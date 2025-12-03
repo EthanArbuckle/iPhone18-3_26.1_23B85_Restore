@@ -1,10 +1,10 @@
 @interface DMFDevice
-+ (id)_sanitizedDeviceKey:(id)a3;
-+ (id)propertyNameForKey:(id)a3;
++ (id)_sanitizedDeviceKey:(id)key;
++ (id)propertyNameForKey:(id)key;
 - (id)initPrivate;
-- (id)valueForKey:(id)a3 error:(id *)a4;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)valueForKey:(id)key error:(id *)error;
+- (id)valueForUndefinedKey:(id)key;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation DMFDevice
@@ -16,10 +16,10 @@
   return [(DMFDevice *)&v3 init];
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a3;
-  v7 = [DMFDevice propertyNameForKey:a4];
+  valueCopy = value;
+  v7 = [DMFDevice propertyNameForKey:key];
   v8 = NSSelectorFromString(v7);
   v10.receiver = self;
   v10.super_class = DMFDevice;
@@ -27,13 +27,13 @@
   {
     v9.receiver = self;
     v9.super_class = DMFDevice;
-    [(DMFDevice *)&v9 setValue:v6 forKey:v7];
+    [(DMFDevice *)&v9 setValue:valueCopy forKey:v7];
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = [DMFDevice propertyNameForKey:a3];
+  v4 = [DMFDevice propertyNameForKey:key];
   NSSelectorFromString(v4);
   if (objc_opt_respondsToSelector())
   {
@@ -50,15 +50,15 @@
   return v5;
 }
 
-+ (id)propertyNameForKey:(id)a3
++ (id)propertyNameForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   if (propertyNameForKey__onceToken != -1)
   {
     +[DMFDevice propertyNameForKey:];
   }
 
-  v5 = [propertyNameForKey__mappedKeys objectForKeyedSubscript:v4];
+  v5 = [propertyNameForKey__mappedKeys objectForKeyedSubscript:keyCopy];
   v6 = v5;
   if (v5)
   {
@@ -67,7 +67,7 @@
 
   else
   {
-    v7 = [a1 _sanitizedDeviceKey:v4];
+    v7 = [self _sanitizedDeviceKey:keyCopy];
   }
 
   v8 = v7;
@@ -121,29 +121,29 @@ void __32__DMFDevice_propertyNameForKey___block_invoke()
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (id)valueForKey:(id)a3 error:(id *)a4
+- (id)valueForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v15 = a4;
-  NSSelectorFromString(v6);
+  keyCopy = key;
+  errorCopy = error;
+  NSSelectorFromString(keyCopy);
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v7 = [DMFDevice propertyNameForKey:v6];
+    v7 = [DMFDevice propertyNameForKey:keyCopy];
 
-    v6 = v7;
+    keyCopy = v7;
   }
 
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@WithError:", v6];
-  v9 = NSSelectorFromString(v8);
+  keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@WithError:", keyCopy];
+  v9 = NSSelectorFromString(keyCopy);
 
-  NSSelectorFromString(v6);
+  NSSelectorFromString(keyCopy);
   if (objc_opt_respondsToSelector())
   {
     v10 = [(DMFDevice *)self methodSignatureForSelector:v9];
     v11 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v10];
     [v11 setTarget:self];
     [v11 setSelector:v9];
-    [v11 setArgument:&v15 atIndex:2];
+    [v11 setArgument:&errorCopy atIndex:2];
     [v11 invoke];
     v14 = 0;
     [v11 getReturnValue:&v14];
@@ -152,13 +152,13 @@ void __32__DMFDevice_propertyNameForKey___block_invoke()
 
   else if (objc_opt_respondsToSelector())
   {
-    v12 = [(DMFDevice *)self valueForKey:v6];
+    v12 = [(DMFDevice *)self valueForKey:keyCopy];
   }
 
-  else if (a4)
+  else if (error)
   {
     DMFErrorWithCodeAndUserInfo(111, 0);
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -169,14 +169,14 @@ void __32__DMFDevice_propertyNameForKey___block_invoke()
   return v12;
 }
 
-+ (id)_sanitizedDeviceKey:(id)a3
++ (id)_sanitizedDeviceKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"^DMFDevice(.*)Key$" withString:@"$1" options:1024 range:{0, objc_msgSend(v3, "length")}];
+  keyCopy = key;
+  v4 = [keyCopy stringByReplacingOccurrencesOfString:@"^DMFDevice(.*)Key$" withString:@"$1" options:1024 range:{0, objc_msgSend(keyCopy, "length")}];
 
   v5 = [v4 substringToIndex:1];
-  v6 = [v5 lowercaseString];
-  v7 = [v4 stringByReplacingCharactersInRange:0 withString:{1, v6}];
+  lowercaseString = [v5 lowercaseString];
+  v7 = [v4 stringByReplacingCharactersInRange:0 withString:{1, lowercaseString}];
 
   return v7;
 }

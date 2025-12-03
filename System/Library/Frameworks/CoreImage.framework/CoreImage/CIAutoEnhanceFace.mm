@@ -1,17 +1,17 @@
 @interface CIAutoEnhanceFace
 - (CGRect)faceRect;
-- (CIAutoEnhanceFace)initWithBounds:(CGRect)a3 andImage:(id)a4 usingContext:(id)a5;
+- (CIAutoEnhanceFace)initWithBounds:(CGRect)bounds andImage:(id)image usingContext:(id)context;
 @end
 
 @implementation CIAutoEnhanceFace
 
-- (CIAutoEnhanceFace)initWithBounds:(CGRect)a3 andImage:(id)a4 usingContext:(id)a5
+- (CIAutoEnhanceFace)initWithBounds:(CGRect)bounds andImage:(id)image usingContext:(id)context
 {
   v32 = *MEMORY[0x1E69E9840];
-  v33.origin.x = a3.origin.x + a3.size.width * 0.339999974 * 0.5;
-  v33.origin.y = a3.origin.y + a3.size.height * 0.339999974 * 0.5;
-  v33.size.width = a3.size.width * 0.660000026;
-  v33.size.height = a3.size.height * 0.660000026;
+  v33.origin.x = bounds.origin.x + bounds.size.width * 0.339999974 * 0.5;
+  v33.origin.y = bounds.origin.y + bounds.size.height * 0.339999974 * 0.5;
+  v33.size.width = bounds.size.width * 0.660000026;
+  v33.size.height = bounds.size.height * 0.660000026;
   v34 = CGRectIntegral(v33);
   x = v34.origin.x;
   y = v34.origin.y;
@@ -37,13 +37,13 @@
     v12->centerX = (x + width * 0.5);
     v12->centerY = (y + height * 0.5);
     CGAffineTransformMakeTranslation(&v31, -x, -y);
-    v15 = [a4 imageByApplyingTransform:&v31];
+    v15 = [image imageByApplyingTransform:&v31];
     CGAffineTransformMakeScale(&v31, 16.0 / width, 16.0 / height);
     v16 = [v15 imageByApplyingTransform:&v31];
     bzero(&v31, 0x400uLL);
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     v18 = 0.0;
-    [a5 render:v16 toBitmap:&v31 rowBytes:64 bounds:264 format:DeviceRGB colorSpace:{0.0, 0.0, 16.0, 16.0}];
+    [context render:v16 toBitmap:&v31 rowBytes:64 bounds:264 format:DeviceRGB colorSpace:{0.0, 0.0, 16.0, 16.0}];
     CGColorSpaceRelease(DeviceRGB);
     v20 = 0;
     v21 = 0.212;

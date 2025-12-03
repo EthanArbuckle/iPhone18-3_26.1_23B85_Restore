@@ -1,5 +1,5 @@
 @interface PUPXPhotoKitAddStacksActionPerformer
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
 - (void)performUserInteractionTask;
 @end
 
@@ -8,8 +8,8 @@
 - (void)performUserInteractionTask
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  if ([v3 count] < 2)
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  if ([assets count] < 2)
   {
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:0];
   }
@@ -33,16 +33,16 @@
   }
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E69C3970] sharedInstance];
-  v7 = [v6 canShowInternalUI];
+  snapshotCopy = snapshot;
+  mEMORY[0x1E69C3970] = [MEMORY[0x1E69C3970] sharedInstance];
+  canShowInternalUI = [mEMORY[0x1E69C3970] canShowInternalUI];
 
-  if (v7 && ([MEMORY[0x1E69A2900] sharedInstance], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "enableStacksReviewUI"), v8, v9))
+  if (canShowInternalUI && ([MEMORY[0x1E69A2900] sharedInstance], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "enableStacksReviewUI"), v8, v9))
   {
-    v10 = [v5 selectedIndexPaths];
-    v11 = [v10 count] > 1;
+    selectedIndexPaths = [snapshotCopy selectedIndexPaths];
+    v11 = [selectedIndexPaths count] > 1;
   }
 
   else

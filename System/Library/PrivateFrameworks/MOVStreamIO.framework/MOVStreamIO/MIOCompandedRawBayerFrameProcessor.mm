@@ -1,19 +1,19 @@
 @interface MIOCompandedRawBayerFrameProcessor
-- (MIOCompandedRawBayerFrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3;
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5;
+- (MIOCompandedRawBayerFrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description;
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MIOCompandedRawBayerFrameProcessor
 
-- (MIOCompandedRawBayerFrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)a3
+- (MIOCompandedRawBayerFrameProcessor)initWithInputFormatDescription:(opaqueCMFormatDescription *)description
 {
   v6.receiver = self;
   v6.super_class = MIOCompandedRawBayerFrameProcessor;
   v4 = [(MIOFrameProcessor *)&v6 initWithInputFormatDescription:?];
   if (v4)
   {
-    v4->_formatDescForEncoding = [MOVStreamIOUtility createL008FormatDescriptionFromCompandedRawBayerFormatDescription:a3];
+    v4->_formatDescForEncoding = [MOVStreamIOUtility createL008FormatDescriptionFromCompandedRawBayerFormatDescription:description];
   }
 
   return v4;
@@ -32,29 +32,29 @@
   [(MIOFrameProcessor *)&v4 dealloc];
 }
 
-- (__CVBuffer)processPixelBuffer:(__CVBuffer *)a3 preserveAttachments:(id)a4 error:(id *)a5
+- (__CVBuffer)processPixelBuffer:(__CVBuffer *)buffer preserveAttachments:(id)attachments error:(id *)error
 {
-  v8 = a4;
+  attachmentsCopy = attachments;
   pool = self->_pool;
-  if (pool || ([MIOPixelBufferPool createNewL008MIOPixelBufferPoolWithReferencePixelBuffer:a3 minBufferCount:10 bufferCacheMode:[(MIOFrameProcessor *)self bufferCacheMode]], v10 = objc_claimAutoreleasedReturnValue(), v11 = self->_pool, self->_pool = v10, v11, (pool = self->_pool) != 0))
+  if (pool || ([MIOPixelBufferPool createNewL008MIOPixelBufferPoolWithReferencePixelBuffer:buffer minBufferCount:10 bufferCacheMode:[(MIOFrameProcessor *)self bufferCacheMode]], v10 = objc_claimAutoreleasedReturnValue(), v11 = self->_pool, self->_pool = v10, v11, (pool = self->_pool) != 0))
   {
-    v12 = [(MIOPixelBufferPool *)pool getPixelBuffer];
-    [(MIOPixelBufferUtility *)PixelBufferUtility splitCompandedBayerBuffer:a3 intoCompandedWarholPixelBuffer:v12];
+    getPixelBuffer = [(MIOPixelBufferPool *)pool getPixelBuffer];
+    [(MIOPixelBufferUtility *)PixelBufferUtility splitCompandedBayerBuffer:buffer intoCompandedWarholPixelBuffer:getPixelBuffer];
   }
 
   else
   {
     v14 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:@"Cannot create pixel buffer pool for RawBayer stream." code:19];
-    if (a5)
+    if (error)
     {
       v14 = v14;
-      *a5 = v14;
+      *error = v14;
     }
 
-    v12 = 0;
+    getPixelBuffer = 0;
   }
 
-  return v12;
+  return getPixelBuffer;
 }
 
 @end

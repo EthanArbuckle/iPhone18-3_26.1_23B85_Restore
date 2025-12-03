@@ -1,42 +1,42 @@
 @interface ICASDeviceSnapshotItemData
-- (ICASDeviceSnapshotItemData)initWithDeviceModel:(id)a3 devicePlatform:(id)a4 bioAuthEnabled:(id)a5 localNotesEnabled:(id)a6 osVersion:(id)a7 deviceID:(id)a8 audioTranscriptEnabled:(id)a9 audioSummaryEnabled:(id)a10 mathTextEnabled:(id)a11 mathHandwritingEnabled:(id)a12;
+- (ICASDeviceSnapshotItemData)initWithDeviceModel:(id)model devicePlatform:(id)platform bioAuthEnabled:(id)enabled localNotesEnabled:(id)notesEnabled osVersion:(id)version deviceID:(id)d audioTranscriptEnabled:(id)transcriptEnabled audioSummaryEnabled:(id)self0 mathTextEnabled:(id)self1 mathHandwritingEnabled:(id)self2;
 - (id)toDict;
 @end
 
 @implementation ICASDeviceSnapshotItemData
 
-- (ICASDeviceSnapshotItemData)initWithDeviceModel:(id)a3 devicePlatform:(id)a4 bioAuthEnabled:(id)a5 localNotesEnabled:(id)a6 osVersion:(id)a7 deviceID:(id)a8 audioTranscriptEnabled:(id)a9 audioSummaryEnabled:(id)a10 mathTextEnabled:(id)a11 mathHandwritingEnabled:(id)a12
+- (ICASDeviceSnapshotItemData)initWithDeviceModel:(id)model devicePlatform:(id)platform bioAuthEnabled:(id)enabled localNotesEnabled:(id)notesEnabled osVersion:(id)version deviceID:(id)d audioTranscriptEnabled:(id)transcriptEnabled audioSummaryEnabled:(id)self0 mathTextEnabled:(id)self1 mathHandwritingEnabled:(id)self2
 {
-  v35 = a3;
-  obj = a4;
-  v34 = a4;
-  v27 = a5;
-  v33 = a5;
-  v32 = a6;
-  v28 = a7;
-  v31 = a7;
-  v29 = a8;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
-  v21 = a11;
-  v22 = a12;
+  modelCopy = model;
+  obj = platform;
+  platformCopy = platform;
+  enabledCopy = enabled;
+  enabledCopy2 = enabled;
+  notesEnabledCopy = notesEnabled;
+  versionCopy = version;
+  versionCopy2 = version;
+  dCopy = d;
+  dCopy2 = d;
+  transcriptEnabledCopy = transcriptEnabled;
+  summaryEnabledCopy = summaryEnabled;
+  textEnabledCopy = textEnabled;
+  handwritingEnabledCopy = handwritingEnabled;
   v36.receiver = self;
   v36.super_class = ICASDeviceSnapshotItemData;
   v23 = [(ICASDeviceSnapshotItemData *)&v36 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeStrong(&v23->_deviceModel, a3);
+    objc_storeStrong(&v23->_deviceModel, model);
     objc_storeStrong(&v24->_devicePlatform, obj);
-    objc_storeStrong(&v24->_bioAuthEnabled, v27);
-    objc_storeStrong(&v24->_localNotesEnabled, a6);
-    objc_storeStrong(&v24->_osVersion, v28);
-    objc_storeStrong(&v24->_deviceID, v29);
-    objc_storeStrong(&v24->_audioTranscriptEnabled, a9);
-    objc_storeStrong(&v24->_audioSummaryEnabled, a10);
-    objc_storeStrong(&v24->_mathTextEnabled, a11);
-    objc_storeStrong(&v24->_mathHandwritingEnabled, a12);
+    objc_storeStrong(&v24->_bioAuthEnabled, enabledCopy);
+    objc_storeStrong(&v24->_localNotesEnabled, notesEnabled);
+    objc_storeStrong(&v24->_osVersion, versionCopy);
+    objc_storeStrong(&v24->_deviceID, dCopy);
+    objc_storeStrong(&v24->_audioTranscriptEnabled, transcriptEnabled);
+    objc_storeStrong(&v24->_audioSummaryEnabled, summaryEnabled);
+    objc_storeStrong(&v24->_mathTextEnabled, textEnabled);
+    objc_storeStrong(&v24->_mathHandwritingEnabled, handwritingEnabled);
   }
 
   return v24;
@@ -46,145 +46,145 @@
 {
   v37[10] = *MEMORY[0x277D85DE8];
   v36[0] = @"deviceModel";
-  v35 = [(ICASDeviceSnapshotItemData *)self deviceModel];
-  if (v35)
+  deviceModel = [(ICASDeviceSnapshotItemData *)self deviceModel];
+  if (deviceModel)
   {
-    v3 = [(ICASDeviceSnapshotItemData *)self deviceModel];
+    deviceModel2 = [(ICASDeviceSnapshotItemData *)self deviceModel];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    deviceModel2 = objc_opt_new();
   }
 
-  v34 = v3;
-  v37[0] = v3;
+  v34 = deviceModel2;
+  v37[0] = deviceModel2;
   v36[1] = @"devicePlatform";
-  v33 = [(ICASDeviceSnapshotItemData *)self devicePlatform];
-  if (v33)
+  devicePlatform = [(ICASDeviceSnapshotItemData *)self devicePlatform];
+  if (devicePlatform)
   {
-    v4 = [(ICASDeviceSnapshotItemData *)self devicePlatform];
+    devicePlatform2 = [(ICASDeviceSnapshotItemData *)self devicePlatform];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    devicePlatform2 = objc_opt_new();
   }
 
-  v32 = v4;
-  v37[1] = v4;
+  v32 = devicePlatform2;
+  v37[1] = devicePlatform2;
   v36[2] = @"bioAuthEnabled";
-  v31 = [(ICASDeviceSnapshotItemData *)self bioAuthEnabled];
-  if (v31)
+  bioAuthEnabled = [(ICASDeviceSnapshotItemData *)self bioAuthEnabled];
+  if (bioAuthEnabled)
   {
-    v5 = [(ICASDeviceSnapshotItemData *)self bioAuthEnabled];
+    bioAuthEnabled2 = [(ICASDeviceSnapshotItemData *)self bioAuthEnabled];
   }
 
   else
   {
-    v5 = objc_opt_new();
+    bioAuthEnabled2 = objc_opt_new();
   }
 
-  v30 = v5;
-  v37[2] = v5;
+  v30 = bioAuthEnabled2;
+  v37[2] = bioAuthEnabled2;
   v36[3] = @"localNotesEnabled";
-  v29 = [(ICASDeviceSnapshotItemData *)self localNotesEnabled];
-  if (v29)
+  localNotesEnabled = [(ICASDeviceSnapshotItemData *)self localNotesEnabled];
+  if (localNotesEnabled)
   {
-    v6 = [(ICASDeviceSnapshotItemData *)self localNotesEnabled];
+    localNotesEnabled2 = [(ICASDeviceSnapshotItemData *)self localNotesEnabled];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    localNotesEnabled2 = objc_opt_new();
   }
 
-  v28 = v6;
-  v37[3] = v6;
+  v28 = localNotesEnabled2;
+  v37[3] = localNotesEnabled2;
   v36[4] = @"osVersion";
-  v27 = [(ICASDeviceSnapshotItemData *)self osVersion];
-  if (v27)
+  osVersion = [(ICASDeviceSnapshotItemData *)self osVersion];
+  if (osVersion)
   {
-    v7 = [(ICASDeviceSnapshotItemData *)self osVersion];
+    osVersion2 = [(ICASDeviceSnapshotItemData *)self osVersion];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    osVersion2 = objc_opt_new();
   }
 
-  v26 = v7;
-  v37[4] = v7;
+  v26 = osVersion2;
+  v37[4] = osVersion2;
   v36[5] = @"deviceID";
-  v25 = [(ICASDeviceSnapshotItemData *)self deviceID];
-  if (v25)
+  deviceID = [(ICASDeviceSnapshotItemData *)self deviceID];
+  if (deviceID)
   {
-    v8 = [(ICASDeviceSnapshotItemData *)self deviceID];
+    deviceID2 = [(ICASDeviceSnapshotItemData *)self deviceID];
   }
 
   else
   {
-    v8 = objc_opt_new();
+    deviceID2 = objc_opt_new();
   }
 
-  v9 = v8;
-  v37[5] = v8;
+  v9 = deviceID2;
+  v37[5] = deviceID2;
   v36[6] = @"audioTranscriptEnabled";
-  v10 = [(ICASDeviceSnapshotItemData *)self audioTranscriptEnabled];
-  if (v10)
+  audioTranscriptEnabled = [(ICASDeviceSnapshotItemData *)self audioTranscriptEnabled];
+  if (audioTranscriptEnabled)
   {
-    v11 = [(ICASDeviceSnapshotItemData *)self audioTranscriptEnabled];
+    audioTranscriptEnabled2 = [(ICASDeviceSnapshotItemData *)self audioTranscriptEnabled];
   }
 
   else
   {
-    v11 = objc_opt_new();
+    audioTranscriptEnabled2 = objc_opt_new();
   }
 
-  v12 = v11;
-  v37[6] = v11;
+  v12 = audioTranscriptEnabled2;
+  v37[6] = audioTranscriptEnabled2;
   v36[7] = @"audioSummaryEnabled";
-  v13 = [(ICASDeviceSnapshotItemData *)self audioSummaryEnabled];
-  if (v13)
+  audioSummaryEnabled = [(ICASDeviceSnapshotItemData *)self audioSummaryEnabled];
+  if (audioSummaryEnabled)
   {
-    v14 = [(ICASDeviceSnapshotItemData *)self audioSummaryEnabled];
+    audioSummaryEnabled2 = [(ICASDeviceSnapshotItemData *)self audioSummaryEnabled];
   }
 
   else
   {
-    v14 = objc_opt_new();
+    audioSummaryEnabled2 = objc_opt_new();
   }
 
-  v15 = v14;
-  v37[7] = v14;
+  v15 = audioSummaryEnabled2;
+  v37[7] = audioSummaryEnabled2;
   v36[8] = @"mathTextEnabled";
-  v16 = [(ICASDeviceSnapshotItemData *)self mathTextEnabled];
-  if (v16)
+  mathTextEnabled = [(ICASDeviceSnapshotItemData *)self mathTextEnabled];
+  if (mathTextEnabled)
   {
-    v17 = [(ICASDeviceSnapshotItemData *)self mathTextEnabled];
+    mathTextEnabled2 = [(ICASDeviceSnapshotItemData *)self mathTextEnabled];
   }
 
   else
   {
-    v17 = objc_opt_new();
+    mathTextEnabled2 = objc_opt_new();
   }
 
-  v18 = v17;
-  v37[8] = v17;
+  v18 = mathTextEnabled2;
+  v37[8] = mathTextEnabled2;
   v36[9] = @"mathHandwritingEnabled";
-  v19 = [(ICASDeviceSnapshotItemData *)self mathHandwritingEnabled];
-  if (v19)
+  mathHandwritingEnabled = [(ICASDeviceSnapshotItemData *)self mathHandwritingEnabled];
+  if (mathHandwritingEnabled)
   {
-    v20 = [(ICASDeviceSnapshotItemData *)self mathHandwritingEnabled];
+    mathHandwritingEnabled2 = [(ICASDeviceSnapshotItemData *)self mathHandwritingEnabled];
   }
 
   else
   {
-    v20 = objc_opt_new();
+    mathHandwritingEnabled2 = objc_opt_new();
   }
 
-  v21 = v20;
-  v37[9] = v20;
+  v21 = mathHandwritingEnabled2;
+  v37[9] = mathHandwritingEnabled2;
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:10];
 
   v23 = *MEMORY[0x277D85DE8];

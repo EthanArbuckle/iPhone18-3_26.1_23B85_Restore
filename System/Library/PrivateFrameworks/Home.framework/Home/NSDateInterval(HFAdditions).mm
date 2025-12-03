@@ -8,8 +8,8 @@
 - (uint64_t)hf_searchResultForDate:()HFAdditions
 {
   v4 = a3;
-  v5 = [a1 startDate];
-  v6 = [v4 compare:v5];
+  startDate = [self startDate];
+  v6 = [v4 compare:startDate];
 
   if (v6 == -1)
   {
@@ -18,8 +18,8 @@
 
   else
   {
-    v7 = [a1 endDate];
-    v8 = [v4 compare:v7];
+    endDate = [self endDate];
+    v8 = [v4 compare:endDate];
 
     if (v8 == 1)
     {
@@ -38,11 +38,11 @@
 - (id)hf_hksvDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [a1 startDate];
-  v4 = [v3 hf_hksvDescription];
-  v5 = [a1 endDate];
-  v6 = [v5 hf_hksvDescription];
-  v7 = [v2 stringWithFormat:@"%@ - %@", v4, v6];
+  startDate = [self startDate];
+  hf_hksvDescription = [startDate hf_hksvDescription];
+  endDate = [self endDate];
+  hf_hksvDescription2 = [endDate hf_hksvDescription];
+  v7 = [v2 stringWithFormat:@"%@ - %@", hf_hksvDescription, hf_hksvDescription2];
 
   return v7;
 }

@@ -1,19 +1,19 @@
 @interface _UIFocusGroup
-+ (id)nullGroupWithCoordinateSpace:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)nullGroupWithCoordinateSpace:(id)space;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)boundingBox;
 - (CGRect)primaryRect;
 - (NSArray)childGroups;
 - (NSArray)items;
 - (UIFocusItem)primaryItem;
-- (_UIFocusGroup)initWithIdentifier:(id)a3 parentGroup:(id)a4 coordinateSpace:(id)a5;
+- (_UIFocusGroup)initWithIdentifier:(id)identifier parentGroup:(id)group coordinateSpace:(id)space;
 - (_UIFocusGroup)parentGroup;
-- (id)_deepCopyWithNewIdentifierToGroupMap:(id)a3;
+- (id)_deepCopyWithNewIdentifierToGroupMap:(id)map;
 - (id)debugDescription;
 - (id)description;
-- (void)_insertChildGroup:(id)a3;
-- (void)_insertItem:(id)a3;
-- (void)_updateWithEnvironment:(id)a3;
+- (void)_insertChildGroup:(id)group;
+- (void)_insertItem:(id)item;
+- (void)_updateWithEnvironment:(id)environment;
 - (void)_validateChildGroupOrderIfNecessary;
 - (void)_validateItemOrderIfNecessary;
 - (void)_validatePrimaryItemIfNecessary;
@@ -22,22 +22,22 @@
 
 @implementation _UIFocusGroup
 
-+ (id)nullGroupWithCoordinateSpace:(id)a3
++ (id)nullGroupWithCoordinateSpace:(id)space
 {
-  v3 = a3;
-  v4 = [(_UIFocusGroup *)[_UIFocusNullGroup alloc] initWithIdentifier:@"com.apple.UIKit.null" parentGroup:0 coordinateSpace:v3];
+  spaceCopy = space;
+  v4 = [(_UIFocusGroup *)[_UIFocusNullGroup alloc] initWithIdentifier:@"com.apple.UIKit.null" parentGroup:0 coordinateSpace:spaceCopy];
 
   return v4;
 }
 
-- (_UIFocusGroup)initWithIdentifier:(id)a3 parentGroup:(id)a4 coordinateSpace:(id)a5
+- (_UIFocusGroup)initWithIdentifier:(id)identifier parentGroup:(id)group coordinateSpace:(id)space
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9 && [v9 length])
+  identifierCopy = identifier;
+  groupCopy = group;
+  spaceCopy = space;
+  if (identifierCopy && [identifierCopy length])
   {
-    if (v11)
+    if (spaceCopy)
     {
       goto LABEL_4;
     }
@@ -45,17 +45,17 @@
 
   else
   {
-    v22 = [MEMORY[0x277CCA890] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"_UIFocusGroup.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"identifier && identifier.length > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusGroup.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"identifier && identifier.length > 0"}];
 
-    if (v11)
+    if (spaceCopy)
     {
       goto LABEL_4;
     }
   }
 
-  v23 = [MEMORY[0x277CCA890] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"_UIFocusGroup.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIFocusGroup.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"coordinateSpace"}];
 
 LABEL_4:
   v24.receiver = self;
@@ -63,7 +63,7 @@ LABEL_4:
   v12 = [(_UIFocusGroup *)&v24 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     v14 = *(v12 + 5);
     *(v12 + 5) = v13;
 
@@ -75,36 +75,36 @@ LABEL_4:
     v18 = *(v12 + 3);
     *(v12 + 3) = v17;
 
-    objc_storeStrong(v12 + 7, a5);
+    objc_storeStrong(v12 + 7, space);
     v19 = *MEMORY[0x277CBF398];
     v20 = *(MEMORY[0x277CBF398] + 16);
     *(v12 + 104) = *MEMORY[0x277CBF398];
     *(v12 + 120) = v20;
     *(v12 + 72) = v19;
     *(v12 + 88) = v20;
-    objc_storeWeak(v12 + 6, v10);
-    [v10 _insertChildGroup:v12];
+    objc_storeWeak(v12 + 6, groupCopy);
+    [groupCopy _insertChildGroup:v12];
   }
 
   return v12;
 }
 
-- (id)_deepCopyWithNewIdentifierToGroupMap:(id)a3
+- (id)_deepCopyWithNewIdentifierToGroupMap:(id)map
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  mapCopy = map;
+  if (!mapCopy)
   {
-    v4 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    mapCopy = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   }
 
-  v5 = [(_UIFocusGroup *)self identifier];
-  v6 = [v4 objectForKey:v5];
+  identifier = [(_UIFocusGroup *)self identifier];
+  v6 = [mapCopy objectForKey:identifier];
   if (!v6)
   {
     v7 = objc_alloc(objc_opt_class());
-    v8 = [(_UIFocusGroup *)self coordinateSpace];
-    v6 = [v7 initWithIdentifier:v5 parentGroup:0 coordinateSpace:v8];
+    coordinateSpace = [(_UIFocusGroup *)self coordinateSpace];
+    v6 = [v7 initWithIdentifier:identifier parentGroup:0 coordinateSpace:coordinateSpace];
 
     v9 = [(NSMutableArray *)self->_items mutableCopy];
     v10 = *(v6 + 24);
@@ -115,13 +115,13 @@ LABEL_4:
     *(v6 + 104) = origin;
     objc_storeStrong((v6 + 32), self->_primaryItem);
     *(v6 + 8) = self->_flags;
-    [v4 setObject:v6 forKey:v5];
+    [mapCopy setObject:v6 forKey:identifier];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v12 = [(_UIFocusGroup *)self childGroups];
-    v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    childGroups = [(_UIFocusGroup *)self childGroups];
+    v13 = [childGroups countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v13)
     {
       v14 = v13;
@@ -132,15 +132,15 @@ LABEL_4:
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(childGroups);
           }
 
-          v17 = [*(*(&v19 + 1) + 8 * i) _deepCopyWithNewIdentifierToGroupMap:v4];
+          v17 = [*(*(&v19 + 1) + 8 * i) _deepCopyWithNewIdentifierToGroupMap:mapCopy];
           objc_storeWeak(v17 + 6, v6);
           [v6 _insertChildGroup:v17];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v14 = [childGroups countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v14);
@@ -150,31 +150,31 @@ LABEL_4:
   return v6;
 }
 
-- (void)_insertChildGroup:(id)a3
+- (void)_insertChildGroup:(id)group
 {
-  [(NSMutableArray *)self->_childGroups addObject:a3];
+  [(NSMutableArray *)self->_childGroups addObject:group];
 
   [(_UIFocusGroup *)self _invalidateChildGroupOrder];
 }
 
-- (void)_insertItem:(id)a3
+- (void)_insertItem:(id)item
 {
-  [(NSMutableArray *)self->_items addObject:a3];
+  [(NSMutableArray *)self->_items addObject:item];
 
   [(_UIFocusGroup *)self _invalidateItemOrder];
 }
 
-- (void)_updateWithEnvironment:(id)a3
+- (void)_updateWithEnvironment:(id)environment
 {
-  v5 = a3;
-  v11 = v5;
+  environmentCopy = environment;
+  v11 = environmentCopy;
   if (!self->_owningEnvironment)
   {
-    objc_storeStrong(&self->_owningEnvironment, a3);
-    v5 = v11;
+    objc_storeStrong(&self->_owningEnvironment, environment);
+    environmentCopy = v11;
   }
 
-  v6 = _UIFocusItemSafeCast(v5);
+  v6 = _UIFocusItemSafeCast(environmentCopy);
   v7 = v6;
   if (v6)
   {
@@ -260,22 +260,22 @@ LABEL_4:
     *&self->_flags |= 4u;
     if ([(NSMutableArray *)self->_items count])
     {
-      v3 = [(NSMutableArray *)self->_items firstObject];
-      v4 = [UIFocusSystem focusSystemForEnvironment:v3];
+      firstObject = [(NSMutableArray *)self->_items firstObject];
+      v4 = [UIFocusSystem focusSystemForEnvironment:firstObject];
 
-      v5 = [v4 focusedItem];
+      focusedItem = [v4 focusedItem];
       v22 = v4;
-      v6 = [v4 _focusGroupHistory];
-      v7 = [(_UIFocusGroup *)self identifier];
-      v8 = [v6 lastFocusedItemForGroupIdentifier:v7];
+      _focusGroupHistory = [v4 _focusGroupHistory];
+      identifier = [(_UIFocusGroup *)self identifier];
+      v8 = [_focusGroupHistory lastFocusedItemForGroupIdentifier:identifier];
 
       v26 = 0u;
       v27 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v23 = self;
-      v9 = [(_UIFocusGroup *)self items];
-      v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      selfCopy = self;
+      items = [(_UIFocusGroup *)self items];
+      v10 = [items countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (v10)
       {
         v11 = v10;
@@ -288,11 +288,11 @@ LABEL_4:
           {
             if (*v25 != v14)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(items);
             }
 
             v16 = *(*(&v24 + 1) + 8 * i);
-            v17 = _UIFocusGroupPriorityForItem(v16, v5, v8);
+            v17 = _UIFocusGroupPriorityForItem(v16, focusedItem, v8);
             if (v17 > v13)
             {
               v18 = v17;
@@ -303,7 +303,7 @@ LABEL_4:
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+          v11 = [items countByEnumeratingWithState:&v24 objects:v28 count:16];
         }
 
         while (v11);
@@ -314,8 +314,8 @@ LABEL_4:
         v12 = 0;
       }
 
-      primaryItem = v23->_primaryItem;
-      v23->_primaryItem = v12;
+      primaryItem = selfCopy->_primaryItem;
+      selfCopy->_primaryItem = v12;
     }
 
     else
@@ -338,20 +338,20 @@ LABEL_4:
   self->_primaryRect.origin = *MEMORY[0x277CBF398];
   self->_primaryRect.size = v3;
   [(_UIFocusGroup *)self _validatePrimaryItemIfNecessary];
-  v27 = self->_primaryItem;
-  if (!v27)
+  firstObject = self->_primaryItem;
+  if (!firstObject)
   {
     [(_UIFocusGroup *)self _validateItemOrderIfNecessary];
-    v27 = [(NSMutableArray *)self->_items firstObject];
-    if (!v27)
+    firstObject = [(NSMutableArray *)self->_items firstObject];
+    if (!firstObject)
     {
-      v27 = 0;
+      firstObject = 0;
       goto LABEL_8;
     }
   }
 
-  v4 = [(_UIFocusGroup *)self coordinateSpace];
-  v5 = _UIFocusItemFrameInCoordinateSpace(v27, v4);
+  coordinateSpace = [(_UIFocusGroup *)self coordinateSpace];
+  v5 = _UIFocusItemFrameInCoordinateSpace(firstObject, coordinateSpace);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -364,17 +364,17 @@ LABEL_4:
   {
 LABEL_8:
     [(_UIFocusGroup *)self _validateChildGroupOrderIfNecessary];
-    v12 = [(NSMutableArray *)self->_childGroups firstObject];
-    if (v12)
+    firstObject2 = [(NSMutableArray *)self->_childGroups firstObject];
+    if (firstObject2)
     {
-      v13 = [(_UIFocusGroup *)self coordinateSpace];
-      [v12 primaryRect];
+      coordinateSpace2 = [(_UIFocusGroup *)self coordinateSpace];
+      [firstObject2 primaryRect];
       v15 = v14;
       v17 = v16;
       v19 = v18;
       v21 = v20;
-      v22 = [v12 coordinateSpace];
-      [v13 convertRect:v22 fromCoordinateSpace:{v15, v17, v19, v21}];
+      coordinateSpace3 = [firstObject2 coordinateSpace];
+      [coordinateSpace2 convertRect:coordinateSpace3 fromCoordinateSpace:{v15, v17, v19, v21}];
       self->_primaryRect.origin.x = v23;
       self->_primaryRect.origin.y = v24;
       self->_primaryRect.size.width = v25;
@@ -397,18 +397,18 @@ LABEL_8:
 LABEL_12:
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_UIFocusGroup *)self isEqualToFocusGroup:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(_UIFocusGroup *)self isEqualToFocusGroup:v5];
   }
 
   return v6;

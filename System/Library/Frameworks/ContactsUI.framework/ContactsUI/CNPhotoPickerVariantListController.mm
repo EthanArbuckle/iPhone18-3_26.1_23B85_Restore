@@ -1,26 +1,26 @@
 @interface CNPhotoPickerVariantListController
 + (CGRect)frameForHeaderInBounds:(CGRect)result;
-+ (int64_t)topMarginForBounds:(CGRect)a3 shouldShowCaptions:(BOOL)a4;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CNPhotoPickerVariantListController)initWithVariantsManager:(id)a3 originalItem:(id)a4 selectedVariantIdentifier:(id)a5;
++ (int64_t)topMarginForBounds:(CGRect)bounds shouldShowCaptions:(BOOL)captions;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CNPhotoPickerVariantListController)initWithVariantsManager:(id)manager originalItem:(id)item selectedVariantIdentifier:(id)identifier;
 - (CNPhotoPickerVariantListControllerDelegate)delegate;
 - (NSString)variantsDisplayTitle;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
 - (void)buildCollectionView;
 - (void)buildHeader;
-- (void)cancel:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (void)cancel:(id)cancel;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)didFinishSelectingVariant;
 - (void)generateProviderItems;
-- (void)providerItemDidUpdate:(id)a3;
+- (void)providerItemDidUpdate:(id)update;
 - (void)updateFlowLayoutItemSize;
-- (void)updateForNewOriginalItem:(id)a3;
-- (void)updatePreviewWithItem:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateForNewOriginalItem:(id)item;
+- (void)updatePreviewWithItem:(id)item;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CNPhotoPickerVariantListController
@@ -32,48 +32,48 @@
   return WeakRetained;
 }
 
-- (void)providerItemDidUpdate:(id)a3
+- (void)providerItemDidUpdate:(id)update
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNPhotoPickerVariantListController *)self providerItems];
-  v6 = [v5 indexOfObject:v4];
+  updateCopy = update;
+  providerItems = [(CNPhotoPickerVariantListController *)self providerItems];
+  v6 = [providerItems indexOfObject:updateCopy];
 
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = [MEMORY[0x1E696AC88] indexPathForItem:v6 inSection:0];
-    v8 = [(CNPhotoPickerVariantListController *)self collectionView];
+    collectionView = [(CNPhotoPickerVariantListController *)self collectionView];
     v14[0] = v7;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    [v8 reloadItemsAtIndexPaths:v9];
+    [collectionView reloadItemsAtIndexPaths:v9];
 
     if ([(CNPhotoPickerVariantListController *)self showPreview])
     {
-      v10 = [(CNPhotoPickerVariantListController *)self collectionView];
-      v11 = [v10 indexPathsForSelectedItems];
-      v12 = [v11 firstObject];
-      v13 = [v12 isEqual:v7];
+      collectionView2 = [(CNPhotoPickerVariantListController *)self collectionView];
+      indexPathsForSelectedItems = [collectionView2 indexPathsForSelectedItems];
+      firstObject = [indexPathsForSelectedItems firstObject];
+      v13 = [firstObject isEqual:v7];
 
       if (v13)
       {
-        [(CNPhotoPickerVariantListController *)self updatePreviewWithItem:v4];
+        [(CNPhotoPickerVariantListController *)self updatePreviewWithItem:updateCopy];
       }
     }
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(CNPhotoPickerVariantListController *)self providerItems];
-  v7 = [v5 item];
+  pathCopy = path;
+  providerItems = [(CNPhotoPickerVariantListController *)self providerItems];
+  item = [pathCopy item];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [providerItems objectAtIndex:item];
   [(CNPhotoPickerVariantListController *)self updatePreviewWithItem:v8];
 
-  v9 = [(CNPhotoPickerVariantListController *)self navigationItem];
-  v10 = [v9 rightBarButtonItem];
-  [v10 setEnabled:1];
+  navigationItem = [(CNPhotoPickerVariantListController *)self navigationItem];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:1];
 
   if ([(CNPhotoPickerVariantListController *)self commitsChangesOnSelection])
   {
@@ -82,34 +82,34 @@
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [a3 indexPathsForSelectedItems];
-  v7 = [v6 containsObject:v5];
+  pathCopy = path;
+  indexPathsForSelectedItems = [view indexPathsForSelectedItems];
+  v7 = [indexPathsForSelectedItems containsObject:pathCopy];
 
   return v7 ^ 1;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[CNPhotoPickerCollectionViewCell cellIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
   [v9 setCellStyle:{-[CNPhotoPickerVariantListController cellStyle](self, "cellStyle")}];
   [v9 setDisplaySelection:{-[CNPhotoPickerVariantListController showsSelection](self, "showsSelection")}];
   v10 = +[CNUIColorRepository photoPickerAvatarBackgroundDefaultColor];
   [v9 setTintColor:v10];
 
-  v11 = [v7 indexPathsForSelectedItems];
+  indexPathsForSelectedItems = [viewCopy indexPathsForSelectedItems];
 
-  [v9 setSelected:{objc_msgSend(v11, "containsObject:", v6)}];
-  v12 = [(CNPhotoPickerVariantListController *)self providerItems];
-  v13 = [v6 row];
+  [v9 setSelected:{objc_msgSend(indexPathsForSelectedItems, "containsObject:", pathCopy)}];
+  providerItems = [(CNPhotoPickerVariantListController *)self providerItems];
+  v13 = [pathCopy row];
 
-  v14 = [v12 objectAtIndexedSubscript:v13];
+  v14 = [providerItems objectAtIndexedSubscript:v13];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -125,8 +125,8 @@
   [v14 thumbnailViewWithPlaceholderProvider:v25 completion:&v20];
   if ([(CNPhotoPickerVariantListController *)self shouldShowCaptions:v20])
   {
-    v16 = [v14 localizedVariantDisplayName];
-    [v15 updateWithCaption:v16];
+    localizedVariantDisplayName = [v14 localizedVariantDisplayName];
+    [v15 updateWithCaption:localizedVariantDisplayName];
   }
 
   v17 = v24;
@@ -151,36 +151,36 @@ uint64_t __76__CNPhotoPickerVariantListController_collectionView_cellForItemAtIn
   return [v3 updateWithView:a2 animation:v4];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(CNPhotoPickerVariantListController *)self providerItems:a3];
+  v4 = [(CNPhotoPickerVariantListController *)self providerItems:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)updatePreviewWithItem:(id)a3
+- (void)updatePreviewWithItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   if ([(CNPhotoPickerVariantListController *)self showPreview])
   {
-    v4 = [(CNPhotoPickerVariantListController *)self posePreview];
-    [v4 updatePreviewWithItem:v5];
+    posePreview = [(CNPhotoPickerVariantListController *)self posePreview];
+    [posePreview updatePreviewWithItem:itemCopy];
   }
 }
 
 - (void)didFinishSelectingVariant
 {
-  v3 = [(CNPhotoPickerVariantListController *)self delegate];
+  delegate = [(CNPhotoPickerVariantListController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(CNPhotoPickerVariantListController *)self collectionView];
-    v5 = [v4 indexPathsForSelectedItems];
-    v6 = [v5 firstObject];
+    collectionView = [(CNPhotoPickerVariantListController *)self collectionView];
+    indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+    firstObject = [indexPathsForSelectedItems firstObject];
 
-    v7 = [(CNPhotoPickerVariantListController *)self providerItems];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "item")}];
+    providerItems = [(CNPhotoPickerVariantListController *)self providerItems];
+    v8 = [providerItems objectAtIndexedSubscript:{objc_msgSend(firstObject, "item")}];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -199,14 +199,14 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
   [v2 photoPickerVariantListController:*(a1 + 32) didSelectProviderItem:*(a1 + 40)];
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = [(CNPhotoPickerVariantListController *)self delegate];
+  delegate = [(CNPhotoPickerVariantListController *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(CNPhotoPickerVariantListController *)self delegate];
-    [v5 photoPickerVariantListControllerDidCancel:self];
+    delegate2 = [(CNPhotoPickerVariantListController *)self delegate];
+    [delegate2 photoPickerVariantListControllerDidCancel:self];
   }
 
   else
@@ -218,9 +218,9 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
 
 - (void)generateProviderItems
 {
-  v3 = [(CNPhotoPickerVariantListController *)self originalItem];
-  v4 = [(CNPhotoPickerVariantListController *)self variantsManager];
-  v5 = [v3 createVariantsItemsWithVariantsManager:v4];
+  originalItem = [(CNPhotoPickerVariantListController *)self originalItem];
+  variantsManager = [(CNPhotoPickerVariantListController *)self variantsManager];
+  v5 = [originalItem createVariantsItemsWithVariantsManager:variantsManager];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -229,25 +229,25 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
   v7[4] = self;
   [v5 _cn_each:v7];
   [(CNPhotoPickerVariantListController *)self setProviderItems:v5];
-  v6 = [(CNPhotoPickerVariantListController *)self collectionView];
-  [v6 reloadData];
+  collectionView = [(CNPhotoPickerVariantListController *)self collectionView];
+  [collectionView reloadData];
 }
 
 - (void)updateFlowLayoutItemSize
 {
-  v3 = [(CNPhotoPickerVariantListController *)self collectionView];
-  v15 = [v3 collectionViewLayout];
+  collectionView = [(CNPhotoPickerVariantListController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  v4 = [(CNPhotoPickerVariantListController *)self numberOfItemsPerRowProvider];
-  v5 = [(CNPhotoPickerVariantListController *)self view];
-  [v5 bounds];
-  v6 = v4[2](v4);
+  numberOfItemsPerRowProvider = [(CNPhotoPickerVariantListController *)self numberOfItemsPerRowProvider];
+  view = [(CNPhotoPickerVariantListController *)self view];
+  [view bounds];
+  v6 = numberOfItemsPerRowProvider[2](numberOfItemsPerRowProvider);
 
-  v7 = [(CNPhotoPickerVariantListController *)self view];
-  [v7 bounds];
+  view2 = [(CNPhotoPickerVariantListController *)self view];
+  [view2 bounds];
   v9 = v8;
 
-  [v15 minimumInteritemSpacing];
+  [collectionViewLayout minimumInteritemSpacing];
   *&v10 = (v9 - (v6 - 1) * v10 + -64.0) / v6;
   v11 = floorf(*&v10);
   v12 = v11;
@@ -258,39 +258,39 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
     v12 = v14 * 2.0 + 8.0 + v11;
   }
 
-  [v15 setItemSize:{v11, v12}];
-  [v15 invalidateLayout];
+  [collectionViewLayout setItemSize:{v11, v12}];
+  [collectionViewLayout invalidateLayout];
 }
 
-- (void)updateForNewOriginalItem:(id)a3
+- (void)updateForNewOriginalItem:(id)item
 {
-  v12 = a3;
-  v5 = [(CNPhotoPickerVariantListController *)self collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
+  itemCopy = item;
+  collectionView = [(CNPhotoPickerVariantListController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
-  objc_storeStrong(&self->_originalItem, a3);
+  objc_storeStrong(&self->_originalItem, item);
   [(CNPhotoPickerVariantListController *)self generateProviderItems];
-  if ([v6 count])
+  if ([indexPathsForSelectedItems count])
   {
     v7 = [(NSArray *)self->_providerItems count];
-    v8 = [v6 objectAtIndexedSubscript:0];
-    v9 = [v8 item];
+    v8 = [indexPathsForSelectedItems objectAtIndexedSubscript:0];
+    item = [v8 item];
 
-    if (v7 > v9)
+    if (v7 > item)
     {
-      v10 = [(CNPhotoPickerVariantListController *)self collectionView];
-      v11 = [v6 objectAtIndexedSubscript:0];
-      [v10 selectItemAtIndexPath:v11 animated:0 scrollPosition:0];
+      collectionView2 = [(CNPhotoPickerVariantListController *)self collectionView];
+      v11 = [indexPathsForSelectedItems objectAtIndexedSubscript:0];
+      [collectionView2 selectItemAtIndexPath:v11 animated:0 scrollPosition:0];
     }
   }
 }
 
 - (NSString)variantsDisplayTitle
 {
-  v2 = [(CNPhotoPickerVariantListController *)self originalItem];
-  v3 = [v2 localizedVariantsTitle];
+  originalItem = [(CNPhotoPickerVariantListController *)self originalItem];
+  localizedVariantsTitle = [originalItem localizedVariantsTitle];
 
-  return v3;
+  return localizedVariantsTitle;
 }
 
 - (void)viewDidLayoutSubviews
@@ -299,12 +299,12 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
   v5.super_class = CNPhotoPickerVariantListController;
   [(CNPhotoPickerVariantListController *)&v5 viewDidLayoutSubviews];
   [(CNPhotoPickerVariantListController *)self updateFlowLayoutItemSize];
-  v3 = [(CNPhotoPickerVariantListController *)self posePreview];
+  posePreview = [(CNPhotoPickerVariantListController *)self posePreview];
 
-  if (v3)
+  if (posePreview)
   {
-    v4 = [(CNPhotoPickerVariantListController *)self posePreview];
-    [v4 layoutIfNeeded];
+    posePreview2 = [(CNPhotoPickerVariantListController *)self posePreview];
+    [posePreview2 layoutIfNeeded];
   }
 }
 
@@ -312,9 +312,9 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
 {
   v41[4] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E69DC840]);
-  v4 = [(CNPhotoPickerVariantListController *)self shouldShowCaptions];
+  shouldShowCaptions = [(CNPhotoPickerVariantListController *)self shouldShowCaptions];
   v5 = 20.0;
-  if (v4)
+  if (shouldShowCaptions)
   {
     v5 = 18.0;
   }
@@ -323,24 +323,24 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
   [v3 setMinimumInteritemSpacing:20.0];
   [v3 setScrollDirection:0];
   [v3 setSectionInsetReference:1];
-  v6 = [(CNPhotoPickerVariantListController *)self sectionHeaderView];
+  sectionHeaderView = [(CNPhotoPickerVariantListController *)self sectionHeaderView];
 
-  if (v6)
+  if (sectionHeaderView)
   {
-    v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v7 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     [v3 setHeaderReferenceSize:{CGRectGetWidth(v42), 50.0}];
   }
 
   v8 = objc_opt_class();
-  v9 = [(CNPhotoPickerVariantListController *)self view];
-  [v9 bounds];
+  view = [(CNPhotoPickerVariantListController *)self view];
+  [view bounds];
   v14 = [v8 topMarginForBounds:-[CNPhotoPickerVariantListController shouldShowCaptions](self shouldShowCaptions:{"shouldShowCaptions"), v10, v11, v12, v13}];
 
   [v3 setSectionInset:{v14, 16.0, 20.0, 16.0}];
   v15 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v16 = [(CNPhotoPickerVariantListController *)self view];
-  [v16 bounds];
+  view2 = [(CNPhotoPickerVariantListController *)self view];
+  [view2 bounds];
   v17 = [v15 initWithFrame:v3 collectionViewLayout:?];
 
   [v17 setDelegate:self];
@@ -350,43 +350,43 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
   [v17 registerClass:v18 forCellWithReuseIdentifier:v19];
 
   [v17 setClipsToBounds:0];
-  v20 = [MEMORY[0x1E69DC888] clearColor];
-  [v17 setBackgroundColor:v20];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v17 setBackgroundColor:clearColor];
 
   [v17 setAlwaysBounceVertical:1];
   [v17 setContentInsetAdjustmentBehavior:2];
   [v17 setContentInset:{0.0, 16.0, 0.0, 16.0}];
-  v21 = [(CNPhotoPickerVariantListController *)self view];
-  [v21 addSubview:v17];
+  view3 = [(CNPhotoPickerVariantListController *)self view];
+  [view3 addSubview:v17];
 
-  v22 = [(CNPhotoPickerVariantListController *)self headerView];
+  headerView = [(CNPhotoPickerVariantListController *)self headerView];
 
-  if (v22)
+  if (headerView)
   {
     [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v40 = [(CNPhotoPickerVariantListController *)self view];
-    v38 = [v17 topAnchor];
-    v39 = [(CNPhotoPickerVariantListController *)self headerView];
-    v37 = [v39 bottomAnchor];
-    v36 = [v38 constraintEqualToAnchor:v37];
+    view4 = [(CNPhotoPickerVariantListController *)self view];
+    topAnchor = [v17 topAnchor];
+    headerView2 = [(CNPhotoPickerVariantListController *)self headerView];
+    bottomAnchor = [headerView2 bottomAnchor];
+    v36 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     v41[0] = v36;
-    v34 = [v17 leftAnchor];
-    v35 = [(CNPhotoPickerVariantListController *)self view];
-    v33 = [v35 leftAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    leftAnchor = [v17 leftAnchor];
+    view5 = [(CNPhotoPickerVariantListController *)self view];
+    leftAnchor2 = [view5 leftAnchor];
+    v32 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v41[1] = v32;
-    v30 = [v17 rightAnchor];
-    v31 = [(CNPhotoPickerVariantListController *)self view];
-    v23 = [v31 rightAnchor];
-    v24 = [v30 constraintEqualToAnchor:v23];
+    rightAnchor = [v17 rightAnchor];
+    view6 = [(CNPhotoPickerVariantListController *)self view];
+    rightAnchor2 = [view6 rightAnchor];
+    v24 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v41[2] = v24;
-    v25 = [v17 bottomAnchor];
-    v26 = [(CNPhotoPickerVariantListController *)self view];
-    v27 = [v26 bottomAnchor];
-    v28 = [v25 constraintEqualToAnchor:v27];
+    bottomAnchor2 = [v17 bottomAnchor];
+    view7 = [(CNPhotoPickerVariantListController *)self view];
+    bottomAnchor3 = [view7 bottomAnchor];
+    v28 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v41[3] = v28;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:4];
-    [v40 addConstraints:v29];
+    [view4 addConstraints:v29];
   }
 
   else
@@ -400,17 +400,17 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
 - (void)buildHeader
 {
   v66[8] = *MEMORY[0x1E69E9840];
-  v3 = [(CNPhotoPickerVariantListController *)self view];
-  [v3 bounds];
+  view = [(CNPhotoPickerVariantListController *)self view];
+  [view bounds];
   v5 = v4;
 
   v6 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, v5, 100.0}];
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v6 setBackgroundColor:clearColor];
 
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v8 = [(CNPhotoPickerVariantListController *)self view];
-  [v8 addSubview:v6];
+  view2 = [(CNPhotoPickerVariantListController *)self view];
+  [view2 addSubview:v6];
 
   [(CNPhotoPickerVariantListController *)self setHeaderView:v6];
   v67.origin.x = 0.0;
@@ -422,18 +422,18 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
   y = v68.origin.y;
   width = v68.size.width;
   height = v68.size.height;
-  v13 = [(CNPhotoPickerVariantListController *)self originalItem];
-  v14 = [CNPhotoPickerPreviewView pickerPreviewWithFrame:v13 forItem:x, y, width, height];
+  originalItem = [(CNPhotoPickerVariantListController *)self originalItem];
+  height = [CNPhotoPickerPreviewView pickerPreviewWithFrame:originalItem forItem:x, y, width, height];
 
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v14 setClipsToBounds:1];
-  [v6 addSubview:v14];
-  v15 = v14;
-  [(CNPhotoPickerVariantListController *)self setPosePreview:v14];
-  v16 = [(CNPhotoPickerVariantListController *)self view];
-  v17 = [v16 window];
-  v18 = [v17 screen];
-  [v18 scale];
+  [height setTranslatesAutoresizingMaskIntoConstraints:0];
+  [height setClipsToBounds:1];
+  [v6 addSubview:height];
+  v15 = height;
+  [(CNPhotoPickerVariantListController *)self setPosePreview:height];
+  view3 = [(CNPhotoPickerVariantListController *)self view];
+  window = [view3 window];
+  screen = [window screen];
+  [screen scale];
   v20 = v19;
 
   if (v20 <= 0.0)
@@ -455,108 +455,108 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
   [v24 setBackgroundColor:v25];
 
   v26 = +[CNUIColorRepository photoPickerBackgroundShadowColor];
-  v27 = [v26 CGColor];
-  v28 = [v24 layer];
-  [v28 setShadowColor:v27];
+  cGColor = [v26 CGColor];
+  layer = [v24 layer];
+  [layer setShadowColor:cGColor];
 
-  v29 = [v24 layer];
+  layer2 = [v24 layer];
   LODWORD(v30) = 1.0;
-  [v29 setShadowOpacity:v30];
+  [layer2 setShadowOpacity:v30];
 
-  v31 = [v24 layer];
-  [v31 setShadowOffset:{0.0, 1.0}];
+  layer3 = [v24 layer];
+  [layer3 setShadowOffset:{0.0, 1.0}];
 
-  v32 = [v24 layer];
-  [v32 setShadowRadius:0.5];
+  layer4 = [v24 layer];
+  [layer4 setShadowRadius:0.5];
 
-  v33 = [v24 layer];
-  [v33 setMasksToBounds:0];
+  layer5 = [v24 layer];
+  [layer5 setMasksToBounds:0];
 
   v64 = v24;
   [v24 setAutoresizingMask:10];
   [v6 addSubview:v24];
-  v34 = [(CNPhotoPickerVariantListController *)self view];
-  v65 = [(CNPhotoPickerVariantListController *)self view];
-  v62 = [v6 topAnchor];
-  v63 = [v34 safeAreaLayoutGuide];
-  v61 = [v63 topAnchor];
-  v60 = [v62 constraintEqualToAnchor:v61];
+  view4 = [(CNPhotoPickerVariantListController *)self view];
+  view5 = [(CNPhotoPickerVariantListController *)self view];
+  topAnchor = [v6 topAnchor];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v60 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v66[0] = v60;
-  v59 = [v6 heightAnchor];
-  v58 = [v34 heightAnchor];
-  v56 = [v59 constraintEqualToAnchor:v58 multiplier:0.3];
+  heightAnchor = [v6 heightAnchor];
+  heightAnchor2 = [view4 heightAnchor];
+  v56 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.3];
   v66[1] = v56;
-  v55 = [v6 leftAnchor];
-  v57 = v34;
-  v54 = [v34 leftAnchor];
-  v53 = [v55 constraintEqualToAnchor:v54];
+  leftAnchor = [v6 leftAnchor];
+  v57 = view4;
+  leftAnchor2 = [view4 leftAnchor];
+  v53 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v66[2] = v53;
-  v52 = [v6 rightAnchor];
-  v51 = [v34 rightAnchor];
-  v49 = [v52 constraintEqualToAnchor:v51];
+  rightAnchor = [v6 rightAnchor];
+  rightAnchor2 = [view4 rightAnchor];
+  v49 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v66[3] = v49;
   v35 = v15;
-  v48 = [v15 topAnchor];
-  v47 = [v6 topAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47 constant:20.0];
+  topAnchor3 = [v15 topAnchor];
+  topAnchor4 = [v6 topAnchor];
+  v46 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:20.0];
   v66[4] = v46;
   v50 = v15;
-  v45 = [v15 bottomAnchor];
-  v36 = [v6 bottomAnchor];
-  v37 = [v45 constraintEqualToAnchor:v36 constant:-20.0];
+  bottomAnchor = [v15 bottomAnchor];
+  bottomAnchor2 = [v6 bottomAnchor];
+  v37 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-20.0];
   v66[5] = v37;
-  v38 = [v15 centerXAnchor];
-  v39 = [v6 centerXAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  centerXAnchor = [v15 centerXAnchor];
+  centerXAnchor2 = [v6 centerXAnchor];
+  v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v66[6] = v40;
-  v41 = [v35 widthAnchor];
-  v42 = [v35 heightAnchor];
-  v43 = [v41 constraintEqualToAnchor:v42];
+  widthAnchor = [v35 widthAnchor];
+  heightAnchor3 = [v35 heightAnchor];
+  v43 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
   v66[7] = v43;
   v44 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:8];
-  [v65 addConstraints:v44];
+  [view5 addConstraints:v44];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = CNPhotoPickerVariantListController;
-  [(CNPhotoPickerVariantListController *)&v9 viewDidAppear:a3];
-  v4 = [(CNPhotoPickerVariantListController *)self collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
-  if (![v5 count])
+  [(CNPhotoPickerVariantListController *)&v9 viewDidAppear:appear];
+  collectionView = [(CNPhotoPickerVariantListController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  if (![indexPathsForSelectedItems count])
   {
-    v6 = [(CNPhotoPickerVariantListController *)self selectedVariantIdentifier];
-    if (v6)
+    selectedVariantIdentifier = [(CNPhotoPickerVariantListController *)self selectedVariantIdentifier];
+    if (selectedVariantIdentifier)
     {
     }
 
     else
     {
-      v7 = [(CNPhotoPickerVariantListController *)self commitsChangesOnSelection];
+      commitsChangesOnSelection = [(CNPhotoPickerVariantListController *)self commitsChangesOnSelection];
 
-      if (v7)
+      if (commitsChangesOnSelection)
       {
         return;
       }
 
-      v4 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-      v8 = [(CNPhotoPickerVariantListController *)self collectionView];
-      [v8 selectItemAtIndexPath:v4 animated:0 scrollPosition:0];
+      collectionView = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
+      collectionView2 = [(CNPhotoPickerVariantListController *)self collectionView];
+      [collectionView2 selectItemAtIndexPath:collectionView animated:0 scrollPosition:0];
 
-      v5 = [(CNPhotoPickerVariantListController *)self collectionView];
-      [(CNPhotoPickerVariantListController *)self collectionView:v5 didSelectItemAtIndexPath:v4];
+      indexPathsForSelectedItems = [(CNPhotoPickerVariantListController *)self collectionView];
+      [(CNPhotoPickerVariantListController *)self collectionView:indexPathsForSelectedItems didSelectItemAtIndexPath:collectionView];
     }
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = CNPhotoPickerVariantListController;
-  [(CNPhotoPickerVariantListController *)&v15 viewWillAppear:a3];
-  v4 = [(CNPhotoPickerVariantListController *)self selectedVariantIdentifier];
-  if (v4)
+  [(CNPhotoPickerVariantListController *)&v15 viewWillAppear:appear];
+  selectedVariantIdentifier = [(CNPhotoPickerVariantListController *)self selectedVariantIdentifier];
+  if (selectedVariantIdentifier)
   {
 
     v5 = 0x7FFFFFFFFFFFFFFFLL;
@@ -564,10 +564,10 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
 
   else
   {
-    v6 = [(CNPhotoPickerVariantListController *)self originalItem];
-    v7 = [v6 imageType];
+    originalItem = [(CNPhotoPickerVariantListController *)self originalItem];
+    imageType = [originalItem imageType];
 
-    if (v7 == 1)
+    if (imageType == 1)
     {
       v5 = 0;
     }
@@ -578,39 +578,39 @@ void __63__CNPhotoPickerVariantListController_didFinishSelectingVariant__block_i
     }
   }
 
-  v8 = [(CNPhotoPickerVariantListController *)self collectionView];
-  v9 = [v8 indexPathsForSelectedItems];
-  if ([v9 count])
+  collectionView = [(CNPhotoPickerVariantListController *)self collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  if ([indexPathsForSelectedItems count])
   {
   }
 
   else
   {
-    v10 = [(CNPhotoPickerVariantListController *)self selectedVariantIdentifier];
+    selectedVariantIdentifier2 = [(CNPhotoPickerVariantListController *)self selectedVariantIdentifier];
 
-    if (!v10)
+    if (!selectedVariantIdentifier2)
     {
       goto LABEL_11;
     }
 
-    v8 = [(CNPhotoPickerVariantListController *)self providerItems];
+    collectionView = [(CNPhotoPickerVariantListController *)self providerItems];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __53__CNPhotoPickerVariantListController_viewWillAppear___block_invoke;
     v14[3] = &unk_1E74E66D0;
     v14[4] = self;
-    v5 = [v8 _cn_indexOfFirstObjectPassingTest:v14];
+    v5 = [collectionView _cn_indexOfFirstObjectPassingTest:v14];
   }
 
 LABEL_11:
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = [MEMORY[0x1E696AC88] indexPathForItem:v5 inSection:0];
-    v12 = [(CNPhotoPickerVariantListController *)self collectionView];
-    [v12 selectItemAtIndexPath:v11 animated:0 scrollPosition:2];
+    collectionView2 = [(CNPhotoPickerVariantListController *)self collectionView];
+    [collectionView2 selectItemAtIndexPath:v11 animated:0 scrollPosition:2];
 
-    v13 = [(CNPhotoPickerVariantListController *)self collectionView];
-    [(CNPhotoPickerVariantListController *)self collectionView:v13 didSelectItemAtIndexPath:v11];
+    collectionView3 = [(CNPhotoPickerVariantListController *)self collectionView];
+    [(CNPhotoPickerVariantListController *)self collectionView:collectionView3 didSelectItemAtIndexPath:v11];
   }
 }
 
@@ -628,70 +628,70 @@ uint64_t __53__CNPhotoPickerVariantListController_viewWillAppear___block_invoke(
   v20.receiver = self;
   v20.super_class = CNPhotoPickerVariantListController;
   [(CNPhotoPickerVariantListController *)&v20 viewDidLoad];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  v4 = [(CNPhotoPickerVariantListController *)self view];
-  [v4 setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  view = [(CNPhotoPickerVariantListController *)self view];
+  [view setBackgroundColor:clearColor];
 
-  v5 = [(CNPhotoPickerVariantListController *)self view];
-  [v5 setInsetsLayoutMarginsFromSafeArea:0];
+  view2 = [(CNPhotoPickerVariantListController *)self view];
+  [view2 setInsetsLayoutMarginsFromSafeArea:0];
 
-  v6 = [(CNPhotoPickerVariantListController *)self originalItem];
+  originalItem = [(CNPhotoPickerVariantListController *)self originalItem];
 
-  if (v6)
+  if (originalItem)
   {
-    v7 = [(CNPhotoPickerVariantListController *)self originalItem];
-    v8 = [v7 localizedVariantsTitle];
-    v9 = [(CNPhotoPickerVariantListController *)self navigationItem];
-    [v9 setTitle:v8];
+    originalItem2 = [(CNPhotoPickerVariantListController *)self originalItem];
+    localizedVariantsTitle = [originalItem2 localizedVariantsTitle];
+    navigationItem = [(CNPhotoPickerVariantListController *)self navigationItem];
+    [navigationItem setTitle:localizedVariantsTitle];
   }
 
   if ([(CNPhotoPickerVariantListController *)self showPreview])
   {
     [(CNPhotoPickerVariantListController *)self buildHeader];
-    v10 = [(CNPhotoPickerVariantListController *)self originalItem];
-    [(CNPhotoPickerVariantListController *)self updatePreviewWithItem:v10];
+    originalItem3 = [(CNPhotoPickerVariantListController *)self originalItem];
+    [(CNPhotoPickerVariantListController *)self updatePreviewWithItem:originalItem3];
   }
 
   [(CNPhotoPickerVariantListController *)self buildCollectionView];
   v11 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:self action:sel_cancel_];
-  v12 = [(CNPhotoPickerVariantListController *)self navigationItem];
-  [v12 setLeftBarButtonItem:v11];
+  navigationItem2 = [(CNPhotoPickerVariantListController *)self navigationItem];
+  [navigationItem2 setLeftBarButtonItem:v11];
 
   v13 = objc_alloc(MEMORY[0x1E69DC708]);
-  v14 = [(CNPhotoPickerVariantListController *)self rightBarButtonTitle];
-  v15 = [v13 initWithTitle:v14 style:2 target:self action:sel_didFinishSelectingVariant];
-  v16 = [(CNPhotoPickerVariantListController *)self navigationItem];
-  [v16 setRightBarButtonItem:v15];
+  rightBarButtonTitle = [(CNPhotoPickerVariantListController *)self rightBarButtonTitle];
+  v15 = [v13 initWithTitle:rightBarButtonTitle style:2 target:self action:sel_didFinishSelectingVariant];
+  navigationItem3 = [(CNPhotoPickerVariantListController *)self navigationItem];
+  [navigationItem3 setRightBarButtonItem:v15];
 
-  v17 = [(CNPhotoPickerVariantListController *)self navigationItem];
-  v18 = [v17 rightBarButtonItem];
-  [v18 setEnabled:0];
+  navigationItem4 = [(CNPhotoPickerVariantListController *)self navigationItem];
+  rightBarButtonItem = [navigationItem4 rightBarButtonItem];
+  [rightBarButtonItem setEnabled:0];
 
   [(CNPhotoPickerVariantListController *)self generateProviderItems];
-  v19 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v19 addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 }
 
-- (CNPhotoPickerVariantListController)initWithVariantsManager:(id)a3 originalItem:(id)a4 selectedVariantIdentifier:(id)a5
+- (CNPhotoPickerVariantListController)initWithVariantsManager:(id)manager originalItem:(id)item selectedVariantIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  itemCopy = item;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = CNPhotoPickerVariantListController;
   v12 = [(CNPhotoPickerVariantListController *)&v18 initWithNibName:0 bundle:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_variantsManager, a3);
-    objc_storeStrong(&v13->_originalItem, a4);
+    objc_storeStrong(&v12->_variantsManager, manager);
+    objc_storeStrong(&v13->_originalItem, item);
     v14 = [&__block_literal_global_34895 copy];
     numberOfItemsPerRowProvider = v13->_numberOfItemsPerRowProvider;
     v13->_numberOfItemsPerRowProvider = v14;
 
     v13->_cellStyle = 1;
-    v13->_shouldShowCaptions = [v10 shouldShowCaption];
-    objc_storeStrong(&v13->_selectedVariantIdentifier, a5);
+    v13->_shouldShowCaptions = [itemCopy shouldShowCaption];
+    objc_storeStrong(&v13->_selectedVariantIdentifier, identifier);
     v13->_showsSelection = 1;
     v16 = v13;
   }
@@ -723,9 +723,9 @@ uint64_t __101__CNPhotoPickerVariantListController_initWithVariantsManager_origi
   return result;
 }
 
-+ (int64_t)topMarginForBounds:(CGRect)a3 shouldShowCaptions:(BOOL)a4
++ (int64_t)topMarginForBounds:(CGRect)bounds shouldShowCaptions:(BOOL)captions
 {
-  if (a3.size.width > 460.0 || a4)
+  if (bounds.size.width > 460.0 || captions)
   {
     return 20;
   }

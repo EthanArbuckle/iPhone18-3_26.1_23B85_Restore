@@ -1,17 +1,17 @@
 @interface CKRecordZoneGraph
-+ (id)topologicallySortRecordZones:(id)a3 withError:(id *)a4;
-- (BOOL)addRecordZones:(id)a3 error:(id *)a4;
++ (id)topologicallySortRecordZones:(id)zones withError:(id *)error;
+- (BOOL)addRecordZones:(id)zones error:(id *)error;
 - (CKRecordZoneGraph)init;
 - (id)description;
-- (id)recordZonesByTopologicalSortWithError:(id *)a3;
+- (id)recordZonesByTopologicalSortWithError:(id *)error;
 @end
 
 @implementation CKRecordZoneGraph
 
-- (BOOL)addRecordZones:(id)a3 error:(id *)a4
+- (BOOL)addRecordZones:(id)zones error:(id *)error
 {
   v106 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  zonesCopy = zones;
   v6 = objc_opt_new();
   v7 = objc_opt_new();
   v90 = objc_opt_new();
@@ -19,7 +19,7 @@
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
-  v8 = v5;
+  v8 = zonesCopy;
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v99, v105, 16);
   obj = v8;
   if (v10)
@@ -41,10 +41,10 @@
 
         if (v19)
         {
-          if (a4)
+          if (error)
           {
             v79 = objc_msgSend_zoneID(v16, v20, v21);
-            *a4 = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v80, @"CKInternalErrorDomain", 1017, @"Asked to sort multiple zones with identical zoneIDs: %@", v79);
+            *error = objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v80, @"CKInternalErrorDomain", 1017, @"Asked to sort multiple zones with identical zoneIDs: %@", v79);
           }
 
           v76 = obj;
@@ -206,7 +206,7 @@ LABEL_40:
   return v2;
 }
 
-- (id)recordZonesByTopologicalSortWithError:(id *)a3
+- (id)recordZonesByTopologicalSortWithError:(id *)error
 {
   v54 = *MEMORY[0x1E69E9840];
   if (self)
@@ -218,14 +218,14 @@ LABEL_40:
       goto LABEL_33;
     }
 
-    v48 = a3;
+    errorCopy2 = error;
     v6 = objc_opt_new();
     objc_msgSend_CKFilter_(self->_nodes, v7, &unk_1EFA30890);
   }
 
   else
   {
-    v48 = a3;
+    errorCopy2 = error;
     v6 = objc_opt_new();
     objc_msgSend_CKFilter_(0, v47, &unk_1EFA30890);
   }
@@ -321,10 +321,10 @@ LABEL_40:
       objc_msgSend_removeAllObjects(0, v41, v42);
     }
 
-    if (v48)
+    if (errorCopy2)
     {
       objc_msgSend_errorWithDomain_code_format_(CKPrettyError, v43, @"CKInternalErrorDomain", 1017, @"Cycle detected in zone graph");
-      *v48 = v5 = 0;
+      *errorCopy2 = v5 = 0;
     }
 
     else
@@ -365,12 +365,12 @@ LABEL_33:
   return objc_msgSend_description(self, a2, v2);
 }
 
-+ (id)topologicallySortRecordZones:(id)a3 withError:(id *)a4
++ (id)topologicallySortRecordZones:(id)zones withError:(id *)error
 {
-  v5 = a3;
+  zonesCopy = zones;
   v6 = objc_alloc_init(CKRecordZoneGraph);
   v17 = 0;
-  v8 = objc_msgSend_addRecordZones_error_(v6, v7, v5, &v17);
+  v8 = objc_msgSend_addRecordZones_error_(v6, v7, zonesCopy, &v17);
 
   v9 = v17;
   v12 = v9;
@@ -381,7 +381,7 @@ LABEL_33:
     v14 = v16;
 
     v12 = v14;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -390,7 +390,7 @@ LABEL_33:
   else
   {
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_7;
     }
@@ -398,7 +398,7 @@ LABEL_33:
 
   if (v12)
   {
-    *a4 = objc_msgSend_CKClientSuitableError(v12, v10, v11);
+    *error = objc_msgSend_CKClientSuitableError(v12, v10, v11);
   }
 
 LABEL_7:

@@ -1,12 +1,12 @@
 @interface SDAutoUnlockAKSSession
 - (BOOL)confirmSession;
 - (BOOL)resetSession;
-- (BOOL)stepSessionWithData:(id)a3 outputData:(id *)a4;
-- (SDAutoUnlockAKSSession)initWithLocalLTK:(id)a3 remoteLTK:(id)a4 sessionType:(int64_t)a5 originator:(BOOL)a6 deviceID:(id)a7 escrowSecret:(id)a8 usingEscrow:(BOOL)a9 externalACMContext:(id)a10;
+- (BOOL)stepSessionWithData:(id)data outputData:(id *)outputData;
+- (SDAutoUnlockAKSSession)initWithLocalLTK:(id)k remoteLTK:(id)tK sessionType:(int64_t)type originator:(BOOL)originator deviceID:(id)d escrowSecret:(id)secret usingEscrow:(BOOL)escrow externalACMContext:(id)self0;
 - (id)generateACMContextData;
 - (id)generateEscrowSecret;
 - (id)generateSessionToken;
-- (int64_t)finalizeEscrowPairing:(id)a3;
+- (int64_t)finalizeEscrowPairing:(id)pairing;
 - (int64_t)finalizeRegistration;
 - (void)fixRemoteLTK;
 - (void)setupAuthorizationSession;
@@ -15,35 +15,35 @@
 
 @implementation SDAutoUnlockAKSSession
 
-- (SDAutoUnlockAKSSession)initWithLocalLTK:(id)a3 remoteLTK:(id)a4 sessionType:(int64_t)a5 originator:(BOOL)a6 deviceID:(id)a7 escrowSecret:(id)a8 usingEscrow:(BOOL)a9 externalACMContext:(id)a10
+- (SDAutoUnlockAKSSession)initWithLocalLTK:(id)k remoteLTK:(id)tK sessionType:(int64_t)type originator:(BOOL)originator deviceID:(id)d escrowSecret:(id)secret usingEscrow:(BOOL)escrow externalACMContext:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
-  v20 = a10;
+  kCopy = k;
+  tKCopy = tK;
+  dCopy = d;
+  secretCopy = secret;
+  contextCopy = context;
   v29.receiver = self;
   v29.super_class = SDAutoUnlockAKSSession;
   v21 = [(SDAutoUnlockAKSSession *)&v29 init];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [kCopy copy];
     localLTK = v21->_localLTK;
     v21->_localLTK = v22;
 
-    v24 = [v17 copy];
+    v24 = [tKCopy copy];
     remoteLTK = v21->_remoteLTK;
     v21->_remoteLTK = v24;
 
-    v21->_sessionType = a5;
-    v21->_originator = a6;
-    v26 = [v19 copy];
+    v21->_sessionType = type;
+    v21->_originator = originator;
+    v26 = [secretCopy copy];
     escrowSecret = v21->_escrowSecret;
     v21->_escrowSecret = v26;
 
-    v21->_usingEscrow = a9;
-    objc_storeStrong(&v21->_deviceID, a7);
-    objc_storeStrong(&v21->_externalACMContext, a10);
+    v21->_usingEscrow = escrow;
+    objc_storeStrong(&v21->_deviceID, d);
+    objc_storeStrong(&v21->_externalACMContext, context);
     v21->_aksSessionID = -1;
     v21->_acmContext = 0;
     [(SDAutoUnlockAKSSession *)v21 setupSession];
@@ -58,27 +58,27 @@
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  v3 = [(SDAutoUnlockAKSSession *)self sessionType];
-  if (v3 <= 5)
+  sessionType = [(SDAutoUnlockAKSSession *)self sessionType];
+  if (sessionType <= 5)
   {
-    if (v3 > 2)
+    if (sessionType > 2)
     {
-      if (v3 != 3)
+      if (sessionType != 3)
       {
-        if (v3 == 4)
+        if (sessionType == 4)
         {
-          v4 = [(SDAutoUnlockAKSSession *)self localLTK];
-          v5 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-          v30 = [(SDAutoUnlockAKSSession *)self originator];
-          [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005D7E0(v4, v5, v30, v40 + 6, 0)];
+          localLTK = [(SDAutoUnlockAKSSession *)self localLTK];
+          remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+          originator = [(SDAutoUnlockAKSSession *)self originator];
+          [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005D7E0(localLTK, remoteLTK, originator, v40 + 6, 0)];
         }
 
         else
         {
-          v4 = [(SDAutoUnlockAKSSession *)self localLTK];
-          v5 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-          v6 = [(SDAutoUnlockAKSSession *)self originator];
-          [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDA0(v4, v5, v6, v40 + 6)];
+          localLTK = [(SDAutoUnlockAKSSession *)self localLTK];
+          remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+          originator2 = [(SDAutoUnlockAKSSession *)self originator];
+          [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDA0(localLTK, remoteLTK, originator2, v40 + 6)];
         }
 
         goto LABEL_28;
@@ -86,12 +86,12 @@
 
       if ([(SDAutoUnlockAKSSession *)self originator])
       {
-        v4 = [(SDAutoUnlockAKSSession *)self localLTK];
-        v5 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-        v25 = [(SDAutoUnlockAKSSession *)self originator];
-        v26 = [(SDAutoUnlockAKSSession *)self usingEscrow];
-        v27 = [(SDAutoUnlockAKSSession *)self escrowSecret];
-        [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDBC(v4, v5, v25, v26, 1, v27, v40 + 6)];
+        localLTK = [(SDAutoUnlockAKSSession *)self localLTK];
+        remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+        originator3 = [(SDAutoUnlockAKSSession *)self originator];
+        usingEscrow = [(SDAutoUnlockAKSSession *)self usingEscrow];
+        escrowSecret = [(SDAutoUnlockAKSSession *)self escrowSecret];
+        [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDBC(localLTK, remoteLTK, originator3, usingEscrow, 1, escrowSecret, v40 + 6)];
 LABEL_27:
 
         goto LABEL_28;
@@ -100,12 +100,12 @@ LABEL_27:
       goto LABEL_25;
     }
 
-    if (v3 == 1)
+    if (sessionType == 1)
     {
-      v20 = [(SDAutoUnlockAKSSession *)self localLTK];
-      v21 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-      v22 = [(SDAutoUnlockAKSSession *)self originator];
-      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005D7E0(v20, v21, v22, v40 + 6, 1)];
+      localLTK2 = [(SDAutoUnlockAKSSession *)self localLTK];
+      remoteLTK2 = [(SDAutoUnlockAKSSession *)self remoteLTK];
+      originator4 = [(SDAutoUnlockAKSSession *)self originator];
+      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005D7E0(localLTK2, remoteLTK2, originator4, v40 + 6, 1)];
 
       v23 = *(v40 + 6);
       v38[0] = _NSConcreteStackBlock;
@@ -117,14 +117,14 @@ LABEL_27:
       [(SDAutoUnlockAKSSession *)self fixRemoteLTKWithStatus:v23 retryBlock:v38];
     }
 
-    else if (v3 == 2)
+    else if (sessionType == 2)
     {
-      v8 = [(SDAutoUnlockAKSSession *)self localLTK];
-      v9 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-      v10 = [(SDAutoUnlockAKSSession *)self originator];
-      v11 = [(SDAutoUnlockAKSSession *)self usingEscrow];
-      v12 = [(SDAutoUnlockAKSSession *)self escrowSecret];
-      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDBC(v8, v9, v10, v11, 0, v12, v40 + 6)];
+      localLTK3 = [(SDAutoUnlockAKSSession *)self localLTK];
+      remoteLTK3 = [(SDAutoUnlockAKSSession *)self remoteLTK];
+      originator5 = [(SDAutoUnlockAKSSession *)self originator];
+      usingEscrow2 = [(SDAutoUnlockAKSSession *)self usingEscrow];
+      escrowSecret2 = [(SDAutoUnlockAKSSession *)self escrowSecret];
+      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDBC(localLTK3, remoteLTK3, originator5, usingEscrow2, 0, escrowSecret2, v40 + 6)];
 
       v13 = *(v40 + 6);
       v37[0] = _NSConcreteStackBlock;
@@ -139,16 +139,16 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  if (v3 <= 7)
+  if (sessionType <= 7)
   {
-    if (v3 != 6)
+    if (sessionType != 6)
     {
-      v14 = [(SDAutoUnlockAKSSession *)self localLTK];
-      v15 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-      v16 = [(SDAutoUnlockAKSSession *)self originator];
-      v17 = [(SDAutoUnlockAKSSession *)self usingEscrow];
-      v18 = [(SDAutoUnlockAKSSession *)self escrowSecret];
-      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DFA0(v14, v15, v16, v17, 0, v18, 0, v40 + 6)];
+      localLTK4 = [(SDAutoUnlockAKSSession *)self localLTK];
+      remoteLTK4 = [(SDAutoUnlockAKSSession *)self remoteLTK];
+      originator6 = [(SDAutoUnlockAKSSession *)self originator];
+      usingEscrow3 = [(SDAutoUnlockAKSSession *)self usingEscrow];
+      escrowSecret3 = [(SDAutoUnlockAKSSession *)self escrowSecret];
+      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DFA0(localLTK4, remoteLTK4, originator6, usingEscrow3, 0, escrowSecret3, 0, v40 + 6)];
 
       v19 = *(v40 + 6);
       v36[0] = _NSConcreteStackBlock;
@@ -161,47 +161,47 @@ LABEL_27:
       goto LABEL_29;
     }
 
-    v4 = [(SDAutoUnlockAKSSession *)self localLTK];
-    v5 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-    v24 = [(SDAutoUnlockAKSSession *)self originator];
-    [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005D7E0(v4, v5, v24, v40 + 6, 1)];
+    localLTK = [(SDAutoUnlockAKSSession *)self localLTK];
+    remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+    originator7 = [(SDAutoUnlockAKSSession *)self originator];
+    [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005D7E0(localLTK, remoteLTK, originator7, v40 + 6, 1)];
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  switch(v3)
+  switch(sessionType)
   {
     case 8:
-      v4 = [(SDAutoUnlockAKSSession *)self localLTK];
-      v5 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-      v28 = [(SDAutoUnlockAKSSession *)self originator];
-      v29 = [(SDAutoUnlockAKSSession *)self usingEscrow];
-      v27 = [(SDAutoUnlockAKSSession *)self escrowSecret];
-      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005E12C(v4, v5, v28, v29, 0, v27, 0, v40 + 6)];
+      localLTK = [(SDAutoUnlockAKSSession *)self localLTK];
+      remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+      originator8 = [(SDAutoUnlockAKSSession *)self originator];
+      usingEscrow4 = [(SDAutoUnlockAKSSession *)self usingEscrow];
+      escrowSecret = [(SDAutoUnlockAKSSession *)self escrowSecret];
+      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005E12C(localLTK, remoteLTK, originator8, usingEscrow4, 0, escrowSecret, 0, v40 + 6)];
       goto LABEL_27;
     case 9:
       if ([(SDAutoUnlockAKSSession *)self originator])
       {
-        v31 = [(SDAutoUnlockAKSSession *)self externalACMContext];
+        externalACMContext = [(SDAutoUnlockAKSSession *)self externalACMContext];
 
         [(SDAutoUnlockAKSSession *)self localLTK];
-        if (v31)
-          v4 = {;
-          v5 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-          v32 = [(SDAutoUnlockAKSSession *)self originator];
-          v33 = [(SDAutoUnlockAKSSession *)self usingEscrow];
-          v27 = [(SDAutoUnlockAKSSession *)self externalACMContext];
-          [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDF0(v4, v5, v32, v33, 1, 1, v27, 0, v40 + 6)];
+        if (externalACMContext)
+          localLTK = {;
+          remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+          originator9 = [(SDAutoUnlockAKSSession *)self originator];
+          usingEscrow5 = [(SDAutoUnlockAKSSession *)self usingEscrow];
+          escrowSecret = [(SDAutoUnlockAKSSession *)self externalACMContext];
+          [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDF0(localLTK, remoteLTK, originator9, usingEscrow5, 1, 1, escrowSecret, 0, v40 + 6)];
         }
 
         else
-          v4 = {;
-          v5 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-          v34 = [(SDAutoUnlockAKSSession *)self originator];
-          v35 = [(SDAutoUnlockAKSSession *)self usingEscrow];
-          v27 = [(SDAutoUnlockAKSSession *)self escrowSecret];
-          [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDBC(v4, v5, v34, v35, 1, v27, v40 + 6)];
+          localLTK = {;
+          remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+          originator10 = [(SDAutoUnlockAKSSession *)self originator];
+          usingEscrow6 = [(SDAutoUnlockAKSSession *)self usingEscrow];
+          escrowSecret = [(SDAutoUnlockAKSSession *)self escrowSecret];
+          [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDBC(localLTK, remoteLTK, originator10, usingEscrow6, 1, escrowSecret, v40 + 6)];
         }
 
         goto LABEL_27;
@@ -211,10 +211,10 @@ LABEL_25:
       [(SDAutoUnlockAKSSession *)self setupAuthorizationSession];
       break;
     case 10:
-      v4 = [(SDAutoUnlockAKSSession *)self localLTK];
-      v5 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-      v7 = [(SDAutoUnlockAKSSession *)self originator];
-      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDBC(v4, v5, v7, 0, 0, 0, v40 + 6)];
+      localLTK = [(SDAutoUnlockAKSSession *)self localLTK];
+      remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+      originator11 = [(SDAutoUnlockAKSSession *)self originator];
+      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005DDBC(localLTK, remoteLTK, originator11, 0, 0, 0, v40 + 6)];
       goto LABEL_28;
   }
 
@@ -231,9 +231,9 @@ LABEL_29:
     sub_10005C3D8(externalACMContext, &self->_acmContext);
     if (!self->_acmContext)
     {
-      v4 = [(SDAutoUnlockAKSSession *)self localLTK];
-      v5 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005E2B4(v4, v5, self->_externalACMContext, 0)];
+      localLTK = [(SDAutoUnlockAKSSession *)self localLTK];
+      remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+      [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005E2B4(localLTK, remoteLTK, self->_externalACMContext, 0)];
     }
   }
 
@@ -274,19 +274,19 @@ LABEL_29:
       v10 = v14;
       if (v15)
       {
-        v11 = auto_unlock_log();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        localLTK2 = auto_unlock_log();
+        if (os_log_type_enabled(localLTK2, OS_LOG_TYPE_ERROR))
         {
-          sub_100070140(&v15, v11);
+          sub_100070140(&v15, localLTK2);
         }
 
         goto LABEL_16;
       }
     }
 
-    v11 = [(SDAutoUnlockAKSSession *)self localLTK];
-    v12 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-    [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005E2B4(v11, v12, v10, 0)];
+    localLTK2 = [(SDAutoUnlockAKSSession *)self localLTK];
+    remoteLTK2 = [(SDAutoUnlockAKSSession *)self remoteLTK];
+    [(SDAutoUnlockAKSSession *)self setAksSessionID:sub_10005E2B4(localLTK2, remoteLTK2, v10, 0)];
 
 LABEL_16:
   }
@@ -302,27 +302,27 @@ LABEL_16:
   }
 
   v4 = +[SDAutoUnlockAKSManager sharedManager];
-  v5 = [(SDAutoUnlockAKSSession *)self deviceID];
-  [v4 resignRemoteLTKForDeviceID:v5];
+  deviceID = [(SDAutoUnlockAKSSession *)self deviceID];
+  [v4 resignRemoteLTKForDeviceID:deviceID];
 
   v6 = +[SDAutoUnlockAKSManager sharedManager];
-  v7 = [(SDAutoUnlockAKSSession *)self deviceID];
-  v8 = [v6 remoteLTKForDeviceID:v7];
+  deviceID2 = [(SDAutoUnlockAKSSession *)self deviceID];
+  v8 = [v6 remoteLTKForDeviceID:deviceID2];
   [(SDAutoUnlockAKSSession *)self setRemoteLTK:v8];
 }
 
-- (BOOL)stepSessionWithData:(id)a3 outputData:(id *)a4
+- (BOOL)stepSessionWithData:(id)data outputData:(id *)outputData
 {
-  v6 = a3;
+  dataCopy = data;
   if (![(SDAutoUnlockAKSSession *)self sessionIsValid])
   {
     goto LABEL_5;
   }
 
-  if (!sub_10005E4BC([(SDAutoUnlockAKSSession *)self aksSessionID], v6, a4))
+  if (!sub_10005E4BC([(SDAutoUnlockAKSSession *)self aksSessionID], dataCopy, outputData))
   {
-    v8 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-    sub_10005CB84(v8);
+    remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+    sub_10005CB84(remoteLTK);
 
 LABEL_5:
     v7 = 0;
@@ -351,14 +351,14 @@ LABEL_6:
   return v3;
 }
 
-- (int64_t)finalizeEscrowPairing:(id)a3
+- (int64_t)finalizeEscrowPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   if ([(SDAutoUnlockAKSSession *)self sessionIsValid])
   {
-    v5 = sub_10005E6DC([(SDAutoUnlockAKSSession *)self aksSessionID], v4);
-    v6 = [(SDAutoUnlockAKSSession *)self remoteLTK];
-    sub_10005CB84(v6);
+    v5 = sub_10005E6DC([(SDAutoUnlockAKSSession *)self aksSessionID], pairingCopy);
+    remoteLTK = [(SDAutoUnlockAKSSession *)self remoteLTK];
+    sub_10005CB84(remoteLTK);
   }
 
   else
@@ -383,28 +383,28 @@ LABEL_6:
 
 - (BOOL)confirmSession
 {
-  v3 = [(SDAutoUnlockAKSSession *)self sessionIsValid];
-  if (v3)
+  sessionIsValid = [(SDAutoUnlockAKSSession *)self sessionIsValid];
+  if (sessionIsValid)
   {
-    v4 = [(SDAutoUnlockAKSSession *)self aksSessionID];
+    aksSessionID = [(SDAutoUnlockAKSSession *)self aksSessionID];
 
-    LOBYTE(v3) = sub_10005E8EC(v4);
+    LOBYTE(sessionIsValid) = sub_10005E8EC(aksSessionID);
   }
 
-  return v3;
+  return sessionIsValid;
 }
 
 - (BOOL)resetSession
 {
-  v3 = [(SDAutoUnlockAKSSession *)self sessionIsValid];
-  if (v3)
+  sessionIsValid = [(SDAutoUnlockAKSSession *)self sessionIsValid];
+  if (sessionIsValid)
   {
     v4 = sub_10005E9C4([(SDAutoUnlockAKSSession *)self aksSessionID]);
     [(SDAutoUnlockAKSSession *)self setAksSessionID:-1];
-    LOBYTE(v3) = v4;
+    LOBYTE(sessionIsValid) = v4;
   }
 
-  return v3;
+  return sessionIsValid;
 }
 
 - (id)generateSessionToken

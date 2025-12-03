@@ -1,17 +1,17 @@
 @interface EPOOBKey
-- (EPOOBKey)initWithData:(id)a3;
+- (EPOOBKey)initWithData:(id)data;
 @end
 
 @implementation EPOOBKey
 
-- (EPOOBKey)initWithData:(id)a3
+- (EPOOBKey)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = [(EPOOBKey *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_key, a3);
+    objc_storeStrong(&v6->_key, data);
   }
 
   return v7;

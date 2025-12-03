@@ -1,6 +1,6 @@
 @interface IsolatedCoreAudioClientNSXPCListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (IsolatedCoreAudioClientNSXPCListenerDelegate)initWithInterface:(id)a3 andEntitlement:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (IsolatedCoreAudioClientNSXPCListenerDelegate)initWithInterface:(id)interface andEntitlement:(id)entitlement;
 - (uint64_t)initWithInterface:andEntitlement:;
 - (void)setClientReaper:(function<void)(int;
 - (void)setMClientReaper:(function<void)(int;
@@ -70,22 +70,22 @@
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)self mEntitlementString];
+  connectionCopy = connection;
+  mEntitlementString = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)self mEntitlementString];
 
-  if (!v6)
+  if (!mEntitlementString)
   {
     goto LABEL_4;
   }
 
-  v7 = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)self mEntitlementString];
-  v8 = [v5 valueForEntitlement:v7];
-  v9 = [v8 BOOLValue];
+  mEntitlementString2 = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)self mEntitlementString];
+  v8 = [connectionCopy valueForEntitlement:mEntitlementString2];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
 
 LABEL_4:
@@ -99,41 +99,41 @@ LABEL_4:
       _os_log_impl(&dword_255576000, v10, OS_LOG_TYPE_DEFAULT, "%25s:%-5d IsolatedCoreAudioClientNSXPCListenerDelegate - Listener", buf, 0x12u);
     }
 
-    v11 = [v5 getProcessID];
-    v12 = v11;
-    v13 = [MEMORY[0x277CCABB0] numberWithInt:v11];
+    getProcessID = [connectionCopy getProcessID];
+    v12 = getProcessID;
+    v13 = [MEMORY[0x277CCABB0] numberWithInt:getProcessID];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     *&v30 = __Block_byref_object_copy_;
     *(&v30 + 1) = __Block_byref_object_dispose_;
-    v31 = [[IsolatedCoreAudioUseCaseConnection alloc] initWithConnection:v5];
-    v14 = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)self mInterface];
-    [v5 setExportedInterface:v14];
+    v31 = [[IsolatedCoreAudioUseCaseConnection alloc] initWithConnection:connectionCopy];
+    mInterface = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)self mInterface];
+    [connectionCopy setExportedInterface:mInterface];
 
-    [v5 setExportedObject:self];
+    [connectionCopy setExportedObject:self];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __83__IsolatedCoreAudioClientNSXPCListenerDelegate_listener_shouldAcceptNewConnection___block_invoke;
     v28[3] = &unk_2797ED2F0;
     v28[4] = buf;
-    [v5 setInterruptionHandler:v28];
+    [connectionCopy setInterruptionHandler:v28];
     v21 = MEMORY[0x277D85DD0];
     v22 = 3221225472;
     v23 = __83__IsolatedCoreAudioClientNSXPCListenerDelegate_listener_shouldAcceptNewConnection___block_invoke_3;
     v24 = &unk_2797ED318;
-    v25 = self;
+    selfCopy = self;
     v27 = v12;
-    v7 = v13;
-    v26 = v7;
-    [v5 setInvalidationHandler:&v21];
+    mEntitlementString2 = v13;
+    v26 = mEntitlementString2;
+    [connectionCopy setInvalidationHandler:&v21];
     v15 = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)self mConnections:v21];
     objc_sync_enter(v15);
-    v16 = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)self mConnections];
-    [v16 setObject:*(*&buf[8] + 40) forKey:v7];
+    mConnections = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)self mConnections];
+    [mConnections setObject:*(*&buf[8] + 40) forKey:mEntitlementString2];
 
     objc_sync_exit(v15);
-    [v5 resume];
+    [connectionCopy resume];
 
     _Block_object_dispose(buf, 8);
     v17 = 1;
@@ -148,9 +148,9 @@ LABEL_4:
     *&buf[12] = 1024;
     *&buf[14] = 36;
     *&buf[18] = 1024;
-    *&buf[20] = [v5 processIdentifier];
+    *&buf[20] = [connectionCopy processIdentifier];
     LOWORD(v30) = 2112;
-    *(&v30 + 2) = v7;
+    *(&v30 + 2) = mEntitlementString2;
     _os_log_impl(&dword_255576000, v18, OS_LOG_TYPE_ERROR, "%25s:%-5d Process %i does not have the %@ entitlement", buf, 0x22u);
   }
 
@@ -215,21 +215,21 @@ void __83__IsolatedCoreAudioClientNSXPCListenerDelegate_listener_shouldAcceptNew
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (IsolatedCoreAudioClientNSXPCListenerDelegate)initWithInterface:(id)a3 andEntitlement:(id)a4
+- (IsolatedCoreAudioClientNSXPCListenerDelegate)initWithInterface:(id)interface andEntitlement:(id)entitlement
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  interfaceCopy = interface;
+  entitlementCopy = entitlement;
   v13.receiver = self;
   v13.super_class = IsolatedCoreAudioClientNSXPCListenerDelegate;
   v8 = [(IsolatedCoreAudioClientNSXPCListenerDelegate *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(IsolatedCoreAudioClientNSXPCListenerDelegate *)v8 setMInterface:v6];
-    [(IsolatedCoreAudioClientNSXPCListenerDelegate *)v9 setMEntitlementString:v7];
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    [(IsolatedCoreAudioClientNSXPCListenerDelegate *)v9 setMConnections:v10];
+    [(IsolatedCoreAudioClientNSXPCListenerDelegate *)v8 setMInterface:interfaceCopy];
+    [(IsolatedCoreAudioClientNSXPCListenerDelegate *)v9 setMEntitlementString:entitlementCopy];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(IsolatedCoreAudioClientNSXPCListenerDelegate *)v9 setMConnections:dictionary];
 
     v14[0] = &unk_286775780;
     v14[3] = v14;
@@ -245,7 +245,7 @@ void __83__IsolatedCoreAudioClientNSXPCListenerDelegate_listener_shouldAcceptNew
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z81-[IsolatedCoreAudioClientNSXPCListenerDelegate initWithInterface:andEntitlement:]E3$_0"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else

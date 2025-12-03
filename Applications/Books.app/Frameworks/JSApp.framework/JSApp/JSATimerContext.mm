@@ -1,5 +1,5 @@
 @interface JSATimerContext
-- (JSATimerContext)initWithCallback:(id)a3 callbackArgs:(id)a4 ownerObject:(id)a5 repeating:(BOOL)a6 interval:(double)a7 timer:(id)a8;
+- (JSATimerContext)initWithCallback:(id)callback callbackArgs:(id)args ownerObject:(id)object repeating:(BOOL)repeating interval:(double)interval timer:(id)timer;
 - (id)description;
 - (void)dealloc;
 - (void)removeManagedReferences;
@@ -7,35 +7,35 @@
 
 @implementation JSATimerContext
 
-- (JSATimerContext)initWithCallback:(id)a3 callbackArgs:(id)a4 ownerObject:(id)a5 repeating:(BOOL)a6 interval:(double)a7 timer:(id)a8
+- (JSATimerContext)initWithCallback:(id)callback callbackArgs:(id)args ownerObject:(id)object repeating:(BOOL)repeating interval:(double)interval timer:(id)timer
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  callbackCopy = callback;
+  argsCopy = args;
+  objectCopy = object;
+  timerCopy = timer;
   v25.receiver = self;
   v25.super_class = JSATimerContext;
   v18 = [(JSATimerContext *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_ownerObject, a5);
-    v20 = [JSManagedValue managedValueWithValue:v14 andOwner:v16];
+    objc_storeStrong(&v18->_ownerObject, object);
+    v20 = [JSManagedValue managedValueWithValue:callbackCopy andOwner:objectCopy];
     managedCallback = v19->_managedCallback;
     v19->_managedCallback = v20;
 
-    v22 = [v15 count];
+    v22 = [argsCopy count];
     if (v22)
     {
-      v22 = [[JSAManagedArray alloc] initWithArray:v15 ownerObject:v16];
+      v22 = [[JSAManagedArray alloc] initWithArray:argsCopy ownerObject:objectCopy];
     }
 
     managedArgs = v19->_managedArgs;
     v19->_managedArgs = v22;
 
-    v19->_interval = a7;
-    v19->_isRepeating = a6;
-    objc_storeStrong(&v19->_timer, a8);
+    v19->_interval = interval;
+    v19->_isRepeating = repeating;
+    objc_storeStrong(&v19->_timer, timer);
   }
 
   return v19;
@@ -43,20 +43,20 @@
 
 - (id)description
 {
-  v3 = [(JSATimerContext *)self timer];
-  v4 = [(JSATimerContext *)self isRepeating];
+  timer = [(JSATimerContext *)self timer];
+  isRepeating = [(JSATimerContext *)self isRepeating];
   [(JSATimerContext *)self interval];
-  v6 = [NSString stringWithFormat:@"<JSATimerContext %p, timer=%p, repeating=%d, interval=%0.3gs>", self, v3, v4, v5];
+  v6 = [NSString stringWithFormat:@"<JSATimerContext %p, timer=%p, repeating=%d, interval=%0.3gs>", self, timer, isRepeating, v5];
 
   return v6;
 }
 
 - (void)removeManagedReferences
 {
-  v3 = [(JSManagedValue *)self->_managedCallback value];
-  v4 = [v3 context];
-  v5 = [v4 virtualMachine];
-  [v5 removeManagedReference:self->_managedCallback withOwner:self->_ownerObject];
+  value = [(JSManagedValue *)self->_managedCallback value];
+  context = [value context];
+  virtualMachine = [context virtualMachine];
+  [virtualMachine removeManagedReference:self->_managedCallback withOwner:self->_ownerObject];
 
   managedCallback = self->_managedCallback;
   self->_managedCallback = 0;

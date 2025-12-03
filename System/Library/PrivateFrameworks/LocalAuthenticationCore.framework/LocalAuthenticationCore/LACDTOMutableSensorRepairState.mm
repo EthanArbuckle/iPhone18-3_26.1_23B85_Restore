@@ -1,20 +1,20 @@
 @interface LACDTOMutableSensorRepairState
 + (id)nullInstance;
-- (BOOL)isEqual:(id)a3;
-- (LACDTOMutableSensorRepairState)initWithFlag:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (LACDTOMutableSensorRepairState)initWithFlag:(int64_t)flag;
 - (NSString)description;
 @end
 
 @implementation LACDTOMutableSensorRepairState
 
-- (LACDTOMutableSensorRepairState)initWithFlag:(int64_t)a3
+- (LACDTOMutableSensorRepairState)initWithFlag:(int64_t)flag
 {
   v5.receiver = self;
   v5.super_class = LACDTOMutableSensorRepairState;
   result = [(LACDTOMutableSensorRepairState *)&v5 init];
   if (result)
   {
-    result->_repairFlag = a3;
+    result->_repairFlag = flag;
   }
 
   return result;
@@ -28,16 +28,16 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F26A1940])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F26A1940])
   {
-    v5 = v4;
-    v6 = [(LACDTOMutableSensorRepairState *)self repairFlag];
-    v7 = [v5 repairFlag];
+    v5 = equalCopy;
+    repairFlag = [(LACDTOMutableSensorRepairState *)self repairFlag];
+    repairFlag2 = [v5 repairFlag];
 
-    v8 = v6 == v7;
+    v8 = repairFlag == repairFlag2;
   }
 
   else
@@ -54,15 +54,15 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(LACDTOMutableSensorRepairState *)self repairFlag];
-  if ((v6 - 1) > 2)
+  repairFlag = [(LACDTOMutableSensorRepairState *)self repairFlag];
+  if ((repairFlag - 1) > 2)
   {
     v7 = @"Unknown";
   }
 
   else
   {
-    v7 = off_1E7A97700[v6 - 1];
+    v7 = off_1E7A97700[repairFlag - 1];
   }
 
   v8 = [v5 stringWithFormat:@"repairFlag: %@", v7];

@@ -1,8 +1,8 @@
 @interface MUPlaceActionControlledItemViewModel
-- (MUPlaceActionControlledItemViewModel)initWithPlaceActionController:(id)a3;
+- (MUPlaceActionControlledItemViewModel)initWithPlaceActionController:(id)controller;
 - (id)accessibilityIdentifier;
 - (id)analyticsButtonValues;
-- (void)performWithPresentationOptions:(id)a3;
+- (void)performWithPresentationOptions:(id)options;
 @end
 
 @implementation MUPlaceActionControlledItemViewModel
@@ -38,37 +38,37 @@ LABEL_7:
   return v5;
 }
 
-- (void)performWithPresentationOptions:(id)a3
+- (void)performWithPresentationOptions:(id)options
 {
-  v7 = a3;
-  v4 = [(_MKPlaceActionButtonController *)self->_actionButtonController buttonSelectedBlock];
+  optionsCopy = options;
+  buttonSelectedBlock = [(_MKPlaceActionButtonController *)self->_actionButtonController buttonSelectedBlock];
 
-  if (v4)
+  if (buttonSelectedBlock)
   {
-    v5 = [(_MKPlaceActionButtonController *)self->_actionButtonController buttonSelectedBlock];
-    v6 = [v7 sourceView];
-    (v5)[2](v5, v6);
+    buttonSelectedBlock2 = [(_MKPlaceActionButtonController *)self->_actionButtonController buttonSelectedBlock];
+    sourceView = [optionsCopy sourceView];
+    (buttonSelectedBlock2)[2](buttonSelectedBlock2, sourceView);
   }
 }
 
 - (id)accessibilityIdentifier
 {
-  v2 = [(MUPlaceActionControlledItemViewModel *)self titleText];
-  v3 = [v2 stringByReplacingOccurrencesOfString:@"\\s" withString:&stru_1F44CA030 options:1024 range:{0, objc_msgSend(v2, "length")}];
+  titleText = [(MUPlaceActionControlledItemViewModel *)self titleText];
+  v3 = [titleText stringByReplacingOccurrencesOfString:@"\\s" withString:&stru_1F44CA030 options:1024 range:{0, objc_msgSend(titleText, "length")}];
 
   return v3;
 }
 
-- (MUPlaceActionControlledItemViewModel)initWithPlaceActionController:(id)a3
+- (MUPlaceActionControlledItemViewModel)initWithPlaceActionController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = MUPlaceActionControlledItemViewModel;
   v6 = [(MUActionRowItemViewModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_actionButtonController, a3);
+    objc_storeStrong(&v6->_actionButtonController, controller);
   }
 
   return v7;

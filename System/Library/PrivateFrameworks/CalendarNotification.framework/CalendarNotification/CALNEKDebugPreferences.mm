@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __40__CALNEKDebugPreferences_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_15 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_15, block);
@@ -32,10 +32,10 @@ uint64_t __40__CALNEKDebugPreferences_sharedInstance__block_invoke(uint64_t a1)
 
 - (BOOL)forceDisplayOfNewTravelAdvisoryHypotheses
 {
-  v2 = [MEMORY[0x277CC5A18] shared];
-  v3 = [v2 forceDisplayOfNewTravelAdvisoryHypotheses];
+  mEMORY[0x277CC5A18] = [MEMORY[0x277CC5A18] shared];
+  forceDisplayOfNewTravelAdvisoryHypotheses = [mEMORY[0x277CC5A18] forceDisplayOfNewTravelAdvisoryHypotheses];
 
-  return v3;
+  return forceDisplayOfNewTravelAdvisoryHypotheses;
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface PSVR2SenseHIDServicePlugin
-+ (BOOL)matchService:(unsigned int)a3 options:(id)a4 score:(int64_t *)a5;
-- (BOOL)isTwoAxisInputIdle:(PSVR2SenseHIDServicePlugin *)self prevInput:(SEL)a2 noiseBuffer:;
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 client:(id)a5;
-- (PSVR2SenseHIDServicePlugin)initWithService:(unsigned int)a3;
-- (id)propertyForKey:(id)a3 client:(id)a4;
++ (BOOL)matchService:(unsigned int)service options:(id)options score:(int64_t *)score;
+- (BOOL)isTwoAxisInputIdle:(PSVR2SenseHIDServicePlugin *)self prevInput:(SEL)input noiseBuffer:;
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client;
+- (PSVR2SenseHIDServicePlugin)initWithService:(unsigned int)service;
+- (id)propertyForKey:(id)key client:(id)client;
 - (void)activate;
 - (void)cancel;
-- (void)connectToBatteryServiceWithClient:(id)a3 reply:(id)a4;
-- (void)connectToIdleServiceWithClient:(id)a3 reply:(id)a4;
+- (void)connectToBatteryServiceWithClient:(id)client reply:(id)reply;
+- (void)connectToIdleServiceWithClient:(id)client reply:(id)reply;
 - (void)dealloc;
-- (void)dispatchHomeButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4;
-- (void)dispatchMenuButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4;
+- (void)dispatchHomeButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp;
+- (void)dispatchMenuButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp;
 - (void)enableHaptics;
-- (void)fetchDeviceRegistryIDWithReply:(id)a3;
+- (void)fetchDeviceRegistryIDWithReply:(id)reply;
 - (void)initGameControllerDaemonXPC;
 - (void)ping;
-- (void)setCancelHandler:(id)a3;
-- (void)setDispatchQueue:(id)a3;
-- (void)setHapticMotor:(unint64_t)a3 frequency:(float)a4 amplitude:(float)a5;
+- (void)setCancelHandler:(id)handler;
+- (void)setDispatchQueue:(id)queue;
+- (void)setHapticMotor:(unint64_t)motor frequency:(float)frequency amplitude:(float)amplitude;
 - (void)stopHaptics;
 @end
 
 @implementation PSVR2SenseHIDServicePlugin
 
-+ (BOOL)matchService:(unsigned int)a3 options:(id)a4 score:(int64_t *)a5
++ (BOOL)matchService:(unsigned int)service options:(id)options score:(int64_t *)score
 {
-  CFProperty = IORegistryEntryCreateCFProperty(a3, @"ProductID", kCFAllocatorDefault, 0);
-  v8 = IORegistryEntryCreateCFProperty(a3, @"VendorID", kCFAllocatorDefault, 0);
+  CFProperty = IORegistryEntryCreateCFProperty(service, @"ProductID", kCFAllocatorDefault, 0);
+  v8 = IORegistryEntryCreateCFProperty(service, @"VendorID", kCFAllocatorDefault, 0);
   if ([v8 intValue] == 1356 && (objc_msgSend(CFProperty, "intValue") == 3653 || objc_msgSend(CFProperty, "intValue") == 3654))
   {
     v9 = 1;
@@ -35,13 +35,13 @@
   else
   {
     v9 = 0;
-    *a5 = 0;
+    *score = 0;
   }
 
   return v9;
 }
 
-- (PSVR2SenseHIDServicePlugin)initWithService:(unsigned int)a3
+- (PSVR2SenseHIDServicePlugin)initWithService:(unsigned int)service
 {
   v29.receiver = self;
   v29.super_class = PSVR2SenseHIDServicePlugin;
@@ -56,8 +56,8 @@
     v8 = IONotificationPortCreate(kIOMainPortDefault);
     *(v4 + 2) = v8;
     IONotificationPortSetDispatchQueue(v8, *(v4 + 1));
-    *(v4 + 6) = a3;
-    IOObjectRetain(a3);
+    *(v4 + 6) = service;
+    IOObjectRetain(service);
     RegistryEntryID = IORegistryEntryGetRegistryEntryID(*(v4 + 6), v4 + 4);
     v10 = sub_1120();
     v11 = v10;
@@ -135,9 +135,9 @@
                     objc_opt_class();
                     if (objc_opt_isKindOfClass())
                     {
-                      v20 = [v11 unsignedIntValue];
-                      v21 = v20;
-                      v4[104] = v20;
+                      unsignedIntValue = [v11 unsignedIntValue];
+                      v21 = unsignedIntValue;
+                      v4[104] = unsignedIntValue;
                     }
 
                     else
@@ -288,16 +288,16 @@ LABEL_22:
   [(PSVR2SenseHIDServicePlugin *)&v11 dealloc];
 }
 
-- (void)setDispatchQueue:(id)a3
+- (void)setDispatchQueue:(id)queue
 {
-  objc_storeStrong(&self->_dispatchQueue, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_dispatchQueue, queue);
+  queueCopy = queue;
   dispatch_set_target_queue(self->_internalQueue, self->_dispatchQueue);
 }
 
-- (void)setCancelHandler:(id)a3
+- (void)setCancelHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   cancelHandler = self->_cancelHandler;
   self->_cancelHandler = v4;
 }
@@ -373,13 +373,13 @@ LABEL_22:
   os_activity_scope_leave(&v8);
 }
 
-- (id)propertyForKey:(id)a3 client:(id)a4
+- (id)propertyForKey:(id)key client:(id)client
 {
-  v5 = a3;
+  keyCopy = key;
   if (sub_E60())
   {
     sub_B024();
-    if (v5)
+    if (keyCopy)
     {
       goto LABEL_3;
     }
@@ -389,13 +389,13 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v5)
+  if (!keyCopy)
   {
     goto LABEL_15;
   }
 
 LABEL_3:
-  if ([v5 isEqualToString:@"ServicePluginDebug"])
+  if ([keyCopy isEqualToString:@"ServicePluginDebug"])
   {
     v6 = objc_opt_new();
     v7 = objc_opt_class();
@@ -419,7 +419,7 @@ LABEL_3:
   else
   {
     v16 = 0;
-    v19 = v5;
+    v19 = keyCopy;
     v12 = [NSArray arrayWithObjects:&v19 count:1];
     v13 = sub_A620(self, v12, &v16);
 
@@ -435,7 +435,7 @@ LABEL_3:
     }
 
     v6 = v16;
-    v10 = [v16 objectForKeyedSubscript:v5];
+    v10 = [v16 objectForKeyedSubscript:keyCopy];
   }
 
   v11 = v10;
@@ -445,27 +445,27 @@ LABEL_16:
   return v11;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4 client:(id)a5
+- (BOOL)setProperty:(id)property forKey:(id)key client:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   if (!sub_E60())
   {
-    if (v7)
+    if (propertyCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_7:
-    v7 = +[NSNull null];
-    if (!v8)
+    propertyCopy = +[NSNull null];
+    if (!keyCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_8:
-    v16 = v8;
-    v17 = v7;
+    v16 = keyCopy;
+    v17 = propertyCopy;
     v15 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v11 = sub_A450(self, &v15);
     if (v11)
@@ -490,7 +490,7 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v13 = [v15 objectForKeyedSubscript:v8];
+    v13 = [v15 objectForKeyedSubscript:keyCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -528,13 +528,13 @@ LABEL_17:
   }
 
   sub_B0C8();
-  if (!v7)
+  if (!propertyCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_3:
-  if (v8)
+  if (keyCopy)
   {
     goto LABEL_8;
   }
@@ -546,39 +546,39 @@ LABEL_5:
   return v9;
 }
 
-- (void)dispatchHomeButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4
+- (void)dispatchHomeButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp
 {
-  if (self->_buttonHome != a3)
+  if (self->_buttonHome != value)
   {
-    v5 = a3;
-    v7 = [(PSVR2SenseHIDServicePlugin *)self createEvent:3 timestamp:a4];
+    valueCopy = value;
+    v7 = [(PSVR2SenseHIDServicePlugin *)self createEvent:3 timestamp:timestamp];
     IOHIDEventSetEventFlags();
     [v7 setIntegerValue:12 forField:196608];
     [v7 setIntegerValue:547 forField:196609];
-    [v7 setIntegerValue:v5 forField:196610];
+    [v7 setIntegerValue:valueCopy forField:196610];
     [v7 setIntegerValue:1 forField:196612];
     [(PSVR2SenseHIDServicePlugin *)self dispatchEvent:v7];
-    self->_buttonHome = v5;
+    self->_buttonHome = valueCopy;
   }
 }
 
-- (void)dispatchMenuButtonEventWithValue:(BOOL)a3 timestamp:(unint64_t)a4
+- (void)dispatchMenuButtonEventWithValue:(BOOL)value timestamp:(unint64_t)timestamp
 {
-  if (self->_buttonMenu != a3)
+  if (self->_buttonMenu != value)
   {
-    v5 = a3;
-    v7 = [(PSVR2SenseHIDServicePlugin *)self createEvent:3 timestamp:a4];
+    valueCopy = value;
+    v7 = [(PSVR2SenseHIDServicePlugin *)self createEvent:3 timestamp:timestamp];
     IOHIDEventSetEventFlags();
     [v7 setIntegerValue:12 forField:196608];
     [v7 setIntegerValue:516 forField:196609];
-    [v7 setIntegerValue:v5 forField:196610];
+    [v7 setIntegerValue:valueCopy forField:196610];
     [v7 setIntegerValue:1 forField:196612];
     [(PSVR2SenseHIDServicePlugin *)self dispatchEvent:v7];
-    self->_buttonMenu = v5;
+    self->_buttonMenu = valueCopy;
   }
 }
 
-- (BOOL)isTwoAxisInputIdle:(PSVR2SenseHIDServicePlugin *)self prevInput:(SEL)a2 noiseBuffer:
+- (BOOL)isTwoAxisInputIdle:(PSVR2SenseHIDServicePlugin *)self prevInput:(SEL)input noiseBuffer:
 {
   v5 = *v2;
   v6 = COERCE_FLOAT(HIDWORD(*v3)) == 0.0;
@@ -597,11 +597,11 @@ LABEL_5:
   return (sqrtf(vaddv_f32(vmul_f32(v8, v8))) < v4) & v7;
 }
 
-- (void)setHapticMotor:(unint64_t)a3 frequency:(float)a4 amplitude:(float)a5
+- (void)setHapticMotor:(unint64_t)motor frequency:(float)frequency amplitude:(float)amplitude
 {
   v25 = 0u;
   v26 = 0u;
-  if (!a3 && self->_hapticsActive)
+  if (!motor && self->_hapticsActive)
   {
     hapticSequence = self->_hapticSequence;
     self->_hapticSequence = hapticSequence + 1;
@@ -611,7 +611,7 @@ LABEL_5:
       *buf = 134218240;
       v28 = hapticSequence;
       v29 = 2048;
-      v30 = a4;
+      frequencyCopy = frequency;
       _os_log_debug_impl(&dword_0, v8, OS_LOG_TYPE_DEBUG, "Set haptic motor sequence=%llu, freq=%f", buf, 0x16u);
     }
 
@@ -786,26 +786,26 @@ LABEL_17:
   }
 }
 
-- (void)fetchDeviceRegistryIDWithReply:(id)a3
+- (void)fetchDeviceRegistryIDWithReply:(id)reply
 {
   registryID = self->_registryID;
-  v5 = a3;
+  replyCopy = reply;
   v6 = [NSNumber numberWithUnsignedLongLong:registryID];
-  (*(a3 + 2))(v5, v6, 0);
+  (*(reply + 2))(replyCopy, v6, 0);
 }
 
-- (void)connectToIdleServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToIdleServiceWithClient:(id)client reply:(id)reply
 {
-  objc_storeStrong(&self->_idleClient, a3);
-  v6 = a4;
-  v6[2](v6, self, 0);
+  objc_storeStrong(&self->_idleClient, client);
+  replyCopy = reply;
+  replyCopy[2](replyCopy, self, 0);
 }
 
-- (void)connectToBatteryServiceWithClient:(id)a3 reply:(id)a4
+- (void)connectToBatteryServiceWithClient:(id)client reply:(id)reply
 {
-  objc_storeStrong(&self->_batteryClient, a3);
-  v6 = a4;
-  v6[2](v6, self, 0);
+  objc_storeStrong(&self->_batteryClient, client);
+  replyCopy = reply;
+  replyCopy[2](replyCopy, self, 0);
 }
 
 - (void)initGameControllerDaemonXPC
@@ -843,8 +843,8 @@ LABEL_17:
   [(NSXPCConnection *)self->_daemonConnection setExportedObject:self];
   [(NSXPCConnection *)self->_daemonConnection _setQueue:self->_dispatchQueue];
   [(NSXPCConnection *)self->_daemonConnection resume];
-  v10 = [(NSXPCConnection *)self->_daemonConnection remoteObjectProxy];
-  [v10 driverCheckIn];
+  remoteObjectProxy = [(NSXPCConnection *)self->_daemonConnection remoteObjectProxy];
+  [remoteObjectProxy driverCheckIn];
 
   os_activity_scope_leave(&state);
   objc_destroyWeak(&v16);

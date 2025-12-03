@@ -1,5 +1,5 @@
 @interface NSAttributeDictionaryEnumerator
-- (NSAttributeDictionaryEnumerator)initWithAttributeDictionary:(id)a3;
+- (NSAttributeDictionaryEnumerator)initWithAttributeDictionary:(id)dictionary;
 - (id)nextObject;
 - (void)dealloc;
 @end
@@ -26,14 +26,14 @@
   [(NSAttributeDictionaryEnumerator *)&v3 dealloc];
 }
 
-- (NSAttributeDictionaryEnumerator)initWithAttributeDictionary:(id)a3
+- (NSAttributeDictionaryEnumerator)initWithAttributeDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = NSAttributeDictionaryEnumerator;
   v4 = [(NSAttributeDictionaryEnumerator *)&v6 init];
   if (v4)
   {
-    v4->dictionary = a3;
+    v4->dictionary = dictionary;
     v4->nextElement = 0;
   }
 

@@ -1,13 +1,13 @@
 @interface TSWPLineSpacing
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver;
 + (id)lineSpacing;
-- (BOOL)isEqual:(id)a3;
-- (TSWPLineSpacing)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSWPLineSpacing)initWithLocalizationDictionary:(id)a3;
-- (TSWPLineSpacing)initWithMode:(int)a3 amount:(double)a4 baselineRule:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSWPLineSpacing)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSWPLineSpacing)initWithLocalizationDictionary:(id)dictionary;
+- (TSWPLineSpacing)initWithMode:(int)mode amount:(double)amount baselineRule:(double)rule;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSWPLineSpacing
@@ -19,24 +19,24 @@
   return v2;
 }
 
-- (TSWPLineSpacing)initWithMode:(int)a3 amount:(double)a4 baselineRule:(double)a5
+- (TSWPLineSpacing)initWithMode:(int)mode amount:(double)amount baselineRule:(double)rule
 {
   v10.receiver = self;
   v10.super_class = TSWPLineSpacing;
   result = [(TSWPLineSpacing *)&v10 init];
   if (result)
   {
-    result->_mode = a3;
-    if (a3 == 2 && a4 <= 0.0)
+    result->_mode = mode;
+    if (mode == 2 && amount <= 0.0)
     {
       v9 = 1.0;
     }
 
     else
     {
-      if (a3 || a4 >= 0.100000001)
+      if (mode || amount >= 0.100000001)
       {
-        result->_amount = a4;
+        result->_amount = amount;
         goto LABEL_10;
       }
 
@@ -45,25 +45,25 @@
 
     result->_amount = v9;
 LABEL_10:
-    result->_baselineRule = a5;
+    result->_baselineRule = rule;
   }
 
   return result;
 }
 
-- (TSWPLineSpacing)initWithLocalizationDictionary:(id)a3
+- (TSWPLineSpacing)initWithLocalizationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
-  v6 = objc_msgSend_objectForKeyedSubscript_(v4, v5, @"mode");
+  v6 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v5, @"mode");
   v7 = TSUCheckedDynamicCast();
 
   objc_opt_class();
-  v9 = objc_msgSend_objectForKeyedSubscript_(v4, v8, @"amount");
+  v9 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v8, @"amount");
   v10 = TSUCheckedDynamicCast();
 
   objc_opt_class();
-  v12 = objc_msgSend_objectForKeyedSubscript_(v4, v11, @"baseline-rule");
+  v12 = objc_msgSend_objectForKeyedSubscript_(dictionaryCopy, v11, @"baseline-rule");
   v13 = TSUDynamicCast();
 
   if (!v7)
@@ -117,41 +117,41 @@ LABEL_10:
   return v40;
 }
 
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSWPLineSpacing alloc];
-  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, a3, v5);
+  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, archive, unarchiverCopy);
 
   return v8;
 }
 
-- (TSWPLineSpacing)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSWPLineSpacing)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v4 = *(a3 + 4);
-  v5 = *(a3 + 7);
+  v4 = *(archive + 4);
+  v5 = *(archive + 7);
   if ((v4 & 2) == 0)
   {
     v5 = 1.0;
   }
 
-  v6 = *(a3 + 8);
+  v6 = *(archive + 8);
   if ((v4 & 4) == 0)
   {
     v6 = 0.800000012;
   }
 
-  return objc_msgSend_initWithMode_amount_baselineRule_(self, a2, (v4 << 31 >> 31) & *(a3 + 6), a4, v5, v6);
+  return objc_msgSend_initWithMode_amount_baselineRule_(self, a2, (v4 << 31 >> 31) & *(archive + 6), unarchiver, v5, v6);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   mode = self->_mode;
   if (mode)
   {
-    *(a3 + 4) |= 1u;
-    *(a3 + 6) = mode;
+    *(archive + 4) |= 1u;
+    *(archive + 6) = mode;
   }
 
   amount = self->_amount;
@@ -162,7 +162,7 @@ LABEL_10:
     {
       if (amount > 0.0 && amount > 3.40282347e38)
       {
-        v43 = v6;
+        v43 = archiverCopy;
         v13 = MEMORY[0x277D81150];
         v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPLineSpacing saveToArchive:archiver:]");
         v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPLineSpacing.mm");
@@ -179,7 +179,7 @@ LABEL_10:
           goto LABEL_9;
         }
 
-        v43 = v6;
+        v43 = archiverCopy;
         v29 = MEMORY[0x277D81150];
         v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPLineSpacing saveToArchive:archiver:]");
         v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v31, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPLineSpacing.mm");
@@ -190,12 +190,12 @@ LABEL_10:
       }
 
       v10 = *&v20;
-      v6 = v43;
+      archiverCopy = v43;
     }
 
 LABEL_9:
-    *(a3 + 4) |= 2u;
-    *(a3 + 7) = v10;
+    *(archive + 4) |= 2u;
+    *(archive + 7) = v10;
   }
 
   baselineRule = self->_baselineRule;
@@ -209,7 +209,7 @@ LABEL_9:
   {
     if (baselineRule > 0.0 && baselineRule > 3.40282347e38)
     {
-      v44 = v6;
+      v44 = archiverCopy;
       v21 = MEMORY[0x277D81150];
       v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPLineSpacing saveToArchive:archiver:]");
       v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v23, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPLineSpacing.mm");
@@ -226,7 +226,7 @@ LABEL_9:
         goto LABEL_16;
       }
 
-      v44 = v6;
+      v44 = archiverCopy;
       v36 = MEMORY[0x277D81150];
       v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, "[TSWPLineSpacing saveToArchive:archiver:]");
       v39 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/text/TSWPLineSpacing.mm");
@@ -237,19 +237,19 @@ LABEL_9:
     }
 
     v12 = *&v28;
-    v6 = v44;
+    archiverCopy = v44;
   }
 
 LABEL_16:
-  *(a3 + 4) |= 4u;
-  *(a3 + 8) = v12;
+  *(archive + 4) |= 4u;
+  *(archive + 8) = v12;
 LABEL_17:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   mode = self->_mode;
   amount = self->_amount;
   baselineRule = self->_baselineRule;
@@ -257,9 +257,9 @@ LABEL_17:
   return objc_msgSend_initWithMode_amount_baselineRule_(v7, v8, mode, amount, baselineRule);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   if (v5 && self->_mode == *(v5 + 8) && ((amount = self->_amount, v7 = *(v5 + 16), amount == v7) || vabdd_f64(amount, v7) < fabs(v7 * 0.000000999999997)))

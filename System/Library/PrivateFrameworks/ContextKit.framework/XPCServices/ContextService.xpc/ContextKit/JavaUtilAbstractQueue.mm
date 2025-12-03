@@ -1,6 +1,6 @@
 @interface JavaUtilAbstractQueue
-- (BOOL)addAllWithJavaUtilCollection:(id)a3;
-- (BOOL)addWithId:(id)a3;
+- (BOOL)addAllWithJavaUtilCollection:(id)collection;
+- (BOOL)addWithId:(id)id;
 - (id)element;
 - (id)remove;
 - (void)clear;
@@ -8,9 +8,9 @@
 
 @implementation JavaUtilAbstractQueue
 
-- (BOOL)addWithId:(id)a3
+- (BOOL)addWithId:(id)id
 {
-  if (![(JavaUtilAbstractQueue *)self offerWithId:a3])
+  if (![(JavaUtilAbstractQueue *)self offerWithId:id])
   {
     v4 = new_JavaLangIllegalStateException_initWithNSString_(@"Queue full");
     objc_exception_throw(v4);
@@ -49,15 +49,15 @@
   }
 }
 
-- (BOOL)addAllWithJavaUtilCollection:(id)a3
+- (BOOL)addAllWithJavaUtilCollection:(id)collection
 {
-  if (!a3)
+  if (!collection)
   {
     v11 = new_JavaLangNullPointerException_initWithNSString_(@"c == null");
     goto LABEL_15;
   }
 
-  if (a3 == self)
+  if (collection == self)
   {
     v11 = new_JavaLangIllegalArgumentException_initWithNSString_(@"c == this");
 LABEL_15:
@@ -68,7 +68,7 @@ LABEL_15:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [collection countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -80,13 +80,13 @@ LABEL_15:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(collection);
         }
 
         v7 |= [(JavaUtilAbstractQueue *)self addWithId:*(*(&v12 + 1) + 8 * i)];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [collection countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

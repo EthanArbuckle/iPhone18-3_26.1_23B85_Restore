@@ -1,25 +1,25 @@
 @interface PDSConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation PDSConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PDSConfiguration *)self queue];
-  [v4 setQueue:v5];
+  queue = [(PDSConfiguration *)self queue];
+  [v4 setQueue:queue];
 
-  v6 = [(PDSConfiguration *)self workloop];
-  [v4 setWorkloop:v6];
+  workloop = [(PDSConfiguration *)self workloop];
+  [v4 setWorkloop:workloop];
 
-  v7 = [(PDSConfiguration *)self daemonRootDirectory];
-  v8 = [v7 copy];
+  daemonRootDirectory = [(PDSConfiguration *)self daemonRootDirectory];
+  v8 = [daemonRootDirectory copy];
   [v4 setDaemonRootDirectory:v8];
 
-  v9 = [(PDSConfiguration *)self pushHandlerPort];
-  v10 = [v9 copy];
+  pushHandlerPort = [(PDSConfiguration *)self pushHandlerPort];
+  v10 = [pushHandlerPort copy];
   [v4 setPushHandlerPort:v10];
 
   return v4;
@@ -29,11 +29,11 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(PDSConfiguration *)self queue];
-  v6 = [(PDSConfiguration *)self workloop];
-  v7 = [(PDSConfiguration *)self daemonRootDirectory];
-  v8 = [(PDSConfiguration *)self pushHandlerPort];
-  v9 = [v3 stringWithFormat:@"<%@: %p queue = %p; workloop = %p; daemonRootDirectory = %@; pushHandlerPort = %@>", v4, self, v5, v6, v7, v8];;
+  queue = [(PDSConfiguration *)self queue];
+  workloop = [(PDSConfiguration *)self workloop];
+  daemonRootDirectory = [(PDSConfiguration *)self daemonRootDirectory];
+  pushHandlerPort = [(PDSConfiguration *)self pushHandlerPort];
+  v9 = [v3 stringWithFormat:@"<%@: %p queue = %p; workloop = %p; daemonRootDirectory = %@; pushHandlerPort = %@>", v4, self, queue, workloop, daemonRootDirectory, pushHandlerPort];;
 
   return v9;
 }

@@ -1,27 +1,27 @@
 @interface RouteUpdatingNavigationServiceTask
-- (BOOL)_shouldUseNavigationServiceForRoutes:(id)a3;
-- (RouteUpdatingNavigationServiceTask)initWithRoutes:(id)a3;
+- (BOOL)_shouldUseNavigationServiceForRoutes:(id)routes;
+- (RouteUpdatingNavigationServiceTask)initWithRoutes:(id)routes;
 - (void)_createTransitRouteUpdaterIfNeeded;
 - (void)_pauseUpdates;
 - (void)_refreshUpdateEnabledForCurrentState;
 - (void)_resumeUpdates;
-- (void)_updateRouteUpdateObservationIfNeededWithRoutes:(id)a3;
+- (void)_updateRouteUpdateObservationIfNeededWithRoutes:(id)routes;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didReceiveRealtimeUpdates:(id)a4;
-- (void)navigationService:(id)a3 didUpdatePreviewRoutes:(id)a4 withSelectedRouteIndex:(unint64_t)a5;
-- (void)startWithUpdateHandler:(id)a3;
+- (void)navigationService:(id)service didReceiveRealtimeUpdates:(id)updates;
+- (void)navigationService:(id)service didUpdatePreviewRoutes:(id)routes withSelectedRouteIndex:(unint64_t)index;
+- (void)startWithUpdateHandler:(id)handler;
 - (void)stop;
-- (void)transitRouteUpdater:(id)a3 didReceiveResponse:(id)a4;
+- (void)transitRouteUpdater:(id)updater didReceiveResponse:(id)response;
 @end
 
 @implementation RouteUpdatingNavigationServiceTask
 
-- (void)transitRouteUpdater:(id)a3 didReceiveResponse:(id)a4
+- (void)transitRouteUpdater:(id)updater didReceiveResponse:(id)response
 {
-  v27 = a3;
-  v6 = a4;
+  updaterCopy = updater;
+  responseCopy = response;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
-  if (v6)
+  if (responseCopy)
   {
     v39 = 0;
     v40 = &v39;
@@ -45,15 +45,15 @@
     block[6] = &v33;
     dispatch_sync(isolationQueue, block);
     v8 = [NSMutableArray alloc];
-    v9 = [v6 routeUpdates];
-    v10 = [v8 initWithCapacity:{objc_msgSend(v9, "count")}];
+    routeUpdates = [responseCopy routeUpdates];
+    v10 = [v8 initWithCapacity:{objc_msgSend(routeUpdates, "count")}];
 
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = [v6 routeUpdates];
-    v12 = [v11 countByEnumeratingWithState:&v28 objects:v49 count:16];
+    routeUpdates2 = [responseCopy routeUpdates];
+    v12 = [routeUpdates2 countByEnumeratingWithState:&v28 objects:v49 count:16];
     if (v12)
     {
       v13 = *v29;
@@ -63,26 +63,26 @@
         {
           if (*v29 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(routeUpdates2);
           }
 
           v15 = *(*(&v28 + 1) + 8 * i);
           v16 = v40[5];
-          v17 = [v15 routeIdentifier];
-          v18 = [v17 clientRouteID];
-          LOBYTE(v16) = [v16 containsObject:v18];
+          routeIdentifier = [v15 routeIdentifier];
+          clientRouteID = [routeIdentifier clientRouteID];
+          LOBYTE(v16) = [v16 containsObject:clientRouteID];
 
           if (v16)
           {
-            v19 = [v15 routeIdentifier];
-            v20 = [v19 clientRouteID];
-            v21 = [RouteUpdatingTaskResult resultWithRouteID:v20 transitUpdate:v15];
+            routeIdentifier2 = [v15 routeIdentifier];
+            clientRouteID2 = [routeIdentifier2 clientRouteID];
+            v21 = [RouteUpdatingTaskResult resultWithRouteID:clientRouteID2 transitUpdate:v15];
 
             [v10 addObject:v21];
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v28 objects:v49 count:16];
+        v12 = [routeUpdates2 countByEnumeratingWithState:&v28 objects:v49 count:16];
       }
 
       while (v12);
@@ -112,12 +112,12 @@
   }
 }
 
-- (void)navigationService:(id)a3 didReceiveRealtimeUpdates:(id)a4
+- (void)navigationService:(id)service didReceiveRealtimeUpdates:(id)updates
 {
-  v25 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  updatesCopy = updates;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
-  if ([v6 count])
+  if ([updatesCopy count])
   {
     v37 = 0;
     v38 = &v37;
@@ -140,12 +140,12 @@
     block[5] = &v37;
     block[6] = &v31;
     dispatch_sync(isolationQueue, block);
-    v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count", v25)}];
+    v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(updatesCopy, "count", serviceCopy)}];
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = v6;
+    v9 = updatesCopy;
     v10 = [v9 countByEnumeratingWithState:&v26 objects:v47 count:16];
     if (v10)
     {
@@ -164,15 +164,15 @@
           if (objc_opt_isKindOfClass())
           {
             v14 = v38[5];
-            v15 = [v13 routeID];
-            LODWORD(v14) = [v14 containsObject:v15];
+            routeID = [v13 routeID];
+            LODWORD(v14) = [v14 containsObject:routeID];
 
             if (v14)
             {
               v16 = v13;
-              v17 = [v16 routeID];
-              v18 = [v16 transitUpdate];
-              v19 = [RouteUpdatingTaskResult resultWithRouteID:v17 transitUpdate:v18];
+              routeID2 = [v16 routeID];
+              transitUpdate = [v16 transitUpdate];
+              v19 = [RouteUpdatingTaskResult resultWithRouteID:routeID2 transitUpdate:transitUpdate];
 
               [v8 addObject:v19];
             }
@@ -209,9 +209,9 @@
   }
 }
 
-- (void)navigationService:(id)a3 didUpdatePreviewRoutes:(id)a4 withSelectedRouteIndex:(unint64_t)a5
+- (void)navigationService:(id)service didUpdatePreviewRoutes:(id)routes withSelectedRouteIndex:(unint64_t)index
 {
-  [(RouteUpdatingNavigationServiceTask *)self _updateRouteUpdateObservationIfNeededWithRoutes:a4];
+  [(RouteUpdatingNavigationServiceTask *)self _updateRouteUpdateObservationIfNeededWithRoutes:routes];
 
   [(RouteUpdatingNavigationServiceTask *)self _refreshUpdateEnabledForCurrentState];
 }
@@ -228,12 +228,12 @@
   dispatch_sync(isolationQueue, block);
 }
 
-- (void)_updateRouteUpdateObservationIfNeededWithRoutes:(id)a3
+- (void)_updateRouteUpdateObservationIfNeededWithRoutes:(id)routes
 {
   isolationQueue = self->_isolationQueue;
-  v5 = a3;
+  routesCopy = routes;
   dispatch_assert_queue_not_V2(isolationQueue);
-  v6 = [(RouteUpdatingNavigationServiceTask *)self _shouldUseNavigationServiceForRoutes:v5];
+  v6 = [(RouteUpdatingNavigationServiceTask *)self _shouldUseNavigationServiceForRoutes:routesCopy];
 
   v7 = +[MNNavigationService sharedService];
   v8 = v7;
@@ -258,9 +258,9 @@
   }
 }
 
-- (BOOL)_shouldUseNavigationServiceForRoutes:(id)a3
+- (BOOL)_shouldUseNavigationServiceForRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   if (GEOConfigGetBOOL())
   {
     v5 = sub_100798A3C();
@@ -277,14 +277,14 @@
 
   else
   {
-    if (!v4)
+    if (!routesCopy)
     {
       v7 = 1;
       goto LABEL_8;
     }
 
     dispatch_assert_queue_not_V2(self->_isolationQueue);
-    v5 = sub_100021DB0(v4, &stru_10162AB48);
+    v5 = sub_100021DB0(routesCopy, &stru_10162AB48);
     *&buf = 0;
     *(&buf + 1) = &buf;
     v14 = 0x3032000000;
@@ -313,9 +313,9 @@ LABEL_8:
 - (void)_refreshUpdateEnabledForCurrentState
 {
   v3 = +[MKApplicationStateMonitor sharedInstance];
-  v4 = [v3 isInBackground];
+  isInBackground = [v3 isInBackground];
 
-  if (v4)
+  if (isInBackground)
   {
 
     [(RouteUpdatingNavigationServiceTask *)self _pauseUpdates];
@@ -375,9 +375,9 @@ LABEL_8:
   _Block_object_dispose(&v6, 8);
 }
 
-- (void)startWithUpdateHandler:(id)a3
+- (void)startWithUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_not_V2(self->_isolationQueue);
   v10 = 0;
   v11 = &v10;
@@ -390,7 +390,7 @@ LABEL_8:
   block[3] = &unk_1016562F0;
   v9 = &v10;
   block[4] = self;
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   dispatch_sync(isolationQueue, block);
   if ((v11[3] & 1) == 0)
@@ -416,32 +416,32 @@ LABEL_8:
   [(RouteUpdatingNavigationServiceTask *)&v5 dealloc];
 }
 
-- (RouteUpdatingNavigationServiceTask)initWithRoutes:(id)a3
+- (RouteUpdatingNavigationServiceTask)initWithRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   v25.receiver = self;
   v25.super_class = RouteUpdatingNavigationServiceTask;
   v5 = [(RouteUpdatingNavigationServiceTask *)&v25 init];
   if (v5)
   {
     v6 = +[NSBundle mainBundle];
-    v7 = [v6 bundleIdentifier];
-    v8 = [NSString stringWithFormat:@"%@.%@.isolationQueue.%p", v7, objc_opt_class(), v5];
+    bundleIdentifier = [v6 bundleIdentifier];
+    v8 = [NSString stringWithFormat:@"%@.%@.isolationQueue.%p", bundleIdentifier, objc_opt_class(), v5];
 
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     isolationQueue = v5->_isolationQueue;
     v5->_isolationQueue = v11;
 
     v13 = [NSSet alloc];
-    v14 = sub_100021DB0(v4, &stru_10162AAE8);
+    v14 = sub_100021DB0(routesCopy, &stru_10162AAE8);
     v15 = [v13 initWithArray:v14];
     routeIDs = v5->_routeIDs;
     v5->_routeIDs = v15;
 
     v17 = [NSSet alloc];
-    v18 = sub_100021DB0(v4, &stru_10162AB28);
+    v18 = sub_100021DB0(routesCopy, &stru_10162AB28);
     v19 = [v17 initWithArray:v18];
     routeUpdateRequests = v5->_routeUpdateRequests;
     v5->_routeUpdateRequests = v19;

@@ -1,16 +1,16 @@
 @interface PXStoryColorNormalizationAutoAdjustment
-- (BOOL)isEqualToDisplayAssetAdjustment:(id)a3;
-- (id)applyToImage:(id)a3 targetSize:(CGSize)a4;
+- (BOOL)isEqualToDisplayAssetAdjustment:(id)adjustment;
+- (id)applyToImage:(id)image targetSize:(CGSize)size;
 @end
 
 @implementation PXStoryColorNormalizationAutoAdjustment
 
-- (BOOL)isEqualToDisplayAssetAdjustment:(id)a3
+- (BOOL)isEqualToDisplayAssetAdjustment:(id)adjustment
 {
-  v4 = a3;
+  adjustmentCopy = adjustment;
   v14.receiver = self;
   v14.super_class = PXStoryColorNormalizationAutoAdjustment;
-  if ([(PXStoryColorNormalizationAdjustment *)&v14 isEqualToDisplayAssetAdjustment:v4])
+  if ([(PXStoryColorNormalizationAdjustment *)&v14 isEqualToDisplayAssetAdjustment:adjustmentCopy])
   {
     v5 = 1;
   }
@@ -20,11 +20,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
-      v7 = [(PXStoryColorNormalizationAutoAdjustment *)self asset];
-      v8 = [v6 asset];
-      v9 = v7;
-      v10 = v8;
+      v6 = adjustmentCopy;
+      asset = [(PXStoryColorNormalizationAutoAdjustment *)self asset];
+      asset2 = [v6 asset];
+      v9 = asset;
+      v10 = asset2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -56,26 +56,26 @@
   return v5;
 }
 
-- (id)applyToImage:(id)a3 targetSize:(CGSize)a4
+- (id)applyToImage:(id)image targetSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v20[4] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = [(PXStoryColorNormalizationAdjustment *)self filter];
-  objc_sync_enter(v8);
-  v9 = [v8 inputNormalization];
-  if (!v9)
+  imageCopy = image;
+  filter = [(PXStoryColorNormalizationAdjustment *)self filter];
+  objc_sync_enter(filter);
+  inputNormalization = [filter inputNormalization];
+  if (!inputNormalization)
   {
-    [v8 setInputImage:v7];
-    v9 = [v8 outputNormalization];
-    [v8 setInputNormalization:v9];
+    [filter setInputImage:imageCopy];
+    inputNormalization = [filter outputNormalization];
+    [filter setInputNormalization:inputNormalization];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(filter);
   v18.receiver = self;
   v18.super_class = PXStoryColorNormalizationAutoAdjustment;
-  v10 = [(PXStoryColorNormalizationAdjustment *)&v18 applyToImage:v7 targetSize:width, height];
+  height = [(PXStoryColorNormalizationAdjustment *)&v18 applyToImage:imageCopy targetSize:width, height];
 
   if ([(PXStoryColorNormalizationAdjustment *)self useFalseColor])
   {
@@ -92,12 +92,12 @@
     v14 = [MEMORY[0x1E695F688] vectorWithX:0.0 Y:0.0 Z:0.0 W:0.0];
     v20[3] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:4];
-    v16 = [v10 imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v15];
+    v16 = [height imageByApplyingFilter:@"CIColorMatrix" withInputParameters:v15];
 
-    v10 = v16;
+    height = v16;
   }
 
-  return v10;
+  return height;
 }
 
 @end

@@ -1,45 +1,45 @@
 @interface CAMSpotlightControlPanel
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_scrubberGradientEdgeInsets;
-- (BOOL)isControlTypeOpen:(int64_t)a3;
-- (BOOL)isControlTypeVisible:(int64_t)a3;
-- (CAMSpotlightControlPanel)initWithFrame:(CGRect)a3;
+- (BOOL)isControlTypeOpen:(int64_t)open;
+- (BOOL)isControlTypeVisible:(int64_t)visible;
+- (CAMSpotlightControlPanel)initWithFrame:(CGRect)frame;
 - (CAMSpotlightControlPanelDelegate)delegate;
 - (CGSize)intrinsicContentSize;
 - (unint64_t)_sliderFontStyle;
 - (void)_apertureSliderDidChangeValue;
-- (void)_applyTextOrientation:(int64_t)a3;
-- (void)_configureAndInstallDiscreteSlider:(id)a3;
+- (void)_applyTextOrientation:(int64_t)orientation;
+- (void)_configureAndInstallDiscreteSlider:(id)slider;
 - (void)_exposureSliderDidChangeValue;
-- (void)_handleIconViewReleased:(id)a3;
-- (void)_layoutFullWidthCustomView:(id)a3;
+- (void)_handleIconViewReleased:(id)released;
+- (void)_layoutFullWidthCustomView:(id)view;
 - (void)_loadApertureSliderIfNeeded;
 - (void)_loadExposureSliderIfNeeded;
-- (void)_loadSliderIfNeededForControlType:(int64_t)a3;
-- (void)_setControlType:(int64_t)a3 open:(BOOL)a4 animated:(BOOL)a5 notifyDelegate:(BOOL)a6;
+- (void)_loadSliderIfNeededForControlType:(int64_t)type;
+- (void)_setControlType:(int64_t)type open:(BOOL)open animated:(BOOL)animated notifyDelegate:(BOOL)delegate;
 - (void)_updateControlIcon;
-- (void)_updateControlsVisibilityAnimated:(BOOL)a3;
+- (void)_updateControlsVisibilityAnimated:(BOOL)animated;
 - (void)_updateTextOrientation;
 - (void)layoutSubviews;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setSpotlightControl:(int64_t)a3 animated:(BOOL)a4;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setSpotlightControl:(int64_t)control animated:(BOOL)animated;
 @end
 
 @implementation CAMSpotlightControlPanel
 
-- (CAMSpotlightControlPanel)initWithFrame:(CGRect)a3
+- (CAMSpotlightControlPanel)initWithFrame:(CGRect)frame
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = CAMSpotlightControlPanel;
-  v3 = [(CAMSpotlightControlPanel *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMSpotlightControlPanel *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E69DC738] buttonWithType:1];
     controlIconView = v3->__controlIconView;
     v3->__controlIconView = v4;
 
-    v6 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIButton *)v3->__controlIconView setTintColor:v6];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UIButton *)v3->__controlIconView setTintColor:labelColor];
 
     [(UIButton *)v3->__controlIconView addTarget:v3 action:sel__handleIconViewReleased_ forControlEvents:64];
     [(CAMSpotlightControlPanel *)v3 addSubview:v3->__controlIconView];
@@ -58,26 +58,26 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(CAMSpotlightControlPanel *)self spotlightControl];
-  if (v3 == 2)
+  spotlightControl = [(CAMSpotlightControlPanel *)self spotlightControl];
+  if (spotlightControl == 2)
   {
-    v4 = [(CAMSpotlightControlPanel *)self exposureSlider];
+    exposureSlider = [(CAMSpotlightControlPanel *)self exposureSlider];
   }
 
   else
   {
-    if (v3 != 3)
+    if (spotlightControl != 3)
     {
       v7 = *MEMORY[0x1E695F060];
       v9 = *(MEMORY[0x1E695F060] + 8);
       goto LABEL_7;
     }
 
-    v4 = [(CAMSpotlightControlPanel *)self apertureSlider];
+    exposureSlider = [(CAMSpotlightControlPanel *)self apertureSlider];
   }
 
-  v5 = v4;
-  [v4 intrinsicContentSize];
+  v5 = exposureSlider;
+  [exposureSlider intrinsicContentSize];
   v7 = v6;
   v9 = v8;
 
@@ -91,14 +91,14 @@ LABEL_7:
 
 - (void)layoutSubviews
 {
-  v3 = [(CAMSpotlightControlPanel *)self exposureSlider];
-  [(CAMSpotlightControlPanel *)self _layoutFullWidthCustomView:v3];
+  exposureSlider = [(CAMSpotlightControlPanel *)self exposureSlider];
+  [(CAMSpotlightControlPanel *)self _layoutFullWidthCustomView:exposureSlider];
 
-  v4 = [(CAMSpotlightControlPanel *)self apertureSlider];
-  [(CAMSpotlightControlPanel *)self _layoutFullWidthCustomView:v4];
+  apertureSlider = [(CAMSpotlightControlPanel *)self apertureSlider];
+  [(CAMSpotlightControlPanel *)self _layoutFullWidthCustomView:apertureSlider];
 
-  v24 = [(CAMSpotlightControlPanel *)self _controlIconView];
-  CAMViewAlignmentSize(v24);
+  _controlIconView = [(CAMSpotlightControlPanel *)self _controlIconView];
+  CAMViewAlignmentSize(_controlIconView);
   CEKRectWithSize();
   v22 = v6;
   v23 = v5;
@@ -109,8 +109,8 @@ LABEL_7:
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(CAMSpotlightControlPanel *)self traitCollection];
-  [v18 displayScale];
+  traitCollection = [(CAMSpotlightControlPanel *)self traitCollection];
+  [traitCollection displayScale];
   v20 = v19;
   UIRectCenteredXInRectScale();
 
@@ -120,90 +120,90 @@ LABEL_7:
   v26.size.height = v17;
   CGRectGetMaxY(v26);
   UIRectGetCenter();
-  [v24 setCenter:v20];
-  [v24 setBounds:{v23, v22, v21, v9}];
+  [_controlIconView setCenter:v20];
+  [_controlIconView setBounds:{v23, v22, v21, v9}];
   [(CAMSpotlightControlPanel *)self _updateControlsVisibilityAnimated:0];
 }
 
-- (void)setSpotlightControl:(int64_t)a3 animated:(BOOL)a4
+- (void)setSpotlightControl:(int64_t)control animated:(BOOL)animated
 {
-  if (self->_spotlightControl != a3)
+  if (self->_spotlightControl != control)
   {
-    v4 = a4;
+    animatedCopy = animated;
     if ([(CAMSpotlightControlPanel *)self isControlTypeOpen:?])
     {
-      [(CAMSpotlightControlPanel *)self _loadSliderIfNeededForControlType:a3];
+      [(CAMSpotlightControlPanel *)self _loadSliderIfNeededForControlType:control];
     }
 
-    self->_spotlightControl = a3;
-    [(CAMSpotlightControlPanel *)self _updateControlsVisibilityAnimated:v4];
+    self->_spotlightControl = control;
+    [(CAMSpotlightControlPanel *)self _updateControlsVisibilityAnimated:animatedCopy];
 
     [(CAMSpotlightControlPanel *)self _updateControlIcon];
   }
 }
 
-- (BOOL)isControlTypeVisible:(int64_t)a3
+- (BOOL)isControlTypeVisible:(int64_t)visible
 {
-  if ([(CAMSpotlightControlPanel *)self spotlightControl]!= a3)
+  if ([(CAMSpotlightControlPanel *)self spotlightControl]!= visible)
   {
     return 0;
   }
 
-  return [(CAMSpotlightControlPanel *)self isControlTypeOpen:a3];
+  return [(CAMSpotlightControlPanel *)self isControlTypeOpen:visible];
 }
 
-- (BOOL)isControlTypeOpen:(int64_t)a3
+- (BOOL)isControlTypeOpen:(int64_t)open
 {
-  v4 = [(CAMSpotlightControlPanel *)self _openByControl];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 objectForKeyedSubscript:v5];
-  v7 = [v6 BOOLValue];
+  _openByControl = [(CAMSpotlightControlPanel *)self _openByControl];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:open];
+  v6 = [_openByControl objectForKeyedSubscript:v5];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)_setControlType:(int64_t)a3 open:(BOOL)a4 animated:(BOOL)a5 notifyDelegate:(BOOL)a6
+- (void)_setControlType:(int64_t)type open:(BOOL)open animated:(BOOL)animated notifyDelegate:(BOOL)delegate
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  if ([(CAMSpotlightControlPanel *)self isControlTypeOpen:?]!= a4)
+  delegateCopy = delegate;
+  animatedCopy = animated;
+  openCopy = open;
+  if ([(CAMSpotlightControlPanel *)self isControlTypeOpen:?]!= open)
   {
-    if ([(CAMSpotlightControlPanel *)self spotlightControl]== a3)
+    if ([(CAMSpotlightControlPanel *)self spotlightControl]== type)
     {
-      [(CAMSpotlightControlPanel *)self _loadSliderIfNeededForControlType:a3];
+      [(CAMSpotlightControlPanel *)self _loadSliderIfNeededForControlType:type];
     }
 
-    v11 = [MEMORY[0x1E696AD98] numberWithBool:v8];
-    v12 = [(CAMSpotlightControlPanel *)self _openByControl];
-    v13 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v12 setObject:v11 forKeyedSubscript:v13];
+    v11 = [MEMORY[0x1E696AD98] numberWithBool:openCopy];
+    _openByControl = [(CAMSpotlightControlPanel *)self _openByControl];
+    v13 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+    [_openByControl setObject:v11 forKeyedSubscript:v13];
 
-    [(CAMSpotlightControlPanel *)self _updateControlsVisibilityAnimated:v7];
-    if (v6)
+    [(CAMSpotlightControlPanel *)self _updateControlsVisibilityAnimated:animatedCopy];
+    if (delegateCopy)
     {
-      v14 = [(CAMSpotlightControlPanel *)self delegate];
-      [v14 spotlightControlPanel:self didChangeOpenForSpotlight:a3];
+      delegate = [(CAMSpotlightControlPanel *)self delegate];
+      [delegate spotlightControlPanel:self didChangeOpenForSpotlight:type];
     }
   }
 }
 
-- (void)_layoutFullWidthCustomView:(id)a3
+- (void)_layoutFullWidthCustomView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(CAMSpotlightControlPanel *)self bounds];
-  [v4 intrinsicContentSize];
-  v7 = [(CAMSpotlightControlPanel *)self traitCollection];
-  [v7 displayScale];
+  [viewCopy intrinsicContentSize];
+  traitCollection = [(CAMSpotlightControlPanel *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
   UIRectCenteredYInRectScale();
-  [v4 setFrame:v6];
+  [viewCopy setFrame:v6];
 }
 
-- (void)_updateControlsVisibilityAnimated:(BOOL)a3
+- (void)_updateControlsVisibilityAnimated:(BOOL)animated
 {
   v3 = 0.0;
-  if (a3)
+  if (animated)
   {
     v3 = 0.5;
   }
@@ -255,15 +255,15 @@ void __62__CAMSpotlightControlPanel__updateControlsVisibilityAnimated___block_in
 
 - (void)_updateControlIcon
 {
-  v3 = [(CAMSpotlightControlPanel *)self spotlightControl];
-  if (v3 == 3)
+  spotlightControl = [(CAMSpotlightControlPanel *)self spotlightControl];
+  if (spotlightControl == 3)
   {
     v4 = @"f.cursive";
   }
 
   else
   {
-    if (v3 != 2)
+    if (spotlightControl != 2)
     {
       return;
     }
@@ -273,39 +273,39 @@ void __62__CAMSpotlightControlPanel__updateControlsVisibilityAnimated___block_in
 
   v7 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
   v5 = [MEMORY[0x1E69DCAB8] systemImageNamed:v4 withConfiguration:v7];
-  v6 = [(CAMSpotlightControlPanel *)self _controlIconView];
-  [v6 setImage:v5 forState:0];
+  _controlIconView = [(CAMSpotlightControlPanel *)self _controlIconView];
+  [_controlIconView setImage:v5 forState:0];
 
   [(CAMSpotlightControlPanel *)self setNeedsLayout];
 }
 
-- (void)_configureAndInstallDiscreteSlider:(id)a3
+- (void)_configureAndInstallDiscreteSlider:(id)slider
 {
-  v4 = a3;
+  sliderCopy = slider;
   [(CAMSpotlightControlPanel *)self _scrubberGradientEdgeInsets];
-  [v4 setGradientInsets:?];
-  [v4 setTitleAlignment:2];
-  [v4 setFontStyle:{-[CAMSpotlightControlPanel _sliderFontStyle](self, "_sliderFontStyle")}];
-  [v4 setUseTextLegibilityShadows:1];
-  [v4 setUseTickMarkLegibilityShadows:1];
-  [v4 setTitleText:&stru_1F1660A30];
-  [v4 setTransparentGradients];
-  [(CAMSpotlightControlPanel *)self insertSubview:v4 atIndex:0];
-  [(CAMSpotlightControlPanel *)self _layoutFullWidthCustomView:v4];
+  [sliderCopy setGradientInsets:?];
+  [sliderCopy setTitleAlignment:2];
+  [sliderCopy setFontStyle:{-[CAMSpotlightControlPanel _sliderFontStyle](self, "_sliderFontStyle")}];
+  [sliderCopy setUseTextLegibilityShadows:1];
+  [sliderCopy setUseTickMarkLegibilityShadows:1];
+  [sliderCopy setTitleText:&stru_1F1660A30];
+  [sliderCopy setTransparentGradients];
+  [(CAMSpotlightControlPanel *)self insertSubview:sliderCopy atIndex:0];
+  [(CAMSpotlightControlPanel *)self _layoutFullWidthCustomView:sliderCopy];
 
   [(CAMSpotlightControlPanel *)self _updateControlsVisibilityAnimated:0];
 
   [(CAMSpotlightControlPanel *)self _updateTextOrientation];
 }
 
-- (void)_loadSliderIfNeededForControlType:(int64_t)a3
+- (void)_loadSliderIfNeededForControlType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     [(CAMSpotlightControlPanel *)self _loadApertureSliderIfNeeded];
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
     [(CAMSpotlightControlPanel *)self _loadExposureSliderIfNeeded];
   }
@@ -321,8 +321,8 @@ void __62__CAMSpotlightControlPanel__updateControlsVisibilityAnimated___block_in
 
     [(CAMSpotlightControlPanel *)self _configureAndInstallDiscreteSlider:self->_apertureSlider];
     [(CEKApertureSlider *)self->_apertureSlider addTarget:self action:sel__apertureSliderDidChangeValue forControlEvents:4096];
-    v5 = [(CAMSpotlightControlPanel *)self delegate];
-    [v5 spotlightControlPanelDidCreateApertureSlider:self];
+    delegate = [(CAMSpotlightControlPanel *)self delegate];
+    [delegate spotlightControlPanelDidCreateApertureSlider:self];
   }
 }
 
@@ -336,37 +336,37 @@ void __62__CAMSpotlightControlPanel__updateControlsVisibilityAnimated___block_in
 
     [(CAMSpotlightControlPanel *)self _configureAndInstallDiscreteSlider:self->_exposureSlider];
     [(CAMExposureSlider *)self->_exposureSlider addTarget:self action:sel__exposureSliderDidChangeValue forControlEvents:4096];
-    v5 = [(CAMSpotlightControlPanel *)self delegate];
-    [v5 spotlightControlPanelDidCreateExposureSlider:self];
+    delegate = [(CAMSpotlightControlPanel *)self delegate];
+    [delegate spotlightControlPanelDidCreateExposureSlider:self];
   }
 }
 
-- (void)_handleIconViewReleased:(id)a3
+- (void)_handleIconViewReleased:(id)released
 {
-  v4 = [(CAMSpotlightControlPanel *)self spotlightControl];
-  v5 = [(CAMSpotlightControlPanel *)self isControlTypeOpen:v4]^ 1;
+  spotlightControl = [(CAMSpotlightControlPanel *)self spotlightControl];
+  v5 = [(CAMSpotlightControlPanel *)self isControlTypeOpen:spotlightControl]^ 1;
 
-  [(CAMSpotlightControlPanel *)self _setControlType:v4 open:v5 animated:1 notifyDelegate:1];
+  [(CAMSpotlightControlPanel *)self _setControlType:spotlightControl open:v5 animated:1 notifyDelegate:1];
 }
 
 - (void)_apertureSliderDidChangeValue
 {
-  v3 = [(CAMSpotlightControlPanel *)self delegate];
-  [v3 spotlightControlPanel:self didChangeValueForSpotlight:3];
+  delegate = [(CAMSpotlightControlPanel *)self delegate];
+  [delegate spotlightControlPanel:self didChangeValueForSpotlight:3];
 }
 
 - (void)_exposureSliderDidChangeValue
 {
-  v3 = [(CAMSpotlightControlPanel *)self delegate];
-  [v3 spotlightControlPanel:self didChangeValueForSpotlight:2];
+  delegate = [(CAMSpotlightControlPanel *)self delegate];
+  [delegate spotlightControlPanel:self didChangeValueForSpotlight:2];
 }
 
 - (unint64_t)_sliderFontStyle
 {
   v2 = +[CAMCaptureCapabilities capabilities];
-  v3 = [v2 sfCameraFontSupported];
+  sfCameraFontSupported = [v2 sfCameraFontSupported];
 
-  return v3;
+  return sfCameraFontSupported;
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_scrubberGradientEdgeInsets
@@ -378,23 +378,23 @@ void __62__CAMSpotlightControlPanel__updateControlsVisibilityAnimated___block_in
   return result;
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    v5 = a4;
-    self->_orientation = a3;
+    animatedCopy = animated;
+    self->_orientation = orientation;
     [(CAMSpotlightControlPanel *)self _updateTextOrientation];
     [(CAMSpotlightControlPanel *)self setNeedsLayout];
-    v8 = [(CAMSpotlightControlPanel *)self _controlIconView];
-    [CAMView rotateView:v8 toInterfaceOrientation:a3 animated:v5];
+    _controlIconView = [(CAMSpotlightControlPanel *)self _controlIconView];
+    [CAMView rotateView:_controlIconView toInterfaceOrientation:orientation animated:animatedCopy];
   }
 }
 
 - (void)_updateTextOrientation
 {
-  v3 = [(CAMSpotlightControlPanel *)self orientation];
-  switch(v3)
+  orientation = [(CAMSpotlightControlPanel *)self orientation];
+  switch(orientation)
   {
     case 1:
       v4 = 0;
@@ -412,13 +412,13 @@ void __62__CAMSpotlightControlPanel__updateControlsVisibilityAnimated___block_in
   [(CAMSpotlightControlPanel *)self _applyTextOrientation:v4];
 }
 
-- (void)_applyTextOrientation:(int64_t)a3
+- (void)_applyTextOrientation:(int64_t)orientation
 {
-  v5 = [(CAMSpotlightControlPanel *)self apertureSlider];
-  [v5 setTextOrientation:a3];
+  apertureSlider = [(CAMSpotlightControlPanel *)self apertureSlider];
+  [apertureSlider setTextOrientation:orientation];
 
-  v6 = [(CAMSpotlightControlPanel *)self exposureSlider];
-  [v6 setTextOrientation:a3];
+  exposureSlider = [(CAMSpotlightControlPanel *)self exposureSlider];
+  [exposureSlider setTextOrientation:orientation];
 }
 
 - (CAMSpotlightControlPanelDelegate)delegate

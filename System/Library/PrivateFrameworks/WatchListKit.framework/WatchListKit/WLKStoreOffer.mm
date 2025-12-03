@@ -1,18 +1,18 @@
 @interface WLKStoreOffer
-+ (id)offersWithMAPIDictionaries:(id)a3;
-+ (id)offersWithSubscriptionDictionaries:(id)a3;
++ (id)offersWithMAPIDictionaries:(id)dictionaries;
++ (id)offersWithSubscriptionDictionaries:(id)dictionaries;
 - (BOOL)specialOfferEligible;
-- (WLKStoreOffer)initWithMAPIDictionary:(id)a3;
-- (WLKStoreOffer)initWithSubscriptionDictionary:(id)a3;
-- (id)sui_buttonSubtitleWithServiceName:(id)a3;
+- (WLKStoreOffer)initWithMAPIDictionary:(id)dictionary;
+- (WLKStoreOffer)initWithSubscriptionDictionary:(id)dictionary;
+- (id)sui_buttonSubtitleWithServiceName:(id)name;
 - (id)sui_buttonTitle;
 @end
 
 @implementation WLKStoreOffer
 
-- (id)sui_buttonSubtitleWithServiceName:(id)a3
+- (id)sui_buttonSubtitleWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [(WLKStoreOffer *)self offerType]- 1;
   if (v5 > 2)
   {
@@ -37,7 +37,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = v4;
+  v12 = nameCopy;
   if ([(WLKStoreOffer *)self offerType]== 4)
   {
     if (v12)
@@ -66,7 +66,7 @@ LABEL_7:
 
 - (id)sui_buttonTitle
 {
-  v3 = [(WLKStoreOffer *)self formattedPrice];
+  formattedPrice = [(WLKStoreOffer *)self formattedPrice];
   if ([(WLKStoreOffer *)self offerType]== 4)
   {
     v4 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.WatchListKit"];
@@ -75,54 +75,54 @@ LABEL_7:
     if ([(WLKStoreOffer *)self subscriptionType]== 2)
     {
       v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.WatchListKit"];
-      v3 = [v6 localizedStringForKey:@"OFFER_ACTION_SUBSCRIBE_FREE_TRIAL" value:&stru_288206BC0 table:@"WatchListKit"];
+      formattedPrice = [v6 localizedStringForKey:@"OFFER_ACTION_SUBSCRIBE_FREE_TRIAL" value:&stru_288206BC0 table:@"WatchListKit"];
     }
 
     else
     {
-      v3 = v5;
+      formattedPrice = v5;
     }
   }
 
-  return v3;
+  return formattedPrice;
 }
 
-- (WLKStoreOffer)initWithSubscriptionDictionary:(id)a3
+- (WLKStoreOffer)initWithSubscriptionDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v31.receiver = self;
   v31.super_class = WLKStoreOffer;
   v5 = [(WLKStoreOffer *)&v31 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
 
     v5->_offerType = 4;
-    v8 = [v4 wlk_stringForKey:@"buyParams"];
+    v8 = [dictionaryCopy wlk_stringForKey:@"buyParams"];
     v9 = [v8 copy];
     buyParameters = v5->_buyParameters;
     v5->_buyParameters = v9;
 
-    v11 = [v4 wlk_stringForKey:@"title"];
+    v11 = [dictionaryCopy wlk_stringForKey:@"title"];
     v12 = [v11 copy];
     title = v5->_title;
     v5->_title = v12;
 
-    v14 = [v4 wlk_stringForKey:@"price"];
+    v14 = [dictionaryCopy wlk_stringForKey:@"price"];
     v15 = MEMORY[0x277CCABB0];
     [v14 floatValue];
     v16 = [v15 numberWithFloat:?];
     price = v5->_price;
     v5->_price = v16;
 
-    v18 = [v4 wlk_stringForKey:@"priceForDisplay"];
+    v18 = [dictionaryCopy wlk_stringForKey:@"priceForDisplay"];
     formattedPrice = v5->_formattedPrice;
     v5->_formattedPrice = v18;
 
     v5->_subscriptionType = 1;
-    v20 = [v4 wlk_stringForKey:@"eligibilityType"];
+    v20 = [dictionaryCopy wlk_stringForKey:@"eligibilityType"];
     if ([v20 isEqualToString:@"INTRO"])
     {
       v21 = @"freeTrialPeriod";
@@ -135,7 +135,7 @@ LABEL_7:
       if (![v20 isEqualToString:@"HARDWARE_1"])
       {
 LABEL_7:
-        v27 = [v4 wlk_stringForKey:@"renewalPeriod"];
+        v27 = [dictionaryCopy wlk_stringForKey:@"renewalPeriod"];
         v28 = [[WLKStoreOfferPeriod alloc] initWithString:v27];
         renewalPeriod = v5->_renewalPeriod;
         v5->_renewalPeriod = v28;
@@ -149,7 +149,7 @@ LABEL_7:
     }
 
     v5->_subscriptionType = v23;
-    v24 = [v4 wlk_stringForKey:v21];
+    v24 = [dictionaryCopy wlk_stringForKey:v21];
     v25 = [[WLKStoreOfferPeriod alloc] initWithString:v24];
     v26 = *(&v5->super.isa + v22);
     *(&v5->super.isa + v22) = v25;
@@ -162,25 +162,25 @@ LABEL_8:
   return v5;
 }
 
-- (WLKStoreOffer)initWithMAPIDictionary:(id)a3
+- (WLKStoreOffer)initWithMAPIDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = WLKStoreOffer;
   v5 = [(WLKStoreOffer *)&v22 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v6;
 
-    v8 = [v4 wlk_stringForKey:@"buyParams"];
+    v8 = [dictionaryCopy wlk_stringForKey:@"buyParams"];
     v9 = [v8 copy];
     buyParameters = v5->_buyParameters;
     v5->_buyParameters = v9;
 
-    v11 = [v4 wlk_stringForKey:@"price"];
-    v12 = [v4 wlk_numberForKey:@"price"];
+    v11 = [dictionaryCopy wlk_stringForKey:@"price"];
+    v12 = [dictionaryCopy wlk_numberForKey:@"price"];
     v13 = v12;
     if (v12)
     {
@@ -197,13 +197,13 @@ LABEL_8:
     price = v5->_price;
     v5->_price = v14;
 
-    v17 = [v4 wlk_stringForKey:@"priceFormatted"];
+    v17 = [dictionaryCopy wlk_stringForKey:@"priceFormatted"];
     formattedPrice = v5->_formattedPrice;
     v5->_formattedPrice = v17;
 
     v5->_offerType = 0;
     v5->_subscriptionType = 0;
-    v19 = [v4 wlk_stringForKey:@"kind"];
+    v19 = [dictionaryCopy wlk_stringForKey:@"kind"];
     if ([v19 isEqualToString:@"buy"])
     {
       v20 = 1;
@@ -247,31 +247,31 @@ LABEL_17:
 
 - (BOOL)specialOfferEligible
 {
-  v3 = [(WLKStoreOffer *)self freeTrialPeriod];
-  if (v3)
+  freeTrialPeriod = [(WLKStoreOffer *)self freeTrialPeriod];
+  if (freeTrialPeriod)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(WLKStoreOffer *)self introOfferPeriod];
-    v4 = v5 != 0;
+    introOfferPeriod = [(WLKStoreOffer *)self introOfferPeriod];
+    v4 = introOfferPeriod != 0;
   }
 
   return v4;
 }
 
-+ (id)offersWithSubscriptionDictionaries:(id)a3
++ (id)offersWithSubscriptionDictionaries:(id)dictionaries
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -316,16 +316,16 @@ LABEL_17:
   return v13;
 }
 
-+ (id)offersWithMAPIDictionaries:(id)a3
++ (id)offersWithMAPIDictionaries:(id)dictionaries
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {

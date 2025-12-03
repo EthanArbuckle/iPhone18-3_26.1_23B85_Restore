@@ -1,34 +1,34 @@
 @interface FPPair
-+ (id)pairWithFirst:(id)a3 second:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPair:(id)a3;
++ (id)pairWithFirst:(id)first second:(id)second;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPair:(id)pair;
 @end
 
 @implementation FPPair
 
-+ (id)pairWithFirst:(id)a3 second:(id)a4
++ (id)pairWithFirst:(id)first second:(id)second
 {
-  v6 = a3;
-  v7 = a4;
+  firstCopy = first;
+  secondCopy = second;
   v8 = objc_opt_new();
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong((v8 + 8), a3);
-    objc_storeStrong(v9 + 2, a4);
+    objc_storeStrong((v8 + 8), first);
+    objc_storeStrong(v9 + 2, second);
   }
 
   return v9;
 }
 
-- (BOOL)isEqualToPair:(id)a3
+- (BOOL)isEqualToPair:(id)pair
 {
-  v4 = a3;
+  pairCopy = pair;
   first = self->_first;
-  if (first == v4[1] || [first isEqual:?])
+  if (first == pairCopy[1] || [first isEqual:?])
   {
     second = self->_second;
-    if (second == v4[2])
+    if (second == pairCopy[2])
     {
       v7 = 1;
     }
@@ -47,16 +47,16 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;

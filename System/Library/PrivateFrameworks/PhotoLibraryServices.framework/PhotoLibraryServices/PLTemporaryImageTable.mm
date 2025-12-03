@@ -1,16 +1,16 @@
 @interface PLTemporaryImageTable
-- (BOOL)_writeBGRAThumbnailDataForImage:(id)a3 intoTable:(id)a4 atIndex:(unint64_t)a5;
-- (BOOL)_writeCompressedThumbnailDataForImage:(id)a3 intoTable:(id)a4 atIndex:(unint64_t)a5;
-- (PLTemporaryImageTable)initWithWithPath:(id)a3 imageFormat:(unsigned __int16)a4;
-- (id)imageForItemAtIndex:(unint64_t)a3;
-- (unint64_t)_imageTableIndexForItemIndex:(unint64_t)a3;
+- (BOOL)_writeBGRAThumbnailDataForImage:(id)image intoTable:(id)table atIndex:(unint64_t)index;
+- (BOOL)_writeCompressedThumbnailDataForImage:(id)image intoTable:(id)table atIndex:(unint64_t)index;
+- (PLTemporaryImageTable)initWithWithPath:(id)path imageFormat:(unsigned __int16)format;
+- (id)imageForItemAtIndex:(unint64_t)index;
+- (unint64_t)_imageTableIndexForItemIndex:(unint64_t)index;
 - (void)_cleanup;
-- (void)_positional_setThumbnailsWithIdentifier:(id)a3 thumbnailIndex:(unint64_t)a4 image:(id)a5 assetUUID:(id)a6;
+- (void)_positional_setThumbnailsWithIdentifier:(id)identifier thumbnailIndex:(unint64_t)index image:(id)image assetUUID:(id)d;
 - (void)dealloc;
-- (void)insertItemAtIndex:(unint64_t)a3;
-- (void)removeItemAtIndex:(unint64_t)a3;
+- (void)insertItemAtIndex:(unint64_t)index;
+- (void)removeItemAtIndex:(unint64_t)index;
 - (void)reset;
-- (void)setImage:(id)a3 forItemAtIndex:(unint64_t)a4;
+- (void)setImage:(id)image forItemAtIndex:(unint64_t)index;
 @end
 
 @implementation PLTemporaryImageTable
@@ -49,42 +49,42 @@
   {
     self->_imageTable = 0;
 
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 removeItemAtPath:self->_imageTablePath error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtPath:self->_imageTablePath error:0];
   }
 
   self->_nextTableEntryIndex = 0;
 }
 
-- (void)removeItemAtIndex:(unint64_t)a3
+- (void)removeItemAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]> a3)
+  if ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]> index)
   {
-    v5 = [(PLTemporaryImageTable *)self _imageTableIndexForItemIndex:a3];
+    v5 = [(PLTemporaryImageTable *)self _imageTableIndexForItemIndex:index];
     if (v5 != 0x7FFFFFFFFFFFFFFFLL)
     {
       [(PLThumbPersistenceManager *)self->_imageTable deleteEntryWithIdentifier:0 orIndex:v5 uuid:0];
     }
 
     itemIndexToThumbEntryMapping = self->_itemIndexToThumbEntryMapping;
-    v7 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableArray *)itemIndexToThumbEntryMapping replaceObjectAtIndex:a3 withObject:v7];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableArray *)itemIndexToThumbEntryMapping replaceObjectAtIndex:index withObject:null];
   }
 }
 
-- (void)insertItemAtIndex:(unint64_t)a3
+- (void)insertItemAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]> a3)
+  if ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]> index)
   {
     itemIndexToThumbEntryMapping = self->_itemIndexToThumbEntryMapping;
-    v6 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableArray *)itemIndexToThumbEntryMapping insertObject:v6 atIndex:a3];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableArray *)itemIndexToThumbEntryMapping insertObject:null atIndex:index];
   }
 }
 
-- (id)imageForItemAtIndex:(unint64_t)a3
+- (id)imageForItemAtIndex:(unint64_t)index
 {
-  v4 = [(PLTemporaryImageTable *)self _imageTableIndexForItemIndex:a3];
+  v4 = [(PLTemporaryImageTable *)self _imageTableIndexForItemIndex:index];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = [(PLThumbPersistenceManager *)self->_imageTable createImageWithIdentifier:0 orIndex:v4]) == 0)
   {
     v7 = 0;
@@ -100,40 +100,40 @@
   return v7;
 }
 
-- (unint64_t)_imageTableIndexForItemIndex:(unint64_t)a3
+- (unint64_t)_imageTableIndexForItemIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]<= a3)
+  if ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]<= index)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  v5 = [(NSMutableArray *)self->_itemIndexToThumbEntryMapping objectAtIndex:a3];
-  v6 = [MEMORY[0x1E695DFB0] null];
+  v5 = [(NSMutableArray *)self->_itemIndexToThumbEntryMapping objectAtIndex:index];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (v5 == v6)
+  if (v5 == null)
   {
-    v7 = 0x7FFFFFFFFFFFFFFFLL;
+    unsignedIntegerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v7 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (void)setImage:(id)a3 forItemAtIndex:(unint64_t)a4
+- (void)setImage:(id)image forItemAtIndex:(unint64_t)index
 {
-  v13 = a3;
-  while ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]<= a4)
+  imageCopy = image;
+  while ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]<= index)
   {
     itemIndexToThumbEntryMapping = self->_itemIndexToThumbEntryMapping;
-    v7 = [MEMORY[0x1E695DFB0] null];
-    [(NSMutableArray *)itemIndexToThumbEntryMapping addObject:v7];
+    null = [MEMORY[0x1E695DFB0] null];
+    [(NSMutableArray *)itemIndexToThumbEntryMapping addObject:null];
   }
 
-  if ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]<= a4)
+  if ([(NSMutableArray *)self->_itemIndexToThumbEntryMapping count]<= index)
   {
     v8 = 0;
 LABEL_8:
@@ -144,37 +144,37 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [(NSMutableArray *)self->_itemIndexToThumbEntryMapping objectAtIndex:a4];
+  v8 = [(NSMutableArray *)self->_itemIndexToThumbEntryMapping objectAtIndex:index];
   if (!v8)
   {
     goto LABEL_8;
   }
 
-  v9 = [MEMORY[0x1E695DFB0] null];
+  null2 = [MEMORY[0x1E695DFB0] null];
 
   v10 = v8;
-  if (v8 == v9)
+  if (v8 == null2)
   {
     goto LABEL_8;
   }
 
 LABEL_9:
-  v12 = [[PLImageContainer alloc] initWithPLImage:v13];
+  v12 = [[PLImageContainer alloc] initWithPLImage:imageCopy];
   -[PLTemporaryImageTable _positional_setThumbnailsWithIdentifier:thumbnailIndex:image:assetUUID:](self, "_positional_setThumbnailsWithIdentifier:thumbnailIndex:image:assetUUID:", 0, [v10 unsignedIntegerValue], v12, 0);
-  [(NSMutableArray *)self->_itemIndexToThumbEntryMapping replaceObjectAtIndex:a4 withObject:v10];
+  [(NSMutableArray *)self->_itemIndexToThumbEntryMapping replaceObjectAtIndex:index withObject:v10];
 }
 
-- (PLTemporaryImageTable)initWithWithPath:(id)a3 imageFormat:(unsigned __int16)a4
+- (PLTemporaryImageTable)initWithWithPath:(id)path imageFormat:(unsigned __int16)format
 {
-  v6 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = PLTemporaryImageTable;
   v7 = [(PLTemporaryImageTable *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_imageFormatID = a4;
-    v9 = [v6 copy];
+    v7->_imageFormatID = format;
+    v9 = [pathCopy copy];
     imageTablePath = v8->_imageTablePath;
     v8->_imageTablePath = v9;
 
@@ -184,30 +184,30 @@ LABEL_9:
   return v8;
 }
 
-- (void)_positional_setThumbnailsWithIdentifier:(id)a3 thumbnailIndex:(unint64_t)a4 image:(id)a5 assetUUID:(id)a6
+- (void)_positional_setThumbnailsWithIdentifier:(id)identifier thumbnailIndex:(unint64_t)index image:(id)image assetUUID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  imageCopy = image;
   v9 = self->_imageTable;
-  v10 = [(PLThumbPersistenceManager *)v9 isReadOnly];
-  if (!v8 || (v10 & 1) != 0 || ![v8 CGImage])
+  isReadOnly = [(PLThumbPersistenceManager *)v9 isReadOnly];
+  if (!imageCopy || (isReadOnly & 1) != 0 || ![imageCopy CGImage])
   {
     goto LABEL_13;
   }
 
-  v11 = [(PLThumbPersistenceManager *)v9 format];
-  if ([v11 thumbnailKind] == 4)
+  format = [(PLThumbPersistenceManager *)v9 format];
+  if ([format thumbnailKind] == 4)
   {
   }
 
   else
   {
-    v12 = [(PLThumbPersistenceManager *)v9 format];
-    v13 = [v12 thumbnailKind];
+    format2 = [(PLThumbPersistenceManager *)v9 format];
+    thumbnailKind = [format2 thumbnailKind];
 
-    if (v13 != 3)
+    if (thumbnailKind != 3)
     {
-      if ([(PLTemporaryImageTable *)self _writeBGRAThumbnailDataForImage:v8 intoTable:v9 atIndex:a4])
+      if ([(PLTemporaryImageTable *)self _writeBGRAThumbnailDataForImage:imageCopy intoTable:v9 atIndex:index])
       {
         goto LABEL_13;
       }
@@ -216,7 +216,7 @@ LABEL_9:
     }
   }
 
-  if ([(PLTemporaryImageTable *)self _writeCompressedThumbnailDataForImage:v8 intoTable:v9 atIndex:a4])
+  if ([(PLTemporaryImageTable *)self _writeCompressedThumbnailDataForImage:imageCopy intoTable:v9 atIndex:index])
   {
     goto LABEL_13;
   }
@@ -233,23 +233,23 @@ LABEL_10:
 LABEL_13:
 }
 
-- (BOOL)_writeBGRAThumbnailDataForImage:(id)a3 intoTable:(id)a4 atIndex:(unint64_t)a5
+- (BOOL)_writeBGRAThumbnailDataForImage:(id)image intoTable:(id)table atIndex:(unint64_t)index
 {
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(v8, "entryLength")}];
+  imageCopy = image;
+  tableCopy = table;
+  v9 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:{objc_msgSend(tableCopy, "entryLength")}];
   v10 = *(MEMORY[0x1E695F058] + 16);
   v27[0] = *MEMORY[0x1E695F058];
   v27[1] = v10;
-  v11 = [v8 format];
-  v12 = [v11 thumbnailSpecification];
+  format = [tableCopy format];
+  thumbnailSpecification = [format thumbnailSpecification];
 
   v26 = v9;
-  v13 = +[PLThumbnailUtilities performSWDownscaleTo5551OnImage:withSpecification:destinationData:imageRect:bytesPerRow:](PLThumbnailUtilities, "performSWDownscaleTo5551OnImage:withSpecification:destinationData:imageRect:bytesPerRow:", [v7 CGImage], v12, &v26, v27, 0);
+  v13 = +[PLThumbnailUtilities performSWDownscaleTo5551OnImage:withSpecification:destinationData:imageRect:bytesPerRow:](PLThumbnailUtilities, "performSWDownscaleTo5551OnImage:withSpecification:destinationData:imageRect:bytesPerRow:", [imageCopy CGImage], thumbnailSpecification, &v26, v27, 0);
   v14 = v26;
 
-  if (v13 && ([v8 formatSideLen], v15 = MEMORY[0x1E69BF190], objc_msgSend(v7, "pixelSize"), objc_msgSend(v15, "centeredRectForSourceSize:destinationSize:"), v17 = v16, v19 = v18, v20 = objc_msgSend(v14, "mutableBytes"), v21 = v20 + objc_msgSend(v14, "length"), *(v21 - 20) = 0, *(v21 - 28) = 0, *(v21 - 12) = v19, *(v21 - 8) = v17, *(v21 - 4) = 0, (objc_msgSend(v8, "writeEntryData:toIndex:", v14, a5) & 1) != 0))
+  if (v13 && ([tableCopy formatSideLen], v15 = MEMORY[0x1E69BF190], objc_msgSend(imageCopy, "pixelSize"), objc_msgSend(v15, "centeredRectForSourceSize:destinationSize:"), v17 = v16, v19 = v18, v20 = objc_msgSend(v14, "mutableBytes"), v21 = v20 + objc_msgSend(v14, "length"), *(v21 - 20) = 0, *(v21 - 28) = 0, *(v21 - 12) = v19, *(v21 - 8) = v17, *(v21 - 4) = 0, (objc_msgSend(tableCopy, "writeEntryData:toIndex:", v14, index) & 1) != 0))
   {
     v22 = 1;
   }
@@ -259,9 +259,9 @@ LABEL_13:
     v23 = PLThumbnailsGetLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v8 formatSideLen];
+      formatSideLen = [tableCopy formatSideLen];
       *buf = 67109120;
-      v29 = v24;
+      v29 = formatSideLen;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Failed to write temporary table image data in format with side len: %d", buf, 8u);
     }
 
@@ -271,16 +271,16 @@ LABEL_13:
   return v22;
 }
 
-- (BOOL)_writeCompressedThumbnailDataForImage:(id)a3 intoTable:(id)a4 atIndex:(unint64_t)a5
+- (BOOL)_writeCompressedThumbnailDataForImage:(id)image intoTable:(id)table atIndex:(unint64_t)index
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [a3 CGImage];
-  v9 = [v7 format];
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v11 = [v10 UUIDString];
+  tableCopy = table;
+  cGImage = [image CGImage];
+  format = [tableCopy format];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v21 = 0;
-  v12 = [PLTableThumbnailEncoder encodeThumbnailImage:v8 toFormat:v9 withUUID:v11 error:&v21];
+  v12 = [PLTableThumbnailEncoder encodeThumbnailImage:cGImage toFormat:format withUUID:uUIDString error:&v21];
   v13 = v21;
 
   if (!v12)
@@ -288,9 +288,9 @@ LABEL_13:
     v14 = PLThumbnailsGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v7 formatSideLen];
+      formatSideLen = [tableCopy formatSideLen];
       *buf = 67109378;
-      *v23 = v16;
+      *v23 = formatSideLen;
       *&v23[4] = 2112;
       *&v23[6] = v13;
       _os_log_impl(&dword_19BF1F000, v14, OS_LOG_TYPE_ERROR, "Failed to encode temporary table image data in format with side len: %d, error: %@", buf, 0x12u);
@@ -299,18 +299,18 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  v14 = [v12 entryDataForEntryLength:{objc_msgSend(v7, "entryLength")}];
-  if (([v7 writeEntryData:v14 toIndex:a5] & 1) == 0)
+  v14 = [v12 entryDataForEntryLength:{objc_msgSend(tableCopy, "entryLength")}];
+  if (([tableCopy writeEntryData:v14 toIndex:index] & 1) == 0)
   {
     v17 = PLThumbnailsGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v18 = [v14 length];
-      v19 = [v7 formatSideLen];
+      formatSideLen2 = [tableCopy formatSideLen];
       *buf = 134218240;
       *v23 = v18;
       *&v23[8] = 1024;
-      *&v23[10] = v19;
+      *&v23[10] = formatSideLen2;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_ERROR, "Failed to write encoded table image data of len: %ld in format with side len: %d", buf, 0x12u);
     }
 

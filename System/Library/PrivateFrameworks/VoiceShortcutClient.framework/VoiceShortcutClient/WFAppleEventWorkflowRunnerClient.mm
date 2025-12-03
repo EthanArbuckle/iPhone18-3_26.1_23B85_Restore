@@ -1,16 +1,16 @@
 @interface WFAppleEventWorkflowRunnerClient
-- (WFAppleEventWorkflowRunnerClient)initWithWorkflowIdentifier:(id)a3 input:(id)a4 parentIdentifier:(id)a5;
+- (WFAppleEventWorkflowRunnerClient)initWithWorkflowIdentifier:(id)identifier input:(id)input parentIdentifier:(id)parentIdentifier;
 @end
 
 @implementation WFAppleEventWorkflowRunnerClient
 
-- (WFAppleEventWorkflowRunnerClient)initWithWorkflowIdentifier:(id)a3 input:(id)a4 parentIdentifier:(id)a5
+- (WFAppleEventWorkflowRunnerClient)initWithWorkflowIdentifier:(id)identifier input:(id)input parentIdentifier:(id)parentIdentifier
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[WFWorkflowDatabaseRunDescriptor alloc] initWithIdentifier:v8];
+  inputCopy = input;
+  identifierCopy = identifier;
+  v9 = [[WFWorkflowDatabaseRunDescriptor alloc] initWithIdentifier:identifierCopy];
 
-  v10 = [[WFWorkflowRunRequest alloc] initWithInput:v7 presentationMode:1];
+  v10 = [[WFWorkflowRunRequest alloc] initWithInput:inputCopy presentationMode:1];
   [(WFWorkflowRunRequest *)v10 setRunSource:@"apple-event"];
   [(WFWorkflowRunRequest *)v10 setAllowsDialogNotifications:0];
   [(WFWorkflowRunRequest *)v10 setOutputBehavior:0];

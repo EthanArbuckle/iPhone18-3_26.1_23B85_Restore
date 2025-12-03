@@ -1,18 +1,18 @@
 @interface UIPanelControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation UIPanelControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v7 = location;
   v6 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UIPanelController";
   v3 = "@";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
@@ -29,7 +29,7 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIPanelControllerAccessibility;

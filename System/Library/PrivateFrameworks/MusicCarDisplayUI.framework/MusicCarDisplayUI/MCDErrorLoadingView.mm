@@ -1,16 +1,16 @@
 @interface MCDErrorLoadingView
-- (MCDErrorLoadingView)initWithTitle:(id)a3 buttonText:(id)a4;
+- (MCDErrorLoadingView)initWithTitle:(id)title buttonText:(id)text;
 - (MCDErrorViewDelegate)delegate;
-- (void)retryButtonPressed:(id)a3;
+- (void)retryButtonPressed:(id)pressed;
 @end
 
 @implementation MCDErrorLoadingView
 
-- (MCDErrorLoadingView)initWithTitle:(id)a3 buttonText:(id)a4
+- (MCDErrorLoadingView)initWithTitle:(id)title buttonText:(id)text
 {
   v61[8] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  textCopy = text;
   v60.receiver = self;
   v60.super_class = MCDErrorLoadingView;
   v8 = *MEMORY[0x277CBF3A0];
@@ -20,15 +20,15 @@
   v12 = [(MCDErrorLoadingView *)&v60 initWithFrame:*MEMORY[0x277CBF3A0], v9, v10, v11];
   if (v12)
   {
-    v13 = [MEMORY[0x277D75348] tableBackgroundColor];
-    [(MCDErrorLoadingView *)v12 setBackgroundColor:v13];
+    tableBackgroundColor = [MEMORY[0x277D75348] tableBackgroundColor];
+    [(MCDErrorLoadingView *)v12 setBackgroundColor:tableBackgroundColor];
 
     v14 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v8, v9, v10, v11}];
     [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v59 = v6;
-    if (v6)
+    v59 = titleCopy;
+    if (titleCopy)
     {
-      [v14 setText:v6];
+      [v14 setText:titleCopy];
     }
 
     else
@@ -43,18 +43,18 @@
 
     [v14 setTextAlignment:1];
     [v14 setNumberOfLines:0];
-    v18 = [MEMORY[0x277D75348] labelColor];
-    [v14 setTextColor:v18];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [v14 setTextColor:labelColor];
 
     v19 = objc_opt_new();
-    v20 = [v19 titleLabel];
+    titleLabel = [v19 titleLabel];
     v21 = _MCDNoContentFontWithTextStyle(*MEMORY[0x277D76920]);
-    [v20 setFont:v21];
+    [titleLabel setFont:v21];
 
-    v58 = v7;
-    if (v7)
+    v58 = textCopy;
+    if (textCopy)
     {
-      [v19 setTitle:v7 forState:0];
+      [v19 setTitle:textCopy forState:0];
     }
 
     else
@@ -73,54 +73,54 @@
     [(MCDErrorLoadingView *)v12 addSubview:v19];
     v46 = MEMORY[0x277CCAAD0];
     v56 = v24;
-    v57 = [v24 heightAnchor];
-    v55 = [(MCDErrorLoadingView *)v12 heightAnchor];
-    v54 = [v57 constraintEqualToAnchor:v55 multiplier:0.15 constant:0.0];
+    heightAnchor = [v24 heightAnchor];
+    heightAnchor2 = [(MCDErrorLoadingView *)v12 heightAnchor];
+    v54 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.15 constant:0.0];
     v61[0] = v54;
-    v53 = [v14 topAnchor];
-    v52 = [v24 bottomAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    topAnchor = [v14 topAnchor];
+    bottomAnchor = [v24 bottomAnchor];
+    v51 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     v61[1] = v51;
-    v49 = [v14 leadingAnchor];
-    v50 = [(MCDErrorLoadingView *)v12 safeAreaLayoutGuide];
-    v48 = [v50 leadingAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48 constant:12.0];
+    leadingAnchor = [v14 leadingAnchor];
+    safeAreaLayoutGuide = [(MCDErrorLoadingView *)v12 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
     v61[2] = v47;
-    v43 = [v14 trailingAnchor];
-    v44 = [(MCDErrorLoadingView *)v12 safeAreaLayoutGuide];
-    v42 = [v44 trailingAnchor];
-    v41 = [v43 constraintEqualToAnchor:v42 constant:-12.0];
+    trailingAnchor = [v14 trailingAnchor];
+    safeAreaLayoutGuide2 = [(MCDErrorLoadingView *)v12 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v41 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
     v61[3] = v41;
-    v40 = [v19 centerXAnchor];
-    v39 = [(MCDErrorLoadingView *)v12 centerXAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39];
+    centerXAnchor = [v19 centerXAnchor];
+    centerXAnchor2 = [(MCDErrorLoadingView *)v12 centerXAnchor];
+    v38 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v61[4] = v38;
-    v37 = [v19 widthAnchor];
-    v36 = [(MCDErrorLoadingView *)v12 widthAnchor];
-    [v37 constraintEqualToAnchor:v36 multiplier:0.699999988 constant:0.0];
+    widthAnchor = [v19 widthAnchor];
+    widthAnchor2 = [(MCDErrorLoadingView *)v12 widthAnchor];
+    [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.699999988 constant:0.0];
     v25 = v45 = v14;
     v61[5] = v25;
-    v26 = [v19 heightAnchor];
-    v27 = [v26 constraintEqualToConstant:40.0];
+    heightAnchor3 = [v19 heightAnchor];
+    v27 = [heightAnchor3 constraintEqualToConstant:40.0];
     v61[6] = v27;
-    v28 = [v19 bottomAnchor];
-    v29 = [(MCDErrorLoadingView *)v12 safeAreaLayoutGuide];
-    v30 = [v29 bottomAnchor];
-    v31 = [v28 constraintEqualToAnchor:v30 constant:-24.0];
+    bottomAnchor2 = [v19 bottomAnchor];
+    safeAreaLayoutGuide3 = [(MCDErrorLoadingView *)v12 safeAreaLayoutGuide];
+    bottomAnchor3 = [safeAreaLayoutGuide3 bottomAnchor];
+    v31 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-24.0];
     v61[7] = v31;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:8];
     [v46 activateConstraints:v32];
 
     v33 = v12;
-    v7 = v58;
-    v6 = v59;
+    textCopy = v58;
+    titleCopy = v59;
   }
 
   v34 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)retryButtonPressed:(id)a3
+- (void)retryButtonPressed:(id)pressed
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v5 = objc_opt_respondsToSelector();

@@ -1,16 +1,16 @@
 @interface AXMNSFWDetectorNode
-+ (BOOL)addNSFWResultToContext:(id)a3 forIdentifier:(id)a4 confidence:(double)a5 markAsSensitiveCaptionContent:(BOOL)a6;
++ (BOOL)addNSFWResultToContext:(id)context forIdentifier:(id)identifier confidence:(double)confidence markAsSensitiveCaptionContent:(BOOL)content;
 + (BOOL)isSupported;
 - (BOOL)validateVisionKitSoftLinkSymbols;
-- (void)evaluate:(id)a3 metrics:(id)a4;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
 @end
 
 @implementation AXMNSFWDetectorNode
 
 + (BOOL)isSupported
 {
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 physicalMemory] > 0x773593FF;
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v3 = [processInfo physicalMemory] > 0x773593FF;
 
   return v3;
 }
@@ -36,14 +36,14 @@
   }
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
   v25.receiver = self;
   v25.super_class = AXMNSFWDetectorNode;
-  [(AXMEvaluationNode *)&v25 evaluate:v6 metrics:v7];
+  [(AXMEvaluationNode *)&v25 evaluate:evaluateCopy metrics:metricsCopy];
   context = objc_autoreleasePoolPush();
   request = self->_request;
   if (!request)
@@ -57,14 +57,14 @@
 
   v27[0] = request;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-  [(AXMEvaluationNode *)self evaluateRequests:v11 withContext:v6 requestHandlerOptions:0 metrics:v7 error:0];
+  [(AXMEvaluationNode *)self evaluateRequests:v11 withContext:evaluateCopy requestHandlerOptions:0 metrics:metricsCopy error:0];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = [(VNVYvzEtX1JlUdu8xx5qhDI *)self->_request results];
-  v13 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  results = [(VNVYvzEtX1JlUdu8xx5qhDI *)self->_request results];
+  v13 = [results countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v13)
   {
     v14 = v13;
@@ -75,16 +75,16 @@
       {
         if (*v22 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(results);
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        v18 = [v17 identifier];
+        identifier = [v17 identifier];
         [v17 confidence];
-        [AXMNSFWDetectorNode addNSFWResultToContext:v6 forIdentifier:v18 confidence:0 markAsSensitiveCaptionContent:v19];
+        [AXMNSFWDetectorNode addNSFWResultToContext:evaluateCopy forIdentifier:identifier confidence:0 markAsSensitiveCaptionContent:v19];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v14 = [results countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v14);
@@ -93,11 +93,11 @@
   objc_autoreleasePoolPop(context);
 }
 
-+ (BOOL)addNSFWResultToContext:(id)a3 forIdentifier:(id)a4 confidence:(double)a5 markAsSensitiveCaptionContent:(BOOL)a6
++ (BOOL)addNSFWResultToContext:(id)context forIdentifier:(id)identifier confidence:(double)confidence markAsSensitiveCaptionContent:(BOOL)content
 {
-  v6 = a6;
-  v9 = a3;
-  v10 = a4;
+  contentCopy = content;
+  contextCopy = context;
+  identifierCopy = identifier;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -119,16 +119,16 @@
     _Unwind_Resume(v20);
   }
 
-  v13 = [v10 isEqualToString:*v11];
+  v13 = [identifierCopy isEqualToString:*v11];
   if (v13)
   {
-    [v9 size];
+    [contextCopy size];
     v16 = v15;
-    v14 = a5;
-    *&v15 = v14;
+    confidenceCopy = confidence;
+    *&v15 = confidenceCopy;
     v18 = [AXMVisionFeature nsfwClassificationWithCategory:@"NSFW Explicit" confidence:v15 canvasSize:v16, v17];
-    [v18 setCaptionMayContainSensitiveContent:v6];
-    [v9 appendFeature:v18];
+    [v18 setCaptionMayContainSensitiveContent:contentCopy];
+    [contextCopy appendFeature:v18];
   }
 
   return v13;

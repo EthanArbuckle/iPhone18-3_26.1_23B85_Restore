@@ -1,17 +1,17 @@
 @interface PHVoicemailGreetingViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)viewDidLoad;
 @end
 
 @implementation PHVoicemailGreetingViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHVoicemailGreetingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PHVoicemailGreetingViewController" hasInstanceMethod:@"sliderCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHVoicemailGreetingSliderCell" hasInstanceVariable:@"_timelineSlider" withType:"VMPlayerTimelineSlider"];
-  [v3 validateClass:@"PHVoicemailGreetingSliderCell" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHVoicemailGreetingViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PHVoicemailGreetingViewController" hasInstanceMethod:@"sliderCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHVoicemailGreetingSliderCell" hasInstanceVariable:@"_timelineSlider" withType:"VMPlayerTimelineSlider"];
+  [validationsCopy validateClass:@"PHVoicemailGreetingSliderCell" hasInstanceMethod:@"progressView" withFullSignature:{"@", 0}];
 }
 
 - (void)viewDidLoad

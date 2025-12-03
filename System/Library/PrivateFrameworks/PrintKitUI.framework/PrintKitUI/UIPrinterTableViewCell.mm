@@ -1,27 +1,27 @@
 @interface UIPrinterTableViewCell
 + (UIImage)blankImage;
 + (UIImage)checkmarkImage;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (PKPrinter)printer;
-- (UIPrinterTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (UIPrinterTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)delegate;
 - (int)printerState;
 - (void)expandedAccessoryAreaTapped;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)printerAccessoryViewInfoButtonPressed:(id)a3;
-- (void)setPrinter:(id)a3;
-- (void)setPrinterSelected:(BOOL)a3;
-- (void)setPrinterState:(int)a3;
+- (void)printerAccessoryViewInfoButtonPressed:(id)pressed;
+- (void)setPrinter:(id)printer;
+- (void)setPrinterSelected:(BOOL)selected;
+- (void)setPrinterState:(int)state;
 @end
 
 @implementation UIPrinterTableViewCell
 
-- (UIPrinterTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (UIPrinterTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v16.receiver = self;
   v16.super_class = UIPrinterTableViewCell;
-  v4 = [(UIPrinterTableViewCell *)&v16 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(UIPrinterTableViewCell *)&v16 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [UIPrinterAccessoryView alloc];
@@ -30,40 +30,40 @@
     v4->_printerAccessoryView = v6;
 
     [(UIPrinterAccessoryView *)v4->_printerAccessoryView setDelegate:v4];
-    v8 = [MEMORY[0x277D756E0] subtitleCellConfiguration];
-    v9 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v10 = [v8 secondaryTextProperties];
-    [v10 setColor:v9];
+    subtitleCellConfiguration = [MEMORY[0x277D756E0] subtitleCellConfiguration];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
+    [secondaryTextProperties setColor:secondaryLabelColor];
 
-    v11 = [v8 imageProperties];
-    [v11 setReservedLayoutSize:{20.0, 20.0}];
+    imageProperties = [subtitleCellConfiguration imageProperties];
+    [imageProperties setReservedLayoutSize:{20.0, 20.0}];
 
-    [v8 setImageToTextPadding:8.0];
-    [(UIPrinterTableViewCell *)v4 setContentConfiguration:v8];
+    [subtitleCellConfiguration setImageToTextPadding:8.0];
+    [(UIPrinterTableViewCell *)v4 setContentConfiguration:subtitleCellConfiguration];
     [(UIPrinterTableViewCell *)v4 setAccessoryView:v4->_printerAccessoryView];
     v12 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v4 action:sel_expandedAccessoryAreaTapped];
     [(UIPrinterTableViewCell *)v4 setExpandedAccessoryTapRecognizer:v12];
 
-    v13 = [(UIPrinterTableViewCell *)v4 expandedAccessoryTapRecognizer];
-    [v13 setDelegate:v4];
+    expandedAccessoryTapRecognizer = [(UIPrinterTableViewCell *)v4 expandedAccessoryTapRecognizer];
+    [expandedAccessoryTapRecognizer setDelegate:v4];
 
-    v14 = [(UIPrinterTableViewCell *)v4 expandedAccessoryTapRecognizer];
-    [(UIPrinterTableViewCell *)v4 addGestureRecognizer:v14];
+    expandedAccessoryTapRecognizer2 = [(UIPrinterTableViewCell *)v4 expandedAccessoryTapRecognizer];
+    [(UIPrinterTableViewCell *)v4 addGestureRecognizer:expandedAccessoryTapRecognizer2];
   }
 
   return v4;
 }
 
-- (void)setPrinter:(id)a3
+- (void)setPrinter:(id)printer
 {
-  v4 = a3;
-  objc_storeWeak(&self->_printer, v4);
-  v10 = [(UIPrinterTableViewCell *)self contentConfiguration];
-  v5 = [v4 displayName];
-  v6 = v5;
-  if (v5)
+  printerCopy = printer;
+  objc_storeWeak(&self->_printer, printerCopy);
+  contentConfiguration = [(UIPrinterTableViewCell *)self contentConfiguration];
+  displayName = [printerCopy displayName];
+  v6 = displayName;
+  if (displayName)
   {
-    v7 = v5;
+    v7 = displayName;
   }
 
   else
@@ -71,13 +71,13 @@
     v7 = &stru_2871AE610;
   }
 
-  [v10 setText:v7];
+  [contentConfiguration setText:v7];
 
-  v8 = [v4 location];
+  location = [printerCopy location];
 
-  if (v8)
+  if (location)
   {
-    v9 = v8;
+    v9 = location;
   }
 
   else
@@ -85,15 +85,15 @@
     v9 = &stru_2871AE610;
   }
 
-  [v10 setSecondaryText:v9];
+  [contentConfiguration setSecondaryText:v9];
 
-  [(UIPrinterTableViewCell *)self setContentConfiguration:v10];
+  [(UIPrinterTableViewCell *)self setContentConfiguration:contentConfiguration];
 }
 
-- (void)setPrinterSelected:(BOOL)a3
+- (void)setPrinterSelected:(BOOL)selected
 {
-  v6 = [(UIPrinterTableViewCell *)self contentConfiguration];
-  if (a3)
+  contentConfiguration = [(UIPrinterTableViewCell *)self contentConfiguration];
+  if (selected)
   {
     +[UIPrinterTableViewCell checkmarkImage];
   }
@@ -103,9 +103,9 @@
     +[UIPrinterTableViewCell blankImage];
   }
   v5 = ;
-  [v6 setImage:v5];
+  [contentConfiguration setImage:v5];
 
-  [(UIPrinterTableViewCell *)self setContentConfiguration:v6];
+  [(UIPrinterTableViewCell *)self setContentConfiguration:contentConfiguration];
 }
 
 - (void)prepareForReuse
@@ -118,33 +118,33 @@
   [(UIPrinterTableViewCell *)self setPrinterSelected:0];
 }
 
-- (void)printerAccessoryViewInfoButtonPressed:(id)a3
+- (void)printerAccessoryViewInfoButtonPressed:(id)pressed
 {
-  v4 = [(UIPrinterTableViewCell *)self delegate];
+  delegate = [(UIPrinterTableViewCell *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 printerInfoButtonTapped:self];
+    [delegate printerInfoButtonTapped:self];
   }
 }
 
 - (int)printerState
 {
-  v2 = [(UIPrinterTableViewCell *)self printerAccessoryView];
-  v3 = [v2 printerState];
+  printerAccessoryView = [(UIPrinterTableViewCell *)self printerAccessoryView];
+  printerState = [printerAccessoryView printerState];
 
-  return v3;
+  return printerState;
 }
 
-- (void)setPrinterState:(int)a3
+- (void)setPrinterState:(int)state
 {
-  v3 = *&a3;
-  v5 = [(UIPrinterTableViewCell *)self printerAccessoryView];
-  v6 = [v5 printerState];
+  v3 = *&state;
+  printerAccessoryView = [(UIPrinterTableViewCell *)self printerAccessoryView];
+  printerState = [printerAccessoryView printerState];
 
-  if (v6 != v3)
+  if (printerState != v3)
   {
-    v7 = [(UIPrinterTableViewCell *)self printerAccessoryView];
-    [v7 setPrinterState:v3];
+    printerAccessoryView2 = [(UIPrinterTableViewCell *)self printerAccessoryView];
+    [printerAccessoryView2 setPrinterState:v3];
 
     [(UIPrinterTableViewCell *)self setNeedsLayout];
   }
@@ -152,44 +152,44 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(UIPrinterTableViewCell *)self accessoryView];
-  [v3 sizeToFit];
+  accessoryView = [(UIPrinterTableViewCell *)self accessoryView];
+  [accessoryView sizeToFit];
 
   v4.receiver = self;
   v4.super_class = UIPrinterTableViewCell;
   [(UIPrinterTableViewCell *)&v4 layoutSubviews];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a4;
-  v6 = [(UIPrinterTableViewCell *)self contentView];
-  [v5 locationInView:v6];
+  touchCopy = touch;
+  contentView = [(UIPrinterTableViewCell *)self contentView];
+  [touchCopy locationInView:contentView];
   v8 = v7;
 
-  v9 = [(UIPrinterTableViewCell *)self contentView];
-  v10 = [(UIPrinterTableViewCell *)self printerAccessoryView];
-  v11 = [v10 infoButton];
-  [v11 frame];
+  contentView2 = [(UIPrinterTableViewCell *)self contentView];
+  printerAccessoryView = [(UIPrinterTableViewCell *)self printerAccessoryView];
+  infoButton = [printerAccessoryView infoButton];
+  [infoButton frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(UIPrinterTableViewCell *)self printerAccessoryView];
-  [v9 convertRect:v20 fromView:{v13, v15, v17, v19}];
+  printerAccessoryView2 = [(UIPrinterTableViewCell *)self printerAccessoryView];
+  [contentView2 convertRect:printerAccessoryView2 fromView:{v13, v15, v17, v19}];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
 
-  v29 = [MEMORY[0x277D75128] sharedApplication];
-  v30 = [v29 userInterfaceLayoutDirection];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
   v31 = v22;
   v32 = v24;
   v33 = v26;
   v34 = v28;
-  if (v30)
+  if (userInterfaceLayoutDirection)
   {
     return v8 <= CGRectGetMaxX(*&v31);
   }
@@ -202,13 +202,13 @@
 
 - (void)expandedAccessoryAreaTapped
 {
-  v3 = [(UIPrinterTableViewCell *)self expandedAccessoryTapRecognizer];
-  v4 = [v3 state];
+  expandedAccessoryTapRecognizer = [(UIPrinterTableViewCell *)self expandedAccessoryTapRecognizer];
+  state = [expandedAccessoryTapRecognizer state];
 
-  if (v4 == 3)
+  if (state == 3)
   {
-    v5 = [(UIPrinterTableViewCell *)self printerAccessoryView];
-    [(UIPrinterTableViewCell *)self printerAccessoryViewInfoButtonPressed:v5];
+    printerAccessoryView = [(UIPrinterTableViewCell *)self printerAccessoryView];
+    [(UIPrinterTableViewCell *)self printerAccessoryViewInfoButtonPressed:printerAccessoryView];
   }
 }
 

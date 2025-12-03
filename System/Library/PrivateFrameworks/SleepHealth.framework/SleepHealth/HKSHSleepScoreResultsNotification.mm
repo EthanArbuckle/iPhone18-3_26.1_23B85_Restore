@@ -1,6 +1,6 @@
 @interface HKSHSleepScoreResultsNotification
 - (HKSHSleepScoreResultsNotification)init;
-- (HKSHSleepScoreResultsNotification)initWithUserInfo:(id)a3;
+- (HKSHSleepScoreResultsNotification)initWithUserInfo:(id)info;
 - (NSDictionary)notificationUserInfo;
 @end
 
@@ -16,7 +16,7 @@
   return v3;
 }
 
-- (HKSHSleepScoreResultsNotification)initWithUserInfo:(id)a3
+- (HKSHSleepScoreResultsNotification)initWithUserInfo:(id)info
 {
   sub_269BE5A00();
   v3 = sub_269BF86A8();

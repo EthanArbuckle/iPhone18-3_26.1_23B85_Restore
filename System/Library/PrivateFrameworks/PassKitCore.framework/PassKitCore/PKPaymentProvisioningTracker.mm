@@ -1,23 +1,23 @@
 @interface PKPaymentProvisioningTracker
 - (BOOL)isCanceled;
-- (PKPaymentProvisioningTracker)initWithPaymentProvisioningController:(id)a3;
+- (PKPaymentProvisioningTracker)initWithPaymentProvisioningController:(id)controller;
 - (void)cancel;
 - (void)dealloc;
 @end
 
 @implementation PKPaymentProvisioningTracker
 
-- (PKPaymentProvisioningTracker)initWithPaymentProvisioningController:(id)a3
+- (PKPaymentProvisioningTracker)initWithPaymentProvisioningController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = PKPaymentProvisioningTracker;
   v5 = [(PKPaymentProvisioningTracker *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_controller, v4);
-    [v4 _noteProvisioningDidBegin];
+    objc_storeWeak(&v5->_controller, controllerCopy);
+    [controllerCopy _noteProvisioningDidBegin];
   }
 
   return v6;

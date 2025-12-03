@@ -3,12 +3,12 @@
 - (WLMailAccountMigrator)init;
 - (id)importDidEnd;
 - (id)importWillBegin;
-- (void)addWorkingTime:(unint64_t)a3;
+- (void)addWorkingTime:(unint64_t)time;
 - (void)enable;
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4;
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6;
-- (void)setEstimatedDataSize:(unint64_t)a3;
-- (void)setState:(id)a3;
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account;
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion;
+- (void)setEstimatedDataSize:(unint64_t)size;
+- (void)setState:(id)state;
 @end
 
 @implementation WLMailAccountMigrator
@@ -21,8 +21,8 @@
   v2 = [(WLMailAccountMigrator *)&v33 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CB8F48] defaultStore];
-    [(WLMailAccountMigrator *)v2 setAccountStore:v3];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    [(WLMailAccountMigrator *)v2 setAccountStore:defaultStore];
 
     accountStore = v2->_accountStore;
     if (accountStore)
@@ -79,8 +79,8 @@
                   objc_enumerationMutation(v14);
                 }
 
-                v19 = [*(*(&v25 + 1) + 8 * j) username];
-                [v13 addObject:v19];
+                username = [*(*(&v25 + 1) + 8 * j) username];
+                [v13 addObject:username];
               }
 
               v16 = [v14 countByEnumeratingWithState:&v25 objects:v34 count:16];
@@ -112,45 +112,45 @@
   [v4 setState:@"enabled"];
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setState:v4];
+  [WeakRetained setState:stateCopy];
 }
 
-- (void)setEstimatedDataSize:(unint64_t)a3
+- (void)setEstimatedDataSize:(unint64_t)size
 {
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setSize:a3];
+  [WeakRetained setSize:size];
 }
 
-- (void)addWorkingTime:(unint64_t)a3
+- (void)addWorkingTime:(unint64_t)time
 {
   WeakRetained = objc_loadWeakRetained(&self->_featurePayload);
-  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + a3}];
+  [WeakRetained setElapsedTime:{objc_msgSend(WeakRetained, "elapsedTime") + time}];
 }
 
-- (void)estimateItemSizeForSummary:(id)a3 account:(id)a4
+- (void)estimateItemSizeForSummary:(id)summary account:(id)account
 {
-  v4 = a3;
-  if (![v4 itemSize])
+  summaryCopy = summary;
+  if (![summaryCopy itemSize])
   {
-    [v4 setItemSize:5120];
+    [summaryCopy setItemSize:5120];
   }
 }
 
-- (void)importRecordData:(id)a3 summary:(id)a4 account:(id)a5 completion:(id)a6
+- (void)importRecordData:(id)data summary:(id)summary account:(id)account completion:(id)completion
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a6;
-  v31 = self;
+  dataCopy = data;
+  completionCopy = completion;
+  selfCopy = self;
   _WLLog();
   if (self->_accountStore && [(NSDictionary *)self->_accountTypes count])
   {
     v45 = 0;
-    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v8 options:0 error:&v45];
+    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v45];
     v11 = v45;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -176,7 +176,7 @@
           {
             v38 = v13;
             v34 = v12;
-            v35 = v8;
+            v35 = dataCopy;
             v21 = [objc_alloc(MEMORY[0x277CB8F30]) initWithAccountType:v15];
             [v21 setUsername:v14];
             [v21 setAccountDescription:v14];
@@ -185,8 +185,8 @@
             v41 = 0u;
             v42 = 0u;
             v33 = v15;
-            v22 = [v15 supportedDataclasses];
-            v23 = [v22 countByEnumeratingWithState:&v41 objects:v46 count:16];
+            supportedDataclasses = [v15 supportedDataclasses];
+            v23 = [supportedDataclasses countByEnumeratingWithState:&v41 objects:v46 count:16];
             if (v23)
             {
               v24 = v23;
@@ -197,7 +197,7 @@
                 {
                   if (*v42 != v25)
                   {
-                    objc_enumerationMutation(v22);
+                    objc_enumerationMutation(supportedDataclasses);
                   }
 
                   v27 = *(*(&v41 + 1) + 8 * i);
@@ -205,7 +205,7 @@
                   [v21 setEnabled:1 forDataclass:v27];
                 }
 
-                v24 = [v22 countByEnumeratingWithState:&v41 objects:v46 count:16];
+                v24 = [supportedDataclasses countByEnumeratingWithState:&v41 objects:v46 count:16];
               }
 
               while (v24);
@@ -223,7 +223,7 @@
             }
 
             v11 = v29;
-            v8 = v35;
+            dataCopy = v35;
             v15 = v33;
             v12 = v34;
             v13 = v38;
@@ -269,7 +269,7 @@
     v17 = MEMORY[0x277CCA9B8];
     v51 = *MEMORY[0x277CCA450];
     v52[0] = @"cannot continue to import an account due to an ACAccountStore error.";
-    v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:{1, v31}];
+    v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v52 forKeys:&v51 count:{1, selfCopy}];
     v11 = [v17 errorWithDomain:@"WLAccountErrorDomain" code:2 userInfo:v10];
     v16 = 0;
   }
@@ -277,9 +277,9 @@
   v32 = [v11 description];
   _WLLog();
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v16, v11);
+    completionCopy[2](completionCopy, v16, v11);
   }
 
   v30 = *MEMORY[0x277D85DE8];

@@ -1,17 +1,17 @@
 @interface ShelfGradientBackgroundDecorationItem
-- (_TtC9SeymourUI37ShelfGradientBackgroundDecorationItem)initWithCoder:(id)a3;
-- (_TtC9SeymourUI37ShelfGradientBackgroundDecorationItem)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI37ShelfGradientBackgroundDecorationItem)initWithCoder:(id)coder;
+- (_TtC9SeymourUI37ShelfGradientBackgroundDecorationItem)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ShelfGradientBackgroundDecorationItem
 
-- (_TtC9SeymourUI37ShelfGradientBackgroundDecorationItem)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI37ShelfGradientBackgroundDecorationItem)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = self + OBJC_IVAR____TtC9SeymourUI37ShelfGradientBackgroundDecorationItem_layout;
   *v8 = 0;
   v8[8] = 1;
@@ -21,13 +21,13 @@
   *(&self->super.super.super.super.isa + v9) = [objc_allocWithZone(MEMORY[0x277CD9EB0]) init];
   v12.receiver = self;
   v12.super_class = type metadata accessor for ShelfGradientBackgroundDecorationItem();
-  v10 = [(ShelfGradientBackgroundDecorationItem *)&v12 initWithFrame:x, y, width, height];
+  height = [(ShelfGradientBackgroundDecorationItem *)&v12 initWithFrame:x, y, width, height];
   sub_20B691540();
 
-  return v10;
+  return height;
 }
 
-- (_TtC9SeymourUI37ShelfGradientBackgroundDecorationItem)initWithCoder:(id)a3
+- (_TtC9SeymourUI37ShelfGradientBackgroundDecorationItem)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC9SeymourUI37ShelfGradientBackgroundDecorationItem_layout;
   *v3 = 0;

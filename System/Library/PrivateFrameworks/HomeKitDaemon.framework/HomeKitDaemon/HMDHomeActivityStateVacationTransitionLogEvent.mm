@@ -1,12 +1,12 @@
 @interface HMDHomeActivityStateVacationTransitionLogEvent
-- (HMDHomeActivityStateVacationTransitionLogEvent)initWithReason:(unint64_t)a3;
+- (HMDHomeActivityStateVacationTransitionLogEvent)initWithReason:(unint64_t)reason;
 @end
 
 @implementation HMDHomeActivityStateVacationTransitionLogEvent
 
-- (HMDHomeActivityStateVacationTransitionLogEvent)initWithReason:(unint64_t)a3
+- (HMDHomeActivityStateVacationTransitionLogEvent)initWithReason:(unint64_t)reason
 {
-  if (a3 == 1)
+  if (reason == 1)
   {
     v5 = _HMFPreconditionFailure();
     return HMDHomeActivityVacationStateChangeReasonAsString(v5);
@@ -19,7 +19,7 @@
     result = [(HMMLogEvent *)&v6 init];
     if (result)
     {
-      result->_reason = a3;
+      result->_reason = reason;
     }
   }
 

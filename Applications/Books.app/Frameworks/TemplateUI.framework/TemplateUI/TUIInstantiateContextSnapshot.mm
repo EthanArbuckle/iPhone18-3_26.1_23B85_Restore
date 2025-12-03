@@ -1,17 +1,17 @@
 @interface TUIInstantiateContextSnapshot
-- (TUIInstantiateContextSnapshot)initWithContextSnapshot:(shared_ptr<const TUI::Evaluation::Context::Snapshot>)a3;
+- (TUIInstantiateContextSnapshot)initWithContextSnapshot:(shared_ptr<const TUI::Evaluation::Context::Snapshot>)snapshot;
 - (id).cxx_construct;
 - (shared_ptr<const)contextSnapshot;
 @end
 
 @implementation TUIInstantiateContextSnapshot
 
-- (TUIInstantiateContextSnapshot)initWithContextSnapshot:(shared_ptr<const TUI::Evaluation::Context::Snapshot>)a3
+- (TUIInstantiateContextSnapshot)initWithContextSnapshot:(shared_ptr<const TUI::Evaluation::Context::Snapshot>)snapshot
 {
-  ptr = a3.__ptr_;
+  ptr = snapshot.__ptr_;
   v10.receiver = self;
   v10.super_class = TUIInstantiateContextSnapshot;
-  v4 = [(TUIInstantiateContextSnapshot *)&v10 init:a3.__ptr_];
+  v4 = [(TUIInstantiateContextSnapshot *)&v10 init:snapshot.__ptr_];
   v5 = v4;
   if (v4)
   {

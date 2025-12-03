@@ -1,5 +1,5 @@
 @interface HighlightItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axPillView;
 - (id)accessibilityLabel;
@@ -8,23 +8,23 @@
 
 @implementation HighlightItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SLHighlightPillView"];
-  [v3 validateClass:@"ShelfKitCollectionViews.ArtworkView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SLHighlightPillView"];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.ArtworkView"];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v8[0] = MEMORY[0x29EDCA5F8];
   v8[1] = 3221225472;
   v8[2] = __52__HighlightItemCellAccessibility_accessibilityLabel__block_invoke;
   v8[3] = &unk_29F2EA0E0;
   v8[4] = self;
-  v9 = v3;
-  v4 = v3;
+  v9 = array;
+  v4 = array;
   v5 = [(HighlightItemCellAccessibility *)self _accessibilityFindDescendant:v8];
   v6 = MEMORY[0x29C2E7870](v4);
 
@@ -56,36 +56,36 @@ uint64_t __52__HighlightItemCellAccessibility_accessibilityLabel__block_invoke(u
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v7.receiver = self;
   v7.super_class = HighlightItemCellAccessibility;
-  v4 = [(HighlightItemCellAccessibility *)&v7 _accessibilitySupplementaryFooterViews];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilitySupplementaryFooterViews = [(HighlightItemCellAccessibility *)&v7 _accessibilitySupplementaryFooterViews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySupplementaryFooterViews];
 
-  v5 = [(HighlightItemCellAccessibility *)self _axPillView];
-  if ([v5 _accessibilityViewIsVisible])
+  _axPillView = [(HighlightItemCellAccessibility *)self _axPillView];
+  if ([_axPillView _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v5];
+    [array axSafelyAddObject:_axPillView];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)automationElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v7.receiver = self;
   v7.super_class = HighlightItemCellAccessibility;
-  v4 = [(HighlightItemCellAccessibility *)&v7 automationElements];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  automationElements = [(HighlightItemCellAccessibility *)&v7 automationElements];
+  [array axSafelyAddObjectsFromArray:automationElements];
 
-  v5 = [(HighlightItemCellAccessibility *)self _axPillView];
-  if ([v5 _accessibilityViewIsVisible])
+  _axPillView = [(HighlightItemCellAccessibility *)self _axPillView];
+  if ([_axPillView _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v5];
+    [array axSafelyAddObject:_axPillView];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_axPillView

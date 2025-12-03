@@ -1,32 +1,32 @@
 @interface HKSHQuickScheduleManagementViewControllerDelegateWrapper
 - (HKSHQuickScheduleManagementViewController)viewController;
 - (HKSHQuickScheduleManagementViewControllerDelegate)wrappedDelegate;
-- (void)quickScheduleManagementViewController:(id)a3 didSave:(id)a4;
-- (void)quickScheduleManagementViewController:(id)a3 shouldPresent:(id)a4;
-- (void)quickScheduleManagementViewControllerDidCancel:(id)a3;
-- (void)quickScheduleManagementViewControllerWillSave:(id)a3;
+- (void)quickScheduleManagementViewController:(id)controller didSave:(id)save;
+- (void)quickScheduleManagementViewController:(id)controller shouldPresent:(id)present;
+- (void)quickScheduleManagementViewControllerDidCancel:(id)cancel;
+- (void)quickScheduleManagementViewControllerWillSave:(id)save;
 @end
 
 @implementation HKSHQuickScheduleManagementViewControllerDelegateWrapper
 
-- (void)quickScheduleManagementViewController:(id)a3 didSave:(id)a4
+- (void)quickScheduleManagementViewController:(id)controller didSave:(id)save
 {
-  v5 = a4;
+  saveCopy = save;
   WeakRetained = objc_loadWeakRetained(&self->_wrappedDelegate);
   v6 = objc_loadWeakRetained(&self->_viewController);
-  [WeakRetained quickScheduleManagementViewController:v6 didSave:v5];
+  [WeakRetained quickScheduleManagementViewController:v6 didSave:saveCopy];
 }
 
-- (void)quickScheduleManagementViewControllerDidCancel:(id)a3
+- (void)quickScheduleManagementViewControllerDidCancel:(id)cancel
 {
   WeakRetained = objc_loadWeakRetained(&self->_wrappedDelegate);
   v4 = objc_loadWeakRetained(&self->_viewController);
   [WeakRetained quickScheduleManagementViewControllerDidCancel:v4];
 }
 
-- (void)quickScheduleManagementViewController:(id)a3 shouldPresent:(id)a4
+- (void)quickScheduleManagementViewController:(id)controller shouldPresent:(id)present
 {
-  v9 = a4;
+  presentCopy = present;
   WeakRetained = objc_loadWeakRetained(&self->_wrappedDelegate);
   v6 = objc_opt_respondsToSelector();
 
@@ -34,11 +34,11 @@
   {
     v7 = objc_loadWeakRetained(&self->_wrappedDelegate);
     v8 = objc_loadWeakRetained(&self->_viewController);
-    [v7 quickScheduleManagementViewController:v8 shouldPresent:v9];
+    [v7 quickScheduleManagementViewController:v8 shouldPresent:presentCopy];
   }
 }
 
-- (void)quickScheduleManagementViewControllerWillSave:(id)a3
+- (void)quickScheduleManagementViewControllerWillSave:(id)save
 {
   WeakRetained = objc_loadWeakRetained(&self->_wrappedDelegate);
   v5 = objc_opt_respondsToSelector();

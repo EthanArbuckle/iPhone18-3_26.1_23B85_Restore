@@ -1,30 +1,30 @@
 @interface _UIDocumentCarouselView
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (_UIDocumentCarouselView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (_UIDocumentCarouselView)initWithFrame:(CGRect)frame;
 - (void)_cleanUpAfterAnimation;
-- (void)_handlePanNavigation:(id)a3;
-- (void)_handleTapNavigation:(id)a3;
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3;
+- (void)_handlePanNavigation:(id)navigation;
+- (void)_handleTapNavigation:(id)navigation;
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins;
 - (void)_performLayout;
-- (void)_updatePagingFraction:(double)a3 withTracking:;
+- (void)_updatePagingFraction:(double)fraction withTracking:;
 - (void)dealloc;
-- (void)scrollToItemAtIndex:(int64_t)a3 animated:(BOOL)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setItems:(id)a3;
-- (void)setLockedFocusEnvironmentForAnimation:(_BYTE *)a1;
-- (void)setPagingEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)willMoveToWindow:(id)a3;
+- (void)scrollToItemAtIndex:(int64_t)index animated:(BOOL)animated;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setItems:(id)items;
+- (void)setLockedFocusEnvironmentForAnimation:(_BYTE *)animation;
+- (void)setPagingEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIDocumentCarouselView
 
-- (_UIDocumentCarouselView)initWithFrame:(CGRect)a3
+- (_UIDocumentCarouselView)initWithFrame:(CGRect)frame
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = _UIDocumentCarouselView;
-  v3 = [(UIView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,8 +36,8 @@
     [(UIView *)v4 setPreservesSuperviewLayoutMargins:1];
     if (v4->_panGestureRecognizer || v4->_tapGestureRecognizer)
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:sel__configureGestureRecognizers object:v4 file:@"_UIDocumentCarouselView.m" lineNumber:588 description:@"UIKit internal inconsistency: gesture recognizers have already been configured"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__configureGestureRecognizers object:v4 file:@"_UIDocumentCarouselView.m" lineNumber:588 description:@"UIKit internal inconsistency: gesture recognizers have already been configured"];
     }
 
     v7 = [[UIPanGestureRecognizer alloc] initWithTarget:v4 action:sel__handlePanNavigation_];
@@ -86,16 +86,16 @@
 - (void)_performLayout
 {
   v216 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  [*(a1 + 416) presentationValue];
+  [*(self + 416) presentationValue];
   v3 = v2;
-  [*(a1 + 424) presentationValue];
+  [*(self + 424) presentationValue];
   v5 = v4;
-  v6 = [*(a1 + 496) count];
+  v6 = [*(self + 496) count];
   v7 = v6;
   if (v6 >= 5)
   {
@@ -107,13 +107,13 @@
     v8 = v6;
   }
 
-  _UIDocumentCarouselViewItemWidth(a1);
+  _UIDocumentCarouselViewItemWidth(self);
   v10 = v9;
-  _UIDocumentCarouselViewRevealDimension(a1);
+  _UIDocumentCarouselViewRevealDimension(self);
   v136 = v11;
   if (!v7 || v10 <= 0.0)
   {
-    v67 = *(a1 + 408);
+    v67 = *(self + 408);
 
     [v67 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_309];
     return;
@@ -129,14 +129,14 @@
 
   v15 = (v12 % v7 + v7) % v7;
   v16 = (v14 % v7 + v7) % v7;
-  v17 = *(a1 + 448);
-  [a1 bounds];
+  v17 = *(self + 448);
+  [self bounds];
   v158 = v19;
   v159 = v18;
   v156 = v21;
   v157 = v20;
-  v170 = a1;
-  [a1 directionalLayoutMargins];
+  selfCopy = self;
+  [self directionalLayoutMargins];
   v23 = v22;
   v147 = v25;
   v149 = v24;
@@ -211,17 +211,17 @@
   {
     v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{v38, v133}];
     v44 = [v166 objectForKeyedSubscript:v43];
-    v45 = [v44 unsignedIntegerValue];
+    unsignedIntegerValue = [v44 unsignedIntegerValue];
 
     v46 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v38];
     v47 = [v33 objectForKeyedSubscript:v46];
-    v48 = [v47 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v47 unsignedIntegerValue];
 
-    v49 = *(v170 + 408);
+    v49 = *(selfCopy + 408);
     v50 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v38];
     p_a = [v49 objectForKeyedSubscript:v50];
 
-    if (!(v45 | v48))
+    if (!(unsignedIntegerValue | unsignedIntegerValue2))
     {
       [p_a _setHiddenForReuse:1];
       goto LABEL_56;
@@ -231,7 +231,7 @@
     v53 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v38];
     [v163 setObject:v52 forKeyedSubscript:v53];
 
-    if (v45 == 3)
+    if (unsignedIntegerValue == 3)
     {
       v54 = v52;
 
@@ -244,20 +244,20 @@
 
         if (v164)
         {
-          *(v170 + 456) = v38;
-          *(v170 + 448) = v39;
+          *(selfCopy + 456) = v38;
+          *(selfCopy + 448) = v39;
         }
       }
 
-      if (v38 == *(v170 + 456))
+      if (v38 == *(selfCopy + 456))
       {
-        v137 = (v48 - 1) < 2;
+        v137 = (unsignedIntegerValue2 - 1) < 2;
       }
 
       v134 = v54;
     }
 
-    if (v48 == 3)
+    if (unsignedIntegerValue2 == 3)
     {
       v55 = v52;
 
@@ -270,20 +270,20 @@
 
         if (v164)
         {
-          *(v170 + 456) = v38;
-          *(v170 + 448) = v39;
+          *(selfCopy + 456) = v38;
+          *(selfCopy + 448) = v39;
         }
       }
 
-      if (v38 == *(v170 + 456))
+      if (v38 == *(selfCopy + 456))
       {
-        v137 = (v45 - 1) < 2;
+        v137 = (unsignedIntegerValue - 1) < 2;
       }
 
       v133 = v55;
     }
 
-    v56 = [*(v170 + 496) objectAtIndexedSubscript:{v38, v133}];
+    v56 = [*(selfCopy + 496) objectAtIndexedSubscript:{v38, v133}];
     if (p_a)
     {
       [(_UIDocumentCarouselViewItemContainerView *)p_a setContentConfiguration:v56];
@@ -310,11 +310,11 @@
         p_a = 0;
       }
 
-      v59 = *(v170 + 408);
+      v59 = *(selfCopy + 408);
       v60 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v38];
       [v59 setObject:p_a forKeyedSubscript:v60];
 
-      [v170 addSubview:p_a];
+      [selfCopy addSubview:p_a];
       if (!p_a)
       {
         v62 = 0.0;
@@ -372,7 +372,7 @@ LABEL_56:
   v208 = v168;
   v209 = v147;
   v210 = sel__performLayout;
-  v200 = v170;
+  v200 = selfCopy;
   v193[0] = MEMORY[0x1E69E9820];
   v193[1] = 3221225472;
   v194 = __41___UIDocumentCarouselView__performLayout__block_invoke_3;
@@ -383,7 +383,7 @@ LABEL_56:
   v189 = __41___UIDocumentCarouselView__performLayout__block_invoke_4;
   v190 = &unk_1E710BEC0;
   v192 = sel__performLayout;
-  v191 = v170;
+  v191 = selfCopy;
   v176[0] = MEMORY[0x1E69E9820];
   v176[1] = 3221225472;
   v177 = __41___UIDocumentCarouselView__performLayout__block_invoke_5;
@@ -396,7 +396,7 @@ LABEL_56:
   v185 = v149;
   v186 = v168;
   v187 = v147;
-  v179 = v170;
+  v179 = selfCopy;
   v154 = 0.0;
   v155 = 0;
   v152 = 0.0;
@@ -469,12 +469,12 @@ LABEL_56:
 
         v78 = *(*(&v172 + 1) + 8 * v77);
         v79 = [v163 objectForKeyedSubscript:v78];
-        v80 = [*(v170 + 408) objectForKeyedSubscript:v78];
+        v80 = [*(selfCopy + 408) objectForKeyedSubscript:v78];
         v81 = [v69 objectForKeyedSubscript:v78];
-        v82 = [v81 unsignedIntegerValue];
+        unsignedIntegerValue3 = [v81 unsignedIntegerValue];
 
         v83 = [v167 objectForKeyedSubscript:v78];
-        v84 = [v83 unsignedIntegerValue];
+        unsignedIntegerValue4 = [v83 unsignedIntegerValue];
 
         v85 = 0.0;
         v86.n128_u64[0] = 0;
@@ -486,7 +486,7 @@ LABEL_56:
         }
 
         v88 = v5;
-        v89 = (v198)(v197, v82, v87, v86, MidX, v140, v152, v154);
+        v89 = (v198)(v197, unsignedIntegerValue3, v87, v86, MidX, v140, v152, v154);
         v91 = v90;
         v92.n128_u64[0] = 0;
         if (v79)
@@ -495,7 +495,7 @@ LABEL_56:
           v85 = *(v79 + 56);
         }
 
-        v95 = (v198)(v197, v84, v92, v85, v148, v146, v68, *&v155);
+        v95 = (v198)(v197, unsignedIntegerValue4, v92, v85, v148, v146, v68, *&v155);
         v96 = v94.n128_f64[0];
         if (v79)
         {
@@ -512,7 +512,7 @@ LABEL_56:
         v97 = (v198)(v197, 3, v93, v94, v71, v169, v161, v160);
         v99 = v98;
         v100 = v97 + v88 * (v89 + v36 * (v95 - v89) - v97);
-        v101 = *(v170 + 456);
+        v101 = *(selfCopy + 456);
         if (v101 == [v78 unsignedIntegerValue])
         {
           v69 = v166;
@@ -591,8 +591,8 @@ LABEL_56:
           *(v79 + 128) = *&v171.tx;
         }
 
-        v111 = v194(v193, v82);
-        v194(v193, v84);
+        v111 = v194(v193, unsignedIntegerValue3);
+        v194(v193, unsignedIntegerValue4);
         v68 = v142;
         v36 = v143;
         if (v79)
@@ -600,8 +600,8 @@ LABEL_56:
           *(v79 + 24) = v111 + v143 * (v112 - v111);
         }
 
-        v113 = v189(v188, v82);
-        v189(v188, v84);
+        v113 = v189(v188, unsignedIntegerValue3);
+        v189(v188, unsignedIntegerValue4);
         v5 = v144;
         if (v79)
         {
@@ -656,15 +656,15 @@ LABEL_56:
           v122 = 0.0;
         }
 
-        v123 = [v80 layer];
+        layer = [v80 layer];
         *&v124 = v122;
-        [v123 setShadowOpacity:v124];
+        [layer setShadowOpacity:v124];
 
         if (v79)
         {
           v125 = *(v79 + 16);
-          v126 = [v80 layer];
-          [v126 setZPosition:v125];
+          layer2 = [v80 layer];
+          [layer2 setZPosition:v125];
 
           [v80 setUserInteractionEnabled:*(v79 + 8)];
           v127 = *(v79 + 64);
@@ -675,9 +675,9 @@ LABEL_56:
 
         else
         {
-          v131 = [v80 layer];
+          layer3 = [v80 layer];
           v128 = 0.0;
-          [v131 setZPosition:0.0];
+          [layer3 setZPosition:0.0];
 
           [v80 setUserInteractionEnabled:0];
           v129 = 0.0;
@@ -700,7 +700,7 @@ LABEL_108:
   }
 }
 
-- (void)_updatePagingFraction:(double)a3 withTracking:
+- (void)_updatePagingFraction:(double)fraction withTracking:
 {
   if (val)
   {
@@ -718,7 +718,7 @@ LABEL_108:
     v9[2] = __62___UIDocumentCarouselView__updatePagingFraction_withTracking___block_invoke;
     v9[3] = &unk_1E70F32F0;
     v9[4] = val;
-    *&v9[5] = a3;
+    *&v9[5] = fraction;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __62___UIDocumentCarouselView__updatePagingFraction_withTracking___block_invoke_2;
@@ -732,55 +732,55 @@ LABEL_108:
 
 - (void)_cleanUpAfterAnimation
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 432);
+    v2 = *(self + 432);
     if (!v2)
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:sel__cleanUpAfterAnimation object:a1 file:@"_UIDocumentCarouselView.m" lineNumber:531 description:@"UIKit internal inconsistency: unbalanced document animation"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__cleanUpAfterAnimation object:self file:@"_UIDocumentCarouselView.m" lineNumber:531 description:@"UIKit internal inconsistency: unbalanced document animation"];
 
-      v2 = *(a1 + 432);
+      v2 = *(self + 432);
     }
 
     v3 = v2 - 1;
-    *(a1 + 432) = v3;
+    *(self + 432) = v3;
     if (!v3)
     {
 
-      [(_UIDocumentCarouselView *)a1 setLockedFocusEnvironmentForAnimation:?];
+      [(_UIDocumentCarouselView *)self setLockedFocusEnvironmentForAnimation:?];
     }
   }
 }
 
-- (void)setLockedFocusEnvironmentForAnimation:(_BYTE *)a1
+- (void)setLockedFocusEnvironmentForAnimation:(_BYTE *)animation
 {
-  if (a1 && a1[488] != a2)
+  if (animation && animation[488] != a2)
   {
-    a1[488] = a2;
-    v4 = [a1 _focusSystem];
-    v5 = v4;
+    animation[488] = a2;
+    _focusSystem = [animation _focusSystem];
+    v5 = _focusSystem;
     if (a2)
     {
-      [v4 _lockEnvironment:a1];
+      [_focusSystem _lockEnvironment:animation];
     }
 
     else
     {
-      [v4 _unlockEnvironment:a1];
+      [_focusSystem _unlockEnvironment:animation];
     }
   }
 }
 
-- (void)scrollToItemAtIndex:(int64_t)a3 animated:(BOOL)a4
+- (void)scrollToItemAtIndex:(int64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v8 = [(NSArray *)self->_items count];
   v9 = v8;
-  if (a3 < 0 || v8 <= a3)
+  if (index < 0 || v8 <= index)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIDocumentCarouselView.m" lineNumber:550 description:{@"Attempted to scroll to an invalid index: %ld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDocumentCarouselView.m" lineNumber:550 description:{@"Attempted to scroll to an invalid index: %ld", index}];
   }
 
   v10 = v9 + -1.0;
@@ -789,8 +789,8 @@ LABEL_108:
     v10 = 2.0;
   }
 
-  v11 = a3 - v10;
-  if (v4)
+  v11 = index - v10;
+  if (animatedCopy)
   {
 
     [(_UIDocumentCarouselView *)self _updatePagingFraction:v11 withTracking:?];
@@ -804,12 +804,12 @@ LABEL_108:
   }
 }
 
-- (void)setPagingEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)setPagingEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  if (self->_pagingEnabled != a3)
+  if (self->_pagingEnabled != enabled)
   {
-    self->_pagingEnabled = a3;
-    if (a3)
+    self->_pagingEnabled = enabled;
+    if (enabled)
     {
       v5 = 1.0;
     }
@@ -819,7 +819,7 @@ LABEL_108:
       v5 = 0.0;
     }
 
-    if (a4)
+    if (animated)
     {
       animationCount = self->_animationCount;
       if (!animationCount)
@@ -855,20 +855,20 @@ LABEL_108:
   }
 }
 
-- (void)_handlePanNavigation:(id)a3
+- (void)_handlePanNavigation:(id)navigation
 {
-  if (self->_panGestureRecognizer != a3)
+  if (self->_panGestureRecognizer != navigation)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"_UIDocumentCarouselView.m" lineNumber:606 description:{@"Invalid parameter not satisfying: %@", @"panGestureRecognizer == _panGestureRecognizer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDocumentCarouselView.m" lineNumber:606 description:{@"Invalid parameter not satisfying: %@", @"panGestureRecognizer == _panGestureRecognizer"}];
   }
 
-  v5 = [a3 state];
-  if ((v5 - 3) < 2)
+  state = [navigation state];
+  if ((state - 3) < 2)
   {
-    [a3 translationInView:self];
+    [navigation translationInView:self];
     v9 = v8;
-    [a3 velocityInView:self];
+    [navigation velocityInView:self];
     v11 = v10;
     v12 = -v10;
     if (v11 >= 0.0)
@@ -931,17 +931,17 @@ LABEL_108:
     [(_UIDocumentCarouselView *)self _cleanUpAfterAnimation];
   }
 
-  else if (v5 == 2)
+  else if (state == 2)
   {
-    v18 = [(UIView *)self window];
-    v19 = [v18 screen];
-    [v19 bounds];
+    window = [(UIView *)self window];
+    screen = [window screen];
+    [screen bounds];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
 
-    [a3 translationInView:self];
+    [navigation translationInView:self];
     v29 = v28;
     v41.origin.x = v21;
     v41.origin.y = v23;
@@ -965,7 +965,7 @@ LABEL_108:
     [(_UIDocumentCarouselView *)self _updatePagingFraction:v33 withTracking:?];
   }
 
-  else if (v5 == 1)
+  else if (state == 1)
   {
     [(UIViewFloatAnimatableProperty *)self->_pagingFractionAnimatableProperty value];
     self->_pagingFractionPanStart = v6;
@@ -980,17 +980,17 @@ LABEL_108:
   }
 }
 
-- (void)_handleTapNavigation:(id)a3
+- (void)_handleTapNavigation:(id)navigation
 {
-  if (self->_tapGestureRecognizer != a3)
+  if (self->_tapGestureRecognizer != navigation)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIDocumentCarouselView.m" lineNumber:650 description:{@"Invalid parameter not satisfying: %@", @"tapGestureRecognizer == _tapGestureRecognizer"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIDocumentCarouselView.m" lineNumber:650 description:{@"Invalid parameter not satisfying: %@", @"tapGestureRecognizer == _tapGestureRecognizer"}];
   }
 
-  if ([a3 state] == 3)
+  if ([navigation state] == 3)
   {
-    [a3 locationInView:self];
+    [navigation locationInView:self];
     v6 = v5;
     [(UIView *)self bounds];
     MidX = CGRectGetMidX(v14);
@@ -1007,12 +1007,12 @@ LABEL_108:
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v5 = [(NSArray *)self->_items count]>= 2 && [(_UIDocumentCarouselView *)self isPagingEnabled];
-  if (self->_panGestureRecognizer != a3)
+  isPagingEnabled = [(NSArray *)self->_items count]>= 2 && [(_UIDocumentCarouselView *)self isPagingEnabled];
+  if (self->_panGestureRecognizer != begin)
   {
-    if (self->_tapGestureRecognizer == a3)
+    if (self->_tapGestureRecognizer == begin)
     {
       containerViews = self->_containerViews;
       v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_centerItemIndex];
@@ -1020,7 +1020,7 @@ LABEL_108:
 
       if (v8)
       {
-        v9 = v5;
+        v9 = isPagingEnabled;
       }
 
       else
@@ -1030,7 +1030,7 @@ LABEL_108:
 
       if (v9)
       {
-        [a3 locationInView:self];
+        [begin locationInView:self];
         v11 = v10;
         [(UIView *)self bounds];
         v12 = CGRectGetMidX(v15) - v11;
@@ -1045,33 +1045,33 @@ LABEL_108:
         }
 
         [v8 frame];
-        LOBYTE(v5) = v13 > CGRectGetWidth(v16) * 0.5;
+        LOBYTE(isPagingEnabled) = v13 > CGRectGetWidth(v16) * 0.5;
       }
 
       else
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(isPagingEnabled) = 0;
       }
     }
 
     else
     {
-      LOBYTE(v5) = 1;
+      LOBYTE(isPagingEnabled) = 1;
     }
   }
 
-  return v5;
+  return isPagingEnabled;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
   if (([(NSArray *)self->_items isEqual:?]& 1) == 0)
   {
-    v5 = [a3 copy];
+    v5 = [items copy];
     items = self->_items;
     self->_items = v5;
 
-    if ([a3 count])
+    if ([items count])
     {
 
       [(_UIDocumentCarouselView *)self scrollToItemAtIndex:0 animated:0];
@@ -1085,12 +1085,12 @@ LABEL_108:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(UIView *)self frame];
   v9 = v8;
   v11 = v10;
@@ -1119,12 +1119,12 @@ LABEL_108:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(UIView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -1153,11 +1153,11 @@ LABEL_108:
   }
 }
 
-- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)a3
+- (void)_layoutMarginsDidChangeFromOldMargins:(UIEdgeInsets)margins
 {
   v4.receiver = self;
   v4.super_class = _UIDocumentCarouselView;
-  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:a3.top, a3.left, a3.bottom, a3.right];
+  [(UIView *)&v4 _layoutMarginsDidChangeFromOldMargins:margins.top, margins.left, margins.bottom, margins.right];
   if (self)
   {
     [(NSMutableDictionary *)self->_containerViews enumerateKeysAndObjectsUsingBlock:&__block_literal_global_15_7];
@@ -1166,12 +1166,12 @@ LABEL_108:
   [(_UIDocumentCarouselView *)self _performLayout];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v5.receiver = self;
   v5.super_class = _UIDocumentCarouselView;
   [(UIView *)&v5 willMoveToWindow:?];
-  if (!a3)
+  if (!window)
   {
     [(_UIDocumentCarouselView *)self setLockedFocusEnvironmentForAnimation:?];
   }

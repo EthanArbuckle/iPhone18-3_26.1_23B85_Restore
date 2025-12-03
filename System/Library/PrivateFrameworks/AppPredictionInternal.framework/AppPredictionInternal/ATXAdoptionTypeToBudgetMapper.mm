@@ -1,30 +1,30 @@
 @interface ATXAdoptionTypeToBudgetMapper
-- (ATXAdoptionTypeToBudgetMapper)initWithAbuseControlConfig:(id)a3;
-- (int64_t)durationLimitForAdoptionType:(unint64_t)a3;
-- (int64_t)hardQuotaForAdoptionType:(unint64_t)a3;
-- (int64_t)softQuotaForAdoptionType:(unint64_t)a3;
+- (ATXAdoptionTypeToBudgetMapper)initWithAbuseControlConfig:(id)config;
+- (int64_t)durationLimitForAdoptionType:(unint64_t)type;
+- (int64_t)hardQuotaForAdoptionType:(unint64_t)type;
+- (int64_t)softQuotaForAdoptionType:(unint64_t)type;
 @end
 
 @implementation ATXAdoptionTypeToBudgetMapper
 
-- (ATXAdoptionTypeToBudgetMapper)initWithAbuseControlConfig:(id)a3
+- (ATXAdoptionTypeToBudgetMapper)initWithAbuseControlConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = ATXAdoptionTypeToBudgetMapper;
   v6 = [(ATXAdoptionTypeToBudgetMapper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_abuseControlConfig, a3);
+    objc_storeStrong(&v6->_abuseControlConfig, config);
   }
 
   return v7;
 }
 
-- (int64_t)softQuotaForAdoptionType:(unint64_t)a3
+- (int64_t)softQuotaForAdoptionType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
       return [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig defaultSoftRotationQuotaForDiverseSchemas];
@@ -37,9 +37,9 @@
   return 0;
 }
 
-- (int64_t)hardQuotaForAdoptionType:(unint64_t)a3
+- (int64_t)hardQuotaForAdoptionType:(unint64_t)type
 {
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
       return [(ATXTimelineAbuseControlConfig *)self->_abuseControlConfig defaultHardRotationQuotaForDiverseSchemas];
@@ -52,10 +52,10 @@
   return 0;
 }
 
-- (int64_t)durationLimitForAdoptionType:(unint64_t)a3
+- (int64_t)durationLimitForAdoptionType:(unint64_t)type
 {
   abuseControlConfig = self->_abuseControlConfig;
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
       return [(ATXTimelineAbuseControlConfig *)abuseControlConfig defaultDurationLimitForDiverseSchemas];

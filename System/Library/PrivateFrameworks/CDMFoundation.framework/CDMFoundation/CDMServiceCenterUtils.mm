@@ -1,9 +1,9 @@
 @interface CDMServiceCenterUtils
 + (BOOL)isHostedInDaemon;
-+ (BOOL)isServiceCenterEnabled:(id)a3;
-+ (BOOL)needEmbeddingConfigsFor:(id)a3;
-+ (id)getAvailableServiceGraphs:(id)a3;
-+ (id)tryInitDAGServices:(id)a3;
++ (BOOL)isServiceCenterEnabled:(id)enabled;
++ (BOOL)needEmbeddingConfigsFor:(id)for;
++ (id)getAvailableServiceGraphs:(id)graphs;
++ (id)tryInitDAGServices:(id)services;
 @end
 
 @implementation CDMServiceCenterUtils
@@ -18,20 +18,20 @@
   return isHostedInDaemon_isHostedInDaemon;
 }
 
-+ (id)getAvailableServiceGraphs:(id)a3
++ (id)getAvailableServiceGraphs:(id)graphs
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  graphsCopy = graphs;
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
-  v5 = [v3 availableServiceGraphs];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  availableServiceGraphs = [graphsCopy availableServiceGraphs];
+  v6 = [v4 initWithCapacity:{objc_msgSend(availableServiceGraphs, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v3 availableServiceGraphs];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+  availableServiceGraphs2 = [graphsCopy availableServiceGraphs];
+  v8 = [availableServiceGraphs2 countByEnumeratingWithState:&v16 objects:v24 count:16];
   if (v8)
   {
     v9 = v8;
@@ -42,7 +42,7 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(availableServiceGraphs2);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
@@ -65,7 +65,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+      v9 = [availableServiceGraphs2 countByEnumeratingWithState:&v16 objects:v24 count:16];
     }
 
     while (v9);
@@ -97,15 +97,15 @@ void __41__CDMServiceCenterUtils_isHostedInDaemon__block_invoke()
   v3 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)needEmbeddingConfigsFor:(id)a3
++ (BOOL)needEmbeddingConfigsFor:(id)for
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  forCopy = for;
+  v4 = [forCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = *v11;
@@ -115,7 +115,7 @@ void __41__CDMServiceCenterUtils_isHostedInDaemon__block_invoke()
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(forCopy);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -127,7 +127,7 @@ void __41__CDMServiceCenterUtils_isHostedInDaemon__block_invoke()
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [forCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -143,17 +143,17 @@ LABEL_11:
   return v4;
 }
 
-+ (id)tryInitDAGServices:(id)a3
++ (id)tryInitDAGServices:(id)services
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  servicesCopy = services;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [v3 availableServiceGraphs];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  availableServiceGraphs = [servicesCopy availableServiceGraphs];
+  v6 = [availableServiceGraphs countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
@@ -164,32 +164,32 @@ LABEL_11:
       {
         if (*v30 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(availableServiceGraphs);
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = NSClassFromString(v10);
         if (v11)
         {
-          v12 = [(objc_class *)v11 requiredDAGServices];
-          [v4 unionSet:v12];
+          requiredDAGServices = [(objc_class *)v11 requiredDAGServices];
+          [v4 unionSet:requiredDAGServices];
         }
 
         else
         {
-          v12 = CDMOSLoggerForCategory(3);
-          if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+          requiredDAGServices = CDMOSLoggerForCategory(3);
+          if (os_log_type_enabled(requiredDAGServices, OS_LOG_TYPE_INFO))
           {
             *buf = 136315394;
             v35 = "+[CDMServiceCenterUtils tryInitDAGServices:]";
             v36 = 2112;
             v37 = v10;
-            _os_log_impl(&dword_1DC287000, v12, OS_LOG_TYPE_INFO, "%s Class not found: %@", buf, 0x16u);
+            _os_log_impl(&dword_1DC287000, requiredDAGServices, OS_LOG_TYPE_INFO, "%s Class not found: %@", buf, 0x16u);
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v7 = [availableServiceGraphs countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v7);
@@ -219,7 +219,7 @@ LABEL_11:
         v19 = NSClassFromString(v18);
         if (v19)
         {
-          v20 = [[v19 alloc] initWithConfig:v3];
+          v20 = [[v19 alloc] initWithConfig:servicesCopy];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -265,7 +265,7 @@ LABEL_11:
   return v24;
 }
 
-+ (BOOL)isServiceCenterEnabled:(id)a3
++ (BOOL)isServiceCenterEnabled:(id)enabled
 {
   v10 = *MEMORY[0x1E69E9840];
   v3 = +[CDMFeatureFlags isSiriMiniEnabled];

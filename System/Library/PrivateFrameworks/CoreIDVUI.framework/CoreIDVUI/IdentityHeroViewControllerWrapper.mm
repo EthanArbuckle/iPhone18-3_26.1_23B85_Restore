@@ -1,37 +1,37 @@
 @interface IdentityHeroViewControllerWrapper
-- (IdentityHeroViewControllerWrapper)initWithImageData:(id)a3 title:(id)a4 subtitle:(id)a5 primaryButtonTitle:(id)a6 secondaryButtonTitle:(id)a7;
-- (id)identityHeroViewController:(id)a3 secondaryButtonClicked:(id)a4;
+- (IdentityHeroViewControllerWrapper)initWithImageData:(id)data title:(id)title subtitle:(id)subtitle primaryButtonTitle:(id)buttonTitle secondaryButtonTitle:(id)secondaryButtonTitle;
+- (id)identityHeroViewController:(id)controller secondaryButtonClicked:(id)clicked;
 @end
 
 @implementation IdentityHeroViewControllerWrapper
 
-- (IdentityHeroViewControllerWrapper)initWithImageData:(id)a3 title:(id)a4 subtitle:(id)a5 primaryButtonTitle:(id)a6 secondaryButtonTitle:(id)a7
+- (IdentityHeroViewControllerWrapper)initWithImageData:(id)data title:(id)title subtitle:(id)subtitle primaryButtonTitle:(id)buttonTitle secondaryButtonTitle:(id)secondaryButtonTitle
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dataCopy = data;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  buttonTitleCopy = buttonTitle;
+  secondaryButtonTitleCopy = secondaryButtonTitle;
   v21.receiver = self;
   v21.super_class = IdentityHeroViewControllerWrapper;
   v17 = [(IdentityHeroViewControllerWrapper *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_imageData, a3);
-    objc_storeStrong(&v18->_title, a4);
-    objc_storeStrong(&v18->_subTitle, a5);
-    objc_storeStrong(&v18->_primaryButtonTitle, a6);
-    objc_storeStrong(&v18->_secondaryButtonTitle, a7);
+    objc_storeStrong(&v17->_imageData, data);
+    objc_storeStrong(&v18->_title, title);
+    objc_storeStrong(&v18->_subTitle, subtitle);
+    objc_storeStrong(&v18->_primaryButtonTitle, buttonTitle);
+    objc_storeStrong(&v18->_secondaryButtonTitle, secondaryButtonTitle);
   }
 
   return v18;
 }
 
-- (id)identityHeroViewController:(id)a3 secondaryButtonClicked:(id)a4
+- (id)identityHeroViewController:(id)controller secondaryButtonClicked:(id)clicked
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  clickedCopy = clicked;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2050000000;
@@ -77,13 +77,13 @@
     v18[1] = 3221225472;
     v18[2] = __87__IdentityHeroViewControllerWrapper_identityHeroViewController_secondaryButtonClicked___block_invoke;
     v18[3] = &unk_278E87340;
-    v19 = v6;
+    v19 = controllerCopy;
     [v14 setPrimaryButtonClickedBlock:v18];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __87__IdentityHeroViewControllerWrapper_identityHeroViewController_secondaryButtonClicked___block_invoke_2;
     v16[3] = &unk_278E87340;
-    v17 = v7;
+    v17 = clickedCopy;
     [v14 setSecondaryButtonClickedBlock:v16];
   }
 

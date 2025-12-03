@@ -2,25 +2,25 @@
 + (id)nullInstance;
 + (id)unlimitedGracePeriod;
 - (BOOL)isActive;
-- (BOOL)isEqual:(id)a3;
-- (LACDTOGracePeriodState)initWithCoder:(id)a3;
-- (LACDTOGracePeriodState)initWithTime:(double)a3 maxThreshold:(double)a4;
+- (BOOL)isEqual:(id)equal;
+- (LACDTOGracePeriodState)initWithCoder:(id)coder;
+- (LACDTOGracePeriodState)initWithTime:(double)time maxThreshold:(double)threshold;
 - (double)duration;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LACDTOGracePeriodState
 
-- (LACDTOGracePeriodState)initWithTime:(double)a3 maxThreshold:(double)a4
+- (LACDTOGracePeriodState)initWithTime:(double)time maxThreshold:(double)threshold
 {
   v7.receiver = self;
   v7.super_class = LACDTOGracePeriodState;
   result = [(LACDTOGracePeriodState *)&v7 init];
   if (result)
   {
-    result->_time = a3;
-    result->_maxThreshold = a4;
+    result->_time = time;
+    result->_maxThreshold = threshold;
   }
 
   return result;
@@ -48,9 +48,9 @@
 
 - (double)duration
 {
-  v3 = [(LACDTOGracePeriodState *)self isActive];
+  isActive = [(LACDTOGracePeriodState *)self isActive];
   result = 0.0;
-  if (v3)
+  if (isActive)
   {
     [(LACDTOGracePeriodState *)self maxThreshold];
     v6 = v5;
@@ -75,41 +75,41 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(LACDTOGracePeriodState *)self time];
   v6 = v5;
   v7 = NSStringFromSelector(sel_time);
-  [v4 encodeDouble:v7 forKey:v6];
+  [coderCopy encodeDouble:v7 forKey:v6];
 
   [(LACDTOGracePeriodState *)self maxThreshold];
   v9 = v8;
   v10 = NSStringFromSelector(sel_maxThreshold);
-  [v4 encodeDouble:v10 forKey:v9];
+  [coderCopy encodeDouble:v10 forKey:v9];
 }
 
-- (LACDTOGracePeriodState)initWithCoder:(id)a3
+- (LACDTOGracePeriodState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_time);
-  [v4 decodeDoubleForKey:v5];
+  [coderCopy decodeDoubleForKey:v5];
   v7 = v6;
 
   v8 = NSStringFromSelector(sel_maxThreshold);
-  [v4 decodeDoubleForKey:v8];
+  [coderCopy decodeDoubleForKey:v8];
   v10 = v9;
 
   return [(LACDTOGracePeriodState *)self initWithTime:v7 maxThreshold:v10];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(LACDTOGracePeriodState *)self time];
     v7 = v6;
     [v5 time];
@@ -153,9 +153,9 @@
   v10 = [v7 stringWithFormat:@"maxThreshold: %@", v9];
   v26[1] = v10;
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [(LACDTOGracePeriodState *)self isActive];
+  isActive = [(LACDTOGracePeriodState *)self isActive];
   v13 = @"NO";
-  if (v12)
+  if (isActive)
   {
     v13 = @"YES";
   }

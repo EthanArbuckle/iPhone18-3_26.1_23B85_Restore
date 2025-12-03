@@ -1,9 +1,9 @@
 @interface MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct;
 - (MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams)init;
-- (MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams)initWithDecodableStruct:(const DecodableType *)a3;
-- (MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams)initWithDecodableStruct:(const DecodableType *)struct;
+- (MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,11 +24,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams);
-  v5 = [(MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams *)self errorCode];
-  [(MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams *)v4 setErrorCode:v5];
+  errorCode = [(MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams *)self errorCode];
+  [(MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams *)v4 setErrorCode:errorCode];
 
   return v4;
 }
@@ -43,9 +43,9 @@
   return v6;
 }
 
-- (MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams;
   v7 = [(MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams *)&v15 init];
@@ -55,7 +55,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:48 commandID:7 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:48 commandID:7 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -76,7 +76,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -87,7 +87,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams)initWithDecodableStruct:(const DecodableType *)a3
+- (MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams)initWithDecodableStruct:(const DecodableType *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams;
@@ -95,7 +95,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -111,9 +111,9 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const DecodableType *)struct
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:a3->var0];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:struct->var0];
   [(MTRGeneralCommissioningClusterSetTCAcknowledgementsResponseParams *)self setErrorCode:v4];
 
   v5 = 0;

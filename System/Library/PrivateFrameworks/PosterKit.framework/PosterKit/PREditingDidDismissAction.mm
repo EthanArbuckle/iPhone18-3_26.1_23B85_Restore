@@ -1,10 +1,10 @@
 @interface PREditingDidDismissAction
-+ (id)acceptChangesWithCompletion:(id)a3;
++ (id)acceptChangesWithCompletion:(id)completion;
 + (id)cancelAction;
-- (id)_initWithCompletion:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5;
-- (void)sendResponseWithUpdatedConfiguration:(id)a3 updatedProperties:(id)a4;
+- (id)_initWithCompletion:(id)completion;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting;
+- (void)sendResponseWithUpdatedConfiguration:(id)configuration updatedProperties:(id)properties;
 @end
 
 @implementation PREditingDidDismissAction
@@ -16,36 +16,36 @@
   return v2;
 }
 
-+ (id)acceptChangesWithCompletion:(id)a3
++ (id)acceptChangesWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [PREditingDidDismissAction acceptChangesWithCompletion:a2];
   }
 
-  v5 = v4;
-  v6 = [[PREditingDidDismissAction alloc] _initWithCompletion:v4];
+  v5 = completionCopy;
+  v6 = [[PREditingDidDismissAction alloc] _initWithCompletion:completionCopy];
 
   return v6;
 }
 
-- (id)_initWithCompletion:(id)a3
+- (id)_initWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x1E698E700]);
-    v6 = [MEMORY[0x1E698E620] tokenForCurrentProcess];
-    [v5 setObject:v6 forSetting:2];
+    tokenForCurrentProcess = [MEMORY[0x1E698E620] tokenForCurrentProcess];
+    [v5 setObject:tokenForCurrentProcess forSetting:2];
 
     v7 = MEMORY[0x1E698E5F8];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __49__PREditingDidDismissAction__initWithCompletion___block_invoke;
     v12[3] = &unk_1E7844B08;
-    v14 = v4;
-    v13 = self;
+    v14 = completionCopy;
+    selfCopy = self;
     v8 = [v7 responderWithHandler:v12];
     [v8 setQueue:MEMORY[0x1E69E96A0]];
   }
@@ -109,11 +109,11 @@ void __49__PREditingDidDismissAction__initWithCompletion___block_invoke(uint64_t
   }
 }
 
-- (void)sendResponseWithUpdatedConfiguration:(id)a3 updatedProperties:(id)a4
+- (void)sendResponseWithUpdatedConfiguration:(id)configuration updatedProperties:(id)properties
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  configurationCopy = configuration;
+  propertiesCopy = properties;
+  v9 = configurationCopy;
   NSClassFromString(&cfstr_Prmutableposte.isa);
   if (!v9)
   {
@@ -125,9 +125,9 @@ void __49__PREditingDidDismissAction__initWithCompletion___block_invoke(uint64_t
     [PREditingDidDismissAction sendResponseWithUpdatedConfiguration:a2 updatedProperties:?];
   }
 
-  v10 = [v9 _path];
-  v11 = [(PREditingDidDismissAction *)self info];
-  v12 = [v11 objectForSetting:2];
+  _path = [v9 _path];
+  info = [(PREditingDidDismissAction *)self info];
+  v12 = [info objectForSetting:2];
   v13 = objc_opt_class();
   v14 = v12;
   if (v13)
@@ -150,13 +150,13 @@ void __49__PREditingDidDismissAction__initWithCompletion___block_invoke(uint64_t
 
   v16 = v15;
 
-  v17 = [v10 extendContentsReadAccessToAuditToken:v16 error:0];
+  v17 = [_path extendContentsReadAccessToAuditToken:v16 error:0];
 
   if (v17)
   {
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [v10 extendValidityForReason:v19];
+    v20 = [_path extendValidityForReason:v19];
 
     v21 = objc_alloc(MEMORY[0x1E698E5F0]);
     v22 = MEMORY[0x1E698E5F8];
@@ -172,7 +172,7 @@ void __49__PREditingDidDismissAction__initWithCompletion___block_invoke(uint64_t
     v26 = objc_alloc_init(MEMORY[0x1E698E700]);
     [v26 setObject:v17 forSetting:1];
     [v26 setObject:v25 forSetting:3];
-    [v26 setObject:v8 forSetting:4];
+    [v26 setObject:propertiesCopy forSetting:4];
     v27 = [MEMORY[0x1E698E600] responseWithInfo:v26];
     v29.receiver = self;
     v29.super_class = PREditingDidDismissAction;
@@ -191,9 +191,9 @@ void __49__PREditingDidDismissAction__initWithCompletion___block_invoke(uint64_t
   }
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 2)
+  if (setting == 2)
   {
     return @"serverAuditToken";
   }
@@ -204,11 +204,11 @@ void __49__PREditingDidDismissAction__initWithCompletion___block_invoke(uint64_t
   }
 }
 
-- (id)valueDescriptionForFlag:(int64_t)a3 object:(id)a4 ofSetting:(unint64_t)a5
+- (id)valueDescriptionForFlag:(int64_t)flag object:(id)object ofSetting:(unint64_t)setting
 {
-  if (a5 == 2)
+  if (setting == 2)
   {
-    v7 = [a4 description];
+    v7 = [object description];
   }
 
   else

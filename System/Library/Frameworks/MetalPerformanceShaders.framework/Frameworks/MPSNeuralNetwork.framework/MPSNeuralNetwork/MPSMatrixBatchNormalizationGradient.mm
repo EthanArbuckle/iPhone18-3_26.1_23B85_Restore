@@ -3,7 +3,7 @@
 - (MPSMatrixBatchNormalizationGradient)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSMatrixBatchNormalizationGradient)initWithDevice:(id)device;
 - (void)encodeToCommandBuffer:(id)commandBuffer gradientMatrix:(MPSMatrix *)gradientMatrix inputMatrix:(MPSMatrix *)inputMatrix meanVector:(MPSVector *)meanVector varianceVector:(MPSVector *)varianceVector gammaVector:(MPSVector *)gammaVector betaVector:(MPSVector *)betaVector resultGradientForDataMatrix:(MPSMatrix *)resultGradientForDataMatrix resultGradientForGammaVector:(MPSVector *)resultGradientForGammaVector resultGradientForBetaVector:(MPSVector *)resultGradientForBetaVector;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setNeuronType:(MPSCNNNeuronType)neuronType parameterA:(float)parameterA parameterB:(float)parameterB parameterC:(float)parameterC;
 @end
 
@@ -371,7 +371,7 @@ LABEL_27:
 {
   if (neuronType == MPSCNNNeuronTypePReLU)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = parameterC;
     v8 = parameterB;
     v9 = parameterA;
@@ -382,13 +382,13 @@ LABEL_27:
     parameterB = v8;
     parameterC = v7;
     v12 = v11;
-    self = v6;
+    self = selfCopy;
     if (v12)
     {
       MTLReportFailure();
       neuronType = v10;
       parameterA = v9;
-      self = v6;
+      self = selfCopy;
       parameterB = v8;
       parameterC = v7;
     }
@@ -452,23 +452,23 @@ LABEL_27:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v48.receiver = self;
   v48.super_class = MPSMatrixBatchNormalizationGradient;
   [(MPSMatrixBinaryKernel *)&v48 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_sourceNumberOfFeatureVectors, @"MPSMatrixBatchNormalizationGradient._sourceNumberOfFeatureVectors;", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_sourceInputFeatureChannels, @"MPSMatrixBatchNormalizationGradient._sourceInputFeatureChannels;", v11, v12, v13, v14);
-  objc_msgSend_encodeInt32_forKey_(a3, v15, self->_neuronType, @"MPSMatrixBatchNormalizationGradient._neuronType;", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_sourceNumberOfFeatureVectors, @"MPSMatrixBatchNormalizationGradient._sourceNumberOfFeatureVectors;", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_sourceInputFeatureChannels, @"MPSMatrixBatchNormalizationGradient._sourceInputFeatureChannels;", v11, v12, v13, v14);
+  objc_msgSend_encodeInt32_forKey_(coder, v15, self->_neuronType, @"MPSMatrixBatchNormalizationGradient._neuronType;", v16, v17, v18, v19);
   *&v20 = self->_neuronA;
-  objc_msgSend_encodeFloat_forKey_(a3, v21, @"MPSMatrixBatchNormalizationGradient._neuronA;", v22, v23, v24, v25, v26, v20);
+  objc_msgSend_encodeFloat_forKey_(coder, v21, @"MPSMatrixBatchNormalizationGradient._neuronA;", v22, v23, v24, v25, v26, v20);
   *&v27 = self->_neuronB;
-  objc_msgSend_encodeFloat_forKey_(a3, v28, @"MPSMatrixBatchNormalizationGradient._neuronB;", v29, v30, v31, v32, v33, v27);
+  objc_msgSend_encodeFloat_forKey_(coder, v28, @"MPSMatrixBatchNormalizationGradient._neuronB;", v29, v30, v31, v32, v33, v27);
   *&v34 = self->_neuronC;
-  objc_msgSend_encodeFloat_forKey_(a3, v35, @"MPSMatrixBatchNormalizationGradient._neuronC;", v36, v37, v38, v39, v40, v34);
+  objc_msgSend_encodeFloat_forKey_(coder, v35, @"MPSMatrixBatchNormalizationGradient._neuronC;", v36, v37, v38, v39, v40, v34);
   *&v41 = self->_epsilon;
-  objc_msgSend_encodeFloat_forKey_(a3, v42, @"MPSMatrixBatchNormalizationGradient._epsilon;", v43, v44, v45, v46, v47, v41);
+  objc_msgSend_encodeFloat_forKey_(coder, v42, @"MPSMatrixBatchNormalizationGradient._epsilon;", v43, v44, v45, v46, v47, v41);
 }
 
 @end

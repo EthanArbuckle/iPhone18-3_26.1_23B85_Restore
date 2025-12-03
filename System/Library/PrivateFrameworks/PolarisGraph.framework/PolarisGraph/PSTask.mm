@@ -1,28 +1,28 @@
 @interface PSTask
-- (PSTask)initWithName:(id)a3;
-- (PSTask)initWithName:(id)a3 computeAgent:(int64_t)a4 inputs:(id)a5 outputs:(id)a6 function:(void *)a7 userdata:(void *)a8;
+- (PSTask)initWithName:(id)name;
+- (PSTask)initWithName:(id)name computeAgent:(int64_t)agent inputs:(id)inputs outputs:(id)outputs function:(void *)function userdata:(void *)userdata;
 - (id)description;
-- (void)addInput:(id)a3;
-- (void)addOutput:(id)a3;
+- (void)addInput:(id)input;
+- (void)addOutput:(id)output;
 - (void)removeAllInputs;
-- (void)setComputeAgentsForEspressoOps:(id)a3;
-- (void)setFunction:(void *)a3 userdata:(void *)a4 userObject:(id)a5;
-- (void)updateBarrier:(id)a3;
-- (void)waitForBarrier:(id)a3;
+- (void)setComputeAgentsForEspressoOps:(id)ops;
+- (void)setFunction:(void *)function userdata:(void *)userdata userObject:(id)object;
+- (void)updateBarrier:(id)barrier;
+- (void)waitForBarrier:(id)barrier;
 @end
 
 @implementation PSTask
 
-- (PSTask)initWithName:(id)a3
+- (PSTask)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v18.receiver = self;
   v18.super_class = PSTask;
   v6 = [(PSTask *)&v18 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = objc_opt_new();
     inputs = v7->_inputs;
     v7->_inputs = v8;
@@ -49,24 +49,24 @@
   return v7;
 }
 
-- (PSTask)initWithName:(id)a3 computeAgent:(int64_t)a4 inputs:(id)a5 outputs:(id)a6 function:(void *)a7 userdata:(void *)a8
+- (PSTask)initWithName:(id)name computeAgent:(int64_t)agent inputs:(id)inputs outputs:(id)outputs function:(void *)function userdata:(void *)userdata
 {
-  v14 = a5;
-  v15 = a6;
-  v16 = [(PSTask *)self initWithName:a3];
+  inputsCopy = inputs;
+  outputsCopy = outputs;
+  v16 = [(PSTask *)self initWithName:name];
   v17 = v16;
   if (v16)
   {
-    v16->_computeAgent = a4;
-    v18 = [v14 copy];
+    v16->_computeAgent = agent;
+    v18 = [inputsCopy copy];
     inputs = v17->_inputs;
     v17->_inputs = v18;
 
-    v20 = [v15 copy];
+    v20 = [outputsCopy copy];
     outputs = v17->_outputs;
     v17->_outputs = v20;
 
-    [(PSTask *)v17 setFunction:a7 userdata:a8];
+    [(PSTask *)v17 setFunction:function userdata:userdata];
   }
 
   return v17;
@@ -137,19 +137,19 @@
   return v3;
 }
 
-- (void)setFunction:(void *)a3 userdata:(void *)a4 userObject:(id)a5
+- (void)setFunction:(void *)function userdata:(void *)userdata userObject:(id)object
 {
-  v8 = a5;
-  [(PSTask *)self setFunction:a3 userdata:a4];
+  objectCopy = object;
+  [(PSTask *)self setFunction:function userdata:userdata];
   userObject = self->_userObject;
-  self->_userObject = v8;
+  self->_userObject = objectCopy;
 }
 
-- (void)addInput:(id)a3
+- (void)addInput:(id)input
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 type] != 3)
+  inputCopy = input;
+  if ([inputCopy type] != 3)
   {
     v16 = 0u;
     v17 = 0u;
@@ -187,37 +187,37 @@
     }
   }
 
-  v10 = [(NSArray *)self->_inputs arrayByAddingObject:v4];
+  v10 = [(NSArray *)self->_inputs arrayByAddingObject:inputCopy];
   inputs = self->_inputs;
   self->_inputs = v10;
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addOutput:(id)a3
+- (void)addOutput:(id)output
 {
-  v4 = [(NSArray *)self->_outputs arrayByAddingObject:a3];
+  v4 = [(NSArray *)self->_outputs arrayByAddingObject:output];
   outputs = self->_outputs;
   self->_outputs = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)waitForBarrier:(id)a3
+- (void)waitForBarrier:(id)barrier
 {
-  v4 = a3;
-  [v4 addBlockingTask:self];
-  v5 = [(NSArray *)self->_waitBarriers arrayByAddingObject:v4];
+  barrierCopy = barrier;
+  [barrierCopy addBlockingTask:self];
+  v5 = [(NSArray *)self->_waitBarriers arrayByAddingObject:barrierCopy];
 
   waitBarriers = self->_waitBarriers;
   self->_waitBarriers = v5;
 }
 
-- (void)updateBarrier:(id)a3
+- (void)updateBarrier:(id)barrier
 {
-  v4 = a3;
-  [v4 addUnblockingTask:self];
-  v5 = [(NSArray *)self->_updateBarriers arrayByAddingObject:v4];
+  barrierCopy = barrier;
+  [barrierCopy addUnblockingTask:self];
+  v5 = [(NSArray *)self->_updateBarriers arrayByAddingObject:barrierCopy];
 
   updateBarriers = self->_updateBarriers;
   self->_updateBarriers = v5;
@@ -232,16 +232,16 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setComputeAgentsForEspressoOps:(id)a3
+- (void)setComputeAgentsForEspressoOps:(id)ops
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  opsCopy = ops;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = opsCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {

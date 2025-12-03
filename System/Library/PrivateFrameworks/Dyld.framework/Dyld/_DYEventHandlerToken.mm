@@ -1,6 +1,6 @@
 @interface _DYEventHandlerToken
 - (_DYEventHandlerToken)init;
-- (_DYEventHandlerToken)initWithValue:(unsigned int)a3;
+- (_DYEventHandlerToken)initWithValue:(unsigned int)value;
 - (unsigned)value;
 @end
 
@@ -31,10 +31,10 @@
   return [(_DYEventHandlerToken *)&v4 init];
 }
 
-- (_DYEventHandlerToken)initWithValue:(unsigned int)a3
+- (_DYEventHandlerToken)initWithValue:(unsigned int)value
 {
   v3 = self + OBJC_IVAR____DYEventHandlerToken__value;
-  *v3 = a3;
+  *v3 = value;
   v3[4] = 0;
   v5.receiver = self;
   v5.super_class = _DYEventHandlerToken;

@@ -1,28 +1,28 @@
 @interface _UIHyperInProcessPointAnimator
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (UISelectionFeedbackGenerator)_feedbackGenerator;
 - (UIViewSpringAnimationBehavior)_springAnimationBehavior;
-- (_UIHyperInProcessPointAnimator)initWithCoder:(id)a3;
-- (_UIHyperInProcessPointAnimator)initWithDimensions:(unint64_t)a3;
+- (_UIHyperInProcessPointAnimator)initWithCoder:(id)coder;
+- (_UIHyperInProcessPointAnimator)initWithDimensions:(unint64_t)dimensions;
 - (_UIHyperInteractor)_interactor;
 - (_UISpringParameters)_nonTrackingSpringParameters;
 - (_UISpringParameters)_trackingSpringParameters;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_animateWithParameters:(id)a3 animations:(id)a4;
-- (void)_animateWithPrelude:(id)a3 animations:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_animateWithParameters:(id)parameters animations:(id)animations;
+- (void)_animateWithPrelude:(id)prelude animations:(id)animations;
 - (void)_interactionBegan;
 - (void)_interactionChanged;
-- (void)_interactionEndedMutatingState:(id)a3;
-- (void)_setNonTrackingSpringParameters:(id)a3;
-- (void)_setTrackingSpringParameters:(id)a3;
+- (void)_interactionEndedMutatingState:(id)state;
+- (void)_setNonTrackingSpringParameters:(id)parameters;
+- (void)_setTrackingSpringParameters:(id)parameters;
 - (void)_updateAnimatablePropertyValuesToConstrainedPoint;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIHyperInProcessPointAnimator
 
-- (_UIHyperInProcessPointAnimator)initWithDimensions:(unint64_t)a3
+- (_UIHyperInProcessPointAnimator)initWithDimensions:(unint64_t)dimensions
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
@@ -31,8 +31,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->__dimensions = a3;
-    v6 = [[UIViewVectorAnimatableProperty alloc] initWithLength:a3];
+    v4->__dimensions = dimensions;
+    v6 = [[UIViewVectorAnimatableProperty alloc] initWithLength:dimensions];
     animatableProperty = v5->__animatableProperty;
     v5->__animatableProperty = v6;
 
@@ -85,13 +85,13 @@
   return trackingSpringParameters;
 }
 
-- (void)_setTrackingSpringParameters:(id)a3
+- (void)_setTrackingSpringParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = self->__trackingSpringParameters;
-  v6 = v4;
+  parametersCopy = parameters;
+  _springAnimationBehavior = self->__trackingSpringParameters;
+  v6 = parametersCopy;
   v14 = v6;
-  if (v5 == v6)
+  if (_springAnimationBehavior == v6)
   {
 
 LABEL_9:
@@ -99,13 +99,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !_springAnimationBehavior)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(_UISpringParameters *)v5 isEqual:v6];
+  v7 = [(_UISpringParameters *)_springAnimationBehavior isEqual:v6];
 
   v8 = v14;
   if (!v7)
@@ -117,11 +117,11 @@ LABEL_8:
     self->__trackingSpringParameters = v9;
 
     [(_UIHyperInProcessPointAnimator *)self didChangeValueForKey:@"_trackingSpringParameters"];
-    v5 = [(_UIHyperInProcessPointAnimator *)self _springAnimationBehavior];
+    _springAnimationBehavior = [(_UIHyperInProcessPointAnimator *)self _springAnimationBehavior];
     [(_UISpringParameters *)v14 _dampingRatio];
     v12 = v11;
     [(_UISpringParameters *)v14 _response];
-    [(_UISpringParameters *)v5 setTrackingDampingRatio:v12 response:v13 dampingRatioSmoothing:0.0 responseSmoothing:0.0];
+    [(_UISpringParameters *)_springAnimationBehavior setTrackingDampingRatio:v12 response:v13 dampingRatioSmoothing:0.0 responseSmoothing:0.0];
     goto LABEL_9;
   }
 
@@ -143,13 +143,13 @@ LABEL_10:
   return nonTrackingSpringParameters;
 }
 
-- (void)_setNonTrackingSpringParameters:(id)a3
+- (void)_setNonTrackingSpringParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = self->__nonTrackingSpringParameters;
-  v6 = v4;
+  parametersCopy = parameters;
+  _springAnimationBehavior = self->__nonTrackingSpringParameters;
+  v6 = parametersCopy;
   v14 = v6;
-  if (v5 == v6)
+  if (_springAnimationBehavior == v6)
   {
 
 LABEL_9:
@@ -157,13 +157,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (!v6 || !v5)
+  if (!v6 || !_springAnimationBehavior)
   {
 
     goto LABEL_8;
   }
 
-  v7 = [(_UISpringParameters *)v5 isEqual:v6];
+  v7 = [(_UISpringParameters *)_springAnimationBehavior isEqual:v6];
 
   v8 = v14;
   if (!v7)
@@ -175,11 +175,11 @@ LABEL_8:
     self->__nonTrackingSpringParameters = v9;
 
     [(_UIHyperInProcessPointAnimator *)self didChangeValueForKey:@"_nonTrackingSpringParameters"];
-    v5 = [(_UIHyperInProcessPointAnimator *)self _springAnimationBehavior];
+    _springAnimationBehavior = [(_UIHyperInProcessPointAnimator *)self _springAnimationBehavior];
     [(_UISpringParameters *)v14 _dampingRatio];
     v12 = v11;
     [(_UISpringParameters *)v14 _response];
-    [(_UISpringParameters *)v5 setDampingRatio:v12 response:v13];
+    [(_UISpringParameters *)_springAnimationBehavior setDampingRatio:v12 response:v13];
     goto LABEL_9;
   }
 
@@ -197,17 +197,17 @@ LABEL_10:
 
     [(UIViewSpringAnimationBehavior *)self->__springAnimationBehavior setInertialTargetSmoothing:0.08];
     [(UIViewSpringAnimationBehavior *)self->__springAnimationBehavior setInertialProjectionDeceleration:0.995];
-    v6 = [(_UIHyperInProcessPointAnimator *)self _trackingSpringParameters];
-    v7 = [(_UIHyperInProcessPointAnimator *)self _nonTrackingSpringParameters];
+    _trackingSpringParameters = [(_UIHyperInProcessPointAnimator *)self _trackingSpringParameters];
+    _nonTrackingSpringParameters = [(_UIHyperInProcessPointAnimator *)self _nonTrackingSpringParameters];
     v8 = self->__springAnimationBehavior;
-    [v6 _dampingRatio];
+    [_trackingSpringParameters _dampingRatio];
     v10 = v9;
-    [v6 _response];
+    [_trackingSpringParameters _response];
     [(UIViewSpringAnimationBehavior *)v8 setTrackingDampingRatio:v10 response:v11 dampingRatioSmoothing:0.0 responseSmoothing:0.0];
     v12 = self->__springAnimationBehavior;
-    [v7 _dampingRatio];
+    [_nonTrackingSpringParameters _dampingRatio];
     v14 = v13;
-    [v7 _response];
+    [_nonTrackingSpringParameters _response];
     [(UIViewSpringAnimationBehavior *)v12 setDampingRatio:v14 response:v15];
 
     springAnimationBehavior = self->__springAnimationBehavior;
@@ -233,23 +233,23 @@ LABEL_10:
 
 - (void)_updateAnimatablePropertyValuesToConstrainedPoint
 {
-  v4 = [(_UIHyperInProcessPointAnimator *)self _animatableProperty];
-  v3 = [(_UIHyperInProcessPointAnimator *)self _interactor];
-  [v4 _copyValue:{objc_msgSend(v3, "_constrainedPoint")}];
+  _animatableProperty = [(_UIHyperInProcessPointAnimator *)self _animatableProperty];
+  _interactor = [(_UIHyperInProcessPointAnimator *)self _interactor];
+  [_animatableProperty _copyValue:{objc_msgSend(_interactor, "_constrainedPoint")}];
 }
 
 - (void)_interactionBegan
 {
   if ([(_UIHyperInProcessPointAnimator *)self _generatesFeedbackWhenBoundaryIsCrossed])
   {
-    v3 = [(_UIHyperInProcessPointAnimator *)self _feedbackGenerator];
-    [v3 prepare];
+    _feedbackGenerator = [(_UIHyperInProcessPointAnimator *)self _feedbackGenerator];
+    [_feedbackGenerator prepare];
   }
 
-  v4 = [(_UIHyperInProcessPointAnimator *)self _interactor];
-  v5 = [v4 _delegate];
-  v6 = [(_UIHyperInProcessPointAnimator *)self _interactor];
-  [v5 _hyperInteractorApplyPresentationPoint:v6];
+  _interactor = [(_UIHyperInProcessPointAnimator *)self _interactor];
+  _delegate = [_interactor _delegate];
+  _interactor2 = [(_UIHyperInProcessPointAnimator *)self _interactor];
+  [_delegate _hyperInteractorApplyPresentationPoint:_interactor2];
 
   [(_UIHyperInProcessPointAnimator *)self _updateAnimatablePropertyValuesToConstrainedPoint];
 }
@@ -269,115 +269,115 @@ LABEL_10:
   [(_UIHyperInProcessPointAnimator *)self _animateWithPrelude:v3 animations:v2];
 }
 
-- (void)_interactionEndedMutatingState:(id)a3
+- (void)_interactionEndedMutatingState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v6[4] = self;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65___UIHyperInProcessPointAnimator__interactionEndedMutatingState___block_invoke;
   v7[3] = &unk_1E70F4A50;
   v7[4] = self;
-  v8 = v4;
+  v8 = stateCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __65___UIHyperInProcessPointAnimator__interactionEndedMutatingState___block_invoke_2;
   v6[3] = &unk_1E70F3590;
-  v5 = v4;
+  v5 = stateCopy;
   [(_UIHyperInProcessPointAnimator *)self _animateWithPrelude:v7 animations:v6];
 }
 
-- (void)_animateWithParameters:(id)a3 animations:(id)a4
+- (void)_animateWithParameters:(id)parameters animations:(id)animations
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = [[UISpringTimingParameters alloc] initWithParameters:v6];
+  animationsCopy = animations;
+  parametersCopy = parameters;
+  v8 = [[UISpringTimingParameters alloc] initWithParameters:parametersCopy];
 
   v7 = [[UIViewPropertyAnimator alloc] initWithDuration:v8 timingParameters:0.0];
-  [(UIViewPropertyAnimator *)v7 addAnimations:v5];
+  [(UIViewPropertyAnimator *)v7 addAnimations:animationsCopy];
 
   [(UIViewPropertyAnimator *)v7 startAnimation];
 }
 
-- (void)_animateWithPrelude:(id)a3 animations:(id)a4
+- (void)_animateWithPrelude:(id)prelude animations:(id)animations
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIHyperInProcessPointAnimator *)self _interactor];
-  v9 = [v8 _isOverridingPresentationPoint];
+  preludeCopy = prelude;
+  animationsCopy = animations;
+  _interactor = [(_UIHyperInProcessPointAnimator *)self _interactor];
+  _isOverridingPresentationPoint = [_interactor _isOverridingPresentationPoint];
 
-  if ((v9 & 1) == 0)
+  if ((_isOverridingPresentationPoint & 1) == 0)
   {
-    v10 = [(_UIHyperInProcessPointAnimator *)self _interactor];
-    v11 = [(_UIHyperInProcessPointAnimator *)self _animatableProperty];
-    [v10 _copyOverridePresentationPoint:{objc_msgSend(v11, "_presentationValue")}];
+    _interactor2 = [(_UIHyperInProcessPointAnimator *)self _interactor];
+    _animatableProperty = [(_UIHyperInProcessPointAnimator *)self _animatableProperty];
+    [_interactor2 _copyOverridePresentationPoint:{objc_msgSend(_animatableProperty, "_presentationValue")}];
 
-    v12 = [(_UIHyperInProcessPointAnimator *)self _interactor];
-    [v12 _setOverridingPresentationPoint:1];
+    _interactor3 = [(_UIHyperInProcessPointAnimator *)self _interactor];
+    [_interactor3 _setOverridingPresentationPoint:1];
   }
 
-  v6[2](v6);
-  v13 = [(_UIHyperInProcessPointAnimator *)self _springAnimationBehavior];
-  v14 = [(_UIHyperInProcessPointAnimator *)self _interactor];
-  v15 = [v14 _isInteractive];
+  preludeCopy[2](preludeCopy);
+  _springAnimationBehavior = [(_UIHyperInProcessPointAnimator *)self _springAnimationBehavior];
+  _interactor4 = [(_UIHyperInProcessPointAnimator *)self _interactor];
+  _isInteractive = [_interactor4 _isInteractive];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __65___UIHyperInProcessPointAnimator__animateWithPrelude_animations___block_invoke;
   v16[3] = &unk_1E70F3FD8;
   v16[4] = self;
-  [UIView _animateUsingSpringBehavior:v13 tracking:v15 animations:v7 completion:v16];
+  [UIView _animateUsingSpringBehavior:_springAnimationBehavior tracking:_isInteractive animations:animationsCopy completion:v16];
 }
 
-- (_UIHyperInProcessPointAnimator)initWithCoder:(id)a3
+- (_UIHyperInProcessPointAnimator)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[_UIHyperInProcessPointAnimator initWithDimensions:](self, "initWithDimensions:", [v4 decodeIntegerForKey:@"_dimensions"]);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_trackingSpringParameters"];
+  coderCopy = coder;
+  v5 = -[_UIHyperInProcessPointAnimator initWithDimensions:](self, "initWithDimensions:", [coderCopy decodeIntegerForKey:@"_dimensions"]);
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_trackingSpringParameters"];
   [(_UIHyperInProcessPointAnimator *)v5 _setTrackingSpringParameters:v6];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_nonTrackingSpringParameters"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_nonTrackingSpringParameters"];
   [(_UIHyperInProcessPointAnimator *)v5 _setNonTrackingSpringParameters:v7];
 
-  v8 = [v4 decodeBoolForKey:@"_generatesFeedbackWhenBoundaryIsCrossed"];
+  v8 = [coderCopy decodeBoolForKey:@"_generatesFeedbackWhenBoundaryIsCrossed"];
   [(_UIHyperInProcessPointAnimator *)v5 _setGeneratesFeedbackWhenBoundaryIsCrossed:v8];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:-[_UIHyperInProcessPointAnimator _dimensions](self forKey:{"_dimensions"), @"_dimensions"}];
-  v4 = [(_UIHyperInProcessPointAnimator *)self _trackingSpringParameters];
-  [v6 encodeObject:v4 forKey:@"_trackingSpringParameters"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[_UIHyperInProcessPointAnimator _dimensions](self forKey:{"_dimensions"), @"_dimensions"}];
+  _trackingSpringParameters = [(_UIHyperInProcessPointAnimator *)self _trackingSpringParameters];
+  [coderCopy encodeObject:_trackingSpringParameters forKey:@"_trackingSpringParameters"];
 
-  v5 = [(_UIHyperInProcessPointAnimator *)self _nonTrackingSpringParameters];
-  [v6 encodeObject:v5 forKey:@"_nonTrackingSpringParameters"];
+  _nonTrackingSpringParameters = [(_UIHyperInProcessPointAnimator *)self _nonTrackingSpringParameters];
+  [coderCopy encodeObject:_nonTrackingSpringParameters forKey:@"_nonTrackingSpringParameters"];
 
-  [v6 encodeBool:-[_UIHyperInProcessPointAnimator _generatesFeedbackWhenBoundaryIsCrossed](self forKey:{"_generatesFeedbackWhenBoundaryIsCrossed"), @"_generatesFeedbackWhenBoundaryIsCrossed"}];
+  [coderCopy encodeBool:-[_UIHyperInProcessPointAnimator _generatesFeedbackWhenBoundaryIsCrossed](self forKey:{"_generatesFeedbackWhenBoundaryIsCrossed"), @"_generatesFeedbackWhenBoundaryIsCrossed"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[_UIHyperInProcessPointAnimator alloc] initWithDimensions:[(_UIHyperInProcessPointAnimator *)self _dimensions]];
-  v5 = [(_UIHyperInProcessPointAnimator *)self _trackingSpringParameters];
-  [(_UIHyperInProcessPointAnimator *)v4 _setTrackingSpringParameters:v5];
+  _trackingSpringParameters = [(_UIHyperInProcessPointAnimator *)self _trackingSpringParameters];
+  [(_UIHyperInProcessPointAnimator *)v4 _setTrackingSpringParameters:_trackingSpringParameters];
 
-  v6 = [(_UIHyperInProcessPointAnimator *)self _nonTrackingSpringParameters];
-  [(_UIHyperInProcessPointAnimator *)v4 _setNonTrackingSpringParameters:v6];
+  _nonTrackingSpringParameters = [(_UIHyperInProcessPointAnimator *)self _nonTrackingSpringParameters];
+  [(_UIHyperInProcessPointAnimator *)v4 _setNonTrackingSpringParameters:_nonTrackingSpringParameters];
 
   [(_UIHyperInProcessPointAnimator *)v4 _setGeneratesFeedbackWhenBoundaryIsCrossed:[(_UIHyperInProcessPointAnimator *)self _generatesFeedbackWhenBoundaryIsCrossed]];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(_UIHyperInProcessPointAnimator *)self _dimensions];
-    if (v6 != [v5 _dimensions])
+    v5 = equalCopy;
+    _dimensions = [(_UIHyperInProcessPointAnimator *)self _dimensions];
+    if (_dimensions != [v5 _dimensions])
     {
       LOBYTE(v12) = 0;
 LABEL_21:
@@ -385,10 +385,10 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v7 = [(_UIHyperInProcessPointAnimator *)self _trackingSpringParameters];
-    v8 = [v5 _trackingSpringParameters];
-    v9 = v7;
-    v10 = v8;
+    _trackingSpringParameters = [(_UIHyperInProcessPointAnimator *)self _trackingSpringParameters];
+    _trackingSpringParameters2 = [v5 _trackingSpringParameters];
+    v9 = _trackingSpringParameters;
+    v10 = _trackingSpringParameters2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -415,10 +415,10 @@ LABEL_20:
       }
     }
 
-    v16 = [(_UIHyperInProcessPointAnimator *)self _nonTrackingSpringParameters];
-    v17 = [v5 _nonTrackingSpringParameters];
-    v14 = v16;
-    v18 = v17;
+    _nonTrackingSpringParameters = [(_UIHyperInProcessPointAnimator *)self _nonTrackingSpringParameters];
+    _nonTrackingSpringParameters2 = [v5 _nonTrackingSpringParameters];
+    v14 = _nonTrackingSpringParameters;
+    v18 = _nonTrackingSpringParameters2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -441,8 +441,8 @@ LABEL_20:
       }
     }
 
-    v19 = [(_UIHyperInProcessPointAnimator *)self _generatesFeedbackWhenBoundaryIsCrossed];
-    v12 = v19 ^ [v5 _generatesFeedbackWhenBoundaryIsCrossed] ^ 1;
+    _generatesFeedbackWhenBoundaryIsCrossed = [(_UIHyperInProcessPointAnimator *)self _generatesFeedbackWhenBoundaryIsCrossed];
+    v12 = _generatesFeedbackWhenBoundaryIsCrossed ^ [v5 _generatesFeedbackWhenBoundaryIsCrossed] ^ 1;
 LABEL_19:
 
     goto LABEL_20;

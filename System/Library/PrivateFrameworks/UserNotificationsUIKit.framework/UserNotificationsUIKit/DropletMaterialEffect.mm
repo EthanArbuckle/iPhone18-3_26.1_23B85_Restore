@@ -1,24 +1,24 @@
 @interface DropletMaterialEffect
 - (_TtC22UserNotificationsUIKit21DropletMaterialEffect)init;
-- (_TtC22UserNotificationsUIKit21DropletMaterialEffect)initWithCoder:(id)a3;
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5;
+- (_TtC22UserNotificationsUIKit21DropletMaterialEffect)initWithCoder:(id)coder;
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage;
 @end
 
 @implementation DropletMaterialEffect
 
-- (_TtC22UserNotificationsUIKit21DropletMaterialEffect)initWithCoder:(id)a3
+- (_TtC22UserNotificationsUIKit21DropletMaterialEffect)initWithCoder:(id)coder
 {
   result = sub_21E92A988();
   __break(1u);
   return result;
 }
 
-- (void)_updateEffectDescriptor:(id)a3 forEnvironment:(id)a4 usage:(int64_t)a5
+- (void)_updateEffectDescriptor:(id)descriptor forEnvironment:(id)environment usage:(int64_t)usage
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_21E8E705C(a3);
+  descriptorCopy = descriptor;
+  environmentCopy = environment;
+  selfCopy = self;
+  sub_21E8E705C(descriptor);
 }
 
 - (_TtC22UserNotificationsUIKit21DropletMaterialEffect)init

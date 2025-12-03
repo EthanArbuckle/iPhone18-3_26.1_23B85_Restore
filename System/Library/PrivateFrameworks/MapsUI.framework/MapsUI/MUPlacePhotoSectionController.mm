@@ -1,32 +1,32 @@
 @interface MUPlacePhotoSectionController
-- (BOOL)dismissPhotoGalleryIfNecessary:(id)a3;
+- (BOOL)dismissPhotoGalleryIfNecessary:(id)necessary;
 - (BOOL)hasContent;
 - (BOOL)isFirstParty;
-- (BOOL)photoSliderView:(id)a3 shouldShowFullWidthForModel:(id)a4;
-- (MUPlacePhotoSectionController)initWithMapItem:(id)a3 configuration:(id)a4;
+- (BOOL)photoSliderView:(id)view shouldShowFullWidthForModel:(id)model;
+- (MUPlacePhotoSectionController)initWithMapItem:(id)item configuration:(id)configuration;
 - (MUPlacePhotoSectionControllerDelegate)photoSectionControllerDelegate;
 - (MUUserInformationProvider)userInfoProvider;
-- (id)animationControllerForDismissedController:(id)a3;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5;
-- (id)attributionViewModelsForPhotoSliderView:(id)a3;
+- (id)animationControllerForDismissedController:(id)controller;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController;
+- (id)attributionViewModelsForPhotoSliderView:(id)view;
 - (id)infoCardChildPossibleActions;
-- (id)photoSliderView:(id)a3 photoOverlayForModel:(id)a4;
-- (id)photoSliderViewRequestsViewModels:(id)a3;
-- (unint64_t)numberOfAttributionsForPhotoSliderView:(id)a3;
-- (void)_addPhotoButtonTappedWithEntryPoint:(int64_t)a3 presentationOptions:(id)a4;
-- (void)_populateRevealedAnalyticsModule:(id)a3;
-- (void)_routeAlbumTapWithViewModel:(id)a3;
-- (void)_routeFlatListTapWithViewModel:(id)a3;
+- (id)photoSliderView:(id)view photoOverlayForModel:(id)model;
+- (id)photoSliderViewRequestsViewModels:(id)models;
+- (unint64_t)numberOfAttributionsForPhotoSliderView:(id)view;
+- (void)_addPhotoButtonTappedWithEntryPoint:(int64_t)point presentationOptions:(id)options;
+- (void)_populateRevealedAnalyticsModule:(id)module;
+- (void)_routeAlbumTapWithViewModel:(id)model;
+- (void)_routeFlatListTapWithViewModel:(id)model;
 - (void)_setupSectionView;
 - (void)_update;
-- (void)photoSliderView:(id)a3 didTapAttribution:(id)a4;
-- (void)photoSliderView:(id)a3 didTapViewModel:(id)a4;
-- (void)placePhotoGallery:(id)a3 attributionViewTappedAtIndex:(unint64_t)a4;
-- (void)placePhotoGallery:(id)a3 didSelectReportImageAtIndex:(unint64_t)a4;
-- (void)placePhotoGallery:(id)a3 openButtonTappedAtIndex:(unint64_t)a4;
-- (void)placePhotoGallery:(id)a3 willCloseAtIndex:(unint64_t)a4;
-- (void)placePhotoGalleryDidCloseAtIndex:(unint64_t)a3;
-- (void)setActive:(BOOL)a3;
+- (void)photoSliderView:(id)view didTapAttribution:(id)attribution;
+- (void)photoSliderView:(id)view didTapViewModel:(id)model;
+- (void)placePhotoGallery:(id)gallery attributionViewTappedAtIndex:(unint64_t)index;
+- (void)placePhotoGallery:(id)gallery didSelectReportImageAtIndex:(unint64_t)index;
+- (void)placePhotoGallery:(id)gallery openButtonTappedAtIndex:(unint64_t)index;
+- (void)placePhotoGallery:(id)gallery willCloseAtIndex:(unint64_t)index;
+- (void)placePhotoGalleryDidCloseAtIndex:(unint64_t)index;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation MUPlacePhotoSectionController
@@ -47,7 +47,7 @@
 
 - (id)infoCardChildPossibleActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(MUPhotoSliderTileProvider *)self->_photoTileProvider showFullScreen])
   {
     v4 = &unk_1F450DE80;
@@ -58,76 +58,76 @@
     v4 = &unk_1F450DE68;
   }
 
-  [v3 addObject:v4];
-  v5 = [v3 copy];
+  [array addObject:v4];
+  v5 = [array copy];
 
   return v5;
 }
 
-- (void)_populateRevealedAnalyticsModule:(id)a3
+- (void)_populateRevealedAnalyticsModule:(id)module
 {
   photoTileProvider = self->_photoTileProvider;
-  v4 = a3;
+  moduleCopy = module;
   v5 = MUPhotosRevealedModuleForProvider(photoTileProvider);
-  [v4 setPhotos:v5];
+  [moduleCopy setPhotos:v5];
 }
 
 - (BOOL)isFirstParty
 {
-  v2 = [(MUPlaceSectionController *)self mapItem];
-  v3 = [v2 _mapkit_preferredFirstPhotoVendor];
-  v4 = [v3 shouldHandlePhotosLocally];
+  mapItem = [(MUPlaceSectionController *)self mapItem];
+  _mapkit_preferredFirstPhotoVendor = [mapItem _mapkit_preferredFirstPhotoVendor];
+  shouldHandlePhotosLocally = [_mapkit_preferredFirstPhotoVendor shouldHandlePhotosLocally];
 
-  return v4;
+  return shouldHandlePhotosLocally;
 }
 
-- (BOOL)dismissPhotoGalleryIfNecessary:(id)a3
+- (BOOL)dismissPhotoGalleryIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   v4 = +[MapsUIUtilities isSafariProcess];
   if (v4)
   {
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    [necessaryCopy dismissViewControllerAnimated:1 completion:0];
   }
 
   return v4;
 }
 
-- (void)placePhotoGallery:(id)a3 didSelectReportImageAtIndex:(unint64_t)a4
+- (void)placePhotoGallery:(id)gallery didSelectReportImageAtIndex:(unint64_t)index
 {
-  v11 = a3;
-  v6 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+  galleryCopy = gallery;
+  photoSectionControllerDelegate = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photoItemAtIndex:a4];
+    v8 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photoItemAtIndex:index];
     [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:86];
-    v9 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-    v10 = [v8 geoMapItemPhoto];
-    [v9 placePhotoSectionController:self didSelectPhotoToReport:v10 withPhotoGalleryViewController:v11];
+    photoSectionControllerDelegate2 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+    geoMapItemPhoto = [v8 geoMapItemPhoto];
+    [photoSectionControllerDelegate2 placePhotoSectionController:self didSelectPhotoToReport:geoMapItemPhoto withPhotoGalleryViewController:galleryCopy];
   }
 }
 
-- (void)placePhotoGallery:(id)a3 openButtonTappedAtIndex:(unint64_t)a4
+- (void)placePhotoGallery:(id)gallery openButtonTappedAtIndex:(unint64_t)index
 {
-  v16 = a3;
-  v6 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-  v7 = [v6 count];
+  galleryCopy = gallery;
+  photos = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+  v7 = [photos count];
 
-  if (v7 > a4)
+  if (v7 > index)
   {
-    v8 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+    photoSectionControllerDelegate = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
     v9 = objc_opt_respondsToSelector();
 
     if (v9)
     {
-      v10 = [(MUPlacePhotoSectionController *)self dismissPhotoGalleryIfNecessary:v16];
-      v11 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-      v12 = [v11 objectAtIndex:a4];
+      v10 = [(MUPlacePhotoSectionController *)self dismissPhotoGalleryIfNecessary:galleryCopy];
+      photos2 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+      v12 = [photos2 objectAtIndex:index];
 
-      v13 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-      v14 = [v12 photoID];
+      photoSectionControllerDelegate2 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+      photoID = [v12 photoID];
       if (v10)
       {
         v15 = 0;
@@ -135,43 +135,43 @@
 
       else
       {
-        v15 = v16;
+        v15 = galleryCopy;
       }
 
-      [v13 placePhotoSectionController:self didSelectViewPhoto:v12 withID:v14 presentingViewController:v15];
+      [photoSectionControllerDelegate2 placePhotoSectionController:self didSelectViewPhoto:v12 withID:photoID presentingViewController:v15];
     }
   }
 }
 
-- (void)placePhotoGallery:(id)a3 attributionViewTappedAtIndex:(unint64_t)a4
+- (void)placePhotoGallery:(id)gallery attributionViewTappedAtIndex:(unint64_t)index
 {
-  v6 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-  [v6 placePhotoSectionController:self didSelectPhotoCategoryAtIndex:a4];
+  photoSectionControllerDelegate = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+  [photoSectionControllerDelegate placePhotoSectionController:self didSelectPhotoCategoryAtIndex:index];
 }
 
-- (void)placePhotoGalleryDidCloseAtIndex:(unint64_t)a3
+- (void)placePhotoGalleryDidCloseAtIndex:(unint64_t)index
 {
-  v4 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+  photoSectionControllerDelegate = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-    [v6 placePhotoSectionControllerDidCloseFullscreenPhotos:self];
+    photoSectionControllerDelegate2 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+    [photoSectionControllerDelegate2 placePhotoSectionControllerDidCloseFullscreenPhotos:self];
   }
 }
 
-- (void)placePhotoGallery:(id)a3 willCloseAtIndex:(unint64_t)a4
+- (void)placePhotoGallery:(id)gallery willCloseAtIndex:(unint64_t)index
 {
-  v6 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-  v7 = [v6 count];
+  photos = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+  v7 = [photos count];
 
-  if (v7 <= a4)
+  if (v7 <= index)
   {
-    v9 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-    v10 = [v9 count] + 1;
+    photos2 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+    v10 = [photos2 count] + 1;
 
-    if (v10 <= a4)
+    if (v10 <= index)
     {
       v8 = 0;
     }
@@ -184,7 +184,7 @@
 
   else
   {
-    v8 = [(MUPlacePhotoSliderView *)self->_photoSliderView imageViewForIndex:a4];
+    v8 = [(MUPlacePhotoSliderView *)self->_photoSliderView imageViewForIndex:index];
   }
 
   photoSliderView = self->_photoSliderView;
@@ -195,7 +195,7 @@
   v14 = v8;
   v12 = v8;
   [(MUPlacePhotoSliderView *)photoSliderView enumerateImageViewsWithBlock:v13];
-  [(MUPlacePhotoSliderView *)self->_photoSliderView scrollToViewAtIndex:a4];
+  [(MUPlacePhotoSliderView *)self->_photoSliderView scrollToViewAtIndex:index];
 }
 
 uint64_t __68__MUPlacePhotoSectionController_placePhotoGallery_willCloseAtIndex___block_invoke(uint64_t a1, void *a2)
@@ -209,47 +209,47 @@ uint64_t __68__MUPlacePhotoSectionController_placePhotoGallery_willCloseAtIndex_
   return [a2 setAlpha:v2];
 }
 
-- (id)animationControllerForDismissedController:(id)a3
+- (id)animationControllerForDismissedController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v5 = v4;
-  v6 = [v5 viewControllers];
-  v7 = [v6 firstObject];
+  v5 = controllerCopy;
+  viewControllers = [v5 viewControllers];
+  firstObject = [viewControllers firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [v5 viewControllers];
-    v10 = [v9 firstObject];
+    viewControllers2 = [v5 viewControllers];
+    firstObject2 = [viewControllers2 firstObject];
 
-    if (v10)
+    if (firstObject2)
     {
-      v11 = [v10 indexOfVisibleView];
-      if (v11 >= [(MUPhotoSliderTileProvider *)self->_photoTileProvider numberOfPhotos])
+      indexOfVisibleView = [firstObject2 indexOfVisibleView];
+      if (indexOfVisibleView >= [(MUPhotoSliderTileProvider *)self->_photoTileProvider numberOfPhotos])
       {
         v16 = 0;
       }
 
       else
       {
-        v12 = [(MUPlacePhotoSliderView *)self->_photoSliderView imageViewForIndex:v11];
+        v12 = [(MUPlacePhotoSliderView *)self->_photoSliderView imageViewForIndex:indexOfVisibleView];
         v13 = objc_alloc(MEMORY[0x1E69DCAE0]);
-        v14 = [v12 image];
-        v15 = [v13 initWithImage:v14];
+        image = [v12 image];
+        v15 = [v13 initWithImage:image];
 
         [v15 setContentMode:{objc_msgSend(v12, "contentMode")}];
         v16 = [[MUPhotoGalleryTransitionAnimator alloc] initWithView:v12 transitionView:v15];
         [(MUPhotoGalleryTransitionAnimator *)v16 setDelegate:self];
       }
 
-      v5 = v10;
+      v5 = firstObject2;
       goto LABEL_10;
     }
 
@@ -266,11 +266,11 @@ LABEL_11:
   return v16;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController
 {
   v6 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v7 = [(UIImageView *)self->_imageViewForTransition image];
-  v8 = [v6 initWithImage:v7];
+  image = [(UIImageView *)self->_imageViewForTransition image];
+  v8 = [v6 initWithImage:image];
 
   [v8 setContentMode:{-[UIImageView contentMode](self->_imageViewForTransition, "contentMode")}];
   v9 = [[MUPhotoGalleryTransitionAnimator alloc] initWithView:self->_imageViewForTransition transitionView:v8];
@@ -279,65 +279,65 @@ LABEL_11:
   return v9;
 }
 
-- (void)_addPhotoButtonTappedWithEntryPoint:(int64_t)a3 presentationOptions:(id)a4
+- (void)_addPhotoButtonTappedWithEntryPoint:(int64_t)point presentationOptions:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   [(MUPlaceSectionController *)self captureInfoCardAction:2147 eventValue:@"photo slider" feedbackType:0 actionRichProviderId:0 classification:0];
-  v7 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-  [v7 placePhotoSectionController:self requestsAddPhotosToMapsWithEntryPoint:a3 options:v6];
+  photoSectionControllerDelegate = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+  [photoSectionControllerDelegate placePhotoSectionController:self requestsAddPhotosToMapsWithEntryPoint:point options:optionsCopy];
 }
 
-- (void)photoSliderView:(id)a3 didTapAttribution:(id)a4
+- (void)photoSliderView:(id)view didTapAttribution:(id)attribution
 {
-  v14 = a4;
-  v5 = [(MUPlacePhotoSliderView *)self->_photoSliderView attributionViewForAttribution:v14];
+  attributionCopy = attribution;
+  v5 = [(MUPlacePhotoSliderView *)self->_photoSliderView attributionViewForAttribution:attributionCopy];
   v6 = objc_alloc_init(MUPresentationOptions);
   [(MUPresentationOptions *)v6 setProgressObserver:v5];
   [(MUPresentationOptions *)v6 setSourceView:v5];
   [v5 frame];
   [(MUPresentationOptions *)v6 setSourceRect:?];
-  if (self->_attributionViewModel == v14)
+  if (self->_attributionViewModel == attributionCopy)
   {
     if ([(MUPhotoSliderTileProvider *)self->_photoTileProvider displayType]== 1)
     {
       [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6018];
-      v7 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-      v8 = [v7 firstObject];
-      [(MUPlacePhotoSectionController *)self _routeAlbumTapWithViewModel:v8];
+      photos = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+      firstObject = [photos firstObject];
+      [(MUPlacePhotoSectionController *)self _routeAlbumTapWithViewModel:firstObject];
     }
 
     else
     {
-      v9 = [(MUPlaceSectionController *)self mapItem];
-      v10 = [v9 _mapkit_hasMultiplePhotoVendors];
+      mapItem = [(MUPlaceSectionController *)self mapItem];
+      _mapkit_hasMultiplePhotoVendors = [mapItem _mapkit_hasMultiplePhotoVendors];
 
-      if (v10)
+      if (_mapkit_hasMultiplePhotoVendors)
       {
         [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6018];
-        v7 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-        [v7 placePhotoSectionControllerRequestsToOpenThumbnailGallery:self withStartingIndex:0];
+        photos = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+        [photos placePhotoSectionControllerRequestsToOpenThumbnailGallery:self withStartingIndex:0];
         goto LABEL_9;
       }
 
-      v11 = [(MUPlaceSectionController *)self mapItem];
-      v7 = [v11 _mapkit_preferredFirstPhotoVendor];
+      mapItem2 = [(MUPlaceSectionController *)self mapItem];
+      photos = [mapItem2 _mapkit_preferredFirstPhotoVendor];
 
-      v12 = [v7 shouldHandlePhotosLocally];
-      v13 = [v7 providerID];
-      if (v12)
+      shouldHandlePhotosLocally = [photos shouldHandlePhotosLocally];
+      providerID = [photos providerID];
+      if (shouldHandlePhotosLocally)
       {
-        [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6018 eventValue:0 actionRichProviderId:v13];
+        [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6018 eventValue:0 actionRichProviderId:providerID];
 
-        v8 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-        [v8 placePhotoSectionControllerRequestsToOpenThumbnailGallery:self withStartingIndex:0];
+        firstObject = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+        [firstObject placePhotoSectionControllerRequestsToOpenThumbnailGallery:self withStartingIndex:0];
       }
 
       else
       {
-        [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6023 eventValue:0 actionRichProviderId:v13];
+        [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6023 eventValue:0 actionRichProviderId:providerID];
 
-        v8 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-        [v8 placePhotoSectionController:self requestsToOpenPhotoAttribution:v7 presentationOptions:v6];
+        firstObject = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+        [firstObject placePhotoSectionController:self requestsToOpenPhotoAttribution:photos presentationOptions:v6];
       }
     }
 
@@ -345,7 +345,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (self->_addPhotoViewModel == v14)
+  if (self->_addPhotoViewModel == attributionCopy)
   {
     [(MUPlacePhotoSectionController *)self _addPhotoButtonTappedWithEntryPoint:2 presentationOptions:v6];
   }
@@ -353,7 +353,7 @@ LABEL_9:
 LABEL_10:
 }
 
-- (unint64_t)numberOfAttributionsForPhotoSliderView:(id)a3
+- (unint64_t)numberOfAttributionsForPhotoSliderView:(id)view
 {
   v3 = 1;
   if (self->_attributionViewModel)
@@ -372,7 +372,7 @@ LABEL_10:
   }
 }
 
-- (id)attributionViewModelsForPhotoSliderView:(id)a3
+- (id)attributionViewModelsForPhotoSliderView:(id)view
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = v4;
@@ -391,47 +391,47 @@ LABEL_10:
   return v6;
 }
 
-- (id)photoSliderView:(id)a3 photoOverlayForModel:(id)a4
+- (id)photoSliderView:(id)view photoOverlayForModel:(id)model
 {
-  v5 = a4;
-  v6 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
+  modelCopy = model;
+  userSubmittedPhoto = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
 
   photoTileProvider = self->_photoTileProvider;
-  if (v6 == v5)
+  if (userSubmittedPhoto == modelCopy)
   {
     [(MUPhotoSliderTileProvider *)photoTileProvider yourPhotosTileOverlay];
   }
 
   else
   {
-    [(MUPhotoSliderTileProvider *)photoTileProvider overlayForPhoto:v5];
+    [(MUPhotoSliderTileProvider *)photoTileProvider overlayForPhoto:modelCopy];
   }
   v8 = ;
 
   return v8;
 }
 
-- (BOOL)photoSliderView:(id)a3 shouldShowFullWidthForModel:(id)a4
+- (BOOL)photoSliderView:(id)view shouldShowFullWidthForModel:(id)model
 {
-  v5 = a4;
+  modelCopy = model;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-    v8 = [v7 count];
+    photos = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+    v8 = [photos count];
 
-    v9 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-    v10 = v9;
+    photos2 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+    v10 = photos2;
     if (v8 == 1)
     {
-      v11 = [v9 firstObject];
+      firstObject = [photos2 firstObject];
 
-      v12 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
-      v13 = [v12 photoID];
-      v14 = [v11 photoID];
-      v15 = [v13 isEqualToString:v14];
+      userSubmittedPhoto = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
+      photoID = [userSubmittedPhoto photoID];
+      photoID2 = [firstObject photoID];
+      v15 = [photoID isEqualToString:photoID2];
 
       if (v15)
       {
@@ -441,7 +441,7 @@ LABEL_10:
 
     else
     {
-      v17 = [v9 count];
+      v17 = [photos2 count];
 
       if (!v17)
       {
@@ -450,12 +450,12 @@ LABEL_10:
     }
   }
 
-  v18 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
-  if (v18)
+  userSubmittedPhoto2 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
+  if (userSubmittedPhoto2)
   {
-    v19 = v18;
-    v20 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-    v21 = [v20 count];
+    v19 = userSubmittedPhoto2;
+    photos3 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+    v21 = [photos3 count];
 
     if (v21)
     {
@@ -463,20 +463,20 @@ LABEL_10:
     }
   }
 
-  v22 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-  v16 = [v22 count] == 1;
+  photos4 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+  v16 = [photos4 count] == 1;
 
   return v16;
 }
 
-- (id)photoSliderViewRequestsViewModels:(id)a3
+- (id)photoSliderViewRequestsViewModels:(id)models
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v5 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
-  [v4 _mapsui_addObjectIfNotNil:v5];
+  userSubmittedPhoto = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
+  [v4 _mapsui_addObjectIfNotNil:userSubmittedPhoto];
 
-  v6 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-  [v4 _mapsui_addObjectsFromArrayIfNotNil:v6];
+  photos = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+  [v4 _mapsui_addObjectsFromArrayIfNotNil:photos];
 
   v7 = [v4 copy];
 
@@ -491,13 +491,13 @@ LABEL_10:
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
     v10 = v3;
     v11 = v4;
-    self->_active = a3;
+    self->_active = active;
     v6 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v6))
     {
@@ -515,19 +515,19 @@ LABEL_10:
   }
 }
 
-- (void)_routeAlbumTapWithViewModel:(id)a3
+- (void)_routeAlbumTapWithViewModel:(id)model
 {
-  v21 = a3;
-  v4 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+  modelCopy = model;
+  photoSectionControllerDelegate = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = v21;
+  v6 = modelCopy;
   if (v5)
   {
-    if (v21)
+    if (modelCopy)
     {
-      v7 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
-      v8 = v7 == v21;
+      userSubmittedPhoto = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
+      v8 = userSubmittedPhoto == modelCopy;
 
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -539,36 +539,36 @@ LABEL_10:
       isKindOfClass = 0;
     }
 
-    v10 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider displayType];
+    displayType = [(MUPhotoSliderTileProvider *)self->_photoTileProvider displayType];
     if (v8)
     {
       [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:329];
       v11 = 0;
 LABEL_7:
-      v12 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-      [v12 placePhotoSectionController:self didSelectPhotoCategoryAtIndex:v11];
+      photoSectionControllerDelegate2 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+      [photoSectionControllerDelegate2 placePhotoSectionController:self didSelectPhotoCategoryAtIndex:v11];
 
-      v6 = v21;
+      v6 = modelCopy;
       goto LABEL_11;
     }
 
-    v13 = v10;
-    v6 = v21;
+    v13 = displayType;
+    v6 = modelCopy;
     if (isKindOfClass)
     {
-      v14 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-      v15 = [v14 indexOfObject:v21];
+      photos = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+      v15 = [photos indexOfObject:modelCopy];
 
       if (v13 == 1)
       {
-        v16 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider albumIdForPhoto:v21];
+        v16 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider albumIdForPhoto:modelCopy];
         [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:284 eventValue:v16 actionRichProviderId:0];
 
         v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v15];
         [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6006 eventValue:v17 actionRichProviderId:0];
 
         v18 = [(MUPlacePhotoSectionController *)self photoSliderViewRequestsViewModels:self->_photoSliderView];
-        v11 = [v18 indexOfObject:v21];
+        v11 = [v18 indexOfObject:modelCopy];
       }
 
       else
@@ -576,8 +576,8 @@ LABEL_7:
         v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v15];
         [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6006 eventValue:v19 actionRichProviderId:0];
 
-        v20 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
-        v11 = v20 != 0;
+        userSubmittedPhoto2 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
+        v11 = userSubmittedPhoto2 != 0;
       }
 
       goto LABEL_7;
@@ -587,33 +587,33 @@ LABEL_7:
 LABEL_11:
 }
 
-- (void)_routeFlatListTapWithViewModel:(id)a3
+- (void)_routeFlatListTapWithViewModel:(id)model
 {
-  v38 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
-    if (v4)
+    userSubmittedPhoto = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
+    if (userSubmittedPhoto)
     {
-      v5 = v4;
-      v6 = [(MUPlaceSectionController *)self mapItem];
-      v7 = [v6 _mapkit_supportsFullScreenExperience];
+      v5 = userSubmittedPhoto;
+      mapItem = [(MUPlaceSectionController *)self mapItem];
+      _mapkit_supportsFullScreenExperience = [mapItem _mapkit_supportsFullScreenExperience];
 
-      if (v7)
+      if (_mapkit_supportsFullScreenExperience)
       {
-        [(MUPlacePhotoSectionController *)self _routeAlbumTapWithViewModel:v38];
+        [(MUPlacePhotoSectionController *)self _routeAlbumTapWithViewModel:modelCopy];
         goto LABEL_15;
       }
     }
 
-    v8 = v38;
-    v9 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-    v10 = [v9 indexOfObject:v8];
+    v8 = modelCopy;
+    photos = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+    v10 = [photos indexOfObject:v8];
 
     if ([(MUPhotoSliderTileProvider *)self->_photoTileProvider shouldRouteToPhotoThumbnailGallery])
     {
-      v11 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+      photoSectionControllerDelegate = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
       v12 = objc_opt_respondsToSelector();
 
       if (v12)
@@ -622,8 +622,8 @@ LABEL_11:
         [(MUPlaceSectionController *)self captureInfoCardAction:6006 eventValue:v13 feedbackType:0 actionRichProviderId:0 classification:0];
 
         [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6087];
-        v14 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-        [v14 placePhotoSectionControllerRequestsToOpenThumbnailGallery:self withStartingIndex:v10];
+        photoSectionControllerDelegate2 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+        [photoSectionControllerDelegate2 placePhotoSectionControllerRequestsToOpenThumbnailGallery:self withStartingIndex:v10];
 LABEL_13:
       }
 
@@ -635,59 +635,59 @@ LABEL_14:
     if (-[MUPhotoSliderTileProvider showFullScreen](self->_photoTileProvider, "showFullScreen") && ![v8 needsObfuscationWhenRenderedInFullScreen])
     {
       v23 = [MUPlacePhotoGalleryViewController alloc];
-      v24 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-      v25 = [(MUPlaceSectionController *)self mapItem];
-      v26 = [(MUPlacePhotoGalleryViewController *)v23 initWithPhotos:v24 additionalView:0 scrollToIndex:v10 mapItem:v25 delegate:self];
+      photos2 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+      mapItem2 = [(MUPlaceSectionController *)self mapItem];
+      v26 = [(MUPlacePhotoGalleryViewController *)v23 initWithPhotos:photos2 additionalView:0 scrollToIndex:v10 mapItem:mapItem2 delegate:self];
       photoGalleryViewController = self->_photoGalleryViewController;
       self->_photoGalleryViewController = v26;
 
       v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v10];
-      v29 = [v8 attribution];
-      v30 = [v29 providerID];
-      [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6006 eventValue:v28 actionRichProviderId:v30];
+      attribution = [v8 attribution];
+      providerID = [attribution providerID];
+      [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6006 eventValue:v28 actionRichProviderId:providerID];
 
       [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6087];
       if (MapKitIdiomIsMacCatalyst())
       {
-        v31 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+        photoSectionControllerDelegate3 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
         v32 = objc_opt_respondsToSelector();
 
         if (v32)
         {
-          v14 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-          [v14 placePhotoSectionController:self requestsSceneActivationForPhotoGalleryViewController:self->_photoGalleryViewController];
+          photoSectionControllerDelegate2 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+          [photoSectionControllerDelegate2 placePhotoSectionController:self requestsSceneActivationForPhotoGalleryViewController:self->_photoGalleryViewController];
           goto LABEL_13;
         }
       }
 
-      v14 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:self->_photoGalleryViewController];
-      v33 = [v14 navigationController];
-      [v33 setNavigationBarHidden:1 animated:0];
+      photoSectionControllerDelegate2 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:self->_photoGalleryViewController];
+      navigationController = [photoSectionControllerDelegate2 navigationController];
+      [navigationController setNavigationBarHidden:1 animated:0];
 
-      [v14 setModalPresentationStyle:5];
-      [v14 setTransitioningDelegate:self];
+      [photoSectionControllerDelegate2 setModalPresentationStyle:5];
+      [photoSectionControllerDelegate2 setTransitioningDelegate:self];
       v34 = [(MUPlacePhotoSliderView *)self->_photoSliderView imageViewForIndex:v10];
       imageViewForTransition = self->_imageViewForTransition;
       self->_imageViewForTransition = v34;
 
-      v36 = [(MUPlacePhotoSectionController *)self presentingViewController];
-      [v36 presentViewController:v14 animated:1 completion:0];
+      presentingViewController = [(MUPlacePhotoSectionController *)self presentingViewController];
+      [presentingViewController presentViewController:photoSectionControllerDelegate2 animated:1 completion:0];
 
-      v37 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-      LOBYTE(v33) = objc_opt_respondsToSelector();
+      photoSectionControllerDelegate4 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+      LOBYTE(navigationController) = objc_opt_respondsToSelector();
 
-      if ((v33 & 1) == 0)
+      if ((navigationController & 1) == 0)
       {
         goto LABEL_13;
       }
 
-      v21 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-      [v21 placePhotoSectionControllerDidOpenFullscreenPhotos:self];
+      photoSectionControllerDelegate5 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+      [photoSectionControllerDelegate5 placePhotoSectionControllerDidOpenFullscreenPhotos:self];
     }
 
     else
     {
-      v15 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+      photoSectionControllerDelegate6 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
       v16 = objc_opt_respondsToSelector();
 
       if ((v16 & 1) == 0)
@@ -699,14 +699,14 @@ LABEL_14:
       [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6006 eventValue:v17 actionRichProviderId:0];
 
       v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", v10];
-      v19 = [v8 attribution];
-      v20 = [v19 providerID];
-      [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6018 eventValue:v18 actionRichProviderId:v20];
+      attribution2 = [v8 attribution];
+      providerID2 = [attribution2 providerID];
+      [(MUPlacePhotoSectionController *)self _captureSliderInstrumentationWithAction:6018 eventValue:v18 actionRichProviderId:providerID2];
 
-      v14 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
-      v21 = [v8 photoID];
-      v22 = [(MUPlacePhotoSectionController *)self presentingViewController];
-      [v14 placePhotoSectionController:self didSelectViewPhoto:v8 withID:v21 presentingViewController:v22];
+      photoSectionControllerDelegate2 = [(MUPlacePhotoSectionController *)self photoSectionControllerDelegate];
+      photoSectionControllerDelegate5 = [v8 photoID];
+      presentingViewController2 = [(MUPlacePhotoSectionController *)self presentingViewController];
+      [photoSectionControllerDelegate2 placePhotoSectionController:self didSelectViewPhoto:v8 withID:photoSectionControllerDelegate5 presentingViewController:presentingViewController2];
     }
 
     goto LABEL_13;
@@ -715,28 +715,28 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)photoSliderView:(id)a3 didTapViewModel:(id)a4
+- (void)photoSliderView:(id)view didTapViewModel:(id)model
 {
-  v8 = a4;
-  v5 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
+  modelCopy = model;
+  userSubmittedPhoto = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
 
-  if (v5 == v8 || (v6 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider displayType], v6 == 1))
+  if (userSubmittedPhoto == modelCopy || (v6 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider displayType], v6 == 1))
   {
-    v6 = [(MUPlacePhotoSectionController *)self _routeAlbumTapWithViewModel:v8];
+    v6 = [(MUPlacePhotoSectionController *)self _routeAlbumTapWithViewModel:modelCopy];
   }
 
   else
   {
-    v7 = v8;
+    v7 = modelCopy;
     if (v6)
     {
       goto LABEL_7;
     }
 
-    v6 = [(MUPlacePhotoSectionController *)self _routeFlatListTapWithViewModel:v8];
+    v6 = [(MUPlacePhotoSectionController *)self _routeFlatListTapWithViewModel:modelCopy];
   }
 
-  v7 = v8;
+  v7 = modelCopy;
 LABEL_7:
 
   MEMORY[0x1EEE66BB8](v6, v7);
@@ -744,15 +744,15 @@ LABEL_7:
 
 - (BOOL)hasContent
 {
-  v3 = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
+  userSubmittedPhoto = [(MUPlacePhotoSectionController *)self userSubmittedPhoto];
 
-  if (v3)
+  if (userSubmittedPhoto)
   {
     return 1;
   }
 
-  v5 = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
-  v4 = [v5 count] != 0;
+  photos = [(MUPhotoSliderTileProvider *)self->_photoTileProvider photos];
+  v4 = [photos count] != 0;
 
   return v4;
 }
@@ -832,13 +832,13 @@ void __50__MUPlacePhotoSectionController__setupSectionView__block_invoke_2(uint6
   }
 }
 
-- (MUPlacePhotoSectionController)initWithMapItem:(id)a3 configuration:(id)a4
+- (MUPlacePhotoSectionController)initWithMapItem:(id)item configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = MUPlacePhotoSectionController;
-  v8 = [(MUPlaceSectionController *)&v15 initWithMapItem:v6];
+  v8 = [(MUPlaceSectionController *)&v15 initWithMapItem:itemCopy];
   if (v8)
   {
     v9 = MUGetPlaceCardLog();
@@ -848,11 +848,11 @@ void __50__MUPlacePhotoSectionController__setupSectionView__block_invoke_2(uint6
       _os_signpost_emit_with_name_impl(&dword_1C5620000, v9, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "MUPlacePhotoSectionControllerInit", "", v14, 2u);
     }
 
-    v10 = [[MUPhotoSliderTileProvider alloc] initWithMapItem:v6];
+    v10 = [[MUPhotoSliderTileProvider alloc] initWithMapItem:itemCopy];
     photoTileProvider = v8->_photoTileProvider;
     v8->_photoTileProvider = v10;
 
-    objc_storeStrong(&v8->_configuration, a4);
+    objc_storeStrong(&v8->_configuration, configuration);
     [(MUPlacePhotoSectionController *)v8 _setupSectionView];
     v12 = MUGetPlaceCardLog();
     if (os_signpost_enabled(v12))

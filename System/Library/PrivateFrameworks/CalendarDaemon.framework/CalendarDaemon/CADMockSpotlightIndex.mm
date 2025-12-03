@@ -1,26 +1,26 @@
 @interface CADMockSpotlightIndex
 - (BOOL)_incrementAndCheckIfShouldFailCall;
-- (CADMockSpotlightIndex)initWithProvider:(id)a3;
+- (CADMockSpotlightIndex)initWithProvider:(id)provider;
 - (double)_artificialDelay;
 - (void)beginIndexBatch;
-- (void)deleteAllSearchableItemsForBundleID:(id)a3 completionHandler:(id)a4;
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 completionHandler:(id)a4;
-- (void)endIndexBatchWithExpectedClientState:(id)a3 newClientState:(id)a4 completionHandler:(id)a5;
-- (void)indexSearchableItems:(id)a3 completionHandler:(id)a4;
+- (void)deleteAllSearchableItemsForBundleID:(id)d completionHandler:(id)handler;
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers completionHandler:(id)handler;
+- (void)endIndexBatchWithExpectedClientState:(id)state newClientState:(id)clientState completionHandler:(id)handler;
+- (void)indexSearchableItems:(id)items completionHandler:(id)handler;
 @end
 
 @implementation CADMockSpotlightIndex
 
-- (CADMockSpotlightIndex)initWithProvider:(id)a3
+- (CADMockSpotlightIndex)initWithProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v13.receiver = self;
   v13.super_class = CADMockSpotlightIndex;
   v5 = [(CADMockSpotlightIndex *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_provider, v4);
+    objc_storeWeak(&v5->_provider, providerCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("CADMockSpotlightIndex", v7);
     queue = v6->_queue;
@@ -61,12 +61,12 @@
   WeakRetained = objc_loadWeakRetained(&self->_provider);
   if (self->_batchOpen)
   {
-    v3 = [WeakRetained failureCallback];
+    failureCallback = [WeakRetained failureCallback];
 
-    if (v3)
+    if (failureCallback)
     {
-      v4 = [WeakRetained failureCallback];
-      (v4)[2](v4, @"beginIndexBatch called in middle of batch");
+      failureCallback2 = [WeakRetained failureCallback];
+      (failureCallback2)[2](failureCallback2, @"beginIndexBatch called in middle of batch");
     }
   }
 
@@ -76,11 +76,11 @@
   self->_batchJobs = v5;
 }
 
-- (void)endIndexBatchWithExpectedClientState:(id)a3 newClientState:(id)a4 completionHandler:(id)a5
+- (void)endIndexBatchWithExpectedClientState:(id)state newClientState:(id)clientState completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  clientStateCopy = clientState;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_provider);
   v12 = WeakRetained;
   v23 = 0;
@@ -101,23 +101,23 @@
     block[3] = &unk_27851AD58;
     block[4] = self;
     v22 = &v23;
-    v21 = v10;
+    v21 = handlerCopy;
     dispatch_after(v14, queue, block);
   }
 
   else
   {
-    v16 = [WeakRetained failureCallback];
+    failureCallback = [WeakRetained failureCallback];
 
-    if (v16)
+    if (failureCallback)
     {
-      v17 = [v12 failureCallback];
-      (v17)[2](v17, @"endIndexBatchWithExpectedClientState called outside batch request");
+      failureCallback2 = [v12 failureCallback];
+      (failureCallback2)[2](failureCallback2, @"endIndexBatchWithExpectedClientState called outside batch request");
     }
 
-    v18 = [(CADMockSpotlightIndex *)self _batchFailureError];
+    _batchFailureError = [(CADMockSpotlightIndex *)self _batchFailureError];
     v19 = v24[5];
-    v24[5] = v18;
+    v24[5] = _batchFailureError;
   }
 
   _Block_object_dispose(&v23, 8);
@@ -178,10 +178,10 @@ LABEL_11:
   return result;
 }
 
-- (void)deleteSearchableItemsWithDomainIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)deleteSearchableItemsWithDomainIdentifiers:(id)identifiers completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -196,13 +196,13 @@ LABEL_11:
   block[1] = 3221225472;
   block[2] = __86__CADMockSpotlightIndex_deleteSearchableItemsWithDomainIdentifiers_completionHandler___block_invoke;
   block[3] = &unk_27851AD80;
-  v18 = v7;
+  v18 = handlerCopy;
   v19 = v20;
   block[4] = self;
   v16 = WeakRetained;
-  v17 = v6;
-  v12 = v7;
-  v13 = v6;
+  v17 = identifiersCopy;
+  v12 = handlerCopy;
+  v13 = identifiersCopy;
   v14 = WeakRetained;
   dispatch_after(v10, queue, block);
 
@@ -248,27 +248,27 @@ uint64_t __86__CADMockSpotlightIndex_deleteSearchableItemsWithDomainIdentifiers_
   return result;
 }
 
-- (void)indexSearchableItems:(id)a3 completionHandler:(id)a4
+- (void)indexSearchableItems:(id)items completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_provider);
   v9 = WeakRetained;
   if (self->_batchOpen)
   {
-    v10 = 0;
+    failureCallback = 0;
   }
 
   else
   {
-    v10 = [WeakRetained failureCallback];
+    failureCallback = [WeakRetained failureCallback];
 
-    if (v10)
+    if (failureCallback)
     {
-      v11 = [v9 failureCallback];
-      (v11)[2](v11, @"deleteSearchableItemsWithDomainIdentifiers called outside batch");
+      failureCallback2 = [v9 failureCallback];
+      (failureCallback2)[2](failureCallback2, @"deleteSearchableItemsWithDomainIdentifiers called outside batch");
 
-      v10 = [(CADMockSpotlightIndex *)self _batchFailureError];
+      failureCallback = [(CADMockSpotlightIndex *)self _batchFailureError];
     }
   }
 
@@ -281,14 +281,14 @@ uint64_t __86__CADMockSpotlightIndex_deleteSearchableItemsWithDomainIdentifiers_
   objc_copyWeak(&v22, &location);
   v13 = v9;
   v20 = v13;
-  v14 = v6;
+  v14 = itemsCopy;
   v21 = v14;
   v15 = MEMORY[0x22AA4DCD0](&v16);
   [(NSMutableArray *)batchJobs addObject:v15, v16, v17, v18, v19];
 
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7, v10);
+    handlerCopy[2](handlerCopy, failureCallback);
   }
 
   objc_destroyWeak(&v22);
@@ -319,10 +319,10 @@ uint64_t __64__CADMockSpotlightIndex_indexSearchableItems_completionHandler___bl
   return 1;
 }
 
-- (void)deleteAllSearchableItemsForBundleID:(id)a3 completionHandler:(id)a4
+- (void)deleteAllSearchableItemsForBundleID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -337,13 +337,13 @@ uint64_t __64__CADMockSpotlightIndex_indexSearchableItems_completionHandler___bl
   block[1] = 3221225472;
   block[2] = __79__CADMockSpotlightIndex_deleteAllSearchableItemsForBundleID_completionHandler___block_invoke;
   block[3] = &unk_27851AD80;
-  v18 = v7;
+  v18 = handlerCopy;
   v19 = v20;
   block[4] = self;
   v16 = WeakRetained;
-  v17 = v6;
-  v12 = v7;
-  v13 = v6;
+  v17 = dCopy;
+  v12 = handlerCopy;
+  v13 = dCopy;
   v14 = WeakRetained;
   dispatch_after(v10, queue, block);
 
@@ -395,9 +395,9 @@ uint64_t __79__CADMockSpotlightIndex_deleteAllSearchableItemsForBundleID_complet
   [WeakRetained setNumCalls:{objc_msgSend(WeakRetained, "numCalls") + 1}];
 
   v4 = objc_loadWeakRetained(&self->_provider);
-  v5 = [v4 failureMode];
+  failureMode = [v4 failureMode];
 
-  switch(v5)
+  switch(failureMode)
   {
     case 3:
       return 1;

@@ -1,15 +1,15 @@
 @interface NDOAgentInternalDebugHelpers
-+ (id)handleInternalCommand:(id)a3;
++ (id)handleInternalCommand:(id)command;
 + (void)runDaemonStartupLogicIfNeeded;
 - (_TtC8ndoagent28NDOAgentInternalDebugHelpers)init;
 @end
 
 @implementation NDOAgentInternalDebugHelpers
 
-+ (id)handleInternalCommand:(id)a3
++ (id)handleInternalCommand:(id)command
 {
-  v3 = a3;
-  v4 = _s8ndoagent28NDOAgentInternalDebugHelpersC06handleC7CommandySo7NSErrorCSgSo12NSDictionaryCFZ_0(v3);
+  commandCopy = command;
+  v4 = _s8ndoagent28NDOAgentInternalDebugHelpersC06handleC7CommandySo7NSErrorCSgSo12NSDictionaryCFZ_0(commandCopy);
 
   return v4;
 }

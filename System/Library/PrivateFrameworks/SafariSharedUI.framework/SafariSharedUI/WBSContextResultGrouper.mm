@@ -1,6 +1,6 @@
 @interface WBSContextResultGrouper
 - (WBSContextResultGrouper)init;
-- (id)groupItems:(id)a3;
+- (id)groupItems:(id)items;
 @end
 
 @implementation WBSContextResultGrouper
@@ -20,16 +20,16 @@
   return v3;
 }
 
-- (id)groupItems:(id)a3
+- (id)groupItems:(id)items
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [objc_alloc(MEMORY[0x1E696AD18]) initWithKeyOptions:0 valueOptions:0 capacity:0];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
@@ -45,14 +45,14 @@
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 groupContextResult];
-        if (v12)
+        groupContextResult = [v11 groupContextResult];
+        if (groupContextResult)
         {
-          v13 = [v5 objectForKey:v12];
+          v13 = [v5 objectForKey:groupContextResult];
           if (!v13)
           {
             v13 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-            [v5 setObject:v13 forKey:v12];
+            [v5 setObject:v13 forKey:groupContextResult];
           }
 
           [v13 addObject:v11];
@@ -69,10 +69,10 @@
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [v5 keyEnumerator];
-  v15 = [v14 allObjects];
+  keyEnumerator = [v5 keyEnumerator];
+  allObjects = [keyEnumerator allObjects];
 
-  v16 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+  v16 = [allObjects countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v16)
   {
     v17 = v16;
@@ -83,7 +83,7 @@
       {
         if (*v24 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(allObjects);
         }
 
         v20 = *(*(&v23 + 1) + 8 * j);
@@ -94,7 +94,7 @@
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v23 objects:v31 count:16];
+      v17 = [allObjects countByEnumeratingWithState:&v23 objects:v31 count:16];
     }
 
     while (v17);

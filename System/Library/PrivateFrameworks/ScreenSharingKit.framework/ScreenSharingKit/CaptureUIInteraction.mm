@@ -1,10 +1,10 @@
 @interface CaptureUIInteraction
 - (_TtC16ScreenSharingKit20CaptureUIInteraction)init;
 - (int64_t)_deviceOrientation;
-- (void)didMoveToView:(id)a3;
-- (void)setView:(id)a3;
-- (void)set_deviceOrientation:(int64_t)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)setView:(id)view;
+- (void)set_deviceOrientation:(int64_t)orientation;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation CaptureUIInteraction
@@ -16,25 +16,25 @@
   return result;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC16ScreenSharingKit20CaptureUIInteraction__view);
-  *(&self->super.isa + OBJC_IVAR____TtC16ScreenSharingKit20CaptureUIInteraction__view) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC16ScreenSharingKit20CaptureUIInteraction__view) = view;
+  viewCopy = view;
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  CaptureUIInteraction.willMove(to:)(a3);
+  viewCopy = view;
+  selfCopy = self;
+  CaptureUIInteraction.willMove(to:)(view);
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  CaptureUIInteraction.didMove(to:)(a3);
+  viewCopy = view;
+  selfCopy = self;
+  CaptureUIInteraction.didMove(to:)(view);
 }
 
 - (int64_t)_deviceOrientation
@@ -44,10 +44,10 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)set_deviceOrientation:(int64_t)a3
+- (void)set_deviceOrientation:(int64_t)orientation
 {
-  v4 = self;
-  CaptureUIInteraction.deviceOrientation.setter(a3);
+  selfCopy = self;
+  CaptureUIInteraction.deviceOrientation.setter(orientation);
 }
 
 @end

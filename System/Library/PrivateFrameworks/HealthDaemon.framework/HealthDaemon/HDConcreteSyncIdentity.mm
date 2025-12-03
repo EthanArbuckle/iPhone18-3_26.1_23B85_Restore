@@ -1,37 +1,37 @@
 @interface HDConcreteSyncIdentity
 + (id)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDConcreteSyncIdentity)init;
 - (id)description;
-- (id)initWithIdentity:(void *)a3 entity:(char)a4 isChild:;
+- (id)initWithIdentity:(void *)identity entity:(char)entity isChild:;
 @end
 
 @implementation HDConcreteSyncIdentity
 
-- (id)initWithIdentity:(void *)a3 entity:(char)a4 isChild:
+- (id)initWithIdentity:(void *)identity entity:(char)entity isChild:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  identityCopy = identity;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = HDConcreteSyncIdentity;
-    a1 = objc_msgSendSuper2(&v14, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v14, sel_init);
+    if (self)
     {
       v9 = [v7 copy];
-      v10 = *(a1 + 2);
-      *(a1 + 2) = v9;
+      v10 = *(self + 2);
+      *(self + 2) = v9;
 
-      v11 = [v8 copy];
-      v12 = *(a1 + 3);
-      *(a1 + 3) = v11;
+      v11 = [identityCopy copy];
+      v12 = *(self + 3);
+      *(self + 3) = v11;
 
-      *(a1 + 8) = a4;
+      *(self + 8) = entity;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (HDConcreteSyncIdentity)init
@@ -54,11 +54,11 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HDSyncIdentity *)self->_identity isEqual:v4[2]]&& [(HDSQLiteEntity *)self->_entity isEqual:v4[3]];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(HDSyncIdentity *)self->_identity isEqual:equalCopy[2]]&& [(HDSQLiteEntity *)self->_entity isEqual:equalCopy[3]];
 
   return v5;
 }

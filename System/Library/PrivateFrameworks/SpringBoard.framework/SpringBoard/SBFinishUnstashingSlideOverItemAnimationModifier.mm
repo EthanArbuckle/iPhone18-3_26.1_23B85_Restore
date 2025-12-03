@@ -1,50 +1,50 @@
 @interface SBFinishUnstashingSlideOverItemAnimationModifier
-- (BOOL)shouldInterruptForActivity:(id)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
-- (id)animationAttributesForItem:(id)a3;
-- (void)transitionWillBegin:(id)a3;
+- (BOOL)shouldInterruptForActivity:(id)activity;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
+- (id)animationAttributesForItem:(id)item;
+- (void)transitionWillBegin:(id)begin;
 @end
 
 @implementation SBFinishUnstashingSlideOverItemAnimationModifier
 
-- (BOOL)shouldInterruptForActivity:(id)a3
+- (BOOL)shouldInterruptForActivity:(id)activity
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_transitionID && [v4 isTransitionEvent])
+  activityCopy = activity;
+  v5 = activityCopy;
+  if (self->_transitionID && [activityCopy isTransitionEvent])
   {
-    v6 = [v5 transitionID];
+    transitionID = [v5 transitionID];
     if (BSEqualObjects())
     {
-      v7 = [v5 isGestureEvent];
+      isGestureEvent = [v5 isGestureEvent];
     }
 
     else
     {
-      v7 = 1;
+      isGestureEvent = 1;
     }
   }
 
   else
   {
-    v7 = [v5 isGestureEvent];
+    isGestureEvent = [v5 isGestureEvent];
   }
 
-  return v7;
+  return isGestureEvent;
 }
 
-- (void)transitionWillBegin:(id)a3
+- (void)transitionWillBegin:(id)begin
 {
-  v4 = [a3 transitionID];
+  transitionID = [begin transitionID];
   transitionID = self->_transitionID;
-  self->_transitionID = v4;
+  self->_transitionID = transitionID;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
   v6.receiver = self;
   v6.super_class = SBFinishUnstashingSlideOverItemAnimationModifier;
-  v3 = [(SBWindowingModifier *)&v6 animationAttributesForItem:a3];
+  v3 = [(SBWindowingModifier *)&v6 animationAttributesForItem:item];
   v4 = [v3 mutableCopy];
 
   [v4 setUpdateMode:3];
@@ -52,30 +52,30 @@
   return v4;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = [v11 itemForLayoutRole:a3];
-  v13 = [v11 itemForLayoutRole:a3];
-  v14 = [(SBFinishUnstashingSlideOverItemAnimationModifier *)self displayItemInSlideOver];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v12 = [layoutCopy itemForLayoutRole:role];
+  v13 = [layoutCopy itemForLayoutRole:role];
+  displayItemInSlideOver = [(SBFinishUnstashingSlideOverItemAnimationModifier *)self displayItemInSlideOver];
   if (!BSEqualObjects())
   {
 
     goto LABEL_5;
   }
 
-  v15 = [(SBWindowingModifier *)self transitionPhase];
+  transitionPhase = [(SBWindowingModifier *)self transitionPhase];
 
-  if (v15 != 2)
+  if (transitionPhase != 2)
   {
 LABEL_5:
     v35.receiver = self;
     v35.super_class = SBFinishUnstashingSlideOverItemAnimationModifier;
-    [(SBFinishUnstashingSlideOverItemAnimationModifier *)&v35 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBFinishUnstashingSlideOverItemAnimationModifier *)&v35 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v20 = v27;
     v22 = v28;
     v24 = v29;
@@ -83,11 +83,11 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v16 = [(SBFinishUnstashingSlideOverItemAnimationModifier *)self layoutAttributesForDisplayItem:v12 inAppLayout:v11];
-  v17 = [(SBFinishUnstashingSlideOverItemAnimationModifier *)self displayItemLayoutAttributesCalculator];
-  v18 = [(SBWindowingModifier *)self windowingConfiguration];
-  [v17 sizeForLayoutAttributes:v16 windowingConfiguration:v18];
-  [v17 centerForLayoutAttributes:v16 windowingConfiguration:v18];
+  v16 = [(SBFinishUnstashingSlideOverItemAnimationModifier *)self layoutAttributesForDisplayItem:v12 inAppLayout:layoutCopy];
+  displayItemLayoutAttributesCalculator = [(SBFinishUnstashingSlideOverItemAnimationModifier *)self displayItemLayoutAttributesCalculator];
+  windowingConfiguration = [(SBWindowingModifier *)self windowingConfiguration];
+  [displayItemLayoutAttributesCalculator sizeForLayoutAttributes:v16 windowingConfiguration:windowingConfiguration];
+  [displayItemLayoutAttributesCalculator centerForLayoutAttributes:v16 windowingConfiguration:windowingConfiguration];
   SBRectWithSize();
   UIRectCenteredAboutPoint();
   v20 = v19;

@@ -1,18 +1,18 @@
 @interface CBControllerLowPowerModeParams
-- (CBControllerLowPowerModeParams)initWithXPCObject:(id)a3 error:(id *)a4;
+- (CBControllerLowPowerModeParams)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBControllerLowPowerModeParams
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  xdict = v4;
+  objectCopy = object;
+  xdict = objectCopy;
   if (self->_actionType)
   {
-    xpc_dictionary_set_uint64(v4, "suA", self->_actionType);
+    xpc_dictionary_set_uint64(objectCopy, "suA", self->_actionType);
   }
 
   dataBlob = self->_dataBlob;
@@ -21,10 +21,10 @@
     v6 = dataBlob;
     v7 = xdict;
     v8 = dataBlob;
-    v9 = [(NSData *)v8 bytes];
-    if (v9)
+    bytes = [(NSData *)v8 bytes];
+    if (bytes)
     {
-      v10 = v9;
+      v10 = bytes;
     }
 
     else
@@ -43,10 +43,10 @@
     v13 = dataMask;
     v14 = xdict;
     v15 = dataMask;
-    v16 = [(NSData *)v15 bytes];
-    if (v16)
+    bytes2 = [(NSData *)v15 bytes];
+    if (bytes2)
     {
-      v17 = v16;
+      v17 = bytes2;
     }
 
     else
@@ -110,10 +110,10 @@
     v20 = deviceIDSalt;
     v21 = xdict;
     v22 = deviceIDSalt;
-    v23 = [(NSData *)v22 bytes];
-    if (v23)
+    bytes3 = [(NSData *)v22 bytes];
+    if (bytes3)
     {
-      v24 = v23;
+      v24 = bytes3;
     }
 
     else
@@ -153,10 +153,10 @@
     v28 = deviceIDInputKeyMaterial;
     v29 = xdict;
     v30 = deviceIDInputKeyMaterial;
-    v31 = [(NSData *)v30 bytes];
-    if (v31)
+    bytes4 = [(NSData *)v30 bytes];
+    if (bytes4)
     {
-      v32 = v31;
+      v32 = bytes4;
     }
 
     else
@@ -175,10 +175,10 @@
     v35 = deviceIDInfo;
     v36 = xdict;
     v37 = deviceIDInfo;
-    v38 = [(NSData *)v37 bytes];
-    if (v38)
+    bytes5 = [(NSData *)v37 bytes];
+    if (bytes5)
     {
-      v39 = v38;
+      v39 = bytes5;
     }
 
     else
@@ -227,10 +227,10 @@
     v42 = deviceIDDiagInfo;
     v43 = xdict;
     v44 = deviceIDDiagInfo;
-    v45 = [(NSData *)v44 bytes];
-    if (v45)
+    bytes6 = [(NSData *)v44 bytes];
+    if (bytes6)
     {
-      v46 = v45;
+      v46 = bytes6;
     }
 
     else
@@ -254,10 +254,10 @@
     v49 = macKeyDiagInfo;
     v50 = xdict;
     v51 = macKeyDiagInfo;
-    v52 = [(NSData *)v51 bytes];
-    if (v52)
+    bytes7 = [(NSData *)v51 bytes];
+    if (bytes7)
     {
-      v53 = v52;
+      v53 = bytes7;
     }
 
     else
@@ -294,9 +294,9 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"ActionType: %s, Blob: %@, Mask: %@, Config: 0x%x, DelayStart: %d, ScanW: 0x%x, ScanI: 0x%x, ScanD: %d, NextScan: %d, ClockDrift: %u, RSSI: %d, GPIOAssertTime: %d, dIDSalt: %@, dIDTsFrq: %d, dIDEffectiveBits: %d, dIDTsLsbsTruncated: %d, dIDIKM: %@, dIDInfo: %@, dIDLen: %d, dIDAdvScanCnt: %d, diagTxAdvInt: %d, diagTxAdvDur: %d, diagTxAdvBackoff: %d, dIDDiagInfo: %@, dIDDiagLen: %d, macKeyDiagInfo: %@, macKeyDiagLen: %d", v3, self->_dataBlob, self->_dataMask, self->_configFlags, self->_scanDelayStart, self->_scanWindow, self->_scanInterval, self->_scanDuration, self->_nextScanDelay, self->_maxClockDriftSeconds, self->_rssiThresholdValue, self->_gpioAssertionTime, self->_deviceIDSalt, self->_deviceIDTimestampFrequency, self->_deviceIDTimestampEffectiveBits, self->_deviceIDTimestampLsbsTruncated, self->_deviceIDInputKeyMaterial, self->_deviceIDInfo, self->_deviceIDLength, self->_deviceIDAdvScanCount, self->_diagnosticTxAdvInterval, self->_diagnosticTxAdvDuration, self->_diagnosticTxAdvBackoff, self->_deviceIDDiagInfo, self->_deviceIDDiagLength, self->_macKeyDiagInfo, self->_macKeyDiagLength];
 }
 
-- (CBControllerLowPowerModeParams)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBControllerLowPowerModeParams)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

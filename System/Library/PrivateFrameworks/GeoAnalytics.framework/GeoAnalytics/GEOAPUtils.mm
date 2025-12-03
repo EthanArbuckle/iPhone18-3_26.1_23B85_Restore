@@ -4,11 +4,11 @@
 + (id)currentDailyAggregationRepresentativeString;
 + (id)currentDailyAggregationTimestamp;
 + (id)daemonSet;
-+ (id)dailyAggregationTimestampFromDate:(id)a3 inAggTimestampFormat:(BOOL)a4;
++ (id)dailyAggregationTimestampFromDate:(id)date inAggTimestampFormat:(BOOL)format;
 + (id)firstPartySet;
 + (int)functionalAppGroup;
 + (int)myAppType;
-+ (void)appTypeForAppId:(id)a3 resultBlock:(id)a4;
++ (void)appTypeForAppId:(id)id resultBlock:(id)block;
 @end
 
 @implementation GEOAPUtils
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = __23__GEOAPUtils_myAppType__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (myAppType_onceToken != -1)
   {
     dispatch_once(&myAppType_onceToken, block);
@@ -223,7 +223,7 @@ uint64_t __27__GEOAPUtils_firstPartySet__block_invoke()
   block[1] = 3221225472;
   block[2] = __23__GEOAPUtils_daemonSet__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (daemonSet_onceToken != -1)
   {
     dispatch_once(&daemonSet_onceToken, block);
@@ -287,10 +287,10 @@ void __23__GEOAPUtils_daemonSet__block_invoke(uint64_t a1)
 
 + (id)currentDailyAggregationTimestamp
 {
-  v3 = [MEMORY[0x1E69A2430] sharedManager];
-  v4 = [v3 bestReferenceDate];
+  mEMORY[0x1E69A2430] = [MEMORY[0x1E69A2430] sharedManager];
+  bestReferenceDate = [mEMORY[0x1E69A2430] bestReferenceDate];
 
-  v5 = [a1 dailyAggregationTimestampFromDate:v4];
+  v5 = [self dailyAggregationTimestampFromDate:bestReferenceDate];
 
   return v5;
 }
@@ -299,14 +299,14 @@ void __23__GEOAPUtils_daemonSet__block_invoke(uint64_t a1)
 {
   if (_GEOConfigHasValue())
   {
-    v3 = [MEMORY[0x1E69A2430] sharedManager];
-    v4 = [v3 bestReferenceDate];
+    mEMORY[0x1E69A2430] = [MEMORY[0x1E69A2430] sharedManager];
+    bestReferenceDate = [mEMORY[0x1E69A2430] bestReferenceDate];
 
     v5 = GEOConfigGetDate();
     v6 = [v5 dateByAddingTimeInterval:86400.0];
     v7 = 1000;
     v8 = @"indeterminant range";
-    while ([v5 compare:v4] == 1 || objc_msgSend(v6, "compare:", v4) == -1)
+    while ([v5 compare:bestReferenceDate] == 1 || objc_msgSend(v6, "compare:", bestReferenceDate) == -1)
     {
       v9 = v6;
 
@@ -319,7 +319,7 @@ void __23__GEOAPUtils_daemonSet__block_invoke(uint64_t a1)
       }
     }
 
-    v8 = [a1 dailyAggregationRepresentativeStringFromDate:v5];
+    v8 = [self dailyAggregationRepresentativeStringFromDate:v5];
     v9 = v5;
 LABEL_9:
   }
@@ -338,7 +338,7 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = __32__GEOAPUtils_functionalAppGroup__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (functionalAppGroup_onceToken != -1)
   {
     dispatch_once(&functionalAppGroup_onceToken, block);
@@ -349,48 +349,48 @@ LABEL_9:
 
 + (id)GEOAPCachePath
 {
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:0];
 
-  v5 = [a1 GEOAPApplicationIdentifier];
-  v6 = [v4 URLByAppendingPathComponent:v5];
+  gEOAPApplicationIdentifier = [self GEOAPApplicationIdentifier];
+  v6 = [v4 URLByAppendingPathComponent:gEOAPApplicationIdentifier];
 
-  v7 = [v6 path];
+  path = [v6 path];
 
-  return v7;
+  return path;
 }
 
-+ (id)dailyAggregationTimestampFromDate:(id)a3 inAggTimestampFormat:(BOOL)a4
++ (id)dailyAggregationTimestampFromDate:(id)date inAggTimestampFormat:(BOOL)format
 {
-  v4 = a4;
-  v5 = a3;
+  formatCopy = format;
+  dateCopy = date;
   v6 = objc_alloc(MEMORY[0x1E695DEE8]);
   v7 = [v6 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-  if (v4)
+  if (formatCopy)
   {
     v8 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
     [v7 setTimeZone:v8];
   }
 
-  v9 = [v7 components:60 fromDate:v5];
+  v9 = [v7 components:60 fromDate:dateCopy];
   [v9 setHour:{objc_msgSend(v9, "hour") - 4}];
   v10 = [v7 dateFromComponents:v9];
   v11 = [v7 components:28 fromDate:v10];
   v12 = [v7 dateFromComponents:v11];
   v13 = objc_alloc_init(MEMORY[0x1E696AC80]);
-  if (v4)
+  if (formatCopy)
   {
-    v14 = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
+    localTimeZone = [MEMORY[0x1E695DFE8] timeZoneForSecondsFromGMT:0];
     v15 = 275;
   }
 
   else
   {
-    v14 = [MEMORY[0x1E695DFE8] localTimeZone];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
     v15 = 883;
   }
 
-  [v13 setTimeZone:v14];
+  [v13 setTimeZone:localTimeZone];
 
   [v13 setFormatOptions:v15];
   v16 = [v13 stringFromDate:v12];
@@ -398,17 +398,17 @@ LABEL_9:
   return v16;
 }
 
-+ (void)appTypeForAppId:(id)a3 resultBlock:(id)a4
++ (void)appTypeForAppId:(id)id resultBlock:(id)block
 {
-  v17 = a3;
-  v5 = a4;
-  if ([v17 isEqualToString:*MEMORY[0x1E69A1A78]])
+  idCopy = id;
+  blockCopy = block;
+  if ([idCopy isEqualToString:*MEMORY[0x1E69A1A78]])
   {
-    v5[2](v5, 0, 1);
+    blockCopy[2](blockCopy, 0, 1);
     goto LABEL_13;
   }
 
-  v6 = [v17 componentsSeparatedByString:@"."];
+  v6 = [idCopy componentsSeparatedByString:@"."];
   if ([v6 count] >= 3)
   {
     v7 = [v6 objectAtIndexedSubscript:0];
@@ -419,11 +419,11 @@ LABEL_9:
 
       if (v9)
       {
-        v10 = [v6 lastObject];
-        v11 = [v10 lowercaseString];
+        lastObject = [v6 lastObject];
+        lowercaseString = [lastObject lowercaseString];
 
-        v12 = [objc_opt_class() firstPartySet];
-        v13 = [v12 containsObject:v11];
+        firstPartySet = [objc_opt_class() firstPartySet];
+        v13 = [firstPartySet containsObject:lowercaseString];
 
         if (v13)
         {
@@ -432,8 +432,8 @@ LABEL_9:
 
         else
         {
-          v15 = [objc_opt_class() daemonSet];
-          v16 = [v15 containsObject:v11];
+          daemonSet = [objc_opt_class() daemonSet];
+          v16 = [daemonSet containsObject:lowercaseString];
 
           if (v16)
           {
@@ -466,7 +466,7 @@ LABEL_9:
   }
 
 LABEL_12:
-  v5[2](v5, v14, 0);
+  blockCopy[2](blockCopy, v14, 0);
 
 LABEL_13:
 }

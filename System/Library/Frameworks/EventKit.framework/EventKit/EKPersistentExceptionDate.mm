@@ -1,6 +1,6 @@
 @interface EKPersistentExceptionDate
 + (id)relations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -28,11 +28,11 @@ void __38__EKPersistentExceptionDate_relations__block_invoke()
   relations_relations_10 = v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(EKPersistentExceptionDate);
-  v5 = [(EKPersistentExceptionDate *)self date];
-  [(EKPersistentObject *)v4 primitiveSetDateValue:v5 forKey:*MEMORY[0x1E6992A00]];
+  date = [(EKPersistentExceptionDate *)self date];
+  [(EKPersistentObject *)v4 primitiveSetDateValue:date forKey:*MEMORY[0x1E6992A00]];
 
   return v4;
 }
@@ -41,8 +41,8 @@ void __38__EKPersistentExceptionDate_relations__block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKPersistentExceptionDate *)self date];
-  v6 = [v3 stringWithFormat:@"%@ <%p> {date = %@}", v4, self, v5];
+  date = [(EKPersistentExceptionDate *)self date];
+  v6 = [v3 stringWithFormat:@"%@ <%p> {date = %@}", v4, self, date];
 
   return v6;
 }

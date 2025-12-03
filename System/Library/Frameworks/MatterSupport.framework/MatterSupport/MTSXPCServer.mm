@@ -1,24 +1,24 @@
 @interface MTSXPCServer
 + (id)logCategory;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MTSAuthorizationServerInterface)authorizationServer;
 - (MTSDevicePairingServerInterface)devicePairingServer;
 - (MTSNetworkCredentialServerInterface)networkCredentialServer;
 - (MTSSystemCommissionerPairingServerInterface)systemCommissionerPairingServer;
 - (MTSXPCDeviceSetupClientProxyDelegate)deviceSetupServer;
 - (MTSXPCServer)init;
-- (MTSXPCServer)initWithListener:(id)a3 clientProxyFactory:(id)a4;
-- (void)clientProxy:(id)a3 checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)a4;
-- (void)clientProxy:(id)a3 fetchDevicePairingsForSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5;
-- (void)clientProxy:(id)a3 fetchSystemCommissionerPairingsWithCompletionHandler:(id)a4;
-- (void)clientProxy:(id)a3 openCommissioningWindowForSystemCommissionerPairingUUID:(id)a4 duration:(double)a5 completionHandler:(id)a6;
-- (void)clientProxy:(id)a3 performDeviceSetupUsingRequest:(id)a4 completionHandler:(id)a5;
-- (void)clientProxy:(id)a3 readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5;
-- (void)clientProxy:(id)a3 removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5;
-- (void)clientProxy:(id)a3 removeDevicePairingWithUUID:(id)a4 forSystemCommissionerPairingUUID:(id)a5 completionHandler:(id)a6;
-- (void)clientProxy:(id)a3 removeSystemCommissionerPairingWithUUID:(id)a4 completionHandler:(id)a5;
-- (void)clientProxy:(id)a3 retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a4 completionHandler:(id)a5;
-- (void)showRestrictedCharacteristicsAccessWarningAlertWithClientProxy:(id)a3;
+- (MTSXPCServer)initWithListener:(id)listener clientProxyFactory:(id)factory;
+- (void)clientProxy:(id)proxy checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)handler;
+- (void)clientProxy:(id)proxy fetchDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)clientProxy:(id)proxy fetchSystemCommissionerPairingsWithCompletionHandler:(id)handler;
+- (void)clientProxy:(id)proxy openCommissioningWindowForSystemCommissionerPairingUUID:(id)d duration:(double)duration completionHandler:(id)handler;
+- (void)clientProxy:(id)proxy performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler;
+- (void)clientProxy:(id)proxy readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)clientProxy:(id)proxy removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler;
+- (void)clientProxy:(id)proxy removeDevicePairingWithUUID:(id)d forSystemCommissionerPairingUUID:(id)iD completionHandler:(id)handler;
+- (void)clientProxy:(id)proxy removeSystemCommissionerPairingWithUUID:(id)d completionHandler:(id)handler;
+- (void)clientProxy:(id)proxy retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler;
+- (void)showRestrictedCharacteristicsAccessWarningAlertWithClientProxy:(id)proxy;
 - (void)start;
 @end
 
@@ -59,26 +59,26 @@
   return WeakRetained;
 }
 
-- (void)showRestrictedCharacteristicsAccessWarningAlertWithClientProxy:(id)a3
+- (void)showRestrictedCharacteristicsAccessWarningAlertWithClientProxy:(id)proxy
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 hasPrivateHomeKitEntitlement])
+  proxyCopy = proxy;
+  if ([proxyCopy hasPrivateHomeKitEntitlement])
   {
-    v5 = [(MTSXPCServer *)self authorizationServer];
-    if (!v5)
+    authorizationServer = [(MTSXPCServer *)self authorizationServer];
+    if (!authorizationServer)
     {
       _HMFPreconditionFailure();
     }
 
-    v6 = v5;
-    [v5 showRestrictedCharacteristicsAccessWarningAlert];
+    v6 = authorizationServer;
+    [authorizationServer showRestrictedCharacteristicsAccessWarningAlert];
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -96,27 +96,27 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientProxy:(id)a3 checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)a4
+- (void)clientProxy:(id)proxy checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasPrivateHomeKitEntitlement])
+  proxyCopy = proxy;
+  handlerCopy = handler;
+  if ([proxyCopy hasPrivateHomeKitEntitlement])
   {
-    v8 = [(MTSXPCServer *)self authorizationServer];
-    if (!v8)
+    authorizationServer = [(MTSXPCServer *)self authorizationServer];
+    if (!authorizationServer)
     {
       _HMFPreconditionFailure();
     }
 
-    v9 = v8;
-    [v8 checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:v7];
+    v9 = authorizationServer;
+    [authorizationServer checkRestrictedCharacteristicsAccessAllowedWithCompletionHandler:handlerCopy];
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -129,23 +129,23 @@
     }
 
     objc_autoreleasePoolPop(v10);
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientProxy:(id)a3 retrievePreferredThreadCredentialsOrCreateWithDataset:(id)a4 completionHandler:(id)a5
+- (void)clientProxy:(id)proxy retrievePreferredThreadCredentialsOrCreateWithDataset:(id)dataset completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 hasThreadCredentialsEntitlement] & 1) == 0)
+  proxyCopy = proxy;
+  datasetCopy = dataset;
+  handlerCopy = handler;
+  if (([proxyCopy hasThreadCredentialsEntitlement] & 1) == 0)
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process is missing entitlement: %@", @"com.apple.matter.support.xpc.thread-credentials"];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -162,47 +162,47 @@
     goto LABEL_8;
   }
 
-  v11 = [(MTSXPCServer *)self networkCredentialServer];
-  v12 = v11;
-  if (!v11)
+  networkCredentialServer = [(MTSXPCServer *)self networkCredentialServer];
+  v12 = networkCredentialServer;
+  if (!networkCredentialServer)
   {
     v17 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5];
 LABEL_8:
     v18 = v17;
-    v10[2](v10, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
 
     goto LABEL_9;
   }
 
-  [v11 retrievePreferredThreadCredentialsOrCreateWithDataset:v9 completionHandler:v10];
+  [networkCredentialServer retrievePreferredThreadCredentialsOrCreateWithDataset:datasetCopy completionHandler:handlerCopy];
 LABEL_9:
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientProxy:(id)a3 removeSystemCommissionerPairingWithUUID:(id)a4 completionHandler:(id)a5
+- (void)clientProxy:(id)proxy removeSystemCommissionerPairingWithUUID:(id)d completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 hasDevicePairingEntitlement])
+  proxyCopy = proxy;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([proxyCopy hasDevicePairingEntitlement])
   {
-    v11 = [(MTSXPCServer *)self systemCommissionerPairingServer];
-    if (!v11)
+    systemCommissionerPairingServer = [(MTSXPCServer *)self systemCommissionerPairingServer];
+    if (!systemCommissionerPairingServer)
     {
       _HMFPreconditionFailure();
     }
 
-    v12 = v11;
-    [v11 removeSystemCommissionerPairingWithUUID:v9 completionHandler:v10];
+    v12 = systemCommissionerPairingServer;
+    [systemCommissionerPairingServer removeSystemCommissionerPairingWithUUID:dCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process is missing entitlement: %@", @"com.apple.matter.support.xpc.device-pairing"];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -216,34 +216,34 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v13);
     v17 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5 reason:v12];
-    v10[2](v10, v17);
+    handlerCopy[2](handlerCopy, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientProxy:(id)a3 fetchSystemCommissionerPairingsWithCompletionHandler:(id)a4
+- (void)clientProxy:(id)proxy fetchSystemCommissionerPairingsWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 hasDevicePairingEntitlement])
+  proxyCopy = proxy;
+  handlerCopy = handler;
+  if ([proxyCopy hasDevicePairingEntitlement])
   {
-    v8 = [(MTSXPCServer *)self systemCommissionerPairingServer];
-    if (!v8)
+    systemCommissionerPairingServer = [(MTSXPCServer *)self systemCommissionerPairingServer];
+    if (!systemCommissionerPairingServer)
     {
       _HMFPreconditionFailure();
     }
 
-    v9 = v8;
-    [v8 fetchSystemCommissionerPairingsWithCompletionHandler:v7];
+    v9 = systemCommissionerPairingServer;
+    [systemCommissionerPairingServer fetchSystemCommissionerPairingsWithCompletionHandler:handlerCopy];
   }
 
   else
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process is missing entitlement: %@", @"com.apple.matter.support.xpc.device-pairing"];
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -257,22 +257,22 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v10);
     v14 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5 reason:v9];
-    v7[2](v7, 0, v14);
+    handlerCopy[2](handlerCopy, 0, v14);
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientProxy:(id)a3 performDeviceSetupUsingRequest:(id)a4 completionHandler:(id)a5
+- (void)clientProxy:(id)proxy performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTSXPCServer *)self deviceSetupServer];
-  if (v10)
+  proxyCopy = proxy;
+  requestCopy = request;
+  handlerCopy = handler;
+  deviceSetupServer = [(MTSXPCServer *)self deviceSetupServer];
+  if (deviceSetupServer)
   {
-    v11 = v10;
-    [v10 clientProxy:v17 performDeviceSetupUsingRequest:v8 completionHandler:v9];
+    v11 = deviceSetupServer;
+    [deviceSetupServer clientProxy:proxyCopy performDeviceSetupUsingRequest:requestCopy completionHandler:handlerCopy];
   }
 
   else
@@ -282,29 +282,29 @@ LABEL_9:
   }
 }
 
-- (void)clientProxy:(id)a3 readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5
+- (void)clientProxy:(id)proxy readCommissioningWindowStatusForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 hasDevicePairingEntitlement])
+  proxyCopy = proxy;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([proxyCopy hasDevicePairingEntitlement])
   {
-    v11 = [(MTSXPCServer *)self devicePairingServer];
-    if (!v11)
+    devicePairingServer = [(MTSXPCServer *)self devicePairingServer];
+    if (!devicePairingServer)
     {
       _HMFPreconditionFailure();
     }
 
-    v12 = v11;
-    [v11 readCommissioningWindowStatusForSystemCommissionerPairingUUID:v9 completionHandler:v10];
+    v12 = devicePairingServer;
+    [devicePairingServer readCommissioningWindowStatusForSystemCommissionerPairingUUID:dCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process is missing entitlement: %@", @"com.apple.matter.support.xpc.device-pairing"];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -318,35 +318,35 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v13);
     v17 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5 reason:v12];
-    v10[2](v10, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientProxy:(id)a3 openCommissioningWindowForSystemCommissionerPairingUUID:(id)a4 duration:(double)a5 completionHandler:(id)a6
+- (void)clientProxy:(id)proxy openCommissioningWindowForSystemCommissionerPairingUUID:(id)d duration:(double)duration completionHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 hasDevicePairingEntitlement])
+  proxyCopy = proxy;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([proxyCopy hasDevicePairingEntitlement])
   {
-    v13 = [(MTSXPCServer *)self devicePairingServer];
-    if (!v13)
+    devicePairingServer = [(MTSXPCServer *)self devicePairingServer];
+    if (!devicePairingServer)
     {
       _HMFPreconditionFailure();
     }
 
-    v14 = v13;
-    [v13 openCommissioningWindowForSystemCommissionerPairingUUID:v11 duration:v12 completionHandler:a5];
+    v14 = devicePairingServer;
+    [devicePairingServer openCommissioningWindowForSystemCommissionerPairingUUID:dCopy duration:handlerCopy completionHandler:duration];
   }
 
   else
   {
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process is missing entitlement: %@", @"com.apple.matter.support.xpc.device-pairing"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -360,35 +360,35 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v15);
     v19 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5 reason:v14];
-    (*(v12 + 2))(v12, 0, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v19);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientProxy:(id)a3 removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5
+- (void)clientProxy:(id)proxy removeAllDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 hasDevicePairingEntitlement])
+  proxyCopy = proxy;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([proxyCopy hasDevicePairingEntitlement])
   {
-    v11 = [(MTSXPCServer *)self devicePairingServer];
-    if (!v11)
+    devicePairingServer = [(MTSXPCServer *)self devicePairingServer];
+    if (!devicePairingServer)
     {
       _HMFPreconditionFailure();
     }
 
-    v12 = v11;
-    [v11 removeAllDevicePairingsForSystemCommissionerPairingUUID:v9 completionHandler:v10];
+    v12 = devicePairingServer;
+    [devicePairingServer removeAllDevicePairingsForSystemCommissionerPairingUUID:dCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process is missing entitlement: %@", @"com.apple.matter.support.xpc.device-pairing"];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -402,36 +402,36 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v13);
     v17 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5 reason:v12];
-    v10[2](v10, v17);
+    handlerCopy[2](handlerCopy, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientProxy:(id)a3 removeDevicePairingWithUUID:(id)a4 forSystemCommissionerPairingUUID:(id)a5 completionHandler:(id)a6
+- (void)clientProxy:(id)proxy removeDevicePairingWithUUID:(id)d forSystemCommissionerPairingUUID:(id)iD completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 hasDevicePairingEntitlement])
+  proxyCopy = proxy;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
+  if ([proxyCopy hasDevicePairingEntitlement])
   {
-    v14 = [(MTSXPCServer *)self devicePairingServer];
-    if (!v14)
+    devicePairingServer = [(MTSXPCServer *)self devicePairingServer];
+    if (!devicePairingServer)
     {
       _HMFPreconditionFailure();
     }
 
-    v15 = v14;
-    [v14 removeDevicePairingWithUUID:v11 forSystemCommissionerPairingUUID:v12 completionHandler:v13];
+    v15 = devicePairingServer;
+    [devicePairingServer removeDevicePairingWithUUID:dCopy forSystemCommissionerPairingUUID:iDCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process is missing entitlement: %@", @"com.apple.matter.support.xpc.device-pairing"];
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -445,35 +445,35 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v16);
     v20 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5 reason:v15];
-    v13[2](v13, v20);
+    handlerCopy[2](handlerCopy, v20);
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientProxy:(id)a3 fetchDevicePairingsForSystemCommissionerPairingUUID:(id)a4 completionHandler:(id)a5
+- (void)clientProxy:(id)proxy fetchDevicePairingsForSystemCommissionerPairingUUID:(id)d completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 hasDevicePairingEntitlement])
+  proxyCopy = proxy;
+  dCopy = d;
+  handlerCopy = handler;
+  if ([proxyCopy hasDevicePairingEntitlement])
   {
-    v11 = [(MTSXPCServer *)self devicePairingServer];
-    if (!v11)
+    devicePairingServer = [(MTSXPCServer *)self devicePairingServer];
+    if (!devicePairingServer)
     {
       _HMFPreconditionFailure();
     }
 
-    v12 = v11;
-    [v11 fetchDevicePairingsForSystemCommissionerPairingUUID:v9 completionHandler:v10];
+    v12 = devicePairingServer;
+    [devicePairingServer fetchDevicePairingsForSystemCommissionerPairingUUID:dCopy completionHandler:handlerCopy];
   }
 
   else
   {
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"Process is missing entitlement: %@", @"com.apple.matter.support.xpc.device-pairing"];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -487,23 +487,23 @@ LABEL_9:
 
     objc_autoreleasePoolPop(v13);
     v17 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:5 reason:v12];
-    v10[2](v10, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MTSXPCServer *)self clientProxyFactory];
-  v9 = (v8)[2](v8, v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  clientProxyFactory = [(MTSXPCServer *)self clientProxyFactory];
+  v9 = (clientProxyFactory)[2](clientProxyFactory, connectionCopy);
 
   [v9 setDelegate:self];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -516,27 +516,27 @@ LABEL_9:
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [MEMORY[0x277CCAE90] mts_clientInterface];
-  [v7 setRemoteObjectInterface:v14];
+  mts_clientInterface = [MEMORY[0x277CCAE90] mts_clientInterface];
+  [connectionCopy setRemoteObjectInterface:mts_clientInterface];
 
-  v15 = [MEMORY[0x277CCAE90] mts_serverInterface];
-  [v7 setExportedInterface:v15];
+  mts_serverInterface = [MEMORY[0x277CCAE90] mts_serverInterface];
+  [connectionCopy setExportedInterface:mts_serverInterface];
 
-  [v7 setExportedObject:v9];
+  [connectionCopy setExportedObject:v9];
   objc_initWeak(buf, v9);
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __51__MTSXPCServer_listener_shouldAcceptNewConnection___block_invoke;
   v22 = &unk_278AA1A40;
   objc_copyWeak(&v24, buf);
-  v23 = v11;
-  [v7 setInvalidationHandler:&v19];
+  v23 = selfCopy;
+  [connectionCopy setInvalidationHandler:&v19];
   os_unfair_lock_lock_with_options();
-  v16 = [(MTSXPCServer *)v11 clientProxies:v19];
+  v16 = [(MTSXPCServer *)selfCopy clientProxies:v19];
   [v16 addObject:v9];
 
-  os_unfair_lock_unlock(&v11->_lock);
-  [v7 resume];
+  os_unfair_lock_unlock(&selfCopy->_lock);
+  [connectionCopy resume];
   objc_destroyWeak(&v24);
   objc_destroyWeak(buf);
 
@@ -577,25 +577,25 @@ void __51__MTSXPCServer_listener_shouldAcceptNewConnection___block_invoke(uint64
 
 - (void)start
 {
-  v3 = [(MTSXPCServer *)self listener];
-  [v3 setDelegate:self];
+  listener = [(MTSXPCServer *)self listener];
+  [listener setDelegate:self];
 
-  v4 = [(MTSXPCServer *)self listener];
-  [v4 start];
+  listener2 = [(MTSXPCServer *)self listener];
+  [listener2 start];
 }
 
-- (MTSXPCServer)initWithListener:(id)a3 clientProxyFactory:(id)a4
+- (MTSXPCServer)initWithListener:(id)listener clientProxyFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  listenerCopy = listener;
+  factoryCopy = factory;
+  if (!listenerCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = factoryCopy;
+  if (!factoryCopy)
   {
 LABEL_7:
     v17 = _HMFPreconditionFailure();
@@ -609,7 +609,7 @@ LABEL_7:
   if (v10)
   {
     v10->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v10->_listener, a3);
+    objc_storeStrong(&v10->_listener, listener);
     v12 = _Block_copy(v9);
     clientProxyFactory = v11->_clientProxyFactory;
     v11->_clientProxyFactory = v12;

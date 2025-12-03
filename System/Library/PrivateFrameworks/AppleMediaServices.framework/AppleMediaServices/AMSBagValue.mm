@@ -1,17 +1,17 @@
 @interface AMSBagValue
-+ (BOOL)_value:(id)a3 isKindOfValueType:(unint64_t)a4;
-+ (id)bagValueWithKey:(id)a3 valueType:(unint64_t)a4 valuePromise:(id)a5;
-+ (id)failingBagValueWithKey:(id)a3 valueType:(unint64_t)a4 error:(id)a5;
-+ (id)frozenBagValueWithKey:(id)a3 value:(id)a4 valueType:(unint64_t)a5;
-- (AMSBagValue)initWithDataSource:(id)a3 key:(id)a4 valueType:(unint64_t)a5 account:(id)a6;
-- (AMSBagValue)initWithFetcher:(id)a3 valueType:(unint64_t)a4;
-- (AMSBagValue)valueWithCompletion:(id)a3;
-- (AMSBagValue)valueWithError:(id *)a3;
++ (BOOL)_value:(id)_value isKindOfValueType:(unint64_t)type;
++ (id)bagValueWithKey:(id)key valueType:(unint64_t)type valuePromise:(id)promise;
++ (id)failingBagValueWithKey:(id)key valueType:(unint64_t)type error:(id)error;
++ (id)frozenBagValueWithKey:(id)key value:(id)value valueType:(unint64_t)type;
+- (AMSBagValue)initWithDataSource:(id)source key:(id)key valueType:(unint64_t)type account:(id)account;
+- (AMSBagValue)initWithFetcher:(id)fetcher valueType:(unint64_t)type;
+- (AMSBagValue)valueWithCompletion:(id)completion;
+- (AMSBagValue)valueWithError:(id *)error;
 - (BOOL)isLoaded;
 - (NSString)key;
-- (id)transformWithBlock:(id)a3;
+- (id)transformWithBlock:(id)block;
 - (id)valuePromise;
-- (void)_applyTransformsToValue:(id)a3 index:(int64_t)a4 completion:(id)a5;
+- (void)_applyTransformsToValue:(id)value index:(int64_t)index completion:(id)completion;
 @end
 
 @implementation AMSBagValue
@@ -32,83 +32,83 @@
 
 - (NSString)key
 {
-  v2 = [(AMSBagValue *)self valueFetcher];
-  v3 = [v2 key];
+  valueFetcher = [(AMSBagValue *)self valueFetcher];
+  v3 = [valueFetcher key];
 
   return v3;
 }
 
 - (BOOL)isLoaded
 {
-  v2 = [(AMSBagValue *)self valueFetcher];
-  v3 = [v2 isLoaded];
+  valueFetcher = [(AMSBagValue *)self valueFetcher];
+  isLoaded = [valueFetcher isLoaded];
 
-  return v3;
+  return isLoaded;
 }
 
-- (AMSBagValue)initWithDataSource:(id)a3 key:(id)a4 valueType:(unint64_t)a5 account:(id)a6
+- (AMSBagValue)initWithDataSource:(id)source key:(id)key valueType:(unint64_t)type account:(id)account
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[AMSBagValueDataSourceValueFetcher alloc] initWithDataSource:v12 key:v11 valueType:a5 account:v10];
+  accountCopy = account;
+  keyCopy = key;
+  sourceCopy = source;
+  v13 = [[AMSBagValueDataSourceValueFetcher alloc] initWithDataSource:sourceCopy key:keyCopy valueType:type account:accountCopy];
 
-  v14 = [(AMSBagValue *)self initWithFetcher:v13 valueType:a5];
+  v14 = [(AMSBagValue *)self initWithFetcher:v13 valueType:type];
   return v14;
 }
 
-- (AMSBagValue)initWithFetcher:(id)a3 valueType:(unint64_t)a4
+- (AMSBagValue)initWithFetcher:(id)fetcher valueType:(unint64_t)type
 {
-  v7 = a3;
+  fetcherCopy = fetcher;
   v11.receiver = self;
   v11.super_class = AMSBagValue;
   v8 = [(AMSBagValue *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_valueType = a4;
-    objc_storeStrong(&v8->_valueFetcher, a3);
+    v8->_valueType = type;
+    objc_storeStrong(&v8->_valueFetcher, fetcher);
   }
 
   return v9;
 }
 
-+ (id)bagValueWithKey:(id)a3 valueType:(unint64_t)a4 valuePromise:(id)a5
++ (id)bagValueWithKey:(id)key valueType:(unint64_t)type valuePromise:(id)promise
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[AMSBridgedBagValue alloc] initWithKey:v8 valueType:a4 valuePromise:v7];
+  promiseCopy = promise;
+  keyCopy = key;
+  v9 = [[AMSBridgedBagValue alloc] initWithKey:keyCopy valueType:type valuePromise:promiseCopy];
 
   return v9;
 }
 
-+ (id)failingBagValueWithKey:(id)a3 valueType:(unint64_t)a4 error:(id)a5
++ (id)failingBagValueWithKey:(id)key valueType:(unint64_t)type error:(id)error
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[AMSFailingBagValue alloc] initWithKey:v8 valueType:a4 error:v7];
+  errorCopy = error;
+  keyCopy = key;
+  v9 = [[AMSFailingBagValue alloc] initWithKey:keyCopy valueType:type error:errorCopy];
 
   return v9;
 }
 
-+ (id)frozenBagValueWithKey:(id)a3 value:(id)a4 valueType:(unint64_t)a5
++ (id)frozenBagValueWithKey:(id)key value:(id)value valueType:(unint64_t)type
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [[AMSFrozenBagValue alloc] initWithKey:v8 value:v7 valueType:a5];
+  valueCopy = value;
+  keyCopy = key;
+  v9 = [[AMSFrozenBagValue alloc] initWithKey:keyCopy value:valueCopy valueType:type];
 
   return v9;
 }
 
-- (id)transformWithBlock:(id)a3
+- (id)transformWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [AMSBagValue alloc];
-  v6 = [(AMSBagValue *)self valueFetcher];
-  v7 = [(AMSBagValue *)v5 initWithFetcher:v6 valueType:[(AMSBagValue *)self valueType]];
+  valueFetcher = [(AMSBagValue *)self valueFetcher];
+  v7 = [(AMSBagValue *)v5 initWithFetcher:valueFetcher valueType:[(AMSBagValue *)self valueType]];
 
-  v8 = [(AMSBagValue *)self transformBlocks];
-  v9 = [v8 mutableCopy];
+  transformBlocks = [(AMSBagValue *)self transformBlocks];
+  v9 = [transformBlocks mutableCopy];
   v10 = v9;
   if (v9)
   {
@@ -122,7 +122,7 @@
 
   v12 = v11;
 
-  v13 = [v4 copy];
+  v13 = [blockCopy copy];
   [v12 addObject:v13];
 
   [(AMSBagValue *)v7 setTransformBlocks:v12];
@@ -130,21 +130,21 @@
   return v7;
 }
 
-- (AMSBagValue)valueWithCompletion:(id)a3
+- (AMSBagValue)valueWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AMSLogKey();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __35__AMSBagValue_valueWithCompletion___block_invoke;
   aBlock[3] = &unk_1E73B4CA8;
   v15 = v5;
-  v16 = self;
-  v17 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v17 = completionCopy;
+  v6 = completionCopy;
   v7 = v5;
   v8 = _Block_copy(aBlock);
-  v9 = [(AMSBagValue *)self valueFetcher];
+  valueFetcher = [(AMSBagValue *)self valueFetcher];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __35__AMSBagValue_valueWithCompletion___block_invoke_12;
@@ -152,7 +152,7 @@
   v12[4] = self;
   v13 = v8;
   v10 = v8;
-  [v9 loadWithCompletion:v12];
+  [valueFetcher loadWithCompletion:v12];
 
   return result;
 }
@@ -521,27 +521,27 @@ void __35__AMSBagValue_valueWithCompletion___block_invoke_36(uint64_t a1, void *
   }
 }
 
-- (AMSBagValue)valueWithError:(id *)a3
+- (AMSBagValue)valueWithError:(id *)error
 {
-  v4 = [(AMSBagValue *)self valuePromise];
-  v5 = [v4 resultWithError:a3];
+  valuePromise = [(AMSBagValue *)self valuePromise];
+  v5 = [valuePromise resultWithError:error];
 
   return v5;
 }
 
-- (void)_applyTransformsToValue:(id)a3 index:(int64_t)a4 completion:(id)a5
+- (void)_applyTransformsToValue:(id)value index:(int64_t)index completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (a4 < 0 || (-[AMSBagValue transformBlocks](self, "transformBlocks"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v11 <= a4) || (-[AMSBagValue transformBlocks](self, "transformBlocks"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "objectAtIndexedSubscript:", a4), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
+  valueCopy = value;
+  completionCopy = completion;
+  if (index < 0 || (-[AMSBagValue transformBlocks](self, "transformBlocks"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v11 <= index) || (-[AMSBagValue transformBlocks](self, "transformBlocks"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "objectAtIndexedSubscript:", index), v13 = objc_claimAutoreleasedReturnValue(), v12, !v13))
   {
-    v9[2](v9, v8, 0);
+    completionCopy[2](completionCopy, valueCopy, 0);
   }
 
   else
   {
-    v14 = (v13)[2](v13, v8);
+    v14 = (v13)[2](v13, valueCopy);
     if (v14)
     {
       v15 = [[AMSMutablePromise alloc] initWithTimeout:60.0];
@@ -551,8 +551,8 @@ void __35__AMSBagValue_valueWithCompletion___block_invoke_36(uint64_t a1, void *
       v20[2] = __56__AMSBagValue__applyTransformsToValue_index_completion___block_invoke;
       v20[3] = &unk_1E73B4D98;
       v20[4] = self;
-      v22 = a4;
-      v21 = v9;
+      indexCopy = index;
+      v21 = completionCopy;
       [(AMSPromise *)v15 addFinishBlock:v20];
     }
 
@@ -564,21 +564,21 @@ void __35__AMSBagValue_valueWithCompletion___block_invoke_36(uint64_t a1, void *
         v16 = +[AMSLogConfig sharedConfig];
       }
 
-      v17 = [v16 OSLogObject];
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v16 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v18 = objc_opt_class();
         v19 = [(AMSBagValue *)self key];
         *buf = 138543874;
         v24 = v18;
         v25 = 2048;
-        v26 = a4;
+        indexCopy2 = index;
         v27 = 2114;
         v28 = v19;
-        _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_ERROR, "%{public}@: Transform (%ld) block returned nil promise for %{public}@. Resolving with previous value.", buf, 0x20u);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: Transform (%ld) block returned nil promise for %{public}@. Resolving with previous value.", buf, 0x20u);
       }
 
-      v9[2](v9, v8, 0);
+      completionCopy[2](completionCopy, valueCopy, 0);
     }
   }
 }
@@ -621,10 +621,10 @@ void __56__AMSBagValue__applyTransformsToValue_index_completion___block_invoke(u
   }
 }
 
-+ (BOOL)_value:(id)a3 isKindOfValueType:(unint64_t)a4
++ (BOOL)_value:(id)_value isKindOfValueType:(unint64_t)type
 {
-  v5 = a3;
-  if (a4 > 6)
+  _valueCopy = _value;
+  if (type > 6)
   {
     isKindOfClass = 1;
   }

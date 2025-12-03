@@ -1,25 +1,25 @@
 @interface PPNotificationManager
-+ (BOOL)_changePotentiallyAffectsCache:(id)a3;
-+ (id)addCalendarVisibilityObserverForLifetimeOfObject:(id)a3 block:(id)a4;
++ (BOOL)_changePotentiallyAffectsCache:(id)cache;
++ (id)addCalendarVisibilityObserverForLifetimeOfObject:(id)object block:(id)block;
 + (id)sharedInstance;
-+ (void)addContactsObserverForLifetimeOfObject:(id)a3 block:(id)a4;
-+ (void)addEventKitObserverForLifetimeOfObject:(id)a3 block:(id)a4;
-+ (void)addMeCardObserverForLifetimeOfObject:(id)a3 block:(id)a4;
-+ (void)addPortraitChangeObserverForLifetimeOfObject:(id)a3 block:(id)a4;
-+ (void)addPortraitInvalidationObserverForLifetimeOfObject:(id)a3 block:(id)a4;
-+ (void)addSuggestionsObserverForLifetimeOfObject:(id)a3 block:(id)a4;
-- (PPNotificationManager)initWithQueueName:(const char *)a3 notificationCenter:(id)a4;
-- (id)addCalendarVisibilityChangeBlock:(id)a3 forLifetimeOfObject:(id)a4;
-- (void)_registerForEventKitChangeTrackingWithGuardedData:(id)a3;
-- (void)addContactsChangeBlock:(id)a3 forLifetimeOfObject:(id)a4;
-- (void)addEventKitChangeBlock:(id)a3 forLifetimeOfObject:(id)a4;
-- (void)addMeCardChangeBlock:(id)a3 forLifetimeOfObject:(id)a4;
-- (void)addPortraitChangeBlock:(id)a3 forLifetimeOfObject:(id)a4;
-- (void)addPortraitInvalidationBlock:(id)a3 forLifetimeOfObject:(id)a4;
-- (void)addSuggestionsChangeBlock:(id)a3 forLifetimeOfObject:(id)a4;
++ (void)addContactsObserverForLifetimeOfObject:(id)object block:(id)block;
++ (void)addEventKitObserverForLifetimeOfObject:(id)object block:(id)block;
++ (void)addMeCardObserverForLifetimeOfObject:(id)object block:(id)block;
++ (void)addPortraitChangeObserverForLifetimeOfObject:(id)object block:(id)block;
++ (void)addPortraitInvalidationObserverForLifetimeOfObject:(id)object block:(id)block;
++ (void)addSuggestionsObserverForLifetimeOfObject:(id)object block:(id)block;
+- (PPNotificationManager)initWithQueueName:(const char *)name notificationCenter:(id)center;
+- (id)addCalendarVisibilityChangeBlock:(id)block forLifetimeOfObject:(id)object;
+- (void)_registerForEventKitChangeTrackingWithGuardedData:(id)data;
+- (void)addContactsChangeBlock:(id)block forLifetimeOfObject:(id)object;
+- (void)addEventKitChangeBlock:(id)block forLifetimeOfObject:(id)object;
+- (void)addMeCardChangeBlock:(id)block forLifetimeOfObject:(id)object;
+- (void)addPortraitChangeBlock:(id)block forLifetimeOfObject:(id)object;
+- (void)addPortraitInvalidationBlock:(id)block forLifetimeOfObject:(id)object;
+- (void)addSuggestionsChangeBlock:(id)block forLifetimeOfObject:(id)object;
 - (void)dealloc;
-- (void)fetchObjectChangesFromStore:(id)a3 usingBlock:(id)a4;
-- (void)setEKStore:(id)a3;
+- (void)fetchObjectChangesFromStore:(id)store usingBlock:(id)block;
+- (void)setEKStore:(id)store;
 - (void)simulatePortraitChange;
 - (void)simulatePortraitInvalidation;
 - (void)stopListening;
@@ -28,20 +28,20 @@
 
 @implementation PPNotificationManager
 
-- (void)addSuggestionsChangeBlock:(id)a3 forLifetimeOfObject:(id)a4
+- (void)addSuggestionsChangeBlock:(id)block forLifetimeOfObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  objectCopy = object;
   lockedData = self->_lockedData;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __71__PPNotificationManager_addSuggestionsChangeBlock_forLifetimeOfObject___block_invoke;
   v11[3] = &unk_1E77F7700;
-  v12 = v7;
-  v13 = v6;
+  v12 = objectCopy;
+  v13 = blockCopy;
   v11[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = objectCopy;
+  v10 = blockCopy;
   [(_PASLock *)lockedData runWithLockAcquired:v11];
 }
 
@@ -126,10 +126,10 @@ void __71__PPNotificationManager_addSuggestionsChangeBlock_forLifetimeOfObject__
   }
 }
 
-- (id)addCalendarVisibilityChangeBlock:(id)a3 forLifetimeOfObject:(id)a4
+- (id)addCalendarVisibilityChangeBlock:(id)block forLifetimeOfObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  objectCopy = object;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -143,9 +143,9 @@ void __71__PPNotificationManager_addSuggestionsChangeBlock_forLifetimeOfObject__
   v13[3] = &unk_1E77F7850;
   v13[4] = self;
   v16 = &v17;
-  v9 = v6;
+  v9 = blockCopy;
   v15 = v9;
-  v10 = v7;
+  v10 = objectCopy;
   v14 = v10;
   [(_PASLock *)lockedData runWithLockAcquired:v13];
   v11 = v18[5];
@@ -262,10 +262,10 @@ id __78__PPNotificationManager_addCalendarVisibilityChangeBlock_forLifetimeOfObj
   return v3;
 }
 
-- (void)_registerForEventKitChangeTrackingWithGuardedData:(id)a3
+- (void)_registerForEventKitChangeTrackingWithGuardedData:(id)data
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = *(a3 + 13);
+  v3 = *(data + 13);
   v8 = 0;
   v4 = [v3 registerForDetailedChangeTracking:&v8];
   v5 = v8;
@@ -283,20 +283,20 @@ id __78__PPNotificationManager_addCalendarVisibilityChangeBlock_forLifetimeOfObj
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addEventKitChangeBlock:(id)a3 forLifetimeOfObject:(id)a4
+- (void)addEventKitChangeBlock:(id)block forLifetimeOfObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  objectCopy = object;
   lockedData = self->_lockedData;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PPNotificationManager_addEventKitChangeBlock_forLifetimeOfObject___block_invoke;
   v11[3] = &unk_1E77F7700;
-  v12 = v7;
-  v13 = v6;
+  v12 = objectCopy;
+  v13 = blockCopy;
   v11[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = objectCopy;
+  v10 = blockCopy;
   [(_PASLock *)lockedData runWithLockAcquired:v11];
 }
 
@@ -640,10 +640,10 @@ id __68__PPNotificationManager_addEventKitChangeBlock_forLifetimeOfObject___bloc
   return v4;
 }
 
-- (void)fetchObjectChangesFromStore:(id)a3 usingBlock:(id)a4
+- (void)fetchObjectChangesFromStore:(id)store usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  blockCopy = block;
   v7 = dispatch_semaphore_create(0);
   v18 = 0;
   v19 = &v18;
@@ -667,16 +667,16 @@ id __68__PPNotificationManager_addEventKitChangeBlock_forLifetimeOfObject___bloc
   v14[1] = 3221225472;
   v14[2] = __64__PPNotificationManager_fetchObjectChangesFromStore_usingBlock___block_invoke;
   v14[3] = &unk_1E77F7750;
-  v10 = v6;
+  v10 = blockCopy;
   v16 = v10;
   v11 = v7;
   v15 = v11;
-  [v8 objectChangesInStore:v5 resultHandler:v14];
+  [v8 objectChangesInStore:storeCopy resultHandler:v14];
   if (dispatch_semaphore_wait(v11, 0))
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PPNotificationManager fetchObjectChangesFromStore:usingBlock:]"];
-    [v12 handleFailureInFunction:v13 file:@"PPNotificationManager.m" lineNumber:548 description:@"+[EKObjectChange objectChangesInStore:resultHandler:] is expected to be synchronous"];
+    [currentHandler handleFailureInFunction:v13 file:@"PPNotificationManager.m" lineNumber:548 description:@"+[EKObjectChange objectChangesInStore:resultHandler:] is expected to be synchronous"];
   }
 }
 
@@ -688,20 +688,20 @@ intptr_t __64__PPNotificationManager_fetchObjectChangesFromStore_usingBlock___bl
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)addPortraitInvalidationBlock:(id)a3 forLifetimeOfObject:(id)a4
+- (void)addPortraitInvalidationBlock:(id)block forLifetimeOfObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  objectCopy = object;
   lockedData = self->_lockedData;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__PPNotificationManager_addPortraitInvalidationBlock_forLifetimeOfObject___block_invoke;
   v11[3] = &unk_1E77F7700;
-  v12 = v7;
-  v13 = v6;
+  v12 = objectCopy;
+  v13 = blockCopy;
   v11[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = objectCopy;
+  v10 = blockCopy;
   [(_PASLock *)lockedData runWithLockAcquired:v11];
 }
 
@@ -768,20 +768,20 @@ void __74__PPNotificationManager_addPortraitInvalidationBlock_forLifetimeOfObjec
   }
 }
 
-- (void)addPortraitChangeBlock:(id)a3 forLifetimeOfObject:(id)a4
+- (void)addPortraitChangeBlock:(id)block forLifetimeOfObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  objectCopy = object;
   lockedData = self->_lockedData;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PPNotificationManager_addPortraitChangeBlock_forLifetimeOfObject___block_invoke;
   v11[3] = &unk_1E77F7700;
-  v12 = v7;
-  v13 = v6;
+  v12 = objectCopy;
+  v13 = blockCopy;
   v11[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = objectCopy;
+  v10 = blockCopy;
   [(_PASLock *)lockedData runWithLockAcquired:v11];
 }
 
@@ -848,20 +848,20 @@ void __68__PPNotificationManager_addPortraitChangeBlock_forLifetimeOfObject___bl
   }
 }
 
-- (void)addMeCardChangeBlock:(id)a3 forLifetimeOfObject:(id)a4
+- (void)addMeCardChangeBlock:(id)block forLifetimeOfObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  objectCopy = object;
   lockedData = self->_lockedData;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__PPNotificationManager_addMeCardChangeBlock_forLifetimeOfObject___block_invoke;
   v11[3] = &unk_1E77F7700;
-  v12 = v7;
-  v13 = v6;
+  v12 = objectCopy;
+  v13 = blockCopy;
   v11[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = objectCopy;
+  v10 = blockCopy;
   [(_PASLock *)lockedData runWithLockAcquired:v11];
 }
 
@@ -998,20 +998,20 @@ void __66__PPNotificationManager_addMeCardChangeBlock_forLifetimeOfObject___bloc
   }
 }
 
-- (void)addContactsChangeBlock:(id)a3 forLifetimeOfObject:(id)a4
+- (void)addContactsChangeBlock:(id)block forLifetimeOfObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  objectCopy = object;
   lockedData = self->_lockedData;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __68__PPNotificationManager_addContactsChangeBlock_forLifetimeOfObject___block_invoke;
   v11[3] = &unk_1E77F7700;
-  v12 = v7;
-  v13 = v6;
+  v12 = objectCopy;
+  v13 = blockCopy;
   v11[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = objectCopy;
+  v10 = blockCopy;
   [(_PASLock *)lockedData runWithLockAcquired:v11];
 }
 
@@ -1176,9 +1176,9 @@ void __38__PPNotificationManager_stopListening__block_invoke(uint64_t a1, void *
   [(PPNotificationManager *)&v3 dealloc];
 }
 
-- (PPNotificationManager)initWithQueueName:(const char *)a3 notificationCenter:(id)a4
+- (PPNotificationManager)initWithQueueName:(const char *)name notificationCenter:(id)center
 {
-  v7 = a4;
+  centerCopy = center;
   v16.receiver = self;
   v16.super_class = PPNotificationManager;
   v8 = [(PPNotificationManager *)&v16 init];
@@ -1190,28 +1190,28 @@ void __38__PPNotificationManager_stopListening__block_invoke(uint64_t a1, void *
     lockedData = v8->_lockedData;
     v8->_lockedData = v11;
 
-    v13 = [MEMORY[0x1E69C5D10] autoreleasingSerialQueueWithLabel:a3 qosClass:9];
+    v13 = [MEMORY[0x1E69C5D10] autoreleasingSerialQueueWithLabel:name qosClass:9];
     serialQueue = v8->_serialQueue;
     v8->_serialQueue = v13;
 
-    objc_storeStrong(&v8->_notificationCenter, a4);
+    objc_storeStrong(&v8->_notificationCenter, center);
   }
 
   return v8;
 }
 
-- (void)setEKStore:(id)a3
+- (void)setEKStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   lockedData = self->_lockedData;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__PPNotificationManager_setEKStore___block_invoke;
   v8[3] = &unk_1E77F7640;
-  v9 = v5;
+  v9 = storeCopy;
   v10 = a2;
   v8[4] = self;
-  v7 = v5;
+  v7 = storeCopy;
   [(_PASLock *)lockedData runWithLockAcquired:v8];
 }
 
@@ -1228,35 +1228,35 @@ void __36__PPNotificationManager_setEKStore___block_invoke(uint64_t a1, void *a2
   objc_storeStrong(v3, *(a1 + 40));
 }
 
-+ (void)addSuggestionsObserverForLifetimeOfObject:(id)a3 block:(id)a4
++ (void)addSuggestionsObserverForLifetimeOfObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() sharedInstance];
-  [v7 addSuggestionsChangeBlock:v5 forLifetimeOfObject:v6];
+  blockCopy = block;
+  objectCopy = object;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance addSuggestionsChangeBlock:blockCopy forLifetimeOfObject:objectCopy];
 }
 
-+ (id)addCalendarVisibilityObserverForLifetimeOfObject:(id)a3 block:(id)a4
++ (id)addCalendarVisibilityObserverForLifetimeOfObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() sharedInstance];
-  v8 = [v7 addCalendarVisibilityChangeBlock:v5 forLifetimeOfObject:v6];
+  blockCopy = block;
+  objectCopy = object;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  v8 = [sharedInstance addCalendarVisibilityChangeBlock:blockCopy forLifetimeOfObject:objectCopy];
 
   return v8;
 }
 
-+ (void)addEventKitObserverForLifetimeOfObject:(id)a3 block:(id)a4
++ (void)addEventKitObserverForLifetimeOfObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() sharedInstance];
-  [v7 addEventKitChangeBlock:v5 forLifetimeOfObject:v6];
+  blockCopy = block;
+  objectCopy = object;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance addEventKitChangeBlock:blockCopy forLifetimeOfObject:objectCopy];
 }
 
-+ (BOOL)_changePotentiallyAffectsCache:(id)a3
++ (BOOL)_changePotentiallyAffectsCache:(id)cache
 {
-  v3 = a3;
+  cacheCopy = cache;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2050000000;
@@ -1405,36 +1405,36 @@ LABEL_16:
   return isKindOfClass & 1;
 }
 
-+ (void)addPortraitInvalidationObserverForLifetimeOfObject:(id)a3 block:(id)a4
++ (void)addPortraitInvalidationObserverForLifetimeOfObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() sharedInstance];
-  [v7 addPortraitInvalidationBlock:v5 forLifetimeOfObject:v6];
+  blockCopy = block;
+  objectCopy = object;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance addPortraitInvalidationBlock:blockCopy forLifetimeOfObject:objectCopy];
 }
 
-+ (void)addPortraitChangeObserverForLifetimeOfObject:(id)a3 block:(id)a4
++ (void)addPortraitChangeObserverForLifetimeOfObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() sharedInstance];
-  [v7 addPortraitChangeBlock:v5 forLifetimeOfObject:v6];
+  blockCopy = block;
+  objectCopy = object;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance addPortraitChangeBlock:blockCopy forLifetimeOfObject:objectCopy];
 }
 
-+ (void)addMeCardObserverForLifetimeOfObject:(id)a3 block:(id)a4
++ (void)addMeCardObserverForLifetimeOfObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() sharedInstance];
-  [v7 addMeCardChangeBlock:v5 forLifetimeOfObject:v6];
+  blockCopy = block;
+  objectCopy = object;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance addMeCardChangeBlock:blockCopy forLifetimeOfObject:objectCopy];
 }
 
-+ (void)addContactsObserverForLifetimeOfObject:(id)a3 block:(id)a4
++ (void)addContactsObserverForLifetimeOfObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() sharedInstance];
-  [v7 addContactsChangeBlock:v5 forLifetimeOfObject:v6];
+  blockCopy = block;
+  objectCopy = object;
+  sharedInstance = [objc_opt_class() sharedInstance];
+  [sharedInstance addContactsChangeBlock:blockCopy forLifetimeOfObject:objectCopy];
 }
 
 + (id)sharedInstance

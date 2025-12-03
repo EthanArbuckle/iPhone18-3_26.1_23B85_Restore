@@ -1,12 +1,12 @@
 @interface AUPasscodeDecoder
 + (AudioComponentDescription)getAUDesc;
 + (void)registerAU;
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3;
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error;
 - (id).cxx_construct;
 - (id)internalRenderBlock;
 - (void)deallocateRenderResources;
-- (void)handleDecodedData:(void *)a3 ofLength:(int)a4;
-- (void)setRenderingOffline:(BOOL)a3;
+- (void)handleDecodedData:(void *)data ofLength:(int)length;
+- (void)setRenderingOffline:(BOOL)offline;
 - (void)startAudioLogCapture;
 - (void)stopAudioLogCapture;
 @end
@@ -36,37 +36,37 @@ uint64_t __31__AUPasscodeDecoder_registerAU__block_invoke()
   return [v0 registerSubclass:v1 asComponentDescription:v3 name:@"AUPasscodeDecoder" version:1];
 }
 
-- (BOOL)allocateRenderResourcesAndReturnError:(id *)a3
+- (BOOL)allocateRenderResourcesAndReturnError:(id *)error
 {
   v61 = *MEMORY[0x277D85DE8];
-  v6 = [(AUPasscodeDecoder *)self codecConfig];
+  codecConfig = [(AUPasscodeDecoder *)self codecConfig];
 
-  if (!v6)
+  if (!codecConfig)
   {
     goto LABEL_40;
   }
 
-  v7 = [(AUPasscodeDecoder *)self codecConfig];
-  v8 = [v7 numChannels];
+  codecConfig2 = [(AUPasscodeDecoder *)self codecConfig];
+  numChannels = [codecConfig2 numChannels];
 
-  if (v8 > 1)
+  if (numChannels > 1)
   {
     goto LABEL_40;
   }
 
-  v9 = [*(self + 79) format];
-  v10 = [*(self + 74) format];
-  if (![v9 isEqual:v10])
+  format = [*(self + 79) format];
+  format2 = [*(self + 74) format];
+  if (![format isEqual:format2])
   {
     goto LABEL_7;
   }
 
-  v11 = [*(self + 79) format];
-  v12 = [v11 isInterleaved];
-  if (v12)
+  format3 = [*(self + 79) format];
+  isInterleaved = [format3 isInterleaved];
+  if (isInterleaved)
   {
-    v3 = [*(self + 79) format];
-    if ([v3 channelCount] > 1)
+    format4 = [*(self + 79) format];
+    if ([format4 channelCount] > 1)
     {
 
 LABEL_7:
@@ -74,23 +74,23 @@ LABEL_7:
     }
   }
 
-  v13 = [*(self + 79) format];
-  v14 = [v13 isStandard];
+  format5 = [*(self + 79) format];
+  isStandard = [format5 isStandard];
 
-  if (v12)
+  if (isInterleaved)
   {
   }
 
-  if ((v14 & 1) == 0)
+  if ((isStandard & 1) == 0)
   {
 LABEL_14:
-    if (a3)
+    if (error)
     {
 LABEL_15:
       v19 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10875 userInfo:0];
       v20 = v19;
       LOBYTE(v20) = 0;
-      *a3 = v19;
+      *error = v19;
       goto LABEL_41;
     }
 
@@ -99,14 +99,14 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v15 = [*(self + 74) format];
-  v16 = [v15 channelCount];
-  v17 = [(AUPasscodeDecoder *)self codecConfig];
-  v18 = [v17 numChannels];
+  format6 = [*(self + 74) format];
+  channelCount = [format6 channelCount];
+  codecConfig3 = [(AUPasscodeDecoder *)self codecConfig];
+  numChannels2 = [codecConfig3 numChannels];
 
-  if (v18 > v16)
+  if (numChannels2 > channelCount)
   {
-    if (a3)
+    if (error)
     {
       goto LABEL_15;
     }
@@ -117,12 +117,12 @@ LABEL_40:
   BufferedAudioBus::allocateRenderResources((self + 592), [(AUAudioUnit *)self maximumFramesToRender]);
   *(self + 196) = [*(self + 112) numChannels];
   v21 = [*(self + 80) objectAtIndexedSubscript:0];
-  v22 = [v21 format];
-  *(self + 197) = [v22 channelCount];
+  format7 = [v21 format];
+  *(self + 197) = [format7 channelCount];
 
   v23 = [*(self + 80) objectAtIndexedSubscript:0];
-  v24 = [v23 format];
-  [v24 sampleRate];
+  format8 = [v23 format];
+  [format8 sampleRate];
   v26 = v25;
   v52 = 0;
   v53.__r_.__value_.__r.__words[0] = &v52;
@@ -182,13 +182,13 @@ LABEL_40:
 
   std::any::reset[abi:ne200100](&v60);
   v34 = [*(self + 80) objectAtIndexedSubscript:0];
-  v35 = [v34 format];
-  v36 = [v35 isInterleaved];
+  format9 = [v34 format];
+  isInterleaved2 = [format9 isInterleaved];
   v52 = 2;
   v53.__r_.__value_.__r.__words[0] = &v52;
   v37 = std::__tree<std::__value_type<unsigned int,std::any>,std::__map_value_compare<unsigned int,std::__value_type<unsigned int,std::any>,std::less<unsigned int>,true>,std::allocator<std::__value_type<unsigned int,std::any>>>::__emplace_unique_key_args<unsigned int,std::piecewise_construct_t const&,std::tuple<unsigned int &&>,std::tuple<>>(self + 760, &v52);
   v38 = (v37 + 5);
-  v60.__r_.__value_.__l.__size_ = v36;
+  v60.__r_.__value_.__l.__size_ = isInterleaved2;
   v60.__r_.__value_.__r.__words[0] = std::__any_imp::_SmallHandler<BOOL>::__handle[abi:ne200100];
   if (&v60 != (v37 + 5))
   {
@@ -204,7 +204,7 @@ LABEL_40:
 
     else
     {
-      *(v37 + 48) = v36;
+      *(v37 + 48) = isInterleaved2;
       v37[5] = std::__any_imp::_SmallHandler<BOOL>::__handle[abi:ne200100];
       v60.__r_.__value_.__r.__words[0] = 0;
     }
@@ -212,8 +212,8 @@ LABEL_40:
 
   std::any::reset[abi:ne200100](&v60);
 
-  v40 = [(AUPasscodeDecoder *)self codecConfig];
-  [APCCodecFactory createDecoderWithConfig:v40 apcConfig:self + 760 error:a3];
+  codecConfig4 = [(AUPasscodeDecoder *)self codecConfig];
+  [APCCodecFactory createDecoderWithConfig:codecConfig4 apcConfig:self + 760 error:error];
   v41 = v53.__r_.__value_.__r.__words[0];
   v53.__r_.__value_.__r.__words[0] = 0;
   v42 = *(self + 73);
@@ -231,9 +231,9 @@ LABEL_40:
 
   if (!*(self + 73))
   {
-    if (a3 && [*a3 code] == -7)
+    if (error && [*error code] == -7)
     {
-      *a3 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10868 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA590] code:-10868 userInfo:0];
     }
 
     [(AUAudioUnit *)self setRenderResourcesAllocated:0];
@@ -242,7 +242,7 @@ LABEL_40:
 
   v51.receiver = self;
   v51.super_class = AUPasscodeDecoder;
-  LODWORD(v20) = [(AUAudioUnit *)&v51 allocateRenderResourcesAndReturnError:a3];
+  LODWORD(v20) = [(AUAudioUnit *)&v51 allocateRenderResourcesAndReturnError:error];
   if (v20)
   {
     std::string::__init(&v60, "AUPasscodeDecoder messenger", 0x1BuLL);
@@ -290,9 +290,9 @@ LABEL_41:
   return v20;
 }
 
-- (void)setRenderingOffline:(BOOL)a3
+- (void)setRenderingOffline:(BOOL)offline
 {
-  *(self + 800) = a3;
+  *(self + 800) = offline;
   v3.receiver = self;
   v3.super_class = AUPasscodeDecoder;
   [(AUAudioUnit *)&v3 setRenderingOffline:?];
@@ -320,7 +320,7 @@ LABEL_41:
   v7 = self + 656;
   v8 = self + 680;
   v9 = self + 576;
-  v10 = [(AUPasscodeDecoder *)self dataHandler];
+  dataHandler = [(AUPasscodeDecoder *)self dataHandler];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__AUPasscodeDecoder_internalRenderBlock__block_invoke;
@@ -331,7 +331,7 @@ LABEL_41:
   v13[9] = v5;
   v13[10] = v8;
   v13[11] = v9;
-  v13[4] = v10;
+  v13[4] = dataHandler;
   v13[5] = v4;
   v13[12] = self + 904;
   v13[13] = self + 816;
@@ -421,21 +421,21 @@ uint64_t __40__AUPasscodeDecoder_internalRenderBlock__block_invoke(uint64_t a1, 
   return v13;
 }
 
-- (void)handleDecodedData:(void *)a3 ofLength:(int)a4
+- (void)handleDecodedData:(void *)data ofLength:(int)length
 {
-  [*(self + 99) appendBytes:a3 length:a4];
+  [*(self + 99) appendBytes:data length:length];
   v5 = [*(self + 99) length];
   if (v5 >= [*(self + 112) payloadLengthBytes])
   {
     v6 = [MEMORY[0x277CBEA90] dataWithData:*(self + 99)];
     [*(self + 99) setLength:0];
-    v7 = [(AUPasscodeDecoder *)self dataHandler];
+    dataHandler = [(AUPasscodeDecoder *)self dataHandler];
 
-    if (v7)
+    if (dataHandler)
     {
-      v8 = [(AUPasscodeDecoder *)self dispatchQueue];
-      v9 = v8;
-      if (!v8)
+      dispatchQueue = [(AUPasscodeDecoder *)self dispatchQueue];
+      v9 = dispatchQueue;
+      if (!dispatchQueue)
       {
         v9 = MEMORY[0x277D85CD0];
         v10 = MEMORY[0x277D85CD0];
@@ -448,7 +448,7 @@ uint64_t __40__AUPasscodeDecoder_internalRenderBlock__block_invoke(uint64_t a1, 
       v11[4] = self;
       v11[5] = v6;
       dispatch_async(v9, v11);
-      if (!v8)
+      if (!dispatchQueue)
       {
       }
     }
@@ -465,8 +465,8 @@ void __48__AUPasscodeDecoder_handleDecodedData_ofLength___block_invoke(uint64_t 
 {
   v11 = 0;
   v3 = [*(self + 80) objectAtIndexedSubscript:0];
-  v4 = [v3 format];
-  [v4 sampleRate];
+  format = [v3 format];
+  [format sampleRate];
   v8 = v5;
   v9 = xmmword_2415B17A0;
   v10 = 0x100000004;

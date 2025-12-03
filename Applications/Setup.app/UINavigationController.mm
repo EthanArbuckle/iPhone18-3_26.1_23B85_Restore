@@ -1,28 +1,28 @@
 @interface UINavigationController
-- (void)buddy_presentAlertController:(id)a3;
+- (void)buddy_presentAlertController:(id)controller;
 @end
 
 @implementation UINavigationController
 
-- (void)buddy_presentAlertController:(id)a3
+- (void)buddy_presentAlertController:(id)controller
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(UINavigationController *)v8 topViewController];
-  v4 = [(UIViewController *)v3 presentedViewController];
+  objc_storeStrong(location, controller);
+  topViewController = [(UINavigationController *)selfCopy topViewController];
+  presentedViewController = [(UIViewController *)topViewController presentedViewController];
 
-  v5 = [(UINavigationController *)v8 topViewController];
-  if (v4)
+  topViewController2 = [(UINavigationController *)selfCopy topViewController];
+  if (presentedViewController)
   {
-    v6 = [(UIViewController *)v5 presentedViewController];
-    [(UIViewController *)v6 presentViewController:location[0] animated:1 completion:0];
+    presentedViewController2 = [(UIViewController *)topViewController2 presentedViewController];
+    [(UIViewController *)presentedViewController2 presentViewController:location[0] animated:1 completion:0];
   }
 
   else
   {
-    [(UIViewController *)v5 presentViewController:location[0] animated:1 completion:0];
+    [(UIViewController *)topViewController2 presentViewController:location[0] animated:1 completion:0];
   }
 
   objc_storeStrong(location, 0);

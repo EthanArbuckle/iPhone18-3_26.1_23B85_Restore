@@ -1,8 +1,8 @@
 @interface _CPSearchSuggestionForFeedback
-- (BOOL)isEqual:(id)a3;
-- (_CPSearchSuggestionForFeedback)initWithFacade:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPSearchSuggestionForFeedback)initWithFacade:(id)facade;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPSearchSuggestionForFeedback
@@ -29,28 +29,28 @@
   return v10 ^ v13 ^ v12 ^ [(NSString *)self->_topicIdentifier hash]^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_29;
   }
 
-  v5 = [(_CPSearchSuggestionForFeedback *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_CPSearchSuggestionForFeedback *)self identifier];
+  identifier2 = [equalCopy identifier];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_28;
   }
 
-  v7 = [(_CPSearchSuggestionForFeedback *)self identifier];
-  if (v7)
+  identifier3 = [(_CPSearchSuggestionForFeedback *)self identifier];
+  if (identifier3)
   {
-    v8 = v7;
-    v9 = [(_CPSearchSuggestionForFeedback *)self identifier];
-    v10 = [v4 identifier];
-    v11 = [v9 isEqual:v10];
+    v8 = identifier3;
+    identifier4 = [(_CPSearchSuggestionForFeedback *)self identifier];
+    identifier5 = [equalCopy identifier];
+    v11 = [identifier4 isEqual:identifier5];
 
     if (!v11)
     {
@@ -62,20 +62,20 @@
   {
   }
 
-  v5 = [(_CPSearchSuggestionForFeedback *)self suggestion];
-  v6 = [v4 suggestion];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_CPSearchSuggestionForFeedback *)self suggestion];
+  identifier2 = [equalCopy suggestion];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_28;
   }
 
-  v12 = [(_CPSearchSuggestionForFeedback *)self suggestion];
-  if (v12)
+  suggestion = [(_CPSearchSuggestionForFeedback *)self suggestion];
+  if (suggestion)
   {
-    v13 = v12;
-    v14 = [(_CPSearchSuggestionForFeedback *)self suggestion];
-    v15 = [v4 suggestion];
-    v16 = [v14 isEqual:v15];
+    v13 = suggestion;
+    suggestion2 = [(_CPSearchSuggestionForFeedback *)self suggestion];
+    suggestion3 = [equalCopy suggestion];
+    v16 = [suggestion2 isEqual:suggestion3];
 
     if (!v16)
     {
@@ -87,20 +87,20 @@
   {
   }
 
-  v5 = [(_CPSearchSuggestionForFeedback *)self query];
-  v6 = [v4 query];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_CPSearchSuggestionForFeedback *)self query];
+  identifier2 = [equalCopy query];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_28;
   }
 
-  v17 = [(_CPSearchSuggestionForFeedback *)self query];
-  if (v17)
+  query = [(_CPSearchSuggestionForFeedback *)self query];
+  if (query)
   {
-    v18 = v17;
-    v19 = [(_CPSearchSuggestionForFeedback *)self query];
-    v20 = [v4 query];
-    v21 = [v19 isEqual:v20];
+    v18 = query;
+    query2 = [(_CPSearchSuggestionForFeedback *)self query];
+    query3 = [equalCopy query];
+    v21 = [query2 isEqual:query3];
 
     if (!v21)
     {
@@ -113,21 +113,21 @@
   }
 
   score = self->_score;
-  [v4 score];
+  [equalCopy score];
   if (score != v23)
   {
     goto LABEL_29;
   }
 
   type = self->_type;
-  if (type != [v4 type])
+  if (type != [equalCopy type])
   {
     goto LABEL_29;
   }
 
-  v5 = [(_CPSearchSuggestionForFeedback *)self fbr];
-  v6 = [v4 fbr];
-  if ((v5 != 0) == (v6 == 0))
+  identifier = [(_CPSearchSuggestionForFeedback *)self fbr];
+  identifier2 = [equalCopy fbr];
+  if ((identifier != 0) == (identifier2 == 0))
   {
     goto LABEL_28;
   }
@@ -137,7 +137,7 @@
   {
     v26 = v25;
     v27 = [(_CPSearchSuggestionForFeedback *)self fbr];
-    v28 = [v4 fbr];
+    v28 = [equalCopy fbr];
     v29 = [v27 isEqual:v28];
 
     if (!v29)
@@ -150,12 +150,12 @@
   {
   }
 
-  v5 = [(_CPSearchSuggestionForFeedback *)self topicIdentifier];
-  v6 = [v4 topicIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  identifier = [(_CPSearchSuggestionForFeedback *)self topicIdentifier];
+  identifier2 = [equalCopy topicIdentifier];
+  if ((identifier != 0) != (identifier2 == 0))
   {
-    v30 = [(_CPSearchSuggestionForFeedback *)self topicIdentifier];
-    if (!v30)
+    topicIdentifier = [(_CPSearchSuggestionForFeedback *)self topicIdentifier];
+    if (!topicIdentifier)
     {
 
 LABEL_32:
@@ -163,10 +163,10 @@ LABEL_32:
       goto LABEL_30;
     }
 
-    v31 = v30;
-    v32 = [(_CPSearchSuggestionForFeedback *)self topicIdentifier];
-    v33 = [v4 topicIdentifier];
-    v34 = [v32 isEqual:v33];
+    v31 = topicIdentifier;
+    topicIdentifier2 = [(_CPSearchSuggestionForFeedback *)self topicIdentifier];
+    topicIdentifier3 = [equalCopy topicIdentifier];
+    v34 = [topicIdentifier2 isEqual:topicIdentifier3];
 
     if (v34)
     {
@@ -186,28 +186,28 @@ LABEL_30:
   return v35;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v18 = a3;
-  v4 = [(_CPSearchSuggestionForFeedback *)self identifier];
+  toCopy = to;
+  identifier = [(_CPSearchSuggestionForFeedback *)self identifier];
 
-  if (v4)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_CPSearchSuggestionForFeedback *)self suggestion];
+  suggestion = [(_CPSearchSuggestionForFeedback *)self suggestion];
 
-  if (v6)
+  if (suggestion)
   {
     suggestion = self->_suggestion;
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_CPSearchSuggestionForFeedback *)self query];
+  query = [(_CPSearchSuggestionForFeedback *)self query];
 
-  if (v8)
+  if (query)
   {
     query = self->_query;
     PBDataWriterWriteStringField();
@@ -234,66 +234,66 @@ LABEL_30:
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_CPSearchSuggestionForFeedback *)self topicIdentifier];
+  topicIdentifier = [(_CPSearchSuggestionForFeedback *)self topicIdentifier];
 
-  v16 = v18;
-  if (v15)
+  v16 = toCopy;
+  if (topicIdentifier)
   {
     topicIdentifier = self->_topicIdentifier;
     PBDataWriterWriteStringField();
-    v16 = v18;
+    v16 = toCopy;
   }
 }
 
-- (_CPSearchSuggestionForFeedback)initWithFacade:(id)a3
+- (_CPSearchSuggestionForFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v18.receiver = self;
   v18.super_class = _CPSearchSuggestionForFeedback;
   v5 = [(_CPSearchSuggestionForFeedback *)&v18 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [facadeCopy identifier];
 
-    if (v6)
+    if (identifier)
     {
-      v7 = [v4 identifier];
-      [(_CPSearchSuggestionForFeedback *)v5 setIdentifier:v7];
+      identifier2 = [facadeCopy identifier];
+      [(_CPSearchSuggestionForFeedback *)v5 setIdentifier:identifier2];
     }
 
-    v8 = [v4 suggestion];
+    suggestion = [facadeCopy suggestion];
 
-    if (v8)
+    if (suggestion)
     {
-      v9 = [v4 suggestion];
-      [(_CPSearchSuggestionForFeedback *)v5 setSuggestion:v9];
+      suggestion2 = [facadeCopy suggestion];
+      [(_CPSearchSuggestionForFeedback *)v5 setSuggestion:suggestion2];
     }
 
-    v10 = [v4 query];
+    query = [facadeCopy query];
 
-    if (v10)
+    if (query)
     {
-      v11 = [v4 query];
-      [(_CPSearchSuggestionForFeedback *)v5 setQuery:v11];
+      query2 = [facadeCopy query];
+      [(_CPSearchSuggestionForFeedback *)v5 setQuery:query2];
     }
 
-    [v4 score];
+    [facadeCopy score];
     [(_CPSearchSuggestionForFeedback *)v5 setScore:?];
-    -[_CPSearchSuggestionForFeedback setType:](v5, "setType:", [v4 type]);
-    v12 = [v4 fbr];
+    -[_CPSearchSuggestionForFeedback setType:](v5, "setType:", [facadeCopy type]);
+    v12 = [facadeCopy fbr];
 
     if (v12)
     {
-      v13 = [v4 fbr];
+      v13 = [facadeCopy fbr];
       [(_CPSearchSuggestionForFeedback *)v5 setFbr:v13];
     }
 
-    v14 = [v4 topicIdentifier];
+    topicIdentifier = [facadeCopy topicIdentifier];
 
-    if (v14)
+    if (topicIdentifier)
     {
-      v15 = [v4 topicIdentifier];
-      [(_CPSearchSuggestionForFeedback *)v5 setTopicIdentifier:v15];
+      topicIdentifier2 = [facadeCopy topicIdentifier];
+      [(_CPSearchSuggestionForFeedback *)v5 setTopicIdentifier:topicIdentifier2];
     }
 
     v16 = v5;

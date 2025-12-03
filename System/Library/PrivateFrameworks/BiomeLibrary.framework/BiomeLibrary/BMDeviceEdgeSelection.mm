@@ -1,15 +1,15 @@
 @interface BMDeviceEdgeSelection
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMDeviceEdgeSelection)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMDeviceEdgeSelection)initWithPublicIPPrefix:(id)a3 addressFamily:(id)a4 prefixLength:(id)a5 interfaceType:(id)a6 radioType:(id)a7 radioBand:(id)a8 country:(id)a9 timeZone:(id)a10 geohash:(id)a11;
-- (BOOL)isEqual:(id)a3;
+- (BMDeviceEdgeSelection)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMDeviceEdgeSelection)initWithPublicIPPrefix:(id)prefix addressFamily:(id)family prefixLength:(id)length interfaceType:(id)type radioType:(id)radioType radioBand:(id)band country:(id)country timeZone:(id)self0 geohash:(id)self1;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMDeviceEdgeSelection
@@ -42,25 +42,25 @@
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMDeviceEdgeSelection *)self publicIPPrefix];
-    v7 = [v5 publicIPPrefix];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    publicIPPrefix = [(BMDeviceEdgeSelection *)self publicIPPrefix];
+    publicIPPrefix2 = [v5 publicIPPrefix];
+    v8 = publicIPPrefix2;
+    if (publicIPPrefix == publicIPPrefix2)
     {
     }
 
     else
     {
-      v9 = [(BMDeviceEdgeSelection *)self publicIPPrefix];
-      v10 = [v5 publicIPPrefix];
-      v11 = [v9 isEqual:v10];
+      publicIPPrefix3 = [(BMDeviceEdgeSelection *)self publicIPPrefix];
+      publicIPPrefix4 = [v5 publicIPPrefix];
+      v11 = [publicIPPrefix3 isEqual:publicIPPrefix4];
 
       if (!v11)
       {
@@ -80,8 +80,8 @@
         goto LABEL_35;
       }
 
-      v13 = [(BMDeviceEdgeSelection *)self addressFamily];
-      if (v13 != [v5 addressFamily])
+      addressFamily = [(BMDeviceEdgeSelection *)self addressFamily];
+      if (addressFamily != [v5 addressFamily])
       {
         goto LABEL_35;
       }
@@ -99,25 +99,25 @@
         goto LABEL_35;
       }
 
-      v14 = [(BMDeviceEdgeSelection *)self prefixLength];
-      if (v14 != [v5 prefixLength])
+      prefixLength = [(BMDeviceEdgeSelection *)self prefixLength];
+      if (prefixLength != [v5 prefixLength])
       {
         goto LABEL_35;
       }
     }
 
-    v15 = [(BMDeviceEdgeSelection *)self interfaceType];
-    v16 = [v5 interfaceType];
-    v17 = v16;
-    if (v15 == v16)
+    interfaceType = [(BMDeviceEdgeSelection *)self interfaceType];
+    interfaceType2 = [v5 interfaceType];
+    v17 = interfaceType2;
+    if (interfaceType == interfaceType2)
     {
     }
 
     else
     {
-      v18 = [(BMDeviceEdgeSelection *)self interfaceType];
-      v19 = [v5 interfaceType];
-      v20 = [v18 isEqual:v19];
+      interfaceType3 = [(BMDeviceEdgeSelection *)self interfaceType];
+      interfaceType4 = [v5 interfaceType];
+      v20 = [interfaceType3 isEqual:interfaceType4];
 
       if (!v20)
       {
@@ -125,18 +125,18 @@
       }
     }
 
-    v21 = [(BMDeviceEdgeSelection *)self radioType];
-    v22 = [v5 radioType];
-    v23 = v22;
-    if (v21 == v22)
+    radioType = [(BMDeviceEdgeSelection *)self radioType];
+    radioType2 = [v5 radioType];
+    v23 = radioType2;
+    if (radioType == radioType2)
     {
     }
 
     else
     {
-      v24 = [(BMDeviceEdgeSelection *)self radioType];
-      v25 = [v5 radioType];
-      v26 = [v24 isEqual:v25];
+      radioType3 = [(BMDeviceEdgeSelection *)self radioType];
+      radioType4 = [v5 radioType];
+      v26 = [radioType3 isEqual:radioType4];
 
       if (!v26)
       {
@@ -144,18 +144,18 @@
       }
     }
 
-    v27 = [(BMDeviceEdgeSelection *)self radioBand];
-    v28 = [v5 radioBand];
-    v29 = v28;
-    if (v27 == v28)
+    radioBand = [(BMDeviceEdgeSelection *)self radioBand];
+    radioBand2 = [v5 radioBand];
+    v29 = radioBand2;
+    if (radioBand == radioBand2)
     {
     }
 
     else
     {
-      v30 = [(BMDeviceEdgeSelection *)self radioBand];
-      v31 = [v5 radioBand];
-      v32 = [v30 isEqual:v31];
+      radioBand3 = [(BMDeviceEdgeSelection *)self radioBand];
+      radioBand4 = [v5 radioBand];
+      v32 = [radioBand3 isEqual:radioBand4];
 
       if (!v32)
       {
@@ -163,18 +163,18 @@
       }
     }
 
-    v33 = [(BMDeviceEdgeSelection *)self country];
-    v34 = [v5 country];
-    v35 = v34;
-    if (v33 == v34)
+    country = [(BMDeviceEdgeSelection *)self country];
+    country2 = [v5 country];
+    v35 = country2;
+    if (country == country2)
     {
     }
 
     else
     {
-      v36 = [(BMDeviceEdgeSelection *)self country];
-      v37 = [v5 country];
-      v38 = [v36 isEqual:v37];
+      country3 = [(BMDeviceEdgeSelection *)self country];
+      country4 = [v5 country];
+      v38 = [country3 isEqual:country4];
 
       if (!v38)
       {
@@ -182,18 +182,18 @@
       }
     }
 
-    v39 = [(BMDeviceEdgeSelection *)self timeZone];
-    v40 = [v5 timeZone];
-    v41 = v40;
-    if (v39 == v40)
+    timeZone = [(BMDeviceEdgeSelection *)self timeZone];
+    timeZone2 = [v5 timeZone];
+    v41 = timeZone2;
+    if (timeZone == timeZone2)
     {
     }
 
     else
     {
-      v42 = [(BMDeviceEdgeSelection *)self timeZone];
-      v43 = [v5 timeZone];
-      v44 = [v42 isEqual:v43];
+      timeZone3 = [(BMDeviceEdgeSelection *)self timeZone];
+      timeZone4 = [v5 timeZone];
+      v44 = [timeZone3 isEqual:timeZone4];
 
       if (!v44)
       {
@@ -205,18 +205,18 @@ LABEL_36:
       }
     }
 
-    v46 = [(BMDeviceEdgeSelection *)self geohash];
-    v47 = [v5 geohash];
-    if (v46 == v47)
+    geohash = [(BMDeviceEdgeSelection *)self geohash];
+    geohash2 = [v5 geohash];
+    if (geohash == geohash2)
     {
       v12 = 1;
     }
 
     else
     {
-      v48 = [(BMDeviceEdgeSelection *)self geohash];
-      v49 = [v5 geohash];
-      v12 = [v48 isEqual:v49];
+      geohash3 = [(BMDeviceEdgeSelection *)self geohash];
+      geohash4 = [v5 geohash];
+      v12 = [geohash3 isEqual:geohash4];
     }
 
     goto LABEL_36;
@@ -231,7 +231,7 @@ LABEL_37:
 - (id)jsonDictionary
 {
   v32[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMDeviceEdgeSelection *)self publicIPPrefix];
+  publicIPPrefix = [(BMDeviceEdgeSelection *)self publicIPPrefix];
   if ([(BMDeviceEdgeSelection *)self hasAddressFamily])
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceEdgeSelection addressFamily](self, "addressFamily")}];
@@ -252,102 +252,102 @@ LABEL_37:
     v5 = 0;
   }
 
-  v6 = [(BMDeviceEdgeSelection *)self interfaceType];
-  v7 = [(BMDeviceEdgeSelection *)self radioType];
-  v30 = [(BMDeviceEdgeSelection *)self radioBand];
-  v8 = [(BMDeviceEdgeSelection *)self country];
-  v9 = [(BMDeviceEdgeSelection *)self timeZone];
-  v10 = [(BMDeviceEdgeSelection *)self geohash];
+  interfaceType = [(BMDeviceEdgeSelection *)self interfaceType];
+  radioType = [(BMDeviceEdgeSelection *)self radioType];
+  radioBand = [(BMDeviceEdgeSelection *)self radioBand];
+  country = [(BMDeviceEdgeSelection *)self country];
+  timeZone = [(BMDeviceEdgeSelection *)self timeZone];
+  geohash = [(BMDeviceEdgeSelection *)self geohash];
   v31[0] = @"publicIPPrefix";
-  v11 = v3;
-  if (!v3)
+  null = publicIPPrefix;
+  if (!publicIPPrefix)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v25 = v11;
-  v32[0] = v11;
+  v25 = null;
+  v32[0] = null;
   v31[1] = @"addressFamily";
-  v12 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v12;
-  v32[1] = v12;
+  v24 = null2;
+  v32[1] = null2;
   v31[2] = @"prefixLength";
-  v13 = v5;
+  null3 = v5;
   if (!v5)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v29 = v3;
-  v23 = v13;
-  v32[2] = v13;
+  v29 = publicIPPrefix;
+  v23 = null3;
+  v32[2] = null3;
   v31[3] = @"interfaceType";
-  v14 = v6;
-  if (!v6)
+  null4 = interfaceType;
+  if (!interfaceType)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
   v28 = v4;
-  v22 = v14;
-  v32[3] = v14;
+  v22 = null4;
+  v32[3] = null4;
   v31[4] = @"radioType";
-  v15 = v7;
-  if (!v7)
+  null5 = radioType;
+  if (!radioType)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v27 = v5;
-  v32[4] = v15;
+  v32[4] = null5;
   v31[5] = @"radioBand";
-  v16 = v30;
-  if (!v30)
+  null6 = radioBand;
+  if (!radioBand)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[5] = v16;
+  v32[5] = null6;
   v31[6] = @"country";
-  v17 = v8;
-  if (!v8)
+  null7 = country;
+  if (!country)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[6] = v17;
+  v32[6] = null7;
   v31[7] = @"timeZone";
-  v18 = v9;
-  if (!v9)
+  null8 = timeZone;
+  if (!timeZone)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[7] = v18;
+  v32[7] = null8;
   v31[8] = @"geohash";
-  v19 = v10;
-  if (!v10)
+  null9 = geohash;
+  if (!geohash)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[8] = v19;
+  v32[8] = null9;
   v26 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:9];
-  if (v10)
+  if (geohash)
   {
-    if (v9)
+    if (timeZone)
     {
       goto LABEL_27;
     }
 
 LABEL_41:
 
-    if (v8)
+    if (country)
     {
       goto LABEL_28;
     }
@@ -355,13 +355,13 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (!v9)
+  if (!timeZone)
   {
     goto LABEL_41;
   }
 
 LABEL_27:
-  if (v8)
+  if (country)
   {
     goto LABEL_28;
   }
@@ -369,15 +369,15 @@ LABEL_27:
 LABEL_42:
 
 LABEL_28:
-  if (!v30)
+  if (!radioBand)
   {
   }
 
-  if (!v7)
+  if (!radioType)
   {
   }
 
-  if (!v6)
+  if (!interfaceType)
   {
   }
 
@@ -417,11 +417,11 @@ LABEL_37:
   return v26;
 }
 
-- (BMDeviceEdgeSelection)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMDeviceEdgeSelection)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v105[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"publicIPPrefix"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"publicIPPrefix"];
   v87 = v7;
   if (!v7 || (v8 = v7, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -434,10 +434,10 @@ LABEL_37:
   {
     v9 = v8;
 LABEL_4:
-    v10 = [v6 objectForKeyedSubscript:@"addressFamily"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"addressFamily"];
     if (!v10 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v82 = a4;
+      errorCopy2 = error;
       v11 = 0;
       goto LABEL_7;
     }
@@ -445,22 +445,22 @@ LABEL_4:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v82 = a4;
+      errorCopy2 = error;
       v11 = v10;
 LABEL_7:
-      v12 = [v6 objectForKeyedSubscript:@"prefixLength"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"prefixLength"];
       if (!v12 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v81 = 0;
 LABEL_10:
-        v13 = [v6 objectForKeyedSubscript:@"interfaceType"];
+        v13 = [dictionaryCopy objectForKeyedSubscript:@"interfaceType"];
         v85 = v10;
         if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v82)
+            if (!errorCopy2)
             {
               v86 = 0;
               v27 = 0;
@@ -482,31 +482,31 @@ LABEL_10:
             v47 = [v42 initWithDomain:v46 code:2 userInfo:v45];
             v86 = 0;
             v27 = 0;
-            *v82 = v47;
+            *errorCopy2 = v47;
             v41 = v44;
             v26 = v81;
             goto LABEL_82;
           }
 
           v86 = v13;
-          v14 = self;
+          selfCopy2 = self;
         }
 
         else
         {
-          v14 = self;
+          selfCopy2 = self;
           v86 = 0;
         }
 
-        v15 = [v6 objectForKeyedSubscript:@"radioType"];
+        v15 = [dictionaryCopy objectForKeyedSubscript:@"radioType"];
         v77 = v13;
         v79 = v15;
         if (!v15 || (v16 = v15, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
         {
           v83 = 0;
 LABEL_16:
-          v17 = [v6 objectForKeyedSubscript:@"radioBand"];
-          self = v14;
+          v17 = [dictionaryCopy objectForKeyedSubscript:@"radioBand"];
+          self = selfCopy2;
           v78 = v9;
           v75 = v17;
           if (v17 && (v18 = v17, objc_opt_class(), v10 = v85, (objc_opt_isKindOfClass() & 1) == 0))
@@ -514,7 +514,7 @@ LABEL_16:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if (!v82)
+              if (!errorCopy2)
               {
                 v80 = 0;
                 v27 = 0;
@@ -535,7 +535,7 @@ LABEL_16:
               v12 = v53;
               v80 = 0;
               v27 = 0;
-              *v82 = [v57 initWithDomain:v56 code:2 userInfo:v19];
+              *errorCopy2 = [v57 initWithDomain:v56 code:2 userInfo:v19];
               goto LABEL_85;
             }
 
@@ -547,7 +547,7 @@ LABEL_16:
             v80 = 0;
           }
 
-          v19 = [v6 objectForKeyedSubscript:@"country"];
+          v19 = [dictionaryCopy objectForKeyedSubscript:@"country"];
           v76 = v11;
           if (!v19 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
@@ -560,11 +560,11 @@ LABEL_16:
           {
             v20 = v19;
 LABEL_22:
-            v21 = [v6 objectForKeyedSubscript:@"timeZone"];
+            v21 = [dictionaryCopy objectForKeyedSubscript:@"timeZone"];
             v73 = v12;
             if (!v21 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
             {
-              v22 = self;
+              selfCopy5 = self;
               v23 = 0;
               goto LABEL_25;
             }
@@ -572,20 +572,20 @@ LABEL_22:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v22 = self;
+              selfCopy5 = self;
               v23 = v21;
 LABEL_25:
-              v24 = [v6 objectForKeyedSubscript:@"geohash"];
+              v24 = [dictionaryCopy objectForKeyedSubscript:@"geohash"];
               if (!v24 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
               {
                 v25 = 0;
 LABEL_28:
                 v26 = v81;
-                v27 = [(BMDeviceEdgeSelection *)v22 initWithPublicIPPrefix:v78 addressFamily:v76 prefixLength:v81 interfaceType:v86 radioType:v83 radioBand:v80 country:v20 timeZone:v23 geohash:v25];
-                v22 = v27;
+                v27 = [(BMDeviceEdgeSelection *)selfCopy5 initWithPublicIPPrefix:v78 addressFamily:v76 prefixLength:v81 interfaceType:v86 radioType:v83 radioBand:v80 country:v20 timeZone:v23 geohash:v25];
+                selfCopy5 = v27;
 LABEL_70:
 
-                self = v22;
+                self = selfCopy5;
                 v12 = v73;
 LABEL_71:
 
@@ -606,7 +606,7 @@ LABEL_73:
                 goto LABEL_28;
               }
 
-              if (v82)
+              if (errorCopy2)
               {
                 v72 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v70 = *MEMORY[0x1E698F240];
@@ -614,7 +614,7 @@ LABEL_73:
                 v65 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"geohash"];
                 v89 = v65;
                 v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v89 forKeys:&v88 count:1];
-                *v82 = [v72 initWithDomain:v70 code:2 userInfo:v66];
+                *errorCopy2 = [v72 initWithDomain:v70 code:2 userInfo:v66];
               }
 
               v25 = 0;
@@ -624,9 +624,9 @@ LABEL_69:
               goto LABEL_70;
             }
 
-            if (v82)
+            if (errorCopy2)
             {
-              v22 = self;
+              selfCopy5 = self;
               v71 = objc_alloc(MEMORY[0x1E696ABC0]);
               v63 = *MEMORY[0x1E698F240];
               v90 = *MEMORY[0x1E696A578];
@@ -636,7 +636,7 @@ LABEL_69:
               v64 = [v71 initWithDomain:v63 code:2 userInfo:v24];
               v23 = 0;
               v27 = 0;
-              *v82 = v64;
+              *errorCopy2 = v64;
               goto LABEL_69;
             }
 
@@ -647,22 +647,22 @@ LABEL_87:
             goto LABEL_71;
           }
 
-          if (v82)
+          if (errorCopy2)
           {
             v58 = objc_alloc(MEMORY[0x1E696ABC0]);
             v59 = v12;
-            v60 = self;
+            selfCopy6 = self;
             v61 = *MEMORY[0x1E698F240];
             v92 = *MEMORY[0x1E696A578];
             v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"country"];
             v93 = v23;
             v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v93 forKeys:&v92 count:1];
             v62 = v61;
-            self = v60;
+            self = selfCopy6;
             v12 = v59;
             v20 = 0;
             v27 = 0;
-            *v82 = [v58 initWithDomain:v62 code:2 userInfo:v21];
+            *errorCopy2 = [v58 initWithDomain:v62 code:2 userInfo:v21];
             goto LABEL_87;
           }
 
@@ -680,7 +680,7 @@ LABEL_85:
           goto LABEL_16;
         }
 
-        if (v82)
+        if (errorCopy2)
         {
           v48 = objc_alloc(MEMORY[0x1E696ABC0]);
           v49 = v11;
@@ -693,9 +693,9 @@ LABEL_85:
           v11 = v49;
           v83 = 0;
           v27 = 0;
-          *v82 = [v48 initWithDomain:v52 code:2 userInfo:v51];
+          *errorCopy2 = [v48 initWithDomain:v52 code:2 userInfo:v51];
           v26 = v81;
-          self = v14;
+          self = selfCopy2;
           v10 = v85;
 LABEL_74:
 
@@ -711,7 +711,7 @@ LABEL_75:
         v26 = v81;
         v41 = v13;
         v45 = v79;
-        self = v14;
+        self = selfCopy2;
 LABEL_82:
         v10 = v85;
         goto LABEL_75;
@@ -724,8 +724,8 @@ LABEL_82:
         goto LABEL_10;
       }
 
-      v26 = v82;
-      if (v82)
+      v26 = errorCopy2;
+      if (errorCopy2)
       {
         v84 = objc_alloc(MEMORY[0x1E696ABC0]);
         v37 = *MEMORY[0x1E698F240];
@@ -739,7 +739,7 @@ LABEL_82:
         v101 = v86;
         v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v101 forKeys:&v100 count:1];
         v27 = 0;
-        *v82 = [v84 initWithDomain:v37 code:2 userInfo:v41];
+        *errorCopy2 = [v84 initWithDomain:v37 code:2 userInfo:v41];
         v26 = 0;
 LABEL_76:
 
@@ -752,10 +752,10 @@ LABEL_77:
       goto LABEL_78;
     }
 
-    if (a4)
+    if (error)
     {
       v31 = objc_alloc(MEMORY[0x1E696ABC0]);
-      v32 = a4;
+      errorCopy3 = error;
       v33 = *MEMORY[0x1E698F240];
       v102 = *MEMORY[0x1E696A578];
       v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"addressFamily"];
@@ -765,7 +765,7 @@ LABEL_77:
       v12 = v35;
       v11 = 0;
       v27 = 0;
-      *v32 = [v31 initWithDomain:v36 code:2 userInfo:v35];
+      *errorCopy3 = [v31 initWithDomain:v36 code:2 userInfo:v35];
       v26 = v34;
       goto LABEL_77;
     }
@@ -778,10 +778,10 @@ LABEL_78:
     goto LABEL_79;
   }
 
-  if (a4)
+  if (error)
   {
     v28 = objc_alloc(MEMORY[0x1E696ABC0]);
-    v29 = a4;
+    errorCopy4 = error;
     v30 = *MEMORY[0x1E698F240];
     v104 = *MEMORY[0x1E696A578];
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"publicIPPrefix"];
@@ -789,7 +789,7 @@ LABEL_78:
     v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v105 forKeys:&v104 count:1];
     v9 = 0;
     v27 = 0;
-    *v29 = [v28 initWithDomain:v30 code:2 userInfo:v10];
+    *errorCopy4 = [v28 initWithDomain:v30 code:2 userInfo:v10];
     goto LABEL_78;
   }
 
@@ -805,75 +805,75 @@ LABEL_79:
 {
   v3 = objc_opt_new();
   [(BMDeviceEdgeSelection *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_publicIPPrefix)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_hasAddressFamily)
   {
     addressFamily = self->_addressFamily;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_hasPrefixLength)
   {
     prefixLength = self->_prefixLength;
     PBDataWriterWriteUint32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_interfaceType)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_radioType)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_radioBand)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_country)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_timeZone)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_geohash)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v36.receiver = self;
   v36.super_class = BMDeviceEdgeSelection;
   v5 = [(BMEventBase *)&v36 init];
@@ -882,12 +882,12 @@ LABEL_79:
     goto LABEL_70;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -898,18 +898,18 @@ LABEL_79:
       while (1)
       {
         v37 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v37 & 0x7F) << v7;
@@ -927,9 +927,9 @@ LABEL_79:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -948,18 +948,18 @@ LABEL_16:
             while (1)
             {
               v37 = 0;
-              v28 = [v4 position] + 1;
-              if (v28 >= [v4 position] && (v29 = objc_msgSend(v4, "position") + 1, v29 <= objc_msgSend(v4, "length")))
+              v28 = [fromCopy position] + 1;
+              if (v28 >= [fromCopy position] && (v29 = objc_msgSend(fromCopy, "position") + 1, v29 <= objc_msgSend(fromCopy, "length")))
               {
-                v30 = [v4 data];
-                [v30 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+                data2 = [fromCopy data];
+                [data2 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v27 |= (v37 & 0x7F) << v25;
@@ -977,7 +977,7 @@ LABEL_16:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -1019,18 +1019,18 @@ LABEL_66:
             while (1)
             {
               v37 = 0;
-              v21 = [v4 position] + 1;
-              if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 1, v22 <= objc_msgSend(v4, "length")))
+              v21 = [fromCopy position] + 1;
+              if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 1, v22 <= objc_msgSend(fromCopy, "length")))
               {
-                v23 = [v4 data];
-                [v23 getBytes:&v37 range:{objc_msgSend(v4, "position"), 1}];
+                data3 = [fromCopy data];
+                [data3 getBytes:&v37 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-                [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+                [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
               }
 
               else
               {
-                [v4 _setError];
+                [fromCopy _setError];
               }
 
               v20 |= (v37 & 0x7F) << v18;
@@ -1048,7 +1048,7 @@ LABEL_66:
               }
             }
 
-            if ([v4 hasError])
+            if ([fromCopy hasError])
             {
               v24 = 0;
             }
@@ -1119,13 +1119,13 @@ LABEL_56:
       *(&v5->super.super.isa + v17) = v16;
 
 LABEL_67:
-      v33 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v33 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_69:
     v34 = 0;
@@ -1143,70 +1143,70 @@ LABEL_70:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMDeviceEdgeSelection *)self publicIPPrefix];
+  publicIPPrefix = [(BMDeviceEdgeSelection *)self publicIPPrefix];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceEdgeSelection addressFamily](self, "addressFamily")}];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[BMDeviceEdgeSelection prefixLength](self, "prefixLength")}];
-  v7 = [(BMDeviceEdgeSelection *)self interfaceType];
-  v8 = [(BMDeviceEdgeSelection *)self radioType];
-  v9 = [(BMDeviceEdgeSelection *)self radioBand];
-  v10 = [(BMDeviceEdgeSelection *)self country];
-  v11 = [(BMDeviceEdgeSelection *)self timeZone];
-  v12 = [(BMDeviceEdgeSelection *)self geohash];
-  v13 = [v3 initWithFormat:@"BMDeviceEdgeSelection with publicIPPrefix: %@, addressFamily: %@, prefixLength: %@, interfaceType: %@, radioType: %@, radioBand: %@, country: %@, timeZone: %@, geohash: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  interfaceType = [(BMDeviceEdgeSelection *)self interfaceType];
+  radioType = [(BMDeviceEdgeSelection *)self radioType];
+  radioBand = [(BMDeviceEdgeSelection *)self radioBand];
+  country = [(BMDeviceEdgeSelection *)self country];
+  timeZone = [(BMDeviceEdgeSelection *)self timeZone];
+  geohash = [(BMDeviceEdgeSelection *)self geohash];
+  v13 = [v3 initWithFormat:@"BMDeviceEdgeSelection with publicIPPrefix: %@, addressFamily: %@, prefixLength: %@, interfaceType: %@, radioType: %@, radioBand: %@, country: %@, timeZone: %@, geohash: %@", publicIPPrefix, v5, v6, interfaceType, radioType, radioBand, country, timeZone, geohash];
 
   return v13;
 }
 
-- (BMDeviceEdgeSelection)initWithPublicIPPrefix:(id)a3 addressFamily:(id)a4 prefixLength:(id)a5 interfaceType:(id)a6 radioType:(id)a7 radioBand:(id)a8 country:(id)a9 timeZone:(id)a10 geohash:(id)a11
+- (BMDeviceEdgeSelection)initWithPublicIPPrefix:(id)prefix addressFamily:(id)family prefixLength:(id)length interfaceType:(id)type radioType:(id)radioType radioBand:(id)band country:(id)country timeZone:(id)self0 geohash:(id)self1
 {
-  v30 = a3;
-  v18 = a4;
-  v19 = a5;
-  v29 = a6;
-  v28 = a7;
-  v27 = a8;
-  v26 = a9;
-  v25 = a10;
-  v24 = a11;
+  prefixCopy = prefix;
+  familyCopy = family;
+  lengthCopy = length;
+  typeCopy = type;
+  radioTypeCopy = radioType;
+  bandCopy = band;
+  countryCopy = country;
+  zoneCopy = zone;
+  geohashCopy = geohash;
   v31.receiver = self;
   v31.super_class = BMDeviceEdgeSelection;
   v20 = [(BMEventBase *)&v31 init];
   if (v20)
   {
     v20->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v20->_publicIPPrefix, a3);
-    if (v18)
+    objc_storeStrong(&v20->_publicIPPrefix, prefix);
+    if (familyCopy)
     {
       v20->_hasAddressFamily = 1;
-      v21 = [v18 unsignedIntValue];
+      unsignedIntValue = [familyCopy unsignedIntValue];
     }
 
     else
     {
-      v21 = 0;
+      unsignedIntValue = 0;
       v20->_hasAddressFamily = 0;
     }
 
-    v20->_addressFamily = v21;
-    if (v19)
+    v20->_addressFamily = unsignedIntValue;
+    if (lengthCopy)
     {
       v20->_hasPrefixLength = 1;
-      v22 = [v19 unsignedIntValue];
+      unsignedIntValue2 = [lengthCopy unsignedIntValue];
     }
 
     else
     {
-      v22 = 0;
+      unsignedIntValue2 = 0;
       v20->_hasPrefixLength = 0;
     }
 
-    v20->_prefixLength = v22;
-    objc_storeStrong(&v20->_interfaceType, a6);
-    objc_storeStrong(&v20->_radioType, a7);
-    objc_storeStrong(&v20->_radioBand, a8);
-    objc_storeStrong(&v20->_country, a9);
-    objc_storeStrong(&v20->_timeZone, a10);
-    objc_storeStrong(&v20->_geohash, a11);
+    v20->_prefixLength = unsignedIntValue2;
+    objc_storeStrong(&v20->_interfaceType, type);
+    objc_storeStrong(&v20->_radioType, radioType);
+    objc_storeStrong(&v20->_radioBand, band);
+    objc_storeStrong(&v20->_country, country);
+    objc_storeStrong(&v20->_timeZone, zone);
+    objc_storeStrong(&v20->_geohash, geohash);
   }
 
   return v20;
@@ -1239,9 +1239,9 @@ LABEL_70:
   return v11;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -1249,8 +1249,8 @@ LABEL_70:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMDeviceEdgeSelection alloc] initByReadFrom:v7];
     v4 = v8;

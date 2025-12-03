@@ -33,32 +33,32 @@
 
 - (void)_internalSetUpImageCache
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   keyStringRequestsToCompletionHandlers = self->_keyStringRequestsToCompletionHandlers;
-  self->_keyStringRequestsToCompletionHandlers = v3;
+  self->_keyStringRequestsToCompletionHandlers = dictionary;
 
   if (self->_imageDirectoryURL)
   {
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
-    v6 = [(WBSSiteMetadataImageCache *)self _diskAccessQueueName];
-    v7 = dispatch_queue_create([v6 UTF8String], v5);
+    _diskAccessQueueName = [(WBSSiteMetadataImageCache *)self _diskAccessQueueName];
+    v7 = dispatch_queue_create([_diskAccessQueueName UTF8String], v5);
     diskAccessQueue = self->_diskAccessQueue;
     self->_diskAccessQueue = v7;
 
-    v9 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     diskReadBlocks = self->_diskReadBlocks;
-    self->_diskReadBlocks = v9;
+    self->_diskReadBlocks = weakObjectsHashTable;
 
     objc_initWeak(&location, self);
     v11 = objc_alloc(MEMORY[0x1E69C8840]);
-    v12 = [(WBSSiteMetadataImageCache *)self _cacheSettingsFileURL];
+    _cacheSettingsFileURL = [(WBSSiteMetadataImageCache *)self _cacheSettingsFileURL];
     internalQueue = self->_internalQueue;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __53__WBSSiteMetadataImageCache__internalSetUpImageCache__block_invoke;
     v19[3] = &unk_1E8286418;
     objc_copyWeak(&v20, &location);
-    v14 = [v11 initWithName:@"SiteMetadataImageCacheSetting" fileURL:v12 dataSourceQueue:internalQueue dataSourceBlock:v19];
+    v14 = [v11 initWithName:@"SiteMetadataImageCacheSetting" fileURL:_cacheSettingsFileURL dataSourceQueue:internalQueue dataSourceBlock:v19];
     cacheSettingsWriter = self->_cacheSettingsWriter;
     self->_cacheSettingsWriter = v14;
 
@@ -75,9 +75,9 @@
   else
   {
     os_unfair_lock_lock(&self->_cacheAccessLock);
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     cacheSettings = self->_cacheSettings;
-    self->_cacheSettings = v16;
+    self->_cacheSettings = dictionary2;
 
     os_unfair_lock_unlock(&self->_cacheAccessLock);
 
@@ -166,8 +166,8 @@ uint64_t __53__WBSSiteMetadataImageCache__internalSetUpImageCache__block_invoke_
 {
   os_unfair_lock_lock(&self->_cacheAccessLock);
   missingImageKeyStrings = self->_missingImageKeyStrings;
-  v4 = [(NSMutableDictionary *)self->_imagesForKeyStrings allKeys];
-  [(NSMutableSet *)missingImageKeyStrings addObjectsFromArray:v4];
+  allKeys = [(NSMutableDictionary *)self->_imagesForKeyStrings allKeys];
+  [(NSMutableSet *)missingImageKeyStrings addObjectsFromArray:allKeys];
 
   [(NSMutableDictionary *)self->_imagesForKeyStrings removeAllObjects];
   os_unfair_lock_unlock(&self->_cacheAccessLock);

@@ -1,13 +1,13 @@
 @interface INGetSettingResponseData
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INGetSettingResponseData)initWithCoder:(id)a3;
-- (INGetSettingResponseData)initWithSettingMetadata:(id)a3 numericValue:(id)a4 boundedValue:(int64_t)a5 binaryValue:(int64_t)a6 labeledValue:(id)a7;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INGetSettingResponseData)initWithCoder:(id)coder;
+- (INGetSettingResponseData)initWithSettingMetadata:(id)metadata numericValue:(id)value boundedValue:(int64_t)boundedValue binaryValue:(int64_t)binaryValue labeledValue:(id)labeledValue;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INGetSettingResponseData
@@ -17,22 +17,22 @@
   v15[5] = *MEMORY[0x1E69E9840];
   v14[0] = @"settingMetadata";
   settingMetadata = self->_settingMetadata;
-  v4 = settingMetadata;
+  null = settingMetadata;
   if (!settingMetadata)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[0] = v4;
+  v15[0] = null;
   v14[1] = @"numericValue";
   numericValue = self->_numericValue;
-  v6 = numericValue;
+  null2 = numericValue;
   if (!numericValue)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[1] = v6;
+  v15[1] = null2;
   v14[2] = @"boundedValue";
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:self->_boundedValue];
   v15[2] = v7;
@@ -41,13 +41,13 @@
   v15[3] = v8;
   v14[4] = @"labeledValue";
   labeledValue = self->_labeledValue;
-  v10 = labeledValue;
+  null3 = labeledValue;
   if (!labeledValue)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v15[4] = v10;
+  v15[4] = null3;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:5];
   if (!labeledValue)
   {
@@ -76,29 +76,29 @@ LABEL_11:
   return v11;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INGetSettingResponseData;
   v6 = [(INGetSettingResponseData *)&v11 description];
-  v7 = [(INGetSettingResponseData *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INGetSettingResponseData *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_settingMetadata];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"settingMetadata"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_settingMetadata];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"settingMetadata"];
 
-  v9 = [v6 encodeObject:self->_numericValue];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"numericValue"];
+  v9 = [encoderCopy encodeObject:self->_numericValue];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"numericValue"];
 
   v10 = self->_boundedValue - 1;
   if (v10 > 2)
@@ -112,7 +112,7 @@ LABEL_11:
   }
 
   v12 = v11;
-  [v7 if_setObjectIfNonNil:v12 forKey:@"boundedValue"];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"boundedValue"];
 
   v13 = self->_binaryValue - 1;
   if (v13 > 2)
@@ -126,46 +126,46 @@ LABEL_11:
   }
 
   v15 = v14;
-  [v7 if_setObjectIfNonNil:v15 forKey:@"binaryValue"];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"binaryValue"];
 
-  v16 = [v6 encodeObject:self->_labeledValue];
+  v16 = [encoderCopy encodeObject:self->_labeledValue];
 
-  [v7 if_setObjectIfNonNil:v16 forKey:@"labeledValue"];
+  [dictionary if_setObjectIfNonNil:v16 forKey:@"labeledValue"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   settingMetadata = self->_settingMetadata;
-  v5 = a3;
-  [v5 encodeObject:settingMetadata forKey:@"settingMetadata"];
-  [v5 encodeObject:self->_numericValue forKey:@"numericValue"];
-  [v5 encodeInteger:self->_boundedValue forKey:@"boundedValue"];
-  [v5 encodeInteger:self->_binaryValue forKey:@"binaryValue"];
-  [v5 encodeObject:self->_labeledValue forKey:@"labeledValue"];
+  coderCopy = coder;
+  [coderCopy encodeObject:settingMetadata forKey:@"settingMetadata"];
+  [coderCopy encodeObject:self->_numericValue forKey:@"numericValue"];
+  [coderCopy encodeInteger:self->_boundedValue forKey:@"boundedValue"];
+  [coderCopy encodeInteger:self->_binaryValue forKey:@"binaryValue"];
+  [coderCopy encodeObject:self->_labeledValue forKey:@"labeledValue"];
 }
 
-- (INGetSettingResponseData)initWithCoder:(id)a3
+- (INGetSettingResponseData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"settingMetadata"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"numericValue"];
-  v7 = [v4 decodeIntegerForKey:@"boundedValue"];
-  v8 = [v4 decodeIntegerForKey:@"binaryValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"settingMetadata"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"numericValue"];
+  v7 = [coderCopy decodeIntegerForKey:@"boundedValue"];
+  v8 = [coderCopy decodeIntegerForKey:@"binaryValue"];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"labeledValue"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"labeledValue"];
 
   v13 = [(INGetSettingResponseData *)self initWithSettingMetadata:v5 numericValue:v6 boundedValue:v7 binaryValue:v8 labeledValue:v12];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -175,7 +175,7 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       settingMetadata = self->_settingMetadata;
       v9 = 0;
       if (settingMetadata == v5->_settingMetadata || [(INSettingMetadata *)settingMetadata isEqual:?])
@@ -214,27 +214,27 @@ LABEL_11:
   return v6 ^ v9;
 }
 
-- (INGetSettingResponseData)initWithSettingMetadata:(id)a3 numericValue:(id)a4 boundedValue:(int64_t)a5 binaryValue:(int64_t)a6 labeledValue:(id)a7
+- (INGetSettingResponseData)initWithSettingMetadata:(id)metadata numericValue:(id)value boundedValue:(int64_t)boundedValue binaryValue:(int64_t)binaryValue labeledValue:(id)labeledValue
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  metadataCopy = metadata;
+  valueCopy = value;
+  labeledValueCopy = labeledValue;
   v23.receiver = self;
   v23.super_class = INGetSettingResponseData;
   v15 = [(INGetSettingResponseData *)&v23 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [metadataCopy copy];
     settingMetadata = v15->_settingMetadata;
     v15->_settingMetadata = v16;
 
-    v18 = [v13 copy];
+    v18 = [valueCopy copy];
     numericValue = v15->_numericValue;
     v15->_numericValue = v18;
 
-    v15->_boundedValue = a5;
-    v15->_binaryValue = a6;
-    v20 = [v14 copy];
+    v15->_boundedValue = boundedValue;
+    v15->_binaryValue = binaryValue;
+    v20 = [labeledValueCopy copy];
     labeledValue = v15->_labeledValue;
     v15->_labeledValue = v20;
   }
@@ -242,29 +242,29 @@ LABEL_11:
   return v15;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"settingMetadata"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"settingMetadata"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"numericValue"];
-    v14 = [v7 decodeObjectOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"numericValue"];
+    v14 = [decoderCopy decodeObjectOfClass:v12 from:v13];
 
-    v15 = [v8 objectForKeyedSubscript:@"boundedValue"];
+    v15 = [fromCopy objectForKeyedSubscript:@"boundedValue"];
     v16 = INBoundedSettingValueWithString(v15);
 
-    v17 = [v8 objectForKeyedSubscript:@"binaryValue"];
+    v17 = [fromCopy objectForKeyedSubscript:@"binaryValue"];
     v18 = INBinarySettingValueWithString(v17);
 
-    v19 = [v8 objectForKeyedSubscript:@"labeledValue"];
-    v20 = [[a1 alloc] initWithSettingMetadata:v11 numericValue:v14 boundedValue:v16 binaryValue:v18 labeledValue:v19];
+    v19 = [fromCopy objectForKeyedSubscript:@"labeledValue"];
+    v20 = [[self alloc] initWithSettingMetadata:v11 numericValue:v14 boundedValue:v16 binaryValue:v18 labeledValue:v19];
   }
 
   else

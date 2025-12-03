@@ -1,29 +1,29 @@
 @interface DNDSAppConfigurationManager
-- (DNDSAppConfigurationManager)initWithAppSpecificSettingsManager:(id)a3;
-- (id)appActionsForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)clearAppActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5;
-- (id)clearSystemActionWithIdentifier:(id)a3 modeIdentifier:(id)a4;
-- (id)setAppAction:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5;
-- (id)setPredicate:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6;
-- (id)setSystemAction:(id)a3 modeIdentifier:(id)a4;
-- (id)setTargetContentIdentifierPrefix:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6;
-- (id)sysdiagnoseDataForDate:(id)a3 redacted:(BOOL)a4;
-- (id)systemActionForActionIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5;
-- (id)systemActionsForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)targetContentIdentifierPrefixesForModeIdentifier:(id)a3 error:(id *)a4;
-- (id)updateSystemActionWithReverseAction:(id)a3 actionIdentifier:(id)a4 modeIdentifier:(id)a5;
-- (void)appSpecificSettingsManager:(id)a3 receivedSyncedAppSpecificSettings:(id)a4 ofType:(Class)a5 applicationIdentifier:(id)a6 modeIdentifier:(id)a7;
-- (void)appSpecificSettingsManager:(id)a3 receivedSyncedClearForAppSpecificSettings:(id)a4 ofType:(Class)a5 applicationIdentifier:(id)a6 modeIdentifier:(id)a7;
+- (DNDSAppConfigurationManager)initWithAppSpecificSettingsManager:(id)manager;
+- (id)appActionsForModeIdentifier:(id)identifier error:(id *)error;
+- (id)clearAppActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier;
+- (id)clearSystemActionWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier;
+- (id)setAppAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier;
+- (id)setPredicate:(id)predicate forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier;
+- (id)setSystemAction:(id)action modeIdentifier:(id)identifier;
+- (id)setTargetContentIdentifierPrefix:(id)prefix forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier;
+- (id)sysdiagnoseDataForDate:(id)date redacted:(BOOL)redacted;
+- (id)systemActionForActionIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error;
+- (id)systemActionsForModeIdentifier:(id)identifier error:(id *)error;
+- (id)targetContentIdentifierPrefixesForModeIdentifier:(id)identifier error:(id *)error;
+- (id)updateSystemActionWithReverseAction:(id)action actionIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier;
+- (void)appSpecificSettingsManager:(id)manager receivedSyncedAppSpecificSettings:(id)settings ofType:(Class)type applicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier;
+- (void)appSpecificSettingsManager:(id)manager receivedSyncedClearForAppSpecificSettings:(id)settings ofType:(Class)type applicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier;
 - (void)dealloc;
-- (void)invalidateAppContextForActionIdentifier:(id)a3 applicationIdentifier:(id)a4 modeIdentifier:(id)a5;
-- (void)refreshWithAvailableModes:(id)a3;
+- (void)invalidateAppContextForActionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier;
+- (void)refreshWithAvailableModes:(id)modes;
 @end
 
 @implementation DNDSAppConfigurationManager
 
-- (DNDSAppConfigurationManager)initWithAppSpecificSettingsManager:(id)a3
+- (DNDSAppConfigurationManager)initWithAppSpecificSettingsManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = DNDSAppConfigurationManager;
   v6 = [(DNDSAppConfigurationManager *)&v14 init];
@@ -37,11 +37,11 @@
     predicates = v6->_predicates;
     v6->_predicates = v9;
 
-    objc_storeStrong(&v6->_appSpecificSettingsManager, a3);
+    objc_storeStrong(&v6->_appSpecificSettingsManager, manager);
     [(DNDSAppSpecificSettingsManager *)v6->_appSpecificSettingsManager setDelegate:v6];
-    v11 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     delegates = v6->_delegates;
-    v6->_delegates = v11;
+    v6->_delegates = weakObjectsHashTable;
 
     DNDSRegisterSysdiagnoseDataProvider(v6);
   }
@@ -57,11 +57,11 @@
   [(DNDSAppConfigurationManager *)&v3 dealloc];
 }
 
-- (void)refreshWithAvailableModes:(id)a3
+- (void)refreshWithAvailableModes:(id)modes
 {
   v36 = *MEMORY[0x277D85DE8];
-  v24 = [a3 bs_map:&__block_literal_global_30];
-  v25 = self;
+  v24 = [modes bs_map:&__block_literal_global_30];
+  selfCopy = self;
   v4 = [DNDSAppSpecificSettingsManager removeModeSpecificSettingsForModeIdentifiersNotInModeIdentifiers:"removeModeSpecificSettingsForModeIdentifiersNotInModeIdentifiers:error:" error:?];
   v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
   v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
@@ -86,12 +86,12 @@
 
         v12 = *(*(&v30 + 1) + 8 * i);
         v13 = [v7 objectForKeyedSubscript:v12];
-        v14 = [v13 applicationIdentifiers];
-        [v5 setObject:v14 forKeyedSubscript:v12];
+        applicationIdentifiers = [v13 applicationIdentifiers];
+        [v5 setObject:applicationIdentifiers forKeyedSubscript:v12];
 
         v15 = [v7 objectForKeyedSubscript:v12];
-        v16 = [v15 modeSpecificSettings];
-        [v6 setObject:v16 forKeyedSubscript:v12];
+        modeSpecificSettings = [v15 modeSpecificSettings];
+        [v6 setObject:modeSpecificSettings forKeyedSubscript:v12];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -104,7 +104,7 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v17 = v25->_delegates;
+  v17 = selfCopy->_delegates;
   v18 = [(NSHashTable *)v17 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v18)
   {
@@ -122,12 +122,12 @@
         v22 = *(*(&v26 + 1) + 8 * j);
         if (objc_opt_respondsToSelector())
         {
-          [v22 appConfigurationManager:v25 didClearActionsForAppsInModeIdentifiers:v5];
+          [v22 appConfigurationManager:selfCopy didClearActionsForAppsInModeIdentifiers:v5];
         }
 
         if (objc_opt_respondsToSelector())
         {
-          [v22 appConfigurationManager:v25 didClearSystemActionsInModeIdentifiers:v6];
+          [v22 appConfigurationManager:selfCopy didClearSystemActionsInModeIdentifiers:v6];
         }
       }
 
@@ -140,20 +140,20 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (id)setPredicate:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6
+- (id)setPredicate:(id)predicate forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  predicateCopy = predicate;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
+  if (!predicateCopy)
   {
     goto LABEL_4;
   }
 
   appSpecificSettingsManager = self->_appSpecificSettingsManager;
   v22 = 0;
-  v15 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager appActionWithIdentifier:v11 forApplicationIdentifier:v12 modeIdentifier:v13 error:&v22];
+  v15 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager appActionWithIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy error:&v22];
   v16 = v22;
   if (v15)
   {
@@ -161,48 +161,48 @@
 LABEL_4:
     v17 = self->_appSpecificSettingsManager;
     v21 = 0;
-    [(DNDSAppSpecificSettingsManager *)v17 setAppSpecificSettings:v10 identifier:v11 type:objc_opt_class() applicationIdentifier:v12 modeIdentifier:v13 error:&v21];
+    [(DNDSAppSpecificSettingsManager *)v17 setAppSpecificSettings:predicateCopy identifier:identifierCopy type:objc_opt_class() applicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy error:&v21];
     v18 = v21;
     goto LABEL_8;
   }
 
-  v19 = [MEMORY[0x277CBEB38] dictionary];
-  [v19 setObject:@"No action exists for action identifier; ignoring request to set predicate." forKeyedSubscript:*MEMORY[0x277CCA450]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"No action exists for action identifier; ignoring request to set predicate." forKeyedSubscript:*MEMORY[0x277CCA450]];
   if (v16)
   {
-    [v19 setObject:v16 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
   }
 
-  v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D05840] code:1006 userInfo:v19];
+  v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D05840] code:1006 userInfo:dictionary];
 
 LABEL_8:
 
   return v18;
 }
 
-- (id)targetContentIdentifierPrefixesForModeIdentifier:(id)a3 error:(id *)a4
+- (id)targetContentIdentifierPrefixesForModeIdentifier:(id)identifier error:(id *)error
 {
   appSpecificSettingsManager = self->_appSpecificSettingsManager;
-  v6 = a3;
-  v7 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager appSpecificSettingsOfType:objc_opt_class() modeIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  v7 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager appSpecificSettingsOfType:objc_opt_class() modeIdentifier:identifierCopy error:error];
 
   return v7;
 }
 
-- (id)setTargetContentIdentifierPrefix:(id)a3 forActionIdentifier:(id)a4 forApplicationIdentifier:(id)a5 modeIdentifier:(id)a6
+- (id)setTargetContentIdentifierPrefix:(id)prefix forActionIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10 || ![v10 length])
+  prefixCopy = prefix;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
+  if (!prefixCopy || ![prefixCopy length])
   {
     goto LABEL_5;
   }
 
   appSpecificSettingsManager = self->_appSpecificSettingsManager;
   v22 = 0;
-  v15 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager appActionWithIdentifier:v11 forApplicationIdentifier:v12 modeIdentifier:v13 error:&v22];
+  v15 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager appActionWithIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy error:&v22];
   v16 = v22;
   if (v15)
   {
@@ -210,33 +210,33 @@ LABEL_8:
 LABEL_5:
     v17 = self->_appSpecificSettingsManager;
     v21 = 0;
-    [(DNDSAppSpecificSettingsManager *)v17 setAppSpecificSettings:v10 identifier:v11 type:objc_opt_class() applicationIdentifier:v12 modeIdentifier:v13 error:&v21];
+    [(DNDSAppSpecificSettingsManager *)v17 setAppSpecificSettings:prefixCopy identifier:identifierCopy type:objc_opt_class() applicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy error:&v21];
     v18 = v21;
     goto LABEL_6;
   }
 
-  v20 = [MEMORY[0x277CBEB38] dictionary];
-  [v20 setObject:@"No action exists for action identifier; ignoring request to set target content identifier prefix." forKeyedSubscript:*MEMORY[0x277CCA450]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:@"No action exists for action identifier; ignoring request to set target content identifier prefix." forKeyedSubscript:*MEMORY[0x277CCA450]];
   if (v16)
   {
-    [v20 setObject:v16 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
+    [dictionary setObject:v16 forKeyedSubscript:*MEMORY[0x277CCA7E8]];
   }
 
-  v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D05840] code:1006 userInfo:v20];
+  v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D05840] code:1006 userInfo:dictionary];
 
 LABEL_6:
 
   return v18;
 }
 
-- (void)invalidateAppContextForActionIdentifier:(id)a3 applicationIdentifier:(id)a4 modeIdentifier:(id)a5
+- (void)invalidateAppContextForActionIdentifier:(id)identifier applicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
   v40 = 0;
-  v11 = [(DNDSAppConfigurationManager *)self appActionForActionIdentifier:v8 applicationIdentifier:v9 modeIdentifier:v10 error:&v40];
+  v11 = [(DNDSAppConfigurationManager *)self appActionForActionIdentifier:identifierCopy applicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy error:&v40];
   v12 = v40;
   if (v12)
   {
@@ -255,11 +255,11 @@ LABEL_6:
     if (os_log_type_enabled(DNDSLogAppConfigurationServiceProvider, OS_LOG_TYPE_ERROR))
     {
       *buf = 138413058;
-      v42 = v8;
+      v42 = identifierCopy;
       v43 = 2112;
-      v44 = v9;
+      v44 = applicationIdentifierCopy;
       v45 = 2112;
-      v46 = v10;
+      v46 = modeIdentifierCopy;
       v47 = 2112;
       v48 = v14;
       _os_log_error_impl(&dword_24912E000, v15, OS_LOG_TYPE_ERROR, "Failed to retrieve action for actionIdentifier:%@ applicationIdentifier:%@ modeIdentifier: %@, error=%@", buf, 0x2Au);
@@ -268,10 +268,10 @@ LABEL_6:
 
   else
   {
-    v16 = [v9 bundleID];
+    bundleID = [applicationIdentifierCopy bundleID];
     v17 = objc_alloc_init(MEMORY[0x277D23C30]);
     v39 = 0;
-    v18 = [v17 actionForBundleIdentifier:v16 andActionIdentifier:v8 error:&v39];
+    v18 = [v17 actionForBundleIdentifier:bundleID andActionIdentifier:identifierCopy error:&v39];
     v19 = v39;
     v14 = v19;
     if (v19 || !v18)
@@ -280,11 +280,11 @@ LABEL_6:
       if (os_log_type_enabled(DNDSLogAppFocusConfiguration, OS_LOG_TYPE_ERROR))
       {
         *buf = 138544130;
-        v42 = v8;
+        v42 = identifierCopy;
         v43 = 2114;
-        v44 = v9;
+        v44 = applicationIdentifierCopy;
         v45 = 2114;
-        v46 = v10;
+        v46 = modeIdentifierCopy;
         v47 = 2114;
         v48 = v14;
         _os_log_error_impl(&dword_24912E000, v27, OS_LOG_TYPE_ERROR, "Failed to get action metadata for task with actionIdentifier:%{public}@ applicationIdentifier:%{public}@ modeIdentifier:%{public}@ error=%{public}@", buf, 0x2Au);
@@ -294,11 +294,11 @@ LABEL_6:
     else
     {
       v30 = v17;
-      v31 = v16;
+      v31 = bundleID;
       v20 = [MEMORY[0x277D23BB8] policyWithActionMetadata:v18];
-      v21 = [v11 action];
-      v22 = [v21 parameters];
-      v23 = [v20 actionWithParameters:v22];
+      action = [v11 action];
+      parameters = [action parameters];
+      v23 = [v20 actionWithParameters:parameters];
 
       v24 = [v23 actionWithOpenWhenRun:0];
 
@@ -312,11 +312,11 @@ LABEL_6:
         if (os_log_type_enabled(DNDSLogAppConfigurationServiceProvider, OS_LOG_TYPE_ERROR))
         {
           *buf = 138413058;
-          v42 = v8;
+          v42 = identifierCopy;
           v43 = 2112;
-          v44 = v9;
+          v44 = applicationIdentifierCopy;
           v45 = 2112;
-          v46 = v10;
+          v46 = modeIdentifierCopy;
           v47 = 2112;
           v48 = v14;
           _os_log_error_impl(&dword_24912E000, v28, OS_LOG_TYPE_ERROR, "Failed to create connection for actionIdentifier:%@ applicationIdentifier:%@ modeIdentifier: %@, error=%@", buf, 0x2Au);
@@ -330,15 +330,15 @@ LABEL_6:
         v32[2] = __108__DNDSAppConfigurationManager_invalidateAppContextForActionIdentifier_applicationIdentifier_modeIdentifier___block_invoke;
         v32[3] = &unk_278F8BBC8;
         v33 = v24;
-        v34 = self;
-        v35 = v8;
-        v36 = v9;
-        v37 = v10;
+        selfCopy = self;
+        v35 = identifierCopy;
+        v36 = applicationIdentifierCopy;
+        v37 = modeIdentifierCopy;
         [v26 fetchActionAppContextForAction:v33 completionHandler:v32];
       }
 
       v17 = v30;
-      v16 = v31;
+      bundleID = v31;
     }
   }
 
@@ -398,36 +398,36 @@ void __108__DNDSAppConfigurationManager_invalidateAppContextForActionIdentifier_
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)appActionsForModeIdentifier:(id)a3 error:(id *)a4
+- (id)appActionsForModeIdentifier:(id)identifier error:(id *)error
 {
   appSpecificSettingsManager = self->_appSpecificSettingsManager;
-  v6 = a3;
-  v7 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager appSpecificSettingsOfType:objc_opt_class() modeIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  v7 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager appSpecificSettingsOfType:objc_opt_class() modeIdentifier:identifierCopy error:error];
 
   return v7;
 }
 
-- (id)setAppAction:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5
+- (id)setAppAction:(id)action forApplicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v34 = 0;
   [MEMORY[0x277D05898] runtimeIsSupported:&v34];
   v11 = v34;
   if (!v11)
   {
-    v12 = [v9 bundleID];
-    [v8 setBundleIdentifier:v12];
+    bundleID = [identifierCopy bundleID];
+    [actionCopy setBundleIdentifier:bundleID];
 
     appSpecificSettingsManager = self->_appSpecificSettingsManager;
-    v14 = [v8 identifier];
+    identifier = [actionCopy identifier];
     v33 = 0;
-    [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setAppSpecificSettings:v8 identifier:v14 type:objc_opt_class() applicationIdentifier:v9 modeIdentifier:v10 error:&v33];
+    [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setAppSpecificSettings:actionCopy identifier:identifier type:objc_opt_class() applicationIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy error:&v33];
     v11 = v33;
 
-    if (v8)
+    if (actionCopy)
     {
       if (v11)
       {
@@ -438,9 +438,9 @@ void __108__DNDSAppConfigurationManager_invalidateAppContextForActionIdentifier_
     else
     {
       v15 = self->_appSpecificSettingsManager;
-      v16 = [0 identifier];
+      identifier2 = [0 identifier];
       v32 = v11;
-      [(DNDSAppSpecificSettingsManager *)v15 setAppSpecificSettings:0 identifier:v16 type:objc_opt_class() applicationIdentifier:v9 modeIdentifier:v10 error:&v32];
+      [(DNDSAppSpecificSettingsManager *)v15 setAppSpecificSettings:0 identifier:identifier2 type:objc_opt_class() applicationIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy error:&v32];
       v17 = v32;
 
       v11 = v17;
@@ -473,7 +473,7 @@ void __108__DNDSAppConfigurationManager_invalidateAppContextForActionIdentifier_
           v23 = *(*(&v28 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v23 appConfigurationManager:self didSetAction:v8 forApplicationIdentifier:v9 modeIdentifier:v10];
+            [v23 appConfigurationManager:self didSetAction:actionCopy forApplicationIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy];
           }
         }
 
@@ -494,19 +494,19 @@ LABEL_16:
   return v24;
 }
 
-- (id)clearAppActionWithIdentifier:(id)a3 forApplicationIdentifier:(id)a4 modeIdentifier:(id)a5
+- (id)clearAppActionWithIdentifier:(id)identifier forApplicationIdentifier:(id)applicationIdentifier modeIdentifier:(id)modeIdentifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  modeIdentifierCopy = modeIdentifier;
   appSpecificSettingsManager = self->_appSpecificSettingsManager;
   v28 = 0;
-  [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setAppSpecificSettings:0 identifier:v8 type:objc_opt_class() applicationIdentifier:v9 modeIdentifier:v10 error:&v28];
+  [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setAppSpecificSettings:0 identifier:identifierCopy type:objc_opt_class() applicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy error:&v28];
   v12 = v28;
   v13 = self->_appSpecificSettingsManager;
   v27 = v12;
-  [(DNDSAppSpecificSettingsManager *)v13 setAppSpecificSettings:0 identifier:v8 type:objc_opt_class() applicationIdentifier:v9 modeIdentifier:v10 error:&v27];
+  [(DNDSAppSpecificSettingsManager *)v13 setAppSpecificSettings:0 identifier:identifierCopy type:objc_opt_class() applicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy error:&v27];
   v22 = v27;
 
   v25 = 0u;
@@ -531,7 +531,7 @@ LABEL_16:
         v19 = *(*(&v23 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v19 appConfigurationManager:self didClearActionWithIdentifier:v8 forApplicationIdentifier:v9 modeIdentifier:v10];
+          [v19 appConfigurationManager:self didClearActionWithIdentifier:identifierCopy forApplicationIdentifier:applicationIdentifierCopy modeIdentifier:modeIdentifierCopy];
         }
       }
 
@@ -546,39 +546,39 @@ LABEL_16:
   return v22;
 }
 
-- (id)systemActionForActionIdentifier:(id)a3 modeIdentifier:(id)a4 error:(id *)a5
+- (id)systemActionForActionIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier error:(id *)error
 {
   appSpecificSettingsManager = self->_appSpecificSettingsManager;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager modeSpecificSettingsOfType:objc_opt_class() identifier:v9 modeIdentifier:v8 error:a5];
+  modeIdentifierCopy = modeIdentifier;
+  identifierCopy = identifier;
+  v10 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager modeSpecificSettingsOfType:objc_opt_class() identifier:identifierCopy modeIdentifier:modeIdentifierCopy error:error];
 
   return v10;
 }
 
-- (id)systemActionsForModeIdentifier:(id)a3 error:(id *)a4
+- (id)systemActionsForModeIdentifier:(id)identifier error:(id *)error
 {
   appSpecificSettingsManager = self->_appSpecificSettingsManager;
-  v6 = a3;
-  v7 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager modeSpecificSettingsOfType:objc_opt_class() modeIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  v7 = [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager modeSpecificSettingsOfType:objc_opt_class() modeIdentifier:identifierCopy error:error];
 
   return v7;
 }
 
-- (id)setSystemAction:(id)a3 modeIdentifier:(id)a4
+- (id)setSystemAction:(id)action modeIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  identifierCopy = identifier;
   v25 = 0;
   [MEMORY[0x277D05AC0] runtimeIsSupported:&v25];
   v8 = v25;
   if (!v8)
   {
     appSpecificSettingsManager = self->_appSpecificSettingsManager;
-    v10 = [v6 identifier];
+    identifier = [actionCopy identifier];
     v24 = 0;
-    [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setModeSpecificSettings:v6 identifier:v10 type:objc_opt_class() modeIdentifier:v7 error:&v24];
+    [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setModeSpecificSettings:actionCopy identifier:identifier type:objc_opt_class() modeIdentifier:identifierCopy error:&v24];
     v8 = v24;
 
     if (!v8)
@@ -605,7 +605,7 @@ LABEL_16:
             v16 = *(*(&v20 + 1) + 8 * i);
             if (objc_opt_respondsToSelector())
             {
-              [v16 appConfigurationManager:self didSetSystemAction:v6 modeIdentifier:{v7, v20}];
+              [v16 appConfigurationManager:self didSetSystemAction:actionCopy modeIdentifier:{identifierCopy, v20}];
             }
           }
 
@@ -624,12 +624,12 @@ LABEL_16:
   return v17;
 }
 
-- (id)updateSystemActionWithReverseAction:(id)a3 actionIdentifier:(id)a4 modeIdentifier:(id)a5
+- (id)updateSystemActionWithReverseAction:(id)action actionIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v34 = 0;
   [MEMORY[0x277D05AC0] runtimeIsSupported:&v34];
   v11 = v34;
@@ -641,14 +641,14 @@ LABEL_16:
   }
 
   v33 = 0;
-  v14 = [(DNDSAppConfigurationManager *)self systemActionForActionIdentifier:v9 modeIdentifier:v10 error:&v33];
+  v14 = [(DNDSAppConfigurationManager *)self systemActionForActionIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy error:&v33];
   v12 = v33;
   if (!v14)
   {
     v21 = DNDSLogSystemFocusConfiguration;
     if (os_log_type_enabled(DNDSLogSystemFocusConfiguration, OS_LOG_TYPE_ERROR))
     {
-      [DNDSAppConfigurationManager updateSystemActionWithReverseAction:v9 actionIdentifier:v10 modeIdentifier:v21];
+      [DNDSAppConfigurationManager updateSystemActionWithReverseAction:identifierCopy actionIdentifier:modeIdentifierCopy modeIdentifier:v21];
       if (v12)
       {
         goto LABEL_12;
@@ -664,20 +664,20 @@ LABEL_12:
       goto LABEL_15;
     }
 
-    v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to find system action for reverse action. action=%@ mode=%@", v9, v10];;
+    modeIdentifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Unable to find system action for reverse action. action=%@ mode=%@", identifierCopy, modeIdentifierCopy];;
     v23 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277D05840];
     v35 = *MEMORY[0x277CCA450];
-    v36[0] = v22;
+    v36[0] = modeIdentifierCopy;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v12 = [v23 errorWithDomain:v24 code:1007 userInfo:v25];
 
     goto LABEL_12;
   }
 
-  v15 = [v14 reverseAction];
-  v16 = v15;
-  if (v15 == v8)
+  reverseAction = [v14 reverseAction];
+  v16 = reverseAction;
+  if (reverseAction == actionCopy)
   {
 
 LABEL_17:
@@ -685,11 +685,11 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v8 && ([v14 reverseAction], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (actionCopy && ([v14 reverseAction], (v17 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v18 = v17;
-    v19 = [v14 reverseAction];
-    v20 = [v8 isEqual:v19];
+    reverseAction2 = [v14 reverseAction];
+    v20 = [actionCopy isEqual:reverseAction2];
 
     if (v20)
     {
@@ -702,11 +702,11 @@ LABEL_17:
   }
 
   v27 = [v14 mutableCopy];
-  [v27 setReverseAction:v8];
+  [v27 setReverseAction:actionCopy];
 
   appSpecificSettingsManager = self->_appSpecificSettingsManager;
   v32 = v12;
-  [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setModeSpecificSettings:v27 identifier:v9 type:objc_opt_class() modeIdentifier:v10 error:&v32];
+  [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setModeSpecificSettings:v27 identifier:identifierCopy type:objc_opt_class() modeIdentifier:modeIdentifierCopy error:&v32];
   v29 = v32;
 
   v26 = v29;
@@ -722,20 +722,20 @@ LABEL_19:
   return v13;
 }
 
-- (id)clearSystemActionWithIdentifier:(id)a3 modeIdentifier:(id)a4
+- (id)clearSystemActionWithIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
   v26 = 0;
-  v8 = [(DNDSAppConfigurationManager *)self systemActionForActionIdentifier:v6 modeIdentifier:v7 error:&v26];
+  v8 = [(DNDSAppConfigurationManager *)self systemActionForActionIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy error:&v26];
   v9 = v26;
   if (v8)
   {
     appSpecificSettingsManager = self->_appSpecificSettingsManager;
     v25 = v9;
-    v20 = v6;
-    [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setModeSpecificSettings:0 identifier:v6 type:objc_opt_class() modeIdentifier:v7 error:&v25];
+    v20 = identifierCopy;
+    [(DNDSAppSpecificSettingsManager *)appSpecificSettingsManager setModeSpecificSettings:0 identifier:identifierCopy type:objc_opt_class() modeIdentifier:modeIdentifierCopy error:&v25];
     v19 = v25;
 
     v23 = 0u;
@@ -760,7 +760,7 @@ LABEL_19:
           v16 = *(*(&v21 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v16 appConfigurationManager:self didClearSystemAction:v8 modeIdentifier:v7];
+            [v16 appConfigurationManager:self didClearSystemAction:v8 modeIdentifier:modeIdentifierCopy];
           }
         }
 
@@ -771,7 +771,7 @@ LABEL_19:
     }
 
     v9 = v19;
-    v6 = v20;
+    identifierCopy = v20;
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -779,20 +779,20 @@ LABEL_19:
   return v9;
 }
 
-- (id)sysdiagnoseDataForDate:(id)a3 redacted:(BOOL)a4
+- (id)sysdiagnoseDataForDate:(id)date redacted:(BOOL)redacted
 {
   v4 = objc_opt_new();
 
   return v4;
 }
 
-- (void)appSpecificSettingsManager:(id)a3 receivedSyncedAppSpecificSettings:(id)a4 ofType:(Class)a5 applicationIdentifier:(id)a6 modeIdentifier:(id)a7
+- (void)appSpecificSettingsManager:(id)manager receivedSyncedAppSpecificSettings:(id)settings ofType:(Class)type applicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = a7;
-  v13 = v10;
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  v13 = settingsCopy;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -816,7 +816,7 @@ LABEL_19:
         v19 = *(*(&v21 + 1) + 8 * v18);
         if (objc_opt_respondsToSelector())
         {
-          [v19 appConfigurationManager:self didSetAction:v13 forApplicationIdentifier:v11 modeIdentifier:{v12, v21}];
+          [v19 appConfigurationManager:self didSetAction:v13 forApplicationIdentifier:identifierCopy modeIdentifier:{modeIdentifierCopy, v21}];
         }
 
         ++v18;
@@ -832,13 +832,13 @@ LABEL_19:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appSpecificSettingsManager:(id)a3 receivedSyncedClearForAppSpecificSettings:(id)a4 ofType:(Class)a5 applicationIdentifier:(id)a6 modeIdentifier:(id)a7
+- (void)appSpecificSettingsManager:(id)manager receivedSyncedClearForAppSpecificSettings:(id)settings ofType:(Class)type applicationIdentifier:(id)identifier modeIdentifier:(id)modeIdentifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v21 = a6;
-  v11 = a7;
-  v12 = v10;
+  settingsCopy = settings;
+  identifierCopy = identifier;
+  modeIdentifierCopy = modeIdentifier;
+  v12 = settingsCopy;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -862,8 +862,8 @@ LABEL_19:
         v18 = *(*(&v22 + 1) + 8 * v17);
         if (objc_opt_respondsToSelector())
         {
-          v19 = [v12 identifier];
-          [v18 appConfigurationManager:self didClearActionWithIdentifier:v19 forApplicationIdentifier:v21 modeIdentifier:v11];
+          identifier = [v12 identifier];
+          [v18 appConfigurationManager:self didClearActionWithIdentifier:identifier forApplicationIdentifier:identifierCopy modeIdentifier:modeIdentifierCopy];
         }
 
         ++v17;

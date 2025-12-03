@@ -1,40 +1,40 @@
 @interface TUIAssistantButtonBarView
 - (BOOL)_containsFlexibleGroupViews;
 - (BOOL)hasVisibleItem;
-- (BOOL)isKeyboardGroup:(id)a3;
-- (BOOL)validateButtonGroup:(id)a3;
+- (BOOL)isKeyboardGroup:(id)group;
+- (BOOL)validateButtonGroup:(id)group;
 - (BOOL)validateButtonGroups;
-- (CGPoint)clipPointInContainer:(CGPoint)a3;
-- (CGSize)_totalGroupSizeThatFits:(CGSize)a3;
-- (CGSize)collapsedSizeThatFits:(CGSize)a3;
+- (CGPoint)clipPointInContainer:(CGPoint)container;
+- (CGSize)_totalGroupSizeThatFits:(CGSize)fits;
+- (CGSize)collapsedSizeThatFits:(CGSize)fits;
 - (CGSize)intrinsicContentSize;
-- (CGSize)preferredSizeForButtonBarItem:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (TUIAssistantButtonBarView)initWithFrame:(CGRect)a3;
+- (CGSize)preferredSizeForButtonBarItem:(id)item;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (TUIAssistantButtonBarView)initWithFrame:(CGRect)frame;
 - (TUIAssistantButtonBarViewDelegate)delegate;
 - (UIEdgeInsets)_insetsForHorizontalMargin;
 - (_UIButtonBarAppearanceDelegate)appearanceDelegate;
 - (_UIButtonBarButtonVisualProvider)visualProvider;
-- (double)_interItemSpacingThatFits:(CGSize)a3 forGroupSize:(CGSize)a4;
+- (double)_interItemSpacingThatFits:(CGSize)fits forGroupSize:(CGSize)size;
 - (double)barButtonWidth;
 - (id)_allVisibleBarItemViews;
-- (id)_groupViewForBarButtonItemGroup:(id)a3;
+- (id)_groupViewForBarButtonItemGroup:(id)group;
 - (id)_uncollapsedGroupViews;
 - (id)_visibleGroupViews;
 - (id)_visibleGroups;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_checkBarButtonItemState:(id)a3;
-- (void)_collapseGroupsIfNecessaryForWidth:(double)a3;
-- (void)_didTapButtonBarButton:(id)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_checkBarButtonItemState:(id)state;
+- (void)_collapseGroupsIfNecessaryForWidth:(double)width;
+- (void)_didTapButtonBarButton:(id)button withEvent:(id)event;
 - (void)_updateBarButtonItemHiddenState;
 - (void)_updateMargins;
-- (void)configureButtonBarItemView:(id)a3 forItem:(id)a4 group:(id)a5;
+- (void)configureButtonBarItemView:(id)view forItem:(id)item group:(id)group;
 - (void)layoutSubviews;
-- (void)setBarButtonWidth:(double)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setButtonGroups:(id)a3 animated:(BOOL)a4;
-- (void)setEffectiveInterItemSpacing:(double)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setBarButtonWidth:(double)width;
+- (void)setBounds:(CGRect)bounds;
+- (void)setButtonGroups:(id)groups animated:(BOOL)animated;
+- (void)setEffectiveInterItemSpacing:(double)spacing;
+- (void)setFrame:(CGRect)frame;
 - (void)uncollapseAllGroups;
 @end
 
@@ -54,12 +54,12 @@
   return WeakRetained;
 }
 
-- (void)_checkBarButtonItemState:(id)a3
+- (void)_checkBarButtonItemState:(id)state
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 view];
-  v5 = [v3 _viewOwner];
+  stateCopy = state;
+  view = [stateCopy view];
+  _viewOwner = [stateCopy _viewOwner];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -105,46 +105,46 @@ void __54__TUIAssistantButtonBarView__checkBarButtonItemState___block_invoke(uin
   }
 }
 
-- (void)_didTapButtonBarButton:(id)a3 withEvent:(id)a4
+- (void)_didTapButtonBarButton:(id)button withEvent:(id)event
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(TUIAssistantButtonBarView *)self _itemViewForSender:v11];
+  buttonCopy = button;
+  eventCopy = event;
+  v7 = [(TUIAssistantButtonBarView *)self _itemViewForSender:buttonCopy];
   if ([v7 isCollapsedItem] && (-[TUIAssistantButtonBarView delegate](self, "delegate"), v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [(TUIAssistantButtonBarView *)self delegate];
-    v10 = [v7 associatedGroup];
-    [v9 assistantButtonBarView:self wantsToShowCollapsedItemGroup:v10 fromButton:v11];
+    delegate = [(TUIAssistantButtonBarView *)self delegate];
+    associatedGroup = [v7 associatedGroup];
+    [delegate assistantButtonBarView:self wantsToShowCollapsedItemGroup:associatedGroup fromButton:buttonCopy];
   }
 
   else
   {
-    v9 = [v7 associatedItem];
-    [(TUIAssistantButtonBarView *)self _checkBarButtonItemState:v9];
-    [v9 _triggerActionForEvent:v6];
+    delegate = [v7 associatedItem];
+    [(TUIAssistantButtonBarView *)self _checkBarButtonItemState:delegate];
+    [delegate _triggerActionForEvent:eventCopy];
   }
 }
 
-- (void)setBarButtonWidth:(double)a3
+- (void)setBarButtonWidth:(double)width
 {
-  v4 = [(TUIAssistantButtonBarView *)self sizeProvider];
-  [v4 setBarButtonWidth:a3];
+  sizeProvider = [(TUIAssistantButtonBarView *)self sizeProvider];
+  [sizeProvider setBarButtonWidth:width];
 }
 
 - (double)barButtonWidth
 {
-  v2 = [(TUIAssistantButtonBarView *)self sizeProvider];
-  [v2 barButtonWidth];
+  sizeProvider = [(TUIAssistantButtonBarView *)self sizeProvider];
+  [sizeProvider barButtonWidth];
   v4 = v3;
 
   return v4;
 }
 
-- (CGSize)preferredSizeForButtonBarItem:(id)a3
+- (CGSize)preferredSizeForButtonBarItem:(id)item
 {
-  v4 = a3;
-  v5 = [(TUIAssistantButtonBarView *)self sizeProvider];
-  [v5 preferredSizeForButtonBarItem:v4];
+  itemCopy = item;
+  sizeProvider = [(TUIAssistantButtonBarView *)self sizeProvider];
+  [sizeProvider preferredSizeForButtonBarItem:itemCopy];
   v7 = v6;
   v9 = v8;
 
@@ -155,32 +155,32 @@ void __54__TUIAssistantButtonBarView__checkBarButtonItemState___block_invoke(uin
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(TUIAssistantButtonBarView *)self clipPointInContainer:x, y];
   v10.receiver = self;
   v10.super_class = TUIAssistantButtonBarView;
-  v8 = [(TUIAssistantButtonBarView *)&v10 hitTest:v7 withEvent:?];
+  v8 = [(TUIAssistantButtonBarView *)&v10 hitTest:eventCopy withEvent:?];
 
   return v8;
 }
 
-- (CGPoint)clipPointInContainer:(CGPoint)a3
+- (CGPoint)clipPointInContainer:(CGPoint)container
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TUIAssistantButtonBarView *)self buttonContainer];
-  [v6 frame];
+  y = container.y;
+  x = container.x;
+  buttonContainer = [(TUIAssistantButtonBarView *)self buttonContainer];
+  [buttonContainer frame];
   Width = CGRectGetWidth(v16);
 
   [(TUIAssistantButtonBarView *)self bounds];
   if (CGRectGetWidth(v17) > Width)
   {
-    v8 = [(TUIAssistantButtonBarView *)self buttonContainer];
-    [v8 frame];
+    buttonContainer2 = [(TUIAssistantButtonBarView *)self buttonContainer];
+    [buttonContainer2 frame];
     MinX = CGRectGetMinX(v18);
 
     [(TUIAssistantButtonBarView *)self bounds];
@@ -207,89 +207,89 @@ void __54__TUIAssistantButtonBarView__checkBarButtonItemState___block_invoke(uin
   return result;
 }
 
-- (void)configureButtonBarItemView:(id)a3 forItem:(id)a4 group:(id)a5
+- (void)configureButtonBarItemView:(id)view forItem:(id)item group:(id)group
 {
-  v29 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 customView];
+  viewCopy = view;
+  itemCopy = item;
+  groupCopy = group;
+  customView = [itemCopy customView];
 
-  if (v10)
+  if (customView)
   {
-    [v29 setBarButtonView:0];
-    v11 = [v8 customView];
-    [v29 setCustomView:v11];
+    [viewCopy setBarButtonView:0];
+    customView2 = [itemCopy customView];
+    [viewCopy setCustomView:customView2];
 
-    [v29 setAssociatedItem:v8];
+    [viewCopy setAssociatedItem:itemCopy];
     goto LABEL_15;
   }
 
-  [v29 setCustomView:0];
-  v12 = [v29 barButtonView];
-  if (v12)
+  [viewCopy setCustomView:0];
+  barButtonView = [viewCopy barButtonView];
+  if (barButtonView)
   {
     goto LABEL_11;
   }
 
-  if ([v8 systemItem] == 5)
+  if ([itemCopy systemItem] == 5)
   {
-    v12 = 0;
+    barButtonView = 0;
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  if ([v8 systemItem] != 6)
+  if ([itemCopy systemItem] != 6)
   {
     v13 = objc_alloc(MEMORY[0x1E69DD398]);
-    v14 = [(TUIAssistantButtonBarView *)self visualProvider];
-    v12 = [v13 initWithVisualProvider:v14];
+    visualProvider = [(TUIAssistantButtonBarView *)self visualProvider];
+    barButtonView = [v13 initWithVisualProvider:visualProvider];
 
-    [v29 setBarButtonView:v12];
-    if ([v8 action])
+    [viewCopy setBarButtonView:barButtonView];
+    if ([itemCopy action])
     {
-      NSStringFromSelector([v8 action]);
+      NSStringFromSelector([itemCopy action]);
     }
 
     else
     {
-      [v8 title];
+      [itemCopy title];
     }
     v15 = ;
-    [v12 setAccessibilityIdentifier:v15];
+    [barButtonView setAccessibilityIdentifier:v15];
 
-    [v12 addTarget:self action:sel__didTapButtonBarButton_withEvent_ forControlEvents:64];
+    [barButtonView addTarget:self action:sel__didTapButtonBarButton_withEvent_ forControlEvents:64];
     goto LABEL_11;
   }
 
 LABEL_12:
-  v16 = [v8 image];
-  v17 = [v16 symbolConfiguration];
-  v18 = [v17 locale];
-  v19 = [(TUIAssistantButtonBarView *)self delegate];
-  [v19 setLocale:v18];
+  image = [itemCopy image];
+  symbolConfiguration = [image symbolConfiguration];
+  locale = [symbolConfiguration locale];
+  delegate = [(TUIAssistantButtonBarView *)self delegate];
+  [delegate setLocale:locale];
 
-  v20 = [v29 barButtonView];
+  barButtonView2 = [viewCopy barButtonView];
   WeakRetained = objc_loadWeakRetained(&self->_appearanceDelegate);
-  [v20 configureFromBarItem:v8 withAppearanceDelegate:WeakRetained];
+  [barButtonView2 configureFromBarItem:itemCopy withAppearanceDelegate:WeakRetained];
 
-  [v29 setAssociatedItem:v8];
-  [v29 setAssociatedGroup:v9];
-  v22 = [v9 representativeItem];
-  [v29 setCollapsedItem:v22 == v8];
+  [viewCopy setAssociatedItem:itemCopy];
+  [viewCopy setAssociatedGroup:groupCopy];
+  representativeItem = [groupCopy representativeItem];
+  [viewCopy setCollapsedItem:representativeItem == itemCopy];
 
-  v23 = [v29 barButtonView];
-  [v8 setView:v23];
+  barButtonView3 = [viewCopy barButtonView];
+  [itemCopy setView:barButtonView3];
 
-  [(TUIAssistantButtonBarView *)self preferredSizeForButtonBarItem:v8];
+  [(TUIAssistantButtonBarView *)self preferredSizeForButtonBarItem:itemCopy];
   if (v24 > 0.0 && v24 < 48.0)
   {
     v25 = *MEMORY[0x1E69DDCE0];
     v26 = *(MEMORY[0x1E69DDCE0] + 16);
     v27 = (48.0 - v24) * -0.5;
-    [v29 setHitTestInsets:{*MEMORY[0x1E69DDCE0], v27, v26, v27}];
-    v28 = [v29 barButtonView];
-    [v28 setHitTestInsets:{v25, v27, v26, v27}];
+    [viewCopy setHitTestInsets:{*MEMORY[0x1E69DDCE0], v27, v26, v27}];
+    barButtonView4 = [viewCopy barButtonView];
+    [barButtonView4 setHitTestInsets:{v25, v27, v26, v27}];
   }
 
 LABEL_15:
@@ -297,8 +297,8 @@ LABEL_15:
 
 - (BOOL)hasVisibleItem
 {
-  v2 = [(TUIAssistantButtonBarView *)self _visibleGroups];
-  v3 = [v2 count] != 0;
+  _visibleGroups = [(TUIAssistantButtonBarView *)self _visibleGroups];
+  v3 = [_visibleGroups count] != 0;
 
   return v3;
 }
@@ -308,10 +308,10 @@ LABEL_15:
   visualProvider = self->_visualProvider;
   if (!visualProvider)
   {
-    v4 = [(TUIAssistantButtonBarView *)self _inheritedRenderConfig];
-    v5 = [v4 buttonBarVisualProvider];
+    _inheritedRenderConfig = [(TUIAssistantButtonBarView *)self _inheritedRenderConfig];
+    buttonBarVisualProvider = [_inheritedRenderConfig buttonBarVisualProvider];
     v6 = self->_visualProvider;
-    self->_visualProvider = v5;
+    self->_visualProvider = buttonBarVisualProvider;
 
     visualProvider = self->_visualProvider;
   }
@@ -319,17 +319,17 @@ LABEL_15:
   return visualProvider;
 }
 
-- (BOOL)validateButtonGroup:(id)a3
+- (BOOL)validateButtonGroup:(id)group
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TUIAssistantButtonBarView *)self _groupViewForBarButtonItemGroup:v4];
-  v6 = [v5 visibleButtons];
-  v7 = [v6 copy];
+  groupCopy = group;
+  v5 = [(TUIAssistantButtonBarView *)self _groupViewForBarButtonItemGroup:groupCopy];
+  visibleButtons = [v5 visibleButtons];
+  v7 = [visibleButtons copy];
 
-  [v4 _validateAllItems];
-  v8 = [v4 barButtonItems];
-  v9 = [v8 count];
+  [groupCopy _validateAllItems];
+  barButtonItems = [groupCopy barButtonItems];
+  v9 = [barButtonItems count];
   v10 = [v7 count];
 
   if (v9 == v10)
@@ -339,12 +339,12 @@ LABEL_15:
     v26[2] = __49__TUIAssistantButtonBarView_validateButtonGroup___block_invoke;
     v26[3] = &unk_1E72D81B0;
     v26[4] = self;
-    v27 = v4;
+    v27 = groupCopy;
     [v7 enumerateObjectsUsingBlock:v26];
   }
 
-  v11 = [v5 visibleButtons];
-  v12 = [v11 isEqualToArray:v7];
+  visibleButtons2 = [v5 visibleButtons];
+  v12 = [visibleButtons2 isEqualToArray:v7];
 
   if ((v12 & 1) == 0)
   {
@@ -354,8 +354,8 @@ LABEL_15:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v13 = [(TUIAssistantButtonBarView *)self groupViews];
-      v14 = [v13 countByEnumeratingWithState:&v22 objects:v28 count:16];
+      groupViews = [(TUIAssistantButtonBarView *)self groupViews];
+      v14 = [groupViews countByEnumeratingWithState:&v22 objects:v28 count:16];
       if (v14)
       {
         v15 = v14;
@@ -366,13 +366,13 @@ LABEL_15:
           {
             if (*v23 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(groupViews);
             }
 
             [*(*(&v22 + 1) + 8 * i) setCollapsed:0];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v22 objects:v28 count:16];
+          v15 = [groupViews countByEnumeratingWithState:&v22 objects:v28 count:16];
         }
 
         while (v15);
@@ -382,18 +382,18 @@ LABEL_15:
     [v5 setNeedsLayout];
   }
 
-  if ([v4 isHidden])
+  if ([groupCopy isHidden])
   {
-    v18 = 1;
+    isHidden = 1;
   }
 
   else
   {
-    v19 = [v4 representativeItem];
-    v18 = [v19 isHidden];
+    representativeItem = [groupCopy representativeItem];
+    isHidden = [representativeItem isHidden];
   }
 
-  v20 = v18 != [v5 isHidden];
+  v20 = isHidden != [v5 isHidden];
 
   return v20 || (v12 & 1) == 0;
 }
@@ -408,15 +408,15 @@ void __49__TUIAssistantButtonBarView_validateButtonGroup___block_invoke(uint64_t
   [v5 configureButtonBarItemView:v7 forItem:v8 group:*(a1 + 40)];
 }
 
-- (BOOL)isKeyboardGroup:(id)a3
+- (BOOL)isKeyboardGroup:(id)group
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [a3 barButtonItems];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  barButtonItems = [group barButtonItems];
+  v4 = [barButtonItems countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -426,7 +426,7 @@ void __49__TUIAssistantButtonBarView_validateButtonGroup___block_invoke(uint64_t
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(barButtonItems);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) isKeyboardItem])
@@ -436,7 +436,7 @@ void __49__TUIAssistantButtonBarView_validateButtonGroup___block_invoke(uint64_t
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [barButtonItems countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -453,7 +453,7 @@ LABEL_11:
 
 - (BOOL)validateButtonGroups
 {
-  v2 = self;
+  selfCopy = self;
   v67 = *MEMORY[0x1E69E9840];
   v59 = 0u;
   v60 = 0u;
@@ -475,7 +475,7 @@ LABEL_11:
           objc_enumerationMutation(v3);
         }
 
-        v6 |= [(TUIAssistantButtonBarView *)v2 validateButtonGroup:*(*(&v59 + 1) + 8 * i)];
+        v6 |= [(TUIAssistantButtonBarView *)selfCopy validateButtonGroup:*(*(&v59 + 1) + 8 * i)];
       }
 
       v5 = [(NSArray *)v3 countByEnumeratingWithState:&v59 objects:v66 count:16];
@@ -489,21 +489,21 @@ LABEL_11:
     v6 = 0;
   }
 
-  v9 = [(TUIAssistantButtonBarView *)v2 separatorGroups];
-  v10 = [v9 count];
+  separatorGroups = [(TUIAssistantButtonBarView *)selfCopy separatorGroups];
+  v10 = [separatorGroups count];
 
   LOBYTE(v11) = v6;
   if (v10)
   {
-    v12 = [(TUIAssistantButtonBarView *)v2 separatorGroups];
-    v43 = [(TUIAssistantButtonBarView *)v2 _visibleGroups];
-    v13 = [(TUIAssistantButtonBarView *)v2 buttonGroups];
-    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v13, "count")}];
+    separatorGroups2 = [(TUIAssistantButtonBarView *)selfCopy separatorGroups];
+    _visibleGroups = [(TUIAssistantButtonBarView *)selfCopy _visibleGroups];
+    buttonGroups = [(TUIAssistantButtonBarView *)selfCopy buttonGroups];
+    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(buttonGroups, "count")}];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    obj = v13;
+    obj = buttonGroups;
     v15 = [obj countByEnumeratingWithState:&v55 objects:v65 count:16];
     if (v15)
     {
@@ -519,7 +519,7 @@ LABEL_11:
           }
 
           v19 = *(*(&v55 + 1) + 8 * j);
-          if (([v43 containsObject:v19] & 1) != 0 || objc_msgSend(v12, "containsObject:", v19))
+          if (([_visibleGroups containsObject:v19] & 1) != 0 || objc_msgSend(separatorGroups2, "containsObject:", v19))
           {
             [v14 addObject:v19];
           }
@@ -531,14 +531,14 @@ LABEL_11:
       while (v16);
     }
 
-    v40 = v2;
+    v40 = selfCopy;
 
     v45 = [v14 count];
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v46 = v12;
+    v46 = separatorGroups2;
     LOBYTE(v11) = v6;
     v44 = [v46 countByEnumeratingWithState:&v51 objects:v64 count:16];
     if (v44)
@@ -613,8 +613,8 @@ LABEL_48:
           v50 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v25 = [v21 barButtonItems];
-          v26 = [v25 countByEnumeratingWithState:&v47 objects:v63 count:16];
+          barButtonItems = [v21 barButtonItems];
+          v26 = [barButtonItems countByEnumeratingWithState:&v47 objects:v63 count:16];
           if (v26)
           {
             v27 = v26;
@@ -625,17 +625,17 @@ LABEL_48:
               {
                 if (*v48 != v28)
                 {
-                  objc_enumerationMutation(v25);
+                  objc_enumerationMutation(barButtonItems);
                 }
 
                 v30 = *(*(&v47 + 1) + 8 * k);
                 v11 |= v24 ^ [v30 _hidden];
                 [v30 _setHidden:v24 & 1];
-                v31 = [v30 buttonGroup];
-                [v31 setHidden:v24 & 1];
+                buttonGroup = [v30 buttonGroup];
+                [buttonGroup setHidden:v24 & 1];
               }
 
-              v27 = [v25 countByEnumeratingWithState:&v47 objects:v63 count:16];
+              v27 = [barButtonItems countByEnumeratingWithState:&v47 objects:v63 count:16];
             }
 
             while (v27);
@@ -652,12 +652,12 @@ LABEL_48:
       while (v38);
     }
 
-    v2 = v40;
+    selfCopy = v40;
   }
 
   if (v6)
   {
-    [(TUIAssistantButtonBarView *)v2 setNeedsLayout];
+    [(TUIAssistantButtonBarView *)selfCopy setNeedsLayout];
   }
 
   return v11 & 1;
@@ -670,9 +670,9 @@ LABEL_48:
   v94.super_class = TUIAssistantButtonBarView;
   [(TUIAssistantButtonBarView *)&v94 layoutSubviews];
   [(TUIAssistantButtonBarView *)self _updateMargins];
-  v3 = [(TUIAssistantButtonBarView *)self delegate];
-  v4 = [v3 inputAssistantItem];
-  [v4 _marginOverride];
+  delegate = [(TUIAssistantButtonBarView *)self delegate];
+  inputAssistantItem = [delegate inputAssistantItem];
+  [inputAssistantItem _marginOverride];
   v6 = v5;
 
   if (v6 <= 0.0)
@@ -682,9 +682,9 @@ LABEL_48:
 
   else
   {
-    v7 = [(TUIAssistantButtonBarView *)self delegate];
-    v8 = [v7 inputAssistantItem];
-    [v8 _marginOverride];
+    delegate2 = [(TUIAssistantButtonBarView *)self delegate];
+    inputAssistantItem2 = [delegate2 inputAssistantItem];
+    [inputAssistantItem2 _marginOverride];
     [(TUIAssistantButtonBarView *)self setHorizontalMargins:?];
   }
 
@@ -698,11 +698,11 @@ LABEL_48:
   v20 = v10 + v19;
   v22 = v21 - (v12 + v16);
   v24 = v23 - (v10 + v14);
-  v25 = [(TUIAssistantButtonBarView *)self buttonContainer];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  buttonContainer = [(TUIAssistantButtonBarView *)self buttonContainer];
+  [buttonContainer setFrame:{v18, v20, v22, v24}];
 
-  v26 = [(TUIAssistantButtonBarView *)self buttonContainer];
-  [v26 bounds];
+  buttonContainer2 = [(TUIAssistantButtonBarView *)self buttonContainer];
+  [buttonContainer2 bounds];
   v28 = v27;
   v30 = v29;
 
@@ -733,12 +733,12 @@ LABEL_48:
 
   if ([(TUIAssistantButtonBarView *)self buttonAlignment]== 1)
   {
-    v35 = [(TUIAssistantButtonBarView *)self _allVisibleBarItemViews];
+    _allVisibleBarItemViews = [(TUIAssistantButtonBarView *)self _allVisibleBarItemViews];
     v90 = 0u;
     v91 = 0u;
     v92 = 0u;
     v93 = 0u;
-    v36 = [v35 countByEnumeratingWithState:&v90 objects:v97 count:16];
+    v36 = [_allVisibleBarItemViews countByEnumeratingWithState:&v90 objects:v97 count:16];
     v37 = 0.0;
     v38 = 0.0;
     if (v36)
@@ -751,25 +751,25 @@ LABEL_48:
         {
           if (*v91 != v40)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(_allVisibleBarItemViews);
           }
 
-          v42 = [*(*(&v90 + 1) + 8 * i) associatedItem];
-          [(TUIAssistantButtonBarView *)self preferredSizeForButtonBarItem:v42];
+          associatedItem = [*(*(&v90 + 1) + 8 * i) associatedItem];
+          [(TUIAssistantButtonBarView *)self preferredSizeForButtonBarItem:associatedItem];
           v44 = v43;
 
           v38 = v38 + v44;
         }
 
-        v39 = [v35 countByEnumeratingWithState:&v90 objects:v97 count:16];
+        v39 = [_allVisibleBarItemViews countByEnumeratingWithState:&v90 objects:v97 count:16];
       }
 
       while (v39);
     }
 
-    if ([v35 count] >= 2)
+    if ([_allVisibleBarItemViews count] >= 2)
     {
-      v37 = (v28 - v38) / ([v35 count] - 1);
+      v37 = (v28 - v38) / ([_allVisibleBarItemViews count] - 1);
       [(TUIAssistantButtonBarView *)self setEffectiveInterItemSpacing:v37];
     }
   }
@@ -789,8 +789,8 @@ LABEL_48:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v50 = [(TUIAssistantButtonBarView *)self _visibleGroupViews];
-    v51 = [v50 countByEnumeratingWithState:&v86 objects:v96 count:16];
+    _visibleGroupViews = [(TUIAssistantButtonBarView *)self _visibleGroupViews];
+    v51 = [_visibleGroupViews countByEnumeratingWithState:&v86 objects:v96 count:16];
     if (v51)
     {
       v52 = v51;
@@ -802,7 +802,7 @@ LABEL_48:
         {
           if (*v87 != v54)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(_visibleGroupViews);
           }
 
           v56 = *(*(&v86 + 1) + 8 * j);
@@ -811,7 +811,7 @@ LABEL_48:
           v53 += [v56 containsFlexibleItems];
         }
 
-        v52 = [v50 countByEnumeratingWithState:&v86 objects:v96 count:16];
+        v52 = [_visibleGroupViews countByEnumeratingWithState:&v86 objects:v96 count:16];
       }
 
       while (v52);
@@ -826,20 +826,20 @@ LABEL_48:
     v48 = v49 / v58;
   }
 
-  v59 = [(TUIAssistantButtonBarView *)self buttonAlignment];
-  v60 = [(TUIAssistantButtonBarView *)self effectiveUserInterfaceLayoutDirection];
-  v61 = [(TUIAssistantButtonBarView *)self groupViews];
-  v62 = v61;
-  if (v59 == 2)
+  buttonAlignment = [(TUIAssistantButtonBarView *)self buttonAlignment];
+  effectiveUserInterfaceLayoutDirection = [(TUIAssistantButtonBarView *)self effectiveUserInterfaceLayoutDirection];
+  groupViews = [(TUIAssistantButtonBarView *)self groupViews];
+  v62 = groupViews;
+  if (buttonAlignment == 2)
   {
-    if (v60 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      [v61 objectEnumerator];
+      [groupViews objectEnumerator];
     }
 
     else
     {
-      [v61 reverseObjectEnumerator];
+      [groupViews reverseObjectEnumerator];
     }
     v63 = ;
     v64 = v28;
@@ -847,14 +847,14 @@ LABEL_48:
 
   else
   {
-    if (v60 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
-      [v61 reverseObjectEnumerator];
+      [groupViews reverseObjectEnumerator];
     }
 
     else
     {
-      [v61 objectEnumerator];
+      [groupViews objectEnumerator];
     }
     v63 = ;
     v64 = 0.0;
@@ -880,23 +880,23 @@ LABEL_48:
         }
 
         v70 = *(*(&v82 + 1) + 8 * k);
-        v71 = [v70 barButtonItemGroup];
-        if ([v71 isHidden])
+        barButtonItemGroup = [v70 barButtonItemGroup];
+        if ([barButtonItemGroup isHidden])
         {
           [v70 setHidden:1];
         }
 
         else
         {
-          v72 = [v70 visibleButtons];
-          [v70 setHidden:{objc_msgSend(v72, "count") == 0}];
+          visibleButtons = [v70 visibleButtons];
+          [v70 setHidden:{objc_msgSend(visibleButtons, "count") == 0}];
         }
 
         if (([v70 isHidden] & 1) == 0)
         {
           [v70 sizeThatFits:{v28, v30}];
           v74 = v34 * v73;
-          v75 = [v70 containsFlexibleItems];
+          containsFlexibleItems = [v70 containsFlexibleItems];
           if (v48 >= v74)
           {
             v76 = v48;
@@ -907,17 +907,17 @@ LABEL_48:
             v76 = v74;
           }
 
-          if (v75)
+          if (containsFlexibleItems)
           {
             v74 = v76;
           }
 
           UIRoundToViewScale();
           v78 = v77;
-          v79 = [(TUIAssistantButtonBarView *)self colorAdaptiveFullButtonBar];
-          v80 = [(TUIAssistantButtonBarView *)self buttonAlignment];
-          v81 = v79;
-          if (v80 == 2)
+          colorAdaptiveFullButtonBar = [(TUIAssistantButtonBarView *)self colorAdaptiveFullButtonBar];
+          buttonAlignment2 = [(TUIAssistantButtonBarView *)self buttonAlignment];
+          v81 = colorAdaptiveFullButtonBar;
+          if (buttonAlignment2 == 2)
           {
             [v70 setFrame:{v64 - v78, v81, v78, v30}];
             v64 = v64 - (v37 + v74);
@@ -938,24 +938,24 @@ LABEL_48:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(TUIAssistantButtonBarView *)self uncollapseAllGroups];
   v8.receiver = self;
   v8.super_class = TUIAssistantButtonBarView;
   [(TUIAssistantButtonBarView *)&v8 setBounds:x, y, width, height];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(TUIAssistantButtonBarView *)self uncollapseAllGroups];
   v8.receiver = self;
   v8.super_class = TUIAssistantButtonBarView;
@@ -969,8 +969,8 @@ LABEL_48:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(TUIAssistantButtonBarView *)self _visibleGroupViews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  _visibleGroupViews = [(TUIAssistantButtonBarView *)self _visibleGroupViews];
+  v3 = [_visibleGroupViews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -980,7 +980,7 @@ LABEL_48:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_visibleGroupViews);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) containsFlexibleItems])
@@ -990,7 +990,7 @@ LABEL_48:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [_visibleGroupViews countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1012,8 +1012,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(TUIAssistantButtonBarView *)self groupViews];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  groupViews = [(TUIAssistantButtonBarView *)self groupViews];
+  v3 = [groupViews countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1025,64 +1025,64 @@ LABEL_11:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(groupViews);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) setCollapsed:0];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [groupViews countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-- (void)_collapseGroupsIfNecessaryForWidth:(double)a3
+- (void)_collapseGroupsIfNecessaryForWidth:(double)width
 {
-  [(TUIAssistantButtonBarView *)self sizeThatFits:a3, 0.0];
+  [(TUIAssistantButtonBarView *)self sizeThatFits:width, 0.0];
   v6 = v5;
-  v7 = [(TUIAssistantButtonBarView *)self constrainedHorizontally];
-  if (v7)
+  constrainedHorizontally = [(TUIAssistantButtonBarView *)self constrainedHorizontally];
+  if (constrainedHorizontally)
   {
-    v7 = [(TUIAssistantButtonBarView *)self _containsFlexibleGroupViews];
+    constrainedHorizontally = [(TUIAssistantButtonBarView *)self _containsFlexibleGroupViews];
   }
 
-  if (v6 > a3 || v7)
+  if (v6 > width || constrainedHorizontally)
   {
     do
     {
-      v9 = [(TUIAssistantButtonBarView *)self _uncollapsedGroupViews];
-      v10 = [v9 count];
+      _uncollapsedGroupViews = [(TUIAssistantButtonBarView *)self _uncollapsedGroupViews];
+      v10 = [_uncollapsedGroupViews count];
 
       if (!v10)
       {
         break;
       }
 
-      v11 = [(TUIAssistantButtonBarView *)self _uncollapsedGroupViews];
-      v12 = [v11 firstObject];
+      _uncollapsedGroupViews2 = [(TUIAssistantButtonBarView *)self _uncollapsedGroupViews];
+      firstObject = [_uncollapsedGroupViews2 firstObject];
 
-      [v12 setCollapsed:1];
-      [(TUIAssistantButtonBarView *)self sizeThatFits:a3, 0.0];
+      [firstObject setCollapsed:1];
+      [(TUIAssistantButtonBarView *)self sizeThatFits:width, 0.0];
       v14 = v13;
     }
 
-    while (v14 >= a3);
+    while (v14 >= width);
   }
 }
 
 - (id)_allVisibleBarItemViews
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DFA0] orderedSet];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TUIAssistantButtonBarView *)self groupViews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  groupViews = [(TUIAssistantButtonBarView *)self groupViews];
+  v5 = [groupViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1093,31 +1093,31 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(groupViews);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) visibleButtons];
-        [v3 addObjectsFromArray:v9];
+        visibleButtons = [*(*(&v11 + 1) + 8 * i) visibleButtons];
+        [orderedSet addObjectsFromArray:visibleButtons];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [groupViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return orderedSet;
 }
 
 - (id)_uncollapsedGroupViews
 {
-  v2 = [(TUIAssistantButtonBarView *)self groupViews];
+  groupViews = [(TUIAssistantButtonBarView *)self groupViews];
   if (_collapsedButtonBarGroupViewsPredicate_onceToken != -1)
   {
     dispatch_once(&_collapsedButtonBarGroupViewsPredicate_onceToken, &__block_literal_global_11782);
   }
 
-  v3 = [v2 filteredOrderedSetUsingPredicate:_collapsedButtonBarGroupViewsPredicate_collapsedButtonBarGroupViewsPredicate];
+  v3 = [groupViews filteredOrderedSetUsingPredicate:_collapsedButtonBarGroupViewsPredicate_collapsedButtonBarGroupViewsPredicate];
 
   return v3;
 }
@@ -1125,13 +1125,13 @@ LABEL_11:
 - (id)_visibleGroups
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(TUIAssistantButtonBarView *)self _visibleGroupViews];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _visibleGroupViews = [(TUIAssistantButtonBarView *)self _visibleGroupViews];
+  v5 = [_visibleGroupViews countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1142,32 +1142,32 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_visibleGroupViews);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) barButtonItemGroup];
-        [v3 addObject:v9];
+        barButtonItemGroup = [*(*(&v11 + 1) + 8 * i) barButtonItemGroup];
+        [array addObject:barButtonItemGroup];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [_visibleGroupViews countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_visibleGroupViews
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(TUIAssistantButtonBarView *)self groupViews];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  groupViews = [(TUIAssistantButtonBarView *)self groupViews];
+  v5 = [groupViews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1178,40 +1178,40 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(groupViews);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 barButtonItemGroup];
-        if ([v10 isHidden])
+        barButtonItemGroup = [v9 barButtonItemGroup];
+        if ([barButtonItemGroup isHidden])
         {
         }
 
         else
         {
-          v11 = [v9 visibleButtons];
-          v12 = [v11 count];
+          visibleButtons = [v9 visibleButtons];
+          v12 = [visibleButtons count];
 
           if (v12)
           {
-            [v3 addObject:v9];
+            [array addObject:v9];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [groupViews countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
-- (CGSize)collapsedSizeThatFits:(CGSize)a3
+- (CGSize)collapsedSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(TUIAssistantButtonBarView *)self _collapseGroupsIfNecessaryForWidth:?];
 
   [(TUIAssistantButtonBarView *)self sizeThatFits:width, height];
@@ -1220,16 +1220,16 @@ LABEL_11:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(TUIAssistantButtonBarView *)self _totalGroupSizeThatFits:?];
   v7 = v6;
   [(TUIAssistantButtonBarView *)self _interItemSpacingThatFits:width forGroupSize:height, v6, v8];
   v10 = v9;
-  v11 = [(TUIAssistantButtonBarView *)self _visibleGroups];
-  v12 = [v11 count] - 1;
+  _visibleGroups = [(TUIAssistantButtonBarView *)self _visibleGroups];
+  v12 = [_visibleGroups count] - 1;
 
   v13 = v7 + v10 * v12;
   v14 = *MEMORY[0x1E69DE788];
@@ -1241,14 +1241,14 @@ LABEL_11:
 - (CGSize)intrinsicContentSize
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(TUIAssistantButtonBarView *)self _visibleGroups];
-  if ([v3 count])
+  _visibleGroups = [(TUIAssistantButtonBarView *)self _visibleGroups];
+  if ([_visibleGroups count])
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v4 = v3;
+    v4 = _visibleGroups;
     v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v5)
     {
@@ -1341,11 +1341,11 @@ LABEL_7:
   return result;
 }
 
-- (double)_interItemSpacingThatFits:(CGSize)a3 forGroupSize:(CGSize)a4
+- (double)_interItemSpacingThatFits:(CGSize)fits forGroupSize:(CGSize)size
 {
-  width = a4.width;
-  v5 = a3.width;
-  v7 = [(TUIAssistantButtonBarView *)self _visibleGroups:a3.width];
+  width = size.width;
+  v5 = fits.width;
+  v7 = [(TUIAssistantButtonBarView *)self _visibleGroups:fits.width];
   v8 = [v7 count] - 1;
 
   if (v8 < 1)
@@ -1363,16 +1363,16 @@ LABEL_7:
   return result;
 }
 
-- (CGSize)_totalGroupSizeThatFits:(CGSize)a3
+- (CGSize)_totalGroupSizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v20 = *MEMORY[0x1E69E9840];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(TUIAssistantButtonBarView *)self _visibleGroups];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _visibleGroups = [(TUIAssistantButtonBarView *)self _visibleGroups];
+  v6 = [_visibleGroups countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1384,7 +1384,7 @@ LABEL_7:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_visibleGroups);
         }
 
         v11 = [(TUIAssistantButtonBarView *)self _groupViewForBarButtonItemGroup:*(*(&v15 + 1) + 8 * i)];
@@ -1392,7 +1392,7 @@ LABEL_7:
         v9 = v9 + v12;
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [_visibleGroups countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -1417,8 +1417,8 @@ LABEL_7:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(TUIAssistantButtonBarView *)self buttonGroups];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  buttonGroups = [(TUIAssistantButtonBarView *)self buttonGroups];
+  v4 = [buttonGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1429,7 +1429,7 @@ LABEL_7:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(buttonGroups);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -1437,24 +1437,24 @@ LABEL_7:
         [v9 setHidden:{objc_msgSend(v8, "isHidden")}];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [buttonGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_groupViewForBarButtonItemGroup:(id)a3
+- (id)_groupViewForBarButtonItemGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(TUIAssistantButtonBarView *)self groupViews];
+  groupCopy = group;
+  groupViews = [(TUIAssistantButtonBarView *)self groupViews];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__TUIAssistantButtonBarView__groupViewForBarButtonItemGroup___block_invoke;
   v11[3] = &unk_1E72D8188;
-  v6 = v4;
+  v6 = groupCopy;
   v12 = v6;
-  v7 = [v5 indexOfObjectPassingTest:v11];
+  v7 = [groupViews indexOfObjectPassingTest:v11];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1463,8 +1463,8 @@ LABEL_7:
 
   else
   {
-    v9 = [(TUIAssistantButtonBarView *)self groupViews];
-    v8 = [v9 objectAtIndex:v7];
+    groupViews2 = [(TUIAssistantButtonBarView *)self groupViews];
+    v8 = [groupViews2 objectAtIndex:v7];
   }
 
   return v8;
@@ -1479,17 +1479,17 @@ BOOL __61__TUIAssistantButtonBarView__groupViewForBarButtonItemGroup___block_inv
   return v7;
 }
 
-- (void)setButtonGroups:(id)a3 animated:(BOOL)a4
+- (void)setButtonGroups:(id)groups animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (![(NSArray *)self->_buttonGroups isEqualToArray:v7])
+  groupsCopy = groups;
+  if (![(NSArray *)self->_buttonGroups isEqualToArray:groupsCopy])
   {
-    v26 = v4;
-    objc_storeStrong(&self->_buttonGroups, a3);
-    v8 = [(TUIAssistantButtonBarView *)self groupViews];
-    v9 = [v8 copy];
+    v26 = animatedCopy;
+    objc_storeStrong(&self->_buttonGroups, groups);
+    groupViews = [(TUIAssistantButtonBarView *)self groupViews];
+    v9 = [groupViews copy];
 
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
@@ -1498,14 +1498,14 @@ BOOL __61__TUIAssistantButtonBarView__groupViewForBarButtonItemGroup___block_inv
     v28 = v9;
     v41 = v28;
     v27 = _Block_copy(aBlock);
-    v10 = [(TUIAssistantButtonBarView *)self groupViews];
-    [v10 removeAllObjects];
+    groupViews2 = [(TUIAssistantButtonBarView *)self groupViews];
+    [groupViews2 removeAllObjects];
 
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v11 = v7;
+    v11 = groupsCopy;
     v12 = [v11 countByEnumeratingWithState:&v36 objects:v42 count:16];
     if (v12)
     {
@@ -1523,16 +1523,16 @@ BOOL __61__TUIAssistantButtonBarView__groupViewForBarButtonItemGroup___block_inv
 
           v16 = *(*(&v36 + 1) + 8 * v15);
           v17 = [TUIAssistantButtonBarGroupView alloc];
-          v18 = [(TUIAssistantButtonBarView *)self visualProvider];
-          v19 = [(TUIAssistantButtonBarGroupView *)v17 initWithBarButtonItemGroup:v16 visualProvider:v18 buttonProvider:self];
+          visualProvider = [(TUIAssistantButtonBarView *)self visualProvider];
+          v19 = [(TUIAssistantButtonBarGroupView *)v17 initWithBarButtonItemGroup:v16 visualProvider:visualProvider buttonProvider:self];
 
           [(TUIAssistantButtonBarView *)self minimumInterItemSpace];
           [(TUIAssistantButtonBarGroupView *)v19 setItemSpacing:?];
-          v20 = [(TUIAssistantButtonBarView *)self groupViews];
-          [v20 addObject:v19];
+          groupViews3 = [(TUIAssistantButtonBarView *)self groupViews];
+          [groupViews3 addObject:v19];
 
-          v21 = [(TUIAssistantButtonBarView *)self buttonContainer];
-          [v21 addSubview:v19];
+          buttonContainer = [(TUIAssistantButtonBarView *)self buttonContainer];
+          [buttonContainer addSubview:v19];
 
           ++v15;
         }
@@ -1720,16 +1720,16 @@ void __54__TUIAssistantButtonBarView_setButtonGroups_animated___block_invoke_3(u
   }
 }
 
-- (void)setEffectiveInterItemSpacing:(double)a3
+- (void)setEffectiveInterItemSpacing:(double)spacing
 {
   v14 = *MEMORY[0x1E69E9840];
-  self->_effectiveInterItemSpacing = a3;
+  self->_effectiveInterItemSpacing = spacing;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(TUIAssistantButtonBarView *)self groupViews];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  groupViews = [(TUIAssistantButtonBarView *)self groupViews];
+  v5 = [groupViews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1741,14 +1741,14 @@ void __54__TUIAssistantButtonBarView_setButtonGroups_animated___block_invoke_3(u
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(groupViews);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setItemSpacing:a3];
+        [*(*(&v9 + 1) + 8 * v8++) setItemSpacing:spacing];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [groupViews countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -1757,11 +1757,11 @@ void __54__TUIAssistantButtonBarView_setButtonGroups_animated___block_invoke_3(u
 
 - (void)_updateMargins
 {
-  v3 = [(TUIAssistantButtonBarView *)self _inheritedRenderConfig];
-  if ([v3 colorAdaptiveBackground])
+  _inheritedRenderConfig = [(TUIAssistantButtonBarView *)self _inheritedRenderConfig];
+  if ([_inheritedRenderConfig colorAdaptiveBackground])
   {
-    v4 = [MEMORY[0x1E69DCBE0] activeInstance];
-    if ([v4 isMinimized])
+    activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+    if ([activeInstance isMinimized])
     {
       v5 = 0;
     }
@@ -1779,25 +1779,25 @@ void __54__TUIAssistantButtonBarView_setButtonGroups_animated___block_invoke_3(u
     [(TUIAssistantButtonBarView *)self setColorAdaptiveFullButtonBar:0];
   }
 
-  v6 = [(TUIAssistantButtonBarView *)self colorAdaptiveFullButtonBar];
+  colorAdaptiveFullButtonBar = [(TUIAssistantButtonBarView *)self colorAdaptiveFullButtonBar];
   v7 = 5.0;
-  if (v6)
+  if (colorAdaptiveFullButtonBar)
   {
     v7 = 24.0;
   }
 
   [(TUIAssistantButtonBarView *)self setMinimumInterItemSpace:v7];
-  v8 = [(TUIAssistantButtonBarView *)self colorAdaptiveFullButtonBar];
+  colorAdaptiveFullButtonBar2 = [(TUIAssistantButtonBarView *)self colorAdaptiveFullButtonBar];
   v9 = 15.0;
-  if (v8)
+  if (colorAdaptiveFullButtonBar2)
   {
     v9 = 28.0;
   }
 
   self->_defaultHorizontalMargins = v9;
-  v10 = [(TUIAssistantButtonBarView *)self colorAdaptiveFullButtonBar];
+  colorAdaptiveFullButtonBar3 = [(TUIAssistantButtonBarView *)self colorAdaptiveFullButtonBar];
   v11 = 40.0;
-  if (v10)
+  if (colorAdaptiveFullButtonBar3)
   {
     v11 = 22.0;
   }
@@ -1805,19 +1805,19 @@ void __54__TUIAssistantButtonBarView_setButtonGroups_animated___block_invoke_3(u
   [(TUIAssistantButtonBarView *)self setBarButtonWidth:v11];
 }
 
-- (TUIAssistantButtonBarView)initWithFrame:(CGRect)a3
+- (TUIAssistantButtonBarView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = TUIAssistantButtonBarView;
-  v3 = [(TUIAssistantButtonBarView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUIAssistantButtonBarView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(TUIAssistantButtonBarView *)v3 setButtonContainer:v5];
 
-    v6 = [(TUIAssistantButtonBarView *)v3 buttonContainer];
-    [(TUIAssistantButtonBarView *)v3 addSubview:v6];
+    buttonContainer = [(TUIAssistantButtonBarView *)v3 buttonContainer];
+    [(TUIAssistantButtonBarView *)v3 addSubview:buttonContainer];
 
     v7 = objc_alloc_init(MEMORY[0x1E695DFA0]);
     [(TUIAssistantButtonBarView *)v3 setGroupViews:v7];

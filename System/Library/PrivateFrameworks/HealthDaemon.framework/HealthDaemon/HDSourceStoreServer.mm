@@ -1,28 +1,28 @@
 @interface HDSourceStoreServer
 + (id)requiredEntitlements;
-- (uint64_t)_IsAllowedToAccessQASPI:(void *)a1;
-- (void)remote_deleteSourceWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_fetchAllSourcesWithCompletion:(id)a3;
-- (void)remote_fetchHasSampleWithBundleIdentifier:(id)a3 completion:(id)a4;
-- (void)remote_fetchOrderedSourcesForObjectType:(id)a3 completion:(id)a4;
-- (void)remote_qaSourceForBundleIdentifier:(id)a3 name:(id)a4 completion:(id)a5;
-- (void)remote_sourceForAppleDeviceWithUUID:(id)a3 identifier:(id)a4 name:(id)a5 productType:(id)a6 completion:(id)a7;
-- (void)remote_updateOrderedSources:(id)a3 forObjectType:(id)a4 completion:(id)a5;
+- (uint64_t)_IsAllowedToAccessQASPI:(void *)i;
+- (void)remote_deleteSourceWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_fetchAllSourcesWithCompletion:(id)completion;
+- (void)remote_fetchHasSampleWithBundleIdentifier:(id)identifier completion:(id)completion;
+- (void)remote_fetchOrderedSourcesForObjectType:(id)type completion:(id)completion;
+- (void)remote_qaSourceForBundleIdentifier:(id)identifier name:(id)name completion:(id)completion;
+- (void)remote_sourceForAppleDeviceWithUUID:(id)d identifier:(id)identifier name:(id)name productType:(id)type completion:(id)completion;
+- (void)remote_updateOrderedSources:(id)sources forObjectType:(id)type completion:(id)completion;
 @end
 
 @implementation HDSourceStoreServer
 
-- (void)remote_fetchAllSourcesWithCompletion:(id)a3
+- (void)remote_fetchAllSourcesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
   v13 = __Block_byref_object_copy__47;
   v14 = __Block_byref_object_dispose__47;
   v15 = 0;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 database];
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__HDSourceStoreServer_remote_fetchAllSourcesWithCompletion___block_invoke;
@@ -30,10 +30,10 @@
   v8[5] = &v10;
   v9 = 0;
   v8[4] = self;
-  [v6 performHighPriorityTransactionsWithError:&v9 block:v8];
+  [database performHighPriorityTransactionsWithError:&v9 block:v8];
   v7 = v9;
 
-  v4[2](v4, v11[5], v7);
+  completionCopy[2](completionCopy, v11[5], v7);
   _Block_object_dispose(&v10, 8);
 }
 
@@ -49,16 +49,16 @@ BOOL __60__HDSourceStoreServer_remote_fetchAllSourcesWithCompletion___block_invo
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (void)remote_fetchHasSampleWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)remote_fetchHasSampleWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v17[0] = 0;
   v17[1] = v17;
   v17[2] = 0x2020000000;
   v17[3] = 0;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 database];
+  profile = [(HDStandardTaskServer *)self profile];
+  database = [profile database];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__HDSourceStoreServer_remote_fetchHasSampleWithBundleIdentifier_completion___block_invoke;
@@ -66,12 +66,12 @@ BOOL __60__HDSourceStoreServer_remote_fetchAllSourcesWithCompletion___block_invo
   v15 = v17;
   v16 = 0;
   v13[4] = self;
-  v10 = v6;
+  v10 = identifierCopy;
   v14 = v10;
-  v11 = [v9 performHighPriorityTransactionsWithError:&v16 block:v13];
+  v11 = [database performHighPriorityTransactionsWithError:&v16 block:v13];
   v12 = v16;
 
-  v7[2](v7, v11, v12);
+  completionCopy[2](completionCopy, v11, v12);
   _Block_object_dispose(v17, 8);
 }
 
@@ -84,17 +84,17 @@ BOOL __76__HDSourceStoreServer_remote_fetchHasSampleWithBundleIdentifier_complet
   return *(*(*(a1 + 48) + 8) + 24) == 1;
 }
 
-- (void)remote_deleteSourceWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)remote_deleteSourceWithBundleIdentifier:(id)identifier completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (v7)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v8 = a4;
-    v9 = [(HDStandardTaskServer *)self profile];
-    v10 = [v9 sourceManager];
+    completionCopy = completion;
+    profile = [(HDStandardTaskServer *)self profile];
+    sourceManager = [profile sourceManager];
     v26 = 0;
-    v11 = [v10 deleteSourceWithBundleIdentifier:v7 error:&v26];
+    v11 = [sourceManager deleteSourceWithBundleIdentifier:identifierCopy error:&v26];
     v12 = v26;
 
     _HKInitializeLogging();
@@ -105,18 +105,18 @@ BOOL __76__HDSourceStoreServer_remote_fetchHasSampleWithBundleIdentifier_complet
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         v15 = v13;
-        v16 = [(HDStandardTaskServer *)self client];
-        v17 = [v16 process];
-        v18 = [v17 name];
+        client = [(HDStandardTaskServer *)self client];
+        process = [client process];
+        name = [process name];
         *buf = 138543618;
-        v28 = v18;
+        v28 = name;
         v29 = 2114;
-        v30 = v7;
+        v30 = identifierCopy;
         _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "Client %{public}@ deleted source %{public}@", buf, 0x16u);
       }
 
-      v19 = [(HDStandardTaskServer *)self profile];
-      [HDCloudSyncStore samplesDeletedInProfile:v19 byUser:1 intervals:0];
+      profile2 = [(HDStandardTaskServer *)self profile];
+      [HDCloudSyncStore samplesDeletedInProfile:profile2 byUser:1 intervals:0];
     }
 
     else
@@ -127,82 +127,82 @@ BOOL __76__HDSourceStoreServer_remote_fetchHasSampleWithBundleIdentifier_complet
       }
 
       v23 = v13;
-      v19 = [(HDStandardTaskServer *)self client];
-      v24 = [v19 process];
-      v25 = [v24 name];
+      profile2 = [(HDStandardTaskServer *)self client];
+      process2 = [profile2 process];
+      name2 = [process2 name];
       *buf = 138543874;
-      v28 = v25;
+      v28 = name2;
       v29 = 2114;
-      v30 = v7;
+      v30 = identifierCopy;
       v31 = 2114;
       v32 = v12;
       _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "Client %{public}@ failed to deleted source %{public}@: %{public}@", buf, 0x20u);
     }
 
 LABEL_9:
-    v8[2](v8, v11, v12);
+    completionCopy[2](completionCopy, v11, v12);
 
     goto LABEL_10;
   }
 
   v20 = MEMORY[0x277CCA9B8];
-  v21 = a4;
+  completionCopy2 = completion;
   v12 = [v20 hk_errorForNilArgument:@"bundleIdentifier" class:objc_opt_class() selector:a2];
-  (*(a4 + 2))(v21, 0, v12);
+  (*(completion + 2))(completionCopy2, 0, v12);
 
 LABEL_10:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_fetchOrderedSourcesForObjectType:(id)a3 completion:(id)a4
+- (void)remote_fetchOrderedSourcesForObjectType:(id)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 sourceOrderManager];
+  completionCopy = completion;
+  typeCopy = type;
+  profile = [(HDStandardTaskServer *)self profile];
+  sourceOrderManager = [profile sourceOrderManager];
   v12 = 0;
-  v10 = [v9 orderedSourcesForObjectType:v7 error:&v12];
+  v10 = [sourceOrderManager orderedSourcesForObjectType:typeCopy error:&v12];
 
   v11 = v12;
-  v6[2](v6, v10, v11);
+  completionCopy[2](completionCopy, v10, v11);
 }
 
-- (void)remote_updateOrderedSources:(id)a3 forObjectType:(id)a4 completion:(id)a5
+- (void)remote_updateOrderedSources:(id)sources forObjectType:(id)type completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HDStandardTaskServer *)self profile];
-  v12 = [v11 sourceOrderManager];
+  completionCopy = completion;
+  typeCopy = type;
+  sourcesCopy = sources;
+  profile = [(HDStandardTaskServer *)self profile];
+  sourceOrderManager = [profile sourceOrderManager];
   v15 = 0;
-  v13 = [v12 updateOrderedSources:v10 forObjectType:v9 error:&v15];
+  v13 = [sourceOrderManager updateOrderedSources:sourcesCopy forObjectType:typeCopy error:&v15];
 
   v14 = v15;
-  v8[2](v8, v13, v14);
+  completionCopy[2](completionCopy, v13, v14);
 }
 
-- (uint64_t)_IsAllowedToAccessQASPI:(void *)a1
+- (uint64_t)_IsAllowedToAccessQASPI:(void *)i
 {
-  if (a1)
+  if (i)
   {
-    v4 = [a1 client];
-    v5 = [v4 process];
-    v6 = [v5 bundleIdentifier];
-    if ([v6 isEqual:@"com.apple.HealthKitTestHost"])
+    client = [i client];
+    process = [client process];
+    bundleIdentifier = [process bundleIdentifier];
+    if ([bundleIdentifier isEqual:@"com.apple.HealthKitTestHost"])
     {
 LABEL_7:
 
 LABEL_8:
-      v13 = [a1 client];
-      v14 = [v13 hasRequiredEntitlement:*MEMORY[0x277CCCDD8] error:a2];
+      client2 = [i client];
+      v14 = [client2 hasRequiredEntitlement:*MEMORY[0x277CCCDD8] error:a2];
 
       return v14;
     }
 
-    v7 = [a1 client];
-    v8 = [v7 process];
-    v9 = [v8 bundleIdentifier];
-    if ([v9 isEqual:@"com.apple.HKTester"])
+    client3 = [i client];
+    process2 = [client3 process];
+    bundleIdentifier2 = [process2 bundleIdentifier];
+    if ([bundleIdentifier2 isEqual:@"com.apple.HKTester"])
     {
 LABEL_6:
 
@@ -210,19 +210,19 @@ LABEL_6:
     }
 
     v20 = a2;
-    v10 = [a1 client];
-    v11 = [v10 process];
-    v12 = [v11 bundleIdentifier];
-    if ([v12 hasPrefix:@"com.apple.internal.HealthUIAKit."])
+    client4 = [i client];
+    process3 = [client4 process];
+    bundleIdentifier3 = [process3 bundleIdentifier];
+    if ([bundleIdentifier3 hasPrefix:@"com.apple.internal.HealthUIAKit."])
     {
 
       a2 = v20;
       goto LABEL_6;
     }
 
-    v17 = [a1 client];
-    [v17 sourceBundleIdentifier];
-    v16 = v18 = v10;
+    client5 = [i client];
+    [client5 sourceBundleIdentifier];
+    v16 = v18 = client4;
     v19 = [v16 hasPrefix:@"com.apple.internal.HealthUIAKit."];
 
     a2 = v20;
@@ -237,30 +237,30 @@ LABEL_6:
   return 0;
 }
 
-- (void)remote_sourceForAppleDeviceWithUUID:(id)a3 identifier:(id)a4 name:(id)a5 productType:(id)a6 completion:(id)a7
+- (void)remote_sourceForAppleDeviceWithUUID:(id)d identifier:(id)identifier name:(id)name productType:(id)type completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dCopy = d;
+  identifierCopy = identifier;
+  nameCopy = name;
+  typeCopy = type;
+  completionCopy = completion;
   v29 = 0;
   v17 = [(HDSourceStoreServer *)self _IsAllowedToAccessQASPI:?];
   v18 = v29;
   if (v17)
   {
-    v19 = [(HDStandardTaskServer *)self profile];
-    v20 = [v19 sourceManager];
+    profile = [(HDStandardTaskServer *)self profile];
+    sourceManager = [profile sourceManager];
     v28 = v18;
-    v26 = v12;
-    v21 = [v20 sourceForAppleDeviceWithUUID:v12 identifier:v13 name:v14 productType:v15 createIfNecessary:1 error:&v28];
+    v26 = dCopy;
+    v21 = [sourceManager sourceForAppleDeviceWithUUID:dCopy identifier:identifierCopy name:nameCopy productType:typeCopy createIfNecessary:1 error:&v28];
     v22 = v28;
 
     if (v21)
     {
-      v23 = [(HDStandardTaskServer *)self profile];
+      profile2 = [(HDStandardTaskServer *)self profile];
       v27 = v22;
-      v24 = [v21 sourceWithProfile:v23 error:&v27];
+      v24 = [v21 sourceWithProfile:profile2 error:&v27];
       v25 = v27;
 
       v22 = v25;
@@ -272,7 +272,7 @@ LABEL_6:
     }
 
     v18 = v22;
-    v12 = v26;
+    dCopy = v26;
   }
 
   else
@@ -280,31 +280,31 @@ LABEL_6:
     v24 = 0;
   }
 
-  v16[2](v16, v24, v18);
+  completionCopy[2](completionCopy, v24, v18);
 }
 
-- (void)remote_qaSourceForBundleIdentifier:(id)a3 name:(id)a4 completion:(id)a5
+- (void)remote_qaSourceForBundleIdentifier:(id)identifier name:(id)name completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  completionCopy = completion;
   v23 = 0;
   v11 = [(HDSourceStoreServer *)self _IsAllowedToAccessQASPI:?];
   v12 = v23;
   if (v11)
   {
-    v13 = [(HDStandardTaskServer *)self profile];
-    v14 = [v13 sourceManager];
+    profile = [(HDStandardTaskServer *)self profile];
+    sourceManager = [profile sourceManager];
     v15 = [MEMORY[0x277CCDDA8] entitlementsWithDictionary:MEMORY[0x277CBEC10]];
     v22 = v12;
-    v16 = [v14 sourceForApplicationIdentifier:v8 createOrUpdateIfNecessary:1 entitlements:v15 name:v9 error:&v22];
+    v16 = [sourceManager sourceForApplicationIdentifier:identifierCopy createOrUpdateIfNecessary:1 entitlements:v15 name:nameCopy error:&v22];
     v17 = v22;
 
     if (v16)
     {
-      v18 = [(HDStandardTaskServer *)self profile];
+      profile2 = [(HDStandardTaskServer *)self profile];
       v21 = v17;
-      v19 = [v16 sourceWithProfile:v18 error:&v21];
+      v19 = [v16 sourceWithProfile:profile2 error:&v21];
       v20 = v21;
 
       v17 = v20;
@@ -323,7 +323,7 @@ LABEL_6:
     v19 = 0;
   }
 
-  v10[2](v10, v19, v12);
+  completionCopy[2](completionCopy, v19, v12);
 }
 
 + (id)requiredEntitlements

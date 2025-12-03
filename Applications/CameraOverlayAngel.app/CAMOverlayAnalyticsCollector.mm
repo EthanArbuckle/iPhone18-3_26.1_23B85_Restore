@@ -1,81 +1,81 @@
 @interface CAMOverlayAnalyticsCollector
 - (CAMOverlayAnalyticsCollector)init;
 - (void)cancelPresentation;
-- (void)countChangeTo:(id)a3;
-- (void)countClientWithPid:(int64_t)a3;
+- (void)countChangeTo:(id)to;
+- (void)countClientWithPid:(int64_t)pid;
 - (void)countDisconnection;
-- (void)countDismissWithReason:(int64_t)a3;
+- (void)countDismissWithReason:(int64_t)reason;
 - (void)countFullPressInPresentation;
-- (void)countPresentationWithReason:(int64_t)a3 control:(id)a4;
-- (void)observeContactRecognitionDelta:(double)a3;
-- (void)registerConnectionWithName:(id)a3 pid:(int64_t)a4;
-- (void)unregisterConnectionWithPID:(int64_t)a3;
+- (void)countPresentationWithReason:(int64_t)reason control:(id)control;
+- (void)observeContactRecognitionDelta:(double)delta;
+- (void)registerConnectionWithName:(id)name pid:(int64_t)pid;
+- (void)unregisterConnectionWithPID:(int64_t)d;
 @end
 
 @implementation CAMOverlayAnalyticsCollector
 
-- (void)registerConnectionWithName:(id)a3 pid:(int64_t)a4
+- (void)registerConnectionWithName:(id)name pid:(int64_t)pid
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  v9 = self;
-  sub_100022904(v6, v8, a4);
+  selfCopy = self;
+  sub_100022904(v6, v8, pid);
 }
 
-- (void)unregisterConnectionWithPID:(int64_t)a3
+- (void)unregisterConnectionWithPID:(int64_t)d
 {
-  v4 = self;
-  sub_100022D14(a3);
+  selfCopy = self;
+  sub_100022D14(d);
 }
 
-- (void)countClientWithPid:(int64_t)a3
+- (void)countClientWithPid:(int64_t)pid
 {
-  v4 = self;
-  sub_1000230D4(a3);
+  selfCopy = self;
+  sub_1000230D4(pid);
 }
 
-- (void)countPresentationWithReason:(int64_t)a3 control:(id)a4
+- (void)countPresentationWithReason:(int64_t)reason control:(id)control
 {
-  v6 = a4;
-  v7 = self;
-  sub_10002487C(a3, v6);
+  controlCopy = control;
+  selfCopy = self;
+  sub_10002487C(reason, controlCopy);
 }
 
 - (void)countFullPressInPresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100021AFC();
 }
 
 - (void)cancelPresentation
 {
-  v2 = self;
+  selfCopy = self;
   sub_100021618();
 }
 
-- (void)countChangeTo:(id)a3
+- (void)countChangeTo:(id)to
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002537C(v4);
+  toCopy = to;
+  selfCopy = self;
+  sub_10002537C(toCopy);
 }
 
-- (void)countDismissWithReason:(int64_t)a3
+- (void)countDismissWithReason:(int64_t)reason
 {
-  v4 = self;
-  sub_100020B60(a3);
+  selfCopy = self;
+  sub_100020B60(reason);
 }
 
 - (void)countDisconnection
 {
-  v2 = self;
+  selfCopy = self;
   sub_100025BE4();
 }
 
-- (void)observeContactRecognitionDelta:(double)a3
+- (void)observeContactRecognitionDelta:(double)delta
 {
-  v4 = self;
-  sub_100026498(a3);
+  selfCopy = self;
+  sub_100026498(delta);
 }
 
 - (CAMOverlayAnalyticsCollector)init

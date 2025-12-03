@@ -1,33 +1,33 @@
 @interface PPXPCServerPipelinedBatchQueryManager
-- (PPXPCServerPipelinedBatchQueryManager)initWithPipelineDepth:(int64_t)a3 pipelinedCallTimeoutNsec:(unint64_t)a4 maxConcurrentRequestsPerConnection:(unint64_t)a5;
-- (void)_unblockQueryReplyThrottleSemaphore:(id)a3;
-- (void)runConcurrentlyWithRequestThrottle:(id)a3;
-- (void)runSynchronouslyWithRequestThrottle:(id)a3;
-- (void)sendBatchedResultForQueryWithName:(id)a3 queryId:(unint64_t)a4 batchGenerator:(id)a5 sendError:(id)a6 sendBatch:(id)a7;
+- (PPXPCServerPipelinedBatchQueryManager)initWithPipelineDepth:(int64_t)depth pipelinedCallTimeoutNsec:(unint64_t)nsec maxConcurrentRequestsPerConnection:(unint64_t)connection;
+- (void)_unblockQueryReplyThrottleSemaphore:(id)semaphore;
+- (void)runConcurrentlyWithRequestThrottle:(id)throttle;
+- (void)runSynchronouslyWithRequestThrottle:(id)throttle;
+- (void)sendBatchedResultForQueryWithName:(id)name queryId:(unint64_t)id batchGenerator:(id)generator sendError:(id)error sendBatch:(id)batch;
 - (void)unblockPendingQueries;
-- (void)waitForBlockWithRequestThrottle:(id)a3;
+- (void)waitForBlockWithRequestThrottle:(id)throttle;
 @end
 
 @implementation PPXPCServerPipelinedBatchQueryManager
 
-- (void)sendBatchedResultForQueryWithName:(id)a3 queryId:(unint64_t)a4 batchGenerator:(id)a5 sendError:(id)a6 sendBatch:(id)a7
+- (void)sendBatchedResultForQueryWithName:(id)name queryId:(unint64_t)id batchGenerator:(id)generator sendError:(id)error sendBatch:(id)batch
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v12 = a5;
-  v13 = a6;
-  v43 = a7;
+  nameCopy = name;
+  generatorCopy = generator;
+  errorCopy = error;
+  batchCopy = batch;
   v14 = self->_queryReplyThrottleSemaphores;
   objc_sync_enter(v14);
   queryReplyThrottleSemaphores = self->_queryReplyThrottleSemaphores;
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:id];
   v17 = [(NSMutableDictionary *)queryReplyThrottleSemaphores objectForKeyedSubscript:v16];
 
   if (!v17)
   {
     v23 = dispatch_semaphore_create(self->_pipelineDepth);
     v24 = self->_queryReplyThrottleSemaphores;
-    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+    v25 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:id];
     [(NSMutableDictionary *)v24 setObject:v23 forKeyedSubscript:v25];
 
     objc_sync_exit(v14);
@@ -47,7 +47,7 @@ LABEL_23:
         v37 = self->_queryReplyThrottleSemaphores;
         objc_sync_enter(v37);
         v38 = self->_queryReplyThrottleSemaphores;
-        v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+        v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:id];
         [(NSMutableDictionary *)v38 setObject:0 forKeyedSubscript:v39];
 
         objc_sync_exit(v37);
@@ -67,10 +67,10 @@ LABEL_23:
 
       else
       {
-        v28 = v12[2](v12, &v49, &v48);
+        v28 = generatorCopy[2](generatorCopy, &v49, &v48);
         if (!v28)
         {
-          v13[2](v13, v48);
+          errorCopy[2](errorCopy, v48);
           v35 = 0;
           goto LABEL_20;
         }
@@ -78,7 +78,7 @@ LABEL_23:
 
       if ([MEMORY[0x277D425A0] waitForSemaphore:v23 timeoutSeconds:self->_pipelinedCallTimeoutNsec / 1000000000.0] == 1)
       {
-        v29 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"timeout while handling pipelined results for query %@ with queryId %llu", v44, a4];
+        v29 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"timeout while handling pipelined results for query %@ with queryId %llu", nameCopy, id];
         v30 = pp_xpc_server_log_handle();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
         {
@@ -93,7 +93,7 @@ LABEL_23:
         v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v55 forKeys:&v54 count:1];
         v33 = [v31 initWithDomain:v41 code:5 userInfo:v32];
 
-        v13[2](v13, v33);
+        errorCopy[2](errorCopy, v33);
       }
 
       else
@@ -108,7 +108,7 @@ LABEL_23:
           v45[3] = &unk_2789755F0;
           v47 = &v56;
           v46 = v23;
-          v43[2](v43, v28, v36, v45);
+          batchCopy[2](batchCopy, v28, v36, v45);
           v35 = 1;
           v29 = v46;
           goto LABEL_19;
@@ -118,9 +118,9 @@ LABEL_23:
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          v51 = v44;
+          v51 = nameCopy;
           v52 = 2048;
-          v53 = a4;
+          idCopy = id;
           _os_log_impl(&dword_23224A000, v29, OS_LOG_TYPE_DEFAULT, "Prematurely terminating pending query %@ with queryId %llu due to connection failure.", buf, 0x16u);
         }
       }
@@ -137,7 +137,7 @@ LABEL_20:
     }
   }
 
-  v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"query %@ can't be started because queryId %llu is already in use", v44, a4];
+  v18 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"query %@ can't be started because queryId %llu is already in use", nameCopy, id];
   v19 = pp_xpc_server_log_handle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
@@ -152,7 +152,7 @@ LABEL_20:
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:&v59 count:1];
   v22 = [v20 initWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:v21];
 
-  v13[2](v13, v22);
+  errorCopy[2](errorCopy, v22);
   objc_sync_exit(v14);
 LABEL_24:
 
@@ -184,9 +184,9 @@ intptr_t __118__PPXPCServerPipelinedBatchQueryManager_sendBatchedResultForQueryW
   objc_sync_exit(v3);
 }
 
-- (void)waitForBlockWithRequestThrottle:(id)a3
+- (void)waitForBlockWithRequestThrottle:(id)throttle
 {
-  v4 = a3;
+  throttleCopy = throttle;
   v5 = os_transaction_create();
   v6 = blockNotifyQueue();
   dispatch_sync(v6, &__block_literal_global_35_14993);
@@ -200,7 +200,7 @@ intptr_t __118__PPXPCServerPipelinedBatchQueryManager_sendBatchedResultForQueryW
   v9[4] = self;
   v10 = v5;
   v8 = v5;
-  dispatch_block_notify(v4, v7, v9);
+  dispatch_block_notify(throttleCopy, v7, v9);
 }
 
 id __73__PPXPCServerPipelinedBatchQueryManager_waitForBlockWithRequestThrottle___block_invoke_2(uint64_t a1)
@@ -210,9 +210,9 @@ id __73__PPXPCServerPipelinedBatchQueryManager_waitForBlockWithRequestThrottle__
   return objc_opt_self();
 }
 
-- (void)runConcurrentlyWithRequestThrottle:(id)a3
+- (void)runConcurrentlyWithRequestThrottle:(id)throttle
 {
-  v4 = a3;
+  throttleCopy = throttle;
   v5 = os_transaction_create();
   v6 = blockNotifyQueue();
   dispatch_sync(v6, &__block_literal_global_32);
@@ -225,10 +225,10 @@ id __73__PPXPCServerPipelinedBatchQueryManager_waitForBlockWithRequestThrottle__
   block[2] = __76__PPXPCServerPipelinedBatchQueryManager_runConcurrentlyWithRequestThrottle___block_invoke_2;
   block[3] = &unk_278979060;
   v12 = v5;
-  v13 = v4;
+  v13 = throttleCopy;
   block[4] = self;
   v9 = v5;
-  v10 = v4;
+  v10 = throttleCopy;
   dispatch_async(v8, block);
 }
 
@@ -240,28 +240,28 @@ id __76__PPXPCServerPipelinedBatchQueryManager_runConcurrentlyWithRequestThrottl
   return objc_opt_self();
 }
 
-- (void)runSynchronouslyWithRequestThrottle:(id)a3
+- (void)runSynchronouslyWithRequestThrottle:(id)throttle
 {
-  v4 = a3;
+  throttleCopy = throttle;
   v5 = blockNotifyQueue();
   dispatch_sync(v5, &__block_literal_global_14999);
 
   dispatch_semaphore_wait(self->_concurrentRequestSem, 0xFFFFFFFFFFFFFFFFLL);
-  v4[2](v4);
+  throttleCopy[2](throttleCopy);
 
   concurrentRequestSem = self->_concurrentRequestSem;
 
   dispatch_semaphore_signal(concurrentRequestSem);
 }
 
-- (void)_unblockQueryReplyThrottleSemaphore:(id)a3
+- (void)_unblockQueryReplyThrottleSemaphore:(id)semaphore
 {
   if (self->_pipelineDepth)
   {
     v5 = 0;
     do
     {
-      dispatch_semaphore_signal(a3);
+      dispatch_semaphore_signal(semaphore);
       ++v5;
     }
 
@@ -269,7 +269,7 @@ id __76__PPXPCServerPipelinedBatchQueryManager_runConcurrentlyWithRequestThrottl
   }
 }
 
-- (PPXPCServerPipelinedBatchQueryManager)initWithPipelineDepth:(int64_t)a3 pipelinedCallTimeoutNsec:(unint64_t)a4 maxConcurrentRequestsPerConnection:(unint64_t)a5
+- (PPXPCServerPipelinedBatchQueryManager)initWithPipelineDepth:(int64_t)depth pipelinedCallTimeoutNsec:(unint64_t)nsec maxConcurrentRequestsPerConnection:(unint64_t)connection
 {
   v15.receiver = self;
   v15.super_class = PPXPCServerPipelinedBatchQueryManager;
@@ -277,9 +277,9 @@ id __76__PPXPCServerPipelinedBatchQueryManager_runConcurrentlyWithRequestThrottl
   v9 = v8;
   if (v8)
   {
-    v8->_pipelineDepth = a3;
-    v8->_pipelinedCallTimeoutNsec = a4;
-    v10 = dispatch_semaphore_create(a5);
+    v8->_pipelineDepth = depth;
+    v8->_pipelinedCallTimeoutNsec = nsec;
+    v10 = dispatch_semaphore_create(connection);
     concurrentRequestSem = v9->_concurrentRequestSem;
     v9->_concurrentRequestSem = v10;
 

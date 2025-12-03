@@ -1,30 +1,30 @@
 @interface VMUFlattenGraphEnumerator
-- (VMUFlattenGraphEnumerator)initWithGraph:(id)a3 graphEnumerator:(id)a4;
+- (VMUFlattenGraphEnumerator)initWithGraph:(id)graph graphEnumerator:(id)enumerator;
 - (void)dealloc;
-- (void)enumerateEdgesOfNode:(unsigned int)a3 withBlock:(id)a4;
+- (void)enumerateEdgesOfNode:(unsigned int)node withBlock:(id)block;
 @end
 
 @implementation VMUFlattenGraphEnumerator
 
-- (VMUFlattenGraphEnumerator)initWithGraph:(id)a3 graphEnumerator:(id)a4
+- (VMUFlattenGraphEnumerator)initWithGraph:(id)graph graphEnumerator:(id)enumerator
 {
-  v6 = a4;
+  enumeratorCopy = enumerator;
   v14.receiver = self;
   v14.super_class = VMUFlattenGraphEnumerator;
-  v7 = [(VMUGraphEnumerator *)&v14 initWithGraph:a3];
+  v7 = [(VMUGraphEnumerator *)&v14 initWithGraph:graph];
   graphEnumerator = v7->_graphEnumerator;
-  v7->_graphEnumerator = v6;
+  v7->_graphEnumerator = enumeratorCopy;
 
-  v9 = [(VMUGraphEnumerator *)v7 graph];
-  LODWORD(v6) = [v9 nodeNamespaceSize];
-  v10 = malloc_type_calloc(1uLL, ((v6 + 7) >> 3) + 4, 0xB2EC2458uLL);
-  *v10 = v6;
+  graph = [(VMUGraphEnumerator *)v7 graph];
+  LODWORD(enumeratorCopy) = [graph nodeNamespaceSize];
+  v10 = malloc_type_calloc(1uLL, ((enumeratorCopy + 7) >> 3) + 4, 0xB2EC2458uLL);
+  *v10 = enumeratorCopy;
   v7->_deliveredReachable = v10;
 
-  v11 = [(VMUGraphEnumerator *)v7 graph];
-  LODWORD(v6) = [v11 nodeNamespaceSize];
-  v12 = malloc_type_calloc(1uLL, ((v6 + 7) >> 3) + 4, 0xB2EC2458uLL);
-  *v12 = v6;
+  graph2 = [(VMUGraphEnumerator *)v7 graph];
+  LODWORD(enumeratorCopy) = [graph2 nodeNamespaceSize];
+  v12 = malloc_type_calloc(1uLL, ((enumeratorCopy + 7) >> 3) + 4, 0xB2EC2458uLL);
+  *v12 = enumeratorCopy;
   v7->_topLevel = v12;
 
   return v7;
@@ -39,34 +39,34 @@
   [(VMUFlattenGraphEnumerator *)&v3 dealloc];
 }
 
-- (void)enumerateEdgesOfNode:(unsigned int)a3 withBlock:(id)a4
+- (void)enumerateEdgesOfNode:(unsigned int)node withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   if (!self->_iteratingTopLevel)
   {
     deliveredReachable = self->_deliveredReachable;
-    if (*deliveredReachable <= a3 || (v8 = a3 >> 3, v9 = *(deliveredReachable + v8 + 4), v10 = 1 << (a3 & 7), (v10 & v9) == 0) || (v11 = self->_topLevel, *v11 > a3) && (v10 & *(v11 + v8 + 4)) != 0)
+    if (*deliveredReachable <= node || (v8 = node >> 3, v9 = *(deliveredReachable + v8 + 4), v10 = 1 << (node & 7), (v10 & v9) == 0) || (v11 = self->_topLevel, *v11 > node) && (v10 & *(v11 + v8 + 4)) != 0)
     {
-      v45 = v6;
+      v45 = blockCopy;
       self->_iteratingTopLevel = 1;
-      v12 = [(VMUGraphEnumerator *)self graph];
-      v13 = [v12 nodeNamespaceSize];
-      v14 = malloc_type_calloc(1uLL, ((v13 + 7) >> 3) + 4, 0xB2EC2458uLL);
-      *v14 = v13;
+      graph = [(VMUGraphEnumerator *)self graph];
+      nodeNamespaceSize = [graph nodeNamespaceSize];
+      v14 = malloc_type_calloc(1uLL, ((nodeNamespaceSize + 7) >> 3) + 4, 0xB2EC2458uLL);
+      *v14 = nodeNamespaceSize;
 
       v57 = 0;
       v58 = &v57;
       v59 = 0x2020000000;
       v60 = 0;
-      v15 = [(VMUGraphEnumerator *)self graph];
-      v16 = 4 * [v15 nodeNamespaceSize];
+      graph2 = [(VMUGraphEnumerator *)self graph];
+      v16 = 4 * [graph2 nodeNamespaceSize];
       v17 = malloc_type_malloc(v16, 0x100004052888210uLL);
       __pattern4[0] = -1;
       memset_pattern4(v17, __pattern4, v16);
 
       v18 = v58;
       v19 = v58[3];
-      v17[v19] = a3;
+      v17[v19] = node;
       v18[3] = v19 + 1;
       v20 = v14 + 1;
       v21 = v58;
@@ -115,9 +115,9 @@ LABEL_10:
 LABEL_12:
       free(v17);
       topLevel = self->_topLevel;
-      if (*topLevel > a3)
+      if (*topLevel > node)
       {
-        *(topLevel + (a3 >> 3) + 4) |= 1 << (a3 & 7);
+        *(topLevel + (node >> 3) + 4) |= 1 << (node & 7);
       }
 
       v29 = self->_deliveredReachable;
@@ -147,7 +147,7 @@ LABEL_12:
       v46[1] = 3221225472;
       v47 = __60__VMUFlattenGraphEnumerator_enumerateEdgesOfNode_withBlock___block_invoke_2;
       v48 = &unk_1E8278698;
-      v50 = a3;
+      nodeCopy = node;
       v49 = v45;
       v36 = v46;
       v37 = *v14;
@@ -191,7 +191,7 @@ LABEL_12:
       *(&self->super.super.isa + v44) = 0;
 
       _Block_object_dispose(&v57, 8);
-      v6 = v45;
+      blockCopy = v45;
     }
   }
 }

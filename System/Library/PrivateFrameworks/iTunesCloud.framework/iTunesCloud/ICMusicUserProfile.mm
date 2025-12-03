@@ -1,12 +1,12 @@
 @interface ICMusicUserProfile
-+ (id)attributesInfoFromMediaAPIResponse:(id)a3;
-- (BOOL)_capabilityForKey:(id)a3 fromAttributes:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (ICMusicUserProfile)initWithCoder:(id)a3;
-- (ICMusicUserProfile)initWithMediaAPIResponse:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)attributesInfoFromMediaAPIResponse:(id)response;
+- (BOOL)_capabilityForKey:(id)key fromAttributes:(id)attributes;
+- (BOOL)isEqual:(id)equal;
+- (ICMusicUserProfile)initWithCoder:(id)coder;
+- (ICMusicUserProfile)initWithMediaAPIResponse:(id)response;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICMusicUserProfile
@@ -14,32 +14,32 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ICMusicUserProfile *)self socialProfile];
-  v5 = [v3 stringWithFormat:@"[<ICMusicUserProfile:%p> socialProfile=%@ isOnboarded=%d, collaborationAllowed=%d]", self, v4, self->_isOnboarded, self->_collaborationAllowed];;
+  socialProfile = [(ICMusicUserProfile *)self socialProfile];
+  v5 = [v3 stringWithFormat:@"[<ICMusicUserProfile:%p> socialProfile=%@ isOnboarded=%d, collaborationAllowed=%d]", self, socialProfile, self->_isOnboarded, self->_collaborationAllowed];;
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[ICMusicUserProfile allocWithZone:?]];
-  v5 = [(ICMusicUserProfile *)self name];
-  v6 = [v5 copy];
+  name = [(ICMusicUserProfile *)self name];
+  v6 = [name copy];
   name = v4->_name;
   v4->_name = v6;
 
-  v8 = [(ICMusicUserProfile *)self artworkInfo];
-  v9 = [v8 copy];
+  artworkInfo = [(ICMusicUserProfile *)self artworkInfo];
+  v9 = [artworkInfo copy];
   artworkInfo = v4->_artworkInfo;
   v4->_artworkInfo = v9;
 
-  v11 = [(ICMusicUserProfile *)self handle];
-  v12 = [v11 copy];
+  handle = [(ICMusicUserProfile *)self handle];
+  v12 = [handle copy];
   handle = v4->_handle;
   v4->_handle = v12;
 
-  v14 = [(ICMusicUserProfile *)self socialProfile];
-  v15 = [v14 copy];
+  socialProfile = [(ICMusicUserProfile *)self socialProfile];
+  v15 = [socialProfile copy];
   socialProfile = v4->_socialProfile;
   v4->_socialProfile = v15;
 
@@ -50,55 +50,55 @@
   v4->_isOnboarded = [(ICMusicUserProfile *)self isOnboarded];
   v4->_collaborationAllowed = [(ICMusicUserProfile *)self collaborationAllowed];
   v4->_displayNameAccepted = [(ICMusicUserProfile *)self displayNameAccepted];
-  v17 = [(ICMusicUserProfile *)self acceptedTerms];
-  v18 = [v17 copy];
+  acceptedTerms = [(ICMusicUserProfile *)self acceptedTerms];
+  v18 = [acceptedTerms copy];
   acceptedTerms = v4->_acceptedTerms;
   v4->_acceptedTerms = v18;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (v5 = -[ICMusicUserProfile isPrivate](self, "isPrivate"), v5 == objc_msgSend(v4, "isPrivate")) && (v6 = -[ICMusicUserProfile isDiscoverableByContact](self, "isDiscoverableByContact"), v6 == objc_msgSend(v4, "isDiscoverableByContact")) && (v7 = -[ICMusicUserProfile isContactCheckAllowed](self, "isContactCheckAllowed"), v7 == objc_msgSend(v4, "isContactCheckAllowed")) && (v8 = -[ICMusicUserProfile isVerified](self, "isVerified"), v8 == objc_msgSend(v4, "isVerified")) && (v9 = -[ICMusicUserProfile isOnboarded](self, "isOnboarded"), v9 == objc_msgSend(v4, "isOnboarded")) && (v10 = -[ICMusicUserProfile collaborationAllowed](self, "collaborationAllowed"), v10 == objc_msgSend(v4, "collaborationAllowed")) && (v11 = -[ICMusicUserProfile displayNameAccepted](self, "displayNameAccepted"), v11 == objc_msgSend(v4, "displayNameAccepted")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (v5 = -[ICMusicUserProfile isPrivate](self, "isPrivate"), v5 == objc_msgSend(equalCopy, "isPrivate")) && (v6 = -[ICMusicUserProfile isDiscoverableByContact](self, "isDiscoverableByContact"), v6 == objc_msgSend(equalCopy, "isDiscoverableByContact")) && (v7 = -[ICMusicUserProfile isContactCheckAllowed](self, "isContactCheckAllowed"), v7 == objc_msgSend(equalCopy, "isContactCheckAllowed")) && (v8 = -[ICMusicUserProfile isVerified](self, "isVerified"), v8 == objc_msgSend(equalCopy, "isVerified")) && (v9 = -[ICMusicUserProfile isOnboarded](self, "isOnboarded"), v9 == objc_msgSend(equalCopy, "isOnboarded")) && (v10 = -[ICMusicUserProfile collaborationAllowed](self, "collaborationAllowed"), v10 == objc_msgSend(equalCopy, "collaborationAllowed")) && (v11 = -[ICMusicUserProfile displayNameAccepted](self, "displayNameAccepted"), v11 == objc_msgSend(equalCopy, "displayNameAccepted")))
   {
-    v14 = [(ICMusicUserProfile *)self name];
-    v15 = [v4 name];
-    if (v14 == v15 || [v14 isEqual:v15])
+    name = [(ICMusicUserProfile *)self name];
+    name2 = [equalCopy name];
+    if (name == name2 || [name isEqual:name2])
     {
-      v16 = [(ICMusicUserProfile *)self handle];
-      v17 = [v4 handle];
-      if (v16 == v17 || [v16 isEqual:v17])
+      handle = [(ICMusicUserProfile *)self handle];
+      handle2 = [equalCopy handle];
+      if (handle == handle2 || [handle isEqual:handle2])
       {
-        v18 = [(ICMusicUserProfile *)self socialProfileID];
-        v19 = [v4 socialProfileID];
-        if (v18 == v19 || [v18 isEqual:v19])
+        socialProfileID = [(ICMusicUserProfile *)self socialProfileID];
+        socialProfileID2 = [equalCopy socialProfileID];
+        if (socialProfileID == socialProfileID2 || [socialProfileID isEqual:socialProfileID2])
         {
-          v20 = [(ICMusicUserProfile *)self artworkInfo];
-          v21 = [v4 artworkInfo];
-          if (v20 == v21 || [v20 isEqual:v21])
+          artworkInfo = [(ICMusicUserProfile *)self artworkInfo];
+          artworkInfo2 = [equalCopy artworkInfo];
+          if (artworkInfo == artworkInfo2 || [artworkInfo isEqual:artworkInfo2])
           {
-            v28 = v19;
-            v29 = v18;
-            v22 = [(ICMusicUserProfile *)self socialProfile];
-            v23 = [v4 socialProfile];
-            if (v22 == v23 || [v22 isEqual:v23])
+            v28 = socialProfileID2;
+            v29 = socialProfileID;
+            socialProfile = [(ICMusicUserProfile *)self socialProfile];
+            socialProfile2 = [equalCopy socialProfile];
+            if (socialProfile == socialProfile2 || [socialProfile isEqual:socialProfile2])
             {
-              v24 = [(ICMusicUserProfile *)self acceptedTerms:v21];
-              v25 = [v4 acceptedTerms];
-              if (v24 == v25)
+              v24 = [(ICMusicUserProfile *)self acceptedTerms:artworkInfo2];
+              acceptedTerms = [equalCopy acceptedTerms];
+              if (v24 == acceptedTerms)
               {
                 v12 = 1;
               }
 
               else
               {
-                v12 = [v24 isEqual:v25];
+                v12 = [v24 isEqual:acceptedTerms];
               }
 
-              v21 = v26;
-              v20 = v27;
+              artworkInfo2 = v26;
+              artworkInfo = v27;
             }
 
             else
@@ -106,8 +106,8 @@
               v12 = 0;
             }
 
-            v19 = v28;
-            v18 = v29;
+            socialProfileID2 = v28;
+            socialProfileID = v29;
           }
 
           else
@@ -142,38 +142,38 @@
   return v12;
 }
 
-- (ICMusicUserProfile)initWithCoder:(id)a3
+- (ICMusicUserProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = ICMusicUserProfile;
   v5 = [(ICMusicUserProfile *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"artwork"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"artwork"];
     artworkInfo = v5->_artworkInfo;
     v5->_artworkInfo = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
     handle = v5->_handle;
     v5->_handle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"socialProfile"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"socialProfile"];
     socialProfile = v5->_socialProfile;
     v5->_socialProfile = v12;
 
-    v5->_isPrivate = [v4 decodeBoolForKey:@"isPrivate"];
-    v5->_isDiscoverableByContact = [v4 decodeBoolForKey:@"isDiscoverableByContact"];
-    v5->_isContactCheckAllowed = [v4 decodeBoolForKey:@"isContactCheckAllowed"];
-    v5->_isVerified = [v4 decodeBoolForKey:@"isVerified"];
-    v5->_isOnboarded = [v4 decodeBoolForKey:@"isOnboarded"];
-    v5->_collaborationAllowed = [v4 decodeBoolForKey:@"collaborationAllowed"];
-    v5->_displayNameAccepted = [v4 decodeBoolForKey:@"displayName"];
-    v14 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"acceptedTerms"];
+    v5->_isPrivate = [coderCopy decodeBoolForKey:@"isPrivate"];
+    v5->_isDiscoverableByContact = [coderCopy decodeBoolForKey:@"isDiscoverableByContact"];
+    v5->_isContactCheckAllowed = [coderCopy decodeBoolForKey:@"isContactCheckAllowed"];
+    v5->_isVerified = [coderCopy decodeBoolForKey:@"isVerified"];
+    v5->_isOnboarded = [coderCopy decodeBoolForKey:@"isOnboarded"];
+    v5->_collaborationAllowed = [coderCopy decodeBoolForKey:@"collaborationAllowed"];
+    v5->_displayNameAccepted = [coderCopy decodeBoolForKey:@"displayName"];
+    v14 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"acceptedTerms"];
     acceptedTerms = v5->_acceptedTerms;
     v5->_acceptedTerms = v14;
   }
@@ -181,32 +181,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_artworkInfo forKey:@"artwork"];
-  [v5 encodeObject:self->_handle forKey:@"handle"];
-  [v5 encodeObject:self->_socialProfile forKey:@"socialProfile"];
-  [v5 encodeBool:self->_isPrivate forKey:@"isPrivate"];
-  [v5 encodeBool:self->_isDiscoverableByContact forKey:@"isDiscoverableByContact"];
-  [v5 encodeBool:self->_isContactCheckAllowed forKey:@"isContactCheckAllowed"];
-  [v5 encodeBool:self->_isVerified forKey:@"isVerified"];
-  [v5 encodeBool:self->_isOnboarded forKey:@"isOnboarded"];
-  [v5 encodeBool:self->_collaborationAllowed forKey:@"collaborationAllowed"];
-  [v5 encodeBool:self->_displayNameAccepted forKey:@"displayName"];
-  [v5 encodeObject:self->_acceptedTerms forKey:@"acceptedTerms"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_artworkInfo forKey:@"artwork"];
+  [coderCopy encodeObject:self->_handle forKey:@"handle"];
+  [coderCopy encodeObject:self->_socialProfile forKey:@"socialProfile"];
+  [coderCopy encodeBool:self->_isPrivate forKey:@"isPrivate"];
+  [coderCopy encodeBool:self->_isDiscoverableByContact forKey:@"isDiscoverableByContact"];
+  [coderCopy encodeBool:self->_isContactCheckAllowed forKey:@"isContactCheckAllowed"];
+  [coderCopy encodeBool:self->_isVerified forKey:@"isVerified"];
+  [coderCopy encodeBool:self->_isOnboarded forKey:@"isOnboarded"];
+  [coderCopy encodeBool:self->_collaborationAllowed forKey:@"collaborationAllowed"];
+  [coderCopy encodeBool:self->_displayNameAccepted forKey:@"displayName"];
+  [coderCopy encodeObject:self->_acceptedTerms forKey:@"acceptedTerms"];
 }
 
-- (BOOL)_capabilityForKey:(id)a3 fromAttributes:(id)a4
+- (BOOL)_capabilityForKey:(id)key fromAttributes:(id)attributes
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 objectForKeyedSubscript:v5];
+  keyCopy = key;
+  v6 = [attributes objectForKeyedSubscript:keyCopy];
   if ((_NSIsNSNumber() & 1) != 0 || _NSIsNSString())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
@@ -215,20 +215,20 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = keyCopy;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_ERROR, "[ICMusicUserProfile] attributesInfo missing value for key '%@'. Defaulting to NO", &v10, 0xCu);
     }
 
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (ICMusicUserProfile)initWithMediaAPIResponse:(id)a3
+- (ICMusicUserProfile)initWithMediaAPIResponse:(id)response
 {
-  v4 = a3;
-  v5 = [ICMusicUserProfile attributesInfoFromMediaAPIResponse:v4];
+  responseCopy = response;
+  v5 = [ICMusicUserProfile attributesInfoFromMediaAPIResponse:responseCopy];
   if (v5)
   {
     v27.receiver = self;
@@ -285,21 +285,21 @@
       handle = v10->_handle;
       v10->_handle = v19;
 
-      v21 = [[ICMusicSocialProfile alloc] initWithMediaAPIResponse:v4];
+      v21 = [[ICMusicSocialProfile alloc] initWithMediaAPIResponse:responseCopy];
       socialProfile = v10->_socialProfile;
       v10->_socialProfile = v21;
     }
 
     self = v6;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 __CFString *__47__ICMusicUserProfile_initWithMediaAPIResponse___block_invoke(uint64_t a1, void *a2)
@@ -337,26 +337,26 @@ LABEL_9:
   return v5;
 }
 
-+ (id)attributesInfoFromMediaAPIResponse:(id)a3
++ (id)attributesInfoFromMediaAPIResponse:(id)response
 {
   v26[5] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
+  responseCopy = response;
+  v4 = responseCopy;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 1;
-  if (v3)
+  if (responseCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"data"];
-    v6 = [v5 firstObject];
+    v5 = [responseCopy objectForKeyedSubscript:@"data"];
+    firstObject = [v5 firstObject];
 
-    v7 = [v6 objectForKeyedSubscript:@"attributes"];
+    v7 = [firstObject objectForKeyedSubscript:@"attributes"];
     v8 = _NSIsNSDictionary();
 
     if (v8)
     {
-      v9 = [v6 objectForKey:@"attributes"];
+      v9 = [firstObject objectForKey:@"attributes"];
       v10 = [v9 objectForKey:@"name"];
       v11 = _NSIsNSString();
 
@@ -414,11 +414,11 @@ LABEL_9:
 
   else
   {
-    v6 = os_log_create("com.apple.amp.iTunesCloud", "UserState");
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    firstObject = os_log_create("com.apple.amp.iTunesCloud", "UserState");
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
-      _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_ERROR, "[ICMusicUserProfile] invalid response. response=nil", buf, 2u);
+      _os_log_impl(&dword_1B4491000, firstObject, OS_LOG_TYPE_ERROR, "[ICMusicUserProfile] invalid response. response=nil", buf, 2u);
     }
 
     v16 = 0;

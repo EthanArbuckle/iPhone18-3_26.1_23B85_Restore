@@ -14,7 +14,7 @@
 
   else
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___GAXSKPaymentQueueOverride;
     v4 = objc_msgSendSuper2(&v6, "canMakePayments");
   }

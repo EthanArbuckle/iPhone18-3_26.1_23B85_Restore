@@ -1,30 +1,30 @@
 @interface VUILibraryProductInfoView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)footerMargin;
 - (UIEdgeInsets)headerMargin;
 - (UIEdgeInsets)padding;
-- (VUILibraryProductInfoView)initWithFrame:(CGRect)a3;
+- (VUILibraryProductInfoView)initWithFrame:(CGRect)frame;
 - (double)_sectionInfoWidth;
 - (double)interitemSpacing;
 - (id)_getNormalizedGroupedInfos;
 - (int64_t)maxLineCount;
 - (unint64_t)_columnCount;
-- (void)_layouCellContentView:(id)a3 inCellBounds:(CGRect)a4;
+- (void)_layouCellContentView:(id)view inCellBounds:(CGRect)bounds;
 - (void)layoutSubviews;
-- (void)setFooterView:(id)a3;
-- (void)setHeaderView:(id)a3;
-- (void)setInfos:(id)a3;
+- (void)setFooterView:(id)view;
+- (void)setHeaderView:(id)view;
+- (void)setInfos:(id)infos;
 @end
 
 @implementation VUILibraryProductInfoView
 
-- (VUILibraryProductInfoView)initWithFrame:(CGRect)a3
+- (VUILibraryProductInfoView)initWithFrame:(CGRect)frame
 {
   v11[3] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = VUILibraryProductInfoView;
-  v3 = [(VUILibraryProductInfoView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUILibraryProductInfoView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     objc_initWeak(&location, v3);
@@ -52,15 +52,15 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
   [WeakRetained setNeedsLayout];
 }
 
-- (void)setHeaderView:(id)a3
+- (void)setHeaderView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   headerView = self->_headerView;
-  v7 = v5;
-  if (headerView != v5)
+  v7 = viewCopy;
+  if (headerView != viewCopy)
   {
     [(UIView *)headerView removeFromSuperview];
-    objc_storeStrong(&self->_headerView, a3);
+    objc_storeStrong(&self->_headerView, view);
     if (self->_headerView)
     {
       [(VUILibraryProductInfoView *)self addSubview:?];
@@ -70,15 +70,15 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
   [(VUILibraryProductInfoView *)self setNeedsLayout];
 }
 
-- (void)setFooterView:(id)a3
+- (void)setFooterView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   footerView = self->_footerView;
-  v7 = v5;
-  if (footerView != v5)
+  v7 = viewCopy;
+  if (footerView != viewCopy)
   {
     [(UIView *)footerView removeFromSuperview];
-    objc_storeStrong(&self->_footerView, a3);
+    objc_storeStrong(&self->_footerView, view);
     if (self->_footerView)
     {
       [(VUILibraryProductInfoView *)self addSubview:?];
@@ -88,16 +88,16 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
   [(VUILibraryProductInfoView *)self setNeedsLayout];
 }
 
-- (void)setInfos:(id)a3
+- (void)setInfos:(id)infos
 {
   v70 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  infosCopy = infos;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v5 = [(VUILibraryProductInfoView *)self subviews];
-  v6 = [v5 countByEnumeratingWithState:&v60 objects:v69 count:16];
+  subviews = [(VUILibraryProductInfoView *)self subviews];
+  v6 = [subviews countByEnumeratingWithState:&v60 objects:v69 count:16];
   if (v6)
   {
     v7 = v6;
@@ -108,55 +108,55 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
       {
         if (*v61 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v10 = *(*(&v60 + 1) + 8 * i);
-        v11 = [(VUILibraryProductInfoView *)self headerView];
-        v12 = v11;
-        if (v10 == v11)
+        headerView = [(VUILibraryProductInfoView *)self headerView];
+        v12 = headerView;
+        if (v10 == headerView)
         {
         }
 
         else
         {
-          v13 = [(VUILibraryProductInfoView *)self footerView];
+          footerView = [(VUILibraryProductInfoView *)self footerView];
 
-          if (v10 != v13)
+          if (v10 != footerView)
           {
             [v10 removeFromSuperview];
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v60 objects:v69 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v60 objects:v69 count:16];
     }
 
     while (v7);
   }
 
-  v14 = [v4 copy];
+  v14 = [infosCopy copy];
   infos = self->_infos;
   self->_infos = v14;
 
-  v46 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-  v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  v46 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(infosCopy, "count")}];
+  v47 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(infosCopy, "count")}];
+  v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(infosCopy, "count")}];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  obj = v4;
+  obj = infosCopy;
   v17 = [obj countByEnumeratingWithState:&v56 objects:v68 count:16];
   if (v17)
   {
     v18 = v17;
-    v19 = 0;
+    groupName = 0;
     v20 = *v57;
     do
     {
       v21 = 0;
-      v22 = v19;
+      v22 = groupName;
       do
       {
         if (*v57 != v20)
@@ -165,8 +165,8 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
         }
 
         v23 = *(*(&v56 + 1) + 8 * v21);
-        v19 = [v23 groupName];
-        if (v22 && ([v22 isEqualToString:v19] & 1) == 0)
+        groupName = [v23 groupName];
+        if (v22 && ([v22 isEqualToString:groupName] & 1) == 0)
         {
           v24 = [v16 copy];
           [v46 addObject:v24];
@@ -174,7 +174,7 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
           [v16 removeAllObjects];
         }
 
-        if (v19)
+        if (groupName)
         {
           [v16 addObject:v23];
         }
@@ -191,7 +191,7 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
         [v47 addObject:v26];
 
         ++v21;
-        v22 = v19;
+        v22 = groupName;
       }
 
       while (v18 != v21);
@@ -232,20 +232,20 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
         }
 
         v37 = *(*(&v52 + 1) + 8 * j);
-        v38 = [v37 headerContentView];
+        headerContentView = [v37 headerContentView];
 
-        if (v38)
+        if (headerContentView)
         {
-          v39 = [v37 headerContentView];
-          [(VUILibraryProductInfoView *)self addSubview:v39];
+          headerContentView2 = [v37 headerContentView];
+          [(VUILibraryProductInfoView *)self addSubview:headerContentView2];
         }
 
         v50 = 0u;
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        v40 = [v37 dataViews];
-        v41 = [v40 countByEnumeratingWithState:&v48 objects:v64 count:16];
+        dataViews = [v37 dataViews];
+        v41 = [dataViews countByEnumeratingWithState:&v48 objects:v64 count:16];
         if (v41)
         {
           v42 = v41;
@@ -256,13 +256,13 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
             {
               if (*v49 != v43)
               {
-                objc_enumerationMutation(v40);
+                objc_enumerationMutation(dataViews);
               }
 
               [(VUILibraryProductInfoView *)self addSubview:*(*(&v48 + 1) + 8 * k)];
             }
 
-            v42 = [v40 countByEnumeratingWithState:&v48 objects:v64 count:16];
+            v42 = [dataViews countByEnumeratingWithState:&v48 objects:v64 count:16];
           }
 
           while (v42);
@@ -287,10 +287,10 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v151 = *MEMORY[0x1E69E9840];
   [(VUILibraryProductInfoView *)self padding];
   v103 = v6;
@@ -301,11 +301,11 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
   v12 = v11;
   [(VUILibraryProductInfoView *)self lineSpacing];
   v109 = v13;
-  v14 = [(VUILibraryProductInfoView *)self maxLineCount];
+  maxLineCount = [(VUILibraryProductInfoView *)self maxLineCount];
   v15 = 0x7FFFFFFFLL;
-  if (v14)
+  if (maxLineCount)
   {
-    v15 = v14;
+    v15 = maxLineCount;
   }
 
   v135 = v15;
@@ -318,8 +318,8 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
   v102 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [(VUILibraryProductInfoView *)self headerView];
-  [v23 vui_sizeThatFits:{v16 - (v20 + v22), 0.0}];
+  headerView = [(VUILibraryProductInfoView *)self headerView];
+  [headerView vui_sizeThatFits:{v16 - (v20 + v22), 0.0}];
   v100 = v24;
 
   [(VUILibraryProductInfoView *)self footerMargin];
@@ -327,14 +327,14 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
   v99 = v25;
   v28 = v27;
   v30 = v29;
-  v31 = [(VUILibraryProductInfoView *)self footerView];
+  footerView = [(VUILibraryProductInfoView *)self footerView];
   v124 = v16;
-  [v31 vui_sizeThatFits:{v16 - (v28 + v30), 0.0}];
+  [footerView vui_sizeThatFits:{v16 - (v28 + v30), 0.0}];
   v97 = v32;
 
   v33 = *MEMORY[0x1E695F060];
   v34 = *(MEMORY[0x1E695F060] + 8);
-  v120 = self;
+  selfCopy = self;
   [(VUILibraryProductInfoView *)self _getNormalizedGroupedInfos];
   v144 = 0u;
   v145 = 0u;
@@ -374,7 +374,7 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
       v128 = v36;
       v129 = v37;
       v40 = *(*(&v144 + 1) + 8 * i);
-      [(VUILibraryProductInfoView *)v120 _maxWidthForGroupInfos:v40, *&v97];
+      [(VUILibraryProductInfoView *)selfCopy _maxWidthForGroupInfos:v40, *&v97];
       v42 = v41;
       v134 = [v40 count];
       v140 = 0u;
@@ -428,19 +428,19 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
             [v54 headerPadding];
             v60 = v59;
             v62 = v61;
-            v63 = [v54 headerContentView];
-            [v63 vui_sizeThatFits:{v47, 0.0}];
+            headerContentView = [v54 headerContentView];
+            [headerContentView vui_sizeThatFits:{v47, 0.0}];
             v65 = v64;
             v67 = v66;
 
-            v68 = [v43 firstObject];
+            firstObject = [v43 firstObject];
 
-            if (v54 == v68)
+            if (v54 == firstObject)
             {
               v48 = v62 + v60 + v67;
-              v69 = [(VUILibraryProductInfoView *)v120 useNormalizedGroupLayout];
+              useNormalizedGroupLayout = [(VUILibraryProductInfoView *)selfCopy useNormalizedGroupLayout];
               v70 = v130;
-              if (v69)
+              if (useNormalizedGroupLayout)
               {
                 v70 = v131;
               }
@@ -461,8 +461,8 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
             v139 = 0u;
             v136 = 0u;
             v137 = 0u;
-            v71 = [v54 dataViews];
-            v72 = [v71 countByEnumeratingWithState:&v136 objects:v148 count:16];
+            dataViews = [v54 dataViews];
+            v72 = [dataViews countByEnumeratingWithState:&v136 objects:v148 count:16];
             if (v72)
             {
               v73 = v72;
@@ -473,7 +473,7 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
                 {
                   if (*v137 != v74)
                   {
-                    objc_enumerationMutation(v71);
+                    objc_enumerationMutation(dataViews);
                   }
 
                   v76 = *(*(&v136 + 1) + 8 * j);
@@ -491,10 +491,10 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
                     v52 = 0.0;
                   }
 
-                  v77 = [v54 dataViews];
-                  v78 = [v77 firstObject];
+                  dataViews2 = [v54 dataViews];
+                  firstObject2 = [dataViews2 firstObject];
 
-                  if (v76 == v78)
+                  if (v76 == firstObject2)
                   {
                     v79 = v52;
                   }
@@ -510,7 +510,7 @@ void __43__VUILibraryProductInfoView_initWithFrame___block_invoke(uint64_t a1)
                   v65 = fmax(v65, v81);
                 }
 
-                v73 = [v71 countByEnumeratingWithState:&v136 objects:v148 count:16];
+                v73 = [dataViews countByEnumeratingWithState:&v136 objects:v148 count:16];
                 if (v73)
                 {
                   continue;
@@ -599,7 +599,7 @@ LABEL_41:
         v114 = fmax(v114, v128);
         v112 = v112 + v109 + v129;
         v49 = v83 - 1;
-        if ([(VUILibraryProductInfoView *)v120 useNormalizedGroupLayout])
+        if ([(VUILibraryProductInfoView *)selfCopy useNormalizedGroupLayout])
         {
           v84 = v84 + v130;
         }
@@ -671,10 +671,10 @@ LABEL_59:
   v137 = v10;
   [(VUILibraryProductInfoView *)self lineSpacing];
   v131 = v11;
-  v12 = [(VUILibraryProductInfoView *)self maxLineCount];
-  if (v12)
+  maxLineCount = [(VUILibraryProductInfoView *)self maxLineCount];
+  if (maxLineCount)
   {
-    v13 = v12;
+    v13 = maxLineCount;
   }
 
   else
@@ -689,27 +689,27 @@ LABEL_59:
   v17 = v16;
   v168 = v18;
   v20 = v19;
-  v21 = [(VUILibraryProductInfoView *)self headerView];
+  headerView = [(VUILibraryProductInfoView *)self headerView];
   v22 = v14 - (v17 + v20);
-  [v21 vui_sizeThatFits:{v22, 0.0}];
+  [headerView vui_sizeThatFits:{v22, 0.0}];
   v166 = v23;
 
   [(VUILibraryProductInfoView *)self footerMargin];
   v128 = v24;
   v26 = v25;
   v28 = v27;
-  v29 = [(VUILibraryProductInfoView *)self footerView];
+  footerView = [(VUILibraryProductInfoView *)self footerView];
   v127 = v26;
   v136 = v14;
-  [v29 vui_sizeThatFits:{v14 - (v26 + v28), 0.0}];
+  [footerView vui_sizeThatFits:{v14 - (v26 + v28), 0.0}];
   v129 = v30;
 
   v31 = v160 + v17;
-  v32 = [(VUILibraryProductInfoView *)self effectiveUserInterfaceLayoutDirection];
-  v162 = self;
-  v33 = [(VUILibraryProductInfoView *)self headerView];
+  effectiveUserInterfaceLayoutDirection = [(VUILibraryProductInfoView *)self effectiveUserInterfaceLayoutDirection];
+  selfCopy = self;
+  headerView2 = [(VUILibraryProductInfoView *)self headerView];
   v130 = v22;
-  if (v32 == 1)
+  if (effectiveUserInterfaceLayoutDirection == 1)
   {
     v34 = v166;
     VUIRectWithFlippedOriginRelativeToBoundingRect();
@@ -724,7 +724,7 @@ LABEL_59:
     v37 = v166;
   }
 
-  [v33 setFrame:{v31, v35, v36, v37}];
+  [headerView2 setFrame:{v31, v35, v36, v37}];
 
   v141 = v168 + v159 + v164 + v34;
   [(VUILibraryProductInfoView *)self _getNormalizedGroupedInfos];
@@ -756,7 +756,7 @@ LABEL_59:
         v135 = v39;
         v140 = v40;
         v42 = *(*(&v186 + 1) + 8 * v40);
-        [(VUILibraryProductInfoView *)v162 _maxWidthForGroupInfos:v42];
+        [(VUILibraryProductInfoView *)selfCopy _maxWidthForGroupInfos:v42];
         v44 = v43;
         v167 = [v42 count];
         v182 = 0u;
@@ -805,17 +805,17 @@ LABEL_17:
             [v52 headerPadding];
             v58 = v57;
             v60 = v59;
-            v61 = [v52 headerContentView];
-            v62 = [v52 headerContentView];
-            [v62 vui_sizeThatFits:{v47, 0.0}];
+            headerContentView = [v52 headerContentView];
+            headerContentView2 = [v52 headerContentView];
+            [headerContentView2 vui_sizeThatFits:{v47, 0.0}];
             v64 = v63;
             v66 = v65;
 
-            v157 = v61;
-            [v61 setBounds:{0.0, 0.0, v64, v66}];
-            v67 = [v149 firstObject];
+            v157 = headerContentView;
+            [headerContentView setBounds:{0.0, 0.0, v64, v66}];
+            firstObject = [v149 firstObject];
 
-            if (v52 == v67)
+            if (v52 == firstObject)
             {
               v68 = v155;
             }
@@ -829,7 +829,7 @@ LABEL_17:
             v180 = 0u;
             v181 = 0u;
             v69 = v163;
-            if (v52 == v67)
+            if (v52 == firstObject)
             {
               v69 = v60 + v58 + v66;
             }
@@ -838,8 +838,8 @@ LABEL_17:
             v165 = v68;
             v178 = 0uLL;
             v179 = 0uLL;
-            v70 = [v52 dataViews];
-            v71 = [v70 countByEnumeratingWithState:&v178 objects:v193 count:16];
+            dataViews = [v52 dataViews];
+            v71 = [dataViews countByEnumeratingWithState:&v178 objects:v193 count:16];
             if (v71)
             {
               v72 = v71;
@@ -851,7 +851,7 @@ LABEL_17:
                 {
                   if (*v179 != v73)
                   {
-                    objc_enumerationMutation(v70);
+                    objc_enumerationMutation(dataViews);
                   }
 
                   v76 = *(*(&v178 + 1) + 8 * i);
@@ -869,10 +869,10 @@ LABEL_17:
                     v50 = 0.0;
                   }
 
-                  v77 = [v52 dataViews];
-                  v78 = [v77 firstObject];
+                  dataViews2 = [v52 dataViews];
+                  firstObject2 = [dataViews2 firstObject];
 
-                  if (v76 == v78)
+                  if (v76 == firstObject2)
                   {
                     v79 = v50;
                   }
@@ -892,7 +892,7 @@ LABEL_17:
                   v13 = v169;
                 }
 
-                v72 = [v70 countByEnumeratingWithState:&v178 objects:v193 count:16];
+                v72 = [dataViews countByEnumeratingWithState:&v178 objects:v193 count:16];
                 if (v72)
                 {
                   continue;
@@ -968,7 +968,7 @@ LABEL_42:
         }
 
         v141 = v88;
-        v89 = v88 > 0.0 && [(VUILibraryProductInfoView *)v162 useNormalizedGroupLayout];
+        v89 = v88 > 0.0 && [(VUILibraryProductInfoView *)selfCopy useNormalizedGroupLayout];
         v176 = 0u;
         v177 = 0u;
         v174 = 0u;
@@ -1005,25 +1005,25 @@ LABEL_42:
               [v96 headerPadding];
               v102 = v101;
               v156 = v103;
-              v104 = [v96 headerContentView];
-              [v104 bounds];
+              headerContentView3 = [v96 headerContentView];
+              [headerContentView3 bounds];
               v106 = v105;
-              v107 = [v90 firstObject];
-              v108 = v96 != v107 || v89;
+              firstObject3 = [v90 firstObject];
+              v108 = v96 != firstObject3 || v89;
 
               if (v108)
               {
                 v94 = v94 + v154;
               }
 
-              [(VUILibraryProductInfoView *)v162 _layouCellContentView:v104 inCellBounds:v160 + v148, v102 + v159 + v94, v84, v106];
+              [(VUILibraryProductInfoView *)selfCopy _layouCellContentView:headerContentView3 inCellBounds:v160 + v148, v102 + v159 + v94, v84, v106];
               v172 = 0u;
               v173 = 0u;
               v94 = v94 + v158 + v156 + v102 + v106;
               v170 = 0u;
               v171 = 0u;
-              v109 = [v96 dataViews];
-              v110 = [v109 countByEnumeratingWithState:&v170 objects:v191 count:16];
+              dataViews3 = [v96 dataViews];
+              v110 = [dataViews3 countByEnumeratingWithState:&v170 objects:v191 count:16];
               if (v110)
               {
                 v111 = v110;
@@ -1035,7 +1035,7 @@ LABEL_42:
                   {
                     if (*v171 != v112)
                     {
-                      objc_enumerationMutation(v109);
+                      objc_enumerationMutation(dataViews3);
                     }
 
                     v114 = *(*(&v170 + 1) + 8 * j);
@@ -1053,22 +1053,22 @@ LABEL_42:
                       v94 = v165 + v163 + v141;
                     }
 
-                    v115 = [v96 dataViews];
-                    v116 = [v115 firstObject];
+                    dataViews4 = [v96 dataViews];
+                    firstObject4 = [dataViews4 firstObject];
 
-                    if (v114 != v116)
+                    if (v114 != firstObject4)
                     {
                       v94 = v98 + v94;
                     }
 
                     [v114 bounds];
                     v118 = v117;
-                    [(VUILibraryProductInfoView *)v162 _layouCellContentView:v114 inCellBounds:v160 + v74, v159 + v94, v84];
+                    [(VUILibraryProductInfoView *)selfCopy _layouCellContentView:v114 inCellBounds:v160 + v74, v159 + v94, v84];
                     v94 = v94 + v118;
                     ++v92;
                   }
 
-                  v111 = [v109 countByEnumeratingWithState:&v170 objects:v191 count:16];
+                  v111 = [dataViews3 countByEnumeratingWithState:&v170 objects:v191 count:16];
                   if (v111)
                   {
                     continue;
@@ -1127,9 +1127,9 @@ LABEL_85:
 
   v119 = v160 + v127;
   v120 = v128 + v141 + v142;
-  v121 = [(VUILibraryProductInfoView *)v162 effectiveUserInterfaceLayoutDirection];
-  v122 = [(VUILibraryProductInfoView *)v162 footerView];
-  if (v121 == 1)
+  effectiveUserInterfaceLayoutDirection2 = [(VUILibraryProductInfoView *)selfCopy effectiveUserInterfaceLayoutDirection];
+  footerView2 = [(VUILibraryProductInfoView *)selfCopy footerView];
+  if (effectiveUserInterfaceLayoutDirection2 == 1)
   {
     VUIRectWithFlippedOriginRelativeToBoundingRect();
     v119 = v125;
@@ -1142,9 +1142,9 @@ LABEL_85:
     v123 = v130;
   }
 
-  [v122 setFrame:{v119, v120, v123, v124}];
+  [footerView2 setFrame:{v119, v120, v123, v124}];
 
-  [(VUILibraryProductInfoView *)v162 invalidateIntrinsicContentSize];
+  [(VUILibraryProductInfoView *)selfCopy invalidateIntrinsicContentSize];
 }
 
 - (id)_getNormalizedGroupedInfos
@@ -1163,25 +1163,25 @@ LABEL_85:
   return v3;
 }
 
-- (void)_layouCellContentView:(id)a3 inCellBounds:(CGRect)a4
+- (void)_layouCellContentView:(id)view inCellBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v22 = a3;
-  [v22 bounds];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  viewCopy = view;
+  [viewCopy bounds];
   if (v9 > width)
   {
-    [v22 frame];
+    [viewCopy frame];
     v11 = v10;
-    [v22 frame];
+    [viewCopy frame];
     v13 = v12;
-    [v22 bounds];
-    [v22 setFrame:{v11, v13, width}];
+    [viewCopy bounds];
+    [viewCopy setFrame:{v11, v13, width}];
   }
 
-  [v22 bounds];
+  [viewCopy bounds];
   v15 = v14;
   if ([(VUILibraryProductInfoView *)self effectiveUserInterfaceLayoutDirection]== 1)
   {
@@ -1197,7 +1197,7 @@ LABEL_85:
     v21 = y + height * 0.5;
   }
 
-  [v22 setCenter:{v18, v21}];
+  [viewCopy setCenter:{v18, v21}];
 }
 
 - (double)_sectionInfoWidth
@@ -1208,8 +1208,8 @@ LABEL_85:
 
   [(VUILibraryProductInfoView *)self interitemSpacing];
   v7 = v6;
-  v8 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-  [v8 bounds];
+  vui_keyWindow = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+  [vui_keyWindow bounds];
   Width = CGRectGetWidth(v13);
 
   [(VUILibraryProductInfoView *)self padding];
@@ -1218,10 +1218,10 @@ LABEL_85:
 
 - (double)interitemSpacing
 {
-  v2 = [(VUILibraryProductInfoView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(VUILibraryProductInfoView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v4 = ([MEMORY[0x1E69DD2E8] vui_interfaceOrientation] - 3) < 2 && v3 == 1;
+  v4 = ([MEMORY[0x1E69DD2E8] vui_interfaceOrientation] - 3) < 2 && userInterfaceIdiom == 1;
   result = 20.0;
   if (v4)
   {
@@ -1233,16 +1233,16 @@ LABEL_85:
 
 - (int64_t)maxLineCount
 {
-  v3 = [(VUILibraryProductInfoView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(VUILibraryProductInfoView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v5 = [MEMORY[0x1E69DD2E8] vui_interfaceOrientation];
-  v6 = [(VUILibraryProductInfoView *)self traitCollection];
-  v7 = [v6 isAXEnabled];
+  vui_interfaceOrientation = [MEMORY[0x1E69DD2E8] vui_interfaceOrientation];
+  traitCollection2 = [(VUILibraryProductInfoView *)self traitCollection];
+  isAXEnabled = [traitCollection2 isAXEnabled];
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v8 = v7;
+    v8 = isAXEnabled;
   }
 
   else
@@ -1251,7 +1251,7 @@ LABEL_85:
   }
 
   v9 = 5;
-  if ((v5 - 3) >= 2)
+  if ((vui_interfaceOrientation - 3) >= 2)
   {
     v9 = 0;
   }
@@ -1283,29 +1283,29 @@ LABEL_85:
 
 - (unint64_t)_columnCount
 {
-  v3 = [(VUILibraryProductInfoView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(VUILibraryProductInfoView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  v5 = [MEMORY[0x1E69DD2E8] vui_interfaceOrientation];
-  v6 = [(VUILibraryProductInfoView *)self traitCollection];
-  v7 = [v6 isAXEnabled];
+  vui_interfaceOrientation = [MEMORY[0x1E69DD2E8] vui_interfaceOrientation];
+  traitCollection2 = [(VUILibraryProductInfoView *)self traitCollection];
+  isAXEnabled = [traitCollection2 isAXEnabled];
 
-  if (v7)
+  if (isAXEnabled)
   {
     return 1;
   }
 
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
     return 2;
   }
 
-  if ((v5 - 1) < 2)
+  if ((vui_interfaceOrientation - 1) < 2)
   {
     return 4;
   }
 
-  if ((v5 - 3) >= 2)
+  if ((vui_interfaceOrientation - 3) >= 2)
   {
     return 2;
   }

@@ -1,66 +1,66 @@
 @interface UARPEndpointControllerInternal
 - (BOOL)prepareConnection;
-- (UARPEndpointControllerInternal)initWithNewConnection:(id)a3 hostManager:(id)a4;
+- (UARPEndpointControllerInternal)initWithNewConnection:(id)connection hostManager:(id)manager;
 - (id)description;
 - (unint64_t)hash;
-- (void)endpointControllerApplyStagedAssets:(id)a3;
-- (void)endpointControllerCacheAsset:(id)a3 assetUUID:(id)a4 appendData:(id)a5 reply:(id)a6;
-- (void)endpointControllerCacheAssetFinish:(id)a3 assetUUID:(id)a4 hashData:(id)a5 reply:(id)a6;
-- (void)endpointControllerCacheAssetStart:(id)a3 assetUUID:(id)a4 reply:(id)a5;
-- (void)endpointControllerCheckAssetManager:(id)a3;
+- (void)endpointControllerApplyStagedAssets:(id)assets;
+- (void)endpointControllerCacheAsset:(id)asset assetUUID:(id)d appendData:(id)data reply:(id)reply;
+- (void)endpointControllerCacheAssetFinish:(id)finish assetUUID:(id)d hashData:(id)data reply:(id)reply;
+- (void)endpointControllerCacheAssetStart:(id)start assetUUID:(id)d reply:(id)reply;
+- (void)endpointControllerCheckAssetManager:(id)manager;
 - (void)endpointControllerClearAssets;
 - (void)endpointControllerClearDatabase;
 - (void)endpointControllerClearPacketCaptures;
-- (void)endpointControllerExportDynamicAsset:(id)a3 endpointUUID:(id)a4 dynamicAssetURL:(id)a5 reply:(id)a6;
-- (void)endpointControllerExportPersonalizedAsset:(id)a3 endpointUUID:(id)a4 personalizedAssetURL:(id)a5 reply:(id)a6;
+- (void)endpointControllerExportDynamicAsset:(id)asset endpointUUID:(id)d dynamicAssetURL:(id)l reply:(id)reply;
+- (void)endpointControllerExportPersonalizedAsset:(id)asset endpointUUID:(id)d personalizedAssetURL:(id)l reply:(id)reply;
 - (void)endpointControllerMonitorForDevices;
-- (void)endpointControllerPauseAssetManagerNotifications:(id)a3 reply:(id)a4;
-- (void)endpointControllerPersonalizeFirmwareAsset:(id)a3 endpointUUID:(id)a4 assetUUID:(id)a5 tatsuRequest:(id)a6 tssServerURL:(id)a7;
-- (void)endpointControllerPersonalizeFirmwareAsset:(id)a3 endpointUUID:(id)a4 assetUUID:(id)a5 tssServerURL:(id)a6;
-- (void)endpointControllerPullDynamicAsset:(id)a3 assetUUID:(id)a4 range:(_NSRange)a5 reply:(id)a6;
-- (void)endpointControllerPullDynamicAssetFinish:(id)a3 assetUUID:(id)a4 hashData:(id)a5 reply:(id)a6;
-- (void)endpointControllerPullDynamicAssetStart:(id)a3 assetUUID:(id)a4 reply:(id)a5;
-- (void)endpointControllerQueryAppleModelNumber:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryAssetIdentifier:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryBoardID:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryChipID:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryChipRevision:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryComponentTag:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryECID:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryECIDData:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryEncodedMappingDatabase:(id)a3;
-- (void)endpointControllerQueryFTABGeneration:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryFirmwareVersion:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryFriendlyName:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryHardwareFusingType:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryHardwareVersion:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryManufacturerName:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryModelName:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryNonce:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryNonceSeed:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryNumberOfComponents:(id)a3 endpointNumber:(id)a4 reply:(id)a5;
-- (void)endpointControllerQueryNumberOfEndpoints:(id)a3 reply:(id)a4;
-- (void)endpointControllerQueryProductionMode:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryRealHdcpKeyPresent:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQuerySecurityDomain:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQuerySecurityMode:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQuerySerialNumber:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerQueryStagedFirmwareVersion:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6;
-- (void)endpointControllerRescindStagedAssets:(id)a3;
-- (void)endpointControllerResumeAssetManagerNotifications:(id)a3 reply:(id)a4;
-- (void)endpointControllerSolicitAsset:(id)a3 assetTag:(id)a4 assetURL:(id)a5 assetUUID:(id)a6;
-- (void)endpointControllerStageAndApplyFirmwareAsset:(id)a3 endpointUUID:(id)a4 assetUUID:(id)a5 tssServerURL:(id)a6;
-- (void)endpointControllerStageFirmwareAsset:(id)a3 endpointUUID:(id)a4 assetUUID:(id)a5 tssServerURL:(id)a6;
-- (void)endpointControllerTssRequestsForPersonalizedAsset:(id)a3 endpointUUID:(id)a4 reply:(id)a5;
-- (void)endpointControllerTssResponsesForPersonalizedAsset:(id)a3 endpointUUID:(id)a4 reply:(id)a5;
+- (void)endpointControllerPauseAssetManagerNotifications:(id)notifications reply:(id)reply;
+- (void)endpointControllerPersonalizeFirmwareAsset:(id)asset endpointUUID:(id)d assetUUID:(id)iD tatsuRequest:(id)request tssServerURL:(id)l;
+- (void)endpointControllerPersonalizeFirmwareAsset:(id)asset endpointUUID:(id)d assetUUID:(id)iD tssServerURL:(id)l;
+- (void)endpointControllerPullDynamicAsset:(id)asset assetUUID:(id)d range:(_NSRange)range reply:(id)reply;
+- (void)endpointControllerPullDynamicAssetFinish:(id)finish assetUUID:(id)d hashData:(id)data reply:(id)reply;
+- (void)endpointControllerPullDynamicAssetStart:(id)start assetUUID:(id)d reply:(id)reply;
+- (void)endpointControllerQueryAppleModelNumber:(id)number endpointNumber:(id)endpointNumber componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryAssetIdentifier:(id)identifier endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryBoardID:(id)d endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryChipID:(id)d endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryChipRevision:(id)revision endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryComponentTag:(id)tag endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryECID:(id)d endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryECIDData:(id)data endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryEncodedMappingDatabase:(id)database;
+- (void)endpointControllerQueryFTABGeneration:(id)generation endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryFirmwareVersion:(id)version endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryFriendlyName:(id)name endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryHardwareFusingType:(id)type endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryHardwareVersion:(id)version endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryManufacturerName:(id)name endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryModelName:(id)name endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryNonce:(id)nonce endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryNonceSeed:(id)seed endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryNumberOfComponents:(id)components endpointNumber:(id)number reply:(id)reply;
+- (void)endpointControllerQueryNumberOfEndpoints:(id)endpoints reply:(id)reply;
+- (void)endpointControllerQueryProductionMode:(id)mode endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryRealHdcpKeyPresent:(id)present endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQuerySecurityDomain:(id)domain endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQuerySecurityMode:(id)mode endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQuerySerialNumber:(id)number endpointNumber:(id)endpointNumber componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerQueryStagedFirmwareVersion:(id)version endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply;
+- (void)endpointControllerRescindStagedAssets:(id)assets;
+- (void)endpointControllerResumeAssetManagerNotifications:(id)notifications reply:(id)reply;
+- (void)endpointControllerSolicitAsset:(id)asset assetTag:(id)tag assetURL:(id)l assetUUID:(id)d;
+- (void)endpointControllerStageAndApplyFirmwareAsset:(id)asset endpointUUID:(id)d assetUUID:(id)iD tssServerURL:(id)l;
+- (void)endpointControllerStageFirmwareAsset:(id)asset endpointUUID:(id)d assetUUID:(id)iD tssServerURL:(id)l;
+- (void)endpointControllerTssRequestsForPersonalizedAsset:(id)asset endpointUUID:(id)d reply:(id)reply;
+- (void)endpointControllerTssResponsesForPersonalizedAsset:(id)asset endpointUUID:(id)d reply:(id)reply;
 @end
 
 @implementation UARPEndpointControllerInternal
 
-- (UARPEndpointControllerInternal)initWithNewConnection:(id)a3 hostManager:(id)a4
+- (UARPEndpointControllerInternal)initWithNewConnection:(id)connection hostManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  connectionCopy = connection;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = UARPEndpointControllerInternal;
   v9 = [(UARPEndpointControllerInternal *)&v19 init];
@@ -78,8 +78,8 @@
     uuid = v9->_uuid;
     v9->_uuid = v14;
 
-    objc_storeStrong(&v9->_xpcConnection, a3);
-    objc_storeWeak(&v9->_hostManager, v8);
+    objc_storeStrong(&v9->_xpcConnection, connection);
+    objc_storeWeak(&v9->_hostManager, managerCopy);
     v9->_processIdentifier = [(NSXPCConnection *)v9->_xpcConnection processIdentifier];
     v16 = v9->_log;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
@@ -99,14 +99,14 @@
   v3 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UARPEndpointControllerProtocol];
   [(NSXPCConnection *)self->_xpcConnection setExportedInterface:v3];
 
-  v4 = [(NSXPCConnection *)self->_xpcConnection exportedInterface];
+  exportedInterface = [(NSXPCConnection *)self->_xpcConnection exportedInterface];
   UARPEndpointControllerProtocolSetupInterface();
 
   [(NSXPCConnection *)self->_xpcConnection setExportedObject:self];
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___UARPEndpointControllerDelegateProtocol];
   [(NSXPCConnection *)self->_xpcConnection setRemoteObjectInterface:v5];
 
-  v6 = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
+  remoteObjectInterface = [(NSXPCConnection *)self->_xpcConnection remoteObjectInterface];
   UARPEndpointControllerDelegateProtocolSetupInterface();
 
   objc_initWeak(&location, self);
@@ -132,16 +132,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(NSUUID *)self->_uuid UUIDString];
-  v3 = [v2 hash];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v3 = [uUIDString hash];
 
   return v3;
 }
 
 - (id)description
 {
-  v2 = [(NSUUID *)self->_uuid UUIDString];
-  v3 = [NSString stringWithFormat:@"UARPEndpointControllerInternal <%@>", v2];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v3 = [NSString stringWithFormat:@"UARPEndpointControllerInternal <%@>", uUIDString];
 
   return v3;
 }
@@ -152,32 +152,32 @@
   [WeakRetained monitorForDevices:self];
 }
 
-- (void)endpointControllerQueryNumberOfEndpoints:(id)a3 reply:(id)a4
+- (void)endpointControllerQueryNumberOfEndpoints:(id)endpoints reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  endpointsCopy = endpoints;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v9 = log;
-    v10 = [v6 UUIDString];
+    uUIDString = [endpointsCopy UUIDString];
     v17 = 136315394;
     v18 = "[UARPEndpointControllerInternal endpointControllerQueryNumberOfEndpoints:reply:]";
     v19 = 2112;
-    v20 = v10;
+    v20 = uUIDString;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@", &v17, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v12 = [WeakRetained findHostEndpointByUUID:v6];
+  v12 = [WeakRetained findHostEndpointByUUID:endpointsCopy];
 
   if (v12)
   {
-    v13 = [v12 layer3Endpoint];
-    v14 = [v13 configuration];
+    layer3Endpoint = [v12 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
 
-    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v14 count]);
-    v7[2](v7, v15);
+    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [configuration count]);
+    replyCopy[2](replyCopy, v15);
   }
 
   else
@@ -190,48 +190,48 @@
   }
 }
 
-- (void)endpointControllerQueryNumberOfComponents:(id)a3 endpointNumber:(id)a4 reply:(id)a5
+- (void)endpointControllerQueryNumberOfComponents:(id)components endpointNumber:(id)number reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  componentsCopy = components;
+  numberCopy = number;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v12 = log;
-    v13 = [v8 UUIDString];
+    uUIDString = [componentsCopy UUIDString];
     v27 = 136315394;
     v28 = "[UARPEndpointControllerInternal endpointControllerQueryNumberOfComponents:endpointNumber:reply:]";
     v29 = 2112;
-    v30 = v13;
+    v30 = uUIDString;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@", &v27, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v15 = [WeakRetained findHostEndpointByUUID:v8];
+  v15 = [WeakRetained findHostEndpointByUUID:componentsCopy];
 
   if (v15)
   {
-    v16 = [v9 unsignedIntegerValue];
-    v17 = [v15 layer3Endpoint];
-    v18 = [v17 configuration];
-    v19 = [v18 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v15 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v19 = [configuration count];
 
-    if (v16 <= v19)
+    if (unsignedIntegerValue <= v19)
     {
-      v21 = [v15 layer3Endpoint];
-      v22 = [v21 configuration];
-      v23 = [v22 objectAtIndexedSubscript:v16];
-      v24 = [v23 components];
-      v25 = [v24 count];
+      layer3Endpoint2 = [v15 layer3Endpoint];
+      configuration2 = [layer3Endpoint2 configuration];
+      v23 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+      components = [v23 components];
+      v25 = [components count];
 
       v26 = [NSNumber numberWithUnsignedInteger:v25];
-      v10[2](v10, v26);
+      replyCopy[2](replyCopy, v26);
     }
 
     else
     {
-      v10[2](v10, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -245,73 +245,73 @@
   }
 }
 
-- (void)endpointControllerQueryComponentTag:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryComponentTag:(id)tag endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  tagCopy = tag;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [tagCopy UUIDString];
     *buf = 136315906;
     v39 = "[UARPEndpointControllerInternal endpointControllerQueryComponentTag:endpointNumber:componentNumber:reply:]";
     v40 = 2112;
-    v41 = v16;
+    v41 = uUIDString;
     v42 = 2048;
-    v43 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v44 = 2048;
-    v45 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:tagCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22 && v12)
+    if (unsignedIntegerValue <= v22 && componentNumberCopy)
     {
-      v37 = v12;
-      v36 = [v12 unsignedIntegerValue];
-      v23 = [v18 layer3Endpoint];
-      v24 = [v23 configuration];
-      v25 = [v24 objectAtIndexedSubscript:v19];
-      v26 = [v25 components];
-      v27 = [v26 count];
+      v37 = componentNumberCopy;
+      unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+      layer3Endpoint2 = [v18 layer3Endpoint];
+      configuration2 = [layer3Endpoint2 configuration];
+      v25 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+      components = [v25 components];
+      v27 = [components count];
 
-      if (v36 <= v27)
+      if (unsignedIntegerValue2 <= v27)
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
+        layer3Endpoint3 = [v18 layer3Endpoint];
+        configuration3 = [layer3Endpoint3 configuration];
+        v31 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
 
-        v32 = [v31 components];
-        v33 = [v32 objectAtIndexedSubscript:v36];
+        components2 = [v31 components];
+        v33 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
 
-        v34 = [v33 componentTag];
-        v35 = [v34 tagString];
-        v13[2](v13, v35);
+        componentTag = [v33 componentTag];
+        tagString = [componentTag tagString];
+        replyCopy[2](replyCopy, tagString);
       }
 
       else
       {
-        v13[2](v13, 0);
+        replyCopy[2](replyCopy, 0);
       }
 
-      v12 = v37;
+      componentNumberCopy = v37;
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -325,82 +325,82 @@
   }
 }
 
-- (void)endpointControllerQueryManufacturerName:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryManufacturerName:(id)name endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [nameCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryManufacturerName:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:nameCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 manufacturerName];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          manufacturerName = [v36 manufacturerName];
+          replyCopy[2](replyCopy, manufacturerName);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 manufacturerName];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        manufacturerName2 = [v31 manufacturerName];
+        replyCopy[2](replyCopy, manufacturerName2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -414,82 +414,82 @@
   }
 }
 
-- (void)endpointControllerQueryModelName:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryModelName:(id)name endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [nameCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryModelName:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:nameCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 modelName];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          modelName = [v36 modelName];
+          replyCopy[2](replyCopy, modelName);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 modelName];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        modelName2 = [v31 modelName];
+        replyCopy[2](replyCopy, modelName2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -503,82 +503,82 @@
   }
 }
 
-- (void)endpointControllerQueryAppleModelNumber:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryAppleModelNumber:(id)number endpointNumber:(id)endpointNumber componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  numberCopy = number;
+  endpointNumberCopy = endpointNumber;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [numberCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryAppleModelNumber:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [endpointNumberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:numberCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [endpointNumberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 appleModelNumber];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          appleModelNumber = [v36 appleModelNumber];
+          replyCopy[2](replyCopy, appleModelNumber);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 appleModelNumber];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        appleModelNumber2 = [v31 appleModelNumber];
+        replyCopy[2](replyCopy, appleModelNumber2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -592,82 +592,82 @@
   }
 }
 
-- (void)endpointControllerQueryAssetIdentifier:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryAssetIdentifier:(id)identifier endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [identifierCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryAssetIdentifier:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:identifierCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 assetIdentifier];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          assetIdentifier = [v36 assetIdentifier];
+          replyCopy[2](replyCopy, assetIdentifier);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 assetIdentifier];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        assetIdentifier2 = [v31 assetIdentifier];
+        replyCopy[2](replyCopy, assetIdentifier2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -681,82 +681,82 @@
   }
 }
 
-- (void)endpointControllerQueryHardwareFusingType:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryHardwareFusingType:(id)type endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  typeCopy = type;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [typeCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryHardwareFusingType:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:typeCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 hwFusingType];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          hwFusingType = [v36 hwFusingType];
+          replyCopy[2](replyCopy, hwFusingType);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 hwFusingType];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        hwFusingType2 = [v31 hwFusingType];
+        replyCopy[2](replyCopy, hwFusingType2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -770,82 +770,82 @@
   }
 }
 
-- (void)endpointControllerQuerySerialNumber:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQuerySerialNumber:(id)number endpointNumber:(id)endpointNumber componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  numberCopy = number;
+  endpointNumberCopy = endpointNumber;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [numberCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQuerySerialNumber:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [endpointNumberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:numberCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [endpointNumberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 serialNumber];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          serialNumber = [v36 serialNumber];
+          replyCopy[2](replyCopy, serialNumber);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 serialNumber];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        serialNumber2 = [v31 serialNumber];
+        replyCopy[2](replyCopy, serialNumber2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -859,82 +859,82 @@
   }
 }
 
-- (void)endpointControllerQueryHardwareVersion:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryHardwareVersion:(id)version endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  versionCopy = version;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [versionCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryHardwareVersion:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:versionCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 hardwareVersion];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          hardwareVersion = [v36 hardwareVersion];
+          replyCopy[2](replyCopy, hardwareVersion);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 hardwareVersion];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        hardwareVersion2 = [v31 hardwareVersion];
+        replyCopy[2](replyCopy, hardwareVersion2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -948,84 +948,84 @@
   }
 }
 
-- (void)endpointControllerQueryFirmwareVersion:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryFirmwareVersion:(id)version endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  versionCopy = version;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [versionCopy UUIDString];
     *buf = 136315906;
     v44 = "[UARPEndpointControllerInternal endpointControllerQueryFirmwareVersion:endpointNumber:componentNumber:reply:]";
     v45 = 2112;
-    v46 = v16;
+    v46 = uUIDString;
     v47 = 2048;
-    v48 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v49 = 2048;
-    v50 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:versionCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v42 = v12;
-        v41 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v42 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v41 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v40 = [v18 layer3Endpoint];
-          v39 = [v40 configuration];
-          v34 = [v39 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v41];
-          v37 = [v36 firmwareVersion];
-          v38 = [v37 versionString];
-          v13[2](v13, v38);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          firmwareVersion = [v36 firmwareVersion];
+          versionString = [firmwareVersion versionString];
+          replyCopy[2](replyCopy, versionString);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v42;
+        componentNumberCopy = v42;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 firmwareVersion];
-        v33 = [v32 versionString];
-        v13[2](v13, v33);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        firmwareVersion2 = [v31 firmwareVersion];
+        versionString2 = [firmwareVersion2 versionString];
+        replyCopy[2](replyCopy, versionString2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1039,84 +1039,84 @@
   }
 }
 
-- (void)endpointControllerQueryStagedFirmwareVersion:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryStagedFirmwareVersion:(id)version endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  versionCopy = version;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [versionCopy UUIDString];
     *buf = 136315906;
     v44 = "[UARPEndpointControllerInternal endpointControllerQueryStagedFirmwareVersion:endpointNumber:componentNumber:reply:]";
     v45 = 2112;
-    v46 = v16;
+    v46 = uUIDString;
     v47 = 2048;
-    v48 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v49 = 2048;
-    v50 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:versionCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v42 = v12;
-        v41 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v42 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v41 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v40 = [v18 layer3Endpoint];
-          v39 = [v40 configuration];
-          v34 = [v39 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v41];
-          v37 = [v36 stagedFirmwareVersion];
-          v38 = [v37 versionString];
-          v13[2](v13, v38);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          stagedFirmwareVersion = [v36 stagedFirmwareVersion];
+          versionString = [stagedFirmwareVersion versionString];
+          replyCopy[2](replyCopy, versionString);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v42;
+        componentNumberCopy = v42;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 stagedFirmwareVersion];
-        v33 = [v32 versionString];
-        v13[2](v13, v33);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        stagedFirmwareVersion2 = [v31 stagedFirmwareVersion];
+        versionString2 = [stagedFirmwareVersion2 versionString];
+        replyCopy[2](replyCopy, versionString2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1130,82 +1130,82 @@
   }
 }
 
-- (void)endpointControllerQueryFriendlyName:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryFriendlyName:(id)name endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [nameCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryFriendlyName:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:nameCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 friendlyName];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          friendlyName = [v36 friendlyName];
+          replyCopy[2](replyCopy, friendlyName);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 friendlyName];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        friendlyName2 = [v31 friendlyName];
+        replyCopy[2](replyCopy, friendlyName2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1219,107 +1219,107 @@
   }
 }
 
-- (void)endpointControllerQueryBoardID:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryBoardID:(id)d endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 136315906;
     v52 = "[UARPEndpointControllerInternal endpointControllerQueryBoardID:endpointNumber:componentNumber:reply:]";
     v53 = 2112;
-    v54 = v16;
+    v54 = uUIDString;
     v55 = 2048;
-    v56 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v57 = 2048;
-    v58 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:dCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v49 = v11;
-        v50 = v12;
-        v24 = [v12 unsignedIntegerValue];
-        v25 = [v18 layer3Endpoint];
-        v26 = [v25 configuration];
-        v27 = [v26 objectAtIndexedSubscript:v19];
-        v28 = [v27 components];
-        v29 = [v28 count];
+        v49 = numberCopy;
+        v50 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v27 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v27 components];
+        v29 = [components count];
 
-        v48 = v24;
-        if (v24 <= v29)
+        v48 = unsignedIntegerValue2;
+        if (unsignedIntegerValue2 <= v29)
         {
-          v37 = [v18 layer3Endpoint];
-          v38 = [v37 configuration];
-          v39 = [v38 objectAtIndexedSubscript:v19];
-          v40 = [v39 components];
-          v41 = [v40 objectAtIndexedSubscript:v48];
-          v42 = [v41 boardID32];
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v39 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v39 components];
+          v41 = [components2 objectAtIndexedSubscript:v48];
+          boardID32 = [v41 boardID32];
 
-          v11 = v49;
-          if (!v42)
+          numberCopy = v49;
+          if (!boardID32)
           {
-            v43 = [v18 layer3Endpoint];
-            v44 = [v43 configuration];
-            v45 = [v44 objectAtIndexedSubscript:v19];
-            v46 = [v45 components];
-            v47 = [v46 objectAtIndexedSubscript:v48];
-            v42 = [v47 boardID64];
+            layer3Endpoint4 = [v18 layer3Endpoint];
+            configuration4 = [layer3Endpoint4 configuration];
+            v45 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+            components3 = [v45 components];
+            v47 = [components3 objectAtIndexedSubscript:v48];
+            boardID32 = [v47 boardID64];
           }
 
-          v13[2](v13, v42);
+          replyCopy[2](replyCopy, boardID32);
 
-          v12 = v50;
+          componentNumberCopy = v50;
         }
 
         else
         {
-          v13[2](v13, 0);
-          v11 = v49;
-          v12 = v50;
+          replyCopy[2](replyCopy, 0);
+          numberCopy = v49;
+          componentNumberCopy = v50;
         }
       }
 
       else
       {
-        v30 = [v18 layer3Endpoint];
-        v31 = [v30 configuration];
-        v32 = [v31 objectAtIndexedSubscript:v19];
-        v33 = [v32 boardID32];
+        layer3Endpoint5 = [v18 layer3Endpoint];
+        configuration5 = [layer3Endpoint5 configuration];
+        v32 = [configuration5 objectAtIndexedSubscript:unsignedIntegerValue];
+        boardID322 = [v32 boardID32];
 
-        if (!v33)
+        if (!boardID322)
         {
-          v34 = [v18 layer3Endpoint];
-          v35 = [v34 configuration];
-          v36 = [v35 objectAtIndexedSubscript:v19];
-          v33 = [v36 boardID64];
+          layer3Endpoint6 = [v18 layer3Endpoint];
+          configuration6 = [layer3Endpoint6 configuration];
+          v36 = [configuration6 objectAtIndexedSubscript:unsignedIntegerValue];
+          boardID322 = [v36 boardID64];
         }
 
-        v13[2](v13, v33);
+        replyCopy[2](replyCopy, boardID322);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1333,82 +1333,82 @@
   }
 }
 
-- (void)endpointControllerQueryChipID:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryChipID:(id)d endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryChipID:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:dCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 chipID];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          chipID = [v36 chipID];
+          replyCopy[2](replyCopy, chipID);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 chipID];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        chipID2 = [v31 chipID];
+        replyCopy[2](replyCopy, chipID2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1422,82 +1422,82 @@
   }
 }
 
-- (void)endpointControllerQueryChipRevision:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryChipRevision:(id)revision endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  revisionCopy = revision;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [revisionCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryChipRevision:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:revisionCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 chipRevision];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          chipRevision = [v36 chipRevision];
+          replyCopy[2](replyCopy, chipRevision);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 chipRevision];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        chipRevision2 = [v31 chipRevision];
+        replyCopy[2](replyCopy, chipRevision2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1511,82 +1511,82 @@
   }
 }
 
-- (void)endpointControllerQueryECID:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryECID:(id)d endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [dCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryECID:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:dCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 ECID];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          eCID = [v36 ECID];
+          replyCopy[2](replyCopy, eCID);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 ECID];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        eCID2 = [v31 ECID];
+        replyCopy[2](replyCopy, eCID2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1600,82 +1600,82 @@
   }
 }
 
-- (void)endpointControllerQueryECIDData:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryECIDData:(id)data endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [dataCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryECIDData:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:dataCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 ecidData];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          ecidData = [v36 ecidData];
+          replyCopy[2](replyCopy, ecidData);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 ecidData];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        ecidData2 = [v31 ecidData];
+        replyCopy[2](replyCopy, ecidData2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1689,82 +1689,82 @@
   }
 }
 
-- (void)endpointControllerQueryFTABGeneration:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryFTABGeneration:(id)generation endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  generationCopy = generation;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [generationCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryFTABGeneration:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:generationCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 ftabGeneration];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          ftabGeneration = [v36 ftabGeneration];
+          replyCopy[2](replyCopy, ftabGeneration);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 ftabGeneration];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        ftabGeneration2 = [v31 ftabGeneration];
+        replyCopy[2](replyCopy, ftabGeneration2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1778,82 +1778,82 @@
   }
 }
 
-- (void)endpointControllerQueryNonce:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryNonce:(id)nonce endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nonceCopy = nonce;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [nonceCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryNonce:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:nonceCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 nonce];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          nonce = [v36 nonce];
+          replyCopy[2](replyCopy, nonce);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 nonce];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        nonce2 = [v31 nonce];
+        replyCopy[2](replyCopy, nonce2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1867,82 +1867,82 @@
   }
 }
 
-- (void)endpointControllerQueryNonceSeed:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryNonceSeed:(id)seed endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  seedCopy = seed;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [seedCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryNonceSeed:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:seedCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 nonceSeed];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          nonceSeed = [v36 nonceSeed];
+          replyCopy[2](replyCopy, nonceSeed);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 nonceSeed];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        nonceSeed2 = [v31 nonceSeed];
+        replyCopy[2](replyCopy, nonceSeed2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -1956,82 +1956,82 @@
   }
 }
 
-- (void)endpointControllerQueryProductionMode:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryProductionMode:(id)mode endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modeCopy = mode;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [modeCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryProductionMode:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:modeCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 productionMode];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          productionMode = [v36 productionMode];
+          replyCopy[2](replyCopy, productionMode);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 productionMode];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        productionMode2 = [v31 productionMode];
+        replyCopy[2](replyCopy, productionMode2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -2045,82 +2045,82 @@
   }
 }
 
-- (void)endpointControllerQueryRealHdcpKeyPresent:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQueryRealHdcpKeyPresent:(id)present endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  presentCopy = present;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [presentCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQueryRealHdcpKeyPresent:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:presentCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 realHdcpKeyPresent];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          realHdcpKeyPresent = [v36 realHdcpKeyPresent];
+          replyCopy[2](replyCopy, realHdcpKeyPresent);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 realHdcpKeyPresent];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        realHdcpKeyPresent2 = [v31 realHdcpKeyPresent];
+        replyCopy[2](replyCopy, realHdcpKeyPresent2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -2134,82 +2134,82 @@
   }
 }
 
-- (void)endpointControllerQuerySecurityDomain:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQuerySecurityDomain:(id)domain endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  domainCopy = domain;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [domainCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQuerySecurityDomain:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:domainCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 securityDomain];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          securityDomain = [v36 securityDomain];
+          replyCopy[2](replyCopy, securityDomain);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 securityDomain];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        securityDomain2 = [v31 securityDomain];
+        replyCopy[2](replyCopy, securityDomain2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -2223,82 +2223,82 @@
   }
 }
 
-- (void)endpointControllerQuerySecurityMode:(id)a3 endpointNumber:(id)a4 componentNumber:(id)a5 reply:(id)a6
+- (void)endpointControllerQuerySecurityMode:(id)mode endpointNumber:(id)number componentNumber:(id)componentNumber reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modeCopy = mode;
+  numberCopy = number;
+  componentNumberCopy = componentNumber;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
+    uUIDString = [modeCopy UUIDString];
     *buf = 136315906;
     v42 = "[UARPEndpointControllerInternal endpointControllerQuerySecurityMode:endpointNumber:componentNumber:reply:]";
     v43 = 2112;
-    v44 = v16;
+    v44 = uUIDString;
     v45 = 2048;
-    v46 = [v11 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
     v47 = 2048;
-    v48 = [v12 unsignedLongValue];
+    unsignedLongValue2 = [componentNumberCopy unsignedLongValue];
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, Endpoint Number is %lu, Component Number is %lu", buf, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [WeakRetained findHostEndpointByUUID:v10];
+  v18 = [WeakRetained findHostEndpointByUUID:modeCopy];
 
   if (v18)
   {
-    v19 = [v11 unsignedIntegerValue];
-    v20 = [v18 layer3Endpoint];
-    v21 = [v20 configuration];
-    v22 = [v21 count];
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    layer3Endpoint = [v18 layer3Endpoint];
+    configuration = [layer3Endpoint configuration];
+    v22 = [configuration count];
 
-    if (v19 <= v22)
+    if (unsignedIntegerValue <= v22)
     {
-      if (v12)
+      if (componentNumberCopy)
       {
-        v40 = v12;
-        v39 = [v12 unsignedIntegerValue];
-        v24 = [v18 layer3Endpoint];
-        v25 = [v24 configuration];
-        v26 = [v25 objectAtIndexedSubscript:v19];
-        v27 = [v26 components];
-        v28 = [v27 count];
+        v40 = componentNumberCopy;
+        unsignedIntegerValue2 = [componentNumberCopy unsignedIntegerValue];
+        layer3Endpoint2 = [v18 layer3Endpoint];
+        configuration2 = [layer3Endpoint2 configuration];
+        v26 = [configuration2 objectAtIndexedSubscript:unsignedIntegerValue];
+        components = [v26 components];
+        v28 = [components count];
 
-        if (v39 <= v28)
+        if (unsignedIntegerValue2 <= v28)
         {
-          v38 = [v18 layer3Endpoint];
-          v33 = [v38 configuration];
-          v34 = [v33 objectAtIndexedSubscript:v19];
-          v35 = [v34 components];
-          v36 = [v35 objectAtIndexedSubscript:v39];
-          v37 = [v36 securityMode];
-          v13[2](v13, v37);
+          layer3Endpoint3 = [v18 layer3Endpoint];
+          configuration3 = [layer3Endpoint3 configuration];
+          v34 = [configuration3 objectAtIndexedSubscript:unsignedIntegerValue];
+          components2 = [v34 components];
+          v36 = [components2 objectAtIndexedSubscript:unsignedIntegerValue2];
+          securityMode = [v36 securityMode];
+          replyCopy[2](replyCopy, securityMode);
         }
 
         else
         {
-          v13[2](v13, 0);
+          replyCopy[2](replyCopy, 0);
         }
 
-        v12 = v40;
+        componentNumberCopy = v40;
       }
 
       else
       {
-        v29 = [v18 layer3Endpoint];
-        v30 = [v29 configuration];
-        v31 = [v30 objectAtIndexedSubscript:v19];
-        v32 = [v31 securityMode];
-        v13[2](v13, v32);
+        layer3Endpoint4 = [v18 layer3Endpoint];
+        configuration4 = [layer3Endpoint4 configuration];
+        v31 = [configuration4 objectAtIndexedSubscript:unsignedIntegerValue];
+        securityMode2 = [v31 securityMode];
+        replyCopy[2](replyCopy, securityMode2);
       }
     }
 
     else
     {
-      v13[2](v13, 0);
+      replyCopy[2](replyCopy, 0);
     }
   }
 
@@ -2312,76 +2312,76 @@
   }
 }
 
-- (void)endpointControllerPersonalizeFirmwareAsset:(id)a3 endpointUUID:(id)a4 assetUUID:(id)a5 tssServerURL:(id)a6
+- (void)endpointControllerPersonalizeFirmwareAsset:(id)asset endpointUUID:(id)d assetUUID:(id)iD tssServerURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v11 UUIDString];
-    v17 = [v12 UUIDString];
-    v18 = [v10 path];
-    v19 = [v13 path];
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [iDCopy UUIDString];
+    path = [assetCopy path];
+    path2 = [lCopy path];
     v20 = 136316162;
     v21 = "[UARPEndpointControllerInternal endpointControllerPersonalizeFirmwareAsset:endpointUUID:assetUUID:tssServerURL:]";
     v22 = 2112;
-    v23 = v16;
+    v23 = uUIDString;
     v24 = 2112;
-    v25 = v17;
+    v25 = uUIDString2;
     v26 = 2112;
-    v27 = v18;
+    v27 = path;
     v28 = 2112;
-    v29 = v19;
+    v29 = path2;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, assetUUID is %@, assetURL is %@, tssServerURL is %@", &v20, 0x34u);
   }
 
-  [(UARPEndpointControllerInternal *)self endpointControllerPersonalizeFirmwareAsset:v10 endpointUUID:v11 assetUUID:v12 tatsuRequest:0 tssServerURL:v13];
+  [(UARPEndpointControllerInternal *)self endpointControllerPersonalizeFirmwareAsset:assetCopy endpointUUID:dCopy assetUUID:iDCopy tatsuRequest:0 tssServerURL:lCopy];
 }
 
-- (void)endpointControllerPersonalizeFirmwareAsset:(id)a3 endpointUUID:(id)a4 assetUUID:(id)a5 tatsuRequest:(id)a6 tssServerURL:(id)a7
+- (void)endpointControllerPersonalizeFirmwareAsset:(id)asset endpointUUID:(id)d assetUUID:(id)iD tatsuRequest:(id)request tssServerURL:(id)l
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  assetCopy = asset;
+  dCopy = d;
+  iDCopy = iD;
+  requestCopy = request;
+  lCopy = l;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v18 = log;
-    v19 = [v13 UUIDString];
-    v20 = [v14 UUIDString];
-    [v12 path];
-    v21 = v27 = v12;
-    v22 = [v16 path];
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [iDCopy UUIDString];
+    [assetCopy path];
+    v21 = v27 = assetCopy;
+    path = [lCopy path];
     *buf = 136316418;
     v29 = "[UARPEndpointControllerInternal endpointControllerPersonalizeFirmwareAsset:endpointUUID:assetUUID:tatsuRequest:tssServerURL:]";
     v30 = 2112;
-    v31 = v19;
+    v31 = uUIDString;
     v32 = 2112;
-    v33 = v20;
+    v33 = uUIDString2;
     v34 = 2112;
     v35 = v21;
     v36 = 2112;
-    v37 = v15;
+    v37 = requestCopy;
     v38 = 2112;
-    v39 = v22;
+    v39 = path;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, assetUUID is %@, assetURL is %@, tssRequest is %@, tssServerURL is %@", buf, 0x3Eu);
 
-    v12 = v27;
+    assetCopy = v27;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v24 = [WeakRetained findHostEndpointByUUID:v13];
+  v24 = [WeakRetained findHostEndpointByUUID:dCopy];
 
   if (v24)
   {
     v25 = objc_loadWeakRetained(&self->_hostManager);
-    [v25 personalizeFirmwareAsset:v12 assetUUID:v14 hostEndpoint:v24 tssServerURL:v16];
+    [v25 personalizeFirmwareAsset:assetCopy assetUUID:iDCopy hostEndpoint:v24 tssServerURL:lCopy];
   }
 
   else
@@ -2394,48 +2394,48 @@
   }
 }
 
-- (void)endpointControllerTssRequestsForPersonalizedAsset:(id)a3 endpointUUID:(id)a4 reply:(id)a5
+- (void)endpointControllerTssRequestsForPersonalizedAsset:(id)asset endpointUUID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  dCopy = d;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v12 = log;
-    v13 = [v9 UUIDString];
-    v14 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [assetCopy UUIDString];
     *buf = 136315650;
     v43 = "[UARPEndpointControllerInternal endpointControllerTssRequestsForPersonalizedAsset:endpointUUID:reply:]";
     v44 = 2112;
-    v45 = v13;
+    v45 = uUIDString;
     v46 = 2112;
-    v47 = v14;
+    v47 = uUIDString2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, assetUUID is %@", buf, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v16 = [WeakRetained findHostEndpointByUUID:v9];
+  v16 = [WeakRetained findHostEndpointByUUID:dCopy];
 
   if (v16)
   {
-    v35 = v9;
-    v17 = [v16 findPersonalizedAssetByUUID:v8];
+    v35 = dCopy;
+    v17 = [v16 findPersonalizedAssetByUUID:assetCopy];
     if (!v17)
     {
-      v17 = [v16 findPersonalizingAssetByUUID:v8];
+      v17 = [v16 findPersonalizingAssetByUUID:assetCopy];
     }
 
     v34 = v16;
-    v36 = v8;
+    v36 = assetCopy;
     v18 = objc_opt_new();
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v33 = v17;
-    v19 = [v17 tatsuTickets];
-    v20 = [v19 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    tatsuTickets = [v17 tatsuTickets];
+    v20 = [tatsuTickets countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v20)
     {
       v21 = v20;
@@ -2446,42 +2446,42 @@
         {
           if (*v38 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(tatsuTickets);
           }
 
           v24 = *(*(&v37 + 1) + 8 * i);
-          v25 = [v24 tatsuRequest];
+          tatsuRequest = [v24 tatsuRequest];
 
-          if (v25)
+          if (tatsuRequest)
           {
-            v26 = [v24 manifestLocation];
-            v27 = [v26 componentTag];
+            manifestLocation = [v24 manifestLocation];
+            componentTag = [manifestLocation componentTag];
 
-            v28 = [v24 tatsuRequest];
-            if (v27)
+            tatsuRequest2 = [v24 tatsuRequest];
+            if (componentTag)
             {
-              v29 = [v24 manifestLocation];
-              v30 = [v29 componentTag];
-              v31 = [v30 tagString];
-              [v18 setObject:v28 forKeyedSubscript:v31];
+              manifestLocation2 = [v24 manifestLocation];
+              componentTag2 = [manifestLocation2 componentTag];
+              tagString = [componentTag2 tagString];
+              [v18 setObject:tatsuRequest2 forKeyedSubscript:tagString];
             }
 
             else
             {
-              [v18 setObject:v28 forKeyedSubscript:@"ROOT"];
+              [v18 setObject:tatsuRequest2 forKeyedSubscript:@"ROOT"];
             }
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v21 = [tatsuTickets countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v21);
     }
 
-    v10[2](v10, v18);
-    v9 = v35;
-    v8 = v36;
+    replyCopy[2](replyCopy, v18);
+    dCopy = v35;
+    assetCopy = v36;
     v16 = v34;
   }
 
@@ -2495,48 +2495,48 @@
   }
 }
 
-- (void)endpointControllerTssResponsesForPersonalizedAsset:(id)a3 endpointUUID:(id)a4 reply:(id)a5
+- (void)endpointControllerTssResponsesForPersonalizedAsset:(id)asset endpointUUID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  assetCopy = asset;
+  dCopy = d;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v12 = log;
-    v13 = [v9 UUIDString];
-    v14 = [v8 UUIDString];
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [assetCopy UUIDString];
     *buf = 136315650;
     v43 = "[UARPEndpointControllerInternal endpointControllerTssResponsesForPersonalizedAsset:endpointUUID:reply:]";
     v44 = 2112;
-    v45 = v13;
+    v45 = uUIDString;
     v46 = 2112;
-    v47 = v14;
+    v47 = uUIDString2;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, assetUUID is %@", buf, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v16 = [WeakRetained findHostEndpointByUUID:v9];
+  v16 = [WeakRetained findHostEndpointByUUID:dCopy];
 
   if (v16)
   {
-    v35 = v9;
-    v17 = [v16 findPersonalizedAssetByUUID:v8];
+    v35 = dCopy;
+    v17 = [v16 findPersonalizedAssetByUUID:assetCopy];
     if (!v17)
     {
-      v17 = [v16 findPersonalizingAssetByUUID:v8];
+      v17 = [v16 findPersonalizingAssetByUUID:assetCopy];
     }
 
     v34 = v16;
-    v36 = v8;
+    v36 = assetCopy;
     v18 = objc_opt_new();
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v33 = v17;
-    v19 = [v17 tatsuTickets];
-    v20 = [v19 countByEnumeratingWithState:&v37 objects:v41 count:16];
+    tatsuTickets = [v17 tatsuTickets];
+    v20 = [tatsuTickets countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v20)
     {
       v21 = v20;
@@ -2547,42 +2547,42 @@
         {
           if (*v38 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(tatsuTickets);
           }
 
           v24 = *(*(&v37 + 1) + 8 * i);
-          v25 = [v24 tatsuResponse];
+          tatsuResponse = [v24 tatsuResponse];
 
-          if (v25)
+          if (tatsuResponse)
           {
-            v26 = [v24 manifestLocation];
-            v27 = [v26 componentTag];
+            manifestLocation = [v24 manifestLocation];
+            componentTag = [manifestLocation componentTag];
 
-            v28 = [v24 tatsuResponse];
-            if (v27)
+            tatsuResponse2 = [v24 tatsuResponse];
+            if (componentTag)
             {
-              v29 = [v24 manifestLocation];
-              v30 = [v29 componentTag];
-              v31 = [v30 tagString];
-              [v18 setObject:v28 forKeyedSubscript:v31];
+              manifestLocation2 = [v24 manifestLocation];
+              componentTag2 = [manifestLocation2 componentTag];
+              tagString = [componentTag2 tagString];
+              [v18 setObject:tatsuResponse2 forKeyedSubscript:tagString];
             }
 
             else
             {
-              [v18 setObject:v28 forKeyedSubscript:@"ROOT"];
+              [v18 setObject:tatsuResponse2 forKeyedSubscript:@"ROOT"];
             }
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v37 objects:v41 count:16];
+        v21 = [tatsuTickets countByEnumeratingWithState:&v37 objects:v41 count:16];
       }
 
       while (v21);
     }
 
-    v10[2](v10, v18);
-    v9 = v35;
-    v8 = v36;
+    replyCopy[2](replyCopy, v18);
+    dCopy = v35;
+    assetCopy = v36;
     v16 = v34;
   }
 
@@ -2596,40 +2596,40 @@
   }
 }
 
-- (void)endpointControllerExportPersonalizedAsset:(id)a3 endpointUUID:(id)a4 personalizedAssetURL:(id)a5 reply:(id)a6
+- (void)endpointControllerExportPersonalizedAsset:(id)asset endpointUUID:(id)d personalizedAssetURL:(id)l reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  dCopy = d;
+  lCopy = l;
+  replyCopy = reply;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v11 UUIDString];
-    v17 = [v10 UUIDString];
-    v18 = [v12 path];
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [assetCopy UUIDString];
+    path = [lCopy path];
     v25 = 136315906;
     v26 = "[UARPEndpointControllerInternal endpointControllerExportPersonalizedAsset:endpointUUID:personalizedAssetURL:reply:]";
     v27 = 2112;
-    v28 = v16;
+    v28 = uUIDString;
     v29 = 2112;
-    v30 = v17;
+    v30 = uUIDString2;
     v31 = 2112;
-    v32 = v18;
+    v32 = path;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, assetUUID is %@, personalizedAssetURL is %@", &v25, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v20 = [WeakRetained findHostEndpointByUUID:v11];
+  v20 = [WeakRetained findHostEndpointByUUID:dCopy];
 
   if (v20)
   {
-    v21 = [v20 findPersonalizedAssetByUUID:v10];
+    v21 = [v20 findPersonalizedAssetByUUID:assetCopy];
     v22 = [[UARPComponentTag alloc] initWithString:@"PMAP"];
     [v21 removePayloadsWithMatchingTag:v22];
-    v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v21 writeToURL:v12 error:0]);
-    v13[2](v13, v23);
+    v23 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v21 writeToURL:lCopy error:0]);
+    replyCopy[2](replyCopy, v23);
   }
 
   else
@@ -2642,37 +2642,37 @@
   }
 }
 
-- (void)endpointControllerStageFirmwareAsset:(id)a3 endpointUUID:(id)a4 assetUUID:(id)a5 tssServerURL:(id)a6
+- (void)endpointControllerStageFirmwareAsset:(id)asset endpointUUID:(id)d assetUUID:(id)iD tssServerURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v11 UUIDString];
-    v17 = [v12 UUIDString];
-    v18 = [v10 path];
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [iDCopy UUIDString];
+    path = [assetCopy path];
     v23 = 136315906;
     v24 = "[UARPEndpointControllerInternal endpointControllerStageFirmwareAsset:endpointUUID:assetUUID:tssServerURL:]";
     v25 = 2112;
-    v26 = v16;
+    v26 = uUIDString;
     v27 = 2112;
-    v28 = v17;
+    v28 = uUIDString2;
     v29 = 2112;
-    v30 = v18;
+    v30 = path;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, assetUUID is %@, assetURL is %@", &v23, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v20 = [WeakRetained findHostEndpointByUUID:v11];
+  v20 = [WeakRetained findHostEndpointByUUID:dCopy];
 
   if (v20)
   {
     v21 = objc_loadWeakRetained(&self->_hostManager);
-    [v21 stageFirmwareAsset:v10 assetUUID:v12 hostEndpoint:v20 tssServerURL:v13];
+    [v21 stageFirmwareAsset:assetCopy assetUUID:iDCopy hostEndpoint:v20 tssServerURL:lCopy];
   }
 
   else
@@ -2685,37 +2685,37 @@
   }
 }
 
-- (void)endpointControllerStageAndApplyFirmwareAsset:(id)a3 endpointUUID:(id)a4 assetUUID:(id)a5 tssServerURL:(id)a6
+- (void)endpointControllerStageAndApplyFirmwareAsset:(id)asset endpointUUID:(id)d assetUUID:(id)iD tssServerURL:(id)l
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v11 UUIDString];
-    v17 = [v12 UUIDString];
-    v18 = [v10 path];
+    uUIDString = [dCopy UUIDString];
+    uUIDString2 = [iDCopy UUIDString];
+    path = [assetCopy path];
     v23 = 136315906;
     v24 = "[UARPEndpointControllerInternal endpointControllerStageAndApplyFirmwareAsset:endpointUUID:assetUUID:tssServerURL:]";
     v25 = 2112;
-    v26 = v16;
+    v26 = uUIDString;
     v27 = 2112;
-    v28 = v17;
+    v28 = uUIDString2;
     v29 = 2112;
-    v30 = v18;
+    v30 = path;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, assetUUID is %@, assetURL is %@", &v23, 0x2Au);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v20 = [WeakRetained findHostEndpointByUUID:v11];
+  v20 = [WeakRetained findHostEndpointByUUID:dCopy];
 
   if (v20)
   {
     v21 = objc_loadWeakRetained(&self->_hostManager);
-    [v21 stageAndApplyFirmwareAsset:v10 assetUUID:v12 hostEndpoint:v20 tssServerURL:v13];
+    [v21 stageAndApplyFirmwareAsset:assetCopy assetUUID:iDCopy hostEndpoint:v20 tssServerURL:lCopy];
   }
 
   else
@@ -2728,23 +2728,23 @@
   }
 }
 
-- (void)endpointControllerApplyStagedAssets:(id)a3
+- (void)endpointControllerApplyStagedAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v6 = log;
-    v7 = [v4 UUIDString];
+    uUIDString = [assetsCopy UUIDString];
     v12 = 136315394;
     v13 = "[UARPEndpointControllerInternal endpointControllerApplyStagedAssets:]";
     v14 = 2112;
-    v15 = v7;
+    v15 = uUIDString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@", &v12, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v9 = [WeakRetained findHostEndpointByUUID:v4];
+  v9 = [WeakRetained findHostEndpointByUUID:assetsCopy];
 
   if (v9)
   {
@@ -2762,23 +2762,23 @@
   }
 }
 
-- (void)endpointControllerRescindStagedAssets:(id)a3
+- (void)endpointControllerRescindStagedAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v6 = log;
-    v7 = [v4 UUIDString];
+    uUIDString = [assetsCopy UUIDString];
     v12 = 136315394;
     v13 = "[UARPEndpointControllerInternal endpointControllerRescindStagedAssets:]";
     v14 = 2112;
-    v15 = v7;
+    v15 = uUIDString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@", &v12, 0x16u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v9 = [WeakRetained findHostEndpointByUUID:v4];
+  v9 = [WeakRetained findHostEndpointByUUID:assetsCopy];
 
   if (v9)
   {
@@ -2796,40 +2796,40 @@
   }
 }
 
-- (void)endpointControllerSolicitAsset:(id)a3 assetTag:(id)a4 assetURL:(id)a5 assetUUID:(id)a6
+- (void)endpointControllerSolicitAsset:(id)asset assetTag:(id)tag assetURL:(id)l assetUUID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  tagCopy = tag;
+  lCopy = l;
+  dCopy = d;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v15 = log;
-    v16 = [v10 UUIDString];
-    v17 = [v13 UUIDString];
-    v18 = [v12 path];
+    uUIDString = [assetCopy UUIDString];
+    uUIDString2 = [dCopy UUIDString];
+    path = [lCopy path];
     v24 = 136316162;
     v25 = "[UARPEndpointControllerInternal endpointControllerSolicitAsset:assetTag:assetURL:assetUUID:]";
     v26 = 2112;
-    v27 = v16;
+    v27 = uUIDString;
     v28 = 2112;
-    v29 = v11;
+    v29 = tagCopy;
     v30 = 2112;
-    v31 = v17;
+    v31 = uUIDString2;
     v32 = 2112;
-    v33 = v18;
+    v33 = path;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "%s: endpointUUID is %@, assetTag is %@, assetUUID is %@, assetURL is %@", &v24, 0x34u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v20 = [WeakRetained findHostEndpointByUUID:v10];
+  v20 = [WeakRetained findHostEndpointByUUID:assetCopy];
 
   if (v20)
   {
-    v21 = [[UARPComponentTag alloc] initWithString:v11];
+    v21 = [[UARPComponentTag alloc] initWithString:tagCopy];
     v22 = objc_loadWeakRetained(&self->_hostManager);
-    [v22 solicitAssetByAssetTag:v21 hostEndpoint:v20 assetURL:v12 assetUUID:v13];
+    [v22 solicitAssetByAssetTag:v21 hostEndpoint:v20 assetURL:lCopy assetUUID:dCopy];
   }
 
   else
@@ -2842,13 +2842,13 @@
   }
 }
 
-- (void)endpointControllerCacheAssetStart:(id)a3 assetUUID:(id)a4 reply:(id)a5
+- (void)endpointControllerCacheAssetStart:(id)start assetUUID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  startCopy = start;
+  dCopy = d;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v12 = [WeakRetained findHostEndpointByUUID:v8];
+  v12 = [WeakRetained findHostEndpointByUUID:startCopy];
 
   log = self->_log;
   if (!v12)
@@ -2867,7 +2867,7 @@
   }
 
   v14 = objc_loadWeakRetained(&self->_hostManager);
-  v15 = [v14 prepareCachingAsset:v9];
+  v15 = [v14 prepareCachingAsset:dCopy];
 
   if ((v15 & 1) == 0)
   {
@@ -2884,17 +2884,17 @@ LABEL_10:
 
   v16 = 1;
 LABEL_11:
-  v10[2](v10, v16);
+  replyCopy[2](replyCopy, v16);
 }
 
-- (void)endpointControllerCacheAsset:(id)a3 assetUUID:(id)a4 appendData:(id)a5 reply:(id)a6
+- (void)endpointControllerCacheAsset:(id)asset assetUUID:(id)d appendData:(id)data reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  dCopy = d;
+  dataCopy = data;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v15 = [WeakRetained findHostEndpointByUUID:v10];
+  v15 = [WeakRetained findHostEndpointByUUID:assetCopy];
 
   log = self->_log;
   if (!v15)
@@ -2909,11 +2909,11 @@ LABEL_11:
 
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEBUG))
   {
-    sub_1000811F0(log, v11);
+    sub_1000811F0(log, dCopy);
   }
 
   v17 = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [v17 appendDataToCachingAsset:v11 data:v12];
+  v18 = [v17 appendDataToCachingAsset:dCopy data:dataCopy];
 
   if ((v18 & 1) == 0)
   {
@@ -2930,17 +2930,17 @@ LABEL_10:
 
   v19 = 1;
 LABEL_11:
-  v13[2](v13, v19);
+  replyCopy[2](replyCopy, v19);
 }
 
-- (void)endpointControllerCacheAssetFinish:(id)a3 assetUUID:(id)a4 hashData:(id)a5 reply:(id)a6
+- (void)endpointControllerCacheAssetFinish:(id)finish assetUUID:(id)d hashData:(id)data reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  finishCopy = finish;
+  dCopy = d;
+  dataCopy = data;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v15 = [WeakRetained findHostEndpointByUUID:v10];
+  v15 = [WeakRetained findHostEndpointByUUID:finishCopy];
 
   log = self->_log;
   if (!v15)
@@ -2959,7 +2959,7 @@ LABEL_11:
   }
 
   v17 = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [v17 finalizeTransferCachingAsset:v11 hashData:v12 error:0];
+  v18 = [v17 finalizeTransferCachingAsset:dCopy hashData:dataCopy error:0];
 
   if ((v18 & 1) == 0)
   {
@@ -2970,16 +2970,16 @@ LABEL_11:
     }
 
 LABEL_11:
-    (*(v13 + 2))(v13, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
     goto LABEL_16;
   }
 
   v19 = objc_loadWeakRetained(&self->_hostManager);
-  v20 = [v19 urlForCachingAsset:v11];
+  v20 = [v19 urlForCachingAsset:dCopy];
 
   if (v20)
   {
-    (*(v13 + 2))(v13, 1, v20);
+    (*(replyCopy + 2))(replyCopy, 1, v20);
   }
 
   else
@@ -2990,24 +2990,24 @@ LABEL_11:
       sub_100081538(v22);
     }
 
-    (*(v13 + 2))(v13, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
   }
 
 LABEL_16:
 }
 
-- (void)endpointControllerPullDynamicAssetStart:(id)a3 assetUUID:(id)a4 reply:(id)a5
+- (void)endpointControllerPullDynamicAssetStart:(id)start assetUUID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  startCopy = start;
+  dCopy = d;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v12 = [WeakRetained findHostEndpointByUUID:v8];
+  v12 = [WeakRetained findHostEndpointByUUID:startCopy];
 
   if (v12)
   {
     v13 = objc_loadWeakRetained(&self->_hostManager);
-    v14 = [v13 urlForDynamicAsset:v9];
+    v14 = [v13 urlForDynamicAsset:dCopy];
 
     if (!v14)
     {
@@ -3017,19 +3017,19 @@ LABEL_16:
         sub_100081670(log);
       }
 
-      (*(v10 + 2))(v10, 0, 0);
+      (*(replyCopy + 2))(replyCopy, 0, 0);
     }
 
     v16 = +[NSFileManager defaultManager];
-    v17 = [v14 path];
-    v18 = [v16 attributesOfItemAtPath:v17 error:0];
+    path = [v14 path];
+    v18 = [v16 attributesOfItemAtPath:path error:0];
 
     if (v18)
     {
-      v19 = [v18 fileSize];
-      if (v19)
+      fileSize = [v18 fileSize];
+      if (fileSize)
       {
-        (*(v10 + 2))(v10, 1, v19);
+        (*(replyCopy + 2))(replyCopy, 1, fileSize);
 LABEL_17:
 
         goto LABEL_18;
@@ -3051,7 +3051,7 @@ LABEL_17:
       }
     }
 
-    (*(v10 + 2))(v10, 0, 0);
+    (*(replyCopy + 2))(replyCopy, 0, 0);
     goto LABEL_17;
   }
 
@@ -3061,31 +3061,31 @@ LABEL_17:
     sub_100081844(v20);
   }
 
-  (*(v10 + 2))(v10, 0, 0);
+  (*(replyCopy + 2))(replyCopy, 0, 0);
 LABEL_18:
 }
 
-- (void)endpointControllerPullDynamicAsset:(id)a3 assetUUID:(id)a4 range:(_NSRange)a5 reply:(id)a6
+- (void)endpointControllerPullDynamicAsset:(id)asset assetUUID:(id)d range:(_NSRange)range reply:(id)reply
 {
-  length = a5.length;
-  location = a5.location;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  length = range.length;
+  location = range.location;
+  assetCopy = asset;
+  dCopy = d;
+  replyCopy = reply;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v15 = [WeakRetained findHostEndpointByUUID:v11];
+  v15 = [WeakRetained findHostEndpointByUUID:assetCopy];
 
   if (v15)
   {
     v16 = objc_loadWeakRetained(&self->_hostManager);
-    v17 = [v16 urlForDynamicAsset:v12];
+    v17 = [v16 urlForDynamicAsset:dCopy];
 
     if (v17)
     {
       v18 = objc_loadWeakRetained(&self->_hostManager);
       v19 = [v18 dataRangeFromDynamicAsset:v17 range:{location, length}];
 
-      v13[2](v13, 1, v19);
+      replyCopy[2](replyCopy, 1, v19);
     }
 
     else
@@ -3096,7 +3096,7 @@ LABEL_18:
         sub_1000818E0(log);
       }
 
-      v13[2](v13, 0, 0);
+      replyCopy[2](replyCopy, 0, 0);
     }
   }
 
@@ -3108,18 +3108,18 @@ LABEL_18:
       sub_10008197C(v20);
     }
 
-    v13[2](v13, 0, 0);
+    replyCopy[2](replyCopy, 0, 0);
   }
 }
 
-- (void)endpointControllerPullDynamicAssetFinish:(id)a3 assetUUID:(id)a4 hashData:(id)a5 reply:(id)a6
+- (void)endpointControllerPullDynamicAssetFinish:(id)finish assetUUID:(id)d hashData:(id)data reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a5;
+  finishCopy = finish;
+  dCopy = d;
+  replyCopy = reply;
+  dataCopy = data;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v15 = [WeakRetained findHostEndpointByUUID:v10];
+  v15 = [WeakRetained findHostEndpointByUUID:finishCopy];
 
   if (!v15)
   {
@@ -3129,11 +3129,11 @@ LABEL_18:
       sub_100081A18(log);
     }
 
-    v12[2](v12, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   v17 = objc_loadWeakRetained(&self->_hostManager);
-  v18 = [v17 urlForDynamicAsset:v11];
+  v18 = [v17 urlForDynamicAsset:dCopy];
 
   if (!v18)
   {
@@ -3143,11 +3143,11 @@ LABEL_18:
       sub_100081AB4(v19);
     }
 
-    v12[2](v12, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   v20 = objc_loadWeakRetained(&self->_hostManager);
-  v21 = [v20 finalizeTransferDynamicAsset:v18 hashData:v13 error:0];
+  v21 = [v20 finalizeTransferDynamicAsset:v18 hashData:dataCopy error:0];
 
   if ((v21 & 1) == 0)
   {
@@ -3158,19 +3158,19 @@ LABEL_18:
     }
   }
 
-  (v12)[2](v12, v21);
+  (replyCopy)[2](replyCopy, v21);
 }
 
-- (void)endpointControllerQueryEncodedMappingDatabase:(id)a3
+- (void)endpointControllerQueryEncodedMappingDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v6 = [WeakRetained knownEndpoints];
+  knownEndpoints = [WeakRetained knownEndpoints];
 
-  if ([v6 count])
+  if ([knownEndpoints count])
   {
     v9 = 0;
-    v7 = [NSKeyedArchiver archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v9];
+    v7 = [NSKeyedArchiver archivedDataWithRootObject:knownEndpoints requiringSecureCoding:1 error:&v9];
     v8 = v9;
     if (!v7 && os_log_type_enabled(self->_log, OS_LOG_TYPE_ERROR))
     {
@@ -3183,7 +3183,7 @@ LABEL_18:
     v7 = 0;
   }
 
-  v4[2](v4, v7);
+  databaseCopy[2](databaseCopy, v7);
 }
 
 - (void)endpointControllerClearDatabase
@@ -3204,38 +3204,38 @@ LABEL_18:
   [WeakRetained clearPacketCaptures];
 }
 
-- (void)endpointControllerPauseAssetManagerNotifications:(id)a3 reply:(id)a4
+- (void)endpointControllerPauseAssetManagerNotifications:(id)notifications reply:(id)reply
 {
-  v9 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  notificationsCopy = notifications;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v8 = [WeakRetained pauseAssetManager:v6];
+  v8 = [WeakRetained pauseAssetManager:notificationsCopy];
 
-  v9[2](v9, v8);
+  replyCopy[2](replyCopy, v8);
 }
 
-- (void)endpointControllerResumeAssetManagerNotifications:(id)a3 reply:(id)a4
+- (void)endpointControllerResumeAssetManagerNotifications:(id)notifications reply:(id)reply
 {
-  v9 = a4;
-  v6 = a3;
+  replyCopy = reply;
+  notificationsCopy = notifications;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  v8 = [WeakRetained resumeAssetManager:v6];
+  v8 = [WeakRetained resumeAssetManager:notificationsCopy];
 
-  v9[2](v9, v8);
+  replyCopy[2](replyCopy, v8);
 }
 
-- (void)endpointControllerCheckAssetManager:(id)a3
+- (void)endpointControllerCheckAssetManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   WeakRetained = objc_loadWeakRetained(&self->_hostManager);
-  [WeakRetained checkAssetManager:v4];
+  [WeakRetained checkAssetManager:managerCopy];
 }
 
-- (void)endpointControllerExportDynamicAsset:(id)a3 endpointUUID:(id)a4 dynamicAssetURL:(id)a5 reply:(id)a6
+- (void)endpointControllerExportDynamicAsset:(id)asset endpointUUID:(id)d dynamicAssetURL:(id)l reply:(id)reply
 {
-  v7 = a6;
+  replyCopy = reply;
   v8 = [NSNumber numberWithBool:0];
-  (*(a6 + 2))(v7, v8);
+  (*(reply + 2))(replyCopy, v8);
 }
 
 @end

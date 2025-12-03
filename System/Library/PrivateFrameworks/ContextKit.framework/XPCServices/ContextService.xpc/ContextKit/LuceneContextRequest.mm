@@ -1,62 +1,62 @@
 @interface LuceneContextRequest
-+ (BOOL)_looksLikeTitleBarUIElement:(id)a3;
-+ (id)hostToCapitalizedName:(id)a3;
-+ (id)lookupTreasureMapForDomainHierarchy:(id)a3 fromTreasureMap:(id)a4 intoSet:(id)a5 isRelaxedMatchOut:(BOOL *)a6;
-+ (id)reverseFQDN:(id)a3;
-+ (id)setOfLinewiseStringsFromFieldValue:(id)a3;
-+ (id)stripHostToDomain:(id)a3 level:(unint64_t)a4;
-+ (void)_addTopicsForUrl:(id)a3 withEngine:(id)a4 documentVisitor:(id)a5 toResponse:(id)a6;
-+ (void)addTopicsForURL:(id)a3 withEngine:(id)a4 toResponse:(id)a5;
++ (BOOL)_looksLikeTitleBarUIElement:(id)element;
++ (id)hostToCapitalizedName:(id)name;
++ (id)lookupTreasureMapForDomainHierarchy:(id)hierarchy fromTreasureMap:(id)map intoSet:(id)set isRelaxedMatchOut:(BOOL *)out;
++ (id)reverseFQDN:(id)n;
++ (id)setOfLinewiseStringsFromFieldValue:(id)value;
++ (id)stripHostToDomain:(id)domain level:(unint64_t)level;
++ (void)_addTopicsForUrl:(id)url withEngine:(id)engine documentVisitor:(id)visitor toResponse:(id)response;
++ (void)addTopicsForURL:(id)l withEngine:(id)engine toResponse:(id)response;
 + (void)initialize;
-- (BOOL)_isIntermediateNameBigramCandidate:(id)a3 tokenB:(id)a4 bothStartUppercase:(BOOL)a5;
-- (BOOL)_isLikelyLabel:(id)a3;
-- (BOOL)_isRelevantUIForExtraction:(id)a3;
-- (BOOL)isLanguageSupported:(id)a3;
+- (BOOL)_isIntermediateNameBigramCandidate:(id)candidate tokenB:(id)b bothStartUppercase:(BOOL)uppercase;
+- (BOOL)_isLikelyLabel:(id)label;
+- (BOOL)_isRelevantUIForExtraction:(id)extraction;
+- (BOOL)isLanguageSupported:(id)supported;
 - (LuceneContextEngine)engine;
-- (LuceneContextRequest)initWithEngine:(id)a3 forRequest:(id)a4;
-- (id)_addHomeAppExtractionResults:(id)a3;
-- (id)_bestTypeVariantForTokenInfo:(id)a3 allowingAllCaps:(BOOL)a4;
+- (LuceneContextRequest)initWithEngine:(id)engine forRequest:(id)request;
+- (id)_addHomeAppExtractionResults:(id)results;
+- (id)_bestTypeVariantForTokenInfo:(id)info allowingAllCaps:(BOOL)caps;
 - (id)_constructQuery;
-- (id)_determineTitleFromUIElements:(id)a3;
-- (id)_getTagTypeForExtractionItemType:(unint64_t)a3;
-- (id)_lookupBigramTermForTokenA:(id)a3 tokenB:(id)a4 tokenTypeOut:(unint64_t *)a5 docIdOut:(int *)a6;
-- (id)_readTermInfo:(id)a3 tokenTypeOut:(unint64_t *)a4 weightOut:(float *)a5 docIdOut:(int *)a6;
-- (id)_resultForBigramInfo:(id)a3 minPrefix:(int64_t)a4;
-- (id)_resultForTokenInfo:(id)a3 minPrefix:(int64_t)a4;
+- (id)_determineTitleFromUIElements:(id)elements;
+- (id)_getTagTypeForExtractionItemType:(unint64_t)type;
+- (id)_lookupBigramTermForTokenA:(id)a tokenB:(id)b tokenTypeOut:(unint64_t *)out docIdOut:(int *)idOut;
+- (id)_readTermInfo:(id)info tokenTypeOut:(unint64_t *)out weightOut:(float *)weightOut docIdOut:(int *)idOut;
+- (id)_resultForBigramInfo:(id)info minPrefix:(int64_t)prefix;
+- (id)_resultForTokenInfo:(id)info minPrefix:(int64_t)prefix;
 - (id)_sortGroupFilterUIElements;
-- (id)_tokenInfoForToken:(id)a3;
-- (id)_tokenStringForText:(id)a3;
-- (id)inspectTitle:(id)a3 titleForTokenization:(id)a4 conditionals:(id)a5;
-- (id)mergeDuplicateResults:(id)a3;
+- (id)_tokenInfoForToken:(id)token;
+- (id)_tokenStringForText:(id)text;
+- (id)inspectTitle:(id)title titleForTokenization:(id)tokenization conditionals:(id)conditionals;
+- (id)mergeDuplicateResults:(id)results;
 - (id)simplifiedDesiredLanguageTags;
 - (id)textTermsEnum;
 - (void)_addTermResults;
 - (void)_blendResults;
-- (void)_determineSurroundingEntities:(id)a3 withUIElementToResultsMapping:(id)a4;
+- (void)_determineSurroundingEntities:(id)entities withUIElementToResultsMapping:(id)mapping;
 - (void)_discardTokenInfos;
-- (void)_processResults:(id)a3 topK:(unint64_t)a4;
-- (void)_rerankFoldedResults:(id)a3;
-- (void)_searchTopKWithQuery:(id)a3 topK:(unint64_t)a4;
+- (void)_processResults:(id)results topK:(unint64_t)k;
+- (void)_rerankFoldedResults:(id)results;
+- (void)_searchTopKWithQuery:(id)query topK:(unint64_t)k;
 - (void)_tokenizeText;
 - (void)addCoreNLPTags;
-- (void)addDebugStringTo:(id)a3 withPrefix:(id)a4 forQuery:(id)a5;
+- (void)addDebugStringTo:(id)to withPrefix:(id)prefix forQuery:(id)query;
 - (void)addExtraQueryCompletions;
 - (void)addRequestFingerprint;
 - (void)addStructuredExtraction;
 - (void)augmentResultsWithTags;
-- (void)configAnalyzerForLanguage:(id)a3;
+- (void)configAnalyzerForLanguage:(id)language;
 - (void)dealloc;
 - (void)discard;
-- (void)filterResultsByTags:(id)a3;
-- (void)findResultsWithReply:(id)a3;
-- (void)postprocessAddQuery:(id)a3;
+- (void)filterResultsByTags:(id)tags;
+- (void)findResultsWithReply:(id)reply;
+- (void)postprocessAddQuery:(id)query;
 @end
 
 @implementation LuceneContextRequest
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v42 = +[OrgApacheLuceneSearchBooleanClause_OccurEnum values];
     v2 = [v42 objectAtIndex:0];
@@ -257,41 +257,41 @@
   [(LuceneContextRequest *)&v3 dealloc];
 }
 
-- (LuceneContextRequest)initWithEngine:(id)a3 forRequest:(id)a4
+- (LuceneContextRequest)initWithEngine:(id)engine forRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  requestCopy = request;
   v78.receiver = self;
   v78.super_class = LuceneContextRequest;
   v8 = [(LuceneContextRequest *)&v78 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_request, a4);
-    v10 = [v7 debug];
-    v9->_debug = v10;
-    if (v10)
+    objc_storeStrong(&v8->_request, request);
+    debug = [requestCopy debug];
+    v9->_debug = debug;
+    if (debug)
     {
-      v11 = 1;
+      timing = 1;
     }
 
     else
     {
-      v11 = [v7 timing];
+      timing = [requestCopy timing];
     }
 
-    v9->_timing = v11;
+    v9->_timing = timing;
     v9->_debugLogEnabled = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG);
-    v12 = objc_storeWeak(&v9->_engine, v6);
-    v9->_nMaxDoc = [v6 maxDoc];
+    v12 = objc_storeWeak(&v9->_engine, engineCopy);
+    v9->_nMaxDoc = [engineCopy maxDoc];
 
     WeakRetained = objc_loadWeakRetained(&v9->_engine);
     v9->_nTerms = [WeakRetained numTerms];
 
     v14 = objc_loadWeakRetained(&v9->_engine);
-    v15 = [v14 bloomFilter];
+    bloomFilter = [v14 bloomFilter];
     bloomFilter = v9->_bloomFilter;
-    v9->_bloomFilter = v15;
+    v9->_bloomFilter = bloomFilter;
 
     v17 = objc_loadWeakRetained(&v9->_engine);
     v9->_useBloomFilter = [v17 useBloomFilter];
@@ -300,16 +300,16 @@
     config = v9->_config;
     v9->_config = v18;
 
-    v20 = [v7 fingerprintMax];
-    v21 = [(ContextConfiguration *)v9->_config maxFingerprints];
-    if (v20 >= v21)
+    fingerprintMax = [requestCopy fingerprintMax];
+    maxFingerprints = [(ContextConfiguration *)v9->_config maxFingerprints];
+    if (fingerprintMax >= maxFingerprints)
     {
-      v20 = v21;
+      fingerprintMax = maxFingerprints;
     }
 
-    if (v20)
+    if (fingerprintMax)
     {
-      v22 = [(OrgApacheLuceneUtilPriorityQueue *)[LeastNumberPriorityQueue alloc] initWithInt:v20 withBoolean:1];
+      v22 = [(OrgApacheLuceneUtilPriorityQueue *)[LeastNumberPriorityQueue alloc] initWithInt:fingerprintMax withBoolean:1];
       minHashPriorityQueue = v9->_minHashPriorityQueue;
       v9->_minHashPriorityQueue = v22;
     }
@@ -326,14 +326,14 @@
     v29 = [[OrgApacheLuceneUtilBytesRef alloc] initWithInt:4096];
     [(OrgApacheLuceneIndexStoredFieldVisitor *)v28 setReusableBytesRefWithOrgApacheLuceneUtilBytesRef:v29];
 
-    v30 = [(_PASBloomFilter *)v9->_bloomFilter newHashesArray];
+    newHashesArray = [(_PASBloomFilter *)v9->_bloomFilter newHashesArray];
     hashesTokenReuse = v9->_hashesTokenReuse;
-    v9->_hashesTokenReuse = v30;
+    v9->_hashesTokenReuse = newHashesArray;
 
     v32 = [OrgApacheLuceneSearchIndexSearcher alloc];
     v33 = objc_loadWeakRetained(&v9->_engine);
-    v34 = [v33 reader];
-    v35 = [(OrgApacheLuceneSearchIndexSearcher *)v32 initWithOrgApacheLuceneIndexIndexReader:v34];
+    reader = [v33 reader];
+    v35 = [(OrgApacheLuceneSearchIndexSearcher *)v32 initWithOrgApacheLuceneIndexIndexReader:reader];
     searcher = v9->_searcher;
     v9->_searcher = v35;
 
@@ -399,44 +399,44 @@
     v60->_secondaryInterceptor = v61;
 
     v60->_charBuffer = malloc_type_calloc(1uLL, 0x100uLL, 0x6B5106AEuLL);
-    v63 = [v6 nGramBreakingSeparators];
+    nGramBreakingSeparators = [engineCopy nGramBreakingSeparators];
     nGramBreakingSeparators = v60->_nGramBreakingSeparators;
-    v60->_nGramBreakingSeparators = v63;
+    v60->_nGramBreakingSeparators = nGramBreakingSeparators;
 
-    v65 = [v6 allowedNGramSeparators];
+    allowedNGramSeparators = [engineCopy allowedNGramSeparators];
     allowedNGramSeparators = v60->_allowedNGramSeparators;
-    v60->_allowedNGramSeparators = v65;
+    v60->_allowedNGramSeparators = allowedNGramSeparators;
 
-    v67 = [v6 quotedTokenCharacterSet];
+    quotedTokenCharacterSet = [engineCopy quotedTokenCharacterSet];
     quotedTokenCharacterSet = v60->_quotedTokenCharacterSet;
-    v60->_quotedTokenCharacterSet = v67;
+    v60->_quotedTokenCharacterSet = quotedTokenCharacterSet;
 
-    v69 = [v6 partialNGramCharacterSet];
+    partialNGramCharacterSet = [engineCopy partialNGramCharacterSet];
     partialNGramCharacterSet = v60->_partialNGramCharacterSet;
-    v60->_partialNGramCharacterSet = v69;
+    v60->_partialNGramCharacterSet = partialNGramCharacterSet;
   }
 
   return v9;
 }
 
-- (BOOL)isLanguageSupported:(id)a3
+- (BOOL)isLanguageSupported:(id)supported
 {
-  v4 = a3;
-  v5 = [(ContextConfiguration *)self->_config luceneSupportedLanguages];
-  if ([v5 count])
+  supportedCopy = supported;
+  luceneSupportedLanguages = [(ContextConfiguration *)self->_config luceneSupportedLanguages];
+  if ([luceneSupportedLanguages count])
   {
-    if (!v4)
+    if (!supportedCopy)
     {
       v6 = 0;
       goto LABEL_7;
     }
 
-    if (([v5 containsObject:v4] & 1) == 0)
+    if (([luceneSupportedLanguages containsObject:supportedCopy] & 1) == 0)
     {
-      v7 = [LanguageUtilities simplifyLanguageTag:v4];
+      v7 = [LanguageUtilities simplifyLanguageTag:supportedCopy];
 
-      v6 = [v5 containsObject:v7];
-      v4 = v7;
+      v6 = [luceneSupportedLanguages containsObject:v7];
+      supportedCopy = v7;
       goto LABEL_7;
     }
   }
@@ -447,10 +447,10 @@ LABEL_7:
   return v6;
 }
 
-- (void)configAnalyzerForLanguage:(id)a3
+- (void)configAnalyzerForLanguage:(id)language
 {
-  v9 = a3;
-  if ([LanguageUtilities isChineseLanguageTag:?]|| [LanguageUtilities isJapaneseLanguageTag:v9])
+  languageCopy = language;
+  if ([LanguageUtilities isChineseLanguageTag:?]|| [LanguageUtilities isJapaneseLanguageTag:languageCopy])
   {
     v4 = objc_opt_new();
     analyzer = self->_analyzer;
@@ -480,8 +480,8 @@ LABEL_7:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CKContextRequest *)self->_request desiredLanguageTags];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  desiredLanguageTags = [(CKContextRequest *)self->_request desiredLanguageTags];
+  v5 = [desiredLanguageTags countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -492,14 +492,14 @@ LABEL_7:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(desiredLanguageTags);
         }
 
         v9 = [LanguageUtilities simplifyLanguageTag:*(*(&v11 + 1) + 8 * i)];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [desiredLanguageTags countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -508,34 +508,34 @@ LABEL_7:
   return v3;
 }
 
-- (void)findResultsWithReply:(id)a3
+- (void)findResultsWithReply:(id)reply
 {
-  v119 = a3;
+  replyCopy = reply;
   v158 = mach_absolute_time();
   v152 = 0;
   v153 = &v152;
   v154 = 0x3032000000;
   v155 = sub_1002AA110;
   v156 = sub_1002AA120;
-  v125 = self;
-  v157 = [(CKContextRequest *)self->_request languageTag];
-  v4 = self;
+  selfCopy = self;
+  languageTag = [(CKContextRequest *)self->_request languageTag];
+  selfCopy2 = self;
   v5 = [CKContextResponse alloc];
   v6 = objc_opt_new();
-  v7 = [v5 initWithResults:v6 requestType:{-[CKContextRequest type](v4->_request, "type")}];
-  response = v4->_response;
-  v4->_response = v7;
+  v7 = [v5 initWithResults:v6 requestType:{-[CKContextRequest type](selfCopy2->_request, "type")}];
+  response = selfCopy2->_response;
+  selfCopy2->_response = v7;
 
-  v9 = v4;
-  v10 = v4->_response;
-  [(ContextConfiguration *)v4->_config hideCompletionsTimeLimit];
+  v9 = selfCopy2;
+  v10 = selfCopy2->_response;
+  [(ContextConfiguration *)selfCopy2->_config hideCompletionsTimeLimit];
   [(CKContextResponse *)v10 setHideCompletionsTimeLimit:?];
-  [(CKContextResponse *)v4->_response setMustPrefixMatchLength:[(ContextConfiguration *)v4->_config mustPrefixMatchLength]];
-  if ([(CKContextRequest *)v4->_request textIsRaw]&& ![(ContextConfiguration *)v4->_config rawTextEnabled]&& [(CKContextRequest *)v4->_request type]!= 2)
+  [(CKContextResponse *)selfCopy2->_response setMustPrefixMatchLength:[(ContextConfiguration *)selfCopy2->_config mustPrefixMatchLength]];
+  if ([(CKContextRequest *)selfCopy2->_request textIsRaw]&& ![(ContextConfiguration *)selfCopy2->_config rawTextEnabled]&& [(CKContextRequest *)selfCopy2->_request type]!= 2)
   {
-    if (v4->_debug)
+    if (selfCopy2->_debug)
     {
-      [(CKContextResponse *)v4->_response addDebug:@"RawText mode is disabled"];
+      [(CKContextResponse *)selfCopy2->_response addDebug:@"RawText mode is disabled"];
     }
 
     v11 = &_os_log_default;
@@ -544,18 +544,18 @@ LABEL_7:
       sub_1002BB720();
     }
 
-    v9 = v125;
-    [(CKContextRequest *)v125->_request setText:0];
+    v9 = selfCopy;
+    [(CKContextRequest *)selfCopy->_request setText:0];
   }
 
-  v12 = [(CKContextRequest *)v9->_request text];
+  text = [(CKContextRequest *)v9->_request text];
   v13 = &_os_log_default;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [v12 length];
-    v15 = [(CKContextRequest *)v125->_request type];
-    v16 = [(CKContextRequest *)v125->_request languageTag];
-    sub_1002BB764(v16, v169, v14, v15);
+    v14 = [text length];
+    type = [(CKContextRequest *)selfCopy->_request type];
+    languageTag2 = [(CKContextRequest *)selfCopy->_request languageTag];
+    sub_1002BB764(languageTag2, v169, v14, type);
   }
 
   v146 = 0;
@@ -564,15 +564,15 @@ LABEL_7:
   v149 = sub_1002AA110;
   v150 = sub_1002AA120;
   v151 = 0;
-  WeakRetained = objc_loadWeakRetained(&v125->_engine);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_engine);
   if ([WeakRetained fallbackModeEnabled])
   {
-    v18 = [(ContextConfiguration *)v125->_config fallbackModeQuerySuggestionsEnabled];
+    fallbackModeQuerySuggestionsEnabled = [(ContextConfiguration *)selfCopy->_config fallbackModeQuerySuggestionsEnabled];
 
-    if ((v18 & 1) == 0)
+    if ((fallbackModeQuerySuggestionsEnabled & 1) == 0)
     {
-      v19 = v125;
-      if (v125->_debug)
+      v19 = selfCopy;
+      if (selfCopy->_debug)
       {
         v20 = @"Fallback mode; query suggestions are disabled";
 LABEL_28:
@@ -589,10 +589,10 @@ LABEL_28:
   {
   }
 
-  v19 = v125;
-  if ([v12 length] < 3)
+  v19 = selfCopy;
+  if ([text length] < 3)
   {
-    if (v125->_timing)
+    if (selfCopy->_timing)
     {
       v20 = @"tSearch:0";
       goto LABEL_28;
@@ -604,32 +604,32 @@ LABEL_29:
   }
 
   v21 = objc_autoreleasePoolPush();
-  v22 = [(ContextConfiguration *)v125->_config debugForceLanguageTag];
+  debugForceLanguageTag = [(ContextConfiguration *)selfCopy->_config debugForceLanguageTag];
 
-  if (v22)
+  if (debugForceLanguageTag)
   {
-    v23 = [(ContextConfiguration *)v125->_config debugForceLanguageTag];
+    debugForceLanguageTag2 = [(ContextConfiguration *)selfCopy->_config debugForceLanguageTag];
     v24 = v153[5];
-    v153[5] = v23;
+    v153[5] = debugForceLanguageTag2;
   }
 
   v142[0] = _NSConcreteStackBlock;
   v142[1] = 3221225472;
   v142[2] = sub_1002ACBCC;
   v142[3] = &unk_100483F70;
-  v145 = v22 == 0;
+  v145 = debugForceLanguageTag == 0;
   v144 = &v152;
-  v142[4] = v125;
-  v25 = v12;
+  v142[4] = selfCopy;
+  v25 = text;
   v143 = v25;
-  [Util elapsedMillisForBlock:v142 enableTiming:v125->_timing];
+  [Util elapsedMillisForBlock:v142 enableTiming:selfCopy->_timing];
   v27 = v26;
-  v120 = [(LuceneContextRequest *)v125 isLanguageSupported:v153[5]];
+  v120 = [(LuceneContextRequest *)selfCopy isLanguageSupported:v153[5]];
   v28 = [v153[5] copy];
-  [(CKContextResponse *)v125->_response setLanguageTag:v28];
+  [(CKContextResponse *)selfCopy->_response setLanguageTag:v28];
 
-  v29 = [(CKContextResponse *)v125->_response languageTag];
-  [(LuceneContextRequest *)v125 configAnalyzerForLanguage:v29];
+  languageTag3 = [(CKContextResponse *)selfCopy->_response languageTag];
+  [(LuceneContextRequest *)selfCopy configAnalyzerForLanguage:languageTag3];
 
   v30 = v27;
   if (v120)
@@ -638,10 +638,10 @@ LABEL_29:
     v141[1] = 3221225472;
     v141[2] = sub_1002ACCE4;
     v141[3] = &unk_100483968;
-    v141[4] = v125;
-    [Util elapsedMillisForBlock:v141 enableTiming:v125->_timing];
+    v141[4] = selfCopy;
+    [Util elapsedMillisForBlock:v141 enableTiming:selfCopy->_timing];
     v32 = v31;
-    if (v125->_debugLogEnabled)
+    if (selfCopy->_debugLogEnabled)
     {
       v33 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -655,23 +655,23 @@ LABEL_29:
     v140[1] = 3221225472;
     v140[2] = sub_1002ACCEC;
     v140[3] = &unk_1003E9488;
-    v37 = v125;
-    v140[4] = v125;
+    v37 = selfCopy;
+    v140[4] = selfCopy;
     v140[5] = &v146;
-    [Util elapsedMillisForBlock:v140 enableTiming:v125->_timing];
-    if (v125->_timing)
+    [Util elapsedMillisForBlock:v140 enableTiming:selfCopy->_timing];
+    if (selfCopy->_timing)
     {
       v39 = v32;
       v40 = v38;
-      [(CKContextResponse *)v125->_response addDebug:@"tLanguageDetect:%f (%@), tTokenize:%f, tConstructQuery:%f", v30, v153[5], v39, v40];
+      [(CKContextResponse *)selfCopy->_response addDebug:@"tLanguageDetect:%f (%@), tTokenize:%f, tConstructQuery:%f", v30, v153[5], v39, v40];
     }
   }
 
   else
   {
-    [(CKContextResponse *)v125->_response setError:qword_100557258];
-    v41 = [(CKContextRequest *)v125->_request type];
-    if (v41 == 15 || v41 == 1)
+    [(CKContextResponse *)selfCopy->_response setError:qword_100557258];
+    type2 = [(CKContextRequest *)selfCopy->_request type];
+    if (type2 == 15 || type2 == 1)
     {
       v42 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -681,15 +681,15 @@ LABEL_29:
       }
     }
 
-    v37 = v125;
-    if (v125->_timing)
+    v37 = selfCopy;
+    if (selfCopy->_timing)
     {
-      [(CKContextResponse *)v125->_response addDebug:@"tLanguageDetect:%f (%@)", v30, v153[5]];
+      [(CKContextResponse *)selfCopy->_response addDebug:@"tLanguageDetect:%f (%@)", v30, v153[5]];
     }
   }
 
   [(LuceneContextRequest *)v37 addRequestFingerprint];
-  if (v37->_debug && v125->_timing)
+  if (v37->_debug && selfCopy->_timing)
   {
     *buf = 0;
     v163 = buf;
@@ -703,19 +703,19 @@ LABEL_29:
     v137[3] = &unk_1003E9488;
     v139 = buf;
     v138 = v25;
-    [Util elapsedMillisForBlock:v137 enableTiming:v125->_timing];
+    [Util elapsedMillisForBlock:v137 enableTiming:selfCopy->_timing];
     v44 = v43;
-    v45 = [(LuceneContextRequest *)v125 isLanguageSupported:*(v163 + 5)];
+    v45 = [(LuceneContextRequest *)selfCopy isLanguageSupported:*(v163 + 5)];
     v46 = v44;
-    [(CKContextResponse *)v125->_response addDebug:@"tLanguageDetectLangId:%f (%@) mismatch:%i", v46, *(v163 + 5), v120 ^ v45];
+    [(CKContextResponse *)selfCopy->_response addDebug:@"tLanguageDetectLangId:%f (%@) mismatch:%i", v46, *(v163 + 5), v120 ^ v45];
 
     _Block_object_dispose(buf, 8);
   }
 
   v47 = v21;
-  v48 = v125;
+  v48 = selfCopy;
   objc_autoreleasePoolPop(v47);
-  if (v125->_debugLogEnabled)
+  if (selfCopy->_debugLogEnabled)
   {
     v49 = &_os_log_default;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
@@ -724,7 +724,7 @@ LABEL_29:
       sub_1002BB81C(buf, v52, v50, v51);
     }
 
-    v48 = v125;
+    v48 = selfCopy;
   }
 
   if (!v147[5])
@@ -745,39 +745,39 @@ LABEL_29:
   config = v48->_config;
   if (!v53)
   {
-    v55 = [(ContextConfiguration *)config luceneQueryDefaultNumResults];
+    luceneQueryDefaultNumResults = [(ContextConfiguration *)config luceneQueryDefaultNumResults];
     goto LABEL_52;
   }
 
   v53 = v53;
   if ([(ContextConfiguration *)config luceneQueryMaxNumResults]< v53)
   {
-    v55 = [(ContextConfiguration *)v48->_config luceneQueryMaxNumResults];
+    luceneQueryDefaultNumResults = [(ContextConfiguration *)v48->_config luceneQueryMaxNumResults];
 LABEL_52:
-    v53 = v55;
+    v53 = luceneQueryDefaultNumResults;
   }
 
   [(LuceneContextRequest *)v48 _searchTopKWithQuery:v147[5] topK:v53 + 20];
-  v56 = [(CKContextResponse *)v48->_response results];
+  results = [(CKContextResponse *)v48->_response results];
   if ([(NSMutableArray *)v48->_termResultsWithDocument count])
   {
-    [v56 addObjectsFromArray:v48->_termResultsWithDocument];
-    v57 = [(LuceneContextRequest *)v48 mergeDuplicateResults:v56];
+    [results addObjectsFromArray:v48->_termResultsWithDocument];
+    v57 = [(LuceneContextRequest *)v48 mergeDuplicateResults:results];
 
-    v48 = v125;
-    [(CKContextResponse *)v125->_response setResults:v57];
-    v56 = v57;
+    v48 = selfCopy;
+    [(CKContextResponse *)selfCopy->_response setResults:v57];
+    results = v57;
   }
 
-  if ([v56 count] > v53)
+  if ([results count] > v53)
   {
-    [v56 removeObjectsInRange:{v53, objc_msgSend(v56, "count") - v53}];
+    [results removeObjectsInRange:{v53, objc_msgSend(results, "count") - v53}];
   }
 
   [(LuceneContextRequest *)v48 _blendResults];
   [(LuceneContextRequest *)v48 _addTermResults];
 
-  v48 = v125;
+  v48 = selfCopy;
 LABEL_58:
   if (v48->_debugLogEnabled)
   {
@@ -792,16 +792,16 @@ LABEL_58:
 LABEL_62:
   _Block_object_dispose(&v146, 8);
 
-  if (v125->_forceNoResults)
+  if (selfCopy->_forceNoResults)
   {
-    [(CKContextResponse *)v125->_response setResults:&__NSArray0__struct];
-    if (v125->_debug)
+    [(CKContextResponse *)selfCopy->_response setResults:&__NSArray0__struct];
+    if (selfCopy->_debug)
     {
-      [(CKContextResponse *)v125->_response addDebug:@"forceNoResults triggered"];
+      [(CKContextResponse *)selfCopy->_response addDebug:@"forceNoResults triggered"];
     }
   }
 
-  [(CKContextResponse *)v125->_response results];
+  [(CKContextResponse *)selfCopy->_response results];
   v135 = 0u;
   v136 = 0u;
   v133 = 0u;
@@ -824,7 +824,7 @@ LABEL_62:
         v65 = objc_autoreleasePoolPush();
         if ([v64 minPrefix] >= 1)
         {
-          [(CKContextResponse *)v125->_response setResultsNeedFiltering:1];
+          [(CKContextResponse *)selfCopy->_response setResultsNeedFiltering:1];
         }
 
         objc_opt_class();
@@ -832,32 +832,32 @@ LABEL_62:
         {
           v66 = v64;
           v67 = objc_opt_new();
-          v68 = [v66 relatedItems];
-          if (v68)
+          relatedItems = [v66 relatedItems];
+          if (relatedItems)
           {
-            [v67 unionOrderedSet:v68];
+            [v67 unionOrderedSet:relatedItems];
           }
 
           v69 = objc_opt_class();
-          v70 = [v66 relatedField];
-          v71 = [v69 setOfLinewiseStringsFromFieldValue:v70];
+          relatedField = [v66 relatedField];
+          v71 = [v69 setOfLinewiseStringsFromFieldValue:relatedField];
 
           if (v71 && [v71 count])
           {
             [v67 unionOrderedSet:v71];
           }
 
-          v72 = [v66 topicId];
-          if ([v72 length])
+          topicId = [v66 topicId];
+          if ([topicId length])
           {
-            v73 = [v66 title];
-            v74 = [v73 length] == 0;
+            title = [v66 title];
+            v74 = [title length] == 0;
 
             if (!v74)
             {
-              v72 = [v66 title];
+              topicId = [v66 title];
               v75 = +[NSCharacterSet URLPathAllowedCharacterSet];
-              v76 = [v72 stringByAddingPercentEncodingWithAllowedCharacters:v75];
+              v76 = [topicId stringByAddingPercentEncodingWithAllowedCharacters:v75];
               v77 = [NSString stringWithFormat:@"wiki\thttps://en.wikipedia.org/wiki/%@", v76];
               [v67 addObject:v77];
 
@@ -892,37 +892,37 @@ LABEL_81:
     while (v62);
   }
 
-  v79 = v125;
-  if ([(CKContextRequest *)v125->_request includeHigherLevelTopics])
+  v79 = selfCopy;
+  if ([(CKContextRequest *)selfCopy->_request includeHigherLevelTopics])
   {
-    v80 = [(CKContextRequest *)v125->_request url];
+    v80 = [(CKContextRequest *)selfCopy->_request url];
     if ([v80 length])
     {
       v81 = [NSURL URLWithString:v80];
       v82 = objc_opt_class();
-      v83 = objc_loadWeakRetained(&v125->_engine);
-      [v82 _addTopicsForUrl:v81 withEngine:v83 documentVisitor:v125->_docVisitor toResponse:v125->_response];
+      v83 = objc_loadWeakRetained(&selfCopy->_engine);
+      [v82 _addTopicsForUrl:v81 withEngine:v83 documentVisitor:selfCopy->_docVisitor toResponse:selfCopy->_response];
     }
 
-    v79 = v125;
+    v79 = selfCopy;
   }
 
   if ([(CKContextRequest *)v79->_request maxConstellationTopics]>= 1)
   {
-    v124 = [(CKContextRequest *)v79->_request itemIds];
-    v84 = [v124 count];
+    itemIds = [(CKContextRequest *)v79->_request itemIds];
+    v84 = [itemIds count];
     if (v84)
     {
       if (v84 >= 0x1F5)
       {
-        v85 = [v124 allKeys];
-        v86 = [v85 sortedArrayUsingSelector:"compare:"];
+        allKeys = [itemIds allKeys];
+        v86 = [allKeys sortedArrayUsingSelector:"compare:"];
 
         v87 = objc_alloc_init(NSMutableDictionary);
         for (j = 0; j != 500; ++j)
         {
           v89 = [v86 objectAtIndexedSubscript:j];
-          v90 = [v124 objectForKeyedSubscript:v89];
+          v90 = [itemIds objectForKeyedSubscript:v89];
           [v87 setObject:v90 forKeyedSubscript:v89];
         }
 
@@ -936,25 +936,25 @@ LABEL_114:
           v127[1] = 3221225472;
           v127[2] = sub_1002ACDCC;
           v127[3] = &unk_100483B68;
-          v127[4] = v125;
+          v127[4] = selfCopy;
           v128 = v91;
-          [Util elapsedMillisForBlock:v127 enableTiming:v125->_timing];
-          if (v125->_timing)
+          [Util elapsedMillisForBlock:v127 enableTiming:selfCopy->_timing];
+          if (selfCopy->_timing)
           {
             v104 = v103;
-            [(CKContextResponse *)v125->_response addDebug:@"tConstellation:%f", v104];
+            [(CKContextResponse *)selfCopy->_response addDebug:@"tConstellation:%f", v104];
           }
         }
 
-        v79 = v125;
+        v79 = selfCopy;
         goto LABEL_119;
       }
     }
 
     else
     {
-      v92 = [(CKContextResponse *)v79->_response results];
-      v93 = [v92 count] == 0;
+      results2 = [(CKContextResponse *)v79->_response results];
+      v93 = [results2 count] == 0;
 
       if (!v93)
       {
@@ -963,8 +963,8 @@ LABEL_114:
         v130 = 0u;
         v131 = 0u;
         v129 = 0u;
-        v95 = [(CKContextResponse *)v125->_response results];
-        v96 = [v95 countByEnumeratingWithState:&v129 objects:v159 count:16];
+        results3 = [(CKContextResponse *)selfCopy->_response results];
+        v96 = [results3 countByEnumeratingWithState:&v129 objects:v159 count:16];
         if (v96)
         {
           v97 = *v130;
@@ -974,13 +974,13 @@ LABEL_114:
             {
               if (*v130 != v97)
               {
-                objc_enumerationMutation(v95);
+                objc_enumerationMutation(results3);
               }
 
-              v99 = [*(*(&v129 + 1) + 8 * k) topicId];
-              if (v99)
+              topicId2 = [*(*(&v129 + 1) + 8 * k) topicId];
+              if (topicId2)
               {
-                v100 = [v94 objectForKey:v99];
+                v100 = [v94 objectForKey:topicId2];
                 v101 = v100;
                 if (v100)
                 {
@@ -992,11 +992,11 @@ LABEL_114:
                   v102 = &off_1004A9F98;
                 }
 
-                [v94 setObject:v102 forKey:v99];
+                [v94 setObject:v102 forKey:topicId2];
               }
             }
 
-            v96 = [v95 countByEnumeratingWithState:&v129 objects:v159 count:16];
+            v96 = [results3 countByEnumeratingWithState:&v129 objects:v159 count:16];
           }
 
           while (v96);
@@ -1004,12 +1004,12 @@ LABEL_114:
 
         v86 = v94;
         v91 = v86;
-        v87 = v124;
+        v87 = itemIds;
         goto LABEL_112;
       }
     }
 
-    v91 = v124;
+    v91 = itemIds;
     goto LABEL_114;
   }
 
@@ -1017,8 +1017,8 @@ LABEL_119:
   if ([(ContextConfiguration *)v79->_config extraQueryCompletionsEnabled])
   {
     v105 = objc_autoreleasePoolPush();
-    v79 = v125;
-    [(LuceneContextRequest *)v125 addExtraQueryCompletions];
+    v79 = selfCopy;
+    [(LuceneContextRequest *)selfCopy addExtraQueryCompletions];
     objc_autoreleasePoolPop(v105);
   }
 
@@ -1047,65 +1047,65 @@ LABEL_119:
     [(LuceneContextRequest *)v79 addStructuredExtraction];
   }
 
-  v108 = [(CKContextRequest *)v79->_request allowedTopicTypeTags];
-  v109 = [v108 count] == 0;
+  allowedTopicTypeTags = [(CKContextRequest *)v79->_request allowedTopicTypeTags];
+  v109 = [allowedTopicTypeTags count] == 0;
 
   if (!v109)
   {
-    v110 = [(CKContextRequest *)v125->_request allowedTopicTypeTags];
-    [(LuceneContextRequest *)v125 filterResultsByTags:v110];
+    allowedTopicTypeTags2 = [(CKContextRequest *)selfCopy->_request allowedTopicTypeTags];
+    [(LuceneContextRequest *)selfCopy filterResultsByTags:allowedTopicTypeTags2];
   }
 
   v111 = os_transaction_create();
-  (v119)[2](v119, v125->_response);
+  (replyCopy)[2](replyCopy, selfCopy->_response);
   v112 = +[MetricsLogging instance];
-  v113 = [(CKContextRequest *)v125->_request text];
-  v114 = [v113 length];
+  text2 = [(CKContextRequest *)selfCopy->_request text];
+  v114 = [text2 length];
   v115 = v153[5];
-  v116 = [(CKContextRequest *)v125->_request type];
-  v117 = objc_loadWeakRetained(&v125->_engine);
-  v118 = [v117 indexId];
-  [v112 recordInputLength:v114 languageTag:v115 languageSupported:v120 requestType:v116 indexId:v118];
+  type3 = [(CKContextRequest *)selfCopy->_request type];
+  v117 = objc_loadWeakRetained(&selfCopy->_engine);
+  indexId = [v117 indexId];
+  [v112 recordInputLength:v114 languageTag:v115 languageSupported:v120 requestType:type3 indexId:indexId];
 
   _Block_object_dispose(&v152, 8);
 }
 
 - (void)addExtraQueryCompletions
 {
-  v3 = [(CKContextRequest *)self->_request type];
-  if (v3 <= 0xF && ((1 << v3) & 0x803A) != 0)
+  type = [(CKContextRequest *)self->_request type];
+  if (type <= 0xF && ((1 << type) & 0x803A) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_engine);
-    v6 = [WeakRetained qidToQueriesMap];
+    qidToQueriesMap = [WeakRetained qidToQueriesMap];
 
     v7 = objc_loadWeakRetained(&self->_engine);
-    v8 = [v7 queriesArray];
+    queriesArray = [v7 queriesArray];
 
-    v71 = v6;
-    if (v6)
+    v71 = qidToQueriesMap;
+    if (qidToQueriesMap)
     {
-      if (v8)
+      if (queriesArray)
       {
-        v9 = [(CKContextResponse *)self->_response results];
-        v10 = [v9 count];
+        results = [(CKContextResponse *)self->_response results];
+        v10 = [results count];
 
         if (v10)
         {
-          v59 = v8;
-          v11 = [(CKContextResponse *)self->_response results];
-          v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", 3 * [v11 count]);
+          v59 = queriesArray;
+          results2 = [(CKContextResponse *)self->_response results];
+          v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", 3 * [results2 count]);
 
           v72 = +[NSMutableSet set];
-          v66 = [(LuceneContextRequest *)self simplifiedDesiredLanguageTags];
-          v13 = [(ContextConfiguration *)self->_config extraQueryCompletionsTopKLanguages];
-          v14 = [(CKContextResponse *)self->_response results];
-          v61 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v14 count]);
+          simplifiedDesiredLanguageTags = [(LuceneContextRequest *)self simplifiedDesiredLanguageTags];
+          extraQueryCompletionsTopKLanguages = [(ContextConfiguration *)self->_config extraQueryCompletionsTopKLanguages];
+          results3 = [(CKContextResponse *)self->_response results];
+          v61 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [results3 count]);
 
           v87 = 0u;
           v88 = 0u;
           v85 = 0u;
           v86 = 0u;
-          v58 = self;
+          selfCopy = self;
           obj = [(CKContextResponse *)self->_response results];
           v67 = [obj countByEnumeratingWithState:&v85 objects:v92 count:16];
           if (v67)
@@ -1121,19 +1121,19 @@ LABEL_119:
                 }
 
                 v16 = *(*(&v85 + 1) + 8 * i);
-                v17 = [v16 topicId];
-                if ([v17 length])
+                topicId = [v16 topicId];
+                if ([topicId length])
                 {
                   [v72 removeAllObjects];
-                  v18 = [v71 objectsForKey:v17 intoSet:v72 keepWalkingOut:0];
-                  if ([v66 count])
+                  v18 = [v71 objectsForKey:topicId intoSet:v72 keepWalkingOut:0];
+                  if ([simplifiedDesiredLanguageTags count])
                   {
                     v62 = v16;
                     v83 = 0u;
                     v84 = 0u;
                     v81 = 0u;
                     v82 = 0u;
-                    v19 = v66;
+                    v19 = simplifiedDesiredLanguageTags;
                     v20 = [v19 countByEnumeratingWithState:&v81 objects:v91 count:16];
                     if (v20)
                     {
@@ -1151,12 +1151,12 @@ LABEL_17:
                           objc_enumerationMutation(v19);
                         }
 
-                        if (v24 > v13)
+                        if (v24 > extraQueryCompletionsTopKLanguages)
                         {
                           break;
                         }
 
-                        v25 = [NSString stringWithFormat:@"%@:%@", v17, *(*(&v81 + 1) + 8 * v23)];
+                        v25 = [NSString stringWithFormat:@"%@:%@", topicId, *(*(&v81 + 1) + 8 * v23)];
                         v26 = [v71 objectsForKey:v25 intoSet:v72 keepWalkingOut:0];
 
                         v23 = v23 + 1;
@@ -1177,13 +1177,13 @@ LABEL_17:
                     v16 = v62;
                   }
 
-                  v27 = [v16 title];
+                  title = [v16 title];
 
-                  if (v27)
+                  if (title)
                   {
-                    v28 = [v16 title];
-                    v29 = [v28 lowercaseString];
-                    [v61 addObject:v29];
+                    title2 = [v16 title];
+                    lowercaseString = [title2 lowercaseString];
+                    [v61 addObject:lowercaseString];
                   }
 
                   v79 = 0u;
@@ -1211,7 +1211,7 @@ LABEL_17:
                         if (!v36)
                         {
                           v37 = [v35 copy];
-                          [v12 setObject:v17 forKey:v37];
+                          [v12 setObject:topicId forKey:v37];
                         }
                       }
 
@@ -1229,24 +1229,24 @@ LABEL_17:
             while (v67);
           }
 
-          v8 = v59;
+          queriesArray = v59;
           v38 = v61;
           if ([v12 count])
           {
-            v39 = [v12 allKeys];
-            v65 = [v39 sortedArrayUsingSelector:"compare:"];
+            allKeys = [v12 allKeys];
+            v65 = [allKeys sortedArrayUsingSelector:"compare:"];
 
-            v40 = [(CKContextResponse *)v58->_response results];
+            results4 = [(CKContextResponse *)selfCopy->_response results];
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v41 = [v40 mutableCopy];
+              v41 = [results4 mutableCopy];
 
-              [(CKContextResponse *)v58->_response setResults:v41];
-              v40 = v41;
+              [(CKContextResponse *)selfCopy->_response setResults:v41];
+              results4 = v41;
             }
 
-            [(CKContextResponse *)v58->_response setResultsNeedFiltering:1];
+            [(CKContextResponse *)selfCopy->_response setResultsNeedFiltering:1];
             v42 = [[ComAppleContextkitUtilObjcIterator alloc] initWithId:v65];
             v43 = [v59 lookupWithComAppleContextkitUtilSpindleArray_State:0 withJavaUtilList:0 withJavaUtilIterator:v42];
 
@@ -1274,10 +1274,10 @@ LABEL_17:
 
                   v49 = *(*(&v73 + 1) + 8 * k);
                   ++v70;
-                  v50 = [v49 lowercaseString];
-                  if (([v38 containsObject:v50] & 1) == 0)
+                  lowercaseString2 = [v49 lowercaseString];
+                  if (([v38 containsObject:lowercaseString2] & 1) == 0)
                   {
-                    [v38 addObject:v50];
+                    [v38 addObject:lowercaseString2];
                     v51 = [[CKContextResult alloc] initWithTitle:v49 query:0 url:0 category:0];
                     [v51 setCategory:@"(query completion)"];
                     [v51 setMinPrefix:1];
@@ -1288,10 +1288,10 @@ LABEL_17:
                       v53 = v46;
                       v54 = v45;
                       v55 = v44;
-                      v57 = v56 = v40;
+                      v57 = v56 = results4;
                       [v51 setTopicId:v57];
 
-                      v40 = v56;
+                      results4 = v56;
                       v44 = v55;
                       v45 = v54;
                       v46 = v53;
@@ -1300,7 +1300,7 @@ LABEL_17:
                       v38 = v61;
                     }
 
-                    [v40 addObject:v51];
+                    [results4 addObject:v51];
                   }
                 }
 
@@ -1310,7 +1310,7 @@ LABEL_17:
               while (v68);
             }
 
-            v8 = v59;
+            queriesArray = v59;
           }
         }
       }
@@ -1320,34 +1320,34 @@ LABEL_17:
 
 - (void)addCoreNLPTags
 {
-  v2 = self;
-  v3 = [(CKContextRequest *)self->_request type];
-  if (v3 <= 0x14 && ((1 << v3) & 0x1A803A) != 0)
+  selfCopy = self;
+  type = [(CKContextRequest *)self->_request type];
+  if (type <= 0x14 && ((1 << type) & 0x1A803A) != 0)
   {
-    v5 = [(CKContextRequest *)v2->_request text];
-    if (v5)
+    text = [(CKContextRequest *)selfCopy->_request text];
+    if (text)
     {
-      v62 = v5;
-      v65 = [TopEntityHelper findNamedEntities:v5];
-      v6 = [(CKContextResponse *)v2->_response results];
+      v62 = text;
+      v65 = [TopEntityHelper findNamedEntities:text];
+      results = [(CKContextResponse *)selfCopy->_response results];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v7 = v6;
+        v7 = results;
       }
 
       else
       {
-        v8 = [v6 mutableCopy];
+        v8 = [results mutableCopy];
 
-        [(CKContextResponse *)v2->_response setResults:v8];
+        [(CKContextResponse *)selfCopy->_response setResults:v8];
         v7 = v8;
       }
 
       v76 = v7;
       v9 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v7 count]);
       v70 = v9;
-      if (!v2->_debug)
+      if (!selfCopy->_debug)
       {
         v93 = 0u;
         v94 = 0u;
@@ -1368,9 +1368,9 @@ LABEL_17:
                 objc_enumerationMutation(v10);
               }
 
-              v15 = [*(*(&v91 + 1) + 8 * i) title];
-              v16 = [v15 lowercaseString];
-              [v70 addObject:v16];
+              title = [*(*(&v91 + 1) + 8 * i) title];
+              lowercaseString = [title lowercaseString];
+              [v70 addObject:lowercaseString];
             }
 
             v12 = [v10 countByEnumeratingWithState:&v91 objects:v99 count:16];
@@ -1394,7 +1394,7 @@ LABEL_17:
       if (v66)
       {
         v64 = *v88;
-        v69 = v2;
+        v69 = selfCopy;
         do
         {
           for (j = 0; j != v66; j = j + 1)
@@ -1420,9 +1420,9 @@ LABEL_17:
               }
 
               v67 = v19;
-              v21 = [v19 allValues];
+              allValues = [v19 allValues];
               v22 = CKContextExecutor_ptr;
-              v23 = [TopEntityHelper mergeAndSort:v21 usingMergeType:v20];
+              v23 = [TopEntityHelper mergeAndSort:allValues usingMergeType:v20];
 
               v85 = 0u;
               v86 = 0u;
@@ -1449,36 +1449,36 @@ LABEL_17:
                     }
 
                     v29 = *(*(&v83 + 1) + 8 * v28);
-                    if (v2->_debug || ([*(*(&v83 + 1) + 8 * v28) score], v31 = v30, -[ContextConfiguration coreNLPMinScore](v2->_config, "coreNLPMinScore"), v31 >= v32))
+                    if (selfCopy->_debug || ([*(*(&v83 + 1) + 8 * v28) score], v31 = v30, -[ContextConfiguration coreNLPMinScore](selfCopy->_config, "coreNLPMinScore"), v31 >= v32))
                     {
                       v78 = v28;
-                      v33 = [v29 name];
-                      v34 = [v33 lowercaseString];
+                      name = [v29 name];
+                      lowercaseString2 = [name lowercaseString];
 
-                      if (([v9 containsObject:v34] & 1) == 0)
+                      if (([v9 containsObject:lowercaseString2] & 1) == 0)
                       {
-                        v77 = v34;
-                        [v9 addObject:v34];
+                        v77 = lowercaseString2;
+                        [v9 addObject:lowercaseString2];
                         v35 = objc_alloc(v22[16]);
-                        v36 = [v29 name];
-                        v37 = [v35 initWithTitle:v36 query:0 url:0 category:v18];
+                        name2 = [v29 name];
+                        v37 = [v35 initWithTitle:name2 query:0 url:0 category:v18];
 
                         [v29 score];
                         v39 = v38;
-                        [(ContextConfiguration *)v2->_config coreNLPRelevantScore];
+                        [(ContextConfiguration *)selfCopy->_config coreNLPRelevantScore];
                         [v37 setMinPrefix:v39 <= v40];
                         v41 = v76;
-                        if (v2->_debug)
+                        if (selfCopy->_debug)
                         {
                           v42 = [v29 count];
-                          v43 = [v29 firstOccurrence];
+                          firstOccurrence = [v29 firstOccurrence];
                           [v29 score];
                           v45 = v44;
-                          v46 = [v29 sourceNamedEntities];
-                          v47 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"count: %lu, firstOccur: %lu, score: %f, sourceEntities: %lu", v42, v43, *&v45, [v46 count]);
+                          sourceNamedEntities = [v29 sourceNamedEntities];
+                          v47 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"count: %lu, firstOccur: %lu, score: %f, sourceEntities: %lu", v42, firstOccurrence, *&v45, [sourceNamedEntities count]);
 
-                          v48 = [v29 sourceNamedEntities];
-                          v49 = [v48 count];
+                          sourceNamedEntities2 = [v29 sourceNamedEntities];
+                          v49 = [sourceNamedEntities2 count];
 
                           if (v49 >= 2)
                           {
@@ -1487,8 +1487,8 @@ LABEL_17:
                             v82 = 0u;
                             v79 = 0u;
                             v80 = 0u;
-                            v50 = [v29 sourceNamedEntities];
-                            v51 = [v50 countByEnumeratingWithState:&v79 objects:v95 count:16];
+                            sourceNamedEntities3 = [v29 sourceNamedEntities];
+                            v51 = [sourceNamedEntities3 countByEnumeratingWithState:&v79 objects:v95 count:16];
                             if (v51)
                             {
                               v52 = v51;
@@ -1501,15 +1501,15 @@ LABEL_17:
                                 {
                                   if (*v80 != v53)
                                   {
-                                    objc_enumerationMutation(v50);
+                                    objc_enumerationMutation(sourceNamedEntities3);
                                   }
 
                                   v56 = *(*(&v79 + 1) + 8 * v54);
-                                  v57 = [v56 name];
+                                  name3 = [v56 name];
                                   v58 = [v56 count];
-                                  v59 = [v56 firstOccurrence];
+                                  firstOccurrence2 = [v56 firstOccurrence];
                                   [v56 score];
-                                  v61 = [NSString stringWithFormat:@"\n  sourceEntity: %@ \t count: %lu, firstOccur: %lu, score: %f", v57, v58, v59, v60];
+                                  v61 = [NSString stringWithFormat:@"\n  sourceEntity: %@ \t count: %lu, firstOccur: %lu, score: %f", name3, v58, firstOccurrence2, v60];
                                   v47 = [v55 stringByAppendingString:v61];
 
                                   v54 = v54 + 1;
@@ -1517,13 +1517,13 @@ LABEL_17:
                                 }
 
                                 while (v52 != v54);
-                                v52 = [v50 countByEnumeratingWithState:&v79 objects:v95 count:16];
+                                v52 = [sourceNamedEntities3 countByEnumeratingWithState:&v79 objects:v95 count:16];
                               }
 
                               while (v52);
                             }
 
-                            v2 = v69;
+                            selfCopy = v69;
                             v9 = v70;
                             v41 = v76;
                             v22 = CKContextExecutor_ptr;
@@ -1540,7 +1540,7 @@ LABEL_17:
                         [v41 addObject:v37];
 
                         v26 = v75;
-                        v34 = v77;
+                        lowercaseString2 = v77;
                       }
 
                       v28 = v78;
@@ -1567,23 +1567,23 @@ LABEL_17:
         while (v66);
       }
 
-      v5 = v62;
+      text = v62;
     }
   }
 }
 
 - (void)augmentResultsWithTags
 {
-  v3 = [(CKContextRequest *)self->_request type];
-  if (v3 <= 0x14 && ((1 << v3) & 0x1B0438) != 0)
+  type = [(CKContextRequest *)self->_request type];
+  if (type <= 0x14 && ((1 << type) & 0x1B0438) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_engine);
-    v6 = [WeakRetained tagsMap];
+    tagsMap = [WeakRetained tagsMap];
 
-    if (v6)
+    if (tagsMap)
     {
-      v7 = [(CKContextResponse *)self->_response results];
-      v8 = [v7 count];
+      results = [(CKContextResponse *)self->_response results];
+      v8 = [results count];
 
       if (v8)
       {
@@ -1608,17 +1608,17 @@ LABEL_17:
               }
 
               v13 = *(*(&v25 + 1) + 8 * i);
-              v14 = [v13 topicId];
-              v15 = [v13 title];
-              if ([v14 length])
+              topicId = [v13 topicId];
+              title = [v13 title];
+              if ([topicId length])
               {
-                v16 = [v6 objectsForKey:v14];
+                v16 = [tagsMap objectsForKey:topicId];
               }
 
-              else if ([v15 length])
+              else if ([title length])
               {
-                v17 = [v15 lowercaseString];
-                v16 = [v6 objectsForKey:v17];
+                lowercaseString = [title lowercaseString];
+                v16 = [tagsMap objectsForKey:lowercaseString];
               }
 
               else
@@ -1626,13 +1626,13 @@ LABEL_17:
                 v16 = 0;
               }
 
-              v18 = [v13 tags];
-              v19 = [v18 count];
+              tags = [v13 tags];
+              v19 = [tags count];
 
               if (v19)
               {
-                v20 = [v13 tags];
-                v21 = [v20 mutableCopy];
+                tags2 = [v13 tags];
+                v21 = [tags2 mutableCopy];
 
                 if ([v16 count])
                 {
@@ -1675,52 +1675,52 @@ LABEL_17:
 
 - (void)addStructuredExtraction
 {
-  v3 = [(CKContextRequest *)self->_request type];
-  if (v3 <= 0x14 && ((1 << v3) & 0x1B0438) != 0)
+  type = [(CKContextRequest *)self->_request type];
+  if (type <= 0x14 && ((1 << type) & 0x1B0438) != 0)
   {
-    v5 = [(CKContextRequest *)self->_request uiElements];
-    if ([v5 count])
+    uiElements = [(CKContextRequest *)self->_request uiElements];
+    if ([uiElements count])
     {
-      v6 = [(LuceneContextRequest *)self _sortGroupFilterUIElements];
-      v7 = [(CKContextResponse *)self->_response results];
+      _sortGroupFilterUIElements = [(LuceneContextRequest *)self _sortGroupFilterUIElements];
+      results = [(CKContextResponse *)self->_response results];
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v8 = [v7 mutableCopy];
+        v8 = [results mutableCopy];
 
         [(CKContextResponse *)self->_response setResults:v8];
-        v7 = v8;
+        results = v8;
       }
 
       v9 = objc_alloc_init(NSMutableDictionary);
-      v10 = [(CKContextRequest *)self->_request uiElements];
-      v11 = [(LuceneContextRequest *)self _determineTitleFromUIElements:v10];
+      uiElements2 = [(CKContextRequest *)self->_request uiElements];
+      v11 = [(LuceneContextRequest *)self _determineTitleFromUIElements:uiElements2];
 
       if (v11)
       {
-        [v7 addObject:v11];
-        v12 = [v11 sourceUIElement];
-        if (v12)
+        [results addObject:v11];
+        sourceUIElement = [v11 sourceUIElement];
+        if (sourceUIElement)
         {
           v13 = [NSMutableArray arrayWithObject:v11];
-          [v9 setObject:v13 forKeyedSubscript:v12];
+          [v9 setObject:v13 forKeyedSubscript:sourceUIElement];
         }
       }
 
       v30 = v11;
-      v29 = [CKStructuredExtractionUtils liveTextResultsFromUIElements:v5];
-      [v7 addObjectsFromArray:?];
-      v33 = v5;
-      v28 = [CKStructuredExtractionUtils personResultsFromUIElements:v5];
-      [v7 addObjectsFromArray:?];
+      v29 = [CKStructuredExtractionUtils liveTextResultsFromUIElements:uiElements];
+      [results addObjectsFromArray:?];
+      v33 = uiElements;
+      v28 = [CKStructuredExtractionUtils personResultsFromUIElements:uiElements];
+      [results addObjectsFromArray:?];
       v38 = 0;
       v14 = [NSDataDetector dataDetectorWithTypes:2104 error:&v38];
       v26 = v38;
       v27 = v14;
-      v32 = v6;
-      v15 = [CKStructuredExtractionUtils ddResultsForUIElements:v6 usingDataDetector:v14 withConfig:self->_config];
-      v31 = v7;
-      [v7 addObjectsFromArray:v15];
+      v32 = _sortGroupFilterUIElements;
+      v15 = [CKStructuredExtractionUtils ddResultsForUIElements:_sortGroupFilterUIElements usingDataDetector:v14 withConfig:self->_config];
+      v31 = results;
+      [results addObjectsFromArray:v15];
       v36 = 0u;
       v37 = 0u;
       v34 = 0u;
@@ -1741,15 +1741,15 @@ LABEL_17:
             }
 
             v21 = *(*(&v34 + 1) + 8 * i);
-            v22 = [v21 sourceUIElement];
-            v23 = [v9 objectForKeyedSubscript:v22];
+            sourceUIElement2 = [v21 sourceUIElement];
+            v23 = [v9 objectForKeyedSubscript:sourceUIElement2];
             if (!v23)
             {
               v23 = objc_alloc_init(NSMutableArray);
             }
 
             [v23 addObject:v21];
-            [v9 setObject:v23 forKeyedSubscript:v22];
+            [v9 setObject:v23 forKeyedSubscript:sourceUIElement2];
           }
 
           v18 = [v16 countByEnumeratingWithState:&v34 objects:v39 count:16];
@@ -1759,20 +1759,20 @@ LABEL_17:
       }
 
       [(LuceneContextRequest *)self _determineSurroundingEntities:v32 withUIElementToResultsMapping:v9];
-      v24 = [(CKContextRequest *)self->_request extractionItems];
-      v25 = [(LuceneContextRequest *)self _addHomeAppExtractionResults:v24];
+      extractionItems = [(CKContextRequest *)self->_request extractionItems];
+      v25 = [(LuceneContextRequest *)self _addHomeAppExtractionResults:extractionItems];
 
       [v31 addObjectsFromArray:v25];
-      v5 = v33;
+      uiElements = v33;
     }
   }
 }
 
-- (id)_addHomeAppExtractionResults:(id)a3
+- (id)_addHomeAppExtractionResults:(id)results
 {
   v4 = [NSMutableArray alloc];
-  v5 = [(CKContextRequest *)self->_request extractionItems];
-  v24 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  extractionItems = [(CKContextRequest *)self->_request extractionItems];
+  v24 = [v4 initWithCapacity:{objc_msgSend(extractionItems, "count")}];
 
   v27 = 0u;
   v28 = 0u;
@@ -1798,26 +1798,26 @@ LABEL_17:
         if (v11)
         {
           v12 = [CKContextResult alloc];
-          v13 = [v10 title];
-          v14 = [v12 initWithTitle:v13 query:0 url:0 category:0];
+          title = [v10 title];
+          v14 = [v12 initWithTitle:title query:0 url:0 category:0];
 
-          v15 = [v10 identifier];
-          [v14 setTopicId:v15];
+          identifier = [v10 identifier];
+          [v14 setTopicId:identifier];
 
           v16 = [NSSet setWithObject:v11];
           [v14 setTags:v16];
 
           [v14 setOnScreen:{objc_msgSend(v10, "isOnScreen")}];
-          v17 = [v10 identifier];
-          v18 = [v10 bundleIdentifier];
-          v19 = [v10 isOnScreen];
+          identifier2 = [v10 identifier];
+          bundleIdentifier = [v10 bundleIdentifier];
+          isOnScreen = [v10 isOnScreen];
           v20 = @"NO";
-          if (v19)
+          if (isOnScreen)
           {
             v20 = @"YES";
           }
 
-          v21 = [NSString stringWithFormat:@"Identifier: %@, BundleIdentifier: %@, On Screen:%@", v17, v18, v20];
+          v21 = [NSString stringWithFormat:@"Identifier: %@, BundleIdentifier: %@, On Screen:%@", identifier2, bundleIdentifier, v20];
           [v14 setDebug:v21];
 
           [v24 addObject:v14];
@@ -1833,43 +1833,43 @@ LABEL_17:
   return v24;
 }
 
-- (id)_getTagTypeForExtractionItemType:(unint64_t)a3
+- (id)_getTagTypeForExtractionItemType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&off_100484318 + a3);
+    v4 = **(&off_100484318 + type);
   }
 
   return v4;
 }
 
-- (void)_determineSurroundingEntities:(id)a3 withUIElementToResultsMapping:(id)a4
+- (void)_determineSurroundingEntities:(id)entities withUIElementToResultsMapping:(id)mapping
 {
-  v6 = a3;
-  v7 = a4;
+  entitiesCopy = entities;
+  mappingCopy = mapping;
   v8 = objc_alloc_init(NSMutableDictionary);
-  if ([v6 count])
+  if ([entitiesCopy count])
   {
     v9 = 0;
-    v35 = v7;
+    v35 = mappingCopy;
     v36 = CKContextTagTypePlainTextLabel;
     v38 = v8;
     do
     {
-      v10 = [v6 objectAtIndexedSubscript:{v9, v35}];
-      v11 = [v7 objectForKeyedSubscript:v10];
+      v10 = [entitiesCopy objectAtIndexedSubscript:{v9, v35}];
+      v11 = [mappingCopy objectForKeyedSubscript:v10];
       v12 = v11;
       if (v11 && [v11 count])
       {
-        v13 = [(ContextConfiguration *)self->_config surroundingEntitiesSearchRange];
-        if (v9 >= v13)
+        surroundingEntitiesSearchRange = [(ContextConfiguration *)self->_config surroundingEntitiesSearchRange];
+        if (v9 >= surroundingEntitiesSearchRange)
         {
-          v14 = v9 - v13;
+          v14 = v9 - surroundingEntitiesSearchRange;
         }
 
         else
@@ -1877,8 +1877,8 @@ LABEL_17:
           v14 = 0;
         }
 
-        v15 = v13 + v9;
-        v16 = [v6 count];
+        v15 = surroundingEntitiesSearchRange + v9;
+        v16 = [entitiesCopy count];
         if (v15 >= v16)
         {
           v17 = v16;
@@ -1897,7 +1897,7 @@ LABEL_17:
         v20 = objc_alloc_init(NSMutableArray);
         while (v14 < v17)
         {
-          v21 = [v6 objectAtIndexedSubscript:v14];
+          v21 = [entitiesCopy objectAtIndexedSubscript:v14];
           if ([(LuceneContextRequest *)self _isLikelyLabel:v21])
           {
             [v21 frameInWindow];
@@ -1912,8 +1912,8 @@ LABEL_17:
               if (!v26)
               {
                 v27 = [CKContextResult alloc];
-                v28 = [v21 text];
-                v26 = [v27 initWithTitle:v28 query:0 url:0 category:0];
+                text = [v21 text];
+                v26 = [v27 initWithTitle:text query:0 url:0 category:0];
 
                 [v21 absoluteOriginOnScreen];
                 [v26 setAbsoluteOriginOnScreen:?];
@@ -1970,30 +1970,30 @@ LABEL_17:
           v8 = v38;
         }
 
-        v7 = v35;
+        mappingCopy = v35;
         v10 = v37;
       }
 
       ++v9;
     }
 
-    while (v9 < [v6 count]);
+    while (v9 < [entitiesCopy count]);
   }
 }
 
-- (id)_determineTitleFromUIElements:(id)a3
+- (id)_determineTitleFromUIElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   [(ContextConfiguration *)self->_config minTitleUIFontSize];
   v6 = v5;
-  v41 = self;
+  selfCopy = self;
   [(ContextConfiguration *)self->_config minTitleUIFontSize];
   v8 = v7;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v9 = v4;
+  v9 = elementsCopy;
   v10 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v10)
   {
@@ -2011,9 +2011,9 @@ LABEL_17:
         v13 = *(*(&v46 + 1) + 8 * i);
         if ([v13 isOnScreen])
         {
-          v14 = [v13 text];
+          text = [v13 text];
           v15 = +[NSCharacterSet newlineCharacterSet];
-          v16 = [v14 rangeOfCharacterFromSet:v15];
+          v16 = [text rangeOfCharacterFromSet:v15];
 
           if (v16 == 0x7FFFFFFFFFFFFFFFLL)
           {
@@ -2031,15 +2031,15 @@ LABEL_17:
             [v13 fontSize];
             if (v6 <= v17)
             {
-              v18 = [v13 text];
-              v19 = [v18 length];
-              v20 = [(ContextConfiguration *)self->_config minUIContextLength];
+              text2 = [v13 text];
+              v19 = [text2 length];
+              minUIContextLength = [(ContextConfiguration *)self->_config minUIContextLength];
 
-              if (v19 > v20)
+              if (v19 > minUIContextLength)
               {
-                v21 = [v40 text];
-                v22 = [v13 text];
-                v23 = [v21 isEqualToString:v22];
+                text3 = [v40 text];
+                text4 = [v13 text];
+                v23 = [text3 isEqualToString:text4];
 
                 if (!v23)
                 {
@@ -2085,10 +2085,10 @@ LABEL_24:
     v26 = 0;
   }
 
-  v27 = [v26 text];
-  if ([v27 length])
+  text5 = [v26 text];
+  if ([text5 length])
   {
-    [(ContextConfiguration *)v41->_config minFontDeltaForTitle];
+    [(ContextConfiguration *)selfCopy->_config minFontDeltaForTitle];
     v29 = v28;
 
     if (!v10)
@@ -2115,7 +2115,7 @@ LABEL_24:
     }
   }
 
-  v31 = [(CKContextRequest *)v41->_request title:v30];
+  v31 = [(CKContextRequest *)selfCopy->_request title:v30];
 
   if (!v31)
   {
@@ -2124,19 +2124,19 @@ LABEL_24:
   }
 
 LABEL_34:
-  v32 = [v10 text];
-  v33 = v32;
-  if (v32)
+  text6 = [v10 text];
+  v33 = text6;
+  if (text6)
   {
-    v34 = v32;
+    title = text6;
   }
 
   else
   {
-    v34 = [(CKContextRequest *)v41->_request title];
+    title = [(CKContextRequest *)selfCopy->_request title];
   }
 
-  v35 = v34;
+  v35 = title;
 
   v36 = [[LuceneContextResult alloc] initWithText:v35];
   if (v10)
@@ -2155,26 +2155,26 @@ LABEL_34:
   v38 = [NSSet setWithObject:CKContextTagTypeTitle];
   [(LuceneContextResult *)v36 setTags:v38];
 
-  [(LuceneContextResult *)v36 setMinPrefix:[(ContextConfiguration *)v41->_config titleMinPrefix]];
+  [(LuceneContextResult *)v36 setMinPrefix:[(ContextConfiguration *)selfCopy->_config titleMinPrefix]];
 LABEL_40:
 
   return v36;
 }
 
-+ (BOOL)_looksLikeTitleBarUIElement:(id)a3
++ (BOOL)_looksLikeTitleBarUIElement:(id)element
 {
-  v3 = a3;
-  v4 = [v3 className];
-  v5 = [v4 isEqualToString:@"UILabel"];
+  elementCopy = element;
+  className = [elementCopy className];
+  v5 = [className isEqualToString:@"UILabel"];
 
-  if (v5 && ([v3 superviewClassNames], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
+  if (v5 && ([elementCopy superviewClassNames], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "count"), v6, v7))
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v3 superviewClassNames];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    superviewClassNames = [elementCopy superviewClassNames];
+    v9 = [superviewClassNames countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2185,7 +2185,7 @@ LABEL_40:
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(superviewClassNames);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -2196,7 +2196,7 @@ LABEL_40:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [superviewClassNames countByEnumeratingWithState:&v16 objects:v20 count:16];
         v14 = 0;
         if (v10)
         {
@@ -2230,9 +2230,9 @@ LABEL_16:
     sub_1002BBAB0();
   }
 
-  v75 = [(CKContextRequest *)self->_request preferredSceneIdentifiers];
-  v3 = [(CKContextRequest *)self->_request uiElements];
-  v4 = [v3 sortedArrayUsingSelector:"compareByPosition:"];
+  preferredSceneIdentifiers = [(CKContextRequest *)self->_request preferredSceneIdentifiers];
+  uiElements = [(CKContextRequest *)self->_request uiElements];
+  v4 = [uiElements sortedArrayUsingSelector:"compareByPosition:"];
   [(CKContextRequest *)self->_request setUiElements:v4];
 
   v5 = objc_alloc_init(NSMutableArray);
@@ -2245,14 +2245,14 @@ LABEL_16:
   if (!v6)
   {
     v8 = 0;
-    v10 = v75;
+    v10 = preferredSceneIdentifiers;
     goto LABEL_67;
   }
 
   v7 = v6;
   v8 = 0;
   v9 = *v83;
-  v10 = v75;
+  v10 = preferredSceneIdentifiers;
   v78 = v5;
   do
   {
@@ -2268,13 +2268,13 @@ LABEL_16:
       v13 = objc_autoreleasePoolPush();
       if (![(LuceneContextRequest *)self _isRelevantUIForExtraction:v12])
       {
-        v14 = v8;
+        sceneIdentifier = v8;
         v8 = 0;
         goto LABEL_22;
       }
 
-      v14 = [v12 sceneIdentifier];
-      if ([v10 count] && (objc_msgSend(v10, "containsObject:", v14) & 1) == 0)
+      sceneIdentifier = [v12 sceneIdentifier];
+      if ([v10 count] && (objc_msgSend(v10, "containsObject:", sceneIdentifier) & 1) == 0)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
         {
@@ -2325,13 +2325,13 @@ LABEL_15:
       v94.size.width = v32;
       if (CGRectEqualToRect(v90, v94))
       {
-        v34 = [v8 text];
-        v35 = [v12 text];
-        v72 = [v34 isEqualToString:v35];
+        text = [v8 text];
+        text2 = [v12 text];
+        v72 = [text isEqualToString:text2];
 
         if (v72)
         {
-          v10 = v75;
+          v10 = preferredSceneIdentifiers;
           v5 = v78;
           goto LABEL_22;
         }
@@ -2358,8 +2358,8 @@ LABEL_15:
         v38 = v20;
       }
 
-      v39 = [v12 superviewClassNames];
-      v40 = [v39 count];
+      superviewClassNames = [v12 superviewClassNames];
+      v40 = [superviewClassNames count];
 
       v41 = 0;
       if (v40 && v37 < v38 + 0.5)
@@ -2421,41 +2421,41 @@ LABEL_15:
       }
 
       v73 = v41;
-      v54 = [v8 className];
-      if (v54)
+      className = [v8 className];
+      if (className)
       {
 
 LABEL_55:
-        v56 = [v8 className];
-        v57 = [v12 className];
-        v69 = [v56 isEqualToString:v57];
+        className2 = [v8 className];
+        className3 = [v12 className];
+        v69 = [className2 isEqualToString:className3];
 
         v58 = v69;
         goto LABEL_56;
       }
 
-      v55 = [v12 className];
+      className4 = [v12 className];
 
-      if (v55)
+      if (className4)
       {
         goto LABEL_55;
       }
 
       v58 = 1;
 LABEL_56:
-      v10 = v75;
+      v10 = preferredSceneIdentifiers;
       v5 = v78;
       if (!v58 || !v73 && !v71 && !v70)
       {
         goto LABEL_15;
       }
 
-      v59 = [v8 text];
-      v60 = [v12 text];
-      v74 = [NSString stringWithFormat:@"%@ %@", v59, v60];
+      text3 = [v8 text];
+      text4 = [v12 text];
+      v74 = [NSString stringWithFormat:@"%@ %@", text3, text4];
 
       v5 = v78;
-      v10 = v75;
+      v10 = preferredSceneIdentifiers;
       [v8 setText:v74];
       v92.origin.x = v20;
       v96.size.height = v76;
@@ -2501,26 +2501,26 @@ LABEL_67:
   return v5;
 }
 
-- (BOOL)_isRelevantUIForExtraction:(id)a3
+- (BOOL)_isRelevantUIForExtraction:(id)extraction
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v6 = [v5 length];
+  extractionCopy = extraction;
+  text = [extractionCopy text];
+  v6 = [text length];
   if (v6 < [(ContextConfiguration *)self->_config minUIContextLength])
   {
     goto LABEL_2;
   }
 
-  v8 = [v4 text];
-  v9 = [v8 length];
-  v10 = [(ContextConfiguration *)self->_config maxUIContextLength];
+  text2 = [extractionCopy text];
+  v9 = [text2 length];
+  maxUIContextLength = [(ContextConfiguration *)self->_config maxUIContextLength];
 
-  if (v9 > v10)
+  if (v9 > maxUIContextLength)
   {
     goto LABEL_5;
   }
 
-  [v4 frameInWindow];
+  [extractionCopy frameInWindow];
   y = v20.origin.y;
   height = v20.size.height;
   if (CGRectIsEmpty(v20))
@@ -2536,25 +2536,25 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v5 = [v4 superviewClassNames];
-  if (!v5)
+  text = [extractionCopy superviewClassNames];
+  if (!text)
   {
 LABEL_14:
     v7 = 1;
     goto LABEL_3;
   }
 
-  v14 = [(ContextConfiguration *)self->_config structuredExtractionUIBlockList];
-  v15 = [NSSet setWithArray:v5];
-  v16 = [v14 intersectsSet:v15];
+  structuredExtractionUIBlockList = [(ContextConfiguration *)self->_config structuredExtractionUIBlockList];
+  v15 = [NSSet setWithArray:text];
+  v16 = [structuredExtractionUIBlockList intersectsSet:v15];
 
   if ((v16 & 1) == 0)
   {
-    if (([v4 isOnScreen] & 1) == 0)
+    if (([extractionCopy isOnScreen] & 1) == 0)
     {
-      v17 = [(ContextConfiguration *)self->_config structuredExtractionUIOffScreenIgnoreList];
-      v18 = [NSSet setWithArray:v5];
-      v19 = [v17 intersectsSet:v18];
+      structuredExtractionUIOffScreenIgnoreList = [(ContextConfiguration *)self->_config structuredExtractionUIOffScreenIgnoreList];
+      v18 = [NSSet setWithArray:text];
+      v19 = [structuredExtractionUIOffScreenIgnoreList intersectsSet:v18];
 
       v7 = v19 ^ 1;
       goto LABEL_3;
@@ -2571,29 +2571,29 @@ LABEL_8:
   return v7 & 1;
 }
 
-- (BOOL)_isLikelyLabel:(id)a3
+- (BOOL)_isLikelyLabel:(id)label
 {
-  v4 = [a3 text];
-  v5 = [v4 length];
+  text = [label text];
+  v5 = [text length];
   LOBYTE(self) = v5 <= [(ContextConfiguration *)self->_config surroundingEntitiesMaxLabelLength];
 
   return self;
 }
 
-- (void)filterResultsByTags:(id)a3
+- (void)filterResultsByTags:(id)tags
 {
-  v4 = a3;
-  v5 = [(CKContextRequest *)self->_request type];
-  if (v5 <= 0x14 && ((1 << v5) & 0x1B0438) != 0)
+  tagsCopy = tags;
+  type = [(CKContextRequest *)self->_request type];
+  if (type <= 0x14 && ((1 << type) & 0x1B0438) != 0)
   {
     v7 = objc_alloc_init(NSMutableArray);
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = self;
-    v8 = [(CKContextResponse *)self->_response results];
-    v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    selfCopy = self;
+    results = [(CKContextResponse *)self->_response results];
+    v9 = [results countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
       v10 = v9;
@@ -2604,16 +2604,16 @@ LABEL_8:
         {
           if (*v20 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(results);
           }
 
           v13 = *(*(&v19 + 1) + 8 * i);
-          v14 = [v13 tags];
-          if (v14)
+          tags = [v13 tags];
+          if (tags)
           {
-            v15 = v14;
-            v16 = [v13 tags];
-            v17 = [v16 intersectsSet:v4];
+            v15 = tags;
+            tags2 = [v13 tags];
+            v17 = [tags2 intersectsSet:tagsCopy];
 
             if (v17)
             {
@@ -2622,20 +2622,20 @@ LABEL_8:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v10 = [results countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v10);
     }
 
-    [(CKContextResponse *)v18->_response setResults:v7];
+    [(CKContextResponse *)selfCopy->_response setResults:v7];
   }
 }
 
-+ (id)setOfLinewiseStringsFromFieldValue:(id)a3
++ (id)setOfLinewiseStringsFromFieldValue:(id)value
 {
-  v3 = a3;
-  if ([v3 length])
+  valueCopy = value;
+  if ([valueCopy length])
   {
     +[NSMutableOrderedSet orderedSet];
     v6[0] = _NSConcreteStackBlock;
@@ -2643,7 +2643,7 @@ LABEL_8:
     v6[2] = sub_1002AFE7C;
     v4 = v6[3] = &unk_100484000;
     v7 = v4;
-    [v3 enumerateLinesUsingBlock:v6];
+    [valueCopy enumerateLinesUsingBlock:v6];
   }
 
   else
@@ -2654,20 +2654,20 @@ LABEL_8:
   return v4;
 }
 
-+ (id)lookupTreasureMapForDomainHierarchy:(id)a3 fromTreasureMap:(id)a4 intoSet:(id)a5 isRelaxedMatchOut:(BOOL *)a6
++ (id)lookupTreasureMapForDomainHierarchy:(id)hierarchy fromTreasureMap:(id)map intoSet:(id)set isRelaxedMatchOut:(BOOL *)out
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  hierarchyCopy = hierarchy;
+  mapCopy = map;
+  setCopy = set;
+  v12 = hierarchyCopy;
   if ([v12 length])
   {
     v20 = 0;
-    v13 = [v10 objectsForKey:v12 intoSet:v11 keepWalkingOut:&v20];
+    v13 = [mapCopy objectsForKey:v12 intoSet:setCopy keepWalkingOut:&v20];
 
-    if (a6 && ![v13 count])
+    if (out && ![v13 count])
     {
-      *a6 = 1;
+      *out = 1;
     }
 
     if ([v13 count] && v20 != 1 || (v14 = objc_msgSend(v12, "indexOf:", 46), (v14 & 0x80000000) != 0))
@@ -2689,7 +2689,7 @@ LABEL_8:
           break;
         }
 
-        v17 = [v10 objectsForKey:v15 intoSet:v13 keepWalkingOut:&v20];
+        v17 = [mapCopy objectsForKey:v15 intoSet:v13 keepWalkingOut:&v20];
 
         if (![v17 count] || v20 == 1)
         {
@@ -2713,104 +2713,104 @@ LABEL_17:
 
   else
   {
-    v18 = v11;
+    v18 = setCopy;
     v15 = v12;
   }
 
   return v18;
 }
 
-+ (void)addTopicsForURL:(id)a3 withEngine:(id)a4 toResponse:(id)a5
++ (void)addTopicsForURL:(id)l withEngine:(id)engine toResponse:(id)response
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  responseCopy = response;
+  engineCopy = engine;
+  lCopy = l;
   v12 = objc_alloc_init(OrgApacheLuceneDocumentDocumentStoredFieldVisitor);
   v11 = [[OrgApacheLuceneUtilBytesRef alloc] initWithInt:4096];
   [(OrgApacheLuceneIndexStoredFieldVisitor *)v12 setReusableBytesRefWithOrgApacheLuceneUtilBytesRef:v11];
 
-  [a1 _addTopicsForUrl:v10 withEngine:v9 documentVisitor:v12 toResponse:v8];
+  [self _addTopicsForUrl:lCopy withEngine:engineCopy documentVisitor:v12 toResponse:responseCopy];
 }
 
-+ (void)_addTopicsForUrl:(id)a3 withEngine:(id)a4 documentVisitor:(id)a5 toResponse:(id)a6
++ (void)_addTopicsForUrl:(id)url withEngine:(id)engine documentVisitor:(id)visitor toResponse:(id)response
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 scheme];
-  v14 = [v9 host];
-  v122 = [v10 treasureMap];
-  v135 = [v10 reader];
-  v121 = v14;
-  if ([v13 length] && objc_msgSend(v14, "length") && v122 && v135)
+  urlCopy = url;
+  engineCopy = engine;
+  visitorCopy = visitor;
+  responseCopy = response;
+  scheme = [urlCopy scheme];
+  host = [urlCopy host];
+  treasureMap = [engineCopy treasureMap];
+  reader = [engineCopy reader];
+  v121 = host;
+  if ([scheme length] && objc_msgSend(host, "length") && treasureMap && reader)
   {
     v150 = 0;
-    v113 = [qword_1005572A8 containsObject:v13];
+    v113 = [qword_1005572A8 containsObject:scheme];
     if (v113)
     {
-      v15 = v14;
-      if ([v14 hasSuffix:@"."])
+      v15 = host;
+      if ([host hasSuffix:@"."])
       {
-        v16 = [v14 substringToIndex:{objc_msgSend(v14, "length") - 1}];
+        v16 = [host substringToIndex:{objc_msgSend(host, "length") - 1}];
 
         v15 = v16;
       }
 
-      v112 = v13;
-      v17 = [v15 lowercaseString];
+      v112 = scheme;
+      lowercaseString = [v15 lowercaseString];
 
-      v18 = [objc_opt_class() lookupTreasureMapForDomainHierarchy:v17 fromTreasureMap:v122 intoSet:0 isRelaxedMatchOut:&v150];
-      v115 = 0;
-      v120 = 0;
-      v121 = v17;
+      v18 = [objc_opt_class() lookupTreasureMapForDomainHierarchy:lowercaseString fromTreasureMap:treasureMap intoSet:0 isRelaxedMatchOut:&v150];
+      value6 = 0;
+      value4 = 0;
+      v121 = lowercaseString;
 LABEL_9:
-      v123 = 0;
-      v126 = 0;
+      value3 = 0;
+      value2 = 0;
       v114 = 0;
       LOBYTE(v124) = 0;
       goto LABEL_71;
     }
 
-    if (![qword_1005572B0 containsObject:v13])
+    if (![qword_1005572B0 containsObject:scheme])
     {
-      if (![qword_1005572B8 containsObject:v13])
+      if (![qword_1005572B8 containsObject:scheme])
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
         {
           sub_1002BBB30();
         }
 
-        v120 = 0;
-        v123 = 0;
-        v126 = 0;
+        value4 = 0;
+        value3 = 0;
+        value2 = 0;
         v18 = 0;
 
         goto LABEL_165;
       }
 
-      v112 = v13;
-      v25 = [NSString stringWithFormat:@"%@://%@", v13, v14];
-      v18 = [v122 objectsForKey:v25 intoSet:0 keepWalkingOut:0];
+      v112 = scheme;
+      v25 = [NSString stringWithFormat:@"%@://%@", scheme, host];
+      v18 = [treasureMap objectsForKey:v25 intoSet:0 keepWalkingOut:0];
 
-      v115 = 0;
-      v120 = 0;
+      value6 = 0;
+      value4 = 0;
       goto LABEL_9;
     }
 
-    v19 = v13;
-    v20 = v14;
-    v21 = [NSString stringWithFormat:@"%@://%@", v13, v14];
-    v18 = [v122 objectsForKey:v21 intoSet:0 keepWalkingOut:0];
-    v112 = v13;
+    v19 = scheme;
+    v20 = host;
+    v21 = [NSString stringWithFormat:@"%@://%@", scheme, host];
+    v18 = [treasureMap objectsForKey:v21 intoSet:0 keepWalkingOut:0];
+    v112 = scheme;
     if (![v18 count])
     {
-      v22 = [v121 lowercaseString];
+      lowercaseString2 = [v121 lowercaseString];
 
-      v20 = v22;
-      v23 = [NSString stringWithFormat:@"%@://%@", v19, v22];
+      v20 = lowercaseString2;
+      v23 = [NSString stringWithFormat:@"%@://%@", v19, lowercaseString2];
 
-      v24 = [v122 objectsForKey:v23 intoSet:v18 keepWalkingOut:0];
+      v24 = [treasureMap objectsForKey:v23 intoSet:v18 keepWalkingOut:0];
 
       v21 = v23;
       v18 = v24;
@@ -2819,10 +2819,10 @@ LABEL_9:
     v121 = v20;
     if ([v18 count])
     {
-      v115 = 0;
-      v120 = 0;
-      v123 = 0;
-      v126 = 0;
+      value6 = 0;
+      value4 = 0;
+      value3 = 0;
+      value2 = 0;
       v114 = 0;
       LOBYTE(v124) = 0;
 LABEL_68:
@@ -2830,7 +2830,7 @@ LABEL_68:
       {
         v48 = objc_opt_class();
         v49 = [objc_opt_class() reverseFQDN:v20];
-        v50 = [v48 lookupTreasureMapForDomainHierarchy:v49 fromTreasureMap:v122 intoSet:v18 isRelaxedMatchOut:&v150];
+        v50 = [v48 lookupTreasureMapForDomainHierarchy:v49 fromTreasureMap:treasureMap intoSet:v18 isRelaxedMatchOut:&v150];
 
         v18 = v50;
       }
@@ -2854,12 +2854,12 @@ LABEL_71:
       }
 
       v54 = +[MetricsLogging instance];
-      v55 = [v10 indexId];
-      [v54 recordURLLookupSucceeded:v53 bundleId:v113 ^ 1 indexId:v55 requestType:6];
+      indexId = [engineCopy indexId];
+      [v54 recordURLLookupSucceeded:v53 bundleId:v113 ^ 1 indexId:indexId requestType:6];
 
       if (![v18 count] && (v124 & 1) == 0)
       {
-        v13 = v112;
+        scheme = v112;
 LABEL_164:
 
 LABEL_165:
@@ -2867,25 +2867,25 @@ LABEL_165:
       }
 
       v56 = objc_alloc_init(NSMutableArray);
-      v57 = [v12 level1Topics];
-      v58 = [v57 count];
+      level1Topics = [responseCopy level1Topics];
+      v58 = [level1Topics count];
 
       if (v58)
       {
-        v59 = [v12 level1Topics];
-        [v56 addObjectsFromArray:v59];
+        level1Topics2 = [responseCopy level1Topics];
+        [v56 addObjectsFromArray:level1Topics2];
       }
 
       v127 = v56;
-      v111 = v9;
+      v111 = urlCopy;
       v60 = objc_alloc_init(NSMutableArray);
-      v61 = [v12 level2Topics];
-      v62 = [v61 count];
+      level2Topics = [responseCopy level2Topics];
+      v62 = [level2Topics count];
 
       if (v62)
       {
-        v63 = [v12 level2Topics];
-        [v60 addObjectsFromArray:v63];
+        level2Topics2 = [responseCopy level2Topics];
+        [v60 addObjectsFromArray:level2Topics2];
       }
 
       v125 = v60;
@@ -2900,7 +2900,7 @@ LABEL_165:
 
         v67 = 0;
         v140 = 0;
-        v13 = v112;
+        scheme = v112;
 LABEL_140:
         if (v124)
         {
@@ -2910,10 +2910,10 @@ LABEL_140:
             [v125 removeAllObjects];
           }
 
-          if (v126 | v123)
+          if (value2 | value3)
           {
-            v100 = [[CKContextResult alloc] initWithTitle:v123 query:0 url:0 category:0];
-            v101 = [v126 copy];
+            v100 = [[CKContextResult alloc] initWithTitle:value3 query:0 url:0 category:0];
+            v101 = [value2 copy];
             [v100 setTopicId:v101];
 
             if (v100)
@@ -2922,10 +2922,10 @@ LABEL_140:
             }
           }
 
-          if (v120 | v115)
+          if (value4 | value6)
           {
-            v102 = [[CKContextResult alloc] initWithTitle:v115 query:0 url:0 category:0];
-            v103 = [v120 copy];
+            v102 = [[CKContextResult alloc] initWithTitle:value6 query:0 url:0 category:0];
+            v103 = [value4 copy];
             [v102 setTopicId:v103];
 
             if (v102)
@@ -2965,21 +2965,21 @@ LABEL_140:
           }
         }
 
-        [v12 setLevel1Topics:v56];
-        [v12 setLevel2Topics:v125];
+        [responseCopy setLevel1Topics:v56];
+        [responseCopy setLevel2Topics:v125];
 LABEL_163:
 
         goto LABEL_164;
       }
 
       v65 = v64;
-      v109 = v12;
+      v109 = responseCopy;
       v66 = 0;
       v67 = 0;
       v129 = 0;
       v68 = *v143;
-      v131 = v11;
-      v133 = v10;
+      v131 = visitorCopy;
+      v133 = engineCopy;
       v128 = v18;
 LABEL_85:
       v69 = 0;
@@ -2990,9 +2990,9 @@ LABEL_85:
           objc_enumerationMutation(v18);
         }
 
-        v70 = [*(*(&v142 + 1) + 8 * v69) intValue];
-        v71 = v70;
-        if ((v70 & 0x80000000) != 0)
+        intValue = [*(*(&v142 + 1) + 8 * v69) intValue];
+        v71 = intValue;
+        if ((intValue & 0x80000000) != 0)
         {
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
@@ -3006,8 +3006,8 @@ LABEL_103:
 
         else
         {
-          v72 = v70 & 7;
-          if ((v70 & 7) > 4)
+          v72 = intValue & 7;
+          if ((intValue & 7) > 4)
           {
             v67 = v72 - 3;
             v66 = 1;
@@ -3015,7 +3015,7 @@ LABEL_103:
 
           else if ((v72 - 2) >= 3)
           {
-            if ((v70 & 7) != 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
+            if ((intValue & 7) != 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
             {
               sub_1002BBBA8(v153, v71, v154);
             }
@@ -3024,7 +3024,7 @@ LABEL_103:
           else
           {
             v66 = 0;
-            v67 = v70 & 7;
+            v67 = intValue & 7;
           }
 
           v74 = v71 >> 3;
@@ -3032,7 +3032,7 @@ LABEL_103:
           {
             v75 = v67;
             v76 = v74 - 64;
-            if ((v74 - 64) >= [v10 maxDoc])
+            if ((v74 - 64) >= [engineCopy maxDoc])
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
               {
@@ -3046,15 +3046,15 @@ LABEL_103:
             }
 
             v139 = v66;
-            v77 = [v11 getDocument];
-            v78 = v77;
-            if (!v77)
+            getDocument = [visitorCopy getDocument];
+            v78 = getDocument;
+            if (!getDocument)
             {
               goto LABEL_134;
             }
 
-            [v77 removeAllFields];
-            [v135 documentWithInt:v74 - 64 withOrgApacheLuceneIndexStoredFieldVisitor:v11];
+            [getDocument removeAllFields];
+            [reader documentWithInt:v74 - 64 withOrgApacheLuceneIndexStoredFieldVisitor:visitorCopy];
             v79 = [v78 getWithNSString:@"title"];
             v137 = [v78 getWithNSString:@"level1"];
             v138 = [v78 getWithNSString:@"level2"];
@@ -3074,27 +3074,27 @@ LABEL_103:
             v134 = v80;
             if (v80)
             {
-              v85 = [v80 numericValue];
-              v86 = v85;
-              if (!v85)
+              numericValue = [v80 numericValue];
+              v86 = numericValue;
+              if (!numericValue)
               {
                 goto LABEL_169;
               }
 
-              v87 = [v85 intValue];
-              if (v87 < 1)
+              intValue2 = [numericValue intValue];
+              if (intValue2 < 1)
               {
                 goto LABEL_169;
               }
 
-              v88 = v87;
-              if (v87 >= [v133 maxDoc])
+              v88 = intValue2;
+              if (intValue2 >= [v133 maxDoc])
               {
                 goto LABEL_169;
               }
 
               [v78 removeAllFields];
-              [v135 documentWithInt:v88 withOrgApacheLuceneIndexStoredFieldVisitor:v131];
+              [reader documentWithInt:v88 withOrgApacheLuceneIndexStoredFieldVisitor:v131];
               v89 = [v78 getWithNSString:@"title"];
               v90 = [v78 getWithNSString:@"level1"];
               v118 = v89;
@@ -3140,8 +3140,8 @@ LABEL_129:
                 v80 = v134;
 LABEL_133:
 
-                v11 = v131;
-                v10 = v133;
+                visitorCopy = v131;
+                engineCopy = v133;
                 v18 = v128;
 LABEL_134:
 
@@ -3160,13 +3160,13 @@ LABEL_134:
 
             else
             {
-              v97 = [v81 title];
+              title = [v81 title];
 
               v91 = 0;
               v94 = v137;
               v96 = v127;
               v95 = v125;
-              if (!v97)
+              if (!title)
               {
                 goto LABEL_129;
               }
@@ -3212,9 +3212,9 @@ LABEL_135:
           {
             v140 = v66;
 
-            v12 = v109;
-            v9 = v111;
-            v13 = v112;
+            responseCopy = v109;
+            urlCopy = v111;
+            scheme = v112;
             v56 = v127;
             if (v129)
             {
@@ -3229,12 +3229,12 @@ LABEL_135:
       }
     }
 
-    if (![v112 isEqualToString:@"app"] || (objc_msgSend(v9, "query"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "length"), v26, !v27))
+    if (![v112 isEqualToString:@"app"] || (objc_msgSend(urlCopy, "query"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "length"), v26, !v27))
     {
-      v115 = 0;
-      v120 = 0;
-      v123 = 0;
-      v126 = 0;
+      value6 = 0;
+      value4 = 0;
+      value3 = 0;
+      value2 = 0;
       v114 = 0;
       LOBYTE(v124) = 0;
 LABEL_61:
@@ -3255,7 +3255,7 @@ LABEL_61:
           break;
         }
 
-        v47 = [v122 objectsForKey:v46 intoSet:v18 keepWalkingOut:0];
+        v47 = [treasureMap objectsForKey:v46 intoSet:v18 keepWalkingOut:0];
 
         v21 = v46;
         v18 = v47;
@@ -3271,33 +3271,33 @@ LABEL_61:
       goto LABEL_68;
     }
 
-    v108 = v12;
-    v110 = v9;
-    v130 = v11;
-    v132 = v10;
-    [NSURLComponents componentsWithURL:v9 resolvingAgainstBaseURL:0];
+    v108 = responseCopy;
+    v110 = urlCopy;
+    v130 = visitorCopy;
+    v132 = engineCopy;
+    [NSURLComponents componentsWithURL:urlCopy resolvingAgainstBaseURL:0];
     v146 = 0u;
     v147 = 0u;
     v148 = 0u;
     v141 = v149 = 0u;
-    v28 = [v141 queryItems];
-    v29 = [v28 countByEnumeratingWithState:&v146 objects:v158 count:16];
+    queryItems = [v141 queryItems];
+    v29 = [queryItems countByEnumeratingWithState:&v146 objects:v158 count:16];
     if (!v29)
     {
-      v115 = 0;
-      v120 = 0;
-      v123 = 0;
-      v126 = 0;
+      value6 = 0;
+      value4 = 0;
+      value3 = 0;
+      value2 = 0;
       v114 = 0;
       LOBYTE(v124) = 0;
       goto LABEL_60;
     }
 
     v30 = v29;
-    v115 = 0;
-    v120 = 0;
-    v123 = 0;
-    v126 = 0;
+    value6 = 0;
+    value4 = 0;
+    value3 = 0;
+    value2 = 0;
     v114 = 0;
     v124 = 0;
     v31 = *v147;
@@ -3308,12 +3308,12 @@ LABEL_24:
       v33 = v18;
       if (*v147 != v31)
       {
-        objc_enumerationMutation(v28);
+        objc_enumerationMutation(queryItems);
       }
 
       v34 = *(*(&v146 + 1) + 8 * v32);
-      v35 = [v34 value];
-      v36 = [v35 length];
+      value = [v34 value];
+      v36 = [value length];
 
       if (v36)
       {
@@ -3324,16 +3324,16 @@ LABEL_24:
 LABEL_50:
       if (v30 == ++v32)
       {
-        v44 = [v28 countByEnumeratingWithState:&v146 objects:v158 count:16];
+        v44 = [queryItems countByEnumeratingWithState:&v146 objects:v158 count:16];
         v30 = v44;
         if (!v44)
         {
 LABEL_60:
 
-          v12 = v108;
-          v9 = v110;
-          v11 = v130;
-          v10 = v132;
+          responseCopy = v108;
+          urlCopy = v110;
+          visitorCopy = v130;
+          engineCopy = v132;
           goto LABEL_61;
         }
 
@@ -3341,10 +3341,10 @@ LABEL_60:
       }
     }
 
-    v37 = [v34 name];
-    if ([v37 isEqualToString:@"level1.id"])
+    name = [v34 name];
+    if ([name isEqualToString:@"level1.id"])
     {
-      v38 = v126 == 0;
+      v38 = value2 == 0;
     }
 
     else
@@ -3354,7 +3354,7 @@ LABEL_60:
 
     if (v38)
     {
-      v126 = [v34 value];
+      value2 = [v34 value];
       v124 = 1;
       v18 = v33;
 LABEL_49:
@@ -3362,9 +3362,9 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    if ([v37 isEqualToString:@"level1.title"])
+    if ([name isEqualToString:@"level1.title"])
     {
-      v39 = v123 == 0;
+      v39 = value3 == 0;
     }
 
     else
@@ -3375,14 +3375,14 @@ LABEL_49:
     v18 = v33;
     if (v39)
     {
-      v123 = [v34 value];
+      value3 = [v34 value];
     }
 
     else
     {
-      if ([v37 isEqualToString:@"level2.id"])
+      if ([name isEqualToString:@"level2.id"])
       {
-        v40 = v120 == 0;
+        v40 = value4 == 0;
       }
 
       else
@@ -3392,17 +3392,17 @@ LABEL_49:
 
       if (v40)
       {
-        v120 = [v34 value];
+        value4 = [v34 value];
       }
 
       else
       {
-        if (![v37 isEqualToString:@"level2.title"] || v115)
+        if (![name isEqualToString:@"level2.title"] || value6)
         {
-          if ([v37 isEqualToString:@"override"])
+          if ([name isEqualToString:@"override"])
           {
-            v42 = [v34 value];
-            v43 = [v42 isEqualToString:@"all"];
+            value5 = [v34 value];
+            v43 = [value5 isEqualToString:@"all"];
 
             v18 = v33;
           }
@@ -3417,7 +3417,7 @@ LABEL_49:
           goto LABEL_48;
         }
 
-        v115 = [v34 value];
+        value6 = [v34 value];
       }
     }
 
@@ -3430,14 +3430,14 @@ LABEL_48:
 LABEL_166:
 }
 
-+ (id)stripHostToDomain:(id)a3 level:(unint64_t)a4
++ (id)stripHostToDomain:(id)domain level:(unint64_t)level
 {
-  v5 = a3;
-  v6 = [v5 length];
-  if (!a4)
+  domainCopy = domain;
+  v6 = [domainCopy length];
+  if (!level)
   {
 LABEL_5:
-    v8 = [v5 substringFromIndex:(v6 + 1)];
+    v8 = [domainCopy substringFromIndex:(v6 + 1)];
 LABEL_6:
     v9 = v8;
     goto LABEL_7;
@@ -3446,28 +3446,28 @@ LABEL_6:
   v7 = 0;
   while (1)
   {
-    v6 = [v5 lastIndexOf:46 fromIndex:v6 - 1];
+    v6 = [domainCopy lastIndexOf:46 fromIndex:v6 - 1];
     if ((v6 & 0x80000000) != 0)
     {
       break;
     }
 
-    if (a4 == ++v7)
+    if (level == ++v7)
     {
       goto LABEL_5;
     }
   }
 
-  if (v7 >= a4 - 1)
+  if (v7 >= level - 1)
   {
-    v8 = v5;
+    v8 = domainCopy;
     goto LABEL_6;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = a4;
+    levelCopy = level;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Unexpected hostname for level %lu", &v11, 0xCu);
   }
 
@@ -3477,41 +3477,41 @@ LABEL_7:
   return v9;
 }
 
-+ (id)hostToCapitalizedName:(id)a3
++ (id)hostToCapitalizedName:(id)name
 {
-  v3 = a3;
-  if (![v3 length])
+  nameCopy = name;
+  if (![nameCopy length])
   {
     goto LABEL_6;
   }
 
-  v4 = [v3 indexOf:46];
+  v4 = [nameCopy indexOf:46];
   if ((v4 & 0x80000000) == 0)
   {
-    v5 = [v3 substring:0 endIndex:v4];
+    v5 = [nameCopy substring:0 endIndex:v4];
 
-    v3 = v5;
+    nameCopy = v5;
   }
 
-  if ([v3 length])
+  if ([nameCopy length])
   {
-    v6 = [v3 capitalizedString];
+    capitalizedString = [nameCopy capitalizedString];
   }
 
   else
   {
 LABEL_6:
-    v6 = 0;
+    capitalizedString = 0;
   }
 
-  return v6;
+  return capitalizedString;
 }
 
 - (void)_tokenizeText
 {
-  v3 = [(CKContextRequest *)self->_request text];
-  v4 = [(CKContextResponse *)self->_response languageTag];
-  v5 = [LanguageUtilities simplifyTextForSearch:v3 withLanguage:v4];
+  text = [(CKContextRequest *)self->_request text];
+  languageTag = [(CKContextResponse *)self->_response languageTag];
+  v5 = [LanguageUtilities simplifyTextForSearch:text withLanguage:languageTag];
   v6 = [v5 length];
   if (v5 && [v5 length] >= 3)
   {
@@ -3563,7 +3563,7 @@ LABEL_6:
   v68 = &v67;
   v69 = 0x2020000000;
   v70 = 0;
-  v12 = [(ContextConfiguration *)self->_config luceneIgnoreAfterPosition];
+  luceneIgnoreAfterPosition = [(ContextConfiguration *)self->_config luceneIgnoreAfterPosition];
   v65[0] = 0;
   v65[1] = v65;
   v65[2] = 0x2020000000;
@@ -3594,16 +3594,16 @@ LABEL_6:
   v53[3] = sub_1002AA110;
   v53[4] = sub_1002AA120;
   v54 = 0;
-  v13 = [(ContextConfiguration *)self->_config luceneMaxUniqueTotalTokens];
-  v25 = [(ContextConfiguration *)self->_config luceneMaxUniqueNotSkippedTokens];
+  luceneMaxUniqueTotalTokens = [(ContextConfiguration *)self->_config luceneMaxUniqueTotalTokens];
+  luceneMaxUniqueNotSkippedTokens = [(ContextConfiguration *)self->_config luceneMaxUniqueNotSkippedTokens];
   v24 = v5;
-  v23 = [(ContextConfiguration *)self->_config luceneMaxUniquePrimaryTokens];
-  v14 = v3;
-  v15 = [(ContextConfiguration *)self->_config bigramMaxEnclosedStopwords];
-  v21 = v4;
+  luceneMaxUniquePrimaryTokens = [(ContextConfiguration *)self->_config luceneMaxUniquePrimaryTokens];
+  v14 = text;
+  bigramMaxEnclosedStopwords = [(ContextConfiguration *)self->_config bigramMaxEnclosedStopwords];
+  v21 = languageTag;
   v22 = v14;
-  v16 = [(ContextConfiguration *)self->_config bigramMaxOffsetDelta];
-  v17 = v15 + 1;
+  bigramMaxOffsetDelta = [(ContextConfiguration *)self->_config bigramMaxOffsetDelta];
+  v17 = bigramMaxEnclosedStopwords + 1;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1002B1A78;
@@ -3611,7 +3611,7 @@ LABEL_6:
   v31 = &v83;
   v20 = v9;
   v27 = v20;
-  v28 = self;
+  selfCopy = self;
   v32 = &v79;
   v33 = &v71;
   v34 = &v67;
@@ -3623,7 +3623,7 @@ LABEL_6:
   v18 = v11;
   v29 = v18;
   v40 = &v87;
-  v46 = v12;
+  v46 = luceneIgnoreAfterPosition;
   v41 = v75;
   v19 = v24;
   v52 = v6 - 1;
@@ -3632,11 +3632,11 @@ LABEL_6:
   v43 = v55;
   v44 = v90;
   v47 = v17;
-  v48 = v16;
+  v48 = bigramMaxOffsetDelta;
   v45 = v77;
-  v49 = v23;
-  v50 = v25;
-  v51 = v13;
+  v49 = luceneMaxUniquePrimaryTokens;
+  v50 = luceneMaxUniqueNotSkippedTokens;
+  v51 = luceneMaxUniqueTotalTokens;
   sub_1002B198C(v7, v26);
   if (self->_debug)
   {
@@ -3666,21 +3666,21 @@ LABEL_6:
   _Block_object_dispose(v90, 8);
 }
 
-- (id)inspectTitle:(id)a3 titleForTokenization:(id)a4 conditionals:(id)a5
+- (id)inspectTitle:(id)title titleForTokenization:(id)tokenization conditionals:(id)conditionals
 {
-  v7 = a3;
-  v30 = a4;
-  v29 = a5;
+  titleCopy = title;
+  tokenizationCopy = tokenization;
+  conditionalsCopy = conditionals;
   v8 = objc_opt_new();
-  v28 = v7;
-  if (![v7 length])
+  v28 = titleCopy;
+  if (![titleCopy length])
   {
     v10 = v8;
     goto LABEL_40;
   }
 
   v27 = v8;
-  [v8 setTitle:v7];
+  [v8 setTitle:titleCopy];
   v62 = 0;
   v63 = &v62;
   v64 = 0x3032000000;
@@ -3688,9 +3688,9 @@ LABEL_6:
   v66 = sub_1002AA120;
   v67 = objc_alloc_init(NSMutableSet);
   [v8 setImportantTokens:v63[5]];
-  if (!v30)
+  if (!tokenizationCopy)
   {
-    v30 = v7;
+    tokenizationCopy = titleCopy;
   }
 
   v56 = 0;
@@ -3700,7 +3700,7 @@ LABEL_6:
   v60 = sub_1002AA120;
   v61 = objc_opt_new();
   [v8 setTokenString:v57[5]];
-  if (v30)
+  if (tokenizationCopy)
   {
     v9 = [(OrgApacheLuceneAnalysisAnalyzer *)self->_analyzer tokenStreamWithNSString:@"text" withNSString:?];
   }
@@ -3731,7 +3731,7 @@ LABEL_6:
   v44[3] = &unk_1004840A0;
   v13 = v12;
   v45 = v13;
-  v46 = self;
+  selfCopy = self;
   v48 = &v56;
   v14 = v27;
   v47 = v14;
@@ -3739,7 +3739,7 @@ LABEL_6:
   v50 = v54;
   v51 = v52;
   sub_1002B198C(v9, v44);
-  if (!v29 || ![v29 count])
+  if (!conditionalsCopy || ![conditionalsCopy count])
   {
     goto LABEL_38;
   }
@@ -3748,7 +3748,7 @@ LABEL_6:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v15 = v29;
+  v15 = conditionalsCopy;
   v16 = [v15 countByEnumeratingWithState:&v40 objects:v68 count:16];
   if (!v16)
   {
@@ -3802,7 +3802,7 @@ LABEL_6:
           v32[3] = &unk_1004840C8;
           v13 = v25;
           v33 = v13;
-          v34 = self;
+          selfCopy2 = self;
           v35 = &v36;
           sub_1002B198C(v23, v32);
           LOBYTE(v25) = *(v37 + 24);
@@ -3882,10 +3882,10 @@ LABEL_40:
   return v10;
 }
 
-- (id)_readTermInfo:(id)a3 tokenTypeOut:(unint64_t *)a4 weightOut:(float *)a5 docIdOut:(int *)a6
+- (id)_readTermInfo:(id)info tokenTypeOut:(unint64_t *)out weightOut:(float *)weightOut docIdOut:(int *)idOut
 {
-  v7 = a3;
-  v51 = [(LuceneContextRequest *)self textTermsEnum];
+  infoCopy = info;
+  textTermsEnum = [(LuceneContextRequest *)self textTermsEnum];
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -3901,28 +3901,28 @@ LABEL_40:
   *&v10 = 67109378;
   v45 = v10;
 LABEL_2:
-  v11 = [v51 seekCeilWithOrgApacheLuceneUtilBytesRef:{v7, v45}];
-  v12 = [v11 ordinal];
+  v11 = [textTermsEnum seekCeilWithOrgApacheLuceneUtilBytesRef:{infoCopy, v45}];
+  ordinal = [v11 ordinal];
 
-  if (v12 == 2)
+  if (ordinal == 2)
   {
-    v13 = [v51 term];
-    v14 = v13;
-    if (!v13)
+    term = [textTermsEnum term];
+    v14 = term;
+    if (!term)
     {
       goto LABEL_72;
     }
 
-    v15 = *(v13 + 20);
-    v16 = v7[5];
+    v15 = *(term + 20);
+    v16 = infoCopy[5];
     if (v15 <= v16)
     {
       goto LABEL_72;
     }
 
-    v17 = *(v13 + 8) + 12 + *(v13 + 16);
+    v17 = *(term + 8) + 12 + *(term + 16);
     v18 = *(v17 + v16);
-    if ((v18 - 65) > 0x19 || memcmp((*(v7 + 1) + 12 + v7[4]), (*(v13 + 8) + 12 + *(v13 + 16)), v7[5]))
+    if ((v18 - 65) > 0x19 || memcmp((*(infoCopy + 1) + 12 + infoCopy[4]), (*(term + 8) + 12 + *(term + 16)), infoCopy[5]))
     {
       goto LABEL_72;
     }
@@ -3988,24 +3988,24 @@ LABEL_2:
 
           while (v21++ < 5);
           v20 = 0;
-          if (a6 && v22 <= 0x7FFFFFFFFFFFFFFELL)
+          if (idOut && v22 <= 0x7FFFFFFFFFFFFFFELL)
           {
             if (self->_debugLogEnabled)
             {
               v26 = &_os_log_default;
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
               {
-                v29 = [(OrgApacheLuceneUtilBytesRef *)v14 utf8ToString];
+                utf8ToString = [(OrgApacheLuceneUtilBytesRef *)v14 utf8ToString];
                 *buf = v45;
                 v58 = v22;
                 v59 = 2112;
-                v60 = v29;
+                v60 = utf8ToString;
                 _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Found docId reference to %i in %@", buf, 0x12u);
               }
             }
 
             v20 = 0;
-            *a6 = v22;
+            *idOut = v22;
           }
 
 LABEL_46:
@@ -4024,9 +4024,9 @@ LABEL_72:
 
 LABEL_73:
             v9 = v9 != 0;
-            if (v7)
+            if (infoCopy)
             {
-              [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool reclaimSpaceWithOrgApacheLuceneUtilBytesRef:v7];
+              [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool reclaimSpaceWithOrgApacheLuceneUtilBytesRef:infoCopy];
             }
 
             v32 = 0;
@@ -4115,34 +4115,34 @@ LABEL_43:
               v42 = &_os_log_default;
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
               {
-                v43 = [v7 utf8ToString];
-                sub_1002BBCC8(v43, buf, v44);
+                utf8ToString2 = [infoCopy utf8ToString];
+                sub_1002BBCC8(utf8ToString2, buf, v44);
               }
             }
 
             goto LABEL_72;
           }
 
-          v34 = v7[5];
+          v34 = infoCopy[5];
           v35 = v34 + 2;
           if (v15 < v34 + 2 || memchr((v17 + v35), 89, v15 - v35))
           {
             goto LABEL_72;
           }
 
-          [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool reclaimSpaceWithOrgApacheLuceneUtilBytesRef:v7];
+          [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool reclaimSpaceWithOrgApacheLuceneUtilBytesRef:infoCopy];
           v31 = [[OrgApacheLuceneUtilBytesRef alloc] initWithByteArray:v14->bytes_ withInt:(v14->offset_ + v35) withInt:(v14->length_ - v35)];
 
           v36 = [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool tryAppendWithOrgApacheLuceneUtilBytesRef:v31];
 
           v30 = 1;
-          v7 = v36;
+          infoCopy = v36;
 LABEL_56:
-          [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool reclaimSpaceWithOrgApacheLuceneUtilBytesRef:v7];
+          [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool reclaimSpaceWithOrgApacheLuceneUtilBytesRef:infoCopy];
           v32 = [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool tryAppendWithOrgApacheLuceneUtilBytesRef:v31];
 
           v33 = v30 & v50;
-          v7 = v32;
+          infoCopy = v32;
           v50 = 0;
           if ((v33 & 1) == 0)
           {
@@ -4156,11 +4156,11 @@ LABEL_56:
             v27 = &_os_log_default;
             if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
             {
-              v28 = [(OrgApacheLuceneUtilBytesRef *)v14 utf8ToString];
+              utf8ToString3 = [(OrgApacheLuceneUtilBytesRef *)v14 utf8ToString];
               *buf = v45;
               v58 = v18;
               v59 = 2112;
-              v60 = v28;
+              v60 = utf8ToString3;
               _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Found unknown modifier %c in %@", buf, 0x12u);
             }
           }
@@ -4176,13 +4176,13 @@ LABEL_56:
     }
   }
 
-  if (v12 != 1)
+  if (ordinal != 1)
   {
     goto LABEL_73;
   }
 
   (v8[2])(v8);
-  v32 = v7;
+  v32 = infoCopy;
 LABEL_64:
   v37 = *(v54 + 6);
   if (v37 < 0.59)
@@ -4198,27 +4198,27 @@ LABEL_64:
       v38 = &_os_log_default;
       if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
       {
-        v39 = [v32 utf8ToString];
-        sub_1002BBD1C(v39, buf, v40);
+        utf8ToString4 = [v32 utf8ToString];
+        sub_1002BBD1C(utf8ToString4, buf, v40);
       }
 
-      v7 = v32;
+      infoCopy = v32;
       goto LABEL_72;
     }
 
-    v7 = v32;
+    infoCopy = v32;
     goto LABEL_73;
   }
 
 LABEL_76:
-  if (a4)
+  if (out)
   {
-    *a4 = v9;
+    *out = v9;
   }
 
-  if (a5)
+  if (weightOut)
   {
-    *a5 = *(v54 + 6);
+    *weightOut = *(v54 + 6);
   }
 
   _Block_object_dispose(&v53, 8);
@@ -4226,10 +4226,10 @@ LABEL_76:
   return v32;
 }
 
-- (id)_tokenInfoForToken:(id)a3
+- (id)_tokenInfoForToken:(id)token
 {
-  v4 = a3;
-  if (![v4 length])
+  tokenCopy = token;
+  if (![tokenCopy length])
   {
     v13 = qword_100557280;
     goto LABEL_41;
@@ -4239,7 +4239,7 @@ LABEL_76:
   v31 = -1.0;
   v29 = 3;
   v5 = objc_autoreleasePoolPush();
-  v6 = [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool tryAppendWithJavaLangCharSequence:v4];
+  v6 = [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool tryAppendWithJavaLangCharSequence:tokenCopy];
   if (!self->_useBloomFilter && !self->_minHashPriorityQueue)
   {
     v12 = 0;
@@ -4248,9 +4248,9 @@ LABEL_76:
 
   v7 = [(LuceneContextRequest *)self _computeHashesWithSeed:1 forBytesRef:v6 reuse:self->_hashesTokenReuse, v29];
   objc_storeStrong(&self->_hashesTokenReuse, v7);
-  v8 = [v7 hashes];
+  hashes = [v7 hashes];
   minHashPriorityQueue = self->_minHashPriorityQueue;
-  v10 = [NSNumber numberWithInt:*v8];
+  v10 = [NSNumber numberWithInt:*hashes];
   v11 = [(OrgApacheLuceneUtilPriorityQueue *)minHashPriorityQueue insertWithOverflowWithId:v10];
 
   if (!self->_useBloomFilter || ([(_PASBloomFilter *)self->_bloomFilter getWithHashes:v7]& 1) != 0)
@@ -4268,21 +4268,21 @@ LABEL_76:
     goto LABEL_31;
   }
 
-  if ([v4 length] >= 3)
+  if ([tokenCopy length] >= 3)
   {
 LABEL_13:
     WeakRetained = objc_loadWeakRetained(&self->_engine);
-    v15 = [WeakRetained wordlist];
+    wordlist = [WeakRetained wordlist];
 
-    if (!v15)
+    if (!wordlist)
     {
       goto LABEL_19;
     }
 
     v16 = objc_loadWeakRetained(&self->_engine);
-    v17 = [v16 wordlist];
-    v18 = [v17 words];
-    v19 = [v18 objectForKeyedSubscript:v4];
+    wordlist2 = [v16 wordlist];
+    words = [wordlist2 words];
+    v19 = [words objectForKeyedSubscript:tokenCopy];
 
     if (!v19)
     {
@@ -4304,7 +4304,7 @@ LABEL_19:
           *&v22 = v31;
           if (v31 >= 0.65)
           {
-            if ([v4 length] >= self->_minTokenLengthPrimary)
+            if ([tokenCopy length] >= self->_minTokenLengthPrimary)
             {
               goto LABEL_34;
             }
@@ -4332,7 +4332,7 @@ LABEL_34:
           v25 = [TokenInfo alloc];
           v26 = [v12 copy];
           *&v27 = v31;
-          v13 = [(TokenInfo *)v25 initWithToken:v4 withHashes:v26 term:v24 type:v29 weight:v30 docId:v27];
+          v13 = [(TokenInfo *)v25 initWithToken:tokenCopy withHashes:v26 term:v24 type:v29 weight:v30 docId:v27];
 
           goto LABEL_39;
         }
@@ -4348,10 +4348,10 @@ LABEL_34:
       goto LABEL_29;
     }
 
-    v20 = [v19 intValue];
-    if (v20 != -1)
+    intValue = [v19 intValue];
+    if (intValue != -1)
     {
-      if (!v20)
+      if (!intValue)
       {
         v29 = 10;
         v31 = 0.62;
@@ -4381,23 +4381,23 @@ LABEL_41:
   return v13;
 }
 
-- (id)_lookupBigramTermForTokenA:(id)a3 tokenB:(id)a4 tokenTypeOut:(unint64_t *)a5 docIdOut:(int *)a6
+- (id)_lookupBigramTermForTokenA:(id)a tokenB:(id)b tokenTypeOut:(unint64_t *)out docIdOut:(int *)idOut
 {
   bytesRefPool = self->_bytesRefPool;
-  v11 = a4;
-  v12 = [a3 token];
-  v13 = [v11 token];
+  bCopy = b;
+  token = [a token];
+  token2 = [bCopy token];
 
-  v14 = [(ComAppleContextkitUtilBytesRefPool *)bytesRefPool tryAppendWithJavaLangCharSequence:v12 withChar:95 withJavaLangCharSequence:v13];
+  v14 = [(ComAppleContextkitUtilBytesRefPool *)bytesRefPool tryAppendWithJavaLangCharSequence:token withChar:95 withJavaLangCharSequence:token2];
 
-  v15 = [(LuceneContextRequest *)self _readTermInfo:v14 tokenTypeOut:a5 weightOut:0 docIdOut:a6];
+  v15 = [(LuceneContextRequest *)self _readTermInfo:v14 tokenTypeOut:out weightOut:0 docIdOut:idOut];
 
   if (!v15)
   {
     goto LABEL_4;
   }
 
-  if (*a5 <= 1)
+  if (*out <= 1)
   {
     [(ComAppleContextkitUtilBytesRefPool *)self->_bytesRefPool reclaimSpaceWithOrgApacheLuceneUtilBytesRef:v15];
 LABEL_4:
@@ -4411,17 +4411,17 @@ LABEL_6:
   return v16;
 }
 
-- (BOOL)_isIntermediateNameBigramCandidate:(id)a3 tokenB:(id)a4 bothStartUppercase:(BOOL)a5
+- (BOOL)_isIntermediateNameBigramCandidate:(id)candidate tokenB:(id)b bothStartUppercase:(BOOL)uppercase
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7 != v8;
-  if (v7 != v8 && [v7 count] <= 3 && objc_msgSend(v8, "count") <= 3 && objc_msgSend(v7, "startsQuotedCount") && objc_msgSend(v8, "endsQuotedCount"))
+  candidateCopy = candidate;
+  bCopy = b;
+  v9 = candidateCopy != bCopy;
+  if (candidateCopy != bCopy && [candidateCopy count] <= 3 && objc_msgSend(bCopy, "count") <= 3 && objc_msgSend(candidateCopy, "startsQuotedCount") && objc_msgSend(bCopy, "endsQuotedCount"))
   {
     v9 = 1;
   }
 
-  else if (v7[1] != 8 && (![TokenInfo isSurnameType:?]|| !a5 && ![TokenInfo isPrimaryType:v7[1]]) || ![TokenInfo isSurnameType:v8[1]]|| !a5 && ![TokenInfo isPrimaryType:v8[1]])
+  else if (candidateCopy[1] != 8 && (![TokenInfo isSurnameType:?]|| !uppercase && ![TokenInfo isPrimaryType:candidateCopy[1]]) || ![TokenInfo isSurnameType:bCopy[1]]|| !uppercase && ![TokenInfo isPrimaryType:bCopy[1]])
   {
     v9 = 0;
   }
@@ -4448,19 +4448,19 @@ LABEL_6:
   v3 = objc_opt_new();
   [v3 setMinimumNumberShouldMatchWithInt:2];
   v130 = v3;
-  v132 = [v3 clauses];
+  clauses = [v3 clauses];
   v4 = objc_opt_new();
   [v4 setMinimumNumberShouldMatchWithInt:0];
   v129 = v4;
-  v134 = [v4 clauses];
-  v131 = [(ContextConfiguration *)self->_config luceneForceSecondaryAfterPosition];
+  clauses2 = [v4 clauses];
+  luceneForceSecondaryAfterPosition = [(ContextConfiguration *)self->_config luceneForceSecondaryAfterPosition];
   v152 = 0u;
   v153 = 0u;
   v154 = 0u;
   v155 = 0u;
   v5 = self->_tokenInfosSequence;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v152 objects:v157 count:16];
-  v144 = self;
+  selfCopy = self;
   if (!v6)
   {
     v136 = 0;
@@ -4500,11 +4500,11 @@ LABEL_6:
 
         if (((1 << v11) & 0x3000) != 0)
         {
-          v12 = [v10 isPrimary];
+          isPrimary = [v10 isPrimary];
           v13 = 0.0;
           v14 = v145;
 LABEL_27:
-          v31 = [v10 isTermResultWithPrimary:v12 & (v14 ^ 1) config:self->_config];
+          v31 = [v10 isTermResultWithPrimary:isPrimary & (v14 ^ 1) config:self->_config];
           if ((v31 & 0x8000000000000000) == 0)
           {
             v32 = [(LuceneContextRequest *)self _resultForTokenInfo:v10 minPrefix:v31];
@@ -4512,9 +4512,9 @@ LABEL_27:
             if (v32)
             {
               v34 = v14;
-              v35 = [v32 docId];
+              docId = [v32 docId];
 
-              if (v35)
+              if (docId)
               {
                 v36 = [(NSMutableArray *)self->_termResultsWithDocument count];
                 v37 = v36 >= [(ContextConfiguration *)self->_config luceneMaxTermResultsWithDocument];
@@ -4536,12 +4536,12 @@ LABEL_27:
                   if (v11 == 5 || v11 == 3)
                   {
                     weakKeywordTermResults = self->_weakKeywordTermResults;
-                    v41 = [v10 token];
+                    token = [v10 token];
                     v42 = weakKeywordTermResults;
                     v14 = v34;
-                    [(NSMutableDictionary *)v42 setObject:v33 forKey:v41];
+                    [(NSMutableDictionary *)v42 setObject:v33 forKey:token];
 
-                    self = v144;
+                    self = selfCopy;
                   }
                 }
               }
@@ -4558,7 +4558,7 @@ LABEL_27:
             }
 
             v44 = v138;
-            if (v12)
+            if (isPrimary)
             {
               v45 = v43;
             }
@@ -4572,15 +4572,15 @@ LABEL_27:
             v46 = v44;
             [v10 weight];
             v48 = v47;
-            v49 = [v10 token];
+            token2 = [v10 token];
             v50 = [v10 count];
-            v51 = [v10 firstOccurence];
-            v52 = [v10 firstOccurenceUnique];
-            v53 = [v10 term];
-            v54 = [v53 text];
-            v125 = v51;
-            self = v144;
-            [v46 appendFormat:@"%@\t%f\t%f\t%@\n%4u\t%8u\t%8u\t%@\n", v45, *&v48, *&v13, v49, v50, v125, v52, v54];
+            firstOccurence = [v10 firstOccurence];
+            firstOccurenceUnique = [v10 firstOccurenceUnique];
+            term = [v10 term];
+            text = [term text];
+            v125 = firstOccurence;
+            self = selfCopy;
+            [v46 appendFormat:@"%@\t%f\t%f\t%@\n%4u\t%8u\t%8u\t%@\n", v45, *&v48, *&v13, token2, v50, v125, firstOccurenceUnique, text];
 
             v5 = v140;
           }
@@ -4599,18 +4599,18 @@ LABEL_15:
           }
         }
 
-        v12 = [v10 isPrimary];
+        isPrimary = [v10 isPrimary];
         v16 = [ComAppleProactiveLuceneScoreInterceptTermQuery alloc];
-        v17 = [v10 term];
-        v18 = self;
-        v19 = v17;
+        term2 = [v10 term];
+        selfCopy2 = self;
+        v19 = term2;
         v20 = 128;
-        if (v12)
+        if (isPrimary)
         {
           v20 = 112;
         }
 
-        v21 = [(ComAppleProactiveLuceneScoreInterceptTermQuery *)v16 initWithOrgApacheLuceneIndexTerm:v17 withComAppleProactiveLuceneScoreInterceptTarget:*(&v18->super.isa + v20)];
+        v21 = [(ComAppleProactiveLuceneScoreInterceptTermQuery *)v16 initWithOrgApacheLuceneIndexTerm:term2 withComAppleProactiveLuceneScoreInterceptTarget:*(&selfCopy2->super.isa + v20)];
 
         [(ComAppleProactiveLuceneScoreInterceptTermQuery *)v21 setUserObjectWithId:v10];
         v22 = [v10 count];
@@ -4622,7 +4622,7 @@ LABEL_15:
         v27 = [OrgApacheLuceneSearchBooleanClause alloc];
         v28 = [(OrgApacheLuceneSearchBooleanClause *)v27 initWithOrgApacheLuceneSearchQuery:v21 withOrgApacheLuceneSearchBooleanClause_OccurEnum:qword_100557250];
         v29 = v145;
-        if (((v12 ^ 1 | v145) & 1) == 0)
+        if (((isPrimary ^ 1 | v145) & 1) == 0)
         {
           if (v139 > 63)
           {
@@ -4630,16 +4630,16 @@ LABEL_15:
             goto LABEL_23;
           }
 
-          v29 = v131 <= [v10 firstOccurence];
+          v29 = luceneForceSecondaryAfterPosition <= [v10 firstOccurence];
         }
 
         v14 = v29;
-        if (((v12 ^ 1 | v29) & 1) == 0)
+        if (((isPrimary ^ 1 | v29) & 1) == 0)
         {
           v14 = 0;
           ++v139;
-          v30 = v132;
-          self = v144;
+          v30 = clauses;
+          self = selfCopy;
 LABEL_26:
           [v30 addWithId:v28];
 
@@ -4649,7 +4649,7 @@ LABEL_26:
         }
 
 LABEL_23:
-        self = v144;
+        self = selfCopy;
         if (v136 > 255)
         {
 
@@ -4658,7 +4658,7 @@ LABEL_23:
         }
 
         ++v136;
-        v30 = v134;
+        v30 = clauses2;
         goto LABEL_26;
       }
     }
@@ -4746,8 +4746,8 @@ LABEL_69:
       v60 = 0;
 LABEL_70:
       LOBYTE(v62) = [v58 isPrimary];
-      v63 = [v58 term];
-      v146 = [v63 text];
+      term3 = [v58 term];
+      text2 = [term3 text];
 
       v64 = 0.0;
       if (!v60)
@@ -4756,23 +4756,23 @@ LABEL_70:
       }
 
       [v58 adjustCounts];
-      v65 = [v58 term];
-      if (!v65)
+      term4 = [v58 term];
+      if (!term4)
       {
-        v69 = [v58 tokenA];
-        v70 = [v58 tokenB];
-        v66 = [(LuceneContextRequest *)self _lookupBigramTermForTokenA:v69 tokenB:v70 tokenTypeOut:&v147 docIdOut:0];
+        tokenA = [v58 tokenA];
+        tokenB = [v58 tokenB];
+        v66 = [(LuceneContextRequest *)self _lookupBigramTermForTokenA:tokenA tokenB:tokenB tokenTypeOut:&v147 docIdOut:0];
 
         if (!v66)
         {
 LABEL_113:
-          v108 = v146;
+          v108 = text2;
           goto LABEL_114;
         }
 
-        v71 = [v66 text];
+        text3 = [v66 text];
 
-        v146 = v71;
+        text2 = text3;
         if (v62)
         {
           goto LABEL_73;
@@ -4785,7 +4785,7 @@ LABEL_78:
         goto LABEL_79;
       }
 
-      v66 = v65;
+      v66 = term4;
       if ((v62 & 1) == 0)
       {
         goto LABEL_78;
@@ -4824,7 +4824,7 @@ LABEL_82:
         {
           v56 = 0;
           ++v139;
-          v78 = v132;
+          v78 = clauses;
           goto LABEL_88;
         }
       }
@@ -4833,26 +4833,26 @@ LABEL_82:
       {
         if (v139 <= 63)
         {
-          if (v131 <= [v58 firstOccurence])
+          if (luceneForceSecondaryAfterPosition <= [v58 firstOccurence])
           {
-            v109 = [v58 tokenA];
-            v110 = [v109 firstOccurence];
+            tokenA2 = [v58 tokenA];
+            firstOccurence2 = [tokenA2 firstOccurence];
 
-            v111 = [v58 tokenB];
-            v112 = [v111 firstOccurence];
+            tokenB2 = [v58 tokenB];
+            firstOccurence3 = [tokenB2 firstOccurence];
 
-            if (v110 >= v112)
+            if (firstOccurence2 >= firstOccurence3)
             {
-              v113 = v112;
+              v113 = firstOccurence3;
             }
 
             else
             {
-              v113 = v110;
+              v113 = firstOccurence2;
             }
 
-            self = v144;
-            v75 = v131 <= v113;
+            self = selfCopy;
+            v75 = luceneForceSecondaryAfterPosition <= v113;
           }
 
           else
@@ -4874,7 +4874,7 @@ LABEL_82:
       else
       {
         ++v136;
-        v78 = v134;
+        v78 = clauses2;
 LABEL_88:
         [v78 addWithId:v77];
         v79 = 1;
@@ -4894,18 +4894,18 @@ LABEL_91:
         if (v81)
         {
           v82 = v56;
-          v83 = [v58 tokenA];
-          v84 = [v83 token];
+          tokenA3 = [v58 tokenA];
+          token3 = [tokenA3 token];
 
-          v85 = [v58 tokenB];
-          v86 = [v85 token];
+          tokenB3 = [v58 tokenB];
+          token4 = [tokenB3 token];
 
-          v87 = [v81 docId];
+          docId2 = [v81 docId];
 
-          if (v87)
+          if (docId2)
           {
             v88 = [(NSMutableArray *)self->_termResultsWithDocument count];
-            v89 = self;
+            selfCopy4 = self;
             if (v88 < [(ContextConfiguration *)self->_config luceneMaxTermAndBigramResultsWithDocument])
             {
               termResultsWithDocument = self->_termResultsWithDocument;
@@ -4916,58 +4916,58 @@ LABEL_91:
           }
 
           v91 = [(NSMutableArray *)self->_termResults count];
-          v89 = self;
+          selfCopy4 = self;
           if (v91 >= [(ContextConfiguration *)self->_config luceneMaxTermAndBigramResults])
           {
             goto LABEL_101;
           }
 
-          v92 = [v58 tokenB];
-          v93 = v92;
-          if (v92[1] == 5)
+          tokenB4 = [v58 tokenB];
+          v93 = tokenB4;
+          if (tokenB4[1] == 5)
           {
 
-            v89 = v144;
+            selfCopy4 = selfCopy;
             goto LABEL_99;
           }
 
-          if ([v128 containsObject:v84])
+          if ([v128 containsObject:token3])
           {
 
-            v89 = v144;
+            selfCopy4 = selfCopy;
             goto LABEL_101;
           }
 
-          v114 = [v128 containsObject:v86];
+          v114 = [v128 containsObject:token4];
 
-          v89 = v144;
+          selfCopy4 = selfCopy;
           if ((v114 & 1) == 0)
           {
 LABEL_99:
-            [v128 addObject:v84];
-            [v128 addObject:v86];
-            termResultsWithDocument = v89->_termResults;
+            [v128 addObject:token3];
+            [v128 addObject:token4];
+            termResultsWithDocument = selfCopy4->_termResults;
 LABEL_100:
             [(NSMutableArray *)termResultsWithDocument addObject:v81];
           }
 
 LABEL_101:
-          v94 = [(NSMutableDictionary *)v89->_weakKeywordTermResults objectForKey:v84];
+          v94 = [(NSMutableDictionary *)selfCopy4->_weakKeywordTermResults objectForKey:token3];
           if (v94)
           {
-            [(NSMutableDictionary *)v89->_weakKeywordTermResults removeObjectForKey:v84];
-            [(NSMutableArray *)v89->_termResults removeObject:v94];
+            [(NSMutableDictionary *)selfCopy4->_weakKeywordTermResults removeObjectForKey:token3];
+            [(NSMutableArray *)selfCopy4->_termResults removeObject:v94];
           }
 
-          v95 = [(NSMutableDictionary *)v89->_weakKeywordTermResults objectForKey:v86];
+          v95 = [(NSMutableDictionary *)selfCopy4->_weakKeywordTermResults objectForKey:token4];
 
           if (v95)
           {
-            [(NSMutableDictionary *)v89->_weakKeywordTermResults removeObjectForKey:v86];
-            [(NSMutableArray *)v89->_termResults removeObject:v95];
+            [(NSMutableDictionary *)selfCopy4->_weakKeywordTermResults removeObjectForKey:token4];
+            [(NSMutableArray *)selfCopy4->_termResults removeObject:v95];
           }
 
-          self = v89;
+          self = selfCopy4;
           v56 = v82;
         }
       }
@@ -4994,17 +4994,17 @@ LABEL_101:
       v98 = v97;
       [v58 weight];
       v100 = v99;
-      v101 = [v58 tokenA];
-      v102 = [v101 token];
-      v103 = [v58 tokenB];
-      v104 = [v103 token];
+      tokenA4 = [v58 tokenA];
+      token5 = [tokenA4 token];
+      tokenB5 = [v58 tokenB];
+      token6 = [tokenB5 token];
       v105 = [v58 count];
-      v106 = [v58 firstOccurence];
-      v107 = [v58 firstOccurenceUnique];
-      v108 = v146;
-      [v98 appendFormat:@"%@\t%f\t%f\t%@ %@\n%4u\t%8u\t%8u\t%@\n", v135, *&v100, v64, v102, v104, v105, v106, v107, v146, context];
+      firstOccurence4 = [v58 firstOccurence];
+      firstOccurenceUnique2 = [v58 firstOccurenceUnique];
+      v108 = text2;
+      [v98 appendFormat:@"%@\t%f\t%f\t%@ %@\n%4u\t%8u\t%8u\t%@\n", v135, *&v100, v64, token5, token6, v105, firstOccurence4, firstOccurenceUnique2, text2, context];
 
-      self = v144;
+      self = selfCopy;
 LABEL_114:
 
 LABEL_115:
@@ -5033,7 +5033,7 @@ LABEL_131:
   [(NSMutableArray *)self->_bigramInfosSequence removeAllObjects];
   v116 = v127;
   [v127 addWithOrgApacheLuceneSearchQuery:v130 withOrgApacheLuceneSearchBooleanClause_OccurEnum:qword_100557240];
-  if (([v134 isEmpty] & 1) == 0)
+  if (([clauses2 isEmpty] & 1) == 0)
   {
     [v127 addWithOrgApacheLuceneSearchQuery:v129 withOrgApacheLuceneSearchBooleanClause_OccurEnum:qword_100557250];
   }
@@ -5050,10 +5050,10 @@ LABEL_131:
     response = self->_response;
     v118 = [(NSMapTable *)self->_tokenInfos count];
     v119 = [(NSMapTable *)self->_bigramInfos count];
-    v120 = [v130 clauses];
-    v121 = [v120 size];
-    v122 = [v129 clauses];
-    -[CKContextResponse addDebug:](response, "addDebug:", @"Tokens: %lu, Phrases: %lu, Primary queries: %lu, Secondary queries: %lu", v118, v119, v121, [v122 size]);
+    clauses3 = [v130 clauses];
+    v121 = [clauses3 size];
+    clauses4 = [v129 clauses];
+    -[CKContextResponse addDebug:](response, "addDebug:", @"Tokens: %lu, Phrases: %lu, Primary queries: %lu, Secondary queries: %lu", v118, v119, v121, [clauses4 size]);
 
     v116 = v127;
   }
@@ -5072,29 +5072,29 @@ LABEL_131:
   return v123;
 }
 
-- (id)_bestTypeVariantForTokenInfo:(id)a3 allowingAllCaps:(BOOL)a4
+- (id)_bestTypeVariantForTokenInfo:(id)info allowingAllCaps:(BOOL)caps
 {
-  v6 = a3;
-  v7 = [v6 offsets];
-  v8 = [v7 count];
+  infoCopy = info;
+  offsets = [infoCopy offsets];
+  v8 = [offsets count];
 
   if (!v8)
   {
-    v33 = [v6 token];
-    v34 = [v33 localizedCapitalizedString];
+    token = [infoCopy token];
+    localizedCapitalizedString = [token localizedCapitalizedString];
 
     goto LABEL_39;
   }
 
-  v38 = a4;
-  v43 = [(CKContextRequest *)self->_request text];
+  capsCopy = caps;
+  text = [(CKContextRequest *)self->_request text];
   v9 = objc_opt_new();
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v10 = [v6 offsets];
-  v11 = [v10 countByEnumeratingWithState:&v48 objects:v53 count:16];
+  offsets2 = [infoCopy offsets];
+  v11 = [offsets2 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v11)
   {
     v12 = v11;
@@ -5105,22 +5105,22 @@ LABEL_131:
       {
         if (*v49 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(offsets2);
         }
 
-        v15 = [*(*(&v48 + 1) + 8 * i) rangeValue];
-        v17 = [v43 substring:v15 endIndex:v16];
+        rangeValue = [*(*(&v48 + 1) + 8 * i) rangeValue];
+        v17 = [text substring:rangeValue endIndex:v16];
         [v9 addObject:v17];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v48 objects:v53 count:16];
+      v12 = [offsets2 countByEnumeratingWithState:&v48 objects:v53 count:16];
     }
 
     while (v12);
   }
 
-  v39 = v6;
-  v42 = [v6 token];
+  v39 = infoCopy;
+  token2 = [infoCopy token];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
@@ -5164,7 +5164,7 @@ LABEL_131:
             v32 = v24;
 
             v40 = v25;
-            v42 = v32;
+            token2 = v32;
           }
         }
       }
@@ -5185,40 +5185,40 @@ LABEL_131:
   if (v40 && v21 && v21 < v40)
   {
     v35 = v41;
-    v36 = v41;
-    v34 = v42;
+    localizedCapitalizedString2 = v41;
+    localizedCapitalizedString = token2;
   }
 
   else
   {
     v35 = v41;
-    v34 = v42;
-    if (v40 && v38)
+    localizedCapitalizedString = token2;
+    if (v40 && capsCopy)
     {
       goto LABEL_38;
     }
 
-    v36 = [v42 localizedCapitalizedString];
+    localizedCapitalizedString2 = [token2 localizedCapitalizedString];
   }
 
-  v34 = v36;
+  localizedCapitalizedString = localizedCapitalizedString2;
 LABEL_38:
 
-  v6 = v39;
+  infoCopy = v39;
 LABEL_39:
 
-  return v34;
+  return localizedCapitalizedString;
 }
 
-- (id)_resultForTokenInfo:(id)a3 minPrefix:(int64_t)a4
+- (id)_resultForTokenInfo:(id)info minPrefix:(int64_t)prefix
 {
-  v6 = a3;
-  v76 = self;
-  v77 = v6;
-  if (![TokenInfo isSurnameType:v6[1]])
+  infoCopy = info;
+  selfCopy = self;
+  v77 = infoCopy;
+  if (![TokenInfo isSurnameType:infoCopy[1]])
   {
-    v51 = [v6 count];
-    if (self->_config->_luceneTermResultMinCount <= v51 - [v6 partialNgramCount])
+    v51 = [infoCopy count];
+    if (self->_config->_luceneTermResultMinCount <= v51 - [infoCopy partialNgramCount])
     {
       goto LABEL_43;
     }
@@ -5234,19 +5234,19 @@ LABEL_40:
     goto LABEL_55;
   }
 
-  v7 = [v6 precedingTokens];
-  if (![v7 count])
+  precedingTokens = [infoCopy precedingTokens];
+  if (![precedingTokens count])
   {
 LABEL_37:
-    if (([v6 isQuoted] & 1) == 0)
+    if (([infoCopy isQuoted] & 1) == 0)
     {
-      if (a4 >= 1)
+      if (prefix >= 1)
       {
 
         goto LABEL_40;
       }
 
-      a4 = 1;
+      prefix = 1;
     }
 
     goto LABEL_43;
@@ -5256,7 +5256,7 @@ LABEL_37:
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v8 = v7;
+  v8 = precedingTokens;
   v9 = [v8 countByEnumeratingWithState:&v80 objects:v84 count:16];
   if (!v9)
   {
@@ -5265,8 +5265,8 @@ LABEL_37:
   }
 
   v10 = v9;
-  v73 = v7;
-  v75 = a4;
+  v73 = precedingTokens;
+  prefixCopy = prefix;
   v11 = 0;
   v78 = v8;
   v79 = 0;
@@ -5282,10 +5282,10 @@ LABEL_37:
 
       v14 = *(*(&v80 + 1) + 8 * i);
       v15 = [v8 countForObject:v14];
-      v16 = [v14 nonretainedObjectValue];
-      if (v16)
+      nonretainedObjectValue = [v14 nonretainedObjectValue];
+      if (nonretainedObjectValue)
       {
-        if (v15 >= self->_config->_luceneGivenSurnameMinGivenCount || self->_config->_luceneGivenSurnameEarlyMentionLimit >= [v6 firstOccurence])
+        if (v15 >= self->_config->_luceneGivenSurnameMinGivenCount || self->_config->_luceneGivenSurnameEarlyMentionLimit >= [infoCopy firstOccurence])
         {
 LABEL_15:
           if (v15 <= v11)
@@ -5295,28 +5295,28 @@ LABEL_15:
 
           v20 = v79;
           v11 = v15;
-          v79 = v16;
+          v79 = nonretainedObjectValue;
         }
 
         else
         {
           v17 = [BigramKey alloc];
-          v18 = [v16 token];
-          v19 = [v6 token];
-          v20 = [(BigramKey *)v17 initWithTokenA:v18 tokenB:v19];
+          token = [nonretainedObjectValue token];
+          token2 = [infoCopy token];
+          v20 = [(BigramKey *)v17 initWithTokenA:token tokenB:token2];
 
-          self = v76;
-          v21 = [(NSMapTable *)v76->_bigramInfos objectForKey:v20];
+          self = selfCopy;
+          v21 = [(NSMapTable *)selfCopy->_bigramInfos objectForKey:v20];
           v22 = v21;
           if (v21 && [v21 isPrimary])
           {
 
-            v6 = v77;
+            infoCopy = v77;
             v8 = v78;
             goto LABEL_15;
           }
 
-          v6 = v77;
+          infoCopy = v77;
         }
 
         v8 = v78;
@@ -5330,32 +5330,32 @@ LABEL_19:
 
   while (v10);
 
-  v7 = v73;
-  a4 = v75;
+  precedingTokens = v73;
+  prefix = prefixCopy;
   if (!v79)
   {
     goto LABEL_37;
   }
 
   v23 = [(LuceneContextRequest *)self _bestTypeVariantForTokenInfo:v79 allowingAllCaps:0];
-  v24 = [(LuceneContextRequest *)self _bestTypeVariantForTokenInfo:v6 allowingAllCaps:0];
-  v25 = v6;
+  v24 = [(LuceneContextRequest *)self _bestTypeVariantForTokenInfo:infoCopy allowingAllCaps:0];
+  v25 = infoCopy;
   v26 = [LuceneContextResult alloc];
   v72 = v24;
   v74 = v23;
   v27 = [NSString stringWithFormat:@"%@ %@", v23, v24];
-  v28 = self;
+  selfCopy2 = self;
   v29 = [(LuceneContextResult *)v26 initWithText:v27];
 
-  v30 = [(BigramKey *)v79 term];
-  v31 = [v30 text];
-  v32 = [v25 term];
-  v33 = [v32 text];
-  v34 = [NSString stringWithFormat:@"%@ %@", v31, v33];
+  term = [(BigramKey *)v79 term];
+  text = [term text];
+  term2 = [v25 term];
+  text2 = [term2 text];
+  v34 = [NSString stringWithFormat:@"%@ %@", text, text2];
   [(LuceneContextResult *)v29 setTerm:v34];
 
-  v35 = [(ContextConfiguration *)v28->_config luceneTermResultUnigramScoreMultiplier];
-  v36 = powf(([v25 firstOccurenceUnique] + 1), -[ContextConfiguration luceneTermResultFirstOccurrencePowerLawDecay](v28->_config, "luceneTermResultFirstOccurrencePowerLawDecay")) * v35;
+  luceneTermResultUnigramScoreMultiplier = [(ContextConfiguration *)selfCopy2->_config luceneTermResultUnigramScoreMultiplier];
+  v36 = powf(([v25 firstOccurenceUnique] + 1), -[ContextConfiguration luceneTermResultFirstOccurrencePowerLawDecay](selfCopy2->_config, "luceneTermResultFirstOccurrencePowerLawDecay")) * luceneTermResultUnigramScoreMultiplier;
   v37 = [(BigramKey *)v79 count];
   [(BigramKey *)v79 weight];
   v39 = ((v38 + 1.0) * (v38 + 1.0)) * v37;
@@ -5369,19 +5369,19 @@ LABEL_19:
 
   *&v41 = v36 * *&v41;
   [(LuceneContextResult *)v29 setLuceneScore:v41];
-  if ([(ContextConfiguration *)v28->_config tagsEnabled])
+  if ([(ContextConfiguration *)selfCopy2->_config tagsEnabled])
   {
-    WeakRetained = objc_loadWeakRetained(&v28->_engine);
-    v43 = [WeakRetained tagsMap];
+    WeakRetained = objc_loadWeakRetained(&selfCopy2->_engine);
+    tagsMap = [WeakRetained tagsMap];
 
-    if (v43)
+    if (tagsMap)
     {
       v44 = [NSSet setWithObject:@"CK_PERSON_GIVEN_SURNAME"];
       [(LuceneContextResult *)v29 setTags:v44];
     }
   }
 
-  if (v28->_debug)
+  if (selfCopy2->_debug)
   {
     if ([(BigramKey *)v79 isPrimary])
     {
@@ -5393,75 +5393,75 @@ LABEL_19:
       v45 = @"?";
     }
 
-    v46 = [(BigramKey *)v79 term];
-    v47 = [v46 text];
-    v48 = [v77 term];
-    v49 = [v48 text];
-    v50 = [NSString stringWithFormat:@"%@%@ +%@", v45, v47, v49];
+    term3 = [(BigramKey *)v79 term];
+    text3 = [term3 text];
+    term4 = [v77 term];
+    text4 = [term4 text];
+    v50 = [NSString stringWithFormat:@"%@%@ +%@", v45, text3, text4];
     [(LuceneContextResult *)v29 setDebug:v50];
   }
 
-  a4 = v75;
+  prefix = prefixCopy;
   if (!v29)
   {
 LABEL_43:
     v52 = [LuceneContextResult alloc];
-    v53 = [(LuceneContextRequest *)v76 _bestTypeVariantForTokenInfo:v77 allowingAllCaps:1];
+    v53 = [(LuceneContextRequest *)selfCopy _bestTypeVariantForTokenInfo:v77 allowingAllCaps:1];
     v29 = [(LuceneContextResult *)v52 initWithText:v53];
 
-    v54 = [v77 term];
-    v55 = [v54 text];
-    [(LuceneContextResult *)v29 setTerm:v55];
+    term5 = [v77 term];
+    text5 = [term5 text];
+    [(LuceneContextResult *)v29 setTerm:text5];
 
-    v56 = [(ContextConfiguration *)v76->_config luceneTermResultUnigramScoreMultiplier];
-    v57 = powf(([v77 firstOccurenceUnique] + 1), -[ContextConfiguration luceneTermResultFirstOccurrencePowerLawDecay](v76->_config, "luceneTermResultFirstOccurrencePowerLawDecay")) * v56;
+    luceneTermResultUnigramScoreMultiplier2 = [(ContextConfiguration *)selfCopy->_config luceneTermResultUnigramScoreMultiplier];
+    v57 = powf(([v77 firstOccurenceUnique] + 1), -[ContextConfiguration luceneTermResultFirstOccurrencePowerLawDecay](selfCopy->_config, "luceneTermResultFirstOccurrencePowerLawDecay")) * luceneTermResultUnigramScoreMultiplier2;
     v58 = v57 * [v77 count];
     [v77 weight];
     *&v60 = v58 * ((v59 + 1.0) * (v59 + 1.0));
     [(LuceneContextResult *)v29 setLuceneScore:v60];
-    if (v76->_debug)
+    if (selfCopy->_debug)
     {
-      v61 = [v77 term];
+      term6 = [v77 term];
       v62 = qword_1005572A0;
 
-      if (v61 == v62)
+      if (term6 == v62)
       {
-        v63 = [v77 token];
-        [NSString stringWithFormat:@"?%@", v63];
+        token3 = [v77 token];
+        [NSString stringWithFormat:@"?%@", token3];
       }
 
       else
       {
-        v63 = [(LuceneContextResult *)v29 term];
-        [NSString stringWithFormat:@"+%@", v63];
+        token3 = [(LuceneContextResult *)v29 term];
+        [NSString stringWithFormat:@"+%@", token3];
       }
       v64 = ;
       [(LuceneContextResult *)v29 setDebug:v64];
     }
   }
 
-  [(LuceneContextResult *)v29 setMinPrefix:a4];
-  v6 = v77;
-  v65 = [v77 docId];
-  if ((v65 & 0x80000000) == 0)
+  [(LuceneContextResult *)v29 setMinPrefix:prefix];
+  infoCopy = v77;
+  docId = [v77 docId];
+  if ((docId & 0x80000000) == 0)
   {
-    v66 = v65;
+    v66 = docId;
     v67 = [v77 count];
-    v68 = [(ContextConfiguration *)v76->_config minTokenCountToAugment]<= v67;
-    v6 = v77;
+    v68 = [(ContextConfiguration *)selfCopy->_config minTokenCountToAugment]<= v67;
+    infoCopy = v77;
     if (v68)
     {
-      [(LuceneContextRequest *)v76 _augmentResult:v29 withDocId:v66 checkLanguageRedirect:1];
+      [(LuceneContextRequest *)selfCopy _augmentResult:v29 withDocId:v66 checkLanguageRedirect:1];
     }
   }
 
-  if (v76->_debug)
+  if (selfCopy->_debug)
   {
     [(LuceneContextResult *)v29 luceneScore];
-    v70 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0 %f T (token result, count:%u, minPrefix:%li, docId:%i)", v69, [v77 count], a4, objc_msgSend(v77, "docId"));
+    v70 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0 %f T (token result, count:%u, minPrefix:%li, docId:%i)", v69, [v77 count], prefix, objc_msgSend(v77, "docId"));
     [(LuceneContextResult *)v29 setCategory:v70];
 
-    v6 = v77;
+    infoCopy = v77;
   }
 
   [(LuceneContextResult *)v29 setExactMatch:1];
@@ -5470,10 +5470,10 @@ LABEL_55:
   return v29;
 }
 
-- (id)_resultForBigramInfo:(id)a3 minPrefix:(int64_t)a4
+- (id)_resultForBigramInfo:(id)info minPrefix:(int64_t)prefix
 {
-  v6 = a3;
-  v7 = v6[1];
+  infoCopy = info;
+  v7 = infoCopy[1];
   if (![TokenInfo isTopicType:v7])
   {
     goto LABEL_4;
@@ -5484,20 +5484,20 @@ LABEL_55:
     goto LABEL_5;
   }
 
-  v8 = [v6 count];
-  v9 = [v6 tokenA];
-  v10 = [v9 partialNgramCount];
-  v11 = [v6 tokenB];
-  v12 = v8 - (v10 + [v11 partialNgramCount]);
+  v8 = [infoCopy count];
+  tokenA = [infoCopy tokenA];
+  partialNgramCount = [tokenA partialNgramCount];
+  tokenB = [infoCopy tokenB];
+  v12 = v8 - (partialNgramCount + [tokenB partialNgramCount]);
 
   if (v12 >= 2)
   {
 LABEL_5:
-    v14 = [v6 tokenA];
-    v15 = [(LuceneContextRequest *)self _bestTypeVariantForTokenInfo:v14 allowingAllCaps:1];
+    tokenA2 = [infoCopy tokenA];
+    v15 = [(LuceneContextRequest *)self _bestTypeVariantForTokenInfo:tokenA2 allowingAllCaps:1];
 
-    v16 = [v6 tokenB];
-    v17 = [(LuceneContextRequest *)self _bestTypeVariantForTokenInfo:v16 allowingAllCaps:1];
+    tokenB2 = [infoCopy tokenB];
+    v17 = [(LuceneContextRequest *)self _bestTypeVariantForTokenInfo:tokenB2 allowingAllCaps:1];
 
     v18 = @"%@ %@";
     if ([LanguageUtilities isChineseJapaneseToken:v15]&& [LanguageUtilities isChineseJapaneseToken:v17])
@@ -5507,72 +5507,72 @@ LABEL_5:
 
     v19 = [NSString stringWithFormat:v18, v15, v17];
     v13 = [[LuceneContextResult alloc] initWithText:v19];
-    v20 = [v6 term];
-    v21 = [v20 text];
-    if (v21)
+    term = [infoCopy term];
+    text = [term text];
+    if (text)
     {
-      [(LuceneContextResult *)v13 setTerm:v21];
+      [(LuceneContextResult *)v13 setTerm:text];
     }
 
     else
     {
-      v46 = a4;
+      prefixCopy = prefix;
       v22 = v15;
       v23 = v17;
       v24 = v19;
-      v25 = [v6 termSequence];
-      v26 = [NSString stringWithFormat:@"%@", v25];
+      termSequence = [infoCopy termSequence];
+      v26 = [NSString stringWithFormat:@"%@", termSequence];
       [(LuceneContextResult *)v13 setTerm:v26];
 
       v19 = v24;
       v17 = v23;
       v15 = v22;
-      a4 = v46;
+      prefix = prefixCopy;
     }
 
-    [(LuceneContextResult *)v13 setMinPrefix:a4];
-    v27 = [v6 docId];
-    if ((v27 & 0x80000000) == 0)
+    [(LuceneContextResult *)v13 setMinPrefix:prefix];
+    docId = [infoCopy docId];
+    if ((docId & 0x80000000) == 0)
     {
-      v28 = v27;
-      v29 = [v6 count];
+      v28 = docId;
+      v29 = [infoCopy count];
       if ([(ContextConfiguration *)self->_config minTokenCountToAugment]<= v29)
       {
         [(LuceneContextRequest *)self _augmentResult:v13 withDocId:v28 checkLanguageRedirect:1];
       }
     }
 
-    v30 = [(ContextConfiguration *)self->_config luceneTermResultBigramScoreMultiplier];
-    v31 = powf(([v6 firstOccurenceUnique] + 1), -[ContextConfiguration luceneTermResultFirstOccurrencePowerLawDecay](self->_config, "luceneTermResultFirstOccurrencePowerLawDecay")) * v30;
-    v32 = v31 * [v6 count];
-    [v6 weight];
+    luceneTermResultBigramScoreMultiplier = [(ContextConfiguration *)self->_config luceneTermResultBigramScoreMultiplier];
+    v31 = powf(([infoCopy firstOccurenceUnique] + 1), -[ContextConfiguration luceneTermResultFirstOccurrencePowerLawDecay](self->_config, "luceneTermResultFirstOccurrencePowerLawDecay")) * luceneTermResultBigramScoreMultiplier;
+    v32 = v31 * [infoCopy count];
+    [infoCopy weight];
     v34 = fmaxf(v33, 1.0);
     *&v35 = v32 * ((v34 + 1.0) * (v34 + 1.0));
     [(LuceneContextResult *)v13 setLuceneScore:v35];
     if (self->_debug)
     {
       [(LuceneContextResult *)v13 luceneScore];
-      v37 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0 %f B (token bigram result, count:%u, minPrefix:%li, docId:%i)", v36, [v6 count], a4, objc_msgSend(v6, "docId"));
+      v37 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0 %f B (token bigram result, count:%u, minPrefix:%li, docId:%i)", v36, [infoCopy count], prefix, objc_msgSend(infoCopy, "docId"));
       [(LuceneContextResult *)v13 setCategory:v37];
 
-      v38 = [v6 term];
+      term2 = [infoCopy term];
       v39 = qword_1005572A0;
 
-      if (v38 == v39)
+      if (term2 == v39)
       {
-        v40 = [v6 tokenA];
-        v41 = [v40 token];
-        v42 = [v6 tokenB];
-        v43 = [v42 token];
-        v44 = [NSString stringWithFormat:@"?%@_%@", v41, v43];
+        tokenA3 = [infoCopy tokenA];
+        token = [tokenA3 token];
+        tokenB3 = [infoCopy tokenB];
+        token2 = [tokenB3 token];
+        v44 = [NSString stringWithFormat:@"?%@_%@", token, token2];
         [(LuceneContextResult *)v13 setDebug:v44];
       }
 
       else
       {
-        v40 = [(LuceneContextResult *)v13 term];
-        v41 = [NSString stringWithFormat:@"+%@", v40];
-        [(LuceneContextResult *)v13 setDebug:v41];
+        tokenA3 = [(LuceneContextResult *)v13 term];
+        token = [NSString stringWithFormat:@"+%@", tokenA3];
+        [(LuceneContextResult *)v13 setDebug:token];
       }
     }
 
@@ -5588,16 +5588,16 @@ LABEL_4:
   return v13;
 }
 
-- (void)_searchTopKWithQuery:(id)a3 topK:(unint64_t)a4
+- (void)_searchTopKWithQuery:(id)query topK:(unint64_t)k
 {
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_1002B6B7C;
   v12 = &unk_100484140;
-  v6 = a3;
-  v13 = v6;
-  v14 = self;
-  v15 = a4;
+  queryCopy = query;
+  v13 = queryCopy;
+  selfCopy = self;
+  kCopy = k;
   [Util elapsedMillisForBlock:&v9 enableTiming:self->_timing];
   if (self->_timing)
   {
@@ -5606,10 +5606,10 @@ LABEL_4:
   }
 }
 
-- (void)_processResults:(id)a3 topK:(unint64_t)a4
+- (void)_processResults:(id)results topK:(unint64_t)k
 {
-  v6 = a3;
-  v76 = [(CKContextResponse *)self->_response results];
+  resultsCopy = results;
+  results = [(CKContextResponse *)self->_response results];
   v7 = objc_opt_new();
   fingerprints = self->_fingerprints;
   self->_fingerprints = v7;
@@ -5623,15 +5623,15 @@ LABEL_4:
   self->_extractTermsReuse = v11;
 
   *&self->_haveFingerprintDupes = 0;
-  v80 = self;
+  selfCopy = self;
   [(ContextConfiguration *)self->_config luceneMinRelativeScore];
   v14 = v13;
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
   v112 = 0u;
-  v75 = v6;
-  v15 = v6[2];
+  v75 = resultsCopy;
+  v15 = resultsCopy[2];
   v16 = [v15 countByEnumeratingWithState:&v109 objects:v118 count:16];
   if (v16)
   {
@@ -5661,12 +5661,12 @@ LABEL_4:
             goto LABEL_17;
           }
 
-          v22 = [LuceneContextRequest _processResult:v80 score:"_processResult:score:relativeScore:" relativeScore:?];
+          v22 = [LuceneContextRequest _processResult:selfCopy score:"_processResult:score:relativeScore:" relativeScore:?];
           if (v22)
           {
-            [v76 addObject:v22];
+            [results addObject:v22];
             self = (self + 1);
-            if (self >= a4)
+            if (self >= k)
             {
 
               goto LABEL_17;
@@ -5687,29 +5687,29 @@ LABEL_4:
 
 LABEL_17:
 
-  v23 = v80;
-  NSFreeMapTable(v80->_perDocumentObjects);
-  perDocumentObjects = v80->_perDocumentObjects;
-  v80->_perDocumentObjects = 0;
+  v23 = selfCopy;
+  NSFreeMapTable(selfCopy->_perDocumentObjects);
+  perDocumentObjects = selfCopy->_perDocumentObjects;
+  selfCopy->_perDocumentObjects = 0;
 
   v77 = objc_opt_new();
-  LODWORD(v15) = [(CKContextRequest *)v80->_request dontSkip];
-  v25 = [(ContextConfiguration *)v80->_config minPrefixAdditionalResults];
+  LODWORD(v15) = [(CKContextRequest *)selfCopy->_request dontSkip];
+  minPrefixAdditionalResults = [(ContextConfiguration *)selfCopy->_config minPrefixAdditionalResults];
   v88 = 0;
-  v74 = v25;
-  if ((v15 & 1) == 0 && (v25 & 0x8000000000000000) == 0)
+  v74 = minPrefixAdditionalResults;
+  if ((v15 & 1) == 0 && (minPrefixAdditionalResults & 0x8000000000000000) == 0)
   {
     v88 = objc_opt_new();
   }
 
   v84 = v15;
-  if (v80->_haveFingerprintDupes || v80->_needFingerprintPostprocessing)
+  if (selfCopy->_haveFingerprintDupes || selfCopy->_needFingerprintPostprocessing)
   {
     v107 = 0u;
     v108 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v26 = v76;
+    v26 = results;
     v27 = [v26 countByEnumeratingWithState:&v105 objects:v117 count:16];
     if (v27)
     {
@@ -5726,10 +5726,10 @@ LABEL_17:
           }
 
           v30 = *(*(&v105 + 1) + 8 * self);
-          v31 = [v30 fingerprintPrimary];
-          if (v80->_needFingerprintPostprocessing && ([v30 skip] & 1) == 0 && v31)
+          fingerprintPrimary = [v30 fingerprintPrimary];
+          if (selfCopy->_needFingerprintPostprocessing && ([v30 skip] & 1) == 0 && fingerprintPrimary)
           {
-            v32 = [(NSMutableDictionary *)v80->_fingerprintsPrimary objectForKey:v31];
+            v32 = [(NSMutableDictionary *)selfCopy->_fingerprintsPrimary objectForKey:fingerprintPrimary];
             v33 = v32;
             if (v32)
             {
@@ -5747,14 +5747,14 @@ LABEL_17:
             }
           }
 
-          v35 = [v30 foldedResults];
-          if (v35)
+          foldedResults = [v30 foldedResults];
+          if (foldedResults)
           {
-            [(LuceneContextRequest *)v80 _rerankFoldedResults:v35];
+            [(LuceneContextRequest *)selfCopy _rerankFoldedResults:foldedResults];
             [v30 finalizeFoldedResult];
             if ((v15 & 1) == 0)
             {
-              [v88 addObjectsFromArray:v35];
+              [v88 addObjectsFromArray:foldedResults];
               [v30 setFoldedResults:0];
             }
           }
@@ -5768,14 +5768,14 @@ LABEL_17:
 
             else if (v15)
             {
-              v36 = [v30 category];
-              v15 = [v36 stringByAppendingString:@" (would skip)"];
+              category = [v30 category];
+              v15 = [category stringByAppendingString:@" (would skip)"];
               [v30 setCategory:v15];
 
               LODWORD(v15) = v84;
             }
 
-            else if (v80->_needFingerprintPostprocessing)
+            else if (selfCopy->_needFingerprintPostprocessing)
             {
               [v77 addObject:v30];
             }
@@ -5793,7 +5793,7 @@ LABEL_17:
 
     if (v15)
     {
-      if (v80->_haveFingerprintDupes)
+      if (selfCopy->_haveFingerprintDupes)
       {
         v37 = objc_opt_new();
         v101 = 0u;
@@ -5816,17 +5816,17 @@ LABEL_17:
               }
 
               v38 = *(*(&v101 + 1) + 8 * self);
-              v39 = [v38 foldedResults];
+              foldedResults2 = [v38 foldedResults];
 
-              if (v39)
+              if (foldedResults2)
               {
                 v99 = 0u;
                 v100 = 0u;
                 v97 = 0u;
                 v98 = 0u;
                 v86 = v38;
-                v40 = [v38 foldedResults];
-                v41 = [v40 countByEnumeratingWithState:&v97 objects:v115 count:16];
+                foldedResults3 = [v38 foldedResults];
+                v41 = [foldedResults3 countByEnumeratingWithState:&v97 objects:v115 count:16];
                 if (v41)
                 {
                   v42 = v41;
@@ -5838,14 +5838,14 @@ LABEL_17:
                     {
                       if (*v98 != v43)
                       {
-                        objc_enumerationMutation(v40);
+                        objc_enumerationMutation(foldedResults3);
                       }
 
                       v46 = *(*(&v97 + 1) + 8 * j);
                       if ((v44 & 1) == 0)
                       {
-                        v47 = [*(*(&v97 + 1) + 8 * j) category];
-                        v48 = [v47 stringByAppendingString:@" (would skip)"];
+                        category2 = [*(*(&v97 + 1) + 8 * j) category];
+                        v48 = [category2 stringByAppendingString:@" (would skip)"];
                         [v46 setCategory:v48];
                       }
 
@@ -5853,7 +5853,7 @@ LABEL_17:
                       v44 = 0;
                     }
 
-                    v42 = [v40 countByEnumeratingWithState:&v97 objects:v115 count:16];
+                    v42 = [foldedResults3 countByEnumeratingWithState:&v97 objects:v115 count:16];
                     v44 = 0;
                   }
 
@@ -5861,7 +5861,7 @@ LABEL_17:
                 }
 
                 [v86 setFoldedResults:0];
-                v23 = v80;
+                v23 = selfCopy;
                 LOBYTE(v15) = v84;
               }
 
@@ -5913,15 +5913,15 @@ LABEL_17:
 
           v52 = *(*(&v93 + 1) + 8 * k);
           [v52 setForceBottomRank:1];
-          v53 = [v52 minPrefix];
-          if (v53 <= v74)
+          minPrefix = [v52 minPrefix];
+          if (minPrefix <= v74)
           {
             v54 = v74;
           }
 
           else
           {
-            v54 = v53;
+            v54 = minPrefix;
           }
 
           [v52 setMinPrefix:v54];
@@ -5933,7 +5933,7 @@ LABEL_17:
       while (v50);
     }
 
-    [v76 addObjectsFromArray:v15];
+    [results addObjectsFromArray:v15];
     LOBYTE(v15) = v84;
   }
 
@@ -5942,8 +5942,8 @@ LABEL_17:
     goto LABEL_117;
   }
 
-  v55 = [(CKContextResponse *)v23->_response results];
-  v56 = [v55 count];
+  results2 = [(CKContextResponse *)v23->_response results];
+  v56 = [results2 count];
 
   if (v56 < 2)
   {
@@ -5956,7 +5956,7 @@ LABEL_17:
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v57 = v76;
+  v57 = results;
   v58 = [v57 countByEnumeratingWithState:&v89 objects:v113 count:16];
   if (!v58)
   {
@@ -5978,43 +5978,43 @@ LABEL_17:
       }
 
       v62 = *(*(&v89 + 1) + 8 * v61);
-      v63 = [v62 title];
-      v64 = [v62 topicId];
-      if (!v63 || ([v87 containsObject:v63] & 1) != 0)
+      title = [v62 title];
+      topicId = [v62 topicId];
+      if (!title || ([v87 containsObject:title] & 1) != 0)
       {
         goto LABEL_108;
       }
 
-      v85 = self;
-      v65 = v80;
-      v66 = [(ContextConfiguration *)v80->_config blacklistTitles];
-      if (v66)
+      selfCopy3 = self;
+      v65 = selfCopy;
+      blacklistTitles = [(ContextConfiguration *)selfCopy->_config blacklistTitles];
+      if (blacklistTitles)
       {
-        self = [(ContextConfiguration *)v80->_config blacklistTitles];
-        v67 = [v62 title];
-        v83 = v67;
-        if ([(LuceneContextRequest *)self containsObject:v67])
+        self = [(ContextConfiguration *)selfCopy->_config blacklistTitles];
+        title2 = [v62 title];
+        v83 = title2;
+        if ([(LuceneContextRequest *)self containsObject:title2])
         {
 
           goto LABEL_107;
         }
 
-        v85 = self;
-        v65 = v80;
+        selfCopy3 = self;
+        v65 = selfCopy;
       }
 
       v68 = v57;
-      v69 = [(ContextConfiguration *)v65->_config blacklistPortrait];
-      v70 = v69;
-      if (v69 && v64)
+      blacklistPortrait = [(ContextConfiguration *)v65->_config blacklistPortrait];
+      v70 = blacklistPortrait;
+      if (blacklistPortrait && topicId)
       {
-        v71 = [(ContextConfiguration *)v80->_config blacklistPortrait];
-        v72 = [v71 containsObject:v64];
+        blacklistPortrait2 = [(ContextConfiguration *)selfCopy->_config blacklistPortrait];
+        v72 = [blacklistPortrait2 containsObject:topicId];
 
-        if (v66)
+        if (blacklistTitles)
         {
 
-          self = v85;
+          self = selfCopy3;
           v57 = v68;
           if (v72)
           {
@@ -6025,14 +6025,14 @@ LABEL_17:
         else
         {
           v57 = v68;
-          self = v85;
+          self = selfCopy3;
           if (v72)
           {
 LABEL_106:
             v60 = obja;
             v59 = v82;
 LABEL_107:
-            if (v80->_config->_blacklistRemoveAllOnMatch)
+            if (selfCopy->_config->_blacklistRemoveAllOnMatch)
             {
 
               [v57 removeAllObjects];
@@ -6050,13 +6050,13 @@ LABEL_108:
       {
 
         v57 = v68;
-        self = v85;
-        if (v66)
+        self = selfCopy3;
+        if (blacklistTitles)
         {
         }
       }
 
-      [v87 addObject:v63];
+      [v87 addObject:title];
       v60 = obja;
       v59 = v82;
 LABEL_109:
@@ -6086,44 +6086,44 @@ LABEL_117:
 {
   [(ContextConfiguration *)self->_config luceneBlendAlpha];
   v4 = v3;
-  v5 = [(CKContextRequest *)self->_request overrideBlendAlpha];
+  overrideBlendAlpha = [(CKContextRequest *)self->_request overrideBlendAlpha];
 
-  if (v5)
+  if (overrideBlendAlpha)
   {
-    v6 = [(CKContextRequest *)self->_request overrideBlendAlpha];
-    [v6 floatValue];
+    overrideBlendAlpha2 = [(CKContextRequest *)self->_request overrideBlendAlpha];
+    [overrideBlendAlpha2 floatValue];
     v4 = v7;
   }
 
-  v8 = [(CKContextResponse *)self->_response results];
-  v9 = [v8 count];
+  results = [(CKContextResponse *)self->_response results];
+  v9 = [results count];
 
   if (v9 >= 2 && v4 != 1.0)
   {
     [(ContextConfiguration *)self->_config luceneBlendBeta];
     v12 = v11;
-    v13 = [(CKContextRequest *)self->_request overrideBlendBeta];
+    overrideBlendBeta = [(CKContextRequest *)self->_request overrideBlendBeta];
 
-    if (v13)
+    if (overrideBlendBeta)
     {
-      v14 = [(CKContextRequest *)self->_request overrideBlendBeta];
-      [v14 floatValue];
+      overrideBlendBeta2 = [(CKContextRequest *)self->_request overrideBlendBeta];
+      [overrideBlendBeta2 floatValue];
       v12 = v15;
     }
 
     [(ContextConfiguration *)self->_config luceneBlendGamma];
     v17 = v16;
-    v18 = [(CKContextRequest *)self->_request overrideBlendGamma];
+    overrideBlendGamma = [(CKContextRequest *)self->_request overrideBlendGamma];
 
-    if (v18)
+    if (overrideBlendGamma)
     {
-      v19 = [(CKContextRequest *)self->_request overrideBlendGamma];
-      [v19 floatValue];
+      overrideBlendGamma2 = [(CKContextRequest *)self->_request overrideBlendGamma];
+      [overrideBlendGamma2 floatValue];
       v17 = v20;
     }
 
-    v21 = [(CKContextResponse *)self->_response results];
-    v22 = [v21 sortedArrayUsingComparator:&stru_100484180];
+    results2 = [(CKContextResponse *)self->_response results];
+    v22 = [results2 sortedArrayUsingComparator:&stru_100484180];
     v60 = 0u;
     v61 = 0u;
     v62 = 0u;
@@ -6158,7 +6158,7 @@ LABEL_117:
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v29 = v21;
+    v29 = results2;
     v30 = [v29 countByEnumeratingWithState:&v56 objects:v78 count:16];
     if (v30)
     {
@@ -6183,8 +6183,8 @@ LABEL_117:
           v39 = *(*(&v56 + 1) + 8 * j);
           [v39 relativeScore];
           v41 = v40;
-          v42 = [v39 docId];
-          v43 = [v42 unsignedLongValue] / v33;
+          docId = [v39 docId];
+          v43 = [docId unsignedLongValue] / v33;
 
           v44 = (1.0 - (v55 * v43)) / log2f(v12 + [v39 docIdRank]);
           if ([v39 forceBottomRank])
@@ -6199,17 +6199,17 @@ LABEL_117:
 
           if (self->_debug && self->_debugLogEnabled && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
           {
-            v47 = [v39 title];
-            v52 = [v39 docIdRank];
-            v53 = [v39 docId];
-            v48 = [v53 unsignedLongValue];
-            v49 = [v39 forceBottomRank];
+            title = [v39 title];
+            docIdRank = [v39 docIdRank];
+            docId2 = [v39 docId];
+            unsignedLongValue = [docId2 unsignedLongValue];
+            forceBottomRank = [v39 forceBottomRank];
             *buf = 138413826;
-            v65 = v47;
+            v65 = title;
             v66 = 2048;
-            v67 = v52;
+            v67 = docIdRank;
             v68 = 2048;
-            v69 = v48;
+            v69 = unsignedLongValue;
             v70 = 2048;
             v71 = v43;
             v72 = 2048;
@@ -6217,7 +6217,7 @@ LABEL_117:
             v74 = 2048;
             v75 = v36;
             v76 = 1024;
-            v77 = v49;
+            v77 = forceBottomRank;
             _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "Result: %@, docIdRank:%lu docId:%lu relativeDocId:%f relativePopScore:%f newScore:%f forceBottom:%i", buf, 0x44u);
           }
 
@@ -6261,16 +6261,16 @@ LABEL_38:
   }
 }
 
-- (id)mergeDuplicateResults:(id)a3
+- (id)mergeDuplicateResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = +[NSMutableArray array];
   v5 = +[NSMutableDictionary dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v3;
+  v6 = resultsCopy;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -6286,8 +6286,8 @@ LABEL_38:
         }
 
         v11 = *(*(&v18 + 1) + 8 * i);
-        v12 = [v11 title];
-        v13 = [v5 objectForKeyedSubscript:v12];
+        title = [v11 title];
+        v13 = [v5 objectForKeyedSubscript:title];
 
         if (v13)
         {
@@ -6298,8 +6298,8 @@ LABEL_38:
         else
         {
           v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 count]);
-          v16 = [v11 title];
-          [v5 setObject:v15 forKeyedSubscript:v16];
+          title2 = [v11 title];
+          [v5 setObject:v15 forKeyedSubscript:title2];
 
           [v4 addObject:v11];
         }
@@ -6319,14 +6319,14 @@ LABEL_38:
   v3 = self->_termResults;
   if ([(NSMutableArray *)v3 count])
   {
-    v41 = self;
-    v4 = [(CKContextResponse *)self->_response results];
-    v5 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+    selfCopy = self;
+    results = [(CKContextResponse *)self->_response results];
+    v5 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(results, "count")}];
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
-    v6 = v4;
+    v6 = results;
     v7 = [v6 countByEnumeratingWithState:&v52 objects:v58 count:16];
     if (v7)
     {
@@ -6342,16 +6342,16 @@ LABEL_38:
           }
 
           v11 = *(*(&v52 + 1) + 8 * i);
-          v12 = [v11 titleTokenString];
-          if (v12)
+          titleTokenString = [v11 titleTokenString];
+          if (titleTokenString)
           {
-            [v5 addObject:v12];
+            [v5 addObject:titleTokenString];
           }
 
-          v13 = [v11 query];
-          if (v13)
+          query = [v11 query];
+          if (query)
           {
-            [v5 addObject:v13];
+            [v5 addObject:query];
           }
         }
 
@@ -6362,8 +6362,8 @@ LABEL_38:
     }
 
     [(NSMutableArray *)v3 sortUsingComparator:&stru_1004841C0];
-    v14 = v41;
-    v15 = [(LuceneContextRequest *)v41 mergeDuplicateResults:v3];
+    v14 = selfCopy;
+    v15 = [(LuceneContextRequest *)selfCopy mergeDuplicateResults:v3];
 
     v16 = v6;
     objc_opt_class();
@@ -6373,7 +6373,7 @@ LABEL_38:
     {
       v17 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v16 count] + objc_msgSend(v15, "count"));
 
-      [(CKContextResponse *)v41->_response setResults:v17];
+      [(CKContextResponse *)selfCopy->_response setResults:v17];
       if ([v16 count])
       {
         [v17 addObjectsFromArray:v16];
@@ -6385,8 +6385,8 @@ LABEL_38:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v18 = [v15 reverseObjectEnumerator];
-    v19 = [v18 countByEnumeratingWithState:&v48 objects:v57 count:16];
+    reverseObjectEnumerator = [v15 reverseObjectEnumerator];
+    v19 = [reverseObjectEnumerator countByEnumeratingWithState:&v48 objects:v57 count:16];
     if (v19)
     {
       v20 = v19;
@@ -6394,7 +6394,7 @@ LABEL_38:
       v39 = v17;
       v40 = v16;
       v37 = *v49;
-      v38 = v18;
+      v38 = reverseObjectEnumerator;
       do
       {
         v22 = 0;
@@ -6403,7 +6403,7 @@ LABEL_38:
         {
           if (*v49 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v23 = *(*(&v48 + 1) + 8 * v22);
@@ -6411,10 +6411,10 @@ LABEL_38:
           {
             [*(*(&v48 + 1) + 8 * v22) luceneScore];
             v25 = v24;
-            v26 = [v23 title];
-            if (v26)
+            title = [v23 title];
+            if (title)
             {
-              v27 = [(LuceneContextRequest *)v14 _tokenStringForText:v26];
+              v27 = [(LuceneContextRequest *)v14 _tokenStringForText:title];
               if (([v43 containsObject:v27] & 1) == 0)
               {
                 v46 = 0u;
@@ -6472,9 +6472,9 @@ LABEL_35:
                 v17 = v39;
                 [v39 insertObject:v23 atIndex:v31];
                 v16 = v40;
-                v14 = v41;
+                v14 = selfCopy;
                 v21 = v37;
-                v18 = v38;
+                reverseObjectEnumerator = v38;
                 v20 = v42;
               }
             }
@@ -6484,7 +6484,7 @@ LABEL_35:
         }
 
         while (v22 != v20);
-        v20 = [v18 countByEnumeratingWithState:&v48 objects:v57 count:16];
+        v20 = [reverseObjectEnumerator countByEnumeratingWithState:&v48 objects:v57 count:16];
       }
 
       while (v20);
@@ -6495,9 +6495,9 @@ LABEL_35:
   }
 }
 
-- (id)_tokenStringForText:(id)a3
+- (id)_tokenStringForText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -6508,9 +6508,9 @@ LABEL_35:
   v16[1] = v16;
   v16[2] = 0x2020000000;
   v17 = 1;
-  if (v4)
+  if (textCopy)
   {
-    v5 = [(OrgApacheLuceneAnalysisAnalyzer *)self->_analyzer tokenStreamWithNSString:@"text" withNSString:v4];
+    v5 = [(OrgApacheLuceneAnalysisAnalyzer *)self->_analyzer tokenStreamWithNSString:@"text" withNSString:textCopy];
   }
 
   else
@@ -6527,7 +6527,7 @@ LABEL_35:
   v11[3] = &unk_1004841E8;
   v8 = v7;
   v12 = v8;
-  v13 = self;
+  selfCopy = self;
   v14 = v16;
   v15 = &v18;
   sub_1002B198C(v5, v11);
@@ -6539,26 +6539,26 @@ LABEL_35:
   return v9;
 }
 
-- (void)postprocessAddQuery:(id)a3
+- (void)postprocessAddQuery:(id)query
 {
-  v8 = a3;
-  v3 = [v8 title];
-  v4 = [v3 indexOf:3];
-  if ((v4 & 0x80000000) == 0 || (v4 = [v3 indexOfString:{@" (", v5 = v3, (v4 & 0x80000000) == 0}])
+  queryCopy = query;
+  title = [queryCopy title];
+  v4 = [title indexOf:3];
+  if ((v4 & 0x80000000) == 0 || (v4 = [title indexOfString:{@" (", v5 = title, (v4 & 0x80000000) == 0}])
   {
-    v5 = [v3 substring:0 endIndex:v4];
+    v5 = [title substring:0 endIndex:v4];
 
-    v6 = [v3 replace:3 withChar:32];
-    [v8 setTitle:v6];
+    v6 = [title replace:3 withChar:32];
+    [queryCopy setTitle:v6];
   }
 
-  v7 = [v5 lowercaseString];
-  [v8 setQuery:v7];
+  lowercaseString = [v5 lowercaseString];
+  [queryCopy setQuery:lowercaseString];
 }
 
-- (void)_rerankFoldedResults:(id)a3
+- (void)_rerankFoldedResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v71 = 0;
   v72 = &v71;
   v73 = 0x3032000000;
@@ -6569,9 +6569,9 @@ LABEL_35:
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v3;
+  obj = resultsCopy;
   v4 = [obj countByEnumeratingWithState:&v67 objects:v77 count:16];
-  v5 = self;
+  selfCopy3 = self;
   if (v4)
   {
     v6 = 0;
@@ -6600,10 +6600,10 @@ LABEL_3:
 
       v10 = *(*(&v67 + 1) + 8 * v9);
       [v10 setFoldCurrentRank:v8];
-      v11 = [v10 title];
-      if (v11)
+      title = [v10 title];
+      if (title)
       {
-        v12 = [(OrgApacheLuceneAnalysisAnalyzer *)v5->_analyzer tokenStreamWithNSString:@"text" withNSString:v11];
+        v12 = [(OrgApacheLuceneAnalysisAnalyzer *)selfCopy3->_analyzer tokenStreamWithNSString:@"text" withNSString:title];
       }
 
       else
@@ -6611,7 +6611,7 @@ LABEL_3:
         v12 = 0;
       }
 
-      v28 = v11;
+      v28 = title;
       v13 = OrgApacheLuceneAnalysisTokenattributesCharTermAttribute_class_();
       v14 = [v12 addAttributeWithIOSClass:v13];
 
@@ -6652,7 +6652,7 @@ LABEL_3:
       v35 = v65;
       v15 = v14;
       v33 = v15;
-      v34 = self;
+      selfCopy2 = self;
       v36 = &v55;
       v37 = &v47;
       v16 = v12;
@@ -6666,11 +6666,11 @@ LABEL_3:
       v17 = v10;
       if (self->_debug && [(CKContextRequest *)self->_request dontSkip])
       {
-        v18 = [v10 debug];
-        v19 = [v10 fingerprintPrimary];
-        v20 = [v19 integerValue];
+        debug = [v10 debug];
+        fingerprintPrimary = [v10 fingerprintPrimary];
+        integerValue = [fingerprintPrimary integerValue];
         v21 = v48[3];
-        v22 = [NSString stringWithFormat:@"%@ %lu %li <- %li %li %li %li -%li", v18, v20, v6, v60[3], v56[3], v52[3], v21, v44[3]];
+        v22 = [NSString stringWithFormat:@"%@ %lu %li <- %li %li %li %li -%li", debug, integerValue, v6, v60[3], v56[3], v52[3], v21, v44[3]];
         [v17 setDebug:v22];
       }
 
@@ -6689,7 +6689,7 @@ LABEL_3:
       v9 = v9 + 1;
       ++v8;
       v29 = v6;
-      v5 = self;
+      selfCopy3 = self;
       if (v25 == v9)
       {
         v4 = [obj countByEnumeratingWithState:&v67 objects:v77 count:16];
@@ -6716,21 +6716,21 @@ LABEL_3:
   _Block_object_dispose(&v71, 8);
 }
 
-- (void)addDebugStringTo:(id)a3 withPrefix:(id)a4 forQuery:(id)a5
+- (void)addDebugStringTo:(id)to withPrefix:(id)prefix forQuery:(id)query
 {
-  v17 = a3;
-  v7 = a4;
-  v8 = a5;
+  toCopy = to;
+  prefixCopy = prefix;
+  queryCopy = query;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 getTerms];
-    v10 = [v9 objectAtIndex:0];
-    v11 = [v9 objectAtIndex:1];
-    v12 = [v10 text];
-    v13 = [v11 text];
-    v14 = [NSString stringWithFormat:@"%@%@ %@ ", v7, v12, v13];
-    [v17 addObject:v14];
+    getTerms = [queryCopy getTerms];
+    v10 = [getTerms objectAtIndex:0];
+    v11 = [getTerms objectAtIndex:1];
+    text = [v10 text];
+    text2 = [v11 text];
+    v14 = [NSString stringWithFormat:@"%@%@ %@ ", prefixCopy, text, text2];
+    [toCopy addObject:v14];
   }
 
   else
@@ -6738,16 +6738,16 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 getTerm];
-      v15 = [v9 text];
-      v16 = [NSString stringWithFormat:@"%@%@ ", v7, v15];
-      [v17 addObject:v16];
+      getTerms = [queryCopy getTerm];
+      text3 = [getTerms text];
+      v16 = [NSString stringWithFormat:@"%@%@ ", prefixCopy, text3];
+      [toCopy addObject:v16];
     }
 
     else
     {
-      v9 = [NSString stringWithFormat:@"%@(%@) ", v7, v8];
-      [v17 addObject:v9];
+      getTerms = [NSString stringWithFormat:@"%@(%@) ", prefixCopy, queryCopy];
+      [toCopy addObject:getTerms];
     }
   }
 }
@@ -6758,11 +6758,11 @@ LABEL_3:
   if (!textTermsEnum)
   {
     WeakRetained = objc_loadWeakRetained(&self->_engine);
-    v5 = [WeakRetained reader];
-    v6 = [OrgApacheLuceneIndexMultiFields getTermsWithOrgApacheLuceneIndexIndexReader:v5 withNSString:@"text"];
-    v7 = [v6 iterator];
+    reader = [WeakRetained reader];
+    v6 = [OrgApacheLuceneIndexMultiFields getTermsWithOrgApacheLuceneIndexIndexReader:reader withNSString:@"text"];
+    iterator = [v6 iterator];
     v8 = self->_textTermsEnum;
-    self->_textTermsEnum = v7;
+    self->_textTermsEnum = iterator;
 
     textTermsEnum = self->_textTermsEnum;
   }
@@ -6770,19 +6770,19 @@ LABEL_3:
   return textTermsEnum;
 }
 
-+ (id)reverseFQDN:(id)a3
++ (id)reverseFQDN:(id)n
 {
-  v3 = a3;
-  if ([v3 length])
+  nCopy = n;
+  if ([nCopy length])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [v3 componentsSeparatedByString:{@".", 0}];
-    v5 = [v4 reverseObjectEnumerator];
+    v4 = [nCopy componentsSeparatedByString:{@".", 0}];
+    reverseObjectEnumerator = [v4 reverseObjectEnumerator];
 
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
@@ -6794,7 +6794,7 @@ LABEL_3:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
@@ -6805,13 +6805,13 @@ LABEL_3:
 
           else
           {
-            v8 = +[NSMutableString stringWithCapacity:](NSMutableString, "stringWithCapacity:", [v3 length]);
+            v8 = +[NSMutableString stringWithCapacity:](NSMutableString, "stringWithCapacity:", [nCopy length]);
           }
 
           [(__CFString *)v8 appendString:v11];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v7 = [reverseObjectEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v7);
@@ -6826,7 +6826,7 @@ LABEL_3:
   else
   {
     v12 = &stru_100484358;
-    if (!v3)
+    if (!nCopy)
     {
       v12 = 0;
     }

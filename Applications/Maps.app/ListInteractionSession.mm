@@ -1,8 +1,8 @@
 @interface ListInteractionSession
-- (ListInteractionSession)initWithObjects:(id)a3 forType:(int)a4 startDate:(id)a5 proactiveStartTimes:(id)a6;
+- (ListInteractionSession)initWithObjects:(id)objects forType:(int)type startDate:(id)date proactiveStartTimes:(id)times;
 - (id)description;
-- (void)updateWithSelection:(id)a3;
-- (void)updateWithTableView:(id)a3;
+- (void)updateWithSelection:(id)selection;
+- (void)updateWithTableView:(id)view;
 @end
 
 @implementation ListInteractionSession
@@ -12,12 +12,12 @@
   listType = self->_listType;
   if (listType >= 0xD)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", listType];
+    listType = [NSString stringWithFormat:@"(unknown: %i)", listType];
   }
 
   else
   {
-    v4 = off_10162B050[listType];
+    listType = off_10162B050[listType];
   }
 
   v19 = 0u;
@@ -33,7 +33,7 @@
     do
     {
       v8 = 0;
-      v9 = v4;
+      v9 = listType;
       do
       {
         if (*v18 != v7)
@@ -42,15 +42,15 @@
         }
 
         v10 = *(*(&v17 + 1) + 8 * v8);
-        v11 = [v10 resultType];
-        if (v11 >= 4)
+        resultType = [v10 resultType];
+        if (resultType >= 4)
         {
-          v12 = [NSString stringWithFormat:@"(unknown: %i)", v11];
+          v12 = [NSString stringWithFormat:@"(unknown: %i)", resultType];
         }
 
         else
         {
-          v12 = off_10162B0B8[v11];
+          v12 = off_10162B0B8[resultType];
         }
 
         if ([v10 initiallyVisible])
@@ -73,10 +73,10 @@
           v14 = @"NO";
         }
 
-        v4 = -[__CFString stringByAppendingFormat:](v9, "stringByAppendingFormat:", @"\nListSession %@ initVisible %@ eventVisible %@ tap %d", v12, v13, v14, [v10 tappedCount]);
+        listType = -[__CFString stringByAppendingFormat:](v9, "stringByAppendingFormat:", @"\nListSession %@ initVisible %@ eventVisible %@ tap %d", v12, v13, v14, [v10 tappedCount]);
 
         v8 = v8 + 1;
-        v9 = v4;
+        v9 = listType;
       }
 
       while (v6 != v8);
@@ -86,18 +86,18 @@
     while (v6);
   }
 
-  return v4;
+  return listType;
 }
 
-- (void)updateWithTableView:(id)a3
+- (void)updateWithTableView:(id)view
 {
-  v4 = [a3 indexPathsForVisibleRows];
+  indexPathsForVisibleRows = [view indexPathsForVisibleRows];
   v5 = +[NSMutableIndexSet indexSet];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v4;
+  v6 = indexPathsForVisibleRows;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -148,28 +148,28 @@
   self->_resultsItemsInitialized = 1;
 }
 
-- (void)updateWithSelection:(id)a3
+- (void)updateWithSelection:(id)selection
 {
-  v6 = a3;
-  if (([v6 row] & 0x8000000000000000) == 0)
+  selectionCopy = selection;
+  if (([selectionCopy row] & 0x8000000000000000) == 0)
   {
-    v4 = [v6 row];
+    v4 = [selectionCopy row];
     if (v4 < [(NSArray *)self->_items count])
     {
-      v5 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [v6 row]);
+      v5 = -[NSArray objectAtIndexedSubscript:](self->_items, "objectAtIndexedSubscript:", [selectionCopy row]);
       [v5 setTappedCount:{objc_msgSend(v5, "tappedCount") + 1}];
     }
   }
 }
 
-- (ListInteractionSession)initWithObjects:(id)a3 forType:(int)a4 startDate:(id)a5 proactiveStartTimes:(id)a6
+- (ListInteractionSession)initWithObjects:(id)objects forType:(int)type startDate:(id)date proactiveStartTimes:(id)times
 {
-  v10 = a3;
-  v60 = a5;
-  v62 = a6;
-  if (![v10 count])
+  objectsCopy = objects;
+  dateCopy = date;
+  timesCopy = times;
+  if (![objectsCopy count])
   {
-    v54 = 0;
+    selfCopy = 0;
     goto LABEL_52;
   }
 
@@ -184,16 +184,16 @@
 
   v11->_resultsItemsInitialized = 0;
   v56 = v11;
-  v11->_listType = a4;
+  v11->_listType = type;
   v59 = +[NSMutableDictionary dictionary];
   v58 = +[NSDate date];
-  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [objectsCopy count]);
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v57 = v10;
-  obj = v10;
+  v57 = objectsCopy;
+  obj = objectsCopy;
   v14 = [obj countByEnumeratingWithState:&v66 objects:v71 count:16];
   if (!v14)
   {
@@ -203,8 +203,8 @@
   v15 = v14;
   v16 = 0;
   v17 = *v67;
-  v63 = a4 - 2;
-  v18 = ((a4 - 2) < 6) & (0x3Bu >> (a4 - 2));
+  v63 = type - 2;
+  v18 = ((type - 2) < 6) & (0x3Bu >> (type - 2));
   v19 = &GEOMapsAuthEnvironmentKey_ptr;
   v61 = v13;
   do
@@ -223,8 +223,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = v21;
-        if ([v23 _hasMUID])
+        mapItem = v21;
+        if ([mapItem _hasMUID])
         {
           goto LABEL_10;
         }
@@ -235,27 +235,27 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = v21;
+        mapItem = v21;
         v25 = objc_alloc_init(GEOProactiveItem);
-        [v25 setProactiveItemType:{objc_msgSend(v23, "proactiveItemType")}];
+        [v25 setProactiveItemType:{objc_msgSend(mapItem, "proactiveItemType")}];
         [v25 setVisible:0];
         [v25 setShared:0];
         [v25 setEdited:0];
         [v25 setDeleted:0];
         [v25 setTapped:0];
-        v26 = [v23 uniqueIdentifier];
-        v27 = [v62 objectForKeyedSubscript:v26];
+        uniqueIdentifier = [mapItem uniqueIdentifier];
+        v27 = [timesCopy objectForKeyedSubscript:uniqueIdentifier];
 
         if (!v27)
         {
-          v28 = [v23 uniqueIdentifier];
-          [v62 setObject:v58 forKeyedSubscript:v28];
+          uniqueIdentifier2 = [mapItem uniqueIdentifier];
+          [timesCopy setObject:v58 forKeyedSubscript:uniqueIdentifier2];
 
           v13 = v61;
           v27 = v58;
         }
 
-        [v27 timeIntervalSinceDate:v60];
+        [v27 timeIntervalSinceDate:dateCopy];
         [v25 setTimeSinceStart:(v29 * 1000.0)];
         v30 = [NSNumber numberWithUnsignedInteger:v16];
         [v59 setObject:v25 forKeyedSubscript:v30];
@@ -310,17 +310,17 @@
 
         if (v43 && ([v43 historyEntry], v44 = objc_claimAutoreleasedReturnValue(), v45 = objc_msgSend(v44, "conformsToProtocol:", v40), v44, v45))
         {
-          v23 = v41;
+          mapItem = v41;
         }
 
         else
         {
-          v23 = 0;
+          mapItem = 0;
         }
 
-        v46 = [v23 historyEntry];
-        v47 = [v46 geoMapItem];
-        v48 = [MKMapItem _itemWithGeoMapItem:v47];
+        historyEntry = [mapItem historyEntry];
+        geoMapItem = [historyEntry geoMapItem];
+        v48 = [MKMapItem _itemWithGeoMapItem:geoMapItem];
 
         if ([v48 _hasMUID])
         {
@@ -347,14 +347,14 @@ LABEL_36:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v23 = [v33 mapItem];
+        mapItem = [v33 mapItem];
         v13 = v61;
         v15 = v64;
         v19 = &GEOMapsAuthEnvironmentKey_ptr;
-        if ([v23 _hasMUID])
+        if ([mapItem _hasMUID])
         {
 LABEL_10:
-          [v22 setBusinessId:{objc_msgSend(v23, "_muid")}];
+          [v22 setBusinessId:{objc_msgSend(mapItem, "_muid")}];
         }
 
 LABEL_11:
@@ -368,10 +368,10 @@ LABEL_11:
       v19 = &GEOMapsAuthEnvironmentKey_ptr;
       if (objc_opt_isKindOfClass())
       {
-        v23 = [v33 mapItem];
-        if ([v23 _hasMUID])
+        mapItem = [v33 mapItem];
+        if ([mapItem _hasMUID])
         {
-          [v22 setBusinessId:{objc_msgSend(v23, "_muid")}];
+          [v22 setBusinessId:{objc_msgSend(mapItem, "_muid")}];
         }
 
         v24 = 1;
@@ -409,13 +409,13 @@ LABEL_49:
   proactiveItems = v56->_proactiveItems;
   v56->_proactiveItems = v52;
 
-  v10 = v57;
+  objectsCopy = v57;
 LABEL_50:
   self = v12;
-  v54 = self;
+  selfCopy = self;
 LABEL_52:
 
-  return v54;
+  return selfCopy;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface AppUpdateMemoryEntity
 - (AppUpdateMemoryEntity)init;
-- (AppUpdateMemoryEntity)initWithUpdateDictionary:(id)a3;
+- (AppUpdateMemoryEntity)initWithUpdateDictionary:(id)dictionary;
 - (BOOL)isAppClip;
 - (NSString)buyParams;
 - (NSString)description;
 - (NSString)parentalControlsName;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)purchase_purchaseInfoForUpdateUserInitiated:(BOOL)a3 bag:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)purchase_purchaseInfoForUpdateUserInitiated:(BOOL)initiated bag:(id)bag;
 - (int64_t)packageType;
 - (unint64_t)itemIdentifier;
-- (void)setBackground:(BOOL)a3;
-- (void)setCodeSignatureUpdate:(BOOL)a3;
-- (void)setOffloaded:(BOOL)a3;
-- (void)setPerDevice:(BOOL)a3;
-- (void)setUpdateState:(int64_t)a3;
+- (void)setBackground:(BOOL)background;
+- (void)setCodeSignatureUpdate:(BOOL)update;
+- (void)setOffloaded:(BOOL)offloaded;
+- (void)setPerDevice:(BOOL)device;
+- (void)setUpdateState:(int64_t)state;
 @end
 
 @implementation AppUpdateMemoryEntity
@@ -25,15 +25,15 @@
   return [(SQLiteMemoryEntity *)&v3 init];
 }
 
-- (AppUpdateMemoryEntity)initWithUpdateDictionary:(id)a3
+- (AppUpdateMemoryEntity)initWithUpdateDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v64.receiver = self;
   v64.super_class = AppUpdateMemoryEntity;
   v5 = [(SQLiteMemoryEntity *)&v64 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = dictionaryCopy;
     if (!v6)
     {
 LABEL_72:
@@ -148,36 +148,36 @@ LABEL_26:
             if ([v35 length] >= 3)
             {
               v36 = [v35 substringToIndex:3];
-              v37 = [v36 lowercaseString];
+              lowercaseString = [v36 lowercaseString];
 
-              if ([v37 isEqualToString:@"ipa"])
+              if ([lowercaseString isEqualToString:@"ipa"])
               {
                 v38 = 2;
               }
 
-              else if ([v37 isEqualToString:@"iph"])
+              else if ([lowercaseString isEqualToString:@"iph"])
               {
                 v38 = 4;
               }
 
-              else if ([v37 isEqualToString:@"ipo"])
+              else if ([lowercaseString isEqualToString:@"ipo"])
               {
                 v38 = 8;
               }
 
-              else if ([v37 isEqualToString:@"tvo"])
+              else if ([lowercaseString isEqualToString:@"tvo"])
               {
                 v38 = 16;
               }
 
-              else if ([v37 isEqualToString:@"wat"])
+              else if ([lowercaseString isEqualToString:@"wat"])
               {
                 v38 = 32;
               }
 
               else
               {
-                v38 = [v37 isEqualToString:@"mac"];
+                v38 = [lowercaseString isEqualToString:@"mac"];
               }
 
               v32 |= v38;
@@ -215,17 +215,17 @@ LABEL_26:
       v43 = [v42 objectForKey:@"value"];
       if (objc_opt_respondsToSelector())
       {
-        v44 = [v43 integerValue];
+        integerValue = [v43 integerValue];
       }
 
       else
       {
-        v44 = 0;
+        integerValue = 0;
       }
 
       v6 = v62;
 
-      v5->_parentalControlsRank = v44;
+      v5->_parentalControlsRank = integerValue;
       v45 = [v63 objectForKey:@"releaseDate"];
 
       objc_opt_class();
@@ -284,8 +284,8 @@ LABEL_26:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v20 count])
     {
-      v21 = [v20 firstObject];
-      v22 = [v21 objectForKey:@"version"];
+      firstObject = [v20 firstObject];
+      v22 = [firstObject objectForKey:@"version"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -329,11 +329,11 @@ LABEL_73:
 
 - (NSString)buyParams
 {
-  v3 = [(AppUpdateMemoryEntity *)self rawUpdateDictionary];
-  v4 = v3;
+  rawUpdateDictionary = [(AppUpdateMemoryEntity *)self rawUpdateDictionary];
+  v4 = rawUpdateDictionary;
   if (self)
   {
-    v5 = [v3 objectForKey:@"buyParams"];
+    v5 = [rawUpdateDictionary objectForKey:@"buyParams"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -365,7 +365,7 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v10 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -375,11 +375,11 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v11 = [v10 valueForKey:@"buyParams"];
+    v11 = [firstObject valueForKey:@"buyParams"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v12 = [v10 objectForKey:@"action-params"];
+      v12 = [firstObject objectForKey:@"action-params"];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -406,35 +406,35 @@ LABEL_20:
 
 - (unint64_t)itemIdentifier
 {
-  v2 = [(AppUpdateMemoryEntity *)self itemID];
-  v3 = [v2 unsignedLongLongValue];
+  itemID = [(AppUpdateMemoryEntity *)self itemID];
+  unsignedLongLongValue = [itemID unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (BOOL)isAppClip
 {
   v2 = sub_10023E258(&self->super.super.isa, @"is_app_clip");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)packageType
 {
   v2 = sub_10023E0F8(self, @"package_type");
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (NSString)parentalControlsName
 {
-  v3 = [(AppUpdateMemoryEntity *)self rawUpdateDictionary];
-  v4 = v3;
+  rawUpdateDictionary = [(AppUpdateMemoryEntity *)self rawUpdateDictionary];
+  v4 = rawUpdateDictionary;
   if (self)
   {
-    v5 = sub_1002B4DE4(v3);
+    v5 = sub_1002B4DE4(rawUpdateDictionary);
     v6 = [v5 objectForKey:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -456,63 +456,63 @@ LABEL_20:
   return v7;
 }
 
-- (void)setOffloaded:(BOOL)a3
+- (void)setOffloaded:(BOOL)offloaded
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:offloaded];
   sub_10023E000(self, v4, @"is_offloaded");
 }
 
-- (void)setBackground:(BOOL)a3
+- (void)setBackground:(BOOL)background
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:background];
   sub_10023E000(self, v4, @"is_background");
 }
 
-- (void)setCodeSignatureUpdate:(BOOL)a3
+- (void)setCodeSignatureUpdate:(BOOL)update
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:update];
   sub_10023E000(self, v4, @"is_code_signature_update");
 }
 
-- (void)setPerDevice:(BOOL)a3
+- (void)setPerDevice:(BOOL)device
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:device];
   sub_10023E000(self, v4, @"is_per_device");
 }
 
-- (void)setUpdateState:(int64_t)a3
+- (void)setUpdateState:(int64_t)state
 {
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:state];
   sub_10023E000(self, v4, @"update_state");
 }
 
 - (NSString)description
 {
-  v3 = [(AppUpdateMemoryEntity *)self bundleID];
-  v4 = [(AppUpdateMemoryEntity *)self itemID];
-  v5 = [(AppUpdateMemoryEntity *)self evid];
-  v6 = [(AppUpdateMemoryEntity *)self currentVersionReleaseDate];
-  v7 = sub_1002525A8(v6);
-  v8 = [NSString stringWithFormat:@"{ bundleID: %@ itemID: %@ evid: %@ currentReleaseDate: %@ }", v3, v4, v5, v7];
+  bundleID = [(AppUpdateMemoryEntity *)self bundleID];
+  itemID = [(AppUpdateMemoryEntity *)self itemID];
+  evid = [(AppUpdateMemoryEntity *)self evid];
+  currentVersionReleaseDate = [(AppUpdateMemoryEntity *)self currentVersionReleaseDate];
+  v7 = sub_1002525A8(currentVersionReleaseDate);
+  v8 = [NSString stringWithFormat:@"{ bundleID: %@ itemID: %@ evid: %@ currentReleaseDate: %@ }", bundleID, itemID, evid, v7];
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = AppUpdateMemoryEntity;
-  return [(SQLiteMemoryEntity *)&v4 copyWithZone:a3];
+  return [(SQLiteMemoryEntity *)&v4 copyWithZone:zone];
 }
 
-- (id)purchase_purchaseInfoForUpdateUserInitiated:(BOOL)a3 bag:(id)a4
+- (id)purchase_purchaseInfoForUpdateUserInitiated:(BOOL)initiated bag:(id)bag
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [[PurchaseInfo alloc] initWithBag:v6];
+  initiatedCopy = initiated;
+  bagCopy = bag;
+  v7 = [[PurchaseInfo alloc] initWithBag:bagCopy];
 
-  v8 = [(AppUpdateMemoryEntity *)self bundleID];
-  [(PurchaseInfo *)v7 setBundleID:v8];
+  bundleID = [(AppUpdateMemoryEntity *)self bundleID];
+  [(PurchaseInfo *)v7 setBundleID:bundleID];
 
   v9 = [[AMSProcessInfo alloc] initWithBundleIdentifier:@"com.apple.AppStore"];
   [(PurchaseInfo *)v7 setClientInfo:v9];
@@ -520,15 +520,15 @@ LABEL_20:
   v10 = +[NSUUID UUID];
   [(PurchaseInfo *)v7 setExternalID:v10];
 
-  v11 = [(AppUpdateMemoryEntity *)self itemID];
-  [(PurchaseInfo *)v7 setItemID:v11];
+  itemID = [(AppUpdateMemoryEntity *)self itemID];
+  [(PurchaseInfo *)v7 setItemID:itemID];
 
   [(PurchaseInfo *)v7 setDiscoveredUpdate:1];
   [(PurchaseInfo *)v7 setDisableBoosting:1];
-  v12 = [(AppUpdateMemoryEntity *)self itemID];
-  -[PurchaseInfo setTVProvider:](v7, "setTVProvider:", +[UpdatesManager isTVProviderApp:](UpdatesManager, "isTVProviderApp:", [v12 integerValue]));
+  itemID2 = [(AppUpdateMemoryEntity *)self itemID];
+  -[PurchaseInfo setTVProvider:](v7, "setTVProvider:", +[UpdatesManager isTVProviderApp:](UpdatesManager, "isTVProviderApp:", [itemID2 integerValue]));
 
-  if (v4)
+  if (initiatedCopy)
   {
     [(PurchaseInfo *)v7 setPriority:0];
     [(PurchaseInfo *)v7 setUpdateType:2];
@@ -550,17 +550,17 @@ LABEL_20:
     [(PurchaseInfo *)v7 setPurchaseType:1];
   }
 
-  v13 = [(AppUpdateMemoryEntity *)self buyParams];
-  if (v13)
+  buyParams = [(AppUpdateMemoryEntity *)self buyParams];
+  if (buyParams)
   {
-    v14 = [AMSBuyParams buyParamsWithString:v13];
-    v15 = [(AppUpdateMemoryEntity *)self parentalControlsName];
-    if (v15)
+    v14 = [AMSBuyParams buyParamsWithString:buyParams];
+    parentalControlsName = [(AppUpdateMemoryEntity *)self parentalControlsName];
+    if (parentalControlsName)
     {
-      [v14 setParameter:v15 forKey:@"installedSoftwareRatingName"];
+      [v14 setParameter:parentalControlsName forKey:@"installedSoftwareRatingName"];
     }
 
-    if (!v4)
+    if (!initiatedCopy)
     {
       [v14 setParameter:@"1" forKey:AMSBuyParamPropertyIsBackground];
     }
@@ -569,20 +569,20 @@ LABEL_20:
   }
 
   v16 = [LSApplicationRecord alloc];
-  v17 = [(AppUpdateMemoryEntity *)self itemID];
-  v18 = [v16 initWithStoreItemIdentifier:objc_msgSend(v17 error:{"unsignedLongLongValue"), 0}];
+  itemID3 = [(AppUpdateMemoryEntity *)self itemID];
+  v18 = [v16 initWithStoreItemIdentifier:objc_msgSend(itemID3 error:{"unsignedLongLongValue"), 0}];
 
   if (v18)
   {
-    v19 = [v18 iTunesMetadata];
-    v20 = [v19 itemName];
-    [(PurchaseInfo *)v7 setItemName:v20];
+    iTunesMetadata = [v18 iTunesMetadata];
+    itemName = [iTunesMetadata itemName];
+    [(PurchaseInfo *)v7 setItemName:itemName];
 
-    v21 = [v18 iTunesMetadata];
-    v22 = [v21 artistName];
-    [(PurchaseInfo *)v7 setVendorName:v22];
+    iTunesMetadata2 = [v18 iTunesMetadata];
+    artistName = [iTunesMetadata2 artistName];
+    [(PurchaseInfo *)v7 setVendorName:artistName];
 
-    v23 = [v18 applicationDSID];
+    applicationDSID = [v18 applicationDSID];
     if (-[PurchaseInfo isTVProvider](v7, "isTVProvider") && (([v18 isProfileValidated] & 1) != 0 || (objc_msgSend(v18, "applicationHasMIDBasedSINF") & 1) == 0))
     {
       [(PurchaseInfo *)v7 setTVProvider:0];
@@ -591,7 +591,7 @@ LABEL_20:
 
   else
   {
-    v23 = 0;
+    applicationDSID = 0;
   }
 
   if ([(PurchaseInfo *)v7 isTVProvider])
@@ -605,17 +605,17 @@ LABEL_20:
     }
 
     [(PurchaseInfo *)v7 setMachineBased:1];
-    v24 = [(PurchaseInfo *)v7 buyParams];
-    v25 = [v24 parameterForKey:AMSBuyParamPropertyAppExtVrsId];
+    buyParams2 = [(PurchaseInfo *)v7 buyParams];
+    v25 = [buyParams2 parameterForKey:AMSBuyParamPropertyAppExtVrsId];
 
-    v26 = [(PurchaseInfo *)v7 buyParams];
+    buyParams3 = [(PurchaseInfo *)v7 buyParams];
     v27 = AMSBuyParamPropertyExternalVersionId;
-    v28 = [v26 parameterForKey:AMSBuyParamPropertyExternalVersionId];
+    v28 = [buyParams3 parameterForKey:AMSBuyParamPropertyExternalVersionId];
 
     if (!v28 && v25)
     {
-      v29 = [(PurchaseInfo *)v7 buyParams];
-      [v29 setParameter:v25 forKey:v27];
+      buyParams4 = [(PurchaseInfo *)v7 buyParams];
+      [buyParams4 setParameter:v25 forKey:v27];
     }
   }
 
@@ -624,16 +624,16 @@ LABEL_20:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
   {
     v36 = 134218240;
-    v37 = self;
+    selfCopy = self;
     v38 = 2048;
-    v39 = [(PurchaseInfo *)v7 expectedSoftwarePlatform];
+    expectedSoftwarePlatform = [(PurchaseInfo *)v7 expectedSoftwarePlatform];
     _os_log_debug_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEBUG, "(AppUpdateMemoryEntity) [%p] expectedSoftwarePlatform=%lu", &v36, 0x16u);
   }
 
   if ([(PurchaseInfo *)v7 expectedSoftwarePlatform]!= 2)
   {
     [(PurchaseInfo *)v7 setCoordinatorIntent:2];
-    if (v4)
+    if (initiatedCopy)
     {
       v31 = 2;
     }
@@ -647,10 +647,10 @@ LABEL_20:
   }
 
   [(PurchaseInfo *)v7 updateGeneratedProperties];
-  if (v23)
+  if (applicationDSID)
   {
     v32 = +[ACAccountStore ams_sharedAccountStore];
-    v33 = [NSNumber numberWithUnsignedLongLong:v23];
+    v33 = [NSNumber numberWithUnsignedLongLong:applicationDSID];
     v34 = [v32 ams_iTunesAccountWithDSID:v33];
 
     if (v34)

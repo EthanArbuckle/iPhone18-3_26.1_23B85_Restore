@@ -1,10 +1,10 @@
 @interface CuratedCollectionMediaIntegrationPlatterControl
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3;
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration;
 - (CuratedCollectionMediaIntegrationInteractionDelegate)interactionDelegate;
-- (CuratedCollectionMediaIntegrationPlatterControl)initWithFrame:(CGRect)a3;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (CuratedCollectionMediaIntegrationPlatterControl)initWithFrame:(CGRect)frame;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation CuratedCollectionMediaIntegrationPlatterControl
@@ -16,29 +16,29 @@
   return WeakRetained;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v7.receiver = self;
   v7.super_class = CuratedCollectionMediaIntegrationPlatterControl;
-  [(CuratedCollectionMediaIntegrationPlatterControl *)&v7 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:a5];
-  v6 = [(CuratedCollectionMediaIntegrationPlatterControl *)self interactionDelegate];
-  [v6 mediaIntegrationMenuWillDisappear];
+  [(CuratedCollectionMediaIntegrationPlatterControl *)&v7 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animator];
+  interactionDelegate = [(CuratedCollectionMediaIntegrationPlatterControl *)self interactionDelegate];
+  [interactionDelegate mediaIntegrationMenuWillDisappear];
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v7.receiver = self;
   v7.super_class = CuratedCollectionMediaIntegrationPlatterControl;
-  [(CuratedCollectionMediaIntegrationPlatterControl *)&v7 contextMenuInteraction:a3 willDisplayMenuForConfiguration:a4 animator:a5];
-  v6 = [(CuratedCollectionMediaIntegrationPlatterControl *)self interactionDelegate];
-  [v6 mediaIntegrationMenuWillAppear];
+  [(CuratedCollectionMediaIntegrationPlatterControl *)&v7 contextMenuInteraction:interaction willDisplayMenuForConfiguration:configuration animator:animator];
+  interactionDelegate = [(CuratedCollectionMediaIntegrationPlatterControl *)self interactionDelegate];
+  [interactionDelegate mediaIntegrationMenuWillAppear];
 }
 
-- (CGPoint)menuAttachmentPointForConfiguration:(id)a3
+- (CGPoint)menuAttachmentPointForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CuratedCollectionMediaIntegrationPlatterControl *)self interactionDelegate];
-  [v5 mediaIntegrationMenuAttachmentPointForConfiguration:v4];
+  configurationCopy = configuration;
+  interactionDelegate = [(CuratedCollectionMediaIntegrationPlatterControl *)self interactionDelegate];
+  [interactionDelegate mediaIntegrationMenuAttachmentPointForConfiguration:configurationCopy];
   v7 = v6;
   v9 = v8;
 
@@ -49,20 +49,20 @@
   return result;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = [(CuratedCollectionMediaIntegrationPlatterControl *)self interactionDelegate];
-  v7 = [v6 mediaIntegrationMenuConfigurationWithInteraction:v5];
+  interactionCopy = interaction;
+  interactionDelegate = [(CuratedCollectionMediaIntegrationPlatterControl *)self interactionDelegate];
+  v7 = [interactionDelegate mediaIntegrationMenuConfigurationWithInteraction:interactionCopy];
 
   return v7;
 }
 
-- (CuratedCollectionMediaIntegrationPlatterControl)initWithFrame:(CGRect)a3
+- (CuratedCollectionMediaIntegrationPlatterControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CuratedCollectionMediaIntegrationPlatterControl;
-  v3 = [(CuratedCollectionMediaIntegrationPlatterControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CuratedCollectionMediaIntegrationPlatterControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

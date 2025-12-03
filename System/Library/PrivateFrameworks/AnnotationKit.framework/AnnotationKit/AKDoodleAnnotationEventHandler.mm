@@ -6,21 +6,21 @@
 
 - (CGSize)naturalSizeForAnnotation
 {
-  v2 = [(AKAnnotationEventHandler *)self annotation];
-  v3 = [v2 path];
+  annotation = [(AKAnnotationEventHandler *)self annotation];
+  path = [annotation path];
 
-  if (v3)
+  if (path)
   {
-    v4 = [v2 path];
-    v5 = [v4 newCGPathForPlatformBezierPath];
+    path2 = [annotation path];
+    newCGPathForPlatformBezierPath = [path2 newCGPathForPlatformBezierPath];
 
     height = 1.0;
-    if (v5)
+    if (newCGPathForPlatformBezierPath)
     {
       width = 1.0;
-      if (!CGPathIsEmpty(v5))
+      if (!CGPathIsEmpty(newCGPathForPlatformBezierPath))
       {
-        BoundingBox = CGPathGetBoundingBox(v5);
+        BoundingBox = CGPathGetBoundingBox(newCGPathForPlatformBezierPath);
         width = BoundingBox.size.width;
         height = BoundingBox.size.height;
       }
@@ -31,7 +31,7 @@
       width = 1.0;
     }
 
-    CGPathRelease(v5);
+    CGPathRelease(newCGPathForPlatformBezierPath);
   }
 
   else

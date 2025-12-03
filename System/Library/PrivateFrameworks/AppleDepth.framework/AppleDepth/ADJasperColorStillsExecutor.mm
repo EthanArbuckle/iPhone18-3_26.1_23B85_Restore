@@ -1,12 +1,12 @@
 @interface ADJasperColorStillsExecutor
 - (ADJasperColorStillsExecutor)init;
-- (ADJasperColorStillsExecutor)initWithParameters:(id)a3;
+- (ADJasperColorStillsExecutor)initWithParameters:(id)parameters;
 - (id)getIntermediates;
-- (id)initForDevice:(id)a3;
+- (id)initForDevice:(id)device;
 - (int64_t)allocateIntermediateBuffers;
 - (int64_t)numberOfExecutionSteps;
-- (int64_t)prepareForEngineType:(unint64_t)a3 inputROI:(CGRect)a4;
-- (uint64_t)executeWithColor:(__n128)a3 pointCloudArray:(__n128)a4 pointCloud2ColorTransform:(__n128)a5 colorCameraCalibration:(uint64_t)a6 outDepthMap:(__CVBuffer *)a7;
+- (int64_t)prepareForEngineType:(unint64_t)type inputROI:(CGRect)i;
+- (uint64_t)executeWithColor:(__n128)color pointCloudArray:(__n128)array pointCloud2ColorTransform:(__n128)transform colorCameraCalibration:(uint64_t)calibration outDepthMap:(__CVBuffer *)map;
 - (void)dealloc;
 - (void)deallocateEspressoBuffers;
 @end
@@ -15,10 +15,10 @@
 
 - (int64_t)numberOfExecutionSteps
 {
-  v2 = [(ADExecutor *)self executorParameters];
-  v3 = [v2 performJasperToColorTransformCorrection];
+  executorParameters = [(ADExecutor *)self executorParameters];
+  performJasperToColorTransformCorrection = [executorParameters performJasperToColorTransformCorrection];
 
-  if (v3)
+  if (performJasperToColorTransformCorrection)
   {
     return 9;
   }
@@ -195,44 +195,44 @@
   [(ADExecutor *)&v10 dealloc];
 }
 
-- (uint64_t)executeWithColor:(__n128)a3 pointCloudArray:(__n128)a4 pointCloud2ColorTransform:(__n128)a5 colorCameraCalibration:(uint64_t)a6 outDepthMap:(__CVBuffer *)a7
+- (uint64_t)executeWithColor:(__n128)color pointCloudArray:(__n128)array pointCloud2ColorTransform:(__n128)transform colorCameraCalibration:(uint64_t)calibration outDepthMap:(__CVBuffer *)map
 {
   v51 = *MEMORY[0x277D85DE8];
   v42 = a2.n128_f64[0];
-  v43 = a3.n128_f64[0];
+  v43 = color.n128_f64[0];
   v49[0] = a2;
-  v49[1] = a3;
-  v44 = a4.n128_f64[0];
-  v49[2] = a4;
-  v49[3] = a5;
-  v46 = a5.n128_f64[0];
+  v49[1] = color;
+  v44 = array.n128_f64[0];
+  v49[2] = array;
+  v49[3] = transform;
+  v46 = transform.n128_f64[0];
   v13 = a8;
   v47 = a9;
-  v14 = a1;
-  objc_sync_enter(v14);
-  v48 = v14;
-  if ((*(v14 + 136) & 1) != 0 || (v15 = a7, Width = CVPixelBufferGetWidth(a7), v17 = [v14 prepareForEngineType:*(v14 + 6) inputSize:{Width, CVPixelBufferGetHeight(v15)}], a7 = v15, !v17))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v48 = selfCopy;
+  if ((*(selfCopy + 136) & 1) != 0 || (v15 = map, Width = CVPixelBufferGetWidth(map), v17 = [selfCopy prepareForEngineType:*(selfCopy + 6) inputSize:{Width, CVPixelBufferGetHeight(v15)}], map = v15, !v17))
   {
-    if (*(v14 + 7))
+    if (*(selfCopy + 7))
     {
       if (a10)
       {
-        v18 = [v14 executorParameters];
-        v19 = [v18 logger];
+        executorParameters = [selfCopy executorParameters];
+        logger = [executorParameters logger];
 
-        v20 = [MEMORY[0x277CCAC38] processInfo];
-        [v20 systemUptime];
+        processInfo = [MEMORY[0x277CCAC38] processInfo];
+        [processInfo systemUptime];
         v22 = v21;
 
         kdebug_trace();
-        [v19 logPixelBuffer:a7 name:"inputColor" timestamp:v22];
-        [v19 logCalibration:v47 name:"inputColorCameraCalibration" timestamp:v22];
-        [v19 logMatrix4x3:"inputPointCloud2ColorTransform" name:v42 timestamp:{v43, v44, v46, v22}];
+        [logger logPixelBuffer:map name:"inputColor" timestamp:v22];
+        [logger logCalibration:v47 name:"inputColorCameraCalibration" timestamp:v22];
+        [logger logMatrix4x3:"inputPointCloud2ColorTransform" name:v42 timestamp:{v43, v44, v46, v22}];
         for (i = 0; [v13 count] > i; ++i)
         {
           v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"inputPointCloud_%d", i];
           v25 = [v13 objectAtIndexedSubscript:i];
-          [v19 logPointCloud:v25 name:objc_msgSend(v24 timestamp:{"UTF8String"), v22}];
+          [logger logPointCloud:v25 name:objc_msgSend(v24 timestamp:{"UTF8String"), v22}];
         }
 
         v26 = 0;
@@ -268,19 +268,19 @@
           }
 
           v26 = v29 + 1;
-          v14 = v48;
+          selfCopy = v48;
         }
 
-        v37 = [v14 executorParameters];
-        v38 = [v37 stepsToExecute];
+        executorParameters2 = [selfCopy executorParameters];
+        stepsToExecute = [executorParameters2 stepsToExecute];
 
-        v39 = [v48 executorParameters];
-        v40 = [v39 timeProfiler];
+        executorParameters3 = [v48 executorParameters];
+        timeProfiler = [executorParameters3 timeProfiler];
 
-        if (v38 >= 1)
+        if (stepsToExecute >= 1)
         {
           kdebug_trace();
-          [v40 startWithUTFString:"preprocess jasper"];
+          [timeProfiler startWithUTFString:"preprocess jasper"];
           [v48 frameExecutionStart];
           mergePointCloudsUsingSameTransform(v47, v49, v13);
         }
@@ -288,7 +288,7 @@
         v17 = -22977;
 
         kdebug_trace();
-        v14 = v48;
+        selfCopy = v48;
       }
 
       else
@@ -315,38 +315,38 @@
     }
   }
 
-  objc_sync_exit(v14);
+  objc_sync_exit(selfCopy);
 
   return v17;
 }
 
-- (int64_t)prepareForEngineType:(unint64_t)a3 inputROI:(CGRect)a4
+- (int64_t)prepareForEngineType:(unint64_t)type inputROI:(CGRect)i
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = self;
-  objc_sync_enter(v9);
+  height = i.size.height;
+  width = i.size.width;
+  y = i.origin.y;
+  x = i.origin.x;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v33 = 335682096;
   v34 = 0u;
   v35 = 0u;
   kdebug_trace();
-  engineType = v9->super._engineType;
-  v11 = [(ADExecutor *)v9 layout];
-  v12 = [(ADExecutor *)v9 executorParameters];
-  v13 = [v12 logger];
-  v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"ROI: Origin: (%d, %d), Size: (%d, %d)", x, y, width, height];
-  [v13 logString:v14 name:"inputROI" priority:0];
+  engineType = selfCopy->super._engineType;
+  layout = [(ADExecutor *)selfCopy layout];
+  executorParameters = [(ADExecutor *)selfCopy executorParameters];
+  logger = [executorParameters logger];
+  height = [MEMORY[0x277CCACA8] stringWithFormat:@"ROI: Origin: (%d, %d), Size: (%d, %d)", x, y, width, height];
+  [logger logString:height name:"inputROI" priority:0];
 
-  v15 = [(ADJasperColorStillsPipeline *)v9->_pipeline inferenceDescriptor];
-  v16 = [v15 colorInput];
-  v17 = [v16 imageDescriptor];
-  v18 = [(ADExecutor *)v9 prepareForEngineType:a3 roi:v17 descriptorForROI:1 exifOrientation:2 rotationPreference:v15 inferenceDescriptor:x, y, width, height];
+  inferenceDescriptor = [(ADJasperColorStillsPipeline *)selfCopy->_pipeline inferenceDescriptor];
+  colorInput = [inferenceDescriptor colorInput];
+  imageDescriptor = [colorInput imageDescriptor];
+  height2 = [(ADExecutor *)selfCopy prepareForEngineType:type roi:imageDescriptor descriptorForROI:1 exifOrientation:2 rotationPreference:inferenceDescriptor inferenceDescriptor:x, y, width, height];
 
-  if (!v18)
+  if (!height2)
   {
-    if (v9->super._engineType == engineType && [(ADExecutor *)v9 layout]== v11 && v9->_isPrepared)
+    if (selfCopy->super._engineType == engineType && [(ADExecutor *)selfCopy layout]== layout && selfCopy->_isPrepared)
     {
       if (ADDebugUtilsADVerboseLogsEnabled == 1)
       {
@@ -361,48 +361,48 @@
       {
         *buf = 0;
         _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Skipping buffers re-allocation and SIP runners init as nothing relevant has changed", buf, 2u);
-        v18 = 0;
+        height2 = 0;
         goto LABEL_15;
       }
 
-      v18 = 0;
+      height2 = 0;
     }
 
     else
     {
-      v19 = [(ADJasperColorStillsPipeline *)v9->_pipeline correctionBackendInferenceDescriptor];
+      correctionBackendInferenceDescriptor = [(ADJasperColorStillsPipeline *)selfCopy->_pipeline correctionBackendInferenceDescriptor];
       v20 = objc_alloc(MEMORY[0x277CED060]);
-      v21 = [v19 networkURL];
-      v22 = [v21 absoluteString];
-      v23 = [v20 initWithPath:v22 forEngine:v9->super._engineType configurationName:0];
-      correctionBackendEspressoRunner = v9->_correctionBackendEspressoRunner;
-      v9->_correctionBackendEspressoRunner = v23;
+      networkURL = [correctionBackendInferenceDescriptor networkURL];
+      absoluteString = [networkURL absoluteString];
+      v23 = [v20 initWithPath:absoluteString forEngine:selfCopy->super._engineType configurationName:0];
+      correctionBackendEspressoRunner = selfCopy->_correctionBackendEspressoRunner;
+      selfCopy->_correctionBackendEspressoRunner = v23;
 
-      if (v9->_correctionBackendEspressoRunner)
+      if (selfCopy->_correctionBackendEspressoRunner)
       {
-        v25 = [(ADJasperColorStillsPipeline *)v9->_pipeline correctionFrontendInferenceDescriptor];
+        correctionFrontendInferenceDescriptor = [(ADJasperColorStillsPipeline *)selfCopy->_pipeline correctionFrontendInferenceDescriptor];
         v26 = objc_alloc(MEMORY[0x277CED060]);
-        v27 = [v25 networkURL];
-        v28 = [v27 absoluteString];
-        v29 = [v26 initWithPath:v28 forEngine:v9->super._engineType configurationName:0];
-        correctionFrontendEspressoRunner = v9->_correctionFrontendEspressoRunner;
-        v9->_correctionFrontendEspressoRunner = v29;
+        networkURL2 = [correctionFrontendInferenceDescriptor networkURL];
+        absoluteString2 = [networkURL2 absoluteString];
+        v29 = [v26 initWithPath:absoluteString2 forEngine:selfCopy->super._engineType configurationName:0];
+        correctionFrontendEspressoRunner = selfCopy->_correctionFrontendEspressoRunner;
+        selfCopy->_correctionFrontendEspressoRunner = v29;
 
-        if (v9->_correctionFrontendEspressoRunner)
+        if (selfCopy->_correctionFrontendEspressoRunner)
         {
-          v18 = [(ADJasperColorStillsExecutor *)v9 allocateIntermediateBuffers];
-          v9->_isPrepared = v18 == 0;
+          height2 = [(ADJasperColorStillsExecutor *)selfCopy allocateIntermediateBuffers];
+          selfCopy->_isPrepared = height2 == 0;
         }
 
         else
         {
-          v18 = -22960;
+          height2 = -22960;
         }
       }
 
       else
       {
-        v18 = -22960;
+        height2 = -22960;
       }
     }
   }
@@ -410,27 +410,27 @@
 LABEL_15:
 
   kdebug_trace();
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
-  return v18;
+  return height2;
 }
 
 - (int64_t)allocateIntermediateBuffers
 {
   [(ADJasperColorStillsExecutor *)self deallocateEspressoBuffers];
-  v3 = [(ADJasperColorStillsPipeline *)self->_pipeline inferenceDescriptor];
-  v4 = [v3 colorInput];
-  v5 = [v4 imageDescriptor];
+  inferenceDescriptor = [(ADJasperColorStillsPipeline *)self->_pipeline inferenceDescriptor];
+  colorInput = [inferenceDescriptor colorInput];
+  imageDescriptor = [colorInput imageDescriptor];
 
-  [v5 sizeForLayout:{-[ADExecutor layout](self, "layout")}];
-  +[ADUtils updatePixelBufferAllocationWithNewSize:pixelFormat:pixelBuffer:](ADUtils, "updatePixelBufferAllocationWithNewSize:pixelFormat:pixelBuffer:", [v5 pixelFormat], &self->_itmPreProcessedColor, v6, v7);
+  [imageDescriptor sizeForLayout:{-[ADExecutor layout](self, "layout")}];
+  +[ADUtils updatePixelBufferAllocationWithNewSize:pixelFormat:pixelBuffer:](ADUtils, "updatePixelBufferAllocationWithNewSize:pixelFormat:pixelBuffer:", [imageDescriptor pixelFormat], &self->_itmPreProcessedColor, v6, v7);
   itmPreProcessedColor = self->_itmPreProcessedColor;
   if (itmPreProcessedColor)
   {
     espressoRunner = self->super._espressoRunner;
-    v10 = [(ADJasperColorStillsPipeline *)self->_pipeline inferenceDescriptor];
-    v11 = [v10 colorInput];
-    v12 = [(ADEspressoRunnerProtocol *)espressoRunner registerPixelBuffer:itmPreProcessedColor forDescriptor:v11];
+    inferenceDescriptor2 = [(ADJasperColorStillsPipeline *)self->_pipeline inferenceDescriptor];
+    colorInput2 = [inferenceDescriptor2 colorInput];
+    v12 = [(ADEspressoRunnerProtocol *)espressoRunner registerPixelBuffer:itmPreProcessedColor forDescriptor:colorInput2];
 
     if (v12)
     {
@@ -449,9 +449,9 @@ LABEL_9:
     {
       correctionBackendEspressoRunner = self->_correctionBackendEspressoRunner;
       v17 = self->_itmPreProcessedColor;
-      v18 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionBackendInferenceDescriptor];
-      v19 = [v18 colorInput];
-      v12 = [(ADEspressoRunner *)correctionBackendEspressoRunner registerPixelBuffer:v17 forDescriptor:v19];
+      correctionBackendInferenceDescriptor = [(ADJasperColorStillsPipeline *)self->_pipeline correctionBackendInferenceDescriptor];
+      colorInput3 = [correctionBackendInferenceDescriptor colorInput];
+      v12 = [(ADEspressoRunner *)correctionBackendEspressoRunner registerPixelBuffer:v17 forDescriptor:colorInput3];
 
       if (v12)
       {
@@ -468,44 +468,44 @@ LABEL_9:
       else
       {
         v20 = self->super._espressoRunner;
-        v21 = [(ADJasperColorStillsPipeline *)self->_pipeline inferenceDescriptor];
-        v22 = [v21 jasperInput];
-        self->_itmPreProcessedJasper = [(ADEspressoRunnerProtocol *)v20 createAndRegisterPixelBufferForDescriptor:v22];
+        inferenceDescriptor3 = [(ADJasperColorStillsPipeline *)self->_pipeline inferenceDescriptor];
+        jasperInput = [inferenceDescriptor3 jasperInput];
+        self->_itmPreProcessedJasper = [(ADEspressoRunnerProtocol *)v20 createAndRegisterPixelBufferForDescriptor:jasperInput];
 
         v23 = self->super._espressoRunner;
-        v24 = [(ADJasperColorStillsPipeline *)self->_pipeline inferenceDescriptor];
-        v25 = [v24 depthOutput];
-        self->_itmUnprocessedDepth = [(ADEspressoRunnerProtocol *)v23 createAndRegisterPixelBufferForDescriptor:v25];
+        inferenceDescriptor4 = [(ADJasperColorStillsPipeline *)self->_pipeline inferenceDescriptor];
+        depthOutput = [inferenceDescriptor4 depthOutput];
+        self->_itmUnprocessedDepth = [(ADEspressoRunnerProtocol *)v23 createAndRegisterPixelBufferForDescriptor:depthOutput];
 
         v26 = self->_correctionBackendEspressoRunner;
-        v27 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionBackendInferenceDescriptor];
-        v28 = [v27 jasperInput];
-        self->_itmPreProcessedJasperForCorrection = [(ADEspressoRunner *)v26 createAndRegisterPixelBufferForDescriptor:v28];
+        correctionBackendInferenceDescriptor2 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionBackendInferenceDescriptor];
+        jasperInput2 = [correctionBackendInferenceDescriptor2 jasperInput];
+        self->_itmPreProcessedJasperForCorrection = [(ADEspressoRunner *)v26 createAndRegisterPixelBufferForDescriptor:jasperInput2];
 
         v29 = self->_correctionBackendEspressoRunner;
-        v30 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionBackendInferenceDescriptor];
-        v31 = [v30 featuresOutput];
-        v32 = [(ADEspressoRunner *)v29 registerDescriptor:v31];
+        correctionBackendInferenceDescriptor3 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionBackendInferenceDescriptor];
+        featuresOutput = [correctionBackendInferenceDescriptor3 featuresOutput];
+        v32 = [(ADEspressoRunner *)v29 registerDescriptor:featuresOutput];
         calibFeaturesOutputBuffer = self->_calibFeaturesOutputBuffer;
         self->_calibFeaturesOutputBuffer = v32;
 
         self->_calibFeaturesOutput = [(ADEspressoBufferHandle *)self->_calibFeaturesOutputBuffer data];
         correctionFrontendEspressoRunner = self->_correctionFrontendEspressoRunner;
-        v35 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionFrontendInferenceDescriptor];
-        v36 = [v35 featuresInput];
-        v37 = [(ADEspressoRunner *)correctionFrontendEspressoRunner registerDescriptor:v36];
+        correctionFrontendInferenceDescriptor = [(ADJasperColorStillsPipeline *)self->_pipeline correctionFrontendInferenceDescriptor];
+        featuresInput = [correctionFrontendInferenceDescriptor featuresInput];
+        v37 = [(ADEspressoRunner *)correctionFrontendEspressoRunner registerDescriptor:featuresInput];
         self->_calibFeaturesInput = [v37 data];
 
         v38 = self->_correctionFrontendEspressoRunner;
-        v39 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionFrontendInferenceDescriptor];
-        v40 = [v39 anglesOutput];
-        v41 = [(ADEspressoRunner *)v38 registerDescriptor:v40];
+        correctionFrontendInferenceDescriptor2 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionFrontendInferenceDescriptor];
+        anglesOutput = [correctionFrontendInferenceDescriptor2 anglesOutput];
+        v41 = [(ADEspressoRunner *)v38 registerDescriptor:anglesOutput];
         self->_calibAnglesOutput = [v41 data];
 
         v42 = self->_correctionFrontendEspressoRunner;
-        v43 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionFrontendInferenceDescriptor];
-        v44 = [v43 errorsOutput];
-        v45 = [(ADEspressoRunner *)v42 registerDescriptor:v44];
+        correctionFrontendInferenceDescriptor3 = [(ADJasperColorStillsPipeline *)self->_pipeline correctionFrontendInferenceDescriptor];
+        errorsOutput = [correctionFrontendInferenceDescriptor3 errorsOutput];
+        v45 = [(ADEspressoRunner *)v42 registerDescriptor:errorsOutput];
         self->_calibErrorsOutput = [v45 data];
 
         if (self->_itmPreProcessedJasper && self->_itmUnprocessedDepth && self->_itmPreProcessedJasperForCorrection)
@@ -540,9 +540,9 @@ LABEL_9:
   self->_itmPreProcessedJasperForCorrection = 0;
 }
 
-- (ADJasperColorStillsExecutor)initWithParameters:(id)a3
+- (ADJasperColorStillsExecutor)initWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v17 = 335679544;
   v18 = 0u;
   v19 = 0u;
@@ -555,7 +555,7 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  if (!v4 || ([v4 pipelineParameters], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  if (!parametersCopy || ([parametersCopy pipelineParameters], v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -566,8 +566,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [v4 pipelineParameters];
-  v8 = [[ADJasperColorStillsPipeline alloc] initWithParameters:v7];
+  pipelineParameters = [parametersCopy pipelineParameters];
+  v8 = [[ADJasperColorStillsPipeline alloc] initWithParameters:pipelineParameters];
   pipeline = v5->_pipeline;
   v5->_pipeline = v8;
 
@@ -579,7 +579,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  [(ADExecutor *)v5 setExecutorParameters:v4];
+  [(ADExecutor *)v5 setExecutorParameters:parametersCopy];
   v5->_itmCroppedScaledColor = 0;
   v5->_itmRotatedColor = 0;
   v5->_itmPreProcessedColor = 0;
@@ -609,10 +609,10 @@ LABEL_11:
   return v13;
 }
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[ADJasperColorStillsExecutorParameters alloc] initForDevice:v4];
+  deviceCopy = device;
+  v5 = [[ADJasperColorStillsExecutorParameters alloc] initForDevice:deviceCopy];
   v6 = [(ADJasperColorStillsExecutor *)self initWithParameters:v5];
 
   return v6;

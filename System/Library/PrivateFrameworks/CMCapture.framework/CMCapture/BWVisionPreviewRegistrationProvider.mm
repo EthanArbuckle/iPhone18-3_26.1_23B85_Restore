@@ -1,25 +1,25 @@
 @interface BWVisionPreviewRegistrationProvider
-- ($65FF825F6F0E105C2F171BD802D3B474)registerWiderCamera:(SEL)a3 narrowerCamera:(opaqueCMSampleBuffer *)a4 widerToNarrowerCameraScale:(opaqueCMSampleBuffer *)a5 isMacroScene:(double)a6 macroTransitionType:(BOOL)a7;
-- (BWVisionPreviewRegistrationProvider)initWithCameraInfoByPortType:(id)a3 sensorBinningFactor:(id)a4;
-- (CGPoint)computeCameraShiftForWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCamera:(opaqueCMSampleBuffer *)a4 widerToNarrowerCameraScale:(double)a5;
-- (double)_registrationShiftForLeftStrip:(CMSampleBufferRef)sbuf byRegisteringWiderCamera:(opaqueCMSampleBuffer *)a4 narrowerCamera:(int)a5 centerBias:(int)a6 widerToNarrowerCameraScale:(_DWORD *)a7 isMacroScene:(double)a8 err:;
-- (void)allocateResourcesWithVideoFormat:(id)a3 metalContext:(id)a4;
+- ($65FF825F6F0E105C2F171BD802D3B474)registerWiderCamera:(SEL)camera narrowerCamera:(opaqueCMSampleBuffer *)narrowerCamera widerToNarrowerCameraScale:(opaqueCMSampleBuffer *)scale isMacroScene:(double)scene macroTransitionType:(BOOL)type;
+- (BWVisionPreviewRegistrationProvider)initWithCameraInfoByPortType:(id)type sensorBinningFactor:(id)factor;
+- (CGPoint)computeCameraShiftForWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(opaqueCMSampleBuffer *)narrowerCamera widerToNarrowerCameraScale:(double)scale;
+- (double)_registrationShiftForLeftStrip:(CMSampleBufferRef)sbuf byRegisteringWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(int)narrowerCamera centerBias:(int)bias widerToNarrowerCameraScale:(_DWORD *)scale isMacroScene:(double)scene err:;
+- (void)allocateResourcesWithVideoFormat:(id)format metalContext:(id)context;
 - (void)cleanupResources;
 - (void)dealloc;
 @end
 
 @implementation BWVisionPreviewRegistrationProvider
 
-- (BWVisionPreviewRegistrationProvider)initWithCameraInfoByPortType:(id)a3 sensorBinningFactor:(id)a4
+- (BWVisionPreviewRegistrationProvider)initWithCameraInfoByPortType:(id)type sensorBinningFactor:(id)factor
 {
   v11.receiver = self;
   v11.super_class = BWVisionPreviewRegistrationProvider;
   v6 = [(BWVisionPreviewRegistrationProvider *)&v11 init];
   if (v6)
   {
-    if (a3)
+    if (type)
     {
-      v7 = [a3 objectForKeyedSubscript:*off_1E798A0D0];
+      v7 = [type objectForKeyedSubscript:*off_1E798A0D0];
       if (v7)
       {
         if (!CGPointMakeWithDictionaryRepresentation([v7 objectForKeyedSubscript:*off_1E7989F10], (v6 + 24)))
@@ -28,14 +28,14 @@
           goto LABEL_19;
         }
 
-        if (FigMotionSphereShiftStateInitialize(v6 + 10, a3, 7))
+        if (FigMotionSphereShiftStateInitialize(v6 + 10, type, 7))
         {
           [BWVisionPreviewRegistrationProvider initWithCameraInfoByPortType:sensorBinningFactor:];
           goto LABEL_19;
         }
       }
 
-      v8 = [a3 objectForKeyedSubscript:*off_1E798A0C0];
+      v8 = [type objectForKeyedSubscript:*off_1E798A0C0];
       if (v8 && !CGPointMakeWithDictionaryRepresentation([v8 objectForKeyedSubscript:*off_1E7989F10], (v6 + 40)))
       {
         [BWVisionPreviewRegistrationProvider initWithCameraInfoByPortType:sensorBinningFactor:];
@@ -43,17 +43,17 @@
 
       else
       {
-        v9 = [a3 objectForKeyedSubscript:*off_1E798A0D8];
+        v9 = [type objectForKeyedSubscript:*off_1E798A0D8];
         if (!v9)
         {
 LABEL_11:
-          *(v6 + 9) = a4;
+          *(v6 + 9) = factor;
           return v6;
         }
 
         if (CGPointMakeWithDictionaryRepresentation([v9 objectForKeyedSubscript:*off_1E7989F10], (v6 + 56)))
         {
-          if (!FigMotionSphereShiftStateInitialize(v6 + 90, a3, 7))
+          if (!FigMotionSphereShiftStateInitialize(v6 + 90, type, 7))
           {
             goto LABEL_11;
           }
@@ -89,14 +89,14 @@ LABEL_19:
   [(BWVisionPreviewRegistrationProvider *)&v3 dealloc];
 }
 
-- (void)allocateResourcesWithVideoFormat:(id)a3 metalContext:(id)a4
+- (void)allocateResourcesWithVideoFormat:(id)format metalContext:(id)context
 {
   if (!self->_registrationPool)
   {
     v6 = objc_alloc_init(BWVideoFormatRequirements);
-    -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", FigCaptureRoundFloatToMultipleOf(4, [a3 width] * 0.3));
-    -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", FigCaptureRoundFloatToMultipleOf(4, [a3 height]));
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{FigCaptureUncompressedPixelFormatForPixelFormat(objc_msgSend(a3, "pixelFormat"))}];
+    -[BWVideoFormatRequirements setWidth:](v6, "setWidth:", FigCaptureRoundFloatToMultipleOf(4, [format width] * 0.3));
+    -[BWVideoFormatRequirements setHeight:](v6, "setHeight:", FigCaptureRoundFloatToMultipleOf(4, [format height]));
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{FigCaptureUncompressedPixelFormatForPixelFormat(objc_msgSend(format, "pixelFormat"))}];
     -[BWVideoFormatRequirements setSupportedPixelFormats:](v6, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v10 count:1]);
     v9 = v6;
     self->_registrationPool = -[BWPixelBufferPool initWithVideoFormat:capacity:name:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:", +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1]), 2, @"BWVisionPreviewRegistrationProvider");
@@ -127,28 +127,28 @@ LABEL_19:
   }
 }
 
-- ($65FF825F6F0E105C2F171BD802D3B474)registerWiderCamera:(SEL)a3 narrowerCamera:(opaqueCMSampleBuffer *)a4 widerToNarrowerCameraScale:(opaqueCMSampleBuffer *)a5 isMacroScene:(double)a6 macroTransitionType:(BOOL)a7
+- ($65FF825F6F0E105C2F171BD802D3B474)registerWiderCamera:(SEL)camera narrowerCamera:(opaqueCMSampleBuffer *)narrowerCamera widerToNarrowerCameraScale:(opaqueCMSampleBuffer *)scale isMacroScene:(double)scene macroTransitionType:(BOOL)type
 {
-  v8 = a7;
+  typeCopy = type;
   v49 = 0;
   v14 = objc_autoreleasePoolPush();
-  v15 = [(BWVisionPreviewRegistrationProvider *)self _registrationShiftForLeftStrip:a4 byRegisteringWiderCamera:a5 narrowerCamera:0 centerBias:v8 widerToNarrowerCameraScale:&v49 isMacroScene:a6 err:?];
+  v15 = [(BWVisionPreviewRegistrationProvider *)self _registrationShiftForLeftStrip:narrowerCamera byRegisteringWiderCamera:scale narrowerCamera:0 centerBias:typeCopy widerToNarrowerCameraScale:&v49 isMacroScene:scene err:?];
   v17 = v16;
   v18 = v49 == 0;
   objc_autoreleasePoolPop(v14);
   v19 = objc_autoreleasePoolPush();
-  v20 = [(BWVisionPreviewRegistrationProvider *)self _registrationShiftForLeftStrip:a4 byRegisteringWiderCamera:a5 narrowerCamera:0 centerBias:v8 widerToNarrowerCameraScale:&v49 isMacroScene:a6 err:?];
+  v20 = [(BWVisionPreviewRegistrationProvider *)self _registrationShiftForLeftStrip:narrowerCamera byRegisteringWiderCamera:scale narrowerCamera:0 centerBias:typeCopy widerToNarrowerCameraScale:&v49 isMacroScene:scene err:?];
   v22 = v21;
   v23 = v49 == 0;
   objc_autoreleasePoolPop(v19);
   v24 = objc_autoreleasePoolPush();
-  v25 = [(BWVisionPreviewRegistrationProvider *)self _registrationShiftForLeftStrip:a4 byRegisteringWiderCamera:a5 narrowerCamera:1 centerBias:v8 widerToNarrowerCameraScale:&v49 isMacroScene:a6 err:?];
+  v25 = [(BWVisionPreviewRegistrationProvider *)self _registrationShiftForLeftStrip:narrowerCamera byRegisteringWiderCamera:scale narrowerCamera:1 centerBias:typeCopy widerToNarrowerCameraScale:&v49 isMacroScene:scene err:?];
   v47 = v26;
   v48 = v25;
   v27 = v49;
   objc_autoreleasePoolPop(v24);
   v28 = objc_autoreleasePoolPush();
-  v29 = [(BWVisionPreviewRegistrationProvider *)self _registrationShiftForLeftStrip:a4 byRegisteringWiderCamera:a5 narrowerCamera:1 centerBias:v8 widerToNarrowerCameraScale:&v49 isMacroScene:a6 err:?];
+  v29 = [(BWVisionPreviewRegistrationProvider *)self _registrationShiftForLeftStrip:narrowerCamera byRegisteringWiderCamera:scale narrowerCamera:1 centerBias:typeCopy widerToNarrowerCameraScale:&v49 isMacroScene:scene err:?];
   v45 = v30;
   v46 = v29;
   v31 = v49;
@@ -197,17 +197,17 @@ LABEL_19:
   return result;
 }
 
-- (CGPoint)computeCameraShiftForWiderCamera:(opaqueCMSampleBuffer *)a3 narrowerCamera:(opaqueCMSampleBuffer *)a4 widerToNarrowerCameraScale:(double)a5
+- (CGPoint)computeCameraShiftForWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(opaqueCMSampleBuffer *)narrowerCamera widerToNarrowerCameraScale:(double)scale
 {
   v8 = *off_1E798A3C8;
-  v9 = CMGetAttachment(a3, *off_1E798A3C8, 0);
-  v10 = CMGetAttachment(a4, v8, 0);
+  v9 = CMGetAttachment(camera, *off_1E798A3C8, 0);
+  v10 = CMGetAttachment(narrowerCamera, v8, 0);
   v11 = [objc_msgSend(v9 objectForKeyedSubscript:{*off_1E798B540), "isEqualToString:", *off_1E798A0D0}];
-  CMSampleBufferGetPresentationTimeStamp(&time, a3);
+  CMSampleBufferGetPresentationTimeStamp(&time, camera);
   Seconds = CMTimeGetSeconds(&time);
-  CMSampleBufferGetPresentationTimeStamp(&time, a4);
+  CMSampleBufferGetPresentationTimeStamp(&time, narrowerCamera);
   v13 = CMTimeGetSeconds(&time);
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
+  ImageBuffer = CMSampleBufferGetImageBuffer(camera);
   Width = CVPixelBufferGetWidth(ImageBuffer);
   Height = CVPixelBufferGetHeight(ImageBuffer);
   v28 = 0.0;
@@ -241,17 +241,17 @@ LABEL_19:
   return result;
 }
 
-- (double)_registrationShiftForLeftStrip:(CMSampleBufferRef)sbuf byRegisteringWiderCamera:(opaqueCMSampleBuffer *)a4 narrowerCamera:(int)a5 centerBias:(int)a6 widerToNarrowerCameraScale:(_DWORD *)a7 isMacroScene:(double)a8 err:
+- (double)_registrationShiftForLeftStrip:(CMSampleBufferRef)sbuf byRegisteringWiderCamera:(opaqueCMSampleBuffer *)camera narrowerCamera:(int)narrowerCamera centerBias:(int)bias widerToNarrowerCameraScale:(_DWORD *)scale isMacroScene:(double)scene err:
 {
-  HIDWORD(v102) = a6;
-  if (!a1)
+  HIDWORD(v102) = bias;
+  if (!self)
   {
     *&v110 = 0.0;
     return *&v110;
   }
 
   ImageBuffer = CMSampleBufferGetImageBuffer(sbuf);
-  v15 = CMSampleBufferGetImageBuffer(a4);
+  v15 = CMSampleBufferGetImageBuffer(camera);
   v110 = *MEMORY[0x1E695EFF8];
   v112 = *(MEMORY[0x1E695EFF8] + 8);
   v16 = *off_1E798A3C8;
@@ -262,7 +262,7 @@ LABEL_19:
     OUTLINED_FUNCTION_7_6();
     FigDebugAssert3();
     v86 = -12780;
-    if (!a7)
+    if (!scale)
     {
       return *&v110;
     }
@@ -271,16 +271,16 @@ LABEL_19:
   }
 
   v18 = v17;
-  v105 = a7;
-  v19 = [*(a1 + 8) newPixelBuffer];
-  v20 = [*(a1 + 8) newPixelBuffer];
-  v21 = v20;
-  if (v19 && v20)
+  scaleCopy = scale;
+  newPixelBuffer = [*(self + 8) newPixelBuffer];
+  newPixelBuffer2 = [*(self + 8) newPixelBuffer];
+  v21 = newPixelBuffer2;
+  if (newPixelBuffer && newPixelBuffer2)
   {
-    v22 = psn_pixelBufferRect(v19);
+    v22 = psn_pixelBufferRect(newPixelBuffer);
     v24 = v23;
     v26 = v25;
-    v27 = CMGetAttachment(a4, v16, 0);
+    v27 = CMGetAttachment(camera, v16, 0);
     rect.a = psn_pixelBufferRect(v15);
     rect.b = v28;
     rect.c = v29;
@@ -292,7 +292,7 @@ LABEL_19:
 
     v119.size = _Q0;
     CGRectMakeWithDictionaryRepresentation([v27 objectForKeyedSubscript:*off_1E798A5C8], &v119);
-    if (a5)
+    if (narrowerCamera)
     {
       v119 = CGRectInset(v119, 0.25, 0.0);
     }
@@ -330,8 +330,8 @@ LABEL_19:
       v45 = vcvtd_n_f64_u64(Height, 1uLL);
       memset(&rect, 0, sizeof(rect));
       CGAffineTransformMakeTranslation(&rect, -(v42 * 0.5), -(Height * 0.5));
-      Scale = CGAffineTransformMakeScale(&v118, 1.0 / a8, 1.0 / a8);
-      OUTLINED_FUNCTION_2_104(Scale, v47, v48, v49, v50, v51, v52, v53, v88, v90, v92, v94, v96, v98, v100, v102, v105, *&a8, v110, v112, v115, v116, v117, *&v118.a, *&v118.b, *&v118.c, *&v118.d, *&v118.tx, *&v118.ty, *&v119.origin.x);
+      Scale = CGAffineTransformMakeScale(&v118, 1.0 / scene, 1.0 / scene);
+      OUTLINED_FUNCTION_2_104(Scale, v47, v48, v49, v50, v51, v52, v53, v88, v90, v92, v94, v96, v98, v100, v102, scaleCopy, *&scene, v110, v112, v115, v116, v117, *&v118.a, *&v118.b, *&v118.c, *&v118.d, *&v118.tx, *&v118.ty, *&v119.origin.x);
       *&rect.a = v119.origin;
       *&rect.c = v119.size;
       *&rect.tx = v120;
@@ -358,7 +358,7 @@ LABEL_19:
         v69 = objc_alloc(getVNImageRequestHandlerClass());
         v70 = MEMORY[0x1E695E0F8];
         v71 = [v69 initWithCVPixelBuffer:v21 options:MEMORY[0x1E695E0F8]];
-        v72 = [objc_alloc(getVNTranslationalImageRegistrationRequestClass()) initWithTargetedCVPixelBuffer:v19 options:v70];
+        v72 = [objc_alloc(getVNTranslationalImageRegistrationRequestClass()) initWithTargetedCVPixelBuffer:newPixelBuffer options:v70];
         v118.a = 0.0;
         *&v115 = v72;
         tx = *&v110;
@@ -431,7 +431,7 @@ LABEL_19:
 LABEL_29:
         v86 = -12780;
 LABEL_31:
-        CFRelease(v19);
+        CFRelease(newPixelBuffer);
         goto LABEL_32;
       }
 
@@ -447,7 +447,7 @@ LABEL_31:
   OUTLINED_FUNCTION_7_6();
   FigDebugAssert3();
   v86 = -12780;
-  if (v19)
+  if (newPixelBuffer)
   {
     goto LABEL_31;
   }
@@ -458,11 +458,11 @@ LABEL_32:
     CFRelease(v21);
   }
 
-  a7 = v105;
-  if (v105)
+  scale = scaleCopy;
+  if (scaleCopy)
   {
 LABEL_35:
-    *a7 = v86;
+    *scale = v86;
   }
 
   return *&v110;

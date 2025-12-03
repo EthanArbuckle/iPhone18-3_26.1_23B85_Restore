@@ -1,26 +1,26 @@
 @interface PPConnectionsLocation
-+ (unint64_t)round:(double)a3 toNearest:(double)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConnectionsLocation:(id)a3;
-- (PPConnectionsLocation)initWithCoder:(id)a3;
-- (PPConnectionsLocation)initWithOriginatingBundleID:(id)a3;
++ (unint64_t)round:(double)round toNearest:(double)nearest;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConnectionsLocation:(id)location;
+- (PPConnectionsLocation)initWithCoder:(id)coder;
+- (PPConnectionsLocation)initWithOriginatingBundleID:(id)d;
 - (id)addressDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)quickTypeItem;
 - (unint64_t)_roundedPredictionAge;
 - (unsigned)_pexItemSource;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPConnectionsLocation
 
-- (BOOL)isEqualToConnectionsLocation:(id)a3
+- (BOOL)isEqualToConnectionsLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = self->_identifier;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == locationCopy[2])
   {
   }
 
@@ -36,7 +36,7 @@
 
   v8 = self->_name;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == locationCopy[3])
   {
   }
 
@@ -52,7 +52,7 @@
 
   v11 = self->_originatingBundleID;
   v12 = v11;
-  if (v11 == v4[4])
+  if (v11 == locationCopy[4])
   {
   }
 
@@ -68,7 +68,7 @@
 
   v14 = self->_fullFormattedAddress;
   v15 = v14;
-  if (v14 == v4[5])
+  if (v14 == locationCopy[5])
   {
   }
 
@@ -84,7 +84,7 @@
 
   v17 = self->_thoroughfare;
   v18 = v17;
-  if (v17 == v4[6])
+  if (v17 == locationCopy[6])
   {
   }
 
@@ -100,7 +100,7 @@
 
   v20 = self->_subThoroughfare;
   v21 = v20;
-  if (v20 == v4[7])
+  if (v20 == locationCopy[7])
   {
   }
 
@@ -116,7 +116,7 @@
 
   v23 = self->_locality;
   v24 = v23;
-  if (v23 == v4[8])
+  if (v23 == locationCopy[8])
   {
   }
 
@@ -132,7 +132,7 @@
 
   v26 = self->_administrativeArea;
   v27 = v26;
-  if (v26 == v4[9])
+  if (v26 == locationCopy[9])
   {
   }
 
@@ -148,7 +148,7 @@
 
   v29 = self->_postalCode;
   v30 = v29;
-  if (v29 == v4[10])
+  if (v29 == locationCopy[10])
   {
   }
 
@@ -164,7 +164,7 @@
 
   v32 = self->_country;
   v33 = v32;
-  if (v32 == v4[11])
+  if (v32 == locationCopy[11])
   {
   }
 
@@ -180,7 +180,7 @@
 
   v35 = self->_latitude;
   v36 = v35;
-  if (v35 == v4[12])
+  if (v35 == locationCopy[12])
   {
   }
 
@@ -196,7 +196,7 @@
 
   v38 = self->_longitude;
   v39 = v38;
-  if (v38 == v4[13])
+  if (v38 == locationCopy[13])
   {
   }
 
@@ -212,7 +212,7 @@
 
   v41 = self->_originatingWebsiteURL;
   v42 = v41;
-  if (v41 == v4[14])
+  if (v41 == locationCopy[14])
   {
   }
 
@@ -228,7 +228,7 @@
 
   v44 = self->_mapItemURL;
   v45 = v44;
-  if (v44 == v4[15])
+  if (v44 == locationCopy[15])
   {
   }
 
@@ -244,7 +244,7 @@
 
   v47 = self->_label;
   v48 = v47;
-  if (v47 == v4[18])
+  if (v47 == locationCopy[18])
   {
   }
 
@@ -260,7 +260,7 @@
 
   v50 = self->_value;
   v51 = v50;
-  if (v50 == v4[19])
+  if (v50 == locationCopy[19])
   {
   }
 
@@ -276,7 +276,7 @@
 
   v53 = self->_shortValue;
   v54 = v53;
-  if (v53 == v4[20])
+  if (v53 == locationCopy[20])
   {
   }
 
@@ -290,11 +290,11 @@
     }
   }
 
-  if (self->_shouldAggregate == *(v4 + 9))
+  if (self->_shouldAggregate == *(locationCopy + 9))
   {
     v56 = self->_addressComponents;
     v57 = v56;
-    if (v56 == v4[22])
+    if (v56 == locationCopy[22])
     {
     }
 
@@ -310,7 +310,7 @@
 
     v59 = self->_source;
     v60 = v59;
-    if (v59 == v4[23])
+    if (v59 == locationCopy[23])
     {
     }
 
@@ -326,7 +326,7 @@
 
     v62 = self->_trigger;
     v63 = v62;
-    if (v62 == v4[24])
+    if (v62 == locationCopy[24])
     {
     }
 
@@ -342,7 +342,7 @@
 
     v65 = self->_createdAt;
     v66 = v65;
-    if (v65 == v4[25])
+    if (v65 == locationCopy[25])
     {
     }
 
@@ -358,7 +358,7 @@
 
     v68 = self->_lifetime;
     v69 = v68;
-    if (v68 == v4[26])
+    if (v68 == locationCopy[26])
     {
     }
 
@@ -374,7 +374,7 @@
 
     v71 = self->_authorHandle;
     v72 = v71;
-    if (v71 == v4[17])
+    if (v71 == locationCopy[17])
     {
     }
 
@@ -390,7 +390,7 @@
 
     v74 = self->_contactHandles;
     v75 = v74;
-    if (v74 == v4[16])
+    if (v74 == locationCopy[16])
     {
     }
 
@@ -404,7 +404,7 @@
       }
     }
 
-    v77 = *(v4 + 8) == self->_copiedToPasteboard;
+    v77 = *(locationCopy + 8) == self->_copiedToPasteboard;
     goto LABEL_97;
   }
 
@@ -415,122 +415,122 @@ LABEL_97:
   return v77;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPConnectionsLocation *)self isEqualToConnectionsLocation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPConnectionsLocation *)self isEqualToConnectionsLocation:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   if (v5)
   {
-    v6 = [(NSString *)self->_identifier copyWithZone:a3];
+    v6 = [(NSString *)self->_identifier copyWithZone:zone];
     v7 = *(v5 + 16);
     *(v5 + 16) = v6;
 
-    v8 = [(NSString *)self->_name copyWithZone:a3];
+    v8 = [(NSString *)self->_name copyWithZone:zone];
     v9 = *(v5 + 24);
     *(v5 + 24) = v8;
 
-    v10 = [(NSString *)self->_originatingBundleID copyWithZone:a3];
+    v10 = [(NSString *)self->_originatingBundleID copyWithZone:zone];
     v11 = *(v5 + 32);
     *(v5 + 32) = v10;
 
-    v12 = [(NSString *)self->_fullFormattedAddress copyWithZone:a3];
+    v12 = [(NSString *)self->_fullFormattedAddress copyWithZone:zone];
     v13 = *(v5 + 40);
     *(v5 + 40) = v12;
 
-    v14 = [(NSString *)self->_thoroughfare copyWithZone:a3];
+    v14 = [(NSString *)self->_thoroughfare copyWithZone:zone];
     v15 = *(v5 + 48);
     *(v5 + 48) = v14;
 
-    v16 = [(NSString *)self->_subThoroughfare copyWithZone:a3];
+    v16 = [(NSString *)self->_subThoroughfare copyWithZone:zone];
     v17 = *(v5 + 56);
     *(v5 + 56) = v16;
 
-    v18 = [(NSString *)self->_locality copyWithZone:a3];
+    v18 = [(NSString *)self->_locality copyWithZone:zone];
     v19 = *(v5 + 64);
     *(v5 + 64) = v18;
 
-    v20 = [(NSString *)self->_administrativeArea copyWithZone:a3];
+    v20 = [(NSString *)self->_administrativeArea copyWithZone:zone];
     v21 = *(v5 + 72);
     *(v5 + 72) = v20;
 
-    v22 = [(NSString *)self->_postalCode copyWithZone:a3];
+    v22 = [(NSString *)self->_postalCode copyWithZone:zone];
     v23 = *(v5 + 80);
     *(v5 + 80) = v22;
 
-    v24 = [(NSString *)self->_country copyWithZone:a3];
+    v24 = [(NSString *)self->_country copyWithZone:zone];
     v25 = *(v5 + 88);
     *(v5 + 88) = v24;
 
-    v26 = [(NSNumber *)self->_latitude copyWithZone:a3];
+    v26 = [(NSNumber *)self->_latitude copyWithZone:zone];
     v27 = *(v5 + 96);
     *(v5 + 96) = v26;
 
-    v28 = [(NSNumber *)self->_longitude copyWithZone:a3];
+    v28 = [(NSNumber *)self->_longitude copyWithZone:zone];
     v29 = *(v5 + 104);
     *(v5 + 104) = v28;
 
-    v30 = [(NSURL *)self->_originatingWebsiteURL copyWithZone:a3];
+    v30 = [(NSURL *)self->_originatingWebsiteURL copyWithZone:zone];
     v31 = *(v5 + 112);
     *(v5 + 112) = v30;
 
-    v32 = [(NSURL *)self->_mapItemURL copyWithZone:a3];
+    v32 = [(NSURL *)self->_mapItemURL copyWithZone:zone];
     v33 = *(v5 + 120);
     *(v5 + 120) = v32;
 
-    v34 = [(NSString *)self->_label copyWithZone:a3];
+    v34 = [(NSString *)self->_label copyWithZone:zone];
     v35 = *(v5 + 144);
     *(v5 + 144) = v34;
 
-    v36 = [(NSString *)self->_value copyWithZone:a3];
+    v36 = [(NSString *)self->_value copyWithZone:zone];
     v37 = *(v5 + 152);
     *(v5 + 152) = v36;
 
-    v38 = [(NSString *)self->_shortValue copyWithZone:a3];
+    v38 = [(NSString *)self->_shortValue copyWithZone:zone];
     v39 = *(v5 + 160);
     *(v5 + 160) = v38;
 
     *(v5 + 9) = self->_shouldAggregate;
-    v40 = [(NSDictionary *)self->_addressComponents copyWithZone:a3];
+    v40 = [(NSDictionary *)self->_addressComponents copyWithZone:zone];
     v41 = *(v5 + 176);
     *(v5 + 176) = v40;
 
-    v42 = [(NSString *)self->_source copyWithZone:a3];
+    v42 = [(NSString *)self->_source copyWithZone:zone];
     v43 = *(v5 + 184);
     *(v5 + 184) = v42;
 
-    v44 = [(NSString *)self->_trigger copyWithZone:a3];
+    v44 = [(NSString *)self->_trigger copyWithZone:zone];
     v45 = *(v5 + 192);
     *(v5 + 192) = v44;
 
-    v46 = [(NSDate *)self->_createdAt copyWithZone:a3];
+    v46 = [(NSDate *)self->_createdAt copyWithZone:zone];
     v47 = *(v5 + 200);
     *(v5 + 200) = v46;
 
-    v48 = [(NSNumber *)self->_lifetime copyWithZone:a3];
+    v48 = [(NSNumber *)self->_lifetime copyWithZone:zone];
     v49 = *(v5 + 208);
     *(v5 + 208) = v48;
 
-    v50 = [(NSString *)self->_authorHandle copyWithZone:a3];
+    v50 = [(NSString *)self->_authorHandle copyWithZone:zone];
     v51 = *(v5 + 136);
     *(v5 + 136) = v50;
 
-    v52 = [(NSArray *)self->_contactHandles copyWithZone:a3];
+    v52 = [(NSArray *)self->_contactHandles copyWithZone:zone];
     v53 = *(v5 + 128);
     *(v5 + 128) = v52;
 
@@ -540,49 +540,49 @@ LABEL_97:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"ide"];
-  [v5 encodeObject:self->_name forKey:@"nam"];
-  [v5 encodeObject:self->_originatingBundleID forKey:@"bid"];
-  [v5 encodeObject:self->_fullFormattedAddress forKey:@"ffa"];
-  [v5 encodeObject:self->_thoroughfare forKey:@"thr"];
-  [v5 encodeObject:self->_subThoroughfare forKey:@"sth"];
-  [v5 encodeObject:self->_locality forKey:@"loc"];
-  [v5 encodeObject:self->_administrativeArea forKey:@"aar"];
-  [v5 encodeObject:self->_postalCode forKey:@"poc"];
-  [v5 encodeObject:self->_country forKey:@"cnt"];
-  [v5 encodeObject:self->_latitude forKey:@"lat"];
-  [v5 encodeObject:self->_longitude forKey:@"lon"];
-  [v5 encodeObject:self->_originatingWebsiteURL forKey:@"owu"];
-  [v5 encodeObject:self->_mapItemURL forKey:@"miu"];
-  [v5 encodeObject:self->_label forKey:@"lab"];
-  [v5 encodeObject:self->_value forKey:@"val"];
-  [v5 encodeObject:self->_shortValue forKey:@"shv"];
-  [v5 encodeBool:self->_shouldAggregate forKey:@"sha"];
-  [v5 encodeObject:self->_addressComponents forKey:@"add"];
-  [v5 encodeObject:self->_source forKey:@"src"];
-  [v5 encodeObject:self->_trigger forKey:@"trg"];
-  [v5 encodeObject:self->_createdAt forKey:@"cra"];
-  [v5 encodeObject:self->_lifetime forKey:@"lft"];
-  [v5 encodeObject:self->_authorHandle forKey:@"auh"];
-  [v5 encodeObject:self->_contactHandles forKey:@"cnh"];
-  [v5 encodeBool:self->_copiedToPasteboard forKey:@"cpb"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"ide"];
+  [coderCopy encodeObject:self->_name forKey:@"nam"];
+  [coderCopy encodeObject:self->_originatingBundleID forKey:@"bid"];
+  [coderCopy encodeObject:self->_fullFormattedAddress forKey:@"ffa"];
+  [coderCopy encodeObject:self->_thoroughfare forKey:@"thr"];
+  [coderCopy encodeObject:self->_subThoroughfare forKey:@"sth"];
+  [coderCopy encodeObject:self->_locality forKey:@"loc"];
+  [coderCopy encodeObject:self->_administrativeArea forKey:@"aar"];
+  [coderCopy encodeObject:self->_postalCode forKey:@"poc"];
+  [coderCopy encodeObject:self->_country forKey:@"cnt"];
+  [coderCopy encodeObject:self->_latitude forKey:@"lat"];
+  [coderCopy encodeObject:self->_longitude forKey:@"lon"];
+  [coderCopy encodeObject:self->_originatingWebsiteURL forKey:@"owu"];
+  [coderCopy encodeObject:self->_mapItemURL forKey:@"miu"];
+  [coderCopy encodeObject:self->_label forKey:@"lab"];
+  [coderCopy encodeObject:self->_value forKey:@"val"];
+  [coderCopy encodeObject:self->_shortValue forKey:@"shv"];
+  [coderCopy encodeBool:self->_shouldAggregate forKey:@"sha"];
+  [coderCopy encodeObject:self->_addressComponents forKey:@"add"];
+  [coderCopy encodeObject:self->_source forKey:@"src"];
+  [coderCopy encodeObject:self->_trigger forKey:@"trg"];
+  [coderCopy encodeObject:self->_createdAt forKey:@"cra"];
+  [coderCopy encodeObject:self->_lifetime forKey:@"lft"];
+  [coderCopy encodeObject:self->_authorHandle forKey:@"auh"];
+  [coderCopy encodeObject:self->_contactHandles forKey:@"cnh"];
+  [coderCopy encodeBool:self->_copiedToPasteboard forKey:@"cpb"];
 }
 
-- (PPConnectionsLocation)initWithCoder:(id)a3
+- (PPConnectionsLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
-  v11 = [v4 decodeObjectOfClass:v5 forKey:@"bid"];
-  v12 = [v4 decodeObjectOfClass:v5 forKey:@"ide"];
+  v11 = [coderCopy decodeObjectOfClass:v5 forKey:@"bid"];
+  v12 = [coderCopy decodeObjectOfClass:v5 forKey:@"ide"];
   v13 = v12;
   if (v11)
   {
@@ -596,7 +596,7 @@ LABEL_97:
 
   if (v14)
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -608,110 +608,110 @@ LABEL_97:
     if (v16)
     {
       objc_storeStrong(&v16->_identifier, v13);
-      v18 = [v4 decodeObjectOfClass:v5 forKey:@"nam"];
+      v18 = [coderCopy decodeObjectOfClass:v5 forKey:@"nam"];
       name = v17->_name;
       v17->_name = v18;
 
       objc_storeStrong(&v17->_originatingBundleID, v11);
-      v20 = [v4 decodeObjectOfClass:v5 forKey:@"ffa"];
+      v20 = [coderCopy decodeObjectOfClass:v5 forKey:@"ffa"];
       fullFormattedAddress = v17->_fullFormattedAddress;
       v17->_fullFormattedAddress = v20;
 
-      v22 = [v4 decodeObjectOfClass:v5 forKey:@"thr"];
+      v22 = [coderCopy decodeObjectOfClass:v5 forKey:@"thr"];
       thoroughfare = v17->_thoroughfare;
       v17->_thoroughfare = v22;
 
-      v24 = [v4 decodeObjectOfClass:v5 forKey:@"sth"];
+      v24 = [coderCopy decodeObjectOfClass:v5 forKey:@"sth"];
       subThoroughfare = v17->_subThoroughfare;
       v17->_subThoroughfare = v24;
 
-      v26 = [v4 decodeObjectOfClass:v5 forKey:@"loc"];
+      v26 = [coderCopy decodeObjectOfClass:v5 forKey:@"loc"];
       locality = v17->_locality;
       v17->_locality = v26;
 
-      v28 = [v4 decodeObjectOfClass:v5 forKey:@"aar"];
+      v28 = [coderCopy decodeObjectOfClass:v5 forKey:@"aar"];
       administrativeArea = v17->_administrativeArea;
       v17->_administrativeArea = v28;
 
-      v30 = [v4 decodeObjectOfClass:v5 forKey:@"poc"];
+      v30 = [coderCopy decodeObjectOfClass:v5 forKey:@"poc"];
       postalCode = v17->_postalCode;
       v17->_postalCode = v30;
 
-      v32 = [v4 decodeObjectOfClass:v5 forKey:@"cnt"];
+      v32 = [coderCopy decodeObjectOfClass:v5 forKey:@"cnt"];
       country = v17->_country;
       v17->_country = v32;
 
-      v34 = [v4 decodeObjectOfClass:v6 forKey:@"lat"];
+      v34 = [coderCopy decodeObjectOfClass:v6 forKey:@"lat"];
       latitude = v17->_latitude;
       v17->_latitude = v34;
 
-      v36 = [v4 decodeObjectOfClass:v6 forKey:@"lon"];
+      v36 = [coderCopy decodeObjectOfClass:v6 forKey:@"lon"];
       longitude = v17->_longitude;
       v17->_longitude = v36;
 
-      v38 = [v4 decodeObjectOfClass:v7 forKey:@"owu"];
+      v38 = [coderCopy decodeObjectOfClass:v7 forKey:@"owu"];
       originatingWebsiteURL = v17->_originatingWebsiteURL;
       v17->_originatingWebsiteURL = v38;
 
-      v40 = [v4 decodeObjectOfClass:v7 forKey:@"miu"];
+      v40 = [coderCopy decodeObjectOfClass:v7 forKey:@"miu"];
       mapItemURL = v17->_mapItemURL;
       v17->_mapItemURL = v40;
 
-      v42 = [v4 decodeObjectOfClass:v5 forKey:@"lab"];
+      v42 = [coderCopy decodeObjectOfClass:v5 forKey:@"lab"];
       label = v17->_label;
       v17->_label = v42;
 
-      v44 = [v4 decodeObjectOfClass:v5 forKey:@"val"];
+      v44 = [coderCopy decodeObjectOfClass:v5 forKey:@"val"];
       value = v17->_value;
       v17->_value = v44;
 
-      v46 = [v4 decodeObjectOfClass:v5 forKey:@"shv"];
+      v46 = [coderCopy decodeObjectOfClass:v5 forKey:@"shv"];
       shortValue = v17->_shortValue;
       v17->_shortValue = v46;
 
-      v17->_shouldAggregate = [v4 decodeBoolForKey:@"sha"];
+      v17->_shouldAggregate = [coderCopy decodeBoolForKey:@"sha"];
       v48 = objc_autoreleasePoolPush();
       v49 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v8, v5, 0}];
       objc_autoreleasePoolPop(v48);
-      v50 = [v4 decodeObjectOfClasses:v49 forKey:@"add"];
+      v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"add"];
       addressComponents = v17->_addressComponents;
       v17->_addressComponents = v50;
 
-      v52 = [v4 decodeObjectOfClass:v5 forKey:@"src"];
+      v52 = [coderCopy decodeObjectOfClass:v5 forKey:@"src"];
       source = v17->_source;
       v17->_source = v52;
 
-      v54 = [v4 decodeObjectOfClass:v5 forKey:@"trg"];
+      v54 = [coderCopy decodeObjectOfClass:v5 forKey:@"trg"];
       trigger = v17->_trigger;
       v17->_trigger = v54;
 
-      v56 = [v4 decodeObjectOfClass:v10 forKey:@"cra"];
+      v56 = [coderCopy decodeObjectOfClass:v10 forKey:@"cra"];
       createdAt = v17->_createdAt;
       v17->_createdAt = v56;
 
-      v58 = [v4 decodeObjectOfClass:v6 forKey:@"lft"];
+      v58 = [coderCopy decodeObjectOfClass:v6 forKey:@"lft"];
       lifetime = v17->_lifetime;
       v17->_lifetime = v58;
 
-      v60 = [v4 decodeObjectOfClass:v5 forKey:@"auh"];
+      v60 = [coderCopy decodeObjectOfClass:v5 forKey:@"auh"];
       authorHandle = v17->_authorHandle;
       v17->_authorHandle = v60;
 
       v62 = objc_autoreleasePoolPush();
       v63 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{v9, v5, 0}];
       objc_autoreleasePoolPop(v62);
-      v64 = [v4 decodeObjectOfClasses:v63 forKey:@"cnh"];
+      v64 = [coderCopy decodeObjectOfClasses:v63 forKey:@"cnh"];
       contactHandles = v17->_contactHandles;
       v17->_contactHandles = v64;
 
-      v17->_copiedToPasteboard = [v4 decodeBoolForKey:@"cpb"];
+      v17->_copiedToPasteboard = [coderCopy decodeBoolForKey:@"cpb"];
     }
 
     self = v17;
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 - (id)description
@@ -799,11 +799,11 @@ void __42__PPConnectionsLocation_addressDictionary__block_invoke()
 
 - (unint64_t)_roundedPredictionAge
 {
-  v2 = [(PPConnectionsLocation *)self createdAt];
-  v3 = v2;
-  if (v2)
+  createdAt = [(PPConnectionsLocation *)self createdAt];
+  v3 = createdAt;
+  if (createdAt)
   {
-    v4 = v2;
+    v4 = createdAt;
   }
 
   else
@@ -859,55 +859,55 @@ void __42__PPConnectionsLocation_addressDictionary__block_invoke()
 
 - (id)quickTypeItem
 {
-  v3 = [(PPConnectionsLocation *)self label];
-  if (v3)
+  label = [(PPConnectionsLocation *)self label];
+  if (label)
   {
-    v4 = [(PPConnectionsLocation *)self value];
-    v5 = [(PPConnectionsLocation *)self label];
-    if (v4)
+    value = [(PPConnectionsLocation *)self value];
+    label2 = [(PPConnectionsLocation *)self label];
+    if (value)
     {
-      v6 = [(PPConnectionsLocation *)self value];
-      if (([(__CFString *)v5 isEqualToString:v6]& 1) != 0)
+      value2 = [(PPConnectionsLocation *)self value];
+      if (([(__CFString *)label2 isEqualToString:value2]& 1) != 0)
       {
-        v7 = 0;
+        label3 = 0;
       }
 
       else
       {
-        v7 = [(PPConnectionsLocation *)self label];
+        label3 = [(PPConnectionsLocation *)self label];
       }
 
-      v5 = v7;
+      label2 = label3;
     }
   }
 
   else
   {
-    v5 = [(PPConnectionsLocation *)self label];
+    label2 = [(PPConnectionsLocation *)self label];
   }
 
-  v8 = [(PPConnectionsLocation *)self value];
+  value3 = [(PPConnectionsLocation *)self value];
 
-  if (v8)
+  if (value3)
   {
     v9 = &stru_1F1B327D8;
-    if (v5)
+    if (label2)
     {
-      v9 = v5;
+      v9 = label2;
     }
 
     v21 = v9;
-    v10 = [(PPConnectionsLocation *)self value];
-    v11 = [(PPConnectionsLocation *)self name];
-    v12 = [(PPConnectionsLocation *)self originatingBundleID];
-    v13 = [(PPConnectionsLocation *)self originatingWebsiteURL];
-    v14 = [(PPConnectionsLocation *)self _roundedPredictionAge];
-    v15 = [(PPConnectionsLocation *)self shouldAggregate];
-    v16 = [(PPConnectionsLocation *)self _pexItemSource];
-    v17 = [(PPConnectionsLocation *)self source];
-    BYTE2(v20) = v16;
-    LOWORD(v20) = v15;
-    v18 = [PPQuickTypeItem quickTypeItemWithLabel:"quickTypeItemWithLabel:value:name:date:fields:originatingBundleID:originatingWebsiteURL:predictionAge:shouldAggregate:flags:score:source:sourceIdentifier:" value:v21 name:v10 date:v11 fields:0 originatingBundleID:4 originatingWebsiteURL:v12 predictionAge:200.0 shouldAggregate:v13 flags:v14 score:v20 source:v17 sourceIdentifier:?];
+    value4 = [(PPConnectionsLocation *)self value];
+    name = [(PPConnectionsLocation *)self name];
+    originatingBundleID = [(PPConnectionsLocation *)self originatingBundleID];
+    originatingWebsiteURL = [(PPConnectionsLocation *)self originatingWebsiteURL];
+    _roundedPredictionAge = [(PPConnectionsLocation *)self _roundedPredictionAge];
+    shouldAggregate = [(PPConnectionsLocation *)self shouldAggregate];
+    _pexItemSource = [(PPConnectionsLocation *)self _pexItemSource];
+    source = [(PPConnectionsLocation *)self source];
+    BYTE2(v20) = _pexItemSource;
+    LOWORD(v20) = shouldAggregate;
+    v18 = [PPQuickTypeItem quickTypeItemWithLabel:"quickTypeItemWithLabel:value:name:date:fields:originatingBundleID:originatingWebsiteURL:predictionAge:shouldAggregate:flags:score:source:sourceIdentifier:" value:v21 name:value4 date:name fields:0 originatingBundleID:4 originatingWebsiteURL:originatingBundleID predictionAge:200.0 shouldAggregate:originatingWebsiteURL flags:_roundedPredictionAge score:v20 source:source sourceIdentifier:?];
   }
 
   else
@@ -918,20 +918,20 @@ void __42__PPConnectionsLocation_addressDictionary__block_invoke()
   return v18;
 }
 
-- (PPConnectionsLocation)initWithOriginatingBundleID:(id)a3
+- (PPConnectionsLocation)initWithOriginatingBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = PPConnectionsLocation;
   v5 = [(PPConnectionsLocation *)&v12 init];
   if (v5)
   {
     v6 = objc_opt_new();
-    v7 = [v6 UUIDString];
+    uUIDString = [v6 UUIDString];
     identifier = v5->_identifier;
-    v5->_identifier = v7;
+    v5->_identifier = uUIDString;
 
-    v9 = [v4 copy];
+    v9 = [dCopy copy];
     originatingBundleID = v5->_originatingBundleID;
     v5->_originatingBundleID = v9;
   }
@@ -939,10 +939,10 @@ void __42__PPConnectionsLocation_addressDictionary__block_invoke()
   return v5;
 }
 
-+ (unint64_t)round:(double)a3 toNearest:(double)a4
++ (unint64_t)round:(double)round toNearest:(double)nearest
 {
-  v4 = a3 / a4 + 0.5;
-  v5 = floorf(v4) * a4;
+  v4 = round / nearest + 0.5;
+  v5 = floorf(v4) * nearest;
   return vcvtas_u32_f32(v5);
 }
 

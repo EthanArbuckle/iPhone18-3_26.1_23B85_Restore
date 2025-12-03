@@ -1,12 +1,12 @@
 @interface CLVisitNotificationAdapter
-- (CLVisitNotificationAdapter)initWithLocationController:(void *)a3;
+- (CLVisitNotificationAdapter)initWithLocationController:(void *)controller;
 - (void)dealloc;
-- (void)onVisit:(id)a3;
+- (void)onVisit:(id)visit;
 @end
 
 @implementation CLVisitNotificationAdapter
 
-- (CLVisitNotificationAdapter)initWithLocationController:(void *)a3
+- (CLVisitNotificationAdapter)initWithLocationController:(void *)controller
 {
   v7.receiver = self;
   v7.super_class = CLVisitNotificationAdapter;
@@ -14,18 +14,18 @@
   v5 = v4;
   if (v4)
   {
-    v4->_locationController = a3;
+    v4->_locationController = controller;
     [(CLVisitNotificationAdapter *)v4 setValid:1];
   }
 
   return v5;
 }
 
-- (void)onVisit:(id)a3
+- (void)onVisit:(id)visit
 {
   if (self->_valid)
   {
-    sub_10066BBE0(self->_locationController, a3);
+    sub_10066BBE0(self->_locationController, visit);
   }
 }
 

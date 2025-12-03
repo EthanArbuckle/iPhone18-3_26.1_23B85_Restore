@@ -1,9 +1,9 @@
 @interface HMDCameraSnapshotSender
 + (id)logCategory;
 - (HMDAccessory)accessory;
-- (HMDCameraSnapshotSender)initWithSessionID:(id)a3 workQueue:(id)a4 device:(id)a5 accessory:(id)a6 uniqueIdentifier:(id)a7;
+- (HMDCameraSnapshotSender)initWithSessionID:(id)d workQueue:(id)queue device:(id)device accessory:(id)accessory uniqueIdentifier:(id)identifier;
 - (id)logIdentifier;
-- (void)_sendImageSendFailure:(id)a3;
+- (void)_sendImageSendFailure:(id)failure;
 @end
 
 @implementation HMDCameraSnapshotSender
@@ -15,18 +15,18 @@
   return WeakRetained;
 }
 
-- (void)_sendImageSendFailure:(id)a3
+- (void)_sendImageSendFailure:(id)failure
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraSnapshotSender *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  failureCopy = failure;
+  workQueue = [(HMDCameraSnapshotSender *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraSnapshotSender *)self device];
-  v7 = [v6 remoteDestinationString];
+  device = [(HMDCameraSnapshotSender *)self device];
+  remoteDestinationString = [device remoteDestinationString];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -34,38 +34,38 @@
     *buf = 138543618;
     v27 = v11;
     v28 = 2112;
-    v29 = v7;
+    v29 = remoteDestinationString;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Sending image send failure to %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDCameraSnapshotSender *)v9 accessory];
-  v13 = [v12 home];
-  v14 = [v13 homeManager];
+  accessory = [(HMDCameraSnapshotSender *)selfCopy accessory];
+  home = [accessory home];
+  homeManager = [home homeManager];
 
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  v16 = [(HMDCameraSnapshotSender *)v9 sessionID];
-  v17 = [v16 sessionID];
-  [v15 setObject:v17 forKeyedSubscript:@"kCameraSessionID"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  sessionID = [(HMDCameraSnapshotSender *)selfCopy sessionID];
+  v16SessionID = [sessionID sessionID];
+  [dictionary setObject:v16SessionID forKeyedSubscript:@"kCameraSessionID"];
 
-  if (v4)
+  if (failureCopy)
   {
-    v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:0];
-    [v15 setObject:v18 forKeyedSubscript:@"kCameraSessionError"];
+    v18 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:failureCopy requiringSecureCoding:1 error:0];
+    [dictionary setObject:v18 forKeyedSubscript:@"kCameraSessionError"];
   }
 
-  v19 = [MEMORY[0x277D0F848] internalMessageWithName:@"kTakeSnapshotSendFailedNotificationKey" messagePayload:v15];
+  v19 = [MEMORY[0x277D0F848] internalMessageWithName:@"kTakeSnapshotSendFailedNotificationKey" messagePayload:dictionary];
   [v19 setQualityOfService:33];
   v20 = [v19 copy];
-  objc_initWeak(buf, v9);
-  v21 = [(HMDCameraSnapshotSender *)v9 uniqueIdentifier];
-  v22 = [(HMDCameraSnapshotSender *)v9 workQueue];
+  objc_initWeak(buf, selfCopy);
+  uniqueIdentifier = [(HMDCameraSnapshotSender *)selfCopy uniqueIdentifier];
+  workQueue2 = [(HMDCameraSnapshotSender *)selfCopy workQueue];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __49__HMDCameraSnapshotSender__sendImageSendFailure___block_invoke;
   v24[3] = &unk_278687FB0;
   objc_copyWeak(&v25, buf);
-  [v14 sendSecureMessage:v20 target:v21 userID:0 destination:v7 responseQueue:v22 responseHandler:v24];
+  [homeManager sendSecureMessage:v20 target:uniqueIdentifier userID:0 destination:remoteDestinationString responseQueue:workQueue2 responseHandler:v24];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(buf);
@@ -95,32 +95,32 @@ void __49__HMDCameraSnapshotSender__sendImageSendFailure___block_invoke(uint64_t
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraSnapshotSender *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraSnapshotSender *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (HMDCameraSnapshotSender)initWithSessionID:(id)a3 workQueue:(id)a4 device:(id)a5 accessory:(id)a6 uniqueIdentifier:(id)a7
+- (HMDCameraSnapshotSender)initWithSessionID:(id)d workQueue:(id)queue device:(id)device accessory:(id)accessory uniqueIdentifier:(id)identifier
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  queueCopy = queue;
+  deviceCopy = device;
+  accessoryCopy = accessory;
+  identifierCopy = identifier;
   v22.receiver = self;
   v22.super_class = HMDCameraSnapshotSender;
   v18 = [(HMDCameraSnapshotSender *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_sessionID, a3);
-    objc_storeStrong(&v19->_device, a5);
-    objc_storeWeak(&v19->_accessory, v16);
-    objc_storeStrong(&v19->_workQueue, a4);
-    objc_storeStrong(&v19->_uniqueIdentifier, a7);
+    objc_storeStrong(&v18->_sessionID, d);
+    objc_storeStrong(&v19->_device, device);
+    objc_storeWeak(&v19->_accessory, accessoryCopy);
+    objc_storeStrong(&v19->_workQueue, queue);
+    objc_storeStrong(&v19->_uniqueIdentifier, identifier);
     v20 = +[HMDCameraPowerAssertionHandler sharedHandler];
-    [v20 registerRemoteRequestHandler:v19 forSessionID:v13];
+    [v20 registerRemoteRequestHandler:v19 forSessionID:dCopy];
   }
 
   return v19;

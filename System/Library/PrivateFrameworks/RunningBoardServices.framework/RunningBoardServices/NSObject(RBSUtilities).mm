@@ -13,12 +13,12 @@
 
 - (__CFString)NSRepresentation
 {
-  if (([a1 conformsToProtocol:&unk_1F01E7240] & 1) == 0)
+  if (([self conformsToProtocol:&unk_1F01E7240] & 1) == 0)
   {
     [NSObject(RBSUtilities) NSRepresentation];
   }
 
-  return nsObjFromXPCObj(a1);
+  return nsObjFromXPCObj(self);
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface HDHRNotificationManager
-- (HDHRNotificationManager)initWithProfile:(id)a3;
+- (HDHRNotificationManager)initWithProfile:(id)profile;
 - (id)_userNotificationCenter;
-- (void)_queue_showNotificationForHeartEvent:(id)a3;
-- (void)_subscribeToFakingNotification:(id)a3 type:(id)a4 withData:(BOOL)a5;
+- (void)_queue_showNotificationForHeartEvent:(id)event;
+- (void)_subscribeToFakingNotification:(id)notification type:(id)type withData:(BOOL)data;
 - (void)_subscribeToFakingNotifications;
 - (void)_unsubscribeToFakingNotifications;
-- (void)daemonReady:(id)a3;
+- (void)daemonReady:(id)ready;
 - (void)dealloc;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 @end
 
 @implementation HDHRNotificationManager
 
-- (HDHRNotificationManager)initWithProfile:(id)a3
+- (HDHRNotificationManager)initWithProfile:(id)profile
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profileCopy = profile;
   v17.receiver = self;
   v17.super_class = HDHRNotificationManager;
   v5 = [(HDHRNotificationManager *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = HKDispatchQueueName();
     v8 = dispatch_queue_create(v7, 0);
     queue = v6->_queue;
@@ -30,8 +30,8 @@
 
     [(HDHRNotificationManager *)v6 _subscribeToFakingNotifications];
     WeakRetained = objc_loadWeakRetained(&v6->_profile);
-    v11 = [WeakRetained daemon];
-    [v11 registerForDaemonReady:v6];
+    daemon = [WeakRetained daemon];
+    [daemon registerForDaemonReady:v6];
 
     _HKInitializeLogging();
     v12 = HKLogHeartRateCategory();
@@ -64,19 +64,19 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained dataManager];
-  v7 = [MEMORY[0x277CCD0C0] tachycardiaType];
-  [v6 removeObserver:self forDataType:v7];
+  dataManager = [WeakRetained dataManager];
+  tachycardiaType = [MEMORY[0x277CCD0C0] tachycardiaType];
+  [dataManager removeObserver:self forDataType:tachycardiaType];
 
   v8 = objc_loadWeakRetained(&self->_profile);
-  v9 = [v8 dataManager];
-  v10 = [MEMORY[0x277CCD0C0] bradycardiaType];
-  [v9 removeObserver:self forDataType:v10];
+  dataManager2 = [v8 dataManager];
+  bradycardiaType = [MEMORY[0x277CCD0C0] bradycardiaType];
+  [dataManager2 removeObserver:self forDataType:bradycardiaType];
 
   v11 = objc_loadWeakRetained(&self->_profile);
-  v12 = [v11 dataManager];
-  v13 = [MEMORY[0x277CCD0C0] lowCardioFitnessEventType];
-  [v12 removeObserver:self forDataType:v13];
+  dataManager3 = [v11 dataManager];
+  lowCardioFitnessEventType = [MEMORY[0x277CCD0C0] lowCardioFitnessEventType];
+  [dataManager3 removeObserver:self forDataType:lowCardioFitnessEventType];
 
   v15.receiver = self;
   v15.super_class = HDHRNotificationManager;
@@ -84,7 +84,7 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
   v18 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -98,32 +98,32 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v7 = [WeakRetained dataManager];
-  v8 = [MEMORY[0x277CCD0C0] tachycardiaType];
-  [v7 addObserver:self forDataType:v8];
+  dataManager = [WeakRetained dataManager];
+  tachycardiaType = [MEMORY[0x277CCD0C0] tachycardiaType];
+  [dataManager addObserver:self forDataType:tachycardiaType];
 
   v9 = objc_loadWeakRetained(&self->_profile);
-  v10 = [v9 dataManager];
-  v11 = [MEMORY[0x277CCD0C0] bradycardiaType];
-  [v10 addObserver:self forDataType:v11];
+  dataManager2 = [v9 dataManager];
+  bradycardiaType = [MEMORY[0x277CCD0C0] bradycardiaType];
+  [dataManager2 addObserver:self forDataType:bradycardiaType];
 
   v12 = objc_loadWeakRetained(&self->_profile);
-  v13 = [v12 dataManager];
-  v14 = [MEMORY[0x277CCD0C0] lowCardioFitnessEventType];
-  [v13 addObserver:self forDataType:v14];
+  dataManager3 = [v12 dataManager];
+  lowCardioFitnessEventType = [MEMORY[0x277CCD0C0] lowCardioFitnessEventType];
+  [dataManager3 addObserver:self forDataType:lowCardioFitnessEventType];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  addedCopy = added;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v6 = [addedCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -134,19 +134,19 @@
       {
         if (*v24 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(addedCopy);
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 sourceRevision];
-        v12 = [v11 source];
-        v13 = [v12 _isLocalDevice];
+        sourceRevision = [v10 sourceRevision];
+        source = [sourceRevision source];
+        _isLocalDevice = [source _isLocalDevice];
 
         _HKInitializeLogging();
         v14 = HKLogHeartRateCategory();
         v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
 
-        if (v13)
+        if (_isLocalDevice)
         {
           if (v15)
           {
@@ -178,8 +178,8 @@
             }
           }
 
-          v19 = [MEMORY[0x277CCDD30] sharedBehavior];
-          if ([v19 isAppleInternalInstall])
+          mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+          if ([mEMORY[0x277CCDD30] isAppleInternalInstall])
           {
             unitTest_notificationForNonLocalDeviceSourceSkipped = self->_unitTest_notificationForNonLocalDeviceSourceSkipped;
 
@@ -195,7 +195,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v7 = [addedCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v7);
@@ -211,8 +211,8 @@
     [HDHRNotificationManager _userNotificationCenter];
   }
 
-  v3 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if (![v3 isAppleInternalInstall] || (unitTest_userNotificationCenter = self->_unitTest_userNotificationCenter) == 0)
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  if (![mEMORY[0x277CCDD30] isAppleInternalInstall] || (unitTest_userNotificationCenter = self->_unitTest_userNotificationCenter) == 0)
   {
     unitTest_userNotificationCenter = _userNotificationCenter_userNotificationCenter;
   }
@@ -229,28 +229,28 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_queue_showNotificationForHeartEvent:(id)a3
+- (void)_queue_showNotificationForHeartEvent:(id)event
 {
   v81 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEA80] currentCalendar];
-  v6 = [v4 endDate];
-  v7 = [v5 hk_dateByAddingDays:1 toDate:v6];
+  eventCopy = event;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  endDate = [eventCopy endDate];
+  v7 = [currentCalendar hk_dateByAddingDays:1 toDate:endDate];
 
-  v8 = [MEMORY[0x277CBEAA8] date];
-  LODWORD(v6) = [v8 hk_isAfterDate:v7];
+  date = [MEMORY[0x277CBEAA8] date];
+  LODWORD(endDate) = [date hk_isAfterDate:v7];
 
   _HKInitializeLogging();
   v9 = HKLogHeartRateCategory();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (!v6)
+  if (!endDate)
   {
     if (v10)
     {
       *buf = 138543874;
       v76 = objc_opt_class();
       v77 = 2112;
-      v78 = v4;
+      v78 = eventCopy;
       v79 = 2114;
       v80 = v7;
       v14 = v76;
@@ -260,21 +260,21 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
     v15 = objc_alloc_init(MEMORY[0x277CCA968]);
     [v15 setDateStyle:0];
     [v15 setTimeStyle:1];
-    v16 = [v4 startDate];
+    startDate = [eventCopy startDate];
     v67 = v15;
-    v17 = [v15 stringFromDate:v16];
+    v17 = [v15 stringFromDate:startDate];
 
-    v18 = [v4 metadata];
-    v19 = [v18 objectForKey:*MEMORY[0x277CCE048]];
+    metadata = [eventCopy metadata];
+    v19 = [metadata objectForKey:*MEMORY[0x277CCE048]];
 
     [v19 _beatsPerMinute];
     v21 = MEMORY[0x277CCABB8];
     v22 = [MEMORY[0x277CCABB0] numberWithInteger:llround(v20)];
     v23 = [v21 localizedStringFromNumber:v22 numberStyle:1];
 
-    v24 = [v4 categoryType];
-    v25 = [MEMORY[0x277CCD0C0] tachycardiaType];
-    v26 = [v24 isEqual:v25];
+    categoryType = [eventCopy categoryType];
+    tachycardiaType = [MEMORY[0x277CCD0C0] tachycardiaType];
+    v26 = [categoryType isEqual:tachycardiaType];
 
     v68 = v23;
     if (v26)
@@ -285,7 +285,7 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
       v29 = v28 = v7;
 
       v30 = MEMORY[0x277CCACA8];
-      v66 = self;
+      selfCopy3 = self;
       v31 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v32 = [v31 localizedStringForKey:@"HEART_RATE_TACHYCARDIA_MESSAGE_FORMAT" value:&stru_283CC4740 table:@"Localizable"];
       v64 = v17;
@@ -299,9 +299,9 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
 
     else
     {
-      v36 = [v4 categoryType];
-      v37 = [MEMORY[0x277CCD0C0] bradycardiaType];
-      v38 = [v36 isEqual:v37];
+      categoryType2 = [eventCopy categoryType];
+      bradycardiaType = [MEMORY[0x277CCD0C0] bradycardiaType];
+      v38 = [categoryType2 isEqual:bradycardiaType];
 
       if (v38)
       {
@@ -310,7 +310,7 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
         v33 = [v39 localizedStringForKey:@"HEART_RATE_BRADYCARDIA_TITLE" value:&stru_283CC4740 table:@"Localizable"];
 
         v40 = MEMORY[0x277CCACA8];
-        v66 = self;
+        selfCopy3 = self;
         v41 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v42 = [v41 localizedStringForKey:@"HEART_RATE_BRADYCARDIA_MESSAGE_FORMAT" value:&stru_283CC4740 table:@"Localizable"];
         v64 = v17;
@@ -321,9 +321,9 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
 
       else
       {
-        v43 = [v4 categoryType];
-        v44 = [MEMORY[0x277CCD0C0] lowCardioFitnessEventType];
-        v45 = [v43 isEqual:v44];
+        categoryType3 = [eventCopy categoryType];
+        lowCardioFitnessEventType = [MEMORY[0x277CCD0C0] lowCardioFitnessEventType];
+        v45 = [categoryType3 isEqual:lowCardioFitnessEventType];
 
         if (!v45)
         {
@@ -331,11 +331,11 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
           v59 = HKLogHeartRateCategory();
           if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
           {
-            [(HDHRNotificationManager *)self _queue_showNotificationForHeartEvent:v4, v59];
+            [(HDHRNotificationManager *)self _queue_showNotificationForHeartEvent:eventCopy, v59];
           }
 
-          v60 = [MEMORY[0x277CCDD30] sharedBehavior];
-          if ([v60 isAppleInternalInstall])
+          mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+          if ([mEMORY[0x277CCDD30] isAppleInternalInstall])
           {
             unitTest_notificationForUnsupportedEventSkipped = self->_unitTest_notificationForUnsupportedEventSkipped;
 
@@ -354,7 +354,7 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
 
         v63 = v19;
         v64 = v17;
-        v66 = self;
+        selfCopy3 = self;
         v33 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:@"HEART_RATE_LOW_CARDIO_FITNESS_TITLE" arguments:0];
         v34 = [MEMORY[0x277CCACA8] localizedUserNotificationStringForKey:@"HEART_RATE_LOW_CARDIO_FITNESS_MESSAGE" arguments:0];
         v35 = @"LowCardioFitness";
@@ -369,12 +369,12 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
     v47 = [MEMORY[0x277CE1F70] soundWithAlertType:25];
     [v47 setAlertTopic:*MEMORY[0x277D71FC8]];
     [v46 setSound:v47];
-    v48 = [v4 endDate];
-    [v46 setDate:v48];
+    endDate2 = [eventCopy endDate];
+    [v46 setDate:endDate2];
 
     [v46 setExpirationDate:v7];
     v72 = 0;
-    v49 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v72];
+    v49 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:eventCopy requiringSecureCoding:1 error:&v72];
     v65 = v72;
     if (v49)
     {
@@ -399,17 +399,17 @@ uint64_t __50__HDHRNotificationManager__userNotificationCenter__block_invoke()
     }
 
     v53 = MEMORY[0x277CE1FC0];
-    v54 = [v4 UUID];
-    v55 = [v54 UUIDString];
-    v56 = [v53 requestWithIdentifier:v55 content:v46 trigger:0];
+    uUID = [eventCopy UUID];
+    uUIDString = [uUID UUIDString];
+    v56 = [v53 requestWithIdentifier:uUIDString content:v46 trigger:0];
 
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __64__HDHRNotificationManager__queue_showNotificationForHeartEvent___block_invoke;
     block[3] = &unk_278660440;
-    block[4] = v66;
+    block[4] = selfCopy3;
     v70 = v56;
-    v71 = v4;
+    v71 = eventCopy;
     v57 = v56;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
@@ -426,13 +426,13 @@ LABEL_21:
     *buf = 138543618;
     v76 = objc_opt_class();
     v77 = 2112;
-    v78 = v4;
+    v78 = eventCopy;
     v11 = v76;
     _os_log_impl(&dword_229486000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] not showing expired notification for event: %@", buf, 0x16u);
   }
 
-  v12 = [MEMORY[0x277CCDD30] sharedBehavior];
-  if ([v12 isAppleInternalInstall])
+  mEMORY[0x277CCDD30]2 = [MEMORY[0x277CCDD30] sharedBehavior];
+  if ([mEMORY[0x277CCDD30]2 isAppleInternalInstall])
   {
     unitTest_notificationForExpiredEventSkipped = self->_unitTest_notificationForExpiredEventSkipped;
 
@@ -566,36 +566,36 @@ LABEL_9:
 
 - (void)_subscribeToFakingNotifications
 {
-  v3 = [MEMORY[0x277CCD0C0] tachycardiaType];
-  [(HDHRNotificationManager *)self _subscribeToFakingNotification:@"com.apple.HeartRate.Tachycardia" type:v3 withData:0];
+  tachycardiaType = [MEMORY[0x277CCD0C0] tachycardiaType];
+  [(HDHRNotificationManager *)self _subscribeToFakingNotification:@"com.apple.HeartRate.Tachycardia" type:tachycardiaType withData:0];
 
-  v4 = [MEMORY[0x277CCD0C0] tachycardiaType];
-  [(HDHRNotificationManager *)self _subscribeToFakingNotification:@"com.apple.HeartRate.TachycardiaWithData" type:v4 withData:1];
+  tachycardiaType2 = [MEMORY[0x277CCD0C0] tachycardiaType];
+  [(HDHRNotificationManager *)self _subscribeToFakingNotification:@"com.apple.HeartRate.TachycardiaWithData" type:tachycardiaType2 withData:1];
 
-  v5 = [MEMORY[0x277CCD0C0] bradycardiaType];
-  [(HDHRNotificationManager *)self _subscribeToFakingNotification:@"com.apple.HeartRate.Bradycardia" type:v5 withData:0];
+  bradycardiaType = [MEMORY[0x277CCD0C0] bradycardiaType];
+  [(HDHRNotificationManager *)self _subscribeToFakingNotification:@"com.apple.HeartRate.Bradycardia" type:bradycardiaType withData:0];
 
-  v6 = [MEMORY[0x277CCD0C0] bradycardiaType];
-  [(HDHRNotificationManager *)self _subscribeToFakingNotification:@"com.apple.HeartRate.BradycardiaWithData" type:v6 withData:1];
+  bradycardiaType2 = [MEMORY[0x277CCD0C0] bradycardiaType];
+  [(HDHRNotificationManager *)self _subscribeToFakingNotification:@"com.apple.HeartRate.BradycardiaWithData" type:bradycardiaType2 withData:1];
 }
 
-- (void)_subscribeToFakingNotification:(id)a3 type:(id)a4 withData:(BOOL)a5
+- (void)_subscribeToFakingNotification:(id)notification type:(id)type withData:(BOOL)data
 {
-  v8 = a3;
-  v9 = a4;
+  notificationCopy = notification;
+  typeCopy = type;
   objc_initWeak(&location, self);
   out_token = 0;
-  v10 = [v8 UTF8String];
+  uTF8String = [notificationCopy UTF8String];
   queue = self->_queue;
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __72__HDHRNotificationManager__subscribeToFakingNotification_type_withData___block_invoke;
   v18 = &unk_278660B30;
   objc_copyWeak(&v20, &location);
-  v12 = v9;
+  v12 = typeCopy;
   v19 = v12;
-  v21 = a5;
-  notify_register_dispatch(v10, &out_token, queue, &v15);
+  dataCopy = data;
+  notify_register_dispatch(uTF8String, &out_token, queue, &v15);
   fakingNotifyTokens = self->_fakingNotifyTokens;
   v14 = [MEMORY[0x277CCABB0] numberWithInt:{out_token, v15, v16, v17, v18}];
   [(NSMutableArray *)fakingNotifyTokens addObject:v14];
@@ -638,10 +638,10 @@ void __72__HDHRNotificationManager__subscribeToFakingNotification_type_withData_
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v9 + 1) + 8 * v6) intValue];
-        if (notify_is_valid_token(v7))
+        intValue = [*(*(&v9 + 1) + 8 * v6) intValue];
+        if (notify_is_valid_token(intValue))
         {
-          notify_cancel(v7);
+          notify_cancel(intValue);
         }
 
         ++v6;

@@ -1,34 +1,34 @@
 @interface PXPlacesMapThumbnailClusterLayout
 - (NSArray)geotaggablesSortDescriptors;
-- (id)_clusterGeotaggables:(id)a3 fromMapRect:(id)a4 viewPort:(id)a5;
-- (id)_clusterGeotaggables:(id)a3 usingHorizontalClusteringDistance:(double)a4 verticalClusteringDistance:(double)a5 viewPort:(id)a6 dataSource:(id)a7 primaryLayoutGeotaggables:(id)a8 maskToMapRect:(id)a9;
-- (id)_clusterGeotaggablesInRect:(id)a3 forViewPort:(id)a4;
-- (id)_clusterGeotaggablesInViewPort:(id)a3;
-- (id)_mutableSortedOrderdGeotaggablesSetFromSet:(id)a3;
-- (id)_primaryGeotaggleInLayoutItem:(id)a3;
-- (id)layoutForViewPort:(id)a3 andDataSourceChange:(id)a4;
-- (unint64_t)_viewPortChangeTypeFrom:(id)a3 to:(id)a4;
+- (id)_clusterGeotaggables:(id)geotaggables fromMapRect:(id)rect viewPort:(id)port;
+- (id)_clusterGeotaggables:(id)geotaggables usingHorizontalClusteringDistance:(double)distance verticalClusteringDistance:(double)clusteringDistance viewPort:(id)port dataSource:(id)source primaryLayoutGeotaggables:(id)layoutGeotaggables maskToMapRect:(id)rect;
+- (id)_clusterGeotaggablesInRect:(id)rect forViewPort:(id)port;
+- (id)_clusterGeotaggablesInViewPort:(id)port;
+- (id)_mutableSortedOrderdGeotaggablesSetFromSet:(id)set;
+- (id)_primaryGeotaggleInLayoutItem:(id)item;
+- (id)layoutForViewPort:(id)port andDataSourceChange:(id)change;
+- (unint64_t)_viewPortChangeTypeFrom:(id)from to:(id)to;
 @end
 
 @implementation PXPlacesMapThumbnailClusterLayout
 
-- (unint64_t)_viewPortChangeTypeFrom:(id)a3 to:(id)a4
+- (unint64_t)_viewPortChangeTypeFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 pitch];
+  fromCopy = from;
+  toCopy = to;
+  [toCopy pitch];
   v9 = v8;
-  [v6 pitch];
+  [fromCopy pitch];
   if (v9 <= v10)
   {
-    [v7 pitch];
+    [toCopy pitch];
     v13 = v12;
-    [v6 pitch];
+    [fromCopy pitch];
     if (v13 >= v14)
     {
-      [v6 zoomLevel];
+      [fromCopy zoomLevel];
       v16 = v15;
-      [v7 zoomLevel];
+      [toCopy zoomLevel];
       if ([(PXPlacesMapThumbnailClusterLayout *)self _zoom:v16 isEqualToZoom:v17])
       {
         v11 = 0;
@@ -36,9 +36,9 @@
 
       else
       {
-        [v6 scale];
+        [fromCopy scale];
         v19 = v18;
-        [v7 scale];
+        [toCopy scale];
         if (v19 > v20)
         {
           v11 = 1;
@@ -83,11 +83,11 @@
   return geotaggablesSortDescriptors;
 }
 
-- (id)_primaryGeotaggleInLayoutItem:(id)a3
+- (id)_primaryGeotaggleInLayoutItem:(id)item
 {
-  v3 = [a3 geotaggables];
-  v4 = v3;
-  if (v3 && [v3 count])
+  geotaggables = [item geotaggables];
+  v4 = geotaggables;
+  if (geotaggables && [geotaggables count])
   {
     v5 = [v4 objectAtIndexedSubscript:0];
   }
@@ -100,62 +100,62 @@
   return v5;
 }
 
-- (id)_mutableSortedOrderdGeotaggablesSetFromSet:(id)a3
+- (id)_mutableSortedOrderdGeotaggablesSetFromSet:(id)set
 {
   v4 = MEMORY[0x1E695DFA0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithSet:v5];
+  setCopy = set;
+  v6 = [[v4 alloc] initWithSet:setCopy];
 
   [(PXPlacesMapThumbnailClusterLayout *)self _sortGeotaggables:v6];
 
   return v6;
 }
 
-- (id)_clusterGeotaggables:(id)a3 usingHorizontalClusteringDistance:(double)a4 verticalClusteringDistance:(double)a5 viewPort:(id)a6 dataSource:(id)a7 primaryLayoutGeotaggables:(id)a8 maskToMapRect:(id)a9
+- (id)_clusterGeotaggables:(id)geotaggables usingHorizontalClusteringDistance:(double)distance verticalClusteringDistance:(double)clusteringDistance viewPort:(id)port dataSource:(id)source primaryLayoutGeotaggables:(id)layoutGeotaggables maskToMapRect:(id)rect
 {
-  var0 = a9.var1.var0;
-  rect = a9.var1.var1;
-  var1 = a9.var0.var1;
-  v9 = a9.var0.var0;
+  var0 = rect.var1.var0;
+  rect = rect.var1.var1;
+  var1 = rect.var0.var1;
+  v9 = rect.var0.var0;
   v93 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  geotaggablesCopy = geotaggables;
+  portCopy = port;
+  sourceCopy = source;
+  layoutGeotaggablesCopy = layoutGeotaggables;
   v19 = MEMORY[0x1E695DFD8];
-  v20 = [v15 set];
+  v20 = [geotaggablesCopy set];
   v21 = [v19 setWithSet:v20];
 
   v22 = objc_alloc_init(MEMORY[0x1E696AD18]);
   v80 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v66 = v16;
-  [v16 scale];
-  v24 = v23 * a4 + v23 * a4;
-  v25 = v23 * a5 + v23 * a5;
+  v66 = portCopy;
+  [portCopy scale];
+  v24 = v23 * distance + v23 * distance;
+  v25 = v23 * clusteringDistance + v23 * clusteringDistance;
   v26 = 0x1E695D000uLL;
   v27 = objc_alloc_init(MEMORY[0x1E695DFA0]);
   v73 = v25;
   v74 = v24;
   v71 = v25 * 0.5;
   v72 = v24 * 0.5;
-  v68 = v17;
-  v69 = v15;
+  v68 = sourceCopy;
+  v69 = geotaggablesCopy;
   v67 = v27;
-  while ([v18 count] || objc_msgSend(v15, "count"))
+  while ([layoutGeotaggablesCopy count] || objc_msgSend(geotaggablesCopy, "count"))
   {
-    if ([v18 count])
+    if ([layoutGeotaggablesCopy count])
     {
-      v28 = v18;
+      v28 = layoutGeotaggablesCopy;
     }
 
     else
     {
-      v28 = v15;
+      v28 = geotaggablesCopy;
     }
 
-    v29 = [v28 firstObject];
+    firstObject = [v28 firstObject];
     v30 = v28;
-    v31 = v29;
+    v31 = firstObject;
     [v30 removeObjectAtIndex:0];
     v32 = [v22 objectForKey:v31];
     if (!v32)
@@ -174,12 +174,12 @@
       {
         v37 = objc_alloc_init(*(v26 + 4000));
         [v37 addObject:v31];
-        v38 = [[PXPlacesMapLayoutItemImpl alloc] initWithCoordinate:latitude, longitude];
+        longitude = [[PXPlacesMapLayoutItemImpl alloc] initWithCoordinate:latitude, longitude];
         v76 = v37;
-        [(PXPlacesMapLayoutItemImpl *)v38 addGeotaggables:v37];
-        [v22 setObject:v38 forKey:v31];
-        v81 = v38;
-        [v27 addObject:v38];
+        [(PXPlacesMapLayoutItemImpl *)longitude addGeotaggables:v37];
+        [v22 setObject:longitude forKey:v31];
+        v81 = longitude;
+        [v27 addObject:longitude];
         v101.origin.x = v35.x - v72;
         v101.origin.y = v35.y - v71;
         v101.size.height = v73;
@@ -189,7 +189,7 @@
         v103.size.width = var0;
         v103.size.height = rect;
         v102 = MKMapRectIntersection(v101, v103);
-        v39 = [v17 findItemsInMapRect:{v102.origin.x, v102.origin.y, v102.size.width, v102.size.height}];
+        v39 = [sourceCopy findItemsInMapRect:{v102.origin.x, v102.origin.y, v102.size.width, v102.size.height}];
         v40 = v39;
         if (v39)
         {
@@ -199,8 +199,8 @@
           if (v41)
           {
             v70 = v31;
-            v42 = [(PXPlacesMapThumbnailClusterLayout *)self geotaggablesSortDescriptors];
-            v43 = [v75 sortedArrayUsingDescriptors:v42];
+            geotaggablesSortDescriptors = [(PXPlacesMapThumbnailClusterLayout *)self geotaggablesSortDescriptors];
+            v43 = [v75 sortedArrayUsingDescriptors:geotaggablesSortDescriptors];
 
             v89 = 0u;
             v90 = 0u;
@@ -222,12 +222,12 @@
                   }
 
                   v49 = *(*(&v87 + 1) + 8 * i);
-                  if ([v21 containsObject:v49] && (-[PXPlacesMapThumbnailClusterLayout currentChangeType](self, "currentChangeType") == 2 || (objc_msgSend(v18, "containsObject:", v49) & 1) == 0))
+                  if ([v21 containsObject:v49] && (-[PXPlacesMapThumbnailClusterLayout currentChangeType](self, "currentChangeType") == 2 || (objc_msgSend(layoutGeotaggablesCopy, "containsObject:", v49) & 1) == 0))
                   {
                     v50 = [v22 objectForKey:v49];
                     if (v50)
                     {
-                      v51 = v18;
+                      v51 = layoutGeotaggablesCopy;
                       v52 = [(PXPlacesMapThumbnailClusterLayout *)self _primaryGeotaggleInLayoutItem:v50];
                       if (([v52 isEqual:v49] & 1) == 0)
                       {
@@ -246,7 +246,7 @@
                         }
                       }
 
-                      v18 = v51;
+                      layoutGeotaggablesCopy = v51;
                     }
 
                     else
@@ -263,8 +263,8 @@
               while (v46);
             }
 
-            v17 = v68;
-            v15 = v69;
+            sourceCopy = v68;
+            geotaggablesCopy = v69;
             v27 = v67;
             v26 = 0x1E695D000;
             v31 = v70;
@@ -314,24 +314,24 @@
   return v67;
 }
 
-- (id)_clusterGeotaggables:(id)a3 fromMapRect:(id)a4 viewPort:(id)a5
+- (id)_clusterGeotaggables:(id)geotaggables fromMapRect:(id)rect viewPort:(id)port
 {
-  var1 = a4.var1.var1;
-  var0 = a4.var1.var0;
-  v7 = a4.var0.var1;
-  v8 = a4.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v7 = rect.var0.var1;
+  v8 = rect.var0.var0;
   v34 = *MEMORY[0x1E69E9840];
-  v11 = a5;
-  v12 = [(PXPlacesMapThumbnailClusterLayout *)self _mutableSortedOrderdGeotaggablesSetFromSet:a3];
-  v13 = [MEMORY[0x1E695DFA0] orderedSet];
-  v14 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
-  v15 = [v14 layoutItems];
+  portCopy = port;
+  v12 = [(PXPlacesMapThumbnailClusterLayout *)self _mutableSortedOrderdGeotaggablesSetFromSet:geotaggables];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+  currentMapLayoutResult = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
+  layoutItems = [currentMapLayoutResult layoutItems];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v16 = v15;
+  v16 = layoutItems;
   v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v17)
   {
@@ -355,7 +355,7 @@
         v38.size.height = var1;
         if (MKMapRectContainsPoint(v38, v37))
         {
-          [v13 addObject:v21];
+          [orderedSet addObject:v21];
         }
       }
 
@@ -369,87 +369,87 @@
   v23 = v22;
   [(PXPlacesMapThumbnailClusterLayout *)self verticalClusteringDistancePixels];
   v25 = v24;
-  v26 = [(PXPlacesMapLayout *)self dataSource];
-  v27 = [(PXPlacesMapThumbnailClusterLayout *)self _clusterGeotaggables:v12 usingHorizontalClusteringDistance:v11 verticalClusteringDistance:v26 viewPort:v13 dataSource:v23 primaryLayoutGeotaggables:v25 maskToMapRect:v8, v7, var0, var1];
+  dataSource = [(PXPlacesMapLayout *)self dataSource];
+  var1 = [(PXPlacesMapThumbnailClusterLayout *)self _clusterGeotaggables:v12 usingHorizontalClusteringDistance:portCopy verticalClusteringDistance:dataSource viewPort:orderedSet dataSource:v23 primaryLayoutGeotaggables:v25 maskToMapRect:v8, v7, var0, var1];
 
-  return v27;
+  return var1;
 }
 
-- (id)_clusterGeotaggablesInRect:(id)a3 forViewPort:(id)a4
+- (id)_clusterGeotaggablesInRect:(id)rect forViewPort:(id)port
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v6 = a3.var0.var1;
-  v7 = a3.var0.var0;
-  v9 = a4;
-  v10 = [(PXPlacesMapLayout *)self dataSource];
-  v11 = [v10 findItemsInMapRect:{v7, v6, var0, var1}];
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v6 = rect.var0.var1;
+  v7 = rect.var0.var0;
+  portCopy = port;
+  dataSource = [(PXPlacesMapLayout *)self dataSource];
+  v11 = [dataSource findItemsInMapRect:{v7, v6, var0, var1}];
 
-  v12 = [(PXPlacesMapThumbnailClusterLayout *)self _clusterGeotaggables:v11 fromMapRect:v9 viewPort:v7, v6, var0, var1];
+  var1 = [(PXPlacesMapThumbnailClusterLayout *)self _clusterGeotaggables:v11 fromMapRect:portCopy viewPort:v7, v6, var0, var1];
 
-  return v12;
+  return var1;
 }
 
-- (id)_clusterGeotaggablesInViewPort:(id)a3
+- (id)_clusterGeotaggablesInViewPort:(id)port
 {
-  v4 = a3;
-  [v4 mapRect];
-  v5 = [(PXPlacesMapThumbnailClusterLayout *)self _clusterGeotaggablesInRect:v4 forViewPort:?];
+  portCopy = port;
+  [portCopy mapRect];
+  v5 = [(PXPlacesMapThumbnailClusterLayout *)self _clusterGeotaggablesInRect:portCopy forViewPort:?];
 
   return v5;
 }
 
-- (id)layoutForViewPort:(id)a3 andDataSourceChange:(id)a4
+- (id)layoutForViewPort:(id)port andDataSourceChange:(id)change
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  portCopy = port;
+  changeCopy = change;
+  if (!portCopy)
   {
-    v44 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v44 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailClusterLayout.m" lineNumber:53 description:@"-[PXPlacesMapThumbnailClusterLayout layout] viewPort cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailClusterLayout.m" lineNumber:53 description:@"-[PXPlacesMapThumbnailClusterLayout layout] viewPort cannot be nil"];
   }
 
-  v9 = [(PXPlacesMapLayout *)self dataSource];
+  dataSource = [(PXPlacesMapLayout *)self dataSource];
 
-  if (!v9)
+  if (!dataSource)
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v45 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailClusterLayout.m" lineNumber:54 description:@"-[PXPlacesMapClusterLayout layout] dataSource cannot be nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailClusterLayout.m" lineNumber:54 description:@"-[PXPlacesMapClusterLayout layout] dataSource cannot be nil"];
   }
 
   [(PXPlacesMapThumbnailClusterLayout *)self horizontalClusteringDistancePixels];
   if (v10 <= 0.0)
   {
-    v46 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v46 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailClusterLayout.m" lineNumber:55 description:@"-[PXPlacesMapClusterLayout layout] horizontalClusteringDistancePixels cannot be <= 0"];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailClusterLayout.m" lineNumber:55 description:@"-[PXPlacesMapClusterLayout layout] horizontalClusteringDistancePixels cannot be <= 0"];
   }
 
   [(PXPlacesMapThumbnailClusterLayout *)self verticalClusteringDistancePixels];
   if (v11 <= 0.0)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailClusterLayout.m" lineNumber:56 description:@"-[PXPlacesMapClusterLayout layout] verticalClusteringDistancePixels cannot be <= 0"];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler4 handleFailureInMethod:a2 object:self file:@"PXPlacesMapThumbnailClusterLayout.m" lineNumber:56 description:@"-[PXPlacesMapClusterLayout layout] verticalClusteringDistancePixels cannot be <= 0"];
   }
 
-  if ([v8 hasChanges])
+  if ([changeCopy hasChanges])
   {
     [(PXPlacesMapThumbnailClusterLayout *)self setCurrentMapLayoutResult:0];
   }
 
-  v12 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
-  if (v12)
+  currentMapLayoutResult = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
+  if (currentMapLayoutResult)
   {
-    v13 = v12;
-    v14 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
-    v15 = [v14 viewPort];
-    if ([v15 isEqual:v7])
+    v13 = currentMapLayoutResult;
+    currentMapLayoutResult2 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
+    viewPort = [currentMapLayoutResult2 viewPort];
+    if ([viewPort isEqual:portCopy])
     {
-      v16 = [v8 hasChanges];
+      hasChanges = [changeCopy hasChanges];
 
-      if ((v16 & 1) == 0)
+      if ((hasChanges & 1) == 0)
       {
-        v17 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
+        currentMapLayoutResult3 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
         goto LABEL_46;
       }
     }
@@ -459,35 +459,35 @@
     }
   }
 
-  v18 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
-  v19 = [v18 viewPort];
-  v20 = [(PXPlacesMapThumbnailClusterLayout *)self _viewPortChangeTypeFrom:v19 to:v7];
+  currentMapLayoutResult4 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
+  viewPort2 = [currentMapLayoutResult4 viewPort];
+  v20 = [(PXPlacesMapThumbnailClusterLayout *)self _viewPortChangeTypeFrom:viewPort2 to:portCopy];
 
   [(PXPlacesMapThumbnailClusterLayout *)self setCurrentChangeType:v20];
-  v21 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
-  if (v21)
+  currentMapLayoutResult5 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
+  if (currentMapLayoutResult5)
   {
-    v22 = v21;
-    v23 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
-    v24 = [v23 layoutItems];
-    v25 = [v24 count];
+    v22 = currentMapLayoutResult5;
+    currentMapLayoutResult6 = [(PXPlacesMapThumbnailClusterLayout *)self currentMapLayoutResult];
+    layoutItems = [currentMapLayoutResult6 layoutItems];
+    v25 = [layoutItems count];
 
     if (v25)
     {
       v26 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-      v27 = [v7 viewPortsBySplitingAt180thMerdian];
+      viewPortsBySplitingAt180thMerdian = [portCopy viewPortsBySplitingAt180thMerdian];
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v28 = [v27 countByEnumeratingWithState:&v49 objects:v57 count:16];
+      v28 = [viewPortsBySplitingAt180thMerdian countByEnumeratingWithState:&v49 objects:v57 count:16];
       if (!v28)
       {
         goto LABEL_45;
       }
 
       v29 = v28;
-      v48 = v7;
+      v48 = portCopy;
       v30 = *v50;
       while (1)
       {
@@ -495,7 +495,7 @@
         {
           if (*v50 != v30)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(viewPortsBySplitingAt180thMerdian);
           }
 
           v32 = *(*(&v49 + 1) + 8 * i);
@@ -527,12 +527,12 @@
                 if (v33 != 0.0)
                 {
 LABEL_28:
-                  v34 = [(PXPlacesMapThumbnailClusterLayout *)self _handlePitchChangeToViewPort:v32 dataSourceChange:v8];
+                  v34 = [(PXPlacesMapThumbnailClusterLayout *)self _handlePitchChangeToViewPort:v32 dataSourceChange:changeCopy];
                   goto LABEL_35;
                 }
 
 LABEL_32:
-                v34 = [(PXPlacesMapThumbnailClusterLayout *)self _handlePanToViewPort:v32 dataSourceChange:v8];
+                v34 = [(PXPlacesMapThumbnailClusterLayout *)self _handlePanToViewPort:v32 dataSourceChange:changeCopy];
                 goto LABEL_35;
             }
           }
@@ -543,10 +543,10 @@ LABEL_35:
           [v26 unionOrderedSet:v34];
         }
 
-        v29 = [v27 countByEnumeratingWithState:&v49 objects:v57 count:16];
+        v29 = [viewPortsBySplitingAt180thMerdian countByEnumeratingWithState:&v49 objects:v57 count:16];
         if (!v29)
         {
-          v7 = v48;
+          portCopy = v48;
           goto LABEL_45;
         }
       }
@@ -554,12 +554,12 @@ LABEL_35:
   }
 
   v26 = objc_alloc_init(MEMORY[0x1E695DFA0]);
-  v27 = [v7 viewPortsBySplitingAt180thMerdian];
+  viewPortsBySplitingAt180thMerdian = [portCopy viewPortsBySplitingAt180thMerdian];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v36 = [v27 countByEnumeratingWithState:&v53 objects:v58 count:16];
+  v36 = [viewPortsBySplitingAt180thMerdian countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v36)
   {
     v37 = v36;
@@ -570,7 +570,7 @@ LABEL_35:
       {
         if (*v54 != v38)
         {
-          objc_enumerationMutation(v27);
+          objc_enumerationMutation(viewPortsBySplitingAt180thMerdian);
         }
 
         v40 = *(*(&v53 + 1) + 8 * j);
@@ -579,7 +579,7 @@ LABEL_35:
         [v26 unionOrderedSet:v41];
       }
 
-      v37 = [v27 countByEnumeratingWithState:&v53 objects:v58 count:16];
+      v37 = [viewPortsBySplitingAt180thMerdian countByEnumeratingWithState:&v53 objects:v58 count:16];
     }
 
     while (v37);
@@ -588,14 +588,14 @@ LABEL_35:
 LABEL_45:
   v42 = [objc_alloc(MEMORY[0x1E695DFB8]) initWithOrderedSet:v26];
 
-  v17 = objc_alloc_init(PXPlacesMapLayoutResultImpl);
-  [(PXPlacesMapLayoutResultImpl *)v17 addItems:v42];
-  [(PXPlacesMapLayoutResultImpl *)v17 setViewPort:v7];
-  [(PXPlacesMapThumbnailClusterLayout *)self setCurrentMapLayoutResult:v17];
+  currentMapLayoutResult3 = objc_alloc_init(PXPlacesMapLayoutResultImpl);
+  [(PXPlacesMapLayoutResultImpl *)currentMapLayoutResult3 addItems:v42];
+  [(PXPlacesMapLayoutResultImpl *)currentMapLayoutResult3 setViewPort:portCopy];
+  [(PXPlacesMapThumbnailClusterLayout *)self setCurrentMapLayoutResult:currentMapLayoutResult3];
 
 LABEL_46:
 
-  return v17;
+  return currentMapLayoutResult3;
 }
 
 @end

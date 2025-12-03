@@ -1,40 +1,40 @@
 @interface MiroEditorClipCollectionViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 @end
 
 @implementation MiroEditorClipCollectionViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MiroEditorFlowLayout"];
-  [v3 validateClass:@"MiroEditorClipCollectionViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"MiroEditorFlowLayout" hasInstanceMethod:@"snappedIndexPath" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MiroEditorClipCollectionViewController" hasInstanceMethod:@"snapToIndexPath: animated:" withFullSignature:{"v", "@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MiroEditorFlowLayout"];
+  [validationsCopy validateClass:@"MiroEditorClipCollectionViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"MiroEditorFlowLayout" hasInstanceMethod:@"snappedIndexPath" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MiroEditorClipCollectionViewController" hasInstanceMethod:@"snapToIndexPath: animated:" withFullSignature:{"v", "@", "B", 0}];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
   v22 = 0;
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
-  v6 = [v5 collectionView];
+  collectionView = [v5 collectionView];
 
-  v7 = [v6 collectionViewLayout];
+  collectionViewLayout = [collectionView collectionViewLayout];
   MEMORY[0x29C2DE4B0](@"MiroEditorFlowLayout");
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_10;
   }
 
-  v8 = [v6 numberOfItemsInSection:0];
+  v8 = [collectionView numberOfItemsInSection:0];
   v22 = 0;
   objc_opt_class();
-  v9 = [v7 safeValueForKey:@"snappedIndexPath"];
+  v9 = [collectionViewLayout safeValueForKey:@"snappedIndexPath"];
   v10 = __UIAccessibilityCastAsClass();
 
-  if (a3 == 2)
+  if (scroll == 2)
   {
     if ([v10 row] < v8 - 1)
     {
@@ -49,14 +49,14 @@
     goto LABEL_9;
   }
 
-  if (a3 != 1 || [v10 row] < 1)
+  if (scroll != 1 || [v10 row] < 1)
   {
 LABEL_9:
 
 LABEL_10:
     v19.receiver = self;
     v19.super_class = MiroEditorClipCollectionViewControllerAccessibility;
-    v17 = [(MiroEditorClipCollectionViewControllerAccessibility *)&v19 accessibilityScroll:a3];
+    v17 = [(MiroEditorClipCollectionViewControllerAccessibility *)&v19 accessibilityScroll:scroll];
     goto LABEL_11;
   }
 
@@ -73,7 +73,7 @@ LABEL_8:
   v14 = v11;
   AXPerformSafeBlock();
   v15 = *MEMORY[0x29EDC7ED8];
-  v16 = [v6 cellForItemAtIndexPath:v14];
+  v16 = [collectionView cellForItemAtIndexPath:v14];
   UIAccessibilityPostNotification(v15, v16);
 
   v17 = 1;

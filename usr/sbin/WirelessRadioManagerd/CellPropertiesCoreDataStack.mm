@@ -1,32 +1,32 @@
 @interface CellPropertiesCoreDataStack
-- (CellPropertiesCoreDataStack)initWithStoreURL:(id)a3 modelURL:(id)a4;
-- (id)managedObjectModel:(id)a3;
-- (void)setupManagedObjectContext:(id)a3 modelURL:(id)a4;
+- (CellPropertiesCoreDataStack)initWithStoreURL:(id)l modelURL:(id)rL;
+- (id)managedObjectModel:(id)model;
+- (void)setupManagedObjectContext:(id)context modelURL:(id)l;
 @end
 
 @implementation CellPropertiesCoreDataStack
 
-- (CellPropertiesCoreDataStack)initWithStoreURL:(id)a3 modelURL:(id)a4
+- (CellPropertiesCoreDataStack)initWithStoreURL:(id)l modelURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v11.receiver = self;
   v11.super_class = CellPropertiesCoreDataStack;
   v8 = [(CellPropertiesCoreDataStack *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CellPropertiesCoreDataStack *)v8 setupManagedObjectContext:v6 modelURL:v7];
+    [(CellPropertiesCoreDataStack *)v8 setupManagedObjectContext:lCopy modelURL:rLCopy];
   }
 
   return v9;
 }
 
-- (void)setupManagedObjectContext:(id)a3 modelURL:(id)a4
+- (void)setupManagedObjectContext:(id)context modelURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CellPropertiesCoreDataStack *)self managedObjectModel:v7];
+  contextCopy = context;
+  lCopy = l;
+  v8 = [(CellPropertiesCoreDataStack *)self managedObjectModel:lCopy];
   v9 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:v8];
   persistentStoreCoordinator = self->persistentStoreCoordinator;
   self->persistentStoreCoordinator = v9;
@@ -47,7 +47,7 @@
   v21 = &__kCFBooleanTrue;
   v13 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
   v19 = 0;
-  v14 = [(NSPersistentStoreCoordinator *)v12 addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:v6 options:v13 error:&v19];
+  v14 = [(NSPersistentStoreCoordinator *)v12 addPersistentStoreWithType:NSSQLiteStoreType configuration:0 URL:contextCopy options:v13 error:&v19];
   v15 = v19;
 
   if (v15)
@@ -68,11 +68,11 @@
   [(NSManagedObjectContext *)self->private_queue_context setPersistentStoreCoordinator:self->persistentStoreCoordinator];
 }
 
-- (id)managedObjectModel:(id)a3
+- (id)managedObjectModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   [WCM_Logging logLevel:22 message:@"CellStationManager: initializing managedObjectModel with the given model URL"];
-  v4 = [[NSManagedObjectModel alloc] initWithContentsOfURL:v3];
+  v4 = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelCopy];
   [WCM_Logging logLevel:22 message:@"CellStationManager: No error in initializing managedObjectModel"];
   if (v4)
   {

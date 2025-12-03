@@ -1,31 +1,31 @@
 @interface CIHighlightRecoveryProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (id)compilePipelineForDevice:(id)a3 functionName:(id)a4 constantValues:(id)a5;
-+ (id)functionConstantValuesTuningParameters:(id)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (id)compilePipelineForDevice:(id)device functionName:(id)name constantValues:(id)values;
++ (id)functionConstantValuesTuningParameters:(id)parameters;
 @end
 
 @implementation CIHighlightRecoveryProcessor
 
-+ (id)compilePipelineForDevice:(id)a3 functionName:(id)a4 constantValues:(id)a5
++ (id)compilePipelineForDevice:(id)device functionName:(id)name constantValues:(id)values
 {
   v12 = 0;
-  v8 = [a3 newDefaultLibraryWithBundle:objc_msgSend(MEMORY[0x1E696AAE8] error:{"bundleForClass:", a1), &v12}];
-  v9 = [v8 newFunctionWithName:a4 constantValues:a5 error:&v12];
-  v10 = [a3 newComputePipelineStateWithFunction:v9 error:&v12];
+  v8 = [device newDefaultLibraryWithBundle:objc_msgSend(MEMORY[0x1E696AAE8] error:{"bundleForClass:", self), &v12}];
+  v9 = [v8 newFunctionWithName:name constantValues:values error:&v12];
+  v10 = [device newComputePipelineStateWithFunction:v9 error:&v12];
 
   return v10;
 }
 
-+ (id)functionConstantValuesTuningParameters:(id)a3
++ (id)functionConstantValuesTuningParameters:(id)parameters
 {
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"maxIntensityT0", "floatValue"}];
+  [objc_msgSend(parameters objectForKeyedSubscript:{@"maxIntensityT0", "floatValue"}];
   v5 = v4;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"maxIntensityT1", "floatValue"}];
+  [objc_msgSend(parameters objectForKeyedSubscript:{@"maxIntensityT1", "floatValue"}];
   v7 = v6;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"minIntensityT0", "floatValue"}];
+  [objc_msgSend(parameters objectForKeyedSubscript:{@"minIntensityT0", "floatValue"}];
   v9 = v8;
-  [objc_msgSend(a3 objectForKeyedSubscript:{@"minIntensityT1", "floatValue"}];
+  [objc_msgSend(parameters objectForKeyedSubscript:{@"minIntensityT1", "floatValue"}];
   v10 = 1.0 / (v7 - v5);
   v12 = 1.0 / (v11 - v9);
   v13 = objc_alloc_init(MEMORY[0x1E6974060]);
@@ -56,25 +56,25 @@ uint64_t __71__CIHighlightRecoveryProcessor_functionConstantValuesTuningParamete
   return [*(a1 + 32) setConstantValue:&v9 type:16 withName:a2];
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
-  v9 = [a3 objectAtIndexedSubscript:{0, a4, a5, a6}];
-  v10 = [a5 metalCommandBuffer];
-  v11 = [objc_msgSend(v10 "commandQueue")];
-  v12 = [a1 functionConstantValuesTuningParameters:a4];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"blurRadiusT0", "floatValue"}];
+  v9 = [inputs objectAtIndexedSubscript:{0, arguments, output, error}];
+  metalCommandBuffer = [output metalCommandBuffer];
+  v11 = [objc_msgSend(metalCommandBuffer "commandQueue")];
+  v12 = [self functionConstantValuesTuningParameters:arguments];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"blurRadiusT0", "floatValue"}];
   v14 = v13;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"blurRadiusT1", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"blurRadiusT1", "floatValue"}];
   v16 = v15;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"maxBlur", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"maxBlur", "floatValue"}];
   v18 = v17;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"apertureScaling", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"apertureScaling", "floatValue"}];
   v20 = (v14 * v19) / v18;
   v69[0] = 1.0 / (((v16 * v19) / v18) - v20);
   v69[1] = -(v69[0] * v20);
-  v21 = [a1 compilePipelineForDevice:v11 functionName:@"sparserendering_xhlrb_scan" constantValues:v12];
-  v22 = [a1 compilePipelineForDevice:v11 functionName:@"sparserendering_xhlrb_diffuse" constantValues:v12];
-  v23 = [a1 compilePipelineForDevice:v11 functionName:@"sparserendering_xhlrb_copy_back" constantValues:v12];
+  v21 = [self compilePipelineForDevice:v11 functionName:@"sparserendering_xhlrb_scan" constantValues:v12];
+  v22 = [self compilePipelineForDevice:v11 functionName:@"sparserendering_xhlrb_diffuse" constantValues:v12];
+  v23 = [self compilePipelineForDevice:v11 functionName:@"sparserendering_xhlrb_copy_back" constantValues:v12];
   v24 = v23;
   if (v21)
   {
@@ -91,9 +91,9 @@ uint64_t __71__CIHighlightRecoveryProcessor_functionConstantValuesTuningParamete
   if (!v26)
   {
     v57 = result;
-    v58 = a5;
+    outputCopy = output;
     [v9 region];
-    v60 = v10;
+    v60 = metalCommandBuffer;
     v29 = v28;
     [v9 region];
     v31 = v29 & 0xFFFFFFFFFFFFFFFELL;
@@ -121,7 +121,7 @@ uint64_t __71__CIHighlightRecoveryProcessor_functionConstantValuesTuningParamete
     v55 = v21;
     v39 = [v11 newTextureWithDescriptor:v38];
     v40 = [v11 newTextureWithDescriptor:v38];
-    v41 = [v60 blitCommandEncoder];
+    blitCommandEncoder = [v60 blitCommandEncoder];
     [v60 setLabel:@"XHLRBComputeBlit"];
     v67 = 0;
     v68 = 0uLL;
@@ -131,74 +131,74 @@ uint64_t __71__CIHighlightRecoveryProcessor_functionConstantValuesTuningParamete
     v62 = 0;
     v63 = 0;
     v64 = 0;
-    [v41 copyFromTexture:objc_msgSend(v36 sourceSlice:"metalTexture") sourceLevel:0 sourceOrigin:0 sourceSize:&v67 toTexture:&v65 destinationSlice:v39 destinationLevel:0 destinationOrigin:{0, &v62}];
-    [v41 fillBuffer:v37 range:0 value:{objc_msgSend(v37, "length"), 0}];
-    [v41 endEncoding];
-    v42 = [v60 computeCommandEncoder];
-    [v42 setLabel:@"XHLRBComputeCompute"];
-    [v42 setComputePipelineState:v55];
-    [v42 setBytes:v69 length:8 atIndex:0];
-    [v42 setBuffer:v37 offset:0 atIndex:1];
-    [v42 setTexture:objc_msgSend(v59 atIndex:{"metalTexture"), 0}];
+    [blitCommandEncoder copyFromTexture:objc_msgSend(v36 sourceSlice:"metalTexture") sourceLevel:0 sourceOrigin:0 sourceSize:&v67 toTexture:&v65 destinationSlice:v39 destinationLevel:0 destinationOrigin:{0, &v62}];
+    [blitCommandEncoder fillBuffer:v37 range:0 value:{objc_msgSend(v37, "length"), 0}];
+    [blitCommandEncoder endEncoding];
+    computeCommandEncoder = [v60 computeCommandEncoder];
+    [computeCommandEncoder setLabel:@"XHLRBComputeCompute"];
+    [computeCommandEncoder setComputePipelineState:v55];
+    [computeCommandEncoder setBytes:v69 length:8 atIndex:0];
+    [computeCommandEncoder setBuffer:v37 offset:0 atIndex:1];
+    [computeCommandEncoder setTexture:objc_msgSend(v59 atIndex:{"metalTexture"), 0}];
     v67 = (v31 + 7) >> 3;
     *&v68 = v56;
     *(&v68 + 1) = 1;
     v65 = v35;
     v66 = xmmword_19CF288E0;
-    [v42 dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
-    v43 = [objc_msgSend(a4 objectForKeyedSubscript:{@"iterations", "unsignedIntValue"}];
+    [computeCommandEncoder dispatchThreadgroups:&v67 threadsPerThreadgroup:&v65];
+    v43 = [objc_msgSend(arguments objectForKeyedSubscript:{@"iterations", "unsignedIntValue"}];
     if (v43)
     {
       v44 = v43;
       do
       {
-        [v42 setComputePipelineState:v22];
-        [v42 setBytes:v69 length:8 atIndex:0];
-        [v42 setBuffer:v37 offset:0 atIndex:1];
-        [v42 setTexture:v39 atIndex:0];
-        [v42 setTexture:v40 atIndex:1];
+        [computeCommandEncoder setComputePipelineState:v22];
+        [computeCommandEncoder setBytes:v69 length:8 atIndex:0];
+        [computeCommandEncoder setBuffer:v37 offset:0 atIndex:1];
+        [computeCommandEncoder setTexture:v39 atIndex:0];
+        [computeCommandEncoder setTexture:v40 atIndex:1];
         v67 = v35;
         v68 = xmmword_19CF288E0;
-        [v42 dispatchThreadgroupsWithIndirectBuffer:v37 indirectBufferOffset:0 threadsPerThreadgroup:&v67];
-        [v42 setComputePipelineState:v24];
-        [v42 setBuffer:v37 offset:0 atIndex:0];
-        [v42 setTexture:v40 atIndex:0];
-        [v42 setTexture:v39 atIndex:1];
+        [computeCommandEncoder dispatchThreadgroupsWithIndirectBuffer:v37 indirectBufferOffset:0 threadsPerThreadgroup:&v67];
+        [computeCommandEncoder setComputePipelineState:v24];
+        [computeCommandEncoder setBuffer:v37 offset:0 atIndex:0];
+        [computeCommandEncoder setTexture:v40 atIndex:0];
+        [computeCommandEncoder setTexture:v39 atIndex:1];
         v67 = v35;
         v68 = xmmword_19CF288E0;
-        [v42 dispatchThreadgroupsWithIndirectBuffer:v37 indirectBufferOffset:0 threadsPerThreadgroup:&v67];
+        [computeCommandEncoder dispatchThreadgroupsWithIndirectBuffer:v37 indirectBufferOffset:0 threadsPerThreadgroup:&v67];
         --v44;
       }
 
       while (v44);
     }
 
-    [v42 endEncoding];
-    v45 = [v60 blitCommandEncoder];
+    [computeCommandEncoder endEncoding];
+    blitCommandEncoder2 = [v60 blitCommandEncoder];
     [v60 setLabel:@"XHLRBComputeBlit"];
     [v59 region];
     MinX = CGRectGetMinX(v70);
     [v59 region];
     MaxY = CGRectGetMaxY(v71);
-    [v58 region];
+    [outputCopy region];
     v48 = CGRectGetMinX(v72);
-    [v58 region];
+    [outputCopy region];
     v49 = CGRectGetMaxY(v73);
     v67 = (v48 - MinX);
     *&v68 = -(v49 - MaxY);
     *(&v68 + 1) = 0;
-    [v58 region];
+    [outputCopy region];
     v51 = v50;
-    [v58 region];
+    [outputCopy region];
     v65 = v51;
     *&v66 = v52;
     *(&v66 + 1) = 1;
-    v53 = [v58 metalTexture];
+    metalTexture = [outputCopy metalTexture];
     v62 = 0;
     v63 = 0;
     v64 = 0;
-    [v45 copyFromTexture:v39 sourceSlice:0 sourceLevel:0 sourceOrigin:&v67 sourceSize:&v65 toTexture:v53 destinationSlice:0 destinationLevel:0 destinationOrigin:&v62];
-    [v45 endEncoding];
+    [blitCommandEncoder2 copyFromTexture:v39 sourceSlice:0 sourceLevel:0 sourceOrigin:&v67 sourceSize:&v65 toTexture:metalTexture destinationSlice:0 destinationLevel:0 destinationOrigin:&v62];
+    [blitCommandEncoder2 endEncoding];
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
     v61[2] = __73__CIHighlightRecoveryProcessor_processWithInputs_arguments_output_error___block_invoke;
@@ -218,9 +218,9 @@ void __73__CIHighlightRecoveryProcessor_processWithInputs_arguments_output_error
   v2 = *(a1 + 48);
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  v17 = CGRectIntegral(a5);
+  v17 = CGRectIntegral(rect);
   x = v17.origin.x;
   y = v17.origin.y;
   width = v17.size.width;

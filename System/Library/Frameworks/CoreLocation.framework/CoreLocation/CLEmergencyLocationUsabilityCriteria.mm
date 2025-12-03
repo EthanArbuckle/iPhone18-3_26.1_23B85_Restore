@@ -1,6 +1,6 @@
 @interface CLEmergencyLocationUsabilityCriteria
 - (CLEmergencyLocationUsabilityCriteria)init;
-- (void)printUsabilityCriteria:(id)a3;
+- (void)printUsabilityCriteria:(id)criteria;
 @end
 
 @implementation CLEmergencyLocationUsabilityCriteria
@@ -21,7 +21,7 @@
   return result;
 }
 
-- (void)printUsabilityCriteria:(id)a3
+- (void)printUsabilityCriteria:(id)criteria
 {
   v30 = *MEMORY[0x1E69E9840];
   if (qword_1ED519088 != -1)
@@ -32,19 +32,19 @@
   v5 = qword_1ED519090;
   if (os_log_type_enabled(qword_1ED519090, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(CLEmergencyLocationUsabilityCriteria *)self vuncCheckRequiredForUsability];
-    v7 = [(CLEmergencyLocationUsabilityCriteria *)self altitudeStitchingEnabled];
+    vuncCheckRequiredForUsability = [(CLEmergencyLocationUsabilityCriteria *)self vuncCheckRequiredForUsability];
+    altitudeStitchingEnabled = [(CLEmergencyLocationUsabilityCriteria *)self altitudeStitchingEnabled];
     [(CLEmergencyLocationUsabilityCriteria *)self maxUsableAge];
     v9 = v8;
     [(CLEmergencyLocationUsabilityCriteria *)self maxUsableHunc];
     v11 = v10;
     [(CLEmergencyLocationUsabilityCriteria *)self maxUsableVunc];
     *buf = 138544898;
-    v17 = a3;
+    criteriaCopy = criteria;
     v18 = 1026;
-    v19 = v6;
+    v19 = vuncCheckRequiredForUsability;
     v20 = 1026;
-    v21 = v7;
+    v21 = altitudeStitchingEnabled;
     v22 = 2050;
     v23 = v9;
     v24 = 2050;
@@ -52,7 +52,7 @@
     v26 = 2050;
     v27 = v12;
     v28 = 1026;
-    v29 = [(CLEmergencyLocationUsabilityCriteria *)self minUsableIntegrity];
+    minUsableIntegrity = [(CLEmergencyLocationUsabilityCriteria *)self minUsableIntegrity];
     _os_log_impl(&dword_19B873000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@,vuncCheckRequiredForUsability,%{public}d,altitudeStitchingEnabled,%{public}d,maxUsableAge,%{public}f,maxUsableHunc,%{public}f,maxUsableVunc,%{public}f,minUsableIntegrity,%{public}d", buf, 0x3Cu);
   }
 

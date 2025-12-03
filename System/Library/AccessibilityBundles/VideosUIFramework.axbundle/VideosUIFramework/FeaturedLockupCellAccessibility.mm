@@ -8,8 +8,8 @@
 {
   v5.receiver = self;
   v5.super_class = FeaturedLockupCellAccessibility;
-  v3 = [(FeaturedLockupCellAccessibility *)&v5 canBecomeFocused];
-  return ([(FeaturedLockupCellAccessibility *)self _accessibilityIsFKARunningForFocusItem]^ 1) & v3;
+  canBecomeFocused = [(FeaturedLockupCellAccessibility *)&v5 canBecomeFocused];
+  return ([(FeaturedLockupCellAccessibility *)self _accessibilityIsFKARunningForFocusItem]^ 1) & canBecomeFocused;
 }
 
 @end

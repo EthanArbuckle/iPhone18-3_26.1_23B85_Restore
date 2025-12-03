@@ -1,7 +1,7 @@
 @interface _DPPINEShardResult
 - (NSArray)inputShares;
 - (_DPPINEShardResult)init;
-- (_DPPINEShardResult)initWithPublicShare:(id)a3 inputShares:(id)a4 nonce:(id)a5 dimension:(int64_t)a6 chunkLength:(int64_t)a7 chunkLengthNormEquality:(int64_t)a8 l2NormBoundInt:(unint64_t)a9 fractionalBitCount:(int64_t)a10;
+- (_DPPINEShardResult)initWithPublicShare:(id)share inputShares:(id)shares nonce:(id)nonce dimension:(int64_t)dimension chunkLength:(int64_t)length chunkLengthNormEquality:(int64_t)equality l2NormBoundInt:(unint64_t)int fractionalBitCount:(int64_t)self0;
 @end
 
 @implementation _DPPINEShardResult
@@ -15,11 +15,11 @@
   return v3;
 }
 
-- (_DPPINEShardResult)initWithPublicShare:(id)a3 inputShares:(id)a4 nonce:(id)a5 dimension:(int64_t)a6 chunkLength:(int64_t)a7 chunkLengthNormEquality:(int64_t)a8 l2NormBoundInt:(unint64_t)a9 fractionalBitCount:(int64_t)a10
+- (_DPPINEShardResult)initWithPublicShare:(id)share inputShares:(id)shares nonce:(id)nonce dimension:(int64_t)dimension chunkLength:(int64_t)length chunkLengthNormEquality:(int64_t)equality l2NormBoundInt:(unint64_t)int fractionalBitCount:(int64_t)self0
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  shareCopy = share;
+  sharesCopy = shares;
+  nonceCopy = nonce;
   v16 = sub_22628E7CC();
   v18 = v17;
 
@@ -27,7 +27,7 @@
   v20 = sub_22628E7CC();
   v22 = v21;
 
-  return PINEShim.ShardResult.init(publicShare:inputShares:nonce:dimension:chunkLength:chunkLengthNormEquality:l2NormBoundInt:fractionalBitCount:)(v16, v18, v19, v20, v22, a6, a7, a8, a9, a10);
+  return PINEShim.ShardResult.init(publicShare:inputShares:nonce:dimension:chunkLength:chunkLengthNormEquality:l2NormBoundInt:fractionalBitCount:)(v16, v18, v19, v20, v22, dimension, length, equality, int, count);
 }
 
 - (_DPPINEShardResult)init

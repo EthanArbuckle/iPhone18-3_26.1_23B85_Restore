@@ -1,23 +1,23 @@
 @interface CRXFCalibrationData
-- (CRXFCalibrationData)initWithACCPayload:(id)a3 leftCalibrationData:(id)a4 rightCalibrationData:(id)a5;
+- (CRXFCalibrationData)initWithACCPayload:(id)payload leftCalibrationData:(id)data rightCalibrationData:(id)calibrationData;
 @end
 
 @implementation CRXFCalibrationData
 
-- (CRXFCalibrationData)initWithACCPayload:(id)a3 leftCalibrationData:(id)a4 rightCalibrationData:(id)a5
+- (CRXFCalibrationData)initWithACCPayload:(id)payload leftCalibrationData:(id)data rightCalibrationData:(id)calibrationData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  payloadCopy = payload;
+  dataCopy = data;
+  calibrationDataCopy = calibrationData;
   v15.receiver = self;
   v15.super_class = CRXFCalibrationData;
   v12 = [(CRXFCalibrationData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accPayload, a3);
-    objc_storeStrong(&v13->_leftCalibrationData, a4);
-    objc_storeStrong(&v13->_rightCalibrationData, a5);
+    objc_storeStrong(&v12->_accPayload, payload);
+    objc_storeStrong(&v13->_leftCalibrationData, data);
+    objc_storeStrong(&v13->_rightCalibrationData, calibrationData);
   }
 
   return v13;

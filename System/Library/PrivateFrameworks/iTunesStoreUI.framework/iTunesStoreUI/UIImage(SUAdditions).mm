@@ -9,12 +9,12 @@
   if (a3 == a4)
   {
 
-    return [a1 stretchableImageWithLeftCapWidth:? topCapHeight:?];
+    return [self stretchableImageWithLeftCapWidth:? topCapHeight:?];
   }
 
   else
   {
-    [a1 size];
+    [self size];
     v9 = v8;
     if (a3 <= a4)
     {
@@ -27,7 +27,7 @@
     }
 
     v11 = ((v10 * 2.0) + 1.0);
-    [a1 scale];
+    [self scale];
     v13 = v12;
     v14 = v12 * v11;
     v15 = ceilf(v14);
@@ -46,10 +46,10 @@
       CGContextScaleCTM(v20, v13, v13);
       CGAffineTransformMakeScale(&v40, v13, v13);
       CGContextSetBaseCTM();
-      [a1 size];
+      [self size];
       *&v21 = v13 * v21;
       v22 = ceilf(*&v21);
-      [a1 size];
+      [self size];
       v24 = v13 * v23;
       v25 = ceilf(v24);
       v39 = v11;
@@ -57,36 +57,36 @@
       v27 = a4;
       v28 = v13 * a4;
       v29 = v22 - v28 - v26;
-      v30 = [a1 CGImage];
+      cGImage = [self CGImage];
       v43.origin.x = 0.0;
       v43.origin.y = 0.0;
       v43.size.width = v26;
       v43.size.height = v25;
-      v31 = CGImageCreateWithImageInRect(v30, v43);
+      v31 = CGImageCreateWithImageInRect(cGImage, v43);
       v44.origin.x = 0.0;
       v44.origin.y = 0.0;
       v44.size.width = a3;
       v44.size.height = v9;
       CGContextDrawImage(v20, v44, v31);
       CGImageRelease(v31);
-      v32 = [a1 CGImage];
+      cGImage2 = [self CGImage];
       v45.origin.x = v26 + v29;
       v45.origin.y = 0.0;
       v45.size.width = v28;
       v45.size.height = v25;
-      v33 = CGImageCreateWithImageInRect(v32, v45);
+      v33 = CGImageCreateWithImageInRect(cGImage2, v45);
       v46.origin.x = v39 - v27;
       v46.origin.y = 0.0;
       v46.size.width = v27;
       v46.size.height = v9;
       CGContextDrawImage(v20, v46, v33);
       CGImageRelease(v33);
-      v34 = [a1 CGImage];
+      cGImage3 = [self CGImage];
       v47.origin.y = 0.0;
       v47.origin.x = v26;
       v47.size.width = v29;
       v47.size.height = v25;
-      v35 = CGImageCreateWithImageInRect(v34, v47);
+      v35 = CGImageCreateWithImageInRect(cGImage3, v47);
       v48.size.width = v39 - a3 - v27;
       v48.origin.y = 0.0;
       v48.origin.x = a3;

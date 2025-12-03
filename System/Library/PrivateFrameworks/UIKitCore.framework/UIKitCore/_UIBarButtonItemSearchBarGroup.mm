@@ -1,15 +1,15 @@
 @interface _UIBarButtonItemSearchBarGroup
 - (BOOL)_viewNeedsWrapper;
-- (_UIBarButtonItemSearchBarGroup)initWithBarButtonItems:(id)a3 representativeItem:(id)a4;
+- (_UIBarButtonItemSearchBarGroup)initWithBarButtonItems:(id)items representativeItem:(id)item;
 - (id)searchBar;
 - (id)searchItem;
 - (uint64_t)_setDisabledExpansion:(uint64_t)result;
 - (void)_checkInstanceVariables;
-- (void)_setSearchBarShouldBeFlexible:(uint64_t)a1;
-- (void)setBarButtonItems:(id)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setProvidesRestingMeasurementValues:(uint64_t)a1;
-- (void)setRepresentativeItem:(id)a3;
+- (void)_setSearchBarShouldBeFlexible:(uint64_t)flexible;
+- (void)setBarButtonItems:(id)items;
+- (void)setHidden:(BOOL)hidden;
+- (void)setProvidesRestingMeasurementValues:(uint64_t)values;
+- (void)setRepresentativeItem:(id)item;
 @end
 
 @implementation _UIBarButtonItemSearchBarGroup
@@ -27,27 +27,27 @@
 
 - (void)_checkInstanceVariables
 {
-  if (a1)
+  if (self)
   {
-    v8 = [a1 _items];
-    if ([v8 count] >= 2)
+    _items = [self _items];
+    if ([_items count] >= 2)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel__checkInstanceVariables object:a1 file:@"_UIBarButtonItemSearchBarGroup.m" lineNumber:29 description:{@"Too many items assigned to a _UIBarButtonItemSearchBarGroup. Fix this. self = %@", a1}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__checkInstanceVariables object:self file:@"_UIBarButtonItemSearchBarGroup.m" lineNumber:29 description:{@"Too many items assigned to a _UIBarButtonItemSearchBarGroup. Fix this. self = %@", self}];
     }
 
-    WeakRetained = objc_loadWeakRetained(a1 + 15);
+    WeakRetained = objc_loadWeakRetained(self + 15);
     if (WeakRetained)
     {
       v3 = WeakRetained;
-      v4 = objc_loadWeakRetained(a1 + 15);
+      v4 = objc_loadWeakRetained(self + 15);
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if ((isKindOfClass & 1) == 0)
       {
-        v6 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v6 handleFailureInMethod:sel__checkInstanceVariables object:a1 file:@"_UIBarButtonItemSearchBarGroup.m" lineNumber:30 description:{@"_UIBarButtonItemSearchBarGroup's item's view must be a UISearchBar. Fix this. self = %@", a1}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:sel__checkInstanceVariables object:self file:@"_UIBarButtonItemSearchBarGroup.m" lineNumber:30 description:{@"_UIBarButtonItemSearchBarGroup's item's view must be a UISearchBar. Fix this. self = %@", self}];
       }
     }
   }
@@ -64,41 +64,41 @@
   return WeakRetained;
 }
 
-- (_UIBarButtonItemSearchBarGroup)initWithBarButtonItems:(id)a3 representativeItem:(id)a4
+- (_UIBarButtonItemSearchBarGroup)initWithBarButtonItems:(id)items representativeItem:(id)item
 {
   v6.receiver = self;
   v6.super_class = _UIBarButtonItemSearchBarGroup;
-  v4 = [(UIBarButtonItemGroup *)&v6 initWithBarButtonItems:a3 representativeItem:a4];
+  v4 = [(UIBarButtonItemGroup *)&v6 initWithBarButtonItems:items representativeItem:item];
   [(_UIBarButtonItemSearchBarGroup *)&v4->super.super.isa _checkInstanceVariables];
   [(UIBarButtonItemGroup *)v4 _setRequiresOwnSection:1];
   return v4;
 }
 
-- (void)setBarButtonItems:(id)a3
+- (void)setBarButtonItems:(id)items
 {
   v8.receiver = self;
   v8.super_class = _UIBarButtonItemSearchBarGroup;
-  v4 = a3;
-  [(UIBarButtonItemGroup *)&v8 setBarButtonItems:v4];
-  v5 = [v4 firstObject];
+  itemsCopy = items;
+  [(UIBarButtonItemGroup *)&v8 setBarButtonItems:itemsCopy];
+  firstObject = [itemsCopy firstObject];
 
-  objc_storeWeak(&self->_searchItem, v5);
+  objc_storeWeak(&self->_searchItem, firstObject);
   WeakRetained = objc_loadWeakRetained(&self->_searchItem);
-  v7 = [WeakRetained view];
-  objc_storeWeak(&self->_searchBar, v7);
+  view = [WeakRetained view];
+  objc_storeWeak(&self->_searchBar, view);
 
   [(_UIBarButtonItemSearchBarGroup *)&self->super.super.isa _checkInstanceVariables];
 }
 
-- (void)setRepresentativeItem:(id)a3
+- (void)setRepresentativeItem:(id)item
 {
-  v4 = a3;
-  if (v4)
+  itemCopy = item;
+  if (itemCopy)
   {
     v5.receiver = self;
     v5.super_class = _UIBarButtonItemSearchBarGroup;
-    [(UIBarButtonItemGroup *)&v5 setRepresentativeItem:v4];
-    objc_storeWeak(&self->_searchIconItem, v4);
+    [(UIBarButtonItemGroup *)&v5 setRepresentativeItem:itemCopy];
+    objc_storeWeak(&self->_searchIconItem, itemCopy);
   }
 
   else if (self->_providesRestingMeasurementValues)
@@ -114,68 +114,68 @@
   }
 }
 
-- (void)setProvidesRestingMeasurementValues:(uint64_t)a1
+- (void)setProvidesRestingMeasurementValues:(uint64_t)values
 {
-  if (a1)
+  if (values)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 120));
+    WeakRetained = objc_loadWeakRetained((values + 120));
     [WeakRetained _setProvidesRestingMeasurementValues:a2];
 
     if (a2)
     {
-      v5 = [a1 representativeItem];
-      *(a1 + 88) = v5 != 0;
+      representativeItem = [values representativeItem];
+      *(values + 88) = representativeItem != 0;
 
-      if ((*(a1 + 88) & 1) == 0)
+      if ((*(values + 88) & 1) == 0)
       {
-        v6 = objc_loadWeakRetained((a1 + 128));
+        v6 = objc_loadWeakRetained((values + 128));
         v7 = v6;
         if (v6)
         {
-          v8 = v6;
+          _searchIconBarButtonItem = v6;
         }
 
         else
         {
-          v12 = objc_loadWeakRetained((a1 + 120));
-          v8 = [v12 _searchIconBarButtonItem];
+          v12 = objc_loadWeakRetained((values + 120));
+          _searchIconBarButtonItem = [v12 _searchIconBarButtonItem];
         }
 
-        v17.receiver = a1;
+        v17.receiver = values;
         v17.super_class = _UIBarButtonItemSearchBarGroup;
-        objc_msgSendSuper2(&v17, sel_setRepresentativeItem_, v8);
-        v11 = objc_loadWeakRetained((a1 + 120));
+        objc_msgSendSuper2(&v17, sel_setRepresentativeItem_, _searchIconBarButtonItem);
+        v11 = objc_loadWeakRetained((values + 120));
         [v11 _idealInlineWidthForLayoutState:2];
         v14 = v13;
-        v15 = objc_loadWeakRetained((a1 + 112));
+        v15 = objc_loadWeakRetained((values + 112));
         [v15 _setWidth:v14];
 
         goto LABEL_10;
       }
     }
 
-    else if ((*(a1 + 88) & 1) == 0)
+    else if ((*(values + 88) & 1) == 0)
     {
-      v16.receiver = a1;
+      v16.receiver = values;
       v16.super_class = _UIBarButtonItemSearchBarGroup;
       objc_msgSendSuper2(&v16, sel_setRepresentativeItem_, 0);
-      v8 = objc_loadWeakRetained((a1 + 120));
-      [v8 _idealInlineWidthForLayoutState:3];
+      _searchIconBarButtonItem = objc_loadWeakRetained((values + 120));
+      [_searchIconBarButtonItem _idealInlineWidthForLayoutState:3];
       v10 = v9;
-      v11 = objc_loadWeakRetained((a1 + 112));
+      v11 = objc_loadWeakRetained((values + 112));
       [v11 _setWidth:v10];
 LABEL_10:
     }
 
-    *(a1 + 104) = a2;
+    *(values + 104) = a2;
   }
 }
 
-- (void)_setSearchBarShouldBeFlexible:(uint64_t)a1
+- (void)_setSearchBarShouldBeFlexible:(uint64_t)flexible
 {
-  if (a1)
+  if (flexible)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 120));
+    WeakRetained = objc_loadWeakRetained((flexible + 120));
     [WeakRetained _setNavigationBarWantsFlexibleInlineSearch:a2];
   }
 }
@@ -196,9 +196,9 @@ LABEL_10:
   if (WeakRetained)
   {
     v4 = objc_loadWeakRetained(&self->_searchIconItem);
-    v5 = [v4 view];
-    v6 = [v5 window];
-    if (v6)
+    view = [v4 view];
+    window = [view window];
+    if (window)
     {
       v7 = 0;
     }
@@ -206,8 +206,8 @@ LABEL_10:
     else
     {
       v8 = objc_loadWeakRetained(&self->_searchBar);
-      v9 = [v8 superview];
-      v7 = v9 == 0;
+      superview = [v8 superview];
+      v7 = superview == 0;
     }
   }
 
@@ -219,13 +219,13 @@ LABEL_10:
   return v7;
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v5.receiver = self;
   v5.super_class = _UIBarButtonItemSearchBarGroup;
   [(UIBarButtonItemGroup *)&v5 setHidden:?];
-  if (v3)
+  if (hiddenCopy)
   {
     self->_disabledExpansion = 0;
   }

@@ -1,47 +1,47 @@
 @interface WFDictionaryParameterState
-+ (void)processValues:(id)a3 context:(id)a4 processingClass:(Class)a5 userInputRequiredHandler:(id)a6 valueHandler:(id)a7;
-- (BOOL)isEqual:(id)a3;
++ (void)processValues:(id)values context:(id)context processingClass:(Class)class userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)containedVariables;
-- (WFDictionaryParameterState)initWithKeyValuePairs:(id)a3;
-- (WFDictionaryParameterState)initWithKeyValuePairs:(id)a3 identity:(id)a4;
-- (WFDictionaryParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
+- (WFDictionaryParameterState)initWithKeyValuePairs:(id)pairs;
+- (WFDictionaryParameterState)initWithKeyValuePairs:(id)pairs identity:(id)identity;
+- (WFDictionaryParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
 - (WFPropertyListObject)serializedRepresentation;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFDictionaryParameterState
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  valueHandlerCopy = valueHandler;
+  handlerCopy = handler;
+  contextCopy = context;
   v11 = objc_opt_class();
-  v12 = [(WFDictionaryParameterState *)self keyValuePairs];
-  [v11 processValues:v12 context:v10 processingClass:objc_opt_class() userInputRequiredHandler:v9 valueHandler:v8];
+  keyValuePairs = [(WFDictionaryParameterState *)self keyValuePairs];
+  [v11 processValues:keyValuePairs context:contextCopy processingClass:objc_opt_class() userInputRequiredHandler:handlerCopy valueHandler:valueHandlerCopy];
 }
 
 - (NSArray)containedVariables
 {
-  v2 = [(WFDictionaryParameterState *)self keyValuePairs];
-  v3 = [v2 valueForKeyPath:@"@unionOfArrays.containedVariables"];
+  keyValuePairs = [(WFDictionaryParameterState *)self keyValuePairs];
+  v3 = [keyValuePairs valueForKeyPath:@"@unionOfArrays.containedVariables"];
 
   return v3;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFDictionaryParameterState *)self keyValuePairs];
-  v3 = [v2 hash];
+  keyValuePairs = [(WFDictionaryParameterState *)self keyValuePairs];
+  v3 = [keyValuePairs hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -51,9 +51,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFDictionaryParameterState *)v4 keyValuePairs];
-      v6 = [(WFDictionaryParameterState *)self keyValuePairs];
-      v7 = [v5 isEqualToArray:v6];
+      keyValuePairs = [(WFDictionaryParameterState *)equalCopy keyValuePairs];
+      keyValuePairs2 = [(WFDictionaryParameterState *)self keyValuePairs];
+      v7 = [keyValuePairs isEqualToArray:keyValuePairs2];
     }
 
     else
@@ -68,8 +68,8 @@
 - (WFPropertyListObject)serializedRepresentation
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v2 = [(WFDictionaryParameterState *)self keyValuePairs];
-  v3 = [v2 if_map:&__block_literal_global_10380];
+  keyValuePairs = [(WFDictionaryParameterState *)self keyValuePairs];
+  v3 = [keyValuePairs if_map:&__block_literal_global_10380];
 
   v9 = v3;
   v10[0] = @"WFSerializationType";
@@ -85,13 +85,13 @@
   return v5;
 }
 
-- (WFDictionaryParameterState)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFDictionaryParameterState)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  providerCopy = provider;
+  parameterCopy = parameter;
+  representationCopy = representation;
   v11 = objc_opt_class();
-  v12 = WFEnforceClass_1501(v10, v11);
+  v12 = WFEnforceClass_1501(representationCopy, v11);
 
   v13 = [v12 objectForKey:@"Value"];
   v14 = objc_opt_class();
@@ -107,20 +107,20 @@
     v23 = 3221225472;
     v24 = __90__WFDictionaryParameterState_initWithSerializedRepresentation_variableProvider_parameter___block_invoke;
     v25 = &unk_1E837DBB0;
-    v26 = v8;
-    v27 = v9;
+    v26 = providerCopy;
+    v27 = parameterCopy;
     v19 = [v18 if_compactMap:&v22];
     self = [(WFDictionaryParameterState *)self initWithKeyValuePairs:v19, v22, v23, v24, v25];
 
-    v20 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v20 = 0;
+    selfCopy = 0;
   }
 
-  return v20;
+  return selfCopy;
 }
 
 WFDictionaryParameterKeyValuePair *__90__WFDictionaryParameterState_initWithSerializedRepresentation_variableProvider_parameter___block_invoke(uint64_t a1, void *a2)
@@ -131,14 +131,14 @@ WFDictionaryParameterKeyValuePair *__90__WFDictionaryParameterState_initWithSeri
   return v4;
 }
 
-- (WFDictionaryParameterState)initWithKeyValuePairs:(id)a3 identity:(id)a4
+- (WFDictionaryParameterState)initWithKeyValuePairs:(id)pairs identity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  pairsCopy = pairs;
+  identityCopy = identity;
+  v9 = identityCopy;
+  if (pairsCopy)
   {
-    if (v8)
+    if (identityCopy)
     {
       goto LABEL_3;
     }
@@ -146,8 +146,8 @@ WFDictionaryParameterKeyValuePair *__90__WFDictionaryParameterState_initWithSeri
 
   else
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"WFDictionaryParameterState.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"keyValuePairs"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDictionaryParameterState.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"keyValuePairs"}];
 
     if (v9)
     {
@@ -155,8 +155,8 @@ WFDictionaryParameterKeyValuePair *__90__WFDictionaryParameterState_initWithSeri
     }
   }
 
-  v16 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFDictionaryParameterState.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFDictionaryParameterState.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"identity"}];
 
 LABEL_3:
   v17.receiver = self;
@@ -164,33 +164,33 @@ LABEL_3:
   v10 = [(WFDictionaryParameterState *)&v17 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [pairsCopy copy];
     keyValuePairs = v10->_keyValuePairs;
     v10->_keyValuePairs = v11;
 
-    objc_storeStrong(&v10->_identity, a4);
+    objc_storeStrong(&v10->_identity, identity);
     v13 = v10;
   }
 
   return v10;
 }
 
-- (WFDictionaryParameterState)initWithKeyValuePairs:(id)a3
+- (WFDictionaryParameterState)initWithKeyValuePairs:(id)pairs
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [(WFDictionaryParameterState *)self initWithKeyValuePairs:v5 identity:v6];
+  pairsCopy = pairs;
+  uUID = [v4 UUID];
+  v7 = [(WFDictionaryParameterState *)self initWithKeyValuePairs:pairsCopy identity:uUID];
 
   return v7;
 }
 
-+ (void)processValues:(id)a3 context:(id)a4 processingClass:(Class)a5 userInputRequiredHandler:(id)a6 valueHandler:(id)a7
++ (void)processValues:(id)values context:(id)context processingClass:(Class)class userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
+  valuesCopy = values;
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
   v14 = objc_opt_new();
   v15 = objc_opt_new();
   v16 = objc_opt_new();
@@ -213,25 +213,25 @@ LABEL_3:
   v37 = v16;
   v39 = v43;
   v40 = v41;
-  v17 = v11;
+  v17 = contextCopy;
   v38 = v17;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __119__WFDictionaryParameterState_Convenience__processValues_context_processingClass_userInputRequiredHandler_valueHandler___block_invoke_4;
   v25[3] = &unk_1E8375620;
   v31 = v43;
-  v18 = v12;
+  v18 = handlerCopy;
   v29 = v18;
   v32 = v41;
-  v19 = v10;
-  v33 = a5;
+  v19 = valuesCopy;
+  classCopy = class;
   v20 = v37;
   v26 = v20;
   v21 = v36;
   v27 = v21;
   v22 = v35;
   v28 = v22;
-  v23 = v13;
+  v23 = valueHandlerCopy;
   v30 = v23;
   [v19 if_enumerateAsynchronouslyInSequence:v34 completionHandler:v25];
 

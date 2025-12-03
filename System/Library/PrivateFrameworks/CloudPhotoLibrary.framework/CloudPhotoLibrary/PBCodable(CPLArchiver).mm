@@ -18,14 +18,14 @@
       v11 = __CPLGenericOSLogDomain();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v12 = [v4 archiverContext];
+        archiverContext = [v4 archiverContext];
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
         v15 = v4[2];
         v16 = objc_opt_class();
         v17 = v4[2];
         *buf = 138413058;
-        v30 = v12;
+        v30 = archiverContext;
         v31 = 2112;
         v32 = v14;
         v33 = 2112;
@@ -47,7 +47,7 @@
 
   v6 = objc_opt_class();
   v7 = [(CPLArchiver *)v4 _decodeKey:v6 class:v4[2] inDictionary:?];
-  v8 = [a1 initWithData:v7];
+  v8 = [self initWithData:v7];
 
   v9 = *MEMORY[0x1E69E9840];
   return v8;
@@ -58,10 +58,10 @@
   v4 = MEMORY[0x1E695DF90];
   v5 = a3;
   v6 = objc_alloc_init(v4);
-  v7 = [a1 data];
+  data = [self data];
   v8 = [(CPLArchiver *)v5 _encodeKey:?];
 
-  [v6 setObject:v7 forKeyedSubscript:v8];
+  [v6 setObject:data forKeyedSubscript:v8];
 
   return v6;
 }

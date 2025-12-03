@@ -10,13 +10,13 @@
   v8 = a4;
   if (!v7)
   {
-    [FBScene(PaperBoard) pb_update:a2 withCompletion:a1];
+    [FBScene(PaperBoard) pb_update:a2 withCompletion:self];
   }
 
   v9 = v8;
-  if ([a1 isActive])
+  if ([self isActive])
   {
-    [a1 performUpdate:v7 withCompletion:v9];
+    [self performUpdate:v7 withCompletion:v9];
   }
 
   else
@@ -26,7 +26,7 @@
     v12[2] = __48__FBScene_PaperBoard__pb_update_withCompletion___block_invoke;
     v12[3] = &unk_278362808;
     v13 = v7;
-    [a1 updateSettingsWithBlock:v12];
+    [self updateSettingsWithBlock:v12];
     if (v9)
     {
       v10[0] = MEMORY[0x277D85DD0];

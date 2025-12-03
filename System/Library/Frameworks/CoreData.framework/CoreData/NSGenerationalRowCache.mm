@@ -1,9 +1,9 @@
 @interface NSGenerationalRowCache
-- (NSGenerationalRowCache)initWithStore:(id)a3;
-- (id)rowCacheForGeneration:(uint64_t)a1;
+- (NSGenerationalRowCache)initWithStore:(id)store;
+- (id)rowCacheForGeneration:(uint64_t)generation;
 - (void)dealloc;
 - (void)forgetAllGenerationalExternalData;
-- (void)removeRowCacheForGenerationWithIdentifier:(uint64_t)a1;
+- (void)removeRowCacheForGenerationWithIdentifier:(uint64_t)identifier;
 @end
 
 @implementation NSGenerationalRowCache
@@ -18,7 +18,7 @@
   [(NSGenerationalRowCache *)&v3 dealloc];
 }
 
-- (NSGenerationalRowCache)initWithStore:(id)a3
+- (NSGenerationalRowCache)initWithStore:(id)store
 {
   v7.receiver = self;
   v7.super_class = NSGenerationalRowCache;
@@ -26,7 +26,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_store = a3;
+    v4->_store = store;
     v4->_primaryCache = [objc_alloc(objc_msgSend(objc_opt_class() "rowCacheClass"))];
     v5->_rowCachesByGenerationToken = objc_alloc_init(MEMORY[0x1E695DF90]);
     v5->_lock._os_unfair_lock_opaque = 0;
@@ -35,10 +35,10 @@
   return v5;
 }
 
-- (id)rowCacheForGeneration:(uint64_t)a1
+- (id)rowCacheForGeneration:(uint64_t)generation
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!generation)
   {
     goto LABEL_10;
   }
@@ -52,7 +52,7 @@
       if (v5)
       {
         os_unfair_lock_lock_with_options();
-        v6 = [*(a1 + 24) objectForKey:v5];
+        v6 = [*(generation + 24) objectForKey:v5];
         v7 = v6;
         if (v6)
         {
@@ -61,12 +61,12 @@
 
         else
         {
-          v12 = *(a1 + 8);
+          v12 = *(generation + 8);
           v7 = [objc_alloc(objc_msgSend(objc_opt_class() "rowCacheClass"))];
-          [*(a1 + 24) setObject:v7 forKey:v5];
+          [*(generation + 24) setObject:v7 forKey:v5];
         }
 
-        os_unfair_lock_unlock((a1 + 32));
+        os_unfair_lock_unlock((generation + 32));
         v13 = v7;
         goto LABEL_13;
       }
@@ -79,27 +79,27 @@ LABEL_13:
     return v7;
   }
 
-  v9 = *(a1 + 16);
+  v9 = *(generation + 16);
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (void)removeRowCacheForGenerationWithIdentifier:(uint64_t)a1
+- (void)removeRowCacheForGenerationWithIdentifier:(uint64_t)identifier
 {
-  if (a1 && a2)
+  if (identifier && a2)
   {
     os_unfair_lock_lock_with_options();
-    [*(a1 + 24) removeObjectForKey:a2];
+    [*(identifier + 24) removeObjectForKey:a2];
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((identifier + 32));
   }
 }
 
 - (void)forgetAllGenerationalExternalData
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     os_unfair_lock_lock_with_options();
     v2 = objc_autoreleasePoolPush();
@@ -107,8 +107,8 @@ LABEL_13:
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [*(a1 + 24) allValues];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+    allValues = [*(self + 24) allValues];
+    v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
     if (v4)
     {
       v5 = *v9;
@@ -119,21 +119,21 @@ LABEL_13:
         {
           if (*v9 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           [(NSPersistentStoreCache *)*(*(&v8 + 1) + 8 * v6++) forgetAllExternalData];
         }
 
         while (v4 != v6);
-        v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+        v4 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       }
 
       while (v4);
     }
 
     objc_autoreleasePoolPop(v2);
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 
   v7 = *MEMORY[0x1E69E9840];

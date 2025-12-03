@@ -1,15 +1,15 @@
 @interface FTTranscriptionUtilities
-+ (id)parseWebVTTSampleBuffer:(opaqueCMSampleBuffer *)a3;
++ (id)parseWebVTTSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 @end
 
 @implementation FTTranscriptionUtilities
 
-+ (id)parseWebVTTSampleBuffer:(opaqueCMSampleBuffer *)a3
++ (id)parseWebVTTSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v22 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(FTWebVTTTranscriptionResult);
   [(FTWebVTTTranscriptionResult *)v4 setIsEmptyCueOut:0];
-  DataBuffer = CMSampleBufferGetDataBuffer(a3);
+  DataBuffer = CMSampleBufferGetDataBuffer(buffer);
   if (DataBuffer)
   {
     v6 = DataBuffer;

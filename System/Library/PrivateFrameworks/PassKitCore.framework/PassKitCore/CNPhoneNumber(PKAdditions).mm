@@ -6,14 +6,14 @@
 
 - (id)pkFormattedStringValue
 {
-  v2 = [a1 countryCode];
-  v3 = [MEMORY[0x1E695CF50] defaultCountryCode];
-  v4 = [v2 isEqualToString:v3];
+  countryCode = [self countryCode];
+  defaultCountryCode = [MEMORY[0x1E695CF50] defaultCountryCode];
+  v4 = [countryCode isEqualToString:defaultCountryCode];
 
   if (v4)
   {
-    v5 = [a1 formattedStringValue];
-    if (v5)
+    formattedStringValue = [self formattedStringValue];
+    if (formattedStringValue)
     {
       goto LABEL_6;
     }
@@ -21,17 +21,17 @@
 
   else
   {
-    v5 = [a1 formattedInternationalStringValue];
-    if (v5)
+    formattedStringValue = [self formattedInternationalStringValue];
+    if (formattedStringValue)
     {
       goto LABEL_6;
     }
   }
 
-  v5 = [a1 stringValue];
+  formattedStringValue = [self stringValue];
 LABEL_6:
 
-  return v5;
+  return formattedStringValue;
 }
 
 @end

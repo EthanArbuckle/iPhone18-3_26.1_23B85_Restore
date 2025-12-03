@@ -1,6 +1,6 @@
 @interface ModalCardPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC7NewsUI231ModalCardPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_TtC7NewsUI231ModalCardPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)dismissModal;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
@@ -8,16 +8,16 @@
 
 @implementation ModalCardPresentationController
 
-- (_TtC7NewsUI231ModalCardPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC7NewsUI231ModalCardPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_218C051FC(v5, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  return sub_218C051FC(controllerCopy, viewController);
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_218C053D4();
   v5 = v4;
   v7 = v6;
@@ -36,21 +36,21 @@
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_218C055B0();
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_218C05B60();
 }
 
 - (void)dismissModal
 {
-  v3 = self;
-  v2 = [(ModalCardPresentationController *)v3 presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  selfCopy = self;
+  presentingViewController = [(ModalCardPresentationController *)selfCopy presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

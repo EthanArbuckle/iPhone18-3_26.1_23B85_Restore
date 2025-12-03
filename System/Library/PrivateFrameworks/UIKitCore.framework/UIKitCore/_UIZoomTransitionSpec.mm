@@ -1,50 +1,50 @@
 @interface _UIZoomTransitionSpec
 + (id)settingsControllerModule;
-- (CATransform3D)recededContentTransformFor:(SEL)a3;
+- (CATransform3D)recededContentTransformFor:(SEL)for;
 - (CGSize)platterShadowOffset;
-- (void)setCancelInteractive:(id)a3;
+- (void)setCancelInteractive:(id)interactive;
 - (void)setDefaultValues;
-- (void)setZoomIn:(id)a3;
-- (void)setZoomInShowcase:(id)a3;
-- (void)setZoomOut:(id)a3;
-- (void)setZoomOutInteractive:(id)a3;
+- (void)setZoomIn:(id)in;
+- (void)setZoomInShowcase:(id)showcase;
+- (void)setZoomOut:(id)out;
+- (void)setZoomOutInteractive:(id)interactive;
 @end
 
 @implementation _UIZoomTransitionSpec
 
-- (void)setZoomIn:(id)a3
+- (void)setZoomIn:(id)in
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomIn);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomIn) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomIn) = in;
+  inCopy = in;
 }
 
-- (void)setZoomInShowcase:(id)a3
+- (void)setZoomInShowcase:(id)showcase
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomInShowcase);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomInShowcase) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomInShowcase) = showcase;
+  showcaseCopy = showcase;
 }
 
-- (void)setZoomOut:(id)a3
+- (void)setZoomOut:(id)out
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomOut);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomOut) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomOut) = out;
+  outCopy = out;
 }
 
-- (void)setZoomOutInteractive:(id)a3
+- (void)setZoomOutInteractive:(id)interactive
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomOutInteractive);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomOutInteractive) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_zoomOutInteractive) = interactive;
+  interactiveCopy = interactive;
 }
 
-- (void)setCancelInteractive:(id)a3
+- (void)setCancelInteractive:(id)interactive
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_cancelInteractive);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_cancelInteractive) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_cancelInteractive) = interactive;
+  interactiveCopy = interactive;
 }
 
 - (CGSize)platterShadowOffset
@@ -56,7 +56,7 @@
   return result;
 }
 
-- (CATransform3D)recededContentTransformFor:(SEL)a3
+- (CATransform3D)recededContentTransformFor:(SEL)for
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -64,7 +64,7 @@
   x = a4.origin.x;
   v9 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_recededBackgroundScaleDownPoints);
   v10 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit21_UIZoomTransitionSpec_recededBackgroundMinScale);
-  v11 = self;
+  selfCopy = self;
   v24.origin.x = x;
   v24.origin.y = y;
   v24.size.width = width;
@@ -103,7 +103,7 @@
 
 - (void)setDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   sub_188FDF76C();
 }
 

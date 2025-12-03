@@ -17,8 +17,8 @@
 LABEL_7:
     v15 = objc_alloc(MEMORY[0x277D7A158]);
     v16 = [objc_alloc(MEMORY[0x277D79E20]) initWithSystemColor:2];
-    v17 = [MEMORY[0x277D79FB8] clearBackground];
-    v18 = [v15 initWithSymbolName:@"xmark" symbolColor:v16 background:v17];
+    clearBackground = [MEMORY[0x277D79FB8] clearBackground];
+    v18 = [v15 initWithSymbolName:@"xmark" symbolColor:v16 background:clearBackground];
 
     v19 = WFLocalizedString(v11);
     v20 = objc_alloc(MEMORY[0x277D7D790]);
@@ -32,9 +32,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v12 = [a1 defaultSerializedRepresentation];
-  v13 = v12;
-  if (v9 && !v12 || (v14 = [a1 allowsMultipleValues], v13, v14))
+  defaultSerializedRepresentation = [self defaultSerializedRepresentation];
+  v13 = defaultSerializedRepresentation;
+  if (v9 && !defaultSerializedRepresentation || (v14 = [self allowsMultipleValues], v13, v14))
   {
     v11 = @"Clear";
     goto LABEL_7;
@@ -65,17 +65,17 @@ LABEL_8:
 
     if ([v9 isEqualToString:*MEMORY[0x277D7D070]])
     {
-      v13 = [v10 availableVariableNames];
+      availableVariableNames = [v10 availableVariableNames];
 LABEL_16:
-      v14 = v13;
-      v12 = [v13 count] != 0;
+      v14 = availableVariableNames;
+      v12 = [availableVariableNames count] != 0;
 
       goto LABEL_18;
     }
 
     if ([v9 isEqualToString:*MEMORY[0x277D7D068]])
     {
-      v13 = [v10 workflowInputClasses];
+      availableVariableNames = [v10 workflowInputClasses];
       goto LABEL_16;
     }
 
@@ -84,10 +84,10 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v11 = [v10 hasAvailableActionOutputVariables];
+  hasAvailableActionOutputVariables = [v10 hasAvailableActionOutputVariables];
   if (a6)
   {
-    v12 = v11;
+    v12 = hasAvailableActionOutputVariables;
   }
 
   else
@@ -108,30 +108,30 @@ LABEL_18:
   v108 = a5;
   v12 = a6;
   v105 = a7;
-  if ([objc_msgSend(a1 "stateClass")])
+  if ([objc_msgSend(self "stateClass")])
   {
-    v13 = [a1 supportedVariableTypes];
+    supportedVariableTypes = [self supportedVariableTypes];
   }
 
   else
   {
-    v13 = 0;
+    supportedVariableTypes = 0;
   }
 
-  v88 = [v108 availableVariableNames];
-  v14 = [MEMORY[0x277CBEB18] array];
-  v15 = [MEMORY[0x277CBEB18] array];
-  v86 = v13;
+  availableVariableNames = [v108 availableVariableNames];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  v86 = supportedVariableTypes;
   v87 = v12;
-  v85 = v14;
-  v106 = v15;
-  v97 = a1;
-  if ([a1 shouldShowVariable:*MEMORY[0x277D7D038] allowedVariableTypes:v13 variableProvider:v108 variableUIDelegate:v12])
+  v85 = array;
+  v106 = array2;
+  selfCopy = self;
+  if ([self shouldShowVariable:*MEMORY[0x277D7D038] allowedVariableTypes:supportedVariableTypes variableProvider:v108 variableUIDelegate:v12])
   {
     v16 = objc_alloc(MEMORY[0x277D7A158]);
     v17 = [MEMORY[0x277D79E20] colorWithSystemColor:1];
-    v18 = [MEMORY[0x277D79FB8] clearBackground];
-    v19 = [v16 initWithSymbolName:@"wand.and.stars" symbolColor:v17 background:v18];
+    clearBackground = [MEMORY[0x277D79FB8] clearBackground];
+    v19 = [v16 initWithSymbolName:@"wand.and.stars" symbolColor:v17 background:clearBackground];
 
     v20 = WFLocalizedString(@"Select Variable");
     v21 = objc_alloc(MEMORY[0x277D7D790]);
@@ -139,7 +139,7 @@ LABEL_18:
     v129[1] = 3221225472;
     v129[2] = __142__WFParameter_WFVariableMenuProvider__variableMenuElementsWithVariable_parameterState_variableProvider_variableUIDelegate_setVariableHandler___block_invoke;
     v129[3] = &unk_279EDBEF8;
-    v130 = v13;
+    v130 = supportedVariableTypes;
     v131 = v12;
     v22 = v108;
     v132 = v22;
@@ -148,15 +148,15 @@ LABEL_18:
     v100 = v20;
     v102 = v19;
     v98 = [v21 initWithTitle:v20 subtitle:0 icon:v19 handler:v129];
-    [v14 addObject:?];
+    [array addObject:?];
     v24 = objc_alloc_init(MEMORY[0x277D7CA40]);
     [v24 setVariableProvider:v22];
-    [v24 setUserDefinedVariableNames:v88];
-    v25 = [v22 availableOutputActions];
-    [v24 setOutputActions:v25];
+    [v24 setUserDefinedVariableNames:availableVariableNames];
+    availableOutputActions = [v22 availableOutputActions];
+    [v24 setOutputActions:availableOutputActions];
 
-    v26 = [v84 containedVariables];
-    [v24 setCurrentVariables:v26];
+    containedVariables = [v84 containedVariables];
+    [v24 setCurrentVariables:containedVariables];
 
     v127 = 0u;
     v128 = 0u;
@@ -197,8 +197,8 @@ LABEL_18:
           }
 
           v36 = objc_alloc(MEMORY[0x277D7D790]);
-          v37 = [v34 name];
-          v38 = [v34 icon];
+          name = [v34 name];
+          icon = [v34 icon];
           v123[0] = MEMORY[0x277D85DD0];
           v123[1] = 3221225472;
           v123[2] = __142__WFParameter_WFVariableMenuProvider__variableMenuElementsWithVariable_parameterState_variableProvider_variableUIDelegate_setVariableHandler___block_invoke_3;
@@ -206,9 +206,9 @@ LABEL_18:
           v39 = v23;
           v123[4] = v34;
           v124 = v39;
-          v40 = [v36 initWithTitle:v37 subtitle:0 icon:v38 state:v35 handler:v123];
+          v40 = [v36 initWithTitle:name subtitle:0 icon:icon state:v35 handler:v123];
 
-          v15 = v106;
+          array2 = v106;
           [v106 addObject:v40];
         }
 
@@ -219,8 +219,8 @@ LABEL_18:
     }
 
     v12 = v87;
-    v14 = v85;
-    a1 = v97;
+    array = v85;
+    self = selfCopy;
   }
 
   v41 = *MEMORY[0x277D7D048];
@@ -263,7 +263,7 @@ LABEL_18:
         }
 
         v48 = *(*(&v119 + 1) + 8 * v47);
-        if ([a1 shouldShowVariable:v48 allowedVariableTypes:v13 variableProvider:v108 variableUIDelegate:v12])
+        if ([self shouldShowVariable:v48 allowedVariableTypes:supportedVariableTypes variableProvider:v108 variableUIDelegate:v12])
         {
           if (v48 == v99 || v48 == v94 || v48 == v93 || v48 == v92 || v48 == v91)
           {
@@ -285,7 +285,7 @@ LABEL_18:
               v118 = 0u;
               v115 = 0u;
               v116 = 0u;
-              v49 = v88;
+              v49 = availableVariableNames;
               v50 = [v49 countByEnumeratingWithState:&v115 objects:v134 count:16];
               if (v50)
               {
@@ -306,13 +306,13 @@ LABEL_18:
                     v56 = 0;
                     if (objc_opt_isKindOfClass())
                     {
-                      v57 = [v44 name];
-                      v56 = [v57 isEqualToString:v54];
+                      name2 = [v44 name];
+                      v56 = [name2 isEqualToString:v54];
                     }
 
                     v58 = objc_alloc(MEMORY[0x277D7D790]);
-                    v59 = [v55 name];
-                    v60 = [v55 icon];
+                    name3 = [v55 name];
+                    icon2 = [v55 icon];
                     v112[0] = MEMORY[0x277D85DD0];
                     v112[1] = 3221225472;
                     v112[2] = __142__WFParameter_WFVariableMenuProvider__variableMenuElementsWithVariable_parameterState_variableProvider_variableUIDelegate_setVariableHandler___block_invoke_4;
@@ -321,10 +321,10 @@ LABEL_18:
                     v113 = v55;
                     v114 = v61;
                     v62 = v55;
-                    v63 = [v58 initWithTitle:v59 subtitle:0 icon:v60 state:v56 handler:v112];
+                    v63 = [v58 initWithTitle:name3 subtitle:0 icon:icon2 state:v56 handler:v112];
 
                     v44 = v107;
-                    v15 = v106;
+                    array2 = v106;
                     [v106 addObject:v63];
                   }
 
@@ -332,12 +332,12 @@ LABEL_18:
                 }
 
                 while (v51);
-                v13 = v86;
+                supportedVariableTypes = v86;
                 v12 = v87;
-                v14 = v85;
+                array = v85;
 LABEL_43:
                 v46 = v96;
-                a1 = v97;
+                self = selfCopy;
               }
 
               v45 = v101;
@@ -348,9 +348,9 @@ LABEL_43:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v71 = [v44 name];
-              v72 = [v64 name];
-              isKindOfClass = [v71 isEqualToString:v72];
+              name4 = [v44 name];
+              name5 = [v64 name];
+              isKindOfClass = [name4 isEqualToString:name5];
             }
 
             else
@@ -360,8 +360,8 @@ LABEL_43:
           }
 
           v66 = objc_alloc(MEMORY[0x277D7D790]);
-          v67 = [v64 name];
-          v68 = [v64 icon];
+          name6 = [v64 name];
+          icon3 = [v64 icon];
           v109[0] = MEMORY[0x277D85DD0];
           v109[1] = 3221225472;
           v109[2] = __142__WFParameter_WFVariableMenuProvider__variableMenuElementsWithVariable_parameterState_variableProvider_variableUIDelegate_setVariableHandler___block_invoke_5;
@@ -370,9 +370,9 @@ LABEL_43:
           v110 = v64;
           v111 = v69;
           v49 = v64;
-          v70 = [v66 initWithTitle:v67 subtitle:0 icon:v68 state:isKindOfClass & 1 handler:v109];
+          v70 = [v66 initWithTitle:name6 subtitle:0 icon:icon3 state:isKindOfClass & 1 handler:v109];
 
-          [v14 addObject:v70];
+          [array addObject:v70];
           v44 = v107;
           goto LABEL_43;
         }
@@ -389,32 +389,32 @@ LABEL_45:
     while (v73);
   }
 
-  v74 = [MEMORY[0x277CBEB18] array];
-  if ([v14 count])
+  array3 = [MEMORY[0x277CBEB18] array];
+  if ([array count])
   {
-    v75 = [objc_alloc(MEMORY[0x277D7D7D0]) initWithMenuElements:v14];
-    [v74 addObject:v75];
+    v75 = [objc_alloc(MEMORY[0x277D7D7D0]) initWithMenuElements:array];
+    [array3 addObject:v75];
   }
 
-  if ([v15 count])
+  if ([array2 count])
   {
-    v76 = [objc_alloc(MEMORY[0x277D7D7D0]) initWithMenuElements:v15];
+    v76 = [objc_alloc(MEMORY[0x277D7D7D0]) initWithMenuElements:array2];
     [v76 setStyle:2];
     v77 = @"Variables…";
     v78 = @"Variables… (user defined + suggested)";
     v79 = WFCurrentBundle();
     v80 = [v79 localizedStringForKey:@"Variables… (user defined + suggested)" value:@"Variables…" table:0];
 
-    v15 = v106;
+    array2 = v106;
     [v76 setTitle:v80];
 
     [v76 setOnlyDisplayTitleWhenCollapsed:1];
-    [v74 addObject:v76];
+    [array3 addObject:v76];
   }
 
-  if ([v74 count])
+  if ([array3 count])
   {
-    v81 = v74;
+    v81 = array3;
   }
 
   else

@@ -1,22 +1,22 @@
 @interface TSAShortcutController
-+ (id)localizedStringForShortcut:(id)a3;
++ (id)localizedStringForShortcut:(id)shortcut;
 - (TSADocumentRoot)documentRoot;
-- (TSAShortcutController)initWithDocumentRoot:(id)a3;
-- (id)shortcutForStyle:(id)a3;
-- (id)styleForShortcut:(id)a3;
+- (TSAShortcutController)initWithDocumentRoot:(id)root;
+- (id)shortcutForStyle:(id)style;
+- (id)styleForShortcut:(id)shortcut;
 - (void)dealloc;
 - (void)documentWillUnload;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
 - (void)removeStylesNotInTheme;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setStyle:(id)a3 forShortcut:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setStyle:(id)style forShortcut:(id)shortcut;
 @end
 
 @implementation TSAShortcutController
 
-+ (id)localizedStringForShortcut:(id)a3
++ (id)localizedStringForShortcut:(id)shortcut
 {
   v4 = MEMORY[0x277D81150];
   v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "+[TSAShortcutController localizedStringForShortcut:]", v3);
@@ -27,10 +27,10 @@
   return 0;
 }
 
-- (TSAShortcutController)initWithDocumentRoot:(id)a3
+- (TSAShortcutController)initWithDocumentRoot:(id)root
 {
-  v7 = a3;
-  if (!v7)
+  rootCopy = root;
+  if (!rootCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSAShortcutController initWithDocumentRoot:]", v6);
@@ -40,14 +40,14 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15, v16);
   }
 
-  v17 = objc_msgSend_context(v7, v4, v5, v6);
+  v17 = objc_msgSend_context(rootCopy, v4, v5, v6);
   v20.receiver = self;
   v20.super_class = TSAShortcutController;
   v18 = [(TSAShortcutController *)&v20 initWithContext:v17];
 
   if (v18)
   {
-    objc_storeWeak(&v18->_documentRoot, v7);
+    objc_storeWeak(&v18->_documentRoot, rootCopy);
   }
 
   return v18;
@@ -71,12 +71,12 @@
   self->_styleToShortcutDictionary = 0;
 }
 
-- (id)shortcutForStyle:(id)a3
+- (id)shortcutForStyle:(id)style
 {
-  v6 = a3;
-  if (v6)
+  styleCopy = style;
+  if (styleCopy)
   {
-    v7 = objc_msgSend_objectForKey_(self->_styleToShortcutDictionary, v4, v6, v5);
+    v7 = objc_msgSend_objectForKey_(self->_styleToShortcutDictionary, v4, styleCopy, v5);
   }
 
   else
@@ -93,10 +93,10 @@
   return v7;
 }
 
-- (id)styleForShortcut:(id)a3
+- (id)styleForShortcut:(id)shortcut
 {
-  v4 = a3;
-  if (!objc_msgSend_length(v4, v5, v6, v7))
+  shortcutCopy = shortcut;
+  if (!objc_msgSend_length(shortcutCopy, v5, v6, v7))
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSAShortcutController styleForShortcut:]", v10);
@@ -106,9 +106,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19);
   }
 
-  if (objc_msgSend_length(v4, v8, v9, v10))
+  if (objc_msgSend_length(shortcutCopy, v8, v9, v10))
   {
-    v22 = objc_msgSend_objectForKey_(self->_shortcutToStyleDictionary, v20, v4, v21);
+    v22 = objc_msgSend_objectForKey_(self->_shortcutToStyleDictionary, v20, shortcutCopy, v21);
   }
 
   else
@@ -119,15 +119,15 @@
   return v22;
 }
 
-- (void)setStyle:(id)a3 forShortcut:(id)a4
+- (void)setStyle:(id)style forShortcut:(id)shortcut
 {
-  v79 = a3;
-  v9 = a4;
-  if (v79)
+  styleCopy = style;
+  shortcutCopy = shortcut;
+  if (styleCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
     v14 = objc_msgSend_context(WeakRetained, v11, v12, v13);
-    v18 = objc_msgSend_context(v79, v15, v16, v17);
+    v18 = objc_msgSend_context(styleCopy, v15, v16, v17);
     isEqual = objc_msgSend_isEqual_(v14, v19, v18, v20);
 
     if ((isEqual & 1) == 0)
@@ -164,29 +164,29 @@
   }
 
   objc_msgSend_willModify(self, v6, v7, v8);
-  if (objc_msgSend_length(v9, v34, v35, v36))
+  if (objc_msgSend_length(shortcutCopy, v34, v35, v36))
   {
-    v41 = objc_msgSend_styleForShortcut_(self, v37, v9, v38);
+    v41 = objc_msgSend_styleForShortcut_(self, v37, shortcutCopy, v38);
     if (v41)
     {
       objc_msgSend_removeObjectForKey_(self->_styleToShortcutDictionary, v39, v41, v40);
     }
 
-    objc_msgSend_removeObjectForKey_(self->_shortcutToStyleDictionary, v39, v9, v40);
+    objc_msgSend_removeObjectForKey_(self->_shortcutToStyleDictionary, v39, shortcutCopy, v40);
   }
 
-  v42 = v79;
-  if (v79)
+  v42 = styleCopy;
+  if (styleCopy)
   {
-    v45 = objc_msgSend_shortcutForStyle_(self, v37, v79, v38);
+    v45 = objc_msgSend_shortcutForStyle_(self, v37, styleCopy, v38);
     if (v45)
     {
       objc_msgSend_removeObjectForKey_(self->_shortcutToStyleDictionary, v43, v45, v44);
     }
 
-    objc_msgSend_removeObjectForKey_(self->_styleToShortcutDictionary, v43, v79, v44);
+    objc_msgSend_removeObjectForKey_(self->_styleToShortcutDictionary, v43, styleCopy, v44);
 
-    if (objc_msgSend_length(v9, v46, v47, v48))
+    if (objc_msgSend_length(shortcutCopy, v46, v47, v48))
     {
       if (!self->_shortcutToStyleDictionary)
       {
@@ -202,8 +202,8 @@
         self->_styleToShortcutDictionary = v51;
       }
 
-      objc_msgSend_setObject_forKey_(self->_shortcutToStyleDictionary, v37, v79, v9);
-      objc_msgSend_setObject_forKey_(self->_styleToShortcutDictionary, v53, v9, v79);
+      objc_msgSend_setObject_forKey_(self->_shortcutToStyleDictionary, v37, styleCopy, shortcutCopy);
+      objc_msgSend_setObject_forKey_(self->_styleToShortcutDictionary, v53, shortcutCopy, styleCopy);
     }
   }
 
@@ -266,18 +266,18 @@
   }
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v8 = objc_alloc_init(MEMORY[0x277D81308]);
-  v9 = *(a3 + 6);
+  v9 = *(archive + 6);
   if (v9 >= 1)
   {
     v10 = 8;
     v11 = MEMORY[0x277D80A18];
     do
     {
-      v12 = *(*(a3 + 4) + v10);
+      v12 = *(*(archive + 4) + v10);
       v13 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v6, *(v12 + 24) & 0xFFFFFFFFFFFFFFFELL, v7);
       v14 = *(v12 + 32);
       v25[0] = MEMORY[0x277D85DD0];
@@ -287,7 +287,7 @@
       v15 = v13;
       v26 = v15;
       v27 = v8;
-      v16 = v5;
+      v16 = unarchiverCopy;
       v18 = objc_opt_class();
       if (v14)
       {
@@ -313,39 +313,39 @@
   v23[4] = self;
   v19 = v8;
   v24 = v19;
-  objc_msgSend_addFinalizeHandler_(v5, v20, v23, v21);
+  objc_msgSend_addFinalizeHandler_(unarchiverCopy, v20, v23, v21);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v8 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v6 = objc_msgSend_messageWithDescriptor_(v8, v4, off_2812F3500[8], v5);
+  v6 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F3500[8], v5);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v7, v6, v8);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v7, v6, unarchiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   shortcutToStyleDictionary = self->_shortcutToStyleDictionary;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2760B72D4;
   v11[3] = &unk_27A6B0360;
-  v12 = v6;
-  v13 = a3;
-  v8 = v6;
+  v12 = archiverCopy;
+  archiveCopy = archive;
+  v8 = archiverCopy;
   objc_msgSend_enumerateKeysAndObjectsUsingBlock_(shortcutToStyleDictionary, v9, v11, v10);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_2760B75AC, off_2812F3500[8]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2760B75AC, off_2812F3500[8]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 - (TSADocumentRoot)documentRoot

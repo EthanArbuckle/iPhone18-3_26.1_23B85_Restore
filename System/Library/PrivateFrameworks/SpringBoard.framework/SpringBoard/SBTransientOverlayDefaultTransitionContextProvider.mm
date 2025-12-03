@@ -1,12 +1,12 @@
 @interface SBTransientOverlayDefaultTransitionContextProvider
-- (void)completeTransition:(BOOL)a3;
+- (void)completeTransition:(BOOL)transition;
 - (void)performAlongsideTransitions;
-- (void)transitionAlongsideUsingBlock:(id)a3 completion:(id)a4;
+- (void)transitionAlongsideUsingBlock:(id)block completion:(id)completion;
 @end
 
 @implementation SBTransientOverlayDefaultTransitionContextProvider
 
-- (void)completeTransition:(BOOL)a3
+- (void)completeTransition:(BOOL)transition
 {
   v18 = *MEMORY[0x277D85DE8];
   if (!self->_didPerformAlongsideTransitions)
@@ -20,7 +20,7 @@
   }
 
   self->_isCompleted = 1;
-  self->_transitionCompletedSuccessfully = a3;
+  self->_transitionCompletedSuccessfully = transition;
   v6 = [(NSMutableArray *)self->_transitionCompletionBlocks copy];
   transitionCompletionBlocks = self->_transitionCompletionBlocks;
   self->_transitionCompletionBlocks = 0;
@@ -56,24 +56,24 @@
 
 - (void)performAlongsideTransitions
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v4 = NSStringFromSelector(a1);
-  [v5 handleFailureInMethod:a1 object:a2 file:@"SBTransientOverlayDefaultTransitionContextProvider.m" lineNumber:38 description:{@"%@ may only be called once.", v4}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v4 = NSStringFromSelector(self);
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBTransientOverlayDefaultTransitionContextProvider.m" lineNumber:38 description:{@"%@ may only be called once.", v4}];
 }
 
-- (void)transitionAlongsideUsingBlock:(id)a3 completion:(id)a4
+- (void)transitionAlongsideUsingBlock:(id)block completion:(id)completion
 {
-  v15 = a3;
-  v6 = a4;
+  blockCopy = block;
+  completionCopy = completion;
   if (self->_didPerformAlongsideTransitions)
   {
-    if (v15)
+    if (blockCopy)
     {
-      v15[2](v15);
+      blockCopy[2](blockCopy);
     }
   }
 
-  else if (v15)
+  else if (blockCopy)
   {
     transitionBlocks = self->_transitionBlocks;
     if (!transitionBlocks)
@@ -85,19 +85,19 @@
       transitionBlocks = self->_transitionBlocks;
     }
 
-    v10 = MEMORY[0x223D6F7F0](v15);
+    v10 = MEMORY[0x223D6F7F0](blockCopy);
     [(NSMutableArray *)transitionBlocks addObject:v10];
   }
 
   if (self->_isCompleted)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6, self->_transitionCompletedSuccessfully);
+      completionCopy[2](completionCopy, self->_transitionCompletedSuccessfully);
     }
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
     transitionCompletionBlocks = self->_transitionCompletionBlocks;
     if (!transitionCompletionBlocks)
@@ -109,7 +109,7 @@
       transitionCompletionBlocks = self->_transitionCompletionBlocks;
     }
 
-    v14 = MEMORY[0x223D6F7F0](v6);
+    v14 = MEMORY[0x223D6F7F0](completionCopy);
     [(NSMutableArray *)transitionCompletionBlocks addObject:v14];
   }
 }

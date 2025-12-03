@@ -1,31 +1,31 @@
 @interface PKPaymentSetupDisambiguationViewController
-- (PKPaymentSetupDisambiguationViewController)initWithProducts:(id)a3 context:(int64_t)a4;
+- (PKPaymentSetupDisambiguationViewController)initWithProducts:(id)products context:(int64_t)context;
 - (PKPaymentSetupDisambiguationViewControllerDelegate)delegate;
-- (id)_productAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_nextTapped:(id)a3;
-- (void)_notifyDelegateDidSelectProduct:(id)a3;
-- (void)_popToCameraCapture:(id)a3;
-- (void)_setupLater:(id)a3;
-- (void)_updateSelectedProduct:(id)a3;
-- (void)setEnteredCardNumber:(id)a3;
-- (void)setProducts:(id)a3;
-- (void)setupFooterViewForTableView:(id)a3;
-- (void)setupHeaderViewForTableView:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)_productAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_nextTapped:(id)tapped;
+- (void)_notifyDelegateDidSelectProduct:(id)product;
+- (void)_popToCameraCapture:(id)capture;
+- (void)_setupLater:(id)later;
+- (void)_updateSelectedProduct:(id)product;
+- (void)setEnteredCardNumber:(id)number;
+- (void)setProducts:(id)products;
+- (void)setupFooterViewForTableView:(id)view;
+- (void)setupHeaderViewForTableView:(id)view;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentSetupDisambiguationViewController
 
-- (PKPaymentSetupDisambiguationViewController)initWithProducts:(id)a3 context:(int64_t)a4
+- (PKPaymentSetupDisambiguationViewController)initWithProducts:(id)products context:(int64_t)context
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  productsCopy = products;
   v18.receiver = self;
   v18.super_class = PKPaymentSetupDisambiguationViewController;
-  v7 = [(PKPaymentSetupTableViewController *)&v18 initWithContext:a4];
+  v7 = [(PKPaymentSetupTableViewController *)&v18 initWithContext:context];
   if (v7)
   {
     v8 = objc_alloc(MEMORY[0x1E69DC708]);
@@ -34,14 +34,14 @@
     nextBarButtonItem = v7->_nextBarButtonItem;
     v7->_nextBarButtonItem = v10;
 
-    v12 = [(PKPaymentSetupDisambiguationViewController *)v7 navigationItem];
-    [v12 setRightBarButtonItem:v7->_nextBarButtonItem];
+    navigationItem = [(PKPaymentSetupDisambiguationViewController *)v7 navigationItem];
+    [navigationItem setRightBarButtonItem:v7->_nextBarButtonItem];
 
     [(UIBarButtonItem *)v7->_nextBarButtonItem setEnabled:0];
     v13 = [MEMORY[0x1E696AEB0] sortDescriptorWithKey:@"displayName" ascending:1];
     v19[0] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
-    v15 = [v6 sortedArrayUsingDescriptors:v14];
+    v15 = [productsCopy sortedArrayUsingDescriptors:v14];
     products = v7->_products;
     v7->_products = v15;
   }
@@ -54,17 +54,17 @@
   v4.receiver = self;
   v4.super_class = PKPaymentSetupDisambiguationViewController;
   [(PKPaymentSetupDisambiguationViewController *)&v4 viewDidLoad];
-  v3 = [(PKPaymentSetupTableViewController *)self tableView];
-  [(PKPaymentSetupDisambiguationViewController *)self setupHeaderViewForTableView:v3];
-  [(PKPaymentSetupDisambiguationViewController *)self setupFooterViewForTableView:v3];
-  [v3 setTableHeaderView:self->_headerView];
-  [v3 setTableFooterView:self->_footerView];
-  [v3 setSeparatorStyle:1];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [(PKPaymentSetupDisambiguationViewController *)self setupHeaderViewForTableView:tableView];
+  [(PKPaymentSetupDisambiguationViewController *)self setupFooterViewForTableView:tableView];
+  [tableView setTableHeaderView:self->_headerView];
+  [tableView setTableFooterView:self->_footerView];
+  [tableView setSeparatorStyle:1];
 }
 
-- (void)setupHeaderViewForTableView:(id)a3
+- (void)setupHeaderViewForTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = [PKTableHeaderView alloc];
   v6 = [(PKTableHeaderView *)v5 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   headerView = self->_headerView;
@@ -84,29 +84,29 @@
 
   v17 = v8;
   v10 = PKLocalizedPaymentString(&cfstr_SelectCardSubt.isa, &stru_1F3BD5BF0.isa, enteredCardNumber);
-  v11 = [(PKTableHeaderView *)self->_headerView imageView];
-  [v11 setImage:0];
+  imageView = [(PKTableHeaderView *)self->_headerView imageView];
+  [imageView setImage:0];
 
-  v12 = [(PKTableHeaderView *)self->_headerView titleLabel];
-  [v12 setText:v17];
+  titleLabel = [(PKTableHeaderView *)self->_headerView titleLabel];
+  [titleLabel setText:v17];
 
-  v13 = [(PKTableHeaderView *)self->_headerView subtitleLabel];
-  [v13 setText:v10];
+  subtitleLabel = [(PKTableHeaderView *)self->_headerView subtitleLabel];
+  [subtitleLabel setText:v10];
 
   v14 = self->_headerView;
-  v15 = [v4 backgroundColor];
+  backgroundColor = [viewCopy backgroundColor];
 
-  v16 = [v15 colorWithAlphaComponent:0.949999988];
+  v16 = [backgroundColor colorWithAlphaComponent:0.949999988];
   [(PKTableHeaderView *)v14 setBackgroundColor:v16];
 
   [(PKTableHeaderView *)self->_headerView sizeToFit];
 }
 
-- (void)setupFooterViewForTableView:(id)a3
+- (void)setupFooterViewForTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v5 bounds];
+  viewCopy = view;
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView bounds];
   v7 = v6;
 
   objc_initWeak(&location, self);
@@ -146,11 +146,11 @@
   footerView = self->_footerView;
   self->_footerView = v18;
 
-  v20 = [(PKDisambiguationFooterView *)self->_footerView descriptionLabel];
+  descriptionLabel = [(PKDisambiguationFooterView *)self->_footerView descriptionLabel];
   v21 = PKLocalizedPaymentString(&cfstr_SelectCardFoot.isa);
-  [v20 setText:v21];
+  [descriptionLabel setText:v21];
 
-  [(PKDisambiguationFooterView *)self->_footerView sizeToFitForTableView:v4];
+  [(PKDisambiguationFooterView *)self->_footerView sizeToFitForTableView:viewCopy];
   objc_destroyWeak(&v23);
 
   objc_destroyWeak(&v25);
@@ -181,28 +181,28 @@ void __74__PKPaymentSetupDisambiguationViewController_setupFooterViewForTableVie
   v6.super_class = PKPaymentSetupDisambiguationViewController;
   [(PKPaymentSetupDisambiguationViewController *)&v6 viewDidLayoutSubviews];
   footerView = self->_footerView;
-  v4 = [(PKPaymentSetupTableViewController *)self tableView];
-  [(PKDisambiguationFooterView *)footerView sizeToFitForTableView:v4];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [(PKDisambiguationFooterView *)footerView sizeToFitForTableView:tableView];
 
-  v5 = [(PKPaymentSetupTableViewController *)self tableView];
+  tableView2 = [(PKPaymentSetupTableViewController *)self tableView];
   [(PKDisambiguationFooterView *)self->_footerView bounds];
-  [v5 _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v7)];
+  [tableView2 _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v7)];
 }
 
-- (id)_productAtIndexPath:(id)a3
+- (id)_productAtIndexPath:(id)path
 {
   products = self->_products;
-  v4 = [a3 row];
+  v4 = [path row];
 
   return [(NSArray *)products objectAtIndex:v4];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(PKPaymentSetupDisambiguationViewController *)self _productAtIndexPath:a4];
+  viewCopy = view;
+  v7 = [(PKPaymentSetupDisambiguationViewController *)self _productAtIndexPath:path];
   v8 = +[PKPaymentSetupProductCell reuseIdentifier];
-  v9 = [v6 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
   if (!v9)
   {
@@ -226,23 +226,23 @@ void __74__PKPaymentSetupDisambiguationViewController_setupFooterViewForTableVie
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v9.receiver = self;
   v9.super_class = PKPaymentSetupDisambiguationViewController;
-  v6 = a4;
-  [(PKPaymentSetupTableViewController *)&v9 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(PKPaymentSetupDisambiguationViewController *)self _productAtIndexPath:v6, v9.receiver, v9.super_class];
+  pathCopy = path;
+  [(PKPaymentSetupTableViewController *)&v9 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(PKPaymentSetupDisambiguationViewController *)self _productAtIndexPath:pathCopy, v9.receiver, v9.super_class];
   [(PKPaymentSetupDisambiguationViewController *)self _updateSelectedProduct:v7];
-  v8 = [(PKPaymentSetupTableViewController *)self tableView];
-  [v8 deselectRowAtIndexPath:v6 animated:0];
+  tableView = [(PKPaymentSetupTableViewController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:0];
 }
 
-- (void)setEnteredCardNumber:(id)a3
+- (void)setEnteredCardNumber:(id)number
 {
-  if (self->_enteredCardNumber != a3)
+  if (self->_enteredCardNumber != number)
   {
-    v4 = [a3 copy];
+    v4 = [number copy];
     enteredCardNumber = self->_enteredCardNumber;
     self->_enteredCardNumber = v4;
 
@@ -253,61 +253,61 @@ void __74__PKPaymentSetupDisambiguationViewController_setupFooterViewForTableVie
     }
 
     v8 = PKLocalizedPaymentString(&cfstr_SelectCardSubt.isa, &stru_1F3BD5BF0.isa, v6);
-    v7 = [(PKTableHeaderView *)self->_headerView subtitleLabel];
-    [v7 setText:v8];
+    subtitleLabel = [(PKTableHeaderView *)self->_headerView subtitleLabel];
+    [subtitleLabel setText:v8];
   }
 }
 
-- (void)setProducts:(id)a3
+- (void)setProducts:(id)products
 {
-  if (self->_products != a3)
+  if (self->_products != products)
   {
-    v4 = [a3 copy];
+    v4 = [products copy];
     products = self->_products;
     self->_products = v4;
 
-    v6 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v6 reloadData];
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView reloadData];
 
     footerView = self->_footerView;
-    v8 = [(PKPaymentSetupTableViewController *)self tableView];
-    [(PKDisambiguationFooterView *)footerView sizeToFitForTableView:v8];
+    tableView2 = [(PKPaymentSetupTableViewController *)self tableView];
+    [(PKDisambiguationFooterView *)footerView sizeToFitForTableView:tableView2];
 
-    v9 = [(PKPaymentSetupTableViewController *)self tableView];
+    tableView3 = [(PKPaymentSetupTableViewController *)self tableView];
     [(PKDisambiguationFooterView *)self->_footerView bounds];
-    [v9 _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v11)];
+    [tableView3 _tableFooterHeightDidChangeToHeight:CGRectGetHeight(v11)];
   }
 }
 
-- (void)_updateSelectedProduct:(id)a3
+- (void)_updateSelectedProduct:(id)product
 {
-  v5 = a3;
-  if (self->_selectedProduct != v5)
+  productCopy = product;
+  if (self->_selectedProduct != productCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_selectedProduct, a3);
-    v6 = [(PKPaymentSetupTableViewController *)self tableView];
-    [v6 reloadData];
+    v7 = productCopy;
+    objc_storeStrong(&self->_selectedProduct, product);
+    tableView = [(PKPaymentSetupTableViewController *)self tableView];
+    [tableView reloadData];
 
     [(UIBarButtonItem *)self->_nextBarButtonItem setEnabled:self->_selectedProduct != 0];
-    v5 = v7;
+    productCopy = v7;
   }
 }
 
-- (void)_nextTapped:(id)a3
+- (void)_nextTapped:(id)tapped
 {
-  v4 = [(PKPaymentSetupDisambiguationViewController *)self selectedProduct];
-  if (v4)
+  selectedProduct = [(PKPaymentSetupDisambiguationViewController *)self selectedProduct];
+  if (selectedProduct)
   {
-    v5 = v4;
-    [(PKPaymentSetupDisambiguationViewController *)self _notifyDelegateDidSelectProduct:v4];
-    v4 = v5;
+    v5 = selectedProduct;
+    [(PKPaymentSetupDisambiguationViewController *)self _notifyDelegateDidSelectProduct:selectedProduct];
+    selectedProduct = v5;
   }
 }
 
-- (void)_notifyDelegateDidSelectProduct:(id)a3
+- (void)_notifyDelegateDidSelectProduct:(id)product
 {
-  v9 = a3;
+  productCopy = product;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
@@ -318,22 +318,22 @@ void __74__PKPaymentSetupDisambiguationViewController_setupFooterViewForTableVie
     if (v7)
     {
       v8 = objc_loadWeakRetained(&self->_delegate);
-      [v8 disambiguationViewController:self didSelectProduct:v9];
+      [v8 disambiguationViewController:self didSelectProduct:productCopy];
     }
   }
 }
 
-- (void)_popToCameraCapture:(id)a3
+- (void)_popToCameraCapture:(id)capture
 {
-  v4 = [(PKPaymentSetupDisambiguationViewController *)self navigationController];
-  v8 = [v4 viewControllers];
+  navigationController = [(PKPaymentSetupDisambiguationViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
 
-  v5 = [v8 objectAtIndex:{objc_msgSend(v8, "count") - 3}];
-  v6 = [(PKPaymentSetupDisambiguationViewController *)self navigationController];
-  v7 = [v6 popToViewController:v5 animated:1];
+  v5 = [viewControllers objectAtIndex:{objc_msgSend(viewControllers, "count") - 3}];
+  navigationController2 = [(PKPaymentSetupDisambiguationViewController *)self navigationController];
+  v7 = [navigationController2 popToViewController:v5 animated:1];
 }
 
-- (void)_setupLater:(id)a3
+- (void)_setupLater:(id)later
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)

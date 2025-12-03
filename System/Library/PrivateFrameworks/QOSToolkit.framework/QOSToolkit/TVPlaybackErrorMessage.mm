@@ -1,9 +1,9 @@
 @interface TVPlaybackErrorMessage
 - (id)defaultAlert;
-- (id)getLocalizedErrorMessageForItems:(id)a3 :(id)a4;
+- (id)getLocalizedErrorMessageForItems:(id)items :(id)a4;
 - (id)logger;
 - (id)metricsRecorder;
-- (void)fetchLocalizedErrorMessageForItems:(NSDictionary *)a3 :(NSError *)a4 completionHandler:(id)a5;
+- (void)fetchLocalizedErrorMessageForItems:(NSDictionary *)items :(NSError *)a4 completionHandler:(id)handler;
 @end
 
 @implementation TVPlaybackErrorMessage
@@ -50,7 +50,7 @@
   return v3;
 }
 
-- (id)getLocalizedErrorMessageForItems:(id)a3 :(id)a4
+- (id)getLocalizedErrorMessageForItems:(id)items :(id)a4
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FEAF658, &qword_261466260);
   v6 = sub_2614648E0();
@@ -81,15 +81,15 @@
   return v13;
 }
 
-- (void)fetchLocalizedErrorMessageForItems:(NSDictionary *)a3 :(NSError *)a4 completionHandler:(id)a5
+- (void)fetchLocalizedErrorMessageForItems:(NSDictionary *)items :(NSError *)a4 completionHandler:(id)handler
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27FEAF830, &qword_261467BD0);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x28223BE20](v9 - 8, v11);
   v13 = &v21 - v12;
-  v14 = _Block_copy(a5);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  v15[2] = a3;
+  v15[2] = items;
   v15[3] = a4;
   v15[4] = v14;
   v15[5] = self;
@@ -105,7 +105,7 @@
   v18[3] = 0;
   v18[4] = &unk_261467AE8;
   v18[5] = v17;
-  v19 = a3;
+  itemsCopy = items;
   v20 = a4;
 
   sub_26145CC00(0, 0, v13, &unk_261467AF8, v18);

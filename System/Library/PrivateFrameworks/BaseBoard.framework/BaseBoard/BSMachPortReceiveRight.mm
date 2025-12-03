@@ -1,6 +1,6 @@
 @interface BSMachPortReceiveRight
 - (BSMachPortReceiveRight)init;
-- (BSMachPortReceiveRight)initWithPort:(unsigned int)a3;
+- (BSMachPortReceiveRight)initWithPort:(unsigned int)port;
 @end
 
 @implementation BSMachPortReceiveRight
@@ -13,7 +13,7 @@
   {
     v3 = _BSMachPortRightDescription(1u, 0, @"init", v8, 0);
     self = [(BSMachPortRight *)self _initWithPort:v8 type:1 owner:0 trace:v3];
-    v4 = self;
+    selfCopy = self;
   }
 
   else
@@ -28,19 +28,19 @@
       _os_log_error_impl(&dword_18FEF6000, v3, OS_LOG_TYPE_ERROR, "failed to create port for %{public}@ - returning nil from initializer", buf, 0xCu);
     }
 
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (BSMachPortReceiveRight)initWithPort:(unsigned int)a3
+- (BSMachPortReceiveRight)initWithPort:(unsigned int)port
 {
-  v3 = *&a3;
-  if (!BSMachPortIsType(a3, 0x20000))
+  v3 = *&port;
+  if (!BSMachPortIsType(port, 0x20000))
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:424 description:@"you must pass in a valid receive right"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BSMachPortRight.m" lineNumber:424 description:@"you must pass in a valid receive right"];
   }
 
   v6 = _BSMachPortRightDescription(1u, 0, @"take", v3, 0);

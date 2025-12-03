@@ -1,22 +1,22 @@
 @interface RBSLaunchdJobDescriptor
 - (NSSet)managedEndpointLaunchIdentifiers;
-- (RBSLaunchdJobDescriptor)initWithExecutableURL:(id)a3 bundleIdentifier:(id)a4;
+- (RBSLaunchdJobDescriptor)initWithExecutableURL:(id)l bundleIdentifier:(id)identifier;
 @end
 
 @implementation RBSLaunchdJobDescriptor
 
-- (RBSLaunchdJobDescriptor)initWithExecutableURL:(id)a3 bundleIdentifier:(id)a4
+- (RBSLaunchdJobDescriptor)initWithExecutableURL:(id)l bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = RBSLaunchdJobDescriptor;
   v9 = [(RBSLaunchdJobDescriptor *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_executableURL, a3);
-    objc_storeStrong(&v10->_bundleIdentifier, a4);
+    objc_storeStrong(&v9->_executableURL, l);
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
     attributes = v10->_attributes;
     v10->_attributes = MEMORY[0x1E695E0F0];
 
@@ -39,8 +39,8 @@
 - (NSSet)managedEndpointLaunchIdentifiers
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSDictionary *)self->_launchRequestEndpointIdentifiers allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [(NSDictionary *)self->_launchRequestEndpointIdentifiers allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   return v4;
 }

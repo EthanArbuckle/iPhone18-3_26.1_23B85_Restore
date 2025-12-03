@@ -1,45 +1,45 @@
 @interface PKKeychainItemWrapper
-- (PKKeychainItemWrapper)initWithIdentifier:(id)a3 accessGroup:(id)a4 serviceName:(id)a5 type:(unint64_t)a6 invisible:(BOOL)a7 accessibility:(unint64_t)a8;
-- (id)dictionaryToSecItemFormat:(id)a3;
-- (id)secItemFormatToDictionary:(id)a3;
-- (int)_resetKeychainItem:(BOOL)a3;
-- (void)applyAccessibilityValueToDictionary:(id)a3;
-- (void)applySynchronizableValueToDictionary:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (PKKeychainItemWrapper)initWithIdentifier:(id)identifier accessGroup:(id)group serviceName:(id)name type:(unint64_t)type invisible:(BOOL)invisible accessibility:(unint64_t)accessibility;
+- (id)dictionaryToSecItemFormat:(id)format;
+- (id)secItemFormatToDictionary:(id)dictionary;
+- (int)_resetKeychainItem:(BOOL)item;
+- (void)applyAccessibilityValueToDictionary:(id)dictionary;
+- (void)applySynchronizableValueToDictionary:(id)dictionary;
+- (void)setObject:(id)object forKey:(id)key;
 - (void)writeToKeychain;
 @end
 
 @implementation PKKeychainItemWrapper
 
-- (PKKeychainItemWrapper)initWithIdentifier:(id)a3 accessGroup:(id)a4 serviceName:(id)a5 type:(unint64_t)a6 invisible:(BOOL)a7 accessibility:(unint64_t)a8
+- (PKKeychainItemWrapper)initWithIdentifier:(id)identifier accessGroup:(id)group serviceName:(id)name type:(unint64_t)type invisible:(BOOL)invisible accessibility:(unint64_t)accessibility
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  identifierCopy = identifier;
+  groupCopy = group;
+  nameCopy = name;
   v25.receiver = self;
   v25.super_class = PKKeychainItemWrapper;
   v17 = [(PKKeychainItemWrapper *)&v25 init];
   v18 = v17;
   if (v17)
   {
-    v17->_invisible = a7;
-    v17->_accessibility = a8;
+    v17->_invisible = invisible;
+    v17->_accessibility = accessibility;
     v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
     genericPasswordQuery = v18->genericPasswordQuery;
     v18->genericPasswordQuery = v19;
 
     [(NSMutableDictionary *)v18->genericPasswordQuery setObject:*MEMORY[0x1E697B008] forKey:*MEMORY[0x1E697AFF8]];
-    [(NSMutableDictionary *)v18->genericPasswordQuery setObject:v14 forKey:*MEMORY[0x1E697AC30]];
-    v18->type = a6;
+    [(NSMutableDictionary *)v18->genericPasswordQuery setObject:identifierCopy forKey:*MEMORY[0x1E697AC30]];
+    v18->type = type;
     [(PKKeychainItemWrapper *)v18 applySynchronizableValueToDictionary:v18->genericPasswordQuery];
-    if (v16)
+    if (nameCopy)
     {
-      [(NSMutableDictionary *)v18->genericPasswordQuery setObject:v16 forKey:*MEMORY[0x1E697AE88]];
+      [(NSMutableDictionary *)v18->genericPasswordQuery setObject:nameCopy forKey:*MEMORY[0x1E697AE88]];
     }
 
-    if (v15)
+    if (groupCopy)
     {
-      [(NSMutableDictionary *)v18->genericPasswordQuery setObject:v15 forKey:*MEMORY[0x1E697ABD0]];
+      [(NSMutableDictionary *)v18->genericPasswordQuery setObject:groupCopy forKey:*MEMORY[0x1E697ABD0]];
     }
 
     [(NSMutableDictionary *)v18->genericPasswordQuery setObject:*MEMORY[0x1E697B270] forKey:*MEMORY[0x1E697B260]];
@@ -66,22 +66,22 @@
   return v18;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  objectCopy = object;
+  keyCopy = key;
+  if (objectCopy)
   {
-    v7 = [(NSMutableDictionary *)self->keychainItemData objectForKey:v6];
-    if (([v7 isEqual:v8] & 1) == 0)
+    v7 = [(NSMutableDictionary *)self->keychainItemData objectForKey:keyCopy];
+    if (([v7 isEqual:objectCopy] & 1) == 0)
     {
-      [(NSMutableDictionary *)self->keychainItemData setObject:v8 forKey:v6];
+      [(NSMutableDictionary *)self->keychainItemData setObject:objectCopy forKey:keyCopy];
       [(PKKeychainItemWrapper *)self writeToKeychain];
     }
   }
 }
 
-- (int)_resetKeychainItem:(BOOL)a3
+- (int)_resetKeychainItem:(BOOL)item
 {
   v16 = *MEMORY[0x1E69E9840];
   keychainItemData = self->keychainItemData;
@@ -93,7 +93,7 @@
     return 0;
   }
 
-  v5 = a3;
+  itemCopy = item;
   if (![(NSMutableDictionary *)keychainItemData count])
   {
     return 0;
@@ -101,7 +101,7 @@
 
   v6 = [(PKKeychainItemWrapper *)self dictionaryToSecItemFormat:self->keychainItemData];
   v7 = v6;
-  if (v5)
+  if (itemCopy)
   {
     v8 = MEMORY[0x1E695E110];
     [v6 setObject:MEMORY[0x1E695E110] forKey:*MEMORY[0x1E697AEF0]];
@@ -126,9 +126,9 @@
   return v10;
 }
 
-- (id)dictionaryToSecItemFormat:(id)a3
+- (id)dictionaryToSecItemFormat:(id)format
 {
-  v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
+  v4 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:format];
   v5 = *MEMORY[0x1E697AC30];
   v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AC30]];
 
@@ -186,9 +186,9 @@ LABEL_11:
   return v4;
 }
 
-- (id)secItemFormatToDictionary:(id)a3
+- (id)secItemFormatToDictionary:(id)dictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a3];
+  v3 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:dictionary];
   v4 = *MEMORY[0x1E697B318];
   [v3 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697B318]];
   [v3 setObject:*MEMORY[0x1E697B008] forKey:*MEMORY[0x1E697AFF8]];
@@ -280,9 +280,9 @@ LABEL_12:
   }
 }
 
-- (void)applySynchronizableValueToDictionary:(id)a3
+- (void)applySynchronizableValueToDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   type = self->type;
   if (type == 2)
   {
@@ -296,7 +296,7 @@ LABEL_12:
 LABEL_7:
     v7 = *v8;
     v6 = *MEMORY[0x1E697AEB0];
-    v9 = v4;
+    v9 = dictionaryCopy;
     goto LABEL_8;
   }
 
@@ -305,18 +305,18 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v9 = v4;
-  [v4 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697B390]];
+  v9 = dictionaryCopy;
+  [dictionaryCopy setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E697B390]];
   [v9 setObject:*MEMORY[0x1E695E4C0] forKey:*MEMORY[0x1E697AEB0]];
   v6 = *MEMORY[0x1E697AEC0];
   v7 = &unk_1F23B5960;
 LABEL_8:
   [v9 setObject:v7 forKey:v6];
-  v4 = v9;
+  dictionaryCopy = v9;
 LABEL_9:
 }
 
-- (void)applyAccessibilityValueToDictionary:(id)a3
+- (void)applyAccessibilityValueToDictionary:(id)dictionary
 {
   if (self->_accessibility == 1)
   {
@@ -326,7 +326,7 @@ LABEL_9:
       v3 = MEMORY[0x1E697ABE0];
     }
 
-    [a3 setObject:*v3 forKey:*MEMORY[0x1E697ABD8]];
+    [dictionary setObject:*v3 forKey:*MEMORY[0x1E697ABD8]];
   }
 }
 

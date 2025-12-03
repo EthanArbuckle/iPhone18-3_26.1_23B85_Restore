@@ -1,7 +1,7 @@
 @interface CSPlatformInfo
 + (id)hardwareMap;
 + (id)sharedInstance;
-+ (id)sharedInstance:(unint64_t)a3;
++ (id)sharedInstance:(unint64_t)instance;
 - (BOOL)forceDetectionDevice;
 - (BOOL)isCrashClassifierSupportedPlatform;
 - (BOOL)isDOEDeviceDefaultSet;
@@ -11,15 +11,15 @@
 - (BOOL)isFeedbackAssistantEligible;
 - (BOOL)isInternalInstall;
 - (BOOL)isKappaDetectionDevice;
-- (BOOL)isKappaDetectionDevice:(unint64_t)a3;
+- (BOOL)isKappaDetectionDevice:(unint64_t)device;
 - (BOOL)isKappaLoggingDevice;
-- (BOOL)isKappaLoggingDevice:(unint64_t)a3;
+- (BOOL)isKappaLoggingDevice:(unint64_t)device;
 - (BOOL)isMDevice;
 - (BOOL)isSovereignDevice;
 - (CSPlatformInfo)init;
-- (CSPlatformInfo)initWithHardware:(unint64_t)a3;
+- (CSPlatformInfo)initWithHardware:(unint64_t)hardware;
 - (id)getSerialNumber;
-- (id)getSystem:(const char *)a3;
+- (id)getSystem:(const char *)system;
 - (id)getSystemModel;
 - (id)getSystemVersionDescription;
 - (id)getSystemVersionDescriptionNoBuild;
@@ -30,13 +30,13 @@
 
 @implementation CSPlatformInfo
 
-+ (id)sharedInstance:(unint64_t)a3
++ (id)sharedInstance:(unint64_t)instance
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10034BE38;
   block[3] = &unk_100423460;
-  block[4] = a3;
+  block[4] = instance;
   if (qword_100458928 != -1)
   {
     dispatch_once(&qword_100458928, block);
@@ -590,11 +590,11 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       hardware = v3->_hardware;
-      v6 = [(CSPlatformInfo *)v3 getSystemVersionDescription];
+      getSystemVersionDescription = [(CSPlatformInfo *)v3 getSystemVersionDescription];
       *buf = 67109378;
       v10 = hardware;
       v11 = 2112;
-      v12 = v6;
+      v12 = getSystemVersionDescription;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "hw = %d (%@)", buf, 0x12u);
     }
 
@@ -604,14 +604,14 @@
   return v3;
 }
 
-- (CSPlatformInfo)initWithHardware:(unint64_t)a3
+- (CSPlatformInfo)initWithHardware:(unint64_t)hardware
 {
   v5.receiver = self;
   v5.super_class = CSPlatformInfo;
   result = [(CSPlatformInfo *)&v5 init];
   if (result)
   {
-    result->_hardware = a3;
+    result->_hardware = hardware;
     result->_isSimulated = 1;
   }
 
@@ -645,11 +645,11 @@
   return v3;
 }
 
-- (BOOL)isKappaDetectionDevice:(unint64_t)a3
+- (BOOL)isKappaDetectionDevice:(unint64_t)device
 {
-  if (a3 != 194 || ![(CSPlatformInfo *)self isDOEDeviceDefaultSet])
+  if (device != 194 || ![(CSPlatformInfo *)self isDOEDeviceDefaultSet])
   {
-    return a3 - 229 < 2 || a3 - 87 < 2 || a3 - 91 < 2 || (a3 & 0xFFFFFFFFFFFFFFFELL) == 202 || (a3 & 0xFFFFFFFFFFFFFFFBLL) - 89 < 2 || a3 - 237 < 6 || a3 - 145 < 0x12 || a3 - 243 < 9;
+    return device - 229 < 2 || device - 87 < 2 || device - 91 < 2 || (device & 0xFFFFFFFFFFFFFFFELL) == 202 || (device & 0xFFFFFFFFFFFFFFFBLL) - 89 < 2 || device - 237 < 6 || device - 145 < 0x12 || device - 243 < 9;
   }
 
   if (qword_100456838 != -1)
@@ -680,20 +680,20 @@
   return v4;
 }
 
-- (BOOL)isKappaLoggingDevice:(unint64_t)a3
+- (BOOL)isKappaLoggingDevice:(unint64_t)device
 {
-  if (a3 - 168 > 0x3C)
+  if (device - 168 > 0x3C)
   {
     goto LABEL_10;
   }
 
-  if (((1 << (a3 + 88)) & 0x100000037A000015) != 0)
+  if (((1 << (device + 88)) & 0x100000037A000015) != 0)
   {
     LOBYTE(v5) = 1;
     return v5;
   }
 
-  if (a3 != 194)
+  if (device != 194)
   {
 LABEL_10:
     LOBYTE(v5) = 0;
@@ -811,12 +811,12 @@ LABEL_10:
   v2 = +[CSPersistentConfiguration sharedConfiguration];
   v3 = [v2 getFloatDefault:@"FeedbackAssistantOverride"];
   v4 = +[CSPermissions sharedInstance];
-  v5 = [v4 isAuthorizedToCollectData];
+  isAuthorizedToCollectData = [v4 isAuthorizedToCollectData];
 
   v6 = +[CSPlatformInfo sharedInstance];
   [v6 isInternalInstall];
 
-  return v5 & BYTE4(v3) & ((v3 & 0x7FFFFFFF) != 0);
+  return isAuthorizedToCollectData & BYTE4(v3) & ((v3 & 0x7FFFFFFF) != 0);
 }
 
 - (BOOL)isInternalInstall
@@ -854,10 +854,10 @@ LABEL_10:
   return v4 & 1;
 }
 
-- (id)getSystem:(const char *)a3
+- (id)getSystem:(const char *)system
 {
   v5 = 128;
-  if (sysctlbyname(a3, v6, &v5, 0, 0))
+  if (sysctlbyname(system, v6, &v5, 0, 0))
   {
     v3 = &stru_100436548;
   }

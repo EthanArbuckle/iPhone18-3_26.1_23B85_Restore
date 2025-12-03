@@ -1,22 +1,22 @@
 @interface SearchUIRowCardSectionView
-+ (BOOL)hasLeadingImageForCardSection:(id)a3;
-+ (BOOL)prefersNoSeparatorAboveRowModel:(id)a3;
-+ (id)dragSubtitleForCardSection:(id)a3;
-+ (id)dragTitleForCardSection:(id)a3;
++ (BOOL)hasLeadingImageForCardSection:(id)section;
++ (BOOL)prefersNoSeparatorAboveRowModel:(id)model;
++ (id)dragSubtitleForCardSection:(id)section;
++ (id)dragTitleForCardSection:(id)section;
 - (id)leadingTextView;
 - (id)setupContentView;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIRowCardSectionView
 
-+ (BOOL)hasLeadingImageForCardSection:(id)a3
++ (BOOL)hasLeadingImageForCardSection:(id)section
 {
-  v3 = a3;
-  v4 = [v3 image];
-  if (v4)
+  sectionCopy = section;
+  image = [sectionCopy image];
+  if (image)
   {
-    v5 = [v3 imageIsRightAligned] ^ 1;
+    v5 = [sectionCopy imageIsRightAligned] ^ 1;
   }
 
   else
@@ -27,26 +27,26 @@
   return v5;
 }
 
-+ (BOOL)prefersNoSeparatorAboveRowModel:(id)a3
++ (BOOL)prefersNoSeparatorAboveRowModel:(id)model
 {
-  v4 = [a3 cardSection];
-  v5 = [v4 leadingText];
-  if (v5)
+  cardSection = [model cardSection];
+  leadingText = [cardSection leadingText];
+  if (leadingText)
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v7 = [v4 leadingSubtitle];
-    if (v7)
+    leadingSubtitle = [cardSection leadingSubtitle];
+    if (leadingSubtitle)
     {
       LOBYTE(v6) = 0;
     }
 
     else
     {
-      v6 = [a1 hasLeadingImageForCardSection:v4] ^ 1;
+      v6 = [self hasLeadingImageForCardSection:cardSection] ^ 1;
     }
   }
 
@@ -60,22 +60,22 @@
   return v2;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 cardSection];
+  modelCopy = model;
+  cardSection = [modelCopy cardSection];
   v23.receiver = self;
   v23.super_class = SearchUIRowCardSectionView;
-  [(SearchUICardSectionView *)&v23 updateWithRowModel:v4];
+  [(SearchUICardSectionView *)&v23 updateWithRowModel:modelCopy];
 
-  v6 = [v5 punchoutOptions];
-  v7 = [v6 firstObject];
-  v8 = [v7 bundleIdentifier];
+  punchoutOptions = [cardSection punchoutOptions];
+  firstObject = [punchoutOptions firstObject];
+  bundleIdentifier = [firstObject bundleIdentifier];
 
-  if ([v5 imageIsRightAligned] && v8 && +[SearchUIUtilities appIsValidForBundleIdentifier:](SearchUIUtilities, "appIsValidForBundleIdentifier:", v8))
+  if ([cardSection imageIsRightAligned] && bundleIdentifier && +[SearchUIUtilities appIsValidForBundleIdentifier:](SearchUIUtilities, "appIsValidForBundleIdentifier:", bundleIdentifier))
   {
     v9 = [SearchUIUtilities bundleIdentifierForApp:14];
-    v10 = [v8 isEqualToString:v9];
+    v10 = [bundleIdentifier isEqualToString:v9];
 
     if (v10)
     {
@@ -88,7 +88,7 @@
 
     else
     {
-      v11 = [SearchUIAppIconImage appIconForBundleIdentifier:v8 variant:2];
+      v11 = [SearchUIAppIconImage appIconForBundleIdentifier:bundleIdentifier variant:2];
       if (!v11)
       {
         goto LABEL_8;
@@ -96,33 +96,33 @@
     }
 
 LABEL_11:
-    v12 = v11;
-    v13 = v12;
+    image = v11;
+    v13 = image;
     goto LABEL_12;
   }
 
 LABEL_8:
-  if (([v5 imageIsRightAligned] & 1) == 0)
+  if (([cardSection imageIsRightAligned] & 1) == 0)
   {
     v11 = 0;
     goto LABEL_11;
   }
 
-  v12 = [v5 image];
+  image = [cardSection image];
   v13 = 0;
 LABEL_12:
-  v14 = [(SearchUICardSectionView *)self contentView];
+  contentView = [(SearchUICardSectionView *)self contentView];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __49__SearchUIRowCardSectionView_updateWithRowModel___block_invoke;
   v18[3] = &unk_1E85B35B0;
-  v19 = v14;
-  v20 = v5;
-  v21 = v12;
+  v19 = contentView;
+  v20 = cardSection;
+  v21 = image;
   v22 = 2;
-  v15 = v12;
-  v16 = v5;
-  v17 = v14;
+  v15 = image;
+  v16 = cardSection;
+  v17 = contentView;
   [v17 performBatchUpdates:v18];
 }
 
@@ -164,24 +164,24 @@ void __49__SearchUIRowCardSectionView_updateWithRowModel___block_invoke(uint64_t
 
 - (id)leadingTextView
 {
-  v2 = [(SearchUICardSectionView *)self contentView];
-  v3 = [v2 leadingTextView];
+  contentView = [(SearchUICardSectionView *)self contentView];
+  leadingTextView = [contentView leadingTextView];
 
-  return v3;
+  return leadingTextView;
 }
 
-+ (id)dragTitleForCardSection:(id)a3
++ (id)dragTitleForCardSection:(id)section
 {
-  v3 = a3;
-  v4 = [v3 leadingText];
-  v5 = [SearchUIUtilities stringForSFRichText:v4];
+  sectionCopy = section;
+  leadingText = [sectionCopy leadingText];
+  v5 = [SearchUIUtilities stringForSFRichText:leadingText];
 
-  v6 = [v3 leadingSubtitle];
+  leadingSubtitle = [sectionCopy leadingSubtitle];
 
-  if (v6)
+  if (leadingSubtitle)
   {
-    v7 = [v3 leadingSubtitle];
-    v8 = [SearchUIUtilities stringForSFRichText:v7];
+    leadingSubtitle2 = [sectionCopy leadingSubtitle];
+    v8 = [SearchUIUtilities stringForSFRichText:leadingSubtitle2];
     v9 = [v5 stringByAppendingFormat:@", %@", v8];
 
     v5 = v9;
@@ -190,18 +190,18 @@ void __49__SearchUIRowCardSectionView_updateWithRowModel___block_invoke(uint64_t
   return v5;
 }
 
-+ (id)dragSubtitleForCardSection:(id)a3
++ (id)dragSubtitleForCardSection:(id)section
 {
-  v3 = a3;
-  v4 = [v3 trailingText];
-  v5 = [SearchUIUtilities stringForSFRichText:v4];
+  sectionCopy = section;
+  trailingText = [sectionCopy trailingText];
+  v5 = [SearchUIUtilities stringForSFRichText:trailingText];
 
-  v6 = [v3 trailingSubtitle];
+  trailingSubtitle = [sectionCopy trailingSubtitle];
 
-  if (v6)
+  if (trailingSubtitle)
   {
-    v7 = [v3 trailingSubtitle];
-    v8 = [SearchUIUtilities stringForSFRichText:v7];
+    trailingSubtitle2 = [sectionCopy trailingSubtitle];
+    v8 = [SearchUIUtilities stringForSFRichText:trailingSubtitle2];
     v9 = [v5 stringByAppendingFormat:@", %@", v8];
 
     v5 = v9;

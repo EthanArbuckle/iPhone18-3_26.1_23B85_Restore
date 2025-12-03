@@ -1,15 +1,15 @@
 @interface IADataStoreDaterange
-- (BOOL)_clearWithMask:(int64_t)a3;
+- (BOOL)_clearWithMask:(int64_t)mask;
 - (BOOL)_updateStartDate;
 - (BOOL)destroy;
 - (BOOL)markToday;
 - (BOOL)persist;
-- (id)timesUsedInDayRangeFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (unint64_t)bitmaskForLessThanDayN:(unint64_t)a3;
+- (id)timesUsedInDayRangeFrom:(unint64_t)from to:(unint64_t)to;
+- (unint64_t)bitmaskForLessThanDayN:(unint64_t)n;
 - (unint64_t)usageFrequency;
-- (unint64_t)usedInDayRangeFrom:(unint64_t)a3 to:(unint64_t)a4;
-- (void)setOriginDate:(id)a3;
-- (void)setStartDate:(id)a3;
+- (unint64_t)usedInDayRangeFrom:(unint64_t)from to:(unint64_t)to;
+- (void)setOriginDate:(id)date;
+- (void)setStartDate:(id)date;
 @end
 
 @implementation IADataStoreDaterange
@@ -117,9 +117,9 @@ LABEL_9:
   return v32;
 }
 
-- (unint64_t)usedInDayRangeFrom:(unint64_t)a3 to:(unint64_t)a4
+- (unint64_t)usedInDayRangeFrom:(unint64_t)from to:(unint64_t)to
 {
-  v4 = objc_msgSend_timesUsedInDayRangeFrom_to_(self, a2, a3, a4);
+  v4 = objc_msgSend_timesUsedInDayRangeFrom_to_(self, a2, from, to);
   v7 = v4;
   if (v4)
   {
@@ -224,11 +224,11 @@ LABEL_21:
   return v12;
 }
 
-- (unint64_t)bitmaskForLessThanDayN:(unint64_t)a3
+- (unint64_t)bitmaskForLessThanDayN:(unint64_t)n
 {
-  if (a3 <= 0x1F)
+  if (n <= 0x1F)
   {
-    return ~(-1 << a3);
+    return ~(-1 << n);
   }
 
   else
@@ -237,10 +237,10 @@ LABEL_21:
   }
 }
 
-- (id)timesUsedInDayRangeFrom:(unint64_t)a3 to:(unint64_t)a4
+- (id)timesUsedInDayRangeFrom:(unint64_t)from to:(unint64_t)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (a4 < a3)
+  if (to < from)
   {
     v7 = sub_1D4621008();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -249,9 +249,9 @@ LABEL_21:
       v24 = 138478339;
       v25 = v10;
       v26 = 2048;
-      v27 = a4;
+      toCopy = to;
       v28 = 2048;
-      v29 = a3;
+      fromCopy = from;
       _os_log_fault_impl(&dword_1D460F000, v7, OS_LOG_TYPE_FAULT, "Daterange with name %{private}@ requires endDayNumber (%lu) >= startDayNumber (%lu)", &v24, 0x20u);
     }
 
@@ -261,7 +261,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if ((objc_msgSend__updateStartDate(self, a2, a3) & 1) == 0)
+  if ((objc_msgSend__updateStartDate(self, a2, from) & 1) == 0)
   {
     v7 = sub_1D4621008();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -272,7 +272,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v12 = objc_msgSend_bitmaskForDayRangeFrom_to_(self, v11, a3, a4);
+  v12 = objc_msgSend_bitmaskForDayRangeFrom_to_(self, v11, from, to);
   v16 = vdup_n_s32(objc_msgSend_bitfield(self, v13, v14) & v12);
   v17 = 0x100000000;
   v18 = 0uLL;
@@ -361,13 +361,13 @@ LABEL_10:
   }
 }
 
-- (BOOL)_clearWithMask:(int64_t)a3
+- (BOOL)_clearWithMask:(int64_t)mask
 {
-  v3 = a3;
-  updated = objc_msgSend__updateStartDate(self, a2, a3);
+  maskCopy = mask;
+  updated = objc_msgSend__updateStartDate(self, a2, mask);
   if (updated)
   {
-    self->_bitfield &= v3;
+    self->_bitfield &= maskCopy;
   }
 
   else
@@ -382,18 +382,18 @@ LABEL_10:
   return updated;
 }
 
-- (void)setStartDate:(id)a3
+- (void)setStartDate:(id)date
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(date, a2, date);
   startDate = self->_startDate;
   self->_startDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, startDate);
 }
 
-- (void)setOriginDate:(id)a3
+- (void)setOriginDate:(id)date
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(date, a2, date);
   originDate = self->_originDate;
   self->_originDate = v4;
 

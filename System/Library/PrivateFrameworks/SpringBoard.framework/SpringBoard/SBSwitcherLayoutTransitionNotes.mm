@@ -1,8 +1,8 @@
 @interface SBSwitcherLayoutTransitionNotes
 - (SBAppLayout)fromAppLayout;
 - (SBAppLayout)inAppLayout;
-- (SBSwitcherLayoutTransitionNotes)initWithFromPreviousState:(id)a3 currentLayoutState:(id)a4 transitionRequest:(id)a5;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBSwitcherLayoutTransitionNotes)initWithFromPreviousState:(id)state currentLayoutState:(id)layoutState transitionRequest:(id)request;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -16,33 +16,33 @@
   return WeakRetained;
 }
 
-- (SBSwitcherLayoutTransitionNotes)initWithFromPreviousState:(id)a3 currentLayoutState:(id)a4 transitionRequest:(id)a5
+- (SBSwitcherLayoutTransitionNotes)initWithFromPreviousState:(id)state currentLayoutState:(id)layoutState transitionRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  stateCopy = state;
+  layoutStateCopy = layoutState;
+  requestCopy = request;
   v46.receiver = self;
   v46.super_class = SBSwitcherLayoutTransitionNotes;
   v11 = [(SBSwitcherLayoutTransitionNotes *)&v46 init];
   if (v11)
   {
-    v12 = vdupq_n_s64([v10 source]);
+    v12 = vdupq_n_s64([requestCopy source]);
     *v12.i8 = vand_s8(vmovn_s32(vuzp1q_s32(vceqq_s64(v12, xmmword_21F8A7230), vceqq_s64(v12, xmmword_21F8A7240))), 0x1000100010001);
     *(v11 + 26) = vuzp1_s8(*v12.i8, *v12.i8).u32[0];
-    v13 = [v8 appLayout];
-    if ([v8 unlockedEnvironmentMode] == 2)
+    appLayout = [stateCopy appLayout];
+    if ([stateCopy unlockedEnvironmentMode] == 2)
     {
-      v14 = 1;
+      isFloatingSwitcherVisible = 1;
     }
 
     else
     {
-      v14 = [v8 isFloatingSwitcherVisible];
+      isFloatingSwitcherVisible = [stateCopy isFloatingSwitcherVisible];
     }
 
-    v11[8] = v14;
-    v15 = [v8 elements];
-    if ([v15 count])
+    v11[8] = isFloatingSwitcherVisible;
+    elements = [stateCopy elements];
+    if ([elements count])
     {
       v16 = v11[8] ^ 1;
     }
@@ -54,25 +54,25 @@
 
     v11[9] = v16 & 1;
 
-    v11[10] = [v8 unlockedEnvironmentMode] == 1;
-    v17 = [v8 elements];
-    v11[11] = [v17 count] > 1;
+    v11[10] = [stateCopy unlockedEnvironmentMode] == 1;
+    elements2 = [stateCopy elements];
+    v11[11] = [elements2 count] > 1;
 
-    v18 = [v9 appLayout];
-    if ([v9 unlockedEnvironmentMode] == 2)
+    appLayout2 = [layoutStateCopy appLayout];
+    if ([layoutStateCopy unlockedEnvironmentMode] == 2)
     {
-      v19 = 1;
+      isFloatingSwitcherVisible2 = 1;
     }
 
     else
     {
-      v19 = [v9 isFloatingSwitcherVisible];
+      isFloatingSwitcherVisible2 = [layoutStateCopy isFloatingSwitcherVisible];
     }
 
-    v11[12] = v19;
-    v11[13] = [v9 unlockedEnvironmentMode] == 1;
-    v20 = [v9 elements];
-    if ([v20 count])
+    v11[12] = isFloatingSwitcherVisible2;
+    v11[13] = [layoutStateCopy unlockedEnvironmentMode] == 1;
+    elements3 = [layoutStateCopy elements];
+    if ([elements3 count])
     {
       v21 = v11[12] ^ 1;
     }
@@ -84,14 +84,14 @@
 
     v11[14] = v21 & 1;
 
-    v22 = [v9 elements];
-    v11[15] = [v22 count] > 1;
+    elements4 = [layoutStateCopy elements];
+    v11[15] = [elements4 count] > 1;
 
-    v23 = [v9 elements];
-    if ([v23 count])
+    elements5 = [layoutStateCopy elements];
+    if ([elements5 count])
     {
-      v24 = [v8 elements];
-      v11[16] = [v24 count] == 0;
+      elements6 = [stateCopy elements];
+      v11[16] = [elements6 count] == 0;
     }
 
     else
@@ -121,18 +121,18 @@
     }
 
     v11[17] = v26 & 1;
-    v27 = [v8 elements];
-    if ([v27 count])
+    elements7 = [stateCopy elements];
+    if ([elements7 count])
     {
-      v28 = [v9 elements];
-      if ([v28 count])
+      elements8 = [layoutStateCopy elements];
+      if ([elements8 count])
       {
-        [v8 elements];
-        v30 = v29 = v10;
-        v31 = [v9 elements];
-        v11[22] = [v30 isEqual:v31] ^ 1;
+        [stateCopy elements];
+        v30 = v29 = requestCopy;
+        elements9 = [layoutStateCopy elements];
+        v11[22] = [v30 isEqual:elements9] ^ 1;
 
-        v10 = v29;
+        requestCopy = v29;
       }
 
       else
@@ -146,7 +146,7 @@
       v11[22] = 0;
     }
 
-    if (v13 == v18)
+    if (appLayout == appLayout2)
     {
       v33 = 0;
       v11[25] = 0;
@@ -161,22 +161,22 @@
     }
 
     v11[24] = v33 & 1;
-    v34 = [v9 elements];
-    if ([v34 count] == 1)
+    elements10 = [layoutStateCopy elements];
+    if ([elements10 count] == 1)
     {
-      v35 = [v8 elements];
-      [v9 elements];
-      v45 = v8;
-      v36 = v18;
-      v37 = v13;
-      v39 = v38 = v10;
-      v40 = [v39 anyObject];
-      v11[23] = [v35 containsObject:v40] ^ 1;
+      elements11 = [stateCopy elements];
+      [layoutStateCopy elements];
+      v45 = stateCopy;
+      v36 = appLayout2;
+      v37 = appLayout;
+      v39 = v38 = requestCopy;
+      anyObject = [v39 anyObject];
+      v11[23] = [elements11 containsObject:anyObject] ^ 1;
 
-      v10 = v38;
-      v13 = v37;
-      v18 = v36;
-      v8 = v45;
+      requestCopy = v38;
+      appLayout = v37;
+      appLayout2 = v36;
+      stateCopy = v45;
     }
 
     else
@@ -208,7 +208,7 @@
       }
 
       v11[20] = v42 & 1;
-      v43 = [v13 isEqual:v18];
+      v43 = [appLayout isEqual:appLayout2];
     }
 
     else
@@ -218,8 +218,8 @@
     }
 
     v11[21] = v43;
-    objc_storeWeak(v11 + 4, v13);
-    objc_storeWeak(v11 + 5, v18);
+    objc_storeWeak(v11 + 4, appLayout);
+    objc_storeWeak(v11 + 5, appLayout2);
   }
 
   return v11;
@@ -227,10 +227,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSwitcherLayoutTransitionNotes *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSwitcherLayoutTransitionNotes *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -242,7 +242,7 @@
   v15[3] = &unk_2783A92D8;
   v4 = v3;
   v16 = v4;
-  v17 = self;
+  selfCopy = self;
   [v4 appendBodySectionWithName:@"Flags" multilinePrefix:0 block:v15];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -250,7 +250,7 @@
   v12[3] = &unk_2783A92D8;
   v5 = v4;
   v13 = v5;
-  v14 = self;
+  selfCopy2 = self;
   [v5 appendBodySectionWithName:@"From AppLayout" multilinePrefix:0 block:v12];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -258,7 +258,7 @@
   v9[3] = &unk_2783A92D8;
   v6 = v5;
   v10 = v6;
-  v11 = self;
+  selfCopy3 = self;
   [v6 appendBodySectionWithName:@"In AppLayout" multilinePrefix:0 block:v9];
   v7 = v6;
 
@@ -304,12 +304,12 @@ void __61__SBSwitcherLayoutTransitionNotes_succinctDescriptionBuilder__block_inv
   v2 = [v1 appendObject:WeakRetained withName:0 skipIfNil:0];
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSwitcherLayoutTransitionNotes *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSwitcherLayoutTransitionNotes *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (SBAppLayout)fromAppLayout

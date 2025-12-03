@@ -3,8 +3,8 @@
 - (UIImage)backdropImage;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setBackdropImage:(id)a3;
-- (void)setIsGradientEnabled:(BOOL)a3;
+- (void)setBackdropImage:(id)image;
+- (void)setIsGradientEnabled:(BOOL)enabled;
 @end
 
 @implementation MRUMediaControlsModuleGradientView
@@ -16,27 +16,27 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setIsGradientEnabled:(BOOL)a3
+- (void)setIsGradientEnabled:(BOOL)enabled
 {
-  v4 = self;
-  sub_1A229A534(a3);
+  selfCopy = self;
+  sub_1A229A534(enabled);
 }
 
 - (UIImage)backdropImage
 {
   v2 = *((*MEMORY[0x1E69E7D40] & **(&self->super.super.super.isa + OBJC_IVAR___MRUMediaControlsModuleGradientView_backdropImageView)) + 0x60);
-  v3 = self;
+  selfCopy = self;
   v4 = v2();
 
   return v4;
 }
 
-- (void)setBackdropImage:(id)a3
+- (void)setBackdropImage:(id)image
 {
   v5 = *((*MEMORY[0x1E69E7D40] & **(&self->super.super.super.isa + OBJC_IVAR___MRUMediaControlsModuleGradientView_backdropImageView)) + 0x78);
-  v6 = a3;
-  v7 = self;
-  v5(a3);
+  imageCopy = image;
+  selfCopy = self;
+  v5(image);
 }
 
 - (void)layoutSubviews
@@ -56,7 +56,7 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A229B284();
 }
 

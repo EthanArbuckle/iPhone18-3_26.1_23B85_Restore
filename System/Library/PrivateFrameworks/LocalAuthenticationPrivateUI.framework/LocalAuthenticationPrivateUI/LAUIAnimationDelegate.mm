@@ -1,8 +1,8 @@
 @interface LAUIAnimationDelegate
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)setDidStopHandler:(id)a3;
+- (void)setDidStopHandler:(id)handler;
 @end
 
 @implementation LAUIAnimationDelegate
@@ -24,12 +24,12 @@
   [(LAUIAnimationDelegate *)&v6 dealloc];
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   didStartHandler = self->_didStartHandler;
   if (didStartHandler)
   {
-    v6 = MEMORY[0x259C5AE60](didStartHandler, a2, a3);
+    v6 = MEMORY[0x259C5AE60](didStartHandler, a2, start);
     v5 = self->_didStartHandler;
     self->_didStartHandler = 0;
 
@@ -37,26 +37,26 @@
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   didStopHandler = self->_didStopHandler;
   if (didStopHandler)
   {
-    v6 = a4;
-    v8 = MEMORY[0x259C5AE60](didStopHandler, a2, a3);
+    finishedCopy = finished;
+    v8 = MEMORY[0x259C5AE60](didStopHandler, a2, stop);
     v7 = self->_didStopHandler;
     self->_didStopHandler = 0;
 
-    v8[2](v8, v6);
+    v8[2](v8, finishedCopy);
   }
 }
 
-- (void)setDidStopHandler:(id)a3
+- (void)setDidStopHandler:(id)handler
 {
-  v4 = a3;
-  if (self->_didStopHandler != v4)
+  handlerCopy = handler;
+  if (self->_didStopHandler != handlerCopy)
   {
-    v8 = v4;
+    v8 = handlerCopy;
     v5 = MEMORY[0x259C5AE60]();
     v6 = [v8 copy];
     didStopHandler = self->_didStopHandler;
@@ -67,7 +67,7 @@
       v5[2](v5, 0);
     }
 
-    v4 = v8;
+    handlerCopy = v8;
   }
 }
 

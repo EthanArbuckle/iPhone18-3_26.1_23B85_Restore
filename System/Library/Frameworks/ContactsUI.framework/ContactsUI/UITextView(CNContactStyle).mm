@@ -6,22 +6,22 @@
 
 - (void)_cnui_applyContactStyle
 {
-  v5 = [a1 _cnui_contactStyle];
-  v2 = [v5 textColor];
+  _cnui_contactStyle = [self _cnui_contactStyle];
+  textColor = [_cnui_contactStyle textColor];
 
-  if (v2)
+  if (textColor)
   {
-    v3 = [v5 textColor];
-    [a1 setTextColor:v3];
+    textColor2 = [_cnui_contactStyle textColor];
+    [self setTextColor:textColor2];
   }
 
-  if ([v5 keyboardAppearance])
+  if ([_cnui_contactStyle keyboardAppearance])
   {
-    [a1 setKeyboardAppearance:{objc_msgSend(v5, "keyboardAppearance")}];
+    [self setKeyboardAppearance:{objc_msgSend(_cnui_contactStyle, "keyboardAppearance")}];
   }
 
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [a1 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [self setBackgroundColor:clearColor];
 }
 
 @end

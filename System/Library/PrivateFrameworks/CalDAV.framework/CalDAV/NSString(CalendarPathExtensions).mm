@@ -16,8 +16,8 @@
 
   else
   {
-    v8 = [MEMORY[0x277CFDC18] sharedLogging];
-    v9 = [v8 logHandleForAccountInfoProvider:0];
+    mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
+    v9 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:0];
     v10 = v9;
     if (v9 && os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {

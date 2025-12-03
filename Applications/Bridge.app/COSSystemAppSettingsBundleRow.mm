@@ -1,11 +1,11 @@
 @interface COSSystemAppSettingsBundleRow
-- (BOOL)_removeRowForSpecialCriteriaOverride:(id)a3;
-- (BOOL)_requiredAppsInstalled:(id)a3;
-- (COSSystemAppSettingsBundleRow)initWithBundle:(id)a3 name:(id)a4;
+- (BOOL)_removeRowForSpecialCriteriaOverride:(id)override;
+- (BOOL)_requiredAppsInstalled:(id)installed;
+- (COSSystemAppSettingsBundleRow)initWithBundle:(id)bundle name:(id)name;
 - (id)description;
 - (id)settingsBundleDict;
-- (void)_setRequiredInstalledWatchAppsForLegacy:(id)a3;
-- (void)setAreRequiredWatchAppsInstalled:(id)a3;
+- (void)_setRequiredInstalledWatchAppsForLegacy:(id)legacy;
+- (void)setAreRequiredWatchAppsInstalled:(id)installed;
 @end
 
 @implementation COSSystemAppSettingsBundleRow
@@ -13,12 +13,12 @@
 - (id)settingsBundleDict
 {
   v19[0] = PSTitleKey;
-  v3 = [(COSSystemAppSettingsBundleRow *)self displayName];
-  v20[0] = v3;
+  displayName = [(COSSystemAppSettingsBundleRow *)self displayName];
+  v20[0] = displayName;
   v19[1] = PSIDKey;
-  v4 = [(COSSystemAppSettingsBundleRow *)self bundle];
-  v5 = [v4 bundleIdentifier];
-  v20[1] = v5;
+  bundle = [(COSSystemAppSettingsBundleRow *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
+  v20[1] = bundleIdentifier;
   v20[2] = @"PSLinkCell";
   v19[2] = PSTableCellClassKey;
   v19[3] = PSBundleHasIconKey;
@@ -26,82 +26,82 @@
   v20[4] = kCFBooleanTrue;
   v19[4] = PSSearchNanoApplicationsBundlePath;
   v19[5] = PSBundlePathKey;
-  v6 = [(COSSystemAppSettingsBundleRow *)self name];
+  name = [(COSSystemAppSettingsBundleRow *)self name];
   v19[6] = @"isController";
-  v20[5] = v6;
+  v20[5] = name;
   v20[6] = kCFBooleanTrue;
   v7 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:7];
   v8 = [NSMutableDictionary dictionaryWithDictionary:v7];
 
-  v9 = [(COSSystemAppSettingsBundleRow *)self requiredCapabilities];
-  [v8 setObject:v9 forKeyedSubscript:BPSRequiredWatchCapabilitiesKey];
+  requiredCapabilities = [(COSSystemAppSettingsBundleRow *)self requiredCapabilities];
+  [v8 setObject:requiredCapabilities forKeyedSubscript:BPSRequiredWatchCapabilitiesKey];
 
-  v10 = [(COSSystemAppSettingsBundleRow *)self forbiddenCapabilities];
-  [v8 setObject:v10 forKeyedSubscript:BPSForbiddenWatchCapabilitiesKey];
+  forbiddenCapabilities = [(COSSystemAppSettingsBundleRow *)self forbiddenCapabilities];
+  [v8 setObject:forbiddenCapabilities forKeyedSubscript:BPSForbiddenWatchCapabilitiesKey];
 
-  v11 = [(COSSystemAppSettingsBundleRow *)self requiredFeatureFlags];
-  [v8 setObject:v11 forKeyedSubscript:BPSRequiredFeatureFlagsKey];
+  requiredFeatureFlags = [(COSSystemAppSettingsBundleRow *)self requiredFeatureFlags];
+  [v8 setObject:requiredFeatureFlags forKeyedSubscript:BPSRequiredFeatureFlagsKey];
 
-  v12 = [(COSSystemAppSettingsBundleRow *)self bundle];
+  bundle2 = [(COSSystemAppSettingsBundleRow *)self bundle];
   v13 = BPSWatchAppBundleIdKey;
-  v14 = [v12 objectForInfoDictionaryKey:BPSWatchAppBundleIdKey];
+  v14 = [bundle2 objectForInfoDictionaryKey:BPSWatchAppBundleIdKey];
   [v8 setObject:v14 forKeyedSubscript:v13];
 
-  v15 = [(COSSystemAppSettingsBundleRow *)self bundle];
+  bundle3 = [(COSSystemAppSettingsBundleRow *)self bundle];
   v16 = PSDataSourceClassKey;
-  v17 = [v15 objectForInfoDictionaryKey:PSDataSourceClassKey];
+  v17 = [bundle3 objectForInfoDictionaryKey:PSDataSourceClassKey];
 
   [v8 setObject:v17 forKeyedSubscript:v16];
 
   return v8;
 }
 
-- (COSSystemAppSettingsBundleRow)initWithBundle:(id)a3 name:(id)a4
+- (COSSystemAppSettingsBundleRow)initWithBundle:(id)bundle name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  bundleCopy = bundle;
+  nameCopy = name;
   v35.receiver = self;
   v35.super_class = COSSystemAppSettingsBundleRow;
   v9 = [(COSSystemAppSettingsBundleRow *)&v35 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bundle, a3);
-    v11 = [v7 bundleIdentifier];
+    objc_storeStrong(&v9->_bundle, bundle);
+    bundleIdentifier = [bundleCopy bundleIdentifier];
     identifier = v10->_identifier;
-    v10->_identifier = v11;
+    v10->_identifier = bundleIdentifier;
 
-    objc_storeStrong(&v10->_name, a4);
-    v13 = [v7 objectForInfoDictionaryKey:BPSRequiredWatchCapabilitiesKey];
+    objc_storeStrong(&v10->_name, name);
+    v13 = [bundleCopy objectForInfoDictionaryKey:BPSRequiredWatchCapabilitiesKey];
     requiredCapabilities = v10->_requiredCapabilities;
     v10->_requiredCapabilities = v13;
 
-    v15 = [v7 objectForInfoDictionaryKey:BPSForbiddenWatchCapabilitiesKey];
+    v15 = [bundleCopy objectForInfoDictionaryKey:BPSForbiddenWatchCapabilitiesKey];
     forbiddenCapabilities = v10->_forbiddenCapabilities;
     v10->_forbiddenCapabilities = v15;
 
-    v17 = [v7 objectForInfoDictionaryKey:BPSRequiredFeatureFlagsKey];
+    v17 = [bundleCopy objectForInfoDictionaryKey:BPSRequiredFeatureFlagsKey];
     requiredFeatureFlags = v10->_requiredFeatureFlags;
     v10->_requiredFeatureFlags = v17;
 
-    v19 = [v7 objectForInfoDictionaryKey:BPSRequiredInstalledWatchApps];
+    v19 = [bundleCopy objectForInfoDictionaryKey:BPSRequiredInstalledWatchApps];
     requiredInstalledWatchApps = v10->_requiredInstalledWatchApps;
     v10->_requiredInstalledWatchApps = v19;
 
-    v21 = [v7 objectForInfoDictionaryKey:BPSShowOnAnyRequiredWatchAppsInstalled];
+    v21 = [bundleCopy objectForInfoDictionaryKey:BPSShowOnAnyRequiredWatchAppsInstalled];
     v10->_showOnAnyRequiredWatchAppsInstalled = [v21 BOOLValue];
 
-    v22 = [v7 objectForInfoDictionaryKey:@"CFBundleDisplayName"];
+    v22 = [bundleCopy objectForInfoDictionaryKey:@"CFBundleDisplayName"];
     displayName = v10->_displayName;
     v10->_displayName = v22;
 
-    v24 = [v7 bundleIdentifier];
-    v25 = [@"com.apple.NanoBedtimeBridgeSettings" isEqualToString:v24];
+    bundleIdentifier2 = [bundleCopy bundleIdentifier];
+    v25 = [@"com.apple.NanoBedtimeBridgeSettings" isEqualToString:bundleIdentifier2];
 
     if (v25)
     {
       v26 = +[NSBundle mainBundle];
-      v27 = [v26 localizedStringForKey:v8 value:&stru_10026E598 table:@"Localizable-burrito"];
+      v27 = [v26 localizedStringForKey:nameCopy value:&stru_10026E598 table:@"Localizable-burrito"];
       v28 = v10->_displayName;
       v10->_displayName = v27;
     }
@@ -109,19 +109,19 @@
     if (![(NSString *)v10->_displayName length])
     {
       v29 = +[NSBundle mainBundle];
-      v30 = [v29 localizedStringForKey:v8 value:&stru_10026E598 table:@"Settings"];
+      v30 = [v29 localizedStringForKey:nameCopy value:&stru_10026E598 table:@"Settings"];
       v31 = v10->_displayName;
       v10->_displayName = v30;
     }
 
-    v32 = [(NSBundle *)v10->_bundle bundleIdentifier];
+    bundleIdentifier3 = [(NSBundle *)v10->_bundle bundleIdentifier];
     if (BPSSystemAppIsRemovable())
     {
       v33 = v10->_requiredInstalledWatchApps;
 
       if (!v33)
       {
-        [(COSSystemAppSettingsBundleRow *)v10 _setRequiredInstalledWatchAppsForLegacy:v7];
+        [(COSSystemAppSettingsBundleRow *)v10 _setRequiredInstalledWatchAppsForLegacy:bundleCopy];
       }
     }
 
@@ -133,7 +133,7 @@
   return v10;
 }
 
-- (void)_setRequiredInstalledWatchAppsForLegacy:(id)a3
+- (void)_setRequiredInstalledWatchAppsForLegacy:(id)legacy
 {
   v4 = BPSWatchAppBundleIDForSettingsBundle();
   v7 = v4;
@@ -142,15 +142,15 @@
   self->_requiredInstalledWatchApps = v5;
 }
 
-- (void)setAreRequiredWatchAppsInstalled:(id)a3
+- (void)setAreRequiredWatchAppsInstalled:(id)installed
 {
-  v10 = a3;
-  v4 = [v10 valueForProperty:NRDevicePropertyIsAltAccount];
-  v5 = [v4 BOOLValue];
+  installedCopy = installed;
+  v4 = [installedCopy valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v4 BOOLValue];
 
-  if ((v5 & 1) == 0 && ([(COSSystemAppSettingsBundleRow *)self requiredInstalledWatchApps], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, HasStandaloneAppsCapability = BPSDeviceHasStandaloneAppsCapability(), v7, HasStandaloneAppsCapability))
+  if ((bOOLValue & 1) == 0 && ([(COSSystemAppSettingsBundleRow *)self requiredInstalledWatchApps], (v6 = objc_claimAutoreleasedReturnValue()) != 0) && (v7 = v6, HasStandaloneAppsCapability = BPSDeviceHasStandaloneAppsCapability(), v7, HasStandaloneAppsCapability))
   {
-    v9 = [(COSSystemAppSettingsBundleRow *)self _requiredAppsInstalled:v10];
+    v9 = [(COSSystemAppSettingsBundleRow *)self _requiredAppsInstalled:installedCopy];
   }
 
   else
@@ -158,10 +158,10 @@
     v9 = 1;
   }
 
-  [(COSSystemAppSettingsBundleRow *)self setRequiredAppsInstalled:![(COSSystemAppSettingsBundleRow *)self _removeRowForSpecialCriteriaOverride:v10]& v9];
+  [(COSSystemAppSettingsBundleRow *)self setRequiredAppsInstalled:![(COSSystemAppSettingsBundleRow *)self _removeRowForSpecialCriteriaOverride:installedCopy]& v9];
 }
 
-- (BOOL)_removeRowForSpecialCriteriaOverride:(id)a3
+- (BOOL)_removeRowForSpecialCriteriaOverride:(id)override
 {
   HasStandaloneAppsCapability = BPSDeviceHasStandaloneAppsCapability();
   if ([@"com.apple.OxygenSaturationSettings" isEqualToString:self->_identifier])
@@ -173,7 +173,7 @@
 
     else
     {
-      v6 = [UIApp displayDevice];
+      displayDevice = [UIApp displayDevice];
       v5 = BPSDeviceHasCapabilityForString() ^ 1;
     }
   }
@@ -186,12 +186,12 @@
   return v5;
 }
 
-- (BOOL)_requiredAppsInstalled:(id)a3
+- (BOOL)_requiredAppsInstalled:(id)installed
 {
-  v4 = a3;
-  if (v4)
+  installedCopy = installed;
+  if (installedCopy)
   {
-    v18 = [(COSSystemAppSettingsBundleRow *)self showOnAnyRequiredWatchAppsInstalled];
+    showOnAnyRequiredWatchAppsInstalled = [(COSSystemAppSettingsBundleRow *)self showOnAnyRequiredWatchAppsInstalled];
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
@@ -218,13 +218,13 @@
           v21 = 0;
           v12 = +[ACXDeviceConnection sharedDeviceConnection];
           v20 = 0;
-          v13 = [v12 getApplicationIsInstalled:&v21 withBundleID:v11 onPairedDevice:v4 error:&v20];
+          v13 = [v12 getApplicationIsInstalled:&v21 withBundleID:v11 onPairedDevice:installedCopy error:&v20];
           v14 = v20;
 
           if (v13)
           {
             v8 = v21;
-            if (v18 == v21)
+            if (showOnAnyRequiredWatchAppsInstalled == v21)
             {
 
               goto LABEL_19;
@@ -269,10 +269,10 @@ LABEL_19:
 
 - (id)description
 {
-  v3 = [(COSSystemAppSettingsBundleRow *)self name];
-  v4 = [(COSSystemAppSettingsBundleRow *)self displayName];
-  v5 = [(COSSystemAppSettingsBundleRow *)self identifier];
-  v6 = [NSString stringWithFormat:@"row name: %@ - display name: %@ - identifier: %@", v3, v4, v5];
+  name = [(COSSystemAppSettingsBundleRow *)self name];
+  displayName = [(COSSystemAppSettingsBundleRow *)self displayName];
+  identifier = [(COSSystemAppSettingsBundleRow *)self identifier];
+  v6 = [NSString stringWithFormat:@"row name: %@ - display name: %@ - identifier: %@", name, displayName, identifier];
 
   return v6;
 }

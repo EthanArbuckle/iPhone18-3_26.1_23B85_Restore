@@ -5,7 +5,7 @@
 - (BOOL)isEmergencyWiFiCallingCurrentlyAvailable;
 - (BOOL)isThumperCallingAllowedForCurrentDevice;
 - (BOOL)isThumperCallingAllowedOnDefaultPairedSecondaryDevice;
-- (BOOL)isThumperCallingAllowedOnSecondaryDeviceWithID:(id)a3;
+- (BOOL)isThumperCallingAllowedOnSecondaryDeviceWithID:(id)d;
 - (BOOL)isThumperCallingCurrentlyAvailable;
 - (BOOL)isThumperCallingEnabled;
 - (BOOL)isThumperCallingProvisioningURLInvalid;
@@ -29,11 +29,11 @@
 - (TUCTCapabilityInfo)thumperCallingCapabilityInfo;
 - (TUCTCapabilityInfo)voLTECallingCapabilityInfo;
 - (TUCTCapabilityInfo)wiFiCallingCapabilityInfo;
-- (TUSenderIdentityCapabilities)initWithSenderIdentityUUID:(id)a3 state:(id)a4 client:(id)a5;
+- (TUSenderIdentityCapabilities)initWithSenderIdentityUUID:(id)d state:(id)state client:(id)client;
 - (id)debugDescription;
 - (int)thumperCallingProvisioningStatus;
 - (int)wiFiCallingProvisioningStatus;
-- (void)_sendNotificationsAndCallbacksComparingToOldSenderIdentityCapabilities:(id)a3;
+- (void)_sendNotificationsAndCallbacksComparingToOldSenderIdentityCapabilities:(id)capabilities;
 - (void)cancelPinRequestFromPrimaryDeviceForThumperCalling;
 - (void)invalidateAndRefreshThumperCallingProvisioningURL;
 - (void)invalidateAndRefreshWiFiCallingProvisioningURL;
@@ -45,124 +45,124 @@
 
 - (BOOL)isThumperCallingEnabled
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 thumperCallingCapabilitiesState];
-  v4 = [v3 isEnabled];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+  isEnabled = [thumperCallingCapabilitiesState isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
 - (TUCTCapabilityInfo)thumperCallingCapabilityInfo
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 thumperCallingCapabilitiesState];
-  v4 = [v3 ctCapabilityInfo];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+  ctCapabilityInfo = [thumperCallingCapabilitiesState ctCapabilityInfo];
 
-  return v4;
+  return ctCapabilityInfo;
 }
 
 - (BOOL)isWiFiCallingEnabled
 {
-  v3 = [(TUSenderIdentityCapabilities *)self supportsWiFiCalling];
-  if (v3)
+  supportsWiFiCalling = [(TUSenderIdentityCapabilities *)self supportsWiFiCalling];
+  if (supportsWiFiCalling)
   {
-    v4 = [(TUSenderIdentityCapabilities *)self state];
-    v5 = [v4 wiFiCallingCapabilitiesState];
-    v6 = [v5 isEnabled];
+    state = [(TUSenderIdentityCapabilities *)self state];
+    wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+    isEnabled = [wiFiCallingCapabilitiesState isEnabled];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(supportsWiFiCalling) = isEnabled;
   }
 
-  return v3;
+  return supportsWiFiCalling;
 }
 
 - (BOOL)supportsWiFiCalling
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 wiFiCallingCapabilitiesState];
-  v4 = [v3 isSupported];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+  isSupported = [wiFiCallingCapabilitiesState isSupported];
 
-  return v4;
+  return isSupported;
 }
 
 - (BOOL)isVoLTECallingEnabled
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 voLTECallingCapabilitiesState];
-  v4 = [v3 isEnabled];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  voLTECallingCapabilitiesState = [state voLTECallingCapabilitiesState];
+  isEnabled = [voLTECallingCapabilitiesState isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
 - (BOOL)supportsThumperCalling
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 thumperCallingCapabilitiesState];
-  v4 = [v3 isSupported];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+  isSupported = [thumperCallingCapabilitiesState isSupported];
 
-  return v4;
+  return isSupported;
 }
 
 - (BOOL)supportsThumperCallingOverCellularData
 {
-  v2 = [(TUSenderIdentityCapabilities *)self client];
-  v3 = [v2 state];
-  v4 = [v3 supportsCellularData];
+  client = [(TUSenderIdentityCapabilities *)self client];
+  state = [client state];
+  supportsCellularData = [state supportsCellularData];
 
-  return v4;
+  return supportsCellularData;
 }
 
 - (TUCTCapabilityInfo)wiFiCallingCapabilityInfo
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 wiFiCallingCapabilitiesState];
-  v4 = [v3 ctCapabilityInfo];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+  ctCapabilityInfo = [wiFiCallingCapabilitiesState ctCapabilityInfo];
 
-  return v4;
+  return ctCapabilityInfo;
 }
 
 - (BOOL)supportsSimultaneousVoiceAndData
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 supportsSimultaneousVoiceAndData];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  supportsSimultaneousVoiceAndData = [state supportsSimultaneousVoiceAndData];
 
-  return v3;
+  return supportsSimultaneousVoiceAndData;
 }
 
 - (BOOL)isWiFiCallingCurrentlyAvailable
 {
-  v3 = [(TUSenderIdentityCapabilities *)self isWiFiCallingEnabled];
-  if (v3)
+  isWiFiCallingEnabled = [(TUSenderIdentityCapabilities *)self isWiFiCallingEnabled];
+  if (isWiFiCallingEnabled)
   {
-    v4 = [(TUSenderIdentityCapabilities *)self state];
-    v5 = [v4 wiFiCallingCapabilitiesState];
-    v6 = [v5 isCurrentlyAvailable];
+    state = [(TUSenderIdentityCapabilities *)self state];
+    wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+    isCurrentlyAvailable = [wiFiCallingCapabilitiesState isCurrentlyAvailable];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(isWiFiCallingEnabled) = isCurrentlyAvailable;
   }
 
-  return v3;
+  return isWiFiCallingEnabled;
 }
 
-- (TUSenderIdentityCapabilities)initWithSenderIdentityUUID:(id)a3 state:(id)a4 client:(id)a5
+- (TUSenderIdentityCapabilities)initWithSenderIdentityUUID:(id)d state:(id)state client:(id)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  stateCopy = state;
+  clientCopy = client;
   v17.receiver = self;
   v17.super_class = TUSenderIdentityCapabilities;
   v11 = [(TUSenderIdentityCapabilities *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [dCopy copy];
     senderIdentityUUID = v11->_senderIdentityUUID;
     v11->_senderIdentityUUID = v12;
 
-    v14 = [v9 copy];
+    v14 = [stateCopy copy];
     state = v11->_state;
     v11->_state = v14;
 
-    objc_storeStrong(&v11->_client, a5);
+    objc_storeStrong(&v11->_client, client);
   }
 
   return v11;
@@ -175,288 +175,288 @@
     return 1;
   }
 
-  v4 = [(TUSenderIdentityCapabilities *)self client];
-  v5 = [v4 state];
-  if ([v5 supportsPrimaryCalling])
+  client = [(TUSenderIdentityCapabilities *)self client];
+  state = [client state];
+  if ([state supportsPrimaryCalling])
   {
-    v3 = 0;
+    areRelayCallingFeaturesEnabled = 0;
   }
 
   else if ([(TUSenderIdentityCapabilities *)self isThumperCallingCurrentlyAvailable])
   {
-    v3 = 1;
+    areRelayCallingFeaturesEnabled = 1;
   }
 
   else
   {
-    v6 = [(TUSenderIdentityCapabilities *)self client];
-    v7 = [v6 state];
-    v3 = [v7 areRelayCallingFeaturesEnabled];
+    client2 = [(TUSenderIdentityCapabilities *)self client];
+    state2 = [client2 state];
+    areRelayCallingFeaturesEnabled = [state2 areRelayCallingFeaturesEnabled];
   }
 
-  return v3;
+  return areRelayCallingFeaturesEnabled;
 }
 
 - (BOOL)canAttemptEmergencyCallsWithoutCellularConnection
 {
-  v3 = [(TUSenderIdentityCapabilities *)self canAttemptTelephonyCallsWithoutCellularConnection];
-  if (v3)
+  canAttemptTelephonyCallsWithoutCellularConnection = [(TUSenderIdentityCapabilities *)self canAttemptTelephonyCallsWithoutCellularConnection];
+  if (canAttemptTelephonyCallsWithoutCellularConnection)
   {
 
-    LOBYTE(v3) = [(TUSenderIdentityCapabilities *)self isEmergencyWiFiCallingCurrentlyAvailable];
+    LOBYTE(canAttemptTelephonyCallsWithoutCellularConnection) = [(TUSenderIdentityCapabilities *)self isEmergencyWiFiCallingCurrentlyAvailable];
   }
 
-  return v3;
+  return canAttemptTelephonyCallsWithoutCellularConnection;
 }
 
 - (BOOL)isCSCallingCurrentlyAvailable
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 csCallingCapabilitiesState];
-  v4 = [v3 isCurrentlyAvailable];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  csCallingCapabilitiesState = [state csCallingCapabilitiesState];
+  isCurrentlyAvailable = [csCallingCapabilitiesState isCurrentlyAvailable];
 
-  return v4;
+  return isCurrentlyAvailable;
 }
 
 - (BOOL)supportsVoLTECalling
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 voLTECallingCapabilitiesState];
-  v4 = [v3 isSupported];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  voLTECallingCapabilitiesState = [state voLTECallingCapabilitiesState];
+  isSupported = [voLTECallingCapabilitiesState isSupported];
 
-  return v4;
+  return isSupported;
 }
 
 - (TUCTCapabilityInfo)voLTECallingCapabilityInfo
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 voLTECallingCapabilitiesState];
-  v4 = [v3 ctCapabilityInfo];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  voLTECallingCapabilitiesState = [state voLTECallingCapabilitiesState];
+  ctCapabilityInfo = [voLTECallingCapabilitiesState ctCapabilityInfo];
 
-  return v4;
+  return ctCapabilityInfo;
 }
 
 - (BOOL)isVoLTECallingCurrentlyAvailable
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 voLTECallingCapabilitiesState];
-  v4 = [v3 isCurrentlyAvailable];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  voLTECallingCapabilitiesState = [state voLTECallingCapabilitiesState];
+  isCurrentlyAvailable = [voLTECallingCapabilitiesState isCurrentlyAvailable];
 
-  return v4;
+  return isCurrentlyAvailable;
 }
 
 - (BOOL)supportsWiFiCallingRoaming
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 wiFiCallingCapabilitiesState];
-  v4 = [v3 isRoamingSupported];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+  isRoamingSupported = [wiFiCallingCapabilitiesState isRoamingSupported];
 
-  return v4;
+  return isRoamingSupported;
 }
 
 - (BOOL)isWiFiCallingRoamingEnabled
 {
-  v3 = [(TUSenderIdentityCapabilities *)self supportsWiFiCallingRoaming];
-  if (v3)
+  supportsWiFiCallingRoaming = [(TUSenderIdentityCapabilities *)self supportsWiFiCallingRoaming];
+  if (supportsWiFiCallingRoaming)
   {
-    v4 = [(TUSenderIdentityCapabilities *)self state];
-    v5 = [v4 wiFiCallingCapabilitiesState];
-    v6 = [v5 isRoamingEnabled];
+    state = [(TUSenderIdentityCapabilities *)self state];
+    wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+    isRoamingEnabled = [wiFiCallingCapabilitiesState isRoamingEnabled];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(supportsWiFiCallingRoaming) = isRoamingEnabled;
   }
 
-  return v3;
+  return supportsWiFiCallingRoaming;
 }
 
 - (BOOL)supportsEmergencyWiFiCalling
 {
-  v3 = [(TUSenderIdentityCapabilities *)self supportsWiFiCalling];
-  if (v3)
+  supportsWiFiCalling = [(TUSenderIdentityCapabilities *)self supportsWiFiCalling];
+  if (supportsWiFiCalling)
   {
-    v4 = [(TUSenderIdentityCapabilities *)self state];
-    v5 = [v4 wiFiCallingCapabilitiesState];
-    v6 = [v5 isEmergencySupported];
+    state = [(TUSenderIdentityCapabilities *)self state];
+    wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+    isEmergencySupported = [wiFiCallingCapabilitiesState isEmergencySupported];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(supportsWiFiCalling) = isEmergencySupported;
   }
 
-  return v3;
+  return supportsWiFiCalling;
 }
 
 - (BOOL)isEmergencyWiFiCallingCurrentlyAvailable
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 wiFiCallingCapabilitiesState];
-  v4 = [v3 isEmergencyCurrentlyAvailable];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+  isEmergencyCurrentlyAvailable = [wiFiCallingCapabilitiesState isEmergencyCurrentlyAvailable];
 
-  return v4;
+  return isEmergencyCurrentlyAvailable;
 }
 
 - (int)wiFiCallingProvisioningStatus
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 wiFiCallingCapabilitiesState];
-  v4 = [v3 provisioningStatus];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+  provisioningStatus = [wiFiCallingCapabilitiesState provisioningStatus];
 
-  return v4;
+  return provisioningStatus;
 }
 
 - (NSURL)wiFiCallingProvisioningURL
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 wiFiCallingCapabilitiesState];
-  v4 = [v3 provisioningURL];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+  provisioningURL = [wiFiCallingCapabilitiesState provisioningURL];
 
-  return v4;
+  return provisioningURL;
 }
 
 - (BOOL)isWiFiCallingProvisioningURLInvalid
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 wiFiCallingCapabilitiesState];
-  v4 = [v3 isProvisioningURLInvalid];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+  isProvisioningURLInvalid = [wiFiCallingCapabilitiesState isProvisioningURLInvalid];
 
-  return v4;
+  return isProvisioningURLInvalid;
 }
 
 - (NSData)wiFiCallingProvisioningPostData
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 wiFiCallingCapabilitiesState];
-  v4 = [v3 provisioningPostData];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  wiFiCallingCapabilitiesState = [state wiFiCallingCapabilitiesState];
+  provisioningPostData = [wiFiCallingCapabilitiesState provisioningPostData];
 
-  return v4;
+  return provisioningPostData;
 }
 
 - (BOOL)isThumperCallingAllowedForCurrentDevice
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 thumperCallingCapabilitiesState];
-  v4 = [v3 isApproved];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+  isApproved = [thumperCallingCapabilitiesState isApproved];
 
-  return v4;
+  return isApproved;
 }
 
 - (BOOL)isThumperCallingCurrentlyAvailable
 {
-  v3 = [(TUSenderIdentityCapabilities *)self isThumperCallingEnabled];
-  if (v3)
+  isThumperCallingEnabled = [(TUSenderIdentityCapabilities *)self isThumperCallingEnabled];
+  if (isThumperCallingEnabled)
   {
-    v4 = [(TUSenderIdentityCapabilities *)self state];
-    v5 = [v4 thumperCallingCapabilitiesState];
-    v6 = [v5 isCurrentlyAvailable];
+    state = [(TUSenderIdentityCapabilities *)self state];
+    thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+    isCurrentlyAvailable = [thumperCallingCapabilitiesState isCurrentlyAvailable];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(isThumperCallingEnabled) = isCurrentlyAvailable;
   }
 
-  return v3;
+  return isThumperCallingEnabled;
 }
 
 - (int)thumperCallingProvisioningStatus
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 thumperCallingCapabilitiesState];
-  v4 = [v3 provisioningStatus];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+  provisioningStatus = [thumperCallingCapabilitiesState provisioningStatus];
 
-  return v4;
+  return provisioningStatus;
 }
 
 - (NSURL)thumperCallingProvisioningURL
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 thumperCallingCapabilitiesState];
-  v4 = [v3 provisioningURL];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+  provisioningURL = [thumperCallingCapabilitiesState provisioningURL];
 
-  return v4;
+  return provisioningURL;
 }
 
 - (BOOL)isThumperCallingProvisioningURLInvalid
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 thumperCallingCapabilitiesState];
-  v4 = [v3 isProvisioningURLInvalid];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+  isProvisioningURLInvalid = [thumperCallingCapabilitiesState isProvisioningURLInvalid];
 
-  return v4;
+  return isProvisioningURLInvalid;
 }
 
 - (NSData)thumperCallingProvisioningPostData
 {
-  v2 = [(TUSenderIdentityCapabilities *)self state];
-  v3 = [v2 thumperCallingCapabilitiesState];
-  v4 = [v3 provisioningPostData];
+  state = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+  provisioningPostData = [thumperCallingCapabilitiesState provisioningPostData];
 
-  return v4;
+  return provisioningPostData;
 }
 
-- (BOOL)isThumperCallingAllowedOnSecondaryDeviceWithID:(id)a3
+- (BOOL)isThumperCallingAllowedOnSecondaryDeviceWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(TUSenderIdentityCapabilities *)self client];
-  v6 = [v5 state];
-  v7 = [v6 supportsPrimaryCalling];
+  dCopy = d;
+  client = [(TUSenderIdentityCapabilities *)self client];
+  state = [client state];
+  supportsPrimaryCalling = [state supportsPrimaryCalling];
 
-  if ((v7 & 1) == 0)
+  if ((supportsPrimaryCalling & 1) == 0)
   {
     v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s can only be called from devices with [TUCallCapabilities supportsPrimaryCalling] = YES", "-[TUSenderIdentityCapabilities isThumperCallingAllowedOnSecondaryDeviceWithID:]"];
     NSLog(&cfstr_TuassertionFai.isa, v8);
 
     if (_TUAssertShouldCrashApplication())
     {
-      v9 = [(TUSenderIdentityCapabilities *)self client];
-      v10 = [v9 state];
-      v11 = [v10 supportsPrimaryCalling];
+      client2 = [(TUSenderIdentityCapabilities *)self client];
+      state2 = [client2 state];
+      supportsPrimaryCalling2 = [state2 supportsPrimaryCalling];
 
-      if ((v11 & 1) == 0)
+      if ((supportsPrimaryCalling2 & 1) == 0)
       {
         [TUSenderIdentityCapabilities isThumperCallingAllowedOnSecondaryDeviceWithID:];
       }
     }
   }
 
-  v12 = [(TUSenderIdentityCapabilities *)self state];
-  v13 = [v12 thumperCallingCapabilitiesState];
+  state3 = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state3 thumperCallingCapabilitiesState];
 
-  v14 = [v13 approvedSecondaryDeviceIDs];
-  v15 = [v14 containsObject:v4];
+  approvedSecondaryDeviceIDs = [thumperCallingCapabilitiesState approvedSecondaryDeviceIDs];
+  v15 = [approvedSecondaryDeviceIDs containsObject:dCopy];
 
   return v15;
 }
 
 - (BOOL)isThumperCallingAllowedOnDefaultPairedSecondaryDevice
 {
-  v3 = [(TUSenderIdentityCapabilities *)self client];
-  v4 = [v3 state];
-  v5 = [v4 supportsPrimaryCalling];
+  client = [(TUSenderIdentityCapabilities *)self client];
+  state = [client state];
+  supportsPrimaryCalling = [state supportsPrimaryCalling];
 
-  if ((v5 & 1) == 0)
+  if ((supportsPrimaryCalling & 1) == 0)
   {
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s can only be called from devices with [TUCallCapabilities supportsPrimaryCalling] = YES", "-[TUSenderIdentityCapabilities isThumperCallingAllowedOnDefaultPairedSecondaryDevice]"];
     NSLog(&cfstr_TuassertionFai.isa, v6);
 
     if (_TUAssertShouldCrashApplication())
     {
-      v7 = [(TUSenderIdentityCapabilities *)self client];
-      v8 = [v7 state];
-      v9 = [v8 supportsPrimaryCalling];
+      client2 = [(TUSenderIdentityCapabilities *)self client];
+      state2 = [client2 state];
+      supportsPrimaryCalling2 = [state2 supportsPrimaryCalling];
 
-      if ((v9 & 1) == 0)
+      if ((supportsPrimaryCalling2 & 1) == 0)
       {
         [TUSenderIdentityCapabilities isThumperCallingAllowedOnDefaultPairedSecondaryDevice];
       }
     }
   }
 
-  v10 = [(TUSenderIdentityCapabilities *)self state];
-  v11 = [v10 thumperCallingCapabilitiesState];
+  state3 = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState = [state3 thumperCallingCapabilitiesState];
 
-  if ([v11 supportsDefaultPairedDevice])
+  if ([thumperCallingCapabilitiesState supportsDefaultPairedDevice])
   {
-    v12 = [(TUSenderIdentityCapabilities *)self client];
-    v13 = [v12 state];
-    v14 = [v13 defaultPairedDevice];
-    v15 = [v14 uniqueID];
-    v16 = [(TUSenderIdentityCapabilities *)self isThumperCallingAllowedOnSecondaryDeviceWithID:v15];
+    client3 = [(TUSenderIdentityCapabilities *)self client];
+    state4 = [client3 state];
+    defaultPairedDevice = [state4 defaultPairedDevice];
+    uniqueID = [defaultPairedDevice uniqueID];
+    v16 = [(TUSenderIdentityCapabilities *)self isThumperCallingAllowedOnSecondaryDeviceWithID:uniqueID];
   }
 
   else
@@ -476,9 +476,9 @@
     _os_log_impl(&dword_1956FD000, v3, OS_LOG_TYPE_DEFAULT, "Asked to invalidate and refresh WiFi calling provisioning URL", v6, 2u);
   }
 
-  v4 = [(TUSenderIdentityCapabilities *)self client];
-  v5 = [(TUSenderIdentityCapabilities *)self senderIdentityUUID];
-  [v4 invalidateAndRefreshWiFiCallingProvisioningURLForSenderIdentityWithUUID:v5];
+  client = [(TUSenderIdentityCapabilities *)self client];
+  senderIdentityUUID = [(TUSenderIdentityCapabilities *)self senderIdentityUUID];
+  [client invalidateAndRefreshWiFiCallingProvisioningURLForSenderIdentityWithUUID:senderIdentityUUID];
 }
 
 - (void)invalidateAndRefreshThumperCallingProvisioningURL
@@ -490,9 +490,9 @@
     _os_log_impl(&dword_1956FD000, v3, OS_LOG_TYPE_DEFAULT, "Asked to invalidate and refresh Thumper calling provisioning URL", v6, 2u);
   }
 
-  v4 = [(TUSenderIdentityCapabilities *)self client];
-  v5 = [(TUSenderIdentityCapabilities *)self senderIdentityUUID];
-  [v4 invalidateAndRefreshThumperCallingProvisioningURLForSenderIdentityWithUUID:v5];
+  client = [(TUSenderIdentityCapabilities *)self client];
+  senderIdentityUUID = [(TUSenderIdentityCapabilities *)self senderIdentityUUID];
+  [client invalidateAndRefreshThumperCallingProvisioningURLForSenderIdentityWithUUID:senderIdentityUUID];
 }
 
 - (void)requestPinFromPrimaryDeviceForThumperCalling
@@ -504,8 +504,8 @@
     _os_log_impl(&dword_1956FD000, v3, OS_LOG_TYPE_DEFAULT, "Asked to request PIN from primary device for Thumper calling", v5, 2u);
   }
 
-  v4 = [(TUSenderIdentityCapabilities *)self client];
-  [v4 requestPinFromPrimaryDevice];
+  client = [(TUSenderIdentityCapabilities *)self client];
+  [client requestPinFromPrimaryDevice];
 }
 
 - (void)cancelPinRequestFromPrimaryDeviceForThumperCalling
@@ -517,199 +517,199 @@
     _os_log_impl(&dword_1956FD000, v3, OS_LOG_TYPE_DEFAULT, "Asked to cancel PIN from primary device for Thumper calling", v5, 2u);
   }
 
-  v4 = [(TUSenderIdentityCapabilities *)self client];
-  [v4 cancelPinRequestFromPrimaryDevice];
+  client = [(TUSenderIdentityCapabilities *)self client];
+  [client cancelPinRequestFromPrimaryDevice];
 }
 
-- (void)_sendNotificationsAndCallbacksComparingToOldSenderIdentityCapabilities:(id)a3
+- (void)_sendNotificationsAndCallbacksComparingToOldSenderIdentityCapabilities:(id)capabilities
 {
   v81 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 isWiFiCallingEnabled];
-  v53 = [v4 isVoLTECallingEnabled];
-  v55 = [v4 supportsThumperCalling];
-  v44 = [v4 supportsThumperCallingOverCellularData];
-  v51 = [v4 isThumperCallingEnabled];
-  v6 = [v4 thumperCallingCapabilityInfo];
-  v49 = [v6 provisioningStatus];
+  capabilitiesCopy = capabilities;
+  isWiFiCallingEnabled = [capabilitiesCopy isWiFiCallingEnabled];
+  isVoLTECallingEnabled = [capabilitiesCopy isVoLTECallingEnabled];
+  supportsThumperCalling = [capabilitiesCopy supportsThumperCalling];
+  supportsThumperCallingOverCellularData = [capabilitiesCopy supportsThumperCallingOverCellularData];
+  isThumperCallingEnabled = [capabilitiesCopy isThumperCallingEnabled];
+  thumperCallingCapabilityInfo = [capabilitiesCopy thumperCallingCapabilityInfo];
+  provisioningStatus = [thumperCallingCapabilityInfo provisioningStatus];
 
-  v7 = [v4 wiFiCallingCapabilityInfo];
-  v45 = [v7 provisioningURL];
+  wiFiCallingCapabilityInfo = [capabilitiesCopy wiFiCallingCapabilityInfo];
+  provisioningURL = [wiFiCallingCapabilityInfo provisioningURL];
 
-  v8 = [v4 thumperCallingCapabilityInfo];
-  v46 = [v8 provisioningURL];
+  thumperCallingCapabilityInfo2 = [capabilitiesCopy thumperCallingCapabilityInfo];
+  provisioningURL2 = [thumperCallingCapabilityInfo2 provisioningURL];
 
-  v9 = [v4 state];
-  v10 = [v9 thumperCallingCapabilitiesState];
-  v43 = [v10 isAssociated];
+  state = [capabilitiesCopy state];
+  thumperCallingCapabilitiesState = [state thumperCallingCapabilitiesState];
+  isAssociated = [thumperCallingCapabilitiesState isAssociated];
 
-  v11 = [v4 state];
+  state2 = [capabilitiesCopy state];
 
-  v12 = [v11 thumperCallingCapabilitiesState];
-  v47 = [v12 supportsDefaultPairedDevice];
+  thumperCallingCapabilitiesState2 = [state2 thumperCallingCapabilitiesState];
+  supportsDefaultPairedDevice = [thumperCallingCapabilitiesState2 supportsDefaultPairedDevice];
 
-  v13 = [(TUSenderIdentityCapabilities *)self isWiFiCallingEnabled];
-  v14 = [(TUSenderIdentityCapabilities *)self isVoLTECallingEnabled];
-  v54 = [(TUSenderIdentityCapabilities *)self supportsThumperCalling];
-  v52 = [(TUSenderIdentityCapabilities *)self supportsThumperCallingOverCellularData];
-  v50 = [(TUSenderIdentityCapabilities *)self isThumperCallingEnabled];
-  v15 = [(TUSenderIdentityCapabilities *)self thumperCallingCapabilityInfo];
-  v48 = [v15 provisioningStatus];
+  isWiFiCallingEnabled2 = [(TUSenderIdentityCapabilities *)self isWiFiCallingEnabled];
+  isVoLTECallingEnabled2 = [(TUSenderIdentityCapabilities *)self isVoLTECallingEnabled];
+  supportsThumperCalling2 = [(TUSenderIdentityCapabilities *)self supportsThumperCalling];
+  supportsThumperCallingOverCellularData2 = [(TUSenderIdentityCapabilities *)self supportsThumperCallingOverCellularData];
+  isThumperCallingEnabled2 = [(TUSenderIdentityCapabilities *)self isThumperCallingEnabled];
+  thumperCallingCapabilityInfo3 = [(TUSenderIdentityCapabilities *)self thumperCallingCapabilityInfo];
+  provisioningStatus2 = [thumperCallingCapabilityInfo3 provisioningStatus];
 
-  v16 = [(TUSenderIdentityCapabilities *)self wiFiCallingCapabilityInfo];
-  v17 = [v16 provisioningURL];
+  wiFiCallingCapabilityInfo2 = [(TUSenderIdentityCapabilities *)self wiFiCallingCapabilityInfo];
+  provisioningURL3 = [wiFiCallingCapabilityInfo2 provisioningURL];
 
-  v18 = [(TUSenderIdentityCapabilities *)self thumperCallingCapabilityInfo];
-  v19 = [v18 provisioningURL];
+  thumperCallingCapabilityInfo4 = [(TUSenderIdentityCapabilities *)self thumperCallingCapabilityInfo];
+  provisioningURL4 = [thumperCallingCapabilityInfo4 provisioningURL];
 
-  v20 = [(TUSenderIdentityCapabilities *)self state];
-  v21 = [v20 thumperCallingCapabilitiesState];
-  v42 = [v21 isAssociated];
+  state3 = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState3 = [state3 thumperCallingCapabilitiesState];
+  isAssociated2 = [thumperCallingCapabilitiesState3 isAssociated];
 
-  v22 = [(TUSenderIdentityCapabilities *)self state];
-  v23 = [v22 thumperCallingCapabilitiesState];
-  v24 = [v23 supportsDefaultPairedDevice];
+  state4 = [(TUSenderIdentityCapabilities *)self state];
+  thumperCallingCapabilitiesState4 = [state4 thumperCallingCapabilitiesState];
+  supportsDefaultPairedDevice2 = [thumperCallingCapabilitiesState4 supportsDefaultPairedDevice];
 
   v25 = 0x1E696A000;
-  if (v5 != v13)
+  if (isWiFiCallingEnabled != isWiFiCallingEnabled2)
   {
     v26 = TUDefaultLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v62 = v5;
+      *v62 = isWiFiCallingEnabled;
       *&v62[4] = 1024;
-      *&v62[6] = v13;
+      *&v62[6] = isWiFiCallingEnabled2;
       _os_log_impl(&dword_1956FD000, v26, OS_LOG_TYPE_DEFAULT, "WiFi capabilities changed from %d to %d", buf, 0xEu);
     }
 
-    v27 = [(TUSenderIdentityCapabilities *)self client];
+    client = [(TUSenderIdentityCapabilities *)self client];
     v60[0] = MEMORY[0x1E69E9820];
     v60[1] = 3221225472;
     v60[2] = __103__TUSenderIdentityCapabilities__sendNotificationsAndCallbacksComparingToOldSenderIdentityCapabilities___block_invoke;
     v60[3] = &unk_1E7424DA0;
     v60[4] = self;
-    [v27 performDelegateCallbackBlock:v60];
+    [client performDelegateCallbackBlock:v60];
 
     v25 = 0x1E696A000uLL;
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 postNotificationName:@"TUCallCapabilitiesWiFiCallingChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"TUCallCapabilitiesWiFiCallingChangedNotification" object:0];
   }
 
-  if (v53 != v14)
+  if (isVoLTECallingEnabled != isVoLTECallingEnabled2)
   {
     v29 = TUDefaultLog();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109376;
-      *v62 = v53;
+      *v62 = isVoLTECallingEnabled;
       *&v62[4] = 1024;
-      *&v62[6] = v14;
+      *&v62[6] = isVoLTECallingEnabled2;
       _os_log_impl(&dword_1956FD000, v29, OS_LOG_TYPE_DEFAULT, "VoLTE capabilities changed from %d to %d", buf, 0xEu);
     }
 
-    v30 = [(TUSenderIdentityCapabilities *)self client];
+    client2 = [(TUSenderIdentityCapabilities *)self client];
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
     v59[2] = __103__TUSenderIdentityCapabilities__sendNotificationsAndCallbacksComparingToOldSenderIdentityCapabilities___block_invoke_12;
     v59[3] = &unk_1E7424DA0;
     v59[4] = self;
-    [v30 performDelegateCallbackBlock:v59];
+    [client2 performDelegateCallbackBlock:v59];
 
-    v31 = [*(v25 + 3464) defaultCenter];
-    [v31 postNotificationName:@"TUCallCapabilitiesVoLTECallingChangedNotification" object:0];
+    defaultCenter2 = [*(v25 + 3464) defaultCenter];
+    [defaultCenter2 postNotificationName:@"TUCallCapabilitiesVoLTECallingChangedNotification" object:0];
   }
 
-  if (v55 != v54 || ((v44 ^ v52) & 1) != 0 || ((v51 ^ v50) & 1) != 0 || v49 != v48 || ((v47 ^ v24) & 1) != 0 || v43 != v42)
+  if (supportsThumperCalling != supportsThumperCalling2 || ((supportsThumperCallingOverCellularData ^ supportsThumperCallingOverCellularData2) & 1) != 0 || ((isThumperCallingEnabled ^ isThumperCallingEnabled2) & 1) != 0 || provisioningStatus != provisioningStatus2 || ((supportsDefaultPairedDevice ^ supportsDefaultPairedDevice2) & 1) != 0 || isAssociated != isAssociated2)
   {
     v32 = TUDefaultLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67111936;
-      *v62 = v55;
+      *v62 = supportsThumperCalling;
       *&v62[4] = 1024;
-      *&v62[6] = v44;
+      *&v62[6] = supportsThumperCallingOverCellularData;
       LOWORD(v63) = 1024;
-      *(&v63 + 2) = v51;
+      *(&v63 + 2) = isThumperCallingEnabled;
       HIWORD(v63) = 1024;
-      v64 = v49;
+      v64 = provisioningStatus;
       v65 = 1024;
-      v66 = v43;
+      v66 = isAssociated;
       v67 = 1024;
-      v68 = v47;
+      v68 = supportsDefaultPairedDevice;
       v69 = 1024;
-      v70 = v54;
+      v70 = supportsThumperCalling2;
       v71 = 1024;
-      v72 = v52;
+      v72 = supportsThumperCallingOverCellularData2;
       v73 = 1024;
-      v74 = v50;
+      v74 = isThumperCallingEnabled2;
       v75 = 1024;
-      v76 = v48;
+      v76 = provisioningStatus2;
       v77 = 1024;
-      v78 = v42;
+      v78 = isAssociated2;
       v79 = 1024;
-      v80 = v24;
+      v80 = supportsDefaultPairedDevice2;
       _os_log_impl(&dword_1956FD000, v32, OS_LOG_TYPE_DEFAULT, "Thumper capabilities changed from (supported=%d overCellularData=%d enabled=%d provisioningStatus=%d, associated=%d, supportsDefaultPairedDevice=%d) to (supported=%d overCellularData=%d enabled=%d provisioningStatus=%d, associated=%d, supportsDefaultPairedDevice=%d)", buf, 0x4Au);
     }
 
-    v33 = [(TUSenderIdentityCapabilities *)self client];
+    client3 = [(TUSenderIdentityCapabilities *)self client];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __103__TUSenderIdentityCapabilities__sendNotificationsAndCallbacksComparingToOldSenderIdentityCapabilities___block_invoke_15;
     v58[3] = &unk_1E7424DA0;
     v58[4] = self;
-    [v33 performDelegateCallbackBlock:v58];
+    [client3 performDelegateCallbackBlock:v58];
 
-    v34 = [*(v25 + 3464) defaultCenter];
-    [v34 postNotificationName:@"TUCallCapabilitiesThumperCallingChangedNotification" object:0];
+    defaultCenter3 = [*(v25 + 3464) defaultCenter];
+    [defaultCenter3 postNotificationName:@"TUCallCapabilitiesThumperCallingChangedNotification" object:0];
   }
 
-  if ((TUObjectsAreEqualOrNil(v45, v17) & 1) == 0)
+  if ((TUObjectsAreEqualOrNil(provisioningURL, provisioningURL3) & 1) == 0)
   {
     v35 = TUDefaultLog();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v62 = v45;
+      *v62 = provisioningURL;
       *&v62[8] = 2112;
-      v63 = v17;
+      v63 = provisioningURL3;
       _os_log_impl(&dword_1956FD000, v35, OS_LOG_TYPE_DEFAULT, "WiFi calling URL changed from %@ to %@", buf, 0x16u);
     }
 
-    v36 = [(TUSenderIdentityCapabilities *)self client];
+    client4 = [(TUSenderIdentityCapabilities *)self client];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __103__TUSenderIdentityCapabilities__sendNotificationsAndCallbacksComparingToOldSenderIdentityCapabilities___block_invoke_18;
     v57[3] = &unk_1E7424DA0;
     v57[4] = self;
-    [v36 performDelegateCallbackBlock:v57];
+    [client4 performDelegateCallbackBlock:v57];
 
-    v37 = [*(v25 + 3464) defaultCenter];
-    [v37 postNotificationName:@"TUCallCapabilitiesWiFiCallingProvisioningURLChangedNotification" object:0];
+    defaultCenter4 = [*(v25 + 3464) defaultCenter];
+    [defaultCenter4 postNotificationName:@"TUCallCapabilitiesWiFiCallingProvisioningURLChangedNotification" object:0];
   }
 
-  if ((TUObjectsAreEqualOrNil(v46, v19) & 1) == 0)
+  if ((TUObjectsAreEqualOrNil(provisioningURL2, provisioningURL4) & 1) == 0)
   {
     v38 = TUDefaultLog();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *v62 = v46;
+      *v62 = provisioningURL2;
       *&v62[8] = 2112;
-      v63 = v19;
+      v63 = provisioningURL4;
       _os_log_impl(&dword_1956FD000, v38, OS_LOG_TYPE_DEFAULT, "Thumper calling URL changed from %@ to %@", buf, 0x16u);
     }
 
-    v39 = [(TUSenderIdentityCapabilities *)self client];
+    client5 = [(TUSenderIdentityCapabilities *)self client];
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
     v56[2] = __103__TUSenderIdentityCapabilities__sendNotificationsAndCallbacksComparingToOldSenderIdentityCapabilities___block_invoke_21;
     v56[3] = &unk_1E7424DA0;
     v56[4] = self;
-    [v39 performDelegateCallbackBlock:v56];
+    [client5 performDelegateCallbackBlock:v56];
 
-    v40 = [*(v25 + 3464) defaultCenter];
-    [v40 postNotificationName:@"TUCallCapabilitiesThumperCallingProvisioningURLChangedNotification" object:0];
+    defaultCenter5 = [*(v25 + 3464) defaultCenter];
+    [defaultCenter5 postNotificationName:@"TUCallCapabilitiesThumperCallingProvisioningURLChangedNotification" object:0];
   }
 
   v41 = *MEMORY[0x1E69E9840];
@@ -801,7 +801,7 @@ void __103__TUSenderIdentityCapabilities__sendNotificationsAndCallbacksComparing
 - (void)isThumperCallingAllowedOnDefaultPairedSecondaryDevice
 {
   OUTLINED_FUNCTION_0_2();
-  v1 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_1_1();
   [v0 handleFailureInMethod:"-[TUSenderIdentityCapabilities isThumperCallingAllowedOnDefaultPairedSecondaryDevice]" object:? file:? lineNumber:? description:?];
 }

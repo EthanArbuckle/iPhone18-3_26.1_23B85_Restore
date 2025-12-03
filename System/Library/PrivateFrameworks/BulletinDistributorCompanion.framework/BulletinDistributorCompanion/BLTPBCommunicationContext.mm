@@ -1,45 +1,45 @@
 @interface BLTPBCommunicationContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSURL)contentURLLocalFileLocation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addRecipients:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCapability:(BOOL)a3;
-- (void)setHasMentionsCurrentUser:(BOOL)a3;
-- (void)setHasNotifyRecipientAnyway:(BOOL)a3;
-- (void)setHasRecipientCount:(BOOL)a3;
-- (void)setHasReplyToCurrentUser:(BOOL)a3;
-- (void)setHasSystemImage:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecipients:(id)recipients;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCapability:(BOOL)capability;
+- (void)setHasMentionsCurrentUser:(BOOL)user;
+- (void)setHasNotifyRecipientAnyway:(BOOL)anyway;
+- (void)setHasRecipientCount:(BOOL)count;
+- (void)setHasReplyToCurrentUser:(BOOL)user;
+- (void)setHasSystemImage:(BOOL)image;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBCommunicationContext
 
-- (void)addRecipients:(id)a3
+- (void)addRecipients:(id)recipients
 {
-  v4 = a3;
+  recipientsCopy = recipients;
   recipients = self->_recipients;
-  v8 = v4;
+  v8 = recipientsCopy;
   if (!recipients)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_recipients;
     self->_recipients = v6;
 
-    v4 = v8;
+    recipientsCopy = v8;
     recipients = self->_recipients;
   }
 
-  [(NSMutableArray *)recipients addObject:v4];
+  [(NSMutableArray *)recipients addObject:recipientsCopy];
 }
 
-- (void)setHasMentionsCurrentUser:(BOOL)a3
+- (void)setHasMentionsCurrentUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 8;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasNotifyRecipientAnyway:(BOOL)a3
+- (void)setHasNotifyRecipientAnyway:(BOOL)anyway
 {
-  if (a3)
+  if (anyway)
   {
     v3 = 16;
   }
@@ -67,9 +67,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasReplyToCurrentUser:(BOOL)a3
+- (void)setHasReplyToCurrentUser:(BOOL)user
 {
-  if (a3)
+  if (user)
   {
     v3 = 32;
   }
@@ -82,9 +82,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasRecipientCount:(BOOL)a3
+- (void)setHasRecipientCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -97,9 +97,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSystemImage:(BOOL)a3
+- (void)setHasSystemImage:(BOOL)image
 {
-  if (a3)
+  if (image)
   {
     v3 = 64;
   }
@@ -112,9 +112,9 @@
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasCapability:(BOOL)a3
+- (void)setHasCapability:(BOOL)capability
 {
-  if (a3)
+  if (capability)
   {
     v3 = 2;
   }
@@ -133,8 +133,8 @@
   v8.receiver = self;
   v8.super_class = BLTPBCommunicationContext;
   v4 = [(BLTPBCommunicationContext *)&v8 description];
-  v5 = [(BLTPBCommunicationContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBCommunicationContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -142,12 +142,12 @@
 - (id)dictionaryRepresentation
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   bundleIdentifier = self->_bundleIdentifier;
@@ -171,8 +171,8 @@
   sender = self->_sender;
   if (sender)
   {
-    v10 = [(BLTPBContact *)sender dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"sender"];
+    dictionaryRepresentation = [(BLTPBContact *)sender dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"sender"];
   }
 
   if ([(NSMutableArray *)self->_recipients count])
@@ -197,8 +197,8 @@
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          [v11 addObject:v17];
+          dictionaryRepresentation2 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          [v11 addObject:dictionaryRepresentation2];
         }
 
         v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -313,10 +313,10 @@ LABEL_33:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
@@ -470,17 +470,17 @@ LABEL_30:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v12;
+    [toCopy setIdentifier:?];
+    toCopy = v12;
   }
 
-  [v4 setBundleIdentifier:self->_bundleIdentifier];
+  [toCopy setBundleIdentifier:self->_bundleIdentifier];
   if (self->_associatedObjectUriData)
   {
     [v12 setAssociatedObjectUriData:?];
@@ -499,10 +499,10 @@ LABEL_30:
   if ([(BLTPBCommunicationContext *)self recipientsCount])
   {
     [v12 clearRecipients];
-    v5 = [(BLTPBCommunicationContext *)self recipientsCount];
-    if (v5)
+    recipientsCount = [(BLTPBCommunicationContext *)self recipientsCount];
+    if (recipientsCount)
     {
-      v6 = v5;
+      v6 = recipientsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BLTPBCommunicationContext *)self recipientsAtIndex:i];
@@ -606,27 +606,27 @@ LABEL_25:
 LABEL_26:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 48);
   *(v5 + 48) = v6;
 
-  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleIdentifier copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSString *)self->_associatedObjectUriData copyWithZone:a3];
+  v10 = [(NSString *)self->_associatedObjectUriData copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
-  v12 = [(NSString *)self->_displayName copyWithZone:a3];
+  v12 = [(NSString *)self->_displayName copyWithZone:zone];
   v13 = *(v5 + 40);
   *(v5 + 40) = v12;
 
-  v14 = [(BLTPBContact *)self->_sender copyWithZone:a3];
+  v14 = [(BLTPBContact *)self->_sender copyWithZone:zone];
   v15 = *(v5 + 80);
   *(v5 + 80) = v14;
 
@@ -649,7 +649,7 @@ LABEL_26:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v30 + 1) + 8 * i) copyWithZone:{a3, v30}];
+        v21 = [*(*(&v30 + 1) + 8 * i) copyWithZone:{zone, v30}];
         [v5 addRecipients:v21];
       }
 
@@ -659,7 +659,7 @@ LABEL_26:
     while (v18);
   }
 
-  v22 = [(NSData *)self->_contentURLData copyWithZone:a3];
+  v22 = [(NSData *)self->_contentURLData copyWithZone:zone];
   v23 = *(v5 + 32);
   *(v5 + 32) = v22;
 
@@ -711,7 +711,7 @@ LABEL_12:
   }
 
 LABEL_13:
-  v25 = [(NSString *)self->_imageName copyWithZone:a3, v30];
+  v25 = [(NSString *)self->_imageName copyWithZone:zone, v30];
   v26 = *(v5 + 56);
   *(v5 + 56) = v25;
 
@@ -755,16 +755,16 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_66;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 6))
+  if (identifier | *(equalCopy + 6))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -773,7 +773,7 @@ LABEL_17:
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  if (bundleIdentifier | *(v4 + 2))
+  if (bundleIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)bundleIdentifier isEqual:?])
     {
@@ -782,7 +782,7 @@ LABEL_17:
   }
 
   associatedObjectUriData = self->_associatedObjectUriData;
-  if (associatedObjectUriData | *(v4 + 1))
+  if (associatedObjectUriData | *(equalCopy + 1))
   {
     if (![(NSString *)associatedObjectUriData isEqual:?])
     {
@@ -791,7 +791,7 @@ LABEL_17:
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 5))
+  if (displayName | *(equalCopy + 5))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -800,7 +800,7 @@ LABEL_17:
   }
 
   sender = self->_sender;
-  if (sender | *(v4 + 10))
+  if (sender | *(equalCopy + 10))
   {
     if (![(BLTPBContact *)sender isEqual:?])
     {
@@ -809,7 +809,7 @@ LABEL_17:
   }
 
   recipients = self->_recipients;
-  if (recipients | *(v4 + 9))
+  if (recipients | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)recipients isEqual:?])
     {
@@ -818,7 +818,7 @@ LABEL_17:
   }
 
   contentURLData = self->_contentURLData;
-  if (contentURLData | *(v4 + 4))
+  if (contentURLData | *(equalCopy + 4))
   {
     if (![(NSData *)contentURLData isEqual:?])
     {
@@ -827,103 +827,103 @@ LABEL_17:
   }
 
   has = self->_has;
-  v13 = *(v4 + 92);
+  v13 = *(equalCopy + 92);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 92) & 8) == 0)
+    if ((*(equalCopy + 92) & 8) == 0)
     {
       goto LABEL_66;
     }
 
-    v14 = *(v4 + 88);
+    v14 = *(equalCopy + 88);
     if (self->_mentionsCurrentUser)
     {
-      if ((*(v4 + 88) & 1) == 0)
+      if ((*(equalCopy + 88) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 88))
+    else if (*(equalCopy + 88))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 92) & 8) != 0)
+  else if ((*(equalCopy + 92) & 8) != 0)
   {
     goto LABEL_66;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 92) & 0x10) == 0)
+    if ((*(equalCopy + 92) & 0x10) == 0)
     {
       goto LABEL_66;
     }
 
-    v15 = *(v4 + 89);
+    v15 = *(equalCopy + 89);
     if (self->_notifyRecipientAnyway)
     {
-      if ((*(v4 + 89) & 1) == 0)
+      if ((*(equalCopy + 89) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 89))
+    else if (*(equalCopy + 89))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 92) & 0x10) != 0)
+  else if ((*(equalCopy + 92) & 0x10) != 0)
   {
     goto LABEL_66;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 92) & 0x20) == 0)
+    if ((*(equalCopy + 92) & 0x20) == 0)
     {
       goto LABEL_66;
     }
 
-    v16 = *(v4 + 90);
+    v16 = *(equalCopy + 90);
     if (self->_replyToCurrentUser)
     {
-      if ((*(v4 + 90) & 1) == 0)
+      if ((*(equalCopy + 90) & 1) == 0)
       {
         goto LABEL_66;
       }
     }
 
-    else if (*(v4 + 90))
+    else if (*(equalCopy + 90))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 92) & 0x20) != 0)
+  else if ((*(equalCopy + 92) & 0x20) != 0)
   {
     goto LABEL_66;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 92) & 4) == 0 || self->_recipientCount != *(v4 + 16))
+    if ((*(equalCopy + 92) & 4) == 0 || self->_recipientCount != *(equalCopy + 16))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 92) & 4) != 0)
+  else if ((*(equalCopy + 92) & 4) != 0)
   {
     goto LABEL_66;
   }
 
   imageName = self->_imageName;
-  if (imageName | *(v4 + 7))
+  if (imageName | *(equalCopy + 7))
   {
     if (![(NSString *)imageName isEqual:?])
     {
@@ -935,7 +935,7 @@ LABEL_17:
 
   if ((has & 0x40) == 0)
   {
-    if ((*(v4 + 92) & 0x40) == 0)
+    if ((*(equalCopy + 92) & 0x40) == 0)
     {
       goto LABEL_48;
     }
@@ -945,21 +945,21 @@ LABEL_66:
     goto LABEL_67;
   }
 
-  if ((*(v4 + 92) & 0x40) == 0)
+  if ((*(equalCopy + 92) & 0x40) == 0)
   {
     goto LABEL_66;
   }
 
-  v18 = *(v4 + 91);
+  v18 = *(equalCopy + 91);
   if (self->_systemImage)
   {
-    if ((*(v4 + 91) & 1) == 0)
+    if ((*(equalCopy + 91) & 1) == 0)
     {
       goto LABEL_66;
     }
   }
 
-  else if (*(v4 + 91))
+  else if (*(equalCopy + 91))
   {
     goto LABEL_66;
   }
@@ -967,20 +967,20 @@ LABEL_66:
 LABEL_48:
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 92) & 2) == 0 || self->_capability != *(v4 + 7))
+    if ((*(equalCopy + 92) & 2) == 0 || self->_capability != *(equalCopy + 7))
     {
       goto LABEL_66;
     }
   }
 
-  else if ((*(v4 + 92) & 2) != 0)
+  else if ((*(equalCopy + 92) & 2) != 0)
   {
     goto LABEL_66;
   }
 
   if (has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_capabilities != *(v4 + 6))
+    if ((*(equalCopy + 92) & 1) == 0 || self->_capabilities != *(equalCopy + 6))
     {
       goto LABEL_66;
     }
@@ -990,7 +990,7 @@ LABEL_48:
 
   else
   {
-    v19 = (*(v4 + 92) & 1) == 0;
+    v19 = (*(equalCopy + 92) & 1) == 0;
   }
 
 LABEL_67:
@@ -1096,32 +1096,32 @@ LABEL_13:
   return v17 ^ v18 ^ v16 ^ v15 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 6))
+  fromCopy = from;
+  if (*(fromCopy + 6))
   {
     [(BLTPBCommunicationContext *)self setIdentifier:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BLTPBCommunicationContext *)self setBundleIdentifier:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BLTPBCommunicationContext *)self setAssociatedObjectUriData:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BLTPBCommunicationContext *)self setDisplayName:?];
   }
 
   sender = self->_sender;
-  v6 = *(v4 + 10);
+  v6 = *(fromCopy + 10);
   if (sender)
   {
     if (v6)
@@ -1139,7 +1139,7 @@ LABEL_13:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = *(v4 + 9);
+  v7 = *(fromCopy + 9);
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -1163,17 +1163,17 @@ LABEL_13:
     while (v9);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BLTPBCommunicationContext *)self setContentURLData:?];
   }
 
-  v12 = *(v4 + 92);
+  v12 = *(fromCopy + 92);
   if ((v12 & 8) != 0)
   {
-    self->_mentionsCurrentUser = *(v4 + 88);
+    self->_mentionsCurrentUser = *(fromCopy + 88);
     *&self->_has |= 8u;
-    v12 = *(v4 + 92);
+    v12 = *(fromCopy + 92);
     if ((v12 & 0x10) == 0)
     {
 LABEL_25:
@@ -1186,14 +1186,14 @@ LABEL_25:
     }
   }
 
-  else if ((*(v4 + 92) & 0x10) == 0)
+  else if ((*(fromCopy + 92) & 0x10) == 0)
   {
     goto LABEL_25;
   }
 
-  self->_notifyRecipientAnyway = *(v4 + 89);
+  self->_notifyRecipientAnyway = *(fromCopy + 89);
   *&self->_has |= 0x10u;
-  v12 = *(v4 + 92);
+  v12 = *(fromCopy + 92);
   if ((v12 & 0x20) == 0)
   {
 LABEL_26:
@@ -1206,33 +1206,33 @@ LABEL_26:
   }
 
 LABEL_37:
-  self->_replyToCurrentUser = *(v4 + 90);
+  self->_replyToCurrentUser = *(fromCopy + 90);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 92) & 4) != 0)
+  if ((*(fromCopy + 92) & 4) != 0)
   {
 LABEL_27:
-    self->_recipientCount = *(v4 + 16);
+    self->_recipientCount = *(fromCopy + 16);
     *&self->_has |= 4u;
   }
 
 LABEL_28:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BLTPBCommunicationContext *)self setImageName:?];
   }
 
-  v13 = *(v4 + 92);
+  v13 = *(fromCopy + 92);
   if ((v13 & 0x40) == 0)
   {
-    if ((*(v4 + 92) & 2) == 0)
+    if ((*(fromCopy + 92) & 2) == 0)
     {
       goto LABEL_32;
     }
 
 LABEL_40:
-    self->_capability = *(v4 + 7);
+    self->_capability = *(fromCopy + 7);
     *&self->_has |= 2u;
-    if ((*(v4 + 92) & 1) == 0)
+    if ((*(fromCopy + 92) & 1) == 0)
     {
       goto LABEL_34;
     }
@@ -1240,9 +1240,9 @@ LABEL_40:
     goto LABEL_33;
   }
 
-  self->_systemImage = *(v4 + 91);
+  self->_systemImage = *(fromCopy + 91);
   *&self->_has |= 0x40u;
-  v13 = *(v4 + 92);
+  v13 = *(fromCopy + 92);
   if ((v13 & 2) != 0)
   {
     goto LABEL_40;
@@ -1252,7 +1252,7 @@ LABEL_32:
   if (v13)
   {
 LABEL_33:
-    self->_capabilities = *(v4 + 6);
+    self->_capabilities = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
@@ -1263,18 +1263,18 @@ LABEL_34:
 
 - (NSURL)contentURLLocalFileLocation
 {
-  v2 = [(BLTPBCommunicationContext *)self contentURLData];
-  v3 = [v2 blt_sha256String];
-  v4 = [v3 blt_filenameSafe];
+  contentURLData = [(BLTPBCommunicationContext *)self contentURLData];
+  blt_sha256String = [contentURLData blt_sha256String];
+  blt_filenameSafe = [blt_sha256String blt_filenameSafe];
 
-  if (v4)
+  if (blt_filenameSafe)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
-    v6 = [v5 blt_contactImagesDirectory];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    blt_contactImagesDirectory = [defaultManager blt_contactImagesDirectory];
 
-    if (v6)
+    if (blt_contactImagesDirectory)
     {
-      v7 = [v6 URLByAppendingPathComponent:v4];
+      v7 = [blt_contactImagesDirectory URLByAppendingPathComponent:blt_filenameSafe];
     }
 
     else

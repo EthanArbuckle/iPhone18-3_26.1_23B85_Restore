@@ -1,80 +1,80 @@
 @interface CapsuleNavigationBarViewController
 - (BOOL)_activeWebViewIsFirstResponder;
 - (BOOL)_shouldAttachCapsuleForTabViewTransition;
-- (BOOL)capsuleCollectionViewAllowsMinimizationGesture:(id)a3;
-- (BOOL)capsuleCollectionViewContentScaleCompletesMinimization:(id)a3;
-- (BOOL)capsuleCollectionViewShouldFocusSelectedItem:(id)a3;
-- (BOOL)transitionToState:(int64_t)a3 options:(int64_t)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4;
-- (CGSize)capsuleCollectionView:(id)a3 preferredSizeForState:(int64_t)a4;
+- (BOOL)capsuleCollectionViewAllowsMinimizationGesture:(id)gesture;
+- (BOOL)capsuleCollectionViewContentScaleCompletesMinimization:(id)minimization;
+- (BOOL)capsuleCollectionViewShouldFocusSelectedItem:(id)item;
+- (BOOL)transitionToState:(int64_t)state options:(int64_t)options animated:(BOOL)animated completionHandler:(id)handler;
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element;
+- (CGSize)capsuleCollectionView:(id)view preferredSizeForState:(int64_t)state;
 - (CapsuleNavigationBarViewControllerDelegate)delegate;
 - (SFCapsuleCollectionView)capsuleCollectionView;
 - (SFCapsuleNavigationBar)selectedItemNavigationBar;
 - (UIFocusEnvironment)customParentFocusEnvironment;
 - (UIResponder)customNextResponder;
 - (UnifiedField)unifiedField;
-- (double)capsuleCollectionView:(id)a3 distanceToTopEdgeIncludingDeceleration:(BOOL)a4;
-- (double)capsuleCollectionView:(id)a3 heightForWidth:(double)a4 state:(int64_t)a5;
-- (double)capsuleCollectionViewMinimizedContentScale:(id)a3;
+- (double)capsuleCollectionView:(id)view distanceToTopEdgeIncludingDeceleration:(BOOL)deceleration;
+- (double)capsuleCollectionView:(id)view heightForWidth:(double)width state:(int64_t)state;
+- (double)capsuleCollectionViewMinimizedContentScale:(id)scale;
 - (id)_contextMenuActionProvider;
-- (id)_dragPreviewForNavigationBar:(id)a3;
-- (id)capsuleCollectionView:(id)a3 contentViewForItemAtIndex:(int64_t)a4;
-- (id)capsuleCollectionView:(id)a3 createSupplementaryViewWithIdentifier:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
+- (id)_dragPreviewForNavigationBar:(id)bar;
+- (id)capsuleCollectionView:(id)view contentViewForItemAtIndex:(int64_t)index;
+- (id)capsuleCollectionView:(id)view createSupplementaryViewWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
 - (id)nextResponder;
 - (id)parentFocusEnvironment;
-- (id)tabAtCollectionViewIndex:(int64_t)a3;
-- (id)topActionForCapsuleCollectionView:(id)a3;
-- (id)trailingActionForCapsuleCollectionView:(id)a3;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
-- (unint64_t)_boundaryEdgesForScrollView:(id)a3;
-- (unint64_t)capsuleCollectionViewBoundaryEdgesForScrollableContent:(id)a3;
-- (void)_keyboardWillHide:(id)a3;
-- (void)_keyboardWillShow:(id)a3;
-- (void)_observeScrollViewDidScroll:(id)a3;
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6;
-- (void)_switchObservingFromTabDocument:(id)a3 toTabDocument:(id)a4;
-- (void)_updateHidingCapsuleAnimated:(BOOL)a3;
+- (id)tabAtCollectionViewIndex:(int64_t)index;
+- (id)topActionForCapsuleCollectionView:(id)view;
+- (id)trailingActionForCapsuleCollectionView:(id)view;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
+- (unint64_t)_boundaryEdgesForScrollView:(id)view;
+- (unint64_t)capsuleCollectionViewBoundaryEdgesForScrollableContent:(id)content;
+- (void)_keyboardWillHide:(id)hide;
+- (void)_keyboardWillShow:(id)show;
+- (void)_observeScrollViewDidScroll:(id)scroll;
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion;
+- (void)_switchObservingFromTabDocument:(id)document toTabDocument:(id)tabDocument;
+- (void)_updateHidingCapsuleAnimated:(BOOL)animated;
 - (void)_updateSelectedItemAccessoryViews;
-- (void)_updateTabDocumentsAnimated:(BOOL)a3 reloadingTab:(id)a4;
+- (void)_updateTabDocumentsAnimated:(BOOL)animated reloadingTab:(id)tab;
 - (void)_updateTabDocumentsWithoutUpdatingCollectionView;
-- (void)beginHidingCapsuleAnimated:(BOOL)a3 reason:(id)a4;
-- (void)capsuleCollectionView:(id)a3 didBeginSelectionGestureOnAxis:(unint64_t)a4;
-- (void)capsuleCollectionView:(id)a3 didSelectItemAtIndex:(int64_t)a4;
-- (void)capsuleCollectionView:(id)a3 selectedItemWillChangeToState:(int64_t)a4 options:(int64_t)a5 coordinator:(id)a6;
-- (void)capsuleCollectionView:(id)a3 willChangeToLayoutStyle:(int64_t)a4;
-- (void)capsuleCollectionViewDidEndSelectionGesture:(id)a3;
-- (void)capsuleCollectionViewLayoutStyleDidChange:(id)a3;
-- (void)capsuleCollectionViewWillHideKeyboard:(id)a3;
-- (void)capsuleCollectionViewWillReloadData:(id)a3;
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
+- (void)beginHidingCapsuleAnimated:(BOOL)animated reason:(id)reason;
+- (void)capsuleCollectionView:(id)view didBeginSelectionGestureOnAxis:(unint64_t)axis;
+- (void)capsuleCollectionView:(id)view didSelectItemAtIndex:(int64_t)index;
+- (void)capsuleCollectionView:(id)view selectedItemWillChangeToState:(int64_t)state options:(int64_t)options coordinator:(id)coordinator;
+- (void)capsuleCollectionView:(id)view willChangeToLayoutStyle:(int64_t)style;
+- (void)capsuleCollectionViewDidEndSelectionGesture:(id)gesture;
+- (void)capsuleCollectionViewLayoutStyleDidChange:(id)change;
+- (void)capsuleCollectionViewWillHideKeyboard:(id)keyboard;
+- (void)capsuleCollectionViewWillReloadData:(id)data;
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
 - (void)editTabBar;
-- (void)endHidingCapsuleAnimated:(BOOL)a3 reason:(id)a4;
+- (void)endHidingCapsuleAnimated:(BOOL)animated reason:(id)reason;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCapsuleIsHiddenForMoreMenu:(BOOL)a3;
-- (void)setLinkedPageView:(id)a3;
-- (void)setNextResponder:(id)a3 parentFocusEnvironment:(id)a4;
-- (void)setTabController:(id)a3;
-- (void)tabCollectionViewDidPresent:(id)a3;
-- (void)tabController:(id)a3 didSwitchFromTabDocument:(id)a4 toTabDocument:(id)a5;
-- (void)tabDocumentWillEndNavigationGesture:(id)a3 withNavigationToBackForwardListItem:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCapsuleIsHiddenForMoreMenu:(BOOL)menu;
+- (void)setLinkedPageView:(id)view;
+- (void)setNextResponder:(id)responder parentFocusEnvironment:(id)environment;
+- (void)setTabController:(id)controller;
+- (void)tabCollectionViewDidPresent:(id)present;
+- (void)tabController:(id)controller didSwitchFromTabDocument:(id)document toTabDocument:(id)tabDocument;
+- (void)tabDocumentWillEndNavigationGesture:(id)gesture withNavigationToBackForwardListItem:(id)item;
 - (void)updateAdditionalBottomObscuredInset;
 - (void)updateCapsuleMinimizationBehavior;
 - (void)updateVisibleContextMenu;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)willTransitionFromTabView:(id)a3 toTabView:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)willTransitionFromTabView:(id)view toTabView:(id)tabView;
 @end
 
 @implementation CapsuleNavigationBarViewController
@@ -82,8 +82,8 @@
 - (void)loadView
 {
   v3 = objc_alloc(MEMORY[0x277D28BF8]);
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = [v3 initWithFrame:?];
   capsuleCollectionView = self->_capsuleCollectionView;
   self->_capsuleCollectionView = v5;
@@ -119,9 +119,9 @@
   v22[3] = &unk_2781D5B30;
   objc_copyWeak(&v23, &location);
   [(SFCapsuleCollectionView *)v4 registerContentViewIdentifier:@"navigationBar" block:v22];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
-  [v5 addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+  [defaultCenter addObserver:self selector:sel__keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
   v6 = objc_alloc(MEMORY[0x277D28C00]);
   [(SFCapsuleCollectionView *)self->_capsuleCollectionView bounds];
   v7 = [v6 initForSizingWithFrame:?];
@@ -130,8 +130,8 @@
 
   [(SFCapsuleNavigationBar *)self->_sizingNavigationBar setIsSelected:1];
   [(SFCapsuleNavigationBar *)self->_sizingNavigationBar setHidden:1];
-  v9 = [MEMORY[0x277D28BF8] maximumContentSizeCategory];
-  [(SFCapsuleNavigationBar *)self->_sizingNavigationBar setMaximumContentSizeCategory:v9];
+  maximumContentSizeCategory = [MEMORY[0x277D28BF8] maximumContentSizeCategory];
+  [(SFCapsuleNavigationBar *)self->_sizingNavigationBar setMaximumContentSizeCategory:maximumContentSizeCategory];
 
   [(SFCapsuleNavigationBar *)self->_sizingNavigationBar _setHostsLayoutEngine:1];
   v10 = objc_alloc(MEMORY[0x277D28C00]);
@@ -143,8 +143,8 @@
   [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar setIsMinimized:1];
   [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar setIsSelected:1];
   [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar setHidden:1];
-  v13 = [MEMORY[0x277D28BF8] maximumContentSizeCategory];
-  [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar setMaximumContentSizeCategory:v13];
+  maximumContentSizeCategory2 = [MEMORY[0x277D28BF8] maximumContentSizeCategory];
+  [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar setMaximumContentSizeCategory:maximumContentSizeCategory2];
 
   [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar _setHostsLayoutEngine:1];
   v14 = __49__CapsuleNavigationBarViewController_viewDidLoad__block_invoke_4();
@@ -162,11 +162,11 @@
   [(SFCapsuleNavigationBar *)self->_sizingNavigationBar setTrailingButtons:v19];
 
   [(CapsuleNavigationBarViewController *)self _updateSelectedItemAccessoryViews];
-  v20 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v20 floatForKey:@"DebugCapsuleEdgeMargin"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults floatForKey:@"DebugCapsuleEdgeMargin"];
   [(SFCapsuleCollectionView *)self->_capsuleCollectionView setEdgeMargin:v21];
   [(CapsuleNavigationBarViewController *)self updateCapsuleMinimizationBehavior];
-  [v20 addObserver:self forKeyPath:@"DebugBarCollapsingBehavior" options:0 context:kvoContext];
+  [standardUserDefaults addObserver:self forKeyPath:@"DebugBarCollapsingBehavior" options:0 context:kvoContext];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&v25);
@@ -175,8 +175,8 @@
 
 - (void)updateAdditionalBottomObscuredInset
 {
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 safari_doubleForKey:*MEMORY[0x277D29040] defaultValue:10.0];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults safari_doubleForKey:*MEMORY[0x277D29040] defaultValue:10.0];
   self->_additionalBottomObscuredInset = v3;
 }
 
@@ -204,27 +204,27 @@ id __49__CapsuleNavigationBarViewController_viewDidLoad__block_invoke_4()
 
 - (void)_updateSelectedItemAccessoryViews
 {
-  v3 = [MEMORY[0x277D75230] plainButtonConfiguration];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  v5 = [v3 background];
-  [v5 setBackgroundColor:v4];
+  plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  background = [plainButtonConfiguration background];
+  [background setBackgroundColor:clearColor];
 
-  [v3 setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
-  v6 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView layoutStyle];
+  [plainButtonConfiguration setContentInsets:{*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)}];
+  layoutStyle = [(SFCapsuleCollectionView *)self->_capsuleCollectionView layoutStyle];
   v7 = _WBSLocalizedString();
   if ([MEMORY[0x277D49A08] isSolariumEnabled])
   {
 
     v8 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark"];
-    v9 = [MEMORY[0x277D75230] glassButtonConfiguration];
+    glassButtonConfiguration = [MEMORY[0x277D75230] glassButtonConfiguration];
 
     v7 = &stru_2827BF158;
-    v3 = v9;
+    plainButtonConfiguration = glassButtonConfiguration;
   }
 
   else
   {
-    if (v6 != 2)
+    if (layoutStyle != 2)
     {
       [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemAccessoryView:0 forState:2];
       goto LABEL_7;
@@ -242,7 +242,7 @@ id __49__CapsuleNavigationBarViewController_viewDidLoad__block_invoke_4()
   v18 = &unk_2781D5B80;
   objc_copyWeak(&v19, &location);
   v12 = [v11 actionWithTitle:v7 image:v8 identifier:0 handler:&v15];
-  v13 = [v10 buttonWithConfiguration:v3 primaryAction:{v12, v15, v16, v17, v18}];
+  v13 = [v10 buttonWithConfiguration:plainButtonConfiguration primaryAction:{v12, v15, v16, v17, v18}];
 
   [v13 setConfigurationUpdateHandler:&__block_literal_global_104_0];
   [v13 setPointerInteractionEnabled:1];
@@ -294,11 +294,11 @@ void __71__CapsuleNavigationBarViewController__updateSelectedItemAccessoryViews_
   v14[1] = *MEMORY[0x277D85DE8];
   if ([(CapsuleNavigationBarViewController *)self _showsOnlyActiveTab])
   {
-    v3 = [(TabController *)self->_tabController activeTabDocument];
-    v4 = v3;
-    if (v3)
+    activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+    v4 = activeTabDocument;
+    if (activeTabDocument)
     {
-      v14[0] = v3;
+      v14[0] = activeTabDocument;
       v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     }
 
@@ -316,8 +316,8 @@ void __71__CapsuleNavigationBarViewController__updateSelectedItemAccessoryViews_
   else
   {
     interactivelyInsertedTabDocument = self->_interactivelyInsertedTabDocument;
-    v7 = [(TabController *)self->_tabController currentTabs];
-    v12 = v7;
+    currentTabs = [(TabController *)self->_tabController currentTabs];
+    v12 = currentTabs;
     if (interactivelyInsertedTabDocument)
     {
       v13[0] = MEMORY[0x277D85DD0];
@@ -325,14 +325,14 @@ void __71__CapsuleNavigationBarViewController__updateSelectedItemAccessoryViews_
       v13[2] = __86__CapsuleNavigationBarViewController__updateTabDocumentsWithoutUpdatingCollectionView__block_invoke;
       v13[3] = &unk_2781D5BC8;
       v13[4] = self;
-      v8 = [v7 safari_filterObjectsUsingBlock:v13];
+      v8 = [currentTabs safari_filterObjectsUsingBlock:v13];
       tabs = self->_tabs;
       self->_tabs = v8;
     }
 
     else
     {
-      v10 = [v7 copy];
+      v10 = [currentTabs copy];
       v11 = self->_tabs;
       self->_tabs = v10;
     }
@@ -382,21 +382,21 @@ id __49__CapsuleNavigationBarViewController_viewDidLoad__block_invoke_3(uint64_t
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 textField];
+      textField = [v3 textField];
     }
 
     else
     {
-      v4 = 0;
+      textField = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    textField = 0;
   }
 
-  return v4;
+  return textField;
 }
 
 - (id)nextResponder
@@ -405,32 +405,32 @@ id __49__CapsuleNavigationBarViewController_viewDidLoad__block_invoke_3(uint64_t
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    nextResponder = WeakRetained;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CapsuleNavigationBarViewController;
-    v5 = [(CapsuleNavigationBarViewController *)&v8 nextResponder];
+    nextResponder = [(CapsuleNavigationBarViewController *)&v8 nextResponder];
   }
 
-  v6 = v5;
+  v6 = nextResponder;
 
   return v6;
 }
 
 - (BOOL)_activeWebViewIsFirstResponder
 {
-  v3 = [(CapsuleNavigationBarViewController *)self view];
-  v4 = [v3 firstResponder];
+  view = [(CapsuleNavigationBarViewController *)self view];
+  firstResponder = [view firstResponder];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(TabController *)self->_tabController activeTabDocument];
-    v6 = [v5 activeWebView];
-    v7 = [v4 isDescendantOfView:v6];
+    activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+    activeWebView = [activeTabDocument activeWebView];
+    v7 = [firstResponder isDescendantOfView:activeWebView];
   }
 
   else
@@ -441,11 +441,11 @@ id __49__CapsuleNavigationBarViewController_viewDidLoad__block_invoke_3(uint64_t
   return v7;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kvoContext == a6)
+  if (kvoContext == context)
   {
-    if ([a3 isEqualToString:{@"DebugBarCollapsingBehavior", a4, a5}])
+    if ([path isEqualToString:{@"DebugBarCollapsingBehavior", object, change}])
     {
 
       [(CapsuleNavigationBarViewController *)self updateCapsuleMinimizationBehavior];
@@ -456,7 +456,7 @@ id __49__CapsuleNavigationBarViewController_viewDidLoad__block_invoke_3(uint64_t
   {
     v7.receiver = self;
     v7.super_class = CapsuleNavigationBarViewController;
-    [(CapsuleNavigationBarViewController *)&v7 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(CapsuleNavigationBarViewController *)&v7 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -506,31 +506,31 @@ void __49__CapsuleNavigationBarViewController_viewDidLoad__block_invoke_2(uint64
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CapsuleNavigationBarViewController;
-  [(CapsuleNavigationBarViewController *)&v8 viewWillAppear:a3];
+  [(CapsuleNavigationBarViewController *)&v8 viewWillAppear:appear];
   if ((SFEnhancedTabOverviewEnabled() & 1) == 0)
   {
-    v4 = [(TabController *)self->_tabController tabCollectionViewProvider];
-    v5 = [v4 tabThumbnailCollectionView];
+    tabCollectionViewProvider = [(TabController *)self->_tabController tabCollectionViewProvider];
+    tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
 
     if (objc_opt_respondsToSelector())
     {
-      [v5 addPresentationObserver:self];
+      [tabThumbnailCollectionView addPresentationObserver:self];
     }
 
-    v6 = v5;
+    v6 = tabThumbnailCollectionView;
     if ([v6 presentationState] == 1)
     {
     }
 
     else
     {
-      v7 = [v6 presentationState];
+      presentationState = [v6 presentationState];
 
-      if (v7 != 2)
+      if (presentationState != 2)
       {
 LABEL_8:
 
@@ -543,47 +543,47 @@ LABEL_8:
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v6.receiver = self;
   v6.super_class = CapsuleNavigationBarViewController;
-  [(CapsuleNavigationBarViewController *)&v6 viewIsAppearing:a3];
-  v4 = [(CapsuleNavigationBarViewController *)self view];
-  v5 = [v4 window];
+  [(CapsuleNavigationBarViewController *)&v6 viewIsAppearing:appearing];
+  view = [(CapsuleNavigationBarViewController *)self view];
+  window = [view window];
 
-  [v5 addSubview:self->_sizingNavigationBar];
-  [v5 addSubview:self->_minimizedSizingNavigationBar];
+  [window addSubview:self->_sizingNavigationBar];
+  [window addSubview:self->_minimizedSizingNavigationBar];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CapsuleNavigationBarViewController;
-  [(CapsuleNavigationBarViewController *)&v6 viewDidDisappear:a3];
-  v4 = [(TabController *)self->_tabController tabCollectionViewProvider];
-  v5 = [v4 tabThumbnailCollectionView];
+  [(CapsuleNavigationBarViewController *)&v6 viewDidDisappear:disappear];
+  tabCollectionViewProvider = [(TabController *)self->_tabController tabCollectionViewProvider];
+  tabThumbnailCollectionView = [tabCollectionViewProvider tabThumbnailCollectionView];
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 removePresentationObserver:self];
+    [tabThumbnailCollectionView removePresentationObserver:self];
   }
 
   [(SFCapsuleNavigationBar *)self->_sizingNavigationBar removeFromSuperview];
   [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar removeFromSuperview];
 }
 
-- (void)willTransitionFromTabView:(id)a3 toTabView:(id)a4
+- (void)willTransitionFromTabView:(id)view toTabView:(id)tabView
 {
-  v7 = a3;
-  v6 = a4;
+  viewCopy = view;
+  tabViewCopy = tabView;
   if (objc_opt_respondsToSelector())
   {
-    [v7 removePresentationObserver:self];
+    [viewCopy removePresentationObserver:self];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 addPresentationObserver:self];
+    [tabViewCopy addPresentationObserver:self];
   }
 }
 
@@ -593,55 +593,55 @@ LABEL_8:
   v4 = WeakRetained;
   if (WeakRetained)
   {
-    v5 = WeakRetained;
+    parentFocusEnvironment = WeakRetained;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CapsuleNavigationBarViewController;
-    v5 = [(CapsuleNavigationBarViewController *)&v8 parentFocusEnvironment];
+    parentFocusEnvironment = [(CapsuleNavigationBarViewController *)&v8 parentFocusEnvironment];
   }
 
-  v6 = v5;
+  v6 = parentFocusEnvironment;
 
   return v6;
 }
 
-- (void)setNextResponder:(id)a3 parentFocusEnvironment:(id)a4
+- (void)setNextResponder:(id)responder parentFocusEnvironment:(id)environment
 {
-  obj = a4;
-  objc_storeWeak(&self->_customNextResponder, a3);
+  obj = environment;
+  objc_storeWeak(&self->_customNextResponder, responder);
   objc_storeWeak(&self->_customParentFocusEnvironment, obj);
 }
 
-- (void)beginHidingCapsuleAnimated:(BOOL)a3 reason:(id)a4
+- (void)beginHidingCapsuleAnimated:(BOOL)animated reason:(id)reason
 {
-  v4 = a3;
+  animatedCopy = animated;
   v10 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reasonCopy = reason;
   v7 = WBS_LOG_CHANNEL_PREFIXLoweredTabBar();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v6;
+    v9 = reasonCopy;
     _os_log_impl(&dword_215819000, v7, OS_LOG_TYPE_DEFAULT, "Begin hiding capsule with reason: %{public}@", &v8, 0xCu);
   }
 
   ++self->_hideCapsuleCount;
-  [(CapsuleNavigationBarViewController *)self _updateHidingCapsuleAnimated:v4];
+  [(CapsuleNavigationBarViewController *)self _updateHidingCapsuleAnimated:animatedCopy];
 }
 
-- (void)endHidingCapsuleAnimated:(BOOL)a3 reason:(id)a4
+- (void)endHidingCapsuleAnimated:(BOOL)animated reason:(id)reason
 {
-  v4 = a3;
+  animatedCopy = animated;
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  reasonCopy = reason;
   v7 = WBS_LOG_CHANNEL_PREFIXLoweredTabBar();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v6;
+    v11 = reasonCopy;
     _os_log_impl(&dword_215819000, v7, OS_LOG_TYPE_DEFAULT, "End hiding capsule with reason: %{public}@", &v10, 0xCu);
   }
 
@@ -649,7 +649,7 @@ LABEL_8:
   if (hideCapsuleCount)
   {
     self->_hideCapsuleCount = hideCapsuleCount - 1;
-    [(CapsuleNavigationBarViewController *)self _updateHidingCapsuleAnimated:v4];
+    [(CapsuleNavigationBarViewController *)self _updateHidingCapsuleAnimated:animatedCopy];
   }
 
   else
@@ -662,9 +662,9 @@ LABEL_8:
   }
 }
 
-- (void)_updateHidingCapsuleAnimated:(BOOL)a3
+- (void)_updateHidingCapsuleAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   hideCapsuleCount = self->_hideCapsuleCount;
   capsuleCollectionView = self->_capsuleCollectionView;
   if (hideCapsuleCount <= 0)
@@ -687,7 +687,7 @@ LABEL_8:
   }
 
   [(SFCapsuleCollectionView *)self->_capsuleCollectionView setItemsAreHidden:v7];
-  if (v3)
+  if (animatedCopy)
   {
     if ([(CapsuleNavigationBarViewController *)self _shouldAttachCapsuleForTabViewTransition])
     {
@@ -711,28 +711,28 @@ LABEL_8:
   }
 }
 
-- (void)setCapsuleIsHiddenForMoreMenu:(BOOL)a3
+- (void)setCapsuleIsHiddenForMoreMenu:(BOOL)menu
 {
-  if (self->_capsuleIsHiddenForMoreMenu != a3)
+  if (self->_capsuleIsHiddenForMoreMenu != menu)
   {
-    v4 = a3;
-    self->_capsuleIsHiddenForMoreMenu = a3;
-    v6 = [(CapsuleNavigationBarViewController *)self capsuleCollectionView];
-    if (v4)
+    menuCopy = menu;
+    self->_capsuleIsHiddenForMoreMenu = menu;
+    capsuleCollectionView = [(CapsuleNavigationBarViewController *)self capsuleCollectionView];
+    if (menuCopy)
     {
-      [v6 setHidingStyle:1];
-      [v6 beginHiddenExemptionForSupplementaryWithIdentifier:*MEMORY[0x277D28FD8]];
+      [capsuleCollectionView setHidingStyle:1];
+      [capsuleCollectionView beginHiddenExemptionForSupplementaryWithIdentifier:*MEMORY[0x277D28FD8]];
       [(CapsuleNavigationBarViewController *)self beginHidingCapsuleAnimated:0 reason:@"minibar menu"];
     }
 
     else
     {
       [(CapsuleNavigationBarViewController *)self endHidingCapsuleAnimated:0 reason:@"minibar menu"];
-      [v6 setHidingStyle:0];
-      [v6 endHiddenExemptionForSupplementaryWithIdentifier:*MEMORY[0x277D28FD8]];
+      [capsuleCollectionView setHidingStyle:0];
+      [capsuleCollectionView endHiddenExemptionForSupplementaryWithIdentifier:*MEMORY[0x277D28FD8]];
     }
 
-    [v6 layoutIfNeeded];
+    [capsuleCollectionView layoutIfNeeded];
   }
 }
 
@@ -751,69 +751,69 @@ LABEL_8:
   return 1;
 }
 
-- (void)setLinkedPageView:(id)a3
+- (void)setLinkedPageView:(id)view
 {
-  objc_storeStrong(&self->_linkedPageView, a3);
-  v5 = a3;
-  [(SFCapsuleCollectionView *)self->_capsuleCollectionView setLinkedPageView:v5];
-  [v5 setCapsuleIndexProvider:self];
+  objc_storeStrong(&self->_linkedPageView, view);
+  viewCopy = view;
+  [(SFCapsuleCollectionView *)self->_capsuleCollectionView setLinkedPageView:viewCopy];
+  [viewCopy setCapsuleIndexProvider:self];
 }
 
-- (void)setTabController:(id)a3
+- (void)setTabController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   tabController = self->_tabController;
-  if (tabController != v5)
+  if (tabController != controllerCopy)
   {
-    v9 = v5;
-    v7 = [(TabController *)tabController activeTabDocument];
-    v8 = [(TabController *)v9 activeTabDocument];
-    [(CapsuleNavigationBarViewController *)self _switchObservingFromTabDocument:v7 toTabDocument:v8];
+    v9 = controllerCopy;
+    activeTabDocument = [(TabController *)tabController activeTabDocument];
+    activeTabDocument2 = [(TabController *)v9 activeTabDocument];
+    [(CapsuleNavigationBarViewController *)self _switchObservingFromTabDocument:activeTabDocument toTabDocument:activeTabDocument2];
 
     [(TabController *)self->_tabController removeDocumentObserver:self];
-    objc_storeStrong(&self->_tabController, a3);
+    objc_storeStrong(&self->_tabController, controller);
     [(TabController *)self->_tabController addDocumentObserver:self];
     [(CapsuleNavigationBarViewController *)self _updateTabDocumentsAnimated:0];
-    v5 = v9;
+    controllerCopy = v9;
   }
 }
 
-- (void)_switchObservingFromTabDocument:(id)a3 toTabDocument:(id)a4
+- (void)_switchObservingFromTabDocument:(id)document toTabDocument:(id)tabDocument
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 webView];
-  v9 = [v8 scrollView];
-  [v9 _removeScrollViewScrollObserver:self];
+  tabDocumentCopy = tabDocument;
+  documentCopy = document;
+  webView = [documentCopy webView];
+  scrollView = [webView scrollView];
+  [scrollView _removeScrollViewScrollObserver:self];
 
-  v10 = [v7 readerWebView];
-  v11 = [v10 scrollView];
-  [v11 _removeScrollViewScrollObserver:self];
+  readerWebView = [documentCopy readerWebView];
+  scrollView2 = [readerWebView scrollView];
+  [scrollView2 _removeScrollViewScrollObserver:self];
 
-  [v7 removeNavigationObserver:self];
-  v12 = [v6 webView];
-  v13 = [v12 scrollView];
-  [v13 _addScrollViewScrollObserver:self];
+  [documentCopy removeNavigationObserver:self];
+  webView2 = [tabDocumentCopy webView];
+  scrollView3 = [webView2 scrollView];
+  [scrollView3 _addScrollViewScrollObserver:self];
 
-  v14 = [v6 readerWebView];
-  v15 = [v14 scrollView];
-  [v15 _addScrollViewScrollObserver:self];
+  readerWebView2 = [tabDocumentCopy readerWebView];
+  scrollView4 = [readerWebView2 scrollView];
+  [scrollView4 _addScrollViewScrollObserver:self];
 
-  [v6 addNavigationObserver:self];
-  v16 = [v6 navigationBarItem];
+  [tabDocumentCopy addNavigationObserver:self];
+  navigationBarItem = [tabDocumentCopy navigationBarItem];
 
-  [(SFCapsuleCollectionView *)self->_capsuleCollectionView setNavigationBarItem:v16];
+  [(SFCapsuleCollectionView *)self->_capsuleCollectionView setNavigationBarItem:navigationBarItem];
 }
 
-- (BOOL)transitionToState:(int64_t)a3 options:(int64_t)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (BOOL)transitionToState:(int64_t)state options:(int64_t)options animated:(BOOL)animated completionHandler:(id)handler
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView selectedItemState];
-  if (v11 != a3)
+  animatedCopy = animated;
+  handlerCopy = handler;
+  selectedItemState = [(SFCapsuleCollectionView *)self->_capsuleCollectionView selectedItemState];
+  if (selectedItemState != state)
   {
-    v12 = v11;
-    v13 = v11 == 1 && a3 == 0;
+    v12 = selectedItemState;
+    v13 = selectedItemState == 1 && state == 0;
     if (v13 && self->_keyboardIsVisible)
     {
       self->_unminimizeOnHideKeyboard = 1;
@@ -821,23 +821,23 @@ LABEL_8:
 
     else
     {
-      v14 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView isForceHidden];
-      if (v12 != 1 || a3 == 1 || v14 == 0)
+      isForceHidden = [(SFCapsuleCollectionView *)self->_capsuleCollectionView isForceHidden];
+      if (v12 != 1 || state == 1 || isForceHidden == 0)
       {
-        v17 = _Block_copy(v10);
+        v17 = _Block_copy(handlerCopy);
         nextStateChangeCompletionHandler = self->_nextStateChangeCompletionHandler;
         self->_nextStateChangeCompletionHandler = v17;
 
-        [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemState:a3 options:a4 animated:v6];
+        [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemState:state options:options animated:animatedCopy];
         v19 = 1;
         goto LABEL_21;
       }
     }
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 
   v19 = 0;
@@ -870,21 +870,21 @@ LABEL_21:
   return v6;
 }
 
-- (id)_dragPreviewForNavigationBar:(id)a3
+- (id)_dragPreviewForNavigationBar:(id)bar
 {
   v4 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView viewForItemAtIndex:[(SFCapsuleCollectionView *)self->_capsuleCollectionView selectedItemIndex]];
   v5 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView contentViewForItemAtIndex:[(SFCapsuleCollectionView *)self->_capsuleCollectionView selectedItemIndex]];
   if ([MEMORY[0x277D49A08] isSolariumEnabled] && -[SFCapsuleCollectionView layoutStyle](self->_capsuleCollectionView, "layoutStyle") == 1 && -[SFCapsuleCollectionView selectedItemIsMinimized](self->_capsuleCollectionView, "selectedItemIsMinimized"))
   {
-    v6 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView viewForSupplementaryWithIdentifier:*MEMORY[0x277D28FC8]];
+    dragPreviewView = [(SFCapsuleCollectionView *)self->_capsuleCollectionView viewForSupplementaryWithIdentifier:*MEMORY[0x277D28FC8]];
   }
 
   else
   {
-    v6 = [v4 dragPreviewView];
+    dragPreviewView = [v4 dragPreviewView];
   }
 
-  v7 = v6;
+  v7 = dragPreviewView;
   v8 = objc_alloc_init(MEMORY[0x277D758D8]);
   v9 = MEMORY[0x277D75208];
   [v5 bounds];
@@ -897,8 +897,8 @@ LABEL_21:
   v19 = [v9 bezierPathWithRoundedRect:v11 cornerRadius:{v13, v15, v17, v18}];
   [v8 setVisiblePath:v19];
 
-  v20 = [MEMORY[0x277D75348] clearColor];
-  [v8 setBackgroundColor:v20];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v8 setBackgroundColor:clearColor];
 
   v21 = [objc_alloc(MEMORY[0x277D75B88]) initWithView:v7 parameters:v8];
 
@@ -907,8 +907,8 @@ LABEL_21:
 
 - (void)updateCapsuleMinimizationBehavior
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [v3 integerForKey:@"DebugBarCollapsingBehavior"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v4 = [standardUserDefaults integerForKey:@"DebugBarCollapsingBehavior"];
 
   capsuleCollectionView = self->_capsuleCollectionView;
   if (v4 == 2)
@@ -977,10 +977,10 @@ void __71__CapsuleNavigationBarViewController__updateSelectedItemAccessoryViews_
   }
 }
 
-- (void)_updateTabDocumentsAnimated:(BOOL)a3 reloadingTab:(id)a4
+- (void)_updateTabDocumentsAnimated:(BOOL)animated reloadingTab:(id)tab
 {
-  v4 = a3;
-  v17 = a4;
+  animatedCopy = animated;
+  tabCopy = tab;
   tabs = self->_tabs;
   if (!tabs)
   {
@@ -989,7 +989,7 @@ void __71__CapsuleNavigationBarViewController__updateSelectedItemAccessoryViews_
 
   v7 = tabs;
   [(CapsuleNavigationBarViewController *)self _updateTabDocumentsWithoutUpdatingCollectionView];
-  if (v17 && (v8 = [(CapsuleNavigationBarViewController *)self collectionViewIndexOfTab:?], v8 != 0x7FFFFFFFFFFFFFFFLL))
+  if (tabCopy && (v8 = [(CapsuleNavigationBarViewController *)self collectionViewIndexOfTab:?], v8 != 0x7FFFFFFFFFFFFFFFLL))
   {
     v9 = [MEMORY[0x277CCAA78] indexSetWithIndex:v8];
   }
@@ -999,25 +999,25 @@ void __71__CapsuleNavigationBarViewController__updateSelectedItemAccessoryViews_
     v9 = 0;
   }
 
-  v10 = [(TabController *)self->_tabController activeTabDocument];
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
   v11 = [(NSArray *)self->_tabs differenceFromArray:v7 withOptions:0 usingEquivalenceTest:&__block_literal_global_109];
   if (([v11 hasChanges] & 1) != 0 || objc_msgSend(v9, "count"))
   {
     capsuleCollectionView = self->_capsuleCollectionView;
-    if (v4)
+    if (animatedCopy)
     {
       [(SFCapsuleCollectionView *)capsuleCollectionView beginUpdates];
       v13 = self->_capsuleCollectionView;
-      v14 = [v11 safari_removalIndexes];
-      [(SFCapsuleCollectionView *)v13 deleteItemsAtIndexes:v14 animated:1];
+      safari_removalIndexes = [v11 safari_removalIndexes];
+      [(SFCapsuleCollectionView *)v13 deleteItemsAtIndexes:safari_removalIndexes animated:1];
 
       v15 = self->_capsuleCollectionView;
-      v16 = [v11 safari_insertionIndexes];
-      [(SFCapsuleCollectionView *)v15 insertItemsAtIndexes:v16 animated:1];
+      safari_insertionIndexes = [v11 safari_insertionIndexes];
+      [(SFCapsuleCollectionView *)v15 insertItemsAtIndexes:safari_insertionIndexes animated:1];
 
-      if ([(NSArray *)self->_tabs containsObject:v10])
+      if ([(NSArray *)self->_tabs containsObject:activeTabDocument])
       {
-        [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemIndex:[(NSArray *)self->_tabs indexOfObject:v10] animated:1];
+        [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemIndex:[(NSArray *)self->_tabs indexOfObject:activeTabDocument] animated:1];
       }
 
       if (v9)
@@ -1034,9 +1034,9 @@ void __71__CapsuleNavigationBarViewController__updateSelectedItemAccessoryViews_
     }
   }
 
-  else if ([(NSArray *)self->_tabs containsObject:v10])
+  else if ([(NSArray *)self->_tabs containsObject:activeTabDocument])
   {
-    [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemIndex:[(NSArray *)self->_tabs indexOfObject:v10] animated:v4];
+    [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemIndex:[(NSArray *)self->_tabs indexOfObject:activeTabDocument] animated:animatedCopy];
   }
 }
 
@@ -1063,12 +1063,12 @@ uint64_t __79__CapsuleNavigationBarViewController__updateTabDocumentsAnimated_re
   [v3 addEditablePropertiesWithTitle:@"Tab Bar Geometry" builder:v7];
   v4 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v3];
   [v4 setModalPresentationStyle:7];
-  v5 = [v4 popoverPresentationController];
-  v6 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView popoverSourceView];
-  [v5 setSourceView:v6];
+  popoverPresentationController = [v4 popoverPresentationController];
+  popoverSourceView = [(SFCapsuleCollectionView *)self->_capsuleCollectionView popoverSourceView];
+  [popoverPresentationController setSourceView:popoverSourceView];
 
-  [v5 setDelegate:self];
-  [v5 _setShouldDimPresentingViewTint:0];
+  [popoverPresentationController setDelegate:self];
+  [popoverPresentationController _setShouldDimPresentingViewTint:0];
   [(CapsuleNavigationBarViewController *)self presentViewController:v4 animated:1 completion:0];
 
   objc_destroyWeak(&v8);
@@ -1109,7 +1109,7 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
   }
 }
 
-- (void)_keyboardWillShow:(id)a3
+- (void)_keyboardWillShow:(id)show
 {
   self->_keyboardIsVisible = 1;
   if (!self->_unminimizeOnHideKeyboard)
@@ -1130,9 +1130,9 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
   }
 }
 
-- (void)_keyboardWillHide:(id)a3
+- (void)_keyboardWillHide:(id)hide
 {
-  v4 = a3;
+  hideCopy = hide;
   self->_keyboardIsVisible = 0;
   if (self->_unminimizeOnHideKeyboard && !self->_showingContextMenu)
   {
@@ -1147,49 +1147,49 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
   }
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v12 = a3;
-  v4 = [(TabController *)self->_tabController activeTabDocument];
-  v5 = [v4 activeWebView];
-  v6 = [v5 scrollView];
+  scrollCopy = scroll;
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+  activeWebView = [activeTabDocument activeWebView];
+  scrollView = [activeWebView scrollView];
 
-  v7 = v12;
-  if (v6 == v12)
+  v7 = scrollCopy;
+  if (scrollView == scrollCopy)
   {
-    v8 = [v12 isTracking];
-    v7 = v12;
-    if ((v8 & 1) == 0)
+    isTracking = [scrollCopy isTracking];
+    v7 = scrollCopy;
+    if ((isTracking & 1) == 0)
     {
-      v9 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView layoutStyle];
-      v7 = v12;
-      if (v9 == 2 || !self->_keyboardIsVisible)
+      layoutStyle = [(SFCapsuleCollectionView *)self->_capsuleCollectionView layoutStyle];
+      v7 = scrollCopy;
+      if (layoutStyle == 2 || !self->_keyboardIsVisible)
       {
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
-        if ((objc_opt_respondsToSelector() & 1) == 0 || [WeakRetained capsuleNavigationBarViewController:self shouldUnminimizeOnScrollForScrollView:v12])
+        if ((objc_opt_respondsToSelector() & 1) == 0 || [WeakRetained capsuleNavigationBarViewController:self shouldUnminimizeOnScrollForScrollView:scrollCopy])
         {
           if ([(SFCapsuleCollectionView *)self->_capsuleCollectionView selectedItemIsMinimized])
           {
             [(CapsuleNavigationBarViewController *)self capsuleCollectionView:self->_capsuleCollectionView distanceToTopEdgeIncludingDeceleration:1];
             if (v11 <= 0.0)
             {
-              -[CapsuleNavigationBarViewController transitionToState:animated:completionHandler:](self, "transitionToState:animated:completionHandler:", 0, [v12 _isAnimatingScroll], 0);
+              -[CapsuleNavigationBarViewController transitionToState:animated:completionHandler:](self, "transitionToState:animated:completionHandler:", 0, [scrollCopy _isAnimatingScroll], 0);
             }
           }
         }
 
-        v7 = v12;
+        v7 = scrollCopy;
       }
     }
   }
 }
 
-- (void)tabController:(id)a3 didSwitchFromTabDocument:(id)a4 toTabDocument:(id)a5
+- (void)tabController:(id)controller didSwitchFromTabDocument:(id)document toTabDocument:(id)tabDocument
 {
-  v7 = a5;
-  v8 = a4;
-  [(CapsuleNavigationBarViewController *)self _switchObservingFromTabDocument:v8 toTabDocument:v7];
-  v9 = [(CapsuleNavigationBarViewController *)self collectionViewIndexOfTab:v8];
+  tabDocumentCopy = tabDocument;
+  documentCopy = document;
+  [(CapsuleNavigationBarViewController *)self _switchObservingFromTabDocument:documentCopy toTabDocument:tabDocumentCopy];
+  v9 = [(CapsuleNavigationBarViewController *)self collectionViewIndexOfTab:documentCopy];
 
   if ([(SFCapsuleCollectionView *)self->_capsuleCollectionView selectionGestureState])
   {
@@ -1211,17 +1211,17 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
     [v11 setTransform:v22];
   }
 
-  if (self->_interactivelyInsertedTabDocument == v7)
+  if (self->_interactivelyInsertedTabDocument == tabDocumentCopy)
   {
-    v17 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView linkedPageView];
-    v18 = [v17 drivesCapsuleSelection];
+    linkedPageView = [(SFCapsuleCollectionView *)self->_capsuleCollectionView linkedPageView];
+    drivesCapsuleSelection = [linkedPageView drivesCapsuleSelection];
 
-    if (v18)
+    if (drivesCapsuleSelection)
     {
       [self->_interactivelyInsertedTabDocument setInteractivelyInserted:0];
-      v19 = [(TabController *)self->_tabController tabCollectionViewProvider];
-      v20 = [v19 tabSwitcherViewController];
-      [v20 setNeedsApplyContentAnimated:1];
+      tabCollectionViewProvider = [(TabController *)self->_tabController tabCollectionViewProvider];
+      tabSwitcherViewController = [tabCollectionViewProvider tabSwitcherViewController];
+      [tabSwitcherViewController setNeedsApplyContentAnimated:1];
     }
 
     interactivelyInsertedTabDocument = self->_interactivelyInsertedTabDocument;
@@ -1237,8 +1237,8 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
       [(CapsuleNavigationBarViewController *)self _updateTabDocumentsWithoutUpdatingCollectionView];
       capsuleCollectionView = self->_capsuleCollectionView;
       v14 = MEMORY[0x277CCAA78];
-      v15 = [(TabController *)self->_tabController activeTabDocument];
-      v16 = [v14 indexSetWithIndex:{-[CapsuleNavigationBarViewController collectionViewIndexOfTab:](self, "collectionViewIndexOfTab:", v15)}];
+      activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+      v16 = [v14 indexSetWithIndex:{-[CapsuleNavigationBarViewController collectionViewIndexOfTab:](self, "collectionViewIndexOfTab:", activeTabDocument)}];
       [(SFCapsuleCollectionView *)capsuleCollectionView reloadItemsAtIndexes:v16];
     }
 
@@ -1251,9 +1251,9 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
   }
 }
 
-- (void)tabDocumentWillEndNavigationGesture:(id)a3 withNavigationToBackForwardListItem:(id)a4
+- (void)tabDocumentWillEndNavigationGesture:(id)gesture withNavigationToBackForwardListItem:(id)item
 {
-  if ([(SFCapsuleCollectionView *)self->_capsuleCollectionView selectedItemIsMinimized:a3])
+  if ([(SFCapsuleCollectionView *)self->_capsuleCollectionView selectedItemIsMinimized:gesture])
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1264,7 +1264,7 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
   }
 }
 
-- (void)tabCollectionViewDidPresent:(id)a3
+- (void)tabCollectionViewDidPresent:(id)present
 {
   if (![(SFCapsuleCollectionView *)self->_capsuleCollectionView selectionGestureState])
   {
@@ -1273,47 +1273,47 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
   }
 }
 
-- (void)capsuleCollectionViewWillReloadData:(id)a3
+- (void)capsuleCollectionViewWillReloadData:(id)data
 {
-  v6 = a3;
-  v4 = [(TabController *)self->_tabController activeTabDocument];
-  v5 = [(CapsuleNavigationBarViewController *)self collectionViewIndexOfTab:v4];
+  dataCopy = data;
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+  v5 = [(CapsuleNavigationBarViewController *)self collectionViewIndexOfTab:activeTabDocument];
 
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v6 setSelectedItemIndex:v5];
+    [dataCopy setSelectedItemIndex:v5];
   }
 }
 
-- (BOOL)capsuleCollectionViewShouldFocusSelectedItem:(id)a3
+- (BOOL)capsuleCollectionViewShouldFocusSelectedItem:(id)item
 {
-  v3 = [(TabController *)self->_tabController activeTabDocument];
-  v4 = [v3 sfScribbleControllerIfLoaded];
-  v5 = [v4 isScribbling];
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+  sfScribbleControllerIfLoaded = [activeTabDocument sfScribbleControllerIfLoaded];
+  isScribbling = [sfScribbleControllerIfLoaded isScribbling];
 
-  return v5 ^ 1;
+  return isScribbling ^ 1;
 }
 
-- (void)capsuleCollectionView:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)capsuleCollectionView:(id)view didSelectItemAtIndex:(int64_t)index
 {
   tabController = self->_tabController;
-  v5 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:a4];
+  v5 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:index];
   [(TabController *)tabController setActiveTab:v5];
 }
 
-- (void)capsuleCollectionView:(id)a3 selectedItemWillChangeToState:(int64_t)a4 options:(int64_t)a5 coordinator:(id)a6
+- (void)capsuleCollectionView:(id)view selectedItemWillChangeToState:(int64_t)state options:(int64_t)options coordinator:(id)coordinator
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = v11;
+  viewCopy = view;
+  coordinatorCopy = coordinator;
+  v12 = coordinatorCopy;
   if (self->_nextStateChangeCompletionHandler)
   {
-    [v11 addCompletion:?];
+    [coordinatorCopy addCompletion:?];
     nextStateChangeCompletionHandler = self->_nextStateChangeCompletionHandler;
     self->_nextStateChangeCompletionHandler = 0;
   }
 
-  if (a4 != 1 && [(CapsuleNavigationBarViewController *)self _activeWebViewIsFirstResponder]&& self->_keyboardIsVisible)
+  if (state != 1 && [(CapsuleNavigationBarViewController *)self _activeWebViewIsFirstResponder]&& self->_keyboardIsVisible)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -1324,9 +1324,9 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ((a4 == 1) == [v10 selectedItemIsMinimized] || (objc_opt_respondsToSelector() & 1) == 0)
+  if ((state == 1) == [viewCopy selectedItemIsMinimized] || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    if (a4 == 2)
+    if (state == 2)
     {
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
@@ -1342,27 +1342,27 @@ void __48__CapsuleNavigationBarViewController_editTabBar__block_invoke_2(uint64_
     [WeakRetained capsuleNavigationController:self obscuredInsetsDidChangeWithCoordinator:v12];
   }
 
-  v15 = [v10 selectedItemState];
+  selectedItemState = [viewCopy selectedItemState];
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained capsuleNavigationBarViewController:self selectedItemWillChangeToState:a4 options:a5 coordinator:v12];
+    [WeakRetained capsuleNavigationBarViewController:self selectedItemWillChangeToState:state options:options coordinator:v12];
   }
 
-  if (a4 == 2 || v15 == 2)
+  if (state == 2 || selectedItemState == 2)
   {
-    self->_capsuleIsFocused = a4 == 2;
-    if ([v10 numberOfItems])
+    self->_capsuleIsFocused = state == 2;
+    if ([viewCopy numberOfItems])
     {
-      v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(v10, "selectedItemIndex")}];
-      [v10 reloadItemsAtIndexes:v16];
+      v16 = [MEMORY[0x277CCAA78] indexSetWithIndex:{objc_msgSend(viewCopy, "selectedItemIndex")}];
+      [viewCopy reloadItemsAtIndexes:v16];
     }
 
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __110__CapsuleNavigationBarViewController_capsuleCollectionView_selectedItemWillChangeToState_options_coordinator___block_invoke_3;
     v17[3] = &unk_2781D5C88;
-    v19 = self;
-    v20 = a5;
+    selfCopy = self;
+    optionsCopy = options;
     v18 = WeakRetained;
     [v12 addAnimations:v17];
   }
@@ -1401,27 +1401,27 @@ void __110__CapsuleNavigationBarViewController_capsuleCollectionView_selectedIte
   }
 }
 
-- (unint64_t)capsuleCollectionViewBoundaryEdgesForScrollableContent:(id)a3
+- (unint64_t)capsuleCollectionViewBoundaryEdgesForScrollableContent:(id)content
 {
-  v4 = [(TabController *)self->_tabController activeTabDocument];
-  v5 = [v4 activeWebView];
-  v6 = [v5 scrollView];
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+  activeWebView = [activeTabDocument activeWebView];
+  scrollView = [activeWebView scrollView];
 
-  v7 = [(CapsuleNavigationBarViewController *)self _boundaryEdgesForScrollView:v6];
+  v7 = [(CapsuleNavigationBarViewController *)self _boundaryEdgesForScrollView:scrollView];
   return v7;
 }
 
-- (unint64_t)_boundaryEdgesForScrollView:(id)a3
+- (unint64_t)_boundaryEdgesForScrollView:(id)view
 {
-  v3 = a3;
-  [v3 contentOffset];
+  viewCopy = view;
+  [viewCopy contentOffset];
   v5 = v4;
-  [v3 contentInset];
+  [viewCopy contentInset];
   v7 = v6;
   v9 = -v8;
-  [v3 bounds];
+  [viewCopy bounds];
   Height = CGRectGetHeight(v15);
-  [v3 contentSize];
+  [viewCopy contentSize];
   v12 = v11;
 
   v13 = 4;
@@ -1441,30 +1441,30 @@ void __110__CapsuleNavigationBarViewController_capsuleCollectionView_selectedIte
   }
 }
 
-- (double)capsuleCollectionView:(id)a3 distanceToTopEdgeIncludingDeceleration:(BOOL)a4
+- (double)capsuleCollectionView:(id)view distanceToTopEdgeIncludingDeceleration:(BOOL)deceleration
 {
-  v4 = a4;
-  v6 = [(TabController *)self->_tabController activeTabDocument];
-  v7 = [v6 activeWebView];
-  v8 = [v7 scrollView];
+  decelerationCopy = deceleration;
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+  activeWebView = [activeTabDocument activeWebView];
+  scrollView = [activeWebView scrollView];
 
-  [v8 contentOffset];
+  [scrollView contentOffset];
   v10 = v9;
-  [v8 _verticalVelocity];
-  if (v4)
+  [scrollView _verticalVelocity];
+  if (decelerationCopy)
   {
     v12 = v11;
     if (v11 != 0.0)
     {
-      [v8 decelerationRate];
+      [scrollView decelerationRate];
       v14 = v13;
       v15 = dbl_215A95AA0[v12 < 0.0];
-      [v8 _verticalVelocity];
+      [scrollView _verticalVelocity];
       v10 = v10 - (v16 - v15) / log(v14);
     }
   }
 
-  [v8 contentInset];
+  [scrollView contentInset];
   v18 = v10 + v17;
   [(SFCapsuleCollectionView *)self->_capsuleCollectionView obscuredInsetsForState:0];
   v20 = v18 - v19;
@@ -1474,9 +1474,9 @@ void __110__CapsuleNavigationBarViewController_capsuleCollectionView_selectedIte
   return v22;
 }
 
-- (id)trailingActionForCapsuleCollectionView:(id)a3
+- (id)trailingActionForCapsuleCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if ([(CapsuleNavigationBarViewController *)self _showsOnlyActiveTab])
   {
     v5 = 0;
@@ -1484,8 +1484,8 @@ void __110__CapsuleNavigationBarViewController_capsuleCollectionView_selectedIte
 
   else
   {
-    v6 = [(NSArray *)self->_tabs lastObject];
-    if (-[TabController canAddNewTabForCurrentBrowsingMode](self->_tabController, "canAddNewTabForCurrentBrowsingMode") && (![v6 isBlank] || objc_msgSend(v6, "isLoading") && (objc_msgSend(v6, "isLoadingStartPage") & 1) == 0))
+    lastObject = [(NSArray *)self->_tabs lastObject];
+    if (-[TabController canAddNewTabForCurrentBrowsingMode](self->_tabController, "canAddNewTabForCurrentBrowsingMode") && (![lastObject isBlank] || objc_msgSend(lastObject, "isLoading") && (objc_msgSend(lastObject, "isLoadingStartPage") & 1) == 0))
     {
       objc_initWeak(&location, self);
       v7 = MEMORY[0x277D750C8];
@@ -1522,9 +1522,9 @@ void __77__CapsuleNavigationBarViewController_trailingActionForCapsuleCollection
   }
 }
 
-- (id)topActionForCapsuleCollectionView:(id)a3
+- (id)topActionForCapsuleCollectionView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x277D750C8];
   v8[0] = MEMORY[0x277D85DD0];
@@ -1555,9 +1555,9 @@ void __72__CapsuleNavigationBarViewController_topActionForCapsuleCollectionView_
   }
 }
 
-- (BOOL)capsuleCollectionViewAllowsMinimizationGesture:(id)a3
+- (BOOL)capsuleCollectionViewAllowsMinimizationGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   if (self->_keyboardIsVisible && [(SFCapsuleCollectionView *)self->_capsuleCollectionView layoutStyle]!= 2)
   {
     v6 = 0;
@@ -1580,20 +1580,20 @@ void __72__CapsuleNavigationBarViewController_topActionForCapsuleCollectionView_
   return v6;
 }
 
-- (double)capsuleCollectionView:(id)a3 heightForWidth:(double)a4 state:(int64_t)a5
+- (double)capsuleCollectionView:(id)view heightForWidth:(double)width state:(int64_t)state
 {
-  v8 = [a3 selectedItemIndex];
-  v9 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView contentViewForItemAtIndex:v8];
+  selectedItemIndex = [view selectedItemIndex];
+  v9 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView contentViewForItemAtIndex:selectedItemIndex];
   v10 = &OBJC_IVAR___CapsuleNavigationBarViewController__sizingNavigationBar;
-  if (a5 == 1)
+  if (state == 1)
   {
     v10 = &OBJC_IVAR___CapsuleNavigationBarViewController__minimizedSizingNavigationBar;
   }
 
   v11 = *(&self->super.super.super.isa + *v10);
-  v12 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:v8];
-  v13 = [v12 navigationBarItem];
-  [v11 setItem:v13];
+  v12 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:selectedItemIndex];
+  navigationBarItem = [v12 navigationBarItem];
+  [v11 setItem:navigationBarItem];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1605,26 +1605,26 @@ void __72__CapsuleNavigationBarViewController_topActionForCapsuleCollectionView_
   [v11 layoutIfNeeded];
   LODWORD(v14) = 1148846080;
   LODWORD(v15) = 1112014848;
-  [v11 systemLayoutSizeFittingSize:a4 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v14, v15}];
+  [v11 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v14, v15}];
   v17 = fmax(v16, 20.0);
 
   return v17;
 }
 
-- (CGSize)capsuleCollectionView:(id)a3 preferredSizeForState:(int64_t)a4
+- (CGSize)capsuleCollectionView:(id)view preferredSizeForState:(int64_t)state
 {
-  v6 = [a3 selectedItemIndex];
-  v7 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView contentViewForItemAtIndex:v6];
+  selectedItemIndex = [view selectedItemIndex];
+  v7 = [(SFCapsuleCollectionView *)self->_capsuleCollectionView contentViewForItemAtIndex:selectedItemIndex];
   v8 = &OBJC_IVAR___CapsuleNavigationBarViewController__sizingNavigationBar;
-  if (a4 == 1)
+  if (state == 1)
   {
     v8 = &OBJC_IVAR___CapsuleNavigationBarViewController__minimizedSizingNavigationBar;
   }
 
   v9 = *(&self->super.super.super.isa + *v8);
-  v10 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:v6];
-  v11 = [v10 navigationBarItem];
-  [v9 setItem:v11];
+  v10 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:selectedItemIndex];
+  navigationBarItem = [v10 navigationBarItem];
+  [v9 setItem:navigationBarItem];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1645,13 +1645,13 @@ void __72__CapsuleNavigationBarViewController_topActionForCapsuleCollectionView_
   return result;
 }
 
-- (double)capsuleCollectionViewMinimizedContentScale:(id)a3
+- (double)capsuleCollectionViewMinimizedContentScale:(id)scale
 {
-  v4 = -[CapsuleNavigationBarViewController tabAtCollectionViewIndex:](self, "tabAtCollectionViewIndex:", [a3 selectedItemIndex]);
-  v5 = [v4 navigationBarItem];
+  v4 = -[CapsuleNavigationBarViewController tabAtCollectionViewIndex:](self, "tabAtCollectionViewIndex:", [scale selectedItemIndex]);
+  navigationBarItem = [v4 navigationBarItem];
 
-  [(SFCapsuleNavigationBar *)self->_sizingNavigationBar setItem:v5];
-  [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar setItem:v5];
+  [(SFCapsuleNavigationBar *)self->_sizingNavigationBar setItem:navigationBarItem];
+  [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar setItem:navigationBarItem];
   [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar urlSize];
   v7 = v6;
   [(SFCapsuleNavigationBar *)self->_sizingNavigationBar urlSize];
@@ -1660,9 +1660,9 @@ void __72__CapsuleNavigationBarViewController_topActionForCapsuleCollectionView_
   return v9;
 }
 
-- (BOOL)capsuleCollectionViewContentScaleCompletesMinimization:(id)a3
+- (BOOL)capsuleCollectionViewContentScaleCompletesMinimization:(id)minimization
 {
-  [(CapsuleNavigationBarViewController *)self capsuleCollectionViewMinimizedContentScale:a3];
+  [(CapsuleNavigationBarViewController *)self capsuleCollectionViewMinimizedContentScale:minimization];
   [(SFCapsuleNavigationBar *)self->_sizingNavigationBar keyContentRect];
   CGRectGetWidth(v6);
   [(SFCapsuleNavigationBar *)self->_minimizedSizingNavigationBar keyContentRect];
@@ -1671,7 +1671,7 @@ void __72__CapsuleNavigationBarViewController_topActionForCapsuleCollectionView_
   return _SFEqualWithEpsilon();
 }
 
-- (void)capsuleCollectionViewWillHideKeyboard:(id)a3
+- (void)capsuleCollectionViewWillHideKeyboard:(id)keyboard
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1680,27 +1680,27 @@ void __72__CapsuleNavigationBarViewController_topActionForCapsuleCollectionView_
   }
 }
 
-- (void)capsuleCollectionView:(id)a3 willChangeToLayoutStyle:(int64_t)a4
+- (void)capsuleCollectionView:(id)view willChangeToLayoutStyle:(int64_t)style
 {
-  [(SFCapsuleNavigationBar *)self->_sizingNavigationBar setLayoutStyle:a4];
+  [(SFCapsuleNavigationBar *)self->_sizingNavigationBar setLayoutStyle:style];
   minimizedSizingNavigationBar = self->_minimizedSizingNavigationBar;
 
-  [(SFCapsuleNavigationBar *)minimizedSizingNavigationBar setLayoutStyle:a4];
+  [(SFCapsuleNavigationBar *)minimizedSizingNavigationBar setLayoutStyle:style];
 }
 
-- (void)capsuleCollectionViewLayoutStyleDidChange:(id)a3
+- (void)capsuleCollectionViewLayoutStyleDidChange:(id)change
 {
   [(CapsuleNavigationBarViewController *)self _updateSelectedItemAccessoryViews];
 
   [(CapsuleNavigationBarViewController *)self _updateTabDocumentsAnimated:0];
 }
 
-- (id)capsuleCollectionView:(id)a3 createSupplementaryViewWithIdentifier:(id)a4
+- (id)capsuleCollectionView:(id)view createSupplementaryViewWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  if ([v7 isEqualToString:*MEMORY[0x277D28FD0]] && (objc_opt_respondsToSelector() & 1) != 0)
+  if ([identifierCopy isEqualToString:*MEMORY[0x277D28FD0]] && (objc_opt_respondsToSelector() & 1) != 0)
   {
     v9 = [WeakRetained createToolbarForCapsuleNavigationBarViewController:self];
     goto LABEL_14;
@@ -1713,9 +1713,9 @@ void __72__CapsuleNavigationBarViewController_topActionForCapsuleCollectionView_
     goto LABEL_10;
   }
 
-  if (![v7 isEqualToString:*MEMORY[0x277D28FC0]])
+  if (![identifierCopy isEqualToString:*MEMORY[0x277D28FC0]])
   {
-    if ([v7 isEqualToString:*MEMORY[0x277D28FD8]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D28FD8]])
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
@@ -1734,7 +1734,7 @@ void __72__CapsuleNavigationBarViewController_topActionForCapsuleCollectionView_
     }
 
 LABEL_10:
-    if ([v7 isEqualToString:*MEMORY[0x277D28FC8]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D28FC8]])
     {
       v9 = objc_alloc_init(MEMORY[0x277D75D18]);
       [v9 safari_setFlexibleGlassBackgroundEnabled:1];
@@ -1815,17 +1815,17 @@ void __98__CapsuleNavigationBarViewController_capsuleCollectionView_createSupple
   }
 }
 
-- (void)capsuleCollectionView:(id)a3 didBeginSelectionGestureOnAxis:(unint64_t)a4
+- (void)capsuleCollectionView:(id)view didBeginSelectionGestureOnAxis:(unint64_t)axis
 {
-  v18 = a3;
+  viewCopy = view;
   [(CapsuleNavigationBarViewController *)self _updateHidingCapsuleAnimated:1];
-  v5 = [v18 selectedItemIndex];
-  if (v5 == [v18 numberOfItems] - 1 && !self->_interactivelyInsertedTabDocument && objc_msgSend(v18, "hasTrailingAction"))
+  selectedItemIndex = [viewCopy selectedItemIndex];
+  if (selectedItemIndex == [viewCopy numberOfItems] - 1 && !self->_interactivelyInsertedTabDocument && objc_msgSend(viewCopy, "hasTrailingAction"))
   {
     v6 = [TabDocument alloc];
-    v7 = [(TabController *)self->_tabController activeTabDocument];
-    v8 = [v7 browserController];
-    v9 = [(TabDocument *)v6 initWithBrowserController:v8];
+    activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+    browserController = [activeTabDocument browserController];
+    v9 = [(TabDocument *)v6 initWithBrowserController:browserController];
     interactivelyInsertedTabDocument = self->_interactivelyInsertedTabDocument;
     self->_interactivelyInsertedTabDocument = v9;
 
@@ -1834,20 +1834,20 @@ void __98__CapsuleNavigationBarViewController_capsuleCollectionView_createSupple
     [self->_interactivelyInsertedTabDocument displayNewTabOverridePageIfNecessary];
     tabController = self->_tabController;
     v12 = self->_interactivelyInsertedTabDocument;
-    v13 = [(TabController *)tabController currentTabs];
-    v14 = [v13 lastObject];
-    [(TabController *)tabController insertTab:v12 afterTab:v14 inBackground:1 animated:1];
+    currentTabs = [(TabController *)tabController currentTabs];
+    lastObject = [currentTabs lastObject];
+    [(TabController *)tabController insertTab:v12 afterTab:lastObject inBackground:1 animated:1];
 
-    v15 = [(TabController *)self->_tabController tabCollectionViewProvider];
-    [v15 updateSnapshotIdentifiers];
+    tabCollectionViewProvider = [(TabController *)self->_tabController tabCollectionViewProvider];
+    [tabCollectionViewProvider updateSnapshotIdentifiers];
 
-    v16 = [(TabController *)self->_tabController tabCollectionViewProvider];
-    v17 = [v16 tabSwitcherViewController];
-    [v17 applyContentIfNeeded];
+    tabCollectionViewProvider2 = [(TabController *)self->_tabController tabCollectionViewProvider];
+    tabSwitcherViewController = [tabCollectionViewProvider2 tabSwitcherViewController];
+    [tabSwitcherViewController applyContentIfNeeded];
   }
 }
 
-- (void)capsuleCollectionViewDidEndSelectionGesture:(id)a3
+- (void)capsuleCollectionViewDidEndSelectionGesture:(id)gesture
 {
   interactivelyInsertedTabDocument = self->_interactivelyInsertedTabDocument;
   if (interactivelyInsertedTabDocument)
@@ -1858,61 +1858,61 @@ void __98__CapsuleNavigationBarViewController_capsuleCollectionView_createSupple
   }
 }
 
-- (id)tabAtCollectionViewIndex:(int64_t)a3
+- (id)tabAtCollectionViewIndex:(int64_t)index
 {
-  if ([(NSArray *)self->_tabs count]== a3 && (interactivelyInsertedTabDocument = self->_interactivelyInsertedTabDocument) != 0)
+  if ([(NSArray *)self->_tabs count]== index && (interactivelyInsertedTabDocument = self->_interactivelyInsertedTabDocument) != 0)
   {
     v6 = interactivelyInsertedTabDocument;
   }
 
   else
   {
-    v6 = [(NSArray *)self->_tabs objectAtIndexedSubscript:a3];
+    v6 = [(NSArray *)self->_tabs objectAtIndexedSubscript:index];
   }
 
   return v6;
 }
 
-- (id)capsuleCollectionView:(id)a3 contentViewForItemAtIndex:(int64_t)a4
+- (id)capsuleCollectionView:(id)view contentViewForItemAtIndex:(int64_t)index
 {
-  v6 = a3;
-  if ([v6 selectedItemIndex] == a4 && objc_msgSend(v6, "selectedItemState") == 2)
+  viewCopy = view;
+  if ([viewCopy selectedItemIndex] == index && objc_msgSend(viewCopy, "selectedItemState") == 2)
   {
-    v7 = [v6 createOrDequeueContentViewWithIdentifier:@"urlField" atIndex:a4];
-    v8 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:a4];
+    v7 = [viewCopy createOrDequeueContentViewWithIdentifier:@"urlField" atIndex:index];
+    v8 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:index];
     cachedSelectedItemNavigationBar = [v8 navigationBarItem];
 
     LODWORD(v8) = self->_focusingForScribble;
-    v10 = [v7 textField];
-    v11 = v10;
+    textField = [v7 textField];
+    v11 = textField;
     if (v8 == 1)
     {
-      [v10 setText:0];
+      [textField setText:0];
 
-      v12 = 0;
+      startIndexOfTextInExpandedText = 0;
       goto LABEL_5;
     }
 
-    v16 = [v10 isFirstResponder];
+    isFirstResponder = [textField isFirstResponder];
 
-    if ((v16 & 1) == 0)
+    if ((isFirstResponder & 1) == 0)
     {
-      v17 = [cachedSelectedItemNavigationBar textWhenExpanded];
-      v18 = [v7 textField];
-      [v18 setText:v17];
+      textWhenExpanded = [cachedSelectedItemNavigationBar textWhenExpanded];
+      textField2 = [v7 textField];
+      [textField2 setText:textWhenExpanded];
 
-      v12 = [cachedSelectedItemNavigationBar startIndexOfTextInExpandedText];
-      v19 = [cachedSelectedItemNavigationBar text];
-      v20 = [v19 length];
+      startIndexOfTextInExpandedText = [cachedSelectedItemNavigationBar startIndexOfTextInExpandedText];
+      text = [cachedSelectedItemNavigationBar text];
+      v20 = [text length];
 
       if (v20)
       {
-        v21 = [cachedSelectedItemNavigationBar text];
-        v22 = [v21 characterAtIndex:0];
+        text2 = [cachedSelectedItemNavigationBar text];
+        v22 = [text2 characterAtIndex:0];
 
         if (v22 == 8206)
         {
-          ++v12;
+          ++startIndexOfTextInExpandedText;
         }
 
         v13 = v20 - (v22 == 8206);
@@ -1922,18 +1922,18 @@ void __98__CapsuleNavigationBarViewController_capsuleCollectionView_createSupple
 LABEL_5:
       v13 = 0;
 LABEL_13:
-      [v7 setRangeOfKeyText:{v12, v13}];
+      [v7 setRangeOfKeyText:{startIndexOfTextInExpandedText, v13}];
     }
   }
 
   else
   {
-    v7 = [v6 createOrDequeueContentViewWithIdentifier:@"navigationBar" atIndex:a4];
-    v14 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:a4];
-    v15 = [v14 navigationBarItem];
-    [v7 setItem:v15];
+    v7 = [viewCopy createOrDequeueContentViewWithIdentifier:@"navigationBar" atIndex:index];
+    v14 = [(CapsuleNavigationBarViewController *)self tabAtCollectionViewIndex:index];
+    navigationBarItem = [v14 navigationBarItem];
+    [v7 setItem:navigationBarItem];
 
-    if ([v6 selectedItemIndex] != a4)
+    if ([viewCopy selectedItemIndex] != index)
     {
       goto LABEL_15;
     }
@@ -1948,42 +1948,42 @@ LABEL_15:
   return v7;
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  sessionCopy = session;
   capsuleCollectionView = self->_capsuleCollectionView;
-  v8 = a3;
+  interactionCopy = interaction;
   v9 = [(SFCapsuleCollectionView *)capsuleCollectionView contentViewForItemAtIndex:[(SFCapsuleCollectionView *)capsuleCollectionView selectedItemIndex]];
-  v10 = [v8 view];
+  view = [interactionCopy view];
 
-  if (v10 != v9)
+  if (view != v9)
   {
     v11 = MEMORY[0x277CBEBF8];
     goto LABEL_12;
   }
 
-  [v6 locationInView:v9];
+  [sessionCopy locationInView:v9];
   v12 = [v9 hitTest:0 withEvent:?];
-  v13 = [v9 leadingButtons];
-  if ([v13 containsObject:v12])
+  leadingButtons = [v9 leadingButtons];
+  if ([leadingButtons containsObject:v12])
   {
   }
 
   else
   {
-    v14 = [v9 trailingButtons];
-    v15 = [v14 containsObject:v12];
+    trailingButtons = [v9 trailingButtons];
+    v15 = [trailingButtons containsObject:v12];
 
     if ((v15 & 1) == 0)
     {
-      v16 = [(TabController *)self->_tabController activeTabDocument];
-      v17 = [v16 urlForSharing];
-      if (v17)
+      activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+      urlForSharing = [activeTabDocument urlForSharing];
+      if (urlForSharing)
       {
-        v18 = [MEMORY[0x277CCAA88] safari_itemProviderForTabDocument:v16];
+        v18 = [MEMORY[0x277CCAA88] safari_itemProviderForTabDocument:activeTabDocument];
         v19 = [objc_alloc(MEMORY[0x277D75470]) initWithItemProvider:v18];
-        [v19 setLocalObject:v17];
+        [v19 setLocalObject:urlForSharing];
         v21[0] = v19;
         v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
       }
@@ -2005,29 +2005,29 @@ LABEL_12:
   return v11;
 }
 
-- (void)dragInteraction:(id)a3 sessionWillBegin:(id)a4
+- (void)dragInteraction:(id)interaction sessionWillBegin:(id)begin
 {
   v5 = MEMORY[0x277D499B8];
-  v6 = a4;
-  v7 = [v5 sharedLogger];
-  [v7 didStartDragWithDragContentType:2];
+  beginCopy = begin;
+  sharedLogger = [v5 sharedLogger];
+  [sharedLogger didStartDragWithDragContentType:2];
 
-  v8 = [(TabController *)self->_tabController activeTabDocument];
-  v9 = [v8 uuid];
-  [v6 setLocalContext:v9];
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+  uuid = [activeTabDocument uuid];
+  [beginCopy setLocalContext:uuid];
 
-  v10 = [v6 items];
+  items = [beginCopy items];
 
-  v11 = [v10 firstObject];
+  firstObject = [items firstObject];
 
-  v12 = [v11 localObject];
+  localObject = [firstObject localObject];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __71__CapsuleNavigationBarViewController_dragInteraction_sessionWillBegin___block_invoke;
   v14[3] = &unk_2781D5CD8;
-  v15 = v12;
-  v13 = v12;
-  [v11 setPreviewProvider:v14];
+  v15 = localObject;
+  v13 = localObject;
+  [firstObject setPreviewProvider:v14];
 }
 
 id __71__CapsuleNavigationBarViewController_dragInteraction_sessionWillBegin___block_invoke(uint64_t a1)
@@ -2040,24 +2040,24 @@ id __71__CapsuleNavigationBarViewController_dragInteraction_sessionWillBegin___b
   return v4;
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v6 = [a3 view];
-  v7 = [(CapsuleNavigationBarViewController *)self _dragPreviewForNavigationBar:v6];
+  view = [interaction view];
+  v7 = [(CapsuleNavigationBarViewController *)self _dragPreviewForNavigationBar:view];
 
   return v7;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v4 = [(TabController *)self->_tabController activeTabDocument:a3];
+  v4 = [(TabController *)self->_tabController activeTabDocument:interaction];
   if ([v4 hasQuickLookContent])
   {
-    v5 = [v4 quickLookDocument];
-    v6 = [MEMORY[0x277D262A0] sharedConnection];
-    v7 = [v5 sourceURL];
-    v8 = [v7 safari_URLByNormalizingBlobURL];
-    if ([v6 isURLManaged:v8])
+    quickLookDocument = [v4 quickLookDocument];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    sourceURL = [quickLookDocument sourceURL];
+    safari_URLByNormalizingBlobURL = [sourceURL safari_URLByNormalizingBlobURL];
+    if ([mEMORY[0x277D262A0] isURLManaged:safari_URLByNormalizingBlobURL])
     {
       v9 = 2;
     }
@@ -2076,17 +2076,17 @@ id __71__CapsuleNavigationBarViewController_dragInteraction_sessionWillBegin___b
   return v9;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
-  v5 = [a4 localDragSession];
-  v6 = [v5 localContext];
+  localDragSession = [update localDragSession];
+  localContext = [localDragSession localContext];
 
-  if (v6)
+  if (localContext)
   {
-    v7 = [(TabController *)self->_tabController activeTabDocument];
-    v8 = [v7 uuid];
+    activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+    uuid = [activeTabDocument uuid];
 
-    if ([v8 isEqual:v6])
+    if ([uuid isEqual:localContext])
     {
       v9 = [objc_alloc(MEMORY[0x277D754A8]) initWithDropOperation:0];
 
@@ -2100,17 +2100,17 @@ LABEL_6:
   return v9;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v5 = MEMORY[0x277D28F40];
-  v6 = a4;
-  v7 = [v5 builder];
+  dropCopy = drop;
+  builder = [v5 builder];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__CapsuleNavigationBarViewController_dropInteraction_performDrop___block_invoke;
   v8[3] = &unk_2781D5D00;
   v8[4] = self;
-  [v7 buildNavigationIntentForDropSession:v6 completionHandler:v8];
+  [builder buildNavigationIntentForDropSession:dropCopy completionHandler:v8];
 }
 
 void __66__CapsuleNavigationBarViewController_dropInteraction_performDrop___block_invoke(uint64_t a1, void *a2)
@@ -2124,27 +2124,27 @@ void __66__CapsuleNavigationBarViewController_dropInteraction_performDrop___bloc
   }
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = [(TabController *)self->_tabController activeTabDocument:a3];
-  v6 = [v5 sfScribbleControllerIfLoaded];
-  v7 = [v6 isScribbling];
+  v5 = [(TabController *)self->_tabController activeTabDocument:interaction];
+  sfScribbleControllerIfLoaded = [v5 sfScribbleControllerIfLoaded];
+  isScribbling = [sfScribbleControllerIfLoaded isScribbling];
 
-  if (v7)
+  if (isScribbling)
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [(CapsuleNavigationBarViewController *)self _contextMenuActionProvider];
-    if (v9)
+    _contextMenuActionProvider = [(CapsuleNavigationBarViewController *)self _contextMenuActionProvider];
+    if (_contextMenuActionProvider)
     {
       self->_showingContextMenu = 1;
       v10 = MEMORY[0x277D753B0];
-      v11 = [(TabController *)self->_tabController activeTabDocument];
-      v12 = [v11 uuid];
-      v8 = [v10 configurationWithIdentifier:v12 previewProvider:0 actionProvider:v9];
+      activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+      uuid = [activeTabDocument uuid];
+      v8 = [v10 configurationWithIdentifier:uuid previewProvider:0 actionProvider:_contextMenuActionProvider];
     }
 
     else
@@ -2158,27 +2158,27 @@ void __66__CapsuleNavigationBarViewController_dropInteraction_performDrop___bloc
 
 - (id)_contextMenuActionProvider
 {
-  v3 = [MEMORY[0x277D49A08] isSolariumEnabled];
-  v4 = [(TabController *)self->_tabController activeTabDocument];
-  v5 = [(TabController *)self->_tabController tabMenuProviderDataSource];
-  if (v3)
+  isSolariumEnabled = [MEMORY[0x277D49A08] isSolariumEnabled];
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+  tabMenuProviderDataSource = [(TabController *)self->_tabController tabMenuProviderDataSource];
+  if (isSolariumEnabled)
   {
-    [TabMenuProvider addressFieldActionProviderForTab:v4 dataSource:v5];
+    [TabMenuProvider addressFieldActionProviderForTab:activeTabDocument dataSource:tabMenuProviderDataSource];
   }
 
   else
   {
-    [TabMenuProvider actionProviderForTab:v4 dataSource:v5 options:10257];
+    [TabMenuProvider actionProviderForTab:activeTabDocument dataSource:tabMenuProviderDataSource options:10257];
   }
   v6 = ;
 
   return v6;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v6 = [a3 view];
-  v7 = [(CapsuleNavigationBarViewController *)self _dragPreviewForNavigationBar:v6];
+  view = [interaction view];
+  v7 = [(CapsuleNavigationBarViewController *)self _dragPreviewForNavigationBar:view];
   cachedHighlightPreview = self->_cachedHighlightPreview;
   self->_cachedHighlightPreview = v7;
 
@@ -2188,22 +2188,22 @@ void __66__CapsuleNavigationBarViewController_dropInteraction_performDrop___bloc
   return v9;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 dismissalPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration dismissalPreviewForItemWithIdentifier:(id)identifier
 {
-  v7 = a3;
+  interactionCopy = interaction;
   v8 = self->_cachedHighlightPreview;
   cachedHighlightPreview = self->_cachedHighlightPreview;
   self->_cachedHighlightPreview = 0;
-  v10 = a5;
+  identifierCopy = identifier;
 
-  v11 = [(TabController *)self->_tabController activeTabDocument];
-  v12 = [v11 uuid];
+  activeTabDocument = [(TabController *)self->_tabController activeTabDocument];
+  uuid = [activeTabDocument uuid];
   v13 = WBSIsEqual();
 
   if (v13)
   {
-    v14 = [v7 view];
-    v15 = [(CapsuleNavigationBarViewController *)self _dragPreviewForNavigationBar:v14];
+    view = [interactionCopy view];
+    v15 = [(CapsuleNavigationBarViewController *)self _dragPreviewForNavigationBar:view];
   }
 
   else
@@ -2215,8 +2215,8 @@ void __66__CapsuleNavigationBarViewController_dropInteraction_performDrop___bloc
     v19 = v18;
     v21 = v20;
     CGAffineTransformMakeScale(&v24, 0.0, 0.0);
-    v14 = [v16 initWithContainer:capsuleCollectionView center:&v24 transform:{v19, v21}];
-    v15 = [(UITargetedPreview *)v8 retargetedPreviewWithTarget:v14];
+    view = [v16 initWithContainer:capsuleCollectionView center:&v24 transform:{v19, v21}];
+    v15 = [(UITargetedPreview *)v8 retargetedPreviewWithTarget:view];
   }
 
   v22 = v15;
@@ -2224,26 +2224,26 @@ void __66__CapsuleNavigationBarViewController_dropInteraction_performDrop___bloc
   return v22;
 }
 
-- (void)contextMenuInteraction:(id)a3 willDisplayMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willDisplayMenuForConfiguration:(id)configuration animator:(id)animator
 {
   capsuleCollectionView = self->_capsuleCollectionView;
-  v7 = a5;
+  animatorCopy = animator;
   [(SFCapsuleCollectionView *)capsuleCollectionView setIgnoresKeyboardHideEvents:1];
-  [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemUsesLiftedPreviewAppearance:1 animator:v7];
+  [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemUsesLiftedPreviewAppearance:1 animator:animatorCopy];
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   self->_showingContextMenu = 0;
   capsuleCollectionView = self->_capsuleCollectionView;
-  v7 = a5;
+  animatorCopy = animator;
   [(SFCapsuleCollectionView *)capsuleCollectionView setIgnoresKeyboardHideEvents:0];
-  [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemUsesLiftedPreviewAppearance:0 animator:v7];
+  [(SFCapsuleCollectionView *)self->_capsuleCollectionView setSelectedItemUsesLiftedPreviewAppearance:0 animator:animatorCopy];
 }
 
-- (CGRect)_scribbleInteraction:(id)a3 frameForElement:(id)a4
+- (CGRect)_scribbleInteraction:(id)interaction frameForElement:(id)element
 {
-  v4 = [(CapsuleNavigationBarViewController *)self selectedItemNavigationBar:a3];
+  v4 = [(CapsuleNavigationBarViewController *)self selectedItemNavigationBar:interaction];
   [v4 bounds];
   v6 = v5;
   v8 = v7;
@@ -2261,17 +2261,17 @@ void __66__CapsuleNavigationBarViewController_dropInteraction_performDrop___bloc
   return result;
 }
 
-- (void)_scribbleInteraction:(id)a3 focusElement:(id)a4 initialFocusSelectionReferencePoint:(CGPoint)a5 completion:(id)a6
+- (void)_scribbleInteraction:(id)interaction focusElement:(id)element initialFocusSelectionReferencePoint:(CGPoint)point completion:(id)completion
 {
-  v7 = a6;
+  completionCopy = completion;
   self->_focusingForScribble = 1;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __119__CapsuleNavigationBarViewController__scribbleInteraction_focusElement_initialFocusSelectionReferencePoint_completion___block_invoke;
   v9[3] = &unk_2781D5D28;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(CapsuleNavigationBarViewController *)self transitionToState:2 animated:1 completionHandler:v9];
 }
 

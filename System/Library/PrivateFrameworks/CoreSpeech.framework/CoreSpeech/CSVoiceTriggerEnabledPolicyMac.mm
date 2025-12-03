@@ -116,8 +116,8 @@ uint64_t __67__CSVoiceTriggerEnabledPolicyMac__addVoiceTriggerEnabledConditions_
 
 - (void)_subscribeEventMonitors
 {
-  v3 = [MEMORY[0x277D01938] sharedInstance];
-  [(CSPolicy *)self subscribeEventMonitor:v3];
+  mEMORY[0x277D01938] = [MEMORY[0x277D01938] sharedInstance];
+  [(CSPolicy *)self subscribeEventMonitor:mEMORY[0x277D01938]];
 
   v4 = +[CSClamshellStateMonitor sharedInstance];
   [(CSPolicy *)self subscribeEventMonitor:v4];
@@ -125,11 +125,11 @@ uint64_t __67__CSVoiceTriggerEnabledPolicyMac__addVoiceTriggerEnabledConditions_
   v5 = +[CSSRFUserSettingMonitor sharedInstance];
   [(CSPolicy *)self subscribeEventMonitor:v5];
 
-  v6 = [MEMORY[0x277D01870] sharedInstance];
-  [(CSPolicy *)self subscribeEventMonitor:v6];
+  mEMORY[0x277D01870] = [MEMORY[0x277D01870] sharedInstance];
+  [(CSPolicy *)self subscribeEventMonitor:mEMORY[0x277D01870]];
 
-  v7 = [MEMORY[0x277D018E8] sharedInstance];
-  [(CSPolicy *)self subscribeEventMonitor:v7];
+  mEMORY[0x277D018E8] = [MEMORY[0x277D018E8] sharedInstance];
+  [(CSPolicy *)self subscribeEventMonitor:mEMORY[0x277D018E8]];
 }
 
 - (CSVoiceTriggerEnabledPolicyMac)init

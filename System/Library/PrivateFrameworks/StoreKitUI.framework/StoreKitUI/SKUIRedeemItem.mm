@@ -1,9 +1,9 @@
 @interface SKUIRedeemItem
-- (SKUIRedeemItem)initWithCoder:(id)a3;
+- (SKUIRedeemItem)initWithCoder:(id)coder;
 - (_NSRange)ageBandRange;
-- (id)artworkURLForSize:(int64_t)a3;
+- (id)artworkURLForSize:(int64_t)size;
 - (id)largestArtworkURL;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKUIRedeemItem
@@ -17,55 +17,55 @@
   return result;
 }
 
-- (id)artworkURLForSize:(int64_t)a3
+- (id)artworkURLForSize:(int64_t)size
 {
-  v4 = [(SKUIRedeemItem *)self artworks];
-  v5 = [v4 artworkURLForSize:a3];
+  artworks = [(SKUIRedeemItem *)self artworks];
+  v5 = [artworks artworkURLForSize:size];
 
   return v5;
 }
 
 - (id)largestArtworkURL
 {
-  v2 = [(SKUIRedeemItem *)self artworks];
-  v3 = [v2 largestArtwork];
-  v4 = [v3 URL];
+  artworks = [(SKUIRedeemItem *)self artworks];
+  largestArtwork = [artworks largestArtwork];
+  v4 = [largestArtwork URL];
 
   return v4;
 }
 
-- (SKUIRedeemItem)initWithCoder:(id)a3
+- (SKUIRedeemItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SKUIRedeemItem;
   v5 = [(SKUIRedeemItem *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"title"];
+    v6 = [coderCopy decodeObjectForKey:@"title"];
     [(SKUIItem *)v5 setTitle:v6];
 
-    -[SKUIItem setItemIdentifier:](v5, "setItemIdentifier:", [v4 decodeInt64ForKey:@"itemIdentifier"]);
-    v7 = [v4 decodeObjectForKey:@"artworks"];
+    -[SKUIItem setItemIdentifier:](v5, "setItemIdentifier:", [coderCopy decodeInt64ForKey:@"itemIdentifier"]);
+    v7 = [coderCopy decodeObjectForKey:@"artworks"];
     [(SKUIRedeemItem *)v5 setArtworks:v7];
 
-    -[SKUIItem setItemKind:](v5, "setItemKind:", [v4 decodeIntegerForKey:@"itemKind"]);
+    -[SKUIItem setItemKind:](v5, "setItemKind:", [coderCopy decodeIntegerForKey:@"itemKind"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(SKUIItem *)self title];
-  [v6 encodeObject:v4 forKey:@"title"];
+  coderCopy = coder;
+  title = [(SKUIItem *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  [v6 encodeInt64:-[SKUIItem itemIdentifier](self forKey:{"itemIdentifier"), @"itemIdentifier"}];
-  v5 = [(SKUIRedeemItem *)self artworks];
-  [v6 encodeObject:v5 forKey:@"artworks"];
+  [coderCopy encodeInt64:-[SKUIItem itemIdentifier](self forKey:{"itemIdentifier"), @"itemIdentifier"}];
+  artworks = [(SKUIRedeemItem *)self artworks];
+  [coderCopy encodeObject:artworks forKey:@"artworks"];
 
-  [v6 encodeInteger:-[SKUIItem itemKind](self forKey:{"itemKind"), @"itemKind"}];
+  [coderCopy encodeInteger:-[SKUIItem itemKind](self forKey:{"itemKind"), @"itemKind"}];
 }
 
 @end

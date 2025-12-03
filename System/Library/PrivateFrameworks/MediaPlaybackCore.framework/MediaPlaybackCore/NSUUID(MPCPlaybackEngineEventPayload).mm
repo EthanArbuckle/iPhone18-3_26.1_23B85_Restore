@@ -7,7 +7,7 @@
 + (id)payloadValueFromJSONValue:()MPCPlaybackEngineEventPayload
 {
   v4 = a3;
-  v5 = [[a1 alloc] initWithUUIDString:v4];
+  v5 = [[self alloc] initWithUUIDString:v4];
 
   return v5;
 }

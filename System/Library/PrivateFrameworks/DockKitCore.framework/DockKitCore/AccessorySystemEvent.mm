@@ -1,23 +1,23 @@
 @interface AccessorySystemEvent
 - (_TtC11DockKitCore20AccessorySystemEvent)init;
-- (_TtC11DockKitCore20AccessorySystemEvent)initWithCoder:(id)a3;
+- (_TtC11DockKitCore20AccessorySystemEvent)initWithCoder:(id)coder;
 - (unsigned)header;
 - (unsigned)payload;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AccessorySystemEvent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  AccessorySystemEvent.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  AccessorySystemEvent.encode(with:)(coderCopy);
 }
 
-- (_TtC11DockKitCore20AccessorySystemEvent)initWithCoder:(id)a3
+- (_TtC11DockKitCore20AccessorySystemEvent)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_224530674();
 
   return v4;

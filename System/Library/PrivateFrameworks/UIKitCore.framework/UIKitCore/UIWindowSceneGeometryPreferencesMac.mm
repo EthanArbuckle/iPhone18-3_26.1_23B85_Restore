@@ -1,5 +1,5 @@
 @interface UIWindowSceneGeometryPreferencesMac
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)systemFrame;
 - (UIWindowSceneGeometryPreferencesMac)init;
 - (UIWindowSceneGeometryPreferencesMac)initWithSystemFrame:(CGRect)systemFrame;
@@ -40,14 +40,14 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v11.receiver = self;
   v11.super_class = UIWindowSceneGeometryPreferencesMac;
-  if ([(UIWindowSceneGeometryPreferences *)&v11 isEqual:v4])
+  if ([(UIWindowSceneGeometryPreferences *)&v11 isEqual:equalCopy])
   {
-    [v4 systemFrame];
+    [equalCopy systemFrame];
     v12.origin.x = v5;
     v12.origin.y = v6;
     v12.size.width = v7;

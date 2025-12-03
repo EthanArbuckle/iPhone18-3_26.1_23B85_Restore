@@ -1,8 +1,8 @@
 @interface HVDataSourceContentState
-+ (id)_pathForDataSource:(void *)a3 basePath:;
-+ (uint64_t)_deleteStateAtPath:(NSObject *)a3 error:;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)saveStateWithError:(id *)a3;
++ (id)_pathForDataSource:(void *)source basePath:;
++ (uint64_t)_deleteStateAtPath:(NSObject *)path error:;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)saveStateWithError:(id *)error;
 - (id)sha256;
 - (unint64_t)hash;
 @end
@@ -12,9 +12,9 @@
 - (id)sha256
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v1 = a1;
+    selfCopy = self;
     memset(&c, 0, sizeof(c));
     CC_SHA256_Init(&c);
     v2 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"self" ascending:1];
@@ -22,9 +22,9 @@
     v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
 
     v4 = objc_autoreleasePoolPush();
-    v5 = [*(v1 + 32) allKeys];
+    allKeys = [*(selfCopy + 32) allKeys];
     v26 = v3;
-    v6 = [v5 sortedArrayUsingDescriptors:v3];
+    v6 = [allKeys sortedArrayUsingDescriptors:v3];
 
     objc_autoreleasePoolPop(v4);
     v34 = 0u;
@@ -49,10 +49,10 @@
           v11 = *(*(&v32 + 1) + 8 * i);
           v12 = objc_autoreleasePoolPush();
           HVSHA256String(v11, &c);
-          v13 = v1;
-          v14 = [*(v1 + 32) objectForKeyedSubscript:v11];
-          v15 = [v14 consumers];
-          v16 = [v15 sortedArrayUsingDescriptors:v26];
+          v13 = selfCopy;
+          v14 = [*(selfCopy + 32) objectForKeyedSubscript:v11];
+          consumers = [v14 consumers];
+          v16 = [consumers sortedArrayUsingDescriptors:v26];
 
           v30 = 0u;
           v31 = 0u;
@@ -86,7 +86,7 @@
           CC_SHA256_Update(&c, &data, 1u);
 
           objc_autoreleasePoolPop(v12);
-          v1 = v13;
+          selfCopy = v13;
         }
 
         v8 = [obj countByEnumeratingWithState:&v32 objects:v38 count:16];
@@ -109,10 +109,10 @@
   return v22;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -122,13 +122,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       dataSource = self->_dataSource;
       if (dataSource == [(HVDataSourceContentState *)v5 dataSource])
       {
         deferredContentStates = self->_deferredContentStates;
-        v8 = [(HVDataSourceContentState *)v5 deferredContentStates];
-        v9 = [(NSMutableDictionary *)deferredContentStates isEqualToDictionary:v8];
+        deferredContentStates = [(HVDataSourceContentState *)v5 deferredContentStates];
+        v9 = [(NSMutableDictionary *)deferredContentStates isEqualToDictionary:deferredContentStates];
       }
 
       else
@@ -177,11 +177,11 @@ void __32__HVDataSourceContentState_hash__block_invoke(uint64_t a1, void *a2, vo
   *(*(*(a1 + 32) + 8) + 24) = v8 + v7;
 }
 
-- (BOOL)saveStateWithError:(id *)a3
+- (BOOL)saveStateWithError:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v5 = [(HVDataSourceContentState *)self sha256];
-  if ([(NSData *)self->_fileContentsHash isEqualToData:v5])
+  sha256 = [(HVDataSourceContentState *)self sha256];
+  if ([(NSData *)self->_fileContentsHash isEqualToData:sha256])
   {
     v6 = hv_default_log_handle();
     v7 = 1;
@@ -207,28 +207,28 @@ void __32__HVDataSourceContentState_hash__block_invoke(uint64_t a1, void *a2, vo
     v13 = v11;
     v32 = v13;
     [(NSMutableDictionary *)deferredContentStates enumerateKeysAndObjectsUsingBlock:v31];
-    v14 = [v13 allKeys];
+    allKeys = [v13 allKeys];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __47__HVDataSourceContentState_saveStateWithError___block_invoke_2;
     v29[3] = &unk_278969B58;
     v30 = v13;
     v15 = v13;
-    v16 = [v14 _pas_mappedArrayWithTransform:v29];
+    v16 = [allKeys _pas_mappedArrayWithTransform:v29];
 
     v17 = [v16 mutableCopy];
     [v9 setDeferredContentStates:v17];
 
     objc_autoreleasePoolPop(v10);
-    v18 = [v9 data];
+    data = [v9 data];
 
     path = self->_path;
     v28 = 0;
-    v7 = [v18 writeToFile:path options:1073741825 error:&v28];
+    v7 = [data writeToFile:path options:1073741825 error:&v28];
     v6 = v28;
     if (v7)
     {
-      objc_storeStrong(&self->_fileContentsHash, v5);
+      objc_storeStrong(&self->_fileContentsHash, sha256);
       v20 = hv_default_log_handle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
@@ -255,10 +255,10 @@ void __32__HVDataSourceContentState_hash__block_invoke(uint64_t a1, void *a2, vo
         _os_log_error_impl(&dword_2321EC000, v22, OS_LOG_TYPE_ERROR, "HVDataSourceContentState: source %u failed to write protobuf at: %@ error: %@", buf, 0x1Cu);
       }
 
-      if (a3)
+      if (error)
       {
         v23 = v6;
-        *a3 = v6;
+        *error = v6;
       }
     }
   }
@@ -301,29 +301,29 @@ id __47__HVDataSourceContentState_saveStateWithError___block_invoke_2(uint64_t a
   return v8;
 }
 
-+ (id)_pathForDataSource:(void *)a3 basePath:
++ (id)_pathForDataSource:(void *)source basePath:
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_opt_self();
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"deferred_%d.pb", a2];
-  v6 = [v4 stringByAppendingPathComponent:v5];
+  v6 = [sourceCopy stringByAppendingPathComponent:v5];
 
   return v6;
 }
 
-+ (uint64_t)_deleteStateAtPath:(NSObject *)a3 error:
++ (uint64_t)_deleteStateAtPath:(NSObject *)path error:
 {
   v20 = *MEMORY[0x277D85DE8];
   v4 = a2;
   objc_opt_self();
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager fileExistsAtPath:v4];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v15 = 0;
-    v8 = [v7 removeItemAtPath:v4 error:&v15];
+    v8 = [defaultManager2 removeItemAtPath:v4 error:&v15];
     v9 = v15;
 
     if (v8)
@@ -343,11 +343,11 @@ id __47__HVDataSourceContentState_saveStateWithError___block_invoke_2(uint64_t a
         _os_log_error_impl(&dword_2321EC000, v11, OS_LOG_TYPE_ERROR, "HVDataSourceContentState: failed to delete protobuf at: %@ error: %@", buf, 0x16u);
       }
 
-      if (a3)
+      if (path)
       {
         v12 = v9;
         v10 = 0;
-        *a3 = v9;
+        *path = v9;
       }
 
       else

@@ -1,7 +1,7 @@
 @interface TSDMediaRep
-- (BOOL)i_shouldRenderStroke:(id)a3;
+- (BOOL)i_shouldRenderStroke:(id)stroke;
 - (BOOL)isPlaceholder;
-- (BOOL)replaceButtonContainsPoint:(CGPoint)a3;
+- (BOOL)replaceButtonContainsPoint:(CGPoint)point;
 - (BOOL)shouldCreateKnobs;
 - (BOOL)shouldShowMediaReplaceUI;
 - (CGPoint)p_scaledPositionOfImageReplaceKnob;
@@ -14,14 +14,14 @@
 - (id)currentReplaceButtonImage;
 - (id)overlayLayers;
 - (id)p_tapToReplaceLayer;
-- (void)addKnobsToArray:(id)a3;
+- (void)addKnobsToArray:(id)array;
 - (void)dealloc;
 - (void)didEndZooming;
 - (void)i_updateFrameRep;
-- (void)p_addLayerForReplaceButtonToArray:(id)a3;
+- (void)p_addLayerForReplaceButtonToArray:(id)array;
 - (void)p_updateTapToReplaceLayerPosition;
-- (void)processChangedProperty:(int)a3;
-- (void)updatePositionsOfKnobs:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)updatePositionsOfKnobs:(id)knobs;
 - (void)willBeginZooming;
 @end
 
@@ -52,12 +52,12 @@
   return TSUDynamicCast();
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v5.receiver = self;
   v5.super_class = TSDMediaRep;
   [(TSDStyledRep *)&v5 processChangedProperty:?];
-  if (a3 == 527)
+  if (property == 527)
   {
     [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] invalidateLayers];
   }
@@ -68,9 +68,9 @@
   *(&self->super.mFlags + 4) = 1;
   if ([(TSDMediaRep *)self shouldShowMediaReplaceUI])
   {
-    v3 = [(TSDRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-    [(TSDInteractiveCanvasController *)v3 layoutInvalidated];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController layoutInvalidated];
   }
 }
 
@@ -79,9 +79,9 @@
   *(&self->super.mFlags + 4) = 0;
   if ([(TSDMediaRep *)self shouldShowMediaReplaceUI])
   {
-    v3 = [(TSDRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-    [(TSDInteractiveCanvasController *)v3 layoutInvalidated];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController layoutInvalidated];
   }
 }
 
@@ -100,21 +100,21 @@
 
 - (id)additionalLayersOverLayer
 {
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
   v6.receiver = self;
   v6.super_class = TSDMediaRep;
-  v4 = [MEMORY[0x277CBEB18] arrayWithArray:{-[TSDRep additionalLayersOverLayer](&v6, sel_additionalLayersOverLayer)}];
-  if ((*(&self->super.mFlags + 1) & 1) == 0 && ![(TSDInteractiveCanvasController *)v3 inReadMode]&& [(TSDMediaRep *)self shouldShowMediaReplaceUI]&& ![(TSDRep *)self isSelected])
+  array = [MEMORY[0x277CBEB18] arrayWithArray:{-[TSDRep additionalLayersOverLayer](&v6, sel_additionalLayersOverLayer)}];
+  if ((*(&self->super.mFlags + 1) & 1) == 0 && ![(TSDInteractiveCanvasController *)interactiveCanvasController inReadMode]&& [(TSDMediaRep *)self shouldShowMediaReplaceUI]&& ![(TSDRep *)self isSelected])
   {
-    if (!v4)
+    if (!array)
     {
-      v4 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
     }
 
-    [(TSDMediaRep *)self p_addLayerForReplaceButtonToArray:v4];
+    [(TSDMediaRep *)self p_addLayerForReplaceButtonToArray:array];
   }
 
-  return v4;
+  return array;
 }
 
 - (BOOL)shouldCreateKnobs
@@ -124,18 +124,18 @@
   return [(TSDRep *)&v4 shouldCreateKnobs]|| [(TSDMediaRep *)self shouldShowMediaReplaceUI];
 }
 
-- (void)addKnobsToArray:(id)a3
+- (void)addKnobsToArray:(id)array
 {
   v3.receiver = self;
   v3.super_class = TSDMediaRep;
-  [(TSDRep *)&v3 addKnobsToArray:a3];
+  [(TSDRep *)&v3 addKnobsToArray:array];
 }
 
-- (void)updatePositionsOfKnobs:(id)a3
+- (void)updatePositionsOfKnobs:(id)knobs
 {
   v3.receiver = self;
   v3.super_class = TSDMediaRep;
-  [(TSDRep *)&v3 updatePositionsOfKnobs:a3];
+  [(TSDRep *)&v3 updatePositionsOfKnobs:knobs];
 }
 
 - (CGPoint)positionOfHyperlinkKnob
@@ -162,19 +162,19 @@
 
 - (BOOL)isPlaceholder
 {
-  v2 = [(TSDMediaRep *)self mediaInfo];
+  mediaInfo = [(TSDMediaRep *)self mediaInfo];
 
-  return [(TSDMediaInfo *)v2 isPlaceholder];
+  return [(TSDMediaInfo *)mediaInfo isPlaceholder];
 }
 
 - (BOOL)shouldShowMediaReplaceUI
 {
-  v3 = [(TSDMediaRep *)self mediaInfo];
-  v4 = [(TSDRep *)self interactiveCanvasController];
-  v5 = [(TSDInteractiveCanvasController *)v4 delegate];
+  mediaInfo = [(TSDMediaRep *)self mediaInfo];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
+  delegate = [(TSDInteractiveCanvasController *)interactiveCanvasController delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(TSDInteractiveCanvasControllerDelegate *)v5 interactiveCanvasController:v4 imageReplaceBadgeBehaviorForRep:self];
+    v6 = [(TSDInteractiveCanvasControllerDelegate *)delegate interactiveCanvasController:interactiveCanvasController imageReplaceBadgeBehaviorForRep:self];
   }
 
   else
@@ -182,38 +182,38 @@
     v6 = 0;
   }
 
-  v7 = [(TSDMediaInfo *)v3 wasMediaReplaced];
-  v8 = v6 != 2 && v7;
-  v9 = [(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive];
-  if (v9)
+  wasMediaReplaced = [(TSDMediaInfo *)mediaInfo wasMediaReplaced];
+  v8 = v6 != 2 && wasMediaReplaced;
+  isCanvasInteractive = [(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive];
+  if (isCanvasInteractive)
   {
-    v9 = [(TSDLayout *)[(TSDRep *)self layout] isInTopLevelContainerForEditing];
-    if (v9)
+    isCanvasInteractive = [(TSDLayout *)[(TSDRep *)self layout] isInTopLevelContainerForEditing];
+    if (isCanvasInteractive)
     {
-      if (v8 | ![(TSDMediaInfo *)v3 isPlaceholder])
+      if (v8 | ![(TSDMediaInfo *)mediaInfo isPlaceholder])
       {
-        LOBYTE(v9) = 0;
+        LOBYTE(isCanvasInteractive) = 0;
       }
 
       else
       {
-        v10 = [(TSDRep *)self isLocked];
-        LOBYTE(v9) = 0;
-        if (!v10 && v6 != 1)
+        isLocked = [(TSDRep *)self isLocked];
+        LOBYTE(isCanvasInteractive) = 0;
+        if (!isLocked && v6 != 1)
         {
           [(TSDMediaRep *)self p_replaceButtonSize];
           v13 = TSDAddSizes(v11, v12, 3.0);
           v15 = v14;
-          v16 = [(TSDRep *)self interactiveCanvasController];
+          interactiveCanvasController2 = [(TSDRep *)self interactiveCanvasController];
           [(TSDRep *)self boundsForStandardKnobs];
-          [(TSDInteractiveCanvasController *)v16 convertUnscaledToBoundsSize:v17, v18];
-          LOBYTE(v9) = v15 <= v20 && v13 <= v19;
+          [(TSDInteractiveCanvasController *)interactiveCanvasController2 convertUnscaledToBoundsSize:v17, v18];
+          LOBYTE(isCanvasInteractive) = v15 <= v20 && v13 <= v19;
         }
       }
     }
   }
 
-  return v9;
+  return isCanvasInteractive;
 }
 
 - (id)currentReplaceButtonImage
@@ -232,53 +232,53 @@
   return [v2 imageNamed:@"sf-canvas-placeholder-P" inBundle:v3];
 }
 
-- (BOOL)replaceButtonContainsPoint:(CGPoint)a3
+- (BOOL)replaceButtonContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TSDMediaRep *)self shouldShowMediaReplaceUI];
-  if (v6)
+  y = point.y;
+  x = point.x;
+  shouldShowMediaReplaceUI = [(TSDMediaRep *)self shouldShowMediaReplaceUI];
+  if (shouldShowMediaReplaceUI)
   {
-    v7 = [(TSDMediaRep *)self p_tapToReplaceLayer];
+    p_tapToReplaceLayer = [(TSDMediaRep *)self p_tapToReplaceLayer];
     [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] convertUnscaledToBoundsPoint:x, y];
-    [v7 convertPoint:-[TSDCanvasLayerHosting canvasLayer](-[TSDInteractiveCanvasController layerHost](-[TSDRep interactiveCanvasController](self fromLayer:{"interactiveCanvasController"), "layerHost"), "canvasLayer"), v8, v9}];
+    [p_tapToReplaceLayer convertPoint:-[TSDCanvasLayerHosting canvasLayer](-[TSDInteractiveCanvasController layerHost](-[TSDRep interactiveCanvasController](self fromLayer:{"interactiveCanvasController"), "layerHost"), "canvasLayer"), v8, v9}];
     v11 = v10;
     v13 = v12;
-    v6 = [v7 containsPoint:?];
-    if (v6)
+    shouldShowMediaReplaceUI = [p_tapToReplaceLayer containsPoint:?];
+    if (shouldShowMediaReplaceUI)
     {
       [(TSDMediaRep *)self p_replaceButtonSize];
       v15 = v14 * 0.5;
-      [v7 bounds];
+      [p_tapToReplaceLayer bounds];
       v20 = TSDCenterOfRect(v16, v17, v18, v19);
-      LOBYTE(v6) = v15 > TSDDistance(v20, v21, v11, v13);
+      LOBYTE(shouldShowMediaReplaceUI) = v15 > TSDDistance(v20, v21, v11, v13);
     }
   }
 
-  return v6;
+  return shouldShowMediaReplaceUI;
 }
 
 - (id)p_tapToReplaceLayer
 {
-  v3 = [(TSDMediaRep *)self currentReplaceButtonImage];
+  currentReplaceButtonImage = [(TSDMediaRep *)self currentReplaceButtonImage];
   if (!*&self->mIsZooming)
   {
     *&self->mIsZooming = objc_alloc_init(TSDNoDefaultImplicitActionLayer);
   }
 
   [(TSDCanvas *)[(TSDRep *)self canvas] contentsScale];
-  [*&self->mIsZooming setContents:{objc_msgSend(v3, "CGImageForContentsScale:")}];
-  [v3 size];
+  [*&self->mIsZooming setContents:{objc_msgSend(currentReplaceButtonImage, "CGImageForContentsScale:")}];
+  [currentReplaceButtonImage size];
   [*&self->mIsZooming setBounds:TSDRectWithSize()];
   return *&self->mIsZooming;
 }
 
-- (void)p_addLayerForReplaceButtonToArray:(id)a3
+- (void)p_addLayerForReplaceButtonToArray:(id)array
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
   [(TSDMediaRep *)self p_updateTapToReplaceLayerPosition];
-  [a3 addObject:{-[TSDMediaRep p_tapToReplaceLayer](self, "p_tapToReplaceLayer")}];
+  [array addObject:{-[TSDMediaRep p_tapToReplaceLayer](self, "p_tapToReplaceLayer")}];
   v5 = MEMORY[0x277CD9FF0];
 
   [v5 commit];
@@ -286,9 +286,9 @@
 
 - (CGSize)p_replaceButtonSize
 {
-  v3 = [(TSDRep *)self shouldDisplayHyperlinkUI];
+  shouldDisplayHyperlinkUI = [(TSDRep *)self shouldDisplayHyperlinkUI];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  if (v3)
+  if (shouldDisplayHyperlinkUI)
   {
     v5 = &sTapToReplaceButtonImageSmallSize;
   }
@@ -314,7 +314,7 @@
 
 - (CGPoint)p_scaledPositionOfImageReplaceKnob
 {
-  v3 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
   [(TSDRep *)self boundsForStandardKnobs];
   v5 = v4;
   v7 = v6;
@@ -339,7 +339,7 @@
   [(TSDRep *)self convertNaturalPointToUnscaledCanvas:v17, MaxY + v16 * (v19 * 0.5 + 3.0)];
   v21 = v20;
   v23 = v22;
-  [(TSDInteractiveCanvasController *)v3 convertUnscaledToBoundsPoint:?];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:?];
   v25 = v24;
   v27 = v26;
   if ([(TSDRep *)self parentRep])
@@ -366,16 +366,16 @@
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v3 = [(TSDRep *)self interactiveCanvasController];
-  v4 = [(TSDMediaRep *)self p_tapToReplaceLayer];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
+  p_tapToReplaceLayer = [(TSDMediaRep *)self p_tapToReplaceLayer];
   [(TSDMediaRep *)self p_scaledPositionOfImageReplaceKnob];
-  [v4 setPosition:?];
+  [p_tapToReplaceLayer setPosition:?];
   if ([(TSDAbstractLayout *)[(TSDRep *)self layout] parent]&& [(TSDRep *)self isSelected])
   {
-    v5 = [(TSDAbstractLayout *)[(TSDRep *)self layout] parent];
-    if (v5)
+    parent = [(TSDAbstractLayout *)[(TSDRep *)self layout] parent];
+    if (parent)
     {
-      [(TSDAbstractLayout *)v5 transformInRoot];
+      [(TSDAbstractLayout *)parent transformInRoot];
       v6 = v13;
       v7 = v14;
       v8 = v15;
@@ -388,10 +388,10 @@
       v7 = 0uLL;
     }
 
-    [(TSDInteractiveCanvasController *)v3 convertUnscaledToBoundsPoint:vaddq_f64(v8, vmlaq_n_f64(vmulq_n_f64(v7, *(MEMORY[0x277CBF348] + 8)), v6, *MEMORY[0x277CBF348]))];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:vaddq_f64(v8, vmlaq_n_f64(vmulq_n_f64(v7, *(MEMORY[0x277CBF348] + 8)), v6, *MEMORY[0x277CBF348]))];
     v10 = v9;
     [-[TSDMediaRep p_tapToReplaceLayer](self "p_tapToReplaceLayer")];
-    [v4 setPosition:{TSDAddPoints(v11, v12, v10)}];
+    [p_tapToReplaceLayer setPosition:{TSDAddPoints(v11, v12, v10)}];
   }
 
   [MEMORY[0x277CD9FF0] commit];
@@ -399,20 +399,20 @@
 
 - (void)i_updateFrameRep
 {
-  v3 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  if (-[TSDMediaRep i_shouldRenderStroke:](self, "i_shouldRenderStroke:", v3) && [v3 isFrame])
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  if (-[TSDMediaRep i_shouldRenderStroke:](self, "i_shouldRenderStroke:", stroke) && [stroke isFrame])
   {
     mFrameMaskLayer = self->mFrameMaskLayer;
     if (!mFrameMaskLayer)
     {
 LABEL_6:
-      self->mFrameMaskLayer = [[TSDFrameRep alloc] initWithTSDFrame:v3];
+      self->mFrameMaskLayer = [[TSDFrameRep alloc] initWithTSDFrame:stroke];
       return;
     }
 
-    v5 = [(CALayer *)mFrameMaskLayer frame];
+    frame = [(CALayer *)mFrameMaskLayer frame];
     v6 = self->mFrameMaskLayer;
-    if (v5 != v3)
+    if (frame != stroke)
     {
 
       self->mFrameMaskLayer = 0;
@@ -436,33 +436,33 @@ LABEL_6:
   }
 }
 
-- (BOOL)i_shouldRenderStroke:(id)a3
+- (BOOL)i_shouldRenderStroke:(id)stroke
 {
-  v5 = [MEMORY[0x277CBEB68] null];
-  LOBYTE(v6) = 0;
-  if (a3)
+  null = [MEMORY[0x277CBEB68] null];
+  LOBYTE(shouldRender) = 0;
+  if (stroke)
   {
-    if (v5 != a3)
+    if (null != stroke)
     {
-      v6 = [a3 shouldRender];
-      if (v6)
+      shouldRender = [stroke shouldRender];
+      if (shouldRender)
       {
-        if ([a3 isFrame])
+        if ([stroke isFrame])
         {
-          v7 = [(TSDMediaRep *)self mediaLayout];
+          mediaLayout = [(TSDMediaRep *)self mediaLayout];
 
-          LOBYTE(v6) = [(TSDMediaLayout *)v7 shouldRenderFrameStroke];
+          LOBYTE(shouldRender) = [(TSDMediaLayout *)mediaLayout shouldRenderFrameStroke];
         }
 
         else
         {
-          LOBYTE(v6) = 1;
+          LOBYTE(shouldRender) = 1;
         }
       }
     }
   }
 
-  return v6;
+  return shouldRender;
 }
 
 @end

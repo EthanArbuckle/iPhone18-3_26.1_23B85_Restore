@@ -1,6 +1,6 @@
 @interface MAAutoAssetSetShortTermLockInMemoryRecord
 - (BOOL)isCurrentlyValid;
-- (MAAutoAssetSetShortTermLockInMemoryRecord)initWithPathAndSetStatus:(id)a3 setStatus:(id)a4;
+- (MAAutoAssetSetShortTermLockInMemoryRecord)initWithPathAndSetStatus:(id)status setStatus:(id)setStatus;
 - (id)summary;
 @end
 
@@ -9,10 +9,10 @@
 - (BOOL)isCurrentlyValid
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self lockerFileRealPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  lockerFileRealPath = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self lockerFileRealPath];
   v18 = 0;
-  v5 = [v3 attributesOfItemAtPath:v4 error:&v18];
+  v5 = [defaultManager attributesOfItemAtPath:lockerFileRealPath error:&v18];
   v6 = v18;
 
   if (v5)
@@ -30,9 +30,9 @@
     v8 = _MAClientLog(@"Auto");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self summary];
+      summary = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self summary];
       *buf = 138412546;
-      v20 = v9;
+      v20 = summary;
       v21 = 2114;
       v22 = v6;
       v10 = "[MAAutoAssetSetShortTermLockInMemoryRecord]: Failed to read lockFileAttributes for %@ Error:%{public}@";
@@ -53,9 +53,9 @@ LABEL_11:
     v8 = _MAClientLog(@"Auto");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self summary];
+      summary = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self summary];
       *buf = 138543362;
-      v20 = v9;
+      v20 = summary;
       v10 = "[MAAutoAssetSetShortTermLockInMemoryRecord]: Unable to determine modification date for lock file tracked by %{public}@";
       v11 = v8;
       v12 = 12;
@@ -68,29 +68,29 @@ LABEL_12:
   }
 
   v8 = v13;
-  v14 = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self recordDate];
-  v15 = [v8 compare:v14]== -1;
+  recordDate = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self recordDate];
+  v15 = [v8 compare:recordDate]== -1;
 
 LABEL_13:
   v16 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-- (MAAutoAssetSetShortTermLockInMemoryRecord)initWithPathAndSetStatus:(id)a3 setStatus:(id)a4
+- (MAAutoAssetSetShortTermLockInMemoryRecord)initWithPathAndSetStatus:(id)status setStatus:(id)setStatus
 {
-  v7 = a3;
-  v8 = a4;
+  statusCopy = status;
+  setStatusCopy = setStatus;
   v14.receiver = self;
   v14.super_class = MAAutoAssetSetShortTermLockInMemoryRecord;
   v9 = [(MAAutoAssetSetShortTermLockInMemoryRecord *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_lockerFileRealPath, a3);
-    objc_storeStrong(&v10->_setStatus, a4);
-    v11 = [MEMORY[0x1E695DF00] date];
+    objc_storeStrong(&v9->_lockerFileRealPath, status);
+    objc_storeStrong(&v10->_setStatus, setStatus);
+    date = [MEMORY[0x1E695DF00] date];
     recordDate = v10->_recordDate;
-    v10->_recordDate = v11;
+    v10->_recordDate = date;
   }
 
   return v10;
@@ -99,10 +99,10 @@ LABEL_13:
 - (id)summary
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self lockerFileRealPath];
-  v5 = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self recordDate];
-  v6 = [v5 description];
-  v7 = [v3 stringWithFormat:@"LockerFilePath: %@ RecordCreatedDate: %@", v4, v6];
+  lockerFileRealPath = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self lockerFileRealPath];
+  recordDate = [(MAAutoAssetSetShortTermLockInMemoryRecord *)self recordDate];
+  v6 = [recordDate description];
+  v7 = [v3 stringWithFormat:@"LockerFilePath: %@ RecordCreatedDate: %@", lockerFileRealPath, v6];
 
   return v7;
 }

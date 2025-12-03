@@ -1,6 +1,6 @@
 @interface AppUsageSession
 - (AppUsageSession)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,11 +24,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = AppUsageSession;
-  return [(SQLiteMemoryEntity *)&v4 copyWithZone:a3];
+  return [(SQLiteMemoryEntity *)&v4 copyWithZone:zone];
 }
 
 @end

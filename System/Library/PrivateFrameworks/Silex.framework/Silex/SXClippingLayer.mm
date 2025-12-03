@@ -3,8 +3,8 @@
 - (void)layoutForContentsRect;
 - (void)layoutForMasking;
 - (void)layoutSublayers;
-- (void)setClippingMode:(unint64_t)a3;
-- (void)setContentLayer:(id)a3;
+- (void)setClippingMode:(unint64_t)mode;
+- (void)setContentLayer:(id)layer;
 @end
 
 @implementation SXClippingLayer
@@ -14,13 +14,13 @@
   v4.receiver = self;
   v4.super_class = SXClippingLayer;
   [(SXClippingLayer *)&v4 layoutSublayers];
-  v3 = [(SXClippingLayer *)self clippingMode];
-  if (v3 == 1)
+  clippingMode = [(SXClippingLayer *)self clippingMode];
+  if (clippingMode == 1)
   {
     [(SXClippingLayer *)self layoutForContentsRect];
   }
 
-  else if (!v3)
+  else if (!clippingMode)
   {
     [(SXClippingLayer *)self layoutForMasking];
   }
@@ -162,14 +162,14 @@
     }
   }
 
-  v40 = [(SXClippingLayer *)self contentLayer];
-  v32 = [(SXClippingLayer *)self contentLayer];
-  [v32 setPosition:{MidX, MidY}];
+  contentLayer = [(SXClippingLayer *)self contentLayer];
+  contentLayer2 = [(SXClippingLayer *)self contentLayer];
+  [contentLayer2 setPosition:{MidX, MidY}];
 
-  v33 = [(SXClippingLayer *)self contentLayer];
-  [v33 setBounds:{0.0, 0.0, v38, v19}];
+  contentLayer3 = [(SXClippingLayer *)self contentLayer];
+  [contentLayer3 setBounds:{0.0, 0.0, v38, v19}];
 
-  [v40 setContentsRect:{v23, v22, v21, v20}];
+  [contentLayer setContentsRect:{v23, v22, v21, v20}];
 }
 
 - (void)layoutForMasking
@@ -179,32 +179,32 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SXClippingLayer *)self contentLayer];
-  [v11 setFrameUsingCenterAndBounds:{v4, v6, v8, v10}];
+  contentLayer = [(SXClippingLayer *)self contentLayer];
+  [contentLayer setFrameUsingCenterAndBounds:{v4, v6, v8, v10}];
 }
 
-- (void)setContentLayer:(id)a3
+- (void)setContentLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   contentLayer = self->_contentLayer;
-  if (contentLayer != v4)
+  if (contentLayer != layerCopy)
   {
     [(CALayer *)contentLayer removeFromSuperlayer];
   }
 
   v6 = self->_contentLayer;
-  self->_contentLayer = v4;
-  v7 = v4;
+  self->_contentLayer = layerCopy;
+  v7 = layerCopy;
 
   [(SXClippingLayer *)self addSublayer:self->_contentLayer];
 
   [(SXClippingLayer *)self setNeedsLayout];
 }
 
-- (void)setClippingMode:(unint64_t)a3
+- (void)setClippingMode:(unint64_t)mode
 {
-  self->_clippingMode = a3;
-  [(SXClippingLayer *)self setMasksToBounds:a3 == 0];
+  self->_clippingMode = mode;
+  [(SXClippingLayer *)self setMasksToBounds:mode == 0];
 
   [(SXClippingLayer *)self setNeedsLayout];
 }

@@ -1,18 +1,18 @@
 @interface THWInteractiveImageCalloutRep
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)p_animatingCallouts;
 - (CGPoint)sourcePoint;
 - (CGPoint)targetPoint;
 - (double)p_zoomDuration;
-- (id)animationForChildRep:(id)a3 layer:(id)a4 withEvent:(id)a5;
-- (id)animationForRepLayer:(id)a3 withEvent:(id)a4;
-- (id)p_delayedAnimationForLayer:(id)a3 withEvent:(id)a4;
+- (id)animationForChildRep:(id)rep layer:(id)layer withEvent:(id)event;
+- (id)animationForRepLayer:(id)layer withEvent:(id)event;
+- (id)p_delayedAnimationForLayer:(id)layer withEvent:(id)event;
 - (id)p_host;
-- (void)addAdditionalChildBackgroundLayersToArray:(id)a3;
-- (void)control:(id)a3 repWasAdded:(id)a4;
-- (void)control:(id)a3 repWillBeRemoved:(id)a4;
+- (void)addAdditionalChildBackgroundLayersToArray:(id)array;
+- (void)control:(id)control repWasAdded:(id)added;
+- (void)control:(id)control repWillBeRemoved:(id)removed;
 - (void)dealloc;
-- (void)didUpdateLayer:(id)a3;
+- (void)didUpdateLayer:(id)layer;
 - (void)p_layoutLine;
 - (void)p_updateGradient;
 - (void)p_updateGradientColors;
@@ -20,7 +20,7 @@
 - (void)p_updateShadow;
 - (void)p_updatedHovering;
 - (void)screenScaleDidChange;
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4;
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated;
 - (void)updateFromLayout;
 @end
 
@@ -61,19 +61,19 @@
   return result;
 }
 
-- (void)setVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(THWInteractiveImageCalloutRep *)self interactiveCanvasController];
-  v8 = v7;
-  if (v4)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  interactiveCanvasController = [(THWInteractiveImageCalloutRep *)self interactiveCanvasController];
+  v8 = interactiveCanvasController;
+  if (animatedCopy)
   {
-    [v7 beginAnimations:@"callout opacity" context:0];
+    [interactiveCanvasController beginAnimations:@"callout opacity" context:0];
     [v8 setAnimationDuration:0.25];
     v9 = [v8 layerForRep:self];
     v10 = 0.0;
-    if (v5)
+    if (visibleCopy)
     {
       *&v10 = 1.0;
     }
@@ -85,9 +85,9 @@
 
   else
   {
-    v11 = [v7 layerForRep:self];
+    v11 = [interactiveCanvasController layerForRep:self];
     v12 = 0.0;
-    if (v5)
+    if (visibleCopy)
     {
       *&v12 = 1.0;
     }
@@ -107,55 +107,55 @@
   [(THWInteractiveImageCalloutRep *)self p_layoutLine];
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v4.receiver = self;
   v4.super_class = THWInteractiveImageCalloutRep;
-  [(THWInteractiveImageCalloutRep *)&v4 didUpdateLayer:a3];
+  [(THWInteractiveImageCalloutRep *)&v4 didUpdateLayer:layer];
   [(THWInteractiveImageCalloutRep *)self p_updateGradientColors];
 }
 
-- (void)addAdditionalChildBackgroundLayersToArray:(id)a3
+- (void)addAdditionalChildBackgroundLayersToArray:(id)array
 {
   if (self->_targetShadow)
   {
-    [a3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_lineShadow)
   {
-    [a3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_line)
   {
-    [a3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_shadowLayer)
   {
-    [a3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_gradientLayer)
   {
 
-    [a3 addObject:?];
+    [array addObject:?];
   }
 }
 
 - (id)p_host
 {
-  v3 = [(THWInteractiveImageCalloutRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWInteractiveImageCalloutRep *)self interactiveCanvasController];
 
-  return [v3 ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWInteractiveImageCalloutHosting];
+  return [interactiveCanvasController ancestorRepOfRep:self orDelegateConformingToProtocol:&OBJC_PROTOCOL___THWInteractiveImageCalloutHosting];
 }
 
 - (void)p_updatedHovering
 {
-  v3 = [(THWInteractiveImageCalloutRep *)self p_host];
+  p_host = [(THWInteractiveImageCalloutRep *)self p_host];
 
-  [v3 interactiveImageCalloutUpdatedHovering:self];
+  [p_host interactiveImageCalloutUpdatedHovering:self];
 }
 
 - (void)screenScaleDidChange
@@ -261,7 +261,7 @@
   v5 = v4;
   if (v3)
   {
-    v6 = [(THWInteractiveImageCalloutRep *)self gradientLayer];
+    gradientLayer = [(THWInteractiveImageCalloutRep *)self gradientLayer];
     if (v5)
     {
       v7 = [+[TSUColor colorWithRed:green:blue:alpha:](TSUColor CGColor:0.0];
@@ -282,7 +282,7 @@ LABEL_7:
   {
     if (v4 && [-[THWInteractiveImageCalloutRep layout](self "layout")])
     {
-      v6 = [(THWInteractiveImageCalloutRep *)self gradientLayer];
+      gradientLayer = [(THWInteractiveImageCalloutRep *)self gradientLayer];
       v7 = [+[TSUColor colorWithRed:green:blue:alpha:](TSUColor CGColor:0.0];
       v10 = 1.0;
       v8 = 1.0;
@@ -290,7 +290,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v6 = [(THWInteractiveImageCalloutRep *)self gradientLayer];
+    gradientLayer = [(THWInteractiveImageCalloutRep *)self gradientLayer];
     v7 = [+[TSUColor colorWithWhite:alpha:](TSUColor CGColor:1.0];
     v12 = 1.0;
     v13 = 1.0;
@@ -300,21 +300,21 @@ LABEL_7:
 LABEL_11:
   v14 = [NSArray arrayWithObjects:v7, [(TSUColor *)v11 CGColor], 0];
 
-  [(CAGradientLayer *)v6 setColors:v14];
+  [(CAGradientLayer *)gradientLayer setColors:v14];
 }
 
 - (BOOL)p_animatingCallouts
 {
-  v3 = [(THWInteractiveImageCalloutRep *)self p_host];
+  p_host = [(THWInteractiveImageCalloutRep *)self p_host];
 
-  return [v3 interactiveImageCalloutIsAnimating:self];
+  return [p_host interactiveImageCalloutIsAnimating:self];
 }
 
 - (double)p_zoomDuration
 {
-  v3 = [(THWInteractiveImageCalloutRep *)self p_host];
+  p_host = [(THWInteractiveImageCalloutRep *)self p_host];
 
-  [v3 interactiveImageCalloutZoomAnimationDuration:self];
+  [p_host interactiveImageCalloutZoomAnimationDuration:self];
   return result;
 }
 
@@ -349,7 +349,7 @@ LABEL_11:
   }
 }
 
-- (id)p_delayedAnimationForLayer:(id)a3 withEvent:(id)a4
+- (id)p_delayedAnimationForLayer:(id)layer withEvent:(id)event
 {
   if (([-[THWInteractiveImageCalloutRep layout](self layout] & 1) != 0 || !objc_msgSend(-[THWInteractiveImageCalloutRep layout](self, "layout"), "selected") || !-[THWInteractiveImageCalloutRep p_animatingCallouts](self, "p_animatingCallouts"))
   {
@@ -359,7 +359,7 @@ LABEL_11:
   [(THWInteractiveImageCalloutRep *)self p_zoomDuration];
   v7 = v6;
   v8 = -0.224999994 / v6 + 1.0;
-  v9 = [CABasicAnimation animationWithKeyPath:a4];
+  v9 = [CABasicAnimation animationWithKeyPath:event];
   [(CABasicAnimation *)v9 setBeginTime:v7 * v8];
   [(CABasicAnimation *)v9 setBeginTimeMode:kCAAnimationRelative];
   [(CABasicAnimation *)v9 setFillMode:kCAFillModeBoth];
@@ -371,63 +371,63 @@ LABEL_11:
 {
   [-[THWInteractiveImageCalloutRep canvas](self "canvas")];
   v4 = v3;
-  v5 = [(THWInteractiveImageCalloutRep *)self targetShadow];
-  if (!v5)
+  targetShadow = [(THWInteractiveImageCalloutRep *)self targetShadow];
+  if (!targetShadow)
   {
-    v5 = +[TSDNoDefaultImplicitActionLayer layer];
+    targetShadow = +[TSDNoDefaultImplicitActionLayer layer];
   }
 
   v6 = [TSUImage imageNamed:@"circle-shadow" inBundle:THBundle()];
   [-[THWInteractiveImageCalloutRep canvas](self "canvas")];
   v8 = v7;
-  -[CALayer setContents:](v5, "setContents:", [v6 CGImageForContentsScale:?]);
-  [(CALayer *)v5 setContentsScale:v8];
+  -[CALayer setContents:](targetShadow, "setContents:", [v6 CGImageForContentsScale:?]);
+  [(CALayer *)targetShadow setContentsScale:v8];
   [v6 size];
   v10 = v9;
   [v6 size];
-  [(CALayer *)v5 setBounds:0.0, 0.0, v10, v11];
-  v12 = [(THWInteractiveImageCalloutRep *)self lineShadow];
-  if (!v12)
+  [(CALayer *)targetShadow setBounds:0.0, 0.0, v10, v11];
+  lineShadow = [(THWInteractiveImageCalloutRep *)self lineShadow];
+  if (!lineShadow)
   {
-    v12 = +[TSDNoDefaultImplicitActionLayer layer];
+    lineShadow = +[TSDNoDefaultImplicitActionLayer layer];
   }
 
-  [(CALayer *)v12 setBounds:0.0, 0.0, 10.0, 6.0];
-  -[CALayer setShadowColor:](v12, "setShadowColor:", [+[TSUColor blackColor](TSUColor "blackColor")]);
-  [(CALayer *)v12 setShadowOffset:0.0, 0.0];
+  [(CALayer *)lineShadow setBounds:0.0, 0.0, 10.0, 6.0];
+  -[CALayer setShadowColor:](lineShadow, "setShadowColor:", [+[TSUColor blackColor](TSUColor "blackColor")]);
+  [(CALayer *)lineShadow setShadowOffset:0.0, 0.0];
   LODWORD(v13) = 0.5;
-  [(CALayer *)v12 setShadowOpacity:v13];
-  [(CALayer *)v12 setShadowRadius:v4];
-  [(CALayer *)v12 bounds];
+  [(CALayer *)lineShadow setShadowOpacity:v13];
+  [(CALayer *)lineShadow setShadowRadius:v4];
+  [(CALayer *)lineShadow bounds];
   CGRectInset(v16, -2.0, 2.0);
   TSDScaleRectAroundPoint();
-  -[CALayer setShadowPath:](v12, "setShadowPath:", [+[TSDBezierPath bezierPathWithRect:](TSDBezierPath CGPath]);
-  [(CALayer *)v12 setMasksToBounds:1];
-  v14 = [(THWInteractiveImageCalloutRep *)self line];
-  if (!v14)
+  -[CALayer setShadowPath:](lineShadow, "setShadowPath:", [+[TSDBezierPath bezierPathWithRect:](TSDBezierPath CGPath]);
+  [(CALayer *)lineShadow setMasksToBounds:1];
+  line = [(THWInteractiveImageCalloutRep *)self line];
+  if (!line)
   {
-    v14 = +[TSDNoDefaultImplicitActionShapeLayer layer];
+    line = +[TSDNoDefaultImplicitActionShapeLayer layer];
   }
 
-  -[CAShapeLayer setStrokeColor:](v14, "setStrokeColor:", [+[TSUColor whiteColor](TSUColor "whiteColor")]);
-  [(CAShapeLayer *)v14 setFillColor:0];
-  [(CAShapeLayer *)v14 setLineWidth:v4 + v4];
-  -[CAShapeLayer setBackgroundColor:](v14, "setBackgroundColor:", [objc_msgSend(+[TSUColor redColor](TSUColor "redColor")]);
-  [(THWInteractiveImageCalloutRep *)self setLine:v14];
-  [(THWInteractiveImageCalloutRep *)self setTargetShadow:v5];
+  -[CAShapeLayer setStrokeColor:](line, "setStrokeColor:", [+[TSUColor whiteColor](TSUColor "whiteColor")]);
+  [(CAShapeLayer *)line setFillColor:0];
+  [(CAShapeLayer *)line setLineWidth:v4 + v4];
+  -[CAShapeLayer setBackgroundColor:](line, "setBackgroundColor:", [objc_msgSend(+[TSUColor redColor](TSUColor "redColor")]);
+  [(THWInteractiveImageCalloutRep *)self setLine:line];
+  [(THWInteractiveImageCalloutRep *)self setTargetShadow:targetShadow];
 
-  [(THWInteractiveImageCalloutRep *)self setLineShadow:v12];
+  [(THWInteractiveImageCalloutRep *)self setLineShadow:lineShadow];
 }
 
 - (void)p_layoutLine
 {
-  v3 = [(THWInteractiveImageCalloutRep *)self p_host];
+  p_host = [(THWInteractiveImageCalloutRep *)self p_host];
   [(THWInteractiveImageCalloutRep *)self targetPoint];
-  [v3 interactiveImageCallout:self convertContentPointToUnscaledOverlayPoint:?];
+  [p_host interactiveImageCallout:self convertContentPointToUnscaledOverlayPoint:?];
   v5 = v4;
   v7 = v6;
   [(THWInteractiveImageCalloutRep *)self sourcePoint];
-  [v3 interactiveImageCallout:self convertContentPointToUnscaledOverlayPoint:?];
+  [p_host interactiveImageCallout:self convertContentPointToUnscaledOverlayPoint:?];
   v9 = v8;
   v11 = v10;
   [(THWInteractiveImageCalloutRep *)self convertUnscaledPointToLayerRelative:v5, v7];
@@ -503,10 +503,10 @@ LABEL_11:
   {
     v46 = CGPathRetain([(CAShapeLayer *)[(THWInteractiveImageCalloutRep *)self line] path]);
     memset(&v70, 0, sizeof(v70));
-    v47 = [(THWInteractiveImageCalloutRep *)self lineShadow];
-    if (v47)
+    lineShadow = [(THWInteractiveImageCalloutRep *)self lineShadow];
+    if (lineShadow)
     {
-      [(CALayer *)v47 transform];
+      [(CALayer *)lineShadow transform];
     }
 
     else
@@ -521,9 +521,9 @@ LABEL_11:
     {
       [(CAShapeLayer *)[(THWInteractiveImageCalloutRep *)self line] setPath:Mutable];
       v67 = v71;
-      v53 = [(THWInteractiveImageCalloutRep *)self lineShadow];
+      lineShadow2 = [(THWInteractiveImageCalloutRep *)self lineShadow];
       a = v67;
-      [(CALayer *)v53 setTransform:&a];
+      [(CALayer *)lineShadow2 setTransform:&a];
       [(CALayer *)[(THWInteractiveImageCalloutRep *)self targetShadow] setPosition:v13, v15];
       [(THWInteractiveImageCalloutRep *)self p_zoomDuration];
       v55 = v54;
@@ -570,16 +570,16 @@ LABEL_11:
   {
     [(CAShapeLayer *)[(THWInteractiveImageCalloutRep *)self line] setPath:Mutable];
     v66 = v71;
-    v48 = [(THWInteractiveImageCalloutRep *)self lineShadow];
+    lineShadow3 = [(THWInteractiveImageCalloutRep *)self lineShadow];
     v70 = v66;
-    [(CALayer *)v48 setTransform:&v70];
+    [(CALayer *)lineShadow3 setTransform:&v70];
     [(CALayer *)[(THWInteractiveImageCalloutRep *)self targetShadow] setPosition:v13, v15];
   }
 
   CGPathRelease(Mutable);
 }
 
-- (void)control:(id)a3 repWasAdded:(id)a4
+- (void)control:(id)control repWasAdded:(id)added
 {
   objc_opt_class();
   v5 = TSUDynamicCast();
@@ -587,7 +587,7 @@ LABEL_11:
   [v5 setDelegate:self];
 }
 
-- (void)control:(id)a3 repWillBeRemoved:(id)a4
+- (void)control:(id)control repWillBeRemoved:(id)removed
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -595,38 +595,38 @@ LABEL_11:
   [v4 setDelegate:0];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v5 = [a3 gestureState];
-  if (v5 > 3)
+  gestureState = [gesture gestureState];
+  if (gestureState > 3)
   {
-    if ((v5 - 4) >= 2)
+    if ((gestureState - 4) >= 2)
     {
       return 1;
     }
 
 LABEL_8:
-    v6 = [(THWInteractiveImageCalloutRep *)self layout];
+    layout = [(THWInteractiveImageCalloutRep *)self layout];
     v7 = 0;
 LABEL_13:
-    [v6 setHighlighted:v7];
+    [layout setHighlighted:v7];
     return 1;
   }
 
-  if (v5 == 1)
+  if (gestureState == 1)
   {
-    v6 = [(THWInteractiveImageCalloutRep *)self layout];
+    layout = [(THWInteractiveImageCalloutRep *)self layout];
     v7 = 1;
     goto LABEL_13;
   }
 
-  if (v5 == 2)
+  if (gestureState == 2)
   {
     if (![-[THWInteractiveImageCalloutRep p_host](self "p_host")])
     {
-      [a3 naturalLocationForRep:self];
+      [gesture naturalLocationForRep:self];
       v8 = [(THWInteractiveImageCalloutRep *)self containsPoint:?];
-      v6 = [(THWInteractiveImageCalloutRep *)self layout];
+      layout = [(THWInteractiveImageCalloutRep *)self layout];
       v7 = v8;
       goto LABEL_13;
     }
@@ -636,7 +636,7 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (v5 == 3 && [-[THWInteractiveImageCalloutRep layout](self "layout")])
+  if (gestureState == 3 && [-[THWInteractiveImageCalloutRep layout](self "layout")])
   {
     [-[THWInteractiveImageCalloutRep layout](self "layout")];
     [-[THWInteractiveImageCalloutRep p_host](self "p_host")];
@@ -645,24 +645,24 @@ LABEL_13:
   return 1;
 }
 
-- (id)animationForRepLayer:(id)a3 withEvent:(id)a4
+- (id)animationForRepLayer:(id)layer withEvent:(id)event
 {
-  if ((self->_gradientLayer != a3 || ([a4 isEqualToString:@"bounds"] & 1) == 0) && (self->_shadowLayer != a3 || (objc_msgSend(a4, "isEqualToString:", @"transform") & 1) == 0 && !objc_msgSend(a4, "isEqualToString:", @"position")))
+  if ((self->_gradientLayer != layer || ([event isEqualToString:@"bounds"] & 1) == 0) && (self->_shadowLayer != layer || (objc_msgSend(event, "isEqualToString:", @"transform") & 1) == 0 && !objc_msgSend(event, "isEqualToString:", @"position")))
   {
     return 0;
   }
 
-  return [(THWInteractiveImageCalloutRep *)self p_delayedAnimationForLayer:a3 withEvent:a4];
+  return [(THWInteractiveImageCalloutRep *)self p_delayedAnimationForLayer:layer withEvent:event];
 }
 
-- (id)animationForChildRep:(id)a3 layer:(id)a4 withEvent:(id)a5
+- (id)animationForChildRep:(id)rep layer:(id)layer withEvent:(id)event
 {
-  if (([a5 isEqualToString:@"bounds"] & 1) == 0 && !objc_msgSend(a5, "isEqualToString:", @"position") || objc_msgSend(a3, "parentRep") != self || objc_msgSend(-[THWInteractiveImageCalloutRep interactiveCanvasController](self, "interactiveCanvasController"), "layerForRep:", a3) != a4)
+  if (([event isEqualToString:@"bounds"] & 1) == 0 && !objc_msgSend(event, "isEqualToString:", @"position") || objc_msgSend(rep, "parentRep") != self || objc_msgSend(-[THWInteractiveImageCalloutRep interactiveCanvasController](self, "interactiveCanvasController"), "layerForRep:", rep) != layer)
   {
     return 0;
   }
 
-  return [(THWInteractiveImageCalloutRep *)self p_delayedAnimationForLayer:a4 withEvent:a5];
+  return [(THWInteractiveImageCalloutRep *)self p_delayedAnimationForLayer:layer withEvent:event];
 }
 
 @end

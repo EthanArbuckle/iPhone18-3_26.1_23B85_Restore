@@ -1,20 +1,20 @@
 @interface ICDelegateAccountStoreServiceListener
 + (id)machServiceListener;
-+ (id)testingListenerWithIdentityStore:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)testingListenerWithIdentityStore:(id)store;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_identityStore;
-- (id)_initWithXPCListener:(id)a3 testingIdentityStore:(id)a4;
-- (void)_userIdentityStoreDelegateAccountStoreDidChangeNotification:(id)a3;
-- (void)addDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)recreateWithCompletionHandler:(id)a3;
-- (void)removeAllTokensWithCompletionHandler:(id)a3;
-- (void)removeDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
-- (void)removeIdentityPropertiesForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)removeTokenForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)removeTokensExpiringBeforeDate:(id)a3 completionHandler:(id)a4;
-- (void)setIdentityProperties:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
-- (void)setToken:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
+- (id)_initWithXPCListener:(id)listener testingIdentityStore:(id)store;
+- (void)_userIdentityStoreDelegateAccountStoreDidChangeNotification:(id)notification;
+- (void)addDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)recreateWithCompletionHandler:(id)handler;
+- (void)removeAllTokensWithCompletionHandler:(id)handler;
+- (void)removeDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeIdentityPropertiesForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeTokenForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeTokensExpiringBeforeDate:(id)date completionHandler:(id)handler;
+- (void)setIdentityProperties:(id)properties forUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)setToken:(id)token forUserIdentity:(id)identity completionHandler:(id)handler;
 @end
 
 @implementation ICDelegateAccountStoreServiceListener
@@ -35,7 +35,7 @@
   return v3;
 }
 
-- (void)_userIdentityStoreDelegateAccountStoreDidChangeNotification:(id)a3
+- (void)_userIdentityStoreDelegateAccountStoreDidChangeNotification:(id)notification
 {
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -96,17 +96,17 @@ void __101__ICDelegateAccountStoreServiceListener__userIdentityStoreDelegateAcco
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v8 = connectionCopy;
   if (self->_ignoresEntitlements)
   {
     goto LABEL_2;
   }
 
-  v15 = [v7 valueForEntitlement:@"com.apple.itunescloud.delegate-account-store"];
+  v15 = [connectionCopy valueForEntitlement:@"com.apple.itunescloud.delegate-account-store"];
   if ((_NSIsNSNumber() & 1) == 0)
   {
 
@@ -115,9 +115,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v16 = [v15 BOOLValue];
+  bOOLValue = [v15 BOOLValue];
 
-  if (!v16)
+  if (!bOOLValue)
   {
     goto LABEL_7;
   }
@@ -198,34 +198,34 @@ void __76__ICDelegateAccountStoreServiceListener_listener_shouldAcceptNewConnect
   }
 }
 
-- (void)setToken:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)setToken:(id)token forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  tokenCopy = token;
+  handlerCopy = handler;
+  identityCopy = identity;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __84__ICDelegateAccountStoreServiceListener_setToken_forUserIdentity_completionHandler___block_invoke;
   v13[3] = &unk_1E7BF4F20;
-  v14 = v8;
-  v12 = v8;
-  [v11 updatePropertiesForUserIdentity:v10 usingBlock:v13 completionHandler:v9];
+  v14 = tokenCopy;
+  v12 = tokenCopy;
+  [_identityStore updatePropertiesForUserIdentity:identityCopy usingBlock:v13 completionHandler:handlerCopy];
 }
 
-- (void)setIdentityProperties:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)setIdentityProperties:(id)properties forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  propertiesCopy = properties;
+  handlerCopy = handler;
+  identityCopy = identity;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __97__ICDelegateAccountStoreServiceListener_setIdentityProperties_forUserIdentity_completionHandler___block_invoke;
   v13[3] = &unk_1E7BF4EF8;
-  v14 = v8;
-  v12 = v8;
-  [v11 insertPropertiesForUserIdentity:v10 usingBlock:v13 completionHandler:v9];
+  v14 = propertiesCopy;
+  v12 = propertiesCopy;
+  [_identityStore insertPropertiesForUserIdentity:identityCopy usingBlock:v13 completionHandler:handlerCopy];
 }
 
 void __97__ICDelegateAccountStoreServiceListener_setIdentityProperties_forUserIdentity_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -236,73 +236,73 @@ void __97__ICDelegateAccountStoreServiceListener_setIdentityProperties_forUserId
   [v3 setDelegated:1];
 }
 
-- (void)removeTokensExpiringBeforeDate:(id)a3 completionHandler:(id)a4
+- (void)removeTokensExpiringBeforeDate:(id)date completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
-  [v8 removeDelegateTokensExpiringBeforeDate:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dateCopy = date;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  [_identityStore removeDelegateTokensExpiringBeforeDate:dateCopy completionHandler:handlerCopy];
 }
 
-- (void)removeTokenForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)removeTokenForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
-  [v8 removeDelegateTokenForUserIdentity:v7 completionHandler:v6];
+  handlerCopy = handler;
+  identityCopy = identity;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  [_identityStore removeDelegateTokenForUserIdentity:identityCopy completionHandler:handlerCopy];
 }
 
-- (void)removeIdentityPropertiesForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)removeIdentityPropertiesForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
-  [v8 removePropertiesForUserIdentity:v7 completionHandler:v6];
+  handlerCopy = handler;
+  identityCopy = identity;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  [_identityStore removePropertiesForUserIdentity:identityCopy completionHandler:handlerCopy];
 }
 
-- (void)removeDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)removeDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
-  [v11 removeDelegationUUIDs:v10 forUserIdentity:v9 completionHandler:v8];
+  handlerCopy = handler;
+  identityCopy = identity;
+  dsCopy = ds;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  [_identityStore removeDelegationUUIDs:dsCopy forUserIdentity:identityCopy completionHandler:handlerCopy];
 }
 
-- (void)removeAllTokensWithCompletionHandler:(id)a3
+- (void)removeAllTokensWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
-  [v5 removeAllDelegateTokensWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  [_identityStore removeAllDelegateTokensWithCompletionHandler:handlerCopy];
 }
 
-- (void)recreateWithCompletionHandler:(id)a3
+- (void)recreateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
-  [v5 _resetDelegateAccountStoreWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  [_identityStore _resetDelegateAccountStoreWithCompletionHandler:handlerCopy];
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
-  [v5 _prepareDelegateAccountStoreWithCompletionHandler:v4];
+  handlerCopy = handler;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  [_identityStore _prepareDelegateAccountStoreWithCompletionHandler:handlerCopy];
 }
 
-- (void)addDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)addDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
-  [v11 addDelegationUUIDs:v10 forUserIdentity:v9 completionHandler:v8];
+  handlerCopy = handler;
+  identityCopy = identity;
+  dsCopy = ds;
+  _identityStore = [(ICDelegateAccountStoreServiceListener *)self _identityStore];
+  [_identityStore addDelegationUUIDs:dsCopy forUserIdentity:identityCopy completionHandler:handlerCopy];
 }
 
-- (id)_initWithXPCListener:(id)a3 testingIdentityStore:(id)a4
+- (id)_initWithXPCListener:(id)listener testingIdentityStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = ICDelegateAccountStoreServiceListener;
   v9 = [(ICDelegateAccountStoreServiceListener *)&v17 init];
@@ -316,28 +316,28 @@ void __97__ICDelegateAccountStoreServiceListener_setIdentityProperties_forUserId
     callbackQueue = v9->_callbackQueue;
     v9->_callbackQueue = v12;
 
-    objc_storeStrong(&v9->_listener, a3);
+    objc_storeStrong(&v9->_listener, listener);
     [(NSXPCListener *)v9->_listener setDelegate:v9];
-    if (v8)
+    if (storeCopy)
     {
       v9->_ignoresEntitlements = 1;
-      objc_storeStrong(&v9->_testingIdentityStore, a4);
+      objc_storeStrong(&v9->_testingIdentityStore, store);
     }
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    v15 = [(ICDelegateAccountStoreServiceListener *)v9 _identityStore];
-    [v14 addObserver:v9 selector:sel__userIdentityStoreDelegateAccountStoreDidChangeNotification_ name:@"ICUserIdentityStoreDelegateAccountStoreDidChangeNotification" object:v15];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    _identityStore = [(ICDelegateAccountStoreServiceListener *)v9 _identityStore];
+    [defaultCenter addObserver:v9 selector:sel__userIdentityStoreDelegateAccountStoreDidChangeNotification_ name:@"ICUserIdentityStoreDelegateAccountStoreDidChangeNotification" object:_identityStore];
   }
 
   return v9;
 }
 
-+ (id)testingListenerWithIdentityStore:(id)a3
++ (id)testingListenerWithIdentityStore:(id)store
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [MEMORY[0x1E696B0D8] anonymousListener];
-  v7 = [v5 _initWithXPCListener:v6 testingIdentityStore:v4];
+  storeCopy = store;
+  v5 = [self alloc];
+  anonymousListener = [MEMORY[0x1E696B0D8] anonymousListener];
+  v7 = [v5 _initWithXPCListener:anonymousListener testingIdentityStore:storeCopy];
 
   return v7;
 }
@@ -345,7 +345,7 @@ void __97__ICDelegateAccountStoreServiceListener_setIdentityProperties_forUserId
 + (id)machServiceListener
 {
   v3 = [objc_alloc(MEMORY[0x1E696B0D8]) initWithMachServiceName:@"com.apple.itunescloud.delegate-account-store"];
-  v4 = [[a1 alloc] _initWithXPCListener:v3 testingIdentityStore:0];
+  v4 = [[self alloc] _initWithXPCListener:v3 testingIdentityStore:0];
 
   return v4;
 }

@@ -18,12 +18,12 @@
 - (double)minimumHeight;
 - (void)configureViewHierarchy;
 - (void)recalculateHeights;
-- (void)setDelegate:(id)a3;
-- (void)setMaximumHeight:(double)a3;
-- (void)setMinimumHeight:(double)a3;
-- (void)setViewModel:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setMaximumHeight:(double)height;
+- (void)setMinimumHeight:(double)height;
+- (void)setViewModel:(id)model;
 - (void)setupViews;
-- (void)updateWith:(id)a3;
+- (void)updateWith:(id)with;
 @end
 
 @implementation ConversationSenderHeaderView
@@ -37,7 +37,7 @@
   return v4;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   _objc_retain(self);
@@ -54,11 +54,11 @@
   return v4;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  _objc_retain(a3);
+  _objc_retain(model);
   _objc_retain(self);
-  sub_1002A7EB8(a3);
+  sub_1002A7EB8(model);
   _objc_release(self);
 }
 
@@ -70,10 +70,10 @@
   return v4;
 }
 
-- (void)setMinimumHeight:(double)a3
+- (void)setMinimumHeight:(double)height
 {
   _objc_retain(self);
-  sub_1002A80D0(a3);
+  sub_1002A80D0(height);
   _objc_release(self);
 }
 
@@ -85,10 +85,10 @@
   return v4;
 }
 
-- (void)setMaximumHeight:(double)a3
+- (void)setMaximumHeight:(double)height
 {
   _objc_retain(self);
-  sub_1002A82BC(a3);
+  sub_1002A82BC(height);
   _objc_release(self);
 }
 
@@ -190,13 +190,13 @@
   return v4;
 }
 
-- (void)updateWith:(id)a3
+- (void)updateWith:(id)with
 {
-  _objc_retain(a3);
+  _objc_retain(with);
   _objc_retain(self);
-  sub_1002AA978(a3);
+  sub_1002AA978(with);
   _objc_release(self);
-  _objc_release(a3);
+  _objc_release(with);
 }
 
 - (void)setupViews

@@ -1,50 +1,50 @@
 @interface CALNMutableTriggeredEventNotificationData
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setAlarmID:(id)a3;
-- (void)setLastFireTimeOfAlertOffsetFromTravelTime:(id)a3;
-- (void)setLastTimeNotificationAdded:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setAlarmID:(id)d;
+- (void)setLastFireTimeOfAlertOffsetFromTravelTime:(id)time;
+- (void)setLastTimeNotificationAdded:(id)added;
 @end
 
 @implementation CALNMutableTriggeredEventNotificationData
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CALNTriggeredEventNotificationData alloc];
-  v5 = [(CALNTriggeredEventNotificationData *)self alarmID];
-  v6 = [(CALNTriggeredEventNotificationData *)self isOffsetFromTravelTimeStart];
-  v7 = [(CALNTriggeredEventNotificationData *)self lastFireTimeOfAlertOffsetFromTravelTime];
-  v8 = [(CALNTriggeredEventNotificationData *)self hypothesis];
-  v9 = [(CALNTriggeredEventNotificationData *)self hasDisplayedLeaveByMessage];
-  v10 = [(CALNTriggeredEventNotificationData *)self hasDisplayedLeaveNowMessage];
-  v11 = [(CALNTriggeredEventNotificationData *)self hasDisplayedRunningLateMessage];
-  v12 = [(CALNTriggeredEventNotificationData *)self lastTimeNotificationAdded];
-  LOBYTE(v15) = v11;
-  v13 = [(CALNTriggeredEventNotificationData *)v4 _initWithAlarmID:v5 isOffsetFromTravelTimeStart:v6 lastFireTimeOfAlertOffsetFromTravelTime:v7 hypothesis:v8 hasDisplayedLeaveByMessage:v9 hasDisplayedLeaveNowMessage:v10 hasDisplayedRunningLateMessage:v15 lastTimeNotificationAdded:v12];
+  alarmID = [(CALNTriggeredEventNotificationData *)self alarmID];
+  isOffsetFromTravelTimeStart = [(CALNTriggeredEventNotificationData *)self isOffsetFromTravelTimeStart];
+  lastFireTimeOfAlertOffsetFromTravelTime = [(CALNTriggeredEventNotificationData *)self lastFireTimeOfAlertOffsetFromTravelTime];
+  hypothesis = [(CALNTriggeredEventNotificationData *)self hypothesis];
+  hasDisplayedLeaveByMessage = [(CALNTriggeredEventNotificationData *)self hasDisplayedLeaveByMessage];
+  hasDisplayedLeaveNowMessage = [(CALNTriggeredEventNotificationData *)self hasDisplayedLeaveNowMessage];
+  hasDisplayedRunningLateMessage = [(CALNTriggeredEventNotificationData *)self hasDisplayedRunningLateMessage];
+  lastTimeNotificationAdded = [(CALNTriggeredEventNotificationData *)self lastTimeNotificationAdded];
+  LOBYTE(v15) = hasDisplayedRunningLateMessage;
+  v13 = [(CALNTriggeredEventNotificationData *)v4 _initWithAlarmID:alarmID isOffsetFromTravelTimeStart:isOffsetFromTravelTimeStart lastFireTimeOfAlertOffsetFromTravelTime:lastFireTimeOfAlertOffsetFromTravelTime hypothesis:hypothesis hasDisplayedLeaveByMessage:hasDisplayedLeaveByMessage hasDisplayedLeaveNowMessage:hasDisplayedLeaveNowMessage hasDisplayedRunningLateMessage:v15 lastTimeNotificationAdded:lastTimeNotificationAdded];
 
   return v13;
 }
 
-- (void)setAlarmID:(id)a3
+- (void)setAlarmID:(id)d
 {
-  v4 = [a3 copy];
+  v4 = [d copy];
   alarmID = self->super._alarmID;
   self->super._alarmID = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setLastFireTimeOfAlertOffsetFromTravelTime:(id)a3
+- (void)setLastFireTimeOfAlertOffsetFromTravelTime:(id)time
 {
-  v4 = [a3 copy];
+  v4 = [time copy];
   lastFireTimeOfAlertOffsetFromTravelTime = self->super._lastFireTimeOfAlertOffsetFromTravelTime;
   self->super._lastFireTimeOfAlertOffsetFromTravelTime = v4;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setLastTimeNotificationAdded:(id)a3
+- (void)setLastTimeNotificationAdded:(id)added
 {
-  v4 = [a3 copy];
+  v4 = [added copy];
   lastTimeNotificationAdded = self->super._lastTimeNotificationAdded;
   self->super._lastTimeNotificationAdded = v4;
 

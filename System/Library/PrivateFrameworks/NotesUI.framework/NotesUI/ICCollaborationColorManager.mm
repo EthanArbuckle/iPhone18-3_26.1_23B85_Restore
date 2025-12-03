@@ -2,10 +2,10 @@
 + (UIColor)defaultColor;
 + (id)participantColors;
 - (ICCollaborationColorManager)init;
-- (id)baseColorValuesForUserID:(id)a3;
-- (id)containerScopedUserRecordNameForAccount:(id)a3;
-- (id)highlightColorForUserID:(id)a3 note:(id)a4;
-- (id)participantAXDisplayNameForUserID:(id)a3 forNote:(id)a4;
+- (id)baseColorValuesForUserID:(id)d;
+- (id)containerScopedUserRecordNameForAccount:(id)account;
+- (id)highlightColorForUserID:(id)d note:(id)note;
+- (id)participantAXDisplayNameForUserID:(id)d forNote:(id)note;
 @end
 
 @implementation ICCollaborationColorManager
@@ -91,8 +91,8 @@ uint64_t __43__ICCollaborationColorManager_defaultColor__block_invoke()
     userIDToColorsDict = v2->_userIDToColorsDict;
     v2->_userIDToColorsDict = v3;
 
-    v5 = [objc_opt_class() participantColors];
-    v6 = [v5 count];
+    participantColors = [objc_opt_class() participantColors];
+    v6 = [participantColors count];
 
     v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v6];
     colorUsageCounts = v2->_colorUsageCounts;
@@ -109,33 +109,33 @@ uint64_t __43__ICCollaborationColorManager_defaultColor__block_invoke()
   return v2;
 }
 
-- (id)highlightColorForUserID:(id)a3 note:(id)a4
+- (id)highlightColorForUserID:(id)d note:(id)note
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:*MEMORY[0x1E695B728]])
+  dCopy = d;
+  noteCopy = note;
+  if ([dCopy isEqualToString:*MEMORY[0x1E695B728]])
   {
-    v8 = [v7 account];
-    v9 = [(ICCollaborationColorManager *)self containerScopedUserRecordNameForAccount:v8];
+    account = [noteCopy account];
+    v9 = [(ICCollaborationColorManager *)self containerScopedUserRecordNameForAccount:account];
 
-    v6 = v9;
+    dCopy = v9;
   }
 
-  if (!v6 || ([MEMORY[0x1E696AFB0] CR_unknown], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "UUIDString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v6, "isEqual:", v11), v11, v10, v12))
+  if (!dCopy || ([MEMORY[0x1E696AFB0] CR_unknown], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "UUIDString"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(dCopy, "isEqual:", v11), v11, v10, v12))
   {
-    v13 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
 LABEL_6:
-    v14 = v13;
+    v14 = clearColor;
     goto LABEL_7;
   }
 
-  if (([v7 isSharedViaICloud] & 1) == 0)
+  if (([noteCopy isSharedViaICloud] & 1) == 0)
   {
-    v13 = [objc_opt_class() defaultColor];
+    clearColor = [objc_opt_class() defaultColor];
     goto LABEL_6;
   }
 
-  v16 = [(ICCollaborationColorManager *)self baseColorValuesForUserID:v6];
+  v16 = [(ICCollaborationColorManager *)self baseColorValuesForUserID:dCopy];
   v17 = MEMORY[0x1E69DC888];
   [v16 redValue];
   v19 = v18;
@@ -151,60 +151,60 @@ LABEL_7:
   return v14;
 }
 
-- (id)baseColorValuesForUserID:(id)a3
+- (id)baseColorValuesForUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(ICCollaborationColorManager *)self userIDToColorsDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  userIDToColorsDict = [(ICCollaborationColorManager *)self userIDToColorsDict];
+  v6 = [userIDToColorsDict objectForKeyedSubscript:dCopy];
 
   if (v6)
   {
-    v7 = [(ICCollaborationColorManager *)self userIDToColorsDict];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    userIDToColorsDict2 = [(ICCollaborationColorManager *)self userIDToColorsDict];
+    v8 = [userIDToColorsDict2 objectForKeyedSubscript:dCopy];
   }
 
   else
   {
-    v7 = [objc_opt_class() participantColors];
-    v9 = [(ICCollaborationColorManager *)self colorUsageCounts];
-    v10 = [v4 hash];
-    v11 = v10 % [v7 count];
-    [v9 count];
+    userIDToColorsDict2 = [objc_opt_class() participantColors];
+    colorUsageCounts = [(ICCollaborationColorManager *)self colorUsageCounts];
+    v10 = [dCopy hash];
+    v11 = v10 % [userIDToColorsDict2 count];
+    [colorUsageCounts count];
     v12 = 0;
     while (1)
     {
-      if (v11 >= [v9 count])
+      if (v11 >= [colorUsageCounts count])
       {
         v11 = 0;
       }
 
-      if (v12 >= [v9 count])
+      if (v12 >= [colorUsageCounts count])
       {
         [(ICCollaborationColorManager *)self setColorUsageCountMinimum:[(ICCollaborationColorManager *)self colorUsageCountMinimum]+ 1];
       }
 
-      v13 = [v9 objectAtIndexedSubscript:v11];
-      v14 = [v13 unsignedIntegerValue];
+      v13 = [colorUsageCounts objectAtIndexedSubscript:v11];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
 
-      if (v14 <= [(ICCollaborationColorManager *)self colorUsageCountMinimum])
+      if (unsignedIntegerValue <= [(ICCollaborationColorManager *)self colorUsageCountMinimum])
       {
         break;
       }
 
       ++v11;
-      if (++v12 > [v9 count])
+      if (++v12 > [colorUsageCounts count])
       {
         v8 = 0;
         goto LABEL_12;
       }
     }
 
-    v8 = [v7 objectAtIndexedSubscript:v11];
-    v15 = [(ICCollaborationColorManager *)self userIDToColorsDict];
-    [v15 setObject:v8 forKey:v4];
+    v8 = [userIDToColorsDict2 objectAtIndexedSubscript:v11];
+    userIDToColorsDict3 = [(ICCollaborationColorManager *)self userIDToColorsDict];
+    [userIDToColorsDict3 setObject:v8 forKey:dCopy];
 
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14 + 1];
-    [v9 setObject:v16 atIndexedSubscript:v11];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+    [colorUsageCounts setObject:v16 atIndexedSubscript:v11];
 
 LABEL_12:
   }
@@ -212,19 +212,19 @@ LABEL_12:
   return v8;
 }
 
-- (id)containerScopedUserRecordNameForAccount:(id)a3
+- (id)containerScopedUserRecordNameForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   if (containerScopedUserRecordNameForAccount__onceToken != -1)
   {
     [ICCollaborationColorManager containerScopedUserRecordNameForAccount:];
   }
 
-  v4 = [v3 identifier];
-  if ([v4 length])
+  identifier = [accountCopy identifier];
+  if ([identifier length])
   {
     os_unfair_lock_lock(&containerScopedUserRecordNameForAccount__accountIDToRecordNameLock);
-    v5 = [containerScopedUserRecordNameForAccount__accountIDToRecordName objectForKeyedSubscript:v4];
+    v5 = [containerScopedUserRecordNameForAccount__accountIDToRecordName objectForKeyedSubscript:identifier];
     os_unfair_lock_unlock(&containerScopedUserRecordNameForAccount__accountIDToRecordNameLock);
     if (v5)
     {
@@ -241,8 +241,8 @@ LABEL_12:
       v23 = __Block_byref_object_dispose__65;
       v24 = 0;
       v7 = dispatch_semaphore_create(0);
-      v8 = [MEMORY[0x1E69B76F0] sharedContext];
-      v9 = [v8 containerForAccountID:v4];
+      mEMORY[0x1E69B76F0] = [MEMORY[0x1E69B76F0] sharedContext];
+      v9 = [mEMORY[0x1E69B76F0] containerForAccountID:identifier];
 
       v13 = MEMORY[0x1E69E9820];
       v14 = 3221225472;
@@ -255,7 +255,7 @@ LABEL_12:
       v11 = dispatch_time(0, 120000000000);
       dispatch_semaphore_wait(v10, v11);
       os_unfair_lock_lock(&containerScopedUserRecordNameForAccount__accountIDToRecordNameLock);
-      [containerScopedUserRecordNameForAccount__accountIDToRecordName setObject:v20[5] forKeyedSubscript:{v4, v13, v14, v15, v16}];
+      [containerScopedUserRecordNameForAccount__accountIDToRecordName setObject:v20[5] forKeyedSubscript:{identifier, v13, v14, v15, v16}];
       os_unfair_lock_unlock(&containerScopedUserRecordNameForAccount__accountIDToRecordNameLock);
       v6 = v20[5];
 
@@ -308,34 +308,34 @@ void __71__ICCollaborationColorManager_containerScopedUserRecordNameForAccount__
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)participantAXDisplayNameForUserID:(id)a3 forNote:(id)a4
+- (id)participantAXDisplayNameForUserID:(id)d forNote:(id)note
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (([v6 isEqualToString:*MEMORY[0x1E695B728]] & 1) != 0 || (objc_msgSend(v7, "account"), v8 = objc_claimAutoreleasedReturnValue(), -[ICCollaborationColorManager containerScopedUserRecordNameForAccount:](self, "containerScopedUserRecordNameForAccount:", v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v6, "isEqualToString:", v9), v9, v8, v10))
+  dCopy = d;
+  noteCopy = note;
+  if (([dCopy isEqualToString:*MEMORY[0x1E695B728]] & 1) != 0 || (objc_msgSend(noteCopy, "account"), v8 = objc_claimAutoreleasedReturnValue(), -[ICCollaborationColorManager containerScopedUserRecordNameForAccount:](self, "containerScopedUserRecordNameForAccount:", v8), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(dCopy, "isEqualToString:", v9), v9, v8, v10))
   {
-    v11 = __ICLocalizedFrameworkString_impl(@"Me", @"Me", 0, 1);
+    ic_localizedNameWithDefaultFormattingStyle = __ICLocalizedFrameworkString_impl(@"Me", @"Me", 0, 1);
   }
 
   else
   {
-    v12 = [v7 serverShare];
-    v13 = [v12 participants];
+    serverShare = [noteCopy serverShare];
+    participants = [serverShare participants];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v14 = v13;
-    v11 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
-    if (v11)
+    v14 = participants;
+    ic_localizedNameWithDefaultFormattingStyle = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    if (ic_localizedNameWithDefaultFormattingStyle)
     {
-      v25 = v7;
+      v25 = noteCopy;
       v15 = *v27;
       while (2)
       {
-        for (i = 0; i != v11; i = i + 1)
+        for (i = 0; i != ic_localizedNameWithDefaultFormattingStyle; i = i + 1)
         {
           if (*v27 != v15)
           {
@@ -343,23 +343,23 @@ void __71__ICCollaborationColorManager_containerScopedUserRecordNameForAccount__
           }
 
           v17 = *(*(&v26 + 1) + 8 * i);
-          v18 = [v17 userIdentity];
-          v19 = [v18 userRecordID];
-          v20 = [v19 recordName];
-          v21 = [v20 isEqualToString:v6];
+          userIdentity = [v17 userIdentity];
+          userRecordID = [userIdentity userRecordID];
+          recordName = [userRecordID recordName];
+          v21 = [recordName isEqualToString:dCopy];
 
           if (v21)
           {
-            v22 = [v17 userIdentity];
-            v23 = [v22 nameComponents];
-            v11 = [v23 ic_localizedNameWithDefaultFormattingStyle];
+            userIdentity2 = [v17 userIdentity];
+            nameComponents = [userIdentity2 nameComponents];
+            ic_localizedNameWithDefaultFormattingStyle = [nameComponents ic_localizedNameWithDefaultFormattingStyle];
 
             goto LABEL_14;
           }
         }
 
-        v11 = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
-        if (v11)
+        ic_localizedNameWithDefaultFormattingStyle = [v14 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        if (ic_localizedNameWithDefaultFormattingStyle)
         {
           continue;
         }
@@ -368,11 +368,11 @@ void __71__ICCollaborationColorManager_containerScopedUserRecordNameForAccount__
       }
 
 LABEL_14:
-      v7 = v25;
+      noteCopy = v25;
     }
   }
 
-  return v11;
+  return ic_localizedNameWithDefaultFormattingStyle;
 }
 
 void __71__ICCollaborationColorManager_containerScopedUserRecordNameForAccount___block_invoke_22_cold_1(uint64_t a1, NSObject *a2)

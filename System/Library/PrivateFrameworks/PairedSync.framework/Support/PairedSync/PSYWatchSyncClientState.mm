@@ -1,9 +1,9 @@
 @interface PSYWatchSyncClientState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)activeActivityLabelsSet;
 - (NSSet)completedActivityLabelsSet;
-- (PSYWatchSyncClientState)initWithPlistRepresentation:(id)a3;
-- (PSYWatchSyncClientState)initWithSyncSessionState:(unint64_t)a3 syncSessionType:(unint64_t)a4 migrationSync:(BOOL)a5 activities:(id)a6 completedActivities:(id)a7;
+- (PSYWatchSyncClientState)initWithPlistRepresentation:(id)representation;
+- (PSYWatchSyncClientState)initWithSyncSessionState:(unint64_t)state syncSessionType:(unint64_t)type migrationSync:(BOOL)sync activities:(id)activities completedActivities:(id)completedActivities;
 - (id)description;
 - (id)plistRepresentation;
 - (unint64_t)hash;
@@ -11,52 +11,52 @@
 
 @implementation PSYWatchSyncClientState
 
-- (PSYWatchSyncClientState)initWithSyncSessionState:(unint64_t)a3 syncSessionType:(unint64_t)a4 migrationSync:(BOOL)a5 activities:(id)a6 completedActivities:(id)a7
+- (PSYWatchSyncClientState)initWithSyncSessionState:(unint64_t)state syncSessionType:(unint64_t)type migrationSync:(BOOL)sync activities:(id)activities completedActivities:(id)completedActivities
 {
-  v13 = a6;
-  v14 = a7;
+  activitiesCopy = activities;
+  completedActivitiesCopy = completedActivities;
   v18.receiver = self;
   v18.super_class = PSYWatchSyncClientState;
   v15 = [(PSYWatchSyncClientState *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_syncSessionState = a3;
-    v15->_syncSessionType = a4;
-    v15->_migrationSync = a5;
-    objc_storeStrong(&v15->_activeActivityLabels, a6);
-    objc_storeStrong(&v16->_completedActivityLabels, a7);
+    v15->_syncSessionState = state;
+    v15->_syncSessionType = type;
+    v15->_migrationSync = sync;
+    objc_storeStrong(&v15->_activeActivityLabels, activities);
+    objc_storeStrong(&v16->_completedActivityLabels, completedActivities);
     v16->_version = 1;
   }
 
   return v16;
 }
 
-- (PSYWatchSyncClientState)initWithPlistRepresentation:(id)a3
+- (PSYWatchSyncClientState)initWithPlistRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v15.receiver = self;
   v15.super_class = PSYWatchSyncClientState;
   v5 = [(PSYWatchSyncClientState *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"version"];
+    v6 = [representationCopy objectForKeyedSubscript:@"version"];
     v5->_version = [v6 unsignedIntegerValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"syncProgressState"];
+    v7 = [representationCopy objectForKeyedSubscript:@"syncProgressState"];
     v5->_syncSessionState = [v7 unsignedIntegerValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"syncSessionType"];
+    v8 = [representationCopy objectForKeyedSubscript:@"syncSessionType"];
     v5->_syncSessionType = [v8 unsignedIntegerValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"migrationSync"];
+    v9 = [representationCopy objectForKeyedSubscript:@"migrationSync"];
     v5->_migrationSync = [v9 BOOLValue];
 
-    v10 = [v4 objectForKeyedSubscript:@"activeActivityLabels"];
+    v10 = [representationCopy objectForKeyedSubscript:@"activeActivityLabels"];
     activeActivityLabels = v5->_activeActivityLabels;
     v5->_activeActivityLabels = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"completedActivityLabels"];
+    v12 = [representationCopy objectForKeyedSubscript:@"completedActivityLabels"];
     completedActivityLabels = v5->_completedActivityLabels;
     v5->_completedActivityLabels = v12;
   }
@@ -125,22 +125,22 @@
   v7 = [NSNumber numberWithBool:[(PSYWatchSyncClientState *)self migrationSync]];
   [v3 setObject:v7 forKeyedSubscript:@"migrationSync"];
 
-  v8 = [(PSYWatchSyncClientState *)self activeActivityLabels];
-  v9 = [v8 count];
+  activeActivityLabels = [(PSYWatchSyncClientState *)self activeActivityLabels];
+  v9 = [activeActivityLabels count];
 
   if (v9)
   {
-    v10 = [(PSYWatchSyncClientState *)self activeActivityLabels];
-    [v3 setObject:v10 forKeyedSubscript:@"activeActivityLabels"];
+    activeActivityLabels2 = [(PSYWatchSyncClientState *)self activeActivityLabels];
+    [v3 setObject:activeActivityLabels2 forKeyedSubscript:@"activeActivityLabels"];
   }
 
-  v11 = [(PSYWatchSyncClientState *)self completedActivityLabels];
-  v12 = [v11 count];
+  completedActivityLabels = [(PSYWatchSyncClientState *)self completedActivityLabels];
+  v12 = [completedActivityLabels count];
 
   if (v12)
   {
-    v13 = [(PSYWatchSyncClientState *)self completedActivityLabels];
-    [v3 setObject:v13 forKeyedSubscript:@"completedActivityLabels"];
+    completedActivityLabels2 = [(PSYWatchSyncClientState *)self completedActivityLabels];
+    [v3 setObject:completedActivityLabels2 forKeyedSubscript:@"completedActivityLabels"];
   }
 
   return v3;
@@ -148,34 +148,34 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PSYWatchSyncClientState *)self syncSessionState];
-  v4 = [(PSYWatchSyncClientState *)self syncSessionType]^ v3;
-  v5 = [(PSYWatchSyncClientState *)self migrationSync];
-  v6 = [(PSYWatchSyncClientState *)self activeActivityLabels];
-  v7 = v4 ^ [v6 hash] ^ v5;
-  v8 = [(PSYWatchSyncClientState *)self completedActivityLabels];
-  v9 = [v8 hash];
+  syncSessionState = [(PSYWatchSyncClientState *)self syncSessionState];
+  v4 = [(PSYWatchSyncClientState *)self syncSessionType]^ syncSessionState;
+  migrationSync = [(PSYWatchSyncClientState *)self migrationSync];
+  activeActivityLabels = [(PSYWatchSyncClientState *)self activeActivityLabels];
+  v7 = v4 ^ [activeActivityLabels hash] ^ migrationSync;
+  completedActivityLabels = [(PSYWatchSyncClientState *)self completedActivityLabels];
+  v9 = [completedActivityLabels hash];
 
   return v7 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PSYWatchSyncClientState *)self syncSessionState];
-    if (v6 == [v5 syncSessionState] && (v7 = -[PSYWatchSyncClientState syncSessionType](self, "syncSessionType"), v7 == objc_msgSend(v5, "syncSessionType")) && (v8 = -[PSYWatchSyncClientState migrationSync](self, "migrationSync"), v8 == objc_msgSend(v5, "migrationSync")))
+    v5 = equalCopy;
+    syncSessionState = [(PSYWatchSyncClientState *)self syncSessionState];
+    if (syncSessionState == [v5 syncSessionState] && (v7 = -[PSYWatchSyncClientState syncSessionType](self, "syncSessionType"), v7 == objc_msgSend(v5, "syncSessionType")) && (v8 = -[PSYWatchSyncClientState migrationSync](self, "migrationSync"), v8 == objc_msgSend(v5, "migrationSync")))
     {
-      v11 = [(PSYWatchSyncClientState *)self activeActivityLabels];
-      v12 = [v5 activeActivityLabels];
-      if ([v11 isEqual:v12])
+      activeActivityLabels = [(PSYWatchSyncClientState *)self activeActivityLabels];
+      activeActivityLabels2 = [v5 activeActivityLabels];
+      if ([activeActivityLabels isEqual:activeActivityLabels2])
       {
-        v13 = [(PSYWatchSyncClientState *)self completedActivityLabels];
-        v14 = [v5 completedActivityLabels];
-        v9 = [v13 isEqual:v14];
+        completedActivityLabels = [(PSYWatchSyncClientState *)self completedActivityLabels];
+        completedActivityLabels2 = [v5 completedActivityLabels];
+        v9 = [completedActivityLabels isEqual:completedActivityLabels2];
       }
 
       else
@@ -202,30 +202,30 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(PSYWatchSyncClientState *)self activeActivityLabels];
-  v6 = [(PSYWatchSyncClientState *)self completedActivityLabels];
+  activeActivityLabels = [(PSYWatchSyncClientState *)self activeActivityLabels];
+  completedActivityLabels = [(PSYWatchSyncClientState *)self completedActivityLabels];
   v7 = sub_100016B74([(PSYWatchSyncClientState *)self syncSessionState]);
-  v8 = [(PSYWatchSyncClientState *)self syncSessionType];
+  syncSessionType = [(PSYWatchSyncClientState *)self syncSessionType];
   v9 = @"Reunion";
-  if (v8 != 1)
+  if (syncSessionType != 1)
   {
     v9 = 0;
   }
 
-  if (!v8)
+  if (!syncSessionType)
   {
     v9 = @"Full";
   }
 
   v10 = v9;
-  v11 = [(PSYWatchSyncClientState *)self migrationSync];
+  migrationSync = [(PSYWatchSyncClientState *)self migrationSync];
   v12 = "NO";
-  if (v11)
+  if (migrationSync)
   {
     v12 = "YES";
   }
 
-  v13 = [NSString stringWithFormat:@"<%@ %p activeActivityLabels=%@ completedActivityLabels=%@; syncSessionState=%@; syncSessionType=%@ migrationSync=%s>", v4, self, v5, v6, v7, v10, v12];;
+  v13 = [NSString stringWithFormat:@"<%@ %p activeActivityLabels=%@ completedActivityLabels=%@; syncSessionState=%@; syncSessionType=%@ migrationSync=%s>", v4, self, activeActivityLabels, completedActivityLabels, v7, v10, v12];;
 
   return v13;
 }

@@ -1,8 +1,8 @@
 @interface FCIssueBookmark
-+ (id)ANFBookmarkWithArticleID:(id)a3;
-+ (id)PDFBookmarkWithPageID:(id)a3;
++ (id)ANFBookmarkWithArticleID:(id)d;
++ (id)PDFBookmarkWithPageID:(id)d;
 - (FCIssueBookmark)init;
-- (FCIssueBookmark)initWithIssueType:(int64_t)a3 articleID:(id)a4 pageID:(id)a5;
+- (FCIssueBookmark)initWithIssueType:(int64_t)type articleID:(id)d pageID:(id)iD;
 @end
 
 @implementation FCIssueBookmark
@@ -33,13 +33,13 @@
   objc_exception_throw(v6);
 }
 
-- (FCIssueBookmark)initWithIssueType:(int64_t)a3 articleID:(id)a4 pageID:(id)a5
+- (FCIssueBookmark)initWithIssueType:(int64_t)type articleID:(id)d pageID:(id)iD
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!a3 && !v8)
+  dCopy = d;
+  iDCopy = iD;
+  v10 = iDCopy;
+  if (!type && !dCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -59,7 +59,7 @@
     goto LABEL_12;
   }
 
-  if (a3 == 1 && !v9 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (type == 1 && !iDCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "issueType != FCIssueTypePDF || pageID != nil"];
     *buf = 136315906;
@@ -82,8 +82,8 @@ LABEL_8:
   v14 = v13;
   if (v13)
   {
-    v13->_issueType = a3;
-    v15 = [v8 copy];
+    v13->_issueType = type;
+    v15 = [dCopy copy];
     articleID = v14->_articleID;
     v14->_articleID = v15;
 
@@ -96,11 +96,11 @@ LABEL_8:
   return v14;
 }
 
-+ (id)PDFBookmarkWithPageID:(id)a3
++ (id)PDFBookmarkWithPageID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "pageID != nil"];
     *buf = 136315906;
@@ -114,18 +114,18 @@ LABEL_8:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v4 = [[FCIssueBookmark alloc] initWithIssueType:1 articleID:0 pageID:v3];
+  v4 = [[FCIssueBookmark alloc] initWithIssueType:1 articleID:0 pageID:dCopy];
 
   v5 = *MEMORY[0x1E69E9840];
 
   return v4;
 }
 
-+ (id)ANFBookmarkWithArticleID:(id)a3
++ (id)ANFBookmarkWithArticleID:(id)d
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "articleID != nil"];
     *buf = 136315906;
@@ -139,7 +139,7 @@ LABEL_8:
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v4 = [[FCIssueBookmark alloc] initWithIssueType:0 articleID:v3 pageID:0];
+  v4 = [[FCIssueBookmark alloc] initWithIssueType:0 articleID:dCopy pageID:0];
 
   v5 = *MEMORY[0x1E69E9840];
 

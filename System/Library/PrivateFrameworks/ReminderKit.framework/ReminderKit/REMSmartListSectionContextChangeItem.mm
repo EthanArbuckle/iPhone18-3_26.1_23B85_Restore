@@ -2,18 +2,18 @@
 - (BOOL)shouldUpdateSectionsOrdering;
 - (NSArray)unsavedSectionIDsOrdering;
 - (REMMemberships)unsavedMembershipsOfRemindersInSections;
-- (REMSmartListSectionContextChangeItem)initWithSmartListChangeItem:(id)a3;
-- (void)setUnsavedMembershipsOfRemindersInSections:(id)a3;
-- (void)setUnsavedSectionIDsOrdering:(id)a3;
-- (void)undeleteSectionWithID:(id)a3;
+- (REMSmartListSectionContextChangeItem)initWithSmartListChangeItem:(id)item;
+- (void)setUnsavedMembershipsOfRemindersInSections:(id)sections;
+- (void)setUnsavedSectionIDsOrdering:(id)ordering;
+- (void)undeleteSectionWithID:(id)d;
 @end
 
 @implementation REMSmartListSectionContextChangeItem
 
-- (REMSmartListSectionContextChangeItem)initWithSmartListChangeItem:(id)a3
+- (REMSmartListSectionContextChangeItem)initWithSmartListChangeItem:(id)item
 {
-  v5 = a3;
-  if (!v5)
+  itemCopy = item;
+  if (!itemCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "smartListChangeItem");
   }
@@ -24,7 +24,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_smartListChangeItem, a3);
+    objc_storeStrong(&v6->_smartListChangeItem, item);
   }
 
   return v7;
@@ -32,55 +32,55 @@
 
 - (BOOL)shouldUpdateSectionsOrdering
 {
-  v2 = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
-  v3 = [v2 shouldUpdateSectionsOrdering];
+  smartListChangeItem = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
+  shouldUpdateSectionsOrdering = [smartListChangeItem shouldUpdateSectionsOrdering];
 
-  return v3;
+  return shouldUpdateSectionsOrdering;
 }
 
 - (NSArray)unsavedSectionIDsOrdering
 {
-  v2 = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
-  v3 = [v2 unsavedSectionIDsOrdering];
+  smartListChangeItem = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
+  unsavedSectionIDsOrdering = [smartListChangeItem unsavedSectionIDsOrdering];
 
-  return v3;
+  return unsavedSectionIDsOrdering;
 }
 
-- (void)setUnsavedSectionIDsOrdering:(id)a3
+- (void)setUnsavedSectionIDsOrdering:(id)ordering
 {
-  v4 = a3;
-  v5 = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
-  [v5 setUnsavedSectionIDsOrdering:v4];
+  orderingCopy = ordering;
+  smartListChangeItem = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
+  [smartListChangeItem setUnsavedSectionIDsOrdering:orderingCopy];
 }
 
 - (REMMemberships)unsavedMembershipsOfRemindersInSections
 {
-  v2 = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
-  v3 = [v2 unsavedMembershipsOfRemindersInSections];
+  smartListChangeItem = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
+  unsavedMembershipsOfRemindersInSections = [smartListChangeItem unsavedMembershipsOfRemindersInSections];
 
-  return v3;
+  return unsavedMembershipsOfRemindersInSections;
 }
 
-- (void)setUnsavedMembershipsOfRemindersInSections:(id)a3
+- (void)setUnsavedMembershipsOfRemindersInSections:(id)sections
 {
-  v4 = a3;
-  v5 = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
-  [v5 setUnsavedMembershipsOfRemindersInSections:v4];
+  sectionsCopy = sections;
+  smartListChangeItem = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
+  [smartListChangeItem setUnsavedMembershipsOfRemindersInSections:sectionsCopy];
 }
 
-- (void)undeleteSectionWithID:(id)a3
+- (void)undeleteSectionWithID:(id)d
 {
-  v8 = a3;
-  if (!v8)
+  dCopy = d;
+  if (!dCopy)
   {
     NSLog(&cfstr_SIsUnexpectedl.isa, "sectionID");
   }
 
-  v4 = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
-  v5 = [v4 sectionIDsToUndelete];
-  v6 = [v5 setByAddingObject:v8];
-  v7 = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
-  [v7 setSectionIDsToUndelete:v6];
+  smartListChangeItem = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
+  sectionIDsToUndelete = [smartListChangeItem sectionIDsToUndelete];
+  v6 = [sectionIDsToUndelete setByAddingObject:dCopy];
+  smartListChangeItem2 = [(REMSmartListSectionContextChangeItem *)self smartListChangeItem];
+  [smartListChangeItem2 setSectionIDsToUndelete:v6];
 }
 
 @end

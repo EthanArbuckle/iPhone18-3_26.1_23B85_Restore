@@ -1,15 +1,15 @@
 @interface THWGutterRep
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)canHandleGesture:(id)a3 forChildRep:(id)a4;
-- (BOOL)handleGesture:(id)a3;
-- (BOOL)shouldRecognizePressOnRep:(id)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)canHandleGesture:(id)gesture forChildRep:(id)rep;
+- (BOOL)handleGesture:(id)gesture;
+- (BOOL)shouldRecognizePressOnRep:(id)rep;
 - (BOOL)wantsPressAction;
 - (BOOL)wantsPressAnimation;
 - (CALayer)pressableAnimationLayer;
 - (CGAffineTransform)freeTransform;
 - (CGRect)frameForPopupInUnscaledCanvas;
 - (THAnimationController)animationController;
-- (THWGutterRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (THWGutterRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (id)expandedContentDrawableToPresent;
 - (id)infoForPressable;
 - (int)pressableAction;
@@ -18,11 +18,11 @@
 
 @implementation THWGutterRep
 
-- (THWGutterRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THWGutterRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v6.receiver = self;
   v6.super_class = THWGutterRep;
-  v4 = [(THWGutterRep *)&v6 initWithLayout:a3 canvas:a4];
+  v4 = [(THWGutterRep *)&v6 initWithLayout:layout canvas:canvas];
   if (v4)
   {
     objc_opt_class();
@@ -42,26 +42,26 @@
   [(THWGutterRep *)&v3 dealloc];
 }
 
-- (BOOL)canHandleGesture:(id)a3 forChildRep:(id)a4
+- (BOOL)canHandleGesture:(id)gesture forChildRep:(id)rep
 {
-  v6 = [(THWGutterRep *)self pressableHandler];
+  pressableHandler = [(THWGutterRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v6 canHandleGesture:a3 forChildRep:a4];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler canHandleGesture:gesture forChildRep:rep];
 }
 
 - (CALayer)pressableAnimationLayer
 {
-  v3 = [(THWGutterRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(THWGutterRep *)self interactiveCanvasController];
   v4 = [-[THWGutterRep interactiveCanvasController](self "interactiveCanvasController")];
 
-  return [v3 layerForRep:v4];
+  return [interactiveCanvasController layerForRep:v4];
 }
 
 - (id)infoForPressable
 {
-  v2 = [(THWGutterRep *)self info];
+  info = [(THWGutterRep *)self info];
 
-  return [v2 associatedInfo];
+  return [info associatedInfo];
 }
 
 - (int)pressableAction
@@ -103,16 +103,16 @@
   return [TSUProtocolCast() popUpInfo] != 0;
 }
 
-- (BOOL)shouldRecognizePressOnRep:(id)a3
+- (BOOL)shouldRecognizePressOnRep:(id)rep
 {
-  v5 = [a3 info];
-  if (v5 == [-[THWGutterRep info](self "info")])
+  info = [rep info];
+  if (info == [-[THWGutterRep info](self "info")])
   {
     return 1;
   }
 
-  v6 = [a3 info];
-  return v6 == [-[THWGutterRep info](self "info")];
+  info2 = [rep info];
+  return info2 == [-[THWGutterRep info](self "info")];
 }
 
 - (CGRect)frameForPopupInUnscaledCanvas
@@ -170,16 +170,16 @@ LABEL_5:
 
   if ([v4 expandedStageDrawable])
   {
-    v8 = [v4 expandedStageDrawable];
+    expandedStageDrawable = [v4 expandedStageDrawable];
   }
 
   else
   {
-    v8 = [v4 stageDrawable];
+    expandedStageDrawable = [v4 stageDrawable];
   }
 
-  v9 = [v8 repClass];
-  if (![v9 conformsToProtocol:&OBJC_PROTOCOL___THWExpandedRep] || (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(v9, "expandedAllowsPresentationInExpandedForInfo:isReflowablePresentation:", objc_msgSend(v4, "expandedStageDrawable"), 0))
+  repClass = [expandedStageDrawable repClass];
+  if (![repClass conformsToProtocol:&OBJC_PROTOCOL___THWExpandedRep] || (objc_opt_respondsToSelector() & 1) != 0 && !objc_msgSend(repClass, "expandedAllowsPresentationInExpandedForInfo:isReflowablePresentation:", objc_msgSend(v4, "expandedStageDrawable"), 0))
   {
     return v4;
   }
@@ -197,18 +197,18 @@ LABEL_5:
   }
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  v4 = [(THWGutterRep *)self pressableHandler];
+  pressableHandler = [(THWGutterRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v4 canHandleGesture:a3];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler canHandleGesture:gesture];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  v4 = [(THWGutterRep *)self pressableHandler];
+  pressableHandler = [(THWGutterRep *)self pressableHandler];
 
-  return [(THWPressableRepGestureTargetHandler *)v4 handleGesture:a3];
+  return [(THWPressableRepGestureTargetHandler *)pressableHandler handleGesture:gesture];
 }
 
 - (THAnimationController)animationController

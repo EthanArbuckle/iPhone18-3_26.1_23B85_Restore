@@ -1,28 +1,28 @@
 @interface DAEASOAuthJWTValidator
-+ (id)base64URLDecode:(id)a3;
-+ (id)base64URLEncode:(id)a3;
-- (BOOL)_signatureValid:(id)a3;
-- (BOOL)idTokenValidWithJWKS:(id)a3 withAudience:(id)a4 withIssuer:(id)a5;
++ (id)base64URLDecode:(id)decode;
++ (id)base64URLEncode:(id)encode;
+- (BOOL)_signatureValid:(id)valid;
+- (BOOL)idTokenValidWithJWKS:(id)s withAudience:(id)audience withIssuer:(id)issuer;
 - (BOOL)personalAccount;
 - (DAEASOAuthJWTValidator)init;
-- (DAEASOAuthJWTValidator)initWithIdToken:(id)a3;
+- (DAEASOAuthJWTValidator)initWithIdToken:(id)token;
 @end
 
 @implementation DAEASOAuthJWTValidator
 
 - (DAEASOAuthJWTValidator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"DAEASOAuthJWTValidator.m" lineNumber:41 description:@"DAEASOAuthJWTValidator cannot be initialized with this method."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"DAEASOAuthJWTValidator.m" lineNumber:41 description:@"DAEASOAuthJWTValidator cannot be initialized with this method."];
 
   return 0;
 }
 
-- (DAEASOAuthJWTValidator)initWithIdToken:(id)a3
+- (DAEASOAuthJWTValidator)initWithIdToken:(id)token
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  tokenCopy = token;
+  if (!tokenCopy)
   {
     [(DAEASOAuthJWTValidator *)a2 initWithIdToken:?];
   }
@@ -35,7 +35,7 @@
     goto LABEL_19;
   }
 
-  v7 = [v5 componentsSeparatedByString:@"."];
+  v7 = [tokenCopy componentsSeparatedByString:@"."];
   if ([v7 count] <= 2)
   {
     v8 = DALoggingwithCategory();
@@ -144,14 +144,14 @@ LABEL_20:
 
 - (BOOL)personalAccount
 {
-  v3 = [(DAEASOAuthJWTValidator *)self payloadJSONObject];
-  v4 = [v3 objectForKeyedSubscript:@"tid"];
+  payloadJSONObject = [(DAEASOAuthJWTValidator *)self payloadJSONObject];
+  v4 = [payloadJSONObject objectForKeyedSubscript:@"tid"];
 
   result = 0;
   if (v4)
   {
-    v5 = [(DAEASOAuthJWTValidator *)self payloadJSONObject];
-    v6 = [v5 objectForKeyedSubscript:@"tid"];
+    payloadJSONObject2 = [(DAEASOAuthJWTValidator *)self payloadJSONObject];
+    v6 = [payloadJSONObject2 objectForKeyedSubscript:@"tid"];
     v7 = [v6 isEqualToString:@"9188040d-6c67-4c5b-b112-36a304b66dad"];
 
     if (v7)
@@ -163,14 +163,14 @@ LABEL_20:
   return result;
 }
 
-- (BOOL)idTokenValidWithJWKS:(id)a3 withAudience:(id)a4 withIssuer:(id)a5
+- (BOOL)idTokenValidWithJWKS:(id)s withAudience:(id)audience withIssuer:(id)issuer
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8 || !v9 || !v10)
+  sCopy = s;
+  audienceCopy = audience;
+  issuerCopy = issuer;
+  v11 = issuerCopy;
+  if (!sCopy || !audienceCopy || !issuerCopy)
   {
     v14 = DALoggingwithCategory();
     v21 = *(MEMORY[0x277D03988] + 3);
@@ -180,9 +180,9 @@ LABEL_20:
     }
 
     v46 = 138412802;
-    v47 = v8;
+    v47 = sCopy;
     v48 = 2112;
-    v49 = v9;
+    v49 = audienceCopy;
     v50 = 2112;
     v51 = v11;
     v22 = "DAEASOAuthJWTValidator idToken could not be validated, nil params %@ %@ %@";
@@ -194,7 +194,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (![(DAEASOAuthJWTValidator *)self _signatureValid:v8])
+  if (![(DAEASOAuthJWTValidator *)self _signatureValid:sCopy])
   {
     v14 = DALoggingwithCategory();
     v26 = *(MEMORY[0x277D03988] + 7);
@@ -241,23 +241,23 @@ LABEL_24:
     else
     {
       v32 = [self->_payloadJSONObject objectForKeyedSubscript:@"aud"];
-      v33 = [v32 isEqualToString:v9];
+      v33 = [v32 isEqualToString:audienceCopy];
 
       if (v33)
       {
         v34 = [self->_payloadJSONObject objectForKeyedSubscript:@"nbf"];
-        v35 = [v34 integerValue];
+        integerValue = [v34 integerValue];
 
         v36 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:300.0];
         [v36 timeIntervalSince1970];
-        if (v37 >= v35)
+        if (v37 >= integerValue)
         {
           v41 = [self->_payloadJSONObject objectForKeyedSubscript:@"exp"];
-          v42 = [v41 integerValue];
+          integerValue2 = [v41 integerValue];
 
           v17 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-300.0];
           [v17 timeIntervalSince1970];
-          if (v43 <= v42)
+          if (v43 <= integerValue2)
           {
             v29 = 1;
             goto LABEL_26;
@@ -269,7 +269,7 @@ LABEL_24:
           {
             [v17 timeIntervalSince1970];
             v46 = 134218240;
-            v47 = *&v42;
+            v47 = *&integerValue2;
             v48 = 2048;
             v49 = v45;
             _os_log_impl(&dword_247E05000, v38, v44, "DAEASOAuthJWTValidator idToken could not be validated, exp validation failed: %f %f", &v46, 0x16u);
@@ -286,7 +286,7 @@ LABEL_24:
           {
             [v36 timeIntervalSince1970];
             v46 = 134218240;
-            v47 = *&v35;
+            v47 = *&integerValue;
             v48 = 2048;
             v49 = v40;
             _os_log_impl(&dword_247E05000, v38, v39, "DAEASOAuthJWTValidator idToken could not be validated, nbf validation failed: %f %f", &v46, 0x16u);
@@ -304,7 +304,7 @@ LABEL_24:
       {
         v19 = [self->_payloadJSONObject objectForKeyedSubscript:@"aud"];
         v46 = 138412546;
-        v47 = v9;
+        v47 = audienceCopy;
         v48 = 2112;
         v49 = v19;
         v20 = "DAEASOAuthJWTValidator idToken could not be validated, audience mismatch: %@ %@";
@@ -342,15 +342,15 @@ LABEL_17:
   return v29;
 }
 
-- (BOOL)_signatureValid:(id)a3
+- (BOOL)_signatureValid:(id)valid
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  validCopy = valid;
   v5 = [self->_headerJSONObject objectForKeyedSubscript:@"kid"];
   if (v5 && (v6 = v5, [self->_payloadJSONObject objectForKeyedSubscript:@"iss"], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
     v59 = 0;
-    v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v59];
+    v8 = [MEMORY[0x277CCAAA0] JSONObjectWithData:validCopy options:0 error:&v59];
     v9 = v59;
     v10 = MEMORY[0x277D03988];
     if (v9 || !v8)
@@ -362,7 +362,7 @@ LABEL_17:
         *buf = 138412546;
         v62 = v9;
         v63 = 2112;
-        v64 = v4;
+        v64 = validCopy;
         _os_log_impl(&dword_247E05000, v11, v24, "DAEASOAuthJWTValidator signature could not be validated: %@ %@", buf, 0x16u);
       }
 
@@ -371,7 +371,7 @@ LABEL_17:
 
     else
     {
-      v53 = v4;
+      v53 = validCopy;
       v57 = 0u;
       v58 = 0u;
       v55 = 0u;
@@ -415,15 +415,15 @@ LABEL_7:
         }
 
         v25 = MEMORY[0x277CCACA8];
-        v26 = [(DAEASOAuthJWTValidator *)self rawHeader];
-        v27 = [(DAEASOAuthJWTValidator *)self rawPayload];
-        v28 = [v25 stringWithFormat:@"%@.%@", v26, v27];
+        rawHeader = [(DAEASOAuthJWTValidator *)self rawHeader];
+        rawPayload = [(DAEASOAuthJWTValidator *)self rawPayload];
+        v28 = [v25 stringWithFormat:@"%@.%@", rawHeader, rawPayload];
 
         v29 = [v28 dataUsingEncoding:1];
         v30 = [v16 objectForKeyedSubscript:@"x5c"];
-        v31 = [v30 firstObject];
+        firstObject = [v30 firstObject];
 
-        v32 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v31 options:0];
+        v32 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:firstObject options:0];
         if (v32)
         {
           v51 = v28;
@@ -539,7 +539,7 @@ LABEL_45:
         _os_log_impl(&dword_247E05000, v11, v47, "DAEASOAuthJWTValidator signature could not be validated: %@ %@", buf, 0x16u);
         v23 = 0;
         v9 = 0;
-        v4 = v53;
+        validCopy = v53;
       }
 
       else
@@ -547,7 +547,7 @@ LABEL_45:
         v23 = 0;
 LABEL_48:
         v9 = 0;
-        v4 = v53;
+        validCopy = v53;
         v8 = v52;
       }
     }
@@ -579,19 +579,19 @@ LABEL_48:
   return v23;
 }
 
-+ (id)base64URLDecode:(id)a3
++ (id)base64URLDecode:(id)decode
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  decodeCopy = decode;
+  if (decodeCopy)
   {
-    v4 = v3;
-    v5 = [v3 length] & 3;
+    v4 = decodeCopy;
+    v5 = [decodeCopy length] & 3;
     if (v5)
     {
       v6 = (4 - v5);
-      v7 = [MEMORY[0x277CCACA8] string];
-      v8 = [v7 stringByPaddingToLength:v6 withString:@"=" startingAtIndex:0];
+      string = [MEMORY[0x277CCACA8] string];
+      v8 = [string stringByPaddingToLength:v6 withString:@"=" startingAtIndex:0];
     }
 
     else
@@ -627,12 +627,12 @@ LABEL_48:
   return v11;
 }
 
-+ (id)base64URLEncode:(id)a3
++ (id)base64URLEncode:(id)encode
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (encode)
   {
-    v3 = [a3 base64EncodedStringWithOptions:0];
+    v3 = [encode base64EncodedStringWithOptions:0];
     v4 = [v3 stringByReplacingOccurrencesOfString:@"+" withString:@"-"];
 
     v5 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];

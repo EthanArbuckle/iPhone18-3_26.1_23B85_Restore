@@ -1,12 +1,12 @@
 @interface _SWCGeneration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_SWCGeneration)init;
-- (_SWCGeneration)initWithCoder:(id)a3;
-- (_SWCGeneration)initWithPID:(int)a3 version:(int)a4 tick:(unint64_t)a5;
+- (_SWCGeneration)initWithCoder:(id)coder;
+- (_SWCGeneration)initWithPID:(int)d version:(int)version tick:(unint64_t)tick;
 - (id)debugDescription;
 - (id)description;
 - (id)generationByIncrementingSelf;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SWCGeneration
@@ -40,25 +40,25 @@
   return v2;
 }
 
-- (_SWCGeneration)initWithPID:(int)a3 version:(int)a4 tick:(unint64_t)a5
+- (_SWCGeneration)initWithPID:(int)d version:(int)version tick:(unint64_t)tick
 {
   v9.receiver = self;
   v9.super_class = _SWCGeneration;
   result = [(_SWCGeneration *)&v9 init];
   if (result)
   {
-    result->_processIdentifier = a3;
-    result->_processIdentifierVersion = a4;
-    result->_tick = a5;
+    result->_processIdentifier = d;
+    result->_processIdentifierVersion = version;
+    result->_tick = tick;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -68,7 +68,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_processIdentifier == v5->_processIdentifier && self->_processIdentifierVersion == v5->_processIdentifierVersion && self->_tick == v5->_tick;
     }
 
@@ -95,18 +95,18 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_processIdentifier forKey:@"processIdentifier"];
-  [v4 encodeInt64:self->_processIdentifierVersion forKey:@"processIdentifierVersion"];
-  [v4 encodeInt64:self->_tick forKey:@"tick"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_processIdentifier forKey:@"processIdentifier"];
+  [coderCopy encodeInt64:self->_processIdentifierVersion forKey:@"processIdentifierVersion"];
+  [coderCopy encodeInt64:self->_tick forKey:@"tick"];
 }
 
-- (_SWCGeneration)initWithCoder:(id)a3
+- (_SWCGeneration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[_SWCGeneration initWithPID:version:tick:](self, "initWithPID:version:tick:", [v4 decodeInt64ForKey:@"processIdentifier"], objc_msgSend(v4, "decodeIntForKey:", @"processIdentifierVersion"), objc_msgSend(v4, "decodeInt64ForKey:", @"tick"));
+  coderCopy = coder;
+  v5 = -[_SWCGeneration initWithPID:version:tick:](self, "initWithPID:version:tick:", [coderCopy decodeInt64ForKey:@"processIdentifier"], objc_msgSend(coderCopy, "decodeIntForKey:", @"processIdentifierVersion"), objc_msgSend(coderCopy, "decodeInt64ForKey:", @"tick"));
 
   return v5;
 }

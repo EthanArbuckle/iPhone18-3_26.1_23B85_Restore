@@ -6,19 +6,19 @@
 
 - (id)vs_url
 {
-  v2 = [a1 url];
-  v3 = [a1 srcset];
+  v2 = [self url];
+  srcset = [self srcset];
 
-  if (v3)
+  if (srcset)
   {
     v4 = objc_alloc_init(VSImageElementHelper);
-    v5 = [a1 srcset];
-    v6 = [(VSImageElementHelper *)v4 bestMatchingKeyForSrcset:v5];
+    srcset2 = [self srcset];
+    v6 = [(VSImageElementHelper *)v4 bestMatchingKeyForSrcset:srcset2];
 
     if (v6)
     {
-      v7 = [a1 srcset];
-      v8 = [v7 objectForKey:v6];
+      srcset3 = [self srcset];
+      v8 = [srcset3 objectForKey:v6];
 
       v2 = v8;
     }

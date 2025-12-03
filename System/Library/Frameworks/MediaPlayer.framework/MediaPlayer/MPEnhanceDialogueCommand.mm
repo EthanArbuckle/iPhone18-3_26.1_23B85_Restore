@@ -1,6 +1,6 @@
 @interface MPEnhanceDialogueCommand
 - (id)_mediaRemoteCommandInfoOptions;
-- (void)setActive:(BOOL)a3;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation MPEnhanceDialogueCommand
@@ -16,11 +16,11 @@
   return v3;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     [(MPRemoteCommand *)self notifyPropagatablePropertyChanged];
   }
 }

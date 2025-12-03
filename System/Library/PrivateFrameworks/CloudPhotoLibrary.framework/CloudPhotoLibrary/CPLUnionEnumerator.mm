@@ -1,13 +1,13 @@
 @interface CPLUnionEnumerator
-- (CPLUnionEnumerator)initWithEnumeratorGenerators:(id)a3;
-- (CPLUnionEnumerator)initWithEnumerators:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)_prepareNextEnumeratorWithState:(id *)a3;
+- (CPLUnionEnumerator)initWithEnumeratorGenerators:(id)generators;
+- (CPLUnionEnumerator)initWithEnumerators:(id)enumerators;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)_prepareNextEnumeratorWithState:(id *)state;
 @end
 
 @implementation CPLUnionEnumerator
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   if (self->_currentEnumerator)
   {
@@ -16,20 +16,20 @@
 
   do
   {
-    [(CPLUnionEnumerator *)self _prepareNextEnumeratorWithState:a3];
+    [(CPLUnionEnumerator *)self _prepareNextEnumeratorWithState:state];
     if (!self->_currentEnumerator)
     {
       return 0;
     }
 
 LABEL_3:
-    a3->var2 = self->_currentEnumeratorMutationsPtr;
-    result = [(NSFastEnumeration *)self->_currentEnumerator countByEnumeratingWithState:a3 objects:a4 count:a5];
+    state->var2 = self->_currentEnumeratorMutationsPtr;
+    result = [(NSFastEnumeration *)self->_currentEnumerator countByEnumeratingWithState:state objects:objects count:count];
   }
 
   while (!result);
   currentEnumeratorMutationsPtr = self->_currentEnumeratorMutationsPtr;
-  var2 = a3->var2;
+  var2 = state->var2;
   if (currentEnumeratorMutationsPtr)
   {
     v12 = var2 == currentEnumeratorMutationsPtr;
@@ -51,11 +51,11 @@ LABEL_3:
     v13 = &countByEnumeratingWithState_objects_count__const_mu2;
   }
 
-  a3->var2 = v13;
+  state->var2 = v13;
   return result;
 }
 
-- (void)_prepareNextEnumeratorWithState:(id *)a3
+- (void)_prepareNextEnumeratorWithState:(id *)state
 {
   remainingGenerators = self->_remainingGenerators;
   currentGeneratorIndex = self->_currentGeneratorIndex;
@@ -94,24 +94,24 @@ LABEL_6:
 LABEL_8:
   if (self->_currentEnumerator)
   {
-    a3->var0 = 0;
-    *a3->var3 = 0u;
-    *&a3->var3[2] = 0u;
-    a3->var3[4] = 0;
+    state->var0 = 0;
+    *state->var3 = 0u;
+    *&state->var3[2] = 0u;
+    state->var3[4] = 0;
     self->_currentEnumeratorMutationsPtr = 0;
   }
 }
 
-- (CPLUnionEnumerator)initWithEnumerators:(id)a3
+- (CPLUnionEnumerator)initWithEnumerators:(id)enumerators
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  enumeratorsCopy = enumerators;
+  v5 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(enumeratorsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = enumeratorsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -151,24 +151,24 @@ LABEL_8:
   return v13;
 }
 
-- (CPLUnionEnumerator)initWithEnumeratorGenerators:(id)a3
+- (CPLUnionEnumerator)initWithEnumeratorGenerators:(id)generators
 {
-  v4 = a3;
+  generatorsCopy = generators;
   v20.receiver = self;
   v20.super_class = CPLUnionEnumerator;
   v5 = [(CPLUnionEnumerator *)&v20 init];
   if (v5)
   {
-    v6 = [v4 count];
+    v6 = [generatorsCopy count];
     if (v6 == 2)
     {
-      v13 = [v4 firstObject];
+      firstObject = [generatorsCopy firstObject];
       v14 = v5->_generatorArray[0];
-      v5->_generatorArray[0] = v13;
+      v5->_generatorArray[0] = firstObject;
 
-      v15 = [v4 lastObject];
+      lastObject = [generatorsCopy lastObject];
       v16 = v5->_generatorArray[1];
-      v5->_generatorArray[1] = v15;
+      v5->_generatorArray[1] = lastObject;
 
       v5->_currentGeneratorIndex = 0;
     }
@@ -180,9 +180,9 @@ LABEL_8:
         v10 = v5->_generatorArray[0];
         v5->_generatorArray[0] = 0;
 
-        v11 = [v4 firstObject];
+        firstObject2 = [generatorsCopy firstObject];
         v12 = v5->_generatorArray[1];
-        v5->_generatorArray[1] = v11;
+        v5->_generatorArray[1] = firstObject2;
 
         v9 = 1;
       }
@@ -191,7 +191,7 @@ LABEL_8:
       {
         if (v6)
         {
-          v17 = [v4 mutableCopy];
+          v17 = [generatorsCopy mutableCopy];
           remainingGenerators = v5->_remainingGenerators;
           v5->_remainingGenerators = v17;
 

@@ -1,14 +1,14 @@
 @interface TSCHPresetImagerBar
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImagerBar
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  width = a4.width;
+  width = size.width;
   v121[16] = *MEMORY[0x277D85DE8];
-  v11 = a6;
+  presetCopy = preset;
   objc_msgSend_p_nativeSize(self, v12, v13, v14, v15);
   v17 = width / v16;
   v112 = sub_27628CE94(8.0, 11.0, 127.0, 17.0, width / v16);
@@ -28,8 +28,8 @@
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  v109 = v11;
-  v40 = objc_msgSend_seriesStyles(v11, v39, v32, v33, v35);
+  v109 = presetCopy;
+  v40 = objc_msgSend_seriesStyles(presetCopy, v39, v32, v33, v35);
   v45 = objc_msgSend_objectAtIndexedSubscript_(v40, v41, v42, v43, v44, 0);
   if (objc_msgSend_count(v40, v46, v47, v48, v49) <= 1)
   {
@@ -115,18 +115,18 @@
     v114[4] = self;
     v115 = v83;
     v116 = v89;
-    v117 = a3;
+    contextCopy = context;
     v93 = v89;
     v94 = v83;
-    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v95, *&v111, *(&v111 + 1), *&v113, a3, v109, v94, 0, v114, *(&v113 + 1), v111, v113);
+    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v95, *&v111, *(&v111 + 1), *&v113, context, v109, v94, 0, v114, *(&v113 + 1), v111, v113);
 
     ++v76;
   }
 
   while (v76 != 4);
-  if (a8)
+  if (cache)
   {
-    *a8 = hasAllResourcesForFill;
+    *cache = hasAllResourcesForFill;
   }
 
   for (i = 3; i != -1; --i)

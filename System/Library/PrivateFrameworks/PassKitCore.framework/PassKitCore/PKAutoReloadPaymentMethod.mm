@@ -1,45 +1,45 @@
 @interface PKAutoReloadPaymentMethod
-- (PKAutoReloadPaymentMethod)initWithCoder:(id)a3;
-- (PKAutoReloadPaymentMethod)initWithDictionary:(id)a3;
+- (PKAutoReloadPaymentMethod)initWithCoder:(id)coder;
+- (PKAutoReloadPaymentMethod)initWithDictionary:(id)dictionary;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAutoReloadPaymentMethod
 
-- (PKAutoReloadPaymentMethod)initWithDictionary:(id)a3
+- (PKAutoReloadPaymentMethod)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PKAutoReloadPaymentMethod;
   v5 = [(PKAutoReloadPaymentMethod *)&v20 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"name"];
+    v6 = [dictionaryCopy PKStringForKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 PKStringForKey:@"suffix"];
+    v8 = [dictionaryCopy PKStringForKey:@"suffix"];
     suffix = v5->_suffix;
     v5->_suffix = v8;
 
-    v10 = [v4 PKStringForKey:@"fpanIdentifier"];
+    v10 = [dictionaryCopy PKStringForKey:@"fpanIdentifier"];
     fpanIdentifier = v5->_fpanIdentifier;
     v5->_fpanIdentifier = v10;
 
-    v12 = [v4 PKStringForKey:@"merchantTokenIdentifier"];
+    v12 = [dictionaryCopy PKStringForKey:@"merchantTokenIdentifier"];
     merchantTokenIdentifier = v5->_merchantTokenIdentifier;
     v5->_merchantTokenIdentifier = v12;
 
-    v14 = [v4 PKStringForKey:@"imageName"];
+    v14 = [dictionaryCopy PKStringForKey:@"imageName"];
     imageName = v5->_imageName;
     v5->_imageName = v14;
 
-    v16 = [v4 PKURLForKey:@"managementURL"];
+    v16 = [dictionaryCopy PKURLForKey:@"managementURL"];
     managementURL = v5->_managementURL;
     v5->_managementURL = v16;
 
-    v18 = [v4 PKStringForKey:@"type"];
+    v18 = [dictionaryCopy PKStringForKey:@"type"];
     if ([v18 isEqualToString:@"pre_paid"])
     {
       v5->_type = 0;
@@ -49,57 +49,57 @@
   return v5;
 }
 
-- (PKAutoReloadPaymentMethod)initWithCoder:(id)a3
+- (PKAutoReloadPaymentMethod)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PKAutoReloadPaymentMethod;
   v5 = [(PKAutoReloadPaymentMethod *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suffix"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suffix"];
     suffix = v5->_suffix;
     v5->_suffix = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fpanIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fpanIdentifier"];
     fpanIdentifier = v5->_fpanIdentifier;
     v5->_fpanIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantTokenIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantTokenIdentifier"];
     merchantTokenIdentifier = v5->_merchantTokenIdentifier;
     v5->_merchantTokenIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
     imageName = v5->_imageName;
     v5->_imageName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"managementURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"managementURL"];
     managementURL = v5->_managementURL;
     v5->_managementURL = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
     v5->_type = [v18 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_suffix forKey:@"suffix"];
-  [v5 encodeObject:self->_fpanIdentifier forKey:@"fpanIdentifier"];
-  [v5 encodeObject:self->_merchantTokenIdentifier forKey:@"merchantTokenIdentifier"];
-  [v5 encodeObject:self->_imageName forKey:@"imageName"];
-  [v5 encodeObject:self->_managementURL forKey:@"managementURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_suffix forKey:@"suffix"];
+  [coderCopy encodeObject:self->_fpanIdentifier forKey:@"fpanIdentifier"];
+  [coderCopy encodeObject:self->_merchantTokenIdentifier forKey:@"merchantTokenIdentifier"];
+  [coderCopy encodeObject:self->_imageName forKey:@"imageName"];
+  [coderCopy encodeObject:self->_managementURL forKey:@"managementURL"];
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_type];
-  [v5 encodeObject:v6 forKey:@"type"];
+  [coderCopy encodeObject:v6 forKey:@"type"];
 }
 
 - (id)description

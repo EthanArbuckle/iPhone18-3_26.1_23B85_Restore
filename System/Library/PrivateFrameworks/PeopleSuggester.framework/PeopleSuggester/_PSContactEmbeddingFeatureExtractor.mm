@@ -1,24 +1,24 @@
 @interface _PSContactEmbeddingFeatureExtractor
-- (id)featureInputForContact:(id)a3;
-- (id)featureInputsForContacts:(id)a3;
+- (id)featureInputForContact:(id)contact;
+- (id)featureInputsForContacts:(id)contacts;
 @end
 
 @implementation _PSContactEmbeddingFeatureExtractor
 
-- (id)featureInputForContact:(id)a3
+- (id)featureInputForContact:(id)contact
 {
-  v3 = a3;
+  contactCopy = contact;
   v4 = objc_alloc_init(_PSFamilyFeatureExtractor);
-  v5 = [(_PSFamilyFeatureExtractor *)v4 featureInputForContact:v3];
+  v5 = [(_PSFamilyFeatureExtractor *)v4 featureInputForContact:contactCopy];
 
   return v5;
 }
 
-- (id)featureInputsForContacts:(id)a3
+- (id)featureInputsForContacts:(id)contacts
 {
-  v3 = a3;
+  contactsCopy = contacts;
   v4 = objc_alloc_init(_PSFamilyFeatureExtractor);
-  v5 = [(_PSFamilyFeatureExtractor *)v4 featureInputsForContacts:v3];
+  v5 = [(_PSFamilyFeatureExtractor *)v4 featureInputsForContacts:contactsCopy];
 
   return v5;
 }

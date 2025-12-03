@@ -17,8 +17,8 @@
 {
   objc_storeStrong(&__currentLocaleOverride, obj);
   v4 = obj;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:*MEMORY[0x277CBE620] object:__currentLocaleOverride];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x277CBE620] object:__currentLocaleOverride];
 }
 
 @end

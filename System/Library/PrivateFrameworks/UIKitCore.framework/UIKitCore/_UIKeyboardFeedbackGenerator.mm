@@ -1,60 +1,60 @@
 @interface _UIKeyboardFeedbackGenerator
-- (float)scaleVolumeSlow:(float)a3 fast:(float)a4 timeSpan:(double)a5;
-- (id)_feedbackWithUpdatedVolume:(id)a3;
-- (void)_playFeedbackForActionType:(int64_t)a3 withCustomization:(id)a4;
+- (float)scaleVolumeSlow:(float)slow fast:(float)fast timeSpan:(double)span;
+- (id)_feedbackWithUpdatedVolume:(id)volume;
+- (void)_playFeedbackForActionType:(int64_t)type withCustomization:(id)customization;
 @end
 
 @implementation _UIKeyboardFeedbackGenerator
 
-- (float)scaleVolumeSlow:(float)a3 fast:(float)a4 timeSpan:(double)a5
+- (float)scaleVolumeSlow:(float)slow fast:(float)fast timeSpan:(double)span
 {
-  v9 = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
-  [v9 slowTypingTime];
+  _keyboardConfiguration = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
+  [_keyboardConfiguration slowTypingTime];
   v11 = v10;
 
-  v12 = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
-  [v12 fastTypingTime];
+  _keyboardConfiguration2 = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
+  [_keyboardConfiguration2 fastTypingTime];
   v14 = v13;
 
-  result = (a5 - v14) / (v11 - v14) * (a3 - a4) + a4;
-  if (a3 >= a4)
+  result = (span - v14) / (v11 - v14) * (slow - fast) + fast;
+  if (slow >= fast)
   {
-    v16 = a4;
+    slowCopy = fast;
   }
 
   else
   {
-    v16 = a3;
+    slowCopy = slow;
   }
 
-  if (a3 >= a4)
+  if (slow >= fast)
   {
-    v17 = a3;
+    fastCopy2 = slow;
   }
 
   else
   {
-    v17 = a4;
+    fastCopy2 = fast;
   }
 
-  if (v16 >= result)
+  if (slowCopy >= result)
   {
-    result = v16;
+    result = slowCopy;
   }
 
-  if (v17 <= result)
+  if (fastCopy2 <= result)
   {
-    return v17;
+    return fastCopy2;
   }
 
   return result;
 }
 
-- (id)_feedbackWithUpdatedVolume:(id)a3
+- (id)_feedbackWithUpdatedVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
-  [v5 fastTypingVolumeMultiplier];
+  volumeCopy = volume;
+  _keyboardConfiguration = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
+  [_keyboardConfiguration fastTypingVolumeMultiplier];
   v7 = v6;
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
@@ -63,12 +63,12 @@
   if (lastTypedKeyTimestamp > 0.0)
   {
     v11 = v9 - lastTypedKeyTimestamp;
-    v12 = [v4 audioParameters];
-    [v12 volume];
+    audioParameters = [volumeCopy audioParameters];
+    [audioParameters volume];
     v14 = v13;
 
-    v15 = [v4 hapticParameters];
-    [v15 volume];
+    hapticParameters = [volumeCopy hapticParameters];
+    [hapticParameters volume];
     v17 = v16;
 
     v18 = v7 * v14;
@@ -83,40 +83,40 @@
     if (v21 != v14 || v24 != v17)
     {
       v26 = v24;
-      v27 = [v4 copy];
+      v27 = [volumeCopy copy];
 
-      v28 = [v27 audioParameters];
+      audioParameters2 = [v27 audioParameters];
       *&v29 = v21;
-      [v28 setVolume:v29];
+      [audioParameters2 setVolume:v29];
 
-      v30 = [v27 hapticParameters];
+      hapticParameters2 = [v27 hapticParameters];
       *&v31 = v26;
-      [v30 setVolume:v31];
+      [hapticParameters2 setVolume:v31];
 
-      v4 = v27;
+      volumeCopy = v27;
     }
   }
 
   self->_lastTypedKeyTimestamp = v9;
 
-  return v4;
+  return volumeCopy;
 }
 
-- (void)_playFeedbackForActionType:(int64_t)a3 withCustomization:(id)a4
+- (void)_playFeedbackForActionType:(int64_t)type withCustomization:(id)customization
 {
   v31 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  customizationCopy = customization;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   [(UIFeedbackGenerator *)self _clientDidUpdateGeneratorWithSelector:a2];
-  v8 = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
-  v9 = [v8 feedbacks];
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v11 = [v9 objectForKeyedSubscript:v10];
+  _keyboardConfiguration = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
+  feedbacks = [_keyboardConfiguration feedbacks];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v11 = [feedbacks objectForKeyedSubscript:v10];
 
   if (v11)
   {
-    v12 = [v11 _individualFeedbacks];
-    v13 = [v12 count];
+    _individualFeedbacks = [v11 _individualFeedbacks];
+    v13 = [_individualFeedbacks count];
 
     if (v13 >= 2)
     {
@@ -129,8 +129,8 @@
         v29 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v16 = [v11 _individualFeedbacks];
-        v17 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        _individualFeedbacks2 = [v11 _individualFeedbacks];
+        v17 = [_individualFeedbacks2 countByEnumeratingWithState:&v26 objects:v30 count:16];
         if (v17)
         {
           v18 = v17;
@@ -141,7 +141,7 @@
             {
               if (*v27 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(_individualFeedbacks2);
               }
 
               v21 = *(*(&v26 + 1) + 8 * i);
@@ -154,7 +154,7 @@
               }
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v26 objects:v30 count:16];
+            v18 = [_individualFeedbacks2 countByEnumeratingWithState:&v26 objects:v30 count:16];
             if (v18)
             {
               continue;
@@ -168,19 +168,19 @@ LABEL_14:
       }
     }
 
-    if (v7)
+    if (customizationCopy)
     {
       v23 = [v11 copy];
 
-      v7[2](v7, v23);
+      customizationCopy[2](customizationCopy, v23);
     }
 
     else
     {
-      v24 = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
-      v25 = [v24 scalingForSpeedEnabled];
+      _keyboardConfiguration2 = [(_UIKeyboardFeedbackGenerator *)self _keyboardConfiguration];
+      scalingForSpeedEnabled = [_keyboardConfiguration2 scalingForSpeedEnabled];
 
-      if (!v25)
+      if (!scalingForSpeedEnabled)
       {
 LABEL_20:
         [(UIFeedbackGenerator *)self _playFeedback:v11 atLocation:1.79769313e308, 1.79769313e308];

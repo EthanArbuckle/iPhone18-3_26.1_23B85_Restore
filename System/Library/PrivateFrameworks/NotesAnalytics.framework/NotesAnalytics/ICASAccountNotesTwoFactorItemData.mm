@@ -1,105 +1,105 @@
 @interface ICASAccountNotesTwoFactorItemData
-- (ICASAccountNotesTwoFactorItemData)initWithTotalCountOfNotesWithCollabAndDocScan:(id)a3 totalCountOfNotesWithCollabAndInlineDrawingV1:(id)a4 totalCountOfNotesWithCollabAndInlineDrawingV2:(id)a5 totalCountOfNotesWithCollabAndFullscreenDrawing:(id)a6 totalCountOfNotesWithCollabAndTables:(id)a7 totalCountOfNotesWithCollabAndOtherAttachments:(id)a8 totalCountOfNotesWithCollabAndChecklist:(id)a9 totalCountOfNotesWithCollabAndIsPinned:(id)a10 totalCountOfNotesWithDocScanAndInlineDrawingV1:(id)a11 totalCountOfNotesWithDocScanAndInlineDrawingV2:(id)a12 totalCountOfNotesWithDocScanAndFullscreenDrawing:(id)a13 totalCountOfNotesWithDocScanAndTables:(id)a14 totalCountOfNotesWithDocScanAndOtherAttachments:(id)a15 totalCountOfNotesWithDocScanAndChecklist:(id)a16 totalCountOfNotesWithDocScanAndIsPinned:(id)a17 totalCountOfNotesWithDocScanAndIsLocked:(id)a18 totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2:(id)a19 totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing:(id)a20 totalCountOfNotesWithInlineDrawingV1AndTables:(id)a21 totalCountOfNotesWithInlineDrawingV1AndOtherAttachments:(id)a22 totalCountOfNotesWithInlineDrawingV1AndChecklist:(id)a23 totalCountOfNotesWithInlineDrawingV1AndIsPinned:(id)a24 totalCountOfNotesWithInlineDrawingV1AndIsLocked:(id)a25 totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing:(id)a26 totalCountOfNotesWithInlineDrawingV2AndTables:(id)a27 totalCountOfNotesWithInlineDrawingV2AndOtherAttachments:(id)a28 totalCountOfNotesWithInlineDrawingV2AndChecklist:(id)a29 totalCountOfNotesWithInlineDrawingV2AndIsPinned:(id)a30 totalCountOfNotesWithInlineDrawingV2AndIsLocked:(id)a31 totalCountOfNotesWithFullscreenDrawingAndTables:(id)a32 totalCountOfNotesWithFullscreenDrawingAndOtherAttachments:(id)a33 totalCountOfNotesWithFullscreenDrawingAndChecklist:(id)a34 totalCountOfNotesWithFullscreenDrawingAndIsPinned:(id)a35 totalCountOfNotesWithFullscreenDrawingAndIsLocked:(id)a36 totalCountOfNotesWithTablesAndOtherAttachments:(id)a37 totalCountOfNotesWithTablesAndChecklist:(id)a38 totalCountOfNotesWithTablesAndIsPinned:(id)a39 totalCountOfNotesWithTablesAndIsLocked:(id)a40 totalCountOfNotesWithOtherAttachmentsAndChecklist:(id)a41 totalCountOfNotesWithOtherAttachmentsAndIsPinned:(id)a42 totalCountOfNotesWithOtherAttachmentsAndIsLocked:(id)a43 totalCountOfNotesWithChecklistAndIsPinned:(id)a44 totalCountOfNotesIsPinnedAndIsLocked:(id)a45;
+- (ICASAccountNotesTwoFactorItemData)initWithTotalCountOfNotesWithCollabAndDocScan:(id)scan totalCountOfNotesWithCollabAndInlineDrawingV1:(id)v1 totalCountOfNotesWithCollabAndInlineDrawingV2:(id)v2 totalCountOfNotesWithCollabAndFullscreenDrawing:(id)drawing totalCountOfNotesWithCollabAndTables:(id)tables totalCountOfNotesWithCollabAndOtherAttachments:(id)attachments totalCountOfNotesWithCollabAndChecklist:(id)checklist totalCountOfNotesWithCollabAndIsPinned:(id)self0 totalCountOfNotesWithDocScanAndInlineDrawingV1:(id)self1 totalCountOfNotesWithDocScanAndInlineDrawingV2:(id)self2 totalCountOfNotesWithDocScanAndFullscreenDrawing:(id)self3 totalCountOfNotesWithDocScanAndTables:(id)self4 totalCountOfNotesWithDocScanAndOtherAttachments:(id)self5 totalCountOfNotesWithDocScanAndChecklist:(id)self6 totalCountOfNotesWithDocScanAndIsPinned:(id)self7 totalCountOfNotesWithDocScanAndIsLocked:(id)self8 totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2:(id)self9 totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing:(id)andFullscreenDrawing totalCountOfNotesWithInlineDrawingV1AndTables:(id)v1AndTables totalCountOfNotesWithInlineDrawingV1AndOtherAttachments:(id)andOtherAttachments totalCountOfNotesWithInlineDrawingV1AndChecklist:(id)v1AndChecklist totalCountOfNotesWithInlineDrawingV1AndIsPinned:(id)andIsPinned totalCountOfNotesWithInlineDrawingV1AndIsLocked:(id)isLocked totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing:(id)v2AndFullscreenDrawing totalCountOfNotesWithInlineDrawingV2AndTables:(id)v2AndTables totalCountOfNotesWithInlineDrawingV2AndOtherAttachments:(id)v2AndOtherAttachments totalCountOfNotesWithInlineDrawingV2AndChecklist:(id)v2AndChecklist totalCountOfNotesWithInlineDrawingV2AndIsPinned:(id)scan0 totalCountOfNotesWithInlineDrawingV2AndIsLocked:(id)scan1 totalCountOfNotesWithFullscreenDrawingAndTables:(id)scan2 totalCountOfNotesWithFullscreenDrawingAndOtherAttachments:(id)scan3 totalCountOfNotesWithFullscreenDrawingAndChecklist:(id)scan4 totalCountOfNotesWithFullscreenDrawingAndIsPinned:(id)scan5 totalCountOfNotesWithFullscreenDrawingAndIsLocked:(id)scan6 totalCountOfNotesWithTablesAndOtherAttachments:(id)scan7 totalCountOfNotesWithTablesAndChecklist:(id)scan8 totalCountOfNotesWithTablesAndIsPinned:(id)scan9 totalCountOfNotesWithTablesAndIsLocked:(id)v10 totalCountOfNotesWithOtherAttachmentsAndChecklist:(id)v11 totalCountOfNotesWithOtherAttachmentsAndIsPinned:(id)v12 totalCountOfNotesWithOtherAttachmentsAndIsLocked:(id)v13 totalCountOfNotesWithChecklistAndIsPinned:(id)v14 totalCountOfNotesIsPinnedAndIsLocked:(id)v15;
 - (id)toDict;
 @end
 
 @implementation ICASAccountNotesTwoFactorItemData
 
-- (ICASAccountNotesTwoFactorItemData)initWithTotalCountOfNotesWithCollabAndDocScan:(id)a3 totalCountOfNotesWithCollabAndInlineDrawingV1:(id)a4 totalCountOfNotesWithCollabAndInlineDrawingV2:(id)a5 totalCountOfNotesWithCollabAndFullscreenDrawing:(id)a6 totalCountOfNotesWithCollabAndTables:(id)a7 totalCountOfNotesWithCollabAndOtherAttachments:(id)a8 totalCountOfNotesWithCollabAndChecklist:(id)a9 totalCountOfNotesWithCollabAndIsPinned:(id)a10 totalCountOfNotesWithDocScanAndInlineDrawingV1:(id)a11 totalCountOfNotesWithDocScanAndInlineDrawingV2:(id)a12 totalCountOfNotesWithDocScanAndFullscreenDrawing:(id)a13 totalCountOfNotesWithDocScanAndTables:(id)a14 totalCountOfNotesWithDocScanAndOtherAttachments:(id)a15 totalCountOfNotesWithDocScanAndChecklist:(id)a16 totalCountOfNotesWithDocScanAndIsPinned:(id)a17 totalCountOfNotesWithDocScanAndIsLocked:(id)a18 totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2:(id)a19 totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing:(id)a20 totalCountOfNotesWithInlineDrawingV1AndTables:(id)a21 totalCountOfNotesWithInlineDrawingV1AndOtherAttachments:(id)a22 totalCountOfNotesWithInlineDrawingV1AndChecklist:(id)a23 totalCountOfNotesWithInlineDrawingV1AndIsPinned:(id)a24 totalCountOfNotesWithInlineDrawingV1AndIsLocked:(id)a25 totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing:(id)a26 totalCountOfNotesWithInlineDrawingV2AndTables:(id)a27 totalCountOfNotesWithInlineDrawingV2AndOtherAttachments:(id)a28 totalCountOfNotesWithInlineDrawingV2AndChecklist:(id)a29 totalCountOfNotesWithInlineDrawingV2AndIsPinned:(id)a30 totalCountOfNotesWithInlineDrawingV2AndIsLocked:(id)a31 totalCountOfNotesWithFullscreenDrawingAndTables:(id)a32 totalCountOfNotesWithFullscreenDrawingAndOtherAttachments:(id)a33 totalCountOfNotesWithFullscreenDrawingAndChecklist:(id)a34 totalCountOfNotesWithFullscreenDrawingAndIsPinned:(id)a35 totalCountOfNotesWithFullscreenDrawingAndIsLocked:(id)a36 totalCountOfNotesWithTablesAndOtherAttachments:(id)a37 totalCountOfNotesWithTablesAndChecklist:(id)a38 totalCountOfNotesWithTablesAndIsPinned:(id)a39 totalCountOfNotesWithTablesAndIsLocked:(id)a40 totalCountOfNotesWithOtherAttachmentsAndChecklist:(id)a41 totalCountOfNotesWithOtherAttachmentsAndIsPinned:(id)a42 totalCountOfNotesWithOtherAttachmentsAndIsLocked:(id)a43 totalCountOfNotesWithChecklistAndIsPinned:(id)a44 totalCountOfNotesIsPinnedAndIsLocked:(id)a45
+- (ICASAccountNotesTwoFactorItemData)initWithTotalCountOfNotesWithCollabAndDocScan:(id)scan totalCountOfNotesWithCollabAndInlineDrawingV1:(id)v1 totalCountOfNotesWithCollabAndInlineDrawingV2:(id)v2 totalCountOfNotesWithCollabAndFullscreenDrawing:(id)drawing totalCountOfNotesWithCollabAndTables:(id)tables totalCountOfNotesWithCollabAndOtherAttachments:(id)attachments totalCountOfNotesWithCollabAndChecklist:(id)checklist totalCountOfNotesWithCollabAndIsPinned:(id)self0 totalCountOfNotesWithDocScanAndInlineDrawingV1:(id)self1 totalCountOfNotesWithDocScanAndInlineDrawingV2:(id)self2 totalCountOfNotesWithDocScanAndFullscreenDrawing:(id)self3 totalCountOfNotesWithDocScanAndTables:(id)self4 totalCountOfNotesWithDocScanAndOtherAttachments:(id)self5 totalCountOfNotesWithDocScanAndChecklist:(id)self6 totalCountOfNotesWithDocScanAndIsPinned:(id)self7 totalCountOfNotesWithDocScanAndIsLocked:(id)self8 totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2:(id)self9 totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing:(id)andFullscreenDrawing totalCountOfNotesWithInlineDrawingV1AndTables:(id)v1AndTables totalCountOfNotesWithInlineDrawingV1AndOtherAttachments:(id)andOtherAttachments totalCountOfNotesWithInlineDrawingV1AndChecklist:(id)v1AndChecklist totalCountOfNotesWithInlineDrawingV1AndIsPinned:(id)andIsPinned totalCountOfNotesWithInlineDrawingV1AndIsLocked:(id)isLocked totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing:(id)v2AndFullscreenDrawing totalCountOfNotesWithInlineDrawingV2AndTables:(id)v2AndTables totalCountOfNotesWithInlineDrawingV2AndOtherAttachments:(id)v2AndOtherAttachments totalCountOfNotesWithInlineDrawingV2AndChecklist:(id)v2AndChecklist totalCountOfNotesWithInlineDrawingV2AndIsPinned:(id)scan0 totalCountOfNotesWithInlineDrawingV2AndIsLocked:(id)scan1 totalCountOfNotesWithFullscreenDrawingAndTables:(id)scan2 totalCountOfNotesWithFullscreenDrawingAndOtherAttachments:(id)scan3 totalCountOfNotesWithFullscreenDrawingAndChecklist:(id)scan4 totalCountOfNotesWithFullscreenDrawingAndIsPinned:(id)scan5 totalCountOfNotesWithFullscreenDrawingAndIsLocked:(id)scan6 totalCountOfNotesWithTablesAndOtherAttachments:(id)scan7 totalCountOfNotesWithTablesAndChecklist:(id)scan8 totalCountOfNotesWithTablesAndIsPinned:(id)scan9 totalCountOfNotesWithTablesAndIsLocked:(id)v10 totalCountOfNotesWithOtherAttachmentsAndChecklist:(id)v11 totalCountOfNotesWithOtherAttachmentsAndIsPinned:(id)v12 totalCountOfNotesWithOtherAttachmentsAndIsLocked:(id)v13 totalCountOfNotesWithChecklistAndIsPinned:(id)v14 totalCountOfNotesIsPinnedAndIsLocked:(id)v15
 {
-  v97 = a3;
-  v96 = a4;
-  v95 = a5;
-  v94 = a6;
-  v58 = a7;
-  v93 = a7;
-  v92 = a8;
-  v91 = a9;
-  v90 = a10;
-  v89 = a11;
-  v88 = a12;
-  v87 = a13;
-  v86 = a14;
-  v85 = a15;
-  v84 = a16;
-  v83 = a17;
-  v82 = a18;
-  v81 = a19;
-  v80 = a20;
-  v79 = a21;
-  v78 = a22;
-  v77 = a23;
-  v76 = a24;
-  v75 = a25;
-  v74 = a26;
-  v73 = a27;
-  v68 = a28;
-  v49 = a29;
-  v50 = a30;
-  v71 = a31;
-  v69 = a32;
-  v51 = a33;
-  v52 = a34;
-  v72 = a35;
-  v70 = a36;
-  v67 = a37;
-  v66 = a38;
-  v65 = a39;
-  v64 = a40;
-  v63 = a41;
-  v62 = a42;
-  v60 = a43;
-  v59 = a44;
-  v53 = a45;
+  scanCopy = scan;
+  v1Copy = v1;
+  v2Copy = v2;
+  drawingCopy = drawing;
+  tablesCopy = tables;
+  tablesCopy2 = tables;
+  attachmentsCopy = attachments;
+  checklistCopy = checklist;
+  pinnedCopy = pinned;
+  drawingV1Copy = drawingV1;
+  drawingV2Copy = drawingV2;
+  fullscreenDrawingCopy = fullscreenDrawing;
+  andTablesCopy = andTables;
+  otherAttachmentsCopy = otherAttachments;
+  andChecklistCopy = andChecklist;
+  isPinnedCopy = isPinned;
+  lockedCopy = locked;
+  inlineDrawingV2Copy = inlineDrawingV2;
+  andFullscreenDrawingCopy = andFullscreenDrawing;
+  v1AndTablesCopy = v1AndTables;
+  andOtherAttachmentsCopy = andOtherAttachments;
+  v1AndChecklistCopy = v1AndChecklist;
+  andIsPinnedCopy = andIsPinned;
+  isLockedCopy = isLocked;
+  v2AndFullscreenDrawingCopy = v2AndFullscreenDrawing;
+  v2AndTablesCopy = v2AndTables;
+  v2AndOtherAttachmentsCopy = v2AndOtherAttachments;
+  v2AndChecklistCopy = v2AndChecklist;
+  v2AndIsPinnedCopy = v2AndIsPinned;
+  andIsLockedCopy = andIsLocked;
+  drawingAndTablesCopy = drawingAndTables;
+  drawingAndOtherAttachmentsCopy = drawingAndOtherAttachments;
+  drawingAndChecklistCopy = drawingAndChecklist;
+  drawingAndIsPinnedCopy = drawingAndIsPinned;
+  drawingAndIsLockedCopy = drawingAndIsLocked;
+  tablesAndOtherAttachmentsCopy = tablesAndOtherAttachments;
+  tablesAndChecklistCopy = tablesAndChecklist;
+  tablesAndIsPinnedCopy = tablesAndIsPinned;
+  tablesAndIsLockedCopy = tablesAndIsLocked;
+  attachmentsAndChecklistCopy = attachmentsAndChecklist;
+  attachmentsAndIsPinnedCopy = attachmentsAndIsPinned;
+  attachmentsAndIsLockedCopy = attachmentsAndIsLocked;
+  checklistAndIsPinnedCopy = checklistAndIsPinned;
+  pinnedAndIsLockedCopy = pinnedAndIsLocked;
   v99.receiver = self;
   v99.super_class = ICASAccountNotesTwoFactorItemData;
   v54 = [(ICASAccountNotesTwoFactorItemData *)&v99 init];
   v55 = v54;
   if (v54)
   {
-    objc_storeStrong(&v54->_totalCountOfNotesWithCollabAndDocScan, a3);
-    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndInlineDrawingV1, a4);
-    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndInlineDrawingV2, a5);
-    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndFullscreenDrawing, a6);
-    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndTables, v58);
-    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndOtherAttachments, a8);
-    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndChecklist, a9);
-    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndIsPinned, a10);
-    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndInlineDrawingV1, a11);
-    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndInlineDrawingV2, a12);
-    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndFullscreenDrawing, a13);
-    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndTables, a14);
-    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndOtherAttachments, a15);
-    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndChecklist, a16);
-    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndIsPinned, a17);
-    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndIsLocked, a18);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2, a19);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing, a20);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndTables, a21);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndOtherAttachments, a22);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndChecklist, a23);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndIsPinned, a24);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndIsLocked, a25);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing, a26);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndTables, a27);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndOtherAttachments, a28);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndChecklist, a29);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndIsPinned, a30);
-    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndIsLocked, a31);
-    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndTables, a32);
-    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndOtherAttachments, a33);
-    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndChecklist, a34);
-    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndIsPinned, a35);
-    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndIsLocked, a36);
-    objc_storeStrong(&v55->_totalCountOfNotesWithTablesAndOtherAttachments, a37);
-    objc_storeStrong(&v55->_totalCountOfNotesWithTablesAndChecklist, a38);
-    objc_storeStrong(&v55->_totalCountOfNotesWithTablesAndIsPinned, a39);
-    objc_storeStrong(&v55->_totalCountOfNotesWithTablesAndIsLocked, a40);
-    objc_storeStrong(&v55->_totalCountOfNotesWithOtherAttachmentsAndChecklist, a41);
-    objc_storeStrong(&v55->_totalCountOfNotesWithOtherAttachmentsAndIsPinned, a42);
-    objc_storeStrong(&v55->_totalCountOfNotesWithOtherAttachmentsAndIsLocked, a43);
-    objc_storeStrong(&v55->_totalCountOfNotesWithChecklistAndIsPinned, a44);
-    objc_storeStrong(&v55->_totalCountOfNotesIsPinnedAndIsLocked, a45);
+    objc_storeStrong(&v54->_totalCountOfNotesWithCollabAndDocScan, scan);
+    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndInlineDrawingV1, v1);
+    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndInlineDrawingV2, v2);
+    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndFullscreenDrawing, drawing);
+    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndTables, tablesCopy);
+    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndOtherAttachments, attachments);
+    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndChecklist, checklist);
+    objc_storeStrong(&v55->_totalCountOfNotesWithCollabAndIsPinned, pinned);
+    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndInlineDrawingV1, drawingV1);
+    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndInlineDrawingV2, drawingV2);
+    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndFullscreenDrawing, fullscreenDrawing);
+    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndTables, andTables);
+    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndOtherAttachments, otherAttachments);
+    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndChecklist, andChecklist);
+    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndIsPinned, isPinned);
+    objc_storeStrong(&v55->_totalCountOfNotesWithDocScanAndIsLocked, locked);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2, inlineDrawingV2);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing, andFullscreenDrawing);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndTables, v1AndTables);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndOtherAttachments, andOtherAttachments);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndChecklist, v1AndChecklist);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndIsPinned, andIsPinned);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV1AndIsLocked, isLocked);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing, v2AndFullscreenDrawing);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndTables, v2AndTables);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndOtherAttachments, v2AndOtherAttachments);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndChecklist, v2AndChecklist);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndIsPinned, v2AndIsPinned);
+    objc_storeStrong(&v55->_totalCountOfNotesWithInlineDrawingV2AndIsLocked, andIsLocked);
+    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndTables, drawingAndTables);
+    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndOtherAttachments, drawingAndOtherAttachments);
+    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndChecklist, drawingAndChecklist);
+    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndIsPinned, drawingAndIsPinned);
+    objc_storeStrong(&v55->_totalCountOfNotesWithFullscreenDrawingAndIsLocked, drawingAndIsLocked);
+    objc_storeStrong(&v55->_totalCountOfNotesWithTablesAndOtherAttachments, tablesAndOtherAttachments);
+    objc_storeStrong(&v55->_totalCountOfNotesWithTablesAndChecklist, tablesAndChecklist);
+    objc_storeStrong(&v55->_totalCountOfNotesWithTablesAndIsPinned, tablesAndIsPinned);
+    objc_storeStrong(&v55->_totalCountOfNotesWithTablesAndIsLocked, tablesAndIsLocked);
+    objc_storeStrong(&v55->_totalCountOfNotesWithOtherAttachmentsAndChecklist, attachmentsAndChecklist);
+    objc_storeStrong(&v55->_totalCountOfNotesWithOtherAttachmentsAndIsPinned, attachmentsAndIsPinned);
+    objc_storeStrong(&v55->_totalCountOfNotesWithOtherAttachmentsAndIsLocked, attachmentsAndIsLocked);
+    objc_storeStrong(&v55->_totalCountOfNotesWithChecklistAndIsPinned, checklistAndIsPinned);
+    objc_storeStrong(&v55->_totalCountOfNotesIsPinnedAndIsLocked, pinnedAndIsLocked);
   }
 
   return v55;
@@ -109,607 +109,607 @@
 {
   v136[43] = *MEMORY[0x277D85DE8];
   v135[0] = @"totalCountOfNotesWithCollabAndDocScan";
-  v134 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndDocScan];
-  if (v134)
+  totalCountOfNotesWithCollabAndDocScan = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndDocScan];
+  if (totalCountOfNotesWithCollabAndDocScan)
   {
-    v3 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndDocScan];
+    totalCountOfNotesWithCollabAndDocScan2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndDocScan];
   }
 
   else
   {
-    v3 = objc_opt_new();
+    totalCountOfNotesWithCollabAndDocScan2 = objc_opt_new();
   }
 
-  v133 = v3;
-  v136[0] = v3;
+  v133 = totalCountOfNotesWithCollabAndDocScan2;
+  v136[0] = totalCountOfNotesWithCollabAndDocScan2;
   v135[1] = @"totalCountOfNotesWithCollabAndInlineDrawingV1";
-  v132 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndInlineDrawingV1];
-  if (v132)
+  totalCountOfNotesWithCollabAndInlineDrawingV1 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndInlineDrawingV1];
+  if (totalCountOfNotesWithCollabAndInlineDrawingV1)
   {
-    v4 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndInlineDrawingV1];
+    totalCountOfNotesWithCollabAndInlineDrawingV12 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndInlineDrawingV1];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    totalCountOfNotesWithCollabAndInlineDrawingV12 = objc_opt_new();
   }
 
-  v131 = v4;
-  v136[1] = v4;
+  v131 = totalCountOfNotesWithCollabAndInlineDrawingV12;
+  v136[1] = totalCountOfNotesWithCollabAndInlineDrawingV12;
   v135[2] = @"totalCountOfNotesWithCollabAndInlineDrawingV2";
-  v130 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndInlineDrawingV2];
-  if (v130)
+  totalCountOfNotesWithCollabAndInlineDrawingV2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndInlineDrawingV2];
+  if (totalCountOfNotesWithCollabAndInlineDrawingV2)
   {
-    v5 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndInlineDrawingV2];
+    totalCountOfNotesWithCollabAndInlineDrawingV22 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndInlineDrawingV2];
   }
 
   else
   {
-    v5 = objc_opt_new();
+    totalCountOfNotesWithCollabAndInlineDrawingV22 = objc_opt_new();
   }
 
-  v129 = v5;
-  v136[2] = v5;
+  v129 = totalCountOfNotesWithCollabAndInlineDrawingV22;
+  v136[2] = totalCountOfNotesWithCollabAndInlineDrawingV22;
   v135[3] = @"totalCountOfNotesWithCollabAndFullscreenDrawing";
-  v128 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndFullscreenDrawing];
-  if (v128)
+  totalCountOfNotesWithCollabAndFullscreenDrawing = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndFullscreenDrawing];
+  if (totalCountOfNotesWithCollabAndFullscreenDrawing)
   {
-    v6 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndFullscreenDrawing];
+    totalCountOfNotesWithCollabAndFullscreenDrawing2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndFullscreenDrawing];
   }
 
   else
   {
-    v6 = objc_opt_new();
+    totalCountOfNotesWithCollabAndFullscreenDrawing2 = objc_opt_new();
   }
 
-  v127 = v6;
-  v136[3] = v6;
+  v127 = totalCountOfNotesWithCollabAndFullscreenDrawing2;
+  v136[3] = totalCountOfNotesWithCollabAndFullscreenDrawing2;
   v135[4] = @"totalCountOfNotesWithCollabAndTables";
-  v126 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndTables];
-  if (v126)
+  totalCountOfNotesWithCollabAndTables = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndTables];
+  if (totalCountOfNotesWithCollabAndTables)
   {
-    v7 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndTables];
+    totalCountOfNotesWithCollabAndTables2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndTables];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    totalCountOfNotesWithCollabAndTables2 = objc_opt_new();
   }
 
-  v125 = v7;
-  v136[4] = v7;
+  v125 = totalCountOfNotesWithCollabAndTables2;
+  v136[4] = totalCountOfNotesWithCollabAndTables2;
   v135[5] = @"totalCountOfNotesWithCollabAndOtherAttachments";
-  v124 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndOtherAttachments];
-  if (v124)
+  totalCountOfNotesWithCollabAndOtherAttachments = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndOtherAttachments];
+  if (totalCountOfNotesWithCollabAndOtherAttachments)
   {
-    v8 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndOtherAttachments];
+    totalCountOfNotesWithCollabAndOtherAttachments2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndOtherAttachments];
   }
 
   else
   {
-    v8 = objc_opt_new();
+    totalCountOfNotesWithCollabAndOtherAttachments2 = objc_opt_new();
   }
 
-  v123 = v8;
-  v136[5] = v8;
+  v123 = totalCountOfNotesWithCollabAndOtherAttachments2;
+  v136[5] = totalCountOfNotesWithCollabAndOtherAttachments2;
   v135[6] = @"totalCountOfNotesWithCollabAndChecklist";
-  v122 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndChecklist];
-  if (v122)
+  totalCountOfNotesWithCollabAndChecklist = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndChecklist];
+  if (totalCountOfNotesWithCollabAndChecklist)
   {
-    v9 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndChecklist];
+    totalCountOfNotesWithCollabAndChecklist2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndChecklist];
   }
 
   else
   {
-    v9 = objc_opt_new();
+    totalCountOfNotesWithCollabAndChecklist2 = objc_opt_new();
   }
 
-  v121 = v9;
-  v136[6] = v9;
+  v121 = totalCountOfNotesWithCollabAndChecklist2;
+  v136[6] = totalCountOfNotesWithCollabAndChecklist2;
   v135[7] = @"totalCountOfNotesWithCollabAndIsPinned";
-  v120 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndIsPinned];
-  if (v120)
+  totalCountOfNotesWithCollabAndIsPinned = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndIsPinned];
+  if (totalCountOfNotesWithCollabAndIsPinned)
   {
-    v10 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndIsPinned];
+    totalCountOfNotesWithCollabAndIsPinned2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithCollabAndIsPinned];
   }
 
   else
   {
-    v10 = objc_opt_new();
+    totalCountOfNotesWithCollabAndIsPinned2 = objc_opt_new();
   }
 
-  v119 = v10;
-  v136[7] = v10;
+  v119 = totalCountOfNotesWithCollabAndIsPinned2;
+  v136[7] = totalCountOfNotesWithCollabAndIsPinned2;
   v135[8] = @"totalCountOfNotesWithDocScanAndInlineDrawingV1";
-  v118 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndInlineDrawingV1];
-  if (v118)
+  totalCountOfNotesWithDocScanAndInlineDrawingV1 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndInlineDrawingV1];
+  if (totalCountOfNotesWithDocScanAndInlineDrawingV1)
   {
-    v11 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndInlineDrawingV1];
+    totalCountOfNotesWithDocScanAndInlineDrawingV12 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndInlineDrawingV1];
   }
 
   else
   {
-    v11 = objc_opt_new();
+    totalCountOfNotesWithDocScanAndInlineDrawingV12 = objc_opt_new();
   }
 
-  v117 = v11;
-  v136[8] = v11;
+  v117 = totalCountOfNotesWithDocScanAndInlineDrawingV12;
+  v136[8] = totalCountOfNotesWithDocScanAndInlineDrawingV12;
   v135[9] = @"totalCountOfNotesWithDocScanAndInlineDrawingV2";
-  v116 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndInlineDrawingV2];
-  if (v116)
+  totalCountOfNotesWithDocScanAndInlineDrawingV2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndInlineDrawingV2];
+  if (totalCountOfNotesWithDocScanAndInlineDrawingV2)
   {
-    v12 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndInlineDrawingV2];
+    totalCountOfNotesWithDocScanAndInlineDrawingV22 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndInlineDrawingV2];
   }
 
   else
   {
-    v12 = objc_opt_new();
+    totalCountOfNotesWithDocScanAndInlineDrawingV22 = objc_opt_new();
   }
 
-  v115 = v12;
-  v136[9] = v12;
+  v115 = totalCountOfNotesWithDocScanAndInlineDrawingV22;
+  v136[9] = totalCountOfNotesWithDocScanAndInlineDrawingV22;
   v135[10] = @"totalCountOfNotesWithDocScanAndFullscreenDrawing";
-  v114 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndFullscreenDrawing];
-  if (v114)
+  totalCountOfNotesWithDocScanAndFullscreenDrawing = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndFullscreenDrawing];
+  if (totalCountOfNotesWithDocScanAndFullscreenDrawing)
   {
-    v13 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndFullscreenDrawing];
+    totalCountOfNotesWithDocScanAndFullscreenDrawing2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndFullscreenDrawing];
   }
 
   else
   {
-    v13 = objc_opt_new();
+    totalCountOfNotesWithDocScanAndFullscreenDrawing2 = objc_opt_new();
   }
 
-  v113 = v13;
-  v136[10] = v13;
+  v113 = totalCountOfNotesWithDocScanAndFullscreenDrawing2;
+  v136[10] = totalCountOfNotesWithDocScanAndFullscreenDrawing2;
   v135[11] = @"totalCountOfNotesWithDocScanAndTables";
-  v112 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndTables];
-  if (v112)
+  totalCountOfNotesWithDocScanAndTables = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndTables];
+  if (totalCountOfNotesWithDocScanAndTables)
   {
-    v14 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndTables];
+    totalCountOfNotesWithDocScanAndTables2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndTables];
   }
 
   else
   {
-    v14 = objc_opt_new();
+    totalCountOfNotesWithDocScanAndTables2 = objc_opt_new();
   }
 
-  v111 = v14;
-  v136[11] = v14;
+  v111 = totalCountOfNotesWithDocScanAndTables2;
+  v136[11] = totalCountOfNotesWithDocScanAndTables2;
   v135[12] = @"totalCountOfNotesWithDocScanAndOtherAttachments";
-  v110 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndOtherAttachments];
-  if (v110)
+  totalCountOfNotesWithDocScanAndOtherAttachments = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndOtherAttachments];
+  if (totalCountOfNotesWithDocScanAndOtherAttachments)
   {
-    v15 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndOtherAttachments];
+    totalCountOfNotesWithDocScanAndOtherAttachments2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndOtherAttachments];
   }
 
   else
   {
-    v15 = objc_opt_new();
+    totalCountOfNotesWithDocScanAndOtherAttachments2 = objc_opt_new();
   }
 
-  v109 = v15;
-  v136[12] = v15;
+  v109 = totalCountOfNotesWithDocScanAndOtherAttachments2;
+  v136[12] = totalCountOfNotesWithDocScanAndOtherAttachments2;
   v135[13] = @"totalCountOfNotesWithDocScanAndChecklist";
-  v108 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndChecklist];
-  if (v108)
+  totalCountOfNotesWithDocScanAndChecklist = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndChecklist];
+  if (totalCountOfNotesWithDocScanAndChecklist)
   {
-    v16 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndChecklist];
+    totalCountOfNotesWithDocScanAndChecklist2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndChecklist];
   }
 
   else
   {
-    v16 = objc_opt_new();
+    totalCountOfNotesWithDocScanAndChecklist2 = objc_opt_new();
   }
 
-  v107 = v16;
-  v136[13] = v16;
+  v107 = totalCountOfNotesWithDocScanAndChecklist2;
+  v136[13] = totalCountOfNotesWithDocScanAndChecklist2;
   v135[14] = @"totalCountOfNotesWithDocScanAndIsPinned";
-  v106 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndIsPinned];
-  if (v106)
+  totalCountOfNotesWithDocScanAndIsPinned = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndIsPinned];
+  if (totalCountOfNotesWithDocScanAndIsPinned)
   {
-    v17 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndIsPinned];
+    totalCountOfNotesWithDocScanAndIsPinned2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndIsPinned];
   }
 
   else
   {
-    v17 = objc_opt_new();
+    totalCountOfNotesWithDocScanAndIsPinned2 = objc_opt_new();
   }
 
-  v105 = v17;
-  v136[14] = v17;
+  v105 = totalCountOfNotesWithDocScanAndIsPinned2;
+  v136[14] = totalCountOfNotesWithDocScanAndIsPinned2;
   v135[15] = @"totalCountOfNotesWithDocScanAndIsLocked";
-  v104 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndIsLocked];
-  if (v104)
+  totalCountOfNotesWithDocScanAndIsLocked = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndIsLocked];
+  if (totalCountOfNotesWithDocScanAndIsLocked)
   {
-    v18 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndIsLocked];
+    totalCountOfNotesWithDocScanAndIsLocked2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithDocScanAndIsLocked];
   }
 
   else
   {
-    v18 = objc_opt_new();
+    totalCountOfNotesWithDocScanAndIsLocked2 = objc_opt_new();
   }
 
-  v103 = v18;
-  v136[15] = v18;
+  v103 = totalCountOfNotesWithDocScanAndIsLocked2;
+  v136[15] = totalCountOfNotesWithDocScanAndIsLocked2;
   v135[16] = @"totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2";
-  v102 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2];
-  if (v102)
+  totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2];
+  if (totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2)
   {
-    v19 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2];
+    totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV22 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV2];
   }
 
   else
   {
-    v19 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV22 = objc_opt_new();
   }
 
-  v101 = v19;
-  v136[16] = v19;
+  v101 = totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV22;
+  v136[16] = totalCountOfNotesWithInlineDrawingV1AndInlineDrawingV22;
   v135[17] = @"totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing";
-  v100 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing];
-  if (v100)
+  totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing];
+  if (totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing)
   {
-    v20 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing];
+    totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing];
   }
 
   else
   {
-    v20 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing2 = objc_opt_new();
   }
 
-  v99 = v20;
-  v136[17] = v20;
+  v99 = totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing2;
+  v136[17] = totalCountOfNotesWithInlineDrawingV1AndFullscreenDrawing2;
   v135[18] = @"totalCountOfNotesWithInlineDrawingV1AndTables";
-  v98 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndTables];
-  if (v98)
+  totalCountOfNotesWithInlineDrawingV1AndTables = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndTables];
+  if (totalCountOfNotesWithInlineDrawingV1AndTables)
   {
-    v21 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndTables];
+    totalCountOfNotesWithInlineDrawingV1AndTables2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndTables];
   }
 
   else
   {
-    v21 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV1AndTables2 = objc_opt_new();
   }
 
-  v97 = v21;
-  v136[18] = v21;
+  v97 = totalCountOfNotesWithInlineDrawingV1AndTables2;
+  v136[18] = totalCountOfNotesWithInlineDrawingV1AndTables2;
   v135[19] = @"totalCountOfNotesWithInlineDrawingV1AndOtherAttachments";
-  v96 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndOtherAttachments];
-  if (v96)
+  totalCountOfNotesWithInlineDrawingV1AndOtherAttachments = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndOtherAttachments];
+  if (totalCountOfNotesWithInlineDrawingV1AndOtherAttachments)
   {
-    v22 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndOtherAttachments];
+    totalCountOfNotesWithInlineDrawingV1AndOtherAttachments2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndOtherAttachments];
   }
 
   else
   {
-    v22 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV1AndOtherAttachments2 = objc_opt_new();
   }
 
-  v95 = v22;
-  v136[19] = v22;
+  v95 = totalCountOfNotesWithInlineDrawingV1AndOtherAttachments2;
+  v136[19] = totalCountOfNotesWithInlineDrawingV1AndOtherAttachments2;
   v135[20] = @"totalCountOfNotesWithInlineDrawingV1AndChecklist";
-  v94 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndChecklist];
-  if (v94)
+  totalCountOfNotesWithInlineDrawingV1AndChecklist = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndChecklist];
+  if (totalCountOfNotesWithInlineDrawingV1AndChecklist)
   {
-    v23 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndChecklist];
+    totalCountOfNotesWithInlineDrawingV1AndChecklist2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndChecklist];
   }
 
   else
   {
-    v23 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV1AndChecklist2 = objc_opt_new();
   }
 
-  v93 = v23;
-  v136[20] = v23;
+  v93 = totalCountOfNotesWithInlineDrawingV1AndChecklist2;
+  v136[20] = totalCountOfNotesWithInlineDrawingV1AndChecklist2;
   v135[21] = @"totalCountOfNotesWithInlineDrawingV1AndIsPinned";
-  v92 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndIsPinned];
-  if (v92)
+  totalCountOfNotesWithInlineDrawingV1AndIsPinned = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndIsPinned];
+  if (totalCountOfNotesWithInlineDrawingV1AndIsPinned)
   {
-    v24 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndIsPinned];
+    totalCountOfNotesWithInlineDrawingV1AndIsPinned2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndIsPinned];
   }
 
   else
   {
-    v24 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV1AndIsPinned2 = objc_opt_new();
   }
 
-  v91 = v24;
-  v136[21] = v24;
+  v91 = totalCountOfNotesWithInlineDrawingV1AndIsPinned2;
+  v136[21] = totalCountOfNotesWithInlineDrawingV1AndIsPinned2;
   v135[22] = @"totalCountOfNotesWithInlineDrawingV1AndIsLocked";
-  v90 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndIsLocked];
-  if (v90)
+  totalCountOfNotesWithInlineDrawingV1AndIsLocked = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndIsLocked];
+  if (totalCountOfNotesWithInlineDrawingV1AndIsLocked)
   {
-    v25 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndIsLocked];
+    totalCountOfNotesWithInlineDrawingV1AndIsLocked2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV1AndIsLocked];
   }
 
   else
   {
-    v25 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV1AndIsLocked2 = objc_opt_new();
   }
 
-  v89 = v25;
-  v136[22] = v25;
+  v89 = totalCountOfNotesWithInlineDrawingV1AndIsLocked2;
+  v136[22] = totalCountOfNotesWithInlineDrawingV1AndIsLocked2;
   v135[23] = @"totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing";
-  v88 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing];
-  if (v88)
+  totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing];
+  if (totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing)
   {
-    v26 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing];
+    totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing];
   }
 
   else
   {
-    v26 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing2 = objc_opt_new();
   }
 
-  v87 = v26;
-  v136[23] = v26;
+  v87 = totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing2;
+  v136[23] = totalCountOfNotesWithInlineDrawingV2AndFullscreenDrawing2;
   v135[24] = @"totalCountOfNotesWithInlineDrawingV2AndTables";
-  v86 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndTables];
-  if (v86)
+  totalCountOfNotesWithInlineDrawingV2AndTables = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndTables];
+  if (totalCountOfNotesWithInlineDrawingV2AndTables)
   {
-    v27 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndTables];
+    totalCountOfNotesWithInlineDrawingV2AndTables2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndTables];
   }
 
   else
   {
-    v27 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV2AndTables2 = objc_opt_new();
   }
 
-  v85 = v27;
-  v136[24] = v27;
+  v85 = totalCountOfNotesWithInlineDrawingV2AndTables2;
+  v136[24] = totalCountOfNotesWithInlineDrawingV2AndTables2;
   v135[25] = @"totalCountOfNotesWithInlineDrawingV2AndOtherAttachments";
-  v84 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndOtherAttachments];
-  if (v84)
+  totalCountOfNotesWithInlineDrawingV2AndOtherAttachments = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndOtherAttachments];
+  if (totalCountOfNotesWithInlineDrawingV2AndOtherAttachments)
   {
-    v28 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndOtherAttachments];
+    totalCountOfNotesWithInlineDrawingV2AndOtherAttachments2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndOtherAttachments];
   }
 
   else
   {
-    v28 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV2AndOtherAttachments2 = objc_opt_new();
   }
 
-  v83 = v28;
-  v136[25] = v28;
+  v83 = totalCountOfNotesWithInlineDrawingV2AndOtherAttachments2;
+  v136[25] = totalCountOfNotesWithInlineDrawingV2AndOtherAttachments2;
   v135[26] = @"totalCountOfNotesWithInlineDrawingV2AndChecklist";
-  v82 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndChecklist];
-  if (v82)
+  totalCountOfNotesWithInlineDrawingV2AndChecklist = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndChecklist];
+  if (totalCountOfNotesWithInlineDrawingV2AndChecklist)
   {
-    v29 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndChecklist];
+    totalCountOfNotesWithInlineDrawingV2AndChecklist2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndChecklist];
   }
 
   else
   {
-    v29 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV2AndChecklist2 = objc_opt_new();
   }
 
-  v81 = v29;
-  v136[26] = v29;
+  v81 = totalCountOfNotesWithInlineDrawingV2AndChecklist2;
+  v136[26] = totalCountOfNotesWithInlineDrawingV2AndChecklist2;
   v135[27] = @"totalCountOfNotesWithInlineDrawingV2AndIsPinned";
-  v80 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndIsPinned];
-  if (v80)
+  totalCountOfNotesWithInlineDrawingV2AndIsPinned = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndIsPinned];
+  if (totalCountOfNotesWithInlineDrawingV2AndIsPinned)
   {
-    v30 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndIsPinned];
+    totalCountOfNotesWithInlineDrawingV2AndIsPinned2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndIsPinned];
   }
 
   else
   {
-    v30 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV2AndIsPinned2 = objc_opt_new();
   }
 
-  v79 = v30;
-  v136[27] = v30;
+  v79 = totalCountOfNotesWithInlineDrawingV2AndIsPinned2;
+  v136[27] = totalCountOfNotesWithInlineDrawingV2AndIsPinned2;
   v135[28] = @"totalCountOfNotesWithInlineDrawingV2AndIsLocked";
-  v78 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndIsLocked];
-  if (v78)
+  totalCountOfNotesWithInlineDrawingV2AndIsLocked = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndIsLocked];
+  if (totalCountOfNotesWithInlineDrawingV2AndIsLocked)
   {
-    v31 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndIsLocked];
+    totalCountOfNotesWithInlineDrawingV2AndIsLocked2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithInlineDrawingV2AndIsLocked];
   }
 
   else
   {
-    v31 = objc_opt_new();
+    totalCountOfNotesWithInlineDrawingV2AndIsLocked2 = objc_opt_new();
   }
 
-  v77 = v31;
-  v136[28] = v31;
+  v77 = totalCountOfNotesWithInlineDrawingV2AndIsLocked2;
+  v136[28] = totalCountOfNotesWithInlineDrawingV2AndIsLocked2;
   v135[29] = @"totalCountOfNotesWithFullscreenDrawingAndTables";
-  v76 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndTables];
-  if (v76)
+  totalCountOfNotesWithFullscreenDrawingAndTables = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndTables];
+  if (totalCountOfNotesWithFullscreenDrawingAndTables)
   {
-    v32 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndTables];
+    totalCountOfNotesWithFullscreenDrawingAndTables2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndTables];
   }
 
   else
   {
-    v32 = objc_opt_new();
+    totalCountOfNotesWithFullscreenDrawingAndTables2 = objc_opt_new();
   }
 
-  v75 = v32;
-  v136[29] = v32;
+  v75 = totalCountOfNotesWithFullscreenDrawingAndTables2;
+  v136[29] = totalCountOfNotesWithFullscreenDrawingAndTables2;
   v135[30] = @"totalCountOfNotesWithFullscreenDrawingAndOtherAttachments";
-  v74 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndOtherAttachments];
-  if (v74)
+  totalCountOfNotesWithFullscreenDrawingAndOtherAttachments = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndOtherAttachments];
+  if (totalCountOfNotesWithFullscreenDrawingAndOtherAttachments)
   {
-    v33 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndOtherAttachments];
+    totalCountOfNotesWithFullscreenDrawingAndOtherAttachments2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndOtherAttachments];
   }
 
   else
   {
-    v33 = objc_opt_new();
+    totalCountOfNotesWithFullscreenDrawingAndOtherAttachments2 = objc_opt_new();
   }
 
-  v73 = v33;
-  v136[30] = v33;
+  v73 = totalCountOfNotesWithFullscreenDrawingAndOtherAttachments2;
+  v136[30] = totalCountOfNotesWithFullscreenDrawingAndOtherAttachments2;
   v135[31] = @"totalCountOfNotesWithFullscreenDrawingAndChecklist";
-  v72 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndChecklist];
-  if (v72)
+  totalCountOfNotesWithFullscreenDrawingAndChecklist = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndChecklist];
+  if (totalCountOfNotesWithFullscreenDrawingAndChecklist)
   {
-    v34 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndChecklist];
+    totalCountOfNotesWithFullscreenDrawingAndChecklist2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndChecklist];
   }
 
   else
   {
-    v34 = objc_opt_new();
+    totalCountOfNotesWithFullscreenDrawingAndChecklist2 = objc_opt_new();
   }
 
-  v71 = v34;
-  v136[31] = v34;
+  v71 = totalCountOfNotesWithFullscreenDrawingAndChecklist2;
+  v136[31] = totalCountOfNotesWithFullscreenDrawingAndChecklist2;
   v135[32] = @"totalCountOfNotesWithFullscreenDrawingAndIsPinned";
-  v70 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndIsPinned];
-  if (v70)
+  totalCountOfNotesWithFullscreenDrawingAndIsPinned = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndIsPinned];
+  if (totalCountOfNotesWithFullscreenDrawingAndIsPinned)
   {
-    v35 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndIsPinned];
+    totalCountOfNotesWithFullscreenDrawingAndIsPinned2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndIsPinned];
   }
 
   else
   {
-    v35 = objc_opt_new();
+    totalCountOfNotesWithFullscreenDrawingAndIsPinned2 = objc_opt_new();
   }
 
-  v69 = v35;
-  v136[32] = v35;
+  v69 = totalCountOfNotesWithFullscreenDrawingAndIsPinned2;
+  v136[32] = totalCountOfNotesWithFullscreenDrawingAndIsPinned2;
   v135[33] = @"totalCountOfNotesWithFullscreenDrawingAndIsLocked";
-  v68 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndIsLocked];
-  if (v68)
+  totalCountOfNotesWithFullscreenDrawingAndIsLocked = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndIsLocked];
+  if (totalCountOfNotesWithFullscreenDrawingAndIsLocked)
   {
-    v36 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndIsLocked];
+    totalCountOfNotesWithFullscreenDrawingAndIsLocked2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithFullscreenDrawingAndIsLocked];
   }
 
   else
   {
-    v36 = objc_opt_new();
+    totalCountOfNotesWithFullscreenDrawingAndIsLocked2 = objc_opt_new();
   }
 
-  v67 = v36;
-  v136[33] = v36;
+  v67 = totalCountOfNotesWithFullscreenDrawingAndIsLocked2;
+  v136[33] = totalCountOfNotesWithFullscreenDrawingAndIsLocked2;
   v135[34] = @"totalCountOfNotesWithTablesAndOtherAttachments";
-  v66 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndOtherAttachments];
-  if (v66)
+  totalCountOfNotesWithTablesAndOtherAttachments = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndOtherAttachments];
+  if (totalCountOfNotesWithTablesAndOtherAttachments)
   {
-    v37 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndOtherAttachments];
+    totalCountOfNotesWithTablesAndOtherAttachments2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndOtherAttachments];
   }
 
   else
   {
-    v37 = objc_opt_new();
+    totalCountOfNotesWithTablesAndOtherAttachments2 = objc_opt_new();
   }
 
-  v65 = v37;
-  v136[34] = v37;
+  v65 = totalCountOfNotesWithTablesAndOtherAttachments2;
+  v136[34] = totalCountOfNotesWithTablesAndOtherAttachments2;
   v135[35] = @"totalCountOfNotesWithTablesAndChecklist";
-  v64 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndChecklist];
-  if (v64)
+  totalCountOfNotesWithTablesAndChecklist = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndChecklist];
+  if (totalCountOfNotesWithTablesAndChecklist)
   {
-    v38 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndChecklist];
+    totalCountOfNotesWithTablesAndChecklist2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndChecklist];
   }
 
   else
   {
-    v38 = objc_opt_new();
+    totalCountOfNotesWithTablesAndChecklist2 = objc_opt_new();
   }
 
-  v63 = v38;
-  v136[35] = v38;
+  v63 = totalCountOfNotesWithTablesAndChecklist2;
+  v136[35] = totalCountOfNotesWithTablesAndChecklist2;
   v135[36] = @"totalCountOfNotesWithTablesAndIsPinned";
-  v62 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndIsPinned];
-  if (v62)
+  totalCountOfNotesWithTablesAndIsPinned = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndIsPinned];
+  if (totalCountOfNotesWithTablesAndIsPinned)
   {
-    v39 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndIsPinned];
+    totalCountOfNotesWithTablesAndIsPinned2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndIsPinned];
   }
 
   else
   {
-    v39 = objc_opt_new();
+    totalCountOfNotesWithTablesAndIsPinned2 = objc_opt_new();
   }
 
-  v61 = v39;
-  v136[36] = v39;
+  v61 = totalCountOfNotesWithTablesAndIsPinned2;
+  v136[36] = totalCountOfNotesWithTablesAndIsPinned2;
   v135[37] = @"totalCountOfNotesWithTablesAndIsLocked";
-  v60 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndIsLocked];
-  if (v60)
+  totalCountOfNotesWithTablesAndIsLocked = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndIsLocked];
+  if (totalCountOfNotesWithTablesAndIsLocked)
   {
-    v40 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndIsLocked];
+    totalCountOfNotesWithTablesAndIsLocked2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithTablesAndIsLocked];
   }
 
   else
   {
-    v40 = objc_opt_new();
+    totalCountOfNotesWithTablesAndIsLocked2 = objc_opt_new();
   }
 
-  v59 = v40;
-  v136[37] = v40;
+  v59 = totalCountOfNotesWithTablesAndIsLocked2;
+  v136[37] = totalCountOfNotesWithTablesAndIsLocked2;
   v135[38] = @"totalCountOfNotesWithOtherAttachmentsAndChecklist";
-  v41 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndChecklist];
-  if (v41)
+  totalCountOfNotesWithOtherAttachmentsAndChecklist = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndChecklist];
+  if (totalCountOfNotesWithOtherAttachmentsAndChecklist)
   {
-    v42 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndChecklist];
+    totalCountOfNotesWithOtherAttachmentsAndChecklist2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndChecklist];
   }
 
   else
   {
-    v42 = objc_opt_new();
+    totalCountOfNotesWithOtherAttachmentsAndChecklist2 = objc_opt_new();
   }
 
-  v43 = v42;
-  v136[38] = v42;
+  v43 = totalCountOfNotesWithOtherAttachmentsAndChecklist2;
+  v136[38] = totalCountOfNotesWithOtherAttachmentsAndChecklist2;
   v135[39] = @"totalCountOfNotesWithOtherAttachmentsAndIsPinned";
-  v44 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndIsPinned];
-  if (v44)
+  totalCountOfNotesWithOtherAttachmentsAndIsPinned = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndIsPinned];
+  if (totalCountOfNotesWithOtherAttachmentsAndIsPinned)
   {
-    v45 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndIsPinned];
+    totalCountOfNotesWithOtherAttachmentsAndIsPinned2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndIsPinned];
   }
 
   else
   {
-    v45 = objc_opt_new();
+    totalCountOfNotesWithOtherAttachmentsAndIsPinned2 = objc_opt_new();
   }
 
-  v46 = v45;
-  v136[39] = v45;
+  v46 = totalCountOfNotesWithOtherAttachmentsAndIsPinned2;
+  v136[39] = totalCountOfNotesWithOtherAttachmentsAndIsPinned2;
   v135[40] = @"totalCountOfNotesWithOtherAttachmentsAndIsLocked";
-  v47 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndIsLocked];
-  if (v47)
+  totalCountOfNotesWithOtherAttachmentsAndIsLocked = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndIsLocked];
+  if (totalCountOfNotesWithOtherAttachmentsAndIsLocked)
   {
-    v48 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndIsLocked];
+    totalCountOfNotesWithOtherAttachmentsAndIsLocked2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithOtherAttachmentsAndIsLocked];
   }
 
   else
   {
-    v48 = objc_opt_new();
+    totalCountOfNotesWithOtherAttachmentsAndIsLocked2 = objc_opt_new();
   }
 
-  v49 = v48;
-  v136[40] = v48;
+  v49 = totalCountOfNotesWithOtherAttachmentsAndIsLocked2;
+  v136[40] = totalCountOfNotesWithOtherAttachmentsAndIsLocked2;
   v135[41] = @"totalCountOfNotesWithChecklistAndIsPinned";
-  v50 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithChecklistAndIsPinned];
-  if (v50)
+  totalCountOfNotesWithChecklistAndIsPinned = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithChecklistAndIsPinned];
+  if (totalCountOfNotesWithChecklistAndIsPinned)
   {
-    v51 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithChecklistAndIsPinned];
+    totalCountOfNotesWithChecklistAndIsPinned2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesWithChecklistAndIsPinned];
   }
 
   else
   {
-    v51 = objc_opt_new();
+    totalCountOfNotesWithChecklistAndIsPinned2 = objc_opt_new();
   }
 
-  v52 = v51;
-  v136[41] = v51;
+  v52 = totalCountOfNotesWithChecklistAndIsPinned2;
+  v136[41] = totalCountOfNotesWithChecklistAndIsPinned2;
   v135[42] = @"totalCountOfNotesIsPinnedAndIsLocked";
-  v53 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesIsPinnedAndIsLocked];
-  if (v53)
+  totalCountOfNotesIsPinnedAndIsLocked = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesIsPinnedAndIsLocked];
+  if (totalCountOfNotesIsPinnedAndIsLocked)
   {
-    v54 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesIsPinnedAndIsLocked];
+    totalCountOfNotesIsPinnedAndIsLocked2 = [(ICASAccountNotesTwoFactorItemData *)self totalCountOfNotesIsPinnedAndIsLocked];
   }
 
   else
   {
-    v54 = objc_opt_new();
+    totalCountOfNotesIsPinnedAndIsLocked2 = objc_opt_new();
   }
 
-  v55 = v54;
-  v136[42] = v54;
+  v55 = totalCountOfNotesIsPinnedAndIsLocked2;
+  v136[42] = totalCountOfNotesIsPinnedAndIsLocked2;
   v58 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v136 forKeys:v135 count:43];
 
   v56 = *MEMORY[0x277D85DE8];

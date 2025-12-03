@@ -1,33 +1,33 @@
 @interface SBInteractiveScreenshotGestureCropsView
-- (SBInteractiveScreenshotGestureCropsView)initWithFrame:(CGRect)a3;
-- (void)_setPresentationValue:(id)a3 forKey:(id)a4;
+- (SBInteractiveScreenshotGestureCropsView)initWithFrame:(CGRect)frame;
+- (void)_setPresentationValue:(id)value forKey:(id)key;
 - (void)_setupUI;
-- (void)_updateGeometryForBounds:(CGRect)a3 shouldUsePresentationValues:(BOOL)a4;
+- (void)_updateGeometryForBounds:(CGRect)bounds shouldUsePresentationValues:(BOOL)values;
 - (void)_updateGeometryOrDeferLayoutUsingModelBounds;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setCornerAlpha:(double)a3;
-- (void)setCornerColor:(id)a3;
-- (void)setCornerEdgeLength:(double)a3;
-- (void)setCropsCompositingFilter:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setGrabberLineWidth:(double)a3;
-- (void)setLineAlpha:(double)a3;
-- (void)setLineColor:(id)a3;
-- (void)setLineGrabberAlpha:(double)a3;
-- (void)setLineGrabberColor:(id)a3;
-- (void)setLineGrabberEdgeLength:(double)a3;
-- (void)setLineWidth:(double)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCornerAlpha:(double)alpha;
+- (void)setCornerColor:(id)color;
+- (void)setCornerEdgeLength:(double)length;
+- (void)setCropsCompositingFilter:(id)filter;
+- (void)setFrame:(CGRect)frame;
+- (void)setGrabberLineWidth:(double)width;
+- (void)setLineAlpha:(double)alpha;
+- (void)setLineColor:(id)color;
+- (void)setLineGrabberAlpha:(double)alpha;
+- (void)setLineGrabberColor:(id)color;
+- (void)setLineGrabberEdgeLength:(double)length;
+- (void)setLineWidth:(double)width;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SBInteractiveScreenshotGestureCropsView
 
-- (SBInteractiveScreenshotGestureCropsView)initWithFrame:(CGRect)a3
+- (SBInteractiveScreenshotGestureCropsView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = SBInteractiveScreenshotGestureCropsView;
-  v3 = [(SBInteractiveScreenshotGestureCropsView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBInteractiveScreenshotGestureCropsView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = dispatch_queue_create("com.apple.SpringBoard.SBInteractiveScreenshotGestureCropsView.accessQueue", 0);
@@ -76,13 +76,13 @@
   bottomLeftCornerHorizontalView = self->_bottomLeftCornerHorizontalView;
   self->_bottomLeftCornerHorizontalView = v9;
 
-  v11 = [MEMORY[0x277D75348] redColor];
-  v12 = [v11 CGColor];
-  v13 = [(UIView *)self->_bottomLeftCornerHorizontalView layer];
-  [v13 setBorderColor:v12];
+  redColor = [MEMORY[0x277D75348] redColor];
+  cGColor = [redColor CGColor];
+  layer = [(UIView *)self->_bottomLeftCornerHorizontalView layer];
+  [layer setBorderColor:cGColor];
 
-  v14 = [(UIView *)self->_bottomLeftCornerHorizontalView layer];
-  [v14 setBorderWidth:1.0];
+  layer2 = [(UIView *)self->_bottomLeftCornerHorizontalView layer];
+  [layer2 setBorderWidth:1.0];
 
   [v3 addObject:self->_bottomLeftCornerHorizontalView];
   [(SBInteractiveScreenshotGestureCropsView *)self addSubview:self->_bottomLeftCornerHorizontalView];
@@ -154,8 +154,8 @@
 
         v36 = *(*(&v81 + 1) + 8 * i);
         [v36 setBackgroundColor:self->_cornerColor];
-        v37 = [v36 layer];
-        [v37 setCompositingFilter:self->_cropsCompositingFilter];
+        layer3 = [v36 layer];
+        [layer3 setCompositingFilter:self->_cropsCompositingFilter];
       }
 
       v33 = [(NSArray *)v31 countByEnumeratingWithState:&v81 objects:v87 count:16];
@@ -214,8 +214,8 @@
 
         v54 = *(*(&v77 + 1) + 8 * j);
         [v54 setBackgroundColor:self->_lineColor];
-        v55 = [v54 layer];
-        [v55 setCompositingFilter:self->_cropsCompositingFilter];
+        layer4 = [v54 layer];
+        [layer4 setCompositingFilter:self->_cropsCompositingFilter];
       }
 
       v51 = [(NSArray *)v49 countByEnumeratingWithState:&v77 objects:v86 count:16];
@@ -271,8 +271,8 @@
 
         v70 = *(*(&v73 + 1) + 8 * k);
         [v70 setBackgroundColor:self->_lineGrabberColor];
-        v71 = [v70 layer];
-        [v71 setCompositingFilter:self->_cropsCompositingFilter];
+        layer5 = [v70 layer];
+        [layer5 setCompositingFilter:self->_cropsCompositingFilter];
       }
 
       v67 = [(NSArray *)v65 countByEnumeratingWithState:&v73 objects:v85 count:16];
@@ -291,29 +291,29 @@
   [(SBInteractiveScreenshotGestureCropsView *)self _updateGeometryForBounds:0 shouldUsePresentationValues:?];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = SBInteractiveScreenshotGestureCropsView;
-  [(SBInteractiveScreenshotGestureCropsView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBInteractiveScreenshotGestureCropsView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(SBInteractiveScreenshotGestureCropsView *)self _updateGeometryOrDeferLayoutUsingModelBounds];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SBInteractiveScreenshotGestureCropsView;
-  [(SBInteractiveScreenshotGestureCropsView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBInteractiveScreenshotGestureCropsView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SBInteractiveScreenshotGestureCropsView *)self _updateGeometryOrDeferLayoutUsingModelBounds];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v9.receiver = self;
   v9.super_class = SBInteractiveScreenshotGestureCropsView;
-  [(SBInteractiveScreenshotGestureCropsView *)&v9 traitCollectionDidChange:a3];
-  v4 = [(SBInteractiveScreenshotGestureCropsView *)self traitCollection];
-  [v4 displayScale];
+  [(SBInteractiveScreenshotGestureCropsView *)&v9 traitCollectionDidChange:change];
+  traitCollection = [(SBInteractiveScreenshotGestureCropsView *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   accessQueue = self->_accessQueue;
@@ -333,23 +333,23 @@ double __68__SBInteractiveScreenshotGestureCropsView_traitCollectionDidChange___
   return result;
 }
 
-- (void)_setPresentationValue:(id)a3 forKey:(id)a4
+- (void)_setPresentationValue:(id)value forKey:(id)key
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"bounds"])
+  valueCopy = value;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"bounds"])
   {
     v34.receiver = self;
     v34.super_class = SBInteractiveScreenshotGestureCropsView;
-    [(SBInteractiveScreenshotGestureCropsView *)&v34 _setPresentationValue:v6 forKey:v7];
-    [v6 CGRectValue];
+    [(SBInteractiveScreenshotGestureCropsView *)&v34 _setPresentationValue:valueCopy forKey:keyCopy];
+    [valueCopy CGRectValue];
     [(SBInteractiveScreenshotGestureCropsView *)self _updateGeometryForBounds:1 shouldUsePresentationValues:?];
   }
 
   else
   {
-    if ([v7 isEqualToString:@"lineGrabberAlpha"])
+    if ([keyCopy isEqualToString:@"lineGrabberAlpha"])
     {
       v32 = 0u;
       v33 = 0u;
@@ -370,7 +370,7 @@ double __68__SBInteractiveScreenshotGestureCropsView_traitCollectionDidChange___
               objc_enumerationMutation(v8);
             }
 
-            [*(*(&v30 + 1) + 8 * i) _setPresentationValue:v6 forKey:@"opacity"];
+            [*(*(&v30 + 1) + 8 * i) _setPresentationValue:valueCopy forKey:@"opacity"];
           }
 
           v10 = [(NSArray *)v8 countByEnumeratingWithState:&v30 objects:v37 count:16];
@@ -380,7 +380,7 @@ double __68__SBInteractiveScreenshotGestureCropsView_traitCollectionDidChange___
       }
     }
 
-    else if ([v7 isEqualToString:@"lineAlpha"])
+    else if ([keyCopy isEqualToString:@"lineAlpha"])
     {
       v28 = 0u;
       v29 = 0u;
@@ -401,7 +401,7 @@ double __68__SBInteractiveScreenshotGestureCropsView_traitCollectionDidChange___
               objc_enumerationMutation(v8);
             }
 
-            [*(*(&v26 + 1) + 8 * j) _setPresentationValue:v6 forKey:@"opacity"];
+            [*(*(&v26 + 1) + 8 * j) _setPresentationValue:valueCopy forKey:@"opacity"];
           }
 
           v14 = [(NSArray *)v8 countByEnumeratingWithState:&v26 objects:v36 count:16];
@@ -413,11 +413,11 @@ double __68__SBInteractiveScreenshotGestureCropsView_traitCollectionDidChange___
 
     else
     {
-      if (![v7 isEqualToString:@"cornerAlpha"])
+      if (![keyCopy isEqualToString:@"cornerAlpha"])
       {
         v21.receiver = self;
         v21.super_class = SBInteractiveScreenshotGestureCropsView;
-        [(SBInteractiveScreenshotGestureCropsView *)&v21 _setPresentationValue:v6 forKey:v7];
+        [(SBInteractiveScreenshotGestureCropsView *)&v21 _setPresentationValue:valueCopy forKey:keyCopy];
         goto LABEL_30;
       }
 
@@ -440,7 +440,7 @@ double __68__SBInteractiveScreenshotGestureCropsView_traitCollectionDidChange___
               objc_enumerationMutation(v8);
             }
 
-            [*(*(&v22 + 1) + 8 * k) _setPresentationValue:v6 forKey:@"opacity"];
+            [*(*(&v22 + 1) + 8 * k) _setPresentationValue:valueCopy forKey:@"opacity"];
           }
 
           v18 = [(NSArray *)v8 countByEnumeratingWithState:&v22 objects:v35 count:16];
@@ -454,12 +454,12 @@ double __68__SBInteractiveScreenshotGestureCropsView_traitCollectionDidChange___
 LABEL_30:
 }
 
-- (void)setCornerAlpha:(double)a3
+- (void)setCornerAlpha:(double)alpha
 {
   v15 = *MEMORY[0x277D85DE8];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_cornerAlpha = a3;
+    self->_cornerAlpha = alpha;
     [(SBInteractiveScreenshotGestureCropsView *)self _didSetCornerAlpha];
     v12 = 0u;
     v13 = 0u;
@@ -493,14 +493,14 @@ LABEL_30:
   }
 }
 
-- (void)setCornerColor:(id)a3
+- (void)setCornerColor:(id)color
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  colorCopy = color;
   cornerColor = self->_cornerColor;
-  if (cornerColor != v5 && ([(UIColor *)cornerColor isEqual:v5]& 1) == 0)
+  if (cornerColor != colorCopy && ([(UIColor *)cornerColor isEqual:colorCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_cornerColor, a3);
+    objc_storeStrong(&self->_cornerColor, color);
     [(SBInteractiveScreenshotGestureCropsView *)self _didSetCornerColor];
     v14 = 0u;
     v15 = 0u;
@@ -534,14 +534,14 @@ LABEL_30:
   }
 }
 
-- (void)setCropsCompositingFilter:(id)a3
+- (void)setCropsCompositingFilter:(id)filter
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  filterCopy = filter;
   cropsCompositingFilter = self->_cropsCompositingFilter;
-  if (cropsCompositingFilter != v5 && ([cropsCompositingFilter isEqual:v5] & 1) == 0)
+  if (cropsCompositingFilter != filterCopy && ([cropsCompositingFilter isEqual:filterCopy] & 1) == 0)
   {
-    objc_storeStrong(&self->_cropsCompositingFilter, a3);
+    objc_storeStrong(&self->_cropsCompositingFilter, filter);
     [(SBInteractiveScreenshotGestureCropsView *)self _didSetCompositingFilter];
     v15 = 0u;
     v16 = 0u;
@@ -563,8 +563,8 @@ LABEL_30:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v13 + 1) + 8 * v11) layer];
-          [v12 setCompositingFilter:self->_cropsCompositingFilter];
+          layer = [*(*(&v13 + 1) + 8 * v11) layer];
+          [layer setCompositingFilter:self->_cropsCompositingFilter];
 
           ++v11;
         }
@@ -578,33 +578,33 @@ LABEL_30:
   }
 }
 
-- (void)setCornerEdgeLength:(double)a3
+- (void)setCornerEdgeLength:(double)length
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_cornerEdgeLength = a3;
+    self->_cornerEdgeLength = length;
 
     [(SBInteractiveScreenshotGestureCropsView *)self _updateGeometryOrDeferLayoutUsingModelBounds];
   }
 }
 
-- (void)setGrabberLineWidth:(double)a3
+- (void)setGrabberLineWidth:(double)width
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_grabberLineWidth = a3;
+    self->_grabberLineWidth = width;
     [(SBInteractiveScreenshotGestureCropsView *)self _didSetGrabberLineWidth];
 
     [(SBInteractiveScreenshotGestureCropsView *)self _updateGeometryOrDeferLayoutUsingModelBounds];
   }
 }
 
-- (void)setLineAlpha:(double)a3
+- (void)setLineAlpha:(double)alpha
 {
   v15 = *MEMORY[0x277D85DE8];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_lineAlpha = a3;
+    self->_lineAlpha = alpha;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -637,14 +637,14 @@ LABEL_30:
   }
 }
 
-- (void)setLineColor:(id)a3
+- (void)setLineColor:(id)color
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  colorCopy = color;
   lineColor = self->_lineColor;
-  if (lineColor != v5 && ([(UIColor *)lineColor isEqual:v5]& 1) == 0)
+  if (lineColor != colorCopy && ([(UIColor *)lineColor isEqual:colorCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_lineColor, a3);
+    objc_storeStrong(&self->_lineColor, color);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -677,22 +677,22 @@ LABEL_30:
   }
 }
 
-- (void)setLineWidth:(double)a3
+- (void)setLineWidth:(double)width
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_lineWidth = a3;
+    self->_lineWidth = width;
 
     [(SBInteractiveScreenshotGestureCropsView *)self _updateGeometryOrDeferLayoutUsingModelBounds];
   }
 }
 
-- (void)setLineGrabberAlpha:(double)a3
+- (void)setLineGrabberAlpha:(double)alpha
 {
   v15 = *MEMORY[0x277D85DE8];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_lineGrabberAlpha = a3;
+    self->_lineGrabberAlpha = alpha;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -725,14 +725,14 @@ LABEL_30:
   }
 }
 
-- (void)setLineGrabberColor:(id)a3
+- (void)setLineGrabberColor:(id)color
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  colorCopy = color;
   lineGrabberColor = self->_lineGrabberColor;
-  if (lineGrabberColor != v5 && ([(UIColor *)lineGrabberColor isEqual:v5]& 1) == 0)
+  if (lineGrabberColor != colorCopy && ([(UIColor *)lineGrabberColor isEqual:colorCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_lineGrabberColor, a3);
+    objc_storeStrong(&self->_lineGrabberColor, color);
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -765,23 +765,23 @@ LABEL_30:
   }
 }
 
-- (void)setLineGrabberEdgeLength:(double)a3
+- (void)setLineGrabberEdgeLength:(double)length
 {
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_lineGrabberEdgeLength = a3;
+    self->_lineGrabberEdgeLength = length;
 
     [(SBInteractiveScreenshotGestureCropsView *)self _updateGeometryOrDeferLayoutUsingModelBounds];
   }
 }
 
-- (void)_updateGeometryForBounds:(CGRect)a3 shouldUsePresentationValues:(BOOL)a4
+- (void)_updateGeometryForBounds:(CGRect)bounds shouldUsePresentationValues:(BOOL)values
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  valuesCopy = values;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v136 = 0;
   v137 = &v136;
   v138 = 0x2020000000;
@@ -1054,7 +1054,7 @@ LABEL_30:
   v46 = v92 - v90;
   v47 = v88 - v86;
   topLeftCornerHorizontalView = self->_topLeftCornerHorizontalView;
-  if (v4)
+  if (valuesCopy)
   {
     [(UIView *)topLeftCornerHorizontalView sb_setPresentationBoundsAndPositionFromFrame:MinX, MinY, cornerEdgeLength, grabberLineWidth, v49];
     [(UIView *)self->_topLeftCornerVerticalView sb_setPresentationBoundsAndPositionFromFrame:v134, v117, v133, v119];

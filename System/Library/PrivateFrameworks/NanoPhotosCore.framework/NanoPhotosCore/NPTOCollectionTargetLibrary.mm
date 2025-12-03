@@ -1,16 +1,16 @@
 @interface NPTOCollectionTargetLibrary
 - (BOOL)isSyncNeeded;
-- (NPTOCollectionTargetLibrary)initWithCollectionTarget:(int64_t)a3 device:(id)a4;
+- (NPTOCollectionTargetLibrary)initWithCollectionTarget:(int64_t)target device:(id)device;
 - (NSDate)lastUpdatedDate;
 - (id)assetCollections;
-- (id)fetchAssetsInAssetCollection:(id)a3 options:(id)a4;
-- (id)fetchAssetsWithOptions:(id)a3;
-- (id)fetchKeyAssetsInAssetCollection:(id)a3 options:(id)a4;
-- (id)metadataForAssetCollection:(id)a3;
-- (unint64_t)countOfAssetsInAssetCollection:(id)a3 options:(id)a4;
-- (unint64_t)countOfAssetsWithOptions:(id)a3;
+- (id)fetchAssetsInAssetCollection:(id)collection options:(id)options;
+- (id)fetchAssetsWithOptions:(id)options;
+- (id)fetchKeyAssetsInAssetCollection:(id)collection options:(id)options;
+- (id)metadataForAssetCollection:(id)collection;
+- (unint64_t)countOfAssetsInAssetCollection:(id)collection options:(id)options;
+- (unint64_t)countOfAssetsWithOptions:(id)options;
 - (unint64_t)expectedCountOfAssets;
-- (unint64_t)expectedCountOfAssetsInAssetCollection:(id)a3;
+- (unint64_t)expectedCountOfAssetsInAssetCollection:(id)collection;
 - (void)_createLibraryCollectionTargetMapChangeObserverIfNeeded;
 - (void)_createSyncNeededChangeObserverIfNeeded;
 - (void)_createSyncingChangeObserverIfNeeded;
@@ -18,43 +18,43 @@
 - (void)_libraryAssetCollections;
 - (void)_libraryAssetUUIDs;
 - (void)_libraryInfo;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 @end
 
 @implementation NPTOCollectionTargetLibrary
 
-- (NPTOCollectionTargetLibrary)initWithCollectionTarget:(int64_t)a3 device:(id)a4
+- (NPTOCollectionTargetLibrary)initWithCollectionTarget:(int64_t)target device:(id)device
 {
-  v7 = a4;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = NPTOCollectionTargetLibrary;
   v8 = [(NPTOCollectionTargetLibrary *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_collectionTarget = a3;
-    objc_storeStrong(&v8->_device, a4);
+    v8->_collectionTarget = target;
+    objc_storeStrong(&v8->_device, device);
   }
 
   return v9;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
   [(NPTOCollectionTargetLibrary *)self _createLibraryCollectionTargetMapChangeObserverIfNeeded];
   [(NPTOCollectionTargetLibrary *)self _createSyncingChangeObserverIfNeeded];
   [(NPTOCollectionTargetLibrary *)self _createSyncNeededChangeObserverIfNeeded];
@@ -67,14 +67,14 @@
     if (!val[3])
     {
       objc_initWeak(&location, val);
-      v2 = [(NPTOCollectionTargetLibrary *)val _libraryInfo];
-      v3 = [MEMORY[0x277CCABD8] mainQueue];
+      _libraryInfo = [(NPTOCollectionTargetLibrary *)val _libraryInfo];
+      mainQueue = [MEMORY[0x277CCABD8] mainQueue];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __86__NPTOCollectionTargetLibrary__createLibraryCollectionTargetMapChangeObserverIfNeeded__block_invoke;
       v6[3] = &unk_27995B8C8;
       objc_copyWeak(&v7, &location);
-      v4 = [v2 collectionTargetMapChangeObserverWithQueue:v3 block:v6];
+      v4 = [_libraryInfo collectionTargetMapChangeObserverWithQueue:mainQueue block:v6];
       v5 = val[3];
       val[3] = v4;
 
@@ -91,14 +91,14 @@
     if (!val[4])
     {
       objc_initWeak(&location, val);
-      v2 = [(NPTOCollectionTargetLibrary *)val _libraryInfo];
-      v3 = [MEMORY[0x277CCABD8] mainQueue];
+      _libraryInfo = [(NPTOCollectionTargetLibrary *)val _libraryInfo];
+      mainQueue = [MEMORY[0x277CCABD8] mainQueue];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __67__NPTOCollectionTargetLibrary__createSyncingChangeObserverIfNeeded__block_invoke;
       v6[3] = &unk_27995B8C8;
       objc_copyWeak(&v7, &location);
-      v4 = [v2 syncingChangeObserverWithQueue:v3 block:v6];
+      v4 = [_libraryInfo syncingChangeObserverWithQueue:mainQueue block:v6];
       v5 = val[4];
       val[4] = v4;
 
@@ -115,14 +115,14 @@
     if (!val[5])
     {
       objc_initWeak(&location, val);
-      v2 = [(NPTOCollectionTargetLibrary *)val _libraryInfo];
-      v3 = [MEMORY[0x277CCABD8] mainQueue];
+      _libraryInfo = [(NPTOCollectionTargetLibrary *)val _libraryInfo];
+      mainQueue = [MEMORY[0x277CCABD8] mainQueue];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __70__NPTOCollectionTargetLibrary__createSyncNeededChangeObserverIfNeeded__block_invoke;
       v6[3] = &unk_27995B8C8;
       objc_copyWeak(&v7, &location);
-      v4 = [v2 syncNeededChangeObserverWithQueue:v3 block:v6];
+      v4 = [_libraryInfo syncNeededChangeObserverWithQueue:mainQueue block:v6];
       v5 = val[5];
       val[5] = v4;
 
@@ -135,15 +135,15 @@
 - (id)assetCollections
 {
   v3 = [MEMORY[0x277CBEB58] set];
-  v4 = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
+  _libraryAssetCollections = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __47__NPTOCollectionTargetLibrary_assetCollections__block_invoke;
   v11 = &unk_27995B878;
-  v12 = self;
+  selfCopy = self;
   v13 = v3;
   v5 = v3;
-  [v4 enumerateKeysAndObjectsUsingBlock:&v8];
+  [_libraryAssetCollections enumerateKeysAndObjectsUsingBlock:&v8];
 
   v6 = [v5 copy];
 
@@ -152,28 +152,28 @@
 
 - (void)_libraryAssetCollections
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [(NPTOCollectionTargetLibrary *)a1 _createLibraryCollectionTargetMapChangeObserverIfNeeded];
-    v3 = v2[6];
+    selfCopy = self;
+    [(NPTOCollectionTargetLibrary *)self _createLibraryCollectionTargetMapChangeObserverIfNeeded];
+    v3 = selfCopy[6];
     if (!v3)
     {
-      v4 = [(NPTOCollectionTargetLibrary *)v2 _libraryInfo];
-      v5 = [v4 collectionTargetMap];
-      v6 = [MEMORY[0x277CCABB0] numberWithInteger:v2[7]];
-      v7 = [v5 objectForKeyedSubscript:v6];
-      v8 = v2[6];
-      v2[6] = v7;
+      _libraryInfo = [(NPTOCollectionTargetLibrary *)selfCopy _libraryInfo];
+      collectionTargetMap = [_libraryInfo collectionTargetMap];
+      v6 = [MEMORY[0x277CCABB0] numberWithInteger:selfCopy[7]];
+      v7 = [collectionTargetMap objectForKeyedSubscript:v6];
+      v8 = selfCopy[6];
+      selfCopy[6] = v7;
 
-      v3 = v2[6];
+      v3 = selfCopy[6];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __47__NPTOCollectionTargetLibrary_assetCollections__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -245,94 +245,94 @@ LABEL_18:
   [*(a1 + 40) addObject:v19];
 }
 
-- (id)metadataForAssetCollection:(id)a3
+- (id)metadataForAssetCollection:(id)collection
 {
-  v4 = [a3 npto_uuid];
-  v5 = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  npto_uuid = [collection npto_uuid];
+  _libraryAssetCollections = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
+  v6 = [_libraryAssetCollections objectForKeyedSubscript:npto_uuid];
 
   v7 = [v6 objectForKeyedSubscript:@"metadata"];
 
   return v7;
 }
 
-- (id)fetchAssetsWithOptions:(id)a3
+- (id)fetchAssetsWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(NPTOCollectionTargetLibrary *)self _libraryAssetUUIDs];
+  optionsCopy = options;
+  _libraryAssetUUIDs = [(NPTOCollectionTargetLibrary *)self _libraryAssetUUIDs];
   v6 = MEMORY[0x277CD97A8];
-  v7 = [MEMORY[0x277CD97A8] npto_localIdentifiersWithUUIDs:v5];
-  v8 = [v6 fetchAssetsWithLocalIdentifiers:v7 options:v4];
+  v7 = [MEMORY[0x277CD97A8] npto_localIdentifiersWithUUIDs:_libraryAssetUUIDs];
+  v8 = [v6 fetchAssetsWithLocalIdentifiers:v7 options:optionsCopy];
 
   return v8;
 }
 
 - (void)_libraryAssetUUIDs
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v2 = [MEMORY[0x277CBEB58] set];
-    v3 = [(NPTOCollectionTargetLibrary *)v1 _libraryAssetCollections];
+    _libraryAssetCollections = [(NPTOCollectionTargetLibrary *)selfCopy _libraryAssetCollections];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __49__NPTOCollectionTargetLibrary__libraryAssetUUIDs__block_invoke;
     v6[3] = &unk_27995B8A0;
     v7 = v2;
     v4 = v2;
-    [v3 enumerateKeysAndObjectsUsingBlock:v6];
+    [_libraryAssetCollections enumerateKeysAndObjectsUsingBlock:v6];
 
-    v1 = [v4 copy];
+    selfCopy = [v4 copy];
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (id)fetchAssetsInAssetCollection:(id)a3 options:(id)a4
+- (id)fetchAssetsInAssetCollection:(id)collection options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
-  v9 = [v7 npto_uuid];
+  optionsCopy = options;
+  collectionCopy = collection;
+  _libraryAssetCollections = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
+  npto_uuid = [collectionCopy npto_uuid];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [_libraryAssetCollections objectForKeyedSubscript:npto_uuid];
   v11 = [v10 objectForKeyedSubscript:@"assetUUIDs"];
 
   v12 = MEMORY[0x277CD97A8];
   v13 = [MEMORY[0x277CD97A8] npto_localIdentifiersWithUUIDs:v11];
-  v14 = [v12 fetchAssetsWithLocalIdentifiers:v13 options:v6];
+  v14 = [v12 fetchAssetsWithLocalIdentifiers:v13 options:optionsCopy];
 
   return v14;
 }
 
-- (id)fetchKeyAssetsInAssetCollection:(id)a3 options:(id)a4
+- (id)fetchKeyAssetsInAssetCollection:(id)collection options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
-  v9 = [v7 npto_uuid];
+  optionsCopy = options;
+  collectionCopy = collection;
+  _libraryAssetCollections = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
+  npto_uuid = [collectionCopy npto_uuid];
 
-  v10 = [v8 objectForKeyedSubscript:v9];
+  v10 = [_libraryAssetCollections objectForKeyedSubscript:npto_uuid];
   v11 = [v10 objectForKeyedSubscript:@"keyAssetUUIDs"];
 
   v12 = MEMORY[0x277CD97A8];
   v13 = [MEMORY[0x277CD97A8] npto_localIdentifiersWithUUIDs:v11];
-  v14 = [v12 fetchAssetsWithLocalIdentifiers:v13 options:v6];
+  v14 = [v12 fetchAssetsWithLocalIdentifiers:v13 options:optionsCopy];
 
   return v14;
 }
 
-- (unint64_t)countOfAssetsWithOptions:(id)a3
+- (unint64_t)countOfAssetsWithOptions:(id)options
 {
-  v3 = [(NPTOCollectionTargetLibrary *)self fetchAssetsWithOptions:a3];
+  v3 = [(NPTOCollectionTargetLibrary *)self fetchAssetsWithOptions:options];
   v4 = [v3 count];
 
   return v4;
 }
 
-- (unint64_t)countOfAssetsInAssetCollection:(id)a3 options:(id)a4
+- (unint64_t)countOfAssetsInAssetCollection:(id)collection options:(id)options
 {
-  v4 = [(NPTOCollectionTargetLibrary *)self fetchAssetsInAssetCollection:a3 options:a4];
+  v4 = [(NPTOCollectionTargetLibrary *)self fetchAssetsInAssetCollection:collection options:options];
   v5 = [v4 count];
 
   return v5;
@@ -340,19 +340,19 @@ LABEL_18:
 
 - (unint64_t)expectedCountOfAssets
 {
-  v2 = [(NPTOCollectionTargetLibrary *)self _libraryAssetUUIDs];
-  v3 = [v2 count];
+  _libraryAssetUUIDs = [(NPTOCollectionTargetLibrary *)self _libraryAssetUUIDs];
+  v3 = [_libraryAssetUUIDs count];
 
   return v3;
 }
 
-- (unint64_t)expectedCountOfAssetsInAssetCollection:(id)a3
+- (unint64_t)expectedCountOfAssetsInAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
-  v6 = [v4 npto_uuid];
+  collectionCopy = collection;
+  _libraryAssetCollections = [(NPTOCollectionTargetLibrary *)self _libraryAssetCollections];
+  npto_uuid = [collectionCopy npto_uuid];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [_libraryAssetCollections objectForKeyedSubscript:npto_uuid];
   v8 = [v7 objectForKeyedSubscript:@"assetUUIDs"];
 
   v9 = [v8 count];
@@ -361,32 +361,32 @@ LABEL_18:
 
 - (NSDate)lastUpdatedDate
 {
-  v2 = [(NPTOCollectionTargetLibrary *)self _libraryInfo];
-  v3 = [v2 lastUpdatedDate];
+  _libraryInfo = [(NPTOCollectionTargetLibrary *)self _libraryInfo];
+  lastUpdatedDate = [_libraryInfo lastUpdatedDate];
 
-  return v3;
+  return lastUpdatedDate;
 }
 
 - (void)_libraryInfo
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
-      v4 = [[NPTOLibraryInfo alloc] initWithDevice:a1[8]];
-      v5 = v2[2];
-      v2[2] = v4;
+      v4 = [[NPTOLibraryInfo alloc] initWithDevice:self[8]];
+      v5 = selfCopy[2];
+      selfCopy[2] = v4;
 
-      v3 = v2[2];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_isSyncing
@@ -395,10 +395,10 @@ LABEL_18:
   {
     v1 = result;
     [(NPTOCollectionTargetLibrary *)result _createSyncingChangeObserverIfNeeded];
-    v2 = [(NPTOCollectionTargetLibrary *)v1 _libraryInfo];
-    v3 = [v2 isSyncing];
+    _libraryInfo = [(NPTOCollectionTargetLibrary *)v1 _libraryInfo];
+    isSyncing = [_libraryInfo isSyncing];
 
-    return v3;
+    return isSyncing;
   }
 
   return result;
@@ -408,12 +408,12 @@ LABEL_18:
 {
   if (self)
   {
-    v2 = self;
+    selfCopy = self;
     [(NPTOCollectionTargetLibrary *)self _createSyncNeededChangeObserverIfNeeded];
-    v3 = [(NPTOCollectionTargetLibrary *)v2 _libraryInfo];
-    v4 = [v3 isSyncNeeded];
+    _libraryInfo = [(NPTOCollectionTargetLibrary *)selfCopy _libraryInfo];
+    isSyncNeeded = [_libraryInfo isSyncNeeded];
 
-    LOBYTE(self) = v4;
+    LOBYTE(self) = isSyncNeeded;
   }
 
   return self;

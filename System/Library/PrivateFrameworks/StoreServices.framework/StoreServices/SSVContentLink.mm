@@ -1,21 +1,21 @@
 @interface SSVContentLink
 - (NSURL)URL;
-- (id)_URLSchemeWithApplication:(int64_t)a3;
-- (id)_stringForContentKind:(int64_t)a3;
-- (int64_t)_targetApplicationWithContentKind:(int64_t)a3;
+- (id)_URLSchemeWithApplication:(int64_t)application;
+- (id)_stringForContentKind:(int64_t)kind;
+- (int64_t)_targetApplicationWithContentKind:(int64_t)kind;
 @end
 
 @implementation SSVContentLink
 
 - (NSURL)URL
 {
-  v3 = [(SSVContentLink *)self targetApplication];
-  v4 = [(SSVContentLink *)self contentKind];
-  if (v3)
+  targetApplication = [(SSVContentLink *)self targetApplication];
+  contentKind = [(SSVContentLink *)self contentKind];
+  if (targetApplication)
   {
 LABEL_4:
     v6 = objc_alloc_init(MEMORY[0x1E696AF20]);
-    v7 = [(SSVContentLink *)self _URLSchemeWithApplication:v3];
+    v7 = [(SSVContentLink *)self _URLSchemeWithApplication:targetApplication];
     [v6 setScheme:v7];
 
     [v6 setPath:@"/"];
@@ -26,10 +26,10 @@ LABEL_4:
       [v8 addObject:v9];
 
       v10 = MEMORY[0x1E696AF60];
-      v11 = [(NSNumber *)self->_itemIdentifier stringValue];
+      stringValue = [(NSNumber *)self->_itemIdentifier stringValue];
       v12 = @"ids";
       v13 = v10;
-      categoryName = v11;
+      categoryName = stringValue;
     }
 
     else
@@ -39,14 +39,14 @@ LABEL_4:
         v16 = [MEMORY[0x1E696AF60] queryItemWithName:@"action" value:@"search"];
         [v8 addObject:v16];
 
-        v11 = [MEMORY[0x1E696AF60] queryItemWithName:@"term" value:self->_searchTerm];
-        [v8 addObject:v11];
+        stringValue = [MEMORY[0x1E696AF60] queryItemWithName:@"term" value:self->_searchTerm];
+        [v8 addObject:stringValue];
         goto LABEL_10;
       }
 
-      v19 = [(SSVContentLink *)self _stringForContentKind:v4];
-      v11 = v19;
-      if (v3 != 3 || !v19)
+      v19 = [(SSVContentLink *)self _stringForContentKind:contentKind];
+      stringValue = v19;
+      if (targetApplication != 3 || !v19)
       {
         if (self->_itemTitle || self->_providerName || self->_categoryName)
         {
@@ -67,7 +67,7 @@ LABEL_4:
       v20 = [MEMORY[0x1E696AF60] queryItemWithName:@"action" value:@"library-link"];
       [v8 addObject:v20];
 
-      v21 = [MEMORY[0x1E696AF60] queryItemWithName:@"kind" value:v11];
+      v21 = [MEMORY[0x1E696AF60] queryItemWithName:@"kind" value:stringValue];
       [v8 addObject:v21];
 
       if (self->_itemTitle)
@@ -111,10 +111,10 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v5 = [(SSVContentLink *)self _targetApplicationWithContentKind:v4];
+  v5 = [(SSVContentLink *)self _targetApplicationWithContentKind:contentKind];
   if (v5)
   {
-    v3 = v5;
+    targetApplication = v5;
     goto LABEL_4;
   }
 
@@ -125,42 +125,42 @@ LABEL_14:
   return v17;
 }
 
-- (id)_stringForContentKind:(int64_t)a3
+- (id)_stringForContentKind:(int64_t)kind
 {
-  if ((a3 - 2) > 6)
+  if ((kind - 2) > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E84ACCB8[a3 - 2];
+    return off_1E84ACCB8[kind - 2];
   }
 }
 
-- (int64_t)_targetApplicationWithContentKind:(int64_t)a3
+- (int64_t)_targetApplicationWithContentKind:(int64_t)kind
 {
-  if ((a3 - 1) > 7)
+  if ((kind - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return qword_1D4B38D60[a3 - 1];
+    return qword_1D4B38D60[kind - 1];
   }
 }
 
-- (id)_URLSchemeWithApplication:(int64_t)a3
+- (id)_URLSchemeWithApplication:(int64_t)application
 {
-  if ((a3 - 1) > 2)
+  if ((application - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E84ACCF0[a3 - 1];
+    return off_1E84ACCF0[application - 1];
   }
 }
 

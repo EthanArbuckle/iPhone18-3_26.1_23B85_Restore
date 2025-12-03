@@ -1,29 +1,29 @@
 @interface NIServerObservationSession
 - (BOOL)validateClientPermissions;
-- (NIServerObservationSession)initWithClientInfo:(const NIServerClientInfo *)a3 connection:(id)a4;
+- (NIServerObservationSession)initWithClientInfo:(const NIServerClientInfo *)info connection:(id)connection;
 - (id)signingIdentity;
 - (int)pid;
-- (void)activate:(id)a3;
+- (void)activate:(id)activate;
 - (void)dealloc;
-- (void)didDiscoverNearbyObject:(id)a3;
-- (void)didRemoveNearbyObjects:(id)a3 withReason:(unint64_t)a4;
-- (void)didUpdateAlgorithmState:(id)a3 forObject:(id)a4;
-- (void)didUpdateMotionState:(int64_t)a3;
-- (void)didUpdateNearbyObjects:(id)a3;
+- (void)didDiscoverNearbyObject:(id)object;
+- (void)didRemoveNearbyObjects:(id)objects withReason:(unint64_t)reason;
+- (void)didUpdateAlgorithmState:(id)state forObject:(id)object;
+- (void)didUpdateMotionState:(int64_t)state;
+- (void)didUpdateNearbyObjects:(id)objects;
 - (void)invalidate;
-- (void)object:(id)a3 didUpdateRegion:(id)a4 previousRegion:(id)a5;
-- (void)pause:(id)a3;
-- (void)runWithConfiguration:(id)a3 reply:(id)a4;
-- (void)uwbSessionInterruptedWithReason:(int64_t)a3 timestamp:(double)a4;
-- (void)uwbSessionInterruptionReasonEnded:(int64_t)a3 timestamp:(double)a4;
+- (void)object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion;
+- (void)pause:(id)pause;
+- (void)runWithConfiguration:(id)configuration reply:(id)reply;
+- (void)uwbSessionInterruptedWithReason:(int64_t)reason timestamp:(double)timestamp;
+- (void)uwbSessionInterruptionReasonEnded:(int64_t)ended timestamp:(double)timestamp;
 @end
 
 @implementation NIServerObservationSession
 
-- (NIServerObservationSession)initWithClientInfo:(const NIServerClientInfo *)a3 connection:(id)a4
+- (NIServerObservationSession)initWithClientInfo:(const NIServerClientInfo *)info connection:(id)connection
 {
-  v6 = a4;
-  if (!v6)
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     v14 = +[NSAssertionHandler currentHandler];
     [v14 handleFailureInMethod:a2 object:self file:@"NIServerObservationSession.mm" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
@@ -38,7 +38,7 @@
     atomic_store(0, &v7->_shouldDeliverUpdates);
     atomic_store(0, &v7->_activated);
     atomic_store(0, &v7->_runOnce);
-    v9 = [NIServerClient delegateProxyWithConnection:v6];
+    v9 = [NIServerClient delegateProxyWithConnection:connectionCopy];
     remote = v8->_remote;
     v8->_remote = v9;
 
@@ -88,24 +88,24 @@ LABEL_9:
     }
   }
 
-  v8 = [(PRAppStateMonitor *)self->_appStateMonitor isDaemon];
-  v9 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
-  v10 = [v9 isEqualToString:@"com.apple.locationd"];
+  isDaemon = [(PRAppStateMonitor *)self->_appStateMonitor isDaemon];
+  launchdJobLabel = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
+  v10 = [launchdJobLabel isEqualToString:@"com.apple.locationd"];
 
-  v11 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
-  v12 = [v11 isEqualToString:@"com.apple.intelligentroutingd"];
+  launchdJobLabel2 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
+  v12 = [launchdJobLabel2 isEqualToString:@"com.apple.intelligentroutingd"];
 
-  v13 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
-  v14 = [v13 isEqualToString:@"com.apple.milod"];
+  launchdJobLabel3 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
+  v14 = [launchdJobLabel3 isEqualToString:@"com.apple.milod"];
 
-  v15 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
-  v16 = [v15 isEqualToString:@"proxtool"];
+  monitoredProcessName = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
+  v16 = [monitoredProcessName isEqualToString:@"proxtool"];
 
-  v17 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
-  v18 = [v17 isEqualToString:@"Hello UWB"];
+  monitoredProcessName2 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
+  v18 = [monitoredProcessName2 isEqualToString:@"Hello UWB"];
 
-  v19 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
-  v20 = [v19 isEqualToString:@"com.apple.WirelessStress"];
+  launchdJobLabel4 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
+  v20 = [launchdJobLabel4 isEqualToString:@"com.apple.WirelessStress"];
 
   if (+[NIPlatformInfo isInternalBuild]&& ((v16 | v18 | v20) & 1) != 0)
   {
@@ -123,9 +123,9 @@ LABEL_10:
     return v21 & 1;
   }
 
-  if (v10 & 1 | ((v8 & 1) == 0))
+  if (v10 & 1 | ((isDaemon & 1) == 0))
   {
-    v21 = v8;
+    v21 = isDaemon;
   }
 
   else
@@ -141,10 +141,10 @@ LABEL_10:
   v3 = qword_1009F9820;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NIServerObservationSession *)self signingIdentity];
+    signingIdentity = [(NIServerObservationSession *)self signingIdentity];
     sessionIdentifier = self->_sessionIdentifier;
     v8 = 138478083;
-    v9 = v4;
+    v9 = signingIdentity;
     v10 = 2113;
     v11 = sessionIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#obsrvr, Invalidate: %{private}@ [%{private}@]", &v8, 0x16u);
@@ -198,40 +198,40 @@ LABEL_10:
   return v4;
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerObservationSession *)self signingIdentity];
+    signingIdentity = [(NIServerObservationSession *)self signingIdentity];
     sessionIdentifier = self->_sessionIdentifier;
     v8 = 138478083;
-    v9 = v6;
+    v9 = signingIdentity;
     v10 = 2113;
     v11 = sessionIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#obsrvr, Activate: %{private}@ [%{private}@]", &v8, 0x16u);
   }
 
-  v4[2](v4, &__NSDictionary0__struct, 0);
+  activateCopy[2](activateCopy, &__NSDictionary0__struct, 0);
   atomic_store(1u, &self->_activated);
 }
 
-- (void)runWithConfiguration:(id)a3 reply:(id)a4
+- (void)runWithConfiguration:(id)configuration reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NIServerObservationSession *)self signingIdentity];
+    signingIdentity = [(NIServerObservationSession *)self signingIdentity];
     sessionIdentifier = self->_sessionIdentifier;
     *buf = 138478339;
-    v19 = v9;
+    v19 = signingIdentity;
     v20 = 2113;
     v21 = sessionIdentifier;
     v22 = 2113;
-    v23 = v6;
+    v23 = configurationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#obsrvr, Run: %{private}@ [%{private}@]. Config: %{private}@", buf, 0x20u);
   }
 
@@ -240,12 +240,12 @@ LABEL_10:
   {
     v11 = +[NIServerHomeDeviceService sharedInstance];
     v12 = self->_sessionIdentifier;
-    v13 = [v6 copy];
+    v13 = [configurationCopy copy];
     [v11 addServiceClient:self identifier:v12 configuration:v13];
 
     atomic_store(1u, &self->_shouldDeliverUpdates);
     atomic_store(1u, &self->_runOnce);
-    v7[2](v7, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
@@ -255,81 +255,81 @@ LABEL_10:
     v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v15 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v14];
 
-    (v7)[2](v7, v15);
+    (replyCopy)[2](replyCopy, v15);
   }
 }
 
-- (void)pause:(id)a3
+- (void)pause:(id)pause
 {
-  v4 = a3;
+  pauseCopy = pause;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerObservationSession *)self signingIdentity];
+    signingIdentity = [(NIServerObservationSession *)self signingIdentity];
     sessionIdentifier = self->_sessionIdentifier;
     v8 = 138478083;
-    v9 = v6;
+    v9 = signingIdentity;
     v10 = 2113;
     v11 = sessionIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#obsrvr, Pause: %{private}@ [%{private}@]", &v8, 0x16u);
   }
 
   atomic_store(0, &self->_shouldDeliverUpdates);
-  v4[2](v4, 0);
+  pauseCopy[2](pauseCopy, 0);
 }
 
-- (void)didDiscoverNearbyObject:(id)a3
+- (void)didDiscoverNearbyObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v4 = atomic_load(&self->_shouldDeliverUpdates);
   if (v4)
   {
-    [(NIServerClient *)self->_remote didDiscoverNearbyObject:v5];
+    [(NIServerClient *)self->_remote didDiscoverNearbyObject:objectCopy];
   }
 }
 
-- (void)didRemoveNearbyObjects:(id)a3 withReason:(unint64_t)a4
+- (void)didRemoveNearbyObjects:(id)objects withReason:(unint64_t)reason
 {
-  v7 = a3;
+  objectsCopy = objects;
   v6 = atomic_load(&self->_shouldDeliverUpdates);
   if (v6)
   {
-    [(NIServerClient *)self->_remote didRemoveNearbyObjects:v7 withReason:a4];
+    [(NIServerClient *)self->_remote didRemoveNearbyObjects:objectsCopy withReason:reason];
   }
 }
 
-- (void)didUpdateNearbyObjects:(id)a3
+- (void)didUpdateNearbyObjects:(id)objects
 {
-  v5 = a3;
+  objectsCopy = objects;
   v4 = atomic_load(&self->_shouldDeliverUpdates);
   if (v4)
   {
-    [(NIServerClient *)self->_remote didUpdateNearbyObjects:v5];
+    [(NIServerClient *)self->_remote didUpdateNearbyObjects:objectsCopy];
   }
 }
 
-- (void)object:(id)a3 didUpdateRegion:(id)a4 previousRegion:(id)a5
+- (void)object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  objectCopy = object;
+  regionCopy = region;
+  previousRegionCopy = previousRegion;
   v10 = atomic_load(&self->_shouldDeliverUpdates);
   if (v10)
   {
-    [(NIServerClient *)self->_remote object:v11 didUpdateRegion:v8 previousRegion:v9];
+    [(NIServerClient *)self->_remote object:objectCopy didUpdateRegion:regionCopy previousRegion:previousRegionCopy];
   }
 }
 
-- (void)didUpdateMotionState:(int64_t)a3
+- (void)didUpdateMotionState:(int64_t)state
 {
   v3 = atomic_load(&self->_shouldDeliverUpdates);
   if (v3)
   {
-    [(NIServerClient *)self->_remote didUpdateMotionState:a3];
+    [(NIServerClient *)self->_remote didUpdateMotionState:state];
   }
 }
 
-- (void)uwbSessionInterruptedWithReason:(int64_t)a3 timestamp:(double)a4
+- (void)uwbSessionInterruptedWithReason:(int64_t)reason timestamp:(double)timestamp
 {
   v4 = atomic_load(&self->_activated);
   if (v4)
@@ -337,12 +337,12 @@ LABEL_10:
     v5 = atomic_load(&self->_runOnce);
     if (v5)
     {
-      [(NIServerClient *)self->_remote uwbSessionInterruptedWithReason:a3 timestamp:a4];
+      [(NIServerClient *)self->_remote uwbSessionInterruptedWithReason:reason timestamp:timestamp];
     }
   }
 }
 
-- (void)uwbSessionInterruptionReasonEnded:(int64_t)a3 timestamp:(double)a4
+- (void)uwbSessionInterruptionReasonEnded:(int64_t)ended timestamp:(double)timestamp
 {
   v4 = atomic_load(&self->_activated);
   if (v4)
@@ -350,19 +350,19 @@ LABEL_10:
     v5 = atomic_load(&self->_runOnce);
     if (v5)
     {
-      [(NIServerClient *)self->_remote uwbSessionInterruptionReasonEnded:a3 timestamp:a4];
+      [(NIServerClient *)self->_remote uwbSessionInterruptionReasonEnded:ended timestamp:timestamp];
     }
   }
 }
 
-- (void)didUpdateAlgorithmState:(id)a3 forObject:(id)a4
+- (void)didUpdateAlgorithmState:(id)state forObject:(id)object
 {
-  v8 = a3;
-  v6 = a4;
+  stateCopy = state;
+  objectCopy = object;
   v7 = atomic_load(&self->_shouldDeliverUpdates);
   if (v7)
   {
-    [(NIServerClient *)self->_remote didUpdateAlgorithmState:v8 forObject:v6];
+    [(NIServerClient *)self->_remote didUpdateAlgorithmState:stateCopy forObject:objectCopy];
   }
 }
 

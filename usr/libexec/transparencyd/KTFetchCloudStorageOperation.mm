@@ -1,5 +1,5 @@
 @interface KTFetchCloudStorageOperation
-+ (id)lastCKFetchWithDeps:(id)a3;
++ (id)lastCKFetchWithDeps:(id)deps;
 - (BOOL)shouldRetry;
 - (_TtC13transparencyd28KTFetchCloudStorageOperation)init;
 - (void)groupStart;
@@ -10,22 +10,22 @@
 - (BOOL)shouldRetry
 {
   v2 = *((swift_isaMask & self->super.super.super.super.super.super.isa) + 0xD8);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = v2();
 
   return v2 & 1;
 }
 
-+ (id)lastCKFetchWithDeps:(id)a3
++ (id)lastCKFetchWithDeps:(id)deps
 {
   v4 = sub_100095820(&qword_100383FB0, &unk_1002D6690);
   v5 = *(*(v4 - 8) + 64);
   __chkstk_darwin(v4 - 8);
   v7 = &v18 - v6;
-  v8 = a3;
-  v9 = [v8 smDataStore];
+  depsCopy = deps;
+  smDataStore = [depsCopy smDataStore];
   v10 = String._bridgeToObjectiveC()();
-  v11 = [v9 getSettingsDate:v10];
+  v11 = [smDataStore getSettingsDate:v10];
 
   swift_unknownObjectRelease();
   if (v11)
@@ -58,7 +58,7 @@
 
 - (void)groupStart
 {
-  v2 = self;
+  selfCopy = self;
   KTFetchCloudStorageOperation.groupStart()();
 }
 

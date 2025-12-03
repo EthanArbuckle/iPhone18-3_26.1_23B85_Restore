@@ -1,20 +1,20 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation ServiceDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___LocationUIProtocol];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  v6 = [[CLLocationButtonMechanism alloc] initWithConnection:v4];
+  v6 = [[CLLocationButtonMechanism alloc] initWithConnection:connectionCopy];
   if (v6)
   {
-    [v4 setExportedObject:v6];
-    [v4 resume];
+    [connectionCopy setExportedObject:v6];
+    [connectionCopy resume];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))

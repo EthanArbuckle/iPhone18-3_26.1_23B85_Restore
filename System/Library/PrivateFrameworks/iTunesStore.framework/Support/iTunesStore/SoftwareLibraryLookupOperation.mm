@@ -1,9 +1,9 @@
 @interface SoftwareLibraryLookupOperation
 - (NSArray)softwareLibraryItems;
-- (SoftwareLibraryLookupOperation)initWithBundleIdentifiers:(id)a3;
-- (SoftwareLibraryLookupOperation)initWithItemIdentifiers:(id)a3;
-- (id)_newSoftwareLibraryItemWithApplicationRecord:(id)a3;
-- (id)_newSoftwareLibraryItemWithContainerPath:(id)a3;
+- (SoftwareLibraryLookupOperation)initWithBundleIdentifiers:(id)identifiers;
+- (SoftwareLibraryLookupOperation)initWithItemIdentifiers:(id)identifiers;
+- (id)_newSoftwareLibraryItemWithApplicationRecord:(id)record;
+- (id)_newSoftwareLibraryItemWithContainerPath:(id)path;
 - (void)_loadFromBundleIdentifiers;
 - (void)_loadFromItemIdentifiers;
 - (void)run;
@@ -29,7 +29,7 @@
 - (void)_loadFromItemIdentifiers
 {
   v23 = objc_alloc_init(NSMutableArray);
-  v24 = self;
+  selfCopy = self;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -57,14 +57,14 @@
         {
           context = objc_autoreleasePoolPush();
           v10 = [LSApplicationRecord alloc];
-          v11 = [v9 unsignedLongLongValue];
+          unsignedLongLongValue = [v9 unsignedLongLongValue];
           v27 = v5;
-          v12 = [v10 initWithStoreItemIdentifier:v11 error:&v27];
+          v12 = [v10 initWithStoreItemIdentifier:unsignedLongLongValue error:&v27];
           v5 = v27;
 
           if (v12)
           {
-            v13 = [(SoftwareLibraryLookupOperation *)v24 _newSoftwareLibraryItemWithApplicationRecord:v12];
+            v13 = [(SoftwareLibraryLookupOperation *)selfCopy _newSoftwareLibraryItemWithApplicationRecord:v12];
             if (v13)
             {
               [v23 addObject:v13];
@@ -79,19 +79,19 @@
             v13 = +[SSLogConfig sharedConfig];
           }
 
-          v14 = [v13 shouldLog];
+          shouldLog = [v13 shouldLog];
           if ([v13 shouldLogToDisk])
           {
-            v14 |= 2u;
+            shouldLog |= 2u;
           }
 
-          v15 = [v13 OSLogObject];
-          if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+          oSLogObject = [v13 OSLogObject];
+          if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
           {
-            v14 &= 2u;
+            shouldLog &= 2u;
           }
 
-          if (v14)
+          if (shouldLog)
           {
             v16 = objc_opt_class();
             v32 = 138543874;
@@ -107,9 +107,9 @@
 
             if (v18)
             {
-              v15 = [NSString stringWithCString:v18 encoding:4, &v32, v22];
+              oSLogObject = [NSString stringWithCString:v18 encoding:4, &v32, v22];
               free(v18);
-              v21 = v15;
+              v21 = oSLogObject;
               SSFileLog();
               goto LABEL_21;
             }
@@ -138,12 +138,12 @@ LABEL_22:
   v5 = 0;
 LABEL_27:
 
-  [(SoftwareLibraryLookupOperation *)v24 lock];
+  [(SoftwareLibraryLookupOperation *)selfCopy lock];
   v19 = [v23 copy];
-  softwareLibraryItems = v24->_softwareLibraryItems;
-  v24->_softwareLibraryItems = v19;
+  softwareLibraryItems = selfCopy->_softwareLibraryItems;
+  selfCopy->_softwareLibraryItems = v19;
 
-  [(SoftwareLibraryLookupOperation *)v24 unlock];
+  [(SoftwareLibraryLookupOperation *)selfCopy unlock];
 }
 
 - (NSArray)softwareLibraryItems
@@ -155,28 +155,28 @@ LABEL_27:
   return v3;
 }
 
-- (SoftwareLibraryLookupOperation)initWithBundleIdentifiers:(id)a3
+- (SoftwareLibraryLookupOperation)initWithBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 &= 2u;
   }
@@ -194,7 +194,7 @@ LABEL_27:
       goto LABEL_12;
     }
 
-    v8 = [NSString stringWithCString:v10 encoding:4, &v17, v15];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, &v17, v15];
     free(v10);
     SSFileLog();
   }
@@ -205,7 +205,7 @@ LABEL_12:
   v11 = [(SoftwareLibraryLookupOperation *)&v16 init];
   if (v11)
   {
-    v12 = [v4 copy];
+    v12 = [identifiersCopy copy];
     bundleIDs = v11->_bundleIDs;
     v11->_bundleIDs = v12;
   }
@@ -213,28 +213,28 @@ LABEL_12:
   return v11;
 }
 
-- (SoftwareLibraryLookupOperation)initWithItemIdentifiers:(id)a3
+- (SoftwareLibraryLookupOperation)initWithItemIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[SSLogConfig sharedDaemonConfig];
   if (!v5)
   {
     v5 = +[SSLogConfig sharedConfig];
   }
 
-  v6 = [v5 shouldLog];
+  shouldLog = [v5 shouldLog];
   if ([v5 shouldLogToDisk])
   {
-    v7 = v6 | 2;
+    v7 = shouldLog | 2;
   }
 
   else
   {
-    v7 = v6;
+    v7 = shouldLog;
   }
 
-  v8 = [v5 OSLogObject];
-  if (!os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v5 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v7 &= 2u;
   }
@@ -252,7 +252,7 @@ LABEL_12:
       goto LABEL_12;
     }
 
-    v8 = [NSString stringWithCString:v10 encoding:4, &v17, v15];
+    oSLogObject = [NSString stringWithCString:v10 encoding:4, &v17, v15];
     free(v10);
     SSFileLog();
   }
@@ -263,7 +263,7 @@ LABEL_12:
   v11 = [(SoftwareLibraryLookupOperation *)&v16 init];
   if (v11)
   {
-    v12 = [v4 copy];
+    v12 = [identifiersCopy copy];
     itemIDs = v11->_itemIDs;
     v11->_itemIDs = v12;
   }
@@ -278,7 +278,7 @@ LABEL_12:
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v62 = self;
+  selfCopy = self;
   obj = self->_bundleIDs;
   v3 = [(NSArray *)obj countByEnumeratingWithState:&v72 objects:v83 count:16];
   v4 = &CFDictionaryGetValue_ptr;
@@ -313,8 +313,8 @@ LABEL_12:
 
       if (v12)
       {
-        v14 = [(SoftwareLibraryLookupOperation *)v62 _newSoftwareLibraryItemWithApplicationRecord:v12];
-        if (v14)
+        sharedDaemonConfig2 = [(SoftwareLibraryLookupOperation *)selfCopy _newSoftwareLibraryItemWithApplicationRecord:v12];
+        if (sharedDaemonConfig2)
         {
           goto LABEL_8;
         }
@@ -322,25 +322,25 @@ LABEL_12:
         goto LABEL_29;
       }
 
-      v15 = [v4[412] sharedDaemonConfig];
-      if (!v15)
+      sharedDaemonConfig = [v4[412] sharedDaemonConfig];
+      if (!sharedDaemonConfig)
       {
-        v15 = [v4[412] sharedConfig];
+        sharedDaemonConfig = [v4[412] sharedConfig];
       }
 
-      v16 = [v15 shouldLog];
-      if ([v15 shouldLogToDisk])
+      shouldLog = [sharedDaemonConfig shouldLog];
+      if ([sharedDaemonConfig shouldLogToDisk])
       {
-        v17 = v16 | 2;
+        v17 = shouldLog | 2;
       }
 
       else
       {
-        v17 = v16;
+        v17 = shouldLog;
       }
 
-      v18 = [v15 OSLogObject];
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      oSLogObject = [sharedDaemonConfig OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v19 = v17;
       }
@@ -371,9 +371,9 @@ LABEL_12:
           goto LABEL_23;
         }
 
-        v18 = [NSString stringWithCString:v22 encoding:4, &v77, v57];
+        oSLogObject = [NSString stringWithCString:v22 encoding:4, &v77, v57];
         free(v22);
-        v56 = v18;
+        v56 = oSLogObject;
         SSFileLog();
       }
 
@@ -398,27 +398,27 @@ LABEL_29:
 
       if (!v12)
       {
-        v14 = [v4[412] sharedDaemonConfig];
-        if (!v14)
+        sharedDaemonConfig2 = [v4[412] sharedDaemonConfig];
+        if (!sharedDaemonConfig2)
         {
-          v14 = [v4[412] sharedConfig];
+          sharedDaemonConfig2 = [v4[412] sharedConfig];
         }
 
-        v28 = [v14 shouldLog];
-        if ([v14 shouldLogToDisk])
+        shouldLog2 = [sharedDaemonConfig2 shouldLog];
+        if ([sharedDaemonConfig2 shouldLogToDisk])
         {
-          v28 |= 2u;
+          shouldLog2 |= 2u;
         }
 
-        v29 = [v14 OSLogObject];
-        if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [sharedDaemonConfig2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
-          v30 = v28;
+          v30 = shouldLog2;
         }
 
         else
         {
-          v30 = v28 & 2;
+          v30 = shouldLog2 & 2;
         }
 
         if (v30)
@@ -437,9 +437,9 @@ LABEL_29:
 
           if (v12)
           {
-            v29 = [NSString stringWithCString:v12 encoding:4, &v77, v57];
+            oSLogObject2 = [NSString stringWithCString:v12 encoding:4, &v77, v57];
             free(v12);
-            v56 = v29;
+            v56 = oSLogObject2;
             SSFileLog();
             v5 = &kCFTypeDictionaryValueCallBacks_ptr;
             v4 = &CFDictionaryGetValue_ptr;
@@ -463,28 +463,28 @@ LABEL_9:
         goto LABEL_30;
       }
 
-      v24 = [v12 applicationState];
-      v25 = [v24 isInstalled];
+      applicationState = [v12 applicationState];
+      isInstalled = [applicationState isInstalled];
 
-      if (v25)
+      if (isInstalled)
       {
-        v14 = objc_alloc_init(SSSoftwareLibraryItem);
-        [v14 setPlaceholder:{objc_msgSend(v12, "isPlaceholder")}];
-        v26 = [v12 bundleIdentifier];
-        [v14 _setValue:v26 forProperty:v59];
+        sharedDaemonConfig2 = objc_alloc_init(SSSoftwareLibraryItem);
+        [sharedDaemonConfig2 setPlaceholder:{objc_msgSend(v12, "isPlaceholder")}];
+        bundleIdentifier = [v12 bundleIdentifier];
+        [sharedDaemonConfig2 _setValue:bundleIdentifier forProperty:v59];
 
-        v27 = [v12 bundleVersion];
-        [v14 _setValue:v27 forProperty:v58];
+        bundleVersion = [v12 bundleVersion];
+        [sharedDaemonConfig2 _setValue:bundleVersion forProperty:v58];
 
         v13 = v7;
         v5 = &kCFTypeDictionaryValueCallBacks_ptr;
-        if (!v14)
+        if (!sharedDaemonConfig2)
         {
           goto LABEL_29;
         }
 
 LABEL_8:
-        [v60 addObject:{v14, v56}];
+        [v60 addObject:{sharedDaemonConfig2, v56}];
         v7 = v13;
         goto LABEL_9;
       }
@@ -504,28 +504,28 @@ LABEL_30:
   while (v33);
 LABEL_49:
 
-  v34 = v62;
-  if (![(NSArray *)v62->_bundleIDs count])
+  v34 = selfCopy;
+  if (![(NSArray *)selfCopy->_bundleIDs count])
   {
-    v35 = [v4[412] sharedDaemonConfig];
-    if (!v35)
+    sharedDaemonConfig3 = [v4[412] sharedDaemonConfig];
+    if (!sharedDaemonConfig3)
     {
-      v35 = [v4[412] sharedConfig];
+      sharedDaemonConfig3 = [v4[412] sharedConfig];
     }
 
-    v36 = [v35 shouldLog];
-    if ([v35 shouldLogToDisk])
+    shouldLog3 = [sharedDaemonConfig3 shouldLog];
+    if ([sharedDaemonConfig3 shouldLogToDisk])
     {
-      v37 = v36 | 2;
+      v37 = shouldLog3 | 2;
     }
 
     else
     {
-      v37 = v36;
+      v37 = shouldLog3;
     }
 
-    v38 = [v35 OSLogObject];
-    if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
+    oSLogObject3 = [sharedDaemonConfig3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
     {
       v39 = v37;
     }
@@ -548,9 +548,9 @@ LABEL_49:
       v43 = &kCFTypeDictionaryValueCallBacks_ptr;
       if (v42)
       {
-        v38 = [NSString stringWithCString:v42 encoding:4, &v77, v57];
+        oSLogObject3 = [NSString stringWithCString:v42 encoding:4, &v77, v57];
         free(v42);
-        v56 = v38;
+        v56 = oSLogObject3;
         SSFileLog();
         goto LABEL_62;
       }
@@ -586,19 +586,19 @@ LABEL_66:
       }
 
       v50 = *(*(&v66 + 1) + 8 * v49);
-      v51 = [v50 iTunesMetadata];
-      if ([v51 storeItemIdentifier])
+      iTunesMetadata = [v50 iTunesMetadata];
+      if ([iTunesMetadata storeItemIdentifier])
       {
-        v52 = [v50 applicationState];
-        if ([v52 isInstalled])
+        applicationState2 = [v50 applicationState];
+        if ([applicationState2 isInstalled])
         {
 
           goto LABEL_73;
         }
 
-        v53 = [v50 isPlaceholder];
+        isPlaceholder = [v50 isPlaceholder];
 
-        if (v53)
+        if (isPlaceholder)
         {
 LABEL_73:
           [v44 addObject:v50];
@@ -619,8 +619,8 @@ LABEL_76:
           v64[1] = 3221225472;
           v64[2] = sub_1001FE054;
           v64[3] = &unk_10032C338;
-          v34 = v62;
-          v64[4] = v62;
+          v34 = selfCopy;
+          v64[4] = selfCopy;
           v65 = v60;
           [v44 enumerateObjectsUsingBlock:v64];
 
@@ -642,15 +642,15 @@ LABEL_76:
   [(SoftwareLibraryLookupOperation *)v34 unlock];
 }
 
-- (id)_newSoftwareLibraryItemWithApplicationRecord:(id)a3
+- (id)_newSoftwareLibraryItemWithApplicationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 bundleContainerURL];
-  v6 = [v5 path];
+  recordCopy = record;
+  bundleContainerURL = [recordCopy bundleContainerURL];
+  path = [bundleContainerURL path];
 
-  v7 = [(SoftwareLibraryLookupOperation *)self _newSoftwareLibraryItemWithContainerPath:v6];
-  v8 = [v4 iTunesMetadata];
-  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 storeItemIdentifier]);
+  v7 = [(SoftwareLibraryLookupOperation *)self _newSoftwareLibraryItemWithContainerPath:path];
+  iTunesMetadata = [recordCopy iTunesMetadata];
+  v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [iTunesMetadata storeItemIdentifier]);
 
   if (!v7)
   {
@@ -666,28 +666,28 @@ LABEL_76:
     }
   }
 
-  [v7 setBeta:{objc_msgSend(v4, "isBeta")}];
-  [v7 setPlaceholder:{objc_msgSend(v4, "isPlaceholder")}];
-  [v7 setProfileValidated:{objc_msgSend(v4, "isProfileValidated")}];
-  [v7 setLaunchProhibited:{objc_msgSend(v4, "isLaunchProhibited")}];
-  v10 = [v4 bundleIdentifier];
-  [v7 _setValue:v10 forProperty:SSSoftwareLibraryItemBundleIdentifier];
+  [v7 setBeta:{objc_msgSend(recordCopy, "isBeta")}];
+  [v7 setPlaceholder:{objc_msgSend(recordCopy, "isPlaceholder")}];
+  [v7 setProfileValidated:{objc_msgSend(recordCopy, "isProfileValidated")}];
+  [v7 setLaunchProhibited:{objc_msgSend(recordCopy, "isLaunchProhibited")}];
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  [v7 _setValue:bundleIdentifier forProperty:SSSoftwareLibraryItemBundleIdentifier];
 
-  v11 = [v4 bundleVersion];
-  [v7 _setValue:v11 forProperty:SSSoftwareLibraryItemBundleVersion];
+  bundleVersion = [recordCopy bundleVersion];
+  [v7 _setValue:bundleVersion forProperty:SSSoftwareLibraryItemBundleVersion];
 
-  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 applicationDSID]);
+  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [recordCopy applicationDSID]);
   [v7 _setValue:v12 forProperty:SSSoftwareLibraryItemPropertyITunesAccountIdentifier];
 
-  v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 applicationFamilyID]);
+  v13 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [recordCopy applicationFamilyID]);
   [v7 _setValue:v13 forProperty:SSSoftwareLibraryItemPropertyFamilyAccountIdentifier];
 
   return v7;
 }
 
-- (id)_newSoftwareLibraryItemWithContainerPath:(id)a3
+- (id)_newSoftwareLibraryItemWithContainerPath:(id)path
 {
-  v3 = [a3 stringByAppendingPathComponent:@"iTunesMetadata.plist"];
+  v3 = [path stringByAppendingPathComponent:@"iTunesMetadata.plist"];
   if (v3)
   {
     v4 = [[NSDictionary alloc] initWithContentsOfFile:v3];

@@ -1,5 +1,5 @@
 @interface IDSWRMLinkRecommendationMetric
-- (IDSWRMLinkRecommendationMetric)initWithRecommendedLinkType:(unsigned int)a3 primaryLinkType:(unsigned int)a4 magnetState:(unsigned int)a5 infraWiFiState:(unsigned int)a6;
+- (IDSWRMLinkRecommendationMetric)initWithRecommendedLinkType:(unsigned int)type primaryLinkType:(unsigned int)linkType magnetState:(unsigned int)state infraWiFiState:(unsigned int)fiState;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -35,17 +35,17 @@
   return v3;
 }
 
-- (IDSWRMLinkRecommendationMetric)initWithRecommendedLinkType:(unsigned int)a3 primaryLinkType:(unsigned int)a4 magnetState:(unsigned int)a5 infraWiFiState:(unsigned int)a6
+- (IDSWRMLinkRecommendationMetric)initWithRecommendedLinkType:(unsigned int)type primaryLinkType:(unsigned int)linkType magnetState:(unsigned int)state infraWiFiState:(unsigned int)fiState
 {
   v11.receiver = self;
   v11.super_class = IDSWRMLinkRecommendationMetric;
   result = [(IDSWRMLinkRecommendationMetric *)&v11 init];
   if (result)
   {
-    result->_recommendedLinkType = a3;
-    result->_primaryLinkType = a4;
-    result->_magnetState = a5;
-    result->_infraWiFiState = a6;
+    result->_recommendedLinkType = type;
+    result->_primaryLinkType = linkType;
+    result->_magnetState = state;
+    result->_infraWiFiState = fiState;
   }
 
   return result;

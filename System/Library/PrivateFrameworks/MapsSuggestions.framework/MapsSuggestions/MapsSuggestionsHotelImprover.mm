@@ -1,15 +1,15 @@
 @interface MapsSuggestionsHotelImprover
-- (BOOL)improveEntry:(id)a3;
+- (BOOL)improveEntry:(id)entry;
 @end
 
 @implementation MapsSuggestionsHotelImprover
 
-- (BOOL)improveEntry:(id)a3
+- (BOOL)improveEntry:(id)entry
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  entryCopy = entry;
+  v4 = entryCopy;
+  if (!entryCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -29,7 +29,7 @@
     goto LABEL_19;
   }
 
-  if ([v3 type] == 13)
+  if ([entryCopy type] == 13)
   {
     v5 = [v4 containsKey:@"MapsSuggestionsScheduledTimeKey"];
     v6 = [v4 containsKey:@"MapsSuggestionsScheduledEndTimeKey"];
@@ -48,9 +48,9 @@
           v12 = GEOFindOrCreateLog();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
           {
-            v13 = [v4 title];
+            title = [v4 title];
             v31 = 138412290;
-            v32 = v13;
+            v32 = title;
             _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_ERROR, "Timezone information is missing for entry %@", &v31, 0xCu);
           }
         }
@@ -71,8 +71,8 @@
             v21 = MapsSuggestionsLocalizedHotelUntilCheckoutDateString(v22);
 
 LABEL_28:
-            v23 = [v4 undecoratedSubtitle];
-            v24 = [v23 isEqualToString:v21];
+            undecoratedSubtitle = [v4 undecoratedSubtitle];
+            v24 = [undecoratedSubtitle isEqualToString:v21];
 
             if ((v24 & 1) == 0)
             {

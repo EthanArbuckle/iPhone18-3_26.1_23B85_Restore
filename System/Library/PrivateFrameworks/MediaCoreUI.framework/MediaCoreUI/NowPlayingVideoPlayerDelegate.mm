@@ -1,51 +1,51 @@
 @interface NowPlayingVideoPlayerDelegate
 - (_TtC11MediaCoreUI29NowPlayingVideoPlayerDelegate)init;
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)videoOutput:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4;
-- (void)videoOutput:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4;
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)videoOutput:(id)output willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
+- (void)videoOutput:(id)output willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation NowPlayingVideoPlayerDelegate
 
-- (void)playerViewController:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
-  [v5 setShowsPlaybackControls_];
+  selfCopy = self;
+  [controllerCopy setShowsPlaybackControls_];
   sub_1C5B9862C(1);
 
   swift_unknownObjectRelease();
 }
 
-- (void)playerViewController:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)playerViewController:(id)controller willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1C5B97754(v6, a4);
+  selfCopy = self;
+  sub_1C5B97754(controllerCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)videoOutput:(id)a3 willBeginFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)videoOutput:(id)output willBeginFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v6 = self;
-  [a3 setShowsPlaybackControls_];
+  selfCopy = self;
+  [output setShowsPlaybackControls_];
   sub_1C5B9862C(1);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)videoOutput:(id)a3 willEndFullScreenPresentationWithAnimationCoordinator:(id)a4
+- (void)videoOutput:(id)output willEndFullScreenPresentationWithAnimationCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1C5B979C4(a3, a4);
+  selfCopy = self;
+  sub_1C5B979C4(output, coordinator);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }

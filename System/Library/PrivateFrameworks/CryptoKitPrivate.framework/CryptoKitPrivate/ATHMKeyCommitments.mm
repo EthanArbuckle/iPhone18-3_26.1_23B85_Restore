@@ -1,30 +1,30 @@
 @interface ATHMKeyCommitments
-+ (BOOL)verifyWithKeyCommitmentsData:(id)a3 numBuckets:(int64_t)a4 deploymentID:(id)a5;
-+ (id)getKeyIDWithKeyCommitmentsData:(id)a3;
++ (BOOL)verifyWithKeyCommitmentsData:(id)data numBuckets:(int64_t)buckets deploymentID:(id)d;
++ (id)getKeyIDWithKeyCommitmentsData:(id)data;
 - (_TtC16CryptoKitPrivate18ATHMKeyCommitments)init;
 @end
 
 @implementation ATHMKeyCommitments
 
-+ (BOOL)verifyWithKeyCommitmentsData:(id)a3 numBuckets:(int64_t)a4 deploymentID:(id)a5
++ (BOOL)verifyWithKeyCommitmentsData:(id)data numBuckets:(int64_t)buckets deploymentID:(id)d
 {
-  v7 = a3;
-  v8 = a5;
+  dataCopy = data;
+  dCopy = d;
   v9 = sub_1C0D7832C();
   v11 = v10;
 
   v12 = sub_1C0D78A9C();
   v14 = v13;
 
-  LOBYTE(v8) = _s16CryptoKitPrivate18ATHMKeyCommitmentsC6verify03keyE4Data10numBuckets12deploymentIDSb10Foundation0H0V_SiSStFZ_0(v9, v11, a4, v12, v14);
+  LOBYTE(dCopy) = _s16CryptoKitPrivate18ATHMKeyCommitmentsC6verify03keyE4Data10numBuckets12deploymentIDSb10Foundation0H0V_SiSStFZ_0(v9, v11, buckets, v12, v14);
 
   sub_1C0CF448C(v9, v11);
-  return v8 & 1;
+  return dCopy & 1;
 }
 
-+ (id)getKeyIDWithKeyCommitmentsData:(id)a3
++ (id)getKeyIDWithKeyCommitmentsData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_1C0D7832C();
   v6 = v5;
 

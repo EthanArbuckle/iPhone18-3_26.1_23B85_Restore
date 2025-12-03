@@ -1,20 +1,20 @@
 @interface MRUSpatialAudioPreferences
-- (MRUSpatialAudioPreferences)initWithMode:(int)a3 headTrackingEnabled:(BOOL)a4;
+- (MRUSpatialAudioPreferences)initWithMode:(int)mode headTrackingEnabled:(BOOL)enabled;
 - (id)description;
-- (id)descriptionForSpatialMode:(int)a3;
+- (id)descriptionForSpatialMode:(int)mode;
 @end
 
 @implementation MRUSpatialAudioPreferences
 
-- (MRUSpatialAudioPreferences)initWithMode:(int)a3 headTrackingEnabled:(BOOL)a4
+- (MRUSpatialAudioPreferences)initWithMode:(int)mode headTrackingEnabled:(BOOL)enabled
 {
   v7.receiver = self;
   v7.super_class = MRUSpatialAudioPreferences;
   result = [(MRUSpatialAudioPreferences *)&v7 init];
   if (result)
   {
-    result->_mode = a3;
-    result->_isHeadTrackingEnabled = a4;
+    result->_mode = mode;
+    result->_isHeadTrackingEnabled = enabled;
   }
 
   return result;
@@ -41,16 +41,16 @@
   return v8;
 }
 
-- (id)descriptionForSpatialMode:(int)a3
+- (id)descriptionForSpatialMode:(int)mode
 {
-  if (a3 > 3)
+  if (mode > 3)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_1E76663B8[a3];
+    return off_1E76663B8[mode];
   }
 }
 

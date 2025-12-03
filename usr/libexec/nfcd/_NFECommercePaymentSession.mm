@@ -1,17 +1,17 @@
 @interface _NFECommercePaymentSession
-+ (id)validateEntitlements:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
 - (BOOL)willStartSession;
-- (void)didStartSession:(id)a3;
-- (void)getAppletsWithCompletion:(id)a3;
-- (void)performECommercePayment:(id)a3 request:(id)a4 completion:(id)a5;
-- (void)validateEcommercePaymentRequest:(id)a3 completion:(id)a4;
+- (void)didStartSession:(id)session;
+- (void)getAppletsWithCompletion:(id)completion;
+- (void)performECommercePayment:(id)payment request:(id)request completion:(id)completion;
+- (void)validateEcommercePaymentRequest:(id)request completion:(id)completion;
 @end
 
 @implementation _NFECommercePaymentSession
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  if ([a3 eCommerceAccess])
+  if ([entitlements eCommerceAccess])
   {
     v5 = 0;
   }
@@ -23,9 +23,9 @@
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v11 = 45;
       if (isMetaClass)
@@ -40,7 +40,7 @@
     v12 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = object_getClass(a1);
+      v13 = object_getClass(self);
       if (class_isMetaClass(v13))
       {
         v14 = 43;
@@ -54,7 +54,7 @@
       *buf = 67109890;
       v26 = v14;
       v27 = 2082;
-      v28 = object_getClassName(a1);
+      v28 = object_getClassName(self);
       v29 = 2082;
       v30 = sel_getName(a2);
       v31 = 1024;
@@ -90,79 +90,79 @@
   return [(_NFSession *)&v4 willStartSession];
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v9.receiver = self;
   v9.super_class = _NFECommercePaymentSession;
-  v4 = a3;
-  [(_NFXPCSession *)&v9 didStartSession:v4];
+  sessionCopy = session;
+  [(_NFXPCSession *)&v9 didStartSession:sessionCopy];
   v5 = [_NFHardwareManager sharedHardwareManager:v9.receiver];
-  v6 = [v5 secureElementWrapper];
+  secureElementWrapper = [v5 secureElementWrapper];
   secureElementWrapper = self->_secureElementWrapper;
-  self->_secureElementWrapper = v6;
+  self->_secureElementWrapper = secureElementWrapper;
 
-  v8 = [(_NFXPCSession *)self remoteObject];
-  [v8 didStartSession:v4];
+  remoteObject = [(_NFXPCSession *)self remoteObject];
+  [remoteObject didStartSession:sessionCopy];
 }
 
-- (void)getAppletsWithCompletion:(id)a3
+- (void)getAppletsWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   v11.receiver = self;
   v11.super_class = _NFECommercePaymentSession;
-  v6 = [(_NFSession *)&v11 workQueue];
+  workQueue = [(_NFSession *)&v11 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005F3D8;
   block[3] = &unk_100316050;
-  v9 = v5;
+  v9 = completionCopy;
   v10 = a2;
   block[4] = self;
-  v7 = v5;
-  dispatch_async(v6, block);
+  v7 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)performECommercePayment:(id)a3 request:(id)a4 completion:(id)a5
+- (void)performECommercePayment:(id)payment request:(id)request completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  paymentCopy = payment;
+  requestCopy = request;
+  completionCopy = completion;
   v21.receiver = self;
   v21.super_class = _NFECommercePaymentSession;
-  v12 = [(_NFSession *)&v21 workQueue];
+  workQueue = [(_NFSession *)&v21 workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005F7EC;
   block[3] = &unk_1003165C0;
-  v19 = v11;
+  v19 = completionCopy;
   v20 = a2;
   block[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
-  dispatch_async(v12, block);
+  v17 = paymentCopy;
+  v18 = requestCopy;
+  v13 = requestCopy;
+  v14 = paymentCopy;
+  v15 = completionCopy;
+  dispatch_async(workQueue, block);
 }
 
-- (void)validateEcommercePaymentRequest:(id)a3 completion:(id)a4
+- (void)validateEcommercePaymentRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v16.receiver = self;
   v16.super_class = _NFECommercePaymentSession;
-  v9 = [(_NFSession *)&v16 workQueue];
+  workQueue = [(_NFSession *)&v16 workQueue];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10005FDAC;
   v12[3] = &unk_1003165E8;
-  v14 = v8;
+  v14 = completionCopy;
   v15 = a2;
   v12[4] = self;
-  v13 = v7;
-  v10 = v7;
-  v11 = v8;
-  dispatch_async(v9, v12);
+  v13 = requestCopy;
+  v10 = requestCopy;
+  v11 = completionCopy;
+  dispatch_async(workQueue, v12);
 }
 
 @end

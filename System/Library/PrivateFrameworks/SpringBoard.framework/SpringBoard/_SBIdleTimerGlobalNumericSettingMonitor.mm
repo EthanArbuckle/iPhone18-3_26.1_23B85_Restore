@@ -1,9 +1,9 @@
 @interface _SBIdleTimerGlobalNumericSettingMonitor
 - (BOOL)_updateCache;
 - (NSNumber)numericValue;
-- (_SBIdleTimerGlobalNumericSettingMonitor)initWithLabel:(id)a3 delegate:(id)a4 updatingForNotification:(id)a5 fetchingWith:(id)a6;
+- (_SBIdleTimerGlobalNumericSettingMonitor)initWithLabel:(id)label delegate:(id)delegate updatingForNotification:(id)notification fetchingWith:(id)with;
 - (id)formattedValue;
-- (void)_settingChanged:(id)a3;
+- (void)_settingChanged:(id)changed;
 - (void)dealloc;
 @end
 
@@ -21,21 +21,21 @@
   return settingCache;
 }
 
-- (_SBIdleTimerGlobalNumericSettingMonitor)initWithLabel:(id)a3 delegate:(id)a4 updatingForNotification:(id)a5 fetchingWith:(id)a6
+- (_SBIdleTimerGlobalNumericSettingMonitor)initWithLabel:(id)label delegate:(id)delegate updatingForNotification:(id)notification fetchingWith:(id)with
 {
-  v10 = a5;
-  v11 = a6;
+  notificationCopy = notification;
+  withCopy = with;
   v17.receiver = self;
   v17.super_class = _SBIdleTimerGlobalNumericSettingMonitor;
-  v12 = [(_SBIdleTimerGlobalSettingMonitor *)&v17 initWithLabel:a3 delegate:a4];
+  v12 = [(_SBIdleTimerGlobalSettingMonitor *)&v17 initWithLabel:label delegate:delegate];
   if (v12)
   {
-    v13 = [v11 copy];
+    v13 = [withCopy copy];
     fetchSettingFromSource = v12->_fetchSettingFromSource;
     v12->_fetchSettingFromSource = v13;
 
-    v15 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v15 addObserver:v12 selector:sel__settingChanged_ name:v10 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v12 selector:sel__settingChanged_ name:notificationCopy object:0];
   }
 
   return v12;
@@ -43,8 +43,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = _SBIdleTimerGlobalNumericSettingMonitor;
@@ -82,17 +82,17 @@ LABEL_8:
   return v5;
 }
 
-- (void)_settingChanged:(id)a3
+- (void)_settingChanged:(id)changed
 {
-  v4 = a3;
-  v3 = v4;
+  changedCopy = changed;
+  v3 = changedCopy;
   BSDispatchMain();
 }
 
 - (id)formattedValue
 {
-  v2 = [(_SBIdleTimerGlobalNumericSettingMonitor *)self numericValue];
-  v3 = [v2 description];
+  numericValue = [(_SBIdleTimerGlobalNumericSettingMonitor *)self numericValue];
+  v3 = [numericValue description];
 
   return v3;
 }

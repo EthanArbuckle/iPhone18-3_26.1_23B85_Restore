@@ -1,22 +1,22 @@
 @interface _UITabSelectionView
 - (CGRect)bounds;
 - (CGRect)frame;
-- (_UITabSelectionView)initWithCoder:(id)a3;
+- (_UITabSelectionView)initWithCoder:(id)coder;
 - (id)currentColorMatrixValue;
-- (void)setBackdropLayer:(id)a3;
+- (void)setBackdropLayer:(id)layer;
 - (void)updateBackdropGeometry;
 @end
 
 @implementation _UITabSelectionView
 
-- (void)setBackdropLayer:(id)a3
+- (void)setBackdropLayer:(id)layer
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____UITabSelectionView_backdropLayer);
-  *(&self->super.super.super.isa + OBJC_IVAR____UITabSelectionView_backdropLayer) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR____UITabSelectionView_backdropLayer) = layer;
+  layerCopy = layer;
 }
 
-- (_UITabSelectionView)initWithCoder:(id)a3
+- (_UITabSelectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____UITabSelectionView_backdropLayer) = 0;
   result = sub_18A4A8398();
@@ -50,17 +50,17 @@
 
 - (void)updateBackdropGeometry
 {
-  v2 = self;
+  selfCopy = self;
   sub_188FE31B4();
 }
 
 - (id)currentColorMatrixValue
 {
-  v2 = self;
-  v3 = [(UIView *)v2 traitCollection];
-  v4 = [(UITraitCollection *)v3 userInterfaceStyle];
+  selfCopy = self;
+  traitCollection = [(UIView *)selfCopy traitCollection];
+  userInterfaceStyle = [(UITraitCollection *)traitCollection userInterfaceStyle];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v5 = 1.082;
   }
@@ -70,7 +70,7 @@
     v5 = 1.185;
   }
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v6 = -0.011;
   }
@@ -80,7 +80,7 @@
     v6 = -0.005;
   }
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     v7 = 0.135;
   }
@@ -91,7 +91,7 @@
   }
 
   v8 = objc_opt_self();
-  v9 = vcltz_s32(vshl_n_s32(vdup_n_s32(v4 == 2), 0x1FuLL));
+  v9 = vcltz_s32(vshl_n_s32(vdup_n_s32(userInterfaceStyle == 2), 0x1FuLL));
   v13[3] = 0;
   *&v13[4] = v7;
   v14 = vbsl_s8(v9, 0x3F80624EBD0B4396, 0x3F933333BC75C28FLL);

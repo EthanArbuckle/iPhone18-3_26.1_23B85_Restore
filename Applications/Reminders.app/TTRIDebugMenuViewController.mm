@@ -1,7 +1,7 @@
 @interface TTRIDebugMenuViewController
 - (UITableView)tableView;
-- (_TtC9Reminders27TTRIDebugMenuViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didTapDone:(id)a3;
+- (_TtC9Reminders27TTRIDebugMenuViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didTapDone:(id)done;
 - (void)viewDidLoad;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10017F760();
 }
 
@@ -20,14 +20,14 @@
   return Strong;
 }
 
-- (void)didTapDone:(id)a3
+- (void)didTapDone:(id)done
 {
-  v4 = a3;
-  v5 = self;
+  doneCopy = done;
+  selfCopy = self;
   sub_1001829CC();
 }
 
-- (_TtC9Reminders27TTRIDebugMenuViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9Reminders27TTRIDebugMenuViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

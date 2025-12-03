@@ -1,17 +1,17 @@
 @interface CKAudioRecorderAccessibility
-- (void)startRecordingForRaiseGesture:(BOOL)a3 shouldPlaySound:(BOOL)a4;
+- (void)startRecordingForRaiseGesture:(BOOL)gesture shouldPlaySound:(BOOL)sound;
 @end
 
 @implementation CKAudioRecorderAccessibility
 
-- (void)startRecordingForRaiseGesture:(BOOL)a3 shouldPlaySound:(BOOL)a4
+- (void)startRecordingForRaiseGesture:(BOOL)gesture shouldPlaySound:(BOOL)sound
 {
-  v4 = a4;
-  v5 = a3;
+  soundCopy = sound;
+  gestureCopy = gesture;
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], &stru_2A21515E8);
   v7.receiver = self;
   v7.super_class = CKAudioRecorderAccessibility;
-  [(CKAudioRecorderAccessibility *)&v7 startRecordingForRaiseGesture:v5 shouldPlaySound:v4];
+  [(CKAudioRecorderAccessibility *)&v7 startRecordingForRaiseGesture:gestureCopy shouldPlaySound:soundCopy];
 }
 
 @end

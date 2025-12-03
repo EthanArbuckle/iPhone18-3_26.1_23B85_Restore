@@ -1,15 +1,15 @@
 @interface ProcessCapability.AssertionObserver
 - (_TtCO16BrowserEngineKit17ProcessCapabilityP33_0A18377BB6CEC07907AEB25ED9D7270217AssertionObserver)init;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
 @end
 
 @implementation ProcessCapability.AssertionObserver
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
-  v5 = a3;
-  v6 = self;
-  sub_19D504F00(v5);
+  assertionCopy = assertion;
+  selfCopy = self;
+  sub_19D504F00(assertionCopy);
 }
 
 - (_TtCO16BrowserEngineKit17ProcessCapabilityP33_0A18377BB6CEC07907AEB25ED9D7270217AssertionObserver)init

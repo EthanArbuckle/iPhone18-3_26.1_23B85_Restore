@@ -10,11 +10,11 @@
 - (id)_cacheControlParameters
 {
   v22 = *MEMORY[0x1E69E9840];
-  v16 = [MEMORY[0x1E695DF90] dictionary];
-  v2 = [a1 ic_valueForHTTPHeaderField:@"Cache-Control"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v2 = [self ic_valueForHTTPHeaderField:@"Cache-Control"];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
     v15 = v2;
     v4 = [v2 componentsSeparatedByString:{@", "}];
     v17 = 0u;
@@ -39,12 +39,12 @@
           if ([v9 count] == 2)
           {
             v10 = [v9 objectAtIndex:0];
-            v11 = [v10 stringByTrimmingCharactersInSet:v3];
+            v11 = [v10 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
             v12 = [v9 objectAtIndex:1];
-            v13 = [v12 stringByTrimmingCharactersInSet:v3];
+            v13 = [v12 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
-            [v16 setObject:v13 forKey:v11];
+            [dictionary setObject:v13 forKey:v11];
           }
         }
 
@@ -57,7 +57,7 @@
     v2 = v15;
   }
 
-  return v16;
+  return dictionary;
 }
 
 - (id)ic_valueForHTTPHeaderField:()ICAdditions
@@ -69,7 +69,7 @@
   v15 = __Block_byref_object_copy__26763;
   v16 = __Block_byref_object_dispose__26764;
   v17 = 0;
-  v5 = [a1 allHeaderFields];
+  allHeaderFields = [self allHeaderFields];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__NSHTTPURLResponse_ICAdditions__ic_valueForHTTPHeaderField___block_invoke;
@@ -77,7 +77,7 @@
   v6 = v4;
   v10 = v6;
   v11 = &v12;
-  [v5 enumerateKeysAndObjectsUsingBlock:v9];
+  [allHeaderFields enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -87,8 +87,8 @@
 
 - (double)cacheControlMaxAge
 {
-  v1 = [a1 _cacheControlParameters];
-  v2 = [v1 objectForKey:@"max-age"];
+  _cacheControlParameters = [self _cacheControlParameters];
+  v2 = [_cacheControlParameters objectForKey:@"max-age"];
   v3 = v2;
   if (v2)
   {
@@ -106,7 +106,7 @@
 
 - (BOOL)hasCacheControl
 {
-  v1 = [a1 ic_valueForHTTPHeaderField:@"Cache-Control"];
+  v1 = [self ic_valueForHTTPHeaderField:@"Cache-Control"];
   v2 = v1 != 0;
 
   return v2;

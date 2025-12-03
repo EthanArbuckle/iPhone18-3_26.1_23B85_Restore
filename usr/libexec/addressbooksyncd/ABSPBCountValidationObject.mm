@@ -1,22 +1,22 @@
 @interface ABSPBCountValidationObject
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRawCount:(BOOL)a3;
-- (void)setHasShowAlert:(BOOL)a3;
-- (void)setHasUnifiedCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRawCount:(BOOL)count;
+- (void)setHasShowAlert:(BOOL)alert;
+- (void)setHasUnifiedCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ABSPBCountValidationObject
 
-- (void)setHasRawCount:(BOOL)a3
+- (void)setHasRawCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasUnifiedCount:(BOOL)a3
+- (void)setHasUnifiedCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasShowAlert:(BOOL)a3
+- (void)setHasShowAlert:(BOOL)alert
 {
-  if (a3)
+  if (alert)
   {
     v3 = 8;
   }
@@ -64,8 +64,8 @@
   v7.receiver = self;
   v7.super_class = ABSPBCountValidationObject;
   v3 = [(ABSPBCountValidationObject *)&v7 description];
-  v4 = [(ABSPBCountValidationObject *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(ABSPBCountValidationObject *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -128,9 +128,9 @@ LABEL_6:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -181,14 +181,14 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_rawCount;
-    *(v4 + 36) |= 2u;
+    toCopy[2] = self->_rawCount;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -207,8 +207,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[3] = self->_unifiedCount;
-  *(v4 + 36) |= 4u;
+  toCopy[3] = self->_unifiedCount;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -222,21 +222,21 @@ LABEL_4:
   }
 
 LABEL_11:
-  v4[1] = self->_favoritesCount;
-  *(v4 + 36) |= 1u;
+  toCopy[1] = self->_favoritesCount;
+  *(toCopy + 36) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_5:
-    *(v4 + 32) = self->_showAlert;
-    *(v4 + 36) |= 8u;
+    *(toCopy + 32) = self->_showAlert;
+    *(toCopy + 36) |= 8u;
   }
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -288,57 +288,57 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_rawCount != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_rawCount != *(equalCopy + 2))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_19;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_unifiedCount != *(v4 + 3))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_unifiedCount != *(equalCopy + 3))
     {
       goto LABEL_19;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_19;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_favoritesCount != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_favoritesCount != *(equalCopy + 1))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_19;
   }
 
-  v5 = (*(v4 + 36) & 8) == 0;
+  v5 = (*(equalCopy + 36) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0)
+    if ((*(equalCopy + 36) & 8) == 0)
     {
 LABEL_19:
       v5 = 0;
@@ -347,13 +347,13 @@ LABEL_19:
 
     if (self->_showAlert)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_19;
     }
@@ -420,15 +420,15 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_rawCount = *(v4 + 2);
+    self->_rawCount = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -441,14 +441,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 4) == 0)
+  else if ((*(fromCopy + 36) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_unifiedCount = *(v4 + 3);
+  self->_unifiedCount = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 1) == 0)
   {
 LABEL_4:
@@ -461,12 +461,12 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_favoritesCount = *(v4 + 1);
+  self->_favoritesCount = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 36) & 8) != 0)
+  if ((*(fromCopy + 36) & 8) != 0)
   {
 LABEL_5:
-    self->_showAlert = *(v4 + 32);
+    self->_showAlert = *(fromCopy + 32);
     *&self->_has |= 8u;
   }
 

@@ -1,7 +1,7 @@
 @interface SBHReusableViewControllerMap
 - (SBHReusableViewControllerMap)init;
 - (id)dequeueReusableViewController;
-- (void)recycleViewController:(id)a3;
+- (void)recycleViewController:(id)controller;
 @end
 
 @implementation SBHReusableViewControllerMap
@@ -25,27 +25,27 @@
 
 - (id)dequeueReusableViewController
 {
-  v3 = [(NSMutableSet *)self->_recycledViewControllers anyObject];
-  if (v3)
+  anyObject = [(NSMutableSet *)self->_recycledViewControllers anyObject];
+  if (anyObject)
   {
-    [(NSMutableSet *)self->_recycledViewControllers removeObject:v3];
+    [(NSMutableSet *)self->_recycledViewControllers removeObject:anyObject];
   }
 
-  return v3;
+  return anyObject;
 }
 
-- (void)recycleViewController:(id)a3
+- (void)recycleViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SBHReusableViewControllerMap *)self recycledViewControllerCount];
-  if (v5 < [(SBHReusableViewControllerMap *)self maximumRecycledViewControllerCount])
+  controllerCopy = controller;
+  recycledViewControllerCount = [(SBHReusableViewControllerMap *)self recycledViewControllerCount];
+  if (recycledViewControllerCount < [(SBHReusableViewControllerMap *)self maximumRecycledViewControllerCount])
   {
     v6 = MEMORY[0x1E69DD250];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __54__SBHReusableViewControllerMap_recycleViewController___block_invoke;
     v8[3] = &unk_1E8088C90;
-    v7 = v4;
+    v7 = controllerCopy;
     v9 = v7;
     [v6 performWithoutAnimation:v8];
     [v7 removeFromParentViewController];

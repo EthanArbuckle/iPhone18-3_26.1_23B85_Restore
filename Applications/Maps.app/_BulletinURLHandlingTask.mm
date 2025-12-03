@@ -1,5 +1,5 @@
 @interface _BulletinURLHandlingTask
-- (BOOL)_validParameters:(id)a3 data:(id *)a4;
+- (BOOL)_validParameters:(id)parameters data:(id *)data;
 - (void)performTask;
 @end
 
@@ -8,15 +8,15 @@
 - (void)performTask
 {
   [(RichMapsActivityCreatingTaskImpl *)self taskStarted];
-  v67 = self;
+  selfCopy = self;
   v3 = [(URLHandlingTask *)self url];
-  v4 = [v3 query];
+  query = [v3 query];
   v66 = v3;
-  if (![v4 length])
+  if (![query length])
   {
-    v5 = [v3 resourceSpecifier];
+    resourceSpecifier = [v3 resourceSpecifier];
 
-    v4 = v5;
+    query = resourceSpecifier;
   }
 
   v6 = objc_alloc_init(NSMutableDictionary);
@@ -24,8 +24,8 @@
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v65 = v4;
-  v7 = [v4 componentsSeparatedByString:@"&"];
+  v65 = query;
+  v7 = [query componentsSeparatedByString:@"&"];
   v8 = [v7 countByEnumeratingWithState:&v73 objects:v80 count:16];
   if (v8)
   {
@@ -57,8 +57,8 @@
   }
 
   v72 = 0;
-  v16 = v67;
-  v17 = [(_BulletinURLHandlingTask *)v67 _validParameters:v6 data:&v72];
+  v16 = selfCopy;
+  v17 = [(_BulletinURLHandlingTask *)selfCopy _validParameters:v6 data:&v72];
   v18 = v72;
   if (v17)
   {
@@ -69,10 +69,10 @@
       v21 = v20;
       if (v20)
       {
-        v22 = [(SyncedBookmarkRepr *)v20 richMapsActivity];
-        if (v22)
+        richMapsActivity = [(SyncedBookmarkRepr *)v20 richMapsActivity];
+        if (richMapsActivity)
         {
-          [(RichMapsActivityCreatingTaskImpl *)v67 taskFinished:v22];
+          [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFinished:richMapsActivity];
 LABEL_84:
 
           goto LABEL_85;
@@ -101,7 +101,7 @@ LABEL_84:
 LABEL_26:
         v25 = v24;
         v26 = [[RichMapsActivity alloc] initWithMapsAction:v24];
-        [(RichMapsActivityCreatingTaskImpl *)v67 taskFinished:v26];
+        [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFinished:v26];
 
 LABEL_27:
 LABEL_85:
@@ -141,7 +141,7 @@ LABEL_47:
 
 LABEL_48:
 
-      [(RichMapsActivityCreatingTaskImpl *)v67 taskFailed];
+      [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFailed];
       goto LABEL_85;
     }
 
@@ -173,7 +173,7 @@ LABEL_48:
 
       v42 = [[PresentParkedCarAction alloc] initWithParkedCarAction:v31];
       v43 = [[RichMapsActivity alloc] initWithMapsAction:v42];
-      [(RichMapsActivityCreatingTaskImpl *)v67 taskFinished:v43];
+      [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFinished:v43];
 
       goto LABEL_53;
     }
@@ -186,8 +186,8 @@ LABEL_48:
       v69 = 0u;
       v70 = 0u;
       v63 = v71 = 0u;
-      v32 = [v63 queryItems];
-      v33 = [v32 countByEnumeratingWithState:&v68 objects:v77 count:16];
+      queryItems = [v63 queryItems];
+      v33 = [queryItems countByEnumeratingWithState:&v68 objects:v77 count:16];
       if (v33)
       {
         v34 = v33;
@@ -198,12 +198,12 @@ LABEL_38:
         {
           if (*v69 != v35)
           {
-            objc_enumerationMutation(v32);
+            objc_enumerationMutation(queryItems);
           }
 
           v37 = *(*(&v68 + 1) + 8 * v36);
-          v38 = [v37 name];
-          v39 = [v38 isEqualToString:@"uniqueID"];
+          name = [v37 name];
+          v39 = [name isEqualToString:@"uniqueID"];
 
           if (v39)
           {
@@ -212,7 +212,7 @@ LABEL_38:
 
           if (v34 == ++v36)
           {
-            v34 = [v32 countByEnumeratingWithState:&v68 objects:v77 count:16];
+            v34 = [queryItems countByEnumeratingWithState:&v68 objects:v77 count:16];
             if (v34)
             {
               goto LABEL_38;
@@ -222,16 +222,16 @@ LABEL_38:
           }
         }
 
-        v48 = [v37 value];
+        value = [v37 value];
 
-        if (!v48)
+        if (!value)
         {
           goto LABEL_59;
         }
 
-        v49 = [[OpenCommuteEntryAction alloc] initWithEntry:v48];
+        v49 = [[OpenCommuteEntryAction alloc] initWithEntry:value];
         v50 = [[RichMapsActivity alloc] initWithMapsAction:v49];
-        [(RichMapsActivityCreatingTaskImpl *)v67 taskFinished:v50];
+        [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFinished:v50];
 
         v19 = v64;
         goto LABEL_86;
@@ -240,7 +240,7 @@ LABEL_38:
 LABEL_44:
 
 LABEL_59:
-      v16 = v67;
+      v16 = selfCopy;
       v44 = v63;
       v19 = v64;
 LABEL_60:
@@ -251,13 +251,13 @@ LABEL_60:
     if ([v19 isEqualToString:@"LowFuel"])
     {
       v44 = [v6 objectForKeyedSubscript:@"engineType"];
-      v45 = [v44 integerValue];
-      if (v45)
+      integerValue = [v44 integerValue];
+      if (integerValue)
       {
-        v46 = [[LowFuelAction alloc] initWithEngineType:v45];
+        v46 = [[LowFuelAction alloc] initWithEngineType:integerValue];
         [(MapsAction *)v46 setUserLocationAccuracy:kCLLocationAccuracyKilometer];
         v47 = [[RichMapsActivity alloc] initWithMapsAction:v46];
-        [(RichMapsActivityCreatingTaskImpl *)v67 taskFinished:v47];
+        [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFinished:v47];
 
         goto LABEL_86;
       }
@@ -273,7 +273,7 @@ LABEL_60:
         v21 = v52;
         v25 = [[SharedTripAction alloc] initWithSharedTrip:v52];
         v53 = [[RichMapsActivity alloc] initWithMapsAction:v25];
-        [(RichMapsActivityCreatingTaskImpl *)v67 taskFinished:v53];
+        [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFinished:v53];
 
         goto LABEL_27;
       }
@@ -304,7 +304,7 @@ LABEL_61:
         v55 = [v6 objectForKeyedSubscript:@"path"];
         [(PresentParkedCarAction *)v42 setPath:[(RichMapsActivity *)v55 isEqualToString:@"EXPIRED_MAPS"]];
         v56 = [[RichMapsActivity alloc] initWithMapsAction:v42];
-        [(RichMapsActivityCreatingTaskImpl *)v67 taskFinished:v56];
+        [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFinished:v56];
 
         goto LABEL_72;
       }
@@ -313,7 +313,7 @@ LABEL_61:
       {
         v21 = [[GEOMapRegion alloc] initWithData:v18];
         v57 = [v6 objectForKeyedSubscript:@"MapsPushNotificationTypeOfflineMapsSuggestionRegionName"];
-        v22 = v57;
+        richMapsActivity = v57;
         if (v21)
         {
           if (v57)
@@ -321,13 +321,13 @@ LABEL_61:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v58 = [[NSData alloc] initWithBase64EncodedString:v22 options:1];
+              v58 = [[NSData alloc] initWithBase64EncodedString:richMapsActivity options:1];
               v59 = [[NSString alloc] initWithData:v58 encoding:4];
               v60 = objc_alloc_init(OpenOfflineMapsManagementAction);
               [(OpenOfflineMapsManagementAction *)v60 setDownloadRegion:v21];
               [(OpenOfflineMapsManagementAction *)v60 setDownloadRegionName:v59];
               v61 = [[RichMapsActivity alloc] initWithMapsAction:v60];
-              [(RichMapsActivityCreatingTaskImpl *)v67 taskFinished:v61];
+              [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFinished:v61];
 
               goto LABEL_84;
             }
@@ -342,7 +342,7 @@ LABEL_61:
         }
 
 LABEL_83:
-        [(RichMapsActivityCreatingTaskImpl *)v67 taskFailed];
+        [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFailed];
         goto LABEL_84;
       }
 
@@ -356,7 +356,7 @@ LABEL_83:
 
     v42 = objc_alloc_init(v54);
     v55 = [[RichMapsActivity alloc] initWithMapsAction:v42];
-    [(RichMapsActivityCreatingTaskImpl *)v67 taskFinished:v55];
+    [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFinished:v55];
 LABEL_72:
 
 LABEL_53:
@@ -373,14 +373,14 @@ LABEL_86:
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "_BulletinURLHandlingTask invalid parameters %@", buf, 0xCu);
   }
 
-  [(RichMapsActivityCreatingTaskImpl *)v67 taskFailed];
+  [(RichMapsActivityCreatingTaskImpl *)selfCopy taskFailed];
 LABEL_87:
 }
 
-- (BOOL)_validParameters:(id)a3 data:(id *)a4
+- (BOOL)_validParameters:(id)parameters data:(id *)data
 {
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"MapsPushNotificationType"];
+  parametersCopy = parameters;
+  v6 = [parametersCopy objectForKeyedSubscript:@"MapsPushNotificationType"];
   if (v6)
   {
     v15[0] = @"ParkedCar";
@@ -399,7 +399,7 @@ LABEL_87:
 
     else
     {
-      v11 = [v5 objectForKeyedSubscript:@"MapsPushNotificationPushData"];
+      v11 = [parametersCopy objectForKeyedSubscript:@"MapsPushNotificationPushData"];
       if (!v11 || (v12 = v11, v9 = [[NSData alloc] initWithBase64EncodedString:v11 options:1], v12, !v9))
       {
         v10 = 0;
@@ -408,7 +408,7 @@ LABEL_87:
     }
 
     v13 = v9;
-    *a4 = v9;
+    *data = v9;
 
     v10 = 1;
 LABEL_9:

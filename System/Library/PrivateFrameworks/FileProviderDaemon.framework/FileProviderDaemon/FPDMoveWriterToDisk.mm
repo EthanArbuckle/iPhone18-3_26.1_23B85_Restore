@@ -1,37 +1,37 @@
 @interface FPDMoveWriterToDisk
-- (FPDMoveWriterToDisk)initWithWriter:(id)a3;
-- (void)_performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 bounceNumber:(id)a8 completion:(id)a9;
-- (void)_performMoveOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 bounceNumber:(id)a8 completion:(id)a9;
-- (void)_resolveLocator:(id)a3 completion:(id)a4;
-- (void)_respectLastUsageDatePolicyForDestinationURL:(id)a3 withSource:(id)a4;
+- (FPDMoveWriterToDisk)initWithWriter:(id)writer;
+- (void)_performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption bounceNumber:(id)number completion:(id)completion;
+- (void)_performMoveOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption bounceNumber:(id)number completion:(id)completion;
+- (void)_resolveLocator:(id)locator completion:(id)completion;
+- (void)_respectLastUsageDatePolicyForDestinationURL:(id)l withSource:(id)source;
 - (void)dealloc;
-- (void)performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8;
-- (void)performCreateFolder:(id)a3 inside:(id)a4 as:(id)a5 completion:(id)a6;
-- (void)performMoveOfFolder:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 atomically:(BOOL)a8 completion:(id)a9;
-- (void)performMoveOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8;
+- (void)performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion;
+- (void)performCreateFolder:(id)folder inside:(id)inside as:(id)as completion:(id)completion;
+- (void)performMoveOfFolder:(id)folder to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption atomically:(BOOL)atomically completion:(id)completion;
+- (void)performMoveOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion;
 @end
 
 @implementation FPDMoveWriterToDisk
 
-- (FPDMoveWriterToDisk)initWithWriter:(id)a3
+- (FPDMoveWriterToDisk)initWithWriter:(id)writer
 {
-  v4 = a3;
+  writerCopy = writer;
   v14.receiver = self;
   v14.super_class = FPDMoveWriterToDisk;
   v5 = [(FPDMoveWriterToDisk *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_writer, v4);
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    objc_storeWeak(&v5->_writer, writerCopy);
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     fileManager = v6->_fileManager;
-    v6->_fileManager = v7;
+    v6->_fileManager = defaultManager;
 
-    v9 = [v4 info];
-    v10 = [v9 targetFolder];
-    v11 = [v10 startAccessingLocator];
+    info = [writerCopy info];
+    targetFolder = [info targetFolder];
+    startAccessingLocator = [targetFolder startAccessingLocator];
     stopAccessingToken = v6->_stopAccessingToken;
-    v6->_stopAccessingToken = v11;
+    v6->_stopAccessingToken = startAccessingLocator;
   }
 
   return v6;
@@ -45,26 +45,26 @@
   [(FPDMoveWriterToDisk *)&v3 dealloc];
 }
 
-- (void)_respectLastUsageDatePolicyForDestinationURL:(id)a3 withSource:(id)a4
+- (void)_respectLastUsageDatePolicyForDestinationURL:(id)l withSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  sourceCopy = source;
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v9 = [WeakRetained info];
-  v10 = [v9 lastUsedDatePolicy];
+  info = [WeakRetained info];
+  lastUsedDatePolicy = [info lastUsedDatePolicy];
 
-  if (v10 == 2)
+  if (lastUsedDatePolicy == 2)
   {
-    v11 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     goto LABEL_8;
   }
 
-  if (v10 != 1)
+  if (lastUsedDatePolicy != 1)
   {
     goto LABEL_9;
   }
 
-  v11 = FPFileMetadataCopyLastUsedDateAtURL();
+  date = FPFileMetadataCopyLastUsedDateAtURL();
   v12 = 0;
   if (!v12)
   {
@@ -84,37 +84,37 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 bounceNumber:(id)a8 completion:(id)a9
+- (void)_performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption bounceNumber:(id)number completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = a9;
-  v29 = a6 == 2;
+  itemCopy = item;
+  toCopy = to;
+  asCopy = as;
+  numberCopy = number;
+  completionCopy = completion;
+  v29 = option == 2;
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v27 = [WeakRetained coordinator];
+  coordinator = [WeakRetained coordinator];
   v19 = objc_loadWeakRetained(&self->_writer);
-  v20 = [v19 operation];
-  v21 = [v20 request];
+  operation = [v19 operation];
+  request = [operation request];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __120__FPDMoveWriterToDisk__performCopyOfItem_to_as_sourceMaterializeOption_targetMaterializeOption_bounceNumber_completion___block_invoke;
   v31[3] = &unk_1E83BF138;
   v31[4] = self;
-  v32 = v15;
-  v33 = v16;
-  v34 = v17;
-  v35 = v14;
-  v36 = v18;
-  v37 = a6;
-  v38 = a7;
-  v22 = v14;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v18;
-  [v27 resolveItemOrURL:v22 recursively:v29 request:v21 andCoordinateWithHandler:v31];
+  v32 = toCopy;
+  v33 = asCopy;
+  v34 = numberCopy;
+  v35 = itemCopy;
+  v36 = completionCopy;
+  optionCopy = option;
+  materializeOptionCopy = materializeOption;
+  v22 = itemCopy;
+  v23 = numberCopy;
+  v24 = asCopy;
+  v25 = toCopy;
+  v26 = completionCopy;
+  [coordinator resolveItemOrURL:v22 recursively:v29 request:request andCoordinateWithHandler:v31];
 }
 
 void __120__FPDMoveWriterToDisk__performCopyOfItem_to_as_sourceMaterializeOption_targetMaterializeOption_bounceNumber_completion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -534,23 +534,23 @@ void __120__FPDMoveWriterToDisk__performCopyOfItem_to_as_sourceMaterializeOption
   }
 }
 
-- (void)performCopyOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8
+- (void)performCopyOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  itemCopy = item;
+  toCopy = to;
+  asCopy = as;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v19 = [WeakRetained info];
-  v20 = [v19 shouldBounce];
+  info = [WeakRetained info];
+  shouldBounce = [info shouldBounce];
 
-  if (v20)
+  if (shouldBounce)
   {
     v23 = 0;
-    v21 = [v16 fp_stringByDeletingPathBounceNo:&v23 andPathExtension:0 isFolder:{objc_msgSend(v14, "isFolder")}];
+    v21 = [asCopy fp_stringByDeletingPathBounceNo:&v23 andPathExtension:0 isFolder:{objc_msgSend(itemCopy, "isFolder")}];
     v22 = v23;
 
-    v16 = v21;
+    asCopy = v21;
   }
 
   else
@@ -558,63 +558,63 @@ void __120__FPDMoveWriterToDisk__performCopyOfItem_to_as_sourceMaterializeOption
     v22 = 0;
   }
 
-  [(FPDMoveWriterToDisk *)self _performCopyOfItem:v14 to:v15 as:v16 sourceMaterializeOption:a6 targetMaterializeOption:a7 bounceNumber:v22 completion:v17];
+  [(FPDMoveWriterToDisk *)self _performCopyOfItem:itemCopy to:toCopy as:asCopy sourceMaterializeOption:option targetMaterializeOption:materializeOption bounceNumber:v22 completion:completionCopy];
 }
 
-- (void)_resolveLocator:(id)a3 completion:(id)a4
+- (void)_resolveLocator:(id)locator completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 isExternalURL];
+  completionCopy = completion;
+  locatorCopy = locator;
+  isExternalURL = [locatorCopy isExternalURL];
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v9 = [WeakRetained coordinator];
-  if (v8)
+  coordinator = [WeakRetained coordinator];
+  if (isExternalURL)
   {
-    v10 = [v7 asURL];
-    [v9 startAccessingURLForAtomDuration:v10];
+    asURL = [locatorCopy asURL];
+    [coordinator startAccessingURLForAtomDuration:asURL];
 
-    WeakRetained = [v7 asURL];
+    WeakRetained = [locatorCopy asURL];
 
-    v6[2](v6, WeakRetained, 0);
+    completionCopy[2](completionCopy, WeakRetained, 0);
   }
 
   else
   {
-    v11 = [v7 asFPItem];
+    asFPItem = [locatorCopy asFPItem];
 
-    [v9 resolveItem:v11 completion:v6];
-    v6 = v9;
+    [coordinator resolveItem:asFPItem completion:completionCopy];
+    completionCopy = coordinator;
   }
 }
 
-- (void)_performMoveOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 bounceNumber:(id)a8 completion:(id)a9
+- (void)_performMoveOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption bounceNumber:(id)number completion:(id)completion
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
+  itemCopy = item;
+  toCopy = to;
+  asCopy = as;
+  numberCopy = number;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_writer);
   v21 = objc_opt_new();
-  [WeakRetained setProgress:v21 forRoot:v15];
+  [WeakRetained setProgress:v21 forRoot:itemCopy];
 
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __120__FPDMoveWriterToDisk__performMoveOfItem_to_as_sourceMaterializeOption_targetMaterializeOption_bounceNumber_completion___block_invoke;
   v27[3] = &unk_1E83BF1D8;
   v27[4] = self;
-  v28 = v16;
-  v29 = v17;
-  v30 = v18;
-  v31 = v15;
-  v32 = v19;
-  v33 = a6;
-  v34 = a7;
-  v22 = v15;
-  v23 = v18;
-  v24 = v17;
-  v25 = v16;
-  v26 = v19;
+  v28 = toCopy;
+  v29 = asCopy;
+  v30 = numberCopy;
+  v31 = itemCopy;
+  v32 = completionCopy;
+  optionCopy = option;
+  materializeOptionCopy = materializeOption;
+  v22 = itemCopy;
+  v23 = numberCopy;
+  v24 = asCopy;
+  v25 = toCopy;
+  v26 = completionCopy;
   [(FPDMoveWriterToDisk *)self _resolveLocator:v22 completion:v27];
 }
 
@@ -1162,23 +1162,23 @@ void __120__FPDMoveWriterToDisk__performMoveOfItem_to_as_sourceMaterializeOption
   }
 }
 
-- (void)performMoveOfItem:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 completion:(id)a8
+- (void)performMoveOfItem:(id)item to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  itemCopy = item;
+  toCopy = to;
+  asCopy = as;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_writer);
-  v19 = [WeakRetained info];
-  v20 = [v19 shouldBounce];
+  info = [WeakRetained info];
+  shouldBounce = [info shouldBounce];
 
-  if (v20)
+  if (shouldBounce)
   {
     v23 = 0;
-    v21 = [v16 fp_stringByDeletingPathBounceNo:&v23 andPathExtension:0 isFolder:{objc_msgSend(v14, "isFolder")}];
+    v21 = [asCopy fp_stringByDeletingPathBounceNo:&v23 andPathExtension:0 isFolder:{objc_msgSend(itemCopy, "isFolder")}];
     v22 = v23;
 
-    v16 = v21;
+    asCopy = v21;
   }
 
   else
@@ -1186,41 +1186,41 @@ void __120__FPDMoveWriterToDisk__performMoveOfItem_to_as_sourceMaterializeOption
     v22 = 0;
   }
 
-  [(FPDMoveWriterToDisk *)self _performMoveOfItem:v14 to:v15 as:v16 sourceMaterializeOption:a6 targetMaterializeOption:a7 bounceNumber:v22 completion:v17];
+  [(FPDMoveWriterToDisk *)self _performMoveOfItem:itemCopy to:toCopy as:asCopy sourceMaterializeOption:option targetMaterializeOption:materializeOption bounceNumber:v22 completion:completionCopy];
 }
 
-- (void)performMoveOfFolder:(id)a3 to:(id)a4 as:(id)a5 sourceMaterializeOption:(unint64_t)a6 targetMaterializeOption:(unint64_t)a7 atomically:(BOOL)a8 completion:(id)a9
+- (void)performMoveOfFolder:(id)folder to:(id)to as:(id)as sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)materializeOption atomically:(BOOL)atomically completion:(id)completion
 {
-  if (a8)
+  if (atomically)
   {
-    [(FPDMoveWriterToDisk *)self performMoveOfItem:a3 to:a4 as:a5 sourceMaterializeOption:a6 targetMaterializeOption:a7 completion:a9];
+    [(FPDMoveWriterToDisk *)self performMoveOfItem:folder to:to as:as sourceMaterializeOption:option targetMaterializeOption:materializeOption completion:completion];
   }
 
   else
   {
-    [(FPDMoveWriterToDisk *)self performCreateFolder:a3 inside:a4 as:a5 completion:a9, a7];
+    [(FPDMoveWriterToDisk *)self performCreateFolder:folder inside:to as:as completion:completion, materializeOption];
   }
 }
 
-- (void)performCreateFolder:(id)a3 inside:(id)a4 as:(id)a5 completion:(id)a6
+- (void)performCreateFolder:(id)folder inside:(id)inside as:(id)as completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  folderCopy = folder;
+  insideCopy = inside;
+  asCopy = as;
+  completionCopy = completion;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __64__FPDMoveWriterToDisk_performCreateFolder_inside_as_completion___block_invoke;
   v18[3] = &unk_1E83BF250;
-  v21 = v11;
-  v22 = v13;
+  v21 = insideCopy;
+  v22 = completionCopy;
   v18[4] = self;
-  v19 = v12;
-  v20 = v10;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
-  v17 = v13;
+  v19 = asCopy;
+  v20 = folderCopy;
+  v14 = insideCopy;
+  v15 = folderCopy;
+  v16 = asCopy;
+  v17 = completionCopy;
   [(FPDMoveWriterToDisk *)self _resolveLocator:v14 completion:v18];
 }
 

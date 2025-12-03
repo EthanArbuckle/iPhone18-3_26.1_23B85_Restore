@@ -1,9 +1,9 @@
 @interface PKPushableCredentialsNavigationController
-- (void)didFinishWithPasses:(id)a3 error:(id)a4;
+- (void)didFinishWithPasses:(id)passes error:(id)error;
 - (void)loadView;
-- (void)setConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)setConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPushableCredentialsNavigationController
@@ -15,17 +15,17 @@
   [(PKPushableCredentialsNavigationController *)&v2 loadView];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPushableCredentialsNavigationController;
-  [(PKPushableCredentialsNavigationController *)&v4 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(PKPushableCredentialsNavigationController *)&v4 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
 }
 
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x1E69E9840];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -36,21 +36,21 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2048;
-    v12 = a4;
+    scaleCopy = scale;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Setting display properties with screenSize=%{public}@ scale=%.f", &v9, 0x16u);
   }
 
   PKSetDisplayProperties();
 }
 
-- (void)setConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v8 = objc_alloc(MEMORY[0x1E69B8840]);
-  v9 = [(PKPushableCredentialsNavigationController *)self _hostProcessIdentifier];
+  _hostProcessIdentifier = [(PKPushableCredentialsNavigationController *)self _hostProcessIdentifier];
   [(PKPushableCredentialsNavigationController *)self _hostAuditToken];
-  v10 = [v8 initWithProcessIdentifier:v9 auditToken:buf];
+  v10 = [v8 initWithProcessIdentifier:_hostProcessIdentifier auditToken:buf];
   if (([v10 shareableCredentialProvisioning] & 1) == 0)
   {
     v13 = PKLogFacilityTypeGetObject();
@@ -66,19 +66,19 @@
     goto LABEL_15;
   }
 
-  [v6 updateAllowManagedAppleIDWithEntitlements:v10];
-  v11 = [v6 configurationType];
-  if (v11 == 2 || v11 == 4)
+  [configurationCopy updateAllowManagedAppleIDWithEntitlements:v10];
+  configurationType = [configurationCopy configurationType];
+  if (configurationType == 2 || configurationType == 4)
   {
-    if ([v6 conformsToProtocol:&unk_1F3E3D3C8])
+    if ([configurationCopy conformsToProtocol:&unk_1F3E3D3C8])
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __80__PKPushableCredentialsNavigationController_setConfiguration_completionHandler___block_invoke;
       block[3] = &unk_1E8012300;
-      v20 = v6;
-      v21 = self;
-      v22 = v7;
+      v20 = configurationCopy;
+      selfCopy = self;
+      v22 = handlerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], block);
 
       v12 = v20;
@@ -113,9 +113,9 @@ LABEL_14:
 LABEL_15:
   v12 = [v14 errorWithDomain:v15 code:v16 userInfo:0];
   [(PKPushableCredentialsNavigationController *)self didFinishWithPasses:0 error:v12];
-  if (v7)
+  if (handlerCopy)
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_17:
@@ -162,18 +162,18 @@ void __80__PKPushableCredentialsNavigationController_setConfiguration_completion
   [WeakRetained didFinishWithPasses:v6 error:v5];
 }
 
-- (void)didFinishWithPasses:(id)a3 error:(id)a4
+- (void)didFinishWithPasses:(id)passes error:(id)error
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  passesCopy = passes;
+  errorCopy = error;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v38 = v6;
+    v38 = passesCopy;
     v39 = 2112;
-    v40 = v7;
+    v40 = errorCopy;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Provisioning did finish with passes %@ and error %@", buf, 0x16u);
   }
 
@@ -181,7 +181,7 @@ void __80__PKPushableCredentialsNavigationController_setConfiguration_completion
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v9 = v6;
+  v9 = passesCopy;
   v10 = [v9 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v10)
   {
@@ -205,11 +205,11 @@ void __80__PKPushableCredentialsNavigationController_setConfiguration_completion
     while (v11);
   }
 
-  if (v7)
+  if (errorCopy)
   {
-    v14 = [v7 domain];
+    domain = [errorCopy domain];
     v15 = *MEMORY[0x1E69B9E70];
-    v16 = v14;
+    v16 = domain;
     v17 = v16;
     if (v16 == v15)
     {
@@ -223,29 +223,29 @@ void __80__PKPushableCredentialsNavigationController_setConfiguration_completion
 LABEL_20:
         v19 = 0;
 LABEL_21:
-        v20 = [v7 underlyingErrors];
-        v21 = [v20 firstObject];
+        underlyingErrors = [errorCopy underlyingErrors];
+        firstObject = [underlyingErrors firstObject];
 
         if (v19)
         {
           goto LABEL_46;
         }
 
-        v22 = [v21 domain];
-        v23 = v22;
-        if (v22 == v15)
+        domain2 = [firstObject domain];
+        v23 = domain2;
+        if (domain2 == v15)
         {
         }
 
         else
         {
-          if (!v15 || !v22)
+          if (!v15 || !domain2)
           {
 
             goto LABEL_31;
           }
 
-          v24 = [v22 isEqualToString:v15];
+          v24 = [domain2 isEqualToString:v15];
 
           if (!v24)
           {
@@ -256,25 +256,25 @@ LABEL_31:
               goto LABEL_45;
             }
 
-            v25 = v7;
-            v26 = [v25 underlyingError];
-            v27 = [v26 domain];
-            v28 = v27;
-            if (v27 == v15)
+            v25 = errorCopy;
+            underlyingError = [v25 underlyingError];
+            domain3 = [underlyingError domain];
+            v28 = domain3;
+            if (domain3 == v15)
             {
             }
 
             else
             {
-              if (!v15 || !v27)
+              if (!v15 || !domain3)
               {
 
 LABEL_40:
                 if ([v25 severity] == 1)
                 {
-                  v30 = [MEMORY[0x1E696ABC0] errorWithDomain:v15 code:0 userInfo:0];
+                  underlyingError2 = [MEMORY[0x1E696ABC0] errorWithDomain:v15 code:0 userInfo:0];
 LABEL_42:
-                  v19 = v30;
+                  v19 = underlyingError2;
 
                   if (!v19)
                   {
@@ -291,7 +291,7 @@ LABEL_45:
                 goto LABEL_46;
               }
 
-              v29 = [v27 isEqualToString:v15];
+              v29 = [domain3 isEqualToString:v15];
 
               if ((v29 & 1) == 0)
               {
@@ -299,12 +299,12 @@ LABEL_45:
               }
             }
 
-            v30 = [v25 underlyingError];
+            underlyingError2 = [v25 underlyingError];
             goto LABEL_42;
           }
         }
 
-        v19 = v21;
+        v19 = firstObject;
         if (v19)
         {
           goto LABEL_46;
@@ -321,14 +321,14 @@ LABEL_45:
       }
     }
 
-    v19 = v7;
+    v19 = errorCopy;
     goto LABEL_21;
   }
 
   v19 = 0;
 LABEL_47:
-  v31 = [(PKPushableCredentialsNavigationController *)self _remoteViewControllerProxy];
-  [v31 didFinishWithPasses:v9 error:v19];
+  _remoteViewControllerProxy = [(PKPushableCredentialsNavigationController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy didFinishWithPasses:v9 error:v19];
 }
 
 @end

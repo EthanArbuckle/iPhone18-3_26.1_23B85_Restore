@@ -1,22 +1,22 @@
 @interface VideoAttributes
-+ (VideoAttributes)videoAttributesWithVideoAttributes:(id)a3;
-+ (id)cameraUIDForVideoAttributeCamera:(int)a3;
-+ (int)videoAttributeCameraForCameraUID:(id)a3;
++ (VideoAttributes)videoAttributesWithVideoAttributes:(id)attributes;
++ (id)cameraUIDForVideoAttributeCamera:(int)camera;
++ (int)videoAttributeCameraForCameraUID:(id)d;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)framePresentationTime;
 - (CGRect)contentsRect;
 - (CGRect)contentsRectForCALayer;
 - (CGSize)ratio;
 - (VideoAttributes)init;
-- (VideoAttributes)initWithCameraStatusBits:(unsigned __int8)a3 aspectRatio:(CGSize)a4 contentsRect:(CGRect)a5 scaleFactor:(float)a6 frameOrientationReference:(int)a7;
-- (VideoAttributes)initWithCoder:(id)a3;
-- (VideoAttributes)initWithEncodedDictionary:(id)a3;
+- (VideoAttributes)initWithCameraStatusBits:(unsigned __int8)bits aspectRatio:(CGSize)ratio contentsRect:(CGRect)rect scaleFactor:(float)factor frameOrientationReference:(int)reference;
+- (VideoAttributes)initWithCoder:(id)coder;
+- (VideoAttributes)initWithEncodedDictionary:(id)dictionary;
 - (id)copyEncodedDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)decodeFromNSDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setFramePresentationTime:(id *)a3;
-- (void)updateCameraStatusBits:(unsigned __int8)a3;
+- (void)decodeFromNSDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
+- (void)setFramePresentationTime:(id *)time;
+- (void)updateCameraStatusBits:(unsigned __int8)bits;
 @end
 
 @implementation VideoAttributes
@@ -48,15 +48,15 @@
   return v3;
 }
 
-- (VideoAttributes)initWithCameraStatusBits:(unsigned __int8)a3 aspectRatio:(CGSize)a4 contentsRect:(CGRect)a5 scaleFactor:(float)a6 frameOrientationReference:(int)a7
+- (VideoAttributes)initWithCameraStatusBits:(unsigned __int8)bits aspectRatio:(CGSize)ratio contentsRect:(CGRect)rect scaleFactor:(float)factor frameOrientationReference:(int)reference
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a4.height;
-  v14 = a4.width;
-  v15 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v13 = ratio.height;
+  v14 = ratio.width;
+  bitsCopy = bits;
   v24 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = VideoAttributes;
@@ -66,77 +66,77 @@
   {
     v16->ratio.width = v14;
     v16->ratio.height = v13;
-    v16->orientation = v15 & 3;
-    v16->camera = (v15 >> 3) & 1;
-    v16->cameraSwitching = (v15 & 0x40) != 0;
-    v16->videoMirrored = (v15 & 4) != 0;
+    v16->orientation = bitsCopy & 3;
+    v16->camera = (bitsCopy >> 3) & 1;
+    v16->cameraSwitching = (bitsCopy & 0x40) != 0;
+    v16->videoMirrored = (bitsCopy & 4) != 0;
     v16->contentsRect.origin.x = x;
     v16->contentsRect.origin.y = y;
     v16->contentsRect.size.width = width;
     v16->contentsRect.size.height = height;
-    *&v17 = a6;
+    *&v17 = factor;
     [(VideoAttributes *)v16 setScaleFactor:v17];
     CMTimeMake(&v22, 0, 1);
     *(&v18->videoMirrored + 3) = v22;
     v19 = MEMORY[0x1E695F050];
-    v18->videoSourceScreen = (v15 & 0x30) == 16;
+    v18->videoSourceScreen = (bitsCopy & 0x30) == 16;
     v20 = v19[1];
     v18->_contentsRectForCALayer.origin = *v19;
     v18->_contentsRectForCALayer.size = v20;
-    LODWORD(v18->scaleFactor) = a7;
+    LODWORD(v18->scaleFactor) = reference;
   }
 
   return v18;
 }
 
-- (VideoAttributes)initWithEncodedDictionary:(id)a3
+- (VideoAttributes)initWithEncodedDictionary:(id)dictionary
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = VideoAttributes;
   v4 = [(VideoAttributes *)&v6 init];
-  [(VideoAttributes *)v4 decodeFromNSDictionary:a3];
+  [(VideoAttributes *)v4 decodeFromNSDictionary:dictionary];
   return v4;
 }
 
-+ (VideoAttributes)videoAttributesWithVideoAttributes:(id)a3
++ (VideoAttributes)videoAttributesWithVideoAttributes:(id)attributes
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!attributes)
   {
     return 0;
   }
 
   v4 = objc_alloc_init(VideoAttributes);
-  [a3 ratio];
+  [attributes ratio];
   [(VideoAttributes *)v4 setRatio:?];
-  -[VideoAttributes setOrientation:](v4, "setOrientation:", [a3 orientation]);
-  -[VideoAttributes setCamera:](v4, "setCamera:", [a3 camera]);
-  -[VideoAttributes setCameraSwitching:](v4, "setCameraSwitching:", [a3 cameraSwitching]);
-  [a3 contentsRect];
+  -[VideoAttributes setOrientation:](v4, "setOrientation:", [attributes orientation]);
+  -[VideoAttributes setCamera:](v4, "setCamera:", [attributes camera]);
+  -[VideoAttributes setCameraSwitching:](v4, "setCameraSwitching:", [attributes cameraSwitching]);
+  [attributes contentsRect];
   [(VideoAttributes *)v4 setContentsRect:?];
-  -[VideoAttributes setVideoSourceScreen:](v4, "setVideoSourceScreen:", [a3 videoSourceScreen]);
-  -[VideoAttributes setVideoMirrored:](v4, "setVideoMirrored:", [a3 videoMirrored]);
-  [a3 framePresentationTime];
+  -[VideoAttributes setVideoSourceScreen:](v4, "setVideoSourceScreen:", [attributes videoSourceScreen]);
+  -[VideoAttributes setVideoMirrored:](v4, "setVideoMirrored:", [attributes videoMirrored]);
+  [attributes framePresentationTime];
   v6 = v8;
   v7 = v9;
   [(VideoAttributes *)v4 setFramePresentationTime:&v6];
-  [a3 scaleFactor];
+  [attributes scaleFactor];
   [(VideoAttributes *)v4 setScaleFactor:?];
-  [a3 contentsRectForCALayer];
+  [attributes contentsRectForCALayer];
   [(VideoAttributes *)v4 setContentsRectForCALayer:?];
-  -[VideoAttributes setFrameOrientationReference:](v4, "setFrameOrientationReference:", [a3 frameOrientationReference]);
+  -[VideoAttributes setFrameOrientationReference:](v4, "setFrameOrientationReference:", [attributes frameOrientationReference]);
   return v4;
 }
 
-+ (int)videoAttributeCameraForCameraUID:(id)a3
++ (int)videoAttributeCameraForCameraUID:(id)d
 {
-  if ([a3 isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:0"])
+  if ([d isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:0"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:2"])
+  if ([d isEqualToString:@"com.apple.avfoundation.avcapturedevice.built-in_video:2"])
   {
     return 2;
   }
@@ -144,16 +144,16 @@
   return 0;
 }
 
-+ (id)cameraUIDForVideoAttributeCamera:(int)a3
++ (id)cameraUIDForVideoAttributeCamera:(int)camera
 {
-  if (a3 > 2)
+  if (camera > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E85F7AE8 + a3);
+    return *(&off_1E85F7AE8 + camera);
   }
 }
 
@@ -251,55 +251,55 @@
   return [v3 stringWithFormat:@"[ratio:%.2fx%.2f orientation:%s camera:%s switching:%s contentsRect:%.3fx%.3f@(%.3f, %.3f) contentsRectForCALayer:%.3fx%.3f@(%.3f, %.3f) videoSourceScreen:%s videoMirrored:%s framePresentationTime:%f scaleFactor:%f frameOrientationReference:%s]", *&width, *&height, v7, v11, v19, size, origin, v23, *&x, *&y, v21, v20, *&Seconds, *(&self->framePresentationTime.epoch + 1), v17];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   x = self->contentsRect.origin.x;
   y = self->contentsRect.origin.y;
   width = self->contentsRect.size.width;
   height = self->contentsRect.size.height;
-  [a3 encodeSize:@"ratio" forKey:{self->ratio.width, self->ratio.height}];
-  [a3 encodeInt:self->orientation forKey:@"orientation"];
-  [a3 encodeInt:self->camera forKey:@"camera"];
-  [a3 encodeBool:self->cameraSwitching forKey:@"cameraSwitching"];
-  [a3 encodeRect:@"contentsRect" forKey:{x, y, width, height}];
-  [a3 encodeBool:self->videoSourceScreen forKey:@"isVideoSourceScreen"];
-  [a3 encodeBool:self->videoMirrored forKey:@"videoMirrored"];
-  [a3 encodeInt64:*(&self->videoMirrored + 3) forKey:@"framePresentationTimeValue"];
-  [a3 encodeInt32:HIDWORD(self->framePresentationTime.value) forKey:@"framePresentationTimeTimeScale"];
+  [coder encodeSize:@"ratio" forKey:{self->ratio.width, self->ratio.height}];
+  [coder encodeInt:self->orientation forKey:@"orientation"];
+  [coder encodeInt:self->camera forKey:@"camera"];
+  [coder encodeBool:self->cameraSwitching forKey:@"cameraSwitching"];
+  [coder encodeRect:@"contentsRect" forKey:{x, y, width, height}];
+  [coder encodeBool:self->videoSourceScreen forKey:@"isVideoSourceScreen"];
+  [coder encodeBool:self->videoMirrored forKey:@"videoMirrored"];
+  [coder encodeInt64:*(&self->videoMirrored + 3) forKey:@"framePresentationTimeValue"];
+  [coder encodeInt32:HIDWORD(self->framePresentationTime.value) forKey:@"framePresentationTimeTimeScale"];
   LODWORD(v9) = HIDWORD(self->framePresentationTime.epoch);
-  [a3 encodeFloat:@"scaleFactor" forKey:v9];
+  [coder encodeFloat:@"scaleFactor" forKey:v9];
   scaleFactor_low = LODWORD(self->scaleFactor);
 
-  [a3 encodeInt:scaleFactor_low forKey:@"frameOrientationReference"];
+  [coder encodeInt:scaleFactor_low forKey:@"frameOrientationReference"];
 }
 
-- (VideoAttributes)initWithCoder:(id)a3
+- (VideoAttributes)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x1E69E9840];
-  [a3 decodeSizeForKey:@"ratio"];
+  [coder decodeSizeForKey:@"ratio"];
   self->ratio.width = v5;
   self->ratio.height = v6;
-  self->orientation = [a3 decodeIntForKey:@"orientation"];
-  self->camera = [a3 decodeIntForKey:@"camera"];
-  self->cameraSwitching = [a3 decodeBoolForKey:@"cameraSwitching"];
-  [a3 decodeRectForKey:@"contentsRect"];
+  self->orientation = [coder decodeIntForKey:@"orientation"];
+  self->camera = [coder decodeIntForKey:@"camera"];
+  self->cameraSwitching = [coder decodeBoolForKey:@"cameraSwitching"];
+  [coder decodeRectForKey:@"contentsRect"];
   self->contentsRect.origin.x = v7;
   self->contentsRect.origin.y = v8;
   self->contentsRect.size.width = v9;
   self->contentsRect.size.height = v10;
-  self->videoSourceScreen = [a3 decodeBoolForKey:@"isVideoSourceScreen"];
-  self->videoMirrored = [a3 decodeBoolForKey:@"videoMirrored"];
-  CMTimeMake(&v17, [a3 decodeInt64ForKey:@"framePresentationTimeValue"], objc_msgSend(a3, "decodeInt32ForKey:", @"framePresentationTimeTimeScale"));
+  self->videoSourceScreen = [coder decodeBoolForKey:@"isVideoSourceScreen"];
+  self->videoMirrored = [coder decodeBoolForKey:@"videoMirrored"];
+  CMTimeMake(&v17, [coder decodeInt64ForKey:@"framePresentationTimeValue"], objc_msgSend(coder, "decodeInt32ForKey:", @"framePresentationTimeTimeScale"));
   *(&self->videoMirrored + 3) = *&v17.value;
   *&self->framePresentationTime.flags = v17.epoch;
-  [a3 decodeFloatForKey:@"scaleFactor"];
+  [coder decodeFloatForKey:@"scaleFactor"];
   HIDWORD(self->framePresentationTime.epoch) = v11;
-  [a3 decodeRectForKey:@"contentsRectForCALayer"];
+  [coder decodeRectForKey:@"contentsRectForCALayer"];
   self->_contentsRectForCALayer.origin.x = v12;
   self->_contentsRectForCALayer.origin.y = v13;
   self->_contentsRectForCALayer.size.width = v14;
   self->_contentsRectForCALayer.size.height = v15;
-  LODWORD(self->scaleFactor) = [a3 decodeIntForKey:@"frameOrientationReference"];
+  LODWORD(self->scaleFactor) = [coder decodeIntForKey:@"frameOrientationReference"];
   return self;
 }
 
@@ -324,23 +324,23 @@
   return v13;
 }
 
-- (void)decodeFromNSDictionary:(id)a3
+- (void)decodeFromNSDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (dictionary)
   {
-    v5 = [a3 objectForKeyedSubscript:@"ratio"];
-    v6 = [a3 objectForKeyedSubscript:@"orientation"];
-    v7 = [a3 objectForKeyedSubscript:@"camera"];
-    v8 = [a3 objectForKeyedSubscript:@"cameraSwitching"];
-    v9 = [a3 objectForKeyedSubscript:@"contentsRect"];
-    v10 = [a3 objectForKeyedSubscript:@"isVideoSourceScreen"];
-    v11 = [a3 objectForKeyedSubscript:@"videoMirrored"];
-    v14 = [a3 objectForKeyedSubscript:@"framePresentationTimeValue"];
-    v12 = [a3 objectForKeyedSubscript:@"framePresentationTimeTimeScale"];
-    v16 = [a3 objectForKeyedSubscript:@"scaleFactor"];
-    aString = [a3 objectForKeyedSubscript:@"contentsRectForCALayer"];
-    v17 = [a3 objectForKeyedSubscript:@"frameOrientationReference"];
+    v5 = [dictionary objectForKeyedSubscript:@"ratio"];
+    v6 = [dictionary objectForKeyedSubscript:@"orientation"];
+    v7 = [dictionary objectForKeyedSubscript:@"camera"];
+    v8 = [dictionary objectForKeyedSubscript:@"cameraSwitching"];
+    v9 = [dictionary objectForKeyedSubscript:@"contentsRect"];
+    v10 = [dictionary objectForKeyedSubscript:@"isVideoSourceScreen"];
+    v11 = [dictionary objectForKeyedSubscript:@"videoMirrored"];
+    v14 = [dictionary objectForKeyedSubscript:@"framePresentationTimeValue"];
+    v12 = [dictionary objectForKeyedSubscript:@"framePresentationTimeTimeScale"];
+    v16 = [dictionary objectForKeyedSubscript:@"scaleFactor"];
+    aString = [dictionary objectForKeyedSubscript:@"contentsRectForCALayer"];
+    v17 = [dictionary objectForKeyedSubscript:@"frameOrientationReference"];
     self->ratio = NSSizeFromString(v5);
     self->orientation = [v6 intValue];
     self->camera = [v7 intValue];
@@ -357,7 +357,7 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [[VideoAttributes allocWithZone:?]];
   if (result)
@@ -384,13 +384,13 @@
   return result;
 }
 
-- (void)updateCameraStatusBits:(unsigned __int8)a3
+- (void)updateCameraStatusBits:(unsigned __int8)bits
 {
-  self->orientation = a3 & 3;
-  self->camera = (a3 >> 3) & 1;
-  self->cameraSwitching = (a3 & 0x40) != 0;
-  self->videoMirrored = (a3 & 4) != 0;
-  self->videoSourceScreen = (a3 & 0x30) == 16;
+  self->orientation = bits & 3;
+  self->camera = (bits >> 3) & 1;
+  self->cameraSwitching = (bits & 0x40) != 0;
+  self->videoMirrored = (bits & 4) != 0;
+  self->videoSourceScreen = (bits & 0x30) == 16;
 }
 
 - (CGSize)ratio
@@ -422,10 +422,10 @@
   return self;
 }
 
-- (void)setFramePresentationTime:(id *)a3
+- (void)setFramePresentationTime:(id *)time
 {
-  v3 = *&a3->var0;
-  *&self->framePresentationTime.flags = a3->var3;
+  v3 = *&time->var0;
+  *&self->framePresentationTime.flags = time->var3;
   *(&self->videoMirrored + 3) = v3;
 }
 

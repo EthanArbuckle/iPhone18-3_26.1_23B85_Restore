@@ -1,45 +1,45 @@
 @interface HFAbstractBaseActionSetBuilder
-- (BOOL)_updateActionBuildersForLightColorAction:(id)a3;
+- (BOOL)_updateActionBuildersForLightColorAction:(id)action;
 - (BOOL)isAffectedByEndEvents;
 - (BOOL)requiresDeviceUnlock;
-- (HFAbstractBaseActionSetBuilder)initWithExistingObject:(id)a3 inHome:(id)a4;
+- (HFAbstractBaseActionSetBuilder)initWithExistingObject:(id)object inHome:(id)home;
 - (HFMediaPlaybackActionBuilder)mediaAction;
 - (NSArray)actions;
 - (NSArray)matterActionBuilders;
 - (NSArray)naturalLightingActions;
-- (id)_removeSuccessfulChanges:(id)a3 fromSetDiff:(id)a4;
+- (id)_removeSuccessfulChanges:(id)changes fromSetDiff:(id)diff;
 - (id)commitItem;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createActionSetBuilder;
 - (id)deleteActionSet;
-- (id)existingActionBuilder:(id)a3 inSet:(id)a4;
+- (id)existingActionBuilder:(id)builder inSet:(id)set;
 - (id)lazilyUpdateActions;
-- (void)addAction:(id)a3;
-- (void)removeAction:(id)a3;
+- (void)addAction:(id)action;
+- (void)removeAction:(id)action;
 - (void)removeAllActions;
-- (void)updateAction:(id)a3;
-- (void)updateActionsInBuilder:(id)a3;
+- (void)updateAction:(id)action;
+- (void)updateActionsInBuilder:(id)builder;
 @end
 
 @implementation HFAbstractBaseActionSetBuilder
 
-- (HFAbstractBaseActionSetBuilder)initWithExistingObject:(id)a3 inHome:(id)a4
+- (HFAbstractBaseActionSetBuilder)initWithExistingObject:(id)object inHome:(id)home
 {
-  v6 = a4;
+  homeCopy = home;
   v16.receiver = self;
   v16.super_class = HFAbstractBaseActionSetBuilder;
-  v7 = [(HFItemBuilder *)&v16 initWithExistingObject:a3 inHome:v6];
+  v7 = [(HFItemBuilder *)&v16 initWithExistingObject:object inHome:homeCopy];
   v8 = v7;
   if (v7)
   {
-    v9 = [(HFAbstractBaseActionSetBuilder *)v7 actionSet];
-    v10 = [v9 actions];
+    actionSet = [(HFAbstractBaseActionSetBuilder *)v7 actionSet];
+    actions = [actionSet actions];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __64__HFAbstractBaseActionSetBuilder_initWithExistingObject_inHome___block_invoke;
     v14[3] = &unk_277DF6430;
-    v15 = v6;
-    v11 = [v10 na_map:v14];
+    v15 = homeCopy;
+    v11 = [actions na_map:v14];
 
     v12 = [[HFMutableSetDiff alloc] initWithFromSet:v11];
     [(HFAbstractBaseActionSetBuilder *)v8 setActionBuilders:v12];
@@ -50,21 +50,21 @@
 
 - (NSArray)actions
 {
-  v2 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  v3 = [v2 toSet];
-  v4 = [v3 allObjects];
+  actionBuilders = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  toSet = [actionBuilders toSet];
+  allObjects = [toSet allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-- (void)addAction:(id)a3
+- (void)addAction:(id)action
 {
-  v4 = a3;
-  v5 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  v6 = [v5 toSet];
-  v7 = [(HFAbstractBaseActionSetBuilder *)self existingActionBuilder:v4 inSet:v6];
+  actionCopy = action;
+  actionBuilders = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  toSet = [actionBuilders toSet];
+  v7 = [(HFAbstractBaseActionSetBuilder *)self existingActionBuilder:actionCopy inSet:toSet];
 
-  [v7 updateWithActionBuilder:v4];
+  [v7 updateWithActionBuilder:actionCopy];
   objc_opt_class();
   v8 = v7;
   if (objc_opt_isKindOfClass())
@@ -80,7 +80,7 @@
   v10 = v9;
 
   objc_opt_class();
-  v18 = v4;
+  v18 = actionCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v18;
@@ -109,8 +109,8 @@
 
   if (v10 && v12)
   {
-    v16 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-    [v16 updateObject:v10];
+    actionBuilders2 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+    [actionBuilders2 updateObject:v10];
 LABEL_19:
 
     goto LABEL_20;
@@ -118,61 +118,61 @@ LABEL_19:
 
   if (v13 && !v15)
   {
-    v17 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-    [v17 deleteObject:v13];
+    actionBuilders3 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+    [actionBuilders3 deleteObject:v13];
   }
 
   if ([(HFAbstractBaseActionSetBuilder *)self _updateActionBuildersForLightColorAction:v18]&& !v15)
   {
-    v16 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-    [v16 addObject:v18];
+    actionBuilders2 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+    [actionBuilders2 addObject:v18];
     goto LABEL_19;
   }
 
 LABEL_20:
 }
 
-- (void)updateAction:(id)a3
+- (void)updateAction:(id)action
 {
-  v4 = a3;
-  [(HFAbstractBaseActionSetBuilder *)self _updateActionBuildersForLightColorAction:v4];
-  v5 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  [v5 updateObject:v4];
+  actionCopy = action;
+  [(HFAbstractBaseActionSetBuilder *)self _updateActionBuildersForLightColorAction:actionCopy];
+  actionBuilders = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  [actionBuilders updateObject:actionCopy];
 }
 
-- (void)removeAction:(id)a3
+- (void)removeAction:(id)action
 {
-  v4 = a3;
-  v5 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  [v5 deleteObject:v4];
+  actionCopy = action;
+  actionBuilders = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  [actionBuilders deleteObject:actionCopy];
 }
 
 - (void)removeAllActions
 {
-  v2 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  [v2 deleteAllObjects];
+  actionBuilders = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  [actionBuilders deleteAllObjects];
 }
 
 - (BOOL)requiresDeviceUnlock
 {
-  v2 = [(HFAbstractBaseActionSetBuilder *)self actions];
-  v3 = [v2 na_any:&__block_literal_global_184];
+  actions = [(HFAbstractBaseActionSetBuilder *)self actions];
+  v3 = [actions na_any:&__block_literal_global_184];
 
   return v3;
 }
 
 - (BOOL)isAffectedByEndEvents
 {
-  v2 = [(HFAbstractBaseActionSetBuilder *)self actions];
-  v3 = [v2 na_any:&__block_literal_global_7_8];
+  actions = [(HFAbstractBaseActionSetBuilder *)self actions];
+  v3 = [actions na_any:&__block_literal_global_7_8];
 
   return v3;
 }
 
 - (HFMediaPlaybackActionBuilder)mediaAction
 {
-  v2 = [(HFAbstractBaseActionSetBuilder *)self actions];
-  v3 = [v2 na_firstObjectPassingTest:&__block_literal_global_9_9];
+  actions = [(HFAbstractBaseActionSetBuilder *)self actions];
+  v3 = [actions na_firstObjectPassingTest:&__block_literal_global_9_9];
 
   return v3;
 }
@@ -188,8 +188,8 @@ uint64_t __45__HFAbstractBaseActionSetBuilder_mediaAction__block_invoke(uint64_t
 
 - (NSArray)naturalLightingActions
 {
-  v2 = [(HFAbstractBaseActionSetBuilder *)self actions];
-  v3 = [v2 na_map:&__block_literal_global_12_7];
+  actions = [(HFAbstractBaseActionSetBuilder *)self actions];
+  v3 = [actions na_map:&__block_literal_global_12_7];
 
   return v3;
 }
@@ -216,8 +216,8 @@ void *__56__HFAbstractBaseActionSetBuilder_naturalLightingActions__block_invoke(
 
 - (NSArray)matterActionBuilders
 {
-  v2 = [(HFAbstractBaseActionSetBuilder *)self actions];
-  v3 = [v2 na_map:&__block_literal_global_15_8];
+  actions = [(HFAbstractBaseActionSetBuilder *)self actions];
+  v3 = [actions na_map:&__block_literal_global_15_8];
 
   return v3;
 }
@@ -244,22 +244,22 @@ void *__54__HFAbstractBaseActionSetBuilder_matterActionBuilders__block_invoke(ui
 
 - (id)deleteActionSet
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBaseActionSetBuilder.m" lineNumber:150 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBaseActionSetBuilder deleteActionSet]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBaseActionSetBuilder.m" lineNumber:150 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBaseActionSetBuilder deleteActionSet]", objc_opt_class()}];
 
   return 0;
 }
 
-- (id)existingActionBuilder:(id)a3 inSet:(id)a4
+- (id)existingActionBuilder:(id)builder inSet:(id)set
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  builderCopy = builder;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  setCopy = set;
+  v7 = [setCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -269,18 +269,18 @@ void *__54__HFAbstractBaseActionSetBuilder_matterActionBuilders__block_invoke(ui
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(setCopy);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 canUpdateWithActionBuilder:{v5, v13}])
+        if ([v10 canUpdateWithActionBuilder:{builderCopy, v13}])
         {
           v7 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [setCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -297,16 +297,16 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)_updateActionBuildersForLightColorAction:(id)a3
+- (BOOL)_updateActionBuildersForLightColorAction:(id)action
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  v6 = [v5 toSet];
-  v7 = [v6 copy];
+  actionCopy = action;
+  actionBuilders = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  toSet = [actionBuilders toSet];
+  v7 = [toSet copy];
 
   objc_opt_class();
-  v8 = v4;
+  v8 = actionCopy;
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -344,18 +344,18 @@ LABEL_11:
     v67[0] = *MEMORY[0x277CCFA30];
     v67[1] = v23;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:2];
-    v24 = [v13 characteristic];
-    v25 = [v24 characteristicType];
+    characteristic = [v13 characteristic];
+    characteristicType = [characteristic characteristicType];
 
     v26 = *MEMORY[0x277CCF7D8];
-    if ([v25 isEqualToString:*MEMORY[0x277CCF7D8]])
+    if ([characteristicType isEqualToString:*MEMORY[0x277CCF7D8]])
     {
       v27 = v22;
     }
 
     else
     {
-      if (![v22 containsObject:v25])
+      if (![v22 containsObject:characteristicType])
       {
         v28 = 0;
         goto LABEL_25;
@@ -372,7 +372,7 @@ LABEL_25:
     {
       v52 = v11;
       v53 = v28;
-      v48 = v25;
+      v48 = characteristicType;
       v49 = v22;
       v50 = v7;
       v57 = 0u;
@@ -434,13 +434,13 @@ LABEL_25:
 
               else if (v42)
               {
-                v43 = [v42 characteristic];
-                v44 = [v43 characteristicType];
+                characteristic2 = [v42 characteristic];
+                characteristicType2 = [characteristic2 characteristicType];
 
-                if ([v53 containsObject:v44])
+                if ([v53 containsObject:characteristicType2])
                 {
-                  v45 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-                  [v45 deleteObject:v42];
+                  actionBuilders2 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+                  [actionBuilders2 deleteObject:v42];
                 }
 
                 v29 = 0x277DEF000;
@@ -463,7 +463,7 @@ LABEL_25:
       v7 = v50;
       v11 = v52;
       v28 = v53;
-      v25 = v48;
+      characteristicType = v48;
       v22 = v49;
       v21 = v54;
     }
@@ -504,8 +504,8 @@ LABEL_25:
           }
 
           v19 = *(*(&v59 + 1) + 8 * j);
-          v20 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-          [v20 deleteObject:v19];
+          actionBuilders3 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+          [actionBuilders3 deleteObject:v19];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v59 objects:v68 count:16];
@@ -572,24 +572,24 @@ uint64_t __75__HFAbstractBaseActionSetBuilder__updateActionBuildersForLightColor
 
 - (id)commitItem
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAbstractBaseActionSetBuilder.m" lineNumber:287 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBaseActionSetBuilder commitItem]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAbstractBaseActionSetBuilder.m" lineNumber:287 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HFAbstractBaseActionSetBuilder commitItem]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)createActionSetBuilder
 {
-  v3 = [(HFItemBuilder *)self home];
-  v4 = [v3 areAutomationBuildersSupported];
+  home = [(HFItemBuilder *)self home];
+  areAutomationBuildersSupported = [home areAutomationBuildersSupported];
 
-  if (v4)
+  if (areAutomationBuildersSupported)
   {
-    v5 = [(HFItemBuilder *)self home];
-    v6 = [v5 newActionSetBuilder];
+    home2 = [(HFItemBuilder *)self home];
+    newActionSetBuilder = [home2 newActionSetBuilder];
 
-    [(HFAbstractBaseActionSetBuilder *)self updateActionsInBuilder:v6];
-    v7 = [MEMORY[0x277D2C900] futureWithResult:v6];
+    [(HFAbstractBaseActionSetBuilder *)self updateActionsInBuilder:newActionSetBuilder];
+    v7 = [MEMORY[0x277D2C900] futureWithResult:newActionSetBuilder];
   }
 
   else
@@ -600,23 +600,23 @@ uint64_t __75__HFAbstractBaseActionSetBuilder__updateActionBuildersForLightColor
   return v7;
 }
 
-- (void)updateActionsInBuilder:(id)a3
+- (void)updateActionsInBuilder:(id)builder
 {
-  v4 = a3;
-  v8 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  v5 = [v8 toSet];
-  v6 = [v5 na_map:&__block_literal_global_25_13];
+  builderCopy = builder;
+  actionBuilders = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  toSet = [actionBuilders toSet];
+  v6 = [toSet na_map:&__block_literal_global_25_13];
   v7 = [v6 na_filter:&__block_literal_global_28_6];
-  [v4 setActions:v7];
+  [builderCopy setActions:v7];
 }
 
 - (id)lazilyUpdateActions
 {
   objc_opt_class();
-  v3 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = actionSet;
   }
 
   else
@@ -921,29 +921,29 @@ void __53__HFAbstractBaseActionSetBuilder_lazilyUpdateActions__block_invoke_42(u
   }
 }
 
-- (id)_removeSuccessfulChanges:(id)a3 fromSetDiff:(id)a4
+- (id)_removeSuccessfulChanges:(id)changes fromSetDiff:(id)diff
 {
-  v5 = a4;
-  v6 = a3;
+  diffCopy = diff;
+  changesCopy = changes;
   v7 = [HFMutableSetDiff alloc];
-  v8 = [v6 toSet];
-  v9 = [(HFMutableSetDiff *)v7 initWithFromSet:v8];
+  toSet = [changesCopy toSet];
+  v9 = [(HFMutableSetDiff *)v7 initWithFromSet:toSet];
 
-  v10 = [v5 additions];
-  v11 = [v6 additions];
-  v12 = [v10 na_setByRemovingObjectsFromSet:v11];
+  additions = [diffCopy additions];
+  additions2 = [changesCopy additions];
+  v12 = [additions na_setByRemovingObjectsFromSet:additions2];
   [(HFMutableSetDiff *)v9 addObjects:v12];
 
-  v13 = [v5 updates];
-  v14 = [v6 updates];
-  v15 = [v13 na_setByRemovingObjectsFromSet:v14];
+  updates = [diffCopy updates];
+  updates2 = [changesCopy updates];
+  v15 = [updates na_setByRemovingObjectsFromSet:updates2];
   [(HFMutableSetDiff *)v9 updateObjects:v15];
 
-  v16 = [v5 deletions];
+  deletions = [diffCopy deletions];
 
-  v17 = [v6 deletions];
+  deletions2 = [changesCopy deletions];
 
-  v18 = [v16 na_setByRemovingObjectsFromSet:v17];
+  v18 = [deletions na_setByRemovingObjectsFromSet:deletions2];
   [(HFMutableSetDiff *)v9 deleteObjects:v18];
 
   v19 = [(HFMutableSetDiff *)v9 copy];
@@ -951,15 +951,15 @@ void __53__HFAbstractBaseActionSetBuilder_lazilyUpdateActions__block_invoke_42(u
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(HFAbstractBaseActionSetBuilder *)self actionSet];
-  v7 = [(HFItemBuilder *)self home];
-  v8 = [v5 initWithExistingObject:v6 inHome:v7];
+  actionSet = [(HFAbstractBaseActionSetBuilder *)self actionSet];
+  home = [(HFItemBuilder *)self home];
+  v8 = [v5 initWithExistingObject:actionSet inHome:home];
 
-  v9 = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
-  v10 = [v9 mutableCopyWithZone:a3];
+  actionBuilders = [(HFAbstractBaseActionSetBuilder *)self actionBuilders];
+  v10 = [actionBuilders mutableCopyWithZone:zone];
   [v8 setActionBuilders:v10];
 
   return v8;

@@ -6,9 +6,9 @@
 + (id)os_log;
 + (id)supplimentalMessageFont;
 - (CGRect)_contentRect;
-- (CGRect)_exclusionRectForView:(id)a3 alongEdge:(unint64_t)a4;
-- (CGRect)titleLabelBaselineAlignmentRectForLabel:(id)a3;
-- (CNComposeHeaderView)initWithFrame:(CGRect)a3;
+- (CGRect)_exclusionRectForView:(id)view alongEdge:(unint64_t)edge;
+- (CGRect)titleLabelBaselineAlignmentRectForLabel:(id)label;
+- (CNComposeHeaderView)initWithFrame:(CGRect)frame;
 - (CNComposeHeaderViewDelegate)delegate;
 - (CNComposeHeaderViewDelegate)internalDelegate;
 - (NSDirectionalEdgeInsets)separatorDirectionalEdgeInsets;
@@ -24,16 +24,16 @@
 - (id)labelColor;
 - (void)createComposeFieldInfoLabelIfNeeded;
 - (void)handleTouchesEnded;
-- (void)layoutComposeFieldInfoLabelWithContentRect:(CGRect)a3 labelRect:(CGRect)a4;
+- (void)layoutComposeFieldInfoLabelWithContentRect:(CGRect)rect labelRect:(CGRect)labelRect;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)refreshPreferredContentSize;
-- (void)setComposeFieldInfoText:(id)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLabel:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setComposeFieldInfoText:(id)text;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setLabel:(id)label;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation CNComposeHeaderView
@@ -98,7 +98,7 @@ id __46__CNComposeHeaderView_supplimentalMessageFont__block_invoke()
   v7[1] = 3221225472;
   v7[2] = __38__CNComposeHeaderView_preferredHeight__block_invoke;
   v7[3] = &__block_descriptor_40_e5_d8__0l;
-  v7[4] = a1;
+  v7[4] = self;
   [v3 cachedFloat:v7 forKey:@"CNComposeHeaderViewPreferredHeight"];
   v5 = v4;
 
@@ -165,8 +165,8 @@ LABEL_9:
 
 + (double)separatorHeight
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return 1.0 / v4;
@@ -179,7 +179,7 @@ LABEL_9:
   v7[1] = 3221225472;
   v7[2] = __52__CNComposeHeaderView__labelTopPaddingSpecification__block_invoke;
   v7[3] = &__block_descriptor_40_e5_d8__0l;
-  v7[4] = a1;
+  v7[4] = self;
   [v3 cachedFloat:v7 forKey:@"CNComposeHeaderViewLabelTopPaddingSpec"];
   v5 = v4;
 
@@ -210,9 +210,9 @@ double __52__CNComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
 
 - (double)labelTopPadding
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  v5 = [v4 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v5 = [featureFlags isFeatureEnabled:29];
 
   if (v5 || ([MEMORY[0x1E69DC668] sharedApplication], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "preferredContentSizeCategory"), v7 = objc_claimAutoreleasedReturnValue(), IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v7), v7, v6, IsAccessibilityCategory))
   {
@@ -224,8 +224,8 @@ double __52__CNComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
   {
     [objc_opt_class() _labelTopPaddingSpecification];
     v12 = v11;
-    v13 = [(CNComposeHeaderView *)self labelView];
-    [v13 _capOffsetFromBoundsTop];
+    labelView = [(CNComposeHeaderView *)self labelView];
+    [labelView _capOffsetFromBoundsTop];
     v10 = v12 - v14;
   }
 
@@ -234,23 +234,23 @@ double __52__CNComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
 
 - (id)labelColor
 {
-  v2 = [(CNComposeHeaderView *)self labelView];
-  v3 = [v2 effectiveTextColor];
+  labelView = [(CNComposeHeaderView *)self labelView];
+  effectiveTextColor = [labelView effectiveTextColor];
 
-  return v3;
+  return effectiveTextColor;
 }
 
-- (CNComposeHeaderView)initWithFrame:(CGRect)a3
+- (CNComposeHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v19.receiver = self;
   v19.super_class = CNComposeHeaderView;
-  v5 = [(CNComposeHeaderView *)&v19 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(CNComposeHeaderView *)&v19 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(CNComposeHeaderView *)v5 setBackgroundColor:v6];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(CNComposeHeaderView *)v5 setBackgroundColor:systemBackgroundColor];
     [(CNComposeHeaderView *)v5 setPreservesSuperviewLayoutMargins:1];
     [(CNComposeHeaderView *)v5 setInsetsLayoutMarginsFromSafeArea:0];
     v7 = MEMORY[0x1E695F058];
@@ -272,8 +272,8 @@ double __52__CNComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
 
     [(CNComposeHeaderLabelView *)v5->_labelView setAutoresizingMask:0];
     v16 = v5->_labelView;
-    v17 = [objc_opt_class() defaultFont];
-    [(CNComposeHeaderLabelView *)v16 setFont:v17];
+    defaultFont = [objc_opt_class() defaultFont];
+    [(CNComposeHeaderLabelView *)v16 setFont:defaultFont];
 
     [(CNComposeHeaderLabelView *)v5->_labelView sizeToFit];
     [(CNComposeHeaderView *)v5 addSubview:v5->_labelView];
@@ -282,63 +282,63 @@ double __52__CNComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
   return v5;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
-    v4 = a3;
-    v5 = [(CNComposeHeaderView *)self labelView];
-    [v5 setText:v4];
+    labelCopy = label;
+    labelView = [(CNComposeHeaderView *)self labelView];
+    [labelView setText:labelCopy];
 
-    v6 = [(CNComposeHeaderView *)self labelView];
-    [v6 sizeToFit];
+    labelView2 = [(CNComposeHeaderView *)self labelView];
+    [labelView2 sizeToFit];
   }
 }
 
 - (NSString)label
 {
-  v2 = [(CNComposeHeaderView *)self labelView];
-  v3 = [v2 text];
+  labelView = [(CNComposeHeaderView *)self labelView];
+  text = [labelView text];
 
-  return v3;
+  return text;
 }
 
 - (void)createComposeFieldInfoLabelIfNeeded
 {
-  v3 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+  composeFieldInfoLabel = [(CNComposeHeaderView *)self composeFieldInfoLabel];
 
-  if (!v3)
+  if (!composeFieldInfoLabel)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
     v5 = [v4 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     [(CNComposeHeaderView *)self setComposeFieldInfoLabel:v5];
 
-    v6 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-    [v6 setNumberOfLines:3];
+    composeFieldInfoLabel2 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+    [composeFieldInfoLabel2 setNumberOfLines:3];
 
-    v7 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-    [v7 setAdjustsFontSizeToFitWidth:1];
+    composeFieldInfoLabel3 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+    [composeFieldInfoLabel3 setAdjustsFontSizeToFitWidth:1];
 
-    v8 = [objc_opt_class() supplimentalMessageFont];
-    v9 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-    [v9 setFont:v8];
+    supplimentalMessageFont = [objc_opt_class() supplimentalMessageFont];
+    composeFieldInfoLabel4 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+    [composeFieldInfoLabel4 setFont:supplimentalMessageFont];
 
-    v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    v10 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-    [v10 setTextColor:v11];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    composeFieldInfoLabel5 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+    [composeFieldInfoLabel5 setTextColor:secondaryLabelColor];
   }
 }
 
-- (void)setComposeFieldInfoText:(id)a3
+- (void)setComposeFieldInfoText:(id)text
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_composeFieldInfoText != v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (self->_composeFieldInfoText != textCopy)
   {
-    v38 = v4;
-    v4 = [v4 isEqualToString:?];
+    v38 = textCopy;
+    textCopy = [textCopy isEqualToString:?];
     v5 = v38;
-    if ((v4 & 1) == 0)
+    if ((textCopy & 1) == 0)
     {
       v6 = [v38 copy];
       composeFieldInfoText = self->_composeFieldInfoText;
@@ -346,57 +346,57 @@ double __52__CNComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
 
       if (!v38 || ![v38 length])
       {
-        v35 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-        v36 = [v35 superview];
+        composeFieldInfoLabel = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+        superview = [composeFieldInfoLabel superview];
 
         v5 = v38;
-        if (v36 != self)
+        if (superview != self)
         {
           goto LABEL_11;
         }
 
-        v34 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-        [v34 removeFromSuperview];
+        composeFieldInfoLabel2 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+        [composeFieldInfoLabel2 removeFromSuperview];
         goto LABEL_9;
       }
 
       [(CNComposeHeaderView *)self createComposeFieldInfoLabelIfNeeded];
       v8 = self->_composeFieldInfoText;
-      v9 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-      [v9 setText:v8];
+      composeFieldInfoLabel3 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+      [composeFieldInfoLabel3 setText:v8];
 
       [(CNComposeHeaderView *)self _contentRect];
       v11 = v10;
       v13 = v12;
       v15 = v14;
       v17 = v16;
-      v18 = [(CNComposeHeaderView *)self labelView];
-      [v18 frame];
+      labelView = [(CNComposeHeaderView *)self labelView];
+      [labelView frame];
       v20 = v19;
       v22 = v21;
       v24 = v23;
       v26 = v25;
 
-      v27 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-      [v27 bounds];
+      composeFieldInfoLabel4 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+      [composeFieldInfoLabel4 bounds];
       v37 = v28;
 
       [(CNComposeHeaderView *)self layoutComposeFieldInfoLabelWithContentRect:v11 labelRect:v13, v15, v17, v20, v22, v24, v26];
-      v29 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-      [v29 bounds];
+      composeFieldInfoLabel5 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+      [composeFieldInfoLabel5 bounds];
       v31 = v30;
 
-      v32 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-      v33 = [v32 superview];
+      composeFieldInfoLabel6 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+      superview2 = [composeFieldInfoLabel6 superview];
 
-      if (v33 != self)
+      if (superview2 != self)
       {
-        v34 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-        [(CNComposeHeaderView *)self addSubview:v34];
+        composeFieldInfoLabel2 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+        [(CNComposeHeaderView *)self addSubview:composeFieldInfoLabel2];
 LABEL_9:
 
 LABEL_10:
-        v4 = [(CNComposeHeaderView *)self _notifyDelegateOfSizeChange];
+        textCopy = [(CNComposeHeaderView *)self _notifyDelegateOfSizeChange];
         v5 = v38;
         goto LABEL_11;
       }
@@ -411,16 +411,16 @@ LABEL_10:
 
 LABEL_11:
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](textCopy, v5);
 }
 
-- (void)layoutComposeFieldInfoLabelWithContentRect:(CGRect)a3 labelRect:(CGRect)a4
+- (void)layoutComposeFieldInfoLabelWithContentRect:(CGRect)rect labelRect:(CGRect)labelRect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(CNComposeHeaderView *)self composeFieldInfoLabel:a3.origin.x];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = [(CNComposeHeaderView *)self composeFieldInfoLabel:rect.origin.x];
   [(CNComposeHeaderView *)self bounds];
   [v9 sizeThatFits:{v10, 1.79769313e308}];
   v12 = v11;
@@ -440,25 +440,25 @@ LABEL_11:
   v19 = v17 - v18;
   [(CNComposeHeaderView *)self separatorDirectionalEdgeInsets];
   v21 = v19 - v20;
-  v22 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-  [v22 setFrame:{MinX, v16, v21, v12}];
+  composeFieldInfoLabel = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+  [composeFieldInfoLabel setFrame:{MinX, v16, v21, v12}];
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(CNComposeHeaderView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(CNComposeHeaderView *)self _shouldReverseLayoutDirection];
   [(CNComposeHeaderView *)self _contentRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CNComposeHeaderView *)self labelView];
-  [v12 frame];
+  labelView = [(CNComposeHeaderView *)self labelView];
+  [labelView frame];
   v14 = v13;
   v16 = v15;
 
-  v17 = [(CNComposeHeaderView *)self labelView];
-  [v17 sizeThatFits:{v9, v11}];
+  labelView2 = [(CNComposeHeaderView *)self labelView];
+  [labelView2 sizeThatFits:{v9, v11}];
   v19 = v18;
   v21 = v20;
 
@@ -478,7 +478,7 @@ LABEL_11:
   if ([(CNComposeHeaderView *)self _shouldEmbedLabelInTextView])
   {
     MinX = 0.0;
-    if (!v3)
+    if (!_shouldReverseLayoutDirection)
     {
       goto LABEL_8;
     }
@@ -491,7 +491,7 @@ LABEL_11:
     goto LABEL_6;
   }
 
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v52.origin.x = recta.origin.x;
     v52.origin.y = v7;
@@ -514,19 +514,19 @@ LABEL_6:
   v54.size.height = v11;
   MinX = CGRectGetMinX(v54);
 LABEL_8:
-  v29 = [(CNComposeHeaderView *)self labelView];
-  [v29 setFrame:{MinX, v25, v23, v21}];
+  labelView3 = [(CNComposeHeaderView *)self labelView];
+  [labelView3 setFrame:{MinX, v25, v23, v21}];
 
-  v30 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-  v31 = [v30 superview];
+  composeFieldInfoLabel = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+  superview = [composeFieldInfoLabel superview];
 
-  if (v31 == self)
+  if (superview == self)
   {
     [(CNComposeHeaderView *)self layoutComposeFieldInfoLabelWithContentRect:recta.origin.x labelRect:v7, v9, v11, MinX, v25, v23, v21];
   }
 
-  v32 = [(CNComposeHeaderView *)self separator];
-  [v32 frame];
+  separator = [(CNComposeHeaderView *)self separator];
+  [separator frame];
   v34 = v33;
 
   [(CNComposeHeaderView *)self frame];
@@ -534,7 +534,7 @@ LABEL_8:
   [objc_opt_class() separatorHeight];
   v37 = v36;
   [(CNComposeHeaderView *)self separatorDirectionalEdgeInsets];
-  if (v3)
+  if (_shouldReverseLayoutDirection)
   {
     v40 = v39;
   }
@@ -551,8 +551,8 @@ LABEL_8:
   v44 = v42 - v43;
   [(CNComposeHeaderView *)self separatorDirectionalEdgeInsets];
   v46 = v44 - v45;
-  v47 = [(CNComposeHeaderView *)self separator];
-  [v47 setFrame:{v40, v41, v46, v34}];
+  separator2 = [(CNComposeHeaderView *)self separator];
+  [separator2 setFrame:{v40, v41, v46, v34}];
 
   *&recta.origin.y = self;
   *&recta.size.width = CNComposeHeaderView;
@@ -569,47 +569,47 @@ LABEL_8:
 
 - (id)headerViewDelegates
 {
-  v3 = [(CNComposeHeaderView *)self delegate];
-  if (v3)
+  delegate = [(CNComposeHeaderView *)self delegate];
+  if (delegate)
   {
   }
 
   else
   {
-    v4 = [(CNComposeHeaderView *)self internalDelegate];
+    internalDelegate = [(CNComposeHeaderView *)self internalDelegate];
 
-    if (!v4)
+    if (!internalDelegate)
     {
       goto LABEL_9;
     }
   }
 
-  v5 = [(CNComposeHeaderView *)self delegate];
+  delegate2 = [(CNComposeHeaderView *)self delegate];
 
-  if (v5)
+  if (delegate2)
   {
-    v6 = [(CNComposeHeaderView *)self delegate];
-    v4 = [MEMORY[0x1E695E0F0] arrayByAddingObject:v6];
+    delegate3 = [(CNComposeHeaderView *)self delegate];
+    internalDelegate = [MEMORY[0x1E695E0F0] arrayByAddingObject:delegate3];
   }
 
   else
   {
-    v4 = MEMORY[0x1E695E0F0];
+    internalDelegate = MEMORY[0x1E695E0F0];
   }
 
-  v7 = [(CNComposeHeaderView *)self internalDelegate];
+  internalDelegate2 = [(CNComposeHeaderView *)self internalDelegate];
 
-  if (v7)
+  if (internalDelegate2)
   {
-    v8 = [(CNComposeHeaderView *)self internalDelegate];
-    v9 = [v4 arrayByAddingObject:v8];
+    internalDelegate3 = [(CNComposeHeaderView *)self internalDelegate];
+    v9 = [internalDelegate arrayByAddingObject:internalDelegate3];
 
-    v4 = v9;
+    internalDelegate = v9;
   }
 
 LABEL_9:
 
-  return v4;
+  return internalDelegate;
 }
 
 - (CGRect)_contentRect
@@ -620,13 +620,13 @@ LABEL_9:
   if (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v4, *MEMORY[0x1E69DDCE0]), vceqq_f64(v6, *(MEMORY[0x1E69DDCE0] + 16))))))
   {
     [(CNComposeHeaderView *)self layoutMargins];
-    v15 = [(CNComposeHeaderView *)self traitCollection];
-    [v15 displayScale];
+    traitCollection = [(CNComposeHeaderView *)self traitCollection];
+    [traitCollection displayScale];
     UIRoundToScale();
     v10 = v16;
 
-    v17 = [(CNComposeHeaderView *)self traitCollection];
-    [v17 displayScale];
+    traitCollection2 = [(CNComposeHeaderView *)self traitCollection];
+    [traitCollection2 displayScale];
     UIRoundToScale();
     v14 = v18;
 
@@ -657,42 +657,42 @@ LABEL_9:
 
 - (double)_additionalContentHeight
 {
-  v3 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-  v4 = [v3 superview];
+  composeFieldInfoLabel = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+  superview = [composeFieldInfoLabel superview];
 
   v5 = 0.0;
-  if (v4 == self)
+  if (superview == self)
   {
-    v6 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
-    [v6 bounds];
+    composeFieldInfoLabel2 = [(CNComposeHeaderView *)self composeFieldInfoLabel];
+    [composeFieldInfoLabel2 bounds];
     v5 = v7;
   }
 
   return v5;
 }
 
-- (CGRect)titleLabelBaselineAlignmentRectForLabel:(id)a3
+- (CGRect)titleLabelBaselineAlignmentRectForLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(CNComposeHeaderView *)self labelView];
-  [v5 layoutSubviews];
+  labelCopy = label;
+  labelView = [(CNComposeHeaderView *)self labelView];
+  [labelView layoutSubviews];
 
-  v6 = [(CNComposeHeaderView *)self labelView];
-  [v6 frame];
+  labelView2 = [(CNComposeHeaderView *)self labelView];
+  [labelView2 frame];
   v45 = v7;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  LOBYTE(v6) = [(CNComposeHeaderView *)self _shouldReverseLayoutDirection];
+  LOBYTE(labelView2) = [(CNComposeHeaderView *)self _shouldReverseLayoutDirection];
   [(CNComposeHeaderView *)self _contentRect];
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
-  [v4 frame];
+  [labelCopy frame];
   rect = v22;
-  [v4 frame];
+  [labelCopy frame];
   v24 = v23;
   v47.origin.x = v15;
   v47.origin.y = v17;
@@ -703,7 +703,7 @@ LABEL_9:
   v27 = v9;
   v28 = v11;
   v29 = v13;
-  if (v6)
+  if (labelView2)
   {
     v30 = CGRectGetMinX(*&v26) + -6.0 - v25;
   }
@@ -718,13 +718,13 @@ LABEL_9:
   v48.size.width = v11;
   v48.size.height = v13;
   MaxY = CGRectGetMaxY(v48);
-  [v4 frame];
+  [labelCopy frame];
   Height = CGRectGetHeight(v49);
-  v33 = [(CNComposeHeaderView *)self labelView];
-  [v33 _baselineOffsetFromBottom];
+  labelView3 = [(CNComposeHeaderView *)self labelView];
+  [labelView3 _baselineOffsetFromBottom];
   v35 = v34;
 
-  [v4 _baselineOffsetFromBottom];
+  [labelCopy _baselineOffsetFromBottom];
   v50.origin.y = MaxY - v35 - (Height - v36);
   v50.origin.x = v30;
   v50.size.width = v25;
@@ -761,8 +761,8 @@ LABEL_9:
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(CNComposeHeaderView *)self headerViewDelegates];
-    v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    headerViewDelegates = [(CNComposeHeaderView *)self headerViewDelegates];
+    v4 = [headerViewDelegates countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v4)
     {
       v5 = v4;
@@ -773,7 +773,7 @@ LABEL_9:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(headerViewDelegates);
           }
 
           v8 = *(*(&v9 + 1) + 8 * i);
@@ -784,7 +784,7 @@ LABEL_9:
           }
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v5 = [headerViewDelegates countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v5)
         {
           continue;
@@ -798,20 +798,20 @@ LABEL_15:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = CNComposeHeaderView;
-  [(CNComposeHeaderView *)&v5 touchesBegan:a3 withEvent:a4];
+  [(CNComposeHeaderView *)&v5 touchesBegan:began withEvent:event];
   if ([(CNComposeHeaderView *)self showsHighlightWhenTouched])
   {
     [(CNComposeHeaderView *)self setHighlighted:1 animated:0];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(CNComposeHeaderView *)self handleTouchesEnded:a3];
+  [(CNComposeHeaderView *)self handleTouchesEnded:ended];
   if ([(CNComposeHeaderView *)self showsHighlightWhenTouched])
   {
 
@@ -819,11 +819,11 @@ LABEL_15:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = CNComposeHeaderView;
-  [(CNComposeHeaderView *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(CNComposeHeaderView *)&v5 touchesCancelled:cancelled withEvent:event];
   if ([(CNComposeHeaderView *)self showsHighlightWhenTouched])
   {
     [(CNComposeHeaderView *)self setHighlighted:0 animated:1];
@@ -855,24 +855,24 @@ LABEL_15:
   return highlightedBackgroundView;
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __47__CNComposeHeaderView_setHighlighted_animated___block_invoke;
   v11[3] = &unk_1E7CD2750;
-  v12 = a3;
+  highlightedCopy = highlighted;
   v11[4] = self;
   v7 = MEMORY[0x1B8CB9350](v11, a2);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2;
   v9[3] = &unk_1E7CD2868;
-  v10 = a3;
+  highlightedCopy2 = highlighted;
   v9[4] = self;
   v8 = MEMORY[0x1B8CB9350](v9);
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v7 animations:v8 completion:0.3];
   }
@@ -923,9 +923,9 @@ void __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   v3 = +[CNAutocompleteFontMetricCache sharedFontMetricCache];
   [v3 ensureCacheIsValid];
 
-  v4 = [(CNComposeHeaderView *)self labelView];
-  v5 = [objc_opt_class() defaultFont];
-  [v4 setFont:v5];
+  labelView = [(CNComposeHeaderView *)self labelView];
+  defaultFont = [objc_opt_class() defaultFont];
+  [labelView setFont:defaultFont];
 
   [(CNComposeHeaderView *)self setNeedsLayout];
 }
@@ -933,9 +933,9 @@ void __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
 - (id)_baseAttributes
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() defaultFont];
+  defaultFont = [objc_opt_class() defaultFont];
   v4 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
-  [v3 _bodyLeading];
+  [defaultFont _bodyLeading];
   [v4 setLineSpacing:v5 * 0.55];
   [(CNComposeHeaderView *)self _recipientViewEdgeInsets];
   [v4 setHeadIndent:v6];
@@ -945,12 +945,12 @@ void __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   }
 
   v11[0] = *MEMORY[0x1E69DB648];
-  v7 = [objc_opt_class() defaultFont];
-  v12[0] = v7;
+  defaultFont2 = [objc_opt_class() defaultFont];
+  v12[0] = defaultFont2;
   v11[1] = *MEMORY[0x1E69DB650];
-  v8 = [MEMORY[0x1E69DC888] labelColor];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
   v11[2] = *MEMORY[0x1E69DB688];
-  v12[1] = v8;
+  v12[1] = labelColor;
   v12[2] = v4;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
@@ -959,41 +959,41 @@ void __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
 
 - (UIEdgeInsets)_recipientViewEdgeInsets
 {
-  v3 = [objc_opt_class() defaultFont];
+  defaultFont = [objc_opt_class() defaultFont];
   v4 = *(MEMORY[0x1E69DDCE0] + 8);
   v5 = *(MEMORY[0x1E69DDCE0] + 24);
-  v6 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v7 = [v6 featureFlags];
-  v8 = [v7 isFeatureEnabled:29];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v8 = [featureFlags isFeatureEnabled:29];
 
   if (v8)
   {
     [objc_opt_class() preferredHeight];
     v10 = v9;
-    [v3 _bodyLeading];
+    [defaultFont _bodyLeading];
     v12 = round((v10 - v11) * 0.5);
-    [v3 _bodyLeading];
+    [defaultFont _bodyLeading];
     v14 = (v10 - v13) * 0.5;
   }
 
   else
   {
-    [v3 ascender];
-    v15 = [(CNComposeHeaderView *)self labelView];
-    [v15 frame];
+    [defaultFont ascender];
+    labelView = [(CNComposeHeaderView *)self labelView];
+    [labelView frame];
     CGRectGetMaxY(v31);
-    v16 = [(CNComposeHeaderView *)self labelView];
-    [v16 _baselineOffsetFromBottom];
+    labelView2 = [(CNComposeHeaderView *)self labelView];
+    [labelView2 _baselineOffsetFromBottom];
 
-    v17 = [MEMORY[0x1E69DC668] sharedApplication];
-    v18 = [v17 preferredContentSizeCategory];
-    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v18);
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
+    IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
     if (IsAccessibilityCategory)
     {
-      [v3 capHeight];
+      [defaultFont capHeight];
       v12 = round(v20 * 0.5);
-      [v3 capHeight];
+      [defaultFont capHeight];
       v14 = v21 * 0.5;
     }
 
@@ -1003,7 +1003,7 @@ void __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
       v12 = v22;
       [objc_opt_class() preferredHeight];
       v24 = v23;
-      [v3 _bodyLeading];
+      [defaultFont _bodyLeading];
       v14 = v24 - (v12 + v25);
     }
   }
@@ -1021,20 +1021,20 @@ void __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   return result;
 }
 
-- (CGRect)_exclusionRectForView:(id)a3 alongEdge:(unint64_t)a4
+- (CGRect)_exclusionRectForView:(id)view alongEdge:(unint64_t)edge
 {
-  v6 = a3;
-  [v6 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 superview];
+  superview = [viewCopy superview];
 
-  if (v15 != self)
+  if (superview != self)
   {
-    v16 = [v6 superview];
-    [v16 convertRect:self toView:{v8, v10, v12, v14}];
+    superview2 = [viewCopy superview];
+    [superview2 convertRect:self toView:{v8, v10, v12, v14}];
     v8 = v17;
     v10 = v18;
     v12 = v19;
@@ -1042,7 +1042,7 @@ void __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   }
 
   v21 = *MEMORY[0x1E695F058];
-  if (a4 == 2)
+  if (edge == 2)
   {
     v38.origin.x = v8;
     v38.origin.y = v10;
@@ -1054,7 +1054,7 @@ void __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   else
   {
     v22 = *(MEMORY[0x1E695F058] + 16);
-    if (a4 == 8)
+    if (edge == 8)
     {
       rect = *(MEMORY[0x1E695F058] + 24);
       v23 = *(MEMORY[0x1E695F058] + 8);
@@ -1136,11 +1136,11 @@ void __47__CNComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
 
 - (id)_automationID
 {
-  v3 = [(CNComposeHeaderView *)self label];
-  if ([v3 length])
+  label = [(CNComposeHeaderView *)self label];
+  if ([label length])
   {
-    v4 = [(CNComposeHeaderView *)self label];
-    v5 = [@"BTN " stringByAppendingString:v4];
+    label2 = [(CNComposeHeaderView *)self label];
+    v5 = [@"BTN " stringByAppendingString:label2];
   }
 
   else

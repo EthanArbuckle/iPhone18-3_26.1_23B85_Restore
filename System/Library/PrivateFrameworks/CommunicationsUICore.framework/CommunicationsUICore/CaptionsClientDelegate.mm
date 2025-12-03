@@ -1,58 +1,58 @@
 @interface CaptionsClientDelegate
 - (_TtC20CommunicationsUICore22CaptionsClientDelegate)init;
-- (void)captionsClient:(id)a3 didDisableCaptions:(BOOL)a4 error:(id)a5;
-- (void)captionsClient:(id)a3 didEnableCaptions:(BOOL)a4 error:(id)a5;
-- (void)captionsClient:(id)a3 didStartCaptioningWithReason:(unsigned __int8)a4;
-- (void)captionsClient:(id)a3 didStopCaptioningWithReason:(unsigned __int8)a4;
-- (void)captionsClient:(id)a3 didUpdateCaptions:(id)a4 source:(int)a5;
-- (void)captionsServerDidDie:(id)a3;
+- (void)captionsClient:(id)client didDisableCaptions:(BOOL)captions error:(id)error;
+- (void)captionsClient:(id)client didEnableCaptions:(BOOL)captions error:(id)error;
+- (void)captionsClient:(id)client didStartCaptioningWithReason:(unsigned __int8)reason;
+- (void)captionsClient:(id)client didStopCaptioningWithReason:(unsigned __int8)reason;
+- (void)captionsClient:(id)client didUpdateCaptions:(id)captions source:(int)source;
+- (void)captionsServerDidDie:(id)die;
 @end
 
 @implementation CaptionsClientDelegate
 
-- (void)captionsClient:(id)a3 didEnableCaptions:(BOOL)a4 error:(id)a5
+- (void)captionsClient:(id)client didEnableCaptions:(BOOL)captions error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_1C2F32630(v8, a4, a5, "Captions %s enabled: %{BOOL}d; error: %@");
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1C2F32630(clientCopy, captions, error, "Captions %s enabled: %{BOOL}d; error: %@");
 }
 
-- (void)captionsClient:(id)a3 didDisableCaptions:(BOOL)a4 error:(id)a5
+- (void)captionsClient:(id)client didDisableCaptions:(BOOL)captions error:(id)error
 {
-  v8 = a3;
-  v9 = self;
-  v10 = a5;
-  sub_1C2F32630(v8, a4, a5, "Captions %s disabled: %{BOOL}d; error: %@");
+  clientCopy = client;
+  selfCopy = self;
+  errorCopy = error;
+  sub_1C2F32630(clientCopy, captions, error, "Captions %s disabled: %{BOOL}d; error: %@");
 }
 
-- (void)captionsClient:(id)a3 didStartCaptioningWithReason:(unsigned __int8)a4
+- (void)captionsClient:(id)client didStartCaptioningWithReason:(unsigned __int8)reason
 {
-  v6 = a3;
-  v7 = self;
-  sub_1C2F329AC(v6, a4, MEMORY[0x1E69E9440], "Captions %s started for reason: %s");
+  clientCopy = client;
+  selfCopy = self;
+  sub_1C2F329AC(clientCopy, reason, MEMORY[0x1E69E9440], "Captions %s started for reason: %s");
 }
 
-- (void)captionsClient:(id)a3 didStopCaptioningWithReason:(unsigned __int8)a4
+- (void)captionsClient:(id)client didStopCaptioningWithReason:(unsigned __int8)reason
 {
-  v6 = a3;
-  v7 = self;
-  sub_1C2F329AC(v6, a4, MEMORY[0x1E69E9430], "Captions %s stopped for reason: %s");
+  clientCopy = client;
+  selfCopy = self;
+  sub_1C2F329AC(clientCopy, reason, MEMORY[0x1E69E9430], "Captions %s stopped for reason: %s");
 }
 
-- (void)captionsClient:(id)a3 didUpdateCaptions:(id)a4 source:(int)a5
+- (void)captionsClient:(id)client didUpdateCaptions:(id)captions source:(int)source
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1C2F33AC8(v7, v8);
+  clientCopy = client;
+  captionsCopy = captions;
+  selfCopy = self;
+  sub_1C2F33AC8(clientCopy, captionsCopy);
 }
 
-- (void)captionsServerDidDie:(id)a3
+- (void)captionsServerDidDie:(id)die
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C2F32C98(v4);
+  dieCopy = die;
+  selfCopy = self;
+  sub_1C2F32C98(dieCopy);
 }
 
 - (_TtC20CommunicationsUICore22CaptionsClientDelegate)init

@@ -1,33 +1,33 @@
 @interface CALNDefaultTimeToLeaveRefreshMonitor
-+ (id)_refreshTimerAlarmNameForEventExternalURL:(id)a3;
-- (CALNDefaultTimeToLeaveRefreshMonitor)initWithStorage:(id)a3;
++ (id)_refreshTimerAlarmNameForEventExternalURL:(id)l;
+- (CALNDefaultTimeToLeaveRefreshMonitor)initWithStorage:(id)storage;
 - (CALNTimeToLeaveRefreshMonitorDelegate)delegate;
-- (void)_refreshTimerFiredForEventExternalURL:(id)a3;
-- (void)receivedAlarmNamed:(id)a3;
-- (void)removeRefreshTimerForEventExternalURL:(id)a3;
-- (void)setUpRefreshTimerWithTriggerDate:(id)a3 eventExternalURL:(id)a4;
+- (void)_refreshTimerFiredForEventExternalURL:(id)l;
+- (void)receivedAlarmNamed:(id)named;
+- (void)removeRefreshTimerForEventExternalURL:(id)l;
+- (void)setUpRefreshTimerWithTriggerDate:(id)date eventExternalURL:(id)l;
 @end
 
 @implementation CALNDefaultTimeToLeaveRefreshMonitor
 
-- (CALNDefaultTimeToLeaveRefreshMonitor)initWithStorage:(id)a3
+- (CALNDefaultTimeToLeaveRefreshMonitor)initWithStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = CALNDefaultTimeToLeaveRefreshMonitor;
   v6 = [(CALNDefaultTimeToLeaveRefreshMonitor *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storage, a3);
+    objc_storeStrong(&v6->_storage, storage);
   }
 
   return v7;
 }
 
-- (void)receivedAlarmNamed:(id)a3
+- (void)receivedAlarmNamed:(id)named
 {
-  v4 = a3;
+  namedCopy = named;
   if (![(CALNDefaultTimeToLeaveRefreshMonitor *)self isActive])
   {
     v7 = +[CALNLogSubsystem calendar];
@@ -39,10 +39,10 @@
     goto LABEL_17;
   }
 
-  if ([v4 hasPrefix:@"CalendarNotificationRefreshTimer-"])
+  if ([namedCopy hasPrefix:@"CalendarNotificationRefreshTimer-"])
   {
     v5 = *MEMORY[0x277CF7880];
-    [v4 UTF8String];
+    [namedCopy UTF8String];
     v6 = xpc_copy_event();
     v7 = v6;
     if (v6)
@@ -92,41 +92,41 @@ LABEL_17:
   }
 }
 
-- (void)setUpRefreshTimerWithTriggerDate:(id)a3 eventExternalURL:(id)a4
+- (void)setUpRefreshTimerWithTriggerDate:(id)date eventExternalURL:(id)l
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  lCopy = l;
   if ([(CALNDefaultTimeToLeaveRefreshMonitor *)self isRegisteredForAlarms])
   {
-    v8 = [(CALNDefaultTimeToLeaveRefreshMonitor *)self storage];
-    v9 = [v8 refreshDateWithIdentifier:v7];
+    storage = [(CALNDefaultTimeToLeaveRefreshMonitor *)self storage];
+    v9 = [storage refreshDateWithIdentifier:lCopy];
 
-    if ([v6 isEqualToDate:v9])
+    if ([dateCopy isEqualToDate:v9])
     {
       v10 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138543618;
-        v22 = v6;
+        v22 = dateCopy;
         v23 = 2114;
-        v24 = v7;
+        v24 = lCopy;
         _os_log_impl(&dword_242909000, v10, OS_LOG_TYPE_DEFAULT, "A refresh timer with the same trigger date of [%{public}@] has already been set up. Will not set up a new timer. Event external URL: [%{public}@].", &v21, 0x16u);
       }
     }
 
     else
     {
-      v11 = [objc_opt_class() _refreshTimerAlarmNameForEventExternalURL:v7];
-      v12 = [v11 UTF8String];
+      v11 = [objc_opt_class() _refreshTimerAlarmNameForEventExternalURL:lCopy];
+      uTF8String = [v11 UTF8String];
 
-      [v6 timeIntervalSinceNow];
+      [dateCopy timeIntervalSinceNow];
       if (v13 >= 0.0)
       {
         v14 = ((ceil(v13) + time(0)) * 1000000000.0);
         v10 = xpc_dictionary_create(0, 0, 0);
         xpc_dictionary_set_date(v10, *MEMORY[0x277CF7888], v14);
-        xpc_dictionary_set_string(v10, "com.apple.calaccessd.TTLRefreshMonitor.alarm.context.URLString", [v7 UTF8String]);
+        xpc_dictionary_set_string(v10, "com.apple.calaccessd.TTLRefreshMonitor.alarm.context.URLString", [lCopy UTF8String]);
         v15 = *MEMORY[0x277CF7880];
         xpc_set_event();
         v16 = MEMORY[0x245D1CF80](v10);
@@ -139,18 +139,18 @@ LABEL_17:
         }
 
         free(v16);
-        v18 = [(CALNDefaultTimeToLeaveRefreshMonitor *)self storage];
-        [v18 addRefreshDate:v6 withIdentifier:v7];
+        storage2 = [(CALNDefaultTimeToLeaveRefreshMonitor *)self storage];
+        [storage2 addRefreshDate:dateCopy withIdentifier:lCopy];
 
         v19 = +[CALNLogSubsystem calendar];
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           v21 = 138543874;
-          v22 = v7;
+          v22 = lCopy;
           v23 = 2114;
-          v24 = v6;
+          v24 = dateCopy;
           v25 = 2082;
-          v26 = v12;
+          v26 = uTF8String;
           _os_log_impl(&dword_242909000, v19, OS_LOG_TYPE_DEFAULT, "Set up refresh timer. event external url = %{public}@, trigger date = %{public}@, job name = %{public}s", &v21, 0x20u);
         }
       }
@@ -178,29 +178,29 @@ LABEL_17:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeRefreshTimerForEventExternalURL:(id)a3
+- (void)removeRefreshTimerForEventExternalURL:(id)l
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   if ([(CALNDefaultTimeToLeaveRefreshMonitor *)self isRegisteredForAlarms])
   {
-    v5 = [(CALNDefaultTimeToLeaveRefreshMonitor *)self storage];
-    v6 = [v5 refreshDateWithIdentifier:v4];
+    storage = [(CALNDefaultTimeToLeaveRefreshMonitor *)self storage];
+    v6 = [storage refreshDateWithIdentifier:lCopy];
 
     if (v6)
     {
-      v7 = [objc_opt_class() _refreshTimerAlarmNameForEventExternalURL:v4];
+      v7 = [objc_opt_class() _refreshTimerAlarmNameForEventExternalURL:lCopy];
       v8 = *MEMORY[0x277CF7880];
       [v7 UTF8String];
       xpc_set_event();
-      v9 = [(CALNDefaultTimeToLeaveRefreshMonitor *)self storage];
-      [v9 removeRefreshDateWithIdentifier:v4];
+      storage2 = [(CALNDefaultTimeToLeaveRefreshMonitor *)self storage];
+      [storage2 removeRefreshDateWithIdentifier:lCopy];
 
       v10 = +[CALNLogSubsystem calendar];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = v4;
+        v13 = lCopy;
         _os_log_impl(&dword_242909000, v10, OS_LOG_TYPE_DEFAULT, "Removed refresh timer for event with external url = %{public}@", &v12, 0xCu);
       }
     }
@@ -227,23 +227,23 @@ LABEL_17:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_refreshTimerFiredForEventExternalURL:(id)a3
+- (void)_refreshTimerFiredForEventExternalURL:(id)l
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = +[CALNLogSubsystem calendar];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543362;
-    v11 = v4;
+    v11 = lCopy;
     _os_log_impl(&dword_242909000, v5, OS_LOG_TYPE_DEFAULT, "Refresh timer fired for event external url = %{public}@", &v10, 0xCu);
   }
 
-  v6 = [(CALNDefaultTimeToLeaveRefreshMonitor *)self delegate];
-  v7 = v6;
-  if (v6)
+  delegate = [(CALNDefaultTimeToLeaveRefreshMonitor *)self delegate];
+  v7 = delegate;
+  if (delegate)
   {
-    [v6 timeToLeaveRefreshMonitor:self refreshTimerFiredForEventExternalURL:v4];
+    [delegate timeToLeaveRefreshMonitor:self refreshTimerFiredForEventExternalURL:lCopy];
   }
 
   else
@@ -258,12 +258,12 @@ LABEL_17:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_refreshTimerAlarmNameForEventExternalURL:(id)a3
++ (id)_refreshTimerAlarmNameForEventExternalURL:(id)l
 {
-  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(a3, "hash")}];
-  v4 = [v3 stringValue];
+  v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(l, "hash")}];
+  stringValue = [v3 stringValue];
 
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-[%@]", @"CalendarNotificationRefreshTimer-", v4];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-[%@]", @"CalendarNotificationRefreshTimer-", stringValue];
 
   return v5;
 }

@@ -1,25 +1,25 @@
 @interface XRFollowUpBlock
-- (XRFollowUpBlock)initWithBlock:(id)a3 operation:(id)a4;
+- (XRFollowUpBlock)initWithBlock:(id)block operation:(id)operation;
 - (void)go;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation XRFollowUpBlock
 
-- (XRFollowUpBlock)initWithBlock:(id)a3 operation:(id)a4
+- (XRFollowUpBlock)initWithBlock:(id)block operation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  operationCopy = operation;
   v12.receiver = self;
   v12.super_class = XRFollowUpBlock;
   v8 = [(XRFollowUpBlock *)&v12 init];
   if (v8)
   {
-    v9 = MEMORY[0x24C1C5B20](v6);
+    v9 = MEMORY[0x24C1C5B20](blockCopy);
     block = v8->_block;
     v8->_block = v9;
 
-    objc_storeStrong(&v8->_op, a4);
+    objc_storeStrong(&v8->_op, operation);
   }
 
   return v8;
@@ -36,19 +36,19 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a4;
-  if (qword_27EE85EC0 == a6)
+  objectCopy = object;
+  if (qword_27EE85EC0 == context)
   {
-    v14 = v8;
-    v9 = v8;
+    v14 = objectCopy;
+    v9 = objectCopy;
     if (objc_msgSend_isFinished(v9, v10, v11, v12, v13))
     {
       sub_24808D308(self);
     }
 
-    v8 = v14;
+    objectCopy = v14;
   }
 }
 

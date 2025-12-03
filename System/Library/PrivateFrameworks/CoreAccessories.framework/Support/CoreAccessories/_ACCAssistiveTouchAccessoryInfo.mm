@@ -1,19 +1,19 @@
 @interface _ACCAssistiveTouchAccessoryInfo
-- (_ACCAssistiveTouchAccessoryInfo)initWithUID:(id)a3;
+- (_ACCAssistiveTouchAccessoryInfo)initWithUID:(id)d;
 - (void)dealloc;
 @end
 
 @implementation _ACCAssistiveTouchAccessoryInfo
 
-- (_ACCAssistiveTouchAccessoryInfo)initWithUID:(id)a3
+- (_ACCAssistiveTouchAccessoryInfo)initWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = _ACCAssistiveTouchAccessoryInfo;
   v5 = [(_ACCAssistiveTouchAccessoryInfo *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     accessoryUID = v5->_accessoryUID;
     v5->_accessoryUID = v6;
   }

@@ -1,5 +1,5 @@
 @interface _UIDatePickerIOSCompactViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityElements;
@@ -11,14 +11,14 @@
 
 @implementation _UIDatePickerIOSCompactViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = @"_UIDatePickerIOSCompactView";
   v3 = @"_UIDatePickerViewComponent";
   [location[0] validateClass:? conformsToProtocol:?];
@@ -107,7 +107,7 @@
 
 - (id)accessibilityValue
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = 0;
   v13 = 0;
@@ -116,20 +116,20 @@
   v2 = MEMORY[0x29EDC9740](v11).n128_u64[0];
   if (v12 == 1 || v12 == 2)
   {
-    v10 = [(_UIDatePickerIOSCompactViewAccessibility *)v15 safeUIViewForKey:@"_dateView", *&v2];
-    v3 = [v10 accessibilityLabel];
+    v10 = [(_UIDatePickerIOSCompactViewAccessibility *)selfCopy safeUIViewForKey:@"_dateView", *&v2];
+    accessibilityLabel = [v10 accessibilityLabel];
     v4 = v13;
-    v13 = v3;
+    v13 = accessibilityLabel;
     MEMORY[0x29EDC9740](v4);
     v2 = MEMORY[0x29EDC9740](v10).n128_u64[0];
   }
 
   if (!v12 || v12 == 2)
   {
-    v9 = [(_UIDatePickerIOSCompactViewAccessibility *)v15 safeUIViewForKey:@"_timeView", *&v2];
-    v5 = [v9 accessibilityLabel];
+    v9 = [(_UIDatePickerIOSCompactViewAccessibility *)selfCopy safeUIViewForKey:@"_timeView", *&v2];
+    accessibilityLabel2 = [v9 accessibilityLabel];
     v6 = v14[0];
-    v14[0] = v5;
+    v14[0] = accessibilityLabel2;
     MEMORY[0x29EDC9740](v6);
     MEMORY[0x29EDC9740](v9);
   }
@@ -143,17 +143,17 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v3.receiver = self;
   v3.super_class = _UIDatePickerIOSCompactViewAccessibility;
-  v4 = [(_UIDatePickerIOSCompactViewAccessibility *)&v3 accessibilityTraits];
-  if ([(_UIDatePickerIOSCompactViewAccessibility *)v6 _accessibilityExpandedStatus]== 2)
+  accessibilityTraits = [(_UIDatePickerIOSCompactViewAccessibility *)&v3 accessibilityTraits];
+  if ([(_UIDatePickerIOSCompactViewAccessibility *)selfCopy _accessibilityExpandedStatus]== 2)
   {
-    v4 |= *MEMORY[0x29EDC7F70];
+    accessibilityTraits |= *MEMORY[0x29EDC7F70];
   }
 
-  return v4;
+  return accessibilityTraits;
 }
 
 - (int64_t)_accessibilityExpandedStatus
@@ -174,11 +174,11 @@
 
 - (BOOL)accessibilityActivate
 {
-  v26 = self;
+  selfCopy = self;
   v25 = a2;
   v3 = [(_UIDatePickerIOSCompactViewAccessibility *)self safeValueForKey:@"data"];
   v24 = [v3 safeIntegerForKey:@"datePickerMode"];
-  v23 = [(_UIDatePickerIOSCompactViewAccessibility *)v26 safeValueForKey:@"datePicker", MEMORY[0x29EDC9740](v3).n128_f64[0]];
+  v23 = [(_UIDatePickerIOSCompactViewAccessibility *)selfCopy safeValueForKey:@"datePicker", MEMORY[0x29EDC9740](v3).n128_f64[0]];
   v22 = [v23 safeValueForKey:@"_compactStyleDelegate"];
   if (v24 == 1)
   {
@@ -187,11 +187,11 @@
     v16 = 0;
     v17 = __65___UIDatePickerIOSCompactViewAccessibility_accessibilityActivate__block_invoke;
     v18 = &unk_29F30CCC0;
-    v19 = MEMORY[0x29EDC9748](v26);
+    v19 = MEMORY[0x29EDC9748](selfCopy);
     v20 = MEMORY[0x29EDC9748](v22);
     v21 = MEMORY[0x29EDC9748](v23);
     AXPerformSafeBlock();
-    v27 = objc_opt_respondsToSelector() & 1;
+    accessibilityActivate = objc_opt_respondsToSelector() & 1;
     v13 = 1;
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v20, 0);
@@ -200,9 +200,9 @@
 
   else if (v24)
   {
-    v4.receiver = v26;
+    v4.receiver = selfCopy;
     v4.super_class = _UIDatePickerIOSCompactViewAccessibility;
-    v27 = [(_UIDatePickerIOSCompactViewAccessibility *)&v4 accessibilityActivate];
+    accessibilityActivate = [(_UIDatePickerIOSCompactViewAccessibility *)&v4 accessibilityActivate];
     v13 = 1;
   }
 
@@ -213,11 +213,11 @@
     v7 = 0;
     v8 = __65___UIDatePickerIOSCompactViewAccessibility_accessibilityActivate__block_invoke_2;
     v9 = &unk_29F30CCC0;
-    v10 = MEMORY[0x29EDC9748](v26);
+    v10 = MEMORY[0x29EDC9748](selfCopy);
     v11 = MEMORY[0x29EDC9748](v22);
     v12 = MEMORY[0x29EDC9748](v23);
     AXPerformSafeBlock();
-    v27 = objc_opt_respondsToSelector() & 1;
+    accessibilityActivate = objc_opt_respondsToSelector() & 1;
     v13 = 1;
     objc_storeStrong(&v12, 0);
     objc_storeStrong(&v11, 0);
@@ -226,7 +226,7 @@
 
   objc_storeStrong(&v22, 0);
   objc_storeStrong(&v23, 0);
-  return v27 & 1;
+  return accessibilityActivate & 1;
 }
 
 @end

@@ -2,14 +2,14 @@
 - (BOOL)exportToURL:(NSURL *)url error:(NSError *)error;
 - (GKDecisionTree)init;
 - (GKDecisionTree)initWithAttribute:(id)attribute;
-- (GKDecisionTree)initWithCoder:(id)a3;
-- (GKDecisionTree)initWithExamples:(id)a3 actions:(id)a4 attributes:(id)a5 maxDepth:(unint64_t)a6 minSamplesSplit:(unint64_t)a7;
+- (GKDecisionTree)initWithCoder:(id)coder;
+- (GKDecisionTree)initWithExamples:(id)examples actions:(id)actions attributes:(id)attributes maxDepth:(unint64_t)depth minSamplesSplit:(unint64_t)split;
 - (GKDecisionTree)initWithURL:(NSURL *)url error:(NSError *)error;
 - (id)description;
-- (id)findAccuracyWithExamples:(id)a3 actions:(id)a4 attributes:(id)a5;
+- (id)findAccuracyWithExamples:(id)examples actions:(id)actions attributes:(id)attributes;
 - (id)findActionForAnswers:(NSDictionary *)answers;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GKDecisionTree
@@ -43,10 +43,10 @@
   return v7;
 }
 
-- (GKDecisionTree)initWithCoder:(id)a3
+- (GKDecisionTree)initWithCoder:(id)coder
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   if ([(GKDecisionTree *)self init])
   {
     operator new();
@@ -56,17 +56,17 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  v4 = [(GKDecisionTree *)self randomSource];
-  [v7 encodeObject:v4 forKey:@"rand"];
+  coderCopy = coder;
+  randomSource = [(GKDecisionTree *)self randomSource];
+  [coderCopy encodeObject:randomSource forKey:@"rand"];
 
   v5 = GKCDecisionTree::encodeWithCoder(self->_decisionTree, 0, 0, 0, 0);
-  [v7 encodeObject:v5 forKey:@"tree"];
+  [coderCopy encodeObject:v5 forKey:@"tree"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_isInduced];
-  [v7 encodeObject:v6 forKey:@"induced"];
+  [coderCopy encodeObject:v6 forKey:@"induced"];
 }
 
 - (void)dealloc
@@ -91,12 +91,12 @@
   [(GKDecisionTree *)&v4 dealloc];
 }
 
-- (GKDecisionTree)initWithExamples:(id)a3 actions:(id)a4 attributes:(id)a5 maxDepth:(unint64_t)a6 minSamplesSplit:(unint64_t)a7
+- (GKDecisionTree)initWithExamples:(id)examples actions:(id)actions attributes:(id)attributes maxDepth:(unint64_t)depth minSamplesSplit:(unint64_t)split
 {
   v45 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v39 = a4;
-  v38 = a5;
+  examplesCopy = examples;
+  actionsCopy = actions;
+  attributesCopy = attributes;
   v11 = [(GKDecisionTree *)self init];
   v12 = v11;
   if (v11)
@@ -106,32 +106,32 @@
     {
       if (decisionTree->var0)
       {
-        v14 = [v10 count];
-        if (v14 != [v39 count])
+        v14 = [examplesCopy count];
+        if (v14 != [actionsCopy count])
         {
-          NSLog(&cfstr_Gkdecisiontree_4.isa, [v39 count], objc_msgSend(v10, "count"));
+          NSLog(&cfstr_Gkdecisiontree_4.isa, [actionsCopy count], objc_msgSend(examplesCopy, "count"));
           operator new();
         }
 
-        v15 = [v10 firstObject];
-        v16 = [v15 count];
-        v17 = [(NSArray *)v38 count];
+        firstObject = [examplesCopy firstObject];
+        v16 = [firstObject count];
+        v17 = [(NSArray *)attributesCopy count];
 
         if (v16 != v17)
         {
-          v32 = [(NSArray *)v38 count];
-          v33 = [v10 firstObject];
-          NSLog(&cfstr_Gkdecisiontree_5.isa, v32, [v33 count]);
+          v32 = [(NSArray *)attributesCopy count];
+          firstObject2 = [examplesCopy firstObject];
+          NSLog(&cfstr_Gkdecisiontree_5.isa, v32, [firstObject2 count]);
 
           operator new();
         }
 
-        v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v10, "count")}];
+        v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(examplesCopy, "count")}];
         v42 = 0u;
         v43 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v19 = v39;
+        v19 = actionsCopy;
         v20 = [v19 countByEnumeratingWithState:&v40 objects:v44 count:16];
         if (v20)
         {
@@ -149,7 +149,7 @@
               }
 
               v24 = *(*(&v40 + 1) + 8 * v23);
-              v25 = [v10 objectAtIndexedSubscript:v21];
+              v25 = [examplesCopy objectAtIndexedSubscript:v21];
               v26 = [v25 arrayByAddingObject:v24];
               [(NSArray *)v18 addObject:v26];
 
@@ -164,18 +164,18 @@
           while (v20);
         }
 
-        if (a6)
+        if (depth)
         {
-          v27 = a6;
+          depthCopy = depth;
         }
 
         else
         {
-          v27 = 1000000000;
+          depthCopy = 1000000000;
         }
 
-        GKCDecisionTree::cartTreeGrowth(v12->_decisionTree, v18, v38, v12->_decisionTree->var0, v27, a7);
-        if (!a7 && v27 == 1000000000)
+        GKCDecisionTree::cartTreeGrowth(v12->_decisionTree, v18, attributesCopy, v12->_decisionTree->var0, depthCopy, split);
+        if (!split && depthCopy == 1000000000)
         {
           v28 = objc_alloc(MEMORY[0x277CBFF00]);
           v29 = GKCDecisionTree::encodeWithCoder(v12->_decisionTree, 0, 0, 0, 0);
@@ -266,17 +266,17 @@
   return v5;
 }
 
-- (id)findAccuracyWithExamples:(id)a3 actions:(id)a4 attributes:(id)a5
+- (id)findAccuracyWithExamples:(id)examples actions:(id)actions attributes:(id)attributes
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v29 = a4;
-  v30 = a5;
+  examplesCopy = examples;
+  actionsCopy = actions;
+  attributesCopy = attributes;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  obj = v7;
+  obj = examplesCopy;
   v8 = [obj countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v8)
   {
@@ -301,7 +301,7 @@
         v37 = 0u;
         v34 = 0u;
         v35 = 0u;
-        v13 = v30;
+        v13 = attributesCopy;
         v14 = [v13 countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v14)
         {
@@ -330,7 +330,7 @@
         }
 
         v20 = [(GKDecisionTree *)self findActionForAnswers:v12];
-        v21 = [v29 objectAtIndexedSubscript:v33];
+        v21 = [actionsCopy objectAtIndexedSubscript:v33];
         v22 = [v21 isEqual:v20];
 
         v9 = v32 + v22;

@@ -1,7 +1,7 @@
 @interface MapEntry
 + (id)descriptor;
-- (unint64_t)verifyWithError:(id *)a3;
-- (void)setMetadataValue:(id)a3 key:(id)a4;
+- (unint64_t)verifyWithError:(id *)error;
+- (void)setMetadataValue:(id)value key:(id)key;
 @end
 
 @implementation MapEntry
@@ -20,31 +20,31 @@
   return v2;
 }
 
-- (void)setMetadataValue:(id)a3 key:(id)a4
+- (void)setMetadataValue:(id)value key:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  valueCopy = value;
+  keyCopy = key;
+  if (valueCopy)
   {
-    v7 = [(MapEntry *)self metadata];
-    v8 = [v7 mutableCopy];
+    metadata = [(MapEntry *)self metadata];
+    v8 = [metadata mutableCopy];
 
     if (!v8)
     {
       v8 = objc_alloc_init(NSMutableDictionary);
     }
 
-    [v8 setObject:v9 forKeyedSubscript:v6];
+    [v8 setObject:valueCopy forKeyedSubscript:keyCopy];
     [(MapEntry *)self setMetadata:v8];
   }
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
   if (![(MapEntry *)self hasSmh]|| ([(MapEntry *)self smh], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v26 = -15;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -52,50 +52,50 @@
     goto LABEL_11;
   }
 
-  v6 = [(MapEntry *)self mapLeaf];
-  if (!v6 || (v7 = v6, -[MapEntry mapLeaf](self, "mapLeaf"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 length], v8, v7, !v9))
+  mapLeaf = [(MapEntry *)self mapLeaf];
+  if (!mapLeaf || (v7 = mapLeaf, -[MapEntry mapLeaf](self, "mapLeaf"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 length], v8, v7, !v9))
   {
     v26 = -16;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_12;
     }
 
 LABEL_11:
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v26 description:@"map entry data required for verification"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v26 description:@"map entry data required for verification"];
     goto LABEL_12;
   }
 
-  v10 = [(MapEntry *)self hashesOfPeersInPathToRootArray];
-  if (v10)
+  hashesOfPeersInPathToRootArray = [(MapEntry *)self hashesOfPeersInPathToRootArray];
+  if (hashesOfPeersInPathToRootArray)
   {
-    v11 = v10;
-    v12 = [(MapEntry *)self hashesOfPeersInPathToRootArray_Count];
+    v11 = hashesOfPeersInPathToRootArray;
+    hashesOfPeersInPathToRootArray_Count = [(MapEntry *)self hashesOfPeersInPathToRootArray_Count];
 
-    if (v12)
+    if (hashesOfPeersInPathToRootArray_Count)
     {
       v13 = [(MapEntry *)self smh];
-      v14 = [(MapEntry *)self verifier];
-      v15 = [v14 trustedKeyStore];
-      v16 = [v15 signatureVerifier];
-      v17 = [(MapEntry *)self dataStore];
-      v18 = [SignedMapHead signedTypeWithObject:v13 verifier:v16 dataStore:v17];
+      verifier = [(MapEntry *)self verifier];
+      trustedKeyStore = [verifier trustedKeyStore];
+      signatureVerifier = [trustedKeyStore signatureVerifier];
+      dataStore = [(MapEntry *)self dataStore];
+      v18 = [SignedMapHead signedTypeWithObject:v13 verifier:signatureVerifier dataStore:dataStore];
 
-      v19 = [(MapEntry *)self metadata];
-      v20 = [v19 objectForKeyedSubscript:@"overrideLogBeginTime"];
+      metadata = [(MapEntry *)self metadata];
+      v20 = [metadata objectForKeyedSubscript:@"overrideLogBeginTime"];
       [v18 setOverrideBeginTime:{objc_msgSend(v20, "longLongValue")}];
 
-      v21 = [(MapEntry *)self verifier];
-      v22 = [(MapEntry *)self mapLeaf];
-      v23 = [(MapEntry *)self hashesOfPeersInPathToRootArray];
-      v24 = [v21 verifyMapEntryWithMapLeaf:v22 hashesToRoot:v23 signedMapHead:v18 error:a3];
+      verifier2 = [(MapEntry *)self verifier];
+      mapLeaf2 = [(MapEntry *)self mapLeaf];
+      hashesOfPeersInPathToRootArray2 = [(MapEntry *)self hashesOfPeersInPathToRootArray];
+      v24 = [verifier2 verifyMapEntryWithMapLeaf:mapLeaf2 hashesToRoot:hashesOfPeersInPathToRootArray2 signedMapHead:v18 error:error];
 
       return v24;
     }
   }
 
   v26 = -17;
-  if (a3)
+  if (error)
   {
     goto LABEL_11;
   }

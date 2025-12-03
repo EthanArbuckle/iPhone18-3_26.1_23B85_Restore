@@ -1,75 +1,75 @@
 @interface IXPlaceholder
-+ (BOOL)_setEntitlementsFromBundleExecutableURL:(id)a3 withBundleID:(id)a4 client:(unint64_t)a5 onPlaceholder:(id)a6 location:(id)a7 error:(id *)a8;
-+ (id)_iconContentForBundleAtURL:(id)a3 infoPlistIconContent:(id *)a4 withStagingPath:(id)a5 error:(id *)a6;
-+ (id)_iconDataForBundle:(__CFBundle *)a3 atURL:(id)a4 isFromSerializedPlaceholder:(BOOL)a5 error:(id *)a6;
-+ (id)_infoPlistLocalizationDictionaryForBundleURL:(id)a3 error:(id *)a4;
-+ (id)_placeholderForBundle:(id)a3 client:(unint64_t)a4 withParent:(id)a5 installType:(unint64_t)a6 metadata:(id)a7 placeholderType:(unint64_t)a8 mayBeDeltaPackage:(BOOL)a9 isFromSerializedPlaceholder:(BOOL)a10 location:(id)a11 error:(id *)a12;
-+ (id)_placeholderForInstallable:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 metadata:(id)a6 isFromSerializedPlaceholder:(BOOL)a7 location:(id)a8 error:(id *)a9;
-+ (id)_pngDataForCGImage:(CGImage *)a3 error:(id *)a4;
-+ (id)placeholderForInstallable:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 metadata:(id)a6 error:(id *)a7;
-+ (id)placeholderForRemovableSystemAppWithBundleID:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 error:(id *)a6;
-+ (id)placeholderFromSerializedPlaceholder:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 error:(id *)a6;
-+ (id)placeholderFromSerializedPlaceholder:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 location:(id)a6 error:(id *)a7;
-- (BOOL)_doInitWithSpecification:(id)a3 error:(id *)a4;
++ (BOOL)_setEntitlementsFromBundleExecutableURL:(id)l withBundleID:(id)d client:(unint64_t)client onPlaceholder:(id)placeholder location:(id)location error:(id *)error;
++ (id)_iconContentForBundleAtURL:(id)l infoPlistIconContent:(id *)content withStagingPath:(id)path error:(id *)error;
++ (id)_iconDataForBundle:(__CFBundle *)bundle atURL:(id)l isFromSerializedPlaceholder:(BOOL)placeholder error:(id *)error;
++ (id)_infoPlistLocalizationDictionaryForBundleURL:(id)l error:(id *)error;
++ (id)_placeholderForBundle:(id)bundle client:(unint64_t)client withParent:(id)parent installType:(unint64_t)type metadata:(id)metadata placeholderType:(unint64_t)placeholderType mayBeDeltaPackage:(BOOL)package isFromSerializedPlaceholder:(BOOL)self0 location:(id)self1 error:(id *)self2;
++ (id)_placeholderForInstallable:(id)installable client:(unint64_t)client installType:(unint64_t)type metadata:(id)metadata isFromSerializedPlaceholder:(BOOL)placeholder location:(id)location error:(id *)error;
++ (id)_pngDataForCGImage:(CGImage *)image error:(id *)error;
++ (id)placeholderForInstallable:(id)installable client:(unint64_t)client installType:(unint64_t)type metadata:(id)metadata error:(id *)error;
++ (id)placeholderForRemovableSystemAppWithBundleID:(id)d client:(unint64_t)client installType:(unint64_t)type error:(id *)error;
++ (id)placeholderFromSerializedPlaceholder:(id)placeholder client:(unint64_t)client installType:(unint64_t)type error:(id *)error;
++ (id)placeholderFromSerializedPlaceholder:(id)placeholder client:(unint64_t)client installType:(unint64_t)type location:(id)location error:(id *)error;
+- (BOOL)_doInitWithSpecification:(id)specification error:(id *)error;
 - (BOOL)hasEntitlementsPromise;
 - (BOOL)hasIconPromise;
 - (BOOL)hasIconResourcesPromise;
 - (BOOL)hasInfoPlistLoctablePromise;
 - (BOOL)hasPlugInPlaceholderPromises;
-- (BOOL)launchProhibited:(BOOL *)a3 error:(id *)a4;
-- (BOOL)setAppExtensionPlaceholderPromises:(id)a3 error:(id *)a4;
-- (BOOL)setConfigurationCompleteWithError:(id *)a3;
-- (BOOL)setEntitlementsPromise:(id)a3 error:(id *)a4;
-- (BOOL)setIconPromise:(id)a3 error:(id *)a4;
-- (BOOL)setIconResourcesPromise:(id)a3 withInfoPlistContent:(id)a4 error:(id *)a5;
-- (BOOL)setInfoPlistLocalizations:(id)a3 error:(id *)a4;
-- (BOOL)setInfoPlistLoctablePromise:(id)a3 error:(id *)a4;
-- (BOOL)setMetadata:(id)a3 error:(id *)a4;
-- (BOOL)setPlaceholderAttributes:(id)a3 error:(id *)a4;
-- (BOOL)setSinfData:(id)a3 error:(id *)a4;
-- (IXPlaceholder)initWithCoder:(id)a3;
-- (IXPlaceholder)initWithSeed:(id)a3;
-- (IXPlaceholder)initWithSpecification:(id)a3 error:(id *)a4;
+- (BOOL)launchProhibited:(BOOL *)prohibited error:(id *)error;
+- (BOOL)setAppExtensionPlaceholderPromises:(id)promises error:(id *)error;
+- (BOOL)setConfigurationCompleteWithError:(id *)error;
+- (BOOL)setEntitlementsPromise:(id)promise error:(id *)error;
+- (BOOL)setIconPromise:(id)promise error:(id *)error;
+- (BOOL)setIconResourcesPromise:(id)promise withInfoPlistContent:(id)content error:(id *)error;
+- (BOOL)setInfoPlistLocalizations:(id)localizations error:(id *)error;
+- (BOOL)setInfoPlistLoctablePromise:(id)promise error:(id *)error;
+- (BOOL)setMetadata:(id)metadata error:(id *)error;
+- (BOOL)setPlaceholderAttributes:(id)attributes error:(id *)error;
+- (BOOL)setSinfData:(id)data error:(id *)error;
+- (IXPlaceholder)initWithCoder:(id)coder;
+- (IXPlaceholder)initWithSeed:(id)seed;
+- (IXPlaceholder)initWithSpecification:(id)specification error:(id *)error;
 - (MIStoreMetadata)metadata;
 - (NSString)bundleDirectoryName;
 - (NSString)bundleID;
 - (NSString)bundleName;
-- (id)_initAppExtensionPlaceholderWithBundleURL:(id)a3 bundleName:(id)a4 bundleID:(id)a5 parentPlaceholder:(id)a6 client:(unint64_t)a7 location:(id)a8 error:(id *)a9;
-- (id)appExtensionPlaceholderPromisesWithError:(id *)a3;
-- (id)entitlementsPromiseWithError:(id *)a3;
-- (id)iconPromiseWithError:(id *)a3;
-- (id)iconResourcesPromiseWithInfoPlistContent:(id *)a3 error:(id *)a4;
-- (id)infoPlistLocalizationsWithError:(id *)a3;
-- (id)infoPlistLoctablePromiseWithError:(id *)a3;
-- (id)initAppPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 installType:(unint64_t)a5 client:(unint64_t)a6;
-- (id)initAppPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 installType:(unint64_t)a5 client:(unint64_t)a6 error:(id *)a7;
-- (id)initAppPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 installType:(unint64_t)a5 client:(unint64_t)a6 location:(id)a7 error:(id *)a8;
-- (id)initExtensionKitPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 parentPlaceholder:(id)a5 client:(unint64_t)a6 error:(id *)a7;
-- (id)initExtensionKitPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 parentPlaceholder:(id)a5 client:(unint64_t)a6 location:(id)a7 error:(id *)a8;
-- (id)initPlugInPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 parentPlaceholder:(id)a5 client:(unint64_t)a6 error:(id *)a7;
-- (id)initPlugInPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 parentPlaceholder:(id)a5 client:(unint64_t)a6 location:(id)a7 error:(id *)a8;
-- (id)metadataWithError:(id *)a3;
-- (id)placeholderAttributesWithError:(id *)a3;
-- (id)sinfDataWithError:(id *)a3;
+- (id)_initAppExtensionPlaceholderWithBundleURL:(id)l bundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client location:(id)location error:(id *)error;
+- (id)appExtensionPlaceholderPromisesWithError:(id *)error;
+- (id)entitlementsPromiseWithError:(id *)error;
+- (id)iconPromiseWithError:(id *)error;
+- (id)iconResourcesPromiseWithInfoPlistContent:(id *)content error:(id *)error;
+- (id)infoPlistLocalizationsWithError:(id *)error;
+- (id)infoPlistLoctablePromiseWithError:(id *)error;
+- (id)initAppPlaceholderWithBundleName:(id)name bundleID:(id)d installType:(unint64_t)type client:(unint64_t)client;
+- (id)initAppPlaceholderWithBundleName:(id)name bundleID:(id)d installType:(unint64_t)type client:(unint64_t)client error:(id *)error;
+- (id)initAppPlaceholderWithBundleName:(id)name bundleID:(id)d installType:(unint64_t)type client:(unint64_t)client location:(id)location error:(id *)error;
+- (id)initExtensionKitPlaceholderWithBundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client error:(id *)error;
+- (id)initExtensionKitPlaceholderWithBundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client location:(id)location error:(id *)error;
+- (id)initPlugInPlaceholderWithBundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client error:(id *)error;
+- (id)initPlugInPlaceholderWithBundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client location:(id)location error:(id *)error;
+- (id)metadataWithError:(id *)error;
+- (id)placeholderAttributesWithError:(id *)error;
+- (id)sinfDataWithError:(id *)error;
 - (unint64_t)installType;
 - (unint64_t)placeholderType;
-- (void)encodeWithCoder:(id)a3;
-- (void)setMetadata:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setMetadata:(id)metadata;
 @end
 
 @implementation IXPlaceholder
 
-+ (id)placeholderForRemovableSystemAppWithBundleID:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 error:(id *)a6
++ (id)placeholderForRemovableSystemAppWithBundleID:(id)d client:(unint64_t)client installType:(unint64_t)type error:(id *)error
 {
-  v10 = a3;
+  dCopy = d;
   v21 = 0;
-  v11 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifierOfSystemPlaceholder:v10 error:&v21];
+  v11 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifierOfSystemPlaceholder:dCopy error:&v21];
   v12 = v21;
   if (v11 && ([v11 isPlaceholder] & 1) != 0)
   {
     v13 = [v11 URL];
     v14 = objc_opt_new();
-    v15 = [a1 placeholderForInstallable:v13 client:a4 installType:a5 metadata:0 location:v14 error:a6];
+    v15 = [self placeholderForInstallable:v13 client:client installType:type metadata:0 location:v14 error:error];
 
     v16 = v12;
   }
@@ -82,13 +82,13 @@
       +[IXPlaceholder placeholderForRemovableSystemAppWithBundleID:client:installType:error:];
     }
 
-    v16 = _CreateError("+[IXPlaceholder placeholderForRemovableSystemAppWithBundleID:client:installType:error:]", 74, @"IXErrorDomain", 0xBuLL, v12, 0, @"Failed to get system app placeholder location from LaunchServices for %@", v18, v10);
+    v16 = _CreateError("+[IXPlaceholder placeholderForRemovableSystemAppWithBundleID:client:installType:error:]", 74, @"IXErrorDomain", 0xBuLL, v12, 0, @"Failed to get system app placeholder location from LaunchServices for %@", v18, dCopy);
 
-    if (a6)
+    if (error)
     {
       v19 = v16;
       v15 = 0;
-      *a6 = v16;
+      *error = v16;
     }
 
     else
@@ -100,18 +100,18 @@
   return v15;
 }
 
-+ (id)_pngDataForCGImage:(CGImage *)a3 error:(id *)a4
++ (id)_pngDataForCGImage:(CGImage *)image error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DF88] data];
-  v7 = [*MEMORY[0x1E6982F28] identifier];
-  v8 = CGImageDestinationCreateWithData(v6, v7, 1uLL, 0);
+  data = [MEMORY[0x1E695DF88] data];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  v8 = CGImageDestinationCreateWithData(data, identifier, 1uLL, 0);
 
   if (v8)
   {
-    CGImageDestinationAddImage(v8, a3, 0);
+    CGImageDestinationAddImage(v8, image, 0);
     if (CGImageDestinationFinalize(v8))
     {
-      v9 = [(__CFData *)v6 copy];
+      v9 = [(__CFData *)data copy];
       v10 = 0;
     }
 
@@ -128,13 +128,13 @@
     }
 
     CFRelease(v8);
-    if (a4)
+    if (error)
     {
 LABEL_12:
       if (!v9)
       {
         v15 = v10;
-        *a4 = v10;
+        *error = v10;
       }
     }
   }
@@ -149,7 +149,7 @@ LABEL_12:
 
     v10 = _CreateError("+[IXPlaceholder _pngDataForCGImage:error:]", 98, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to create CGImageDestination", v12, v17);
     v9 = 0;
-    if (a4)
+    if (error)
     {
       goto LABEL_12;
     }
@@ -158,14 +158,14 @@ LABEL_12:
   return v9;
 }
 
-+ (id)_iconDataForBundle:(__CFBundle *)a3 atURL:(id)a4 isFromSerializedPlaceholder:(BOOL)a5 error:(id *)a6
++ (id)_iconDataForBundle:(__CFBundle *)bundle atURL:(id)l isFromSerializedPlaceholder:(BOOL)placeholder error:(id *)error
 {
-  v7 = a5;
+  placeholderCopy = placeholder;
   v88 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  if (v7)
+  lCopy = l;
+  if (placeholderCopy)
   {
-    ValueForInfoDictionaryKey = CFBundleGetValueForInfoDictionaryKey(a3, @"CF_MIPlaceholderConstructorVersion");
+    ValueForInfoDictionaryKey = CFBundleGetValueForInfoDictionaryKey(bundle, @"CF_MIPlaceholderConstructorVersion");
     if (ValueForInfoDictionaryKey)
     {
       v12 = ValueForInfoDictionaryKey;
@@ -175,28 +175,28 @@ LABEL_12:
         *buf = 136315394;
         v83 = "_BundleHasMalformedIconKeys";
         v84 = 2112;
-        v85 = v12;
+        bundleCopy2 = v12;
         _os_log_impl(&dword_1DA47A000, v13, OS_LOG_TYPE_DEFAULT, "%s: Using placeholder generated by OS version %@", buf, 0x16u);
       }
 
       goto LABEL_32;
     }
 
-    v14 = CFBundleGetValueForInfoDictionaryKey(a3, *MEMORY[0x1E695E4E8]);
+    v14 = CFBundleGetValueForInfoDictionaryKey(bundle, *MEMORY[0x1E695E4E8]);
     objc_opt_class();
     v13 = v14;
     if (objc_opt_isKindOfClass())
     {
       if (v13 && [v13 isEqualToString:@"Executable"])
       {
-        v15 = CFBundleGetValueForInfoDictionaryKey(a3, *MEMORY[0x1E695E130]);
+        v15 = CFBundleGetValueForInfoDictionaryKey(bundle, *MEMORY[0x1E695E130]);
         objc_opt_class();
         v16 = v15;
         if (objc_opt_isKindOfClass())
         {
           if (v16 && ([v16 isEqualToString:@"Icon"] & 1) != 0)
           {
-            v17 = CFBundleGetValueForInfoDictionaryKey(a3, @"CFBundleIcons");
+            v17 = CFBundleGetValueForInfoDictionaryKey(bundle, @"CFBundleIcons");
 
             if (!v17)
             {
@@ -209,7 +209,7 @@ LABEL_12:
               *buf = 136315394;
               v83 = "+[IXPlaceholder _iconDataForBundle:atURL:isFromSerializedPlaceholder:error:]";
               v84 = 2112;
-              v85 = a3;
+              bundleCopy2 = bundle;
               _os_log_impl(&dword_1DA47A000, v18, OS_LOG_TYPE_DEFAULT, "%s: Attempting malformed icon key fixup for %@", buf, 0x16u);
             }
 
@@ -222,7 +222,7 @@ LABEL_12:
                 *buf = 136315394;
                 v83 = "_UpdateBundleWithCorrectedIconKeys";
                 v84 = 2112;
-                v85 = a3;
+                bundleCopy2 = bundle;
                 _os_log_impl(&dword_1DA47A000, v21, OS_LOG_TYPE_DEFAULT, "%s: Failed to get Info.plist URL from %@", buf, 0x16u);
               }
 
@@ -239,11 +239,11 @@ LABEL_12:
               v60 = IXGetLoggingHandle(kIXLoggingSubsystem);
               if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
               {
-                v61 = [v19 path];
+                path = [v19 path];
                 *buf = 136315650;
                 v83 = "_UpdateBundleWithCorrectedIconKeys";
                 v84 = 2112;
-                v85 = v61;
+                bundleCopy2 = path;
                 v86 = 2112;
                 v87 = v21;
                 _os_log_impl(&dword_1DA47A000, v60, OS_LOG_TYPE_DEFAULT, "%s: Failed to fetch info plist from %@ : %@", buf, 0x20u);
@@ -252,7 +252,7 @@ LABEL_12:
               goto LABEL_68;
             }
 
-            v67 = a1;
+            selfCopy = self;
             v72 = 0u;
             v73 = 0u;
             v70 = 0u;
@@ -264,7 +264,7 @@ LABEL_12:
               v25 = v24;
               v64 = v21;
               v65 = v19;
-              v66 = a6;
+              errorCopy = error;
               v26 = 0;
               v27 = *v71;
               do
@@ -292,7 +292,7 @@ LABEL_12:
               while (v25);
 
               v19 = v65;
-              a6 = v66;
+              error = errorCopy;
               v21 = v64;
               if (v26)
               {
@@ -304,13 +304,13 @@ LABEL_12:
                 {
                   _CFBundleFlushBundleCaches();
                   v33 = IXGetLoggingHandle(kIXLoggingSubsystem);
-                  a1 = v67;
+                  self = selfCopy;
                   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
                   {
                     *v76 = 136315394;
                     v77 = "_UpdateBundleWithCorrectedIconKeys";
                     v78 = 2112;
-                    v79 = a3;
+                    bundleCopy4 = bundle;
                     _os_log_impl(&dword_1DA47A000, v33, OS_LOG_TYPE_DEFAULT, "%s: Fixed up malformed icon keys in %@", v76, 0x16u);
                   }
                 }
@@ -318,14 +318,14 @@ LABEL_12:
                 else
                 {
                   v33 = IXGetLoggingHandle(kIXLoggingSubsystem);
-                  a1 = v67;
+                  self = selfCopy;
                   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
                   {
-                    v63 = [v65 path];
+                    path2 = [v65 path];
                     *v76 = 136315650;
                     v77 = "_UpdateBundleWithCorrectedIconKeys";
                     v78 = 2112;
-                    v79 = v63;
+                    bundleCopy4 = path2;
                     v80 = 2112;
                     v81 = v32;
                     _os_log_impl(&dword_1DA47A000, v33, OS_LOG_TYPE_DEFAULT, "%s: Failed to write updated Info.plist to %@ : %@", v76, 0x20u);
@@ -349,11 +349,11 @@ LABEL_68:
               *v76 = 136315394;
               v77 = "_UpdateBundleWithCorrectedIconKeys";
               v78 = 2112;
-              v79 = a3;
+              bundleCopy4 = bundle;
               _os_log_impl(&dword_1DA47A000, v62, OS_LOG_TYPE_DEFAULT, "%s: No offending keys found; skipping icon fixup for %@", v76, 0x16u);
             }
 
-            a1 = v67;
+            self = selfCopy;
             goto LABEL_68;
           }
         }
@@ -377,12 +377,12 @@ LABEL_32:
 
 LABEL_33:
   v34 = objc_autoreleasePoolPush();
-  v35 = CFBundleGetIdentifier(a3);
-  v36 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithURL:v10];
+  v35 = CFBundleGetIdentifier(bundle);
+  v36 = [objc_alloc(MEMORY[0x1E69A8A00]) initWithURL:lCopy];
   if (!v36)
   {
-    v50 = [v10 path];
-    _CreateError("+[IXPlaceholder _iconDataForBundle:atURL:isFromSerializedPlaceholder:error:]", 230, @"IXErrorDomain", 0xCuLL, 0, 0, @"Failed to initialize an icon for bundle at %@ ", v53, v50);
+    path3 = [lCopy path];
+    _CreateError("+[IXPlaceholder _iconDataForBundle:atURL:isFromSerializedPlaceholder:error:]", 230, @"IXErrorDomain", 0xCuLL, 0, 0, @"Failed to initialize an icon for bundle at %@ ", v53, path3);
     v48 = LABEL_45:;
     v39 = 0;
 LABEL_46:
@@ -394,7 +394,7 @@ LABEL_46:
   v38 = [MEMORY[0x1E69A8A30] imageDescriptorNamed:*MEMORY[0x1E69A8A78]];
   if (!v38)
   {
-    v50 = [v10 path];
+    path3 = [lCopy path];
     _CreateError("+[IXPlaceholder _iconDataForBundle:atURL:isFromSerializedPlaceholder:error:]", 236, @"IXErrorDomain", 0xCuLL, 0, 0, @"Failed to create image descriptor with name %@ while creating an icon for bundle at %@", v54, v37);
     goto LABEL_45;
   }
@@ -408,7 +408,7 @@ LABEL_46:
   v41 = [v36 prepareImageForDescriptor:v39];
   if (!v41)
   {
-    v50 = [v10 path];
+    path3 = [lCopy path];
     v48 = _CreateError("+[IXPlaceholder _iconDataForBundle:atURL:isFromSerializedPlaceholder:error:]", 247, @"IXErrorDomain", 0xCuLL, 0, 0, @"Failed to create image with descriptor %@ for bundle at %@", v58, v39);
     goto LABEL_46;
   }
@@ -419,49 +419,49 @@ LABEL_46:
     v43 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
     {
-      [v10 path];
-      v45 = v44 = a6;
+      [lCopy path];
+      v45 = v44 = error;
       *buf = 136315650;
       v83 = "+[IXPlaceholder _iconDataForBundle:atURL:isFromSerializedPlaceholder:error:]";
       v84 = 2112;
-      v85 = v35;
+      bundleCopy2 = v35;
       v86 = 2112;
       v87 = v45;
       _os_log_impl(&dword_1DA47A000, v43, OS_LOG_TYPE_DEFAULT, "%s: IconServices returned a placeholder icon for bundle with identifer %@ located at %@", buf, 0x20u);
 
-      a6 = v44;
+      error = v44;
     }
   }
 
-  v46 = [v42 CGImage];
-  if (!v46)
+  cGImage = [v42 CGImage];
+  if (!cGImage)
   {
-    v50 = [v10 path];
+    path3 = [lCopy path];
     v48 = _CreateError("+[IXPlaceholder _iconDataForBundle:atURL:isFromSerializedPlaceholder:error:]", 257, @"IXErrorDomain", 0xCuLL, 0, 0, @"Failed to get CGImageRef from ISImage %@ for bundle at %@", v59, v42);
     goto LABEL_47;
   }
 
   v68 = 0;
-  v47 = [a1 _pngDataForCGImage:v46 error:&v68];
+  v47 = [self _pngDataForCGImage:cGImage error:&v68];
   v48 = v68;
   if (!v47)
   {
-    v49 = a6;
-    v50 = [v10 path];
-    v52 = _CreateError("+[IXPlaceholder _iconDataForBundle:atURL:isFromSerializedPlaceholder:error:]", 263, @"IXErrorDomain", 0xCuLL, v48, 0, @"Failed to create PNG data when constructing icon for bundle at %@", v51, v50);
+    errorCopy2 = error;
+    path3 = [lCopy path];
+    v52 = _CreateError("+[IXPlaceholder _iconDataForBundle:atURL:isFromSerializedPlaceholder:error:]", 263, @"IXErrorDomain", 0xCuLL, v48, 0, @"Failed to create PNG data when constructing icon for bundle at %@", v51, path3);
 
     v48 = v52;
-    a6 = v49;
+    error = errorCopy2;
 LABEL_47:
 
     v47 = 0;
   }
 
   objc_autoreleasePoolPop(v34);
-  if (a6 && !v47)
+  if (error && !v47)
   {
     v55 = v48;
-    *a6 = v48;
+    *error = v48;
   }
 
   v56 = *MEMORY[0x1E69E9840];
@@ -469,25 +469,25 @@ LABEL_47:
   return v47;
 }
 
-+ (id)_iconContentForBundleAtURL:(id)a3 infoPlistIconContent:(id *)a4 withStagingPath:(id)a5 error:(id *)a6
++ (id)_iconContentForBundleAtURL:(id)l infoPlistIconContent:(id *)content withStagingPath:(id)path error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  lCopy = l;
+  pathCopy = path;
   v11 = +[IXFileManager defaultManager];
   v28 = 0;
-  v12 = [v11 createTemporaryDirectoryInDirectoryURL:v10 error:&v28];
+  v12 = [v11 createTemporaryDirectoryInDirectoryURL:pathCopy error:&v28];
 
   v13 = v28;
   v14 = v13;
   if (!v12)
   {
     v16 = 0;
-    if (a6)
+    if (error)
     {
 LABEL_14:
       v24 = v14;
       v21 = 0;
-      *a6 = v14;
+      *error = v14;
       goto LABEL_15;
     }
 
@@ -507,8 +507,8 @@ LABEL_15:
   {
     if (v17)
     {
-      v22 = [v9 path];
-      v14 = _CreateError("+[IXPlaceholder _iconContentForBundleAtURL:infoPlistIconContent:withStagingPath:error:]", 295, @"IXErrorDomain", 0xCuLL, v17, 0, @"Failed to capture icon content for placeholder from bundle at %@", v23, v22);
+      path = [lCopy path];
+      v14 = _CreateError("+[IXPlaceholder _iconContentForBundleAtURL:infoPlistIconContent:withStagingPath:error:]", 295, @"IXErrorDomain", 0xCuLL, v17, 0, @"Failed to capture icon content for placeholder from bundle at %@", v23, path);
     }
 
     else
@@ -518,7 +518,7 @@ LABEL_15:
 
 LABEL_13:
     [v11 removeItemAtURL:v12 error:0];
-    if (a6)
+    if (error)
     {
       goto LABEL_14;
     }
@@ -533,10 +533,10 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (a4)
+  if (content)
   {
     v20 = v16;
-    *a4 = v16;
+    *content = v16;
   }
 
   v21 = v12;
@@ -545,20 +545,20 @@ LABEL_16:
   return v21;
 }
 
-+ (id)_infoPlistLocalizationDictionaryForBundleURL:(id)a3 error:(id *)a4
++ (id)_infoPlistLocalizationDictionaryForBundleURL:(id)l error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_opt_new();
   v7 = +[IXFileManager defaultManager];
   v43 = 0;
-  v8 = [v7 urlsForItemsInDirectoryAtURL:v5 ignoringSymlinks:1 error:&v43];
+  v8 = [v7 urlsForItemsInDirectoryAtURL:lCopy ignoringSymlinks:1 error:&v43];
   v9 = v43;
 
   if (v8)
   {
-    v33 = a4;
-    v34 = v5;
+    errorCopy = error;
+    v34 = lCopy;
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
@@ -587,8 +587,8 @@ LABEL_16:
         }
 
         v15 = *(*(&v39 + 1) + 8 * v13);
-        v16 = [v15 pathExtension];
-        v17 = [v16 isEqualToString:@"lproj"];
+        pathExtension = [v15 pathExtension];
+        v17 = [pathExtension isEqualToString:@"lproj"];
 
         if (!v17)
         {
@@ -597,8 +597,8 @@ LABEL_16:
         }
 
         v18 = [v15 URLByAppendingPathComponent:@"InfoPlist.strings" isDirectory:0];
-        v19 = [v15 lastPathComponent];
-        v20 = [v19 stringByDeletingPathExtension];
+        lastPathComponent = [v15 lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
         v38 = v14;
         v21 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v18 error:&v38];
@@ -607,19 +607,19 @@ LABEL_16:
         v22 = v21;
         if (!v21)
         {
-          v23 = [v9 domain];
-          if (![v23 isEqualToString:v36])
+          domain = [v9 domain];
+          if (![domain isEqualToString:v36])
           {
 
 LABEL_15:
             v26 = IXGetLoggingHandle(kIXLoggingSubsystem);
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
-              v27 = [v18 path];
+              path = [v18 path];
               *buf = 136315650;
               v45 = "+[IXPlaceholder _infoPlistLocalizationDictionaryForBundleURL:error:]";
               v46 = 2112;
-              v47 = v27;
+              v47 = path;
               v48 = 2112;
               v49 = v9;
               _os_log_impl(&dword_1DA47A000, v26, OS_LOG_TYPE_DEFAULT, "%s: Failed to read %@: %@", buf, 0x20u);
@@ -631,10 +631,10 @@ LABEL_15:
             goto LABEL_18;
           }
 
-          v24 = [v9 code];
+          code = [v9 code];
 
           v22 = MEMORY[0x1E695E0F8];
-          v25 = v24 == 260;
+          v25 = code == 260;
           v6 = v35;
           if (!v25)
           {
@@ -643,7 +643,7 @@ LABEL_15:
         }
 
 LABEL_18:
-        [v6 setObject:v22 forKeyedSubscript:v20];
+        [v6 setObject:v22 forKeyedSubscript:stringByDeletingPathExtension];
 
         v14 = v9;
 LABEL_19:
@@ -657,10 +657,10 @@ LABEL_19:
 LABEL_21:
 
         v28 = [v6 copy];
-        a4 = v33;
-        v5 = v34;
+        error = errorCopy;
+        lCopy = v34;
         v8 = v32;
-        if (!v33)
+        if (!errorCopy)
         {
           goto LABEL_26;
         }
@@ -671,7 +671,7 @@ LABEL_21:
   }
 
   v28 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_26;
   }
@@ -680,7 +680,7 @@ LABEL_24:
   if (!v28)
   {
     v29 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
 LABEL_26:
@@ -690,37 +690,37 @@ LABEL_26:
   return v28;
 }
 
-+ (id)placeholderForInstallable:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 metadata:(id)a6 error:(id *)a7
++ (id)placeholderForInstallable:(id)installable client:(unint64_t)client installType:(unint64_t)type metadata:(id)metadata error:(id *)error
 {
-  v12 = a6;
-  v13 = a3;
+  metadataCopy = metadata;
+  installableCopy = installable;
   v14 = objc_opt_new();
-  v15 = [a1 placeholderForInstallable:v13 client:a4 installType:a5 metadata:v12 location:v14 error:a7];
+  v15 = [self placeholderForInstallable:installableCopy client:client installType:type metadata:metadataCopy location:v14 error:error];
 
   return v15;
 }
 
-+ (id)_placeholderForInstallable:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 metadata:(id)a6 isFromSerializedPlaceholder:(BOOL)a7 location:(id)a8 error:(id *)a9
++ (id)_placeholderForInstallable:(id)installable client:(unint64_t)client installType:(unint64_t)type metadata:(id)metadata isFromSerializedPlaceholder:(BOOL)placeholder location:(id)location error:(id *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a6;
-  v16 = a8;
-  v17 = v14;
-  v18 = v15;
+  installableCopy = installable;
+  metadataCopy = metadata;
+  locationCopy = location;
+  v17 = installableCopy;
+  v18 = metadataCopy;
   v69 = 0;
   v19 = +[IXFileManager defaultManager];
   v68 = 0;
-  LODWORD(v14) = [v19 itemExistsAtURL:v17 isDirectory:&v69 error:&v68];
-  v20 = v68;
-  if (!v14)
+  LODWORD(installableCopy) = [v19 itemExistsAtURL:v17 isDirectory:&v69 error:&v68];
+  domain2 = v68;
+  if (!installableCopy)
   {
     v25 = 0;
     v21 = 0;
     v24 = v18;
     v26 = v17;
-    v27 = a9;
-    if (!a9)
+    errorCopy3 = error;
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -728,7 +728,7 @@ LABEL_26:
     goto LABEL_15;
   }
 
-  v62 = v16;
+  v62 = locationCopy;
   if ((v69 & 1) == 0)
   {
     v28 = IXGetLoggingHandle(kIXLoggingSubsystem);
@@ -737,17 +737,17 @@ LABEL_26:
       [IXPlaceholder _placeholderForInstallable:v17 client:? installType:? metadata:? isFromSerializedPlaceholder:? location:? error:?];
     }
 
-    v29 = [v17 path];
-    v23 = _CreateError("+[IXPlaceholder _placeholderForInstallable:client:installType:metadata:isFromSerializedPlaceholder:location:error:]", 419, @"IXErrorDomain", 4uLL, 0, 0, @"Item at %@ is unexpectedly a file", v30, v29);
+    path = [v17 path];
+    v23 = _CreateError("+[IXPlaceholder _placeholderForInstallable:client:installType:metadata:isFromSerializedPlaceholder:location:error:]", 419, @"IXErrorDomain", 4uLL, 0, 0, @"Item at %@ is unexpectedly a file", v30, path);
 
     v25 = 0;
     v21 = 0;
     goto LABEL_12;
   }
 
-  v60 = a1;
+  selfCopy = self;
   v21 = [v17 URLByAppendingPathComponent:@"Payload" isDirectory:1];
-  v67 = v20;
+  v67 = domain2;
   v22 = [v19 itemExistsAtURL:v21 isDirectory:&v69 error:&v67];
   v23 = v67;
 
@@ -755,28 +755,28 @@ LABEL_26:
   {
     if (v69 == 1)
     {
-      v57 = a4;
+      clientCopy2 = client;
       if (v18)
       {
-        v56 = a5;
+        typeCopy4 = type;
         v24 = v18;
         goto LABEL_34;
       }
 
-      v20 = [v17 URLByAppendingPathComponent:@"iTunesMetadata.plist" isDirectory:0];
+      domain2 = [v17 URLByAppendingPathComponent:@"iTunesMetadata.plist" isDirectory:0];
       v66 = v23;
-      v40 = [v19 itemExistsAtURL:v20 error:&v66];
+      v40 = [v19 itemExistsAtURL:domain2 error:&v66];
       v41 = v66;
 
       if (v40)
       {
         v65 = v41;
-        v25 = [MEMORY[0x1E69A8DB8] metadataFromPlistAtURL:v20 error:&v65];
+        v25 = [MEMORY[0x1E69A8DB8] metadataFromPlistAtURL:domain2 error:&v65];
         v23 = v65;
 
         if (v25)
         {
-          v56 = a5;
+          typeCopy4 = type;
           v41 = v23;
 LABEL_33:
 
@@ -811,8 +811,8 @@ LABEL_34:
                     objc_enumerationMutation(obj);
                   }
 
-                  v49 = [*(*(&v70 + 1) + 8 * i) lastPathComponent];
-                  if ([v49 hasPrefix:@"com.apple.deltainstallcommands."] & 1) != 0 || (objc_msgSend(v49, "hasPrefix:", @"com.apple.parallelpatchinfo.") & 1) != 0 || (objc_msgSend(v49, "hasPrefix:", @"com.apple.parallelpatcharchive."))
+                  lastPathComponent = [*(*(&v70 + 1) + 8 * i) lastPathComponent];
+                  if ([lastPathComponent hasPrefix:@"com.apple.deltainstallcommands."] & 1) != 0 || (objc_msgSend(lastPathComponent, "hasPrefix:", @"com.apple.parallelpatchinfo.") & 1) != 0 || (objc_msgSend(lastPathComponent, "hasPrefix:", @"com.apple.parallelpatcharchive."))
                   {
 
                     v35 = 1;
@@ -865,20 +865,20 @@ LABEL_47:
 
           v64 = v23;
           v25 = AppURLFromExtractedPayloadDir(v21, &v64);
-          v20 = v64;
+          domain2 = v64;
 
           if (v25)
           {
 
-            v23 = v20;
+            v23 = domain2;
             v26 = v25;
             goto LABEL_55;
           }
 
 LABEL_56:
-          v16 = v62;
-          v27 = a9;
-          if (!a9)
+          locationCopy = v62;
+          errorCopy3 = error;
+          if (!error)
           {
             goto LABEL_17;
           }
@@ -891,14 +891,14 @@ LABEL_56:
 
       else
       {
-        v42 = [v41 domain];
-        if ([v42 isEqualToString:*MEMORY[0x1E696A798]])
+        domain = [v41 domain];
+        if ([domain isEqualToString:*MEMORY[0x1E696A798]])
         {
-          v56 = a5;
-          v43 = [v41 code];
+          typeCopy4 = type;
+          code = [v41 code];
 
           v25 = 0;
-          if (v43 == 2)
+          if (code == 2)
           {
             goto LABEL_33;
           }
@@ -927,53 +927,53 @@ LABEL_13:
       [IXPlaceholder _placeholderForInstallable:v21 client:? installType:? metadata:? isFromSerializedPlaceholder:? location:? error:?];
     }
 
-    v37 = [v21 path];
-    v39 = _CreateError("+[IXPlaceholder _placeholderForInstallable:client:installType:metadata:isFromSerializedPlaceholder:location:error:]", 451, @"IXErrorDomain", 4uLL, 0, 0, @"Item at %@ is a file", v38, v37);
+    path2 = [v21 path];
+    v39 = _CreateError("+[IXPlaceholder _placeholderForInstallable:client:installType:metadata:isFromSerializedPlaceholder:location:error:]", 451, @"IXErrorDomain", 4uLL, 0, 0, @"Item at %@ is a file", v38, path2);
 
     v25 = 0;
-    v20 = v23;
+    domain2 = v23;
     v23 = v39;
 LABEL_12:
     v24 = v18;
     goto LABEL_13;
   }
 
-  v20 = [v23 domain];
-  if (![v20 isEqualToString:*MEMORY[0x1E696A798]])
+  domain2 = [v23 domain];
+  if (![domain2 isEqualToString:*MEMORY[0x1E696A798]])
   {
     v25 = 0;
     goto LABEL_12;
   }
 
-  v34 = [v23 code];
+  code2 = [v23 code];
 
-  if (v34 != 2)
+  if (code2 != 2)
   {
     v25 = 0;
-    v20 = v23;
+    domain2 = v23;
     v24 = v18;
     v26 = v17;
     goto LABEL_56;
   }
 
-  v56 = a5;
-  v57 = a4;
+  typeCopy4 = type;
+  clientCopy2 = client;
   v35 = 0;
   v24 = v18;
   v26 = v17;
-  v20 = v23;
+  domain2 = v23;
 LABEL_55:
   v63 = v23;
-  BYTE1(v53) = a7;
+  BYTE1(v53) = placeholder;
   LOBYTE(v53) = v35;
-  v25 = [v60 _placeholderForBundle:v26 client:v57 withParent:0 installType:v56 metadata:v24 placeholderType:1 mayBeDeltaPackage:v53 isFromSerializedPlaceholder:v62 location:&v63 error:?];
+  v25 = [selfCopy _placeholderForBundle:v26 client:clientCopy2 withParent:0 installType:typeCopy4 metadata:v24 placeholderType:1 mayBeDeltaPackage:v53 isFromSerializedPlaceholder:v62 location:&v63 error:?];
   v23 = v63;
 LABEL_14:
-  v27 = a9;
+  errorCopy3 = error;
 
-  v20 = v23;
-  v16 = v62;
-  if (!a9)
+  domain2 = v23;
+  locationCopy = v62;
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -981,8 +981,8 @@ LABEL_14:
 LABEL_15:
   if (!v25)
   {
-    v31 = v20;
-    *v27 = v20;
+    v31 = domain2;
+    *errorCopy3 = domain2;
   }
 
 LABEL_17:
@@ -992,24 +992,24 @@ LABEL_17:
   return v25;
 }
 
-+ (id)placeholderFromSerializedPlaceholder:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 error:(id *)a6
++ (id)placeholderFromSerializedPlaceholder:(id)placeholder client:(unint64_t)client installType:(unint64_t)type error:(id *)error
 {
-  v10 = a3;
+  placeholderCopy = placeholder;
   v11 = objc_opt_new();
-  v12 = [a1 placeholderFromSerializedPlaceholder:v10 client:a4 installType:a5 location:v11 error:a6];
+  v12 = [self placeholderFromSerializedPlaceholder:placeholderCopy client:client installType:type location:v11 error:error];
 
   return v12;
 }
 
-+ (id)placeholderFromSerializedPlaceholder:(id)a3 client:(unint64_t)a4 installType:(unint64_t)a5 location:(id)a6 error:(id *)a7
++ (id)placeholderFromSerializedPlaceholder:(id)placeholder client:(unint64_t)client installType:(unint64_t)type location:(id)location error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
+  placeholderCopy = placeholder;
+  locationCopy = location;
   v13 = +[IXFileManager defaultManager];
   v42 = 0;
   v41 = 0;
-  v14 = [v13 itemExistsAtURL:v11 isDirectory:&v42 error:&v41];
+  v14 = [v13 itemExistsAtURL:placeholderCopy isDirectory:&v42 error:&v41];
   v15 = v41;
   v16 = v15;
   if (!v14)
@@ -1022,16 +1022,16 @@ LABEL_17:
     v17 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [IXPlaceholder placeholderFromSerializedPlaceholder:v11 client:? installType:? location:? error:?];
+      [IXPlaceholder placeholderFromSerializedPlaceholder:placeholderCopy client:? installType:? location:? error:?];
     }
 
-    v18 = [v11 path];
-    v20 = _CreateError("+[IXPlaceholder placeholderFromSerializedPlaceholder:client:installType:location:error:]", 484, @"IXErrorDomain", 0x2AuLL, 0, 0, @"Expected the serialized placeholder at %@ to be an IPA", v19, v18);
+    path = [placeholderCopy path];
+    v20 = _CreateError("+[IXPlaceholder placeholderFromSerializedPlaceholder:client:installType:location:error:]", 484, @"IXErrorDomain", 0x2AuLL, 0, 0, @"Expected the serialized placeholder at %@ to be an IPA", v19, path);
 
     v21 = 0;
     v22 = 0;
     v16 = v20;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -1040,7 +1040,7 @@ LABEL_19:
     if (!v22)
     {
       v31 = v16;
-      *a7 = v16;
+      *error = v16;
     }
 
     goto LABEL_21;
@@ -1063,7 +1063,7 @@ LABEL_19:
 LABEL_13:
     v21 = 0;
     v22 = 0;
-    if (!a7)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -1072,13 +1072,13 @@ LABEL_13:
   }
 
   v39 = v23;
-  v24 = [MEMORY[0x1E69B1980] extractZipArchiveAtURL:v11 toURL:v21 withError:&v39];
+  v24 = [MEMORY[0x1E69B1980] extractZipArchiveAtURL:placeholderCopy toURL:v21 withError:&v39];
   v25 = v39;
 
   if (v24)
   {
     v38 = v25;
-    v22 = [IXPlaceholder _placeholderForInstallable:v21 client:a4 installType:a5 metadata:0 isFromSerializedPlaceholder:1 location:v12 error:&v38];
+    v22 = [IXPlaceholder _placeholderForInstallable:v21 client:client installType:type metadata:0 isFromSerializedPlaceholder:1 location:locationCopy error:&v38];
     v16 = v38;
   }
 
@@ -1087,28 +1087,28 @@ LABEL_13:
     v28 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v34 = [v11 path];
-      v35 = [v21 path];
+      path2 = [placeholderCopy path];
+      path3 = [v21 path];
       *buf = 136315906;
       v44 = "+[IXPlaceholder placeholderFromSerializedPlaceholder:client:installType:location:error:]";
       v45 = 2112;
-      v46 = v34;
+      v46 = path2;
       v47 = 2112;
-      v48 = v35;
+      v48 = path3;
       v49 = 2112;
       v50 = v25;
       _os_log_error_impl(&dword_1DA47A000, v28, OS_LOG_TYPE_ERROR, "%s: Failed to extract %@ to %@ : %@", buf, 0x2Au);
     }
 
-    v29 = [v11 path];
-    v37 = [v21 path];
-    v16 = _CreateError("+[IXPlaceholder placeholderFromSerializedPlaceholder:client:installType:location:error:]", 496, @"IXErrorDomain", 0x2AuLL, v25, 0, @"Failed to extract %@ to %@", v30, v29);
+    path4 = [placeholderCopy path];
+    path5 = [v21 path];
+    v16 = _CreateError("+[IXPlaceholder placeholderFromSerializedPlaceholder:client:installType:location:error:]", 496, @"IXErrorDomain", 0x2AuLL, v25, 0, @"Failed to extract %@ to %@", v30, path4);
 
     v22 = 0;
   }
 
   [v13 removeItemAtURL:v21 error:0];
-  if (a7)
+  if (error)
   {
     goto LABEL_19;
   }
@@ -1120,14 +1120,14 @@ LABEL_21:
   return v22;
 }
 
-+ (BOOL)_setEntitlementsFromBundleExecutableURL:(id)a3 withBundleID:(id)a4 client:(unint64_t)a5 onPlaceholder:(id)a6 location:(id)a7 error:(id *)a8
++ (BOOL)_setEntitlementsFromBundleExecutableURL:(id)l withBundleID:(id)d client:(unint64_t)client onPlaceholder:(id)placeholder location:(id)location error:(id *)error
 {
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = v12;
+  lCopy = l;
+  dCopy = d;
+  placeholderCopy = placeholder;
+  locationCopy = location;
+  v16 = lCopy;
   *staticCode = 0;
   information = 0;
   if (SecStaticCodeCreateWithPath(v16, 0, staticCode))
@@ -1138,8 +1138,8 @@ LABEL_21:
       [IXPlaceholder _setEntitlementsFromBundleExecutableURL:v16 withBundleID:? client:? onPlaceholder:? location:? error:?];
     }
 
-    v18 = [v16 path];
-    _CreateError("_IXCopyEntitlementsForPath", 614, @"IXErrorDomain", 0x2BuLL, 0, 0, @"Failed to construct SecStaticCode for %@ : %d", v19, v18);
+    path = [v16 path];
+    _CreateError("_IXCopyEntitlementsForPath", 614, @"IXErrorDomain", 0x2BuLL, 0, 0, @"Failed to construct SecStaticCode for %@ : %d", v19, path);
     v22 = LABEL_9:;
 
     Copy = 0;
@@ -1154,8 +1154,8 @@ LABEL_21:
       [IXPlaceholder _setEntitlementsFromBundleExecutableURL:v16 withBundleID:? client:? onPlaceholder:? location:? error:?];
     }
 
-    v18 = [v16 path];
-    _CreateError("_IXCopyEntitlementsForPath", 620, @"IXErrorDomain", 0x2BuLL, 0, 0, @"SecCodeCopySigningInformation for %@ returned error %d", v21, v18);
+    path = [v16 path];
+    _CreateError("_IXCopyEntitlementsForPath", 620, @"IXErrorDomain", 0x2BuLL, 0, 0, @"SecCodeCopySigningInformation for %@ returned error %d", v21, path);
     goto LABEL_9;
   }
 
@@ -1206,13 +1206,13 @@ LABEL_10:
     v34 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
-      v35 = [v16 path];
+      path2 = [v16 path];
       *staticCode = 136315906;
       *&staticCode[4] = "+[IXPlaceholder _setEntitlementsFromBundleExecutableURL:withBundleID:client:onPlaceholder:location:error:]";
       v57 = 2112;
-      v58 = v13;
+      v58 = dCopy;
       v59 = 2112;
-      v60 = v35;
+      v60 = path2;
       v61 = 2112;
       v62 = v26;
       _os_log_error_impl(&dword_1DA47A000, v34, OS_LOG_TYPE_ERROR, "%s: Failed to fetch entitlements for %@ from %@ : %@", staticCode, 0x2Au);
@@ -1229,7 +1229,7 @@ LABEL_10:
       *staticCode = 136315650;
       *&staticCode[4] = "+[IXPlaceholder _setEntitlementsFromBundleExecutableURL:withBundleID:client:onPlaceholder:location:error:]";
       v57 = 2112;
-      v58 = v13;
+      v58 = dCopy;
       v59 = 2112;
       v60 = v16;
       _os_log_impl(&dword_1DA47A000, v34, OS_LOG_TYPE_DEFAULT, "%s: Executable for %@ at %@ had no entitlements", staticCode, 0x20u);
@@ -1243,15 +1243,15 @@ LABEL_26:
   }
 
   v27 = [IXPromisedInMemoryDictionary alloc];
-  v28 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Entitlements Promise for %@", v13];
-  v29 = [(IXPromisedInMemoryDictionary *)v27 initWithName:v28 client:a5 dictionary:Copy location:v15];
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Entitlements Promise for %@", dCopy];
+  v29 = [(IXPromisedInMemoryDictionary *)v27 initWithName:dCopy client:client dictionary:Copy location:locationCopy];
 
   if (v29)
   {
-    v50 = v15;
+    v50 = locationCopy;
     v52 = v26;
-    v30 = v14;
-    v31 = [v14 setEntitlementsPromise:v29 error:&v52];
+    v30 = placeholderCopy;
+    v31 = [placeholderCopy setEntitlementsPromise:v29 error:&v52];
     v32 = v52;
 
     if (v31)
@@ -1260,8 +1260,8 @@ LABEL_26:
       v29 = 0;
       v33 = 1;
       v26 = v32;
-      v14 = v30;
-      v15 = v50;
+      placeholderCopy = v30;
+      locationCopy = v50;
       goto LABEL_46;
     }
 
@@ -1271,9 +1271,9 @@ LABEL_26:
       +[IXPlaceholder _setEntitlementsFromBundleExecutableURL:withBundleID:client:onPlaceholder:location:error:];
     }
 
-    v38 = _CreateError("+[IXPlaceholder _setEntitlementsFromBundleExecutableURL:withBundleID:client:onPlaceholder:location:error:]", 685, @"IXErrorDomain", 2uLL, v32, 0, @"Failed to set alternative entitlements promise for %@", v42, v13);
+    v38 = _CreateError("+[IXPlaceholder _setEntitlementsFromBundleExecutableURL:withBundleID:client:onPlaceholder:location:error:]", 685, @"IXErrorDomain", 2uLL, v32, 0, @"Failed to set alternative entitlements promise for %@", v42, dCopy);
 
-    v39 = a8;
+    errorCopy2 = error;
     if (v38)
     {
       v54 = *MEMORY[0x1E696AA08];
@@ -1286,11 +1286,11 @@ LABEL_26:
       v26 = 0;
     }
 
-    v14 = v30;
+    placeholderCopy = v30;
     v45 = _CreateError("+[IXPlaceholder _setEntitlementsFromBundleExecutableURL:withBundleID:client:onPlaceholder:location:error:]", 699, @"IXErrorDomain", 1uLL, 0, v26, @"An error occurred before the entitlements promise could be set on the placeholder.", v43, v49);
     [(IXDataPromise *)v29 cancelForReason:v45 client:15 error:0];
 
-    v15 = v50;
+    locationCopy = v50;
   }
 
   else
@@ -1301,15 +1301,15 @@ LABEL_26:
       +[IXPlaceholder _setEntitlementsFromBundleExecutableURL:withBundleID:client:onPlaceholder:location:error:];
     }
 
-    v38 = _CreateError("+[IXPlaceholder _setEntitlementsFromBundleExecutableURL:withBundleID:client:onPlaceholder:location:error:]", 680, @"IXErrorDomain", 2uLL, 0, 0, @"Failed to create IXPromisedInMemoryDictionary for entitlements for %@", v37, v13);
-    v39 = a8;
+    v38 = _CreateError("+[IXPlaceholder _setEntitlementsFromBundleExecutableURL:withBundleID:client:onPlaceholder:location:error:]", 680, @"IXErrorDomain", 2uLL, 0, 0, @"Failed to create IXPromisedInMemoryDictionary for entitlements for %@", v37, dCopy);
+    errorCopy2 = error;
   }
 
-  if (v39)
+  if (errorCopy2)
   {
     v46 = v38;
     v33 = 0;
-    *v39 = v38;
+    *errorCopy2 = v38;
   }
 
   else
@@ -1324,18 +1324,18 @@ LABEL_46:
   return v33;
 }
 
-+ (id)_placeholderForBundle:(id)a3 client:(unint64_t)a4 withParent:(id)a5 installType:(unint64_t)a6 metadata:(id)a7 placeholderType:(unint64_t)a8 mayBeDeltaPackage:(BOOL)a9 isFromSerializedPlaceholder:(BOOL)a10 location:(id)a11 error:(id *)a12
++ (id)_placeholderForBundle:(id)bundle client:(unint64_t)client withParent:(id)parent installType:(unint64_t)type metadata:(id)metadata placeholderType:(unint64_t)placeholderType mayBeDeltaPackage:(BOOL)package isFromSerializedPlaceholder:(BOOL)self0 location:(id)self1 error:(id *)self2
 {
   v271 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v213 = a5;
-  v16 = a7;
-  v17 = a11;
+  bundleCopy = bundle;
+  parentCopy = parent;
+  metadataCopy = metadata;
+  locationCopy = location;
   v18 = objc_opt_new();
   v19 = +[IXFileManager defaultManager];
   v20 = *MEMORY[0x1E695E480];
   Unique = _CFBundleCreateUnique();
-  v214 = v15;
+  v214 = bundleCopy;
   if (Unique)
   {
     v22 = Unique;
@@ -1347,16 +1347,16 @@ LABEL_46:
       v35 = IXGetLoggingHandle(kIXLoggingSubsystem);
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        [IXPlaceholder _placeholderForBundle:v15 client:? withParent:? installType:? metadata:? placeholderType:? mayBeDeltaPackage:? isFromSerializedPlaceholder:? location:? error:?];
+        [IXPlaceholder _placeholderForBundle:bundleCopy client:? withParent:? installType:? metadata:? placeholderType:? mayBeDeltaPackage:? isFromSerializedPlaceholder:? location:? error:?];
       }
 
-      v36 = [v15 path];
-      v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 752, @"IXErrorDomain", 0xDuLL, 0, 0, @"Failed to get bundle ID from %@", v37, v36);
+      path = [bundleCopy path];
+      v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 752, @"IXErrorDomain", 0xDuLL, 0, 0, @"Failed to get bundle ID from %@", v37, path);
 
       v38 = 0;
       v219 = 0;
       v221 = 0;
-      v34 = 0;
+      lastPathComponent = 0;
       v210 = 0;
       v211 = 0;
       v216 = 0;
@@ -1381,7 +1381,7 @@ LABEL_46:
       v38 = 0;
       v219 = 0;
       v221 = 0;
-      v34 = 0;
+      lastPathComponent = 0;
       v210 = 0;
       v211 = 0;
       v216 = 0;
@@ -1402,13 +1402,13 @@ LABEL_22:
         +[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:];
       }
 
-      _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 762, @"IXErrorDomain", 0x2CuLL, 0, 0, @"Bundle identifier is an empty string, which is not allowed", v44, v190);
+      _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 762, @"IXErrorDomain", 0x2CuLL, 0, 0, @"Bundle identifier is an empty string, which is not allowed", v44, path8);
       goto LABEL_21;
     }
 
     v197 = v19;
     v208 = v24;
-    if (a9)
+    if (package)
     {
       v257 = 0;
       v39 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v24 allowPlaceholder:0 error:&v257];
@@ -1416,31 +1416,31 @@ LABEL_22:
       if (v39)
       {
         CFRelease(v22);
-        v15 = [v39 URL];
+        bundleCopy = [v39 URL];
 
         v41 = _CFBundleCreateUnique();
         if (v41)
         {
           v22 = v41;
-          v42 = v17;
-          v196 = v16;
+          v42 = locationCopy;
+          v196 = metadataCopy;
 
           goto LABEL_40;
         }
 
-        v84 = v17;
+        v84 = locationCopy;
         v85 = IXGetLoggingHandle(kIXLoggingSubsystem);
         if (os_log_type_enabled(v85, OS_LOG_TYPE_ERROR))
         {
-          [IXPlaceholder _placeholderForBundle:v15 client:? withParent:? installType:? metadata:? placeholderType:? mayBeDeltaPackage:? isFromSerializedPlaceholder:? location:? error:?];
+          [IXPlaceholder _placeholderForBundle:bundleCopy client:? withParent:? installType:? metadata:? placeholderType:? mayBeDeltaPackage:? isFromSerializedPlaceholder:? location:? error:?];
         }
 
-        v86 = [v15 path];
-        v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 774, @"IXErrorDomain", 0xAuLL, 0, 0, @"Failed to create CFBundle from %@", v87, v86);
+        path2 = [bundleCopy path];
+        v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 774, @"IXErrorDomain", 0xAuLL, 0, 0, @"Failed to create CFBundle from %@", v87, path2);
 
         cf = 0;
-        v214 = v15;
-        v17 = v84;
+        v214 = bundleCopy;
+        locationCopy = v84;
       }
 
       else
@@ -1460,7 +1460,7 @@ LABEL_22:
       v212 = 0;
       v210 = 0;
       v33 = 0;
-      v34 = 0;
+      lastPathComponent = 0;
       v221 = 0;
       v38 = 0;
 LABEL_76:
@@ -1469,15 +1469,15 @@ LABEL_76:
       goto LABEL_77;
     }
 
-    v42 = v17;
-    v196 = v16;
+    v42 = locationCopy;
+    v196 = metadataCopy;
     v40 = 0;
 LABEL_40:
     v256 = v40;
     v58 = [[IXPlaceholderAttributes alloc] initWithInfoPlistFromBundle:v22 error:&v256];
     v59 = v256;
 
-    v214 = v15;
+    v214 = bundleCopy;
     v207 = v58;
     cf = v22;
     if (!v58)
@@ -1488,21 +1488,21 @@ LABEL_40:
         +[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:];
       }
 
-      v63 = [v15 path];
-      v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 787, @"IXErrorDomain", 2uLL, v59, 0, @"Failed create placeholder attributes from %@", v64, v63);
+      path3 = [bundleCopy path];
+      v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 787, @"IXErrorDomain", 2uLL, v59, 0, @"Failed create placeholder attributes from %@", v64, path3);
 
       v38 = 0;
       v219 = 0;
       v221 = 0;
-      v34 = 0;
+      lastPathComponent = 0;
       v210 = 0;
       v211 = 0;
       v216 = 0;
       v218 = 0;
       v33 = 0;
       v212 = 0;
-      v16 = v196;
-      v17 = v42;
+      metadataCopy = v196;
+      locationCopy = v42;
       v32 = 0;
       goto LABEL_46;
     }
@@ -1512,17 +1512,17 @@ LABEL_40:
     v61 = ValueForInfoDictionaryKey;
     if (objc_opt_isKindOfClass())
     {
-      v34 = v61;
+      lastPathComponent = v61;
     }
 
     else
     {
-      v34 = 0;
+      lastPathComponent = 0;
     }
 
-    v17 = v42;
+    locationCopy = v42;
 
-    if (!v34 || ![v34 length])
+    if (!lastPathComponent || ![lastPathComponent length])
     {
       v65 = CFBundleGetValueForInfoDictionaryKey(v22, *MEMORY[0x1E695E4F8]);
       objc_opt_class();
@@ -1539,25 +1539,25 @@ LABEL_40:
 
       if (v67 && [v67 length])
       {
-        v34 = v67;
+        lastPathComponent = v67;
       }
 
       else
       {
-        v70 = [v15 URLByDeletingPathExtension];
-        v34 = [v70 lastPathComponent];
+        uRLByDeletingPathExtension = [bundleCopy URLByDeletingPathExtension];
+        lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
       }
 
-      v17 = v42;
+      locationCopy = v42;
     }
 
     v19 = v197;
-    if (v213)
+    if (parentCopy)
     {
       v253 = v59;
-      v190 = &v253;
-      v71 = v15;
-      v72 = [[IXPlaceholder alloc] _initAppExtensionPlaceholderWithBundleURL:v15 bundleName:v34 bundleID:v208 parentPlaceholder:v213 client:a4 location:v17 error:?];
+      path8 = &v253;
+      v71 = bundleCopy;
+      v72 = [[IXPlaceholder alloc] _initAppExtensionPlaceholderWithBundleURL:bundleCopy bundleName:lastPathComponent bundleID:v208 parentPlaceholder:parentCopy client:client location:locationCopy error:?];
       v30 = v253;
 
       if (!v72)
@@ -1571,7 +1571,7 @@ LABEL_40:
         v218 = 0;
         v212 = 0;
         v32 = 0;
-        v16 = v196;
+        metadataCopy = v196;
 LABEL_85:
         v33 = v207;
         v24 = v208;
@@ -1605,7 +1605,7 @@ LABEL_67:
         v216 = 0;
         v212 = 0;
         v32 = 0;
-        v16 = v196;
+        metadataCopy = v196;
         goto LABEL_82;
       }
 
@@ -1617,7 +1617,7 @@ LABEL_67:
       if (v81 && [v197 itemExistsAtURL:v81])
       {
         v251 = v79;
-        v83 = [a1 _setEntitlementsFromBundleExecutableURL:v81 withBundleID:v208 client:a4 onPlaceholder:v72 location:v17 error:&v251];
+        v83 = [self _setEntitlementsFromBundleExecutableURL:v81 withBundleID:v208 client:client onPlaceholder:v72 location:locationCopy error:&v251];
         v30 = v251;
 
         if ((v83 & 1) == 0)
@@ -1628,48 +1628,48 @@ LABEL_67:
           v216 = 0;
           v210 = 0;
           v32 = 0;
-          v16 = v196;
+          metadataCopy = v196;
           goto LABEL_46;
         }
 
-        v205 = v17;
+        v205 = locationCopy;
         v79 = v30;
         v80 = cf;
 LABEL_104:
-        v105 = [MEMORY[0x1E69A8D40] fullFidelityIconsEnabled];
+        fullFidelityIconsEnabled = [MEMORY[0x1E69A8D40] fullFidelityIconsEnabled];
         v106 = IXGetLoggingHandle(kIXLoggingSubsystem);
         v107 = os_log_type_enabled(v106, OS_LOG_TYPE_DEFAULT);
-        v201 = v34;
-        if (v105)
+        v201 = lastPathComponent;
+        if (fullFidelityIconsEnabled)
         {
           if (v107)
           {
-            v108 = [v71 path];
+            path4 = [v71 path];
             *buf = 136315650;
             v264 = "+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]";
             v265 = 2112;
             v266 = v208;
             v267 = 2112;
-            v268 = v108;
+            v268 = path4;
             _os_log_impl(&dword_1DA47A000, v106, OS_LOG_TYPE_DEFAULT, "%s: Using full fidelity icons for %@ at %@", buf, 0x20u);
           }
 
           v109 = v71;
 
           v110 = [IXPromisedTransferToPath alloc];
-          v190 = v208;
+          path8 = v208;
           v111 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Icon resources for %@"];
           v247 = v79;
-          v17 = v205;
-          v32 = [(IXPromisedTransferToPath *)v110 initWithName:v111 client:a4 transferPath:0 diskSpaceNeeded:0 location:v205 error:&v247];
+          locationCopy = v205;
+          v32 = [(IXPromisedTransferToPath *)v110 initWithName:v111 client:client transferPath:0 diskSpaceNeeded:0 location:v205 error:&v247];
           v112 = v247;
 
           if (v32)
           {
             v246 = 0;
-            v113 = [(IXOwnedDataPromise *)v32 stagingBaseDir];
+            stagingBaseDir = [(IXOwnedDataPromise *)v32 stagingBaseDir];
             v245 = v112;
-            v114 = [a1 _iconContentForBundleAtURL:v109 infoPlistIconContent:&v246 withStagingPath:v113 error:&v245];
+            v114 = [self _iconContentForBundleAtURL:v109 infoPlistIconContent:&v246 withStagingPath:stagingBaseDir error:&v245];
             v115 = v246;
             v116 = v245;
 
@@ -1684,7 +1684,7 @@ LABEL_104:
               if (!v117)
               {
                 v119 = IXGetLoggingHandle(kIXLoggingSubsystem);
-                v17 = v205;
+                locationCopy = v205;
                 if (os_log_type_enabled(v119, OS_LOG_TYPE_ERROR))
                 {
                   +[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:];
@@ -1699,7 +1699,7 @@ LABEL_104:
                 v216 = 0;
                 v210 = 0;
                 v32 = 0;
-                v16 = v196;
+                metadataCopy = v196;
                 v19 = v197;
                 goto LABEL_137;
               }
@@ -1707,15 +1707,15 @@ LABEL_104:
               goto LABEL_143;
             }
 
-            v130 = [(IXPromisedTransferToPath *)v116 domain];
-            if ([v130 isEqualToString:@"IXErrorDomain"])
+            domain = [(IXPromisedTransferToPath *)v116 domain];
+            if ([domain isEqualToString:@"IXErrorDomain"])
             {
-              v131 = [(IXPromisedTransferToPath *)v116 code];
+              code = [(IXPromisedTransferToPath *)v116 code];
 
               v132 = v214;
-              if (v131 == 23)
+              if (code == 23)
               {
-                v133 = [v214 path];
+                path5 = [v214 path];
                 _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 901, @"IXErrorDomain", 1uLL, 0, 0, @"No icon found for bundle %@ at %@; skipping icon resources promise", v134, v208);
                 v140 = LABEL_141:;
 
@@ -1738,7 +1738,7 @@ LABEL_143:
               v132 = v109;
             }
 
-            v133 = [v132 path];
+            path5 = [v132 path];
             _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 903, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to get icon content for bundle with identifier %@ at %@ : %@; skipping icon resources promise", v139, v208);
             goto LABEL_141;
           }
@@ -1749,7 +1749,7 @@ LABEL_143:
           v219 = 0;
           v216 = 0;
           v210 = 0;
-          v16 = v196;
+          metadataCopy = v196;
           v19 = v197;
         }
 
@@ -1757,18 +1757,18 @@ LABEL_143:
         {
           if (v107)
           {
-            v121 = [v71 path];
+            path6 = [v71 path];
             *buf = 136315650;
             v264 = "+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]";
             v265 = 2112;
             v266 = v208;
             v267 = 2112;
-            v268 = v121;
+            v268 = path6;
             _os_log_impl(&dword_1DA47A000, v106, OS_LOG_TYPE_DEFAULT, "%s: Using single PNG icon for %@ at %@", buf, 0x20u);
           }
 
           v242 = v79;
-          v115 = [a1 _iconDataForBundle:v80 atURL:v71 isFromSerializedPlaceholder:a10 error:&v242];
+          v115 = [self _iconDataForBundle:v80 atURL:v71 isFromSerializedPlaceholder:placeholder error:&v242];
           v122 = v71;
           v32 = v242;
 
@@ -1777,13 +1777,13 @@ LABEL_143:
             v114 = IXGetLoggingHandle(kIXLoggingSubsystem);
             if (os_log_type_enabled(v114, OS_LOG_TYPE_ERROR))
             {
-              v127 = [v122 path];
+              path7 = [v122 path];
               *buf = 136315906;
               v264 = "+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]";
               v265 = 2112;
               v266 = v208;
               v267 = 2112;
-              v268 = v127;
+              v268 = path7;
               v269 = 2112;
               v270 = v32;
               _os_log_error_impl(&dword_1DA47A000, v114, OS_LOG_TYPE_ERROR, "%s: Failed to get icon data for bundle with identifier %@ at %@ : %@", buf, 0x2Au);
@@ -1793,9 +1793,9 @@ LABEL_143:
           }
 
           v123 = [IXPromisedInMemoryData alloc];
-          v190 = v208;
+          path8 = v208;
           v124 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Icon for %@"];
-          v125 = [(IXPromisedInMemoryData *)v123 initWithName:v124 client:a4 data:v115 location:v205];
+          v125 = [(IXPromisedInMemoryData *)v123 initWithName:v124 client:client data:v115 location:v205];
 
           v219 = v125;
           if (v125)
@@ -1813,17 +1813,17 @@ LABEL_144:
               v32 = [v214 URLByAppendingPathComponent:@"InfoPlist.loctable" isDirectory:0];
               if (![v19 itemExistsAtURL:v32])
               {
-                v17 = v205;
+                locationCopy = v205;
                 goto LABEL_149;
               }
 
               v142 = [v19 diskUsageForURL:v32];
               v143 = [IXPromisedTransferToPath alloc];
               v144 = MEMORY[0x1E696AEC0];
-              v190 = [v214 path];
+              path8 = [v214 path];
               v145 = [v144 stringWithFormat:@"Loctable Promise for %@"];
               v240 = v118;
-              v146 = [(IXPromisedTransferToPath *)v143 initWithName:v145 client:a4 transferPath:v32 diskSpaceNeeded:v142 location:v205 error:&v240];
+              v146 = [(IXPromisedTransferToPath *)v143 initWithName:v145 client:client transferPath:v32 diskSpaceNeeded:v142 location:v205 error:&v240];
               v30 = v240;
 
               if (v146)
@@ -1837,16 +1837,16 @@ LABEL_144:
                 if (v147)
                 {
 
-                  v17 = v205;
+                  locationCopy = v205;
                   v19 = v197;
 LABEL_149:
                   v33 = v207;
                   v238 = v118;
-                  v148 = [a1 _infoPlistLocalizationDictionaryForBundleURL:v214 error:&v238];
+                  v148 = [self _infoPlistLocalizationDictionaryForBundleURL:v214 error:&v238];
                   v149 = v238;
 
                   v150 = v148;
-                  v16 = v196;
+                  metadataCopy = v196;
                   if (v150)
                   {
                     v237 = v149;
@@ -1856,7 +1856,7 @@ LABEL_149:
 
                     if (v151)
                     {
-                      if (!v213)
+                      if (!parentCopy)
                       {
                         v199 = v32;
                         v235 = 0u;
@@ -1869,7 +1869,7 @@ LABEL_149:
                         {
                           v193 = *v234;
                           v160 = v197;
-                          v206 = v17;
+                          v206 = locationCopy;
                           while (2)
                           {
                             v161 = 0;
@@ -1881,8 +1881,8 @@ LABEL_149:
                               }
 
                               v194 = v161;
-                              v162 = [*(*(&v233 + 1) + 8 * v161) unsignedIntegerValue];
-                              if (v162 == 3)
+                              unsignedIntegerValue = [*(*(&v233 + 1) + 8 * v161) unsignedIntegerValue];
+                              if (unsignedIntegerValue == 3)
                               {
                                 v163 = @"Extensions";
                               }
@@ -1892,8 +1892,8 @@ LABEL_149:
                                 v163 = 0;
                               }
 
-                              v220 = v162;
-                              if (v162 == 2)
+                              v220 = unsignedIntegerValue;
+                              if (unsignedIntegerValue == 2)
                               {
                                 v164 = @"PlugIns";
                               }
@@ -1920,10 +1920,10 @@ LABEL_149:
                                     +[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:];
                                   }
 
-                                  v185 = [v165 path];
-                                  v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 973, @"IXErrorDomain", 2uLL, v167, 0, @"Failed to get URLs of items at %@", v189, v185);
+                                  path9 = [v165 path];
+                                  v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 973, @"IXErrorDomain", 2uLL, v167, 0, @"Failed to get URLs of items at %@", v189, path9);
 LABEL_202:
-                                  v17 = v206;
+                                  locationCopy = v206;
                                   v19 = v197;
 
                                   v38 = 0;
@@ -1951,15 +1951,15 @@ LABEL_202:
                                       }
 
                                       v172 = *(*(&v228 + 1) + 8 * i);
-                                      v173 = [v172 pathExtension];
-                                      v174 = [v173 isEqualToString:@"appex"];
+                                      pathExtension = [v172 pathExtension];
+                                      v174 = [pathExtension isEqualToString:@"appex"];
 
                                       if (v174)
                                       {
                                         v227[1] = v167;
-                                        BYTE1(v190) = a10;
-                                        LOBYTE(v190) = 0;
-                                        v175 = [a1 _placeholderForBundle:v172 client:a4 withParent:v221 installType:0 metadata:0 placeholderType:v220 mayBeDeltaPackage:? isFromSerializedPlaceholder:? location:? error:?];
+                                        BYTE1(path8) = placeholder;
+                                        LOBYTE(path8) = 0;
+                                        v175 = [self _placeholderForBundle:v172 client:client withParent:v221 installType:0 metadata:0 placeholderType:v220 mayBeDeltaPackage:? isFromSerializedPlaceholder:? location:? error:?];
                                         v176 = v167;
 
                                         if (!v175)
@@ -1970,10 +1970,10 @@ LABEL_202:
                                             +[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:];
                                           }
 
-                                          v183 = [v172 path];
-                                          v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 994, @"IXErrorDomain", 2uLL, v176, 0, @"Failed to create app extension placeholder for %@", v184, v183);
+                                          path10 = [v172 path];
+                                          v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 994, @"IXErrorDomain", 2uLL, v176, 0, @"Failed to create app extension placeholder for %@", v184, path10);
 
-                                          v185 = obj;
+                                          path9 = obj;
                                           v167 = obj;
                                           goto LABEL_202;
                                         }
@@ -1997,7 +1997,7 @@ LABEL_202:
                                 }
 
                                 v30 = v167;
-                                v17 = v206;
+                                locationCopy = v206;
                                 v160 = v197;
                                 v165 = v191;
                               }
@@ -2038,7 +2038,7 @@ LABEL_202:
 LABEL_203:
                             v33 = v207;
                             v32 = v199;
-                            v34 = v201;
+                            lastPathComponent = v201;
                             goto LABEL_77;
                           }
 
@@ -2048,7 +2048,7 @@ LABEL_203:
                         v18 = 0;
                         v33 = v207;
                         v32 = v199;
-                        v34 = v201;
+                        lastPathComponent = v201;
                       }
 
                       v152 = v30;
@@ -2127,16 +2127,16 @@ LABEL_83:
 
                 v216 = v146;
                 v156 = IXGetLoggingHandle(kIXLoggingSubsystem);
-                v16 = v196;
-                v17 = v205;
+                metadataCopy = v196;
+                locationCopy = v205;
                 v24 = v208;
                 if (os_log_type_enabled(v156, OS_LOG_TYPE_ERROR))
                 {
                   +[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:];
                 }
 
-                v157 = [(IXPromisedTransferToPath *)v32 path];
-                v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 945, @"IXErrorDomain", 2uLL, v118, 0, @"Failed to set loctable promise for %@", v158, v157);
+                path11 = [(IXPromisedTransferToPath *)v32 path];
+                v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 945, @"IXErrorDomain", 2uLL, v118, 0, @"Failed to set loctable promise for %@", v158, path11);
 
                 v38 = 0;
                 v218 = 0;
@@ -2156,7 +2156,7 @@ LABEL_82:
             }
 
             v137 = IXGetLoggingHandle(kIXLoggingSubsystem);
-            v17 = v205;
+            locationCopy = v205;
             if (os_log_type_enabled(v137, OS_LOG_TYPE_ERROR))
             {
               +[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:];
@@ -2164,7 +2164,7 @@ LABEL_82:
 
             v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 922, @"IXErrorDomain", 2uLL, v118, 0, @"Failed to set icon promise for %@", v138, v208);
             v32 = v118;
-            v16 = v196;
+            metadataCopy = v196;
           }
 
           else
@@ -2177,8 +2177,8 @@ LABEL_82:
             }
 
             v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 917, @"IXErrorDomain", 2uLL, 0, 0, @"Failed to create IXPromisedInMemoryData for icon for %@", v136, v208);
-            v16 = v196;
-            v17 = v205;
+            metadataCopy = v196;
+            locationCopy = v205;
           }
 
           v38 = 0;
@@ -2194,17 +2194,17 @@ LABEL_137:
         goto LABEL_138;
       }
 
-      v205 = v17;
+      v205 = locationCopy;
       if ([v197 itemExistsAtURL:v82])
       {
         v90 = [v197 diskUsageForURL:v82];
         v91 = [IXPromisedTransferToPath alloc];
-        v190 = v208;
+        path8 = v208;
         v92 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Entitlements Promise for %@"];
-        v93 = v17;
+        v93 = locationCopy;
         v94 = v92;
         v250 = v79;
-        v95 = [(IXPromisedTransferToPath *)v91 initWithName:v92 client:a4 transferPath:v82 diskSpaceNeeded:v90 location:v93 error:&v250];
+        v95 = [(IXPromisedTransferToPath *)v91 initWithName:v92 client:client transferPath:v82 diskSpaceNeeded:v90 location:v93 error:&v250];
         v30 = v250;
 
         if (v95)
@@ -2219,7 +2219,7 @@ LABEL_137:
           {
             v218 = v95;
             v128 = IXGetLoggingHandle(kIXLoggingSubsystem);
-            v16 = v196;
+            metadataCopy = v196;
             v24 = v208;
             if (os_log_type_enabled(v128, OS_LOG_TYPE_ERROR))
             {
@@ -2233,7 +2233,7 @@ LABEL_137:
             v216 = 0;
             v210 = 0;
             v32 = 0;
-            v17 = v205;
+            locationCopy = v205;
             goto LABEL_82;
           }
 
@@ -2249,13 +2249,13 @@ LABEL_163:
         v210 = 0;
         v32 = 0;
 LABEL_164:
-        v16 = v196;
+        metadataCopy = v196;
         v19 = v197;
-        v17 = v205;
+        locationCopy = v205;
         goto LABEL_85;
       }
 
-      if (v213)
+      if (parentCopy)
       {
         goto LABEL_104;
       }
@@ -2267,11 +2267,11 @@ LABEL_164:
         goto LABEL_103;
       }
 
-      v103 = [(IXPromisedTransferToPath *)v102 executableURL];
-      if (v103)
+      executableURL = [(IXPromisedTransferToPath *)v102 executableURL];
+      if (executableURL)
       {
         v248 = v79;
-        v104 = [a1 _setEntitlementsFromBundleExecutableURL:v103 withBundleID:v208 client:a4 onPlaceholder:v72 location:v17 error:&v248];
+        v104 = [self _setEntitlementsFromBundleExecutableURL:executableURL withBundleID:v208 client:client onPlaceholder:v72 location:locationCopy error:&v248];
         v30 = v248;
 
         if (!v104)
@@ -2288,14 +2288,14 @@ LABEL_103:
       goto LABEL_104;
     }
 
-    v201 = v34;
-    v204 = v17;
-    v73 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:v34 bundleID:v208 type:1 client:a4 location:v17];
-    v74 = [v15 URLByDeletingPathExtension];
-    v75 = [v74 lastPathComponent];
-    [(IXPlaceholderSpecification *)v73 setBundleDirectoryName:v75];
+    v201 = lastPathComponent;
+    v204 = locationCopy;
+    v73 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:lastPathComponent bundleID:v208 type:1 client:client location:locationCopy];
+    uRLByDeletingPathExtension2 = [bundleCopy URLByDeletingPathExtension];
+    lastPathComponent2 = [uRLByDeletingPathExtension2 lastPathComponent];
+    [(IXPlaceholderSpecification *)v73 setBundleDirectoryName:lastPathComponent2];
 
-    [(IXPlaceholderSpecification *)v73 setInstallType:a6];
+    [(IXPlaceholderSpecification *)v73 setInstallType:type];
     v255 = v59;
     v72 = [[IXPlaceholder alloc] initWithSpecification:v73 error:&v255];
     v76 = v255;
@@ -2312,8 +2312,8 @@ LABEL_103:
         [(IXPlaceholderAttributes *)v207 setExtensionDictionary:0];
         [(IXPlaceholderAttributes *)v207 setExAppExtensionAttributes:0];
 
-        v17 = v204;
-        v71 = v15;
+        locationCopy = v204;
+        v71 = bundleCopy;
         goto LABEL_67;
       }
 
@@ -2328,7 +2328,7 @@ LABEL_103:
       v24 = v208;
       v99 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 814, @"IXErrorDomain", 2uLL, v30, 0, @"Failed to set metadata for %@", v101, v208);
       v76 = v30;
-      v16 = v196;
+      metadataCopy = v196;
     }
 
     else
@@ -2342,7 +2342,7 @@ LABEL_103:
       }
 
       v99 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 809, @"IXErrorDomain", 2uLL, v76, 0, @"Failed to create IXPlaceholder for app bundle ID %@", v98, v208);
-      v16 = v196;
+      metadataCopy = v196;
       v33 = v207;
     }
 
@@ -2355,21 +2355,21 @@ LABEL_103:
     v212 = 0;
     v32 = 0;
     v30 = v99;
-    v17 = v204;
+    locationCopy = v204;
     v19 = v197;
 LABEL_138:
-    v34 = v201;
+    lastPathComponent = v201;
     goto LABEL_23;
   }
 
   v27 = IXGetLoggingHandle(kIXLoggingSubsystem);
   if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
   {
-    [IXPlaceholder _placeholderForBundle:v15 client:? withParent:? installType:? metadata:? placeholderType:? mayBeDeltaPackage:? isFromSerializedPlaceholder:? location:? error:?];
+    [IXPlaceholder _placeholderForBundle:bundleCopy client:? withParent:? installType:? metadata:? placeholderType:? mayBeDeltaPackage:? isFromSerializedPlaceholder:? location:? error:?];
   }
 
-  v28 = [v15 path];
-  v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 746, @"IXErrorDomain", 0xAuLL, 0, 0, @"Failed to create CFBundle from %@", v29, v28);
+  path12 = [bundleCopy path];
+  v30 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 746, @"IXErrorDomain", 0xAuLL, 0, 0, @"Failed to create CFBundle from %@", v29, path12);
 
   v32 = 0;
   v211 = 0;
@@ -2380,23 +2380,23 @@ LABEL_138:
   v218 = 0;
   v219 = 0;
   v221 = 0;
-  v34 = 0;
+  lastPathComponent = 0;
   v24 = 0;
 LABEL_25:
-  v200 = v34;
-  v203 = v17;
+  v200 = lastPathComponent;
+  v203 = locationCopy;
   v209 = v24;
-  if (a12)
+  if (error)
   {
     v45 = v30;
-    *a12 = v30;
+    *error = v30;
   }
 
   v198 = v32;
   v46 = v19;
   if (v30)
   {
-    v47 = v16;
+    v47 = metadataCopy;
     v259 = *MEMORY[0x1E696AA08];
     v48 = v30;
     v260 = v30;
@@ -2406,11 +2406,11 @@ LABEL_25:
   else
   {
     v48 = 0;
-    v47 = v16;
+    v47 = metadataCopy;
     v49 = 0;
   }
 
-  v50 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 1029, @"IXErrorDomain", 1uLL, 0, v49, @"Canceling because an error occurred during creation of the IXPlaceholder", v31, v190);
+  v50 = _CreateError("+[IXPlaceholder _placeholderForBundle:client:withParent:installType:metadata:placeholderType:mayBeDeltaPackage:isFromSerializedPlaceholder:location:error:]", 1029, @"IXErrorDomain", 1uLL, 0, v49, @"Canceling because an error occurred during creation of the IXPlaceholder", v31, path8);
   [(IXDataPromise *)v221 cancelForReason:v50 client:15 error:0];
   [(IXDataPromise *)v218 cancelForReason:v50 client:15 error:0];
   [(IXDataPromise *)v219 cancelForReason:v50 client:15 error:0];
@@ -2444,13 +2444,13 @@ LABEL_25:
   }
 
   v38 = 0;
-  v16 = v47;
-  v17 = v203;
+  metadataCopy = v47;
+  locationCopy = v203;
   v19 = v46;
   v24 = v209;
   v30 = v48;
   v32 = v198;
-  v34 = v200;
+  lastPathComponent = v200;
 LABEL_38:
   v55 = v38;
 
@@ -2458,53 +2458,53 @@ LABEL_38:
   return v38;
 }
 
-- (id)initAppPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 installType:(unint64_t)a5 client:(unint64_t)a6 error:(id *)a7
+- (id)initAppPlaceholderWithBundleName:(id)name bundleID:(id)d installType:(unint64_t)type client:(unint64_t)client error:(id *)error
 {
-  v12 = a4;
-  v13 = a3;
+  dCopy = d;
+  nameCopy = name;
   v14 = objc_opt_new();
-  v15 = [(IXPlaceholder *)self initAppPlaceholderWithBundleName:v13 bundleID:v12 installType:a5 client:a6 location:v14 error:a7];
+  v15 = [(IXPlaceholder *)self initAppPlaceholderWithBundleName:nameCopy bundleID:dCopy installType:type client:client location:v14 error:error];
 
   return v15;
 }
 
-- (id)_initAppExtensionPlaceholderWithBundleURL:(id)a3 bundleName:(id)a4 bundleID:(id)a5 parentPlaceholder:(id)a6 client:(unint64_t)a7 location:(id)a8 error:(id *)a9
+- (id)_initAppExtensionPlaceholderWithBundleURL:(id)l bundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client location:(id)location error:(id *)error
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = [v15 URLByDeletingLastPathComponent];
-  v21 = [v20 lastPathComponent];
-  if ([v21 isEqualToString:@"PlugIns"])
+  lCopy = l;
+  nameCopy = name;
+  dCopy = d;
+  placeholderCopy = placeholder;
+  locationCopy = location;
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  lastPathComponent = [uRLByDeletingLastPathComponent lastPathComponent];
+  if ([lastPathComponent isEqualToString:@"PlugIns"])
   {
-    v35 = v20;
-    v22 = v18;
+    v35 = uRLByDeletingLastPathComponent;
+    v22 = placeholderCopy;
     v23 = 2;
 LABEL_5:
-    v24 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:v16 bundleID:v17 type:v23 client:a7 location:v19];
-    v25 = [v15 URLByDeletingPathExtension];
-    [v25 lastPathComponent];
-    v26 = v17;
-    v28 = v27 = v16;
+    v24 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:nameCopy bundleID:dCopy type:v23 client:client location:locationCopy];
+    uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+    [uRLByDeletingPathExtension lastPathComponent];
+    v26 = dCopy;
+    v28 = v27 = nameCopy;
     [(IXPlaceholderSpecification *)v24 setBundleDirectoryName:v28];
 
-    v16 = v27;
-    v17 = v26;
+    nameCopy = v27;
+    dCopy = v26;
 
-    v18 = v22;
+    placeholderCopy = v22;
     [(IXPlaceholderSpecification *)v24 setParentPlaceholder:v22];
-    self = [(IXPlaceholder *)self initWithSpecification:v24 error:a9];
-    v29 = self;
-    v20 = v35;
+    self = [(IXPlaceholder *)self initWithSpecification:v24 error:error];
+    selfCopy = self;
+    uRLByDeletingLastPathComponent = v35;
     goto LABEL_6;
   }
 
-  if ([v21 isEqualToString:@"Extensions"])
+  if ([lastPathComponent isEqualToString:@"Extensions"])
   {
-    v35 = v20;
-    v22 = v18;
+    v35 = uRLByDeletingLastPathComponent;
+    v22 = placeholderCopy;
     v23 = 3;
     goto LABEL_5;
   }
@@ -2515,61 +2515,61 @@ LABEL_5:
     [IXPlaceholder _initAppExtensionPlaceholderWithBundleURL:bundleName:bundleID:parentPlaceholder:client:location:error:];
   }
 
-  v33 = _CreateError("[IXPlaceholder _initAppExtensionPlaceholderWithBundleURL:bundleName:bundleID:parentPlaceholder:client:location:error:]", 1058, @"IXErrorDomain", 2uLL, 0, 0, @"Unable to determine IXPlaceholder type for this app extension bundle at %@", v32, v15);
+  v33 = _CreateError("[IXPlaceholder _initAppExtensionPlaceholderWithBundleURL:bundleName:bundleID:parentPlaceholder:client:location:error:]", 1058, @"IXErrorDomain", 2uLL, 0, 0, @"Unable to determine IXPlaceholder type for this app extension bundle at %@", v32, lCopy);
   v24 = v33;
-  if (a9)
+  if (error)
   {
     v34 = v33;
-    v29 = 0;
-    *a9 = v24;
+    selfCopy = 0;
+    *error = v24;
   }
 
   else
   {
-    v29 = 0;
+    selfCopy = 0;
   }
 
 LABEL_6:
 
-  return v29;
+  return selfCopy;
 }
 
-- (id)initExtensionKitPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 parentPlaceholder:(id)a5 client:(unint64_t)a6 error:(id *)a7
+- (id)initExtensionKitPlaceholderWithBundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client error:(id *)error
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  placeholderCopy = placeholder;
+  dCopy = d;
+  nameCopy = name;
   v15 = objc_opt_new();
-  v16 = [(IXPlaceholder *)self initExtensionKitPlaceholderWithBundleName:v14 bundleID:v13 parentPlaceholder:v12 client:a6 location:v15 error:a7];
+  v16 = [(IXPlaceholder *)self initExtensionKitPlaceholderWithBundleName:nameCopy bundleID:dCopy parentPlaceholder:placeholderCopy client:client location:v15 error:error];
 
   return v16;
 }
 
-- (id)initPlugInPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 parentPlaceholder:(id)a5 client:(unint64_t)a6 error:(id *)a7
+- (id)initPlugInPlaceholderWithBundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client error:(id *)error
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  placeholderCopy = placeholder;
+  dCopy = d;
+  nameCopy = name;
   v15 = objc_opt_new();
-  v16 = [(IXPlaceholder *)self initPlugInPlaceholderWithBundleName:v14 bundleID:v13 parentPlaceholder:v12 client:a6 location:v15 error:a7];
+  v16 = [(IXPlaceholder *)self initPlugInPlaceholderWithBundleName:nameCopy bundleID:dCopy parentPlaceholder:placeholderCopy client:client location:v15 error:error];
 
   return v16;
 }
 
-- (id)initAppPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 installType:(unint64_t)a5 client:(unint64_t)a6 location:(id)a7 error:(id *)a8
+- (id)initAppPlaceholderWithBundleName:(id)name bundleID:(id)d installType:(unint64_t)type client:(unint64_t)client location:(id)location error:(id *)error
 {
-  v14 = a7;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:v16 bundleID:v15 type:1 client:a6 location:v14];
-  [(IXPlaceholderSpecification *)v17 setInstallType:a5];
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"App Placeholder: %@ (%@)", v16, v15];
+  locationCopy = location;
+  dCopy = d;
+  nameCopy = name;
+  v17 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:nameCopy bundleID:dCopy type:1 client:client location:locationCopy];
+  [(IXPlaceholderSpecification *)v17 setInstallType:type];
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"App Placeholder: %@ (%@)", nameCopy, dCopy];
 
   v22.receiver = self;
   v22.super_class = IXPlaceholder;
-  v19 = [(IXOwnedDataPromise *)&v22 initWithName:v18 client:a6 diskSpaceNeeded:0 location:v14];
+  v19 = [(IXOwnedDataPromise *)&v22 initWithName:dCopy client:client diskSpaceNeeded:0 location:locationCopy];
 
-  if (v19 && ![(IXPlaceholder *)v19 _doInitWithSpecification:v17 error:a8])
+  if (v19 && ![(IXPlaceholder *)v19 _doInitWithSpecification:v17 error:error])
   {
     v20 = 0;
   }
@@ -2582,22 +2582,22 @@ LABEL_6:
   return v20;
 }
 
-- (id)initExtensionKitPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 parentPlaceholder:(id)a5 client:(unint64_t)a6 location:(id)a7 error:(id *)a8
+- (id)initExtensionKitPlaceholderWithBundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client location:(id)location error:(id *)error
 {
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:v17 bundleID:v16 type:3 client:a6 location:v14];
-  [(IXPlaceholderSpecification *)v18 setParentPlaceholder:v15];
+  locationCopy = location;
+  placeholderCopy = placeholder;
+  dCopy = d;
+  nameCopy = name;
+  v18 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:nameCopy bundleID:dCopy type:3 client:client location:locationCopy];
+  [(IXPlaceholderSpecification *)v18 setParentPlaceholder:placeholderCopy];
 
-  v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ExtensionKit app extension Placeholder: %@ (%@)", v17, v16];
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ExtensionKit app extension Placeholder: %@ (%@)", nameCopy, dCopy];
 
   v23.receiver = self;
   v23.super_class = IXPlaceholder;
-  v20 = [(IXOwnedDataPromise *)&v23 initWithName:v19 client:a6 diskSpaceNeeded:0 location:v14];
+  v20 = [(IXOwnedDataPromise *)&v23 initWithName:dCopy client:client diskSpaceNeeded:0 location:locationCopy];
 
-  if (v20 && ![(IXPlaceholder *)v20 _doInitWithSpecification:v18 error:a8])
+  if (v20 && ![(IXPlaceholder *)v20 _doInitWithSpecification:v18 error:error])
   {
     v21 = 0;
   }
@@ -2610,22 +2610,22 @@ LABEL_6:
   return v21;
 }
 
-- (id)initPlugInPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 parentPlaceholder:(id)a5 client:(unint64_t)a6 location:(id)a7 error:(id *)a8
+- (id)initPlugInPlaceholderWithBundleName:(id)name bundleID:(id)d parentPlaceholder:(id)placeholder client:(unint64_t)client location:(id)location error:(id *)error
 {
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:v17 bundleID:v16 type:2 client:a6 location:v14];
-  [(IXPlaceholderSpecification *)v18 setParentPlaceholder:v15];
+  locationCopy = location;
+  placeholderCopy = placeholder;
+  dCopy = d;
+  nameCopy = name;
+  v18 = [[IXPlaceholderSpecification alloc] initWithLocalizedBundleName:nameCopy bundleID:dCopy type:2 client:client location:locationCopy];
+  [(IXPlaceholderSpecification *)v18 setParentPlaceholder:placeholderCopy];
 
-  v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PluginKit app extension Placeholder: %@ (%@)", v17, v16];
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"PluginKit app extension Placeholder: %@ (%@)", nameCopy, dCopy];
 
   v23.receiver = self;
   v23.super_class = IXPlaceholder;
-  v20 = [(IXOwnedDataPromise *)&v23 initWithName:v19 client:a6 diskSpaceNeeded:0 location:v14];
+  v20 = [(IXOwnedDataPromise *)&v23 initWithName:dCopy client:client diskSpaceNeeded:0 location:locationCopy];
 
-  if (v20 && ![(IXPlaceholder *)v20 _doInitWithSpecification:v18 error:a8])
+  if (v20 && ![(IXPlaceholder *)v20 _doInitWithSpecification:v18 error:error])
   {
     v21 = 0;
   }
@@ -2638,34 +2638,34 @@ LABEL_6:
   return v21;
 }
 
-- (id)initAppPlaceholderWithBundleName:(id)a3 bundleID:(id)a4 installType:(unint64_t)a5 client:(unint64_t)a6
+- (id)initAppPlaceholderWithBundleName:(id)name bundleID:(id)d installType:(unint64_t)type client:(unint64_t)client
 {
-  v10 = a4;
-  v11 = a3;
+  dCopy = d;
+  nameCopy = name;
   v12 = objc_opt_new();
-  v13 = [(IXPlaceholder *)self initAppPlaceholderWithBundleName:v11 bundleID:v10 installType:a5 client:a6 location:v12 error:0];
+  v13 = [(IXPlaceholder *)self initAppPlaceholderWithBundleName:nameCopy bundleID:dCopy installType:type client:client location:v12 error:0];
 
   return v13;
 }
 
-- (BOOL)_doInitWithSpecification:(id)a3 error:(id *)a4
+- (BOOL)_doInitWithSpecification:(id)specification error:(id *)error
 {
   v70 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  specificationCopy = specification;
   v56 = 0;
   v57 = &v56;
   v58 = 0x3032000000;
   v59 = __Block_byref_object_copy__7;
   v60 = __Block_byref_object_dispose__7;
   v61 = 0;
-  v7 = [v6 bundleID];
-  v8 = [v6 parentPlaceholder];
-  v9 = [v6 placeholderType];
-  v10 = [v6 localizedBundleName];
-  v11 = [v6 bundleDirectoryName];
-  v12 = [v6 installType];
-  v13 = IXIsAppExtensionForPlaceholderType(v9);
-  if ((v9 - 4) <= 0xFFFFFFFFFFFFFFFCLL)
+  bundleID = [specificationCopy bundleID];
+  parentPlaceholder = [specificationCopy parentPlaceholder];
+  placeholderType = [specificationCopy placeholderType];
+  localizedBundleName = [specificationCopy localizedBundleName];
+  bundleDirectoryName = [specificationCopy bundleDirectoryName];
+  installType = [specificationCopy installType];
+  v13 = IXIsAppExtensionForPlaceholderType(placeholderType);
+  if ((placeholderType - 4) <= 0xFFFFFFFFFFFFFFFCLL)
   {
     v14 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -2673,7 +2673,7 @@ LABEL_6:
       [IXPlaceholder _doInitWithSpecification:error:];
     }
 
-    v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1153, @"IXErrorDomain", 0x35uLL, 0, 0, @"Invalid placeholder type %lu", v15, v9);
+    v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1153, @"IXErrorDomain", 0x35uLL, 0, 0, @"Invalid placeholder type %lu", v15, placeholderType);
 LABEL_31:
     v29 = 0;
     v30 = 0;
@@ -2683,7 +2683,7 @@ LABEL_31:
   }
 
   v17 = v13;
-  if ([v7 containsEmbeddedNULLCharacter])
+  if ([bundleID containsEmbeddedNULLCharacter])
   {
     v18 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -2691,11 +2691,11 @@ LABEL_31:
       [IXPlaceholder _doInitWithSpecification:error:];
     }
 
-    v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1158, @"IXErrorDomain", 0x35uLL, 0, 0, @"Bundle identifier %@ contained an embedded NULL character this is not allowed", v19, v7);;
+    v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1158, @"IXErrorDomain", 0x35uLL, 0, 0, @"Bundle identifier %@ contained an embedded NULL character this is not allowed", v19, bundleID);;
     goto LABEL_31;
   }
 
-  if (v11 && [v11 containsEmbeddedNULLCharacter])
+  if (bundleDirectoryName && [bundleDirectoryName containsEmbeddedNULLCharacter])
   {
     v20 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -2703,11 +2703,11 @@ LABEL_31:
       [IXPlaceholder _doInitWithSpecification:error:];
     }
 
-    v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1163, @"IXErrorDomain", 0x35uLL, 0, 0, @"Bundle directory name %@ contained an embedded NULL character this is not allowed", v21, v11);;
+    v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1163, @"IXErrorDomain", 0x35uLL, 0, 0, @"Bundle directory name %@ contained an embedded NULL character this is not allowed", v21, bundleDirectoryName);;
     goto LABEL_31;
   }
 
-  if ([v10 containsEmbeddedNULLCharacter])
+  if ([localizedBundleName containsEmbeddedNULLCharacter])
   {
     v22 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -2715,11 +2715,11 @@ LABEL_31:
       [IXPlaceholder _doInitWithSpecification:error:];
     }
 
-    v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1168, @"IXErrorDomain", 0x35uLL, 0, 0, @"Localized bundle name %@ contained an embedded NULL character this is not allowed", v23, v10);;
+    v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1168, @"IXErrorDomain", 0x35uLL, 0, 0, @"Localized bundle name %@ contained an embedded NULL character this is not allowed", v23, localizedBundleName);;
     goto LABEL_31;
   }
 
-  if (v8)
+  if (parentPlaceholder)
   {
     if (!v17)
     {
@@ -2729,34 +2729,34 @@ LABEL_31:
         [IXPlaceholder _doInitWithSpecification:error:];
       }
 
-      v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1174, @"IXErrorDomain", 0x35uLL, 0, 0, @"App placeholder %@ specified parent placeholder this is not allowed.", v35, v7);;
+      v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1174, @"IXErrorDomain", 0x35uLL, 0, 0, @"App placeholder %@ specified parent placeholder this is not allowed.", v35, bundleID);;
       goto LABEL_31;
     }
 
-    v24 = [v8 seed];
-    v52 = [v24 isAppExtension];
+    seed = [parentPlaceholder seed];
+    isAppExtension = [seed isAppExtension];
 
-    if (v52)
+    if (isAppExtension)
     {
       v25 = IXGetLoggingHandle(kIXLoggingSubsystem);
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v49 = [v8 seed];
-        v50 = [v49 bundleID];
+        seed2 = [parentPlaceholder seed];
+        bundleID2 = [seed2 bundleID];
         *buf = 136315906;
         v63 = "[IXPlaceholder _doInitWithSpecification:error:]";
         v64 = 2112;
-        v65 = v7;
+        v65 = bundleID;
         v66 = 2112;
-        v67 = v50;
+        v67 = bundleID2;
         v68 = 2112;
         v69 = 0;
         _os_log_error_impl(&dword_1DA47A000, v25, OS_LOG_TYPE_ERROR, "%s: App extension placeholder for %@ specified another app extension, %@, as its parent. App extension placeholders must have an app placeholder as their parent. : %@", buf, 0x2Au);
       }
 
-      v26 = [v8 seed];
-      v51 = [v26 bundleID];
-      v28 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1179, @"IXErrorDomain", 0x35uLL, 0, 0, @"App extension placeholder for %@ specified another app extension, %@, as its parent. App extension placeholders must have an app placeholder as their parent.", v27, v7);
+      seed3 = [parentPlaceholder seed];
+      bundleID3 = [seed3 bundleID];
+      v28 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1179, @"IXErrorDomain", 0x35uLL, 0, 0, @"App extension placeholder for %@ specified another app extension, %@, as its parent. App extension placeholders must have an app placeholder as their parent.", v27, bundleID);
 
       v29 = 0;
       v30 = 0;
@@ -2764,7 +2764,7 @@ LABEL_31:
       v57[5] = v28;
 LABEL_32:
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_35;
       }
@@ -2783,11 +2783,11 @@ LABEL_32:
         [IXPlaceholder _doInitWithSpecification:error:];
       }
 
-      v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1184, @"IXErrorDomain", 0x35uLL, 0, 0, @"App extension placeholder %@ did not specify a parent placeholder this is not allowed.", v33, v7);;
+      v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1184, @"IXErrorDomain", 0x35uLL, 0, 0, @"App extension placeholder %@ did not specify a parent placeholder this is not allowed.", v33, bundleID);;
       goto LABEL_31;
     }
 
-    if (!v12)
+    if (!installType)
     {
       v46 = IXGetLoggingHandle(kIXLoggingSubsystem);
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
@@ -2795,25 +2795,25 @@ LABEL_32:
         [IXPlaceholder _doInitWithSpecification:error:];
       }
 
-      v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1190, @"IXErrorDomain", 0x35uLL, 0, 0, @"No install type was specified for placeholder %@. This value is required.", v47, v7);
+      v16 = _CreateError("[IXPlaceholder _doInitWithSpecification:error:]", 1190, @"IXErrorDomain", 0x35uLL, 0, 0, @"No install type was specified for placeholder %@. This value is required.", v47, bundleID);
       goto LABEL_31;
     }
   }
 
-  v38 = [(IXDataPromise *)self seed];
-  [v38 setBundleName:v10];
+  seed4 = [(IXDataPromise *)self seed];
+  [seed4 setBundleName:localizedBundleName];
 
-  v39 = [(IXDataPromise *)self seed];
-  [v39 setBundleDirectoryName:v11];
+  seed5 = [(IXDataPromise *)self seed];
+  [seed5 setBundleDirectoryName:bundleDirectoryName];
 
-  v40 = [(IXDataPromise *)self seed];
-  [v40 setBundleID:v7];
+  seed6 = [(IXDataPromise *)self seed];
+  [seed6 setBundleID:bundleID];
 
-  v41 = [(IXDataPromise *)self seed];
-  [v41 setInstallType:v12];
+  seed7 = [(IXDataPromise *)self seed];
+  [seed7 setInstallType:installType];
 
-  v42 = [(IXDataPromise *)self seed];
-  [v42 setPlaceholderType:v9];
+  seed8 = [(IXDataPromise *)self seed];
+  [seed8 setPlaceholderType:placeholderType];
 
   v43 = +[IXServerConnection sharedConnection];
   v55[0] = MEMORY[0x1E69E9820];
@@ -2825,14 +2825,14 @@ LABEL_32:
 
   if (v29)
   {
-    v44 = [(IXDataPromise *)self seed];
+    seed9 = [(IXDataPromise *)self seed];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __48__IXPlaceholder__doInitWithSpecification_error___block_invoke_226;
     v54[3] = &unk_1E85C62B0;
     v54[4] = self;
     v54[5] = &v56;
-    [v29 _remote_createPlaceholderDataPromiseWithSeed:v44 completion:v54];
+    [v29 _remote_createPlaceholderDataPromiseWithSeed:seed9 completion:v54];
 
     v45 = v57;
     if (!v57[5])
@@ -2847,7 +2847,7 @@ LABEL_32:
   }
 
   v30 = 0;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_35;
   }
@@ -2855,7 +2855,7 @@ LABEL_32:
 LABEL_33:
   if (!v30)
   {
-    *a4 = v57[5];
+    *error = v57[5];
   }
 
 LABEL_35:
@@ -2913,32 +2913,32 @@ void __48__IXPlaceholder__doInitWithSpecification_error___block_invoke_226(uint6
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (IXPlaceholder)initWithSpecification:(id)a3 error:(id *)a4
+- (IXPlaceholder)initWithSpecification:(id)specification error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bundleID];
-  v7 = IXStringForPlaceholderType([v5 placeholderType]);
-  v8 = v6;
-  v9 = [v5 localizedBundleName];
-  v10 = [v5 bundleDirectoryName];
-  v11 = v10;
-  v12 = v9;
-  if (v9 || (v12 = v10, v13 = v8, v10))
+  specificationCopy = specification;
+  bundleID = [specificationCopy bundleID];
+  v7 = IXStringForPlaceholderType([specificationCopy placeholderType]);
+  v8 = bundleID;
+  localizedBundleName = [specificationCopy localizedBundleName];
+  bundleDirectoryName = [specificationCopy bundleDirectoryName];
+  v11 = bundleDirectoryName;
+  v12 = localizedBundleName;
+  if (localizedBundleName || (v12 = bundleDirectoryName, v13 = v8, bundleDirectoryName))
   {
     v13 = v12;
   }
 
   v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Placeholder: %@ (%@)", v7, v13, v8];
-  v15 = [v5 client];
-  v16 = [v5 location];
+  client = [specificationCopy client];
+  location = [specificationCopy location];
   v24.receiver = self;
   v24.super_class = IXPlaceholder;
-  v17 = [(IXOwnedDataPromise *)&v24 initWithName:v14 client:v15 diskSpaceNeeded:0 location:v16];
+  v17 = [(IXOwnedDataPromise *)&v24 initWithName:v14 client:client diskSpaceNeeded:0 location:location];
 
   if (v17)
   {
     v23 = 0;
-    v18 = [(IXPlaceholder *)v17 _doInitWithSpecification:v5 error:&v23];
+    v18 = [(IXPlaceholder *)v17 _doInitWithSpecification:specificationCopy error:&v23];
     v19 = v23;
     if (v18)
     {
@@ -2951,11 +2951,11 @@ void __48__IXPlaceholder__doInitWithSpecification_error___block_invoke_226(uint6
     v19 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v20 = v19;
     v17 = 0;
-    *a4 = v19;
+    *error = v19;
   }
 
   else
@@ -2968,23 +2968,23 @@ LABEL_11:
   return v17;
 }
 
-- (IXPlaceholder)initWithCoder:(id)a3
+- (IXPlaceholder)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = IXPlaceholder;
-  return [(IXOwnedDataPromise *)&v4 initWithCoder:a3];
+  return [(IXOwnedDataPromise *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = IXPlaceholder;
-  [(IXDataPromise *)&v3 encodeWithCoder:a3];
+  [(IXDataPromise *)&v3 encodeWithCoder:coder];
 }
 
-- (BOOL)setIconPromise:(id)a3 error:(id *)a4
+- (BOOL)setIconPromise:(id)promise error:(id *)error
 {
-  v6 = a3;
+  promiseCopy = promise;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -2996,30 +2996,30 @@ LABEL_11:
   v21[1] = 3221225472;
   v21[2] = __38__IXPlaceholder_setIconPromise_error___block_invoke;
   v21[3] = &unk_1E85C5920;
-  v8 = v6;
+  v8 = promiseCopy;
   v22 = v8;
-  v23 = self;
+  selfCopy = self;
   v24 = &v25;
   v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v21];
-  v10 = [(IXDataPromise *)self uniqueIdentifier];
-  v11 = [v8 uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier2 = [v8 uniqueIdentifier];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __38__IXPlaceholder_setIconPromise_error___block_invoke_235;
   v17[3] = &unk_1E85C5920;
   v12 = v8;
   v18 = v12;
-  v19 = self;
+  selfCopy2 = self;
   v20 = &v25;
-  [v9 _remote_IXSPlaceholder:v10 setIconPromiseUUID:v11 completion:v17];
+  [v9 _remote_IXSPlaceholder:uniqueIdentifier setIconPromiseUUID:uniqueIdentifier2 completion:v17];
 
   v13 = v26;
-  if (a4)
+  if (error)
   {
     v14 = v26[5];
     if (v14)
     {
-      *a4 = v14;
+      *error = v14;
       v13 = v26;
     }
   }
@@ -3086,7 +3086,7 @@ void __38__IXPlaceholder_setIconPromise_error___block_invoke_235(void *a1, void 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)iconPromiseWithError:(id *)a3
+- (id)iconPromiseWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -3107,19 +3107,19 @@ void __38__IXPlaceholder_setIconPromise_error___block_invoke_235(void *a1, void 
   v12[3] = &unk_1E85C5560;
   v12[4] = &v13;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __38__IXPlaceholder_iconPromiseWithError___block_invoke_236;
   v11[3] = &unk_1E85C5970;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v6 _remote_IXSPlaceholder:v7 getIconPromise:v11];
+  [v6 _remote_IXSPlaceholder:uniqueIdentifier getIconPromise:v11];
 
   v8 = v20[5];
-  if (a3 && !v8)
+  if (error && !v8)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v8 = v20[5];
   }
 
@@ -3248,14 +3248,14 @@ LABEL_17:
   v8[3] = &unk_1E85C5998;
   v8[4] = self;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
-  v5 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __31__IXPlaceholder_hasIconPromise__block_invoke_248;
   v7[3] = &unk_1E85C59C0;
   v7[4] = self;
   v7[5] = &v9;
-  [v4 _remote_IXSPlaceholder:v5 hasIconPromise:v7];
+  [v4 _remote_IXSPlaceholder:uniqueIdentifier hasIconPromise:v7];
 
   LOBYTE(v3) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -3313,17 +3313,17 @@ void __31__IXPlaceholder_hasIconPromise__block_invoke_248(uint64_t a1, char a2, 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setIconResourcesPromise:(id)a3 withInfoPlistContent:(id)a4 error:(id *)a5
+- (BOOL)setIconResourcesPromise:(id)promise withInfoPlistContent:(id)content error:(id *)error
 {
-  v30 = a3;
-  v8 = a4;
+  promiseCopy = promise;
+  contentCopy = content;
   v39 = 0;
   v40 = &v39;
   v41 = 0x3032000000;
   v42 = __Block_byref_object_copy__7;
   v43 = __Block_byref_object_dispose__7;
   v44 = 0;
-  if (!IXDictionaryContainsOnlyPlistContent(v8))
+  if (!IXDictionaryContainsOnlyPlistContent(contentCopy))
   {
     v23 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -3337,11 +3337,11 @@ void __31__IXPlaceholder_hasIconPromise__block_invoke_248(uint64_t a1, char a2, 
 
   v9 = [IXPromisedInMemoryDictionary alloc];
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(IXPlaceholder *)self bundleID];
-  v12 = [v10 stringWithFormat:@"Info.plist icon content for %@", v11];
-  v13 = [(IXDataPromise *)self creatorIdentifier];
-  v14 = [(IXOwnedDataPromise *)self location];
-  v15 = [(IXPromisedInMemoryDictionary *)v9 initWithName:v12 client:v13 dictionary:v8 location:v14];
+  bundleID = [(IXPlaceholder *)self bundleID];
+  v12 = [v10 stringWithFormat:@"Info.plist icon content for %@", bundleID];
+  creatorIdentifier = [(IXDataPromise *)self creatorIdentifier];
+  location = [(IXOwnedDataPromise *)self location];
+  v15 = [(IXPromisedInMemoryDictionary *)v9 initWithName:v12 client:creatorIdentifier dictionary:contentCopy location:location];
 
   if (!v15)
   {
@@ -3364,29 +3364,29 @@ LABEL_10:
   v35[1] = 3221225472;
   v35[2] = __68__IXPlaceholder_setIconResourcesPromise_withInfoPlistContent_error___block_invoke;
   v35[3] = &unk_1E85C5920;
-  v17 = v30;
+  v17 = promiseCopy;
   v36 = v17;
-  v37 = self;
+  selfCopy = self;
   v38 = &v39;
   v18 = [v16 synchronousRemoteObjectProxyWithErrorHandler:v35];
-  v19 = [(IXDataPromise *)self uniqueIdentifier];
-  v20 = [v17 uniqueIdentifier];
-  v21 = [(IXDataPromise *)v15 uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier2 = [v17 uniqueIdentifier];
+  uniqueIdentifier3 = [(IXDataPromise *)v15 uniqueIdentifier];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __68__IXPlaceholder_setIconResourcesPromise_withInfoPlistContent_error___block_invoke_259;
   v31[3] = &unk_1E85C5920;
   v32 = v17;
-  v33 = self;
+  selfCopy2 = self;
   v34 = &v39;
-  [v18 _remote_IXSPlaceholder:v19 setIconResourcesPromiseUUID:v20 withInfoPlistIconContentPromiseUUID:v21 completion:v31];
+  [v18 _remote_IXSPlaceholder:uniqueIdentifier setIconResourcesPromiseUUID:uniqueIdentifier2 withInfoPlistIconContentPromiseUUID:uniqueIdentifier3 completion:v31];
 
   v22 = v40[5] == 0;
 LABEL_11:
 
-  if (a5 && !v22)
+  if (error && !v22)
   {
-    *a5 = v40[5];
+    *error = v40[5];
   }
 
   _Block_object_dispose(&v39, 8);
@@ -3450,7 +3450,7 @@ void __68__IXPlaceholder_setIconResourcesPromise_withInfoPlistContent_error___bl
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)iconResourcesPromiseWithInfoPlistContent:(id *)a3 error:(id *)a4
+- (id)iconResourcesPromiseWithInfoPlistContent:(id *)content error:(id *)error
 {
   v27 = 0;
   v28 = &v27;
@@ -3477,7 +3477,7 @@ void __68__IXPlaceholder_setIconResourcesPromise_withInfoPlistContent_error___bl
   v14[3] = &unk_1E85C5560;
   v14[4] = &v27;
   v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v14];
-  v9 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__IXPlaceholder_iconResourcesPromiseWithInfoPlistContent_error___block_invoke_260;
@@ -3485,18 +3485,18 @@ void __68__IXPlaceholder_setIconResourcesPromise_withInfoPlistContent_error___bl
   v13[4] = &v27;
   v13[5] = &v21;
   v13[6] = &v15;
-  [v8 _remote_IXSPlaceholder:v9 getIconResourcesPromiseAndInfoPlistContentPromise:v13];
+  [v8 _remote_IXSPlaceholder:uniqueIdentifier getIconResourcesPromiseAndInfoPlistContentPromise:v13];
 
   v10 = v22[5];
-  if (a3 && v10)
+  if (content && v10)
   {
-    *a3 = v16[5];
+    *content = v16[5];
     v10 = v22[5];
   }
 
-  if (a4 && !v10)
+  if (error && !v10)
   {
-    *a4 = v28[5];
+    *error = v28[5];
     v10 = v22[5];
   }
 
@@ -3629,14 +3629,14 @@ LABEL_20:
   v8[3] = &unk_1E85C5998;
   v8[4] = self;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
-  v5 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__IXPlaceholder_hasIconResourcesPromise__block_invoke_268;
   v7[3] = &unk_1E85C59C0;
   v7[4] = self;
   v7[5] = &v9;
-  [v4 _remote_IXSPlaceholder:v5 hasIconResourcesPromise:v7];
+  [v4 _remote_IXSPlaceholder:uniqueIdentifier hasIconResourcesPromise:v7];
 
   LOBYTE(v3) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -3694,9 +3694,9 @@ void __40__IXPlaceholder_hasIconResourcesPromise__block_invoke_268(uint64_t a1, 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setInfoPlistLocalizations:(id)a3 error:(id *)a4
+- (BOOL)setInfoPlistLocalizations:(id)localizations error:(id *)error
 {
-  v6 = a3;
+  localizationsCopy = localizations;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -3707,7 +3707,7 @@ void __40__IXPlaceholder_hasIconResourcesPromise__block_invoke_268(uint64_t a1, 
   v8 = objc_opt_class();
   v9 = objc_opt_class();
   v10 = objc_opt_class();
-  if ((IXDictionaryContainsOnlyClassesCheckingValueTypes(v6, v7, v8, v9, v10) & 1) == 0)
+  if ((IXDictionaryContainsOnlyClassesCheckingValueTypes(localizationsCopy, v7, v8, v9, v10) & 1) == 0)
   {
     v23 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -3721,11 +3721,11 @@ void __40__IXPlaceholder_hasIconResourcesPromise__block_invoke_268(uint64_t a1, 
 
   v11 = [IXPromisedInMemoryDictionary alloc];
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(IXPlaceholder *)self bundleID];
-  v14 = [v12 stringWithFormat:@"Localizations for %@", v13];
-  v15 = [(IXDataPromise *)self creatorIdentifier];
-  v16 = [(IXOwnedDataPromise *)self location];
-  v17 = [(IXPromisedInMemoryDictionary *)v11 initWithName:v14 client:v15 dictionary:v6 location:v16];
+  bundleID = [(IXPlaceholder *)self bundleID];
+  v14 = [v12 stringWithFormat:@"Localizations for %@", bundleID];
+  creatorIdentifier = [(IXDataPromise *)self creatorIdentifier];
+  location = [(IXOwnedDataPromise *)self location];
+  v17 = [(IXPromisedInMemoryDictionary *)v11 initWithName:v14 client:creatorIdentifier dictionary:localizationsCopy location:location];
 
   if (!v17)
   {
@@ -3751,22 +3751,22 @@ LABEL_10:
   v31[4] = self;
   v31[5] = &v32;
   v19 = [v18 synchronousRemoteObjectProxyWithErrorHandler:v31];
-  v20 = [(IXDataPromise *)self uniqueIdentifier];
-  v21 = [(IXDataPromise *)v17 uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier2 = [(IXDataPromise *)v17 uniqueIdentifier];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __49__IXPlaceholder_setInfoPlistLocalizations_error___block_invoke_279;
   v30[3] = &unk_1E85C58D0;
   v30[4] = self;
   v30[5] = &v32;
-  [v19 _remote_IXSPlaceholder:v20 setLocalizationPromiseUUID:v21 completion:v30];
+  [v19 _remote_IXSPlaceholder:uniqueIdentifier setLocalizationPromiseUUID:uniqueIdentifier2 completion:v30];
 
   v22 = v33[5] == 0;
 LABEL_11:
 
-  if (a4 && !v22)
+  if (error && !v22)
   {
-    *a4 = v33[5];
+    *error = v33[5];
   }
 
   _Block_object_dispose(&v32, 8);
@@ -3824,7 +3824,7 @@ void __49__IXPlaceholder_setInfoPlistLocalizations_error___block_invoke_279(uint
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)infoPlistLocalizationsWithError:(id *)a3
+- (id)infoPlistLocalizationsWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -3846,7 +3846,7 @@ void __49__IXPlaceholder_setInfoPlistLocalizations_error___block_invoke_279(uint
   v12[4] = self;
   v12[5] = &v19;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__IXPlaceholder_infoPlistLocalizationsWithError___block_invoke_280;
@@ -3854,12 +3854,12 @@ void __49__IXPlaceholder_setInfoPlistLocalizations_error___block_invoke_279(uint
   v11[4] = self;
   v11[5] = &v19;
   v11[6] = &v13;
-  [v6 _remote_IXSPlaceholder:v7 getLocalizationDictionary:v11];
+  [v6 _remote_IXSPlaceholder:uniqueIdentifier getLocalizationDictionary:v11];
 
   v8 = v14[5];
-  if (a3 && !v8)
+  if (error && !v8)
   {
-    *a3 = v20[5];
+    *error = v20[5];
     v8 = v14[5];
   }
 
@@ -3942,9 +3942,9 @@ LABEL_8:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setEntitlementsPromise:(id)a3 error:(id *)a4
+- (BOOL)setEntitlementsPromise:(id)promise error:(id *)error
 {
-  v6 = a3;
+  promiseCopy = promise;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -3956,30 +3956,30 @@ LABEL_8:
   v21[1] = 3221225472;
   v21[2] = __46__IXPlaceholder_setEntitlementsPromise_error___block_invoke;
   v21[3] = &unk_1E85C5920;
-  v8 = v6;
+  v8 = promiseCopy;
   v22 = v8;
-  v23 = self;
+  selfCopy = self;
   v24 = &v25;
   v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v21];
-  v10 = [(IXDataPromise *)self uniqueIdentifier];
-  v11 = [v8 uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier2 = [v8 uniqueIdentifier];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __46__IXPlaceholder_setEntitlementsPromise_error___block_invoke_285;
   v17[3] = &unk_1E85C5920;
   v12 = v8;
   v18 = v12;
-  v19 = self;
+  selfCopy2 = self;
   v20 = &v25;
-  [v9 _remote_IXSPlaceholder:v10 setEntitlementsPromiseUUID:v11 completion:v17];
+  [v9 _remote_IXSPlaceholder:uniqueIdentifier setEntitlementsPromiseUUID:uniqueIdentifier2 completion:v17];
 
   v13 = v26;
-  if (a4)
+  if (error)
   {
     v14 = v26[5];
     if (v14)
     {
-      *a4 = v14;
+      *error = v14;
       v13 = v26;
     }
   }
@@ -4046,7 +4046,7 @@ void __46__IXPlaceholder_setEntitlementsPromise_error___block_invoke_285(void *a
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)entitlementsPromiseWithError:(id *)a3
+- (id)entitlementsPromiseWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -4067,19 +4067,19 @@ void __46__IXPlaceholder_setEntitlementsPromise_error___block_invoke_285(void *a
   v12[3] = &unk_1E85C5560;
   v12[4] = &v13;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __46__IXPlaceholder_entitlementsPromiseWithError___block_invoke_286;
   v11[3] = &unk_1E85C5970;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v6 _remote_IXSPlaceholder:v7 getEntitlementsPromise:v11];
+  [v6 _remote_IXSPlaceholder:uniqueIdentifier getEntitlementsPromise:v11];
 
   v8 = v20[5];
-  if (a3 && !v8)
+  if (error && !v8)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v8 = v20[5];
   }
 
@@ -4208,14 +4208,14 @@ LABEL_17:
   v8[3] = &unk_1E85C5998;
   v8[4] = self;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
-  v5 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __39__IXPlaceholder_hasEntitlementsPromise__block_invoke_290;
   v7[3] = &unk_1E85C59C0;
   v7[4] = self;
   v7[5] = &v9;
-  [v4 _remote_IXSPlaceholder:v5 hasEntitlementsPromise:v7];
+  [v4 _remote_IXSPlaceholder:uniqueIdentifier hasEntitlementsPromise:v7];
 
   LOBYTE(v3) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -4273,9 +4273,9 @@ void __39__IXPlaceholder_hasEntitlementsPromise__block_invoke_290(uint64_t a1, c
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setInfoPlistLoctablePromise:(id)a3 error:(id *)a4
+- (BOOL)setInfoPlistLoctablePromise:(id)promise error:(id *)error
 {
-  v6 = a3;
+  promiseCopy = promise;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -4287,30 +4287,30 @@ void __39__IXPlaceholder_hasEntitlementsPromise__block_invoke_290(uint64_t a1, c
   v21[1] = 3221225472;
   v21[2] = __51__IXPlaceholder_setInfoPlistLoctablePromise_error___block_invoke;
   v21[3] = &unk_1E85C5920;
-  v8 = v6;
+  v8 = promiseCopy;
   v22 = v8;
-  v23 = self;
+  selfCopy = self;
   v24 = &v25;
   v9 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v21];
-  v10 = [(IXDataPromise *)self uniqueIdentifier];
-  v11 = [v8 uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier2 = [v8 uniqueIdentifier];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __51__IXPlaceholder_setInfoPlistLoctablePromise_error___block_invoke_291;
   v17[3] = &unk_1E85C5920;
   v12 = v8;
   v18 = v12;
-  v19 = self;
+  selfCopy2 = self;
   v20 = &v25;
-  [v9 _remote_IXSPlaceholder:v10 setInfoPlistLoctablePromiseUUID:v11 completion:v17];
+  [v9 _remote_IXSPlaceholder:uniqueIdentifier setInfoPlistLoctablePromiseUUID:uniqueIdentifier2 completion:v17];
 
   v13 = v26;
-  if (a4)
+  if (error)
   {
     v14 = v26[5];
     if (v14)
     {
-      *a4 = v14;
+      *error = v14;
       v13 = v26;
     }
   }
@@ -4377,7 +4377,7 @@ void __51__IXPlaceholder_setInfoPlistLoctablePromise_error___block_invoke_291(vo
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)infoPlistLoctablePromiseWithError:(id *)a3
+- (id)infoPlistLoctablePromiseWithError:(id *)error
 {
   v19 = 0;
   v20 = &v19;
@@ -4398,19 +4398,19 @@ void __51__IXPlaceholder_setInfoPlistLoctablePromise_error___block_invoke_291(vo
   v12[3] = &unk_1E85C5560;
   v12[4] = &v13;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v12];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__IXPlaceholder_infoPlistLoctablePromiseWithError___block_invoke_292;
   v11[3] = &unk_1E85C5970;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v6 _remote_IXSPlaceholder:v7 getInfoPlistLoctablePromise:v11];
+  [v6 _remote_IXSPlaceholder:uniqueIdentifier getInfoPlistLoctablePromise:v11];
 
   v8 = v20[5];
-  if (a3 && !v8)
+  if (error && !v8)
   {
-    *a3 = v14[5];
+    *error = v14[5];
     v8 = v20[5];
   }
 
@@ -4539,14 +4539,14 @@ LABEL_17:
   v8[3] = &unk_1E85C5998;
   v8[4] = self;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
-  v5 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__IXPlaceholder_hasInfoPlistLoctablePromise__block_invoke_296;
   v7[3] = &unk_1E85C59C0;
   v7[4] = self;
   v7[5] = &v9;
-  [v4 _remote_IXSPlaceholder:v5 hasInfoPlistLoctablePromise:v7];
+  [v4 _remote_IXSPlaceholder:uniqueIdentifier hasInfoPlistLoctablePromise:v7];
 
   LOBYTE(v3) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -4604,10 +4604,10 @@ void __44__IXPlaceholder_hasInfoPlistLoctablePromise__block_invoke_296(uint64_t 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setAppExtensionPlaceholderPromises:(id)a3 error:(id *)a4
+- (BOOL)setAppExtensionPlaceholderPromises:(id)promises error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  promisesCopy = promises;
   v43 = 0;
   v44 = &v43;
   v45 = 0x3032000000;
@@ -4616,14 +4616,14 @@ void __44__IXPlaceholder_hasInfoPlistLoctablePromise__block_invoke_296(uint64_t 
   v48 = 0;
   v6 = objc_opt_new();
   v7 = MEMORY[0x1E696AEC0];
-  v8 = [(IXPlaceholder *)self bundleID];
-  v9 = [v7 stringWithFormat:@"%@.", v8];
+  bundleID = [(IXPlaceholder *)self bundleID];
+  v9 = [v7 stringWithFormat:@"%@.", bundleID];
 
   v41 = 0u;
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v10 = v5;
+  v10 = promisesCopy;
   v11 = [v10 countByEnumeratingWithState:&v39 objects:v50 count:16];
   if (v11)
   {
@@ -4638,18 +4638,18 @@ LABEL_3:
       }
 
       v14 = *(*(&v39 + 1) + 8 * v13);
-      v15 = [v14 bundleID];
-      v16 = [v15 hasPrefix:v9];
+      bundleID2 = [v14 bundleID];
+      v16 = [bundleID2 hasPrefix:v9];
 
       if ((v16 & 1) == 0)
       {
         break;
       }
 
-      v17 = [v14 seed];
-      v18 = [v17 isAppExtension];
+      seed = [v14 seed];
+      isAppExtension = [seed isAppExtension];
 
-      if ((v18 & 1) == 0)
+      if ((isAppExtension & 1) == 0)
       {
         v28 = IXGetLoggingHandle(kIXLoggingSubsystem);
         if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -4665,8 +4665,8 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v19 = [v14 uniqueIdentifier];
-      [v6 addObject:v19];
+      uniqueIdentifier = [v14 uniqueIdentifier];
+      [v6 addObject:uniqueIdentifier];
 
       if (v11 == ++v13)
       {
@@ -4683,12 +4683,12 @@ LABEL_17:
     v23 = IXGetLoggingHandle(kIXLoggingSubsystem);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v14 bundleID];
-      [(IXPlaceholder *)v24 setAppExtensionPlaceholderPromises:v9 error:v49];
+      bundleID3 = [v14 bundleID];
+      [(IXPlaceholder *)bundleID3 setAppExtensionPlaceholderPromises:v9 error:v49];
     }
 
-    v25 = [v14 bundleID];
-    v27 = _CreateError("[IXPlaceholder setAppExtensionPlaceholderPromises:error:]", 1702, @"IXErrorDomain", 8uLL, 0, 0, @"Attempted to set app extension placeholder promise with bundle ID %@ that does not match required prefix of %@ for parent", v26, v25);
+    bundleID4 = [v14 bundleID];
+    v27 = _CreateError("[IXPlaceholder setAppExtensionPlaceholderPromises:error:]", 1702, @"IXErrorDomain", 8uLL, 0, 0, @"Attempted to set app extension placeholder promise with bundle ID %@ that does not match required prefix of %@ for parent", v26, bundleID4);
 
     goto LABEL_17;
   }
@@ -4703,23 +4703,23 @@ LABEL_10:
   v38[4] = self;
   v38[5] = &v43;
   v21 = [v20 synchronousRemoteObjectProxyWithErrorHandler:v38];
-  v22 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier2 = [(IXDataPromise *)self uniqueIdentifier];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __58__IXPlaceholder_setAppExtensionPlaceholderPromises_error___block_invoke_306;
   v37[3] = &unk_1E85C58D0;
   v37[4] = self;
   v37[5] = &v43;
-  [v21 _remote_IXSPlaceholder:v22 setAppExtensionPlaceholderPromiseUUIDs:v6 completion:v37];
+  [v21 _remote_IXSPlaceholder:uniqueIdentifier2 setAppExtensionPlaceholderPromiseUUIDs:v6 completion:v37];
 
 LABEL_18:
   v31 = v44;
-  if (a4)
+  if (error)
   {
     v32 = v44[5];
     if (v32)
     {
-      *a4 = v32;
+      *error = v32;
       v31 = v44;
     }
   }
@@ -4781,7 +4781,7 @@ void __58__IXPlaceholder_setAppExtensionPlaceholderPromises_error___block_invoke
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)appExtensionPlaceholderPromisesWithError:(id *)a3
+- (id)appExtensionPlaceholderPromisesWithError:(id *)error
 {
   v50 = *MEMORY[0x1E69E9840];
   v42 = 0;
@@ -4803,21 +4803,21 @@ void __58__IXPlaceholder_setAppExtensionPlaceholderPromises_error___block_invoke
   v35[3] = &unk_1E85C5560;
   v35[4] = &v36;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v35];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __58__IXPlaceholder_appExtensionPlaceholderPromisesWithError___block_invoke_307;
   v34[3] = &unk_1E85C5588;
   v34[4] = &v36;
   v34[5] = &v42;
-  [v6 _remote_IXSPlaceholder:v7 getAppExtensionPlaceholderPromises:v34];
+  [v6 _remote_IXSPlaceholder:uniqueIdentifier getAppExtensionPlaceholderPromises:v34];
 
   if (v37[5])
   {
     v8 = 0;
 LABEL_21:
     v16 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -4825,7 +4825,7 @@ LABEL_21:
 LABEL_22:
     if (!v16)
     {
-      *a3 = v37[5];
+      *error = v37[5];
     }
 
     goto LABEL_24;
@@ -4854,18 +4854,18 @@ LABEL_22:
       }
 
       v13 = *(*(&v30 + 1) + 8 * i);
-      v14 = [v13 clientPromiseClass];
-      v15 = [[v14 alloc] initWithSeed:v13];
+      clientPromiseClass = [v13 clientPromiseClass];
+      v15 = [[clientPromiseClass alloc] initWithSeed:v13];
       if (!v15)
       {
         v17 = IXGetLoggingHandle(kIXLoggingSubsystem);
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v18 = NSStringFromClass(v14);
+          v18 = NSStringFromClass(clientPromiseClass);
           [(IXPlaceholder *)v18 appExtensionPlaceholderPromisesWithError:v13, v48];
         }
 
-        v19 = NSStringFromClass(v14);
+        v19 = NSStringFromClass(clientPromiseClass);
         v21 = _CreateError("[IXPlaceholder appExtensionPlaceholderPromisesWithError:]", 1773, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to initialize promise class %@ with seed %@", v20, v19);
         goto LABEL_20;
       }
@@ -4876,11 +4876,11 @@ LABEL_22:
         v22 = IXGetLoggingHandle(kIXLoggingSubsystem);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v23 = NSStringFromClass(v14);
+          v23 = NSStringFromClass(clientPromiseClass);
           [(IXPlaceholder *)v13 appExtensionPlaceholderPromisesWithError:v23, v48];
         }
 
-        v19 = NSStringFromClass(v14);
+        v19 = NSStringFromClass(clientPromiseClass);
         v21 = _CreateError("[IXPlaceholder appExtensionPlaceholderPromisesWithError:]", 1776, @"IXErrorDomain", 1uLL, 0, 0, @"Seed object %@ should have been for a placeholder promise but was instead for class %@", v24, v13);
 LABEL_20:
         v25 = v21;
@@ -4906,7 +4906,7 @@ LABEL_20:
 LABEL_12:
 
   v16 = [v8 copy];
-  if (a3)
+  if (error)
   {
     goto LABEL_22;
   }
@@ -4999,14 +4999,14 @@ LABEL_8:
   v8[3] = &unk_1E85C5998;
   v8[4] = self;
   v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
-  v5 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __45__IXPlaceholder_hasPlugInPlaceholderPromises__block_invoke_315;
   v7[3] = &unk_1E85C59C0;
   v7[4] = self;
   v7[5] = &v9;
-  [v4 _remote_IXSPlaceholder:v5 hasAppExtensionPlaceholderPromises:v7];
+  [v4 _remote_IXSPlaceholder:uniqueIdentifier hasAppExtensionPlaceholderPromises:v7];
 
   LOBYTE(v3) = *(v10 + 24);
   _Block_object_dispose(&v9, 8);
@@ -5064,7 +5064,7 @@ void __45__IXPlaceholder_hasPlugInPlaceholderPromises__block_invoke_315(uint64_t
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setConfigurationCompleteWithError:(id *)a3
+- (BOOL)setConfigurationCompleteWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -5080,22 +5080,22 @@ void __45__IXPlaceholder_hasPlugInPlaceholderPromises__block_invoke_315(uint64_t
   v13[4] = self;
   v13[5] = &v14;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v13];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__IXPlaceholder_setConfigurationCompleteWithError___block_invoke_316;
   v12[3] = &unk_1E85C58D0;
   v12[4] = self;
   v12[5] = &v14;
-  [v6 _remote_IXSPlaceholder:v7 setConfigurationCompleteWithCompletion:v12];
+  [v6 _remote_IXSPlaceholder:uniqueIdentifier setConfigurationCompleteWithCompletion:v12];
 
   v8 = v15;
-  if (a3)
+  if (error)
   {
     v9 = v15[5];
     if (v9)
     {
-      *a3 = v9;
+      *error = v9;
       v8 = v15;
     }
   }
@@ -5156,51 +5156,51 @@ void __51__IXPlaceholder_setConfigurationCompleteWithError___block_invoke_316(ui
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (IXPlaceholder)initWithSeed:(id)a3
+- (IXPlaceholder)initWithSeed:(id)seed
 {
   v4.receiver = self;
   v4.super_class = IXPlaceholder;
-  return [(IXOwnedDataPromise *)&v4 initWithSeed:a3];
+  return [(IXOwnedDataPromise *)&v4 initWithSeed:seed];
 }
 
 - (NSString)bundleName
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 bundleName];
+  seed = [(IXDataPromise *)self seed];
+  bundleName = [seed bundleName];
 
-  return v3;
+  return bundleName;
 }
 
 - (NSString)bundleDirectoryName
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 bundleDirectoryName];
+  seed = [(IXDataPromise *)self seed];
+  bundleDirectoryName = [seed bundleDirectoryName];
 
-  return v3;
+  return bundleDirectoryName;
 }
 
 - (NSString)bundleID
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 bundleID];
+  seed = [(IXDataPromise *)self seed];
+  bundleID = [seed bundleID];
 
-  return v3;
+  return bundleID;
 }
 
 - (unint64_t)placeholderType
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 placeholderType];
+  seed = [(IXDataPromise *)self seed];
+  placeholderType = [seed placeholderType];
 
-  return v3;
+  return placeholderType;
 }
 
 - (unint64_t)installType
 {
-  v2 = [(IXDataPromise *)self seed];
-  v3 = [v2 installType];
+  seed = [(IXDataPromise *)self seed];
+  installType = [seed installType];
 
-  return v3;
+  return installType;
 }
 
 - (MIStoreMetadata)metadata
@@ -5217,7 +5217,7 @@ void __51__IXPlaceholder_setConfigurationCompleteWithError___block_invoke_316(ui
       *buf = 136315650;
       v10 = "[IXPlaceholder metadata]";
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v4;
       _os_log_impl(&dword_1DA47A000, v5, OS_LOG_TYPE_DEFAULT, "%s: Failed to get metadata for %@: %@", buf, 0x20u);
@@ -5229,11 +5229,11 @@ void __51__IXPlaceholder_setConfigurationCompleteWithError___block_invoke_316(ui
   return v3;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
   v15 = *MEMORY[0x1E69E9840];
   v8 = 0;
-  v4 = [(IXPlaceholder *)self setMetadata:a3 error:&v8];
+  v4 = [(IXPlaceholder *)self setMetadata:metadata error:&v8];
   v5 = v8;
   if (!v4)
   {
@@ -5243,7 +5243,7 @@ void __51__IXPlaceholder_setConfigurationCompleteWithError___block_invoke_316(ui
       *buf = 136315650;
       v10 = "[IXPlaceholder setMetadata:]";
       v11 = 2112;
-      v12 = self;
+      selfCopy = self;
       v13 = 2112;
       v14 = v5;
       _os_log_impl(&dword_1DA47A000, v6, OS_LOG_TYPE_DEFAULT, "%s: Failed to set metadata for %@: %@", buf, 0x20u);
@@ -5253,25 +5253,25 @@ void __51__IXPlaceholder_setConfigurationCompleteWithError___block_invoke_316(ui
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setMetadata:(id)a3 error:(id *)a4
+- (BOOL)setMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  metadataCopy = metadata;
+  v7 = metadataCopy;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__7;
   v31 = __Block_byref_object_dispose__7;
   v32 = 0;
-  if (!v6)
+  if (!metadataCopy)
   {
-    v12 = 0;
+    uniqueIdentifier = 0;
     v11 = 0;
     goto LABEL_6;
   }
 
   obj = 0;
-  v8 = IXEncodeRootObject(v6, &obj);
+  v8 = IXEncodeRootObject(metadataCopy, &obj);
   objc_storeStrong(&v32, obj);
   if (!v8)
   {
@@ -5282,8 +5282,8 @@ LABEL_12:
   }
 
   v9 = [IXPromisedInMemoryData alloc];
-  v10 = [(IXOwnedDataPromise *)self location];
-  v11 = [(IXPromisedInMemoryData *)v9 initWithName:@"MIStoreMetadata data" client:15 data:v8 location:v10];
+  location = [(IXOwnedDataPromise *)self location];
+  v11 = [(IXPromisedInMemoryData *)v9 initWithName:@"MIStoreMetadata data" client:15 data:v8 location:location];
 
   if (!v11)
   {
@@ -5300,7 +5300,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v12 = [(IXDataPromise *)v11 uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)v11 uniqueIdentifier];
 LABEL_6:
   v13 = +[IXServerConnection sharedConnection];
   v25[0] = MEMORY[0x1E69E9820];
@@ -5310,14 +5310,14 @@ LABEL_6:
   v25[4] = self;
   v25[5] = &v27;
   v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v25];
-  v15 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier2 = [(IXDataPromise *)self uniqueIdentifier];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __35__IXPlaceholder_setMetadata_error___block_invoke_326;
   v24[3] = &unk_1E85C58D0;
   v24[4] = self;
   v24[5] = &v27;
-  [v14 _remote_IXSPlaceholder:v15 setMetadataPromiseUUID:v12 completion:v24];
+  [v14 _remote_IXSPlaceholder:uniqueIdentifier2 setMetadataPromiseUUID:uniqueIdentifier completion:v24];
 
   if (v28[5] && v11)
   {
@@ -5326,9 +5326,9 @@ LABEL_6:
 
 LABEL_13:
   v20 = v28[5];
-  if (a4 && v20)
+  if (error && v20)
   {
-    *a4 = v20;
+    *error = v20;
     v20 = v28[5];
   }
 
@@ -5389,7 +5389,7 @@ void __35__IXPlaceholder_setMetadata_error___block_invoke_326(uint64_t a1, void 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)metadataWithError:(id *)a3
+- (id)metadataWithError:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -5410,14 +5410,14 @@ void __35__IXPlaceholder_setMetadata_error___block_invoke_326(uint64_t a1, void 
   v16[3] = &unk_1E85C5560;
   v16[4] = &v17;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v16];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __35__IXPlaceholder_metadataWithError___block_invoke_2;
   v15[3] = &unk_1E85C6328;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v6 _remote_IXSPlaceholder:v7 getMetadataWithCompletion:v15];
+  [v6 _remote_IXSPlaceholder:uniqueIdentifier getMetadataWithCompletion:v15];
 
   v9 = v24[5];
   if (!v9)
@@ -5425,7 +5425,7 @@ void __35__IXPlaceholder_setMetadata_error___block_invoke_326(uint64_t a1, void 
     if (v18[5])
     {
       v9 = 0;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -5438,7 +5438,7 @@ void __35__IXPlaceholder_setMetadata_error___block_invoke_326(uint64_t a1, void 
       v18[5] = v10;
 
       v9 = v24[5];
-      if (!a3)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -5446,7 +5446,7 @@ void __35__IXPlaceholder_setMetadata_error___block_invoke_326(uint64_t a1, void 
 
     if (!v9)
     {
-      *a3 = v18[5];
+      *error = v18[5];
       v9 = v24[5];
     }
   }
@@ -5474,20 +5474,20 @@ void __35__IXPlaceholder_metadataWithError___block_invoke_2(uint64_t a1, void *a
   *(v9 + 40) = v6;
 }
 
-- (BOOL)setSinfData:(id)a3 error:(id *)a4
+- (BOOL)setSinfData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__7;
   v28 = __Block_byref_object_dispose__7;
   v29 = 0;
-  if (v6)
+  if (dataCopy)
   {
     v7 = [IXPromisedInMemoryData alloc];
-    v8 = [(IXOwnedDataPromise *)self location];
-    v9 = [(IXPromisedInMemoryData *)v7 initWithName:@"Placeholder Sinf Data" client:15 data:v6 location:v8];
+    location = [(IXOwnedDataPromise *)self location];
+    v9 = [(IXPromisedInMemoryData *)v7 initWithName:@"Placeholder Sinf Data" client:15 data:dataCopy location:location];
 
     if (!v9)
     {
@@ -5511,7 +5511,7 @@ void __35__IXPlaceholder_metadataWithError___block_invoke_2(uint64_t a1, void *a
     v9 = 0;
   }
 
-  v14 = [(IXDataPromise *)v9 uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)v9 uniqueIdentifier];
   v15 = +[IXServerConnection sharedConnection];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
@@ -5520,14 +5520,14 @@ void __35__IXPlaceholder_metadataWithError___block_invoke_2(uint64_t a1, void *a
   v23[4] = self;
   v23[5] = &v24;
   v16 = [v15 synchronousRemoteObjectProxyWithErrorHandler:v23];
-  v17 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier2 = [(IXDataPromise *)self uniqueIdentifier];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __35__IXPlaceholder_setSinfData_error___block_invoke_337;
   v22[3] = &unk_1E85C58D0;
   v22[4] = self;
   v22[5] = &v24;
-  [v16 _remote_IXSPlaceholder:v17 setSinfPromiseUUID:v14 completion:v22];
+  [v16 _remote_IXSPlaceholder:uniqueIdentifier2 setSinfPromiseUUID:uniqueIdentifier completion:v22];
 
   if (v9)
   {
@@ -5540,9 +5540,9 @@ void __35__IXPlaceholder_metadataWithError___block_invoke_2(uint64_t a1, void *a
 
 LABEL_10:
   v19 = v25[5];
-  if (a4 && v19)
+  if (error && v19)
   {
-    *a4 = v19;
+    *error = v19;
     v19 = v25[5];
   }
 
@@ -5603,7 +5603,7 @@ void __35__IXPlaceholder_setSinfData_error___block_invoke_337(uint64_t a1, void 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sinfDataWithError:(id *)a3
+- (id)sinfDataWithError:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -5624,14 +5624,14 @@ void __35__IXPlaceholder_setSinfData_error___block_invoke_337(uint64_t a1, void 
   v16[3] = &unk_1E85C5560;
   v16[4] = &v17;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v16];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __35__IXPlaceholder_sinfDataWithError___block_invoke_2;
   v15[3] = &unk_1E85C6350;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v6 _remote_IXSPlaceholder:v7 getSinfDataWithCompletion:v15];
+  [v6 _remote_IXSPlaceholder:uniqueIdentifier getSinfDataWithCompletion:v15];
 
   v9 = v24[5];
   if (!v9)
@@ -5639,7 +5639,7 @@ void __35__IXPlaceholder_setSinfData_error___block_invoke_337(uint64_t a1, void 
     if (v18[5])
     {
       v9 = 0;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -5652,7 +5652,7 @@ void __35__IXPlaceholder_setSinfData_error___block_invoke_337(uint64_t a1, void 
       v18[5] = v10;
 
       v9 = v24[5];
-      if (!a3)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -5660,7 +5660,7 @@ void __35__IXPlaceholder_setSinfData_error___block_invoke_337(uint64_t a1, void 
 
     if (!v9)
     {
-      *a3 = v18[5];
+      *error = v18[5];
       v9 = v24[5];
     }
   }
@@ -5688,7 +5688,7 @@ void __35__IXPlaceholder_sinfDataWithError___block_invoke_2(uint64_t a1, void *a
   *(v9 + 40) = v6;
 }
 
-- (BOOL)launchProhibited:(BOOL *)a3 error:(id *)a4
+- (BOOL)launchProhibited:(BOOL *)prohibited error:(id *)error
 {
   v15 = 0;
   v16 = &v15;
@@ -5703,19 +5703,19 @@ void __35__IXPlaceholder_sinfDataWithError___block_invoke_2(uint64_t a1, void *a
   v14[3] = &unk_1E85C5560;
   v14[4] = &v15;
   v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v14];
-  v9 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __40__IXPlaceholder_launchProhibited_error___block_invoke_2;
   v13[3] = &unk_1E85C59E8;
   v13[4] = &v15;
-  v13[5] = a3;
-  [v8 _remote_IXSPlaceholder:v9 getLaunchProhibitedWithCompletion:v13];
+  v13[5] = prohibited;
+  [v8 _remote_IXSPlaceholder:uniqueIdentifier getLaunchProhibitedWithCompletion:v13];
 
   v10 = v16[5];
-  if (a4 && v10)
+  if (error && v10)
   {
-    *a4 = v10;
+    *error = v10;
     v10 = v16[5];
   }
 
@@ -5744,23 +5744,23 @@ uint64_t __40__IXPlaceholder_launchProhibited_error___block_invoke_2(uint64_t a1
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)setPlaceholderAttributes:(id)a3 error:(id *)a4
+- (BOOL)setPlaceholderAttributes:(id)attributes error:(id *)error
 {
-  v6 = a3;
+  attributesCopy = attributes;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
   v47 = __Block_byref_object_copy__7;
   v48 = __Block_byref_object_dispose__7;
   v49 = 0;
-  v7 = [(IXPlaceholder *)self placeholderType];
-  v8 = v7;
-  switch(v7)
+  placeholderType = [(IXPlaceholder *)self placeholderType];
+  v8 = placeholderType;
+  switch(placeholderType)
   {
     case 1uLL:
-      v20 = [v6 extensionDictionary];
+      extensionDictionary = [attributesCopy extensionDictionary];
 
-      if (v20)
+      if (extensionDictionary)
       {
         v21 = IXGetLoggingHandle(kIXLoggingSubsystem);
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -5772,9 +5772,9 @@ uint64_t __40__IXPlaceholder_launchProhibited_error___block_invoke_2(uint64_t a1
         goto LABEL_34;
       }
 
-      v25 = [v6 exAppExtensionAttributes];
+      exAppExtensionAttributes = [attributesCopy exAppExtensionAttributes];
 
-      if (v25)
+      if (exAppExtensionAttributes)
       {
         v26 = IXGetLoggingHandle(kIXLoggingSubsystem);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -5788,9 +5788,9 @@ uint64_t __40__IXPlaceholder_launchProhibited_error___block_invoke_2(uint64_t a1
 
       goto LABEL_26;
     case 2uLL:
-      v15 = [v6 extensionDictionary];
+      extensionDictionary2 = [attributesCopy extensionDictionary];
 
-      if (!v15)
+      if (!extensionDictionary2)
       {
         v23 = IXGetLoggingHandle(kIXLoggingSubsystem);
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -5802,8 +5802,8 @@ uint64_t __40__IXPlaceholder_launchProhibited_error___block_invoke_2(uint64_t a1
         goto LABEL_34;
       }
 
-      v16 = [v6 extensionDictionary];
-      v17 = [v16 objectForKeyedSubscript:@"NSExtensionPointIdentifier"];
+      extensionDictionary3 = [attributesCopy extensionDictionary];
+      v17 = [extensionDictionary3 objectForKeyedSubscript:@"NSExtensionPointIdentifier"];
 
       if (!v17)
       {
@@ -5819,9 +5819,9 @@ uint64_t __40__IXPlaceholder_launchProhibited_error___block_invoke_2(uint64_t a1
 
       goto LABEL_26;
     case 3uLL:
-      v9 = [v6 exAppExtensionAttributes];
+      exAppExtensionAttributes2 = [attributesCopy exAppExtensionAttributes];
 
-      if (!v9)
+      if (!exAppExtensionAttributes2)
       {
         v30 = IXGetLoggingHandle(kIXLoggingSubsystem);
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -5833,8 +5833,8 @@ uint64_t __40__IXPlaceholder_launchProhibited_error___block_invoke_2(uint64_t a1
         goto LABEL_34;
       }
 
-      v10 = [v6 exAppExtensionAttributes];
-      v11 = [v10 objectForKeyedSubscript:@"EXExtensionPointIdentifier"];
+      exAppExtensionAttributes3 = [attributesCopy exAppExtensionAttributes];
+      v11 = [exAppExtensionAttributes3 objectForKeyedSubscript:@"EXExtensionPointIdentifier"];
 
       if (!v11)
       {
@@ -5856,7 +5856,7 @@ LABEL_37:
 LABEL_26:
       if (IXIsAppExtensionForPlaceholderType(v8))
       {
-        if ([v6 launchProhibited])
+        if ([attributesCopy launchProhibited])
         {
           v28 = IXGetLoggingHandle(kIXLoggingSubsystem);
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -5868,9 +5868,9 @@ LABEL_26:
           goto LABEL_34;
         }
 
-        v33 = [v6 bundleVersion];
+        bundleVersion = [attributesCopy bundleVersion];
 
-        if (!v33)
+        if (!bundleVersion)
         {
           v39 = IXGetLoggingHandle(kIXLoggingSubsystem);
           if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -5890,23 +5890,23 @@ LABEL_26:
       v43[3] = &unk_1E85C5560;
       v43[4] = &v44;
       v34 = [v32 synchronousRemoteObjectProxyWithErrorHandler:v43];
-      v35 = [(IXDataPromise *)self uniqueIdentifier];
+      uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
       v42[0] = MEMORY[0x1E69E9820];
       v42[1] = 3221225472;
       v42[2] = __48__IXPlaceholder_setPlaceholderAttributes_error___block_invoke_2;
       v42[3] = &unk_1E85C5560;
       v42[4] = &v44;
-      [v34 _remote_IXSPlaceholder:v35 setAttributes:v6 completion:v42];
+      [v34 _remote_IXSPlaceholder:uniqueIdentifier setAttributes:attributesCopy completion:v42];
 
       goto LABEL_37;
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Unknown placeholder type: %lu", v7}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Unknown placeholder type: %lu", placeholderType}];
 LABEL_38:
   v36 = v45[5];
-  if (a4 && v36)
+  if (error && v36)
   {
-    *a4 = v36;
+    *error = v36;
     v36 = v45[5];
   }
 
@@ -5916,7 +5916,7 @@ LABEL_38:
   return v37;
 }
 
-- (id)placeholderAttributesWithError:(id *)a3
+- (id)placeholderAttributesWithError:(id *)error
 {
   v23 = 0;
   v24 = &v23;
@@ -5937,14 +5937,14 @@ LABEL_38:
   v16[3] = &unk_1E85C5560;
   v16[4] = &v17;
   v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v16];
-  v7 = [(IXDataPromise *)self uniqueIdentifier];
+  uniqueIdentifier = [(IXDataPromise *)self uniqueIdentifier];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __48__IXPlaceholder_placeholderAttributesWithError___block_invoke_2;
   v15[3] = &unk_1E85C6378;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v6 _remote_IXSPlaceholder:v7 getAttributesWithCompletion:v15];
+  [v6 _remote_IXSPlaceholder:uniqueIdentifier getAttributesWithCompletion:v15];
 
   v9 = v24[5];
   if (!v9)
@@ -5952,7 +5952,7 @@ LABEL_38:
     if (v18[5])
     {
       v9 = 0;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -5965,7 +5965,7 @@ LABEL_38:
       v18[5] = v10;
 
       v9 = v24[5];
-      if (!a3)
+      if (!error)
       {
         goto LABEL_8;
       }
@@ -5973,7 +5973,7 @@ LABEL_38:
 
     if (!v9)
     {
-      *a3 = v18[5];
+      *error = v18[5];
       v9 = v24[5];
     }
   }

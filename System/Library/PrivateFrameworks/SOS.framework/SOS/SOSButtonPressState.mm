@@ -1,56 +1,56 @@
 @interface SOSButtonPressState
-- (SOSButtonPressState)initWithCoder:(id)a3;
-- (SOSButtonPressState)initWithVolumeUpPressed:(BOOL)a3 Timestamp:(double)a4 VolumeDownPressed:(BOOL)a5 Timestamp:(double)a6 LockPressedTimestamp:(double)a7;
+- (SOSButtonPressState)initWithCoder:(id)coder;
+- (SOSButtonPressState)initWithVolumeUpPressed:(BOOL)pressed Timestamp:(double)timestamp VolumeDownPressed:(BOOL)downPressed Timestamp:(double)a6 LockPressedTimestamp:(double)pressedTimestamp;
 - (double)getButtonPressGap;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SOSButtonPressState
 
-- (SOSButtonPressState)initWithVolumeUpPressed:(BOOL)a3 Timestamp:(double)a4 VolumeDownPressed:(BOOL)a5 Timestamp:(double)a6 LockPressedTimestamp:(double)a7
+- (SOSButtonPressState)initWithVolumeUpPressed:(BOOL)pressed Timestamp:(double)timestamp VolumeDownPressed:(BOOL)downPressed Timestamp:(double)a6 LockPressedTimestamp:(double)pressedTimestamp
 {
   v13.receiver = self;
   v13.super_class = SOSButtonPressState;
   result = [(SOSButtonPressState *)&v13 init];
   if (result)
   {
-    result->_volumeUpPressed = a3;
-    result->_volumeDownPressed = a5;
-    result->_volumeUpPressedMCTTimestamp = a4;
+    result->_volumeUpPressed = pressed;
+    result->_volumeDownPressed = downPressed;
+    result->_volumeUpPressedMCTTimestamp = timestamp;
     result->_volumeDownPressedMCTTimestamp = a6;
-    result->_lockPressedMCTTimestamp = a7;
+    result->_lockPressedMCTTimestamp = pressedTimestamp;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   volumeUpPressed = self->_volumeUpPressed;
-  v5 = a3;
-  [v5 encodeBool:volumeUpPressed forKey:@"volumeUpPressed"];
-  [v5 encodeBool:self->_volumeDownPressed forKey:@"volumeDownPressed"];
-  [v5 encodeDouble:@"volumeUpPressedMCTTimestamp" forKey:self->_volumeUpPressedMCTTimestamp];
-  [v5 encodeDouble:@"volumeDownPressedMCTTimestamp" forKey:self->_volumeDownPressedMCTTimestamp];
-  [v5 encodeDouble:@"lockPressedMCTTimestamp" forKey:self->_lockPressedMCTTimestamp];
+  coderCopy = coder;
+  [coderCopy encodeBool:volumeUpPressed forKey:@"volumeUpPressed"];
+  [coderCopy encodeBool:self->_volumeDownPressed forKey:@"volumeDownPressed"];
+  [coderCopy encodeDouble:@"volumeUpPressedMCTTimestamp" forKey:self->_volumeUpPressedMCTTimestamp];
+  [coderCopy encodeDouble:@"volumeDownPressedMCTTimestamp" forKey:self->_volumeDownPressedMCTTimestamp];
+  [coderCopy encodeDouble:@"lockPressedMCTTimestamp" forKey:self->_lockPressedMCTTimestamp];
 }
 
-- (SOSButtonPressState)initWithCoder:(id)a3
+- (SOSButtonPressState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SOSButtonPressState;
   v5 = [(SOSButtonPressState *)&v10 init];
   if (v5)
   {
-    v5->_volumeUpPressed = [v4 decodeBoolForKey:@"volumeUpPressed"];
-    v5->_volumeDownPressed = [v4 decodeBoolForKey:@"volumeDownPressed"];
-    [v4 decodeDoubleForKey:@"volumeUpPressedMCTTimestamp"];
+    v5->_volumeUpPressed = [coderCopy decodeBoolForKey:@"volumeUpPressed"];
+    v5->_volumeDownPressed = [coderCopy decodeBoolForKey:@"volumeDownPressed"];
+    [coderCopy decodeDoubleForKey:@"volumeUpPressedMCTTimestamp"];
     v5->_volumeUpPressedMCTTimestamp = v6;
-    [v4 decodeDoubleForKey:@"volumeDownPressedMCTTimestamp"];
+    [coderCopy decodeDoubleForKey:@"volumeDownPressedMCTTimestamp"];
     v5->_volumeDownPressedMCTTimestamp = v7;
-    [v4 decodeDoubleForKey:@"lockPressedMCTTimestamp"];
+    [coderCopy decodeDoubleForKey:@"lockPressedMCTTimestamp"];
     v5->_lockPressedMCTTimestamp = v8;
   }
 
@@ -60,14 +60,14 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SOSButtonPressState *)self volumeUpPressed];
+  volumeUpPressed = [(SOSButtonPressState *)self volumeUpPressed];
   [(SOSButtonPressState *)self volumeUpPressedMCTTimestamp];
   v6 = v5;
-  v7 = [(SOSButtonPressState *)self volumeDownPressed];
+  volumeDownPressed = [(SOSButtonPressState *)self volumeDownPressed];
   [(SOSButtonPressState *)self volumeDownPressedMCTTimestamp];
   v9 = v8;
   [(SOSButtonPressState *)self lockPressedMCTTimestamp];
-  return [v3 stringWithFormat:@"SOSButtonPressState, volumeUpPressed, %d, volumeUpPressedMCTTimestamp, %f, volumeDownPressed, %d, volumeDownPressedMCTTimestamp, %f, lockPressedMCTTimestamp, %f", v4, v6, v7, v9, v10];
+  return [v3 stringWithFormat:@"SOSButtonPressState, volumeUpPressed, %d, volumeUpPressedMCTTimestamp, %f, volumeDownPressed, %d, volumeDownPressedMCTTimestamp, %f, lockPressedMCTTimestamp, %f", volumeUpPressed, v6, volumeDownPressed, v9, v10];
 }
 
 - (double)getButtonPressGap

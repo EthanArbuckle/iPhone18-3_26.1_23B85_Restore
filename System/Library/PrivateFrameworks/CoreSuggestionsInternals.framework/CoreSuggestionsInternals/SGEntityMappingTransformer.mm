@@ -1,11 +1,11 @@
 @interface SGEntityMappingTransformer
-+ (id)withEmailMapping:(id)a3 linkMapping:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEntityMappingTransformer:(id)a3;
-- (SGEntityMappingTransformer)initWithEmailMapping:(id)a3 linkMapping:(id)a4;
-- (SGEntityMappingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5;
-- (id)toPlistWithChunks:(id)a3;
-- (id)transform:(id)a3;
++ (id)withEmailMapping:(id)mapping linkMapping:(id)linkMapping;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEntityMappingTransformer:(id)transformer;
+- (SGEntityMappingTransformer)initWithEmailMapping:(id)mapping linkMapping:(id)linkMapping;
+- (SGEntityMappingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context;
+- (id)toPlistWithChunks:(id)chunks;
+- (id)transform:(id)transform;
 - (unint64_t)hash;
 @end
 
@@ -13,45 +13,45 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SGEntityMappingTransformer *)self emailMapping];
-  v4 = [v3 hash];
+  emailMapping = [(SGEntityMappingTransformer *)self emailMapping];
+  v4 = [emailMapping hash];
 
-  v5 = [(SGEntityMappingTransformer *)self linkMapping];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  linkMapping = [(SGEntityMappingTransformer *)self linkMapping];
+  v6 = [linkMapping hash] - v4 + 32 * v4;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGEntityMappingTransformer *)self isEqualToEntityMappingTransformer:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGEntityMappingTransformer *)self isEqualToEntityMappingTransformer:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToEntityMappingTransformer:(id)a3
+- (BOOL)isEqualToEntityMappingTransformer:(id)transformer
 {
-  v6 = a3;
-  if (v6)
+  transformerCopy = transformer;
+  if (transformerCopy)
   {
-    v7 = [(SGEntityMappingTransformer *)self emailMapping];
-    v8 = [v6 emailMapping];
-    if (v7 == v8 || (-[SGEntityMappingTransformer emailMapping](self, "emailMapping"), v3 = objc_claimAutoreleasedReturnValue(), [v6 emailMapping], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
+    emailMapping = [(SGEntityMappingTransformer *)self emailMapping];
+    emailMapping2 = [transformerCopy emailMapping];
+    if (emailMapping == emailMapping2 || (-[SGEntityMappingTransformer emailMapping](self, "emailMapping"), v3 = objc_claimAutoreleasedReturnValue(), [transformerCopy emailMapping], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqual:", v4)))
     {
-      v10 = [(SGEntityMappingTransformer *)self linkMapping];
-      v11 = [v6 linkMapping];
-      v12 = v11;
-      if (v10 == v11)
+      linkMapping = [(SGEntityMappingTransformer *)self linkMapping];
+      linkMapping2 = [transformerCopy linkMapping];
+      v12 = linkMapping2;
+      if (linkMapping == linkMapping2)
       {
 
         v9 = 1;
@@ -59,12 +59,12 @@
 
       else
       {
-        v13 = [(SGEntityMappingTransformer *)self linkMapping];
-        v14 = [v6 linkMapping];
-        v9 = [v13 isEqual:v14];
+        linkMapping3 = [(SGEntityMappingTransformer *)self linkMapping];
+        linkMapping4 = [transformerCopy linkMapping];
+        v9 = [linkMapping3 isEqual:linkMapping4];
       }
 
-      if (v7 == v8)
+      if (emailMapping == emailMapping2)
       {
         goto LABEL_11;
       }
@@ -85,25 +85,25 @@ LABEL_12:
   return v9;
 }
 
-- (SGEntityMappingTransformer)initWithPlist:(id)a3 chunks:(id)a4 context:(id)a5
+- (SGEntityMappingTransformer)initWithPlist:(id)plist chunks:(id)chunks context:(id)context
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"EMAIL_MAPPING"];
-  v8 = [v6 objectForKeyedSubscript:@"LINK_MAPPING"];
+  plistCopy = plist;
+  v7 = [plistCopy objectForKeyedSubscript:@"EMAIL_MAPPING"];
+  v8 = [plistCopy objectForKeyedSubscript:@"LINK_MAPPING"];
 
   v9 = [(SGEntityMappingTransformer *)self initWithEmailMapping:v7 linkMapping:v8];
   return v9;
 }
 
-- (id)toPlistWithChunks:(id)a3
+- (id)toPlistWithChunks:(id)chunks
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v9[0] = @"EMAIL_MAPPING";
-  v4 = [(SGEntityMappingTransformer *)self emailMapping];
+  emailMapping = [(SGEntityMappingTransformer *)self emailMapping];
   v9[1] = @"LINK_MAPPING";
-  v10[0] = v4;
-  v5 = [(SGEntityMappingTransformer *)self linkMapping];
-  v10[1] = v5;
+  v10[0] = emailMapping;
+  linkMapping = [(SGEntityMappingTransformer *)self linkMapping];
+  v10[1] = linkMapping;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:2];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -111,9 +111,9 @@ LABEL_12:
   return v6;
 }
 
-- (id)transform:(id)a3
+- (id)transform:(id)transform
 {
-  v4 = a3;
+  transformCopy = transform;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -131,11 +131,11 @@ LABEL_12:
   block[1] = 3221225472;
   block[2] = __40__SGEntityMappingTransformer_transform___block_invoke;
   block[3] = &unk_278956130;
-  v13 = v4;
-  v14 = self;
+  v13 = transformCopy;
+  selfCopy = self;
   v7 = v5;
   v15 = v7;
-  v8 = v4;
+  v8 = transformCopy;
   dispatch_sync(v6, block);
   v9 = v15;
   v10 = v7;
@@ -255,11 +255,11 @@ void __40__SGEntityMappingTransformer_transform___block_invoke(id *a1)
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (SGEntityMappingTransformer)initWithEmailMapping:(id)a3 linkMapping:(id)a4
+- (SGEntityMappingTransformer)initWithEmailMapping:(id)mapping linkMapping:(id)linkMapping
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  mappingCopy = mapping;
+  linkMappingCopy = linkMapping;
   v16.receiver = self;
   v16.super_class = SGEntityMappingTransformer;
   v8 = [(SGEntityMappingTransformer *)&v16 init];
@@ -275,26 +275,26 @@ void __40__SGEntityMappingTransformer_transform___block_invoke(id *a1)
       v11 = sgLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v14 = [v10 localizedDescription];
+        localizedDescription = [v10 localizedDescription];
         *buf = 138412290;
-        v18 = v14;
+        v18 = localizedDescription;
         _os_log_error_impl(&dword_231E60000, v11, OS_LOG_TYPE_ERROR, "Error constructing data detector for featurizing: %@", buf, 0xCu);
       }
     }
 
-    [(SGEntityMappingTransformer *)v8 setEmailMapping:v6];
-    [(SGEntityMappingTransformer *)v8 setLinkMapping:v7];
+    [(SGEntityMappingTransformer *)v8 setEmailMapping:mappingCopy];
+    [(SGEntityMappingTransformer *)v8 setLinkMapping:linkMappingCopy];
   }
 
   v12 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-+ (id)withEmailMapping:(id)a3 linkMapping:(id)a4
++ (id)withEmailMapping:(id)mapping linkMapping:(id)linkMapping
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SGEntityMappingTransformer alloc] initWithEmailMapping:v6 linkMapping:v5];
+  linkMappingCopy = linkMapping;
+  mappingCopy = mapping;
+  v7 = [[SGEntityMappingTransformer alloc] initWithEmailMapping:mappingCopy linkMapping:linkMappingCopy];
 
   return v7;
 }

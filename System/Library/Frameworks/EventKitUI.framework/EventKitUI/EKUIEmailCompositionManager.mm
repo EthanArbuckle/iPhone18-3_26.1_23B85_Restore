@@ -1,41 +1,41 @@
 @interface EKUIEmailCompositionManager
-+ (BOOL)canShowViewControllerForEvent:(id)a3 withParticipantRecipients:(id)a4;
-+ (id)_recipientEmailAddressesToDisplayNames:(id)a3 withParticipantRecipients:(id)a4;
-- (EKUIEmailCompositionManager)initWithEvent:(id)a3 participantRecipients:(id)a4 subjectPrefix:(id)a5 bodyPrefix:(id)a6;
-- (id)_htmlBodyForMailMessageWithNames:(id)a3;
++ (BOOL)canShowViewControllerForEvent:(id)event withParticipantRecipients:(id)recipients;
++ (id)_recipientEmailAddressesToDisplayNames:(id)names withParticipantRecipients:(id)recipients;
+- (EKUIEmailCompositionManager)initWithEvent:(id)event participantRecipients:(id)recipients subjectPrefix:(id)prefix bodyPrefix:(id)bodyPrefix;
+- (id)_htmlBodyForMailMessageWithNames:(id)names;
 - (void)initViewController;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
 @end
 
 @implementation EKUIEmailCompositionManager
 
-- (EKUIEmailCompositionManager)initWithEvent:(id)a3 participantRecipients:(id)a4 subjectPrefix:(id)a5 bodyPrefix:(id)a6
+- (EKUIEmailCompositionManager)initWithEvent:(id)event participantRecipients:(id)recipients subjectPrefix:(id)prefix bodyPrefix:(id)bodyPrefix
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  eventCopy = event;
+  recipientsCopy = recipients;
+  prefixCopy = prefix;
+  bodyPrefixCopy = bodyPrefix;
   v18.receiver = self;
   v18.super_class = EKUIEmailCompositionManager;
   v15 = [(EKUIEmailCompositionManager *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_event, a3);
-    objc_storeStrong(&v16->_participantRecipients, a4);
-    objc_storeStrong(&v16->_subjectPrefix, a5);
-    objc_storeStrong(&v16->_bodyPrefix, a6);
+    objc_storeStrong(&v15->_event, event);
+    objc_storeStrong(&v16->_participantRecipients, recipients);
+    objc_storeStrong(&v16->_subjectPrefix, prefix);
+    objc_storeStrong(&v16->_bodyPrefix, bodyPrefix);
     [(EKUIEmailCompositionManager *)v16 initViewController];
   }
 
   return v16;
 }
 
-+ (BOOL)canShowViewControllerForEvent:(id)a3 withParticipantRecipients:(id)a4
++ (BOOL)canShowViewControllerForEvent:(id)event withParticipantRecipients:(id)recipients
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  eventCopy = event;
+  recipientsCopy = recipients;
+  if (!eventCopy)
   {
     v14 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEBUG))
@@ -52,10 +52,10 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [MEMORY[0x1E6993370] sharedInstance];
-  v8 = [v5 calendar];
-  v9 = [v8 source];
-  v10 = [v7 sourceIsManaged:v9];
+  mEMORY[0x1E6993370] = [MEMORY[0x1E6993370] sharedInstance];
+  calendar = [eventCopy calendar];
+  source = [calendar source];
+  v10 = [mEMORY[0x1E6993370] sourceIsManaged:source];
 
   if (v10)
   {
@@ -81,7 +81,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v12 = [objc_opt_class() _recipientEmailAddressesToDisplayNames:v5 withParticipantRecipients:v6];
+  v12 = [objc_opt_class() _recipientEmailAddressesToDisplayNames:eventCopy withParticipantRecipients:recipientsCopy];
   v13 = [v12 count] != 0;
 
 LABEL_13:
@@ -109,10 +109,10 @@ LABEL_13:
   v8 = v6;
   v35 = v8;
   [v4 enumerateKeysAndObjectsUsingBlock:&v31];
-  v9 = [MEMORY[0x1E6993370] sharedInstance];
-  v10 = [(EKEvent *)self->_event calendar];
-  v11 = [v10 source];
-  v12 = [v9 sourceIsManaged:v11];
+  mEMORY[0x1E6993370] = [MEMORY[0x1E6993370] sharedInstance];
+  calendar = [(EKEvent *)self->_event calendar];
+  source = [calendar source];
+  v12 = [mEMORY[0x1E6993370] sourceIsManaged:source];
 
   if (v12)
   {
@@ -130,27 +130,27 @@ LABEL_13:
 
   [(MFMailComposeViewController *)self->_composeViewController setMailComposeDelegate:self];
   [(MFMailComposeViewController *)self->_composeViewController setToRecipients:v7];
-  v16 = [(EKEvent *)self->_event selfAttendee];
-  v17 = [v16 emailAddress];
+  selfAttendee = [(EKEvent *)self->_event selfAttendee];
+  emailAddress = [selfAttendee emailAddress];
 
-  if (v17)
+  if (emailAddress)
   {
     v18 = self->_composeViewController;
-    v19 = [(EKEvent *)self->_event selfAttendee];
-    v20 = [v19 emailAddress];
-    [(MFMailComposeViewController *)v18 setPreferredSendingEmailAddress:v20];
+    selfAttendee2 = [(EKEvent *)self->_event selfAttendee];
+    emailAddress2 = [selfAttendee2 emailAddress];
+    [(MFMailComposeViewController *)v18 setPreferredSendingEmailAddress:emailAddress2];
   }
 
   if ([(EKEvent *)self->_event isSelfOrganized])
   {
-    v21 = [(EKEvent *)self->_event organizer];
+    organizer = [(EKEvent *)self->_event organizer];
 
-    if (v21)
+    if (organizer)
     {
       v22 = self->_composeViewController;
-      v23 = [(EKEvent *)self->_event organizer];
-      v24 = [v23 emailAddress];
-      [(MFMailComposeViewController *)v22 setPreferredSendingEmailAddress:v24];
+      organizer2 = [(EKEvent *)self->_event organizer];
+      emailAddress3 = [organizer2 emailAddress];
+      [(MFMailComposeViewController *)v22 setPreferredSendingEmailAddress:emailAddress3];
     }
   }
 
@@ -158,15 +158,15 @@ LABEL_13:
   if (subjectPrefix)
   {
     v26 = MEMORY[0x1E696AEC0];
-    v27 = [(EKEvent *)self->_event title];
-    v28 = [v26 stringWithFormat:@"%@ %@", subjectPrefix, v27, v31, v32, v33, v34];
+    title = [(EKEvent *)self->_event title];
+    v28 = [v26 stringWithFormat:@"%@ %@", subjectPrefix, title, v31, v32, v33, v34];
     [(MFMailComposeViewController *)self->_composeViewController setSubject:v28];
   }
 
   else
   {
-    v27 = [(EKEvent *)self->_event title];
-    [(MFMailComposeViewController *)self->_composeViewController setSubject:v27];
+    title = [(EKEvent *)self->_event title];
+    [(MFMailComposeViewController *)self->_composeViewController setSubject:title];
   }
 
   v29 = [(EKUIEmailCompositionManager *)self _htmlBodyForMailMessageWithNames:v8];
@@ -180,26 +180,26 @@ LABEL_13:
   }
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 3)
+  controllerCopy = controller;
+  errorCopy = error;
+  if (result == 3)
   {
     v10 = kEKUILogHandle;
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v9;
+      v15 = errorCopy;
       _os_log_impl(&dword_1D3400000, v10, OS_LOG_TYPE_ERROR, "Mail compose controller failed to send result: %@", &v14, 0xCu);
     }
   }
 
-  v11 = [(EKUIEmailCompositionManager *)self messageSendingComplete];
+  messageSendingComplete = [(EKUIEmailCompositionManager *)self messageSendingComplete];
 
   v12 = kEKUILogHandle;
-  if (v11)
+  if (messageSendingComplete)
   {
     if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEFAULT))
     {
@@ -207,8 +207,8 @@ LABEL_13:
       _os_log_impl(&dword_1D3400000, v12, OS_LOG_TYPE_DEFAULT, "Notify of composition completion.", &v14, 2u);
     }
 
-    v13 = [(EKUIEmailCompositionManager *)self messageSendingComplete];
-    (v13)[2](v13, a4 == 2);
+    messageSendingComplete2 = [(EKUIEmailCompositionManager *)self messageSendingComplete];
+    (messageSendingComplete2)[2](messageSendingComplete2, result == 2);
   }
 
   else if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
@@ -218,14 +218,14 @@ LABEL_13:
   }
 }
 
-+ (id)_recipientEmailAddressesToDisplayNames:(id)a3 withParticipantRecipients:(id)a4
++ (id)_recipientEmailAddressesToDisplayNames:(id)names withParticipantRecipients:(id)recipients
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (![v6 count])
+  namesCopy = names;
+  recipientsCopy = recipients;
+  v7 = recipientsCopy;
+  if (![recipientsCopy count])
   {
-    v7 = [EKUICommunicationUtilities attendeesIgnoringMe:v5];
+    v7 = [EKUICommunicationUtilities attendeesIgnoringMe:namesCopy];
   }
 
   v8 = [v7 count];
@@ -370,9 +370,9 @@ LABEL_24:
   }
 }
 
-- (id)_htmlBodyForMailMessageWithNames:(id)a3
+- (id)_htmlBodyForMailMessageWithNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v5 appendString:@"<br><br>"];
   if (self->_bodyPrefix)
@@ -381,43 +381,43 @@ LABEL_24:
   }
 
   [v5 appendString:@"<br><br>"];
-  v6 = [(EKEvent *)self->_event title];
-  [v5 appendFormat:@"<b>%@</b><br>", v6];
+  title = [(EKEvent *)self->_event title];
+  [v5 appendFormat:@"<b>%@</b><br>", title];
 
-  v7 = [MEMORY[0x1E69933E0] sharedGenerator];
-  v8 = [v7 dateStringRepresentationForEvent:self->_event];
+  mEMORY[0x1E69933E0] = [MEMORY[0x1E69933E0] sharedGenerator];
+  v8 = [mEMORY[0x1E69933E0] dateStringRepresentationForEvent:self->_event];
 
   if (v8)
   {
     [v5 appendFormat:@"%@<br>", v8];
   }
 
-  v9 = [(EKEvent *)self->_event locationWithoutPrediction];
-  v10 = [v9 length];
+  locationWithoutPrediction = [(EKEvent *)self->_event locationWithoutPrediction];
+  v10 = [locationWithoutPrediction length];
 
   if (v10)
   {
     v11 = MEMORY[0x1E696AEC0];
     v12 = EventKitUIBundle();
     v13 = [v12 localizedStringForKey:@"Location: %@" value:&stru_1F4EF6790 table:0];
-    v14 = [(EKEvent *)self->_event locationWithoutPrediction];
-    v15 = [v11 localizedStringWithFormat:v13, v14];
+    locationWithoutPrediction2 = [(EKEvent *)self->_event locationWithoutPrediction];
+    v15 = [v11 localizedStringWithFormat:v13, locationWithoutPrediction2];
     [v5 appendFormat:@"%@<br>", v15];
   }
 
-  v16 = [(EKEvent *)self->_event virtualConference];
+  virtualConference = [(EKEvent *)self->_event virtualConference];
 
-  if (v16)
+  if (virtualConference)
   {
-    v17 = [MEMORY[0x1E69933E0] sharedGenerator];
-    v18 = [v17 virtualConferenceEmailHTMLRepresentation:self->_event];
+    mEMORY[0x1E69933E0]2 = [MEMORY[0x1E69933E0] sharedGenerator];
+    v18 = [mEMORY[0x1E69933E0]2 virtualConferenceEmailHTMLRepresentation:self->_event];
     [v5 appendString:v18];
   }
 
-  if ([v4 count])
+  if ([namesCopy count])
   {
     v19 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
-    v20 = [v4 mf_commaSeparatedRecipientListWithWidth:v19 forFont:1.79769313e308];
+    v20 = [namesCopy mf_commaSeparatedRecipientListWithWidth:v19 forFont:1.79769313e308];
 
     v21 = MEMORY[0x1E696AEC0];
     v22 = EventKitUIBundle();

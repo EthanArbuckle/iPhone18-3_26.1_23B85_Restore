@@ -1,46 +1,46 @@
 @interface HMDModernTransportMessageContextOptions
-+ (id)newWithBuilder:(id)a3;
-- (HMDModernTransportMessageContextOptions)initWithBuilder:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (HMDModernTransportMessageContextOptions)initWithBuilder:(id)builder;
 @end
 
 @implementation HMDModernTransportMessageContextOptions
 
-- (HMDModernTransportMessageContextOptions)initWithBuilder:(id)a3
+- (HMDModernTransportMessageContextOptions)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = HMDModernTransportMessageContextOptions;
   v5 = [(HMDModernTransportMessageContextOptions *)&v15 init];
   if (v5)
   {
-    v6 = [v4 transports];
+    transports = [builderCopy transports];
     transports = v5->_transports;
-    v5->_transports = v6;
+    v5->_transports = transports;
 
-    [v4 timeoutOverride];
+    [builderCopy timeoutOverride];
     v5->_timeoutOverride = v8;
-    [v4 timeToLive];
+    [builderCopy timeToLive];
     v5->_timeToLive = v9;
-    v5->_expectsMultipleResponses = [v4 expectsMultipleResponses];
-    v5->_expectRapportSuccess = [v4 expectRapportSuccess];
-    v5->_trackingDeviceReachability = [v4 trackingDeviceReachability];
-    v10 = [v4 requestStartTimeHeaderKey];
+    v5->_expectsMultipleResponses = [builderCopy expectsMultipleResponses];
+    v5->_expectRapportSuccess = [builderCopy expectRapportSuccess];
+    v5->_trackingDeviceReachability = [builderCopy trackingDeviceReachability];
+    requestStartTimeHeaderKey = [builderCopy requestStartTimeHeaderKey];
     requestStartTimeHeaderKey = v5->_requestStartTimeHeaderKey;
-    v5->_requestStartTimeHeaderKey = v10;
+    v5->_requestStartTimeHeaderKey = requestStartTimeHeaderKey;
 
-    v12 = [v4 timeToLiveHeaderKey];
+    timeToLiveHeaderKey = [builderCopy timeToLiveHeaderKey];
     timeToLiveHeaderKey = v5->_timeToLiveHeaderKey;
-    v5->_timeToLiveHeaderKey = v12;
+    v5->_timeToLiveHeaderKey = timeToLiveHeaderKey;
   }
 
   return v5;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(HMDModernTransportMessageContextOptionsBuilder);
-  v3[2](v3, v4);
+  builderCopy[2](builderCopy, v4);
 
   v5 = [[HMDModernTransportMessageContextOptions alloc] initWithBuilder:v4];
   return v5;

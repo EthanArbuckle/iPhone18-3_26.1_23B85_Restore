@@ -1,20 +1,20 @@
 @interface CAMStorageController
 - (BOOL)_isUsingExternalStorage;
 - (BOOL)_isUsingInternalStorage;
-- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 verbose:(BOOL)a5;
+- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging verbose:(BOOL)verbose;
 - (CAMPurgeableStorageContainer)purgeableStorageContainer;
 - (CAMPurgeableStorageContainerDelegate)delegate;
 - (CAMStorageController)init;
-- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)a3;
-- (int64_t)minimumDiskUsageThresholdInBytesForGraphConfiguration:(id)a3;
+- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)configuration;
+- (int64_t)minimumDiskUsageThresholdInBytesForGraphConfiguration:(id)configuration;
 - (int64_t)totalFreeBytes;
-- (void)_setCurrentStorage:(id)a3;
+- (void)_setCurrentStorage:(id)storage;
 - (void)_updateGraphConfigurationOnCurrentStorage;
 - (void)_updateStorageDelegates;
-- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 completion:(id)a5;
-- (void)setDelegate:(id)a3;
-- (void)setExternalStorage:(id)a3;
-- (void)setGraphConfiguration:(id)a3;
+- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging completion:(id)completion;
+- (void)setDelegate:(id)delegate;
+- (void)setExternalStorage:(id)storage;
+- (void)setGraphConfiguration:(id)configuration;
 @end
 
 @implementation CAMStorageController
@@ -36,150 +36,150 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_delegate, a3);
+  objc_storeWeak(&self->_delegate, delegate);
 
   [(CAMStorageController *)self _updateStorageDelegates];
 }
 
 - (void)_updateStorageDelegates
 {
-  v3 = [(CAMStorageController *)self _isUsingInternalStorage];
-  if (v3)
+  _isUsingInternalStorage = [(CAMStorageController *)self _isUsingInternalStorage];
+  if (_isUsingInternalStorage)
   {
-    v4 = [(CAMStorageController *)self delegate];
+    delegate = [(CAMStorageController *)self delegate];
   }
 
   else
   {
-    v4 = 0;
+    delegate = 0;
   }
 
-  v5 = [(CAMStorageController *)self _internalStorage];
-  [v5 setDelegate:v4];
+  _internalStorage = [(CAMStorageController *)self _internalStorage];
+  [_internalStorage setDelegate:delegate];
 
-  if (v3)
+  if (_isUsingInternalStorage)
   {
   }
 
-  v6 = [(CAMStorageController *)self _isUsingExternalStorage];
-  if (v6)
+  _isUsingExternalStorage = [(CAMStorageController *)self _isUsingExternalStorage];
+  if (_isUsingExternalStorage)
   {
-    v8 = [(CAMStorageController *)self delegate];
+    delegate2 = [(CAMStorageController *)self delegate];
   }
 
   else
   {
-    v8 = 0;
+    delegate2 = 0;
   }
 
-  v7 = [(CAMStorageController *)self externalStorage];
-  [v7 setDelegate:v8];
+  externalStorage = [(CAMStorageController *)self externalStorage];
+  [externalStorage setDelegate:delegate2];
 
-  if (v6)
+  if (_isUsingExternalStorage)
   {
   }
 }
 
 - (CAMPurgeableStorageContainer)purgeableStorageContainer
 {
-  v3 = [(CAMStorageController *)self _currentStorage];
-  v4 = [(CAMStorageController *)self _internalStorage];
-  if (v3 == v4)
+  _currentStorage = [(CAMStorageController *)self _currentStorage];
+  _internalStorage = [(CAMStorageController *)self _internalStorage];
+  if (_currentStorage == _internalStorage)
   {
-    v5 = [(CAMStorageController *)self _internalStorage];
+    _internalStorage2 = [(CAMStorageController *)self _internalStorage];
   }
 
   else
   {
-    v5 = 0;
+    _internalStorage2 = 0;
   }
 
-  return v5;
+  return _internalStorage2;
 }
 
-- (void)_setCurrentStorage:(id)a3
+- (void)_setCurrentStorage:(id)storage
 {
-  v5 = a3;
-  if (self->__currentStorage != v5)
+  storageCopy = storage;
+  if (self->__currentStorage != storageCopy)
   {
-    v16 = v5;
-    v6 = [(CAMStorageController *)self purgeableStorageContainer];
-    if ([v6 isPurging])
+    v16 = storageCopy;
+    purgeableStorageContainer = [(CAMStorageController *)self purgeableStorageContainer];
+    if ([purgeableStorageContainer isPurging])
     {
-      v7 = 1;
+      isCancelingPurge = 1;
     }
 
     else
     {
-      v8 = [(CAMStorageController *)self purgeableStorageContainer];
-      v7 = [v8 isCancelingPurge];
+      purgeableStorageContainer2 = [(CAMStorageController *)self purgeableStorageContainer];
+      isCancelingPurge = [purgeableStorageContainer2 isCancelingPurge];
     }
 
-    objc_storeStrong(&self->__currentStorage, a3);
+    objc_storeStrong(&self->__currentStorage, storage);
     [(CAMStorageController *)self _updateStorageDelegates];
     [(CAMStorageController *)self _updateGraphConfigurationOnCurrentStorage];
-    v9 = [(CAMStorageController *)self purgeableStorageContainer];
-    if ([v9 isPurging])
+    purgeableStorageContainer3 = [(CAMStorageController *)self purgeableStorageContainer];
+    if ([purgeableStorageContainer3 isPurging])
     {
-      v10 = 1;
+      isCancelingPurge2 = 1;
     }
 
     else
     {
-      v11 = [(CAMStorageController *)self purgeableStorageContainer];
-      v10 = [v11 isCancelingPurge];
+      purgeableStorageContainer4 = [(CAMStorageController *)self purgeableStorageContainer];
+      isCancelingPurge2 = [purgeableStorageContainer4 isCancelingPurge];
     }
 
-    if (v7 != v10)
+    if (isCancelingPurge != isCancelingPurge2)
     {
-      v12 = [(CAMStorageController *)self delegate];
-      v13 = [(CAMStorageController *)self purgeableStorageContainer];
-      [v12 storageControllerDidChangePurgingState:v13];
+      delegate = [(CAMStorageController *)self delegate];
+      purgeableStorageContainer5 = [(CAMStorageController *)self purgeableStorageContainer];
+      [delegate storageControllerDidChangePurgingState:purgeableStorageContainer5];
     }
 
-    v14 = [(CAMStorageController *)self delegate];
-    v15 = [(CAMStorageController *)self _currentStorage];
-    [v14 availableDiskSpaceChanged:v15];
+    delegate2 = [(CAMStorageController *)self delegate];
+    _currentStorage = [(CAMStorageController *)self _currentStorage];
+    [delegate2 availableDiskSpaceChanged:_currentStorage];
 
-    v5 = v16;
+    storageCopy = v16;
   }
 }
 
 - (BOOL)_isUsingInternalStorage
 {
-  v2 = self;
-  v3 = [(CAMStorageController *)self _currentStorage];
-  v4 = [(CAMStorageController *)v2 _internalStorage];
-  LOBYTE(v2) = v3 == v4;
+  selfCopy = self;
+  _currentStorage = [(CAMStorageController *)self _currentStorage];
+  _internalStorage = [(CAMStorageController *)selfCopy _internalStorage];
+  LOBYTE(selfCopy) = _currentStorage == _internalStorage;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_isUsingExternalStorage
 {
-  v2 = self;
-  v3 = [(CAMStorageController *)self _currentStorage];
-  v4 = [(CAMStorageController *)v2 externalStorage];
-  LOBYTE(v2) = v3 == v4;
+  selfCopy = self;
+  _currentStorage = [(CAMStorageController *)self _currentStorage];
+  externalStorage = [(CAMStorageController *)selfCopy externalStorage];
+  LOBYTE(selfCopy) = _currentStorage == externalStorage;
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setExternalStorage:(id)a3
+- (void)setExternalStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   externalStorage = self->_externalStorage;
-  if (externalStorage != v5)
+  if (externalStorage != storageCopy)
   {
-    v8 = v5;
-    externalStorage = [externalStorage isEqual:v5];
-    v5 = v8;
+    v8 = storageCopy;
+    externalStorage = [externalStorage isEqual:storageCopy];
+    storageCopy = v8;
     if ((externalStorage & 1) == 0)
     {
       [(CAMExternalStorage *)self->_externalStorage setDelegate:0];
-      objc_storeStrong(&self->_externalStorage, a3);
+      objc_storeStrong(&self->_externalStorage, storage);
       if (v8)
       {
         externalStorage = [(CAMStorageController *)self _setCurrentStorage:v8];
@@ -187,82 +187,82 @@
 
       else
       {
-        v7 = [(CAMStorageController *)self _internalStorage];
-        [(CAMStorageController *)self _setCurrentStorage:v7];
+        _internalStorage = [(CAMStorageController *)self _internalStorage];
+        [(CAMStorageController *)self _setCurrentStorage:_internalStorage];
       }
 
-      v5 = v8;
+      storageCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](externalStorage, v5);
+  MEMORY[0x1EEE66BB8](externalStorage, storageCopy);
 }
 
-- (void)setGraphConfiguration:(id)a3
+- (void)setGraphConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   p_graphConfiguration = &self->_graphConfiguration;
-  if (self->_graphConfiguration != v5)
+  if (self->_graphConfiguration != configurationCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_graphConfiguration, a3);
+    v7 = configurationCopy;
+    objc_storeStrong(p_graphConfiguration, configuration);
     p_graphConfiguration = [(CAMStorageController *)self _updateGraphConfigurationOnCurrentStorage];
-    v5 = v7;
+    configurationCopy = v7;
   }
 
-  MEMORY[0x1EEE66BB8](p_graphConfiguration, v5);
+  MEMORY[0x1EEE66BB8](p_graphConfiguration, configurationCopy);
 }
 
 - (void)_updateGraphConfigurationOnCurrentStorage
 {
-  v4 = [(CAMStorageController *)self graphConfiguration];
-  v3 = [(CAMStorageController *)self _currentStorage];
-  [v3 setGraphConfiguration:v4];
+  graphConfiguration = [(CAMStorageController *)self graphConfiguration];
+  _currentStorage = [(CAMStorageController *)self _currentStorage];
+  [_currentStorage setGraphConfiguration:graphConfiguration];
 }
 
 - (int64_t)totalFreeBytes
 {
-  v2 = [(CAMStorageController *)self _currentStorage];
-  v3 = [v2 totalFreeBytes];
+  _currentStorage = [(CAMStorageController *)self _currentStorage];
+  totalFreeBytes = [_currentStorage totalFreeBytes];
 
-  return v3;
+  return totalFreeBytes;
 }
 
-- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 completion:(id)a5
+- (void)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CAMStorageController *)self _currentStorage];
-  [v10 hasDiskSpaceToAllowCaptureWithConfiguration:v9 allowPurging:v5 completion:v8];
+  purgingCopy = purging;
+  completionCopy = completion;
+  configurationCopy = configuration;
+  _currentStorage = [(CAMStorageController *)self _currentStorage];
+  [_currentStorage hasDiskSpaceToAllowCaptureWithConfiguration:configurationCopy allowPurging:purgingCopy completion:completionCopy];
 }
 
-- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)a3 allowPurging:(BOOL)a4 verbose:(BOOL)a5
+- (BOOL)hasDiskSpaceToAllowCaptureWithConfiguration:(id)configuration allowPurging:(BOOL)purging verbose:(BOOL)verbose
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [(CAMStorageController *)self _currentStorage];
-  LOBYTE(v5) = [v9 hasDiskSpaceToAllowCaptureWithConfiguration:v8 allowPurging:v6 verbose:v5];
+  verboseCopy = verbose;
+  purgingCopy = purging;
+  configurationCopy = configuration;
+  _currentStorage = [(CAMStorageController *)self _currentStorage];
+  LOBYTE(verboseCopy) = [_currentStorage hasDiskSpaceToAllowCaptureWithConfiguration:configurationCopy allowPurging:purgingCopy verbose:verboseCopy];
 
-  return v5;
+  return verboseCopy;
 }
 
-- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)a3
+- (double)availableRecordingTimeInSecondsForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CAMStorageController *)self _currentStorage];
-  [v5 availableRecordingTimeInSecondsForGraphConfiguration:v4];
+  configurationCopy = configuration;
+  _currentStorage = [(CAMStorageController *)self _currentStorage];
+  [_currentStorage availableRecordingTimeInSecondsForGraphConfiguration:configurationCopy];
   v7 = v6;
 
   return v7;
 }
 
-- (int64_t)minimumDiskUsageThresholdInBytesForGraphConfiguration:(id)a3
+- (int64_t)minimumDiskUsageThresholdInBytesForGraphConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CAMStorageController *)self _currentStorage];
-  v6 = [v5 minimumDiskUsageThresholdInBytesForGraphConfiguration:v4];
+  configurationCopy = configuration;
+  _currentStorage = [(CAMStorageController *)self _currentStorage];
+  v6 = [_currentStorage minimumDiskUsageThresholdInBytesForGraphConfiguration:configurationCopy];
 
   return v6;
 }

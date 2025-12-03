@@ -1,21 +1,21 @@
 @interface GenericFailure
-- (BOOL)doesMatchResult:(id)a3;
+- (BOOL)doesMatchResult:(id)result;
 @end
 
 @implementation GenericFailure
 
-- (BOOL)doesMatchResult:(id)a3
+- (BOOL)doesMatchResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 corrected];
-  v5 = [v4 componentsJoinedByString:&stru_287EC4808];
+  resultCopy = result;
+  corrected = [resultCopy corrected];
+  v5 = [corrected componentsJoinedByString:&stru_287EC4808];
 
-  v6 = [v3 intended];
+  intended = [resultCopy intended];
 
-  v7 = [v6 componentsJoinedByString:&stru_287EC4808];
+  v7 = [intended componentsJoinedByString:&stru_287EC4808];
 
-  LOBYTE(v6) = [v5 isEqualToString:v7];
-  return v6;
+  LOBYTE(intended) = [v5 isEqualToString:v7];
+  return intended;
 }
 
 @end

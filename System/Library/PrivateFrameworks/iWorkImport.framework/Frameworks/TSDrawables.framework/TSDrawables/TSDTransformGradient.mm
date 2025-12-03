@@ -1,41 +1,41 @@
 @interface TSDTransformGradient
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualIgnoringTransform:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualIgnoringTransform:(id)transform;
 - (CGPoint)endPoint;
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4;
-- (CGPoint)normalizedPointForSize:(CGSize)a3 endPoint:(BOOL)a4;
-- (CGPoint)p_scalePoint:(CGPoint)a3 fromShapeWithNaturalSize:(CGSize)a4;
-- (CGPoint)p_scalePoint:(CGPoint)a3 toShapeWithNaturalSize:(CGSize)a4;
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds;
+- (CGPoint)normalizedPointForSize:(CGSize)size endPoint:(BOOL)point;
+- (CGPoint)p_scalePoint:(CGPoint)point fromShapeWithNaturalSize:(CGSize)size;
+- (CGPoint)p_scalePoint:(CGPoint)point toShapeWithNaturalSize:(CGSize)size;
 - (CGPoint)startPoint;
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4;
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds;
 - (CGSize)baseNaturalSize;
-- (CGSize)baseNaturalSizeForBounds:(CGRect)a3;
-- (TSDTransformGradient)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDTransformGradient)initWithGradient:(id)a3 inPath:(id)a4 andBounds:(CGRect)a5;
-- (TSDTransformGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4;
-- (TSDTransformGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5;
+- (CGSize)baseNaturalSizeForBounds:(CGRect)bounds;
+- (TSDTransformGradient)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDTransformGradient)initWithGradient:(id)gradient inPath:(id)path andBounds:(CGRect)bounds;
+- (TSDTransformGradient)initWithGradientStops:(id)stops type:(unint64_t)type;
+- (TSDTransformGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type;
 - (double)gradientAngleInDegrees;
 - (id)description;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
-- (void)p_drawQuartzGradientInContext:(CGContext *)a3 withGradientNaturalSize:(CGSize)a4 baseNaturalSize:(CGSize)a5 start:(CGPoint)a6 end:(CGPoint)a7;
-- (void)p_setBaseNaturalSize:(CGSize)a3;
+- (void)p_drawQuartzGradientInContext:(CGContext *)context withGradientNaturalSize:(CGSize)size baseNaturalSize:(CGSize)naturalSize start:(CGPoint)start end:(CGPoint)end;
+- (void)p_setBaseNaturalSize:(CGSize)size;
 - (void)p_setDefaultValues;
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6;
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f;
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDTransformGradient
 
-- (TSDTransformGradient)initWithStartColor:(id)a3 endColor:(id)a4 type:(unint64_t)a5
+- (TSDTransformGradient)initWithStartColor:(id)color endColor:(id)endColor type:(unint64_t)type
 {
   v10.receiver = self;
   v10.super_class = TSDTransformGradient;
-  v5 = [(TSDGradient *)&v10 initWithStartColor:a3 endColor:a4 type:a5];
+  v5 = [(TSDGradient *)&v10 initWithStartColor:color endColor:endColor type:type];
   v8 = v5;
   if (v5)
   {
@@ -45,11 +45,11 @@
   return v8;
 }
 
-- (TSDTransformGradient)initWithGradientStops:(id)a3 type:(unint64_t)a4
+- (TSDTransformGradient)initWithGradientStops:(id)stops type:(unint64_t)type
 {
   v9.receiver = self;
   v9.super_class = TSDTransformGradient;
-  v4 = [(TSDGradient *)&v9 initWithGradientStops:a3 type:a4];
+  v4 = [(TSDGradient *)&v9 initWithGradientStops:stops type:type];
   v7 = v4;
   if (v4)
   {
@@ -59,16 +59,16 @@
   return v7;
 }
 
-- (TSDTransformGradient)initWithGradient:(id)a3 inPath:(id)a4 andBounds:(CGRect)a5
+- (TSDTransformGradient)initWithGradient:(id)gradient inPath:(id)path andBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a3;
-  v12 = a4;
-  v15 = objc_msgSend_gradientStops(v11, v13, v14);
-  v18 = objc_msgSend_gradientType(v11, v16, v17);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  gradientCopy = gradient;
+  pathCopy = path;
+  v15 = objc_msgSend_gradientStops(gradientCopy, v13, v14);
+  v18 = objc_msgSend_gradientType(gradientCopy, v16, v17);
   v33.receiver = self;
   v33.super_class = TSDTransformGradient;
   v19 = [(TSDGradient *)&v33 initWithGradientStops:v15 type:v18];
@@ -88,11 +88,11 @@
     v19->_baseNaturalSize.width = width;
     v19->_baseNaturalSize.height = height;
     TSURectWithSize();
-    objc_msgSend_startPointForPath_andBounds_(v11, v26, v12);
+    objc_msgSend_startPointForPath_andBounds_(gradientCopy, v26, pathCopy);
     v19->_startPoint.x = v27;
     v19->_startPoint.y = v28;
     TSURectWithSize();
-    objc_msgSend_endPointForPath_andBounds_(v11, v29, v12);
+    objc_msgSend_endPointForPath_andBounds_(gradientCopy, v29, pathCopy);
     v19->_endPoint.x = v30;
     v19->_endPoint.y = v31;
   }
@@ -127,10 +127,10 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
@@ -139,7 +139,7 @@
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
-    if (v5 && (v23.receiver = self, v23.super_class = TSDTransformGradient, [(TSDGradient *)&v23 isEqual:v4]) && ((objc_msgSend_startPoint(v5, v6, v7), self->_startPoint.x == v11) ? (v12 = self->_startPoint.y == v10) : (v12 = 0), v12 && ((objc_msgSend_endPoint(v5, v8, v9), self->_endPoint.x == v16) ? (v17 = self->_endPoint.y == v15) : (v17 = 0), v17)))
+    if (v5 && (v23.receiver = self, v23.super_class = TSDTransformGradient, [(TSDGradient *)&v23 isEqual:equalCopy]) && ((objc_msgSend_startPoint(v5, v6, v7), self->_startPoint.x == v11) ? (v12 = self->_startPoint.y == v10) : (v12 = 0), v12 && ((objc_msgSend_endPoint(v5, v8, v9), self->_endPoint.x == v16) ? (v17 = self->_endPoint.y == v15) : (v17 = 0), v17)))
     {
       p_baseNaturalSize = &self->_baseNaturalSize;
       objc_msgSend_baseNaturalSize(v5, v13, v14);
@@ -155,10 +155,10 @@
   return v18;
 }
 
-- (BOOL)isEqualIgnoringTransform:(id)a3
+- (BOOL)isEqualIgnoringTransform:(id)transform
 {
-  v4 = a3;
-  if (v4 == self)
+  transformCopy = transform;
+  if (transformCopy == self)
   {
     v11 = 1;
   }
@@ -167,7 +167,7 @@
   {
     objc_opt_class();
     v5 = TSUDynamicCast();
-    if (v5 && (v13.receiver = self, v13.super_class = TSDTransformGradient, [(TSDGradient *)&v13 isEqual:v4]))
+    if (v5 && (v13.receiver = self, v13.super_class = TSDTransformGradient, [(TSDGradient *)&v13 isEqual:transformCopy]))
     {
       p_baseNaturalSize = &self->_baseNaturalSize;
       objc_msgSend_baseNaturalSize(v5, v6, v7);
@@ -183,9 +183,9 @@
   return v11;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDMutableTransformGradient, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDMutableTransformGradient, a2, zone);
   v7 = objc_msgSend_gradientStops(self, v5, v6);
   v10 = objc_msgSend_gradientType(self, v8, v9);
   objc_msgSend_opacity(self, v11, v12);
@@ -202,12 +202,12 @@
   return v14;
 }
 
-- (CGPoint)normalizedPointForSize:(CGSize)a3 endPoint:(BOOL)a4
+- (CGPoint)normalizedPointForSize:(CGSize)size endPoint:(BOOL)point
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  objc_msgSend_startPoint(self, a2, a4);
+  pointCopy = point;
+  height = size.height;
+  width = size.width;
+  objc_msgSend_startPoint(self, a2, point);
   v25 = v9;
   v26 = v8;
   objc_msgSend_endPoint(self, v10, v11);
@@ -250,7 +250,7 @@
     TSUAddPoints();
   }
 
-  if (!v4)
+  if (!pointCopy)
   {
     v21.f64[0] = v27.f64[0];
     v22 = v18;
@@ -261,39 +261,39 @@
   return result;
 }
 
-- (void)p_setBaseNaturalSize:(CGSize)a3
+- (void)p_setBaseNaturalSize:(CGSize)size
 {
-  if (a3.height <= 0.0)
+  if (size.height <= 0.0)
   {
-    a3.height = 1.0;
+    size.height = 1.0;
   }
 
-  if (a3.width <= 0.0)
+  if (size.width <= 0.0)
   {
-    a3.width = 1.0;
+    size.width = 1.0;
   }
 
-  self->_baseNaturalSize = a3;
+  self->_baseNaturalSize = size;
 }
 
-- (void)paintRect:(CGRect)a3 inContext:(CGContext *)a4
+- (void)paintRect:(CGRect)rect inContext:(CGContext *)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = objc_msgSend_p_CGGradient(self, a2, a4);
-  CGContextSaveGState(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v10 = objc_msgSend_p_CGGradient(self, a2, context);
+  CGContextSaveGState(context);
   CGContextClipToRectSafe();
-  objc_msgSend_p_prepareForDrawingInContext_(self, v11, a4);
+  objc_msgSend_p_prepareForDrawingInContext_(self, v11, context);
   if (objc_msgSend_gradientType(self, v12, v13))
   {
     objc_msgSend_centeredRadialTransformInRect_(self, v14, v15, x, y, width, height);
-    CGContextConcatCTM(a4, &v20);
+    CGContextConcatCTM(context, &v20);
     v21 = **&MEMORY[0x277CBF348];
     v23.x = *MEMORY[0x277CBF348];
     v23.y = v21.y;
-    CGContextDrawRadialGradient(a4, v10, *MEMORY[0x277CBF348], 0.0, v23, 100.0, 3u);
+    CGContextDrawRadialGradient(context, v10, *MEMORY[0x277CBF348], 0.0, v23, 100.0, 3u);
   }
 
   else
@@ -308,7 +308,7 @@
     v25.size.width = width;
     v25.size.height = height;
     MinY = CGRectGetMinY(v25);
-    CGContextTranslateCTM(a4, MidX, MinY);
+    CGContextTranslateCTM(context, MidX, MinY);
     v26.origin.x = x;
     v26.origin.y = y;
     v26.size.width = width;
@@ -319,55 +319,55 @@
     v27.size.width = width;
     v27.size.height = height;
     v19 = CGRectGetHeight(v27);
-    CGContextScaleCTM(a4, v18, v19 / 100.0);
+    CGContextScaleCTM(context, v18, v19 / 100.0);
     v22.y = 0.0;
     v22.x = 100.0;
-    CGContextDrawLinearGradient(a4, v10, *MEMORY[0x277CBF348], v22, 3u);
+    CGContextDrawLinearGradient(context, v10, *MEMORY[0x277CBF348], v22, 3u);
   }
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (void)paintPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)paintPath:(CGPath *)path inContext:(CGContext *)context
 {
-  BoundingBox = CGPathGetBoundingBox(a3);
+  BoundingBox = CGPathGetBoundingBox(path);
 
-  objc_msgSend_paintPath_naturalBounds_inContext_isPDF_(self, v7, a3, a4, 0, BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height);
+  objc_msgSend_paintPath_naturalBounds_inContext_isPDF_(self, v7, path, context, 0, BoundingBox.origin.x, BoundingBox.origin.y, BoundingBox.size.width, BoundingBox.size.height);
 }
 
-- (void)paintPath:(CGPath *)a3 naturalBounds:(CGRect)a4 inContext:(CGContext *)a5 isPDF:(BOOL)a6
+- (void)paintPath:(CGPath *)path naturalBounds:(CGRect)bounds inContext:(CGContext *)context isPDF:(BOOL)f
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  CGContextSaveGState(a5);
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  CGContextSaveGState(context);
   CGContextAddPathSafe();
-  CGContextClip(a5);
-  CGContextTranslateCTM(a5, x, y);
-  if ((a6 || TSDCGContextIsPDFContext(a5)) && (objc_msgSend_p_stopsHaveAlpha(self, v13, v14) & 1) != 0 || TSDCGContextIsPrintContext(a5))
+  CGContextClip(context);
+  CGContextTranslateCTM(context, x, y);
+  if ((f || TSDCGContextIsPDFContext(context)) && (objc_msgSend_p_stopsHaveAlpha(self, v13, v14) & 1) != 0 || TSDCGContextIsPrintContext(context))
   {
     v16 = *(MEMORY[0x277CBF3A0] + 16);
     v19 = *MEMORY[0x277CBF3A0];
     v20 = v16;
-    v18 = objc_msgSend_p_beginBitmapWrapperContextInContext_returningIntegralBounds_(self, v15, a5, &v19);
+    v18 = objc_msgSend_p_beginBitmapWrapperContextInContext_returningIntegralBounds_(self, v15, context, &v19);
     if (v18)
     {
       objc_msgSend_p_drawQuartzGradientInContext_withGradientNaturalSize_baseNaturalSize_start_end_(self, v17, v18, width, height, self->_baseNaturalSize.width, self->_baseNaturalSize.height, self->_startPoint.x, self->_startPoint.y, self->_endPoint.x, self->_endPoint.y);
     }
 
-    objc_msgSend_p_endBitmapWrapperContext_inContext_withIntegralBounds_(self, v17, v18, a5, v19, v20);
+    objc_msgSend_p_endBitmapWrapperContext_inContext_withIntegralBounds_(self, v17, v18, context, v19, v20);
   }
 
   else
   {
-    objc_msgSend_p_drawQuartzGradientInContext_withGradientNaturalSize_baseNaturalSize_start_end_(self, v15, a5, width, height, self->_baseNaturalSize.width, self->_baseNaturalSize.height, self->_startPoint.x, self->_startPoint.y, self->_endPoint.x, self->_endPoint.y);
+    objc_msgSend_p_drawQuartzGradientInContext_withGradientNaturalSize_baseNaturalSize_start_end_(self, v15, context, width, height, self->_baseNaturalSize.width, self->_baseNaturalSize.height, self->_startPoint.x, self->_startPoint.y, self->_endPoint.x, self->_endPoint.y);
   }
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
 }
 
-- (CGPoint)startPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)startPointForPath:(id)path andBounds:(CGRect)bounds
 {
   MEMORY[0x2821F9670](self, sel_normalizedPointForSize_endPoint_, 0);
   result.y = v5;
@@ -375,7 +375,7 @@
   return result;
 }
 
-- (CGPoint)endPointForPath:(id)a3 andBounds:(CGRect)a4
+- (CGPoint)endPointForPath:(id)path andBounds:(CGRect)bounds
 {
   MEMORY[0x2821F9670](self, sel_normalizedPointForSize_endPoint_, 1);
   result.y = v5;
@@ -383,11 +383,11 @@
   return result;
 }
 
-- (CGSize)baseNaturalSizeForBounds:(CGRect)a3
+- (CGSize)baseNaturalSizeForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  if (objc_msgSend_gradientType(self, a2, v3, a3.origin.x, a3.origin.y))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  if (objc_msgSend_gradientType(self, a2, v3, bounds.origin.x, bounds.origin.y))
   {
     objc_msgSend_baseNaturalSize(self, v7, v8);
     width = v9;
@@ -409,9 +409,9 @@
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -465,9 +465,9 @@
   return v43;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v8 = MEMORY[0x277CBEB18];
@@ -489,7 +489,7 @@
       v31 = objc_msgSend_gradientStops(v7, v29, v30);
       v33 = objc_msgSend_objectAtIndexedSubscript_(v31, v32, v25);
 
-      v35 = objc_msgSend_mixedObjectWithFraction_ofObject_(v28, v34, v33, a3);
+      v35 = objc_msgSend_mixedObjectWithFraction_ofObject_(v28, v34, v33, fraction);
       objc_msgSend_addObject_(v16, v36, v35);
 
       ++v25;
@@ -536,51 +536,51 @@
   self->_baseNaturalSize = vdupq_n_s64(0x4059000000000000uLL);
 }
 
-- (CGPoint)p_scalePoint:(CGPoint)a3 toShapeWithNaturalSize:(CGSize)a4
+- (CGPoint)p_scalePoint:(CGPoint)point toShapeWithNaturalSize:(CGSize)size
 {
-  v4 = a3.x * a4.width / self->_baseNaturalSize.width;
-  v5 = a3.y * a4.height / self->_baseNaturalSize.height;
+  v4 = point.x * size.width / self->_baseNaturalSize.width;
+  v5 = point.y * size.height / self->_baseNaturalSize.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (CGPoint)p_scalePoint:(CGPoint)a3 fromShapeWithNaturalSize:(CGSize)a4
+- (CGPoint)p_scalePoint:(CGPoint)point fromShapeWithNaturalSize:(CGSize)size
 {
-  v4 = a3.x * self->_baseNaturalSize.width / a4.width;
-  v5 = a3.y * self->_baseNaturalSize.height / a4.height;
+  v4 = point.x * self->_baseNaturalSize.width / size.width;
+  v5 = point.y * self->_baseNaturalSize.height / size.height;
   result.y = v5;
   result.x = v4;
   return result;
 }
 
-- (void)p_drawQuartzGradientInContext:(CGContext *)a3 withGradientNaturalSize:(CGSize)a4 baseNaturalSize:(CGSize)a5 start:(CGPoint)a6 end:(CGPoint)a7
+- (void)p_drawQuartzGradientInContext:(CGContext *)context withGradientNaturalSize:(CGSize)size baseNaturalSize:(CGSize)naturalSize start:(CGPoint)start end:(CGPoint)end
 {
-  y = a6.y;
-  x = a6.x;
-  objc_msgSend_transformForSize_(self, a2, a3, a4.width, a4.height, a5.width, a5.height);
-  CGContextConcatCTM(a3, &v22);
-  CGContextTranslateCTM(a3, x, y);
+  y = start.y;
+  x = start.x;
+  objc_msgSend_transformForSize_(self, a2, context, size.width, size.height, naturalSize.width, naturalSize.height);
+  CGContextConcatCTM(context, &v22);
+  CGContextTranslateCTM(context, x, y);
   TSUSubtractPoints();
   TSUAngleFromDelta();
-  CGContextRotateCTM(a3, v11);
+  CGContextRotateCTM(context, v11);
   TSUDistance();
-  CGContextScaleCTM(a3, v12 / 100.0, v12 / 100.0);
-  objc_msgSend_p_prepareForDrawingInContext_(self, v13, a3);
+  CGContextScaleCTM(context, v12 / 100.0, v12 / 100.0);
+  objc_msgSend_p_prepareForDrawingInContext_(self, v13, context);
   v16 = objc_msgSend_gradientType(self, v14, v15);
   v19 = objc_msgSend_p_CGGradient(self, v17, v18);
   v20 = *MEMORY[0x277CBF348];
   v21 = *(MEMORY[0x277CBF348] + 8);
   if (v16)
   {
-    CGContextDrawRadialGradient(a3, v19, *&v20, 0.0, *MEMORY[0x277CBF348], 100.0, 3u);
+    CGContextDrawRadialGradient(context, v19, *&v20, 0.0, *MEMORY[0x277CBF348], 100.0, 3u);
   }
 
   else
   {
     v23.x = 100.0;
     v23.y = 0.0;
-    CGContextDrawLinearGradient(a3, v19, *&v20, v23, 3u);
+    CGContextDrawLinearGradient(context, v19, *&v20, v23, 3u);
   }
 }
 
@@ -611,14 +611,14 @@
   return result;
 }
 
-- (TSDTransformGradient)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDTransformGradient)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
   v20.receiver = self;
   v20.super_class = TSDTransformGradient;
-  v5 = [(TSDGradient *)&v20 initWithArchive:a3 unarchiver:a4];
+  v5 = [(TSDGradient *)&v20 initWithArchive:archive unarchiver:unarchiver];
   if (v5)
   {
-    v6 = *(a3 + 7);
+    v6 = *(archive + 7);
     if (!v6)
     {
       v6 = &TSD::_GradientArchive_default_instance_;
@@ -677,24 +677,24 @@
   return v5;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   v35.receiver = self;
   v35.super_class = TSDTransformGradient;
-  [(TSDGradient *)&v35 saveToArchive:a3 archiver:v6];
-  *(a3 + 10) |= 2u;
-  v9 = *(a3 + 7);
+  [(TSDGradient *)&v35 saveToArchive:archive archiver:archiverCopy];
+  *(archive + 10) |= 2u;
+  v9 = *(archive + 7);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = google::protobuf::Arena::CreateMaybeMessage<TSD::GradientArchive>(v10);
-    *(a3 + 7) = v9;
+    *(archive + 7) = v9;
   }
 
   *(v9 + 16) |= 2u;

@@ -1,29 +1,29 @@
 @interface VCPVideoPetsAnalyzer
-- (VCPVideoPetsAnalyzer)initWithTransform:(CGAffineTransform *)a3;
-- (id)parseResults:(id)a3 toDetections:(id)a4 atTime:(id *)a5 fromTime:(id *)a6 addActiveRegions:(id)a7;
+- (VCPVideoPetsAnalyzer)initWithTransform:(CGAffineTransform *)transform;
+- (id)parseResults:(id)results toDetections:(id)detections atTime:(id *)time fromTime:(id *)fromTime addActiveRegions:(id)regions;
 - (id)results;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6;
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6 frameStats:(id)a7;
-- (int)finishAnalysisPass:(id *)a3;
-- (void)addDetectionToDict:(id *)a3 withActiveRegions:(id)a4 forPetsDetections:(id)a5 fromTime:(id *)a6;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags;
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags frameStats:(id)stats;
+- (int)finishAnalysisPass:(id *)pass;
+- (void)addDetectionToDict:(id *)dict withActiveRegions:(id)regions forPetsDetections:(id)detections fromTime:(id *)time;
 @end
 
 @implementation VCPVideoPetsAnalyzer
 
-- (VCPVideoPetsAnalyzer)initWithTransform:(CGAffineTransform *)a3
+- (VCPVideoPetsAnalyzer)initWithTransform:(CGAffineTransform *)transform
 {
   v21.receiver = self;
   v21.super_class = VCPVideoPetsAnalyzer;
   v3 = [(VCPVideoPetsAnalyzer *)&v21 init];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = *(v3 + 1);
-    *(v3 + 1) = v4;
+    *(v3 + 1) = array;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v7 = *(v3 + 2);
-    *(v3 + 2) = v6;
+    *(v3 + 2) = array2;
 
     v8 = *MEMORY[0x1E6960C80];
     *(v3 + 5) = *(MEMORY[0x1E6960C80] + 16);
@@ -42,13 +42,13 @@
     v14 = *(v3 + 12);
     if (v14)
     {
-      v15 = [MEMORY[0x1E695DEC8] array];
+      array3 = [MEMORY[0x1E695DEC8] array];
       v16 = *(v3 + 13);
-      *(v3 + 13) = v15;
+      *(v3 + 13) = array3;
 
-      v17 = [MEMORY[0x1E695DEC8] array];
+      array4 = [MEMORY[0x1E695DEC8] array];
       v18 = *(v3 + 14);
-      *(v3 + 14) = v17;
+      *(v3 + 14) = array4;
 
       v14 = v3;
     }
@@ -64,30 +64,30 @@
   return v19;
 }
 
-- (id)parseResults:(id)a3 toDetections:(id)a4 atTime:(id *)a5 fromTime:(id *)a6 addActiveRegions:(id)a7
+- (id)parseResults:(id)results toDetections:(id)detections atTime:(id *)time fromTime:(id *)fromTime addActiveRegions:(id)regions
 {
   v64 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v46 = a4;
-  v11 = a7;
-  if (![v10 count])
+  resultsCopy = results;
+  detectionsCopy = detections;
+  regionsCopy = regions;
+  if (![resultsCopy count])
   {
-    v12 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
 
     v13 = *MEMORY[0x1E6960C70];
-    a6->var3 = *(MEMORY[0x1E6960C70] + 16);
-    *&a6->var0 = v13;
-    v11 = v12;
+    fromTime->var3 = *(MEMORY[0x1E6960C70] + 16);
+    *&fromTime->var0 = v13;
+    regionsCopy = array;
   }
 
-  v40 = v11;
-  v42 = [MEMORY[0x1E695DF70] array];
-  v14 = [MEMORY[0x1E695DF70] arrayWithArray:v10];
+  v40 = regionsCopy;
+  array2 = [MEMORY[0x1E695DF70] array];
+  v14 = [MEMORY[0x1E695DF70] arrayWithArray:resultsCopy];
   v55 = 0u;
   v53 = 0u;
   v54 = 0u;
   v52 = 0u;
-  obj = v10;
+  obj = resultsCopy;
   v15 = [obj countByEnumeratingWithState:&v52 objects:v63 count:16];
   if (v15)
   {
@@ -116,11 +116,11 @@
           if (!v25)
           {
 
-            v38 = [MEMORY[0x1E695DEC8] array];
+            array3 = [MEMORY[0x1E695DEC8] array];
             goto LABEL_25;
           }
 
-          [v42 addObject:v25];
+          [array2 addObject:v25];
         }
       }
 
@@ -164,13 +164,13 @@
         v61[1] = v31;
         v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:v60 count:2];
 
-        time = *a6;
+        time = *fromTime;
         v58[0] = @"start";
         v33 = CMTimeCopyAsDictionary(&time, 0);
         v59[0] = v33;
         v58[1] = @"duration";
-        time = *a5;
-        rhs = *a6;
+        time = *time;
+        rhs = *fromTime;
         CMTimeSubtract(&v47, &time, &rhs);
         time = v47;
         v34 = CMTimeCopyAsDictionary(&time, 0);
@@ -178,7 +178,7 @@
         v59[1] = v34;
         v59[2] = v32;
         v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v59 forKeys:v58 count:3];
-        [v46 addObject:v35];
+        [detectionsCopy addObject:v35];
       }
 
       v26 = [v43 countByEnumeratingWithState:&v48 objects:v62 count:16];
@@ -187,13 +187,13 @@
     while (v26);
   }
 
-  if ([v42 count])
+  if ([array2 count])
   {
-    v36 = v42;
+    v36 = array2;
 
-    v37 = *&a5->var0;
-    a6->var3 = a5->var3;
-    *&a6->var0 = v37;
+    v37 = *&time->var0;
+    fromTime->var3 = time->var3;
+    *&fromTime->var0 = v37;
   }
 
   else
@@ -201,47 +201,47 @@
     v36 = v43;
   }
 
-  v38 = v36;
-  v40 = v38;
+  array3 = v36;
+  v40 = array3;
 LABEL_25:
 
-  return v38;
+  return array3;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6 frameStats:(id)a7
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags frameStats:(id)stats
 {
-  v10 = a7;
+  statsCopy = stats;
   v11 = objc_autoreleasePoolPush();
   v29 = 0;
-  lhs = *a4;
+  lhs = *timestamp;
   rhs = self->_timeLastProcess;
   CMTimeSubtract(&time, &lhs, &rhs);
   if (CMTimeGetSeconds(&time) >= 1.0)
   {
     petsAnalyer = self->_petsAnalyer;
     v27 = 0;
-    v12 = [(VCPImagePetsAnalyzer *)petsAnalyer analyzePixelBuffer:a3 flags:&v29 results:&v27 cancel:&__block_literal_global_1];
+    v12 = [(VCPImagePetsAnalyzer *)petsAnalyer analyzePixelBuffer:frame flags:&v29 results:&v27 cancel:&__block_literal_global_1];
     v15 = v27;
     v13 = v15;
     if (!v12)
     {
       v16 = [v15 objectForKeyedSubscript:@"PetsResults"];
       petsDetections = self->_petsDetections;
-      lhs = *a4;
+      lhs = *timestamp;
       v18 = [(VCPVideoPetsAnalyzer *)self parseResults:v16 toDetections:petsDetections atTime:&lhs fromTime:&self->_petsStart addActiveRegions:self->_petsActiveRegions];
       petsActiveRegions = self->_petsActiveRegions;
       self->_petsActiveRegions = v18;
 
       v20 = [v13 objectForKeyedSubscript:@"PetsFaceResults"];
       petsFaceDetections = self->_petsFaceDetections;
-      lhs = *a4;
+      lhs = *timestamp;
       v22 = [(VCPVideoPetsAnalyzer *)self parseResults:v20 toDetections:petsFaceDetections atTime:&lhs fromTime:&self->_petsFaceStart addActiveRegions:self->_petsFaceActiveRegions];
       petsFaceActiveRegions = self->_petsFaceActiveRegions;
       self->_petsFaceActiveRegions = v22;
 
       v12 = 0;
-      v24 = *&a4->var0;
-      self->_timeLastProcess.epoch = a4->var3;
+      v24 = *&timestamp->var0;
+      self->_timeLastProcess.epoch = timestamp->var3;
       *&self->_timeLastProcess.value = v24;
     }
   }
@@ -256,32 +256,32 @@ LABEL_25:
   if (!v12)
   {
     v25 = [v13 objectForKeyedSubscript:@"PetsResults"];
-    [v10 setPetsDetections:v25];
+    [statsCopy setPetsDetections:v25];
   }
 
   return v12;
 }
 
-- (int)analyzeFrame:(__CVBuffer *)a3 withTimestamp:(id *)a4 andDuration:(id *)a5 flags:(unint64_t *)a6
+- (int)analyzeFrame:(__CVBuffer *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration flags:(unint64_t *)flags
 {
-  v8 = *a4;
-  v7 = *a5;
-  return [(VCPVideoPetsAnalyzer *)self analyzeFrame:a3 withTimestamp:&v8 andDuration:&v7 flags:a6 frameStats:0];
+  v8 = *timestamp;
+  v7 = *duration;
+  return [(VCPVideoPetsAnalyzer *)self analyzeFrame:frame withTimestamp:&v8 andDuration:&v7 flags:flags frameStats:0];
 }
 
-- (void)addDetectionToDict:(id *)a3 withActiveRegions:(id)a4 forPetsDetections:(id)a5 fromTime:(id *)a6
+- (void)addDetectionToDict:(id *)dict withActiveRegions:(id)regions forPetsDetections:(id)detections fromTime:(id *)time
 {
   v37 = *MEMORY[0x1E69E9840];
-  v20 = a4;
-  v23 = a5;
+  regionsCopy = regions;
+  detectionsCopy = detections;
   memset(&v30, 0, sizeof(v30));
-  v9 = *&a3->var0.var3;
-  *&range.start.value = *&a3->var0.var0;
+  v9 = *&dict->var0.var3;
+  *&range.start.value = *&dict->var0.var0;
   *&range.start.epoch = v9;
-  *&range.duration.timescale = *&a3->var1.var1;
+  *&range.duration.timescale = *&dict->var1.var1;
   CMTimeRangeGetEnd(&v29, &range);
   range.start = v29;
-  rhs = *a6;
+  rhs = *time;
   CMTimeSubtract(&v30, &range.start, &rhs);
   range.start = v30;
   if (CMTimeGetSeconds(&range.start) > 0.300000012)
@@ -290,7 +290,7 @@ LABEL_25:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v20;
+    obj = regionsCopy;
     v10 = [obj countByEnumeratingWithState:&v24 objects:v36 count:16];
     if (v10)
     {
@@ -317,8 +317,8 @@ LABEL_25:
           v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:2];
 
           v32[0] = @"start";
-          *&range.start.value = *&a6->var0;
-          range.start.epoch = a6->var3;
+          *&range.start.value = *&time->var0;
+          range.start.epoch = time->var3;
           v17 = CMTimeCopyAsDictionary(&range.start, 0);
           v33[0] = v17;
           v32[1] = @"duration";
@@ -328,7 +328,7 @@ LABEL_25:
           v33[1] = v18;
           v33[2] = v16;
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:3];
-          [v23 addObject:v19];
+          [detectionsCopy addObject:v19];
         }
 
         v10 = [obj countByEnumeratingWithState:&v24 objects:v36 count:16];
@@ -339,38 +339,38 @@ LABEL_25:
   }
 }
 
-- (int)finishAnalysisPass:(id *)a3
+- (int)finishAnalysisPass:(id *)pass
 {
   if ([(NSArray *)self->_petsActiveRegions count])
   {
-    v5 = *&a3->var0.var3;
-    v18 = *&a3->var0.var0;
+    v5 = *&pass->var0.var3;
+    v18 = *&pass->var0.var0;
     v19 = v5;
     petsActiveRegions = self->_petsActiveRegions;
-    v20 = *&a3->var1.var1;
+    v20 = *&pass->var1.var1;
     petsDetections = self->_petsDetections;
     v16 = *&self->_petsStart.value;
     epoch = self->_petsStart.epoch;
     [(VCPVideoPetsAnalyzer *)self addDetectionToDict:&v18 withActiveRegions:petsActiveRegions forPetsDetections:petsDetections fromTime:&v16];
-    v8 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     v9 = self->_petsActiveRegions;
-    self->_petsActiveRegions = v8;
+    self->_petsActiveRegions = array;
   }
 
   if ([(NSArray *)self->_petsFaceActiveRegions count])
   {
-    v10 = *&a3->var0.var3;
-    v18 = *&a3->var0.var0;
+    v10 = *&pass->var0.var3;
+    v18 = *&pass->var0.var0;
     v19 = v10;
     petsFaceActiveRegions = self->_petsFaceActiveRegions;
-    v20 = *&a3->var1.var1;
+    v20 = *&pass->var1.var1;
     petsFaceDetections = self->_petsFaceDetections;
     v16 = *&self->_petsFaceStart.value;
     epoch = self->_petsFaceStart.epoch;
     [(VCPVideoPetsAnalyzer *)self addDetectionToDict:&v18 withActiveRegions:petsFaceActiveRegions forPetsDetections:petsFaceDetections fromTime:&v16];
-    v13 = [MEMORY[0x1E695DEC8] array];
+    array2 = [MEMORY[0x1E695DEC8] array];
     v14 = self->_petsFaceActiveRegions;
-    self->_petsFaceActiveRegions = v13;
+    self->_petsFaceActiveRegions = array2;
   }
 
   return 0;
@@ -378,20 +378,20 @@ LABEL_25:
 
 - (id)results
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSMutableArray *)self->_petsDetections count])
   {
-    [v3 setValue:self->_petsDetections forKey:@"PetsResults"];
+    [dictionary setValue:self->_petsDetections forKey:@"PetsResults"];
   }
 
   if ([(NSMutableArray *)self->_petsFaceDetections count])
   {
-    [v3 setValue:self->_petsFaceDetections forKey:@"PetsFaceResults"];
+    [dictionary setValue:self->_petsFaceDetections forKey:@"PetsFaceResults"];
   }
 
-  if ([v3 count])
+  if ([dictionary count])
   {
-    v4 = v3;
+    v4 = dictionary;
   }
 
   else

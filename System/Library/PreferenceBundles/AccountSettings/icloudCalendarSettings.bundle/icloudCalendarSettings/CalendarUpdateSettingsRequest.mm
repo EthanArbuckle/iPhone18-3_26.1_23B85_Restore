@@ -1,25 +1,25 @@
 @interface CalendarUpdateSettingsRequest
-- (CalendarUpdateSettingsRequest)initWithAccount:(id)a3 accountStore:(id)a4 emailList:(id)a5;
+- (CalendarUpdateSettingsRequest)initWithAccount:(id)account accountStore:(id)store emailList:(id)list;
 - (id)bodyDictionary;
 - (id)urlString;
-- (void)performRequestWithCallback:(id)a3;
+- (void)performRequestWithCallback:(id)callback;
 @end
 
 @implementation CalendarUpdateSettingsRequest
 
-- (CalendarUpdateSettingsRequest)initWithAccount:(id)a3 accountStore:(id)a4 emailList:(id)a5
+- (CalendarUpdateSettingsRequest)initWithAccount:(id)account accountStore:(id)store emailList:(id)list
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(CalendarUpdateSettingsRequest *)self urlString];
+  listCopy = list;
+  storeCopy = store;
+  accountCopy = account;
+  urlString = [(CalendarUpdateSettingsRequest *)self urlString];
   v15.receiver = self;
   v15.super_class = CalendarUpdateSettingsRequest;
-  v13 = [(CalendarBaseRequest *)&v15 initWithURLString:v12 accountStore:v10 appleAccount:v11 httpRequestType:@"POST" requestBody:0 httpHeader:0];
+  v13 = [(CalendarBaseRequest *)&v15 initWithURLString:urlString accountStore:storeCopy appleAccount:accountCopy httpRequestType:@"POST" requestBody:0 httpHeader:0];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_inviteEmailArray, a5);
+    objc_storeStrong(&v13->_inviteEmailArray, list);
   }
 
   return v13;
@@ -27,14 +27,14 @@
 
 - (id)urlString
 {
-  v3 = [(CalendarBaseRequest *)self iCloudAppleAccount];
-  v4 = [v3 propertiesForDataclass:@"com.apple.Dataclass.Calendars"];
+  iCloudAppleAccount = [(CalendarBaseRequest *)self iCloudAppleAccount];
+  v4 = [iCloudAppleAccount propertiesForDataclass:@"com.apple.Dataclass.Calendars"];
   v5 = [v4 objectForKeyedSubscript:@"sendReceiveURL"];
 
   if (!v5)
   {
-    v6 = [(CalendarBaseRequest *)self iCloudAppleAccount];
-    v7 = [v6 propertiesForDataclass:@"com.apple.Dataclass.Calendars"];
+    iCloudAppleAccount2 = [(CalendarBaseRequest *)self iCloudAppleAccount];
+    v7 = [iCloudAppleAccount2 propertiesForDataclass:@"com.apple.Dataclass.Calendars"];
     v8 = [v7 objectForKeyedSubscript:@"url"];
 
     v5 = [NSString stringWithFormat:@"%@/api/settings/sendreceive", v8];
@@ -50,14 +50,14 @@
   return v5;
 }
 
-- (void)performRequestWithCallback:(id)a3
+- (void)performRequestWithCallback:(id)callback
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_5B44;
   v5[3] = &unk_147A8;
-  v6 = a3;
-  v4 = v6;
+  callbackCopy = callback;
+  v4 = callbackCopy;
   [(CalendarBaseRequest *)self performRequestWithHandler:v5];
 }
 
@@ -84,8 +84,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) toDictionary];
-        [v4 addObject:v10];
+        toDictionary = [*(*(&v12 + 1) + 8 * i) toDictionary];
+        [v4 addObject:toDictionary];
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];

@@ -1,7 +1,7 @@
 @interface _NSPersonNameComponentsStyleFormatterShortNameSimpleFallback
 - (id)fallbackStyleFormatter;
 - (id)keysOfInterest;
-- (id)stringFromComponents:(id)a3 attributesByRange:(id)a4;
+- (id)stringFromComponents:(id)components attributesByRange:(id)range;
 @end
 
 @implementation _NSPersonNameComponentsStyleFormatterShortNameSimpleFallback
@@ -18,14 +18,14 @@
   return result;
 }
 
-- (id)stringFromComponents:(id)a3 attributesByRange:(id)a4
+- (id)stringFromComponents:(id)components attributesByRange:(id)range
 {
   if (![(_NSPersonNameComponentsStyleFormatter *)self fullComponentsAreValid:?])
   {
     return 0;
   }
 
-  v7 = [(_NSPersonNameComponentsStyleFormatter *)self _formattedStringFromOrderedKeys:[(_NSPersonNameComponentsStyleFormatter *)self _orderedNonEmptyKeysFromComponents:a3] components:a3 attributesByRange:a4];
+  v7 = [(_NSPersonNameComponentsStyleFormatter *)self _formattedStringFromOrderedKeys:[(_NSPersonNameComponentsStyleFormatter *)self _orderedNonEmptyKeysFromComponents:components] components:components attributesByRange:range];
   if (v7)
   {
     v8 = v7;
@@ -37,7 +37,7 @@
 
   v9 = [[_NSPersonNameComponentsStyleFormatterMedium alloc] initWithMasterFormatter:[(_NSPersonNameComponentsStyleFormatter *)self masterFormatter]];
 
-  return [(_NSPersonNameComponentsStyleFormatter *)v9 stringFromComponents:a3 attributesByRange:a4];
+  return [(_NSPersonNameComponentsStyleFormatter *)v9 stringFromComponents:components attributesByRange:range];
 }
 
 - (id)fallbackStyleFormatter

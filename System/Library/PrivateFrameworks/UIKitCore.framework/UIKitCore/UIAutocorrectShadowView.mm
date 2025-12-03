@@ -1,20 +1,20 @@
 @interface UIAutocorrectShadowView
-- (void)drawRect:(CGRect)a3;
-- (void)setEdgeType:(int)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setEdgeType:(int)type;
 @end
 
 @implementation UIAutocorrectShadowView
 
-- (void)setEdgeType:(int)a3
+- (void)setEdgeType:(int)type
 {
-  if (self->m_edgeType != a3)
+  if (self->m_edgeType != type)
   {
-    self->m_edgeType = a3;
+    self->m_edgeType = type;
     [(UIView *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   m_edgeType = self->m_edgeType;
   if (m_edgeType == 2)
@@ -27,7 +27,7 @@
     v4 = 8 * (m_edgeType == 1);
   }
 
-  [(UIView *)self bounds:a3.origin.x];
+  [(UIView *)self bounds:rect.origin.x];
   v26 = CGRectInset(v25, 8.0, 8.0);
   v27 = CGRectIntegral(v26);
   x = v27.origin.x;

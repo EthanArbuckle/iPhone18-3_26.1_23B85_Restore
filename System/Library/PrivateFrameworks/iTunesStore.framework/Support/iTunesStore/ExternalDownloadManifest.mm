@@ -1,13 +1,13 @@
 @interface ExternalDownloadManifest
-- (BOOL)_parsePropertyList:(id)a3;
-- (ExternalDownloadManifest)initWithPropertyList:(id)a3;
-- (ExternalDownloadManifest)initWithValidDownloads:(id)a3 invalidDownloads:(id)a4;
+- (BOOL)_parsePropertyList:(id)list;
+- (ExternalDownloadManifest)initWithPropertyList:(id)list;
+- (ExternalDownloadManifest)initWithValidDownloads:(id)downloads invalidDownloads:(id)invalidDownloads;
 - (void)dealloc;
 @end
 
 @implementation ExternalDownloadManifest
 
-- (ExternalDownloadManifest)initWithPropertyList:(id)a3
+- (ExternalDownloadManifest)initWithPropertyList:(id)list
 {
   v6.receiver = self;
   v6.super_class = ExternalDownloadManifest;
@@ -15,7 +15,7 @@
   if (v4)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![(ExternalDownloadManifest *)v4 _parsePropertyList:a3])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![(ExternalDownloadManifest *)v4 _parsePropertyList:list])
     {
 
       return 0;
@@ -25,15 +25,15 @@
   return v4;
 }
 
-- (ExternalDownloadManifest)initWithValidDownloads:(id)a3 invalidDownloads:(id)a4
+- (ExternalDownloadManifest)initWithValidDownloads:(id)downloads invalidDownloads:(id)invalidDownloads
 {
   v8.receiver = self;
   v8.super_class = ExternalDownloadManifest;
   v6 = [(ExternalDownloadManifest *)&v8 init];
   if (v6)
   {
-    v6->_invalidDownloads = [a4 copy];
-    v6->_validDownloads = [a3 copy];
+    v6->_invalidDownloads = [invalidDownloads copy];
+    v6->_validDownloads = [downloads copy];
   }
 
   return v6;
@@ -46,11 +46,11 @@
   [(ExternalDownloadManifest *)&v3 dealloc];
 }
 
-- (BOOL)_parsePropertyList:(id)a3
+- (BOOL)_parsePropertyList:(id)list
 {
   v35 = objc_alloc_init(NSMutableArray);
   v34 = objc_alloc_init(NSMutableArray);
-  v4 = [a3 objectForKey:@"items"];
+  v4 = [list objectForKey:@"items"];
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
@@ -87,10 +87,10 @@
               v15 = v9;
               v16 = v4;
               v17 = [LSApplicationProxy applicationProxyForIdentifier:v13];
-              v18 = [v17 isInstalled];
+              isInstalled = [v17 isInstalled];
               v19 = [objc_msgSend(v17 "applicationType")];
-              v20 = [v17 profileValidated];
-              if (!v18 || (v19 & v20 & 1) != 0)
+              profileValidated = [v17 profileValidated];
+              if (!isInstalled || (v19 & profileValidated & 1) != 0)
               {
                 v28 = [[Download alloc] initWithExternalManifestDictionary:v11];
                 if ([(Download *)v28 valueForProperty:@"download_state.download_error"])
@@ -119,15 +119,15 @@
                   v21 = +[SSLogConfig sharedConfig];
                 }
 
-                v22 = [v21 shouldLog];
+                shouldLog = [v21 shouldLog];
                 if ([v21 shouldLogToDisk])
                 {
-                  v23 = v22 | 2;
+                  v23 = shouldLog | 2;
                 }
 
                 else
                 {
-                  v23 = v22;
+                  v23 = shouldLog;
                 }
 
                 if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_ERROR))

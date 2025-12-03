@@ -1,27 +1,27 @@
 @interface CDFBetaDiagnostics
-- (BOOL)collectLogsFrom:(id)a3 to:(id)a4 runtimeFlags:(unint64_t)a5;
-- (BOOL)collectStateSnapshotsFrom:(id)a3 to:(id)a4 runtimeFlags:(unint64_t)a5;
-- (void)collectCCMetadataFrom:(id)a3 to:(id)a4;
-- (void)collectFWLogsFrom:(id)a3 to:(id)a4 runtimeFlags:(unint64_t)a5;
-- (void)collectTextLogsFrom:(id)a3 to:(id)a4;
+- (BOOL)collectLogsFrom:(id)from to:(id)to runtimeFlags:(unint64_t)flags;
+- (BOOL)collectStateSnapshotsFrom:(id)from to:(id)to runtimeFlags:(unint64_t)flags;
+- (void)collectCCMetadataFrom:(id)from to:(id)to;
+- (void)collectFWLogsFrom:(id)from to:(id)to runtimeFlags:(unint64_t)flags;
+- (void)collectTextLogsFrom:(id)from to:(id)to;
 @end
 
 @implementation CDFBetaDiagnostics
 
-- (BOOL)collectStateSnapshotsFrom:(id)a3 to:(id)a4 runtimeFlags:(unint64_t)a5
+- (BOOL)collectStateSnapshotsFrom:(id)from to:(id)to runtimeFlags:(unint64_t)flags
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  fromCopy = from;
+  toCopy = to;
   v10 = [&unk_28561CDE8 objectAtIndexedSubscript:3];
-  v11 = [v8 URLByAppendingPathComponent:v10 isDirectory:1];
+  v11 = [fromCopy URLByAppendingPathComponent:v10 isDirectory:1];
 
   v12 = [&unk_28561CDE8 objectAtIndexedSubscript:3];
-  v13 = [v9 URLByAppendingPathComponent:v12 isDirectory:1];
+  v13 = [toCopy URLByAppendingPathComponent:v12 isDirectory:1];
 
   v24.receiver = self;
   v24.super_class = CDFBetaDiagnostics;
-  v14 = [(CDFSubsystemDiagnostics *)&v24 collectStateSnapshotsFrom:v11 to:v13 runtimeFlags:a5];
+  v14 = [(CDFSubsystemDiagnostics *)&v24 collectStateSnapshotsFrom:v11 to:v13 runtimeFlags:flags];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v15 = "in";
@@ -37,10 +37,10 @@
     _os_log_impl(&dword_2433AC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "CDF: %s: transfer %{public}scomplete for subsystem logs", buf, 0x16u);
   }
 
-  v16 = [v8 lastPathComponent];
-  v17 = [CDFSubsystemDiagnostics isFatalCollection:v16];
+  lastPathComponent = [fromCopy lastPathComponent];
+  v17 = [CDFSubsystemDiagnostics isFatalCollection:lastPathComponent];
 
-  if (v17 && ((a5 & 2) != 0 || [(CDFSubsystemDiagnostics *)self buildEnv]== 2))
+  if (v17 && ((flags & 2) != 0 || [(CDFSubsystemDiagnostics *)self buildEnv]== 2))
   {
     v18 = [CDFSubsystemDiagnostics collectFilesWithRegex:@"^Crashlog\\.(BT2G|BT5G|BTLPS|BTMAIN|BTS)\\.bin(\\.synced)?$|^Crashlog\\.WDMAInfo\\.txt(\\.synced)?$" from:v11 to:v13];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -82,40 +82,40 @@
   return 1;
 }
 
-- (void)collectTextLogsFrom:(id)a3 to:(id)a4
+- (void)collectTextLogsFrom:(id)from to:(id)to
 {
-  v5 = a4;
-  v6 = a3;
+  toCopy = to;
+  fromCopy = from;
   v7 = [&unk_28561CDE8 objectAtIndexedSubscript:1];
-  v14 = [v6 URLByAppendingPathComponent:v7 isDirectory:1];
+  v14 = [fromCopy URLByAppendingPathComponent:v7 isDirectory:1];
 
   v8 = [&unk_28561CDE8 objectAtIndexedSubscript:1];
-  v9 = [v5 URLByAppendingPathComponent:v8 isDirectory:1];
+  v9 = [toCopy URLByAppendingPathComponent:v8 isDirectory:1];
 
   [CDFSubsystemDiagnostics collectFilesWithRegexes:&unk_28561CDA0 from:v14 to:v9 mostRecent:3];
   v10 = [&unk_28561CDE8 objectAtIndexedSubscript:2];
-  v11 = [v6 URLByAppendingPathComponent:v10 isDirectory:1];
+  v11 = [fromCopy URLByAppendingPathComponent:v10 isDirectory:1];
 
   v12 = [&unk_28561CDE8 objectAtIndexedSubscript:2];
-  v13 = [v5 URLByAppendingPathComponent:v12 isDirectory:1];
+  v13 = [toCopy URLByAppendingPathComponent:v12 isDirectory:1];
 
   [CDFSubsystemDiagnostics collectFilesWithRegexes:&unk_28561CDB8 from:v11 to:v13 mostRecent:3];
 }
 
-- (void)collectFWLogsFrom:(id)a3 to:(id)a4 runtimeFlags:(unint64_t)a5
+- (void)collectFWLogsFrom:(id)from to:(id)to runtimeFlags:(unint64_t)flags
 {
-  v5 = a5;
-  if ((a5 & 2) != 0)
+  flagsCopy = flags;
+  if ((flags & 2) != 0)
   {
-    v7 = a4;
-    v8 = a3;
+    toCopy = to;
+    fromCopy = from;
     v9 = [&unk_28561CDE8 objectAtIndexedSubscript:4];
-    v13 = [v8 URLByAppendingPathComponent:v9 isDirectory:1];
+    v13 = [fromCopy URLByAppendingPathComponent:v9 isDirectory:1];
 
     v10 = [&unk_28561CDE8 objectAtIndexedSubscript:4];
-    v11 = [v7 URLByAppendingPathComponent:v10 isDirectory:1];
+    v11 = [toCopy URLByAppendingPathComponent:v10 isDirectory:1];
 
-    if ((v5 & 0x100) != 0)
+    if ((flagsCopy & 0x100) != 0)
     {
       v12 = 20;
     }
@@ -129,35 +129,35 @@
   }
 }
 
-- (void)collectCCMetadataFrom:(id)a3 to:(id)a4
+- (void)collectCCMetadataFrom:(id)from to:(id)to
 {
-  v5 = a4;
-  v6 = a3;
+  toCopy = to;
+  fromCopy = from;
   v7 = [&unk_28561CDE8 objectAtIndexedSubscript:0];
-  v10 = [v6 URLByAppendingPathComponent:v7 isDirectory:1];
+  v10 = [fromCopy URLByAppendingPathComponent:v7 isDirectory:1];
 
   v8 = [&unk_28561CDE8 objectAtIndexedSubscript:0];
-  v9 = [v5 URLByAppendingPathComponent:v8 isDirectory:1];
+  v9 = [toCopy URLByAppendingPathComponent:v8 isDirectory:1];
 
   [CDFSubsystemDiagnostics collectFilesWithRegex:@"^(system|capture)\\.plist(\\.synced)?$" from:v10 to:v9];
 }
 
-- (BOOL)collectLogsFrom:(id)a3 to:(id)a4 runtimeFlags:(unint64_t)a5
+- (BOOL)collectLogsFrom:(id)from to:(id)to runtimeFlags:(unint64_t)flags
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!([(CDFSubsystemDiagnostics *)self buildEnv]| a5 & 2))
+  fromCopy = from;
+  toCopy = to;
+  if (!([(CDFSubsystemDiagnostics *)self buildEnv]| flags & 2))
   {
     goto LABEL_4;
   }
 
-  if ([CDFSubsystemDiagnostics createSubsystemDirectoryStructure:v8 outputDir:v9 subDirectoryList:&unk_28561CDE8])
+  if ([CDFSubsystemDiagnostics createSubsystemDirectoryStructure:fromCopy outputDir:toCopy subDirectoryList:&unk_28561CDE8])
   {
-    [(CDFBetaDiagnostics *)self collectStateSnapshotsFrom:v8 to:v9 runtimeFlags:a5];
-    [(CDFBetaDiagnostics *)self collectTextLogsFrom:v8 to:v9];
-    [(CDFBetaDiagnostics *)self collectCCMetadataFrom:v8 to:v9];
-    [(CDFBetaDiagnostics *)self collectFWLogsFrom:v8 to:v9 runtimeFlags:a5];
+    [(CDFBetaDiagnostics *)self collectStateSnapshotsFrom:fromCopy to:toCopy runtimeFlags:flags];
+    [(CDFBetaDiagnostics *)self collectTextLogsFrom:fromCopy to:toCopy];
+    [(CDFBetaDiagnostics *)self collectCCMetadataFrom:fromCopy to:toCopy];
+    [(CDFBetaDiagnostics *)self collectFWLogsFrom:fromCopy to:toCopy runtimeFlags:flags];
 LABEL_4:
     v10 = 1;
     goto LABEL_5;

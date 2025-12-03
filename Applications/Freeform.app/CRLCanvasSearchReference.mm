@@ -1,56 +1,56 @@
 @interface CRLCanvasSearchReference
-+ (id)searchReferenceWithBoardItem:(id)a3 searchCanvasDelegate:(id)a4;
-+ (id)searchReferenceWithBoardItem:(id)a3 selectionPath:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)searchReferenceWithBoardItem:(id)item searchCanvasDelegate:(id)delegate;
++ (id)searchReferenceWithBoardItem:(id)item selectionPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)connectionLineUnscaledPoint;
 - (CGPoint)searchReferencePoint;
 - (CGRect)searchReferenceLayoutFrame;
-- (CRLCanvasSearchReference)initWithBoardItem:(id)a3 selectionPath:(id)a4;
+- (CRLCanvasSearchReference)initWithBoardItem:(id)item selectionPath:(id)path;
 - (NSString)description;
-- (id)commandForReplacingWithString:(id)a3 options:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)commandForReplacingWithString:(id)string options:(unint64_t)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)model;
 - (id)selectionPath;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
 @end
 
 @implementation CRLCanvasSearchReference
 
-+ (id)searchReferenceWithBoardItem:(id)a3 searchCanvasDelegate:(id)a4
++ (id)searchReferenceWithBoardItem:(id)item searchCanvasDelegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CRLCanvasSearchReference alloc] initWithBoardItem:v6 selectionPath:0];
+  delegateCopy = delegate;
+  itemCopy = item;
+  v7 = [[CRLCanvasSearchReference alloc] initWithBoardItem:itemCopy selectionPath:0];
 
-  v8 = [v5 selectionPathForSearchReference:v7];
+  v8 = [delegateCopy selectionPathForSearchReference:v7];
 
   [(CRLCanvasSearchReference *)v7 setSelectionPath:v8];
 
   return v7;
 }
 
-+ (id)searchReferenceWithBoardItem:(id)a3 selectionPath:(id)a4
++ (id)searchReferenceWithBoardItem:(id)item selectionPath:(id)path
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CRLCanvasSearchReference alloc] initWithBoardItem:v6 selectionPath:v5];
+  pathCopy = path;
+  itemCopy = item;
+  v7 = [[CRLCanvasSearchReference alloc] initWithBoardItem:itemCopy selectionPath:pathCopy];
 
   return v7;
 }
 
-- (CRLCanvasSearchReference)initWithBoardItem:(id)a3 selectionPath:(id)a4
+- (CRLCanvasSearchReference)initWithBoardItem:(id)item selectionPath:(id)path
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = CRLCanvasSearchReference;
   v9 = [(CRLCanvasSearchReference *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mBoardItem, a3);
-    objc_storeStrong(&v10->mSelectionPath, a4);
+    objc_storeStrong(&v9->mBoardItem, item);
+    objc_storeStrong(&v10->mSelectionPath, path);
     v10->mRootIndex = 0x7FFFFFFFFFFFFFFFLL;
     v11 = +[NSUUID UUID];
     mUuid = v10->mUuid;
@@ -62,27 +62,27 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRLCanvasSearchReference *)self boardItem];
-  v4 = [v3 hash];
-  v5 = [(CRLCanvasSearchReference *)self uuid];
-  v6 = [v5 hash];
+  boardItem = [(CRLCanvasSearchReference *)self boardItem];
+  v4 = [boardItem hash];
+  uuid = [(CRLCanvasSearchReference *)self uuid];
+  v6 = [uuid hash];
 
   return v4 + v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CRLCanvasSearchReference *)self boardItem];
-    v6 = [v4 boardItem];
-    if ([v5 isEqual:v6])
+    boardItem = [(CRLCanvasSearchReference *)self boardItem];
+    boardItem2 = [equalCopy boardItem];
+    if ([boardItem isEqual:boardItem2])
     {
-      v7 = [(CRLCanvasSearchReference *)self uuid];
-      v8 = [v4 uuid];
-      v9 = [v7 isEqual:v8];
+      uuid = [(CRLCanvasSearchReference *)self uuid];
+      uuid2 = [equalCopy uuid];
+      v9 = [uuid isEqual:uuid2];
     }
 
     else
@@ -99,31 +99,31 @@
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(CRLCanvasSearchReference *)self searchReferencePoint];
   v6 = v5;
-  [v4 searchReferencePoint];
+  [compareCopy searchReferencePoint];
   v8 = v7;
   [(CRLCanvasSearchReference *)self searchReferencePoint];
   v10 = v9;
   v12 = v11;
-  [v4 searchReferencePoint];
+  [compareCopy searchReferencePoint];
   if (v6 == v8)
   {
     if (v10 == v13)
     {
-      v23 = [(CRLCanvasSearchReference *)self uuid];
-      v24 = [v4 uuid];
-      v21 = [v23 compare:v24];
+      uuid = [(CRLCanvasSearchReference *)self uuid];
+      uuid2 = [compareCopy uuid];
+      v21 = [uuid compare:uuid2];
 
       goto LABEL_11;
     }
 
     [(CRLCanvasSearchReference *)self searchReferencePoint];
     v18 = v17;
-    [v4 searchReferencePoint];
+    [compareCopy searchReferencePoint];
     v15 = v18 < v19;
     v16 = v18 <= v19;
   }
@@ -154,19 +154,19 @@ LABEL_11:
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(CRLCanvasSearchReference *)self boardItem];
+  boardItem = [(CRLCanvasSearchReference *)self boardItem];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(CRLCanvasSearchReference *)self boardItem];
+  boardItem2 = [(CRLCanvasSearchReference *)self boardItem];
   v9 = NSStringFromCGPoint(self->mSearchReferencePoint);
-  v10 = [NSString stringWithFormat:@"<%@ %p info=<%@ %p>, frame=<%@>", v4, self, v7, v8, v9];
+  v10 = [NSString stringWithFormat:@"<%@ %p info=<%@ %p>, frame=<%@>", v4, self, v7, boardItem2, v9];
 
   return v10;
 }
 
-- (id)commandForReplacingWithString:(id)a3 options:(unint64_t)a4
+- (id)commandForReplacingWithString:(id)string options:(unint64_t)options
 {
-  [CRLAssertionHandler _atomicIncrementAssertCount:a3];
+  [CRLAssertionHandler _atomicIncrementAssertCount:string];
   if (qword_101AD5A10 != -1)
   {
     sub_10139C698();
@@ -197,8 +197,8 @@ LABEL_11:
 
 - (id)model
 {
-  v2 = [(CRLCanvasSearchReference *)self boardItem];
-  v9 = sub_1003035DC(v2, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLModel);
+  boardItem = [(CRLCanvasSearchReference *)self boardItem];
+  v9 = sub_1003035DC(boardItem, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLModel);
 
   return v9;
 }
@@ -240,7 +240,7 @@ LABEL_11:
   return mSelectionPath;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CRLCanvasSearchReference alloc] initWithBoardItem:self->mBoardItem selectionPath:self->mSelectionPath];
   [(CRLCanvasSearchReference *)self searchReferencePoint];

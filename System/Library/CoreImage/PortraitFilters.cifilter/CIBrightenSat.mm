@@ -74,7 +74,7 @@
     return 0;
   }
 
-  v4 = [(CIBrightenSat *)self _brightenSat];
+  _brightenSat = [(CIBrightenSat *)self _brightenSat];
   [(NSNumber *)self->inputPShift floatValue];
   v6 = v5;
   [(NSNumber *)self->inputTShift floatValue];
@@ -94,7 +94,7 @@
   v21[4] = [NSNumber numberWithFloat:v10];
   LODWORD(v19) = v8;
   v21[5] = [NSNumber numberWithFloat:v19];
-  return [v4 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v21, 6), v11, v13, v15, v17}];
+  return [_brightenSat applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v21, 6), v11, v13, v15, v17}];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface FedStatsPluginUserProofingConsentChecker
-- (id)checkConsentForClientIdentifier:(id)a3 error:(id *)a4;
+- (id)checkConsentForClientIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation FedStatsPluginUserProofingConsentChecker
 
-- (id)checkConsentForClientIdentifier:(id)a3 error:(id *)a4
+- (id)checkConsentForClientIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  if ([&unk_285E17A70 containsObject:v5])
+  identifierCopy = identifier;
+  if ([&unk_285E17A70 containsObject:identifierCopy])
   {
     v6 = +[FedStatsPluginLog logger];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -42,9 +42,9 @@
     if (dispatch_semaphore_wait(v9, v10))
     {
       v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"User consent check failed after %u seconds", 15, v15, v16, v17, v18];
-      if (a4)
+      if (error)
       {
-        *a4 = [FedStatsPluginError errorWithCode:300 description:v11];
+        *error = [FedStatsPluginError errorWithCode:300 description:v11];
       }
 
       v12 = 0;
@@ -53,9 +53,9 @@
     else
     {
       v13 = v29[5];
-      if (a4 && !v13)
+      if (error && !v13)
       {
-        *a4 = [FedStatsPluginError errorWithCode:300 underlyingError:v23[5] description:@"Cannot access CoreIDVUI consent manager"];
+        *error = [FedStatsPluginError errorWithCode:300 underlyingError:v23[5] description:@"Cannot access CoreIDVUI consent manager"];
         v13 = v29[5];
       }
 

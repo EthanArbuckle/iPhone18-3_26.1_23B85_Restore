@@ -1,23 +1,23 @@
 @interface SearchResultBackgroundView
-- (_TtC22SubscribePageExtension26SearchResultBackgroundView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (_TtC22SubscribePageExtension26SearchResultBackgroundView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation SearchResultBackgroundView
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001C3A44(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  sub_1001C3A44(attributesCopy);
 }
 
-- (_TtC22SubscribePageExtension26SearchResultBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension26SearchResultBackgroundView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension26SearchResultBackgroundView_borderColor) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension26SearchResultBackgroundView_backgroundGradientColors) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension26SearchResultBackgroundView_gradientLayer) = 0;

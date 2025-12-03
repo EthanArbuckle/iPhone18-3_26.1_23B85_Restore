@@ -1,20 +1,20 @@
 @interface VCDisplayLink
 - (BOOL)activate;
 - (BOOL)ensureDisplayIsReady;
-- (VCDisplayLink)initWithHandler:(id)a3 preferredFrameRate:(float)a4;
-- (VCDisplayLink)initWithHandler:(id)a3 threadPriority:(unsigned int)a4 threadOptions:(unsigned int)a5 threadIdentifier:(id)a6 preferredFrameRate:(float)a7;
+- (VCDisplayLink)initWithHandler:(id)handler preferredFrameRate:(float)rate;
+- (VCDisplayLink)initWithHandler:(id)handler threadPriority:(unsigned int)priority threadOptions:(unsigned int)options threadIdentifier:(id)identifier preferredFrameRate:(float)rate;
 - (void)activate;
 - (void)deactivate;
 - (void)dealloc;
-- (void)displayLinkTick:(id)a3;
+- (void)displayLinkTick:(id)tick;
 - (void)handleWaitToRunTimeout;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)runDisplayLinkThreadWithStopRequested:(BOOL *)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)runDisplayLinkThreadWithStopRequested:(BOOL *)requested;
 @end
 
 @implementation VCDisplayLink
 
-- (VCDisplayLink)initWithHandler:(id)a3 preferredFrameRate:(float)a4
+- (VCDisplayLink)initWithHandler:(id)handler preferredFrameRate:(float)rate
 {
   v19 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
@@ -43,13 +43,13 @@
     }
   }
 
-  if (!a3)
+  if (!handler)
   {
     [VCDisplayLink initWithHandler:v6 preferredFrameRate:buf];
     return *buf;
   }
 
-  v6->_handler = _Block_copy(a3);
+  v6->_handler = _Block_copy(handler);
   v9 = [MEMORY[0x1E6979330] displayLinkWithTarget:v6 selector:sel_displayLinkTick_];
   v6->_caDisplayLink = v9;
   if (!v9)
@@ -58,9 +58,9 @@
     return *buf;
   }
 
-  if (a4 != 0.0)
+  if (rate != 0.0)
   {
-    v20 = CAFrameRateRangeMake(a4, a4, a4);
+    v20 = CAFrameRateRangeMake(rate, rate, rate);
     [(CADisplayLink *)v6->_caDisplayLink setPreferredFrameRateRange:*&v20.minimum, *&v20.maximum, *&v20.preferred];
   }
 
@@ -84,8 +84,8 @@
   if (!thread)
   {
     caDisplayLink = self->_caDisplayLink;
-    v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(CADisplayLink *)caDisplayLink addToRunLoop:v7 forMode:*MEMORY[0x1E695D918]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(CADisplayLink *)caDisplayLink addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695D918]];
 LABEL_7:
     v5 = 1;
     goto LABEL_8;
@@ -129,10 +129,10 @@ LABEL_8:
     [(CADisplayLink *)self->_caDisplayLink invalidate];
     if (self->_thread)
     {
-      v3 = [(NSRunLoop *)self->_runLoop getCFRunLoop];
-      if (v3)
+      getCFRunLoop = [(NSRunLoop *)self->_runLoop getCFRunLoop];
+      if (getCFRunLoop)
       {
-        CFRunLoopStop(v3);
+        CFRunLoopStop(getCFRunLoop);
       }
 
       VCRealTimeThread_Finalize(self->_thread);
@@ -166,7 +166,7 @@ LABEL_8:
       v12 = 1024;
       v13 = 182;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d dealloc VCDisplayLink[%p]", buf, 0x26u);
     }
   }
@@ -191,7 +191,7 @@ LABEL_8:
   [(VCObject *)&v7 dealloc];
 }
 
-- (void)runDisplayLinkThreadWithStopRequested:(BOOL *)a3
+- (void)runDisplayLinkThreadWithStopRequested:(BOOL *)requested
 {
   v19 = *MEMORY[0x1E69E9840];
   if (self->_state == 2)
@@ -207,9 +207,9 @@ LABEL_8:
     if (v6)
     {
       v7 = v6;
-      v8 = [(NSRunLoop *)self->_runLoop getCFRunLoop];
+      getCFRunLoop = [(NSRunLoop *)self->_runLoop getCFRunLoop];
       v9 = *MEMORY[0x1E695E8E0];
-      CFRunLoopAddObserver(v8, v7, *MEMORY[0x1E695E8E0]);
+      CFRunLoopAddObserver(getCFRunLoop, v7, *MEMORY[0x1E695E8E0]);
       [(CADisplayLink *)self->_caDisplayLink addToRunLoop:self->_runLoop forMode:*MEMORY[0x1E695D918]];
       CFRunLoopRun();
       CFRunLoopRemoveObserver([(NSRunLoop *)self->_runLoop getCFRunLoop], v7, v9);
@@ -250,24 +250,24 @@ LABEL_8:
     }
   }
 
-  *a3 = 1;
+  *requested = 1;
 }
 
-- (void)displayLinkTick:(id)a3
+- (void)displayLinkTick:(id)tick
 {
   if (self->_handler)
   {
-    [a3 timestamp];
-    [a3 targetTimestamp];
-    [a3 duration];
+    [tick timestamp];
+    [tick targetTimestamp];
+    [tick duration];
     (*(self->_handler + 2))();
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ([a3 isEqualToString:{@"refreshRate", a4, a5, a6}])
+  if ([path isEqualToString:{@"refreshRate", object, change, context}])
   {
     [-[CADisplayLink display](self->_caDisplayLink "display")];
     v8 = v7;
@@ -315,17 +315,17 @@ LABEL_8:
   }
 }
 
-- (VCDisplayLink)initWithHandler:(id)a3 threadPriority:(unsigned int)a4 threadOptions:(unsigned int)a5 threadIdentifier:(id)a6 preferredFrameRate:(float)a7
+- (VCDisplayLink)initWithHandler:(id)handler threadPriority:(unsigned int)priority threadOptions:(unsigned int)options threadIdentifier:(id)identifier preferredFrameRate:(float)rate
 {
   v22 = *MEMORY[0x1E69E9840];
-  v10 = [(VCDisplayLink *)self initWithHandler:a3 preferredFrameRate:?];
+  v10 = [(VCDisplayLink *)self initWithHandler:handler preferredFrameRate:?];
   if (v10)
   {
     v11 = dispatch_semaphore_create(0);
     v10->_waitToRunSemaphore = v11;
     if (v11)
     {
-      v12 = VCRealTimeThread_Initialize(a4, _VCDisplayLinkThread, v10, [a6 UTF8String], a5);
+      v12 = VCRealTimeThread_Initialize(priority, _VCDisplayLinkThread, v10, [identifier UTF8String], options);
       v10->_thread = v12;
       if (v12)
       {
@@ -488,7 +488,7 @@ LABEL_8:
 
 - (void)activate
 {
-  *a1 = 1;
+  *self = 1;
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
     VRTraceErrorLogLevelToCSTR();

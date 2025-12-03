@@ -1,13 +1,13 @@
 @interface CCDatabaseUpdate
-+ (id)builderWithTableName:(id)a3;
++ (id)builderWithTableName:(id)name;
 @end
 
 @implementation CCDatabaseUpdate
 
-+ (id)builderWithTableName:(id)a3
++ (id)builderWithTableName:(id)name
 {
-  v3 = a3;
-  v4 = [[CCDatabaseUpdateBuilder alloc] initWithTableName:v3];
+  nameCopy = name;
+  v4 = [[CCDatabaseUpdateBuilder alloc] initWithTableName:nameCopy];
 
   return v4;
 }

@@ -1,9 +1,9 @@
 @interface ChangeAlarmStatusIntentResponse
 - (ChangeAlarmStatusIntentResponse)init;
-- (ChangeAlarmStatusIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (ChangeAlarmStatusIntentResponse)initWithPropertiesByName:(id)a3;
+- (ChangeAlarmStatusIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity;
+- (ChangeAlarmStatusIntentResponse)initWithPropertiesByName:(id)name;
 - (int64_t)code;
-- (void)setCode:(int64_t)a3;
+- (void)setCode:(int64_t)code;
 @end
 
 @implementation ChangeAlarmStatusIntentResponse
@@ -15,22 +15,22 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setCode:(int64_t)a3
+- (void)setCode:(int64_t)code
 {
   v5 = OBJC_IVAR___ChangeAlarmStatusIntentResponse_code;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
+  *(&self->super.super.isa + v5) = code;
 }
 
-- (ChangeAlarmStatusIntentResponse)initWithCode:(int64_t)a3 userActivity:(id)a4
+- (ChangeAlarmStatusIntentResponse)initWithCode:(int64_t)code userActivity:(id)activity
 {
-  v6 = a4;
+  activityCopy = activity;
   v7 = [(ChangeAlarmStatusIntentResponse *)self init];
   v8 = OBJC_IVAR___ChangeAlarmStatusIntentResponse_code;
   swift_beginAccess();
-  *(&v7->super.super.isa + v8) = a3;
+  *(&v7->super.super.isa + v8) = code;
   v9 = v7;
-  [(ChangeAlarmStatusIntentResponse *)v9 setUserActivity:v6];
+  [(ChangeAlarmStatusIntentResponse *)v9 setUserActivity:activityCopy];
 
   return v9;
 }
@@ -43,9 +43,9 @@
   return [(ChangeAlarmStatusIntentResponse *)&v3 init];
 }
 
-- (ChangeAlarmStatusIntentResponse)initWithPropertiesByName:(id)a3
+- (ChangeAlarmStatusIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_2692C77E0();
   }

@@ -1,50 +1,50 @@
 @interface PKAccountBillPaymentAmountDescriptionView
 - (BOOL)_isEnteredAmountValid;
-- (BOOL)_shouldShakeWithNewAmount:(id)a3;
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5;
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKAccountBillPaymentAmountDescriptionView)initWithSuggestedAmountList:(id)a3 account:(id)a4 configuration:(id)a5 delegate:(id)a6;
+- (BOOL)_shouldShakeWithNewAmount:(id)amount;
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKAccountBillPaymentAmountDescriptionView)initWithSuggestedAmountList:(id)list account:(id)account configuration:(id)configuration delegate:(id)delegate;
 - (PKAccountBillPaymentAmountDescriptionViewDelegate)delegate;
 - (id)_keypadSuggestions;
 - (id)_suggestedAmountDescriptionAttributedString;
-- (void)_enteredAmountDidChangeTo:(id)a3;
+- (void)_enteredAmountDidChangeTo:(id)to;
 - (void)_updateDescriptionAlpha;
-- (void)_updateEnteredAmount:(id)a3;
+- (void)_updateEnteredAmount:(id)amount;
 - (void)dismissKeyboard;
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3;
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount;
 - (void)layoutSubviews;
 - (void)normalizeEnteredAmount;
-- (void)numberPadSuggestionsView:(id)a3 didSelectSuggestion:(id)a4;
-- (void)setDescriptionText:(id)a3;
-- (void)setShowAmount:(BOOL)a3;
-- (void)setShowDescriptionLabels:(BOOL)a3;
-- (void)setShowDescriptionSubtitle:(BOOL)a3;
-- (void)setTitleText:(id)a3;
+- (void)numberPadSuggestionsView:(id)view didSelectSuggestion:(id)suggestion;
+- (void)setDescriptionText:(id)text;
+- (void)setShowAmount:(BOOL)amount;
+- (void)setShowDescriptionLabels:(BOOL)labels;
+- (void)setShowDescriptionSubtitle:(BOOL)subtitle;
+- (void)setTitleText:(id)text;
 - (void)showKeyboard;
 @end
 
 @implementation PKAccountBillPaymentAmountDescriptionView
 
-- (PKAccountBillPaymentAmountDescriptionView)initWithSuggestedAmountList:(id)a3 account:(id)a4 configuration:(id)a5 delegate:(id)a6
+- (PKAccountBillPaymentAmountDescriptionView)initWithSuggestedAmountList:(id)list account:(id)account configuration:(id)configuration delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  listCopy = list;
+  accountCopy = account;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v54.receiver = self;
   v54.super_class = PKAccountBillPaymentAmountDescriptionView;
   v15 = [(PKAccountBillPaymentAmountDescriptionView *)&v54 init];
   v16 = v15;
   if (v15)
   {
-    v43 = v13;
-    v45 = v12;
-    v47 = v11;
-    objc_storeWeak(&v15->_delegate, v14);
-    objc_storeStrong(&v16->_suggestionList, a3);
-    objc_storeStrong(&v16->_account, a4);
-    objc_storeStrong(&v16->_configuration, a5);
+    v43 = configurationCopy;
+    v45 = accountCopy;
+    v47 = listCopy;
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(&v16->_suggestionList, list);
+    objc_storeStrong(&v16->_account, account);
+    objc_storeStrong(&v16->_configuration, configuration);
     v16->_showDescriptionLabels = 1;
     v16->_showDescriptionSubtitle = 1;
     v17 = PKLocalizedFeatureString();
@@ -69,7 +69,7 @@
         v23 = 1;
       }
 
-      [(UILabel *)v22 setTextAlignment:v23, v13, v12, v11];
+      [(UILabel *)v22 setTextAlignment:v23, configurationCopy, accountCopy, listCopy];
       v26 = v16->_suggestedAmountTitleLabel;
       v24 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38], 0x8000, 0, *MEMORY[0x1E69DB980]);
       v25 = v26;
@@ -97,17 +97,17 @@
     [(UITextView *)v16->_suggestedAmountDescriptionView setTextContainerInset:*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)];
     [(UITextView *)v16->_suggestedAmountDescriptionView setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
     v29 = [PKAccountBillPaymentAmountContainerView alloc];
-    v30 = [(PKBillPaymentSuggestedAmountList *)v16->_suggestionList currencyCode];
-    v31 = [(PKAccountBillPaymentAmountContainerView *)v29 initWithCurrencyCode:v30 minimumAmount:v16->_minimumAmount];
+    currencyCode = [(PKBillPaymentSuggestedAmountList *)v16->_suggestionList currencyCode];
+    v31 = [(PKAccountBillPaymentAmountContainerView *)v29 initWithCurrencyCode:currencyCode minimumAmount:v16->_minimumAmount];
     amountContainerView = v16->_amountContainerView;
     v16->_amountContainerView = v31;
 
-    v33 = [(PKAccountBillPaymentAmountDescriptionView *)v16 _enterCurrencyAmountView];
-    [v33 setDelegate:v16];
-    v34 = [(PKAccountBillPaymentAmountDescriptionView *)v16 _keypadSuggestions];
+    _enterCurrencyAmountView = [(PKAccountBillPaymentAmountDescriptionView *)v16 _enterCurrencyAmountView];
+    [_enterCurrencyAmountView setDelegate:v16];
+    _keypadSuggestions = [(PKAccountBillPaymentAmountDescriptionView *)v16 _keypadSuggestions];
     if (_UISolariumFeatureFlagEnabled())
     {
-      [v33 setAmountSuggestions:v34];
+      [_enterCurrencyAmountView setAmountSuggestions:_keypadSuggestions];
       objc_initWeak(&location, v16);
       v35 = MEMORY[0x1E69DC628];
       v51[0] = MEMORY[0x1E69E9820];
@@ -127,9 +127,9 @@
 
     else
     {
-      v39 = [[PKNumberPadSuggestionsView alloc] initWithDefaultFrame];
+      initWithDefaultFrame = [[PKNumberPadSuggestionsView alloc] initWithDefaultFrame];
       suggestionView = v16->_suggestionView;
-      v16->_suggestionView = v39;
+      v16->_suggestionView = initWithDefaultFrame;
 
       [(PKNumberPadSuggestionsView *)v16->_suggestionView setDelegate:v16];
       v41 = v16->_suggestionView;
@@ -137,9 +137,9 @@
       v49[1] = 3221225472;
       v49[2] = __104__PKAccountBillPaymentAmountDescriptionView_initWithSuggestedAmountList_account_configuration_delegate___block_invoke_2;
       v49[3] = &unk_1E8013EC0;
-      v50 = v34;
+      v50 = _keypadSuggestions;
       [(PKNumberPadSuggestionsView *)v41 performBatchUpdates:v49];
-      [v33 setInputAccessoryView:v16->_suggestionView];
+      [_enterCurrencyAmountView setInputAccessoryView:v16->_suggestionView];
     }
 
     [(PKAccountBillPaymentAmountDescriptionView *)v16 addSubview:v16->_suggestedAmountTitleLabel];
@@ -147,9 +147,9 @@
     [(PKAccountBillPaymentAmountDescriptionView *)v16 addSubview:v16->_amountContainerView];
     [(PKAccountBillPaymentAmountDescriptionView *)v16 setAccessibilityIdentifier:*MEMORY[0x1E69B96F0]];
 
-    v12 = v46;
-    v11 = v48;
-    v13 = v44;
+    accountCopy = v46;
+    listCopy = v48;
+    configurationCopy = v44;
   }
 
   return v16;
@@ -250,13 +250,13 @@ void __104__PKAccountBillPaymentAmountDescriptionView_initWithSuggestedAmountLis
   [(UIButton *)self->_learnMoreButton setFrame:v29, CGRectGetMaxY(v41) + 10.0, v31, v33];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v5 = 0.0;
   if (self->_showDescriptionLabels)
   {
-    [(UILabel *)self->_suggestedAmountTitleLabel sizeThatFits:a3.width, 1.79769313e308];
+    [(UILabel *)self->_suggestedAmountTitleLabel sizeThatFits:fits.width, 1.79769313e308];
     v5 = v6 + 0.0;
     if (self->_showDescriptionSubtitle)
     {
@@ -293,18 +293,18 @@ void __104__PKAccountBillPaymentAmountDescriptionView_initWithSuggestedAmountLis
   return result;
 }
 
-- (void)numberPadSuggestionsView:(id)a3 didSelectSuggestion:(id)a4
+- (void)numberPadSuggestionsView:(id)view didSelectSuggestion:(id)suggestion
 {
-  v6 = [a4 value];
-  [(PKAccountBillPaymentAmountDescriptionView *)self _updateEnteredAmount:v6];
-  if ([(PKAccountBillPaymentAmountDescriptionView *)self _shouldShakeWithNewAmount:v6])
+  value = [suggestion value];
+  [(PKAccountBillPaymentAmountDescriptionView *)self _updateEnteredAmount:value];
+  if ([(PKAccountBillPaymentAmountDescriptionView *)self _shouldShakeWithNewAmount:value])
   {
-    v5 = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
-    [v5 pkui_smallShakeWithCompletion:0];
+    _enterCurrencyAmountView = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
+    [_enterCurrencyAmountView pkui_smallShakeWithCompletion:0];
   }
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5 interaction:(int64_t)a6
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range interaction:(int64_t)interaction
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained billPaymentAmountDescriptionViewHasTappedLearnMore:self];
@@ -312,26 +312,26 @@ void __104__PKAccountBillPaymentAmountDescriptionView_initWithSuggestedAmountLis
   return 0;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleText, a3);
+    objc_storeStrong(&self->_titleText, text);
     [(UILabel *)self->_suggestedAmountTitleLabel setText:self->_titleText];
     [(PKAccountBillPaymentAmountDescriptionView *)self setNeedsLayout];
   }
 }
 
-- (void)setDescriptionText:(id)a3
+- (void)setDescriptionText:(id)text
 {
-  v13 = a3;
-  v4 = v13;
+  textCopy = text;
+  v4 = textCopy;
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    if ([(NSString *)v13 length])
+    if ([(NSString *)textCopy length])
     {
-      v5 = [(NSString *)v13 stringByAppendingFormat:@" %@", self->_learnMoreString];
+      v5 = [(NSString *)textCopy stringByAppendingFormat:@" %@", self->_learnMoreString];
     }
 
     else
@@ -365,8 +365,8 @@ void __104__PKAccountBillPaymentAmountDescriptionView_initWithSuggestedAmountLis
 LABEL_13:
     objc_storeStrong(&self->_descriptionText, v4);
     suggestedAmountDescriptionView = self->_suggestedAmountDescriptionView;
-    v12 = [(PKAccountBillPaymentAmountDescriptionView *)self _suggestedAmountDescriptionAttributedString];
-    [(UITextView *)suggestedAmountDescriptionView setAttributedText:v12];
+    _suggestedAmountDescriptionAttributedString = [(PKAccountBillPaymentAmountDescriptionView *)self _suggestedAmountDescriptionAttributedString];
+    [(UITextView *)suggestedAmountDescriptionView setAttributedText:_suggestedAmountDescriptionAttributedString];
 
     [(PKAccountBillPaymentAmountDescriptionView *)self setNeedsLayout];
   }
@@ -393,12 +393,12 @@ LABEL_14:
     {
       v9 = [(NSString *)self->_descriptionText rangeOfString:self->_learnMoreString];
       v11 = v10;
-      v12 = [MEMORY[0x1E69DC888] linkColor];
-      [v8 pk_addLinkURL:v4 toRange:v9 withColor:v11 isUnderlined:{v12, 0}];
+      linkColor = [MEMORY[0x1E69DC888] linkColor];
+      [v8 pk_addLinkURL:v4 toRange:v9 withColor:v11 isUnderlined:{linkColor, 0}];
     }
 
-    v13 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v14 = [v13 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v14 = [defaultParagraphStyle mutableCopy];
 
     [v14 setLineBreakMode:0];
     [v14 setAlignment:PKOBKTextAlignment()];
@@ -412,8 +412,8 @@ LABEL_14:
 
     [v8 addAttribute:*MEMORY[0x1E69DB688] value:v14 range:{0, v3}];
     v17 = *MEMORY[0x1E69DB650];
-    v18 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v8 addAttribute:v17 value:v18 range:{0, v3}];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v8 addAttribute:v17 value:secondaryLabelColor range:{0, v3}];
 
     [v8 addAttribute:*MEMORY[0x1E69DB648] value:v7 range:{0, v3}];
   }
@@ -426,29 +426,29 @@ LABEL_14:
   return v8;
 }
 
-- (void)setShowAmount:(BOOL)a3
+- (void)setShowAmount:(BOOL)amount
 {
-  [(PKAccountBillPaymentAmountContainerView *)self->_amountContainerView setShowAmount:a3];
+  [(PKAccountBillPaymentAmountContainerView *)self->_amountContainerView setShowAmount:amount];
 
   [(PKAccountBillPaymentAmountDescriptionView *)self setNeedsLayout];
 }
 
-- (void)setShowDescriptionLabels:(BOOL)a3
+- (void)setShowDescriptionLabels:(BOOL)labels
 {
-  if (self->_showDescriptionLabels == !a3)
+  if (self->_showDescriptionLabels == !labels)
   {
-    self->_showDescriptionLabels = a3;
+    self->_showDescriptionLabels = labels;
     [(PKAccountBillPaymentAmountDescriptionView *)self _updateDescriptionAlpha];
 
     [(PKAccountBillPaymentAmountDescriptionView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowDescriptionSubtitle:(BOOL)a3
+- (void)setShowDescriptionSubtitle:(BOOL)subtitle
 {
-  if (self->_showDescriptionSubtitle == !a3)
+  if (self->_showDescriptionSubtitle == !subtitle)
   {
-    self->_showDescriptionSubtitle = a3;
+    self->_showDescriptionSubtitle = subtitle;
     [(PKAccountBillPaymentAmountDescriptionView *)self _updateDescriptionAlpha];
 
     [(PKAccountBillPaymentAmountDescriptionView *)self setNeedsLayout];
@@ -477,19 +477,19 @@ LABEL_14:
 
 - (void)showKeyboard
 {
-  v2 = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
-  [v2 showKeyboard];
+  _enterCurrencyAmountView = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
+  [_enterCurrencyAmountView showKeyboard];
 }
 
 - (void)dismissKeyboard
 {
-  v2 = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
-  [v2 dismissKeyboard];
+  _enterCurrencyAmountView = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
+  [_enterCurrencyAmountView dismissKeyboard];
 }
 
 - (void)normalizeEnteredAmount
 {
-  v8 = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
+  _enterCurrencyAmountView = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
   v3 = self->_enteredAmount;
   p_maximumAmount = &self->_maximumAmount;
   maximumAmount = self->_maximumAmount;
@@ -501,26 +501,26 @@ LABEL_14:
   }
 
   [(PKAccountBillPaymentAmountDescriptionView *)self _updateEnteredAmount:v3];
-  [v8 setCurrentAmount:v3 forceFormatForDisplay:1];
+  [_enterCurrencyAmountView setCurrentAmount:v3 forceFormatForDisplay:1];
 }
 
-- (BOOL)enterCurrencyAmountView:(id)a3 shouldChangeAmountFrom:(id)a4 to:(id)a5
+- (BOOL)enterCurrencyAmountView:(id)view shouldChangeAmountFrom:(id)from to:(id)to
 {
-  v7 = a4;
-  v8 = a5;
-  if ([(PKAccountBillPaymentAmountDescriptionView *)self _shouldShakeWithNewAmount:v8])
+  fromCopy = from;
+  toCopy = to;
+  if ([(PKAccountBillPaymentAmountDescriptionView *)self _shouldShakeWithNewAmount:toCopy])
   {
-    v9 = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
-    [v9 pkui_smallShakeWithCompletion:0];
+    _enterCurrencyAmountView = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
+    [_enterCurrencyAmountView pkui_smallShakeWithCompletion:0];
   }
 
-  if (self->_minimumAmount && [v7 compare:?] == -1 && objc_msgSend(v8, "compare:", self->_minimumAmount) == -1)
+  if (self->_minimumAmount && [fromCopy compare:?] == -1 && objc_msgSend(toCopy, "compare:", self->_minimumAmount) == -1)
   {
-    v13 = [MEMORY[0x1E696AB90] zero];
-    if ([v7 compare:v13])
+    zero = [MEMORY[0x1E696AB90] zero];
+    if ([fromCopy compare:zero])
     {
-      v14 = [MEMORY[0x1E696AB90] zero];
-      v15 = [v8 compare:v14];
+      zero2 = [MEMORY[0x1E696AB90] zero];
+      v15 = [toCopy compare:zero2];
 
       if (v15)
       {
@@ -535,44 +535,44 @@ LABEL_14:
   }
 
   maximumAmount = self->_maximumAmount;
-  v11 = !maximumAmount || [(NSDecimalNumber *)maximumAmount compare:v7]!= NSOrderedAscending || [(NSDecimalNumber *)self->_maximumAmount compare:v8]!= NSOrderedAscending;
+  v11 = !maximumAmount || [(NSDecimalNumber *)maximumAmount compare:fromCopy]!= NSOrderedAscending || [(NSDecimalNumber *)self->_maximumAmount compare:toCopy]!= NSOrderedAscending;
 LABEL_10:
 
   return v11;
 }
 
-- (void)enterCurrencyAmountViewDidChangeAmount:(id)a3
+- (void)enterCurrencyAmountViewDidChangeAmount:(id)amount
 {
-  v4 = [a3 currentAmount];
+  currentAmount = [amount currentAmount];
   enteredAmount = self->_enteredAmount;
-  self->_enteredAmount = v4;
-  v6 = v4;
+  self->_enteredAmount = currentAmount;
+  v6 = currentAmount;
 
   [(PKAccountBillPaymentAmountDescriptionView *)self _enteredAmountDidChangeTo:v6];
 }
 
-- (void)_updateEnteredAmount:(id)a3
+- (void)_updateEnteredAmount:(id)amount
 {
-  objc_storeStrong(&self->_enteredAmount, a3);
-  v6 = a3;
-  v5 = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
-  [v5 setCurrentAmount:v6 forceFormatForDisplay:PKIsVision() ^ 1];
+  objc_storeStrong(&self->_enteredAmount, amount);
+  amountCopy = amount;
+  _enterCurrencyAmountView = [(PKAccountBillPaymentAmountDescriptionView *)self _enterCurrencyAmountView];
+  [_enterCurrencyAmountView setCurrentAmount:amountCopy forceFormatForDisplay:PKIsVision() ^ 1];
 
-  [(PKAccountBillPaymentAmountDescriptionView *)self _enteredAmountDidChangeTo:v6];
+  [(PKAccountBillPaymentAmountDescriptionView *)self _enteredAmountDidChangeTo:amountCopy];
 }
 
-- (void)_enteredAmountDidChangeTo:(id)a3
+- (void)_enteredAmountDidChangeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained billPaymentAmountDescriptionView:self hasChangedAmount:v4 isValidAmount:{-[PKAccountBillPaymentAmountDescriptionView _isEnteredAmountValid](self, "_isEnteredAmountValid")}];
+  [WeakRetained billPaymentAmountDescriptionView:self hasChangedAmount:toCopy isValidAmount:{-[PKAccountBillPaymentAmountDescriptionView _isEnteredAmountValid](self, "_isEnteredAmountValid")}];
 }
 
 - (BOOL)_isEnteredAmountValid
 {
   enteredAmount = self->_enteredAmount;
-  v4 = [MEMORY[0x1E696AB90] notANumber];
-  LOBYTE(enteredAmount) = [(NSDecimalNumber *)enteredAmount isEqualToNumber:v4];
+  notANumber = [MEMORY[0x1E696AB90] notANumber];
+  LOBYTE(enteredAmount) = [(NSDecimalNumber *)enteredAmount isEqualToNumber:notANumber];
 
   if (enteredAmount)
   {
@@ -580,8 +580,8 @@ LABEL_10:
   }
 
   v5 = self->_enteredAmount;
-  v6 = [MEMORY[0x1E696AB90] zero];
-  LOBYTE(v5) = [(NSDecimalNumber *)v5 isEqualToNumber:v6];
+  zero = [MEMORY[0x1E696AB90] zero];
+  LOBYTE(v5) = [(NSDecimalNumber *)v5 isEqualToNumber:zero];
 
   if (v5)
   {
@@ -601,30 +601,30 @@ LABEL_10:
   return !minimumAmount || [(NSDecimalNumber *)minimumAmount compare:self->_enteredAmount]!= NSOrderedDescending;
 }
 
-- (BOOL)_shouldShakeWithNewAmount:(id)a3
+- (BOOL)_shouldShakeWithNewAmount:(id)amount
 {
-  v4 = a3;
-  if (v4)
+  amountCopy = amount;
+  if (amountCopy)
   {
-    v5 = [MEMORY[0x1E696AB90] notANumber];
-    v6 = [v4 compare:v5];
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    v6 = [amountCopy compare:notANumber];
 
     if (v6)
     {
-      v7 = [(NSDecimalNumber *)self->_maximumAmount decimalNumberBySubtracting:v4];
-      v8 = [MEMORY[0x1E696AB90] zero];
-      v9 = [v7 compare:v8];
+      v7 = [(NSDecimalNumber *)self->_maximumAmount decimalNumberBySubtracting:amountCopy];
+      zero = [MEMORY[0x1E696AB90] zero];
+      v9 = [v7 compare:zero];
 
       if (v9 != -1)
       {
-        v10 = [MEMORY[0x1E696AB90] zero];
-        if (([v4 isEqualToNumber:v10] & 1) != 0 || (minimumAmount = self->_minimumAmount) == 0)
+        zero2 = [MEMORY[0x1E696AB90] zero];
+        if (([amountCopy isEqualToNumber:zero2] & 1) != 0 || (minimumAmount = self->_minimumAmount) == 0)
         {
         }
 
         else
         {
-          v12 = [(NSDecimalNumber *)minimumAmount compare:v4];
+          v12 = [(NSDecimalNumber *)minimumAmount compare:amountCopy];
 
           if (v12 == 1)
           {
@@ -654,52 +654,52 @@ LABEL_12:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   IsLastMonthsStatement = accountCurrentStatementIsLastMonthsStatement(self->_account);
-  v5 = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList currencyCode];
+  currencyCode = [(PKBillPaymentSuggestedAmountList *)self->_suggestionList currencyCode];
   [(PKAccount *)self->_account feature];
-  v6 = [(PKAccount *)self->_account creditDetails];
-  v7 = [v6 accountSummary];
-  v8 = [v7 currentStatement];
-  v43 = [v7 balanceSummary];
-  v9 = [v7 pastDueAmount];
-  v44 = v8;
+  creditDetails = [(PKAccount *)self->_account creditDetails];
+  accountSummary = [creditDetails accountSummary];
+  currentStatement = [accountSummary currentStatement];
+  balanceSummary = [accountSummary balanceSummary];
+  pastDueAmount = [accountSummary pastDueAmount];
+  v44 = currentStatement;
   if (IsLastMonthsStatement)
   {
-    v47 = [v8 closingDate];
+    closingDate = [currentStatement closingDate];
   }
 
   else
   {
-    v47 = 0;
+    closingDate = 0;
   }
 
   v10 = objc_alloc_init(MEMORY[0x1E696AB78]);
-  v45 = v6;
-  v11 = [v6 productTimeZone];
-  [v10 setTimeZone:v11];
+  v45 = creditDetails;
+  productTimeZone = [creditDetails productTimeZone];
+  [v10 setTimeZone:productTimeZone];
 
-  v12 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-  [v10 setLocale:v12];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  [v10 setLocale:autoupdatingCurrentLocale];
 
   [v10 setLocalizedDateFormatFromTemplate:@"MMM"];
-  v46 = v9;
-  if (v9)
+  v46 = pastDueAmount;
+  if (pastDueAmount)
   {
-    v13 = [MEMORY[0x1E696AB90] zero];
-    v14 = [v9 compare:v13];
+    zero = [MEMORY[0x1E696AB90] zero];
+    v14 = [pastDueAmount compare:zero];
 
     if (v14 == 1)
     {
       v15 = MEMORY[0x1E69B89E0];
       v16 = PKLocalizedFeatureString();
-      if (v5)
+      if (currencyCode)
       {
-        v17 = [v15 suggestionWithTitle:v16 value:v46 currencyCode:v5];
+        v17 = [v15 suggestionWithTitle:v16 value:v46 currencyCode:currencyCode];
       }
 
       else
       {
-        v18 = [v6 currencyCode];
-        v17 = [v15 suggestionWithTitle:v16 value:v46 currencyCode:v18];
+        currencyCode2 = [creditDetails currencyCode];
+        v17 = [v15 suggestionWithTitle:v16 value:v46 currencyCode:currencyCode2];
       }
 
       [v3 addObject:v17];
@@ -711,8 +711,8 @@ LABEL_12:
   {
     v20 = MEMORY[0x1E69B89E0];
     v21 = PKLocalizedFeatureString();
-    v22 = [v19 amount];
-    v23 = [v20 suggestionWithTitle:v21 value:v22 currencyCode:v5];
+    amount = [v19 amount];
+    v23 = [v20 suggestionWithTitle:v21 value:amount currencyCode:currencyCode];
 
     [v3 addObject:v23];
   }
@@ -721,7 +721,7 @@ LABEL_12:
 
   if (v24)
   {
-    if (v47 && ([v10 stringFromDate:?], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (closingDate && ([v10 stringFromDate:?], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v26 = v25;
       v42 = v25;
@@ -734,8 +734,8 @@ LABEL_12:
     }
 
     v28 = MEMORY[0x1E69B89E0];
-    v29 = [v24 amount];
-    v30 = [v28 suggestionWithTitle:v27 value:v29 currencyCode:v5];
+    amount2 = [v24 amount];
+    v30 = [v28 suggestionWithTitle:v27 value:amount2 currencyCode:currencyCode];
 
     [v3 addObject:v30];
   }
@@ -744,16 +744,16 @@ LABEL_12:
 
   if (v31)
   {
-    v32 = [v43 pendingPurchases];
-    if (!v32 || ([MEMORY[0x1E696AB90] zero], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v32, "compare:", v33), v33, v34 != 1))
+    pendingPurchases = [balanceSummary pendingPurchases];
+    if (!pendingPurchases || ([MEMORY[0x1E696AB90] zero], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(pendingPurchases, "compare:", v33), v33, v34 != 1))
     {
       [(PKAccountServiceAccountResolutionConfiguration *)self->_configuration earlyInstallmentPlan];
     }
 
     v35 = PKLocalizedFeatureString();
     v36 = MEMORY[0x1E69B89E0];
-    v37 = [v31 amount];
-    v38 = [v36 suggestionWithTitle:v35 value:v37 currencyCode:v5];
+    amount3 = [v31 amount];
+    v38 = [v36 suggestionWithTitle:v35 value:amount3 currencyCode:currencyCode];
 
     [v3 addObject:v38];
   }

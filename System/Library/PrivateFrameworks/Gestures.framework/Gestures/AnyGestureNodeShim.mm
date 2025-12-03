@@ -1,11 +1,11 @@
 @interface AnyGestureNodeShim
-- (BOOL)abort:(id *)a3;
+- (BOOL)abort:(id *)abort;
 - (BOOL)disallowExclusionWithUnresolvedFailureRequirements;
-- (BOOL)ensureUpdated:(id *)a3;
-- (BOOL)failWithReason:(id)a3 error:(id *)a4;
+- (BOOL)ensureUpdated:(id *)updated;
+- (BOOL)failWithReason:(id)reason error:(id *)error;
 - (BOOL)isBlocked;
 - (BOOL)isDisabled;
-- (BOOL)updateWithValue:(id)a3 isFinal:(BOOL)a4 error:(id *)a5;
+- (BOOL)updateWithValue:(id)value isFinal:(BOOL)final error:(id *)error;
 - (GFGestureNodeContainer)container;
 - (GFGestureNodeCoordinator)coordinator;
 - (GFGestureNodeDelegate)delegate;
@@ -14,16 +14,16 @@
 - (NSString)tag;
 - (_TtC8Gestures18AnyGestureNodeShim)init;
 - (int64_t)phase;
-- (void)setContainer:(id)a3;
-- (void)setDisabled:(BOOL)a3;
-- (void)setDisallowExclusionWithUnresolvedFailureRequirements:(BOOL)a3;
-- (void)setTag:(id)a3;
-- (void)setTracking:(BOOL)a3 eventsWithIdentifiers:(id)a4;
+- (void)setContainer:(id)container;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setDisallowExclusionWithUnresolvedFailureRequirements:(BOOL)requirements;
+- (void)setTag:(id)tag;
+- (void)setTracking:(BOOL)tracking eventsWithIdentifiers:(id)identifiers;
 @end
 
 @implementation AnyGestureNodeShim
 
-- (void)setContainer:(id)a3
+- (void)setContainer:(id)container
 {
   v4 = swift_unknownObjectWeakAssign();
   v5 = (*((*MEMORY[0x1E69E7D40] & *self) + 0x78))(v4);
@@ -31,34 +31,34 @@
   swift_unknownObjectRetain();
   if (Strong)
   {
-    v7 = self;
+    selfCopy = self;
     swift_unknownObjectRelease();
     Strong = &off_1F01A5718;
-    v8 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy2 = 0;
   }
 
   v9 = *(*v5 + 200);
-  v10 = self;
-  v9(v8, Strong);
+  selfCopy3 = self;
+  v9(selfCopy2, Strong);
 
   swift_unknownObjectRelease();
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  v4 = self;
-  sub_18E683934(a3);
+  selfCopy = self;
+  sub_18E683934(disabled);
 }
 
-- (void)setDisallowExclusionWithUnresolvedFailureRequirements:(BOOL)a3
+- (void)setDisallowExclusionWithUnresolvedFailureRequirements:(BOOL)requirements
 {
-  v4 = self;
-  sub_18E6828C8(a3);
+  selfCopy = self;
+  sub_18E6828C8(requirements);
 }
 
 - (NSString)tag
@@ -81,17 +81,17 @@
   return v5;
 }
 
-- (void)setTracking:(BOOL)a3 eventsWithIdentifiers:(id)a4
+- (void)setTracking:(BOOL)tracking eventsWithIdentifiers:(id)identifiers
 {
   sub_18E685090();
   v6 = sub_18E72B178();
-  v7 = self;
-  sub_18E6850DC(a3, v6);
+  selfCopy = self;
+  sub_18E6850DC(tracking, v6);
 }
 
 - (NSError)failureReason
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_18E68A150();
 
   if (v3)
@@ -125,7 +125,7 @@
 - (BOOL)isBlocked
 {
   v3 = *(*(*((*MEMORY[0x1E69E7D40] & *self) + 0x78))() + 296);
-  v4 = self;
+  selfCopy = self;
   v3(&v7);
 
   v5 = v8 == 0;
@@ -133,9 +133,9 @@
   return v5;
 }
 
-- (void)setTag:(id)a3
+- (void)setTag:(id)tag
 {
-  if (a3)
+  if (tag)
   {
     v4 = sub_18E72AFD8();
     v6 = v5;
@@ -166,7 +166,7 @@
 - (NSString)identifier
 {
   v3 = *((*((*MEMORY[0x1E69E7D40] & *self) + 0x78))() + 16);
-  v4 = self;
+  selfCopy = self;
 
   sub_18E72B778();
 
@@ -204,7 +204,7 @@
   return (v5 >> 1) & 1;
 }
 
-- (BOOL)updateWithValue:(id)a3 isFinal:(BOOL)a4 error:(id *)a5
+- (BOOL)updateWithValue:(id)value isFinal:(BOOL)final error:(id *)error
 {
   swift_unknownObjectRetain();
   sub_18E72B458();
@@ -214,21 +214,21 @@
   return result;
 }
 
-- (BOOL)failWithReason:(id)a3 error:(id *)a4
+- (BOOL)failWithReason:(id)reason error:(id *)error
 {
   result = sub_18E72B6E8();
   __break(1u);
   return result;
 }
 
-- (BOOL)abort:(id *)a3
+- (BOOL)abort:(id *)abort
 {
   result = sub_18E72B6E8();
   __break(1u);
   return result;
 }
 
-- (BOOL)ensureUpdated:(id *)a3
+- (BOOL)ensureUpdated:(id *)updated
 {
   result = sub_18E72B6E8();
   __break(1u);

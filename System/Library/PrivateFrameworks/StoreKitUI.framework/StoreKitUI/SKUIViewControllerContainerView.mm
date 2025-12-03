@@ -1,20 +1,20 @@
 @interface SKUIViewControllerContainerView
-- (SKUIViewControllerContainerView)initWithFrame:(CGRect)a3;
+- (SKUIViewControllerContainerView)initWithFrame:(CGRect)frame;
 - (void)_updateLayoutOfViewControllerView;
 - (void)layoutSubviews;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setViewController:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setViewController:(id)controller;
 @end
 
 @implementation SKUIViewControllerContainerView
 
-- (SKUIViewControllerContainerView)initWithFrame:(CGRect)a3
+- (SKUIViewControllerContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIViewControllerContainerView initWithFrame:];
@@ -22,11 +22,11 @@
 
   v11.receiver = self;
   v11.super_class = SKUIViewControllerContainerView;
-  v8 = [(SKUIViewControllerContainerView *)&v11 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUIViewControllerContainerView *)&v11 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    [(SKUIViewControllerContainerView *)v8 setPreservesSuperviewLayoutMargins:1];
+    [(SKUIViewControllerContainerView *)height setPreservesSuperviewLayoutMargins:1];
   }
 
   return v9;
@@ -40,47 +40,47 @@
   [(SKUIViewControllerContainerView *)self _updateLayoutOfViewControllerView];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = SKUIViewControllerContainerView;
-  [(SKUIViewControllerContainerView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SKUIViewControllerContainerView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(SKUIViewControllerContainerView *)self _updateLayoutOfViewControllerView];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = SKUIViewControllerContainerView;
-  [(SKUIViewControllerContainerView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SKUIViewControllerContainerView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SKUIViewControllerContainerView *)self _updateLayoutOfViewControllerView];
 }
 
-- (void)setViewController:(id)a3
+- (void)setViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   viewController = self->_viewController;
-  v10 = v5;
-  if (viewController != v5)
+  v10 = controllerCopy;
+  if (viewController != controllerCopy)
   {
     if (viewController)
     {
-      v7 = [(UIViewController *)viewController view];
-      if ([v7 isDescendantOfView:self])
+      view = [(UIViewController *)viewController view];
+      if ([view isDescendantOfView:self])
       {
-        [v7 removeFromSuperview];
+        [view removeFromSuperview];
       }
     }
 
-    objc_storeStrong(&self->_viewController, a3);
+    objc_storeStrong(&self->_viewController, controller);
     viewController = self->_viewController;
   }
 
   if (viewController)
   {
-    v8 = [(UIViewController *)viewController view];
-    v9 = v8;
-    if (v8 && ([v8 isDescendantOfView:self] & 1) == 0)
+    view2 = [(UIViewController *)viewController view];
+    v9 = view2;
+    if (view2 && ([view2 isDescendantOfView:self] & 1) == 0)
     {
       [v9 removeFromSuperview];
       [(SKUIViewControllerContainerView *)self addSubview:v9];
@@ -91,9 +91,9 @@
 
 - (void)_updateLayoutOfViewControllerView
 {
-  v3 = [(UIViewController *)self->_viewController view];
+  view = [(UIViewController *)self->_viewController view];
   [(SKUIViewControllerContainerView *)self bounds];
-  [v3 setFrame:?];
+  [view setFrame:?];
 }
 
 - (void)initWithFrame:.cold.1()

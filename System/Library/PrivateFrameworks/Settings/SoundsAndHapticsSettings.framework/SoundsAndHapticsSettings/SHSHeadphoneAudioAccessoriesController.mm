@@ -6,7 +6,7 @@
 - (void)dealloc;
 - (void)deleteAllAudioAccessoryData;
 - (void)loadView;
-- (void)setConnectedToHeadphonesEnabled:(id)a3 forSpecifier:(id)a4;
+- (void)setConnectedToHeadphonesEnabled:(id)enabled forSpecifier:(id)specifier;
 @end
 
 @implementation SHSHeadphoneAudioAccessoriesController
@@ -64,9 +64,9 @@
   if (!v4)
   {
     v5 = objc_opt_new();
-    v6 = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
+    audioSettingsManager = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
     v7 = *MEMORY[0x277CEFAB0];
-    v8 = [v6 getPreferenceFor:*MEMORY[0x277CEFAB0]];
+    v8 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFAB0]];
 
     if (v8)
     {
@@ -85,11 +85,11 @@
       v12 = [v10 groupSpecifierWithID:@"SHSCurrentAudioAccessoryKey" name:v11];
 
       [v5 addObject:v12];
-      v13 = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
-      v14 = [v13 getPreferenceFor:v7];
-      v15 = [v14 BOOLValue];
+      audioSettingsManager2 = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
+      v14 = [audioSettingsManager2 getPreferenceFor:v7];
+      bOOLValue = [v14 BOOLValue];
 
-      if (v15)
+      if (bOOLValue)
       {
         v16 = @"HEADPHONE_CURRENT_DEVICE_HEADPHONE_FOOTER";
       }
@@ -109,8 +109,8 @@
       [v5 addObject:v20];
     }
 
-    v21 = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
-    v22 = [v21 getPreferenceFor:*MEMORY[0x277CEFAE0]];
+    audioSettingsManager3 = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
+    v22 = [audioSettingsManager3 getPreferenceFor:*MEMORY[0x277CEFAE0]];
     v23 = [v22 count];
 
     if (v23)
@@ -216,28 +216,28 @@ void __77__SHSHeadphoneAudioAccessoriesController_confirmForgetAudioAccessoriesA
   [(SHSHeadphoneAudioAccessoriesController *)self removeSpecifierID:@"SHSForgetAudioAccessoryKey" animated:1];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, *MEMORY[0x277CEFA70], 0, 0, 1u);
-  v4 = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
-  v5 = [v4 getPreferenceFor:*MEMORY[0x277CEFAB0]];
+  audioSettingsManager = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
+  v5 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFAB0]];
 
   if (!v5)
   {
-    v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
     v6 = [MEMORY[0x277CBEBC0] URLWithString:@"prefs:root=Sounds&path=HEADPHONE_LEVEL_LIMIT_SETTING"];
-    [v7 openSensitiveURL:v6 withOptions:0];
+    [defaultWorkspace openSensitiveURL:v6 withOptions:0];
   }
 }
 
-- (void)setConnectedToHeadphonesEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setConnectedToHeadphonesEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v7 = a3;
-  v5 = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
-  v6 = [v5 setPreferenceFor:*MEMORY[0x277CEFAB0] value:v7];
+  enabledCopy = enabled;
+  audioSettingsManager = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
+  v6 = [audioSettingsManager setPreferenceFor:*MEMORY[0x277CEFAB0] value:enabledCopy];
 }
 
 - (id)getConnectedToHeadphonesEnabled
 {
-  v2 = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
-  v3 = [v2 getPreferenceFor:*MEMORY[0x277CEFAB0]];
+  audioSettingsManager = [(SHSHeadphoneAudioAccessoriesController *)self audioSettingsManager];
+  v3 = [audioSettingsManager getPreferenceFor:*MEMORY[0x277CEFAB0]];
 
   return v3;
 }

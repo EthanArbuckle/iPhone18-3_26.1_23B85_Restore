@@ -1,22 +1,22 @@
 @interface AVTGroupDialAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axScrollDial:(BOOL)a3;
-- (BOOL)accessibilityScroll:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axScrollDial:(BOOL)dial;
+- (BOOL)accessibilityScroll:(int64_t)scroll;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation AVTGroupDialAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTGroupDial" hasInstanceMethod:@"currentSelectedItemIndex" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"AVTGroupDial" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTGroupDial" hasInstanceMethod:@"setSelectedGroupIndex:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"AVTGroupPickerItem" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"AVTGroupPickerDelegate" hasRequiredInstanceMethod:@"groupPicker:didSelectGroupAtIndex:tapped:"];
-  [v3 validateProtocol:@"AVTGroupPicker" hasRequiredInstanceMethod:@"groupItems"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTGroupDial" hasInstanceMethod:@"currentSelectedItemIndex" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"AVTGroupDial" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTGroupDial" hasInstanceMethod:@"setSelectedGroupIndex:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"AVTGroupPickerItem" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"AVTGroupPickerDelegate" hasRequiredInstanceMethod:@"groupPicker:didSelectGroupAtIndex:tapped:"];
+  [validationsCopy validateProtocol:@"AVTGroupPicker" hasRequiredInstanceMethod:@"groupItems"];
 }
 
 - (id)accessibilityValue
@@ -40,12 +40,12 @@
   return *MEMORY[0x29EDC7F60] | [(AVTGroupDialAccessibility *)&v3 accessibilityTraits];
 }
 
-- (BOOL)_axScrollDial:(BOOL)a3
+- (BOOL)_axScrollDial:(BOOL)dial
 {
-  v3 = a3;
+  dialCopy = dial;
   v5 = [(AVTGroupDialAccessibility *)self safeIntegerForKey:@"currentSelectedItemIndex"];
   v6 = v5;
-  if (v3)
+  if (dialCopy)
   {
     v7 = [(AVTGroupDialAccessibility *)self safeArrayForKey:@"groupItems"];
     v8 = v6 < [v7 count] - 1;
@@ -67,15 +67,15 @@ void __43__AVTGroupDialAccessibility__axScrollDial___block_invoke(uint64_t a1)
   [v2 groupPicker:*(a1 + 32) didSelectGroupAtIndex:*(a1 + 40) tapped:0];
 }
 
-- (BOOL)accessibilityScroll:(int64_t)a3
+- (BOOL)accessibilityScroll:(int64_t)scroll
 {
-  if (a3 == 2)
+  if (scroll == 2)
   {
     v3 = 1;
     return [(AVTGroupDialAccessibility *)self _axScrollDial:v3];
   }
 
-  if (a3 == 1)
+  if (scroll == 1)
   {
     v3 = 0;
     return [(AVTGroupDialAccessibility *)self _axScrollDial:v3];

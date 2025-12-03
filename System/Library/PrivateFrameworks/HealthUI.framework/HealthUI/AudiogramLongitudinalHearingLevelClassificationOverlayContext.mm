@@ -1,10 +1,10 @@
 @interface AudiogramLongitudinalHearingLevelClassificationOverlayContext
 - (_TtC8HealthUI61AudiogramLongitudinalHearingLevelClassificationOverlayContext)init;
 - (id)contextItemForLastUpdate;
-- (id)overlayDisplayTypeForTimeScope:(int64_t)a3;
+- (id)overlayDisplayTypeForTimeScope:(int64_t)scope;
 - (id)sampleTypeForDateRangeUpdates;
-- (int64_t)resolutionForTimeScope:(int64_t)a3 traitResolution:(int64_t)a4;
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7;
+- (int64_t)resolutionForTimeScope:(int64_t)scope traitResolution:(int64_t)resolution;
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion;
 @end
 
 @implementation AudiogramLongitudinalHearingLevelClassificationOverlayContext
@@ -20,12 +20,12 @@
   }
 
   sub_1C3C27CB4(0, &qword_1EC0857A0);
-  v2 = [swift_getObjCClassFromMetadata() audiogramSampleType];
+  audiogramSampleType = [swift_getObjCClassFromMetadata() audiogramSampleType];
 
-  return v2;
+  return audiogramSampleType;
 }
 
-- (id)overlayDisplayTypeForTimeScope:(int64_t)a3
+- (id)overlayDisplayTypeForTimeScope:(int64_t)scope
 {
   sub_1C3D20374();
   sub_1C3D20364();
@@ -40,14 +40,14 @@
   return v4;
 }
 
-- (void)updateContextItemForDateInterval:(id)a3 overlayController:(id)a4 timeScope:(int64_t)a5 resolution:(int64_t)a6 completion:(id)a7
+- (void)updateContextItemForDateInterval:(id)interval overlayController:(id)controller timeScope:(int64_t)scope resolution:(int64_t)resolution completion:(id)completion
 {
-  v17 = a5;
-  v18 = a6;
+  scopeCopy = scope;
+  resolutionCopy = resolution;
   v10 = sub_1C3D1DC54();
   v11 = *(v10 - 8);
   MEMORY[0x1EEE9AC00](v10);
-  v13 = &v17 - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v13 = &scopeCopy - ((v12 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1C3D20374();
   sub_1C3D20364();
   sub_1C3D20314();
@@ -56,12 +56,12 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v14 = _Block_copy(a7);
+  v14 = _Block_copy(completion);
   sub_1C3D1DC04();
   _Block_copy(v14);
-  v15 = a4;
-  v16 = self;
-  sub_1C3CB6DA4(v13, v15, v17, v18, v16, v14);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1C3CB6DA4(v13, controllerCopy, scopeCopy, resolutionCopy, selfCopy, v14);
   _Block_release(v14);
   _Block_release(v14);
 
@@ -83,7 +83,7 @@
   return v3;
 }
 
-- (int64_t)resolutionForTimeScope:(int64_t)a3 traitResolution:(int64_t)a4
+- (int64_t)resolutionForTimeScope:(int64_t)scope traitResolution:(int64_t)resolution
 {
   sub_1C3D20374();
   sub_1C3D20364();

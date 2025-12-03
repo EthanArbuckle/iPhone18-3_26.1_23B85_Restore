@@ -22,7 +22,7 @@
     }
 
     v5 = objc_opt_class();
-    return object_setClass(a1, v5);
+    return object_setClass(self, v5);
   }
 
   return result;

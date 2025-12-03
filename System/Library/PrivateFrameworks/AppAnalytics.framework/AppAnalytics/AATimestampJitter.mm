@@ -1,9 +1,9 @@
 @interface AATimestampJitter
 + (AATimestampJitter)default;
 - (AATimestampJitter)init;
-- (id)withEnabled:(BOOL)a3;
-- (id)withLowerBound:(double)a3;
-- (id)withUpperBound:(double)a3;
+- (id)withEnabled:(BOOL)enabled;
+- (id)withLowerBound:(double)bound;
+- (id)withUpperBound:(double)bound;
 @end
 
 @implementation AATimestampJitter
@@ -20,13 +20,13 @@
   return v3;
 }
 
-- (id)withEnabled:(BOOL)a3
+- (id)withEnabled:(BOOL)enabled
 {
   ObjectType = swift_getObjectType();
   v6 = *(&self->super.isa + OBJC_IVAR___AATimestampJitter_lowerBound);
   v7 = *(&self->super.isa + OBJC_IVAR___AATimestampJitter_upperBound);
   v8 = objc_allocWithZone(ObjectType);
-  v8[OBJC_IVAR___AATimestampJitter_enabled] = a3;
+  v8[OBJC_IVAR___AATimestampJitter_enabled] = enabled;
   *&v8[OBJC_IVAR___AATimestampJitter_lowerBound] = v6;
   *&v8[OBJC_IVAR___AATimestampJitter_upperBound] = v7;
   v11.receiver = v8;
@@ -36,14 +36,14 @@
   return v9;
 }
 
-- (id)withLowerBound:(double)a3
+- (id)withLowerBound:(double)bound
 {
   ObjectType = swift_getObjectType();
   v6 = *(&self->super.isa + OBJC_IVAR___AATimestampJitter_enabled);
   v7 = *(&self->super.isa + OBJC_IVAR___AATimestampJitter_upperBound);
   v8 = objc_allocWithZone(ObjectType);
   v8[OBJC_IVAR___AATimestampJitter_enabled] = v6;
-  *&v8[OBJC_IVAR___AATimestampJitter_lowerBound] = a3;
+  *&v8[OBJC_IVAR___AATimestampJitter_lowerBound] = bound;
   *&v8[OBJC_IVAR___AATimestampJitter_upperBound] = v7;
   v11.receiver = v8;
   v11.super_class = ObjectType;
@@ -52,7 +52,7 @@
   return v9;
 }
 
-- (id)withUpperBound:(double)a3
+- (id)withUpperBound:(double)bound
 {
   ObjectType = swift_getObjectType();
   v6 = *(&self->super.isa + OBJC_IVAR___AATimestampJitter_enabled);
@@ -60,7 +60,7 @@
   v8 = objc_allocWithZone(ObjectType);
   v8[OBJC_IVAR___AATimestampJitter_enabled] = v6;
   *&v8[OBJC_IVAR___AATimestampJitter_lowerBound] = v7;
-  *&v8[OBJC_IVAR___AATimestampJitter_upperBound] = a3;
+  *&v8[OBJC_IVAR___AATimestampJitter_upperBound] = bound;
   v11.receiver = v8;
   v11.super_class = ObjectType;
   v9 = [(AATimestampJitter *)&v11 init];

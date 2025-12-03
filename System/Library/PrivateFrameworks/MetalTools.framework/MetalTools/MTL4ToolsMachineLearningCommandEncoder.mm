@@ -1,67 +1,67 @@
 @interface MTL4ToolsMachineLearningCommandEncoder
-- (MTL4ToolsMachineLearningCommandEncoder)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4ToolsMachineLearningCommandEncoder)initWithBaseObject:(id)object parent:(id)parent;
 - (unint64_t)endEventValue;
 - (unint64_t)startEventValue;
-- (void)dispatchNetworkWithIntermediatesHeap:(id)a3;
-- (void)endEncodingWithSignalEvent:(id)a3 waitEvent:(id)a4 signalValue:(unint64_t)a5 waitValue:(unint64_t)a6;
-- (void)setArgumentTable:(id)a3;
-- (void)setPipelineState:(id)a3;
+- (void)dispatchNetworkWithIntermediatesHeap:(id)heap;
+- (void)endEncodingWithSignalEvent:(id)event waitEvent:(id)waitEvent signalValue:(unint64_t)value waitValue:(unint64_t)waitValue;
+- (void)setArgumentTable:(id)table;
+- (void)setPipelineState:(id)state;
 @end
 
 @implementation MTL4ToolsMachineLearningCommandEncoder
 
-- (MTL4ToolsMachineLearningCommandEncoder)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsMachineLearningCommandEncoder)initWithBaseObject:(id)object parent:(id)parent
 {
   v5.receiver = self;
   v5.super_class = MTL4ToolsMachineLearningCommandEncoder;
-  return [(MTL4ToolsCommandEncoder *)&v5 initWithBaseObject:a3 parent:a4];
+  return [(MTL4ToolsCommandEncoder *)&v5 initWithBaseObject:object parent:parent];
 }
 
-- (void)setPipelineState:(id)a3
+- (void)setPipelineState:(id)state
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v4 setPipelineState:v5];
+  [baseObject setPipelineState:baseObject2];
 }
 
-- (void)setArgumentTable:(id)a3
+- (void)setArgumentTable:(id)table
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [table baseObject];
 
-  [v4 setArgumentTable:v5];
+  [baseObject setArgumentTable:baseObject2];
 }
 
-- (void)dispatchNetworkWithIntermediatesHeap:(id)a3
+- (void)dispatchNetworkWithIntermediatesHeap:(id)heap
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [heap baseObject];
 
-  [v4 dispatchNetworkWithIntermediatesHeap:v5];
+  [baseObject dispatchNetworkWithIntermediatesHeap:baseObject2];
 }
 
-- (void)endEncodingWithSignalEvent:(id)a3 waitEvent:(id)a4 signalValue:(unint64_t)a5 waitValue:(unint64_t)a6
+- (void)endEncodingWithSignalEvent:(id)event waitEvent:(id)waitEvent signalValue:(unint64_t)value waitValue:(unint64_t)waitValue
 {
-  v10 = [(MTLToolsObject *)self baseObject];
-  v11 = [a3 baseObject];
-  v12 = [a4 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
+  baseObject3 = [waitEvent baseObject];
 
-  [v10 endEncodingWithSignalEvent:v11 waitEvent:v12 signalValue:a5 waitValue:a6];
+  [baseObject endEncodingWithSignalEvent:baseObject2 waitEvent:baseObject3 signalValue:value waitValue:waitValue];
 }
 
 - (unint64_t)endEventValue
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 endEventValue];
+  return [baseObject endEventValue];
 }
 
 - (unint64_t)startEventValue
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 startEventValue];
+  return [baseObject startEventValue];
 }
 
 @end

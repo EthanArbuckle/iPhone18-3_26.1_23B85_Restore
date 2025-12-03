@@ -1,82 +1,82 @@
 @interface PMCredentialPickerViewController
-- (BOOL)validateReadyForAuthorization:(id)a3;
+- (BOOL)validateReadyForAuthorization:(id)authorization;
 - (UIWindow)presentationAnchor;
-- (_TtC17PasswordManagerUI32PMCredentialPickerViewController)initWithPresentationContext:(id)a3 shouldExpandOtherLoginChoices:(BOOL)a4 activity:(id)a5;
-- (id)initRequiringTableView:(BOOL)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (_TtC17PasswordManagerUI32PMCredentialPickerViewController)initWithPresentationContext:(id)context shouldExpandOtherLoginChoices:(BOOL)choices activity:(id)activity;
+- (id)initRequiringTableView:(BOOL)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (int64_t)numberOfTableRows;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)authenticationProvider:(id)a3 hideViewController:(id)a4;
-- (void)authenticationProvider:(id)a3 presentAlert:(id)a4 primaryAction:(id)a5 alternateAction:(id)a6;
-- (void)authenticationProvider:(id)a3 showViewController:(id)a4;
-- (void)confirmButtonSubPaneDidEnterProcessingState:(id)a3 withAuthenticatedContext:(id)a4;
-- (void)confirmButtonSubPaneDidFailBiometry:(id)a3 allowingPasscodeFallback:(BOOL)a4;
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithCredential:(id)a4 error:(id)a5 completion:(id)a6;
-- (void)credentialListViewControllerDidPrepareInterface:(id)a3;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)authenticationProvider:(id)provider hideViewController:(id)controller;
+- (void)authenticationProvider:(id)provider presentAlert:(id)alert primaryAction:(id)action alternateAction:(id)alternateAction;
+- (void)authenticationProvider:(id)provider showViewController:(id)controller;
+- (void)confirmButtonSubPaneDidEnterProcessingState:(id)state withAuthenticatedContext:(id)context;
+- (void)confirmButtonSubPaneDidFailBiometry:(id)biometry allowingPasscodeFallback:(BOOL)fallback;
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithCredential:(id)credential error:(id)error completion:(id)completion;
+- (void)credentialListViewControllerDidPrepareInterface:(id)interface;
 - (void)expandLoginChoicesButtonPressed;
-- (void)keychainSyncStatusMayHaveChangedWithNotification:(id)a3;
+- (void)keychainSyncStatusMayHaveChangedWithNotification:(id)notification;
 - (void)manualPasswordEntryButtonPressed;
-- (void)performAuthorization:(id)a3 withAuthenticatedLAContext:(id)a4;
+- (void)performAuthorization:(id)authorization withAuthenticatedLAContext:(id)context;
 - (void)performConditionalRegistrationIfPossible;
-- (void)performPasswordAuthentication:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)performPasswordAuthentication:(id)authentication;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)useCABLEButtonPressed;
 - (void)userTappedContinueButton;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 @end
 
 @implementation PMCredentialPickerViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_21CB038E4();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_21CB04204(a3);
+  selfCopy = self;
+  sub_21CB04204(appearing);
 }
 
-- (_TtC17PasswordManagerUI32PMCredentialPickerViewController)initWithPresentationContext:(id)a3 shouldExpandOtherLoginChoices:(BOOL)a4 activity:(id)a5
+- (_TtC17PasswordManagerUI32PMCredentialPickerViewController)initWithPresentationContext:(id)context shouldExpandOtherLoginChoices:(BOOL)choices activity:(id)activity
 {
-  v6 = a4;
-  v7 = a3;
+  choicesCopy = choices;
+  contextCopy = context;
   swift_unknownObjectRetain();
-  PMCredentialPickerViewController.init(presentationContext:shouldExpandOtherLoginChoices:activity:)(v7, v6, a5);
+  PMCredentialPickerViewController.init(presentationContext:shouldExpandOtherLoginChoices:activity:)(contextCopy, choicesCopy, activity);
   return result;
 }
 
-- (id)initRequiringTableView:(BOOL)a3
+- (id)initRequiringTableView:(BOOL)view
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   v6 = sub_21CB138C0();
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_21CB13A20(a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_21CB13A20(section);
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_21CB80FC4();
   v7 = *(v6 - 8);
@@ -84,16 +84,16 @@
   MEMORY[0x28223BE20](v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB80F94();
-  v11 = a3;
-  v12 = self;
-  v13 = PMCredentialPickerViewController.tableView(_:cellForRowAt:)(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = PMCredentialPickerViewController.tableView(_:cellForRowAt:)(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 
   return v13;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   v5 = sub_21CB81024();
   v6 = *(v5 - 8);
@@ -101,7 +101,7 @@
   MEMORY[0x28223BE20](v5);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   v10 = 0;
-  if (a4 == 1)
+  if (section == 1)
   {
     sub_21CB81014();
     sub_21CB81004();
@@ -134,11 +134,11 @@
   else if (*((v4 & 0xFFFFFFFFFFFFFF8) + 0x10) >= 2)
   {
 LABEL_3:
-    v5 = self;
+    selfCopy = self;
     goto LABEL_8;
   }
 
-  v7 = self;
+  selfCopy2 = self;
   if ((sub_21CB81704() & 1) == 0)
   {
     v9 = 0;
@@ -167,7 +167,7 @@ LABEL_11:
   return v9;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_21CB80FC4();
   v7 = *(v6 - 8);
@@ -175,51 +175,51 @@ LABEL_11:
   MEMORY[0x28223BE20](v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB80F94();
-  v11 = a3;
-  v12 = self;
-  PMCredentialPickerViewController.tableView(_:didSelectRowAt:)(v11);
+  viewCopy = view;
+  selfCopy = self;
+  PMCredentialPickerViewController.tableView(_:didSelectRowAt:)(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)confirmButtonSubPaneDidEnterProcessingState:(id)a3 withAuthenticatedContext:(id)a4
+- (void)confirmButtonSubPaneDidEnterProcessingState:(id)state withAuthenticatedContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  PMCredentialPickerViewController.confirmButtonSubPaneDidEnterProcessingState(_:withAuthenticatedContext:)(v6, a4);
+  stateCopy = state;
+  contextCopy = context;
+  selfCopy = self;
+  PMCredentialPickerViewController.confirmButtonSubPaneDidEnterProcessingState(_:withAuthenticatedContext:)(stateCopy, context);
 }
 
-- (void)confirmButtonSubPaneDidFailBiometry:(id)a3 allowingPasscodeFallback:(BOOL)a4
+- (void)confirmButtonSubPaneDidFailBiometry:(id)biometry allowingPasscodeFallback:(BOOL)fallback
 {
-  v6 = a3;
-  v7 = self;
-  sub_21CB13CE4(a4);
+  biometryCopy = biometry;
+  selfCopy = self;
+  sub_21CB13CE4(fallback);
 }
 
 - (void)userTappedContinueButton
 {
-  v2 = self;
+  selfCopy = self;
   PMCredentialPickerViewController.userTappedContinueButton()();
 }
 
-- (void)performPasswordAuthentication:(id)a3
+- (void)performPasswordAuthentication:(id)authentication
 {
-  v4 = a3;
-  v5 = self;
+  authenticationCopy = authentication;
+  selfCopy = self;
   _s17PasswordManagerUI32PMCredentialPickerViewControllerC07performA14AuthenticationyySo39ASCredentialRequestConfirmButtonSubPaneCF_0();
 }
 
-- (void)performAuthorization:(id)a3 withAuthenticatedLAContext:(id)a4
+- (void)performAuthorization:(id)authorization withAuthenticatedLAContext:(id)context
 {
   v6 = swift_allocObject();
   *(v6 + 16) = self;
-  v8 = self;
-  v7 = a4;
-  sub_21CB07B10(a4, sub_21CB1731C, v6);
+  selfCopy = self;
+  contextCopy = context;
+  sub_21CB07B10(context, sub_21CB1731C, v6);
 }
 
-- (BOOL)validateReadyForAuthorization:(id)a3
+- (BOOL)validateReadyForAuthorization:(id)authorization
 {
   v3 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC17PasswordManagerUI32PMCredentialPickerViewController_loginChoicesToShow);
   if (v3 >> 62)
@@ -237,90 +237,90 @@ LABEL_11:
 
 - (void)expandLoginChoicesButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_21CB0C910();
 }
 
 - (void)useCABLEButtonPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_21CB0CB2C();
 }
 
 - (void)manualPasswordEntryButtonPressed
 {
-  v3 = self;
-  v2 = [(ASCredentialRequestPaneViewController *)v3 delegate];
-  if (v2)
+  selfCopy = self;
+  delegate = [(ASCredentialRequestPaneViewController *)selfCopy delegate];
+  if (delegate)
   {
-    [(ASCredentialRequestPaneViewControllerDelegate *)v2 requestPaneViewControllerPresentManualPasswordEntryInterface:v3];
+    [(ASCredentialRequestPaneViewControllerDelegate *)delegate requestPaneViewControllerPresentManualPasswordEntryInterface:selfCopy];
     swift_unknownObjectRelease();
   }
 }
 
-- (void)credentialAuthenticationViewController:(id)a3 didFinishWithCredential:(id)a4 error:(id)a5 completion:(id)a6
+- (void)credentialAuthenticationViewController:(id)controller didFinishWithCredential:(id)credential error:(id)error completion:(id)completion
 {
-  v10 = _Block_copy(a6);
+  v10 = _Block_copy(completion);
   _Block_copy(v10);
-  v11 = a3;
-  v12 = a4;
-  v13 = self;
-  v14 = a5;
-  sub_21CB14518(v11, a4, a5, v13, v10);
+  controllerCopy = controller;
+  credentialCopy = credential;
+  selfCopy = self;
+  errorCopy = error;
+  sub_21CB14518(controllerCopy, credential, error, selfCopy, v10);
   _Block_release(v10);
   _Block_release(v10);
 }
 
-- (void)credentialListViewControllerDidPrepareInterface:(id)a3
+- (void)credentialListViewControllerDidPrepareInterface:(id)interface
 {
-  v4 = a3;
-  v5 = self;
-  PMCredentialPickerViewController.credentialListViewControllerDidPrepareInterface(_:)(v4);
+  interfaceCopy = interface;
+  selfCopy = self;
+  PMCredentialPickerViewController.credentialListViewControllerDidPrepareInterface(_:)(interfaceCopy);
 }
 
 - (void)performConditionalRegistrationIfPossible
 {
-  v2 = self;
+  selfCopy = self;
   PMCredentialPickerViewController.performConditionalRegistrationIfPossible()();
 }
 
-- (void)authenticationProvider:(id)a3 showViewController:(id)a4
+- (void)authenticationProvider:(id)provider showViewController:(id)controller
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  sub_21CB161E4(v6, &unk_282E5BD48, sub_21CB17070, &block_descriptor_140);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21CB161E4(controllerCopy, &unk_282E5BD48, sub_21CB17070, &block_descriptor_140);
   swift_unknownObjectRelease();
 }
 
-- (void)authenticationProvider:(id)a3 hideViewController:(id)a4
+- (void)authenticationProvider:(id)provider hideViewController:(id)controller
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
-  sub_21CB164D4(v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_21CB164D4(controllerCopy);
   swift_unknownObjectRelease();
 }
 
-- (void)authenticationProvider:(id)a3 presentAlert:(id)a4 primaryAction:(id)a5 alternateAction:(id)a6
+- (void)authenticationProvider:(id)provider presentAlert:(id)alert primaryAction:(id)action alternateAction:(id)alternateAction
 {
-  v8 = _Block_copy(a5);
-  v9 = _Block_copy(a6);
+  v8 = _Block_copy(action);
+  v9 = _Block_copy(alternateAction);
   v10 = sub_21CB85474();
   v11 = swift_allocObject();
   *(v11 + 16) = v8;
   v12 = swift_allocObject();
   *(v12 + 16) = v9;
   swift_unknownObjectRetain();
-  v13 = self;
+  selfCopy = self;
   sub_21CB167D0(v10, sub_21CB16ED8, v11, sub_21CB17324, v12);
   swift_unknownObjectRelease();
 }
 
 - (UIWindow)presentationAnchor
 {
-  v2 = self;
-  result = [(PMCredentialPickerViewController *)v2 view];
+  selfCopy = self;
+  result = [(PMCredentialPickerViewController *)selfCopy view];
   if (!result)
   {
     __break(1u);
@@ -328,19 +328,19 @@ LABEL_11:
   }
 
   v4 = result;
-  v5 = [(UIWindow *)result window];
+  window = [(UIWindow *)result window];
 
-  if (!v5)
+  if (!window)
   {
 LABEL_7:
     __break(1u);
     return result;
   }
 
-  return v5;
+  return window;
 }
 
-- (void)keychainSyncStatusMayHaveChangedWithNotification:(id)a3
+- (void)keychainSyncStatusMayHaveChangedWithNotification:(id)notification
 {
   v4 = sub_21CB807E4();
   v5 = *(v4 - 8);
@@ -348,7 +348,7 @@ LABEL_7:
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_21CB807B4();
-  v9 = self;
+  selfCopy = self;
   sub_21CB10350();
 
   (*(v5 + 8))(v8, v4);

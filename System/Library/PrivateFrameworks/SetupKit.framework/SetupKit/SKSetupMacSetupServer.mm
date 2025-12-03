@@ -1,11 +1,11 @@
 @interface SKSetupMacSetupServer
 - (BOOL)_bleAdvertiserShouldRun;
 - (SKSetupMacSetupServer)init;
-- (id)descriptionWithLevel:(int)a3;
+- (id)descriptionWithLevel:(int)level;
 - (void)_activate;
 - (void)_bleAdvertiserEnsureStarted;
 - (void)_bleAdvertiserEnsureStopped;
-- (void)_bleServerAcceptConnecton:(id)a3;
+- (void)_bleServerAcceptConnecton:(id)connecton;
 - (void)_bleServerEnsureStarted;
 - (void)_bleServerEnsureStopped;
 - (void)_invalidate;
@@ -26,9 +26,9 @@
   }
 }
 
-- (void)_bleServerAcceptConnecton:(id)a3
+- (void)_bleServerAcceptConnecton:(id)connecton
 {
-  v12 = a3;
+  connectonCopy = connecton;
   v4 = self->super._skCnx;
   if (v4)
   {
@@ -36,31 +36,31 @@
     var0 = self->super._ucat->var0;
     if (var0 <= 90)
     {
-      v7 = v12;
+      v7 = connectonCopy;
       if (var0 != -1)
       {
 LABEL_4:
         v10 = v7;
         LogPrintF();
-        [v12 invalidate];
+        [connectonCopy invalidate];
         goto LABEL_8;
       }
 
       if (_LogCategory_Initialize())
       {
         ucat = self->super._ucat;
-        v7 = v12;
+        v7 = connectonCopy;
         goto LABEL_4;
       }
     }
 
-    [v12 invalidate];
+    [connectonCopy invalidate];
   }
 
   else
   {
     v5 = objc_alloc_init(SKConnection);
-    [(SKConnection *)v5 setBleConnection:v12];
+    [(SKConnection *)v5 setBleConnection:connectonCopy];
     [(SKSetupBase *)self _connectionStartWithSKConnection:v5 clientMode:0 completeOnFailure:0 completion:&__block_literal_global_45];
   }
 
@@ -379,19 +379,19 @@ LABEL_10:
 {
   if (self->_completed)
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(bleListeningPSM) = 0;
   }
 
   else
   {
-    v2 = [(CBServer *)self->_bleServer bleListeningPSM];
-    if (v2)
+    bleListeningPSM = [(CBServer *)self->_bleServer bleListeningPSM];
+    if (bleListeningPSM)
     {
-      LOBYTE(v2) = [(SKConnection *)self->super._skCnx state]!= 1;
+      LOBYTE(bleListeningPSM) = [(SKConnection *)self->super._skCnx state]!= 1;
     }
   }
 
-  return v2;
+  return bleListeningPSM;
 }
 
 - (void)_run
@@ -445,9 +445,9 @@ LABEL_10:
   [(SKSetupBase *)&v3 _activate];
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v3 = 0;
   }

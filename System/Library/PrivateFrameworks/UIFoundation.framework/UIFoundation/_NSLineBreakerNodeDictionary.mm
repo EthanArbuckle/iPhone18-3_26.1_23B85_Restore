@@ -1,7 +1,7 @@
 @interface _NSLineBreakerNodeDictionary
 - (void)dealloc;
-- (void)enumerateClassesAndNodesUsingBlock:(void *)a1;
-- (void)setNode:(uint64_t)a1 forClass:(uint64_t)a2;
+- (void)enumerateClassesAndNodesUsingBlock:(void *)block;
+- (void)setNode:(uint64_t)node forClass:(uint64_t)class;
 @end
 
 @implementation _NSLineBreakerNodeDictionary
@@ -19,11 +19,11 @@
   [(_NSLineBreakerNodeDictionary *)&v4 dealloc];
 }
 
-- (void)setNode:(uint64_t)a1 forClass:(uint64_t)a2
+- (void)setNode:(uint64_t)node forClass:(uint64_t)class
 {
-  if (a1)
+  if (node)
   {
-    if (!a2 || *(a2 + 32) == 1)
+    if (!class || *(class + 32) == 1)
     {
       [_NSLineBreakerNodeDictionary setNode:forClass:];
     }
@@ -32,18 +32,18 @@
   }
 }
 
-- (void)enumerateClassesAndNodesUsingBlock:(void *)a1
+- (void)enumerateClassesAndNodesUsingBlock:(void *)block
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (block)
   {
-    if (a1[2])
+    if (block[2])
     {
-      (*(v3 + 2))(v3, a1[1]);
+      (*(v3 + 2))(v3, block[1]);
     }
 
-    v5 = a1[3];
+    v5 = block[3];
     if (v5)
     {
       v6[0] = MEMORY[0x1E69E9820];

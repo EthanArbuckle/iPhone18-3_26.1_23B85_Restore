@@ -1,49 +1,49 @@
 @interface IDSUDPGlobalLink
-- (BOOL)_processStunBindingRequest:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8;
-- (BOOL)_processStunBindingResponse:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8;
-- (BOOL)_processStunDataIndication:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8 packetBuffer:(id *)a9 fromDeviceUniqueID:(id)a10 cbuuid:(id)a11;
-- (BOOL)_processStunEchoRequest:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8;
-- (BOOL)_processStunEchoResponse:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8;
-- (BOOL)_processStunPacket:(id *)a3 fromDevice:(id)a4 arrivalTime:(double)a5 fromDeviceUniqueID:(id)a6 cbuuid:(id)a7;
-- (BOOL)link:(id)a3 didReceivePacket:(id *)a4 fromDeviceUniqueID:(id)a5 cbuuid:(id)a6;
+- (BOOL)_processStunBindingRequest:(id)request fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time;
+- (BOOL)_processStunBindingResponse:(id)response fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time;
+- (BOOL)_processStunDataIndication:(id)indication fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time packetBuffer:(id *)buffer fromDeviceUniqueID:(id)self0 cbuuid:(id)self1;
+- (BOOL)_processStunEchoRequest:(id)request fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time;
+- (BOOL)_processStunEchoResponse:(id)response fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time;
+- (BOOL)_processStunPacket:(id *)packet fromDevice:(id)device arrivalTime:(double)time fromDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (BOOL)link:(id)link didReceivePacket:(id *)packet fromDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
 - (IDSLinkDelegate)alternateDelegate;
 - (IDSLinkDelegate)delegate;
-- (IDSUDPGlobalLink)initWithDeviceUniqueID:(id)a3 cbuuid:(id)a4;
+- (IDSUDPGlobalLink)initWithDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
 - (id)copyLinkStatsDict;
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4;
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link;
 - (unint64_t)headerOverhead;
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5;
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
 - (void)_createSimpleConnectionData;
-- (void)_forwardPacketBuffer:(id *)a3 fromDeviceUniqueID:(id)a4 cbuuid:(id)a5;
+- (void)_forwardPacketBuffer:(id *)buffer fromDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
 - (void)_handleEchoTimer;
 - (void)_sendConnectionCheckRequest;
 - (void)_sendNominateRequest;
-- (void)_startConnectionEcho:(double)a3;
+- (void)_startConnectionEcho:(double)echo;
 - (void)_startEchoTimer;
 - (void)_stopEchoTimer;
-- (void)_updateLinkTransportAddress:(unsigned int)a3 localAddress:(sockaddr *)a4 remoteAddress:(sockaddr *)a5;
-- (void)createConnectionData:(id)a3 dataReadyHandler:(id)a4;
+- (void)_updateLinkTransportAddress:(unsigned int)address localAddress:(sockaddr *)localAddress remoteAddress:(sockaddr *)remoteAddress;
+- (void)createConnectionData:(id)data dataReadyHandler:(id)handler;
 - (void)dealloc;
 - (void)invalidate;
-- (void)processRemoteConnectionData:(id)a3 completionHandler:(id)a4;
-- (void)startConnectionForDevice:(id)a3 isInitiator:(BOOL)a4 remotePartyID:(id)a5 useStunMICheck:(BOOL)a6;
+- (void)processRemoteConnectionData:(id)data completionHandler:(id)handler;
+- (void)startConnectionForDevice:(id)device isInitiator:(BOOL)initiator remotePartyID:(id)d useStunMICheck:(BOOL)check;
 @end
 
 @implementation IDSUDPGlobalLink
 
-- (IDSUDPGlobalLink)initWithDeviceUniqueID:(id)a3 cbuuid:(id)a4
+- (IDSUDPGlobalLink)initWithDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v20.receiver = self;
   v20.super_class = IDSUDPGlobalLink;
   v9 = [(IDSUDPGlobalLink *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cbuuid, a4);
-    objc_storeStrong(&v10->_deviceUniqueID, a3);
-    v11 = [[IDSUDPLink alloc] initWithDeviceUniqueID:v7 cbuuid:v8];
+    objc_storeStrong(&v9->_cbuuid, cbuuid);
+    objc_storeStrong(&v10->_deviceUniqueID, d);
+    v11 = [[IDSUDPLink alloc] initWithDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
     udpLink = v10->_udpLink;
     v10->_udpLink = v11;
 
@@ -77,7 +77,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Dealloc UDPGlobalLink %@", buf, 0xCu);
   }
 
@@ -114,15 +114,15 @@
   self->_isInvalidated = 1;
 }
 
-- (void)createConnectionData:(id)a3 dataReadyHandler:(id)a4
+- (void)createConnectionData:(id)data dataReadyHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v8 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = dataCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "createConnectionData - localPartyID=%@", buf, 0xCu);
   }
 
@@ -186,14 +186,14 @@
       }
     }
 
-    if (v7)
+    if (handlerCopy)
     {
       v19 = im_primary_queue();
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100473024;
       block[3] = &unk_100BD7298;
-      v22 = v7;
+      v22 = handlerCopy;
       v21 = v15;
       dispatch_async(v19, block);
     }
@@ -201,8 +201,8 @@
 
   else
   {
-    [(IDSUDPGlobalLink *)self setLocalPartyID:v6];
-    v11 = [v7 copy];
+    [(IDSUDPGlobalLink *)self setLocalPartyID:dataCopy];
+    v11 = [handlerCopy copy];
     dataReadyHandler = self->_dataReadyHandler;
     self->_dataReadyHandler = v11;
 
@@ -211,16 +211,16 @@
   }
 }
 
-- (void)processRemoteConnectionData:(id)a3 completionHandler:(id)a4
+- (void)processRemoteConnectionData:(id)data completionHandler:(id)handler
 {
-  v74 = self;
-  v72 = a3;
-  v70 = a4;
+  selfCopy = self;
+  dataCopy = data;
+  handlerCopy = handler;
   v5 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *v95 = v72;
+    *v95 = dataCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "processRemoteConnectionData %@", buf, 0xCu);
   }
 
@@ -228,37 +228,37 @@
   {
     if (_IDSShouldLogTransport())
     {
-      v62 = v72;
+      v62 = dataCopy;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v62 = v72;
+        v62 = dataCopy;
         _IDSLogV();
       }
     }
   }
 
-  v6 = [v70 copy];
-  completionHandler = v74->_completionHandler;
-  v74->_completionHandler = v6;
+  v6 = [handlerCopy copy];
+  completionHandler = selfCopy->_completionHandler;
+  selfCopy->_completionHandler = v6;
 
-  if (v72)
+  if (dataCopy)
   {
-    state = v74->_state;
+    state = selfCopy->_state;
     if (state == 2)
     {
-      v9 = v72;
-      v69 = [v72 bytes];
-      v10 = [v72 length];
+      v9 = dataCopy;
+      bytes = [dataCopy bytes];
+      v10 = [dataCopy length];
       if (v10 > 1)
       {
-        v24 = *v69;
+        v24 = *bytes;
         if (v24 < 2)
         {
-          v28 = v69[1];
-          v67 = [(IDSUDPLink *)v74->_udpLink copyCurrentNetworkInterfaces];
+          v28 = bytes[1];
+          copyCurrentNetworkInterfaces = [(IDSUDPLink *)selfCopy->_udpLink copyCurrentNetworkInterfaces];
           v64[1] = v64;
-          __chkstk_darwin(v67);
+          __chkstk_darwin(copyCurrentNetworkInterfaces);
           v66 = &v62;
           v62 = 0xAAAAAAAAAAAAAAAALL;
           v63 = 0xAAAAAAAAAAAAAAAALL;
@@ -276,9 +276,9 @@
           v73 = v29;
           do
           {
-            v30 = *(v69 + 3);
-            v69 += 6;
-            v31 = bswap32(*(v69 - 1));
+            v30 = *(bytes + 3);
+            bytes += 6;
+            v31 = bswap32(*(bytes - 1));
             v32 = bswap32(v30) >> 16;
             v33 = OSLogHandleForTransportCategory();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -314,12 +314,12 @@
             v83 = 16;
             IPPortToSA4();
             v75 = [IDSSockAddrWrapper wrapperWithSockAddr:v93, v62, v63];
-            [(NSMutableArray *)v74->_remoteAddressArray addObject:v75];
+            [(NSMutableArray *)selfCopy->_remoteAddressArray addObject:v75];
             v81 = 0u;
             v82 = 0u;
             v79 = 0u;
             v80 = 0u;
-            v35 = v67;
+            v35 = copyCurrentNetworkInterfaces;
             v36 = [v35 countByEnumeratingWithState:&v79 objects:v92 count:16];
             if (v36)
             {
@@ -334,8 +334,8 @@
                 }
 
                 v43 = *(*(&v79 + 1) + 8 * v37);
-                v44 = [v43 address];
-                v45 = [v44 sa4];
+                address = [v43 address];
+                v45 = [address sa4];
                 v46 = bswap32(*(v45 + 1));
                 v47 = HIBYTE(v46) == 10 || (v46 & 0xFFF00000) == -1408237568;
                 v48 = v46 & 0xFFFF0000;
@@ -346,7 +346,7 @@
                   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = v73;
-                    *v95 = v44;
+                    *v95 = address;
                     *&v95[8] = 2112;
                     *v96 = v75;
                     _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "skip address pair [%@-%@].", buf, 0x16u);
@@ -371,7 +371,7 @@
                   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
                   {
                     *buf = v73;
-                    *v95 = v44;
+                    *v95 = address;
                     *&v95[8] = 2112;
                     *v96 = v75;
                     _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_DEFAULT, "add address pair [%@-%@]", buf, 0x16u);
@@ -389,8 +389,8 @@
                     }
                   }
 
-                  v52 = [v43 index];
-                  sub_1003CFAC0(&v74->_sockAddrPairTable.iNumPair, v52, v45, v93, 1, 0, 0);
+                  index = [v43 index];
+                  sub_1003CFAC0(&selfCopy->_sockAddrPairTable.iNumPair, index, v45, v93, 1, 0, 0);
                   ++v76;
                 }
 
@@ -413,7 +413,7 @@
           while (v71 != v68);
           if (v76)
           {
-            [(IDSUDPGlobalLink *)v74 _sendConnectionCheckRequest];
+            [(IDSUDPGlobalLink *)selfCopy _sendConnectionCheckRequest];
             v11 = 0;
             v13 = 0;
           }
@@ -443,14 +443,14 @@ LABEL_104:
               }
             }
 
-            if (v74->_completionHandler)
+            if (selfCopy->_completionHandler)
             {
               v60 = im_primary_queue();
               v77[0] = _NSConcreteStackBlock;
               v77[1] = 3221225472;
               v77[2] = sub_1004741BC;
               v77[3] = &unk_100BD6E40;
-              v77[4] = v74;
+              v77[4] = selfCopy;
               v13 = v13;
               v78 = v13;
               dispatch_async(v60, v77);
@@ -462,7 +462,7 @@ LABEL_104:
 
         else
         {
-          v11 = [NSString stringWithFormat:@"connection data has unsupported version %d", *v69];
+          v11 = [NSString stringWithFormat:@"connection data has unsupported version %d", *bytes];
           v25 = [NSDictionary dictionaryWithObject:v11 forKey:NSLocalizedDescriptionKey];
           v13 = [NSError errorWithDomain:@"UDPGlobalLink" code:8004 userInfo:v25];
 
@@ -488,14 +488,14 @@ LABEL_104:
             }
           }
 
-          if (v74->_completionHandler)
+          if (selfCopy->_completionHandler)
           {
             v27 = im_primary_queue();
             v84[0] = _NSConcreteStackBlock;
             v84[1] = 3221225472;
             v84[2] = sub_1004741A8;
             v84[3] = &unk_100BD6E40;
-            v84[4] = v74;
+            v84[4] = selfCopy;
             v13 = v13;
             v85 = v13;
             dispatch_async(v27, v84);
@@ -531,14 +531,14 @@ LABEL_104:
           }
         }
 
-        if (v74->_completionHandler)
+        if (selfCopy->_completionHandler)
         {
           v15 = im_primary_queue();
           v86[0] = _NSConcreteStackBlock;
           v86[1] = 3221225472;
           v86[2] = sub_100474194;
           v86[3] = &unk_100BD6E40;
-          v86[4] = v74;
+          v86[4] = selfCopy;
           v13 = v13;
           v87 = v13;
           dispatch_async(v15, v86);
@@ -565,7 +565,7 @@ LABEL_104:
       v21 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = v74->_state;
+        v22 = selfCopy->_state;
         if (v22 > 6)
         {
           v23 = "UnexpectedState";
@@ -583,13 +583,13 @@ LABEL_104:
 
       if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
       {
-        v54 = v74->_state;
+        v54 = selfCopy->_state;
         v55 = v54 > 6 ? "UnexpectedState" : _IDSLinkStateStrings[v54];
         v62 = v55;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
-          v56 = v74->_state;
+          v56 = selfCopy->_state;
           if (v56 > 6)
           {
             v57 = "UnexpectedState";
@@ -605,14 +605,14 @@ LABEL_104:
         }
       }
 
-      if (v74->_completionHandler)
+      if (selfCopy->_completionHandler)
       {
         v61 = im_primary_queue();
         v88[0] = _NSConcreteStackBlock;
         v88[1] = 3221225472;
         v88[2] = sub_100474180;
         v88[3] = &unk_100BD6E40;
-        v88[4] = v74;
+        v88[4] = selfCopy;
         v13 = v13;
         v89 = v13;
         dispatch_async(v61, v88);
@@ -644,14 +644,14 @@ LABEL_104:
       }
     }
 
-    if (v74->_completionHandler)
+    if (selfCopy->_completionHandler)
     {
       v18 = im_primary_queue();
       v90[0] = _NSConcreteStackBlock;
       v90[1] = 3221225472;
       v90[2] = sub_10047416C;
       v90[3] = &unk_100BD6E40;
-      v90[4] = v74;
+      v90[4] = selfCopy;
       v13 = v13;
       v91 = v13;
       dispatch_async(v18, v90);
@@ -661,23 +661,23 @@ LABEL_104:
   }
 }
 
-- (void)startConnectionForDevice:(id)a3 isInitiator:(BOOL)a4 remotePartyID:(id)a5 useStunMICheck:(BOOL)a6
+- (void)startConnectionForDevice:(id)device isInitiator:(BOOL)initiator remotePartyID:(id)d useStunMICheck:(BOOL)check
 {
-  v6 = a6;
-  v8 = a4;
-  v10 = a3;
-  v36 = v10;
-  v37 = a5;
-  if (v10)
+  checkCopy = check;
+  initiatorCopy = initiator;
+  deviceCopy = device;
+  v36 = deviceCopy;
+  dCopy = d;
+  if (deviceCopy)
   {
-    v35 = self;
+    selfCopy = self;
     v11 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = @"NO";
       *buf = 138413058;
-      *&buf[4] = v10;
-      if (v8)
+      *&buf[4] = deviceCopy;
+      if (initiatorCopy)
       {
         v13 = @"YES";
       }
@@ -689,13 +689,13 @@ LABEL_104:
 
       *&buf[14] = v13;
       *&buf[12] = 2112;
-      if (v6)
+      if (checkCopy)
       {
         v12 = @"YES";
       }
 
       *&buf[22] = 2112;
-      *&buf[24] = v37;
+      *&buf[24] = dCopy;
       LOWORD(v47) = 2112;
       *(&v47 + 2) = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "startConnectionForDevice - deviceID=%@ isInitiator=%@ remotePartyID=%@ stunMICheck=%@", buf, 0x2Au);
@@ -703,16 +703,16 @@ LABEL_104:
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLogTransport())
     {
-      v14 = v8 ? @"YES" : @"NO";
-      v15 = v6 ? @"YES" : @"NO";
-      v33 = v37;
+      v14 = initiatorCopy ? @"YES" : @"NO";
+      v15 = checkCopy ? @"YES" : @"NO";
+      v33 = dCopy;
       v34 = v15;
       v31 = v36;
       v32 = v14;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v33 = v37;
+        v33 = dCopy;
         v34 = v15;
         v31 = v36;
         v32 = v14;
@@ -720,14 +720,14 @@ LABEL_104:
       }
     }
 
-    self->_useStunMICheck = v6;
-    if (!v8)
+    self->_useStunMICheck = checkCopy;
+    if (!initiatorCopy)
     {
       [(IDSUDPGlobalLink *)self _sendNominateRequest];
       goto LABEL_49;
     }
 
-    if (v37)
+    if (dCopy)
     {
       [(IDSUDPGlobalLink *)self setRemotePartyID:?];
       v41 = 0u;
@@ -782,8 +782,8 @@ LABEL_104:
         while (v17);
       }
 
-      nominateBlocks = v35->_nominateBlocks;
-      v35->_nominateBlocks = 0;
+      nominateBlocks = selfCopy->_nominateBlocks;
+      selfCopy->_nominateBlocks = 0;
 
       *&v24 = 0xAAAAAAAAAAAAAAAALL;
       *(&v24 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -804,16 +804,16 @@ LABEL_104:
       v45[2] = v24;
       v45[0] = v24;
       v38 = 0;
-      v25 = v37;
-      v26 = [v37 UTF8String];
-      v27 = strlen(v26);
-      if (sub_1003D0C28(&v35->_sockAddrPairTable, v26, v27, &v38, buf, v45))
+      v25 = dCopy;
+      uTF8String = [dCopy UTF8String];
+      v27 = strlen(uTF8String);
+      if (sub_1003D0C28(&selfCopy->_sockAddrPairTable, uTF8String, v27, &v38, buf, v45))
       {
         v28 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
           *v43 = 136315138;
-          v44 = v26;
+          v44 = uTF8String;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Nominated connection matches remotePartyID %s.", v43, 0xCu);
         }
 
@@ -821,17 +821,17 @@ LABEL_104:
         {
           if (_IDSShouldLogTransport())
           {
-            v31 = v26;
+            v31 = uTF8String;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
-              v31 = v26;
+              v31 = uTF8String;
               _IDSLogV();
             }
           }
         }
 
-        [(IDSUDPGlobalLink *)v35 _updateLinkTransportAddress:v38 localAddress:buf remoteAddress:v45, v31, v32, v33, v34];
+        [(IDSUDPGlobalLink *)selfCopy _updateLinkTransportAddress:v38 localAddress:buf remoteAddress:v45, v31, v32, v33, v34];
       }
 
       goto LABEL_49;
@@ -943,14 +943,14 @@ LABEL_49:
           objc_enumerationMutation(obj);
         }
 
-        v9 = [*(*(&v28 + 1) + 8 * i) address];
-        if (v9)
+        address = [*(*(&v28 + 1) + 8 * i) address];
+        if (address)
         {
           v10 = OSLogHandleForTransportCategory();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *v33 = v9;
+            *v33 = address;
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "add local adress %@", buf, 0xCu);
           }
 
@@ -958,17 +958,17 @@ LABEL_49:
           {
             if (_IDSShouldLogTransport())
             {
-              v21 = v9;
+              v21 = address;
               _IDSLogTransport();
               if (_IDSShouldLog())
               {
-                v21 = v9;
+                v21 = address;
                 _IDSLogV();
               }
             }
           }
 
-          v11 = [v9 sa4];
+          v11 = [address sa4];
           if ((v6 - &v35 - 513) >= -6)
           {
             v12 = OSLogHandleForIDSCategory();
@@ -1190,8 +1190,8 @@ LABEL_6:
 
     else if (v5 - self->_connectionRequestStartTime >= 5.0)
     {
-      v10 = [NSDictionary dictionaryWithObject:@"Connection check is timed out forKey:cannot connect to remote party.", NSLocalizedDescriptionKey];
-      v11 = [NSError errorWithDomain:@"UDPGlobalLink" code:8005 userInfo:v10];
+      nSLocalizedDescriptionKey = [NSDictionary dictionaryWithObject:@"Connection check is timed out forKey:cannot connect to remote party.", NSLocalizedDescriptionKey];
+      v11 = [NSError errorWithDomain:@"UDPGlobalLink" code:8005 userInfo:nSLocalizedDescriptionKey];
 
       v12 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1332,8 +1332,8 @@ LABEL_37:
 
     else
     {
-      v10 = [(NSString *)self->_localPartyID UTF8String];
-      v11 = strlen(v10);
+      uTF8String = [(NSString *)self->_localPartyID UTF8String];
+      v11 = strlen(uTF8String);
       ids_monotonic_time();
       v13 = v12;
       if (qword_100CBD420 != -1)
@@ -1341,7 +1341,7 @@ LABEL_37:
         sub_100920914();
       }
 
-      sub_1003D0CF8(&self->_sockAddrPairTable, self->_udpLink, self->_cbuuid, v10, v11, (qword_100CBD418 + v13 * 4294967300.0) >> 22);
+      sub_1003D0CF8(&self->_sockAddrPairTable, self->_udpLink, self->_cbuuid, uTF8String, v11, (qword_100CBD418 + v13 * 4294967300.0) >> 22);
       IDSTransportThreadAddBlockAfter();
     }
   }
@@ -1371,7 +1371,7 @@ LABEL_37:
   }
 }
 
-- (void)_startConnectionEcho:(double)a3
+- (void)_startConnectionEcho:(double)echo
 {
   if (sub_1003D0BE8(&self->_sockAddrPairTable))
   {
@@ -1399,7 +1399,7 @@ LABEL_17:
   else
   {
     ids_monotonic_time();
-    if (v6 - a3 >= 5.0)
+    if (v6 - echo >= 5.0)
     {
       v8 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1600,9 +1600,9 @@ LABEL_17:
   }
 }
 
-- (void)_updateLinkTransportAddress:(unsigned int)a3 localAddress:(sockaddr *)a4 remoteAddress:(sockaddr *)a5
+- (void)_updateLinkTransportAddress:(unsigned int)address localAddress:(sockaddr *)localAddress remoteAddress:(sockaddr *)remoteAddress
 {
-  v7 = *&a3;
+  v7 = *&address;
   *&v9 = 0xAAAAAAAAAAAAAAAALL;
   *(&v9 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v29 = v9;
@@ -1624,8 +1624,8 @@ LABEL_17:
   if (!IsValidSA() || !IsValidSA())
   {
     self->_sourceInterfaceIndex = v7;
-    memcpy(&self->_sourceAddress, a4, a4->sa_len);
-    memcpy(&self->_destinationAddress, a5, a5->sa_len);
+    memcpy(&self->_sourceAddress, localAddress, localAddress->sa_len);
+    memcpy(&self->_destinationAddress, remoteAddress, remoteAddress->sa_len);
     self->_state = 4;
     v12 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -1662,19 +1662,19 @@ LABEL_17:
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 unsignedIntValue];
+      unsignedIntValue = [v14 unsignedIntValue];
     }
 
     else
     {
-      v16 = 800;
+      unsignedIntValue = 800;
     }
 
-    [(IDSUDPLink *)self->_udpLink setTrafficClass:v16];
+    [(IDSUDPLink *)self->_udpLink setTrafficClass:unsignedIntValue];
     v17 = +[IMLockdownManager sharedInstance];
-    v18 = [v17 isInternalInstall];
+    isInternalInstall = [v17 isInternalInstall];
 
-    if (v18)
+    if (isInternalInstall)
     {
       [(IDSUDPGlobalLink *)self _startEchoTimer];
     }
@@ -1682,11 +1682,11 @@ LABEL_17:
     goto LABEL_24;
   }
 
-  if (sub_100476950(&self->_sourceAddress, a4) || sub_100476950(&self->_destinationAddress, a5))
+  if (sub_100476950(&self->_sourceAddress, localAddress) || sub_100476950(&self->_destinationAddress, remoteAddress))
   {
     self->_sourceInterfaceIndex = v7;
-    memcpy(&self->_sourceAddress, a4, a4->sa_len);
-    memcpy(&self->_destinationAddress, a5, a5->sa_len);
+    memcpy(&self->_sourceAddress, localAddress, localAddress->sa_len);
+    memcpy(&self->_destinationAddress, remoteAddress, remoteAddress->sa_len);
     v10 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -1716,7 +1716,7 @@ LABEL_24:
   }
 }
 
-- (BOOL)_processStunBindingRequest:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8
+- (BOOL)_processStunBindingRequest:(id)request fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time
 {
   v8 = __chkstk_darwin(self);
   v10 = v9;
@@ -1821,9 +1821,9 @@ LABEL_24:
 
   v84 = *&buf[8];
   v30 = __b[2];
-  v31 = [v29 UTF8String];
-  v32 = strlen(v31);
-  if (v84 >= 1 && v30 >= 1 && v32 == v30 && !memcmp(&__b[3], v31, v32))
+  uTF8String = [v29 UTF8String];
+  v32 = strlen(uTF8String);
+  if (v84 >= 1 && v30 >= 1 && v32 == v30 && !memcmp(&__b[3], uTF8String, v32))
   {
     v75 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT))
@@ -1848,9 +1848,9 @@ LABEL_24:
     }
 
     sub_1003CFAC0((v18 + 56), v15, __src, v12, 5, &__b[3], v30);
-    v76 = [*(v18 + 1856) UTF8String];
-    v77 = strlen(v76);
-    if (!memcmp(&__b[3], v76, v77))
+    uTF8String2 = [*(v18 + 1856) UTF8String];
+    v77 = strlen(uTF8String2);
+    if (!memcmp(&__b[3], uTF8String2, v77))
     {
       v78 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
@@ -1858,7 +1858,7 @@ LABEL_24:
         *v112 = 67109378;
         *&v112[4] = v84;
         *&v112[8] = 2080;
-        *&v112[10] = v76;
+        *&v112[10] = uTF8String2;
         _os_log_impl(&_mh_execute_header, v78, OS_LOG_TYPE_DEFAULT, "nominate request with count(%d) matches remoteID %s", v112, 0x12u);
       }
 
@@ -1867,12 +1867,12 @@ LABEL_24:
         if (_IDSShouldLogTransport())
         {
           v80 = v84;
-          v81 = v76;
+          v81 = uTF8String2;
           _IDSLogTransport();
           if (_IDSShouldLog())
           {
             v80 = v84;
-            v81 = v76;
+            v81 = uTF8String2;
             _IDSLogV();
           }
         }
@@ -1939,10 +1939,10 @@ LABEL_28:
 
         v43 = [[IDSStunMessage alloc] initWithType:257];
         v44 = *v35;
-        v45 = [v20 transactionID];
+        transactionID = [v20 transactionID];
         v46 = *(v35 + 8);
         v80 = *(v18 + 1840);
-        [v43 stunResponseToBuffer:v44 outputLength:v35 + 16 transactionID:v45 reqCount:v84 echoTime:v41 delay:v42 keyData:v80 remainingLength:v46];
+        [v43 stunResponseToBuffer:v44 outputLength:v35 + 16 transactionID:transactionID reqCount:v84 echoTime:v41 delay:v42 keyData:v80 remainingLength:v46];
 
         v47 = OSLogHandleForTransportCategory();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
@@ -2105,11 +2105,11 @@ LABEL_94:
   return 1;
 }
 
-- (BOOL)_processStunBindingResponse:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8
+- (BOOL)_processStunBindingResponse:(id)response fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time
 {
-  v11 = *&a5;
-  v14 = a3;
-  v15 = a4;
+  v11 = *&index;
+  responseCopy = response;
+  deviceCopy = device;
   v36 = &v31;
   *&v16 = 0xAAAAAAAAAAAAAAAALL;
   *(&v16 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -2131,7 +2131,7 @@ LABEL_94:
   v38[7] = v16;
   memset(__b, 170, sizeof(__b));
   v17 = 0.0;
-  if ([v14 getAttribute:32773 attribute:__b])
+  if ([responseCopy getAttribute:32773 attribute:__b])
   {
     v18 = LOBYTE(__b[3]);
     v19 = BYTE1(__b[3]);
@@ -2142,7 +2142,7 @@ LABEL_94:
       sub_100920914();
     }
 
-    v17 = vcvtd_n_f64_u32((-256 * v20 - v21 + -256 * v18 - v19 + ((qword_100CBD418 + a8 * 4294967300.0) >> 22)), 0xAuLL) * 1000.0;
+    v17 = vcvtd_n_f64_u32((-256 * v20 - v21 + -256 * v18 - v19 + ((qword_100CBD418 + time * 4294967300.0) >> 22)), 0xAuLL) * 1000.0;
   }
 
   SAToIPPortString();
@@ -2151,7 +2151,7 @@ LABEL_94:
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v41 = v14;
+    v41 = responseCopy;
     v42 = 2080;
     v43 = v39;
     v44 = 1024;
@@ -2170,7 +2170,7 @@ LABEL_94:
       v35 = v17;
       v33 = v11;
       v34 = v38;
-      v31 = v14;
+      v31 = responseCopy;
       v32 = v39;
       _IDSLogTransport();
       if (_IDSShouldLog())
@@ -2178,23 +2178,23 @@ LABEL_94:
         v35 = v17;
         v33 = v11;
         v34 = v38;
-        v31 = v14;
+        v31 = responseCopy;
         v32 = v39;
         _IDSLogV();
       }
     }
   }
 
-  v23 = [v14 transactionID];
-  v24 = v23;
-  v25 = [v23 bytes];
+  transactionID = [responseCopy transactionID];
+  v24 = transactionID;
+  bytes = [transactionID bytes];
 
-  if ([v14 getAttribute:37 attribute:__b])
+  if ([responseCopy getAttribute:37 attribute:__b])
   {
     v26 = __b[2];
     if (__b[2] >= 1)
     {
-      sub_1003D0050(&self->_sockAddrPairTable, v25, 5);
+      sub_1003D0050(&self->_sockAddrPairTable, bytes, 5);
       v27 = OSLogHandleForTransportCategory();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
@@ -2217,11 +2217,11 @@ LABEL_94:
         }
       }
 
-      [(IDSUDPGlobalLink *)self _updateLinkTransportAddress:v11 localAddress:a6 remoteAddress:a7];
+      [(IDSUDPGlobalLink *)self _updateLinkTransportAddress:v11 localAddress:address remoteAddress:remmoteAddress];
     }
   }
 
-  else if (sub_1003D0050(&self->_sockAddrPairTable, v25, 3) && self->_completionHandler && !self->_notifyReachableDone)
+  else if (sub_1003D0050(&self->_sockAddrPairTable, bytes, 3) && self->_completionHandler && !self->_notifyReachableDone)
   {
     self->_notifyReachableDone = 1;
     v28 = OSLogHandleForTransportCategory();
@@ -2255,13 +2255,13 @@ LABEL_94:
   return 1;
 }
 
-- (BOOL)_processStunEchoRequest:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8
+- (BOOL)_processStunEchoRequest:(id)request fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time
 {
-  v54 = a7;
-  v55 = a6;
-  v9 = *&a5;
-  v12 = a3;
-  v56 = a4;
+  remmoteAddressCopy = remmoteAddress;
+  addressCopy = address;
+  v9 = *&index;
+  requestCopy = request;
+  deviceCopy = device;
   v53 = &keyData;
   *&v13 = 0xAAAAAAAAAAAAAAAALL;
   *(&v13 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -2282,7 +2282,7 @@ LABEL_94:
   v63 = v13;
   v64 = v13;
   memset(__b, 170, sizeof(__b));
-  if ([v12 getAttribute:37 attribute:__b])
+  if ([requestCopy getAttribute:37 attribute:__b])
   {
     v14 = __b[2];
     if ((__b[2] & 0x80000000) != 0)
@@ -2360,7 +2360,7 @@ LABEL_94:
 
   v23 = _IDSLinkPacketBufferCreate();
   memset(buf, 170, 0x5D0uLL);
-  if ([v12 getAttribute:32773 attribute:buf])
+  if ([requestCopy getAttribute:32773 attribute:buf])
   {
     v24 = *&buf[12];
     ids_monotonic_time();
@@ -2371,7 +2371,7 @@ LABEL_94:
     }
 
     v27 = bswap32(v24) >> 16;
-    v28 = ((qword_100CBD418 + v26 * 4294967300.0) >> 22) - ((qword_100CBD418 + a8 * 4294967300.0) >> 22);
+    v28 = ((qword_100CBD418 + v26 * 4294967300.0) >> 22) - ((qword_100CBD418 + time * 4294967300.0) >> 22);
   }
 
   else
@@ -2382,10 +2382,10 @@ LABEL_94:
 
   v29 = [[IDSStunMessage alloc] initWithType:4067];
   v30 = *v23;
-  v31 = [v12 transactionID];
+  transactionID = [requestCopy transactionID];
   v32 = *(v23 + 8);
   keyData = self->_keyData;
-  [v29 stunResponseToBuffer:v30 outputLength:v23 + 16 transactionID:v31 reqCount:v14 echoTime:v27 delay:v28 keyData:keyData remainingLength:v32];
+  [v29 stunResponseToBuffer:v30 outputLength:v23 + 16 transactionID:transactionID reqCount:v14 echoTime:v27 delay:v28 keyData:keyData remainingLength:v32];
 
   v33 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -2430,7 +2430,7 @@ LABEL_94:
     }
   }
 
-  v43 = [(IDSUDPLink *)self->_udpLink sendPacketBuffer:v23 toDeviceUniqueID:self->_deviceUniqueID cbuuid:v56];
+  v43 = [(IDSUDPLink *)self->_udpLink sendPacketBuffer:v23 toDeviceUniqueID:self->_deviceUniqueID cbuuid:deviceCopy];
   if (v43)
   {
     v44 = OSLogHandleForTransportCategory();
@@ -2478,12 +2478,12 @@ LABEL_44:
   return 1;
 }
 
-- (BOOL)_processStunEchoResponse:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8
+- (BOOL)_processStunEchoResponse:(id)response fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time
 {
-  v9 = *&a5;
-  v12 = a3;
+  v9 = *&index;
+  responseCopy = response;
   v33 = &v28;
-  v34 = a4;
+  deviceCopy = device;
   *&v13 = 0xAAAAAAAAAAAAAAAALL;
   *(&v13 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v36[6] = v13;
@@ -2503,7 +2503,7 @@ LABEL_44:
   v35[6] = v13;
   v35[7] = v13;
   memset(__b, 170, sizeof(__b));
-  if ([v12 getAttribute:37 attribute:__b])
+  if ([responseCopy getAttribute:37 attribute:__b])
   {
     v14 = __b[2];
     v15 = sub_1003D1C08(&self->_sockAddrPairTable);
@@ -2534,7 +2534,7 @@ LABEL_44:
 
     else
     {
-      if ([v12 getAttribute:32773 attribute:__b])
+      if ([responseCopy getAttribute:32773 attribute:__b])
       {
         v16 = LOBYTE(__b[3]);
         v17 = BYTE1(__b[3]);
@@ -2545,7 +2545,7 @@ LABEL_44:
           sub_100920914();
         }
 
-        v20 = (vcvtd_n_f64_u32((-256 * v18 - v19 + -256 * v16 - v17 + ((qword_100CBD418 + a8 * 4294967300.0) >> 22)), 0xAuLL) * 1000.0);
+        v20 = (vcvtd_n_f64_u32((-256 * v18 - v19 + -256 * v16 - v17 + ((qword_100CBD418 + time * 4294967300.0) >> 22)), 0xAuLL) * 1000.0);
       }
 
       else
@@ -2593,11 +2593,11 @@ LABEL_44:
         }
       }
 
-      v24 = [v12 transactionID];
-      v25 = v24;
-      v26 = [v24 bytes];
+      transactionID = [responseCopy transactionID];
+      v25 = transactionID;
+      bytes = [transactionID bytes];
 
-      sub_1003D0050(&self->_sockAddrPairTable, v26, 7);
+      sub_1003D0050(&self->_sockAddrPairTable, bytes, 7);
     }
   }
 
@@ -2626,13 +2626,13 @@ LABEL_44:
   return 1;
 }
 
-- (BOOL)_processStunDataIndication:(id)a3 fromDevice:(id)a4 localIfIndex:(unsigned int)a5 localAddress:(sockaddr *)a6 remmoteAddress:(sockaddr *)a7 arrivalTime:(double)a8 packetBuffer:(id *)a9 fromDeviceUniqueID:(id)a10 cbuuid:(id)a11
+- (BOOL)_processStunDataIndication:(id)indication fromDevice:(id)device localIfIndex:(unsigned int)index localAddress:(sockaddr *)address remmoteAddress:(sockaddr *)remmoteAddress arrivalTime:(double)time packetBuffer:(id *)buffer fromDeviceUniqueID:(id)self0 cbuuid:(id)self1
 {
-  v12 = *&a5;
-  v15 = a3;
-  v16 = a4;
-  v17 = a10;
-  v18 = a11;
+  v12 = *&index;
+  indicationCopy = indication;
+  deviceCopy = device;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   *&v19 = 0xAAAAAAAAAAAAAAAALL;
   *(&v19 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v41[6] = v19;
@@ -2652,7 +2652,7 @@ LABEL_44:
   v40[1] = v19;
   v40[0] = v19;
   bzero(v38, 0x5D0uLL);
-  if (([v15 getAttribute:19 attribute:v38] & 1) == 0)
+  if (([indicationCopy getAttribute:19 attribute:v38] & 1) == 0)
   {
     v23 = OSLogHandleForTransportCategory();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -2716,11 +2716,11 @@ LABEL_22:
   SAToIPPortString();
   SAToIPPortString();
   IDSLinkPacketBufferAddBufferStart();
-  a9->var2 = v39;
+  buffer->var2 = v39;
   v20 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    var2 = a9->var2;
+    var2 = buffer->var2;
     *buf = 134218754;
     v31 = var2;
     v32 = 2080;
@@ -2738,34 +2738,34 @@ LABEL_22:
     {
       v28 = v12;
       v29 = v40;
-      v26 = a9->var2;
+      v26 = buffer->var2;
       v27 = v41;
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
         v28 = v12;
         v29 = v40;
-        v26 = a9->var2;
+        v26 = buffer->var2;
         v27 = v41;
         _IDSLogV();
       }
     }
   }
 
-  [(IDSUDPGlobalLink *)self _forwardPacketBuffer:a9 fromDeviceUniqueID:v17 cbuuid:v18, v26, v27, v28, v29];
+  [(IDSUDPGlobalLink *)self _forwardPacketBuffer:buffer fromDeviceUniqueID:dCopy cbuuid:cbuuidCopy, v26, v27, v28, v29];
   v22 = 1;
 LABEL_23:
 
   return v22;
 }
 
-- (BOOL)_processStunPacket:(id *)a3 fromDevice:(id)a4 arrivalTime:(double)a5 fromDeviceUniqueID:(id)a6 cbuuid:(id)a7
+- (BOOL)_processStunPacket:(id *)packet fromDevice:(id)device arrivalTime:(double)time fromDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  deviceCopy = device;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
   v15 = [[IDSStunMessage alloc] initWithType:0];
-  if (([v15 read:a3->var0 inputLength:SLODWORD(a3->var2)] & 1) == 0)
+  if (([v15 read:packet->var0 inputLength:SLODWORD(packet->var2)] & 1) == 0)
   {
     v18 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -2782,61 +2782,61 @@ LABEL_23:
     goto LABEL_27;
   }
 
-  v16 = [v15 type];
+  type = [v15 type];
   if (!self->_useStunMICheck)
   {
     goto LABEL_9;
   }
 
-  if ([v15 verifyMessageIntegrityWithKey:self->_keyData inputBuffer:a3->var0 inputLength:LODWORD(a3->var2)])
+  if ([v15 verifyMessageIntegrityWithKey:self->_keyData inputBuffer:packet->var0 inputLength:LODWORD(packet->var2)])
   {
     v17 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
       *buf = 67109120;
-      *&buf[4] = v16;
+      *&buf[4] = type;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "### stun packet type %04x passed MI check.", buf, 8u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v42 = v16;
+      v42 = type;
       _IDSLogV();
     }
 
 LABEL_9:
-    if (v16 <= 0x100u)
+    if (type <= 0x100u)
     {
-      if (v16 == 1)
+      if (type == 1)
       {
         memset(buf, 170, 0x5D0uLL);
         memset(__b, 170, sizeof(__b));
-        v21 = *&a3->var18.__ss_pad2[64];
-        v77 = *&a3->var18.__ss_pad2[48];
+        v21 = *&packet->var18.__ss_pad2[64];
+        v77 = *&packet->var18.__ss_pad2[48];
         v78 = v21;
-        v22 = *&a3->var18.__ss_pad2[96];
-        v79 = *&a3->var18.__ss_pad2[80];
+        v22 = *&packet->var18.__ss_pad2[96];
+        v79 = *&packet->var18.__ss_pad2[80];
         v80 = v22;
-        v23 = *a3->var18.__ss_pad2;
-        v73 = *&a3->var18.ss_len;
+        v23 = *packet->var18.__ss_pad2;
+        v73 = *&packet->var18.ss_len;
         v74 = v23;
-        v24 = *&a3->var18.__ss_pad2[32];
-        v75 = *&a3->var18.__ss_pad2[16];
+        v24 = *&packet->var18.__ss_pad2[32];
+        v75 = *&packet->var18.__ss_pad2[16];
         v76 = v24;
-        v25 = *&a3->var19.__ss_pad2[64];
-        v26 = *&a3->var19.__ss_pad2[80];
-        v69 = *&a3->var19.__ss_pad2[48];
+        v25 = *&packet->var19.__ss_pad2[64];
+        v26 = *&packet->var19.__ss_pad2[80];
+        v69 = *&packet->var19.__ss_pad2[48];
         v70 = v25;
-        v27 = *&a3->var19.__ss_pad2[96];
+        v27 = *&packet->var19.__ss_pad2[96];
         v71 = v26;
         v72 = v27;
-        v28 = *a3->var19.__ss_pad2;
-        v65 = *&a3->var19.ss_len;
+        v28 = *packet->var19.__ss_pad2;
+        v65 = *&packet->var19.ss_len;
         v66 = v28;
-        v29 = *&a3->var19.__ss_pad2[32];
-        v67 = *&a3->var19.__ss_pad2[16];
+        v29 = *&packet->var19.__ss_pad2[32];
+        v67 = *&packet->var19.__ss_pad2[16];
         v68 = v29;
-        var17 = a3->var17;
+        var17 = packet->var17;
         v44[0] = _NSConcreteStackBlock;
         v44[1] = 3221225472;
         v44[2] = sub_10047945C;
@@ -2859,10 +2859,10 @@ LABEL_9:
         v58 = v68;
         v57 = v67;
         v56 = v66;
-        v46 = v12;
+        v46 = deviceCopy;
         v64 = var17;
         v55 = v65;
-        v63 = a5;
+        timeCopy = time;
         v32 = objc_retainBlock(v44);
         if ([v31 getAttribute:37 attribute:buf] && objc_msgSend(v31, "getAttribute:attribute:", 6, __b) && !self->_remotePartyID)
         {
@@ -2907,25 +2907,25 @@ LABEL_9:
         goto LABEL_42;
       }
 
-      if (v16 == 23)
+      if (type == 23)
       {
-        [(IDSUDPGlobalLink *)self _processStunDataIndication:v15 fromDevice:v12 localIfIndex:a3->var17 localAddress:&a3->var18 remmoteAddress:&a3->var19 arrivalTime:a3 packetBuffer:a5 fromDeviceUniqueID:v13 cbuuid:v14];
+        [(IDSUDPGlobalLink *)self _processStunDataIndication:v15 fromDevice:deviceCopy localIfIndex:packet->var17 localAddress:&packet->var18 remmoteAddress:&packet->var19 arrivalTime:packet packetBuffer:time fromDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
         goto LABEL_42;
       }
     }
 
     else
     {
-      switch(v16)
+      switch(type)
       {
         case 0x101u:
-          [(IDSUDPGlobalLink *)self _processStunBindingResponse:v15 fromDevice:v12 localIfIndex:a3->var17 localAddress:&a3->var18 remmoteAddress:&a3->var19 arrivalTime:a5];
+          [(IDSUDPGlobalLink *)self _processStunBindingResponse:v15 fromDevice:deviceCopy localIfIndex:packet->var17 localAddress:&packet->var18 remmoteAddress:&packet->var19 arrivalTime:time];
           goto LABEL_42;
         case 0xEE3u:
-          [(IDSUDPGlobalLink *)self _processStunEchoRequest:v15 fromDevice:v12 localIfIndex:a3->var17 localAddress:&a3->var18 remmoteAddress:&a3->var19 arrivalTime:a5];
+          [(IDSUDPGlobalLink *)self _processStunEchoRequest:v15 fromDevice:deviceCopy localIfIndex:packet->var17 localAddress:&packet->var18 remmoteAddress:&packet->var19 arrivalTime:time];
           goto LABEL_42;
         case 0xFE3u:
-          [(IDSUDPGlobalLink *)self _processStunEchoResponse:v15 fromDevice:v12 localIfIndex:a3->var17 localAddress:&a3->var18 remmoteAddress:&a3->var19 arrivalTime:a5];
+          [(IDSUDPGlobalLink *)self _processStunEchoResponse:v15 fromDevice:deviceCopy localIfIndex:packet->var17 localAddress:&packet->var18 remmoteAddress:&packet->var19 arrivalTime:time];
 LABEL_42:
           v20 = 1;
           goto LABEL_43;
@@ -2936,7 +2936,7 @@ LABEL_42:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = v16;
+      *&buf[4] = type;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "_processStunPacket - receive invalid STUN message, type (%04X)", buf, 8u);
     }
 
@@ -2959,7 +2959,7 @@ LABEL_42:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    *&buf[4] = v16;
+    *&buf[4] = type;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "failed to verify message intergrity for stun packet type %04x.", buf, 8u);
   }
 
@@ -2983,14 +2983,14 @@ LABEL_43:
   return v20;
 }
 
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a4;
-  v9 = a5;
-  if (__rev16(*a3->var0) == 57344 || !self->_useStunMICheck)
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  if (__rev16(*buffer->var0) == 57344 || !self->_useStunMICheck)
   {
-    var2 = a3->var2;
-    v16 = [(IDSUDPLink *)self->_udpLink sendPacketBuffer:a3 toDeviceUniqueID:v8 cbuuid:v9];
+    var2 = buffer->var2;
+    v16 = [(IDSUDPLink *)self->_udpLink sendPacketBuffer:buffer toDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
     if (v16)
     {
       goto LABEL_10;
@@ -3001,11 +3001,11 @@ LABEL_43:
 
   v10 = _IDSLinkPacketBufferCreate();
   v11 = [[IDSStunMessage alloc] initWithType:23];
-  [v11 dataIndicationToBuffer:*v10 outputLength:v10 + 2 data:a3->var0 dataLen:LODWORD(a3->var2) keyData:self->_keyData remainingLength:v10[1]];
+  [v11 dataIndicationToBuffer:*v10 outputLength:v10 + 2 data:buffer->var0 dataLen:LODWORD(buffer->var2) keyData:self->_keyData remainingLength:v10[1]];
   v12 = OSLogHandleForTransportCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = a3->var2;
+    v13 = buffer->var2;
     v14 = v10[2];
     *buf = 134218240;
     v24 = v13;
@@ -3018,12 +3018,12 @@ LABEL_43:
   {
     if (_IDSShouldLogTransport())
     {
-      v21 = a3->var2;
+      v21 = buffer->var2;
       v22 = v10[2];
       _IDSLogTransport();
       if (_IDSShouldLog())
       {
-        v21 = a3->var2;
+        v21 = buffer->var2;
         v22 = v10[2];
         _IDSLogV();
       }
@@ -3031,7 +3031,7 @@ LABEL_43:
   }
 
   var2 = v10[2];
-  v16 = [(IDSUDPLink *)self->_udpLink sendPacketBuffer:v10 toDeviceUniqueID:v8 cbuuid:v9, v21, v22];
+  v16 = [(IDSUDPLink *)self->_udpLink sendPacketBuffer:v10 toDeviceUniqueID:dCopy cbuuid:cbuuidCopy, v21, v22];
   _IDSLinkPacketBufferRelease();
 
   if (!v16)
@@ -3078,7 +3078,7 @@ LABEL_10:
   return v16;
 }
 
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link
 {
   if (self->_previousReportTime == 0.0)
   {
@@ -3087,7 +3087,7 @@ LABEL_10:
 
   else
   {
-    if (a4)
+    if (link)
     {
       v6 = 42;
     }
@@ -3123,7 +3123,7 @@ LABEL_10:
     v9 = [NSString stringWithFormat:@"%c Global    (%s) Tx %6llu pkts %@B %@bps     %6llu pkts %@B\n                        Rx %6llu pkts %@B %@bps     %6llu pkts %@B\n", v22, v21, v20, v10, v11, totalPacketsSent, v13, v14, v15, v16, totalPacketsReceived, v18];
   }
 
-  self->_previousReportTime = a3;
+  self->_previousReportTime = report;
   self->_previousBytesSent = self->_totalBytesSent;
   *&self->_previousPacketsSent = *&self->_totalPacketsSent;
   self->_previousPacketsReceived = self->_totalPacketsReceived;
@@ -3131,37 +3131,37 @@ LABEL_10:
   return v9;
 }
 
-- (void)_forwardPacketBuffer:(id *)a3 fromDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (void)_forwardPacketBuffer:(id *)buffer fromDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a5;
-  v9 = a4;
+  cbuuidCopy = cbuuid;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained link:self didReceivePacket:a3 fromDeviceUniqueID:v9 cbuuid:v8];
+  [WeakRetained link:self didReceivePacket:buffer fromDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
 }
 
-- (BOOL)link:(id)a3 didReceivePacket:(id *)a4 fromDeviceUniqueID:(id)a5 cbuuid:(id)a6
+- (BOOL)link:(id)link didReceivePacket:(id *)packet fromDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4)
+  linkCopy = link;
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  if (packet)
   {
-    if (a4->var2)
+    if (packet->var2)
     {
       ids_monotonic_time();
       v14 = v13;
-      var2 = a4->var2;
+      var2 = packet->var2;
       v16 = vdupq_n_s64(1uLL);
       v16.i64[0] = var2;
       *&self->_totalBytesReceived = vaddq_s64(*&self->_totalBytesReceived, v16);
-      if (*a4->var0 == 15)
+      if (*packet->var0 == 15)
       {
         if (var2 < 21)
         {
           v22 = OSLogHandleForIDSCategory();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = a4->var2;
+            v23 = packet->var2;
             *buf = 134217984;
             v28 = v23;
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "didReceivePacket - unknown packet (%zdB)", buf, 0xCu);
@@ -3175,14 +3175,14 @@ LABEL_10:
 
         else
         {
-          v17 = bswap32(*(a4->var0 + 1)) >> 16;
+          v17 = bswap32(*(packet->var0 + 1)) >> 16;
           if ((v17 & 0xC000) == 0)
           {
             v18 = [NSData dataWithBytes:"dataWithBytes:length:" length:?];
             v19 = OSLogHandleForIDSCategory();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
             {
-              v20 = a4->var2;
+              v20 = packet->var2;
               *buf = 134218498;
               v28 = v20;
               v29 = 1024;
@@ -3196,30 +3196,30 @@ LABEL_10:
             {
               v25 = v17;
               v26 = v18;
-              v24 = a4->var2;
+              v24 = packet->var2;
               _IDSLogV();
             }
 
-            [(IDSUDPGlobalLink *)self _processStunPacket:a4 fromDevice:v12 arrivalTime:v11 fromDeviceUniqueID:v12 cbuuid:v14, v24, v25, v26];
+            [(IDSUDPGlobalLink *)self _processStunPacket:packet fromDevice:cbuuidCopy arrivalTime:dCopy fromDeviceUniqueID:cbuuidCopy cbuuid:v14, v24, v25, v26];
           }
         }
       }
 
       else
       {
-        [(IDSUDPGlobalLink *)self _forwardPacketBuffer:a4 fromDeviceUniqueID:v11 cbuuid:v12];
+        [(IDSUDPGlobalLink *)self _forwardPacketBuffer:packet fromDeviceUniqueID:dCopy cbuuid:cbuuidCopy];
       }
 
-      LOBYTE(a4) = 1;
+      LOBYTE(packet) = 1;
     }
 
     else
     {
-      LOBYTE(a4) = 0;
+      LOBYTE(packet) = 0;
     }
   }
 
-  return a4;
+  return packet;
 }
 
 - (IDSLinkDelegate)delegate

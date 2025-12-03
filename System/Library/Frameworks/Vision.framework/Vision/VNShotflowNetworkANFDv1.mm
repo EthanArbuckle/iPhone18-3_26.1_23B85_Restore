@@ -4,18 +4,18 @@
 + (const)cellStartsY;
 + (const)importantClasses;
 + (const)ratios;
-- (VNShotflowNetworkANFDv1)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6 threshold:(float)a7;
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4;
+- (VNShotflowNetworkANFDv1)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type threshold:(float)threshold;
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height;
 - (void)initializeBuffers;
 @end
 
 @implementation VNShotflowNetworkANFDv1
 
-- (int)setInputShape:(unint64_t)a3 height:(unint64_t)a4
+- (int)setInputShape:(unint64_t)shape height:(unint64_t)height
 {
   v10.receiver = self;
   v10.super_class = VNShotflowNetworkANFDv1;
-  v4 = [(VNShotflowNetwork *)&v10 setInputShape:a3 height:a4];
+  v4 = [(VNShotflowNetwork *)&v10 setInputShape:shape height:height];
   if (!v4)
   {
     v6 = 0;
@@ -60,16 +60,16 @@
   operator new();
 }
 
-- (VNShotflowNetworkANFDv1)initWithModelPath:(id)a3 espressoEngineID:(int)a4 espressoDeviceID:(int)a5 espressoStorageType:(int)a6 threshold:(float)a7
+- (VNShotflowNetworkANFDv1)initWithModelPath:(id)path espressoEngineID:(int)d espressoDeviceID:(int)iD espressoStorageType:(int)type threshold:(float)threshold
 {
-  v8 = *&a6;
-  v9 = *&a5;
-  v10 = *&a4;
-  v12 = a3;
+  v8 = *&type;
+  v9 = *&iD;
+  v10 = *&d;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = VNShotflowNetworkANFDv1;
-  *&v13 = a7;
-  v14 = [(VNShotflowNetwork *)&v18 initWithModelPath:v12 espressoEngineID:v10 espressoDeviceID:v9 espressoStorageType:v8 threshold:v13];
+  *&v13 = threshold;
+  v14 = [(VNShotflowNetwork *)&v18 initWithModelPath:pathCopy espressoEngineID:v10 espressoDeviceID:v9 espressoStorageType:v8 threshold:v13];
   v15 = v14;
   if (v14)
   {

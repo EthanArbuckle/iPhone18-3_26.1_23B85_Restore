@@ -1,9 +1,9 @@
 @interface CKTranscriptPluginBreadcrumbChatItem
 - (CGSize)iconSizePlusHorizontalPadding;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIImage)iconImage;
 - (char)transcriptOrientation;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
 - (id)loadTranscriptText;
 - (unint64_t)_breadcrumbOptionFlags;
 - (unint64_t)layoutType;
@@ -18,8 +18,8 @@
     return 1;
   }
 
-  v4 = [(CKChatItem *)self IMChatItem];
-  if ([v4 isFromMe])
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  if ([iMChatItem isFromMe])
   {
     v3 = 2;
   }
@@ -35,22 +35,22 @@
 - (id)loadTranscriptText
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 breadcrumbTranscriptTextAttributes];
+  breadcrumbTranscriptTextAttributes = [v3 breadcrumbTranscriptTextAttributes];
 
-  v5 = [(CKChatItem *)self IMChatItem];
-  v6 = [v5 statusText];
-  if (v6)
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  statusText = [iMChatItem statusText];
+  if (statusText)
   {
-    v7 = v6;
+    statusString = statusText;
 LABEL_4:
-    v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v7 attributes:v4];
+    v9 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:statusString attributes:breadcrumbTranscriptTextAttributes];
     goto LABEL_5;
   }
 
-  v8 = [v5 dataSource];
-  v7 = [v8 statusString];
+  dataSource = [iMChatItem dataSource];
+  statusString = [dataSource statusString];
 
-  if (v7)
+  if (statusString)
   {
     goto LABEL_4;
   }
@@ -61,32 +61,32 @@ LABEL_5:
   return v9;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(CKTranscriptPluginBreadcrumbChatItem *)self iconSizePlusHorizontalPadding];
   v9 = v8;
   v25.receiver = self;
   v25.super_class = CKTranscriptPluginBreadcrumbChatItem;
-  [(CKMultilineStampLabelChatItem *)&v25 loadSizeThatFits:a4 textAlignmentInsets:width - v8, height];
+  [(CKMultilineStampLabelChatItem *)&v25 loadSizeThatFits:insets textAlignmentInsets:width - v8, height];
   v11 = v10;
   v13 = v12;
-  v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRoundToScale();
   v16 = v15;
 
-  if (a4)
+  if (insets)
   {
     if (v16 < 0.0)
     {
       v16 = 0.0;
     }
 
-    v17 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-    v18 = a4->bottom - v16;
-    if (v17)
+    userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+    v18 = insets->bottom - v16;
+    if (userInterfaceLayoutDirection)
     {
       v19 = 0.0;
     }
@@ -96,8 +96,8 @@ LABEL_5:
       v19 = v9;
     }
 
-    v20 = v19 + a4->left;
-    if (v17)
+    v20 = v19 + insets->left;
+    if (userInterfaceLayoutDirection)
     {
       v21 = v9;
     }
@@ -107,11 +107,11 @@ LABEL_5:
       v21 = 0.0;
     }
 
-    v22 = a4->right + v21;
-    a4->top = a4->top - v16;
-    a4->left = v20;
-    a4->bottom = v18;
-    a4->right = v22;
+    v22 = insets->right + v21;
+    insets->top = insets->top - v16;
+    insets->left = v20;
+    insets->bottom = v18;
+    insets->right = v22;
   }
 
   v23 = v9 + v11;
@@ -128,28 +128,28 @@ LABEL_5:
     iconImage = self->_iconImage;
     if (!iconImage)
     {
-      v4 = [(CKChatItem *)self IMChatItem];
-      v5 = [v4 dataSource];
+      iMChatItem = [(CKChatItem *)self IMChatItem];
+      dataSource = [iMChatItem dataSource];
 
-      v6 = [MEMORY[0x1E69A5AD0] sharedInstance];
-      v7 = [v5 bundleID];
-      v8 = [v6 balloonPluginForBundleID:v7];
+      mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+      bundleID = [dataSource bundleID];
+      v8 = [mEMORY[0x1E69A5AD0] balloonPluginForBundleID:bundleID];
 
-      v9 = [v8 __ck_breadcrumbImage];
+      __ck_breadcrumbImage = [v8 __ck_breadcrumbImage];
       v10 = self->_iconImage;
-      self->_iconImage = v9;
+      self->_iconImage = __ck_breadcrumbImage;
 
       if (!self->_iconImage)
       {
-        v11 = [v5 pluginPayload];
-        v12 = [v11 payloadDictionary];
+        pluginPayload = [dataSource pluginPayload];
+        payloadDictionary = [pluginPayload payloadDictionary];
 
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __49__CKTranscriptPluginBreadcrumbChatItem_iconImage__block_invoke;
         v17[3] = &unk_1E72F0CF8;
         v17[4] = self;
-        v13 = [MEMORY[0x1E69A5AC0] __ck_appIconFromPayloadDictionary:v12 withCompletionBlock:v17];
+        v13 = [MEMORY[0x1E69A5AC0] __ck_appIconFromPayloadDictionary:payloadDictionary withCompletionBlock:v17];
         v14 = self->_iconImage;
         self->_iconImage = v13;
       }
@@ -193,11 +193,11 @@ void __49__CKTranscriptPluginBreadcrumbChatItem_iconImage__block_invoke(uint64_t
     v5 = v4;
     v7 = v6;
 
-    v8 = [(CKTranscriptPluginBreadcrumbChatItem *)self iconImage];
-    v9 = v8;
-    if (v8)
+    iconImage = [(CKTranscriptPluginBreadcrumbChatItem *)self iconImage];
+    v9 = iconImage;
+    if (iconImage)
     {
-      [v8 size];
+      [iconImage size];
       v5 = v10;
       v7 = v11;
     }
@@ -222,10 +222,10 @@ void __49__CKTranscriptPluginBreadcrumbChatItem_iconImage__block_invoke(uint64_t
 
 - (unint64_t)_breadcrumbOptionFlags
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 optionFlags];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  optionFlags = [iMChatItem optionFlags];
 
-  return v3;
+  return optionFlags;
 }
 
 - (unint64_t)layoutType
@@ -241,20 +241,20 @@ void __49__CKTranscriptPluginBreadcrumbChatItem_iconImage__block_invoke(uint64_t
   }
 }
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
   v45 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v10 = a5;
-  v39 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = [v10 objectAtIndex:a4 - 1];
+    v11 = [itemsCopy objectAtIndex:index - 1];
   }
 
   objc_opt_class();
@@ -271,14 +271,14 @@ void __49__CKTranscriptPluginBreadcrumbChatItem_iconImage__block_invoke(uint64_t
   [v19 largeTranscriptSpace];
   v21 = v20;
 
-  v22 = [v11 layoutType];
-  if (v22 > 10)
+  layoutType = [v11 layoutType];
+  if (layoutType > 10)
   {
-    if (v22 <= 17)
+    if (layoutType <= 17)
     {
-      if ((v22 - 13) >= 3)
+      if ((layoutType - 13) >= 3)
       {
-        if ((v22 - 11) < 2)
+        if ((layoutType - 11) < 2)
         {
           goto LABEL_37;
         }
@@ -289,19 +289,19 @@ void __49__CKTranscriptPluginBreadcrumbChatItem_iconImage__block_invoke(uint64_t
       goto LABEL_24;
     }
 
-    if ((v22 - 23) < 2)
+    if ((layoutType - 23) < 2)
     {
       goto LABEL_37;
     }
 
-    if (v22 == 18)
+    if (layoutType == 18)
     {
       v23 = +[CKUIBehavior sharedBehaviors];
       [v23 mediumTranscriptSpace];
       goto LABEL_29;
     }
 
-    if (v22 == 19)
+    if (layoutType == 19)
     {
       v23 = +[CKUIBehavior sharedBehaviors];
       [v23 smallTranscriptSpace];
@@ -330,20 +330,20 @@ LABEL_32:
     goto LABEL_37;
   }
 
-  if (v22 > 6)
+  if (layoutType > 6)
   {
-    if (v22 == 7)
+    if (layoutType == 7)
     {
       v21 = v18;
       goto LABEL_37;
     }
 
-    if (v22 == 8)
+    if (layoutType == 8)
     {
       goto LABEL_37;
     }
 
-    if (v22 != 10)
+    if (layoutType != 10)
     {
       goto LABEL_32;
     }
@@ -353,14 +353,14 @@ LABEL_32:
     goto LABEL_29;
   }
 
-  if ((v22 - 2) < 2)
+  if ((layoutType - 2) < 2)
   {
     goto LABEL_37;
   }
 
-  if ((v22 - 5) >= 2)
+  if ((layoutType - 5) >= 2)
   {
-    if (v22 == 1)
+    if (layoutType == 1)
     {
 LABEL_24:
       if ((isKindOfClass & 1) == 0)
@@ -368,13 +368,13 @@ LABEL_24:
         goto LABEL_37;
       }
 
-      v25 = [(CKChatItem *)self IMChatItem];
-      v26 = [v25 dataSource];
-      v27 = [v26 messageGUID];
-      v28 = [v11 IMChatItem];
-      v29 = [v28 dataSource];
-      v30 = [v29 messageGUID];
-      v31 = [v27 isEqualToString:v30];
+      iMChatItem = [(CKChatItem *)self IMChatItem];
+      dataSource = [iMChatItem dataSource];
+      messageGUID = [dataSource messageGUID];
+      iMChatItem2 = [v11 IMChatItem];
+      dataSource2 = [iMChatItem2 dataSource];
+      messageGUID2 = [dataSource2 messageGUID];
+      v31 = [messageGUID isEqualToString:messageGUID2];
 
       if (!v31)
       {

@@ -1,25 +1,25 @@
 @interface MTRPluginPBMClusterPath
-+ (MTRPluginPBMClusterPath)clusterPathWithEndpointID:(id)a3 clusterID:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (MTRPluginPBMClusterPath)clusterPathWithEndpointID:(id)d clusterID:(id)iD;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (MTRClusterPath)clusterPath;
-- (MTRPluginPBMClusterPath)initWithClusterPath:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRPluginPBMClusterPath)initWithClusterPath:(id)path;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setClusterPath:(id)a3;
-- (void)setHasEndpointID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setClusterPath:(id)path;
+- (void)setHasEndpointID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTRPluginPBMClusterPath
 
-- (void)setHasEndpointID:(BOOL)a3
+- (void)setHasEndpointID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -38,20 +38,20 @@
   v8.receiver = self;
   v8.super_class = MTRPluginPBMClusterPath;
   v4 = [(MTRPluginPBMClusterPath *)&v8 description];
-  v5 = [(MTRPluginPBMClusterPath *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MTRPluginPBMClusterPath *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_endpointID];
-    [v3 setObject:v5 forKey:@"endpointID"];
+    [dictionary setObject:v5 forKey:@"endpointID"];
 
     has = self->_has;
   }
@@ -59,22 +59,22 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_clusterID];
-    [v3 setObject:v6 forKey:@"clusterID"];
+    [dictionary setObject:v6 forKey:@"clusterID"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     endpointID = self->_endpointID;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -82,31 +82,31 @@
   {
     clusterID = self->_clusterID;
     PBDataWriterWriteUint32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[3] = self->_endpointID;
-    *(v4 + 16) |= 2u;
+    toCopy[3] = self->_endpointID;
+    *(toCopy + 16) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[2] = self->_clusterID;
-    *(v4 + 16) |= 1u;
+    toCopy[2] = self->_clusterID;
+    *(toCopy + 16) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -124,33 +124,33 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 16) & 2) == 0 || self->_endpointID != *(v4 + 3))
+    if ((*(equalCopy + 16) & 2) == 0 || self->_endpointID != *(equalCopy + 3))
     {
       goto LABEL_11;
     }
   }
 
-  else if ((*(v4 + 16) & 2) != 0)
+  else if ((*(equalCopy + 16) & 2) != 0)
   {
 LABEL_11:
     v5 = 0;
     goto LABEL_12;
   }
 
-  v5 = (*(v4 + 16) & 1) == 0;
+  v5 = (*(equalCopy + 16) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 16) & 1) == 0 || self->_clusterID != *(v4 + 2))
+    if ((*(equalCopy + 16) & 1) == 0 || self->_clusterID != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
@@ -189,71 +189,71 @@ LABEL_3:
   return v3 ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 16);
+  fromCopy = from;
+  v5 = *(fromCopy + 16);
   if ((v5 & 2) != 0)
   {
-    self->_endpointID = *(v4 + 3);
+    self->_endpointID = *(fromCopy + 3);
     *&self->_has |= 2u;
-    v5 = *(v4 + 16);
+    v5 = *(fromCopy + 16);
   }
 
   if (v5)
   {
-    self->_clusterID = *(v4 + 2);
+    self->_clusterID = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 }
 
-- (MTRPluginPBMClusterPath)initWithClusterPath:(id)a3
+- (MTRPluginPBMClusterPath)initWithClusterPath:(id)path
 {
-  v4 = a3;
-  if (v4 && (self = [(MTRPluginPBMClusterPath *)self init]) != 0)
+  pathCopy = path;
+  if (pathCopy && (self = [(MTRPluginPBMClusterPath *)self init]) != 0)
   {
-    v5 = [v4 endpoint];
-    -[MTRPluginPBMClusterPath setEndpointID:](self, "setEndpointID:", [v5 unsignedIntValue]);
+    endpoint = [pathCopy endpoint];
+    -[MTRPluginPBMClusterPath setEndpointID:](self, "setEndpointID:", [endpoint unsignedIntValue]);
 
-    v6 = [v4 cluster];
-    -[MTRPluginPBMClusterPath setClusterID:](self, "setClusterID:", [v6 unsignedIntValue]);
+    cluster = [pathCopy cluster];
+    -[MTRPluginPBMClusterPath setClusterID:](self, "setClusterID:", [cluster unsignedIntValue]);
 
     self = self;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (MTRPluginPBMClusterPath)clusterPathWithEndpointID:(id)a3 clusterID:(id)a4
++ (MTRPluginPBMClusterPath)clusterPathWithEndpointID:(id)d clusterID:(id)iD
 {
-  v5 = a4;
-  v6 = a3;
+  iDCopy = iD;
+  dCopy = d;
   v7 = objc_alloc_init(MTRPluginPBMClusterPath);
-  v8 = [v6 unsignedIntValue];
+  unsignedIntValue = [dCopy unsignedIntValue];
 
-  [(MTRPluginPBMClusterPath *)v7 setEndpointID:v8];
-  v9 = [v5 unsignedIntValue];
+  [(MTRPluginPBMClusterPath *)v7 setEndpointID:unsignedIntValue];
+  unsignedIntValue2 = [iDCopy unsignedIntValue];
 
-  [(MTRPluginPBMClusterPath *)v7 setClusterID:v9];
+  [(MTRPluginPBMClusterPath *)v7 setClusterID:unsignedIntValue2];
 
   return v7;
 }
 
-- (void)setClusterPath:(id)a3
+- (void)setClusterPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 endpoint];
-  -[MTRPluginPBMClusterPath setEndpointID:](self, "setEndpointID:", [v5 unsignedIntValue]);
+  pathCopy = path;
+  endpoint = [pathCopy endpoint];
+  -[MTRPluginPBMClusterPath setEndpointID:](self, "setEndpointID:", [endpoint unsignedIntValue]);
 
-  v6 = [v4 cluster];
+  cluster = [pathCopy cluster];
 
-  -[MTRPluginPBMClusterPath setClusterID:](self, "setClusterID:", [v6 unsignedIntValue]);
+  -[MTRPluginPBMClusterPath setClusterID:](self, "setClusterID:", [cluster unsignedIntValue]);
 }
 
 - (MTRClusterPath)clusterPath
@@ -268,14 +268,14 @@ LABEL_3:
 
 - (BOOL)isValid
 {
-  v3 = [(MTRPluginPBMClusterPath *)self hasEndpointID];
-  if (v3)
+  hasEndpointID = [(MTRPluginPBMClusterPath *)self hasEndpointID];
+  if (hasEndpointID)
   {
 
-    LOBYTE(v3) = [(MTRPluginPBMClusterPath *)self hasClusterID];
+    LOBYTE(hasEndpointID) = [(MTRPluginPBMClusterPath *)self hasClusterID];
   }
 
-  return v3;
+  return hasEndpointID;
 }
 
 @end

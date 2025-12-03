@@ -1,13 +1,13 @@
 @interface IMBTranscriptMessageViewController
-- (_TtC8Business34IMBTranscriptMessageViewController)initWithCoder:(id)a3;
-- (_TtC8Business34IMBTranscriptMessageViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)paymentRequestDidUpdate:(id)a3;
+- (_TtC8Business34IMBTranscriptMessageViewController)initWithCoder:(id)coder;
+- (_TtC8Business34IMBTranscriptMessageViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)paymentRequestDidUpdate:(id)update;
 - (void)viewDidLoad;
 @end
 
 @implementation IMBTranscriptMessageViewController
 
-- (_TtC8Business34IMBTranscriptMessageViewController)initWithCoder:(id)a3
+- (_TtC8Business34IMBTranscriptMessageViewController)initWithCoder:(id)coder
 {
   *&self->pluginBubbleContext[OBJC_IVAR____TtC8Business34IMBTranscriptMessageViewController_messagesAppProxy] = 0;
   swift_unknownObjectWeakInit();
@@ -22,21 +22,21 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003C7E0();
 }
 
-- (_TtC8Business34IMBTranscriptMessageViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8Business34IMBTranscriptMessageViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)paymentRequestDidUpdate:(id)a3
+- (void)paymentRequestDidUpdate:(id)update
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_10003CE68();
   swift_unknownObjectRelease();
 }

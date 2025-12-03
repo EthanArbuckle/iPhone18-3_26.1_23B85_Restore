@@ -1,53 +1,53 @@
 @interface ASDPassthroughProperty
 - (ASDObject)underlyingObject;
-- (ASDPassthroughProperty)initWithUnderlyingObject:(id)a3 andAddress:(id)a4;
-- (ASDPassthroughProperty)initWithUnderlyingObject:(id)a3 andPropertyAddress:(AudioObjectPropertyAddress)a4;
+- (ASDPassthroughProperty)initWithUnderlyingObject:(id)object andAddress:(id)address;
+- (ASDPassthroughProperty)initWithUnderlyingObject:(id)object andPropertyAddress:(AudioObjectPropertyAddress)address;
 - (AudioObjectPropertyAddress)propertyAddress;
 - (BOOL)isSettable;
 @end
 
 @implementation ASDPassthroughProperty
 
-- (ASDPassthroughProperty)initWithUnderlyingObject:(id)a3 andAddress:(id)a4
+- (ASDPassthroughProperty)initWithUnderlyingObject:(id)object andAddress:(id)address
 {
-  v6 = a3;
-  v7 = a4;
-  v13 = [v7 audioObjectPropertyAddress];
+  objectCopy = object;
+  addressCopy = address;
+  audioObjectPropertyAddress = [addressCopy audioObjectPropertyAddress];
   v14 = v8;
-  v9 = [v6 customPropertyWithAddress:&v13];
+  v9 = [objectCopy customPropertyWithAddress:&audioObjectPropertyAddress];
   v10 = v9;
   if (v9)
   {
-    self = -[ASDPassthroughProperty initWithUnderlyingObject:address:propertyDataType:andQualifierDataType:](self, "initWithUnderlyingObject:address:propertyDataType:andQualifierDataType:", v6, v7, [v9 propertyDataType], objc_msgSend(v9, "qualifierDataType"));
-    v11 = self;
+    self = -[ASDPassthroughProperty initWithUnderlyingObject:address:propertyDataType:andQualifierDataType:](self, "initWithUnderlyingObject:address:propertyDataType:andQualifierDataType:", objectCopy, addressCopy, [v9 propertyDataType], objc_msgSend(v9, "qualifierDataType"));
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (ASDPassthroughProperty)initWithUnderlyingObject:(id)a3 andPropertyAddress:(AudioObjectPropertyAddress)a4
+- (ASDPassthroughProperty)initWithUnderlyingObject:(id)object andPropertyAddress:(AudioObjectPropertyAddress)address
 {
-  mElement = a4.mElement;
-  v5 = *&a4.mSelector;
-  v7 = a3;
-  v8 = [[ASDPropertyAddress alloc] initWithAddress:v5, mElement];
-  v9 = [(ASDPassthroughProperty *)self initWithUnderlyingObject:v7 andAddress:v8];
+  mElement = address.mElement;
+  v5 = *&address.mSelector;
+  objectCopy = object;
+  mElement = [[ASDPropertyAddress alloc] initWithAddress:v5, mElement];
+  v9 = [(ASDPassthroughProperty *)self initWithUnderlyingObject:objectCopy andAddress:mElement];
 
   return v9;
 }
 
 - (BOOL)isSettable
 {
-  v2 = self;
-  v3 = [(ASDPassthroughProperty *)self underlyingObject];
-  LOBYTE(v2) = [v3 isPropertySettable:&v2->_propertyAddress];
+  selfCopy = self;
+  underlyingObject = [(ASDPassthroughProperty *)self underlyingObject];
+  LOBYTE(selfCopy) = [underlyingObject isPropertySettable:&selfCopy->_propertyAddress];
 
-  return v2;
+  return selfCopy;
 }
 
 - (ASDObject)underlyingObject

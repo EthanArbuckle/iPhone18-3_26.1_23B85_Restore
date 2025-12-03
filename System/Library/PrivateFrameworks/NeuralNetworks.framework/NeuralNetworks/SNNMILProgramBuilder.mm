@@ -1,8 +1,8 @@
 @interface SNNMILProgramBuilder
 - (SNNMILProgramBuilder)init;
-- (SNNMILProgramBuilder)initWithContext:(id)a3 location:(id)a4;
+- (SNNMILProgramBuilder)initWithContext:(id)context location:(id)location;
 - (id)build;
-- (id)functionWithName:(id)a3 location:(id)a4;
+- (id)functionWithName:(id)name location:(id)location;
 - (unique_ptr<MIL::Location,)milLocation;
 @end
 
@@ -24,15 +24,15 @@
   return v2;
 }
 
-- (SNNMILProgramBuilder)initWithContext:(id)a3 location:(id)a4
+- (SNNMILProgramBuilder)initWithContext:(id)context location:(id)location
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  locationCopy = location;
   v13.receiver = self;
   v13.super_class = SNNMILProgramBuilder;
   v9 = [(SNNMILProgramBuilder *)&v13 init];
-  objc_storeStrong(&v9->_context, a3);
-  objc_storeStrong(&v9->_location, a4);
+  objc_storeStrong(&v9->_context, context);
+  objc_storeStrong(&v9->_location, location);
   v10 = [MEMORY[0x277CBEBF8] mutableCopy];
   functionBuilders = v9->_functionBuilders;
   v9->_functionBuilders = v10;
@@ -71,11 +71,11 @@
             objc_enumerationMutation(v4);
           }
 
-          v8 = [*(*(&v34 + 1) + 8 * i) build];
-          v9 = v8;
-          if (v8)
+          build = [*(*(&v34 + 1) + 8 * i) build];
+          v9 = build;
+          if (build)
           {
-            [v8 name];
+            [build name];
             [v9 milFunction];
           }
 
@@ -213,11 +213,11 @@
   return v5;
 }
 
-- (id)functionWithName:(id)a3 location:(id)a4
+- (id)functionWithName:(id)name location:(id)location
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  locationCopy = location;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -237,8 +237,8 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = [v13 isEqualToString:v6];
+        name = [v12 name];
+        v14 = [name isEqualToString:nameCopy];
 
         if (v14)
         {
@@ -258,7 +258,7 @@
     }
   }
 
-  v15 = [[SNNMILFunctionBuilder alloc] initWithName:v6 context:self->_context location:v7];
+  v15 = [[SNNMILFunctionBuilder alloc] initWithName:nameCopy context:self->_context location:locationCopy];
   [(NSMutableArray *)self->_functionBuilders addObject:v15];
 LABEL_11:
 

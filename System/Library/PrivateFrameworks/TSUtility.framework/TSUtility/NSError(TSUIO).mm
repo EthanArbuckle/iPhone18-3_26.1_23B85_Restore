@@ -26,7 +26,7 @@ LABEL_5:
 
   v7 = 0;
 LABEL_7:
-  v8 = [a1 tsu_errorWithDomain:@"com.apple.iwork.TSUIO" code:a3 alertTitle:v7 alertMessage:0];
+  v8 = [self tsu_errorWithDomain:@"com.apple.iwork.TSUIO" code:a3 alertTitle:v7 alertMessage:0];
 
   return v8;
 }
@@ -38,7 +38,7 @@ LABEL_7:
   v7 = [v6 localizedStringForKey:@"An error occurred while reading: %s" value:&stru_287DDF830 table:@"TSUtility"];
   v8 = [v5 stringWithFormat:v7, strerror(a3)];
 
-  v9 = [a1 tsu_errorWithDomain:@"com.apple.iwork.TSUIO" code:0 alertTitle:v8 alertMessage:0];
+  v9 = [self tsu_errorWithDomain:@"com.apple.iwork.TSUIO" code:0 alertTitle:v8 alertMessage:0];
 
   return v9;
 }
@@ -50,7 +50,7 @@ LABEL_7:
   v7 = [v6 localizedStringForKey:@"An error occurred while writing: %s" value:&stru_287DDF830 table:@"TSUtility"];
   v8 = [v5 stringWithFormat:v7, strerror(a3)];
 
-  v9 = [a1 tsu_errorWithDomain:@"com.apple.iwork.TSUIO" code:1 alertTitle:v8 alertMessage:0];
+  v9 = [self tsu_errorWithDomain:@"com.apple.iwork.TSUIO" code:1 alertTitle:v8 alertMessage:0];
 
   return v9;
 }

@@ -1,58 +1,58 @@
 @interface _SFPBBeginMapsRoutingCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBBeginMapsRoutingCommand)initWithDictionary:(id)a3;
-- (_SFPBBeginMapsRoutingCommand)initWithFacade:(id)a3;
-- (_SFPBBeginMapsRoutingCommand)initWithJSON:(id)a3;
+- (_SFPBBeginMapsRoutingCommand)initWithDictionary:(id)dictionary;
+- (_SFPBBeginMapsRoutingCommand)initWithFacade:(id)facade;
+- (_SFPBBeginMapsRoutingCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setMapsData:(id)a3;
-- (void)setName:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setMapsData:(id)data;
+- (void)setName:(id)name;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBBeginMapsRoutingCommand
 
-- (_SFPBBeginMapsRoutingCommand)initWithFacade:(id)a3
+- (_SFPBBeginMapsRoutingCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBBeginMapsRoutingCommand *)self init];
   if (v5)
   {
-    v6 = [v4 location];
+    location = [facadeCopy location];
 
-    if (v6)
+    if (location)
     {
       v7 = [_SFPBLatLng alloc];
-      v8 = [v4 location];
-      v9 = [(_SFPBLatLng *)v7 initWithFacade:v8];
+      location2 = [facadeCopy location];
+      v9 = [(_SFPBLatLng *)v7 initWithFacade:location2];
       [(_SFPBBeginMapsRoutingCommand *)v5 setLocation:v9];
     }
 
-    v10 = [v4 mapsData];
+    mapsData = [facadeCopy mapsData];
 
-    if (v10)
+    if (mapsData)
     {
-      v11 = [v4 mapsData];
-      [(_SFPBBeginMapsRoutingCommand *)v5 setMapsData:v11];
+      mapsData2 = [facadeCopy mapsData];
+      [(_SFPBBeginMapsRoutingCommand *)v5 setMapsData:mapsData2];
     }
 
-    if ([v4 hasShouldSearchDirectionsAlongCurrentRoute])
+    if ([facadeCopy hasShouldSearchDirectionsAlongCurrentRoute])
     {
-      -[_SFPBBeginMapsRoutingCommand setShouldSearchDirectionsAlongCurrentRoute:](v5, "setShouldSearchDirectionsAlongCurrentRoute:", [v4 shouldSearchDirectionsAlongCurrentRoute]);
+      -[_SFPBBeginMapsRoutingCommand setShouldSearchDirectionsAlongCurrentRoute:](v5, "setShouldSearchDirectionsAlongCurrentRoute:", [facadeCopy shouldSearchDirectionsAlongCurrentRoute]);
     }
 
-    v12 = [v4 name];
+    name = [facadeCopy name];
 
-    if (v12)
+    if (name)
     {
-      v13 = [v4 name];
-      [(_SFPBBeginMapsRoutingCommand *)v5 setName:v13];
+      name2 = [facadeCopy name];
+      [(_SFPBBeginMapsRoutingCommand *)v5 setName:name2];
     }
 
-    if ([v4 hasDirectionsMode])
+    if ([facadeCopy hasDirectionsMode])
     {
-      -[_SFPBBeginMapsRoutingCommand setDirectionsMode:](v5, "setDirectionsMode:", [v4 directionsMode]);
+      -[_SFPBBeginMapsRoutingCommand setDirectionsMode:](v5, "setDirectionsMode:", [facadeCopy directionsMode]);
     }
 
     v14 = v5;
@@ -61,15 +61,15 @@
   return v5;
 }
 
-- (_SFPBBeginMapsRoutingCommand)initWithDictionary:(id)a3
+- (_SFPBBeginMapsRoutingCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = _SFPBBeginMapsRoutingCommand;
   v5 = [(_SFPBBeginMapsRoutingCommand *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"location"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"location"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       [(_SFPBBeginMapsRoutingCommand *)v5 setLocation:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"mapsData"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"mapsData"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,14 +85,14 @@
       [(_SFPBBeginMapsRoutingCommand *)v5 setMapsData:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"shouldSearchDirectionsAlongCurrentRoute"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"shouldSearchDirectionsAlongCurrentRoute"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBBeginMapsRoutingCommand setShouldSearchDirectionsAlongCurrentRoute:](v5, "setShouldSearchDirectionsAlongCurrentRoute:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"name"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -100,7 +100,7 @@
       [(_SFPBBeginMapsRoutingCommand *)v5 setName:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"directionsMode"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"directionsMode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -113,30 +113,30 @@
   return v5;
 }
 
-- (_SFPBBeginMapsRoutingCommand)initWithJSON:(id)a3
+- (_SFPBBeginMapsRoutingCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBBeginMapsRoutingCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBBeginMapsRoutingCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBBeginMapsRoutingCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -149,69 +149,69 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_directionsMode)
   {
-    v4 = [(_SFPBBeginMapsRoutingCommand *)self directionsMode];
-    if (v4 >= 6)
+    directionsMode = [(_SFPBBeginMapsRoutingCommand *)self directionsMode];
+    if (directionsMode >= 6)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", directionsMode];
     }
 
     else
     {
-      v5 = off_1E7ACE580[v4];
+      v5 = off_1E7ACE580[directionsMode];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"directionsMode"];
+    [dictionary setObject:v5 forKeyedSubscript:@"directionsMode"];
   }
 
   if (self->_location)
   {
-    v6 = [(_SFPBBeginMapsRoutingCommand *)self location];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    location = [(_SFPBBeginMapsRoutingCommand *)self location];
+    dictionaryRepresentation = [location dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"location"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"location"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"location"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"location"];
     }
   }
 
   if (self->_mapsData)
   {
-    v9 = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
-    v10 = [v9 base64EncodedStringWithOptions:0];
+    mapsData = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
+    v10 = [mapsData base64EncodedStringWithOptions:0];
     if (v10)
     {
-      [v3 setObject:v10 forKeyedSubscript:@"mapsData"];
+      [dictionary setObject:v10 forKeyedSubscript:@"mapsData"];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v11 forKeyedSubscript:@"mapsData"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"mapsData"];
     }
   }
 
   if (self->_name)
   {
-    v12 = [(_SFPBBeginMapsRoutingCommand *)self name];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"name"];
+    name = [(_SFPBBeginMapsRoutingCommand *)self name];
+    v13 = [name copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"name"];
   }
 
   if (self->_shouldSearchDirectionsAlongCurrentRoute)
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBBeginMapsRoutingCommand shouldSearchDirectionsAlongCurrentRoute](self, "shouldSearchDirectionsAlongCurrentRoute")}];
-    [v3 setObject:v14 forKeyedSubscript:@"shouldSearchDirectionsAlongCurrentRoute"];
+    [dictionary setObject:v14 forKeyedSubscript:@"shouldSearchDirectionsAlongCurrentRoute"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -231,28 +231,28 @@
   return v4 ^ v3 ^ v5 ^ [(NSString *)self->_name hash]^ (2654435761 * self->_directionsMode);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = [(_SFPBBeginMapsRoutingCommand *)self location];
-  v6 = [v4 location];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_SFPBBeginMapsRoutingCommand *)self location];
+  location2 = [equalCopy location];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_17;
   }
 
-  v7 = [(_SFPBBeginMapsRoutingCommand *)self location];
-  if (v7)
+  location3 = [(_SFPBBeginMapsRoutingCommand *)self location];
+  if (location3)
   {
-    v8 = v7;
-    v9 = [(_SFPBBeginMapsRoutingCommand *)self location];
-    v10 = [v4 location];
-    v11 = [v9 isEqual:v10];
+    v8 = location3;
+    location4 = [(_SFPBBeginMapsRoutingCommand *)self location];
+    location5 = [equalCopy location];
+    v11 = [location4 isEqual:location5];
 
     if (!v11)
     {
@@ -264,20 +264,20 @@
   {
   }
 
-  v5 = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
-  v6 = [v4 mapsData];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
+  location2 = [equalCopy mapsData];
+  if ((location != 0) == (location2 == 0))
   {
     goto LABEL_17;
   }
 
-  v12 = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
-  if (v12)
+  mapsData = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
+  if (mapsData)
   {
-    v13 = v12;
-    v14 = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
-    v15 = [v4 mapsData];
-    v16 = [v14 isEqual:v15];
+    v13 = mapsData;
+    mapsData2 = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
+    mapsData3 = [equalCopy mapsData];
+    v16 = [mapsData2 isEqual:mapsData3];
 
     if (!v16)
     {
@@ -290,34 +290,34 @@
   }
 
   shouldSearchDirectionsAlongCurrentRoute = self->_shouldSearchDirectionsAlongCurrentRoute;
-  if (shouldSearchDirectionsAlongCurrentRoute != [v4 shouldSearchDirectionsAlongCurrentRoute])
+  if (shouldSearchDirectionsAlongCurrentRoute != [equalCopy shouldSearchDirectionsAlongCurrentRoute])
   {
     goto LABEL_18;
   }
 
-  v5 = [(_SFPBBeginMapsRoutingCommand *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) == (v6 == 0))
+  location = [(_SFPBBeginMapsRoutingCommand *)self name];
+  location2 = [equalCopy name];
+  if ((location != 0) == (location2 == 0))
   {
 LABEL_17:
 
     goto LABEL_18;
   }
 
-  v18 = [(_SFPBBeginMapsRoutingCommand *)self name];
-  if (!v18)
+  name = [(_SFPBBeginMapsRoutingCommand *)self name];
+  if (!name)
   {
 
 LABEL_21:
     directionsMode = self->_directionsMode;
-    v23 = directionsMode == [v4 directionsMode];
+    v23 = directionsMode == [equalCopy directionsMode];
     goto LABEL_19;
   }
 
-  v19 = v18;
-  v20 = [(_SFPBBeginMapsRoutingCommand *)self name];
-  v21 = [v4 name];
-  v22 = [v20 isEqual:v21];
+  v19 = name;
+  name2 = [(_SFPBBeginMapsRoutingCommand *)self name];
+  name3 = [equalCopy name];
+  v22 = [name2 isEqual:name3];
 
   if (v22)
   {
@@ -331,17 +331,17 @@ LABEL_19:
   return v23;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(_SFPBBeginMapsRoutingCommand *)self location];
-  if (v4)
+  toCopy = to;
+  location = [(_SFPBBeginMapsRoutingCommand *)self location];
+  if (location)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
-  if (v5)
+  mapsData = [(_SFPBBeginMapsRoutingCommand *)self mapsData];
+  if (mapsData)
   {
     PBDataWriterWriteDataField();
   }
@@ -351,33 +351,33 @@ LABEL_19:
     PBDataWriterWriteBOOLField();
   }
 
-  v6 = [(_SFPBBeginMapsRoutingCommand *)self name];
-  if (v6)
+  name = [(_SFPBBeginMapsRoutingCommand *)self name];
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBBeginMapsRoutingCommand *)self directionsMode];
-  v8 = v9;
-  if (v7)
+  directionsMode = [(_SFPBBeginMapsRoutingCommand *)self directionsMode];
+  v8 = toCopy;
+  if (directionsMode)
   {
     PBDataWriterWriteInt32Field();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setMapsData:(id)a3
+- (void)setMapsData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   mapsData = self->_mapsData;
   self->_mapsData = v4;
 

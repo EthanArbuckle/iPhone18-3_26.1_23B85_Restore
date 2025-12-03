@@ -1,17 +1,17 @@
 @interface NSFileSubarbitrationClaim
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4;
-- (NSFileSubarbitrationClaim)initWithCoder:(id)a3;
-- (NSFileSubarbitrationClaim)initWithReadingURLs:(id)a3 options:(unint64_t)a4 writingURLs:(id)a5 options:(unint64_t)a6 claimer:(id)a7;
-- (id)descriptionWithIndenting:(id)a3;
-- (id)relinquishmentForWrite:(BOOL)a3 toPresenterForID:(id)a4;
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability;
+- (NSFileSubarbitrationClaim)initWithCoder:(id)coder;
+- (NSFileSubarbitrationClaim)initWithReadingURLs:(id)ls options:(unint64_t)options writingURLs:(id)rLs options:(unint64_t)a6 claimer:(id)claimer;
+- (id)descriptionWithIndenting:(id)indenting;
+- (id)relinquishmentForWrite:(BOOL)write toPresenterForID:(id)d;
 - (void)dealloc;
-- (void)devalueOldClaim:(id)a3;
+- (void)devalueOldClaim:(id)claim;
 - (void)devalueSelf;
-- (void)encodeWithCoder:(id)a3;
-- (void)evaluateNewClaim:(id)a3;
-- (void)forwardReacquisitionForWritingClaim:(BOOL)a3 withID:(id)a4 toPresenterForID:(id)a5 usingReplySender:(id)a6;
-- (void)forwardRelinquishmentForWritingClaim:(BOOL)a3 withID:(id)a4 options:(unint64_t)a5 purposeID:(id)a6 subitemURL:(id)a7 toPresenter:(id)a8 usingReplySender:(id)a9;
-- (void)forwardUsingConnection:(id)a3 withServer:(id)a4 crashHandler:(id)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)evaluateNewClaim:(id)claim;
+- (void)forwardReacquisitionForWritingClaim:(BOOL)claim withID:(id)d toPresenterForID:(id)iD usingReplySender:(id)sender;
+- (void)forwardRelinquishmentForWritingClaim:(BOOL)claim withID:(id)d options:(unint64_t)options purposeID:(id)iD subitemURL:(id)l toPresenter:(id)presenter usingReplySender:(id)sender;
+- (void)forwardUsingConnection:(id)connection withServer:(id)server crashHandler:(id)handler;
 - (void)granted;
 - (void)invokeClaimer;
 - (void)revoked;
@@ -19,16 +19,16 @@
 
 @implementation NSFileSubarbitrationClaim
 
-- (NSFileSubarbitrationClaim)initWithReadingURLs:(id)a3 options:(unint64_t)a4 writingURLs:(id)a5 options:(unint64_t)a6 claimer:(id)a7
+- (NSFileSubarbitrationClaim)initWithReadingURLs:(id)ls options:(unint64_t)options writingURLs:(id)rLs options:(unint64_t)a6 claimer:(id)claimer
 {
   v12 = [(NSFileAccessClaim *)self initWithClient:0 claimID:0 purposeID:0];
   if (v12)
   {
-    v12->_readingURLs = [a3 copy];
-    v12->_readingOptions = a4;
-    v12->_writingURLs = [a5 copy];
+    v12->_readingURLs = [ls copy];
+    v12->_readingOptions = options;
+    v12->_writingURLs = [rLs copy];
     v12->_writingOptions = a6;
-    v12->super._claimerOrNil = [a7 copy];
+    v12->super._claimerOrNil = [claimer copy];
   }
 
   return v12;
@@ -43,7 +43,7 @@
   [(NSFileAccessClaim *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -51,16 +51,16 @@
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be encoded by XPC" userInfo:0]);
   }
 
-  [a3 encodeObject:self->_readingURLs forKey:@"NSReadingURLsKey"];
-  [a3 encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_readingOptions), @"NSReadingOptionsKey"}];
-  [a3 encodeObject:self->_writingURLs forKey:@"NSWritingURLsKey"];
-  [a3 encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_writingOptions), @"NSWritingOptionsKey"}];
+  [coder encodeObject:self->_readingURLs forKey:@"NSReadingURLsKey"];
+  [coder encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_readingOptions), @"NSReadingOptionsKey"}];
+  [coder encodeObject:self->_writingURLs forKey:@"NSWritingURLsKey"];
+  [coder encodeObject:+[NSNumber numberWithUnsignedInteger:](NSNumber forKey:{"numberWithUnsignedInteger:", self->_writingOptions), @"NSWritingOptionsKey"}];
   v5.receiver = self;
   v5.super_class = NSFileSubarbitrationClaim;
-  [(NSFileAccessClaim *)&v5 encodeWithCoder:a3];
+  [(NSFileAccessClaim *)&v5 encodeWithCoder:coder];
 }
 
-- (NSFileSubarbitrationClaim)initWithCoder:(id)a3
+- (NSFileSubarbitrationClaim)initWithCoder:(id)coder
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -74,22 +74,22 @@
       objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"NSFileAccessClaims should only ever be decoded by XPC" userInfo:0]);
     }
 
-    v5 = [a3 allowedClasses];
+    allowedClasses = [coder allowedClasses];
     v6 = MEMORY[0x1E695DFD8];
     v16[0] = objc_opt_class();
     v16[1] = objc_opt_class();
-    v7 = [v5 setByAddingObjectsFromSet:{objc_msgSend(v6, "setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v16, 2))}];
+    v7 = [allowedClasses setByAddingObjectsFromSet:{objc_msgSend(v6, "setWithArray:", objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v16, 2))}];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v10 = __43__NSFileSubarbitrationClaim_initWithCoder___block_invoke;
     v11 = &unk_1E69F9BA8;
-    v12 = a3;
+    coderCopy = coder;
     v13 = v7;
     v14 = v4;
     v4->_readingURLs = [__43__NSFileSubarbitrationClaim_initWithCoder___block_invoke(v9 @"NSReadingURLsKey")];
     v4->_writingURLs = [v10(v9 @"NSWritingURLsKey")];
-    v4->_readingOptions = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSReadingOptionsKey", "unsignedIntegerValue"}];
-    v4->_writingOptions = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"NSWritingOptionsKey", "unsignedIntegerValue"}];
+    v4->_readingOptions = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSReadingOptionsKey", "unsignedIntegerValue"}];
+    v4->_writingOptions = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"NSWritingOptionsKey", "unsignedIntegerValue"}];
     v4->_forwardedClaimIDs = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v4->_readRelinquishmentsByPresenterID = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4->_writeRelinquishmentsByPresenterID = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -153,7 +153,7 @@ LABEL_13:
   return v4;
 }
 
-- (id)descriptionWithIndenting:(id)a3
+- (id)descriptionWithIndenting:(id)indenting
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -161,20 +161,20 @@ LABEL_13:
   result = [(NSFileAccessClaim *)&v6 descriptionWithIndenting:?];
   if (self->_nullified)
   {
-    return [result stringByAppendingFormat:@"\n%@    (nullified)", a3];
+    return [result stringByAppendingFormat:@"\n%@    (nullified)", indenting];
   }
 
   return result;
 }
 
-- (void)forwardUsingConnection:(id)a3 withServer:(id)a4 crashHandler:(id)a5
+- (void)forwardUsingConnection:(id)connection withServer:(id)server crashHandler:(id)handler
 {
   v16 = *MEMORY[0x1E69E9840];
   v9 = _NSFCClaimsLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v15 = [(NSFileAccessClaim *)self claimID];
+    claimID = [(NSFileAccessClaim *)self claimID];
     _os_log_debug_impl(&dword_18075C000, v9, OS_LOG_TYPE_DEBUG, "Subarbitration claim %{public}@ blocked pending grantAccessClaim", buf, 0xCu);
   }
 
@@ -184,15 +184,15 @@ LABEL_13:
   v13[2] = __76__NSFileSubarbitrationClaim_forwardUsingConnection_withServer_crashHandler___block_invoke;
   v13[3] = &unk_1E69F61A0;
   v13[4] = self;
-  v13[5] = a5;
-  v10 = [a3 remoteObjectProxyWithErrorHandler:v13];
-  v11 = [a4 endpoint];
+  v13[5] = handler;
+  v10 = [connection remoteObjectProxyWithErrorHandler:v13];
+  endpoint = [server endpoint];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__NSFileSubarbitrationClaim_forwardUsingConnection_withServer_crashHandler___block_invoke_44;
   v12[3] = &unk_1E69F3A28;
   v12[4] = self;
-  [v10 grantSubarbitrationClaim:self withServer:v11 reply:v12];
+  [v10 grantSubarbitrationClaim:self withServer:endpoint reply:v12];
 }
 
 uint64_t __76__NSFileSubarbitrationClaim_forwardUsingConnection_withServer_crashHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -254,10 +254,10 @@ LABEL_3:
   return [*(a1 + 32) unblock];
 }
 
-- (BOOL)evaluateSelfWithRootNode:(id)a3 checkSubarbitrability:(BOOL)a4
+- (BOOL)evaluateSelfWithRootNode:(id)node checkSubarbitrability:(BOOL)subarbitrability
 {
   v94 = *MEMORY[0x1E69E9840];
-  if (!a4)
+  if (!subarbitrability)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v90 = 0u;
@@ -278,7 +278,7 @@ LABEL_3:
             objc_enumerationMutation(readingURLs);
           }
 
-          v11 = [a3 descendantForFileURL:*(*(&v90 + 1) + 8 * i)];
+          v11 = [node descendantForFileURL:*(*(&v90 + 1) + 8 * i)];
           if (v11)
           {
             [v6 addObject:v11];
@@ -313,7 +313,7 @@ LABEL_3:
             objc_enumerationMutation(writingURLs);
           }
 
-          v17 = [a3 descendantForFileURL:*(*(&v85 + 1) + 8 * j)];
+          v17 = [node descendantForFileURL:*(*(&v85 + 1) + 8 * j)];
           if (v17)
           {
             [v12 addObject:v17];
@@ -469,7 +469,7 @@ LABEL_3:
       }
     }
 
-    self->_rootNode = a3;
+    self->_rootNode = node;
     v49[0] = MEMORY[0x1E69E9820];
     v49[1] = 3221225472;
     v49[2] = __76__NSFileSubarbitrationClaim_evaluateSelfWithRootNode_checkSubarbitrability___block_invoke_13;
@@ -546,7 +546,7 @@ LABEL_3:
     _Block_object_dispose(v57, 8);
   }
 
-  return !a4;
+  return !subarbitrability;
 }
 
 uint64_t __76__NSFileSubarbitrationClaim_evaluateSelfWithRootNode_checkSubarbitrability___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -768,10 +768,10 @@ uint64_t __76__NSFileSubarbitrationClaim_evaluateSelfWithRootNode_checkSubarbitr
   return result;
 }
 
-- (void)evaluateNewClaim:(id)a3
+- (void)evaluateNewClaim:(id)claim
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 != self && ![(NSFileSubarbitrationClaim *)self nullified])
+  if (claim != self && ![(NSFileSubarbitrationClaim *)self nullified])
   {
     if (objc_opt_isKindOfClass())
     {
@@ -779,16 +779,16 @@ uint64_t __76__NSFileSubarbitrationClaim_evaluateSelfWithRootNode_checkSubarbitr
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = [a3 claimID];
+        claimID = [claim claimID];
         v13 = 2114;
-        v14 = [(NSFileAccessClaim *)self claimID];
+        claimID2 = [(NSFileAccessClaim *)self claimID];
         _os_log_impl(&dword_18075C000, v5, OS_LOG_TYPE_DEFAULT, "New subarbitration claim %{public}@ is blocked by subarbitration claim %{public}@", &v11, 0x16u);
       }
 
-      v6 = self;
-      v7 = a3;
+      claimCopy2 = self;
+      selfCopy2 = claim;
 LABEL_15:
-      [v6 addPendingClaim:v7];
+      [claimCopy2 addPendingClaim:selfCopy2];
       return;
     }
 
@@ -798,47 +798,47 @@ LABEL_15:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = [a3 claimID];
+        claimID = [claim claimID];
         v13 = 2114;
-        v14 = [(NSFileAccessClaim *)self claimID];
+        claimID2 = [(NSFileAccessClaim *)self claimID];
         _os_log_impl(&dword_18075C000, v10, OS_LOG_TYPE_DEFAULT, "Claim %{public}@ is blocked by subarbitration claim %{public}@", &v11, 0x16u);
       }
 
-      v6 = a3;
-      v7 = self;
+      claimCopy2 = claim;
+      selfCopy2 = self;
       goto LABEL_15;
     }
 
-    v8 = [a3 claimID];
-    if (([(NSMutableSet *)self->_forwardedClaimIDs containsObject:v8]& 1) == 0)
+    claimID3 = [claim claimID];
+    if (([(NSMutableSet *)self->_forwardedClaimIDs containsObject:claimID3]& 1) == 0)
     {
-      [(NSMutableSet *)self->_forwardedClaimIDs addObject:v8];
+      [(NSMutableSet *)self->_forwardedClaimIDs addObject:claimID3];
       v9 = _NSFCClaimsLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138543618;
-        v12 = [a3 claimID];
+        claimID = [claim claimID];
         v13 = 2114;
-        v14 = [(NSFileAccessClaim *)self claimID];
+        claimID2 = [(NSFileAccessClaim *)self claimID];
         _os_log_impl(&dword_18075C000, v9, OS_LOG_TYPE_DEFAULT, "Forwarding claim %{public}@ to subarbiter for claim %{public}@ for evaluation there", &v11, 0x16u);
       }
 
-      [a3 forwardUsingConnection:self->_subarbiterConnection crashHandler:&__block_literal_global_80];
+      [claim forwardUsingConnection:self->_subarbiterConnection crashHandler:&__block_literal_global_80];
     }
   }
 }
 
-- (void)devalueOldClaim:(id)a3
+- (void)devalueOldClaim:(id)claim
 {
-  if (a3 != self)
+  if (claim != self)
   {
-    v4 = [a3 claimID];
-    if ([(NSMutableSet *)self->_forwardedClaimIDs containsObject:v4])
+    claimID = [claim claimID];
+    if ([(NSMutableSet *)self->_forwardedClaimIDs containsObject:claimID])
     {
       [-[NSXPCConnection remoteObjectProxy](self->_subarbiterConnection "remoteObjectProxy")];
       forwardedClaimIDs = self->_forwardedClaimIDs;
 
-      [(NSMutableSet *)forwardedClaimIDs removeObject:v4];
+      [(NSMutableSet *)forwardedClaimIDs removeObject:claimID];
     }
   }
 }
@@ -1109,7 +1109,7 @@ uint64_t __36__NSFileSubarbitrationClaim_granted__block_invoke_2(uint64_t result
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v8 = [(NSFileAccessClaim *)self claimID];
+      claimID = [(NSFileAccessClaim *)self claimID];
       _os_log_impl(&dword_18075C000, v3, OS_LOG_TYPE_DEFAULT, "Subarbitration claim %{public}@ invoked in client", buf, 0xCu);
     }
 
@@ -1123,9 +1123,9 @@ uint64_t __36__NSFileSubarbitrationClaim_granted__block_invoke_2(uint64_t result
     v4 = _NSFCClaimsLog();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NSFileAccessClaim *)self claimID];
+      claimID2 = [(NSFileAccessClaim *)self claimID];
       *buf = 138543362;
-      v8 = v5;
+      claimID = claimID2;
       _os_log_impl(&dword_18075C000, v4, OS_LOG_TYPE_DEFAULT, "Subarbitration claim %{public}@ invoked in server", buf, 0xCu);
     }
 
@@ -1219,9 +1219,9 @@ uint64_t __36__NSFileSubarbitrationClaim_granted__block_invoke_2(uint64_t result
   [(NSFileAccessClaim *)&v13 devalueSelf];
 }
 
-- (id)relinquishmentForWrite:(BOOL)a3 toPresenterForID:(id)a4
+- (id)relinquishmentForWrite:(BOOL)write toPresenterForID:(id)d
 {
-  if (a3)
+  if (write)
   {
     v5 = 288;
   }
@@ -1232,22 +1232,22 @@ uint64_t __36__NSFileSubarbitrationClaim_granted__block_invoke_2(uint64_t result
   }
 
   v6 = (&self->super.super.isa + v5);
-  v7 = [*(&self->super.super.isa + v5) objectForKey:a4];
+  v7 = [*(&self->super.super.isa + v5) objectForKey:d];
   if (v7)
   {
     return v7;
   }
 
   v8 = objc_alloc_init(NSFilePresenterRelinquishment);
-  [*v6 setObject:v8 forKey:a4];
+  [*v6 setObject:v8 forKey:d];
   v9 = v8;
   return v8;
 }
 
-- (void)forwardRelinquishmentForWritingClaim:(BOOL)a3 withID:(id)a4 options:(unint64_t)a5 purposeID:(id)a6 subitemURL:(id)a7 toPresenter:(id)a8 usingReplySender:(id)a9
+- (void)forwardRelinquishmentForWritingClaim:(BOOL)claim withID:(id)d options:(unint64_t)options purposeID:(id)iD subitemURL:(id)l toPresenter:(id)presenter usingReplySender:(id)sender
 {
   v19[6] = *MEMORY[0x1E69E9840];
-  v15 = -[NSFileSubarbitrationClaim relinquishmentForWrite:toPresenterForID:](self, "relinquishmentForWrite:toPresenterForID:", a3, [a8 reactorID]);
+  v15 = -[NSFileSubarbitrationClaim relinquishmentForWrite:toPresenterForID:](self, "relinquishmentForWrite:toPresenterForID:", claim, [presenter reactorID]);
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3052000000;
@@ -1258,21 +1258,21 @@ uint64_t __36__NSFileSubarbitrationClaim_granted__block_invoke_2(uint64_t result
   v17[1] = 3221225472;
   v17[2] = __131__NSFileSubarbitrationClaim_forwardRelinquishmentForWritingClaim_withID_options_purposeID_subitemURL_toPresenter_usingReplySender___block_invoke;
   v17[3] = &unk_1E69F9D58;
-  v18 = a3;
-  v17[4] = a8;
-  v17[5] = a4;
-  v17[6] = a6;
-  v17[7] = a7;
+  claimCopy = claim;
+  v17[4] = presenter;
+  v17[5] = d;
+  v17[6] = iD;
+  v17[7] = l;
   v17[9] = v19;
-  v17[10] = a5;
+  v17[10] = options;
   v17[8] = v15;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __131__NSFileSubarbitrationClaim_forwardRelinquishmentForWritingClaim_withID_options_purposeID_subitemURL_toPresenter_usingReplySender___block_invoke_3;
   v16[3] = &unk_1E69F9D80;
-  v16[4] = a9;
+  v16[4] = sender;
   v16[5] = v19;
-  [v15 performRelinquishmentToAccessClaimIfNecessary:a4 usingBlock:v17 withReply:v16];
+  [v15 performRelinquishmentToAccessClaimIfNecessary:d usingBlock:v17 withReply:v16];
   _Block_object_dispose(v19, 8);
 }
 
@@ -1323,25 +1323,25 @@ void __131__NSFileSubarbitrationClaim_forwardRelinquishmentForWritingClaim_withI
   *(*(*(a1 + 40) + 8) + 40) = 0;
 }
 
-- (void)forwardReacquisitionForWritingClaim:(BOOL)a3 withID:(id)a4 toPresenterForID:(id)a5 usingReplySender:(id)a6
+- (void)forwardReacquisitionForWritingClaim:(BOOL)claim withID:(id)d toPresenterForID:(id)iD usingReplySender:(id)sender
 {
   v10[5] = *MEMORY[0x1E69E9840];
-  v8 = [(NSFileSubarbitrationClaim *)self relinquishmentForWrite:a3 toPresenterForID:a5];
+  v8 = [(NSFileSubarbitrationClaim *)self relinquishmentForWrite:claim toPresenterForID:iD];
   if (v8)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __106__NSFileSubarbitrationClaim_forwardReacquisitionForWritingClaim_withID_toPresenterForID_usingReplySender___block_invoke;
     v10[3] = &unk_1E69F40C0;
-    v10[4] = a6;
-    [v8 removeBlockingAccessClaimID:a4 thenContinue:v10];
+    v10[4] = sender;
+    [v8 removeBlockingAccessClaimID:d thenContinue:v10];
   }
 
-  else if (a6)
+  else if (sender)
   {
-    v9 = *(a6 + 2);
+    v9 = *(sender + 2);
 
-    v9(a6);
+    v9(sender);
   }
 }
 

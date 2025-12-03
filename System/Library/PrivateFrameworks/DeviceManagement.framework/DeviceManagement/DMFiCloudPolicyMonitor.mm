@@ -1,19 +1,19 @@
 @interface DMFiCloudPolicyMonitor
-+ (id)iCloudLogoutPolicyForPoliciesByType:(id)a3;
++ (id)iCloudLogoutPolicyForPoliciesByType:(id)type;
 - (DMFiCloudPolicyMonitor)init;
-- (DMFiCloudPolicyMonitor)initWithPolicyChangeHandler:(id)a3;
-- (id)requestiCloudLogoutPolicyWithError:(id *)a3;
+- (DMFiCloudPolicyMonitor)initWithPolicyChangeHandler:(id)handler;
+- (id)requestiCloudLogoutPolicyWithError:(id *)error;
 - (int64_t)iCloudLogoutPolicy;
 - (void)dealloc;
-- (void)requestiCloudLogoutPolicyWithCompletionHandler:(id)a3;
+- (void)requestiCloudLogoutPolicyWithCompletionHandler:(id)handler;
 @end
 
 @implementation DMFiCloudPolicyMonitor
 
-- (DMFiCloudPolicyMonitor)initWithPolicyChangeHandler:(id)a3
+- (DMFiCloudPolicyMonitor)initWithPolicyChangeHandler:(id)handler
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v19.receiver = self;
   v19.super_class = DMFiCloudPolicyMonitor;
   v5 = [(DMFiCloudPolicyMonitor *)&v19 init];
@@ -28,11 +28,11 @@
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    if (v4)
+    if (handlerCopy)
     {
       v10 = [DMFPolicyRegistration alloc];
       v11 = [MEMORY[0x1E695DFD8] setWithArray:v5->_policyTypes];
-      v12 = [(DMFPolicyRegistration *)v10 initWithIdentifier:@"dmf.policy.monitor.icloud.account.logout" policyTypes:v11 callback:v4];
+      v12 = [(DMFPolicyRegistration *)v10 initWithIdentifier:@"dmf.policy.monitor.icloud.account.logout" policyTypes:v11 callback:handlerCopy];
 
       v13 = +[DMFPolicyMonitor policyMonitor];
       v14 = v5->_identifier;
@@ -72,43 +72,43 @@ void __54__DMFiCloudPolicyMonitor_initWithPolicyChangeHandler___block_invoke(uin
   [(DMFiCloudPolicyMonitor *)&v4 dealloc];
 }
 
-+ (id)iCloudLogoutPolicyForPoliciesByType:(id)a3
++ (id)iCloudLogoutPolicyForPoliciesByType:(id)type
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [a3 objectForKeyedSubscript:@"icloudaccountlogout"];
+  v3 = [type objectForKeyedSubscript:@"icloudaccountlogout"];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 defaultPolicy];
+    defaultPolicy = [v3 defaultPolicy];
   }
 
   else
   {
-    v5 = 0;
+    defaultPolicy = 0;
   }
 
   v6 = DMFPolicyLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = DMFPolicyUnlocalizedDisplayName(v5);
+    v7 = DMFPolicyUnlocalizedDisplayName(defaultPolicy);
     v11 = 138543362;
     v12 = v7;
     _os_log_impl(&dword_1DBFFF000, v6, OS_LOG_TYPE_DEFAULT, "iCloud logout has policy %{public}@", &v11, 0xCu);
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:defaultPolicy];
 
   v9 = *MEMORY[0x1E69E9840];
 
   return v8;
 }
 
-- (id)requestiCloudLogoutPolicyWithError:(id *)a3
+- (id)requestiCloudLogoutPolicyWithError:(id *)error
 {
   v5 = +[DMFPolicyMonitor policyMonitor];
-  v6 = [(DMFiCloudPolicyMonitor *)self policyTypes];
+  policyTypes = [(DMFiCloudPolicyMonitor *)self policyTypes];
   v13 = 0;
-  v7 = [v5 requestPoliciesForTypes:v6 withError:&v13];
+  v7 = [v5 requestPoliciesForTypes:policyTypes withError:&v13];
   v8 = v13;
 
   if (v7)
@@ -124,11 +124,11 @@ void __54__DMFiCloudPolicyMonitor_initWithPolicyChangeHandler___block_invoke(uin
       [DMFiCloudPolicyMonitor requestiCloudLogoutPolicyWithError:?];
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v8;
       v9 = 0;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -140,19 +140,19 @@ void __54__DMFiCloudPolicyMonitor_initWithPolicyChangeHandler___block_invoke(uin
   return v9;
 }
 
-- (void)requestiCloudLogoutPolicyWithCompletionHandler:(id)a3
+- (void)requestiCloudLogoutPolicyWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[DMFPolicyMonitor policyMonitor];
-  v6 = [(DMFiCloudPolicyMonitor *)self policyTypes];
+  policyTypes = [(DMFiCloudPolicyMonitor *)self policyTypes];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__DMFiCloudPolicyMonitor_requestiCloudLogoutPolicyWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E8616A20;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v5 requestPoliciesForTypes:v6 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [v5 requestPoliciesForTypes:policyTypes completionHandler:v8];
 }
 
 void __73__DMFiCloudPolicyMonitor_requestiCloudLogoutPolicyWithCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -183,8 +183,8 @@ void __73__DMFiCloudPolicyMonitor_requestiCloudLogoutPolicyWithCompletionHandler
   v4[1] = 3221225472;
   v4[2] = __30__DMFiCloudPolicyMonitor_init__block_invoke;
   v4[3] = &unk_1E86160F8;
-  v5 = self;
-  v2 = [(DMFiCloudPolicyMonitor *)v5 initWithPolicyChangeHandler:v4];
+  selfCopy = self;
+  v2 = [(DMFiCloudPolicyMonitor *)selfCopy initWithPolicyChangeHandler:v4];
 
   return v2;
 }

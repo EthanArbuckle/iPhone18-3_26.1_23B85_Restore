@@ -4,22 +4,22 @@
 - (NSArray)donatedRoutes;
 - (NSArray)recommendedRoutes;
 - (id)defaultsContext;
-- (id)irCandidateFor:(id)a3;
-- (id)recommendationForGroupedOutputDevices:(id)a3;
-- (id)sortEndpointRoutes:(id)a3;
-- (void)addDonatedRoute:(id)a3;
-- (void)donateGroupedOutputDevices:(id)a3;
-- (void)donatePickerChoiceFor:(id)a3 bundleID:(id)a4 isEligibleApp:(BOOL)a5 reason:(id)a6;
+- (id)irCandidateFor:(id)for;
+- (id)recommendationForGroupedOutputDevices:(id)devices;
+- (id)sortEndpointRoutes:(id)routes;
+- (void)addDonatedRoute:(id)route;
+- (void)donateGroupedOutputDevices:(id)devices;
+- (void)donatePickerChoiceFor:(id)for bundleID:(id)d isEligibleApp:(BOOL)app reason:(id)reason;
 - (void)initializeSession;
 - (void)initializeSessionWhenAppropriate;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didUpdateContext:(id)a4;
-- (void)session:(id)a3 suspendedWithReason:(int64_t)a4;
-- (void)session:(id)a3 suspensionReasonEnded:(int64_t)a4 isNoLongerSuspended:(BOOL)a5;
-- (void)setDonatedRoutes:(id)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setRecommendedRoutes:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didUpdateContext:(id)context;
+- (void)session:(id)session suspendedWithReason:(int64_t)reason;
+- (void)session:(id)session suspensionReasonEnded:(int64_t)ended isNoLongerSuspended:(BOOL)suspended;
+- (void)setDonatedRoutes:(id)routes;
+- (void)setMode:(int64_t)mode;
+- (void)setRecommendedRoutes:(id)routes;
 - (void)updateRecommendations;
 @end
 
@@ -73,18 +73,18 @@ uint64_t __37__MRURouteRecommender_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)irCandidateFor:(id)a3
+- (id)irCandidateFor:(id)for
 {
   v3 = MEMORY[0x1E69AA828];
-  v4 = a3;
+  forCopy = for;
   v5 = [v3 alloc];
-  v6 = [v4 routeIdentifier];
-  v7 = [v5 initWithCandidateIdentifier:v6];
+  routeIdentifier = [forCopy routeIdentifier];
+  v7 = [v5 initWithCandidateIdentifier:routeIdentifier];
 
   v8 = MEMORY[0x1E695DFD8];
-  v9 = [v4 nodes];
+  nodes = [forCopy nodes];
 
-  v10 = [v9 msv_map:&__block_literal_global_152];
+  v10 = [nodes msv_map:&__block_literal_global_152];
   v11 = [v8 setWithArray:v10];
   [v7 updateNodes:v11];
 
@@ -120,25 +120,25 @@ id __38__MRURouteRecommender_irCandidateFor___block_invoke(uint64_t a1, void *a2
   return v3;
 }
 
-- (void)setRecommendedRoutes:(id)a3
+- (void)setRecommendedRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   os_unfair_lock_lock(&self->_recommendedRoutesLock);
   recommendedRoutes = self->_recommendedRoutes;
-  self->_recommendedRoutes = v4;
+  self->_recommendedRoutes = routesCopy;
 
   os_unfair_lock_unlock(&self->_recommendedRoutesLock);
 }
 
 - (void)updateRecommendations
 {
-  v3 = [(MRURouteRecommender *)self donationQueue];
+  donationQueue = [(MRURouteRecommender *)self donationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __44__MRURouteRecommender_updateRecommendations__block_invoke;
   block[3] = &unk_1E7663898;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(donationQueue, block);
 }
 
 void __44__MRURouteRecommender_updateRecommendations__block_invoke(uint64_t a1)
@@ -156,24 +156,24 @@ void __44__MRURouteRecommender_updateRecommendations__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setDonatedRoutes:(id)a3
+- (void)setDonatedRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   os_unfair_lock_lock(&self->_donatedRoutesLock);
   donatedRoutes = self->_donatedRoutes;
-  self->_donatedRoutes = v4;
+  self->_donatedRoutes = routesCopy;
 
   os_unfair_lock_unlock(&self->_donatedRoutesLock);
 }
 
-- (void)addDonatedRoute:(id)a3
+- (void)addDonatedRoute:(id)route
 {
-  v6 = a3;
+  routeCopy = route;
   os_unfair_lock_lock(&self->_donatedRoutesLock);
   v4 = self->_donatedRoutes;
-  if (![(NSArray *)v4 containsObject:v6])
+  if (![(NSArray *)v4 containsObject:routeCopy])
   {
-    v5 = [(NSArray *)self->_donatedRoutes arrayByAddingObject:v6];
+    v5 = [(NSArray *)self->_donatedRoutes arrayByAddingObject:routeCopy];
 
     objc_storeStrong(&self->_donatedRoutes, v5);
     v4 = v5;
@@ -182,19 +182,19 @@ void __44__MRURouteRecommender_updateRecommendations__block_invoke(uint64_t a1)
   os_unfair_lock_unlock(&self->_donatedRoutesLock);
 }
 
-- (id)recommendationForGroupedOutputDevices:(id)a3
+- (id)recommendationForGroupedOutputDevices:(id)devices
 {
-  v4 = [MEMORY[0x1E69B0A50] routeWithOutputDevices:a3];
+  v4 = [MEMORY[0x1E69B0A50] routeWithOutputDevices:devices];
   if (v4)
   {
-    v5 = [(MRURouteRecommender *)self recommendedRoutes];
+    recommendedRoutes = [(MRURouteRecommender *)self recommendedRoutes];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __61__MRURouteRecommender_recommendationForGroupedOutputDevices___block_invoke;
     v17[3] = &unk_1E7664B70;
     v6 = v4;
     v18 = v6;
-    v7 = [v5 msv_firstWhere:v17];
+    v7 = [recommendedRoutes msv_firstWhere:v17];
 
     if (v7)
     {
@@ -203,13 +203,13 @@ void __44__MRURouteRecommender_updateRecommendations__block_invoke(uint64_t a1)
 
     else
     {
-      v9 = [(MRURouteRecommender *)self donatedRoutes];
+      donatedRoutes = [(MRURouteRecommender *)self donatedRoutes];
       v12 = MEMORY[0x1E69E9820];
       v13 = 3221225472;
       v14 = __61__MRURouteRecommender_recommendationForGroupedOutputDevices___block_invoke_2;
       v15 = &unk_1E7664B98;
       v16 = v6;
-      v10 = [v9 msv_firstWhere:&v12];
+      v10 = [donatedRoutes msv_firstWhere:&v12];
 
       if (v10)
       {
@@ -252,28 +252,28 @@ uint64_t __61__MRURouteRecommender_recommendationForGroupedOutputDevices___block
   return v5;
 }
 
-- (void)donateGroupedOutputDevices:(id)a3
+- (void)donateGroupedOutputDevices:(id)devices
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRURouteRecommender *)self session];
+  devicesCopy = devices;
+  session = [(MRURouteRecommender *)self session];
 
-  if (v5)
+  if (session)
   {
-    v6 = [MEMORY[0x1E69B0A50] routeWithOutputDevices:v4];
+    v6 = [MEMORY[0x1E69B0A50] routeWithOutputDevices:devicesCopy];
     v7 = v6;
     if (v6)
     {
       if ([v6 donateAsCandidate])
       {
-        v8 = [(MRURouteRecommender *)self donationQueue];
+        donationQueue = [(MRURouteRecommender *)self donationQueue];
         v10[0] = MEMORY[0x1E69E9820];
         v10[1] = 3221225472;
         v10[2] = __50__MRURouteRecommender_donateGroupedOutputDevices___block_invoke;
         v10[3] = &unk_1E76639D0;
         v11 = v7;
-        v12 = self;
-        dispatch_async(v8, v10);
+        selfCopy = self;
+        dispatch_async(donationQueue, v10);
 
         v9 = v11;
       }
@@ -324,13 +324,13 @@ uint64_t __50__MRURouteRecommender_donateGroupedOutputDevices___block_invoke(uin
 {
   v15 = *MEMORY[0x1E69E9840];
   objc_initWeak(&location, self);
-  v3 = [(MRURouteRecommender *)self donationQueue];
+  donationQueue = [(MRURouteRecommender *)self donationQueue];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __55__MRURouteRecommender_initializeSessionWhenAppropriate__block_invoke;
   handler[3] = &unk_1E76649F0;
   objc_copyWeak(&v11, &location);
-  v4 = notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &self->_firstUnlockToken, v3, handler);
+  v4 = notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", &self->_firstUnlockToken, donationQueue, handler);
 
   if (v4)
   {
@@ -345,13 +345,13 @@ uint64_t __50__MRURouteRecommender_donateGroupedOutputDevices___block_invoke(uin
 
   if (MKBDeviceUnlockedSinceBoot() == 1)
   {
-    v6 = [(MRURouteRecommender *)self donationQueue];
+    donationQueue2 = [(MRURouteRecommender *)self donationQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __55__MRURouteRecommender_initializeSessionWhenAppropriate__block_invoke_158;
     block[3] = &unk_1E7663AE8;
     objc_copyWeak(&v9, &location);
-    dispatch_async(v6, block);
+    dispatch_async(donationQueue2, block);
 
     objc_destroyWeak(&v9);
   }
@@ -392,35 +392,35 @@ void __55__MRURouteRecommender_initializeSessionWhenAppropriate__block_invoke_15
 - (void)initializeSession
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69B0B28] currentSettings];
-  v4 = [v3 supportRouteRecommendations];
+  currentSettings = [MEMORY[0x1E69B0B28] currentSettings];
+  supportRouteRecommendations = [currentSettings supportRouteRecommendations];
 
-  if (v4)
+  if (supportRouteRecommendations)
   {
     v5 = [MEMORY[0x1E69B1418] hasEntitlement:@"com.apple.intelligentroutingd.xpc.media" inGroup:@"com.apple.security.exception.mach-lookup.global-name"];
     v6 = [MEMORY[0x1E69B1418] hasBoolEntitlement:@"com.apple.intelligentrouting.recommendationservice"];
     v7 = v6;
     if (v5 && (v6 & 1) != 0)
     {
-      v8 = [(MRURouteRecommender *)self serviceToken];
+      serviceToken = [(MRURouteRecommender *)self serviceToken];
 
       v9 = _MRLogForCategory();
       v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-      if (v8)
+      if (serviceToken)
       {
         if (v10)
         {
-          v11 = [(MRURouteRecommender *)self serviceToken];
+          serviceToken2 = [(MRURouteRecommender *)self serviceToken];
           v17 = 138412290;
-          v18 = v11;
+          v18 = serviceToken2;
           _os_log_impl(&dword_1A20FC000, v9, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR Using persisted token %@", &v17, 0xCu);
         }
 
         v12 = objc_alloc_init(MEMORY[0x1E69AA850]);
         [(MRURouteRecommender *)self setSession:v12];
 
-        v13 = [(MRURouteRecommender *)self session];
-        [v13 setDelegate:self];
+        session = [(MRURouteRecommender *)self session];
+        [session setDelegate:self];
 
         [(MRURouteRecommender *)self setMode:0];
       }
@@ -471,43 +471,43 @@ void __55__MRURouteRecommender_initializeSessionWhenAppropriate__block_invoke_15
   }
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
   v20 = *MEMORY[0x1E69E9840];
-  self->_mode = a3;
+  self->_mode = mode;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 134217984;
-    v15 = a3;
+    modeCopy = mode;
     _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR Mode set to %ld", &v14, 0xCu);
   }
 
-  v6 = [(MRURouteRecommender *)self session];
+  session = [(MRURouteRecommender *)self session];
 
-  if (v6)
+  if (session)
   {
     v7 = objc_alloc(MEMORY[0x1E69AA830]);
-    v8 = [(MRURouteRecommender *)self serviceToken];
-    v9 = [v7 initWithServiceToken:v8];
+    serviceToken = [(MRURouteRecommender *)self serviceToken];
+    v9 = [v7 initWithServiceToken:serviceToken];
 
-    [v9 setMode:a3];
+    [v9 setMode:mode];
     v10 = _MRLogForCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(MRURouteRecommender *)self session];
-      v12 = [(MRURouteRecommender *)self session];
+      session2 = [(MRURouteRecommender *)self session];
+      session3 = [(MRURouteRecommender *)self session];
       v14 = 134218498;
-      v15 = v11;
+      modeCopy = session2;
       v16 = 2112;
-      v17 = v12;
+      v17 = session3;
       v18 = 2112;
       v19 = v9;
       _os_log_impl(&dword_1A20FC000, v10, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR Will call (%p)%@ runWithConfiguration: %@", &v14, 0x20u);
     }
 
-    v13 = [(MRURouteRecommender *)self session];
-    [v13 runWithConfiguration:v9];
+    session4 = [(MRURouteRecommender *)self session];
+    [session4 runWithConfiguration:v9];
   }
 
   else
@@ -520,53 +520,53 @@ void __55__MRURouteRecommender_initializeSessionWhenAppropriate__block_invoke_15
   }
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = _MRLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138412290;
-    v17 = v7;
+    v17 = errorCopy;
     _os_log_impl(&dword_1A20FC000, v8, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR session:didFailWithError: %@", &v16, 0xCu);
   }
 
-  v9 = [(MRURouteRecommender *)self session];
-  v10 = v9;
-  if (v9 == v6)
+  session = [(MRURouteRecommender *)self session];
+  v10 = session;
+  if (session == sessionCopy)
   {
-    v11 = [v7 domain];
-    v12 = [v11 isEqualToString:*MEMORY[0x1E69AA820]];
+    domain = [errorCopy domain];
+    v12 = [domain isEqualToString:*MEMORY[0x1E69AA820]];
 
     if (v12)
     {
-      if ([v7 code] == -12887)
+      if ([errorCopy code] == -12887)
       {
         v13 = _MRLogForCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           v16 = 134217984;
-          v17 = v6;
+          v17 = sessionCopy;
           _os_log_impl(&dword_1A20FC000, v13, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR Client session %p invalidated, recreating", &v16, 0xCu);
         }
 
         [(MRURouteRecommender *)self initializeSession];
       }
 
-      else if ([v7 code] == -12889)
+      else if ([errorCopy code] == -12889)
       {
         v14 = _MRLogForCategory();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          [(MRURouteRecommender *)self session:v6 didFailWithError:v14];
+          [(MRURouteRecommender *)self session:sessionCopy didFailWithError:v14];
         }
 
         v15 = _MRLogForCategory();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
         {
-          [(MRURouteRecommender *)self session:v6 didFailWithError:v15];
+          [(MRURouteRecommender *)self session:sessionCopy didFailWithError:v15];
         }
 
         [(MRURouteRecommender *)self setSession:0];
@@ -579,79 +579,79 @@ void __55__MRURouteRecommender_initializeSessionWhenAppropriate__block_invoke_15
   }
 }
 
-- (void)session:(id)a3 didUpdateContext:(id)a4
+- (void)session:(id)session didUpdateContext:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  contextCopy = context;
   v6 = _MRLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v5;
+    v21 = contextCopy;
     _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR session:didUpdateContext: %@", buf, 0xCu);
   }
 
-  v7 = [(MRURouteRecommender *)self defaultsContext];
-  v8 = v7;
-  if (v7)
+  defaultsContext = [(MRURouteRecommender *)self defaultsContext];
+  v8 = defaultsContext;
+  if (defaultsContext)
   {
-    v9 = v7;
+    v9 = defaultsContext;
   }
 
   else
   {
-    v9 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AA818]];
+    v9 = [contextCopy objectForKeyedSubscript:*MEMORY[0x1E69AA818]];
   }
 
   v10 = v9;
 
-  v11 = [v10 contextIdentifier];
-  v12 = [v10 candidateResults];
+  contextIdentifier = [v10 contextIdentifier];
+  candidateResults = [v10 candidateResults];
   v13 = _MRLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v12;
+    v21 = candidateResults;
     _os_log_impl(&dword_1A20FC000, v13, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR got %@", buf, 0xCu);
   }
 
-  v14 = [v12 allObjects];
+  allObjects = [candidateResults allObjects];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __48__MRURouteRecommender_session_didUpdateContext___block_invoke;
   v18[3] = &unk_1E7664BC0;
-  v19 = v11;
-  v15 = v11;
-  v16 = [v14 msv_map:v18];
+  v19 = contextIdentifier;
+  v15 = contextIdentifier;
+  v16 = [allObjects msv_map:v18];
   [(MRURouteRecommender *)self setRecommendedRoutes:v16];
 
-  v17 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v17 postNotificationName:MRURouteRecommenderDidUpdateRecommendationsNotification object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:MRURouteRecommenderDidUpdateRecommendationsNotification object:self];
 }
 
-- (void)session:(id)a3 suspendedWithReason:(int64_t)a4
+- (void)session:(id)session suspendedWithReason:(int64_t)reason
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a4;
+    reasonCopy = reason;
     _os_log_impl(&dword_1A20FC000, v5, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR session:suspendedWithReason: %ld", &v6, 0xCu);
   }
 }
 
-- (void)session:(id)a3 suspensionReasonEnded:(int64_t)a4 isNoLongerSuspended:(BOOL)a5
+- (void)session:(id)session suspensionReasonEnded:(int64_t)ended isNoLongerSuspended:(BOOL)suspended
 {
-  v5 = a5;
+  suspendedCopy = suspended;
   v12 = *MEMORY[0x1E69E9840];
   v7 = _MRLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = a4;
+    endedCopy = ended;
     v10 = 1024;
-    v11 = v5;
+    v11 = suspendedCopy;
     _os_log_impl(&dword_1A20FC000, v7, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR session:suspensionReasonEnded:isNoLongerSuspended: %ld %d", &v8, 0x12u);
   }
 }
@@ -659,8 +659,8 @@ void __55__MRURouteRecommender_initializeSessionWhenAppropriate__block_invoke_15
 - (id)defaultsContext
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = [(MRURouteRecommender *)self userDefaults];
-  v3 = [v2 objectForKey:@"IRContextUpdate"];
+  userDefaults = [(MRURouteRecommender *)self userDefaults];
+  v3 = [userDefaults objectForKey:@"IRContextUpdate"];
 
   v4 = [MRIRRouteRecommendationContext fromObject:v3];
   v5 = _MRLogForCategory();
@@ -701,23 +701,23 @@ LABEL_7:
   return v4;
 }
 
-- (id)sortEndpointRoutes:(id)a3
+- (id)sortEndpointRoutes:(id)routes
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MRURouteRecommender *)self session];
-  if (v5 && (v6 = v5, v7 = [v4 count], v6, v7 > 1))
+  routesCopy = routes;
+  session = [(MRURouteRecommender *)self session];
+  if (session && (v6 = session, v7 = [routesCopy count], v6, v7 > 1))
   {
     v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v30 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v28 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v32 = [(MRURouteRecommender *)self recommendedRoutes];
+    recommendedRoutes = [(MRURouteRecommender *)self recommendedRoutes];
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v27 = v4;
-    obj = v4;
+    v27 = routesCopy;
+    obj = routesCopy;
     v9 = [obj countByEnumeratingWithState:&v36 objects:v48 count:16];
     if (v9)
     {
@@ -745,21 +745,21 @@ LABEL_7:
           }
 
           v14 = v13;
-          v15 = [v14 endpointObject];
-          if (v15)
+          endpointObject = [v14 endpointObject];
+          if (endpointObject)
           {
-            v16 = [MEMORY[0x1E69B0A50] routeWithEndpoint:v15];
+            v16 = [MEMORY[0x1E69B0A50] routeWithEndpoint:endpointObject];
             v34[0] = MEMORY[0x1E69E9820];
             v34[1] = 3221225472;
             v34[2] = __42__MRURouteRecommender_sortEndpointRoutes___block_invoke;
             v34[3] = &unk_1E7664B70;
             v17 = v16;
             v35 = v17;
-            v18 = [v32 msv_firstWhere:v34];
-            v19 = [v18 classification];
-            if ((v19 - 2) >= 3)
+            v18 = [recommendedRoutes msv_firstWhere:v34];
+            classification = [v18 classification];
+            if ((classification - 2) >= 3)
             {
-              if (v19 == 1)
+              if (classification == 1)
               {
                 v20 = v28;
                 v21 = 1;
@@ -823,12 +823,12 @@ LABEL_7:
       _os_log_impl(&dword_1A20FC000, v25, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR promoted: %@ medium: %@, bottom: %@ = %@", buf, 0x2Au);
     }
 
-    v4 = v27;
+    routesCopy = v27;
   }
 
   else
   {
-    v8 = v4;
+    v8 = routesCopy;
   }
 
   return v8;
@@ -847,20 +847,20 @@ uint64_t __42__MRURouteRecommender_sortEndpointRoutes___block_invoke(uint64_t a1
   return v7;
 }
 
-- (void)donatePickerChoiceFor:(id)a3 bundleID:(id)a4 isEligibleApp:(BOOL)a5 reason:(id)a6
+- (void)donatePickerChoiceFor:(id)for bundleID:(id)d isEligibleApp:(BOOL)app reason:(id)reason
 {
-  v7 = a5;
+  appCopy = app;
   v34 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(MRURouteRecommender *)self session];
+  forCopy = for;
+  dCopy = d;
+  reasonCopy = reason;
+  session = [(MRURouteRecommender *)self session];
 
-  if (v13)
+  if (session)
   {
-    v14 = [MEMORY[0x1E69B0A50] routeWithEndpoint:v10];
-    v15 = [(MRURouteRecommender *)self lastDonatedPickerChoice];
-    v16 = [v14 isEqual:v15];
+    v14 = [MEMORY[0x1E69B0A50] routeWithEndpoint:forCopy];
+    lastDonatedPickerChoice = [(MRURouteRecommender *)self lastDonatedPickerChoice];
+    v16 = [v14 isEqual:lastDonatedPickerChoice];
 
     if (v16)
     {
@@ -876,18 +876,18 @@ uint64_t __42__MRURouteRecommender_sortEndpointRoutes___block_invoke(uint64_t a1
     [(MRURouteRecommender *)self setLastDonatedPickerChoice:v14];
     v18 = [objc_alloc(MEMORY[0x1E69AA838]) initWithEventType:0 eventSubType:0];
     v19 = v18;
-    if (v11)
+    if (dCopy)
     {
-      [v18 setBundleID:v11];
-      [v19 setIsEligibleApp:v7];
+      [v18 setBundleID:dCopy];
+      [v19 setIsEligibleApp:appCopy];
     }
 
     v20 = [(MRURouteRecommender *)self irCandidateFor:v14];
-    v21 = [v20 candidateIdentifier];
+    candidateIdentifier = [v20 candidateIdentifier];
 
-    v22 = _MRLogForCategory();
-    v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-    if (v21)
+    session2 = _MRLogForCategory();
+    v23 = os_log_type_enabled(session2, OS_LOG_TYPE_DEFAULT);
+    if (candidateIdentifier)
     {
       if (v23)
       {
@@ -896,12 +896,12 @@ uint64_t __42__MRURouteRecommender_sortEndpointRoutes___block_invoke(uint64_t a1
         v26 = 2112;
         v27 = v20;
         v28 = 2112;
-        v29 = v12;
-        _os_log_impl(&dword_1A20FC000, v22, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR EVENT: MRU is adding %@ for candidate %@ - reason: %@", &v24, 0x20u);
+        v29 = reasonCopy;
+        _os_log_impl(&dword_1A20FC000, session2, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR EVENT: MRU is adding %@ for candidate %@ - reason: %@", &v24, 0x20u);
       }
 
-      v22 = [(MRURouteRecommender *)self session];
-      [v22 addEvent:v19 forCandidate:v20];
+      session2 = [(MRURouteRecommender *)self session];
+      [session2 addEvent:v19 forCandidate:v20];
     }
 
     else if (v23)
@@ -913,10 +913,10 @@ uint64_t __42__MRURouteRecommender_sortEndpointRoutes___block_invoke(uint64_t a1
       v28 = 2112;
       v29 = v14;
       v30 = 2112;
-      v31 = v10;
+      v31 = forCopy;
       v32 = 2112;
-      v33 = v12;
-      _os_log_impl(&dword_1A20FC000, v22, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR EVENT: MRU is DROPPING %@ for candidate %@, no candidate identifier - route: %@, endpoint: %@ - reason: %@", &v24, 0x34u);
+      v33 = reasonCopy;
+      _os_log_impl(&dword_1A20FC000, session2, OS_LOG_TYPE_DEFAULT, "[MRDRRC].URR EVENT: MRU is DROPPING %@ for candidate %@, no candidate identifier - route: %@, endpoint: %@ - reason: %@", &v24, 0x34u);
     }
   }
 
@@ -930,16 +930,16 @@ uint64_t __42__MRURouteRecommender_sortEndpointRoutes___block_invoke(uint64_t a1
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = [(MRURouteRecommender *)self userDefaults];
+  pathCopy = path;
+  objectCopy = object;
+  userDefaults = [(MRURouteRecommender *)self userDefaults];
 
-  if (v9 == v8 && [v11 isEqualToString:@"IRContextUpdate"])
+  if (userDefaults == objectCopy && [pathCopy isEqualToString:@"IRContextUpdate"])
   {
-    v10 = [(MRURouteRecommender *)self session];
-    [(MRURouteRecommender *)self session:v10 didUpdateContext:MEMORY[0x1E695E0F8]];
+    session = [(MRURouteRecommender *)self session];
+    [(MRURouteRecommender *)self session:session didUpdateContext:MEMORY[0x1E695E0F8]];
   }
 }
 

@@ -1,6 +1,6 @@
 @interface _UIDefaultCommands
 + (id)sharedCommands;
-- (id)defaultCommandForAction:(int)a3 wantsCopy:;
+- (id)defaultCommandForAction:(int)action wantsCopy:;
 - (void)defaultCommandsContainingAppName;
 - (void)fixedDefaultCommands;
 @end
@@ -28,12 +28,12 @@
 - (void)fixedDefaultCommands
 {
   v136[1] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = a1[1];
+    v1 = self[1];
     if (!v1)
     {
-      v76 = a1;
+      selfCopy = self;
       v59 = _UINSLocalizedStringWithDefaultValue(@"Duplicate", @"Duplicate");
       v56 = _UINSLocalizedStringWithDefaultValue(@"Move", @"Move");
       v57 = _UINSLocalizedStringWithDefaultValue(@"Rename", @"Rename");
@@ -41,14 +41,14 @@
       v73 = [_UISelectorDictionary alloc];
       v2 = _UINSLocalizedStringWithDefaultValue(@"Dictation", @"Dictation");
       v3 = [UIKeyCommand commandWithTitle:v2 imageName:@"microphone" action:sel_startDictation_ input:@"d" modifierFlags:0x800000];
-      v133 = [v3 _allowGlobeModifierKeyCommand];
+      _allowGlobeModifierKeyCommand = [v3 _allowGlobeModifierKeyCommand];
 
-      [v133 setRepeatBehavior:2];
+      [_allowGlobeModifierKeyCommand setRepeatBehavior:2];
       v4 = _UINSLocalizedStringWithDefaultValue(@"Emoji", @"Emoji");
       v5 = [UIKeyCommand commandWithTitle:v4 imageName:@"emoji.face.grinning" action:sel_orderFrontCharacterPalette_ input:@"e" modifierFlags:0x800000];
-      v132 = [v5 _allowGlobeModifierKeyCommand];
+      _allowGlobeModifierKeyCommand2 = [v5 _allowGlobeModifierKeyCommand];
 
-      [v132 setRepeatBehavior:2];
+      [_allowGlobeModifierKeyCommand2 setRepeatBehavior:2];
       v131 = [UIKeyCommand commandWithTitle:&stru_1EFB14550 imageName:@"emoji.face.grinning" action:sel__handleLegacyEmojiKeyboardShortcut_ input:@" " modifierFlags:1310720];
       [v131 setAttributes:4];
       [v131 setRepeatBehavior:2];
@@ -191,68 +191,68 @@
       }
 
       v24 = [UICommand commandWithTitle:v22 imageName:@"apple.writing.tools" preferredDisplayMode:v23 action:sel_showWritingTools_];
-      v25 = [(_UISelectorDictionary *)v73 initWithMapping:&__block_literal_global_292 objects:v133, v132, v131, v130, v129, v128, v127, v126, v125, v124, v123, v122, v121, v120, v119, v118, v117, v116, v115, v114, v113, v112, v111, v110, v109, v108, v107, v106, v105, v104, v103, v102, v101, v100, v99, v98, v97, v96, v93, v95, v94, v92, v91, v90, v89, v88, v87, v36, v35, v34, v33, v32, v14, v15, v18, v19, v21, v24, 0];
-      v26 = v76[1];
-      v76[1] = v25;
+      v25 = [(_UISelectorDictionary *)v73 initWithMapping:&__block_literal_global_292 objects:_allowGlobeModifierKeyCommand, _allowGlobeModifierKeyCommand2, v131, v130, v129, v128, v127, v126, v125, v124, v123, v122, v121, v120, v119, v118, v117, v116, v115, v114, v113, v112, v111, v110, v109, v108, v107, v106, v105, v104, v103, v102, v101, v100, v99, v98, v97, v96, v93, v95, v94, v92, v91, v90, v89, v88, v87, v36, v35, v34, v33, v32, v14, v15, v18, v19, v21, v24, 0];
+      v26 = selfCopy[1];
+      selfCopy[1] = v25;
 
-      v1 = v76[1];
+      v1 = selfCopy[1];
     }
 
-    a1 = v1;
+    self = v1;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)defaultCommandsContainingAppName
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[2];
+    selfCopy = self;
+    v3 = self[2];
     if (!v3)
     {
       v4 = [_UISelectorDictionary alloc];
       v5 = +[UIApplication _applicationNameForMenus];
       v11 = _UILocalizedFormat(@"KEYSHORTCUTHUD_APP_SETTINGS_ELLIPSIS", @"Key Shortcut HUD: App menu Settings item title. This string is parameterized to contain the provided app name app name, so it is expected to look like Mail Settings… or Messages Settings…. This string is displayed in the iOS Key Shortcut HUD. It should have an ellipsis at the end, indicating that it opens a separate panel.", @"%@ Settings…", v6, v7, v8, v9, v10, v5);
-      v12 = [UIKeyCommand commandWithTitle:v11 imageName:@"gear" action:sel_orderFrontPreferencesPanel_ input:@" modifierFlags:", 0x100000];
+      0x100000 = [UIKeyCommand commandWithTitle:v11 imageName:@"gear" action:sel_orderFrontPreferencesPanel_ input:@" modifierFlags:", 0x100000];
 
       if ((dyld_program_sdk_at_least() & 1) == 0)
       {
-        [v12 _setEnumerationPriority:-1];
+        [0x100000 _setEnumerationPriority:-1];
       }
 
-      v13 = [(_UISelectorDictionary *)v4 initWithMapping:&__block_literal_global_579_0 objects:v12, 0];
-      v14 = v2[2];
-      v2[2] = v13;
+      v13 = [(_UISelectorDictionary *)v4 initWithMapping:&__block_literal_global_579_0 objects:0x100000, 0];
+      v14 = selfCopy[2];
+      selfCopy[2] = v13;
 
-      v3 = v2[2];
+      v3 = selfCopy[2];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (id)defaultCommandForAction:(int)a3 wantsCopy:
+- (id)defaultCommandForAction:(int)action wantsCopy:
 {
-  if (!a1)
+  if (!self)
   {
     v7 = 0;
     goto LABEL_7;
   }
 
-  v6 = [(_UIDefaultCommands *)a1 fixedDefaultCommands];
-  v7 = [v6 objectForSelector:a2];
+  fixedDefaultCommands = [(_UIDefaultCommands *)self fixedDefaultCommands];
+  v7 = [fixedDefaultCommands objectForSelector:a2];
 
   if (!v7)
   {
-    v8 = [(_UIDefaultCommands *)a1 defaultCommandsContainingAppName];
-    v7 = [v8 objectForSelector:a2];
+    defaultCommandsContainingAppName = [(_UIDefaultCommands *)self defaultCommandsContainingAppName];
+    v7 = [defaultCommandsContainingAppName objectForSelector:a2];
 
-    if (!a3)
+    if (!action)
     {
       goto LABEL_7;
     }
@@ -260,7 +260,7 @@
     goto LABEL_6;
   }
 
-  if (a3)
+  if (action)
   {
 LABEL_6:
     v9 = [v7 copy];

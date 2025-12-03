@@ -1,34 +1,34 @@
 @interface SXSubscriptionActivationEligibilityConditionValidator
-- (BOOL)validateCondition:(id)a3 context:(id)a4;
+- (BOOL)validateCondition:(id)condition context:(id)context;
 @end
 
 @implementation SXSubscriptionActivationEligibilityConditionValidator
 
-- (BOOL)validateCondition:(id)a3 context:(id)a4
+- (BOOL)validateCondition:(id)condition context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 subscriptionActivationEligibility])
+  conditionCopy = condition;
+  contextCopy = context;
+  if (![conditionCopy subscriptionActivationEligibility])
   {
     goto LABEL_4;
   }
 
-  if ([v5 subscriptionActivationEligibility] == 2)
+  if ([conditionCopy subscriptionActivationEligibility] == 2)
   {
-    if ([v6 subscriptionActivationEligibility] == 3)
+    if ([contextCopy subscriptionActivationEligibility] == 3)
     {
 LABEL_4:
       v7 = 1;
       goto LABEL_10;
     }
 
-    v9 = [v6 subscriptionActivationEligibility] == 4;
+    v9 = [contextCopy subscriptionActivationEligibility] == 4;
   }
 
   else
   {
-    v8 = [v5 subscriptionActivationEligibility];
-    v9 = v8 == [v6 subscriptionActivationEligibility];
+    subscriptionActivationEligibility = [conditionCopy subscriptionActivationEligibility];
+    v9 = subscriptionActivationEligibility == [contextCopy subscriptionActivationEligibility];
   }
 
   v7 = v9;

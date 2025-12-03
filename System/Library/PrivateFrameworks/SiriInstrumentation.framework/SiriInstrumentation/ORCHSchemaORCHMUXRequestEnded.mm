@@ -1,49 +1,49 @@
 @interface ORCHSchemaORCHMUXRequestEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ORCHSchemaORCHMUXRequestEnded)initWithDictionary:(id)a3;
-- (ORCHSchemaORCHMUXRequestEnded)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ORCHSchemaORCHMUXRequestEnded)initWithDictionary:(id)dictionary;
+- (ORCHSchemaORCHMUXRequestEnded)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addUserScores:(id)a3;
-- (void)addVoiceIdScores:(id)a3;
-- (void)setHasIsOutsider:(BOOL)a3;
-- (void)setHasIsSelectedUserPartOfMultipleHomes:(BOOL)a3;
-- (void)setHasNlRerunLatencyInMs:(BOOL)a3;
-- (void)setHasNlRerunTimeInMs:(BOOL)a3;
-- (void)setHasORCHUserIdentityClassification:(BOOL)a3;
-- (void)setHasVoiceIdClassification:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addUserScores:(id)scores;
+- (void)addVoiceIdScores:(id)scores;
+- (void)setHasIsOutsider:(BOOL)outsider;
+- (void)setHasIsSelectedUserPartOfMultipleHomes:(BOOL)homes;
+- (void)setHasNlRerunLatencyInMs:(BOOL)ms;
+- (void)setHasNlRerunTimeInMs:(BOOL)ms;
+- (void)setHasORCHUserIdentityClassification:(BOOL)classification;
+- (void)setHasVoiceIdClassification:(BOOL)classification;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ORCHSchemaORCHMUXRequestEnded
 
-- (ORCHSchemaORCHMUXRequestEnded)initWithDictionary:(id)a3
+- (ORCHSchemaORCHMUXRequestEnded)initWithDictionary:(id)dictionary
 {
   v62 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v59.receiver = self;
   v59.super_class = ORCHSchemaORCHMUXRequestEnded;
   v5 = [(ORCHSchemaORCHMUXRequestEnded *)&v59 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isMultiUser"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isMultiUser"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHMUXRequestEnded setIsMultiUser:](v5, "setIsMultiUser:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"nlRerunTimeInMs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"nlRerunTimeInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHMUXRequestEnded setNlRerunTimeInMs:](v5, "setNlRerunTimeInMs:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"userScores"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"userScores"];
     objc_opt_class();
     v44 = v7;
     v45 = v6;
@@ -88,7 +88,7 @@
       v8 = v9;
     }
 
-    v17 = [v4 objectForKeyedSubscript:@"ORCHUserIdentityClassification"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"ORCHUserIdentityClassification"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
     }
 
     v43 = v17;
-    v18 = [v4 objectForKeyedSubscript:@"isOutsider"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isOutsider"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
     }
 
     v42 = v18;
-    v19 = [v4 objectForKeyedSubscript:@"voiceIdAssetVersion"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"voiceIdAssetVersion"];
     objc_opt_class();
     v50 = v19;
     if (objc_opt_isKindOfClass())
@@ -113,7 +113,7 @@
       [(ORCHSchemaORCHMUXRequestEnded *)v5 setVoiceIdAssetVersion:v20];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"isSelectedUserPartOfMultipleHomes"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"isSelectedUserPartOfMultipleHomes"];
     objc_opt_class();
     v49 = v21;
     if (objc_opt_isKindOfClass())
@@ -121,7 +121,7 @@
       -[ORCHSchemaORCHMUXRequestEnded setIsSelectedUserPartOfMultipleHomes:](v5, "setIsSelectedUserPartOfMultipleHomes:", [v21 BOOLValue]);
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"selectedSharedUserId"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"selectedSharedUserId"];
     objc_opt_class();
     v48 = v22;
     if (objc_opt_isKindOfClass())
@@ -130,14 +130,14 @@
       [(ORCHSchemaORCHMUXRequestEnded *)v5 setSelectedSharedUserId:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"nlRerunLatencyInMs"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"nlRerunLatencyInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ORCHSchemaORCHMUXRequestEnded setNlRerunLatencyInMs:](v5, "setNlRerunLatencyInMs:", [v24 unsignedLongLongValue]);
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"selectedUserEphemeralId"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"selectedUserEphemeralId"];
     objc_opt_class();
     v47 = v25;
     if (objc_opt_isKindOfClass())
@@ -146,7 +146,7 @@
       [(ORCHSchemaORCHMUXRequestEnded *)v5 setSelectedUserEphemeralId:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"selectedloggableUserIdHash"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"selectedloggableUserIdHash"];
     objc_opt_class();
     v46 = v27;
     if (objc_opt_isKindOfClass())
@@ -155,7 +155,7 @@
       [(ORCHSchemaORCHMUXRequestEnded *)v5 setSelectedloggableUserIdHash:v28];
     }
 
-    v29 = [v4 objectForKeyedSubscript:@"voiceIdScores"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"voiceIdScores"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -201,7 +201,7 @@
       v8 = v41;
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"voiceIdClassification"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"voiceIdClassification"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -214,30 +214,30 @@
   return v5;
 }
 
-- (ORCHSchemaORCHMUXRequestEnded)initWithJSON:(id)a3
+- (ORCHSchemaORCHMUXRequestEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ORCHSchemaORCHMUXRequestEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ORCHSchemaORCHMUXRequestEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ORCHSchemaORCHMUXRequestEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -251,7 +251,7 @@
 - (id)dictionaryRepresentation
 {
   v50 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -266,14 +266,14 @@
       v6 = off_1E78DECA8[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"ORCHUserIdentityClassification"];
+    [dictionary setObject:v6 forKeyedSubscript:@"ORCHUserIdentityClassification"];
     has = self->_has;
   }
 
   if (has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHMUXRequestEnded isMultiUser](self, "isMultiUser")}];
-    [v3 setObject:v12 forKeyedSubscript:@"isMultiUser"];
+    [dictionary setObject:v12 forKeyedSubscript:@"isMultiUser"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -294,7 +294,7 @@ LABEL_8:
   }
 
   v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHMUXRequestEnded isOutsider](self, "isOutsider")}];
-  [v3 setObject:v13 forKeyedSubscript:@"isOutsider"];
+  [dictionary setObject:v13 forKeyedSubscript:@"isOutsider"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -310,7 +310,7 @@ LABEL_9:
 
 LABEL_19:
   v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[ORCHSchemaORCHMUXRequestEnded isSelectedUserPartOfMultipleHomes](self, "isSelectedUserPartOfMultipleHomes")}];
-  [v3 setObject:v14 forKeyedSubscript:@"isSelectedUserPartOfMultipleHomes"];
+  [dictionary setObject:v14 forKeyedSubscript:@"isSelectedUserPartOfMultipleHomes"];
 
   has = self->_has;
   if ((has & 0x20) == 0)
@@ -326,49 +326,49 @@ LABEL_10:
 
 LABEL_20:
   v15 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ORCHSchemaORCHMUXRequestEnded nlRerunLatencyInMs](self, "nlRerunLatencyInMs")}];
-  [v3 setObject:v15 forKeyedSubscript:@"nlRerunLatencyInMs"];
+  [dictionary setObject:v15 forKeyedSubscript:@"nlRerunLatencyInMs"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_11:
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ORCHSchemaORCHMUXRequestEnded nlRerunTimeInMs](self, "nlRerunTimeInMs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"nlRerunTimeInMs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"nlRerunTimeInMs"];
   }
 
 LABEL_12:
   if (self->_selectedSharedUserId)
   {
-    v8 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"selectedSharedUserId"];
+    selectedSharedUserId = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
+    v9 = [selectedSharedUserId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"selectedSharedUserId"];
   }
 
   if (self->_selectedUserEphemeralId)
   {
-    v10 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    selectedUserEphemeralId = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
+    dictionaryRepresentation = [selectedUserEphemeralId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"selectedUserEphemeralId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"selectedUserEphemeralId"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"selectedUserEphemeralId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"selectedUserEphemeralId"];
     }
   }
 
   if (self->_selectedloggableUserIdHash)
   {
-    v17 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"selectedloggableUserIdHash"];
+    selectedloggableUserIdHash = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
+    v18 = [selectedloggableUserIdHash copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"selectedloggableUserIdHash"];
   }
 
   if ([(NSArray *)self->_userScores count])
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
@@ -388,16 +388,16 @@ LABEL_12:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
-          if (v25)
+          dictionaryRepresentation2 = [*(*(&v44 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v19 addObject:v25];
+            [array addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v26 = [MEMORY[0x1E695DFB0] null];
-            [v19 addObject:v26];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null2];
           }
         }
 
@@ -407,14 +407,14 @@ LABEL_12:
       while (v22);
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"userScores"];
+    [dictionary setObject:array forKeyedSubscript:@"userScores"];
   }
 
   if (self->_voiceIdAssetVersion)
   {
-    v27 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
-    v28 = [v27 copy];
-    [v3 setObject:v28 forKeyedSubscript:@"voiceIdAssetVersion"];
+    voiceIdAssetVersion = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
+    v28 = [voiceIdAssetVersion copy];
+    [dictionary setObject:v28 forKeyedSubscript:@"voiceIdAssetVersion"];
   }
 
   if ((*&self->_has & 0x40) != 0)
@@ -430,12 +430,12 @@ LABEL_12:
       v30 = off_1E78DECA8[v29];
     }
 
-    [v3 setObject:v30 forKeyedSubscript:@"voiceIdClassification"];
+    [dictionary setObject:v30 forKeyedSubscript:@"voiceIdClassification"];
   }
 
   if ([(NSArray *)self->_voiceIdScores count])
   {
-    v31 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
@@ -455,16 +455,16 @@ LABEL_12:
             objc_enumerationMutation(v32);
           }
 
-          v37 = [*(*(&v40 + 1) + 8 * j) dictionaryRepresentation];
-          if (v37)
+          dictionaryRepresentation3 = [*(*(&v40 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation3)
           {
-            [v31 addObject:v37];
+            [array2 addObject:dictionaryRepresentation3];
           }
 
           else
           {
-            v38 = [MEMORY[0x1E695DFB0] null];
-            [v31 addObject:v38];
+            null3 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null3];
           }
         }
 
@@ -474,12 +474,12 @@ LABEL_12:
       while (v34);
     }
 
-    [v3 setObject:v31 forKeyedSubscript:@"voiceIdScores"];
+    [dictionary setObject:array2 forKeyedSubscript:@"voiceIdScores"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -567,16 +567,16 @@ LABEL_11:
   return v16 ^ v17 ^ v14 ^ v3 ^ v15 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_52;
   }
 
   has = self->_has;
-  v6 = v4[92];
+  v6 = equalCopy[92];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_52;
@@ -585,13 +585,13 @@ LABEL_11:
   if (*&has)
   {
     isMultiUser = self->_isMultiUser;
-    if (isMultiUser != [v4 isMultiUser])
+    if (isMultiUser != [equalCopy isMultiUser])
     {
       goto LABEL_52;
     }
 
     has = self->_has;
-    v6 = v4[92];
+    v6 = equalCopy[92];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -603,26 +603,26 @@ LABEL_11:
   if (v8)
   {
     nlRerunTimeInMs = self->_nlRerunTimeInMs;
-    if (nlRerunTimeInMs != [v4 nlRerunTimeInMs])
+    if (nlRerunTimeInMs != [equalCopy nlRerunTimeInMs])
     {
       goto LABEL_52;
     }
   }
 
-  v10 = [(ORCHSchemaORCHMUXRequestEnded *)self userScores];
-  v11 = [v4 userScores];
-  if ((v10 != 0) == (v11 == 0))
+  userScores = [(ORCHSchemaORCHMUXRequestEnded *)self userScores];
+  userScores2 = [equalCopy userScores];
+  if ((userScores != 0) == (userScores2 == 0))
   {
     goto LABEL_51;
   }
 
-  v12 = [(ORCHSchemaORCHMUXRequestEnded *)self userScores];
-  if (v12)
+  userScores3 = [(ORCHSchemaORCHMUXRequestEnded *)self userScores];
+  if (userScores3)
   {
-    v13 = v12;
-    v14 = [(ORCHSchemaORCHMUXRequestEnded *)self userScores];
-    v15 = [v4 userScores];
-    v16 = [v14 isEqual:v15];
+    v13 = userScores3;
+    userScores4 = [(ORCHSchemaORCHMUXRequestEnded *)self userScores];
+    userScores5 = [equalCopy userScores];
+    v16 = [userScores4 isEqual:userScores5];
 
     if (!v16)
     {
@@ -636,7 +636,7 @@ LABEL_11:
 
   v17 = self->_has;
   v18 = (*&v17 >> 2) & 1;
-  v19 = v4[92];
+  v19 = equalCopy[92];
   if (v18 != ((v19 >> 2) & 1))
   {
     goto LABEL_52;
@@ -645,13 +645,13 @@ LABEL_11:
   if (v18)
   {
     ORCHUserIdentityClassification = self->_ORCHUserIdentityClassification;
-    if (ORCHUserIdentityClassification != [v4 ORCHUserIdentityClassification])
+    if (ORCHUserIdentityClassification != [equalCopy ORCHUserIdentityClassification])
     {
       goto LABEL_52;
     }
 
     v17 = self->_has;
-    v19 = v4[92];
+    v19 = equalCopy[92];
   }
 
   v21 = (*&v17 >> 3) & 1;
@@ -663,26 +663,26 @@ LABEL_11:
   if (v21)
   {
     isOutsider = self->_isOutsider;
-    if (isOutsider != [v4 isOutsider])
+    if (isOutsider != [equalCopy isOutsider])
     {
       goto LABEL_52;
     }
   }
 
-  v10 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
-  v11 = [v4 voiceIdAssetVersion];
-  if ((v10 != 0) == (v11 == 0))
+  userScores = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
+  userScores2 = [equalCopy voiceIdAssetVersion];
+  if ((userScores != 0) == (userScores2 == 0))
   {
     goto LABEL_51;
   }
 
-  v23 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
-  if (v23)
+  voiceIdAssetVersion = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
+  if (voiceIdAssetVersion)
   {
-    v24 = v23;
-    v25 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
-    v26 = [v4 voiceIdAssetVersion];
-    v27 = [v25 isEqual:v26];
+    v24 = voiceIdAssetVersion;
+    voiceIdAssetVersion2 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
+    voiceIdAssetVersion3 = [equalCopy voiceIdAssetVersion];
+    v27 = [voiceIdAssetVersion2 isEqual:voiceIdAssetVersion3];
 
     if (!v27)
     {
@@ -695,7 +695,7 @@ LABEL_11:
   }
 
   v28 = (*&self->_has >> 4) & 1;
-  if (v28 != ((v4[92] >> 4) & 1))
+  if (v28 != ((equalCopy[92] >> 4) & 1))
   {
     goto LABEL_52;
   }
@@ -703,26 +703,26 @@ LABEL_11:
   if (v28)
   {
     isSelectedUserPartOfMultipleHomes = self->_isSelectedUserPartOfMultipleHomes;
-    if (isSelectedUserPartOfMultipleHomes != [v4 isSelectedUserPartOfMultipleHomes])
+    if (isSelectedUserPartOfMultipleHomes != [equalCopy isSelectedUserPartOfMultipleHomes])
     {
       goto LABEL_52;
     }
   }
 
-  v10 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
-  v11 = [v4 selectedSharedUserId];
-  if ((v10 != 0) == (v11 == 0))
+  userScores = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
+  userScores2 = [equalCopy selectedSharedUserId];
+  if ((userScores != 0) == (userScores2 == 0))
   {
     goto LABEL_51;
   }
 
-  v30 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
-  if (v30)
+  selectedSharedUserId = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
+  if (selectedSharedUserId)
   {
-    v31 = v30;
-    v32 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
-    v33 = [v4 selectedSharedUserId];
-    v34 = [v32 isEqual:v33];
+    v31 = selectedSharedUserId;
+    selectedSharedUserId2 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
+    selectedSharedUserId3 = [equalCopy selectedSharedUserId];
+    v34 = [selectedSharedUserId2 isEqual:selectedSharedUserId3];
 
     if (!v34)
     {
@@ -735,7 +735,7 @@ LABEL_11:
   }
 
   v35 = (*&self->_has >> 5) & 1;
-  if (v35 != ((v4[92] >> 5) & 1))
+  if (v35 != ((equalCopy[92] >> 5) & 1))
   {
     goto LABEL_52;
   }
@@ -743,26 +743,26 @@ LABEL_11:
   if (v35)
   {
     nlRerunLatencyInMs = self->_nlRerunLatencyInMs;
-    if (nlRerunLatencyInMs != [v4 nlRerunLatencyInMs])
+    if (nlRerunLatencyInMs != [equalCopy nlRerunLatencyInMs])
     {
       goto LABEL_52;
     }
   }
 
-  v10 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
-  v11 = [v4 selectedUserEphemeralId];
-  if ((v10 != 0) == (v11 == 0))
+  userScores = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
+  userScores2 = [equalCopy selectedUserEphemeralId];
+  if ((userScores != 0) == (userScores2 == 0))
   {
     goto LABEL_51;
   }
 
-  v37 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
-  if (v37)
+  selectedUserEphemeralId = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
+  if (selectedUserEphemeralId)
   {
-    v38 = v37;
-    v39 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
-    v40 = [v4 selectedUserEphemeralId];
-    v41 = [v39 isEqual:v40];
+    v38 = selectedUserEphemeralId;
+    selectedUserEphemeralId2 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
+    selectedUserEphemeralId3 = [equalCopy selectedUserEphemeralId];
+    v41 = [selectedUserEphemeralId2 isEqual:selectedUserEphemeralId3];
 
     if (!v41)
     {
@@ -774,20 +774,20 @@ LABEL_11:
   {
   }
 
-  v10 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
-  v11 = [v4 selectedloggableUserIdHash];
-  if ((v10 != 0) == (v11 == 0))
+  userScores = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
+  userScores2 = [equalCopy selectedloggableUserIdHash];
+  if ((userScores != 0) == (userScores2 == 0))
   {
     goto LABEL_51;
   }
 
-  v42 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
-  if (v42)
+  selectedloggableUserIdHash = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
+  if (selectedloggableUserIdHash)
   {
-    v43 = v42;
-    v44 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
-    v45 = [v4 selectedloggableUserIdHash];
-    v46 = [v44 isEqual:v45];
+    v43 = selectedloggableUserIdHash;
+    selectedloggableUserIdHash2 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
+    selectedloggableUserIdHash3 = [equalCopy selectedloggableUserIdHash];
+    v46 = [selectedloggableUserIdHash2 isEqual:selectedloggableUserIdHash3];
 
     if (!v46)
     {
@@ -799,22 +799,22 @@ LABEL_11:
   {
   }
 
-  v10 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdScores];
-  v11 = [v4 voiceIdScores];
-  if ((v10 != 0) == (v11 == 0))
+  userScores = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdScores];
+  userScores2 = [equalCopy voiceIdScores];
+  if ((userScores != 0) == (userScores2 == 0))
   {
 LABEL_51:
 
     goto LABEL_52;
   }
 
-  v47 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdScores];
-  if (v47)
+  voiceIdScores = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdScores];
+  if (voiceIdScores)
   {
-    v48 = v47;
-    v49 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdScores];
-    v50 = [v4 voiceIdScores];
-    v51 = [v49 isEqual:v50];
+    v48 = voiceIdScores;
+    voiceIdScores2 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdScores];
+    voiceIdScores3 = [equalCopy voiceIdScores];
+    v51 = [voiceIdScores2 isEqual:voiceIdScores3];
 
     if (!v51)
     {
@@ -827,9 +827,9 @@ LABEL_51:
   }
 
   v54 = (*&self->_has >> 6) & 1;
-  if (v54 == ((v4[92] >> 6) & 1))
+  if (v54 == ((equalCopy[92] >> 6) & 1))
   {
-    if (!v54 || (voiceIdClassification = self->_voiceIdClassification, voiceIdClassification == [v4 voiceIdClassification]))
+    if (!v54 || (voiceIdClassification = self->_voiceIdClassification, voiceIdClassification == [equalCopy voiceIdClassification]))
     {
       v52 = 1;
       goto LABEL_53;
@@ -843,10 +843,10 @@ LABEL_53:
   return v52;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -899,9 +899,9 @@ LABEL_53:
     PBDataWriterWriteBOOLField();
   }
 
-  v12 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
+  voiceIdAssetVersion = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdAssetVersion];
 
-  if (v12)
+  if (voiceIdAssetVersion)
   {
     PBDataWriterWriteStringField();
   }
@@ -911,9 +911,9 @@ LABEL_53:
     PBDataWriterWriteBOOLField();
   }
 
-  v13 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
+  selectedSharedUserId = [(ORCHSchemaORCHMUXRequestEnded *)self selectedSharedUserId];
 
-  if (v13)
+  if (selectedSharedUserId)
   {
     PBDataWriterWriteStringField();
   }
@@ -923,17 +923,17 @@ LABEL_53:
     PBDataWriterWriteUint64Field();
   }
 
-  v14 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
+  selectedUserEphemeralId = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
 
-  if (v14)
+  if (selectedUserEphemeralId)
   {
-    v15 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
+    selectedUserEphemeralId2 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
+  selectedloggableUserIdHash = [(ORCHSchemaORCHMUXRequestEnded *)self selectedloggableUserIdHash];
 
-  if (v16)
+  if (selectedloggableUserIdHash)
   {
     PBDataWriterWriteStringField();
   }
@@ -972,9 +972,9 @@ LABEL_53:
   }
 }
 
-- (void)setHasVoiceIdClassification:(BOOL)a3
+- (void)setHasVoiceIdClassification:(BOOL)classification
 {
-  if (a3)
+  if (classification)
   {
     v3 = 64;
   }
@@ -987,27 +987,27 @@ LABEL_53:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)addVoiceIdScores:(id)a3
+- (void)addVoiceIdScores:(id)scores
 {
-  v4 = a3;
+  scoresCopy = scores;
   voiceIdScores = self->_voiceIdScores;
-  v8 = v4;
+  v8 = scoresCopy;
   if (!voiceIdScores)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_voiceIdScores;
-    self->_voiceIdScores = v6;
+    self->_voiceIdScores = array;
 
-    v4 = v8;
+    scoresCopy = v8;
     voiceIdScores = self->_voiceIdScores;
   }
 
-  [(NSArray *)voiceIdScores addObject:v4];
+  [(NSArray *)voiceIdScores addObject:scoresCopy];
 }
 
-- (void)setHasNlRerunLatencyInMs:(BOOL)a3
+- (void)setHasNlRerunLatencyInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 32;
   }
@@ -1020,9 +1020,9 @@ LABEL_53:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsSelectedUserPartOfMultipleHomes:(BOOL)a3
+- (void)setHasIsSelectedUserPartOfMultipleHomes:(BOOL)homes
 {
-  if (a3)
+  if (homes)
   {
     v3 = 16;
   }
@@ -1035,9 +1035,9 @@ LABEL_53:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasIsOutsider:(BOOL)a3
+- (void)setHasIsOutsider:(BOOL)outsider
 {
-  if (a3)
+  if (outsider)
   {
     v3 = 8;
   }
@@ -1050,9 +1050,9 @@ LABEL_53:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasORCHUserIdentityClassification:(BOOL)a3
+- (void)setHasORCHUserIdentityClassification:(BOOL)classification
 {
-  if (a3)
+  if (classification)
   {
     v3 = 4;
   }
@@ -1065,27 +1065,27 @@ LABEL_53:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addUserScores:(id)a3
+- (void)addUserScores:(id)scores
 {
-  v4 = a3;
+  scoresCopy = scores;
   userScores = self->_userScores;
-  v8 = v4;
+  v8 = scoresCopy;
   if (!userScores)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_userScores;
-    self->_userScores = v6;
+    self->_userScores = array;
 
-    v4 = v8;
+    scoresCopy = v8;
     userScores = self->_userScores;
   }
 
-  [(NSArray *)userScores addObject:v4];
+  [(NSArray *)userScores addObject:scoresCopy];
 }
 
-- (void)setHasNlRerunTimeInMs:(BOOL)a3
+- (void)setHasNlRerunTimeInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -1098,32 +1098,32 @@ LABEL_53:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v14.receiver = self;
   v14.super_class = ORCHSchemaORCHMUXRequestEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v14 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:8])
+  v5 = [(SISchemaInstrumentationMessage *)&v14 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:8])
   {
     [(ORCHSchemaORCHMUXRequestEnded *)self deleteSelectedSharedUserId];
   }
 
-  v6 = [(ORCHSchemaORCHMUXRequestEnded *)self userScores];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  userScores = [(ORCHSchemaORCHMUXRequestEnded *)self userScores];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:userScores underConditions:policyCopy];
   [(ORCHSchemaORCHMUXRequestEnded *)self setUserScores:v7];
 
-  v8 = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
-  v9 = [v8 applySensitiveConditionsPolicy:v4];
-  v10 = [v9 suppressMessage];
+  selectedUserEphemeralId = [(ORCHSchemaORCHMUXRequestEnded *)self selectedUserEphemeralId];
+  v9 = [selectedUserEphemeralId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v9 suppressMessage];
 
-  if (v10)
+  if (suppressMessage)
   {
     [(ORCHSchemaORCHMUXRequestEnded *)self deleteSelectedUserEphemeralId];
   }
 
-  v11 = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdScores];
-  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v11 underConditions:v4];
+  voiceIdScores = [(ORCHSchemaORCHMUXRequestEnded *)self voiceIdScores];
+  v12 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:voiceIdScores underConditions:policyCopy];
   [(ORCHSchemaORCHMUXRequestEnded *)self setVoiceIdScores:v12];
 
   return v5;

@@ -1,29 +1,29 @@
 @interface CHChannelDouble
-- (BOOL)getFirstKeyframeTime:(id *)a3 curveDoubleValue:(double *)a4;
-- (BOOL)getKeyframeAfterTime:(id *)a3 time:(id *)a4 curveDoubleValue:(double *)a5;
-- (BOOL)getKeyframeBeforeTime:(id *)a3 time:(id *)a4 curveDoubleValue:(double *)a5;
-- (BOOL)getLastKeyframeTime:(id *)a3 curveDoubleValue:(double *)a4;
-- (double)curveDoubleValueAtTime:(id *)a3;
+- (BOOL)getFirstKeyframeTime:(id *)time curveDoubleValue:(double *)value;
+- (BOOL)getKeyframeAfterTime:(id *)time time:(id *)a4 curveDoubleValue:(double *)value;
+- (BOOL)getKeyframeBeforeTime:(id *)time time:(id *)a4 curveDoubleValue:(double *)value;
+- (BOOL)getLastKeyframeTime:(id *)time curveDoubleValue:(double *)value;
+- (double)curveDoubleValueAtTime:(id *)time;
 - (double)defaultCurveDoubleValue;
-- (double)doubleValueAtTime:(id *)a3;
+- (double)doubleValueAtTime:(id *)time;
 - (double)maxCurveDoubleValue;
 - (double)maxUIDoubleValue;
 - (double)minCurveDoubleValue;
-- (unsigned)getCurveSamples:(id *)a3 delta:(id *)a4 numberOfSamples:(unsigned int)a5 samplesX:(void *)a6 samplesY:(void *)a7;
-- (void)getExtremaBetweenStart:(id *)a3 end:(id *)a4 minDoubleValue:(double *)a5 maxDoubleValue:(double *)a6;
-- (void)setCoarseDeltaDoubleValue:(double)a3;
-- (void)setDefaultCurveDoubleValue:(double)a3;
-- (void)setFineDeltaDoubleValue:(double)a3;
-- (void)setKeyframesFromTime:(id *)a3 fromMap:(void *)a4 frameDuration:(id *)a5;
-- (void)setMaxCurveDoubleValue:(double)a3;
-- (void)setMaxUIDoubleValue:(double)a3;
-- (void)setMinCurveDoubleValue:(double)a3;
-- (void)setMinUIDoubleValue:(double)a3;
+- (unsigned)getCurveSamples:(id *)samples delta:(id *)delta numberOfSamples:(unsigned int)ofSamples samplesX:(void *)x samplesY:(void *)y;
+- (void)getExtremaBetweenStart:(id *)start end:(id *)end minDoubleValue:(double *)value maxDoubleValue:(double *)doubleValue;
+- (void)setCoarseDeltaDoubleValue:(double)value;
+- (void)setDefaultCurveDoubleValue:(double)value;
+- (void)setFineDeltaDoubleValue:(double)value;
+- (void)setKeyframesFromTime:(id *)time fromMap:(void *)map frameDuration:(id *)duration;
+- (void)setMaxCurveDoubleValue:(double)value;
+- (void)setMaxUIDoubleValue:(double)value;
+- (void)setMinCurveDoubleValue:(double)value;
+- (void)setMinUIDoubleValue:(double)value;
 @end
 
 @implementation CHChannelDouble
 
-- (double)doubleValueAtTime:(id *)a3
+- (double)doubleValueAtTime:(id *)time
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -35,22 +35,22 @@
     v5 = 0;
   }
 
-  (*(v5->var0 + 42))(&v7, v5, a3);
+  (*(v5->var0 + 42))(&v7, v5, time);
   OZChannel::getValueAsDouble(v5, &v7, 0.0);
   return result;
 }
 
-- (double)curveDoubleValueAtTime:(id *)a3
+- (double)curveDoubleValueAtTime:(id *)time
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  return OZChannel::getCurveValue(pOZChannel, a3, 0);
+  return OZChannel::getCurveValue(pOZChannel, time, 0);
 }
 
-- (void)getExtremaBetweenStart:(id *)a3 end:(id *)a4 minDoubleValue:(double *)a5 maxDoubleValue:(double *)a6
+- (void)getExtremaBetweenStart:(id *)start end:(id *)end minDoubleValue:(double *)value maxDoubleValue:(double *)doubleValue
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -73,7 +73,7 @@
   return OZChannel::getDefaultValue(pOZChannel);
 }
 
-- (void)setDefaultCurveDoubleValue:(double)a3
+- (void)setDefaultCurveDoubleValue:(double)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -90,7 +90,7 @@
   if (v6)
   {
     v8 = (var0[104])(v5);
-    OZChannel::setDefaultValue(v5, a3);
+    OZChannel::setDefaultValue(v5, value);
     if (v8)
     {
       return;
@@ -100,7 +100,7 @@
   else
   {
     v9 = (var0[62])(v5, 1);
-    OZChannel::setDefaultValue(v5, a3);
+    OZChannel::setDefaultValue(v5, value);
     if (v9)
     {
       return;
@@ -118,14 +118,14 @@
   return 0.0;
 }
 
-- (void)setMinCurveDoubleValue:(double)a3
+- (void)setMinCurveDoubleValue:(double)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setMin(pOZChannel, a3);
+  OZChannel::setMin(pOZChannel, value);
 }
 
 - (double)maxCurveDoubleValue
@@ -134,24 +134,24 @@
   return 0.0;
 }
 
-- (void)setMaxCurveDoubleValue:(double)a3
+- (void)setMaxCurveDoubleValue:(double)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setMax(pOZChannel, a3);
+  OZChannel::setMax(pOZChannel, value);
 }
 
-- (void)setMinUIDoubleValue:(double)a3
+- (void)setMinUIDoubleValue:(double)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setSliderMin(pOZChannel, a3);
+  OZChannel::setSliderMin(pOZChannel, value);
 }
 
 - (double)maxUIDoubleValue
@@ -167,77 +167,77 @@
   return result;
 }
 
-- (void)setMaxUIDoubleValue:(double)a3
+- (void)setMaxUIDoubleValue:(double)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setSliderMax(pOZChannel, a3);
+  OZChannel::setSliderMax(pOZChannel, value);
 }
 
-- (void)setCoarseDeltaDoubleValue:(double)a3
+- (void)setCoarseDeltaDoubleValue:(double)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setCoarseDelta(pOZChannel, a3);
+  OZChannel::setCoarseDelta(pOZChannel, value);
 }
 
-- (void)setFineDeltaDoubleValue:(double)a3
+- (void)setFineDeltaDoubleValue:(double)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannel::setFineDelta(pOZChannel, a3);
+  OZChannel::setFineDelta(pOZChannel, value);
 }
 
-- (BOOL)getFirstKeyframeTime:(id *)a3 curveDoubleValue:(double *)a4
+- (BOOL)getFirstKeyframeTime:(id *)time curveDoubleValue:(double *)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  return OZChannel::getFirstKeyframe(pOZChannel, a3, a4);
+  return OZChannel::getFirstKeyframe(pOZChannel, time, value);
 }
 
-- (BOOL)getLastKeyframeTime:(id *)a3 curveDoubleValue:(double *)a4
+- (BOOL)getLastKeyframeTime:(id *)time curveDoubleValue:(double *)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  return OZChannel::getLastKeyframe(pOZChannel, a3, a4);
+  return OZChannel::getLastKeyframe(pOZChannel, time, value);
 }
 
-- (BOOL)getKeyframeAfterTime:(id *)a3 time:(id *)a4 curveDoubleValue:(double *)a5
+- (BOOL)getKeyframeAfterTime:(id *)time time:(id *)a4 curveDoubleValue:(double *)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  return OZChannel::getNextKeyframe(pOZChannel, a3, a4, a5);
+  return OZChannel::getNextKeyframe(pOZChannel, time, a4, value);
 }
 
-- (BOOL)getKeyframeBeforeTime:(id *)a3 time:(id *)a4 curveDoubleValue:(double *)a5
+- (BOOL)getKeyframeBeforeTime:(id *)time time:(id *)a4 curveDoubleValue:(double *)value
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  return OZChannel::getPreviousKeyframe(pOZChannel, a3, a4, a5);
+  return OZChannel::getPreviousKeyframe(pOZChannel, time, a4, value);
 }
 
-- (unsigned)getCurveSamples:(id *)a3 delta:(id *)a4 numberOfSamples:(unsigned int)a5 samplesX:(void *)a6 samplesY:(void *)a7
+- (unsigned)getCurveSamples:(id *)samples delta:(id *)delta numberOfSamples:(unsigned int)ofSamples samplesX:(void *)x samplesY:(void *)y
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
@@ -245,17 +245,17 @@
   }
 
   OZChannel::getSamples(pOZChannel);
-  return a5;
+  return ofSamples;
 }
 
-- (void)setKeyframesFromTime:(id *)a3 fromMap:(void *)a4 frameDuration:(id *)a5
+- (void)setKeyframesFromTime:(id *)time fromMap:(void *)map frameDuration:(id *)duration
 {
   pOZChannel = self->super.super._pOZChannel;
   if (pOZChannel)
   {
   }
 
-  OZChannelBase::setKeyframesWithChannelRef(pOZChannel, a3, a5, a4, 1);
+  OZChannelBase::setKeyframesWithChannelRef(pOZChannel, time, duration, map, 1);
 }
 
 @end

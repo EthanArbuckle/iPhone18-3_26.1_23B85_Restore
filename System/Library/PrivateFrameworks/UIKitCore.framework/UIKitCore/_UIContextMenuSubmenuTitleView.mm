@@ -1,35 +1,35 @@
 @interface _UIContextMenuSubmenuTitleView
 - (UIEdgeInsets)backgroundShapeInsets;
-- (_UIContextMenuSubmenuTitleView)initWithFrame:(CGRect)a3;
+- (_UIContextMenuSubmenuTitleView)initWithFrame:(CGRect)frame;
 - (id)_platformMetrics;
 - (int64_t)focusItemDeferralMode;
-- (void)addObscuringMaterialViewWithGroupName:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
-- (void)setBackgroundMaterialGroupName:(id)a3;
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)addObscuringMaterialViewWithGroupName:(id)name;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)setBackgroundMaterialGroupName:(id)name;
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation _UIContextMenuSubmenuTitleView
 
-- (_UIContextMenuSubmenuTitleView)initWithFrame:(CGRect)a3
+- (_UIContextMenuSubmenuTitleView)initWithFrame:(CGRect)frame
 {
   v66[4] = *MEMORY[0x1E69E9840];
   v64.receiver = self;
   v64.super_class = _UIContextMenuSubmenuTitleView;
-  v3 = [(UICollectionReusableView *)&v64 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v64 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(UIView *)v3 setFocusEffect:0];
-    v5 = [(_UIContextMenuSubmenuTitleView *)v4 _platformMetrics];
-    [v5 sectionInsets];
+    _platformMetrics = [(_UIContextMenuSubmenuTitleView *)v4 _platformMetrics];
+    [_platformMetrics sectionInsets];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(UIView *)v4 _shouldReverseLayoutDirection];
-    if (v14)
+    _shouldReverseLayoutDirection = [(UIView *)v4 _shouldReverseLayoutDirection];
+    if (_shouldReverseLayoutDirection)
     {
       v15 = v13;
     }
@@ -39,7 +39,7 @@
       v15 = v9;
     }
 
-    if (v14)
+    if (_shouldReverseLayoutDirection)
     {
       v16 = v9;
     }
@@ -50,58 +50,58 @@
     }
 
     [(_UIContextMenuSubmenuTitleView *)v4 setBackgroundShapeInsets:v7, v15, v11, v16];
-    v17 = [(UIView *)v4 traitCollection];
-    v18 = [v17 userInterfaceIdiom];
-    v19 = _UIContextMenuGetPlatformMetrics(v18);
-    v20 = [v19 submenuTitleBackgroundProvider];
+    traitCollection = [(UIView *)v4 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+    v19 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
+    submenuTitleBackgroundProvider = [v19 submenuTitleBackgroundProvider];
 
-    if (v20)
+    if (submenuTitleBackgroundProvider)
     {
-      v21 = [v19 submenuTitleBackgroundProvider];
-      v22 = v21[2]();
+      submenuTitleBackgroundProvider2 = [v19 submenuTitleBackgroundProvider];
+      v22 = submenuTitleBackgroundProvider2[2]();
     }
 
     else
     {
-      v21 = _UIContextMenuGetPlatformMetrics(v18);
+      submenuTitleBackgroundProvider2 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
       v23 = [UIVisualEffectView alloc];
-      v24 = [v21 menuBackgroundEffect];
-      v22 = [(UIVisualEffectView *)v23 initWithEffect:v24];
+      menuBackgroundEffect = [submenuTitleBackgroundProvider2 menuBackgroundEffect];
+      v22 = [(UIVisualEffectView *)v23 initWithEffect:menuBackgroundEffect];
 
-      v25 = [v21 menuBackgroundColor];
-      [(UIView *)v22 setBackgroundColor:v25];
+      menuBackgroundColor = [submenuTitleBackgroundProvider2 menuBackgroundColor];
+      [(UIView *)v22 setBackgroundColor:menuBackgroundColor];
     }
 
     [(_UIContextMenuSubmenuTitleView *)v4 setBgView:v22];
-    v26 = [(_UIContextMenuSubmenuTitleView *)v4 bgView];
-    [(UIView *)v4 addSubview:v26];
-    [(UIView *)v4 _addBoundsMatchingConstraintsForView:v26];
+    bgView = [(_UIContextMenuSubmenuTitleView *)v4 bgView];
+    [(UIView *)v4 addSubview:bgView];
+    [(UIView *)v4 _addBoundsMatchingConstraintsForView:bgView];
 
     v27 = objc_opt_new();
     contentView = v4->_contentView;
     v4->_contentView = v27;
 
-    [v5 prefersLeadingImageCellLayout];
+    [_platformMetrics prefersLeadingImageCellLayout];
     [(_UIContextMenuCellContentView *)v4->_contentView setLayoutClass:objc_opt_class()];
     [(UIView *)v4->_contentView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4 addSubview:v4->_contentView];
     v53 = MEMORY[0x1E69977A0];
-    v61 = [(UIView *)v4->_contentView leadingAnchor];
-    v59 = [(UIView *)v4 leadingAnchor];
-    v57 = [v61 constraintEqualToAnchor:v59 constant:v9];
+    leadingAnchor = [(UIView *)v4->_contentView leadingAnchor];
+    leadingAnchor2 = [(UIView *)v4 leadingAnchor];
+    v57 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v9];
     v66[0] = v57;
-    v55 = [(UIView *)v4->_contentView trailingAnchor];
+    trailingAnchor = [(UIView *)v4->_contentView trailingAnchor];
     [(UIView *)v4 trailingAnchor];
-    v29 = v63 = v5;
-    v30 = [v55 constraintEqualToAnchor:v29 constant:-v13];
+    v29 = v63 = _platformMetrics;
+    v30 = [trailingAnchor constraintEqualToAnchor:v29 constant:-v13];
     v66[1] = v30;
-    v31 = [(UIView *)v4->_contentView topAnchor];
-    v32 = [(UIView *)v4 topAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32 constant:v7];
+    topAnchor = [(UIView *)v4->_contentView topAnchor];
+    topAnchor2 = [(UIView *)v4 topAnchor];
+    v33 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:v7];
     v66[2] = v33;
-    v34 = [(UIView *)v4->_contentView bottomAnchor];
-    v35 = [(UIView *)v4 bottomAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35 constant:-v11];
+    bottomAnchor = [(UIView *)v4->_contentView bottomAnchor];
+    bottomAnchor2 = [(UIView *)v4 bottomAnchor];
+    v36 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-v11];
     v66[3] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v66 count:4];
     [v53 activateConstraints:v37];
@@ -114,21 +114,21 @@
     [(UIView *)v43 setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4 addSubview:v43];
     v54 = MEMORY[0x1E69977A0];
-    v62 = [(UIView *)v43 leadingAnchor];
-    v60 = [(UIView *)v4 leadingAnchor];
-    v58 = [v62 constraintEqualToAnchor:v60 constant:v39];
+    leadingAnchor3 = [(UIView *)v43 leadingAnchor];
+    leadingAnchor4 = [(UIView *)v4 leadingAnchor];
+    v58 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:v39];
     v65[0] = v58;
-    v56 = [(UIView *)v43 trailingAnchor];
-    v44 = [(UIView *)v4 trailingAnchor];
-    v45 = [v56 constraintEqualToAnchor:v44 constant:-v41];
+    trailingAnchor2 = [(UIView *)v43 trailingAnchor];
+    trailingAnchor3 = [(UIView *)v4 trailingAnchor];
+    v45 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-v41];
     v65[1] = v45;
-    v46 = [(UIView *)v43 topAnchor];
-    v47 = [(UIView *)v4 bottomAnchor];
-    v48 = [v46 constraintEqualToAnchor:v47];
+    topAnchor3 = [(UIView *)v43 topAnchor];
+    bottomAnchor3 = [(UIView *)v4 bottomAnchor];
+    v48 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3];
     v65[2] = v48;
-    v49 = [(UIView *)v43 heightAnchor];
+    heightAnchor = [(UIView *)v43 heightAnchor];
     [v63 submenuTitleSeparatorHeight];
-    v50 = [v49 constraintEqualToConstant:?];
+    v50 = [heightAnchor constraintEqualToConstant:?];
     v65[3] = v50;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v65 count:4];
     [v54 activateConstraints:v51];
@@ -137,51 +137,51 @@
   return v4;
 }
 
-- (void)setBackgroundMaterialGroupName:(id)a3
+- (void)setBackgroundMaterialGroupName:(id)name
 {
-  v7 = a3;
-  v4 = [(_UIContextMenuSubmenuTitleView *)self bgView];
+  nameCopy = name;
+  bgView = [(_UIContextMenuSubmenuTitleView *)self bgView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(_UIContextMenuSubmenuTitleView *)self bgView];
-    [v6 _setGroupName:v7];
+    bgView2 = [(_UIContextMenuSubmenuTitleView *)self bgView];
+    [bgView2 _setGroupName:nameCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    v4 = a3;
-    self->_highlighted = a3;
-    if (a3)
+    highlightedCopy = highlighted;
+    self->_highlighted = highlighted;
+    if (highlighted)
     {
-      v6 = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
+      highlightedBgView = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
 
-      if (!v6)
+      if (!highlightedBgView)
       {
-        v7 = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
+        highlightedBgView2 = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
 
-        if (!v7)
+        if (!highlightedBgView2)
         {
           v8 = objc_alloc_init(UIVisualEffectView);
           [(_UIContextMenuSubmenuTitleView *)self setHighlightedBgView:v8];
 
-          v9 = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
-          v10 = [(_UIContextMenuSubmenuTitleView *)self bgView];
-          [(UIView *)self insertSubview:v9 aboveSubview:v10];
+          highlightedBgView3 = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
+          bgView = [(_UIContextMenuSubmenuTitleView *)self bgView];
+          [(UIView *)self insertSubview:highlightedBgView3 aboveSubview:bgView];
         }
 
-        v11 = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
-        v12 = [(_UIContextMenuSubmenuTitleView *)self contentView];
-        v13 = [v12 contentShape];
-        v14 = v13;
-        if (v13)
+        highlightedBgView4 = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
+        contentView = [(_UIContextMenuSubmenuTitleView *)self contentView];
+        contentShape = [contentView contentShape];
+        v14 = contentShape;
+        if (contentShape)
         {
-          v15 = v13;
+          v15 = contentShape;
         }
 
         else
@@ -191,95 +191,95 @@
 
         v16 = v15;
 
-        v17 = [(UIView *)self traitCollection];
-        v18 = [v17 userInterfaceIdiom];
+        traitCollection = [(UIView *)self traitCollection];
+        userInterfaceIdiom = [traitCollection userInterfaceIdiom];
         v19 = v16;
-        v20 = _UIContextMenuGetPlatformMetrics(v18);
-        v21 = [v20 menuHighlightBackgroundDescriptorProvider];
-        v22 = (v21)[2](v21, v19);
+        v20 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
+        menuHighlightBackgroundDescriptorProvider = [v20 menuHighlightBackgroundDescriptorProvider];
+        v22 = (menuHighlightBackgroundDescriptorProvider)[2](menuHighlightBackgroundDescriptorProvider, v19);
 
         [(UIView *)self bounds];
-        [v11 setFrame:?];
-        v23 = [v22 backgroundColor];
-        [v11 setBackgroundColor:v23];
+        [highlightedBgView4 setFrame:?];
+        backgroundColor = [v22 backgroundColor];
+        [highlightedBgView4 setBackgroundColor:backgroundColor];
 
-        v24 = [v22 effect];
-        [v11 setEffect:v24];
+        effect = [v22 effect];
+        [highlightedBgView4 setEffect:effect];
 
-        v25 = [v22 contentBackgroundColor];
-        v26 = [v11 contentView];
-        [v26 setBackgroundColor:v25];
+        contentBackgroundColor = [v22 contentBackgroundColor];
+        contentView2 = [highlightedBgView4 contentView];
+        [contentView2 setBackgroundColor:contentBackgroundColor];
 
-        v27 = [v22 backgroundShape];
+        backgroundShape = [v22 backgroundShape];
 
-        if (v27)
+        if (backgroundShape)
         {
-          v28 = [v22 backgroundShape];
+          backgroundShape2 = [v22 backgroundShape];
           [(_UIContextMenuSubmenuTitleView *)self backgroundShapeInsets];
-          v29 = [v28 shapeByApplyingInsets:?];
+          v29 = [backgroundShape2 shapeByApplyingInsets:?];
 
-          [v11 _applyShape:v29];
+          [highlightedBgView4 _applyShape:v29];
         }
       }
     }
 
-    v30 = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
-    [v30 setHidden:!v4];
+    highlightedBgView5 = [(_UIContextMenuSubmenuTitleView *)self highlightedBgView];
+    [highlightedBgView5 setHidden:!highlightedCopy];
   }
 }
 
-- (void)addObscuringMaterialViewWithGroupName:(id)a3
+- (void)addObscuringMaterialViewWithGroupName:(id)name
 {
-  v4 = a3;
-  v5 = [(_UIContextMenuSubmenuTitleView *)self obscuringMaterialView];
+  nameCopy = name;
+  obscuringMaterialView = [(_UIContextMenuSubmenuTitleView *)self obscuringMaterialView];
 
-  if (!v5)
+  if (!obscuringMaterialView)
   {
-    v6 = [(UIView *)self traitCollection];
-    v7 = _UIContextMenuGetPlatformMetrics([v6 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v7 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
     v8 = [UIVisualEffectView alloc];
-    v9 = [v7 menuBackgroundEffect];
-    v10 = [(UIVisualEffectView *)v8 initWithEffect:v9];
+    menuBackgroundEffect = [v7 menuBackgroundEffect];
+    v10 = [(UIVisualEffectView *)v8 initWithEffect:menuBackgroundEffect];
 
-    v11 = [v7 menuBackgroundColor];
-    [(UIView *)v10 setBackgroundColor:v11];
+    menuBackgroundColor = [v7 menuBackgroundColor];
+    [(UIView *)v10 setBackgroundColor:menuBackgroundColor];
 
-    v12 = [(_UIContextMenuSubmenuTitleView *)self bgView];
+    bgView = [(_UIContextMenuSubmenuTitleView *)self bgView];
     if (self)
     {
-      [(UIView *)self insertSubview:v10 aboveSubview:v12];
+      [(UIView *)self insertSubview:v10 aboveSubview:bgView];
       [(UIView *)self _addBoundsMatchingConstraintsForView:v10];
     }
 
     [(_UIContextMenuSubmenuTitleView *)self setObscuringMaterialView:v10];
   }
 
-  v13 = [(_UIContextMenuSubmenuTitleView *)self obscuringMaterialView];
-  [v13 _setGroupName:v4];
+  obscuringMaterialView2 = [(_UIContextMenuSubmenuTitleView *)self obscuringMaterialView];
+  [obscuringMaterialView2 _setGroupName:nameCopy];
 }
 
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = margins.trailing;
+  bottom = margins.bottom;
+  leading = margins.leading;
+  top = margins.top;
   v9.receiver = self;
   v9.super_class = _UIContextMenuSubmenuTitleView;
   [(UIView *)&v9 setDirectionalLayoutMargins:?];
-  v8 = [(_UIContextMenuSubmenuTitleView *)self contentView];
-  [v8 setDirectionalLayoutMargins:{top, leading, bottom, trailing}];
+  contentView = [(_UIContextMenuSubmenuTitleView *)self contentView];
+  [contentView setDirectionalLayoutMargins:{top, leading, bottom, trailing}];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
   v8.receiver = self;
   v8.super_class = _UIContextMenuSubmenuTitleView;
-  v6 = a3;
-  [(UIView *)&v8 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 nextFocusedItem];
+  contextCopy = context;
+  [(UIView *)&v8 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  nextFocusedItem = [contextCopy nextFocusedItem];
 
-  [(_UIContextMenuSubmenuTitleView *)self setHighlighted:v7 == self];
+  [(_UIContextMenuSubmenuTitleView *)self setHighlighted:nextFocusedItem == self];
 }
 
 - (int64_t)focusItemDeferralMode
@@ -297,8 +297,8 @@
 
 - (id)_platformMetrics
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIContextMenuGetPlatformMetrics([v2 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   return v3;
 }

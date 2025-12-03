@@ -1,17 +1,17 @@
 @interface UIPickerTableViewTitledCell
-- (UIPickerTableViewTitledCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 textColor:(id)a5 forceTextAlignmentCentered:(BOOL)a6;
-- (void)_setIsCenterCell:(BOOL)a3 shouldModifyAlphaOfView:(BOOL)a4;
+- (UIPickerTableViewTitledCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier textColor:(id)color forceTextAlignmentCentered:(BOOL)centered;
+- (void)_setIsCenterCell:(BOOL)cell shouldModifyAlphaOfView:(BOOL)view;
 - (void)prepareForReuse;
 @end
 
 @implementation UIPickerTableViewTitledCell
 
-- (UIPickerTableViewTitledCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 textColor:(id)a5 forceTextAlignmentCentered:(BOOL)a6
+- (UIPickerTableViewTitledCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier textColor:(id)color forceTextAlignmentCentered:(BOOL)centered
 {
-  v10 = a5;
+  colorCopy = color;
   v31.receiver = self;
   v31.super_class = UIPickerTableViewTitledCell;
-  v11 = [(UIPickerTableViewCell *)&v31 initWithStyle:a3 reuseIdentifier:a4];
+  v11 = [(UIPickerTableViewCell *)&v31 initWithStyle:style reuseIdentifier:identifier];
   if (v11)
   {
     v12 = [UILabel alloc];
@@ -20,11 +20,11 @@
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(UIPickerTableViewCell *)v11 style];
-    [v21 labelSideOffset];
+    style = [(UIPickerTableViewCell *)v11 style];
+    [style labelSideOffset];
     v23 = v22;
-    v24 = [(UIPickerTableViewCell *)v11 style];
-    [v24 labelSideOffset];
+    style2 = [(UIPickerTableViewCell *)v11 style];
+    [style2 labelSideOffset];
     v26 = [(UILabel *)v12 initWithFrame:v14 + v25, v16 + 0.0, v18 - (v23 + v25), v20];
     titleLabel = v11->_titleLabel;
     v11->_titleLabel = v26;
@@ -39,21 +39,21 @@
 
     [(UIView *)v11 addSubview:v11->_titleLabel];
     [(UITableViewCell *)v11 setSelectionStyle:0];
-    objc_storeStrong(&v11->_textColor, a5);
+    objc_storeStrong(&v11->_textColor, color);
     [(UILabel *)v11->_titleLabel setTextColor:v11->_textColor];
   }
 
   return v11;
 }
 
-- (void)_setIsCenterCell:(BOOL)a3 shouldModifyAlphaOfView:(BOOL)a4
+- (void)_setIsCenterCell:(BOOL)cell shouldModifyAlphaOfView:(BOOL)view
 {
-  v4 = a3;
-  if (a4)
+  cellCopy = cell;
+  if (view)
   {
     titleLabel = self->_titleLabel;
     v7 = 0.447;
-    if (a3)
+    if (cell)
     {
       v7 = 1.0;
     }
@@ -62,16 +62,16 @@
   }
 
   v8 = self->_titleLabel;
-  v11 = [(UIPickerTableViewCell *)self style];
-  v9 = [(UIView *)self traitCollection];
-  if (v4)
+  style = [(UIPickerTableViewCell *)self style];
+  traitCollection = [(UIView *)self traitCollection];
+  if (cellCopy)
   {
-    [v11 centerCellFontWithTraitCollection:v9];
+    [style centerCellFontWithTraitCollection:traitCollection];
   }
 
   else
   {
-    [v11 nonCenterCellFontWithTraitCollection:v9];
+    [style nonCenterCellFontWithTraitCollection:traitCollection];
   }
   v10 = ;
   [(UILabel *)v8 setFont:v10];

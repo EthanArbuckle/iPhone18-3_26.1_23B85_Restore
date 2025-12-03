@@ -1,12 +1,12 @@
 @interface NPKProtoSetCommutePlanReminderForCommutePlanAndPassRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoSetCommutePlanReminderForCommutePlanAndPassRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoSetCommutePlanReminderForCommutePlanAndPassRequest;
   v4 = [(NPKProtoSetCommutePlanReminderForCommutePlanAndPassRequest *)&v8 description];
-  v5 = [(NPKProtoSetCommutePlanReminderForCommutePlanAndPassRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoSetCommutePlanReminderForCommutePlanAndPassRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uniqueID = self->_uniqueID;
   if (uniqueID)
   {
-    [v3 setObject:uniqueID forKey:@"uniqueID"];
+    [dictionary setObject:uniqueID forKey:@"uniqueID"];
   }
 
   commutePlanBytes = self->_commutePlanBytes;
@@ -48,61 +48,61 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uniqueID)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_commutePlanBytes)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     reminderInterval = self->_reminderInterval;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_uniqueID)
   {
-    [v4 setUniqueID:?];
-    v4 = v5;
+    [toCopy setUniqueID:?];
+    toCopy = v5;
   }
 
   if (self->_commutePlanBytes)
   {
     [v5 setCommutePlanBytes:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_reminderInterval;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 1) = *&self->_reminderInterval;
+    *(toCopy + 32) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueID copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSData *)self->_commutePlanBytes copyWithZone:a3];
+  v8 = [(NSData *)self->_commutePlanBytes copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
@@ -115,16 +115,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_10;
   }
 
   uniqueID = self->_uniqueID;
-  if (uniqueID | *(v4 + 3))
+  if (uniqueID | *(equalCopy + 3))
   {
     if (![(NSString *)uniqueID isEqual:?])
     {
@@ -133,7 +133,7 @@
   }
 
   commutePlanBytes = self->_commutePlanBytes;
-  if (commutePlanBytes | *(v4 + 2))
+  if (commutePlanBytes | *(equalCopy + 2))
   {
     if (![(NSData *)commutePlanBytes isEqual:?])
     {
@@ -141,10 +141,10 @@
     }
   }
 
-  v7 = (*(v4 + 32) & 1) == 0;
+  v7 = (*(equalCopy + 32) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) != 0 && self->_reminderInterval == *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) != 0 && self->_reminderInterval == *(equalCopy + 1))
     {
       v7 = 1;
       goto LABEL_11;
@@ -199,25 +199,25 @@ LABEL_11:
   return v4 ^ v3 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 3))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 3))
   {
     [(NPKProtoSetCommutePlanReminderForCommutePlanAndPassRequest *)self setUniqueID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NPKProtoSetCommutePlanReminderForCommutePlanAndPassRequest *)self setCommutePlanBytes:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
-    self->_reminderInterval = v4[1];
+    self->_reminderInterval = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

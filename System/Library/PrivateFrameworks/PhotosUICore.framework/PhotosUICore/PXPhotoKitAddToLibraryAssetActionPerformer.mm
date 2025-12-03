@@ -1,42 +1,42 @@
 @interface PXPhotoKitAddToLibraryAssetActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
-- (void)_simulateImportForAssetReference:(id)a3 assetImportStatusManager:(id)a4;
-- (void)importAssets:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
+- (void)_simulateImportForAssetReference:(id)reference assetImportStatusManager:(id)manager;
+- (void)importAssets:(id)assets;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAddToLibraryAssetActionPerformer
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = a3;
+  targetCopy = target;
   v8 = [v6 systemImageNamed:@"square.and.arrow.down"];
-  v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v8 style:0 target:v7 action:a4];
+  v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v8 style:0 target:targetCopy action:action];
 
   return v9;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11 || [v11 sourceType] != 8 || objc_msgSend(v12, "assetCollectionType") != 7)
+  assetCopy = asset;
+  collectionCopy = collection;
+  personCopy = person;
+  groupCopy = group;
+  if (!assetCopy || [assetCopy sourceType] != 8 || objc_msgSend(collectionCopy, "assetCollectionType") != 7)
   {
     v16 = 0;
     goto LABEL_8;
   }
 
-  v15 = v12;
+  v15 = collectionCopy;
   if (!v15)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAddToLibraryAssetActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v20}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAddToLibraryAssetActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollection", v20}];
 LABEL_11:
 
     goto LABEL_6;
@@ -45,11 +45,11 @@ LABEL_11:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v20 = NSStringFromClass(v21);
-    v22 = [v15 px_descriptionForAssertionMessage];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAddToLibraryAssetActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v20, v22}];
+    px_descriptionForAssertionMessage = [v15 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAddToLibraryAssetActionPerformer.m" lineNumber:28 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollection", v20, px_descriptionForAssertionMessage}];
 
     goto LABEL_11;
   }
@@ -61,28 +61,28 @@ LABEL_8:
   return v16;
 }
 
-- (void)importAssets:(id)a3
+- (void)importAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   v5 = objc_alloc_init(MEMORY[0x1E6978690]);
   [v5 setShouldDownloadOrCloudReReferenceMissingResources:1];
-  v6 = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
+  px_systemPhotoLibrary = [MEMORY[0x1E69789A8] px_systemPhotoLibrary];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __59__PXPhotoKitAddToLibraryAssetActionPerformer_importAssets___block_invoke;
   v12[3] = &unk_1E774A1B8;
-  v13 = v4;
+  v13 = assetsCopy;
   v14 = v5;
-  v15 = self;
+  selfCopy = self;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __59__PXPhotoKitAddToLibraryAssetActionPerformer_importAssets___block_invoke_2;
   v9[3] = &unk_1E774B730;
   v10 = v13;
-  v11 = self;
+  selfCopy2 = self;
   v7 = v13;
   v8 = v5;
-  [v6 performChanges:v12 completionHandler:v9];
+  [px_systemPhotoLibrary performChanges:v12 completionHandler:v9];
 }
 
 void __59__PXPhotoKitAddToLibraryAssetActionPerformer_importAssets___block_invoke(uint64_t a1)
@@ -178,24 +178,24 @@ uint64_t __59__PXPhotoKitAddToLibraryAssetActionPerformer_importAssets___block_i
   return [v10 completeUserInteractionTaskWithSuccess:v11 error:v12];
 }
 
-- (void)_simulateImportForAssetReference:(id)a3 assetImportStatusManager:(id)a4
+- (void)_simulateImportForAssetReference:(id)reference assetImportStatusManager:(id)manager
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  referenceCopy = reference;
+  managerCopy = manager;
   v8 = PLSharingGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 asset];
+    asset = [referenceCopy asset];
     *buf = 138412290;
-    v24 = v9;
+    v24 = asset;
     _os_log_impl(&dword_1A3C1C000, v8, OS_LOG_TYPE_DEFAULT, "[AddToLibrary] Simulating import for asset: %@", buf, 0xCu);
   }
 
   v10 = +[PXCompleteMyMomentSettings sharedInstance];
-  v11 = [v10 simulateImportFailure];
+  simulateImportFailure = [v10 simulateImportFailure];
 
-  if (v11)
+  if (simulateImportFailure)
   {
     v12 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"Simulated failure"];
   }
@@ -205,20 +205,20 @@ uint64_t __59__PXPhotoKitAddToLibraryAssetActionPerformer_importAssets___block_i
     v12 = 0;
   }
 
-  [v7 beginSimulatedImportForAssetReference:v6];
+  [managerCopy beginSimulatedImportForAssetReference:referenceCopy];
   v13 = dispatch_time(0, 5000000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__PXPhotoKitAddToLibraryAssetActionPerformer__simulateImportForAssetReference_assetImportStatusManager___block_invoke;
   block[3] = &unk_1E773F018;
-  v18 = v7;
-  v19 = v6;
-  v22 = v11;
-  v20 = self;
+  v18 = managerCopy;
+  v19 = referenceCopy;
+  v22 = simulateImportFailure;
+  selfCopy = self;
   v21 = v12;
   v14 = v12;
-  v15 = v6;
-  v16 = v7;
+  v15 = referenceCopy;
+  v16 = managerCopy;
   dispatch_after(v13, MEMORY[0x1E69E96A0], block);
 }
 
@@ -235,18 +235,18 @@ uint64_t __104__PXPhotoKitAddToLibraryAssetActionPerformer__simulateImportForAss
 - (void)performUserInteractionTask
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = [(PXAssetActionPerformer *)self selectionSnapshot];
-  v5 = [v4 selectedIndexPaths];
-  v6 = [v5 count];
+  selectionSnapshot = [(PXAssetActionPerformer *)self selectionSnapshot];
+  selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+  v6 = [selectedIndexPaths count];
 
-  if (!v4 || !v6)
+  if (!selectionSnapshot || !v6)
   {
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:0];
     goto LABEL_13;
   }
 
-  v7 = [v4 dataSource];
-  if (v7)
+  dataSource = [selectionSnapshot dataSource];
+  if (dataSource)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -254,35 +254,35 @@ uint64_t __104__PXPhotoKitAddToLibraryAssetActionPerformer__simulateImportForAss
       goto LABEL_5;
     }
 
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v20 = NSStringFromClass(v21);
-    v22 = [v7 px_descriptionForAssertionMessage];
-    [v18 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAddToLibraryAssetActionPerformer.m" lineNumber:61 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionSnapshot.dataSource", v20, v22}];
+    px_descriptionForAssertionMessage = [dataSource px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAddToLibraryAssetActionPerformer.m" lineNumber:61 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"selectionSnapshot.dataSource", v20, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v19 = objc_opt_class();
     v20 = NSStringFromClass(v19);
-    [v18 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAddToLibraryAssetActionPerformer.m" lineNumber:61 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionSnapshot.dataSource", v20}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAddToLibraryAssetActionPerformer.m" lineNumber:61 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"selectionSnapshot.dataSource", v20}];
   }
 
 LABEL_5:
-  v8 = [(PXPhotoKitAssetActionPerformer *)self importStatusManager];
-  v9 = v8;
-  if (v8 && [v8 supportsStateSimulation])
+  importStatusManager = [(PXPhotoKitAssetActionPerformer *)self importStatusManager];
+  v9 = importStatusManager;
+  if (importStatusManager && [importStatusManager supportsStateSimulation])
   {
-    v10 = [v4 selectedIndexPaths];
+    selectedIndexPaths2 = [selectionSnapshot selectedIndexPaths];
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __72__PXPhotoKitAddToLibraryAssetActionPerformer_performUserInteractionTask__block_invoke;
     v28[3] = &unk_1E7743210;
-    v29 = v7;
-    v30 = self;
+    v29 = dataSource;
+    selfCopy = self;
     v31 = v9;
-    [v10 enumerateItemIndexPathsUsingBlock:v28];
+    [selectedIndexPaths2 enumerateItemIndexPathsUsingBlock:v28];
 
     v11 = v29;
   }
@@ -290,22 +290,22 @@ LABEL_5:
   else
   {
     v12 = [MEMORY[0x1E695DF70] arrayWithCapacity:v6];
-    v13 = [v4 selectedIndexPaths];
+    selectedIndexPaths3 = [selectionSnapshot selectedIndexPaths];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __72__PXPhotoKitAddToLibraryAssetActionPerformer_performUserInteractionTask__block_invoke_2;
     v23[3] = &unk_1E773BA50;
     v24 = v12;
-    v14 = v7;
-    v26 = self;
+    v14 = dataSource;
+    selfCopy2 = self;
     v27 = a2;
     v25 = v14;
     v11 = v12;
-    [v13 enumerateItemIndexPathsUsingBlock:v23];
+    [selectedIndexPaths3 enumerateItemIndexPathsUsingBlock:v23];
 
-    v15 = [v14 identifier];
+    identifier = [v14 identifier];
     *&buf[8] = xmmword_1A5380D10;
-    *buf = v15;
+    *buf = identifier;
     v33 = 0x7FFFFFFFFFFFFFFFLL;
     v16 = [v14 assetCollectionAtSectionIndexPath:buf];
     v17 = PLSharingGetLog();

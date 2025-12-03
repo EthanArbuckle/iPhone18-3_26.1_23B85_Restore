@@ -1,16 +1,16 @@
 @interface MPFilterManager
 + (id)sharedManager;
-+ (void)loadFilterManagerWithPaths:(id)a3;
++ (void)loadFilterManagerWithPaths:(id)paths;
 + (void)releaseSharedManager;
-- (MPFilterManager)initWithPaths:(id)a3;
-- (id)animationsForFilterID:(id)a3 andPresetID:(id)a4;
-- (id)attributesForFilterID:(id)a3 andPresetID:(id)a4;
-- (id)constraintsForFilterPresetsMatchingList:(id)a3 andCriteria:(id)a4;
-- (id)filterPresetsMatchingCriteria:(id)a3;
-- (id)presetIDsForFilterID:(id)a3;
-- (id)randomFilter:(BOOL)a3;
-- (id)randomFilterPresetFromList:(id)a3 abidingWithConstraints:(id)a4;
-- (id)versionOfFilterID:(id)a3;
+- (MPFilterManager)initWithPaths:(id)paths;
+- (id)animationsForFilterID:(id)d andPresetID:(id)iD;
+- (id)attributesForFilterID:(id)d andPresetID:(id)iD;
+- (id)constraintsForFilterPresetsMatchingList:(id)list andCriteria:(id)criteria;
+- (id)filterPresetsMatchingCriteria:(id)criteria;
+- (id)presetIDsForFilterID:(id)d;
+- (id)randomFilter:(BOOL)filter;
+- (id)randomFilterPresetFromList:(id)list abidingWithConstraints:(id)constraints;
+- (id)versionOfFilterID:(id)d;
 - (void)dealloc;
 @end
 
@@ -21,13 +21,13 @@
   result = qword_1EF298;
   if (!qword_1EF298)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF298)
     {
       qword_1EF298 = [[MPFilterManager alloc] initWithPaths:0];
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF298;
   }
 
@@ -38,11 +38,11 @@
 {
   if (qword_1EF298)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF298 = 0;
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
@@ -57,26 +57,26 @@
   [(MPFilterManager *)&v3 dealloc];
 }
 
-- (id)versionOfFilterID:(id)a3
+- (id)versionOfFilterID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->mFilters objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->mFilters objectForKey:d];
 
   return [v3 objectForKey:@"version"];
 }
 
-- (id)presetIDsForFilterID:(id)a3
+- (id)presetIDsForFilterID:(id)d
 {
-  v3 = [-[NSMutableDictionary objectForKey:](self->mFilters objectForKey:{a3), "objectForKey:", @"presets"}];
+  v3 = [-[NSMutableDictionary objectForKey:](self->mFilters objectForKey:{d), "objectForKey:", @"presets"}];
 
   return [v3 allKeys];
 }
 
-- (id)attributesForFilterID:(id)a3 andPresetID:(id)a4
+- (id)attributesForFilterID:(id)d andPresetID:(id)iD
 {
-  v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters "objectForKey:{"objectForKey:", @"presets", "objectForKey:", a4}")];
+  v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters "objectForKey:{"objectForKey:", @"presets", "objectForKey:", iD}")];
   if (!v6)
   {
-    v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters objectForKey:{a3), "objectForKey:", @"presets", "objectForKey:", @"Default"}];
+    v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters objectForKey:{d), "objectForKey:", @"presets", "objectForKey:", @"Default"}];
   }
 
   v7 = [objc_msgSend(v6 objectForKey:{@"attributes", "copy"}];
@@ -84,12 +84,12 @@
   return v7;
 }
 
-- (id)animationsForFilterID:(id)a3 andPresetID:(id)a4
+- (id)animationsForFilterID:(id)d andPresetID:(id)iD
 {
-  v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters "objectForKey:{"objectForKey:", @"presets", "objectForKey:", a4}")];
+  v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters "objectForKey:{"objectForKey:", @"presets", "objectForKey:", iD}")];
   if (!v6)
   {
-    v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters objectForKey:{a3), "objectForKey:", @"presets", "objectForKey:", @"Default"}];
+    v6 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters objectForKey:{d), "objectForKey:", @"presets", "objectForKey:", @"Default"}];
   }
 
   v7 = [v6 objectForKey:@"animations"];
@@ -109,15 +109,15 @@
   return v9;
 }
 
-- (id)constraintsForFilterPresetsMatchingList:(id)a3 andCriteria:(id)a4
+- (id)constraintsForFilterPresetsMatchingList:(id)list andCriteria:(id)criteria
 {
   v32 = +[NSMutableDictionary dictionary];
-  if (!a3)
+  if (!list)
   {
-    a3 = [(NSMutableDictionary *)self->mFilters allKeys];
+    list = [(NSMutableDictionary *)self->mFilters allKeys];
   }
 
-  if (![a3 count])
+  if (![list count])
   {
     return 0;
   }
@@ -127,12 +127,12 @@
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v52 objects:v59 count:16];
+  v7 = [list countByEnumeratingWithState:&v52 objects:v59 count:16];
   if (v7)
   {
     v8 = v7;
     v9 = *v53;
-    obj = a3;
+    obj = list;
     do
     {
       for (i = 0; i != v8; i = i + 1)
@@ -204,10 +204,10 @@
         }
 
         v18 = *(*(&v44 + 1) + 8 * k);
-        v19 = [v18 stringByDeletingLastPathComponent];
-        v20 = [v18 lastPathComponent];
-        v21 = [(NSMutableDictionary *)self->mFilters objectForKey:v19];
-        v22 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters objectForKey:{v19), "objectForKey:", @"presets", "objectForKey:", v20}];
+        stringByDeletingLastPathComponent = [v18 stringByDeletingLastPathComponent];
+        lastPathComponent = [v18 lastPathComponent];
+        v21 = [(NSMutableDictionary *)self->mFilters objectForKey:stringByDeletingLastPathComponent];
+        v22 = [objc_msgSend(-[NSMutableDictionary objectForKey:](self->mFilters objectForKey:{stringByDeletingLastPathComponent), "objectForKey:", @"presets", "objectForKey:", lastPathComponent}];
         obja = v21;
         v23 = [v21 objectForKey:@"tags"];
         v37 = v22;
@@ -216,7 +216,7 @@
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v25 = [a4 countByEnumeratingWithState:&v40 objects:v56 count:16];
+        v25 = [criteria countByEnumeratingWithState:&v40 objects:v56 count:16];
         if (v25)
         {
           v26 = v25;
@@ -227,7 +227,7 @@ LABEL_28:
           {
             if (*v41 != v27)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(criteria);
             }
 
             v29 = *(*(&v40 + 1) + 8 * v28);
@@ -238,7 +238,7 @@ LABEL_28:
 
             if (v26 == ++v28)
             {
-              v26 = [a4 countByEnumeratingWithState:&v40 objects:v56 count:16];
+              v26 = [criteria countByEnumeratingWithState:&v40 objects:v56 count:16];
               if (v26)
               {
                 goto LABEL_28;
@@ -269,19 +269,19 @@ LABEL_37:
   return v33;
 }
 
-- (id)randomFilterPresetFromList:(id)a3 abidingWithConstraints:(id)a4
+- (id)randomFilterPresetFromList:(id)list abidingWithConstraints:(id)constraints
 {
-  if (a4)
+  if (constraints)
   {
-    v6 = +[NSMutableArray array];
+    allKeys = +[NSMutableArray array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v22 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    v22 = [list countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v22)
     {
-      v20 = v6;
+      v20 = allKeys;
       v21 = *v28;
       do
       {
@@ -289,16 +289,16 @@ LABEL_37:
         {
           if (*v28 != v21)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(list);
           }
 
           v8 = *(*(&v27 + 1) + 8 * i);
-          v9 = [a3 objectForKey:v8];
+          v9 = [list objectForKey:v8];
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
           v26 = 0u;
-          v10 = [a4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+          v10 = [constraints countByEnumeratingWithState:&v23 objects:v31 count:16];
           if (v10)
           {
             v11 = v10;
@@ -309,13 +309,13 @@ LABEL_9:
             {
               if (*v24 != v12)
               {
-                objc_enumerationMutation(a4);
+                objc_enumerationMutation(constraints);
               }
 
               v14 = *(*(&v23 + 1) + 8 * v13);
               if ([v9 objectForKey:v14])
               {
-                [objc_msgSend(a4 objectForKey:{v14), "floatValue"}];
+                [objc_msgSend(constraints objectForKey:{v14), "floatValue"}];
                 v16 = v15;
                 v17 = NSRangeFromString([v9 objectForKey:v14]);
                 if (v16 < v17.location || v16 - v17.location >= v17.length)
@@ -326,7 +326,7 @@ LABEL_9:
 
               if (v11 == ++v13)
               {
-                v11 = [a4 countByEnumeratingWithState:&v23 objects:v31 count:16];
+                v11 = [constraints countByEnumeratingWithState:&v23 objects:v31 count:16];
                 if (v11)
                 {
                   goto LABEL_9;
@@ -346,36 +346,36 @@ LABEL_21:
           [v20 addObject:v8];
         }
 
-        v22 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v22 = [list countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v22);
-      v6 = v20;
+      allKeys = v20;
     }
   }
 
   else
   {
-    v6 = [a3 allKeys];
+    allKeys = [list allKeys];
   }
 
-  result = [v6 count];
+  result = [allKeys count];
   if (result)
   {
-    return [v6 objectAtIndex:rand() % result];
+    return [allKeys objectAtIndex:rand() % result];
   }
 
   return result;
 }
 
-- (id)filterPresetsMatchingCriteria:(id)a3
+- (id)filterPresetsMatchingCriteria:(id)criteria
 {
   v28 = +[NSMutableArray array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = self->mFilters;
   v26 = [(NSMutableDictionary *)obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v26)
@@ -395,7 +395,7 @@ LABEL_21:
         v29 = *(*(&v41 + 1) + 8 * v5);
         if (([v29 isEqualToString:@"Default"] & 1) == 0)
         {
-          v6 = [(NSMutableDictionary *)v23->mFilters objectForKey:v29];
+          v6 = [(NSMutableDictionary *)selfCopy->mFilters objectForKey:v29];
           v7 = [v6 objectForKey:@"presets"];
           if (!v7)
           {
@@ -426,7 +426,7 @@ LABEL_21:
                 v34 = 0u;
                 v35 = 0u;
                 v36 = 0u;
-                v11 = [a3 countByEnumeratingWithState:&v33 objects:v45 count:16];
+                v11 = [criteria countByEnumeratingWithState:&v33 objects:v45 count:16];
                 if (v11)
                 {
                   v12 = v11;
@@ -437,13 +437,13 @@ LABEL_16:
                   {
                     if (*v34 != v13)
                     {
-                      objc_enumerationMutation(a3);
+                      objc_enumerationMutation(criteria);
                     }
 
                     v15 = *(*(&v33 + 1) + 8 * v14);
                     if ([v10 objectForKey:v15])
                     {
-                      [objc_msgSend(a3 objectForKey:{v15), "floatValue"}];
+                      [objc_msgSend(criteria objectForKey:{v15), "floatValue"}];
                       v17 = v16;
                       v18 = v10;
                     }
@@ -455,7 +455,7 @@ LABEL_16:
                         goto LABEL_27;
                       }
 
-                      [objc_msgSend(a3 objectForKey:{v15), "floatValue"}];
+                      [objc_msgSend(criteria objectForKey:{v15), "floatValue"}];
                       v17 = v19;
                       v18 = v6;
                     }
@@ -474,7 +474,7 @@ LABEL_16:
 LABEL_27:
                     if (v12 == ++v14)
                     {
-                      v12 = [a3 countByEnumeratingWithState:&v33 objects:v45 count:16];
+                      v12 = [criteria countByEnumeratingWithState:&v33 objects:v45 count:16];
                       if (v12)
                       {
                         goto LABEL_16;
@@ -510,16 +510,16 @@ LABEL_32:
   return v28;
 }
 
-- (id)randomFilter:(BOOL)a3
+- (id)randomFilter:(BOOL)filter
 {
-  v3 = [(NSMutableDictionary *)self->mFilters allKeys];
+  allKeys = [(NSMutableDictionary *)self->mFilters allKeys];
   v4 = rand();
-  v5 = v4 % [v3 count];
+  v5 = v4 % [allKeys count];
 
-  return [v3 objectAtIndex:v5];
+  return [allKeys objectAtIndex:v5];
 }
 
-+ (void)loadFilterManagerWithPaths:(id)a3
++ (void)loadFilterManagerWithPaths:(id)paths
 {
   if (qword_1EF298)
   {
@@ -527,10 +527,10 @@ LABEL_32:
     qword_1EF298 = 0;
   }
 
-  qword_1EF298 = [[MPFilterManager alloc] initWithPaths:a3];
+  qword_1EF298 = [[MPFilterManager alloc] initWithPaths:paths];
 }
 
-- (MPFilterManager)initWithPaths:(id)a3
+- (MPFilterManager)initWithPaths:(id)paths
 {
   v64.receiver = self;
   v64.super_class = MPFilterManager;
@@ -541,9 +541,9 @@ LABEL_32:
     v5 = +[NSMutableArray array];
     v47 = v4;
     v6 = v5;
-    if (a3)
+    if (paths)
     {
-      [v5 addObjectsFromArray:a3];
+      [v5 addObjectsFromArray:paths];
     }
 
     else

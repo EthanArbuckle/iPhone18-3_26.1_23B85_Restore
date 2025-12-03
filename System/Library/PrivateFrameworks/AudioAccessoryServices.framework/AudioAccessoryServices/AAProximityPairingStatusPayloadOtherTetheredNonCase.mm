@@ -8,17 +8,17 @@
 {
   v28.receiver = self;
   v28.super_class = AAProximityPairingStatusPayloadOtherTetheredNonCase;
-  v3 = [(AAProximityPairingStatusPayloadGeneral *)&v28 describeProperties];
-  v27 = v3;
-  v4 = [(AAProximityPairingStatusPayloadOtherTetheredNonCase *)self primaryLocation];
-  if (v4 > 3)
+  describeProperties = [(AAProximityPairingStatusPayloadGeneral *)&v28 describeProperties];
+  v27 = describeProperties;
+  primaryLocation = [(AAProximityPairingStatusPayloadOtherTetheredNonCase *)self primaryLocation];
+  if (primaryLocation > 3)
   {
     v5 = "?";
   }
 
   else
   {
-    v5 = off_278CDE210[v4];
+    v5 = off_278CDE210[primaryLocation];
   }
 
   v17 = v5;
@@ -41,7 +41,7 @@
   v8 = v26;
 
   v25 = v8;
-  v19 = [(AAProximityPairingStatusPayloadOtherTetheredNonCase *)self lidOpenCount];
+  lidOpenCount = [(AAProximityPairingStatusPayloadOtherTetheredNonCase *)self lidOpenCount];
   NSAppendPrintF_safe();
   v9 = v8;
 
@@ -61,7 +61,7 @@
   v11 = v24;
 
   v23[1] = v11;
-  v21 = [(AAProximityPairingStatusPayloadOtherTetheredNonCase *)self color];
+  color = [(AAProximityPairingStatusPayloadOtherTetheredNonCase *)self color];
   NSAppendPrintF_safe();
   v12 = v11;
 

@@ -1,26 +1,26 @@
 @interface DNDModeConfigurationLocationTrigger
-- (BOOL)isEqual:(id)a3;
-- (DNDModeConfigurationLocationTrigger)initWithCoder:(id)a3;
-- (DNDModeConfigurationLocationTrigger)initWithRegion:(id)a3 detail:(id)a4 enabledSetting:(unint64_t)a5;
+- (BOOL)isEqual:(id)equal;
+- (DNDModeConfigurationLocationTrigger)initWithCoder:(id)coder;
+- (DNDModeConfigurationLocationTrigger)initWithRegion:(id)region detail:(id)detail enabledSetting:(unint64_t)setting;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDModeConfigurationLocationTrigger
 
-- (DNDModeConfigurationLocationTrigger)initWithRegion:(id)a3 detail:(id)a4 enabledSetting:(unint64_t)a5
+- (DNDModeConfigurationLocationTrigger)initWithRegion:(id)region detail:(id)detail enabledSetting:(unint64_t)setting
 {
-  v9 = a3;
-  v10 = a4;
+  regionCopy = region;
+  detailCopy = detail;
   v16.receiver = self;
   v16.super_class = DNDModeConfigurationLocationTrigger;
-  v11 = [(DNDModeConfigurationTrigger *)&v16 initWithEnabledSetting:a5];
+  v11 = [(DNDModeConfigurationTrigger *)&v16 initWithEnabledSetting:setting];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_region, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_region, region);
+    v13 = [detailCopy copy];
     detail = v12->_detail;
     v12->_detail = v13;
   }
@@ -37,10 +37,10 @@
   return v4 ^ [(NSString *)self->_detail hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -50,7 +50,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = equalCopy;
       v27.receiver = self;
       v27.super_class = DNDModeConfigurationLocationTrigger;
       if (![(DNDModeConfigurationTrigger *)&v27 isEqual:v6])
@@ -61,12 +61,12 @@ LABEL_27:
         goto LABEL_28;
       }
 
-      v7 = [(DNDModeConfigurationLocationTrigger *)self region];
-      v8 = [(DNDModeConfigurationLocationTrigger *)v6 region];
-      if (v7 != v8)
+      region = [(DNDModeConfigurationLocationTrigger *)self region];
+      region2 = [(DNDModeConfigurationLocationTrigger *)v6 region];
+      if (region != region2)
       {
-        v9 = [(DNDModeConfigurationLocationTrigger *)self region];
-        if (!v9)
+        region3 = [(DNDModeConfigurationLocationTrigger *)self region];
+        if (!region3)
         {
           v13 = 0;
 LABEL_26:
@@ -74,9 +74,9 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v3 = v9;
-        v10 = [(DNDModeConfigurationLocationTrigger *)v6 region];
-        if (!v10)
+        v3 = region3;
+        region4 = [(DNDModeConfigurationLocationTrigger *)v6 region];
+        if (!region4)
         {
           v13 = 0;
 LABEL_25:
@@ -84,9 +84,9 @@ LABEL_25:
           goto LABEL_26;
         }
 
-        v11 = [(DNDModeConfigurationLocationTrigger *)self region];
-        v12 = [(DNDModeConfigurationLocationTrigger *)v6 region];
-        if (![v11 isEqual:v12])
+        region5 = [(DNDModeConfigurationLocationTrigger *)self region];
+        region6 = [(DNDModeConfigurationLocationTrigger *)v6 region];
+        if (![region5 isEqual:region6])
         {
           v13 = 0;
 LABEL_24:
@@ -94,15 +94,15 @@ LABEL_24:
           goto LABEL_25;
         }
 
-        v24 = v12;
-        v25 = v11;
-        v26 = v10;
+        v24 = region6;
+        v25 = region5;
+        v26 = region4;
       }
 
-      v14 = [(DNDModeConfigurationLocationTrigger *)self detail];
-      v15 = [(DNDModeConfigurationLocationTrigger *)v6 detail];
-      v16 = v15;
-      if (v14 == v15)
+      detail = [(DNDModeConfigurationLocationTrigger *)self detail];
+      detail2 = [(DNDModeConfigurationLocationTrigger *)v6 detail];
+      v16 = detail2;
+      if (detail == detail2)
       {
 
         v13 = 1;
@@ -110,17 +110,17 @@ LABEL_24:
 
       else
       {
-        v17 = [(DNDModeConfigurationLocationTrigger *)self detail];
-        if (v17)
+        detail3 = [(DNDModeConfigurationLocationTrigger *)self detail];
+        if (detail3)
         {
-          v18 = v17;
-          v19 = [(DNDModeConfigurationLocationTrigger *)v6 detail];
-          if (v19)
+          v18 = detail3;
+          detail4 = [(DNDModeConfigurationLocationTrigger *)v6 detail];
+          if (detail4)
           {
-            v22 = [(DNDModeConfigurationLocationTrigger *)self detail];
+            detail5 = [(DNDModeConfigurationLocationTrigger *)self detail];
             [(DNDModeConfigurationLocationTrigger *)v6 detail];
             v20 = v23 = v3;
-            v13 = [v22 isEqual:v20];
+            v13 = [detail5 isEqual:v20];
 
             v3 = v23;
           }
@@ -138,10 +138,10 @@ LABEL_24:
         }
       }
 
-      v11 = v25;
-      v10 = v26;
-      v12 = v24;
-      if (v7 == v8)
+      region5 = v25;
+      region4 = v26;
+      region6 = v24;
+      if (region == region2)
       {
         goto LABEL_26;
       }
@@ -161,27 +161,27 @@ LABEL_28:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(DNDModeConfigurationTrigger *)self enabledSetting];
-  v6 = [(DNDModeConfigurationLocationTrigger *)self region];
-  v7 = [(DNDModeConfigurationLocationTrigger *)self detail];
-  v8 = [v3 stringWithFormat:@"<%@: %p enabledSetting: %llu; region: %@; detail: %@>", v4, self, v5, v6, v7];;
+  enabledSetting = [(DNDModeConfigurationTrigger *)self enabledSetting];
+  region = [(DNDModeConfigurationLocationTrigger *)self region];
+  detail = [(DNDModeConfigurationLocationTrigger *)self detail];
+  v8 = [v3 stringWithFormat:@"<%@: %p enabledSetting: %llu; region: %@; detail: %@>", v4, self, enabledSetting, region, detail];;
 
   return v8;
 }
 
-- (DNDModeConfigurationLocationTrigger)initWithCoder:(id)a3
+- (DNDModeConfigurationLocationTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = DNDModeConfigurationLocationTrigger;
-  v5 = [(DNDModeConfigurationTrigger *)&v11 initWithCoder:v4];
+  v5 = [(DNDModeConfigurationTrigger *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"region"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"region"];
     region = v5->_region;
     v5->_region = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"detail"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"detail"];
     detail = v5->_detail;
     v5->_detail = v8;
   }
@@ -189,17 +189,17 @@ LABEL_28:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = DNDModeConfigurationLocationTrigger;
-  v4 = a3;
-  [(DNDModeConfigurationTrigger *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(DNDModeConfigurationTrigger *)&v7 encodeWithCoder:coderCopy];
   v5 = [(DNDModeConfigurationLocationTrigger *)self region:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"region"];
+  [coderCopy encodeObject:v5 forKey:@"region"];
 
-  v6 = [(DNDModeConfigurationLocationTrigger *)self detail];
-  [v4 encodeObject:v6 forKey:@"detail"];
+  detail = [(DNDModeConfigurationLocationTrigger *)self detail];
+  [coderCopy encodeObject:detail forKey:@"detail"];
 }
 
 @end

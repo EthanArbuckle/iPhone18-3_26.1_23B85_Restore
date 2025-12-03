@@ -1,8 +1,8 @@
 @interface VNWeakTypeWrapper
-- (BOOL)isEqual:(id)a3;
-- (VNWeakTypeWrapper)initWithObject:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNWeakTypeWrapper)initWithObject:(id)object;
 - (id)description;
-- (id)objectAndReturnError:(id *)a3;
+- (id)objectAndReturnError:(id *)error;
 @end
 
 @implementation VNWeakTypeWrapper
@@ -14,15 +14,15 @@
   v8.super_class = VNWeakTypeWrapper;
   v4 = [(VNWeakTypeWrapper *)&v8 description];
   WeakRetained = objc_loadWeakRetained(&self->_weakObject);
-  v6 = [v3 initWithFormat:@"%@: %@", v4, WeakRetained];
+  weakRetained = [v3 initWithFormat:@"%@: %@", v4, WeakRetained];
 
-  return v6;
+  return weakRetained;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -32,7 +32,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(VNWeakTypeWrapper *)v4 objectAndReturnError:0];
+      v5 = [(VNWeakTypeWrapper *)equalCopy objectAndReturnError:0];
       v6 = [(VNWeakTypeWrapper *)self objectAndReturnError:0];
       v7 = VisionCoreEqualOrNilObjects();
     }
@@ -46,7 +46,7 @@
   return v7;
 }
 
-- (id)objectAndReturnError:(id *)a3
+- (id)objectAndReturnError:(id *)error
 {
   WeakRetained = objc_loadWeakRetained(&self->_weakObject);
   v5 = WeakRetained;
@@ -55,24 +55,24 @@
     v6 = WeakRetained;
   }
 
-  else if (a3)
+  else if (error)
   {
-    *a3 = [VNError errorForInternalErrorWithLocalizedDescription:@"Weak VNType object wrapper contains nil object"];
+    *error = [VNError errorForInternalErrorWithLocalizedDescription:@"Weak VNType object wrapper contains nil object"];
   }
 
   return v5;
 }
 
-- (VNWeakTypeWrapper)initWithObject:(id)a3
+- (VNWeakTypeWrapper)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v8.receiver = self;
   v8.super_class = VNWeakTypeWrapper;
   v5 = [(VNWeakTypeWrapper *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_weakObject, v4);
+    objc_storeWeak(&v5->_weakObject, objectCopy);
   }
 
   return v6;

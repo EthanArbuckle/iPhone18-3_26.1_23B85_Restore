@@ -1,17 +1,17 @@
 @interface _FPItemList
-- (BOOL)isObsoleteID:(id)a3;
+- (BOOL)isObsoleteID:(id)d;
 - (_FPItemList)init;
 - (id)description;
-- (id)itemIDsDifferenceWithList:(id)a3;
+- (id)itemIDsDifferenceWithList:(id)list;
 - (id)mutableCopy;
-- (unint64_t)indexOfItemID:(id)a3;
-- (unint64_t)indexOfObject:(id)a3;
-- (void)addObject:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
+- (unint64_t)indexOfItemID:(id)d;
+- (unint64_t)indexOfObject:(id)object;
+- (void)addObject:(id)object;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)removeObjectWithID:(id)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)removeObjectWithID:(id)d;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation _FPItemList
@@ -23,17 +23,17 @@
   v2 = [(_FPItemList *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     orderedSet = v2->_orderedSet;
-    v2->_orderedSet = v3;
+    v2->_orderedSet = orderedSet;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     itemsByIDs = v2->_itemsByIDs;
-    v2->_itemsByIDs = v5;
+    v2->_itemsByIDs = dictionary;
 
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     formerIDs = v2->_formerIDs;
-    v2->_formerIDs = v7;
+    v2->_formerIDs = dictionary2;
   }
 
   return v2;
@@ -75,12 +75,12 @@
   return v3;
 }
 
-- (id)itemIDsDifferenceWithList:(id)a3
+- (id)itemIDsDifferenceWithList:(id)list
 {
   orderedSet = self->_orderedSet;
-  v4 = a3;
+  listCopy = list;
   v5 = [(NSMutableOrderedSet *)orderedSet mutableCopy];
-  v6 = v4[1];
+  v6 = listCopy[1];
 
   [v5 minusOrderedSet:v6];
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
@@ -95,18 +95,18 @@
   return v8;
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v4 = a3;
-  v5 = [v4 itemID];
-  v6 = [(_FPItemList *)self indexOfItemID:v5];
+  objectCopy = object;
+  itemID = [objectCopy itemID];
+  v6 = [(_FPItemList *)self indexOfItemID:itemID];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 formerItemID];
-    if (v7)
+    formerItemID = [objectCopy formerItemID];
+    if (formerItemID)
     {
-      v6 = [(_FPItemList *)self indexOfItemID:v7];
+      v6 = [(_FPItemList *)self indexOfItemID:formerItemID];
     }
 
     else
@@ -118,9 +118,9 @@
   return v6;
 }
 
-- (unint64_t)indexOfItemID:(id)a3
+- (unint64_t)indexOfItemID:(id)d
 {
-  v4 = [(NSMutableDictionary *)self->_itemsByIDs objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_itemsByIDs objectForKeyedSubscript:d];
   if (v4)
   {
     v5 = [(NSMutableOrderedSet *)self->_orderedSet indexOfObject:v4];
@@ -134,42 +134,42 @@
   return v5;
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v12 = a3;
+  objectCopy = object;
   itemsByIDs = self->_itemsByIDs;
-  v7 = [v12 itemID];
-  [(NSMutableDictionary *)itemsByIDs setObject:v12 forKeyedSubscript:v7];
+  itemID = [objectCopy itemID];
+  [(NSMutableDictionary *)itemsByIDs setObject:objectCopy forKeyedSubscript:itemID];
 
-  [(NSMutableOrderedSet *)self->_orderedSet insertObject:v12 atIndex:a4];
-  v8 = [v12 formerItemID];
+  [(NSMutableOrderedSet *)self->_orderedSet insertObject:objectCopy atIndex:index];
+  formerItemID = [objectCopy formerItemID];
 
-  if (v8)
+  if (formerItemID)
   {
     formerIDs = self->_formerIDs;
-    v10 = [v12 itemID];
-    v11 = [v12 formerItemID];
-    [(NSMutableDictionary *)formerIDs setObject:v10 forKey:v11];
+    itemID2 = [objectCopy itemID];
+    formerItemID2 = [objectCopy formerItemID];
+    [(NSMutableDictionary *)formerIDs setObject:itemID2 forKey:formerItemID2];
   }
 }
 
-- (void)removeObjectWithID:(id)a3
+- (void)removeObjectWithID:(id)d
 {
-  v9 = a3;
+  dCopy = d;
   v4 = [(NSMutableDictionary *)self->_itemsByIDs objectForKeyedSubscript:?];
   [(NSMutableOrderedSet *)self->_orderedSet removeObject:v4];
-  v5 = [v4 formerItemID];
+  formerItemID = [v4 formerItemID];
 
-  if (v5)
+  if (formerItemID)
   {
     formerIDs = self->_formerIDs;
-    v7 = [v4 formerItemID];
-    [(NSMutableDictionary *)formerIDs removeObjectForKey:v7];
+    formerItemID2 = [v4 formerItemID];
+    [(NSMutableDictionary *)formerIDs removeObjectForKey:formerItemID2];
   }
 
   if (!v4)
   {
-    v8 = [(NSMutableDictionary *)self->_formerIDs objectForKey:v9];
+    v8 = [(NSMutableDictionary *)self->_formerIDs objectForKey:dCopy];
     if (v8)
     {
       [(_FPItemList *)self removeObjectWithID:v8];
@@ -177,39 +177,39 @@
   }
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   v10 = [(NSMutableOrderedSet *)self->_orderedSet objectAtIndex:?];
   itemsByIDs = self->_itemsByIDs;
-  v6 = [v10 itemID];
-  [(NSMutableDictionary *)itemsByIDs setObject:0 forKeyedSubscript:v6];
+  itemID = [v10 itemID];
+  [(NSMutableDictionary *)itemsByIDs setObject:0 forKeyedSubscript:itemID];
 
-  [(NSMutableOrderedSet *)self->_orderedSet removeObjectAtIndex:a3];
-  v7 = [v10 formerItemID];
+  [(NSMutableOrderedSet *)self->_orderedSet removeObjectAtIndex:index];
+  formerItemID = [v10 formerItemID];
 
-  if (v7)
+  if (formerItemID)
   {
     formerIDs = self->_formerIDs;
-    v9 = [v10 formerItemID];
-    [(NSMutableDictionary *)formerIDs removeObjectForKey:v9];
+    formerItemID2 = [v10 formerItemID];
+    [(NSMutableDictionary *)formerIDs removeObjectForKey:formerItemID2];
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v9 = a3;
+  objectCopy = object;
   itemsByIDs = self->_itemsByIDs;
-  v5 = [v9 itemID];
-  [(NSMutableDictionary *)itemsByIDs setObject:v9 forKeyedSubscript:v5];
+  itemID = [objectCopy itemID];
+  [(NSMutableDictionary *)itemsByIDs setObject:objectCopy forKeyedSubscript:itemID];
 
-  [(NSMutableOrderedSet *)self->_orderedSet addObject:v9];
-  v6 = [v9 formerItemID];
+  [(NSMutableOrderedSet *)self->_orderedSet addObject:objectCopy];
+  formerItemID = [objectCopy formerItemID];
 
-  if (v6)
+  if (formerItemID)
   {
     formerIDs = self->_formerIDs;
-    v8 = [v9 formerItemID];
-    [(NSMutableDictionary *)formerIDs removeObjectForKey:v8];
+    formerItemID2 = [objectCopy formerItemID];
+    [(NSMutableDictionary *)formerIDs removeObjectForKey:formerItemID2];
   }
 }
 
@@ -223,43 +223,43 @@
   }
 }
 
-- (BOOL)isObsoleteID:(id)a3
+- (BOOL)isObsoleteID:(id)d
 {
-  v3 = [(NSMutableDictionary *)self->_formerIDs objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_formerIDs objectForKey:d];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
-  v17 = a4;
-  v6 = [(NSMutableOrderedSet *)self->_orderedSet objectAtIndex:a3];
+  objectCopy = object;
+  v6 = [(NSMutableOrderedSet *)self->_orderedSet objectAtIndex:index];
   itemsByIDs = self->_itemsByIDs;
-  v8 = [v6 itemID];
-  [(NSMutableDictionary *)itemsByIDs setObject:0 forKeyedSubscript:v8];
+  itemID = [v6 itemID];
+  [(NSMutableDictionary *)itemsByIDs setObject:0 forKeyedSubscript:itemID];
 
   v9 = self->_itemsByIDs;
-  v10 = [v17 itemID];
-  [(NSMutableDictionary *)v9 setObject:v17 forKeyedSubscript:v10];
+  itemID2 = [objectCopy itemID];
+  [(NSMutableDictionary *)v9 setObject:objectCopy forKeyedSubscript:itemID2];
 
-  [(NSMutableOrderedSet *)self->_orderedSet replaceObjectAtIndex:a3 withObject:v17];
-  v11 = [v6 formerItemID];
+  [(NSMutableOrderedSet *)self->_orderedSet replaceObjectAtIndex:index withObject:objectCopy];
+  formerItemID = [v6 formerItemID];
 
-  if (v11)
+  if (formerItemID)
   {
     formerIDs = self->_formerIDs;
-    v13 = [v17 formerItemID];
-    [(NSMutableDictionary *)formerIDs removeObjectForKey:v13];
+    formerItemID2 = [objectCopy formerItemID];
+    [(NSMutableDictionary *)formerIDs removeObjectForKey:formerItemID2];
   }
 
-  v14 = [v17 formerItemID];
+  formerItemID3 = [objectCopy formerItemID];
 
-  if (v14)
+  if (formerItemID3)
   {
     v15 = self->_formerIDs;
-    v16 = [v17 formerItemID];
-    [(NSMutableDictionary *)v15 removeObjectForKey:v16];
+    formerItemID4 = [objectCopy formerItemID];
+    [(NSMutableDictionary *)v15 removeObjectForKey:formerItemID4];
   }
 }
 

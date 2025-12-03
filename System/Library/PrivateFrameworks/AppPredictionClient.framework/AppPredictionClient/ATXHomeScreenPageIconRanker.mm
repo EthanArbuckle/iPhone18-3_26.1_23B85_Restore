@@ -1,8 +1,8 @@
 @interface ATXHomeScreenPageIconRanker
 - (ATXHomeScreenPageIconRanker)init;
-- (ATXHomeScreenPageIconRanker)initWithCache:(id)a3;
-- (id)_pageForPageIndex:(unint64_t)a3;
-- (id)iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex:(unint64_t)a3;
+- (ATXHomeScreenPageIconRanker)initWithCache:(id)cache;
+- (id)_pageForPageIndex:(unint64_t)index;
+- (id)iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex:(unint64_t)index;
 @end
 
 @implementation ATXHomeScreenPageIconRanker
@@ -15,24 +15,24 @@
   return v4;
 }
 
-- (ATXHomeScreenPageIconRanker)initWithCache:(id)a3
+- (ATXHomeScreenPageIconRanker)initWithCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   v9.receiver = self;
   v9.super_class = ATXHomeScreenPageIconRanker;
   v6 = [(ATXHomeScreenPageIconRanker *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cache, a3);
+    objc_storeStrong(&v6->_cache, cache);
   }
 
   return v7;
 }
 
-- (id)iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex:(unint64_t)a3
+- (id)iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex:(unint64_t)index
 {
-  v3 = [(ATXHomeScreenPageIconRanker *)self _pageForPageIndex:a3];
+  v3 = [(ATXHomeScreenPageIconRanker *)self _pageForPageIndex:index];
   v4 = MEMORY[0x1E695E0F0];
   if (v3)
   {
@@ -45,9 +45,9 @@
 
     v11 = BiomeLibrary();
     v12 = [v11 App];
-    v13 = [v12 InFocus];
+    inFocus = [v12 InFocus];
     v14 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
-    v15 = [v13 atx_publisherFromStartTime:v14];
+    v15 = [inFocus atx_publisherFromStartTime:v14];
 
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
@@ -65,7 +65,7 @@
     v53 = v15;
     v20 = [v15 sinkWithCompletion:&__block_literal_global_22 receiveInput:v64];
     v21 = objc_opt_new();
-    v22 = [v16 leafIcons];
+    leafIcons = [v16 leafIcons];
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
     v61[2] = __88__ATXHomeScreenPageIconRanker_iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex___block_invoke_5;
@@ -74,7 +74,7 @@
     v62 = v23;
     v24 = v21;
     v63 = v24;
-    [v22 enumerateObjectsUsingBlock:v61];
+    [leafIcons enumerateObjectsUsingBlock:v61];
 
     v25 = __atxlog_handle_default();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -82,14 +82,14 @@
       [ATXHomeScreenPageIconRanker iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex:];
     }
 
-    v26 = [v17 allObjects];
+    allObjects = [v17 allObjects];
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
     v59[2] = __88__ATXHomeScreenPageIconRanker_iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex___block_invoke_27;
     v59[3] = &unk_1E80C17F0;
     v27 = v17;
     v60 = v27;
-    v28 = [v26 sortedArrayUsingComparator:v59];
+    v28 = [allObjects sortedArrayUsingComparator:v59];
 
     v29 = __atxlog_handle_default();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
@@ -97,8 +97,8 @@
       [ATXHomeScreenPageIconRanker iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex:];
     }
 
-    v30 = [v16 leafIcons];
-    v31 = [v30 _pas_mappedArrayWithIndexedTransform:&__block_literal_global_32_0];
+    leafIcons2 = [v16 leafIcons];
+    v31 = [leafIcons2 _pas_mappedArrayWithIndexedTransform:&__block_literal_global_32_0];
     v32 = v31;
     if (v31)
     {
@@ -121,7 +121,7 @@
     v36 = objc_opt_new();
     v37 = v16;
     v38 = objc_opt_new();
-    v39 = [v37 leafIcons];
+    leafIcons3 = [v37 leafIcons];
 
     v69[0] = MEMORY[0x1E69E9820];
     v69[1] = 3221225472;
@@ -129,7 +129,7 @@
     v69[3] = &unk_1E80C1E58;
     v70 = v38;
     v40 = v38;
-    [v39 enumerateObjectsUsingBlock:v69];
+    [leafIcons3 enumerateObjectsUsingBlock:v69];
 
     v56[0] = MEMORY[0x1E69E9820];
     v56[1] = 3221225472;
@@ -147,14 +147,14 @@
       [ATXHomeScreenPageIconRanker iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex:];
     }
 
-    v44 = [v41 allObjects];
+    allObjects2 = [v41 allObjects];
     v54[0] = MEMORY[0x1E69E9820];
     v54[1] = 3221225472;
     v54[2] = __88__ATXHomeScreenPageIconRanker_iconIndexesInAscendingOrderOfHistoricalUsageForPageIndex___block_invoke_36;
     v54[3] = &unk_1E80C17F0;
     v45 = v41;
     v55 = v45;
-    v46 = [v44 sortedArrayUsingComparator:v54];
+    v46 = [allObjects2 sortedArrayUsingComparator:v54];
 
     v47 = __atxlog_handle_default();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_DEBUG))
@@ -359,7 +359,7 @@ uint64_t __88__ATXHomeScreenPageIconRanker_iconIndexesInAscendingOrderOfHistoric
   }
 }
 
-- (id)_pageForPageIndex:(unint64_t)a3
+- (id)_pageForPageIndex:(unint64_t)index
 {
   v22 = *MEMORY[0x1E69E9840];
   cache = self->_cache;
@@ -395,7 +395,7 @@ uint64_t __88__ATXHomeScreenPageIconRanker_iconIndexesInAscendingOrderOfHistoric
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        if ([v13 pageIndex] == a3)
+        if ([v13 pageIndex] == index)
         {
           v14 = v13;
           goto LABEL_15;

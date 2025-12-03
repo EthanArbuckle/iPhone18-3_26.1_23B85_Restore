@@ -1,23 +1,23 @@
 @interface BRCUbiquitousAttributes
-+ (id)brc_attributesValues:(id)a3 localItem:(id)a4;
-+ (void)brc_getterForAttribute:(id)a3;
++ (id)brc_attributesValues:(id)values localItem:(id)item;
++ (void)brc_getterForAttribute:(id)attribute;
 @end
 
 @implementation BRCUbiquitousAttributes
 
-+ (void)brc_getterForAttribute:(id)a3
++ (void)brc_getterForAttribute:(id)attribute
 {
   v3 = brc_getterForAttribute__onceToken;
-  v4 = a3;
+  attributeCopy = attribute;
   if (v3 != -1)
   {
     +[BRCUbiquitousAttributes brc_getterForAttribute:];
   }
 
-  v5 = [brc_getterForAttribute__ubiquitousAttributeToFunction objectForKeyedSubscript:v4];
+  v5 = [brc_getterForAttribute__ubiquitousAttributeToFunction objectForKeyedSubscript:attributeCopy];
 
-  v6 = [v5 pointerValue];
-  return v6;
+  pointerValue = [v5 pointerValue];
+  return pointerValue;
 }
 
 void __50__BRCUbiquitousAttributes_brc_getterForAttribute___block_invoke()
@@ -96,11 +96,11 @@ void __50__BRCUbiquitousAttributes_brc_getterForAttribute___block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)brc_attributesValues:(id)a3 localItem:(id)a4
++ (id)brc_attributesValues:(id)values localItem:(id)item
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  valuesCopy = values;
+  itemCopy = item;
   v8 = brc_bread_crumbs();
   v9 = brc_default_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -108,12 +108,12 @@ void __50__BRCUbiquitousAttributes_brc_getterForAttribute___block_invoke()
     +[BRCUbiquitousAttributes brc_attributesValues:localItem:];
   }
 
-  v29 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  v29 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(valuesCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = v6;
+  v10 = valuesCopy;
   v11 = [v10 countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v11)
   {
@@ -131,12 +131,12 @@ void __50__BRCUbiquitousAttributes_brc_getterForAttribute___block_invoke()
         }
 
         v16 = *(*(&v30 + 1) + 8 * i);
-        v17 = [a1 brc_getterForAttribute:{v16, v28}];
+        v17 = [self brc_getterForAttribute:{v16, v28}];
         if (v17)
         {
           v18 = v17;
-          v19 = [v7 db];
-          v20 = v18(v7, v19);
+          v19 = [itemCopy db];
+          v20 = v18(itemCopy, v19);
 
           if (v20)
           {

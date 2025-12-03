@@ -1,15 +1,15 @@
 @interface ASCompetitionTemplateSource
 - (ASCompetitionTemplateSourceDataProvider)dataProvider;
-- (id)unusedTemplateNamesForFriendWithUUID:(id)a3;
-- (void)templatesWithCompletion:(id)a3;
+- (id)unusedTemplateNamesForFriendWithUUID:(id)d;
+- (void)templatesWithCompletion:(id)completion;
 @end
 
 @implementation ASCompetitionTemplateSource
 
-- (void)templatesWithCompletion:(id)a3
+- (void)templatesWithCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   ASLoggingInitialize();
   v5 = MEMORY[0x277CE8FC0];
   v6 = *MEMORY[0x277CE8FC0];
@@ -38,10 +38,10 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_dataProvider);
-  v12 = [WeakRetained friends];
-  v13 = [v12 hk_filter:&__block_literal_global_5];
+  friends = [WeakRetained friends];
+  v13 = [friends hk_filter:&__block_literal_global_5];
 
-  v14 = [v13 allObjects];
+  allObjects = [v13 allObjects];
   v15 = ASFriendsSortedByEarliestCompetitionVictoryOrPotentialVictoryDate();
 
   v26[0] = MEMORY[0x277D85DD0];
@@ -54,9 +54,9 @@
   if ([v15 count])
   {
     v17 = [objc_alloc(MEMORY[0x277CF1938]) initWithIdentifier:@"com.apple.ActivityMonitorApp.activity-competition-participated" bundleID:@"com.apple.ActivityMonitorApp" context:0];
-    v18 = [MEMORY[0x277CF1B58] discoverabilitySignal];
-    v19 = [v18 source];
-    [v19 sendEvent:v17];
+    discoverabilitySignal = [MEMORY[0x277CF1B58] discoverabilitySignal];
+    source = [discoverabilitySignal source];
+    [source sendEvent:v17];
   }
 
   ASLoggingInitialize();
@@ -72,7 +72,7 @@
   }
 
   v24 = [v16 copy];
-  (*(v4 + 2))(v4, v24, 0, 0);
+  (*(completionCopy + 2))(completionCopy, v24, 0, 0);
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -137,13 +137,13 @@ void __55__ASCompetitionTemplateSource_templatesWithCompletion___block_invoke_29
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)unusedTemplateNamesForFriendWithUUID:(id)a3
+- (id)unusedTemplateNamesForFriendWithUUID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = [MEMORY[0x277CBEB98] set];
   WeakRetained = objc_loadWeakRetained(&self->_dataProvider);
-  v7 = [WeakRetained friendWithUUID:v4];
+  v7 = [WeakRetained friendWithUUID:dCopy];
 
   ASLoggingInitialize();
   v8 = MEMORY[0x277CE8FC0];
@@ -154,11 +154,11 @@ void __55__ASCompetitionTemplateSource_templatesWithCompletion___block_invoke_29
     if (v10)
     {
       v11 = v9;
-      v12 = [v7 displayName];
+      displayName = [v7 displayName];
       v20 = 138543618;
-      v21 = v4;
+      v21 = dCopy;
       v22 = 2112;
-      v23 = v12;
+      v23 = displayName;
       _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "Competition template source building unused template names for friend: %{public}@ - %@", &v20, 0x16u);
     }
 
@@ -172,7 +172,7 @@ void __55__ASCompetitionTemplateSource_templatesWithCompletion___block_invoke_29
         _os_log_impl(&dword_23E5E3000, v13, OS_LOG_TYPE_DEFAULT, "No wins against this friend and competition isn't active, victory template is now unused", &v20, 2u);
       }
 
-      v14 = [v7 UUID];
+      uUID = [v7 UUID];
       v15 = ASCompetitionVictoryTemplateNameForFriend();
 
       v16 = [v5 setByAddingObject:v15];
@@ -184,7 +184,7 @@ void __55__ASCompetitionTemplateSource_templatesWithCompletion___block_invoke_29
   else if (v10)
   {
     v20 = 138543362;
-    v21 = v4;
+    v21 = dCopy;
     _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "Competition template source couldn't find friend: %{public}@", &v20, 0xCu);
   }
 

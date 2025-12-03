@@ -2,24 +2,24 @@
 - (BOOL)isDisabled;
 - (SSMetricsController)init;
 - (id)_connection;
-- (id)_cookieValuesForConfiguration:(id)a3;
+- (id)_cookieValuesForConfiguration:(id)configuration;
 - (id)_userType;
-- (id)_valueForField:(id)a3 withFieldData:(id)a4;
-- (id)locationWithPosition:(int64_t)a3 type:(id)a4 fieldData:(id)a5;
+- (id)_valueForField:(id)field withFieldData:(id)data;
+- (id)locationWithPosition:(int64_t)position type:(id)type fieldData:(id)data;
 - (void)_applicationWillEnterForeground;
-- (void)_enumerateFieldValuesWithMap:(id)a3 fieldData:(id)a4 block:(id)a5;
+- (void)_enumerateFieldValuesWithMap:(id)map fieldData:(id)data block:(id)block;
 - (void)_flushUnreportedEventsIfEnabled;
 - (void)_handleFlushTimer;
-- (void)_serialQueueInsertEvents:(id)a3 withCompletionHandler:(id)a4;
+- (void)_serialQueueInsertEvents:(id)events withCompletionHandler:(id)handler;
 - (void)_setupFlushTimer;
 - (void)dealloc;
-- (void)flushUnreportedEventsWithCompletionHandler:(id)a3;
-- (void)insertEvent:(id)a3 withCompletionHandler:(id)a4;
-- (void)insertEvents:(id)a3 withCompletionHandler:(id)a4;
-- (void)recordAnalyticsForMetricsDialogEvent:(id)a3 withTopic:(id)a4;
-- (void)setFlushTimerEnabled:(BOOL)a3;
-- (void)setGlobalConfiguration:(id)a3;
-- (void)setPageConfiguration:(id)a3;
+- (void)flushUnreportedEventsWithCompletionHandler:(id)handler;
+- (void)insertEvent:(id)event withCompletionHandler:(id)handler;
+- (void)insertEvents:(id)events withCompletionHandler:(id)handler;
+- (void)recordAnalyticsForMetricsDialogEvent:(id)event withTopic:(id)topic;
+- (void)setFlushTimerEnabled:(BOOL)enabled;
+- (void)setGlobalConfiguration:(id)configuration;
+- (void)setPageConfiguration:(id)configuration;
 @end
 
 @implementation SSMetricsController
@@ -49,17 +49,17 @@
     *(v2 + 3) = v9;
 
     v11 = MEMORY[0x1E698C7D8];
-    v12 = [MEMORY[0x1E698CA00] bagSubProfile];
-    v13 = [MEMORY[0x1E698CA00] bagSubProfileVersion];
-    v14 = [v11 bagForProfile:v12 profileVersion:v13];
+    bagSubProfile = [MEMORY[0x1E698CA00] bagSubProfile];
+    bagSubProfileVersion = [MEMORY[0x1E698CA00] bagSubProfileVersion];
+    v14 = [v11 bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
     v15 = [objc_alloc(MEMORY[0x1E698C8D8]) initWithBag:v14];
     v16 = *(v2 + 1);
     *(v2 + 1) = v15;
 
     *(v2 + 49) = 0;
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v2 selector:sel__applicationWillEnterForeground name:0x1F50440B8 object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__applicationWillEnterForeground name:0x1F50440B8 object:0];
   }
 
   return v2;
@@ -177,16 +177,16 @@ LABEL_17:
 
 - (BOOL)isDisabled
 {
-  v2 = [(SSMetricsController *)self configuration];
-  v3 = [v2 isDisabled];
+  configuration = [(SSMetricsController *)self configuration];
+  isDisabled = [configuration isDisabled];
 
-  return v3;
+  return isDisabled;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:0x1F50440B8 object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:0x1F50440B8 object:0];
 
   flushTimerBlock = self->_flushTimerBlock;
   if (flushTimerBlock)
@@ -216,18 +216,18 @@ LABEL_17:
   return connection;
 }
 
-- (id)_cookieValuesForConfiguration:(id)a3
+- (id)_cookieValuesForConfiguration:(id)configuration
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [a3 cookieFields];
-  if ([v3 count])
+  cookieFields = [configuration cookieFields];
+  if ([cookieFields count])
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v5 = +[SSAccountStore defaultStore];
-    v6 = [v5 activeAccount];
+    activeAccount = [v5 activeAccount];
 
     v7 = +[SSVCookieStorage sharedStorage];
-    v8 = [v7 allCookiesForAccount:v6];
+    v8 = [v7 allCookiesForAccount:activeAccount];
 
     v22 = 0u;
     v23 = 0u;
@@ -249,14 +249,14 @@ LABEL_17:
           }
 
           v14 = *(*(&v20 + 1) + 8 * i);
-          v15 = [v14 name];
-          v16 = [v3 containsObject:v15];
+          name = [v14 name];
+          v16 = [cookieFields containsObject:name];
 
           if (v16)
           {
-            v17 = [v14 value];
-            v18 = [v14 name];
-            [v4 setValue:v17 forKey:v18];
+            value = [v14 value];
+            name2 = [v14 name];
+            [v4 setValue:value forKey:name2];
           }
         }
 
@@ -275,23 +275,23 @@ LABEL_17:
   return v4;
 }
 
-- (void)_serialQueueInsertEvents:(id)a3 withCompletionHandler:(id)a4
+- (void)_serialQueueInsertEvents:(id)events withCompletionHandler:(id)handler
 {
   v110 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v94 = self;
-  v8 = [(SSMetricsController *)self configuration];
-  v9 = [v8 reportingURLString];
+  eventsCopy = events;
+  handlerCopy = handler;
+  selfCopy = self;
+  configuration = [(SSMetricsController *)self configuration];
+  reportingURLString = [configuration reportingURLString];
   objc_opt_class();
-  v91 = v9;
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v9 length])
+  v91 = reportingURLString;
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [reportingURLString length])
   {
-    v86 = v7;
+    v86 = handlerCopy;
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v85 = [(SSMetricsController *)self _userType];
+    _userType = [(SSMetricsController *)self _userType];
     [v10 setObject:? forKey:?];
-    v11 = [(SSMetricsController *)self _cookieValuesForConfiguration:v8];
+    v11 = [(SSMetricsController *)self _cookieValuesForConfiguration:configuration];
     if ([v11 count])
     {
       [v10 setObject:v11 forKey:@"cookies"];
@@ -300,19 +300,19 @@ LABEL_17:
     v84 = v11;
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v89 = [MEMORY[0x1E696AD98] numberWithDouble:?];
-    v90 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
+    v90 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(eventsCopy, "count")}];
     v101 = 0u;
     v102 = 0u;
     v103 = 0u;
     v104 = 0u;
-    v87 = v6;
-    obj = v6;
+    v87 = eventsCopy;
+    obj = eventsCopy;
     v12 = [obj countByEnumeratingWithState:&v101 objects:v109 count:16];
     if (v12)
     {
       v13 = v12;
       v14 = *v102;
-      v88 = v8;
+      v88 = configuration;
       do
       {
         v15 = 0;
@@ -325,7 +325,7 @@ LABEL_17:
           }
 
           v16 = *(*(&v101 + 1) + 8 * v15);
-          if ([v16 isBlacklistedByConfiguration:{v8, v82, v83}])
+          if ([v16 isBlacklistedByConfiguration:{configuration, v82, v83}])
           {
             v17 = +[SSLogConfig sharedStoreServicesConfig];
             if (!v17)
@@ -333,21 +333,21 @@ LABEL_17:
               v17 = +[SSLogConfig sharedConfig];
             }
 
-            v18 = [v17 shouldLog];
+            shouldLog = [v17 shouldLog];
             if ([v17 shouldLogToDisk])
             {
-              v18 |= 2u;
+              shouldLog |= 2u;
             }
 
-            v19 = [v17 OSLogObject];
-            if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+            oSLogObject = [v17 OSLogObject];
+            if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = v18;
+              v20 = shouldLog;
             }
 
             else
             {
-              v20 = v18 & 2;
+              v20 = shouldLog & 2;
             }
 
             if (v20)
@@ -364,9 +364,9 @@ LABEL_17:
 
               if (v23)
               {
-                v19 = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v105, v83}];
+                oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, &v105, v83}];
                 free(v23);
-                SSFileLog(v17, @"%@", v24, v25, v26, v27, v28, v29, v19);
+                SSFileLog(v17, @"%@", v24, v25, v26, v27, v28, v29, oSLogObject);
                 goto LABEL_27;
               }
             }
@@ -382,32 +382,32 @@ LABEL_27:
           context = objc_autoreleasePoolPush();
           if (([MEMORY[0x1E698C918] suppressEngagement] & 1) == 0)
           {
-            v30 = v94->_engagement;
+            v30 = selfCopy->_engagement;
             v31 = objc_alloc_init(MEMORY[0x1E695DF90]);
             [v16 appendPropertiesToBody:v31];
             v32 = [objc_alloc(MEMORY[0x1E698CA08]) initWithUnderlyingDictionary:v31];
             if (([v32 suppressEngagement] & 1) == 0)
             {
-              v33 = [v32 underlyingDictionary];
-              v34 = [(AMSEngagement *)v30 enqueueData:v33];
+              underlyingDictionary = [v32 underlyingDictionary];
+              v34 = [(AMSEngagement *)v30 enqueueData:underlyingDictionary];
 
-              v8 = v88;
+              configuration = v88;
             }
           }
 
           v35 = v14;
           v36 = v10;
-          v37 = [v16 allTableEntityPropertiesPermittedByConfiguration:v8 externalValues:v10];
+          v37 = [v16 allTableEntityPropertiesPermittedByConfiguration:configuration externalValues:v10];
           v38 = [v37 objectForKey:@"eventBody"];
           if ([v38 length])
           {
             v39 = [v16 decorateReportingURL:v91];
-            v40 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v16, "shouldSuppressUserInfo")}];
+            oSLogObject2 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v16, "shouldSuppressUserInfo")}];
             v41 = objc_alloc_init(MEMORY[0x1E695DF90]);
             [v41 setObject:v89 forKey:@"timestampInserted"];
             [v41 setObject:&unk_1F507A1B0 forKey:@"timestampReported"];
             [v41 setObject:v39 forKey:@"report_url"];
-            [v41 setObject:v40 forKey:@"supressDsid"];
+            [v41 setObject:oSLogObject2 forKey:@"supressDsid"];
             [v41 setObject:v38 forKey:@"eventBody"];
             [(__CFString *)v90 addObject:v41];
           }
@@ -420,19 +420,19 @@ LABEL_27:
               v39 = +[SSLogConfig sharedConfig];
             }
 
-            v42 = [v39 shouldLog];
+            shouldLog2 = [v39 shouldLog];
             if ([v39 shouldLogToDisk])
             {
-              v43 = v42 | 2;
+              v43 = shouldLog2 | 2;
             }
 
             else
             {
-              v43 = v42;
+              v43 = shouldLog2;
             }
 
-            v40 = [v39 OSLogObject];
-            if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
+            oSLogObject2 = [v39 OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
             {
               v44 = v43;
             }
@@ -456,16 +456,16 @@ LABEL_27:
 
               if (!v47)
               {
-                v8 = v88;
+                configuration = v88;
                 goto LABEL_42;
               }
 
-              v40 = [MEMORY[0x1E696AEC0] stringWithCString:v47 encoding:{4, &v105, v83}];
+              oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v47 encoding:{4, &v105, v83}];
               free(v47);
-              SSFileLog(v39, @"%@", v48, v49, v50, v51, v52, v53, v40);
+              SSFileLog(v39, @"%@", v48, v49, v50, v51, v52, v53, oSLogObject2);
             }
 
-            v8 = v88;
+            configuration = v88;
           }
 
 LABEL_42:
@@ -487,8 +487,8 @@ LABEL_43:
 
     if (![(__CFString *)v90 count])
     {
-      v7 = v86;
-      v6 = v87;
+      handlerCopy = v86;
+      eventsCopy = v87;
       if (!v86)
       {
 LABEL_78:
@@ -511,23 +511,23 @@ LABEL_77:
       goto LABEL_78;
     }
 
-    v7 = v86;
+    handlerCopy = v86;
     if (!SSIsInternalBuild() || !_os_feature_enabled_impl())
     {
 LABEL_63:
       v67 = xpc_dictionary_create(0, 0, 0);
       xpc_dictionary_set_int64(v67, "0", 110);
       SSXPCDictionarySetCFObject(v67, "1", v90);
-      v68 = [(SSMetricsController *)v94 _connection];
+      _connection = [(SSMetricsController *)selfCopy _connection];
       v99[0] = MEMORY[0x1E69E9820];
       v99[1] = 3221225472;
       v99[2] = __70__SSMetricsController__serialQueueInsertEvents_withCompletionHandler___block_invoke;
       v99[3] = &unk_1E84ABEF0;
-      v99[4] = v94;
+      v99[4] = selfCopy;
       v100 = v86;
-      [v68 sendMessage:v67 withReply:v99];
+      [_connection sendMessage:v67 withReply:v99];
 
-      v6 = v87;
+      eventsCopy = v87;
       goto LABEL_77;
     }
 
@@ -537,19 +537,19 @@ LABEL_63:
       v55 = +[SSLogConfig sharedConfig];
     }
 
-    v56 = [v55 shouldLog];
+    shouldLog3 = [v55 shouldLog];
     if ([v55 shouldLogToDisk])
     {
-      v57 = v56 | 2;
+      v57 = shouldLog3 | 2;
     }
 
     else
     {
-      v57 = v56;
+      v57 = shouldLog3;
     }
 
-    v58 = [v55 OSLogObject];
-    if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
+    oSLogObject3 = [v55 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
     {
       v59 = v57;
     }
@@ -573,9 +573,9 @@ LABEL_62:
         goto LABEL_63;
       }
 
-      v58 = [MEMORY[0x1E696AEC0] stringWithCString:v60 encoding:{4, &v105, v83}];
+      oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v60 encoding:{4, &v105, v83}];
       free(v60);
-      SSFileLog(v55, @"%@", v61, v62, v63, v64, v65, v66, v58);
+      SSFileLog(v55, @"%@", v61, v62, v63, v64, v65, v66, oSLogObject3);
     }
 
     goto LABEL_62;
@@ -587,19 +587,19 @@ LABEL_62:
     v10 = +[SSLogConfig sharedConfig];
   }
 
-  v69 = [v10 shouldLog];
+  shouldLog4 = [v10 shouldLog];
   if ([v10 shouldLogToDisk])
   {
-    v70 = v69 | 2;
+    v70 = shouldLog4 | 2;
   }
 
   else
   {
-    v70 = v69;
+    v70 = shouldLog4;
   }
 
-  v71 = [v10 OSLogObject];
-  if (!os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
+  oSLogObject4 = [v10 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
   {
     v70 &= 2u;
   }
@@ -620,9 +620,9 @@ LABEL_62:
 
   if (v74)
   {
-    v71 = [MEMORY[0x1E696AEC0] stringWithCString:v74 encoding:{4, &v105, v83}];
+    oSLogObject4 = [MEMORY[0x1E696AEC0] stringWithCString:v74 encoding:{4, &v105, v83}];
     free(v74);
-    SSFileLog(v10, @"%@", v75, v76, v77, v78, v79, v80, v71);
+    SSFileLog(v10, @"%@", v75, v76, v77, v78, v79, v80, oSLogObject4);
 LABEL_74:
   }
 
@@ -802,19 +802,19 @@ void __70__SSMetricsController__serialQueueInsertEvents_withCompletionHandler___
     v3 = +[SSLogConfig sharedConfig];
   }
 
-  v4 = [v3 shouldLog];
+  shouldLog = [v3 shouldLog];
   if ([v3 shouldLogToDisk])
   {
-    v5 = v4 | 2;
+    v5 = shouldLog | 2;
   }
 
   else
   {
-    v5 = v4;
+    v5 = shouldLog;
   }
 
-  v6 = [v3 OSLogObject];
-  if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v3 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v5 &= 2u;
   }
@@ -832,9 +832,9 @@ void __70__SSMetricsController__serialQueueInsertEvents_withCompletionHandler___
 
   if (v8)
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, location, v15}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, location, v15}];
     free(v8);
-    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+    SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
 LABEL_11:
   }
 
@@ -885,19 +885,19 @@ void __40__SSMetricsController__handleFlushTimer__block_invoke(uint64_t a1)
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
-    v6 = [v3 OSLogObject];
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
+    oSLogObject = [v3 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v5 &= 2u;
     }
@@ -924,9 +924,9 @@ LABEL_14:
         return;
       }
 
-      v6 = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, location, v17}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v8 encoding:{4, location, v17}];
       free(v8);
-      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, v6);
+      SSFileLog(v3, @"%@", v9, v10, v11, v12, v13, v14, oSLogObject);
     }
 
     goto LABEL_14;
@@ -1079,23 +1079,23 @@ void __39__SSMetricsController__setupFlushTimer__block_invoke_57(uint64_t a1)
   }
 }
 
-- (void)setFlushTimerEnabled:(BOOL)a3
+- (void)setFlushTimerEnabled:(BOOL)enabled
 {
-  if (self->_flushTimerEnabled != a3)
+  if (self->_flushTimerEnabled != enabled)
   {
-    self->_flushTimerEnabled = a3;
+    self->_flushTimerEnabled = enabled;
     [(SSMetricsController *)self _setupFlushTimer];
   }
 }
 
-- (void)flushUnreportedEventsWithCompletionHandler:(id)a3
+- (void)flushUnreportedEventsWithCompletionHandler:(id)handler
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SSMetricsController *)self configuration];
-  v6 = [v5 isSendDisabled];
+  handlerCopy = handler;
+  configuration = [(SSMetricsController *)self configuration];
+  isSendDisabled = [configuration isSendDisabled];
 
-  if (!v6)
+  if (!isSendDisabled)
   {
     v8 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v8)
@@ -1103,19 +1103,19 @@ void __39__SSMetricsController__setupFlushTimer__block_invoke_57(uint64_t a1)
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v8 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v10 &= 2u;
     }
@@ -1152,19 +1152,19 @@ void __39__SSMetricsController__setupFlushTimer__block_invoke_57(uint64_t a1)
       v21 = +[SSLogConfig sharedConfig];
     }
 
-    v22 = [v21 shouldLog];
+    shouldLog2 = [v21 shouldLog];
     if ([v21 shouldLogToDisk])
     {
-      v23 = v22 | 2;
+      v23 = shouldLog2 | 2;
     }
 
     else
     {
-      v23 = v22;
+      v23 = shouldLog2;
     }
 
-    v24 = [v21 OSLogObject];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [v21 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
       v25 = v23;
     }
@@ -1187,37 +1187,37 @@ LABEL_29:
 
 LABEL_30:
         objc_initWeak(location, self);
-        v33 = [(SSMetricsController *)self serialQueue];
+        serialQueue = [(SSMetricsController *)self serialQueue];
         v36[0] = MEMORY[0x1E69E9820];
         v36[1] = 3221225472;
         v36[2] = __66__SSMetricsController_flushUnreportedEventsWithCompletionHandler___block_invoke_58;
         v36[3] = &unk_1E84AED80;
         objc_copyWeak(&v38, location);
         v36[4] = self;
-        v37 = v4;
-        dispatch_async(v33, v36);
+        v37 = handlerCopy;
+        dispatch_async(serialQueue, v36);
 
         objc_destroyWeak(&v38);
         objc_destroyWeak(location);
         goto LABEL_31;
       }
 
-      v24 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, location, v35}];
+      oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v26 encoding:{4, location, v35}];
       free(v26);
-      SSFileLog(v21, @"%@", v27, v28, v29, v30, v31, v32, v24);
+      SSFileLog(v21, @"%@", v27, v28, v29, v30, v31, v32, oSLogObject2);
     }
 
     goto LABEL_29;
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     v7 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __66__SSMetricsController_flushUnreportedEventsWithCompletionHandler___block_invoke;
     block[3] = &unk_1E84ADED0;
-    v40 = v4;
+    v40 = handlerCopy;
     dispatch_async(v7, block);
   }
 
@@ -1386,40 +1386,40 @@ LABEL_18:
 LABEL_31:
 }
 
-- (void)insertEvent:(id)a3 withCompletionHandler:(id)a4
+- (void)insertEvent:(id)event withCompletionHandler:(id)handler
 {
-  if (a3)
+  if (event)
   {
     v6 = MEMORY[0x1E695DEC8];
-    v7 = a4;
-    v8 = [v6 arrayWithObject:a3];
+    handlerCopy = handler;
+    handlerCopy2 = [v6 arrayWithObject:event];
     [SSMetricsController insertEvents:"insertEvents:withCompletionHandler:" withCompletionHandler:?];
   }
 
   else
   {
-    v8 = a4;
+    handlerCopy2 = handler;
     [(SSMetricsController *)self insertEvents:0 withCompletionHandler:?];
   }
 }
 
-- (void)insertEvents:(id)a3 withCompletionHandler:(id)a4
+- (void)insertEvents:(id)events withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(SSMetricsController *)self serialQueue];
+  serialQueue = [(SSMetricsController *)self serialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__SSMetricsController_insertEvents_withCompletionHandler___block_invoke;
   block[3] = &unk_1E84AEDA8;
   objc_copyWeak(&v15, &location);
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = eventsCopy;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = eventsCopy;
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -1720,16 +1720,16 @@ LABEL_49:
 LABEL_67:
 }
 
-- (id)locationWithPosition:(int64_t)a3 type:(id)a4 fieldData:(id)a5
+- (id)locationWithPosition:(int64_t)position type:(id)type fieldData:(id)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  typeCopy = type;
+  dataCopy = data;
   v10 = objc_alloc_init(SSMetricsEventLocation);
-  [(SSMetricsEventLocation *)v10 setLocationPosition:a3];
-  [(SSMetricsEventLocation *)v10 setLocationType:v8];
-  v11 = [(SSMetricsConfiguration *)self->_configuration fieldsMap];
-  v12 = [v11 objectForKey:@"single"];
+  [(SSMetricsEventLocation *)v10 setLocationPosition:position];
+  [(SSMetricsEventLocation *)v10 setLocationType:typeCopy];
+  fieldsMap = [(SSMetricsConfiguration *)self->_configuration fieldsMap];
+  v12 = [fieldsMap objectForKey:@"single"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1738,10 +1738,10 @@ LABEL_67:
     v33[2] = __59__SSMetricsController_locationWithPosition_type_fieldData___block_invoke;
     v33[3] = &unk_1E84AE620;
     v34 = v10;
-    [(SSMetricsController *)self _enumerateFieldValuesWithMap:v12 fieldData:v9 block:v33];
+    [(SSMetricsController *)self _enumerateFieldValuesWithMap:v12 fieldData:dataCopy block:v33];
   }
 
-  v13 = [v11 objectForKey:@"multi"];
+  v13 = [fieldsMap objectForKey:@"multi"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1750,16 +1750,16 @@ LABEL_67:
     v31[2] = __59__SSMetricsController_locationWithPosition_type_fieldData___block_invoke_2;
     v31[3] = &unk_1E84AE620;
     v32 = v10;
-    [(SSMetricsController *)self _enumerateFieldValuesWithMap:v13 fieldData:v9 block:v31];
+    [(SSMetricsController *)self _enumerateFieldValuesWithMap:v13 fieldData:dataCopy block:v31];
   }
 
-  v14 = [v11 objectForKey:@"custom"];
+  v14 = [fieldsMap objectForKey:@"custom"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v24 = v13;
     v25 = v12;
-    v26 = v8;
+    v26 = typeCopy;
     v23 = v14;
     v15 = [v14 objectForKey:@"location"];
     v27 = 0u;
@@ -1784,7 +1784,7 @@ LABEL_67:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v21 = [(SSMetricsController *)self _valueForField:v20 withFieldData:v9];
+            v21 = [(SSMetricsController *)self _valueForField:v20 withFieldData:dataCopy];
             if (v21)
             {
               [(SSMetricsEventLocation *)v10 setValue:v21 forLocationKey:v20];
@@ -1798,7 +1798,7 @@ LABEL_67:
       while (v17);
     }
 
-    v8 = v26;
+    typeCopy = v26;
     v13 = v24;
     v12 = v25;
     v14 = v23;
@@ -1814,11 +1814,11 @@ uint64_t __59__SSMetricsController_locationWithPosition_type_fieldData___block_i
   return result;
 }
 
-- (void)recordAnalyticsForMetricsDialogEvent:(id)a3 withTopic:(id)a4
+- (void)recordAnalyticsForMetricsDialogEvent:(id)event withTopic:(id)topic
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  topicCopy = topic;
+  eventCopy = event;
   if (!SSIsDaemon())
   {
     if (!SSIsInternalBuild() || !_os_feature_enabled_impl())
@@ -1832,19 +1832,19 @@ uint64_t __59__SSMetricsController_locationWithPosition_type_fieldData___block_i
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog;
     }
 
-    v11 = [v8 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    oSLogObject = [v8 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
     {
       v12 = v10;
     }
@@ -1867,30 +1867,30 @@ LABEL_19:
 
 LABEL_20:
         v20 = SSXPCCreateMessageDictionary(197);
-        SSXPCDictionarySetObject(v20, "1", v7);
+        SSXPCDictionarySetObject(v20, "1", eventCopy);
 
-        SSXPCDictionarySetObject(v20, "2", v6);
-        v21 = [(SSMetricsController *)self _connection];
+        SSXPCDictionarySetObject(v20, "2", topicCopy);
+        _connection = [(SSMetricsController *)self _connection];
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __70__SSMetricsController_recordAnalyticsForMetricsDialogEvent_withTopic___block_invoke;
         v24[3] = &unk_1E84AEDD0;
         v24[4] = self;
-        [v21 sendMessage:v20 withReply:v24];
+        [_connection sendMessage:v20 withReply:v24];
 
         return;
       }
 
-      v11 = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v25, v22}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v13 encoding:{4, &v25, v22}];
       free(v13);
-      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, v11);
+      SSFileLog(v8, @"%@", v14, v15, v16, v17, v18, v19, oSLogObject);
     }
 
     goto LABEL_19;
   }
 
   v23 = objc_alloc_init(NSClassFromString(&cfstr_Metricscontrol.isa));
-  [v23 recordAnalyticsWithMetricsDialogEvent:v7 forTopic:v6];
+  [v23 recordAnalyticsWithMetricsDialogEvent:eventCopy forTopic:topicCopy];
 }
 
 void __70__SSMetricsController_recordAnalyticsForMetricsDialogEvent_withTopic___block_invoke(uint64_t a1, void *a2)
@@ -2025,18 +2025,18 @@ LABEL_24:
   }
 }
 
-- (void)setGlobalConfiguration:(id)a3
+- (void)setGlobalConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SSMetricsController *)self serialQueue];
+  configurationCopy = configuration;
+  serialQueue = [(SSMetricsController *)self serialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__SSMetricsController_setGlobalConfiguration___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 void __46__SSMetricsController_setGlobalConfiguration___block_invoke(uint64_t a1)
@@ -2059,18 +2059,18 @@ void __46__SSMetricsController_setGlobalConfiguration___block_invoke(uint64_t a1
   }
 }
 
-- (void)setPageConfiguration:(id)a3
+- (void)setPageConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(SSMetricsController *)self serialQueue];
+  configurationCopy = configuration;
+  serialQueue = [(SSMetricsController *)self serialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SSMetricsController_setPageConfiguration___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  dispatch_sync(serialQueue, v7);
 }
 
 uint64_t __44__SSMetricsController_setPageConfiguration___block_invoke(uint64_t result)
@@ -2083,20 +2083,20 @@ uint64_t __44__SSMetricsController_setPageConfiguration___block_invoke(uint64_t 
   return result;
 }
 
-- (void)_enumerateFieldValuesWithMap:(id)a3 fieldData:(id)a4 block:(id)a5
+- (void)_enumerateFieldValuesWithMap:(id)map fieldData:(id)data block:(id)block
 {
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__SSMetricsController__enumerateFieldValuesWithMap_fieldData_block___block_invoke;
   v12[3] = &unk_1E84AEDF8;
   v12[4] = self;
-  v13 = v8;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
-  [a3 enumerateKeysAndObjectsUsingBlock:v12];
+  v13 = dataCopy;
+  v14 = blockCopy;
+  v10 = blockCopy;
+  v11 = dataCopy;
+  [map enumerateKeysAndObjectsUsingBlock:v12];
 }
 
 void __68__SSMetricsController__enumerateFieldValuesWithMap_fieldData_block___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2150,14 +2150,14 @@ void __68__SSMetricsController__enumerateFieldValuesWithMap_fieldData_block___bl
   }
 }
 
-- (id)_valueForField:(id)a3 withFieldData:(id)a4
+- (id)_valueForField:(id)field withFieldData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SSMetricsConfiguration *)self->_configuration valueForConfigurationKey:v6];
+  fieldCopy = field;
+  dataCopy = data;
+  v8 = [(SSMetricsConfiguration *)self->_configuration valueForConfigurationKey:fieldCopy];
   if (!v8)
   {
-    v8 = [v7 valueForMetricsField:v6];
+    v8 = [dataCopy valueForMetricsField:fieldCopy];
   }
 
   return v8;
@@ -2166,17 +2166,17 @@ void __68__SSMetricsController__enumerateFieldValuesWithMap_fieldData_block___bl
 - (id)_userType
 {
   v2 = +[SSVSubscriptionStatusCoordinator sharedCoordinator];
-  v3 = [v2 lastKnownStatus];
+  lastKnownStatus = [v2 lastKnownStatus];
 
-  v4 = [v3 accountStatus];
-  if (v4 > 4)
+  accountStatus = [lastKnownStatus accountStatus];
+  if (accountStatus > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E84AEE18[v4];
+    v5 = off_1E84AEE18[accountStatus];
   }
 
   return v5;

@@ -1,12 +1,12 @@
 @interface PKAutoRefineController
 - (PKAutoRefineController)init;
 - (uint64_t)isRefinableStroke:(uint64_t)result;
-- (uint64_t)stableSynthesisParametersFromSourceStrokes:(void *)a3 outInk:(void *)a4 outReferenceStroke:;
+- (uint64_t)stableSynthesisParametersFromSourceStrokes:(void *)strokes outInk:(void *)ink outReferenceStroke:;
 - (void)clearRefinableStrokes;
-- (void)indexRefinableStroke:(uint64_t)a1;
-- (void)removeAsRefinableStrokes:(uint64_t)a1;
-- (void)setIsAutoRefineOn:(int)a3 force:;
-- (void)setIsAutoRefineOn:(uint64_t)a1;
+- (void)indexRefinableStroke:(uint64_t)stroke;
+- (void)removeAsRefinableStrokes:(uint64_t)strokes;
+- (void)setIsAutoRefineOn:(int)on force:;
+- (void)setIsAutoRefineOn:(uint64_t)on;
 @end
 
 @implementation PKAutoRefineController
@@ -21,9 +21,9 @@
     objc_opt_self();
     v2->_isAutoRefineOn = +[PKSettingsDaemon autoRefineEnabled];
     v2->_forceAutoRefineState = 0;
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     refinableLocalPencilStrokeUUIDs = v2->_refinableLocalPencilStrokeUUIDs;
-    v2->_refinableLocalPencilStrokeUUIDs = v3;
+    v2->_refinableLocalPencilStrokeUUIDs = array;
 
     objc_initWeak(&location, v2);
     v5 = [PKAutoRefineSettingsObserver alloc];
@@ -98,32 +98,32 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setIsAutoRefineOn:(int)a3 force:
+- (void)setIsAutoRefineOn:(int)on force:
 {
-  if (a1)
+  if (self)
   {
-    v3 = a3;
+    onCopy = on;
     v4 = a2;
-    if (*(a1 + 25) != a2 || *(a1 + 24) != a3)
+    if (*(self + 25) != a2 || *(self + 24) != on)
     {
-      [(PKAutoRefineController *)a1 clearRefinableStrokes];
-      if ((v3 & 1) == 0)
+      [(PKAutoRefineController *)self clearRefinableStrokes];
+      if ((onCopy & 1) == 0)
       {
         objc_opt_self();
         v4 = +[PKSettingsDaemon autoRefineEnabled];
       }
 
-      *(a1 + 25) = v4;
-      *(a1 + 24) = v3;
+      *(self + 25) = v4;
+      *(self + 24) = onCopy;
     }
   }
 }
 
 - (void)clearRefinableStrokes
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 8) removeAllObjects];
+    [*(self + 8) removeAllObjects];
     v1 = os_log_create("com.apple.pencilkit", "AutoRefine");
     if (os_log_type_enabled(v1, OS_LOG_TYPE_DEBUG))
     {
@@ -133,18 +133,18 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)indexRefinableStroke:(uint64_t)a1
+- (void)indexRefinableStroke:(uint64_t)stroke
 {
   v15 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1 && v3 && *(a1 + 25) == 1)
+  if (stroke && v3 && *(stroke + 25) == 1)
   {
     if (PKIsPadDevice() && CHGetPersonalizedSynthesisSupportState() > 2)
     {
-      v5 = *(a1 + 8);
-      v6 = [v4 _strokeUUID];
-      [v5 addObject:v6];
+      v5 = *(stroke + 8);
+      _strokeUUID = [v4 _strokeUUID];
+      [v5 addObject:_strokeUUID];
     }
 
     else
@@ -162,7 +162,7 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
     {
       [v4 _bounds];
       v9 = NSStringFromCGRect(v16);
-      v10 = [*(a1 + 8) count];
+      v10 = [*(stroke + 8) count];
       v11 = 138412546;
       v12 = v9;
       v13 = 2048;
@@ -172,16 +172,16 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setIsAutoRefineOn:(uint64_t)a1
+- (void)setIsAutoRefineOn:(uint64_t)on
 {
-  if (a1)
+  if (on)
   {
     v2 = a2;
-    if (*(a1 + 25) != a2 || (*(a1 + 24) & 1) == 0)
+    if (*(on + 25) != a2 || (*(on + 24) & 1) == 0)
     {
-      [(PKAutoRefineController *)a1 clearRefinableStrokes];
-      *(a1 + 25) = v2;
-      *(a1 + 24) = 1;
+      [(PKAutoRefineController *)on clearRefinableStrokes];
+      *(on + 25) = v2;
+      *(on + 24) = 1;
     }
   }
 }
@@ -191,8 +191,8 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
   if (result)
   {
     v2 = *(result + 8);
-    v3 = [a2 _strokeUUID];
-    v4 = [v2 containsObject:v3];
+    _strokeUUID = [a2 _strokeUUID];
+    v4 = [v2 containsObject:_strokeUUID];
 
     return v4;
   }
@@ -200,12 +200,12 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)removeAsRefinableStrokes:(uint64_t)a1
+- (void)removeAsRefinableStrokes:(uint64_t)strokes
 {
   v23 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (strokes)
   {
     v16 = 0u;
     v17 = 0u;
@@ -226,9 +226,9 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
             objc_enumerationMutation(v4);
           }
 
-          v9 = *(a1 + 8);
-          v10 = [*(*(&v14 + 1) + 8 * v8) _strokeUUID];
-          [v9 removeObject:v10];
+          v9 = *(strokes + 8);
+          _strokeUUID = [*(*(&v14 + 1) + 8 * v8) _strokeUUID];
+          [v9 removeObject:_strokeUUID];
 
           ++v8;
         }
@@ -244,7 +244,7 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       v12 = [v4 count];
-      v13 = [*(a1 + 8) count];
+      v13 = [*(strokes + 8) count];
       *buf = 134218240;
       v19 = v12;
       v20 = 2048;
@@ -254,12 +254,12 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
   }
 }
 
-- (uint64_t)stableSynthesisParametersFromSourceStrokes:(void *)a3 outInk:(void *)a4 outReferenceStroke:
+- (uint64_t)stableSynthesisParametersFromSourceStrokes:(void *)strokes outInk:(void *)ink outReferenceStroke:
 {
   v42 = *MEMORY[0x1E69E9840];
   v7 = a2;
   v8 = v7;
-  if (!a1)
+  if (!self)
   {
     v12 = 0;
     goto LABEL_12;
@@ -295,18 +295,18 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
   v16[1] = 3221225472;
   v16[2] = __95__PKAutoRefineController_stableSynthesisParametersFromSourceStrokes_outInk_outReferenceStroke___block_invoke;
   v16[3] = &unk_1E82DBD10;
-  v16[4] = a1;
+  v16[4] = self;
   v16[5] = v17;
   v16[6] = &v24;
   v16[7] = &v18;
   v16[8] = &v30;
   v16[9] = &v36;
   [v7 enumerateObjectsWithOptions:2 usingBlock:v16];
-  v9 = *(a1 + 32);
+  v9 = *(self + 32);
   if (v9 && *(v37 + 24) == 1 && v31[5] == v9)
   {
-    *a3 = v9;
-    v11 = *(a1 + 40);
+    *strokes = v9;
+    v11 = *(self + 40);
   }
 
   else
@@ -323,17 +323,17 @@ void __30__PKAutoRefineController_init__block_invoke_2(uint64_t a1)
         _os_log_error_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_ERROR, "AutoRefine: No reflowable stroke identified among %ld stroke to determine the synthesis parameters, fallback to using a non-refinable stroke instead.", buf, 0xCu);
       }
 
-      *a3 = [v19[5] _ink];
+      *strokes = [v19[5] _ink];
       v12 = 0;
-      *a4 = v19[5];
+      *ink = v19[5];
       goto LABEL_11;
     }
 
-    *a3 = [v10 _ink];
+    *strokes = [v10 _ink];
     v11 = v25[5];
   }
 
-  *a4 = v11;
+  *ink = v11;
   v12 = *(v37 + 24);
 LABEL_11:
   _Block_object_dispose(v17, 8);

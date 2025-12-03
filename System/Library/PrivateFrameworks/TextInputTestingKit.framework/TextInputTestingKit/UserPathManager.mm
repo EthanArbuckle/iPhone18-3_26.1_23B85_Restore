@@ -1,38 +1,38 @@
 @interface UserPathManager
 - (BOOL)buildLookupTree;
-- (BOOL)computeTranslations:(id)a3;
-- (UserPathManager)initWithPathFile:(id)a3;
-- (id)lookup:(id)a3 keyboardController:(id)a4;
-- (id)translateLayoutForKeys:(id)a3 keyboardController:(id)a4;
+- (BOOL)computeTranslations:(id)translations;
+- (UserPathManager)initWithPathFile:(id)file;
+- (id)lookup:(id)lookup keyboardController:(id)controller;
+- (id)translateLayoutForKeys:(id)keys keyboardController:(id)controller;
 - (void)dealloc;
-- (void)setRandomNumberSeed:(unsigned int)a3;
+- (void)setRandomNumberSeed:(unsigned int)seed;
 @end
 
 @implementation UserPathManager
 
-- (id)lookup:(id)a3 keyboardController:(id)a4
+- (id)lookup:(id)lookup keyboardController:(id)controller
 {
   v48 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v39 = a4;
-  v6 = [(NSMutableDictionary *)self->_lookupTree objectForKey:v38];
-  if (v6 || (lookupTree = self->_lookupTree, [v38 lowercaseString], v8 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](lookupTree, "objectForKey:", v8), v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  lookupCopy = lookup;
+  controllerCopy = controller;
+  v6 = [(NSMutableDictionary *)self->_lookupTree objectForKey:lookupCopy];
+  if (v6 || (lookupTree = self->_lookupTree, [lookupCopy lowercaseString], v8 = objc_claimAutoreleasedReturnValue(), -[NSMutableDictionary objectForKey:](lookupTree, "objectForKey:", v8), v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
   {
     v35 = v6;
     v40 = [v6 objectAtIndex:{std::mersenne_twister_engine<unsigned int, 32ul, 624ul, 397ul, 31ul, 2567483615u, 11ul, 4294967295u, 7ul, 2636928640u, 15ul, 4022730752u, 18ul, 1812433253u>::operator()(self->m_generator) % objc_msgSend(v6, "count")}];
-    v9 = [v39 keyplane];
-    v10 = [v9 name];
+    keyplane = [controllerCopy keyplane];
+    name = [keyplane name];
 
-    v37 = v10;
-    v11 = [(NSMutableDictionary *)self->_transforms objectForKey:v10];
+    v37 = name;
+    v11 = [(NSMutableDictionary *)self->_transforms objectForKey:name];
     if (!v11)
     {
-      [(UserPathManager *)self computeTranslations:v39];
-      v11 = [(NSMutableDictionary *)self->_transforms objectForKey:v10];
+      [(UserPathManager *)self computeTranslations:controllerCopy];
+      v11 = [(NSMutableDictionary *)self->_transforms objectForKey:name];
     }
 
-    v12 = [v40 layout];
-    v13 = [v11 objectForKey:v12];
+    layout = [v40 layout];
+    v13 = [v11 objectForKey:layout];
 
     v36 = v13;
     if (v13)
@@ -43,8 +43,8 @@
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v15 = [v40 samples];
-      v16 = [v15 countByEnumeratingWithState:&v42 objects:v47 count:16];
+      samples = [v40 samples];
+      v16 = [samples countByEnumeratingWithState:&v42 objects:v47 count:16];
       if (v16)
       {
         v17 = *v43;
@@ -54,7 +54,7 @@
           {
             if (*v43 != v17)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(samples);
             }
 
             v19 = *(*(&v42 + 1) + 8 * i);
@@ -76,7 +76,7 @@
             [(TIContinuousPath *)v14 addSample:v33];
           }
 
-          v16 = [v15 countByEnumeratingWithState:&v42 objects:v47 count:16];
+          v16 = [samples countByEnumeratingWithState:&v42 objects:v47 count:16];
         }
 
         while (v16);
@@ -103,19 +103,19 @@
   v53 = *MEMORY[0x277D85DE8];
   for (i = self; ; self = i)
   {
-    v32 = [(TTKTestCaseSource *)self->_source getNextTestCase];
+    getNextTestCase = [(TTKTestCaseSource *)self->_source getNextTestCase];
 
-    if (!v32)
+    if (!getNextTestCase)
     {
       break;
     }
 
-    v3 = [v32 records];
+    records = [getNextTestCase records];
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    obj = v3;
+    obj = records;
     v28 = [obj countByEnumeratingWithState:&v46 objects:v52 count:16];
     if (v28)
     {
@@ -130,17 +130,17 @@
           }
 
           v4 = *(*(&v46 + 1) + 8 * j);
-          v33 = [v4 primaryIntendedText];
+          primaryIntendedText = [v4 primaryIntendedText];
           v5 = [TIContinuousPathWithLayoutName alloc];
-          v6 = [v4 layoutName];
-          v7 = [(TIContinuousPathWithLayoutName *)v5 initWithLayout:v6];
+          layoutName = [v4 layoutName];
+          v7 = [(TIContinuousPathWithLayoutName *)v5 initWithLayout:layoutName];
 
-          v8 = [v4 touchDataCollection];
+          touchDataCollection = [v4 touchDataCollection];
           v44 = 0u;
           v45 = 0u;
           v42 = 0u;
           v43 = 0u;
-          v35 = v8;
+          v35 = touchDataCollection;
           v9 = [v35 countByEnumeratingWithState:&v42 objects:v51 count:16];
           if (v9)
           {
@@ -161,8 +161,8 @@
                 v39 = 0u;
                 v40 = 0u;
                 v41 = 0u;
-                v13 = [v12 samples];
-                v14 = [v13 countByEnumeratingWithState:&v38 objects:v50 count:16];
+                samples = [v12 samples];
+                v14 = [samples countByEnumeratingWithState:&v38 objects:v50 count:16];
                 if (v14)
                 {
                   v15 = *v39;
@@ -172,7 +172,7 @@
                     {
                       if (*v39 != v15)
                       {
-                        objc_enumerationMutation(v13);
+                        objc_enumerationMutation(samples);
                       }
 
                       v17 = *(*(&v38 + 1) + 8 * m);
@@ -191,7 +191,7 @@
                       [(TIContinuousPath *)v7 addSample:v25];
                     }
 
-                    v14 = [v13 countByEnumeratingWithState:&v38 objects:v50 count:16];
+                    v14 = [samples countByEnumeratingWithState:&v38 objects:v50 count:16];
                   }
 
                   while (v14);
@@ -204,14 +204,14 @@
             while (v9);
           }
 
-          v26 = [(NSMutableDictionary *)i->_lookupTree objectForKey:v33];
-          if (!v26)
+          array = [(NSMutableDictionary *)i->_lookupTree objectForKey:primaryIntendedText];
+          if (!array)
           {
-            v26 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
             [NSMutableDictionary setObject:"setObject:forKey:" forKey:?];
           }
 
-          [v26 addObject:v7];
+          [array addObject:v7];
         }
 
         v28 = [obj countByEnumeratingWithState:&v46 objects:v52 count:16];
@@ -220,17 +220,17 @@
       while (v28);
     }
 
-    v2 = v32;
+    v2 = getNextTestCase;
   }
 
   return 1;
 }
 
-- (id)translateLayoutForKeys:(id)a3 keyboardController:(id)a4
+- (id)translateLayoutForKeys:(id)keys keyboardController:(id)controller
 {
   v74 = *MEMORY[0x277D85DE8];
-  v52 = a3;
-  v5 = a4;
+  keysCopy = keys;
+  controllerCopy = controller;
   v66[0] = 0;
   v66[1] = v66;
   v66[2] = 0x5012000000;
@@ -246,21 +246,21 @@
   v64[3] = __Block_byref_object_copy__15;
   v64[4] = __Block_byref_object_dispose__16;
   v65 = 0;
-  v7 = [v5 keyplane];
-  v8 = [v7 keys];
+  keyplane = [controllerCopy keyplane];
+  keys = [keyplane keys];
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __61__UserPathManager_translateLayoutForKeys_keyboardController___block_invoke;
   v63[3] = &unk_279DA0EB8;
   v63[4] = v64;
   v63[5] = v66;
-  [v8 enumerateObjectsUsingBlock:v63];
+  [keys enumerateObjectsUsingBlock:v63];
 
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  obj = v52;
+  obj = keysCopy;
   v9 = [obj countByEnumeratingWithState:&v59 objects:v73 count:16];
   if (v9)
   {
@@ -281,10 +281,10 @@
         }
 
         v14 = *(*(&v59 + 1) + 8 * i);
-        v15 = [v14 string];
-        v16 = [v5 layoutUtils];
-        v17 = [v5 keyplane];
-        v18 = [v16 exactKeyForString:v15 keyplane:v17];
+        string = [v14 string];
+        layoutUtils = [controllerCopy layoutUtils];
+        keyplane2 = [controllerCopy keyplane];
+        v18 = [layoutUtils exactKeyForString:string keyplane:keyplane2];
 
         if (v18)
         {
@@ -439,20 +439,20 @@ void __61__UserPathManager_translateLayoutForKeys_keyboardController___block_inv
   }
 }
 
-- (BOOL)computeTranslations:(id)a3
+- (BOOL)computeTranslations:(id)translations
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v15 = [(TTKTestCaseSource *)self->_source layouts];
-  v5 = [v4 keyplane];
-  v16 = [v5 name];
+  translationsCopy = translations;
+  layouts = [(TTKTestCaseSource *)self->_source layouts];
+  keyplane = [translationsCopy keyplane];
+  name = [keyplane name];
 
-  v17 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v15;
+  v6 = layouts;
   v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
@@ -468,11 +468,11 @@ void __61__UserPathManager_translateLayoutForKeys_keyboardController___block_inv
 
         v10 = *(*(&v18 + 1) + 8 * i);
         v11 = [v6 objectForKey:v10];
-        v12 = [v11 keys];
-        v13 = [(UserPathManager *)self translateLayoutForKeys:v12 keyboardController:v4];
+        keys = [v11 keys];
+        v13 = [(UserPathManager *)self translateLayoutForKeys:keys keyboardController:translationsCopy];
         if (v13)
         {
-          [v17 setObject:v13 forKey:v10];
+          [dictionary setObject:v13 forKey:v10];
         }
       }
 
@@ -482,18 +482,18 @@ void __61__UserPathManager_translateLayoutForKeys_keyboardController___block_inv
     while (v7);
   }
 
-  [(NSMutableDictionary *)self->_transforms setObject:v17 forKey:v16];
+  [(NSMutableDictionary *)self->_transforms setObject:dictionary forKey:name];
   return 1;
 }
 
-- (void)setRandomNumberSeed:(unsigned int)a3
+- (void)setRandomNumberSeed:(unsigned int)seed
 {
   m_generator = self->m_generator;
-  *m_generator = a3;
+  *m_generator = seed;
   for (i = 1; i != 624; ++i)
   {
-    a3 = i + 1812433253 * (a3 ^ (a3 >> 30));
-    m_generator[i] = a3;
+    seed = i + 1812433253 * (seed ^ (seed >> 30));
+    m_generator[i] = seed;
   }
 
   *(m_generator + 312) = 0;
@@ -512,35 +512,35 @@ void __61__UserPathManager_translateLayoutForKeys_keyboardController___block_inv
   [(UserPathManager *)&v4 dealloc];
 }
 
-- (UserPathManager)initWithPathFile:(id)a3
+- (UserPathManager)initWithPathFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v16.receiver = self;
   v16.super_class = UserPathManager;
   v6 = [(UserPathManager *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pathFile, a3);
-    v8 = [TTKTestCaseReader loadFromPath:v5];
+    objc_storeStrong(&v6->_pathFile, file);
+    v8 = [TTKTestCaseReader loadFromPath:fileCopy];
     source = v7->_source;
     v7->_source = v8;
 
     if (v7->_source)
     {
-      v10 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       transforms = v7->_transforms;
-      v7->_transforms = v10;
+      v7->_transforms = dictionary;
 
-      v12 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       lookupTree = v7->_lookupTree;
-      v7->_lookupTree = v12;
+      v7->_lookupTree = dictionary2;
 
       [(UserPathManager *)v7 buildLookupTree];
       operator new();
     }
 
-    fprintf(*MEMORY[0x277D85DF8], "Error: Unable to parse user path JSON file '%s'\n\n", [v5 cStringUsingEncoding:4]);
+    fprintf(*MEMORY[0x277D85DF8], "Error: Unable to parse user path JSON file '%s'\n\n", [fileCopy cStringUsingEncoding:4]);
     v14 = 0;
   }
 

@@ -1,89 +1,89 @@
 @interface CPSPointOfInterestAnnotationView
-+ (CGPath)_createPathForBalloonRadius:(double)a3 tailLength:(double)a4;
-+ (id)balloonWithText:(id)a3 traitCollection:(id)a4;
-- (CPSPointOfInterestAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
++ (CGPath)_createPathForBalloonRadius:(double)radius tailLength:(double)length;
++ (id)balloonWithText:(id)text traitCollection:(id)collection;
+- (CPSPointOfInterestAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (id)_defaultPOI;
 - (void)_configure;
 - (void)_updateImage;
 - (void)prepareForDisplay;
 - (void)prepareForReuse;
-- (void)setImageSet:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setSelectedImageSet:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setImageSet:(id)set;
+- (void)setSelected:(BOOL)selected;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setSelectedImageSet:(id)set;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation CPSPointOfInterestAnnotationView
 
-- (CPSPointOfInterestAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (CPSPointOfInterestAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, annotation);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v4 = v14;
-  v14 = 0;
+  objc_storeStrong(&v12, identifier);
+  v4 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v4;
   v11.super_class = CPSPointOfInterestAnnotationView;
   v10 = [(MKAnnotationView *)&v11 initWithAnnotation:location[0] reuseIdentifier:v12];
-  v14 = v10;
-  objc_storeStrong(&v14, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    v8 = [(CPSPointOfInterestAnnotationView *)v14 _defaultPOI];
-    [(MKAnnotationView *)v14 setImage:?];
-    *&v5 = MEMORY[0x277D82BD8](v8).n128_u64[0];
-    [(CPSPointOfInterestAnnotationView *)v14 _configure];
+    _defaultPOI = [(CPSPointOfInterestAnnotationView *)selfCopy _defaultPOI];
+    [(MKAnnotationView *)selfCopy setImage:?];
+    *&v5 = MEMORY[0x277D82BD8](_defaultPOI).n128_u64[0];
+    [(CPSPointOfInterestAnnotationView *)selfCopy _configure];
   }
 
-  v7 = MEMORY[0x277D82BE0](v14);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, change);
+  v3.receiver = selfCopy;
   v3.super_class = CPSPointOfInterestAnnotationView;
   [(CPSPointOfInterestAnnotationView *)&v3 traitCollectionDidChange:location[0]];
-  [(CPSPointOfInterestAnnotationView *)v5 _updateImage];
+  [(CPSPointOfInterestAnnotationView *)selfCopy _updateImage];
   objc_storeStrong(location, 0);
 }
 
-- (void)setImageSet:(id)a3
+- (void)setImageSet:(id)set
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (![(CPImageSet *)v4->_imageSet isEqual:location[0]])
+  objc_storeStrong(location, set);
+  if (![(CPImageSet *)selfCopy->_imageSet isEqual:location[0]])
   {
-    objc_storeStrong(&v4->_imageSet, location[0]);
-    [(CPSPointOfInterestAnnotationView *)v4 _updateImage];
+    objc_storeStrong(&selfCopy->_imageSet, location[0]);
+    [(CPSPointOfInterestAnnotationView *)selfCopy _updateImage];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)setSelectedImageSet:(id)a3
+- (void)setSelectedImageSet:(id)set
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (![(CPImageSet *)v4->_selectedImageSet isEqual:location[0]])
+  objc_storeStrong(location, set);
+  if (![(CPImageSet *)selfCopy->_selectedImageSet isEqual:location[0]])
   {
-    objc_storeStrong(&v4->_selectedImageSet, location[0]);
-    [(CPSPointOfInterestAnnotationView *)v4 _updateImage];
+    objc_storeStrong(&selfCopy->_selectedImageSet, location[0]);
+    [(CPSPointOfInterestAnnotationView *)selfCopy _updateImage];
   }
 
   objc_storeStrong(location, 0);
@@ -93,88 +93,88 @@
 {
   if ([(MKAnnotationView *)self isSelected])
   {
-    v11 = [(CPSPointOfInterestAnnotationView *)self selectedImageSet];
-    *&v2 = MEMORY[0x277D82BD8](v11).n128_u64[0];
-    if (v11)
+    selectedImageSet = [(CPSPointOfInterestAnnotationView *)self selectedImageSet];
+    *&v2 = MEMORY[0x277D82BD8](selectedImageSet).n128_u64[0];
+    if (selectedImageSet)
     {
-      v10 = [(CPSPointOfInterestAnnotationView *)self selectedImageSet];
-      v9 = [(CPImageSet *)v10 image];
+      selectedImageSet2 = [(CPSPointOfInterestAnnotationView *)self selectedImageSet];
+      image = [(CPImageSet *)selectedImageSet2 image];
       [(MKAnnotationView *)self setImage:?];
-      MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](image);
+      MEMORY[0x277D82BD8](selectedImageSet2);
     }
 
     else
     {
-      v8 = [(CPSPointOfInterestAnnotationView *)self _defaultPOI];
+      _defaultPOI = [(CPSPointOfInterestAnnotationView *)self _defaultPOI];
       [(MKAnnotationView *)self setImage:?];
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](_defaultPOI);
     }
   }
 
   else
   {
-    v7 = [(CPSPointOfInterestAnnotationView *)self imageSet];
-    *&v3 = MEMORY[0x277D82BD8](v7).n128_u64[0];
-    if (v7)
+    imageSet = [(CPSPointOfInterestAnnotationView *)self imageSet];
+    *&v3 = MEMORY[0x277D82BD8](imageSet).n128_u64[0];
+    if (imageSet)
     {
-      v6 = [(CPSPointOfInterestAnnotationView *)self imageSet];
-      v5 = [(CPImageSet *)v6 image];
+      imageSet2 = [(CPSPointOfInterestAnnotationView *)self imageSet];
+      image2 = [(CPImageSet *)imageSet2 image];
       [(MKAnnotationView *)self setImage:?];
-      MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](image2);
+      MEMORY[0x277D82BD8](imageSet2);
     }
 
     else
     {
-      v4 = [(CPSPointOfInterestAnnotationView *)self _defaultPOI];
+      _defaultPOI2 = [(CPSPointOfInterestAnnotationView *)self _defaultPOI];
       [(MKAnnotationView *)self setImage:?];
-      MEMORY[0x277D82BD8](v4);
+      MEMORY[0x277D82BD8](_defaultPOI2);
     }
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  selectedCopy = selected;
   v3.receiver = self;
   v3.super_class = CPSPointOfInterestAnnotationView;
-  [(MKAnnotationView *)&v3 setSelected:a3];
-  [(CPSPointOfInterestAnnotationView *)v6 setSelected:v4 animated:1];
+  [(MKAnnotationView *)&v3 setSelected:selected];
+  [(CPSPointOfInterestAnnotationView *)selfCopy setSelected:selectedCopy animated:1];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  v5 = a4;
+  selectedCopy = selected;
+  animatedCopy = animated;
   v4.receiver = self;
   v4.super_class = CPSPointOfInterestAnnotationView;
-  [(MKAnnotationView *)&v4 setSelected:a3 animated:a4];
-  [(CPSPointOfInterestAnnotationView *)v8 _updateImage];
+  [(MKAnnotationView *)&v4 setSelected:selected animated:animated];
+  [(CPSPointOfInterestAnnotationView *)selfCopy _updateImage];
 }
 
 - (void)prepareForDisplay
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(CPSPointOfInterestAnnotationView *)self _configure];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CPSPointOfInterestAnnotationView;
   [(MKAnnotationView *)&v2 prepareForDisplay];
 }
 
 - (void)prepareForReuse
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = CPSPointOfInterestAnnotationView;
   [(MKAnnotationView *)&v2 prepareForReuse];
-  [(CPSPointOfInterestAnnotationView *)v4 _configure];
+  [(CPSPointOfInterestAnnotationView *)selfCopy _configure];
 }
 
 - (void)_configure
@@ -187,21 +187,21 @@
 
 - (id)_defaultPOI
 {
-  v3 = [(CPSPointOfInterestAnnotationView *)self traitCollection];
+  traitCollection = [(CPSPointOfInterestAnnotationView *)self traitCollection];
   v4 = [CPSPointOfInterestAnnotationView balloonWithText:0 traitCollection:?];
-  MEMORY[0x277D82BD8](v3);
+  MEMORY[0x277D82BD8](traitCollection);
 
   return v4;
 }
 
-+ (id)balloonWithText:(id)a3 traitCollection:(id)a4
++ (id)balloonWithText:(id)text traitCollection:(id)collection
 {
-  v39 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, text);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, collection);
   v36 = +[CPSEntityStyles mapAnnotationDropShadow];
   v35 = [MEMORY[0x277D74300] systemFontOfSize:12.0 weight:*MEMORY[0x277D74400]];
   memset(v34, 0, sizeof(v34));
@@ -226,7 +226,7 @@
   v16 = v28[0];
   v18 = MEMORY[0x277D82BE0](v37);
   v19 = MEMORY[0x277D82BE0](v36);
-  v21[1] = v39;
+  v21[1] = selfCopy;
   v22 = v29;
   v23 = v30;
   memcpy(v24, __b, sizeof(v24));
@@ -309,22 +309,22 @@ void __68__CPSPointOfInterestAnnotationView_balloonWithText_traitCollection___bl
   objc_storeStrong(location, 0);
 }
 
-+ (CGPath)_createPathForBalloonRadius:(double)a3 tailLength:(double)a4
++ (CGPath)_createPathForBalloonRadius:(double)radius tailLength:(double)length
 {
-  v11 = a4 / 4.0;
-  v10 = a4 / 5.0;
-  v9 = a3 * 2.0;
-  cp2x = 0.448000014 * a3;
-  cp1x = 0.38499999 * a3;
+  v11 = length / 4.0;
+  v10 = length / 5.0;
+  v9 = radius * 2.0;
+  cp2x = 0.448000014 * radius;
+  cp1x = 0.38499999 * radius;
   path = CGPathCreateMutable();
-  CGPathMoveToPoint(path, 0, v9, a3);
+  CGPathMoveToPoint(path, 0, v9, radius);
   v5 = 3.0;
-  CGPathAddCurveToPoint(path, 0, v9, a3 * 1.5, v9 - cp1x, v9 - a4 / 3.0, a3 + a4 / 2.0 + v10, v9);
-  CGPathAddCurveToPoint(path, 0, a3 + a4 / v5, v9 + a4 / v5, a3 + v11, v9 + a4, a3, v9 + a4);
-  CGPathAddCurveToPoint(path, 0, a3 - v11, v9 + a4, a3 - a4 / v5, v9 + a4 / v5, a3 - (a4 / 2.0 + v10), v9);
-  CGPathAddCurveToPoint(path, 0, cp1x, v9 - a4 / 3.0, 0.0, a3 * 1.5, 0.0, a3);
-  CGPathAddCurveToPoint(path, 0, 0.0, cp2x, cp2x, 0.0, a3, 0.0);
-  CGPathAddCurveToPoint(path, 0, v9 - cp2x, 0.0, v9, cp2x, v9, a3);
+  CGPathAddCurveToPoint(path, 0, v9, radius * 1.5, v9 - cp1x, v9 - length / 3.0, radius + length / 2.0 + v10, v9);
+  CGPathAddCurveToPoint(path, 0, radius + length / v5, v9 + length / v5, radius + v11, v9 + length, radius, v9 + length);
+  CGPathAddCurveToPoint(path, 0, radius - v11, v9 + length, radius - length / v5, v9 + length / v5, radius - (length / 2.0 + v10), v9);
+  CGPathAddCurveToPoint(path, 0, cp1x, v9 - length / 3.0, 0.0, radius * 1.5, 0.0, radius);
+  CGPathAddCurveToPoint(path, 0, 0.0, cp2x, cp2x, 0.0, radius, 0.0);
+  CGPathAddCurveToPoint(path, 0, v9 - cp2x, 0.0, v9, cp2x, v9, radius);
   CGPathCloseSubpath(path);
   return path;
 }

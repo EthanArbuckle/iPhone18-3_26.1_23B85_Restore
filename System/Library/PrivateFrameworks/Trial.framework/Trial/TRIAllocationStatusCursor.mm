@@ -1,22 +1,22 @@
 @interface TRIAllocationStatusCursor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)date;
-- (TRIAllocationStatusCursor)initWithCoder:(id)a3;
-- (TRIAllocationStatusCursor)initWithSecondsFromEpoch:(double)a3;
+- (TRIAllocationStatusCursor)initWithCoder:(id)coder;
+- (TRIAllocationStatusCursor)initWithSecondsFromEpoch:(double)epoch;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRIAllocationStatusCursor
 
-- (TRIAllocationStatusCursor)initWithSecondsFromEpoch:(double)a3
+- (TRIAllocationStatusCursor)initWithSecondsFromEpoch:(double)epoch
 {
   v5.receiver = self;
   v5.super_class = TRIAllocationStatusCursor;
   result = [(TRIAllocationStatusCursor *)&v5 init];
   if (result)
   {
-    result->_secondsFromEpoch = a3;
+    result->_secondsFromEpoch = epoch;
   }
 
   return result;
@@ -29,14 +29,14 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_secondsFromEpoch];
-    v6 = [MEMORY[0x277CCABB0] numberWithDouble:v4[1]];
+    v6 = [MEMORY[0x277CCABB0] numberWithDouble:equalCopy[1]];
     v7 = [v5 isEqual:v6];
   }
 
@@ -56,10 +56,10 @@
   return v3;
 }
 
-- (TRIAllocationStatusCursor)initWithCoder:(id)a3
+- (TRIAllocationStatusCursor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (v5)
   {
     v11 = 0;
@@ -69,11 +69,11 @@
     {
       if ([v6 hasLowerBoundExclusive])
       {
-        v8 = [v6 lowerBoundExclusive];
-        [v8 timeIntervalSince1970];
+        lowerBoundExclusive = [v6 lowerBoundExclusive];
+        [lowerBoundExclusive timeIntervalSince1970];
         self = [(TRIAllocationStatusCursor *)self initWithSecondsFromEpoch:?];
 
-        v9 = self;
+        selfCopy = self;
 LABEL_8:
 
         goto LABEL_9;
@@ -82,34 +82,34 @@ LABEL_8:
 
     else
     {
-      [v4 failWithError:v7];
+      [coderCopy failWithError:v7];
     }
 
-    v9 = 0;
+    selfCopy = 0;
     goto LABEL_8;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_9:
 
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
+  coderCopy = coder;
   v5 = objc_opt_new();
   v6 = [objc_alloc(MEMORY[0x277D73B88]) initWithTimeIntervalSince1970:self->_secondsFromEpoch];
   [v5 setLowerBoundExclusive:v6];
 
-  v7 = [v5 data];
-  if (!v7)
+  data = [v5 data];
+  if (!data)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"data"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIAllocationStatusProvider.m" lineNumber:92 description:{@"Invalid parameter not satisfying: %@", @"data"}];
   }
 
-  [v9 encodeObject:v7 forKey:@"data"];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
 @end

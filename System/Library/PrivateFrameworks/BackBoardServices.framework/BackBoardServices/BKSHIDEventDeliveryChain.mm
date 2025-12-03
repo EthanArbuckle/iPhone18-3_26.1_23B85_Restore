@@ -2,37 +2,37 @@
 + (id)new;
 + (id)protobufSchema;
 - (BKSHIDEventDeliveryChain)init;
-- (BKSHIDEventDeliveryChain)initWithCoder:(id)a3;
-- (BKSHIDEventDeliveryChain)initWithIdentity:(id)a3 compatibilityDisplay:(id)a4 selectionPath:(id)a5 path:(id)a6 modalities:(id)a7 containsSubset:(BOOL)a8 containsEndOfChain:(BOOL)a9;
-- (BOOL)isEqual:(id)a3;
+- (BKSHIDEventDeliveryChain)initWithCoder:(id)coder;
+- (BKSHIDEventDeliveryChain)initWithIdentity:(id)identity compatibilityDisplay:(id)display selectionPath:(id)path path:(id)a6 modalities:(id)modalities containsSubset:(BOOL)subset containsEndOfChain:(BOOL)chain;
+- (BOOL)isEqual:(id)equal;
 - (id)_dataProtobufEncoded;
-- (id)_protobufDecodedFromData:(id)a3;
-- (id)didFinishProtobufDecodingWithError:(id *)a3;
+- (id)_protobufDecodedFromData:(id)data;
+- (id)didFinishProtobufDecodingWithError:(id *)error;
 - (id)initForProtobufDecoding;
-- (id)subsetForPID:(int)a3;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)subsetForPID:(int)d;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BKSHIDEventDeliveryChain
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __57__BKSHIDEventDeliveryChain_appendDescriptionToFormatter___block_invoke;
   v8[3] = &unk_1E6F47C78;
-  v9 = v4;
-  v10 = self;
-  [v4 appendProem:0 block:v8];
-  v5 = [v4 appendBool:self->_containsEndOfChain withName:@"containsEndOfChain"];
+  v9 = formatterCopy;
+  selfCopy = self;
+  [formatterCopy appendProem:0 block:v8];
+  v5 = [formatterCopy appendBool:self->_containsEndOfChain withName:@"containsEndOfChain"];
   if (self->_containsSubset)
   {
-    v6 = [v4 appendBool:1 withName:@"containsSubset"];
+    v6 = [formatterCopy appendBool:1 withName:@"containsSubset"];
   }
 
-  v7 = [v4 appendObject:self->_deferringPath withName:0];
+  v7 = [formatterCopy appendObject:self->_deferringPath withName:0];
 }
 
 void __57__BKSHIDEventDeliveryChain_appendDescriptionToFormatter___block_invoke(uint64_t a1)
@@ -67,22 +67,22 @@ void __57__BKSHIDEventDeliveryChain_appendDescriptionToFormatter___block_invoke(
   }
 }
 
-- (id)didFinishProtobufDecodingWithError:(id *)a3
+- (id)didFinishProtobufDecodingWithError:(id *)error
 {
   if (self->_identity)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
     v5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A798] code:5 userInfo:&unk_1EF56BF40];
     v6 = v5;
-    v3 = 0;
-    *a3 = v5;
+    selfCopy = 0;
+    *error = v5;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)initForProtobufDecoding
@@ -92,7 +92,7 @@ void __57__BKSHIDEventDeliveryChain_appendDescriptionToFormatter___block_invoke(
   return [(BKSHIDEventDeliveryChain *)&v3 init];
 }
 
-- (id)subsetForPID:(int)a3
+- (id)subsetForPID:(int)d
 {
   v19[0] = 0;
   v19[1] = v19;
@@ -107,16 +107,16 @@ void __57__BKSHIDEventDeliveryChain_appendDescriptionToFormatter___block_invoke(
   v13[1] = 3221225472;
   v13[2] = __41__BKSHIDEventDeliveryChain_subsetForPID___block_invoke;
   v13[3] = &unk_1E6F46E98;
-  v14 = a3;
+  dCopy = d;
   v13[4] = v19;
   v13[5] = &v15;
   v5 = [(NSArray *)deferringPath bs_filter:v13];
   v6 = *(v16 + 24);
   if (self->_containsEndOfChain)
   {
-    v7 = [(NSArray *)self->_deferringPath lastObject];
-    v8 = [v5 lastObject];
-    v9 = [v7 isEqual:v8];
+    lastObject = [(NSArray *)self->_deferringPath lastObject];
+    lastObject2 = [v5 lastObject];
+    v9 = [lastObject isEqual:lastObject2];
   }
 
   else
@@ -158,17 +158,17 @@ uint64_t __41__BKSHIDEventDeliveryChain_subsetForPID___block_invoke(uint64_t a1,
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BKSHIDEventDeliveryChain *)self _dataProtobufEncoded];
-  [v4 encodeObject:v5 forKey:@"backboarddSelfData"];
+  coderCopy = coder;
+  _dataProtobufEncoded = [(BKSHIDEventDeliveryChain *)self _dataProtobufEncoded];
+  [coderCopy encodeObject:_dataProtobufEncoded forKey:@"backboarddSelfData"];
 }
 
-- (BKSHIDEventDeliveryChain)initWithCoder:(id)a3
+- (BKSHIDEventDeliveryChain)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backboarddSelfData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backboarddSelfData"];
 
   v6 = [(BKSHIDEventDeliveryChain *)self _protobufDecodedFromData:v5];
 
@@ -196,7 +196,7 @@ uint64_t __41__BKSHIDEventDeliveryChain_subsetForPID___block_invoke(uint64_t a1,
       v16 = 2114;
       v17 = v12;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"BKSHIDEventDeliveryChain.m";
       v22 = 1024;
@@ -217,14 +217,14 @@ uint64_t __41__BKSHIDEventDeliveryChain_subsetForPID___block_invoke(uint64_t a1,
   return v6;
 }
 
-- (id)_protobufDecodedFromData:(id)a3
+- (id)_protobufDecodedFromData:(id)data
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v9 = 0;
-    v4 = [MEMORY[0x1E698E750] decodeObjectOfClass:objc_opt_class() fromData:v3 error:&v9];
+    v4 = [MEMORY[0x1E698E750] decodeObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
     v5 = v9;
     if (v4)
     {
@@ -258,10 +258,10 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -269,7 +269,7 @@ LABEL_9:
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -326,34 +326,34 @@ LABEL_16:
   return v8;
 }
 
-- (BKSHIDEventDeliveryChain)initWithIdentity:(id)a3 compatibilityDisplay:(id)a4 selectionPath:(id)a5 path:(id)a6 modalities:(id)a7 containsSubset:(BOOL)a8 containsEndOfChain:(BOOL)a9
+- (BKSHIDEventDeliveryChain)initWithIdentity:(id)identity compatibilityDisplay:(id)display selectionPath:(id)path path:(id)a6 modalities:(id)modalities containsSubset:(BOOL)subset containsEndOfChain:(BOOL)chain
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  identityCopy = identity;
+  displayCopy = display;
+  pathCopy = path;
   v18 = a6;
-  v19 = a7;
+  modalitiesCopy = modalities;
   v28.receiver = self;
   v28.super_class = BKSHIDEventDeliveryChain;
   v20 = [(BKSHIDEventDeliveryChain *)&v28 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_identity, a3);
+    objc_storeStrong(&v20->_identity, identity);
     v22 = [v18 copy];
     deferringPath = v21->_deferringPath;
     v21->_deferringPath = v22;
 
-    if ([v19 count])
+    if ([modalitiesCopy count])
     {
-      v24 = [v19 copy];
+      v24 = [modalitiesCopy copy];
       modalities = v21->_modalities;
       v21->_modalities = v24;
     }
 
-    objc_storeStrong(&v21->_selectionPath, a5);
-    objc_storeStrong(&v21->_compatibilityDisplay, a4);
-    v21->_containsSubset = a8;
+    objc_storeStrong(&v21->_selectionPath, path);
+    objc_storeStrong(&v21->_compatibilityDisplay, display);
+    v21->_containsSubset = subset;
     v21->_containsEndOfChain = 1;
   }
 
@@ -373,7 +373,7 @@ LABEL_16:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeliveryChain.m";
     v17 = 1024;
@@ -395,7 +395,7 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __42__BKSHIDEventDeliveryChain_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_6262 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_6262, block);
@@ -438,7 +438,7 @@ void __42__BKSHIDEventDeliveryChain_protobufSchema__block_invoke_2(uint64_t a1, 
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = a1;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeliveryChain.m";
     v17 = 1024;

@@ -1,21 +1,21 @@
 @interface GKBlendNoiseModifier
-- (GKBlendNoiseModifier)initWithSelectionRangeLowerBound:(double)a3 selectionRangeUpperBound:(double)a4 selectionBoundaryBlendDistance:(double)a5;
+- (GKBlendNoiseModifier)initWithSelectionRangeLowerBound:(double)bound selectionRangeUpperBound:(double)upperBound selectionBoundaryBlendDistance:(double)distance;
 - (double)valueAt:(GKBlendNoiseModifier *)self;
 - (id)cloneModule;
 @end
 
 @implementation GKBlendNoiseModifier
 
-- (GKBlendNoiseModifier)initWithSelectionRangeLowerBound:(double)a3 selectionRangeUpperBound:(double)a4 selectionBoundaryBlendDistance:(double)a5
+- (GKBlendNoiseModifier)initWithSelectionRangeLowerBound:(double)bound selectionRangeUpperBound:(double)upperBound selectionBoundaryBlendDistance:(double)distance
 {
   v9.receiver = self;
   v9.super_class = GKBlendNoiseModifier;
   result = [(GKNoiseModifier *)&v9 initWithInputModuleCount:3];
   if (result)
   {
-    result->_lowerBound = a3;
-    result->_upperBound = a4;
-    result->_blendDistance = a5;
+    result->_lowerBound = bound;
+    result->_upperBound = upperBound;
+    result->_blendDistance = distance;
   }
 
   return result;

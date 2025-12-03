@@ -1,23 +1,23 @@
 @interface JSUserDefaults
 - (_TtC11AppStoreKit14JSUserDefaults)init;
-- (id)double:(id)a3;
-- (id)integer:(id)a3;
-- (id)string:(id)a3;
-- (void)setDouble:(id)a3 :(id)a4;
-- (void)setInteger:(id)a3 :(id)a4;
-- (void)setString:(id)a3 :(id)a4;
+- (id)double:(id)double;
+- (id)integer:(id)integer;
+- (id)string:(id)string;
+- (void)setDouble:(id)double :(id)a4;
+- (void)setInteger:(id)integer :(id)a4;
+- (void)setString:(id)string :(id)a4;
 @end
 
 @implementation JSUserDefaults
 
-- (id)string:(id)a3
+- (id)string:(id)string
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit14JSUserDefaults_userDefaults);
-  v5 = self;
-  v6 = [v4 stringForKey_];
-  if (v6)
+  selfCopy = self;
+  stringForKey_ = [v4 stringForKey_];
+  if (stringForKey_)
   {
-    v7 = v6;
+    v7 = stringForKey_;
     sub_1E1AF5DFC();
 
     v8 = sub_1E1AF5DBC();
@@ -32,34 +32,34 @@
   return v8;
 }
 
-- (id)integer:(id)a3
+- (id)integer:(id)integer
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit14JSUserDefaults_userDefaults);
-  v5 = self;
-  v6 = [v4 integerForKey_];
-  v7 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithInteger_];
+  selfCopy = self;
+  integerForKey_ = [v4 integerForKey_];
+  initWithInteger_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithInteger_];
 
-  return v7;
+  return initWithInteger_;
 }
 
-- (id)double:(id)a3
+- (id)double:(id)double
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit14JSUserDefaults_userDefaults);
-  v5 = self;
+  selfCopy = self;
   [v4 doubleForKey_];
-  v7 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithDouble_];
+  initWithDouble_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithDouble_];
 
-  return v7;
+  return initWithDouble_;
 }
 
-- (void)setString:(id)a3 :(id)a4
+- (void)setString:(id)string :(id)a4
 {
-  if (a3)
+  if (string)
   {
     sub_1E1AF5DFC();
     v6 = *(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit14JSUserDefaults_userDefaults);
     v7 = a4;
-    v8 = self;
+    selfCopy = self;
     v9 = sub_1E1AF5DBC();
   }
 
@@ -67,7 +67,7 @@
   {
     v6 = *(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit14JSUserDefaults_userDefaults);
     v10 = a4;
-    v11 = self;
+    selfCopy2 = self;
     v9 = 0;
   }
 
@@ -76,22 +76,22 @@
   swift_unknownObjectRelease();
 }
 
-- (void)setInteger:(id)a3 :(id)a4
+- (void)setInteger:(id)integer :(id)a4
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit14JSUserDefaults_userDefaults);
-  v9 = a3;
+  integerCopy = integer;
   v7 = a4;
-  v8 = self;
-  [v6 setInteger:objc_msgSend(v9 forKey:{sel_integerValue), v7}];
+  selfCopy = self;
+  [v6 setInteger:objc_msgSend(integerCopy forKey:{sel_integerValue), v7}];
 }
 
-- (void)setDouble:(id)a3 :(id)a4
+- (void)setDouble:(id)double :(id)a4
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtC11AppStoreKit14JSUserDefaults_userDefaults);
-  v9 = a3;
+  doubleCopy = double;
   v7 = a4;
-  v8 = self;
-  [v9 doubleValue];
+  selfCopy = self;
+  [doubleCopy doubleValue];
   [v6 setDouble:v7 forKey:?];
 }
 

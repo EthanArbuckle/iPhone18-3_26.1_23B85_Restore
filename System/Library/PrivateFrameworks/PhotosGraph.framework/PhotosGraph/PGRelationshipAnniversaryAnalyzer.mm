@@ -1,15 +1,15 @@
 @interface PGRelationshipAnniversaryAnalyzer
-- (PGRelationshipAnniversaryAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipAnniversaryAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipAnniversaryAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  blockCopy = block;
+  v5 = _Block_copy(blockCopy);
   v29 = 0;
   v30 = 0;
   v31 = &v30;
@@ -32,8 +32,8 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v9 = [WeakRetained personNodes];
-    v10 = [v9 count];
+    personNodes = [WeakRetained personNodes];
+    v10 = [personNodes count];
     buf = 0;
     *&v38 = &buf;
     *(&v38 + 1) = 0x2020000000;
@@ -52,7 +52,7 @@
     v22 = &v26;
     v25 = 0x3F847AE147AE147BLL;
     v23 = &v30;
-    [v9 enumerateNodesUsingBlock:v18];
+    [personNodes enumerateNodesUsingBlock:v18];
     if (v5)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -118,16 +118,16 @@ void __66__PGRelationshipAnniversaryAnalyzer_runAnalysisWithProgressBlock___bloc
   }
 }
 
-- (PGRelationshipAnniversaryAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipAnniversaryAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipAnniversaryAnalyzer;
   v5 = [(PGRelationshipAnniversaryAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

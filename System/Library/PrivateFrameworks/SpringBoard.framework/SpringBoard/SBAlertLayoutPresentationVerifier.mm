@@ -2,7 +2,7 @@
 + (id)__lock_verifiers;
 + (uint64_t)_handleTrackingStateChange;
 + (void)_handleTrackingStateChange;
-- (SBAlertLayoutPresentationVerifier)initWithScreen:(id)a3;
+- (SBAlertLayoutPresentationVerifier)initWithScreen:(id)screen;
 - (uint64_t)_fixAlertItemLayout;
 - (uint64_t)_hasBrokenAlertPresentationInvariants;
 - (uint64_t)_hasBrokenHostingLayerInvariants;
@@ -12,20 +12,20 @@
 - (void)_performLayoutVerification;
 - (void)_startTrackingBadPositions;
 - (void)_stopTrackingBadPositions;
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5;
-- (void)activeInterfaceOrientationWillChangeToOrientation:(int64_t)a3;
-- (void)addVerifier:(uint64_t)a1;
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation;
+- (void)activeInterfaceOrientationWillChangeToOrientation:(int64_t)orientation;
+- (void)addVerifier:(uint64_t)verifier;
 - (void)dealloc;
-- (void)removeVerifier:(uint64_t)a1;
-- (void)scheduleAlertLayoutVerificationForReason:(id)a3;
-- (void)scheduleDelayedAlertLayoutVerificationForReason:(id)a3;
+- (void)removeVerifier:(uint64_t)verifier;
+- (void)scheduleAlertLayoutVerificationForReason:(id)reason;
+- (void)scheduleDelayedAlertLayoutVerificationForReason:(id)reason;
 @end
 
 @implementation SBAlertLayoutPresentationVerifier
 
-- (SBAlertLayoutPresentationVerifier)initWithScreen:(id)a3
+- (SBAlertLayoutPresentationVerifier)initWithScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   v11.receiver = self;
   v11.super_class = SBAlertLayoutPresentationVerifier;
   v6 = [(SBAlertLayoutPresentationVerifier *)&v11 init];
@@ -36,7 +36,7 @@
     v6->_updateReasons = v8;
 
     v6->_firstLogEventTime = -1.79769313e308;
-    objc_storeStrong(&v6->_screen, a3);
+    objc_storeStrong(&v6->_screen, screen);
     v6->_lastAutoBugCaptureEventTime = 0.0;
     [SBApp addActiveOrientationObserver:v6];
     v10 = +[SBReachabilityManager sharedInstance];
@@ -54,8 +54,8 @@
   v17 = *MEMORY[0x277D85DE8];
   objc_opt_self();
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v0 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  __isReportingBadPositions = [v0 BOOLForKey:@"SBTrackAlertWindowPosition"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  __isReportingBadPositions = [standardUserDefaults BOOLForKey:@"SBTrackAlertWindowPosition"];
 
   os_unfair_lock_lock(&__verifierLock);
   v1 = +[SBAlertLayoutPresentationVerifier __lock_verifiers];
@@ -117,10 +117,10 @@
   [(SBAlertLayoutPresentationVerifier *)&v4 dealloc];
 }
 
-- (void)scheduleDelayedAlertLayoutVerificationForReason:(id)a3
+- (void)scheduleDelayedAlertLayoutVerificationForReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [(SBAlertLayoutPresentationVerifier *)a2 scheduleDelayedAlertLayoutVerificationForReason:?];
   }
@@ -128,7 +128,7 @@
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if (self->_pendingScheduledLayoutVerification)
   {
-    [(NSMutableArray *)self->_updateReasons addObject:v5];
+    [(NSMutableArray *)self->_updateReasons addObject:reasonCopy];
   }
 
   else
@@ -140,22 +140,22 @@
     v8[2] = __85__SBAlertLayoutPresentationVerifier_scheduleDelayedAlertLayoutVerificationForReason___block_invoke;
     v8[3] = &unk_2783A92D8;
     v8[4] = self;
-    v9 = v5;
+    v9 = reasonCopy;
     v7 = MEMORY[0x277D85CD0];
     dispatch_after(v6, MEMORY[0x277D85CD0], v8);
   }
 }
 
-- (void)scheduleAlertLayoutVerificationForReason:(id)a3
+- (void)scheduleAlertLayoutVerificationForReason:(id)reason
 {
-  v5 = a3;
-  if (!v5)
+  reasonCopy = reason;
+  if (!reasonCopy)
   {
     [(SBAlertLayoutPresentationVerifier *)a2 scheduleAlertLayoutVerificationForReason:?];
   }
 
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  [(NSMutableArray *)self->_updateReasons addObject:v5];
+  [(NSMutableArray *)self->_updateReasons addObject:reasonCopy];
   if (!self->_pendingLayoutVerification)
   {
     self->_pendingLayoutVerification = 1;
@@ -285,21 +285,21 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
   return result;
 }
 
-- (void)activeInterfaceOrientationWillChangeToOrientation:(int64_t)a3
+- (void)activeInterfaceOrientationWillChangeToOrientation:(int64_t)orientation
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Will change to orientation %li", a3];
-  [(SBAlertLayoutPresentationVerifier *)self scheduleAlertLayoutVerificationForReason:v4];
+  orientation = [MEMORY[0x277CCACA8] stringWithFormat:@"Will change to orientation %li", orientation];
+  [(SBAlertLayoutPresentationVerifier *)self scheduleAlertLayoutVerificationForReason:orientation];
 }
 
-- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)a3 willAnimateWithDuration:(double)a4 fromOrientation:(int64_t)a5
+- (void)activeInterfaceOrientationDidChangeToOrientation:(int64_t)orientation willAnimateWithDuration:(double)duration fromOrientation:(int64_t)fromOrientation
 {
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Did change from orientation %li to orientation %li", a4, a5, a3];
-  [(SBAlertLayoutPresentationVerifier *)self scheduleAlertLayoutVerificationForReason:v6];
+  orientation = [MEMORY[0x277CCACA8] stringWithFormat:@"Did change from orientation %li to orientation %li", duration, fromOrientation, orientation];
+  [(SBAlertLayoutPresentationVerifier *)self scheduleAlertLayoutVerificationForReason:orientation];
 }
 
-- (void)addVerifier:(uint64_t)a1
+- (void)addVerifier:(uint64_t)verifier
 {
-  if (a1)
+  if (verifier)
   {
     v2 = a2;
     os_unfair_lock_lock(&__verifierLock);
@@ -310,9 +310,9 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
   }
 }
 
-- (void)removeVerifier:(uint64_t)a1
+- (void)removeVerifier:(uint64_t)verifier
 {
-  if (a1)
+  if (verifier)
   {
     v2 = a2;
     os_unfair_lock_lock(&__verifierLock);
@@ -325,18 +325,18 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
 
 - (void)_performLayoutVerification
 {
-  if (a1)
+  if (self)
   {
-    if (([(SBAlertLayoutPresentationVerifier *)a1 _hasBrokenHostingLayerInvariants]& 1) != 0 || ([(SBAlertLayoutPresentationVerifier *)a1 _hasBrokenWindowInvariants]& 1) != 0 || [(SBAlertLayoutPresentationVerifier *)a1 _hasBrokenAlertPresentationInvariants])
+    if (([(SBAlertLayoutPresentationVerifier *)self _hasBrokenHostingLayerInvariants]& 1) != 0 || ([(SBAlertLayoutPresentationVerifier *)self _hasBrokenWindowInvariants]& 1) != 0 || [(SBAlertLayoutPresentationVerifier *)self _hasBrokenAlertPresentationInvariants])
     {
-      if (*&a1[8].isa == -1.79769313e308)
+      if (*&self[8].isa == -1.79769313e308)
       {
         BSContinuousMachTimeNow();
-        a1[8].isa = v2;
+        self[8].isa = v2;
       }
 
       BSContinuousMachTimeNow();
-      if (v3 - *&a1[8].isa >= 10.0)
+      if (v3 - *&self[8].isa >= 10.0)
       {
         v4 = SBLogAlertItems();
         if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -348,14 +348,14 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
 
       else
       {
-        [(SBAlertLayoutPresentationVerifier *)a1 _logAlertItemLayout];
+        [(SBAlertLayoutPresentationVerifier *)self _logAlertItemLayout];
         if (__isReportingBadPositions == 1)
         {
-          [(SBAlertLayoutPresentationVerifier *)a1 _logToAutoBugCapture];
+          [(SBAlertLayoutPresentationVerifier *)self _logToAutoBugCapture];
         }
       }
 
-      [(SBAlertLayoutPresentationVerifier *)a1 _fixAlertItemLayout];
+      [(SBAlertLayoutPresentationVerifier *)self _fixAlertItemLayout];
     }
 
     else
@@ -367,38 +367,38 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
         _os_log_debug_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEBUG, "Alert layout appears correct.", v6, 2u);
       }
 
-      a1[8].isa = 0xFFEFFFFFFFFFFFFFLL;
+      self[8].isa = 0xFFEFFFFFFFFFFFFFLL;
     }
   }
 }
 
 - (void)_stopTrackingBadPositions
 {
-  if (a1)
+  if (self)
   {
-    [*(a1 + 48) invalidate];
-    v2 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    [*(self + 48) invalidate];
+    v2 = *(self + 48);
+    *(self + 48) = 0;
   }
 }
 
 - (void)_logToAutoBugCapture
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
     if (__isReportingBadPositions == 1)
     {
-      v2 = *(a1 + 56);
-      if (v2 == 0.0 || (BSContinuousMachTimeNow(), v3 - *(a1 + 56) >= 300.0))
+      v2 = *(self + 56);
+      if (v2 == 0.0 || (BSContinuousMachTimeNow(), v3 - *(self + 56) >= 300.0))
       {
         BSContinuousMachTimeNow();
-        *(a1 + 56) = v4;
+        *(self + 56) = v4;
         v5 = objc_alloc_init(MEMORY[0x277D6AFC8]);
-        v6 = [MEMORY[0x277CCAC38] processInfo];
-        v7 = [v6 processName];
-        v8 = [v5 signatureWithDomain:@"SpringBoard" type:@"AlertLayout" subType:@"PositionVerifier" subtypeContext:0 detectedProcess:v7 triggerThresholdValues:0];
+        processInfo = [MEMORY[0x277CCAC38] processInfo];
+        processName = [processInfo processName];
+        v8 = [v5 signatureWithDomain:@"SpringBoard" type:@"AlertLayout" subType:@"PositionVerifier" subtypeContext:0 detectedProcess:processName triggerThresholdValues:0];
 
         v9 = *MEMORY[0x277D6AFF0];
         v12[0] = *MEMORY[0x277D6AFF8];
@@ -410,7 +410,7 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
         v11[1] = 3221225472;
         v11[2] = __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invoke;
         v11[3] = &unk_2783BE8E0;
-        v11[4] = a1;
+        v11[4] = self;
         *&v11[5] = v2;
         [v5 snapshotWithSignature:v8 duration:MEMORY[0x277CBEBF8] events:0 payload:v10 actions:v11 reply:0.0];
       }
@@ -420,31 +420,31 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
 
 - (uint64_t)_hasBrokenHostingLayerInvariants
 {
-  v1 = a1;
+  selfCopy = self;
   v28 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
-      v2 = [MEMORY[0x277D0AAD8] sharedInstance];
-      v3 = [*(v1 + 24) _scene];
-      v4 = [v3 identifier];
-      v5 = [v2 sceneWithIdentifier:v4];
+      mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+      _scene = [*(selfCopy + 24) _scene];
+      identifier = [_scene identifier];
+      v5 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:identifier];
 
-      v6 = [v5 uiPresentationManager];
-      v7 = [v6 defaultPresentationContext];
-      v8 = [v7 layerPresentationOverrides];
+      uiPresentationManager = [v5 uiPresentationManager];
+      defaultPresentationContext = [uiPresentationManager defaultPresentationContext];
+      layerPresentationOverrides = [defaultPresentationContext layerPresentationOverrides];
 
-      v9 = [MEMORY[0x277D75968] targetForUIWindow:*(v1 + 24)];
-      v10 = [v8 objectForKey:v9];
-      v11 = [v10 transformer];
+      v9 = [MEMORY[0x277D75968] targetForUIWindow:*(selfCopy + 24)];
+      v10 = [layerPresentationOverrides objectForKey:v9];
+      transformer = [v10 transformer];
 
       v22 = 0u;
       v23 = 0u;
       v21 = 0u;
-      if (v11)
+      if (transformer)
       {
-        [v11 transform];
+        [transformer transform];
       }
 
       else
@@ -454,13 +454,13 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
         v23 = *(MEMORY[0x277CBF2C0] + 32);
       }
 
-      [*(v1 + 24) bounds];
+      [*(selfCopy + 24) bounds];
       OUTLINED_FUNCTION_4_14();
       MidX = CGRectGetMidX(v30);
       v31.origin.x = OUTLINED_FUNCTION_3_23();
       MidY = CGRectGetMidY(v31);
       v13 = vaddq_f64(v23, vmlaq_n_f64(vmulq_n_f64(v22, MidY), v21, MidX));
-      v1 = MidX != v13.f64[0];
+      selfCopy = MidX != v13.f64[0];
       if (MidX != v13.f64[0])
       {
         point = v13;
@@ -487,7 +487,7 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)_hasBrokenWindowInvariants
@@ -499,7 +499,7 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
     result = *(result + 24);
     if (result)
     {
-      v2 = [result screen];
+      screen = [result screen];
       v3 = *(v1 + 40);
 
       [*(v1 + 24) bounds];
@@ -508,18 +508,18 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
       v18.origin.x = OUTLINED_FUNCTION_3_23();
       v4 = CGRectEqualToRect(v18, v21);
       v5 = [*(v1 + 24) isHidden] | v4;
-      if (v2 == v3)
+      if (screen == v3)
       {
-        v7 = [*(v1 + 40) coordinateSpace];
+        coordinateSpace = [*(v1 + 40) coordinateSpace];
         [*(v1 + 24) bounds];
-        [v7 convertRect:*(v1 + 24) fromCoordinateSpace:?];
+        [coordinateSpace convertRect:*(v1 + 24) fromCoordinateSpace:?];
         OUTLINED_FUNCTION_4_14();
 
         v19.origin.x = OUTLINED_FUNCTION_3_23();
         MidX = CGRectGetMidX(v19);
         [*(v1 + 40) bounds];
         v9 = vabdd_f64(MidX, CGRectGetMidX(v20));
-        v10 = [*(v1 + 24) isHidden];
+        isHidden = [*(v1 + 24) isHidden];
         if (v9 < 1.0)
         {
           v6 = 1;
@@ -527,7 +527,7 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
 
         else
         {
-          v6 = v10;
+          v6 = isHidden;
         }
 
         if (v5 & v6)
@@ -545,7 +545,7 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v12[0] = 67109632;
-        v12[1] = v2 == v3;
+        v12[1] = screen == v3;
         v13 = 1024;
         v14 = v5 & 1;
         v15 = 1024;
@@ -562,64 +562,64 @@ double __57__SBAlertLayoutPresentationVerifier__logToAutoBugCapture__block_invok
 
 - (uint64_t)_hasBrokenAlertPresentationInvariants
 {
-  v1 = a1;
+  selfCopy = self;
   v26 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(&a1[4].isa);
-    v3 = [WeakRetained currentlyPresentedAlertItem];
+    WeakRetained = objc_loadWeakRetained(&self[4].isa);
+    currentlyPresentedAlertItem = [WeakRetained currentlyPresentedAlertItem];
 
-    v4 = [v3 alertController];
-    v5 = [v4 view];
-    v6 = [v4 presentationController];
-    if (v6)
+    alertController = [currentlyPresentedAlertItem alertController];
+    view = [alertController view];
+    presentationController = [alertController presentationController];
+    if (presentationController)
     {
-      v7 = v6;
-      v8 = [v5 window];
-      if (v8)
+      v7 = presentationController;
+      window = [view window];
+      if (window)
       {
-        v9 = v8;
-        v10 = [v5 window];
-        v11 = [v10 isHidden];
+        v9 = window;
+        window2 = [view window];
+        isHidden = [window2 isHidden];
 
-        if ((v11 & 1) == 0)
+        if ((isHidden & 1) == 0)
         {
-          v12 = [v5 window];
-          v13 = *(v1 + 24);
+          window3 = [view window];
+          v13 = *(selfCopy + 24);
 
-          v14 = *(v1 + 40);
-          v15 = [*(v1 + 24) screen];
+          v14 = *(selfCopy + 40);
+          screen = [*(selfCopy + 24) screen];
 
-          if (v14 != v15)
+          if (v14 != screen)
           {
             v16 = 0;
             goto LABEL_15;
           }
 
-          v18 = [*(v1 + 40) coordinateSpace];
-          [v5 bounds];
-          [v18 convertRect:v5 fromCoordinateSpace:?];
+          coordinateSpace = [*(selfCopy + 40) coordinateSpace];
+          [view bounds];
+          [coordinateSpace convertRect:view fromCoordinateSpace:?];
           OUTLINED_FUNCTION_4_14();
 
           v27.origin.x = OUTLINED_FUNCTION_3_23();
           MidX = CGRectGetMidX(v27);
-          [*(v1 + 40) bounds];
+          [*(selfCopy + 40) bounds];
           v20 = vabdd_f64(MidX, CGRectGetMidX(v28));
           v16 = v20 < 1.0;
-          if (v12 != v13 || v20 >= 1.0)
+          if (window3 != v13 || v20 >= 1.0)
           {
 LABEL_15:
             v22 = SBLogAlertItems();
             if (OUTLINED_FUNCTION_9_6(v22))
             {
               v23[0] = 67109376;
-              v23[1] = v12 == v13;
+              v23[1] = window3 == v13;
               v24 = 1024;
               v25 = v16;
-              _os_log_error_impl(&dword_21ED4E000, v1, OS_LOG_TYPE_ERROR, "Alert layout invariants broken. correctScreenPresentation:%{BOOL}i correctXLayout:%{BOOL}i", v23, 0xEu);
+              _os_log_error_impl(&dword_21ED4E000, selfCopy, OS_LOG_TYPE_ERROR, "Alert layout invariants broken. correctScreenPresentation:%{BOOL}i correctXLayout:%{BOOL}i", v23, 0xEu);
             }
 
-            v1 = 1;
+            selfCopy = 1;
             goto LABEL_9;
           }
         }
@@ -630,19 +630,19 @@ LABEL_15:
       }
     }
 
-    v1 = 0;
+    selfCopy = 0;
 LABEL_9:
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_logAlertItemLayout
 {
   v187 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v3 = a1;
+    selfCopy = self;
     v4 = SBLogAlertItems();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_FAULT))
     {
@@ -650,14 +650,14 @@ LABEL_9:
       _os_log_fault_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_FAULT, "Broken invariant in alert item layout.", &buf, 2u);
     }
 
-    WeakRetained = objc_loadWeakRetained((v3 + 32));
-    v6 = [WeakRetained currentlyPresentedAlertItem];
+    WeakRetained = objc_loadWeakRetained((selfCopy + 32));
+    currentlyPresentedAlertItem = [WeakRetained currentlyPresentedAlertItem];
 
     HIDWORD(v175) = arc4random();
     v7 = SBLogAlertItems();
     if (OUTLINED_FUNCTION_9_6(v7))
     {
-      v71 = *(v3 + 16);
+      v71 = *(selfCopy + 16);
       LODWORD(buf.a) = 138543362;
       *(&buf.a + 4) = v71;
       OUTLINED_FUNCTION_5_12();
@@ -669,7 +669,7 @@ LABEL_9:
     {
       OUTLINED_FUNCTION_10_7();
       LODWORD(buf.a) = v77;
-      *(&buf.a + 4) = v6;
+      *(&buf.a + 4) = currentlyPresentedAlertItem;
       WORD2(buf.b) = 1024;
       *(&buf.b + 6) = v78;
       OUTLINED_FUNCTION_5_12();
@@ -680,7 +680,7 @@ LABEL_9:
     if (OUTLINED_FUNCTION_9_6(v9))
     {
       OUTLINED_FUNCTION_8_5();
-      v84 = *(v3 + 24);
+      v84 = *(selfCopy + 24);
       [v84 bounds];
       v85 = NSStringFromCGRect(v190);
       LODWORD(buf.a) = 67109634;
@@ -697,11 +697,11 @@ LABEL_9:
     if (OUTLINED_FUNCTION_9_6(v10))
     {
       OUTLINED_FUNCTION_8_5();
-      v91 = [*(v3 + 24) _contextId];
+      _contextId = [*(selfCopy + 24) _contextId];
       LODWORD(buf.a) = 67109376;
       HIDWORD(buf.a) = v4;
       LOWORD(buf.b) = 1024;
-      *(&buf.b + 2) = v91;
+      *(&buf.b + 2) = _contextId;
       OUTLINED_FUNCTION_5_12();
       _os_log_error_impl(v92, v93, v94, v95, v96, 0xEu);
     }
@@ -710,8 +710,8 @@ LABEL_9:
     if (OUTLINED_FUNCTION_9_6(v11))
     {
       OUTLINED_FUNCTION_8_5();
-      v97 = [*(v3 + 24) screen];
-      OUTLINED_FUNCTION_0_45(v97, 1.5047e-36);
+      screen = [*(selfCopy + 24) screen];
+      OUTLINED_FUNCTION_0_45(screen, 1.5047e-36);
       OUTLINED_FUNCTION_5_12();
       _os_log_error_impl(v98, v99, v100, v101, v102, 0x12u);
     }
@@ -720,8 +720,8 @@ LABEL_9:
     if (OUTLINED_FUNCTION_9_6(v12))
     {
       OUTLINED_FUNCTION_8_5();
-      v103 = [*(v3 + 24) _scene];
-      OUTLINED_FUNCTION_0_45(v103, 1.5047e-36);
+      _scene = [*(selfCopy + 24) _scene];
+      OUTLINED_FUNCTION_0_45(_scene, 1.5047e-36);
       OUTLINED_FUNCTION_5_12();
       _os_log_error_impl(v104, v105, v106, v107, v108, 0x12u);
     }
@@ -730,9 +730,9 @@ LABEL_9:
     if (OUTLINED_FUNCTION_9_6(v13))
     {
       OUTLINED_FUNCTION_8_5();
-      v109 = [*(v3 + 24) _scene];
-      v110 = [v109 settings];
-      OUTLINED_FUNCTION_0_45(v110, 1.5047e-36);
+      _scene2 = [*(selfCopy + 24) _scene];
+      settings = [_scene2 settings];
+      OUTLINED_FUNCTION_0_45(settings, 1.5047e-36);
       OUTLINED_FUNCTION_5_12();
       _os_log_error_impl(v111, v112, v113, v114, v115, 0x12u);
     }
@@ -741,17 +741,17 @@ LABEL_9:
     if (OUTLINED_FUNCTION_9_6(v14))
     {
       OUTLINED_FUNCTION_8_5();
-      v116 = [*(v3 + 24) _scene];
-      v117 = [v116 clientSettings];
-      OUTLINED_FUNCTION_0_45(v117, 1.5047e-36);
+      _scene3 = [*(selfCopy + 24) _scene];
+      clientSettings = [_scene3 clientSettings];
+      OUTLINED_FUNCTION_0_45(clientSettings, 1.5047e-36);
       OUTLINED_FUNCTION_5_12();
       _os_log_error_impl(v118, v119, v120, v121, v122, 0x12u);
     }
 
-    v15 = [v6 alertController];
-    if (v15)
+    alertController = [currentlyPresentedAlertItem alertController];
+    if (alertController)
     {
-      v16 = v15;
+      v16 = alertController;
       OUTLINED_FUNCTION_8_5();
       do
       {
@@ -769,18 +769,18 @@ LABEL_9:
           _os_log_error_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_ERROR, "DL%x: View controller in presentation hierarchy: <%{public}@, %p>.", &buf, 0x1Cu);
         }
 
-        v18 = [v16 presentingViewController];
+        presentingViewController = [v16 presentingViewController];
 
-        v16 = v18;
+        v16 = presentingViewController;
       }
 
-      while (v18);
+      while (presentingViewController);
     }
 
-    v20 = [v6 alertController];
-    v21 = [v20 view];
+    alertController2 = [currentlyPresentedAlertItem alertController];
+    view = [alertController2 view];
 
-    if (v21)
+    if (view)
     {
       LODWORD(v4) = 2114;
       do
@@ -788,18 +788,18 @@ LABEL_9:
         v22 = SBLogAlertItems();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          [v21 center];
+          [view center];
           v2 = NSStringFromCGPoint(v188);
-          [v21 bounds];
+          [view bounds];
           v24 = NSStringFromCGRect(v189);
-          [v21 transform];
+          [view transform];
           NSStringFromCGAffineTransform(&buf);
-          v25 = v3;
-          v27 = v26 = v6;
+          v25 = selfCopy;
+          v27 = v26 = currentlyPresentedAlertItem;
           LODWORD(buf.a) = 67110146;
           HIDWORD(buf.a) = WORD2(v175);
           LOWORD(buf.b) = 2114;
-          *(&buf.b + 2) = v21;
+          *(&buf.b + 2) = view;
           WORD1(buf.c) = 2114;
           *(&buf.c + 4) = v2;
           WORD2(buf.d) = 2114;
@@ -808,24 +808,24 @@ LABEL_9:
           *&buf.ty = v27;
           _os_log_error_impl(&dword_21ED4E000, v22, OS_LOG_TYPE_ERROR, "DL%x: View in hierarchy: %{public}@. Center: %{public}@. Bounds: %{public}@. Transform: %{public}@", &buf, 0x30u);
 
-          v6 = v26;
-          v3 = v25;
+          currentlyPresentedAlertItem = v26;
+          selfCopy = v25;
         }
 
-        v23 = [v21 superview];
+        superview = [view superview];
 
-        v21 = v23;
+        view = superview;
       }
 
-      while (v23);
+      while (superview);
     }
 
-    v28 = [*(v3 + 24) _scene];
-    if (v28)
+    _scene4 = [*(selfCopy + 24) _scene];
+    if (_scene4)
     {
-      v29 = [MEMORY[0x277D0AAD8] sharedInstance];
-      v30 = [v28 identifier];
-      v31 = [v29 sceneWithIdentifier:v30];
+      mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+      identifier = [_scene4 identifier];
+      v31 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:identifier];
     }
 
     else
@@ -833,8 +833,8 @@ LABEL_9:
       v31 = 0;
     }
 
-    v32 = [v31 uiPresentationManager];
-    v33 = [v32 defaultPresentationContext];
+    uiPresentationManager = [v31 uiPresentationManager];
+    defaultPresentationContext = [uiPresentationManager defaultPresentationContext];
 
     v34 = +[SBMainDisplayRootWindowScenePresentationBinder sharedInstance];
     v35 = SBLogAlertItems();
@@ -852,8 +852,8 @@ LABEL_9:
     if (OUTLINED_FUNCTION_11_5(v36))
     {
       OUTLINED_FUNCTION_8_5();
-      v127 = [v34 rootWindow];
-      OUTLINED_FUNCTION_0_45(v127, 1.5047e-36);
+      rootWindow = [v34 rootWindow];
+      OUTLINED_FUNCTION_0_45(rootWindow, 1.5047e-36);
       OUTLINED_FUNCTION_6_10(&dword_21ED4E000, v128, v129, "DL%x: Root window: %{public}@");
     }
 
@@ -875,7 +875,7 @@ LABEL_9:
       LODWORD(buf.a) = 67109378;
       HIDWORD(buf.a) = v134;
       OUTLINED_FUNCTION_2_30();
-      *(v135 + 58) = v33;
+      *(v135 + 58) = defaultPresentationContext;
       OUTLINED_FUNCTION_6_10(&dword_21ED4E000, v136, v137, "DL%x: Host scene presentation context: %{public}@");
     }
 
@@ -883,8 +883,8 @@ LABEL_9:
     if (OUTLINED_FUNCTION_11_5(v39))
     {
       OUTLINED_FUNCTION_8_5();
-      v138 = [v33 layerPresentationOverrides];
-      OUTLINED_FUNCTION_0_45(v138, 1.5047e-36);
+      layerPresentationOverrides = [defaultPresentationContext layerPresentationOverrides];
+      OUTLINED_FUNCTION_0_45(layerPresentationOverrides, 1.5047e-36);
       OUTLINED_FUNCTION_6_10(&dword_21ED4E000, v139, v140, "DL%x: Host scene layer presentation overrides: %{public}@");
     }
 
@@ -895,16 +895,16 @@ LABEL_9:
       LODWORD(buf.a) = 67109378;
       HIDWORD(buf.a) = v141;
       OUTLINED_FUNCTION_2_30();
-      *(v142 + 58) = v28;
+      *(v142 + 58) = _scene4;
       OUTLINED_FUNCTION_6_10(&dword_21ED4E000, v143, v144, "DL%x: Alert client scene: %{public}@");
     }
 
     memset(&buf, 0, sizeof(buf));
-    v41 = [v34 sceneTransformer];
-    v42 = v41;
-    if (v41)
+    sceneTransformer = [v34 sceneTransformer];
+    v42 = sceneTransformer;
+    if (sceneTransformer)
     {
-      [v41 transform];
+      [sceneTransformer transform];
     }
 
     else
@@ -922,15 +922,15 @@ LABEL_9:
     v182 = v43;
     v164 = *&v184.tx;
     v183 = *&v184.tx;
-    v44 = [v33 hostTransformer];
+    hostTransformer = [defaultPresentationContext hostTransformer];
 
-    if (v44)
+    if (hostTransformer)
     {
-      v45 = [v33 hostTransformer];
-      v44 = v45;
-      if (v45)
+      hostTransformer2 = [defaultPresentationContext hostTransformer];
+      hostTransformer = hostTransformer2;
+      if (hostTransformer2)
       {
-        [v45 transform];
+        [hostTransformer2 transform];
       }
 
       else
@@ -941,17 +941,17 @@ LABEL_9:
       v184 = v180;
     }
 
-    if (*(v3 + 24))
+    if (*(selfCopy + 24))
     {
-      v4 = v6;
-      v3 = [MEMORY[0x277D75968] targetForUIWindow:?];
-      v46 = [v33 layerPresentationOverrides];
-      v47 = [v46 objectForKey:v3];
-      v44 = [v47 transformer];
+      v4 = currentlyPresentedAlertItem;
+      selfCopy = [MEMORY[0x277D75968] targetForUIWindow:?];
+      layerPresentationOverrides2 = [defaultPresentationContext layerPresentationOverrides];
+      v47 = [layerPresentationOverrides2 objectForKey:selfCopy];
+      hostTransformer = [v47 transformer];
 
-      if (v44)
+      if (hostTransformer)
       {
-        [v44 transform];
+        [hostTransformer transform];
       }
 
       else
@@ -961,7 +961,7 @@ LABEL_9:
         v183 = v164;
       }
 
-      v6 = v4;
+      currentlyPresentedAlertItem = v4;
     }
 
     *&v180.a = v170;
@@ -985,8 +985,8 @@ LABEL_9:
       *&t1.a = *&buf.a;
       *&t1.c = *&buf.c;
       v145 = OUTLINED_FUNCTION_13_3(*&buf.tx);
-      v44 = NSStringFromCGAffineTransform(v145);
-      OUTLINED_FUNCTION_1_27(v44, 1.5047e-36);
+      hostTransformer = NSStringFromCGAffineTransform(v145);
+      OUTLINED_FUNCTION_1_27(hostTransformer, 1.5047e-36);
       OUTLINED_FUNCTION_7_4(&dword_21ED4E000, v146, v147, "DL%x: Root transform: %{public}@");
     }
 
@@ -997,8 +997,8 @@ LABEL_9:
       *&t1.a = *&v184.a;
       *&t1.c = *&v184.c;
       v148 = OUTLINED_FUNCTION_13_3(*&v184.tx);
-      v44 = NSStringFromCGAffineTransform(v148);
-      OUTLINED_FUNCTION_1_27(v44, 1.5047e-36);
+      hostTransformer = NSStringFromCGAffineTransform(v148);
+      OUTLINED_FUNCTION_1_27(hostTransformer, 1.5047e-36);
       OUTLINED_FUNCTION_7_4(&dword_21ED4E000, v149, v150, "DL%x: Scene transform: %{public}@");
     }
 
@@ -1009,8 +1009,8 @@ LABEL_9:
       *&t1.a = v181;
       *&t1.c = v182;
       v151 = OUTLINED_FUNCTION_13_3(v183);
-      v44 = NSStringFromCGAffineTransform(v151);
-      OUTLINED_FUNCTION_1_27(v44, 1.5047e-36);
+      hostTransformer = NSStringFromCGAffineTransform(v151);
+      OUTLINED_FUNCTION_1_27(hostTransformer, 1.5047e-36);
       OUTLINED_FUNCTION_7_4(&dword_21ED4E000, v152, v153, "DL%x: Alert layer transform: %{public}@");
     }
 
@@ -1021,8 +1021,8 @@ LABEL_9:
       *&t1.a = *&v180.a;
       *&t1.c = *&v180.c;
       v154 = OUTLINED_FUNCTION_13_3(*&v180.tx);
-      v44 = NSStringFromCGAffineTransform(v154);
-      OUTLINED_FUNCTION_1_27(v44, 1.5047e-36);
+      hostTransformer = NSStringFromCGAffineTransform(v154);
+      OUTLINED_FUNCTION_1_27(hostTransformer, 1.5047e-36);
       OUTLINED_FUNCTION_7_4(&dword_21ED4E000, v155, v156, "DL%x: Total combined transform: %{public}@");
     }
 
@@ -1030,8 +1030,8 @@ LABEL_9:
     if (OUTLINED_FUNCTION_12_4(v68))
     {
       OUTLINED_FUNCTION_8_5();
-      v44 = [SBApp orientationAggregator];
-      OUTLINED_FUNCTION_1_27(v44, 1.5047e-36);
+      hostTransformer = [SBApp orientationAggregator];
+      OUTLINED_FUNCTION_1_27(hostTransformer, 1.5047e-36);
       OUTLINED_FUNCTION_7_4(&dword_21ED4E000, v157, v158, "DL%x: Orientation state: %{public}@");
     }
 
@@ -1040,22 +1040,22 @@ LABEL_9:
     if (OUTLINED_FUNCTION_11_5(v70))
     {
       OUTLINED_FUNCTION_8_5();
-      v159 = [v69 reachabilityEnabled];
-      v160 = [v69 reachabilityModeActive];
+      reachabilityEnabled = [v69 reachabilityEnabled];
+      reachabilityModeActive = [v69 reachabilityModeActive];
       [v69 reachabilityYOffset];
       v162 = v161;
       [v69 effectiveReachabilityYOffset];
       LODWORD(t1.a) = 67110144;
       HIDWORD(t1.a) = v4;
       LOWORD(t1.b) = 1024;
-      *(&t1.b + 2) = v159;
+      *(&t1.b + 2) = reachabilityEnabled;
       HIWORD(t1.b) = 1024;
-      LODWORD(t1.c) = v160;
+      LODWORD(t1.c) = reachabilityModeActive;
       WORD2(t1.c) = 2048;
       *(&t1.c + 6) = v162;
       HIWORD(t1.d) = 2048;
       t1.tx = v163;
-      _os_log_error_impl(&dword_21ED4E000, v44, OS_LOG_TYPE_ERROR, "DL%x: Reachability enabled:%{BOOL}i active:%{BOOL}i offsetWhenActive:%f currentOffset:%f", &t1, 0x28u);
+      _os_log_error_impl(&dword_21ED4E000, hostTransformer, OS_LOG_TYPE_ERROR, "DL%x: Reachability enabled:%{BOOL}i active:%{BOOL}i offsetWhenActive:%f currentOffset:%f", &t1, 0x28u);
     }
   }
 }
@@ -1090,18 +1090,18 @@ LABEL_9:
 
 + (uint64_t)_handleTrackingStateChange
 {
-  v8 = **(a1 + 16);
+  v8 = **(self + 16);
   do
   {
     v9 = 0;
     do
     {
-      if (**(a1 + 16) != v8)
+      if (**(self + 16) != v8)
       {
         objc_enumerationMutation(obj);
       }
 
-      v10 = *(*(a1 + 8) + 8 * v9);
+      v10 = *(*(self + 8) + 8 * v9);
       if (v10)
       {
         [*(v10 + 48) invalidate];
@@ -1113,7 +1113,7 @@ LABEL_9:
     }
 
     while (a3 != v9);
-    result = [obj countByEnumeratingWithState:a1 objects:a4 count:16];
+    result = [obj countByEnumeratingWithState:self objects:a4 count:16];
     a3 = result;
   }
 

@@ -1,10 +1,10 @@
 @interface CNUICoreMapTileGenerator
 + (id)defaultImage;
-+ (id)mapTileImagesForPlacemark:(id)a3 snapshotterProvider:(id)a4 scheduler:(id)a5;
-+ (id)placemarkForAddress:(id)a3 geocoderProvider:(id)a4 scheduler:(id)a5;
++ (id)mapTileImagesForPlacemark:(id)placemark snapshotterProvider:(id)provider scheduler:(id)scheduler;
++ (id)placemarkForAddress:(id)address geocoderProvider:(id)provider scheduler:(id)scheduler;
 - (CNUICoreMapTileGenerator)init;
-- (CNUICoreMapTileGenerator)initWithGeocoderProvider:(id)a3 snapshotterProvider:(id)a4 schedulerProvider:(id)a5;
-- (id)tilesForAddress:(id)a3;
+- (CNUICoreMapTileGenerator)initWithGeocoderProvider:(id)provider snapshotterProvider:(id)snapshotterProvider schedulerProvider:(id)schedulerProvider;
+- (id)tilesForAddress:(id)address;
 @end
 
 @implementation CNUICoreMapTileGenerator
@@ -20,9 +20,9 @@
 
 - (CNUICoreMapTileGenerator)init
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 schedulerProvider];
-  v5 = [(CNUICoreMapTileGenerator *)self initWithGeocoderProvider:&__block_literal_global_14 snapshotterProvider:&__block_literal_global_17 schedulerProvider:v4];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  schedulerProvider = [currentEnvironment schedulerProvider];
+  v5 = [(CNUICoreMapTileGenerator *)self initWithGeocoderProvider:&__block_literal_global_14 snapshotterProvider:&__block_literal_global_17 schedulerProvider:schedulerProvider];
 
   return v5;
 }
@@ -43,73 +43,73 @@ id __32__CNUICoreMapTileGenerator_init__block_invoke_2(uint64_t a1, void *a2)
   return v4;
 }
 
-- (CNUICoreMapTileGenerator)initWithGeocoderProvider:(id)a3 snapshotterProvider:(id)a4 schedulerProvider:(id)a5
+- (CNUICoreMapTileGenerator)initWithGeocoderProvider:(id)provider snapshotterProvider:(id)snapshotterProvider schedulerProvider:(id)schedulerProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  snapshotterProviderCopy = snapshotterProvider;
+  schedulerProviderCopy = schedulerProvider;
   v20.receiver = self;
   v20.super_class = CNUICoreMapTileGenerator;
   v11 = [(CNUICoreMapTileGenerator *)&v20 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [providerCopy copy];
     geocoderProvider = v11->_geocoderProvider;
     v11->_geocoderProvider = v12;
 
-    v14 = [v9 copy];
+    v14 = [snapshotterProviderCopy copy];
     snapshotterProvider = v11->_snapshotterProvider;
     v11->_snapshotterProvider = v14;
 
-    v16 = [v10 newSerialSchedulerWithName:@"com.apple.contacts.ContactsUI.CNUICoreMapTileGenerator"];
+    v16 = [schedulerProviderCopy newSerialSchedulerWithName:@"com.apple.contacts.ContactsUI.CNUICoreMapTileGenerator"];
     workQueue = v11->_workQueue;
     v11->_workQueue = v16;
 
-    objc_storeStrong(&v11->_schedulerProvider, a5);
+    objc_storeStrong(&v11->_schedulerProvider, schedulerProvider);
     v18 = v11;
   }
 
   return v11;
 }
 
-- (id)tilesForAddress:(id)a3
+- (id)tilesForAddress:(id)address
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNUICoreMapTileGenerator *)self geocoderProvider];
-  v6 = [(CNUICoreMapTileGenerator *)self snapshotterProvider];
-  v7 = [(CNUICoreMapTileGenerator *)self workQueue];
-  v8 = [(CNUICoreMapTileGenerator *)self schedulerProvider];
-  v25 = v5;
-  v9 = [objc_opt_class() placemarkForAddress:v4 geocoderProvider:v5 scheduler:v7];
+  addressCopy = address;
+  geocoderProvider = [(CNUICoreMapTileGenerator *)self geocoderProvider];
+  snapshotterProvider = [(CNUICoreMapTileGenerator *)self snapshotterProvider];
+  workQueue = [(CNUICoreMapTileGenerator *)self workQueue];
+  schedulerProvider = [(CNUICoreMapTileGenerator *)self schedulerProvider];
+  v25 = geocoderProvider;
+  v9 = [objc_opt_class() placemarkForAddress:addressCopy geocoderProvider:geocoderProvider scheduler:workQueue];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __44__CNUICoreMapTileGenerator_tilesForAddress___block_invoke;
   v26[3] = &unk_1E76E7E98;
   v26[4] = self;
-  v10 = v6;
+  v10 = snapshotterProvider;
   v28 = v10;
-  v11 = v7;
+  v11 = workQueue;
   v27 = v11;
-  v12 = [v9 flatMap:v26 schedulerProvider:v8];
+  v12 = [v9 flatMap:v26 schedulerProvider:schedulerProvider];
   v13 = MEMORY[0x1E6996798];
-  v14 = [MEMORY[0x1E695DFB0] null];
-  v15 = [v13 observableWithResult:v14];
+  null = [MEMORY[0x1E695DFB0] null];
+  v15 = [v13 observableWithResult:null];
   v16 = [v12 onError:v15];
 
-  v17 = [(CNUICoreMapTileGenerator *)self schedulerProvider];
-  v18 = [v17 backgroundScheduler];
-  v19 = [v16 subscribeOn:v18];
+  schedulerProvider2 = [(CNUICoreMapTileGenerator *)self schedulerProvider];
+  backgroundScheduler = [schedulerProvider2 backgroundScheduler];
+  v19 = [v16 subscribeOn:backgroundScheduler];
 
-  v20 = [objc_opt_class() defaultImage];
-  v29[0] = v20;
+  defaultImage = [objc_opt_class() defaultImage];
+  v29[0] = defaultImage;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:1];
   v22 = [v19 startWith:v21];
 
   v23 = +[CNUICoreLogProvider contact_card_os_log];
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    [(CNUICoreMapTileGenerator *)v4 tilesForAddress:v9, v23];
+    [(CNUICoreMapTileGenerator *)addressCopy tilesForAddress:v9, v23];
   }
 
   return v22;
@@ -123,22 +123,22 @@ id __44__CNUICoreMapTileGenerator_tilesForAddress___block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (id)placemarkForAddress:(id)a3 geocoderProvider:(id)a4 scheduler:(id)a5
++ (id)placemarkForAddress:(id)address geocoderProvider:(id)provider scheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  addressCopy = address;
+  providerCopy = provider;
+  schedulerCopy = scheduler;
   v10 = MEMORY[0x1E6996798];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __75__CNUICoreMapTileGenerator_placemarkForAddress_geocoderProvider_scheduler___block_invoke;
   v16[3] = &unk_1E76E7F38;
-  v18 = v7;
-  v19 = v8;
-  v17 = v9;
-  v11 = v7;
-  v12 = v8;
-  v13 = v9;
+  v18 = addressCopy;
+  v19 = providerCopy;
+  v17 = schedulerCopy;
+  v11 = addressCopy;
+  v12 = providerCopy;
+  v13 = schedulerCopy;
   v14 = [v10 observableWithBlock:v16];
 
   return v14;
@@ -253,22 +253,22 @@ LABEL_6:
 LABEL_10:
 }
 
-+ (id)mapTileImagesForPlacemark:(id)a3 snapshotterProvider:(id)a4 scheduler:(id)a5
++ (id)mapTileImagesForPlacemark:(id)placemark snapshotterProvider:(id)provider scheduler:(id)scheduler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  placemarkCopy = placemark;
+  providerCopy = provider;
+  schedulerCopy = scheduler;
   v10 = MEMORY[0x1E6996798];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84__CNUICoreMapTileGenerator_mapTileImagesForPlacemark_snapshotterProvider_scheduler___block_invoke;
   v16[3] = &unk_1E76E7FD8;
-  v17 = v9;
-  v18 = v7;
-  v19 = v8;
-  v11 = v8;
-  v12 = v7;
-  v13 = v9;
+  v17 = schedulerCopy;
+  v18 = placemarkCopy;
+  v19 = providerCopy;
+  v11 = providerCopy;
+  v12 = placemarkCopy;
+  v13 = schedulerCopy;
   v14 = [v10 observableWithBlock:v16];
 
   return v14;

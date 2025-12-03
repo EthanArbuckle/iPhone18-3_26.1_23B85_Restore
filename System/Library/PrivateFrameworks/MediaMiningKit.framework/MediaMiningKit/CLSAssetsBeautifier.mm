@@ -1,16 +1,16 @@
 @interface CLSAssetsBeautifier
 + (id)beautifier;
-- (BOOL)itemIsRequired:(id)a3;
-- (CLSAssetsBeautifier)initWithSimilarityModelClass:(Class)a3;
-- (id)_clustersBySplittingZeroDiameterClustersInClusters:(id)a3 targetingNumberOfClusters:(unint64_t)a4;
-- (id)_naturalClusteringBestItemInItems:(id)a3;
-- (id)_naturalClusteringWithItems:(id)a3 withSimilarity:(int64_t)a4 timestampSupport:(BOOL)a5 debugInfo:(id)a6;
-- (id)bestItemInItems:(id)a3;
-- (id)deduplicateItems:(id)a3 withDuration:(double)a4 andSimilarity:(int64_t)a5 debugInfo:(id)a6;
-- (id)performWithItems:(id)a3 maximumNumberOfItemsToChoose:(unint64_t)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-- (id)requiredItemsInItems:(id)a3;
-- (id)sampledItemsInSortedItems:(id)a3 maximumNumberOfItemsToChoose:(unint64_t)a4 debugInfo:(id)a5 progressBlock:(id)a6;
-- (id)sortedItemsWithItems:(id)a3;
+- (BOOL)itemIsRequired:(id)required;
+- (CLSAssetsBeautifier)initWithSimilarityModelClass:(Class)class;
+- (id)_clustersBySplittingZeroDiameterClustersInClusters:(id)clusters targetingNumberOfClusters:(unint64_t)ofClusters;
+- (id)_naturalClusteringBestItemInItems:(id)items;
+- (id)_naturalClusteringWithItems:(id)items withSimilarity:(int64_t)similarity timestampSupport:(BOOL)support debugInfo:(id)info;
+- (id)bestItemInItems:(id)items;
+- (id)deduplicateItems:(id)items withDuration:(double)duration andSimilarity:(int64_t)similarity debugInfo:(id)info;
+- (id)performWithItems:(id)items maximumNumberOfItemsToChoose:(unint64_t)choose debugInfo:(id)info progressBlock:(id)block;
+- (id)requiredItemsInItems:(id)items;
+- (id)sampledItemsInSortedItems:(id)items maximumNumberOfItemsToChoose:(unint64_t)choose debugInfo:(id)info progressBlock:(id)block;
+- (id)sortedItemsWithItems:(id)items;
 @end
 
 @implementation CLSAssetsBeautifier
@@ -37,10 +37,10 @@ double __71__CLSAssetsBeautifier_Performance__hierarchicalClusteringDistanceBloc
   return result;
 }
 
-- (id)requiredItemsInItems:(id)a3
+- (id)requiredItemsInItems:(id)items
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   identifiersOfRequiredItems = self->_identifiersOfRequiredItems;
   if (identifiersOfRequiredItems && [(NSSet *)identifiersOfRequiredItems count])
   {
@@ -48,8 +48,8 @@ double __71__CLSAssetsBeautifier_Performance__hierarchicalClusteringDistanceBloc
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v16 = v4;
-    v6 = v4;
+    v16 = itemsCopy;
+    v6 = itemsCopy;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v7)
     {
@@ -67,8 +67,8 @@ double __71__CLSAssetsBeautifier_Performance__hierarchicalClusteringDistanceBloc
 
           v12 = *(*(&v17 + 1) + 8 * i);
           v13 = self->_identifiersOfRequiredItems;
-          v14 = [v12 clsIdentifier];
-          LODWORD(v13) = [(NSSet *)v13 containsObject:v14];
+          clsIdentifier = [v12 clsIdentifier];
+          LODWORD(v13) = [(NSSet *)v13 containsObject:clsIdentifier];
 
           if (v13)
           {
@@ -92,7 +92,7 @@ double __71__CLSAssetsBeautifier_Performance__hierarchicalClusteringDistanceBloc
       v9 = 0;
     }
 
-    v4 = v16;
+    itemsCopy = v16;
   }
 
   else
@@ -103,7 +103,7 @@ double __71__CLSAssetsBeautifier_Performance__hierarchicalClusteringDistanceBloc
   return v9;
 }
 
-- (BOOL)itemIsRequired:(id)a3
+- (BOOL)itemIsRequired:(id)required
 {
   identifiersOfRequiredItems = self->_identifiersOfRequiredItems;
   if (!identifiersOfRequiredItems)
@@ -111,8 +111,8 @@ double __71__CLSAssetsBeautifier_Performance__hierarchicalClusteringDistanceBloc
     return 0;
   }
 
-  v4 = [a3 clsIdentifier];
-  v5 = [(NSSet *)identifiersOfRequiredItems containsObject:v4];
+  clsIdentifier = [required clsIdentifier];
+  v5 = [(NSSet *)identifiersOfRequiredItems containsObject:clsIdentifier];
 
   return v5;
 }
@@ -186,15 +186,15 @@ LABEL_13:
   return v11;
 }
 
-- (id)_naturalClusteringWithItems:(id)a3 withSimilarity:(int64_t)a4 timestampSupport:(BOOL)a5 debugInfo:(id)a6
+- (id)_naturalClusteringWithItems:(id)items withSimilarity:(int64_t)similarity timestampSupport:(BOOL)support debugInfo:(id)info
 {
-  v7 = a5;
+  supportCopy = support;
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
+  itemsCopy = items;
+  infoCopy = info;
   v12 = objc_opt_new();
-  v31 = v10;
-  v13 = [(CLSSimilarStacker *)self->_similarStacker stackSimilarItems:v10 withSimilarity:a4 timestampSupport:v7 progressBlock:0];
+  v31 = itemsCopy;
+  v13 = [(CLSSimilarStacker *)self->_similarStacker stackSimilarItems:itemsCopy withSimilarity:similarity timestampSupport:supportCopy progressBlock:0];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -216,19 +216,19 @@ LABEL_13:
         v18 = *(*(&v32 + 1) + 8 * i);
         if ([v18 count] < 2)
         {
-          v20 = [v18 firstObject];
-          v19 = v20;
-          if (v20)
+          firstObject = [v18 firstObject];
+          v19 = firstObject;
+          if (firstObject)
           {
             identifiersOfEligibleItems = self->_identifiersOfEligibleItems;
-            if (!identifiersOfEligibleItems || ([v20 clsIdentifier], v22 = objc_claimAutoreleasedReturnValue(), v23 = -[NSSet containsObject:](identifiersOfEligibleItems, "containsObject:", v22), v22, v23))
+            if (!identifiersOfEligibleItems || ([firstObject clsIdentifier], v22 = objc_claimAutoreleasedReturnValue(), v23 = -[NSSet containsObject:](identifiersOfEligibleItems, "containsObject:", v22), v22, v23))
             {
               [v12 addObject:v19];
-              if (v11)
+              if (infoCopy)
               {
                 if ([(CLSAssetsBeautifier *)self itemIsRequired:v19])
                 {
-                  v24 = v11;
+                  v24 = infoCopy;
                   v25 = 4;
                   v26 = v19;
                   v27 = @"Item is required";
@@ -236,7 +236,7 @@ LABEL_13:
 
                 else
                 {
-                  v24 = v11;
+                  v24 = infoCopy;
                   v25 = 1;
                   v26 = v19;
                   v27 = @"Alone in Natural Clustering";
@@ -254,9 +254,9 @@ LABEL_13:
           if ([v19 count])
           {
             [v12 addObjectsFromArray:v19];
-            if (v11)
+            if (infoCopy)
             {
-              [v11 dedupItems:v18 toRequiredItems:v19 withDedupingType:1];
+              [infoCopy dedupItems:v18 toRequiredItems:v19 withDedupingType:1];
             }
           }
 
@@ -266,13 +266,13 @@ LABEL_13:
             if (v28)
             {
               [v12 addObject:v28];
-              [v11 dedupItems:v18 toItem:v28 withDedupingType:1];
+              [infoCopy dedupItems:v18 toItem:v28 withDedupingType:1];
             }
 
-            else if (v11)
+            else if (infoCopy)
             {
               v29 = [MEMORY[0x277CBEB98] setWithArray:v18];
-              [v11 setState:2 ofItems:v29 withReason:@"Failed to find a best item in Natural Clustering"];
+              [infoCopy setState:2 ofItems:v29 withReason:@"Failed to find a best item in Natural Clustering"];
             }
           }
         }
@@ -287,11 +287,11 @@ LABEL_13:
   return v12;
 }
 
-- (id)_naturalClusteringBestItemInItems:(id)a3
+- (id)_naturalClusteringBestItemInItems:(id)items
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CLSAssetsBeautifier *)self requiredItemsInItems:v4];
+  itemsCopy = items;
+  v5 = [(CLSAssetsBeautifier *)self requiredItemsInItems:itemsCopy];
   if ([v5 count])
   {
     loggingConnection = self->_loggingConnection;
@@ -306,7 +306,7 @@ LABEL_13:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = v4;
+  v7 = itemsCopy;
   v8 = [v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (!v8)
   {
@@ -337,8 +337,8 @@ LABEL_13:
       identifiersOfEligibleItems = self->_identifiersOfEligibleItems;
       if (identifiersOfEligibleItems)
       {
-        v20 = [*(*(&v36 + 1) + 8 * i) clsIdentifier];
-        v21 = [(NSSet *)identifiersOfEligibleItems containsObject:v20];
+        clsIdentifier = [*(*(&v36 + 1) + 8 * i) clsIdentifier];
+        v21 = [(NSSet *)identifiersOfEligibleItems containsObject:clsIdentifier];
 
         if (!v21)
         {
@@ -363,16 +363,16 @@ LABEL_13:
         v24 = v23;
       }
 
-      v25 = [v18 clsIsAestheticallyPrettyGood];
+      clsIsAestheticallyPrettyGood = [v18 clsIsAestheticallyPrettyGood];
       if (v24 <= v16)
       {
-        if (v24 != v16 || (v25 & 1) == 0)
+        if (v24 != v16 || (clsIsAestheticallyPrettyGood & 1) == 0)
         {
           continue;
         }
       }
 
-      else if (v25)
+      else if (clsIsAestheticallyPrettyGood)
       {
         [v18 clsAestheticScore];
         v27 = v26;
@@ -420,9 +420,9 @@ LABEL_28:
         v32 = [(CLSAssetsBeautifier *)self rankSimilarItems:v7];
         if ([v32 count])
         {
-          v33 = [v32 firstObject];
+          firstObject = [v32 firstObject];
 
-          v11 = v33;
+          v11 = firstObject;
         }
 
 LABEL_37:
@@ -438,17 +438,17 @@ LABEL_37:
   return v11;
 }
 
-- (id)bestItemInItems:(id)a3
+- (id)bestItemInItems:(id)items
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 count];
+  itemsCopy = items;
+  v5 = [itemsCopy count];
   if (!v5)
   {
     goto LABEL_60;
   }
 
-  v6 = [(CLSAssetsBeautifier *)self requiredItemsInItems:v4];
+  v6 = [(CLSAssetsBeautifier *)self requiredItemsInItems:itemsCopy];
   if ([v6 count])
   {
     loggingConnection = self->_loggingConnection;
@@ -461,13 +461,13 @@ LABEL_37:
 
   if (v5 == 1)
   {
-    v8 = [v4 firstObject];
-    v5 = v8;
+    firstObject = [itemsCopy firstObject];
+    v5 = firstObject;
     identifiersOfEligibleItems = self->_identifiersOfEligibleItems;
-    if (identifiersOfEligibleItems && ([v8 clsIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSSet containsObject:](identifiersOfEligibleItems, "containsObject:", v10), v10, !v11) || (objc_msgSend(v5, "clsContentScore"), v12 < *MEMORY[0x277D3C768]))
+    if (identifiersOfEligibleItems && ([firstObject clsIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[NSSet containsObject:](identifiersOfEligibleItems, "containsObject:", v10), v10, !v11) || (objc_msgSend(v5, "clsContentScore"), v12 < *MEMORY[0x277D3C768]))
     {
       v44 = v6;
-      v45 = v4;
+      v45 = itemsCopy;
       v13 = 0;
       goto LABEL_58;
     }
@@ -476,8 +476,8 @@ LABEL_37:
   }
 
   v44 = v6;
-  v45 = v4;
-  v5 = [(CLSAssetsBeautifier *)self sortedItemsWithItems:v4];
+  v45 = itemsCopy;
+  v5 = [(CLSAssetsBeautifier *)self sortedItemsWithItems:itemsCopy];
   v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v15 = [v5 count];
   v52 = *MEMORY[0x277D3C758];
@@ -676,7 +676,7 @@ LABEL_35:
 LABEL_58:
   v5 = v13;
   v6 = v44;
-  v4 = v45;
+  itemsCopy = v45;
 LABEL_59:
 
 LABEL_60:
@@ -684,30 +684,30 @@ LABEL_60:
   return v5;
 }
 
-- (id)sortedItemsWithItems:(id)a3
+- (id)sortedItemsWithItems:(id)items
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAC98];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [v3 sortDescriptorWithKey:@"cls_universalDate" ascending:1];
   v10[0] = v5;
   v6 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"clsIdentifier" ascending:1];
   v10[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
 
-  v8 = [v4 sortedArrayUsingDescriptors:v7];
+  v8 = [itemsCopy sortedArrayUsingDescriptors:v7];
 
   return v8;
 }
 
-- (id)_clustersBySplittingZeroDiameterClustersInClusters:(id)a3 targetingNumberOfClusters:(unint64_t)a4
+- (id)_clustersBySplittingZeroDiameterClustersInClusters:(id)clusters targetingNumberOfClusters:(unint64_t)ofClusters
 {
   v52 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4 - [v5 count];
+  clustersCopy = clusters;
+  v6 = ofClusters - [clustersCopy count];
   if (v6 <= 0)
   {
-    v38 = v5;
+    v38 = clustersCopy;
   }
 
   else
@@ -718,7 +718,7 @@ LABEL_60:
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v9 = v5;
+    v9 = clustersCopy;
     v10 = [v9 countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v10)
     {
@@ -734,8 +734,8 @@ LABEL_60:
           }
 
           v14 = *(*(&v46 + 1) + 8 * i);
-          v15 = [v14 objects];
-          if ([v15 count] <= 1)
+          objects = [v14 objects];
+          if ([objects count] <= 1)
           {
             v16 = v7;
           }
@@ -768,16 +768,16 @@ LABEL_60:
         v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v50 count:1];
         [v41 sortUsingDescriptors:v20];
 
-        v44 = [v41 firstObject];
-        v21 = [v44 objects];
-        v22 = [v21 count];
+        firstObject = [v41 firstObject];
+        objects2 = [firstObject objects];
+        v22 = [objects2 count];
         v23 = v22;
         v45 = v22;
         if ([v41 count] >= 2)
         {
           v24 = [v41 objectAtIndexedSubscript:1];
-          v25 = [v24 objects];
-          v26 = [v25 count];
+          objects3 = [v24 objects];
+          v26 = [objects3 count];
 
           v22 = v45;
           v27 = v45 / v26;
@@ -816,7 +816,7 @@ LABEL_60:
             v32 = v31 / v28;
             v33 = v31 / v28 - v29;
             v34 = *(v17 + 3128);
-            v35 = [v21 subarrayWithRange:?];
+            v35 = [objects2 subarrayWithRange:?];
             v36 = [v34 clusterWithObjects:v35];
 
             v17 = 0x277D3A000;
@@ -855,23 +855,23 @@ LABEL_60:
   return v38;
 }
 
-- (id)deduplicateItems:(id)a3 withDuration:(double)a4 andSimilarity:(int64_t)a5 debugInfo:(id)a6
+- (id)deduplicateItems:(id)items withDuration:(double)duration andSimilarity:(int64_t)similarity debugInfo:(id)info
 {
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  [v10 setAgent:@"Beautifier"];
-  [v10 setStage:@"Deduplicate"];
-  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  itemsCopy = items;
+  infoCopy = info;
+  [infoCopy setAgent:@"Beautifier"];
+  [infoCopy setStage:@"Deduplicate"];
+  v11 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v12 = objc_alloc(MEMORY[0x277D3AC30]);
-  v13 = [(CLSAssetsBeautifier *)self timeClusteringDistanceBlock];
-  v14 = [v12 initWithDistanceBlock:v13];
+  timeClusteringDistanceBlock = [(CLSAssetsBeautifier *)self timeClusteringDistanceBlock];
+  v14 = [v12 initWithDistanceBlock:timeClusteringDistanceBlock];
 
-  [v14 setMaximumDistance:a4];
+  [v14 setMaximumDistance:duration];
   [v14 setMinimumNumberOfObjects:1];
   v32 = v14;
-  v33 = v9;
-  v15 = [v14 performWithDataset:v9 progressBlock:0];
+  v33 = itemsCopy;
+  v15 = [v14 performWithDataset:itemsCopy progressBlock:0];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -891,14 +891,14 @@ LABEL_60:
           objc_enumerationMutation(v15);
         }
 
-        v21 = [*(*(&v35 + 1) + 8 * i) objects];
-        if ([v21 count] < 2)
+        objects = [*(*(&v35 + 1) + 8 * i) objects];
+        if ([objects count] < 2)
         {
-          v23 = [v21 firstObject];
-          if ([(CLSAssetsBeautifier *)self itemIsRequired:v23])
+          firstObject = [objects firstObject];
+          if ([(CLSAssetsBeautifier *)self itemIsRequired:firstObject])
           {
-            v24 = [MEMORY[0x277CBEB98] setWithArray:v21];
-            v25 = v10;
+            v24 = [MEMORY[0x277CBEB98] setWithArray:objects];
+            v25 = infoCopy;
             v26 = 4;
             v27 = v24;
             v28 = @"Item is required";
@@ -906,10 +906,10 @@ LABEL_60:
 
           else
           {
-            [v23 clsContentScore];
+            [firstObject clsContentScore];
             v30 = v29;
-            v24 = [MEMORY[0x277CBEB98] setWithArray:v21];
-            v25 = v10;
+            v24 = [MEMORY[0x277CBEB98] setWithArray:objects];
+            v25 = infoCopy;
             if (v30 <= v19)
             {
               v26 = 2;
@@ -929,17 +929,17 @@ LABEL_60:
           goto LABEL_16;
         }
 
-        v22 = [(CLSAssetsBeautifier *)self _naturalClusteringWithItems:v21 withSimilarity:a5 timestampSupport:0 debugInfo:v10];
-        v23 = v22;
+        v22 = [(CLSAssetsBeautifier *)self _naturalClusteringWithItems:objects withSimilarity:similarity timestampSupport:0 debugInfo:infoCopy];
+        firstObject = v22;
         if (v22 && [v22 count])
         {
-          v23 = v23;
-          v24 = v21;
-          v21 = v23;
+          firstObject = firstObject;
+          v24 = objects;
+          objects = firstObject;
 LABEL_16:
         }
 
-        [v11 addObjectsFromArray:v21];
+        [v11 addObjectsFromArray:objects];
       }
 
       v17 = [v15 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -951,14 +951,14 @@ LABEL_16:
   return v11;
 }
 
-- (id)performWithItems:(id)a3 maximumNumberOfItemsToChoose:(unint64_t)a4 debugInfo:(id)a5 progressBlock:(id)a6
+- (id)performWithItems:(id)items maximumNumberOfItemsToChoose:(unint64_t)choose debugInfo:(id)info progressBlock:(id)block
 {
-  v8 = a4;
+  chooseCopy = choose;
   v101 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v81 = a6;
-  v12 = _Block_copy(v81);
+  itemsCopy = items;
+  infoCopy = info;
+  blockCopy = block;
+  v12 = _Block_copy(blockCopy);
   v13 = v12;
   v92 = 0;
   v93 = &v92;
@@ -987,20 +987,20 @@ LABEL_16:
   v16 = self->_loggingConnection;
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v56 = [v10 count];
+    v56 = [itemsCopy count];
     *buf = 67109376;
-    v98 = v8;
+    v98 = chooseCopy;
     v99 = 1024;
     v100 = v56;
     _os_log_debug_impl(&dword_22F907000, v16, OS_LOG_TYPE_DEBUG, "Beautifier: Beautifying %d items out of %d", buf, 0xEu);
   }
 
-  v82 = self;
+  selfCopy = self;
   v83 = v13;
 
-  [v11 setAgent:@"Beautifier"];
-  v17 = self;
-  [(CLSAssetsBeautifier *)self sortedItemsWithItems:v10];
+  [infoCopy setAgent:@"Beautifier"];
+  selfCopy3 = self;
+  [(CLSAssetsBeautifier *)self sortedItemsWithItems:itemsCopy];
   v77 = v18 = v83;
   v76 = [CLSAssetsBeautifier sampledItemsInSortedItems:"sampledItemsInSortedItems:maximumNumberOfItemsToChoose:debugInfo:progressBlock:" maximumNumberOfItemsToChoose:? debugInfo:? progressBlock:?];
   v80 = [(CLSAssetsBeautifier *)self sortedItemsWithItems:?];
@@ -1028,11 +1028,11 @@ LABEL_16:
   v78 = v20;
   if (self->_enableFinalNaturalClustering && [v20 count] >= 2)
   {
-    [v11 setStage:@"Final Natural Clustering"];
-    [v11 beginTentativeSection];
-    v21 = [(CLSAssetsBeautifier *)self _naturalClusteringWithItems:v78 withSimilarity:0 timestampSupport:0 debugInfo:v11];
+    [infoCopy setStage:@"Final Natural Clustering"];
+    [infoCopy beginTentativeSection];
+    v21 = [(CLSAssetsBeautifier *)self _naturalClusteringWithItems:v78 withSimilarity:0 timestampSupport:0 debugInfo:infoCopy];
     v22 = [v21 count];
-    [v11 endTentativeSectionWithSuccess:v22 != 0];
+    [infoCopy endTentativeSectionWithSuccess:v22 != 0];
     if (v22)
     {
       v23 = self->_loggingConnection;
@@ -1051,7 +1051,7 @@ LABEL_16:
       v78 = v24;
     }
 
-    v17 = self;
+    selfCopy3 = self;
     v18 = v83;
   }
 
@@ -1075,14 +1075,14 @@ LABEL_16:
     }
   }
 
-  if (!v17->_enableFinalTimeClustering || [v78 count] < 2)
+  if (!selfCopy3->_enableFinalTimeClustering || [v78 count] < 2)
   {
 LABEL_84:
-    v59 = v17->_loggingConnection;
+    v59 = selfCopy3->_loggingConnection;
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEBUG))
     {
       v63 = [v78 count];
-      v64 = [v10 count];
+      v64 = [itemsCopy count];
       *buf = 67109376;
       v98 = v63;
       v99 = 1024;
@@ -1110,13 +1110,13 @@ LABEL_90:
     goto LABEL_91;
   }
 
-  [v11 setStage:@"Final Time Clustering"];
+  [infoCopy setStage:@"Final Time Clustering"];
   v27 = objc_alloc(MEMORY[0x277D3AC30]);
-  v28 = [(CLSAssetsBeautifier *)v17 timeClusteringDistanceBlock];
-  v71 = [v27 initWithDistanceBlock:v28];
+  timeClusteringDistanceBlock = [(CLSAssetsBeautifier *)selfCopy3 timeClusteringDistanceBlock];
+  v71 = [v27 initWithDistanceBlock:timeClusteringDistanceBlock];
 
   [v71 setMaximumDistance:3.0];
-  v29 = self;
+  selfCopy4 = self;
   [v71 setMinimumNumberOfObjects:1];
   v88[0] = MEMORY[0x277D85DD0];
   v88[1] = 3221225472;
@@ -1139,11 +1139,11 @@ LABEL_90:
     goto LABEL_82;
   }
 
-  v73 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v30 = 0;
   v31 = *MEMORY[0x277D3C758];
-  v69 = v11;
-  v70 = v10;
+  v69 = infoCopy;
+  v70 = itemsCopy;
   while (1)
   {
     v32 = [v79 count];
@@ -1154,33 +1154,33 @@ LABEL_90:
     }
 
     v33 = objc_autoreleasePoolPush();
-    v29 = v82;
+    selfCopy4 = selfCopy;
     if (!v83 || (v91 = 0, (*(v74 + 2))(v74, &v91, 0.5), v34 = *(v93 + 24) | v91, *(v93 + 24) = v34, (v34 & 1) == 0))
     {
       v36 = [v79 objectAtIndexedSubscript:v30];
-      v37 = [v36 objects];
-      if (([v37 count] - 2) > 2)
+      objects = [v36 objects];
+      if (([objects count] - 2) > 2)
       {
-        [v73 addObjectsFromArray:v37];
+        [array addObjectsFromArray:objects];
         v35 = 0;
         goto LABEL_75;
       }
 
-      v38 = [(CLSAssetsBeautifier *)v82 requiredItemsInItems:v37];
+      v38 = [(CLSAssetsBeautifier *)selfCopy requiredItemsInItems:objects];
       v72 = v38;
       if ([v38 count])
       {
-        [v73 addObjectsFromArray:v38];
-        if (v11)
+        [array addObjectsFromArray:v38];
+        if (infoCopy)
         {
-          [v11 dedupItems:v37 toRequiredItems:v38 withDedupingType:5];
+          [infoCopy dedupItems:objects toRequiredItems:v38 withDedupingType:5];
         }
 
         v35 = 4;
 LABEL_74:
 
 LABEL_75:
-        v29 = v82;
+        selfCopy4 = selfCopy;
         goto LABEL_76;
       }
 
@@ -1189,7 +1189,7 @@ LABEL_75:
       v87 = 0u;
       v84 = 0u;
       v85 = 0u;
-      v40 = v37;
+      v40 = objects;
       v41 = [v40 countByEnumeratingWithState:&v84 objects:v96 count:16];
       if (v41)
       {
@@ -1216,9 +1216,9 @@ LABEL_75:
         while (v41);
       }
 
-      v11 = v69;
-      v10 = v70;
-      v45 = [(CLSAssetsBeautifier *)v82 bestItemInItems:v40];
+      infoCopy = v69;
+      itemsCopy = v70;
+      v45 = [(CLSAssetsBeautifier *)selfCopy bestItemInItems:v40];
       if (!v45)
       {
         goto LABEL_70;
@@ -1231,7 +1231,7 @@ LABEL_66:
         goto LABEL_67;
       }
 
-      v46 = [(CLSAssetsBeautifier *)v82 bestItemInItems:v39];
+      v46 = [(CLSAssetsBeautifier *)selfCopy bestItemInItems:v39];
       [v45 clsContentScore];
       v48 = v47;
       if ([v45 isFavorite])
@@ -1246,9 +1246,9 @@ LABEL_66:
 
       [v46 clsContentScore];
       v51 = v50;
-      v52 = [v46 isFavorite];
+      isFavorite = [v46 isFavorite];
       v53 = v31 + v51;
-      if (!v52)
+      if (!isFavorite)
       {
         v53 = v51;
       }
@@ -1264,7 +1264,7 @@ LABEL_66:
         v45 = v46;
         v54 = 4;
 LABEL_67:
-        [v73 addObject:v45];
+        [array addObject:v45];
         [v69 dedupItems:v40 toItem:v45 withDedupingType:v54];
       }
 
@@ -1302,11 +1302,11 @@ LABEL_76:
     ++v30;
   }
 
-  v57 = v29->_loggingConnection;
+  v57 = selfCopy4->_loggingConnection;
   if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
   {
     v67 = [v78 count];
-    v68 = [v73 count];
+    v68 = [array count];
     *buf = 67109376;
     v98 = v67;
     v99 = 1024;
@@ -1314,14 +1314,14 @@ LABEL_76:
     _os_log_debug_impl(&dword_22F907000, v57, OS_LOG_TYPE_DEBUG, "Final Time Clustering filtered from %d to %d items", buf, 0xEu);
   }
 
-  v58 = v73;
+  v58 = array;
   v78 = v58;
 LABEL_81:
 
 LABEL_82:
   if (v75)
   {
-    v17 = v82;
+    selfCopy3 = selfCopy;
     v18 = v83;
     goto LABEL_84;
   }
@@ -1356,18 +1356,18 @@ uint64_t __93__CLSAssetsBeautifier_performWithItems_maximumNumberOfItemsToChoose
   return result;
 }
 
-- (id)sampledItemsInSortedItems:(id)a3 maximumNumberOfItemsToChoose:(unint64_t)a4 debugInfo:(id)a5 progressBlock:(id)a6
+- (id)sampledItemsInSortedItems:(id)items maximumNumberOfItemsToChoose:(unint64_t)choose debugInfo:(id)info progressBlock:(id)block
 {
   v123 = *MEMORY[0x277D85DE8];
-  v85 = a3;
-  v89 = a5;
-  v9 = a6;
+  itemsCopy = items;
+  infoCopy = info;
+  blockCopy = block;
   v115 = 0;
   v116 = &v115;
   v117 = 0x2020000000;
   v118 = 0;
-  v88 = _Block_copy(v9);
-  v82 = v9;
+  v88 = _Block_copy(blockCopy);
+  v82 = blockCopy;
   if (v88)
   {
     v114 = 0;
@@ -1391,27 +1391,27 @@ uint64_t __93__CLSAssetsBeautifier_performWithItems_maximumNumberOfItemsToChoose
   v12 = self->_loggingConnection;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v52 = [v85 count];
+    v52 = [itemsCopy count];
     *buf = 67109376;
-    *v122 = a4;
+    *v122 = choose;
     *&v122[4] = 1024;
     *&v122[6] = v52;
     _os_log_debug_impl(&dword_22F907000, v12, OS_LOG_TYPE_DEBUG, "Beautifier: Sampling %d items out of %d", buf, 0xEu);
   }
 
-  [v89 setStage:@"Sampling"];
-  v84 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a4];
+  [infoCopy setStage:@"Sampling"];
+  v84 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:choose];
   context = objc_autoreleasePoolPush();
   if (self->_enableStatisticalSampling)
   {
     if (self->_usesKMeans)
     {
       v13 = [objc_alloc(MEMORY[0x277D3AC98]) initWithNumericValueKeypaths:&unk_28449B2F8];
-      [v13 setK:a4];
+      [v13 setK:choose];
       v86 = v13;
       if (self->_discardNonEligibleClustersInSampling)
       {
-        v14 = v85;
+        v14 = itemsCopy;
         obj = 0;
         v78 = MEMORY[0x277D85DD0];
         v15 = *MEMORY[0x277D3C768];
@@ -1466,8 +1466,8 @@ uint64_t __93__CLSAssetsBeautifier_performWithItems_maximumNumberOfItemsToChoose
                 v104 = 0u;
                 v105 = 0u;
                 v106 = 0u;
-                v21 = [v20 objects];
-                v22 = [v21 countByEnumeratingWithState:&v103 objects:v119 count:16];
+                objects = [v20 objects];
+                v22 = [objects countByEnumeratingWithState:&v103 objects:v119 count:16];
                 if (v22)
                 {
                   v23 = *v104;
@@ -1477,15 +1477,15 @@ uint64_t __93__CLSAssetsBeautifier_performWithItems_maximumNumberOfItemsToChoose
                     {
                       if (*v104 != v23)
                       {
-                        objc_enumerationMutation(v21);
+                        objc_enumerationMutation(objects);
                       }
 
                       v25 = *(*(&v103 + 1) + 8 * j);
                       identifiersOfEligibleItems = self->_identifiersOfEligibleItems;
                       if (identifiersOfEligibleItems)
                       {
-                        v27 = [*(*(&v103 + 1) + 8 * j) clsIdentifier];
-                        v28 = [(NSSet *)identifiersOfEligibleItems containsObject:v27];
+                        clsIdentifier = [*(*(&v103 + 1) + 8 * j) clsIdentifier];
+                        v28 = [(NSSet *)identifiersOfEligibleItems containsObject:clsIdentifier];
 
                         if (!v28)
                         {
@@ -1497,14 +1497,14 @@ uint64_t __93__CLSAssetsBeautifier_performWithItems_maximumNumberOfItemsToChoose
                       if (v29 >= v15)
                       {
 
-                        v31 = [v20 objects];
-                        [v91 addObjectsFromArray:v31];
+                        objects2 = [v20 objects];
+                        [v91 addObjectsFromArray:objects2];
                         ++v96;
                         goto LABEL_32;
                       }
                     }
 
-                    v22 = [v21 countByEnumeratingWithState:&v103 objects:v119 count:16];
+                    v22 = [objects countByEnumeratingWithState:&v103 objects:v119 count:16];
                     if (v22)
                     {
                       continue;
@@ -1515,9 +1515,9 @@ uint64_t __93__CLSAssetsBeautifier_performWithItems_maximumNumberOfItemsToChoose
                 }
 
                 v30 = MEMORY[0x277CBEB98];
-                v31 = [v20 objects];
-                v32 = [v30 setWithArray:v31];
-                [v89 setState:2 ofItems:v32 withReason:@"Non-eligible cluster"];
+                objects2 = [v20 objects];
+                v32 = [v30 setWithArray:objects2];
+                [infoCopy setState:2 ofItems:v32 withReason:@"Non-eligible cluster"];
 
 LABEL_32:
               }
@@ -1533,7 +1533,7 @@ LABEL_32:
             v96 = 0;
           }
 
-          if (v81 < a4 || (v33 = [v91 count], v81 <= v96) || v33 <= v96)
+          if (v81 < choose || (v33 = [v91 count], v81 <= v96) || v33 <= v96)
           {
 
             v95 = @"kMeans";
@@ -1572,7 +1572,7 @@ LABEL_32:
       v100[3] = &unk_2788A8AA8;
       v101 = v88;
       v102 = &v115;
-      v16 = [v13 performWithDataset:v85 progressBlock:v100];
+      v16 = [v13 performWithDataset:itemsCopy progressBlock:v100];
       if (*(v116 + 24) == 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1609,17 +1609,17 @@ LABEL_72:
     else
     {
       v43 = objc_alloc(MEMORY[0x277D3AC88]);
-      v44 = [(CLSAssetsBeautifier *)self hierarchicalClusteringDistanceBlock];
-      v86 = [v43 initWithDistanceBlock:v44];
+      hierarchicalClusteringDistanceBlock = [(CLSAssetsBeautifier *)self hierarchicalClusteringDistanceBlock];
+      v86 = [v43 initWithDistanceBlock:hierarchicalClusteringDistanceBlock];
 
       [v86 setUsesSortedDataRelativeDistanceCache:1];
       [v86 setLinkage:0];
-      [v86 setK:a4];
-      v45 = [v85 lastObject];
-      v46 = [v45 cls_universalDate];
-      v47 = [v85 firstObject];
-      v48 = [v47 cls_universalDate];
-      [v46 timeIntervalSinceDate:v48];
+      [v86 setK:choose];
+      lastObject = [itemsCopy lastObject];
+      cls_universalDate = [lastObject cls_universalDate];
+      firstObject = [itemsCopy firstObject];
+      cls_universalDate2 = [firstObject cls_universalDate];
+      [cls_universalDate timeIntervalSinceDate:cls_universalDate2];
       [v86 setThreshold:?];
 
       v97[0] = MEMORY[0x277D85DD0];
@@ -1628,7 +1628,7 @@ LABEL_72:
       v97[3] = &unk_2788A8AA8;
       v98 = v88;
       v99 = &v115;
-      v16 = [v86 performWithDataset:v85 progressBlock:v97];
+      v16 = [v86 performWithDataset:itemsCopy progressBlock:v97];
       if (*(v116 + 24) == 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -1650,7 +1650,7 @@ LABEL_72:
     obj = v16;
 LABEL_65:
 
-    if ((a4 - [obj count]) >= 1)
+    if ((choose - [obj count]) >= 1)
     {
       v16 = [(CLSAssetsBeautifier *)self _clustersBySplittingZeroDiameterClustersInClusters:obj targetingNumberOfClusters:?];
       v41 = 1;
@@ -1665,11 +1665,11 @@ LABEL_73:
 
   else
   {
-    v86 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a4];
-    v36 = [v85 count];
-    if (a4)
+    v86 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:choose];
+    v36 = [itemsCopy count];
+    if (choose)
     {
-      v37 = vcvtad_u64_f64(v36 / a4);
+      v37 = vcvtad_u64_f64(v36 / choose);
       while (1)
       {
         if (v88)
@@ -1684,7 +1684,7 @@ LABEL_73:
           }
         }
 
-        v39 = [v85 subarrayWithRange:{0, v37}];
+        v39 = [itemsCopy subarrayWithRange:{0, v37}];
         v40 = [MEMORY[0x277D3AC38] clusterWithObjects:v39];
         [v86 addObject:v40];
       }
@@ -1716,7 +1716,7 @@ LABEL_112:
     goto LABEL_116;
   }
 
-  [v89 setClusters:obj withReason:v95];
+  [infoCopy setClusters:obj withReason:v95];
   v53 = 0;
   v54 = *MEMORY[0x277D3C758];
   v55 = *MEMORY[0x277D3C760];
@@ -1726,15 +1726,15 @@ LABEL_112:
     v57 = [obj objectAtIndexedSubscript:v53];
     if (!v88 || (v114 = 0, v88[2](v88, &v114, 0.5), v58 = *(v116 + 24) | v114, *(v116 + 24) = v58, (v58 & 1) == 0))
     {
-      v60 = [v57 objects];
-      v61 = [(CLSAssetsBeautifier *)self requiredItemsInItems:v60];
+      objects3 = [v57 objects];
+      v61 = [(CLSAssetsBeautifier *)self requiredItemsInItems:objects3];
       if ([v61 count])
       {
         [v84 addObjectsFromArray:v61];
-        if (v89)
+        if (infoCopy)
         {
           v62 = [MEMORY[0x277CBEB98] setWithArray:v61];
-          [v89 requireItems:v62 inCluster:v57];
+          [infoCopy requireItems:v62 inCluster:v57];
           v59 = 12;
           goto LABEL_103;
         }
@@ -1745,27 +1745,27 @@ LABEL_105:
         goto LABEL_106;
       }
 
-      v62 = [(CLSAssetsBeautifier *)self bestItemInItems:v60];
-      v63 = [v62 isFavorite];
+      v62 = [(CLSAssetsBeautifier *)self bestItemInItems:objects3];
+      isFavorite = [v62 isFavorite];
       v64 = v54;
-      if ((v63 & 1) == 0)
+      if ((isFavorite & 1) == 0)
       {
         [v62 clsContentScore];
       }
 
-      if (v64 < v55 && self->_enableIntermediateNaturalClustering && [v60 count] >= 2)
+      if (v64 < v55 && self->_enableIntermediateNaturalClustering && [objects3 count] >= 2)
       {
-        [v89 beginTentativeSection];
-        v65 = [(CLSAssetsBeautifier *)self _naturalClusteringWithItems:v60 withSimilarity:0 timestampSupport:1 debugInfo:v89];
+        [infoCopy beginTentativeSection];
+        v65 = [(CLSAssetsBeautifier *)self _naturalClusteringWithItems:objects3 withSimilarity:0 timestampSupport:1 debugInfo:infoCopy];
         v92 = [v65 count];
-        [v89 endTentativeSectionWithSuccess:v92 != 0];
+        [infoCopy endTentativeSectionWithSuccess:v92 != 0];
         if (v92)
         {
           v87 = [(CLSAssetsBeautifier *)self bestItemInItems:v65];
 
-          if (v89)
+          if (infoCopy)
           {
-            v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"Intermediate Natural Clustering, chose %lu items out of %lu", objc_msgSend(v65, "count"), objc_msgSend(v60, "count")];
+            v66 = [MEMORY[0x277CCACA8] stringWithFormat:@"Intermediate Natural Clustering, chose %lu items out of %lu", objc_msgSend(v65, "count"), objc_msgSend(objects3, "count")];
 
             v67 = self->_loggingConnection;
             if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
@@ -1776,7 +1776,7 @@ LABEL_105:
             }
 
             v68 = [MEMORY[0x277CBEB98] setWithArray:v65];
-            [v89 chooseItems:v68 inCluster:v57 withReason:v66];
+            [infoCopy chooseItems:v68 inCluster:v57 withReason:v66];
 
             v95 = [MEMORY[0x277CCACA8] stringWithFormat:@"Best Item, chose %d item out of %lu", v87 != 0, objc_msgSend(v65, "count")];
 
@@ -1788,7 +1788,7 @@ LABEL_105:
               _os_log_debug_impl(&dword_22F907000, v69, OS_LOG_TYPE_DEBUG, "Beautifier: %@", buf, 0xCu);
             }
 
-            [v89 chooseItem:v87 inItems:v65 withReason:v95];
+            [infoCopy chooseItem:v87 inItems:v65 withReason:v95];
           }
         }
 
@@ -1805,7 +1805,7 @@ LABEL_105:
 LABEL_99:
           if (v59)
           {
-            v70 = [MEMORY[0x277CCACA8] stringWithFormat:@"Best Item, chose %d items out of %lu", v62 != 0, objc_msgSend(v60, "count")];
+            v70 = [MEMORY[0x277CCACA8] stringWithFormat:@"Best Item, chose %d items out of %lu", v62 != 0, objc_msgSend(objects3, "count")];
 
             v71 = v53;
             v72 = self->_loggingConnection;
@@ -1816,7 +1816,7 @@ LABEL_99:
               _os_log_debug_impl(&dword_22F907000, v72, OS_LOG_TYPE_DEBUG, "Beautifier: %@", buf, 0xCu);
             }
 
-            [v89 chooseItem:v62 inCluster:v57 withReason:v70];
+            [infoCopy chooseItem:v62 inCluster:v57 withReason:v70];
             v53 = v71;
             v59 = 0;
             v95 = v70;
@@ -1864,7 +1864,7 @@ LABEL_106:
   if (os_log_type_enabled(v73, OS_LOG_TYPE_DEBUG))
   {
     v75 = [v84 count];
-    v76 = [v85 count];
+    v76 = [itemsCopy count];
     *buf = 67109376;
     *v122 = v75;
     *&v122[4] = 1024;
@@ -1932,7 +1932,7 @@ uint64_t __102__CLSAssetsBeautifier_sampledItemsInSortedItems_maximumNumberOfIte
   return result;
 }
 
-- (CLSAssetsBeautifier)initWithSimilarityModelClass:(Class)a3
+- (CLSAssetsBeautifier)initWithSimilarityModelClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = CLSAssetsBeautifier;
@@ -1943,7 +1943,7 @@ uint64_t __102__CLSAssetsBeautifier_sampledItemsInSortedItems_maximumNumberOfIte
     v4[8] = 1;
     *(v4 + 9) = 0;
     v4[24] = 1;
-    v6 = [[CLSSimilarStacker alloc] initWithSimilarityModelClass:a3];
+    v6 = [[CLSSimilarStacker alloc] initWithSimilarityModelClass:class];
     similarStacker = v5->_similarStacker;
     v5->_similarStacker = v6;
 

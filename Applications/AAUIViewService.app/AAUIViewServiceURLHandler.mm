@@ -1,39 +1,39 @@
 @interface AAUIViewServiceURLHandler
-- (BOOL)handleUniversalLinkInUserActivity:(id)a3;
-- (id)_buildURLInfoFromActivity:(id)a3;
-- (void)_handleMailImportURL:(id)a3;
+- (BOOL)handleUniversalLinkInUserActivity:(id)activity;
+- (id)_buildURLInfoFromActivity:(id)activity;
+- (void)_handleMailImportURL:(id)l;
 - (void)_openCustomDomainManageURL;
-- (void)_openCustomDomainURL:(id)a3 domainState:(id)a4;
+- (void)_openCustomDomainURL:(id)l domainState:(id)state;
 - (void)_openPrivateEmailManageURL;
-- (void)_presentCustodianInvitationWithUUID:(id)a3 fallBackURL:(id)a4;
-- (void)_presentInheritanceInvitationWithBeneficiaryID:(id)a3 fallBackURL:(id)a4;
+- (void)_presentCustodianInvitationWithUUID:(id)d fallBackURL:(id)l;
+- (void)_presentInheritanceInvitationWithBeneficiaryID:(id)d fallBackURL:(id)l;
 @end
 
 @implementation AAUIViewServiceURLHandler
 
-- (id)_buildURLInfoFromActivity:(id)a3
+- (id)_buildURLInfoFromActivity:(id)activity
 {
-  v3 = a3;
+  activityCopy = activity;
   v4 = _AAUILogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 activityType];
+    activityType = [activityCopy activityType];
     v12 = 136380931;
     v13 = "[AAUIViewServiceURLHandler _buildURLInfoFromActivity:]";
     v14 = 2112;
-    v15 = v5;
+    v15 = activityType;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{private}s handling user activity type: %@", &v12, 0x16u);
   }
 
-  v6 = [v3 activityType];
-  v7 = [v6 isEqual:NSUserActivityTypeBrowsingWeb];
+  activityType2 = [activityCopy activityType];
+  v7 = [activityType2 isEqual:NSUserActivityTypeBrowsingWeb];
 
   if (v7)
   {
-    v8 = [v3 webpageURL];
-    if (v8)
+    webpageURL = [activityCopy webpageURL];
+    if (webpageURL)
     {
-      v9 = [[NSURLComponents alloc] initWithURL:v8 resolvingAgainstBaseURL:1];
+      v9 = [[NSURLComponents alloc] initWithURL:webpageURL resolvingAgainstBaseURL:1];
       if (v9)
       {
         v10 = [AAUniversalLinkHelper infoForComponents:v9];
@@ -59,9 +59,9 @@
   return v10;
 }
 
-- (BOOL)handleUniversalLinkInUserActivity:(id)a3
+- (BOOL)handleUniversalLinkInUserActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100001764;
@@ -71,15 +71,15 @@
   v6 = _AAUILogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 activityType];
+    activityType = [activityCopy activityType];
     *buf = 136380931;
     v23 = "[AAUIViewServiceURLHandler handleUniversalLinkInUserActivity:]";
     v24 = 2112;
-    v25 = v7;
+    v25 = activityType;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{private}s handling user activity type: %@", buf, 0x16u);
   }
 
-  v8 = [(AAUIViewServiceURLHandler *)self _buildURLInfoFromActivity:v4];
+  v8 = [(AAUIViewServiceURLHandler *)self _buildURLInfoFromActivity:activityCopy];
   v9 = v8;
   if (v8)
   {
@@ -148,8 +148,8 @@ LABEL_33:
     v18 = [[NSUUID alloc] initWithUUIDString:v17];
     if ([v11 isEqualToString:AAURLKeyFlowTypeCustodian])
     {
-      v19 = [v4 webpageURL];
-      [(AAUIViewServiceURLHandler *)self _presentCustodianInvitationWithUUID:v18 fallBackURL:v19];
+      webpageURL = [activityCopy webpageURL];
+      [(AAUIViewServiceURLHandler *)self _presentCustodianInvitationWithUUID:v18 fallBackURL:webpageURL];
     }
 
     else
@@ -160,8 +160,8 @@ LABEL_33:
         goto LABEL_32;
       }
 
-      v19 = [v4 webpageURL];
-      [(AAUIViewServiceURLHandler *)self _presentInheritanceInvitationWithBeneficiaryID:v18 fallBackURL:v19];
+      webpageURL = [activityCopy webpageURL];
+      [(AAUIViewServiceURLHandler *)self _presentInheritanceInvitationWithBeneficiaryID:v18 fallBackURL:webpageURL];
     }
 
     v13 = 1;
@@ -197,26 +197,26 @@ LABEL_26:
   [v2 openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)_openCustomDomainURL:(id)a3 domainState:(id)a4
+- (void)_openCustomDomainURL:(id)l domainState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  stateCopy = state;
   v7 = [[NSURLComponents alloc] initWithString:@"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/com.apple.Dataclass.Mail/BYOD_SETTING_SPECIFIER_ID"];
   if (v7)
   {
     v8 = objc_alloc_init(NSMutableArray);
-    v9 = [[NSURLQueryItem alloc] initWithName:@"domain" value:v5];
+    v9 = [[NSURLQueryItem alloc] initWithName:@"domain" value:lCopy];
     [v8 addObject:v9];
 
-    if (v6)
+    if (stateCopy)
     {
-      v10 = [[NSURLQueryItem alloc] initWithName:@"domainState" value:v6];
+      v10 = [[NSURLQueryItem alloc] initWithName:@"domainState" value:stateCopy];
       [v8 addObject:v10];
     }
 
     [v7 setQueryItems:v8];
-    v11 = [v7 string];
-    v12 = [v11 stringByReplacingOccurrencesOfString:@"?" withString:@"&"];
+    string = [v7 string];
+    v12 = [string stringByReplacingOccurrencesOfString:@"?" withString:@"&"];
 
     v13 = _AAUILogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -245,27 +245,27 @@ LABEL_26:
   }
 }
 
-- (void)_presentCustodianInvitationWithUUID:(id)a3 fallBackURL:(id)a4
+- (void)_presentCustodianInvitationWithUUID:(id)d fallBackURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   v8 = objc_alloc_init(AACustodianController);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100001BC0;
   v11[3] = &unk_1000103C0;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = lCopy;
+  selfCopy = self;
+  v14 = dCopy;
+  v9 = dCopy;
+  v10 = lCopy;
   [v8 displayInvitationUIWithUUID:v9 completion:v11];
 }
 
-- (void)_presentInheritanceInvitationWithBeneficiaryID:(id)a3 fallBackURL:(id)a4
+- (void)_presentInheritanceInvitationWithBeneficiaryID:(id)d fallBackURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  lCopy = l;
   v8 = _AAUILogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -278,28 +278,28 @@ LABEL_26:
   v12[1] = 3221225472;
   v12[2] = sub_100001E38;
   v12[3] = &unk_1000103C0;
-  v13 = v7;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
-  v11 = v7;
+  v13 = lCopy;
+  selfCopy = self;
+  v15 = dCopy;
+  v10 = dCopy;
+  v11 = lCopy;
   [v9 presentInheritanceInvitationUIWithBeneficiaryID:v10 completion:v12];
 }
 
-- (void)_handleMailImportURL:(id)a3
+- (void)_handleMailImportURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = [[NSURLComponents alloc] initWithString:@"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/com.apple.Dataclass.Mail/MAIL_IMPORT"];
   v5 = v4;
-  if (v3 && v4)
+  if (lCopy && v4)
   {
     v6 = objc_alloc_init(NSMutableArray);
-    v7 = [[NSURLQueryItem alloc] initWithName:@"state" value:v3];
+    v7 = [[NSURLQueryItem alloc] initWithName:@"state" value:lCopy];
     [v6 addObject:v7];
 
     [v5 setQueryItems:v6];
-    v8 = [v5 string];
-    v9 = [v8 stringByReplacingOccurrencesOfString:@"?" withString:@"&"];
+    string = [v5 string];
+    v9 = [string stringByReplacingOccurrencesOfString:@"?" withString:@"&"];
 
     v10 = _AAUILogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))

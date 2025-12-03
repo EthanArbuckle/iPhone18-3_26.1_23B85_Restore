@@ -1,5 +1,5 @@
 @interface MostActiveParticipantViewController
-- (_TtC15ConversationKit35MostActiveParticipantViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit35MostActiveParticipantViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -8,24 +8,24 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   MostActiveParticipantViewController.viewDidLoad()();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   MostActiveParticipantViewController.viewDidLayoutSubviews()();
 }
 
-- (_TtC15ConversationKit35MostActiveParticipantViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit35MostActiveParticipantViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   MostActiveParticipantViewController.init(nibName:bundle:)();
 }
 

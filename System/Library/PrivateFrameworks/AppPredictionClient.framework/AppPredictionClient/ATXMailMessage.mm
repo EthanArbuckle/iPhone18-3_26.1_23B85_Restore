@@ -1,44 +1,44 @@
 @interface ATXMailMessage
-- (ATXMailMessage)initWithCoder:(id)a3;
-- (ATXMailMessage)initWithMailID:(id)a3 bundleID:(id)a4 dateReceived:(id)a5 sender:(id)a6 recipients:(id)a7 subject:(id)a8 body:(id)a9;
-- (void)encodeWithCoder:(id)a3;
+- (ATXMailMessage)initWithCoder:(id)coder;
+- (ATXMailMessage)initWithMailID:(id)d bundleID:(id)iD dateReceived:(id)received sender:(id)sender recipients:(id)recipients subject:(id)subject body:(id)body;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXMailMessage
 
-- (ATXMailMessage)initWithMailID:(id)a3 bundleID:(id)a4 dateReceived:(id)a5 sender:(id)a6 recipients:(id)a7 subject:(id)a8 body:(id)a9
+- (ATXMailMessage)initWithMailID:(id)d bundleID:(id)iD dateReceived:(id)received sender:(id)sender recipients:(id)recipients subject:(id)subject body:(id)body
 {
-  v15 = a3;
-  v16 = a4;
-  v33 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  dCopy = d;
+  iDCopy = iD;
+  receivedCopy = received;
+  senderCopy = sender;
+  recipientsCopy = recipients;
+  subjectCopy = subject;
+  bodyCopy = body;
   v34.receiver = self;
   v34.super_class = ATXMailMessage;
   v21 = [(ATXMailMessage *)&v34 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [dCopy copy];
     mailID = v21->_mailID;
     v21->_mailID = v22;
 
-    v24 = [v16 copy];
+    v24 = [iDCopy copy];
     bundleID = v21->_bundleID;
     v21->_bundleID = v24;
 
-    objc_storeStrong(&v21->_dateReceived, a5);
-    objc_storeStrong(&v21->_sender, a6);
-    v26 = [v18 copy];
+    objc_storeStrong(&v21->_dateReceived, received);
+    objc_storeStrong(&v21->_sender, sender);
+    v26 = [recipientsCopy copy];
     recipients = v21->_recipients;
     v21->_recipients = v26;
 
-    v28 = [v19 copy];
+    v28 = [subjectCopy copy];
     subject = v21->_subject;
     v21->_subject = v28;
 
-    v30 = [v20 copy];
+    v30 = [bodyCopy copy];
     body = v21->_body;
     v21->_body = v30;
   }
@@ -46,53 +46,53 @@
   return v21;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXMailMessage *)self mailID];
-  [v4 encodeObject:v5 forKey:@"mailID"];
+  coderCopy = coder;
+  mailID = [(ATXMailMessage *)self mailID];
+  [coderCopy encodeObject:mailID forKey:@"mailID"];
 
-  v6 = [(ATXMailMessage *)self bundleID];
-  [v4 encodeObject:v6 forKey:@"bundleID"];
+  bundleID = [(ATXMailMessage *)self bundleID];
+  [coderCopy encodeObject:bundleID forKey:@"bundleID"];
 
-  v7 = [(ATXMailMessage *)self dateReceived];
-  [v4 encodeObject:v7 forKey:@"dateReceived"];
+  dateReceived = [(ATXMailMessage *)self dateReceived];
+  [coderCopy encodeObject:dateReceived forKey:@"dateReceived"];
 
-  v8 = [(ATXMailMessage *)self sender];
-  [v4 encodeObject:v8 forKey:@"sender"];
+  sender = [(ATXMailMessage *)self sender];
+  [coderCopy encodeObject:sender forKey:@"sender"];
 
-  v9 = [(ATXMailMessage *)self recipients];
-  [v4 encodeObject:v9 forKey:@"recipients"];
+  recipients = [(ATXMailMessage *)self recipients];
+  [coderCopy encodeObject:recipients forKey:@"recipients"];
 
-  v10 = [(ATXMailMessage *)self subject];
-  [v4 encodeObject:v10 forKey:@"subject"];
+  subject = [(ATXMailMessage *)self subject];
+  [coderCopy encodeObject:subject forKey:@"subject"];
 
-  v11 = [(ATXMailMessage *)self body];
-  [v4 encodeObject:v11 forKey:@"body"];
+  body = [(ATXMailMessage *)self body];
+  [coderCopy encodeObject:body forKey:@"body"];
 }
 
-- (ATXMailMessage)initWithCoder:(id)a3
+- (ATXMailMessage)initWithCoder:(id)coder
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = ATXMailMessage;
   v5 = [(ATXMailMessage *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mailID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mailID"];
     mailID = v5->_mailID;
     v5->_mailID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateReceived"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateReceived"];
     dateReceived = v5->_dateReceived;
     v5->_dateReceived = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sender"];
     sender = v5->_sender;
     v5->_sender = v12;
 
@@ -101,15 +101,15 @@
     v26[1] = objc_opt_class();
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
     v16 = [v14 setWithArray:v15];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"recipients"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"recipients"];
     recipients = v5->_recipients;
     v5->_recipients = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subject"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subject"];
     subject = v5->_subject;
     v5->_subject = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"body"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"body"];
     body = v5->_body;
     v5->_body = v21;
 

@@ -1,24 +1,24 @@
 @interface _UIImageCGImageContent
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isHDR;
-- (BOOL)optimizeContentForImageSize:(CGSize)a3 completionHandler:(id)a4;
-- (BOOL)prepareContentForDisplayWithCompletionHandler:(id)a3;
-- (CGImage)_provideCGImageWithSize:(CGSize)a3 scale:(double)a4;
+- (BOOL)optimizeContentForImageSize:(CGSize)size completionHandler:(id)handler;
+- (BOOL)prepareContentForDisplayWithCompletionHandler:(id)handler;
+- (CGImage)_provideCGImageWithSize:(CGSize)size scale:(double)scale;
 - (CGSize)sizeInPixels;
-- (_UIImageCGImageContent)contentWithCGImage:(CGImage *)a3;
-- (_UIImageCGImageContent)initWithCGImage:(CGImage *)a3 scale:(double)a4;
-- (_UIImageCGImageContent)initWithCGImageSource:(CGImageSource *)a3 CGImage:(CGImage *)a4 scale:(double)a5;
-- (_UIImageCGImageContent)initWithCGImageSource:(CGImageSource *)a3 scale:(double)a4;
+- (_UIImageCGImageContent)contentWithCGImage:(CGImage *)image;
+- (_UIImageCGImageContent)initWithCGImage:(CGImage *)image scale:(double)scale;
+- (_UIImageCGImageContent)initWithCGImageSource:(CGImageSource *)source CGImage:(CGImage *)image scale:(double)scale;
+- (_UIImageCGImageContent)initWithCGImageSource:(CGImageSource *)source scale:(double)scale;
 - (double)imageMaximumHeadroom;
 - (id)_activeDecompressorCreatingIfNecessary;
-- (id)contentOptimizedForImageSize:(CGSize)a3;
+- (id)contentOptimizedForImageSize:(CGSize)size;
 - (id)contentPreparedForDisplay;
 - (id)imageRendererFormat;
 - (id)layerContents;
 - (id)makeSDRVersion;
 - (unint64_t)hash;
 - (void)_contentWithCARenderRef;
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6;
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext;
 - (void)dealloc;
 @end
 
@@ -26,9 +26,9 @@
 
 - (CGSize)sizeInPixels
 {
-  v2 = [(_UIImageCGImageContent *)self CGImage];
-  Width = CGImageGetWidth(v2);
-  Height = CGImageGetHeight(v2);
+  cGImage = [(_UIImageCGImageContent *)self CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v5 = Width;
   result.height = Height;
   result.width = v5;
@@ -44,9 +44,9 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_UIImageCGImageContent *)self CGImage];
+  cGImage = [(_UIImageCGImageContent *)self CGImage];
 
-  return CFHash(v2);
+  return CFHash(cGImage);
 }
 
 - (void)dealloc
@@ -60,9 +60,9 @@
 - (id)imageRendererFormat
 {
   v3 = +[UIGraphicsImageRendererFormat preferredFormat];
-  v4 = [(_UIImageCGImageContent *)self CGImage];
-  ColorSpace = CGImageGetColorSpace(v4);
-  if ((CGImageGetBitmapInfo(v4) & 0x100) != 0)
+  cGImage = [(_UIImageCGImageContent *)self CGImage];
+  ColorSpace = CGImageGetColorSpace(cGImage);
+  if ((CGImageGetBitmapInfo(cGImage) & 0x100) != 0)
   {
     v6 = v3;
     v7 = 1;
@@ -96,7 +96,7 @@ LABEL_6:
   }
 
   [v3 _setOverrideColorSpace:ColorSpace];
-  [v3 _setOverrideBitsPerComponent:CGImageGetBitsPerComponent(v4)];
+  [v3 _setOverrideBitsPerComponent:CGImageGetBitsPerComponent(cGImage)];
 LABEL_7:
   [v3 setOpaque:CGImageHasAlpha() ^ 1];
   [(_UIImageContent *)self scale];
@@ -107,24 +107,24 @@ LABEL_7:
 
 - (id)contentPreparedForDisplay
 {
-  v3 = [(_UIImageContent *)self _existingPreparedContentForDisplay];
-  if (v3)
+  _existingPreparedContentForDisplay = [(_UIImageContent *)self _existingPreparedContentForDisplay];
+  if (_existingPreparedContentForDisplay)
   {
-    v4 = v3;
+    v4 = _existingPreparedContentForDisplay;
   }
 
   else
   {
-    v5 = [(_UIImageCGImageContent *)self _activeDecompressorCreatingIfNecessary];
-    v6 = v5;
-    if (!v5 || (v7 = [v5 waitForImageRef]) == 0 || (v8 = v7, v9 = [_UIImageCGImageContent alloc], -[_UIImageContent scale](self, "scale"), v10 = -[_UIImageCGImageContent initWithCGImage:scale:](v9, "initWithCGImage:scale:", v8), -[_UIImageCGImageContent _contentWithCARenderRef](v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+    _activeDecompressorCreatingIfNecessary = [(_UIImageCGImageContent *)self _activeDecompressorCreatingIfNecessary];
+    v6 = _activeDecompressorCreatingIfNecessary;
+    if (!_activeDecompressorCreatingIfNecessary || (v7 = [_activeDecompressorCreatingIfNecessary waitForImageRef]) == 0 || (v8 = v7, v9 = [_UIImageCGImageContent alloc], -[_UIImageContent scale](self, "scale"), v10 = -[_UIImageCGImageContent initWithCGImage:scale:](v9, "initWithCGImage:scale:", v8), -[_UIImageCGImageContent _contentWithCARenderRef](v10), _contentWithCARenderRef = objc_claimAutoreleasedReturnValue(), v10, !_contentWithCARenderRef))
     {
-      v11 = [(_UIImageCGImageContent *)self _contentWithCARenderRef];
+      _contentWithCARenderRef = [(_UIImageCGImageContent *)self _contentWithCARenderRef];
     }
 
-    [(_UIImageContent *)_UIImageCGImageContent _cachePreparedContent:v11 forDisplayOfContent:self];
+    [(_UIImageContent *)_UIImageCGImageContent _cachePreparedContent:_contentWithCARenderRef forDisplayOfContent:self];
     objc_setAssociatedObject(self, @"com.apple.UIKit.active-decompressor", 0, 0x301);
-    v4 = v11;
+    v4 = _contentWithCARenderRef;
   }
 
   return v4;
@@ -132,23 +132,23 @@ LABEL_7:
 
 - (id)_activeDecompressorCreatingIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    v1 = a1;
-    objc_sync_enter(v1);
-    v2 = objc_getAssociatedObject(v1, @"com.apple.UIKit.active-decompressor");
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v2 = objc_getAssociatedObject(selfCopy, @"com.apple.UIKit.active-decompressor");
     if (!v2)
     {
       v3 = [_UINewCGImageDecompressor alloc];
-      v4 = [v1 CGImage];
+      cGImage = [selfCopy CGImage];
       objc_opt_self();
       v5 = _UIImageDecompressionCompletionQueue();
-      v2 = [(_UINewCGImageDecompressor *)v3 initWithSourceImage:v4 completionQueue:v5];
+      v2 = [(_UINewCGImageDecompressor *)v3 initWithSourceImage:cGImage completionQueue:v5];
 
-      objc_setAssociatedObject(v1, @"com.apple.UIKit.active-decompressor", v2, 1);
+      objc_setAssociatedObject(selfCopy, @"com.apple.UIKit.active-decompressor", v2, 1);
     }
 
-    objc_sync_exit(v1);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -161,17 +161,17 @@ LABEL_7:
 
 - (void)_contentWithCARenderRef
 {
-  if (a1 && ((v2 = [a1 CGImage], !objc_msgSend(MEMORY[0x1E69E58C0], "instancesRespondToSelector:", sel_CA_copyRenderValueWithColorspace_)) ? (v3 = objc_msgSend(v2, "CA_copyRenderValue")) : (v3 = objc_msgSend(v2, "CA_copyRenderValueWithColorspace:", CGImageGetColorSpace(v2))), v3))
+  if (self && ((v2 = [self CGImage], !objc_msgSend(MEMORY[0x1E69E58C0], "instancesRespondToSelector:", sel_CA_copyRenderValueWithColorspace_)) ? (v3 = objc_msgSend(v2, "CA_copyRenderValue")) : (v3 = objc_msgSend(v2, "CA_copyRenderValueWithColorspace:", CGImageGetColorSpace(v2))), v3))
   {
     v4 = [_UIImagePreparedCGImageContent alloc];
-    [a1 scale];
+    [self scale];
     if (v4)
     {
       v6 = v5;
       if (!v2)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v9 handleFailureInMethod:sel_initWithCARenderRef_CGImage_scale_ object:v4 file:@"_UIImageContent.m" lineNumber:707 description:{@"Invalid parameter not satisfying: %@", @"originalImageRef != NULL"}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:sel_initWithCARenderRef_CGImage_scale_ object:v4 file:@"_UIImageContent.m" lineNumber:707 description:{@"Invalid parameter not satisfying: %@", @"originalImageRef != NULL"}];
       }
 
       v10.receiver = v4;
@@ -199,71 +199,71 @@ LABEL_7:
   return v7;
 }
 
-- (_UIImageCGImageContent)initWithCGImageSource:(CGImageSource *)a3 CGImage:(CGImage *)a4 scale:(double)a5
+- (_UIImageCGImageContent)initWithCGImageSource:(CGImageSource *)source CGImage:(CGImage *)image scale:(double)scale
 {
-  if (!a4)
+  if (!image)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:740 description:@"Need an imageRef"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:740 description:@"Need an imageRef"];
   }
 
-  v10 = CFGetTypeID(a4);
+  v10 = CFGetTypeID(image);
   if (v10 != CGImageGetTypeID())
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:741 description:@"imageRef passed is not a CGImageRef"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:741 description:@"imageRef passed is not a CGImageRef"];
   }
 
   v15.receiver = self;
   v15.super_class = _UIImageCGImageContent;
-  v11 = [(_UIImageContent *)&v15 initWithScale:a5];
+  v11 = [(_UIImageContent *)&v15 initWithScale:scale];
   if (v11)
   {
-    atomic_store(CGImageRetain(a4), v11 + 5);
-    [v11 _setCGImageSource:a3];
+    atomic_store(CGImageRetain(image), v11 + 5);
+    [v11 _setCGImageSource:source];
   }
 
   return v11;
 }
 
-- (_UIImageCGImageContent)initWithCGImage:(CGImage *)a3 scale:(double)a4
+- (_UIImageCGImageContent)initWithCGImage:(CGImage *)image scale:(double)scale
 {
   ImageSource = CGImageGetImageSource();
 
-  return [(_UIImageCGImageContent *)self initWithCGImageSource:ImageSource CGImage:a3 scale:a4];
+  return [(_UIImageCGImageContent *)self initWithCGImageSource:ImageSource CGImage:image scale:scale];
 }
 
-- (_UIImageCGImageContent)initWithCGImageSource:(CGImageSource *)a3 scale:(double)a4
+- (_UIImageCGImageContent)initWithCGImageSource:(CGImageSource *)source scale:(double)scale
 {
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(a3, 0, 0);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(source, 0, 0);
   if (ImageAtIndex)
   {
     v8 = ImageAtIndex;
-    v9 = [(_UIImageCGImageContent *)self initWithCGImageSource:a3 CGImage:ImageAtIndex scale:a4];
+    v9 = [(_UIImageCGImageContent *)self initWithCGImageSource:source CGImage:ImageAtIndex scale:scale];
     CGImageRelease(v8);
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)layerContents
 {
-  v2 = self;
+  selfCopy = self;
 
-  return [(_UIImageCGImageContent *)v2 CGImage];
+  return [(_UIImageCGImageContent *)selfCopy CGImage];
 }
 
 - (double)imageMaximumHeadroom
 {
-  v2 = [(_UIImageCGImageContent *)self CGImage];
-  ColorSpace = CGImageGetColorSpace(v2);
+  cGImage = [(_UIImageCGImageContent *)self CGImage];
+  ColorSpace = CGImageGetColorSpace(cGImage);
   v4 = CGColorSpaceUsesITUR_2100TF(ColorSpace);
   result = 1.0;
   if (v4)
@@ -275,7 +275,7 @@ LABEL_7:
 
     else
     {
-      v6 = CGImageGetColorSpace(v2);
+      v6 = CGImageGetColorSpace(cGImage);
       IsHLGBased = CGColorSpaceIsHLGBased(v6);
       result = 8.0;
       if (IsHLGBased)
@@ -293,13 +293,13 @@ LABEL_7:
   v17[1] = *MEMORY[0x1E69E9840];
   if (![(_UIImageCGImageContent *)self isHDR])
   {
-    v8 = self;
+    selfCopy = self;
     goto LABEL_12;
   }
 
-  v3 = [(_UIImageCGImageContent *)self CGImage];
-  v4 = [(_UIImageContent *)self CGImageSource];
-  if (!v4)
+  cGImage = [(_UIImageCGImageContent *)self CGImage];
+  cGImageSource = [(_UIImageContent *)self CGImageSource];
+  if (!cGImageSource)
   {
     goto LABEL_7;
   }
@@ -307,7 +307,7 @@ LABEL_7:
   v16 = *MEMORY[0x1E696E018];
   v17[0] = *MEMORY[0x1E696E030];
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(v4, 0, v5);
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(cGImageSource, 0, v5);
   ColorSpace = CGImageGetColorSpace(ImageAtIndex);
   if (CGColorSpaceUsesITUR_2100TF(ColorSpace))
   {
@@ -315,8 +315,8 @@ LABEL_7:
 
 LABEL_7:
     v9 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F0B8]);
-    Width = CGImageGetWidth(v3);
-    Height = CGImageGetHeight(v3);
+    Width = CGImageGetWidth(cGImage);
+    Height = CGImageGetHeight(cGImage);
     if (CGImageHasAlpha())
     {
       v12 = 4353;
@@ -334,7 +334,7 @@ LABEL_7:
     v19.origin.y = *(MEMORY[0x1E695EFF8] + 8);
     v19.size.width = Width;
     v19.size.height = Height;
-    CGContextDrawImage(v13, v19, v3);
+    CGContextDrawImage(v13, v19, cGImage);
     ImageAtIndex = CGBitmapContextCreateImage(v13);
     CGContextRelease(v13);
     goto LABEL_11;
@@ -348,24 +348,24 @@ LABEL_7:
 LABEL_11:
   v14 = [_UIImageCGImageContent alloc];
   [(_UIImageContent *)self scale];
-  v8 = [(_UIImageCGImageContent *)v14 initWithCGImageSource:v4 CGImage:ImageAtIndex scale:?];
+  selfCopy = [(_UIImageCGImageContent *)v14 initWithCGImageSource:cGImageSource CGImage:ImageAtIndex scale:?];
   CFRelease(ImageAtIndex);
 LABEL_12:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     explicit = atomic_load_explicit(&self->_imageRef, memory_order_acquire);
-    v6 = atomic_load_explicit(v4 + 5, memory_order_acquire);
+    v6 = atomic_load_explicit(equalCopy + 5, memory_order_acquire);
     v10.receiver = self;
     v10.super_class = _UIImageCGImageContent;
-    v7 = [(_UIImageContent *)&v10 isEqual:v4];
+    v7 = [(_UIImageContent *)&v10 isEqual:equalCopy];
     if (explicit == v6)
     {
       v8 = v7;
@@ -385,11 +385,11 @@ LABEL_12:
   return v8;
 }
 
-- (CGImage)_provideCGImageWithSize:(CGSize)a3 scale:(double)a4
+- (CGImage)_provideCGImageWithSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  [(_UIImageContent *)self size:a3.width];
+  height = size.height;
+  width = size.width;
+  [(_UIImageContent *)self size:size.width];
   if (width == v8 && height == v7)
   {
     v15 = atomic_load(&self->_imageRef);
@@ -400,11 +400,11 @@ LABEL_12:
 
   else
   {
-    v10 = 0;
+    cGImage = 0;
     if (width > 0.0 && height > 0.0)
     {
-      v11 = [(_UIImageCGImageContent *)self imageRendererFormat];
-      v12 = [[UIGraphicsImageRenderer alloc] initWithSize:v11 format:width, height];
+      imageRendererFormat = [(_UIImageCGImageContent *)self imageRendererFormat];
+      height = [[UIGraphicsImageRenderer alloc] initWithSize:imageRendererFormat format:width, height];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __56___UIImageCGImageContent__provideCGImageWithSize_scale___block_invoke;
@@ -412,43 +412,43 @@ LABEL_12:
       *&v17[5] = width;
       *&v17[6] = height;
       v17[4] = self;
-      v13 = [(UIGraphicsImageRenderer *)v12 imageWithActions:v17];
-      v10 = [v13 CGImage];
+      v13 = [(UIGraphicsImageRenderer *)height imageWithActions:v17];
+      cGImage = [v13 CGImage];
     }
 
-    return v10;
+    return cGImage;
   }
 }
 
-- (void)_drawWithSize:(CGSize)a3 scale:(double)a4 inContext:(CGContext *)a5 renditionContext:(id)a6
+- (void)_drawWithSize:(CGSize)size scale:(double)scale inContext:(CGContext *)context renditionContext:(id)renditionContext
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9 = *MEMORY[0x1E695EFF8];
   v10 = *(MEMORY[0x1E695EFF8] + 8);
-  v11 = [(_UIImageCGImageContent *)self CGImage];
+  cGImage = [(_UIImageCGImageContent *)self CGImage];
   v12 = v9;
   v13 = v10;
   v14 = width;
   v15 = height;
 
-  CGContextDrawImage(a5, *&v12, v11);
+  CGContextDrawImage(context, *&v12, cGImage);
 }
 
-- (_UIImageCGImageContent)contentWithCGImage:(CGImage *)a3
+- (_UIImageCGImageContent)contentWithCGImage:(CGImage *)image
 {
   v5 = [_UIImageCGImageContent alloc];
   [(_UIImageContent *)self scale];
-  v6 = [(_UIImageCGImageContent *)v5 initWithCGImage:a3 scale:?];
+  v6 = [(_UIImageCGImageContent *)v5 initWithCGImage:image scale:?];
 
   return v6;
 }
 
-- (BOOL)prepareContentForDisplayWithCompletionHandler:(id)a3
+- (BOOL)prepareContentForDisplayWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(_UIImageContent *)self _existingPreparedContentForDisplay];
-  if (v5)
+  handlerCopy = handler;
+  _existingPreparedContentForDisplay = [(_UIImageContent *)self _existingPreparedContentForDisplay];
+  if (_existingPreparedContentForDisplay)
   {
     objc_opt_self();
     v6 = _UIImageDecompressionCompletionQueue();
@@ -456,8 +456,8 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = __72___UIImageCGImageContent_prepareContentForDisplayWithCompletionHandler___block_invoke;
     block[3] = &unk_1E70F4A50;
-    v20 = v4;
-    v19 = v5;
+    v20 = handlerCopy;
+    v19 = _existingPreparedContentForDisplay;
     dispatch_async(v6, block);
 
     v7 = v20;
@@ -470,11 +470,11 @@ LABEL_12:
     aBlock[2] = __72___UIImageCGImageContent_prepareContentForDisplayWithCompletionHandler___block_invoke_2;
     aBlock[3] = &unk_1E70F37C0;
     aBlock[4] = self;
-    v8 = v4;
+    v8 = handlerCopy;
     v17 = v8;
     v9 = _Block_copy(aBlock);
-    v10 = [(_UIImageCGImageContent *)self _activeDecompressorCreatingIfNecessary];
-    if (v10)
+    _activeDecompressorCreatingIfNecessary = [(_UIImageCGImageContent *)self _activeDecompressorCreatingIfNecessary];
+    if (_activeDecompressorCreatingIfNecessary)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -483,7 +483,7 @@ LABEL_12:
       v13[4] = self;
       v14 = v8;
       v15 = v9;
-      [(_UINewCGImageDecompressor *)v10 decompressAsync:v13];
+      [(_UINewCGImageDecompressor *)_activeDecompressorCreatingIfNecessary decompressAsync:v13];
     }
 
     else
@@ -498,13 +498,13 @@ LABEL_12:
   return 1;
 }
 
-- (id)contentOptimizedForImageSize:(CGSize)a3
+- (id)contentOptimizedForImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v19[4] = *MEMORY[0x1E69E9840];
   [(_UIImageCGImageContent *)self CGImage];
-  v6 = [(_UIImageContent *)self CGImageSource];
+  cGImageSource = [(_UIImageContent *)self CGImageSource];
   [(_UIImageContent *)self scale];
   v8 = v7;
   [(_UIImageCGImageContent *)self sizeInPixels];
@@ -515,7 +515,7 @@ LABEL_12:
   }
 
   v10 = vcvtpd_u64_f64(v9);
-  if (v6)
+  if (cGImageSource)
   {
     v11 = *MEMORY[0x1E696DFE8];
     v18[0] = *MEMORY[0x1E696DFF0];
@@ -530,7 +530,7 @@ LABEL_12:
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:4];
     v14 = [v13 mutableCopy];
 
-    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v6, 0, v14);
+    ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(cGImageSource, 0, v14);
     if (ThumbnailAtIndex)
     {
 LABEL_5:
@@ -555,15 +555,15 @@ LABEL_8:
   return v16;
 }
 
-- (BOOL)optimizeContentForImageSize:(CGSize)a3 completionHandler:(id)a4
+- (BOOL)optimizeContentForImageSize:(CGSize)size completionHandler:(id)handler
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = a4;
-  if (!v8)
+  height = size.height;
+  width = size.width;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1105 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != NULL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIImageContent.m" lineNumber:1105 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != NULL"}];
   }
 
   v9 = AsyncFallbackPreparationQueue();
@@ -572,10 +572,10 @@ LABEL_8:
   block[2] = __72___UIImageCGImageContent_optimizeContentForImageSize_completionHandler___block_invoke;
   block[3] = &unk_1E71060F8;
   block[4] = self;
-  v14 = v8;
+  v14 = handlerCopy;
   v15 = width;
   v16 = height;
-  v10 = v8;
+  v10 = handlerCopy;
   dispatch_async(v9, block);
 
   return 1;

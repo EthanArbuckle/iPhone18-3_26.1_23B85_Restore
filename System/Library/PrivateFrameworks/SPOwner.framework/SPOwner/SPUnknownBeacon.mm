@@ -1,18 +1,18 @@
 @interface SPUnknownBeacon
-- (BOOL)isEqual:(id)a3;
-- (SPUnknownBeacon)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (SPUnknownBeacon)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPUnknownBeacon
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -22,11 +22,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SPUnknownBeacon *)self identifier];
-      v7 = [(SPUnknownBeacon *)v5 identifier];
+      v5 = equalCopy;
+      identifier = [(SPUnknownBeacon *)self identifier];
+      identifier2 = [(SPUnknownBeacon *)v5 identifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [identifier isEqual:identifier2];
     }
 
     else
@@ -40,61 +40,61 @@
 
 - (unint64_t)hash
 {
-  v2 = [(SPUnknownBeacon *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(SPUnknownBeacon *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
-  v5 = [(SPUnknownBeacon *)self name];
-  [v4 setName:v5];
+  name = [(SPUnknownBeacon *)self name];
+  [v4 setName:name];
 
-  v6 = [(SPUnknownBeacon *)self identifier];
-  [v4 setIdentifier:v6];
+  identifier = [(SPUnknownBeacon *)self identifier];
+  [v4 setIdentifier:identifier];
 
-  v7 = [(SPUnknownBeacon *)self beaconIdentifier];
-  [v4 setBeaconIdentifier:v7];
+  beaconIdentifier = [(SPUnknownBeacon *)self beaconIdentifier];
+  [v4 setBeaconIdentifier:beaconIdentifier];
 
-  v8 = [(SPUnknownBeacon *)self beaconLocations];
-  v9 = [v8 copy];
+  beaconLocations = [(SPUnknownBeacon *)self beaconLocations];
+  v9 = [beaconLocations copy];
   [v4 setBeaconLocations:v9];
 
-  v10 = [(SPUnknownBeacon *)self advertisement];
-  v11 = [v10 copy];
+  advertisement = [(SPUnknownBeacon *)self advertisement];
+  v11 = [advertisement copy];
   [v4 setAdvertisement:v11];
 
-  v12 = [(SPUnknownBeacon *)self handle];
-  v13 = [v12 copy];
+  handle = [(SPUnknownBeacon *)self handle];
+  v13 = [handle copy];
   [v4 setHandle:v13];
 
   [v4 setIsIgnored:{-[SPUnknownBeacon isIgnored](self, "isIgnored")}];
   [v4 setIsAppleAudioAccessory:{-[SPUnknownBeacon isAppleAudioAccessory](self, "isAppleAudioAccessory")}];
-  v14 = [(SPUnknownBeacon *)self triggerDate];
-  [v4 setTriggerDate:v14];
+  triggerDate = [(SPUnknownBeacon *)self triggerDate];
+  [v4 setTriggerDate:triggerDate];
 
-  v15 = [(SPUnknownBeacon *)self ignoresUntilDate];
-  [v4 setIgnoresUntilDate:v15];
+  ignoresUntilDate = [(SPUnknownBeacon *)self ignoresUntilDate];
+  [v4 setIgnoresUntilDate:ignoresUntilDate];
 
-  v16 = [(SPUnknownBeacon *)self type];
-  [v4 setType:v16];
+  type = [(SPUnknownBeacon *)self type];
+  [v4 setType:type];
 
   [v4 setObservationType:{-[SPUnknownBeacon observationType](self, "observationType")}];
   [v4 setAlertState:{-[SPUnknownBeacon alertState](self, "alertState")}];
   [v4 setCapabilities:{-[SPUnknownBeacon capabilities](self, "capabilities")}];
   [v4 setConnected:{-[SPUnknownBeacon connected](self, "connected")}];
-  v17 = [(SPUnknownBeacon *)self metadata];
-  v18 = [v17 copy];
+  metadata = [(SPUnknownBeacon *)self metadata];
+  v18 = [metadata copy];
   [v4 setMetadata:v18];
 
-  v19 = [(SPUnknownBeacon *)self productInformation];
-  v20 = [v19 copy];
+  productInformation = [(SPUnknownBeacon *)self productInformation];
+  v20 = [productInformation copy];
   [v4 setProductInformation:v20];
 
-  v21 = [(SPUnknownBeacon *)self taskInformation];
-  v22 = [v21 copy];
+  taskInformation = [(SPUnknownBeacon *)self taskInformation];
+  v22 = [taskInformation copy];
   [v4 setTaskInformation:v22];
 
   [v4 setIsFindMyNetwork:{-[SPUnknownBeacon isFindMyNetwork](self, "isFindMyNetwork")}];
@@ -102,53 +102,53 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v7 = a3;
-  [v7 encodeObject:name forKey:@"name"];
-  [v7 encodeObject:self->_identifier forKey:@"identifier"];
-  [v7 encodeObject:self->_beaconIdentifier forKey:@"beaconIdentifier"];
-  [v7 encodeObject:self->_beaconLocations forKey:@"beaconLocations"];
-  [v7 encodeObject:self->_advertisement forKey:@"advertisement"];
-  v5 = [(SPUnknownBeacon *)self handle];
-  [v7 encodeObject:v5 forKey:@"handle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_beaconIdentifier forKey:@"beaconIdentifier"];
+  [coderCopy encodeObject:self->_beaconLocations forKey:@"beaconLocations"];
+  [coderCopy encodeObject:self->_advertisement forKey:@"advertisement"];
+  handle = [(SPUnknownBeacon *)self handle];
+  [coderCopy encodeObject:handle forKey:@"handle"];
 
-  [v7 encodeBool:self->_isIgnored forKey:@"isIgnored"];
-  [v7 encodeBool:self->_isAppleAudioAccessory forKey:@"isAppleAudioAccessory"];
-  [v7 encodeObject:self->_triggerDate forKey:@"triggerDate"];
-  [v7 encodeObject:self->_ignoresUntilDate forKey:@"ignoresUntilDate"];
-  [v7 encodeObject:self->_type forKey:@"type"];
-  [v7 encodeInteger:self->_observationType forKey:@"observationType"];
-  [v7 encodeInteger:self->_alertState forKey:@"alertState"];
+  [coderCopy encodeBool:self->_isIgnored forKey:@"isIgnored"];
+  [coderCopy encodeBool:self->_isAppleAudioAccessory forKey:@"isAppleAudioAccessory"];
+  [coderCopy encodeObject:self->_triggerDate forKey:@"triggerDate"];
+  [coderCopy encodeObject:self->_ignoresUntilDate forKey:@"ignoresUntilDate"];
+  [coderCopy encodeObject:self->_type forKey:@"type"];
+  [coderCopy encodeInteger:self->_observationType forKey:@"observationType"];
+  [coderCopy encodeInteger:self->_alertState forKey:@"alertState"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_capabilities];
-  [v7 encodeObject:v6 forKey:@"capabilities"];
+  [coderCopy encodeObject:v6 forKey:@"capabilities"];
 
-  [v7 encodeBool:self->_connected forKey:@"connected"];
-  [v7 encodeObject:self->_metadata forKey:@"metadata"];
-  [v7 encodeObject:self->_productInformation forKey:@"productInformation"];
-  [v7 encodeObject:self->_taskInformation forKey:@"taskInformation"];
-  [v7 encodeBool:self->_isFindMyNetwork forKey:@"isFindMyNetwork"];
-  [v7 encodeBool:self->_isPosh forKey:@"isPosh"];
+  [coderCopy encodeBool:self->_connected forKey:@"connected"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
+  [coderCopy encodeObject:self->_productInformation forKey:@"productInformation"];
+  [coderCopy encodeObject:self->_taskInformation forKey:@"taskInformation"];
+  [coderCopy encodeBool:self->_isFindMyNetwork forKey:@"isFindMyNetwork"];
+  [coderCopy encodeBool:self->_isPosh forKey:@"isPosh"];
 }
 
-- (SPUnknownBeacon)initWithCoder:(id)a3
+- (SPUnknownBeacon)initWithCoder:(id)coder
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   name = self->_name;
   self->_name = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   identifier = self->_identifier;
   self->_identifier = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"advertisement"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"advertisement"];
   advertisement = self->_advertisement;
   self->_advertisement = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"beaconIdentifier"];
   beaconIdentifier = self->_beaconIdentifier;
   self->_beaconIdentifier = v11;
 
@@ -157,7 +157,7 @@
   v42[1] = objc_opt_class();
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
   v15 = [v13 setWithArray:v14];
-  v16 = [v4 decodeObjectOfClasses:v15 forKey:@"beaconLocations"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"beaconLocations"];
 
   if (v16)
   {
@@ -172,35 +172,35 @@
   beaconLocations = self->_beaconLocations;
   self->_beaconLocations = v17;
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"handle"];
   handle = self->_handle;
   self->_handle = v19;
 
-  self->_isIgnored = [v4 decodeBoolForKey:@"isIgnored"];
-  self->_isAppleAudioAccessory = [v4 decodeBoolForKey:@"isAppleAudioAccessory"];
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"triggerDate"];
+  self->_isIgnored = [coderCopy decodeBoolForKey:@"isIgnored"];
+  self->_isAppleAudioAccessory = [coderCopy decodeBoolForKey:@"isAppleAudioAccessory"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"triggerDate"];
   triggerDate = self->_triggerDate;
   self->_triggerDate = v21;
 
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ignoresUntilDate"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ignoresUntilDate"];
   ignoresUntilDate = self->_ignoresUntilDate;
   self->_ignoresUntilDate = v23;
 
-  v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   type = self->_type;
   self->_type = v25;
 
-  self->_observationType = [v4 decodeIntegerForKey:@"observationType"];
-  self->_alertState = [v4 decodeIntegerForKey:@"alertState"];
-  v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"capabilities"];
+  self->_observationType = [coderCopy decodeIntegerForKey:@"observationType"];
+  self->_alertState = [coderCopy decodeIntegerForKey:@"alertState"];
+  v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capabilities"];
   self->_capabilities = [v27 unsignedIntegerValue];
 
-  self->_connected = [v4 decodeBoolForKey:@"connected"];
-  v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+  self->_connected = [coderCopy decodeBoolForKey:@"connected"];
+  v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
   metadata = self->_metadata;
   self->_metadata = v28;
 
-  v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"productInformation"];
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"productInformation"];
   productInformation = self->_productInformation;
   self->_productInformation = v30;
 
@@ -210,12 +210,12 @@
   v41 = objc_opt_class();
   v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:3];
   v34 = [v32 setWithArray:{v33, v39, v40}];
-  v35 = [v4 decodeObjectOfClasses:v34 forKey:@"taskInformation"];
+  v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"taskInformation"];
   taskInformation = self->_taskInformation;
   self->_taskInformation = v35;
 
-  self->_isFindMyNetwork = [v4 decodeBoolForKey:@"isFindMyNetwork"];
-  self->_isPosh = [v4 decodeBoolForKey:@"isPosh"];
+  self->_isFindMyNetwork = [coderCopy decodeBoolForKey:@"isFindMyNetwork"];
+  self->_isPosh = [coderCopy decodeBoolForKey:@"isPosh"];
 
   v37 = *MEMORY[0x277D85DE8];
   return self;
@@ -225,9 +225,9 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SPUnknownBeacon *)self identifier];
-  v6 = [(SPUnknownBeacon *)self advertisement];
-  v7 = [v3 stringWithFormat:@"<%@: %p %@ %lu isFindMyNetwork: %i isPosh: %i>", v4, self, v5, objc_msgSend(v6, "hash"), -[SPUnknownBeacon isFindMyNetwork](self, "isFindMyNetwork"), -[SPUnknownBeacon isPosh](self, "isPosh")];
+  identifier = [(SPUnknownBeacon *)self identifier];
+  advertisement = [(SPUnknownBeacon *)self advertisement];
+  v7 = [v3 stringWithFormat:@"<%@: %p %@ %lu isFindMyNetwork: %i isPosh: %i>", v4, self, identifier, objc_msgSend(advertisement, "hash"), -[SPUnknownBeacon isFindMyNetwork](self, "isFindMyNetwork"), -[SPUnknownBeacon isPosh](self, "isPosh")];
 
   return v7;
 }

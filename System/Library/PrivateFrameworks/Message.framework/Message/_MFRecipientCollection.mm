@@ -1,8 +1,8 @@
 @interface _MFRecipientCollection
 - (_MFRecipientCollection)init;
-- (void)addBCCRecipientWithAddress:(id)a3 displayName:(id)a4;
-- (void)addCCRecipientWithAddress:(id)a3 displayName:(id)a4;
-- (void)addToRecipientWithAddress:(id)a3 displayName:(id)a4;
+- (void)addBCCRecipientWithAddress:(id)address displayName:(id)name;
+- (void)addCCRecipientWithAddress:(id)address displayName:(id)name;
+- (void)addToRecipientWithAddress:(id)address displayName:(id)name;
 @end
 
 @implementation _MFRecipientCollection
@@ -30,27 +30,27 @@
   return v2;
 }
 
-- (void)addToRecipientWithAddress:(id)a3 displayName:(id)a4
+- (void)addToRecipientWithAddress:(id)address displayName:(id)name
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [[_MFEmailAddress alloc] initWithAddress:v8 displayName:v6];
+  addressCopy = address;
+  nameCopy = name;
+  v7 = [[_MFEmailAddress alloc] initWithAddress:addressCopy displayName:nameCopy];
   [(_MFRecipientCollection *)self addToRecipient:v7];
 }
 
-- (void)addCCRecipientWithAddress:(id)a3 displayName:(id)a4
+- (void)addCCRecipientWithAddress:(id)address displayName:(id)name
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [[_MFEmailAddress alloc] initWithAddress:v8 displayName:v6];
+  addressCopy = address;
+  nameCopy = name;
+  v7 = [[_MFEmailAddress alloc] initWithAddress:addressCopy displayName:nameCopy];
   [(_MFRecipientCollection *)self addCCRecipient:v7];
 }
 
-- (void)addBCCRecipientWithAddress:(id)a3 displayName:(id)a4
+- (void)addBCCRecipientWithAddress:(id)address displayName:(id)name
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [[_MFEmailAddress alloc] initWithAddress:v8 displayName:v6];
+  addressCopy = address;
+  nameCopy = name;
+  v7 = [[_MFEmailAddress alloc] initWithAddress:addressCopy displayName:nameCopy];
   [(_MFRecipientCollection *)self addBCCRecipient:v7];
 }
 

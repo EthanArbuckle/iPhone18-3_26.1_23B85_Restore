@@ -1,7 +1,7 @@
 @interface CPLFileStorageItem
-- (BOOL)getResourceValue:(id *)a3 forKey:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
-- (CPLFileStorageItem)initWithIdentity:(id)a3 original:(BOOL)a4 markedForDelete:(BOOL)a5 lastAccessDate:(id)a6;
+- (BOOL)getResourceValue:(id *)value forKey:(id)key error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (CPLFileStorageItem)initWithIdentity:(id)identity original:(BOOL)original markedForDelete:(BOOL)delete lastAccessDate:(id)date;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -12,10 +12,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CPLFileStorageItem *)self identity];
-  v6 = [v5 fingerPrint];
-  v7 = [(CPLFileStorageItem *)self identity];
-  v8 = [v7 fileUTI];
+  identity = [(CPLFileStorageItem *)self identity];
+  fingerPrint = [identity fingerPrint];
+  identity2 = [(CPLFileStorageItem *)self identity];
+  fileUTI = [identity2 fileUTI];
   if ([(CPLFileStorageItem *)self isOriginal])
   {
     v9 = " [original]";
@@ -26,31 +26,31 @@
     v9 = "";
   }
 
-  v10 = [(CPLFileStorageItem *)self isMarkedForDelete];
+  isMarkedForDelete = [(CPLFileStorageItem *)self isMarkedForDelete];
   v11 = " [to be deleted]";
-  if (!v10)
+  if (!isMarkedForDelete)
   {
     v11 = "";
   }
 
-  v12 = [v3 stringWithFormat:@"<%@ [%@ %@]%s%s>", v4, v6, v8, v9, v11];
+  v12 = [v3 stringWithFormat:@"<%@ [%@ %@]%s%s>", v4, fingerPrint, fileUTI, v9, v11];
 
   return v12;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(CPLFileStorageItem *)self identity];
-  v3 = [v2 fingerPrint];
-  v4 = [v3 hash];
+  identity = [(CPLFileStorageItem *)self identity];
+  fingerPrint = [identity fingerPrint];
+  v4 = [fingerPrint hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
     goto LABEL_7;
@@ -59,26 +59,26 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(CPLFileStorageItem *)self isOriginal];
-    if (v5 == [(CPLFileStorageItem *)v4 isOriginal])
+    isOriginal = [(CPLFileStorageItem *)self isOriginal];
+    if (isOriginal == [(CPLFileStorageItem *)equalCopy isOriginal])
     {
-      v6 = [(CPLFileStorageItem *)self isMarkedForDelete];
-      if (v6 == [(CPLFileStorageItem *)v4 isMarkedForDelete])
+      isMarkedForDelete = [(CPLFileStorageItem *)self isMarkedForDelete];
+      if (isMarkedForDelete == [(CPLFileStorageItem *)equalCopy isMarkedForDelete])
       {
-        v9 = [(CPLFileStorageItem *)self lastAccessDate];
+        lastAccessDate = [(CPLFileStorageItem *)self lastAccessDate];
 
-        v10 = [(CPLFileStorageItem *)v4 lastAccessDate];
-        v11 = v10;
-        if (v9)
+        lastAccessDate2 = [(CPLFileStorageItem *)equalCopy lastAccessDate];
+        v11 = lastAccessDate2;
+        if (lastAccessDate)
         {
-          if (!v10)
+          if (!lastAccessDate2)
           {
             goto LABEL_5;
           }
 
-          v12 = [(CPLFileStorageItem *)self lastAccessDate];
-          v13 = [(CPLFileStorageItem *)v4 lastAccessDate];
-          v14 = [v12 isEqual:v13];
+          lastAccessDate3 = [(CPLFileStorageItem *)self lastAccessDate];
+          lastAccessDate4 = [(CPLFileStorageItem *)equalCopy lastAccessDate];
+          v14 = [lastAccessDate3 isEqual:lastAccessDate4];
 
           if ((v14 & 1) == 0)
           {
@@ -95,9 +95,9 @@
           }
         }
 
-        v15 = [(CPLFileStorageItem *)self identity];
-        v16 = [(CPLFileStorageItem *)v4 identity];
-        v7 = [v15 isEqual:v16];
+        identity = [(CPLFileStorageItem *)self identity];
+        identity2 = [(CPLFileStorageItem *)equalCopy identity];
+        v7 = [identity isEqual:identity2];
 
         goto LABEL_7;
       }
@@ -111,49 +111,49 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)getResourceValue:(id *)a3 forKey:(id)a4 error:(id *)a5
+- (BOOL)getResourceValue:(id *)value forKey:(id)key error:(id *)error
 {
-  v8 = a4;
-  v9 = [(CPLResourceIdentity *)self->_identity fileURL];
-  v10 = v9;
-  if (v9)
+  keyCopy = key;
+  fileURL = [(CPLResourceIdentity *)self->_identity fileURL];
+  v10 = fileURL;
+  if (fileURL)
   {
-    v11 = [v9 getResourceValue:a3 forKey:v8 error:a5];
+    v11 = [fileURL getResourceValue:value forKey:keyCopy error:error];
   }
 
   else
   {
-    *a3 = 0;
+    *value = 0;
     v11 = 1;
   }
 
   return v11;
 }
 
-- (CPLFileStorageItem)initWithIdentity:(id)a3 original:(BOOL)a4 markedForDelete:(BOOL)a5 lastAccessDate:(id)a6
+- (CPLFileStorageItem)initWithIdentity:(id)identity original:(BOOL)original markedForDelete:(BOOL)delete lastAccessDate:(id)date
 {
-  v12 = a3;
-  v13 = a6;
+  identityCopy = identity;
+  dateCopy = date;
   v33.receiver = self;
   v33.super_class = CPLFileStorageItem;
   v14 = [(CPLFileStorageItem *)&v33 init];
   v15 = v14;
   if (v14)
   {
-    if (v12)
+    if (identityCopy)
     {
-      objc_storeStrong(&v14->_identity, a3);
-      v16 = [v12 fingerPrint];
+      objc_storeStrong(&v14->_identity, identity);
+      fingerPrint = [identityCopy fingerPrint];
 
-      if (v16)
+      if (fingerPrint)
       {
-        v17 = [v12 fileUTI];
+        fileUTI = [identityCopy fileUTI];
 
-        if (v17)
+        if (fileUTI)
         {
-          v15->_original = a4;
-          v15->_markedForDelete = a5;
-          v18 = [v13 copy];
+          v15->_original = original;
+          v15->_markedForDelete = delete;
+          v18 = [dateCopy copy];
           lastAccessDate = v15->_lastAccessDate;
           v15->_lastAccessDate = v18;
 
@@ -170,10 +170,10 @@ LABEL_7:
           }
         }
 
-        v22 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineFileStorage.m"];
         v24 = @"Can't create a file storage item without a type identifier";
-        v25 = v22;
+        v25 = currentHandler;
         v26 = a2;
         v27 = v15;
         v28 = v23;
@@ -192,10 +192,10 @@ LABEL_7:
           }
         }
 
-        v22 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineFileStorage.m"];
         v24 = @"Can't create a file storage item without an identity finger print";
-        v25 = v22;
+        v25 = currentHandler;
         v26 = a2;
         v27 = v15;
         v28 = v23;
@@ -215,10 +215,10 @@ LABEL_7:
         }
       }
 
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineFileStorage.m"];
       v24 = @"Can't create a file storage item without an identity";
-      v25 = v22;
+      v25 = currentHandler;
       v26 = a2;
       v27 = v15;
       v28 = v23;

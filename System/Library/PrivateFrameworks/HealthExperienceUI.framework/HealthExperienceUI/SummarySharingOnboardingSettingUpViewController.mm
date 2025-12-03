@@ -1,8 +1,8 @@
 @interface SummarySharingOnboardingSettingUpViewController
-- (_TtC18HealthExperienceUI47SummarySharingOnboardingSettingUpViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC18HealthExperienceUI47SummarySharingOnboardingSettingUpViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC18HealthExperienceUI47SummarySharingOnboardingSettingUpViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC18HealthExperienceUI47SummarySharingOnboardingSettingUpViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)hxui_cancelButtonTapped;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -10,34 +10,34 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA2B054C();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = type metadata accessor for SummarySharingOnboardingSettingUpViewController();
   v4 = v5.receiver;
-  [(OBBaseWelcomeController *)&v5 viewDidAppear:v3];
+  [(OBBaseWelcomeController *)&v5 viewDidAppear:appearCopy];
   sub_1BA2B09B0();
 }
 
 - (void)hxui_cancelButtonTapped
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA2B0868();
 }
 
-- (_TtC18HealthExperienceUI47SummarySharingOnboardingSettingUpViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI47SummarySharingOnboardingSettingUpViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18HealthExperienceUI47SummarySharingOnboardingSettingUpViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC18HealthExperienceUI47SummarySharingOnboardingSettingUpViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

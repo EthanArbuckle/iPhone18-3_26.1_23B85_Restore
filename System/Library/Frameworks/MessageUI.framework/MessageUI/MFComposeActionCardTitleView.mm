@@ -1,18 +1,18 @@
 @interface MFComposeActionCardTitleView
-+ (double)heightForTraitCollection:(id)a3;
-- (MFComposeActionCardTitleView)initWithFrame:(CGRect)a3;
++ (double)heightForTraitCollection:(id)collection;
+- (MFComposeActionCardTitleView)initWithFrame:(CGRect)frame;
 - (void)_updateHeightForCurrentTraits;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MFComposeActionCardTitleView
 
-- (MFComposeActionCardTitleView)initWithFrame:(CGRect)a3
+- (MFComposeActionCardTitleView)initWithFrame:(CGRect)frame
 {
   v29[4] = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = MFComposeActionCardTitleView;
-  v3 = [(_UINavigationBarTitleView *)&v28 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_UINavigationBarTitleView *)&v28 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -36,23 +36,23 @@
     [(MFComposeActionCardTitleView *)v4 addSubview:v4->_titleLabel];
     [(MFComposeActionCardTitleView *)v4 addSubview:v4->_closeButton];
     v11 = MEMORY[0x1E696ACD8];
-    v27 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v25 = [(MFComposeActionCardTitleView *)v4 layoutMarginsGuide];
-    v24 = [v25 leadingAnchor];
-    v23 = [v27 constraintEqualToAnchor:8.0 constant:?];
+    leadingAnchor = [(UILabel *)v4->_titleLabel leadingAnchor];
+    layoutMarginsGuide = [(MFComposeActionCardTitleView *)v4 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:8.0 constant:?];
     v29[0] = v23;
-    v26 = [(UILabel *)v4->_titleLabel centerYAnchor];
-    v22 = [(MFComposeActionCardTitleView *)v4 centerYAnchor];
-    v21 = [v26 constraintEqualToAnchor:?];
+    centerYAnchor = [(UILabel *)v4->_titleLabel centerYAnchor];
+    centerYAnchor2 = [(MFComposeActionCardTitleView *)v4 centerYAnchor];
+    v21 = [centerYAnchor constraintEqualToAnchor:?];
     v29[1] = v21;
-    v12 = [(MFComposeActionCardTitleView *)v4 layoutMarginsGuide];
-    v13 = [v12 trailingAnchor];
-    v14 = [(UIButton *)v4->_closeButton trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:8.0];
+    layoutMarginsGuide2 = [(MFComposeActionCardTitleView *)v4 layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
+    trailingAnchor2 = [(UIButton *)v4->_closeButton trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:8.0];
     v29[2] = v15;
-    v16 = [(UIButton *)v4->_closeButton centerYAnchor];
-    v17 = [(MFComposeActionCardTitleView *)v4 centerYAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    centerYAnchor3 = [(UIButton *)v4->_closeButton centerYAnchor];
+    centerYAnchor4 = [(MFComposeActionCardTitleView *)v4 centerYAnchor];
+    v18 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v29[3] = v18;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v29 count:4];
     [v11 activateConstraints:v19];
@@ -63,27 +63,27 @@
   return v4;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = MFComposeActionCardTitleView;
-  [(MFComposeActionCardTitleView *)&v5 traitCollectionDidChange:v4];
+  [(MFComposeActionCardTitleView *)&v5 traitCollectionDidChange:changeCopy];
   [(MFComposeActionCardTitleView *)self _updateHeightForCurrentTraits];
 }
 
 - (void)_updateHeightForCurrentTraits
 {
   v3 = objc_opt_class();
-  v4 = [(MFComposeActionCardTitleView *)self traitCollection];
+  traitCollection = [(MFComposeActionCardTitleView *)self traitCollection];
   [v3 heightForTraitCollection:?];
   [(_UINavigationBarTitleView *)self setHeight:?];
 }
 
-+ (double)heightForTraitCollection:(id)a3
++ (double)heightForTraitCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 verticalSizeClass] == 1 && objc_msgSend(v3, "horizontalSizeClass") == 1)
+  collectionCopy = collection;
+  if ([collectionCopy verticalSizeClass] == 1 && objc_msgSend(collectionCopy, "horizontalSizeClass") == 1)
   {
     v4 = 0x4047000000000000;
   }

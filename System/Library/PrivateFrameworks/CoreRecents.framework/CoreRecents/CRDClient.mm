@@ -1,6 +1,6 @@
 @interface CRDClient
-- (BOOL)hasEntitlement:(id)a3;
-- (CRDClient)initWithConnection:(id)a3 library:(id)a4;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (CRDClient)initWithConnection:(id)connection library:(id)library;
 - (NSString)bundleIdentifier;
 - (void)dealloc;
 @end
@@ -30,23 +30,23 @@
   [(CRDClient *)&v3 dealloc];
 }
 
-- (CRDClient)initWithConnection:(id)a3 library:(id)a4
+- (CRDClient)initWithConnection:(id)connection library:(id)library
 {
   v8.receiver = self;
   v8.super_class = CRDClient;
   v6 = [(CRDClient *)&v8 init];
   if (v6)
   {
-    v6->_connection = a3;
-    v6->_library = a4;
+    v6->_connection = connection;
+    v6->_library = library;
   }
 
   return v6;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:a3];
+  v3 = [(NSXPCConnection *)self->_connection valueForEntitlement:entitlement];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;

@@ -1,7 +1,7 @@
 @interface LUILogViewerController
-- (BOOL)_performSearch:(id)a3;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
+- (BOOL)_performSearch:(id)search;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
 - (LUILogContentViewController)logContentViewController;
 - (LUILogFilterViewController)logFilterViewController;
 - (LUILogViewerAssistiveTouch)assistiveTouch;
@@ -11,19 +11,19 @@
 - (UIPageViewController)pageViewController;
 - (UIPanGestureRecognizer)panGesture;
 - (UIView)baseView;
-- (_NSRange)_searchRangeForDate:(id)a3 inText:(id)a4;
-- (id)_attributedLogStringFrom:(id)a3 fontSize:(double)a4;
-- (id)_getLogsFromDate:(id)a3 predicate:(id)a4 duplicateHandler:(id)a5;
+- (_NSRange)_searchRangeForDate:(id)date inText:(id)text;
+- (id)_attributedLogStringFrom:(id)from fontSize:(double)size;
+- (id)_getLogsFromDate:(id)date predicate:(id)predicate duplicateHandler:(id)handler;
 - (id)orderedViewControllers;
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4;
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4;
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController;
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController;
 - (void)_cleanupHighlight;
 - (void)_cleanupLogs;
 - (void)_decreaseCurrentHighlightIndex;
 - (void)_dismissLogViewerView;
 - (void)_grabLogAndUpdateTextView;
 - (void)_increaseCurrentHighlightIndex;
-- (void)_moveElementsToView:(id)a3;
+- (void)_moveElementsToView:(id)view;
 - (void)_presentLogViewerView;
 - (void)_setupInitialHighlight;
 - (void)_startStreamLog;
@@ -31,20 +31,20 @@
 - (void)_updateHighlight;
 - (void)_updateLogFromLastTime;
 - (void)dealloc;
-- (void)handlePan:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)logContentViewController:(id)a3 didSelectDateForLog:(id)a4;
-- (void)logContentViewController:(id)a3 didSelectLogOptionWithTimeInterval:(double)a4;
-- (void)logFilterViewController:(id)a3 didAddPredicates:(id)a4;
-- (void)logFilterViewController:(id)a3 didDeletePredicate:(id)a4;
-- (void)logFilterViewControllerApplyButtonTapped:(id)a3;
-- (void)logViewerLeftCaretButtonTapped:(id)a3;
-- (void)logViewerRightCaretButtonTapped:(id)a3;
-- (void)logViewerViewClearButtontapped:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6;
-- (void)searchBarSearchButtonClicked:(id)a3;
+- (void)handlePan:(id)pan;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)logContentViewController:(id)controller didSelectDateForLog:(id)log;
+- (void)logContentViewController:(id)controller didSelectLogOptionWithTimeInterval:(double)interval;
+- (void)logFilterViewController:(id)controller didAddPredicates:(id)predicates;
+- (void)logFilterViewController:(id)controller didDeletePredicate:(id)predicate;
+- (void)logFilterViewControllerApplyButtonTapped:(id)tapped;
+- (void)logViewerLeftCaretButtonTapped:(id)tapped;
+- (void)logViewerRightCaretButtonTapped:(id)tapped;
+- (void)logViewerViewClearButtontapped:(id)buttontapped;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed;
+- (void)searchBarSearchButtonClicked:(id)clicked;
 - (void)setup;
 - (void)showLogContentPage;
 - (void)showLogFilterPage;
@@ -54,18 +54,18 @@
 
 - (void)setup
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 delegate];
-  v5 = [v4 window];
-  [(LUILogViewerController *)self setBaseView:v5];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  delegate = [mEMORY[0x277D75128] delegate];
+  window = [delegate window];
+  [(LUILogViewerController *)self setBaseView:window];
 
-  v6 = [(LUILogViewerController *)self baseView];
-  [(LUILogViewerController *)self _moveElementsToView:v6];
+  baseView = [(LUILogViewerController *)self baseView];
+  [(LUILogViewerController *)self _moveElementsToView:baseView];
 
   CGAffineTransformMakeScale(&v10, 0.0, 0.0);
-  v7 = [(LUILogViewerController *)self assistiveTouch];
+  assistiveTouch = [(LUILogViewerController *)self assistiveTouch];
   v9 = v10;
-  [v7 setTransform:&v9];
+  [assistiveTouch setTransform:&v9];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -105,11 +105,11 @@ void __31__LUILogViewerController_setup__block_invoke(uint64_t a1)
     v2->_logMinutesArray = v7;
 
     [(LUILogViewerController *)v2 addObserver:v2 forKeyPath:@"predicates" options:1 context:0];
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x277D76C60] object:0];
 
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v2 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_keyboardWillHide_ name:*MEMORY[0x277D76C50] object:0];
   }
 
   return v2;
@@ -128,16 +128,16 @@ void __31__LUILogViewerController_setup__block_invoke(uint64_t a1)
   [(LUILogViewerController *)self logInterval];
   if (v3 > 0.0)
   {
-    v4 = [(LUILogViewerController *)self logContentViewController];
-    v5 = [v4 textView];
-    [v5 setText:0];
+    logContentViewController = [(LUILogViewerController *)self logContentViewController];
+    textView = [logContentViewController textView];
+    [textView setText:0];
 
-    v6 = [(LUILogViewerController *)self logContentViewController];
-    [v6 showSpinner:1];
+    logContentViewController2 = [(LUILogViewerController *)self logContentViewController];
+    [logContentViewController2 showSpinner:1];
 
-    v7 = [(LUILogViewerController *)self logContentViewController];
-    v8 = [v7 view];
-    [v8 setUserInteractionEnabled:0];
+    logContentViewController3 = [(LUILogViewerController *)self logContentViewController];
+    view = [logContentViewController3 view];
+    [view setUserInteractionEnabled:0];
 
     v9 = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x277D85DD0];
@@ -194,14 +194,14 @@ void __51__LUILogViewerController__grabLogAndUpdateTextView__block_invoke_2(uint
   [v6 setUserInteractionEnabled:1];
 }
 
-- (id)_getLogsFromDate:(id)a3 predicate:(id)a4 duplicateHandler:(id)a5
+- (id)_getLogsFromDate:(id)date predicate:(id)predicate duplicateHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  predicateCopy = predicate;
+  handlerCopy = handler;
   [(LUILogViewerController *)self setIsFetchingLogs:1];
   v11 = objc_opt_new();
-  v12 = [MEMORY[0x277D24438] localStore];
+  localStore = [MEMORY[0x277D24438] localStore];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -213,7 +213,7 @@ void __51__LUILogViewerController__grabLogAndUpdateTextView__block_invoke_2(uint
   v29[2] = __70__LUILogViewerController__getLogsFromDate_predicate_duplicateHandler___block_invoke;
   v29[3] = &unk_279828510;
   v29[4] = &v30;
-  [v12 prepareWithCompletionHandler:v29];
+  [localStore prepareWithCompletionHandler:v29];
   v13 = dispatch_semaphore_create(0);
   v14 = objc_alloc(MEMORY[0x277D24440]);
   v15 = [v14 initWithSource:v31[5]];
@@ -221,14 +221,14 @@ void __51__LUILogViewerController__grabLogAndUpdateTextView__block_invoke_2(uint
   _getLogsFromDate_predicate_duplicateHandler__stream = v15;
 
   [_getLogsFromDate_predicate_duplicateHandler__stream setFlags:21];
-  [_getLogsFromDate_predicate_duplicateHandler__stream setFilterPredicate:v9];
+  [_getLogsFromDate_predicate_duplicateHandler__stream setFilterPredicate:predicateCopy];
   v17 = _getLogsFromDate_predicate_duplicateHandler__stream;
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __70__LUILogViewerController__getLogsFromDate_predicate_duplicateHandler___block_invoke_2;
   v26[3] = &unk_279828538;
   v26[4] = self;
-  v18 = v10;
+  v18 = handlerCopy;
   v28 = v18;
   v19 = v11;
   v27 = v19;
@@ -241,7 +241,7 @@ void __51__LUILogViewerController__grabLogAndUpdateTextView__block_invoke_2(uint
   v21 = v13;
   v25 = v21;
   [v20 setInvalidationHandler:v24];
-  [_getLogsFromDate_predicate_duplicateHandler__stream activateStreamFromDate:v8];
+  [_getLogsFromDate_predicate_duplicateHandler__stream activateStreamFromDate:dateCopy];
   dispatch_semaphore_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
   [(LUILogViewerController *)self setIsFetchingLogs:0];
   v22 = [v19 copy];
@@ -300,89 +300,89 @@ void __70__LUILogViewerController__getLogsFromDate_predicate_duplicateHandler___
   }
 }
 
-- (id)_attributedLogStringFrom:(id)a3 fontSize:(double)a4
+- (id)_attributedLogStringFrom:(id)from fontSize:(double)size
 {
   v58[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   v6 = objc_opt_new();
   v56 = *MEMORY[0x277D740C0];
   v7 = v56;
-  v8 = [MEMORY[0x277D75348] whiteColor];
-  v58[0] = v8;
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v58[0] = whiteColor;
   v57 = *MEMORY[0x277D740A8];
   v9 = v57;
-  v10 = [MEMORY[0x277D74300] systemFontOfSize:a4];
+  v10 = [MEMORY[0x277D74300] systemFontOfSize:size];
   v58[1] = v10;
   v49 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v58 forKeys:&v56 count:2];
 
-  v46 = [MEMORY[0x277D75348] logCyanColor];
+  logCyanColor = [MEMORY[0x277D75348] logCyanColor];
   v54[1] = v9;
-  v55[0] = v46;
+  v55[0] = logCyanColor;
   v54[0] = v7;
-  v11 = [MEMORY[0x277D74300] systemFontOfSize:a4];
+  v11 = [MEMORY[0x277D74300] systemFontOfSize:size];
   v55[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v55 forKeys:v54 count:2];
 
   v13 = objc_alloc(MEMORY[0x277CCA898]);
   v14 = MEMORY[0x277CCACA8];
-  v15 = [v5 date];
-  v16 = secondStringWithDate(v15);
-  v17 = [v14 stringWithFormat:@"%@.%06d   ", v16, *(objc_msgSend(v5, "unixDate") + 8)];
+  date = [fromCopy date];
+  v16 = secondStringWithDate(date);
+  v17 = [v14 stringWithFormat:@"%@.%06d   ", v16, *(objc_msgSend(fromCopy, "unixDate") + 8)];
   v18 = [v13 initWithString:v17 attributes:v12];
 
   v48 = v18;
   [v6 appendAttributedString:v18];
   v19 = objc_alloc(MEMORY[0x277CCA898]);
-  v20 = v5;
-  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d   ", objc_msgSend(v5, "processIdentifier")];
+  v20 = fromCopy;
+  v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d   ", objc_msgSend(fromCopy, "processIdentifier")];
   v22 = [v19 initWithString:v21 attributes:v49];
 
   v47 = v22;
   [v6 appendAttributedString:v22];
-  v23 = [MEMORY[0x277D75348] logPurpleColor];
+  logPurpleColor = [MEMORY[0x277D75348] logPurpleColor];
 
   v52[1] = v9;
-  v53[0] = v23;
+  v53[0] = logPurpleColor;
   v52[0] = v7;
-  v24 = [MEMORY[0x277D74300] systemFontOfSize:a4];
+  v24 = [MEMORY[0x277D74300] systemFontOfSize:size];
   v53[1] = v24;
   v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:2];
 
   v26 = objc_alloc(MEMORY[0x277CCA898]);
-  v27 = [v20 process];
-  v28 = [v26 initWithString:v27 attributes:v25];
+  process = [v20 process];
+  v28 = [v26 initWithString:process attributes:v25];
 
   [v6 appendAttributedString:v28];
   v29 = objc_msgSend(objc_alloc(MEMORY[0x277CCA898]), "initWithString:attributes:", @": ("), v49;
   v30 = v6;
   [v6 appendAttributedString:v29];
-  v31 = [v20 sender];
+  sender = [v20 sender];
 
-  if (v31)
+  if (sender)
   {
-    v32 = [MEMORY[0x277D75348] logYellowColor];
+    logYellowColor = [MEMORY[0x277D75348] logYellowColor];
 
     v50[1] = v9;
-    v51[0] = v32;
+    v51[0] = logYellowColor;
     v50[0] = v7;
-    v33 = [MEMORY[0x277D74300] systemFontOfSize:a4];
+    v33 = [MEMORY[0x277D74300] systemFontOfSize:size];
     v51[1] = v33;
     v34 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v51 forKeys:v50 count:2];
 
     v35 = objc_alloc(MEMORY[0x277CCA898]);
-    v36 = [v20 sender];
-    v37 = [v35 initWithString:v36 attributes:v34];
+    sender2 = [v20 sender];
+    v37 = [v35 initWithString:sender2 attributes:v34];
 
     [v30 appendAttributedString:v37];
     v25 = v34;
-    v23 = v32;
+    logPurpleColor = logYellowColor;
   }
 
   v38 = v30;
   v39 = objc_alloc(MEMORY[0x277CCA898]);
   v40 = MEMORY[0x277CCACA8];
-  v41 = [v20 composedMessage];
-  v42 = [v40 stringWithFormat:@" %@\n\n"], v41);
+  composedMessage = [v20 composedMessage];
+  v42 = [v40 stringWithFormat:@" %@\n\n"], composedMessage);
   v43 = [v39 initWithString:v42 attributes:v49];
 
   [v38 appendAttributedString:v43];
@@ -397,8 +397,8 @@ void __70__LUILogViewerController__getLogsFromDate_predicate_duplicateHandler___
   [(LUILogViewerController *)self setLastLogDate:v3];
 
   [(LUILogViewerController *)self setIsStreaming:1];
-  v4 = [(LUILogViewerController *)self logViewerView];
-  [v4 switchClearButtonTitle:0];
+  logViewerView = [(LUILogViewerController *)self logViewerView];
+  [logViewerView switchClearButtonTitle:0];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -426,28 +426,28 @@ void __41__LUILogViewerController__startStreamLog__block_invoke(uint64_t a1, voi
 - (void)_stopStreaming
 {
   [(LUILogViewerController *)self setIsStreaming:0];
-  v3 = [(LUILogViewerController *)self logViewerView];
-  [v3 switchClearButtonTitle:1];
+  logViewerView = [(LUILogViewerController *)self logViewerView];
+  [logViewerView switchClearButtonTitle:1];
 }
 
 - (void)_updateLogFromLastTime
 {
-  v3 = [(LUILogViewerController *)self logContentViewController];
-  v4 = [v3 textView];
-  [v4 contentOffset];
+  logContentViewController = [(LUILogViewerController *)self logContentViewController];
+  textView = [logContentViewController textView];
+  [textView contentOffset];
   v6 = v5;
-  v7 = [(LUILogViewerController *)self logContentViewController];
-  v8 = [v7 textView];
-  [v8 contentSize];
+  logContentViewController2 = [(LUILogViewerController *)self logContentViewController];
+  textView2 = [logContentViewController2 textView];
+  [textView2 contentSize];
   v10 = v9;
-  v11 = [(LUILogViewerController *)self logContentViewController];
-  v12 = [v11 textView];
-  [v12 frame];
+  logContentViewController3 = [(LUILogViewerController *)self logContentViewController];
+  textView3 = [logContentViewController3 textView];
+  [textView3 frame];
   v14 = v6 >= v10 - v13 + -50.0;
 
-  v15 = [(LUILogViewerController *)self logContentViewController];
-  v16 = [v15 textView];
-  v17 = [v16 text];
+  logContentViewController4 = [(LUILogViewerController *)self logContentViewController];
+  textView4 = [logContentViewController4 textView];
+  text = [textView4 text];
 
   v24[0] = 0;
   v24[1] = v24;
@@ -458,11 +458,11 @@ void __41__LUILogViewerController__startStreamLog__block_invoke(uint64_t a1, voi
   v20[1] = 3221225472;
   v20[2] = __48__LUILogViewerController__updateLogFromLastTime__block_invoke;
   v20[3] = &unk_279828600;
-  v21 = v17;
+  v21 = text;
   v22 = v24;
   v20[4] = self;
   v23 = v14;
-  v19 = v17;
+  v19 = text;
   dispatch_async(v18, v20);
 
   _Block_object_dispose(v24, 8);
@@ -549,46 +549,46 @@ void __48__LUILogViewerController__updateLogFromLastTime__block_invoke_3(uint64_
 - (void)_cleanupLogs
 {
   [(LUILogViewerController *)self setLogInterval:0.0];
-  v3 = [(LUILogViewerController *)self logContentViewController];
-  v4 = [v3 textView];
-  [v4 setText:0];
+  logContentViewController = [(LUILogViewerController *)self logContentViewController];
+  textView = [logContentViewController textView];
+  [textView setText:0];
 
-  v5 = [(LUILogViewerController *)self logContentViewController];
-  [v5 clearScreenshots];
+  logContentViewController2 = [(LUILogViewerController *)self logContentViewController];
+  [logContentViewController2 clearScreenshots];
 
-  v6 = [(LUILogViewerController *)self logViewerView];
-  [v6 resetSearchResultLabel];
+  logViewerView = [(LUILogViewerController *)self logViewerView];
+  [logViewerView resetSearchResultLabel];
 
   [(LUILogViewerController *)self setHighlightRanges:MEMORY[0x277CBEBF8]];
   [(LUILogViewerController *)self setCurrentHighlightIndex:-1];
   [(LUILogViewerController *)self setFirstLogDate:0];
   [(LUILogViewerController *)self setLastLogDate:0];
-  v7 = [(LUILogViewerController *)self logMinutesSet];
-  [v7 removeAllObjects];
+  logMinutesSet = [(LUILogViewerController *)self logMinutesSet];
+  [logMinutesSet removeAllObjects];
 
-  v8 = [(LUILogViewerController *)self logMinutesArray];
-  [v8 removeAllObjects];
+  logMinutesArray = [(LUILogViewerController *)self logMinutesArray];
+  [logMinutesArray removeAllObjects];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v29 = a3;
-  v4 = [(LUILogViewerController *)self assistiveTouch];
-  [v4 alpha];
+  showCopy = show;
+  assistiveTouch = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch alpha];
   v6 = v5;
 
   if (v6 != 0.0)
   {
     [(LUILogViewerController *)self setOutsideKeyboardIsShowing:1];
-    v7 = [v29 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
+    userInfo = [showCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BB8]];
     v9 = v8;
     if (v8)
     {
       [v8 CGRectValue];
       v11 = v10;
-      v12 = [(LUILogViewerController *)self assistiveTouch];
-      [v12 frame];
+      assistiveTouch2 = [(LUILogViewerController *)self assistiveTouch];
+      [assistiveTouch2 frame];
       v14 = v13;
       v16 = v15;
       v18 = v17;
@@ -599,32 +599,32 @@ void __48__LUILogViewerController__updateLogFromLastTime__block_invoke_3(uint64_
       v31.size.width = v18;
       v31.size.height = v20;
       v21 = v11 + CGRectGetMaxY(v31);
-      v22 = [MEMORY[0x277D759A0] mainScreen];
-      [v22 bounds];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen bounds];
       v24 = v23;
 
       if (v21 > v24)
       {
-        v25 = [MEMORY[0x277D759A0] mainScreen];
-        [v25 bounds];
+        mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+        [mainScreen2 bounds];
         v27 = v26 - v11 - v20;
 
-        v28 = [(LUILogViewerController *)self assistiveTouch];
-        [v28 setFrame:{v14, v27, v18, v20}];
+        assistiveTouch3 = [(LUILogViewerController *)self assistiveTouch];
+        [assistiveTouch3 setFrame:{v14, v27, v18, v20}];
       }
     }
   }
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v4 = [(LUILogViewerController *)self assistiveTouch];
-  [v4 alpha];
+  assistiveTouch = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch alpha];
   if (v5 == 0.0)
   {
-    v6 = [(LUILogViewerController *)self outsideKeyboardIsShowing];
+    outsideKeyboardIsShowing = [(LUILogViewerController *)self outsideKeyboardIsShowing];
 
-    if (!v6)
+    if (!outsideKeyboardIsShowing)
     {
       return;
     }
@@ -639,56 +639,56 @@ void __48__LUILogViewerController__updateLogFromLastTime__block_invoke_3(uint64_
 
 - (void)_presentLogViewerView
 {
-  v3 = [(LUILogViewerController *)self outsideKeyboardIsShowing];
-  v4 = [(LUILogViewerController *)self logViewerView];
-  v5 = [v4 searchBar];
-  [v5 setUserInteractionEnabled:!v3];
+  outsideKeyboardIsShowing = [(LUILogViewerController *)self outsideKeyboardIsShowing];
+  logViewerView = [(LUILogViewerController *)self logViewerView];
+  searchBar = [logViewerView searchBar];
+  [searchBar setUserInteractionEnabled:!outsideKeyboardIsShowing];
 
-  v6 = [(LUILogViewerController *)self assistiveTouch];
-  [v6 setAlpha:0.0];
+  assistiveTouch = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch setAlpha:0.0];
 
-  v7 = [(LUILogViewerController *)self logViewerView];
-  [v7 frame];
+  logViewerView2 = [(LUILogViewerController *)self logViewerView];
+  [logViewerView2 frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(LUILogViewerController *)self assistiveTouch];
-  [v16 frame];
+  assistiveTouch2 = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch2 frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(LUILogViewerController *)self logViewerView];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  logViewerView3 = [(LUILogViewerController *)self logViewerView];
+  [logViewerView3 setFrame:{v18, v20, v22, v24}];
 
-  v26 = [(LUILogViewerController *)self logViewerView];
-  v27 = [v26 superview];
+  logViewerView4 = [(LUILogViewerController *)self logViewerView];
+  superview = [logViewerView4 superview];
 
-  if (!v27)
+  if (!superview)
   {
-    v28 = [(LUILogViewerController *)self baseView];
-    v29 = [(LUILogViewerController *)self logViewerView];
-    [v28 addSubview:v29];
+    baseView = [(LUILogViewerController *)self baseView];
+    logViewerView5 = [(LUILogViewerController *)self logViewerView];
+    [baseView addSubview:logViewerView5];
   }
 
-  v30 = [(LUILogViewerController *)self logViewerView];
-  [v30 setAlpha:1.0];
+  logViewerView6 = [(LUILogViewerController *)self logViewerView];
+  [logViewerView6 setAlpha:1.0];
 
   v31 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"cornerRadius"];
   v32 = MEMORY[0x277CCABB0];
-  v33 = [(LUILogViewerController *)self assistiveTouch];
-  v34 = [v33 layer];
-  [v34 cornerRadius];
+  assistiveTouch3 = [(LUILogViewerController *)self assistiveTouch];
+  layer = [assistiveTouch3 layer];
+  [layer cornerRadius];
   v35 = [v32 numberWithDouble:?];
   [v31 setFromValue:v35];
 
   [v31 setToValue:&unk_286841AC8];
   [v31 setDuration:0.200000003];
-  v36 = [(LUILogViewerController *)self logViewerView];
-  v37 = [v36 layer];
-  [v37 addAnimation:v31 forKey:0];
+  logViewerView7 = [(LUILogViewerController *)self logViewerView];
+  layer2 = [logViewerView7 layer];
+  [layer2 addAnimation:v31 forKey:0];
 
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
@@ -734,40 +734,40 @@ void __47__LUILogViewerController__presentLogViewerView__block_invoke_2(uint64_t
 
 - (void)_dismissLogViewerView
 {
-  v3 = [(LUILogViewerController *)self logViewerView];
-  [v3 setAlpha:0.0];
+  logViewerView = [(LUILogViewerController *)self logViewerView];
+  [logViewerView setAlpha:0.0];
 
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277D75348] blackColor];
-  v6 = [v5 colorWithAlphaComponent:0.8];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  v6 = [blackColor colorWithAlphaComponent:0.8];
   [v4 setBackgroundColor:v6];
 
-  v7 = [(LUILogViewerController *)self logViewerView];
-  [v7 frame];
+  logViewerView2 = [(LUILogViewerController *)self logViewerView];
+  [logViewerView2 frame];
   [v4 setFrame:?];
 
-  v8 = [(LUILogViewerController *)self assistiveTouch];
-  v9 = [v8 layer];
-  [v9 cornerRadius];
+  assistiveTouch = [(LUILogViewerController *)self assistiveTouch];
+  layer = [assistiveTouch layer];
+  [layer cornerRadius];
   v11 = v10;
-  v12 = [v4 layer];
-  [v12 setCornerRadius:v11];
+  layer2 = [v4 layer];
+  [layer2 setCornerRadius:v11];
 
-  v13 = [(LUILogViewerController *)self baseView];
-  [v13 addSubview:v4];
+  baseView = [(LUILogViewerController *)self baseView];
+  [baseView addSubview:v4];
 
   v14 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"cornerRadius"];
   [v14 setFromValue:&unk_286841AC8];
   v15 = MEMORY[0x277CCABB0];
-  v16 = [(LUILogViewerController *)self assistiveTouch];
-  v17 = [v16 layer];
-  [v17 cornerRadius];
+  assistiveTouch2 = [(LUILogViewerController *)self assistiveTouch];
+  layer3 = [assistiveTouch2 layer];
+  [layer3 cornerRadius];
   v18 = [v15 numberWithDouble:?];
   [v14 setToValue:v18];
 
   [v14 setDuration:0.200000003];
-  v19 = [v4 layer];
-  [v19 addAnimation:v14 forKey:0];
+  layer4 = [v4 layer];
+  [layer4 addAnimation:v14 forKey:0];
 
   v20 = MEMORY[0x277D75D18];
   v24[0] = MEMORY[0x277D85DD0];
@@ -775,7 +775,7 @@ void __47__LUILogViewerController__presentLogViewerView__block_invoke_2(uint64_t
   v24[2] = __47__LUILogViewerController__dismissLogViewerView__block_invoke;
   v24[3] = &unk_2798284E8;
   v25 = v4;
-  v26 = self;
+  selfCopy = self;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __47__LUILogViewerController__dismissLogViewerView__block_invoke_2;
@@ -815,28 +815,28 @@ void __47__LUILogViewerController__dismissLogViewerView__block_invoke_2(uint64_t
 - (void)showLogFilterPage
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [(LUILogViewerController *)self pageViewController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [(LUILogViewerController *)self logFilterViewController];
+  pageViewController = [(LUILogViewerController *)self pageViewController];
+  viewControllers = [pageViewController viewControllers];
+  v5 = [viewControllers objectAtIndexedSubscript:0];
+  logFilterViewController = [(LUILogViewerController *)self logFilterViewController];
 
-  if (v5 != v6)
+  if (v5 != logFilterViewController)
   {
-    v7 = [(LUILogViewerController *)self pageViewController];
-    v8 = [v7 view];
-    [v8 setUserInteractionEnabled:0];
+    pageViewController2 = [(LUILogViewerController *)self pageViewController];
+    view = [pageViewController2 view];
+    [view setUserInteractionEnabled:0];
 
     objc_initWeak(&location, self);
-    v9 = [(LUILogViewerController *)self pageViewController];
-    v10 = [(LUILogViewerController *)self logFilterViewController];
-    v15[0] = v10;
+    pageViewController3 = [(LUILogViewerController *)self pageViewController];
+    logFilterViewController2 = [(LUILogViewerController *)self logFilterViewController];
+    v15[0] = logFilterViewController2;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __43__LUILogViewerController_showLogFilterPage__block_invoke;
     v12[3] = &unk_2798286A0;
     objc_copyWeak(&v13, &location);
-    [v9 setViewControllers:v11 direction:0 animated:1 completion:v12];
+    [pageViewController3 setViewControllers:v11 direction:0 animated:1 completion:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -863,28 +863,28 @@ void __43__LUILogViewerController_showLogFilterPage__block_invoke(uint64_t a1, i
 - (void)showLogContentPage
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = [(LUILogViewerController *)self pageViewController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 objectAtIndexedSubscript:0];
-  v6 = [(LUILogViewerController *)self logContentViewController];
+  pageViewController = [(LUILogViewerController *)self pageViewController];
+  viewControllers = [pageViewController viewControllers];
+  v5 = [viewControllers objectAtIndexedSubscript:0];
+  logContentViewController = [(LUILogViewerController *)self logContentViewController];
 
-  if (v5 != v6)
+  if (v5 != logContentViewController)
   {
-    v7 = [(LUILogViewerController *)self pageViewController];
-    v8 = [v7 view];
-    [v8 setUserInteractionEnabled:0];
+    pageViewController2 = [(LUILogViewerController *)self pageViewController];
+    view = [pageViewController2 view];
+    [view setUserInteractionEnabled:0];
 
     objc_initWeak(&location, self);
-    v9 = [(LUILogViewerController *)self pageViewController];
-    v10 = [(LUILogViewerController *)self logContentViewController];
-    v15[0] = v10;
+    pageViewController3 = [(LUILogViewerController *)self pageViewController];
+    logContentViewController2 = [(LUILogViewerController *)self logContentViewController];
+    v15[0] = logContentViewController2;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __44__LUILogViewerController_showLogContentPage__block_invoke;
     v12[3] = &unk_2798286A0;
     objc_copyWeak(&v13, &location);
-    [v9 setViewControllers:v11 direction:1 animated:1 completion:v12];
+    [pageViewController3 setViewControllers:v11 direction:1 animated:1 completion:v12];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
@@ -908,81 +908,81 @@ void __44__LUILogViewerController_showLogContentPage__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_moveElementsToView:(id)a3
+- (void)_moveElementsToView:(id)view
 {
-  v4 = a3;
-  v5 = [(LUILogViewerController *)self assistiveTouch];
-  v6 = [v5 superview];
-  v7 = [(LUILogViewerController *)self panGesture];
-  [v6 removeGestureRecognizer:v7];
+  viewCopy = view;
+  assistiveTouch = [(LUILogViewerController *)self assistiveTouch];
+  superview = [assistiveTouch superview];
+  panGesture = [(LUILogViewerController *)self panGesture];
+  [superview removeGestureRecognizer:panGesture];
 
-  v8 = [(LUILogViewerController *)self assistiveTouch];
-  [v8 removeFromSuperview];
+  assistiveTouch2 = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch2 removeFromSuperview];
 
-  v9 = [(LUILogViewerView *)self->_logViewerView superview];
+  superview2 = [(LUILogViewerView *)self->_logViewerView superview];
 
-  if (v9)
+  if (superview2)
   {
-    v10 = [(LUILogViewerController *)self logViewerView];
-    [v10 removeFromSuperview];
+    logViewerView = [(LUILogViewerController *)self logViewerView];
+    [logViewerView removeFromSuperview];
 
-    v11 = [(LUILogViewerController *)self assistiveTouch];
-    [v4 addSubview:v11];
+    assistiveTouch3 = [(LUILogViewerController *)self assistiveTouch];
+    [viewCopy addSubview:assistiveTouch3];
 
-    v12 = [(LUILogViewerController *)self panGesture];
-    [v4 addGestureRecognizer:v12];
+    panGesture2 = [(LUILogViewerController *)self panGesture];
+    [viewCopy addGestureRecognizer:panGesture2];
 
-    v14 = [(LUILogViewerController *)self logViewerView];
-    [v4 addSubview:?];
+    logViewerView2 = [(LUILogViewerController *)self logViewerView];
+    [viewCopy addSubview:?];
   }
 
   else
   {
-    v13 = [(LUILogViewerController *)self assistiveTouch];
-    [v4 addSubview:v13];
+    assistiveTouch4 = [(LUILogViewerController *)self assistiveTouch];
+    [viewCopy addSubview:assistiveTouch4];
 
-    v14 = [(LUILogViewerController *)self panGesture];
-    [v4 addGestureRecognizer:?];
+    logViewerView2 = [(LUILogViewerController *)self panGesture];
+    [viewCopy addGestureRecognizer:?];
   }
 }
 
 - (void)_increaseCurrentHighlightIndex
 {
   v3 = [(LUILogViewerController *)self currentHighlightIndex]+ 1;
-  v4 = [(LUILogViewerController *)self highlightRanges];
-  -[LUILogViewerController setCurrentHighlightIndex:](self, "setCurrentHighlightIndex:", v3 % [v4 count]);
+  highlightRanges = [(LUILogViewerController *)self highlightRanges];
+  -[LUILogViewerController setCurrentHighlightIndex:](self, "setCurrentHighlightIndex:", v3 % [highlightRanges count]);
 
-  v6 = [(LUILogViewerController *)self logViewerView];
-  v5 = [(LUILogViewerController *)self highlightRanges];
-  [v6 updateSearchResultLabelWithTotalResult:objc_msgSend(v5 currentIndex:{"count"), -[LUILogViewerController currentHighlightIndex](self, "currentHighlightIndex") + 1}];
+  logViewerView = [(LUILogViewerController *)self logViewerView];
+  highlightRanges2 = [(LUILogViewerController *)self highlightRanges];
+  [logViewerView updateSearchResultLabelWithTotalResult:objc_msgSend(highlightRanges2 currentIndex:{"count"), -[LUILogViewerController currentHighlightIndex](self, "currentHighlightIndex") + 1}];
 }
 
 - (void)_decreaseCurrentHighlightIndex
 {
-  v3 = [(LUILogViewerController *)self currentHighlightIndex];
-  v4 = [(LUILogViewerController *)self highlightRanges];
-  v5 = v3 + [v4 count] - 1;
-  v6 = [(LUILogViewerController *)self highlightRanges];
-  -[LUILogViewerController setCurrentHighlightIndex:](self, "setCurrentHighlightIndex:", v5 % [v6 count]);
+  currentHighlightIndex = [(LUILogViewerController *)self currentHighlightIndex];
+  highlightRanges = [(LUILogViewerController *)self highlightRanges];
+  v5 = currentHighlightIndex + [highlightRanges count] - 1;
+  highlightRanges2 = [(LUILogViewerController *)self highlightRanges];
+  -[LUILogViewerController setCurrentHighlightIndex:](self, "setCurrentHighlightIndex:", v5 % [highlightRanges2 count]);
 
-  v8 = [(LUILogViewerController *)self logViewerView];
-  v7 = [(LUILogViewerController *)self highlightRanges];
-  [v8 updateSearchResultLabelWithTotalResult:objc_msgSend(v7 currentIndex:{"count"), -[LUILogViewerController currentHighlightIndex](self, "currentHighlightIndex") + 1}];
+  logViewerView = [(LUILogViewerController *)self logViewerView];
+  highlightRanges3 = [(LUILogViewerController *)self highlightRanges];
+  [logViewerView updateSearchResultLabelWithTotalResult:objc_msgSend(highlightRanges3 currentIndex:{"count"), -[LUILogViewerController currentHighlightIndex](self, "currentHighlightIndex") + 1}];
 }
 
-- (BOOL)_performSearch:(id)a3
+- (BOOL)_performSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   [(LUILogViewerController *)self _cleanupHighlight];
   v5 = objc_opt_new();
-  v6 = [(LUILogViewerController *)self logContentViewController];
-  v7 = [v6 textView];
-  v8 = [v7 text];
-  v9 = [v8 lowercaseString];
+  logContentViewController = [(LUILogViewerController *)self logContentViewController];
+  textView = [logContentViewController textView];
+  text = [textView text];
+  lowercaseString = [text lowercaseString];
 
-  v10 = [v4 lowercaseString];
+  lowercaseString2 = [searchCopy lowercaseString];
 
-  v11 = [v9 rangeOfString:v10];
+  v11 = [lowercaseString rangeOfString:lowercaseString2];
   if (v12)
   {
     v13 = v11;
@@ -992,7 +992,7 @@ void __44__LUILogViewerController_showLogContentPage__block_invoke(uint64_t a1, 
       v15 = [MEMORY[0x277CCAE60] valueWithRange:{v13, v14}];
       [v5 addObject:v15];
 
-      v13 = [v9 rangeOfString:v10 options:0 range:v13 + v14 locale:{objc_msgSend(v9, "length") - (v13 + v14), 0}];
+      v13 = [lowercaseString rangeOfString:lowercaseString2 options:0 range:v13 + v14 locale:{objc_msgSend(lowercaseString, "length") - (v13 + v14), 0}];
       v14 = v16;
     }
 
@@ -1014,40 +1014,40 @@ void __44__LUILogViewerController_showLogContentPage__block_invoke(uint64_t a1, 
 
 - (void)_setupInitialHighlight
 {
-  v3 = [(LUILogViewerController *)self logContentViewController];
-  v4 = [v3 textView];
-  v5 = [v4 textStorage];
-  [v5 beginEditing];
+  logContentViewController = [(LUILogViewerController *)self logContentViewController];
+  textView = [logContentViewController textView];
+  textStorage = [textView textStorage];
+  [textStorage beginEditing];
 
-  v6 = [(LUILogViewerController *)self highlightRanges];
+  highlightRanges = [(LUILogViewerController *)self highlightRanges];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __48__LUILogViewerController__setupInitialHighlight__block_invoke;
   v21[3] = &unk_2798286C8;
   v21[4] = self;
-  [v6 enumerateObjectsUsingBlock:v21];
+  [highlightRanges enumerateObjectsUsingBlock:v21];
 
-  v7 = [(LUILogViewerController *)self logContentViewController];
-  v8 = [v7 textView];
-  v9 = [v8 textStorage];
-  [v9 endEditing];
+  logContentViewController2 = [(LUILogViewerController *)self logContentViewController];
+  textView2 = [logContentViewController2 textView];
+  textStorage2 = [textView2 textStorage];
+  [textStorage2 endEditing];
 
-  v10 = [(LUILogViewerController *)self logContentViewController];
-  v11 = [v10 textView];
-  [v11 becomeFirstResponder];
+  logContentViewController3 = [(LUILogViewerController *)self logContentViewController];
+  textView3 = [logContentViewController3 textView];
+  [textView3 becomeFirstResponder];
 
-  v12 = [(LUILogViewerController *)self highlightRanges];
-  v13 = [v12 objectAtIndexedSubscript:{-[LUILogViewerController currentHighlightIndex](self, "currentHighlightIndex")}];
-  v14 = [v13 rangeValue];
+  highlightRanges2 = [(LUILogViewerController *)self highlightRanges];
+  v13 = [highlightRanges2 objectAtIndexedSubscript:{-[LUILogViewerController currentHighlightIndex](self, "currentHighlightIndex")}];
+  rangeValue = [v13 rangeValue];
   v16 = v15;
 
-  v17 = [(LUILogViewerController *)self logContentViewController];
-  v18 = [v17 textView];
-  [v18 setSelectedRange:{v14, v16}];
+  logContentViewController4 = [(LUILogViewerController *)self logContentViewController];
+  textView4 = [logContentViewController4 textView];
+  [textView4 setSelectedRange:{rangeValue, v16}];
 
-  v19 = [(LUILogViewerController *)self logContentViewController];
-  v20 = [v19 textView];
-  [v20 scrollRangeToVisible:{v14, v16}];
+  logContentViewController5 = [(LUILogViewerController *)self logContentViewController];
+  textView5 = [logContentViewController5 textView];
+  [textView5 scrollRangeToVisible:{rangeValue, v16}];
 }
 
 void __48__LUILogViewerController__setupInitialHighlight__block_invoke(uint64_t a1, void *a2)
@@ -1065,35 +1065,35 @@ void __48__LUILogViewerController__setupInitialHighlight__block_invoke(uint64_t 
 
 - (void)_updateHighlight
 {
-  v3 = [(LUILogViewerController *)self highlightRanges];
-  v4 = [v3 objectAtIndexedSubscript:{-[LUILogViewerController currentHighlightIndex](self, "currentHighlightIndex")}];
-  v5 = [v4 rangeValue];
+  highlightRanges = [(LUILogViewerController *)self highlightRanges];
+  v4 = [highlightRanges objectAtIndexedSubscript:{-[LUILogViewerController currentHighlightIndex](self, "currentHighlightIndex")}];
+  rangeValue = [v4 rangeValue];
   v7 = v6;
 
-  v8 = [(LUILogViewerController *)self logContentViewController];
-  v9 = [v8 textView];
-  [v9 becomeFirstResponder];
+  logContentViewController = [(LUILogViewerController *)self logContentViewController];
+  textView = [logContentViewController textView];
+  [textView becomeFirstResponder];
 
-  v10 = [(LUILogViewerController *)self logContentViewController];
-  v11 = [v10 textView];
-  [v11 setSelectedRange:{v5, v7}];
+  logContentViewController2 = [(LUILogViewerController *)self logContentViewController];
+  textView2 = [logContentViewController2 textView];
+  [textView2 setSelectedRange:{rangeValue, v7}];
 
-  v13 = [(LUILogViewerController *)self logContentViewController];
-  v12 = [v13 textView];
-  [v12 scrollRangeToVisible:{v5, v7}];
+  logContentViewController3 = [(LUILogViewerController *)self logContentViewController];
+  textView3 = [logContentViewController3 textView];
+  [textView3 scrollRangeToVisible:{rangeValue, v7}];
 }
 
 - (void)_cleanupHighlight
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(LUILogViewerController *)self highlightRanges];
+  highlightRanges = [(LUILogViewerController *)self highlightRanges];
 
-  if (v3)
+  if (highlightRanges)
   {
-    v4 = [(LUILogViewerController *)self logContentViewController];
-    v5 = [v4 textView];
-    v6 = [v5 textStorage];
-    [v6 beginEditing];
+    logContentViewController = [(LUILogViewerController *)self logContentViewController];
+    textView = [logContentViewController textView];
+    textStorage = [textView textStorage];
+    [textStorage beginEditing];
 
     v25 = 0u;
     v26 = 0u;
@@ -1116,12 +1116,12 @@ void __48__LUILogViewerController__setupInitialHighlight__block_invoke(uint64_t 
             objc_enumerationMutation(obj);
           }
 
-          v12 = [*(*(&v23 + 1) + 8 * v11) rangeValue];
+          rangeValue = [*(*(&v23 + 1) + 8 * v11) rangeValue];
           v14 = v13;
-          v15 = [(LUILogViewerController *)self logContentViewController];
-          v16 = [v15 textView];
-          v17 = [v16 textStorage];
-          [v17 removeAttribute:v10 range:{v12, v14}];
+          logContentViewController2 = [(LUILogViewerController *)self logContentViewController];
+          textView2 = [logContentViewController2 textView];
+          textStorage2 = [textView2 textStorage];
+          [textStorage2 removeAttribute:v10 range:{rangeValue, v14}];
 
           ++v11;
         }
@@ -1133,80 +1133,80 @@ void __48__LUILogViewerController__setupInitialHighlight__block_invoke(uint64_t 
       while (v8);
     }
 
-    v18 = [(LUILogViewerController *)self logContentViewController];
-    v19 = [v18 textView];
-    v20 = [v19 textStorage];
-    [v20 endEditing];
+    logContentViewController3 = [(LUILogViewerController *)self logContentViewController];
+    textView3 = [logContentViewController3 textView];
+    textStorage3 = [textView3 textStorage];
+    [textStorage3 endEditing];
 
     [(LUILogViewerController *)self setHighlightRanges:0];
     [(LUILogViewerController *)self setCurrentHighlightIndex:-1];
-    v21 = [(LUILogViewerController *)self logViewerView];
-    [v21 resetSearchResultLabel];
+    logViewerView = [(LUILogViewerController *)self logViewerView];
+    [logViewerView resetSearchResultLabel];
   }
 }
 
-- (_NSRange)_searchRangeForDate:(id)a3 inText:(id)a4
+- (_NSRange)_searchRangeForDate:(id)date inText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = secondStringWithDate(v6);
-  v9 = [v7 rangeOfString:v8];
+  dateCopy = date;
+  textCopy = text;
+  v8 = secondStringWithDate(dateCopy);
+  v9 = [textCopy rangeOfString:v8];
   v11 = v10;
 
   if (!v11)
   {
-    v12 = [(LUILogViewerController *)self logMinutesArray];
-    v13 = [v12 count];
+    logMinutesArray = [(LUILogViewerController *)self logMinutesArray];
+    v13 = [logMinutesArray count];
 
     if (v13 >= 2)
     {
-      [v6 timeIntervalSinceReferenceDate];
+      [dateCopy timeIntervalSinceReferenceDate];
       v15 = v14;
-      v16 = [(LUILogViewerController *)self logMinutesArray];
-      v17 = [v16 count] - 1;
+      logMinutesArray2 = [(LUILogViewerController *)self logMinutesArray];
+      v17 = [logMinutesArray2 count] - 1;
 
       if (v17 < 2)
       {
         v18 = 0;
 LABEL_13:
-        v23 = [(LUILogViewerController *)self logMinutesArray];
-        v24 = [v23 objectAtIndexedSubscript:v18];
+        logMinutesArray3 = [(LUILogViewerController *)self logMinutesArray];
+        v24 = [logMinutesArray3 objectAtIndexedSubscript:v18];
         [v24 doubleValue];
         v26 = v25;
 
         if (v26 >= v15)
         {
           v31 = MEMORY[0x277CBEAA8];
-          v32 = [(LUILogViewerController *)self logMinutesArray];
-          v33 = [v32 objectAtIndexedSubscript:v18];
+          logMinutesArray4 = [(LUILogViewerController *)self logMinutesArray];
+          v33 = [logMinutesArray4 objectAtIndexedSubscript:v18];
           [v33 doubleValue];
           v34 = v31;
         }
 
         else
         {
-          v27 = [(LUILogViewerController *)self logMinutesArray];
-          v28 = [v27 objectAtIndexedSubscript:v17];
+          logMinutesArray5 = [(LUILogViewerController *)self logMinutesArray];
+          v28 = [logMinutesArray5 objectAtIndexedSubscript:v17];
           [v28 doubleValue];
           v30 = v29;
 
           if (v30 < v15)
           {
-            v9 = [v7 length] - 1;
+            v9 = [textCopy length] - 1;
             v11 = 1;
             goto LABEL_21;
           }
 
           v36 = MEMORY[0x277CBEAA8];
-          v32 = [(LUILogViewerController *)self logMinutesArray];
-          v33 = [v32 objectAtIndexedSubscript:v17];
+          logMinutesArray4 = [(LUILogViewerController *)self logMinutesArray];
+          v33 = [logMinutesArray4 objectAtIndexedSubscript:v17];
           [v33 doubleValue];
           v34 = v36;
         }
 
         v37 = [v34 dateWithTimeIntervalSinceReferenceDate:?];
         v38 = secondStringWithDate(v37);
-        v9 = [v7 rangeOfString:v38];
+        v9 = [textCopy rangeOfString:v38];
         v11 = v39;
       }
 
@@ -1215,8 +1215,8 @@ LABEL_13:
         v18 = 0;
         while (1)
         {
-          v19 = [(LUILogViewerController *)self logMinutesArray];
-          v20 = [v19 objectAtIndexedSubscript:v18 + ((v17 - v18) >> 1)];
+          logMinutesArray6 = [(LUILogViewerController *)self logMinutesArray];
+          v20 = [logMinutesArray6 objectAtIndexedSubscript:v18 + ((v17 - v18) >> 1)];
           [v20 doubleValue];
           v22 = v21;
 
@@ -1241,9 +1241,9 @@ LABEL_13:
           }
         }
 
-        v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v15];
-        v33 = secondStringWithDate(v32);
-        v9 = [v7 rangeOfString:v33];
+        logMinutesArray4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:v15];
+        v33 = secondStringWithDate(logMinutesArray4);
+        v9 = [textCopy rangeOfString:v33];
         v11 = v35;
       }
 
@@ -1269,17 +1269,17 @@ LABEL_21:
   if (!assistiveTouch)
   {
     v4 = [LUILogViewerAssistiveTouch alloc];
-    v5 = [MEMORY[0x277D759A0] mainScreen];
-    [v5 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v6 = CGRectGetWidth(v13) + -70.0;
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 bounds];
     v8 = [(LUILogViewerAssistiveTouch *)v4 initWithFrame:v6, CGRectGetHeight(v14) + -70.0, 70.0, 70.0];
     v9 = self->_assistiveTouch;
     self->_assistiveTouch = v8;
 
-    v10 = [(LUILogViewerAssistiveTouch *)self->_assistiveTouch layer];
-    [v10 setZPosition:3.40282347e38];
+    layer = [(LUILogViewerAssistiveTouch *)self->_assistiveTouch layer];
+    [layer setZPosition:3.40282347e38];
 
     [(LUILogViewerAssistiveTouch *)self->_assistiveTouch setAutoresizingMask:9];
     [(LUILogViewerAssistiveTouch *)self->_assistiveTouch addTarget:self action:sel_assistiveTouchButtonTapped_ forControlEvents:64];
@@ -1294,8 +1294,8 @@ LABEL_21:
   logViewerView = self->_logViewerView;
   if (!logViewerView)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     Height = CGRectGetHeight(v20);
 
     if (Height > 650.0)
@@ -1304,33 +1304,33 @@ LABEL_21:
     }
 
     v6 = [LUILogViewerView alloc];
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 bounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 bounds];
     v8 = CGRectGetHeight(v21) - Height;
-    v9 = [MEMORY[0x277D759A0] mainScreen];
-    [v9 bounds];
-    v10 = [(LUILogViewerView *)v6 initWithFrame:0.0, v8, CGRectGetWidth(v22), Height];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 bounds];
+    height = [(LUILogViewerView *)v6 initWithFrame:0.0, v8, CGRectGetWidth(v22), Height];
     v11 = self->_logViewerView;
-    self->_logViewerView = v10;
+    self->_logViewerView = height;
 
-    v12 = [(LUILogViewerView *)self->_logViewerView layer];
-    [v12 setZPosition:3.40282347e38];
+    layer = [(LUILogViewerView *)self->_logViewerView layer];
+    [layer setZPosition:3.40282347e38];
 
     [(LUILogViewerView *)self->_logViewerView setAutoresizingMask:10];
     [(LUILogViewerView *)self->_logViewerView setDelegate:self];
-    v13 = [(LUILogViewerController *)self pageViewController];
-    v14 = [v13 view];
+    pageViewController = [(LUILogViewerController *)self pageViewController];
+    view = [pageViewController view];
 
-    v15 = [(LUILogViewerView *)self->_logViewerView contentHolderView];
-    [v15 frame];
-    [v14 setFrame:?];
+    contentHolderView = [(LUILogViewerView *)self->_logViewerView contentHolderView];
+    [contentHolderView frame];
+    [view setFrame:?];
 
-    v16 = [(LUILogViewerView *)self->_logViewerView contentHolderView];
-    [v16 addSubview:v14];
+    contentHolderView2 = [(LUILogViewerView *)self->_logViewerView contentHolderView];
+    [contentHolderView2 addSubview:view];
 
-    [v14 setAutoresizingMask:18];
-    v17 = [(LUILogViewerView *)self->_logViewerView searchBar];
-    [v17 setDelegate:self];
+    [view setAutoresizingMask:18];
+    searchBar = [(LUILogViewerView *)self->_logViewerView searchBar];
+    [searchBar setDelegate:self];
 
     [(LUILogViewerView *)self->_logViewerView highlightLogButton:1];
     logViewerView = self->_logViewerView;
@@ -1352,8 +1352,8 @@ LABEL_21:
     [(UIPageViewController *)self->_pageViewController setDataSource:self];
     [(UIPageViewController *)self->_pageViewController setDelegate:self];
     v6 = self->_pageViewController;
-    v7 = [(LUILogViewerController *)self orderedViewControllers];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    orderedViewControllers = [(LUILogViewerController *)self orderedViewControllers];
+    v8 = [orderedViewControllers objectAtIndexedSubscript:0];
     v11[0] = v8;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     [(UIPageViewController *)v6 setViewControllers:v9 direction:0 animated:0 completion:0];
@@ -1412,40 +1412,40 @@ LABEL_21:
   return panGesture;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"predicates", a4, a5, a6}])
+  if ([path isEqualToString:{@"predicates", object, change, context}])
   {
-    v7 = [(LUILogViewerController *)self predicates];
-    v8 = [v7 count];
+    predicates = [(LUILogViewerController *)self predicates];
+    v8 = [predicates count];
 
-    v9 = [(LUILogViewerController *)self logContentViewController];
-    [v9 enableTimeConsumingOptions:v8 != 0];
+    logContentViewController = [(LUILogViewerController *)self logContentViewController];
+    [logContentViewController enableTimeConsumingOptions:v8 != 0];
   }
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 translationInView:v5];
+  panCopy = pan;
+  view = [panCopy view];
+  [panCopy translationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [v4 state];
-  if (v10 == 2)
+  state = [panCopy state];
+  if (state == 2)
   {
     v13 = v7 + *&handlePan__originCenter_0;
     v14 = v9 + *&handlePan__originCenter_1;
-    v33 = [(LUILogViewerController *)self assistiveTouch];
-    [v33 setCenter:{v13, v14}];
+    assistiveTouch = [(LUILogViewerController *)self assistiveTouch];
+    [assistiveTouch setCenter:{v13, v14}];
     goto LABEL_5;
   }
 
-  if (v10 == 1)
+  if (state == 1)
   {
-    v33 = [(LUILogViewerController *)self assistiveTouch];
-    [v33 center];
+    assistiveTouch = [(LUILogViewerController *)self assistiveTouch];
+    [assistiveTouch center];
     handlePan__originCenter_0 = v11;
     handlePan__originCenter_1 = v12;
 LABEL_5:
@@ -1453,24 +1453,24 @@ LABEL_5:
     return;
   }
 
-  v15 = [MEMORY[0x277D759A0] mainScreen];
-  [v15 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   Width = CGRectGetWidth(v36);
 
-  v17 = [MEMORY[0x277D759A0] mainScreen];
-  [v17 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   Height = CGRectGetHeight(v37);
 
-  v19 = [(LUILogViewerController *)self assistiveTouch];
-  [v19 center];
+  assistiveTouch2 = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch2 center];
   v21 = v20;
 
-  v22 = [(LUILogViewerController *)self assistiveTouch];
-  [v22 center];
+  assistiveTouch3 = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch3 center];
   v24 = v23;
 
-  v25 = [(LUILogViewerController *)self assistiveTouch];
-  [v25 frame];
+  assistiveTouch4 = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch4 frame];
   v26 = CGRectGetWidth(v38) * 0.5;
   if (v24 >= Width * 0.5)
   {
@@ -1482,8 +1482,8 @@ LABEL_5:
     v27 = v26;
   }
 
-  v28 = [(LUILogViewerController *)self assistiveTouch];
-  [v28 frame];
+  assistiveTouch5 = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch5 frame];
   v29 = CGRectGetHeight(v39) * 0.5;
 
   if (v29 >= v21)
@@ -1491,8 +1491,8 @@ LABEL_5:
     v21 = v29;
   }
 
-  v30 = [(LUILogViewerController *)self assistiveTouch];
-  [v30 frame];
+  assistiveTouch6 = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch6 frame];
   v31 = Height - CGRectGetHeight(v40) * 0.5;
 
   v34[1] = 3221225472;
@@ -1523,24 +1523,24 @@ void __36__LUILogViewerController_handlePan___block_invoke(uint64_t a1)
   [v3 setCenter:{v1, v2}];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v4 locationInView:v5];
+  beginCopy = begin;
+  view = [beginCopy view];
+  [beginCopy locationInView:view];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(LUILogViewerController *)self assistiveTouch];
-  [v10 frame];
+  assistiveTouch = [(LUILogViewerController *)self assistiveTouch];
+  [assistiveTouch frame];
   v12.x = v7;
   v12.y = v9;
-  LOBYTE(v4) = CGRectContainsPoint(v13, v12);
+  LOBYTE(beginCopy) = CGRectContainsPoint(v13, v12);
 
-  return v4;
+  return beginCopy;
 }
 
-- (void)logViewerViewClearButtontapped:(id)a3
+- (void)logViewerViewClearButtontapped:(id)buttontapped
 {
   if ([(LUILogViewerController *)self isStreaming])
   {
@@ -1551,15 +1551,15 @@ void __36__LUILogViewerController_handlePan___block_invoke(uint64_t a1)
   else if (![(LUILogViewerController *)self isFetchingLogs])
   {
     [(LUILogViewerController *)self _cleanupLogs];
-    v4 = [(LUILogViewerController *)self logContentViewController];
-    [v4 showLogOptionsView];
+    logContentViewController = [(LUILogViewerController *)self logContentViewController];
+    [logContentViewController showLogOptionsView];
   }
 }
 
-- (void)logViewerLeftCaretButtonTapped:(id)a3
+- (void)logViewerLeftCaretButtonTapped:(id)tapped
 {
-  v4 = [(LUILogViewerController *)self highlightRanges];
-  v5 = [v4 count];
+  highlightRanges = [(LUILogViewerController *)self highlightRanges];
+  v5 = [highlightRanges count];
 
   if (v5)
   {
@@ -1569,10 +1569,10 @@ void __36__LUILogViewerController_handlePan___block_invoke(uint64_t a1)
   }
 }
 
-- (void)logViewerRightCaretButtonTapped:(id)a3
+- (void)logViewerRightCaretButtonTapped:(id)tapped
 {
-  v4 = [(LUILogViewerController *)self highlightRanges];
-  v5 = [v4 count];
+  highlightRanges = [(LUILogViewerController *)self highlightRanges];
+  v5 = [highlightRanges count];
 
   if (v5)
   {
@@ -1582,32 +1582,32 @@ void __36__LUILogViewerController_handlePan___block_invoke(uint64_t a1)
   }
 }
 
-- (void)pageViewController:(id)a3 didFinishAnimating:(BOOL)a4 previousViewControllers:(id)a5 transitionCompleted:(BOOL)a6
+- (void)pageViewController:(id)controller didFinishAnimating:(BOOL)animating previousViewControllers:(id)controllers transitionCompleted:(BOOL)completed
 {
-  if (a4 && a6)
+  if (animating && completed)
   {
-    v7 = [a3 viewControllers];
-    v8 = [v7 objectAtIndexedSubscript:0];
-    v9 = [(LUILogViewerController *)self logContentViewController];
-    v10 = v8 == v9;
-    v11 = v8 != v9;
+    viewControllers = [controller viewControllers];
+    v8 = [viewControllers objectAtIndexedSubscript:0];
+    logContentViewController = [(LUILogViewerController *)self logContentViewController];
+    v10 = v8 == logContentViewController;
+    v11 = v8 != logContentViewController;
 
-    v12 = [(LUILogViewerController *)self logViewerView];
-    [v12 highlightFilterButton:v11];
+    logViewerView = [(LUILogViewerController *)self logViewerView];
+    [logViewerView highlightFilterButton:v11];
 
-    v13 = [(LUILogViewerController *)self logViewerView];
-    [v13 highlightLogButton:v10];
+    logViewerView2 = [(LUILogViewerController *)self logViewerView];
+    [logViewerView2 highlightLogButton:v10];
   }
 }
 
-- (id)pageViewController:(id)a3 viewControllerAfterViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerAfterViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(LUILogViewerController *)self orderedViewControllers];
-  v7 = [v6 indexOfObject:v5];
+  viewControllerCopy = viewController;
+  orderedViewControllers = [(LUILogViewerController *)self orderedViewControllers];
+  v7 = [orderedViewControllers indexOfObject:viewControllerCopy];
 
-  v8 = [(LUILogViewerController *)self orderedViewControllers];
-  v9 = [v8 count] - 1;
+  orderedViewControllers2 = [(LUILogViewerController *)self orderedViewControllers];
+  v9 = [orderedViewControllers2 count] - 1;
 
   if (v7 >= v9)
   {
@@ -1616,23 +1616,23 @@ void __36__LUILogViewerController_handlePan___block_invoke(uint64_t a1)
 
   else
   {
-    v10 = [(LUILogViewerController *)self orderedViewControllers];
-    v11 = [v10 objectAtIndexedSubscript:v7 + 1];
+    orderedViewControllers3 = [(LUILogViewerController *)self orderedViewControllers];
+    v11 = [orderedViewControllers3 objectAtIndexedSubscript:v7 + 1];
   }
 
   return v11;
 }
 
-- (id)pageViewController:(id)a3 viewControllerBeforeViewController:(id)a4
+- (id)pageViewController:(id)controller viewControllerBeforeViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(LUILogViewerController *)self orderedViewControllers];
-  v7 = [v6 indexOfObject:v5];
+  viewControllerCopy = viewController;
+  orderedViewControllers = [(LUILogViewerController *)self orderedViewControllers];
+  v7 = [orderedViewControllers indexOfObject:viewControllerCopy];
 
   if (v7)
   {
-    v8 = [(LUILogViewerController *)self orderedViewControllers];
-    v9 = [v8 objectAtIndexedSubscript:v7 - 1];
+    orderedViewControllers2 = [(LUILogViewerController *)self orderedViewControllers];
+    v9 = [orderedViewControllers2 objectAtIndexedSubscript:v7 - 1];
   }
 
   else
@@ -1670,17 +1670,17 @@ void __48__LUILogViewerController_orderedViewControllers__block_invoke(uint64_t 
   orderedViewControllers_result = v4;
 }
 
-- (void)logFilterViewController:(id)a3 didAddPredicates:(id)a4
+- (void)logFilterViewController:(id)controller didAddPredicates:(id)predicates
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LUILogViewerController *)self predicates];
-  v9 = [v8 arrayByAddingObjectsFromArray:v6];
+  predicatesCopy = predicates;
+  controllerCopy = controller;
+  predicates = [(LUILogViewerController *)self predicates];
+  v9 = [predicates arrayByAddingObjectsFromArray:predicatesCopy];
 
   v10 = [v9 sortedArrayUsingComparator:&__block_literal_global];
 
   [(LUILogViewerController *)self setPredicates:v10];
-  [v7 predicateDataUpdated];
+  [controllerCopy predicateDataUpdated];
 }
 
 uint64_t __67__LUILogViewerController_logFilterViewController_didAddPredicates___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1693,21 +1693,21 @@ uint64_t __67__LUILogViewerController_logFilterViewController_didAddPredicates__
   return v7;
 }
 
-- (void)logFilterViewController:(id)a3 didDeletePredicate:(id)a4
+- (void)logFilterViewController:(id)controller didDeletePredicate:(id)predicate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(LUILogViewerController *)self predicates];
-  v10 = [v8 mutableCopy];
+  predicateCopy = predicate;
+  controllerCopy = controller;
+  predicates = [(LUILogViewerController *)self predicates];
+  v10 = [predicates mutableCopy];
 
-  [v10 removeObject:v6];
+  [v10 removeObject:predicateCopy];
   v9 = [v10 copy];
   [(LUILogViewerController *)self setPredicates:v9];
 
-  [v7 predicateDataUpdated];
+  [controllerCopy predicateDataUpdated];
 }
 
-- (void)logFilterViewControllerApplyButtonTapped:(id)a3
+- (void)logFilterViewControllerApplyButtonTapped:(id)tapped
 {
   [(LUILogViewerController *)self showLogContentPage];
   [(LUILogViewerController *)self _stopStreaming];
@@ -1723,18 +1723,18 @@ uint64_t __67__LUILogViewerController_logFilterViewController_didAddPredicates__
 
   else
   {
-    v6 = [(LUILogViewerController *)self logContentViewController];
-    [v6 showLogOptionsView];
+    logContentViewController = [(LUILogViewerController *)self logContentViewController];
+    [logContentViewController showLogOptionsView];
   }
 }
 
-- (void)logContentViewController:(id)a3 didSelectLogOptionWithTimeInterval:(double)a4
+- (void)logContentViewController:(id)controller didSelectLogOptionWithTimeInterval:(double)interval
 {
-  [(LUILogViewerController *)self setLogInterval:a3];
-  v6 = [(LUILogViewerController *)self logContentViewController];
-  [v6 showLogTextView];
+  [(LUILogViewerController *)self setLogInterval:controller];
+  logContentViewController = [(LUILogViewerController *)self logContentViewController];
+  [logContentViewController showLogTextView];
 
-  if (a4 <= 0.0)
+  if (interval <= 0.0)
   {
 
     [(LUILogViewerController *)self _startStreamLog];
@@ -1747,43 +1747,43 @@ uint64_t __67__LUILogViewerController_logFilterViewController_didAddPredicates__
   }
 }
 
-- (void)logContentViewController:(id)a3 didSelectDateForLog:(id)a4
+- (void)logContentViewController:(id)controller didSelectDateForLog:(id)log
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(LUILogViewerController *)self firstLogDate];
-  if (v7)
+  controllerCopy = controller;
+  logCopy = log;
+  firstLogDate = [(LUILogViewerController *)self firstLogDate];
+  if (firstLogDate)
   {
-    v8 = v7;
-    v9 = [(LUILogViewerController *)self lastLogDate];
+    v8 = firstLogDate;
+    lastLogDate = [(LUILogViewerController *)self lastLogDate];
 
-    if (v9)
+    if (lastLogDate)
     {
-      v10 = [v16 textView];
-      v11 = [v10 text];
-      v12 = [(LUILogViewerController *)self _searchRangeForDate:v6 inText:v11];
+      textView = [controllerCopy textView];
+      text = [textView text];
+      v12 = [(LUILogViewerController *)self _searchRangeForDate:logCopy inText:text];
       v14 = v13;
 
       if (v14)
       {
-        v15 = [v16 textView];
-        [v15 scrollRangeToVisible:{v12, v14}];
+        textView2 = [controllerCopy textView];
+        [textView2 scrollRangeToVisible:{v12, v14}];
       }
     }
   }
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v6 = a3;
+  clickedCopy = clicked;
   if ([(LUILogViewerController *)self currentHighlightIndex]== -1)
   {
-    v4 = [v6 text];
-    v5 = [(LUILogViewerController *)self _performSearch:v4];
+    text = [clickedCopy text];
+    v5 = [(LUILogViewerController *)self _performSearch:text];
 
     if (v5)
     {
-      [v6 endEditing:1];
+      [clickedCopy endEditing:1];
     }
   }
 
@@ -1794,16 +1794,16 @@ uint64_t __67__LUILogViewerController_logFilterViewController_didAddPredicates__
   }
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
-  v3 = self;
-  v4 = [(LUILogViewerController *)self pageViewController];
-  v5 = [v4 viewControllers];
-  v6 = [v5 firstObject];
-  v7 = [(LUILogViewerController *)v3 logContentViewController];
-  LOBYTE(v3) = v6 == v7;
+  selfCopy = self;
+  pageViewController = [(LUILogViewerController *)self pageViewController];
+  viewControllers = [pageViewController viewControllers];
+  firstObject = [viewControllers firstObject];
+  logContentViewController = [(LUILogViewerController *)selfCopy logContentViewController];
+  LOBYTE(selfCopy) = firstObject == logContentViewController;
 
-  return v3;
+  return selfCopy;
 }
 
 - (LUILogViewerControllerDelegate)delegate

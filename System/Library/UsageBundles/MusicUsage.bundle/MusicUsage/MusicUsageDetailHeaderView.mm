@@ -1,11 +1,11 @@
 @interface MusicUsageDetailHeaderView
 - (MusicUsageDetailHeaderView)init;
-- (MusicUsageDetailHeaderView)initWithSpecifier:(id)a3;
-- (double)preferredHeightForWidth:(double)a3;
+- (MusicUsageDetailHeaderView)initWithSpecifier:(id)specifier;
+- (double)preferredHeightForWidth:(double)width;
 - (void)_updateContents;
-- (void)configureForSpecifier:(id)a3;
+- (void)configureForSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
@@ -163,15 +163,15 @@
   [(MusicUsageDetailHeaderView *)&v4 dealloc];
 }
 
-- (MusicUsageDetailHeaderView)initWithSpecifier:(id)a3
+- (MusicUsageDetailHeaderView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = [(MusicUsageDetailHeaderView *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_specifier, v4);
-    v7 = [v4 propertyForKey:@"MusicUsageItemPropertyKey"];
+    objc_storeWeak(&v5->_specifier, specifierCopy);
+    v7 = [specifierCopy propertyForKey:@"MusicUsageItemPropertyKey"];
     usageItem = v6->_usageItem;
     v6->_usageItem = v7;
 
@@ -181,7 +181,7 @@
   return v6;
 }
 
-- (double)preferredHeightForWidth:(double)a3
+- (double)preferredHeightForWidth:(double)width
 {
   [(MusicUsageDetailHeaderView *)self _updateContents];
   [(MusicUsageDetailHeaderView *)self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height];
@@ -190,9 +190,9 @@
 
 - (void)updateConstraints
 {
-  v3 = [(MusicUsageDetailHeaderView *)self traitCollection];
+  traitCollection = [(MusicUsageDetailHeaderView *)self traitCollection];
   v4 = 8.0;
-  if ([v3 horizontalSizeClass] == &dword_0 + 2)
+  if ([traitCollection horizontalSizeClass] == &dword_0 + 2)
   {
     PSTableViewSideInset();
     v4 = v5 + 8.0;
@@ -204,10 +204,10 @@
     goto LABEL_7;
   }
 
-  v7 = [(NSLayoutConstraint *)leadingViewConstraint firstItem];
+  firstItem = [(NSLayoutConstraint *)leadingViewConstraint firstItem];
   leadingView = self->_leadingView;
 
-  if (v7 != leadingView)
+  if (firstItem != leadingView)
   {
     [(MusicUsageDetailHeaderView *)self removeConstraint:self->_leadingViewConstraint];
     v9 = self->_leadingViewConstraint;
@@ -243,10 +243,10 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v16 = [(NSLayoutConstraint *)subtitleLeadingConstraint secondItem];
+    secondItem = [(NSLayoutConstraint *)subtitleLeadingConstraint secondItem];
     v17 = self->_leadingView;
 
-    if (v16 != v17)
+    if (secondItem != v17)
     {
       [(MusicUsageDetailHeaderView *)self removeConstraint:self->_subtitleLeadingConstraint];
       v18 = self->_subtitleLeadingConstraint;
@@ -267,18 +267,18 @@ LABEL_15:
   [(MusicUsageDetailHeaderView *)&v21 updateConstraints];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   [(MusicUsageDetailHeaderView *)self setNeedsUpdateConstraints];
 
   [(MusicUsageDetailHeaderView *)self updateConstraintsIfNeeded];
 }
 
-- (void)configureForSpecifier:(id)a3
+- (void)configureForSpecifier:(id)specifier
 {
-  v4 = a3;
-  objc_storeWeak(&self->_specifier, v4);
-  v5 = [v4 propertyForKey:@"MusicUsageItemPropertyKey"];
+  specifierCopy = specifier;
+  objc_storeWeak(&self->_specifier, specifierCopy);
+  v5 = [specifierCopy propertyForKey:@"MusicUsageItemPropertyKey"];
 
   usageItem = self->_usageItem;
   self->_usageItem = v5;
@@ -288,16 +288,16 @@ LABEL_15:
 
 - (void)_updateContents
 {
-  v3 = [(MusicUsageItem *)self->_usageItem itemCollection];
-  v4 = [v3 artworkCatalog];
+  itemCollection = [(MusicUsageItem *)self->_usageItem itemCollection];
+  artworkCatalog = [itemCollection artworkCatalog];
   v5 = &OBJC_IVAR___MusicUsageDetailHeaderView__imageView;
-  if (!v4)
+  if (!artworkCatalog)
   {
     v5 = &OBJC_IVAR___MusicUsageDetailHeaderView__subtitleLabel;
   }
 
   objc_storeStrong(&self->_leadingView, *(&self->super.super.super.isa + *v5));
-  if (v4)
+  if (artworkCatalog)
   {
     v44 = 0uLL;
     v45 = 0uLL;
@@ -331,23 +331,23 @@ LABEL_15:
     v12 = PSPointImageOfColor();
     [(UIImageView *)self->_imageView setImage:v12];
 
-    v13 = [(MusicUsageDetailHeaderView *)self window];
-    v14 = [v13 screen];
-    [v14 scale];
+    window = [(MusicUsageDetailHeaderView *)self window];
+    screen = [window screen];
+    [screen scale];
     if (v15 == 0.0)
     {
       v16 = +[UIScreen mainScreen];
       [v16 scale];
-      [v4 setDestinationScale:?];
+      [artworkCatalog setDestinationScale:?];
     }
 
     else
     {
-      [v4 setDestinationScale:?];
+      [artworkCatalog setDestinationScale:?];
     }
 
-    [v4 setFittingSize:{44.0, 44.0}];
-    [v4 setDestination:self->_imageView configurationBlock:&stru_10500];
+    [artworkCatalog setFittingSize:{44.0, 44.0}];
+    [artworkCatalog setDestination:self->_imageView configurationBlock:&stru_10500];
   }
 
   else
@@ -381,7 +381,7 @@ LABEL_15:
     }
   }
 
-  v22 = [v3 count];
+  v22 = [itemCollection count];
   v23 = v22;
   if (v22)
   {
@@ -400,28 +400,28 @@ LABEL_15:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_specifier);
-  v27 = [WeakRetained name];
+  name = [WeakRetained name];
 
-  v28 = [v3 representativeItem];
-  v29 = [v28 valueForProperty:MPMediaItemPropertyIsCompilation];
-  v30 = [v29 BOOLValue];
+  representativeItem = [itemCollection representativeItem];
+  v29 = [representativeItem valueForProperty:MPMediaItemPropertyIsCompilation];
+  bOOLValue = [v29 BOOLValue];
 
-  v31 = [v3 representativeItem];
-  v32 = [v31 valueForProperty:MPMediaItemPropertyAlbumArtistPersistentID];
-  v33 = [v32 longLongValue];
+  representativeItem2 = [itemCollection representativeItem];
+  v32 = [representativeItem2 valueForProperty:MPMediaItemPropertyAlbumArtistPersistentID];
+  longLongValue = [v32 longLongValue];
 
-  if (v30 && !v33)
+  if (bOOLValue && !longLongValue)
   {
     v34 = [NSBundle bundleWithIdentifier:@"com.apple.MusicUsage"];
     v35 = [v34 localizedStringForKey:@"VARIOUS_ARTISTS_TITLE" value:&stru_108A0 table:@"MusicUsage"];
 
-    v27 = v35;
+    name = v35;
   }
 
-  [(UILabel *)self->_titleLabel setText:v27];
+  [(UILabel *)self->_titleLabel setText:name];
   [(UILabel *)self->_subtitleLabel setText:v23];
-  v36 = [(MusicUsageItem *)self->_usageItem childUsageGroup];
-  v37 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [v36 groupSize], 2);
+  childUsageGroup = [(MusicUsageItem *)self->_usageItem childUsageGroup];
+  v37 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [childUsageGroup groupSize], 2);
   [(UILabel *)self->_sizeLabel setText:v37];
 
   [(MusicUsageDetailHeaderView *)self setNeedsUpdateConstraints];

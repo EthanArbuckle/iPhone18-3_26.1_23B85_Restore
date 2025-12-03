@@ -1,5 +1,5 @@
 @interface MTAEditAlarmVolumeCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
 - (void)accessibilityDecrement;
@@ -8,27 +8,27 @@
 
 @implementation MTAEditAlarmVolumeCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MTAEditAlarmVolumeCell" hasInstanceMethod:@"volumeSlider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UISlider" hasInstanceMethod:@"_accessibilityBumpValue:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MTAEditAlarmVolumeCell" hasInstanceMethod:@"volumeSlider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UISlider" hasInstanceMethod:@"_accessibilityBumpValue:" withFullSignature:{"v", "B", 0}];
 }
 
 - (id)accessibilityValue
 {
   v2 = [(MTAEditAlarmVolumeCellAccessibility *)self safeValueForKey:@"volumeSlider"];
-  v3 = [v2 accessibilityValue];
+  accessibilityValue = [v2 accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v2 = [(MTAEditAlarmVolumeCellAccessibility *)self safeValueForKey:@"volumeSlider"];
-  v3 = [v2 accessibilityTraits];
+  accessibilityTraits = [v2 accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (void)accessibilityIncrement

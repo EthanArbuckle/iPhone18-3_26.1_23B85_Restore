@@ -1,36 +1,36 @@
 @interface CARSilentModeInCarPlayOption
 + (id)allOptions;
-+ (id)optionWithFullTitle:(id)a3 footer:(id)a4 silentModeType:(unint64_t)a5 accessibilityIdentifier:(id)a6;
-- (CARSilentModeInCarPlayOption)initWithFullTitle:(id)a3 footer:(id)a4 silentModeType:(unint64_t)a5 accessibilityIdentifier:(id)a6;
++ (id)optionWithFullTitle:(id)title footer:(id)footer silentModeType:(unint64_t)type accessibilityIdentifier:(id)identifier;
+- (CARSilentModeInCarPlayOption)initWithFullTitle:(id)title footer:(id)footer silentModeType:(unint64_t)type accessibilityIdentifier:(id)identifier;
 @end
 
 @implementation CARSilentModeInCarPlayOption
 
-+ (id)optionWithFullTitle:(id)a3 footer:(id)a4 silentModeType:(unint64_t)a5 accessibilityIdentifier:(id)a6
++ (id)optionWithFullTitle:(id)title footer:(id)footer silentModeType:(unint64_t)type accessibilityIdentifier:(id)identifier
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[CARSilentModeInCarPlayOption alloc] initWithFullTitle:v11 footer:v10 silentModeType:a5 accessibilityIdentifier:v9];
+  identifierCopy = identifier;
+  footerCopy = footer;
+  titleCopy = title;
+  v12 = [[CARSilentModeInCarPlayOption alloc] initWithFullTitle:titleCopy footer:footerCopy silentModeType:type accessibilityIdentifier:identifierCopy];
 
   return v12;
 }
 
-- (CARSilentModeInCarPlayOption)initWithFullTitle:(id)a3 footer:(id)a4 silentModeType:(unint64_t)a5 accessibilityIdentifier:(id)a6
+- (CARSilentModeInCarPlayOption)initWithFullTitle:(id)title footer:(id)footer silentModeType:(unint64_t)type accessibilityIdentifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  titleCopy = title;
+  footerCopy = footer;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = CARSilentModeInCarPlayOption;
   v14 = [(CARSilentModeInCarPlayOption *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_fullTitle, a3);
-    objc_storeStrong(&v15->_footer, a4);
-    v15->_silentModeType = a5;
-    objc_storeStrong(&v15->_accessibilityIdentifier, a6);
+    objc_storeStrong(&v14->_fullTitle, title);
+    objc_storeStrong(&v15->_footer, footer);
+    v15->_silentModeType = type;
+    objc_storeStrong(&v15->_accessibilityIdentifier, identifier);
   }
 
   return v15;

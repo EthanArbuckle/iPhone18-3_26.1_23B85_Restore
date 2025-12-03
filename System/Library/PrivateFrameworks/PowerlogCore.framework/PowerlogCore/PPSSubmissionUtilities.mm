@@ -1,24 +1,24 @@
 @interface PPSSubmissionUtilities
-+ (BOOL)submit:(id)a3;
++ (BOOL)submit:(id)submit;
 + (id)taskingTables;
 @end
 
 @implementation PPSSubmissionUtilities
 
-+ (BOOL)submit:(id)a3
++ (BOOL)submit:(id)submit
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 isValid])
+  submitCopy = submit;
+  if ([submitCopy isValid])
   {
-    v4 = [v3 issueCategory];
-    v5 = [v3 issueDescription];
-    v6 = [v3 fileType];
-    v7 = [v3 filePath];
-    v8 = [v7 path];
-    v9 = [v3 targetContainer];
-    v10 = [v3 recordType];
-    [v3 contextDictionary];
+    issueCategory = [submitCopy issueCategory];
+    issueDescription = [submitCopy issueDescription];
+    fileType = [submitCopy fileType];
+    filePath = [submitCopy filePath];
+    path = [filePath path];
+    targetContainer = [submitCopy targetContainer];
+    recordType = [submitCopy recordType];
+    [submitCopy contextDictionary];
     v21 = v23 = 0;
     v11 = DRSubmitLogToCKContainer();
     v22 = 0;
@@ -29,17 +29,17 @@
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
-        v14 = [v3 issueCategory];
+        issueCategory2 = [submitCopy issueCategory];
         *buf = 138412802;
         v25 = @"com.apple.perfpowerservices";
         v26 = 2112;
-        v27 = v14;
+        v27 = issueCategory2;
         v28 = 2112;
-        v29 = v3;
+        v29 = submitCopy;
         _os_log_impl(&dword_1D8611000, v13, OS_LOG_TYPE_INFO, "Submitted record for '%@:%@'  to DiagnosticPipeline: %@", buf, 0x20u);
       }
 
-      if (![v3 isExpedited])
+      if (![submitCopy isExpedited])
       {
         v18 = 1;
 LABEL_19:
@@ -71,7 +71,7 @@ LABEL_19:
 
     else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(PPSSubmissionUtilities *)v3 submit:v13];
+      [(PPSSubmissionUtilities *)submitCopy submit:v13];
     }
 
     v18 = 0;

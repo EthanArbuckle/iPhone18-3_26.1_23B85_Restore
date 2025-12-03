@@ -1,25 +1,25 @@
 @interface CBServiceUUIDParamInfo
-- (BOOL)isEqual:(id)a3;
-- (CBServiceUUIDParamInfo)initWithXPCObject:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (CBServiceUUIDParamInfo)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation CBServiceUUIDParamInfo
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   serviceUUID = self->_serviceUUID;
-  xdict = v4;
+  xdict = objectCopy;
   if (serviceUUID)
   {
     v6 = serviceUUID;
-    v7 = [(NSData *)v6 bytes];
-    if (v7)
+    bytes = [(NSData *)v6 bytes];
+    if (bytes)
     {
-      v8 = v7;
+      v8 = bytes;
     }
 
     else
@@ -38,10 +38,10 @@
     v11 = blobData;
     v12 = xdict;
     v13 = blobData;
-    v14 = [(NSData *)v13 bytes];
-    if (v14)
+    bytes2 = [(NSData *)v13 bytes];
+    if (bytes2)
     {
-      v15 = v14;
+      v15 = bytes2;
     }
 
     else
@@ -61,10 +61,10 @@
     v19 = maskData;
     v20 = xdict;
     v21 = maskData;
-    v22 = [(NSData *)v21 bytes];
-    if (v22)
+    bytes3 = [(NSData *)v21 bytes];
+    if (bytes3)
     {
-      v23 = v22;
+      v23 = bytes3;
     }
 
     else
@@ -88,23 +88,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CBServiceUUIDParamInfo *)self serviceUUID];
-  v4 = [v3 hash];
-  v5 = [(CBServiceUUIDParamInfo *)self blobData];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(CBServiceUUIDParamInfo *)self maskData];
-  v8 = [v7 hash];
+  serviceUUID = [(CBServiceUUIDParamInfo *)self serviceUUID];
+  v4 = [serviceUUID hash];
+  blobData = [(CBServiceUUIDParamInfo *)self blobData];
+  v6 = [blobData hash] ^ v4;
+  maskData = [(CBServiceUUIDParamInfo *)self maskData];
+  v8 = [maskData hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy)
   {
-    if (v4 == self)
+    if (equalCopy == self)
     {
       v13 = 1;
       goto LABEL_22;
@@ -114,10 +114,10 @@
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
-      v7 = [(CBServiceUUIDParamInfo *)self serviceUUID];
-      v8 = [(CBServiceUUIDParamInfo *)v6 serviceUUID];
-      v9 = v7;
-      v10 = v8;
+      serviceUUID = [(CBServiceUUIDParamInfo *)self serviceUUID];
+      serviceUUID2 = [(CBServiceUUIDParamInfo *)v6 serviceUUID];
+      v9 = serviceUUID;
+      v10 = serviceUUID2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -138,10 +138,10 @@
         }
       }
 
-      v14 = [(CBServiceUUIDParamInfo *)self blobData];
-      v15 = [(CBServiceUUIDParamInfo *)v6 blobData];
-      v9 = v14;
-      v16 = v15;
+      blobData = [(CBServiceUUIDParamInfo *)self blobData];
+      blobData2 = [(CBServiceUUIDParamInfo *)v6 blobData];
+      v9 = blobData;
+      v16 = blobData2;
       v11 = v16;
       if (v9 == v16)
       {
@@ -166,10 +166,10 @@ LABEL_21:
         }
       }
 
-      v18 = [(CBServiceUUIDParamInfo *)self maskData];
-      v19 = [(CBServiceUUIDParamInfo *)v6 maskData];
-      v9 = v18;
-      v20 = v19;
+      maskData = [(CBServiceUUIDParamInfo *)self maskData];
+      maskData2 = [(CBServiceUUIDParamInfo *)v6 maskData];
+      v9 = maskData;
+      v20 = maskData2;
       v11 = v20;
       if (v9 == v20)
       {
@@ -197,9 +197,9 @@ LABEL_22:
   return v13;
 }
 
-- (CBServiceUUIDParamInfo)initWithXPCObject:(id)a3 error:(id *)a4
+- (CBServiceUUIDParamInfo)initWithXPCObject:(id)object error:(id *)error
 {
-  OUTLINED_FUNCTION_19(self, a2, a3);
+  OUTLINED_FUNCTION_19(self, a2, object);
   v7 = OUTLINED_FUNCTION_18();
   if (!v7)
   {

@@ -1,42 +1,42 @@
 @interface FigCaptureStillImageSettings
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOutputFormatCompressed;
-- (FigCaptureStillImageSettings)initWithCoder:(id)a3;
-- (FigCaptureStillImageSettings)initWithSettingsID:(int64_t)a3;
-- (FigCaptureStillImageSettings)initWithSettingsID:(int64_t)a3 captureRequestIdentifier:(id)a4;
+- (FigCaptureStillImageSettings)initWithCoder:(id)coder;
+- (FigCaptureStillImageSettings)initWithSettingsID:(int64_t)d;
+- (FigCaptureStillImageSettings)initWithSettingsID:(int64_t)d captureRequestIdentifier:(id)identifier;
 - (NSDictionary)outputPixelBufferAttributes;
 - (NSDictionary)previewPixelBufferAttributes;
 - (NSString)imageGroupIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)figCaptureIrisPreparedSettingsRepresentation;
-- (void)_initWithSettingsID:(void *)a3 captureRequestIdentifier:(void *)a4 imageGroupIdentifier:;
+- (void)_initWithSettingsID:(void *)d captureRequestIdentifier:(void *)identifier imageGroupIdentifier:;
 - (void)_teardownBracketStorage;
 - (void)cannotProcessDepthPhotos;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)resetDimensions;
-- (void)setBracketType:(int)a3 imageCount:(unsigned int)a4;
-- (void)setStillImageUserInitiatedRequestPTS:(id *)a3;
+- (void)setBracketType:(int)type imageCount:(unsigned int)count;
+- (void)setStillImageUserInitiatedRequestPTS:(id *)s;
 @end
 
 @implementation FigCaptureStillImageSettings
 
-- (FigCaptureStillImageSettings)initWithSettingsID:(int64_t)a3
+- (FigCaptureStillImageSettings)initWithSettingsID:(int64_t)d
 {
   v5 = [objc_msgSend(MEMORY[0x1E696AFB0] "UUID")];
 
-  return [(FigCaptureStillImageSettings *)self _initWithSettingsID:a3 captureRequestIdentifier:v5 imageGroupIdentifier:0];
+  return [(FigCaptureStillImageSettings *)self _initWithSettingsID:d captureRequestIdentifier:v5 imageGroupIdentifier:0];
 }
 
-- (FigCaptureStillImageSettings)initWithSettingsID:(int64_t)a3 captureRequestIdentifier:(id)a4
+- (FigCaptureStillImageSettings)initWithSettingsID:(int64_t)d captureRequestIdentifier:(id)identifier
 {
-  if (![objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:a4])
+  if (![objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:identifier])
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Invalid capture request identifier. Not a UUID string" userInfo:0]);
   }
 
-  return [(FigCaptureStillImageSettings *)self _initWithSettingsID:a3 captureRequestIdentifier:a4 imageGroupIdentifier:0];
+  return [(FigCaptureStillImageSettings *)self _initWithSettingsID:d captureRequestIdentifier:identifier imageGroupIdentifier:0];
 }
 
 - (void)dealloc
@@ -55,176 +55,176 @@ void __46__FigCaptureStillImageSettings_initWithCoder___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt64:self->_settingsID forKey:@"settingsID"];
-  [a3 encodeInt32:self->_payloadType forKey:@"payloadType"];
-  [a3 encodeInt32:self->_settingsProvider forKey:@"settingsProvider"];
+  [coder encodeInt64:self->_settingsID forKey:@"settingsID"];
+  [coder encodeInt32:self->_payloadType forKey:@"payloadType"];
+  [coder encodeInt32:self->_settingsProvider forKey:@"settingsProvider"];
   outputFormat = self->_outputFormat;
   if (outputFormat)
   {
-    [a3 encodeInt32:outputFormat forKey:@"outputFormat"];
+    [coder encodeInt32:outputFormat forKey:@"outputFormat"];
   }
 
   outputFileType = self->_outputFileType;
   if (outputFileType)
   {
-    [a3 encodeInt32:outputFileType forKey:@"outputFileType"];
+    [coder encodeInt32:outputFileType forKey:@"outputFileType"];
   }
 
   rawOutputFormat = self->_rawOutputFormat;
   if (rawOutputFormat)
   {
-    [a3 encodeInt32:rawOutputFormat forKey:@"rawOutputFormat"];
+    [coder encodeInt32:rawOutputFormat forKey:@"rawOutputFormat"];
   }
 
   rawOutputFileType = self->_rawOutputFileType;
   if (rawOutputFileType)
   {
-    [a3 encodeInt32:rawOutputFileType forKey:@"rawOutputFileType"];
+    [coder encodeInt32:rawOutputFileType forKey:@"rawOutputFileType"];
   }
 
   rawOutputFileBitDepth = self->_rawOutputFileBitDepth;
   if (rawOutputFileBitDepth)
   {
-    [a3 encodeInt32:rawOutputFileBitDepth forKey:@"rawOutputFileBitDepth"];
+    [coder encodeInt32:rawOutputFileBitDepth forKey:@"rawOutputFileBitDepth"];
   }
 
   rawOutputFileCodec = self->_rawOutputFileCodec;
   if (rawOutputFileCodec)
   {
-    [a3 encodeInt32:rawOutputFileCodec forKey:@"rawOutputFileCodec"];
+    [coder encodeInt32:rawOutputFileCodec forKey:@"rawOutputFileCodec"];
   }
 
   if (self->_rawOutputFileCodecQuality != 0.0)
   {
-    [a3 encodeFloat:@"rawOutputFileCodecQuality" forKey:?];
+    [coder encodeFloat:@"rawOutputFileCodecQuality" forKey:?];
   }
 
-  [a3 encodeInt32:self->_outputWidth forKey:@"outputWidth"];
-  [a3 encodeInt32:self->_outputHeight forKey:@"outputHeight"];
-  [a3 encodeInt32:self->_originalOutputDimensions.width forKey:@"originalOutputDimensionsWidth"];
-  [a3 encodeInt32:self->_originalOutputDimensions.height forKey:@"originalOutputDimensionsHeight"];
-  [a3 encodeBool:self->_squareCropEnabled forKey:@"squareCropEnabled"];
-  [a3 encodeInt32:self->_aspectRatio forKey:@"aspectRatio"];
-  [a3 encodeBool:self->_outputMirroring forKey:@"outputMirroring"];
-  [a3 encodeInt32:self->_outputRotationDegrees forKey:@"outputRotationDegrees"];
-  [a3 encodeBool:self->_previewEnabled forKey:@"previewEnabled"];
+  [coder encodeInt32:self->_outputWidth forKey:@"outputWidth"];
+  [coder encodeInt32:self->_outputHeight forKey:@"outputHeight"];
+  [coder encodeInt32:self->_originalOutputDimensions.width forKey:@"originalOutputDimensionsWidth"];
+  [coder encodeInt32:self->_originalOutputDimensions.height forKey:@"originalOutputDimensionsHeight"];
+  [coder encodeBool:self->_squareCropEnabled forKey:@"squareCropEnabled"];
+  [coder encodeInt32:self->_aspectRatio forKey:@"aspectRatio"];
+  [coder encodeBool:self->_outputMirroring forKey:@"outputMirroring"];
+  [coder encodeInt32:self->_outputRotationDegrees forKey:@"outputRotationDegrees"];
+  [coder encodeBool:self->_previewEnabled forKey:@"previewEnabled"];
   if (self->_previewEnabled)
   {
-    [a3 encodeInt32:self->_previewFormat forKey:@"previewFormat"];
-    [a3 encodeInt32:self->_previewWidth forKey:@"previewWidth"];
-    [a3 encodeInt32:self->_previewHeight forKey:@"previewHeight"];
-    [a3 encodeBool:self->_previewMirroring forKey:@"previewMirroring"];
-    [a3 encodeInt32:self->_previewRotationDegrees forKey:@"previewRotationDegrees"];
+    [coder encodeInt32:self->_previewFormat forKey:@"previewFormat"];
+    [coder encodeInt32:self->_previewWidth forKey:@"previewWidth"];
+    [coder encodeInt32:self->_previewHeight forKey:@"previewHeight"];
+    [coder encodeBool:self->_previewMirroring forKey:@"previewMirroring"];
+    [coder encodeInt32:self->_previewRotationDegrees forKey:@"previewRotationDegrees"];
   }
 
-  [a3 encodeBool:self->_thumbnailEnabled forKey:@"thumbnailEnabled"];
+  [coder encodeBool:self->_thumbnailEnabled forKey:@"thumbnailEnabled"];
   if (self->_thumbnailEnabled)
   {
-    [a3 encodeInt32:self->_thumbnailFormat forKey:@"thumbnailFormat"];
-    [a3 encodeInt32:self->_thumbnailWidth forKey:@"thumbnailWidth"];
-    [a3 encodeInt32:self->_thumbnailHeight forKey:@"thumbnailHeight"];
+    [coder encodeInt32:self->_thumbnailFormat forKey:@"thumbnailFormat"];
+    [coder encodeInt32:self->_thumbnailWidth forKey:@"thumbnailWidth"];
+    [coder encodeInt32:self->_thumbnailHeight forKey:@"thumbnailHeight"];
   }
 
-  [a3 encodeBool:self->_rawThumbnailEnabled forKey:@"rawThumbnailEnabled"];
+  [coder encodeBool:self->_rawThumbnailEnabled forKey:@"rawThumbnailEnabled"];
   if (self->_rawThumbnailEnabled)
   {
-    [a3 encodeInt32:self->_rawThumbnailFormat forKey:@"rawThumbnailFormat"];
-    [a3 encodeInt32:self->_rawThumbnailWidth forKey:@"rawThumbnailWidth"];
-    [a3 encodeInt32:self->_rawThumbnailHeight forKey:@"rawThumbnailHeight"];
+    [coder encodeInt32:self->_rawThumbnailFormat forKey:@"rawThumbnailFormat"];
+    [coder encodeInt32:self->_rawThumbnailWidth forKey:@"rawThumbnailWidth"];
+    [coder encodeInt32:self->_rawThumbnailHeight forKey:@"rawThumbnailHeight"];
   }
 
-  [a3 encodeBool:self->_noiseReductionEnabled forKey:@"powerBlurEnabled"];
-  [a3 encodeBool:self->_burstQualityCaptureEnabled forKey:@"burstQualityCaptureEnabled"];
+  [coder encodeBool:self->_noiseReductionEnabled forKey:@"powerBlurEnabled"];
+  [coder encodeBool:self->_burstQualityCaptureEnabled forKey:@"burstQualityCaptureEnabled"];
   *&v11 = self->_scaleFactor;
-  [a3 encodeFloat:@"scaleFactor" forKey:v11];
-  [a3 encodeBool:self->_zoomWithoutUpscalingEnabled forKey:@"zoomWithoutUpscalingEnabled"];
-  [a3 encodeInt32:self->_shutterSound forKey:@"shutterSound"];
-  [a3 encodeInt32:self->_flashMode forKey:@"flashMode"];
-  [a3 encodeBool:self->_autoRedEyeReductionEnabled forKey:@"autoRedEyeReductionEnabled"];
-  [a3 encodeInt32:self->_digitalFlashMode forKey:@"digitalFlashMode"];
-  [a3 encodeBool:self->_constantColorEnabled forKey:@"constantColorEnabled"];
-  [a3 encodeBool:self->_constantColorFallbackPhotoDeliveryEnabled forKey:@"constantColorFallbackPhotoDeliveryEnabled"];
-  [a3 encodeBool:self->_autoStereoPhotoCaptureEnabled forKey:@"autoStereoPhotoCaptureEnabled"];
-  [a3 encodeInt32:self->_wideColorMode forKey:@"wideColorMode"];
-  [a3 encodeInt32:self->_HDRMode forKey:@"HDRMode"];
+  [coder encodeFloat:@"scaleFactor" forKey:v11];
+  [coder encodeBool:self->_zoomWithoutUpscalingEnabled forKey:@"zoomWithoutUpscalingEnabled"];
+  [coder encodeInt32:self->_shutterSound forKey:@"shutterSound"];
+  [coder encodeInt32:self->_flashMode forKey:@"flashMode"];
+  [coder encodeBool:self->_autoRedEyeReductionEnabled forKey:@"autoRedEyeReductionEnabled"];
+  [coder encodeInt32:self->_digitalFlashMode forKey:@"digitalFlashMode"];
+  [coder encodeBool:self->_constantColorEnabled forKey:@"constantColorEnabled"];
+  [coder encodeBool:self->_constantColorFallbackPhotoDeliveryEnabled forKey:@"constantColorFallbackPhotoDeliveryEnabled"];
+  [coder encodeBool:self->_autoStereoPhotoCaptureEnabled forKey:@"autoStereoPhotoCaptureEnabled"];
+  [coder encodeInt32:self->_wideColorMode forKey:@"wideColorMode"];
+  [coder encodeInt32:self->_HDRMode forKey:@"HDRMode"];
   if (self->_depthDataDeliveryEnabled)
   {
-    [a3 encodeBool:1 forKey:@"depthDataDeliveryEnabled"];
-    [a3 encodeBool:self->_embedsDepthDataInImage forKey:@"embedsDepthDataInImage"];
-    [a3 encodeBool:self->_depthDataFiltered forKey:@"depthDataFiltered"];
+    [coder encodeBool:1 forKey:@"depthDataDeliveryEnabled"];
+    [coder encodeBool:self->_embedsDepthDataInImage forKey:@"embedsDepthDataInImage"];
+    [coder encodeBool:self->_depthDataFiltered forKey:@"depthDataFiltered"];
   }
 
-  [a3 encodeBool:self->_cameraCalibrationDataDeliveryEnabled forKey:@"cameraCalibrationDataDeliveryEnabled"];
+  [coder encodeBool:self->_cameraCalibrationDataDeliveryEnabled forKey:@"cameraCalibrationDataDeliveryEnabled"];
   if (self->_portraitEffectsMatteDeliveryEnabled)
   {
-    [a3 encodeBool:1 forKey:@"portraitEffectsMatteDeliveryEnabled"];
-    [a3 encodeBool:self->_embedsPortraitEffectsMatteInImage forKey:@"embedsPortraitEffectsMatteInImage"];
+    [coder encodeBool:1 forKey:@"portraitEffectsMatteDeliveryEnabled"];
+    [coder encodeBool:self->_embedsPortraitEffectsMatteInImage forKey:@"embedsPortraitEffectsMatteInImage"];
   }
 
   if ([(NSArray *)self->_enabledSemanticSegmentationMatteURNs count])
   {
-    [a3 encodeObject:self->_enabledSemanticSegmentationMatteURNs forKey:@"enabledSemanticSegmentationMatteURNs"];
-    [a3 encodeBool:self->_embedsSemanticSegmentationMattesInImage forKey:@"embedsSemanticSegmentationMattesInImage"];
+    [coder encodeObject:self->_enabledSemanticSegmentationMatteURNs forKey:@"enabledSemanticSegmentationMatteURNs"];
+    [coder encodeBool:self->_embedsSemanticSegmentationMattesInImage forKey:@"embedsSemanticSegmentationMattesInImage"];
   }
 
   if ([(NSDictionary *)self->_metadata count])
   {
-    [a3 encodeObject:self->_metadata forKey:@"metadata"];
+    [coder encodeObject:self->_metadata forKey:@"metadata"];
   }
 
   if ([(NSDictionary *)self->_metadataForOriginalImage count])
   {
-    [a3 encodeObject:self->_metadataForOriginalImage forKey:@"metadataForOriginalImage"];
+    [coder encodeObject:self->_metadataForOriginalImage forKey:@"metadataForOriginalImage"];
   }
 
   if ([(NSArray *)self->_originalImageFilters count])
   {
-    [a3 encodeObject:self->_originalImageFilters forKey:@"originalImageFilters"];
+    [coder encodeObject:self->_originalImageFilters forKey:@"originalImageFilters"];
   }
 
   if ([(NSArray *)self->_processedImageFilters count])
   {
-    [a3 encodeObject:self->_processedImageFilters forKey:@"processedImageFilters"];
+    [coder encodeObject:self->_processedImageFilters forKey:@"processedImageFilters"];
   }
 
-  [a3 encodeBool:self->_providesOriginalImage forKey:@"providesOriginalImage"];
+  [coder encodeBool:self->_providesOriginalImage forKey:@"providesOriginalImage"];
   *&v12 = self->_simulatedAperture;
-  [a3 encodeFloat:@"simulatedAperture" forKey:v12];
+  [coder encodeFloat:@"simulatedAperture" forKey:v12];
   *&v13 = self->_portraitLightingEffectStrength;
-  [a3 encodeFloat:@"portraitLightingEffectStrength" forKey:v13];
+  [coder encodeFloat:@"portraitLightingEffectStrength" forKey:v13];
   if ([(NSArray *)self->_bravoConstituentImageDeliveryDeviceTypes count])
   {
-    [a3 encodeObject:self->_bravoConstituentImageDeliveryDeviceTypes forKey:@"bravoConstituentImageDeliveryDeviceTypes"];
+    [coder encodeObject:self->_bravoConstituentImageDeliveryDeviceTypes forKey:@"bravoConstituentImageDeliveryDeviceTypes"];
   }
 
   if ([(NSDictionary *)self->_spatialOverCaptureMetadata count])
   {
-    [a3 encodeObject:self->_spatialOverCaptureMetadata forKey:@"spatialOverCaptureMetadata"];
+    [coder encodeObject:self->_spatialOverCaptureMetadata forKey:@"spatialOverCaptureMetadata"];
   }
 
   if ([(NSDictionary *)self->_spatialOverCaptureMetadataForOriginalImage count])
   {
-    [a3 encodeObject:self->_spatialOverCaptureMetadataForOriginalImage forKey:@"spatialOverCaptureMetadataForOriginalImage"];
+    [coder encodeObject:self->_spatialOverCaptureMetadataForOriginalImage forKey:@"spatialOverCaptureMetadataForOriginalImage"];
   }
 
-  [a3 encodeBool:self->_autoDeferredProcessingEnabled forKey:@"autoDeferredProcessingEnabled"];
-  [a3 encodeInt32:self->_qualityPrioritization forKey:@"qualityPrioritization"];
-  [a3 encodeInt32:self->_clientQualityPrioritization forKey:@"clientQualityPrioritization"];
-  [a3 encodeInt32:self->_bravoImageFusionMode forKey:@"bravoImageFusionMode"];
-  [a3 encodeBool:self->_autoIntelligentDistortionCorrectionEnabled forKey:@"autoIntelligentDistortionCorrectionEnabled"];
-  [a3 encodeObject:self->_vtCompressionProperties forKey:@"vtCompressionProperties"];
-  [a3 encodeInt32:self->_bracketType forKey:@"bracketType"];
-  [a3 encodeInt32:self->_bracketImageCount forKey:@"bracketImageCount"];
-  [a3 encodeBool:self->_lensStabilizationDuringBracketEnabled forKey:@"lensStabilizationDuringBracketEnabled"];
+  [coder encodeBool:self->_autoDeferredProcessingEnabled forKey:@"autoDeferredProcessingEnabled"];
+  [coder encodeInt32:self->_qualityPrioritization forKey:@"qualityPrioritization"];
+  [coder encodeInt32:self->_clientQualityPrioritization forKey:@"clientQualityPrioritization"];
+  [coder encodeInt32:self->_bravoImageFusionMode forKey:@"bravoImageFusionMode"];
+  [coder encodeBool:self->_autoIntelligentDistortionCorrectionEnabled forKey:@"autoIntelligentDistortionCorrectionEnabled"];
+  [coder encodeObject:self->_vtCompressionProperties forKey:@"vtCompressionProperties"];
+  [coder encodeInt32:self->_bracketType forKey:@"bracketType"];
+  [coder encodeInt32:self->_bracketImageCount forKey:@"bracketImageCount"];
+  [coder encodeBool:self->_lensStabilizationDuringBracketEnabled forKey:@"lensStabilizationDuringBracketEnabled"];
   bracketType = self->_bracketType;
   if (bracketType == 1)
   {
     ISOs = self->_ISOs;
     if (ISOs)
     {
-      [a3 encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", ISOs, 4 * self->_bracketImageCount), @"ISOs"}];
+      [coder encodeObject:objc_msgSend(MEMORY[0x1E695DEF0] forKey:{"dataWithBytes:length:", ISOs, 4 * self->_bracketImageCount), @"ISOs"}];
     }
 
     exposureDurations = self->_exposureDurations;
@@ -244,61 +244,61 @@ void __46__FigCaptureStillImageSettings_initWithCoder___block_invoke()
       v16 = [MEMORY[0x1E695DEF0] dataWithBytes:exposureTargetBiases length:4 * self->_bracketImageCount];
       v17 = @"exposureTargetBiases";
 LABEL_49:
-      [a3 encodeObject:v16 forKey:v17];
+      [coder encodeObject:v16 forKey:v17];
     }
   }
 
-  [a3 encodeInt64:self->_stillImageUserInitiatedRequestTime forKey:@"stillImageUserInitiatedRequestTime"];
+  [coder encodeInt64:self->_stillImageUserInitiatedRequestTime forKey:@"stillImageUserInitiatedRequestTime"];
   v20 = *MEMORY[0x1E695E480];
   stillImageUserInitiatedRequestPTS = self->_stillImageUserInitiatedRequestPTS;
   v21 = CMTimeCopyAsDictionary(&stillImageUserInitiatedRequestPTS, v20);
-  [a3 encodeObject:v21 forKey:@"stillImageUserInitiatedRequestPTS"];
+  [coder encodeObject:v21 forKey:@"stillImageUserInitiatedRequestPTS"];
 
-  [a3 encodeInt64:self->_stillImageRequestTime forKey:@"stillImageRequestTime"];
-  [a3 encodeInt64:self->_stillImageCaptureStartTime forKey:@"stillImageCaptureStartTime"];
-  [a3 encodeDouble:@"stillImageCaptureAbsoluteStartTime" forKey:self->_stillImageCaptureAbsoluteStartTime];
-  [a3 encodeObject:self->_imageGroupIdentifier forKey:@"imageGroupIdentifier"];
-  [a3 encodeObject:self->_captureRequestIdentifier forKey:@"captureRequestIdentifier"];
-  [a3 encodeBool:self->_clientInitiatedPrepareSettings forKey:@"clientInitiatedPrepareSettings"];
-  [a3 encodeBool:self->_userInitiatedRequestSettings forKey:@"userInitiatedRequestSettings"];
-  [a3 encodeBool:self->_beginMomentCaptureSettings forKey:@"beginMomentCaptureSettings"];
+  [coder encodeInt64:self->_stillImageRequestTime forKey:@"stillImageRequestTime"];
+  [coder encodeInt64:self->_stillImageCaptureStartTime forKey:@"stillImageCaptureStartTime"];
+  [coder encodeDouble:@"stillImageCaptureAbsoluteStartTime" forKey:self->_stillImageCaptureAbsoluteStartTime];
+  [coder encodeObject:self->_imageGroupIdentifier forKey:@"imageGroupIdentifier"];
+  [coder encodeObject:self->_captureRequestIdentifier forKey:@"captureRequestIdentifier"];
+  [coder encodeBool:self->_clientInitiatedPrepareSettings forKey:@"clientInitiatedPrepareSettings"];
+  [coder encodeBool:self->_userInitiatedRequestSettings forKey:@"userInitiatedRequestSettings"];
+  [coder encodeBool:self->_beginMomentCaptureSettings forKey:@"beginMomentCaptureSettings"];
   *&v22 = self->_videoStabilizationOverscanCropMultiplier;
-  [a3 encodeFloat:@"videoStabilizationOverscanCropMultiplier" forKey:v22];
-  [a3 encodeInt32:self->_resolutionFlavor forKey:@"resolutionFlavor"];
-  [a3 encodeInt32:self->_deferredPhotoProxyWidth forKey:@"deferredPhotoProxyWidth"];
-  [a3 encodeInt32:self->_deferredPhotoProxyHeight forKey:@"deferredPhotoProxyHeight"];
-  [a3 encodeInt32:self->_deferredPhotoFinalWidth forKey:@"deferredPhotoFinalWidth"];
-  [a3 encodeInt32:self->_deferredPhotoFinalHeight forKey:@"deferredPhotoFinalHeight"];
-  [a3 encodeInt32:self->_deferredPhotoFinalThumbnailDimensions.width forKey:@"deferredPhotoFinalThumbnailDimensionsWidth"];
-  [a3 encodeInt32:self->_deferredPhotoFinalThumbnailDimensions.height forKey:@"deferredPhotoFinalThumbnailDimensionsHeight"];
-  [a3 encodeInt32:self->_deferredPhotoFinalRawThumbnailDimensions.width forKey:@"deferredPhotoFinalRawThumbnailDimensionsWidth"];
-  [a3 encodeInt32:self->_deferredPhotoFinalRawThumbnailDimensions.height forKey:@"deferredPhotoFinalRawThumbnailDimensionsHeight"];
-  [a3 encodeInt32:self->_deferredSourceDeviceType forKey:@"deferredSourceDeviceType"];
-  [a3 encodeInt32:self->_deferredSourcePosition forKey:@"deferredSourcePosition"];
-  [a3 encodeObject:self->_deferredVideoFormatUniqueID forKey:@"deferredVideoFormatUniqueID"];
-  [a3 encodeObject:self->_deferredDepthDataFormatUniqueID forKey:@"deferredDepthDataFormatUniqueID"];
-  [a3 encodeBool:self->_bypassUpscaling forKey:@"bypassUpscaling"];
-  [a3 encodeObject:self->_cmioCompressedFormat forKey:@"compressedFormat"];
-  [a3 encodeBool:self->_cmioHighResolutionPhotoEnabled forKey:@"highResolutionPhotoEnabled"];
-  [a3 encodeInt32:self->_cmioMaxPhotoDimensionsWidth forKey:@"maxPhotoDimensionsWidth"];
-  [a3 encodeInt32:self->_cmioMaxPhotoDimensionsHeight forKey:@"maxPhotoDimensionsHeight"];
-  [a3 encodeBool:self->_deviceOrientationCorrectionEnabled forKey:@"deviceOrientationCorrectionEnabled"];
+  [coder encodeFloat:@"videoStabilizationOverscanCropMultiplier" forKey:v22];
+  [coder encodeInt32:self->_resolutionFlavor forKey:@"resolutionFlavor"];
+  [coder encodeInt32:self->_deferredPhotoProxyWidth forKey:@"deferredPhotoProxyWidth"];
+  [coder encodeInt32:self->_deferredPhotoProxyHeight forKey:@"deferredPhotoProxyHeight"];
+  [coder encodeInt32:self->_deferredPhotoFinalWidth forKey:@"deferredPhotoFinalWidth"];
+  [coder encodeInt32:self->_deferredPhotoFinalHeight forKey:@"deferredPhotoFinalHeight"];
+  [coder encodeInt32:self->_deferredPhotoFinalThumbnailDimensions.width forKey:@"deferredPhotoFinalThumbnailDimensionsWidth"];
+  [coder encodeInt32:self->_deferredPhotoFinalThumbnailDimensions.height forKey:@"deferredPhotoFinalThumbnailDimensionsHeight"];
+  [coder encodeInt32:self->_deferredPhotoFinalRawThumbnailDimensions.width forKey:@"deferredPhotoFinalRawThumbnailDimensionsWidth"];
+  [coder encodeInt32:self->_deferredPhotoFinalRawThumbnailDimensions.height forKey:@"deferredPhotoFinalRawThumbnailDimensionsHeight"];
+  [coder encodeInt32:self->_deferredSourceDeviceType forKey:@"deferredSourceDeviceType"];
+  [coder encodeInt32:self->_deferredSourcePosition forKey:@"deferredSourcePosition"];
+  [coder encodeObject:self->_deferredVideoFormatUniqueID forKey:@"deferredVideoFormatUniqueID"];
+  [coder encodeObject:self->_deferredDepthDataFormatUniqueID forKey:@"deferredDepthDataFormatUniqueID"];
+  [coder encodeBool:self->_bypassUpscaling forKey:@"bypassUpscaling"];
+  [coder encodeObject:self->_cmioCompressedFormat forKey:@"compressedFormat"];
+  [coder encodeBool:self->_cmioHighResolutionPhotoEnabled forKey:@"highResolutionPhotoEnabled"];
+  [coder encodeInt32:self->_cmioMaxPhotoDimensionsWidth forKey:@"maxPhotoDimensionsWidth"];
+  [coder encodeInt32:self->_cmioMaxPhotoDimensionsHeight forKey:@"maxPhotoDimensionsHeight"];
+  [coder encodeBool:self->_deviceOrientationCorrectionEnabled forKey:@"deviceOrientationCorrectionEnabled"];
   smartStyle = self->_smartStyle;
   if (smartStyle)
   {
-    [a3 encodeObject:smartStyle forKey:@"smartStyle"];
+    [coder encodeObject:smartStyle forKey:@"smartStyle"];
   }
 
-  [a3 encodeBool:self->_smartStyleReversibilitySupported forKey:@"smartStyleReversibilitySupported"];
+  [coder encodeBool:self->_smartStyleReversibilitySupported forKey:@"smartStyleReversibilitySupported"];
   if ([(NSArray *)self->_photoLibraryThumbnailDimensions count])
   {
-    [a3 encodeObject:self->_photoLibraryThumbnailDimensions forKey:@"photoLibraryThumbnailDimensions"];
+    [coder encodeObject:self->_photoLibraryThumbnailDimensions forKey:@"photoLibraryThumbnailDimensions"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithSettingsID:captureRequestIdentifier:", self->_settingsID, self->_captureRequestIdentifier}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithSettingsID:captureRequestIdentifier:", self->_settingsID, self->_captureRequestIdentifier}];
 
   *(v4 + 408) = self->_imageGroupIdentifier;
   [v4 setPayloadType:self->_payloadType];
@@ -402,7 +402,7 @@ LABEL_49:
   if (bracketType == 2)
   {
     *(v4 + 344) = malloc_type_calloc(self->_bracketImageCount, 4uLL, 0x100004052888210uLL);
-    v10 = [v4 exposureTargetBiases];
+    exposureTargetBiases = [v4 exposureTargetBiases];
     v11 = 344;
     goto LABEL_17;
   }
@@ -412,10 +412,10 @@ LABEL_49:
     *(v4 + 328) = malloc_type_calloc(self->_bracketImageCount, 0x18uLL, 0x1000040504FFAC1uLL);
     memcpy([v4 exposureDurations], self->_exposureDurations, 24 * self->_bracketImageCount);
     *(v4 + 336) = malloc_type_calloc(self->_bracketImageCount, 4uLL, 0x100004052888210uLL);
-    v10 = [v4 ISOs];
+    exposureTargetBiases = [v4 ISOs];
     v11 = 336;
 LABEL_17:
-    memcpy(v10, *(&self->super.isa + v11), 4 * self->_bracketImageCount);
+    memcpy(exposureTargetBiases, *(&self->super.isa + v11), 4 * self->_bracketImageCount);
   }
 
   [v4 setStillImageUserInitiatedRequestTime:self->_stillImageUserInitiatedRequestTime];
@@ -453,12 +453,12 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
-    LOBYTE(v61) = 1;
-    return v61;
+    LOBYTE(exposureDurations) = 1;
+    return exposureDurations;
   }
 
   v129 = v6;
@@ -472,327 +472,327 @@ LABEL_17:
   }
 
   settingsID = self->_settingsID;
-  if (settingsID != [a3 settingsID])
+  if (settingsID != [equal settingsID])
   {
     goto LABEL_154;
   }
 
   payloadType = self->_payloadType;
-  if (payloadType != [a3 payloadType])
+  if (payloadType != [equal payloadType])
   {
     goto LABEL_154;
   }
 
   settingsProvider = self->_settingsProvider;
-  if (settingsProvider != [a3 settingsProvider])
+  if (settingsProvider != [equal settingsProvider])
   {
     goto LABEL_154;
   }
 
   outputFormat = self->_outputFormat;
-  if (outputFormat != [a3 outputFormat])
+  if (outputFormat != [equal outputFormat])
   {
     goto LABEL_154;
   }
 
   outputFileType = self->_outputFileType;
-  if (outputFileType != [a3 outputFileType])
+  if (outputFileType != [equal outputFileType])
   {
     goto LABEL_154;
   }
 
   rawOutputFormat = self->_rawOutputFormat;
-  if (rawOutputFormat != [a3 rawOutputFormat])
+  if (rawOutputFormat != [equal rawOutputFormat])
   {
     goto LABEL_154;
   }
 
   rawOutputFileType = self->_rawOutputFileType;
-  if (rawOutputFileType != [a3 rawOutputFileType])
+  if (rawOutputFileType != [equal rawOutputFileType])
   {
     goto LABEL_154;
   }
 
   rawOutputFileBitDepth = self->_rawOutputFileBitDepth;
-  if (rawOutputFileBitDepth != [a3 rawOutputFileBitDepth])
+  if (rawOutputFileBitDepth != [equal rawOutputFileBitDepth])
   {
     goto LABEL_154;
   }
 
   rawOutputFileCodec = self->_rawOutputFileCodec;
-  if (rawOutputFileCodec != [a3 rawOutputFileCodec])
+  if (rawOutputFileCodec != [equal rawOutputFileCodec])
   {
     goto LABEL_154;
   }
 
   rawOutputFileCodecQuality = self->_rawOutputFileCodecQuality;
-  [a3 rawOutputFileCodecQuality];
+  [equal rawOutputFileCodecQuality];
   if (rawOutputFileCodecQuality != v19)
   {
     goto LABEL_154;
   }
 
   outputWidth = self->_outputWidth;
-  if (outputWidth != [a3 outputWidth])
+  if (outputWidth != [equal outputWidth])
   {
     goto LABEL_154;
   }
 
   outputHeight = self->_outputHeight;
-  if (outputHeight != [a3 outputHeight])
+  if (outputHeight != [equal outputHeight])
   {
     goto LABEL_154;
   }
 
-  if (*&self->_originalOutputDimensions != [a3 originalOutputDimensions])
+  if (*&self->_originalOutputDimensions != [equal originalOutputDimensions])
   {
     goto LABEL_154;
   }
 
   squareCropEnabled = self->_squareCropEnabled;
-  if (squareCropEnabled != [a3 squareCropEnabled])
+  if (squareCropEnabled != [equal squareCropEnabled])
   {
     goto LABEL_154;
   }
 
   aspectRatio = self->_aspectRatio;
-  if (aspectRatio != [a3 aspectRatio])
+  if (aspectRatio != [equal aspectRatio])
   {
     goto LABEL_154;
   }
 
   outputMirroring = self->_outputMirroring;
-  if (outputMirroring != [a3 outputMirroring])
+  if (outputMirroring != [equal outputMirroring])
   {
     goto LABEL_154;
   }
 
   outputRotationDegrees = self->_outputRotationDegrees;
-  if (outputRotationDegrees != [a3 outputRotationDegrees])
+  if (outputRotationDegrees != [equal outputRotationDegrees])
   {
     goto LABEL_154;
   }
 
   previewEnabled = self->_previewEnabled;
-  if (previewEnabled != [a3 previewEnabled])
+  if (previewEnabled != [equal previewEnabled])
   {
     goto LABEL_154;
   }
 
   previewFormat = self->_previewFormat;
-  if (previewFormat != [a3 previewFormat])
+  if (previewFormat != [equal previewFormat])
   {
     goto LABEL_154;
   }
 
   previewWidth = self->_previewWidth;
-  if (previewWidth != [a3 previewWidth])
+  if (previewWidth != [equal previewWidth])
   {
     goto LABEL_154;
   }
 
   previewHeight = self->_previewHeight;
-  if (previewHeight != [a3 previewHeight])
+  if (previewHeight != [equal previewHeight])
   {
     goto LABEL_154;
   }
 
   previewMirroring = self->_previewMirroring;
-  if (previewMirroring != [a3 previewMirroring])
+  if (previewMirroring != [equal previewMirroring])
   {
     goto LABEL_154;
   }
 
   previewRotationDegrees = self->_previewRotationDegrees;
-  if (previewRotationDegrees != [a3 previewRotationDegrees])
+  if (previewRotationDegrees != [equal previewRotationDegrees])
   {
     goto LABEL_154;
   }
 
   thumbnailEnabled = self->_thumbnailEnabled;
-  if (thumbnailEnabled != [a3 thumbnailEnabled])
+  if (thumbnailEnabled != [equal thumbnailEnabled])
   {
     goto LABEL_154;
   }
 
   thumbnailFormat = self->_thumbnailFormat;
-  if (thumbnailFormat != [a3 thumbnailFormat])
+  if (thumbnailFormat != [equal thumbnailFormat])
   {
     goto LABEL_154;
   }
 
   thumbnailWidth = self->_thumbnailWidth;
-  if (thumbnailWidth != [a3 thumbnailWidth])
+  if (thumbnailWidth != [equal thumbnailWidth])
   {
     goto LABEL_154;
   }
 
   thumbnailHeight = self->_thumbnailHeight;
-  if (thumbnailHeight != [a3 thumbnailHeight])
+  if (thumbnailHeight != [equal thumbnailHeight])
   {
     goto LABEL_154;
   }
 
   rawThumbnailEnabled = self->_rawThumbnailEnabled;
-  if (rawThumbnailEnabled != [a3 rawThumbnailEnabled])
+  if (rawThumbnailEnabled != [equal rawThumbnailEnabled])
   {
     goto LABEL_154;
   }
 
   rawThumbnailFormat = self->_rawThumbnailFormat;
-  if (rawThumbnailFormat != [a3 rawThumbnailFormat])
+  if (rawThumbnailFormat != [equal rawThumbnailFormat])
   {
     goto LABEL_154;
   }
 
   rawThumbnailWidth = self->_rawThumbnailWidth;
-  if (rawThumbnailWidth != [a3 rawThumbnailWidth])
+  if (rawThumbnailWidth != [equal rawThumbnailWidth])
   {
     goto LABEL_154;
   }
 
   rawThumbnailHeight = self->_rawThumbnailHeight;
-  if (rawThumbnailHeight != [a3 rawThumbnailHeight])
+  if (rawThumbnailHeight != [equal rawThumbnailHeight])
   {
     goto LABEL_154;
   }
 
   noiseReductionEnabled = self->_noiseReductionEnabled;
-  if (noiseReductionEnabled != [a3 noiseReductionEnabled])
+  if (noiseReductionEnabled != [equal noiseReductionEnabled])
   {
     goto LABEL_154;
   }
 
   burstQualityCaptureEnabled = self->_burstQualityCaptureEnabled;
-  if (burstQualityCaptureEnabled != [a3 burstQualityCaptureEnabled])
+  if (burstQualityCaptureEnabled != [equal burstQualityCaptureEnabled])
   {
     goto LABEL_154;
   }
 
   scaleFactor = self->_scaleFactor;
-  [a3 scaleFactor];
+  [equal scaleFactor];
   if (scaleFactor != v43)
   {
     goto LABEL_154;
   }
 
   zoomWithoutUpscalingEnabled = self->_zoomWithoutUpscalingEnabled;
-  if (zoomWithoutUpscalingEnabled != [a3 isZoomWithoutUpscalingEnabled])
+  if (zoomWithoutUpscalingEnabled != [equal isZoomWithoutUpscalingEnabled])
   {
     goto LABEL_154;
   }
 
   shutterSound = self->_shutterSound;
-  if (shutterSound != [a3 shutterSound])
+  if (shutterSound != [equal shutterSound])
   {
     goto LABEL_154;
   }
 
   flashMode = self->_flashMode;
-  if (flashMode != [a3 flashMode])
+  if (flashMode != [equal flashMode])
   {
     goto LABEL_154;
   }
 
   autoRedEyeReductionEnabled = self->_autoRedEyeReductionEnabled;
-  if (autoRedEyeReductionEnabled != [a3 autoRedEyeReductionEnabled])
+  if (autoRedEyeReductionEnabled != [equal autoRedEyeReductionEnabled])
   {
     goto LABEL_154;
   }
 
   digitalFlashMode = self->_digitalFlashMode;
-  if (digitalFlashMode != [a3 digitalFlashMode])
+  if (digitalFlashMode != [equal digitalFlashMode])
   {
     goto LABEL_154;
   }
 
   constantColorEnabled = self->_constantColorEnabled;
-  if (constantColorEnabled != [a3 constantColorEnabled])
+  if (constantColorEnabled != [equal constantColorEnabled])
   {
     goto LABEL_154;
   }
 
   constantColorFallbackPhotoDeliveryEnabled = self->_constantColorFallbackPhotoDeliveryEnabled;
-  if (constantColorFallbackPhotoDeliveryEnabled != [a3 constantColorFallbackPhotoDeliveryEnabled])
+  if (constantColorFallbackPhotoDeliveryEnabled != [equal constantColorFallbackPhotoDeliveryEnabled])
   {
     goto LABEL_154;
   }
 
   autoStereoPhotoCaptureEnabled = self->_autoStereoPhotoCaptureEnabled;
-  if (autoStereoPhotoCaptureEnabled != [a3 autoStereoPhotoCaptureEnabled])
+  if (autoStereoPhotoCaptureEnabled != [equal autoStereoPhotoCaptureEnabled])
   {
     goto LABEL_154;
   }
 
   wideColorMode = self->_wideColorMode;
-  if (wideColorMode != [a3 wideColorMode])
+  if (wideColorMode != [equal wideColorMode])
   {
     goto LABEL_154;
   }
 
   HDRMode = self->_HDRMode;
-  if (HDRMode != [a3 HDRMode])
+  if (HDRMode != [equal HDRMode])
   {
     goto LABEL_154;
   }
 
   depthDataDeliveryEnabled = self->_depthDataDeliveryEnabled;
-  if (depthDataDeliveryEnabled != [a3 depthDataDeliveryEnabled])
+  if (depthDataDeliveryEnabled != [equal depthDataDeliveryEnabled])
   {
     goto LABEL_154;
   }
 
   embedsDepthDataInImage = self->_embedsDepthDataInImage;
-  if (embedsDepthDataInImage != [a3 embedsDepthDataInImage])
+  if (embedsDepthDataInImage != [equal embedsDepthDataInImage])
   {
     goto LABEL_154;
   }
 
   depthDataFiltered = self->_depthDataFiltered;
-  if (depthDataFiltered != [a3 depthDataFiltered])
+  if (depthDataFiltered != [equal depthDataFiltered])
   {
     goto LABEL_154;
   }
 
   cameraCalibrationDataDeliveryEnabled = self->_cameraCalibrationDataDeliveryEnabled;
-  if (cameraCalibrationDataDeliveryEnabled != [a3 cameraCalibrationDataDeliveryEnabled])
+  if (cameraCalibrationDataDeliveryEnabled != [equal cameraCalibrationDataDeliveryEnabled])
   {
     goto LABEL_154;
   }
 
   portraitEffectsMatteDeliveryEnabled = self->_portraitEffectsMatteDeliveryEnabled;
-  if (portraitEffectsMatteDeliveryEnabled != [a3 portraitEffectsMatteDeliveryEnabled])
+  if (portraitEffectsMatteDeliveryEnabled != [equal portraitEffectsMatteDeliveryEnabled])
   {
     goto LABEL_154;
   }
 
   embedsPortraitEffectsMatteInImage = self->_embedsPortraitEffectsMatteInImage;
-  if (embedsPortraitEffectsMatteInImage != [a3 embedsPortraitEffectsMatteInImage])
+  if (embedsPortraitEffectsMatteInImage != [equal embedsPortraitEffectsMatteInImage])
   {
     goto LABEL_154;
   }
 
   v60 = [MEMORY[0x1E695DFD8] setWithArray:self->_enabledSemanticSegmentationMatteURNs];
-  LODWORD(v61) = [v60 isEqual:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", objc_msgSend(a3, "enabledSemanticSegmentationMatteURNs"))}];
-  if (!v61)
+  LODWORD(exposureDurations) = [v60 isEqual:{objc_msgSend(MEMORY[0x1E695DFD8], "setWithArray:", objc_msgSend(equal, "enabledSemanticSegmentationMatteURNs"))}];
+  if (!exposureDurations)
   {
-    return v61;
+    return exposureDurations;
   }
 
   embedsSemanticSegmentationMattesInImage = self->_embedsSemanticSegmentationMattesInImage;
-  if (embedsSemanticSegmentationMattesInImage != [a3 embedsSemanticSegmentationMattesInImage])
+  if (embedsSemanticSegmentationMattesInImage != [equal embedsSemanticSegmentationMattesInImage])
   {
     goto LABEL_154;
   }
 
   metadata = self->_metadata;
-  if (metadata == [a3 metadata] || (LODWORD(v61) = -[NSDictionary isEqual:](self->_metadata, "isEqual:", objc_msgSend(a3, "metadata")), v61))
+  if (metadata == [equal metadata] || (LODWORD(exposureDurations) = -[NSDictionary isEqual:](self->_metadata, "isEqual:", objc_msgSend(equal, "metadata")), exposureDurations))
   {
     metadataForOriginalImage = self->_metadataForOriginalImage;
-    if (metadataForOriginalImage == [a3 metadataForOriginalImage] || (LODWORD(v61) = -[NSDictionary isEqual:](self->_metadataForOriginalImage, "isEqual:", objc_msgSend(a3, "metadataForOriginalImage")), v61))
+    if (metadataForOriginalImage == [equal metadataForOriginalImage] || (LODWORD(exposureDurations) = -[NSDictionary isEqual:](self->_metadataForOriginalImage, "isEqual:", objc_msgSend(equal, "metadataForOriginalImage")), exposureDurations))
     {
       v65 = [(NSArray *)self->_originalImageFilters count];
-      if (v65 != [objc_msgSend(a3 "originalImageFilters")])
+      if (v65 != [objc_msgSend(equal "originalImageFilters")])
       {
         goto LABEL_154;
       }
@@ -801,7 +801,7 @@ LABEL_17:
       {
         v66 = 0;
         v67 = 1;
-        while (([objc_msgSend(-[NSArray objectAtIndexedSubscript:](self->_originalImageFilters objectAtIndexedSubscript:{v66), "name"), "isEqualToString:", objc_msgSend(objc_msgSend(objc_msgSend(a3, "originalImageFilters"), "objectAtIndexedSubscript:", v66), "name")}] & 1) != 0)
+        while (([objc_msgSend(-[NSArray objectAtIndexedSubscript:](self->_originalImageFilters objectAtIndexedSubscript:{v66), "name"), "isEqualToString:", objc_msgSend(objc_msgSend(objc_msgSend(equal, "originalImageFilters"), "objectAtIndexedSubscript:", v66), "name")}] & 1) != 0)
         {
           v66 = v67;
           v68 = [(NSArray *)self->_originalImageFilters count]> v67++;
@@ -816,7 +816,7 @@ LABEL_17:
 
 LABEL_64:
       v69 = [(NSArray *)self->_processedImageFilters count];
-      if (v69 != [objc_msgSend(a3 "processedImageFilters")])
+      if (v69 != [objc_msgSend(equal "processedImageFilters")])
       {
         goto LABEL_154;
       }
@@ -825,7 +825,7 @@ LABEL_64:
       {
         v70 = 0;
         v71 = 1;
-        while (([objc_msgSend(-[NSArray objectAtIndexedSubscript:](self->_processedImageFilters objectAtIndexedSubscript:{v70), "name"), "isEqualToString:", objc_msgSend(objc_msgSend(objc_msgSend(a3, "processedImageFilters"), "objectAtIndexedSubscript:", v70), "name")}] & 1) != 0)
+        while (([objc_msgSend(-[NSArray objectAtIndexedSubscript:](self->_processedImageFilters objectAtIndexedSubscript:{v70), "name"), "isEqualToString:", objc_msgSend(objc_msgSend(objc_msgSend(equal, "processedImageFilters"), "objectAtIndexedSubscript:", v70), "name")}] & 1) != 0)
         {
           v70 = v71;
           v68 = [(NSArray *)self->_processedImageFilters count]> v71++;
@@ -840,88 +840,88 @@ LABEL_64:
 
 LABEL_69:
       simulatedAperture = self->_simulatedAperture;
-      [a3 simulatedAperture];
+      [equal simulatedAperture];
       if (simulatedAperture != v73)
       {
         goto LABEL_154;
       }
 
       portraitLightingEffectStrength = self->_portraitLightingEffectStrength;
-      [a3 portraitLightingEffectStrength];
+      [equal portraitLightingEffectStrength];
       if (portraitLightingEffectStrength != v75)
       {
         goto LABEL_154;
       }
 
       providesOriginalImage = self->_providesOriginalImage;
-      if (providesOriginalImage != [a3 providesOriginalImage])
+      if (providesOriginalImage != [equal providesOriginalImage])
       {
         goto LABEL_154;
       }
 
       bravoConstituentImageDeliveryDeviceTypes = self->_bravoConstituentImageDeliveryDeviceTypes;
-      if (bravoConstituentImageDeliveryDeviceTypes == [a3 bravoConstituentImageDeliveryDeviceTypes] || (LODWORD(v61) = -[NSArray isEqual:](self->_bravoConstituentImageDeliveryDeviceTypes, "isEqual:", objc_msgSend(a3, "bravoConstituentImageDeliveryDeviceTypes")), v61))
+      if (bravoConstituentImageDeliveryDeviceTypes == [equal bravoConstituentImageDeliveryDeviceTypes] || (LODWORD(exposureDurations) = -[NSArray isEqual:](self->_bravoConstituentImageDeliveryDeviceTypes, "isEqual:", objc_msgSend(equal, "bravoConstituentImageDeliveryDeviceTypes")), exposureDurations))
       {
         spatialOverCaptureMetadata = self->_spatialOverCaptureMetadata;
-        if (spatialOverCaptureMetadata == [a3 spatialOverCaptureMetadata] || (LODWORD(v61) = -[NSDictionary isEqual:](self->_spatialOverCaptureMetadata, "isEqual:", objc_msgSend(a3, "spatialOverCaptureMetadata")), v61))
+        if (spatialOverCaptureMetadata == [equal spatialOverCaptureMetadata] || (LODWORD(exposureDurations) = -[NSDictionary isEqual:](self->_spatialOverCaptureMetadata, "isEqual:", objc_msgSend(equal, "spatialOverCaptureMetadata")), exposureDurations))
         {
           spatialOverCaptureMetadataForOriginalImage = self->_spatialOverCaptureMetadataForOriginalImage;
-          if (spatialOverCaptureMetadataForOriginalImage == [a3 spatialOverCaptureMetadataForOriginalImage] || (LODWORD(v61) = -[NSDictionary isEqual:](self->_spatialOverCaptureMetadataForOriginalImage, "isEqual:", objc_msgSend(a3, "spatialOverCaptureMetadataForOriginalImage")), v61))
+          if (spatialOverCaptureMetadataForOriginalImage == [equal spatialOverCaptureMetadataForOriginalImage] || (LODWORD(exposureDurations) = -[NSDictionary isEqual:](self->_spatialOverCaptureMetadataForOriginalImage, "isEqual:", objc_msgSend(equal, "spatialOverCaptureMetadataForOriginalImage")), exposureDurations))
           {
             autoDeferredProcessingEnabled = self->_autoDeferredProcessingEnabled;
-            if (autoDeferredProcessingEnabled != [a3 autoDeferredProcessingEnabled])
+            if (autoDeferredProcessingEnabled != [equal autoDeferredProcessingEnabled])
             {
               goto LABEL_154;
             }
 
             qualityPrioritization = self->_qualityPrioritization;
-            if (qualityPrioritization != [a3 qualityPrioritization])
+            if (qualityPrioritization != [equal qualityPrioritization])
             {
               goto LABEL_154;
             }
 
             clientQualityPrioritization = self->_clientQualityPrioritization;
-            if (clientQualityPrioritization != [a3 clientQualityPrioritization])
+            if (clientQualityPrioritization != [equal clientQualityPrioritization])
             {
               goto LABEL_154;
             }
 
             bravoImageFusionMode = self->_bravoImageFusionMode;
-            if (bravoImageFusionMode != [a3 bravoImageFusionMode])
+            if (bravoImageFusionMode != [equal bravoImageFusionMode])
             {
               goto LABEL_154;
             }
 
             autoIntelligentDistortionCorrectionEnabled = self->_autoIntelligentDistortionCorrectionEnabled;
-            if (autoIntelligentDistortionCorrectionEnabled != [a3 autoIntelligentDistortionCorrectionEnabled])
+            if (autoIntelligentDistortionCorrectionEnabled != [equal autoIntelligentDistortionCorrectionEnabled])
             {
               goto LABEL_154;
             }
 
             vtCompressionProperties = self->_vtCompressionProperties;
-            if (vtCompressionProperties != [a3 vtCompressionProperties])
+            if (vtCompressionProperties != [equal vtCompressionProperties])
             {
-              LODWORD(v61) = -[NSDictionary isEqual:](self->_vtCompressionProperties, "isEqual:", [a3 vtCompressionProperties]);
-              if (!v61)
+              LODWORD(exposureDurations) = -[NSDictionary isEqual:](self->_vtCompressionProperties, "isEqual:", [equal vtCompressionProperties]);
+              if (!exposureDurations)
               {
-                return v61;
+                return exposureDurations;
               }
             }
 
             bracketType = self->_bracketType;
-            if (bracketType != [a3 bracketType])
+            if (bracketType != [equal bracketType])
             {
               goto LABEL_154;
             }
 
             bracketImageCount = self->_bracketImageCount;
-            if (bracketImageCount != [a3 bracketImageCount])
+            if (bracketImageCount != [equal bracketImageCount])
             {
               goto LABEL_154;
             }
 
             lensStabilizationDuringBracketEnabled = self->_lensStabilizationDuringBracketEnabled;
-            if (lensStabilizationDuringBracketEnabled != [a3 lensStabilizationDuringBracketEnabled])
+            if (lensStabilizationDuringBracketEnabled != [equal lensStabilizationDuringBracketEnabled])
             {
               goto LABEL_154;
             }
@@ -937,7 +937,7 @@ LABEL_69:
                   goto LABEL_160;
                 }
 
-                if ([a3 exposureDurations])
+                if ([equal exposureDurations])
                 {
                   goto LABEL_154;
                 }
@@ -945,23 +945,23 @@ LABEL_69:
                 if (self->_exposureDurations)
                 {
 LABEL_160:
-                  v61 = [a3 exposureDurations];
-                  if (!v61)
+                  exposureDurations = [equal exposureDurations];
+                  if (!exposureDurations)
                   {
-                    return v61;
+                    return exposureDurations;
                   }
 
                   if (self->_exposureDurations)
                   {
-                    if ([a3 exposureDurations])
+                    if ([equal exposureDurations])
                     {
                       v91 = &self->_exposureDurations[v89];
-                      v92 = [a3 exposureDurations];
+                      exposureDurations2 = [equal exposureDurations];
                       v93 = *&v91->var0;
                       time1.epoch = v91->var3;
                       *&time1.value = v93;
-                      v94 = *(v92 + v89 * 24);
-                      stillImageUserInitiatedRequestPTS.epoch = *(v92 + v89 * 24 + 16);
+                      v94 = *(exposureDurations2 + v89 * 24);
+                      stillImageUserInitiatedRequestPTS.epoch = *(exposureDurations2 + v89 * 24 + 16);
                       *&stillImageUserInitiatedRequestPTS.value = v94;
                       if (CMTimeCompare(&time1, &stillImageUserInitiatedRequestPTS))
                       {
@@ -976,7 +976,7 @@ LABEL_160:
                   goto LABEL_159;
                 }
 
-                if ([a3 ISOs])
+                if ([equal ISOs])
                 {
                   goto LABEL_154;
                 }
@@ -984,18 +984,18 @@ LABEL_160:
                 if (self->_ISOs)
                 {
 LABEL_159:
-                  v61 = [a3 ISOs];
-                  if (!v61)
+                  exposureDurations = [equal ISOs];
+                  if (!exposureDurations)
                   {
-                    return v61;
+                    return exposureDurations;
                   }
 
                   if (self->_ISOs)
                   {
-                    if ([a3 ISOs])
+                    if ([equal ISOs])
                     {
                       v95 = self->_ISOs[v90];
-                      if (v95 != *([a3 ISOs] + 4 * v90))
+                      if (v95 != *([equal ISOs] + 4 * v90))
                       {
                         goto LABEL_154;
                       }
@@ -1008,7 +1008,7 @@ LABEL_159:
                   goto LABEL_158;
                 }
 
-                if ([a3 exposureTargetBiases])
+                if ([equal exposureTargetBiases])
                 {
                   goto LABEL_154;
                 }
@@ -1016,18 +1016,18 @@ LABEL_159:
                 if (self->_exposureTargetBiases)
                 {
 LABEL_158:
-                  v61 = [a3 exposureTargetBiases];
-                  if (!v61)
+                  exposureDurations = [equal exposureTargetBiases];
+                  if (!exposureDurations)
                   {
-                    return v61;
+                    return exposureDurations;
                   }
 
                   if (self->_exposureTargetBiases)
                   {
-                    if ([a3 exposureTargetBiases])
+                    if ([equal exposureTargetBiases])
                     {
                       v96 = self->_exposureTargetBiases[v90];
-                      if (v96 != *([a3 exposureTargetBiases] + 4 * v90))
+                      if (v96 != *([equal exposureTargetBiases] + 4 * v90))
                       {
                         goto LABEL_154;
                       }
@@ -1043,14 +1043,14 @@ LABEL_158:
             }
 
             stillImageUserInitiatedRequestTime = self->_stillImageUserInitiatedRequestTime;
-            if (stillImageUserInitiatedRequestTime != [a3 stillImageUserInitiatedRequestTime])
+            if (stillImageUserInitiatedRequestTime != [equal stillImageUserInitiatedRequestTime])
             {
               goto LABEL_154;
             }
 
-            if (a3)
+            if (equal)
             {
-              [a3 stillImageUserInitiatedRequestPTS];
+              [equal stillImageUserInitiatedRequestPTS];
             }
 
             else
@@ -1065,152 +1065,152 @@ LABEL_158:
             }
 
             stillImageRequestTime = self->_stillImageRequestTime;
-            if (stillImageRequestTime != [a3 stillImageRequestTime])
+            if (stillImageRequestTime != [equal stillImageRequestTime])
             {
               goto LABEL_154;
             }
 
             stillImageCaptureStartTime = self->_stillImageCaptureStartTime;
-            if (stillImageCaptureStartTime != [a3 stillImageCaptureStartTime])
+            if (stillImageCaptureStartTime != [equal stillImageCaptureStartTime])
             {
               goto LABEL_154;
             }
 
             stillImageCaptureAbsoluteStartTime = self->_stillImageCaptureAbsoluteStartTime;
-            [a3 stillImageCaptureAbsoluteStartTime];
+            [equal stillImageCaptureAbsoluteStartTime];
             if (stillImageCaptureAbsoluteStartTime != v101)
             {
               goto LABEL_154;
             }
 
             imageGroupIdentifier = self->_imageGroupIdentifier;
-            if (imageGroupIdentifier == [a3 imageGroupIdentifier] || (LODWORD(v61) = -[NSString isEqualToString:](self->_imageGroupIdentifier, "isEqualToString:", objc_msgSend(a3, "imageGroupIdentifier")), v61))
+            if (imageGroupIdentifier == [equal imageGroupIdentifier] || (LODWORD(exposureDurations) = -[NSString isEqualToString:](self->_imageGroupIdentifier, "isEqualToString:", objc_msgSend(equal, "imageGroupIdentifier")), exposureDurations))
             {
               captureRequestIdentifier = self->_captureRequestIdentifier;
-              if (captureRequestIdentifier == [a3 captureRequestIdentifier] || (LODWORD(v61) = -[NSString isEqualToString:](self->_captureRequestIdentifier, "isEqualToString:", objc_msgSend(a3, "captureRequestIdentifier")), v61))
+              if (captureRequestIdentifier == [equal captureRequestIdentifier] || (LODWORD(exposureDurations) = -[NSString isEqualToString:](self->_captureRequestIdentifier, "isEqualToString:", objc_msgSend(equal, "captureRequestIdentifier")), exposureDurations))
               {
                 clientInitiatedPrepareSettings = self->_clientInitiatedPrepareSettings;
-                if (clientInitiatedPrepareSettings != [a3 isClientInitiatedPrepareSettings])
+                if (clientInitiatedPrepareSettings != [equal isClientInitiatedPrepareSettings])
                 {
                   goto LABEL_154;
                 }
 
                 userInitiatedRequestSettings = self->_userInitiatedRequestSettings;
-                if (userInitiatedRequestSettings != [a3 isUserInitiatedRequestSettings])
+                if (userInitiatedRequestSettings != [equal isUserInitiatedRequestSettings])
                 {
                   goto LABEL_154;
                 }
 
                 videoStabilizationOverscanCropMultiplier = self->_videoStabilizationOverscanCropMultiplier;
-                [a3 videoStabilizationOverscanCropMultiplier];
+                [equal videoStabilizationOverscanCropMultiplier];
                 if (videoStabilizationOverscanCropMultiplier != v107)
                 {
                   goto LABEL_154;
                 }
 
                 resolutionFlavor = self->_resolutionFlavor;
-                if (resolutionFlavor != [a3 resolutionFlavor])
+                if (resolutionFlavor != [equal resolutionFlavor])
                 {
                   goto LABEL_154;
                 }
 
                 deferredPhotoProxyWidth = self->_deferredPhotoProxyWidth;
-                if (deferredPhotoProxyWidth != [a3 deferredPhotoProxyWidth])
+                if (deferredPhotoProxyWidth != [equal deferredPhotoProxyWidth])
                 {
                   goto LABEL_154;
                 }
 
                 deferredPhotoProxyHeight = self->_deferredPhotoProxyHeight;
-                if (deferredPhotoProxyHeight != [a3 deferredPhotoProxyHeight])
+                if (deferredPhotoProxyHeight != [equal deferredPhotoProxyHeight])
                 {
                   goto LABEL_154;
                 }
 
                 deferredPhotoFinalWidth = self->_deferredPhotoFinalWidth;
-                if (deferredPhotoFinalWidth != [a3 deferredPhotoFinalWidth])
+                if (deferredPhotoFinalWidth != [equal deferredPhotoFinalWidth])
                 {
                   goto LABEL_154;
                 }
 
                 deferredPhotoFinalHeight = self->_deferredPhotoFinalHeight;
-                if (deferredPhotoFinalHeight != [a3 deferredPhotoFinalHeight])
+                if (deferredPhotoFinalHeight != [equal deferredPhotoFinalHeight])
                 {
                   goto LABEL_154;
                 }
 
-                if (*&self->_deferredPhotoFinalThumbnailDimensions != [a3 deferredPhotoFinalThumbnailDimensions])
+                if (*&self->_deferredPhotoFinalThumbnailDimensions != [equal deferredPhotoFinalThumbnailDimensions])
                 {
                   goto LABEL_154;
                 }
 
-                if (*&self->_deferredPhotoFinalRawThumbnailDimensions != [a3 deferredPhotoFinalRawThumbnailDimensions])
+                if (*&self->_deferredPhotoFinalRawThumbnailDimensions != [equal deferredPhotoFinalRawThumbnailDimensions])
                 {
                   goto LABEL_154;
                 }
 
                 deferredSourceDeviceType = self->_deferredSourceDeviceType;
-                if (deferredSourceDeviceType != [a3 deferredSourceDeviceType])
+                if (deferredSourceDeviceType != [equal deferredSourceDeviceType])
                 {
                   goto LABEL_154;
                 }
 
                 deferredSourcePosition = self->_deferredSourcePosition;
-                if (deferredSourcePosition != [a3 deferredSourcePosition])
+                if (deferredSourcePosition != [equal deferredSourcePosition])
                 {
                   goto LABEL_154;
                 }
 
                 deferredVideoFormatUniqueID = self->_deferredVideoFormatUniqueID;
-                if (deferredVideoFormatUniqueID == [a3 deferredVideoFormatUniqueID] || (LODWORD(v61) = -[NSString isEqualToString:](self->_deferredVideoFormatUniqueID, "isEqualToString:", objc_msgSend(a3, "deferredVideoFormatUniqueID")), v61))
+                if (deferredVideoFormatUniqueID == [equal deferredVideoFormatUniqueID] || (LODWORD(exposureDurations) = -[NSString isEqualToString:](self->_deferredVideoFormatUniqueID, "isEqualToString:", objc_msgSend(equal, "deferredVideoFormatUniqueID")), exposureDurations))
                 {
                   deferredDepthDataFormatUniqueID = self->_deferredDepthDataFormatUniqueID;
-                  if (deferredDepthDataFormatUniqueID == [a3 deferredDepthDataFormatUniqueID] || (LODWORD(v61) = -[NSString isEqualToString:](self->_deferredDepthDataFormatUniqueID, "isEqualToString:", objc_msgSend(a3, "deferredDepthDataFormatUniqueID")), v61))
+                  if (deferredDepthDataFormatUniqueID == [equal deferredDepthDataFormatUniqueID] || (LODWORD(exposureDurations) = -[NSString isEqualToString:](self->_deferredDepthDataFormatUniqueID, "isEqualToString:", objc_msgSend(equal, "deferredDepthDataFormatUniqueID")), exposureDurations))
                   {
                     bypassUpscaling = self->_bypassUpscaling;
-                    if (bypassUpscaling == [a3 bypassUpscaling])
+                    if (bypassUpscaling == [equal bypassUpscaling])
                     {
                       cmioCompressedFormat = self->_cmioCompressedFormat;
-                      if (cmioCompressedFormat != [a3 cmioCompressedFormat])
+                      if (cmioCompressedFormat != [equal cmioCompressedFormat])
                       {
-                        LODWORD(v61) = -[NSString isEqualToString:](self->_cmioCompressedFormat, "isEqualToString:", [a3 cmioCompressedFormat]);
-                        if (!v61)
+                        LODWORD(exposureDurations) = -[NSString isEqualToString:](self->_cmioCompressedFormat, "isEqualToString:", [equal cmioCompressedFormat]);
+                        if (!exposureDurations)
                         {
-                          return v61;
+                          return exposureDurations;
                         }
                       }
 
                       cmioHighResolutionPhotoEnabled = self->_cmioHighResolutionPhotoEnabled;
-                      if (cmioHighResolutionPhotoEnabled == [a3 cmioHighResolutionPhotoEnabled])
+                      if (cmioHighResolutionPhotoEnabled == [equal cmioHighResolutionPhotoEnabled])
                       {
                         cmioMaxPhotoDimensionsWidth = self->_cmioMaxPhotoDimensionsWidth;
-                        if (cmioMaxPhotoDimensionsWidth == [a3 cmioMaxPhotoDimensionsWidth])
+                        if (cmioMaxPhotoDimensionsWidth == [equal cmioMaxPhotoDimensionsWidth])
                         {
                           cmioMaxPhotoDimensionsHeight = self->_cmioMaxPhotoDimensionsHeight;
-                          if (cmioMaxPhotoDimensionsHeight == [a3 cmioMaxPhotoDimensionsHeight])
+                          if (cmioMaxPhotoDimensionsHeight == [equal cmioMaxPhotoDimensionsHeight])
                           {
                             deviceOrientationCorrectionEnabled = self->_deviceOrientationCorrectionEnabled;
-                            if (deviceOrientationCorrectionEnabled == [a3 deviceOrientationCorrectionEnabled])
+                            if (deviceOrientationCorrectionEnabled == [equal deviceOrientationCorrectionEnabled])
                             {
                               smartStyle = self->_smartStyle;
-                              if (smartStyle != [a3 smartStyle])
+                              if (smartStyle != [equal smartStyle])
                               {
-                                LODWORD(v61) = -[FigCaptureSmartStyle isEqual:](self->_smartStyle, "isEqual:", [a3 smartStyle]);
-                                if (!v61)
+                                LODWORD(exposureDurations) = -[FigCaptureSmartStyle isEqual:](self->_smartStyle, "isEqual:", [equal smartStyle]);
+                                if (!exposureDurations)
                                 {
-                                  return v61;
+                                  return exposureDurations;
                                 }
                               }
 
                               smartStyleReversibilitySupported = self->_smartStyleReversibilitySupported;
-                              if (smartStyleReversibilitySupported == [a3 smartStyleReversibilitySupported])
+                              if (smartStyleReversibilitySupported == [equal smartStyleReversibilitySupported])
                               {
                                 photoLibraryThumbnailDimensions = self->_photoLibraryThumbnailDimensions;
-                                if (photoLibraryThumbnailDimensions == [a3 photoLibraryThumbnailDimensions] || (LODWORD(v61) = -[NSArray isEqual:](self->_photoLibraryThumbnailDimensions, "isEqual:", objc_msgSend(a3, "photoLibraryThumbnailDimensions")), v61))
+                                if (photoLibraryThumbnailDimensions == [equal photoLibraryThumbnailDimensions] || (LODWORD(exposureDurations) = -[NSArray isEqual:](self->_photoLibraryThumbnailDimensions, "isEqual:", objc_msgSend(equal, "photoLibraryThumbnailDimensions")), exposureDurations))
                                 {
-                                  LOBYTE(v61) = 1;
+                                  LOBYTE(exposureDurations) = 1;
                                 }
 
-                                return v61;
+                                return exposureDurations;
                               }
                             }
                           }
@@ -1219,7 +1219,7 @@ LABEL_158:
                     }
 
 LABEL_154:
-                    LOBYTE(v61) = 0;
+                    LOBYTE(exposureDurations) = 0;
                   }
                 }
               }
@@ -1230,7 +1230,7 @@ LABEL_154:
     }
   }
 
-  return v61;
+  return exposureDurations;
 }
 
 - (id)description
@@ -1302,12 +1302,12 @@ LABEL_154:
   scaleFactor = self->_scaleFactor;
   if (scaleFactor == 1.0)
   {
-    v80 = &stru_1F216A3D0;
+    scaleFactor = &stru_1F216A3D0;
   }
 
   else
   {
-    v80 = [MEMORY[0x1E696AEC0] stringWithFormat:@" x%.3f", scaleFactor];
+    scaleFactor = [MEMORY[0x1E696AEC0] stringWithFormat:@" x%.3f", scaleFactor];
   }
 
   zoomWithoutUpscalingEnabled = self->_zoomWithoutUpscalingEnabled;
@@ -1494,12 +1494,12 @@ LABEL_154:
   v68 = v13;
   if (resolutionFlavor)
   {
-    v45 = [MEMORY[0x1E696AEC0] stringWithFormat:@" flavor:%d", resolutionFlavor];
+    resolutionFlavor = [MEMORY[0x1E696AEC0] stringWithFormat:@" flavor:%d", resolutionFlavor];
   }
 
   else
   {
-    v45 = &stru_1F216A3D0;
+    resolutionFlavor = &stru_1F216A3D0;
   }
 
   v21 = @" CP:balanced";
@@ -1685,7 +1685,7 @@ LABEL_154:
     v20 = @" OrientationCorrection:1";
   }
 
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %p: captureID:%lld '%.4s'('%.4s')%@ %dx%d R:%d%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@", objc_opt_class(), self, self->_settingsID, v92, &v91, v85, self->_outputWidth, self->_outputHeight, self->_outputRotationDegrees, v37, v76, v81, v84, v83, v82, v39, v38, v80, v35, v77, v74, v73, v71, v34, v70, v69, v44, v46, v33, v32, v31, v64, v62, v68, v56, v52, v26, v57, v54, v59, v58, v53, v49, v43, v48, v42, v47, v45, v40, v20];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %p: captureID:%lld '%.4s'('%.4s')%@ %dx%d R:%d%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@%@", objc_opt_class(), self, self->_settingsID, v92, &v91, v85, self->_outputWidth, self->_outputHeight, self->_outputRotationDegrees, v37, v76, v81, v84, v83, v82, v39, v38, scaleFactor, v35, v77, v74, v73, v71, v34, v70, v69, v44, v46, v33, v32, v31, v64, v62, v68, v56, v52, v26, v57, v54, v59, v58, v53, v49, v43, v48, v42, v47, resolutionFlavor, v40, v20];
 }
 
 - (void)resetDimensions
@@ -1740,15 +1740,15 @@ LABEL_154:
 
 - (BOOL)isOutputFormatCompressed
 {
-  v2 = [(FigCaptureStillImageSettings *)self outputFormat];
-  v3 = v2 == 1752589105 || v2 == 1785750887;
-  return v2 == 1635148593 || v3;
+  outputFormat = [(FigCaptureStillImageSettings *)self outputFormat];
+  v3 = outputFormat == 1752589105 || outputFormat == 1785750887;
+  return outputFormat == 1635148593 || v3;
 }
 
 - (NSDictionary)previewPixelBufferAttributes
 {
-  v3 = [(FigCaptureStillImageSettings *)self previewFormat];
-  if (v3 != 875704422 && v3 != 1111970369 && v3 != 875704438)
+  previewFormat = [(FigCaptureStillImageSettings *)self previewFormat];
+  if (previewFormat != 875704422 && previewFormat != 1111970369 && previewFormat != 875704438)
   {
     return 0;
   }
@@ -1768,28 +1768,28 @@ LABEL_154:
   [(FigCaptureStillImageSettings *)self setProcessedImageFilters:0];
 }
 
-- (void)setBracketType:(int)a3 imageCount:(unsigned int)a4
+- (void)setBracketType:(int)type imageCount:(unsigned int)count
 {
-  if (self->_bracketType != a3 || self->_bracketImageCount != a4)
+  if (self->_bracketType != type || self->_bracketImageCount != count)
   {
     [(FigCaptureStillImageSettings *)&self->super.isa _teardownBracketStorage];
   }
 
-  self->_bracketType = a3;
-  if (a4 >= 8)
+  self->_bracketType = type;
+  if (count >= 8)
   {
-    v7 = 8;
+    countCopy = 8;
   }
 
   else
   {
-    v7 = a4;
+    countCopy = count;
   }
 
-  self->_bracketImageCount = v7;
-  if (a4)
+  self->_bracketImageCount = countCopy;
+  if (count)
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       if (self->_exposureTargetBiases)
       {
@@ -1800,18 +1800,18 @@ LABEL_154:
       goto LABEL_15;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       if (!self->_exposureDurations)
       {
-        self->_exposureDurations = malloc_type_calloc(a4, 0x18uLL, 0x1000040504FFAC1uLL);
+        self->_exposureDurations = malloc_type_calloc(count, 0x18uLL, 0x1000040504FFAC1uLL);
       }
 
       if (!self->_ISOs)
       {
         p_exposureTargetBiases = &self->_ISOs;
 LABEL_15:
-        *p_exposureTargetBiases = malloc_type_calloc(a4, 4uLL, 0x100004052888210uLL);
+        *p_exposureTargetBiases = malloc_type_calloc(count, 4uLL, 0x100004052888210uLL);
       }
     }
   }
@@ -1849,29 +1849,29 @@ LABEL_15:
   return v3;
 }
 
-- (void)setStillImageUserInitiatedRequestPTS:(id *)a3
+- (void)setStillImageUserInitiatedRequestPTS:(id *)s
 {
-  v3 = *&a3->var0;
-  self->_stillImageUserInitiatedRequestPTS.epoch = a3->var3;
+  v3 = *&s->var0;
+  self->_stillImageUserInitiatedRequestPTS.epoch = s->var3;
   *&self->_stillImageUserInitiatedRequestPTS.value = v3;
 }
 
-- (void)_initWithSettingsID:(void *)a3 captureRequestIdentifier:(void *)a4 imageGroupIdentifier:
+- (void)_initWithSettingsID:(void *)d captureRequestIdentifier:(void *)identifier imageGroupIdentifier:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = FigCaptureStillImageSettings;
   v7 = objc_msgSendSuper2(&v10, sel_init);
   v8 = v7;
   if (v7)
   {
     v7[1] = a2;
-    v7[52] = [a3 copy];
-    v8[51] = [a4 copy];
+    v7[52] = [d copy];
+    v8[51] = [identifier copy];
     *(v8 + 61) = 2143289344;
   }
 
@@ -1880,162 +1880,162 @@ LABEL_15:
 
 - (void)_teardownBracketStorage
 {
-  if (a1)
+  if (self)
   {
-    free(a1[41]);
-    a1[41] = 0;
-    free(a1[42]);
-    a1[42] = 0;
-    free(a1[43]);
-    a1[43] = 0;
+    free(self[41]);
+    self[41] = 0;
+    free(self[42]);
+    self[42] = 0;
+    free(self[43]);
+    self[43] = 0;
   }
 }
 
-- (FigCaptureStillImageSettings)initWithCoder:(id)a3
+- (FigCaptureStillImageSettings)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeInt64ForKey:@"settingsID"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"captureRequestIdentifier"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"imageGroupIdentifier"];
+  v5 = [coder decodeInt64ForKey:@"settingsID"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"captureRequestIdentifier"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"imageGroupIdentifier"];
   v8 = [(FigCaptureStillImageSettings *)self _initWithSettingsID:v5 captureRequestIdentifier:v6 imageGroupIdentifier:v7];
   if (v8)
   {
-    *(v8 + 4) = [a3 decodeInt32ForKey:@"payloadType"];
-    *(v8 + 5) = [a3 decodeInt32ForKey:@"settingsProvider"];
-    *(v8 + 6) = [a3 decodeInt32ForKey:@"outputFormat"];
-    *(v8 + 7) = [a3 decodeInt32ForKey:@"outputFileType"];
-    *(v8 + 8) = [a3 decodeInt32ForKey:@"rawOutputFormat"];
-    *(v8 + 9) = [a3 decodeInt32ForKey:@"rawOutputFileType"];
-    *(v8 + 10) = [a3 decodeInt32ForKey:@"rawOutputFileBitDepth"];
-    *(v8 + 11) = [a3 decodeInt32ForKey:@"rawOutputFileCodec"];
-    [a3 decodeFloatForKey:@"rawOutputFileCodecQuality"];
+    *(v8 + 4) = [coder decodeInt32ForKey:@"payloadType"];
+    *(v8 + 5) = [coder decodeInt32ForKey:@"settingsProvider"];
+    *(v8 + 6) = [coder decodeInt32ForKey:@"outputFormat"];
+    *(v8 + 7) = [coder decodeInt32ForKey:@"outputFileType"];
+    *(v8 + 8) = [coder decodeInt32ForKey:@"rawOutputFormat"];
+    *(v8 + 9) = [coder decodeInt32ForKey:@"rawOutputFileType"];
+    *(v8 + 10) = [coder decodeInt32ForKey:@"rawOutputFileBitDepth"];
+    *(v8 + 11) = [coder decodeInt32ForKey:@"rawOutputFileCodec"];
+    [coder decodeFloatForKey:@"rawOutputFileCodecQuality"];
     *(v8 + 12) = v9;
-    *(v8 + 13) = [a3 decodeInt32ForKey:@"outputWidth"];
-    *(v8 + 14) = [a3 decodeInt32ForKey:@"outputHeight"];
-    *(v8 + 15) = [a3 decodeInt32ForKey:@"originalOutputDimensionsWidth"];
-    *(v8 + 16) = [a3 decodeInt32ForKey:@"originalOutputDimensionsHeight"];
-    *(v8 + 68) = [a3 decodeBoolForKey:@"squareCropEnabled"];
-    *(v8 + 18) = [a3 decodeInt32ForKey:@"aspectRatio"];
-    *(v8 + 76) = [a3 decodeBoolForKey:@"outputMirroring"];
-    *(v8 + 20) = [a3 decodeInt32ForKey:@"outputRotationDegrees"];
-    v10 = [a3 decodeBoolForKey:@"previewEnabled"];
+    *(v8 + 13) = [coder decodeInt32ForKey:@"outputWidth"];
+    *(v8 + 14) = [coder decodeInt32ForKey:@"outputHeight"];
+    *(v8 + 15) = [coder decodeInt32ForKey:@"originalOutputDimensionsWidth"];
+    *(v8 + 16) = [coder decodeInt32ForKey:@"originalOutputDimensionsHeight"];
+    *(v8 + 68) = [coder decodeBoolForKey:@"squareCropEnabled"];
+    *(v8 + 18) = [coder decodeInt32ForKey:@"aspectRatio"];
+    *(v8 + 76) = [coder decodeBoolForKey:@"outputMirroring"];
+    *(v8 + 20) = [coder decodeInt32ForKey:@"outputRotationDegrees"];
+    v10 = [coder decodeBoolForKey:@"previewEnabled"];
     *(v8 + 84) = v10;
     if (v10)
     {
-      *(v8 + 22) = [a3 decodeInt32ForKey:@"previewFormat"];
-      *(v8 + 23) = [a3 decodeInt32ForKey:@"previewWidth"];
-      *(v8 + 24) = [a3 decodeInt32ForKey:@"previewHeight"];
-      *(v8 + 100) = [a3 decodeBoolForKey:@"previewMirroring"];
-      *(v8 + 26) = [a3 decodeInt32ForKey:@"previewRotationDegrees"];
+      *(v8 + 22) = [coder decodeInt32ForKey:@"previewFormat"];
+      *(v8 + 23) = [coder decodeInt32ForKey:@"previewWidth"];
+      *(v8 + 24) = [coder decodeInt32ForKey:@"previewHeight"];
+      *(v8 + 100) = [coder decodeBoolForKey:@"previewMirroring"];
+      *(v8 + 26) = [coder decodeInt32ForKey:@"previewRotationDegrees"];
     }
 
-    v11 = [a3 decodeBoolForKey:@"thumbnailEnabled"];
+    v11 = [coder decodeBoolForKey:@"thumbnailEnabled"];
     *(v8 + 108) = v11;
     if (v11)
     {
-      *(v8 + 28) = [a3 decodeInt32ForKey:@"thumbnailFormat"];
-      *(v8 + 29) = [a3 decodeInt32ForKey:@"thumbnailWidth"];
-      *(v8 + 30) = [a3 decodeInt32ForKey:@"thumbnailHeight"];
+      *(v8 + 28) = [coder decodeInt32ForKey:@"thumbnailFormat"];
+      *(v8 + 29) = [coder decodeInt32ForKey:@"thumbnailWidth"];
+      *(v8 + 30) = [coder decodeInt32ForKey:@"thumbnailHeight"];
     }
 
-    v12 = [a3 decodeBoolForKey:@"rawThumbnailEnabled"];
+    v12 = [coder decodeBoolForKey:@"rawThumbnailEnabled"];
     *(v8 + 124) = v12;
     if (v12)
     {
-      *(v8 + 32) = [a3 decodeInt32ForKey:@"rawThumbnailFormat"];
-      *(v8 + 33) = [a3 decodeInt32ForKey:@"rawThumbnailWidth"];
-      *(v8 + 34) = [a3 decodeInt32ForKey:@"rawThumbnailHeight"];
+      *(v8 + 32) = [coder decodeInt32ForKey:@"rawThumbnailFormat"];
+      *(v8 + 33) = [coder decodeInt32ForKey:@"rawThumbnailWidth"];
+      *(v8 + 34) = [coder decodeInt32ForKey:@"rawThumbnailHeight"];
     }
 
-    *(v8 + 140) = [a3 decodeBoolForKey:@"powerBlurEnabled"];
-    *(v8 + 141) = [a3 decodeBoolForKey:@"burstQualityCaptureEnabled"];
-    [a3 decodeFloatForKey:@"scaleFactor"];
+    *(v8 + 140) = [coder decodeBoolForKey:@"powerBlurEnabled"];
+    *(v8 + 141) = [coder decodeBoolForKey:@"burstQualityCaptureEnabled"];
+    [coder decodeFloatForKey:@"scaleFactor"];
     *(v8 + 36) = v13;
-    *(v8 + 148) = [a3 decodeBoolForKey:@"zoomWithoutUpscalingEnabled"];
-    *(v8 + 38) = [a3 decodeInt32ForKey:@"shutterSound"];
-    *(v8 + 39) = [a3 decodeInt32ForKey:@"flashMode"];
-    *(v8 + 160) = [a3 decodeBoolForKey:@"autoRedEyeReductionEnabled"];
-    *(v8 + 41) = [a3 decodeInt32ForKey:@"digitalFlashMode"];
-    *(v8 + 168) = [a3 decodeBoolForKey:@"constantColorEnabled"];
-    *(v8 + 169) = [a3 decodeBoolForKey:@"constantColorFallbackPhotoDeliveryEnabled"];
-    *(v8 + 170) = [a3 decodeBoolForKey:@"autoStereoPhotoCaptureEnabled"];
-    *(v8 + 43) = [a3 decodeInt32ForKey:@"wideColorMode"];
-    *(v8 + 44) = [a3 decodeInt32ForKey:@"HDRMode"];
-    v14 = [a3 decodeBoolForKey:@"depthDataDeliveryEnabled"];
+    *(v8 + 148) = [coder decodeBoolForKey:@"zoomWithoutUpscalingEnabled"];
+    *(v8 + 38) = [coder decodeInt32ForKey:@"shutterSound"];
+    *(v8 + 39) = [coder decodeInt32ForKey:@"flashMode"];
+    *(v8 + 160) = [coder decodeBoolForKey:@"autoRedEyeReductionEnabled"];
+    *(v8 + 41) = [coder decodeInt32ForKey:@"digitalFlashMode"];
+    *(v8 + 168) = [coder decodeBoolForKey:@"constantColorEnabled"];
+    *(v8 + 169) = [coder decodeBoolForKey:@"constantColorFallbackPhotoDeliveryEnabled"];
+    *(v8 + 170) = [coder decodeBoolForKey:@"autoStereoPhotoCaptureEnabled"];
+    *(v8 + 43) = [coder decodeInt32ForKey:@"wideColorMode"];
+    *(v8 + 44) = [coder decodeInt32ForKey:@"HDRMode"];
+    v14 = [coder decodeBoolForKey:@"depthDataDeliveryEnabled"];
     *(v8 + 180) = v14;
     if (v14)
     {
-      *(v8 + 181) = [a3 decodeBoolForKey:@"embedsDepthDataInImage"];
-      *(v8 + 182) = [a3 decodeBoolForKey:@"depthDataFiltered"];
+      *(v8 + 181) = [coder decodeBoolForKey:@"embedsDepthDataInImage"];
+      *(v8 + 182) = [coder decodeBoolForKey:@"depthDataFiltered"];
     }
 
-    *(v8 + 183) = [a3 decodeBoolForKey:@"cameraCalibrationDataDeliveryEnabled"];
-    v15 = [a3 decodeBoolForKey:@"portraitEffectsMatteDeliveryEnabled"];
+    *(v8 + 183) = [coder decodeBoolForKey:@"cameraCalibrationDataDeliveryEnabled"];
+    v15 = [coder decodeBoolForKey:@"portraitEffectsMatteDeliveryEnabled"];
     *(v8 + 184) = v15;
     if (v15)
     {
-      *(v8 + 185) = [a3 decodeBoolForKey:@"embedsPortraitEffectsMatteInImage"];
+      *(v8 + 185) = [coder decodeBoolForKey:@"embedsPortraitEffectsMatteInImage"];
     }
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
-    v18 = [a3 decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithObjects:", v17, objc_opt_class(), 0), @"enabledSemanticSegmentationMatteURNs"}];
+    v18 = [coder decodeObjectOfClasses:objc_msgSend(v16 forKey:{"setWithObjects:", v17, objc_opt_class(), 0), @"enabledSemanticSegmentationMatteURNs"}];
     v8[24] = v18;
     if ([v18 count])
     {
-      *(v8 + 200) = [a3 decodeBoolForKey:@"embedsSemanticSegmentationMattesInImage"];
+      *(v8 + 200) = [coder decodeBoolForKey:@"embedsSemanticSegmentationMattesInImage"];
     }
 
-    v8[26] = [objc_msgSend(a3 decodePropertyListForKey:{@"metadata", "copy"}];
-    v8[27] = [objc_msgSend(a3 decodePropertyListForKey:{@"metadataForOriginalImage", "copy"}];
+    v8[26] = [objc_msgSend(coder decodePropertyListForKey:{@"metadata", "copy"}];
+    v8[27] = [objc_msgSend(coder decodePropertyListForKey:{@"metadataForOriginalImage", "copy"}];
     v19 = objc_alloc(MEMORY[0x1E695DFD8]);
     v20 = objc_opt_class();
     v21 = [v19 initWithObjects:{v20, objc_opt_class(), 0}];
-    if ((([a3 containsValueForKey:@"originalImageFilters"] & 1) != 0 || objc_msgSend(a3, "containsValueForKey:", @"processedImageFilters")) && initWithCoder__onceToken != -1)
+    if ((([coder containsValueForKey:@"originalImageFilters"] & 1) != 0 || objc_msgSend(coder, "containsValueForKey:", @"processedImageFilters")) && initWithCoder__onceToken != -1)
     {
       dispatch_once(&initWithCoder__onceToken, &__block_literal_global_39);
     }
 
-    v8[28] = [a3 decodeObjectOfClasses:v21 forKey:@"originalImageFilters"];
-    v8[29] = [a3 decodeObjectOfClasses:v21 forKey:@"processedImageFilters"];
+    v8[28] = [coder decodeObjectOfClasses:v21 forKey:@"originalImageFilters"];
+    v8[29] = [coder decodeObjectOfClasses:v21 forKey:@"processedImageFilters"];
 
-    [a3 decodeFloatForKey:@"simulatedAperture"];
+    [coder decodeFloatForKey:@"simulatedAperture"];
     *(v8 + 60) = v22;
-    if ([a3 containsValueForKey:@"portraitLightingEffectStrength"])
+    if ([coder containsValueForKey:@"portraitLightingEffectStrength"])
     {
-      [a3 decodeFloatForKey:@"portraitLightingEffectStrength"];
+      [coder decodeFloatForKey:@"portraitLightingEffectStrength"];
       *(v8 + 61) = v23;
     }
 
-    *(v8 + 248) = [a3 decodeBoolForKey:@"providesOriginalImage"];
-    v8[32] = [objc_msgSend(a3 decodePropertyListForKey:{@"bravoConstituentImageDeliveryDeviceTypes", "copy"}];
-    v8[33] = [objc_msgSend(a3 decodePropertyListForKey:{@"spatialOverCaptureMetadata", "copy"}];
-    v8[34] = [objc_msgSend(a3 decodePropertyListForKey:{@"spatialOverCaptureMetadataForOriginalImage", "copy"}];
-    *(v8 + 280) = [a3 decodeBoolForKey:@"autoDeferredProcessingEnabled"];
-    *(v8 + 71) = [a3 decodeInt32ForKey:@"qualityPrioritization"];
-    *(v8 + 72) = [a3 decodeInt32ForKey:@"clientQualityPrioritization"];
-    *(v8 + 73) = [a3 decodeInt32ForKey:@"bravoImageFusionMode"];
-    *(v8 + 296) = [a3 decodeBoolForKey:@"autoIntelligentDistortionCorrectionEnabled"];
-    v8[38] = [objc_msgSend(a3 decodePropertyListForKey:{@"vtCompressionProperties", "copy"}];
-    *(v8 + 78) = [a3 decodeInt32ForKey:@"bracketType"];
-    if ([a3 decodeInt32ForKey:@"bracketImageCount"] > 7)
+    *(v8 + 248) = [coder decodeBoolForKey:@"providesOriginalImage"];
+    v8[32] = [objc_msgSend(coder decodePropertyListForKey:{@"bravoConstituentImageDeliveryDeviceTypes", "copy"}];
+    v8[33] = [objc_msgSend(coder decodePropertyListForKey:{@"spatialOverCaptureMetadata", "copy"}];
+    v8[34] = [objc_msgSend(coder decodePropertyListForKey:{@"spatialOverCaptureMetadataForOriginalImage", "copy"}];
+    *(v8 + 280) = [coder decodeBoolForKey:@"autoDeferredProcessingEnabled"];
+    *(v8 + 71) = [coder decodeInt32ForKey:@"qualityPrioritization"];
+    *(v8 + 72) = [coder decodeInt32ForKey:@"clientQualityPrioritization"];
+    *(v8 + 73) = [coder decodeInt32ForKey:@"bravoImageFusionMode"];
+    *(v8 + 296) = [coder decodeBoolForKey:@"autoIntelligentDistortionCorrectionEnabled"];
+    v8[38] = [objc_msgSend(coder decodePropertyListForKey:{@"vtCompressionProperties", "copy"}];
+    *(v8 + 78) = [coder decodeInt32ForKey:@"bracketType"];
+    if ([coder decodeInt32ForKey:@"bracketImageCount"] > 7)
     {
       v24 = 8;
     }
 
     else
     {
-      v24 = [a3 decodeInt32ForKey:@"bracketImageCount"];
+      v24 = [coder decodeInt32ForKey:@"bracketImageCount"];
     }
 
     *(v8 + 79) = v24;
-    *(v8 + 320) = [a3 decodeBoolForKey:@"lensStabilizationDuringBracketEnabled"];
+    *(v8 + 320) = [coder decodeBoolForKey:@"lensStabilizationDuringBracketEnabled"];
     v25 = *(v8 + 78);
     if (v25 == 1)
     {
       v8[42] = OUTLINED_FUNCTION_0_36();
-      [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"ISOs", "getBytes:length:", v8[42], 4 * *(v8 + 79)}];
+      [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"ISOs", "getBytes:length:", v8[42], 4 * *(v8 + 79)}];
       v8[41] = malloc_type_calloc(*(v8 + 79), 0x18uLL, 0x1000040504FFAC1uLL);
-      v26 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"exposureDurations"];
+      v26 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"exposureDurations"];
       v27 = v8[41];
       v28 = 24 * *(v8 + 79);
     }
@@ -2045,49 +2045,49 @@ LABEL_15:
       if (v25 != 2)
       {
 LABEL_28:
-        v8[44] = [a3 decodeInt64ForKey:@"stillImageUserInitiatedRequestTime"];
+        v8[44] = [coder decodeInt64ForKey:@"stillImageUserInitiatedRequestTime"];
         v29 = MEMORY[0x1E695DFD8];
         v30 = objc_opt_class();
         v31 = objc_opt_class();
-        v32 = [a3 decodeObjectOfClasses:objc_msgSend(v29 forKey:{"setWithObjects:", v30, v31, objc_opt_class(), 0), @"stillImageUserInitiatedRequestPTS"}];
+        v32 = [coder decodeObjectOfClasses:objc_msgSend(v29 forKey:{"setWithObjects:", v30, v31, objc_opt_class(), 0), @"stillImageUserInitiatedRequestPTS"}];
         CMTimeMakeFromDictionary(&v36, v32);
         *(v8 + 15) = v36;
-        v8[48] = [a3 decodeInt64ForKey:@"stillImageRequestTime"];
-        v8[49] = [a3 decodeInt64ForKey:@"stillImageCaptureStartTime"];
-        [a3 decodeDoubleForKey:@"stillImageCaptureAbsoluteStartTime"];
+        v8[48] = [coder decodeInt64ForKey:@"stillImageRequestTime"];
+        v8[49] = [coder decodeInt64ForKey:@"stillImageCaptureStartTime"];
+        [coder decodeDoubleForKey:@"stillImageCaptureAbsoluteStartTime"];
         v8[50] = v33;
-        *(v8 + 424) = [a3 decodeBoolForKey:@"clientInitiatedPrepareSettings"];
-        *(v8 + 425) = [a3 decodeBoolForKey:@"userInitiatedRequestSettings"];
-        *(v8 + 426) = [a3 decodeBoolForKey:@"beginMomentCaptureSettings"];
-        [a3 decodeFloatForKey:@"videoStabilizationOverscanCropMultiplier"];
+        *(v8 + 424) = [coder decodeBoolForKey:@"clientInitiatedPrepareSettings"];
+        *(v8 + 425) = [coder decodeBoolForKey:@"userInitiatedRequestSettings"];
+        *(v8 + 426) = [coder decodeBoolForKey:@"beginMomentCaptureSettings"];
+        [coder decodeFloatForKey:@"videoStabilizationOverscanCropMultiplier"];
         *(v8 + 107) = v34;
-        *(v8 + 108) = [a3 decodeInt32ForKey:@"resolutionFlavor"];
-        *(v8 + 109) = [a3 decodeInt32ForKey:@"deferredPhotoProxyWidth"];
-        *(v8 + 110) = [a3 decodeInt32ForKey:@"deferredPhotoProxyHeight"];
-        *(v8 + 111) = [a3 decodeInt32ForKey:@"deferredPhotoFinalWidth"];
-        *(v8 + 112) = [a3 decodeInt32ForKey:@"deferredPhotoFinalHeight"];
-        *(v8 + 113) = [a3 decodeInt32ForKey:@"deferredPhotoFinalThumbnailDimensionsWidth"];
-        *(v8 + 114) = [a3 decodeInt32ForKey:@"deferredPhotoFinalThumbnailDimensionsHeight"];
-        *(v8 + 115) = [a3 decodeInt32ForKey:@"deferredPhotoFinalRawThumbnailDimensionsWidth"];
-        *(v8 + 116) = [a3 decodeInt32ForKey:@"deferredPhotoFinalRawThumbnailDimensionsHeight"];
-        *(v8 + 117) = [a3 decodeInt32ForKey:@"deferredSourceDeviceType"];
-        *(v8 + 118) = [a3 decodeInt32ForKey:@"deferredSourcePosition"];
-        v8[60] = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"deferredVideoFormatUniqueID", "copy"}];
-        v8[61] = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"deferredDepthDataFormatUniqueID", "copy"}];
-        *(v8 + 496) = [a3 decodeBoolForKey:@"bypassUpscaling"];
-        v8[63] = [objc_msgSend(a3 decodeObjectOfClass:objc_opt_class() forKey:{@"compressedFormat", "copy"}];
-        *(v8 + 512) = [a3 decodeBoolForKey:@"highResolutionPhotoEnabled"];
-        *(v8 + 129) = [a3 decodeInt32ForKey:@"maxPhotoDimensionsWidth"];
-        *(v8 + 130) = [a3 decodeInt32ForKey:@"maxPhotoDimensionsHeight"];
-        *(v8 + 524) = [a3 decodeBoolForKey:@"deviceOrientationCorrectionEnabled"];
-        v8[66] = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"smartStyle"];
-        *(v8 + 536) = [a3 decodeBoolForKey:@"smartStyleReversibilitySupported"];
-        v8[69] = [objc_msgSend(a3 decodePropertyListForKey:{@"photoLibraryThumbnailDimensions", "copy"}];
+        *(v8 + 108) = [coder decodeInt32ForKey:@"resolutionFlavor"];
+        *(v8 + 109) = [coder decodeInt32ForKey:@"deferredPhotoProxyWidth"];
+        *(v8 + 110) = [coder decodeInt32ForKey:@"deferredPhotoProxyHeight"];
+        *(v8 + 111) = [coder decodeInt32ForKey:@"deferredPhotoFinalWidth"];
+        *(v8 + 112) = [coder decodeInt32ForKey:@"deferredPhotoFinalHeight"];
+        *(v8 + 113) = [coder decodeInt32ForKey:@"deferredPhotoFinalThumbnailDimensionsWidth"];
+        *(v8 + 114) = [coder decodeInt32ForKey:@"deferredPhotoFinalThumbnailDimensionsHeight"];
+        *(v8 + 115) = [coder decodeInt32ForKey:@"deferredPhotoFinalRawThumbnailDimensionsWidth"];
+        *(v8 + 116) = [coder decodeInt32ForKey:@"deferredPhotoFinalRawThumbnailDimensionsHeight"];
+        *(v8 + 117) = [coder decodeInt32ForKey:@"deferredSourceDeviceType"];
+        *(v8 + 118) = [coder decodeInt32ForKey:@"deferredSourcePosition"];
+        v8[60] = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"deferredVideoFormatUniqueID", "copy"}];
+        v8[61] = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"deferredDepthDataFormatUniqueID", "copy"}];
+        *(v8 + 496) = [coder decodeBoolForKey:@"bypassUpscaling"];
+        v8[63] = [objc_msgSend(coder decodeObjectOfClass:objc_opt_class() forKey:{@"compressedFormat", "copy"}];
+        *(v8 + 512) = [coder decodeBoolForKey:@"highResolutionPhotoEnabled"];
+        *(v8 + 129) = [coder decodeInt32ForKey:@"maxPhotoDimensionsWidth"];
+        *(v8 + 130) = [coder decodeInt32ForKey:@"maxPhotoDimensionsHeight"];
+        *(v8 + 524) = [coder decodeBoolForKey:@"deviceOrientationCorrectionEnabled"];
+        v8[66] = [coder decodeObjectOfClass:objc_opt_class() forKey:@"smartStyle"];
+        *(v8 + 536) = [coder decodeBoolForKey:@"smartStyleReversibilitySupported"];
+        v8[69] = [objc_msgSend(coder decodePropertyListForKey:{@"photoLibraryThumbnailDimensions", "copy"}];
         return v8;
       }
 
       v8[43] = OUTLINED_FUNCTION_0_36();
-      v26 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"exposureTargetBiases"];
+      v26 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"exposureTargetBiases"];
       v27 = v8[43];
       v28 = 4 * *(v8 + 79);
     }

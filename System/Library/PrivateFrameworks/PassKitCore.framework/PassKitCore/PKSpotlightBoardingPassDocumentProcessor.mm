@@ -1,8 +1,8 @@
 @interface PKSpotlightBoardingPassDocumentProcessor
 - (id)attributeKeyMapForAirTransit;
 - (id)attributeKeyMapForBusAndTrainTransit;
-- (id)attributeKeyMapForDonation:(id)a3;
-- (id)extractAttributesFromPKPass:(id)a3;
+- (id)attributeKeyMapForDonation:(id)donation;
+- (id)extractAttributesFromPKPass:(id)pass;
 - (id)multiValuedSearchableAttributes;
 @end
 
@@ -62,24 +62,24 @@
   return v3;
 }
 
-- (id)attributeKeyMapForDonation:(id)a3
+- (id)attributeKeyMapForDonation:(id)donation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 style] == 4)
+  donationCopy = donation;
+  v5 = donationCopy;
+  if (donationCopy && [donationCopy style] == 4)
   {
-    v6 = [v5 transitType];
-    if ((v6 - 2) < 2)
+    transitType = [v5 transitType];
+    if ((transitType - 2) < 2)
     {
-      v7 = [(PKSpotlightBoardingPassDocumentProcessor *)self attributeKeyMapForBusAndTrainTransit];
+      attributeKeyMapForBusAndTrainTransit = [(PKSpotlightBoardingPassDocumentProcessor *)self attributeKeyMapForBusAndTrainTransit];
 LABEL_7:
-      v8 = v7;
+      v8 = attributeKeyMapForBusAndTrainTransit;
       goto LABEL_9;
     }
 
-    if (v6 == 1)
+    if (transitType == 1)
     {
-      v7 = [(PKSpotlightBoardingPassDocumentProcessor *)self attributeKeyMapForAirTransit];
+      attributeKeyMapForBusAndTrainTransit = [(PKSpotlightBoardingPassDocumentProcessor *)self attributeKeyMapForAirTransit];
       goto LABEL_7;
     }
   }
@@ -90,21 +90,21 @@ LABEL_9:
   return v8;
 }
 
-- (id)extractAttributesFromPKPass:(id)a3
+- (id)extractAttributesFromPKPass:(id)pass
 {
-  v3 = a3;
+  passCopy = pass;
   v4 = objc_opt_new();
-  v5 = [v3 transitType];
-  if ((v5 - 2) < 3)
+  transitType = [passCopy transitType];
+  if ((transitType - 2) < 3)
   {
     [v4 setObject:*MEMORY[0x1E6963AD0] forKey:*MEMORY[0x1E6964278]];
-    v6 = [v3 frontFieldBuckets];
-    if ([v6 count] < 2)
+    frontFieldBuckets = [passCopy frontFieldBuckets];
+    if ([frontFieldBuckets count] < 2)
     {
       goto LABEL_10;
     }
 
-    v7 = [v6 objectAtIndexedSubscript:1];
+    v7 = [frontFieldBuckets objectAtIndexedSubscript:1];
     v8 = [v7 count];
 
     if (v8 != 2)
@@ -112,45 +112,45 @@ LABEL_9:
       goto LABEL_10;
     }
 
-    v9 = [v6 objectAtIndexedSubscript:1];
+    v9 = [frontFieldBuckets objectAtIndexedSubscript:1];
     v10 = [v9 objectAtIndexedSubscript:0];
-    v11 = [v10 label];
-    [v4 safelySetObject:v11 forKey:*MEMORY[0x1E6964250]];
+    label = [v10 label];
+    [v4 safelySetObject:label forKey:*MEMORY[0x1E6964250]];
 
     v12 = [v9 objectAtIndexedSubscript:1];
-    v13 = [v12 label];
-    [v4 safelySetObject:v13 forKey:*MEMORY[0x1E6964020]];
+    label2 = [v12 label];
+    [v4 safelySetObject:label2 forKey:*MEMORY[0x1E6964020]];
     goto LABEL_9;
   }
 
-  if (v5 != 1)
+  if (transitType != 1)
   {
     goto LABEL_11;
   }
 
   [v4 setObject:*MEMORY[0x1E6963AA0] forKey:*MEMORY[0x1E6964278]];
-  v6 = [v3 frontFieldBuckets];
-  if ([v6 count] >= 2)
+  frontFieldBuckets = [passCopy frontFieldBuckets];
+  if ([frontFieldBuckets count] >= 2)
   {
-    v14 = [v6 objectAtIndexedSubscript:1];
+    v14 = [frontFieldBuckets objectAtIndexedSubscript:1];
     v15 = [v14 count];
 
     if (v15 == 2)
     {
-      v9 = [v6 objectAtIndexedSubscript:1];
+      v9 = [frontFieldBuckets objectAtIndexedSubscript:1];
       v12 = [v9 objectAtIndexedSubscript:0];
-      v13 = [v9 objectAtIndexedSubscript:1];
-      v16 = [v12 label];
-      [v4 safelySetObject:v16 forKey:*MEMORY[0x1E69640D8]];
+      label2 = [v9 objectAtIndexedSubscript:1];
+      label3 = [v12 label];
+      [v4 safelySetObject:label3 forKey:*MEMORY[0x1E69640D8]];
 
-      v17 = [v12 value];
-      [v4 safelySetObject:v17 forKey:*MEMORY[0x1E69640C8]];
+      value = [v12 value];
+      [v4 safelySetObject:value forKey:*MEMORY[0x1E69640C8]];
 
-      v18 = [v13 label];
-      [v4 safelySetObject:v18 forKey:*MEMORY[0x1E6964050]];
+      v13Label = [label2 label];
+      [v4 safelySetObject:v13Label forKey:*MEMORY[0x1E6964050]];
 
-      v19 = [v13 value];
-      [v4 safelySetObject:v19 forKey:*MEMORY[0x1E6964040]];
+      value2 = [label2 value];
+      [v4 safelySetObject:value2 forKey:*MEMORY[0x1E6964040]];
 
 LABEL_9:
     }

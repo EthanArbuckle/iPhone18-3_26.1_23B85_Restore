@@ -1,21 +1,21 @@
 @interface HDOdometerDataCollector
-- (HDOdometerDataCollector)initWithProfile:(id)a3 collectedDistanceType:(id)a4;
-- (double)queue_differenceFromDatum:(id)a3 toDatum:(id)a4 type:(id)a5;
+- (HDOdometerDataCollector)initWithProfile:(id)profile collectedDistanceType:(id)type;
+- (double)queue_differenceFromDatum:(id)datum toDatum:(id)toDatum type:(id)type;
 - (id)queue_newDataSource;
-- (unint64_t)queue_targetCollectionTypeForRequestedCollectionType:(unint64_t)a3;
+- (unint64_t)queue_targetCollectionTypeForRequestedCollectionType:(unint64_t)type;
 @end
 
 @implementation HDOdometerDataCollector
 
-- (HDOdometerDataCollector)initWithProfile:(id)a3 collectedDistanceType:(id)a4
+- (HDOdometerDataCollector)initWithProfile:(id)profile collectedDistanceType:(id)type
 {
-  v6 = a4;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = HDOdometerDataCollector;
-  v7 = [(HDCoreMotionDataCollector *)&v11 initWithProfile:a3];
+  v7 = [(HDCoreMotionDataCollector *)&v11 initWithProfile:profile];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [typeCopy copy];
     distanceType = v7->_distanceType;
     v7->_distanceType = v8;
   }
@@ -30,43 +30,43 @@
   return v2;
 }
 
-- (double)queue_differenceFromDatum:(id)a3 toDatum:(id)a4 type:(id)a5
+- (double)queue_differenceFromDatum:(id)datum toDatum:(id)toDatum type:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  if (([a5 isEqual:self->_distanceType] & 1) == 0)
+  datumCopy = datum;
+  toDatumCopy = toDatum;
+  if (([type isEqual:self->_distanceType] & 1) == 0)
   {
-    v26 = [MEMORY[0x277CCA890] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"HDOdometerDataCollector.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"[type isEqual:_distanceType]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDOdometerDataCollector.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"[type isEqual:_distanceType]"}];
   }
 
-  v11 = [v10 hd_epochDatestamp];
-  v12 = [v9 hd_epochDatestamp];
-  v13 = [v11 isEqualToDate:v12];
+  hd_epochDatestamp = [toDatumCopy hd_epochDatestamp];
+  hd_epochDatestamp2 = [datumCopy hd_epochDatestamp];
+  v13 = [hd_epochDatestamp isEqualToDate:hd_epochDatestamp2];
 
-  v14 = [v9 hd_epochDatestamp];
-  v15 = [v9 hd_datestamp];
-  if ([v14 isEqualToDate:v15])
+  hd_epochDatestamp3 = [datumCopy hd_epochDatestamp];
+  hd_datestamp = [datumCopy hd_datestamp];
+  if ([hd_epochDatestamp3 isEqualToDate:hd_datestamp])
   {
   }
 
   else
   {
-    v16 = [v10 hd_epochDatestamp];
-    v17 = [v10 hd_datestamp];
-    v18 = [v16 isEqualToDate:v17];
+    hd_epochDatestamp4 = [toDatumCopy hd_epochDatestamp];
+    hd_datestamp2 = [toDatumCopy hd_datestamp];
+    v18 = [hd_epochDatestamp4 isEqualToDate:hd_datestamp2];
 
     if (((v13 | v18) & 1) == 0)
     {
-      [v10 deltaDistance];
+      [toDatumCopy deltaDistance];
       v23 = v24;
       goto LABEL_10;
     }
   }
 
-  [v10 deltaDistance];
+  [toDatumCopy deltaDistance];
   v20 = v19;
-  [v9 deltaDistance];
+  [datumCopy deltaDistance];
   v22 = v20 - v21;
   if (v22 >= 0.0)
   {
@@ -83,16 +83,16 @@ LABEL_10:
   return v23;
 }
 
-- (unint64_t)queue_targetCollectionTypeForRequestedCollectionType:(unint64_t)a3
+- (unint64_t)queue_targetCollectionTypeForRequestedCollectionType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_22916E4F0[a3];
+    return qword_22916E4F0[type];
   }
 }
 

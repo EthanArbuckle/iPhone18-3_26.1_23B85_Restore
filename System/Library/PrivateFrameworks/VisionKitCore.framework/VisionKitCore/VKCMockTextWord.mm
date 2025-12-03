@@ -1,22 +1,22 @@
 @interface VKCMockTextWord
-- (VKCMockTextWord)initWithWordsDictionary:(id)a3;
+- (VKCMockTextWord)initWithWordsDictionary:(id)dictionary;
 - (_NSRange)range;
 @end
 
 @implementation VKCMockTextWord
 
-- (VKCMockTextWord)initWithWordsDictionary:(id)a3
+- (VKCMockTextWord)initWithWordsDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = VKCMockTextWord;
   v5 = [(VKCMockTextWord *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:VKCMockResultTextKey];
+    v6 = [dictionaryCopy objectForKeyedSubscript:VKCMockResultTextKey];
     [(VKCMockTextWord *)v5 setText:v6];
 
-    v7 = [v4 objectForKeyedSubscript:VKCMockResultQuadKey];
+    v7 = [dictionaryCopy objectForKeyedSubscript:VKCMockResultQuadKey];
     v8 = [[VKQuad alloc] initWithDictionary:v7];
     [(VKCMockTextWord *)v5 setQuad:v8];
   }

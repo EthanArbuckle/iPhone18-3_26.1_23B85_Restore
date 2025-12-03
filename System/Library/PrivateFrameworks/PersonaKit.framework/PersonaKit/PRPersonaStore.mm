@@ -1,36 +1,36 @@
 @interface PRPersonaStore
 - (BOOL)hasVendedData;
-- (PRPersonaStore)initWithServiceListenerEndpoint:(id)a3;
-- (id)likenessDataForPropagationToRecipient:(id)a3 lastContactDate:(id)a4;
-- (void)_setHasVendedData:(BOOL)a3;
+- (PRPersonaStore)initWithServiceListenerEndpoint:(id)endpoint;
+- (id)likenessDataForPropagationToRecipient:(id)recipient lastContactDate:(id)date;
+- (void)_setHasVendedData:(BOOL)data;
 - (void)_startListeningForCacheChangeNotifications;
 - (void)_stopListeningForCacheChangeNotifications;
-- (void)allLikenessesForPrimaryiCloudAccountWithCompletion:(id)a3;
-- (void)changeCurrentSelfLikenessToLikenessWithUniqueID:(id)a3 completion:(id)a4;
-- (void)currentLikenessForPrimaryiCloudAccountWithDesiredFreshness:(unint64_t)a3 completion:(id)a4;
+- (void)allLikenessesForPrimaryiCloudAccountWithCompletion:(id)completion;
+- (void)changeCurrentSelfLikenessToLikenessWithUniqueID:(id)d completion:(id)completion;
+- (void)currentLikenessForPrimaryiCloudAccountWithDesiredFreshness:(unint64_t)freshness completion:(id)completion;
 - (void)dealloc;
-- (void)donateLikeness:(id)a3 forEmailAddress:(id)a4 completion:(id)a5;
-- (void)donateLikeness:(id)a3 forPhoneNumber:(id)a4 completion:(id)a5;
-- (void)handleAppleIDEvent:(unint64_t)a3 account:(id)a4 completion:(id)a5;
-- (void)likenessForEmailAddress:(id)a3 desiredFreshness:(unint64_t)a4 completion:(id)a5;
-- (void)likenessForPhoneNumber:(id)a3 desiredFreshness:(unint64_t)a4 completion:(id)a5;
-- (void)likenessesWithExternalIdentifier:(id)a3 completion:(id)a4;
-- (void)removeAllLikenessForPrimaryiCloudAccountWithCompletion:(id)a3;
-- (void)removeLikeness:(id)a3 forPrimayiCloudAccountWithCompletion:(id)a4;
-- (void)saveLikeness:(id)a3 forPrimayiCloudAccountWithCompletion:(id)a4;
-- (void)screenNameForAppleIDWithAltDSID:(id)a3 completion:(id)a4;
-- (void)screenNameForEmailAddress:(id)a3 completion:(id)a4;
-- (void)screenNameForPhoneNumber:(id)a3 completion:(id)a4;
-- (void)screenNameForPrimaryiCloudAccountWithCompletion:(id)a3;
-- (void)setScreenName:(id)a3 forAppleIDWithAltDSID:(id)a4 completion:(id)a5;
-- (void)setScreenName:(id)a3 forPrimaryiCloudAccountWithCompletion:(id)a4;
+- (void)donateLikeness:(id)likeness forEmailAddress:(id)address completion:(id)completion;
+- (void)donateLikeness:(id)likeness forPhoneNumber:(id)number completion:(id)completion;
+- (void)handleAppleIDEvent:(unint64_t)event account:(id)account completion:(id)completion;
+- (void)likenessForEmailAddress:(id)address desiredFreshness:(unint64_t)freshness completion:(id)completion;
+- (void)likenessForPhoneNumber:(id)number desiredFreshness:(unint64_t)freshness completion:(id)completion;
+- (void)likenessesWithExternalIdentifier:(id)identifier completion:(id)completion;
+- (void)removeAllLikenessForPrimaryiCloudAccountWithCompletion:(id)completion;
+- (void)removeLikeness:(id)likeness forPrimayiCloudAccountWithCompletion:(id)completion;
+- (void)saveLikeness:(id)likeness forPrimayiCloudAccountWithCompletion:(id)completion;
+- (void)screenNameForAppleIDWithAltDSID:(id)d completion:(id)completion;
+- (void)screenNameForEmailAddress:(id)address completion:(id)completion;
+- (void)screenNameForPhoneNumber:(id)number completion:(id)completion;
+- (void)screenNameForPrimaryiCloudAccountWithCompletion:(id)completion;
+- (void)setScreenName:(id)name forAppleIDWithAltDSID:(id)d completion:(id)completion;
+- (void)setScreenName:(id)name forPrimaryiCloudAccountWithCompletion:(id)completion;
 @end
 
 @implementation PRPersonaStore
 
-- (PRPersonaStore)initWithServiceListenerEndpoint:(id)a3
+- (PRPersonaStore)initWithServiceListenerEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v14.receiver = self;
   v14.super_class = PRPersonaStore;
   v6 = [(PRPersonaStore *)&v14 init];
@@ -50,7 +50,7 @@
     v6->_dataVendingFlagLock = v11;
 
     [(NSLock *)v6->_dataVendingFlagLock setName:@"PRPersonaStoreDataVendFlagLock"];
-    objc_storeStrong(&v6->_serviceListenerEndpoint, a3);
+    objc_storeStrong(&v6->_serviceListenerEndpoint, endpoint);
     [(PRPersonaStore *)v6 _startListeningForCacheChangeNotifications];
   }
 
@@ -83,7 +83,7 @@
   return hasVendedData;
 }
 
-- (void)_setHasVendedData:(BOOL)a3
+- (void)_setHasVendedData:(BOOL)data
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = _PRGetLogSystem();
@@ -97,15 +97,15 @@
   }
 
   [(NSLock *)self->_dataVendingFlagLock lock];
-  self->_hasVendedData = a3;
+  self->_hasVendedData = data;
   [(NSLock *)self->_dataVendingFlagLock unlock];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentLikenessForPrimaryiCloudAccountWithDesiredFreshness:(unint64_t)a3 completion:(id)a4
+- (void)currentLikenessForPrimaryiCloudAccountWithDesiredFreshness:(unint64_t)freshness completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = _PRGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -121,8 +121,8 @@
   v10[2] = __88__PRPersonaStore_currentLikenessForPrimaryiCloudAccountWithDesiredFreshness_completion___block_invoke;
   v10[3] = &unk_279A1B748;
   v10[4] = self;
-  v11 = v5;
-  v7 = v5;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = MEMORY[0x25F8B2920](v10);
   v8[2](v8, 0, 0);
 
@@ -189,10 +189,10 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allLikenessesForPrimaryiCloudAccountWithCompletion:(id)a3
+- (void)allLikenessesForPrimaryiCloudAccountWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _PRGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -208,8 +208,8 @@ LABEL_7:
   v9[2] = __69__PRPersonaStore_allLikenessesForPrimaryiCloudAccountWithCompletion___block_invoke;
   v9[3] = &unk_279A1B770;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = completionCopy;
+  v6 = completionCopy;
   v7 = MEMORY[0x25F8B2920](v9);
   v7[2](v7, 0, 0);
 
@@ -276,11 +276,11 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)likenessForPhoneNumber:(id)a3 desiredFreshness:(unint64_t)a4 completion:(id)a5
+- (void)likenessForPhoneNumber:(id)number desiredFreshness:(unint64_t)freshness completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  numberCopy = number;
+  completionCopy = completion;
   v9 = _PRGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -289,7 +289,7 @@ LABEL_7:
     v20 = 1024;
     v21 = 189;
     v22 = 2112;
-    v23 = v7;
+    v23 = numberCopy;
     _os_log_impl(&dword_25E428000, v9, OS_LOG_TYPE_DEFAULT, "%s (%d) Looking up likeness for phone number %@...", buf, 0x1Cu);
   }
 
@@ -297,11 +297,11 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = __69__PRPersonaStore_likenessForPhoneNumber_desiredFreshness_completion___block_invoke;
   v14[3] = &unk_279A1B798;
-  v15 = v7;
-  v16 = self;
-  v17 = v8;
-  v10 = v8;
-  v11 = v7;
+  v15 = numberCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v10 = completionCopy;
+  v11 = numberCopy;
   v12 = MEMORY[0x25F8B2920](v14);
   v12[2](v12, 0, 0);
 
@@ -374,11 +374,11 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)likenessForEmailAddress:(id)a3 desiredFreshness:(unint64_t)a4 completion:(id)a5
+- (void)likenessForEmailAddress:(id)address desiredFreshness:(unint64_t)freshness completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   v9 = _PRGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -387,7 +387,7 @@ LABEL_7:
     v20 = 1024;
     v21 = 227;
     v22 = 2112;
-    v23 = v7;
+    v23 = addressCopy;
     _os_log_impl(&dword_25E428000, v9, OS_LOG_TYPE_DEFAULT, "%s (%d) Looking up likeness for email %@...", buf, 0x1Cu);
   }
 
@@ -395,11 +395,11 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = __70__PRPersonaStore_likenessForEmailAddress_desiredFreshness_completion___block_invoke;
   v14[3] = &unk_279A1B798;
-  v15 = v7;
-  v16 = self;
-  v17 = v8;
-  v10 = v8;
-  v11 = v7;
+  v15 = addressCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v10 = completionCopy;
+  v11 = addressCopy;
   v12 = MEMORY[0x25F8B2920](v14);
   v12[2](v12, 0, 0);
 
@@ -472,10 +472,10 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveLikeness:(id)a3 forPrimayiCloudAccountWithCompletion:(id)a4
+- (void)saveLikeness:(id)likeness forPrimayiCloudAccountWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = _PRGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -491,8 +491,8 @@ LABEL_7:
   v10[2] = __68__PRPersonaStore_saveLikeness_forPrimayiCloudAccountWithCompletion___block_invoke;
   v10[3] = &unk_279A1B7E8;
   v10[4] = self;
-  v11 = v5;
-  v7 = v5;
+  v11 = completionCopy;
+  v7 = completionCopy;
   v8 = MEMORY[0x25F8B2920](v10);
   v8[2](v8, 1, 0);
 
@@ -559,11 +559,11 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)changeCurrentSelfLikenessToLikenessWithUniqueID:(id)a3 completion:(id)a4
+- (void)changeCurrentSelfLikenessToLikenessWithUniqueID:(id)d completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _PRGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -572,7 +572,7 @@ LABEL_7:
     v16 = 1024;
     v17 = 295;
     v18 = 2112;
-    v19 = v6;
+    v19 = dCopy;
     _os_log_impl(&dword_25E428000, v8, OS_LOG_TYPE_DEFAULT, "%s (%d) Changing current self likeness to the one with ID: %@...", buf, 0x1Cu);
   }
 
@@ -581,8 +581,8 @@ LABEL_7:
   v12[2] = __77__PRPersonaStore_changeCurrentSelfLikenessToLikenessWithUniqueID_completion___block_invoke;
   v12[3] = &unk_279A1B7E8;
   v12[4] = self;
-  v13 = v7;
-  v9 = v7;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = MEMORY[0x25F8B2920](v12);
   v10[2](v10, 1, 0);
 
@@ -649,11 +649,11 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeLikeness:(id)a3 forPrimayiCloudAccountWithCompletion:(id)a4
+- (void)removeLikeness:(id)likeness forPrimayiCloudAccountWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  likenessCopy = likeness;
+  completionCopy = completion;
   v8 = _PRGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -662,7 +662,7 @@ LABEL_7:
     v16 = 1024;
     v17 = 325;
     v18 = 2112;
-    v19 = v6;
+    v19 = likenessCopy;
     _os_log_impl(&dword_25E428000, v8, OS_LOG_TYPE_DEFAULT, "%s (%d) Removing likeness self likeness %@...", buf, 0x1Cu);
   }
 
@@ -671,8 +671,8 @@ LABEL_7:
   v12[2] = __70__PRPersonaStore_removeLikeness_forPrimayiCloudAccountWithCompletion___block_invoke;
   v12[3] = &unk_279A1B7E8;
   v12[4] = self;
-  v13 = v7;
-  v9 = v7;
+  v13 = completionCopy;
+  v9 = completionCopy;
   v10 = MEMORY[0x25F8B2920](v12);
   v10[2](v10, 1, 0);
 
@@ -739,10 +739,10 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllLikenessForPrimaryiCloudAccountWithCompletion:(id)a3
+- (void)removeAllLikenessForPrimaryiCloudAccountWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _PRGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -758,8 +758,8 @@ LABEL_7:
   v9[2] = __73__PRPersonaStore_removeAllLikenessForPrimaryiCloudAccountWithCompletion___block_invoke;
   v9[3] = &unk_279A1B7E8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = completionCopy;
+  v6 = completionCopy;
   v7 = MEMORY[0x25F8B2920](v9);
   v7[2](v7, 1, 0);
 
@@ -826,22 +826,22 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)likenessDataForPropagationToRecipient:(id)a3 lastContactDate:(id)a4
+- (id)likenessDataForPropagationToRecipient:(id)recipient lastContactDate:(id)date
 {
-  [(PRPersonaStore *)self _setHasVendedData:1, a4];
+  [(PRPersonaStore *)self _setHasVendedData:1, date];
 
   return [0 dataForPropagation];
 }
 
-- (void)handleAppleIDEvent:(unint64_t)a3 account:(id)a4 completion:(id)a5
+- (void)handleAppleIDEvent:(unint64_t)event account:(id)account completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  accountCopy = account;
+  completionCopy = completion;
   v10 = _PRGetLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:event];
     *buf = 136315906;
     v18 = "[PRPersonaStore handleAppleIDEvent:account:completion:]";
     v19 = 1024;
@@ -849,7 +849,7 @@ LABEL_7:
     v21 = 2112;
     v22 = v11;
     v23 = 2112;
-    v24 = v8;
+    v24 = accountCopy;
     _os_log_impl(&dword_25E428000, v10, OS_LOG_TYPE_DEFAULT, "%s (%d) Handling event %@ for account: %@", buf, 0x26u);
   }
 
@@ -858,8 +858,8 @@ LABEL_7:
   v15[2] = __56__PRPersonaStore_handleAppleIDEvent_account_completion___block_invoke;
   v15[3] = &unk_279A1B7E8;
   v15[4] = self;
-  v16 = v9;
-  v12 = v9;
+  v16 = completionCopy;
+  v12 = completionCopy;
   v13 = MEMORY[0x25F8B2920](v15);
   v13[2](v13, 1, 0);
 
@@ -926,11 +926,11 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)donateLikeness:(id)a3 forEmailAddress:(id)a4 completion:(id)a5
+- (void)donateLikeness:(id)likeness forEmailAddress:(id)address completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  addressCopy = address;
+  completionCopy = completion;
   v9 = _PRGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -939,7 +939,7 @@ LABEL_7:
     v20 = 1024;
     v21 = 553;
     v22 = 2112;
-    v23 = v7;
+    v23 = addressCopy;
     _os_log_impl(&dword_25E428000, v9, OS_LOG_TYPE_DEFAULT, "%s (%d) Donation for email %@...", buf, 0x1Cu);
   }
 
@@ -947,11 +947,11 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = __60__PRPersonaStore_donateLikeness_forEmailAddress_completion___block_invoke;
   v14[3] = &unk_279A1B810;
-  v16 = self;
-  v17 = v8;
-  v15 = v7;
-  v10 = v8;
-  v11 = v7;
+  selfCopy = self;
+  v17 = completionCopy;
+  v15 = addressCopy;
+  v10 = completionCopy;
+  v11 = addressCopy;
   v12 = MEMORY[0x25F8B2920](v14);
   v12[2](v12, 1, 0);
 
@@ -1024,11 +1024,11 @@ LABEL_7:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)donateLikeness:(id)a3 forPhoneNumber:(id)a4 completion:(id)a5
+- (void)donateLikeness:(id)likeness forPhoneNumber:(id)number completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  numberCopy = number;
+  completionCopy = completion;
   v9 = _PRGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1037,7 +1037,7 @@ LABEL_7:
     v20 = 1024;
     v21 = 583;
     v22 = 2112;
-    v23 = v7;
+    v23 = numberCopy;
     _os_log_impl(&dword_25E428000, v9, OS_LOG_TYPE_DEFAULT, "%s (%d) Donation for phone number %@...", buf, 0x1Cu);
   }
 
@@ -1045,11 +1045,11 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = __59__PRPersonaStore_donateLikeness_forPhoneNumber_completion___block_invoke;
   v14[3] = &unk_279A1B810;
-  v16 = self;
-  v17 = v8;
-  v15 = v7;
-  v10 = v8;
-  v11 = v7;
+  selfCopy = self;
+  v17 = completionCopy;
+  v15 = numberCopy;
+  v10 = completionCopy;
+  v11 = numberCopy;
   v12 = MEMORY[0x25F8B2920](v14);
   v12[2](v12, 1, 0);
 
@@ -1122,11 +1122,11 @@ LABEL_7:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)likenessesWithExternalIdentifier:(id)a3 completion:(id)a4
+- (void)likenessesWithExternalIdentifier:(id)identifier completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = _PRGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1135,7 +1135,7 @@ LABEL_7:
     v19 = 1024;
     v20 = 613;
     v21 = 2112;
-    v22 = v6;
+    v22 = identifierCopy;
     _os_log_impl(&dword_25E428000, v8, OS_LOG_TYPE_DEFAULT, "%s (%d) Looking up for external ID: %@", buf, 0x1Cu);
   }
 
@@ -1143,11 +1143,11 @@ LABEL_7:
   v13[1] = 3221225472;
   v13[2] = __62__PRPersonaStore_likenessesWithExternalIdentifier_completion___block_invoke;
   v13[3] = &unk_279A1B838;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
-  v9 = v7;
-  v10 = v6;
+  v14 = identifierCopy;
+  selfCopy = self;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   v11 = MEMORY[0x25F8B2920](v13);
   v11[2](v11, 0, 0);
 
@@ -1222,11 +1222,11 @@ LABEL_7:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)screenNameForEmailAddress:(id)a3 completion:(id)a4
+- (void)screenNameForEmailAddress:(id)address completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v8 = _PRGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1235,7 +1235,7 @@ LABEL_7:
     v20 = 1024;
     v21 = 667;
     v22 = 2112;
-    v23 = v6;
+    v23 = addressCopy;
     _os_log_impl(&dword_25E428000, v8, OS_LOG_TYPE_DEFAULT, "%s (%d) Looking up with email: %@", buf, 0x1Cu);
   }
 
@@ -1243,11 +1243,11 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = __55__PRPersonaStore_screenNameForEmailAddress_completion___block_invoke;
   v14[3] = &unk_279A1B860;
-  v16 = self;
-  v17 = v7;
-  v15 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v17 = completionCopy;
+  v15 = addressCopy;
+  v9 = completionCopy;
+  v10 = addressCopy;
   v11 = MEMORY[0x25F8B2920](v14);
   v12 = [MEMORY[0x277CCA9B8] pr_errorWithCode:-9019];
   (v11)[2](v11, 0, v12);
@@ -1322,11 +1322,11 @@ LABEL_7:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)screenNameForPhoneNumber:(id)a3 completion:(id)a4
+- (void)screenNameForPhoneNumber:(id)number completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numberCopy = number;
+  completionCopy = completion;
   v8 = _PRGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1335,7 +1335,7 @@ LABEL_7:
     v20 = 1024;
     v21 = 698;
     v22 = 2112;
-    v23 = v6;
+    v23 = numberCopy;
     _os_log_impl(&dword_25E428000, v8, OS_LOG_TYPE_DEFAULT, "%s (%d) Looking up with phone number: %@", buf, 0x1Cu);
   }
 
@@ -1343,11 +1343,11 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = __54__PRPersonaStore_screenNameForPhoneNumber_completion___block_invoke;
   v14[3] = &unk_279A1B860;
-  v16 = self;
-  v17 = v7;
-  v15 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v17 = completionCopy;
+  v15 = numberCopy;
+  v9 = completionCopy;
+  v10 = numberCopy;
   v11 = MEMORY[0x25F8B2920](v14);
   v12 = [MEMORY[0x277CCA9B8] pr_errorWithCode:-9019];
   (v11)[2](v11, 0, v12);
@@ -1422,10 +1422,10 @@ LABEL_7:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)screenNameForPrimaryiCloudAccountWithCompletion:(id)a3
+- (void)screenNameForPrimaryiCloudAccountWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _PRGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1440,11 +1440,11 @@ LABEL_7:
   v11 = 3221225472;
   v12 = __66__PRPersonaStore_screenNameForPrimaryiCloudAccountWithCompletion___block_invoke;
   v13 = &unk_279A1B888;
-  v14 = self;
-  v15 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v15 = completionCopy;
+  v6 = completionCopy;
   v7 = MEMORY[0x25F8B2920](&v10);
-  v8 = [MEMORY[0x277CCA9B8] pr_errorWithCode:{-9019, v10, v11, v12, v13, v14}];
+  v8 = [MEMORY[0x277CCA9B8] pr_errorWithCode:{-9019, v10, v11, v12, v13, selfCopy}];
   (v7)[2](v7, 0, v8);
 
   v9 = *MEMORY[0x277D85DE8];
@@ -1511,11 +1511,11 @@ LABEL_7:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)screenNameForAppleIDWithAltDSID:(id)a3 completion:(id)a4
+- (void)screenNameForAppleIDWithAltDSID:(id)d completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = _PRGetLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1524,7 +1524,7 @@ LABEL_7:
     v20 = 1024;
     v21 = 760;
     v22 = 2112;
-    v23 = v6;
+    v23 = dCopy;
     _os_log_impl(&dword_25E428000, v8, OS_LOG_TYPE_DEFAULT, "%s (%d) Looking up with altDSID: %@", buf, 0x1Cu);
   }
 
@@ -1532,11 +1532,11 @@ LABEL_7:
   v14[1] = 3221225472;
   v14[2] = __61__PRPersonaStore_screenNameForAppleIDWithAltDSID_completion___block_invoke;
   v14[3] = &unk_279A1B860;
-  v16 = self;
-  v17 = v7;
-  v15 = v6;
-  v9 = v7;
-  v10 = v6;
+  selfCopy = self;
+  v17 = completionCopy;
+  v15 = dCopy;
+  v9 = completionCopy;
+  v10 = dCopy;
   v11 = MEMORY[0x25F8B2920](v14);
   v12 = [MEMORY[0x277CCA9B8] pr_errorWithCode:-9019];
   (v11)[2](v11, 0, v12);
@@ -1611,10 +1611,10 @@ LABEL_7:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setScreenName:(id)a3 forPrimaryiCloudAccountWithCompletion:(id)a4
+- (void)setScreenName:(id)name forPrimaryiCloudAccountWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = _PRGetLogSystem();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -1629,11 +1629,11 @@ LABEL_7:
   v12 = 3221225472;
   v13 = __70__PRPersonaStore_setScreenName_forPrimaryiCloudAccountWithCompletion___block_invoke;
   v14 = &unk_279A1B7E8;
-  v15 = self;
-  v16 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v16 = completionCopy;
+  v7 = completionCopy;
   v8 = MEMORY[0x25F8B2920](&v11);
-  v9 = [MEMORY[0x277CCA9B8] pr_errorWithCode:{-9019, v11, v12, v13, v14, v15}];
+  v9 = [MEMORY[0x277CCA9B8] pr_errorWithCode:{-9019, v11, v12, v13, v14, selfCopy}];
   (v8)[2](v8, 0, v9);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -1699,11 +1699,11 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setScreenName:(id)a3 forAppleIDWithAltDSID:(id)a4 completion:(id)a5
+- (void)setScreenName:(id)name forAppleIDWithAltDSID:(id)d completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  completionCopy = completion;
   v9 = _PRGetLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -1712,7 +1712,7 @@ LABEL_7:
     v21 = 1024;
     v22 = 823;
     v23 = 2112;
-    v24 = v7;
+    v24 = dCopy;
     _os_log_impl(&dword_25E428000, v9, OS_LOG_TYPE_DEFAULT, "%s (%d) Setting for altDSID: %@", buf, 0x1Cu);
   }
 
@@ -1720,11 +1720,11 @@ LABEL_7:
   v15[1] = 3221225472;
   v15[2] = __65__PRPersonaStore_setScreenName_forAppleIDWithAltDSID_completion___block_invoke;
   v15[3] = &unk_279A1B810;
-  v17 = self;
-  v18 = v8;
-  v16 = v7;
-  v10 = v8;
-  v11 = v7;
+  selfCopy = self;
+  v18 = completionCopy;
+  v16 = dCopy;
+  v10 = completionCopy;
+  v11 = dCopy;
   v12 = MEMORY[0x25F8B2920](v15);
   v13 = [MEMORY[0x277CCA9B8] pr_errorWithCode:-9019];
   (v12)[2](v12, 0, v13);

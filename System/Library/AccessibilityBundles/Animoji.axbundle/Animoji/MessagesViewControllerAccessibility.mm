@@ -1,79 +1,79 @@
 @interface MessagesViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)shouldPerformSegueWithIdentifier:(id)a3 sender:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)shouldPerformSegueWithIdentifier:(id)identifier sender:(id)sender;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityUpdateCollectionViewAccessibilityForPresentationStyle:(unint64_t)a3;
+- (void)_accessibilityUpdateCollectionViewAccessibilityForPresentationStyle:(unint64_t)style;
 - (void)_accessibilityUpdateRecordButtonLabel;
-- (void)dismissLaunchScreenIfNecessaryForPresentationStyle:(unint64_t)a3 controller:(id)a4;
-- (void)handleRecordTap:(id)a3;
-- (void)hideUserInfoLabelWithDuration:(double)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)showUserInfoLabelWithText:(id)a3;
+- (void)dismissLaunchScreenIfNecessaryForPresentationStyle:(unint64_t)style controller:(id)controller;
+- (void)handleRecordTap:(id)tap;
+- (void)hideUserInfoLabelWithDuration:(double)duration;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)showUserInfoLabelWithText:(id)text;
 - (void)viewDidLoad;
-- (void)willTransitionToPresentationStyle:(unint64_t)a3;
+- (void)willTransitionToPresentationStyle:(unint64_t)style;
 @end
 
 @implementation MessagesViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVTAvatarListCell"];
-  [v3 validateClass:@"AVTAvatar"];
-  [v3 validateClass:@"AVTAnimoji"];
-  [v3 validateClass:@"AVTMemoji"];
-  [v3 validateClass:@"MessagesViewController" isKindOfClass:@"MSMessagesAppViewController"];
-  [v3 validateClass:@"PuppetCollectionViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_confirmSendingMessageButton" withType:"UIButton"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_cancelSendingMessageButton" withType:"InsetBackgroundUIButton"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_replayMessageButton" withType:"ImageLabelButton"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_editButton" withType:"InsetBackgroundUIButton"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_recordButton" withType:"RecordButton"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_recording" withType:"BOOL"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_puppetView" withType:"AVTRecordView"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_puppetCollectionViewController" withType:"PuppetCollectionViewController"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_userInfoView" withType:"AVTUserInfoView"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_avatarListController" withType:"<AVTRecordingCarouselController>"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_avatarDataSource" withType:"AVTAvatarRecordDataSource"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_recordingDisplayView" withType:"RecordingTimeDisplayView"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_UIState" withType:"Q"];
-  [v3 validateClass:@"MessagesViewController" hasInstanceVariable:@"_arSessionState" withType:"Q"];
-  [v3 validateClass:@"AVTPuppetView" hasInstanceMethod:@"mute" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVTPuppetView" hasInstanceMethod:@"faceIsTracked" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MSMessagesAppViewController" hasInstanceMethod:@"presentationStyle" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"displaysLaunchScreen" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"liveCell" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"addItemView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"recordListItems" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"displayedRecord" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarListCell" hasInstanceMethod:@"avatar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarListCell" hasInstanceMethod:@"avtView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTUserInfoView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RecordingTimeDisplayView" hasInstanceMethod:@"timerLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarPuppetRecord" hasInstanceMethod:@"puppetName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTAvatarRecord" hasInstanceMethod:@"avatarData" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"AVTAvatarRecord" hasRequiredInstanceMethod:@"isEditable"];
-  [v3 validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"selectedRecord" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"handleRecordTap:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"updateUIState:animated:" withFullSignature:{"v", "Q", "B", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"observeValueForKeyPath:ofObject:change:context:" withFullSignature:{"v", "@", "@", "@", "^v", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"handleSceneShortPress:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"recordingDidFinish:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"showUserInfoLabelWithText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"hideUserInfoLabelWithDuration:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"handleResumeTrackingTap:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"willTransitionToPresentationStyle:" withFullSignature:{"v", "Q", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"dismissAvatarUIControllerAnimated:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"dismissLaunchScreenIfNecessaryForPresentationStyle:controller:" withFullSignature:{"v", "Q", "@", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"updateEditButtonVisibilityForceHide:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"MessagesViewController" hasInstanceMethod:@"shouldPerformSegueWithIdentifier:sender:" withFullSignature:{"B", "@", "@", 0}];
-  [v3 validateClass:@"AVTAvatarRecordDataSource" hasInstanceMethod:@"numberOfRecords" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"indexPathForItemClosestToCenter" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"loadRecords" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"displayAvatarForRecord:animated:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"scrollToViewAtIndex:animated:" withFullSignature:{"v", "Q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVTAvatarListCell"];
+  [validationsCopy validateClass:@"AVTAvatar"];
+  [validationsCopy validateClass:@"AVTAnimoji"];
+  [validationsCopy validateClass:@"AVTMemoji"];
+  [validationsCopy validateClass:@"MessagesViewController" isKindOfClass:@"MSMessagesAppViewController"];
+  [validationsCopy validateClass:@"PuppetCollectionViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_confirmSendingMessageButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_cancelSendingMessageButton" withType:"InsetBackgroundUIButton"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_replayMessageButton" withType:"ImageLabelButton"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_editButton" withType:"InsetBackgroundUIButton"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_recordButton" withType:"RecordButton"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_recording" withType:"BOOL"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_puppetView" withType:"AVTRecordView"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_puppetCollectionViewController" withType:"PuppetCollectionViewController"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_userInfoView" withType:"AVTUserInfoView"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_avatarListController" withType:"<AVTRecordingCarouselController>"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_avatarDataSource" withType:"AVTAvatarRecordDataSource"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_recordingDisplayView" withType:"RecordingTimeDisplayView"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_UIState" withType:"Q"];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceVariable:@"_arSessionState" withType:"Q"];
+  [validationsCopy validateClass:@"AVTPuppetView" hasInstanceMethod:@"mute" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVTPuppetView" hasInstanceMethod:@"faceIsTracked" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MSMessagesAppViewController" hasInstanceMethod:@"presentationStyle" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"displaysLaunchScreen" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"liveCell" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"addItemView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"collectionView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"recordListItems" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"displayedRecord" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarListCell" hasInstanceMethod:@"avatar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarListCell" hasInstanceMethod:@"avtView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTUserInfoView" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RecordingTimeDisplayView" hasInstanceMethod:@"timerLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarPuppetRecord" hasInstanceMethod:@"puppetName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarRecord" hasInstanceMethod:@"avatarData" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"AVTAvatarRecord" hasRequiredInstanceMethod:@"isEditable"];
+  [validationsCopy validateClass:@"PuppetCollectionViewController" hasInstanceMethod:@"selectedRecord" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"handleRecordTap:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"updateUIState:animated:" withFullSignature:{"v", "Q", "B", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"observeValueForKeyPath:ofObject:change:context:" withFullSignature:{"v", "@", "@", "@", "^v", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"handleSceneShortPress:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"recordingDidFinish:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"showUserInfoLabelWithText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"hideUserInfoLabelWithDuration:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"handleResumeTrackingTap:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"willTransitionToPresentationStyle:" withFullSignature:{"v", "Q", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"dismissAvatarUIControllerAnimated:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"dismissLaunchScreenIfNecessaryForPresentationStyle:controller:" withFullSignature:{"v", "Q", "@", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"updateEditButtonVisibilityForceHide:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"MessagesViewController" hasInstanceMethod:@"shouldPerformSegueWithIdentifier:sender:" withFullSignature:{"B", "@", "@", 0}];
+  [validationsCopy validateClass:@"AVTAvatarRecordDataSource" hasInstanceMethod:@"numberOfRecords" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"indexPathForItemClosestToCenter" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"loadRecords" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"displayAvatarForRecord:animated:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"AVTMultiAvatarController" hasInstanceMethod:@"scrollToViewAtIndex:animated:" withFullSignature:{"v", "Q", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -128,14 +128,14 @@
   v19 = __UIAccessibilityCastAsClass();
 
   [(MessagesViewControllerAccessibility *)self _setAXLiveCell:v19];
-  v20 = [(MessagesViewControllerAccessibility *)self _axAvatarCarousel];
-  if (!v20 && v17)
+  _axAvatarCarousel = [(MessagesViewControllerAccessibility *)self _axAvatarCarousel];
+  if (!_axAvatarCarousel && v17)
   {
-    v20 = [[AX_AvatarCarousel alloc] initWithMessagesController:self accessibilityContainer:v17];
-    [(MessagesViewControllerAccessibility *)self _setAXAvatarCarousel:v20];
+    _axAvatarCarousel = [[AX_AvatarCarousel alloc] initWithMessagesController:self accessibilityContainer:v17];
+    [(MessagesViewControllerAccessibility *)self _setAXAvatarCarousel:_axAvatarCarousel];
   }
 
-  v21 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, v20}];
+  v21 = [MEMORY[0x29EDB8D80] axArrayByIgnoringNilElementsWithCount:{1, _axAvatarCarousel}];
   [v17 setAccessibilityElements:v21];
 
   objc_destroyWeak(&v23);
@@ -174,13 +174,13 @@ id __81__MessagesViewControllerAccessibility__accessibilityLoadAccessibilityInfo
   [v4 setAccessibilityLabel:v6];
 }
 
-- (void)_accessibilityUpdateCollectionViewAccessibilityForPresentationStyle:(unint64_t)a3
+- (void)_accessibilityUpdateCollectionViewAccessibilityForPresentationStyle:(unint64_t)style
 {
   v5 = [(MessagesViewControllerAccessibility *)self safeValueForKey:@"_puppetCollectionViewController"];
   v8 = [v5 safeValueForKey:@"view"];
 
   v6 = [(MessagesViewControllerAccessibility *)self safeBoolForKey:@"displaysLaunchScreen"];
-  if (a3 == 1)
+  if (style == 1)
   {
     v7 = v6;
   }
@@ -201,28 +201,28 @@ id __81__MessagesViewControllerAccessibility__accessibilityLoadAccessibilityInfo
   [(MessagesViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)handleRecordTap:(id)a3
+- (void)handleRecordTap:(id)tap
 {
   v4.receiver = self;
   v4.super_class = MessagesViewControllerAccessibility;
-  [(MessagesViewControllerAccessibility *)&v4 handleRecordTap:a3];
+  [(MessagesViewControllerAccessibility *)&v4 handleRecordTap:tap];
   [(MessagesViewControllerAccessibility *)self _accessibilityUpdateRecordButtonLabel];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"faceIsTracked"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"faceIsTracked"])
   {
     v22 = 0;
     objc_opt_class();
     v13 = [(MessagesViewControllerAccessibility *)self safeValueForKeyPath:@"_avatarListController.multiAvatarController.liveCell"];
     v14 = __UIAccessibilityCastAsClass();
 
-    v15 = [(MessagesViewControllerAccessibility *)self _axLiveCell];
-    v16 = [v14 isEqual:v15];
+    _axLiveCell = [(MessagesViewControllerAccessibility *)self _axLiveCell];
+    v16 = [v14 isEqual:_axLiveCell];
 
     if (v16)
     {
@@ -251,54 +251,54 @@ id __81__MessagesViewControllerAccessibility__accessibilityLoadAccessibilityInfo
 
   v21.receiver = self;
   v21.super_class = MessagesViewControllerAccessibility;
-  [(MessagesViewControllerAccessibility *)&v21 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(MessagesViewControllerAccessibility *)&v21 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 }
 
-- (void)showUserInfoLabelWithText:(id)a3
+- (void)showUserInfoLabelWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v7.receiver = self;
   v7.super_class = MessagesViewControllerAccessibility;
-  [(MessagesViewControllerAccessibility *)&v7 showUserInfoLabelWithText:v4];
-  v5 = [(MessagesViewControllerAccessibility *)self _axLastUserInfoString];
-  v6 = [v4 isEqualToString:v5];
+  [(MessagesViewControllerAccessibility *)&v7 showUserInfoLabelWithText:textCopy];
+  _axLastUserInfoString = [(MessagesViewControllerAccessibility *)self _axLastUserInfoString];
+  v6 = [textCopy isEqualToString:_axLastUserInfoString];
 
   if ((v6 & 1) == 0)
   {
-    [(MessagesViewControllerAccessibility *)self _setAXLastUserInfoString:v4];
+    [(MessagesViewControllerAccessibility *)self _setAXLastUserInfoString:textCopy];
     UIAccessibilitySpeakOrQueueIfNeeded();
   }
 }
 
-- (void)hideUserInfoLabelWithDuration:(double)a3
+- (void)hideUserInfoLabelWithDuration:(double)duration
 {
   v4.receiver = self;
   v4.super_class = MessagesViewControllerAccessibility;
-  [(MessagesViewControllerAccessibility *)&v4 hideUserInfoLabelWithDuration:a3];
+  [(MessagesViewControllerAccessibility *)&v4 hideUserInfoLabelWithDuration:duration];
   [(MessagesViewControllerAccessibility *)self _setAXLastUserInfoString:0];
 }
 
-- (void)willTransitionToPresentationStyle:(unint64_t)a3
+- (void)willTransitionToPresentationStyle:(unint64_t)style
 {
   v5.receiver = self;
   v5.super_class = MessagesViewControllerAccessibility;
   [(MessagesViewControllerAccessibility *)&v5 willTransitionToPresentationStyle:?];
-  [(MessagesViewControllerAccessibility *)self _accessibilityUpdateCollectionViewAccessibilityForPresentationStyle:a3];
+  [(MessagesViewControllerAccessibility *)self _accessibilityUpdateCollectionViewAccessibilityForPresentationStyle:style];
 }
 
-- (void)dismissLaunchScreenIfNecessaryForPresentationStyle:(unint64_t)a3 controller:(id)a4
+- (void)dismissLaunchScreenIfNecessaryForPresentationStyle:(unint64_t)style controller:(id)controller
 {
   v6.receiver = self;
   v6.super_class = MessagesViewControllerAccessibility;
-  [(MessagesViewControllerAccessibility *)&v6 dismissLaunchScreenIfNecessaryForPresentationStyle:a3 controller:a4];
-  [(MessagesViewControllerAccessibility *)self _accessibilityUpdateCollectionViewAccessibilityForPresentationStyle:a3];
+  [(MessagesViewControllerAccessibility *)&v6 dismissLaunchScreenIfNecessaryForPresentationStyle:style controller:controller];
+  [(MessagesViewControllerAccessibility *)self _accessibilityUpdateCollectionViewAccessibilityForPresentationStyle:style];
 }
 
-- (BOOL)shouldPerformSegueWithIdentifier:(id)a3 sender:(id)a4
+- (BOOL)shouldPerformSegueWithIdentifier:(id)identifier sender:(id)sender
 {
   v7.receiver = self;
   v7.super_class = MessagesViewControllerAccessibility;
-  v5 = [(MessagesViewControllerAccessibility *)&v7 shouldPerformSegueWithIdentifier:a3 sender:a4];
+  v5 = [(MessagesViewControllerAccessibility *)&v7 shouldPerformSegueWithIdentifier:identifier sender:sender];
   [(MessagesViewControllerAccessibility *)self _accessibilityUpdateCollectionViewAccessibilityForPresentationStyle:[(MessagesViewControllerAccessibility *)self safeUnsignedIntegerForKey:@"presentationStyle"]];
   return v5;
 }

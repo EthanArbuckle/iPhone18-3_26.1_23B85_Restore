@@ -1,5 +1,5 @@
 @interface PLCloudFeedCommentsEntry
-- (BOOL)shouldBeRemovedFromPhotoLibrary:(id)a3;
+- (BOOL)shouldBeRemovedFromPhotoLibrary:(id)library;
 - (void)willSave;
 @end
 
@@ -10,19 +10,19 @@
   v8.receiver = self;
   v8.super_class = PLCloudFeedCommentsEntry;
   [(PLCloudFeedEntry *)&v8 willSave];
-  v3 = [(PLCloudFeedCommentsEntry *)self managedObjectContext];
+  managedObjectContext = [(PLCloudFeedCommentsEntry *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(PLCloudFeedCommentsEntry *)self changedValues];
-    v5 = [v4 objectForKeyedSubscript:@"entryComments"];
+    changedValues = [(PLCloudFeedCommentsEntry *)self changedValues];
+    v5 = [changedValues objectForKeyedSubscript:@"entryComments"];
     if (v5)
     {
     }
 
     else
     {
-      v6 = [v4 objectForKeyedSubscript:@"entryLikeComments"];
+      v6 = [changedValues objectForKeyedSubscript:@"entryLikeComments"];
 
       if (!v6)
       {
@@ -32,8 +32,8 @@ LABEL_6:
       }
     }
 
-    v7 = [v3 delayedSaveActions];
-    [v7 recordCloudFeedCommentsEntryForCommentUpdate:self];
+    delayedSaveActions = [managedObjectContext delayedSaveActions];
+    [delayedSaveActions recordCloudFeedCommentsEntryForCommentUpdate:self];
 
     goto LABEL_6;
   }
@@ -41,25 +41,25 @@ LABEL_6:
 LABEL_7:
 }
 
-- (BOOL)shouldBeRemovedFromPhotoLibrary:(id)a3
+- (BOOL)shouldBeRemovedFromPhotoLibrary:(id)library
 {
   v8.receiver = self;
   v8.super_class = PLCloudFeedCommentsEntry;
-  if ([(PLCloudFeedEntry *)&v8 shouldBeRemovedFromPhotoLibrary:a3])
+  if ([(PLCloudFeedEntry *)&v8 shouldBeRemovedFromPhotoLibrary:library])
   {
     return 1;
   }
 
-  v5 = [(PLCloudFeedCommentsEntry *)self entryComments];
-  if ([v5 count])
+  entryComments = [(PLCloudFeedCommentsEntry *)self entryComments];
+  if ([entryComments count])
   {
     v4 = 0;
   }
 
   else
   {
-    v6 = [(PLCloudFeedCommentsEntry *)self entryLikeComments];
-    v4 = [v6 count] == 0;
+    entryLikeComments = [(PLCloudFeedCommentsEntry *)self entryLikeComments];
+    v4 = [entryLikeComments count] == 0;
   }
 
   return v4;

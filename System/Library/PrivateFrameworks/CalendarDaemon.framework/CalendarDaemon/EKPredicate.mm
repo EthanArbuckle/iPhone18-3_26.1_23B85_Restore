@@ -1,10 +1,10 @@
 @interface EKPredicate
-- (EKPredicate)initWithCalendars:(id)a3;
-- (EKPredicate)initWithCoder:(id)a3;
+- (EKPredicate)initWithCalendars:(id)calendars;
+- (EKPredicate)initWithCoder:(id)coder;
 - (id)databasesToQuery;
 - (id)predicateFormat;
 - (void)createCalendarMaps;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EKPredicate
@@ -24,7 +24,7 @@
   v4 = v3;
   if (!self->_databaseToCalendarRowIDs && [(NSArray *)v3 count])
   {
-    v17 = self;
+    selfCopy = self;
     v5 = objc_opt_new();
     v18 = 0u;
     v19 = 0u;
@@ -64,22 +64,22 @@
       while (v8);
     }
 
-    databaseToCalendarRowIDs = v17->_databaseToCalendarRowIDs;
-    v17->_databaseToCalendarRowIDs = v5;
+    databaseToCalendarRowIDs = selfCopy->_databaseToCalendarRowIDs;
+    selfCopy->_databaseToCalendarRowIDs = v5;
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (EKPredicate)initWithCalendars:(id)a3
+- (EKPredicate)initWithCalendars:(id)calendars
 {
-  v4 = a3;
+  calendarsCopy = calendars;
   v9.receiver = self;
   v9.super_class = EKPredicate;
   v5 = [(EKPredicate *)&v9 init];
   if (v5)
   {
-    v6 = [v4 CalFilter:&__block_literal_global_23];
+    v6 = [calendarsCopy CalFilter:&__block_literal_global_23];
     calendars = v5->_calendars;
     v5->_calendars = v6;
   }
@@ -87,12 +87,12 @@
   return v5;
 }
 
-- (EKPredicate)initWithCoder:(id)a3
+- (EKPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = EKPredicate;
-  v5 = [(EKPredicate *)&v9 initWithCoder:v4];
+  v5 = [(EKPredicate *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
     if (initWithCoder__onceToken_0 != -1)
@@ -100,7 +100,7 @@
       [EKPredicate initWithCoder:];
     }
 
-    v6 = [v4 decodeObjectOfClasses:initWithCoder____whitelistedClasses_0 forKey:@"calendars"];
+    v6 = [coderCopy decodeObjectOfClasses:initWithCoder____whitelistedClasses_0 forKey:@"calendars"];
     calendars = v5->_calendars;
     v5->_calendars = v6;
   }
@@ -119,13 +119,13 @@ uint64_t __29__EKPredicate_initWithCoder___block_invoke()
   return MEMORY[0x2821F96F8](v3);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = EKPredicate;
-  v4 = a3;
-  [(EKPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_calendars forKey:{@"calendars", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(EKPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_calendars forKey:{@"calendars", v5.receiver, v5.super_class}];
 }
 
 - (id)predicateFormat
@@ -138,8 +138,8 @@ uint64_t __29__EKPredicate_initWithCoder___block_invoke()
   v6 = NSStringFromClass(v5);
   v7 = [v3 stringFromDate:self->_startDate];
   v8 = [v3 stringFromDate:self->_endDate];
-  v9 = [(EKPredicate *)self calendars];
-  v10 = [CADPredicate conciseCalendarList:v9];
+  calendars = [(EKPredicate *)self calendars];
+  v10 = [CADPredicate conciseCalendarList:calendars];
   v11 = [v4 stringWithFormat:@"%@ start:%@ end:%@; cals:%@", v6, v7, v8, v10];;
 
   return v11;

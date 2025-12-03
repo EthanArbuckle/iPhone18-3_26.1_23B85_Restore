@@ -1,28 +1,28 @@
 @interface CNiOSABContactsInContainerPredicate
-- (BOOL)canSearchCoreRecentsLibrary:(id)a3;
-- (CNiOSABContactsInContainerPredicate)initWithCoder:(id)a3;
-- (CNiOSABContactsInContainerPredicate)initWithParentContainerIdentifier:(id)a3;
+- (BOOL)canSearchCoreRecentsLibrary:(id)library;
+- (CNiOSABContactsInContainerPredicate)initWithCoder:(id)coder;
+- (CNiOSABContactsInContainerPredicate)initWithParentContainerIdentifier:(id)identifier;
 - (NSString)description;
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7;
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5;
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7;
-- (id)contactsFromRecentsLibrary:(id)a3;
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error;
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error;
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror;
+- (id)contactsFromRecentsLibrary:(id)library;
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNiOSABContactsInContainerPredicate
 
-- (CNiOSABContactsInContainerPredicate)initWithParentContainerIdentifier:(id)a3
+- (CNiOSABContactsInContainerPredicate)initWithParentContainerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AE18] predicateWithFormat:@"parentContainer.identifier == %@", v4];
+  identifierCopy = identifier;
+  identifierCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"parentContainer.identifier == %@", identifierCopy];
   v11.receiver = self;
   v11.super_class = CNiOSABContactsInContainerPredicate;
-  v6 = [(CNPredicate *)&v11 initWithPredicate:v5];
+  v6 = [(CNPredicate *)&v11 initWithPredicate:identifierCopy];
   if (v6)
   {
-    v7 = [v4 copy];
+    v7 = [identifierCopy copy];
     parentContainerIdentifier = v6->_parentContainerIdentifier;
     v6->_parentContainerIdentifier = v7;
 
@@ -32,15 +32,15 @@
   return v6;
 }
 
-- (CNiOSABContactsInContainerPredicate)initWithCoder:(id)a3
+- (CNiOSABContactsInContainerPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CNiOSABContactsInContainerPredicate;
-  v5 = [(CNPredicate *)&v11 initWithCoder:v4];
+  v5 = [(CNPredicate *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_parentContainerIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_parentContainerIdentifier"];
     v7 = [v6 copy];
     parentContainerIdentifier = v5->_parentContainerIdentifier;
     v5->_parentContainerIdentifier = v7;
@@ -51,19 +51,19 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CNiOSABContactsInContainerPredicate;
-  v4 = a3;
-  [(CNPredicate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_parentContainerIdentifier forKey:{@"_parentContainerIdentifier", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CNPredicate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_parentContainerIdentifier forKey:{@"_parentContainerIdentifier", v5.receiver, v5.super_class}];
 }
 
-- (__CFArray)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 error:(__CFError *)a7
+- (__CFArray)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment error:(__CFError *)error
 {
   v15 = 0;
-  v8 = [(CNiOSABContactsInContainerPredicate *)self cn_copyPeopleInAddressBook:a3 fetchRequest:a4 matchInfos:a5 environment:a6 nserror:&v15];
+  v8 = [(CNiOSABContactsInContainerPredicate *)self cn_copyPeopleInAddressBook:book fetchRequest:request matchInfos:infos environment:environment nserror:&v15];
   v9 = v15;
   v10 = v9;
   if (v8)
@@ -71,31 +71,31 @@
     v11 = v8;
   }
 
-  else if (a7)
+  else if (error)
   {
-    v12 = [v9 code];
-    v13 = [v10 userInfo];
-    *a7 = [CNErrorFactory errorWithCode:v12 userInfo:v13];
+    code = [v9 code];
+    userInfo = [v10 userInfo];
+    *error = [CNErrorFactory errorWithCode:code userInfo:userInfo];
   }
 
   return v8;
 }
 
-- (id)cn_copyPeopleInAddressBook:(void *)a3 fetchRequest:(id)a4 matchInfos:(id *)a5 environment:(id)a6 nserror:(id *)a7
+- (id)cn_copyPeopleInAddressBook:(void *)book fetchRequest:(id)request matchInfos:(id *)infos environment:(id)environment nserror:(id *)nserror
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
+  requestCopy = request;
   v11 = *MEMORY[0x1E6996568];
-  v12 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
-  LODWORD(v11) = (*(v11 + 16))(v11, v12);
+  parentContainerIdentifier = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
+  LODWORD(v11) = (*(v11 + 16))(v11, parentContainerIdentifier);
 
   if (v11)
   {
     v13 = [CNErrorFactory errorWithCode:400 userInfo:0];
-    if (a7)
+    if (nserror)
     {
       v13 = v13;
-      *a7 = v13;
+      *nserror = v13;
     }
 
     v14 = 0;
@@ -103,14 +103,14 @@
 
   else
   {
-    v15 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
-    v19[0] = v15;
+    parentContainerIdentifier2 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
+    v19[0] = parentContainerIdentifier2;
     [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     v16 = ABAddressBookCopySourcesWithUUIDs();
 
     if (v16 && ([v16 firstObject], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
     {
-      v14 = ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering(a3, v17, [v10 sortOrder]);
+      v14 = ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering(book, v17, [requestCopy sortOrder]);
     }
 
     else
@@ -122,21 +122,21 @@
   return v14;
 }
 
-- (id)cn_ABQSLPredicateForAddressBook:(void *)a3 fetchRequest:(id)a4 error:(id *)a5
+- (id)cn_ABQSLPredicateForAddressBook:(void *)book fetchRequest:(id)request error:(id *)error
 {
   v7 = *MEMORY[0x1E6996568];
-  v8 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier:a3];
+  v8 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier:book];
   LODWORD(v7) = (*(v7 + 16))(v7, v8);
 
   if (v7)
   {
     v9 = [CNErrorFactory errorWithCode:400 userInfo:0];
-    v10 = v9;
-    if (a5)
+    parentContainerIdentifier = v9;
+    if (error)
     {
       v11 = v9;
       v12 = 0;
-      *a5 = v10;
+      *error = parentContainerIdentifier;
     }
 
     else
@@ -148,8 +148,8 @@
   else
   {
     v13 = MEMORY[0x1E698A130];
-    v10 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
-    v12 = [v13 predicateForContactsInContainerWithIdentifier:v10];
+    parentContainerIdentifier = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
+    v12 = [v13 predicateForContactsInContainerWithIdentifier:parentContainerIdentifier];
   }
 
   return v12;
@@ -159,24 +159,24 @@
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"kind" object:@"-[CNContact predicateForContactsInContainerWithIdentifier:]"];
-  v5 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
-  v6 = [v3 appendName:@"identifier" object:v5];
+  parentContainerIdentifier = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
+  v6 = [v3 appendName:@"identifier" object:parentContainerIdentifier];
 
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (BOOL)canSearchCoreRecentsLibrary:(id)a3
+- (BOOL)canSearchCoreRecentsLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
+  libraryCopy = library;
+  parentContainerIdentifier = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
 
-  if (v5)
+  if (parentContainerIdentifier)
   {
-    v6 = [v4 domains];
-    v7 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
-    v8 = [v6 containsObject:v7];
+    domains = [libraryCopy domains];
+    parentContainerIdentifier2 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
+    v8 = [domains containsObject:parentContainerIdentifier2];
   }
 
   else
@@ -187,19 +187,19 @@
   return v8;
 }
 
-- (id)contactsFromRecentsLibrary:(id)a3
+- (id)contactsFromRecentsLibrary:(id)library
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
+  libraryCopy = library;
+  parentContainerIdentifier = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
 
-  if (v5)
+  if (parentContainerIdentifier)
   {
-    v6 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
-    v15[0] = v6;
+    parentContainerIdentifier2 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
+    v15[0] = parentContainerIdentifier2;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
     v14 = 0;
-    v8 = [v4 allContactsFromDomains:v7 error:&v14];
+    v8 = [libraryCopy allContactsFromDomains:v7 error:&v14];
     v9 = v14;
 
     v10 = MEMORY[0x1E6996810];
@@ -215,17 +215,17 @@
   return v12;
 }
 
-- (int64_t)countOfContactsFromRecentsLibrary:(id)a3
+- (int64_t)countOfContactsFromRecentsLibrary:(id)library
 {
-  v4 = a3;
-  v5 = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
+  libraryCopy = library;
+  parentContainerIdentifier = [(CNiOSABContactsInContainerPredicate *)self parentContainerIdentifier];
 
-  if (v5)
+  if (parentContainerIdentifier)
   {
-    v5 = [v4 countAllContactsWithError:0];
+    parentContainerIdentifier = [libraryCopy countAllContactsWithError:0];
   }
 
-  return v5;
+  return parentContainerIdentifier;
 }
 
 @end

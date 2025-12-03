@@ -1,6 +1,6 @@
 @interface _PLViewControllerOneToOneTransitionContext
 - (CGAffineTransform)targetTransform;
-- (void)setTargetTransform:(CGAffineTransform *)a3;
+- (void)setTargetTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _PLViewControllerOneToOneTransitionContext
@@ -14,11 +14,11 @@
   return self;
 }
 
-- (void)setTargetTransform:(CGAffineTransform *)a3
+- (void)setTargetTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_targetTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_targetTransform.a = *&transform->a;
   *&self->_targetTransform.c = v4;
   *&self->_targetTransform.tx = v3;
 }

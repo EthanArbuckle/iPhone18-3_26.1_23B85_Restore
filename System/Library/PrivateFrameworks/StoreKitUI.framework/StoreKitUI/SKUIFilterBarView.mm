@@ -1,37 +1,37 @@
 @interface SKUIFilterBarView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4;
-+ (id)_attributedStringForButtonText:(id)a3 style:(id)a4 context:(id)a5;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (id)_attributedStringForMenuItem:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIFilterBarView)initWithFrame:(CGRect)a3;
-- (void)_buttonAction:(id)a3;
-- (void)_cancelConfirmationAction:(id)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForButton:(id)button context:(id)context;
++ (id)_attributedStringForButtonText:(id)text style:(id)style context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (id)_attributedStringForMenuItem:(id)item context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIFilterBarView)initWithFrame:(CGRect)frame;
+- (void)_buttonAction:(id)action;
+- (void)_cancelConfirmationAction:(id)action;
 - (void)_destroyMenuPopover;
-- (void)_imageTapAction:(id)a3;
-- (void)_menuButtonAction:(id)a3;
-- (void)_showConfirmationAction:(id)a3;
+- (void)_imageTapAction:(id)action;
+- (void)_menuButtonAction:(id)action;
+- (void)_showConfirmationAction:(id)action;
 - (void)dealloc;
-- (void)itemOfferButtonWillAnimateTransition:(id)a3;
+- (void)itemOfferButtonWillAnimateTransition:(id)transition;
 - (void)layoutSubviews;
-- (void)menuPopover:(id)a3 didSelectMenuItemAtIndex:(int64_t)a4;
-- (void)menuPopover:(id)a3 willRepositionToRect:(CGRect *)a4 inView:(id *)a5;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)menuPopover:(id)popover didSelectMenuItemAtIndex:(int64_t)index;
+- (void)menuPopover:(id)popover willRepositionToRect:(CGRect *)rect inView:(id *)view;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SKUIFilterBarView
 
-- (SKUIFilterBarView)initWithFrame:(CGRect)a3
+- (SKUIFilterBarView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIFilterBarView initWithFrame:];
@@ -39,27 +39,27 @@
 
   v18.receiver = self;
   v18.super_class = SKUIFilterBarView;
-  v8 = [(SKUIViewReuseView *)&v18 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUIViewReuseView *)&v18 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    centerElementViews = v8->_centerElementViews;
-    v8->_centerElementViews = v9;
+    centerElementViews = height->_centerElementViews;
+    height->_centerElementViews = v9;
 
     v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    leftElementViews = v8->_leftElementViews;
-    v8->_leftElementViews = v11;
+    leftElementViews = height->_leftElementViews;
+    height->_leftElementViews = v11;
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    rightElementViews = v8->_rightElementViews;
-    v8->_rightElementViews = v13;
+    rightElementViews = height->_rightElementViews;
+    height->_rightElementViews = v13;
 
     v15 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:517 valueOptions:0 capacity:0];
-    viewElementViews = v8->_viewElementViews;
-    v8->_viewElementViews = v15;
+    viewElementViews = height->_viewElementViews;
+    height->_viewElementViews = v15;
   }
 
-  return v8;
+  return height;
 }
 
 - (void)dealloc
@@ -70,10 +70,10 @@
   [(SKUIViewReuseView *)&v3 dealloc];
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -82,15 +82,15 @@
   v11[1] = 3221225472;
   v11[2] = __68__SKUIFilterBarView_prefetchResourcesForViewElement_reason_context___block_invoke;
   v11[3] = &unk_2781F95A0;
-  v9 = v8;
+  v9 = contextCopy;
   v13 = &v15;
-  v14 = a4;
+  reasonCopy = reason;
   v12 = v9;
-  [v7 enumerateChildrenUsingBlock:v11];
-  LOBYTE(a4) = *(v16 + 24);
+  [elementCopy enumerateChildrenUsingBlock:v11];
+  LOBYTE(reason) = *(v16 + 24);
 
   _Block_object_dispose(&v15, 8);
-  return a4;
+  return reason;
 }
 
 uint64_t __68__SKUIFilterBarView_prefetchResourcesForViewElement_reason_context___block_invoke(uint64_t a1, uint64_t a2)
@@ -100,7 +100,7 @@ uint64_t __68__SKUIFilterBarView_prefetchResourcesForViewElement_reason_context_
   return result;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -109,22 +109,22 @@ uint64_t __68__SKUIFilterBarView_prefetchResourcesForViewElement_reason_context_
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [v8 labelLayoutCache];
+  contextCopy = context;
+  elementCopy = element;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__SKUIFilterBarView_requestLayoutForViewElement_width_context___block_invoke;
   v13[3] = &unk_2781FAEB8;
-  v16 = a4;
-  v17 = a1;
-  v14 = v10;
-  v15 = v8;
-  v11 = v8;
-  v12 = v10;
-  [v9 enumerateChildrenUsingBlock:v13];
+  widthCopy = width;
+  selfCopy = self;
+  v14 = labelLayoutCache;
+  v15 = contextCopy;
+  v11 = contextCopy;
+  v12 = labelLayoutCache;
+  [elementCopy enumerateChildrenUsingBlock:v13];
 }
 
 uint64_t __63__SKUIFilterBarView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -181,25 +181,25 @@ LABEL_13:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3010000000;
   v21 = &unk_215F8ACD7;
-  v22 = a3;
+  widthCopy = width;
   v23 = 0;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__SKUIFilterBarView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v14[3] = &unk_2781F95A0;
-  v9 = v8;
-  v17 = a3;
+  v9 = contextCopy;
+  widthCopy2 = width;
   v15 = v9;
   v16 = &v18;
-  [v7 enumerateChildrenUsingBlock:v14];
+  [elementCopy enumerateChildrenUsingBlock:v14];
   v10 = v19[4];
   if (v19[5] >= 29.0)
   {
@@ -235,10 +235,10 @@ uint64_t __59__SKUIFilterBarView_sizeThatFitsWidth_viewElement_context___block_i
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   [(NSMutableArray *)self->_centerElementViews removeAllObjects];
   [(NSMutableArray *)self->_leftElementViews removeAllObjects];
   [(NSMutableArray *)self->_rightElementViews removeAllObjects];
@@ -254,11 +254,11 @@ uint64_t __59__SKUIFilterBarView_sizeThatFitsWidth_viewElement_context___block_i
   v14[2] = __57__SKUIFilterBarView_reloadWithViewElement_width_context___block_invoke;
   v14[3] = &unk_2781F95C8;
   v14[4] = self;
-  v15 = v8;
-  v17 = a4;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
+  v15 = elementCopy;
+  widthCopy = width;
+  v16 = contextCopy;
+  v12 = contextCopy;
+  v13 = elementCopy;
   [(SKUIViewReuseView *)self modifyUsingBlock:v14];
 }
 
@@ -486,15 +486,15 @@ LABEL_44:
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_contentInset.top), vceqq_f64(v4, *&self->_contentInset.bottom)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SKUIFilterBarView *)self setNeedsLayout];
   }
 }
@@ -507,7 +507,7 @@ LABEL_44:
   v6 = v5;
   v74[0] = self->_leftElementViews;
   v74[1] = self->_centerElementViews;
-  v54 = self;
+  selfCopy = self;
   v7 = 0;
   v8 = 0;
   v74[2] = self->_rightElementViews;
@@ -579,8 +579,8 @@ LABEL_44:
     v9 = v9 + ((v7 - 1) * 9.0);
   }
 
-  right = v54->_contentInset.right;
-  for (j = v4 - v54->_contentInset.left - right; v9 > j; v9 = v9 + -5.0)
+  right = selfCopy->_contentInset.right;
+  for (j = v4 - selfCopy->_contentInset.left - right; v9 > j; v9 = v9 + -5.0)
   {
     v27 = 0;
     v28 = 0.0;
@@ -616,7 +616,7 @@ LABEL_44:
     {
       if (v30 == 1)
       {
-        v33 = v58 + v54->_contentInset.left;
+        v33 = v58 + selfCopy->_contentInset.left;
         if (v58 > 0.00000011920929)
         {
           v33 = v33 + 9.0;
@@ -650,7 +650,7 @@ LABEL_44:
 
       else
       {
-        left = v54->_contentInset.left;
+        left = selfCopy->_contentInset.left;
       }
     }
 
@@ -709,13 +709,13 @@ LABEL_44:
   }
 
   while (v30 != 3);
-  if (v54->_bottomDividerView)
+  if (selfCopy->_bottomDividerView)
   {
-    v49 = [MEMORY[0x277D759A0] mainScreen];
-    [v49 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v51 = 1.0 / v50;
 
-    [(SKUIDividerView *)v54->_bottomDividerView setFrame:0.0, v6 - v51, v53, v51];
+    [(SKUIDividerView *)selfCopy->_bottomDividerView setFrame:0.0, v6 - v51, v53, v51];
   }
 
   for (m = 2; m != -1; --m)
@@ -723,9 +723,9 @@ LABEL_44:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
@@ -772,18 +772,18 @@ LABEL_44:
   return result;
 }
 
-- (void)itemOfferButtonWillAnimateTransition:(id)a3
+- (void)itemOfferButtonWillAnimateTransition:(id)transition
 {
-  v15 = a3;
-  [v15 frame];
+  transitionCopy = transition;
+  [transitionCopy frame];
   x = v17.origin.x;
   y = v17.origin.y;
   width = v17.size.width;
   MaxX = CGRectGetMaxX(v17);
-  [v15 sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
+  [transitionCopy sizeThatFits:{*(MEMORY[0x277CBF390] + 16), *(MEMORY[0x277CBF390] + 24)}];
   v9 = v8;
   v11 = v10;
-  if ([(NSMutableArray *)self->_centerElementViews containsObject:v15])
+  if ([(NSMutableArray *)self->_centerElementViews containsObject:transitionCopy])
   {
     v12 = (v9 - width) * 0.5;
     v13 = x - floorf(v12);
@@ -791,7 +791,7 @@ LABEL_44:
 
   else
   {
-    v14 = [(NSMutableArray *)self->_rightElementViews containsObject:v15];
+    v14 = [(NSMutableArray *)self->_rightElementViews containsObject:transitionCopy];
     v13 = MaxX - v9;
     if (!v14)
     {
@@ -799,10 +799,10 @@ LABEL_44:
     }
   }
 
-  [v15 setFrame:{v13, y, v9, v11}];
+  [transitionCopy setFrame:{v13, y, v9, v11}];
 }
 
-- (void)menuPopover:(id)a3 didSelectMenuItemAtIndex:(int64_t)a4
+- (void)menuPopover:(id)popover didSelectMenuItemAtIndex:(int64_t)index
 {
   if (self->_focusedMenuButton)
   {
@@ -815,27 +815,27 @@ LABEL_44:
       v7 = 0;
     }
 
-    [v7 dispatchEventOfType:2 forItemAtIndex:a4];
+    [v7 dispatchEventOfType:2 forItemAtIndex:index];
     [(SKUIFilterBarView *)self _destroyMenuPopover];
   }
 }
 
-- (void)menuPopover:(id)a3 willRepositionToRect:(CGRect *)a4 inView:(id *)a5
+- (void)menuPopover:(id)popover willRepositionToRect:(CGRect *)rect inView:(id *)view
 {
-  [(UIControl *)self->_focusedMenuButton frame:a3];
-  a4->origin.x = v6;
-  a4->origin.y = v7;
-  a4->size.width = v8;
-  a4->size.height = v9;
+  [(UIControl *)self->_focusedMenuButton frame:popover];
+  rect->origin.x = v6;
+  rect->origin.y = v7;
+  rect->size.width = v8;
+  rect->size.height = v9;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  actionCopy = action;
   v5 = SKUICollectionViewCellForView(self);
   v6 = SKUICollectionViewForView(self);
-  v7 = [v6 delegate];
+  delegate = [v6 delegate];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -855,13 +855,13 @@ LABEL_44:
           objc_enumerationMutation(v8);
         }
 
-        if (*(*(&v15 + 1) + 8 * i) == v4)
+        if (*(*(&v15 + 1) + 8 * i) == actionCopy)
         {
           v13 = [(NSMapTable *)self->_viewElementViews objectForKey:v15];
           if (objc_opt_respondsToSelector())
           {
             v14 = [v6 indexPathForCell:v5];
-            [v7 collectionView:v6 didConfirmButtonElement:v13 withClickInfo:0 forItemAtIndexPath:v14];
+            [delegate collectionView:v6 didConfirmButtonElement:v13 withClickInfo:0 forItemAtIndexPath:v14];
           }
 
           else
@@ -886,25 +886,25 @@ LABEL_44:
 LABEL_14:
 }
 
-- (void)_cancelConfirmationAction:(id)a3
+- (void)_cancelConfirmationAction:(id)action
 {
-  v4 = a3;
-  [(SKUIFilterBarView *)self bringSubviewToFront:v4];
-  [v4 setShowingConfirmation:0 animated:1];
+  actionCopy = action;
+  [(SKUIFilterBarView *)self bringSubviewToFront:actionCopy];
+  [actionCopy setShowingConfirmation:0 animated:1];
 }
 
-- (void)_imageTapAction:(id)a3
+- (void)_imageTapAction:(id)action
 {
   viewElementViews = self->_viewElementViews;
-  v4 = [a3 view];
-  v5 = [(NSMapTable *)viewElementViews objectForKey:v4];
+  view = [action view];
+  v5 = [(NSMapTable *)viewElementViews objectForKey:view];
 
   [v5 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (void)_menuButtonAction:(id)a3
+- (void)_menuButtonAction:(id)action
 {
-  v23 = a3;
+  actionCopy = action;
   popoverController = self->_popoverController;
   if (popoverController)
   {
@@ -917,13 +917,13 @@ LABEL_14:
     self->_popoverController = 0;
   }
 
-  v8 = [(NSMapTable *)self->_viewElementViews objectForKey:v23];
+  v8 = [(NSMapTable *)self->_viewElementViews objectForKey:actionCopy];
   if (v8)
   {
-    objc_storeStrong(&self->_focusedMenuButton, a3);
+    objc_storeStrong(&self->_focusedMenuButton, action);
     v9 = [SKUIMenuPopoverController alloc];
-    v10 = [v8 menuItemTitles];
-    v11 = -[SKUIMenuPopoverController initWithMenuTitles:selectedIndex:](v9, "initWithMenuTitles:selectedIndex:", v10, [v8 selectedItemIndex]);
+    menuItemTitles = [v8 menuItemTitles];
+    v11 = -[SKUIMenuPopoverController initWithMenuTitles:selectedIndex:](v9, "initWithMenuTitles:selectedIndex:", menuItemTitles, [v8 selectedItemIndex]);
     v12 = self->_popoverController;
     self->_popoverController = v11;
 
@@ -934,95 +934,95 @@ LABEL_14:
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(UIControl *)self->_focusedMenuButton superview];
-    [(SKUIMenuPopoverController *)v13 presentFromRect:v22 inView:15 permittedArrowDirections:1 animated:v15, v17, v19, v21];
+    superview = [(UIControl *)self->_focusedMenuButton superview];
+    [(SKUIMenuPopoverController *)v13 presentFromRect:superview inView:15 permittedArrowDirections:1 animated:v15, v17, v19, v21];
   }
 }
 
-- (void)_showConfirmationAction:(id)a3
+- (void)_showConfirmationAction:(id)action
 {
-  v4 = a3;
-  [(SKUIFilterBarView *)self bringSubviewToFront:v4];
-  [v4 setShowingConfirmation:1 animated:1];
+  actionCopy = action;
+  [(SKUIFilterBarView *)self bringSubviewToFront:actionCopy];
+  [actionCopy setShowingConfirmation:1 animated:1];
 }
 
-+ (id)_attributedStringForButton:(id)a3 context:(id)a4
++ (id)_attributedStringForButton:(id)button context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 buttonText];
-  v9 = [v6 buttonTitleStyle];
-  if (v9)
+  buttonCopy = button;
+  contextCopy = context;
+  buttonText = [buttonCopy buttonText];
+  buttonTitleStyle = [buttonCopy buttonTitleStyle];
+  if (buttonTitleStyle)
   {
-    v10 = [a1 _attributedStringForButtonText:v8 style:v9 context:v7];
+    v10 = [self _attributedStringForButtonText:buttonText style:buttonTitleStyle context:contextCopy];
   }
 
   else
   {
-    v11 = [v6 style];
-    v10 = [a1 _attributedStringForButtonText:v8 style:v11 context:v7];
+    style = [buttonCopy style];
+    v10 = [self _attributedStringForButtonText:buttonText style:style context:contextCopy];
   }
 
   return v10;
 }
 
-+ (id)_attributedStringForButtonText:(id)a3 style:(id)a4 context:(id)a5
++ (id)_attributedStringForButtonText:(id)text style:(id)style context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = SKUIViewElementFontWithStyle(v8);
+  textCopy = text;
+  styleCopy = style;
+  contextCopy = context;
+  v10 = SKUIViewElementFontWithStyle(styleCopy);
   if (!v10)
   {
     v10 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
   }
 
-  v11 = [v9 tintColor];
-  v12 = SKUIViewElementPlainColorWithStyle(v8, v11);
+  tintColor = [contextCopy tintColor];
+  labelColor = SKUIViewElementPlainColorWithStyle(styleCopy, tintColor);
 
-  if (!v12)
+  if (!labelColor)
   {
-    v12 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
-  v13 = [v7 attributedStringWithDefaultFont:v10 foregroundColor:v12 style:v8];
+  v13 = [textCopy attributedStringWithDefaultFont:v10 foregroundColor:labelColor style:styleCopy];
 
   return v13;
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
   }
 
-  v9 = [v6 tintColor];
-  v10 = SKUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  labelColor = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v10)
+  if (!labelColor)
   {
-    v10 = [MEMORY[0x277D75348] labelColor];
+    labelColor = [MEMORY[0x277D75348] labelColor];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v12 = [text attributedStringWithDefaultFont:v8 foregroundColor:labelColor style:style];
 
   return v12;
 }
 
-+ (id)_attributedStringForMenuItem:(id)a3 context:(id)a4
++ (id)_attributedStringForMenuItem:(id)item context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 itemText];
-  v9 = [v7 style];
+  contextCopy = context;
+  itemCopy = item;
+  itemText = [itemCopy itemText];
+  style = [itemCopy style];
 
-  v10 = [a1 _attributedStringForButtonText:v8 style:v9 context:v6];
+  v10 = [self _attributedStringForButtonText:itemText style:style context:contextCopy];
 
   return v10;
 }

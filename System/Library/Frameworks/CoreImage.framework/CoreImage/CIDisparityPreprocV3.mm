@@ -62,7 +62,7 @@ id __44__CIDisparityPreprocV3_preprocKernelNoAlpha__block_invoke()
     CGAffineTransformMakeScale(&v29, v11, v13 / v14);
     v28 = v29;
     v15 = [(CIImage *)inputAlphaImage imageByApplyingTransform:&v28];
-    v16 = [(CIDisparityPreprocV3 *)self preprocKernel];
+    preprocKernel = [(CIDisparityPreprocV3 *)self preprocKernel];
     [v7 extent];
     v18 = v17;
     v20 = v19;
@@ -73,7 +73,7 @@ id __44__CIDisparityPreprocV3_preprocKernelNoAlpha__block_invoke()
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
     v32 = @"kCIKernelOutputFormat";
     v33 = [MEMORY[0x1E696AD98] numberWithInt:264];
-    v26 = [v16 applyWithExtent:v25 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v33, &v32, 1), v18, v20, v22, v24}];
+    v26 = [preprocKernel applyWithExtent:v25 arguments:objc_msgSend(MEMORY[0x1E695DF20] options:{"dictionaryWithObjects:forKeys:count:", &v33, &v32, 1), v18, v20, v22, v24}];
   }
 
   else

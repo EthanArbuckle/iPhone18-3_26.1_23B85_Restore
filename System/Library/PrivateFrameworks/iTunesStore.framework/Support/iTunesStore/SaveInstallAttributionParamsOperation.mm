@@ -1,13 +1,13 @@
 @interface SaveInstallAttributionParamsOperation
-- (SaveInstallAttributionParamsOperation)initWithRequest:(id)a3;
+- (SaveInstallAttributionParamsOperation)initWithRequest:(id)request;
 - (void)run;
 @end
 
 @implementation SaveInstallAttributionParamsOperation
 
-- (SaveInstallAttributionParamsOperation)initWithRequest:(id)a3
+- (SaveInstallAttributionParamsOperation)initWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v27.receiver = self;
   v27.super_class = SaveInstallAttributionParamsOperation;
   v5 = [(SaveInstallAttributionParamsOperation *)&v27 init];
@@ -18,28 +18,28 @@
     v5->_params = v6;
 
     v8 = v5->_params;
-    v9 = [v4 appAdamId];
-    [(InstallAttributionParams *)v8 setAppAdamId:v9];
+    appAdamId = [requestCopy appAdamId];
+    [(InstallAttributionParams *)v8 setAppAdamId:appAdamId];
 
     v10 = v5->_params;
-    v11 = [v4 adNetworkId];
-    [(InstallAttributionParams *)v10 setAdNetworkId:v11];
+    adNetworkId = [requestCopy adNetworkId];
+    [(InstallAttributionParams *)v10 setAdNetworkId:adNetworkId];
 
     v12 = v5->_params;
-    v13 = [v4 campaignId];
-    [(InstallAttributionParams *)v12 setCampaignId:v13];
+    campaignId = [requestCopy campaignId];
+    [(InstallAttributionParams *)v12 setCampaignId:campaignId];
 
     v14 = v5->_params;
-    v15 = [v4 impressionId];
-    [(InstallAttributionParams *)v14 setImpressionId:v15];
+    impressionId = [requestCopy impressionId];
+    [(InstallAttributionParams *)v14 setImpressionId:impressionId];
 
     v16 = v5->_params;
-    v17 = [v4 timestamp];
-    [(InstallAttributionParams *)v16 setTimestamp:v17];
+    timestamp = [requestCopy timestamp];
+    [(InstallAttributionParams *)v16 setTimestamp:timestamp];
 
     v18 = v5->_params;
-    v19 = [v4 attributionSignature];
-    [(InstallAttributionParams *)v18 setAttributionSignature:v19];
+    attributionSignature = [requestCopy attributionSignature];
+    [(InstallAttributionParams *)v18 setAttributionSignature:attributionSignature];
 
     v20 = +[NSDate date];
     [v20 timeIntervalSince1970];
@@ -47,11 +47,11 @@
 
     v23 = [NSNumber numberWithLongLong:v22];
     [(InstallAttributionParams *)v5->_params setLocalTimestamp:v23];
-    v24 = [v4 originatingBundleId];
+    originatingBundleId = [requestCopy originatingBundleId];
     originatingBundleId = v5->_originatingBundleId;
-    v5->_originatingBundleId = v24;
+    v5->_originatingBundleId = originatingBundleId;
 
-    v5->_overrideCampaignLimit = [v4 overrideCampaignLimit];
+    v5->_overrideCampaignLimit = [requestCopy overrideCampaignLimit];
   }
 
   return v5;
@@ -87,9 +87,9 @@ LABEL_63:
   }
 
   v3 = [LSApplicationProxy applicationProxyForIdentifier:?];
-  v4 = [v3 bundleURL];
-  v5 = [v4 path];
-  v6 = [v5 stringByAppendingPathComponent:@"Info.plist"];
+  bundleURL = [v3 bundleURL];
+  path = [bundleURL path];
+  v6 = [path stringByAppendingPathComponent:@"Info.plist"];
 
   v7 = SSVURLProtocolConsumer_ptr;
   v8 = [[NSDictionary alloc] initWithContentsOfFile:v6];
@@ -101,19 +101,19 @@ LABEL_63:
       v40 = +[SSLogConfig sharedConfig];
     }
 
-    v41 = [v40 shouldLog];
+    shouldLog = [v40 shouldLog];
     if ([v40 shouldLogToDisk])
     {
-      v42 = v41 | 2;
+      v42 = shouldLog | 2;
     }
 
     else
     {
-      v42 = v41;
+      v42 = shouldLog;
     }
 
-    v43 = [v40 OSLogObject];
-    if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v40 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v44 = v42;
     }
@@ -146,7 +146,7 @@ LABEL_49:
         goto LABEL_70;
       }
 
-      v43 = [NSString stringWithCString:v48 encoding:4, &v78, v67];
+      oSLogObject = [NSString stringWithCString:v48 encoding:4, &v78, v67];
       free(v48);
       SSFileLog();
     }
@@ -165,19 +165,19 @@ LABEL_49:
       v50 = +[SSLogConfig sharedConfig];
     }
 
-    v51 = [v50 shouldLog];
+    shouldLog2 = [v50 shouldLog];
     if ([v50 shouldLogToDisk])
     {
-      v52 = v51 | 2;
+      v52 = shouldLog2 | 2;
     }
 
     else
     {
-      v52 = v51;
+      v52 = shouldLog2;
     }
 
-    v53 = [v50 OSLogObject];
-    if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v50 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v54 = v52;
     }
@@ -207,7 +207,7 @@ LABEL_62:
         goto LABEL_69;
       }
 
-      v53 = [NSString stringWithCString:v58 encoding:4, &v78, v67];
+      oSLogObject2 = [NSString stringWithCString:v58 encoding:4, &v78, v67];
       free(v58);
       SSFileLog();
     }
@@ -252,19 +252,19 @@ LABEL_62:
           v21 = +[SSLogConfig sharedConfig];
         }
 
-        v22 = [v21 shouldLog];
+        shouldLog3 = [v21 shouldLog];
         if ([v21 shouldLogToDisk])
         {
-          v23 = v22 | 2;
+          v23 = shouldLog3 | 2;
         }
 
         else
         {
-          v23 = v22;
+          v23 = shouldLog3;
         }
 
-        v24 = [v21 OSLogObject];
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
+        oSLogObject3 = [v21 OSLogObject];
+        if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_ERROR))
         {
           v25 = v23;
         }
@@ -289,9 +289,9 @@ LABEL_62:
 
           if (v29)
           {
-            v24 = [NSString stringWithCString:v29 encoding:4, &v78, v67];
+            oSLogObject3 = [NSString stringWithCString:v29 encoding:4, &v78, v67];
             free(v29);
-            v66 = v24;
+            v66 = oSLogObject3;
             SSFileLog();
             goto LABEL_23;
           }
@@ -307,8 +307,8 @@ LABEL_23:
       }
 
       v17 = [v16 objectForKeyedSubscript:@"SKAdNetworkIdentifier"];
-      v18 = [(InstallAttributionParams *)self->_params adNetworkId];
-      v19 = [v17 isEqualToString:v18];
+      adNetworkId = [(InstallAttributionParams *)self->_params adNetworkId];
+      v19 = [v17 isEqualToString:adNetworkId];
 
       if (v19)
       {
@@ -329,21 +329,21 @@ LABEL_27:
     v30 = +[SSLogConfig sharedConfig];
   }
 
-  v31 = [v30 shouldLog];
+  shouldLog4 = [v30 shouldLog];
   if ([v30 shouldLogToDisk])
   {
-    v31 |= 2u;
+    shouldLog4 |= 2u;
   }
 
-  v32 = [v30 OSLogObject];
-  if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+  oSLogObject4 = [v30 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
   {
-    v33 = v31;
+    v33 = shouldLog4;
   }
 
   else
   {
-    v33 = v31 & 2;
+    v33 = shouldLog4 & 2;
   }
 
   if (v33)
@@ -352,13 +352,13 @@ LABEL_27:
     v35 = self->_originatingBundleId;
     v36 = self->_params;
     v37 = v34;
-    v38 = [(InstallAttributionParams *)v36 adNetworkId];
+    adNetworkId2 = [(InstallAttributionParams *)v36 adNetworkId];
     v78 = 138543874;
     v79 = v34;
     v80 = 2112;
     v81 = v35;
     v82 = 2112;
-    v83 = v38;
+    v83 = adNetworkId2;
     LODWORD(v67) = 32;
     v39 = _os_log_send_and_compose_impl();
 
@@ -368,7 +368,7 @@ LABEL_27:
     v9 = v69;
     if (v39)
     {
-      v32 = [NSString stringWithCString:v39 encoding:4, &v78, v67];
+      oSLogObject4 = [NSString stringWithCString:v39 encoding:4, &v78, v67];
       free(v39);
       SSFileLog();
       goto LABEL_67;

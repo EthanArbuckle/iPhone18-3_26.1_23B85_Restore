@@ -1,33 +1,33 @@
 @interface AVPlaybackContentTransitioningView
-- (AVPlaybackContentTransitioningView)initWithFrame:(CGRect)a3 activeContentView:(id)a4;
+- (AVPlaybackContentTransitioningView)initWithFrame:(CGRect)frame activeContentView:(id)view;
 - (AVPlaybackContentTransitioningViewDelegate)contentTransitioningDelegate;
-- (BOOL)_canTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
+- (BOOL)_canTransitionFromState:(int64_t)state toState:(int64_t)toState;
 - (BOOL)canShowStatusBarBackgroundGradientWhenStatusBarVisible;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGRect)_frameExcludingActiveContent;
 - (CGRect)_frameExcludingTransitioningContent;
 - (CGRect)frameForActiveContentView;
 - (CGRect)frameForTransitioningContentView;
 - (CGRect)videoContentFrame;
-- (id)_descriptionForState:(int64_t)a3;
+- (id)_descriptionForState:(int64_t)state;
 - (id)_makeStateDescription;
 - (void)_ensureContentViews;
-- (void)_performBoundsOrContentSizeAdjustment:(id)a3;
-- (void)_setTransitionState:(id)a3 transitionDirection:(id)a4 transitionProgress:(id)a5;
+- (void)_performBoundsOrContentSizeAdjustment:(id)adjustment;
+- (void)_setTransitionState:(id)state transitionDirection:(id)direction transitionProgress:(id)progress;
 - (void)_updateSizeAndContentFrame;
 - (void)_updateTransitionStateIfPossible;
-- (void)performTransition:(int64_t)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setPlayingOnSecondScreen:(BOOL)a3;
-- (void)setStateDescription:(id)a3;
-- (void)setVideoContentFrame:(CGRect)a3;
-- (void)setVideoGravity:(int64_t)a3 removingAllSublayerTransformAnimations:(BOOL)a4;
+- (void)performTransition:(int64_t)transition;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)visible;
+- (void)setDelegate:(id)delegate;
+- (void)setFrame:(CGRect)frame;
+- (void)setPlayingOnSecondScreen:(BOOL)screen;
+- (void)setStateDescription:(id)description;
+- (void)setVideoContentFrame:(CGRect)frame;
+- (void)setVideoGravity:(int64_t)gravity removingAllSublayerTransformAnimations:(BOOL)animations;
 @end
 
 @implementation AVPlaybackContentTransitioningView
@@ -68,15 +68,15 @@
 - (id)_makeStateDescription
 {
   v3 = [(AVPlaybackContentTransitioningView *)self _descriptionForState:[(AVPlaybackContentTransitioningView *)self transitionState]];
-  v4 = [(AVPlaybackContentTransitioningView *)self transitionDirection];
-  if (v4 > 3)
+  transitionDirection = [(AVPlaybackContentTransitioningView *)self transitionDirection];
+  if (transitionDirection > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = off_1E72085C0[v4];
+    v5 = off_1E72085C0[transitionDirection];
   }
 
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v3, v5];
@@ -84,26 +84,26 @@
   return v6;
 }
 
-- (id)_descriptionForState:(int64_t)a3
+- (id)_descriptionForState:(int64_t)state
 {
-  if (a3 > 7)
+  if (state > 7)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7208580[a3];
+    return off_1E7208580[state];
   }
 }
 
-- (void)setStateDescription:(id)a3
+- (void)setStateDescription:(id)description
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(NSString *)self->_stateDescription isEqualToString:v4])
+  descriptionCopy = description;
+  if (![(NSString *)self->_stateDescription isEqualToString:descriptionCopy])
   {
-    v5 = [v4 copy];
+    v5 = [descriptionCopy copy];
     stateDescription = self->_stateDescription;
     self->_stateDescription = v5;
 
@@ -132,104 +132,104 @@
   }
 }
 
-- (BOOL)_canTransitionFromState:(int64_t)a3 toState:(int64_t)a4
+- (BOOL)_canTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  if (a4 > 3)
+  if (toState > 3)
   {
-    v4 = 0x48u >> a3;
-    if (a3 >= 8)
+    v4 = 0x48u >> state;
+    if (state >= 8)
     {
       LOBYTE(v4) = 0;
     }
 
-    v9 = 0x40u >> a3;
-    if (a3 >= 8)
+    v9 = 0x40u >> state;
+    if (state >= 8)
     {
       LOBYTE(v9) = 0;
     }
 
-    if (a4 != 7)
+    if (toState != 7)
     {
       LOBYTE(v9) = 0;
     }
 
-    if (a4 != 6)
+    if (toState != 6)
     {
       LOBYTE(v4) = v9;
     }
 
-    v6 = 0x18u >> a3;
-    if (a3 >= 8)
+    v6 = 0x18u >> state;
+    if (state >= 8)
     {
       LOBYTE(v6) = 0;
     }
 
-    v10 = 0x10u >> a3;
-    if (a3 >= 8)
+    v10 = 0x10u >> state;
+    if (state >= 8)
     {
       LOBYTE(v10) = 0;
     }
 
-    if (a4 != 5)
+    if (toState != 5)
     {
       LOBYTE(v10) = 0;
     }
 
-    if (a4 != 4)
+    if (toState != 4)
     {
       LOBYTE(v6) = v10;
     }
 
-    v8 = a4 <= 5;
+    v8 = toState <= 5;
   }
 
   else
   {
-    v4 = 6u >> a3;
-    if (a3 >= 8)
+    v4 = 6u >> state;
+    if (state >= 8)
     {
       LOBYTE(v4) = 0;
     }
 
-    v5 = 0x5Au >> a3;
-    if (a3 >= 8)
+    v5 = 0x5Au >> state;
+    if (state >= 8)
     {
       LOBYTE(v5) = 0;
     }
 
-    if (a4 != 3)
+    if (toState != 3)
     {
       LOBYTE(v5) = 0;
     }
 
-    if (a4 != 2)
+    if (toState != 2)
     {
       LOBYTE(v4) = v5;
     }
 
-    v6 = 0xA5u >> a3;
-    if (a3 >= 8)
+    v6 = 0xA5u >> state;
+    if (state >= 8)
     {
       LOBYTE(v6) = 0;
     }
 
-    v7 = 1u >> a3;
-    if (a3 >= 8)
+    v7 = 1u >> state;
+    if (state >= 8)
     {
       LOBYTE(v7) = 0;
     }
 
-    if (a4 != 1)
+    if (toState != 1)
     {
       LOBYTE(v7) = 0;
     }
 
-    if (a4)
+    if (toState)
     {
       LOBYTE(v6) = v7;
     }
 
-    v8 = a4 <= 1;
+    v8 = toState <= 1;
   }
 
   if (v8)
@@ -304,34 +304,34 @@
 
 - (void)_ensureContentViews
 {
-  v3 = [(AVPlaybackContentTransitioningView *)self activeContentView];
+  activeContentView = [(AVPlaybackContentTransitioningView *)self activeContentView];
   [(AVPlaybackContentTransitioningView *)self frameForActiveContentView];
-  [v3 setFrame:?];
+  [activeContentView setFrame:?];
 
-  v4 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+  incomingContentView = [(AVPlaybackContentTransitioningView *)self incomingContentView];
   [(AVPlaybackContentTransitioningView *)self frameForTransitioningContentView];
-  [v4 setFrame:?];
+  [incomingContentView setFrame:?];
 
-  v5 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-  v6 = [v5 superview];
+  activeContentView2 = [(AVPlaybackContentTransitioningView *)self activeContentView];
+  superview = [activeContentView2 superview];
 
-  if (v6 != self)
+  if (superview != self)
   {
-    v7 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-    [(AVPlaybackContentTransitioningView *)self addSubview:v7];
+    activeContentView3 = [(AVPlaybackContentTransitioningView *)self activeContentView];
+    [(AVPlaybackContentTransitioningView *)self addSubview:activeContentView3];
   }
 
-  v8 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-  if (v8)
+  incomingContentView2 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+  if (incomingContentView2)
   {
-    v9 = v8;
-    v10 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-    v11 = [v10 superview];
+    v9 = incomingContentView2;
+    incomingContentView3 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+    superview2 = [incomingContentView3 superview];
 
-    if (v11 != self)
+    if (superview2 != self)
     {
-      v12 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-      [(AVPlaybackContentTransitioningView *)self addSubview:v12];
+      incomingContentView4 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+      [(AVPlaybackContentTransitioningView *)self addSubview:incomingContentView4];
     }
   }
 }
@@ -357,11 +357,11 @@
   v17 = *(MEMORY[0x1E695F058] + 8);
   v19 = *(MEMORY[0x1E695F058] + 16);
   v20 = *(MEMORY[0x1E695F058] + 24);
-  v21 = [(AVPlaybackContentTransitioningView *)self transitionState];
-  if (v21 <= 6 && ((1 << v21) & 0x58) != 0)
+  transitionState = [(AVPlaybackContentTransitioningView *)self transitionState];
+  if (transitionState <= 6 && ((1 << transitionState) & 0x58) != 0)
   {
-    v22 = [(AVPlaybackContentTransitioningView *)self transitionDirection];
-    if (v22 == 3)
+    transitionDirection = [(AVPlaybackContentTransitioningView *)self transitionDirection];
+    if (transitionDirection == 3)
     {
       [(AVPlaybackContentTransitioningView *)self _interpageSpacing];
       v28 = v27;
@@ -376,7 +376,7 @@
       v24 = v57;
     }
 
-    else if (v22 == 2)
+    else if (transitionDirection == 2)
     {
       [(AVPlaybackContentTransitioningView *)self _interpageSpacing];
       v26 = v25;
@@ -392,7 +392,7 @@
 
     else
     {
-      if (v22 == 1)
+      if (transitionDirection == 1)
       {
         v20 = v54;
         v19 = v55;
@@ -409,7 +409,7 @@
       }
 
       v24 = v57;
-      if (v22 == 1)
+      if (transitionDirection == 1)
       {
         v24 = *v58;
       }
@@ -427,8 +427,8 @@
   [(AVPlaybackContentTransitioningView *)self bounds];
   v30 = v29;
   v32 = v31;
-  v33 = [(AVPlaybackContentTransitioningView *)self transitionState];
-  if ((v33 - 3) < 2)
+  transitionState2 = [(AVPlaybackContentTransitioningView *)self transitionState];
+  if ((transitionState2 - 3) < 2)
   {
 LABEL_16:
     [(AVPlaybackContentTransitioningView *)self bounds];
@@ -438,9 +438,9 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  if (v33 != 7)
+  if (transitionState2 != 7)
   {
-    if (v33 != 6)
+    if (transitionState2 != 6)
     {
       goto LABEL_18;
     }
@@ -487,11 +487,11 @@ LABEL_18:
   [(AVPlaybackContentTransitioningView *)self _ensureContentViews];
 }
 
-- (void)_performBoundsOrContentSizeAdjustment:(id)a3
+- (void)_performBoundsOrContentSizeAdjustment:(id)adjustment
 {
-  v4 = a3;
+  adjustmentCopy = adjustment;
   [(AVPlaybackContentTransitioningView *)self setBoundsOrContentSizeAdjustmentCount:[(AVPlaybackContentTransitioningView *)self boundsOrContentSizeAdjustmentCount]+ 1];
-  v4[2](v4);
+  adjustmentCopy[2](adjustmentCopy);
 
   v5 = [(AVPlaybackContentTransitioningView *)self boundsOrContentSizeAdjustmentCount]- 1;
 
@@ -505,8 +505,8 @@ LABEL_18:
     return;
   }
 
-  v3 = [(AVPlaybackContentTransitioningView *)self transitionState];
-  if (v3 <= 7 && ((1 << v3) & 0xA7) != 0)
+  transitionState = [(AVPlaybackContentTransitioningView *)self transitionState];
+  if (transitionState <= 7 && ((1 << transitionState) & 0xA7) != 0)
   {
     if (([(AVPlaybackContentTransitioningView *)self _isHorizontalBouncing]& 1) != 0)
     {
@@ -530,22 +530,22 @@ LABEL_18:
     [(AVPlaybackContentTransitioningView *)self frameForActiveContentView];
     if (v13 <= CGRectGetMinX(v25))
     {
-      v14 = 2;
+      transitionDirection = 2;
     }
 
     else
     {
-      v14 = 3;
+      transitionDirection = 3;
     }
   }
 
   else
   {
     v11 = MEMORY[0x1E696AD98];
-    v14 = [(AVPlaybackContentTransitioningView *)self transitionDirection];
+    transitionDirection = [(AVPlaybackContentTransitioningView *)self transitionDirection];
   }
 
-  v4 = [v11 numberWithInteger:v14];
+  v4 = [v11 numberWithInteger:transitionDirection];
 LABEL_14:
   v23 = v4;
   [(AVPlaybackContentTransitioningView *)self contentSize];
@@ -554,15 +554,15 @@ LABEL_14:
   v17 = v16 - CGRectGetWidth(v26);
   if (v17 > 0.0)
   {
-    v18 = [v23 integerValue];
-    if (v18 == 3)
+    integerValue = [v23 integerValue];
+    if (integerValue == 3)
     {
       v19 = MEMORY[0x1E696AD98];
       [(AVPlaybackContentTransitioningView *)self contentOffset];
       goto LABEL_20;
     }
 
-    if (v18 == 2)
+    if (integerValue == 2)
     {
       v19 = MEMORY[0x1E696AD98];
       [(AVPlaybackContentTransitioningView *)self contentOffset];
@@ -578,16 +578,16 @@ LABEL_21:
   [(AVPlaybackContentTransitioningView *)self _setTransitionState:0 transitionDirection:v23 transitionProgress:v22];
 }
 
-- (void)performTransition:(int64_t)a3
+- (void)performTransition:(int64_t)transition
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [(AVPlaybackContentTransitioningView *)self transitionState];
-  if ((v5 - 1) >= 7)
+  transitionState = [(AVPlaybackContentTransitioningView *)self transitionState];
+  if ((transitionState - 1) >= 7)
   {
-    if (!v5)
+    if (!transitionState)
     {
       v7 = *(MEMORY[0x1E695EFF8] + 8);
-      if (a3 == 2)
+      if (transition == 2)
       {
         [(AVPlaybackContentTransitioningView *)self bounds];
         Width = CGRectGetWidth(v21);
@@ -595,7 +595,7 @@ LABEL_21:
         v10 = Width + v9;
       }
 
-      else if (a3 == 3)
+      else if (transition == 3)
       {
         [(AVPlaybackContentTransitioningView *)self bounds];
         v11 = CGRectGetWidth(v22);
@@ -620,23 +620,23 @@ LABEL_21:
     v6 = _AVLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(AVPlaybackContentTransitioningView *)self stateDescription];
+      stateDescription = [(AVPlaybackContentTransitioningView *)self stateDescription];
       v15 = 138412546;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v13;
+      v18 = stateDescription;
       _os_log_error_impl(&dword_18B49C000, v6, OS_LOG_TYPE_ERROR, "Instance %@ attempted content transition while one was already active. Ignoring. %@", &v15, 0x16u);
     }
   }
 }
 
-- (void)_setTransitionState:(id)a3 transitionDirection:(id)a4 transitionProgress:(id)a5
+- (void)_setTransitionState:(id)state transitionDirection:(id)direction transitionProgress:(id)progress
 {
   v167 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v161 = v8;
+  stateCopy = state;
+  directionCopy = direction;
+  progressCopy = progress;
+  v161 = stateCopy;
   if ([(AVPlaybackContentTransitioningView *)self _isAdjustingBoundsOrContentSize])
   {
     v11 = _AVLog();
@@ -646,40 +646,40 @@ LABEL_21:
       _os_log_error_impl(&dword_18B49C000, v11, OS_LOG_TYPE_ERROR, "Attempt to transition while adjusting bounds.", buf, 2u);
     }
 
-    v8 = v161;
+    stateCopy = v161;
   }
 
   transitionState = self->_transitionState;
   transitionDirection = self->_transitionDirection;
   transitionProgress = self->_transitionProgress;
-  v15 = transitionState;
-  if (v8)
+  integerValue = transitionState;
+  if (stateCopy)
   {
-    v15 = [v8 integerValue];
+    integerValue = [stateCopy integerValue];
   }
 
-  v16 = transitionDirection;
-  if (v9)
+  integerValue2 = transitionDirection;
+  if (directionCopy)
   {
-    v16 = [v9 integerValue];
+    integerValue2 = [directionCopy integerValue];
   }
 
   v17 = transitionProgress;
-  if (v10)
+  if (progressCopy)
   {
-    [v10 doubleValue];
+    [progressCopy doubleValue];
     v17 = v18;
   }
 
-  v160 = v10;
-  v19 = v9;
-  if (![(AVPlaybackContentTransitioningView *)self _canTransitionFromState:transitionState toState:v15])
+  v160 = progressCopy;
+  v19 = directionCopy;
+  if (![(AVPlaybackContentTransitioningView *)self _canTransitionFromState:transitionState toState:integerValue])
   {
     v20 = _AVLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v159 = [(AVPlaybackContentTransitioningView *)self _descriptionForState:transitionState];
-      v158 = [(AVPlaybackContentTransitioningView *)self _descriptionForState:v15];
+      v158 = [(AVPlaybackContentTransitioningView *)self _descriptionForState:integerValue];
       *buf = 138412546;
       v164 = v159;
       v165 = 2112;
@@ -688,14 +688,14 @@ LABEL_21:
     }
   }
 
-  if (v15 <= 7)
+  if (integerValue <= 7)
   {
-    if (((1 << v15) & 0x27) != 0)
+    if (((1 << integerValue) & 0x27) != 0)
     {
       v17 = 0.0;
     }
 
-    else if (((1 << v15) & 0x58) != 0)
+    else if (((1 << integerValue) & 0x58) != 0)
     {
       v17 = fmin(fmax(v17, 0.0), 1.0);
     }
@@ -706,24 +706,24 @@ LABEL_21:
     }
   }
 
-  self->_transitionDirection = v16;
+  self->_transitionDirection = integerValue2;
   self->_transitionProgress = v17;
-  self->_transitionState = v15;
+  self->_transitionState = integerValue;
   v162[0] = MEMORY[0x1E69E9820];
   v162[1] = 3221225472;
   v162[2] = __97__AVPlaybackContentTransitioningView__setTransitionState_transitionDirection_transitionProgress___block_invoke;
   v162[3] = &unk_1E7208ED8;
-  v162[5] = v15;
+  v162[5] = integerValue;
   v162[6] = transitionState;
   v162[4] = self;
   [(AVPlaybackContentTransitioningView *)self _performBoundsOrContentSizeAdjustment:v162];
-  v21 = [(AVPlaybackContentTransitioningView *)self _makeStateDescription];
-  [(AVPlaybackContentTransitioningView *)self setStateDescription:v21];
+  _makeStateDescription = [(AVPlaybackContentTransitioningView *)self _makeStateDescription];
+  [(AVPlaybackContentTransitioningView *)self setStateDescription:_makeStateDescription];
 
-  v22 = [(AVPlaybackContentTransitioningView *)self contentTransitioningDelegate];
-  [v22 contentTransitioningViewDidChangeTransitionStatus:self oldState:transitionState oldTransitionDirection:transitionDirection oldProgress:transitionProgress];
+  contentTransitioningDelegate = [(AVPlaybackContentTransitioningView *)self contentTransitioningDelegate];
+  [contentTransitioningDelegate contentTransitioningViewDidChangeTransitionStatus:self oldState:transitionState oldTransitionDirection:transitionDirection oldProgress:transitionProgress];
 
-  if (v15 != self->_transitionState)
+  if (integerValue != self->_transitionState)
   {
     v23 = _AVLog();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -733,16 +733,16 @@ LABEL_21:
     }
   }
 
-  if (v15 <= 3)
+  if (integerValue <= 3)
   {
     v24 = v19;
-    if (v15 <= 1)
+    if (integerValue <= 1)
     {
-      if (v15)
+      if (integerValue)
       {
-        if (v15 == 1)
+        if (integerValue == 1)
         {
-          if (!v16)
+          if (!integerValue2)
           {
             v25 = _AVLog();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -752,28 +752,28 @@ LABEL_21:
             }
           }
 
-          v26 = [(AVPlaybackContentTransitioningView *)self contentTransitioningDelegate];
-          v27 = [v26 contentTransitioningView:self shouldBeginTransitionWithDirection:v16];
+          contentTransitioningDelegate2 = [(AVPlaybackContentTransitioningView *)self contentTransitioningDelegate];
+          v27 = [contentTransitioningDelegate2 contentTransitioningView:self shouldBeginTransitionWithDirection:integerValue2];
 
           if (v27)
           {
-            v28 = [(AVPlaybackContentTransitioningView *)self contentTransitioningDelegate];
-            v29 = [v28 contentTransitioningPlayerContentViewForTransition:self];
+            contentTransitioningDelegate3 = [(AVPlaybackContentTransitioningView *)self contentTransitioningDelegate];
+            v29 = [contentTransitioningDelegate3 contentTransitioningPlayerContentViewForTransition:self];
             incomingContentView = self->_incomingContentView;
             self->_incomingContentView = v29;
 
-            v31 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-            [v31 setPlayingOnSecondScreen:{-[AVPlaybackContentTransitioningView isPlayingOnSecondScreen](self, "isPlayingOnSecondScreen")}];
+            incomingContentView = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+            [incomingContentView setPlayingOnSecondScreen:{-[AVPlaybackContentTransitioningView isPlayingOnSecondScreen](self, "isPlayingOnSecondScreen")}];
 
-            v32 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-            v33 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-            [v32 setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:{objc_msgSend(v33, "canShowStatusBarBackgroundGradientWhenStatusBarVisible")}];
+            incomingContentView2 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+            activeContentView = [(AVPlaybackContentTransitioningView *)self activeContentView];
+            [incomingContentView2 setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:{objc_msgSend(activeContentView, "canShowStatusBarBackgroundGradientWhenStatusBarVisible")}];
 
-            v34 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-            v35 = [v34 playerLayerView];
-            v36 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-            v37 = [v36 playerLayerView];
-            [v35 setVideoGravity:{objc_msgSend(v37, "videoGravity")}];
+            incomingContentView3 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+            playerLayerView = [incomingContentView3 playerLayerView];
+            activeContentView2 = [(AVPlaybackContentTransitioningView *)self activeContentView];
+            playerLayerView2 = [activeContentView2 playerLayerView];
+            [playerLayerView setVideoGravity:{objc_msgSend(playerLayerView2, "videoGravity")}];
 
 LABEL_108:
             v38 = &unk_1EFF12AB8;
@@ -787,31 +787,31 @@ LABEL_108:
         goto LABEL_120;
       }
 
-      if (!v16)
+      if (!integerValue2)
       {
         goto LABEL_120;
       }
 
       v38 = &unk_1EFF12AA0;
 LABEL_118:
-      v130 = self;
+      selfCopy9 = self;
       v131 = 0;
       v52 = 0;
       goto LABEL_119;
     }
 
-    if (v15 == 2)
+    if (integerValue == 2)
     {
-      v91 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
+      targetContentOffset = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
 
-      if (v91)
+      if (targetContentOffset)
       {
         [(AVPlaybackContentTransitioningView *)self setTargetContentOffset:0];
         [(AVPlaybackContentTransitioningView *)self setContentOffset:0 animated:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
         goto LABEL_120;
       }
 
-      if (transitionDirection == v16)
+      if (transitionDirection == integerValue2)
       {
         goto LABEL_120;
       }
@@ -820,7 +820,7 @@ LABEL_118:
       goto LABEL_118;
     }
 
-    if (!v16 && transitionState != 3)
+    if (!integerValue2 && transitionState != 3)
     {
       v39 = _AVLog();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -830,13 +830,13 @@ LABEL_118:
       }
     }
 
-    v40 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
-    if (v40)
+    targetContentOffset2 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
+    if (targetContentOffset2)
     {
-      v41 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
-      [v41 CGPointValue];
+      targetContentOffset3 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
+      [targetContentOffset3 CGPointValue];
       [(AVPlaybackContentTransitioningView *)self frameForActiveContentView];
-      v42 = self;
+      selfCopy2 = self;
       UIPointRoundToViewScale();
       v44 = v43;
       v46 = v45;
@@ -852,13 +852,13 @@ LABEL_118:
       v51 = 0;
     }
 
-    v132 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
-    if (v132)
+    targetContentOffset4 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
+    if (targetContentOffset4)
     {
-      v133 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
-      [v133 CGPointValue];
+      targetContentOffset5 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
+      [targetContentOffset5 CGPointValue];
       [(AVPlaybackContentTransitioningView *)self frameForTransitioningContentView];
-      v134 = self;
+      selfCopy3 = self;
       UIPointRoundToViewScale();
       v136 = v135;
       v138 = v137;
@@ -881,7 +881,7 @@ LABEL_118:
     [(AVPlaybackContentTransitioningView *)self frameForTransitioningContentView];
     v145 = CGRectGetMinX(v173);
     [(AVPlaybackContentTransitioningView *)self contentOffset];
-    if (v16 == 3)
+    if (integerValue2 == 3)
     {
       if (transitionDirection != 3)
       {
@@ -907,9 +907,9 @@ LABEL_114:
 
     else
     {
-      if (v16 != 2)
+      if (integerValue2 != 2)
       {
-        if (v16)
+        if (integerValue2)
         {
           v148 = 0;
           v147 = 0;
@@ -936,26 +936,26 @@ LABEL_114:
   }
 
   v24 = v19;
-  if (v15 > 5)
+  if (integerValue > 5)
   {
-    if (v15 != 6)
+    if (integerValue != 6)
     {
-      if (v15 == 7)
+      if (integerValue == 7)
       {
         v38 = &unk_1EFF12AE8;
         v52 = &unk_1EFF13250;
 LABEL_74:
-        v130 = self;
+        selfCopy9 = self;
         v131 = 0;
 LABEL_119:
-        [(AVPlaybackContentTransitioningView *)v130 _setTransitionState:v38 transitionDirection:v131 transitionProgress:v52];
+        [(AVPlaybackContentTransitioningView *)selfCopy9 _setTransitionState:v38 transitionDirection:v131 transitionProgress:v52];
         goto LABEL_120;
       }
 
       goto LABEL_120;
     }
 
-    if (transitionDirection != v16 && v16)
+    if (transitionDirection != integerValue2 && integerValue2)
     {
       v92 = _AVLog();
       if (os_log_type_enabled(v92, OS_LOG_TYPE_ERROR))
@@ -972,14 +972,14 @@ LABEL_119:
 
     [(AVPlaybackContentTransitioningView *)self bounds];
     [(AVPlaybackContentTransitioningView *)self _frameExcludingTransitioningContent];
-    v93 = self;
+    selfCopy5 = self;
     UIPointRoundToViewScale();
     v95 = v94;
     v97 = v96;
     UISizeRoundToViewScale();
     v99 = v98;
     v101 = v100;
-    self = v93;
+    self = selfCopy5;
     UIPointRoundToViewScale();
     v103 = v102;
     v105 = v104;
@@ -1001,14 +1001,14 @@ LABEL_119:
     {
       [(AVPlaybackContentTransitioningView *)self frameForTransitioningContentView];
       [(AVPlaybackContentTransitioningView *)self bounds];
-      v111 = self;
+      selfCopy6 = self;
       UIPointRoundToViewScale();
       v113 = v112;
       v115 = v114;
       UISizeRoundToViewScale();
       v117 = v116;
       v119 = v118;
-      v120 = v111;
+      v120 = selfCopy6;
       UIPointRoundToViewScale();
       v122 = v121;
       v124 = v123;
@@ -1032,17 +1032,17 @@ LABEL_119:
       v129 = 1;
     }
 
-    v153 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
-    v150 = (!v153 || [(AVPlaybackContentTransitioningView *)self isDragging]&& ([(AVPlaybackContentTransitioningView *)self isDecelerating]& 1) == 0 && [(AVPlaybackContentTransitioningView *)self isTracking]) && !v129;
+    targetContentOffset6 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
+    v150 = (!targetContentOffset6 || [(AVPlaybackContentTransitioningView *)self isDragging]&& ([(AVPlaybackContentTransitioningView *)self isDecelerating]& 1) == 0 && [(AVPlaybackContentTransitioningView *)self isTracking]) && !v129;
 
     if (v129)
     {
-      v154 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-      [v154 removeFromSuperview];
+      activeContentView3 = [(AVPlaybackContentTransitioningView *)self activeContentView];
+      [activeContentView3 removeFromSuperview];
 
-      v155 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+      incomingContentView4 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
       activeContentView = self->_activeContentView;
-      self->_activeContentView = v155;
+      self->_activeContentView = incomingContentView4;
 
       [(AVPlaybackContentContainerView *)self->_activeContentView setPlayingOnSecondScreen:[(AVPlaybackContentTransitioningView *)self isPlayingOnSecondScreen]];
       v157 = self->_incomingContentView;
@@ -1063,7 +1063,7 @@ LABEL_107:
     goto LABEL_120;
   }
 
-  if (v15 != 4)
+  if (integerValue != 4)
   {
     v38 = &unk_1EFF12AE8;
 LABEL_73:
@@ -1071,7 +1071,7 @@ LABEL_73:
     goto LABEL_74;
   }
 
-  if (transitionDirection != v16 && v16)
+  if (transitionDirection != integerValue2 && integerValue2)
   {
     v53 = _AVLog();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -1085,14 +1085,14 @@ LABEL_73:
   {
     [(AVPlaybackContentTransitioningView *)self bounds];
     [(AVPlaybackContentTransitioningView *)self _frameExcludingActiveContent];
-    v54 = self;
+    selfCopy7 = self;
     UIPointRoundToViewScale();
     v56 = v55;
     v58 = v57;
     UISizeRoundToViewScale();
     v60 = v59;
     v62 = v61;
-    self = v54;
+    self = selfCopy7;
     UIPointRoundToViewScale();
     v64 = v63;
     v66 = v65;
@@ -1114,14 +1114,14 @@ LABEL_73:
     {
       [(AVPlaybackContentTransitioningView *)self frameForActiveContentView];
       [(AVPlaybackContentTransitioningView *)self bounds];
-      v72 = self;
+      selfCopy8 = self;
       UIPointRoundToViewScale();
       v74 = v73;
       v76 = v75;
       UISizeRoundToViewScale();
       v78 = v77;
       v80 = v79;
-      v81 = v72;
+      v81 = selfCopy8;
       UIPointRoundToViewScale();
       v83 = v82;
       v85 = v84;
@@ -1145,13 +1145,13 @@ LABEL_73:
       v90 = 1;
     }
 
-    v149 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
-    v150 = (!v149 || [(AVPlaybackContentTransitioningView *)self isDragging]&& ([(AVPlaybackContentTransitioningView *)self isDecelerating]& 1) == 0 && [(AVPlaybackContentTransitioningView *)self isTracking]) && !v90;
+    targetContentOffset7 = [(AVPlaybackContentTransitioningView *)self targetContentOffset];
+    v150 = (!targetContentOffset7 || [(AVPlaybackContentTransitioningView *)self isDragging]&& ([(AVPlaybackContentTransitioningView *)self isDecelerating]& 1) == 0 && [(AVPlaybackContentTransitioningView *)self isTracking]) && !v90;
 
     if (v90)
     {
-      v151 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-      [v151 removeFromSuperview];
+      incomingContentView5 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+      [incomingContentView5 removeFromSuperview];
 
       v152 = self->_incomingContentView;
       self->_incomingContentView = 0;
@@ -1160,7 +1160,7 @@ LABEL_73:
       v131 = &unk_1EFF12AE8;
       v52 = &unk_1EFF13240;
 LABEL_106:
-      v130 = self;
+      selfCopy9 = self;
       goto LABEL_119;
     }
 
@@ -1182,33 +1182,33 @@ uint64_t __97__AVPlaybackContentTransitioningView__setTransitionState_transition
   return result;
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(AVPlaybackContentTransitioningView *)self setTransitionInteractive:0];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(AVPlaybackContentTransitioningView *)self setTargetContentOffset:0];
 
   [(AVPlaybackContentTransitioningView *)self setTransitionInteractive:0];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(AVPlaybackContentTransitioningView *)self setTransitionInteractive:1];
 
   [(AVPlaybackContentTransitioningView *)self setTargetContentOffset:0];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a5->x;
-  y = a5->y;
-  [(AVPlaybackContentTransitioningView *)self contentSize:a3];
+  x = offset->x;
+  y = offset->y;
+  [(AVPlaybackContentTransitioningView *)self contentSize:dragging];
   v10 = v9;
   [(AVPlaybackContentTransitioningView *)self bounds];
   if (v10 == CGRectGetWidth(v16) || ([(AVPlaybackContentTransitioningView *)self contentSize], x <= v11 * 0.5))
@@ -1228,55 +1228,55 @@ uint64_t __97__AVPlaybackContentTransitioningView__setTransitionState_transition
   v15 = [MEMORY[0x1E696B098] valueWithCGPoint:{v14, y}];
   [(AVPlaybackContentTransitioningView *)self setTargetContentOffset:v15];
 
-  a5->x = v14;
-  a5->y = y;
+  offset->x = v14;
+  offset->y = y;
 }
 
 - (BOOL)canShowStatusBarBackgroundGradientWhenStatusBarVisible
 {
-  v2 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-  v3 = [v2 canShowStatusBarBackgroundGradientWhenStatusBarVisible];
+  activeContentView = [(AVPlaybackContentTransitioningView *)self activeContentView];
+  canShowStatusBarBackgroundGradientWhenStatusBarVisible = [activeContentView canShowStatusBarBackgroundGradientWhenStatusBarVisible];
 
-  return v3;
+  return canShowStatusBarBackgroundGradientWhenStatusBarVisible;
 }
 
-- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)a3
+- (void)setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:(BOOL)visible
 {
-  v3 = a3;
-  v5 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-  [v5 setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:v3];
+  visibleCopy = visible;
+  activeContentView = [(AVPlaybackContentTransitioningView *)self activeContentView];
+  [activeContentView setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:visibleCopy];
 
-  v6 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-  [v6 setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:v3];
+  incomingContentView = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+  [incomingContentView setCanShowStatusBarBackgroundGradientWhenStatusBarVisible:visibleCopy];
 }
 
-- (void)setVideoGravity:(int64_t)a3 removingAllSublayerTransformAnimations:(BOOL)a4
+- (void)setVideoGravity:(int64_t)gravity removingAllSublayerTransformAnimations:(BOOL)animations
 {
-  v4 = a4;
-  v7 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-  [v7 setVideoGravity:a3 removingAllSublayerTransformAnimations:v4];
+  animationsCopy = animations;
+  activeContentView = [(AVPlaybackContentTransitioningView *)self activeContentView];
+  [activeContentView setVideoGravity:gravity removingAllSublayerTransformAnimations:animationsCopy];
 
-  v8 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-  [v8 setVideoGravity:a3 removingAllSublayerTransformAnimations:v4];
+  incomingContentView = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+  [incomingContentView setVideoGravity:gravity removingAllSublayerTransformAnimations:animationsCopy];
 }
 
-- (void)setVideoContentFrame:(CGRect)a3
+- (void)setVideoContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-  [v8 setVideoContentFrame:{x, y, width, height}];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  activeContentView = [(AVPlaybackContentTransitioningView *)self activeContentView];
+  [activeContentView setVideoContentFrame:{x, y, width, height}];
 
-  v9 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-  [v9 setVideoContentFrame:{x, y, width, height}];
+  incomingContentView = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+  [incomingContentView setVideoContentFrame:{x, y, width, height}];
 }
 
 - (CGRect)videoContentFrame
 {
-  v2 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-  [v2 videoContentFrame];
+  activeContentView = [(AVPlaybackContentTransitioningView *)self activeContentView];
+  [activeContentView videoContentFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1293,28 +1293,28 @@ uint64_t __97__AVPlaybackContentTransitioningView__setTransitionState_transition
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = AVPlaybackContentTransitioningView;
-  [(AVPlaybackContentTransitioningView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AVPlaybackContentTransitioningView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AVPlaybackContentTransitioningView *)self _updateTransitionStateIfPossible];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v9.receiver = self;
   v9.super_class = AVPlaybackContentTransitioningView;
-  if ([(AVPlaybackContentTransitioningView *)&v9 gestureRecognizerShouldBegin:v4])
+  if ([(AVPlaybackContentTransitioningView *)&v9 gestureRecognizerShouldBegin:beginCopy])
   {
-    v5 = [(AVPlaybackContentTransitioningView *)self panGestureRecognizer];
+    panGestureRecognizer = [(AVPlaybackContentTransitioningView *)self panGestureRecognizer];
 
-    if (v5 == v4)
+    if (panGestureRecognizer == beginCopy)
     {
-      v7 = [(AVPlaybackContentTransitioningView *)self contentTransitioningDelegate];
-      [v4 locationInView:self];
-      v6 = [v7 contentTransitioningViewShouldBeginDragging:self locationInView:?];
+      contentTransitioningDelegate = [(AVPlaybackContentTransitioningView *)self contentTransitioningDelegate];
+      [beginCopy locationInView:self];
+      v6 = [contentTransitioningDelegate contentTransitioningViewShouldBeginDragging:self locationInView:?];
     }
 
     else
@@ -1331,61 +1331,61 @@ uint64_t __97__AVPlaybackContentTransitioningView__setTransitionState_transition
   return v6;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v3.receiver = self;
   v3.super_class = AVPlaybackContentTransitioningView;
-  [(AVPlaybackContentTransitioningView *)&v3 setDelegate:a3];
+  [(AVPlaybackContentTransitioningView *)&v3 setDelegate:delegate];
 }
 
-- (void)setPlayingOnSecondScreen:(BOOL)a3
+- (void)setPlayingOnSecondScreen:(BOOL)screen
 {
-  v3 = a3;
-  self->_playingOnSecondScreen = a3;
-  v5 = [(AVPlaybackContentTransitioningView *)self activeContentView];
-  [v5 setPlayingOnSecondScreen:v3];
+  screenCopy = screen;
+  self->_playingOnSecondScreen = screen;
+  activeContentView = [(AVPlaybackContentTransitioningView *)self activeContentView];
+  [activeContentView setPlayingOnSecondScreen:screenCopy];
 
-  v6 = [(AVPlaybackContentTransitioningView *)self incomingContentView];
-  [v6 setPlayingOnSecondScreen:v3];
+  incomingContentView = [(AVPlaybackContentTransitioningView *)self incomingContentView];
+  [incomingContentView setPlayingOnSecondScreen:screenCopy];
 }
 
-- (AVPlaybackContentTransitioningView)initWithFrame:(CGRect)a3 activeContentView:(id)a4
+- (AVPlaybackContentTransitioningView)initWithFrame:(CGRect)frame activeContentView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v15.receiver = self;
   v15.super_class = AVPlaybackContentTransitioningView;
-  v10 = [(AVPlaybackContentTransitioningView *)&v15 initWithFrame:x, y, width, height];
-  if (v10)
+  height = [(AVPlaybackContentTransitioningView *)&v15 initWithFrame:x, y, width, height];
+  if (height)
   {
     v11 = *MEMORY[0x1E695EFF8];
     v12 = *(MEMORY[0x1E695EFF8] + 8);
-    v13 = v9;
-    if (!v9)
+    height2 = viewCopy;
+    if (!viewCopy)
     {
-      v13 = [[AVPlaybackContentContainerView alloc] initWithFrame:0 activeContentView:v11, v12, width, height];
+      height2 = [[AVPlaybackContentContainerView alloc] initWithFrame:0 activeContentView:v11, v12, width, height];
     }
 
-    objc_storeStrong(&v10->_activeContentView, v13);
-    if (!v9)
+    objc_storeStrong(&height->_activeContentView, height2);
+    if (!viewCopy)
     {
     }
 
-    [(AVPlaybackContentContainerView *)v10->_activeContentView setFrame:v11, v12, width, height];
-    [(AVPlaybackContentTransitioningView *)v10 setContentInsetAdjustmentBehavior:2];
-    [(AVPlaybackContentTransitioningView *)v10 setPagingEnabled:1];
-    [(AVPlaybackContentTransitioningView *)v10 setDelegate:v10];
-    [(AVPlaybackContentTransitioningView *)v10 setShowsHorizontalScrollIndicator:0];
-    [(AVPlaybackContentTransitioningView *)v10 setShowsVerticalScrollIndicator:0];
-    [(AVPlaybackContentTransitioningView *)v10 _setInterpageSpacing:24.0, 0.0];
-    [(AVPlaybackContentTransitioningView *)v10 setAlwaysBounceHorizontal:1];
-    [(AVPlaybackContentTransitioningView *)v10 setDirectionalLockEnabled:1];
+    [(AVPlaybackContentContainerView *)height->_activeContentView setFrame:v11, v12, width, height];
+    [(AVPlaybackContentTransitioningView *)height setContentInsetAdjustmentBehavior:2];
+    [(AVPlaybackContentTransitioningView *)height setPagingEnabled:1];
+    [(AVPlaybackContentTransitioningView *)height setDelegate:height];
+    [(AVPlaybackContentTransitioningView *)height setShowsHorizontalScrollIndicator:0];
+    [(AVPlaybackContentTransitioningView *)height setShowsVerticalScrollIndicator:0];
+    [(AVPlaybackContentTransitioningView *)height _setInterpageSpacing:24.0, 0.0];
+    [(AVPlaybackContentTransitioningView *)height setAlwaysBounceHorizontal:1];
+    [(AVPlaybackContentTransitioningView *)height setDirectionalLockEnabled:1];
   }
 
-  return v10;
+  return height;
 }
 
 @end

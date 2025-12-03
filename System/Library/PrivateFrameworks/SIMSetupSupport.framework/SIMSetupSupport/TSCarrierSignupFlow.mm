@@ -1,24 +1,24 @@
 @interface TSCarrierSignupFlow
-- (TSCarrierSignupFlow)initWithPlan:(id)a3;
-- (TSCarrierSignupFlow)initWithPlan:(id)a3 queriableFirstViewController:(BOOL)a4 hostViewController:(id)a5;
-- (id)_getSFSafariViewControllerWithURL:(id)a3;
-- (id)_handleCarrierInfoWithUrl:(id)a3 postdata:(id)a4 type:(id)a5 error:(id)a6;
-- (id)nextViewControllerFrom:(id)a3;
+- (TSCarrierSignupFlow)initWithPlan:(id)plan;
+- (TSCarrierSignupFlow)initWithPlan:(id)plan queriableFirstViewController:(BOOL)controller hostViewController:(id)viewController;
+- (id)_getSFSafariViewControllerWithURL:(id)l;
+- (id)_handleCarrierInfoWithUrl:(id)url postdata:(id)postdata type:(id)type error:(id)error;
+- (id)nextViewControllerFrom:(id)from;
 - (void)dealloc;
-- (void)didPurchasePlanSuccessfullyWithCarrier:(id)a3 mnc:(id)a4 gid1:(id)a5 gid2:(id)a6 state:(id)a7;
-- (void)didPurchasePlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 alternateSDMP:(id)a7 state:(id)a8;
-- (void)safariViewControllerDidFinish:(id)a3;
-- (void)showFirstViewControllerWithHostController:(id)a3 completion:(id)a4;
-- (void)startTimer:(int64_t)a3;
-- (void)viewControllerDidComplete:(id)a3;
+- (void)didPurchasePlanSuccessfullyWithCarrier:(id)carrier mnc:(id)mnc gid1:(id)gid1 gid2:(id)gid2 state:(id)state;
+- (void)didPurchasePlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid alternateSDMP:(id)p state:(id)state;
+- (void)safariViewControllerDidFinish:(id)finish;
+- (void)showFirstViewControllerWithHostController:(id)controller completion:(id)completion;
+- (void)startTimer:(int64_t)timer;
+- (void)viewControllerDidComplete:(id)complete;
 @end
 
 @implementation TSCarrierSignupFlow
 
-- (TSCarrierSignupFlow)initWithPlan:(id)a3 queriableFirstViewController:(BOOL)a4 hostViewController:(id)a5
+- (TSCarrierSignupFlow)initWithPlan:(id)plan queriableFirstViewController:(BOOL)controller hostViewController:(id)viewController
 {
-  v9 = a3;
-  v10 = a5;
+  planCopy = plan;
+  viewControllerCopy = viewController;
   if (!+[TSUtilities isPad])
   {
     v17 = _TSLogDomain();
@@ -30,7 +30,7 @@
     goto LABEL_10;
   }
 
-  if (!v9)
+  if (!planCopy)
   {
     v17 = _TSLogDomain();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@
 
 LABEL_10:
 
-    v16 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -52,28 +52,28 @@ LABEL_10:
     v12 = +[TSUserInPurchaseFlowAssertion sharedInstance];
     [v12 assertUserInPurchaseFlowStartOver:0 caller:v11];
 
-    objc_storeStrong(&v11->_hostViewController, a5);
-    v11->_isQueriableFirstViewController = a4;
+    objc_storeStrong(&v11->_hostViewController, viewController);
+    v11->_isQueriableFirstViewController = controller;
     v13 = [objc_alloc(MEMORY[0x277CC37B0]) initWithQueue:0];
     client = v11->_client;
     v11->_client = v13;
 
-    objc_storeStrong(&v11->_plan, a3);
+    objc_storeStrong(&v11->_plan, plan);
     postdata = v11->_postdata;
     v11->_postdata = 0;
   }
 
   self = v11;
-  v16 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v16;
+  return selfCopy;
 }
 
-- (TSCarrierSignupFlow)initWithPlan:(id)a3
+- (TSCarrierSignupFlow)initWithPlan:(id)plan
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  planCopy = plan;
   if (!+[TSUtilities isPad])
   {
     v15 = _TSLogDomain();
@@ -85,7 +85,7 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  if (!v5)
+  if (!planCopy)
   {
     v15 = _TSLogDomain();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -95,7 +95,7 @@ LABEL_11:
 
 LABEL_10:
 
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
@@ -112,7 +112,7 @@ LABEL_10:
     client = v6->_client;
     v6->_client = v8;
 
-    objc_storeStrong(&v6->_plan, a3);
+    objc_storeStrong(&v6->_plan, plan);
     postdata = v6->_postdata;
     v6->_postdata = 0;
 
@@ -129,11 +129,11 @@ LABEL_10:
   }
 
   self = v6;
-  v14 = self;
+  selfCopy = self;
 LABEL_11:
 
   v16 = *MEMORY[0x277D85DE8];
-  return v14;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -146,11 +146,11 @@ LABEL_11:
   [(TSCarrierSignupFlow *)&v4 dealloc];
 }
 
-- (void)showFirstViewControllerWithHostController:(id)a3 completion:(id)a4
+- (void)showFirstViewControllerWithHostController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (controllerCopy)
   {
     objc_initWeak(&location, self);
     client = self->_client;
@@ -160,9 +160,9 @@ LABEL_11:
     v11[2] = __76__TSCarrierSignupFlow_showFirstViewControllerWithHostController_completion___block_invoke;
     v11[3] = &unk_279B44A00;
     objc_copyWeak(&v15, &location);
-    v14 = v7;
-    v12 = v6;
-    v13 = self;
+    v14 = completionCopy;
+    v12 = controllerCopy;
+    selfCopy = self;
     [(CoreTelephonyClient *)client websheetInfoForPlan:plan completion:v11];
 
     objc_destroyWeak(&v15);
@@ -177,7 +177,7 @@ LABEL_11:
       [TSCarrierSignupFlow showFirstViewControllerWithHostController:completion:];
     }
 
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
@@ -409,9 +409,9 @@ void __76__TSCarrierSignupFlow_showFirstViewControllerWithHostController_complet
   }
 }
 
-- (id)nextViewControllerFrom:(id)a3
+- (id)nextViewControllerFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -419,8 +419,8 @@ void __76__TSCarrierSignupFlow_showFirstViewControllerWithHostController_complet
     if (v5)
     {
       v6 = v5;
-      v7 = [(TSBuddyMLController *)self->_buddyMLController type];
-      v8 = [v7 isEqualToString:@"Lite"];
+      type = [(TSBuddyMLController *)self->_buddyMLController type];
+      v8 = [type isEqualToString:@"Lite"];
 
       if (v8)
       {
@@ -439,18 +439,18 @@ void __76__TSCarrierSignupFlow_showFirstViewControllerWithHostController_complet
       goto LABEL_12;
     }
 
-    [(TSSIMSetupFlow *)self showLoadFailureAlert:v4 error:0];
+    [(TSSIMSetupFlow *)self showLoadFailureAlert:fromCopy error:0];
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 dismissCause] == 3)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [fromCopy dismissCause] == 3)
     {
       v10 = [TSSubFlowViewController alloc];
       subFlow = self->_subFlow;
-      v12 = [(TSSIMSetupFlow *)self navigationController];
-      v9 = [(TSSubFlowViewController *)v10 initWithFlow:subFlow navigationController:v12 delegate:self];
+      navigationController = [(TSSIMSetupFlow *)self navigationController];
+      v9 = [(TSSubFlowViewController *)v10 initWithFlow:subFlow navigationController:navigationController delegate:self];
 
       goto LABEL_12;
     }
@@ -462,19 +462,19 @@ LABEL_12:
   return v9;
 }
 
-- (void)viewControllerDidComplete:(id)a3
+- (void)viewControllerDidComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  v5 = [v4 dismissCause];
-  if (v5)
+  dismissCause = [completeCopy dismissCause];
+  if (dismissCause)
   {
-    if (v5 == 1)
+    if (dismissCause == 1)
     {
       [(TSSIMSetupFlow *)self endFlowGracefully:3];
       goto LABEL_6;
@@ -483,7 +483,7 @@ LABEL_12:
 LABEL_5:
     v6.receiver = self;
     v6.super_class = TSCarrierSignupFlow;
-    [(TSSIMSetupFlow *)&v6 viewControllerDidComplete:v4];
+    [(TSSIMSetupFlow *)&v6 viewControllerDidComplete:completeCopy];
     goto LABEL_6;
   }
 
@@ -495,7 +495,7 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)startTimer:(int64_t)a3
+- (void)startTimer:(int64_t)timer
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = _TSLogDomain();
@@ -509,42 +509,42 @@ LABEL_6:
     _os_log_impl(&dword_262AA8000, v5, OS_LOG_TYPE_DEFAULT, "start timer on subflow %@ @%s", &v8, 0x16u);
   }
 
-  [(TSSIMSetupFlow *)self->_subFlow startTimer:a3];
+  [(TSSIMSetupFlow *)self->_subFlow startTimer:timer];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didPurchasePlanSuccessfullyWithEid:(id)a3 imei:(id)a4 meid:(id)a5 iccid:(id)a6 alternateSDMP:(id)a7 state:(id)a8
+- (void)didPurchasePlanSuccessfullyWithEid:(id)eid imei:(id)imei meid:(id)meid iccid:(id)iccid alternateSDMP:(id)p state:(id)state
 {
-  v11 = a8;
-  v12 = a7;
-  v13 = a6;
-  v15 = [TSUtilities getByteRepresentationOf:a3];
-  v14 = [MEMORY[0x277CF96D8] sharedManager];
-  [v14 didPurchasePlanForCsn:v15 iccid:v13 profileServer:v12 state:v11];
+  stateCopy = state;
+  pCopy = p;
+  iccidCopy = iccid;
+  v15 = [TSUtilities getByteRepresentationOf:eid];
+  mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+  [mEMORY[0x277CF96D8] didPurchasePlanForCsn:v15 iccid:iccidCopy profileServer:pCopy state:stateCopy];
 }
 
-- (void)didPurchasePlanSuccessfullyWithCarrier:(id)a3 mnc:(id)a4 gid1:(id)a5 gid2:(id)a6 state:(id)a7
+- (void)didPurchasePlanSuccessfullyWithCarrier:(id)carrier mnc:(id)mnc gid1:(id)gid1 gid2:(id)gid2 state:(id)state
 {
   v11 = MEMORY[0x277CF96D8];
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v11 sharedManager];
-  [v17 didPurchasePlanForCarrier:v16 mnc:v15 gid1:v14 gid2:v13 state:v12];
+  stateCopy = state;
+  gid2Copy = gid2;
+  gid1Copy = gid1;
+  mncCopy = mnc;
+  carrierCopy = carrier;
+  sharedManager = [v11 sharedManager];
+  [sharedManager didPurchasePlanForCarrier:carrierCopy mnc:mncCopy gid1:gid1Copy gid2:gid2Copy state:stateCopy];
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__TSCarrierSignupFlow_safariViewControllerDidFinish___block_invoke;
   v6[3] = &unk_279B44490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = finishCopy;
+  v5 = finishCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -570,18 +570,18 @@ uint64_t __53__TSCarrierSignupFlow_safariViewControllerDidFinish___block_invoke(
   return result;
 }
 
-- (id)_handleCarrierInfoWithUrl:(id)a3 postdata:(id)a4 type:(id)a5 error:(id)a6
+- (id)_handleCarrierInfoWithUrl:(id)url postdata:(id)postdata type:(id)type error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  urlCopy = url;
+  postdataCopy = postdata;
+  typeCopy = type;
+  errorCopy = error;
+  if (errorCopy)
   {
     v14 = _TSLogDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [TSCarrierSignupFlow _handleCarrierInfoWithUrl:v13 postdata:v14 type:? error:?];
+      [TSCarrierSignupFlow _handleCarrierInfoWithUrl:errorCopy postdata:v14 type:? error:?];
     }
 
 LABEL_12:
@@ -590,7 +590,7 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (!v10 || ![v10 length])
+  if (!urlCopy || ![urlCopy length])
   {
     v14 = _TSLogDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -601,44 +601,44 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (v11 && [v11 count])
+  if (postdataCopy && [postdataCopy count])
   {
-    if ([v12 isEqualToString:@"websheet"])
+    if ([typeCopy isEqualToString:@"websheet"])
     {
-      v15 = [MEMORY[0x277CBEBC0] URLWithString:v10];
+      v15 = [MEMORY[0x277CBEBC0] URLWithString:urlCopy];
       v16 = 1;
     }
 
-    else if ([v12 isEqualToString:@"buddyml"])
+    else if ([typeCopy isEqualToString:@"buddyml"])
     {
-      v15 = [MEMORY[0x277CBEBC0] URLWithString:v10];
+      v15 = [MEMORY[0x277CBEBC0] URLWithString:urlCopy];
       v16 = 5;
     }
 
-    else if ([v12 isEqualToString:@"entitlements"])
+    else if ([typeCopy isEqualToString:@"entitlements"])
     {
-      v15 = [MEMORY[0x277CBEBC0] URLWithString:v10];
+      v15 = [MEMORY[0x277CBEBC0] URLWithString:urlCopy];
       v16 = 2;
     }
 
     else
     {
-      if (![v12 isEqualToString:@"Lite"])
+      if (![typeCopy isEqualToString:@"Lite"])
       {
         v14 = _TSLogDomain();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          [TSCarrierSignupFlow _handleCarrierInfoWithUrl:v12 postdata:self type:v14 error:?];
+          [TSCarrierSignupFlow _handleCarrierInfoWithUrl:typeCopy postdata:self type:v14 error:?];
         }
 
         goto LABEL_12;
       }
 
-      v15 = [MEMORY[0x277CBEBC0] URLWithString:v10];
+      v15 = [MEMORY[0x277CBEBC0] URLWithString:urlCopy];
       v16 = 6;
     }
 
-    v17 = [TSURLRequestFactory requestWithType:v16 URL:v15 postdata:v11];
+    v17 = [TSURLRequestFactory requestWithType:v16 URL:v15 postdata:postdataCopy];
   }
 
   else
@@ -650,7 +650,7 @@ LABEL_12:
     }
 
     v20 = MEMORY[0x277CCAB70];
-    v21 = [MEMORY[0x277CBEBC0] URLWithString:v10];
+    v21 = [MEMORY[0x277CBEBC0] URLWithString:urlCopy];
     v17 = [v20 requestWithURL:v21];
 
     [v17 _setNonAppInitiated:1];
@@ -661,10 +661,10 @@ LABEL_13:
   return v17;
 }
 
-- (id)_getSFSafariViewControllerWithURL:(id)a3
+- (id)_getSFSafariViewControllerWithURL:(id)l
 {
   v4 = MEMORY[0x277CDB708];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc_init(v4);
   [v6 setEntersReaderIfAvailable:0];
   [v6 _setEphemeral:1];
@@ -673,7 +673,7 @@ LABEL_13:
     [v6 set_isBeingUsedForCellularServiceBootstrap:1];
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CDB700]) initWithURL:v5 configuration:v6];
+  v7 = [objc_alloc(MEMORY[0x277CDB700]) initWithURL:lCopy configuration:v6];
 
   [v7 setDelegate:self];
   [v7 _setShowingLinkPreview:0];

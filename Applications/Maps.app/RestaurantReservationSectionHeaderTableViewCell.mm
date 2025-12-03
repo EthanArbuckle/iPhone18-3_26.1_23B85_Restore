@@ -1,14 +1,14 @@
 @interface RestaurantReservationSectionHeaderTableViewCell
 - (BOOL)hidesHairline;
 - (NSString)text;
-- (RestaurantReservationSectionHeaderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (RestaurantReservationSectionHeaderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIColor)textColor;
 - (UIFont)font;
 - (void)initConstraints;
-- (void)setFont:(id)a3;
-- (void)setHidesHairline:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setFont:(id)font;
+- (void)setHidesHairline:(BOOL)hairline;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 - (void)updateTheme;
 @end
 
@@ -16,62 +16,62 @@
 
 - (UIFont)font
 {
-  v2 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  v3 = [v2 font];
+  headerLabel = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  font = [headerLabel font];
 
-  return v3;
+  return font;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  headerLabel = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  [headerLabel setFont:fontCopy];
 }
 
 - (BOOL)hidesHairline
 {
-  v2 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
-  v3 = [v2 isHidden];
+  hairlineContainer = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
+  isHidden = [hairlineContainer isHidden];
 
-  return v3;
+  return isHidden;
 }
 
-- (void)setHidesHairline:(BOOL)a3
+- (void)setHidesHairline:(BOOL)hairline
 {
-  v3 = a3;
-  v4 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
-  [v4 setHidden:v3];
+  hairlineCopy = hairline;
+  hairlineContainer = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
+  [hairlineContainer setHidden:hairlineCopy];
 }
 
 - (NSString)text
 {
-  v2 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  v3 = [v2 text];
+  headerLabel = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  text = [headerLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v5 = [a3 localizedUppercaseString];
-  v4 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  [v4 setText:v5];
+  localizedUppercaseString = [text localizedUppercaseString];
+  headerLabel = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  [headerLabel setText:localizedUppercaseString];
 }
 
 - (UIColor)textColor
 {
-  v2 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  v3 = [v2 textColor];
+  headerLabel = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  textColor = [headerLabel textColor];
 
-  return v3;
+  return textColor;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  v5 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  [v5 setTextColor:v4];
+  colorCopy = color;
+  headerLabel = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  [headerLabel setTextColor:colorCopy];
 }
 
 - (void)updateTheme
@@ -79,83 +79,83 @@
   v6.receiver = self;
   v6.super_class = RestaurantReservationSectionHeaderTableViewCell;
   [(MapsThemeTableViewCell *)&v6 updateTheme];
-  v3 = [(RestaurantReservationSectionHeaderTableViewCell *)self theme];
-  v4 = [v3 hairlineColor];
-  v5 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
-  [v5 setHairlineColor:v4];
+  theme = [(RestaurantReservationSectionHeaderTableViewCell *)self theme];
+  hairlineColor = [theme hairlineColor];
+  hairlineContainer = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
+  [hairlineContainer setHairlineColor:hairlineColor];
 }
 
 - (void)initConstraints
 {
-  v3 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headerLabel = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  [headerLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  hairlineContainer = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
+  [hairlineContainer setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v50 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
-  v49 = [v50 layoutMarginsGuide];
-  v47 = [v49 leadingAnchor];
-  v48 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
-  v46 = [v48 leadingAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  contentView = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor = [layoutMarginsGuide leadingAnchor];
+  hairlineContainer2 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
+  leadingAnchor2 = [hairlineContainer2 leadingAnchor];
+  v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v51[0] = v45;
-  v44 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
-  v42 = [v44 trailingAnchor];
-  v43 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
-  v41 = [v43 trailingAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  contentView2 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
+  trailingAnchor = [contentView2 trailingAnchor];
+  hairlineContainer3 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
+  trailingAnchor2 = [hairlineContainer3 trailingAnchor];
+  v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v51[1] = v40;
-  v39 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
-  v37 = [v39 topAnchor];
-  v38 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
-  v36 = [v38 topAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  contentView3 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
+  hairlineContainer4 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
+  topAnchor2 = [hairlineContainer4 topAnchor];
+  v35 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v51[2] = v35;
-  v34 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
-  v32 = [v34 bottomAnchor];
-  v33 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
-  v31 = [v33 bottomAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  contentView4 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
+  bottomAnchor = [contentView4 bottomAnchor];
+  hairlineContainer5 = [(RestaurantReservationSectionHeaderTableViewCell *)self hairlineContainer];
+  bottomAnchor2 = [hairlineContainer5 bottomAnchor];
+  v30 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v51[3] = v30;
-  v29 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
-  v28 = [v29 layoutMarginsGuide];
-  v26 = [v28 leadingAnchor];
-  v27 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  v25 = [v27 leadingAnchor];
-  v24 = [v26 constraintEqualToAnchor:v25];
+  contentView5 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
+  layoutMarginsGuide2 = [contentView5 layoutMarginsGuide];
+  leadingAnchor3 = [layoutMarginsGuide2 leadingAnchor];
+  headerLabel2 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  leadingAnchor4 = [headerLabel2 leadingAnchor];
+  v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v51[4] = v24;
-  v23 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
-  v22 = [v23 layoutMarginsGuide];
-  v20 = [v22 trailingAnchor];
-  v21 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  v19 = [v21 trailingAnchor];
-  v18 = [v20 constraintEqualToAnchor:v19];
+  contentView6 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
+  layoutMarginsGuide3 = [contentView6 layoutMarginsGuide];
+  trailingAnchor3 = [layoutMarginsGuide3 trailingAnchor];
+  headerLabel3 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  trailingAnchor4 = [headerLabel3 trailingAnchor];
+  v18 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v51[5] = v18;
-  v17 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  v15 = [v17 firstBaselineAnchor];
-  v16 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
-  v5 = [v16 topAnchor];
-  v6 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  v7 = [v6 font];
-  [v7 _mapkit_scaledValueForValue:26.0];
-  v8 = [v15 constraintEqualToAnchor:v5 constant:?];
+  headerLabel4 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  firstBaselineAnchor = [headerLabel4 firstBaselineAnchor];
+  contentView7 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
+  topAnchor3 = [contentView7 topAnchor];
+  headerLabel5 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  font = [headerLabel5 font];
+  [font _mapkit_scaledValueForValue:26.0];
+  v8 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor3 constant:?];
   v51[6] = v8;
-  v9 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
-  v10 = [v9 bottomAnchor];
-  v11 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
-  v12 = [v11 bottomAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  contentView8 = [(RestaurantReservationSectionHeaderTableViewCell *)self contentView];
+  bottomAnchor3 = [contentView8 bottomAnchor];
+  headerLabel6 = [(RestaurantReservationSectionHeaderTableViewCell *)self headerLabel];
+  bottomAnchor4 = [headerLabel6 bottomAnchor];
+  v13 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v51[7] = v13;
   v14 = [NSArray arrayWithObjects:v51 count:8];
   [NSLayoutConstraint activateConstraints:v14];
 }
 
-- (RestaurantReservationSectionHeaderTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RestaurantReservationSectionHeaderTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v20.receiver = self;
   v20.super_class = RestaurantReservationSectionHeaderTableViewCell;
-  v4 = [(MapsThemeTableViewCell *)&v20 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(MapsThemeTableViewCell *)&v20 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MKViewWithHairline);
@@ -165,30 +165,30 @@
     [(RestaurantReservationSectionHeaderTableViewCell *)v4 setHeaderLabel:v6];
 
     v7 = +[UIColor labelColor];
-    v8 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
-    [v8 setTextColor:v7];
+    headerLabel = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
+    [headerLabel setTextColor:v7];
 
-    v9 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
-    [v9 setTextAlignment:0];
+    headerLabel2 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
+    [headerLabel2 setTextAlignment:0];
 
     v10 = +[UIColor clearColor];
-    v11 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
-    [v11 setBackgroundColor:v10];
+    headerLabel3 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
+    [headerLabel3 setBackgroundColor:v10];
 
-    v12 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
-    [v12 setNumberOfLines:1];
+    headerLabel4 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
+    [headerLabel4 setNumberOfLines:1];
 
     v13 = +[UIFont system15];
-    v14 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
-    [v14 setFont:v13];
+    headerLabel5 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
+    [headerLabel5 setFont:v13];
 
-    v15 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 contentView];
-    v16 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 hairlineContainer];
-    [v15 addSubview:v16];
+    contentView = [(RestaurantReservationSectionHeaderTableViewCell *)v4 contentView];
+    hairlineContainer = [(RestaurantReservationSectionHeaderTableViewCell *)v4 hairlineContainer];
+    [contentView addSubview:hairlineContainer];
 
-    v17 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 contentView];
-    v18 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
-    [v17 addSubview:v18];
+    contentView2 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 contentView];
+    headerLabel6 = [(RestaurantReservationSectionHeaderTableViewCell *)v4 headerLabel];
+    [contentView2 addSubview:headerLabel6];
 
     [(RestaurantReservationSectionHeaderTableViewCell *)v4 initConstraints];
   }

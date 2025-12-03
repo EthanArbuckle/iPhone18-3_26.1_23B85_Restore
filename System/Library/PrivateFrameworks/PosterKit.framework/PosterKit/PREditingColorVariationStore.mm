@@ -1,45 +1,45 @@
 @interface PREditingColorVariationStore
-+ (id)posterColorForColor:(id)a3 withAppliedVariation:(double)a4;
-+ (void)performMigrationsIfNeededForStorage:(id)a3 version:(unint64_t)a4;
++ (id)posterColorForColor:(id)color withAppliedVariation:(double)variation;
++ (void)performMigrationsIfNeededForStorage:(id)storage version:(unint64_t)version;
 - (PREditingColorVariationStore)init;
-- (PREditingColorVariationStore)initWithVariationStorage:(id)a3 version:(unint64_t)a4;
-- (id)baseColorForVariedColor:(id)a3 forContextIdentifier:(id)a4 variation:(double *)a5 forDataLayerPicker:(BOOL)a6;
+- (PREditingColorVariationStore)initWithVariationStorage:(id)storage version:(unint64_t)version;
+- (id)baseColorForVariedColor:(id)color forContextIdentifier:(id)identifier variation:(double *)variation forDataLayerPicker:(BOOL)picker;
 - (id)dictionaryRepresentation;
-- (id)persistedVariationForContextIdentifier:(id)a3;
-- (id)variationForPickerColor:(id)a3 forContextIdentifier:(id)a4;
+- (id)persistedVariationForContextIdentifier:(id)identifier;
+- (id)variationForPickerColor:(id)color forContextIdentifier:(id)identifier;
 - (void)resetAllValues;
-- (void)setVariation:(double)a3 forPickerColor:(id)a4 forContextIdentifier:(id)a5;
+- (void)setVariation:(double)variation forPickerColor:(id)color forContextIdentifier:(id)identifier;
 @end
 
 @implementation PREditingColorVariationStore
 
-+ (void)performMigrationsIfNeededForStorage:(id)a3 version:(unint64_t)a4
++ (void)performMigrationsIfNeededForStorage:(id)storage version:(unint64_t)version
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  storageCopy = storage;
+  v6 = storageCopy;
+  if (storageCopy)
   {
-    v7 = v5;
-    v5 = [objc_opt_class() version];
+    v7 = storageCopy;
+    storageCopy = [objc_opt_class() version];
     v6 = v7;
-    if (a4 <= 2 && v5 > a4)
+    if (version <= 2 && storageCopy > version)
     {
-      v5 = [v7 removeAllObjects];
+      storageCopy = [v7 removeAllObjects];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](storageCopy, v6);
 }
 
-+ (id)posterColorForColor:(id)a3 withAppliedVariation:(double)a4
++ (id)posterColorForColor:(id)color withAppliedVariation:(double)variation
 {
-  v5 = a3;
-  v6 = [[PRPosterColor alloc] initWithColor:v5 preferredStyle:0];
+  colorCopy = color;
+  v6 = [[PRPosterColor alloc] initWithColor:colorCopy preferredStyle:0];
 
-  v7 = a4 * -0.25;
-  v8 = [(PRPosterColor *)v6 hslValues];
-  [v8 luminance];
+  v7 = variation * -0.25;
+  hslValues = [(PRPosterColor *)v6 hslValues];
+  [hslValues luminance];
   v10 = v9;
 
   v11 = fmax(v10 + v7, 0.0);
@@ -53,24 +53,24 @@
   return v12;
 }
 
-- (PREditingColorVariationStore)initWithVariationStorage:(id)a3 version:(unint64_t)a4
+- (PREditingColorVariationStore)initWithVariationStorage:(id)storage version:(unint64_t)version
 {
-  v6 = a3;
+  storageCopy = storage;
   v14.receiver = self;
   v14.super_class = PREditingColorVariationStore;
   v7 = [(PREditingColorVariationStore *)&v14 init];
   if (v7)
   {
-    v8 = [v6 mutableCopy];
-    [objc_opt_class() performMigrationsIfNeededForStorage:v8 version:a4];
-    if (!v8)
+    dictionary = [storageCopy mutableCopy];
+    [objc_opt_class() performMigrationsIfNeededForStorage:dictionary version:version];
+    if (!dictionary)
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
     }
 
     variationStorage = v7->_variationStorage;
-    v7->_variationStorage = v8;
-    v10 = v8;
+    v7->_variationStorage = dictionary;
+    v10 = dictionary;
 
     v11 = [(NSMutableDictionary *)v10 mutableCopy];
     persistentVariationStorage = v7->_persistentVariationStorage;
@@ -82,16 +82,16 @@
 
 - (PREditingColorVariationStore)init
 {
-  v3 = [objc_opt_class() version];
+  version = [objc_opt_class() version];
 
-  return [(PREditingColorVariationStore *)self initWithVariationStorage:0 version:v3];
+  return [(PREditingColorVariationStore *)self initWithVariationStorage:0 version:version];
 }
 
-- (id)baseColorForVariedColor:(id)a3 forContextIdentifier:(id)a4 variation:(double *)a5 forDataLayerPicker:(BOOL)a6
+- (id)baseColorForVariedColor:(id)color forContextIdentifier:(id)identifier variation:(double *)variation forDataLayerPicker:(BOOL)picker
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(NSMutableDictionary *)self->_variationStorage objectForKeyedSubscript:v11];
+  colorCopy = color;
+  identifierCopy = identifier;
+  v12 = [(NSMutableDictionary *)self->_variationStorage objectForKeyedSubscript:identifierCopy];
   if (v12)
   {
     v29 = 0;
@@ -108,17 +108,17 @@
     v17[1] = 3221225472;
     v17[2] = __106__PREditingColorVariationStore_baseColorForVariedColor_forContextIdentifier_variation_forDataLayerPicker___block_invoke;
     v17[3] = &unk_1E7843240;
-    v22 = a6;
-    v18 = v10;
-    v19 = self;
+    pickerCopy = picker;
+    v18 = colorCopy;
+    selfCopy = self;
     v20 = &v23;
     v21 = &v29;
     [v12 enumerateKeysAndObjectsUsingBlock:v17];
     v13 = v24;
     v14 = v24[5];
-    if (a5 && v14)
+    if (variation && v14)
     {
-      *a5 = v30[3];
+      *variation = v30[3];
       v14 = v13[5];
     }
 
@@ -167,16 +167,16 @@ void __106__PREditingColorVariationStore_baseColorForVariedColor_forContextIdent
   }
 }
 
-- (id)variationForPickerColor:(id)a3 forContextIdentifier:(id)a4
+- (id)variationForPickerColor:(id)color forContextIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a3 baseColor];
-  v8 = [(NSMutableDictionary *)self->_variationStorage objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  baseColor = [color baseColor];
+  v8 = [(NSMutableDictionary *)self->_variationStorage objectForKeyedSubscript:identifierCopy];
 
   if (v8)
   {
-    v9 = [v7 identifier];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    identifier = [baseColor identifier];
+    v10 = [v8 objectForKeyedSubscript:identifier];
     v11 = v10;
     if (v10)
     {
@@ -185,10 +185,10 @@ void __106__PREditingColorVariationStore_baseColorForVariedColor_forContextIdent
 
     else
     {
-      v13 = [v7 colorValues];
-      v14 = [v13 identifier];
+      colorValues = [baseColor colorValues];
+      identifier2 = [colorValues identifier];
 
-      v12 = [v8 objectForKeyedSubscript:v14];
+      v12 = [v8 objectForKeyedSubscript:identifier2];
     }
   }
 
@@ -200,54 +200,54 @@ void __106__PREditingColorVariationStore_baseColorForVariedColor_forContextIdent
   return v11;
 }
 
-- (void)setVariation:(double)a3 forPickerColor:(id)a4 forContextIdentifier:(id)a5
+- (void)setVariation:(double)variation forPickerColor:(id)color forContextIdentifier:(id)identifier
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [a4 baseColor];
-  v10 = [(NSMutableDictionary *)self->_variationStorage objectForKeyedSubscript:v8];
+  identifierCopy = identifier;
+  baseColor = [color baseColor];
+  v10 = [(NSMutableDictionary *)self->_variationStorage objectForKeyedSubscript:identifierCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 mutableCopy];
+    dictionary = [v10 mutableCopy];
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  v13 = v12;
-  v14 = [v9 identifier];
-  v15 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v13 setObject:v15 forKeyedSubscript:v14];
+  v13 = dictionary;
+  identifier = [baseColor identifier];
+  v15 = [MEMORY[0x1E696AD98] numberWithDouble:variation];
+  [v13 setObject:v15 forKeyedSubscript:identifier];
 
   v16 = [v13 copy];
-  [(NSMutableDictionary *)self->_variationStorage setObject:v16 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_variationStorage setObject:v16 forKeyedSubscript:identifierCopy];
 
-  v19 = v14;
-  v17 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v19 = identifier;
+  v17 = [MEMORY[0x1E696AD98] numberWithDouble:variation];
   v20[0] = v17;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
-  [(NSMutableDictionary *)self->_persistentVariationStorage setObject:v18 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)self->_persistentVariationStorage setObject:v18 forKeyedSubscript:identifierCopy];
 }
 
-- (id)persistedVariationForContextIdentifier:(id)a3
+- (id)persistedVariationForContextIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_persistentVariationStorage objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->_persistentVariationStorage objectForKeyedSubscript:identifier];
   v4 = v3;
   if (v3 && [v3 count] <= 1)
   {
-    v6 = [v4 allValues];
-    v5 = [v6 firstObject];
+    allValues = [v4 allValues];
+    firstObject = [allValues firstObject];
   }
 
   else
   {
-    v5 = 0;
+    firstObject = 0;
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (id)dictionaryRepresentation

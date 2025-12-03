@@ -1,22 +1,22 @@
 @interface HMIDataReader
-- (HMIDataReader)initWithData:(id)a3;
-- (id)readData:(unint64_t)a3;
+- (HMIDataReader)initWithData:(id)data;
+- (id)readData:(unint64_t)data;
 - (unint64_t)readUInt64;
 - (unsigned)readUInt32;
 @end
 
 @implementation HMIDataReader
 
-- (HMIDataReader)initWithData:(id)a3
+- (HMIDataReader)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = HMIDataReader;
   v6 = [(HMIDataReader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
     v7->_position = 0;
   }
 
@@ -25,24 +25,24 @@
 
 - (unsigned)readUInt32
 {
-  v3 = [(NSData *)self->_data bytes];
+  bytes = [(NSData *)self->_data bytes];
   position = self->_position;
   self->_position = position + 4;
-  return bswap32(*&v3[position]);
+  return bswap32(*&bytes[position]);
 }
 
 - (unint64_t)readUInt64
 {
-  v3 = [(NSData *)self->_data bytes];
+  bytes = [(NSData *)self->_data bytes];
   position = self->_position;
   self->_position = position + 8;
-  return bswap64(*&v3[position]);
+  return bswap64(*&bytes[position]);
 }
 
-- (id)readData:(unint64_t)a3
+- (id)readData:(unint64_t)data
 {
-  result = [(NSData *)self->_data subdataWithRange:self->_position, a3];
-  self->_position += a3;
+  result = [(NSData *)self->_data subdataWithRange:self->_position, data];
+  self->_position += data;
   return result;
 }
 

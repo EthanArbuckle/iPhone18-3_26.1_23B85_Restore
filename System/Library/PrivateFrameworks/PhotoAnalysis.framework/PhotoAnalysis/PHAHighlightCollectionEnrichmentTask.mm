@@ -1,8 +1,8 @@
 @interface PHAHighlightCollectionEnrichmentTask
-- (PHAHighlightCollectionEnrichmentTask)initWithOptions:(id)a3;
+- (PHAHighlightCollectionEnrichmentTask)initWithOptions:(id)options;
 - (id)enrichmentProcessor;
 - (id)taskClassDependencies;
-- (void)timeoutFatal:(BOOL)a3;
+- (void)timeoutFatal:(BOOL)fatal;
 @end
 
 @implementation PHAHighlightCollectionEnrichmentTask
@@ -22,9 +22,9 @@
   return v2;
 }
 
-- (void)timeoutFatal:(BOOL)a3
+- (void)timeoutFatal:(BOOL)fatal
 {
-  if (a3)
+  if (fatal)
   {
     __assert_rtn("[PHAHighlightCollectionEnrichmentTask timeoutFatal:]", "PHAHighlightCollectionEnrichmentTask.m", 55, "NO");
   }
@@ -45,16 +45,16 @@
   return v2;
 }
 
-- (PHAHighlightCollectionEnrichmentTask)initWithOptions:(id)a3
+- (PHAHighlightCollectionEnrichmentTask)initWithOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   v9.receiver = self;
   v9.super_class = PHAHighlightCollectionEnrichmentTask;
   v6 = [(PHAHighlightCollectionEnrichmentTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_options, a3);
+    objc_storeStrong(&v6->_options, options);
   }
 
   return v7;

@@ -1,17 +1,17 @@
 @interface SASProximityPasscodeValidationAction
-+ (id)actionFromDictionary:(id)a3;
++ (id)actionFromDictionary:(id)dictionary;
 - (id)requestPayload;
 - (id)responsePayload;
-- (void)setResponseFromData:(id)a3;
+- (void)setResponseFromData:(id)data;
 @end
 
 @implementation SASProximityPasscodeValidationAction
 
-+ (id)actionFromDictionary:(id)a3
++ (id)actionFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(SASProximityPasscodeValidationAction);
-  v5 = [v3 objectForKeyedSubscript:@"passcode"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"passcode"];
 
   [(SASProximityPasscodeValidationAction *)v4 setPasscode:v5];
 
@@ -22,8 +22,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"passcode";
-  v2 = [(SASProximityPasscodeValidationAction *)self passcode];
-  v7[0] = v2;
+  passcode = [(SASProximityPasscodeValidationAction *)self passcode];
+  v7[0] = passcode;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -34,9 +34,9 @@
 - (id)responsePayload
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  v4 = [(SASProximityPasscodeValidationAction *)self passcode];
-  v5 = [v3 unlockDeviceWithPasscode:v4 outError:0];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  passcode = [(SASProximityPasscodeValidationAction *)self passcode];
+  v5 = [mEMORY[0x277D262A0] unlockDeviceWithPasscode:passcode outError:0];
 
   v17 = @"success";
   v6 = [MEMORY[0x277CCABB0] numberWithBool:v5];
@@ -67,17 +67,17 @@
   return v8;
 }
 
-- (void)setResponseFromData:(id)a3
+- (void)setResponseFromData:(id)data
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAAC8];
   v5 = MEMORY[0x277CBEB98];
-  v6 = a3;
+  dataCopy = data;
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v5 setWithObjects:{v7, v8, objc_opt_class(), 0}];
   v15 = 0;
-  v10 = [v4 unarchivedObjectOfClasses:v9 fromData:v6 error:&v15];
+  v10 = [v4 unarchivedObjectOfClasses:v9 fromData:dataCopy error:&v15];
 
   v11 = v15;
   if (!v10)

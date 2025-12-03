@@ -1,20 +1,20 @@
 @interface HMDNetworkRouterFirewallRuleManagerOverrideParser
-+ (id)_parseOverrideNetworkDeclarationsWithProductGroup:(id)a3 productNumber:(id)a4 productNumberDictionary:(id)a5 accessoryIdentifier:(id)a6;
-+ (id)_parseOverridePairedMetadataWithProductGroup:(id)a3 productNumber:(id)a4 productNumberDictionary:(id)a5 accessoryIdentifier:(id)a6;
++ (id)_parseOverrideNetworkDeclarationsWithProductGroup:(id)group productNumber:(id)number productNumberDictionary:(id)dictionary accessoryIdentifier:(id)identifier;
++ (id)_parseOverridePairedMetadataWithProductGroup:(id)group productNumber:(id)number productNumberDictionary:(id)dictionary accessoryIdentifier:(id)identifier;
 + (id)logCategory;
-+ (id)parseFromData:(id)a3;
++ (id)parseFromData:(id)data;
 @end
 
 @implementation HMDNetworkRouterFirewallRuleManagerOverrideParser
 
-+ (id)_parseOverridePairedMetadataWithProductGroup:(id)a3 productNumber:(id)a4 productNumberDictionary:(id)a5 accessoryIdentifier:(id)a6
++ (id)_parseOverridePairedMetadataWithProductGroup:(id)group productNumber:(id)number productNumberDictionary:(id)dictionary accessoryIdentifier:(id)identifier
 {
   v47 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(__CFString *)v11 objectForKeyedSubscript:@"pairedMetadata"];
+  groupCopy = group;
+  numberCopy = number;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  v13 = [(__CFString *)dictionaryCopy objectForKeyedSubscript:@"pairedMetadata"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -35,7 +35,7 @@
     v17 = v36;
     if (v16)
     {
-      v18 = [[HMDCloudPairedMetadata alloc] initWithBaseAccessoryIdentifier:v12 data:v16 allowUnzippedData:1];
+      v18 = [[HMDCloudPairedMetadata alloc] initWithBaseAccessoryIdentifier:identifierCopy data:v16 allowUnzippedData:1];
       if (v18)
       {
         v19 = v16;
@@ -44,7 +44,7 @@
       else
       {
         context = objc_autoreleasePoolPush();
-        v28 = a1;
+        selfCopy = self;
         v29 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
@@ -52,11 +52,11 @@
           *buf = 138544130;
           v38 = v32;
           v39 = 2112;
-          v40 = v35;
+          v40 = groupCopy;
           v41 = 2112;
-          v42 = v10;
+          v42 = numberCopy;
           v43 = 2112;
-          v44 = v11;
+          v44 = dictionaryCopy;
           _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_ERROR, "%{public}@JSON dictionary for '%@':'%@' did not parse correctly: %@", buf, 0x2Au);
         }
 
@@ -68,7 +68,7 @@
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -77,11 +77,11 @@
         *buf = 138544386;
         v38 = v27;
         v39 = 2112;
-        v40 = v35;
+        v40 = groupCopy;
         v41 = 2112;
-        v42 = v10;
+        v42 = numberCopy;
         v43 = 2112;
-        v44 = v11;
+        v44 = dictionaryCopy;
         v45 = 2112;
         v46 = v17;
         _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_ERROR, "%{public}@JSON dictionary for '%@':'%@' failed to convert to JSON: %@: %@", buf, 0x34u);
@@ -97,7 +97,7 @@
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = a1;
+    selfCopy3 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -105,9 +105,9 @@
       *buf = 138544386;
       v38 = v23;
       v39 = 2112;
-      v40 = v35;
+      v40 = groupCopy;
       v41 = 2112;
-      v42 = v10;
+      v42 = numberCopy;
       v43 = 2112;
       v44 = @"pairedMetadata";
       v45 = 2112;
@@ -124,14 +124,14 @@
   return v19;
 }
 
-+ (id)_parseOverrideNetworkDeclarationsWithProductGroup:(id)a3 productNumber:(id)a4 productNumberDictionary:(id)a5 accessoryIdentifier:(id)a6
++ (id)_parseOverrideNetworkDeclarationsWithProductGroup:(id)group productNumber:(id)number productNumberDictionary:(id)dictionary accessoryIdentifier:(id)identifier
 {
   v47 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(__CFString *)v11 objectForKeyedSubscript:@"networkDeclarations"];
+  groupCopy = group;
+  numberCopy = number;
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  v13 = [(__CFString *)dictionaryCopy objectForKeyedSubscript:@"networkDeclarations"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -152,7 +152,7 @@
     v17 = v36;
     if (v16)
     {
-      v18 = [[HMDNetworkRouterFirewallRuleCloudNetworkDeclarations alloc] initWithBaseAccessoryIdentifier:v12 data:v16 allowUnzippedData:1];
+      v18 = [[HMDNetworkRouterFirewallRuleCloudNetworkDeclarations alloc] initWithBaseAccessoryIdentifier:identifierCopy data:v16 allowUnzippedData:1];
       if (v18)
       {
         v19 = v16;
@@ -161,7 +161,7 @@
       else
       {
         context = objc_autoreleasePoolPush();
-        v28 = a1;
+        selfCopy = self;
         v29 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
         {
@@ -169,11 +169,11 @@
           *buf = 138544130;
           v38 = v32;
           v39 = 2112;
-          v40 = v35;
+          v40 = groupCopy;
           v41 = 2112;
-          v42 = v10;
+          v42 = numberCopy;
           v43 = 2112;
-          v44 = v11;
+          v44 = dictionaryCopy;
           _os_log_impl(&dword_2531F8000, v29, OS_LOG_TYPE_ERROR, "%{public}@JSON dictionary for '%@':'%@' did not parse correctly: %@", buf, 0x2Au);
         }
 
@@ -185,7 +185,7 @@
     else
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = a1;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -194,11 +194,11 @@
         *buf = 138544386;
         v38 = v27;
         v39 = 2112;
-        v40 = v35;
+        v40 = groupCopy;
         v41 = 2112;
-        v42 = v10;
+        v42 = numberCopy;
         v43 = 2112;
-        v44 = v11;
+        v44 = dictionaryCopy;
         v45 = 2112;
         v46 = v17;
         _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_ERROR, "%{public}@JSON dictionary for '%@':'%@' failed to convert to JSON: %@: %@", buf, 0x34u);
@@ -214,7 +214,7 @@
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = a1;
+    selfCopy3 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -222,9 +222,9 @@
       *buf = 138544386;
       v38 = v23;
       v39 = 2112;
-      v40 = v35;
+      v40 = groupCopy;
       v41 = 2112;
-      v42 = v10;
+      v42 = numberCopy;
       v43 = 2112;
       v44 = @"networkDeclarations";
       v45 = 2112;
@@ -241,12 +241,12 @@
   return v19;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v37 = 0;
-  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v37];
+  v5 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v37];
   v6 = v37;
   v7 = v6;
   if (v5)
@@ -278,7 +278,7 @@
 
     if (isKindOfClass)
     {
-      v18 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x2020000000;
@@ -288,8 +288,8 @@
       v32 = __67__HMDNetworkRouterFirewallRuleManagerOverrideParser_parseFromData___block_invoke;
       v33 = &unk_279722FC8;
       v35 = buf;
-      v36 = a1;
-      v19 = v18;
+      selfCopy = self;
+      v19 = dictionary;
       v34 = v19;
       [v14 enumerateKeysAndObjectsUsingBlock:&v30];
       if (*(*&buf[8] + 24))
@@ -302,7 +302,7 @@
         if (![v19 count])
         {
           v24 = objc_autoreleasePoolPush();
-          v25 = a1;
+          selfCopy2 = self;
           v26 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
@@ -326,7 +326,7 @@
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = a1;
+      selfCopy3 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
@@ -346,7 +346,7 @@
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    selfCopy4 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {

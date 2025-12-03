@@ -1,9 +1,9 @@
 @interface HKCDAPDFGenerator
 + (id)PDFTranslator;
 - (HKCDAPDFGenerator)init;
-- (void)_finishGenerationWithURL:(id)a3 tempFileDescriptor:(int)a4 completionHandler:(id)a5 error:(id)a6;
-- (void)_pdfForHTML:(id)a3 completionHandler:(id)a4;
-- (void)generatePDFForCDAXML:(id)a3 completionHandler:(id)a4;
+- (void)_finishGenerationWithURL:(id)l tempFileDescriptor:(int)descriptor completionHandler:(id)handler error:(id)error;
+- (void)_pdfForHTML:(id)l completionHandler:(id)handler;
+- (void)generatePDFForCDAXML:(id)l completionHandler:(id)handler;
 @end
 
 @implementation HKCDAPDFGenerator
@@ -15,12 +15,12 @@
   return [(HKCDAPDFGenerator *)&v3 init];
 }
 
-- (void)generatePDFForCDAXML:(id)a3 completionHandler:(id)a4
+- (void)generatePDFForCDAXML:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  lCopy = l;
+  handlerCopy = handler;
+  v6 = handlerCopy;
+  v7 = lCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
@@ -31,19 +31,19 @@ void __60__HKCDAPDFGenerator_generatePDFForCDAXML_completionHandler___block_invo
   [*(a1 + 40) _pdfForHTML:v2 completionHandler:*(a1 + 48)];
 }
 
-- (void)_pdfForHTML:(id)a3 completionHandler:(id)a4
+- (void)_pdfForHTML:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__HKCDAPDFGenerator__pdfForHTML_completionHandler___block_invoke;
   block[3] = &unk_1E81B5A60;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = lCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -113,15 +113,15 @@ uint64_t __51__HKCDAPDFGenerator__pdfForHTML_completionHandler___block_invoke_2(
   return [v5 _finishGenerationWithURL:v7 tempFileDescriptor:v6 completionHandler:v8 error:v9];
 }
 
-- (void)_finishGenerationWithURL:(id)a3 tempFileDescriptor:(int)a4 completionHandler:(id)a5 error:(id)a6
+- (void)_finishGenerationWithURL:(id)l tempFileDescriptor:(int)descriptor completionHandler:(id)handler error:(id)error
 {
-  v11 = a3;
-  v9 = a5;
-  v10 = a6;
-  v9[2](v9, v11 != 0);
-  if ((a4 & 0x80000000) == 0)
+  lCopy = l;
+  handlerCopy = handler;
+  errorCopy = error;
+  handlerCopy[2](handlerCopy, lCopy != 0);
+  if ((descriptor & 0x80000000) == 0)
   {
-    close(a4);
+    close(descriptor);
   }
 }
 

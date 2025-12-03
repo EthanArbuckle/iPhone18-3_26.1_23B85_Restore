@@ -1,101 +1,101 @@
 @interface AVTAvatar
-+ (AVTAvatar)avatarWithDataRepresentation:(id)a3 usageIntent:(unint64_t)a4 error:(id *)a5;
-+ (AVTAvatar)avatarWithDescriptor:(id)a3 usageIntent:(unint64_t)a4 error:(id *)a5;
-+ (double)applyGazeCorrectionWithInputAngle:(int32x4_t)a1 translation:(__n128)a2;
-+ (void)preloadAvatar:(id)a3;
-- ($9556BFE61B967AE735F1A0D700315F88)morphInfoForARKitBlendShapeIndex:(SEL)a3;
++ (AVTAvatar)avatarWithDataRepresentation:(id)representation usageIntent:(unint64_t)intent error:(id *)error;
++ (AVTAvatar)avatarWithDescriptor:(id)descriptor usageIntent:(unint64_t)intent error:(id *)error;
++ (double)applyGazeCorrectionWithInputAngle:(int32x4_t)angle translation:(__n128)translation;
++ (void)preloadAvatar:(id)avatar;
+- ($9556BFE61B967AE735F1A0D700315F88)morphInfoForARKitBlendShapeIndex:(SEL)index;
 - (AVTAvatar)init;
 - (BOOL)arMode;
 - (BOOL)usesSkinningForEyeOrientation;
 - (VFXNode)avatarNode;
 - (VFXNode)headNode;
 - (__n128)arOffset;
-- (double)physicsDownforceForNodeNamed:(id)a3;
+- (double)physicsDownforceForNodeNamed:(id)named;
 - (float)arScale;
 - (float)opacity;
-- (id)_cachePresentationConfigurationShaderModifiersForMaterial:(id)a3 cacheKey:(id)a4 shaderModifiersBuilder:(id)a5;
-- (id)_objectsInDescriptors:(id)a3 andHierarchy:(id)a4 passingTest:(id)a5;
+- (id)_cachePresentationConfigurationShaderModifiersForMaterial:(id)material cacheKey:(id)key shaderModifiersBuilder:(id)builder;
+- (id)_objectsInDescriptors:(id)descriptors andHierarchy:(id)hierarchy passingTest:(id)test;
 - (id)bakedAnimationCopy;
 - (id)bakedAnimationPlayer;
-- (id)blendShapeNameForARKitBlendShapeIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)blendShapeNameForARKitBlendShapeIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dataRepresentation;
 - (id)debugPoseJSONRepresentation;
-- (id)effectiveMorphedNodeForTargetName:(id)a3;
+- (id)effectiveMorphedNodeForTargetName:(id)name;
 - (id)newDescriptor;
-- (id)nodesMatchingStickerPattern:(id)a3 inHierarchy:(id)a4 options:(unint64_t)a5 includingDerivedNodes:(BOOL)a6;
+- (id)nodesMatchingStickerPattern:(id)pattern inHierarchy:(id)hierarchy options:(unint64_t)options includingDerivedNodes:(BOOL)nodes;
 - (id)pose;
-- (id)snapshotWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5;
+- (id)snapshotWithSize:(CGSize)size scale:(double)scale options:(id)options;
 - (id)stickerPhysicsStateIdentifier;
-- (int64_t)blendShapeIndexForARKitBlendShapeName:(id)a3;
+- (int64_t)blendShapeIndexForARKitBlendShapeName:(id)name;
 - (uint64_t)setupEyeOrientationAndReflections;
-- (void)_addNodesMatchingStickerPattern:(id)a3 inHierarchy:(id)a4 toArray:(id)a5 options:(unint64_t)a6;
-- (void)_applyBlendShapes:(const float *)a3 parameters:(const float *)a4;
-- (void)_applyBlendShapesWithTrackingData:(id *)a3;
-- (void)_applyHeadPoseWithTrackingData:(id *)a3 gazeCorrection:(BOOL)a4 pointOfView:(id)a5;
+- (void)_addNodesMatchingStickerPattern:(id)pattern inHierarchy:(id)hierarchy toArray:(id)array options:(unint64_t)options;
+- (void)_applyBlendShapes:(const float *)shapes parameters:(const float *)parameters;
+- (void)_applyBlendShapesWithTrackingData:(id *)data;
+- (void)_applyHeadPoseWithTrackingData:(id *)data gazeCorrection:(BOOL)correction pointOfView:(id)view;
 - (void)_avatarNodeAndHeadNodeAreNowAvailable;
-- (void)_preparePrePass:(BOOL)a3;
+- (void)_preparePrePass:(BOOL)pass;
 - (void)_resetFaceToRandomPosition;
-- (void)_restoreOriginalShaderModifiersOfMaterial:(id)a3;
-- (void)_transitionFromPose:(id)a3 toPose:(id)a4 bakedAnimationBlendFactor:(double)a5 duration:(double)a6 delay:(double)a7 timingFunction:(id)a8 timingAnimation:(id)a9 completionHandler:(id)a10;
-- (void)_updateARModeShaderModifiersForMaterial:(id)a3 withOnTopMask:(BOOL)a4;
-- (void)addCustomBehavioursInHierarchy:(id)a3 forBodyParts:(unint64_t)a4;
-- (void)addDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey:(id)a3 block:(id)a4;
-- (void)addDynamicsInHierarchy:(id)a3 ignoringUpperNodes:(id)a4;
-- (void)addMorpherDrivenMaterialsInHierarchy:(id)a3;
-- (void)addMorphingSkinningControllersInHierarchy:(id)a3;
-- (void)animatePhysicsScaleFactor:(double)a3 duration:(double)a4;
-- (void)applyBlendShapesWithTrackingInfo:(id)a3;
+- (void)_restoreOriginalShaderModifiersOfMaterial:(id)material;
+- (void)_transitionFromPose:(id)pose toPose:(id)toPose bakedAnimationBlendFactor:(double)factor duration:(double)duration delay:(double)delay timingFunction:(id)function timingAnimation:(id)animation completionHandler:(id)self0;
+- (void)_updateARModeShaderModifiersForMaterial:(id)material withOnTopMask:(BOOL)mask;
+- (void)addCustomBehavioursInHierarchy:(id)hierarchy forBodyParts:(unint64_t)parts;
+- (void)addDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey:(id)key block:(id)block;
+- (void)addDynamicsInHierarchy:(id)hierarchy ignoringUpperNodes:(id)nodes;
+- (void)addMorpherDrivenMaterialsInHierarchy:(id)hierarchy;
+- (void)addMorphingSkinningControllersInHierarchy:(id)hierarchy;
+- (void)animatePhysicsScaleFactor:(double)factor duration:(double)duration;
+- (void)applyBlendShapesWithTrackingInfo:(id)info;
 - (void)arMode;
 - (void)avatarCommonInit;
 - (void)avatarNode;
 - (void)dealloc;
-- (void)didAddToScene:(id)a3;
+- (void)didAddToScene:(id)scene;
 - (void)disabledBlendshapesSpecializationSettingsDidChange;
-- (void)enumerateMorphInfoForCustomBlendShapeName:(id)a3 usingBlock:(id)a4;
-- (void)evaluateDynamicsAtTime:(double)a3;
+- (void)enumerateMorphInfoForCustomBlendShapeName:(id)name usingBlock:(id)block;
+- (void)evaluateDynamicsAtTime:(double)time;
 - (void)headNode;
 - (void)newDescriptor;
 - (void)opacity;
 - (void)pauseBakedAnimation;
 - (void)physicsSpecializationSettingsDidChange;
 - (void)pose;
-- (void)removeCustomBehavioursInHierarchy:(id)a3 forBodyParts:(unint64_t)a4;
-- (void)removeDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey:(id)a3;
-- (void)removeDynamicsInHierarchy:(id)a3;
-- (void)removeMorpherDrivenMaterialsInHierarchy:(id)a3;
-- (void)removeMorphingSkinningControllersInHierarchy:(id)a3;
+- (void)removeCustomBehavioursInHierarchy:(id)hierarchy forBodyParts:(unint64_t)parts;
+- (void)removeDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey:(id)key;
+- (void)removeDynamicsInHierarchy:(id)hierarchy;
+- (void)removeMorpherDrivenMaterialsInHierarchy:(id)hierarchy;
+- (void)removeMorphingSkinningControllersInHierarchy:(id)hierarchy;
 - (void)resetCustomBehaviours;
 - (void)resetDynamics;
 - (void)resetMorpherDrivenMaterials;
 - (void)resetMorphingSkinningControllers;
-- (void)resetPresentationConfigurationBehavioursInHierarchy:(id)a3 forBodyParts:(unint64_t)a4;
+- (void)resetPresentationConfigurationBehavioursInHierarchy:(id)hierarchy forBodyParts:(unint64_t)parts;
 - (void)resumeBakedAnimation;
-- (void)setArMode:(BOOL)a3;
-- (void)setBakedAnimationReferenceTime:(double)a3;
-- (void)setOpacity:(float)a3;
-- (void)setPose:(id)a3;
-- (void)setPresentationConfiguration:(id)a3;
+- (void)setArMode:(BOOL)mode;
+- (void)setBakedAnimationReferenceTime:(double)time;
+- (void)setOpacity:(float)opacity;
+- (void)setPose:(id)pose;
+- (void)setPresentationConfiguration:(id)configuration;
 - (void)setupEyeOrientationAndReflections;
 - (void)setupMorphInfo;
 - (void)setupMorphInfoForChangeInSubHierarchy;
 - (void)stickerPhysicsStateIdentifier;
 - (void)stopTransitionAnimation;
-- (void)stopTransitionAnimationWithBlendOutDuration:(double)a3;
-- (void)transitionFromPose:(id)a3 toPose:(id)a4 duration:(double)a5 delay:(double)a6 completionHandler:(id)a7;
-- (void)transitionFromPose:(id)a3 toPose:(id)a4 duration:(double)a5 delay:(double)a6 timingAnimation:(id)a7 completionHandler:(id)a8;
-- (void)transitionFromPose:(id)a3 toPose:(id)a4 duration:(double)a5 delay:(double)a6 timingFunction:(id)a7 completionHandler:(id)a8;
-- (void)transitionToPose:(id)a3 duration:(double)a4 delay:(double)a5 completionHandler:(id)a6;
+- (void)stopTransitionAnimationWithBlendOutDuration:(double)duration;
+- (void)transitionFromPose:(id)pose toPose:(id)toPose duration:(double)duration delay:(double)delay completionHandler:(id)handler;
+- (void)transitionFromPose:(id)pose toPose:(id)toPose duration:(double)duration delay:(double)delay timingAnimation:(id)animation completionHandler:(id)handler;
+- (void)transitionFromPose:(id)pose toPose:(id)toPose duration:(double)duration delay:(double)delay timingFunction:(id)function completionHandler:(id)handler;
+- (void)transitionToPose:(id)pose duration:(double)duration delay:(double)delay completionHandler:(id)handler;
 - (void)update;
-- (void)updateAfterAnimationsEvaluatedAtTime:(double)a3 renderer:(id)a4;
+- (void)updateAfterAnimationsEvaluatedAtTime:(double)time renderer:(id)renderer;
 - (void)updateBindings;
-- (void)updateBindingsOfNode:(id)a3;
+- (void)updateBindingsOfNode:(id)node;
 - (void)updateEyeOrientationAndReflections;
-- (void)updateMorpherDrivenMaterialsWithDeltaTime:(double)a3;
-- (void)updatePoseWithCVAFaceTrackingAnimationDictionary:(void *)a1 neckPosition:(uint64_t)a2 neckOrientation:(void *)a3 applySmoothing:(int)a4;
-- (void)updatePoseWithFaceTrackingData:(id)a3 applySmoothing:(BOOL)a4;
-- (void)updatePoseWithPoseProvider:(id)a3 applySmoothing:(BOOL)a4;
-- (void)willRemoveFromWorld:(id)a3;
+- (void)updateMorpherDrivenMaterialsWithDeltaTime:(double)time;
+- (void)updatePoseWithCVAFaceTrackingAnimationDictionary:(void *)dictionary neckPosition:(uint64_t)position neckOrientation:(void *)orientation applySmoothing:(int)smoothing;
+- (void)updatePoseWithFaceTrackingData:(id)data applySmoothing:(BOOL)smoothing;
+- (void)updatePoseWithPoseProvider:(id)provider applySmoothing:(BOOL)smoothing;
+- (void)willRemoveFromWorld:(id)world;
 @end
 
 @implementation AVTAvatar
@@ -141,8 +141,8 @@
 
 - (__n128)arOffset
 {
-  v1 = [a1 specializationSettings];
-  v2 = [v1 objectForKeyedSubscript:@"AR"];
+  specializationSettings = [self specializationSettings];
+  v2 = [specializationSettings objectForKeyedSubscript:@"AR"];
 
   v3 = [v2 objectForKeyedSubscript:@"offset"];
   v4 = [v3 objectForKeyedSubscript:@"x"];
@@ -165,8 +165,8 @@
 
 - (float)arScale
 {
-  v2 = [(AVTAvatar *)self specializationSettings];
-  v3 = [v2 objectForKeyedSubscript:@"AR"];
+  specializationSettings = [(AVTAvatar *)self specializationSettings];
+  v3 = [specializationSettings objectForKeyedSubscript:@"AR"];
 
   v4 = [v3 objectForKeyedSubscript:@"scale"];
   [v4 floatValue];
@@ -175,11 +175,11 @@
   return v6;
 }
 
-- (double)physicsDownforceForNodeNamed:(id)a3
+- (double)physicsDownforceForNodeNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(AVTAvatar *)self specializationSettings];
-  v6 = [v5 objectForKeyedSubscript:@"dynamics"];
+  namedCopy = named;
+  specializationSettings = [(AVTAvatar *)self specializationSettings];
+  v6 = [specializationSettings objectForKeyedSubscript:@"dynamics"];
 
   v7 = [v6 objectForKeyedSubscript:@"apply downforce to"];
   v8 = [v6 objectForKey:@"downforce multiplier"];
@@ -203,7 +203,7 @@
   v15[1] = 3221225472;
   v15[2] = __42__AVTAvatar_physicsDownforceForNodeNamed___block_invoke;
   v15[3] = &unk_1E7F49150;
-  v12 = v4;
+  v12 = namedCopy;
   v16 = v12;
   v17 = &v19;
   v18 = v11;
@@ -236,13 +236,13 @@ double __42__AVTAvatar_physicsDownforceForNodeNamed___block_invoke(uint64_t a1, 
 
 - (void)_avatarNodeAndHeadNodeAreNowAvailable
 {
-  v3 = [(AVTAvatar *)self headNode];
+  headNode = [(AVTAvatar *)self headNode];
   headNode = self->_headNode;
-  self->_headNode = v3;
+  self->_headNode = headNode;
 
-  v5 = [(AVTAvatar *)self avatarNode];
+  avatarNode = [(AVTAvatar *)self avatarNode];
   avatarNode = self->_avatarNode;
-  self->_avatarNode = v5;
+  self->_avatarNode = avatarNode;
 
   if (!self->_headNode || (v7 = self->_avatarNode) == 0)
   {
@@ -272,10 +272,10 @@ double __42__AVTAvatar_physicsDownforceForNodeNamed___block_invoke(uint64_t a1, 
   [(AVTAvatar *)self arOffset];
   *self->_arOffset = v17;
   v18 = [(VFXNode *)self->_avatarNode animationPlayerForKey:@"AVTPuppetAnimationGroup"];
-  v19 = [v18 animation];
-  v20 = [v19 caAnimation];
+  animation = [v18 animation];
+  caAnimation = [animation caAnimation];
   bakedAnimation = self->_bakedAnimation;
-  self->_bakedAnimation = v20;
+  self->_bakedAnimation = caAnimation;
 
   [(AVTAvatar *)self setupMorphInfo];
 
@@ -304,14 +304,14 @@ double __42__AVTAvatar_physicsDownforceForNodeNamed___block_invoke(uint64_t a1, 
   return 0;
 }
 
-- (void)setBakedAnimationReferenceTime:(double)a3
+- (void)setBakedAnimationReferenceTime:(double)time
 {
   if (self->_bakedAnimation)
   {
     bakedAnimationPlayer_lazy = self->_bakedAnimationPlayer_lazy;
     self->_bakedAnimationPlayer_lazy = 0;
 
-    [(CAAnimation *)self->_bakedAnimation setBeginTime:a3];
+    [(CAAnimation *)self->_bakedAnimation setBeginTime:time];
     [(CAAnimation *)self->_bakedAnimation setTimeOffset:0.0];
     v7 = [MEMORY[0x1E69DF2B0] animationWithCAAnimation:self->_bakedAnimation];
     v6 = [MEMORY[0x1E69DF2C0] animationPlayerWithAnimation:v7];
@@ -386,16 +386,16 @@ double __42__AVTAvatar_physicsDownforceForNodeNamed___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (void)_restoreOriginalShaderModifiersOfMaterial:(id)a3
+- (void)_restoreOriginalShaderModifiersOfMaterial:(id)material
 {
-  v3 = a3;
-  v4 = objc_getAssociatedObject(v3, @"kAVTOriginalShaderModifiers");
+  materialCopy = material;
+  v4 = objc_getAssociatedObject(materialCopy, @"kAVTOriginalShaderModifiers");
   if (v4)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = materialCopy;
       v6 = 0;
 LABEL_6:
       [v5 setShaderModifiers:v6];
@@ -405,7 +405,7 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v3;
+      v5 = materialCopy;
       v6 = v4;
       goto LABEL_6;
     }
@@ -420,30 +420,30 @@ LABEL_6:
 LABEL_10:
 }
 
-- (id)_cachePresentationConfigurationShaderModifiersForMaterial:(id)a3 cacheKey:(id)a4 shaderModifiersBuilder:(id)a5
+- (id)_cachePresentationConfigurationShaderModifiersForMaterial:(id)material cacheKey:(id)key shaderModifiersBuilder:(id)builder
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = objc_getAssociatedObject(v7, v8);
+  materialCopy = material;
+  keyCopy = key;
+  builderCopy = builder;
+  v10 = objc_getAssociatedObject(materialCopy, keyCopy);
   if (!v10)
   {
-    v11 = objc_getAssociatedObject(v7, @"kAVTOriginalShaderModifiers");
+    v11 = objc_getAssociatedObject(materialCopy, @"kAVTOriginalShaderModifiers");
     if (!v11)
     {
-      v13 = [v7 shaderModifiers];
-      if ([v13 count])
+      shaderModifiers = [materialCopy shaderModifiers];
+      if ([shaderModifiers count])
       {
-        v14 = v13;
+        null = shaderModifiers;
       }
 
       else
       {
-        v14 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
       }
 
-      v12 = v14;
-      objc_setAssociatedObject(v7, @"kAVTOriginalShaderModifiers", v14, 0x303);
+      v12 = null;
+      objc_setAssociatedObject(materialCopy, @"kAVTOriginalShaderModifiers", null, 0x303);
       goto LABEL_14;
     }
 
@@ -455,10 +455,10 @@ LABEL_10:
       if (objc_opt_isKindOfClass())
       {
         v12 = v12;
-        v13 = v12;
+        shaderModifiers = v12;
 LABEL_14:
-        v10 = v9[2](v9, v13);
-        objc_setAssociatedObject(v7, v8, v10, 0x303);
+        v10 = builderCopy[2](builderCopy, shaderModifiers);
+        objc_setAssociatedObject(materialCopy, keyCopy, v10, 0x303);
 
         goto LABEL_15;
       }
@@ -470,7 +470,7 @@ LABEL_14:
       }
     }
 
-    v13 = 0;
+    shaderModifiers = 0;
     goto LABEL_14;
   }
 
@@ -479,23 +479,23 @@ LABEL_15:
   return v10;
 }
 
-- (void)_updateARModeShaderModifiersForMaterial:(id)a3 withOnTopMask:(BOOL)a4
+- (void)_updateARModeShaderModifiersForMaterial:(id)material withOnTopMask:(BOOL)mask
 {
-  v6 = a3;
+  materialCopy = material;
   if ([(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR])
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __67__AVTAvatar__updateARModeShaderModifiersForMaterial_withOnTopMask___block_invoke;
     v8[3] = &__block_descriptor_33_e36___NSDictionary_16__0__NSDictionary_8l;
-    v9 = a4;
-    v7 = [(AVTAvatar *)self _cachePresentationConfigurationShaderModifiersForMaterial:v6 cacheKey:@"kAVTARShaderModifiers" shaderModifiersBuilder:v8];
-    [v6 setShaderModifiers:v7];
+    maskCopy = mask;
+    v7 = [(AVTAvatar *)self _cachePresentationConfigurationShaderModifiersForMaterial:materialCopy cacheKey:@"kAVTARShaderModifiers" shaderModifiersBuilder:v8];
+    [materialCopy setShaderModifiers:v7];
   }
 
   else
   {
-    [(AVTAvatar *)self _restoreOriginalShaderModifiersOfMaterial:v6];
+    [(AVTAvatar *)self _restoreOriginalShaderModifiersOfMaterial:materialCopy];
   }
 }
 
@@ -547,9 +547,9 @@ id __67__AVTAvatar__updateARModeShaderModifiersForMaterial_withOnTopMask___block
   return [(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR];
 }
 
-- (void)setArMode:(BOOL)a3
+- (void)setArMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   if ((setArMode__done & 1) == 0)
   {
     setArMode__done = 1;
@@ -560,7 +560,7 @@ id __67__AVTAvatar__updateARModeShaderModifiersForMaterial_withOnTopMask___block
     }
   }
 
-  if (v3)
+  if (modeCopy)
   {
     v6 = objc_alloc_init(AVTAugmentedRealityPresentationConfiguration);
   }
@@ -574,22 +574,22 @@ id __67__AVTAvatar__updateARModeShaderModifiersForMaterial_withOnTopMask___block
   [(AVTAvatar *)self setPresentationConfiguration:v6];
 }
 
-- (void)setPresentationConfiguration:(id)a3
+- (void)setPresentationConfiguration:(id)configuration
 {
-  v5 = a3;
-  if (self->_presentationConfiguration != v5)
+  configurationCopy = configuration;
+  if (self->_presentationConfiguration != configurationCopy)
   {
-    v14 = v5;
-    v6 = [(AVTPresentationConfiguration *)v5 usesAR];
-    v7 = [(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR];
+    v14 = configurationCopy;
+    usesAR = [(AVTPresentationConfiguration *)configurationCopy usesAR];
+    usesAR2 = [(AVTPresentationConfiguration *)self->_presentationConfiguration usesAR];
     [(AVTAvatar *)self removePresentationConfigurationBehavioursInHierarchy:self->_avatarNode forBodyParts:-1];
-    objc_storeStrong(&self->_presentationConfiguration, a3);
+    objc_storeStrong(&self->_presentationConfiguration, configuration);
     [(AVTAvatar *)self resetPresentationConfigurationBehavioursInHierarchy:self->_avatarNode forBodyParts:-1];
-    v5 = v14;
-    if (v6 != v7)
+    configurationCopy = v14;
+    if (usesAR != usesAR2)
     {
       v8.i32[0] = 1.0;
-      if (v6)
+      if (usesAR)
       {
         v8.i32[0] = LODWORD(self->_arScale);
       }
@@ -598,32 +598,32 @@ id __67__AVTAvatar__updateARModeShaderModifiersForMaterial_withOnTopMask___block
       [(VFXNode *)self->_neckNode scale:*&v8];
       v11 = vmvnq_s8(vceqq_f32(v10, v13));
       v11.i32[3] = v11.i32[2];
-      v5 = v14;
+      configurationCopy = v14;
       if ((vmaxvq_u32(v11) & 0x80000000) != 0)
       {
         [MEMORY[0x1E69DF378] begin];
         [(VFXNode *)self->_neckNode setScale:*vdupq_lane_s32(v12, 0).i64];
         [MEMORY[0x1E69DF378] commit];
-        v5 = v14;
+        configurationCopy = v14;
       }
     }
   }
 }
 
-- (void)resetPresentationConfigurationBehavioursInHierarchy:(id)a3 forBodyParts:(unint64_t)a4
+- (void)resetPresentationConfigurationBehavioursInHierarchy:(id)hierarchy forBodyParts:(unint64_t)parts
 {
   presentationConfiguration = self->_presentationConfiguration;
-  v6 = a3;
-  v7 = [(AVTPresentationConfiguration *)presentationConfiguration usesAR];
+  hierarchyCopy = hierarchy;
+  usesAR = [(AVTPresentationConfiguration *)presentationConfiguration usesAR];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __78__AVTAvatar_resetPresentationConfigurationBehavioursInHierarchy_forBodyParts___block_invoke;
   v24[3] = &unk_1E7F47B10;
   v24[4] = self;
-  [v6 enumerateHierarchyUsingBlock:v24];
+  [hierarchyCopy enumerateHierarchyUsingBlock:v24];
 
-  v8 = [(AVTAvatar *)self specializationSettings];
-  v9 = [v8 objectForKeyedSubscript:@"AR"];
+  specializationSettings = [(AVTAvatar *)self specializationSettings];
+  v9 = [specializationSettings objectForKeyedSubscript:@"AR"];
 
   v10 = [v9 objectForKeyedSubscript:@"additional geometries"];
   if ([v10 count])
@@ -634,7 +634,7 @@ id __67__AVTAvatar__updateARModeShaderModifiersForMaterial_withOnTopMask___block
     v21[2] = __78__AVTAvatar_resetPresentationConfigurationBehavioursInHierarchy_forBodyParts___block_invoke_2;
     v21[3] = &unk_1E7F49198;
     v22 = v10;
-    v23 = v7;
+    v23 = usesAR;
     [(VFXNode *)avatarNode enumerateChildNodesUsingBlock:v21];
   }
 
@@ -644,19 +644,19 @@ id __67__AVTAvatar__updateARModeShaderModifiersForMaterial_withOnTopMask___block
   {
     v14 = [v12 objectForKeyedSubscript:@"normal node"];
     v15 = [(VFXNode *)self->_avatarNode childNodeWithName:v14 recursively:1];
-    [v15 setHidden:v7];
+    [v15 setHidden:usesAR];
     v16 = [v13 objectForKeyedSubscript:@"AR node"];
     v17 = [(VFXNode *)self->_avatarNode childNodeWithName:v16 recursively:1];
-    v18 = [v17 morpher];
+    morpher = [v17 morpher];
 
-    if (!v18)
+    if (!morpher)
     {
-      v19 = [v15 morpher];
-      v20 = [v19 copy];
+      morpher2 = [v15 morpher];
+      v20 = [morpher2 copy];
       [v17 setMorpher:v20];
     }
 
-    [v17 setHidden:v7 ^ 1];
+    [v17 setHidden:usesAR ^ 1];
   }
 }
 
@@ -720,21 +720,21 @@ void __78__AVTAvatar_resetPresentationConfigurationBehavioursInHierarchy_forBody
 
 - (void)updateBindings
 {
-  v4 = [(AVTAvatar *)self headNode];
-  v3 = [v4 parentNode];
-  [(AVTAvatar *)self updateBindingsOfNode:v3];
+  headNode = [(AVTAvatar *)self headNode];
+  parentNode = [headNode parentNode];
+  [(AVTAvatar *)self updateBindingsOfNode:parentNode];
 }
 
-- (void)updateBindingsOfNode:(id)a3
+- (void)updateBindingsOfNode:(id)node
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nodeCopy = node;
   if (!self->_headNode || !self->_morphInfoFromARKitBlendShapeIndex)
   {
     [AVTAvatar updateBindingsOfNode:];
   }
 
-  v5 = v4;
+  v5 = nodeCopy;
   strcpy(v9, "morpher.weights[000]");
   strcpy(v8, "morpher.weights[000]");
   v7[0] = MEMORY[0x1E69E9820];
@@ -744,7 +744,7 @@ void __78__AVTAvatar_resetPresentationConfigurationBehavioursInHierarchy_forBody
   v7[4] = self;
   v7[5] = v9;
   v7[6] = v8;
-  [v4 enumerateHierarchyUsingBlock:v7];
+  [nodeCopy enumerateHierarchyUsingBlock:v7];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -815,18 +815,18 @@ uint64_t __34__AVTAvatar_updateBindingsOfNode___block_invoke_2(uint64_t a1, void
   [(AVTAvatar *)self setupMorphInfoForChangeInSubHierarchy];
 }
 
-- (void)addCustomBehavioursInHierarchy:(id)a3 forBodyParts:(unint64_t)a4
+- (void)addCustomBehavioursInHierarchy:(id)hierarchy forBodyParts:(unint64_t)parts
 {
-  v6 = a3;
-  [(AVTAvatar *)self addMorphingSkinningControllersInHierarchy:v6];
-  [(AVTAvatar *)self resetPresentationConfigurationBehavioursInHierarchy:v6 forBodyParts:a4];
+  hierarchyCopy = hierarchy;
+  [(AVTAvatar *)self addMorphingSkinningControllersInHierarchy:hierarchyCopy];
+  [(AVTAvatar *)self resetPresentationConfigurationBehavioursInHierarchy:hierarchyCopy forBodyParts:parts];
 
   [(AVTAvatar *)self setupMorphInfoForChangeInSubHierarchy];
 }
 
-- (void)removeCustomBehavioursInHierarchy:(id)a3 forBodyParts:(unint64_t)a4
+- (void)removeCustomBehavioursInHierarchy:(id)hierarchy forBodyParts:(unint64_t)parts
 {
-  [(AVTAvatar *)self removeMorphingSkinningControllersInHierarchy:a3, a4];
+  [(AVTAvatar *)self removeMorphingSkinningControllersInHierarchy:hierarchy, parts];
 
   [(AVTAvatar *)self setupMorphInfoForChangeInSubHierarchy];
 }
@@ -835,8 +835,8 @@ uint64_t __34__AVTAvatar_updateBindingsOfNode___block_invoke_2(uint64_t a1, void
 {
   if (self->_morphInfoFromARKitBlendShapeIndex)
   {
-    v3 = [(AVTAvatar *)self specializationSettings];
-    v9 = [v3 objectForKeyedSubscript:@"ARKit disabled blendshapes"];
+    specializationSettings = [(AVTAvatar *)self specializationSettings];
+    v9 = [specializationSettings objectForKeyedSubscript:@"ARKit disabled blendshapes"];
 
     v4 = 0;
     for (i = 0; i != 52; ++i)
@@ -862,26 +862,26 @@ uint64_t __34__AVTAvatar_updateBindingsOfNode___block_invoke_2(uint64_t a1, void
   [(AVTAvatar *)self resetMorpherDrivenMaterials];
 }
 
-- (void)addMorphingSkinningControllersInHierarchy:(id)a3
+- (void)addMorphingSkinningControllersInHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  [(AVTAvatar *)self addDynamicsInHierarchy:v4 ignoringUpperNodes:0];
-  [(AVTAvatar *)self addMorpherDrivenMaterialsInHierarchy:v4];
+  hierarchyCopy = hierarchy;
+  [(AVTAvatar *)self addDynamicsInHierarchy:hierarchyCopy ignoringUpperNodes:0];
+  [(AVTAvatar *)self addMorpherDrivenMaterialsInHierarchy:hierarchyCopy];
 }
 
-- (void)removeMorphingSkinningControllersInHierarchy:(id)a3
+- (void)removeMorphingSkinningControllersInHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  [(AVTAvatar *)self removeDynamicsInHierarchy:v4];
-  [(AVTAvatar *)self removeMorpherDrivenMaterialsInHierarchy:v4];
+  hierarchyCopy = hierarchy;
+  [(AVTAvatar *)self removeDynamicsInHierarchy:hierarchyCopy];
+  [(AVTAvatar *)self removeMorpherDrivenMaterialsInHierarchy:hierarchyCopy];
 }
 
-- (id)_objectsInDescriptors:(id)a3 andHierarchy:(id)a4 passingTest:(id)a5
+- (id)_objectsInDescriptors:(id)descriptors andHierarchy:(id)hierarchy passingTest:(id)test
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  descriptorsCopy = descriptors;
+  hierarchyCopy = hierarchy;
+  testCopy = test;
+  if ([descriptorsCopy count])
   {
     v16 = 0;
     v17 = &v16;
@@ -893,10 +893,10 @@ uint64_t __34__AVTAvatar_updateBindingsOfNode___block_invoke_2(uint64_t a1, void
     v12[1] = 3221225472;
     v12[2] = __60__AVTAvatar__objectsInDescriptors_andHierarchy_passingTest___block_invoke;
     v12[3] = &unk_1E7F49210;
-    v13 = v7;
-    v14 = v9;
+    v13 = descriptorsCopy;
+    v14 = testCopy;
     v15 = &v16;
-    [v8 enumerateHierarchyUsingBlock:v12];
+    [hierarchyCopy enumerateHierarchyUsingBlock:v12];
     v10 = v17[5];
 
     _Block_object_dispose(&v16, 8);
@@ -1002,27 +1002,27 @@ void __60__AVTAvatar__objectsInDescriptors_andHierarchy_passingTest___block_invo
     dynamics = self->_dynamics;
     self->_dynamics = 0;
 
-    v9 = [(AVTAvatar *)self upperNodesIgnoredByDynamics];
-    [(AVTAvatar *)self addDynamicsInHierarchy:self->_avatarNode ignoringUpperNodes:v9];
+    upperNodesIgnoredByDynamics = [(AVTAvatar *)self upperNodesIgnoredByDynamics];
+    [(AVTAvatar *)self addDynamicsInHierarchy:self->_avatarNode ignoringUpperNodes:upperNodesIgnoredByDynamics];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addDynamicsInHierarchy:(id)a3 ignoringUpperNodes:(id)a4
+- (void)addDynamicsInHierarchy:(id)hierarchy ignoringUpperNodes:(id)nodes
 {
-  v6 = a3;
-  v7 = a4;
-  if (!-[AVTAvatar optimizeForSnapshot](self, "optimizeForSnapshot") || [v7 count])
+  hierarchyCopy = hierarchy;
+  nodesCopy = nodes;
+  if (!-[AVTAvatar optimizeForSnapshot](self, "optimizeForSnapshot") || [nodesCopy count])
   {
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __55__AVTAvatar_addDynamicsInHierarchy_ignoringUpperNodes___block_invoke;
     v8[3] = &unk_1E7F49238;
     v8[4] = self;
-    [AVTPhysicalizedMorpherDynamic enumerateDynamicsInHierarchy:v6 forAvatar:self ignoredUpperNodes:v7 usingBlock:v8];
-    [AVTPhysicalizedSkeletonDynamic enumerateDynamicsInHierarchy:v6 forAvatar:self usingBlock:v8];
-    [AVTSpringDynamic enumerateDynamicsInHierarchy:v6 forAvatar:self usingBlock:v8];
+    [AVTPhysicalizedMorpherDynamic enumerateDynamicsInHierarchy:hierarchyCopy forAvatar:self ignoredUpperNodes:nodesCopy usingBlock:v8];
+    [AVTPhysicalizedSkeletonDynamic enumerateDynamicsInHierarchy:hierarchyCopy forAvatar:self usingBlock:v8];
+    [AVTSpringDynamic enumerateDynamicsInHierarchy:hierarchyCopy forAvatar:self usingBlock:v8];
   }
 }
 
@@ -1045,10 +1045,10 @@ void __55__AVTAvatar_addDynamicsInHierarchy_ignoringUpperNodes___block_invoke(ui
   [v4 addObject:v3];
 }
 
-- (void)removeDynamicsInHierarchy:(id)a3
+- (void)removeDynamicsInHierarchy:(id)hierarchy
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = [(AVTAvatar *)self _objectsInDescriptors:self->_dynamics andHierarchy:a3 passingTest:&__block_literal_global_169];
+  v4 = [(AVTAvatar *)self _objectsInDescriptors:self->_dynamics andHierarchy:hierarchy passingTest:&__block_literal_global_169];
   if ([v4 count])
   {
     v14 = 0u;
@@ -1092,7 +1092,7 @@ void __55__AVTAvatar_addDynamicsInHierarchy_ignoringUpperNodes___block_invoke(ui
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)evaluateDynamicsAtTime:(double)a3
+- (void)evaluateDynamicsAtTime:(double)time
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -1115,7 +1115,7 @@ void __55__AVTAvatar_addDynamicsInHierarchy_ignoringUpperNodes___block_invoke(ui
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) evaluateAtTime:self->_physicsController physicsController:{a3, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) evaluateAtTime:self->_physicsController physicsController:{time, v11}];
       }
 
       while (v7 != v9);
@@ -1133,15 +1133,15 @@ void __55__AVTAvatar_addDynamicsInHierarchy_ignoringUpperNodes___block_invoke(ui
   morpherDrivenMaterialDescriptors = self->_morpherDrivenMaterialDescriptors;
   self->_morpherDrivenMaterialDescriptors = 0;
 
-  v4 = [(AVTAvatar *)self avatarNode];
-  [(AVTAvatar *)self addMorpherDrivenMaterialsInHierarchy:v4];
+  avatarNode = [(AVTAvatar *)self avatarNode];
+  [(AVTAvatar *)self addMorpherDrivenMaterialsInHierarchy:avatarNode];
 }
 
-- (void)addMorpherDrivenMaterialsInHierarchy:(id)a3
+- (void)addMorpherDrivenMaterialsInHierarchy:(id)hierarchy
 {
-  v4 = a3;
-  v5 = [(AVTAvatar *)self specializationSettings];
-  v6 = [v5 objectForKeyedSubscript:@"ARKit driven material"];
+  hierarchyCopy = hierarchy;
+  specializationSettings = [(AVTAvatar *)self specializationSettings];
+  v6 = [specializationSettings objectForKeyedSubscript:@"ARKit driven material"];
 
   if ([v6 count])
   {
@@ -1150,10 +1150,10 @@ void __55__AVTAvatar_addDynamicsInHierarchy_ignoringUpperNodes___block_invoke(ui
     v12[2] = __50__AVTAvatar_addMorpherDrivenMaterialsInHierarchy___block_invoke;
     v12[3] = &unk_1E7F492A8;
     v12[4] = self;
-    v13 = v4;
+    v13 = hierarchyCopy;
     [v6 enumerateKeysAndObjectsUsingBlock:v12];
-    v7 = [v6 allKeys];
-    v8 = [v7 count];
+    allKeys = [v6 allKeys];
+    v8 = [allKeys count];
     v9 = [(NSMutableArray *)self->_morpherDrivenMaterialDescriptors count];
 
     if (v8 != v9)
@@ -1343,10 +1343,10 @@ uint64_t __50__AVTAvatar_addMorpherDrivenMaterialsInHierarchy___block_invoke_2(u
   return v6;
 }
 
-- (void)removeMorpherDrivenMaterialsInHierarchy:(id)a3
+- (void)removeMorpherDrivenMaterialsInHierarchy:(id)hierarchy
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [(AVTAvatar *)self _objectsInDescriptors:self->_morpherDrivenMaterialDescriptors andHierarchy:a3 passingTest:&__block_literal_global_176];
+  v4 = [(AVTAvatar *)self _objectsInDescriptors:self->_morpherDrivenMaterialDescriptors andHierarchy:hierarchy passingTest:&__block_literal_global_176];
   if ([v4 count])
   {
     v18 = 0u;
@@ -1406,18 +1406,18 @@ uint64_t __50__AVTAvatar_addMorpherDrivenMaterialsInHierarchy___block_invoke_2(u
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateMorpherDrivenMaterialsWithDeltaTime:(double)a3
+- (void)updateMorpherDrivenMaterialsWithDeltaTime:(double)time
 {
   if ([(NSMutableArray *)self->_morpherDrivenMaterialDescriptors count])
   {
     v4 = MEMORY[0x1E69DF378];
-    v5 = [(VFXNode *)self->_avatarNode world];
+    world = [(VFXNode *)self->_avatarNode world];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke;
     v6[3] = &unk_1E7F492F0;
     v6[4] = self;
-    [v4 performPresentationObjectQueriesInWorld:v5 usingBlock:v6];
+    [v4 performPresentationObjectQueriesInWorld:world usingBlock:v6];
   }
 }
 
@@ -1490,25 +1490,25 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
 
 - (BOOL)usesSkinningForEyeOrientation
 {
-  v2 = [(AVTAvatar *)self specializationSettings];
-  v3 = [v2 objectForKeyedSubscript:@"eye behavior"];
+  specializationSettings = [(AVTAvatar *)self specializationSettings];
+  v3 = [specializationSettings objectForKeyedSubscript:@"eye behavior"];
 
   v4 = [v3 objectForKeyedSubscript:@"uses skinning for orientation"];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (void)setupEyeOrientationAndReflections
 {
-  v3 = [(AVTAvatar *)self specializationSettings];
-  v19 = [v3 objectForKeyedSubscript:@"eye behavior"];
+  specializationSettings = [(AVTAvatar *)self specializationSettings];
+  v19 = [specializationSettings objectForKeyedSubscript:@"eye behavior"];
 
-  v4 = [(VFXNode *)self->_headNode morpher];
+  morpher = [(VFXNode *)self->_headNode morpher];
   v5 = [v19 objectForKeyedSubscript:@"wants pupil reflection correction"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     if (!self->_rightEye || !self->_leftEye)
     {
@@ -1519,25 +1519,25 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
     pupilReflectionCorrectionDescriptor = self->_pupilReflectionCorrectionDescriptor;
     self->_pupilReflectionCorrectionDescriptor = v7;
 
-    [(AVTPupilReflectionCorrectionDescriptor *)self->_pupilReflectionCorrectionDescriptor setReadMorpher:v4];
-    v9 = [(VFXNode *)self->_leftEye model];
-    v10 = [v9 firstMaterial];
-    [(AVTPupilReflectionCorrectionDescriptor *)self->_pupilReflectionCorrectionDescriptor setLeftEyeMaterial:v10];
+    [(AVTPupilReflectionCorrectionDescriptor *)self->_pupilReflectionCorrectionDescriptor setReadMorpher:morpher];
+    model = [(VFXNode *)self->_leftEye model];
+    firstMaterial = [model firstMaterial];
+    [(AVTPupilReflectionCorrectionDescriptor *)self->_pupilReflectionCorrectionDescriptor setLeftEyeMaterial:firstMaterial];
 
-    v11 = [(VFXNode *)self->_rightEye model];
-    v12 = [v11 firstMaterial];
-    [(AVTPupilReflectionCorrectionDescriptor *)self->_pupilReflectionCorrectionDescriptor setRightEyeMaterial:v12];
+    model2 = [(VFXNode *)self->_rightEye model];
+    firstMaterial2 = [model2 firstMaterial];
+    [(AVTPupilReflectionCorrectionDescriptor *)self->_pupilReflectionCorrectionDescriptor setRightEyeMaterial:firstMaterial2];
 
-    v13 = [(VFXNode *)self->_headNode morpher];
-    v14 = [v13 _weightIndexForTargetNamed:@"eyeBlink_L"];
+    morpher2 = [(VFXNode *)self->_headNode morpher];
+    v14 = [morpher2 _weightIndexForTargetNamed:@"eyeBlink_L"];
     v15 = self->_pupilReflectionCorrectionDescriptor;
     if (v15)
     {
       v15->_leftEyeTargetIndex = v14;
     }
 
-    v16 = [(VFXNode *)self->_headNode morpher];
-    v17 = [v16 _weightIndexForTargetNamed:@"eyeBlink_R"];
+    morpher3 = [(VFXNode *)self->_headNode morpher];
+    v17 = [morpher3 _weightIndexForTargetNamed:@"eyeBlink_R"];
     v18 = self->_pupilReflectionCorrectionDescriptor;
     if (v18)
     {
@@ -1556,47 +1556,47 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
   if (self->_pupilReflectionCorrectionDescriptor)
   {
     v3 = MEMORY[0x1E69DF378];
-    v4 = [(VFXNode *)self->_avatarNode world];
+    world = [(VFXNode *)self->_avatarNode world];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__AVTAvatar_updateEyeOrientationAndReflections__block_invoke;
     v8[3] = &unk_1E7F492F0;
     v8[4] = self;
-    [v3 performPresentationObjectQueriesInWorld:v4 usingBlock:v8];
+    [v3 performPresentationObjectQueriesInWorld:world usingBlock:v8];
   }
 
   if (self->_eyeSkinningDescriptor)
   {
     v5 = MEMORY[0x1E69DF378];
-    v6 = [(VFXNode *)self->_avatarNode world];
+    world2 = [(VFXNode *)self->_avatarNode world];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __47__AVTAvatar_updateEyeOrientationAndReflections__block_invoke_2;
     v7[3] = &unk_1E7F492F0;
     v7[4] = self;
-    [v5 performPresentationObjectQueriesInWorld:v6 usingBlock:v7];
+    [v5 performPresentationObjectQueriesInWorld:world2 usingBlock:v7];
   }
 }
 
-- (void)willRemoveFromWorld:(id)a3
+- (void)willRemoveFromWorld:(id)world
 {
   physicsController = self->_physicsController;
-  v4 = [a3 physicsWorld];
-  [(AVTPhysicsController *)physicsController removeFromPhysicsWorld:v4];
+  physicsWorld = [world physicsWorld];
+  [(AVTPhysicsController *)physicsController removeFromPhysicsWorld:physicsWorld];
 }
 
-- (void)didAddToScene:(id)a3
+- (void)didAddToScene:(id)scene
 {
   physicsController = self->_physicsController;
-  v4 = [a3 physicsWorld];
-  [(AVTPhysicsController *)physicsController addToPhysicsWorld:v4];
+  physicsWorld = [scene physicsWorld];
+  [(AVTPhysicsController *)physicsController addToPhysicsWorld:physicsWorld];
 }
 
-- (void)updateAfterAnimationsEvaluatedAtTime:(double)a3 renderer:(id)a4
+- (void)updateAfterAnimationsEvaluatedAtTime:(double)time renderer:(id)renderer
 {
-  v6 = a4;
+  rendererCopy = renderer;
   physicsScaleFactor = self->_physicsScaleFactor;
-  v8 = a3 - self->_lastRenderTime;
+  v8 = time - self->_lastRenderTime;
   if (v8 == 0.0)
   {
     v8 = 0.0166666667;
@@ -1612,9 +1612,9 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
     v9 = 0.1;
   }
 
-  self->_lastRenderTime = a3;
-  [(AVTPhysicsController *)self->_physicsController updateAtTime:a3 forceMultiplier:physicsScaleFactor];
-  [(AVTAvatar *)self evaluateDynamicsAtTime:a3];
+  self->_lastRenderTime = time;
+  [(AVTPhysicsController *)self->_physicsController updateAtTime:time forceMultiplier:physicsScaleFactor];
+  [(AVTAvatar *)self evaluateDynamicsAtTime:time];
   [(AVTAvatar *)self updateEyeOrientationAndReflections];
   [(AVTAvatar *)self updateMorpherDrivenMaterialsWithDeltaTime:v9];
   if (self->_didUpdateAtTimeCallbackItems)
@@ -1635,7 +1635,7 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
           if ((*(v12 + 8) & 1) == 0)
           {
             *(v12 + 8) = 1;
-            *(v12 + 16) = a3;
+            *(v12 + 16) = time;
           }
 
           v15 = *(v12 + 32);
@@ -1650,7 +1650,7 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
           v16 = 16;
         }
 
-        (*v16)(v15, self, v6, &v18, a3, v13);
+        (*v16)(v15, self, rendererCopy, &v18, time, v13);
 
         if (v18 == 1)
         {
@@ -1670,26 +1670,26 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
   }
 }
 
-- (void)addDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey:(id)a3 block:(id)a4
+- (void)addDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey:(id)key block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  blockCopy = block;
   os_unfair_lock_lock(&self->_didUpdateAtTimeLock);
   v8 = objc_alloc_init(AVTAvatarDidUpdateAtTimeCallbackItem);
-  v9 = [v6 copy];
+  v9 = [keyCopy copy];
   v11 = v9;
   if (v8)
   {
     objc_setProperty_nonatomic_copy(v8, v10, v9, 24);
 
-    v12 = [v7 copy];
+    v12 = [blockCopy copy];
     objc_setProperty_nonatomic_copy(v8, v13, v12, 32);
   }
 
   else
   {
 
-    v12 = [v7 copy];
+    v12 = [blockCopy copy];
   }
 
   didUpdateAtTimeCallbackItems = self->_didUpdateAtTimeCallbackItems;
@@ -1699,7 +1699,7 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
     v19[1] = 3221225472;
     v19[2] = __76__AVTAvatar_addDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey_block___block_invoke;
     v19[3] = &unk_1E7F49318;
-    v20 = v6;
+    v20 = keyCopy;
     v15 = [(NSMutableArray *)didUpdateAtTimeCallbackItems indexOfObjectPassingTest:v19];
     v16 = self->_didUpdateAtTimeCallbackItems;
     if (v15 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1725,16 +1725,16 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
   os_unfair_lock_unlock(&self->_didUpdateAtTimeLock);
 }
 
-- (void)removeDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey:(id)a3
+- (void)removeDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_didUpdateAtTimeLock);
   didUpdateAtTimeCallbackItems = self->_didUpdateAtTimeCallbackItems;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__AVTAvatar_removeDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey___block_invoke;
   v9[3] = &unk_1E7F49318;
-  v6 = v4;
+  v6 = keyCopy;
   v10 = v6;
   v7 = [(NSMutableArray *)didUpdateAtTimeCallbackItems indexOfObjectPassingTest:v9];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1750,11 +1750,11 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
   os_unfair_lock_unlock(&self->_didUpdateAtTimeLock);
 }
 
-- (id)effectiveMorphedNodeForTargetName:(id)a3
+- (id)effectiveMorphedNodeForTargetName:(id)name
 {
-  v4 = a3;
-  v5 = [(AVTAvatar *)self specializationSettings];
-  v6 = [v5 objectForKeyedSubscript:@"ARKit driven morpher"];
+  nameCopy = name;
+  specializationSettings = [(AVTAvatar *)self specializationSettings];
+  v6 = [specializationSettings objectForKeyedSubscript:@"ARKit driven morpher"];
 
   v19 = 0;
   v20 = &v19;
@@ -1766,7 +1766,7 @@ void __55__AVTAvatar_updateMorpherDrivenMaterialsWithDeltaTime___block_invoke(ui
   v14 = 3221225472;
   v15 = __47__AVTAvatar_effectiveMorphedNodeForTargetName___block_invoke;
   v16 = &unk_1E7F47D68;
-  v7 = v4;
+  v7 = nameCopy;
   v17 = v7;
   v18 = &v19;
   [v6 enumerateKeysAndObjectsUsingBlock:&v13];
@@ -1802,31 +1802,31 @@ void __47__AVTAvatar_effectiveMorphedNodeForTargetName___block_invoke(uint64_t a
   if (headNode)
   {
     self->_morphInfoFromARKitBlendShapeIndex = malloc_type_realloc(morphInfoFromARKitBlendShapeIndex, 0x680uLL, 0x108004077A7B0B0uLL);
-    v5 = [(AVTAvatar *)self specializationSettings];
-    v17 = [v5 objectForKeyedSubscript:@"ARKit disabled blendshapes"];
+    specializationSettings = [(AVTAvatar *)self specializationSettings];
+    v17 = [specializationSettings objectForKeyedSubscript:@"ARKit disabled blendshapes"];
 
     v6 = 0;
     for (i = 0; i != 52; ++i)
     {
       v8 = AVTBlendShapeLocationFromARIndex(i);
       v9 = [(AVTAvatar *)self effectiveMorphedNodeForTargetName:v8];
-      v10 = [v9 morpher];
-      v11 = [v10 _weightIndexForTargetNamed:v8];
+      morpher = [v9 morpher];
+      v11 = [morpher _weightIndexForTargetNamed:v8];
 
       v12 = 0;
-      v13 = 0;
+      morpher2 = 0;
       v14 = 0x7FFFFFFFFFFFFFFFLL;
       v15 = 0;
       if (v9 && v11 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v13 = [v9 morpher];
+        morpher2 = [v9 morpher];
         v12 = [v17 containsObject:v8] ^ 1;
         v15 = v9;
         v14 = v11;
       }
 
       v16 = &self->_morphInfoFromARKitBlendShapeIndex[v6];
-      v16->var0 = v13;
+      v16->var0 = morpher2;
       v16->var1 = v15;
       v16->var2 = v14;
       v16->var3 = v12;
@@ -1852,8 +1852,8 @@ void __47__AVTAvatar_effectiveMorphedNodeForTargetName___block_invoke(uint64_t a
 - (void)setupMorphInfoForChangeInSubHierarchy
 {
   self->_friendlyPoseMorphInfoCount = 0;
-  v3 = [(AVTAvatar *)self specializationSettings];
-  v4 = [v3 objectForKeyedSubscript:@"ARKit disabled blendshapes"];
+  specializationSettings = [(AVTAvatar *)self specializationSettings];
+  v4 = [specializationSettings objectForKeyedSubscript:@"ARKit disabled blendshapes"];
 
   v5 = [v4 containsObject:@"Emoji"] ^ 1;
   v10 = MEMORY[0x1E69E9820];
@@ -1861,7 +1861,7 @@ void __47__AVTAvatar_effectiveMorphedNodeForTargetName___block_invoke(uint64_t a
   v12 = __50__AVTAvatar_setupMorphInfoForChangeInSubHierarchy__block_invoke;
   v13 = &unk_1E7F49340;
   v15 = v5;
-  v14 = self;
+  selfCopy = self;
   v6 = self->_headNode;
   if (v6)
   {
@@ -1935,17 +1935,17 @@ void __50__AVTAvatar_setupMorphInfoForChangeInSubHierarchy__block_invoke_2(uint6
   }
 }
 
-- (void)updatePoseWithPoseProvider:(id)a3 applySmoothing:(BOOL)a4
+- (void)updatePoseWithPoseProvider:(id)provider applySmoothing:(BOOL)smoothing
 {
-  v4 = a4;
-  v6 = a3;
+  smoothingCopy = smoothing;
+  providerCopy = provider;
   if (!self->_headNode)
   {
     goto LABEL_21;
   }
 
-  v27 = v6;
-  if (v4)
+  v27 = providerCopy;
+  if (smoothingCopy)
   {
     [MEMORY[0x1E69DF378] begin];
     [MEMORY[0x1E69DF378] setAnimationDuration:0.05];
@@ -1998,8 +1998,8 @@ void __50__AVTAvatar_setupMorphInfoForChangeInSubHierarchy__block_invoke_2(uint6
   }
 
   [(AVTPhysicsController *)self->_physicsController setupPhysicsIfNeeded];
-  v21 = [v27 unitSystem];
-  if (v21 == 1)
+  unitSystem = [v27 unitSystem];
+  if (unitSystem == 1)
   {
     [v27 neckPosition];
     v26 = v23;
@@ -2011,7 +2011,7 @@ void __50__AVTAvatar_setupMorphInfoForChangeInSubHierarchy__block_invoke_2(uint6
 
   else
   {
-    if (v21)
+    if (unitSystem)
     {
       goto LABEL_19;
     }
@@ -2023,23 +2023,23 @@ void __50__AVTAvatar_setupMorphInfoForChangeInSubHierarchy__block_invoke_2(uint6
 LABEL_19:
   [v27 neckOrientation];
   [(VFXNode *)self->_neckNode setOrientation:?];
-  v6 = v27;
-  if (v4)
+  providerCopy = v27;
+  if (smoothingCopy)
   {
     [MEMORY[0x1E69DF378] commit];
-    v6 = v27;
+    providerCopy = v27;
   }
 
 LABEL_21:
 }
 
-- (void)updatePoseWithFaceTrackingData:(id)a3 applySmoothing:(BOOL)a4
+- (void)updatePoseWithFaceTrackingData:(id)data applySmoothing:(BOOL)smoothing
 {
-  v4 = a4;
-  v6 = a3;
+  smoothingCopy = smoothing;
+  dataCopy = data;
   if (self->_headNode)
   {
-    if (v4)
+    if (smoothingCopy)
     {
       [MEMORY[0x1E69DF378] begin];
       [MEMORY[0x1E69DF378] setAnimationDuration:0.05];
@@ -2048,31 +2048,31 @@ LABEL_21:
       [v7 setAnimationTimingFunction:v8];
     }
 
-    if ([v6 length] != 480)
+    if ([dataCopy length] != 480)
     {
       v9 = avt_default_log();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [AVTAvatar updatePoseWithFaceTrackingData:v6 applySmoothing:?];
+        [AVTAvatar updatePoseWithFaceTrackingData:dataCopy applySmoothing:?];
       }
     }
 
-    v10 = [v6 bytes];
-    [(AVTAvatar *)self _applyBlendShapesWithTrackingData:v10];
-    [(AVTAvatar *)self _applyHeadPoseWithTrackingData:v10 gazeCorrection:1 pointOfView:0];
-    if (v4)
+    bytes = [dataCopy bytes];
+    [(AVTAvatar *)self _applyBlendShapesWithTrackingData:bytes];
+    [(AVTAvatar *)self _applyHeadPoseWithTrackingData:bytes gazeCorrection:1 pointOfView:0];
+    if (smoothingCopy)
     {
       [MEMORY[0x1E69DF378] commit];
     }
   }
 }
 
-- (void)updatePoseWithCVAFaceTrackingAnimationDictionary:(void *)a1 neckPosition:(uint64_t)a2 neckOrientation:(void *)a3 applySmoothing:(int)a4
+- (void)updatePoseWithCVAFaceTrackingAnimationDictionary:(void *)dictionary neckPosition:(uint64_t)position neckOrientation:(void *)orientation applySmoothing:(int)smoothing
 {
-  v6 = a3;
-  if (a1[3])
+  orientationCopy = orientation;
+  if (dictionary[3])
   {
-    if (a4)
+    if (smoothing)
     {
       [MEMORY[0x1E69DF378] begin];
       [MEMORY[0x1E69DF378] setAnimationDuration:0.05];
@@ -2094,8 +2094,8 @@ LABEL_21:
     v11.i32[3] = 0;
     v29[1] = v11;
     v29[2] = v28;
-    v12 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698BF80]];
-    v13 = [v6 objectForKeyedSubscript:*MEMORY[0x1E698BFB0]];
+    v12 = [orientationCopy objectForKeyedSubscript:*MEMORY[0x1E698BF80]];
+    v13 = [orientationCopy objectForKeyedSubscript:*MEMORY[0x1E698BFB0]];
     if ([v12 length] != 204)
     {
       v14 = avt_default_log();
@@ -2107,26 +2107,26 @@ LABEL_21:
 
     if ([v12 length] == 204)
     {
-      v15 = [v12 bytes];
-      *(&v29[3] + 4) = *v15;
-      v16 = v15[3];
-      v17 = v15[4];
-      v18 = v15[2];
-      *(&v29[4] + 4) = v15[1];
+      bytes = [v12 bytes];
+      *(&v29[3] + 4) = *bytes;
+      v16 = bytes[3];
+      v17 = bytes[4];
+      v18 = bytes[2];
+      *(&v29[4] + 4) = bytes[1];
       *(&v29[7] + 4) = v17;
       *(&v29[6] + 4) = v16;
       *(&v29[5] + 4) = v18;
-      v19 = v15[7];
-      v20 = v15[8];
-      v21 = v15[6];
-      *(&v29[8] + 4) = v15[5];
+      v19 = bytes[7];
+      v20 = bytes[8];
+      v21 = bytes[6];
+      *(&v29[8] + 4) = bytes[5];
       *(&v29[11] + 4) = v20;
       *(&v29[10] + 4) = v19;
       *(&v29[9] + 4) = v21;
-      v23 = v15[10];
-      v22 = v15[11];
-      v24 = *(v15 + 188);
-      *(&v29[12] + 4) = v15[9];
+      v23 = bytes[10];
+      v22 = bytes[11];
+      v24 = *(bytes + 188);
+      *(&v29[12] + 4) = bytes[9];
       v29[15] = v24;
       *(&v29[14] + 4) = v22;
       *(&v29[13] + 4) = v23;
@@ -2134,30 +2134,30 @@ LABEL_21:
 
     [v13 floatValue];
     HIDWORD(v30) = v25;
-    [a1 _applyBlendShapesWithTrackingData:v29];
-    [a1 _applyHeadPoseWithTrackingData:v29 gazeCorrection:1 pointOfView:0];
-    if (a4)
+    [dictionary _applyBlendShapesWithTrackingData:v29];
+    [dictionary _applyHeadPoseWithTrackingData:v29 gazeCorrection:1 pointOfView:0];
+    if (smoothing)
     {
       [MEMORY[0x1E69DF378] commit];
     }
   }
 }
 
-- (void)_applyBlendShapes:(const float *)a3 parameters:(const float *)a4
+- (void)_applyBlendShapes:(const float *)shapes parameters:(const float *)parameters
 {
   if (self->_headNode)
   {
     morphInfoFromARKitBlendShapeIndex = self->_morphInfoFromARKitBlendShapeIndex;
     var2 = morphInfoFromARKitBlendShapeIndex[51].var2;
     v9 = -1.0;
-    if (var2 != 0x7FFFFFFFFFFFFFFFLL && *a4 != -1.0)
+    if (var2 != 0x7FFFFFFFFFFFFFFFLL && *parameters != -1.0)
     {
       var0 = morphInfoFromARKitBlendShapeIndex[51].var0;
       v11 = 0.0;
       if (morphInfoFromARKitBlendShapeIndex[51].var3)
       {
         v12 = *MEMORY[0x1E6986408];
-        v11 = fmaxf(fminf(*a4, 1.0), 0.0);
+        v11 = fmaxf(fminf(*parameters, 1.0), 0.0);
         v13 = AVTBlendShapeLocationFromARIndex(51);
 
         if (v13 == v12)
@@ -2179,7 +2179,7 @@ LABEL_21:
       v17 = v16->var2;
       if (v17 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v18 = a3[i];
+        v18 = shapes[i];
         if (v18 != -1.0)
         {
           v19 = v16->var0;
@@ -2221,28 +2221,28 @@ LABEL_21:
   }
 }
 
-- (void)_applyBlendShapesWithTrackingData:(id *)a3
+- (void)_applyBlendShapesWithTrackingData:(id *)data
 {
-  if (a3)
+  if (data)
   {
-    [(AVTAvatar *)self _applyBlendShapes:&a3->var2[10] parameters:&a3[1].var2[4]];
+    [(AVTAvatar *)self _applyBlendShapes:&data->var2[10] parameters:&data[1].var2[4]];
   }
 }
 
-- (void)_applyHeadPoseWithTrackingData:(id *)a3 gazeCorrection:(BOOL)a4 pointOfView:(id)a5
+- (void)_applyHeadPoseWithTrackingData:(id *)data gazeCorrection:(BOOL)correction pointOfView:(id)view
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (!a3)
+  correctionCopy = correction;
+  viewCopy = view;
+  v9 = viewCopy;
+  if (!data)
   {
     goto LABEL_29;
   }
 
-  v10 = *&a3->var2[5];
-  if (LOBYTE(a3->var2[9]) == 1)
+  v10 = *&data->var2[5];
+  if (LOBYTE(data->var2[9]) == 1)
   {
-    if (v8)
+    if (viewCopy)
     {
       v11 = *MEMORY[0x1E69E9B18];
       v12 = *(MEMORY[0x1E69E9B18] + 16);
@@ -2265,11 +2265,11 @@ LABEL_21:
       *&v13 = (v19 + v16.f32[1]) + (v19 + v16.f32[1]);
       *(&v13 + 1) = (v18 - v16.f32[0]) + (v18 - v16.f32[0]);
       *(&v13 + 2) = v15.f32[0] - v15.f32[1];
-      v20 = vaddq_f32(*&a3->var2[1], *(MEMORY[0x1E69E9B18] + 48));
+      v20 = vaddq_f32(*&data->var2[1], *(MEMORY[0x1E69E9B18] + 48));
       v20.i32[3] = HIDWORD(*(MEMORY[0x1E69E9B18] + 48));
       v47 = v20;
       v48 = v13;
-      [v8 worldTransform];
+      [viewCopy worldTransform];
       v25 = 0;
       v53[0] = v51;
       v53[1] = v49;
@@ -2350,8 +2350,8 @@ LABEL_21:
 
     else
     {
-      v50 = *&a3->var2[5];
-      v52 = *&a3->var2[1];
+      v50 = *&data->var2[5];
+      v52 = *&data->var2[1];
       if ((_applyHeadPoseWithTrackingData_gazeCorrection_pointOfView__done & 1) == 0)
       {
         _applyHeadPoseWithTrackingData_gazeCorrection_pointOfView__done = 1;
@@ -2367,10 +2367,10 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v50 = *&a3->var2[5];
-  v52 = *&a3->var2[1];
+  v50 = *&data->var2[5];
+  v52 = *&data->var2[1];
   [(AVTPhysicsController *)self->_physicsController setupPhysicsIfNeeded];
-  if (!v5)
+  if (!correctionCopy)
   {
 LABEL_24:
     v38 = *&v50;
@@ -2380,7 +2380,7 @@ LABEL_24:
   [(AVTAvatar *)AVTAnimoji applyGazeCorrectionWithInputAngle:*&v50 translation:*v52.i64];
 LABEL_25:
   [(VFXNode *)self->_neckNode setOrientation:v38];
-  if (LOBYTE(a3->var2[9]) == 1)
+  if (LOBYTE(data->var2[9]) == 1)
   {
     [(VFXNode *)self->_neckNode convertPosition:self->_rootJointNode toNode:*self->_arOffset];
     *&v46 = vsubq_f32(v52, v45).u64[0];
@@ -2395,17 +2395,17 @@ LABEL_25:
 LABEL_29:
 }
 
-- (void)applyBlendShapesWithTrackingInfo:(id)a3
+- (void)applyBlendShapesWithTrackingInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v4 = [a3 trackingData];
+    trackingData = [info trackingData];
 
-    [(AVTAvatar *)self _applyBlendShapesWithTrackingData:v4];
+    [(AVTAvatar *)self _applyBlendShapesWithTrackingData:trackingData];
   }
 }
 
-- ($9556BFE61B967AE735F1A0D700315F88)morphInfoForARKitBlendShapeIndex:(SEL)a3
+- ($9556BFE61B967AE735F1A0D700315F88)morphInfoForARKitBlendShapeIndex:(SEL)index
 {
   v4 = self[2].var0 + 32 * a4;
   v5 = v4[1];
@@ -2414,22 +2414,22 @@ LABEL_29:
   return self;
 }
 
-- (id)blendShapeNameForARKitBlendShapeIndex:(unint64_t)a3
+- (id)blendShapeNameForARKitBlendShapeIndex:(unint64_t)index
 {
   [(AVTAvatar *)self morphInfoForARKitBlendShapeIndex:0, 0];
-  v4 = AVTBlendShapeLocationFromARIndex(a3);
+  v4 = AVTBlendShapeLocationFromARIndex(index);
 
   return v4;
 }
 
-- (int64_t)blendShapeIndexForARKitBlendShapeName:(id)a3
+- (int64_t)blendShapeIndexForARKitBlendShapeName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = 0;
   while (1)
   {
     v6 = [(AVTAvatar *)self blendShapeNameForARKitBlendShapeIndex:v5];
-    v7 = [v6 isEqualToString:v4];
+    v7 = [v6 isEqualToString:nameCopy];
 
     if (v7)
     {
@@ -2446,10 +2446,10 @@ LABEL_29:
   return v5;
 }
 
-- (void)enumerateMorphInfoForCustomBlendShapeName:(id)a3 usingBlock:(id)a4
+- (void)enumerateMorphInfoForCustomBlendShapeName:(id)name usingBlock:(id)block
 {
-  v6 = a4;
-  if ([a3 isEqualToString:@"Emoji"] && self->_friendlyPoseMorphInfoCount)
+  blockCopy = block;
+  if ([name isEqualToString:@"Emoji"] && self->_friendlyPoseMorphInfoCount)
   {
     v7 = 0;
     v8 = 0;
@@ -2459,10 +2459,10 @@ LABEL_29:
       v10 = *&v9->var2;
       v13 = *&v9->var0;
       v14 = v10;
-      v11 = v6[2];
+      v11 = blockCopy[2];
       v12[0] = v13;
       v12[1] = v10;
-      v11(v6, v12);
+      v11(blockCopy, v12);
       ++v8;
       ++v7;
     }
@@ -2471,10 +2471,10 @@ LABEL_29:
   }
 }
 
-+ (double)applyGazeCorrectionWithInputAngle:(int32x4_t)a1 translation:(__n128)a2
++ (double)applyGazeCorrectionWithInputAngle:(int32x4_t)angle translation:(__n128)translation
 {
-  v27 = a2.n128_u64[0];
-  v2 = a2.n128_f32[2] + AVTGetNeutralZ() * 100.0;
+  v27 = translation.n128_u64[0];
+  v2 = translation.n128_f32[2] + AVTGetNeutralZ() * 100.0;
   v3 = *(&v27 + 1) / 0.2;
   v4 = atanf(v3 / v2) + 0.104719755;
   v5 = __sincosf_stret(v4 * 0.5);
@@ -2484,12 +2484,12 @@ LABEL_29:
   v8 = vmulq_n_f32(vmulq_n_f32(xmmword_1BB4F05D0, v24), v5.__sinval);
   v9 = v8;
   v9.i32[3] = v8.i32[0];
-  v10 = a1;
-  v11 = vzip1q_s32(v10, v10);
-  v11.i32[0] = a1.i32[2];
-  v12 = vmlaq_f32(vmlaq_n_f32(vmulq_f32(vmulq_f32(vextq_s8(vdupq_laneq_s32(a1, 3), a1, 4uLL), v9), xmmword_1BB4F09A0), a1, v5.__cosval), xmmword_1BB4F09A0, vmulq_f32(v11, vextq_s8(vextq_s8(v8, v8, 0xCuLL), v8, 8uLL)));
-  v13 = vuzp1q_s32(v10, v10);
-  v13.i32[0] = a1.i32[1];
+  angleCopy = angle;
+  v11 = vzip1q_s32(angleCopy, angleCopy);
+  v11.i32[0] = angle.i32[2];
+  v12 = vmlaq_f32(vmlaq_n_f32(vmulq_f32(vmulq_f32(vextq_s8(vdupq_laneq_s32(angle, 3), angle, 4uLL), v9), xmmword_1BB4F09A0), angle, v5.__cosval), xmmword_1BB4F09A0, vmulq_f32(v11, vextq_s8(vextq_s8(v8, v8, 0xCuLL), v8, 8uLL)));
+  v13 = vuzp1q_s32(angleCopy, angleCopy);
+  v13.i32[0] = angle.i32[1];
   v26 = vmlsq_f32(v12, v13, vextq_s8(vuzp1q_s32(v8, v8), v8, 0xCuLL));
   v14 = atanf((*&v27 + *&v27) / v2);
   v15 = __sincosf_stret(v14 * -0.5);
@@ -2509,24 +2509,24 @@ LABEL_29:
 
 - (void)_resetFaceToRandomPosition
 {
-  v3 = [(VFXNode *)self->_headNode morpher];
-  v4 = [v3 targets];
+  morpher = [(VFXNode *)self->_headNode morpher];
+  targets = [morpher targets];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __39__AVTAvatar__resetFaceToRandomPosition__block_invoke;
   v13[3] = &unk_1E7F49368;
   v13[4] = self;
-  [v4 enumerateObjectsUsingBlock:v13];
+  [targets enumerateObjectsUsingBlock:v13];
 
-  LODWORD(v3) = rand();
+  LODWORD(morpher) = rand();
   v5 = rand();
   __asm { FMOV            V1.2D, #-0.5 }
 
-  v11 = COERCE_DOUBLE(vcvt_f32_f64(vmulq_f64(vaddq_f64(vcvtq_f64_f32(vmul_f32(vcvt_f32_s32(__PAIR64__(v5, v3)), 0x3000000030000000)), _Q1), xmmword_1BB4F09B0)));
+  v11 = COERCE_DOUBLE(vcvt_f32_f64(vmulq_f64(vaddq_f64(vcvtq_f64_f32(vmul_f32(vcvt_f32_s32(__PAIR64__(v5, morpher)), 0x3000000030000000)), _Q1), xmmword_1BB4F09B0)));
   rand();
   [(VFXNode *)self->_rootJointNode setPosition:v11];
-  LODWORD(v3) = rand();
-  v12 = COERCE_DOUBLE(vadd_f32(vmul_f32(vcvt_f32_s32(__PAIR64__(rand(), v3)), 0x3000000030000000), 0xBF000000BF000000));
+  LODWORD(morpher) = rand();
+  v12 = COERCE_DOUBLE(vadd_f32(vmul_f32(vcvt_f32_s32(__PAIR64__(rand(), morpher)), 0x3000000030000000), 0xBF000000BF000000));
   rand();
   [(VFXNode *)self->_rootJointNode setEulerAngles:v12];
 }
@@ -2554,10 +2554,10 @@ void __39__AVTAvatar__resetFaceToRandomPosition__block_invoke(uint64_t a1, void 
 
   v4 = v3;
   v5 = [(VFXNode *)self->_rootJointNode animationPlayerForKey:@"kAVTTransitionAnimation-posePosition"];
-  v6 = [v5 animation];
-  v7 = [v6 caAnimation];
+  animation = [v5 animation];
+  caAnimation = [animation caAnimation];
 
-  if (v7)
+  if (caAnimation)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -2569,9 +2569,9 @@ void __39__AVTAvatar__resetFaceToRandomPosition__block_invoke(uint64_t a1, void 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v7 toValue];
+      toValue = [caAnimation toValue];
 
-      if (v9)
+      if (toValue)
       {
 LABEL_6:
         v10 = 0;
@@ -2622,8 +2622,8 @@ LABEL_6:
         [v36 avt_float3Value];
         [(AVTAvatarPose *)v4 setNeckPosition:?];
 
-        v35 = __17__AVTAvatar_pose__block_invoke(v37, self->_neckNode);
-        [v35 avt_float4Value];
+        presentationNode2 = __17__AVTAvatar_pose__block_invoke(v37, self->_neckNode);
+        [presentationNode2 avt_float4Value];
         goto LABEL_31;
       }
     }
@@ -2664,12 +2664,12 @@ LABEL_6:
   }
 
   [(AVTAvatarPose *)v4 setWeight:@"Emoji" forBlendShapeNamed:morphWeight];
-  v34 = [(VFXNode *)self->_rootJointNode presentationNode];
-  [v34 position];
+  presentationNode = [(VFXNode *)self->_rootJointNode presentationNode];
+  [presentationNode position];
   [(AVTAvatarPose *)v4 setNeckPosition:?];
 
-  v35 = [(VFXNode *)self->_neckNode presentationNode];
-  [v35 orientation];
+  presentationNode2 = [(VFXNode *)self->_neckNode presentationNode];
+  [presentationNode2 orientation];
 LABEL_31:
   [(AVTAvatarPose *)v4 setNeckOrientation:?];
 
@@ -2714,9 +2714,9 @@ id __17__AVTAvatar_pose__block_invoke(uint64_t a1, void *a2)
   return v6;
 }
 
-- (void)setPose:(id)a3
+- (void)setPose:(id)pose
 {
-  v24 = a3;
+  poseCopy = pose;
   if (self->_morphInfoFromARKitBlendShapeIndex)
   {
     v4 = 0;
@@ -2732,7 +2732,7 @@ id __17__AVTAvatar_pose__block_invoke(uint64_t a1, void *a2)
         v11 = 0.0;
         if (var3)
         {
-          [v24 weightForBlendShapeNamed:{v10, 0.0}];
+          [poseCopy weightForBlendShapeNamed:{v10, 0.0}];
           *&v11 = v11;
         }
 
@@ -2754,7 +2754,7 @@ id __17__AVTAvatar_pose__block_invoke(uint64_t a1, void *a2)
         v17 = 0.0;
         if (v14->var3)
         {
-          [v24 weightForBlendShapeNamed:{@"Emoji", 0.0}];
+          [poseCopy weightForBlendShapeNamed:{@"Emoji", 0.0}];
           *&v17 = v17;
         }
 
@@ -2771,7 +2771,7 @@ id __17__AVTAvatar_pose__block_invoke(uint64_t a1, void *a2)
       v18 = 0.0;
       if (self->_friendlyPoseMorphInfoProxy.isEnabled)
       {
-        [v24 weightForBlendShapeNamed:{@"Emoji", 0.0}];
+        [poseCopy weightForBlendShapeNamed:{@"Emoji", 0.0}];
         v18 = v19;
       }
 
@@ -2779,13 +2779,13 @@ id __17__AVTAvatar_pose__block_invoke(uint64_t a1, void *a2)
     }
 
     [(AVTPhysicsController *)self->_physicsController setupPhysicsIfNeeded];
-    if (v24)
+    if (poseCopy)
     {
-      [v24 neckPosition];
+      [poseCopy neckPosition];
       [(VFXNode *)self->_rootJointNode setPosition:?];
-      [v24 neckOrientation];
+      [poseCopy neckOrientation];
       [(VFXNode *)self->_neckNode setOrientation:?];
-      [v24 bakedAnimationBlendFactor];
+      [poseCopy bakedAnimationBlendFactor];
       v21 = v20;
     }
 
@@ -2796,9 +2796,9 @@ id __17__AVTAvatar_pose__block_invoke(uint64_t a1, void *a2)
       v21 = 1.0;
     }
 
-    v22 = [(AVTAvatar *)self bakedAnimationPlayer];
+    bakedAnimationPlayer = [(AVTAvatar *)self bakedAnimationPlayer];
     *&v23 = v21;
-    [v22 setBlendFactor:v23];
+    [bakedAnimationPlayer setBlendFactor:v23];
   }
 }
 
@@ -2815,8 +2815,8 @@ id __17__AVTAvatar_pose__block_invoke(uint64_t a1, void *a2)
   [(VFXNode *)avatarNode enumerateHierarchyUsingBlock:v22];
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v6 appendString:@"{\n"];
-  v7 = [v5 allKeys];
-  v8 = [v7 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v5 allKeys];
+  v8 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
@@ -2933,12 +2933,12 @@ void __40__AVTAvatar_debugPoseJSONRepresentation__block_invoke_4(uint64_t a1, vo
   [v10 appendFormat:@"    %@ : %.3f%s\n", v12, *&v9, v11];
 }
 
-- (void)animatePhysicsScaleFactor:(double)a3 duration:(double)a4
+- (void)animatePhysicsScaleFactor:(double)factor duration:(double)duration
 {
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
 
-    [(AVTAvatar *)self setPhysicsScaleFactor:a3];
+    [(AVTAvatar *)self setPhysicsScaleFactor:factor];
   }
 
   else
@@ -2950,9 +2950,9 @@ void __40__AVTAvatar_debugPoseJSONRepresentation__block_invoke_4(uint64_t a1, vo
     v7[1] = 3221225472;
     v7[2] = __48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke;
     v7[3] = &__block_descriptor_56_e52_v48__0__AVTAvatar_8d16d24___VFXWorldRenderer__32_B40l;
-    *&v7[4] = a4;
+    *&v7[4] = duration;
     *&v7[5] = physicsScaleFactor;
-    *&v7[6] = a3;
+    *&v7[6] = factor;
     [(AVTAvatar *)self addDidUpdateAfterAnimationsEvaluatedAtTimeCallbackForKey:@"animatePhysicsOnAvatar" block:v7];
   }
 }
@@ -2970,13 +2970,13 @@ double *__48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke(double
   return result;
 }
 
-- (void)transitionToPose:(id)a3 duration:(double)a4 delay:(double)a5 completionHandler:(id)a6
+- (void)transitionToPose:(id)pose duration:(double)duration delay:(double)delay completionHandler:(id)handler
 {
-  v12 = a3;
-  v10 = a6;
-  if (v12)
+  poseCopy = pose;
+  handlerCopy = handler;
+  if (poseCopy)
   {
-    [v12 bakedAnimationBlendFactor];
+    [poseCopy bakedAnimationBlendFactor];
   }
 
   else
@@ -2984,17 +2984,17 @@ double *__48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke(double
     v11 = 1.0;
   }
 
-  [(AVTAvatar *)self _transitionFromPose:0 toPose:v12 bakedAnimationBlendFactor:0 duration:0 delay:v10 timingFunction:v11 timingAnimation:a4 completionHandler:a5];
+  [(AVTAvatar *)self _transitionFromPose:0 toPose:poseCopy bakedAnimationBlendFactor:0 duration:0 delay:handlerCopy timingFunction:v11 timingAnimation:duration completionHandler:delay];
 }
 
-- (void)transitionFromPose:(id)a3 toPose:(id)a4 duration:(double)a5 delay:(double)a6 completionHandler:(id)a7
+- (void)transitionFromPose:(id)pose toPose:(id)toPose duration:(double)duration delay:(double)delay completionHandler:(id)handler
 {
-  v15 = a3;
-  v12 = a4;
-  v13 = a7;
-  if (v12)
+  poseCopy = pose;
+  toPoseCopy = toPose;
+  handlerCopy = handler;
+  if (toPoseCopy)
   {
-    [v12 bakedAnimationBlendFactor];
+    [toPoseCopy bakedAnimationBlendFactor];
   }
 
   else
@@ -3002,18 +3002,18 @@ double *__48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke(double
     v14 = 1.0;
   }
 
-  [(AVTAvatar *)self _transitionFromPose:v15 toPose:v12 bakedAnimationBlendFactor:0 duration:0 delay:v13 timingFunction:v14 timingAnimation:a5 completionHandler:a6];
+  [(AVTAvatar *)self _transitionFromPose:poseCopy toPose:toPoseCopy bakedAnimationBlendFactor:0 duration:0 delay:handlerCopy timingFunction:v14 timingAnimation:duration completionHandler:delay];
 }
 
-- (void)transitionFromPose:(id)a3 toPose:(id)a4 duration:(double)a5 delay:(double)a6 timingFunction:(id)a7 completionHandler:(id)a8
+- (void)transitionFromPose:(id)pose toPose:(id)toPose duration:(double)duration delay:(double)delay timingFunction:(id)function completionHandler:(id)handler
 {
-  v18 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  if (v14)
+  poseCopy = pose;
+  toPoseCopy = toPose;
+  functionCopy = function;
+  handlerCopy = handler;
+  if (toPoseCopy)
   {
-    [v14 bakedAnimationBlendFactor];
+    [toPoseCopy bakedAnimationBlendFactor];
   }
 
   else
@@ -3021,18 +3021,18 @@ double *__48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke(double
     v17 = 1.0;
   }
 
-  [(AVTAvatar *)self _transitionFromPose:v18 toPose:v14 bakedAnimationBlendFactor:v15 duration:0 delay:v16 timingFunction:v17 timingAnimation:a5 completionHandler:a6];
+  [(AVTAvatar *)self _transitionFromPose:poseCopy toPose:toPoseCopy bakedAnimationBlendFactor:functionCopy duration:0 delay:handlerCopy timingFunction:v17 timingAnimation:duration completionHandler:delay];
 }
 
-- (void)transitionFromPose:(id)a3 toPose:(id)a4 duration:(double)a5 delay:(double)a6 timingAnimation:(id)a7 completionHandler:(id)a8
+- (void)transitionFromPose:(id)pose toPose:(id)toPose duration:(double)duration delay:(double)delay timingAnimation:(id)animation completionHandler:(id)handler
 {
-  v18 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a8;
-  if (v14)
+  poseCopy = pose;
+  toPoseCopy = toPose;
+  animationCopy = animation;
+  handlerCopy = handler;
+  if (toPoseCopy)
   {
-    [v14 bakedAnimationBlendFactor];
+    [toPoseCopy bakedAnimationBlendFactor];
   }
 
   else
@@ -3040,16 +3040,16 @@ double *__48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke(double
     v17 = 1.0;
   }
 
-  [(AVTAvatar *)self _transitionFromPose:v18 toPose:v14 bakedAnimationBlendFactor:0 duration:v15 delay:v16 timingFunction:v17 timingAnimation:a5 completionHandler:a6];
+  [(AVTAvatar *)self _transitionFromPose:poseCopy toPose:toPoseCopy bakedAnimationBlendFactor:0 duration:animationCopy delay:handlerCopy timingFunction:v17 timingAnimation:duration completionHandler:delay];
 }
 
-- (void)_transitionFromPose:(id)a3 toPose:(id)a4 bakedAnimationBlendFactor:(double)a5 duration:(double)a6 delay:(double)a7 timingFunction:(id)a8 timingAnimation:(id)a9 completionHandler:(id)a10
+- (void)_transitionFromPose:(id)pose toPose:(id)toPose bakedAnimationBlendFactor:(double)factor duration:(double)duration delay:(double)delay timingFunction:(id)function timingAnimation:(id)animation completionHandler:(id)self0
 {
-  v78 = a3;
-  v18 = a4;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  poseCopy = pose;
+  toPoseCopy = toPose;
+  functionCopy = function;
+  animationCopy = animation;
+  handlerCopy = handler;
   v22 = CACurrentMediaTime();
   ++self->_transitionCount;
   objc_initWeak(location, self);
@@ -3061,11 +3061,11 @@ double *__48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke(double
   v92[2] = __130__AVTAvatar__transitionFromPose_toPose_bakedAnimationBlendFactor_duration_delay_timingFunction_timingAnimation_completionHandler___block_invoke;
   v92[3] = &unk_1E7F493B0;
   objc_copyWeak(&v94, location);
-  v95 = v18 != 0;
-  v77 = v21;
+  v95 = toPoseCopy != 0;
+  v77 = handlerCopy;
   v93 = v77;
   [v23 setCompletionBlock:v92];
-  if (!v18 && v20)
+  if (!toPoseCopy && animationCopy)
   {
     v24 = avt_default_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -3074,23 +3074,23 @@ double *__48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke(double
       _os_log_impl(&dword_1BB472000, v24, OS_LOG_TYPE_DEFAULT, "Can't use a timing animation without a destination pose", buf, 2u);
     }
 
-    v20 = 0;
+    animationCopy = 0;
   }
 
-  v25 = v22 + a7;
+  v25 = v22 + delay;
   v84[0] = MEMORY[0x1E69E9820];
   v84[1] = 3221225472;
   v85 = __130__AVTAvatar__transitionFromPose_toPose_bakedAnimationBlendFactor_duration_delay_timingFunction_timingAnimation_completionHandler___block_invoke_266;
   v86 = &unk_1E7F493D8;
-  v89 = a6;
-  v76 = v20;
+  durationCopy = duration;
+  v76 = animationCopy;
   v87 = v76;
   v90 = v25;
   v26 = 0;
   v27 = 0;
-  v75 = v19;
+  v75 = functionCopy;
   v88 = v75;
-  v79 = v18;
+  v79 = toPoseCopy;
   do
   {
     v28 = &self->_morphInfoFromARKitBlendShapeIndex[v26];
@@ -3103,13 +3103,13 @@ double *__48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke(double
         v31 = [(AVTAvatar *)self blendShapeNameForARKitBlendShapeIndex:v27];
         v32 = [@"kAVTTransitionAnimation-" stringByAppendingString:v31];
         v33 = [MEMORY[0x1E696AEC0] stringWithFormat:@"morpher.weights[%d]", var2, v75, v76];
-        if (v78)
+        if (poseCopy)
         {
           v34 = MEMORY[0x1E696AD98];
-          [v78 weightForBlendShapeNamed:v31];
+          [poseCopy weightForBlendShapeNamed:v31];
           *&v35 = v35;
           v36 = [v34 numberWithFloat:v35];
-          if (!v18)
+          if (!toPoseCopy)
           {
             goto LABEL_14;
           }
@@ -3118,21 +3118,21 @@ double *__48__AVTAvatar_animatePhysicsScaleFactor_duration___block_invoke(double
         else
         {
           v36 = 0;
-          if (!v18)
+          if (!toPoseCopy)
           {
 LABEL_14:
-            v85(v84, var1, v33, v32, v36, v18);
+            v85(v84, var1, v33, v32, v36, toPoseCopy);
 
-            v18 = v79;
+            toPoseCopy = v79;
             goto LABEL_15;
           }
         }
 
-        v37 = v18;
+        v37 = toPoseCopy;
         v38 = MEMORY[0x1E696AD98];
         [v37 weightForBlendShapeNamed:v31];
         *&v39 = v39;
-        v18 = [v38 numberWithFloat:v39];
+        toPoseCopy = [v38 numberWithFloat:v39];
         goto LABEL_14;
       }
     }
@@ -3147,7 +3147,7 @@ LABEL_15:
   {
     v40 = 0;
     v41 = 0;
-    v42 = v78;
+    v42 = poseCopy;
     while (1)
     {
       v43 = &self->_friendlyPoseMorphInfos[v40];
@@ -3188,7 +3188,7 @@ LABEL_24:
 
       ++v41;
       ++v40;
-      v42 = v78;
+      v42 = poseCopy;
       if (v41 >= self->_friendlyPoseMorphInfoCount)
       {
         goto LABEL_33;
@@ -3207,7 +3207,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v42 = v78;
+  v42 = poseCopy;
   if (self->_friendlyPoseMorphInfoProxy.isEnabled)
   {
     if (v79)
@@ -3287,14 +3287,14 @@ LABEL_41:
   v81 = __130__AVTAvatar__transitionFromPose_toPose_bakedAnimationBlendFactor_duration_delay_timingFunction_timingAnimation_completionHandler___block_invoke_2;
   v82 = &__block_descriptor_40_e63_v40__0__CABasicAnimation_8__NSString_16___VFXAnimatable__24__32l;
   v83 = v25;
-  v65 = [(AVTAvatar *)self bakedAnimationPlayer];
-  v66 = v65;
-  if (v65)
+  bakedAnimationPlayer = [(AVTAvatar *)self bakedAnimationPlayer];
+  v66 = bakedAnimationPlayer;
+  if (bakedAnimationPlayer)
   {
-    if (a6 <= 0.0)
+    if (duration <= 0.0)
     {
-      [v65 removeAnimationForKey:@"transition-blendFactor"];
-      *&v74 = a5;
+      [bakedAnimationPlayer removeAnimationForKey:@"transition-blendFactor"];
+      *&v74 = factor;
       [v66 setBlendFactor:v74];
     }
 
@@ -3302,22 +3302,22 @@ LABEL_41:
     {
       v67 = [MEMORY[0x1E6979318] animationWithKeyPath:@"blendFactor"];
       v81(v80, v67, @"transition-blendFactor", v66, AVTInterpolateBasicAnimationFloat);
-      v68 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+      v68 = [MEMORY[0x1E696AD98] numberWithDouble:factor];
       [v67 setToValue:v68];
 
-      [v67 setDuration:a6];
+      [v67 setDuration:duration];
       [v67 setBeginTime:v25];
       [v67 setFillMode:*MEMORY[0x1E69797E8]];
       [v67 setRemovedOnCompletion:0];
       v69 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
       [v67 setTimingFunction:v69];
 
-      v70 = [v67 fromValue];
+      fromValue = [v67 fromValue];
 
-      if (v70)
+      if (fromValue)
       {
-        v71 = [v67 fromValue];
-        [v71 floatValue];
+        fromValue2 = [v67 fromValue];
+        [fromValue2 floatValue];
         [v66 setBlendFactor:?];
       }
 
@@ -3327,7 +3327,7 @@ LABEL_41:
       [v73 setTimeOrigin:1];
       [v66 addAnimationPlayer:v73 forKey:@"transition-blendFactor"];
 
-      v42 = v78;
+      v42 = poseCopy;
     }
   }
 
@@ -3729,13 +3729,13 @@ LABEL_7:
   }
 }
 
-- (void)stopTransitionAnimationWithBlendOutDuration:(double)a3
+- (void)stopTransitionAnimationWithBlendOutDuration:(double)duration
 {
-  v4 = a3;
+  durationCopy = duration;
   for (i = 8; i != 1672; i += 32)
   {
-    *&a3 = v4;
-    [*(&self->_morphInfoFromARKitBlendShapeIndex->var0 + i) removeAllAnimationsWithBlendOutDuration:a3];
+    *&duration = durationCopy;
+    [*(&self->_morphInfoFromARKitBlendShapeIndex->var0 + i) removeAllAnimationsWithBlendOutDuration:duration];
   }
 
   if (self->_friendlyPoseMorphInfoCount)
@@ -3744,8 +3744,8 @@ LABEL_7:
     v7 = 8;
     do
     {
-      *&a3 = v4;
-      [*(&self->_friendlyPoseMorphInfos->var0 + v7) removeAllAnimationsWithBlendOutDuration:a3];
+      *&duration = durationCopy;
+      [*(&self->_friendlyPoseMorphInfos->var0 + v7) removeAllAnimationsWithBlendOutDuration:duration];
       ++v6;
       v7 += 32;
     }
@@ -3753,34 +3753,34 @@ LABEL_7:
     while (v6 < self->_friendlyPoseMorphInfoCount);
   }
 
-  *&a3 = v4;
-  [(VFXNode *)self->_rootJointNode removeAllAnimationsWithBlendOutDuration:a3];
-  *&v8 = v4;
+  *&duration = durationCopy;
+  [(VFXNode *)self->_rootJointNode removeAllAnimationsWithBlendOutDuration:duration];
+  *&v8 = durationCopy;
   [(VFXNode *)self->_neckNode removeAllAnimationsWithBlendOutDuration:v8];
-  *&v9 = v4;
+  *&v9 = durationCopy;
   [(VFXAnimationPlayer *)self->_bakedAnimationPlayer_lazy removeAllAnimationsWithBlendOutDuration:v9];
   self->_transitionCount = 0;
 }
 
-- (id)snapshotWithSize:(CGSize)a3 scale:(double)a4 options:(id)a5
+- (id)snapshotWithSize:(CGSize)size scale:(double)scale options:(id)options
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
+  height = size.height;
+  width = size.width;
+  optionsCopy = options;
   v10 = +[AVTSnapshotBuilder sharedInstance];
   objc_sync_enter(v10);
   [v10 setAvatar:self];
-  v11 = [v9 objectForKeyedSubscript:@"AVTSnapshotAnimatedKey"];
-  v12 = [v11 BOOLValue];
+  v11 = [optionsCopy objectForKeyedSubscript:@"AVTSnapshotAnimatedKey"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
-    [v10 animatedImageWithSize:v9 scale:width options:{height, a4}];
+    [v10 animatedImageWithSize:optionsCopy scale:width options:{height, scale}];
   }
 
   else
   {
-    [v10 imageWithSize:v9 scale:width options:{height, a4}];
+    [v10 imageWithSize:optionsCopy scale:width options:{height, scale}];
   }
   v13 = ;
   objc_sync_exit(v10);
@@ -3788,25 +3788,25 @@ LABEL_7:
   return v13;
 }
 
-+ (void)preloadAvatar:(id)a3
++ (void)preloadAvatar:(id)avatar
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  avatarCopy = avatar;
   v4 = objc_autoreleasePoolPush();
   v9 = @"AVTRendererOptionInitiallyConfigureForARMode";
   v10[0] = MEMORY[0x1E695E110];
   v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   v6 = [(VFXRenderer *)AVTRenderer rendererWithDevice:0 options:v5];
 
-  [v6 setAvatar:v3];
-  v7 = [v6 world];
-  [v6 prepareObject:v7 shouldAbortBlock:0];
+  [v6 setAvatar:avatarCopy];
+  world = [v6 world];
+  [v6 prepareObject:world shouldAbortBlock:0];
 
   objc_autoreleasePoolPop(v4);
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = avt_default_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -3819,16 +3819,16 @@ LABEL_7:
 
 - (id)dataRepresentation
 {
-  v2 = [(AVTAvatar *)self newDescriptor];
-  v3 = [v2 dataRepresentation];
+  newDescriptor = [(AVTAvatar *)self newDescriptor];
+  dataRepresentation = [newDescriptor dataRepresentation];
 
-  return v3;
+  return dataRepresentation;
 }
 
-+ (AVTAvatar)avatarWithDataRepresentation:(id)a3 usageIntent:(unint64_t)a4 error:(id *)a5
++ (AVTAvatar)avatarWithDataRepresentation:(id)representation usageIntent:(unint64_t)intent error:(id *)error
 {
-  v8 = [AVTAvatarDescriptor descriptorWithDataRepresentation:a3 error:a5];
-  v9 = [a1 avatarWithDescriptor:v8 usageIntent:a4 error:a5];
+  v8 = [AVTAvatarDescriptor descriptorWithDataRepresentation:representation error:error];
+  v9 = [self avatarWithDescriptor:v8 usageIntent:intent error:error];
 
   return v9;
 }
@@ -3844,15 +3844,15 @@ LABEL_7:
   return 0;
 }
 
-+ (AVTAvatar)avatarWithDescriptor:(id)a3 usageIntent:(unint64_t)a4 error:(id *)a5
++ (AVTAvatar)avatarWithDescriptor:(id)descriptor usageIntent:(unint64_t)intent error:(id *)error
 {
-  v7 = a3;
+  descriptorCopy = descriptor;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = off_1E7F47150;
 LABEL_5:
-    v9 = [objc_alloc(*v8) initWithDescriptor:v7 usageIntent:a4 error:a5];
+    v9 = [objc_alloc(*v8) initWithDescriptor:descriptorCopy usageIntent:intent error:error];
     goto LABEL_7;
   }
 
@@ -3888,24 +3888,24 @@ LABEL_7:
   return 0;
 }
 
-- (id)nodesMatchingStickerPattern:(id)a3 inHierarchy:(id)a4 options:(unint64_t)a5 includingDerivedNodes:(BOOL)a6
+- (id)nodesMatchingStickerPattern:(id)pattern inHierarchy:(id)hierarchy options:(unint64_t)options includingDerivedNodes:(BOOL)nodes
 {
-  v6 = a6;
+  nodesCopy = nodes;
   v25 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  patternCopy = pattern;
+  hierarchyCopy = hierarchy;
   v12 = objc_alloc_init(MEMORY[0x1E695DF70]);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(AVTAvatar *)self _addNodesMatchingStickerPattern:v10 inHierarchy:v11 toArray:v12 options:a5];
-    if (!v6)
+    [(AVTAvatar *)self _addNodesMatchingStickerPattern:patternCopy inHierarchy:hierarchyCopy toArray:v12 options:options];
+    if (!nodesCopy)
     {
       goto LABEL_17;
     }
 
 LABEL_16:
-    [(AVTAvatar *)self addDerivedNodesMatchingStickerPattern:v10 toArray:v12 options:a5, v20];
+    [(AVTAvatar *)self addDerivedNodesMatchingStickerPattern:patternCopy toArray:v12 options:options, v20];
     goto LABEL_17;
   }
 
@@ -3916,7 +3916,7 @@ LABEL_16:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v13 = v10;
+    v13 = patternCopy;
     v14 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v14)
     {
@@ -3931,7 +3931,7 @@ LABEL_16:
             objc_enumerationMutation(v13);
           }
 
-          [(AVTAvatar *)self _addNodesMatchingStickerPattern:*(*(&v20 + 1) + 8 * i) inHierarchy:v11 toArray:v12 options:a5, v20];
+          [(AVTAvatar *)self _addNodesMatchingStickerPattern:*(*(&v20 + 1) + 8 * i) inHierarchy:hierarchyCopy toArray:v12 options:options, v20];
         }
 
         v15 = [v13 countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -3950,7 +3950,7 @@ LABEL_16:
     }
   }
 
-  if (v6)
+  if (nodesCopy)
   {
     goto LABEL_16;
   }
@@ -3962,26 +3962,26 @@ LABEL_17:
   return v12;
 }
 
-- (void)_addNodesMatchingStickerPattern:(id)a3 inHierarchy:(id)a4 toArray:(id)a5 options:(unint64_t)a6
+- (void)_addNodesMatchingStickerPattern:(id)pattern inHierarchy:(id)hierarchy toArray:(id)array options:(unint64_t)options
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  LOBYTE(a4) = [v9 hasSuffix:@"*"];
-  v12 = [v9 substringToIndex:{objc_msgSend(v9, "length") - 1}];
+  patternCopy = pattern;
+  arrayCopy = array;
+  hierarchyCopy = hierarchy;
+  LOBYTE(hierarchy) = [patternCopy hasSuffix:@"*"];
+  v12 = [patternCopy substringToIndex:{objc_msgSend(patternCopy, "length") - 1}];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __73__AVTAvatar__addNodesMatchingStickerPattern_inHierarchy_toArray_options___block_invoke;
   v16[3] = &unk_1E7F49420;
-  v21 = a4;
+  hierarchyCopy2 = hierarchy;
   v17 = v12;
-  v18 = v10;
-  v19 = v9;
-  v20 = a6;
-  v13 = v9;
-  v14 = v10;
+  v18 = arrayCopy;
+  v19 = patternCopy;
+  optionsCopy = options;
+  v13 = patternCopy;
+  v14 = arrayCopy;
   v15 = v12;
-  [v11 enumerateHierarchyUsingBlock:v16];
+  [hierarchyCopy enumerateHierarchyUsingBlock:v16];
 }
 
 void __73__AVTAvatar__addNodesMatchingStickerPattern_inHierarchy_toArray_options___block_invoke(uint64_t a1, void *a2)
@@ -4018,11 +4018,11 @@ LABEL_8:
 
 - (float)opacity
 {
-  v2 = [(AVTAvatar *)self avatarNode];
-  v3 = v2;
-  if (v2)
+  avatarNode = [(AVTAvatar *)self avatarNode];
+  v3 = avatarNode;
+  if (avatarNode)
   {
-    [v2 opacity];
+    [avatarNode opacity];
     v5 = v4;
   }
 
@@ -4040,31 +4040,31 @@ LABEL_8:
   return v5;
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
-  v7 = [(AVTAvatar *)self avatarNode];
-  [v7 opacity];
-  if (v5 != a3)
+  avatarNode = [(AVTAvatar *)self avatarNode];
+  [avatarNode opacity];
+  if (v5 != opacity)
   {
-    if (a3 == 1.0 || ([v7 opacity], *&v6 == 1.0))
+    if (opacity == 1.0 || ([avatarNode opacity], *&v6 == 1.0))
     {
-      [(AVTAvatar *)self _preparePrePass:a3 != 1.0];
+      [(AVTAvatar *)self _preparePrePass:opacity != 1.0];
     }
 
-    *&v6 = a3;
-    [v7 setOpacity:v6];
+    *&v6 = opacity;
+    [avatarNode setOpacity:v6];
   }
 }
 
-- (void)_preparePrePass:(BOOL)a3
+- (void)_preparePrePass:(BOOL)pass
 {
-  v4 = [(AVTAvatar *)self avatarNode];
+  avatarNode = [(AVTAvatar *)self avatarNode];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __29__AVTAvatar__preparePrePass___block_invoke;
   v5[3] = &__block_descriptor_33_e21_v24__0__VFXNode_8_B16l;
-  v6 = a3;
-  [v4 enumerateHierarchyUsingBlock:v5];
+  passCopy = pass;
+  [avatarNode enumerateHierarchyUsingBlock:v5];
 }
 
 void __29__AVTAvatar__preparePrePass___block_invoke(uint64_t a1, void *a2)
@@ -4407,67 +4407,67 @@ uint64_t __73__AVTAvatar_removeDidUpdateAfterAnimationsEvaluatedAtTimeCallbackFo
 - (uint64_t)setupEyeOrientationAndReflections
 {
   v4 = objc_alloc_init(AVTEyeSkinningDescriptor);
-  v5 = *(a1 + 152);
-  *(a1 + 152) = v4;
+  v5 = *(self + 152);
+  *(self + 152) = v4;
 
-  [(AVTPupilReflectionCorrectionDescriptor *)*(a1 + 152) setReadMorpher:a2];
-  v6 = [*(a1 + 8) childNodeWithName:@"L_eye_JNT" recursively:1];
-  [(AVTPupilReflectionCorrectionDescriptor *)*(a1 + 152) setLeftEyeMaterial:v6];
+  [(AVTPupilReflectionCorrectionDescriptor *)*(self + 152) setReadMorpher:a2];
+  v6 = [*(self + 8) childNodeWithName:@"L_eye_JNT" recursively:1];
+  [(AVTPupilReflectionCorrectionDescriptor *)*(self + 152) setLeftEyeMaterial:v6];
 
-  v7 = [*(a1 + 8) childNodeWithName:@"R_eye_JNT" recursively:1];
-  [(AVTPupilReflectionCorrectionDescriptor *)*(a1 + 152) setRightEyeMaterial:v7];
+  v7 = [*(self + 8) childNodeWithName:@"R_eye_JNT" recursively:1];
+  [(AVTPupilReflectionCorrectionDescriptor *)*(self + 152) setRightEyeMaterial:v7];
 
   v8 = [a2 _weightIndexForTargetNamed:@"eyeLookDown_L"];
-  v9 = *(a1 + 152);
+  v9 = *(self + 152);
   if (v9)
   {
     *(v9 + 32) = v8;
   }
 
   v10 = [a2 _weightIndexForTargetNamed:@"eyeLookIn_L"];
-  v11 = *(a1 + 152);
+  v11 = *(self + 152);
   if (v11)
   {
     *(v11 + 40) = v10;
   }
 
   v12 = [a2 _weightIndexForTargetNamed:@"eyeLookOut_L"];
-  v13 = *(a1 + 152);
+  v13 = *(self + 152);
   if (v13)
   {
     *(v13 + 48) = v12;
   }
 
   v14 = [a2 _weightIndexForTargetNamed:@"eyeLookUp_L"];
-  v15 = *(a1 + 152);
+  v15 = *(self + 152);
   if (v15)
   {
     *(v15 + 56) = v14;
   }
 
   v16 = [a2 _weightIndexForTargetNamed:@"eyeLookDown_R"];
-  v17 = *(a1 + 152);
+  v17 = *(self + 152);
   if (v17)
   {
     *(v17 + 64) = v16;
   }
 
   v18 = [a2 _weightIndexForTargetNamed:@"eyeLookIn_R"];
-  v19 = *(a1 + 152);
+  v19 = *(self + 152);
   if (v19)
   {
     *(v19 + 72) = v18;
   }
 
   v20 = [a2 _weightIndexForTargetNamed:@"eyeLookOut_R"];
-  v21 = *(a1 + 152);
+  v21 = *(self + 152);
   if (v21)
   {
     *(v21 + 80) = v20;
   }
 
   result = [a2 _weightIndexForTargetNamed:@"eyeLookUp_R"];
-  v23 = *(a1 + 152);
+  v23 = *(self + 152);
   if (v23)
   {
     *(v23 + 88) = result;

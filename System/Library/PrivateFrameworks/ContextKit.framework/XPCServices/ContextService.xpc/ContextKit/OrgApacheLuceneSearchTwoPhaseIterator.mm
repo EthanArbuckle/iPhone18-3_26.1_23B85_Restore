@@ -1,13 +1,13 @@
 @interface OrgApacheLuceneSearchTwoPhaseIterator
-- (OrgApacheLuceneSearchTwoPhaseIterator)initWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3;
+- (OrgApacheLuceneSearchTwoPhaseIterator)initWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTwoPhaseIterator
 
-- (OrgApacheLuceneSearchTwoPhaseIterator)initWithOrgApacheLuceneSearchDocIdSetIterator:(id)a3
+- (OrgApacheLuceneSearchTwoPhaseIterator)initWithOrgApacheLuceneSearchDocIdSetIterator:(id)iterator
 {
-  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_(a3);
+  v4 = OrgLukhnosPortmobileUtilObjects_requireNonNullWithId_(iterator);
   JreStrongAssign(&self->approximation_, v4);
   return self;
 }

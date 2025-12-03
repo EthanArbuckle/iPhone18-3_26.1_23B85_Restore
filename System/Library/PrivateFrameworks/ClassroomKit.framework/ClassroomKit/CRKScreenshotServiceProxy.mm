@@ -1,7 +1,7 @@
 @interface CRKScreenshotServiceProxy
 - (CRKScreenshotServiceProxy)init;
-- (void)_fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)a3 completion:(id)a4;
-- (void)fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)a3 completion:(id)a4;
+- (void)_fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)pixels completion:(id)completion;
+- (void)fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)pixels completion:(id)completion;
 @end
 
 @implementation CRKScreenshotServiceProxy
@@ -21,18 +21,18 @@
   return v2;
 }
 
-- (void)fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)a3 completion:(id)a4
+- (void)fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)pixels completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = pixels.height;
+  width = pixels.width;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __83__CRKScreenshotServiceProxy_fetchScreenshotDataWithMaximumSizeInPixels_completion___block_invoke;
   v9[3] = &unk_278DC2338;
   v9[4] = self;
-  v10 = v7;
-  v8 = v7;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [(CRKScreenshotServiceProxy *)self _fetchScreenshotDataWithMaximumSizeInPixels:v9 completion:width, height];
 }
 
@@ -45,20 +45,20 @@ void __83__CRKScreenshotServiceProxy_fetchScreenshotDataWithMaximumSizeInPixels_
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)a3 completion:(id)a4
+- (void)_fetchScreenshotDataWithMaximumSizeInPixels:(CGSize)pixels completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [(CRKScreenshotServiceProxy *)self connectionProvider];
-  v9 = [v8 connection];
+  height = pixels.height;
+  width = pixels.width;
+  completionCopy = completion;
+  connectionProvider = [(CRKScreenshotServiceProxy *)self connectionProvider];
+  connection = [connectionProvider connection];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __84__CRKScreenshotServiceProxy__fetchScreenshotDataWithMaximumSizeInPixels_completion___block_invoke;
   v15[3] = &unk_278DC0FE0;
-  v10 = v7;
+  v10 = completionCopy;
   v16 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v15];
+  v11 = [connection remoteObjectProxyWithErrorHandler:v15];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;

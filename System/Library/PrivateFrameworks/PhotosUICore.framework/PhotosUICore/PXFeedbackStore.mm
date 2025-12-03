@@ -7,8 +7,8 @@
 - (unint64_t)sentFeedbackCount;
 - (unint64_t)unsentFeedbackCount;
 - (void)_cleanupStore;
-- (void)addFeedbackEntry:(id)a3;
-- (void)removeFeedbackEntry:(id)a3;
+- (void)addFeedbackEntry:(id)entry;
+- (void)removeFeedbackEntry:(id)entry;
 @end
 
 @implementation PXFeedbackStore
@@ -31,10 +31,10 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v10 = [(PXFeedbackStore *)self store];
-  v11 = [v10 allKeys];
+  store = [(PXFeedbackStore *)self store];
+  allKeys = [store allKeys];
 
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v12 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -47,7 +47,7 @@
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = [v16 stringByAppendingFormat:@"      - key: %@\n", *(*(&v18 + 1) + 8 * v15)];
@@ -57,7 +57,7 @@
       }
 
       while (v13 != v15);
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
@@ -70,8 +70,8 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DEF0];
-  v4 = [(PXFeedbackStore *)self _storePath];
-  v5 = [v3 dataWithContentsOfFile:v4];
+  _storePath = [(PXFeedbackStore *)self _storePath];
+  v5 = [v3 dataWithContentsOfFile:_storePath];
 
   if (v5)
   {
@@ -99,8 +99,8 @@
     }
   }
 
-  v15 = [(PXFeedbackStore *)self store];
-  v16 = v15 != 0;
+  store = [(PXFeedbackStore *)self store];
+  v16 = store != 0;
 
   return v16;
 }
@@ -108,11 +108,11 @@
 - (BOOL)_saveStore
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = [(PXFeedbackStore *)self _storePath];
+  _storePath = [(PXFeedbackStore *)self _storePath];
   v4 = MEMORY[0x1E696ACC8];
-  v5 = [(PXFeedbackStore *)self store];
+  store = [(PXFeedbackStore *)self store];
   v10 = 0;
-  v6 = [v4 archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v10];
+  v6 = [v4 archivedDataWithRootObject:store requiringSecureCoding:1 error:&v10];
   v7 = v10;
 
   if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
@@ -122,21 +122,21 @@
     _os_log_impl(&dword_1A3C1C000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "Failed to archive savedStore, error: %@", buf, 0xCu);
   }
 
-  v8 = [v6 writeToFile:v3 atomically:1];
+  v8 = [v6 writeToFile:_storePath atomically:1];
 
   return v8;
 }
 
 - (void)_cleanupStore
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   store = self->_store;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__PXFeedbackStore__cleanupStore__block_invoke;
   v6[3] = &unk_1E7744710;
-  v7 = v3;
-  v5 = v3;
+  v7 = array;
+  v5 = array;
   [(NSMutableDictionary *)store enumerateKeysAndObjectsUsingBlock:v6];
   [(NSMutableDictionary *)self->_store removeObjectsForKeys:v5];
 }
@@ -165,10 +165,10 @@ void __32__PXFeedbackStore__cleanupStore__block_invoke(uint64_t a1, void *a2, vo
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PXFeedbackStore *)self store];
-  v3 = [v2 objectEnumerator];
+  store = [(PXFeedbackStore *)self store];
+  objectEnumerator = [store objectEnumerator];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -180,13 +180,13 @@ void __32__PXFeedbackStore__cleanupStore__block_invoke(uint64_t a1, void *a2, vo
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v6 += [*(*(&v10 + 1) + 8 * i) alreadyCollected] ^ 1;
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -207,10 +207,10 @@ void __32__PXFeedbackStore__cleanupStore__block_invoke(uint64_t a1, void *a2, vo
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(PXFeedbackStore *)self store];
-  v3 = [v2 objectEnumerator];
+  store = [(PXFeedbackStore *)self store];
+  objectEnumerator = [store objectEnumerator];
 
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -222,13 +222,13 @@ void __32__PXFeedbackStore__cleanupStore__block_invoke(uint64_t a1, void *a2, vo
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v6 += [*(*(&v10 + 1) + 8 * i) alreadyCollected];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -242,22 +242,22 @@ void __32__PXFeedbackStore__cleanupStore__block_invoke(uint64_t a1, void *a2, vo
   return v6;
 }
 
-- (void)removeFeedbackEntry:(id)a3
+- (void)removeFeedbackEntry:(id)entry
 {
   store = self->_store;
-  v5 = [a3 uniqueID];
-  [(NSMutableDictionary *)store removeObjectForKey:v5];
+  uniqueID = [entry uniqueID];
+  [(NSMutableDictionary *)store removeObjectForKey:uniqueID];
 
   [(PXFeedbackStore *)self _saveStore];
 }
 
-- (void)addFeedbackEntry:(id)a3
+- (void)addFeedbackEntry:(id)entry
 {
-  v4 = a3;
-  [v4 setAlreadyCollected:0];
-  v5 = [(PXFeedbackStore *)self store];
-  v6 = [v4 uniqueID];
-  [v5 setValue:v4 forKey:v6];
+  entryCopy = entry;
+  [entryCopy setAlreadyCollected:0];
+  store = [(PXFeedbackStore *)self store];
+  uniqueID = [entryCopy uniqueID];
+  [store setValue:entryCopy forKey:uniqueID];
 
   [(PXFeedbackStore *)self _saveStore];
 }

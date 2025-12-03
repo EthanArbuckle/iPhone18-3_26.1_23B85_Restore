@@ -1,18 +1,18 @@
 @interface VGEarPCAFrameSelector
-- (VGEarPCAFrameSelector)initWithOptions:(id)a3;
-- (float)getMotionBlurScoreFromLandmarks:()vector<float isEarDetected:(std:(BOOL)a4 :(id *)a5 allocator<float>> *)a3 frameTimestamp:;
+- (VGEarPCAFrameSelector)initWithOptions:(id)options;
+- (float)getMotionBlurScoreFromLandmarks:()vector<float isEarDetected:(std:(BOOL)detected :(id *)a5 allocator<float>> *)a3 frameTimestamp:;
 - (id).cxx_construct;
-- (id)addPoseWithCaptureData:(id)a3 faceYaw:(id)a4;
+- (id)addPoseWithCaptureData:(id)data faceYaw:(id)yaw;
 - (id)currentState;
 - (vector<EarFrame,)posesFromGroup:(VGEarPCAFrameSelector *)self;
 @end
 
 @implementation VGEarPCAFrameSelector
 
-- (VGEarPCAFrameSelector)initWithOptions:(id)a3
+- (VGEarPCAFrameSelector)initWithOptions:(id)options
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v24.receiver = self;
   v24.super_class = VGEarPCAFrameSelector;
   v5 = [(VGEarPCAFrameSelector *)&v24 init];
@@ -21,24 +21,24 @@
     v6 = VGLogVGEarPCASelectionState();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [v4 description];
+      v7 = [optionsCopy description];
       [(VGEarPCAFrameSelector *)v7 initWithOptions:buf, v6];
     }
 
-    v8 = [v4 modelsRootPath];
-    v9 = v8 == 0;
+    modelsRootPath = [optionsCopy modelsRootPath];
+    v9 = modelsRootPath == 0;
 
     if (!v9)
     {
-      [v4 earPresenceThreshold];
-      [v4 earOcclusionThreshold];
-      [v4 bboxVisibilityThreshold];
-      [v4 landmarkVisibilityThreshold];
-      [v4 faceYawLimit];
-      v10 = [v4 modelsRootPath];
-      v11 = v10;
-      v12 = [v10 UTF8String];
-      v13 = strlen(v12);
+      [optionsCopy earPresenceThreshold];
+      [optionsCopy earOcclusionThreshold];
+      [optionsCopy bboxVisibilityThreshold];
+      [optionsCopy landmarkVisibilityThreshold];
+      [optionsCopy faceYawLimit];
+      modelsRootPath2 = [optionsCopy modelsRootPath];
+      v11 = modelsRootPath2;
+      uTF8String = [modelsRootPath2 UTF8String];
+      v13 = strlen(uTF8String);
       if (v13 < 0x7FFFFFFFFFFFFFF8)
       {
         v14 = v13;
@@ -47,13 +47,13 @@
           v20 = v13;
           if (v13)
           {
-            memmove(&__p, v12, v13);
+            memmove(&__p, uTF8String, v13);
           }
 
           *(&__p + v14) = 0;
-          v21 = [v4 useEarSideSmoothPredictor];
-          v22 = [v4 earSideSmoothPredictorBufferCapacity];
-          [v4 earSideSmoothPredictorConfidenceThreshold];
+          useEarSideSmoothPredictor = [optionsCopy useEarSideSmoothPredictor];
+          earSideSmoothPredictorBufferCapacity = [optionsCopy earSideSmoothPredictorBufferCapacity];
+          [optionsCopy earSideSmoothPredictorConfidenceThreshold];
           v23 = v16;
 
           vg::ear_detection::EarPCADetector::create();
@@ -110,34 +110,34 @@
 - (id)currentState
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(VGEarPCACaptureOptions *)self->_options frameCountThreshold];
-  v4 = [(VGEarPCACaptureOptions *)self->_options frameCountThreshold];
-  if (v4 >= self->_leftFrameCount)
+  frameCountThreshold = [(VGEarPCACaptureOptions *)self->_options frameCountThreshold];
+  frameCountThreshold2 = [(VGEarPCACaptureOptions *)self->_options frameCountThreshold];
+  if (frameCountThreshold2 >= self->_leftFrameCount)
   {
     leftFrameCount = self->_leftFrameCount;
   }
 
   else
   {
-    leftFrameCount = v4;
+    leftFrameCount = frameCountThreshold2;
   }
 
-  v6 = [(VGEarPCACaptureOptions *)self->_options frameCountThreshold];
-  v7 = [(VGEarPCACaptureOptions *)self->_options frameCountThreshold];
-  if (v7 >= self->_rightFrameCount)
+  frameCountThreshold3 = [(VGEarPCACaptureOptions *)self->_options frameCountThreshold];
+  frameCountThreshold4 = [(VGEarPCACaptureOptions *)self->_options frameCountThreshold];
+  if (frameCountThreshold4 >= self->_rightFrameCount)
   {
     rightFrameCount = self->_rightFrameCount;
   }
 
   else
   {
-    rightFrameCount = v7;
+    rightFrameCount = frameCountThreshold4;
   }
 
   v9 = 2 * [(VGEarPCACaptureOptions *)self->_options frameCountThreshold];
   v10 = objc_alloc_init(VGEarPCASelectionState);
   [(VGEarPCASelectionState *)v10 setFailed:v9 == 0];
-  v11 = v6 - rightFrameCount + v3 - leftFrameCount;
+  v11 = frameCountThreshold3 - rightFrameCount + frameCountThreshold - leftFrameCount;
   v12 = VGLogVGEarPCASelectionState();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
@@ -156,8 +156,8 @@
   [(VGEarPCASelectionState *)v10 setRightEarCompleted:self->_rightFrameCount >= [(VGEarPCACaptureOptions *)self->_options frameCountThreshold]];
   if (![(VGEarPCASelectionState *)v10 failed])
   {
-    v13 = [(VGEarPCASelectionState *)v10 leftEarCompleted]&& [(VGEarPCASelectionState *)v10 rightEarCompleted];
-    [(VGEarPCASelectionState *)v10 setCompleted:v13];
+    rightEarCompleted = [(VGEarPCASelectionState *)v10 leftEarCompleted]&& [(VGEarPCASelectionState *)v10 rightEarCompleted];
+    [(VGEarPCASelectionState *)v10 setCompleted:rightEarCompleted];
     if (v9)
     {
       *&v14 = (v9 - v11) / v9;
@@ -170,12 +170,12 @@
   return v10;
 }
 
-- (float)getMotionBlurScoreFromLandmarks:()vector<float isEarDetected:(std:(BOOL)a4 :(id *)a5 allocator<float>> *)a3 frameTimestamp:
+- (float)getMotionBlurScoreFromLandmarks:()vector<float isEarDetected:(std:(BOOL)detected :(id *)a5 allocator<float>> *)a3 frameTimestamp:
 {
   v49 = *MEMORY[0x277D85DE8];
   [(VGEarPCACaptureOptions *)self->_options motionBlurFilterThreshold];
   v10 = v9;
-  if (a4)
+  if (detected)
   {
     time = *a5;
     v11 = (CMTimeGetSeconds(&time) * 1000.0);
@@ -361,22 +361,22 @@
   return v10;
 }
 
-- (id)addPoseWithCaptureData:(id)a3 faceYaw:(id)a4
+- (id)addPoseWithCaptureData:(id)data faceYaw:(id)yaw
 {
   v91 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(VGEarPCAFrameSelector *)self currentState];
-  [v9 setDetectionError:1];
-  if ([v9 failed])
+  dataCopy = data;
+  yawCopy = yaw;
+  currentState = [(VGEarPCAFrameSelector *)self currentState];
+  [currentState setDetectionError:1];
+  if ([currentState failed])
   {
-    v10 = v9;
+    currentState2 = currentState;
     goto LABEL_70;
   }
 
-  if (v7)
+  if (dataCopy)
   {
-    [v7 timestamp];
+    [dataCopy timestamp];
   }
 
   else
@@ -385,7 +385,7 @@
   }
 
   Seconds = CMTimeGetSeconds(time);
-  v12 = CVPixelBufferGetIOSurface([v7 yuvRectified]);
+  v12 = CVPixelBufferGetIOSurface([dataCopy yuvRectified]);
   if (!v12)
   {
     v16 = VGLogVGEarPCASelectionState();
@@ -394,11 +394,11 @@
       [VGEarPCAFrameSelector addPoseWithCaptureData:faceYaw:];
     }
 
-    v10 = v9;
+    currentState2 = currentState;
     goto LABEL_69;
   }
 
-  v13 = CVPixelBufferGetIOSurface([v7 depth]);
+  v13 = CVPixelBufferGetIOSurface([dataCopy depth]);
   if (!v13)
   {
     v17 = VGLogVGEarPCASelectionState();
@@ -407,13 +407,13 @@
       [VGEarPCAFrameSelector addPoseWithCaptureData:faceYaw:];
     }
 
-    v10 = v9;
+    currentState2 = currentState;
     goto LABEL_68;
   }
 
-  if (v8)
+  if (yawCopy)
   {
-    [v8 floatValue];
+    [yawCopy floatValue];
     v15 = 0x100000000;
   }
 
@@ -448,7 +448,7 @@
   }
 
   v18 = v90;
-  [v9 setDetectionError:v90];
+  [currentState setDetectionError:v90];
   v50[4] = v61;
   v50[5] = v62;
   v50[6] = v63;
@@ -465,7 +465,7 @@
   v55 = 0;
   v56 = 0;
   std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&__p, v66[1], v67, (v67 - v66[1]) >> 2);
-  [v9 setPose:v50];
+  [currentState setPose:v50];
   if (__p)
   {
     v55 = __p;
@@ -489,9 +489,9 @@
       v48 = 0;
       v49 = 0;
       std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v47, v65[0], v65[1], (v65[1] - v65[0]) >> 2);
-      if (v7)
+      if (dataCopy)
       {
-        [v7 timestamp];
+        [dataCopy timestamp];
       }
 
       else
@@ -525,7 +525,7 @@
           _os_log_debug_impl(&dword_270F06000, v27, OS_LOG_TYPE_DEBUG, "Frame#%zu rejected because of motion blur score greater or equal to threshold (%g >= %g)", &location, 0x20u);
         }
 
-        [v9 setDetectionError:5];
+        [currentState setDetectionError:5];
         goto LABEL_29;
       }
 
@@ -546,7 +546,7 @@
     *v75 = 0u;
     *v76 = 0u;
     v77 = 0u;
-    objc_storeStrong(&location.captureData, a3);
+    objc_storeStrong(&location.captureData, data);
     v71 = v61;
     v72 = v62;
     v73 = v63;
@@ -567,8 +567,8 @@
       if (v57)
       {
 LABEL_48:
-        v10 = [(VGEarPCAFrameSelector *)self currentState];
-        [v10 setDetectionError:0];
+        currentState2 = [(VGEarPCAFrameSelector *)self currentState];
+        [currentState2 setDetectionError:0];
         v37 = v61;
         v38 = v62;
         v39 = v63;
@@ -585,7 +585,7 @@ LABEL_48:
         v45 = 0;
         v46 = 0;
         std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v44, v66[1], v67, (v67 - v66[1]) >> 2);
-        [v10 setPose:&v33];
+        [currentState2 setPose:&v33];
         if (v44)
         {
           v45 = v44;
@@ -598,9 +598,9 @@ LABEL_48:
           operator delete(v41);
         }
 
-        [v10 setLeftEarCompleted:{objc_msgSend(v9, "leftEarCompleted", v33, v34, v35, v36, v37, v38, v39, v40)}];
-        [v10 setRightEarCompleted:{objc_msgSend(v9, "rightEarCompleted")}];
-        if ([v10 completed])
+        [currentState2 setLeftEarCompleted:{objc_msgSend(currentState, "leftEarCompleted", v33, v34, v35, v36, v37, v38, v39, v40)}];
+        [currentState2 setRightEarCompleted:{objc_msgSend(currentState, "rightEarCompleted")}];
+        if ([currentState2 completed])
         {
           self->_selectionCompleted = 1;
         }
@@ -639,7 +639,7 @@ LABEL_48:
   }
 
 LABEL_29:
-  v10 = v9;
+  currentState2 = currentState;
 LABEL_59:
   if (v66[1])
   {
@@ -675,7 +675,7 @@ LABEL_70:
 
   v30 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return currentState2;
 }
 
 - (id).cxx_construct

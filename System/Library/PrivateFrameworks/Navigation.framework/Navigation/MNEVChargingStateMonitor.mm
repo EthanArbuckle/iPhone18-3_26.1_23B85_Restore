@@ -1,11 +1,11 @@
 @interface MNEVChargingStateMonitor
-- (MNEVChargingStateMonitor)initWithTargetBatteryCharge:(id)a3;
+- (MNEVChargingStateMonitor)initWithTargetBatteryCharge:(id)charge;
 - (MNEVChargingStateMonitorDelegate)delegate;
 - (void)_notifyShouldShowChargingInfo;
 - (void)_startTimer;
-- (void)_updateForVehicle:(id)a3 forceDelegateCallback:(BOOL)a4;
+- (void)_updateForVehicle:(id)vehicle forceDelegateCallback:(BOOL)callback;
 - (void)dealloc;
-- (void)updateForLocation:(id)a3;
+- (void)updateForLocation:(id)location;
 @end
 
 @implementation MNEVChargingStateMonitor
@@ -17,17 +17,17 @@
   return WeakRetained;
 }
 
-- (void)_updateForVehicle:(id)a3 forceDelegateCallback:(BOOL)a4
+- (void)_updateForVehicle:(id)vehicle forceDelegateCallback:(BOOL)callback
 {
-  v6 = a3;
+  vehicleCopy = vehicle;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __68__MNEVChargingStateMonitor__updateForVehicle_forceDelegateCallback___block_invoke;
   v8[3] = &unk_1E842F9D8;
-  v9 = v6;
-  v10 = self;
-  v11 = a4;
-  v7 = v6;
+  v9 = vehicleCopy;
+  selfCopy = self;
+  callbackCopy = callback;
+  v7 = vehicleCopy;
   MNRunAsyncOnNavigationQueue(v8);
 }
 
@@ -106,8 +106,8 @@ void __68__MNEVChargingStateMonitor__updateForVehicle_forceDelegateCallback___bl
   {
     self->_shouldShowChargingInfo = 1;
     [(MNDispatchTimer *)self->_timer cancel];
-    v4 = [(MNEVChargingStateMonitor *)self delegate];
-    [v4 evChargingStateMonitorShouldShowChargingInfo:self];
+    delegate = [(MNEVChargingStateMonitor *)self delegate];
+    [delegate evChargingStateMonitorShouldShowChargingInfo:self];
   }
 }
 
@@ -158,9 +158,9 @@ void __39__MNEVChargingStateMonitor__startTimer__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateForLocation:(id)a3
+- (void)updateForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   if (!self->_shouldShowChargingInfo)
   {
     v5 = [MEMORY[0x1E695DF00] now];
@@ -171,7 +171,7 @@ void __39__MNEVChargingStateMonitor__startTimer__block_invoke(uint64_t a1)
 
     if (v7 > v9)
     {
-      [v4 speed];
+      [locationCopy speed];
       v11 = v10;
       GEOConfigGetDouble();
       if (v11 <= v12)
@@ -200,10 +200,10 @@ void __39__MNEVChargingStateMonitor__startTimer__block_invoke(uint64_t a1)
   [(MNEVChargingStateMonitor *)&v4 dealloc];
 }
 
-- (MNEVChargingStateMonitor)initWithTargetBatteryCharge:(id)a3
+- (MNEVChargingStateMonitor)initWithTargetBatteryCharge:(id)charge
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  chargeCopy = charge;
   v19.receiver = self;
   v19.super_class = MNEVChargingStateMonitor;
   v6 = [(MNEVChargingStateMonitor *)&v19 init];
@@ -213,13 +213,13 @@ void __39__MNEVChargingStateMonitor__startTimer__block_invoke(uint64_t a1)
     goto LABEL_6;
   }
 
-  objc_storeStrong(&v6->_targetBatteryCharge, a3);
+  objc_storeStrong(&v6->_targetBatteryCharge, charge);
   v7->_shouldShowChargingInfo = 0;
   v8 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x1E696B030] kilowattHours];
-    v10 = [v5 measurementByConvertingToUnit:v9];
+    kilowattHours = [MEMORY[0x1E696B030] kilowattHours];
+    v10 = [chargeCopy measurementByConvertingToUnit:kilowattHours];
     [v10 doubleValue];
     *buf = 67109120;
     v21 = (v11 * 1000.0);
@@ -228,12 +228,12 @@ void __39__MNEVChargingStateMonitor__startTimer__block_invoke(uint64_t a1)
 
   v12 = +[MNVirtualGarageManager sharedManager];
   [v12 registerObserver:v7];
-  v13 = [v12 lastVehicle];
+  lastVehicle = [v12 lastVehicle];
 
-  if (v13)
+  if (lastVehicle)
   {
-    v14 = [v12 lastVehicle];
-    [(MNEVChargingStateMonitor *)v7 _updateForVehicle:v14 forceDelegateCallback:1];
+    lastVehicle2 = [v12 lastVehicle];
+    [(MNEVChargingStateMonitor *)v7 _updateForVehicle:lastVehicle2 forceDelegateCallback:1];
 
 LABEL_6:
     v15 = v7;

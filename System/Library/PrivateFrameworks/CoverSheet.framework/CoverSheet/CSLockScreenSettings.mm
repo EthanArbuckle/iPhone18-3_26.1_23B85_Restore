@@ -32,29 +32,29 @@
   [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings setDefaultValues];
   [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings setDuration:0.35];
   [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings setCurve:393216];
-  v3 = [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings controlPoint1Settings];
-  [v3 setPointValue:{0.6, 0.0}];
+  controlPoint1Settings = [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings controlPoint1Settings];
+  [controlPoint1Settings setPointValue:{0.6, 0.0}];
 
-  v4 = [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings controlPoint2Settings];
-  [v4 setPointValue:{1.0, 0.4}];
+  controlPoint2Settings = [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings controlPoint2Settings];
+  [controlPoint2Settings setPointValue:{1.0, 0.4}];
 
   [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperInSettings setDefaultValues];
   [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperInSettings setDuration:0.35];
   [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperInSettings setCurve:393216];
-  v5 = [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings controlPoint1Settings];
-  [v5 setPointValue:{0.0, 0.6}];
+  controlPoint1Settings2 = [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings controlPoint1Settings];
+  [controlPoint1Settings2 setPointValue:{0.0, 0.6}];
 
-  v6 = [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings controlPoint2Settings];
-  [v6 setPointValue:{0.4, 1.0}];
+  controlPoint2Settings2 = [(SBFAnimationSettings *)self->_unlockToPhoneWallpaperOutSettings controlPoint2Settings];
+  [controlPoint2Settings2 setPointValue:{0.4, 1.0}];
 
   [(SBFAnimationSettings *)self->_unlockWallpaperOutSettings setDefaultValues];
   [(SBFAnimationSettings *)self->_unlockWallpaperOutSettings setDuration:0.25];
   [(SBFAnimationSettings *)self->_unlockWallpaperOutSettings setCurve:393216];
-  v7 = [(SBFAnimationSettings *)self->_unlockWallpaperOutSettings controlPoint1Settings];
-  [v7 setPointValue:{0.0, 1.0}];
+  controlPoint1Settings3 = [(SBFAnimationSettings *)self->_unlockWallpaperOutSettings controlPoint1Settings];
+  [controlPoint1Settings3 setPointValue:{0.0, 1.0}];
 
-  v8 = [(SBFAnimationSettings *)self->_unlockWallpaperOutSettings controlPoint2Settings];
-  [v8 setPointValue:{0.0, 1.0}];
+  controlPoint2Settings3 = [(SBFAnimationSettings *)self->_unlockWallpaperOutSettings controlPoint2Settings];
+  [controlPoint2Settings3 setPointValue:{0.0, 1.0}];
 
   [(SBFAnimationSettings *)self->_unlockWallpaperInSettings setDefaultValues];
   [(SBFAnimationSettings *)self->_unlockWallpaperInSettings setAnimationType:1];
@@ -71,8 +71,8 @@
 
   else
   {
-    v9 = [MEMORY[0x277D75418] currentDevice];
-    *&self->_mainToCameraViewSlideCompletionPercentage = qword_21EC95FA0[[v9 userInterfaceIdiom] == 1];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    *&self->_mainToCameraViewSlideCompletionPercentage = qword_21EC95FA0[[currentDevice userInterfaceIdiom] == 1];
   }
 
   if (__sb__runningInSpringBoard())
@@ -89,10 +89,10 @@
 
   else
   {
-    v12 = [MEMORY[0x277D75418] currentDevice];
-    v13 = [v12 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
     v14 = 0.333;
-    if (v13 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v14 = 0.25;
     }
@@ -395,8 +395,8 @@
 
   v113 = [MEMORY[0x277D43218] sectionWithRows:v97 title:@"Security"];
   v98 = MEMORY[0x277D431A8];
-  v99 = [MEMORY[0x277D43238] action];
-  v100 = [v98 rowWithTitle:@"Restore Defaults" action:v99];
+  action = [MEMORY[0x277D43238] action];
+  v100 = [v98 rowWithTitle:@"Restore Defaults" action:action];
   v194 = v100;
   v121 = [MEMORY[0x277CBEA60] arrayWithObjects:&v194 count:1];
 

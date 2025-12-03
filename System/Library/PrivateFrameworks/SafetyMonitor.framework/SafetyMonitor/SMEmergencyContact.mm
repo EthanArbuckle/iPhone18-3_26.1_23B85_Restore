@@ -1,9 +1,9 @@
 @interface SMEmergencyContact
 - (SMEmergencyContact)init;
-- (SMEmergencyContact)initWithCoder:(id)a3;
-- (SMEmergencyContact)initWithIdentifier:(id)a3 name:(id)a4 phoneNumber:(id)a5;
+- (SMEmergencyContact)initWithCoder:(id)coder;
+- (SMEmergencyContact)initWithIdentifier:(id)identifier name:(id)name phoneNumber:(id)number;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMEmergencyContact
@@ -16,12 +16,12 @@
   return v4;
 }
 
-- (SMEmergencyContact)initWithIdentifier:(id)a3 name:(id)a4 phoneNumber:(id)a5
+- (SMEmergencyContact)initWithIdentifier:(id)identifier name:(id)name phoneNumber:(id)number
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  identifierCopy = identifier;
+  nameCopy = name;
+  numberCopy = number;
+  if (identifierCopy)
   {
     v17.receiver = self;
     v17.super_class = SMEmergencyContact;
@@ -29,13 +29,13 @@
     p_isa = &v12->super.isa;
     if (v12)
     {
-      objc_storeStrong(&v12->_identifier, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
+      objc_storeStrong(&v12->_identifier, identifier);
+      objc_storeStrong(p_isa + 2, name);
+      objc_storeStrong(p_isa + 3, number);
     }
 
     self = p_isa;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -47,43 +47,43 @@
       _os_log_error_impl(&dword_26455D000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier", buf, 2u);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (SMEmergencyContact)initWithCoder:(id)a3
+- (SMEmergencyContact)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
 
   v8 = [(SMEmergencyContact *)self initWithIdentifier:v5 name:v6 phoneNumber:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SMEmergencyContact *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(SMEmergencyContact *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(SMEmergencyContact *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(SMEmergencyContact *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v7 = [(SMEmergencyContact *)self phoneNumber];
-  [v4 encodeObject:v7 forKey:@"phoneNumber"];
+  phoneNumber = [(SMEmergencyContact *)self phoneNumber];
+  [coderCopy encodeObject:phoneNumber forKey:@"phoneNumber"];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SMEmergencyContact *)self identifier];
-  v5 = [(SMEmergencyContact *)self name];
-  v6 = [(SMEmergencyContact *)self phoneNumber];
-  v7 = [v3 stringWithFormat:@"objectId, %@, name, %@, phoneNumber, %@", v4, v5, v6];
+  identifier = [(SMEmergencyContact *)self identifier];
+  name = [(SMEmergencyContact *)self name];
+  phoneNumber = [(SMEmergencyContact *)self phoneNumber];
+  v7 = [v3 stringWithFormat:@"objectId, %@, name, %@, phoneNumber, %@", identifier, name, phoneNumber];
 
   return v7;
 }

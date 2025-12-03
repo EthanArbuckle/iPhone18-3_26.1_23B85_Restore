@@ -1,39 +1,39 @@
 @interface COIDSServiceDirector
-- (COIDSServiceDirector)initWithIDSService:(id)a3 meshName:(id)a4;
+- (COIDSServiceDirector)initWithIDSService:(id)service meshName:(id)name;
 - (COIDSServiceDirectorOnDemandDiscoveryDelegate)discoveryDelegate;
 - (NSString)description;
-- (id)tokenFromURI:(id)a3;
-- (id)transportWithDiscoveryRecord:(id)a3 withExecutionContext:(id)a4;
-- (void)_withLock:(id)a3;
-- (void)sendMessage:(id)a3 toDestination:(id)a4 completionHandler:(id)a5;
-- (void)sendResponse:(id)a3 responseIdentifier:(id)a4 toDestination:(id)a5;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (id)tokenFromURI:(id)i;
+- (id)transportWithDiscoveryRecord:(id)record withExecutionContext:(id)context;
+- (void)_withLock:(id)lock;
+- (void)sendMessage:(id)message toDestination:(id)destination completionHandler:(id)handler;
+- (void)sendResponse:(id)response responseIdentifier:(id)identifier toDestination:(id)destination;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 - (void)start;
 @end
 
 @implementation COIDSServiceDirector
 
-- (COIDSServiceDirector)initWithIDSService:(id)a3 meshName:(id)a4
+- (COIDSServiceDirector)initWithIDSService:(id)service meshName:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  nameCopy = name;
   v19.receiver = self;
   v19.super_class = COIDSServiceDirector;
   v9 = [(COIDSServiceDirector *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_service, a3);
-    objc_storeStrong(&v10->_meshName, a4);
+    objc_storeStrong(&v9->_service, service);
+    objc_storeStrong(&v10->_meshName, name);
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v12 = dispatch_queue_create("com.apple.coordination.idsdirector", v11);
     queue = v10->_queue;
     v10->_queue = v12;
 
-    v14 = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x277CCAB00] strongToWeakObjectsMapTable];
     activeTransports = v10->_activeTransports;
-    v10->_activeTransports = v14;
+    v10->_activeTransports = strongToWeakObjectsMapTable;
 
     v16 = objc_alloc_init(COIDSMessageFactory);
     messageFactory = v10->_messageFactory;
@@ -57,115 +57,115 @@
 
 - (void)start
 {
-  v4 = [(COIDSServiceDirector *)self service];
-  v3 = [(COIDSServiceDirector *)self queue];
-  [v4 addDelegate:self queue:v3];
+  service = [(COIDSServiceDirector *)self service];
+  queue = [(COIDSServiceDirector *)self queue];
+  [service addDelegate:self queue:queue];
 }
 
-- (id)transportWithDiscoveryRecord:(id)a3 withExecutionContext:(id)a4
+- (id)transportWithDiscoveryRecord:(id)record withExecutionContext:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [[COIDSTransport alloc] initWithDiscoveryRecord:v6 executionContext:v7];
+  recordCopy = record;
+  contextCopy = context;
+  v8 = [[COIDSTransport alloc] initWithDiscoveryRecord:recordCopy executionContext:contextCopy];
 
   v9 = COCoreLogForCategory(17);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 IDSIdentifier];
+    iDSIdentifier = [recordCopy IDSIdentifier];
     v19 = 138543874;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
     v22 = v8;
     v23 = 2114;
-    v24 = v10;
+    v24 = iDSIdentifier;
     _os_log_impl(&dword_244378000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ created new transport %p for remote IDS identifier %{public}@", &v19, 0x20u);
   }
 
-  v11 = [v6 deviceTokenURI];
-  v12 = [(COIDSServiceDirector *)self service];
-  v13 = [v12 conformsToProtocol:&unk_2857E6360];
+  deviceTokenURI = [recordCopy deviceTokenURI];
+  service = [(COIDSServiceDirector *)self service];
+  v13 = [service conformsToProtocol:&unk_2857E6360];
 
   if (v13)
   {
-    v14 = [(COIDSServiceDirector *)self service];
-    v15 = [v14 tokenFromID:v11];
+    service2 = [(COIDSServiceDirector *)self service];
+    v15 = [service2 tokenFromID:deviceTokenURI];
   }
 
   else
   {
-    v15 = [(COIDSServiceDirector *)self tokenFromURI:v11];
+    v15 = [(COIDSServiceDirector *)self tokenFromURI:deviceTokenURI];
   }
 
-  v16 = [(COIDSServiceDirector *)self activeTransports];
-  [v16 setObject:v8 forKey:v15];
+  activeTransports = [(COIDSServiceDirector *)self activeTransports];
+  [activeTransports setObject:v8 forKey:v15];
 
   v17 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (void)sendMessage:(id)a3 toDestination:(id)a4 completionHandler:(id)a5
+- (void)sendMessage:(id)message toDestination:(id)destination completionHandler:(id)handler
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v20 = *MEMORY[0x277D185B0];
   v21[0] = &unk_2857C8898;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  destinationCopy = destination;
+  messageCopy = message;
   v12 = [v8 dictionaryWithObjects:v21 forKeys:&v20 count:1];
-  v13 = [(COIDSServiceDirector *)self service];
-  v14 = [MEMORY[0x277CBEB98] setWithObject:v10];
+  service = [(COIDSServiceDirector *)self service];
+  v14 = [MEMORY[0x277CBEB98] setWithObject:destinationCopy];
 
   v18 = 0;
   v19 = 0;
-  [v13 sendMessage:v11 toDestinations:v14 priority:300 options:v12 identifier:&v19 error:&v18];
+  [service sendMessage:messageCopy toDestinations:v14 priority:300 options:v12 identifier:&v19 error:&v18];
 
   v15 = v19;
   v16 = v18;
 
-  v9[2](v9, v15, v16);
+  handlerCopy[2](handlerCopy, v15, v16);
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendResponse:(id)a3 responseIdentifier:(id)a4 toDestination:(id)a5
+- (void)sendResponse:(id)response responseIdentifier:(id)identifier toDestination:(id)destination
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v19 = *MEMORY[0x277D18610];
-  v20[0] = a4;
+  v20[0] = identifier;
   v8 = MEMORY[0x277CBEAC0];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  destinationCopy = destination;
+  identifierCopy = identifier;
+  responseCopy = response;
   v12 = [v8 dictionaryWithObjects:v20 forKeys:&v19 count:1];
-  v13 = [(COIDSServiceDirector *)self service];
-  v14 = [MEMORY[0x277CBEB98] setWithObject:v9];
+  service = [(COIDSServiceDirector *)self service];
+  v14 = [MEMORY[0x277CBEB98] setWithObject:destinationCopy];
 
   v17 = 0;
   v18 = 0;
-  [v13 sendMessage:v11 toDestinations:v14 priority:300 options:v12 identifier:&v18 error:&v17];
+  [service sendMessage:responseCopy toDestinations:v14 priority:300 options:v12 identifier:&v18 error:&v17];
 
   v15 = v18;
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v21 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a7;
+  identifierCopy = identifier;
+  errorCopy = error;
   v12 = COCoreLogForCategory(17);
   v13 = v12;
-  if (v8)
+  if (successCopy)
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543618;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2114;
-      v18 = v10;
+      v18 = identifierCopy;
       _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ Did send message %{public}@ successfully", &v15, 0x16u);
     }
   }
@@ -173,33 +173,33 @@
   else if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     v15 = 138543874;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2114;
-    v18 = v10;
+    v18 = identifierCopy;
     v19 = 2114;
-    v20 = v11;
+    v20 = errorCopy;
     _os_log_error_impl(&dword_244378000, v13, OS_LOG_TYPE_ERROR, "%{public}@ Failed to send message %{public}@: %{public}@", &v15, 0x20u);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __71__COIDSServiceDirector_service_account_incomingMessage_fromID_context___block_invoke;
   v16[3] = &unk_278E15C88;
   v16[4] = self;
-  v17 = v11;
-  v18 = v12;
-  v19 = v10;
-  v13 = v10;
-  v14 = v12;
-  v15 = v11;
+  v17 = dCopy;
+  v18 = contextCopy;
+  v19 = messageCopy;
+  v13 = messageCopy;
+  v14 = contextCopy;
+  v15 = dCopy;
   [(COIDSServiceDirector *)self _withLock:v16];
 }
 
@@ -347,19 +347,19 @@ LABEL_27:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)tokenFromURI:(id)a3
+- (id)tokenFromURI:(id)i
 {
   v6 = 0;
-  v3 = [a3 _stripPotentialTokenURIWithToken:&v6];
+  v3 = [i _stripPotentialTokenURIWithToken:&v6];
   v4 = v6;
 
   return v4;

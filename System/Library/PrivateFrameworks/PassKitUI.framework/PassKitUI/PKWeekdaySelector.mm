@@ -1,14 +1,14 @@
 @interface PKWeekdaySelector
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (PKWeekdaySelector)init;
 - (PKWeekdaySelectorDelegate)delegate;
-- (void)_weekdayTapped:(id)a3;
+- (void)_weekdayTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setSelectedDays:(id)a3 possibleDays:(id)a4;
-- (void)setUserInteractionEnabled:(BOOL)a3;
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setFrame:(CGRect)frame;
+- (void)setSelectedDays:(id)days possibleDays:(id)possibleDays;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation PKWeekdaySelector
@@ -35,14 +35,14 @@
     [(UIStackView *)v2->_stackView setAlignment:0];
     [(UIStackView *)v2->_stackView setAxis:0];
     [(PKWeekdaySelector *)v2 addSubview:v2->_stackView];
-    v7 = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
-    v8 = [v7 veryShortWeekdaySymbols];
+    autoupdatingCurrentCalendar = [MEMORY[0x1E695DEE8] autoupdatingCurrentCalendar];
+    veryShortWeekdaySymbols = [autoupdatingCurrentCalendar veryShortWeekdaySymbols];
 
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    obj = v8;
+    obj = veryShortWeekdaySymbols;
     v9 = [obj countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v9)
     {
@@ -58,21 +58,21 @@
           }
 
           v12 = [[PKCalendarDayLabelView alloc] initWithDayString:*(*(&v22 + 1) + 8 * i)];
-          v13 = [(UIStackView *)v2->_stackView arrangedSubviews];
-          -[PKCalendarDayLabelView setTag:](v12, "setTag:", [v13 count] + 1);
+          arrangedSubviews = [(UIStackView *)v2->_stackView arrangedSubviews];
+          -[PKCalendarDayLabelView setTag:](v12, "setTag:", [arrangedSubviews count] + 1);
 
           v14 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v2 action:sel__weekdayTapped_];
           [(PKCalendarDayLabelView *)v12 addGestureRecognizer:v14];
-          v15 = [MEMORY[0x1E69DC888] linkColor];
-          v16 = [v15 colorWithAlphaComponent:0.2];
+          linkColor = [MEMORY[0x1E69DC888] linkColor];
+          v16 = [linkColor colorWithAlphaComponent:0.2];
 
           [(PKCalendarDayLabelView *)v12 setHighlightBackgroundColor:v16];
-          v17 = [MEMORY[0x1E69DC888] linkColor];
-          [(PKCalendarDayLabelView *)v12 setHighlightTextColor:v17];
+          linkColor2 = [MEMORY[0x1E69DC888] linkColor];
+          [(PKCalendarDayLabelView *)v12 setHighlightTextColor:linkColor2];
 
           [(PKCalendarDayLabelView *)v12 setHighlightPadding:20.0];
-          v18 = [MEMORY[0x1E69DC888] grayColor];
-          [(PKCalendarDayLabelView *)v12 setDisabledTextColor:v18];
+          grayColor = [MEMORY[0x1E69DC888] grayColor];
+          [(PKCalendarDayLabelView *)v12 setDisabledTextColor:grayColor];
 
           [(UIStackView *)v2->_stackView addArrangedSubview:v12];
         }
@@ -87,13 +87,13 @@
   return v2;
 }
 
-- (void)_weekdayTapped:(id)a3
+- (void)_weekdayTapped:(id)tapped
 {
-  v9 = [a3 view];
-  v4 = [v9 isSelected];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v9, "tag")}];
+  view = [tapped view];
+  isSelected = [view isSelected];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(view, "tag")}];
   selectedWeekdays = self->_selectedWeekdays;
-  if (v4)
+  if (isSelected)
   {
     [(NSMutableSet *)selectedWeekdays removeObject:v5];
   }
@@ -103,25 +103,25 @@
     [(NSMutableSet *)selectedWeekdays addObject:v5];
   }
 
-  [v9 setSelected:v4 ^ 1u];
+  [view setSelected:isSelected ^ 1u];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [(NSMutableSet *)self->_selectedWeekdays allObjects];
-  [WeakRetained weekdaySelector:self didUpdateSelectedWeekdays:v8];
+  allObjects = [(NSMutableSet *)self->_selectedWeekdays allObjects];
+  [WeakRetained weekdaySelector:self didUpdateSelectedWeekdays:allObjects];
 }
 
-- (void)setSelectedDays:(id)a3 possibleDays:(id)a4
+- (void)setSelectedDays:(id)days possibleDays:(id)possibleDays
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v21 = v6;
-  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v6];
+  daysCopy = days;
+  possibleDaysCopy = possibleDays;
+  v21 = daysCopy;
+  v8 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:daysCopy];
   selectedWeekdays = self->_selectedWeekdays;
   self->_selectedWeekdays = v8;
 
-  if (v7)
+  if (possibleDaysCopy)
   {
-    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:v7];
+    v10 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithArray:possibleDaysCopy];
   }
 
   else
@@ -130,7 +130,7 @@
   }
 
   objc_storeStrong(&self->_possibleWeekdays, v10);
-  if (v7)
+  if (possibleDaysCopy)
   {
   }
 
@@ -138,8 +138,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v11 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v12 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v12 = [arrangedSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v12)
   {
     v13 = v12;
@@ -150,7 +150,7 @@
       {
         if (*v23 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v16 = *(*(&v22 + 1) + 8 * i);
@@ -170,27 +170,27 @@
         [v16 setUserInteractionEnabled:v19];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v13 = [arrangedSubviews countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v13);
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = PKWeekdaySelector;
   [(PKWeekdaySelector *)&v18 setUserInteractionEnabled:?];
-  [(UIStackView *)self->_stackView setUserInteractionEnabled:v3];
+  [(UIStackView *)self->_stackView setUserInteractionEnabled:enabledCopy];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(UIStackView *)self->_stackView arrangedSubviews];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  arrangedSubviews = [(UIStackView *)self->_stackView arrangedSubviews];
+  v6 = [arrangedSubviews countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -201,7 +201,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -217,33 +217,33 @@
           v13 = 1;
         }
 
-        [v10 setUserInteractionEnabled:v3 & v13];
+        [v10 setUserInteractionEnabled:enabledCopy & v13];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v7 = [arrangedSubviews countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
+  trailing = margins.trailing;
+  bottom = margins.bottom;
+  leading = margins.leading;
+  top = margins.top;
   v8.receiver = self;
   v8.super_class = PKWeekdaySelector;
   [(PKWeekdaySelector *)&v8 setDirectionalLayoutMargins:?];
   [(UIStackView *)self->_stackView setDirectionalLayoutMargins:top, leading, bottom, trailing];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PKWeekdaySelector;
-  [(PKWeekdaySelector *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PKWeekdaySelector *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PKWeekdaySelector *)self setNeedsLayout];
 }
 
@@ -256,23 +256,23 @@
   [(PKWeekdaySelector *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKWeekdaySelector *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKWeekdaySelector *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  width = a3.size.width;
-  v7 = [(UIStackView *)self->_stackView arrangedSubviews:a3.origin.x];
-  v8 = [v7 firstObject];
+  width = bounds.size.width;
+  v7 = [(UIStackView *)self->_stackView arrangedSubviews:bounds.origin.x];
+  firstObject = [v7 firstObject];
 
-  [v8 sizeThatFits:{width, 1.79769313e308}];
+  [firstObject sizeThatFits:{width, 1.79769313e308}];
   v10 = v9;
-  if (!a4)
+  if (!layout)
   {
     [(UIStackView *)self->_stackView setFrame:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), width, v9];
     [(UIStackView *)self->_stackView layoutSubviews];

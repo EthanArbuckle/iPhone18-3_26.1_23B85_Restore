@@ -1,15 +1,15 @@
 @interface AWDWiFiMetricsManagerBlacklistedNetworkInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBlacklistingRecord:(id)a3;
-- (void)copyTo:(id)a3;
+- (void)addBlacklistingRecord:(id)record;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasReserverdInfo:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasReserverdInfo:(BOOL)info;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerBlacklistedNetworkInfo
@@ -23,9 +23,9 @@
   [(AWDWiFiMetricsManagerBlacklistedNetworkInfo *)&v3 dealloc];
 }
 
-- (void)setHasReserverdInfo:(BOOL)a3
+- (void)setHasReserverdInfo:(BOOL)info
 {
-  if (a3)
+  if (info)
   {
     v3 = 2;
   }
@@ -38,7 +38,7 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addBlacklistingRecord:(id)a3
+- (void)addBlacklistingRecord:(id)record
 {
   blacklistingRecords = self->_blacklistingRecords;
   if (!blacklistingRecords)
@@ -47,7 +47,7 @@
     self->_blacklistingRecords = blacklistingRecords;
   }
 
-  [(NSMutableArray *)blacklistingRecords addObject:a3];
+  [(NSMutableArray *)blacklistingRecords addObject:record];
 }
 
 - (id)description
@@ -60,12 +60,12 @@
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
+  v4 = dictionary;
   ssidHash = self->_ssidHash;
   if (ssidHash)
   {
-    [v3 setObject:ssidHash forKey:@"ssidHash"];
+    [dictionary setObject:ssidHash forKey:@"ssidHash"];
   }
 
   has = self->_has;
@@ -118,7 +118,7 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x29EDCA608];
   if (self->_ssidHash)
@@ -172,48 +172,48 @@
   v13 = *MEMORY[0x29EDCA608];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (self->_ssidHash)
   {
-    [a3 setSsidHash:?];
+    [to setSsidHash:?];
   }
 
   has = self->_has;
   if (has)
   {
-    *(a3 + 4) = self->_networkFlags;
-    *(a3 + 32) |= 1u;
+    *(to + 4) = self->_networkFlags;
+    *(to + 32) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(a3 + 5) = self->_reserverdInfo;
-    *(a3 + 32) |= 2u;
+    *(to + 5) = self->_reserverdInfo;
+    *(to + 32) |= 2u;
   }
 
   if ([(AWDWiFiMetricsManagerBlacklistedNetworkInfo *)self blacklistingRecordsCount])
   {
-    [a3 clearBlacklistingRecords];
-    v6 = [(AWDWiFiMetricsManagerBlacklistedNetworkInfo *)self blacklistingRecordsCount];
-    if (v6)
+    [to clearBlacklistingRecords];
+    blacklistingRecordsCount = [(AWDWiFiMetricsManagerBlacklistedNetworkInfo *)self blacklistingRecordsCount];
+    if (blacklistingRecordsCount)
     {
-      v7 = v6;
+      v7 = blacklistingRecordsCount;
       for (i = 0; i != v7; ++i)
       {
-        [a3 addBlacklistingRecord:{-[AWDWiFiMetricsManagerBlacklistedNetworkInfo blacklistingRecordAtIndex:](self, "blacklistingRecordAtIndex:", i)}];
+        [to addBlacklistingRecord:{-[AWDWiFiMetricsManagerBlacklistedNetworkInfo blacklistingRecordAtIndex:](self, "blacklistingRecordAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x29EDCA608];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
 
-  *(v5 + 24) = [(NSString *)self->_ssidHash copyWithZone:a3];
+  *(v5 + 24) = [(NSString *)self->_ssidHash copyWithZone:zone];
   has = self->_has;
   if (has)
   {
@@ -247,7 +247,7 @@
           objc_enumerationMutation(blacklistingRecords);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v15 + 1) + 8 * i) copyWithZone:zone];
         [v5 addBlacklistingRecord:v12];
       }
 
@@ -261,24 +261,24 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     ssidHash = self->_ssidHash;
-    if (!(ssidHash | *(a3 + 3)) || (v5 = [(NSString *)ssidHash isEqual:?]) != 0)
+    if (!(ssidHash | *(equal + 3)) || (v5 = [(NSString *)ssidHash isEqual:?]) != 0)
     {
-      v7 = *(a3 + 32);
+      v7 = *(equal + 32);
       if (*&self->_has)
       {
-        if ((*(a3 + 32) & 1) == 0 || self->_networkFlags != *(a3 + 4))
+        if ((*(equal + 32) & 1) == 0 || self->_networkFlags != *(equal + 4))
         {
           goto LABEL_16;
         }
       }
 
-      else if (*(a3 + 32))
+      else if (*(equal + 32))
       {
 LABEL_16:
         LOBYTE(v5) = 0;
@@ -287,19 +287,19 @@ LABEL_16:
 
       if ((*&self->_has & 2) != 0)
       {
-        if ((*(a3 + 32) & 2) == 0 || self->_reserverdInfo != *(a3 + 5))
+        if ((*(equal + 32) & 2) == 0 || self->_reserverdInfo != *(equal + 5))
         {
           goto LABEL_16;
         }
       }
 
-      else if ((*(a3 + 32) & 2) != 0)
+      else if ((*(equal + 32) & 2) != 0)
       {
         goto LABEL_16;
       }
 
       blacklistingRecords = self->_blacklistingRecords;
-      if (blacklistingRecords | *(a3 + 1))
+      if (blacklistingRecords | *(equal + 1))
       {
 
         LOBYTE(v5) = [(NSMutableArray *)blacklistingRecords isEqual:?];
@@ -342,25 +342,25 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ [(NSMutableArray *)self->_blacklistingRecords hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x29EDCA608];
-  if (*(a3 + 3))
+  if (*(from + 3))
   {
     [(AWDWiFiMetricsManagerBlacklistedNetworkInfo *)self setSsidHash:?];
   }
 
-  v5 = *(a3 + 32);
+  v5 = *(from + 32);
   if (v5)
   {
-    self->_networkFlags = *(a3 + 4);
+    self->_networkFlags = *(from + 4);
     *&self->_has |= 1u;
-    v5 = *(a3 + 32);
+    v5 = *(from + 32);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_reserverdInfo = *(a3 + 5);
+    self->_reserverdInfo = *(from + 5);
     *&self->_has |= 2u;
   }
 
@@ -368,7 +368,7 @@ LABEL_3:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(a3 + 1);
+  v6 = *(from + 1);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

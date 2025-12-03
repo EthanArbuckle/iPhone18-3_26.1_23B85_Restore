@@ -1,18 +1,18 @@
 @interface PaymentRequestViewInterfaceFactory
-+ (id)interfaceForConfiguration:(id)a3 withDelegate:(id)a4;
++ (id)interfaceForConfiguration:(id)configuration withDelegate:(id)delegate;
 - (_TtC9PassKitUI34PaymentRequestViewInterfaceFactory)init;
 @end
 
 @implementation PaymentRequestViewInterfaceFactory
 
-+ (id)interfaceForConfiguration:(id)a3 withDelegate:(id)a4
++ (id)interfaceForConfiguration:(id)configuration withDelegate:(id)delegate
 {
-  v4 = a3;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
   sub_1BE053624();
   swift_unknownObjectRelease();
   swift_getObjCClassMetadata();
-  v5 = static PaymentRequestViewInterfaceFactory.interface(forConfiguration:withDelegate:)(v4, v7);
+  v5 = static PaymentRequestViewInterfaceFactory.interface(forConfiguration:withDelegate:)(configurationCopy, v7);
 
   __swift_destroy_boxed_opaque_existential_0(v7);
 

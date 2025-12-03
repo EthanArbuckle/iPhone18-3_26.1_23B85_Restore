@@ -1,20 +1,20 @@
 @interface TRIXPCStatusRequestHandler
-- (TRIXPCStatusRequestHandler)initWithPromise:(id)a3 auditToken:(id *)a4;
-- (void)experimentHistoryRecordsWithLimit:(unint64_t)a3 newerThanDate:(id)a4 deploymentEnvironment:(int)a5 completion:(id)a6;
-- (void)experimentRecordsWithDeploymentEnvironments:(id)a3 completion:(id)a4;
-- (void)rolloutAllocationStatusWithCompletion:(id)a3;
-- (void)rolloutRecordsWithCompletion:(id)a3;
+- (TRIXPCStatusRequestHandler)initWithPromise:(id)promise auditToken:(id *)token;
+- (void)experimentHistoryRecordsWithLimit:(unint64_t)limit newerThanDate:(id)date deploymentEnvironment:(int)environment completion:(id)completion;
+- (void)experimentRecordsWithDeploymentEnvironments:(id)environments completion:(id)completion;
+- (void)rolloutAllocationStatusWithCompletion:(id)completion;
+- (void)rolloutRecordsWithCompletion:(id)completion;
 @end
 
 @implementation TRIXPCStatusRequestHandler
 
-- (TRIXPCStatusRequestHandler)initWithPromise:(id)a3 auditToken:(id *)a4
+- (TRIXPCStatusRequestHandler)initWithPromise:(id)promise auditToken:(id *)token
 {
-  v8 = a3;
-  if (!v8)
+  promiseCopy = promise;
+  if (!promiseCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"TRIXPCStatusService.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIXPCStatusService.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"promise"}];
   }
 
   v14.receiver = self;
@@ -23,25 +23,25 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_promise, a3);
-    v11 = *&a4->var0[4];
-    *v10->_auditToken.val = *a4->var0;
+    objc_storeStrong(&v9->_promise, promise);
+    v11 = *&token->var0[4];
+    *v10->_auditToken.val = *token->var0;
     *&v10->_auditToken.val[4] = v11;
   }
 
   return v10;
 }
 
-- (void)experimentHistoryRecordsWithLimit:(unint64_t)a3 newerThanDate:(id)a4 deploymentEnvironment:(int)a5 completion:(id)a6
+- (void)experimentHistoryRecordsWithLimit:(unint64_t)limit newerThanDate:(id)date deploymentEnvironment:(int)environment completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  dateCopy = date;
+  completionCopy = completion;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __111__TRIXPCStatusRequestHandler_experimentHistoryRecordsWithLimit_newerThanDate_deploymentEnvironment_completion___block_invoke;
   v23[3] = &unk_279DE1038;
   v23[4] = self;
-  v24 = a5;
+  environmentCopy = environment;
   v12 = MEMORY[0x2743948D0](v23);
   v12[2](v12, 0);
   promise = self->_promise;
@@ -50,13 +50,13 @@
   v17[2] = __111__TRIXPCStatusRequestHandler_experimentHistoryRecordsWithLimit_newerThanDate_deploymentEnvironment_completion___block_invoke_58;
   v17[3] = &unk_279DE10B0;
   v19 = v12;
-  v20 = v11;
-  v22 = a5;
+  v20 = completionCopy;
+  environmentCopy2 = environment;
   v17[4] = self;
-  v18 = v10;
-  v21 = a3;
-  v14 = v10;
-  v15 = v11;
+  v18 = dateCopy;
+  limitCopy = limit;
+  v14 = dateCopy;
+  v15 = completionCopy;
   v16 = v12;
   [(TRIXPCServerContextPromise *)promise addBlockToExecuteAfterPromiseFullfillment:v17];
 }
@@ -411,10 +411,10 @@ LABEL_11:
   return v10;
 }
 
-- (void)experimentRecordsWithDeploymentEnvironments:(id)a3 completion:(id)a4
+- (void)experimentRecordsWithDeploymentEnvironments:(id)environments completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  environmentsCopy = environments;
+  completionCopy = completion;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __85__TRIXPCStatusRequestHandler_experimentRecordsWithDeploymentEnvironments_completion___block_invoke;
@@ -426,13 +426,13 @@ LABEL_11:
   v13[1] = 3221225472;
   v13[2] = __85__TRIXPCStatusRequestHandler_experimentRecordsWithDeploymentEnvironments_completion___block_invoke_93;
   v13[3] = &unk_279DE0610;
-  v15 = v7;
+  v15 = completionCopy;
   v16 = v8;
   v13[4] = self;
-  v14 = v6;
-  v9 = v6;
+  v14 = environmentsCopy;
+  v9 = environmentsCopy;
   v10 = v8;
-  v11 = v7;
+  v11 = completionCopy;
   v12 = MEMORY[0x2743948D0](v13);
   [(TRIXPCServerContextPromise *)self->_promise addBlockToExecuteAfterPromiseFullfillment:v12];
 }
@@ -783,9 +783,9 @@ LABEL_13:
   return v4;
 }
 
-- (void)rolloutRecordsWithCompletion:(id)a3
+- (void)rolloutRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __59__TRIXPCStatusRequestHandler_rolloutRecordsWithCompletion___block_invoke;
@@ -797,13 +797,13 @@ LABEL_13:
   v10 = 3221225472;
   v11 = __59__TRIXPCStatusRequestHandler_rolloutRecordsWithCompletion___block_invoke_112;
   v12 = &unk_279DE0638;
-  v14 = v4;
+  v14 = completionCopy;
   v15 = v5;
-  v13 = self;
+  selfCopy = self;
   v6 = v5;
-  v7 = v4;
+  v7 = completionCopy;
   v8 = MEMORY[0x2743948D0](&v9);
-  [(TRIXPCServerContextPromise *)self->_promise addBlockToExecuteAfterPromiseFullfillment:v8, v9, v10, v11, v12, v13];
+  [(TRIXPCServerContextPromise *)self->_promise addBlockToExecuteAfterPromiseFullfillment:v8, v9, v10, v11, v12, selfCopy];
 }
 
 void __59__TRIXPCStatusRequestHandler_rolloutRecordsWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -998,15 +998,15 @@ void __59__TRIXPCStatusRequestHandler_rolloutRecordsWithCompletion___block_invok
   [*(a1 + 32) addObject:v3];
 }
 
-- (void)rolloutAllocationStatusWithCompletion:(id)a3
+- (void)rolloutAllocationStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__TRIXPCStatusRequestHandler_rolloutAllocationStatusWithCompletion___block_invoke;
   v6[3] = &unk_279DE10D8;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(TRIXPCStatusRequestHandler *)self rolloutRecordsWithCompletion:v6];
 }
 

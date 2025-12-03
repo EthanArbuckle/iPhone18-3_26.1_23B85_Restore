@@ -1,26 +1,26 @@
 @interface FBABugFormDetailTableViewController
-- (BOOL)searchBar:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)searchBar:(id)bar shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (FBABugFormEditorDelegate)delegate;
 - (id)getPathToScrollTo;
 - (id)keyCommands;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)beginSearch;
 - (void)commitSelection;
 - (void)dealloc;
-- (void)didGetClientSideResolvedNotification:(id)a3;
+- (void)didGetClientSideResolvedNotification:(id)notification;
 - (void)recordCheckboxAnswers;
-- (void)searchBarTextDidBeginEditing:(id)a3;
+- (void)searchBarTextDidBeginEditing:(id)editing;
 - (void)selectNext;
 - (void)selectPrevious;
-- (void)setQuestion:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setQuestion:(id)question;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateCheckboxDelegateIfNeeded;
 - (void)updateChoices;
 - (void)updateSearchBar;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -31,27 +31,27 @@
   v11.receiver = self;
   v11.super_class = FBABugFormDetailTableViewController;
   [(FBABugFormDetailTableViewController *)&v11 viewDidLoad];
-  v3 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v3 setEstimatedSectionHeaderHeight:44.0];
+  tableView = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView setEstimatedSectionHeaderHeight:44.0];
 
-  v4 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v4 setSectionHeaderHeight:UITableViewAutomaticDimension];
+  tableView2 = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView2 setSectionHeaderHeight:UITableViewAutomaticDimension];
 
-  v5 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v5 setEstimatedRowHeight:44.0];
+  tableView3 = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView3 setEstimatedRowHeight:44.0];
 
-  v6 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v6 setRowHeight:UITableViewAutomaticDimension];
+  tableView4 = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView4 setRowHeight:UITableViewAutomaticDimension];
 
-  v7 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v7 setEstimatedSectionFooterHeight:0.0];
+  tableView5 = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView5 setEstimatedSectionFooterHeight:0.0];
 
   v8 = +[UIColor secondarySystemGroupedBackgroundColor];
-  v9 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v9 setBackgroundColor:v8];
+  tableView6 = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView6 setBackgroundColor:v8];
 
-  v10 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v10 _setHeaderAndFooterViewsFloat:0];
+  tableView7 = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView7 _setHeaderAndFooterViewsFloat:0];
 
   [(FBABugFormDetailTableViewController *)self updateSearchBar];
 }
@@ -66,15 +66,15 @@
   [(FBABugFormDetailTableViewController *)&v4 dealloc];
 }
 
-- (void)setQuestion:(id)a3
+- (void)setQuestion:(id)question
 {
-  v8 = a3;
-  objc_storeStrong(&self->_question, a3);
-  v5 = [v8 choiceSetResolver];
+  questionCopy = question;
+  objc_storeStrong(&self->_question, question);
+  choiceSetResolver = [questionCopy choiceSetResolver];
 
   v6 = +[NSNotificationCenter defaultCenter];
   v7 = v6;
-  if (v5)
+  if (choiceSetResolver)
   {
     [v6 addObserver:self selector:"didGetClientSideResolvedNotification:" name:FBKClientSideResolvedChoicesDidChangeNotification object:0];
   }
@@ -89,18 +89,18 @@
 
 - (void)updateChoices
 {
-  v3 = [(FBABugFormDetailTableViewController *)self question];
-  v4 = [v3 allChoices];
+  question = [(FBABugFormDetailTableViewController *)self question];
+  allChoices = [question allChoices];
   v5 = [NSPredicate predicateWithFormat:@"isPrompt = NO"];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [allChoices filteredArrayUsingPredicate:v5];
   [(FBABugFormDetailTableViewController *)self setVisibleChoices:v6];
 
-  v7 = [(FBABugFormDetailTableViewController *)self visibleChoices];
-  [(FBABugFormDetailTableViewController *)self setSearchResultChoices:v7];
+  visibleChoices = [(FBABugFormDetailTableViewController *)self visibleChoices];
+  [(FBABugFormDetailTableViewController *)self setSearchResultChoices:visibleChoices];
 
   [(FBABugFormDetailTableViewController *)self updateSearchBar];
-  v8 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v8 reloadData];
+  tableView = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)updateSearchBar
@@ -108,18 +108,18 @@
   v22 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"Choice"];
   [v22 frame];
   v4 = v3;
-  v5 = [(FBABugFormDetailTableViewController *)self visibleChoices];
-  v6 = [v5 count];
+  visibleChoices = [(FBABugFormDetailTableViewController *)self visibleChoices];
+  v6 = [visibleChoices count];
 
-  v7 = [(FBABugFormDetailTableViewController *)self question];
-  if ([v7 answerType] != 2)
+  question = [(FBABugFormDetailTableViewController *)self question];
+  if ([question answerType] != 2)
   {
     goto LABEL_6;
   }
 
   v8 = v4 * v6;
-  v9 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v9 frame];
+  tableView = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView frame];
   if (v8 <= v10)
   {
 
@@ -135,25 +135,25 @@ LABEL_6:
     v13 = self->_searchController;
     self->_searchController = v12;
 
-    v14 = [(FBABugFormDetailTableViewController *)self searchController];
-    [v14 setSearchResultsUpdater:self];
+    searchController = [(FBABugFormDetailTableViewController *)self searchController];
+    [searchController setSearchResultsUpdater:self];
 
     v15 = self->_searchController;
-    v16 = [(FBABugFormDetailTableViewController *)self navigationItem];
-    [v16 setSearchController:v15];
+    navigationItem = [(FBABugFormDetailTableViewController *)self navigationItem];
+    [navigationItem setSearchController:v15];
 
-    v17 = [(FBABugFormDetailTableViewController *)self searchController];
-    [v17 setDelegate:self];
+    searchController2 = [(FBABugFormDetailTableViewController *)self searchController];
+    [searchController2 setDelegate:self];
 
-    v18 = [(FBABugFormDetailTableViewController *)self searchController];
-    [v18 setObscuresBackgroundDuringPresentation:0];
+    searchController3 = [(FBABugFormDetailTableViewController *)self searchController];
+    [searchController3 setObscuresBackgroundDuringPresentation:0];
 
-    v19 = [(FBABugFormDetailTableViewController *)self searchController];
-    v20 = [v19 searchBar];
-    [v20 setDelegate:self];
+    searchController4 = [(FBABugFormDetailTableViewController *)self searchController];
+    searchBar = [searchController4 searchBar];
+    [searchBar setDelegate:self];
 
-    v21 = [(FBABugFormDetailTableViewController *)self searchController];
-    [v21 setHidesNavigationBarDuringPresentation:0];
+    searchController5 = [(FBABugFormDetailTableViewController *)self searchController];
+    [searchController5 setHidesNavigationBarDuringPresentation:0];
 
     [(FBABugFormDetailTableViewController *)self setDefinesPresentationContext:1];
   }
@@ -163,75 +163,75 @@ LABEL_7:
 
 - (void)updateCheckboxDelegateIfNeeded
 {
-  v3 = [(FBABugFormDetailTableViewController *)self question];
-  v4 = [v3 answerType];
+  question = [(FBABugFormDetailTableViewController *)self question];
+  answerType = [question answerType];
 
-  if (v4 == 4)
+  if (answerType == 4)
   {
-    v5 = [(FBABugFormDetailTableViewController *)self checkboxAnswersAtStart];
-    v6 = [(FBABugFormDetailTableViewController *)self answer];
-    v7 = [v6 values];
-    v8 = [NSSet setWithArray:v7];
-    v9 = [v5 isEqualToSet:v8];
+    checkboxAnswersAtStart = [(FBABugFormDetailTableViewController *)self checkboxAnswersAtStart];
+    answer = [(FBABugFormDetailTableViewController *)self answer];
+    values = [answer values];
+    v8 = [NSSet setWithArray:values];
+    v9 = [checkboxAnswersAtStart isEqualToSet:v8];
 
     if ((v9 & 1) == 0)
     {
       v10 = +[FBALog appHandle];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
-        v11 = [(FBABugFormDetailTableViewController *)self question];
-        v12 = [v11 role];
+        question2 = [(FBABugFormDetailTableViewController *)self question];
+        role = [question2 role];
         v15 = 138543362;
-        v16 = v12;
+        v16 = role;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Checkbox answers changed for question [%{public}@]", &v15, 0xCu);
       }
 
-      v13 = [(FBABugFormDetailTableViewController *)self delegate];
-      v14 = [(FBABugFormDetailTableViewController *)self question];
-      [v13 answerDidChangeForQuestion:v14];
+      delegate = [(FBABugFormDetailTableViewController *)self delegate];
+      question3 = [(FBABugFormDetailTableViewController *)self question];
+      [delegate answerDidChangeForQuestion:question3];
     }
   }
 }
 
 - (void)recordCheckboxAnswers
 {
-  v3 = [(FBABugFormDetailTableViewController *)self question];
-  v4 = [v3 answerType];
+  question = [(FBABugFormDetailTableViewController *)self question];
+  answerType = [question answerType];
 
-  if (v4 == 4)
+  if (answerType == 4)
   {
-    v7 = [(FBABugFormDetailTableViewController *)self answer];
-    v5 = [v7 values];
-    v6 = [NSSet setWithArray:v5];
+    answer = [(FBABugFormDetailTableViewController *)self answer];
+    values = [answer values];
+    v6 = [NSSet setWithArray:values];
     [(FBABugFormDetailTableViewController *)self setCheckboxAnswersAtStart:v6];
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [(FBABugFormDetailTableViewController *)self tableView];
-  v8 = [v7 dequeueReusableCellWithIdentifier:@"FBADetailTableViewHeaderCell"];
+  viewCopy = view;
+  tableView = [(FBABugFormDetailTableViewController *)self tableView];
+  v8 = [tableView dequeueReusableCellWithIdentifier:@"FBADetailTableViewHeaderCell"];
 
-  v9 = [v8 contentView];
-  v10 = [v9 backgroundColor];
-  [v8 setBackgroundColor:v10];
+  contentView = [v8 contentView];
+  backgroundColor = [contentView backgroundColor];
+  [v8 setBackgroundColor:backgroundColor];
 
   v11 = +[UIColor labelColor];
-  v12 = [v8 textLabel];
-  [v12 setTextColor:v11];
+  textLabel = [v8 textLabel];
+  [textLabel setTextColor:v11];
 
-  v13 = [(FBABugFormDetailTableViewController *)self tableView:v6 titleForHeaderInSection:a4];
+  v13 = [(FBABugFormDetailTableViewController *)self tableView:viewCopy titleForHeaderInSection:section];
 
-  v14 = [v8 textLabel];
-  [v14 setText:v13];
+  textLabel2 = [v8 textLabel];
+  [textLabel2 setText:v13];
 
-  v15 = [(FBABugFormDetailTableViewController *)self question];
-  v16 = [v15 answerType];
-  if (v16 == 4)
+  question = [(FBABugFormDetailTableViewController *)self question];
+  answerType = [question answerType];
+  if (answerType == 4)
   {
-    v14 = +[NSBundle mainBundle];
-    v17 = [v14 localizedStringForKey:@"CHECKBOX_FOOTER_TITLE" value:&stru_1000E2210 table:0];
+    textLabel2 = +[NSBundle mainBundle];
+    v17 = [textLabel2 localizedStringForKey:@"CHECKBOX_FOOTER_TITLE" value:&stru_1000E2210 table:0];
   }
 
   else
@@ -239,28 +239,28 @@ LABEL_7:
     v17 = 0;
   }
 
-  v18 = [v8 detailTextLabel];
-  [v18 setText:v17];
+  detailTextLabel = [v8 detailTextLabel];
+  [detailTextLabel setText:v17];
 
-  if (v16 == 4)
+  if (answerType == 4)
   {
   }
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(FBABugFormDetailTableViewController *)self searchController:a3];
-  v6 = [v5 isActive];
+  v5 = [(FBABugFormDetailTableViewController *)self searchController:view];
+  isActive = [v5 isActive];
 
-  if (v6)
+  if (isActive)
   {
-    v7 = [(FBABugFormDetailTableViewController *)self searchResultChoices];
-    if (v7)
+    searchResultChoices = [(FBABugFormDetailTableViewController *)self searchResultChoices];
+    if (searchResultChoices)
     {
-      v8 = [(FBABugFormDetailTableViewController *)self searchResultChoices];
-      v9 = [v8 count];
+      searchResultChoices2 = [(FBABugFormDetailTableViewController *)self searchResultChoices];
+      v9 = [searchResultChoices2 count];
     }
 
     else
@@ -271,32 +271,32 @@ LABEL_7:
 
   else
   {
-    v7 = [(FBABugFormDetailTableViewController *)self visibleChoices];
-    v9 = [v7 count];
+    searchResultChoices = [(FBABugFormDetailTableViewController *)self visibleChoices];
+    v9 = [searchResultChoices count];
   }
 
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(FBABugFormDetailTableViewController *)self question:a3];
-  v5 = [v4 text];
+  v4 = [(FBABugFormDetailTableViewController *)self question:view];
+  text = [v4 text];
 
-  return v5;
+  return text;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Choice" forIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Choice" forIndexPath:pathCopy];
   if (!v7)
   {
     v7 = [[FBAChoiceCell alloc] initWithStyle:0 reuseIdentifier:@"Choice"];
   }
 
-  v8 = [(FBABugFormDetailTableViewController *)self searchController];
-  if ([v8 isActive])
+  searchController = [(FBABugFormDetailTableViewController *)self searchController];
+  if ([searchController isActive])
   {
     [(FBABugFormDetailTableViewController *)self searchResultChoices];
   }
@@ -306,29 +306,29 @@ LABEL_7:
     [(FBABugFormDetailTableViewController *)self visibleChoices];
   }
   v9 = ;
-  v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
+  v10 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   [(FBAChoiceCell *)v7 updateWithChoice:v10];
-  v11 = [(FBABugFormDetailTableViewController *)self question];
-  v12 = [v11 answerType];
+  question = [(FBABugFormDetailTableViewController *)self question];
+  answerType = [question answerType];
 
-  if ((v12 - 2) >= 2)
+  if ((answerType - 2) >= 2)
   {
-    if (v12 != 4)
+    if (answerType != 4)
     {
       goto LABEL_11;
     }
 
-    v13 = [(FBABugFormDetailTableViewController *)self answer];
-    v14 = [v13 values];
-    [(FBAChoiceCell *)v7 evaluateSelectionWithValues:v14];
+    answer = [(FBABugFormDetailTableViewController *)self answer];
+    values = [answer values];
+    [(FBAChoiceCell *)v7 evaluateSelectionWithValues:values];
   }
 
   else
   {
-    v13 = [(FBABugFormDetailTableViewController *)self answer];
-    v14 = [v13 value];
-    [(FBAChoiceCell *)v7 evaluateSelectionWithValue:v14];
+    answer = [(FBABugFormDetailTableViewController *)self answer];
+    values = [answer value];
+    [(FBAChoiceCell *)v7 evaluateSelectionWithValue:values];
   }
 
 LABEL_11:
@@ -336,19 +336,19 @@ LABEL_11:
   return v7;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [a3 searchBar];
-  v14 = [v4 text];
+  searchBar = [controller searchBar];
+  text = [searchBar text];
 
-  if ([v14 length])
+  if ([text length])
   {
     v5 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-    v6 = [v14 stringByTrimmingCharactersInSet:v5];
+    v6 = [text stringByTrimmingCharactersInSet:v5];
 
     v7 = [NSPredicate predicateWithFormat:@"title CONTAINS[cd] %@", v6];
-    v8 = [(FBABugFormDetailTableViewController *)self visibleChoices];
-    v9 = [v8 filteredArrayUsingPredicate:v7];
+    visibleChoices = [(FBABugFormDetailTableViewController *)self visibleChoices];
+    v9 = [visibleChoices filteredArrayUsingPredicate:v7];
     v10 = [v9 mutableCopy];
     searchResultChoices = self->_searchResultChoices;
     self->_searchResultChoices = v10;
@@ -356,34 +356,34 @@ LABEL_11:
 
   else
   {
-    v12 = [(FBABugFormDetailTableViewController *)self visibleChoices];
+    visibleChoices2 = [(FBABugFormDetailTableViewController *)self visibleChoices];
     v6 = self->_searchResultChoices;
-    self->_searchResultChoices = v12;
+    self->_searchResultChoices = visibleChoices2;
   }
 
-  v13 = [(FBABugFormDetailTableViewController *)self tableView];
-  [v13 reloadData];
+  tableView = [(FBABugFormDetailTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  v4 = [(FBABugFormDetailTableViewController *)self tableView];
-  v6 = [v4 indexPathForSelectedRow];
+  tableView = [(FBABugFormDetailTableViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v6)
+  if (indexPathForSelectedRow)
   {
-    v5 = [(FBABugFormDetailTableViewController *)self tableView];
-    [v5 deselectRowAtIndexPath:v6 animated:1];
+    tableView2 = [(FBABugFormDetailTableViewController *)self tableView];
+    [tableView2 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
   }
 }
 
-- (BOOL)searchBar:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)searchBar:(id)bar shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  v7 = a3;
-  v8 = [a5 isEqualToString:@"\t"];
+  barCopy = bar;
+  v8 = [text isEqualToString:@"\t"];
   if (v8)
   {
-    [v7 endEditing:1];
+    [barCopy endEditing:1];
     [(FBABugFormDetailTableViewController *)self becomeFirstResponder];
     [(FBABugFormDetailTableViewController *)self selectNext];
   }
@@ -391,13 +391,13 @@ LABEL_11:
   return v8 ^ 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v8 = [(FBABugFormDetailTableViewController *)self searchController];
-  if ([v8 isActive])
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  searchController = [(FBABugFormDetailTableViewController *)self searchController];
+  if ([searchController isActive])
   {
     [(FBABugFormDetailTableViewController *)self searchResultChoices];
   }
@@ -407,75 +407,75 @@ LABEL_11:
     [(FBABugFormDetailTableViewController *)self visibleChoices];
   }
   v9 = ;
-  v10 = [v9 objectAtIndex:{objc_msgSend(v7, "row")}];
+  v10 = [v9 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-  v11 = [(FBABugFormDetailTableViewController *)self question];
-  v12 = [v11 answerType];
+  question = [(FBABugFormDetailTableViewController *)self question];
+  answerType = [question answerType];
 
-  if ((v12 - 2) >= 2)
+  if ((answerType - 2) >= 2)
   {
-    if (v12 == 4)
+    if (answerType == 4)
     {
-      v22 = [(FBKAnswer *)self->_answer values];
-      v23 = [v10 value];
-      v24 = [v22 containsObject:v23];
+      values = [(FBKAnswer *)self->_answer values];
+      value = [v10 value];
+      v24 = [values containsObject:value];
 
-      v25 = [(FBKAnswer *)self->_answer values];
-      v26 = [v10 value];
+      values2 = [(FBKAnswer *)self->_answer values];
+      value2 = [v10 value];
       if (v24)
       {
-        v27 = [NSPredicate predicateWithFormat:@"SELF != %@", v26];
-        v28 = [v25 filteredArrayUsingPredicate:v27];
+        v27 = [NSPredicate predicateWithFormat:@"SELF != %@", value2];
+        v28 = [values2 filteredArrayUsingPredicate:v27];
         [(FBKAnswer *)self->_answer setValues:v28];
       }
 
       else
       {
-        v27 = [v25 arrayByAddingObject:v26];
+        v27 = [values2 arrayByAddingObject:value2];
         [(FBKAnswer *)self->_answer setValues:v27];
       }
 
-      v16 = [v6 visibleCells];
+      visibleCells = [viewCopy visibleCells];
       v29[0] = _NSConcreteStackBlock;
       v29[1] = 3221225472;
       v29[2] = sub_100035470;
       v29[3] = &unk_1000DEC28;
       v29[4] = self;
-      [v16 enumerateObjectsUsingBlock:v29];
+      [visibleCells enumerateObjectsUsingBlock:v29];
     }
 
     else
     {
-      v16 = +[FBALog appHandle];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+      visibleCells = +[FBALog appHandle];
+      if (os_log_type_enabled(visibleCells, OS_LOG_TYPE_ERROR))
       {
-        sub_100094094(self, v16);
+        sub_100094094(self, visibleCells);
       }
     }
   }
 
   else
   {
-    v13 = [v6 visibleCells];
-    [v13 enumerateObjectsUsingBlock:&stru_1000DF818];
+    visibleCells2 = [viewCopy visibleCells];
+    [visibleCells2 enumerateObjectsUsingBlock:&stru_1000DF818];
 
-    v14 = [(FBABugFormDetailTableViewController *)self answer];
-    v15 = [v10 value];
-    [v14 setValue:v15];
+    answer = [(FBABugFormDetailTableViewController *)self answer];
+    value3 = [v10 value];
+    [answer setValue:value3];
 
-    v16 = [v6 cellForRowAtIndexPath:v7];
-    v17 = [(FBABugFormDetailTableViewController *)self answer];
-    v18 = [v17 value];
-    [v16 evaluateSelectionWithValue:v18];
+    visibleCells = [viewCopy cellForRowAtIndexPath:pathCopy];
+    answer2 = [(FBABugFormDetailTableViewController *)self answer];
+    value4 = [answer2 value];
+    [visibleCells evaluateSelectionWithValue:value4];
 
-    v19 = [(FBABugFormDetailTableViewController *)self delegate];
-    v20 = [(FBABugFormDetailTableViewController *)self question];
-    [v19 answerDidChangeForQuestion:v20];
+    delegate = [(FBABugFormDetailTableViewController *)self delegate];
+    question2 = [(FBABugFormDetailTableViewController *)self question];
+    [delegate answerDidChangeForQuestion:question2];
 
-    v21 = [(FBABugFormDetailTableViewController *)self searchController];
-    LODWORD(v20) = [v21 isActive];
+    searchController2 = [(FBABugFormDetailTableViewController *)self searchController];
+    LODWORD(question2) = [searchController2 isActive];
 
-    if (v20)
+    if (question2)
     {
       [(FBABugFormDetailTableViewController *)self dismissViewControllerAnimated:1 completion:0];
     }
@@ -484,22 +484,22 @@ LABEL_11:
   }
 }
 
-- (void)didGetClientSideResolvedNotification:(id)a3
+- (void)didGetClientSideResolvedNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(FBABugFormDetailTableViewController *)self question];
-  v6 = [v5 choiceSetResolver];
-  v7 = [v4 isEqual:v6];
+  object = [notification object];
+  question = [(FBABugFormDetailTableViewController *)self question];
+  choiceSetResolver = [question choiceSetResolver];
+  v7 = [object isEqual:choiceSetResolver];
 
   if (v7)
   {
     v8 = +[FBALog appHandle];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [(FBABugFormDetailTableViewController *)self question];
-      v10 = [v9 allChoices];
+      question2 = [(FBABugFormDetailTableViewController *)self question];
+      allChoices = [question2 allChoices];
       v11[0] = 67109120;
-      v11[1] = [v10 count];
+      v11[1] = [allChoices count];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "updating choice set with [%i] choices", v11, 8u);
     }
 
@@ -509,16 +509,16 @@ LABEL_11:
 
 - (id)getPathToScrollTo
 {
-  v3 = [(FBABugFormDetailTableViewController *)self visibleChoices];
-  v4 = [(FBKAnswer *)self->_answer value];
-  v5 = [NSPredicate predicateWithFormat:@"value ==[c] %@", v4];
-  v6 = [v3 filteredArrayUsingPredicate:v5];
+  visibleChoices = [(FBABugFormDetailTableViewController *)self visibleChoices];
+  value = [(FBKAnswer *)self->_answer value];
+  v5 = [NSPredicate predicateWithFormat:@"value ==[c] %@", value];
+  v6 = [visibleChoices filteredArrayUsingPredicate:v5];
 
   if ([v6 count])
   {
-    v7 = [(FBABugFormDetailTableViewController *)self visibleChoices];
-    v8 = [v6 firstObject];
-    v9 = [v7 indexOfObject:v8];
+    visibleChoices2 = [(FBABugFormDetailTableViewController *)self visibleChoices];
+    firstObject = [v6 firstObject];
+    v9 = [visibleChoices2 indexOfObject:firstObject];
 
     v10 = [NSIndexPath indexPathForRow:v9 inSection:0];
   }
@@ -533,59 +533,59 @@ LABEL_11:
 
 - (void)beginSearch
 {
-  v3 = [(FBABugFormDetailTableViewController *)self searchController];
+  searchController = [(FBABugFormDetailTableViewController *)self searchController];
 
-  if (v3)
+  if (searchController)
   {
-    v5 = [(FBABugFormDetailTableViewController *)self searchController];
-    v4 = [v5 searchBar];
-    [v4 becomeFirstResponder];
+    searchController2 = [(FBABugFormDetailTableViewController *)self searchController];
+    searchBar = [searchController2 searchBar];
+    [searchBar becomeFirstResponder];
   }
 }
 
 - (void)selectNext
 {
-  v3 = [(FBABugFormDetailTableViewController *)self tableView];
-  v10 = [v3 indexPathForSelectedRow];
+  tableView = [(FBABugFormDetailTableViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  v4 = [(FBABugFormDetailTableViewController *)self tableView];
-  v5 = [v4 numberOfRowsInSection:0];
+  tableView2 = [(FBABugFormDetailTableViewController *)self tableView];
+  v5 = [tableView2 numberOfRowsInSection:0];
 
-  v6 = [v10 row];
-  if (!v10 && (v7 = 0, v5 > 0) || (v7 = v6 + 1, (v6 + 1) < v5))
+  v6 = [indexPathForSelectedRow row];
+  if (!indexPathForSelectedRow && (v7 = 0, v5 > 0) || (v7 = v6 + 1, (v6 + 1) < v5))
   {
-    v8 = [(FBABugFormDetailTableViewController *)self tableView];
+    tableView3 = [(FBABugFormDetailTableViewController *)self tableView];
     v9 = [NSIndexPath indexPathForRow:v7 inSection:0];
-    [v8 selectRowAtIndexPath:v9 animated:1 scrollPosition:2];
+    [tableView3 selectRowAtIndexPath:v9 animated:1 scrollPosition:2];
   }
 }
 
 - (void)selectPrevious
 {
-  v3 = [(FBABugFormDetailTableViewController *)self tableView];
-  v11 = [v3 indexPathForSelectedRow];
+  tableView = [(FBABugFormDetailTableViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  v4 = [(FBABugFormDetailTableViewController *)self tableView];
-  v5 = [v4 numberOfRowsInSection:0];
+  tableView2 = [(FBABugFormDetailTableViewController *)self tableView];
+  v5 = [tableView2 numberOfRowsInSection:0];
 
-  v6 = [v11 row];
-  if (!v11 && (v7 = v5 < 1, v8 = v5 - 1, !v7) || (v8 = v6 - 1, v6 >= 1))
+  v6 = [indexPathForSelectedRow row];
+  if (!indexPathForSelectedRow && (v7 = v5 < 1, v8 = v5 - 1, !v7) || (v8 = v6 - 1, v6 >= 1))
   {
-    v9 = [(FBABugFormDetailTableViewController *)self tableView];
+    tableView3 = [(FBABugFormDetailTableViewController *)self tableView];
     v10 = [NSIndexPath indexPathForRow:v8 inSection:0];
-    [v9 selectRowAtIndexPath:v10 animated:1 scrollPosition:2];
+    [tableView3 selectRowAtIndexPath:v10 animated:1 scrollPosition:2];
   }
 }
 
 - (void)commitSelection
 {
-  v3 = [(FBABugFormDetailTableViewController *)self tableView];
-  v5 = [v3 indexPathForSelectedRow];
+  tableView = [(FBABugFormDetailTableViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v5)
+  if (indexPathForSelectedRow)
   {
-    v4 = [(FBABugFormDetailTableViewController *)self tableView];
-    [(FBABugFormDetailTableViewController *)self tableView:v4 didSelectRowAtIndexPath:v5];
+    tableView2 = [(FBABugFormDetailTableViewController *)self tableView];
+    [(FBABugFormDetailTableViewController *)self tableView:tableView2 didSelectRowAtIndexPath:indexPathForSelectedRow];
   }
 }
 

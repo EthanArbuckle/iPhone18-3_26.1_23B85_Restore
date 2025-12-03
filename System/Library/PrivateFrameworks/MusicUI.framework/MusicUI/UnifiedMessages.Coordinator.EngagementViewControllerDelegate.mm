@@ -1,34 +1,34 @@
 @interface UnifiedMessages.Coordinator.EngagementViewControllerDelegate
-- (BOOL)engagementViewController:(id)a3 handleDynamicDelegateAction:(id)a4 completionHandler:(id)a5;
-- (void)engagementViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5;
-- (void)engagementViewControllerShouldDismiss:(id)a3;
+- (BOOL)engagementViewController:(id)controller handleDynamicDelegateAction:(id)action completionHandler:(id)handler;
+- (void)engagementViewController:(id)controller didResolveWithResult:(id)result error:(id)error;
+- (void)engagementViewControllerShouldDismiss:(id)dismiss;
 @end
 
 @implementation UnifiedMessages.Coordinator.EngagementViewControllerDelegate
 
-- (void)engagementViewControllerShouldDismiss:(id)a3
+- (void)engagementViewControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_216B05F48();
 }
 
-- (void)engagementViewController:(id)a3 didResolveWithResult:(id)a4 error:(id)a5
+- (void)engagementViewController:(id)controller didResolveWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = a5;
-  v10 = self;
-  sub_216B060C4(v10, v9, v11);
+  controllerCopy = controller;
+  resultCopy = result;
+  errorCopy = error;
+  selfCopy = self;
+  sub_216B060C4(selfCopy, resultCopy, errorCopy);
 }
 
-- (BOOL)engagementViewController:(id)a3 handleDynamicDelegateAction:(id)a4 completionHandler:(id)a5
+- (BOOL)engagementViewController:(id)controller handleDynamicDelegateAction:(id)action completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   *(swift_allocObject() + 16) = v8;
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
+  controllerCopy = controller;
+  actionCopy = action;
+  selfCopy = self;
   sub_216B06358();
 
   return 1;

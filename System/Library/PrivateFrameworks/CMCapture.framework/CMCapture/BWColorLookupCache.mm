@@ -3,10 +3,10 @@
 - (BWColorLookupCacheEntry)_colorLookupTablesForColorCubeFilter:(BWColorLookupCacheEntry *)result;
 - (BWColorLookupCacheEntry)_colorLookupTablesForColorCubesWithMaskFilter:(BWColorLookupCacheEntry *)result;
 - (id)blackColorLookupTable;
-- (id)colorLookupTablesForFilter:(id)a3;
-- (id)fetchColorLookupTablesForFilter:(id)a3;
+- (id)colorLookupTablesForFilter:(id)filter;
+- (id)fetchColorLookupTablesForFilter:(id)filter;
 - (id)identityColorLookupTable;
-- (id)interpolatedColorLookupTableFromTable:(id)a3 toTable:(id)a4 fractionComplete:(float)a5;
+- (id)interpolatedColorLookupTableFromTable:(id)table toTable:(id)toTable fractionComplete:(float)complete;
 - (id)whiteColorLookupTable;
 - (void)dealloc;
 @end
@@ -55,10 +55,10 @@ id __26__BWColorLookupCache_init__block_invoke(uint64_t a1)
   [(BWColorLookupCache *)&v4 dealloc];
 }
 
-- (id)colorLookupTablesForFilter:(id)a3
+- (id)colorLookupTablesForFilter:(id)filter
 {
-  v3 = a3;
-  if (a3)
+  filterCopy = filter;
+  if (filter)
   {
     v10 = 0;
     v11 = &v10;
@@ -73,12 +73,12 @@ id __26__BWColorLookupCache_init__block_invoke(uint64_t a1)
     {
       if (isKindOfClass)
       {
-        v6 = [(BWColorLookupCache *)self _colorLookupTablesForColorCubesWithMaskFilter:v3];
+        v6 = [(BWColorLookupCache *)self _colorLookupTablesForColorCubesWithMaskFilter:filterCopy];
       }
 
       else
       {
-        v6 = [(BWColorLookupCache *)self _colorLookupTablesForColorCubeFilter:v3];
+        v6 = [(BWColorLookupCache *)self _colorLookupTablesForColorCubeFilter:filterCopy];
       }
     }
 
@@ -89,18 +89,18 @@ id __26__BWColorLookupCache_init__block_invoke(uint64_t a1)
       block[1] = 3221225472;
       block[2] = __49__BWColorLookupCache_colorLookupTablesForFilter___block_invoke;
       block[3] = &unk_1E7999668;
-      block[5] = v3;
+      block[5] = filterCopy;
       block[6] = &v10;
       block[4] = self;
       dispatch_sync(coreImageCacheIsolationQueue, block);
       v6 = v11[5];
     }
 
-    v3 = v6;
+    filterCopy = v6;
     _Block_object_dispose(&v10, 8);
   }
 
-  return v3;
+  return filterCopy;
 }
 
 id __49__BWColorLookupCache_colorLookupTablesForFilter___block_invoke(uint64_t a1)
@@ -110,14 +110,14 @@ id __49__BWColorLookupCache_colorLookupTablesForFilter___block_invoke(uint64_t a
   return result;
 }
 
-- (id)fetchColorLookupTablesForFilter:(id)a3
+- (id)fetchColorLookupTablesForFilter:(id)filter
 {
-  if (!a3)
+  if (!filter)
   {
     return 0;
   }
 
-  v5 = [a3 name];
+  name = [filter name];
   NSClassFromString(&cfstr_Ciphotoeffect.isa);
   isKindOfClass = objc_opt_isKindOfClass();
   NSClassFromString(&cfstr_Ciphotoeffect3_1.isa);
@@ -138,22 +138,22 @@ id __49__BWColorLookupCache_colorLookupTablesForFilter___block_invoke(uint64_t a
   v10 = objc_opt_isKindOfClass();
   if (isKindOfClass)
   {
-    v11 = [a3 cubePath];
+    cubePath = [filter cubePath];
     v12 = 0;
     goto LABEL_13;
   }
 
   if (v7)
   {
-    v11 = [a3 cubePath];
-    v13 = [a3 backgroundCubePath];
+    cubePath = [filter cubePath];
+    backgroundCubePath = [filter backgroundCubePath];
 LABEL_12:
-    v12 = v13;
+    v12 = backgroundCubePath;
 LABEL_13:
     v18 = 0;
-    if (v11)
+    if (cubePath)
     {
-      v14 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v11 options:2 error:&v18];
+      v14 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:cubePath options:2 error:&v18];
       if (!v12)
       {
         goto LABEL_18;
@@ -176,7 +176,7 @@ LABEL_18:
           v17[3] = &unk_1E798FD58;
           v17[4] = self;
           v17[5] = v15;
-          v17[6] = v5;
+          v17[6] = name;
           dispatch_sync(coreImageCacheIsolationQueue, v17);
         }
 
@@ -195,8 +195,8 @@ LABEL_18:
 
   if (v8)
   {
-    v11 = [a3 previewCubePath];
-    v13 = [a3 backgroundPreviewCubePath];
+    cubePath = [filter previewCubePath];
+    backgroundCubePath = [filter backgroundPreviewCubePath];
     goto LABEL_12;
   }
 
@@ -208,7 +208,7 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  return [(BWColorLookupCache *)self _colorLookupTablesForColorCubeFilter:a3];
+  return [(BWColorLookupCache *)self _colorLookupTablesForColorCubeFilter:filter];
 }
 
 - (id)identityColorLookupTable
@@ -408,15 +408,15 @@ uint64_t __43__BWColorLookupCache_whiteColorLookupTable__block_invoke()
   return result;
 }
 
-- (id)interpolatedColorLookupTableFromTable:(id)a3 toTable:(id)a4 fractionComplete:(float)a5
+- (id)interpolatedColorLookupTableFromTable:(id)table toTable:(id)toTable fractionComplete:(float)complete
 {
-  if (!a3 || !a4)
+  if (!table || !toTable)
   {
     return 0;
   }
 
-  v8 = cbrt(([a3 length] >> 2));
-  if (v8 != cbrt(([a4 length] >> 2)))
+  v8 = cbrt(([table length] >> 2));
+  if (v8 != cbrt(([toTable length] >> 2)))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0();
@@ -424,13 +424,13 @@ uint64_t __43__BWColorLookupCache_whiteColorLookupTable__block_invoke()
     return 0;
   }
 
-  v9 = [a3 bytes];
-  v10 = [a4 bytes];
+  bytes = [table bytes];
+  bytes2 = [toTable bytes];
   v11 = 4 * v8 * v8 * v8;
   v12 = malloc_type_malloc(v11, 0x100004077774924uLL);
   v13 = v12;
-  *&v14 = 1.0 - a5;
-  if (a5 <= 1.0)
+  *&v14 = 1.0 - complete;
+  if (complete <= 1.0)
   {
     if (v11)
     {
@@ -438,10 +438,10 @@ uint64_t __43__BWColorLookupCache_whiteColorLookupTable__block_invoke()
       v22 = 4 * v8 * v8 * v8;
       do
       {
-        v24 = *v9++;
+        v24 = *bytes++;
         v23 = v24;
-        v25 = *v10++;
-        *v21++ = llroundf((v25 * a5) + (v23 * *&v14));
+        v25 = *bytes2++;
+        *v21++ = llroundf((v25 * complete) + (v23 * *&v14));
         --v22;
       }
 
@@ -455,10 +455,10 @@ uint64_t __43__BWColorLookupCache_whiteColorLookupTable__block_invoke()
     v16 = 4 * v8 * v8 * v8;
     do
     {
-      v18 = *v9++;
+      v18 = *bytes++;
       v17 = v18;
-      v19 = *v10++;
-      v20 = roundf((v19 * a5) + (v17 * *&v14));
+      v19 = *bytes2++;
+      v20 = roundf((v19 * complete) + (v17 * *&v14));
       if (v20 > 255.0)
       {
         v20 = 255.0;

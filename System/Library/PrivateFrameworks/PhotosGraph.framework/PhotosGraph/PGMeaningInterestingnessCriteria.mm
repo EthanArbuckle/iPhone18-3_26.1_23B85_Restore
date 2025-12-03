@@ -1,16 +1,16 @@
 @interface PGMeaningInterestingnessCriteria
-+ (id)criteriaWithDictionary:(id)a3;
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4;
++ (id)criteriaWithDictionary:(id)dictionary;
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache;
 - (NSString)description;
 @end
 
 @implementation PGMeaningInterestingnessCriteria
 
-+ (id)criteriaWithDictionary:(id)a3
++ (id)criteriaWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"mustBeInteresting"];
+  dictionaryCopy = dictionary;
+  v5 = objc_alloc_init(self);
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"mustBeInteresting"];
 
   [v5 setMustBeInteresting:{objc_msgSend(v6, "BOOLValue")}];
 
@@ -20,9 +20,9 @@
 - (NSString)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(PGMeaningInterestingnessCriteria *)self mustBeInteresting];
+  mustBeInteresting = [(PGMeaningInterestingnessCriteria *)self mustBeInteresting];
   v4 = @"NO";
-  if (v3)
+  if (mustBeInteresting)
   {
     v4 = @"YES";
   }
@@ -30,20 +30,20 @@
   return [v2 stringWithFormat:@"mustBeInteresting: %@\n", v4];
 }
 
-- (BOOL)passesForMomentNode:(id)a3 momentNodeCache:(id)a4
+- (BOOL)passesForMomentNode:(id)node momentNodeCache:(id)cache
 {
-  v5 = a3;
-  if (-[PGMeaningInterestingnessCriteria mustBeInteresting](self, "mustBeInteresting") && ([v5 isInteresting] & 1) == 0)
+  nodeCopy = node;
+  if (-[PGMeaningInterestingnessCriteria mustBeInteresting](self, "mustBeInteresting") && ([nodeCopy isInteresting] & 1) == 0)
   {
-    v6 = [v5 isSmartInteresting];
+    isSmartInteresting = [nodeCopy isSmartInteresting];
   }
 
   else
   {
-    v6 = 1;
+    isSmartInteresting = 1;
   }
 
-  return v6;
+  return isSmartInteresting;
 }
 
 @end

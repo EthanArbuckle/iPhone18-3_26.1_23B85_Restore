@@ -1,17 +1,17 @@
 @interface PUSetSocialGroupKeyPhotoActivity
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 @end
 
 @implementation PUSetSocialGroupKeyPhotoActivity
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = [(PXActivity *)self itemSourceController];
-  v4 = [v3 socialGroup];
-  if (v4)
+  itemSourceController = [(PXActivity *)self itemSourceController];
+  socialGroup = [itemSourceController socialGroup];
+  if (socialGroup)
   {
-    v5 = [v3 assets];
-    v6 = [v5 count] == 1;
+    assets = [itemSourceController assets];
+    v6 = [assets count] == 1;
   }
 
   else

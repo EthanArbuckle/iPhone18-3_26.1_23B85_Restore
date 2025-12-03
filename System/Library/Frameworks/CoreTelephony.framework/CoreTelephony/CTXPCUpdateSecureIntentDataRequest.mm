@@ -2,30 +2,30 @@
 + (id)allowedClassesForArguments;
 - (BOOL)isDTOEvaluationFailed;
 - (id)data;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCUpdateSecureIntentDataRequest
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCUpdateSecureIntentDataRequest *)self data];
-  v9 = [(CTXPCUpdateSecureIntentDataRequest *)self isDTOEvaluationFailed];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  data = [(CTXPCUpdateSecureIntentDataRequest *)self data];
+  isDTOEvaluationFailed = [(CTXPCUpdateSecureIntentDataRequest *)self isDTOEvaluationFailed];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __82__CTXPCUpdateSecureIntentDataRequest_performRequestWithHandler_completionHandler___block_invoke;
   v11[3] = &unk_1E6A43CC8;
-  v10 = v7;
+  v10 = completionHandlerCopy;
   v12 = v10;
-  [v6 updateSecureIntentData:v8 isDTOEvaluationFailed:v9 completion:v11];
+  [handlerCopy updateSecureIntentData:data isDTOEvaluationFailed:isDTOEvaluationFailed completion:v11];
 }
 
 + (id)allowedClassesForArguments
 {
   v8[2] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCUpdateSecureIntentDataRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -40,8 +40,8 @@
 
 - (id)data
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"data"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"data"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -58,12 +58,12 @@
 
 - (BOOL)isDTOEvaluationFailed
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"isDTOEvaluationFailed"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"isDTOEvaluationFailed"];
   v4 = CTThrowingCastIfClass<NSNumber>(v3);
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 @end

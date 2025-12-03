@@ -7,9 +7,9 @@
 - (id)resolvedColorFromTraitCollection:()UIKit
 {
   v4 = a3;
-  v5 = [v4 userInterfaceStyle];
-  v6 = [v4 displayGamut];
-  if (v5 == 2)
+  userInterfaceStyle = [v4 userInterfaceStyle];
+  displayGamut = [v4 displayGamut];
+  if (userInterfaceStyle == 2)
   {
     v7 = 2;
   }
@@ -19,7 +19,7 @@
     v7 = 1;
   }
 
-  v8 = [a1 resolvedColorForColorScheme:v7 displayGamut:v6 != 1];
+  v8 = [self resolvedColorForColorScheme:v7 displayGamut:displayGamut != 1];
   v9 = v8;
   if (v8)
   {

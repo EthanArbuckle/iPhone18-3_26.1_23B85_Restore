@@ -27,8 +27,8 @@
   v2 = [(MRBaseComponentHandler *)&v22 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] groupStandardUserDefaults];
-    -[MRBaseComponentHandler setIsSUCaseForComponent:](v2, "setIsSUCaseForComponent:", [v3 BOOLForKey:@"SUcaseForDisplay"]);
+    groupStandardUserDefaults = [MEMORY[0x277CBEBD0] groupStandardUserDefaults];
+    -[MRBaseComponentHandler setIsSUCaseForComponent:](v2, "setIsSUCaseForComponent:", [groupStandardUserDefaults BOOLForKey:@"SUcaseForDisplay"]);
 
     [(MRBaseComponentHandler *)v2 setComponentName:@"TouchController"];
     [(MRBaseComponentHandler *)v2 setComponentFollowupClientID:@"com.apple.mobilerepair.DisplayRepair"];
@@ -46,8 +46,8 @@
 
     [(MRBaseComponentHandler *)v2 setFinishRepairTitle:@"FINISH_DISPLAY_REPAIR_TITLE"];
     [(MRBaseComponentHandler *)v2 setFinishRepairMessage:@"FINISH_DISPLAY_REPAIR_DESC"];
-    v7 = [(MRBaseComponentHandler *)v2 componentFollowupClientID];
-    v8 = [v7 stringByAppendingString:@"FINISH_REPAIR"];
+    componentFollowupClientID = [(MRBaseComponentHandler *)v2 componentFollowupClientID];
+    v8 = [componentFollowupClientID stringByAppendingString:@"FINISH_REPAIR"];
     [(MRBaseComponentHandler *)v2 setFinishRepairKey:v8];
 
     [(MRBaseComponentHandler *)v2 setComponentUnLockCheckCountKey:@"unlockCheckCountForDisplay"];
@@ -66,15 +66,15 @@
     [(MRBaseComponentHandler *)v2 setComponentFirstUIDisplayedTimeKey:@"firstUIDisplayedTimeForDisplay"];
     [(MRBaseComponentHandler *)v2 setLastKnownComponentIdentifierKey:@"lastKnownIDForDisplay"];
     v10 = MEMORY[0x277D00FD0];
-    v11 = [(MRBaseComponentHandler *)v2 componentName];
-    v12 = [v10 copySealingManifestDataInstanceForComponent:v11];
+    componentName = [(MRBaseComponentHandler *)v2 componentName];
+    v12 = [v10 copySealingManifestDataInstanceForComponent:componentName];
     [(MRBaseComponentHandler *)v2 setLastKnownComponentIdentifierValue:v12];
 
     v13 = objc_opt_new();
     [(MRBaseComponentHandler *)v2 setComponentAuthHandler:v13];
 
-    v14 = [(MRBaseComponentHandler *)v2 componentFollowupClientID];
-    v15 = [@"/var/mobile/Library/Preferences/" stringByAppendingString:v14];
+    componentFollowupClientID2 = [(MRBaseComponentHandler *)v2 componentFollowupClientID];
+    v15 = [@"/var/mobile/Library/Preferences/" stringByAppendingString:componentFollowupClientID2];
     v16 = [v15 stringByAppendingString:@".plist"];
     [(MRBaseComponentHandler *)v2 setStateFilePath:v16];
 
@@ -87,9 +87,9 @@
       [(MRBaseComponentHandler *)v2 setFollowUpInfoMessage:@"UNABLE_TO_VERIFY_DISPLAY_MESSAGE_IPAD"];
       [(MRBaseComponentHandler *)v2 setPopUpNotificationMessage:@"UNABLE_TO_VERIFY_DISPLAY_NOTIF_TEXT"];
       v17 = objc_opt_new();
-      v18 = [v17 isSupportedIPad];
+      isSupportedIPad = [v17 isSupportedIPad];
 
-      if ((v18 & 1) == 0)
+      if ((isSupportedIPad & 1) == 0)
       {
         [(MRBaseComponentHandler *)v2 setUnlockCheckActivityRequired:0];
         [(MRBaseComponentHandler *)v2 setDisplayNotification:0];
@@ -114,7 +114,7 @@
   if ([MEMORY[0x277D00FC0] isStrongComponent:1025])
   {
     v3 = objc_opt_new();
-    [a1 handleComponentSUCase:@"hasDisplayedFollowupForDisplay" lastAUthCheckBuildVersion:@"LastDisplayAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.DisplayRepair" queryString:@"TouchController" suCasekey:@"SUcaseForDisplay" startBuildVersion:@"17A800" componentAuth:v3];
+    [self handleComponentSUCase:@"hasDisplayedFollowupForDisplay" lastAUthCheckBuildVersion:@"LastDisplayAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.DisplayRepair" queryString:@"TouchController" suCasekey:@"SUcaseForDisplay" startBuildVersion:@"17A800" componentAuth:v3];
   }
 }
 
@@ -124,7 +124,7 @@
   block[1] = 3221225472;
   block[2] = __44__MRDisplayComponentHandler_sharedSingleton__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSingleton_once_8 != -1)
   {
     dispatch_once(&sharedSingleton_once_8, block);

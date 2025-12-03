@@ -2,23 +2,23 @@
 - (ADPeerLocationRemote)init;
 - (id)_locationManager;
 - (void)_cancelBestLocationTimer;
-- (void)_executeBestLocationCompletionWithLocation:(id)a3 error:(id)a4;
-- (void)_executeBestLocationCompletionWithLocationErrorWithCode:(int64_t)a3;
-- (void)_getBestLocationWithCompletion:(id)a3;
+- (void)_executeBestLocationCompletionWithLocation:(id)location error:(id)error;
+- (void)_executeBestLocationCompletionWithLocationErrorWithCode:(int64_t)code;
+- (void)_getBestLocationWithCompletion:(id)completion;
 - (void)_startBestLocationTimer;
 - (void)_startUpdatingLocation;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidPauseLocationUpdates:(id)a3;
-- (void)locationManagerDidResumeLocationUpdates:(id)a3;
-- (void)peerConnection:(id)a3 handlePBSubclass:(id)a4 completion:(id)a5;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidPauseLocationUpdates:(id)updates;
+- (void)locationManagerDidResumeLocationUpdates:(id)updates;
+- (void)peerConnection:(id)connection handlePBSubclass:(id)subclass completion:(id)completion;
 @end
 
 @implementation ADPeerLocationRemote
 
-- (void)locationManagerDidResumeLocationUpdates:(id)a3
+- (void)locationManagerDidResumeLocationUpdates:(id)updates
 {
   v3 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -29,7 +29,7 @@
   }
 }
 
-- (void)locationManagerDidPauseLocationUpdates:(id)a3
+- (void)locationManagerDidPauseLocationUpdates:(id)updates
 {
   v3 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -40,16 +40,16 @@
   }
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  v6 = a3;
+  managerCopy = manager;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v11 = 136315394;
     v12 = "[ADPeerLocationRemote locationManager:didChangeAuthorizationStatus:]";
     v13 = 1024;
-    v14 = a4;
+    statusCopy = status;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s %d", &v11, 0x12u);
   }
 
@@ -84,74 +84,74 @@
   }
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
   {
     v7 = 136315394;
     v8 = "[ADPeerLocationRemote locationManager:didFailWithError:]";
     v9 = 2114;
-    v10 = v5;
+    v10 = errorCopy;
     _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%s %{public}@", &v7, 0x16u);
   }
 
-  [(ADPeerLocationRemote *)self _executeBestLocationCompletionWithLocation:0 error:v5];
+  [(ADPeerLocationRemote *)self _executeBestLocationCompletionWithLocation:0 error:errorCopy];
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v5 = [a4 lastObject];
+  lastObject = [locations lastObject];
   v6 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
     v7 = 136315395;
     v8 = "[ADPeerLocationRemote locationManager:didUpdateLocations:]";
     v9 = 2113;
-    v10 = v5;
+    v10 = lastObject;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s updated location %{private}@", &v7, 0x16u);
   }
 
-  [(ADPeerLocationRemote *)self _executeBestLocationCompletionWithLocation:v5];
+  [(ADPeerLocationRemote *)self _executeBestLocationCompletionWithLocation:lastObject];
 }
 
-- (void)peerConnection:(id)a3 handlePBSubclass:(id)a4 completion:(id)a5
+- (void)peerConnection:(id)connection handlePBSubclass:(id)subclass completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  subclassCopy = subclass;
+  completionCopy = completion;
   v9 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v10 = 136315394;
     v11 = "[ADPeerLocationRemote peerConnection:handlePBSubclass:completion:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = subclassCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s %@", &v10, 0x16u);
   }
 
-  [v7 _ad_performWithPeerLocationManagerRemote:self completion:v8];
+  [subclassCopy _ad_performWithPeerLocationManagerRemote:self completion:completionCopy];
 }
 
-- (void)_executeBestLocationCompletionWithLocationErrorWithCode:(int64_t)a3
+- (void)_executeBestLocationCompletionWithLocationErrorWithCode:(int64_t)code
 {
-  v4 = [[NSError alloc] initWithDomain:@"com.apple.siri.location.Error" code:a3 userInfo:&__NSDictionary0__struct];
+  v4 = [[NSError alloc] initWithDomain:@"com.apple.siri.location.Error" code:code userInfo:&__NSDictionary0__struct];
   [(ADPeerLocationRemote *)self _executeBestLocationCompletionWithLocation:0 error:v4];
 }
 
-- (void)_executeBestLocationCompletionWithLocation:(id)a3 error:(id)a4
+- (void)_executeBestLocationCompletionWithLocation:(id)location error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  errorCopy = error;
   v8 = AFSiriLogContextLocation;
   if (os_log_type_enabled(AFSiriLogContextLocation, OS_LOG_TYPE_INFO))
   {
     v18 = 136315651;
     v19 = "[ADPeerLocationRemote _executeBestLocationCompletionWithLocation:error:]";
     v20 = 2113;
-    v21 = v6;
+    v21 = locationCopy;
     v22 = 2112;
-    v23 = v7;
+    v23 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s %{private}@ %@", &v18, 0x20u);
   }
 
@@ -164,13 +164,13 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s stopping location updates", &v18, 0xCu);
   }
 
-  v10 = [(ADPeerLocationRemote *)self _locationManager];
-  [v10 stopUpdatingLocation];
+  _locationManager = [(ADPeerLocationRemote *)self _locationManager];
+  [_locationManager stopUpdatingLocation];
 
-  v11 = [(ADPeerLocationRemote *)self _hasActiveBestLocationRequest];
+  _hasActiveBestLocationRequest = [(ADPeerLocationRemote *)self _hasActiveBestLocationRequest];
   v12 = AFSiriLogContextDaemon;
   v13 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO);
-  if (v11)
+  if (_hasActiveBestLocationRequest)
   {
     if (v13)
     {
@@ -179,10 +179,10 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s has active request; calling completion", &v18, 0xCu);
     }
 
-    if (v6)
+    if (locationCopy)
     {
       v14 = objc_alloc_init(_ADPBLocationSetPeerLocationRequest);
-      [(_ADPBLocationSetPeerLocationRequest *)v14 ad_setLocation:v6];
+      [(_ADPBLocationSetPeerLocationRequest *)v14 ad_setLocation:locationCopy];
     }
 
     else
@@ -218,17 +218,17 @@
   }
 }
 
-- (void)_getBestLocationWithCompletion:(id)a3
+- (void)_getBestLocationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012E15C;
   v7[3] = &unk_10051E038;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -242,8 +242,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s starting location updates", &v5, 0xCu);
   }
 
-  v4 = [(ADPeerLocationRemote *)self _locationManager];
-  [v4 startUpdatingLocation];
+  _locationManager = [(ADPeerLocationRemote *)self _locationManager];
+  [_locationManager startUpdatingLocation];
 }
 
 - (void)_cancelBestLocationTimer

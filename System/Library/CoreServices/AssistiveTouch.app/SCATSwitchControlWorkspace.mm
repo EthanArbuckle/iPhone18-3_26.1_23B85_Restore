@@ -1,27 +1,27 @@
 @interface SCATSwitchControlWorkspace
 + (id)sharedWorkspace;
-- (BOOL)pointPicker:(id)a3 pauseForNumberOfCycles:(unint64_t)a4;
+- (BOOL)pointPicker:(id)picker pauseForNumberOfCycles:(unint64_t)cycles;
 - (CGPoint)headTrackingPoint;
 - (CGPoint)lastPickedPoint;
 - (CGPoint)pointerPoint;
-- (CGRect)menu:(id)a3 rectToClearForFingersWithGestureSheet:(BOOL)a4;
+- (CGRect)menu:(id)menu rectToClearForFingersWithGestureSheet:(BOOL)sheet;
 - (SCATSwitchControlWorkspace)init;
-- (void)accessibilityManager:(id)a3 applicationWasActivated:(id)a4;
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5;
-- (void)accessibilityManager:(id)a3 mediaDidBegin:(__CFData *)a4;
+- (void)accessibilityManager:(id)manager applicationWasActivated:(id)activated;
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data;
+- (void)accessibilityManager:(id)manager mediaDidBegin:(__CFData *)begin;
 - (void)dealloc;
-- (void)inputController:(id)a3 didReceivePoint:(CGPoint)a4;
-- (void)pointPicker:(id)a3 didFinishDwellingOnPoint:(CGPoint)a4;
-- (void)pointPicker:(id)a3 didPickPoint:(CGPoint)a4;
-- (void)pointPicker:(id)a3 didSweepIntoFocusContext:(id)a4 isRefiningPoint:(BOOL)a5;
-- (void)pointPicker:(id)a3 didSweepOutOfFocusContext:(id)a4 isRefiningPoint:(BOOL)a5;
-- (void)pointPickerDidFinishSweeping:(id)a3;
-- (void)scannerManager:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5;
-- (void)scannerManager:(id)a3 willUnfocusFromContext:(id)a4;
-- (void)scannerManagerDidBecomeActive:(id)a3;
-- (void)scannerManagerDidBecomeInactive:(id)a3;
-- (void)scannerManagerDidPause:(id)a3;
-- (void)setPointerPoint:(CGPoint)a3;
+- (void)inputController:(id)controller didReceivePoint:(CGPoint)point;
+- (void)pointPicker:(id)picker didFinishDwellingOnPoint:(CGPoint)point;
+- (void)pointPicker:(id)picker didPickPoint:(CGPoint)point;
+- (void)pointPicker:(id)picker didSweepIntoFocusContext:(id)context isRefiningPoint:(BOOL)point;
+- (void)pointPicker:(id)picker didSweepOutOfFocusContext:(id)context isRefiningPoint:(BOOL)point;
+- (void)pointPickerDidFinishSweeping:(id)sweeping;
+- (void)scannerManager:(id)manager didFocusOnContext:(id)context oldContext:(id)oldContext;
+- (void)scannerManager:(id)manager willUnfocusFromContext:(id)context;
+- (void)scannerManagerDidBecomeActive:(id)active;
+- (void)scannerManagerDidBecomeInactive:(id)inactive;
+- (void)scannerManagerDidPause:(id)pause;
+- (void)setPointerPoint:(CGPoint)point;
 @end
 
 @implementation SCATSwitchControlWorkspace
@@ -55,8 +55,8 @@
     menu = v2->_menu;
     v2->_menu = v5;
 
-    v7 = [(SCATSwitchControlWorkspace *)v2 menu];
-    v8 = [SCATPointPicker pointPickerWithMode:2 menu:v7];
+    menu = [(SCATSwitchControlWorkspace *)v2 menu];
+    v8 = [SCATPointPicker pointPickerWithMode:2 menu:menu];
     pointPicker = v2->_pointPicker;
     v2->_pointPicker = v8;
 
@@ -93,8 +93,8 @@
 - (CGPoint)headTrackingPoint
 {
   v2 = +[SCATScannerManager sharedManager];
-  v3 = [v2 pointPicker];
-  [v3 lastReceivedPoint];
+  pointPicker = [v2 pointPicker];
+  [pointPicker lastReceivedPoint];
   v5 = v4;
   v7 = v6;
 
@@ -113,10 +113,10 @@
   return result;
 }
 
-- (void)setPointerPoint:(CGPoint)a3
+- (void)setPointerPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = +[SCATScannerManager sharedManager];
   [v5 overrideMotionTrackerLookAtPoint:{x, y}];
 }
@@ -129,11 +129,11 @@
   return result;
 }
 
-- (void)accessibilityManager:(id)a3 didReceiveEvent:(int64_t)a4 data:(id)a5
+- (void)accessibilityManager:(id)manager didReceiveEvent:(int64_t)event data:(id)data
 {
-  v10 = a3;
-  v7 = a5;
-  if (a4 == 1)
+  managerCopy = manager;
+  dataCopy = data;
+  if (event == 1)
   {
     if (!_AXSAutomationEnabled())
     {
@@ -144,7 +144,7 @@
     goto LABEL_7;
   }
 
-  if (a4 == 3 && _AXSAutomationEnabled())
+  if (event == 3 && _AXSAutomationEnabled())
   {
     v8 = @"SwitchControlDidReceiveLayoutChange";
 LABEL_7:
@@ -155,7 +155,7 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)accessibilityManager:(id)a3 applicationWasActivated:(id)a4
+- (void)accessibilityManager:(id)manager applicationWasActivated:(id)activated
 {
   if (_AXSAutomationEnabled())
   {
@@ -164,7 +164,7 @@ LABEL_8:
   }
 }
 
-- (void)accessibilityManager:(id)a3 mediaDidBegin:(__CFData *)a4
+- (void)accessibilityManager:(id)manager mediaDidBegin:(__CFData *)begin
 {
   if (_AXSAutomationEnabled())
   {
@@ -173,81 +173,81 @@ LABEL_8:
   }
 }
 
-- (void)scannerManager:(id)a3 didFocusOnContext:(id)a4 oldContext:(id)a5
+- (void)scannerManager:(id)manager didFocusOnContext:(id)context oldContext:(id)oldContext
 {
-  v9 = a4;
+  contextCopy = context;
   if (_AXSAutomationEnabled())
   {
     v6 = +[NSDistributedNotificationCenter defaultCenter];
     [v6 postNotificationName:@"SwitchControlEventOccurred" object:@"SwitchControlFocusElementDidChange"];
   }
 
-  v7 = [v9 element];
+  element = [contextCopy element];
   currentFocusedElement = self->_currentFocusedElement;
-  self->_currentFocusedElement = v7;
+  self->_currentFocusedElement = element;
 }
 
-- (void)scannerManager:(id)a3 willUnfocusFromContext:(id)a4
+- (void)scannerManager:(id)manager willUnfocusFromContext:(id)context
 {
-  v5 = [a3 activeScannerDriver];
-  self->_isScannerPaused = [v5 isPaused];
+  activeScannerDriver = [manager activeScannerDriver];
+  self->_isScannerPaused = [activeScannerDriver isPaused];
 }
 
-- (void)scannerManagerDidPause:(id)a3
+- (void)scannerManagerDidPause:(id)pause
 {
-  v4 = a3;
+  pauseCopy = pause;
   if (_AXSAutomationEnabled())
   {
     v5 = +[NSDistributedNotificationCenter defaultCenter];
     [v5 postNotificationName:@"SwitchControlEventOccurred" object:@"SwitchControlScannerDidPause"];
   }
 
-  v6 = [v4 activeScannerDriver];
-  self->_isScannerActive = [v6 isActive];
+  activeScannerDriver = [pauseCopy activeScannerDriver];
+  self->_isScannerActive = [activeScannerDriver isActive];
 
-  v7 = [v4 activeScannerDriver];
+  activeScannerDriver2 = [pauseCopy activeScannerDriver];
 
-  self->_isScannerPaused = [v7 isPaused];
+  self->_isScannerPaused = [activeScannerDriver2 isPaused];
 }
 
-- (void)scannerManagerDidBecomeActive:(id)a3
+- (void)scannerManagerDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   if (_AXSAutomationEnabled())
   {
     v5 = +[NSDistributedNotificationCenter defaultCenter];
     [v5 postNotificationName:@"SwitchControlEventOccurred" object:@"SwitchControlScannerBecameActive"];
   }
 
-  v6 = [v4 activeScannerDriver];
-  self->_isScannerActive = [v6 isActive];
+  activeScannerDriver = [activeCopy activeScannerDriver];
+  self->_isScannerActive = [activeScannerDriver isActive];
 
-  v7 = [v4 activeScannerDriver];
-  self->_isScannerPaused = [v7 isPaused];
+  activeScannerDriver2 = [activeCopy activeScannerDriver];
+  self->_isScannerPaused = [activeScannerDriver2 isPaused];
 
-  v8 = [v4 activeScannerDriver];
+  activeScannerDriver3 = [activeCopy activeScannerDriver];
 
-  self->_scannerType = [v8 driverType];
+  self->_scannerType = [activeScannerDriver3 driverType];
 }
 
-- (void)scannerManagerDidBecomeInactive:(id)a3
+- (void)scannerManagerDidBecomeInactive:(id)inactive
 {
-  v4 = a3;
+  inactiveCopy = inactive;
   if (_AXSAutomationEnabled())
   {
     v5 = +[NSDistributedNotificationCenter defaultCenter];
     [v5 postNotificationName:@"SwitchControlEventOccurred" object:@"SwitchControlScannerBecameInactive"];
   }
 
-  v6 = [v4 activeScannerDriver];
-  self->_isScannerActive = [v6 isActive];
+  activeScannerDriver = [inactiveCopy activeScannerDriver];
+  self->_isScannerActive = [activeScannerDriver isActive];
 
-  v7 = [v4 activeScannerDriver];
+  activeScannerDriver2 = [inactiveCopy activeScannerDriver];
 
-  self->_isScannerPaused = [v7 isPaused];
+  self->_isScannerPaused = [activeScannerDriver2 isPaused];
 }
 
-- (void)inputController:(id)a3 didReceivePoint:(CGPoint)a4
+- (void)inputController:(id)controller didReceivePoint:(CGPoint)point
 {
   if (self->_isMonitoring && _AXSAutomationEnabled())
   {
@@ -256,7 +256,7 @@ LABEL_8:
   }
 }
 
-- (CGRect)menu:(id)a3 rectToClearForFingersWithGestureSheet:(BOOL)a4
+- (CGRect)menu:(id)menu rectToClearForFingersWithGestureSheet:(BOOL)sheet
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -269,7 +269,7 @@ LABEL_8:
   return result;
 }
 
-- (void)pointPicker:(id)a3 didFinishDwellingOnPoint:(CGPoint)a4
+- (void)pointPicker:(id)picker didFinishDwellingOnPoint:(CGPoint)point
 {
   if (_AXSAutomationEnabled())
   {
@@ -278,7 +278,7 @@ LABEL_8:
   }
 }
 
-- (void)pointPicker:(id)a3 didPickPoint:(CGPoint)a4
+- (void)pointPicker:(id)picker didPickPoint:(CGPoint)point
 {
   if (_AXSAutomationEnabled())
   {
@@ -287,20 +287,20 @@ LABEL_8:
   }
 }
 
-- (void)pointPicker:(id)a3 didSweepIntoFocusContext:(id)a4 isRefiningPoint:(BOOL)a5
+- (void)pointPicker:(id)picker didSweepIntoFocusContext:(id)context isRefiningPoint:(BOOL)point
 {
-  v7 = a4;
+  contextCopy = context;
   if (_AXSAutomationEnabled())
   {
     v6 = +[NSDistributedNotificationCenter defaultCenter];
     [v6 postNotificationName:@"SwitchControlEventOccurred" object:@"SwitchControlPointerDidSweepIntoFocusContext"];
   }
 
-  self->_curFocusContext = v7;
+  self->_curFocusContext = contextCopy;
   self->_prevFocusContext = 0;
 }
 
-- (void)pointPicker:(id)a3 didSweepOutOfFocusContext:(id)a4 isRefiningPoint:(BOOL)a5
+- (void)pointPicker:(id)picker didSweepOutOfFocusContext:(id)context isRefiningPoint:(BOOL)point
 {
   if (_AXSAutomationEnabled())
   {
@@ -313,7 +313,7 @@ LABEL_8:
   self->_prevFocusContext = curFocusContext;
 }
 
-- (BOOL)pointPicker:(id)a3 pauseForNumberOfCycles:(unint64_t)a4
+- (BOOL)pointPicker:(id)picker pauseForNumberOfCycles:(unint64_t)cycles
 {
   if (_AXSAutomationEnabled())
   {
@@ -324,7 +324,7 @@ LABEL_8:
   return 0;
 }
 
-- (void)pointPickerDidFinishSweeping:(id)a3
+- (void)pointPickerDidFinishSweeping:(id)sweeping
 {
   if (_AXSAutomationEnabled())
   {

@@ -1,113 +1,113 @@
 @interface WDAddDataManualEntryItem
-+ (id)dateItemWithMaximumDate:(id)a3;
-+ (id)dateTimeItemWithMaximumDate:(id)a3 highlightWhenEditing:(BOOL)a4 displayName:(id)a5;
-+ (id)durationItemWithMaximumDate:(id)a3;
-+ (id)heightPickerItemWithFeetUnitString:(id)a3 inchUnitString:(id)a4;
-+ (id)multiSelectItemWithEntries:(id)a3 selectedIndex:(int64_t)a4;
-+ (id)numericItemWithManualEntryType:(unint64_t)a3 numberFormatter:(id)a4;
-+ (id)timeItemWithMaximumDate:(id)a3;
-+ (id)twoPartDateRangeItemWithMaximumEndDate:(id)a3;
-+ (id)twoPartDateTimeItemWithMaximumDate:(id)a3;
++ (id)dateItemWithMaximumDate:(id)date;
++ (id)dateTimeItemWithMaximumDate:(id)date highlightWhenEditing:(BOOL)editing displayName:(id)name;
++ (id)durationItemWithMaximumDate:(id)date;
++ (id)heightPickerItemWithFeetUnitString:(id)string inchUnitString:(id)unitString;
++ (id)multiSelectItemWithEntries:(id)entries selectedIndex:(int64_t)index;
++ (id)numericItemWithManualEntryType:(unint64_t)type numberFormatter:(id)formatter;
++ (id)timeItemWithMaximumDate:(id)date;
++ (id)twoPartDateRangeItemWithMaximumEndDate:(id)date;
++ (id)twoPartDateTimeItemWithMaximumDate:(id)date;
 - (WDAddDataManualEntryItemDelegate)delegate;
-- (id)_createHXUIInlineDatePickerTableViewCellWithTitle:(id)a3 datePickerMode:(int64_t)a4 maxDate:(id)a5;
-- (id)_createHXUIInlinePickerTableViewCellWithTitle:(id)a3;
+- (id)_createHXUIInlineDatePickerTableViewCellWithTitle:(id)title datePickerMode:(int64_t)mode maxDate:(id)date;
+- (id)_createHXUIInlinePickerTableViewCellWithTitle:(id)title;
 - (id)_createUITableViewCell;
-- (id)_createWDManualDataEntryTableViewCellWithDisplayName:(id)a3 unitName:(id)a4 entryType:(unint64_t)a5 highlightWhenEditing:(BOOL)a6;
+- (id)_createWDManualDataEntryTableViewCellWithDisplayName:(id)name unitName:(id)unitName entryType:(unint64_t)type highlightWhenEditing:(BOOL)editing;
 - (id)generateValue;
 - (id)tableViewCells;
 - (void)_didUpdateValue;
-- (void)_disambiguateDateComponents:(id)a3 withCompletion:(id)a4;
-- (void)cellForItemTapped:(id)a3;
-- (void)setValue:(id)a3;
+- (void)_disambiguateDateComponents:(id)components withCompletion:(id)completion;
+- (void)cellForItemTapped:(id)tapped;
+- (void)setValue:(id)value;
 @end
 
 @implementation WDAddDataManualEntryItem
 
-+ (id)dateItemWithMaximumDate:(id)a3
++ (id)dateItemWithMaximumDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = [_WDDateBasedAddDataManualEntryItem alloc];
   v5 = HABundle();
   v6 = [v5 localizedStringForKey:@"DATE" value:&stru_1F3823B88 table:@"AddDataLocalization"];
-  v7 = [(_WDDateBasedAddDataManualEntryItem *)v4 initWithMaximumDate:v3 highlightWhenEditing:0 datePickerMode:1 displayName:v6];
+  v7 = [(_WDDateBasedAddDataManualEntryItem *)v4 initWithMaximumDate:dateCopy highlightWhenEditing:0 datePickerMode:1 displayName:v6];
 
   return v7;
 }
 
-+ (id)timeItemWithMaximumDate:(id)a3
++ (id)timeItemWithMaximumDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = [_WDDateBasedAddDataManualEntryItem alloc];
   v5 = HABundle();
   v6 = [v5 localizedStringForKey:@"TIME" value:&stru_1F3823B88 table:@"AddDataLocalization"];
-  v7 = [(_WDDateBasedAddDataManualEntryItem *)v4 initWithMaximumDate:v3 highlightWhenEditing:0 datePickerMode:0 displayName:v6];
+  v7 = [(_WDDateBasedAddDataManualEntryItem *)v4 initWithMaximumDate:dateCopy highlightWhenEditing:0 datePickerMode:0 displayName:v6];
 
   return v7;
 }
 
-+ (id)dateTimeItemWithMaximumDate:(id)a3 highlightWhenEditing:(BOOL)a4 displayName:(id)a5
++ (id)dateTimeItemWithMaximumDate:(id)date highlightWhenEditing:(BOOL)editing displayName:(id)name
 {
-  v5 = a4;
-  v7 = a5;
-  v8 = a3;
-  v9 = [[_WDDateBasedAddDataManualEntryItem alloc] initWithMaximumDate:v8 highlightWhenEditing:v5 datePickerMode:2 displayName:v7];
+  editingCopy = editing;
+  nameCopy = name;
+  dateCopy = date;
+  v9 = [[_WDDateBasedAddDataManualEntryItem alloc] initWithMaximumDate:dateCopy highlightWhenEditing:editingCopy datePickerMode:2 displayName:nameCopy];
 
   return v9;
 }
 
-+ (id)twoPartDateTimeItemWithMaximumDate:(id)a3
++ (id)twoPartDateTimeItemWithMaximumDate:(id)date
 {
-  v3 = a3;
-  v4 = [[_WDTwoPartDateTimeManualEntryItem alloc] initWithMaximumDate:v3];
+  dateCopy = date;
+  v4 = [[_WDTwoPartDateTimeManualEntryItem alloc] initWithMaximumDate:dateCopy];
 
   return v4;
 }
 
-+ (id)twoPartDateRangeItemWithMaximumEndDate:(id)a3
++ (id)twoPartDateRangeItemWithMaximumEndDate:(id)date
 {
-  v3 = a3;
-  v4 = [[_WDTwoPartDateRangeManualEntryItem alloc] initWithMaximumEndDate:v3];
+  dateCopy = date;
+  v4 = [[_WDTwoPartDateRangeManualEntryItem alloc] initWithMaximumEndDate:dateCopy];
 
   return v4;
 }
 
-+ (id)durationItemWithMaximumDate:(id)a3
++ (id)durationItemWithMaximumDate:(id)date
 {
-  v3 = a3;
-  v4 = [[_WDDateWithDurationManualEntryItem alloc] initWithMaximumDate:v3];
+  dateCopy = date;
+  v4 = [[_WDDateWithDurationManualEntryItem alloc] initWithMaximumDate:dateCopy];
 
   return v4;
 }
 
-+ (id)numericItemWithManualEntryType:(unint64_t)a3 numberFormatter:(id)a4
++ (id)numericItemWithManualEntryType:(unint64_t)type numberFormatter:(id)formatter
 {
-  v5 = a4;
+  formatterCopy = formatter;
   v6 = objc_alloc_init(_WDNumberBasedAddDataManualEntryItem);
-  [(_WDNumberBasedAddDataManualEntryItem *)v6 setManualEntryType:a3];
-  [(_WDNumberBasedAddDataManualEntryItem *)v6 setNumberFormatter:v5];
+  [(_WDNumberBasedAddDataManualEntryItem *)v6 setManualEntryType:type];
+  [(_WDNumberBasedAddDataManualEntryItem *)v6 setNumberFormatter:formatterCopy];
 
   return v6;
 }
 
-+ (id)multiSelectItemWithEntries:(id)a3 selectedIndex:(int64_t)a4
++ (id)multiSelectItemWithEntries:(id)entries selectedIndex:(int64_t)index
 {
-  v5 = a3;
+  entriesCopy = entries;
   v6 = objc_alloc_init(_WDMultiSelectManualEntryItem);
-  [(_WDMultiSelectManualEntryItem *)v6 setTitles:v5];
+  [(_WDMultiSelectManualEntryItem *)v6 setTitles:entriesCopy];
 
-  [(_WDMultiSelectManualEntryItem *)v6 setSelectedIndex:a4];
+  [(_WDMultiSelectManualEntryItem *)v6 setSelectedIndex:index];
 
   return v6;
 }
 
-+ (id)heightPickerItemWithFeetUnitString:(id)a3 inchUnitString:(id)a4
++ (id)heightPickerItemWithFeetUnitString:(id)string inchUnitString:(id)unitString
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[_WDHeightPickerManualEntryItem alloc] initWithDisplayName:v6];
-  [(_WDHeightPickerManualEntryItem *)v7 setFeetUnitString:v6];
+  unitStringCopy = unitString;
+  stringCopy = string;
+  v7 = [[_WDHeightPickerManualEntryItem alloc] initWithDisplayName:stringCopy];
+  [(_WDHeightPickerManualEntryItem *)v7 setFeetUnitString:stringCopy];
 
-  [(_WDHeightPickerManualEntryItem *)v7 setInchUnitString:v5];
+  [(_WDHeightPickerManualEntryItem *)v7 setInchUnitString:unitStringCopy];
 
   return v7;
 }
@@ -119,31 +119,31 @@
   return v2;
 }
 
-- (id)_createWDManualDataEntryTableViewCellWithDisplayName:(id)a3 unitName:(id)a4 entryType:(unint64_t)a5 highlightWhenEditing:(BOOL)a6
+- (id)_createWDManualDataEntryTableViewCellWithDisplayName:(id)name unitName:(id)unitName entryType:(unint64_t)type highlightWhenEditing:(BOOL)editing
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[WDManualDataEntryTableViewCell alloc] initWithDisplayName:v10 unitName:v9 dataEntryType:a5];
+  editingCopy = editing;
+  unitNameCopy = unitName;
+  nameCopy = name;
+  v11 = [[WDManualDataEntryTableViewCell alloc] initWithDisplayName:nameCopy unitName:unitNameCopy dataEntryType:type];
 
-  [(WDManualDataEntryTableViewCell *)v11 setShouldHighlightWhenEditing:v6];
+  [(WDManualDataEntryTableViewCell *)v11 setShouldHighlightWhenEditing:editingCopy];
 
   return v11;
 }
 
-- (id)_createHXUIInlineDatePickerTableViewCellWithTitle:(id)a3 datePickerMode:(int64_t)a4 maxDate:(id)a5
+- (id)_createHXUIInlineDatePickerTableViewCellWithTitle:(id)title datePickerMode:(int64_t)mode maxDate:(id)date
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[HXUIInlineDatePickerTableViewCell alloc] initWithTitle:v8 datePickerMode:a4 maxDate:v7];
+  dateCopy = date;
+  titleCopy = title;
+  v9 = [[HXUIInlineDatePickerTableViewCell alloc] initWithTitle:titleCopy datePickerMode:mode maxDate:dateCopy];
 
   return v9;
 }
 
-- (id)_createHXUIInlinePickerTableViewCellWithTitle:(id)a3
+- (id)_createHXUIInlinePickerTableViewCellWithTitle:(id)title
 {
-  v3 = a3;
-  v4 = [[HXUIInlinePickerTableViewCell alloc] initWithTitle:v3];
+  titleCopy = title;
+  v4 = [[HXUIInlinePickerTableViewCell alloc] initWithTitle:titleCopy];
 
   return v4;
 }
@@ -154,25 +154,25 @@
   [WeakRetained manualEntryItemDidUpdate:self];
 }
 
-- (void)_disambiguateDateComponents:(id)a3 withCompletion:(id)a4
+- (void)_disambiguateDateComponents:(id)components withCompletion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v9 = [v8 hk_disambiguatedDSTDatesForComponents:v6];
+  componentsCopy = components;
+  completionCopy = completion;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v9 = [currentCalendar hk_disambiguatedDSTDatesForComponents:componentsCopy];
   if ([v9 count] == 1)
   {
-    v10 = [v9 firstObject];
-    v7[2](v7, v10);
+    firstObject = [v9 firstObject];
+    completionCopy[2](completionCopy, firstObject);
   }
 
   else
   {
-    v24 = self;
-    v25 = v8;
-    v26 = v6;
-    v11 = v7;
+    selfCopy = self;
+    v25 = currentCalendar;
+    v26 = componentsCopy;
+    v11 = completionCopy;
     v12 = [MEMORY[0x1E69DC650] alertControllerWithTitle:0 message:0 preferredStyle:0];
     v13 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v13 setDateStyle:3];
@@ -217,16 +217,16 @@
       while (v15);
     }
 
-    v23 = [(WDAddDataManualEntryItem *)v24 delegate];
-    [v23 presentViewController:v12 animated:1 completion:0];
+    delegate = [(WDAddDataManualEntryItem *)selfCopy delegate];
+    [delegate presentViewController:v12 animated:1 completion:0];
 
-    v8 = v25;
-    v6 = v26;
-    v7 = v11;
+    currentCalendar = v25;
+    componentsCopy = v26;
+    completionCopy = v11;
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
   v11 = *MEMORY[0x1E69E9840];
   _HKInitializeLogging();
@@ -237,18 +237,18 @@
     v7 = 138543618;
     v8 = v6;
     v9 = 2114;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B9F07000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ has been called on %{public}@, which does not implement this method. This is probably a mistake.", &v7, 0x16u);
   }
 }
 
-- (void)cellForItemTapped:(id)a3
+- (void)cellForItemTapped:(id)tapped
 {
-  v3 = a3;
+  tappedCopy = tapped;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 beginEditing];
+    [tappedCopy beginEditing];
   }
 }
 

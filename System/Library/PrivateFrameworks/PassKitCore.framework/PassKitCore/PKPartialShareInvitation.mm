@@ -1,85 +1,85 @@
 @interface PKPartialShareInvitation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPartialShareInvitation:(id)a3;
-- (PKPartialShareInvitation)initWithCoder:(id)a3;
-- (PKPartialShareInvitation)initWithHomeInvite:(id)a3 displayInformation:(id)a4;
-- (PKPartialShareInvitation)initWithShare:(id)a3 pass:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPartialShareInvitation:(id)invitation;
+- (PKPartialShareInvitation)initWithCoder:(id)coder;
+- (PKPartialShareInvitation)initWithHomeInvite:(id)invite displayInformation:(id)information;
+- (PKPartialShareInvitation)initWithShare:(id)share pass:(id)pass;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRecipientHandle:(id)a3;
-- (void)setRecipientNickname:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRecipientHandle:(id)handle;
+- (void)setRecipientNickname:(id)nickname;
 @end
 
 @implementation PKPartialShareInvitation
 
-- (PKPartialShareInvitation)initWithShare:(id)a3 pass:(id)a4
+- (PKPartialShareInvitation)initWithShare:(id)share pass:(id)pass
 {
-  v7 = a3;
-  v8 = a4;
+  shareCopy = share;
+  passCopy = pass;
   v12.receiver = self;
   v12.super_class = PKPartialShareInvitation;
   v9 = [(PKPartialShareInvitation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_share, a3);
-    objc_storeStrong(&v10->_pass, a4);
+    objc_storeStrong(&v9->_share, share);
+    objc_storeStrong(&v10->_pass, pass);
   }
 
   return v10;
 }
 
-- (PKPartialShareInvitation)initWithHomeInvite:(id)a3 displayInformation:(id)a4
+- (PKPartialShareInvitation)initWithHomeInvite:(id)invite displayInformation:(id)information
 {
-  v7 = a3;
-  v8 = a4;
+  inviteCopy = invite;
+  informationCopy = information;
   v12.receiver = self;
   v12.super_class = PKPartialShareInvitation;
   v9 = [(PKPartialShareInvitation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_homeInvite, a3);
-    objc_storeStrong(&v10->_displayInformation, a4);
+    objc_storeStrong(&v9->_homeInvite, invite);
+    objc_storeStrong(&v10->_displayInformation, information);
   }
 
   return v10;
 }
 
-- (PKPartialShareInvitation)initWithCoder:(id)a3
+- (PKPartialShareInvitation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = PKPartialShareInvitation;
   v5 = [(PKPartialShareInvitation *)&v30 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"share"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"share"];
     share = v5->_share;
     v5->_share = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pass"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pass"];
     pass = v5->_pass;
     v5->_pass = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"homeInvite"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeInvite"];
     homeInvite = v5->_homeInvite;
     v5->_homeInvite = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayInformation"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayInformation"];
     displayInformation = v5->_displayInformation;
     v5->_displayInformation = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientNickname"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientNickname"];
     recipientNickname = v5->_recipientNickname;
     v5->_recipientNickname = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientHandle"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientHandle"];
     recipientHandle = v5->_recipientHandle;
     v5->_recipientHandle = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestSource"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestSource"];
     v19 = v18;
     v20 = 0;
     if (v18 == @"UI" || !v18)
@@ -110,23 +110,23 @@
 LABEL_12:
 
     v5->_requestSource = v20;
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingInvitationFlow"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingInvitationFlow"];
     v5->_sharingInvitationFlow = PKSharingInvitationFlowFromString(v28);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   share = self->_share;
-  v5 = a3;
-  [v5 encodeObject:share forKey:@"share"];
-  [v5 encodeObject:self->_pass forKey:@"pass"];
-  [v5 encodeObject:self->_homeInvite forKey:@"homeInvite"];
-  [v5 encodeObject:self->_displayInformation forKey:@"displayInformation"];
-  [v5 encodeObject:self->_recipientNickname forKey:@"recipientNickname"];
-  [v5 encodeObject:self->_recipientHandle forKey:@"recipientHandle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:share forKey:@"share"];
+  [coderCopy encodeObject:self->_pass forKey:@"pass"];
+  [coderCopy encodeObject:self->_homeInvite forKey:@"homeInvite"];
+  [coderCopy encodeObject:self->_displayInformation forKey:@"displayInformation"];
+  [coderCopy encodeObject:self->_recipientNickname forKey:@"recipientNickname"];
+  [coderCopy encodeObject:self->_recipientHandle forKey:@"recipientHandle"];
   requestSource = self->_requestSource;
   v7 = @"UI";
   if (requestSource == 1)
@@ -144,9 +144,9 @@ LABEL_12:
     v8 = v7;
   }
 
-  [v5 encodeObject:v8 forKey:@"requestSource"];
+  [coderCopy encodeObject:v8 forKey:@"requestSource"];
   v9 = PKSharingInvitationFlowToString(self->_sharingInvitationFlow);
-  [v5 encodeObject:v9 forKey:@"sharingInvitationFlow"];
+  [coderCopy encodeObject:v9 forKey:@"sharingInvitationFlow"];
 }
 
 - (id)description
@@ -191,11 +191,11 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_share)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_pass)
@@ -230,33 +230,33 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPartialShareInvitation *)self isEqualToPartialShareInvitation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPartialShareInvitation *)self isEqualToPartialShareInvitation:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPartialShareInvitation:(id)a3
+- (BOOL)isEqualToPartialShareInvitation:(id)invitation
 {
-  v4 = a3;
-  if (!v4)
+  invitationCopy = invitation;
+  if (!invitationCopy)
   {
     goto LABEL_37;
   }
 
   share = self->_share;
-  v6 = v4[1];
+  v6 = invitationCopy[1];
   if (share)
   {
     v7 = v6 == 0;
@@ -281,7 +281,7 @@ LABEL_12:
   }
 
   pass = self->_pass;
-  v9 = v4[2];
+  v9 = invitationCopy[2];
   if (pass && v9)
   {
     if (([(PKSecureElementPass *)pass isEqual:?]& 1) == 0)
@@ -296,7 +296,7 @@ LABEL_12:
   }
 
   homeInvite = self->_homeInvite;
-  v11 = v4[5];
+  v11 = invitationCopy[5];
   if (homeInvite && v11)
   {
     if (([(NSData *)homeInvite isEqual:?]& 1) == 0)
@@ -311,7 +311,7 @@ LABEL_12:
   }
 
   displayInformation = self->_displayInformation;
-  v13 = v4[6];
+  v13 = invitationCopy[6];
   if (displayInformation && v13)
   {
     if (([(PKSharingMessageDisplayInformation *)displayInformation isEqual:?]& 1) == 0)
@@ -326,7 +326,7 @@ LABEL_12:
   }
 
   recipientNickname = self->_recipientNickname;
-  v15 = v4[7];
+  v15 = invitationCopy[7];
   if (recipientNickname && v15)
   {
     if (([(NSString *)recipientNickname isEqual:?]& 1) == 0)
@@ -341,7 +341,7 @@ LABEL_12:
   }
 
   recipientHandle = self->_recipientHandle;
-  v17 = v4[8];
+  v17 = invitationCopy[8];
   if (!recipientHandle || !v17)
   {
     if (recipientHandle == v17)
@@ -360,34 +360,34 @@ LABEL_37:
   }
 
 LABEL_35:
-  if (self->_requestSource != v4[3])
+  if (self->_requestSource != invitationCopy[3])
   {
     goto LABEL_37;
   }
 
-  v18 = self->_sharingInvitationFlow == v4[4];
+  v18 = self->_sharingInvitationFlow == invitationCopy[4];
 LABEL_38:
 
   return v18;
 }
 
-- (void)setRecipientHandle:(id)a3
+- (void)setRecipientHandle:(id)handle
 {
-  v5 = a3;
-  objc_storeStrong(&self->_recipientHandle, a3);
+  handleCopy = handle;
+  objc_storeStrong(&self->_recipientHandle, handle);
   if (self->_recipientHandle)
   {
     [(PKPassShare *)self->_share setRecipientHandle:?];
   }
 }
 
-- (void)setRecipientNickname:(id)a3
+- (void)setRecipientNickname:(id)nickname
 {
-  v5 = a3;
-  objc_storeStrong(&self->_recipientNickname, a3);
+  nicknameCopy = nickname;
+  objc_storeStrong(&self->_recipientNickname, nickname);
   if (self->_recipientNickname)
   {
-    [(PKPassShare *)self->_share setRecipientNickname:v5];
+    [(PKPassShare *)self->_share setRecipientNickname:nicknameCopy];
   }
 }
 

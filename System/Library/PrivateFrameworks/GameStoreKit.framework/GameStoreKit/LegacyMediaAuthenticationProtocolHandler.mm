@@ -1,16 +1,16 @@
 @interface LegacyMediaAuthenticationProtocolHandler
 - (_TtC12GameStoreKit40LegacyMediaAuthenticationProtocolHandler)init;
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 error:(id *)a6;
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect error:(id *)error;
 @end
 
 @implementation LegacyMediaAuthenticationProtocolHandler
 
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 error:(id *)a6
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = self;
-  sub_24F2D85AC(v10, v11, a5, a6);
+  requestCopy = request;
+  taskCopy = task;
+  selfCopy = self;
+  sub_24F2D85AC(requestCopy, taskCopy, redirect, error);
 }
 
 - (_TtC12GameStoreKit40LegacyMediaAuthenticationProtocolHandler)init

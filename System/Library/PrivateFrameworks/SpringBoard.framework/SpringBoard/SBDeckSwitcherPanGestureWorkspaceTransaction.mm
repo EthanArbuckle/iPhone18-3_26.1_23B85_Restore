@@ -1,104 +1,104 @@
 @interface SBDeckSwitcherPanGestureWorkspaceTransaction
-- (id)selectedAppLayoutForGestureRecognizer:(id)a3;
+- (id)selectedAppLayoutForGestureRecognizer:(id)recognizer;
 - (void)_begin;
-- (void)_beginWithGesture:(id)a3;
+- (void)_beginWithGesture:(id)gesture;
 - (void)_didComplete;
-- (void)_finishWithGesture:(id)a3;
+- (void)_finishWithGesture:(id)gesture;
 - (void)_removeHysteresisFromTranslation;
 @end
 
 @implementation SBDeckSwitcherPanGestureWorkspaceTransaction
 
-- (id)selectedAppLayoutForGestureRecognizer:(id)a3
+- (id)selectedAppLayoutForGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
-  v36 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-  v6 = [v5 contentView];
-  v7 = [v5 view];
-  v8 = [v5 layoutContext];
-  v9 = [v8 layoutState];
-  v10 = [v9 unlockedEnvironmentMode];
+  recognizerCopy = recognizer;
+  switcherController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherController];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  contentView = [switcherViewController contentView];
+  view = [switcherViewController view];
+  layoutContext = [switcherViewController layoutContext];
+  layoutState = [layoutContext layoutState];
+  unlockedEnvironmentMode = [layoutState unlockedEnvironmentMode];
 
-  v11 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v12 = [v11 transientOverlayContext];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  transientOverlayContext = [transitionRequest transientOverlayContext];
 
-  v13 = [v5 layoutContext];
-  v14 = [v13 activeTransitionContext];
+  layoutContext2 = [switcherViewController layoutContext];
+  activeTransitionContext = [layoutContext2 activeTransitionContext];
 
-  v15 = [v14 request];
-  v16 = [v15 transientOverlayContext];
+  request = [activeTransitionContext request];
+  transientOverlayContext2 = [request transientOverlayContext];
 
-  if (v12 && [v12 transitionType] == 1 && !-[SBFluidSwitcherGestureWorkspaceTransaction hasCompletedAtLeastOneGesture](self, "hasCompletedAtLeastOneGesture"))
+  if (transientOverlayContext && [transientOverlayContext transitionType] == 1 && !-[SBFluidSwitcherGestureWorkspaceTransaction hasCompletedAtLeastOneGesture](self, "hasCompletedAtLeastOneGesture"))
   {
-    v33 = [v12 transientOverlay];
-    v21 = [v5 _appLayoutForWorkspaceTransientOverlay:v33];
+    transientOverlay = [transientOverlayContext transientOverlay];
+    appLayout = [switcherViewController _appLayoutForWorkspaceTransientOverlay:transientOverlay];
   }
 
   else
   {
-    if (v10 == 2)
+    if (unlockedEnvironmentMode == 2)
     {
-      [v7 bounds];
+      [view bounds];
       UIRectGetCenter();
-      v29 = v5;
+      v29 = switcherViewController;
     }
 
     else
     {
-      if (v10 == 1 && (!v14 || !v16 || [v16 transitionType]))
+      if (unlockedEnvironmentMode == 1 && (!activeTransitionContext || !transientOverlayContext2 || [transientOverlayContext2 transitionType]))
       {
-        v17 = [v5 layoutContext];
-        v18 = [v17 layoutState];
+        layoutContext3 = [switcherViewController layoutContext];
+        layoutState2 = [layoutContext3 layoutState];
 
-        if (SBPeekConfigurationIsValid([v18 peekConfiguration]))
+        if (SBPeekConfigurationIsValid([layoutState2 peekConfiguration]))
         {
-          v19 = [v5 layoutContext];
-          [v19 layoutState];
-          v20 = v35 = v4;
-          v21 = [v20 appLayout];
+          layoutContext4 = [switcherViewController layoutContext];
+          [layoutContext4 layoutState];
+          v20 = v35 = recognizerCopy;
+          appLayout = [v20 appLayout];
 
-          v4 = v35;
+          recognizerCopy = v35;
         }
 
         else
         {
-          v21 = 0;
+          appLayout = 0;
         }
 
         goto LABEL_19;
       }
 
-      v22 = v4;
-      v23 = [v36 windowManagementContext];
-      v24 = [v23 isChamoisOrFlexibleWindowing];
+      v22 = recognizerCopy;
+      windowManagementContext = [switcherController windowManagementContext];
+      isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
-      if (v24)
+      if (isChamoisOrFlexibleWindowing)
       {
-        v25 = [v5 layoutContext];
-        v26 = [v25 layoutState];
-        v21 = [v26 appLayout];
+        layoutContext5 = [switcherViewController layoutContext];
+        layoutState3 = [layoutContext5 layoutState];
+        appLayout = [layoutState3 appLayout];
 
-        v4 = v22;
+        recognizerCopy = v22;
         goto LABEL_19;
       }
 
-      v4 = v22;
-      [v22 locationInView:v6];
-      [v6 size];
+      recognizerCopy = v22;
+      [v22 locationInView:contentView];
+      [contentView size];
       v31 = v30 * 0.5;
-      [v6 size];
+      [contentView size];
       v27 = v32 * 0.5;
-      v29 = v5;
+      v29 = switcherViewController;
       v28 = v31;
     }
 
-    v21 = [v29 _adjustedAppLayoutForItemContainerAtLocation:1 environment:{v27, v28}];
+    appLayout = [v29 _adjustedAppLayoutForItemContainerAtLocation:1 environment:{v27, v28}];
   }
 
 LABEL_19:
 
-  return v21;
+  return appLayout;
 }
 
 - (void)_begin
@@ -128,21 +128,21 @@ LABEL_19:
   [(SBFluidSwitcherGestureWorkspaceTransaction *)&v4 _didComplete];
 }
 
-- (void)_beginWithGesture:(id)a3
+- (void)_beginWithGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   kdebug_trace();
   [(SBDeckSwitcherPanGestureWorkspaceTransaction *)self _removeHysteresisFromTranslation];
-  v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+  switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
   v6 = objc_opt_class();
-  v7 = SBSafeCast(v6, v4);
+  v7 = SBSafeCast(v6, gestureCopy);
   [v7 touchedEdges];
   if (v7)
   {
     [v7 _touchInterfaceOrientation];
     v8 = _screenRegionGivenInterfaceOrientedRegion();
-    v9 = [v5 dataSource];
-    v10 = [v9 switcherInterfaceOrientationForSwitcherContentController:v5];
+    dataSource = [switcherViewController dataSource];
+    v10 = [dataSource switcherInterfaceOrientationForSwitcherContentController:switcherViewController];
 
     if ((_interfaceOrientedRegionGivenScreenRegion() & 4) == 0)
     {
@@ -152,7 +152,7 @@ LABEL_19:
       v18 = &unk_2783BEC18;
       v20 = v8;
       v21 = v10;
-      v19 = self;
+      selfCopy = self;
       v11 = v16;
       v12 = 0;
       v22 = 0;
@@ -182,11 +182,11 @@ LABEL_19:
     }
   }
 
-  v14 = [(SBDeckSwitcherPanGestureWorkspaceTransaction *)self selectedAppLayoutForGestureRecognizer:v4];
+  v14 = [(SBDeckSwitcherPanGestureWorkspaceTransaction *)self selectedAppLayoutForGestureRecognizer:gestureCopy];
   [(SBFluidSwitcherGestureWorkspaceTransaction *)self setSelectedAppLayout:v14];
   v15.receiver = self;
   v15.super_class = SBDeckSwitcherPanGestureWorkspaceTransaction;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v15 _beginWithGesture:v4];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v15 _beginWithGesture:gestureCopy];
   kdebug_trace();
 }
 
@@ -208,13 +208,13 @@ void __66__SBDeckSwitcherPanGestureWorkspaceTransaction__beginWithGesture___bloc
   }
 }
 
-- (void)_finishWithGesture:(id)a3
+- (void)_finishWithGesture:(id)gesture
 {
-  v4 = a3;
+  gestureCopy = gesture;
   kdebug_trace();
   v5.receiver = self;
   v5.super_class = SBDeckSwitcherPanGestureWorkspaceTransaction;
-  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v5 _finishWithGesture:v4];
+  [(SBFluidSwitcherGestureWorkspaceTransaction *)&v5 _finishWithGesture:gestureCopy];
 
   kdebug_trace();
 }
@@ -222,15 +222,15 @@ void __66__SBDeckSwitcherPanGestureWorkspaceTransaction__beginWithGesture___bloc
 - (void)_removeHysteresisFromTranslation
 {
   v3 = objc_opt_class();
-  v4 = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
-  v12 = SBSafeCast(v3, v4);
+  gestureRecognizer = [(SBSystemGestureWorkspaceTransaction *)self gestureRecognizer];
+  v12 = SBSafeCast(v3, gestureRecognizer);
 
   if (v12)
   {
-    v5 = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
-    v6 = [v5 view];
+    switcherViewController = [(SBFluidSwitcherGestureWorkspaceTransaction *)self switcherViewController];
+    view = [switcherViewController view];
 
-    [v12 translationInView:v6];
+    [v12 translationInView:view];
     v8 = v7;
     [v12 _hysteresis];
     v10 = v8 + v9;
@@ -245,7 +245,7 @@ void __66__SBDeckSwitcherPanGestureWorkspaceTransaction__beginWithGesture___bloc
       v10 = v11;
     }
 
-    [v12 setTranslation:v6 inView:{0.0, v10}];
+    [v12 setTranslation:view inView:{0.0, v10}];
   }
 }
 

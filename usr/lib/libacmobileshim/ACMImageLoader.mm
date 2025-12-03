@@ -1,7 +1,7 @@
 @interface ACMImageLoader
 + (id)sharedInstance;
 - (NSMutableDictionary)imagesCache;
-- (id)imageNamed:(id)a3;
+- (id)imageNamed:(id)named;
 - (void)dealloc;
 @end
 
@@ -39,9 +39,9 @@
   [(ACMImageLoader *)&v3 dealloc];
 }
 
-- (id)imageNamed:(id)a3
+- (id)imageNamed:(id)named
 {
-  v5 = [(NSMutableDictionary *)[(ACMImageLoader *)self imagesCache] objectForKeyedSubscript:a3];
+  v5 = [(NSMutableDictionary *)[(ACMImageLoader *)self imagesCache] objectForKeyedSubscript:named];
   if (!v5)
   {
     [objc_msgSend(MEMORY[0x29EDC7C40] "mainScreen")];
@@ -52,7 +52,7 @@
 LABEL_8:
       if (qword_2A1EB8E90 && (ACFLogSettingsGetLevelMask() & 8) != 0)
       {
-        ACFLogNS(3, "[ACMImageLoader imageNamed:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMImages.m", 116, 0, @"No data for image %@", v13, v14, a3);
+        ACFLogNS(3, "[ACMImageLoader imageNamed:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMImages.m", 116, 0, @"No data for image %@", v13, v14, named);
       }
 
       return 0;
@@ -69,9 +69,9 @@ LABEL_8:
           v10 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"_%dx", v9];
         }
 
-        NSClassFromString([MEMORY[0x29EDBA0F8] stringWithFormat:@"ACM_%@%@_%@", objc_msgSend(a3, "stringByDeletingPathExtension"), v10, objc_msgSend(objc_msgSend(a3, "pathExtension"), "uppercaseString")]);
-        v11 = [objc_opt_new() data];
-        if (v11)
+        NSClassFromString([MEMORY[0x29EDBA0F8] stringWithFormat:@"ACM_%@%@_%@", objc_msgSend(named, "stringByDeletingPathExtension"), v10, objc_msgSend(objc_msgSend(named, "pathExtension"), "uppercaseString")]);
+        data = [objc_opt_new() data];
+        if (data)
         {
           break;
         }
@@ -85,7 +85,7 @@ LABEL_8:
         }
       }
 
-      v15 = v11;
+      v15 = data;
       if (qword_2A1EB8E88 && (ACFLogSettingsGetLevelMask() & 0x80) != 0)
       {
         v16 = objc_opt_class();
@@ -107,7 +107,7 @@ LABEL_8:
 
       if (v5)
       {
-        [(NSMutableDictionary *)[(ACMImageLoader *)self imagesCache] setObject:v5 forKey:a3];
+        [(NSMutableDictionary *)[(ACMImageLoader *)self imagesCache] setObject:v5 forKey:named];
       }
     }
   }

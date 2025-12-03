@@ -1,20 +1,20 @@
 @interface STSCHNdefRecordBundle
-- (BOOL)isEqual:(id)a3;
-- (STSCHNdefRecordBundle)initWithAlternativeRecord:(id)a3 configurationRecord:(id)a4 auxiliaryRecords:(id)a5 errorRecord:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (STSCHNdefRecordBundle)initWithAlternativeRecord:(id)record configurationRecord:(id)configurationRecord auxiliaryRecords:(id)records errorRecord:(id)errorRecord;
 @end
 
 @implementation STSCHNdefRecordBundle
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v18 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v9 = v6;
@@ -127,22 +127,22 @@ LABEL_9:
   return v18;
 }
 
-- (STSCHNdefRecordBundle)initWithAlternativeRecord:(id)a3 configurationRecord:(id)a4 auxiliaryRecords:(id)a5 errorRecord:(id)a6
+- (STSCHNdefRecordBundle)initWithAlternativeRecord:(id)record configurationRecord:(id)configurationRecord auxiliaryRecords:(id)records errorRecord:(id)errorRecord
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  recordCopy = record;
+  configurationRecordCopy = configurationRecord;
+  recordsCopy = records;
+  errorRecordCopy = errorRecord;
   v18.receiver = self;
   v18.super_class = STSCHNdefRecordBundle;
   v15 = [(STSCHNdefRecordBundle *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_alternativeRecord, a3);
-    objc_storeStrong(&v16->_configurationRecord, a4);
-    objc_storeStrong(&v16->_auxiliaryRecords, a5);
-    objc_storeStrong(&v16->_errorRecord, a6);
+    objc_storeStrong(&v15->_alternativeRecord, record);
+    objc_storeStrong(&v16->_configurationRecord, configurationRecord);
+    objc_storeStrong(&v16->_auxiliaryRecords, records);
+    objc_storeStrong(&v16->_errorRecord, errorRecord);
   }
 
   return v16;

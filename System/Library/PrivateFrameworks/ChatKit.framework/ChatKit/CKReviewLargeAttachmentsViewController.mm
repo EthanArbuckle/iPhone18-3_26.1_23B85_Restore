@@ -1,20 +1,20 @@
 @interface CKReviewLargeAttachmentsViewController
 - (CKReviewLargeAttachmentsViewController)init;
 - (id)_previewItem;
-- (id)modelObjectAtIndex:(unint64_t)a3;
+- (id)modelObjectAtIndex:(unint64_t)index;
 - (id)navigationBarTitle;
 - (int64_t)_progressIndicatorRowIndex;
 - (unint64_t)numberOfModelObjects;
-- (void)_addFetchedAttachments:(id)a3 isFinished:(BOOL)a4;
+- (void)_addFetchedAttachments:(id)attachments isFinished:(BOOL)finished;
 - (void)_appendProgressIndicatorRowIfNeeded;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_deleteProgressIndicatorRowWithRowAnimation:(int64_t)a3;
-- (void)_insertAttachments:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_deleteProgressIndicatorRowWithRowAnimation:(int64_t)animation;
+- (void)_insertAttachments:(id)attachments;
 - (void)_populateAttachmentData;
 - (void)_rebuildModelObjectsIfNeeded;
-- (void)deleteModelObjectAndUnderlyingData:(id)a3;
-- (void)didSelectModelObjectAtIndex:(unint64_t)a3;
-- (void)previewControllerDidDismiss:(id)a3;
+- (void)deleteModelObjectAndUnderlyingData:(id)data;
+- (void)didSelectModelObjectAtIndex:(unint64_t)index;
+- (void)previewControllerDidDismiss:(id)dismiss;
 - (void)reloadModelData;
 - (void)viewDidLoad;
 @end
@@ -33,9 +33,9 @@
     privateWorkQueue = v2->_privateWorkQueue;
     v2->_privateWorkQueue = v4;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     modelObjects = v2->_modelObjects;
-    v2->_modelObjects = v6;
+    v2->_modelObjects = array;
 
     v8 = [MEMORY[0x1E695DFA8] set];
     loadedAttachmentGuids = v2->_loadedAttachmentGuids;
@@ -48,10 +48,10 @@
 - (void)_rebuildModelObjectsIfNeeded
 {
   v31 = *MEMORY[0x1E69E9840];
-  v21 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v3 = +[CKStoragePluginDataModel sharedInstance];
-  v4 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
-  v19 = [v3 cachedAttachmentsForAttachmentClass:v4];
+  attachmentClass = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+  v19 = [v3 cachedAttachmentsForAttachmentClass:attachmentClass];
 
   if (v19 && [v19 count])
   {
@@ -78,14 +78,14 @@
 
           v10 = *(*(&v22 + 1) + 8 * i);
           v11 = [v10 objectForKeyedSubscript:{@"guid", v19}];
-          v12 = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
-          v13 = [v12 containsObject:v11];
+          loadedAttachmentGuids = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
+          v13 = [loadedAttachmentGuids containsObject:v11];
 
           if ((v13 & 1) == 0)
           {
-            [v21 addObject:v10];
-            v14 = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
-            [v14 addObject:v11];
+            [array addObject:v10];
+            loadedAttachmentGuids2 = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
+            [loadedAttachmentGuids2 addObject:v11];
           }
         }
 
@@ -100,20 +100,20 @@
       v15 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [v21 count];
-        v17 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+        v16 = [array count];
+        attachmentClass2 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
         *buf = 134218242;
         v27 = v16;
         v28 = 2112;
-        v29 = v17;
+        v29 = attachmentClass2;
         _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "Rebuilt cached %ld model objects for class type: %@", buf, 0x16u);
       }
     }
   }
 
-  [(CKReviewLargeAttachmentsViewController *)self setModelObjects:v21, v19];
-  v18 = [(CKAbstractReviewViewController *)self tableView];
-  [v18 reloadData];
+  [(CKReviewLargeAttachmentsViewController *)self setModelObjects:array, v19];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)viewDidLoad
@@ -135,32 +135,32 @@
 
 - (void)reloadModelData
 {
-  v3 = [(CKAbstractReviewViewController *)self tableView];
-  v4 = [(CKAbstractReviewViewController *)self tableView];
-  v5 = [v4 indexPathForSelectedRow];
-  [v3 deselectRowAtIndexPath:v5 animated:0];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  tableView2 = [(CKAbstractReviewViewController *)self tableView];
+  indexPathForSelectedRow = [tableView2 indexPathForSelectedRow];
+  [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 
   v6 = +[CKStoragePluginDataModel sharedInstance];
-  v7 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
-  [v6 setCachedAttachments:MEMORY[0x1E695E0F0] forAttachmentClass:v7];
+  attachmentClass = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+  [v6 setCachedAttachments:MEMORY[0x1E695E0F0] forAttachmentClass:attachmentClass];
 
-  v8 = [MEMORY[0x1E695DF70] array];
-  [(CKReviewLargeAttachmentsViewController *)self setModelObjects:v8];
+  array = [MEMORY[0x1E695DF70] array];
+  [(CKReviewLargeAttachmentsViewController *)self setModelObjects:array];
 
   v9 = [MEMORY[0x1E695DFA8] set];
   [(CKReviewLargeAttachmentsViewController *)self setLoadedAttachmentGuids:v9];
 
   v10 = +[CKStoragePluginDataModel sharedInstance];
-  v11 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
-  [v10 setCachedAttachmentFetchOffset:0 forAttachmentClass:v11];
+  attachmentClass2 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+  [v10 setCachedAttachmentFetchOffset:0 forAttachmentClass:attachmentClass2];
 
-  v12 = [(CKAbstractReviewViewController *)self tableView];
-  [v12 reloadData];
+  tableView3 = [(CKAbstractReviewViewController *)self tableView];
+  [tableView3 reloadData];
 
   [(CKReviewLargeAttachmentsViewController *)self _populateAttachmentData];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   if (![(CKReviewLargeAttachmentsViewController *)self isLoading])
   {
@@ -171,29 +171,29 @@
 
 - (unint64_t)numberOfModelObjects
 {
-  v2 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-  v3 = [v2 count];
+  modelObjects = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+  v3 = [modelObjects count];
 
   return v3;
 }
 
 - (int64_t)_progressIndicatorRowIndex
 {
-  v3 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-  if ([v3 count])
+  modelObjects = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+  if ([modelObjects count])
   {
-    v4 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-    v5 = [v4 lastObject];
+    modelObjects2 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+    lastObject = [modelObjects2 lastObject];
     v6 = +[CKStorageLoadingCell reuseIdentifier];
-    v7 = [v5 isEqual:v6];
+    v7 = [lastObject isEqual:v6];
 
     if (!v7)
     {
       return -1;
     }
 
-    v3 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-    v8 = [v3 count] - 1;
+    modelObjects = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+    v8 = [modelObjects count] - 1;
   }
 
   else
@@ -204,19 +204,19 @@
   return v8;
 }
 
-- (id)modelObjectAtIndex:(unint64_t)a3
+- (id)modelObjectAtIndex:(unint64_t)index
 {
-  v4 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  modelObjects = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+  v5 = [modelObjects objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (void)deleteModelObjectAndUnderlyingData:(id)a3
+- (void)deleteModelObjectAndUnderlyingData:(id)data
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"guid"];
+  dataCopy = data;
+  v5 = [dataCopy objectForKeyedSubscript:@"guid"];
   v6 = v5;
   if (v5)
   {
@@ -230,67 +230,67 @@
   }
 
   v8 = +[CKStoragePluginDataModel sharedInstance];
-  v9 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
-  v10 = [v8 cachedAttachmentsForAttachmentClass:v9];
+  attachmentClass = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+  v10 = [v8 cachedAttachmentsForAttachmentClass:attachmentClass];
 
   v11 = +[CKStoragePluginDataModel sharedInstance];
-  v18[0] = v4;
+  v18[0] = dataCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
   v13 = [v10 arrayByExcludingObjectsInArray:v12];
-  v14 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
-  [v11 setCachedAttachments:v13 forAttachmentClass:v14];
+  attachmentClass2 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+  [v11 setCachedAttachments:v13 forAttachmentClass:attachmentClass2];
 
-  v15 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-  [v15 removeObject:v4];
+  modelObjects = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+  [modelObjects removeObject:dataCopy];
 }
 
-- (void)didSelectModelObjectAtIndex:(unint64_t)a3
+- (void)didSelectModelObjectAtIndex:(unint64_t)index
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  if (![(CKAbstractReviewViewController *)self isLoadingIndicatorRowIndex:a3])
+  if (![(CKAbstractReviewViewController *)self isLoadingIndicatorRowIndex:index])
   {
-    v4 = [(CKReviewLargeAttachmentsViewController *)self _previewItem];
-    if ([MEMORY[0x1E697A0C8] canPreviewItem:v4])
+    _previewItem = [(CKReviewLargeAttachmentsViewController *)self _previewItem];
+    if ([MEMORY[0x1E697A0C8] canPreviewItem:_previewItem])
     {
       v5 = objc_alloc(MEMORY[0x1E697A0C8]);
-      v10[0] = v4;
+      v10[0] = _previewItem;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-      v7 = [v5 initWithPreviewItems:v6];
+      indexPathForSelectedRow = [v5 initWithPreviewItems:v6];
 
-      [v7 setDelegate:self];
-      [(CKReviewLargeAttachmentsViewController *)self presentViewController:v7 animated:1 completion:0];
+      [indexPathForSelectedRow setDelegate:self];
+      [(CKReviewLargeAttachmentsViewController *)self presentViewController:indexPathForSelectedRow animated:1 completion:0];
     }
 
     else
     {
-      v8 = [(CKAbstractReviewViewController *)self tableView];
-      v7 = [v8 indexPathForSelectedRow];
+      tableView = [(CKAbstractReviewViewController *)self tableView];
+      indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-      if (v7)
+      if (indexPathForSelectedRow)
       {
-        v9 = [(CKAbstractReviewViewController *)self tableView];
-        [v9 deselectRowAtIndexPath:v7 animated:1];
+        tableView2 = [(CKAbstractReviewViewController *)self tableView];
+        [tableView2 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
       }
     }
   }
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
-  v4 = [(CKAbstractReviewViewController *)self tableView];
-  v6 = [v4 indexPathForSelectedRow];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v6)
+  if (indexPathForSelectedRow)
   {
-    v5 = [(CKAbstractReviewViewController *)self tableView];
-    [v5 deselectRowAtIndexPath:v6 animated:1];
+    tableView2 = [(CKAbstractReviewViewController *)self tableView];
+    [tableView2 deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
   }
 }
 
 - (void)_populateAttachmentData
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+  attachmentClass = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
   if ([(CKReviewLargeAttachmentsViewController *)self isLoading])
   {
     if (IMOSLoggingEnabled())
@@ -299,7 +299,7 @@
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *v16 = v3;
+        *v16 = attachmentClass;
         _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "_populateAttachmentData called when already loading attachments of class: %@, ignoring", buf, 0xCu);
       }
     }
@@ -308,8 +308,8 @@
   else
   {
     v5 = +[CKStoragePluginDataModel sharedInstance];
-    v6 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
-    v7 = [v5 cachedAttachmentsForAttachmentClass:v6];
+    attachmentClass2 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+    v7 = [v5 cachedAttachmentsForAttachmentClass:attachmentClass2];
 
     if (v7 && [v7 count] >= 0x64)
     {
@@ -321,7 +321,7 @@
           *buf = 67109378;
           *v16 = 100;
           *&v16[4] = 2112;
-          *&v16[6] = v3;
+          *&v16[6] = attachmentClass;
           _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "_populateAttachmentData called when already loaded at least %d attachments of type: %@, ignoring", buf, 0x12u);
         }
       }
@@ -337,9 +337,9 @@
         {
           v10 = +[CKStoragePluginDataModel sharedInstance];
           *buf = 138412802;
-          *v16 = v3;
+          *v16 = attachmentClass;
           *&v16[8] = 2048;
-          *&v16[10] = [v10 cachedAttachmentFetchOffsetForAttachmentClass:v3];
+          *&v16[10] = [v10 cachedAttachmentFetchOffsetForAttachmentClass:attachmentClass];
           v17 = 2048;
           v18 = [v7 count];
           _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "begining to fetch attachments for class: %@, starting at cache offset: %lld, %ld attachments already loaded...", buf, 0x20u);
@@ -348,14 +348,14 @@
 
       [(CKReviewLargeAttachmentsViewController *)self _appendProgressIndicatorRowIfNeeded];
       objc_initWeak(buf, self);
-      v11 = [(CKReviewLargeAttachmentsViewController *)self privateWorkQueue];
+      privateWorkQueue = [(CKReviewLargeAttachmentsViewController *)self privateWorkQueue];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __65__CKReviewLargeAttachmentsViewController__populateAttachmentData__block_invoke;
       v12[3] = &unk_1E72EBB98;
       objc_copyWeak(&v14, buf);
-      v13 = v3;
-      dispatch_async(v11, v12);
+      v13 = attachmentClass;
+      dispatch_async(privateWorkQueue, v12);
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(buf);
@@ -683,21 +683,21 @@ LABEL_47:
   }
 }
 
-- (void)_deleteProgressIndicatorRowWithRowAnimation:(int64_t)a3
+- (void)_deleteProgressIndicatorRowWithRowAnimation:(int64_t)animation
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v5 = [(CKReviewLargeAttachmentsViewController *)self _progressIndicatorRowIndex];
-  if ((v5 & 0x8000000000000000) == 0)
+  _progressIndicatorRowIndex = [(CKReviewLargeAttachmentsViewController *)self _progressIndicatorRowIndex];
+  if ((_progressIndicatorRowIndex & 0x8000000000000000) == 0)
   {
-    v6 = v5;
-    v7 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-    [v7 removeObjectAtIndex:v6];
+    v6 = _progressIndicatorRowIndex;
+    modelObjects = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+    [modelObjects removeObjectAtIndex:v6];
 
-    v8 = [(CKAbstractReviewViewController *)self tableView];
+    tableView = [(CKAbstractReviewViewController *)self tableView];
     v9 = [MEMORY[0x1E696AC88] indexPathForRow:v6 inSection:0];
     v11[0] = v9;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
-    [v8 deleteRowsAtIndexPaths:v10 withRowAnimation:a3];
+    [tableView deleteRowsAtIndexPaths:v10 withRowAnimation:animation];
   }
 }
 
@@ -708,36 +708,36 @@ LABEL_47:
   {
     if ([(CKReviewLargeAttachmentsViewController *)self _progressIndicatorRowIndex]== -1)
     {
-      v3 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+      modelObjects = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
       v4 = +[CKStorageLoadingCell reuseIdentifier];
-      [v3 addObject:v4];
+      [modelObjects addObject:v4];
 
-      v5 = [(CKAbstractReviewViewController *)self tableView];
+      tableView = [(CKAbstractReviewViewController *)self tableView];
       v6 = MEMORY[0x1E696AC88];
-      v7 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-      v8 = [v6 indexPathForRow:objc_msgSend(v7 inSection:{"count") - 1, 0}];
+      modelObjects2 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+      v8 = [v6 indexPathForRow:objc_msgSend(modelObjects2 inSection:{"count") - 1, 0}];
       v10[0] = v8;
       v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-      [v5 insertRowsAtIndexPaths:v9 withRowAnimation:5];
+      [tableView insertRowsAtIndexPaths:v9 withRowAnimation:5];
     }
   }
 }
 
-- (void)_insertAttachments:(id)a3
+- (void)_insertAttachments:(id)attachments
 {
   v60 = *MEMORY[0x1E69E9840];
-  v42 = a3;
-  if ([v42 count])
+  attachmentsCopy = attachments;
+  if ([attachmentsCopy count])
   {
     v4 = +[CKStoragePluginDataModel sharedInstance];
-    v5 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
-    v6 = [v4 cachedAttachmentsForAttachmentClass:v5];
+    attachmentClass = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+    v6 = [v4 cachedAttachmentsForAttachmentClass:attachmentClass];
     v7 = [v6 mutableCopy];
 
-    v43 = v7;
+    array = v7;
     if (!v7)
     {
-      v43 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
     }
 
     if (IMOSLoggingEnabled())
@@ -745,37 +745,37 @@ LABEL_47:
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
-        v9 = [v42 count];
-        v10 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
-        v11 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-        v12 = [v11 count];
-        v13 = [v43 count];
-        v14 = [v43 count];
+        v9 = [attachmentsCopy count];
+        attachmentClass2 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+        modelObjects = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+        v12 = [modelObjects count];
+        v13 = [array count];
+        v14 = [array count];
         *buf = 134219010;
         v51 = v9;
         v52 = 2112;
-        v53 = v10;
+        v53 = attachmentClass2;
         v54 = 2048;
         v55 = v12 - 1;
         v56 = 2048;
         v57 = v13;
         v58 = 2048;
-        v59 = [v42 count] + v14;
+        v59 = [attachmentsCopy count] + v14;
         _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Adding %ld new attachments of class %@ at row %ld. Previous attachment count: %ld. New total attachment count: %ld", buf, 0x34u);
       }
     }
 
-    v15 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-    v16 = v15 == 0;
+    modelObjects2 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+    v16 = modelObjects2 == 0;
 
     if (v16)
     {
-      v17 = [MEMORY[0x1E695DF70] array];
-      [(CKReviewLargeAttachmentsViewController *)self setModelObjects:v17];
+      array2 = [MEMORY[0x1E695DF70] array];
+      [(CKReviewLargeAttachmentsViewController *)self setModelObjects:array2];
     }
 
-    v18 = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
-    v19 = v18 == 0;
+    loadedAttachmentGuids = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
+    v19 = loadedAttachmentGuids == 0;
 
     if (v19)
     {
@@ -783,15 +783,15 @@ LABEL_47:
       [(CKReviewLargeAttachmentsViewController *)self setLoadedAttachmentGuids:v20];
     }
 
-    v21 = [(CKAbstractReviewViewController *)self tableView];
-    [v21 beginUpdates];
+    tableView = [(CKAbstractReviewViewController *)self tableView];
+    [tableView beginUpdates];
 
     [(CKReviewLargeAttachmentsViewController *)self _deleteProgressIndicatorRowWithRowAnimation:5];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v22 = v42;
+    v22 = attachmentsCopy;
     v23 = [v22 countByEnumeratingWithState:&v44 objects:v49 count:16];
     if (v23)
     {
@@ -807,39 +807,39 @@ LABEL_47:
 
           v26 = *(*(&v44 + 1) + 8 * i);
           v27 = [v26 objectForKeyedSubscript:@"guid"];
-          v28 = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
-          v29 = [v28 containsObject:v27];
+          loadedAttachmentGuids2 = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
+          v29 = [loadedAttachmentGuids2 containsObject:v27];
 
           if ((v29 & 1) == 0)
           {
-            v30 = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
-            [v30 addObject:v27];
+            loadedAttachmentGuids3 = [(CKReviewLargeAttachmentsViewController *)self loadedAttachmentGuids];
+            [loadedAttachmentGuids3 addObject:v27];
 
             if (IMOSLoggingEnabled())
             {
               v31 = OSLogHandleForIMFoundationCategory();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
               {
-                v32 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+                attachmentClass3 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
                 *buf = 138412546;
                 v51 = v27;
                 v52 = 2112;
-                v53 = v32;
+                v53 = attachmentClass3;
                 _os_log_impl(&dword_19020E000, v31, OS_LOG_TYPE_INFO, "Adding attachment %@ of type: %@", buf, 0x16u);
               }
             }
 
-            [v43 addObject:v26];
-            v33 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-            [v33 addObject:v26];
+            [array addObject:v26];
+            modelObjects3 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+            [modelObjects3 addObject:v26];
 
-            v34 = [(CKAbstractReviewViewController *)self tableView];
+            tableView2 = [(CKAbstractReviewViewController *)self tableView];
             v35 = MEMORY[0x1E696AC88];
-            v36 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
-            v37 = [v35 indexPathForRow:objc_msgSend(v36 inSection:{"count") - 1, 0}];
+            modelObjects4 = [(CKReviewLargeAttachmentsViewController *)self modelObjects];
+            v37 = [v35 indexPathForRow:objc_msgSend(modelObjects4 inSection:{"count") - 1, 0}];
             v48 = v37;
             v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
-            [v34 insertRowsAtIndexPaths:v38 withRowAnimation:5];
+            [tableView2 insertRowsAtIndexPaths:v38 withRowAnimation:5];
           }
         }
 
@@ -850,26 +850,26 @@ LABEL_47:
     }
 
     [(CKReviewLargeAttachmentsViewController *)self _appendProgressIndicatorRowIfNeeded];
-    v39 = [(CKAbstractReviewViewController *)self tableView];
-    [v39 endUpdates];
+    tableView3 = [(CKAbstractReviewViewController *)self tableView];
+    [tableView3 endUpdates];
 
     v40 = +[CKStoragePluginDataModel sharedInstance];
-    v41 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
-    [v40 setCachedAttachments:v43 forAttachmentClass:v41];
+    attachmentClass4 = [(CKReviewLargeAttachmentsViewController *)self attachmentClass];
+    [v40 setCachedAttachments:array forAttachmentClass:attachmentClass4];
   }
 }
 
-- (void)_addFetchedAttachments:(id)a3 isFinished:(BOOL)a4
+- (void)_addFetchedAttachments:(id)attachments isFinished:(BOOL)finished
 {
-  v6 = a3;
+  attachmentsCopy = attachments;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__CKReviewLargeAttachmentsViewController__addFetchedAttachments_isFinished___block_invoke;
   block[3] = &unk_1E72EBBC0;
   block[4] = self;
-  v9 = v6;
-  v10 = a4;
-  v7 = v6;
+  v9 = attachmentsCopy;
+  finishedCopy = finished;
+  v7 = attachmentsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -894,32 +894,32 @@ void __76__CKReviewLargeAttachmentsViewController__addFetchedAttachments_isFinis
 
 - (id)_previewItem
 {
-  v3 = [(CKAbstractReviewViewController *)self tableView];
-  v4 = [v3 indexPathForSelectedRow];
+  tableView = [(CKAbstractReviewViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
 
-  if (v4 && !-[CKAbstractReviewViewController isLoadingIndicatorRowIndex:](self, "isLoadingIndicatorRowIndex:", [v4 row]))
+  if (indexPathForSelectedRow && !-[CKAbstractReviewViewController isLoadingIndicatorRowIndex:](self, "isLoadingIndicatorRowIndex:", [indexPathForSelectedRow row]))
   {
-    v6 = [(CKAbstractReviewViewController *)self tableView];
-    v7 = [v6 cellForRowAtIndexPath:v4];
+    tableView2 = [(CKAbstractReviewViewController *)self tableView];
+    v7 = [tableView2 cellForRowAtIndexPath:indexPathForSelectedRow];
 
     if (v7)
     {
-      v8 = [v7 cachedAttachmentItem];
-      v5 = [v8 attachmentItem];
+      cachedAttachmentItem = [v7 cachedAttachmentItem];
+      attachmentItem = [cachedAttachmentItem attachmentItem];
     }
 
     else
     {
-      v5 = 0;
+      attachmentItem = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    attachmentItem = 0;
   }
 
-  return v5;
+  return attachmentItem;
 }
 
 @end

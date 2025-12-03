@@ -2,31 +2,31 @@
 + (id)dataForNeutralRecord;
 + (id)dataForNewRecord;
 + (id)defaultAvatarRecord;
-+ (id)matchingIdentifierTest:(id)a3;
++ (id)matchingIdentifierTest:(id)test;
 - (AVTAvatarRecord)init;
-- (AVTAvatarRecord)initWithAvatarData:(id)a3;
-- (AVTAvatarRecord)initWithAvatarData:(id)a3 identifier:(id)a4 orderDate:(id)a5;
-- (AVTAvatarRecord)initWithAvatarData:(id)a3 orderDate:(id)a4;
-- (AVTAvatarRecord)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVTAvatarRecord)initWithAvatarData:(id)data;
+- (AVTAvatarRecord)initWithAvatarData:(id)data identifier:(id)identifier orderDate:(id)date;
+- (AVTAvatarRecord)initWithAvatarData:(id)data orderDate:(id)date;
+- (AVTAvatarRecord)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVTAvatarRecord
 
-+ (id)matchingIdentifierTest:(id)a3
++ (id)matchingIdentifierTest:(id)test
 {
-  v3 = a3;
+  testCopy = test;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__AVTAvatarRecord_matchingIdentifierTest___block_invoke;
   v7[3] = &unk_278CFAB28;
-  v8 = v3;
-  v4 = v3;
+  v8 = testCopy;
+  v4 = testCopy;
   v5 = MEMORY[0x245CF3540](v7);
 
   return v5;
@@ -82,114 +82,114 @@ void __39__AVTAvatarRecord_dataForNeutralRecord__block_invoke()
 
 + (id)defaultAvatarRecord
 {
-  v2 = [a1 dataForNeutralRecord];
+  dataForNeutralRecord = [self dataForNeutralRecord];
   v3 = [AVTAvatarRecord alloc];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [(AVTAvatarRecord *)v3 initWithAvatarData:v2 orderDate:v4];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [(AVTAvatarRecord *)v3 initWithAvatarData:dataForNeutralRecord orderDate:date];
 
   return v5;
 }
 
 - (AVTAvatarRecord)init
 {
-  v3 = [objc_opt_class() dataForNeutralRecord];
-  v4 = [(AVTAvatarRecord *)self initWithAvatarData:v3];
+  dataForNeutralRecord = [objc_opt_class() dataForNeutralRecord];
+  v4 = [(AVTAvatarRecord *)self initWithAvatarData:dataForNeutralRecord];
 
   return v4;
 }
 
-- (AVTAvatarRecord)initWithAvatarData:(id)a3
+- (AVTAvatarRecord)initWithAvatarData:(id)data
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [(AVTAvatarRecord *)self initWithAvatarData:v5 orderDate:v6];
+  dataCopy = data;
+  date = [v4 date];
+  v7 = [(AVTAvatarRecord *)self initWithAvatarData:dataCopy orderDate:date];
 
   return v7;
 }
 
-- (AVTAvatarRecord)initWithAvatarData:(id)a3 orderDate:(id)a4
+- (AVTAvatarRecord)initWithAvatarData:(id)data orderDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
+  dateCopy = date;
+  dataCopy = data;
   v8 = objc_opt_new();
-  v9 = [v8 UUIDString];
+  uUIDString = [v8 UUIDString];
 
-  v10 = [(AVTAvatarRecord *)self initWithAvatarData:v7 identifier:v9 orderDate:v6];
+  v10 = [(AVTAvatarRecord *)self initWithAvatarData:dataCopy identifier:uUIDString orderDate:dateCopy];
   return v10;
 }
 
-- (AVTAvatarRecord)initWithAvatarData:(id)a3 identifier:(id)a4 orderDate:(id)a5
+- (AVTAvatarRecord)initWithAvatarData:(id)data identifier:(id)identifier orderDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  dateCopy = date;
   v16.receiver = self;
   v16.super_class = AVTAvatarRecord;
   v12 = [(AVTAvatarRecord *)&v16 init];
   if (v12)
   {
-    v13 = [v10 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    objc_storeStrong(&v12->_avatarData, a3);
-    objc_storeStrong(&v12->_orderDate, a5);
+    objc_storeStrong(&v12->_avatarData, data);
+    objc_storeStrong(&v12->_orderDate, date);
   }
 
   return v12;
 }
 
-- (AVTAvatarRecord)initWithCoder:(id)a3
+- (AVTAvatarRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"avatarData"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"avatarData"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderDate"];
 
   v8 = [(AVTAvatarRecord *)self initWithAvatarData:v6 identifier:v5 orderDate:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = [(AVTAvatarRecord *)self avatarData];
-  [v4 encodeObject:v7 forKey:@"avatarData"];
-  v5 = [(AVTAvatarRecord *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  avatarData = [(AVTAvatarRecord *)self avatarData];
+  [coderCopy encodeObject:avatarData forKey:@"avatarData"];
+  identifier = [(AVTAvatarRecord *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(AVTAvatarRecord *)self orderDate];
-  [v4 encodeObject:v6 forKey:@"orderDate"];
+  orderDate = [(AVTAvatarRecord *)self orderDate];
+  [coderCopy encodeObject:orderDate forKey:@"orderDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVTAvatarRecord alloc];
-  v5 = [(AVTAvatarRecord *)self avatarData];
-  v6 = [(AVTAvatarRecord *)self identifier];
-  v7 = [(AVTAvatarRecord *)self orderDate];
-  v8 = [(AVTAvatarRecord *)v4 initWithAvatarData:v5 identifier:v6 orderDate:v7];
+  avatarData = [(AVTAvatarRecord *)self avatarData];
+  identifier = [(AVTAvatarRecord *)self identifier];
+  orderDate = [(AVTAvatarRecord *)self orderDate];
+  v8 = [(AVTAvatarRecord *)v4 initWithAvatarData:avatarData identifier:identifier orderDate:orderDate];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 != self)
+  equalCopy = equal;
+  if (equalCopy != self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(AVTAvatarRecord *)self identifier];
-      if (v6 || ([(AVTAvatarRecord *)v5 identifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+      identifier = [(AVTAvatarRecord *)self identifier];
+      if (identifier || ([(AVTAvatarRecord *)equalCopy identifier], (avatarData2 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v7 = [(AVTAvatarRecord *)self identifier];
-        v8 = [(AVTAvatarRecord *)v5 identifier];
-        v9 = [v7 isEqual:v8];
+        identifier2 = [(AVTAvatarRecord *)self identifier];
+        identifier3 = [(AVTAvatarRecord *)equalCopy identifier];
+        v9 = [identifier2 isEqual:identifier3];
 
-        if (v6)
+        if (identifier)
         {
 
           if (!v9)
@@ -208,21 +208,21 @@ void __39__AVTAvatarRecord_dataForNeutralRecord__block_invoke()
         }
       }
 
-      v11 = [(AVTAvatarRecord *)self avatarData];
-      if (!v11)
+      avatarData = [(AVTAvatarRecord *)self avatarData];
+      if (!avatarData)
       {
-        v3 = [(AVTAvatarRecord *)v5 avatarData];
-        if (!v3)
+        avatarData2 = [(AVTAvatarRecord *)equalCopy avatarData];
+        if (!avatarData2)
         {
 LABEL_14:
-          v15 = [(AVTAvatarRecord *)self orderDate];
-          if (v15 || ([(AVTAvatarRecord *)v5 orderDate], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+          orderDate = [(AVTAvatarRecord *)self orderDate];
+          if (orderDate || ([(AVTAvatarRecord *)equalCopy orderDate], (avatarData2 = objc_claimAutoreleasedReturnValue()) != 0))
           {
-            v16 = [(AVTAvatarRecord *)self orderDate];
-            v17 = [(AVTAvatarRecord *)v5 orderDate];
-            v10 = [v16 isEqual:v17];
+            orderDate2 = [(AVTAvatarRecord *)self orderDate];
+            orderDate3 = [(AVTAvatarRecord *)equalCopy orderDate];
+            v10 = [orderDate2 isEqual:orderDate3];
 
-            if (v15)
+            if (orderDate)
             {
 LABEL_23:
 
@@ -239,11 +239,11 @@ LABEL_23:
         }
       }
 
-      v12 = [(AVTAvatarRecord *)self avatarData];
-      v13 = [(AVTAvatarRecord *)v5 avatarData];
-      v14 = [v12 isEqual:v13];
+      avatarData3 = [(AVTAvatarRecord *)self avatarData];
+      avatarData4 = [(AVTAvatarRecord *)equalCopy avatarData];
+      v14 = [avatarData3 isEqual:avatarData4];
 
-      if (v11)
+      if (avatarData)
       {
 
         if (v14)
@@ -275,19 +275,19 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(AVTAvatarRecord *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(AVTAvatarRecord *)self identifier];
+  identifier = [(AVTAvatarRecord *)self identifier];
+  v4 = [identifier hash];
+  identifier2 = [(AVTAvatarRecord *)self identifier];
   *(&v7 + 1) = v4;
-  *&v7 = [v5 hash];
+  *&v7 = [identifier2 hash];
   v6 = v7 >> 43;
-  v8 = [(AVTAvatarRecord *)self avatarData];
-  v9 = [v8 hash];
-  v10 = [(AVTAvatarRecord *)self avatarData];
+  avatarData = [(AVTAvatarRecord *)self avatarData];
+  v9 = [avatarData hash];
+  avatarData2 = [(AVTAvatarRecord *)self avatarData];
   *(&v7 + 1) = v9;
-  *&v7 = [v10 hash];
-  v11 = [(AVTAvatarRecord *)self orderDate];
-  v12 = [v11 hash];
+  *&v7 = [avatarData2 hash];
+  orderDate = [(AVTAvatarRecord *)self orderDate];
+  v12 = [orderDate hash];
 
   return (v7 >> 32) ^ v6 ^ v12;
 }
@@ -300,8 +300,8 @@ LABEL_20:
   v4 = [v3 mutableCopy];
 
   [v4 appendString:@" "];
-  v5 = [(AVTAvatarRecord *)self identifier];
-  [v4 appendString:v5];
+  identifier = [(AVTAvatarRecord *)self identifier];
+  [v4 appendString:identifier];
 
   v6 = [v4 copy];
 
@@ -311,17 +311,17 @@ LABEL_20:
 - (id)dictionaryRepresentation
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [(AVTAvatarRecord *)self avatarData];
-  if (v3 && (v4 = v3, [(AVTAvatarRecord *)self identifier], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  avatarData = [(AVTAvatarRecord *)self avatarData];
+  if (avatarData && (v4 = avatarData, [(AVTAvatarRecord *)self identifier], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = objc_alloc(MEMORY[0x277CCACA8]);
-    v7 = [(AVTAvatarRecord *)self avatarData];
-    v8 = [v6 initWithData:v7 encoding:4];
+    avatarData2 = [(AVTAvatarRecord *)self avatarData];
+    v8 = [v6 initWithData:avatarData2 encoding:4];
 
     v13[0] = @"identifier";
-    v9 = [(AVTAvatarRecord *)self identifier];
+    identifier = [(AVTAvatarRecord *)self identifier];
     v13[1] = @"avatarDataString";
-    v14[0] = v9;
+    v14[0] = identifier;
     v14[1] = v8;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
   }

@@ -1,9 +1,9 @@
 @interface PKFlightShareMessageBubbleViewController
 - (PKMessageExtensionMessageBubbleViewControllerDelegate)delegate;
-- (double)heightThatFitsWidth:(double)a3;
+- (double)heightThatFitsWidth:(double)width;
 - (void)loadView;
-- (void)setProperties:(id)a3;
-- (void)willBecomeContentViewControllerForAppViewController:(id)a3 withMessageFromMe:(BOOL)a4;
+- (void)setProperties:(id)properties;
+- (void)willBecomeContentViewControllerForAppViewController:(id)controller withMessageFromMe:(BOOL)me;
 @end
 
 @implementation PKFlightShareMessageBubbleViewController
@@ -19,22 +19,22 @@
   [(PKFlightShareMessageBubbleViewController *)self setView:v5];
 }
 
-- (double)heightThatFitsWidth:(double)a3
+- (double)heightThatFitsWidth:(double)width
 {
-  v4 = [(PKFlightShareMessageBubbleViewController *)self bubbleView];
-  [v4 sizeThatFits:{a3, 1.79769313e308}];
+  bubbleView = [(PKFlightShareMessageBubbleViewController *)self bubbleView];
+  [bubbleView sizeThatFits:{width, 1.79769313e308}];
   v6 = v5;
 
   return v6;
 }
 
-- (void)willBecomeContentViewControllerForAppViewController:(id)a3 withMessageFromMe:(BOOL)a4
+- (void)willBecomeContentViewControllerForAppViewController:(id)controller withMessageFromMe:(BOOL)me
 {
-  v4 = a4;
-  [a3 _balloonMaskEdgeInsets];
+  meCopy = me;
+  [controller _balloonMaskEdgeInsets];
   v9 = v8;
   v11 = v10;
-  if (v4)
+  if (meCopy)
   {
     v12 = 0.0;
   }
@@ -44,7 +44,7 @@
     v12 = v6;
   }
 
-  if (v4)
+  if (meCopy)
   {
     v13 = v7 + v6;
   }
@@ -54,18 +54,18 @@
     v13 = v7;
   }
 
-  v14 = [(PKFlightShareMessageBubbleViewController *)self bubbleView];
-  [v14 setContentInsets:{v9, v12, v11, v13}];
+  bubbleView = [(PKFlightShareMessageBubbleViewController *)self bubbleView];
+  [bubbleView setContentInsets:{v9, v12, v11, v13}];
 
-  v15 = [(PKFlightShareMessageBubbleViewController *)self bubbleView];
-  [v15 setIsFromMe:v4];
+  bubbleView2 = [(PKFlightShareMessageBubbleViewController *)self bubbleView];
+  [bubbleView2 setIsFromMe:meCopy];
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
-  v4 = a3;
-  v5 = [(PKFlightShareMessageBubbleViewController *)self bubbleView];
-  [v5 updateViewWithProperties:v4];
+  propertiesCopy = properties;
+  bubbleView = [(PKFlightShareMessageBubbleViewController *)self bubbleView];
+  [bubbleView updateViewWithProperties:propertiesCopy];
 }
 
 - (PKMessageExtensionMessageBubbleViewControllerDelegate)delegate

@@ -1,23 +1,23 @@
 @interface UIMultiColumnViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_secondColumnBarButtonItem:(int64_t)a3 createIfNecessary:(BOOL)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_secondColumnBarButtonItem:(int64_t)item createIfNecessary:(BOOL)necessary;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axModalizeViewControllerViews;
-- (void)setNavControllers:(id)a3;
-- (void)setViewControllers:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setNavControllers:(id)controllers;
+- (void)setViewControllers:(id)controllers;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation UIMultiColumnViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = "@";
   v5 = @"UIMultiColumnViewController";
   v3 = "v";
@@ -35,10 +35,10 @@
 - (void)_axModalizeViewControllerViews
 {
   v20 = *MEMORY[0x29EDCA608];
-  v18 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v17 = [v18 safeValueForKey:@"navControllers"];
+    v17 = [selfCopy safeValueForKey:@"navControllers"];
     memset(__b, 0, 0x40uLL);
     obj = MEMORY[0x29EDC9748](v17);
     v8 = [obj countByEnumeratingWithState:__b objects:v19 count:16];
@@ -65,10 +65,10 @@
 
         v12 = MEMORY[0x29EDC9748](v13);
         objc_storeStrong(&v13, 0);
-        v15 = [v12 view];
+        view = [v12 view];
         *&v1 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-        [v15 setShouldGroupAccessibilityChildren:{1, v1}];
-        objc_storeStrong(&v15, 0);
+        [view setShouldGroupAccessibilityChildren:{1, v1}];
+        objc_storeStrong(&view, 0);
         ++v5;
         if (v3 + 1 >= v6)
         {
@@ -88,61 +88,61 @@
     v10 = __UIAccessibilityCastAsClass();
     v9 = MEMORY[0x29EDC9748](v10);
     objc_storeStrong(&v10, 0);
-    v2 = [v9 view];
-    [v2 _accessibilitySetSortPriority:1];
-    MEMORY[0x29EDC9740](v2);
+    view2 = [v9 view];
+    [view2 _accessibilitySetSortPriority:1];
+    MEMORY[0x29EDC9740](view2);
     MEMORY[0x29EDC9740](v9);
     objc_storeStrong(&v17, 0);
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = UIMultiColumnViewControllerAccessibility;
-  [(UIMultiColumnViewControllerAccessibility *)&v3 viewDidAppear:a3];
-  [(UIMultiColumnViewControllerAccessibility *)v6 _axModalizeViewControllerViews];
+  [(UIMultiColumnViewControllerAccessibility *)&v3 viewDidAppear:appear];
+  [(UIMultiColumnViewControllerAccessibility *)selfCopy _axModalizeViewControllerViews];
 }
 
-- (void)setViewControllers:(id)a3
+- (void)setViewControllers:(id)controllers
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, controllers);
+  v3.receiver = selfCopy;
   v3.super_class = UIMultiColumnViewControllerAccessibility;
   [(UIMultiColumnViewControllerAccessibility *)&v3 setViewControllers:location[0]];
-  [(UIMultiColumnViewControllerAccessibility *)v5 _axModalizeViewControllerViews];
+  [(UIMultiColumnViewControllerAccessibility *)selfCopy _axModalizeViewControllerViews];
   objc_storeStrong(location, 0);
 }
 
-- (void)setNavControllers:(id)a3
+- (void)setNavControllers:(id)controllers
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, controllers);
+  v3.receiver = selfCopy;
   v3.super_class = UIMultiColumnViewControllerAccessibility;
   [(UIMultiColumnViewControllerAccessibility *)&v3 setViewControllers:location[0]];
-  [(UIMultiColumnViewControllerAccessibility *)v5 _axModalizeViewControllerViews];
+  [(UIMultiColumnViewControllerAccessibility *)selfCopy _axModalizeViewControllerViews];
   objc_storeStrong(location, 0);
 }
 
-- (id)_secondColumnBarButtonItem:(int64_t)a3 createIfNecessary:(BOOL)a4
+- (id)_secondColumnBarButtonItem:(int64_t)item createIfNecessary:(BOOL)necessary
 {
-  v11 = self;
+  selfCopy = self;
   v10 = a2;
-  v9 = a3;
-  v8 = a4;
+  itemCopy = item;
+  necessaryCopy = necessary;
   v6.receiver = self;
   v6.super_class = UIMultiColumnViewControllerAccessibility;
-  v7 = [(UIMultiColumnViewControllerAccessibility *)&v6 _secondColumnBarButtonItem:a3 createIfNecessary:a4];
-  [(UIMultiColumnViewControllerAccessibility *)v11 _accessibilityLoadAccessibilityInformation];
+  v7 = [(UIMultiColumnViewControllerAccessibility *)&v6 _secondColumnBarButtonItem:item createIfNecessary:necessary];
+  [(UIMultiColumnViewControllerAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
   v5 = MEMORY[0x29EDC9748](v7);
   objc_storeStrong(&v7, 0);
 
@@ -151,22 +151,22 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7.receiver = self;
   v7.super_class = UIMultiColumnViewControllerAccessibility;
   [(UIMultiColumnViewControllerAccessibility *)&v7 _accessibilityLoadAccessibilityInformation];
-  v4 = [(UIMultiColumnViewControllerAccessibility *)v9 safeValueForKey:@"_hideSecondColumnBarButtonItem"];
+  v4 = [(UIMultiColumnViewControllerAccessibility *)selfCopy safeValueForKey:@"_hideSecondColumnBarButtonItem"];
   v3 = UIKitAccessibilityLocalizedString();
   [v4 setAccessibilityLabel:?];
   MEMORY[0x29EDC9740](v3);
   *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-  v6 = [(UIMultiColumnViewControllerAccessibility *)v9 safeValueForKey:@"_showSecondColumnBarButtonItem", v2];
+  v6 = [(UIMultiColumnViewControllerAccessibility *)selfCopy safeValueForKey:@"_showSecondColumnBarButtonItem", v2];
   v5 = UIKitAccessibilityLocalizedString();
   [v6 setAccessibilityLabel:?];
   MEMORY[0x29EDC9740](v5);
   MEMORY[0x29EDC9740](v6);
-  [(UIMultiColumnViewControllerAccessibility *)v9 _axModalizeViewControllerViews];
+  [(UIMultiColumnViewControllerAccessibility *)selfCopy _axModalizeViewControllerViews];
 }
 
 @end

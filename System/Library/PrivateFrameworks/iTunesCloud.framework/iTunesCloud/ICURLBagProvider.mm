@@ -1,25 +1,25 @@
 @interface ICURLBagProvider
 + (ICURLBagProvider)sharedBagProvider;
 - (ICURLBagProvider)init;
-- (id)_amsProcessInfoFromRequestContext:(id)a3;
+- (id)_amsProcessInfoFromRequestContext:(id)context;
 - (id)_cacheDirectoryPath;
-- (id)_dictionaryFromBagPayloadDictionaryAddingKnownMissingKeys:(id)a3 forProfileName:(id)a4;
-- (id)_getCacheKeyForRequestContext:(id)a3;
+- (id)_dictionaryFromBagPayloadDictionaryAddingKnownMissingKeys:(id)keys forProfileName:(id)name;
+- (id)_getCacheKeyForRequestContext:(id)context;
 - (id)_knownMissingBagValuesDictionary;
 - (id)_legacyCacheFilePath;
-- (id)_loadPlistAtPath:(id)a3;
-- (void)_cleanBagCacheExcludingPaths:(id)a3;
-- (void)_fetchBagForRequestContext:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleAMSBagChangedNotification:(id)a3;
-- (void)_handleAMSBagInvalidatedNotification:(id)a3;
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3;
-- (void)_invalidateCacheEntriesWithProfileName:(id)a3 profileVersion:(id)a4;
+- (id)_loadPlistAtPath:(id)path;
+- (void)_cleanBagCacheExcludingPaths:(id)paths;
+- (void)_fetchBagForRequestContext:(id)context withCompletionHandler:(id)handler;
+- (void)_handleAMSBagChangedNotification:(id)notification;
+- (void)_handleAMSBagInvalidatedNotification:(id)notification;
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification;
+- (void)_invalidateCacheEntriesWithProfileName:(id)name profileVersion:(id)version;
 - (void)_loadCache;
 - (void)_loadMonoCache;
-- (void)_persistBagToDisk:(id)a3 withKey:(id)a4;
+- (void)_persistBagToDisk:(id)disk withKey:(id)key;
 - (void)dealloc;
-- (void)getBagAndURLMetricsForRequestContext:(id)a3 forceRefetch:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)getBagForRequestContext:(id)a3 qualityOfService:(int64_t)a4 forceRefetch:(BOOL)a5 withCompletionHandler:(id)a6;
+- (void)getBagAndURLMetricsForRequestContext:(id)context forceRefetch:(BOOL)refetch withCompletionHandler:(id)handler;
+- (void)getBagForRequestContext:(id)context qualityOfService:(int64_t)service forceRefetch:(BOOL)refetch withCompletionHandler:(id)handler;
 - (void)invalidateCache;
 @end
 
@@ -77,14 +77,14 @@ uint64_t __37__ICURLBagProvider_sharedBagProvider__block_invoke()
     bagChangeNotificationReceivedForRequestContext = v2->_bagChangeNotificationReceivedForRequestContext;
     v2->_bagChangeNotificationReceivedForRequestContext = v14;
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v2 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:0];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v2 selector:sel__handleAMSBagChangedNotification_ name:*MEMORY[0x1E698C500] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleAMSBagChangedNotification_ name:*MEMORY[0x1E698C500] object:0];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v2 selector:sel__handleAMSBagInvalidatedNotification_ name:*MEMORY[0x1E698C520] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__handleAMSBagInvalidatedNotification_ name:*MEMORY[0x1E698C520] object:0];
 
     [(ICURLBagProvider *)v2 _loadCache];
   }
@@ -278,27 +278,27 @@ void __30__ICURLBagProvider__loadCache__block_invoke(uint64_t a1)
 - (id)_cacheDirectoryPath
 {
   v2 = +[ICClientInfo defaultInfo];
-  v3 = [v2 processName];
-  v4 = v3;
+  processName = [v2 processName];
+  v4 = processName;
   v5 = @"unknown";
-  if (v3)
+  if (processName)
   {
-    v5 = v3;
+    v5 = processName;
   }
 
   v6 = v5;
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 URLsForDirectory:14 inDomains:1];
-  v9 = [v8 lastObject];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager URLsForDirectory:14 inDomains:1];
+  lastObject = [v8 lastObject];
 
   v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.iTunesCloud/URLBags/%@", v6];
 
-  v11 = [v9 URLByAppendingPathComponent:v10];
+  v11 = [lastObject URLByAppendingPathComponent:v10];
 
-  v12 = [v11 path];
+  path = [v11 path];
 
-  return v12;
+  return path;
 }
 
 - (id)_knownMissingBagValuesDictionary
@@ -327,25 +327,25 @@ void __52__ICURLBagProvider__knownMissingBagValuesDictionary__block_invoke()
   _knownMissingBagValuesDictionary_sKnownMissingBagValuesDictionary = v0;
 }
 
-- (id)_dictionaryFromBagPayloadDictionaryAddingKnownMissingKeys:(id)a3 forProfileName:(id)a4
+- (id)_dictionaryFromBagPayloadDictionaryAddingKnownMissingKeys:(id)keys forProfileName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  nameCopy = name;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy__5609;
   v22 = __Block_byref_object_dispose__5610;
   v23 = 0;
-  v8 = [(ICURLBagProvider *)self _knownMissingBagValuesDictionary];
+  _knownMissingBagValuesDictionary = [(ICURLBagProvider *)self _knownMissingBagValuesDictionary];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __93__ICURLBagProvider__dictionaryFromBagPayloadDictionaryAddingKnownMissingKeys_forProfileName___block_invoke;
   v14[3] = &unk_1E7BF44B0;
-  v9 = v6;
+  v9 = keysCopy;
   v15 = v9;
   v17 = &v18;
-  v10 = v8;
+  v10 = _knownMissingBagValuesDictionary;
   v16 = v10;
   [v10 enumerateKeysAndObjectsUsingBlock:v14];
   v11 = v19[5];
@@ -393,38 +393,38 @@ void __93__ICURLBagProvider__dictionaryFromBagPayloadDictionaryAddingKnownMissin
   }
 }
 
-- (id)_amsProcessInfoFromRequestContext:(id)a3
+- (id)_amsProcessInfoFromRequestContext:(id)context
 {
-  v3 = [a3 clientInfo];
-  v4 = [v3 bundleIdentifier];
-  if (!v4)
+  clientInfo = [context clientInfo];
+  bundleIdentifier = [clientInfo bundleIdentifier];
+  if (!bundleIdentifier)
   {
     v5 = objc_alloc_init(MEMORY[0x1E698CAC8]);
     goto LABEL_5;
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E698CAC8]) initWithBundleIdentifier:v4];
-  if (ICSystemApplicationTypeForBundleIdentifier(v4))
+  v5 = [objc_alloc(MEMORY[0x1E698CAC8]) initWithBundleIdentifier:bundleIdentifier];
+  if (ICSystemApplicationTypeForBundleIdentifier(bundleIdentifier))
   {
 LABEL_5:
-    v6 = [v3 clientIdentifier];
-    [v5 setExecutableName:v6];
+    clientIdentifier = [clientInfo clientIdentifier];
+    [v5 setExecutableName:clientIdentifier];
 
-    v7 = [v3 clientIdentifier];
-    [v5 setLocalizedName:v7];
+    clientIdentifier2 = [clientInfo clientIdentifier];
+    [v5 setLocalizedName:clientIdentifier2];
 
-    v8 = [v3 clientVersion];
-    [v5 setClientVersion:v8];
+    clientVersion = [clientInfo clientVersion];
+    [v5 setClientVersion:clientVersion];
   }
 
-  v9 = [v3 clientBundleIdentifier];
-  v10 = [v3 bundleIdentifier];
-  v11 = [v9 isEqualToString:v10];
+  clientBundleIdentifier = [clientInfo clientBundleIdentifier];
+  bundleIdentifier2 = [clientInfo bundleIdentifier];
+  v11 = [clientBundleIdentifier isEqualToString:bundleIdentifier2];
 
   if ((v11 & 1) == 0)
   {
-    v12 = [v3 clientBundleIdentifier];
-    [v5 setProxyAppBundleID:v12];
+    clientBundleIdentifier2 = [clientInfo clientBundleIdentifier];
+    [v5 setProxyAppBundleID:clientBundleIdentifier2];
   }
 
   return v5;
@@ -433,12 +433,12 @@ LABEL_5:
 - (id)_legacyCacheFilePath
 {
   v2 = +[ICClientInfo defaultInfo];
-  v3 = [v2 processName];
+  processName = [v2 processName];
 
   v4 = @"unknown";
-  if (v3)
+  if (processName)
   {
-    v4 = v3;
+    v4 = processName;
   }
 
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.plist", v4];
@@ -449,20 +449,20 @@ LABEL_5:
   return v8;
 }
 
-- (void)_persistBagToDisk:(id)a3 withKey:(id)a4
+- (void)_persistBagToDisk:(id)disk withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  diskCopy = disk;
+  keyCopy = key;
   persistenceQueue = self->_persistenceQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46__ICURLBagProvider__persistBagToDisk_withKey___block_invoke;
   block[3] = &unk_1E7BFA178;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = diskCopy;
+  selfCopy = self;
+  v14 = keyCopy;
+  v9 = keyCopy;
+  v10 = diskCopy;
   dispatch_async(persistenceQueue, block);
 }
 
@@ -840,17 +840,17 @@ LABEL_15:
   }
 }
 
-- (void)_cleanBagCacheExcludingPaths:(id)a3
+- (void)_cleanBagCacheExcludingPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   persistenceQueue = self->_persistenceQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __49__ICURLBagProvider__cleanBagCacheExcludingPaths___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pathsCopy;
+  v6 = pathsCopy;
   dispatch_async(persistenceQueue, v7);
 }
 
@@ -992,12 +992,12 @@ BOOL __30__ICURLBagProvider__loadCache__block_invoke_128(uint64_t a1, uint64_t a
   return v12;
 }
 
-- (id)_loadPlistAtPath:(id)a3
+- (id)_loadPlistAtPath:(id)path
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   v11 = 0;
-  v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v4 options:0 error:&v11];
+  v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:pathCopy options:0 error:&v11];
   v6 = v11;
   if (v6)
   {
@@ -1005,9 +1005,9 @@ BOOL __30__ICURLBagProvider__loadCache__block_invoke_128(uint64_t a1, uint64_t a
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
-      v15 = v4;
+      v15 = pathCopy;
       v16 = 2114;
       v17 = v6;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_ERROR, "%{public}@ Could not load plist at path '%{public}@' error=%{public}@", buf, 0x20u);
@@ -1032,20 +1032,20 @@ BOOL __30__ICURLBagProvider__loadCache__block_invoke_128(uint64_t a1, uint64_t a
   return v9;
 }
 
-- (void)_invalidateCacheEntriesWithProfileName:(id)a3 profileVersion:(id)a4
+- (void)_invalidateCacheEntriesWithProfileName:(id)name profileVersion:(id)version
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  versionCopy = version;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
-    v18 = v6;
+    v18 = nameCopy;
     v19 = 2114;
-    v20 = v7;
+    v20 = versionCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Invalidating cached bags with profile %{public}@/%{public}@", buf, 0x20u);
   }
 
@@ -1055,10 +1055,10 @@ BOOL __30__ICURLBagProvider__loadCache__block_invoke_128(uint64_t a1, uint64_t a
   block[2] = __74__ICURLBagProvider__invalidateCacheEntriesWithProfileName_profileVersion___block_invoke;
   block[3] = &unk_1E7BFA178;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = nameCopy;
+  v14 = versionCopy;
+  v10 = versionCopy;
+  v11 = nameCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1156,36 +1156,36 @@ LABEL_16:
 LABEL_20:
 }
 
-- (void)_handleAMSBagInvalidatedNotification:(id)a3
+- (void)_handleAMSBagInvalidatedNotification:(id)notification
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
+  userInfo = [notification userInfo];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 2114;
-    v11 = v4;
+    v11 = userInfo;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Received AMSBag invalidation notification with userInfo %{public}@", &v8, 0x16u);
   }
 
-  v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698C510]];
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E698C518]];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E698C510]];
+  v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E698C518]];
   [(ICURLBagProvider *)self _invalidateCacheEntriesWithProfileName:v6 profileVersion:v7];
 }
 
-- (void)_handleAMSBagChangedNotification:(id)a3
+- (void)_handleAMSBagChangedNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__ICURLBagProvider__handleAMSBagChangedNotification___block_invoke;
   v7[3] = &unk_1E7BFA078;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
   dispatch_async(accessQueue, v7);
 }
 
@@ -1318,76 +1318,76 @@ LABEL_11:
   return v14;
 }
 
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ user identity changed - invalidating bag cache", &v5, 0xCu);
   }
 
   [(ICURLBagProvider *)self invalidateCache];
 }
 
-- (void)_fetchBagForRequestContext:(id)a3 withCompletionHandler:(id)a4
+- (void)_fetchBagForRequestContext:(id)context withCompletionHandler:(id)handler
 {
   v78 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  handlerCopy = handler;
   v8 = +[ICDeviceInfo currentDeviceInfo];
-  v9 = [v6 clientInfo];
-  v54 = [MEMORY[0x1E695DF00] date];
+  clientInfo = [contextCopy clientInfo];
+  date = [MEMORY[0x1E695DF00] date];
   v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v6 clientInfo];
+    clientInfo2 = [contextCopy clientInfo];
     *buf = 138543874;
-    v73 = self;
+    selfCopy7 = self;
     v74 = 2114;
-    v75 = v6;
+    v75 = contextCopy;
     v76 = 2114;
-    v77 = v11;
+    v77 = clientInfo2;
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing bag request for requestContext %{public}@. clientInfo=%{public}@", buf, 0x20u);
   }
 
-  v12 = [v9 bagProfile];
-  if (!v12)
+  bagProfile = [clientInfo bagProfile];
+  if (!bagProfile)
   {
     v13 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v73 = self;
+      selfCopy7 = self;
       _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ No bag profile name provided - using default", buf, 0xCu);
     }
 
-    v12 = @"itunescloudd";
+    bagProfile = @"itunescloudd";
     v14 = @"itunescloudd";
   }
 
-  v52 = [v9 bagProfileVersion];
-  if (!v52)
+  bagProfileVersion = [clientInfo bagProfileVersion];
+  if (!bagProfileVersion)
   {
     v15 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v73 = self;
+      selfCopy7 = self;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ No bag profile version provided - using default", buf, 0xCu);
     }
 
-    v52 = @"1";
+    bagProfileVersion = @"1";
     v16 = @"1";
   }
 
-  v51 = v9;
-  v17 = [v6 identityStore];
-  v18 = [v6 identity];
+  v51 = clientInfo;
+  identityStore = [contextCopy identityStore];
+  identity = [contextCopy identity];
   v71 = 0;
-  v19 = [v17 DSIDForUserIdentity:v18 outError:&v71];
+  v19 = [identityStore DSIDForUserIdentity:identity outError:&v71];
   v20 = v71;
 
   if (v20)
@@ -1395,11 +1395,11 @@ LABEL_11:
     v21 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v6 identity];
+      identity2 = [contextCopy identity];
       *buf = 138543874;
-      v73 = self;
+      selfCopy7 = self;
       v74 = 2114;
-      v75 = v22;
+      v75 = identity2;
       v76 = 2114;
       v77 = v20;
       _os_log_impl(&dword_1B4491000, v21, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load account DSID for identity %{public}@. err=%{public}@", buf, 0x20u);
@@ -1423,7 +1423,7 @@ LABEL_11:
         {
           v27 = ICCreateLoggableValueForDSID(v19);
           *buf = 138543874;
-          v73 = self;
+          selfCopy7 = self;
           v74 = 2114;
           v75 = v27;
           v76 = 2114;
@@ -1432,38 +1432,38 @@ LABEL_11:
         }
       }
 
-      v28 = v24;
+      dictionary = v24;
     }
 
     else
     {
       v25 = v20;
-      v28 = 0;
+      dictionary = 0;
     }
 
-    v53 = [(ICURLBagProvider *)self _amsProcessInfoFromRequestContext:v6];
+    v53 = [(ICURLBagProvider *)self _amsProcessInfoFromRequestContext:contextCopy];
     v44 = os_log_create("com.apple.amp.iTunesCloud", "Default");
-    v43 = v54;
+    v43 = date;
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v73 = self;
+      selfCopy7 = self;
       v74 = 2114;
-      v75 = v6;
+      v75 = contextCopy;
       v76 = 2114;
-      v77 = v28;
+      v77 = dictionary;
       _os_log_impl(&dword_1B4491000, v44, OS_LOG_TYPE_DEFAULT, "%{public}@ fetching AMS bag for context %{public}@ using account %{public}@.", buf, 0x20u);
     }
 
-    v39 = v52;
-    if (v28)
+    v39 = bagProfileVersion;
+    if (dictionary)
     {
-      [MEMORY[0x1E698C7D8] bagForProfile:v12 profileVersion:v52 processInfo:v53 account:v28];
+      [MEMORY[0x1E698C7D8] bagForProfile:bagProfile profileVersion:bagProfileVersion processInfo:v53 account:dictionary];
     }
 
     else
     {
-      [MEMORY[0x1E698C7D8] bagForProfile:v12 profileVersion:v52 processInfo:v53];
+      [MEMORY[0x1E698C7D8] bagForProfile:bagProfile profileVersion:bagProfileVersion processInfo:v53];
     }
     v45 = ;
     v62[0] = MEMORY[0x1E69E9820];
@@ -1471,16 +1471,16 @@ LABEL_11:
     v62[2] = __69__ICURLBagProvider__fetchBagForRequestContext_withCompletionHandler___block_invoke;
     v62[3] = &unk_1E7BF43C0;
     v62[4] = self;
-    v69 = v7;
+    v69 = handlerCopy;
     v63 = v45;
-    v64 = v12;
-    v65 = v54;
-    v66 = v52;
+    v64 = bagProfile;
+    v65 = date;
+    v66 = bagProfileVersion;
     v67 = v50;
-    v68 = v6;
+    v68 = contextCopy;
     v37 = v50;
-    v33 = v45;
-    [v33 createSnapshotWithCompletion:v62];
+    firstObject = v45;
+    [firstObject createSnapshotWithCompletion:v62];
   }
 
   else
@@ -1490,46 +1490,46 @@ LABEL_11:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v73 = self;
+      selfCopy7 = self;
       v74 = 2114;
-      v75 = v6;
+      v75 = contextCopy;
       _os_log_impl(&dword_1B4491000, v29, OS_LOG_TYPE_DEFAULT, "%{public}@ fetching legacy bag for context %{public}@", buf, 0x16u);
     }
 
-    v28 = [MEMORY[0x1E695DF90] dictionary];
-    [v28 setObject:@"6" forKey:@"ix"];
-    v30 = [v8 currentLocale];
-    if (v30)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [dictionary setObject:@"6" forKey:@"ix"];
+    currentLocale = [v8 currentLocale];
+    if (currentLocale)
     {
-      [v28 setObject:v30 forKey:@"locale"];
+      [dictionary setObject:currentLocale forKey:@"locale"];
     }
 
-    v53 = v30;
-    v47 = self;
+    v53 = currentLocale;
+    selfCopy8 = self;
     v48 = v8;
-    v49 = v7;
-    v31 = [v8 productVersion];
-    v32 = [v31 componentsSeparatedByString:@"."];
-    v33 = [v32 firstObject];
+    v49 = handlerCopy;
+    productVersion = [v8 productVersion];
+    v32 = [productVersion componentsSeparatedByString:@"."];
+    firstObject = [v32 firstObject];
 
-    if ([v33 length])
+    if ([firstObject length])
     {
-      [v28 setObject:v33 forKey:@"os"];
+      [dictionary setObject:firstObject forKey:@"os"];
     }
 
     v34 = objc_alloc(MEMORY[0x1E695AC18]);
     v35 = [MEMORY[0x1E695DFF8] URLWithString:@"https://init.itunes.apple.com/bag.xml"];
-    v36 = [v35 ic_URLByAppendingQueryParameters:v28];
+    v36 = [v35 ic_URLByAppendingQueryParameters:dictionary];
     v37 = [v34 initWithURL:v36];
 
     [v37 setCachePolicy:1];
-    v38 = [[ICStoreURLRequest alloc] initWithURLRequest:v37 requestContext:v6];
+    v38 = [[ICStoreURLRequest alloc] initWithURLRequest:v37 requestContext:contextCopy];
     [(ICStoreURLRequest *)v38 setShouldRequireURLBag:0];
     [(ICStoreURLRequest *)v38 setAnisetteVersion:0];
     [(ICURLRequest *)v38 setPrioritize:1];
     [(ICStoreURLRequest *)v38 setShouldUseMescalSigning:0];
-    v39 = v52;
-    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bag profile:%@ version:%@", v12, v52];
+    v39 = bagProfileVersion;
+    v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Bag profile:%@ version:%@", bagProfile, bagProfileVersion];
     [(ICURLRequest *)v38 setRequestName:v40];
 
     v41 = +[ICURLSessionManager unlimitedHighPrioritySession];
@@ -1537,18 +1537,18 @@ LABEL_11:
     v55[1] = 3221225472;
     v55[2] = __69__ICURLBagProvider__fetchBagForRequestContext_withCompletionHandler___block_invoke_114;
     v55[3] = &unk_1E7BF5D30;
-    v55[4] = v47;
-    v7 = v49;
+    v55[4] = selfCopy8;
+    handlerCopy = v49;
     v61 = v49;
-    v56 = v12;
-    v57 = v54;
-    v58 = v52;
+    v56 = bagProfile;
+    v57 = date;
+    v58 = bagProfileVersion;
     v59 = v50;
-    v60 = v6;
+    v60 = contextCopy;
     v42 = v50;
     [v41 enqueueDataRequest:v38 withCompletionHandler:v55];
 
-    v43 = v54;
+    v43 = date;
     v25 = v46;
     v8 = v48;
   }
@@ -1869,19 +1869,19 @@ void __69__ICURLBagProvider__fetchBagForRequestContext_withCompletionHandler___b
   (*(*(a1 + 104) + 16))();
 }
 
-- (id)_getCacheKeyForRequestContext:(id)a3
+- (id)_getCacheKeyForRequestContext:(id)context
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 identity];
-  v6 = [v4 identityStore];
-  v7 = v6;
+  contextCopy = context;
+  identity = [contextCopy identity];
+  identityStore = [contextCopy identityStore];
+  v7 = identityStore;
   v8 = 0;
-  if (v5 && v6)
+  if (identity && identityStore)
   {
-    v9 = v4;
+    v9 = contextCopy;
     v46 = 0;
-    v8 = [v6 getPropertiesForUserIdentity:v5 error:&v46];
+    v8 = [identityStore getPropertiesForUserIdentity:identity error:&v46];
     v10 = v46;
     if (v10)
     {
@@ -1889,59 +1889,59 @@ void __69__ICURLBagProvider__fetchBagForRequestContext_withCompletionHandler___b
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543618;
-        v48 = self;
+        selfCopy = self;
         v49 = 2114;
         v50 = v10;
         _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_ERROR, "%{public}@ Failed to fetch identity properties. err=%{public}@", buf, 0x16u);
       }
     }
 
-    v4 = v9;
+    contextCopy = v9;
   }
 
   v39 = v7;
-  v40 = v5;
-  v45 = [v8 storefrontIdentifier];
+  v40 = identity;
+  storefrontIdentifier = [v8 storefrontIdentifier];
   v38 = v8;
-  v12 = [v8 DSID];
-  v13 = [v4 clientInfo];
-  v44 = [v13 clientIdentifier];
-  v14 = [v13 clientVersion];
-  v43 = [v13 bundleIdentifier];
-  v42 = [v13 bagProfile];
-  v41 = [v13 bagProfileVersion];
+  dSID = [v8 DSID];
+  clientInfo = [contextCopy clientInfo];
+  clientIdentifier = [clientInfo clientIdentifier];
+  clientVersion = [clientInfo clientVersion];
+  bundleIdentifier = [clientInfo bundleIdentifier];
+  bagProfile = [clientInfo bagProfile];
+  bagProfileVersion = [clientInfo bagProfileVersion];
   v15 = +[ICDeviceInfo currentDeviceInfo];
-  v16 = [v15 currentLocale];
-  v17 = [v15 productPlatform];
-  v18 = [v4 personalizationStyle];
+  currentLocale = [v15 currentLocale];
+  productPlatform = [v15 productPlatform];
+  personalizationStyle = [contextCopy personalizationStyle];
   v19 = MEMORY[0x1E696AEC0];
   if (self->_useAMSBag)
   {
-    if (v12)
+    if (dSID)
     {
-      v20 = [v12 stringValue];
+      stringValue = [dSID stringValue];
     }
 
     else
     {
-      v20 = @"nil";
+      stringValue = @"nil";
     }
 
-    v22 = v43;
-    v23 = v44;
-    if (!v43)
+    v22 = bundleIdentifier;
+    v23 = clientIdentifier;
+    if (!bundleIdentifier)
     {
       v22 = @"nil";
     }
 
-    if (!v44)
+    if (!clientIdentifier)
     {
       v23 = @"nil";
     }
 
-    if (v14)
+    if (clientVersion)
     {
-      v24 = v14;
+      v24 = clientVersion;
     }
 
     else
@@ -1949,27 +1949,27 @@ void __69__ICURLBagProvider__fetchBagForRequestContext_withCompletionHandler___b
       v24 = @"nil";
     }
 
-    v26 = v41;
-    v25 = v42;
-    if (!v42)
+    v26 = bagProfileVersion;
+    v25 = bagProfile;
+    if (!bagProfile)
     {
       v25 = @"nil";
     }
 
-    if (!v41)
+    if (!bagProfileVersion)
     {
       v26 = @"nil";
     }
 
-    v27 = v45;
-    if (!v45)
+    v27 = storefrontIdentifier;
+    if (!storefrontIdentifier)
     {
       v27 = @"nil";
     }
 
-    if (v16)
+    if (currentLocale)
     {
-      v28 = v16;
+      v28 = currentLocale;
     }
 
     else
@@ -1977,9 +1977,9 @@ void __69__ICURLBagProvider__fetchBagForRequestContext_withCompletionHandler___b
       v28 = @"nil";
     }
 
-    if (v17)
+    if (productPlatform)
     {
-      v29 = v17;
+      v29 = productPlatform;
     }
 
     else
@@ -1987,8 +1987,8 @@ void __69__ICURLBagProvider__fetchBagForRequestContext_withCompletionHandler___b
       v29 = @"nil";
     }
 
-    v30 = [v19 stringWithFormat:@"%@-%@-%@-%@-%@-%@-%@-%@-%@", v20, v22, v23, v24, v25, v26, v27, v28, v29];
-    if (!v12)
+    v30 = [v19 stringWithFormat:@"%@-%@-%@-%@-%@-%@-%@-%@-%@", stringValue, v22, v23, v24, v25, v26, v27, v28, v29];
+    if (!dSID)
     {
       goto LABEL_53;
     }
@@ -1998,15 +1998,15 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v21 = v18;
-  if (v12)
+  v21 = personalizationStyle;
+  if (dSID)
   {
-    v20 = [v12 stringValue];
+    stringValue = [dSID stringValue];
   }
 
   else
   {
-    v20 = @"nil";
+    stringValue = @"nil";
   }
 
   v31 = @"personalized";
@@ -2015,16 +2015,16 @@ LABEL_52:
     v31 = @"unpersonalized";
   }
 
-  v32 = v44;
-  v33 = v45;
-  if (!v44)
+  v32 = clientIdentifier;
+  v33 = storefrontIdentifier;
+  if (!clientIdentifier)
   {
     v32 = @"nil";
   }
 
-  if (v14)
+  if (clientVersion)
   {
-    v34 = v14;
+    v34 = clientVersion;
   }
 
   else
@@ -2032,14 +2032,14 @@ LABEL_52:
     v34 = @"nil";
   }
 
-  if (!v45)
+  if (!storefrontIdentifier)
   {
     v33 = @"nil";
   }
 
-  if (v16)
+  if (currentLocale)
   {
-    v35 = v16;
+    v35 = currentLocale;
   }
 
   else
@@ -2047,9 +2047,9 @@ LABEL_52:
     v35 = @"nil";
   }
 
-  if (v17)
+  if (productPlatform)
   {
-    v36 = v17;
+    v36 = productPlatform;
   }
 
   else
@@ -2057,8 +2057,8 @@ LABEL_52:
     v36 = @"nil";
   }
 
-  v30 = [v19 stringWithFormat:@"%ld-%@-%@-%@-%@-%@-%@-%@", 0, v20, v31, v32, v34, v33, v35, v36];
-  if (v12)
+  v30 = [v19 stringWithFormat:@"%ld-%@-%@-%@-%@-%@-%@-%@", 0, stringValue, v31, v32, v34, v33, v35, v36];
+  if (dSID)
   {
     goto LABEL_52;
   }
@@ -2075,24 +2075,24 @@ LABEL_53:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Invalidating all entries in url bag cache by expiring them", &v4, 0xCu);
   }
 
   [(ICURLBagProvider *)self _invalidateCacheEntriesWithProfileName:0 profileVersion:0];
 }
 
-- (void)getBagAndURLMetricsForRequestContext:(id)a3 forceRefetch:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)getBagAndURLMetricsForRequestContext:(id)context forceRefetch:(BOOL)refetch withCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
+  refetchCopy = refetch;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __92__ICURLBagProvider_getBagAndURLMetricsForRequestContext_forceRefetch_withCompletionHandler___block_invoke;
   v10[3] = &unk_1E7BF4370;
-  v11 = v8;
-  v9 = v8;
-  [(ICURLBagProvider *)self getBagForRequestContext:a3 forceRefetch:v5 withCompletionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [(ICURLBagProvider *)self getBagForRequestContext:context forceRefetch:refetchCopy withCompletionHandler:v10];
 }
 
 uint64_t __92__ICURLBagProvider_getBagAndURLMetricsForRequestContext_forceRefetch_withCompletionHandler___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -2106,26 +2106,26 @@ uint64_t __92__ICURLBagProvider_getBagAndURLMetricsForRequestContext_forceRefetc
   return result;
 }
 
-- (void)getBagForRequestContext:(id)a3 qualityOfService:(int64_t)a4 forceRefetch:(BOOL)a5 withCompletionHandler:(id)a6
+- (void)getBagForRequestContext:(id)context qualityOfService:(int64_t)service forceRefetch:(BOOL)refetch withCompletionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
-  if (!v9)
+  contextCopy = context;
+  handlerCopy = handler;
+  if (!contextCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"ICURLBagProvider.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"requestContext != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICURLBagProvider.m" lineNumber:116 description:{@"Invalid parameter not satisfying: %@", @"requestContext != nil"}];
   }
 
-  v11 = [v9 preloadedBag];
-  if (v11 && (([v9 allowsExpiredBags] & 1) != 0 || (objc_msgSend(v11, "isExpired") & 1) == 0))
+  preloadedBag = [contextCopy preloadedBag];
+  if (preloadedBag && (([contextCopy allowsExpiredBags] & 1) != 0 || (objc_msgSend(preloadedBag, "isExpired") & 1) == 0))
   {
-    v10[2](v10, v11, 0);
+    handlerCopy[2](handlerCopy, preloadedBag, 0);
   }
 
   else
   {
-    v13 = v9;
-    v14 = v10;
+    v13 = contextCopy;
+    v14 = handlerCopy;
     msv_dispatch_async_on_queue_with_qos();
   }
 }
@@ -2560,8 +2560,8 @@ void __96__ICURLBagProvider_getBagForRequestContext_qualityOfService_forceRefetc
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"ICUserIdentityStoreDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"ICUserIdentityStoreDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = ICURLBagProvider;

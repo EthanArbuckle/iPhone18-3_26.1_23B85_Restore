@@ -1,13 +1,13 @@
 @interface ButtonWrapper.AppearanceDelegate
 - (CGRect)bounds;
 - (_TtCC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper18AppearanceDelegate)init;
-- (double)additionalEdgeSpacingForButtonBarButton:(id)a3 representingBarButtonItem:(id)a4;
-- (id)tintColorForButtonBarButton:(id)a3;
+- (double)additionalEdgeSpacingForButtonBarButton:(id)button representingBarButtonItem:(id)item;
+- (id)tintColorForButtonBarButton:(id)button;
 @end
 
 @implementation ButtonWrapper.AppearanceDelegate
 
-- (double)additionalEdgeSpacingForButtonBarButton:(id)a3 representingBarButtonItem:(id)a4
+- (double)additionalEdgeSpacingForButtonBarButton:(id)button representingBarButtonItem:(id)item
 {
   v6 = self + OBJC_IVAR____TtCC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper18AppearanceDelegate_metrics;
   result = 0.0;
@@ -23,9 +23,9 @@
     v16 = *v6;
     v17 = v9;
     v10 = *(&self->super.isa + OBJC_IVAR____TtCC5UIKitP33_DDE14AA6B49FCAFC5A54255A118E1D8713ButtonWrapper18AppearanceDelegate_isSingleItemSection);
-    v12 = a4;
-    v13 = self;
-    sub_188E4FA28(v12, v10, v14);
+    itemCopy = item;
+    selfCopy = self;
+    sub_188E4FA28(itemCopy, v10, v14);
 
     return v15;
   }
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (id)tintColorForButtonBarButton:(id)a3
+- (id)tintColorForButtonBarButton:(id)button
 {
-  v3 = [objc_opt_self() tintColor];
+  tintColor = [objc_opt_self() tintColor];
 
-  return v3;
+  return tintColor;
 }
 
 - (CGRect)bounds

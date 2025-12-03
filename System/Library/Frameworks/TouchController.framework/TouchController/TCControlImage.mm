@@ -1,71 +1,71 @@
 @interface TCControlImage
 - (CGPoint)offset;
 - (CGSize)size;
-- (TCControlImage)initWithCGImage:(CGImage *)a3 size:(CGSize)a4 device:(id)a5;
-- (TCControlImage)initWithTexture:(id)a3 size:(CGSize)a4;
-- (TCControlImage)initWithTexture:(id)a3 size:(CGSize)a4 highlightTexture:(id)a5 offset:(CGPoint)a6 tintColor:(CGColor *)a7;
-- (TCControlImage)initWithUIImage:(id)a3 size:(CGSize)a4 device:(id)a5;
-- (void)setTintColor:(CGColor *)a3;
+- (TCControlImage)initWithCGImage:(CGImage *)image size:(CGSize)size device:(id)device;
+- (TCControlImage)initWithTexture:(id)texture size:(CGSize)size;
+- (TCControlImage)initWithTexture:(id)texture size:(CGSize)size highlightTexture:(id)highlightTexture offset:(CGPoint)offset tintColor:(CGColor *)color;
+- (TCControlImage)initWithUIImage:(id)image size:(CGSize)size device:(id)device;
+- (void)setTintColor:(CGColor *)color;
 @end
 
 @implementation TCControlImage
 
-- (TCControlImage)initWithTexture:(id)a3 size:(CGSize)a4 highlightTexture:(id)a5 offset:(CGPoint)a6 tintColor:(CGColor *)a7
+- (TCControlImage)initWithTexture:(id)texture size:(CGSize)size highlightTexture:(id)highlightTexture offset:(CGPoint)offset tintColor:(CGColor *)color
 {
-  y = a6.y;
-  x = a6.x;
-  height = a4.height;
-  width = a4.width;
-  v15 = a3;
-  v16 = a5;
+  y = offset.y;
+  x = offset.x;
+  height = size.height;
+  width = size.width;
+  textureCopy = texture;
+  highlightTextureCopy = highlightTexture;
   v20.receiver = self;
   v20.super_class = TCControlImage;
   v17 = [(TCControlImage *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_texture, a3);
+    objc_storeStrong(&v17->_texture, texture);
     v18->_size.width = width;
     v18->_size.height = height;
-    objc_storeStrong(&v18->_highlightTexture, a5);
+    objc_storeStrong(&v18->_highlightTexture, highlightTexture);
     v18->_offset.x = x;
     v18->_offset.y = y;
-    v18->_tintColor = a7;
-    CGColorRetain(a7);
+    v18->_tintColor = color;
+    CGColorRetain(color);
   }
 
   return v18;
 }
 
-- (TCControlImage)initWithTexture:(id)a3 size:(CGSize)a4
+- (TCControlImage)initWithTexture:(id)texture size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  textureCopy = texture;
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v12[0] = xmmword_23AAEDFD0;
   v12[1] = unk_23AAEDFE0;
-  v9 = [(TCControlImage *)self initWithTexture:v7 size:0 highlightTexture:CGColorCreate(DeviceRGB offset:v12) tintColor:width, height, 0.0, 0.0];
+  v9 = [(TCControlImage *)self initWithTexture:textureCopy size:0 highlightTexture:CGColorCreate(DeviceRGB offset:v12) tintColor:width, height, 0.0, 0.0];
 
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (TCControlImage)initWithCGImage:(CGImage *)a3 size:(CGSize)a4 device:(id)a5
+- (TCControlImage)initWithCGImage:(CGImage *)image size:(CGSize)size device:(id)device
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v23[1] = *MEMORY[0x277D85DE8];
   v9 = MEMORY[0x277CD71F0];
-  v10 = a5;
-  v11 = [[v9 alloc] initWithDevice:v10];
+  deviceCopy = device;
+  v11 = [[v9 alloc] initWithDevice:deviceCopy];
 
   v22 = *MEMORY[0x277CD71B0];
   v23[0] = MEMORY[0x277CBEC38];
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
   v21 = 0;
-  v13 = [v11 newTextureWithCGImage:a3 options:v12 error:&v21];
+  v13 = [v11 newTextureWithCGImage:image options:v12 error:&v21];
   v14 = v21;
   if (v13)
   {
@@ -73,7 +73,7 @@
     v16 = [(TCControlImage *)self initWithTexture:v13 size:0 highlightTexture:GenericRGB offset:width tintColor:height, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     CGColorRelease(GenericRGB);
     self = v16;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -84,23 +84,23 @@
       [TCControlImage initWithCGImage:v14 size:v18 device:?];
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
   v19 = *MEMORY[0x277D85DE8];
-  return v17;
+  return selfCopy;
 }
 
-- (TCControlImage)initWithUIImage:(id)a3 size:(CGSize)a4 device:(id)a5
+- (TCControlImage)initWithUIImage:(id)image size:(CGSize)size device:(id)device
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a5;
-  v10 = [a3 CGImage];
-  if (v10)
+  height = size.height;
+  width = size.width;
+  deviceCopy = device;
+  cGImage = [image CGImage];
+  if (cGImage)
   {
-    self = [(TCControlImage *)self initWithCGImage:v10 size:v9 device:width, height];
-    v11 = self;
+    self = [(TCControlImage *)self initWithCGImage:cGImage size:deviceCopy device:width, height];
+    selfCopy = self;
   }
 
   else
@@ -111,18 +111,18 @@
       [TCControlImage initWithUIImage:v12 size:? device:?];
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)setTintColor:(CGColor *)a3
+- (void)setTintColor:(CGColor *)color
 {
   CGColorRelease(self->_tintColor);
-  self->_tintColor = a3;
+  self->_tintColor = color;
 
-  CGColorRetain(a3);
+  CGColorRetain(color);
 }
 
 - (CGSize)size

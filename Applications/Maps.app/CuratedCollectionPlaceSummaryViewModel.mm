@@ -1,5 +1,5 @@
 @interface CuratedCollectionPlaceSummaryViewModel
-- (CuratedCollectionPlaceSummaryViewModel)initWithMapItem:(id)a3;
+- (CuratedCollectionPlaceSummaryViewModel)initWithMapItem:(id)item;
 - (NSAttributedString)hours;
 - (NSString)category;
 - (NSString)distance;
@@ -12,27 +12,27 @@
 - (NSAttributedString)hours
 {
   v3 = [_MKLocalizedHoursBuilder alloc];
-  v4 = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
-  v5 = [v3 initWithMapItem:v4 localizedHoursStringOptions:128];
+  mapItem = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
+  v5 = [v3 initWithMapItem:mapItem localizedHoursStringOptions:128];
 
-  v6 = [v5 localizedOperatingHours];
-  v7 = [[NSMutableAttributedString alloc] initWithString:v6];
-  v8 = [v5 localizedOpenState];
-  v9 = [v6 rangeOfString:v8];
+  localizedOperatingHours = [v5 localizedOperatingHours];
+  v7 = [[NSMutableAttributedString alloc] initWithString:localizedOperatingHours];
+  localizedOpenState = [v5 localizedOpenState];
+  v9 = [localizedOperatingHours rangeOfString:localizedOpenState];
   v11 = v10;
 
   if (v9 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [v5 localizedOpenState];
-    if ([v6 rangeOfString:v12] != 0x7FFFFFFFFFFFFFFFLL)
+    localizedOpenState2 = [v5 localizedOpenState];
+    if ([localizedOperatingHours rangeOfString:localizedOpenState2] != 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = +[UIColor secondaryLabelColor];
       [v5 updateHoursLabelColorWithDefaultLabelColor:v13];
     }
 
     v18 = NSForegroundColorAttributeName;
-    v14 = [v5 hoursStateLabelColor];
-    v19 = v14;
+    hoursStateLabelColor = [v5 hoursStateLabelColor];
+    v19 = hoursStateLabelColor;
     v15 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
 
     [v7 setAttributes:v15 range:{v9, v11}];
@@ -45,18 +45,18 @@
 
 - (NSString)price
 {
-  v3 = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
-  v4 = [v3 _hasPriceDescription];
-  v5 = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
-  v6 = v5;
-  if (v4)
+  mapItem = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
+  _hasPriceDescription = [mapItem _hasPriceDescription];
+  mapItem2 = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
+  v6 = mapItem2;
+  if (_hasPriceDescription)
   {
-    [v5 _priceDescription];
+    [mapItem2 _priceDescription];
   }
 
   else
   {
-    [v5 _priceRangeString];
+    [mapItem2 _priceRangeString];
   }
   v7 = ;
 
@@ -78,17 +78,17 @@
 - (NSString)distance
 {
   v12 = 0;
-  v3 = [(CuratedCollectionPlaceSummaryViewModel *)self currentLocation];
-  v4 = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
-  v5 = [NSString distanceStringFromLocation:v3 toMapItem:v4 showsDistance:&v12];
+  currentLocation = [(CuratedCollectionPlaceSummaryViewModel *)self currentLocation];
+  mapItem = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
+  v5 = [NSString distanceStringFromLocation:currentLocation toMapItem:mapItem showsDistance:&v12];
 
   if ((v12 & 1) == 0)
   {
-    v6 = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
-    v7 = [v6 _geoMapItem];
-    v8 = [v7 _resultSnippetLocationString];
+    mapItem2 = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
+    _geoMapItem = [mapItem2 _geoMapItem];
+    _resultSnippetLocationString = [_geoMapItem _resultSnippetLocationString];
 
-    v5 = v8;
+    v5 = _resultSnippetLocationString;
   }
 
   if ([v5 length])
@@ -108,12 +108,12 @@
 
 - (NSString)category
 {
-  v2 = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
-  v3 = [v2 _firstLocalizedCategoryName];
+  mapItem = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
+  _firstLocalizedCategoryName = [mapItem _firstLocalizedCategoryName];
 
-  if ([v3 length])
+  if ([_firstLocalizedCategoryName length])
   {
-    v4 = v3;
+    v4 = _firstLocalizedCategoryName;
   }
 
   else
@@ -128,22 +128,22 @@
 
 - (NSString)title
 {
-  v2 = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
-  v3 = [v2 name];
+  mapItem = [(CuratedCollectionPlaceSummaryViewModel *)self mapItem];
+  name = [mapItem name];
 
-  return v3;
+  return name;
 }
 
-- (CuratedCollectionPlaceSummaryViewModel)initWithMapItem:(id)a3
+- (CuratedCollectionPlaceSummaryViewModel)initWithMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = CuratedCollectionPlaceSummaryViewModel;
   v6 = [(CuratedCollectionPlaceSummaryViewModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapItem, a3);
+    objc_storeStrong(&v6->_mapItem, item);
   }
 
   return v7;

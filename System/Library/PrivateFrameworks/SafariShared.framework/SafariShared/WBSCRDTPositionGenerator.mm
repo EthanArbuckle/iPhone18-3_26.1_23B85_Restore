@@ -1,46 +1,46 @@
 @interface WBSCRDTPositionGenerator
-- (WBSCRDTPositionGenerator)initWithDelegate:(id)a3;
+- (WBSCRDTPositionGenerator)initWithDelegate:(id)delegate;
 - (WBSCRDTPositionGeneratorDelegate)delegate;
-- (id)_generatePositionBetweenPosition:(id)a3 andPosition:(id)a4;
-- (id)_generatePositionsForStrides:(id)a3;
-- (id)_positionForRecordName:(id)a3;
-- (id)_stridesForSiblingRecords:(id)a3;
-- (void)_enumerateRecordNamesAfterRecordWithName:(id)a3 usingBlock:(id)a4;
-- (void)_enumerateRecordNamesBeforeRecordWithName:(id)a3 usingBlock:(id)a4;
-- (void)generatePositionsForChildRecordNamesGroupedByParentFolders:(id)a3;
+- (id)_generatePositionBetweenPosition:(id)position andPosition:(id)andPosition;
+- (id)_generatePositionsForStrides:(id)strides;
+- (id)_positionForRecordName:(id)name;
+- (id)_stridesForSiblingRecords:(id)records;
+- (void)_enumerateRecordNamesAfterRecordWithName:(id)name usingBlock:(id)block;
+- (void)_enumerateRecordNamesBeforeRecordWithName:(id)name usingBlock:(id)block;
+- (void)generatePositionsForChildRecordNamesGroupedByParentFolders:(id)folders;
 @end
 
 @implementation WBSCRDTPositionGenerator
 
-- (WBSCRDTPositionGenerator)initWithDelegate:(id)a3
+- (WBSCRDTPositionGenerator)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = WBSCRDTPositionGenerator;
   v5 = [(WBSCRDTPositionGenerator *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 
   return v6;
 }
 
-- (void)generatePositionsForChildRecordNamesGroupedByParentFolders:(id)a3
+- (void)generatePositionsForChildRecordNamesGroupedByParentFolders:(id)folders
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  foldersCopy = folders;
+  dictionary = [v4 dictionary];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __87__WBSCRDTPositionGenerator_generatePositionsForChildRecordNamesGroupedByParentFolders___block_invoke;
   v13 = &unk_1E7FC49A0;
-  v14 = self;
-  v15 = v6;
-  v7 = v6;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v10];
+  selfCopy = self;
+  v15 = dictionary;
+  v7 = dictionary;
+  [foldersCopy enumerateKeysAndObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
   recordNamesToPositions = self->_recordNamesToPositions;
@@ -66,23 +66,23 @@ void __87__WBSCRDTPositionGenerator_generatePositionsForChildRecordNamesGroupedB
   objc_autoreleasePoolPop(v7);
 }
 
-- (id)_stridesForSiblingRecords:(id)a3
+- (id)_stridesForSiblingRecords:(id)records
 {
-  v4 = a3;
-  v19 = [MEMORY[0x1E695DF70] array];
-  v5 = [v4 mutableCopy];
-  v20 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = [v5 anyObject];
-  if (v6)
+  recordsCopy = records;
+  array = [MEMORY[0x1E695DF70] array];
+  v5 = [recordsCopy mutableCopy];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  anyObject = [v5 anyObject];
+  if (anyObject)
   {
-    v7 = v6;
+    v7 = anyObject;
     do
     {
       v8 = objc_autoreleasePoolPush();
       [v5 removeObject:v7];
       if (![MEMORY[0x1E695BA58] safari_folderTypeForRecordName:v7])
       {
-        v9 = [MEMORY[0x1E695DF70] array];
+        array2 = [MEMORY[0x1E695DF70] array];
         v41 = 0;
         v42 = &v41;
         v43 = 0x3032000000;
@@ -95,21 +95,21 @@ void __87__WBSCRDTPositionGenerator_generatePositionsForChildRecordNamesGroupedB
         v38 = __Block_byref_object_copy__7;
         v39 = __Block_byref_object_dispose__7;
         v40 = 0;
-        [v9 addObject:v7];
+        [array2 addObject:v7];
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __54__WBSCRDTPositionGenerator__stridesForSiblingRecords___block_invoke;
         v28[3] = &unk_1E7FC49C8;
-        v10 = v4;
+        v10 = recordsCopy;
         v29 = v10;
-        v11 = v9;
+        v11 = array2;
         v30 = v11;
         v12 = v5;
         v31 = v12;
         v34 = &v41;
-        v13 = v20;
+        v13 = dictionary;
         v32 = v13;
-        v33 = self;
+        selfCopy = self;
         [(WBSCRDTPositionGenerator *)self _enumerateRecordNamesBeforeRecordWithName:v7 usingBlock:v28];
         v21[0] = MEMORY[0x1E69E9820];
         v21[1] = 3221225472;
@@ -121,26 +121,26 @@ void __87__WBSCRDTPositionGenerator_generatePositionsForChildRecordNamesGroupedB
         v24 = v12;
         v27 = &v35;
         v25 = v13;
-        v26 = self;
+        selfCopy2 = self;
         [(WBSCRDTPositionGenerator *)self _enumerateRecordNamesAfterRecordWithName:v7 usingBlock:v21];
         v15 = [_WBSCRDTPositionGeneratorStride alloc];
         v16 = [(_WBSCRDTPositionGeneratorStride *)v15 initWithRecordNames:v14 beforePosition:v42[5] afterPosition:v36[5]];
-        [v19 addObject:v16];
+        [array addObject:v16];
 
         _Block_object_dispose(&v35, 8);
         _Block_object_dispose(&v41, 8);
       }
 
       objc_autoreleasePoolPop(v8);
-      v17 = [v5 anyObject];
+      anyObject2 = [v5 anyObject];
 
-      v7 = v17;
+      v7 = anyObject2;
     }
 
-    while (v17);
+    while (anyObject2);
   }
 
-  return v19;
+  return array;
 }
 
 void __54__WBSCRDTPositionGenerator__stridesForSiblingRecords___block_invoke(uint64_t a1, void *a2, _BYTE *a3)
@@ -209,17 +209,17 @@ void __54__WBSCRDTPositionGenerator__stridesForSiblingRecords___block_invoke_2(u
   }
 }
 
-- (void)_enumerateRecordNamesBeforeRecordWithName:(id)a3 usingBlock:(id)a4
+- (void)_enumerateRecordNamesBeforeRecordWithName:(id)name usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__WBSCRDTPositionGenerator__enumerateRecordNamesBeforeRecordWithName_usingBlock___block_invoke;
   v13[3] = &unk_1E7FC49F0;
   v13[4] = self;
   v8 = MEMORY[0x1BFB13CE0](v13);
-  v9 = (v8)[2](v8, v6);
+  v9 = (v8)[2](v8, nameCopy);
   if (v9)
   {
     v10 = v9;
@@ -228,7 +228,7 @@ void __54__WBSCRDTPositionGenerator__stridesForSiblingRecords___block_invoke_2(u
       if (![MEMORY[0x1E695BA58] safari_folderTypeForRecordName:v10])
       {
         v12 = 0;
-        v7[2](v7, v10, &v12);
+        blockCopy[2](blockCopy, v10, &v12);
         if (v12)
         {
           break;
@@ -254,17 +254,17 @@ id __81__WBSCRDTPositionGenerator__enumerateRecordNamesBeforeRecordWithName_usin
   return v6;
 }
 
-- (void)_enumerateRecordNamesAfterRecordWithName:(id)a3 usingBlock:(id)a4
+- (void)_enumerateRecordNamesAfterRecordWithName:(id)name usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__WBSCRDTPositionGenerator__enumerateRecordNamesAfterRecordWithName_usingBlock___block_invoke;
   v13[3] = &unk_1E7FC49F0;
   v13[4] = self;
   v8 = MEMORY[0x1BFB13CE0](v13);
-  v9 = (v8)[2](v8, v6);
+  v9 = (v8)[2](v8, nameCopy);
   if (v9)
   {
     v10 = v9;
@@ -273,7 +273,7 @@ id __81__WBSCRDTPositionGenerator__enumerateRecordNamesBeforeRecordWithName_usin
       if (![MEMORY[0x1E695BA58] safari_folderTypeForRecordName:v10])
       {
         v12 = 0;
-        v7[2](v7, v10, &v12);
+        blockCopy[2](blockCopy, v10, &v12);
         if (v12)
         {
           break;
@@ -299,44 +299,44 @@ id __80__WBSCRDTPositionGenerator__enumerateRecordNamesAfterRecordWithName_using
   return v6;
 }
 
-- (id)_generatePositionsForStrides:(id)a3
+- (id)_generatePositionsForStrides:(id)strides
 {
   v41 = *MEMORY[0x1E69E9840];
-  v24 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  stridesCopy = strides;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   context = objc_autoreleasePoolPush();
-  v25 = [v24 mutableCopy];
-  v5 = [v25 firstObject];
-  if (v5)
+  v25 = [stridesCopy mutableCopy];
+  firstObject = [v25 firstObject];
+  if (firstObject)
   {
     do
     {
       [v25 removeObjectAtIndex:0];
-      v26 = [v5 recordNames];
-      v6 = [v5 beforePosition];
+      recordNames = [firstObject recordNames];
+      beforePosition = [firstObject beforePosition];
       v34 = 0;
       v35 = &v34;
       v36 = 0x3032000000;
       v37 = __Block_byref_object_copy__7;
       v38 = __Block_byref_object_dispose__7;
-      v39 = [v5 afterPosition];
+      afterPosition = [firstObject afterPosition];
       if (v35[5])
       {
-        if (v6)
+        if (beforePosition)
         {
-          v7 = [(WBSCRDTPositionGenerator *)self _generatePositionBetweenPosition:v6 andPosition:?];
-          v8 = [v26 count];
-          v9 = [v26 objectAtIndexedSubscript:v8 >> 1];
-          [v4 setObject:v7 forKeyedSubscript:v9];
+          v7 = [(WBSCRDTPositionGenerator *)self _generatePositionBetweenPosition:beforePosition andPosition:?];
+          v8 = [recordNames count];
+          v9 = [recordNames objectAtIndexedSubscript:v8 >> 1];
+          [dictionary setObject:v7 forKeyedSubscript:v9];
 
-          v10 = [v26 subarrayWithRange:{0, v8 >> 1}];
+          v10 = [recordNames subarrayWithRange:{0, v8 >> 1}];
           if ([v10 count])
           {
-            v11 = [[_WBSCRDTPositionGeneratorStride alloc] initWithRecordNames:v10 beforePosition:v6 afterPosition:v7];
+            v11 = [[_WBSCRDTPositionGeneratorStride alloc] initWithRecordNames:v10 beforePosition:beforePosition afterPosition:v7];
             [v25 addObject:v11];
           }
 
-          v12 = [v26 subarrayWithRange:{(v8 >> 1) + 1, v8 + ~(v8 >> 1)}];
+          v12 = [recordNames subarrayWithRange:{(v8 >> 1) + 1, v8 + ~(v8 >> 1)}];
           if ([v12 count])
           {
             v13 = [_WBSCRDTPositionGeneratorStride alloc];
@@ -353,8 +353,8 @@ id __80__WBSCRDTPositionGenerator__enumerateRecordNamesAfterRecordWithName_using
           v27[3] = &unk_1E7FC4A18;
           v29 = &v34;
           v27[4] = self;
-          v28 = v4;
-          [v26 enumerateObjectsWithOptions:2 usingBlock:v27];
+          v28 = dictionary;
+          [recordNames enumerateObjectsWithOptions:2 usingBlock:v27];
         }
       }
 
@@ -364,7 +364,7 @@ id __80__WBSCRDTPositionGenerator__enumerateRecordNamesAfterRecordWithName_using
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v15 = v26;
+        v15 = recordNames;
         v16 = [v15 countByEnumeratingWithState:&v30 objects:v40 count:16];
         if (v16)
         {
@@ -372,7 +372,7 @@ id __80__WBSCRDTPositionGenerator__enumerateRecordNamesAfterRecordWithName_using
           do
           {
             v18 = 0;
-            v19 = v6;
+            v19 = beforePosition;
             do
             {
               if (*v31 != v17)
@@ -381,11 +381,11 @@ id __80__WBSCRDTPositionGenerator__enumerateRecordNamesAfterRecordWithName_using
               }
 
               v20 = *(*(&v30 + 1) + 8 * v18);
-              v6 = [(WBSCRDTPositionGenerator *)self _generatePositionBetweenPosition:v19 andPosition:0];
+              beforePosition = [(WBSCRDTPositionGenerator *)self _generatePositionBetweenPosition:v19 andPosition:0];
 
-              [v4 setObject:v6 forKeyedSubscript:v20];
+              [dictionary setObject:beforePosition forKeyedSubscript:v20];
               ++v18;
-              v19 = v6;
+              v19 = beforePosition;
             }
 
             while (v16 != v18);
@@ -398,17 +398,17 @@ id __80__WBSCRDTPositionGenerator__enumerateRecordNamesAfterRecordWithName_using
 
       _Block_object_dispose(&v34, 8);
 
-      v21 = [v25 firstObject];
+      firstObject2 = [v25 firstObject];
 
-      v5 = v21;
+      firstObject = firstObject2;
     }
 
-    while (v21);
+    while (firstObject2);
   }
 
   objc_autoreleasePoolPop(context);
 
-  return v4;
+  return dictionary;
 }
 
 void __57__WBSCRDTPositionGenerator__generatePositionsForStrides___block_invoke(uint64_t a1, void *a2)
@@ -424,29 +424,29 @@ void __57__WBSCRDTPositionGenerator__generatePositionsForStrides___block_invoke(
   [*(a1 + 40) setObject:*(*(*(a1 + 48) + 8) + 40) forKeyedSubscript:v8];
 }
 
-- (id)_generatePositionBetweenPosition:(id)a3 andPosition:(id)a4
+- (id)_generatePositionBetweenPosition:(id)position andPosition:(id)andPosition
 {
-  v6 = a4;
-  v7 = a3;
+  andPositionCopy = andPosition;
+  positionCopy = position;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = [WeakRetained deviceIdentifierForPositionGenerator:self];
-  v10 = +[WBSCRDTPosition positionBetweenPosition:andPosition:withDeviceIdentifier:changeID:](WBSCRDTPosition, "positionBetweenPosition:andPosition:withDeviceIdentifier:changeID:", v7, v6, v9, [WeakRetained nextChangeIDForPositionInPositionGenerator:self]);
+  v10 = +[WBSCRDTPosition positionBetweenPosition:andPosition:withDeviceIdentifier:changeID:](WBSCRDTPosition, "positionBetweenPosition:andPosition:withDeviceIdentifier:changeID:", positionCopy, andPositionCopy, v9, [WeakRetained nextChangeIDForPositionInPositionGenerator:self]);
 
   return v10;
 }
 
-- (id)_positionForRecordName:(id)a3
+- (id)_positionForRecordName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained positionGenerator:self positionForRecordName:v4];
+  v6 = [WeakRetained positionGenerator:self positionForRecordName:nameCopy];
 
   if (!v6)
   {
     v7 = WBS_LOG_CHANNEL_PREFIXCloudBookmarks();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(WBSCRDTPositionGenerator *)v4 _positionForRecordName:v7];
+      [(WBSCRDTPositionGenerator *)nameCopy _positionForRecordName:v7];
     }
   }
 

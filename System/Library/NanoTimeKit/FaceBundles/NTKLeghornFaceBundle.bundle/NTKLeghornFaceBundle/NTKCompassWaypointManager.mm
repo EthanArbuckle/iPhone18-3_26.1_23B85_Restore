@@ -1,14 +1,14 @@
 @interface NTKCompassWaypointManager
-+ (id)_filterNCWaypoints:(id)a3 location:(id)a4 radius:(double)a5;
-+ (id)_filterNCWaypoints:(id)a3 query:(id)a4;
++ (id)_filterNCWaypoints:(id)waypoints location:(id)location radius:(double)radius;
++ (id)_filterNCWaypoints:(id)waypoints query:(id)query;
 - (NSArray)waypoints;
 - (NTKCompassWaypointManager)init;
 - (void)_removeObservers;
 - (void)_updateSubscriber;
-- (void)_waypointListDidChange:(id)a3;
+- (void)_waypointListDidChange:(id)change;
 - (void)dealloc;
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6;
-- (void)startUpdatingDelegate:(id)a3;
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion;
+- (void)startUpdatingDelegate:(id)delegate;
 - (void)stopUpdating;
 @end
 
@@ -41,7 +41,7 @@
   [(NTKCompassWaypointManager *)&v4 dealloc];
 }
 
-+ (id)_filterNCWaypoints:(id)a3 location:(id)a4 radius:(double)a5
++ (id)_filterNCWaypoints:(id)waypoints location:(id)location radius:(double)radius
 {
   v5 = objc_opt_new();
   v8 = objc_msgSend_copy(v5, v6, v7);
@@ -49,16 +49,16 @@
   return v8;
 }
 
-+ (id)_filterNCWaypoints:(id)a3 query:(id)a4
++ (id)_filterNCWaypoints:(id)waypoints query:(id)query
 {
-  v6 = a4;
-  v7 = a3;
-  if (objc_msgSend_isValid(v6, v8, v9))
+  queryCopy = query;
+  waypointsCopy = waypoints;
+  if (objc_msgSend_isValid(queryCopy, v8, v9))
   {
     v12 = objc_alloc(MEMORY[0x277CE41F8]);
-    objc_msgSend_centerCoordinate(v6, v13, v14);
+    objc_msgSend_centerCoordinate(queryCopy, v13, v14);
     v16 = v15;
-    objc_msgSend_centerCoordinate(v6, v17, v15);
+    objc_msgSend_centerCoordinate(queryCopy, v17, v15);
     v19 = objc_msgSend_initWithLatitude_longitude_(v12, v18, v16);
   }
 
@@ -67,8 +67,8 @@
     v19 = 0;
   }
 
-  objc_msgSend_radius(v6, v10, v11);
-  v22 = objc_msgSend__filterNCWaypoints_location_radius_(a1, v20, v21, v7, v19);
+  objc_msgSend_radius(queryCopy, v10, v11);
+  v22 = objc_msgSend__filterNCWaypoints_location_radius_(self, v20, v21, waypointsCopy, v19);
 
   return v22;
 }
@@ -82,7 +82,7 @@
   }
 }
 
-- (void)_waypointListDidChange:(id)a3
+- (void)_waypointListDidChange:(id)change
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = NTKFoghornFaceBundleLogObject();
@@ -130,16 +130,16 @@
   return v8;
 }
 
-- (void)setQueryCenterLocation:(id)a3 radius:(double)a4 poiFilter:(id)a5 completion:(id)a6
+- (void)setQueryCenterLocation:(id)location radius:(double)radius poiFilter:(id)filter completion:(id)completion
 {
-  v40 = a3;
-  v10 = a5;
-  v12 = a6;
-  if ((v40 || a4 <= 0.0) && (a4 <= 0.0 || (v13 = 50.0, a4 >= 50.0)))
+  locationCopy = location;
+  filterCopy = filter;
+  completionCopy = completion;
+  if ((locationCopy || radius <= 0.0) && (radius <= 0.0 || (v13 = 50.0, radius >= 50.0)))
   {
-    v14 = objc_msgSend_copyIncludingCategories_(v10, v11, v13, 1);
+    v14 = objc_msgSend_copyIncludingCategories_(filterCopy, v11, v13, 1);
     v15 = self->_currentQuery;
-    objc_msgSend_coordinate(v40, v16, v17);
+    objc_msgSend_coordinate(locationCopy, v16, v17);
     v20 = objc_msgSend_queryWithCenterCoordinate_radius_poiFilter_(NTKLeghornWaypointQuery, v18, v19, v14);
     if ((objc_msgSend_matchesQuery_(v15, v21, v22, v20) & 1) == 0)
     {
@@ -162,22 +162,22 @@
       objc_storeStrong(&self->_currentQuery, v20);
     }
 
-    if (v12)
+    if (completionCopy)
     {
       v39 = objc_msgSend_waypoints(self, v23, v24);
-      v12[2](v12, self->_filteredWaypoints != 0);
+      completionCopy[2](completionCopy, self->_filteredWaypoints != 0);
     }
   }
 
-  else if (v12)
+  else if (completionCopy)
   {
-    v12[2](v12, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)startUpdatingDelegate:(id)a3
+- (void)startUpdatingDelegate:(id)delegate
 {
-  objc_storeStrong(&self->_delegate, a3);
+  objc_storeStrong(&self->_delegate, delegate);
 
   MEMORY[0x2821F9670](v3);
 }

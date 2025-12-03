@@ -1,6 +1,6 @@
 @interface HMDRemoteLoginInitiatorCompanionAuthentication
 + (id)logCategory;
-- (HMDRemoteLoginInitiatorCompanionAuthentication)initWithSessionID:(id)a3 remoteDevice:(id)a4 workQueue:(id)a5 remoteMessageSender:(id)a6 delegate:(id)a7 account:(id)a8;
+- (HMDRemoteLoginInitiatorCompanionAuthentication)initWithSessionID:(id)d remoteDevice:(id)device workQueue:(id)queue remoteMessageSender:(id)sender delegate:(id)delegate account:(id)account;
 - (id)description;
 - (void)_authenticate;
 - (void)authenticate;
@@ -13,61 +13,61 @@
 {
   v36 = *MEMORY[0x277D85DE8];
   v3 = +[HMDAppleAccountManager sharedManager];
-  v4 = [v3 accountStore];
+  accountStore = [v3 accountStore];
 
-  v5 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)self account];
+  account = [(HMDRemoteLoginInitiatorCompanionAuthentication *)self account];
   v27 = 0;
-  v6 = [v4 credentialForAccount:v5 error:&v27];
+  v6 = [accountStore credentialForAccount:account error:&v27];
   v7 = v27;
 
   if (v6)
   {
-    v8 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)self account];
-    [v8 setCredential:v6];
+    account2 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)self account];
+    [account2 setCredential:v6];
 
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)v10 account];
-      v14 = [v13 identifier];
-      v15 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)v10 account];
+      account3 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)selfCopy account];
+      identifier = [account3 identifier];
+      account4 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)selfCopy account];
       *buf = 138543874;
       v31 = v12;
       v32 = 2112;
-      v33 = v14;
+      v33 = identifier;
       v34 = 2112;
-      v35 = v15;
+      v35 = account4;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Loaded credentials for account %@, %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
-    v16 = [MEMORY[0x277CF0218] currentDevice];
-    [v16 setLinkType:3];
+    currentDevice = [MEMORY[0x277CF0218] currentDevice];
+    [currentDevice setLinkType:3];
     v17 = [HMDRemoteLoginCompanionAuthenticationRequest alloc];
-    v18 = [(HMDRemoteLoginAuthentication *)v10 sessionID];
-    v19 = [(HMRemoteLoginMessage *)v17 initWithSessionID:v18];
+    sessionID = [(HMDRemoteLoginAuthentication *)selfCopy sessionID];
+    v19 = [(HMRemoteLoginMessage *)v17 initWithSessionID:sessionID];
 
-    v20 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)v10 account];
-    [(HMDRemoteLoginCompanionAuthenticationRequest *)v19 setAccount:v20];
+    account5 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)selfCopy account];
+    [(HMDRemoteLoginCompanionAuthenticationRequest *)v19 setAccount:account5];
 
-    [(HMDRemoteLoginCompanionAuthenticationRequest *)v19 setCompanionDevice:v16];
+    [(HMDRemoteLoginCompanionAuthenticationRequest *)v19 setCompanionDevice:currentDevice];
     [(HMDRemoteLoginAuthenticationRequest *)v19 setTargetedAccountType:0];
     v28 = @"kHMDRemoteLoginCompanionAuthenticationRequest";
     v21 = encodeRootObject();
     v29 = v21;
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
 
-    objc_initWeak(buf, v10);
-    v23 = [(HMDRemoteLoginAuthentication *)v10 remoteMessageSender];
+    objc_initWeak(buf, selfCopy);
+    remoteMessageSender = [(HMDRemoteLoginAuthentication *)selfCopy remoteMessageSender];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __63__HMDRemoteLoginInitiatorCompanionAuthentication__authenticate__block_invoke;
     v25[3] = &unk_279733B98;
     objc_copyWeak(&v26, buf);
-    [v23 sendRemoteMessageWithName:@"kHMDRemoteLoginCompanionAuthenticationRequest" payload:v22 responseHandler:v25];
+    [remoteMessageSender sendRemoteMessageWithName:@"kHMDRemoteLoginCompanionAuthenticationRequest" payload:v22 responseHandler:v25];
 
     objc_destroyWeak(&v26);
     objc_destroyWeak(buf);
@@ -86,21 +86,21 @@ void __63__HMDRemoteLoginInitiatorCompanionAuthentication__authenticate__block_i
 
 - (void)authenticate
 {
-  v3 = [(HMDRemoteLoginAuthentication *)self workQueue];
+  workQueue = [(HMDRemoteLoginAuthentication *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__HMDRemoteLoginInitiatorCompanionAuthentication_authenticate__block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDRemoteLoginAuthentication *)self sessionID];
-  v5 = [(HMDRemoteLoginInitiatorCompanionAuthentication *)self account];
-  v6 = [v3 stringWithFormat:@"[Init-Companion-Auth: Session: %@, Account: %@]", v4, v5];
+  sessionID = [(HMDRemoteLoginAuthentication *)self sessionID];
+  account = [(HMDRemoteLoginInitiatorCompanionAuthentication *)self account];
+  v6 = [v3 stringWithFormat:@"[Init-Companion-Auth: Session: %@, Account: %@]", sessionID, account];
 
   return v6;
 }
@@ -109,7 +109,7 @@ void __63__HMDRemoteLoginInitiatorCompanionAuthentication__authenticate__block_i
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -117,27 +117,27 @@ void __63__HMDRemoteLoginInitiatorCompanionAuthentication__authenticate__block_i
     *buf = 138543618;
     v10 = v6;
     v11 = 2112;
-    v12 = v4;
+    v12 = selfCopy;
     _os_log_impl(&dword_2531F8000, v5, OS_LOG_TYPE_INFO, "%{public}@Dealloc %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = HMDRemoteLoginInitiatorCompanionAuthentication;
   [(HMDRemoteLoginInitiatorCompanionAuthentication *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDRemoteLoginInitiatorCompanionAuthentication)initWithSessionID:(id)a3 remoteDevice:(id)a4 workQueue:(id)a5 remoteMessageSender:(id)a6 delegate:(id)a7 account:(id)a8
+- (HMDRemoteLoginInitiatorCompanionAuthentication)initWithSessionID:(id)d remoteDevice:(id)device workQueue:(id)queue remoteMessageSender:(id)sender delegate:(id)delegate account:(id)account
 {
-  v15 = a8;
+  accountCopy = account;
   v19.receiver = self;
   v19.super_class = HMDRemoteLoginInitiatorCompanionAuthentication;
-  v16 = [(HMDRemoteLoginInitiatorAuthentication *)&v19 initWithSessionID:a3 remoteDevice:a4 workQueue:a5 remoteMessageSender:a6 delegate:a7];
+  v16 = [(HMDRemoteLoginInitiatorAuthentication *)&v19 initWithSessionID:d remoteDevice:device workQueue:queue remoteMessageSender:sender delegate:delegate];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_account, a8);
+    objc_storeStrong(&v16->_account, account);
   }
 
   return v17;

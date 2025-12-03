@@ -1,74 +1,74 @@
 @interface FKAppleAccount
-- (BOOL)isEqual:(id)a3;
-- (FKAppleAccount)initWithAccountIdentifier:(id)a3 currentBalance:(id)a4 totalBalance:(id)a5 currency:(id)a6 status:(unint64_t)a7 type:(unint64_t)a8 creditLimit:(id)a9 minimumDueAmount:(id)a10 nextPaymentDueDate:(id)a11 lastUpdated:(id)a12 displayName:(id)a13 openingDate:(id)a14 overduePaymentAmount:(id)a15;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKAppleAccount)initWithAccountIdentifier:(id)identifier currentBalance:(id)balance totalBalance:(id)totalBalance currency:(id)currency status:(unint64_t)status type:(unint64_t)type creditLimit:(id)limit minimumDueAmount:(id)self0 nextPaymentDueDate:(id)self1 lastUpdated:(id)self2 displayName:(id)self3 openingDate:(id)self4 overduePaymentAmount:(id)self5;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation FKAppleAccount
 
-- (FKAppleAccount)initWithAccountIdentifier:(id)a3 currentBalance:(id)a4 totalBalance:(id)a5 currency:(id)a6 status:(unint64_t)a7 type:(unint64_t)a8 creditLimit:(id)a9 minimumDueAmount:(id)a10 nextPaymentDueDate:(id)a11 lastUpdated:(id)a12 displayName:(id)a13 openingDate:(id)a14 overduePaymentAmount:(id)a15
+- (FKAppleAccount)initWithAccountIdentifier:(id)identifier currentBalance:(id)balance totalBalance:(id)totalBalance currency:(id)currency status:(unint64_t)status type:(unint64_t)type creditLimit:(id)limit minimumDueAmount:(id)self0 nextPaymentDueDate:(id)self1 lastUpdated:(id)self2 displayName:(id)self3 openingDate:(id)self4 overduePaymentAmount:(id)self5
 {
-  v18 = a3;
-  v19 = a4;
-  v55 = a5;
-  v54 = a6;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
-  v23 = a12;
-  v24 = a13;
-  v25 = a14;
-  v26 = a15;
+  identifierCopy = identifier;
+  balanceCopy = balance;
+  totalBalanceCopy = totalBalance;
+  currencyCopy = currency;
+  limitCopy = limit;
+  amountCopy = amount;
+  dateCopy = date;
+  updatedCopy = updated;
+  nameCopy = name;
+  openingDateCopy = openingDate;
+  paymentAmountCopy = paymentAmount;
   v56.receiver = self;
   v56.super_class = FKAppleAccount;
   v27 = [(FKAppleAccount *)&v56 init];
   if (v27)
   {
-    v28 = [v18 copy];
+    v28 = [identifierCopy copy];
     accountIdentifier = v27->_accountIdentifier;
     v27->_accountIdentifier = v28;
 
-    v30 = [v19 copy];
+    v30 = [balanceCopy copy];
     currentBalance = v27->_currentBalance;
     v27->_currentBalance = v30;
 
-    v32 = [v55 copy];
+    v32 = [totalBalanceCopy copy];
     totalBalance = v27->_totalBalance;
     v27->_totalBalance = v32;
 
-    v34 = [v54 copy];
+    v34 = [currencyCopy copy];
     currency = v27->_currency;
     v27->_currency = v34;
 
-    v36 = [v24 copy];
+    v36 = [nameCopy copy];
     displayName = v27->_displayName;
     v27->_displayName = v36;
 
-    v27->_status = a7;
-    v27->_type = a8;
-    v38 = [v20 copy];
+    v27->_status = status;
+    v27->_type = type;
+    v38 = [limitCopy copy];
     creditLimit = v27->_creditLimit;
     v27->_creditLimit = v38;
 
-    v40 = [v21 copy];
+    v40 = [amountCopy copy];
     minimumDueAmount = v27->_minimumDueAmount;
     v27->_minimumDueAmount = v40;
 
-    v42 = [v22 copy];
+    v42 = [dateCopy copy];
     nextPaymentDueDate = v27->_nextPaymentDueDate;
     v27->_nextPaymentDueDate = v42;
 
-    v44 = [v23 copy];
+    v44 = [updatedCopy copy];
     lastUpdated = v27->_lastUpdated;
     v27->_lastUpdated = v44;
 
-    v46 = [v25 copy];
+    v46 = [openingDateCopy copy];
     openingDate = v27->_openingDate;
     v27->_openingDate = v46;
 
-    v48 = [v26 copy];
+    v48 = [paymentAmountCopy copy];
     overduePaymentAmount = v27->_overduePaymentAmount;
     v27->_overduePaymentAmount = v48;
   }
@@ -76,51 +76,51 @@
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_displayName copyWithZone:a3];
+  v8 = [(NSString *)self->_displayName copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(NSDecimalNumber *)self->_currentBalance copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_currentBalance copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSDecimalNumber *)self->_totalBalance copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_totalBalance copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NSString *)self->_currency copyWithZone:a3];
+  v14 = [(NSString *)self->_currency copyWithZone:zone];
   v15 = v5[4];
   v5[4] = v14;
 
   v5[5] = self->_status;
-  v16 = [(NSDecimalNumber *)self->_minimumDueAmount copyWithZone:a3];
+  v16 = [(NSDecimalNumber *)self->_minimumDueAmount copyWithZone:zone];
   v17 = v5[9];
   v5[9] = v16;
 
-  v18 = [(NSDecimalNumber *)self->_creditLimit copyWithZone:a3];
+  v18 = [(NSDecimalNumber *)self->_creditLimit copyWithZone:zone];
   v19 = v5[8];
   v5[8] = v18;
 
-  v20 = [(NSDate *)self->_nextPaymentDueDate copyWithZone:a3];
+  v20 = [(NSDate *)self->_nextPaymentDueDate copyWithZone:zone];
   v21 = v5[10];
   v5[10] = v20;
 
-  v22 = [(NSDate *)self->_lastUpdated copyWithZone:a3];
+  v22 = [(NSDate *)self->_lastUpdated copyWithZone:zone];
   v23 = v5[11];
   v5[11] = v22;
 
-  v24 = [(NSDate *)self->_openingDate copyWithZone:a3];
+  v24 = [(NSDate *)self->_openingDate copyWithZone:zone];
   v25 = v5[12];
   v5[12] = v24;
 
-  v26 = [(NSDecimalNumber *)self->_overduePaymentAmount copyWithZone:a3];
+  v26 = [(NSDecimalNumber *)self->_overduePaymentAmount copyWithZone:zone];
   v27 = v5[13];
   v5[13] = v26;
 
@@ -147,16 +147,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     v7 = FKEqualObjects(self->_accountIdentifier, v6[1]) && FKEqualObjects(self->_displayName, v6[7]) && FKEqualObjects(self->_minimumDueAmount, v6[9]) && FKEqualObjects(self->_currentBalance, v6[2]) && FKEqualObjects(self->_totalBalance, v6[3]) && FKEqualObjects(self->_currency, v6[4]) && FKEqualObjects(self->_creditLimit, v6[8]) && FKEqualObjects(self->_nextPaymentDueDate, v6[10]) && FKEqualObjects(self->_lastUpdated, v6[11]) && FKEqualObjects(self->_openingDate, v6[12]) && FKEqualObjects(self->_overduePaymentAmount, v6[13]) && self->_status == v6[5];

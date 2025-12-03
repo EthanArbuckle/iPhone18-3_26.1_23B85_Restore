@@ -6,10 +6,10 @@
 
 - (id)sb_resolvedColor
 {
-  v2 = [a1 colorName];
-  if (v2)
+  colorName = [self colorName];
+  if (colorName)
   {
-    v3 = [MEMORY[0x277D75348] sbui_systemColorNamed:v2];
+    v3 = [MEMORY[0x277D75348] sbui_systemColorNamed:colorName];
   }
 
   else
@@ -17,12 +17,12 @@
     v3 = 0;
   }
 
-  v4 = [a1 color];
-  v5 = v4;
-  if (v4)
+  color = [self color];
+  v5 = color;
+  if (color)
   {
     v6 = MEMORY[0x277D75348];
-    [v4 red];
+    [color red];
     v8 = v7;
     [v5 green];
     v10 = v9;

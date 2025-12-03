@@ -1,24 +1,24 @@
 @interface INInformationUseCaseParameterValueResolutionResult
-+ (id)confirmationRequiredWithINInformationUseCaseParameterValueToConfirm:(id)a3;
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)disambiguationWithINInformationUseCaseParameterValuesToDisambiguate:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)successWithResolvedINInformationUseCaseParameterValue:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
++ (id)confirmationRequiredWithINInformationUseCaseParameterValueToConfirm:(id)confirm;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)disambiguationWithINInformationUseCaseParameterValuesToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedINInformationUseCaseParameterValue:(id)value;
++ (id)successWithResolvedObject:(id)object;
 @end
 
 @implementation INInformationUseCaseParameterValueResolutionResult
 
-+ (id)successWithResolvedINInformationUseCaseParameterValue:(id)a3
++ (id)successWithResolvedINInformationUseCaseParameterValue:(id)value
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static INInformationUseCaseParameterValueResolutionResult.success(with:)(v4);
+  valueCopy = value;
+  v5 = static INInformationUseCaseParameterValueResolutionResult.success(with:)(valueCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithINInformationUseCaseParameterValuesToDisambiguate:(id)a3
++ (id)disambiguationWithINInformationUseCaseParameterValuesToDisambiguate:(id)disambiguate
 {
   type metadata accessor for INInformationUseCaseParameterValue();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -28,30 +28,30 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithINInformationUseCaseParameterValueToConfirm:(id)a3
++ (id)confirmationRequiredWithINInformationUseCaseParameterValueToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static INInformationUseCaseParameterValueResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static INInformationUseCaseParameterValueResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

@@ -7,7 +7,7 @@
 - (void)(_:(@guaranteed)[@convention(block )
 {
   v8 = a2;
-  v9 = *(a1 + 32);
+  v9 = *(self + 32);
   if (a2)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo7CGPointVABXBMd);

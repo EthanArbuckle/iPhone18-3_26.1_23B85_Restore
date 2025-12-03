@@ -1,43 +1,43 @@
 @interface TSCHChartPieWedgeElement
-- (BOOL)angleInRange:(double)a3 startAngle:(double)a4 endAngle:(double)a5;
-- (BOOL)calloutLineIntersectsWedgeWithStartPoint:(CGPoint)a3 midPoint:(CGPoint)a4;
-- (BOOL)isInUpperHalfOfChartWithStartPoint:(CGPoint)a3;
+- (BOOL)angleInRange:(double)range startAngle:(double)angle endAngle:(double)endAngle;
+- (BOOL)calloutLineIntersectsWedgeWithStartPoint:(CGPoint)point midPoint:(CGPoint)midPoint;
+- (BOOL)isInUpperHalfOfChartWithStartPoint:(CGPoint)point;
 - (BOOL)isOnLeftSideOfChart;
-- (BOOL)lineIntersectsLineWithStartPoint:(CGPoint)a3 firstLineEndPoint:(CGPoint)a4 secondLineStartPoint:(CGPoint)a5 secondLineEndPoint:(CGPoint)a6 outIntersectionPoint:(CGPoint *)a7;
-- (BOOL)lineIntersectsWedgeWithLineStartPoint:(CGPoint)a3 lineEndPoint:(CGPoint)a4;
-- (BOOL)pointWithinWedgeSpread:(CGPoint)a3 percentage:(double)a4;
-- (BOOL)shouldUsePerpendicularBendedLineWithStartPoint:(CGPoint)a3;
-- (BOOL)wedgeBisectionIntersectsRect:(CGRect)a3 outIntersectionPointClosestToWedgeTip:(CGPoint *)a4;
+- (BOOL)lineIntersectsLineWithStartPoint:(CGPoint)point firstLineEndPoint:(CGPoint)endPoint secondLineStartPoint:(CGPoint)startPoint secondLineEndPoint:(CGPoint)lineEndPoint outIntersectionPoint:(CGPoint *)intersectionPoint;
+- (BOOL)lineIntersectsWedgeWithLineStartPoint:(CGPoint)point lineEndPoint:(CGPoint)endPoint;
+- (BOOL)pointWithinWedgeSpread:(CGPoint)spread percentage:(double)percentage;
+- (BOOL)shouldUsePerpendicularBendedLineWithStartPoint:(CGPoint)point;
+- (BOOL)wedgeBisectionIntersectsRect:(CGRect)rect outIntersectionPointClosestToWedgeTip:(CGPoint *)tip;
 - (CGPoint)arcEndPoint;
 - (CGPoint)arcStartPoint;
-- (CGPoint)bendedLineMidpointWithStartPoint:(CGPoint)a3 length:(double)a4 shouldBeUpwards:(BOOL)a5;
+- (CGPoint)bendedLineMidpointWithStartPoint:(CGPoint)point length:(double)length shouldBeUpwards:(BOOL)upwards;
 - (CGPoint)centerPoint;
-- (CGPoint)defaultBendedLineEndpointWithStartPoint:(CGPoint)a3;
-- (CGPoint)defaultBendedLineMidpointWithStartPoint:(CGPoint)a3;
+- (CGPoint)defaultBendedLineEndpointWithStartPoint:(CGPoint)point;
+- (CGPoint)defaultBendedLineMidpointWithStartPoint:(CGPoint)point;
 - (CGPoint)defaultLabelCenterPoint;
-- (CGPoint)defaultLabelCenterPointForLabelWithSize:(CGSize)a3 bended:(BOOL)a4;
+- (CGPoint)defaultLabelCenterPointForLabelWithSize:(CGSize)size bended:(BOOL)bended;
 - (CGPoint)defaultLabelEndpointForBendedLineLabels;
-- (CGPoint)firstHalfOfBendedLineVectorNormalizedShouldBeUpwards:(BOOL)a3;
-- (CGPoint)midpointOnClosestEdgeToWedgeTip:(CGRect)a3;
+- (CGPoint)firstHalfOfBendedLineVectorNormalizedShouldBeUpwards:(BOOL)upwards;
+- (CGPoint)midpointOnClosestEdgeToWedgeTip:(CGRect)tip;
 - (CGPoint)normalizedWedgeBisectionVector;
-- (CGPoint)pointAlongWedgeBisectionInChartCoordinateSpaceWithFloatDistanceFromWedgeTip:(double)a3;
-- (CGPoint)pointAlongWedgeBisectionInChartCoordinateSpaceWithPercentDistanceFromWedgeTip:(double)a3;
+- (CGPoint)pointAlongWedgeBisectionInChartCoordinateSpaceWithFloatDistanceFromWedgeTip:(double)tip;
+- (CGPoint)pointAlongWedgeBisectionInChartCoordinateSpaceWithPercentDistanceFromWedgeTip:(double)tip;
 - (CGPoint)pointAtWedgeCircumferenceMiddleInChartCoordinateSpace;
 - (CGPoint)pointAtWedgeTipInChartCoordinateSpace;
-- (CGRect)defaultLabelRectForLabelWithSize:(CGSize)a3 bended:(BOOL)a4;
-- (TSCHChartPieLabelRects)labelRectsForFirstLabelWithSize:(SEL)a3 secondLabelSize:(CGSize)a4 stacked:(CGSize)a5 stackedLabelCenterAlign:(BOOL)a6 placeToTheSideOfPieChart:(BOOL)a7;
-- (TSCHChartPieWedgeElement)initWithRadius:(double)a3 startAngle:(double)a4 midAngle:(double)a5 endAngle:(double)a6 labelExplosion:(double)a7 wedgeExplosion:(double)a8 series:(id)a9;
+- (CGRect)defaultLabelRectForLabelWithSize:(CGSize)size bended:(BOOL)bended;
+- (TSCHChartPieLabelRects)labelRectsForFirstLabelWithSize:(SEL)size secondLabelSize:(CGSize)labelSize stacked:(CGSize)stacked stackedLabelCenterAlign:(BOOL)align placeToTheSideOfPieChart:(BOOL)chart;
+- (TSCHChartPieWedgeElement)initWithRadius:(double)radius startAngle:(double)angle midAngle:(double)midAngle endAngle:(double)endAngle labelExplosion:(double)explosion wedgeExplosion:(double)wedgeExplosion series:(id)series;
 - (TSCHChartSeries)series;
-- (double)p_xShiftAmountWithEndpoint:(CGPoint)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setLayoutSystem:(TSCHChartPieWedgeElementLayoutSystem *)a3;
+- (double)p_xShiftAmountWithEndpoint:(CGPoint)endpoint;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setLayoutSystem:(TSCHChartPieWedgeElementLayoutSystem *)system;
 @end
 
 @implementation TSCHChartPieWedgeElement
 
-- (TSCHChartPieWedgeElement)initWithRadius:(double)a3 startAngle:(double)a4 midAngle:(double)a5 endAngle:(double)a6 labelExplosion:(double)a7 wedgeExplosion:(double)a8 series:(id)a9
+- (TSCHChartPieWedgeElement)initWithRadius:(double)radius startAngle:(double)angle midAngle:(double)midAngle endAngle:(double)endAngle labelExplosion:(double)explosion wedgeExplosion:(double)wedgeExplosion series:(id)series
 {
-  v16 = a9;
+  seriesCopy = series;
   v20.receiver = self;
   v20.super_class = TSCHChartPieWedgeElement;
   v17 = [(TSCHChartPieWedgeElement *)&v20 init];
@@ -46,22 +46,22 @@
   {
     v17->_layoutSystem.coordinateSpace = 0;
     v17->_layoutSystem.centerPoint = *MEMORY[0x277CBF348];
-    v17->_radius = a3;
-    v17->_midAngle = a5;
-    v17->_startAngle = a4;
-    v17->_endAngle = a6;
-    v17->_labelExplosion = a7;
-    v17->_wedgeExplosion = a8;
-    objc_storeWeak(&v17->_series, v16);
+    v17->_radius = radius;
+    v17->_midAngle = midAngle;
+    v17->_startAngle = angle;
+    v17->_endAngle = endAngle;
+    v17->_labelExplosion = explosion;
+    v17->_wedgeExplosion = wedgeExplosion;
+    objc_storeWeak(&v17->_series, seriesCopy);
   }
 
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   v19 = v15;
   if (v15)
@@ -107,9 +107,9 @@
   return result;
 }
 
-- (CGRect)defaultLabelRectForLabelWithSize:(CGSize)a3 bended:(BOOL)a4
+- (CGRect)defaultLabelRectForLabelWithSize:(CGSize)size bended:(BOOL)bended
 {
-  objc_msgSend_defaultLabelCenterPointForLabelWithSize_bended_(self, a2, a3.width, a3.height, v4, a4);
+  objc_msgSend_defaultLabelCenterPointForLabelWithSize_bended_(self, a2, size.width, size.height, v4, bended);
 
   TSURectWithCenterAndSize();
   result.size.height = v8;
@@ -119,32 +119,32 @@
   return result;
 }
 
-- (TSCHChartPieLabelRects)labelRectsForFirstLabelWithSize:(SEL)a3 secondLabelSize:(CGSize)a4 stacked:(CGSize)a5 stackedLabelCenterAlign:(BOOL)a6 placeToTheSideOfPieChart:(BOOL)a7
+- (TSCHChartPieLabelRects)labelRectsForFirstLabelWithSize:(SEL)size secondLabelSize:(CGSize)labelSize stacked:(CGSize)stacked stackedLabelCenterAlign:(BOOL)align placeToTheSideOfPieChart:(BOOL)chart
 {
-  v8 = a7;
-  v9 = a6;
-  height = a5.height;
-  v11 = a4.height;
-  width = a4.width;
-  if (a4.height >= a5.height)
+  chartCopy = chart;
+  alignCopy = align;
+  height = stacked.height;
+  v11 = labelSize.height;
+  width = labelSize.width;
+  if (labelSize.height >= stacked.height)
   {
-    v15 = a4.height;
+    v15 = labelSize.height;
   }
 
   else
   {
-    v15 = a5.height;
+    v15 = stacked.height;
   }
 
-  v37 = a5.width;
-  v16 = width + a5.width + 5.0;
-  v17 = v11 + a5.height;
-  if (width >= a5.height)
+  v37 = stacked.width;
+  v16 = width + stacked.width + 5.0;
+  v17 = v11 + stacked.height;
+  if (width >= stacked.height)
   {
-    a5.height = width;
+    stacked.height = width;
   }
 
-  if (a6)
+  if (align)
   {
     v18 = v17;
   }
@@ -154,25 +154,25 @@
     v18 = v15;
   }
 
-  if (a6)
+  if (align)
   {
-    objc_msgSend_defaultLabelCenterPointForLabelWithSize_bended_(self, a3, a5.height, v18, v17, a8, a5.height);
+    objc_msgSend_defaultLabelCenterPointForLabelWithSize_bended_(self, size, stacked.height, v18, v17, a8, stacked.height);
   }
 
   else
   {
-    objc_msgSend_defaultLabelCenterPointForLabelWithSize_bended_(self, a3, v16, v18, v17, a8, a5.height);
+    objc_msgSend_defaultLabelCenterPointForLabelWithSize_bended_(self, size, v16, v18, v17, a8, stacked.height);
   }
 
   v20 = v19;
   TSURectWithCenterAndSize();
   v26 = v22;
   v27 = v23;
-  if (v9)
+  if (alignCopy)
   {
     v28 = v24;
     v29 = v25;
-    if (v8)
+    if (chartCopy)
     {
       v30 = CGRectGetMidX(*&v22) + v37 * -0.5;
     }
@@ -218,12 +218,12 @@
   return result;
 }
 
-- (CGPoint)defaultLabelCenterPointForLabelWithSize:(CGSize)a3 bended:(BOOL)a4
+- (CGPoint)defaultLabelCenterPointForLabelWithSize:(CGSize)size bended:(BOOL)bended
 {
-  if (a4)
+  if (bended)
   {
-    width = a3.width;
-    objc_msgSend_defaultLabelEndpointForBendedLineLabels(self, a2, a3.width, a3.height, v4);
+    width = size.width;
+    objc_msgSend_defaultLabelEndpointForBendedLineLabels(self, a2, size.width, size.height, v4);
     v8 = v7;
     v10 = v9;
     objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, v11, v7, v9, v12);
@@ -242,7 +242,7 @@
 
   else
   {
-    objc_msgSend_defaultLabelCenterPoint(self, a2, a3.width, a3.height, v4);
+    objc_msgSend_defaultLabelCenterPoint(self, a2, size.width, size.height, v4);
     v10 = v16;
   }
 
@@ -252,10 +252,10 @@
   return result;
 }
 
-- (double)p_xShiftAmountWithEndpoint:(CGPoint)a3
+- (double)p_xShiftAmountWithEndpoint:(CGPoint)endpoint
 {
-  x = a3.x;
-  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, a3.x, a3.y, v3);
+  x = endpoint.x;
+  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, endpoint.x, endpoint.y, v3);
   v7 = vabdd_f64(x, v6);
   radius = self->_radius;
   v9 = radius - v7;
@@ -287,9 +287,9 @@
   return result;
 }
 
-- (CGPoint)bendedLineMidpointWithStartPoint:(CGPoint)a3 length:(double)a4 shouldBeUpwards:(BOOL)a5
+- (CGPoint)bendedLineMidpointWithStartPoint:(CGPoint)point length:(double)length shouldBeUpwards:(BOOL)upwards
 {
-  objc_msgSend_firstHalfOfBendedLineVectorNormalizedShouldBeUpwards_(self, a2, a3.x, a3.y, a4, a5);
+  objc_msgSend_firstHalfOfBendedLineVectorNormalizedShouldBeUpwards_(self, a2, point.x, point.y, length, upwards);
   TSUMultiplyPointScalar();
 
   TSUAddPoints();
@@ -298,11 +298,11 @@
   return result;
 }
 
-- (CGPoint)defaultBendedLineEndpointWithStartPoint:(CGPoint)a3
+- (CGPoint)defaultBendedLineEndpointWithStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  objc_msgSend_defaultBendedLineMidpointWithStartPoint_(self, a2, a3.x, a3.y, v3);
+  y = point.y;
+  x = point.x;
+  objc_msgSend_defaultBendedLineMidpointWithStartPoint_(self, a2, point.x, point.y, v3);
   v8 = v7;
   v10 = v9;
   TSUNormalizeAngleInRadians();
@@ -321,11 +321,11 @@
   return result;
 }
 
-- (CGPoint)defaultBendedLineMidpointWithStartPoint:(CGPoint)a3
+- (CGPoint)defaultBendedLineMidpointWithStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  if (objc_msgSend_shouldUsePerpendicularBendedLineWithStartPoint_(self, a2, a3.x, a3.y, v3))
+  y = point.y;
+  x = point.x;
+  if (objc_msgSend_shouldUsePerpendicularBendedLineWithStartPoint_(self, a2, point.x, point.y, v3))
   {
     started = objc_msgSend_isInUpperHalfOfChartWithStartPoint_(self, v7, x, y, v8);
     v10 = 7.0;
@@ -350,7 +350,7 @@
   return result;
 }
 
-- (BOOL)shouldUsePerpendicularBendedLineWithStartPoint:(CGPoint)a3
+- (BOOL)shouldUsePerpendicularBendedLineWithStartPoint:(CGPoint)point
 {
   TSUNormalizeAngleInRadians();
   v4 = v3 * 57.2957795;
@@ -381,19 +381,19 @@
   return result;
 }
 
-- (CGPoint)pointAlongWedgeBisectionInChartCoordinateSpaceWithPercentDistanceFromWedgeTip:(double)a3
+- (CGPoint)pointAlongWedgeBisectionInChartCoordinateSpaceWithPercentDistanceFromWedgeTip:(double)tip
 {
-  if (a3 < 0.0)
+  if (tip < 0.0)
   {
     v7 = MEMORY[0x277D81150];
-    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, v3, v4, "[TSCHChartPieWedgeElement pointAlongWedgeBisectionInChartCoordinateSpaceWithPercentDistanceFromWedgeTip:]");
+    v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, tip, v3, v4, "[TSCHChartPieWedgeElement pointAlongWedgeBisectionInChartCoordinateSpaceWithPercentDistanceFromWedgeTip:]");
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartPieWedgeElement.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v14, v15, v16, v17, v8, v13, 272, 0, "Invalid percentage value: %f. Value must be greater than or equal to 0", *&a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v14, v15, v16, v17, v8, v13, 272, 0, "Invalid percentage value: %f. Value must be greater than or equal to 0", *&tip);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19, v20, v21);
   }
 
-  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, a3, v3, v4);
+  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, tip, v3, v4);
   v23 = v22;
   v25 = v24;
   v27 = __sincos_stret(self->_midAngle);
@@ -409,7 +409,7 @@
     sinval = v27.__sinval;
   }
 
-  v31 = self->_radius * a3;
+  v31 = self->_radius * tip;
   v32 = v23 + v31 * cosval;
   v33 = v25 + v31 * sinval;
   result.y = v33;
@@ -425,9 +425,9 @@
   return result;
 }
 
-- (CGPoint)pointAlongWedgeBisectionInChartCoordinateSpaceWithFloatDistanceFromWedgeTip:(double)a3
+- (CGPoint)pointAlongWedgeBisectionInChartCoordinateSpaceWithFloatDistanceFromWedgeTip:(double)tip
 {
-  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, a3, v3, v4);
+  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, tip, v3, v4);
   objc_msgSend_normalizedWedgeBisectionVector(self, v6, v7, v8, v9);
   TSUMultiplyPointScalar();
 
@@ -437,9 +437,9 @@
   return result;
 }
 
-- (CGPoint)firstHalfOfBendedLineVectorNormalizedShouldBeUpwards:(BOOL)a3
+- (CGPoint)firstHalfOfBendedLineVectorNormalizedShouldBeUpwards:(BOOL)upwards
 {
-  v6 = a3;
+  upwardsCopy = upwards;
   if (objc_msgSend_isOnLeftSideOfChart(self, a2, v3, v4, v5))
   {
     v9.n128_f64[0] = 2.35619449;
@@ -453,19 +453,19 @@
   v7.n128_u64[0] = 1.0;
   v8.n128_u64[0] = 0;
 
-  MEMORY[0x2821EC448](!v6, v7, v8, v9);
+  MEMORY[0x2821EC448](!upwardsCopy, v7, v8, v9);
   result.y = v11;
   result.x = v10;
   return result;
 }
 
-- (BOOL)calloutLineIntersectsWedgeWithStartPoint:(CGPoint)a3 midPoint:(CGPoint)a4
+- (BOOL)calloutLineIntersectsWedgeWithStartPoint:(CGPoint)point midPoint:(CGPoint)midPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  v9 = objc_msgSend_isOnLeftSideOfChart(self, a2, a3.x, a3.y, a4.x);
+  y = midPoint.y;
+  x = midPoint.x;
+  v6 = point.y;
+  v7 = point.x;
+  v9 = objc_msgSend_isOnLeftSideOfChart(self, a2, point.x, point.y, midPoint.x);
   radius = self->_radius;
   if (v9)
   {
@@ -477,13 +477,13 @@
   return (started | objc_msgSend_lineIntersectsWedgeWithLineStartPoint_lineEndPoint_(self, v14, x, y, v12, y)) & 1;
 }
 
-- (BOOL)lineIntersectsWedgeWithLineStartPoint:(CGPoint)a3 lineEndPoint:(CGPoint)a4
+- (BOOL)lineIntersectsWedgeWithLineStartPoint:(CGPoint)point lineEndPoint:(CGPoint)endPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
-  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, *MEMORY[0x277CBF348], a3.y, a4.x, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
+  y = endPoint.y;
+  x = endPoint.x;
+  v6 = point.y;
+  v7 = point.x;
+  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, *MEMORY[0x277CBF348], point.y, endPoint.x, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8));
   v10 = v9;
   v12 = v11;
   objc_msgSend_arcStartPoint(self, v13, v9, v11, v14);
@@ -495,11 +495,11 @@
   return (started | objc_msgSend_lineIntersectsLineWithStartPoint_firstLineEndPoint_secondLineStartPoint_secondLineEndPoint_outIntersectionPoint_(self, v29, v7, v6, x, &v33, y, v24, v26, v30, v31)) & 1;
 }
 
-- (BOOL)pointWithinWedgeSpread:(CGPoint)a3 percentage:(double)a4
+- (BOOL)pointWithinWedgeSpread:(CGPoint)spread percentage:(double)percentage
 {
-  objc_msgSend_angleAtWedgeTip(self, a2, a3.x, a3.y, a4);
+  objc_msgSend_angleAtWedgeTip(self, a2, spread.x, spread.y, percentage);
   midAngle = self->_midAngle;
-  v8 = v6 * a4 * 0.5;
+  v8 = v6 * percentage * 0.5;
   v9 = midAngle - v8;
   v10 = midAngle + v8;
   objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, v11, v8, midAngle, 0.5);
@@ -509,10 +509,10 @@
   return MEMORY[0x2821F9670](self, sel_angleInRange_startAngle_endAngle_, v12, v9, v10);
 }
 
-- (BOOL)isInUpperHalfOfChartWithStartPoint:(CGPoint)a3
+- (BOOL)isInUpperHalfOfChartWithStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, a3.x, a3.y, v3);
+  y = point.y;
+  objc_msgSend_pointAtWedgeTipInChartCoordinateSpace(self, a2, point.x, point.y, v3);
   return y < v5 && vabdd_f64(y, v5) >= 0.00999999978;
 }
 
@@ -568,13 +568,13 @@
   return result;
 }
 
-- (BOOL)wedgeBisectionIntersectsRect:(CGRect)a3 outIntersectionPointClosestToWedgeTip:(CGPoint *)a4
+- (BOOL)wedgeBisectionIntersectsRect:(CGRect)rect outIntersectionPointClosestToWedgeTip:(CGPoint *)tip
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  MinX = CGRectGetMinX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  MinX = CGRectGetMinX(rect);
   v40.origin.x = x;
   v40.origin.y = y;
   v40.size.width = width;
@@ -623,14 +623,14 @@
   v23 = &v36;
   if (objc_msgSend_lineIntersectsLineWithStartPoint_firstLineEndPoint_secondLineStartPoint_secondLineEndPoint_outIntersectionPoint_(self, v24, v16, v18, v19, &v36, v21, MinX, MaxY, MaxX, v11) & 1) != 0 || (v23 = &v37, (objc_msgSend_lineIntersectsLineWithStartPoint_firstLineEndPoint_secondLineStartPoint_secondLineEndPoint_outIntersectionPoint_(self, v25, v16, v18, v20, &v37, v22, v33, MinY, v30, v31)) || (v23 = &v39, (objc_msgSend_lineIntersectsLineWithStartPoint_firstLineEndPoint_secondLineStartPoint_secondLineEndPoint_outIntersectionPoint_(self, v26, v16, v18, v20, &v39, v22, MinX, MaxY, v33, MinY)) || (v23 = &v38, (started = objc_msgSend_lineIntersectsLineWithStartPoint_firstLineEndPoint_secondLineStartPoint_secondLineEndPoint_outIntersectionPoint_(self, v27, v16, v18, v20, &v38, v22, MaxX, v11, v30, v31)) != 0))
   {
-    *a4 = *v23;
+    *tip = *v23;
     LOBYTE(started) = 1;
   }
 
   return started;
 }
 
-- (BOOL)lineIntersectsLineWithStartPoint:(CGPoint)a3 firstLineEndPoint:(CGPoint)a4 secondLineStartPoint:(CGPoint)a5 secondLineEndPoint:(CGPoint)a6 outIntersectionPoint:(CGPoint *)a7
+- (BOOL)lineIntersectsLineWithStartPoint:(CGPoint)point firstLineEndPoint:(CGPoint)endPoint secondLineStartPoint:(CGPoint)startPoint secondLineEndPoint:(CGPoint)lineEndPoint outIntersectionPoint:(CGPoint *)intersectionPoint
 {
   TSUSubtractPoints();
   TSUSubtractPoints();
@@ -653,8 +653,8 @@
     {
       TSUMultiplyPointScalar();
       TSUAddPoints();
-      a7->x = v17;
-      a7->y = v18;
+      intersectionPoint->x = v17;
+      intersectionPoint->y = v18;
       return 1;
     }
   }
@@ -662,15 +662,15 @@
   return result;
 }
 
-- (CGPoint)midpointOnClosestEdgeToWedgeTip:(CGRect)a3
+- (CGPoint)midpointOnClosestEdgeToWedgeTip:(CGRect)tip
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = tip.size.height;
+  width = tip.size.width;
+  y = tip.origin.y;
+  x = tip.origin.x;
   v59[4] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCAE60];
-  MinX = CGRectGetMinX(a3);
+  MinX = CGRectGetMinX(tip);
   v61.origin.x = x;
   v61.origin.y = y;
   v61.size.width = width;
@@ -750,7 +750,7 @@
   return result;
 }
 
-- (BOOL)angleInRange:(double)a3 startAngle:(double)a4 endAngle:(double)a5
+- (BOOL)angleInRange:(double)range startAngle:(double)angle endAngle:(double)endAngle
 {
   TSUNormalizeAngleInRadians();
   v6 = v5;
@@ -770,10 +770,10 @@
   return v6 < v9;
 }
 
-- (void)setLayoutSystem:(TSCHChartPieWedgeElementLayoutSystem *)a3
+- (void)setLayoutSystem:(TSCHChartPieWedgeElementLayoutSystem *)system
 {
-  v3 = *&a3->coordinateSpace;
-  self->_layoutSystem.centerPoint.y = a3->centerPoint.y;
+  v3 = *&system->coordinateSpace;
+  self->_layoutSystem.centerPoint.y = system->centerPoint.y;
   *&self->_layoutSystem.coordinateSpace = v3;
 }
 

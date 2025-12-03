@@ -7,7 +7,7 @@
 - (uint64_t)fp_isCloudDocsPushTopic
 {
   v2 = [@"com.apple.icloud-container." stringByAppendingString:@"clouddocs."];
-  v3 = [a1 hasPrefix:v2];
+  v3 = [self hasPrefix:v2];
 
   return v3;
 }

@@ -1,8 +1,8 @@
 @interface FCMultiResolutionImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (FCMultiResolutionImage)init;
-- (FCMultiResolutionImage)initWithConfigDictionary:(id)a3;
-- (FCMultiResolutionImage)initWithImageURL1X:(id)a3 imageURL2X:(id)a4 imageURL3X:(id)a5;
+- (FCMultiResolutionImage)initWithConfigDictionary:(id)dictionary;
+- (FCMultiResolutionImage)initWithImageURL1X:(id)x imageURL2X:(id)l2X imageURL3X:(id)l3X;
 - (unint64_t)hash;
 @end
 
@@ -34,45 +34,45 @@
   objc_exception_throw(v6);
 }
 
-- (FCMultiResolutionImage)initWithConfigDictionary:(id)a3
+- (FCMultiResolutionImage)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationURLValue(v4, @"image1x");
-  v6 = FCAppConfigurationURLValue(v4, @"image2x");
-  v7 = FCAppConfigurationURLValue(v4, @"image3x");
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationURLValue(dictionaryCopy, @"image1x");
+  v6 = FCAppConfigurationURLValue(dictionaryCopy, @"image2x");
+  v7 = FCAppConfigurationURLValue(dictionaryCopy, @"image3x");
 
   v8 = [(FCMultiResolutionImage *)self initWithImageURL1X:v5 imageURL2X:v6 imageURL3X:v7];
   return v8;
 }
 
-- (FCMultiResolutionImage)initWithImageURL1X:(id)a3 imageURL2X:(id)a4 imageURL3X:(id)a5
+- (FCMultiResolutionImage)initWithImageURL1X:(id)x imageURL2X:(id)l2X imageURL3X:(id)l3X
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  xCopy = x;
+  l2XCopy = l2X;
+  l3XCopy = l3X;
   v15.receiver = self;
   v15.super_class = FCMultiResolutionImage;
   v12 = [(FCMultiResolutionImage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_imageURL1x, a3);
-    objc_storeStrong(&v13->_imageURL2x, a4);
-    objc_storeStrong(&v13->_imageURL3x, a5);
+    objc_storeStrong(&v12->_imageURL1x, x);
+    objc_storeStrong(&v13->_imageURL2x, l2X);
+    objc_storeStrong(&v13->_imageURL3x, l3X);
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if (v4)
+  if (equalCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -91,19 +91,19 @@
   if (v6)
   {
     v7 = MEMORY[0x1E69E58C0];
-    v8 = [(FCMultiResolutionImage *)self imageURL1x];
-    v9 = [v6 imageURL1x];
-    if ([v7 nf_object:v8 isEqualToObject:v9])
+    imageURL1x = [(FCMultiResolutionImage *)self imageURL1x];
+    imageURL1x2 = [v6 imageURL1x];
+    if ([v7 nf_object:imageURL1x isEqualToObject:imageURL1x2])
     {
       v10 = MEMORY[0x1E69E58C0];
-      v11 = [(FCMultiResolutionImage *)self imageURL2x];
-      v12 = [v6 imageURL2x];
-      if ([v10 nf_object:v11 isEqualToObject:v12])
+      imageURL2x = [(FCMultiResolutionImage *)self imageURL2x];
+      imageURL2x2 = [v6 imageURL2x];
+      if ([v10 nf_object:imageURL2x isEqualToObject:imageURL2x2])
       {
         v13 = MEMORY[0x1E69E58C0];
-        v14 = [(FCMultiResolutionImage *)self imageURL3x];
-        v15 = [v6 imageURL3x];
-        v16 = [v13 nf_object:v14 isEqualToObject:v15];
+        imageURL3x = [(FCMultiResolutionImage *)self imageURL3x];
+        imageURL3x2 = [v6 imageURL3x];
+        v16 = [v13 nf_object:imageURL3x isEqualToObject:imageURL3x2];
       }
 
       else
@@ -128,12 +128,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(FCMultiResolutionImage *)self imageURL1x];
-  v4 = [v3 hash];
-  v5 = [(FCMultiResolutionImage *)self imageURL2x];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(FCMultiResolutionImage *)self imageURL3x];
-  v8 = [v7 hash];
+  imageURL1x = [(FCMultiResolutionImage *)self imageURL1x];
+  v4 = [imageURL1x hash];
+  imageURL2x = [(FCMultiResolutionImage *)self imageURL2x];
+  v6 = [imageURL2x hash] ^ v4;
+  imageURL3x = [(FCMultiResolutionImage *)self imageURL3x];
+  v8 = [imageURL3x hash];
 
   return v6 ^ v8;
 }

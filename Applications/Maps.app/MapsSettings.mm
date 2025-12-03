@@ -9,24 +9,24 @@
 + (BOOL)userDesiresTraffic;
 + (BOOL)usesMetric;
 + (NSString)preferredDistanceUnit;
-+ (id)valueForDefaultsKey:(id)a3 defaultValue:(id)a4;
++ (id)valueForDefaultsKey:(id)key defaultValue:(id)value;
 + (int64_t)selectedViewMode;
-+ (void)_sendDiscoverabilitySignalsForKey:(id)a3;
-+ (void)_synchronizeNanoDefaultsForDomain:(id)a3 key:(id)a4 container:(id)a5;
++ (void)_sendDiscoverabilitySignalsForKey:(id)key;
++ (void)_synchronizeNanoDefaultsForDomain:(id)domain key:(id)key container:(id)container;
 + (void)clearSelectedViewModeIfExpired;
 + (void)postNotification;
-+ (void)setAllowEmailCorrespondence:(BOOL)a3;
-+ (void)setAlwaysShowScale:(BOOL)a3;
-+ (void)setSelectedViewMode:(int64_t)a3;
-+ (void)setShowsAirQualityIndex:(BOOL)a3;
-+ (void)setShowsCompass:(BOOL)a3;
-+ (void)setShowsWeather:(BOOL)a3;
-+ (void)setShowsZoomControls:(BOOL)a3;
++ (void)setAllowEmailCorrespondence:(BOOL)correspondence;
++ (void)setAlwaysShowScale:(BOOL)scale;
++ (void)setSelectedViewMode:(int64_t)mode;
++ (void)setShowsAirQualityIndex:(BOOL)index;
++ (void)setShowsCompass:(BOOL)compass;
++ (void)setShowsWeather:(BOOL)weather;
++ (void)setShowsZoomControls:(BOOL)controls;
 + (void)setSystemMeasurementUnits;
-+ (void)setUserDesiresLabels:(BOOL)a3;
-+ (void)setUserDesiresTraffic:(BOOL)a3;
-+ (void)setValue:(id)a3 forConfigKey:(id)a4;
-+ (void)setValue:(id)a3 forDefaultsKey:(id)a4 bundleID:(id)a5 syncToNano:(BOOL)a6;
++ (void)setUserDesiresLabels:(BOOL)labels;
++ (void)setUserDesiresTraffic:(BOOL)traffic;
++ (void)setValue:(id)value forConfigKey:(id)key;
++ (void)setValue:(id)value forDefaultsKey:(id)key bundleID:(id)d syncToNano:(BOOL)nano;
 @end
 
 @implementation MapsSettings
@@ -51,7 +51,7 @@
 
 + (void)clearSelectedViewModeIfExpired
 {
-  if ([a1 _selectedViewModeIsExpired])
+  if ([self _selectedViewModeIsExpired])
   {
     v2 = sub_100798408();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
@@ -108,9 +108,9 @@
 + (BOOL)userDesiresTraffic
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 launchedToTest];
+  launchedToTest = [v2 launchedToTest];
 
-  if (v3)
+  if (launchedToTest)
   {
     return 0;
   }
@@ -142,20 +142,20 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)_sendDiscoverabilitySignalsForKey:(id)a3
++ (void)_sendDiscoverabilitySignalsForKey:(id)key
 {
-  if ([&off_1016ED4C0 containsObject:a3])
+  if ([&off_1016ED4C0 containsObject:key])
   {
     v3 = dispatch_get_global_queue(9, 0);
     dispatch_async(v3, &stru_101637E38);
@@ -164,8 +164,8 @@
 
 + (BOOL)usesMetric
 {
-  v2 = [a1 preferredDistanceUnit];
-  v3 = [@"Imperial" isEqualToString:v2];
+  preferredDistanceUnit = [self preferredDistanceUnit];
+  v3 = [@"Imperial" isEqualToString:preferredDistanceUnit];
 
   return v3;
 }
@@ -178,10 +178,10 @@
   {
     v4 = +[NSLocale currentLocale];
     v5 = [v4 _navigation_objectForKey:NSLocaleUsesMetricSystem];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
 
     v7 = @"Imperial";
-    if (v6)
+    if (bOOLValue)
     {
       v7 = @"Metric";
     }
@@ -197,17 +197,17 @@
 + (void)postNotification
 {
   v4 = +[NSNotificationCenter defaultCenter];
-  v3 = [a1 settingsUpdatedNotificationKey];
-  [v4 postNotificationName:v3 object:a1];
+  settingsUpdatedNotificationKey = [self settingsUpdatedNotificationKey];
+  [v4 postNotificationName:settingsUpdatedNotificationKey object:self];
 }
 
-+ (void)setAlwaysShowScale:(BOOL)a3
++ (void)setAlwaysShowScale:(BOOL)scale
 {
-  v3 = a3;
+  scaleCopy = scale;
   v5 = +[NSUserDefaults standardUserDefaults];
-  [v5 setBool:v3 forKey:@"MapsDefaultAlwaysShowScale"];
+  [v5 setBool:scaleCopy forKey:@"MapsDefaultAlwaysShowScale"];
 
-  [a1 postNotification];
+  [self postNotification];
 }
 
 + (BOOL)alwaysShowScale
@@ -218,24 +218,24 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)setShowsZoomControls:(BOOL)a3
++ (void)setShowsZoomControls:(BOOL)controls
 {
-  v3 = a3;
+  controlsCopy = controls;
   v5 = +[NSUserDefaults standardUserDefaults];
-  [v5 setBool:v3 forKey:@"MapsDefaultShowZoomControls"];
+  [v5 setBool:controlsCopy forKey:@"MapsDefaultShowZoomControls"];
 
-  [a1 postNotification];
+  [self postNotification];
 }
 
 + (BOOL)showsZoomControls
@@ -246,24 +246,24 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)setShowsCompass:(BOOL)a3
++ (void)setShowsCompass:(BOOL)compass
 {
-  v3 = a3;
+  compassCopy = compass;
   v5 = +[NSUserDefaults standardUserDefaults];
-  [v5 setBool:v3 forKey:@"MapsDefaultShowCompass"];
+  [v5 setBool:compassCopy forKey:@"MapsDefaultShowCompass"];
 
-  [a1 postNotification];
+  [self postNotification];
 }
 
 + (BOOL)showsCompass
@@ -274,20 +274,20 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (void)setAllowEmailCorrespondence:(BOOL)a3
++ (void)setAllowEmailCorrespondence:(BOOL)correspondence
 {
-  if (a3)
+  if (correspondence)
   {
     sub_10079ADEC(1);
   }
@@ -298,60 +298,60 @@
   }
 }
 
-+ (void)setShowsAirQualityIndex:(BOOL)a3
++ (void)setShowsAirQualityIndex:(BOOL)index
 {
-  v3 = a3;
+  indexCopy = index;
   v4 = +[WeatherSettingsManager sharedManager];
-  [v4 setShouldShowAirQualityConditions:v3];
+  [v4 setShouldShowAirQualityConditions:indexCopy];
 }
 
 + (BOOL)showsAirQualityIndex
 {
   v2 = +[WeatherSettingsManager sharedManager];
-  v3 = [v2 shouldShowAirQualityConditions];
+  shouldShowAirQualityConditions = [v2 shouldShowAirQualityConditions];
 
-  return v3;
+  return shouldShowAirQualityConditions;
 }
 
-+ (void)setShowsWeather:(BOOL)a3
++ (void)setShowsWeather:(BOOL)weather
 {
-  v3 = a3;
+  weatherCopy = weather;
   v4 = +[WeatherSettingsManager sharedManager];
-  [v4 setShouldShowWeatherConditions:v3];
+  [v4 setShouldShowWeatherConditions:weatherCopy];
 }
 
 + (BOOL)showsWeather
 {
   v2 = +[WeatherSettingsManager sharedManager];
-  v3 = [v2 shouldShowWeatherConditions];
+  shouldShowWeatherConditions = [v2 shouldShowWeatherConditions];
 
-  return v3;
+  return shouldShowWeatherConditions;
 }
 
-+ (void)setUserDesiresLabels:(BOOL)a3
++ (void)setUserDesiresLabels:(BOOL)labels
 {
-  v3 = a3;
+  labelsCopy = labels;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"SatelliteMapShowLabelsKey"];
+  [v4 setBool:labelsCopy forKey:@"SatelliteMapShowLabelsKey"];
 }
 
-+ (void)setUserDesiresTraffic:(BOOL)a3
++ (void)setUserDesiresTraffic:(BOOL)traffic
 {
-  v3 = a3;
+  trafficCopy = traffic;
   v4 = +[NSUserDefaults standardUserDefaults];
-  [v4 setBool:v3 forKey:@"DesiresTrafficKey"];
+  [v4 setBool:trafficCopy forKey:@"DesiresTrafficKey"];
 }
 
-+ (void)setSelectedViewMode:(int64_t)a3
++ (void)setSelectedViewMode:(int64_t)mode
 {
-  if (a3 > 7)
+  if (mode > 7)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = qword_101215550[a3];
+    v3 = qword_101215550[mode];
   }
 
   if (((v3 - 1) & 0xFFFFFFFFFFFFFFFALL) != 0)
@@ -388,7 +388,7 @@
 
 + (int64_t)selectedViewMode
 {
-  if ([a1 _selectedViewModeIsExpired])
+  if ([self _selectedViewModeIsExpired])
   {
     v2 = sub_100798408();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_INFO))
@@ -446,34 +446,34 @@
   }
 }
 
-+ (void)_synchronizeNanoDefaultsForDomain:(id)a3 key:(id)a4 container:(id)a5
++ (void)_synchronizeNanoDefaultsForDomain:(id)domain key:(id)key container:(id)container
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && v8)
+  domainCopy = domain;
+  keyCopy = key;
+  containerCopy = container;
+  if (domainCopy && keyCopy)
   {
     v10 = objc_alloc_init(NPSManager);
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = 138412802;
-      v14 = v7;
+      v14 = domainCopy;
       v15 = 2112;
-      v16 = v8;
+      v16 = keyCopy;
       v17 = 2112;
-      v18 = v9;
+      v18 = containerCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "NPSManager synchronizeUserDefaultsDomain:%@, key= %@, container= %@)", &v13, 0x20u);
     }
 
-    v12 = [NSSet setWithObject:v8];
-    [v10 synchronizeUserDefaultsDomain:v7 keys:v12 container:v9];
+    v12 = [NSSet setWithObject:keyCopy];
+    [v10 synchronizeUserDefaultsDomain:domainCopy keys:v12 container:containerCopy];
   }
 }
 
-+ (void)setValue:(id)a3 forConfigKey:(id)a4
++ (void)setValue:(id)value forConfigKey:(id)key
 {
-  v4 = a3;
+  valueCopy = value;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
@@ -488,7 +488,7 @@
     *buf = 138412546;
     v14 = v6;
     v15 = 2112;
-    v16 = v4;
+    v16 = valueCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "GEOConfigSet(key= %@, value= %@)", buf, 0x16u);
   }
 
@@ -496,15 +496,15 @@
   _Block_object_dispose(&v7, 8);
 }
 
-+ (void)setValue:(id)a3 forDefaultsKey:(id)a4 bundleID:(id)a5 syncToNano:(BOOL)a6
++ (void)setValue:(id)value forDefaultsKey:(id)key bundleID:(id)d syncToNano:(BOOL)nano
 {
-  v20 = a6;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  nanoCopy = nano;
+  valueCopy = value;
+  keyCopy = key;
+  dCopy = d;
+  if (dCopy)
   {
-    v11 = v10;
+    v11 = dCopy;
   }
 
   else
@@ -513,15 +513,15 @@
   }
 
   v12 = +[MSPMapsPaths mapsApplicationContainerPaths];
-  v13 = [v12 homeDirectory];
+  homeDirectory = [v12 homeDirectory];
 
   v14 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     *buf = 138413570;
-    v23 = v9;
+    v23 = keyCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = valueCopy;
     v26 = 2112;
     v27 = v11;
     v28 = 2112;
@@ -529,7 +529,7 @@
     v30 = 2112;
     v31 = kCFPreferencesAnyHost;
     v32 = 2112;
-    v33 = v13;
+    v33 = homeDirectory;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "_CFPreferencesSetValueWithContainer(key= %@, value= %@, applicationId= %@, userName= %@, hostName= %@, containerPath= %@)", buf, 0x3Eu);
   }
 
@@ -544,22 +544,22 @@
     v26 = 2112;
     v27 = kCFPreferencesAnyHost;
     v28 = 2112;
-    v29 = v13;
+    v29 = homeDirectory;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "_CFPreferencesSynchronizeWithContainer(applicationID= %@, userName= %@, hostName= %@, containerPath= %@)", buf, 0x2Au);
   }
 
   _CFPreferencesSynchronizeWithContainer();
   GSSendAppPreferencesChanged();
   v16 = +[MSPMapsPaths mapsApplicationContainerPaths];
-  v17 = [v16 groupDirectory];
+  groupDirectory = [v16 groupDirectory];
 
   v18 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     *buf = 138413570;
-    v23 = v9;
+    v23 = keyCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = valueCopy;
     v26 = 2112;
     v27 = @"group.com.apple.Maps";
     v28 = 2112;
@@ -567,7 +567,7 @@
     v30 = 2112;
     v31 = kCFPreferencesAnyHost;
     v32 = 2112;
-    v33 = v17;
+    v33 = groupDirectory;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "_CFPreferencesSetValueWithContainer(key= %@, value= %@, applicationId= %@, userName= %@, hostName= %@, containerPath= %@)", buf, 0x3Eu);
   }
 
@@ -582,26 +582,26 @@
     v26 = 2112;
     v27 = kCFPreferencesAnyHost;
     v28 = 2112;
-    v29 = v17;
+    v29 = groupDirectory;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "_CFPreferencesSynchronizeWithContainer(applicationID= %@, userName= %@, hostName= %@, containerPath= %@)", buf, 0x2Au);
   }
 
   _CFPreferencesSynchronizeWithContainer();
   GSSendAppPreferencesChanged();
-  if (v20)
+  if (nanoCopy)
   {
-    [a1 _synchronizeNanoDefaultsForDomain:v11 key:v9 container:v11];
+    [self _synchronizeNanoDefaultsForDomain:v11 key:keyCopy container:v11];
   }
 
-  [a1 _sendDiscoverabilitySignalsForKey:v9];
+  [self _sendDiscoverabilitySignalsForKey:keyCopy];
 }
 
-+ (id)valueForDefaultsKey:(id)a3 defaultValue:(id)a4
++ (id)valueForDefaultsKey:(id)key defaultValue:(id)value
 {
-  v5 = a4;
-  v6 = a3;
+  valueCopy = value;
+  keyCopy = key;
   v7 = +[MSPMapsPaths mapsApplicationContainerPaths];
-  v8 = [v7 homeDirectory];
+  homeDirectory = [v7 homeDirectory];
 
   v9 = _CFPreferencesCopyValueWithContainer();
   if (v9)
@@ -611,7 +611,7 @@
 
   else
   {
-    v10 = v5;
+    v10 = valueCopy;
   }
 
   v11 = v10;

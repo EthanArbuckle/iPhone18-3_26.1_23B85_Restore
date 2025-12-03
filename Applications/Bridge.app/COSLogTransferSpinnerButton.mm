@@ -1,18 +1,18 @@
 @interface COSLogTransferSpinnerButton
-- (COSLogTransferSpinnerButton)initWithFrame:(CGRect)a3;
-- (void)cancelDownload:(id)a3;
+- (COSLogTransferSpinnerButton)initWithFrame:(CGRect)frame;
+- (void)cancelDownload:(id)download;
 - (void)layoutSubviews;
 - (void)prepareProgressIndicatorIfNeeded;
-- (void)setProgress:(double)a3 animated:(BOOL)a4;
+- (void)setProgress:(double)progress animated:(BOOL)animated;
 @end
 
 @implementation COSLogTransferSpinnerButton
 
-- (COSLogTransferSpinnerButton)initWithFrame:(CGRect)a3
+- (COSLogTransferSpinnerButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = COSLogTransferSpinnerButton;
-  v3 = [(COSLogTransferSpinnerButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(COSLogTransferSpinnerButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UIImageView alloc] initWithImage:0];
@@ -50,7 +50,7 @@
   }
 }
 
-- (void)cancelDownload:(id)a3
+- (void)cancelDownload:(id)download
 {
   v4 = +[NSNotificationCenter defaultCenter];
   specifier = self->_specifier;
@@ -75,17 +75,17 @@
   [(UIImageView *)self->_spinnerView setFrame:v4, v6, v8, v9 + 1.0];
 }
 
-- (void)setProgress:(double)a3 animated:(BOOL)a4
+- (void)setProgress:(double)progress animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3 > 0.0)
+  animatedCopy = animated;
+  if (progress > 0.0)
   {
     [(COSLogTransferSpinnerButton *)self prepareProgressIndicatorIfNeeded];
   }
 
   progressIndicator = self->_progressIndicator;
 
-  [(SKUICircleProgressIndicator *)progressIndicator setProgress:v4 animated:a3 / 100.0];
+  [(SKUICircleProgressIndicator *)progressIndicator setProgress:animatedCopy animated:progress / 100.0];
 }
 
 @end

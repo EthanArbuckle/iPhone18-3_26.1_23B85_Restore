@@ -1,47 +1,47 @@
 @interface TICoreAnalyticsEventController
 + (void)registerScheduledEventsActivity;
 - (TICoreAnalyticsEventController)init;
-- (id)adjustValue:(id)a3 forFieldSpec:(id)a4;
-- (id)adjustValues:(id)a3 forFieldSpec:(id)a4;
-- (void)dispatchEventWithDescriptor:(id)a3 andSpec:(id)a4 withProvider:(id)a5 andContext:(id)a6 andMetrics:(id)a7 completionHandler:(id)a8;
-- (void)dispatchEventWithName:(id)a3 payload:(id)a4 testingParameters:(id)a5 eventSpec:(id)a6 completionHandler:(id)a7;
-- (void)dispatchEventsFromRegistry:(id)a3 withProvider:(id)a4 andContext:(id)a5 andMetrics:(id)a6 completionHandler:(id)a7;
-- (void)dispatchScheduledEventsWithCompletionHandler:(id)a3;
-- (void)queueScheduledEventsWithCompletionHandler:(id)a3;
+- (id)adjustValue:(id)value forFieldSpec:(id)spec;
+- (id)adjustValues:(id)values forFieldSpec:(id)spec;
+- (void)dispatchEventWithDescriptor:(id)descriptor andSpec:(id)spec withProvider:(id)provider andContext:(id)context andMetrics:(id)metrics completionHandler:(id)handler;
+- (void)dispatchEventWithName:(id)name payload:(id)payload testingParameters:(id)parameters eventSpec:(id)spec completionHandler:(id)handler;
+- (void)dispatchEventsFromRegistry:(id)registry withProvider:(id)provider andContext:(id)context andMetrics:(id)metrics completionHandler:(id)handler;
+- (void)dispatchScheduledEventsWithCompletionHandler:(id)handler;
+- (void)queueScheduledEventsWithCompletionHandler:(id)handler;
 @end
 
 @implementation TICoreAnalyticsEventController
 
-- (void)dispatchEventWithName:(id)a3 payload:(id)a4 testingParameters:(id)a5 eventSpec:(id)a6 completionHandler:(id)a7
+- (void)dispatchEventWithName:(id)name payload:(id)payload testingParameters:(id)parameters eventSpec:(id)spec completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
+  nameCopy = name;
+  handlerCopy = handler;
+  specCopy = spec;
+  parametersCopy = parameters;
+  payloadCopy = payload;
   v16 = IXADefaultLogFacility();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Dispatching event: %@", "-[TICoreAnalyticsEventController dispatchEventWithName:payload:testingParameters:eventSpec:completionHandler:]", v11];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Dispatching event: %@", "-[TICoreAnalyticsEventController dispatchEventWithName:payload:testingParameters:eventSpec:completionHandler:]", nameCopy];
     *buf = 138412290;
-    v27 = v17;
+    v27 = nameCopy;
     _os_log_impl(&dword_22CA55000, v16, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
-  v18 = [MEMORY[0x277D6F318] sharedInstance];
-  [v18 registerEventSpec:v13];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] registerEventSpec:specCopy];
 
-  v19 = [MEMORY[0x277D6F318] sharedInstance];
+  mEMORY[0x277D6F318]2 = [MEMORY[0x277D6F318] sharedInstance];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __110__TICoreAnalyticsEventController_dispatchEventWithName_payload_testingParameters_eventSpec_completionHandler___block_invoke;
   v23[3] = &unk_278730308;
-  v24 = v11;
-  v25 = v12;
-  v20 = v12;
-  v21 = v11;
-  [v19 dispatchEventWithName:v21 payload:v15 testingParameters:v14 allowSparsePayload:0 withCompletionHandler:v23];
+  v24 = nameCopy;
+  v25 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = nameCopy;
+  [mEMORY[0x277D6F318]2 dispatchEventWithName:v21 payload:payloadCopy testingParameters:parametersCopy allowSparsePayload:0 withCompletionHandler:v23];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -89,16 +89,16 @@ LABEL_7:
   return result;
 }
 
-- (id)adjustValue:(id)a3 forFieldSpec:(id)a4
+- (id)adjustValue:(id)value forFieldSpec:(id)spec
 {
-  v5 = a3;
-  v6 = a4;
-  if ([MEMORY[0x277D6F320] isNumber:v5] && objc_msgSend(v6, "isMemberOfClass:", objc_opt_class()))
+  valueCopy = value;
+  specCopy = spec;
+  if ([MEMORY[0x277D6F320] isNumber:valueCopy] && objc_msgSend(specCopy, "isMemberOfClass:", objc_opt_class()))
   {
-    v7 = v6;
+    v7 = specCopy;
     v8 = MEMORY[0x277D6F320];
-    v9 = [v7 significantDigits];
-    v10 = [v8 roundNumber:v5 toSignificantDigits:v9];
+    significantDigits = [v7 significantDigits];
+    v10 = [v8 roundNumber:valueCopy toSignificantDigits:significantDigits];
 
     if ([v7 isInteger] && objc_msgSend(MEMORY[0x277D6F320], "isFloat:", v10))
     {
@@ -126,28 +126,28 @@ LABEL_7:
     }
 
 LABEL_11:
-    v5 = v10;
+    valueCopy = v10;
   }
 
-  return v5;
+  return valueCopy;
 }
 
-- (id)adjustValues:(id)a3 forFieldSpec:(id)a4
+- (id)adjustValues:(id)values forFieldSpec:(id)spec
 {
-  v6 = a4;
+  specCopy = spec;
   v7 = MEMORY[0x277CBEB18];
-  v8 = a3;
-  v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  valuesCopy = values;
+  v9 = [v7 arrayWithCapacity:{objc_msgSend(valuesCopy, "count")}];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invoke;
   v15[3] = &unk_2787302E0;
   v10 = v9;
   v16 = v10;
-  v17 = self;
-  v18 = v6;
-  v11 = v6;
-  [v8 enumerateObjectsUsingBlock:v15];
+  selfCopy = self;
+  v18 = specCopy;
+  v11 = specCopy;
+  [valuesCopy enumerateObjectsUsingBlock:v15];
 
   v12 = v18;
   v13 = v10;
@@ -161,30 +161,30 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
   [*(a1 + 32) setObject:v5 atIndexedSubscript:a3];
 }
 
-- (void)dispatchEventWithDescriptor:(id)a3 andSpec:(id)a4 withProvider:(id)a5 andContext:(id)a6 andMetrics:(id)a7 completionHandler:(id)a8
+- (void)dispatchEventWithDescriptor:(id)descriptor andSpec:(id)spec withProvider:(id)provider andContext:(id)context andMetrics:(id)metrics completionHandler:(id)handler
 {
   v92 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  descriptorCopy = descriptor;
+  specCopy = spec;
+  providerCopy = provider;
+  contextCopy = context;
+  handlerCopy = handler;
   v64 = objc_opt_new();
   v76 = objc_opt_new();
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v17 = [v12 fieldDescriptors];
-  v62 = v15;
-  v63 = v13;
-  v71 = [v17 countByEnumeratingWithState:&v85 objects:v91 count:16];
-  v60 = v16;
-  v61 = v12;
-  v69 = v14;
+  fieldDescriptors = [descriptorCopy fieldDescriptors];
+  v62 = contextCopy;
+  v63 = specCopy;
+  v71 = [fieldDescriptors countByEnumeratingWithState:&v85 objects:v91 count:16];
+  v60 = handlerCopy;
+  v61 = descriptorCopy;
+  v69 = providerCopy;
   if (v71)
   {
-    obj = v17;
+    obj = fieldDescriptors;
     v18 = 0;
     v19 = 0;
     v68 = *v86;
@@ -198,26 +198,26 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
         }
 
         v21 = *(*(&v85 + 1) + 8 * i);
-        v22 = [v21 inactiveValue];
-        v74 = v22 != 0;
+        inactiveValue = [v21 inactiveValue];
+        v74 = inactiveValue != 0;
 
-        v23 = [v21 fieldName];
-        v24 = v13;
-        v72 = [v13 fieldSpecWithName:v23];
-        v25 = [v21 metricType];
-        v26 = [v25 isEqualToString:@"bucketedWordLength"];
+        fieldName = [v21 fieldName];
+        v24 = specCopy;
+        v72 = [specCopy fieldSpecWithName:fieldName];
+        metricType = [v21 metricType];
+        v26 = [metricType isEqualToString:@"bucketedWordLength"];
 
-        v27 = [v21 metricName];
+        metricName = [v21 metricName];
         if (v26)
         {
-          v28 = [v69 valuesByBucketedWordLengthForMetricWithName:v27 withContext:v15];
+          v28 = [v69 valuesByBucketedWordLengthForMetricWithName:metricName withContext:contextCopy];
 
-          v29 = [v21 inactiveValue];
+          inactiveValue2 = [v21 inactiveValue];
 
-          if (v29)
+          if (inactiveValue2)
           {
             v66 = v28;
-            v67 = v23;
+            v67 = fieldName;
             v83 = 0u;
             v84 = 0u;
             v81 = 0u;
@@ -238,8 +238,8 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
                   }
 
                   v35 = *(*(&v81 + 1) + 8 * j);
-                  v36 = [v21 inactiveValue];
-                  LODWORD(v35) = [v35 isEqual:v36];
+                  inactiveValue3 = [v21 inactiveValue];
+                  LODWORD(v35) = [v35 isEqual:inactiveValue3];
 
                   v18 |= v35 ^ 1;
                 }
@@ -250,43 +250,43 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
               while (v32);
             }
 
-            v15 = v62;
+            contextCopy = v62;
             v24 = v63;
             v28 = v66;
-            v23 = v67;
+            fieldName = v67;
           }
 
           v37 = v72;
           v38 = [(TICoreAnalyticsEventController *)self adjustValues:v28 forFieldSpec:v72];
-          [v76 setObject:v38 forKey:v23];
+          [v76 setObject:v38 forKey:fieldName];
           v39 = v74;
         }
 
         else
         {
-          v28 = [v69 valueForMetricWithName:v27 withContext:v15];
+          v28 = [v69 valueForMetricWithName:metricName withContext:contextCopy];
 
-          v40 = [v21 inactiveValue];
-          if (v40)
+          inactiveValue4 = [v21 inactiveValue];
+          if (inactiveValue4)
           {
-            v41 = [v21 inactiveValue];
-            v42 = v23;
-            v43 = [v28 isEqual:v41] ^ 1;
+            inactiveValue5 = [v21 inactiveValue];
+            v42 = fieldName;
+            v43 = [v28 isEqual:inactiveValue5] ^ 1;
 
             v18 |= v43;
-            v23 = v42;
+            fieldName = v42;
           }
 
           v39 = v74;
 
           v37 = v72;
           v38 = [(TICoreAnalyticsEventController *)self adjustValue:v28 forFieldSpec:v72];
-          [v64 setObject:v38 forKey:v23];
+          [v64 setObject:v38 forKey:fieldName];
         }
 
         v19 |= v39;
 
-        v13 = v24;
+        specCopy = v24;
       }
 
       v71 = [obj countByEnumeratingWithState:&v85 objects:v91 count:16];
@@ -295,7 +295,7 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
     while (v71);
 
     v44 = v60;
-    v12 = v61;
+    descriptorCopy = v61;
     v45 = v69;
     if (!(v18 & 1 | ((v19 & 1) == 0)))
     {
@@ -312,17 +312,17 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
   {
   }
 
-  if ([v12 includeTestingParameters])
+  if ([descriptorCopy includeTestingParameters])
   {
-    v75 = [v15 testingParameters];
+    testingParameters = [contextCopy testingParameters];
   }
 
   else
   {
-    v75 = 0;
+    testingParameters = 0;
   }
 
-  v46 = [v12 eventName];
+  eventName = [descriptorCopy eventName];
   if ([v76 count])
   {
     v73 = *MEMORY[0x277D6FDA8];
@@ -331,14 +331,14 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
       v47 = 0;
       do
       {
-        v48 = v46;
+        v48 = eventName;
         v49 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v64];
         v77 = 0u;
         v78 = 0u;
         v79 = 0u;
         v80 = 0u;
-        v50 = [v76 allKeys];
-        v51 = [v50 countByEnumeratingWithState:&v77 objects:v89 count:16];
+        allKeys = [v76 allKeys];
+        v51 = [allKeys countByEnumeratingWithState:&v77 objects:v89 count:16];
         if (v51)
         {
           v52 = v51;
@@ -349,7 +349,7 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
             {
               if (*v78 != v53)
               {
-                objc_enumerationMutation(v50);
+                objc_enumerationMutation(allKeys);
               }
 
               v55 = *(*(&v77 + 1) + 8 * k);
@@ -358,15 +358,15 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
               [v49 setObject:v57 forKey:v55];
             }
 
-            v52 = [v50 countByEnumeratingWithState:&v77 objects:v89 count:16];
+            v52 = [allKeys countByEnumeratingWithState:&v77 objects:v89 count:16];
           }
 
           while (v52);
         }
 
-        v46 = v48;
-        v13 = v63;
-        [(TICoreAnalyticsEventController *)self dispatchEventWithName:v48 payload:v49 testingParameters:v75 eventSpec:v63 completionHandler:0];
+        eventName = v48;
+        specCopy = v63;
+        [(TICoreAnalyticsEventController *)self dispatchEventWithName:v48 payload:v49 testingParameters:testingParameters eventSpec:v63 completionHandler:0];
 
         ++v47;
       }
@@ -377,38 +377,38 @@ void __60__TICoreAnalyticsEventController_adjustValues_forFieldSpec___block_invo
 
   else
   {
-    [(TICoreAnalyticsEventController *)self dispatchEventWithName:v46 payload:v64 testingParameters:v75 eventSpec:v13 completionHandler:0];
+    [(TICoreAnalyticsEventController *)self dispatchEventWithName:eventName payload:v64 testingParameters:testingParameters eventSpec:specCopy completionHandler:0];
   }
 
   v44 = v60;
   if (v60)
   {
-    v58 = [MEMORY[0x277D6F318] sharedInstance];
-    [v58 queueCompletionHandler:v60];
+    mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+    [mEMORY[0x277D6F318] queueCompletionHandler:v60];
   }
 
-  v12 = v61;
-  v15 = v62;
+  descriptorCopy = v61;
+  contextCopy = v62;
   v45 = v69;
 LABEL_45:
 
   v59 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchEventsFromRegistry:(id)a3 withProvider:(id)a4 andContext:(id)a5 andMetrics:(id)a6 completionHandler:(id)a7
+- (void)dispatchEventsFromRegistry:(id)registry withProvider:(id)provider andContext:(id)context andMetrics:(id)metrics completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v29 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = v15;
-  v17 = v12;
-  if (v12 && v14)
+  registryCopy = registry;
+  providerCopy = provider;
+  contextCopy = context;
+  metricsCopy = metrics;
+  handlerCopy = handler;
+  v16 = handlerCopy;
+  v17 = registryCopy;
+  if (registryCopy && metricsCopy)
   {
-    v27 = v15;
-    [v12 allEventDescriptors];
+    v27 = handlerCopy;
+    [registryCopy allEventDescriptors];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -428,10 +428,10 @@ LABEL_45:
           }
 
           v22 = *(*(&v30 + 1) + 8 * i);
-          v23 = [v22 eventName];
-          v24 = [v17 eventSpecWithName:v23];
+          eventName = [v22 eventName];
+          v24 = [v17 eventSpecWithName:eventName];
 
-          [(TICoreAnalyticsEventController *)self dispatchEventWithDescriptor:v22 andSpec:v24 withProvider:v29 andContext:v13 andMetrics:v14 completionHandler:0];
+          [(TICoreAnalyticsEventController *)self dispatchEventWithDescriptor:v22 andSpec:v24 withProvider:providerCopy andContext:contextCopy andMetrics:metricsCopy completionHandler:0];
         }
 
         v19 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -443,23 +443,23 @@ LABEL_45:
     v16 = v27;
     if (v27)
     {
-      v25 = [MEMORY[0x277D6F318] sharedInstance];
-      [v25 queueCompletionHandler:v27];
+      mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+      [mEMORY[0x277D6F318] queueCompletionHandler:v27];
     }
   }
 
-  else if (v15)
+  else if (handlerCopy)
   {
-    (*(v15 + 2))(v15);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dispatchScheduledEventsWithCompletionHandler:(id)a3
+- (void)dispatchScheduledEventsWithCompletionHandler:(id)handler
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = IXADefaultLogFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -473,19 +473,19 @@ LABEL_45:
   [(TIPreferencesAnalyzer *)v7 analyzeRegisteredPreferences];
   v8 = +[TIEventDescriptorRegistry registry];
   v9 = +[TIMetricDescriptorRegistry registry];
-  v10 = [MEMORY[0x277D6F548] sharedUserModelDataStore];
+  mEMORY[0x277D6F548] = [MEMORY[0x277D6F548] sharedUserModelDataStore];
   v11 = [MEMORY[0x277CBEAA8] now];
   v12 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.keyboard"];
   v13 = [v12 BOOLForKey:@"ignoreLastMigrationDate"];
   v39 = v12;
   v14 = [v12 BOOLForKey:@"typingSessionNotificationsEnabled"];
-  if ([v10 isValid])
+  if ([mEMORY[0x277D6F548] isValid])
   {
-    v38 = [v10 transientLastMigrationDate];
+    transientLastMigrationDate = [mEMORY[0x277D6F548] transientLastMigrationDate];
     v15 = [MEMORY[0x277CBEAA8] dateWithTimeInterval:v11 sinceDate:-(*MEMORY[0x277D6FD98] * *MEMORY[0x277D6FD28])];
     v16 = v15;
     v37 = v15;
-    if ((v13 & 1) == 0 && [v15 compare:v38] == -1)
+    if ((v13 & 1) == 0 && [v15 compare:transientLastMigrationDate] == -1)
     {
       v31 = IXADefaultLogFacility();
       v27 = v39;
@@ -505,8 +505,8 @@ LABEL_45:
     {
       v34 = v14;
       v35 = v7;
-      v36 = v4;
-      [v10 getAllKnownInputModesSinceDate:v16];
+      v36 = handlerCopy;
+      [mEMORY[0x277D6F548] getAllKnownInputModesSinceDate:v16];
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
@@ -515,7 +515,7 @@ LABEL_45:
       if (v43)
       {
         v41 = *v52;
-        v42 = v10;
+        v42 = mEMORY[0x277D6F548];
         do
         {
           for (i = 0; i != v43; ++i)
@@ -526,13 +526,13 @@ LABEL_45:
             }
 
             v18 = v11;
-            v19 = [TIKBUserModel userModelWithInputMode:*(*(&v51 + 1) + 8 * i) userModelDataStore:v10 metricDescriptorRegistry:v9 fromDate:v11];
-            v20 = [v19 kbContexts];
+            v19 = [TIKBUserModel userModelWithInputMode:*(*(&v51 + 1) + 8 * i) userModelDataStore:mEMORY[0x277D6F548] metricDescriptorRegistry:v9 fromDate:v11];
+            kbContexts = [v19 kbContexts];
             v47 = 0u;
             v48 = 0u;
             v49 = 0u;
             v50 = 0u;
-            v21 = [v20 countByEnumeratingWithState:&v47 objects:v55 count:16];
+            v21 = [kbContexts countByEnumeratingWithState:&v47 objects:v55 count:16];
             if (v21)
             {
               v22 = v21;
@@ -543,19 +543,19 @@ LABEL_45:
                 {
                   if (*v48 != v23)
                   {
-                    objc_enumerationMutation(v20);
+                    objc_enumerationMutation(kbContexts);
                   }
 
                   [(TICoreAnalyticsEventController *)self dispatchEventsFromRegistry:v8 withProvider:v19 andContext:*(*(&v47 + 1) + 8 * j) andMetrics:v9 completionHandler:0];
                 }
 
-                v22 = [v20 countByEnumeratingWithState:&v47 objects:v55 count:16];
+                v22 = [kbContexts countByEnumeratingWithState:&v47 objects:v55 count:16];
               }
 
               while (v22);
             }
 
-            v10 = v42;
+            mEMORY[0x277D6F548] = v42;
             v11 = v18;
           }
 
@@ -565,23 +565,23 @@ LABEL_45:
         while (v43);
       }
 
-      v25 = [MEMORY[0x277D6F318] sharedInstance];
+      mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
       v44[0] = MEMORY[0x277D85DD0];
       v44[1] = 3221225472;
       v44[2] = __79__TICoreAnalyticsEventController_dispatchScheduledEventsWithCompletionHandler___block_invoke;
       v44[3] = &unk_2787302B8;
-      v4 = v36;
+      handlerCopy = v36;
       v45 = v36;
       v14 = v34;
       v46 = v34;
-      [v25 queueCompletionHandler:v44];
+      [mEMORY[0x277D6F318] queueCompletionHandler:v44];
 
       v26 = 1;
       v7 = v35;
       v27 = v39;
     }
 
-    v28 = v38;
+    v28 = transientLastMigrationDate;
   }
 
   else
@@ -599,7 +599,7 @@ LABEL_45:
     v27 = v39;
   }
 
-  if (v4 && (v26 & 1) == 0)
+  if (handlerCopy && (v26 & 1) == 0)
   {
     if (TI_IS_INTERNAL_INSTALL::once_token != -1)
     {
@@ -608,11 +608,11 @@ LABEL_45:
 
     if (TI_IS_INTERNAL_INSTALL::is_internal_install == 1 && v14)
     {
-      v29 = [MEMORY[0x277CCA9A0] defaultCenter];
-      [v29 postNotificationName:@"com.apple.keyboard.inputAnalytics.scheduledEventsDidComplete" object:0 userInfo:0 deliverImmediately:1];
+      defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+      [defaultCenter postNotificationName:@"com.apple.keyboard.inputAnalytics.scheduledEventsDidComplete" object:0 userInfo:0 deliverImmediately:1];
     }
 
-    v4[2](v4);
+    handlerCopy[2](handlerCopy);
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -649,12 +649,12 @@ void __79__TICoreAnalyticsEventController_dispatchScheduledEventsWithCompletionH
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queueScheduledEventsWithCompletionHandler:(id)a3
+- (void)queueScheduledEventsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = handlerCopy;
+  v6 = handlerCopy;
   TIDispatchAsync();
 }
 
@@ -686,8 +686,8 @@ void __79__TICoreAnalyticsEventController_dispatchScheduledEventsWithCompletionH
     _os_log_impl(&dword_22CA55000, v2, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
   }
 
-  v4 = [@"com.apple.keyboard.analytics.scheduledEventsActivity" UTF8String];
-  xpc_activity_register(v4, *MEMORY[0x277D86238], &__block_literal_global_6188);
+  uTF8String = [@"com.apple.keyboard.analytics.scheduledEventsActivity" UTF8String];
+  xpc_activity_register(uTF8String, *MEMORY[0x277D86238], &__block_literal_global_6188);
   v5 = *MEMORY[0x277D85DE8];
 }
 

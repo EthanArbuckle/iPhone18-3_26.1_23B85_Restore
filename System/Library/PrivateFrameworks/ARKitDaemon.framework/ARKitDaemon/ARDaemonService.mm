@@ -1,54 +1,54 @@
 @interface ARDaemonService
 + (int64_t)maximumConcurrentServicesPerClient;
-- (ARDaemonService)initWithConnection:(id)a3;
-- (ARDaemonService)initWithConnection:(id)a3 exportedInterface:(id)a4 remoteObjectInterface:(id)a5;
-- (ARDaemonService)initWithRemoteService:(id)a3;
+- (ARDaemonService)initWithConnection:(id)connection;
+- (ARDaemonService)initWithConnection:(id)connection exportedInterface:(id)interface remoteObjectInterface:(id)objectInterface;
+- (ARDaemonService)initWithRemoteService:(id)service;
 - (ARDaemonServiceDataSource)dataSource;
 - (ARDaemonServiceDelegate)delegate;
 - (id)initAsLocalService;
 - (uint64_t)isAuthorized;
 - (uint64_t)isDataAccessAllowed;
 - (uint64_t)isHidFocused;
-- (void)_commonInitWithProcessName:(id)a3 processIdentifier:(int)a4 bundleIdentifier:(id)a5;
+- (void)_commonInitWithProcessName:(id)name processIdentifier:(int)identifier bundleIdentifier:(id)bundleIdentifier;
 - (void)beginDispatchChannelCreation;
 - (void)beginRTChannelCreation;
 - (void)interruptionHandler;
 - (void)invalidate;
 - (void)invalidateClient;
 - (void)invalidationHandler;
-- (void)setActive:(BOOL)a3;
-- (void)startService:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)startService:(id)service;
 @end
 
 @implementation ARDaemonService
 
-- (void)_commonInitWithProcessName:(id)a3 processIdentifier:(int)a4 bundleIdentifier:(id)a5
+- (void)_commonInitWithProcessName:(id)name processIdentifier:(int)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  bundleIdentifierCopy = bundleIdentifier;
   clientProcessName = self->_clientProcessName;
-  self->_clientProcessName = v8;
-  v11 = v8;
+  self->_clientProcessName = nameCopy;
+  v11 = nameCopy;
 
-  self->_clientProcessIdentifier = a4;
+  self->_clientProcessIdentifier = identifier;
   clientBundleIdentifier = self->_clientBundleIdentifier;
-  self->_clientBundleIdentifier = v9;
-  v13 = v9;
+  self->_clientBundleIdentifier = bundleIdentifierCopy;
+  v13 = bundleIdentifierCopy;
 
-  v16 = [objc_opt_class() serviceName];
-  v14 = [v16 stringByReplacingOccurrencesOfString:@"com.apple.arkit.service." withString:&stru_284F65A90];
+  serviceName = [objc_opt_class() serviceName];
+  v14 = [serviceName stringByReplacingOccurrencesOfString:@"com.apple.arkit.service." withString:&stru_284F65A90];
   shortenedServiceNameForLogging = self->_shortenedServiceNameForLogging;
   self->_shortenedServiceNameForLogging = v14;
 }
 
-- (ARDaemonService)initWithConnection:(id)a3
+- (ARDaemonService)initWithConnection:(id)connection
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectionCopy = connection;
   if ([objc_opt_class() remoteServiceClass])
   {
-    v5 = [objc_opt_class() remoteServiceClass];
-    if (v5 != objc_opt_class())
+    remoteServiceClass = [objc_opt_class() remoteServiceClass];
+    if (remoteServiceClass != objc_opt_class())
     {
       v6 = [objc_msgSend(objc_opt_class() "remoteServiceClass")];
       v7 = [objc_msgSend(objc_opt_class() "remoteServiceClass")];
@@ -57,8 +57,8 @@
       {
         if (v7)
         {
-          self = [(ARDaemonService *)self initWithConnection:v4 exportedInterface:v7 remoteObjectInterface:v6];
-          v9 = self;
+          self = [(ARDaemonService *)self initWithConnection:connectionCopy exportedInterface:v7 remoteObjectInterface:v6];
+          selfCopy = self;
 LABEL_33:
 
           goto LABEL_34;
@@ -78,12 +78,12 @@ LABEL_33:
           {
             v31 = objc_opt_class();
             v25 = NSStringFromClass(v31);
-            v32 = [objc_opt_class() remoteServiceClass];
-            v27 = NSStringFromClass(v32);
+            remoteServiceClass2 = [objc_opt_class() remoteServiceClass];
+            v27 = NSStringFromClass(remoteServiceClass2);
             v41 = 138543874;
             v42 = v25;
             v43 = 2048;
-            v44 = self;
+            selfCopy7 = self;
             v45 = 2112;
             v46 = v27;
             v28 = "%{public}@ <%p>: %@ does not define a daemon service interface. Implement the 'daemonServiceInterface'";
@@ -100,12 +100,12 @@ LABEL_33:
 
         v37 = objc_opt_class();
         v25 = NSStringFromClass(v37);
-        v38 = [objc_opt_class() remoteServiceClass];
-        v27 = NSStringFromClass(v38);
+        remoteServiceClass3 = [objc_opt_class() remoteServiceClass];
+        v27 = NSStringFromClass(remoteServiceClass3);
         v41 = 138543874;
         v42 = v25;
         v43 = 2048;
-        v44 = self;
+        selfCopy7 = self;
         v45 = 2112;
         v46 = v27;
         v28 = "Error: %{public}@ <%p>: %@ does not define a daemon service interface. Implement the 'daemonServiceInterface'";
@@ -127,12 +127,12 @@ LABEL_33:
           {
             v24 = objc_opt_class();
             v25 = NSStringFromClass(v24);
-            v26 = [objc_opt_class() remoteServiceClass];
-            v27 = NSStringFromClass(v26);
+            remoteServiceClass4 = [objc_opt_class() remoteServiceClass];
+            v27 = NSStringFromClass(remoteServiceClass4);
             v41 = 138543874;
             v42 = v25;
             v43 = 2048;
-            v44 = self;
+            selfCopy7 = self;
             v45 = 2112;
             v46 = v27;
             v28 = "%{public}@ <%p>: %@ does not define a remote service interface. Implement the 'remoteServiceInterface'";
@@ -145,7 +145,7 @@ LABEL_31:
 
 LABEL_32:
 
-          v9 = 0;
+          selfCopy = 0;
           goto LABEL_33;
         }
 
@@ -156,12 +156,12 @@ LABEL_32:
 
         v35 = objc_opt_class();
         v25 = NSStringFromClass(v35);
-        v36 = [objc_opt_class() remoteServiceClass];
-        v27 = NSStringFromClass(v36);
+        remoteServiceClass5 = [objc_opt_class() remoteServiceClass];
+        v27 = NSStringFromClass(remoteServiceClass5);
         v41 = 138543874;
         v42 = v25;
         v43 = 2048;
-        v44 = self;
+        selfCopy7 = self;
         v45 = 2112;
         v46 = v27;
         v28 = "Error: %{public}@ <%p>: %@ does not define a remote service interface. Implement the 'remoteServiceInterface'";
@@ -192,7 +192,7 @@ LABEL_32:
       v41 = 138543874;
       v42 = v13;
       v43 = 2048;
-      v44 = self;
+      selfCopy7 = self;
       v45 = 2112;
       v46 = v15;
       v16 = "%{public}@ <%p>: %@ does not define a remote service class. Implement the 'remoteServiceClass' function and point it to its remote";
@@ -212,7 +212,7 @@ LABEL_13:
     v41 = 138543874;
     v42 = v13;
     v43 = 2048;
-    v44 = self;
+    selfCopy7 = self;
     v45 = 2112;
     v46 = v15;
     v16 = "Error: %{public}@ <%p>: %@ does not define a remote service class. Implement the 'remoteServiceClass' function and point it to its remote";
@@ -221,20 +221,20 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v9 = 0;
+  selfCopy = 0;
 LABEL_34:
 
   v39 = *MEMORY[0x277D85DE8];
-  return v9;
+  return selfCopy;
 }
 
-- (ARDaemonService)initWithConnection:(id)a3 exportedInterface:(id)a4 remoteObjectInterface:(id)a5
+- (ARDaemonService)initWithConnection:(id)connection exportedInterface:(id)interface remoteObjectInterface:(id)objectInterface
 {
   v43 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  connectionCopy = connection;
+  interfaceCopy = interface;
+  objectInterfaceCopy = objectInterface;
+  if (connectionCopy)
   {
     v35.receiver = self;
     v35.super_class = ARDaemonService;
@@ -245,32 +245,32 @@ LABEL_34:
       v14 = *(v12 + 2);
       *(v12 + 2) = v13;
 
-      [v9 setExportedObject:v12];
-      [v9 setExportedInterface:v10];
-      [v9 setRemoteObjectInterface:v11];
+      [connectionCopy setExportedObject:v12];
+      [connectionCopy setExportedInterface:interfaceCopy];
+      [connectionCopy setRemoteObjectInterface:objectInterfaceCopy];
       objc_initWeak(&location, v12);
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __78__ARDaemonService_initWithConnection_exportedInterface_remoteObjectInterface___block_invoke;
       v32[3] = &unk_278BCBB68;
       objc_copyWeak(&v33, &location);
-      [v9 setInterruptionHandler:v32];
+      [connectionCopy setInterruptionHandler:v32];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __78__ARDaemonService_initWithConnection_exportedInterface_remoteObjectInterface___block_invoke_2;
       v30[3] = &unk_278BCBB68;
       objc_copyWeak(&v31, &location);
-      [v9 setInvalidationHandler:v30];
-      objc_storeStrong(v12 + 10, a3);
+      [connectionCopy setInvalidationHandler:v30];
+      objc_storeStrong(v12 + 10, connection);
       v15 = ARCreateTransactionForService(v12);
       v16 = *(v12 + 1);
       *(v12 + 1) = v15;
 
       *(v12 + 32) = 1;
-      v17 = [*(v12 + 10) ar_processName];
-      v18 = [*(v12 + 10) ar_remoteProcessIdentifier];
-      v19 = [*(v12 + 10) ar_processBundleIdentifier];
-      [v12 _commonInitWithProcessName:v17 processIdentifier:v18 bundleIdentifier:v19];
+      ar_processName = [*(v12 + 10) ar_processName];
+      ar_remoteProcessIdentifier = [*(v12 + 10) ar_remoteProcessIdentifier];
+      ar_processBundleIdentifier = [*(v12 + 10) ar_processBundleIdentifier];
+      [v12 _commonInitWithProcessName:ar_processName processIdentifier:ar_remoteProcessIdentifier bundleIdentifier:ar_processBundleIdentifier];
 
       v20 = _ARLogGeneral_0();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -305,16 +305,16 @@ LABEL_34:
     }
 
     self = v12;
-    v27 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v27 = 0;
+    selfCopy = 0;
   }
 
   v28 = *MEMORY[0x277D85DE8];
-  return v27;
+  return selfCopy;
 }
 
 void __78__ARDaemonService_initWithConnection_exportedInterface_remoteObjectInterface___block_invoke(uint64_t a1)
@@ -336,35 +336,35 @@ void __78__ARDaemonService_initWithConnection_exportedInterface_remoteObjectInte
   v2 = [(ARDaemonService *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v3 processName];
-    v5 = [MEMORY[0x277CCAC38] processInfo];
-    v6 = [v5 processIdentifier];
-    v7 = [MEMORY[0x277CCA8D8] mainBundle];
-    v8 = [v7 bundleIdentifier];
-    [(ARDaemonService *)v2 _commonInitWithProcessName:v4 processIdentifier:v6 bundleIdentifier:v8];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    processIdentifier = [processInfo2 processIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [(ARDaemonService *)v2 _commonInitWithProcessName:processName processIdentifier:processIdentifier bundleIdentifier:bundleIdentifier];
   }
 
   return v2;
 }
 
-- (ARDaemonService)initWithRemoteService:(id)a3
+- (ARDaemonService)initWithRemoteService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   v14.receiver = self;
   v14.super_class = ARDaemonService;
   v6 = [(ARDaemonService *)&v14 init];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCAC38] processInfo];
-    v8 = [v7 processName];
-    v9 = [MEMORY[0x277CCAC38] processInfo];
-    v10 = [v9 processIdentifier];
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 bundleIdentifier];
-    [(ARDaemonService *)v6 _commonInitWithProcessName:v8 processIdentifier:v10 bundleIdentifier:v12];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    processInfo2 = [MEMORY[0x277CCAC38] processInfo];
+    processIdentifier = [processInfo2 processIdentifier];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [(ARDaemonService *)v6 _commonInitWithProcessName:processName processIdentifier:processIdentifier bundleIdentifier:bundleIdentifier];
 
-    objc_storeStrong(&v6->_remoteService, a3);
+    objc_storeStrong(&v6->_remoteService, service);
   }
 
   return v6;
@@ -387,7 +387,7 @@ void __78__ARDaemonService_initWithConnection_exportedInterface_remoteObjectInte
     *buf = 138543874;
     v19 = v6;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = clientProcessName;
     _os_log_impl(&dword_23D391000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Daemon service interrupted: %{public}@", buf, 0x20u);
@@ -398,18 +398,18 @@ void __78__ARDaemonService_initWithConnection_exportedInterface_remoteObjectInte
 
   if (!v9)
   {
-    v10 = [(ARDaemonService *)self channel];
+    channel = [(ARDaemonService *)self channel];
     channel_rt_close();
 
     [(ARDaemonService *)self setChannel:0];
   }
 
-  v11 = [(ARDaemonService *)self dispatchChannel];
-  v12 = v11 == 0;
+  dispatchChannel = [(ARDaemonService *)self dispatchChannel];
+  v12 = dispatchChannel == 0;
 
   if (!v12)
   {
-    v13 = [(ARDaemonService *)self dispatchChannel];
+    dispatchChannel2 = [(ARDaemonService *)self dispatchChannel];
     channel_rt_close();
 
     [(ARDaemonService *)self setDispatchChannel:0];
@@ -444,7 +444,7 @@ void __78__ARDaemonService_initWithConnection_exportedInterface_remoteObjectInte
     *buf = 138543874;
     v19 = v6;
     v20 = 2048;
-    v21 = self;
+    selfCopy = self;
     v22 = 2114;
     v23 = clientProcessName;
     _os_log_impl(&dword_23D391000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Daemon service invalidated: %{public}@", buf, 0x20u);
@@ -462,18 +462,18 @@ void __78__ARDaemonService_initWithConnection_exportedInterface_remoteObjectInte
 
   if (!v11)
   {
-    v12 = [(ARDaemonService *)self channel];
+    channel = [(ARDaemonService *)self channel];
     channel_rt_close();
 
     [(ARDaemonService *)self setChannel:0];
   }
 
-  v13 = [(ARDaemonService *)self dispatchChannel];
-  v14 = v13 == 0;
+  dispatchChannel = [(ARDaemonService *)self dispatchChannel];
+  v14 = dispatchChannel == 0;
 
   if (!v14)
   {
-    v15 = [(ARDaemonService *)self dispatchChannel];
+    dispatchChannel2 = [(ARDaemonService *)self dispatchChannel];
     channel_rt_close();
 
     [(ARDaemonService *)self setDispatchChannel:0];
@@ -512,12 +512,12 @@ uint64_t __53__ARDaemonService_maximumConcurrentServicesPerClient__block_invoke(
     v8 = 138543618;
     v9 = v5;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_23D391000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Force invalidating client", &v8, 0x16u);
   }
 
-  v6 = [(ARDaemonService *)self clientService];
-  [v6 invalidate];
+  clientService = [(ARDaemonService *)self clientService];
+  [clientService invalidate];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -525,9 +525,9 @@ uint64_t __53__ARDaemonService_maximumConcurrentServicesPerClient__block_invoke(
 - (void)invalidate
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ARDaemonService *)self connection];
+  connection = [(ARDaemonService *)self connection];
   [(ARDaemonService *)self setConnection:0];
-  [v3 invalidate];
+  [connection invalidate];
   v10.opaque[0] = 0;
   v10.opaque[1] = 0;
   v4 = _os_activity_create(&dword_23D391000, "Daemon service invalidate", self->_daemonServiceActivity, OS_ACTIVITY_FLAG_DEFAULT);
@@ -538,13 +538,13 @@ uint64_t __53__ARDaemonService_maximumConcurrentServicesPerClient__block_invoke(
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [objc_opt_class() serviceName];
+    serviceName = [objc_opt_class() serviceName];
     *buf = 138543874;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
-    v16 = v8;
+    v16 = serviceName;
     _os_log_impl(&dword_23D391000, v5, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Invalidate: %{public}@", buf, 0x20u);
   }
 
@@ -552,9 +552,9 @@ uint64_t __53__ARDaemonService_maximumConcurrentServicesPerClient__block_invoke(
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v16 = *MEMORY[0x277D85DE8];
   v5 = _ARLogGeneral_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -564,26 +564,26 @@ uint64_t __53__ARDaemonService_maximumConcurrentServicesPerClient__block_invoke(
     v8 = @"NO";
     v10 = 138543874;
     v11 = v7;
-    if (v3)
+    if (activeCopy)
     {
       v8 = @"YES";
     }
 
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = v8;
     _os_log_impl(&dword_23D391000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ <%p>: Setting active to: %{public}@", &v10, 0x20u);
   }
 
-  self->_active = v3;
+  self->_active = activeCopy;
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startService:(id)a3
+- (void)startService:(id)service
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = _ARLogGeneral_0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -604,7 +604,7 @@ uint64_t __53__ARDaemonService_maximumConcurrentServicesPerClient__block_invoke(
   v9 = _os_activity_create(&dword_23D391000, "Daemon service started", self->_daemonServiceActivity, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v9, v11);
 
-  v4[2](v4, 1);
+  serviceCopy[2](serviceCopy, 1);
   os_activity_scope_leave(v11);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -621,13 +621,13 @@ uint64_t __53__ARDaemonService_maximumConcurrentServicesPerClient__block_invoke(
   if (asymmetric_endpoint_and_request)
   {
     objc_initWeak(location, self);
-    v6 = [(ARDaemonService *)self connection];
+    connection = [(ARDaemonService *)self connection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __41__ARDaemonService_beginRTChannelCreation__block_invoke;
     v19[3] = &unk_278BCBCB8;
     objc_copyWeak(&v20, location);
-    v7 = [v6 remoteObjectProxyWithErrorHandler:v19];
+    v7 = [connection remoteObjectProxyWithErrorHandler:v19];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __41__ARDaemonService_beginRTChannelCreation__block_invoke_23;
@@ -660,7 +660,7 @@ uint64_t __53__ARDaemonService_maximumConcurrentServicesPerClient__block_invoke(
         *location = 138543618;
         *&location[4] = v12;
         v22 = 2048;
-        v23 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_23D391000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to create endpoint using channel_create_endpoint_and_request", location, 0x16u);
       }
     }
@@ -672,7 +672,7 @@ uint64_t __53__ARDaemonService_maximumConcurrentServicesPerClient__block_invoke(
       *location = 138543618;
       *&location[4] = v14;
       v22 = 2048;
-      v23 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23D391000, v10, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to create endpoint using channel_create_endpoint_and_request", location, 0x16u);
     }
   }
@@ -885,22 +885,22 @@ LABEL_27:
 - (void)beginDispatchChannelCreation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(ARDaemonService *)self dispatchChannelDataSize];
+  dispatchChannelDataSize = [(ARDaemonService *)self dispatchChannelDataSize];
   empty = xpc_dictionary_create_empty();
-  xpc_dictionary_set_uint64(empty, [*MEMORY[0x277CE53C0] UTF8String], v3);
+  xpc_dictionary_set_uint64(empty, [*MEMORY[0x277CE53C0] UTF8String], dispatchChannelDataSize);
   [(ARDaemonService *)self minimumChannelQueueSize];
   v5 = *MEMORY[0x277D85FA0];
   asymmetric_endpoint_and_request = channel_create_asymmetric_endpoint_and_request();
   if (asymmetric_endpoint_and_request)
   {
     objc_initWeak(location, self);
-    v7 = [(ARDaemonService *)self connection];
+    connection = [(ARDaemonService *)self connection];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __47__ARDaemonService_beginDispatchChannelCreation__block_invoke;
     v21[3] = &unk_278BCBCB8;
     objc_copyWeak(&v22, location);
-    v8 = [v7 remoteObjectProxyWithErrorHandler:v21];
+    v8 = [connection remoteObjectProxyWithErrorHandler:v21];
     v9 = [MEMORY[0x277CE53B8] wrapperWithDictionary:empty];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -934,7 +934,7 @@ LABEL_27:
         *location = 138543618;
         *&location[4] = v14;
         v24 = 2048;
-        v25 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_23D391000, v12, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unable to create endpoint using channel_create_endpoint_and_request", location, 0x16u);
       }
     }
@@ -946,7 +946,7 @@ LABEL_27:
       *location = 138543618;
       *&location[4] = v16;
       v24 = 2048;
-      v25 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_23D391000, v12, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unable to create endpoint using channel_create_endpoint_and_request", location, 0x16u);
     }
   }
@@ -1173,9 +1173,9 @@ LABEL_27:
 
 - (uint64_t)isAuthorized
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0(*(a1 + 33));
+    return OUTLINED_FUNCTION_0(*(self + 33));
   }
 
   else
@@ -1186,9 +1186,9 @@ LABEL_27:
 
 - (uint64_t)isDataAccessAllowed
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0(*(a1 + 34));
+    return OUTLINED_FUNCTION_0(*(self + 34));
   }
 
   else
@@ -1199,9 +1199,9 @@ LABEL_27:
 
 - (uint64_t)isHidFocused
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_0(*(a1 + 35));
+    return OUTLINED_FUNCTION_0(*(self + 35));
   }
 
   else

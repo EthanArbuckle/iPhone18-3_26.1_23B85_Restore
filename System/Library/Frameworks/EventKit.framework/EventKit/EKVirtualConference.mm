@@ -1,34 +1,34 @@
 @interface EKVirtualConference
-+ (void)virtualConferenceForRoomType:(id)a3 completion:(id)a4 queue:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (EKVirtualConference)initWithTitle:(id)a3 joinMethods:(id)a4 conferenceDetails:(id)a5;
++ (void)virtualConferenceForRoomType:(id)type completion:(id)completion queue:(id)queue;
+- (BOOL)isEqual:(id)equal;
+- (EKVirtualConference)initWithTitle:(id)title joinMethods:(id)methods conferenceDetails:(id)details;
 - (NSURL)firstPhoneNumber;
 - (NSURL)urlWithAllowedScheme;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation EKVirtualConference
 
-- (EKVirtualConference)initWithTitle:(id)a3 joinMethods:(id)a4 conferenceDetails:(id)a5
+- (EKVirtualConference)initWithTitle:(id)title joinMethods:(id)methods conferenceDetails:(id)details
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  titleCopy = title;
+  methodsCopy = methods;
+  detailsCopy = details;
   v19.receiver = self;
   v19.super_class = EKVirtualConference;
   v11 = [(EKVirtualConference *)&v19 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [methodsCopy copy];
     joinMethods = v11->_joinMethods;
     v11->_joinMethods = v12;
 
-    v14 = [v10 copy];
+    v14 = [detailsCopy copy];
     conferenceDetails = v11->_conferenceDetails;
     v11->_conferenceDetails = v14;
 
-    v16 = [v8 copy];
+    v16 = [titleCopy copy];
     title = v11->_title;
     v11->_title = v16;
   }
@@ -36,12 +36,12 @@
   return v11;
 }
 
-+ (void)virtualConferenceForRoomType:(id)a3 completion:(id)a4 queue:(id)a5
++ (void)virtualConferenceForRoomType:(id)type completion:(id)completion queue:(id)queue
 {
   v65 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v33 = a5;
+  typeCopy = type;
+  completionCopy = completion;
+  queueCopy = queue;
   v52[0] = 0;
   v52[1] = v52;
   v52[2] = 0x2020000000;
@@ -51,7 +51,7 @@
   aBlock[2] = __69__EKVirtualConference_virtualConferenceForRoomType_completion_queue___block_invoke;
   aBlock[3] = &unk_1E77FFF98;
   v51 = v52;
-  v9 = v8;
+  v9 = completionCopy;
   v50 = v9;
   v10 = _Block_copy(aBlock);
   v43 = 0;
@@ -61,10 +61,10 @@
   v47 = __Block_byref_object_dispose__21;
   v48 = 0;
   v11 = MEMORY[0x1E696ABD0];
-  v12 = [v7 extensionBundleIdentifier];
+  extensionBundleIdentifier = [typeCopy extensionBundleIdentifier];
   v13 = (v44 + 5);
   obj = v44[5];
-  v14 = [v11 extensionWithIdentifier:v12 error:&obj];
+  v14 = [v11 extensionWithIdentifier:extensionBundleIdentifier error:&obj];
   objc_storeStrong(v13, obj);
 
   if (v44[5] || !v14)
@@ -72,16 +72,16 @@
     v25 = EKLogHandle;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v28 = [v7 title];
-      v29 = [v7 identifier];
-      v30 = [v7 extensionBundleIdentifier];
+      title = [typeCopy title];
+      identifier = [typeCopy identifier];
+      extensionBundleIdentifier2 = [typeCopy extensionBundleIdentifier];
       v31 = v44[5];
       *buf = 138413058;
-      v58 = v28;
+      v58 = title;
       v59 = 2112;
-      v60 = v29;
+      v60 = identifier;
       v61 = 2112;
-      v62 = v30;
+      v62 = extensionBundleIdentifier2;
       v63 = 2112;
       v64 = v31;
       _os_log_error_impl(&dword_1A805E000, v25, OS_LOG_TYPE_ERROR, "Could not load extension for room type title: %@ identifier: %@ extensionIdentifier: %@, error = %@", buf, 0x2Au);
@@ -96,9 +96,9 @@
     v38[1] = 3221225472;
     v38[2] = __69__EKVirtualConference_virtualConferenceForRoomType_completion_queue___block_invoke_17;
     v38[3] = &unk_1E77FFFC0;
-    v15 = v7;
+    v15 = typeCopy;
     v39 = v15;
-    v16 = v33;
+    v16 = queueCopy;
     v40 = v16;
     v17 = v10;
     v41 = v17;
@@ -107,8 +107,8 @@
     v56[0] = @"_EKVirutalConferenceRequestTypeJoinMethodsForRoomType";
     v55[0] = @"_EKVirtualConferenceRequestTypeKey";
     v55[1] = @"_EKVirtualConferenceRequestRoomTypeIdentifier";
-    v19 = [v15 identifier];
-    v56[1] = v19;
+    identifier2 = [v15 identifier];
+    v56[1] = identifier2;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:2];
     [v18 setUserInfo:v20];
 
@@ -398,8 +398,8 @@ uint64_t __69__EKVirtualConference_virtualConferenceForRoomType_completion_queue
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(EKVirtualConference *)self joinMethods];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  joinMethods = [(EKVirtualConference *)self joinMethods];
+  v3 = [joinMethods countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -410,7 +410,7 @@ LABEL_3:
     {
       if (*v11 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(joinMethods);
       }
 
       v7 = [*(*(&v10 + 1) + 8 * v6) URL];
@@ -421,7 +421,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [joinMethods countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -445,9 +445,9 @@ LABEL_9:
 
 - (NSURL)urlWithAllowedScheme
 {
-  v2 = [(EKVirtualConference *)self joinMethods];
-  v3 = [v2 firstObject];
-  v4 = [v3 URL];
+  joinMethods = [(EKVirtualConference *)self joinMethods];
+  firstObject = [joinMethods firstObject];
+  v4 = [firstObject URL];
 
   if (v4 && [MEMORY[0x1E6992F48] conferenceURLHasAllowedScheme:v4])
   {
@@ -462,10 +462,10 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -475,25 +475,25 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(EKVirtualConference *)v5 joinMethods];
-      v7 = [(EKVirtualConference *)self joinMethods];
+      v5 = equalCopy;
+      joinMethods = [(EKVirtualConference *)v5 joinMethods];
+      joinMethods2 = [(EKVirtualConference *)self joinMethods];
       v8 = CalEqualObjects();
 
-      v9 = [(EKVirtualConference *)v5 conferenceDetails];
-      v10 = [(EKVirtualConference *)self conferenceDetails];
+      conferenceDetails = [(EKVirtualConference *)v5 conferenceDetails];
+      conferenceDetails2 = [(EKVirtualConference *)self conferenceDetails];
       v11 = CalEqualStrings();
 
-      v12 = [(EKVirtualConference *)v5 title];
-      v13 = [(EKVirtualConference *)self title];
+      title = [(EKVirtualConference *)v5 title];
+      title2 = [(EKVirtualConference *)self title];
       v14 = CalEqualStrings();
 
-      v15 = [(EKVirtualConference *)v5 source];
-      v16 = [(EKVirtualConference *)self source];
+      source = [(EKVirtualConference *)v5 source];
+      source2 = [(EKVirtualConference *)self source];
       v17 = 0;
       if (v8 && v11)
       {
-        if (v15 == v16)
+        if (source == source2)
         {
           v17 = v14;
         }
@@ -526,13 +526,13 @@ LABEL_9:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [EKVirtualConference alloc];
-  v5 = [(EKVirtualConference *)self title];
-  v6 = [(EKVirtualConference *)self joinMethods];
-  v7 = [(EKVirtualConference *)self conferenceDetails];
-  v8 = [(EKVirtualConference *)v4 initWithTitle:v5 joinMethods:v6 conferenceDetails:v7];
+  title = [(EKVirtualConference *)self title];
+  joinMethods = [(EKVirtualConference *)self joinMethods];
+  conferenceDetails = [(EKVirtualConference *)self conferenceDetails];
+  v8 = [(EKVirtualConference *)v4 initWithTitle:title joinMethods:joinMethods conferenceDetails:conferenceDetails];
 
   [(EKVirtualConference *)v8 setSource:self->_source];
   return v8;

@@ -1,264 +1,264 @@
 @interface MADAutoAssetControlManagerParam
-- (MADAutoAssetControlManagerParam)initWithClientID:(id)a3;
-- (MADAutoAssetControlManagerParam)initWithClientRequest:(id)a3 reportingProgressThroughProxy:(id)a4 withReplyCompletion:(id)a5;
-- (MADAutoAssetControlManagerParam)initWithCoder:(id)a3;
-- (MADAutoAssetControlManagerParam)initWithDownloadsInFlight:(id)a3;
-- (MADAutoAssetControlManagerParam)initWithParamType:(int64_t)a3 withSafeSummary:(id)a4 withEventOSTransaction:(id)a5 withScheduledJobs:(id)a6 withClientID:(id)a7 withClientRequestMessage:(id)a8 withClientProgressProxy:(id)a9 withClientReplyCompletion:(id)a10 withResponseMessage:(id)a11 withResponseError:(id)a12 withDownloadsInFlight:(id)a13 withDownloadOptions:(id)a14 withAutoAssetJobID:(id)a15 withAutoAssetCatalog:(id)a16 withLockForUseError:(id)a17 withFinishedError:(id)a18 withDownloadProgress:(id)a19 withJobCurrentStatus:(id)a20 withAutoAssetSelector:(id)a21 withAutoAssetUUID:(id)a22 withSetOfAutoAssetSelectors:(id)a23 withPushNotifications:(id)a24 withSetDescriptor:(id)a25 withAutoAssetDescriptors:(id)a26 withSetPolicy:(id)a27 withAssetTargetOSVersion:(id)a28 withAssetTargetBuildVersion:(id)a29 withAssetTargetTrainName:(id)a30 withAssetTargetRestoreVersion:(id)a31 withStagedToDownloaded:(id)a32 withStagedLookupResults:(id)a33 withNewOSPromotion:(BOOL)a34 withDownloadingDescriptor:(id)a35 withBaseForPatchDescriptor:(id)a36 withBaseForStagingDescriptors:(id)a37 withSchedulerInvolved:(BOOL)a38 withPotentialNetworkFailure:(BOOL)a39 withRequiringLoadPriorToUse:(BOOL)a40 withClientDomainName:(id)a41 withAssetSetIdentifier:(id)a42 withSetConfiguration:(id)a43 withSetAtomicInstance:(id)a44 withSetJobInformation:(id)a45 withTriggeredSets:(id)a46;
-- (MADAutoAssetControlManagerParam)initWithPromoted:(id)a3 withSetLookupResults:(id)a4 withNewOSPromotion:(BOOL)a5 withRequiringLoadPriorToUse:(BOOL)a6;
-- (MADAutoAssetControlManagerParam)initWithSafeSummary:(id)a3;
-- (MADAutoAssetControlManagerParam)initWithScheduledJobs:(id)a3;
+- (MADAutoAssetControlManagerParam)initWithClientID:(id)d;
+- (MADAutoAssetControlManagerParam)initWithClientRequest:(id)request reportingProgressThroughProxy:(id)proxy withReplyCompletion:(id)completion;
+- (MADAutoAssetControlManagerParam)initWithCoder:(id)coder;
+- (MADAutoAssetControlManagerParam)initWithDownloadsInFlight:(id)flight;
+- (MADAutoAssetControlManagerParam)initWithParamType:(int64_t)type withSafeSummary:(id)summary withEventOSTransaction:(id)transaction withScheduledJobs:(id)jobs withClientID:(id)d withClientRequestMessage:(id)message withClientProgressProxy:(id)proxy withClientReplyCompletion:(id)self0 withResponseMessage:(id)self1 withResponseError:(id)self2 withDownloadsInFlight:(id)self3 withDownloadOptions:(id)self4 withAutoAssetJobID:(id)self5 withAutoAssetCatalog:(id)self6 withLockForUseError:(id)self7 withFinishedError:(id)self8 withDownloadProgress:(id)self9 withJobCurrentStatus:(id)status withAutoAssetSelector:(id)selector withAutoAssetUUID:(id)uID withSetOfAutoAssetSelectors:(id)selectors withPushNotifications:(id)notifications withSetDescriptor:(id)descriptor withAutoAssetDescriptors:(id)descriptors withSetPolicy:(id)policy withAssetTargetOSVersion:(id)version withAssetTargetBuildVersion:(id)buildVersion withAssetTargetTrainName:(id)type0 withAssetTargetRestoreVersion:(id)type1 withStagedToDownloaded:(id)type2 withStagedLookupResults:(id)type3 withNewOSPromotion:(BOOL)type4 withDownloadingDescriptor:(id)type5 withBaseForPatchDescriptor:(id)type6 withBaseForStagingDescriptors:(id)type7 withSchedulerInvolved:(BOOL)type8 withPotentialNetworkFailure:(BOOL)type9 withRequiringLoadPriorToUse:(BOOL)summary0 withClientDomainName:(id)summary1 withAssetSetIdentifier:(id)summary2 withSetConfiguration:(id)summary3 withSetAtomicInstance:(id)summary4 withSetJobInformation:(id)summary5 withTriggeredSets:(id)summary6;
+- (MADAutoAssetControlManagerParam)initWithPromoted:(id)promoted withSetLookupResults:(id)results withNewOSPromotion:(BOOL)promotion withRequiringLoadPriorToUse:(BOOL)use;
+- (MADAutoAssetControlManagerParam)initWithSafeSummary:(id)summary;
+- (MADAutoAssetControlManagerParam)initWithScheduledJobs:(id)jobs;
 - (id)_summary;
-- (id)initForAssetSelector:(id)a3;
-- (id)initForAutoAssetDescriptors:(id)a3;
-- (id)initForConfigFinishedJobID:(id)a3 andDownloadOptions:(id)a4 withError:(id)a5;
-- (id)initForCurrentJobID:(id)a3 withProgress:(id)a4;
-- (id)initForFinishedJobID:(id)a3 withCatalog:(id)a4 withError:(id)a5;
-- (id)initForFinishedJobID:(id)a3 withError:(id)a4;
-- (id)initForFinishedJobSelector:(id)a3 withAutoAssetUUID:(id)a4 withSchedulerInvolved:(BOOL)a5 withPotentialNetworkFailure:(BOOL)a6;
-- (id)initForFinishedSetJob:(id)a3 forAssetSetIdentifier:(id)a4 withSetAtomicInstance:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7 withSchedulerInvolved:(BOOL)a8 withPotentialNetworkFailure:(BOOL)a9;
-- (id)initForJobFoundSelector:(id)a3 withAutoAssetUUID:(id)a4;
-- (id)initForJobIssueProgress:(id)a3 forAutoAssetSelector:(id)a4 withAutoAssetUUID:(id)a5 withJobCurrentStatus:(id)a6 withLockForUseError:(id)a7;
-- (id)initForJobIssueReply:(id)a3 forAutoAssetSelector:(id)a4 withAutoAssetUUID:(id)a5 withResponseMessage:(id)a6 withResponseError:(id)a7;
-- (id)initForReceivedPushNotifications:(id)a3;
-- (id)initForSecureOperationsFinished:(id)a3 forSetDescriptor:(id)a4 forAutoAssetDescriptors:(id)a5;
-- (id)initForSecureOperationsFinished:(id)a3 forSetDescriptor:(id)a4 forAutoAssetDescriptors:(id)a5 withError:(id)a6;
-- (id)initForSetConfiguration:(id)a3;
-- (id)initForSetConfiguration:(id)a3 withSetDescriptor:(id)a4 withCatalogLookupResponse:(id)a5;
-- (id)initForSetJobClientDomain:(id)a3 forAssetSetIdentifier:(id)a4;
-- (id)initForSetJobFound:(id)a3 forAssetSetIdentifier:(id)a4 withSetAtomicInstance:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7;
-- (id)initForSetJobIssueProgress:(id)a3 forDomainName:(id)a4 forAssetSetIdentifier:(id)a5 withSetAtomicInstance:(id)a6 withAutoAssetUUID:(id)a7 withSetJobInformation:(id)a8 withLockForUseError:(id)a9;
-- (id)initForSetJobIssueReply:(id)a3 forDomainName:(id)a4 forAssetSetIdentifier:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7 withResponseError:(id)a8;
-- (id)initForSetJobSchedulerNoClientDownloaded:(id)a3 forDomainName:(id)a4 forAssetSetIdentifier:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7 withResponseError:(id)a8;
-- (id)initForSetJobSchedulerNoClientFoundSame:(id)a3 forDomainName:(id)a4 forAssetSetIdentifier:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7 withResponseError:(id)a8;
-- (id)initForStagerJobInformation:(id)a3;
-- (id)initForStagerJobLookupResults:(id)a3 withBaseForStagingDescriptors:(id)a4 withDetermineError:(id)a5;
-- (id)initForStagerJobStart:(id)a3 withStagerSetConfiguration:(id)a4 usingCachedAutoAssetCatalog:(id)a5 usingBaseForPatching:(id)a6 withAssetTargetOSVersion:(id)a7 withAssetTargetBuildVersion:(id)a8;
-- (id)initForStagerSetJobStart:(id)a3 withAssetTargetOSVersion:(id)a4 withAssetTargetBuildVersion:(id)a5 withAssetTargetTrainName:(id)a6 withAssetTargetRestoreVersion:(id)a7;
+- (id)initForAssetSelector:(id)selector;
+- (id)initForAutoAssetDescriptors:(id)descriptors;
+- (id)initForConfigFinishedJobID:(id)d andDownloadOptions:(id)options withError:(id)error;
+- (id)initForCurrentJobID:(id)d withProgress:(id)progress;
+- (id)initForFinishedJobID:(id)d withCatalog:(id)catalog withError:(id)error;
+- (id)initForFinishedJobID:(id)d withError:(id)error;
+- (id)initForFinishedJobSelector:(id)selector withAutoAssetUUID:(id)d withSchedulerInvolved:(BOOL)involved withPotentialNetworkFailure:(BOOL)failure;
+- (id)initForFinishedSetJob:(id)job forAssetSetIdentifier:(id)identifier withSetAtomicInstance:(id)instance withAutoAssetUUID:(id)d withSetJobInformation:(id)information withSchedulerInvolved:(BOOL)involved withPotentialNetworkFailure:(BOOL)failure;
+- (id)initForJobFoundSelector:(id)selector withAutoAssetUUID:(id)d;
+- (id)initForJobIssueProgress:(id)progress forAutoAssetSelector:(id)selector withAutoAssetUUID:(id)d withJobCurrentStatus:(id)status withLockForUseError:(id)error;
+- (id)initForJobIssueReply:(id)reply forAutoAssetSelector:(id)selector withAutoAssetUUID:(id)d withResponseMessage:(id)message withResponseError:(id)error;
+- (id)initForReceivedPushNotifications:(id)notifications;
+- (id)initForSecureOperationsFinished:(id)finished forSetDescriptor:(id)descriptor forAutoAssetDescriptors:(id)descriptors;
+- (id)initForSecureOperationsFinished:(id)finished forSetDescriptor:(id)descriptor forAutoAssetDescriptors:(id)descriptors withError:(id)error;
+- (id)initForSetConfiguration:(id)configuration;
+- (id)initForSetConfiguration:(id)configuration withSetDescriptor:(id)descriptor withCatalogLookupResponse:(id)response;
+- (id)initForSetJobClientDomain:(id)domain forAssetSetIdentifier:(id)identifier;
+- (id)initForSetJobFound:(id)found forAssetSetIdentifier:(id)identifier withSetAtomicInstance:(id)instance withAutoAssetUUID:(id)d withSetJobInformation:(id)information;
+- (id)initForSetJobIssueProgress:(id)progress forDomainName:(id)name forAssetSetIdentifier:(id)identifier withSetAtomicInstance:(id)instance withAutoAssetUUID:(id)d withSetJobInformation:(id)information withLockForUseError:(id)error;
+- (id)initForSetJobIssueReply:(id)reply forDomainName:(id)name forAssetSetIdentifier:(id)identifier withAutoAssetUUID:(id)d withSetJobInformation:(id)information withResponseError:(id)error;
+- (id)initForSetJobSchedulerNoClientDownloaded:(id)downloaded forDomainName:(id)name forAssetSetIdentifier:(id)identifier withAutoAssetUUID:(id)d withSetJobInformation:(id)information withResponseError:(id)error;
+- (id)initForSetJobSchedulerNoClientFoundSame:(id)same forDomainName:(id)name forAssetSetIdentifier:(id)identifier withAutoAssetUUID:(id)d withSetJobInformation:(id)information withResponseError:(id)error;
+- (id)initForStagerJobInformation:(id)information;
+- (id)initForStagerJobLookupResults:(id)results withBaseForStagingDescriptors:(id)descriptors withDetermineError:(id)error;
+- (id)initForStagerJobStart:(id)start withStagerSetConfiguration:(id)configuration usingCachedAutoAssetCatalog:(id)catalog usingBaseForPatching:(id)patching withAssetTargetOSVersion:(id)version withAssetTargetBuildVersion:(id)buildVersion;
+- (id)initForStagerSetJobStart:(id)start withAssetTargetOSVersion:(id)version withAssetTargetBuildVersion:(id)buildVersion withAssetTargetTrainName:(id)name withAssetTargetRestoreVersion:(id)restoreVersion;
 - (id)initForTimerFired;
-- (id)initForTriggeredNoActivity:(id)a3;
-- (id)initForTriggeredSelectors:(id)a3 withEventOSTransaction:(id)a4;
-- (id)initForTriggeredSets:(id)a3 withEventOSTransaction:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)initForTriggeredNoActivity:(id)activity;
+- (id)initForTriggeredSelectors:(id)selectors withEventOSTransaction:(id)transaction;
+- (id)initForTriggeredSets:(id)sets withEventOSTransaction:(id)transaction;
+- (void)encodeWithCoder:(id)coder;
 - (void)updateSafeSummary;
 @end
 
 @implementation MADAutoAssetControlManagerParam
 
-- (MADAutoAssetControlManagerParam)initWithSafeSummary:(id)a3
+- (MADAutoAssetControlManagerParam)initWithSafeSummary:(id)summary
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 0;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:0 withEventOSTransaction:a3 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:0 withEventOSTransaction:summary withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (MADAutoAssetControlManagerParam)initWithScheduledJobs:(id)a3
+- (MADAutoAssetControlManagerParam)initWithScheduledJobs:(id)jobs
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 0;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:1 withEventOSTransaction:0 withScheduledJobs:0 withClientID:a3 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:1 withEventOSTransaction:0 withScheduledJobs:0 withClientID:jobs withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (MADAutoAssetControlManagerParam)initWithClientID:(id)a3
+- (MADAutoAssetControlManagerParam)initWithClientID:(id)d
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 0;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:2 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:a3 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:2 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:d withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (MADAutoAssetControlManagerParam)initWithClientRequest:(id)a3 reportingProgressThroughProxy:(id)a4 withReplyCompletion:(id)a5
+- (MADAutoAssetControlManagerParam)initWithClientRequest:(id)request reportingProgressThroughProxy:(id)proxy withReplyCompletion:(id)completion
 {
   BYTE2(v7) = 0;
   LOWORD(v7) = 0;
   LOBYTE(v6) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:3 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:a3 withClientReplyCompletion:a4 withResponseMessage:a5 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:3 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:request withClientReplyCompletion:proxy withResponseMessage:completion withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (MADAutoAssetControlManagerParam)initWithDownloadsInFlight:(id)a3
+- (MADAutoAssetControlManagerParam)initWithDownloadsInFlight:(id)flight
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 0;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:4 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:a3 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:4 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:flight withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForFinishedJobID:(id)a3 withError:(id)a4
+- (id)initForFinishedJobID:(id)d withError:(id)error
 {
   BYTE2(v6) = 0;
   LOWORD(v6) = 0;
   LOBYTE(v5) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:5 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:a3 withLockForUseError:0 withFinishedError:0 withDownloadProgress:a4 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:5 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:d withLockForUseError:0 withFinishedError:0 withDownloadProgress:error withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForFinishedJobID:(id)a3 withCatalog:(id)a4 withError:(id)a5
+- (id)initForFinishedJobID:(id)d withCatalog:(id)catalog withError:(id)error
 {
   BYTE2(v7) = 0;
   LOWORD(v7) = 0;
   LOBYTE(v6) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:6 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:a3 withLockForUseError:a4 withFinishedError:0 withDownloadProgress:a5 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:6 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:d withLockForUseError:catalog withFinishedError:0 withDownloadProgress:error withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForConfigFinishedJobID:(id)a3 andDownloadOptions:(id)a4 withError:(id)a5
+- (id)initForConfigFinishedJobID:(id)d andDownloadOptions:(id)options withError:(id)error
 {
   BYTE2(v7) = 0;
   LOWORD(v7) = 0;
   LOBYTE(v6) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:7 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:a4 withAutoAssetCatalog:a3 withLockForUseError:0 withFinishedError:0 withDownloadProgress:a5 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:7 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:options withAutoAssetCatalog:d withLockForUseError:0 withFinishedError:0 withDownloadProgress:error withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForCurrentJobID:(id)a3 withProgress:(id)a4
+- (id)initForCurrentJobID:(id)d withProgress:(id)progress
 {
   BYTE2(v6) = 0;
   LOWORD(v6) = 0;
   LOBYTE(v5) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:8 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:a3 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:a4 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:8 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:d withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:progress withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForJobFoundSelector:(id)a3 withAutoAssetUUID:(id)a4
+- (id)initForJobFoundSelector:(id)selector withAutoAssetUUID:(id)d
 {
   BYTE2(v6) = 0;
   LOWORD(v6) = 0;
   LOBYTE(v5) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:9 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:a3 withSetOfAutoAssetSelectors:a4 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:9 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:selector withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForJobIssueProgress:(id)a3 forAutoAssetSelector:(id)a4 withAutoAssetUUID:(id)a5 withJobCurrentStatus:(id)a6 withLockForUseError:(id)a7
+- (id)initForJobIssueProgress:(id)progress forAutoAssetSelector:(id)selector withAutoAssetUUID:(id)d withJobCurrentStatus:(id)status withLockForUseError:(id)error
 {
   BYTE2(v9) = 0;
   LOWORD(v9) = 0;
   LOBYTE(v8) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:11 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:a3 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:a7 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:a6 withAutoAssetUUID:a4 withSetOfAutoAssetSelectors:a5 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v8 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v9 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:11 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:progress withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:error withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:status withAutoAssetUUID:selector withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v8 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v9 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForJobIssueReply:(id)a3 forAutoAssetSelector:(id)a4 withAutoAssetUUID:(id)a5 withResponseMessage:(id)a6 withResponseError:(id)a7
+- (id)initForJobIssueReply:(id)reply forAutoAssetSelector:(id)selector withAutoAssetUUID:(id)d withResponseMessage:(id)message withResponseError:(id)error
 {
   BYTE2(v9) = 0;
   LOWORD(v9) = 0;
   LOBYTE(v8) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:10 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:a3 withResponseError:a6 withDownloadsInFlight:a7 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:a4 withSetOfAutoAssetSelectors:a5 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v8 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v9 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:10 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:reply withResponseError:message withDownloadsInFlight:error withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:selector withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v8 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v9 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForFinishedJobSelector:(id)a3 withAutoAssetUUID:(id)a4 withSchedulerInvolved:(BOOL)a5 withPotentialNetworkFailure:(BOOL)a6
+- (id)initForFinishedJobSelector:(id)selector withAutoAssetUUID:(id)d withSchedulerInvolved:(BOOL)involved withPotentialNetworkFailure:(BOOL)failure
 {
   BYTE2(v8) = 0;
-  BYTE1(v8) = a6;
-  LOBYTE(v8) = a5;
+  BYTE1(v8) = failure;
+  LOBYTE(v8) = involved;
   LOBYTE(v7) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:12 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:a3 withSetOfAutoAssetSelectors:a4 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v7 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v8 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:12 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:selector withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v7 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v8 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForTriggeredSelectors:(id)a3 withEventOSTransaction:(id)a4
+- (id)initForTriggeredSelectors:(id)selectors withEventOSTransaction:(id)transaction
 {
   BYTE2(v6) = 0;
   LOWORD(v6) = 1;
   LOBYTE(v5) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:20 withEventOSTransaction:0 withScheduledJobs:a4 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:a3 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:20 withEventOSTransaction:0 withScheduledJobs:transaction withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:selectors withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForTriggeredSets:(id)a3 withEventOSTransaction:(id)a4
+- (id)initForTriggeredSets:(id)sets withEventOSTransaction:(id)transaction
 {
   BYTE2(v6) = 0;
   LOWORD(v6) = 1;
   LOBYTE(v5) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:21 withEventOSTransaction:0 withScheduledJobs:a4 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:a3 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:21 withEventOSTransaction:0 withScheduledJobs:transaction withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:sets withTriggeredSets:?];
 }
 
-- (id)initForTriggeredNoActivity:(id)a3
+- (id)initForTriggeredNoActivity:(id)activity
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 1;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:22 withEventOSTransaction:0 withScheduledJobs:a3 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:22 withEventOSTransaction:0 withScheduledJobs:activity withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForReceivedPushNotifications:(id)a3
+- (id)initForReceivedPushNotifications:(id)notifications
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 0;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:23 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:a3 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:23 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:notifications withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSecureOperationsFinished:(id)a3 forSetDescriptor:(id)a4 forAutoAssetDescriptors:(id)a5
+- (id)initForSecureOperationsFinished:(id)finished forSetDescriptor:(id)descriptor forAutoAssetDescriptors:(id)descriptors
 {
   BYTE2(v7) = 0;
   LOWORD(v7) = 0;
   LOBYTE(v6) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:24 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:a4 withSetPolicy:a5 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:24 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:descriptor withSetPolicy:descriptors withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSecureOperationsFinished:(id)a3 forSetDescriptor:(id)a4 forAutoAssetDescriptors:(id)a5 withError:(id)a6
+- (id)initForSecureOperationsFinished:(id)finished forSetDescriptor:(id)descriptor forAutoAssetDescriptors:(id)descriptors withError:(id)error
 {
   BYTE2(v8) = 0;
   LOWORD(v8) = 0;
   LOBYTE(v7) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:24 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:a6 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:a4 withSetPolicy:a5 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v7 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v8 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:24 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:error withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:descriptor withSetPolicy:descriptors withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v7 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v8 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForAutoAssetDescriptors:(id)a3
+- (id)initForAutoAssetDescriptors:(id)descriptors
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 0;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:25 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:a3 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:25 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:descriptors withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForStagerSetJobStart:(id)a3 withAssetTargetOSVersion:(id)a4 withAssetTargetBuildVersion:(id)a5 withAssetTargetTrainName:(id)a6 withAssetTargetRestoreVersion:(id)a7
+- (id)initForStagerSetJobStart:(id)start withAssetTargetOSVersion:(id)version withAssetTargetBuildVersion:(id)buildVersion withAssetTargetTrainName:(id)name withAssetTargetRestoreVersion:(id)restoreVersion
 {
   BYTE2(v9) = 0;
   LOWORD(v9) = 0;
   LOBYTE(v8) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:26 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:a4 withAssetTargetTrainName:a5 withAssetTargetRestoreVersion:a6 withStagedToDownloaded:a7 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v8 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v9 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:a3 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:26 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:version withAssetTargetTrainName:buildVersion withAssetTargetRestoreVersion:name withStagedToDownloaded:restoreVersion withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v8 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v9 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:start withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForStagerJobStart:(id)a3 withStagerSetConfiguration:(id)a4 usingCachedAutoAssetCatalog:(id)a5 usingBaseForPatching:(id)a6 withAssetTargetOSVersion:(id)a7 withAssetTargetBuildVersion:(id)a8
+- (id)initForStagerJobStart:(id)start withStagerSetConfiguration:(id)configuration usingCachedAutoAssetCatalog:(id)catalog usingBaseForPatching:(id)patching withAssetTargetOSVersion:(id)version withAssetTargetBuildVersion:(id)buildVersion
 {
   BYTE2(v10) = 0;
   LOWORD(v10) = 0;
   LOBYTE(v9) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:27 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:a5 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:a3 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:a7 withAssetTargetTrainName:a8 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v9 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:a6 withSchedulerInvolved:0 withPotentialNetworkFailure:v10 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:a4 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:27 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:catalog withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:start withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:version withAssetTargetTrainName:buildVersion withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v9 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:patching withSchedulerInvolved:0 withPotentialNetworkFailure:v10 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:configuration withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForStagerJobInformation:(id)a3
+- (id)initForStagerJobInformation:(id)information
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 0;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:28 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:a3 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:28 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:information withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForStagerJobLookupResults:(id)a3 withBaseForStagingDescriptors:(id)a4 withDetermineError:(id)a5
+- (id)initForStagerJobLookupResults:(id)results withBaseForStagingDescriptors:(id)descriptors withDetermineError:(id)error
 {
   BYTE2(v7) = 0;
   LOWORD(v7) = 0;
   LOBYTE(v6) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:29 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:a3 withFinishedError:0 withDownloadProgress:a5 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:a4 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:29 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:results withFinishedError:0 withDownloadProgress:error withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:descriptors withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForAssetSelector:(id)a3
+- (id)initForAssetSelector:(id)selector
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 0;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:31 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:a3 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:31 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:selector withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSetConfiguration:(id)a3
+- (id)initForSetConfiguration:(id)configuration
 {
   BYTE2(v5) = 0;
   LOWORD(v5) = 0;
   LOBYTE(v4) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:32 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:a3 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:32 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v4 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v5 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:configuration withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSetConfiguration:(id)a3 withSetDescriptor:(id)a4 withCatalogLookupResponse:(id)a5
+- (id)initForSetConfiguration:(id)configuration withSetDescriptor:(id)descriptor withCatalogLookupResponse:(id)response
 {
   BYTE2(v7) = 0;
   LOWORD(v7) = 0;
   LOBYTE(v6) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:32 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:a5 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:a4 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:a3 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:32 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:response withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:descriptor withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v6 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v7 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:configuration withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
 - (id)initForTimerFired
@@ -269,121 +269,121 @@
   return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:33 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v3 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v4 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (MADAutoAssetControlManagerParam)initWithPromoted:(id)a3 withSetLookupResults:(id)a4 withNewOSPromotion:(BOOL)a5 withRequiringLoadPriorToUse:(BOOL)a6
+- (MADAutoAssetControlManagerParam)initWithPromoted:(id)promoted withSetLookupResults:(id)results withNewOSPromotion:(BOOL)promotion withRequiringLoadPriorToUse:(BOOL)use
 {
-  BYTE2(v8) = a6;
+  BYTE2(v8) = use;
   LOWORD(v8) = 0;
-  LOBYTE(v7) = a5;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:30 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:a3 withNewOSPromotion:a4 withDownloadingDescriptor:v7 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v8 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  LOBYTE(v7) = promotion;
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:30 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:promoted withNewOSPromotion:results withDownloadingDescriptor:v7 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v8 withRequiringLoadPriorToUse:0 withClientDomainName:0 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSetJobFound:(id)a3 forAssetSetIdentifier:(id)a4 withSetAtomicInstance:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7
+- (id)initForSetJobFound:(id)found forAssetSetIdentifier:(id)identifier withSetAtomicInstance:(id)instance withAutoAssetUUID:(id)d withSetJobInformation:(id)information
 {
   BYTE2(v9) = 0;
   LOWORD(v9) = 0;
   LOBYTE(v8) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:13 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:a6 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v8 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v9 withRequiringLoadPriorToUse:a3 withClientDomainName:a4 withAssetSetIdentifier:0 withSetConfiguration:a5 withSetAtomicInstance:a7 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:13 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v8 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v9 withRequiringLoadPriorToUse:found withClientDomainName:identifier withAssetSetIdentifier:0 withSetConfiguration:instance withSetAtomicInstance:information withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSetJobIssueReply:(id)a3 forDomainName:(id)a4 forAssetSetIdentifier:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7 withResponseError:(id)a8
+- (id)initForSetJobIssueReply:(id)reply forDomainName:(id)name forAssetSetIdentifier:(id)identifier withAutoAssetUUID:(id)d withSetJobInformation:(id)information withResponseError:(id)error
 {
   BYTE2(v10) = 0;
   LOWORD(v10) = 0;
   LOBYTE(v9) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:14 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:a3 withResponseError:0 withDownloadsInFlight:a8 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:a6 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v9 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v10 withRequiringLoadPriorToUse:a4 withClientDomainName:a5 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:a7 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:14 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:reply withResponseError:0 withDownloadsInFlight:error withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v9 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v10 withRequiringLoadPriorToUse:name withClientDomainName:identifier withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:information withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSetJobSchedulerNoClientFoundSame:(id)a3 forDomainName:(id)a4 forAssetSetIdentifier:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7 withResponseError:(id)a8
+- (id)initForSetJobSchedulerNoClientFoundSame:(id)same forDomainName:(id)name forAssetSetIdentifier:(id)identifier withAutoAssetUUID:(id)d withSetJobInformation:(id)information withResponseError:(id)error
 {
   BYTE2(v10) = 0;
   LOWORD(v10) = 0;
   LOBYTE(v9) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:15 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:a8 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:a3 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:a6 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v9 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v10 withRequiringLoadPriorToUse:a4 withClientDomainName:a5 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:a7 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:15 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:error withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:same withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v9 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v10 withRequiringLoadPriorToUse:name withClientDomainName:identifier withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:information withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSetJobSchedulerNoClientDownloaded:(id)a3 forDomainName:(id)a4 forAssetSetIdentifier:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7 withResponseError:(id)a8
+- (id)initForSetJobSchedulerNoClientDownloaded:(id)downloaded forDomainName:(id)name forAssetSetIdentifier:(id)identifier withAutoAssetUUID:(id)d withSetJobInformation:(id)information withResponseError:(id)error
 {
   BYTE2(v10) = 0;
   LOWORD(v10) = 0;
   LOBYTE(v9) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:16 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:a8 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:a3 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:a6 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v9 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v10 withRequiringLoadPriorToUse:a4 withClientDomainName:a5 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:a7 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:16 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:error withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:downloaded withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v9 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v10 withRequiringLoadPriorToUse:name withClientDomainName:identifier withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:information withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSetJobIssueProgress:(id)a3 forDomainName:(id)a4 forAssetSetIdentifier:(id)a5 withSetAtomicInstance:(id)a6 withAutoAssetUUID:(id)a7 withSetJobInformation:(id)a8 withLockForUseError:(id)a9
+- (id)initForSetJobIssueProgress:(id)progress forDomainName:(id)name forAssetSetIdentifier:(id)identifier withSetAtomicInstance:(id)instance withAutoAssetUUID:(id)d withSetJobInformation:(id)information withLockForUseError:(id)error
 {
   BYTE2(v11) = 0;
   LOWORD(v11) = 0;
   LOBYTE(v10) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:17 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:a3 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:a9 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:a7 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v10 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v11 withRequiringLoadPriorToUse:a4 withClientDomainName:a5 withAssetSetIdentifier:0 withSetConfiguration:a6 withSetAtomicInstance:a8 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:17 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:progress withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:error withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v10 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v11 withRequiringLoadPriorToUse:name withClientDomainName:identifier withAssetSetIdentifier:0 withSetConfiguration:instance withSetAtomicInstance:information withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForFinishedSetJob:(id)a3 forAssetSetIdentifier:(id)a4 withSetAtomicInstance:(id)a5 withAutoAssetUUID:(id)a6 withSetJobInformation:(id)a7 withSchedulerInvolved:(BOOL)a8 withPotentialNetworkFailure:(BOOL)a9
+- (id)initForFinishedSetJob:(id)job forAssetSetIdentifier:(id)identifier withSetAtomicInstance:(id)instance withAutoAssetUUID:(id)d withSetJobInformation:(id)information withSchedulerInvolved:(BOOL)involved withPotentialNetworkFailure:(BOOL)failure
 {
   BYTE2(v11) = 0;
-  BYTE1(v11) = a9;
-  LOBYTE(v11) = a8;
+  BYTE1(v11) = failure;
+  LOBYTE(v11) = involved;
   LOBYTE(v10) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:19 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:a6 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v10 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v11 withRequiringLoadPriorToUse:a3 withClientDomainName:a4 withAssetSetIdentifier:0 withSetConfiguration:a5 withSetAtomicInstance:a7 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:19 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:d withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v10 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v11 withRequiringLoadPriorToUse:job withClientDomainName:identifier withAssetSetIdentifier:0 withSetConfiguration:instance withSetAtomicInstance:information withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (id)initForSetJobClientDomain:(id)a3 forAssetSetIdentifier:(id)a4
+- (id)initForSetJobClientDomain:(id)domain forAssetSetIdentifier:(id)identifier
 {
   BYTE2(v6) = 0;
   LOWORD(v6) = 0;
   LOBYTE(v5) = 0;
-  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:18 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:a3 withClientDomainName:a4 withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
+  return [MADAutoAssetControlManagerParam initWithParamType:"initWithParamType:withSafeSummary:withEventOSTransaction:withScheduledJobs:withClientID:withClientRequestMessage:withClientProgressProxy:withClientReplyCompletion:withResponseMessage:withResponseError:withDownloadsInFlight:withDownloadOptions:withAutoAssetJobID:withAutoAssetCatalog:withLockForUseError:withFinishedError:withDownloadProgress:withJobCurrentStatus:withAutoAssetSelector:withAutoAssetUUID:withSetOfAutoAssetSelectors:withPushNotifications:withSetDescriptor:withAutoAssetDescriptors:withSetPolicy:withAssetTargetOSVersion:withAssetTargetBuildVersion:withAssetTargetTrainName:withAssetTargetRestoreVersion:withStagedToDownloaded:withStagedLookupResults:withNewOSPromotion:withDownloadingDescriptor:withBaseForPatchDescriptor:withBaseForStagingDescriptors:withSchedulerInvolved:withPotentialNetworkFailure:withRequiringLoadPriorToUse:withClientDomainName:withAssetSetIdentifier:withSetConfiguration:withSetAtomicInstance:withSetJobInformation:withTriggeredSets:" withSafeSummary:18 withEventOSTransaction:0 withScheduledJobs:0 withClientID:0 withClientRequestMessage:0 withClientProgressProxy:0 withClientReplyCompletion:0 withResponseMessage:0 withResponseError:0 withDownloadsInFlight:0 withDownloadOptions:0 withAutoAssetJobID:0 withAutoAssetCatalog:0 withLockForUseError:0 withFinishedError:0 withDownloadProgress:0 withJobCurrentStatus:0 withAutoAssetSelector:0 withAutoAssetUUID:0 withSetOfAutoAssetSelectors:0 withPushNotifications:0 withSetDescriptor:0 withAutoAssetDescriptors:0 withSetPolicy:0 withAssetTargetOSVersion:0 withAssetTargetBuildVersion:0 withAssetTargetTrainName:0 withAssetTargetRestoreVersion:0 withStagedToDownloaded:0 withStagedLookupResults:0 withNewOSPromotion:0 withDownloadingDescriptor:v5 withBaseForPatchDescriptor:0 withBaseForStagingDescriptors:0 withSchedulerInvolved:0 withPotentialNetworkFailure:v6 withRequiringLoadPriorToUse:domain withClientDomainName:identifier withAssetSetIdentifier:0 withSetConfiguration:0 withSetAtomicInstance:0 withSetJobInformation:0 withTriggeredSets:?];
 }
 
-- (MADAutoAssetControlManagerParam)initWithParamType:(int64_t)a3 withSafeSummary:(id)a4 withEventOSTransaction:(id)a5 withScheduledJobs:(id)a6 withClientID:(id)a7 withClientRequestMessage:(id)a8 withClientProgressProxy:(id)a9 withClientReplyCompletion:(id)a10 withResponseMessage:(id)a11 withResponseError:(id)a12 withDownloadsInFlight:(id)a13 withDownloadOptions:(id)a14 withAutoAssetJobID:(id)a15 withAutoAssetCatalog:(id)a16 withLockForUseError:(id)a17 withFinishedError:(id)a18 withDownloadProgress:(id)a19 withJobCurrentStatus:(id)a20 withAutoAssetSelector:(id)a21 withAutoAssetUUID:(id)a22 withSetOfAutoAssetSelectors:(id)a23 withPushNotifications:(id)a24 withSetDescriptor:(id)a25 withAutoAssetDescriptors:(id)a26 withSetPolicy:(id)a27 withAssetTargetOSVersion:(id)a28 withAssetTargetBuildVersion:(id)a29 withAssetTargetTrainName:(id)a30 withAssetTargetRestoreVersion:(id)a31 withStagedToDownloaded:(id)a32 withStagedLookupResults:(id)a33 withNewOSPromotion:(BOOL)a34 withDownloadingDescriptor:(id)a35 withBaseForPatchDescriptor:(id)a36 withBaseForStagingDescriptors:(id)a37 withSchedulerInvolved:(BOOL)a38 withPotentialNetworkFailure:(BOOL)a39 withRequiringLoadPriorToUse:(BOOL)a40 withClientDomainName:(id)a41 withAssetSetIdentifier:(id)a42 withSetConfiguration:(id)a43 withSetAtomicInstance:(id)a44 withSetJobInformation:(id)a45 withTriggeredSets:(id)a46
+- (MADAutoAssetControlManagerParam)initWithParamType:(int64_t)type withSafeSummary:(id)summary withEventOSTransaction:(id)transaction withScheduledJobs:(id)jobs withClientID:(id)d withClientRequestMessage:(id)message withClientProgressProxy:(id)proxy withClientReplyCompletion:(id)self0 withResponseMessage:(id)self1 withResponseError:(id)self2 withDownloadsInFlight:(id)self3 withDownloadOptions:(id)self4 withAutoAssetJobID:(id)self5 withAutoAssetCatalog:(id)self6 withLockForUseError:(id)self7 withFinishedError:(id)self8 withDownloadProgress:(id)self9 withJobCurrentStatus:(id)status withAutoAssetSelector:(id)selector withAutoAssetUUID:(id)uID withSetOfAutoAssetSelectors:(id)selectors withPushNotifications:(id)notifications withSetDescriptor:(id)descriptor withAutoAssetDescriptors:(id)descriptors withSetPolicy:(id)policy withAssetTargetOSVersion:(id)version withAssetTargetBuildVersion:(id)buildVersion withAssetTargetTrainName:(id)type0 withAssetTargetRestoreVersion:(id)type1 withStagedToDownloaded:(id)type2 withStagedLookupResults:(id)type3 withNewOSPromotion:(BOOL)type4 withDownloadingDescriptor:(id)type5 withBaseForPatchDescriptor:(id)type6 withBaseForStagingDescriptors:(id)type7 withSchedulerInvolved:(BOOL)type8 withPotentialNetworkFailure:(BOOL)type9 withRequiringLoadPriorToUse:(BOOL)summary0 withClientDomainName:(id)summary1 withAssetSetIdentifier:(id)summary2 withSetConfiguration:(id)summary3 withSetAtomicInstance:(id)summary4 withSetJobInformation:(id)summary5 withTriggeredSets:(id)summary6
 {
-  v49 = a4;
-  obj = a5;
-  v108 = a5;
-  v72 = a6;
-  v107 = a6;
-  v106 = a7;
-  v105 = a8;
-  v104 = a9;
-  v110 = a10;
-  v103 = a11;
-  v102 = a12;
-  v101 = a13;
-  v100 = a14;
-  v99 = a15;
-  v98 = a16;
-  v97 = a17;
-  v96 = a18;
-  v95 = a19;
-  v50 = a20;
-  v94 = a21;
-  v93 = a22;
-  v92 = a23;
-  v91 = a24;
-  v89 = a25;
-  v90 = a26;
-  v88 = a27;
-  v87 = a28;
-  v86 = a29;
-  v85 = a30;
-  v84 = a31;
-  v51 = a32;
-  v83 = a33;
-  v82 = a35;
-  v81 = a36;
-  v80 = a37;
-  v79 = a41;
-  v78 = a42;
-  v52 = a43;
-  v53 = a44;
-  v77 = a45;
-  v76 = a46;
+  summaryCopy = summary;
+  obj = transaction;
+  transactionCopy = transaction;
+  jobsCopy = jobs;
+  jobsCopy2 = jobs;
+  dCopy = d;
+  messageCopy = message;
+  proxyCopy = proxy;
+  completionCopy = completion;
+  responseMessageCopy = responseMessage;
+  errorCopy = error;
+  flightCopy = flight;
+  optionsCopy = options;
+  iDCopy = iD;
+  catalogCopy = catalog;
+  useErrorCopy = useError;
+  finishedErrorCopy = finishedError;
+  progressCopy = progress;
+  statusCopy = status;
+  selectorCopy = selector;
+  uIDCopy = uID;
+  selectorsCopy = selectors;
+  notificationsCopy = notifications;
+  descriptorCopy = descriptor;
+  descriptorsCopy = descriptors;
+  policyCopy = policy;
+  versionCopy = version;
+  buildVersionCopy = buildVersion;
+  nameCopy = name;
+  restoreVersionCopy = restoreVersion;
+  downloadedCopy = downloaded;
+  resultsCopy = results;
+  downloadingDescriptorCopy = downloadingDescriptor;
+  patchDescriptorCopy = patchDescriptor;
+  stagingDescriptorsCopy = stagingDescriptors;
+  domainNameCopy = domainName;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  instanceCopy = instance;
+  informationCopy = information;
+  setsCopy = sets;
   v111.receiver = self;
   v111.super_class = MADAutoAssetControlManagerParam;
   v54 = [(MADAutoAssetControlManagerParam *)&v111 init];
   if (v54)
   {
-    v75 = v50;
-    if (v50)
+    v75 = statusCopy;
+    if (statusCopy)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -392,90 +392,90 @@
         if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
         {
           *buf = 134217984;
-          v113 = a3;
+          typeCopy = type;
           _os_log_impl(&dword_0, v55, OS_LOG_TYPE_ERROR, "{MADAutoAssetControlManagerParam-initWithParamType} WARNING: wrong class provided as jobCurrentStatus paramType:%ld", buf, 0xCu);
         }
       }
     }
 
-    v54->_paramType = a3;
+    v54->_paramType = type;
     objc_storeStrong(&v54->_eventOSTransaction, obj);
-    objc_storeStrong(&v54->_scheduledJobs, v72);
-    objc_storeStrong(&v54->_clientID, a7);
+    objc_storeStrong(&v54->_scheduledJobs, jobsCopy);
+    objc_storeStrong(&v54->_clientID, d);
     clientRequest = v54->_clientRequest;
     v54->_clientRequest = 0;
 
     clientRequestArray = v54->_clientRequestArray;
     v54->_clientRequestArray = 0;
 
-    objc_storeStrong(&v54->_clientRequestMessage, a8);
+    objc_storeStrong(&v54->_clientRequestMessage, message);
     v58 = voucher_copy();
     clientVoucher = v54->_clientVoucher;
     v54->_clientVoucher = v58;
 
-    objc_storeStrong(&v54->_clientProgressProxy, a9);
-    v60 = objc_retainBlock(v110);
+    objc_storeStrong(&v54->_clientProgressProxy, proxy);
+    v60 = objc_retainBlock(completionCopy);
     clientReplyCompletion = v54->_clientReplyCompletion;
     v54->_clientReplyCompletion = v60;
 
-    objc_storeStrong(&v54->_responseMessage, a11);
-    objc_storeStrong(&v54->_responseError, a12);
-    objc_storeStrong(&v54->_downloadsInFlight, a13);
-    objc_storeStrong(&v54->_downloadOptions, a14);
-    objc_storeStrong(&v54->_autoAssetJobID, a15);
-    objc_storeStrong(&v54->_autoAssetCatalog, a16);
-    objc_storeStrong(&v54->_lockForUseError, a17);
-    objc_storeStrong(&v54->_finishedError, a18);
+    objc_storeStrong(&v54->_responseMessage, responseMessage);
+    objc_storeStrong(&v54->_responseError, error);
+    objc_storeStrong(&v54->_downloadsInFlight, flight);
+    objc_storeStrong(&v54->_downloadOptions, options);
+    objc_storeStrong(&v54->_autoAssetJobID, iD);
+    objc_storeStrong(&v54->_autoAssetCatalog, catalog);
+    objc_storeStrong(&v54->_lockForUseError, useError);
+    objc_storeStrong(&v54->_finishedError, finishedError);
     jobInformation = v54->_jobInformation;
     v54->_jobInformation = 0;
 
-    objc_storeStrong(&v54->_setJobInformation, a45);
-    objc_storeStrong(&v54->_downloadProgress, a19);
-    objc_storeStrong(&v54->_autoAssetStatus, a20);
-    objc_storeStrong(&v54->_autoAssetSelector, a21);
-    objc_storeStrong(&v54->_autoAssetUUID, a22);
+    objc_storeStrong(&v54->_setJobInformation, information);
+    objc_storeStrong(&v54->_downloadProgress, progress);
+    objc_storeStrong(&v54->_autoAssetStatus, status);
+    objc_storeStrong(&v54->_autoAssetSelector, selector);
+    objc_storeStrong(&v54->_autoAssetUUID, uID);
     fromAutoAssetJob = v54->_fromAutoAssetJob;
     v54->_fromAutoAssetJob = 0;
 
     originalSelector = v54->_originalSelector;
     v54->_originalSelector = 0;
 
-    objc_storeStrong(&v54->_setOfAutoAssetSelectors, a23);
-    objc_storeStrong(&v54->_pushNotifications, a24);
-    objc_storeStrong(&v54->_setPolicy, a27);
-    objc_storeStrong(&v54->_assetTargetOSVersion, a28);
-    objc_storeStrong(&v54->_assetTargetBuildVersion, a29);
-    objc_storeStrong(&v54->_assetTargetTrainName, a30);
-    objc_storeStrong(&v54->_assetTargetRestoreVersion, a31);
-    objc_storeStrong(&v54->_stagedToDownloaded, a32);
-    objc_storeStrong(&v54->_stagedSetLookupResults, a33);
-    v54->_newOSPromotion = a34;
-    objc_storeStrong(&v54->_downloadingDescriptor, a35);
-    objc_storeStrong(&v54->_baseForPatchDescriptor, a36);
-    objc_storeStrong(&v54->_baseForStagingDescriptors, a37);
-    v54->_schedulerInvolved = a38;
-    v54->_potentialNetworkFailure = a39;
-    v54->_requiringLoadPriorToUse = a40;
-    objc_storeStrong(&v54->_clientDomainName, a41);
-    objc_storeStrong(&v54->_assetSetIdentifier, a42);
-    objc_storeStrong(&v54->_setConfiguration, a43);
-    objc_storeStrong(&v54->_setAtomicInstance, a44);
-    objc_storeStrong(&v54->_setJobInformation, a45);
-    objc_storeStrong(&v54->_triggeredSets, a46);
-    objc_storeStrong(&v54->_setDescriptor, a25);
-    objc_storeStrong(&v54->_autoAssetDescriptors, a26);
-    v65 = [(MADAutoAssetControlManagerParam *)v54 _summary];
-    v66 = v65;
-    if (v49)
+    objc_storeStrong(&v54->_setOfAutoAssetSelectors, selectors);
+    objc_storeStrong(&v54->_pushNotifications, notifications);
+    objc_storeStrong(&v54->_setPolicy, policy);
+    objc_storeStrong(&v54->_assetTargetOSVersion, version);
+    objc_storeStrong(&v54->_assetTargetBuildVersion, buildVersion);
+    objc_storeStrong(&v54->_assetTargetTrainName, name);
+    objc_storeStrong(&v54->_assetTargetRestoreVersion, restoreVersion);
+    objc_storeStrong(&v54->_stagedToDownloaded, downloaded);
+    objc_storeStrong(&v54->_stagedSetLookupResults, results);
+    v54->_newOSPromotion = promotion;
+    objc_storeStrong(&v54->_downloadingDescriptor, downloadingDescriptor);
+    objc_storeStrong(&v54->_baseForPatchDescriptor, patchDescriptor);
+    objc_storeStrong(&v54->_baseForStagingDescriptors, stagingDescriptors);
+    v54->_schedulerInvolved = involved;
+    v54->_potentialNetworkFailure = failure;
+    v54->_requiringLoadPriorToUse = use;
+    objc_storeStrong(&v54->_clientDomainName, domainName);
+    objc_storeStrong(&v54->_assetSetIdentifier, identifier);
+    objc_storeStrong(&v54->_setConfiguration, configuration);
+    objc_storeStrong(&v54->_setAtomicInstance, instance);
+    objc_storeStrong(&v54->_setJobInformation, information);
+    objc_storeStrong(&v54->_triggeredSets, sets);
+    objc_storeStrong(&v54->_setDescriptor, descriptor);
+    objc_storeStrong(&v54->_autoAssetDescriptors, descriptors);
+    _summary = [(MADAutoAssetControlManagerParam *)v54 _summary];
+    v66 = _summary;
+    if (summaryCopy)
     {
-      if (v65)
+      if (_summary)
       {
-        v67 = [[NSString alloc] initWithFormat:@"%@+++%@", v49, v65];
+        v67 = [[NSString alloc] initWithFormat:@"%@+++%@", summaryCopy, _summary];
       }
 
       else
       {
-        v67 = v49;
+        v67 = summaryCopy;
       }
 
       paramSafeSummary = v54->_paramSafeSummary;
@@ -485,49 +485,49 @@
     }
 
     v68 = v54->_paramSafeSummary;
-    v54->_paramSafeSummary = v65;
+    v54->_paramSafeSummary = _summary;
 
     v66 = v54->_paramSafeSummary;
-    v50 = v75;
+    statusCopy = v75;
     if (!v66)
     {
       v54->_paramSafeSummary = &stru_4BD3F0;
 LABEL_14:
 
-      v50 = v75;
+      statusCopy = v75;
     }
   }
 
   return v54;
 }
 
-- (MADAutoAssetControlManagerParam)initWithCoder:(id)a3
+- (MADAutoAssetControlManagerParam)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v131.receiver = self;
   v131.super_class = MADAutoAssetControlManagerParam;
   v5 = [(MADAutoAssetControlManagerParam *)&v131 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paramSafeSummary"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paramSafeSummary"];
     paramSafeSummary = v5->_paramSafeSummary;
     v5->_paramSafeSummary = v6;
 
-    v5->_paramType = [v4 decodeInt64ForKey:@"paramType"];
+    v5->_paramType = [coderCopy decodeInt64ForKey:@"paramType"];
     v8 = [NSSet alloc];
     v143[0] = objc_opt_class();
     v143[1] = objc_opt_class();
     v9 = [NSArray arrayWithObjects:v143 count:2];
     v10 = [v8 initWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"scheduledJobs"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"scheduledJobs"];
     scheduledJobs = v5->_scheduledJobs;
     v5->_scheduledJobs = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientID"];
     clientID = v5->_clientID;
     v5->_clientID = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientRequest"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientRequest"];
     clientRequest = v5->_clientRequest;
     v5->_clientRequest = v15;
 
@@ -536,23 +536,23 @@ LABEL_14:
     v142[1] = objc_opt_class();
     v18 = [NSArray arrayWithObjects:v142 count:2];
     v19 = [v17 initWithArray:v18];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"clientRequestArray"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"clientRequestArray"];
     clientRequestArray = v5->_clientRequestArray;
     v5->_clientRequestArray = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientRequestMessage"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientRequestMessage"];
     clientRequestMessage = v5->_clientRequestMessage;
     v5->_clientRequestMessage = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientProgressProxy"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientProgressProxy"];
     clientProgressProxy = v5->_clientProgressProxy;
     v5->_clientProgressProxy = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"responseMessage"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responseMessage"];
     responseMessage = v5->_responseMessage;
     v5->_responseMessage = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"responseError"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"responseError"];
     responseError = v5->_responseError;
     v5->_responseError = v28;
 
@@ -561,7 +561,7 @@ LABEL_14:
     v141[1] = objc_opt_class();
     v31 = [NSArray arrayWithObjects:v141 count:2];
     v32 = [v30 initWithArray:v31];
-    v33 = [v4 decodeObjectOfClasses:v32 forKey:@"downloadsInFlight"];
+    v33 = [coderCopy decodeObjectOfClasses:v32 forKey:@"downloadsInFlight"];
     downloadsInFlight = v5->_downloadsInFlight;
     v5->_downloadsInFlight = v33;
 
@@ -570,11 +570,11 @@ LABEL_14:
     v140[1] = objc_opt_class();
     v36 = [NSArray arrayWithObjects:v140 count:2];
     v37 = [v35 initWithArray:v36];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"downloadOptions"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"downloadOptions"];
     downloadOptions = v5->_downloadOptions;
     v5->_downloadOptions = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetJobID"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetJobID"];
     autoAssetJobID = v5->_autoAssetJobID;
     v5->_autoAssetJobID = v40;
 
@@ -594,47 +594,47 @@ LABEL_14:
     v139[12] = objc_opt_class();
     v43 = [NSArray arrayWithObjects:v139 count:13];
     v44 = [v42 initWithArray:v43];
-    v45 = [v4 decodeObjectOfClasses:v44 forKey:@"autoAssetCatalog"];
+    v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"autoAssetCatalog"];
     autoAssetCatalog = v5->_autoAssetCatalog;
     v5->_autoAssetCatalog = v45;
 
-    v47 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lockForUseError"];
+    v47 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lockForUseError"];
     lockForUseError = v5->_lockForUseError;
     v5->_lockForUseError = v47;
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"finishedError"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"finishedError"];
     finishedError = v5->_finishedError;
     v5->_finishedError = v49;
 
-    v51 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jobInformation"];
+    v51 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jobInformation"];
     jobInformation = v5->_jobInformation;
     v5->_jobInformation = v51;
 
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setJobInformation"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setJobInformation"];
     setJobInformation = v5->_setJobInformation;
     v5->_setJobInformation = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadProgress"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadProgress"];
     downloadProgress = v5->_downloadProgress;
     v5->_downloadProgress = v55;
 
-    v57 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetStatus"];
+    v57 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetStatus"];
     autoAssetStatus = v5->_autoAssetStatus;
     v5->_autoAssetStatus = v57;
 
-    v59 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetSelector"];
+    v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetSelector"];
     autoAssetSelector = v5->_autoAssetSelector;
     v5->_autoAssetSelector = v59;
 
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetJobUUID"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"autoAssetJobUUID"];
     autoAssetUUID = v5->_autoAssetUUID;
     v5->_autoAssetUUID = v61;
 
-    v63 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fromAutoAssetJob"];
+    v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fromAutoAssetJob"];
     fromAutoAssetJob = v5->_fromAutoAssetJob;
     v5->_fromAutoAssetJob = v63;
 
-    v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalSelector"];
+    v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalSelector"];
     originalSelector = v5->_originalSelector;
     v5->_originalSelector = v65;
 
@@ -644,7 +644,7 @@ LABEL_14:
     v138[2] = objc_opt_class();
     v68 = [NSArray arrayWithObjects:v138 count:3];
     v69 = [v67 initWithArray:v68];
-    v70 = [v4 decodeObjectOfClasses:v69 forKey:@"setOfAutoAssetSelectors"];
+    v70 = [coderCopy decodeObjectOfClasses:v69 forKey:@"setOfAutoAssetSelectors"];
     setOfAutoAssetSelectors = v5->_setOfAutoAssetSelectors;
     v5->_setOfAutoAssetSelectors = v70;
 
@@ -653,27 +653,27 @@ LABEL_14:
     v137[1] = objc_opt_class();
     v73 = [NSArray arrayWithObjects:v137 count:2];
     v74 = [v72 initWithArray:v73];
-    v75 = [v4 decodeObjectOfClasses:v74 forKey:@"pushNotifications"];
+    v75 = [coderCopy decodeObjectOfClasses:v74 forKey:@"pushNotifications"];
     pushNotifications = v5->_pushNotifications;
     v5->_pushNotifications = v75;
 
-    v77 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setPolicy"];
+    v77 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setPolicy"];
     setPolicy = v5->_setPolicy;
     v5->_setPolicy = v77;
 
-    v79 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetOSVersion"];
+    v79 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetOSVersion"];
     assetTargetOSVersion = v5->_assetTargetOSVersion;
     v5->_assetTargetOSVersion = v79;
 
-    v81 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetBuildVersion"];
+    v81 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetBuildVersion"];
     assetTargetBuildVersion = v5->_assetTargetBuildVersion;
     v5->_assetTargetBuildVersion = v81;
 
-    v83 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetTrainName"];
+    v83 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetTrainName"];
     assetTargetTrainName = v5->_assetTargetTrainName;
     v5->_assetTargetTrainName = v83;
 
-    v85 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetRestoreVersion"];
+    v85 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetTargetRestoreVersion"];
     assetTargetRestoreVersion = v5->_assetTargetRestoreVersion;
     v5->_assetTargetRestoreVersion = v85;
 
@@ -682,7 +682,7 @@ LABEL_14:
     v136[1] = objc_opt_class();
     v88 = [NSArray arrayWithObjects:v136 count:2];
     v89 = [v87 initWithArray:v88];
-    v90 = [v4 decodeObjectOfClasses:v89 forKey:@"stagedToDownloaded"];
+    v90 = [coderCopy decodeObjectOfClasses:v89 forKey:@"stagedToDownloaded"];
     stagedToDownloaded = v5->_stagedToDownloaded;
     v5->_stagedToDownloaded = v90;
 
@@ -691,16 +691,16 @@ LABEL_14:
     v135[1] = objc_opt_class();
     v93 = [NSArray arrayWithObjects:v135 count:2];
     v94 = [v92 initWithArray:v93];
-    v95 = [v4 decodeObjectOfClasses:v94 forKey:@"stagedSetLookupResults"];
+    v95 = [coderCopy decodeObjectOfClasses:v94 forKey:@"stagedSetLookupResults"];
     stagedSetLookupResults = v5->_stagedSetLookupResults;
     v5->_stagedSetLookupResults = v95;
 
-    v5->_newOSPromotion = [v4 decodeBoolForKey:@"newOSPromoted"];
-    v97 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"downloadingDescriptor"];
+    v5->_newOSPromotion = [coderCopy decodeBoolForKey:@"newOSPromoted"];
+    v97 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"downloadingDescriptor"];
     downloadingDescriptor = v5->_downloadingDescriptor;
     v5->_downloadingDescriptor = v97;
 
-    v99 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseForPatchDescriptor"];
+    v99 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseForPatchDescriptor"];
     baseForPatchDescriptor = v5->_baseForPatchDescriptor;
     v5->_baseForPatchDescriptor = v99;
 
@@ -709,30 +709,30 @@ LABEL_14:
     v134[1] = objc_opt_class();
     v102 = [NSArray arrayWithObjects:v134 count:2];
     v103 = [v101 initWithArray:v102];
-    v104 = [v4 decodeObjectOfClasses:v103 forKey:@"baseForStagingDescriptors"];
+    v104 = [coderCopy decodeObjectOfClasses:v103 forKey:@"baseForStagingDescriptors"];
     baseForStagingDescriptors = v5->_baseForStagingDescriptors;
     v5->_baseForStagingDescriptors = v104;
 
-    v5->_schedulerInvolved = [v4 decodeBoolForKey:@"schedulerInvolved"];
-    v5->_potentialNetworkFailure = [v4 decodeBoolForKey:@"potentialNetworkFailure"];
-    v5->_requiringLoadPriorToUse = [v4 decodeBoolForKey:@"requiringLoadPriorToUse"];
-    v106 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
+    v5->_schedulerInvolved = [coderCopy decodeBoolForKey:@"schedulerInvolved"];
+    v5->_potentialNetworkFailure = [coderCopy decodeBoolForKey:@"potentialNetworkFailure"];
+    v5->_requiringLoadPriorToUse = [coderCopy decodeBoolForKey:@"requiringLoadPriorToUse"];
+    v106 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDomainName"];
     clientDomainName = v5->_clientDomainName;
     v5->_clientDomainName = v106;
 
-    v108 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
+    v108 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetSetIdentifier"];
     assetSetIdentifier = v5->_assetSetIdentifier;
     v5->_assetSetIdentifier = v108;
 
-    v110 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setConfiguration"];
+    v110 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setConfiguration"];
     setConfiguration = v5->_setConfiguration;
     v5->_setConfiguration = v110;
 
-    v112 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setAtomicInstance"];
+    v112 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setAtomicInstance"];
     setAtomicInstance = v5->_setAtomicInstance;
     v5->_setAtomicInstance = v112;
 
-    v114 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setJobInformation"];
+    v114 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setJobInformation"];
     v115 = v5->_setJobInformation;
     v5->_setJobInformation = v114;
 
@@ -743,11 +743,11 @@ LABEL_14:
     v133[3] = objc_opt_class();
     v117 = [NSArray arrayWithObjects:v133 count:4];
     v118 = [v116 initWithArray:v117];
-    v119 = [v4 decodeObjectOfClasses:v118 forKey:@"triggeredSets"];
+    v119 = [coderCopy decodeObjectOfClasses:v118 forKey:@"triggeredSets"];
     triggeredSets = v5->_triggeredSets;
     v5->_triggeredSets = v119;
 
-    v121 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setDescriptor"];
+    v121 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setDescriptor"];
     setDescriptor = v5->_setDescriptor;
     v5->_setDescriptor = v121;
 
@@ -756,7 +756,7 @@ LABEL_14:
     v132[1] = objc_opt_class();
     v124 = [NSArray arrayWithObjects:v132 count:2];
     v125 = [v123 initWithArray:v124];
-    v126 = [v4 decodeObjectOfClasses:v125 forKey:@"autoAssetDescriptors"];
+    v126 = [coderCopy decodeObjectOfClasses:v125 forKey:@"autoAssetDescriptors"];
     autoAssetDescriptors = v5->_autoAssetDescriptors;
     v5->_autoAssetDescriptors = v126;
 
@@ -770,147 +770,147 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetControlManagerParam *)self paramSafeSummary];
-  [v4 encodeObject:v5 forKey:@"paramSafeSummary"];
+  coderCopy = coder;
+  paramSafeSummary = [(MADAutoAssetControlManagerParam *)self paramSafeSummary];
+  [coderCopy encodeObject:paramSafeSummary forKey:@"paramSafeSummary"];
 
-  [v4 encodeInt64:-[MADAutoAssetControlManagerParam paramType](self forKey:{"paramType"), @"paramType"}];
-  v6 = [(MADAutoAssetControlManagerParam *)self scheduledJobs];
-  [v4 encodeObject:v6 forKey:@"scheduledJobs"];
+  [coderCopy encodeInt64:-[MADAutoAssetControlManagerParam paramType](self forKey:{"paramType"), @"paramType"}];
+  scheduledJobs = [(MADAutoAssetControlManagerParam *)self scheduledJobs];
+  [coderCopy encodeObject:scheduledJobs forKey:@"scheduledJobs"];
 
-  v7 = [(MADAutoAssetControlManagerParam *)self clientID];
-  [v4 encodeObject:v7 forKey:@"clientID"];
+  clientID = [(MADAutoAssetControlManagerParam *)self clientID];
+  [coderCopy encodeObject:clientID forKey:@"clientID"];
 
-  v8 = [(MADAutoAssetControlManagerParam *)self clientRequest];
-  [v4 encodeObject:v8 forKey:@"clientRequest"];
+  clientRequest = [(MADAutoAssetControlManagerParam *)self clientRequest];
+  [coderCopy encodeObject:clientRequest forKey:@"clientRequest"];
 
-  v9 = [(MADAutoAssetControlManagerParam *)self clientRequestArray];
-  [v4 encodeObject:v9 forKey:@"clientRequestArray"];
+  clientRequestArray = [(MADAutoAssetControlManagerParam *)self clientRequestArray];
+  [coderCopy encodeObject:clientRequestArray forKey:@"clientRequestArray"];
 
-  v10 = [(MADAutoAssetControlManagerParam *)self clientRequestMessage];
-  [v4 encodeObject:v10 forKey:@"clientRequestMessage"];
+  clientRequestMessage = [(MADAutoAssetControlManagerParam *)self clientRequestMessage];
+  [coderCopy encodeObject:clientRequestMessage forKey:@"clientRequestMessage"];
 
-  v11 = [(MADAutoAssetControlManagerParam *)self clientProgressProxy];
-  [v4 encodeObject:v11 forKey:@"clientProgressProxy"];
+  clientProgressProxy = [(MADAutoAssetControlManagerParam *)self clientProgressProxy];
+  [coderCopy encodeObject:clientProgressProxy forKey:@"clientProgressProxy"];
 
-  v12 = [(MADAutoAssetControlManagerParam *)self responseMessage];
-  [v4 encodeObject:v12 forKey:@"responseMessage"];
+  responseMessage = [(MADAutoAssetControlManagerParam *)self responseMessage];
+  [coderCopy encodeObject:responseMessage forKey:@"responseMessage"];
 
-  v13 = [(MADAutoAssetControlManagerParam *)self responseError];
-  [v4 encodeObject:v13 forKey:@"responseError"];
+  responseError = [(MADAutoAssetControlManagerParam *)self responseError];
+  [coderCopy encodeObject:responseError forKey:@"responseError"];
 
-  v14 = [(MADAutoAssetControlManagerParam *)self downloadsInFlight];
-  [v4 encodeObject:v14 forKey:@"downloadsInFlight"];
+  downloadsInFlight = [(MADAutoAssetControlManagerParam *)self downloadsInFlight];
+  [coderCopy encodeObject:downloadsInFlight forKey:@"downloadsInFlight"];
 
-  v15 = [(MADAutoAssetControlManagerParam *)self downloadOptions];
-  [v4 encodeObject:v15 forKey:@"downloadOptions"];
+  downloadOptions = [(MADAutoAssetControlManagerParam *)self downloadOptions];
+  [coderCopy encodeObject:downloadOptions forKey:@"downloadOptions"];
 
-  v16 = [(MADAutoAssetControlManagerParam *)self autoAssetJobID];
-  [v4 encodeObject:v16 forKey:@"autoAssetJobID"];
+  autoAssetJobID = [(MADAutoAssetControlManagerParam *)self autoAssetJobID];
+  [coderCopy encodeObject:autoAssetJobID forKey:@"autoAssetJobID"];
 
-  v17 = [(MADAutoAssetControlManagerParam *)self autoAssetCatalog];
-  [v4 encodeObject:v17 forKey:@"autoAssetCatalog"];
+  autoAssetCatalog = [(MADAutoAssetControlManagerParam *)self autoAssetCatalog];
+  [coderCopy encodeObject:autoAssetCatalog forKey:@"autoAssetCatalog"];
 
-  v18 = [(MADAutoAssetControlManagerParam *)self lockForUseError];
-  [v4 encodeObject:v18 forKey:@"lockForUseError"];
+  lockForUseError = [(MADAutoAssetControlManagerParam *)self lockForUseError];
+  [coderCopy encodeObject:lockForUseError forKey:@"lockForUseError"];
 
-  v19 = [(MADAutoAssetControlManagerParam *)self finishedError];
-  [v4 encodeObject:v19 forKey:@"finishedError"];
+  finishedError = [(MADAutoAssetControlManagerParam *)self finishedError];
+  [coderCopy encodeObject:finishedError forKey:@"finishedError"];
 
-  v20 = [(MADAutoAssetControlManagerParam *)self jobInformation];
-  [v4 encodeObject:v20 forKey:@"jobInformation"];
+  jobInformation = [(MADAutoAssetControlManagerParam *)self jobInformation];
+  [coderCopy encodeObject:jobInformation forKey:@"jobInformation"];
 
-  v21 = [(MADAutoAssetControlManagerParam *)self setJobInformation];
-  [v4 encodeObject:v21 forKey:@"setJobInformation"];
+  setJobInformation = [(MADAutoAssetControlManagerParam *)self setJobInformation];
+  [coderCopy encodeObject:setJobInformation forKey:@"setJobInformation"];
 
-  v22 = [(MADAutoAssetControlManagerParam *)self downloadProgress];
-  [v4 encodeObject:v22 forKey:@"downloadProgress"];
+  downloadProgress = [(MADAutoAssetControlManagerParam *)self downloadProgress];
+  [coderCopy encodeObject:downloadProgress forKey:@"downloadProgress"];
 
-  v23 = [(MADAutoAssetControlManagerParam *)self autoAssetStatus];
-  [v4 encodeObject:v23 forKey:@"autoAssetStatus"];
+  autoAssetStatus = [(MADAutoAssetControlManagerParam *)self autoAssetStatus];
+  [coderCopy encodeObject:autoAssetStatus forKey:@"autoAssetStatus"];
 
-  v24 = [(MADAutoAssetControlManagerParam *)self autoAssetSelector];
-  [v4 encodeObject:v24 forKey:@"autoAssetSelector"];
+  autoAssetSelector = [(MADAutoAssetControlManagerParam *)self autoAssetSelector];
+  [coderCopy encodeObject:autoAssetSelector forKey:@"autoAssetSelector"];
 
-  v25 = [(MADAutoAssetControlManagerParam *)self autoAssetUUID];
-  [v4 encodeObject:v25 forKey:@"autoAssetJobUUID"];
+  autoAssetUUID = [(MADAutoAssetControlManagerParam *)self autoAssetUUID];
+  [coderCopy encodeObject:autoAssetUUID forKey:@"autoAssetJobUUID"];
 
-  v26 = [(MADAutoAssetControlManagerParam *)self fromAutoAssetJob];
-  [v4 encodeObject:v26 forKey:@"fromAutoAssetJob"];
+  fromAutoAssetJob = [(MADAutoAssetControlManagerParam *)self fromAutoAssetJob];
+  [coderCopy encodeObject:fromAutoAssetJob forKey:@"fromAutoAssetJob"];
 
-  v27 = [(MADAutoAssetControlManagerParam *)self originalSelector];
-  [v4 encodeObject:v27 forKey:@"originalSelector"];
+  originalSelector = [(MADAutoAssetControlManagerParam *)self originalSelector];
+  [coderCopy encodeObject:originalSelector forKey:@"originalSelector"];
 
-  v28 = [(MADAutoAssetControlManagerParam *)self setOfAutoAssetSelectors];
-  [v4 encodeObject:v28 forKey:@"setOfAutoAssetSelectors"];
+  setOfAutoAssetSelectors = [(MADAutoAssetControlManagerParam *)self setOfAutoAssetSelectors];
+  [coderCopy encodeObject:setOfAutoAssetSelectors forKey:@"setOfAutoAssetSelectors"];
 
-  v29 = [(MADAutoAssetControlManagerParam *)self pushNotifications];
-  [v4 encodeObject:v29 forKey:@"pushNotifications"];
+  pushNotifications = [(MADAutoAssetControlManagerParam *)self pushNotifications];
+  [coderCopy encodeObject:pushNotifications forKey:@"pushNotifications"];
 
-  v30 = [(MADAutoAssetControlManagerParam *)self setPolicy];
-  [v4 encodeObject:v30 forKey:@"setPolicy"];
+  setPolicy = [(MADAutoAssetControlManagerParam *)self setPolicy];
+  [coderCopy encodeObject:setPolicy forKey:@"setPolicy"];
 
-  v31 = [(MADAutoAssetControlManagerParam *)self assetTargetOSVersion];
-  [v4 encodeObject:v31 forKey:@"assetTargetOSVersion"];
+  assetTargetOSVersion = [(MADAutoAssetControlManagerParam *)self assetTargetOSVersion];
+  [coderCopy encodeObject:assetTargetOSVersion forKey:@"assetTargetOSVersion"];
 
-  v32 = [(MADAutoAssetControlManagerParam *)self assetTargetBuildVersion];
-  [v4 encodeObject:v32 forKey:@"assetTargetBuildVersion"];
+  assetTargetBuildVersion = [(MADAutoAssetControlManagerParam *)self assetTargetBuildVersion];
+  [coderCopy encodeObject:assetTargetBuildVersion forKey:@"assetTargetBuildVersion"];
 
-  v33 = [(MADAutoAssetControlManagerParam *)self assetTargetTrainName];
-  [v4 encodeObject:v33 forKey:@"assetTargetTrainName"];
+  assetTargetTrainName = [(MADAutoAssetControlManagerParam *)self assetTargetTrainName];
+  [coderCopy encodeObject:assetTargetTrainName forKey:@"assetTargetTrainName"];
 
-  v34 = [(MADAutoAssetControlManagerParam *)self assetTargetRestoreVersion];
-  [v4 encodeObject:v34 forKey:@"assetTargetRestoreVersion"];
+  assetTargetRestoreVersion = [(MADAutoAssetControlManagerParam *)self assetTargetRestoreVersion];
+  [coderCopy encodeObject:assetTargetRestoreVersion forKey:@"assetTargetRestoreVersion"];
 
-  v35 = [(MADAutoAssetControlManagerParam *)self stagedToDownloaded];
-  [v4 encodeObject:v35 forKey:@"stagedToDownloaded"];
+  stagedToDownloaded = [(MADAutoAssetControlManagerParam *)self stagedToDownloaded];
+  [coderCopy encodeObject:stagedToDownloaded forKey:@"stagedToDownloaded"];
 
-  v36 = [(MADAutoAssetControlManagerParam *)self stagedSetLookupResults];
-  [v4 encodeObject:v36 forKey:@"stagedSetLookupResults"];
+  stagedSetLookupResults = [(MADAutoAssetControlManagerParam *)self stagedSetLookupResults];
+  [coderCopy encodeObject:stagedSetLookupResults forKey:@"stagedSetLookupResults"];
 
-  [v4 encodeBool:-[MADAutoAssetControlManagerParam newOSPromotion](self forKey:{"newOSPromotion"), @"newOSPromoted"}];
-  v37 = [(MADAutoAssetControlManagerParam *)self downloadingDescriptor];
-  [v4 encodeObject:v37 forKey:@"downloadingDescriptor"];
+  [coderCopy encodeBool:-[MADAutoAssetControlManagerParam newOSPromotion](self forKey:{"newOSPromotion"), @"newOSPromoted"}];
+  downloadingDescriptor = [(MADAutoAssetControlManagerParam *)self downloadingDescriptor];
+  [coderCopy encodeObject:downloadingDescriptor forKey:@"downloadingDescriptor"];
 
-  v38 = [(MADAutoAssetControlManagerParam *)self baseForPatchDescriptor];
-  [v4 encodeObject:v38 forKey:@"baseForPatchDescriptor"];
+  baseForPatchDescriptor = [(MADAutoAssetControlManagerParam *)self baseForPatchDescriptor];
+  [coderCopy encodeObject:baseForPatchDescriptor forKey:@"baseForPatchDescriptor"];
 
-  v39 = [(MADAutoAssetControlManagerParam *)self baseForStagingDescriptors];
-  [v4 encodeObject:v39 forKey:@"baseForStagingDescriptors"];
+  baseForStagingDescriptors = [(MADAutoAssetControlManagerParam *)self baseForStagingDescriptors];
+  [coderCopy encodeObject:baseForStagingDescriptors forKey:@"baseForStagingDescriptors"];
 
-  [v4 encodeBool:-[MADAutoAssetControlManagerParam schedulerInvolved](self forKey:{"schedulerInvolved"), @"schedulerInvolved"}];
-  [v4 encodeBool:-[MADAutoAssetControlManagerParam potentialNetworkFailure](self forKey:{"potentialNetworkFailure"), @"potentialNetworkFailure"}];
-  [v4 encodeBool:-[MADAutoAssetControlManagerParam requiringLoadPriorToUse](self forKey:{"requiringLoadPriorToUse"), @"requiringLoadPriorToUse"}];
-  v40 = [(MADAutoAssetControlManagerParam *)self clientDomainName];
-  [v4 encodeObject:v40 forKey:@"clientDomainName"];
+  [coderCopy encodeBool:-[MADAutoAssetControlManagerParam schedulerInvolved](self forKey:{"schedulerInvolved"), @"schedulerInvolved"}];
+  [coderCopy encodeBool:-[MADAutoAssetControlManagerParam potentialNetworkFailure](self forKey:{"potentialNetworkFailure"), @"potentialNetworkFailure"}];
+  [coderCopy encodeBool:-[MADAutoAssetControlManagerParam requiringLoadPriorToUse](self forKey:{"requiringLoadPriorToUse"), @"requiringLoadPriorToUse"}];
+  clientDomainName = [(MADAutoAssetControlManagerParam *)self clientDomainName];
+  [coderCopy encodeObject:clientDomainName forKey:@"clientDomainName"];
 
-  v41 = [(MADAutoAssetControlManagerParam *)self assetSetIdentifier];
-  [v4 encodeObject:v41 forKey:@"assetSetIdentifier"];
+  assetSetIdentifier = [(MADAutoAssetControlManagerParam *)self assetSetIdentifier];
+  [coderCopy encodeObject:assetSetIdentifier forKey:@"assetSetIdentifier"];
 
-  v42 = [(MADAutoAssetControlManagerParam *)self setConfiguration];
-  [v4 encodeObject:v42 forKey:@"setConfiguration"];
+  setConfiguration = [(MADAutoAssetControlManagerParam *)self setConfiguration];
+  [coderCopy encodeObject:setConfiguration forKey:@"setConfiguration"];
 
-  v43 = [(MADAutoAssetControlManagerParam *)self setAtomicInstance];
-  [v4 encodeObject:v43 forKey:@"setAtomicInstance"];
+  setAtomicInstance = [(MADAutoAssetControlManagerParam *)self setAtomicInstance];
+  [coderCopy encodeObject:setAtomicInstance forKey:@"setAtomicInstance"];
 
-  v44 = [(MADAutoAssetControlManagerParam *)self setJobInformation];
-  [v4 encodeObject:v44 forKey:@"setJobInformation"];
+  setJobInformation2 = [(MADAutoAssetControlManagerParam *)self setJobInformation];
+  [coderCopy encodeObject:setJobInformation2 forKey:@"setJobInformation"];
 
-  v45 = [(MADAutoAssetControlManagerParam *)self triggeredSets];
-  [v4 encodeObject:v45 forKey:@"triggeredSets"];
+  triggeredSets = [(MADAutoAssetControlManagerParam *)self triggeredSets];
+  [coderCopy encodeObject:triggeredSets forKey:@"triggeredSets"];
 
-  v46 = [(MADAutoAssetControlManagerParam *)self setDescriptor];
-  [v4 encodeObject:v46 forKey:@"setDescriptor"];
+  setDescriptor = [(MADAutoAssetControlManagerParam *)self setDescriptor];
+  [coderCopy encodeObject:setDescriptor forKey:@"setDescriptor"];
 
-  v47 = [(MADAutoAssetControlManagerParam *)self autoAssetDescriptors];
-  [v4 encodeObject:v47 forKey:@"autoAssetDescriptors"];
+  autoAssetDescriptors = [(MADAutoAssetControlManagerParam *)self autoAssetDescriptors];
+  [coderCopy encodeObject:autoAssetDescriptors forKey:@"autoAssetDescriptors"];
 }
 
 - (id)_summary
 {
-  v3 = 0;
+  v142 = 0;
   switch(self->_paramType)
   {
     case 0:
@@ -921,7 +921,7 @@ LABEL_14:
       v5 = @"SCHEDULED_JOBS|scheduledJobs:%ld";
       goto LABEL_205;
     case 2:
-      v42 = [[NSString alloc] initWithFormat:@"CLIENT_ID|clientID[%@]", self->_clientID, v160, v161, v162, v163, v164];
+      v164 = [[NSString alloc] initWithFormat:@"CLIENT_ID|clientID[%@]", self->_clientID, v160, v161, v162, v163, v164];
       goto LABEL_206;
     case 3:
       v48 = [NSString alloc];
@@ -932,13 +932,13 @@ LABEL_14:
         if (clientRequestMessage)
         {
           v51 = 1;
-          v7 = [MADAutoAssetControlManager newSummaryForRequestMessage:clientRequestMessage includingSelector:1];
+          summary = [MADAutoAssetControlManager newSummaryForRequestMessage:clientRequestMessage includingSelector:1];
           v52 = 0;
         }
 
         else
         {
-          v7 = [(MADAutoAssetClientRequest *)clientRequest summary];
+          summary = [(MADAutoAssetClientRequest *)clientRequest summary];
           v51 = 0;
           v52 = 1;
         }
@@ -948,7 +948,7 @@ LABEL_14:
       {
         v51 = 0;
         v52 = 0;
-        v7 = @"N";
+        summary = @"N";
       }
 
       v142 = @"Y";
@@ -977,7 +977,7 @@ LABEL_14:
         v142 = @"N";
       }
 
-      v3 = [v48 initWithFormat:@"CLIENT_REQUEST[%@]|setJobInfo:%@|progress:%@|reply:%@", v7, v143, v144, v142];
+      v142 = [v48 initWithFormat:@"CLIENT_REQUEST[%@]|setJobInfo:%@|progress:%@|reply:%@", summary, v143, v144, v142];
       if (v51)
       {
       }
@@ -1004,8 +1004,8 @@ LABEL_14:
       autoAssetJobID = self->_autoAssetJobID;
       if (self->_finishedError)
       {
-        v54 = [MADAutoAssetClientRequest responseErrorSummary:?];
-        v55 = [v4 initWithFormat:@"DOWNLOAD|jobID[%@]|finished[%@]", autoAssetJobID, v54, v161];
+        summary2 = [MADAutoAssetClientRequest responseErrorSummary:?];
+        v161 = [v4 initWithFormat:@"DOWNLOAD|jobID[%@]|finished[%@]", autoAssetJobID, summary2, v161];
         goto LABEL_117;
       }
 
@@ -1020,8 +1020,8 @@ LABEL_14:
       v77 = v76;
       if (self->_finishedError)
       {
-        v54 = [MADAutoAssetClientRequest responseErrorSummary:?];
-        v55 = [v4 initWithFormat:@"CATALOG|jobID[%@]|count:%lu|finished[%@]", v75, v77, v54];
+        summary2 = [MADAutoAssetClientRequest responseErrorSummary:?];
+        v161 = [v4 initWithFormat:@"CATALOG|jobID[%@]|count:%lu|finished[%@]", v75, v77, summary2];
         goto LABEL_117;
       }
 
@@ -1035,8 +1035,8 @@ LABEL_14:
       v53 = self->_autoAssetJobID;
       if (self->_finishedError)
       {
-        v54 = [MADAutoAssetClientRequest responseErrorSummary:?];
-        v55 = [v4 initWithFormat:@"CONFIG|jobID[%@]|finished[%@]", v53, v54, v161];
+        summary2 = [MADAutoAssetClientRequest responseErrorSummary:?];
+        v161 = [v4 initWithFormat:@"CONFIG|jobID[%@]|finished[%@]", v53, summary2, v161];
         goto LABEL_117;
       }
 
@@ -1047,26 +1047,26 @@ LABEL_14:
     case 8:
       v85 = [NSString alloc];
       v86 = self->_autoAssetJobID;
-      v54 = [(MAAutoAssetProgress *)self->_downloadProgress summary];
-      v55 = [v85 initWithFormat:@"PROGRESS|jobID[%@]|progress[%@]", v86, v54, v161];
+      summary2 = [(MAAutoAssetProgress *)self->_downloadProgress summary];
+      v161 = [v85 initWithFormat:@"PROGRESS|jobID[%@]|progress[%@]", v86, summary2, v161];
       goto LABEL_117;
     case 9:
       v34 = [NSString alloc];
       autoAssetUUID = self->_autoAssetUUID;
-      v7 = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
-      v24 = [(MADAutoAssetDescriptor *)self->_downloadingDescriptor summary];
+      summary = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
+      summary3 = [(MADAutoAssetDescriptor *)self->_downloadingDescriptor summary];
       baseForPatchDescriptor = self->_baseForPatchDescriptor;
       if (baseForPatchDescriptor)
       {
-        v37 = [(MADAutoAssetDescriptor *)baseForPatchDescriptor summary];
-        v3 = [v34 initWithFormat:@"PERSISTED|UUID[%@]|selector[%@]|downloading[%@]|baseForPatch[%@]", autoAssetUUID, v7, v24, v37];
+        summary4 = [(MADAutoAssetDescriptor *)baseForPatchDescriptor summary];
+        v142 = [v34 initWithFormat:@"PERSISTED|UUID[%@]|selector[%@]|downloading[%@]|baseForPatch[%@]", autoAssetUUID, summary, summary3, summary4];
       }
 
       else
       {
-        v84 = [v34 initWithFormat:@"PERSISTED|UUID[%@]|selector[%@]|downloading[%@]|baseForPatch[%@]", autoAssetUUID, v7, v24, @"N", v163, v164];
+        v1642 = [v34 initWithFormat:@"PERSISTED|UUID[%@]|selector[%@]|downloading[%@]|baseForPatch[%@]", autoAssetUUID, summary, summary3, @"N", v163, v164];
 LABEL_174:
-        v3 = v84;
+        v142 = v1642;
       }
 
 LABEL_188:
@@ -1074,7 +1074,7 @@ LABEL_188:
       goto LABEL_257;
     case 0xALL:
       v80 = [NSString alloc];
-      v7 = [(SUCoreConnectMessage *)self->_responseMessage summary];
+      summary = [(SUCoreConnectMessage *)self->_responseMessage summary];
       if (self->_setJobInformation)
       {
         v81 = @"Y";
@@ -1105,53 +1105,53 @@ LABEL_188:
         v83 = @"N";
       }
 
-      v24 = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
-      v84 = [v80 initWithFormat:@"CLIENT_REPLY[%@]|setJobInfo:%@|clientRequest:%@|reply:%@|selector[%@]|jobID[%@]", v7, v81, v82, v83, v24, self->_autoAssetUUID];
+      summary3 = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
+      v1642 = [v80 initWithFormat:@"CLIENT_REPLY[%@]|setJobInfo:%@|clientRequest:%@|reply:%@|selector[%@]|jobID[%@]", summary, v81, v82, v83, summary3, self->_autoAssetUUID];
       goto LABEL_174;
     case 0xBLL:
-      v22 = [(MADAutoAssetJobInformation *)self->_jobInformation currentStatus];
-      v7 = [v22 downloadProgress];
+      currentStatus = [(MADAutoAssetJobInformation *)self->_jobInformation currentStatus];
+      summary = [currentStatus downloadProgress];
 
-      if (!v7)
+      if (!summary)
       {
-        v7 = [(MAAutoAssetStatus *)self->_autoAssetStatus downloadProgress];
+        summary = [(MAAutoAssetStatus *)self->_autoAssetStatus downloadProgress];
       }
 
       v23 = [NSString alloc];
-      v24 = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
+      summary3 = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
       v25 = self->_autoAssetUUID;
-      if (v7)
+      if (summary)
       {
-        v26 = [(__CFString *)v7 summary];
+        v7Summary = [(__CFString *)summary summary];
       }
 
       else
       {
-        v26 = @"N";
+        v7Summary = @"N";
       }
 
       if (self->_lockForUseError)
       {
         v127 = [NSString alloc];
         v128 = [MADAutoAssetClientRequest responseErrorSummary:self->_lockForUseError];
-        v129 = [v127 initWithFormat:@"|lockError:%@", v128];
-        v3 = [v23 initWithFormat:@"CLIENT_PROGRESS|selector[%@]|jobID[%@]|progress[%@]%@", v24, v25, v26, v129];
+        v128 = [v127 initWithFormat:@"|lockError:%@", v128];
+        v142 = [v23 initWithFormat:@"CLIENT_PROGRESS|selector[%@]|jobID[%@]|progress[%@]%@", summary3, v25, v7Summary, v128];
       }
 
       else
       {
-        v3 = [v23 initWithFormat:@"CLIENT_PROGRESS|selector[%@]|jobID[%@]|progress[%@]%@", v24, v25, v26, &stru_4BD3F0];
+        v142 = [v23 initWithFormat:@"CLIENT_PROGRESS|selector[%@]|jobID[%@]|progress[%@]%@", summary3, v25, v7Summary, &stru_4BD3F0];
       }
 
-      if (v7)
+      if (summary)
       {
       }
 
       goto LABEL_188;
     case 0xCLL:
       v28 = [NSString alloc];
-      v29 = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
-      v7 = v29;
+      summary5 = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
+      summary = summary5;
       v30 = @"Y";
       if (self->_fromAutoAssetJob)
       {
@@ -1178,7 +1178,7 @@ LABEL_188:
         v30 = @"N";
       }
 
-      v33 = [v28 initWithFormat:@"FINISHED|selector[%@]|UUID[%@]|fromAutoAssetJob:%@|schedulerInvolved:%@|potentialNetworkFailure:%@", v29, self->_autoAssetUUID, v31, v32, v30];
+      v163 = [v28 initWithFormat:@"FINISHED|selector[%@]|UUID[%@]|fromAutoAssetJob:%@|schedulerInvolved:%@|potentialNetworkFailure:%@", summary5, self->_autoAssetUUID, v31, v32, v30];
       goto LABEL_256;
     case 0xDLL:
       v73 = [NSString alloc];
@@ -1188,7 +1188,7 @@ LABEL_188:
         v74 = @"N";
       }
 
-      v42 = [v73 initWithFormat:@"SET_PERSISTED|setJobInfo:%@|domain:%@|identifier:%@|jobID:[%@]", v74, self->_clientDomainName, self->_assetSetIdentifier, self->_autoAssetUUID, v163, v164];
+      v164 = [v73 initWithFormat:@"SET_PERSISTED|setJobInfo:%@|domain:%@|identifier:%@|jobID:[%@]", v74, self->_clientDomainName, self->_assetSetIdentifier, self->_autoAssetUUID, v163, v164];
       goto LABEL_206;
     case 0xELL:
       v17 = [NSString alloc];
@@ -1208,12 +1208,12 @@ LABEL_188:
       responseError = self->_responseError;
       if (responseError)
       {
-        v16 = [(NSError *)self->_responseError checkedDescription];
+        checkedDescription = [(NSError *)self->_responseError checkedDescription];
       }
 
       else
       {
-        v16 = @"N";
+        checkedDescription = @"N";
       }
 
       if (self->_clientReplyCompletion)
@@ -1226,7 +1226,7 @@ LABEL_188:
         v126 = @"N";
       }
 
-      v125 = [v17 initWithFormat:@"SET_CLIENT_REPLY|setJobInfo:%@|domain:%@|identifier:%@|jobID[%@]|responseError[%@]|clientReply[%@]", v18, clientDomainName, assetSetIdentifier, v21, v16, v126];
+      v126 = [v17 initWithFormat:@"SET_CLIENT_REPLY|setJobInfo:%@|domain:%@|identifier:%@|jobID[%@]|responseError[%@]|clientReply[%@]", v18, clientDomainName, assetSetIdentifier, v21, checkedDescription, v126];
       goto LABEL_263;
     case 0xFLL:
       v43 = [NSString alloc];
@@ -1246,12 +1246,12 @@ LABEL_188:
       responseError = self->_responseError;
       if (responseError)
       {
-        v16 = [(NSError *)self->_responseError checkedDescription];
+        checkedDescription = [(NSError *)self->_responseError checkedDescription];
       }
 
       else
       {
-        v16 = @"N";
+        checkedDescription = @"N";
       }
 
       if (self->_autoAssetCatalog)
@@ -1264,7 +1264,7 @@ LABEL_188:
         v130 = @"N";
       }
 
-      v125 = [v43 initWithFormat:@"SET_SCHEDULER_FOUND_SAME|setJobInfo:%@|domain:%@|identifier:%@|jobID[%@]|responseError[%@]|autoAssetCatalog:%@", v44, v45, v46, v47, v16, v130];
+      v126 = [v43 initWithFormat:@"SET_SCHEDULER_FOUND_SAME|setJobInfo:%@|domain:%@|identifier:%@|jobID[%@]|responseError[%@]|autoAssetCatalog:%@", v44, v45, v46, v47, checkedDescription, v130];
       goto LABEL_263;
     case 0x10:
       v10 = [NSString alloc];
@@ -1284,12 +1284,12 @@ LABEL_188:
       responseError = self->_responseError;
       if (responseError)
       {
-        v16 = [(NSError *)self->_responseError checkedDescription];
+        checkedDescription = [(NSError *)self->_responseError checkedDescription];
       }
 
       else
       {
-        v16 = @"N";
+        checkedDescription = @"N";
       }
 
       if (self->_autoAssetCatalog)
@@ -1302,11 +1302,11 @@ LABEL_188:
         v124 = @"N";
       }
 
-      v125 = [v10 initWithFormat:@"SET_SCHEDULER_DOWNLOADED|setJobInfo:%@|domain:%@|identifier:%@|jobID[%@]|responseError[%@]|autoAssetCatalog:%@", v11, v12, v13, v14, v16, v124];
+      v126 = [v10 initWithFormat:@"SET_SCHEDULER_DOWNLOADED|setJobInfo:%@|domain:%@|identifier:%@|jobID[%@]|responseError[%@]|autoAssetCatalog:%@", v11, v12, v13, v14, checkedDescription, v124];
       goto LABEL_263;
     case 0x11:
       v57 = [NSString alloc];
-      v58 = @"N";
+      summary6 = @"N";
       setJobInformation = self->_setJobInformation;
       if (setJobInformation)
       {
@@ -1321,29 +1321,29 @@ LABEL_188:
       v62 = self->_clientDomainName;
       v61 = self->_assetSetIdentifier;
       v63 = self->_autoAssetUUID;
-      v7 = [(MADAutoSetJobInformation *)setJobInformation currentSetStatus];
-      v24 = [(__CFString *)v7 downloadProgress];
-      if (v24)
+      summary = [(MADAutoSetJobInformation *)setJobInformation currentSetStatus];
+      summary3 = [(__CFString *)summary downloadProgress];
+      if (summary3)
       {
-        v166 = [(MADAutoSetJobInformation *)self->_setJobInformation currentSetStatus];
-        v165 = [v166 downloadProgress];
-        v58 = [v165 summary];
+        currentSetStatus = [(MADAutoSetJobInformation *)self->_setJobInformation currentSetStatus];
+        downloadProgress = [currentSetStatus downloadProgress];
+        summary6 = [downloadProgress summary];
       }
 
       if (self->_lockForUseError)
       {
         v131 = [NSString alloc];
         v132 = [MADAutoAssetClientRequest responseErrorSummary:self->_lockForUseError];
-        v133 = [v131 initWithFormat:@"|lockError[%@]", v132];
-        v3 = [v57 initWithFormat:@"SET_CLIENT_PROGRESS|setJobInfo:%@|domain:%@|identifier[%@]|jobID[%@]|progress[%@]%@", v60, v62, v61, v63, v58, v133];
+        v132 = [v131 initWithFormat:@"|lockError[%@]", v132];
+        v142 = [v57 initWithFormat:@"SET_CLIENT_PROGRESS|setJobInfo:%@|domain:%@|identifier[%@]|jobID[%@]|progress[%@]%@", v60, v62, v61, v63, summary6, v132];
       }
 
       else
       {
-        v3 = [v57 initWithFormat:@"SET_CLIENT_PROGRESS|setJobInfo:%@|domain:%@|identifier[%@]|jobID[%@]|progress[%@]%@", v60, v62, v61, v63, v58, &stru_4BD3F0];
+        v142 = [v57 initWithFormat:@"SET_CLIENT_PROGRESS|setJobInfo:%@|domain:%@|identifier[%@]|jobID[%@]|progress[%@]%@", v60, v62, v61, v63, summary6, &stru_4BD3F0];
       }
 
-      if (v24)
+      if (summary3)
       {
       }
 
@@ -1360,7 +1360,7 @@ LABEL_188:
         v79 = @"N";
       }
 
-      v42 = [v78 initWithFormat:@"SET_JOB_IDENTIFIER|setJobInfo:%@|domain:%@|identifier[%@]", v79, self->_clientDomainName, self->_assetSetIdentifier, v162, v163, v164];
+      v164 = [v78 initWithFormat:@"SET_JOB_IDENTIFIER|setJobInfo:%@|domain:%@|identifier[%@]", v79, self->_clientDomainName, self->_assetSetIdentifier, v162, v163, v164];
       goto LABEL_206;
     case 0x13:
       v94 = [NSString alloc];
@@ -1390,7 +1390,7 @@ LABEL_188:
         v95 = @"N";
       }
 
-      v42 = [v94 initWithFormat:@"SET_JOB_FINISHED|setJobInfo:%@|domain:%@|identifier:%@jobID[%@]|schedulerInvolved:%@|potentialNetworkFailure:%@", v96, *&self->_clientDomainName, self->_autoAssetUUID, v97, v95];
+      v164 = [v94 initWithFormat:@"SET_JOB_FINISHED|setJobInfo:%@|domain:%@|identifier:%@jobID[%@]|schedulerInvolved:%@|potentialNetworkFailure:%@", v96, *&self->_clientDomainName, self->_autoAssetUUID, v97, v95];
       goto LABEL_206;
     case 0x14:
       v64 = [(NSArray *)self->_setOfAutoAssetSelectors count];
@@ -1408,7 +1408,7 @@ LABEL_188:
           v67 = @"N";
         }
 
-        v42 = [v66 initWithFormat:@"SCHEDULER|count:%ld|osTrans:%@", v65, v67, v161, v162, v163, v164];
+        v164 = [v66 initWithFormat:@"SCHEDULER|count:%ld|osTrans:%@", v65, v67, v161, v162, v163, v164];
         goto LABEL_206;
       }
 
@@ -1421,7 +1421,7 @@ LABEL_188:
       if (v104)
       {
         v105 = v104;
-        v7 = 0;
+        summary = 0;
         v106 = *v172;
         do
         {
@@ -1433,17 +1433,17 @@ LABEL_188:
             }
 
             v108 = *(*(&v171 + 1) + 8 * i);
-            if (v7)
+            if (summary)
             {
-              v109 = [*(*(&v171 + 1) + 8 * i) summary];
-              [(__CFString *)v7 appendFormat:@", %@", v109];
+              summary7 = [*(*(&v171 + 1) + 8 * i) summary];
+              [(__CFString *)summary appendFormat:@", %@", summary7];
             }
 
             else
             {
               v110 = [NSMutableString alloc];
-              v109 = [v108 summary];
-              v7 = [v110 initWithFormat:@"%@", v109];
+              summary7 = [v108 summary];
+              summary = [v110 initWithFormat:@"%@", summary7];
             }
           }
 
@@ -1455,7 +1455,7 @@ LABEL_188:
 
       else
       {
-        v7 = 0;
+        summary = 0;
       }
 
       v151 = [NSString alloc];
@@ -1470,7 +1470,7 @@ LABEL_188:
         v153 = @"N";
       }
 
-      v33 = [v151 initWithFormat:@"SCHEDULER|count:%ld|selectors:%@|osTrans:%@", v152, v7, v153, v162, v163];
+      v163 = [v151 initWithFormat:@"SCHEDULER|count:%ld|selectors:%@|osTrans:%@", v152, summary, v153, v162, v163];
       goto LABEL_256;
     case 0x15:
       v69 = [(NSArray *)self->_triggeredSets count];
@@ -1488,7 +1488,7 @@ LABEL_188:
           v72 = @"N";
         }
 
-        v42 = [v71 initWithFormat:@"SET-SCHEDULER|count:%ld|osTrans:%@", v70, v72, v161, v162, v163, v164];
+        v164 = [v71 initWithFormat:@"SET-SCHEDULER|count:%ld|osTrans:%@", v70, v72, v161, v162, v163, v164];
         goto LABEL_206;
       }
 
@@ -1501,7 +1501,7 @@ LABEL_188:
       if (v112)
       {
         v113 = v112;
-        v7 = 0;
+        summary = 0;
         v114 = *v168;
         do
         {
@@ -1513,17 +1513,17 @@ LABEL_188:
             }
 
             v116 = *(*(&v167 + 1) + 8 * j);
-            if (v7)
+            if (summary)
             {
-              v117 = [*(*(&v167 + 1) + 8 * j) summary];
-              [(__CFString *)v7 appendFormat:@", %@", v117];
+              summary8 = [*(*(&v167 + 1) + 8 * j) summary];
+              [(__CFString *)summary appendFormat:@", %@", summary8];
             }
 
             else
             {
               v118 = [NSMutableString alloc];
-              v117 = [v116 summary];
-              v7 = [v118 initWithFormat:@"%@", v117];
+              summary8 = [v116 summary];
+              summary = [v118 initWithFormat:@"%@", summary8];
             }
           }
 
@@ -1535,7 +1535,7 @@ LABEL_188:
 
       else
       {
-        v7 = 0;
+        summary = 0;
       }
 
       v154 = [NSString alloc];
@@ -1550,9 +1550,9 @@ LABEL_188:
         v156 = @"N";
       }
 
-      v33 = [v154 initWithFormat:@"SET-SCHEDULER|count:%ld|triggeredSets:%@|osTrans:%@", v155, v7, v156, v162, v163];
+      v163 = [v154 initWithFormat:@"SET-SCHEDULER|count:%ld|triggeredSets:%@|osTrans:%@", v155, summary, v156, v162, v163];
 LABEL_256:
-      v3 = v33;
+      v142 = v163;
 LABEL_257:
 
       goto LABEL_266;
@@ -1568,7 +1568,7 @@ LABEL_257:
         v93 = @"N";
       }
 
-      v42 = [v92 initWithFormat:@"SCHEDULER_NO_ACTIVITY|osTrans:%@", v93, v160, v161, v162, v163, v164];
+      v164 = [v92 initWithFormat:@"SCHEDULER_NO_ACTIVITY|osTrans:%@", v93, v160, v161, v162, v163, v164];
       goto LABEL_206;
     case 0x17:
       v4 = [NSString alloc];
@@ -1583,45 +1583,45 @@ LABEL_257:
         if (v39)
         {
           v40 = [NSString alloc];
-          v41 = [v39 summary];
-          v7 = [v40 initWithFormat:@"secureDescriptor:%@", v41];
+          summary9 = [v39 summary];
+          summary = [v40 initWithFormat:@"secureDescriptor:%@", summary9];
         }
 
         else
         {
-          v7 = @"BAD-DESCRIPTORS-ARRAY";
+          summary = @"BAD-DESCRIPTORS-ARRAY";
         }
       }
 
       else
       {
-        v7 = [[NSString alloc] initWithFormat:@"secureDescriptors:%ld", v38];
+        summary = [[NSString alloc] initWithFormat:@"secureDescriptors:%ld", v38];
       }
 
       v148 = [NSString alloc];
       setDescriptor = self->_setDescriptor;
       if (setDescriptor)
       {
-        v9 = [(MADAutoSetDescriptor *)self->_setDescriptor summary];
+        summary10 = [(MADAutoSetDescriptor *)self->_setDescriptor summary];
       }
 
       else
       {
-        v9 = @"N";
+        summary10 = @"N";
       }
 
       finishedError = self->_finishedError;
       if (finishedError)
       {
-        v150 = [(NSError *)finishedError checkedDescription];
-        v3 = [v148 initWithFormat:@"SECURE_OPERATIONS_FINISHED|setDescriptor:%@|%@|finishedError:%@", v9, v7, v150];
+        checkedDescription2 = [(NSError *)finishedError checkedDescription];
+        v142 = [v148 initWithFormat:@"SECURE_OPERATIONS_FINISHED|setDescriptor:%@|%@|finishedError:%@", summary10, summary, checkedDescription2];
       }
 
       else
       {
-        v141 = [v148 initWithFormat:@"SECURE_OPERATIONS_FINISHED|setDescriptor:%@|%@|finishedError:%@", v9, v7, @"N", v162, v163, v164];
+        v1643 = [v148 initWithFormat:@"SECURE_OPERATIONS_FINISHED|setDescriptor:%@|%@|finishedError:%@", summary10, summary, @"N", v162, v163, v164];
 LABEL_243:
-        v3 = v141;
+        v142 = v1643;
       }
 
 LABEL_244:
@@ -1637,16 +1637,16 @@ LABEL_244:
       goto LABEL_205;
     case 0x1ALL:
       v102 = [NSString alloc];
-      v7 = [(MADAutoSetConfiguration *)self->_setConfiguration summary];
+      summary = [(MADAutoSetConfiguration *)self->_setConfiguration summary];
       setDescriptor = self->_setPolicy;
       if (setDescriptor)
       {
-        v9 = [(MANAutoAssetSetPolicy *)self->_setPolicy summary];
+        summary10 = [(MANAutoAssetSetPolicy *)self->_setPolicy summary];
       }
 
       else
       {
-        v9 = @"N";
+        summary10 = @"N";
       }
 
       assetTargetOSVersion = self->_assetTargetOSVersion;
@@ -1673,20 +1673,20 @@ LABEL_244:
         assetTargetRestoreVersion = @"N";
       }
 
-      v141 = [v102 initWithFormat:@"STAGER_SET_START|setConfig[%@]|policy:%@|assetTarget[OSVersion:%@|BuildVersion:%@|TrainName:%@|RestoreVersion:%@", v7, v9, assetTargetOSVersion, assetTargetBuildVersion, assetTargetTrainName, assetTargetRestoreVersion];
+      v1643 = [v102 initWithFormat:@"STAGER_SET_START|setConfig[%@]|policy:%@|assetTarget[OSVersion:%@|BuildVersion:%@|TrainName:%@|RestoreVersion:%@", summary, summary10, assetTargetOSVersion, assetTargetBuildVersion, assetTargetTrainName, assetTargetRestoreVersion];
       goto LABEL_243;
     case 0x1BLL:
       v6 = [NSString alloc];
-      v7 = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
+      summary = [(MAAutoAssetSelector *)self->_autoAssetSelector summary];
       setDescriptor = self->_baseForPatchDescriptor;
       if (setDescriptor)
       {
-        v9 = [(MADAutoAssetDescriptor *)self->_baseForPatchDescriptor assetVersion];
+        summary10 = [(MADAutoAssetDescriptor *)self->_baseForPatchDescriptor assetVersion];
       }
 
       else
       {
-        v9 = @"N";
+        summary10 = @"N";
       }
 
       if (self->_autoAssetCatalog)
@@ -1702,12 +1702,12 @@ LABEL_244:
       setPolicy = self->_setPolicy;
       if (setPolicy)
       {
-        v121 = [(MANAutoAssetSetPolicy *)self->_setPolicy summary];
+        summary11 = [(MANAutoAssetSetPolicy *)self->_setPolicy summary];
       }
 
       else
       {
-        v121 = @"N";
+        summary11 = @"N";
       }
 
       v122 = self->_assetTargetOSVersion;
@@ -1722,7 +1722,7 @@ LABEL_244:
         v123 = @"N";
       }
 
-      v3 = [v6 initWithFormat:@"STAGER_START|selector[%@]|patchingFrom:%@|catalog:%@|policy:%@|assetTargetOSVersion:%@|assetTargetBuildVersion:%@", v7, v9, v119, v121, v122, v123];
+      v142 = [v6 initWithFormat:@"STAGER_START|selector[%@]|patchingFrom:%@|catalog:%@|policy:%@|assetTargetOSVersion:%@|assetTargetBuildVersion:%@", summary, summary10, v119, summary11, v122, v123];
       if (setPolicy)
       {
       }
@@ -1733,23 +1733,23 @@ LABEL_244:
       responseError = self->_jobInformation;
       if (responseError)
       {
-        v16 = [(MADAutoAssetJobInformation *)self->_jobInformation summary];
+        checkedDescription = [(MADAutoAssetJobInformation *)self->_jobInformation summary];
       }
 
       else
       {
-        v16 = @"N";
+        checkedDescription = @"N";
       }
 
       if (self->_finishedError)
       {
         v136 = [MADAutoAssetClientRequest responseErrorSummary:?];
-        v3 = [v98 initWithFormat:@"STAGER_INFO|jobInfo[%@]|finished[%@]", v16, v136];
+        v142 = [v98 initWithFormat:@"STAGER_INFO|jobInfo[%@]|finished[%@]", checkedDescription, v136];
 
         goto LABEL_264;
       }
 
-      v125 = [v98 initWithFormat:@"STAGER_INFO|jobInfo[%@]|finished[%@]", v16, @"SUCCESS", v161, v162, v163, v164];
+      v126 = [v98 initWithFormat:@"STAGER_INFO|jobInfo[%@]|finished[%@]", checkedDescription, @"SUCCESS", v161, v162, v163, v164];
       goto LABEL_263;
     case 0x1DLL:
       v4 = [NSString alloc];
@@ -1767,8 +1767,8 @@ LABEL_244:
       v101 = v100;
       if (self->_finishedError)
       {
-        v54 = [MADAutoAssetClientRequest responseErrorSummary:?];
-        v55 = [v4 initWithFormat:@"STAGER_LOOKUP|autoAssetCatalog:%@|baseDescriptors:%ld|determineError[%@]", v99, v101, v54];
+        summary2 = [MADAutoAssetClientRequest responseErrorSummary:?];
+        v161 = [v4 initWithFormat:@"STAGER_LOOKUP|autoAssetCatalog:%@|baseDescriptors:%ld|determineError[%@]", v99, v101, summary2];
         goto LABEL_117;
       }
 
@@ -1827,10 +1827,10 @@ LABEL_244:
       autoAssetSelector = self->_autoAssetSelector;
       if (autoAssetSelector)
       {
-        v54 = [(MAAutoAssetSelector *)autoAssetSelector summary];
-        v55 = [v4 initWithFormat:@"ASSET_SELECTOR|autoAssetSelector:%@", v54, v160, v161];
+        summary2 = [(MAAutoAssetSelector *)autoAssetSelector summary];
+        v161 = [v4 initWithFormat:@"ASSET_SELECTOR|autoAssetSelector:%@", summary2, v160, v161];
 LABEL_117:
-        v3 = v55;
+        v142 = v161;
       }
 
       else
@@ -1838,14 +1838,14 @@ LABEL_117:
         v159 = @"N";
         v5 = @"ASSET_SELECTOR|autoAssetSelector:%@";
 LABEL_205:
-        v42 = [v4 initWithFormat:v5, v159, v160, v161, v162, v163, v164];
+        v164 = [v4 initWithFormat:v5, v159, v160, v161, v162, v163, v164];
 LABEL_206:
-        v3 = v42;
+        v142 = v164;
       }
 
 LABEL_266:
 
-      return v3;
+      return v142;
     case 0x20:
       v90 = self->_setDescriptor;
       v91 = [NSString alloc];
@@ -1854,16 +1854,16 @@ LABEL_266:
       {
         if (responseError)
         {
-          v16 = [(MADAutoSetConfiguration *)self->_setConfiguration summary];
+          checkedDescription = [(MADAutoSetConfiguration *)self->_setConfiguration summary];
         }
 
         else
         {
-          v16 = @"N";
+          checkedDescription = @"N";
         }
 
-        v145 = [(MADAutoSetDescriptor *)self->_setDescriptor summary];
-        v146 = v145;
+        summary12 = [(MADAutoSetDescriptor *)self->_setDescriptor summary];
+        v146 = summary12;
         if (self->_autoAssetCatalog)
         {
           v147 = @"Y";
@@ -1874,19 +1874,19 @@ LABEL_266:
           v147 = @"N";
         }
 
-        v3 = [v91 initWithFormat:@"SET_CONFIGURATION|setConfiguration:%@|setDescriptor:%@|autoAssetCatalog:%@", v16, v145, v147];
+        v142 = [v91 initWithFormat:@"SET_CONFIGURATION|setConfiguration:%@|setDescriptor:%@|autoAssetCatalog:%@", checkedDescription, summary12, v147];
       }
 
       else
       {
         if (responseError)
         {
-          v16 = [(MADAutoSetConfiguration *)self->_setConfiguration summary];
+          checkedDescription = [(MADAutoSetConfiguration *)self->_setConfiguration summary];
         }
 
         else
         {
-          v16 = @"N";
+          checkedDescription = @"N";
         }
 
         if (self->_autoAssetCatalog)
@@ -1899,9 +1899,9 @@ LABEL_266:
           v157 = @"N";
         }
 
-        v125 = [v91 initWithFormat:@"SET_CONFIGURATION|setConfiguration:%@|autoAssetCatalog:%@", v16, v157, v161, v162, v163, v164];
+        v126 = [v91 initWithFormat:@"SET_CONFIGURATION|setConfiguration:%@|autoAssetCatalog:%@", checkedDescription, v157, v161, v162, v163, v164];
 LABEL_263:
-        v3 = v125;
+        v142 = v126;
       }
 
 LABEL_264:
@@ -1911,22 +1911,22 @@ LABEL_264:
 
       goto LABEL_266;
     case 0x21:
-      v3 = @"TIMER_FIRED";
+      v142 = @"TIMER_FIRED";
       goto LABEL_266;
     default:
-      v3 = @"UNKNOWN_TYPE";
+      v142 = @"UNKNOWN_TYPE";
       goto LABEL_266;
   }
 }
 
 - (void)updateSafeSummary
 {
-  v3 = [(MADAutoAssetControlManagerParam *)self _summary];
-  [(MADAutoAssetControlManagerParam *)self setParamSafeSummary:v3];
+  _summary = [(MADAutoAssetControlManagerParam *)self _summary];
+  [(MADAutoAssetControlManagerParam *)self setParamSafeSummary:_summary];
 
-  v4 = [(MADAutoAssetControlManagerParam *)self paramSafeSummary];
+  paramSafeSummary = [(MADAutoAssetControlManagerParam *)self paramSafeSummary];
 
-  if (!v4)
+  if (!paramSafeSummary)
   {
 
     [(MADAutoAssetControlManagerParam *)self setParamSafeSummary:&stru_4BD3F0];

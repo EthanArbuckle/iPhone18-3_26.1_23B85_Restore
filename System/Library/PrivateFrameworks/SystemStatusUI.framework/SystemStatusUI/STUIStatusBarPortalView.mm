@@ -1,7 +1,7 @@
 @interface STUIStatusBarPortalView
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation STUIStatusBarPortalView
@@ -15,13 +15,13 @@
   [(STUIStatusBarPortalView *)&v3 layoutSubviews];
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  portalView = a3;
+  portalView = view;
   v17 = portalView;
   if (self->_view != portalView)
   {
-    objc_storeStrong(&self->_view, a3);
+    objc_storeStrong(&self->_view, view);
     v6 = v17;
     portalView = self->_portalView;
     if (!v17)

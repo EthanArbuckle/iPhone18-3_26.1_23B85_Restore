@@ -1,26 +1,26 @@
 @interface _NTKImageListPhotosReader
-- (_NTKImageListPhotosReader)initWithResourceDirectory:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
+- (_NTKImageListPhotosReader)initWithResourceDirectory:(id)directory;
+- (id)objectAtIndex:(unint64_t)index;
 @end
 
 @implementation _NTKImageListPhotosReader
 
-- (_NTKImageListPhotosReader)initWithResourceDirectory:(id)a3
+- (_NTKImageListPhotosReader)initWithResourceDirectory:(id)directory
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  directoryCopy = directory;
   v24.receiver = self;
   v24.super_class = _NTKImageListPhotosReader;
-  v5 = [(NTKPhotosReader *)&v24 initWithResourceDirectory:v4];
+  v5 = [(NTKPhotosReader *)&v24 initWithResourceDirectory:directoryCopy];
   if (v5)
   {
     v6 = objc_opt_new();
     photos = v5->_photos;
     v5->_photos = v6;
 
-    if (v4)
+    if (directoryCopy)
     {
-      v8 = [v4 stringByAppendingPathComponent:@"Images.plist"];
+      v8 = [directoryCopy stringByAppendingPathComponent:@"Images.plist"];
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v8];
       v10 = v9;
       if (v9)
@@ -48,7 +48,7 @@
                 objc_enumerationMutation(v12);
               }
 
-              v17 = [NTKPhoto decodeFromDictionary:*(*(&v20 + 1) + 8 * i) forResourceDirectory:v4];
+              v17 = [NTKPhoto decodeFromDictionary:*(*(&v20 + 1) + 8 * i) forResourceDirectory:directoryCopy];
               if (v17)
               {
                 [(NSMutableArray *)v5->_photos addObject:v17];
@@ -77,16 +77,16 @@
   return v5;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if ([(NSMutableArray *)self->_photos count]<= a3)
+  if ([(NSMutableArray *)self->_photos count]<= index)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:a3];
+    v5 = [(NSMutableArray *)self->_photos objectAtIndexedSubscript:index];
   }
 
   return v5;

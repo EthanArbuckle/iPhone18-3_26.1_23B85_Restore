@@ -1,64 +1,64 @@
 @interface TUConversationReactionsController
-- (TUConversationReactionsController)initWithConversationDataSource:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)conversation:(id)a3 participant:(id)a4 didReact:(id)a5;
-- (void)conversation:(id)a3 participantDidStopReacting:(id)a4;
-- (void)removeDelegate:(id)a3;
+- (TUConversationReactionsController)initWithConversationDataSource:(id)source;
+- (void)addDelegate:(id)delegate;
+- (void)conversation:(id)conversation participant:(id)participant didReact:(id)react;
+- (void)conversation:(id)conversation participantDidStopReacting:(id)reacting;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation TUConversationReactionsController
 
-- (TUConversationReactionsController)initWithConversationDataSource:(id)a3
+- (TUConversationReactionsController)initWithConversationDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = TUConversationReactionsController;
   v6 = [(TUConversationReactionsController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     [(TUConversationManagerDataSource *)v7->_dataSource setReactionsDelegate:v7];
-    v8 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     delegates = v7->_delegates;
-    v7->_delegates = v8;
+    v7->_delegates = weakObjectsHashTable;
   }
 
   return v7;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(TUConversationReactionsController *)self delegates];
-  [v5 addObject:v4];
+  delegates = [(TUConversationReactionsController *)self delegates];
+  [delegates addObject:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(TUConversationReactionsController *)self delegates];
-  [v5 removeObject:v4];
+  delegates = [(TUConversationReactionsController *)self delegates];
+  [delegates removeObject:delegateCopy];
 }
 
-- (void)conversation:(id)a3 participant:(id)a4 didReact:(id)a5
+- (void)conversation:(id)conversation participant:(id)participant didReact:(id)react
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  conversationCopy = conversation;
+  participantCopy = participant;
+  reactCopy = react;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__TUConversationReactionsController_conversation_participant_didReact___block_invoke;
   v14[3] = &unk_1E7425188;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = conversationCopy;
+  v16 = participantCopy;
+  v17 = reactCopy;
+  v11 = reactCopy;
+  v12 = participantCopy;
+  v13 = conversationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v14);
 }
 
@@ -104,19 +104,19 @@ void __71__TUConversationReactionsController_conversation_participant_didReact__
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)conversation:(id)a3 participantDidStopReacting:(id)a4
+- (void)conversation:(id)conversation participantDidStopReacting:(id)reacting
 {
-  v6 = a3;
-  v7 = a4;
+  conversationCopy = conversation;
+  reactingCopy = reacting;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__TUConversationReactionsController_conversation_participantDidStopReacting___block_invoke;
   block[3] = &unk_1E7424FD8;
   block[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = conversationCopy;
+  v12 = reactingCopy;
+  v8 = reactingCopy;
+  v9 = conversationCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 

@@ -1,19 +1,19 @@
 @interface PowerEventHandler_Rcp
-- (id)init:(id)a3;
-- (void)powerEventListenerSystemPoweredOn_Rcp:(id)a3;
+- (id)init:(id)init;
+- (void)powerEventListenerSystemPoweredOn_Rcp:(id)rcp;
 @end
 
 @implementation PowerEventHandler_Rcp
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v4 = a3;
+  initCopy = init;
   v12.receiver = self;
   v12.super_class = PowerEventHandler_Rcp;
   v5 = [(PowerEventHandler_Rcp *)&v12 init];
   if (v5)
   {
-    v6 = [[PowerEventListener alloc] initWithDelegate:v5 queue:v4];
+    v6 = [[PowerEventListener alloc] initWithDelegate:v5 queue:initCopy];
     v7 = powerEventListener;
     powerEventListener = v6;
 
@@ -33,7 +33,7 @@
       [PowerEventHandler_Rcp init:];
     }
 
-    v9 = [powerEventListener registerForEvents];
+    registerForEvents = [powerEventListener registerForEvents];
     v10 = log_get_logging_obg("com.apple.threadradiod", "default");
     if (v10)
     {
@@ -42,7 +42,7 @@
         *buf = 136315394;
         v14 = "[PowerEventHandler_Rcp init:]";
         v15 = 1024;
-        v16 = v9;
+        v16 = registerForEvents;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Power Assertion: %s registerForEvents: %d", buf, 0x12u);
       }
     }
@@ -56,7 +56,7 @@
   return v5;
 }
 
-- (void)powerEventListenerSystemPoweredOn_Rcp:(id)a3
+- (void)powerEventListenerSystemPoweredOn_Rcp:(id)rcp
 {
   v3 = dispatch_get_current_queue();
   v4 = log_get_logging_obg("com.apple.threadradiod", "default");

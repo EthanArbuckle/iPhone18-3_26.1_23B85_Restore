@@ -1,15 +1,15 @@
 @interface MarkupButtonContainerView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC13AEBookPlugins25MarkupButtonContainerView)initWithCoder:(id)a3;
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC13AEBookPlugins25MarkupButtonContainerView)initWithCoder:(id)coder;
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection;
 - (void)layoutSubviews;
-- (void)updateForMiniBarState:(BOOL)a3;
+- (void)updateForMiniBarState:(BOOL)state;
 @end
 
 @implementation MarkupButtonContainerView
 
-- (_TtC13AEBookPlugins25MarkupButtonContainerView)initWithCoder:(id)a3
+- (_TtC13AEBookPlugins25MarkupButtonContainerView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13AEBookPlugins25MarkupButtonContainerView_regularButtonPadding) = 0x4010000000000000;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13AEBookPlugins25MarkupButtonContainerView_compactButtonPadding) = 0x4008000000000000;
@@ -24,14 +24,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_121B08();
 }
 
-- (void)_traitCollectionDidChangeWithSender:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChangeWithSender:(id)sender previousTraitCollection:(id)collection
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_139B70();
   swift_unknownObjectRelease();
   sub_121CB4();
@@ -39,11 +39,11 @@
   sub_1223F0(&v6);
 }
 
-- (void)updateForMiniBarState:(BOOL)a3
+- (void)updateForMiniBarState:(BOOL)state
 {
-  v3 = self;
-  [(MarkupButtonContainerView *)v3 setNeedsLayout];
-  [(MarkupButtonContainerView *)v3 layoutIfNeeded];
+  selfCopy = self;
+  [(MarkupButtonContainerView *)selfCopy setNeedsLayout];
+  [(MarkupButtonContainerView *)selfCopy layoutIfNeeded];
 }
 
 - (CGSize)intrinsicContentSize
@@ -56,9 +56,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MarkupButtonContainerView *)self intrinsicContentSize:a3.width];
+  [(MarkupButtonContainerView *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;

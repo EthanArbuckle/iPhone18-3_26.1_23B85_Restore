@@ -1,27 +1,27 @@
 @interface TPSDualSimValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSDualSimValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CC37B0];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [v4 alloc];
   v7 = [v6 initWithQueue:MEMORY[0x277D85CD0]];
   v13 = 0;
   v8 = [v7 getDualSimCapability:&v13];
   v9 = v13;
-  v10 = [(TPSTargetingValidation *)self BOOLValue];
+  bOOLValue = [(TPSTargetingValidation *)self BOOLValue];
   v11 = v8 == 3;
-  v12 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v12];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:targeting];
   }
 
-  (*(v5 + 2))(v5, v11 ^ v10, 0);
+  (*(completionCopy + 2))(completionCopy, v11 ^ bOOLValue, 0);
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface GKImageKey
-+ (id)fileNameWithIdentifierInImageSource:(id)a3;
-+ (id)keyForImageIdentifier:(id)a3 withImageSource:(id)a4;
++ (id)fileNameWithIdentifierInImageSource:(id)source;
++ (id)keyForImageIdentifier:(id)identifier withImageSource:(id)source;
 - (CGSize)size;
 - (NSString)cacheKey;
 - (NSString)filePath;
@@ -8,54 +8,54 @@
 
 @implementation GKImageKey
 
-+ (id)fileNameWithIdentifierInImageSource:(id)a3
++ (id)fileNameWithIdentifierInImageSource:(id)source
 {
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [v3 imageBrush];
+  sourceCopy = source;
+  name = [sourceCopy name];
+  imageBrush = [sourceCopy imageBrush];
 
-  if ([v5 conformsToProtocol:&unk_286191A68])
+  if ([imageBrush conformsToProtocol:&unk_286191A68])
   {
-    v6 = [v5 renderedImageIdentifier];
-    v7 = [v4 stringByAppendingFormat:@"-%@", v6];
+    renderedImageIdentifier = [imageBrush renderedImageIdentifier];
+    v7 = [name stringByAppendingFormat:@"-%@", renderedImageIdentifier];
 
-    v4 = v7;
+    name = v7;
   }
 
-  v8 = [MEMORY[0x277D75418] currentDevice];
-  v9 = [v8 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v10 = @"~iphone";
-  if (v9 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v10 = @"~ipad";
   }
 
   v11 = v10;
-  [v5 scaleForInput:0];
+  [imageBrush scaleForInput:0];
   if (v12 >= 2.0)
   {
-    [v4 stringByAppendingFormat:@"%@%@%@", @"@2x", v11, @".gkpix"];
+    [name stringByAppendingFormat:@"%@%@%@", @"@2x", v11, @".gkpix"];
   }
 
   else
   {
-    [v4 stringByAppendingFormat:@"%@%@", v11, @".gkpix", v15];
+    [name stringByAppendingFormat:@"%@%@", v11, @".gkpix", v15];
   }
   v13 = ;
 
   return v13;
 }
 
-+ (id)keyForImageIdentifier:(id)a3 withImageSource:(id)a4
++ (id)keyForImageIdentifier:(id)identifier withImageSource:(id)source
 {
-  v6 = a4;
-  v7 = a3;
+  sourceCopy = source;
+  identifierCopy = identifier;
   v8 = objc_alloc_init(GKImageKey);
-  v9 = [a1 fileNameWithIdentifierInImageSource:v6];
+  v9 = [self fileNameWithIdentifierInImageSource:sourceCopy];
 
   [(GKImageKey *)v8 setBasename:v9];
-  [(GKImageKey *)v8 setImageID:v7];
+  [(GKImageKey *)v8 setImageID:identifierCopy];
 
   return v8;
 }

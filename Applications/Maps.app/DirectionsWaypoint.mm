@@ -1,7 +1,7 @@
 @interface DirectionsWaypoint
-+ (DirectionsWaypoint)directionsWaypointWithNanoDirectionWaypoint:(id)a3;
++ (DirectionsWaypoint)directionsWaypointWithNanoDirectionWaypoint:(id)waypoint;
 - ($873BFAB23BBB6E2F0B0288ED2F935688)bounds;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isValid;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)hawkQueryRepresentation;
@@ -11,8 +11,8 @@
 - (id)description;
 - (id)nanoDirectionWaypoint;
 - (unint64_t)hash;
-- (void)setResponseSearch:(id)a3;
-- (void)updateFromGEOComposedWaypoint:(id)a3;
+- (void)setResponseSearch:(id)search;
+- (void)updateFromGEOComposedWaypoint:(id)waypoint;
 @end
 
 @implementation DirectionsWaypoint
@@ -20,132 +20,132 @@
 - (id)nanoDirectionWaypoint
 {
   v3 = objc_alloc_init(NanoDirectionWaypoint);
-  v4 = [(DirectionsWaypoint *)self requestSearch];
+  requestSearch = [(DirectionsWaypoint *)self requestSearch];
 
-  if (v4)
+  if (requestSearch)
   {
-    v5 = [(DirectionsWaypoint *)self requestSearch];
-    v6 = [v5 isDynamicCurrentLocation];
+    requestSearch2 = [(DirectionsWaypoint *)self requestSearch];
+    isDynamicCurrentLocation = [requestSearch2 isDynamicCurrentLocation];
 
-    if (v6)
+    if (isDynamicCurrentLocation)
     {
-      v7 = [(DirectionsWaypoint *)self requestSearch];
-      [v7 coordinate];
+      requestSearch3 = [(DirectionsWaypoint *)self requestSearch];
+      [requestSearch3 coordinate];
       v9 = v8;
       v11 = v10;
 
-      v12 = 0;
+      requestSearch4 = 0;
       if (fabs(v11) <= 180.0 && v9 >= -90.0 && v9 <= 90.0)
       {
-        v12 = [[GEOLocation alloc] initWithGEOCoordinate:1 isUserLocation:{v9, v11}];
+        requestSearch4 = [[GEOLocation alloc] initWithGEOCoordinate:1 isUserLocation:{v9, v11}];
       }
 
-      v13 = [NanoDirectionWaypoint directionWaypointForCurrentLocation:v12];
+      v13 = [NanoDirectionWaypoint directionWaypointForCurrentLocation:requestSearch4];
       goto LABEL_10;
     }
 
-    v12 = [(DirectionsWaypoint *)self requestSearch];
-    v16 = [v12 mapItem];
-    v17 = [(NanoDirectionWaypoint *)v16 _geoMapItem];
-    v15 = [NanoDirectionWaypoint directionWaypointWithGEOMapItem:v17];
+    requestSearch4 = [(DirectionsWaypoint *)self requestSearch];
+    mapItem = [requestSearch4 mapItem];
+    _geoMapItem = [(NanoDirectionWaypoint *)mapItem _geoMapItem];
+    v15 = [NanoDirectionWaypoint directionWaypointWithGEOMapItem:_geoMapItem];
 
 LABEL_14:
-    v3 = v16;
+    v3 = mapItem;
     goto LABEL_15;
   }
 
-  v14 = [(DirectionsWaypoint *)self requestSearchString];
+  requestSearchString = [(DirectionsWaypoint *)self requestSearchString];
 
-  if (!v14)
+  if (!requestSearchString)
   {
-    v18 = [(DirectionsWaypoint *)self externalURLQuery];
+    externalURLQuery = [(DirectionsWaypoint *)self externalURLQuery];
 
-    if (!v18)
+    if (!externalURLQuery)
     {
       goto LABEL_16;
     }
 
-    v12 = [(DirectionsWaypoint *)self externalURLQuery];
-    v16 = [v12 query];
-    v17 = [(DirectionsWaypoint *)self externalURLQuery];
-    v19 = [v17 muid];
-    v20 = [(DirectionsWaypoint *)self externalURLQuery];
-    v15 = +[NanoDirectionWaypoint directionWaypointWithLabel:muid:providerID:](NanoDirectionWaypoint, "directionWaypointWithLabel:muid:providerID:", v16, v19, [v20 resultProviderId]);
+    requestSearch4 = [(DirectionsWaypoint *)self externalURLQuery];
+    mapItem = [requestSearch4 query];
+    _geoMapItem = [(DirectionsWaypoint *)self externalURLQuery];
+    muid = [_geoMapItem muid];
+    externalURLQuery2 = [(DirectionsWaypoint *)self externalURLQuery];
+    v15 = +[NanoDirectionWaypoint directionWaypointWithLabel:muid:providerID:](NanoDirectionWaypoint, "directionWaypointWithLabel:muid:providerID:", mapItem, muid, [externalURLQuery2 resultProviderId]);
 
     goto LABEL_14;
   }
 
-  v12 = [(DirectionsWaypoint *)self requestSearchString];
-  v13 = [NanoDirectionWaypoint directionWaypointWithSearchString:v12];
+  requestSearch4 = [(DirectionsWaypoint *)self requestSearchString];
+  v13 = [NanoDirectionWaypoint directionWaypointWithSearchString:requestSearch4];
 LABEL_10:
   v15 = v13;
 LABEL_15:
 
   v3 = v15;
 LABEL_16:
-  v21 = [(DirectionsWaypoint *)self responseSearch];
+  responseSearch = [(DirectionsWaypoint *)self responseSearch];
 
-  if (v21)
+  if (responseSearch)
   {
-    v22 = [(DirectionsWaypoint *)self responseSearch];
-    v23 = [v22 composedWaypoint];
-    [(NanoDirectionWaypoint *)v3 setComposedWaypoint:v23];
+    responseSearch2 = [(DirectionsWaypoint *)self responseSearch];
+    composedWaypoint = [responseSearch2 composedWaypoint];
+    [(NanoDirectionWaypoint *)v3 setComposedWaypoint:composedWaypoint];
   }
 
   return v3;
 }
 
-+ (DirectionsWaypoint)directionsWaypointWithNanoDirectionWaypoint:(id)a3
++ (DirectionsWaypoint)directionsWaypointWithNanoDirectionWaypoint:(id)waypoint
 {
-  v3 = a3;
+  waypointCopy = waypoint;
   v4 = objc_alloc_init(DirectionsWaypoint);
-  if ([v3 isCurrentLocation])
+  if ([waypointCopy isCurrentLocation])
   {
-    v5 = +[SearchResult currentLocationSearchResult];
-    [(DirectionsWaypoint *)v4 setRequestSearch:v5];
+    searchString2 = +[SearchResult currentLocationSearchResult];
+    [(DirectionsWaypoint *)v4 setRequestSearch:searchString2];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v6 = [v3 searchString];
+  searchString = [waypointCopy searchString];
 
-  if (v6)
+  if (searchString)
   {
-    v5 = [v3 searchString];
-    [(DirectionsWaypoint *)v4 setRequestSearchString:v5];
+    searchString2 = [waypointCopy searchString];
+    [(DirectionsWaypoint *)v4 setRequestSearchString:searchString2];
     goto LABEL_8;
   }
 
-  v7 = [v3 geoMapItem];
+  geoMapItem = [waypointCopy geoMapItem];
 
-  if (v7)
+  if (geoMapItem)
   {
     v8 = [SearchResult alloc];
-    v5 = [v3 geoMapItem];
-    v9 = [(SearchResult *)v8 initWithGEOMapItem:v5];
+    searchString2 = [waypointCopy geoMapItem];
+    v9 = [(SearchResult *)v8 initWithGEOMapItem:searchString2];
     [(DirectionsWaypoint *)v4 setRequestSearch:v9];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if ([v3 muid] && objc_msgSend(v3, "providerID") >= 1)
+  if ([waypointCopy muid] && objc_msgSend(waypointCopy, "providerID") >= 1)
   {
     v13 = [ExternalURLQuery alloc];
-    v5 = [v3 searchString];
-    v9 = -[ExternalURLQuery initWithQuery:coordinate:muid:resultProviderId:contentProvider:](v13, "initWithQuery:coordinate:muid:resultProviderId:contentProvider:", v5, [v3 muid], objc_msgSend(v3, "providerID"), 0, kCLLocationCoordinate2DInvalid.latitude, kCLLocationCoordinate2DInvalid.longitude);
+    searchString2 = [waypointCopy searchString];
+    v9 = -[ExternalURLQuery initWithQuery:coordinate:muid:resultProviderId:contentProvider:](v13, "initWithQuery:coordinate:muid:resultProviderId:contentProvider:", searchString2, [waypointCopy muid], objc_msgSend(waypointCopy, "providerID"), 0, kCLLocationCoordinate2DInvalid.latitude, kCLLocationCoordinate2DInvalid.longitude);
     [(DirectionsWaypoint *)v4 setExternalURLQuery:v9];
     goto LABEL_7;
   }
 
 LABEL_9:
-  v10 = [v3 composedWaypoint];
+  composedWaypoint = [waypointCopy composedWaypoint];
 
-  if (v10)
+  if (composedWaypoint)
   {
-    v11 = [v3 composedWaypoint];
-    [(DirectionsWaypoint *)v4 updateFromGEOComposedWaypoint:v11];
+    composedWaypoint2 = [waypointCopy composedWaypoint];
+    [(DirectionsWaypoint *)v4 updateFromGEOComposedWaypoint:composedWaypoint2];
   }
 
   return v4;
@@ -170,63 +170,63 @@ LABEL_9:
     v4 = @"NO";
   }
 
-  v6 = [(DirectionsWaypoint *)self location];
-  v7 = [NSMutableString stringWithFormat:@"<%@: %p isValid=%@ isDynamicCurrentLocation=%@ location=%@", v3, self, v5, v4, v6];
+  location = [(DirectionsWaypoint *)self location];
+  v7 = [NSMutableString stringWithFormat:@"<%@: %p isValid=%@ isDynamicCurrentLocation=%@ location=%@", v3, self, v5, v4, location];
 
-  v8 = [(DirectionsWaypoint *)self requestSearchString];
+  requestSearchString = [(DirectionsWaypoint *)self requestSearchString];
 
-  if (v8)
+  if (requestSearchString)
   {
-    v9 = [(DirectionsWaypoint *)self requestSearchString];
-    [v7 appendFormat:@" requestSearchString=%@", v9];
+    requestSearchString2 = [(DirectionsWaypoint *)self requestSearchString];
+    [v7 appendFormat:@" requestSearchString=%@", requestSearchString2];
   }
 
-  v10 = [(DirectionsWaypoint *)self requestSearch];
+  requestSearch = [(DirectionsWaypoint *)self requestSearch];
 
-  if (v10)
+  if (requestSearch)
   {
-    v11 = [(DirectionsWaypoint *)self requestSearch];
-    [v7 appendFormat:@" requestSearch=%@", v11];
+    requestSearch2 = [(DirectionsWaypoint *)self requestSearch];
+    [v7 appendFormat:@" requestSearch=%@", requestSearch2];
   }
 
-  v12 = [(DirectionsWaypoint *)self requestAddress];
+  requestAddress = [(DirectionsWaypoint *)self requestAddress];
 
-  if (v12)
+  if (requestAddress)
   {
-    v13 = [(DirectionsWaypoint *)self requestAddress];
-    [v7 appendFormat:@" requestAddress=%@", v13];
+    requestAddress2 = [(DirectionsWaypoint *)self requestAddress];
+    [v7 appendFormat:@" requestAddress=%@", requestAddress2];
   }
 
-  v14 = [(DirectionsWaypoint *)self suggestionsPrefix];
+  suggestionsPrefix = [(DirectionsWaypoint *)self suggestionsPrefix];
 
-  if (v14)
+  if (suggestionsPrefix)
   {
-    v15 = [(DirectionsWaypoint *)self suggestionsPrefix];
-    [v7 appendFormat:@" suggestionsPrefix=%@", v15];
+    suggestionsPrefix2 = [(DirectionsWaypoint *)self suggestionsPrefix];
+    [v7 appendFormat:@" suggestionsPrefix=%@", suggestionsPrefix2];
   }
 
-  v16 = [(DirectionsWaypoint *)self responseSearch];
+  responseSearch = [(DirectionsWaypoint *)self responseSearch];
 
-  if (v16)
+  if (responseSearch)
   {
-    v17 = [(DirectionsWaypoint *)self responseSearch];
-    [v7 appendFormat:@" responseSearch=%@", v17];
+    responseSearch2 = [(DirectionsWaypoint *)self responseSearch];
+    [v7 appendFormat:@" responseSearch=%@", responseSearch2];
   }
 
-  v18 = [(DirectionsWaypoint *)self completion];
+  completion = [(DirectionsWaypoint *)self completion];
 
-  if (v18)
+  if (completion)
   {
-    v19 = [(DirectionsWaypoint *)self completion];
-    [v7 appendFormat:@" completion=%@", v19];
+    completion2 = [(DirectionsWaypoint *)self completion];
+    [v7 appendFormat:@" completion=%@", completion2];
   }
 
-  v20 = [(DirectionsWaypoint *)self mapItemIfLoaded];
+  mapItemIfLoaded = [(DirectionsWaypoint *)self mapItemIfLoaded];
 
-  if (v20)
+  if (mapItemIfLoaded)
   {
-    v21 = [(DirectionsWaypoint *)self mapItemIfLoaded];
-    [v7 appendFormat:@" mapItemIfLoaded=%@", v21];
+    mapItemIfLoaded2 = [(DirectionsWaypoint *)self mapItemIfLoaded];
+    [v7 appendFormat:@" mapItemIfLoaded=%@", mapItemIfLoaded2];
   }
 
   [v7 appendString:@">"];
@@ -237,16 +237,16 @@ LABEL_9:
 - (unint64_t)hash
 {
   v3 = [objc_opt_class() hash];
-  v4 = [(DirectionsWaypoint *)self location];
-  v5 = [v4 hash];
+  location = [(DirectionsWaypoint *)self location];
+  v5 = [location hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -256,7 +256,7 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(DirectionsWaypoint *)v5 pin];
       v7 = [(DirectionsWaypoint *)self pin];
       v8 = v7;
@@ -268,58 +268,58 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v10 = [(DirectionsWaypoint *)v5 location];
-      if (v10 && (v11 = v10, [(DirectionsWaypoint *)self location], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
+      location = [(DirectionsWaypoint *)v5 location];
+      if (location && (v11 = location, [(DirectionsWaypoint *)self location], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v12))
       {
-        v13 = [(DirectionsWaypoint *)v5 location];
-        v14 = [(DirectionsWaypoint *)self location];
+        location2 = [(DirectionsWaypoint *)v5 location];
+        location3 = [(DirectionsWaypoint *)self location];
       }
 
       else
       {
-        v17 = [(DirectionsWaypoint *)v5 requestSearchString];
-        if (v17)
+        requestSearchString = [(DirectionsWaypoint *)v5 requestSearchString];
+        if (requestSearchString)
         {
-          v18 = v17;
-          v19 = [(DirectionsWaypoint *)self requestSearchString];
+          v18 = requestSearchString;
+          requestSearchString2 = [(DirectionsWaypoint *)self requestSearchString];
 
-          if (v19)
+          if (requestSearchString2)
           {
-            v13 = [(DirectionsWaypoint *)v5 requestSearchString];
-            v15 = [(DirectionsWaypoint *)self requestSearchString];
-            v16 = [v13 isEqualToString:v15];
+            location2 = [(DirectionsWaypoint *)v5 requestSearchString];
+            requestSearchString3 = [(DirectionsWaypoint *)self requestSearchString];
+            v16 = [location2 isEqualToString:requestSearchString3];
             goto LABEL_18;
           }
         }
 
-        v20 = [(DirectionsWaypoint *)v5 externalURLQuery];
-        if (v20)
+        externalURLQuery = [(DirectionsWaypoint *)v5 externalURLQuery];
+        if (externalURLQuery)
         {
-          v21 = v20;
-          v22 = [(DirectionsWaypoint *)self externalURLQuery];
+          v21 = externalURLQuery;
+          externalURLQuery2 = [(DirectionsWaypoint *)self externalURLQuery];
 
-          if (v22)
+          if (externalURLQuery2)
           {
-            v13 = [(DirectionsWaypoint *)v5 externalURLQuery];
-            v15 = [(DirectionsWaypoint *)self externalURLQuery];
-            v16 = [v13 isEqualToExternalURLQuery:v15];
+            location2 = [(DirectionsWaypoint *)v5 externalURLQuery];
+            requestSearchString3 = [(DirectionsWaypoint *)self externalURLQuery];
+            v16 = [location2 isEqualToExternalURLQuery:requestSearchString3];
             goto LABEL_18;
           }
         }
 
-        v24 = [(DirectionsWaypoint *)v5 requestAddress];
-        if (!v24 || (v25 = v24, [(DirectionsWaypoint *)self requestAddress], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, !v26))
+        requestAddress = [(DirectionsWaypoint *)v5 requestAddress];
+        if (!requestAddress || (v25 = requestAddress, [(DirectionsWaypoint *)self requestAddress], v26 = objc_claimAutoreleasedReturnValue(), v26, v25, !v26))
         {
           v9 = 0;
           goto LABEL_19;
         }
 
-        v13 = [(DirectionsWaypoint *)v5 requestAddress];
-        v14 = [(DirectionsWaypoint *)self requestAddress];
+        location2 = [(DirectionsWaypoint *)v5 requestAddress];
+        location3 = [(DirectionsWaypoint *)self requestAddress];
       }
 
-      v15 = v14;
-      v16 = [v13 isEqual:v14];
+      requestSearchString3 = location3;
+      v16 = [location2 isEqual:location3];
 LABEL_18:
       v9 = v16;
 
@@ -403,18 +403,18 @@ LABEL_20:
 
 - (NSString)singleLineAddress
 {
-  v3 = [(SearchResult *)self->_requestSearch singleLineAddress];
-  if ([v3 length])
+  singleLineAddress = [(SearchResult *)self->_requestSearch singleLineAddress];
+  if ([singleLineAddress length])
   {
-    v4 = v3;
+    singleLineAddress2 = singleLineAddress;
   }
 
   else
   {
-    v4 = [(SearchResult *)self->_responseSearch singleLineAddress];
+    singleLineAddress2 = [(SearchResult *)self->_responseSearch singleLineAddress];
   }
 
-  v5 = v4;
+  v5 = singleLineAddress2;
 
   return v5;
 }
@@ -423,12 +423,12 @@ LABEL_20:
 {
   if ([(DirectionsWaypoint *)self isValid])
   {
-    v3 = [(DirectionsWaypoint *)self mapItemIfLoaded];
-    v4 = [v3 _identifier];
+    mapItemIfLoaded = [(DirectionsWaypoint *)self mapItemIfLoaded];
+    _identifier = [mapItemIfLoaded _identifier];
 
-    if (v4)
+    if (_identifier)
     {
-      v5 = [(DirectionsWaypoint *)self location];
+      location = [(DirectionsWaypoint *)self location];
     }
 
     else
@@ -437,16 +437,16 @@ LABEL_20:
       v6 = [NSNumber numberWithDouble:?];
       [(DirectionsWaypoint *)self coordinate];
       v8 = [NSNumber numberWithDouble:v7];
-      v5 = [NSString stringWithFormat:@"%@, %@", v6, v8];
+      location = [NSString stringWithFormat:@"%@, %@", v6, v8];
     }
   }
 
   else
   {
-    v5 = @"<invalid>";
+    location = @"<invalid>";
   }
 
-  return v5;
+  return location;
 }
 
 - (NSString)location
@@ -456,9 +456,9 @@ LABEL_20:
     requestSearch = self->_requestSearch;
     if (requestSearch)
     {
-      v4 = [(SearchResult *)requestSearch routableAddress];
+      routableAddress = [(SearchResult *)requestSearch routableAddress];
 LABEL_4:
-      v5 = v4;
+      v5 = routableAddress;
       goto LABEL_6;
     }
 
@@ -468,24 +468,24 @@ LABEL_4:
       externalURLQuery = self->_externalURLQuery;
       if (externalURLQuery)
       {
-        v4 = [(ExternalURLQuery *)externalURLQuery query];
+        routableAddress = [(ExternalURLQuery *)externalURLQuery query];
       }
 
       else if ([(AddressBookAddress *)self->_requestAddress isValid])
       {
-        v4 = [(AddressBookAddress *)self->_requestAddress singleLineAddress];
+        routableAddress = [(AddressBookAddress *)self->_requestAddress singleLineAddress];
       }
 
       else
       {
-        v4 = self->_requestSearchString;
+        routableAddress = self->_requestSearchString;
       }
 
       goto LABEL_4;
     }
 
-    v8 = [(MKLocalSearchCompletion *)completion displayLines];
-    v5 = [v8 componentsJoinedByString:{@", "}];
+    displayLines = [(MKLocalSearchCompletion *)completion displayLines];
+    v5 = [displayLines componentsJoinedByString:{@", "}];
 
     if (![v5 length])
     {
@@ -517,22 +517,22 @@ LABEL_6:
   completion = self->_completion;
   if (completion)
   {
-    v4 = [(MKLocalSearchCompletion *)completion category];
-    if (v4)
+    category = [(MKLocalSearchCompletion *)completion category];
+    if (category)
     {
 
       return 1;
     }
 
-    v5 = [(MKLocalSearchCompletion *)self->_completion queryLine];
-    if ([v5 length])
+    queryLine = [(MKLocalSearchCompletion *)self->_completion queryLine];
+    if ([queryLine length])
     {
 
       return 1;
     }
 
-    v6 = [(MKLocalSearchCompletion *)self->_completion title];
-    v7 = [v6 length];
+    title = [(MKLocalSearchCompletion *)self->_completion title];
+    v7 = [title length];
 
     if (v7)
     {
@@ -548,78 +548,78 @@ LABEL_6:
   return [(NSString *)self->_requestSearchString length]!= 0;
 }
 
-- (void)setResponseSearch:(id)a3
+- (void)setResponseSearch:(id)search
 {
-  v5 = a3;
+  searchCopy = search;
   p_responseSearch = &self->_responseSearch;
-  if (self->_responseSearch != v5)
+  if (self->_responseSearch != searchCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_responseSearch, a3);
-    v5 = v9;
+    v9 = searchCopy;
+    objc_storeStrong(&self->_responseSearch, search);
+    searchCopy = v9;
     requestSearch = self->_requestSearch;
     p_requestSearch = &self->_requestSearch;
     if (!requestSearch)
     {
       objc_storeStrong(p_requestSearch, *p_responseSearch);
-      v5 = v9;
+      searchCopy = v9;
     }
   }
 }
 
-- (void)updateFromGEOComposedWaypoint:(id)a3
+- (void)updateFromGEOComposedWaypoint:(id)waypoint
 {
-  v15 = a3;
-  v4 = [(DirectionsWaypoint *)self responseSearch];
+  waypointCopy = waypoint;
+  responseSearch = [(DirectionsWaypoint *)self responseSearch];
 
-  v5 = v15;
-  if (!v4)
+  v5 = waypointCopy;
+  if (!responseSearch)
   {
-    v6 = [v15 geoMapItem];
-    v7 = [(DirectionsWaypoint *)self requestSearch];
+    geoMapItem = [waypointCopy geoMapItem];
+    requestSearch = [(DirectionsWaypoint *)self requestSearch];
 
-    if (v7)
+    if (requestSearch)
     {
-      v8 = [(DirectionsWaypoint *)self requestSearch];
-      v9 = [v8 copy];
+      requestSearch2 = [(DirectionsWaypoint *)self requestSearch];
+      v9 = [requestSearch2 copy];
       [(DirectionsWaypoint *)self setResponseSearch:v9];
 
-      v10 = [(DirectionsWaypoint *)self responseSearch];
-      [v10 updateWithGEOMapItem:v6];
+      responseSearch2 = [(DirectionsWaypoint *)self responseSearch];
+      [responseSearch2 updateWithGEOMapItem:geoMapItem];
     }
 
     else
     {
-      if ([v15 hasFindMyHandleID])
+      if ([waypointCopy hasFindMyHandleID])
       {
-        v11 = [[SearchResult alloc] initWithComposedWaypoint:v15];
+        v11 = [[SearchResult alloc] initWithComposedWaypoint:waypointCopy];
       }
 
       else
       {
-        v12 = [v15 isCurrentLocation];
-        if (v6)
+        isCurrentLocation = [waypointCopy isCurrentLocation];
+        if (geoMapItem)
         {
-          if ((v12 & 1) == 0 && ![v15 isLocationWaypointType])
+          if ((isCurrentLocation & 1) == 0 && ![waypointCopy isLocationWaypointType])
           {
             v13 = [SearchResult alloc];
-            v10 = [MKMapItem _itemWithGeoMapItem:v6];
-            v14 = [(SearchResult *)v13 initWithMapItem:v10];
+            responseSearch2 = [MKMapItem _itemWithGeoMapItem:geoMapItem];
+            v14 = [(SearchResult *)v13 initWithMapItem:responseSearch2];
             [(DirectionsWaypoint *)self setResponseSearch:v14];
 
             goto LABEL_13;
           }
 
-          v11 = [[SearchResult alloc] initWithComposedWaypoint:v15 preserveLocationInfo:1];
+          v11 = [[SearchResult alloc] initWithComposedWaypoint:waypointCopy preserveLocationInfo:1];
         }
 
         else
         {
-          if (!v12)
+          if (!isCurrentLocation)
           {
 LABEL_14:
 
-            v5 = v15;
+            v5 = waypointCopy;
             goto LABEL_15;
           }
 
@@ -627,7 +627,7 @@ LABEL_14:
         }
       }
 
-      v10 = v11;
+      responseSearch2 = v11;
       [(DirectionsWaypoint *)self setResponseSearch:v11];
     }
 

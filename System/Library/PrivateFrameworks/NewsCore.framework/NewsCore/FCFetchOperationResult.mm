@@ -1,25 +1,25 @@
 @interface FCFetchOperationResult
-+ (FCFetchOperationResult)resultWithStatus:(unint64_t)a3 fetchedObject:(id)a4 error:(id)a5;
++ (FCFetchOperationResult)resultWithStatus:(unint64_t)status fetchedObject:(id)object error:(id)error;
 - (BOOL)anyMissingObjects;
-- (FCFetchOperationResult)initWithStatus:(unint64_t)a3 fetchedObject:(id)a4 fetchResult:(unint64_t)a5 error:(id)a6;
+- (FCFetchOperationResult)initWithStatus:(unint64_t)status fetchedObject:(id)object fetchResult:(unint64_t)result error:(id)error;
 @end
 
 @implementation FCFetchOperationResult
 
 - (BOOL)anyMissingObjects
 {
-  v2 = [(FCFetchOperationResult *)self missingObjectDescriptions];
-  v3 = [v2 count] != 0;
+  missingObjectDescriptions = [(FCFetchOperationResult *)self missingObjectDescriptions];
+  v3 = [missingObjectDescriptions count] != 0;
 
   return v3;
 }
 
-- (FCFetchOperationResult)initWithStatus:(unint64_t)a3 fetchedObject:(id)a4 fetchResult:(unint64_t)a5 error:(id)a6
+- (FCFetchOperationResult)initWithStatus:(unint64_t)status fetchedObject:(id)object fetchResult:(unint64_t)result error:(id)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v11 = a4;
-  v12 = a6;
-  if (a3 && v11)
+  objectCopy = object;
+  errorCopy = error;
+  if (status && objectCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -39,7 +39,7 @@
     goto LABEL_12;
   }
 
-  if (!a3 && !v11 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!status && !objectCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"fetchedObject must not be nil if the operation was successful"];
     *buf = 136315906;
@@ -62,21 +62,21 @@ LABEL_8:
   v16 = v15;
   if (v15)
   {
-    v15->_status = a3;
-    objc_storeStrong(&v15->_fetchedObject, a4);
-    v16->_fetchResult = a5;
-    objc_storeStrong(&v16->_error, a6);
+    v15->_status = status;
+    objc_storeStrong(&v15->_fetchedObject, object);
+    v16->_fetchResult = result;
+    objc_storeStrong(&v16->_error, error);
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-+ (FCFetchOperationResult)resultWithStatus:(unint64_t)a3 fetchedObject:(id)a4 error:(id)a5
++ (FCFetchOperationResult)resultWithStatus:(unint64_t)status fetchedObject:(id)object error:(id)error
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[FCFetchOperationResult alloc] initWithStatus:a3 fetchedObject:v8 fetchResult:1 error:v7];
+  errorCopy = error;
+  objectCopy = object;
+  v9 = [[FCFetchOperationResult alloc] initWithStatus:status fetchedObject:objectCopy fetchResult:1 error:errorCopy];
 
   return v9;
 }

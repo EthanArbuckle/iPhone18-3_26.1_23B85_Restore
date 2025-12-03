@@ -1,7 +1,7 @@
 @interface FSFNluResponseFeature
-- (FSFNluResponseFeature)initWithContent:(id)a3 dataVersion:(unsigned int)a4;
-- (FSFNluResponseFeature)initWithContentJson:(id)a3 dataVersion:(unsigned int)a4;
-- (FSFNluResponseFeature)initWithData:(id)a3 dataVersion:(unsigned int)a4;
+- (FSFNluResponseFeature)initWithContent:(id)content dataVersion:(unsigned int)version;
+- (FSFNluResponseFeature)initWithContentJson:(id)json dataVersion:(unsigned int)version;
+- (FSFNluResponseFeature)initWithData:(id)data dataVersion:(unsigned int)version;
 - (id)content;
 - (id)interactionId;
 - (id)json;
@@ -9,17 +9,17 @@
 
 @implementation FSFNluResponseFeature
 
-- (FSFNluResponseFeature)initWithData:(id)a3 dataVersion:(unsigned int)a4
+- (FSFNluResponseFeature)initWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = FSFNluResponseFeature;
   v7 = [(FSFNluResponseFeature *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_dataVersion = a4;
-    v9 = [objc_alloc(MEMORY[0x277D5DDB0]) initWithData:v6];
+    v7->_dataVersion = version;
+    v9 = [objc_alloc(MEMORY[0x277D5DDB0]) initWithData:dataCopy];
     content = v8->_content;
     v8->_content = v9;
   }
@@ -27,9 +27,9 @@
   return v8;
 }
 
-- (FSFNluResponseFeature)initWithContent:(id)a3 dataVersion:(unsigned int)a4
+- (FSFNluResponseFeature)initWithContent:(id)content dataVersion:(unsigned int)version
 {
-  v7 = a3;
+  contentCopy = content;
   if (+[FSFUtils isSupportedPlatform])
   {
     v12.receiver = self;
@@ -38,26 +38,26 @@
     v9 = v8;
     if (v8)
     {
-      v8->_dataVersion = a4;
-      objc_storeStrong(&v8->_content, a3);
+      v8->_dataVersion = version;
+      objc_storeStrong(&v8->_content, content);
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (FSFNluResponseFeature)initWithContentJson:(id)a3 dataVersion:(unsigned int)a4
+- (FSFNluResponseFeature)initWithContentJson:(id)json dataVersion:(unsigned int)version
 {
-  v6 = a3;
+  jsonCopy = json;
   if (+[FSFUtils isSupportedPlatform])
   {
     v15.receiver = self;
@@ -66,25 +66,25 @@
     v8 = v7;
     if (v7)
     {
-      v7->_dataVersion = a4;
+      v7->_dataVersion = version;
       v9 = objc_alloc(MEMORY[0x277D5DDB0]);
-      v10 = [v6 dataUsingEncoding:4];
+      v10 = [jsonCopy dataUsingEncoding:4];
       v11 = [v9 initWithData:v10];
       content = v8->_content;
       v8->_content = v11;
     }
 
     self = v8;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:@"This method is not implemented for the current platform"];
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)content
@@ -106,16 +106,16 @@
 - (id)json
 {
   v2 = MEMORY[0x277CCAAA0];
-  v3 = [(SIRINLUEXTERNALCDMNluResponse *)self->_content dictionaryRepresentation];
-  v4 = [v2 dataWithJSONObject:v3 options:3 error:0];
+  dictionaryRepresentation = [(SIRINLUEXTERNALCDMNluResponse *)self->_content dictionaryRepresentation];
+  v4 = [v2 dataWithJSONObject:dictionaryRepresentation options:3 error:0];
 
   return v4;
 }
 
 - (id)interactionId
 {
-  v2 = [(SIRINLUEXTERNALCDMNluResponse *)self->_content requestId];
-  v3 = [v2 idA];
+  requestId = [(SIRINLUEXTERNALCDMNluResponse *)self->_content requestId];
+  v3 = [requestId idA];
 
   return v3;
 }

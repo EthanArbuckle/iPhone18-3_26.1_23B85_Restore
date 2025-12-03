@@ -1,15 +1,15 @@
 @interface UIWebScrollView
-- (UIWebScrollView)initWithFrame:(CGRect)a3;
+- (UIWebScrollView)initWithFrame:(CGRect)frame;
 - (void)didMoveToWindow;
 @end
 
 @implementation UIWebScrollView
 
-- (UIWebScrollView)initWithFrame:(CGRect)a3
+- (UIWebScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = UIWebScrollView;
-  v3 = [(UIScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -25,8 +25,8 @@
   v6.receiver = self;
   v6.super_class = UIWebScrollView;
   [(UIView *)&v6 didMoveToWindow];
-  v3 = [(UIView *)self window];
-  if (!v3)
+  window = [(UIView *)self window];
+  if (!window)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._delegate);
     v5 = objc_opt_respondsToSelector();
@@ -36,8 +36,8 @@
       return;
     }
 
-    v3 = objc_loadWeakRetained(&self->super._delegate);
-    [v3 performSelector:sel_scrollViewWasRemoved_ withObject:self];
+    window = objc_loadWeakRetained(&self->super._delegate);
+    [window performSelector:sel_scrollViewWasRemoved_ withObject:self];
   }
 }
 

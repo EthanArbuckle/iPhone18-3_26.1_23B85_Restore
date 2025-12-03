@@ -25,17 +25,17 @@
 - (uint64_t)fcui_hasExuberatedLineHeightForText:()FocusUIAdditions
 {
   v4 = a3;
-  if ([v4 length] && objc_msgSend(a1, "fcui_hasExuberatedLineHeight"))
+  if ([v4 length] && objc_msgSend(self, "fcui_hasExuberatedLineHeight"))
   {
-    v5 = [v4 fcui_containsExcessiveLineHeightCharacters];
+    fcui_containsExcessiveLineHeightCharacters = [v4 fcui_containsExcessiveLineHeightCharacters];
   }
 
   else
   {
-    v5 = 0;
+    fcui_containsExcessiveLineHeightCharacters = 0;
   }
 
-  return v5;
+  return fcui_containsExcessiveLineHeightCharacters;
 }
 
 - (uint64_t)fcui_effectiveScaledValueForValue:()FocusUIAdditions hasExuberatedLineHeight:
@@ -43,7 +43,7 @@
   if (a4)
   {
     v6 = objc_opt_class();
-    [a1 _scaledValueForValue:a2];
+    [self _scaledValueForValue:a2];
 
     return [v6 fcui_exuberatedValueForValue:?];
   }
@@ -51,16 +51,16 @@
   else
   {
 
-    return [a1 _scaledValueForValue:?];
+    return [self _scaledValueForValue:?];
   }
 }
 
 - (uint64_t)fcui_effectiveLineHeightForText:()FocusUIAdditions
 {
-  if ([a1 fcui_hasExuberatedLineHeightForText:?])
+  if ([self fcui_hasExuberatedLineHeightForText:?])
   {
     v2 = objc_opt_class();
-    [a1 lineHeight];
+    [self lineHeight];
 
     return [v2 fcui_exuberatedValueForValue:?];
   }
@@ -68,7 +68,7 @@
   else
   {
 
-    return [a1 lineHeight];
+    return [self lineHeight];
   }
 }
 
@@ -88,7 +88,7 @@
       }
 
       v19 = *MEMORY[0x277D740A8];
-      v20[0] = a1;
+      v20[0] = self;
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
       [v14 boundingRectWithSize:1 options:v16 attributes:v15 context:{a4, a5}];
 
@@ -97,10 +97,10 @@
         a8 = -1;
       }
 
-      v17 = [v15 numberOfLineFragments];
-      if (a8 >= v17)
+      numberOfLineFragments = [v15 numberOfLineFragments];
+      if (a8 >= numberOfLineFragments)
       {
-        a8 = v17;
+        a8 = numberOfLineFragments;
       }
     }
   }
@@ -116,7 +116,7 @@
 - (double)fcui_measuringHeightForText:()FocusUIAdditions withNumberOfLines:
 {
   v6 = a4;
-  [a1 fcui_effectiveLineHeightForText:?];
+  [self fcui_effectiveLineHeightForText:?];
   v8 = v7;
   v9 = a4 - 1;
   if (!a4)
@@ -125,29 +125,29 @@
   }
 
   v10 = v9;
-  [a1 leading];
+  [self leading];
   return v11 * v10 + v6 * v8;
 }
 
 - (double)fcui_drawingHeightForText:()FocusUIAdditions withNumberOfLines:additionalPadding:
 {
-  v8 = [a1 fcui_hasExuberatedLineHeightForText:?];
+  v8 = [self fcui_hasExuberatedLineHeightForText:?];
   if (v8)
   {
     v9 = objc_opt_class();
-    [a1 lineHeight];
+    [self lineHeight];
     [v9 fcui_exuberatedValueForValue:?];
   }
 
   else
   {
-    [a1 lineHeight];
+    [self lineHeight];
   }
 
   v11 = v10;
-  [a1 fcui_effectiveScaledValueForValue:v8 hasExuberatedLineHeight:a2];
+  [self fcui_effectiveScaledValueForValue:v8 hasExuberatedLineHeight:a2];
   v13 = v12;
-  [a1 leading];
+  [self leading];
   return (v13 + v11 + v14) * a5;
 }
 

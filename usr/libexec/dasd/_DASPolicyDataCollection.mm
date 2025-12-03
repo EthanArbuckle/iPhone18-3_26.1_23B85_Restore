@@ -1,18 +1,18 @@
 @interface _DASPolicyDataCollection
 + (id)sharedInstance;
-- (BOOL)sendDataToPPS:(id)a3 subsystem:(id)a4 category:(id)a5;
-- (BOOL)shouldReportBlockingReasonsForActivity:(id)a3;
+- (BOOL)sendDataToPPS:(id)s subsystem:(id)subsystem category:(id)category;
+- (BOOL)shouldReportBlockingReasonsForActivity:(id)activity;
 - (_DASPolicyDataCollection)init;
-- (id)dictForCAWithBitmap:(unint64_t)a3 policyName:(id)a4 priority:(id)a5;
-- (id)networkQualityDictForCAWithPriority:(id)a3 blockingCriteria:(id)a4 responseDetails:(id)a5;
+- (id)dictForCAWithBitmap:(unint64_t)bitmap policyName:(id)name priority:(id)priority;
+- (id)networkQualityDictForCAWithPriority:(id)priority blockingCriteria:(id)criteria responseDetails:(id)details;
 - (unint64_t)timeInMinutesSinceLastEvaluation;
 - (void)evaluateAndReportBlockingReasonsForAllCriteria;
 - (void)noteEvaluationTime;
-- (void)reportBlockingReason:(unint64_t)a3 forActivity:(id)a4;
+- (void)reportBlockingReason:(unint64_t)reason forActivity:(id)activity;
 - (void)reportPolicyBlockingReasonsForIntensiveTasksToPPS;
 - (void)reportPolicyBlockingReasonsForSpecificTasksToPPS;
 - (void)scheduleTelemetry;
-- (void)setCriteriaForActivity:(id)a3 withCriteriaIndex:(int64_t)a4;
+- (void)setCriteriaForActivity:(id)activity withCriteriaIndex:(int64_t)index;
 @end
 
 @implementation _DASPolicyDataCollection
@@ -74,8 +74,8 @@
     }
 
     v22 = +[_DASDaemon sharedInstance];
-    v23 = [v22 evaluationQueue];
-    v24 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v23);
+    evaluationQueue = [v22 evaluationQueue];
+    v24 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, evaluationQueue);
     policyDataCollectionTimer = v2->_policyDataCollectionTimer;
     v2->_policyDataCollectionTimer = v24;
   }
@@ -183,31 +183,31 @@ LABEL_40:
           for (j = 0; j != 13; ++j)
           {
             v17 = objc_autoreleasePoolPush();
-            v18 = [v14 unsignedLongValue];
+            unsignedLongValue = [v14 unsignedLongValue];
             v19 = _DASActivityDurationShort;
             v20 = +[NSDate now];
             v21 = +[NSDate now];
-            v22 = [_DASActivity activityWithName:@"com.apple.dasd.PolicyDataCollectionActivity" priority:v18 duration:v19 startingAfter:v20 startingBefore:v21];
+            v22 = [_DASActivity activityWithName:@"com.apple.dasd.PolicyDataCollectionActivity" priority:unsignedLongValue duration:v19 startingAfter:v20 startingBefore:v21];
 
             [(_DASPolicyDataCollection *)self setCriteriaForActivity:v22 withCriteriaIndex:j];
             if ([v9 appliesToActivity:v22])
             {
               v23 = +[_DASDaemon sharedInstance];
-              v24 = [v23 context];
-              v25 = [v9 responseForActivity:v22 withState:v24];
+              context = [v23 context];
+              v25 = [v9 responseForActivity:v22 withState:context];
 
-              v26 = [v25 rationale];
+              rationale = [v25 rationale];
               objc_opt_class();
-              LOBYTE(v24) = objc_opt_isKindOfClass();
+              LOBYTE(context) = objc_opt_isKindOfClass();
 
-              if (v24)
+              if (context)
               {
-                v27 = [v25 rationale];
-                v28 = [v27 detailsAsDictionary];
-                if (v28)
+                rationale2 = [v25 rationale];
+                detailsAsDictionary = [rationale2 detailsAsDictionary];
+                if (detailsAsDictionary)
                 {
                   v29 = [NSNumber numberWithInteger:j];
-                  [v79 setObject:v28 forKeyedSubscript:v29];
+                  [v79 setObject:detailsAsDictionary forKeyedSubscript:v29];
                 }
               }
 
@@ -250,7 +250,7 @@ LABEL_26:
             v119 = 3221225472;
             v120 = sub_10001F0A0;
             v121 = &unk_1001B5930;
-            v122 = self;
+            selfCopy = self;
             v125 = v15 & 0x11B7;
             v123 = v69;
             v124 = v14;
@@ -272,7 +272,7 @@ LABEL_26:
                 v111 = 3221225472;
                 v112 = sub_10001F0B0;
                 v113 = &unk_1001B5930;
-                v114 = self;
+                selfCopy2 = self;
                 v115 = v14;
                 v117 = k;
                 v116 = v36;
@@ -308,7 +308,7 @@ LABEL_34:
         v104 = 3221225472;
         v105 = sub_10001F128;
         v106 = &unk_1001B5958;
-        v107 = self;
+        selfCopy3 = self;
         v109 = v73;
         v108 = v69;
         AnalyticsSendEventLazy();
@@ -344,17 +344,17 @@ LABEL_45:
 
         v44 = *(*(&v99 + 1) + 8 * m);
         v45 = [v68 objectForKeyedSubscript:v44];
-        v46 = [v45 unsignedLongValue];
+        unsignedLongValue2 = [v45 unsignedLongValue];
 
-        if (v46)
+        if (unsignedLongValue2)
         {
           v92 = _NSConcreteStackBlock;
           v93 = 3221225472;
           v94 = sub_10001F13C;
           v95 = &unk_1001B5958;
           v97 = v44;
-          v98 = v46;
-          v96 = self;
+          v98 = unsignedLongValue2;
+          selfCopy4 = self;
           AnalyticsSendEventLazy();
         }
       }
@@ -371,7 +371,7 @@ LABEL_45:
     v87 = 3221225472;
     v88 = sub_10001F150;
     v89 = &unk_1001B5980;
-    v90 = self;
+    selfCopy5 = self;
     v91 = v72;
     AnalyticsSendEventLazy();
   }
@@ -430,64 +430,64 @@ LABEL_45:
   [(_DASPolicyDataCollection *)self noteEvaluationTime];
 }
 
-- (id)dictForCAWithBitmap:(unint64_t)a3 policyName:(id)a4 priority:(id)a5
+- (id)dictForCAWithBitmap:(unint64_t)bitmap policyName:(id)name priority:(id)priority
 {
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  priorityCopy = priority;
   v10 = objc_alloc_init(NSMutableDictionary);
   v11 = v10;
-  if (v8)
+  if (nameCopy)
   {
-    [v10 setObject:v8 forKeyedSubscript:@"PolicyName"];
+    [v10 setObject:nameCopy forKeyedSubscript:@"PolicyName"];
   }
 
-  if (v9)
+  if (priorityCopy)
   {
-    v12 = +[_DASActivity prettySchedulingPriorityDescription:](_DASActivity, "prettySchedulingPriorityDescription:", [v9 unsignedIntValue]);
+    v12 = +[_DASActivity prettySchedulingPriorityDescription:](_DASActivity, "prettySchedulingPriorityDescription:", [priorityCopy unsignedIntValue]);
     [v11 setObject:v12 forKeyedSubscript:@"Priority"];
   }
 
-  if (a3)
+  if (bitmap)
   {
-    v13 = [NSNumber numberWithInt:a3 & 1];
+    v13 = [NSNumber numberWithInt:bitmap & 1];
     [v11 setObject:v13 forKeyedSubscript:@"NoCriteria"];
 
-    v14 = [NSNumber numberWithInt:(a3 >> 1) & 1];
+    v14 = [NSNumber numberWithInt:(bitmap >> 1) & 1];
     [v11 setObject:v14 forKeyedSubscript:@"RequiresPlugin"];
 
-    v15 = [NSNumber numberWithInt:(a3 >> 2) & 1];
+    v15 = [NSNumber numberWithInt:(bitmap >> 2) & 1];
     [v11 setObject:v15 forKeyedSubscript:@"RequiresNetwork"];
 
-    v16 = [NSNumber numberWithInt:(a3 >> 4) & 1];
+    v16 = [NSNumber numberWithInt:(bitmap >> 4) & 1];
     [v11 setObject:v16 forKeyedSubscript:@"RequiresDeviceInactivity"];
 
-    v17 = [NSNumber numberWithInt:(a3 >> 5) & 1];
+    v17 = [NSNumber numberWithInt:(bitmap >> 5) & 1];
     [v11 setObject:v17 forKeyedSubscript:@"RequiresSignificantUserInactivity"];
 
-    v18 = [NSNumber numberWithInt:(a3 >> 7) & 1];
+    v18 = [NSNumber numberWithInt:(bitmap >> 7) & 1];
     [v11 setObject:v18 forKeyedSubscript:@"IsIntensive"];
 
-    v19 = [NSNumber numberWithInt:(a3 >> 8) & 1];
+    v19 = [NSNumber numberWithInt:(bitmap >> 8) & 1];
     [v11 setObject:v19 forKeyedSubscript:@"RequiresFileProtectionComplete"];
 
-    v20 = [NSNumber numberWithInt:(a3 >> 12) & 1];
+    v20 = [NSNumber numberWithInt:(bitmap >> 12) & 1];
     [v11 setObject:v20 forKeyedSubscript:@"RequiresWidgetBudget"];
   }
 
   v21 = +[_DASTrialManager sharedInstance];
-  v22 = [v21 experimentID];
+  experimentID = [v21 experimentID];
 
-  if (v22)
+  if (experimentID)
   {
-    v23 = [v21 experimentID];
-    [v11 setObject:v23 forKeyedSubscript:@"trialExperimentId"];
+    experimentID2 = [v21 experimentID];
+    [v11 setObject:experimentID2 forKeyedSubscript:@"trialExperimentId"];
 
-    v24 = [v21 treatmentID];
-    [v11 setObject:v24 forKeyedSubscript:@"trialTreatmentId"];
+    treatmentID = [v21 treatmentID];
+    [v11 setObject:treatmentID forKeyedSubscript:@"trialTreatmentId"];
 
     v25 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v21 deploymentID]);
-    v26 = [v25 stringValue];
-    [v11 setObject:v26 forKeyedSubscript:@"trialDeploymentId"];
+    stringValue = [v25 stringValue];
+    [v11 setObject:stringValue forKeyedSubscript:@"trialDeploymentId"];
   }
 
   v27 = [NSNumber numberWithUnsignedInteger:[(_DASPolicyDataCollection *)self timeInMinutesSinceLastEvaluation]];
@@ -496,27 +496,27 @@ LABEL_45:
   return v11;
 }
 
-- (id)networkQualityDictForCAWithPriority:(id)a3 blockingCriteria:(id)a4 responseDetails:(id)a5
+- (id)networkQualityDictForCAWithPriority:(id)priority blockingCriteria:(id)criteria responseDetails:(id)details
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  priorityCopy = priority;
+  criteriaCopy = criteria;
+  detailsCopy = details;
   v11 = objc_alloc_init(NSMutableDictionary);
-  if (v8)
+  if (priorityCopy)
   {
-    v12 = +[_DASActivity prettySchedulingPriorityDescription:](_DASActivity, "prettySchedulingPriorityDescription:", [v8 unsignedIntValue]);
+    v12 = +[_DASActivity prettySchedulingPriorityDescription:](_DASActivity, "prettySchedulingPriorityDescription:", [priorityCopy unsignedIntValue]);
     [v11 setObject:v12 forKeyedSubscript:@"Priority"];
   }
 
-  if (v9)
+  if (criteriaCopy)
   {
-    v13 = [v9 copy];
+    v13 = [criteriaCopy copy];
     [v11 setObject:v13 forKeyedSubscript:@"BlockingCriteria"];
   }
 
-  if (v10)
+  if (detailsCopy)
   {
-    [v11 addEntriesFromDictionary:v10];
+    [v11 addEntriesFromDictionary:detailsCopy];
   }
 
   v14 = [NSNumber numberWithUnsignedInteger:[(_DASPolicyDataCollection *)self timeInMinutesSinceLastEvaluation]];
@@ -527,24 +527,24 @@ LABEL_45:
   return v15;
 }
 
-- (void)setCriteriaForActivity:(id)a3 withCriteriaIndex:(int64_t)a4
+- (void)setCriteriaForActivity:(id)activity withCriteriaIndex:(int64_t)index
 {
-  v5 = a3;
-  v7 = v5;
-  if (a4 > 6)
+  activityCopy = activity;
+  v7 = activityCopy;
+  if (index > 6)
   {
-    if (a4 > 9)
+    if (index > 9)
     {
-      switch(a4)
+      switch(index)
       {
         case 10:
-          [v5 setBudgeted:1];
+          [activityCopy setBudgeted:1];
           break;
         case 11:
-          [v5 setDataBudgeted:1];
+          [activityCopy setDataBudgeted:1];
           break;
         case 12:
-          [v5 setRemoteDevice:@"test"];
+          [activityCopy setRemoteDevice:@"test"];
           [v7 setWidgetID:@"widgetID"];
           break;
         default:
@@ -552,9 +552,9 @@ LABEL_45:
       }
     }
 
-    else if (a4 == 7)
+    else if (index == 7)
     {
-      [v5 setCpuIntensive:1];
+      [activityCopy setCpuIntensive:1];
       [v7 setMemoryIntensive:1];
       [v7 setDiskIntensive:1];
       [v7 setAneIntensive:1];
@@ -563,7 +563,7 @@ LABEL_45:
 
     else
     {
-      if (a4 == 8)
+      if (index == 8)
       {
         +[_DASFileProtection complete];
       }
@@ -577,45 +577,45 @@ LABEL_45:
     }
   }
 
-  else if (a4 > 3)
+  else if (index > 3)
   {
-    if (a4 == 4)
+    if (index == 4)
     {
-      [v5 setRequiresDeviceInactivity:1];
+      [activityCopy setRequiresDeviceInactivity:1];
     }
 
-    else if (a4 == 5)
+    else if (index == 5)
     {
-      [v5 setRequiresSignificantUserInactivity:1];
+      [activityCopy setRequiresSignificantUserInactivity:1];
     }
 
     else
     {
-      [v5 setTriggersRestart:1];
+      [activityCopy setTriggersRestart:1];
     }
   }
 
-  else if (a4 == 1)
+  else if (index == 1)
   {
-    [v5 setRequiresPlugin:1];
+    [activityCopy setRequiresPlugin:1];
   }
 
   else
   {
-    if (a4 != 2)
+    if (index != 2)
     {
-      if (a4 != 3)
+      if (index != 3)
       {
         goto LABEL_28;
       }
 
-      [v5 setRequiresInexpensiveNetworking:1];
+      [activityCopy setRequiresInexpensiveNetworking:1];
     }
 
     [v7 setRequiresNetwork:1];
   }
 
-  v5 = v7;
+  activityCopy = v7;
 LABEL_28:
 }
 
@@ -648,18 +648,18 @@ LABEL_28:
   [(NSUserDefaults *)policyDataCollectionDefaults setObject:v6 forKey:@"LastEvaluationDate"];
 }
 
-- (BOOL)shouldReportBlockingReasonsForActivity:(id)a3
+- (BOOL)shouldReportBlockingReasonsForActivity:(id)activity
 {
-  v3 = a3;
-  if ([v3 isIntensive])
+  activityCopy = activity;
+  if ([activityCopy isIntensive])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [v3 fastPass];
-    if (v5 || ([v3 isSoftwareUpdateActivity] & 1) != 0)
+    fastPass = [activityCopy fastPass];
+    if (fastPass || ([activityCopy isSoftwareUpdateActivity] & 1) != 0)
     {
       v4 = 1;
     }
@@ -667,38 +667,38 @@ LABEL_28:
     else
     {
       v7 = qword_10020AE78;
-      v8 = [v3 name];
-      v4 = [v7 containsObject:v8];
+      name = [activityCopy name];
+      v4 = [v7 containsObject:name];
     }
   }
 
   return v4;
 }
 
-- (void)reportBlockingReason:(unint64_t)a3 forActivity:(id)a4
+- (void)reportBlockingReason:(unint64_t)reason forActivity:(id)activity
 {
-  v26 = a4;
-  if ([v26 isIntensive])
+  activityCopy = activity;
+  if ([activityCopy isIntensive])
   {
     priorityToIntensiveBlockingPolicies = self->_priorityToIntensiveBlockingPolicies;
-    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v26 schedulingPriority]);
+    v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [activityCopy schedulingPriority]);
     v8 = [(NSMutableDictionary *)priorityToIntensiveBlockingPolicies objectForKeyedSubscript:v7];
-    v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 unsignedLongLongValue] | a3);
+    v9 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v8 unsignedLongLongValue] | reason);
     v10 = self->_priorityToIntensiveBlockingPolicies;
-    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v26 schedulingPriority]);
+    v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [activityCopy schedulingPriority]);
     [(NSMutableDictionary *)v10 setObject:v9 forKeyedSubscript:v11];
   }
 
-  v12 = [v26 fastPass];
-  if (v12)
+  fastPass = [activityCopy fastPass];
+  if (fastPass)
   {
   }
 
   else
   {
     v13 = qword_10020AE78;
-    v14 = [v26 name];
-    LODWORD(v13) = [v13 containsObject:v14];
+    name = [activityCopy name];
+    LODWORD(v13) = [v13 containsObject:name];
 
     if (!v13)
     {
@@ -707,23 +707,23 @@ LABEL_28:
   }
 
   taskToBlockingPolicies = self->_taskToBlockingPolicies;
-  v16 = [v26 name];
-  v17 = [(NSMutableDictionary *)taskToBlockingPolicies objectForKey:v16];
+  name2 = [activityCopy name];
+  v17 = [(NSMutableDictionary *)taskToBlockingPolicies objectForKey:name2];
 
   if (!v17)
   {
     v18 = self->_taskToBlockingPolicies;
-    v19 = [v26 name];
-    [(NSMutableDictionary *)v18 setObject:&off_1001C9700 forKeyedSubscript:v19];
+    name3 = [activityCopy name];
+    [(NSMutableDictionary *)v18 setObject:&off_1001C9700 forKeyedSubscript:name3];
   }
 
   v20 = self->_taskToBlockingPolicies;
-  v21 = [v26 name];
-  v22 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:v21];
-  v23 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v22 unsignedLongLongValue] | a3);
+  name4 = [activityCopy name];
+  v22 = [(NSMutableDictionary *)v20 objectForKeyedSubscript:name4];
+  v23 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v22 unsignedLongLongValue] | reason);
   v24 = self->_taskToBlockingPolicies;
-  v25 = [v26 name];
-  [(NSMutableDictionary *)v24 setObject:v23 forKeyedSubscript:v25];
+  name5 = [activityCopy name];
+  [(NSMutableDictionary *)v24 setObject:v23 forKeyedSubscript:name5];
 
 LABEL_9:
 }
@@ -800,15 +800,15 @@ LABEL_9:
 
 - (void)reportPolicyBlockingReasonsForSpecificTasksToPPS
 {
-  v3 = [(NSMutableDictionary *)self->_taskToBlockingPolicies allKeys];
-  if ([v3 count])
+  allKeys = [(NSMutableDictionary *)self->_taskToBlockingPolicies allKeys];
+  if ([allKeys count])
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v11 = v3;
-    obj = v3;
+    v11 = allKeys;
+    obj = allKeys;
     v4 = [obj countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
@@ -842,17 +842,17 @@ LABEL_9:
     }
 
     [(NSMutableDictionary *)self->_taskToBlockingPolicies removeAllObjects];
-    v3 = v11;
+    allKeys = v11;
   }
 }
 
-- (BOOL)sendDataToPPS:(id)a3 subsystem:(id)a4 category:(id)a5
+- (BOOL)sendDataToPPS:(id)s subsystem:(id)subsystem category:(id)category
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  categoryCopy = category;
+  subsystemCopy = subsystem;
+  sCopy = s;
   v10 = +[_DASPPSDataManager sharedInstance];
-  v11 = [v10 sendDataToPPS:v9 subsystem:v8 category:v7];
+  v11 = [v10 sendDataToPPS:sCopy subsystem:subsystemCopy category:categoryCopy];
 
   return v11;
 }

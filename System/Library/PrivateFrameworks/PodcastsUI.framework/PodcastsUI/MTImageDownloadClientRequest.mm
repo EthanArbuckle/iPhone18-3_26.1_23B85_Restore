@@ -1,45 +1,45 @@
 @interface MTImageDownloadClientRequest
-+ (id)requestForUrl:(id)a3 key:(id)a4 podcastUuid:(id)a5 completion:(id)a6;
-- (MTImageDownloadClientRequest)initWithUrl:(id)a3 key:(id)a4 podcastUuid:(id)a5 completion:(id)a6;
++ (id)requestForUrl:(id)url key:(id)key podcastUuid:(id)uuid completion:(id)completion;
+- (MTImageDownloadClientRequest)initWithUrl:(id)url key:(id)key podcastUuid:(id)uuid completion:(id)completion;
 - (id)description;
 @end
 
 @implementation MTImageDownloadClientRequest
 
-+ (id)requestForUrl:(id)a3 key:(id)a4 podcastUuid:(id)a5 completion:(id)a6
++ (id)requestForUrl:(id)url key:(id)key podcastUuid:(id)uuid completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithUrl:v13 key:v12 podcastUuid:v11 completion:v10];
+  completionCopy = completion;
+  uuidCopy = uuid;
+  keyCopy = key;
+  urlCopy = url;
+  v14 = [[self alloc] initWithUrl:urlCopy key:keyCopy podcastUuid:uuidCopy completion:completionCopy];
 
   return v14;
 }
 
-- (MTImageDownloadClientRequest)initWithUrl:(id)a3 key:(id)a4 podcastUuid:(id)a5 completion:(id)a6
+- (MTImageDownloadClientRequest)initWithUrl:(id)url key:(id)key podcastUuid:(id)uuid completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  urlCopy = url;
+  keyCopy = key;
+  uuidCopy = uuid;
+  completionCopy = completion;
   v23.receiver = self;
   v23.super_class = MTImageDownloadClientRequest;
   v15 = [(MTImageDownloadClientRequest *)&v23 init];
   if (v15)
   {
-    v16 = [MEMORY[0x277CCAD78] UUID];
-    v17 = [v16 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     uniqueId = v15->_uniqueId;
-    v15->_uniqueId = v17;
+    v15->_uniqueId = uUIDString;
 
-    objc_storeStrong(&v15->_url, a3);
-    objc_storeStrong(&v15->_key, a4);
-    if (v13)
+    objc_storeStrong(&v15->_url, url);
+    objc_storeStrong(&v15->_key, key);
+    if (uuidCopy)
     {
-      if ([v13 length])
+      if ([uuidCopy length])
       {
-        v19 = v13;
+        v19 = uuidCopy;
       }
 
       else
@@ -54,7 +54,7 @@
     }
 
     objc_storeStrong(&v15->_uuid, v19);
-    v20 = _Block_copy(v14);
+    v20 = _Block_copy(completionCopy);
     completion = v15->_completion;
     v15->_completion = v20;
   }
@@ -64,14 +64,14 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"url=%@, key=%@", self->_url, self->_key];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
   if ([(NSString *)self->_uuid length])
   {
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"uuid=%@", self->_uuid];
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
   if (self->_completion)
@@ -85,9 +85,9 @@
   }
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"completion=%@", v6];
-  [v3 addObject:v7];
+  [array addObject:v7];
 
-  v8 = [v3 componentsJoinedByString:{@", "}];
+  v8 = [array componentsJoinedByString:{@", "}];
 
   return v8;
 }

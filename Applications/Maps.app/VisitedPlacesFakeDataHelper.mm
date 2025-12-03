@@ -1,9 +1,9 @@
 @interface VisitedPlacesFakeDataHelper
 + (BOOL)isEnabled;
-+ (id)fakeVisitUIKitMenuWithMapsSyncId:(id)a3 isPinned:(BOOL)a4;
-+ (void)addVisitFromMapSyncId:(id)a3 isPinned:(BOOL)a4 dayAgo:(int64_t)a5;
-+ (void)addVisitWithMapItem:(id)a3 cityName:(id)a4 dayAgo:(int64_t)a5;
-+ (void)fetchMapItemWithMuid:(unint64_t)a3 completionHandler:(id)a4;
++ (id)fakeVisitUIKitMenuWithMapsSyncId:(id)id isPinned:(BOOL)pinned;
++ (void)addVisitFromMapSyncId:(id)id isPinned:(BOOL)pinned dayAgo:(int64_t)ago;
++ (void)addVisitWithMapItem:(id)item cityName:(id)name dayAgo:(int64_t)ago;
++ (void)fetchMapItemWithMuid:(unint64_t)muid completionHandler:(id)handler;
 - (_TtC4Maps27VisitedPlacesFakeDataHelper)init;
 @end
 
@@ -18,13 +18,13 @@
 
   if (byte_1019601D0 == 1)
   {
-    v2 = [objc_opt_self() sharedPlatform];
-    if (v2)
+    sharedPlatform = [objc_opt_self() sharedPlatform];
+    if (sharedPlatform)
     {
-      v3 = v2;
-      v4 = [v2 isInternalInstall];
+      v3 = sharedPlatform;
+      isInternalInstall = [sharedPlatform isInternalInstall];
 
-      LOBYTE(v2) = v4;
+      LOBYTE(sharedPlatform) = isInternalInstall;
     }
 
     else
@@ -35,30 +35,30 @@
 
   else
   {
-    LOBYTE(v2) = 0;
+    LOBYTE(sharedPlatform) = 0;
   }
 
-  return v2;
+  return sharedPlatform;
 }
 
-+ (void)addVisitFromMapSyncId:(id)a3 isPinned:(BOOL)a4 dayAgo:(int64_t)a5
++ (void)addVisitFromMapSyncId:(id)id isPinned:(BOOL)pinned dayAgo:(int64_t)ago
 {
   v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
   swift_getObjCClassMetadata();
-  sub_10050D7A0(v7, v9, a4, a5);
+  sub_10050D7A0(v7, v9, pinned, ago);
 }
 
-+ (void)fetchMapItemWithMuid:(unint64_t)a3 completionHandler:(id)a4
++ (void)fetchMapItemWithMuid:(unint64_t)muid completionHandler:(id)handler
 {
   v7 = sub_1000CE6B8(&unk_10190BA50);
   __chkstk_darwin(v7 - 8);
   v9 = &v15 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = muid;
   v11[3] = v10;
-  v11[4] = a1;
+  v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
   (*(*(v12 - 8) + 56))(v9, 1, 1, v12);
   v13 = swift_allocObject();
@@ -74,9 +74,9 @@
   sub_10054DB08(0, 0, v9, &unk_1011F66B0, v14);
 }
 
-+ (void)addVisitWithMapItem:(id)a3 cityName:(id)a4 dayAgo:(int64_t)a5
++ (void)addVisitWithMapItem:(id)item cityName:(id)name dayAgo:(int64_t)ago
 {
-  if (a4)
+  if (name)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
@@ -89,13 +89,13 @@
   }
 
   swift_getObjCClassMetadata();
-  v10 = a3;
-  static VisitedPlacesFakeDataHelper.addVisit(mapItem:cityName:dayAgo:)(v10, v7, v9, a5);
+  itemCopy = item;
+  static VisitedPlacesFakeDataHelper.addVisit(mapItem:cityName:dayAgo:)(itemCopy, v7, v9, ago);
 }
 
-+ (id)fakeVisitUIKitMenuWithMapsSyncId:(id)a3 isPinned:(BOOL)a4
++ (id)fakeVisitUIKitMenuWithMapsSyncId:(id)id isPinned:(BOOL)pinned
 {
-  if (a3)
+  if (id)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -108,7 +108,7 @@
   }
 
   swift_getObjCClassMetadata();
-  v8 = static VisitedPlacesFakeDataHelper.fakeVisitUIKitMenu(mapsSyncId:isPinned:)(v5, v7, a4);
+  v8 = static VisitedPlacesFakeDataHelper.fakeVisitUIKitMenu(mapsSyncId:isPinned:)(v5, v7, pinned);
 
   return v8;
 }

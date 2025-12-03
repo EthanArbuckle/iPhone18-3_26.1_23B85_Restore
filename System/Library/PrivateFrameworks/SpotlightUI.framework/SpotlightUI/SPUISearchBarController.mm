@@ -6,8 +6,8 @@
 - (id)sceneSpecification;
 - (void)didInvalidateSceneWhenForeground;
 - (void)loadView;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)updateSceneSettingsWithBlock:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)updateSceneSettingsWithBlock:(id)block;
 @end
 
 @implementation SPUISearchBarController
@@ -31,24 +31,24 @@
   v3 = objc_opt_new();
   [(SPUISearchBarController *)self setView:v3];
 
-  v4 = [(SPUISearchBarController *)self view];
-  [v4 setHeight:60.0];
+  view = [(SPUISearchBarController *)self view];
+  [view setHeight:60.0];
 
-  v5 = [(SPUISearchBarController *)self view];
-  v6 = [v5 heightAnchor];
-  v7 = [(SPUISearchBarController *)self view];
-  [v7 height];
-  v8 = [v6 constraintEqualToConstant:?];
+  view2 = [(SPUISearchBarController *)self view];
+  heightAnchor = [view2 heightAnchor];
+  view3 = [(SPUISearchBarController *)self view];
+  [view3 height];
+  v8 = [heightAnchor constraintEqualToConstant:?];
   [(SPUISearchBarController *)self setHeightAnchor:v8];
 
-  v9 = [(SPUISearchBarController *)self heightAnchor];
-  [v9 setActive:1];
+  heightAnchor2 = [(SPUISearchBarController *)self heightAnchor];
+  [heightAnchor2 setActive:1];
 }
 
 - (CGSize)initialFittingSize
 {
-  v2 = [(SPUISearchBarController *)self view];
-  [v2 intrinsicContentSize];
+  view = [(SPUISearchBarController *)self view];
+  [view intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -66,36 +66,36 @@
   return v2;
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v18 = a3;
-  v6 = [a4 transitionContext];
+  sceneCopy = scene;
+  transitionContext = [settings transitionContext];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 searchBarDidFocus])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [transitionContext searchBarDidFocus])
   {
-    v7 = [(SPUISearchBarController *)self delegate];
-    [v7 searchBarDidFocus];
+    delegate = [(SPUISearchBarController *)self delegate];
+    [delegate searchBarDidFocus];
   }
 
-  v8 = [v18 clientSettings];
+  clientSettings = [sceneCopy clientSettings];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [v18 clientSettings];
-    [v10 headerHeight];
+    clientSettings2 = [sceneCopy clientSettings];
+    [clientSettings2 headerHeight];
     if (v11 > 0.0)
     {
-      [v10 headerHeight];
+      [clientSettings2 headerHeight];
       v13 = v12;
-      v14 = [(SPUISearchBarController *)self view];
-      [v14 setHeight:v13];
+      view = [(SPUISearchBarController *)self view];
+      [view setHeight:v13];
 
-      [v10 headerHeight];
+      [clientSettings2 headerHeight];
       v16 = v15;
-      v17 = [(SPUISearchBarController *)self heightAnchor];
-      [v17 setConstant:v16];
+      heightAnchor = [(SPUISearchBarController *)self heightAnchor];
+      [heightAnchor setConstant:v16];
     }
   }
 }
@@ -103,20 +103,20 @@
 - (void)didInvalidateSceneWhenForeground
 {
   [(SPUISpotlightRemoteViewController *)self viewWillAppear:0];
-  v3 = [(SPUISearchBarController *)self view];
-  [v3 setNeedsLayout];
+  view = [(SPUISearchBarController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)updateSceneSettingsWithBlock:(id)a3
+- (void)updateSceneSettingsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __56__SPUISearchBarController_updateSceneSettingsWithBlock___block_invoke;
   v6[3] = &unk_279D053A0;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = blockCopy;
   v7 = v5;
   [(SPUISpotlightRemoteViewController *)self addOrExecuteEventAsNeeded:v6];
 

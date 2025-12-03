@@ -1,10 +1,10 @@
 @interface HKOntologyVersion
-+ (id)_stableStringRepresentationOfEntries:(uint64_t)a1;
-- (BOOL)isEqual:(id)a3;
++ (id)_stableStringRepresentationOfEntries:(uint64_t)entries;
+- (BOOL)isEqual:(id)equal;
 - (HKOntologyVersion)init;
-- (HKOntologyVersion)initWithCoder:(id)a3;
-- (HKOntologyVersion)initWithShardEntries:(id)a3;
-- (HKOntologyVersion)initWithString:(id)a3;
+- (HKOntologyVersion)initWithCoder:(id)coder;
+- (HKOntologyVersion)initWithShardEntries:(id)entries;
+- (HKOntologyVersion)initWithString:(id)string;
 @end
 
 @implementation HKOntologyVersion
@@ -19,15 +19,15 @@
   return 0;
 }
 
-- (HKOntologyVersion)initWithString:(id)a3
+- (HKOntologyVersion)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = HKOntologyVersion;
   v5 = [(HKOntologyVersion *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     string = v5->_string;
     v5->_string = v6;
   }
@@ -35,32 +35,32 @@
   return v5;
 }
 
-- (HKOntologyVersion)initWithShardEntries:(id)a3
+- (HKOntologyVersion)initWithShardEntries:(id)entries
 {
-  v4 = [HKOntologyVersion _stableStringRepresentationOfEntries:a3];
+  v4 = [HKOntologyVersion _stableStringRepresentationOfEntries:entries];
   v5 = [(HKOntologyVersion *)self initWithString:v4];
 
   return v5;
 }
 
-+ (id)_stableStringRepresentationOfEntries:(uint64_t)a1
++ (id)_stableStringRepresentationOfEntries:(uint64_t)entries
 {
   v2 = a2;
   objc_opt_self();
   v3 = [v2 hk_mapToSet:&__block_literal_global_18];
 
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [v3 allObjects];
+  v5 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   v6 = [v5 componentsJoinedByString:@"|"];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_6;
   }
@@ -74,7 +74,7 @@ LABEL_7:
   }
 
   string = self->_string;
-  v6 = v4->_string;
+  v6 = equalCopy->_string;
   if (string == v6)
   {
 LABEL_6:
@@ -93,10 +93,10 @@ LABEL_8:
   return v7;
 }
 
-- (HKOntologyVersion)initWithCoder:(id)a3
+- (HKOntologyVersion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"string"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"string"];
 
   v6 = [(HKOntologyVersion *)self initWithString:v5];
   return v6;

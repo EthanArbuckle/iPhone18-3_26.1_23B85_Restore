@@ -5,17 +5,17 @@
 - (BOOL)shouldCrossFadeNavigationBar;
 - (BOOL)shouldCrossFadeNavigationBarVisibility;
 - (UIViewControllerTransitionCoordinator)transitionCoordinator;
-- (_UIViewControllerTransitionConductor)initWithDelegate:(id)a3 transitionManager:(id)a4;
+- (_UIViewControllerTransitionConductor)initWithDelegate:(id)delegate transitionManager:(id)manager;
 - (_UIViewControllerTransitionConductorDelegate)delegate;
-- (double)navigationBarHidingDurationWithDefaultDuration:(double)a3;
+- (double)navigationBarHidingDurationWithDefaultDuration:(double)duration;
 - (id)interruptibleNavigationTransitionAnimator;
 - (id)navigationBarTransitionOverlay;
 - (id)navigationToolbarTransitionController;
 - (int64_t)navigationBarTransitionVariant;
-- (void)_beginAnimationTrackingInteractive:(BOOL)a3;
+- (void)_beginAnimationTrackingInteractive:(BOOL)interactive;
 - (void)_finishAnimationTracking;
-- (void)_startCustomTransition:(id)a3;
-- (void)_startTransition:(int)a3 fromViewController:(id)a4 toViewController:(id)a5;
+- (void)_startCustomTransition:(id)transition;
+- (void)_startTransition:(int)transition fromViewController:(id)controller toViewController:(id)viewController;
 - (void)startDeferredTransitionIfNeeded;
 - (void)stopTransitionsImmediately;
 @end
@@ -24,10 +24,10 @@
 
 - (UIViewControllerTransitionCoordinator)transitionCoordinator
 {
-  v2 = [(_UIViewControllerTransitionConductor *)self transitionContext];
-  v3 = [v2 _transitionCoordinator];
+  transitionContext = [(_UIViewControllerTransitionConductor *)self transitionContext];
+  _transitionCoordinator = [transitionContext _transitionCoordinator];
 
-  return v3;
+  return _transitionCoordinator;
 }
 
 - (BOOL)shouldCrossFadeBottomBars
@@ -44,11 +44,11 @@
 
 - (void)startDeferredTransitionIfNeeded
 {
-  v3 = [(_UIViewControllerTransitionConductor *)self needsDeferredTransition];
+  needsDeferredTransition = [(_UIViewControllerTransitionConductor *)self needsDeferredTransition];
   if (self->_transitionController)
   {
-    v4 = [(_UIViewControllerTransitionConductor *)self transitionContext];
-    if (v3)
+    transitionContext = [(_UIViewControllerTransitionConductor *)self transitionContext];
+    if (needsDeferredTransition)
     {
       goto LABEL_3;
     }
@@ -60,8 +60,8 @@ LABEL_12:
   }
 
   [(_UIViewControllerTransitionConductor *)self setInteractiveTransition:0];
-  v4 = 0;
-  if (!v3)
+  transitionContext = 0;
+  if (!needsDeferredTransition)
   {
     goto LABEL_12;
   }
@@ -75,9 +75,9 @@ LABEL_3:
 
   if (v6 | v8 && v6 == v8)
   {
-    v9 = [v8 view];
-    v10 = [(_UIViewControllerTransitionConductor *)self transitionContainerView];
-    v11 = [v9 isDescendantOfView:v10];
+    view = [v8 view];
+    transitionContainerView = [(_UIViewControllerTransitionConductor *)self transitionContainerView];
+    v11 = [view isDescendantOfView:transitionContainerView];
 
     if ((v11 & 1) == 0)
     {
@@ -89,13 +89,13 @@ LABEL_3:
   {
 LABEL_6:
     v12 = 1;
-    if (!v4)
+    if (!transitionContext)
     {
       goto LABEL_7;
     }
 
 LABEL_16:
-    v13 = [v4 _state];
+    _state = [transitionContext _state];
     if (!v12)
     {
       goto LABEL_8;
@@ -107,18 +107,18 @@ LABEL_16:
   [(_UIViewControllerTransitionConductor *)self setNeedsDeferredTransition:0];
 LABEL_15:
   v12 = 0;
-  if (v4)
+  if (transitionContext)
   {
     goto LABEL_16;
   }
 
 LABEL_7:
-  v13 = 0;
+  _state = 0;
   if (!v12)
   {
 LABEL_8:
-    v14 = objc_loadWeakRetained(&self->_delegate);
-    [v14 transitionConductor:self didStartDeferredTransition:0 context:v4];
+    interactiveTransitionController3 = objc_loadWeakRetained(&self->_delegate);
+    [interactiveTransitionController3 transitionConductor:self didStartDeferredTransition:0 context:transitionContext];
     goto LABEL_9;
   }
 
@@ -155,9 +155,9 @@ LABEL_17:
 
   else
   {
-    v21 = [(_UIViewControllerTransitionConductor *)self transitionContext];
-    [v21 _setInteractor:0];
-    [v21 _setAnimator:0];
+    transitionContext2 = [(_UIViewControllerTransitionConductor *)self transitionContext];
+    [transitionContext2 _setInteractor:0];
+    [transitionContext2 _setAnimator:0];
     transitionController = self->_transitionController;
     self->_transitionController = 0;
 
@@ -170,16 +170,16 @@ LABEL_17:
   }
 
   v25 = objc_loadWeakRetained(&self->_delegate);
-  [v25 transitionConductor:self didStartDeferredTransition:1 context:v4];
+  [v25 transitionConductor:self didStartDeferredTransition:1 context:transitionContext];
 
-  if (v13 == 3)
+  if (_state == 3)
   {
     has_internal_diagnostics = os_variant_has_internal_diagnostics();
-    v31 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
+    interactiveTransitionController = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
 
     if (has_internal_diagnostics)
     {
-      if (!v31)
+      if (!interactiveTransitionController)
       {
         v35 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_FAULT))
@@ -190,7 +190,7 @@ LABEL_17:
       }
     }
 
-    else if (!v31)
+    else if (!interactiveTransitionController)
     {
       v37 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED4A0B90) + 8);
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -200,33 +200,33 @@ LABEL_17:
       }
     }
 
-    v32 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
+    interactiveTransitionController2 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) == 0)
     {
-      [v4 finishInteractiveTransition];
+      [transitionContext finishInteractiveTransition];
       goto LABEL_10;
     }
 
-    v14 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
-    [v14 finishInteractiveTransition];
+    interactiveTransitionController3 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
+    [interactiveTransitionController3 finishInteractiveTransition];
   }
 
   else
   {
-    if (v13 != 2)
+    if (_state != 2)
     {
       goto LABEL_10;
     }
 
     v26 = os_variant_has_internal_diagnostics();
-    v27 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
+    interactiveTransitionController4 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
 
     if (v26)
     {
-      if (!v27)
+      if (!interactiveTransitionController4)
       {
         v34 = __UIFaultDebugAssertLog();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
@@ -237,7 +237,7 @@ LABEL_17:
       }
     }
 
-    else if (!v27)
+    else if (!interactiveTransitionController4)
     {
       v36 = *(__UILogGetCategoryCachedImpl("Assert", &_MergedGlobals_1293) + 8);
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -247,18 +247,18 @@ LABEL_17:
       }
     }
 
-    v28 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
+    interactiveTransitionController5 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
     objc_opt_class();
     v29 = objc_opt_isKindOfClass();
 
     if ((v29 & 1) == 0)
     {
-      [v4 cancelInteractiveTransition];
+      [transitionContext cancelInteractiveTransition];
       goto LABEL_10;
     }
 
-    v14 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
-    [v14 cancelInteractiveTransition];
+    interactiveTransitionController3 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
+    [interactiveTransitionController3 cancelInteractiveTransition];
   }
 
 LABEL_9:
@@ -281,9 +281,9 @@ LABEL_10:
   }
 
   transitionController = self->_transitionController;
-  v4 = [(_UIViewControllerTransitionConductor *)self transitionContainerView];
-  v5 = [v4 traitCollection];
-  LOBYTE(transitionController) = [(UIViewControllerAnimatedTransitioning *)transitionController _shouldUseInterruptibleAnimatorWithTraitCollection:v5];
+  transitionContainerView = [(_UIViewControllerTransitionConductor *)self transitionContainerView];
+  traitCollection = [transitionContainerView traitCollection];
+  LOBYTE(transitionController) = [(UIViewControllerAnimatedTransitioning *)transitionController _shouldUseInterruptibleAnimatorWithTraitCollection:traitCollection];
 
   return transitionController;
 }
@@ -328,18 +328,18 @@ LABEL_10:
   return [(UIViewControllerAnimatedTransitioning *)transitionController _shouldCrossFadeNavigationBarVisibility];
 }
 
-- (_UIViewControllerTransitionConductor)initWithDelegate:(id)a3 transitionManager:(id)a4
+- (_UIViewControllerTransitionConductor)initWithDelegate:(id)delegate transitionManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = _UIViewControllerTransitionConductor;
   v8 = [(_UIViewControllerTransitionConductor *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_transitionManager, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_transitionManager, manager);
   }
 
   return v9;
@@ -361,15 +361,15 @@ LABEL_10:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIViewControllerAnimatedTransitioning *)self->_transitionController _navigationBarTransitionOverlay];
+    _navigationBarTransitionOverlay = [(UIViewControllerAnimatedTransitioning *)self->_transitionController _navigationBarTransitionOverlay];
   }
 
   else
   {
-    v3 = 0;
+    _navigationBarTransitionOverlay = 0;
   }
 
-  return v3;
+  return _navigationBarTransitionOverlay;
 }
 
 - (BOOL)shouldCrossFadeNavigationBar
@@ -384,17 +384,17 @@ LABEL_10:
   return [(UIViewControllerAnimatedTransitioning *)transitionController _shouldCrossFadeNavigationBar];
 }
 
-- (double)navigationBarHidingDurationWithDefaultDuration:(double)a3
+- (double)navigationBarHidingDurationWithDefaultDuration:(double)duration
 {
   if (objc_opt_respondsToSelector())
   {
     transitionController = self->_transitionController;
-    v6 = [(_UIViewControllerTransitionConductor *)self transitionContext];
-    [(UIViewControllerAnimatedTransitioning *)transitionController _customNavigationBarHidingDuration:v6];
-    a3 = v7;
+    transitionContext = [(_UIViewControllerTransitionConductor *)self transitionContext];
+    [(UIViewControllerAnimatedTransitioning *)transitionController _customNavigationBarHidingDuration:transitionContext];
+    duration = v7;
   }
 
-  return a3;
+  return duration;
 }
 
 - (id)interruptibleNavigationTransitionAnimator
@@ -402,8 +402,8 @@ LABEL_10:
   if ([(_UIViewControllerTransitionConductor *)self hasInterruptibleNavigationTransition])
   {
     transitionController = self->_transitionController;
-    v4 = [(_UIViewControllerTransitionConductor *)self transitionContext];
-    v5 = [(UIViewControllerAnimatedTransitioning *)transitionController interruptibleAnimatorForTransition:v4];
+    transitionContext = [(_UIViewControllerTransitionConductor *)self transitionContext];
+    v5 = [(UIViewControllerAnimatedTransitioning *)transitionController interruptibleAnimatorForTransition:transitionContext];
   }
 
   else
@@ -414,16 +414,16 @@ LABEL_10:
   return v5;
 }
 
-- (void)_beginAnimationTrackingInteractive:(BOOL)a3
+- (void)_beginAnimationTrackingInteractive:(BOOL)interactive
 {
-  v3 = a3;
+  interactiveCopy = interactive;
   if (+[UIViewPropertyAnimator _canEnableTrackingAnimationsWithAnimators])
   {
     if (!+[UIViewPropertyAnimator _trackingAnimationsCurrentlyEnabled])
     {
       v4 = +[UIViewPropertyAnimator _startTrackingAnimations];
 
-      [UIViewPropertyAnimator _setTrackedAnimationsStartPaused:v3];
+      [UIViewPropertyAnimator _setTrackedAnimationsStartPaused:interactiveCopy];
     }
   }
 
@@ -448,49 +448,49 @@ LABEL_10:
   }
 }
 
-- (void)_startTransition:(int)a3 fromViewController:(id)a4 toViewController:(id)a5
+- (void)_startTransition:(int)transition fromViewController:(id)controller toViewController:(id)viewController
 {
-  v6 = *&a3;
-  v73 = a4;
-  v8 = a5;
+  v6 = *&transition;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v10 = [WeakRetained topViewControllerForTransitionConductor:self];
 
-  if (v10 != v8)
+  if (v10 != viewControllerCopy)
   {
     v11 = v10;
 
-    v8 = v11;
+    viewControllerCopy = v11;
   }
 
   v12 = objc_loadWeakRetained(&self->_delegate);
-  [v12 transitionConductor:self frameForViewController:v8];
+  [v12 transitionConductor:self frameForViewController:viewControllerCopy];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
   v21 = objc_loadWeakRetained(&self->_delegate);
-  [v21 transitionConductor:self frameForWrapperViewForViewController:v8];
+  [v21 transitionConductor:self frameForWrapperViewForViewController:viewControllerCopy];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
-  v30 = [v8 view];
-  v31 = [v8 childModalViewController];
+  view = [viewControllerCopy view];
+  childModalViewController = [viewControllerCopy childModalViewController];
 
-  if (!v31 || ([UIViewControllerWrapperView existingWrapperViewForView:v30], (v32 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!childModalViewController || ([UIViewControllerWrapperView existingWrapperViewForView:view], (v32 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v32 = [(UIViewControllerWrapperView *)v23 wrapperViewForView:v25 wrapperFrame:v27 viewFrame:v29, v14, v16, v18, v20, UIViewControllerWrapperView, v30];
+    v32 = [(UIViewControllerWrapperView *)v23 wrapperViewForView:v25 wrapperFrame:v27 viewFrame:v29, v14, v16, v18, v20, UIViewControllerWrapperView, view];
   }
 
   v33 = objc_loadWeakRetained(&self->_delegate);
-  v34 = [v33 transitionConductor:self retargetedToViewControllerForTransitionFromViewController:v73 toViewController:v8 transition:v6];
+  v34 = [v33 transitionConductor:self retargetedToViewControllerForTransitionFromViewController:controllerCopy toViewController:viewControllerCopy transition:v6];
 
-  if (!v30 || ([v34 view], v35 = objc_claimAutoreleasedReturnValue(), v35, v30 != v35))
+  if (!view || ([v34 view], v35 = objc_claimAutoreleasedReturnValue(), v35, view != v35))
   {
-    v36 = [v34 view];
+    view2 = [v34 view];
 
     v37 = objc_loadWeakRetained(&self->_delegate);
     [v37 transitionConductor:self frameForViewController:v34];
@@ -506,34 +506,34 @@ LABEL_10:
     v52 = v51;
     v54 = v53;
 
-    v55 = [(UIViewControllerWrapperView *)v48 wrapperViewForView:v50 wrapperFrame:v52 viewFrame:v54, v39, v41, v43, v45, UIViewControllerWrapperView, v36];
+    v55 = [(UIViewControllerWrapperView *)v48 wrapperViewForView:v50 wrapperFrame:v52 viewFrame:v54, v39, v41, v43, v45, UIViewControllerWrapperView, view2];
 
     v32 = v55;
-    v30 = v36;
+    view = view2;
   }
 
   v56 = objc_loadWeakRetained(&self->_delegate);
-  v57 = [v56 navigationTransitionView];
+  navigationTransitionView = [v56 navigationTransitionView];
 
   if (v34)
   {
-    v58 = [v73 view];
-    v59 = [UIViewControllerWrapperView existingWrapperViewForView:v58];
+    view3 = [controllerCopy view];
+    v59 = [UIViewControllerWrapperView existingWrapperViewForView:view3];
     v60 = v59;
     if (v59)
     {
-      v61 = v59;
+      view4 = v59;
     }
 
     else
     {
-      v61 = [v73 view];
+      view4 = [controllerCopy view];
     }
 
-    v65 = v61;
+    v65 = view4;
 
-    v66 = [v65 superview];
-    if (v66 == v57)
+    superview = [v65 superview];
+    if (superview == navigationTransitionView)
     {
       v67 = v65;
     }
@@ -547,23 +547,23 @@ LABEL_10:
 
     if (!v68)
     {
-      v69 = [v57 subviews];
-      v70 = [v69 lastObject];
+      subviews = [navigationTransitionView subviews];
+      lastObject = [subviews lastObject];
 
-      if (v70 == v32 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+      if (lastObject == v32 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
         v65 = 0;
       }
 
       else
       {
-        v65 = v70;
+        v65 = lastObject;
       }
     }
 
-    [v57 addSubview:v32];
+    [navigationTransitionView addSubview:v32];
     v71 = objc_loadWeakRetained(&self->_delegate);
-    [v71 transitionConductor:self beginPinningInputViewsForTransitionFromViewController:v73 toViewController:v34 forTransitionType:v6];
+    [v71 transitionConductor:self beginPinningInputViewsForTransitionFromViewController:controllerCopy toViewController:v34 forTransitionType:v6];
 
     v72 = objc_loadWeakRetained(&self->_delegate);
     [v72 transitionConductor:self didEndTransitionFromView:v65 toView:v32];
@@ -571,68 +571,68 @@ LABEL_10:
 
   else
   {
-    v62 = [v73 view];
-    v63 = v62;
-    v64 = [v57 subviews];
-    [v64 makeObjectsPerformSelector:sel_removeFromSuperview];
+    view5 = [controllerCopy view];
+    v63 = view5;
+    subviews2 = [navigationTransitionView subviews];
+    [subviews2 makeObjectsPerformSelector:sel_removeFromSuperview];
 
     v65 = objc_loadWeakRetained(&self->_delegate);
-    [v65 transitionConductor:self didEndTransitionFromView:v62 toView:0];
+    [v65 transitionConductor:self didEndTransitionFromView:view5 toView:0];
   }
 }
 
-- (void)_startCustomTransition:(id)a3
+- (void)_startCustomTransition:(id)transition
 {
-  v52 = a3;
+  transitionCopy = transition;
   v5 = [_UIViewControllerTransitionContext _associatedTransitionContextForAnimationController:?];
-  v6 = [v5 toViewController];
-  v7 = [v5 fromViewController];
-  v8 = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
+  toViewController = [v5 toViewController];
+  fromViewController = [v5 fromViewController];
+  interactiveTransitionController = [(_UIViewControllerTransitionConductor *)self interactiveTransitionController];
   [(_UIViewControllerTransitionConductor *)self customNavigationTransitionDuration];
   [v5 _setDuration:?];
-  v9 = [(_UIViewControllerTransitionConductor *)self isInteractiveTransition];
-  if ((v9 & 1) == 0 && v8)
+  isInteractiveTransition = [(_UIViewControllerTransitionConductor *)self isInteractiveTransition];
+  if ((isInteractiveTransition & 1) == 0 && interactiveTransitionController)
   {
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v8 wantsInteractiveStart];
+      isInteractiveTransition = [interactiveTransitionController wantsInteractiveStart];
     }
 
     else
     {
-      v9 = 1;
+      isInteractiveTransition = 1;
     }
   }
 
-  [(_UIViewControllerTransitionConductor *)self setInteractiveTransition:v9];
-  if (!v7 || !v6)
+  [(_UIViewControllerTransitionConductor *)self setInteractiveTransition:isInteractiveTransition];
+  if (!fromViewController || !toViewController)
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v49 handleFailureInMethod:a2 object:self file:@"_UIViewControllerTransitionConductor.m" lineNumber:374 description:@"custom transitions require both a fromViewController and toViewController!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIViewControllerTransitionConductor.m" lineNumber:374 description:@"custom transitions require both a fromViewController and toViewController!"];
   }
 
-  v10 = [v6 view];
+  view = [toViewController view];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained transitionConductor:self frameForViewController:v6];
+  [WeakRetained transitionConductor:self frameForViewController:toViewController];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
 
-  v51 = v10;
-  [v10 setFrame:{v13, v15, v17, v19}];
+  v51 = view;
+  [view setFrame:{v13, v15, v17, v19}];
   v20 = objc_loadWeakRetained(&self->_delegate);
   [v20 transitionConductor:self didStartCustomTransitionWithContext:v5];
 
   v21 = objc_loadWeakRetained(&self->_delegate);
-  [v21 transitionConductor:self frameForViewController:v6];
+  [v21 transitionConductor:self frameForViewController:toViewController];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
 
-  v30 = [v6 view];
-  [v30 frame];
+  view2 = [toViewController view];
+  [view2 frame];
   v61.origin.x = v31;
   v61.origin.y = v32;
   v61.size.width = v33;
@@ -641,12 +641,12 @@ LABEL_10:
   v60.origin.y = v25;
   v60.size.width = v27;
   v60.size.height = v29;
-  LOBYTE(v10) = CGRectEqualToRect(v60, v61);
+  LOBYTE(view) = CGRectEqualToRect(v60, v61);
 
-  if ((v10 & 1) == 0)
+  if ((view & 1) == 0)
   {
-    v35 = [v6 view];
-    [v35 setFrame:{v23, v25, v27, v29}];
+    view3 = [toViewController view];
+    [view3 setFrame:{v23, v25, v27, v29}];
   }
 
   [v5 _setToEndFrame:{v23, v25, v27, v29}];
@@ -662,14 +662,14 @@ LABEL_10:
   aBlock[3] = &unk_1E7122640;
   aBlock[4] = self;
   v36 = _Block_copy(aBlock);
-  if (v8)
+  if (interactiveTransitionController)
   {
-    [(_UIViewControllerTransitionConductor *)self _beginAnimationTrackingInteractive:v9];
+    [(_UIViewControllerTransitionConductor *)self _beginAnimationTrackingInteractive:isInteractiveTransition];
   }
 
-  v37 = [(_UIViewControllerTransitionConductor *)self deferredTransitionType];
+  deferredTransitionType = [(_UIViewControllerTransitionConductor *)self deferredTransitionType];
   v38 = objc_loadWeakRetained(&self->_delegate);
-  v50 = [v38 navigationTransitionView];
+  navigationTransitionView = [v38 navigationTransitionView];
 
   v39 = objc_loadWeakRetained(&self->_delegate);
   v40 = [v39 inputViewAnimationStyleForTransitionConductor:self];
@@ -680,22 +680,22 @@ LABEL_10:
   v53[2] = __63___UIViewControllerTransitionConductor__startCustomTransition___block_invoke_3;
   v53[3] = &unk_1E7122370;
   v53[4] = self;
-  v41 = v7;
+  v41 = fromViewController;
   v54 = v41;
-  v42 = v6;
+  v42 = toViewController;
   v55 = v42;
-  v56 = v37;
+  v56 = deferredTransitionType;
   v43 = _Block_copy(v53);
   v44 = [_UIViewControllerTransitionRequest alloc];
   v45 = objc_loadWeakRetained(&self->_delegate);
-  v46 = [(_UIViewControllerTransitionRequest *)v44 initWithTransitionContext:v5 animator:v52 interactor:v8 interactiveUpdateHandler:v36 keyboardShouldAnimateAlongsideForInteractiveTransitions:1 keyboardAnimationStyle:v40 pinningInputViewsResponder:v45 extraPinningInputViewsBlock:v43 handoffData:self->_pendingPreemptionHandoffData];
+  v46 = [(_UIViewControllerTransitionRequest *)v44 initWithTransitionContext:v5 animator:transitionCopy interactor:interactiveTransitionController interactiveUpdateHandler:v36 keyboardShouldAnimateAlongsideForInteractiveTransitions:1 keyboardAnimationStyle:v40 pinningInputViewsResponder:v45 extraPinningInputViewsBlock:v43 handoffData:self->_pendingPreemptionHandoffData];
 
-  v47 = [(_UIViewControllerTransitionConductor *)self transitionManager];
+  transitionManager = [(_UIViewControllerTransitionConductor *)self transitionManager];
 
-  if (v47)
+  if (transitionManager)
   {
-    v48 = [(_UIViewControllerTransitionConductor *)self transitionManager];
-    [v48 performAnimatedTransitionWithRequest:v46];
+    transitionManager2 = [(_UIViewControllerTransitionConductor *)self transitionManager];
+    [transitionManager2 performAnimatedTransitionWithRequest:v46];
   }
 
   else
@@ -703,7 +703,7 @@ LABEL_10:
     _UIViewControllerTransitioningRunCustomTransitionWithRequest(v46);
   }
 
-  if (v8)
+  if (interactiveTransitionController)
   {
     [(_UIViewControllerTransitionConductor *)self _finishAnimationTracking];
   }

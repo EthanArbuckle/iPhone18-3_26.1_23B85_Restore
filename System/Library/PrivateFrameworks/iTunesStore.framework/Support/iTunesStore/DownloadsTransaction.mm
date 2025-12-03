@@ -1,31 +1,31 @@
 @interface DownloadsTransaction
-- (BOOL)_moveDownloadWithID:(int64_t)a3 relativeToDownloadWithID:(int64_t)a4 comparisonType:(int64_t)a5;
-- (BOOL)_resetDownload:(id)a3 withValues:(const void *)a4 isUserIntiated:(BOOL)a5;
-- (BOOL)deletePersistentDownloadManagerWithClientID:(id)a3 persistenceID:(id)a4;
-- (BOOL)deletePersistentDownloadManagerWithID:(int64_t)a3;
-- (BOOL)finishDownloadWithID:(int64_t)a3 finalPhase:(id)a4 updatePipeline:(BOOL)a5;
-- (BOOL)finishDownloadsWithIdentifiers:(id)a3 finalPhase:(id)a4;
-- (BOOL)pauseDownloadsWithIdentifiers:(id)a3;
-- (BOOL)prioritizeDownloadWithID:(int64_t)a3 aboveDownloadWithID:(int64_t)a4 error:(id *)a5;
-- (BOOL)prioritizeDownloadsWithKind:(id)a3 clientID:(id)a4;
-- (BOOL)resetDownloadsMatchingPredicate:(id)a3 isUserInitiated:(BOOL)a4;
-- (BOOL)resetDownloadsWithIdentifiers:(id)a3 isUserInitiated:(BOOL)a4;
-- (BOOL)restartDownloadsWithIdentifiers:(id)a3;
-- (BOOL)retryDownloadWithIdentifier:(int64_t)a3;
-- (BOOL)retryDownloadsWithIdentifiers:(id)a3;
-- (BOOL)updateDownloadEntityWithIdentifier:(int64_t)a3 withDownload:(id)a4;
-- (double)_orderKeyAdjacentToOrderKey:(double)a3 comparisonType:(int64_t)a4;
-- (id)_addEffectiveClientWithBundleID:(id)a3 database:(id)a4;
-- (id)_copyEffectiveBundleIDForDownload:(id)a3;
-- (id)_newTransactionForDownload:(id)a3 inDatabase:(id)a4;
-- (id)addDownloads:(id)a3;
+- (BOOL)_moveDownloadWithID:(int64_t)d relativeToDownloadWithID:(int64_t)iD comparisonType:(int64_t)type;
+- (BOOL)_resetDownload:(id)download withValues:(const void *)values isUserIntiated:(BOOL)intiated;
+- (BOOL)deletePersistentDownloadManagerWithClientID:(id)d persistenceID:(id)iD;
+- (BOOL)deletePersistentDownloadManagerWithID:(int64_t)d;
+- (BOOL)finishDownloadWithID:(int64_t)d finalPhase:(id)phase updatePipeline:(BOOL)pipeline;
+- (BOOL)finishDownloadsWithIdentifiers:(id)identifiers finalPhase:(id)phase;
+- (BOOL)pauseDownloadsWithIdentifiers:(id)identifiers;
+- (BOOL)prioritizeDownloadWithID:(int64_t)d aboveDownloadWithID:(int64_t)iD error:(id *)error;
+- (BOOL)prioritizeDownloadsWithKind:(id)kind clientID:(id)d;
+- (BOOL)resetDownloadsMatchingPredicate:(id)predicate isUserInitiated:(BOOL)initiated;
+- (BOOL)resetDownloadsWithIdentifiers:(id)identifiers isUserInitiated:(BOOL)initiated;
+- (BOOL)restartDownloadsWithIdentifiers:(id)identifiers;
+- (BOOL)retryDownloadWithIdentifier:(int64_t)identifier;
+- (BOOL)retryDownloadsWithIdentifiers:(id)identifiers;
+- (BOOL)updateDownloadEntityWithIdentifier:(int64_t)identifier withDownload:(id)download;
+- (double)_orderKeyAdjacentToOrderKey:(double)key comparisonType:(int64_t)type;
+- (id)_addEffectiveClientWithBundleID:(id)d database:(id)database;
+- (id)_copyEffectiveBundleIDForDownload:(id)download;
+- (id)_newTransactionForDownload:(id)download inDatabase:(id)database;
+- (id)addDownloads:(id)downloads;
 - (id)changeset;
-- (id)importDownloads:(id)a3 initialOrderKey:(double)a4 orderKeyIncrement:(double)a5;
-- (id)insertDownloads:(id)a3 afterDownloadWithID:(int64_t)a4;
-- (id)insertDownloads:(id)a3 beforeDownloadWithID:(int64_t)a4;
-- (void)_setPolicy:(id)a3 forDownloadWithID:(int64_t)a4;
-- (void)reconcileSoftwareDownloads:(id)a3 fromITunesStore:(BOOL)a4;
-- (void)setValue:(id)a3 forExternalProperty:(id)a4 ofDownloadID:(int64_t)a5;
+- (id)importDownloads:(id)downloads initialOrderKey:(double)key orderKeyIncrement:(double)increment;
+- (id)insertDownloads:(id)downloads afterDownloadWithID:(int64_t)d;
+- (id)insertDownloads:(id)downloads beforeDownloadWithID:(int64_t)d;
+- (void)_setPolicy:(id)policy forDownloadWithID:(int64_t)d;
+- (void)reconcileSoftwareDownloads:(id)downloads fromITunesStore:(BOOL)store;
+- (void)setValue:(id)value forExternalProperty:(id)property ofDownloadID:(int64_t)d;
 @end
 
 @implementation DownloadsTransaction
@@ -37,14 +37,14 @@
   return v2;
 }
 
-- (id)addDownloads:(id)a3
+- (id)addDownloads:(id)downloads
 {
   [+[DownloadEntity maxValueForProperty:predicate:database:](DownloadEntity maxValueForProperty:@"order_key" predicate:0 database:{-[DownloadsSession database](self, "database")), "doubleValue"}];
   v6 = v5;
   [objc_opt_class() orderKeyIncrement];
-  v8 = [(DownloadsTransaction *)self importDownloads:a3 initialOrderKey:v6 orderKeyIncrement:v7];
+  v8 = [(DownloadsTransaction *)self importDownloads:downloads initialOrderKey:v6 orderKeyIncrement:v7];
   v9 = [v8 count];
-  if (v9 == [a3 count])
+  if (v9 == [downloads count])
   {
     [(DownloadsChangeset *)self->super._changeset addDownloadsToPipelineWithIDs:v8];
   }
@@ -52,22 +52,22 @@
   return v8;
 }
 
-- (BOOL)deletePersistentDownloadManagerWithClientID:(id)a3 persistenceID:(id)a4
+- (BOOL)deletePersistentDownloadManagerWithClientID:(id)d persistenceID:(id)iD
 {
-  v5 = [PersistentDownloadManagerEntity anyInDatabase:[(DownloadsSession *)self database] predicate:[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:[SSSQLiteComparisonPredicate predicateWithProperty:@"persistence_id" equalToValue:a4], [SSSQLiteComparisonPredicate predicateWithProperty:@"client_id" equalToValue:a3], 0]]];
+  v5 = [PersistentDownloadManagerEntity anyInDatabase:[(DownloadsSession *)self database] predicate:[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:[SSSQLiteComparisonPredicate predicateWithProperty:@"persistence_id" equalToValue:iD], [SSSQLiteComparisonPredicate predicateWithProperty:@"client_id" equalToValue:d], 0]]];
   if (v5)
   {
-    v6 = [v5 persistentID];
+    persistentID = [v5 persistentID];
 
-    LOBYTE(v5) = [(DownloadsTransaction *)self deletePersistentDownloadManagerWithID:v6];
+    LOBYTE(v5) = [(DownloadsTransaction *)self deletePersistentDownloadManagerWithID:persistentID];
   }
 
   return v5;
 }
 
-- (BOOL)deletePersistentDownloadManagerWithID:(int64_t)a3
+- (BOOL)deletePersistentDownloadManagerWithID:(int64_t)d
 {
-  v5 = [(DownloadsSession *)self database];
+  database = [(DownloadsSession *)self database];
   v6 = objc_alloc_init(NSMutableArray);
   v25 = @"download_id";
   v23[0] = _NSConcreteStackBlock;
@@ -75,18 +75,18 @@
   v23[2] = sub_100091C80;
   v23[3] = &unk_100327288;
   v23[4] = v6;
-  [+[PersistentDownloadEntity queryWithDatabase:predicate:](PersistentDownloadEntity queryWithDatabase:v5 predicate:{+[SSSQLiteComparisonPredicate predicateWithProperty:equalToLongLong:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToLongLong:", @"manager_id", a3)), "enumeratePersistentIDsAndProperties:count:usingBlock:", &v25, 1, v23}];
-  v7 = [[PersistentDownloadManagerEntity alloc] initWithPersistentID:a3 inDatabase:v5];
-  v8 = [(PersistentDownloadManagerEntity *)v7 deleteFromDatabase];
+  [+[PersistentDownloadEntity queryWithDatabase:predicate:](PersistentDownloadEntity queryWithDatabase:database predicate:{+[SSSQLiteComparisonPredicate predicateWithProperty:equalToLongLong:](SSSQLiteComparisonPredicate, "predicateWithProperty:equalToLongLong:", @"manager_id", d)), "enumeratePersistentIDsAndProperties:count:usingBlock:", &v25, 1, v23}];
+  v7 = [[PersistentDownloadManagerEntity alloc] initWithPersistentID:d inDatabase:database];
+  deleteFromDatabase = [(PersistentDownloadManagerEntity *)v7 deleteFromDatabase];
 
-  if (!v8)
+  if (!deleteFromDatabase)
   {
 LABEL_12:
     v16 = 0;
     goto LABEL_13;
   }
 
-  v18 = self;
+  selfCopy = self;
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -106,12 +106,12 @@ LABEL_4:
       }
 
       v13 = *(*(&v19 + 1) + 8 * v12);
-      if (![PersistentDownloadEntity anyInDatabase:v5 predicate:[SSSQLiteComparisonPredicate predicateWithProperty:@"download_id" equalToValue:v13]])
+      if (![PersistentDownloadEntity anyInDatabase:database predicate:[SSSQLiteComparisonPredicate predicateWithProperty:@"download_id" equalToValue:v13]])
       {
-        v14 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v13 longLongValue], v5);
-        v15 = [(DownloadEntity *)v14 deleteFromDatabase];
+        v14 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v13 longLongValue], database);
+        deleteFromDatabase2 = [(DownloadEntity *)v14 deleteFromDatabase];
 
-        if (!v15)
+        if (!deleteFromDatabase2)
         {
           goto LABEL_12;
         }
@@ -131,30 +131,30 @@ LABEL_4:
   }
 
   v16 = 1;
-  [(DownloadsChangeset *)v18->super._changeset addDownloadChangeTypes:1];
+  [(DownloadsChangeset *)selfCopy->super._changeset addDownloadChangeTypes:1];
 LABEL_13:
 
   return v16;
 }
 
-- (BOOL)finishDownloadWithID:(int64_t)a3 finalPhase:(id)a4 updatePipeline:(BOOL)a5
+- (BOOL)finishDownloadWithID:(int64_t)d finalPhase:(id)phase updatePipeline:(BOOL)pipeline
 {
-  v5 = a5;
+  pipelineCopy = pipeline;
   v9 = +[SSLogConfig sharedDaemonConfig];
   if (!v9)
   {
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
   if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_INFO))
@@ -167,9 +167,9 @@ LABEL_13:
     v18 = 138412802;
     v19 = objc_opt_class();
     v20 = 2048;
-    v21 = a3;
+    dCopy = d;
     v22 = 2112;
-    v23 = a4;
+    phaseCopy = phase;
     LODWORD(v17) = 32;
     v12 = _os_log_send_and_compose_impl();
     if (v12)
@@ -181,14 +181,14 @@ LABEL_13:
     }
   }
 
-  if (v5)
+  if (pipelineCopy)
   {
-    v14 = [[NSOrderedSet alloc] initWithObjects:{+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", a3), 0}];
+    v14 = [[NSOrderedSet alloc] initWithObjects:{+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", d), 0}];
     [(DownloadPipeline *)self->super.super._pipeline stopDownloadsWithIdentifiers:v14 reason:0];
   }
 
-  v15 = [[DownloadEntity alloc] initWithPersistentID:a3 inDatabase:[(DownloadsSession *)self database]];
-  [(DownloadsExternalTransaction *)self unionChangeset:[(DownloadEntity *)v15 finishWithFinalPhase:a4]];
+  v15 = [[DownloadEntity alloc] initWithPersistentID:d inDatabase:[(DownloadsSession *)self database]];
+  [(DownloadsExternalTransaction *)self unionChangeset:[(DownloadEntity *)v15 finishWithFinalPhase:phase]];
   [(DownloadEntity *)v15 deleteScratchDirectory];
   if ([+[ApplicationWorkspace defaultWorkspace](ApplicationWorkspace "defaultWorkspace")] && objc_msgSend(+[ApplicationWorkspace defaultWorkspace](ApplicationWorkspace, "defaultWorkspace"), "shouldModifyQuota:", -[DownloadEntity valueForProperty:](v15, "valueForProperty:", @"kind")))
   {
@@ -198,13 +198,13 @@ LABEL_13:
   return 1;
 }
 
-- (BOOL)finishDownloadsWithIdentifiers:(id)a3 finalPhase:(id)a4
+- (BOOL)finishDownloadsWithIdentifiers:(id)identifiers finalPhase:(id)phase
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [identifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -215,12 +215,12 @@ LABEL_13:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(identifiers);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = objc_autoreleasePoolPush();
-        LODWORD(v11) = -[DownloadsTransaction finishDownloadWithID:finalPhase:updatePipeline:](self, "finishDownloadWithID:finalPhase:updatePipeline:", [v11 longLongValue], a4, 0);
+        LODWORD(v11) = -[DownloadsTransaction finishDownloadWithID:finalPhase:updatePipeline:](self, "finishDownloadWithID:finalPhase:updatePipeline:", [v11 longLongValue], phase, 0);
         objc_autoreleasePoolPop(v12);
         if (!v11)
         {
@@ -229,7 +229,7 @@ LABEL_13:
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [identifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -241,29 +241,29 @@ LABEL_13:
 
   v13 = 1;
 LABEL_11:
-  [(DownloadPipeline *)self->super.super._pipeline stopDownloadsWithIdentifiers:a3 reason:0];
+  [(DownloadPipeline *)self->super.super._pipeline stopDownloadsWithIdentifiers:identifiers reason:0];
   return v13;
 }
 
-- (id)importDownloads:(id)a3 initialOrderKey:(double)a4 orderKeyIncrement:(double)a5
+- (id)importDownloads:(id)downloads initialOrderKey:(double)key orderKeyIncrement:(double)increment
 {
   v9 = +[NSMutableOrderedSet orderedSet];
   v79 = objc_alloc_init(NSMutableDictionary);
-  v10 = [(DownloadsSession *)self database];
-  v11 = [objc_opt_class() orderingBucketSize];
+  database = [(DownloadsSession *)self database];
+  orderingBucketSize = [objc_opt_class() orderingBucketSize];
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = a3;
-  v77 = [a3 countByEnumeratingWithState:&v81 objects:v91 count:16];
+  obj = downloads;
+  v77 = [downloads countByEnumeratingWithState:&v81 objects:v91 count:16];
   if (v77)
   {
-    __upper_bound = v11 >> 1;
+    __upper_bound = orderingBucketSize >> 1;
     v75 = *v82;
     v74 = SSDownloadExternalPropertyPolicy;
     v78 = v9;
-    v73 = v10;
+    v73 = database;
     do
     {
       v12 = 0;
@@ -276,16 +276,16 @@ LABEL_11:
 
         v13 = *(*(&v81 + 1) + 8 * v12);
         v14 = objc_autoreleasePoolPush();
-        a4 = a4 + a5;
-        [v13 setValue:+[NSNumber numberWithDouble:](NSNumber forProperty:{"numberWithDouble:", a4), @"order_key"}];
+        key = key + increment;
+        [v13 setValue:+[NSNumber numberWithDouble:](NSNumber forProperty:{"numberWithDouble:", key), @"order_key"}];
         [v13 setValue:+[NSNumber numberWithInt:](NSNumber forProperty:{"numberWithInt:", arc4random_uniform(__upper_bound)), @"order_seed"}];
-        v15 = [v13 externalPropertyValues];
-        if (![v15 objectForKey:v74])
+        externalPropertyValues = [v13 externalPropertyValues];
+        if (![externalPropertyValues objectForKey:v74])
         {
-          v16 = [v13 downloadPolicy];
-          if (v16)
+          downloadPolicy = [v13 downloadPolicy];
+          if (downloadPolicy)
           {
-            [v13 setValue:+[NSNumber numberWithLongLong:](NSNumber forProperty:{"numberWithLongLong:", -[DownloadPolicyManager addDownloadPolicy:](-[DownloadsSession policyManager](self, "policyManager"), "addDownloadPolicy:", v16)), @"policy_id"}];
+            [v13 setValue:+[NSNumber numberWithLongLong:](NSNumber forProperty:{"numberWithLongLong:", -[DownloadPolicyManager addDownloadPolicy:](-[DownloadsSession policyManager](self, "policyManager"), "addDownloadPolicy:", downloadPolicy)), @"policy_id"}];
           }
         }
 
@@ -294,7 +294,7 @@ LABEL_11:
         {
           v18 = v17;
           v19 = [v79 objectForKey:v17];
-          if (v19 || (v19 = [(DownloadsTransaction *)self _addEffectiveClientWithBundleID:v18 database:v10]) != 0)
+          if (v19 || (v19 = [(DownloadsTransaction *)self _addEffectiveClientWithBundleID:v18 database:database]) != 0)
           {
             v20 = v19;
             [v13 setValue:v19 forProperty:@"effective_client_id"];
@@ -303,8 +303,8 @@ LABEL_11:
         }
 
         [v13 setValue:0 forProperty:@"application_id.bundle_id"];
-        v21 = [v13 propertyValues];
-        v22 = [[DownloadEntity alloc] initWithPropertyValues:v21 inDatabase:v10];
+        propertyValues = [v13 propertyValues];
+        v22 = [[DownloadEntity alloc] initWithPropertyValues:propertyValues inDatabase:database];
         if (!v22)
         {
           v41 = +[SSLogConfig sharedDaemonConfig];
@@ -313,15 +313,15 @@ LABEL_11:
             v41 = +[SSLogConfig sharedConfig];
           }
 
-          v42 = [v41 shouldLog];
+          shouldLog = [v41 shouldLog];
           if ([v41 shouldLogToDisk])
           {
-            v43 = v42 | 2;
+            v43 = shouldLog | 2;
           }
 
           else
           {
-            v43 = v42;
+            v43 = shouldLog;
           }
 
           if (os_log_type_enabled([v41 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -337,11 +337,11 @@ LABEL_11:
           if (v44)
           {
             v45 = objc_opt_class();
-            v46 = [v13 databaseID];
+            databaseID = [v13 databaseID];
             v85 = 138543618;
             v86 = v45;
             v87 = 2048;
-            v88 = v46;
+            v88 = databaseID;
             LODWORD(v71) = 22;
             v70 = &v85;
             v47 = _os_log_send_and_compose_impl();
@@ -359,11 +359,11 @@ LABEL_11:
         }
 
         v23 = v22;
-        v24 = [(DownloadsTransaction *)self _newTransactionForDownload:v22 inDatabase:v10];
+        v24 = [(DownloadsTransaction *)self _newTransactionForDownload:v22 inDatabase:database];
         -[DownloadEntity setValue:forProperty:](v23, "setValue:forProperty:", +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [v24 persistentID]), @"transaction_id");
-        if (v15)
+        if (externalPropertyValues)
         {
-          [(DownloadsExternalTransaction *)self setExternalPropertyValues:v15 forDownloadWithID:[(DownloadEntity *)v23 persistentID]];
+          [(DownloadsExternalTransaction *)self setExternalPropertyValues:externalPropertyValues forDownloadWithID:[(DownloadEntity *)v23 persistentID]];
         }
 
         v25 = [(DownloadEntity *)v23 setAssetsUsingDownload:v13];
@@ -375,15 +375,15 @@ LABEL_11:
             v50 = +[SSLogConfig sharedConfig];
           }
 
-          v51 = [v50 shouldLog];
+          shouldLog2 = [v50 shouldLog];
           if ([v50 shouldLogToDisk])
           {
-            v52 = v51 | 2;
+            v52 = shouldLog2 | 2;
           }
 
           else
           {
-            v52 = v51;
+            v52 = shouldLog2;
           }
 
           if (os_log_type_enabled([v50 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -399,11 +399,11 @@ LABEL_11:
           if (v53)
           {
             v54 = objc_opt_class();
-            v55 = [(DownloadEntity *)v23 persistentID];
+            persistentID = [(DownloadEntity *)v23 persistentID];
             v85 = 138543618;
             v86 = v54;
             v87 = 2048;
-            v88 = v55;
+            v88 = persistentID;
             LODWORD(v71) = 22;
             v70 = &v85;
             v56 = _os_log_send_and_compose_impl();
@@ -425,19 +425,19 @@ LABEL_67:
 
         v26 = v25;
         context = v14;
-        v27 = [(DownloadEntity *)v23 persistentID];
-        [v78 addObject:{+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", v27)}];
-        v28 = [v21 objectForKey:@"kind"];
+        persistentID2 = [(DownloadEntity *)v23 persistentID];
+        [v78 addObject:{+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", persistentID2)}];
+        v28 = [propertyValues objectForKey:@"kind"];
         if (v28)
         {
           v29 = v28;
           if (SSDownloadKindIsMediaKind())
           {
-            v30 = [(DownloadEntity *)v23 copyDownloadingIPodLibraryItem];
-            if (v30)
+            copyDownloadingIPodLibraryItem = [(DownloadEntity *)v23 copyDownloadingIPodLibraryItem];
+            if (copyDownloadingIPodLibraryItem)
             {
-              v31 = v30;
-              [(DownloadsChangeset *)self->super._changeset addIPodLibraryItem:v30];
+              v31 = copyDownloadingIPodLibraryItem;
+              [(DownloadsChangeset *)self->super._changeset addIPodLibraryItem:copyDownloadingIPodLibraryItem];
               goto LABEL_22;
             }
           }
@@ -453,18 +453,18 @@ LABEL_67:
               }
 
               v33 = v32;
-              v34 = [v32 shouldLog];
+              shouldLog3 = [v32 shouldLog];
               if ([v33 shouldLogToDisk])
               {
-                v34 |= 2u;
+                shouldLog3 |= 2u;
               }
 
               if (!os_log_type_enabled([v33 OSLogObject], OS_LOG_TYPE_DEBUG))
               {
-                v34 &= 2u;
+                shouldLog3 &= 2u;
               }
 
-              if (v34)
+              if (shouldLog3)
               {
                 v35 = objc_opt_class();
                 v85 = 138412290;
@@ -484,14 +484,14 @@ LABEL_67:
               }
             }
 
-            else if ([objc_msgSend(v21 objectForKey:{@"is_automatic", "integerValue"}] != 2)
+            else if ([objc_msgSend(propertyValues objectForKey:{@"is_automatic", "integerValue"}] != 2)
             {
-              v39 = [v21 objectForKey:@"bundle_id"];
-              v31 = -[ApplicationHandle initWithTransactionIdentifier:downloadIdentifier:bundleIdentifier:]([ApplicationHandle alloc], "initWithTransactionIdentifier:downloadIdentifier:bundleIdentifier:", [v24 persistentID], v27, v39);
+              v39 = [propertyValues objectForKey:@"bundle_id"];
+              v31 = -[ApplicationHandle initWithTransactionIdentifier:downloadIdentifier:bundleIdentifier:]([ApplicationHandle alloc], "initWithTransactionIdentifier:downloadIdentifier:bundleIdentifier:", [v24 persistentID], persistentID2, v39);
               [(DownloadsChangeset *)self->super._changeset addAppPlaceholderWithHandle:v31];
               if ([v39 length])
               {
-                [ApplicationWorkspaceState incompleteNotificationForInstallingDownload:v27 bundleIdentifier:v39];
+                [ApplicationWorkspaceState incompleteNotificationForInstallingDownload:persistentID2 bundleIdentifier:v39];
               }
 
 LABEL_22:
@@ -502,17 +502,17 @@ LABEL_22:
         }
 
 LABEL_36:
-        if ([objc_msgSend(v21 objectForKey:{@"is_restore", "BOOLValue"}])
+        if ([objc_msgSend(propertyValues objectForKey:{@"is_restore", "BOOLValue"}])
         {
           [(DownloadsChangeset *)self->super._changeset addDownloadChangeTypes:32];
-          [(DownloadsChangeset *)self->super._changeset addRestorableDownloadID:v27];
+          [(DownloadsChangeset *)self->super._changeset addRestorableDownloadID:persistentID2];
         }
 
         [(DownloadsChangeset *)self->super._changeset unionChangeset:v26];
 
         objc_autoreleasePoolPop(context);
         v12 = v12 + 1;
-        v10 = v73;
+        database = v73;
       }
 
       while (v77 != v12);
@@ -537,15 +537,15 @@ LABEL_68:
       v61 = +[SSLogConfig sharedConfig];
     }
 
-    v62 = [v61 shouldLog];
+    shouldLog4 = [v61 shouldLog];
     if ([v61 shouldLogToDisk])
     {
-      v63 = v62 | 2;
+      v63 = shouldLog4 | 2;
     }
 
     else
     {
-      v63 = v62;
+      v63 = shouldLog4;
     }
 
     if (!os_log_type_enabled([v61 OSLogObject], OS_LOG_TYPE_ERROR))
@@ -581,26 +581,26 @@ LABEL_68:
   return v9;
 }
 
-- (id)insertDownloads:(id)a3 afterDownloadWithID:(int64_t)a4
+- (id)insertDownloads:(id)downloads afterDownloadWithID:(int64_t)d
 {
-  v6 = [[DownloadEntity alloc] initWithPersistentID:a4 inDatabase:[(DownloadsSession *)self database]];
+  v6 = [[DownloadEntity alloc] initWithPersistentID:d inDatabase:[(DownloadsSession *)self database]];
   v7 = [(DownloadEntity *)v6 valueForProperty:@"order_key"];
   if (v7)
   {
     [v7 doubleValue];
     v9 = v8;
     [(DownloadsTransaction *)self _orderKeyAdjacentToOrderKey:5 comparisonType:?];
-    v11 = -[DownloadsTransaction importDownloads:initialOrderKey:orderKeyIncrement:](self, "importDownloads:initialOrderKey:orderKeyIncrement:", a3, v9, vabdd_f64(v10, v9) / ([a3 count] + 1));
+    v11 = -[DownloadsTransaction importDownloads:initialOrderKey:orderKeyIncrement:](self, "importDownloads:initialOrderKey:orderKeyIncrement:", downloads, v9, vabdd_f64(v10, v9) / ([downloads count] + 1));
   }
 
   else
   {
-    v11 = [(DownloadsTransaction *)self addDownloads:a3];
+    v11 = [(DownloadsTransaction *)self addDownloads:downloads];
   }
 
   v12 = v11;
   v13 = [v11 count];
-  if (v13 == [a3 count])
+  if (v13 == [downloads count])
   {
     [(DownloadsChangeset *)self->super._changeset addDownloadsToPipelineWithIDs:v12];
   }
@@ -608,26 +608,26 @@ LABEL_68:
   return v12;
 }
 
-- (id)insertDownloads:(id)a3 beforeDownloadWithID:(int64_t)a4
+- (id)insertDownloads:(id)downloads beforeDownloadWithID:(int64_t)d
 {
-  v6 = [[DownloadEntity alloc] initWithPersistentID:a4 inDatabase:[(DownloadsSession *)self database]];
+  v6 = [[DownloadEntity alloc] initWithPersistentID:d inDatabase:[(DownloadsSession *)self database]];
   v7 = [(DownloadEntity *)v6 valueForProperty:@"order_key"];
   if (v7)
   {
     [v7 doubleValue];
     v9 = v8;
     [(DownloadsTransaction *)self _orderKeyAdjacentToOrderKey:3 comparisonType:?];
-    v11 = -[DownloadsTransaction importDownloads:initialOrderKey:orderKeyIncrement:](self, "importDownloads:initialOrderKey:orderKeyIncrement:", a3, v10, vabdd_f64(v10, v9) / ([a3 count] + 1));
+    v11 = -[DownloadsTransaction importDownloads:initialOrderKey:orderKeyIncrement:](self, "importDownloads:initialOrderKey:orderKeyIncrement:", downloads, v10, vabdd_f64(v10, v9) / ([downloads count] + 1));
   }
 
   else
   {
-    v11 = [(DownloadsTransaction *)self addDownloads:a3];
+    v11 = [(DownloadsTransaction *)self addDownloads:downloads];
   }
 
   v12 = v11;
   v13 = [v11 count];
-  if (v13 == [a3 count])
+  if (v13 == [downloads count])
   {
     [(DownloadsChangeset *)self->super._changeset addDownloadsToPipelineWithIDs:v12];
   }
@@ -635,16 +635,16 @@ LABEL_68:
   return v12;
 }
 
-- (BOOL)pauseDownloadsWithIdentifiers:(id)a3
+- (BOOL)pauseDownloadsWithIdentifiers:(id)identifiers
 {
-  v19 = [(DownloadsSession *)self database];
-  obj = a3;
-  v18 = [a3 count];
+  database = [(DownloadsSession *)self database];
+  obj = identifiers;
+  v18 = [identifiers count];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v5 = [identifiers countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -663,11 +663,11 @@ LABEL_68:
 
         v10 = *(*(&v20 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v10 longLongValue], v19);
-        v13 = [(DownloadEntity *)v12 downloadKind];
+        v12 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v10 longLongValue], database);
+        downloadKind = [(DownloadEntity *)v12 downloadKind];
         [(DownloadEntity *)v12 setValue:v8 forProperty:@"download_state.phase"];
         [(DownloadsChangeset *)self->super._changeset addDownloadChangeTypes:2];
-        [(DownloadsChangeset *)self->super._changeset addDownloadKind:v13];
+        [(DownloadsChangeset *)self->super._changeset addDownloadKind:downloadKind];
         [(DownloadsChangeset *)self->super._changeset addStatusChangedDownloadID:[(DownloadEntity *)v12 persistentID]];
         if (v18 == 1)
         {
@@ -690,9 +690,9 @@ LABEL_68:
   return 1;
 }
 
-- (BOOL)prioritizeDownloadWithID:(int64_t)a3 aboveDownloadWithID:(int64_t)a4 error:(id *)a5
+- (BOOL)prioritizeDownloadWithID:(int64_t)d aboveDownloadWithID:(int64_t)iD error:(id *)error
 {
-  v9 = [[DownloadEntity alloc] initWithPersistentID:a3 inDatabase:[(DownloadsSession *)self database]];
+  v9 = [[DownloadEntity alloc] initWithPersistentID:d inDatabase:[(DownloadsSession *)self database]];
   if (([(DownloadEntity *)v9 existsInDatabase]& 1) != 0 && ([(DownloadEntity *)v9 valueForProperty:@"IFNULL(download_state.phase, SSDownloadPhaseWaiting)"], !SSDownloadPhaseIsFinishedPhase()))
   {
     v13 = +[SSLogConfig sharedDaemonConfig];
@@ -701,15 +701,15 @@ LABEL_68:
       v13 = +[SSLogConfig sharedConfig];
     }
 
-    v14 = [v13 shouldLog];
+    shouldLog = [v13 shouldLog];
     if ([v13 shouldLogToDisk])
     {
-      v15 = v14 | 2;
+      v15 = shouldLog | 2;
     }
 
     else
     {
-      v15 = v14;
+      v15 = shouldLog;
     }
 
     if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_INFO))
@@ -722,7 +722,7 @@ LABEL_68:
       v21 = 138412546;
       v22 = objc_opt_class();
       v23 = 2048;
-      v24 = a3;
+      dCopy = d;
       LODWORD(v20) = 22;
       v19 = &v21;
       v16 = _os_log_send_and_compose_impl();
@@ -737,18 +737,18 @@ LABEL_68:
     }
 
     [(DownloadEntity *)v9 setValue:&off_10034BC40 forProperty:@"priority", v19];
-    if (!a4)
+    if (!iD)
     {
       v11 = 1;
       [(DownloadsChangeset *)self->super._changeset addDownloadChangeTypes:1];
       [(DownloadsChangeset *)self->super._changeset addDownloadKind:[(DownloadEntity *)v9 downloadKind]];
-      [(DownloadPipeline *)self->super.super._pipeline prioritizeDownloadWithIdentifier:[NSNumber numberWithLongLong:a3]];
+      [(DownloadPipeline *)self->super.super._pipeline prioritizeDownloadWithIdentifier:[NSNumber numberWithLongLong:d]];
       goto LABEL_6;
     }
 
-    v11 = [(DownloadsTransaction *)self moveDownloadWithID:a3 beforeDownloadWithID:a4];
+    v11 = [(DownloadsTransaction *)self moveDownloadWithID:d beforeDownloadWithID:iD];
     v10 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -758,7 +758,7 @@ LABEL_68:
   {
     v10 = SSError();
     v11 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_6;
     }
@@ -767,7 +767,7 @@ LABEL_68:
   if (!v11)
   {
     v11 = 0;
-    *a5 = v10;
+    *error = v10;
   }
 
 LABEL_6:
@@ -775,28 +775,28 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)prioritizeDownloadsWithKind:(id)a3 clientID:(id)a4
+- (BOOL)prioritizeDownloadsWithKind:(id)kind clientID:(id)d
 {
-  v7 = [(DownloadsSession *)self database];
-  v8 = [SSSQLiteComparisonPredicate predicateWithProperty:@"kind" equalToValue:a3];
-  v9 = [DownloadEntity minValueForProperty:@"order_key" predicate:[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:v8 database:[SSSQLiteComparisonPredicate predicateWithProperty:@"client_id" value:a4 comparisonType:2], 0]], v7];
+  database = [(DownloadsSession *)self database];
+  v8 = [SSSQLiteComparisonPredicate predicateWithProperty:@"kind" equalToValue:kind];
+  v9 = [DownloadEntity minValueForProperty:@"order_key" predicate:[SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:v8 database:[SSSQLiteComparisonPredicate predicateWithProperty:@"client_id" value:d comparisonType:2], 0]], database];
   if (v9)
   {
-    v40 = a3;
+    kindCopy = kind;
     v10 = v9;
     v11 = objc_alloc_init(NSMutableArray);
     v38 = v10;
     [v10 doubleValue];
-    v39 = self;
+    selfCopy = self;
     [(DownloadsTransaction *)self _orderKeyAdjacentToOrderKey:3 comparisonType:?];
     v13 = v12;
-    v14 = [SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:v8, [SSSQLiteComparisonPredicate predicateWithProperty:@"client_id" equalToValue:a4], 0]];
+    v14 = [SSSQLiteCompoundPredicate predicateMatchingAllPredicates:[NSArray arrayWithObjects:v8, [SSSQLiteComparisonPredicate predicateWithProperty:@"client_id" equalToValue:d], 0]];
     v15 = objc_alloc_init(SSSQLiteQueryDescriptor);
     [v15 setEntityClass:objc_opt_class()];
     [v15 setOrderingDirections:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", SSSQLiteOrderDescending, SSSQLiteOrderAscending, 0)}];
     [v15 setOrderingProperties:{+[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", @"priority", @"order_key", 0)}];
     [v15 setPredicate:v14];
-    v16 = [[SSSQLiteQuery alloc] initWithDatabase:v7 descriptor:v15];
+    v16 = [[SSSQLiteQuery alloc] initWithDatabase:database descriptor:v15];
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_10009364C;
@@ -806,22 +806,22 @@ LABEL_6:
 
     if ([v11 count])
     {
-      v17 = a4;
+      dCopy = d;
       v18 = +[SSLogConfig sharedDaemonConfig];
       if (!v18)
       {
         v18 = +[SSLogConfig sharedConfig];
       }
 
-      v19 = [v18 shouldLog];
+      shouldLog = [v18 shouldLog];
       if ([v18 shouldLogToDisk])
       {
-        v20 = v19 | 2;
+        v20 = shouldLog | 2;
       }
 
       else
       {
-        v20 = v19;
+        v20 = shouldLog;
       }
 
       if (os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_INFO))
@@ -840,9 +840,9 @@ LABEL_6:
         v47 = 138412802;
         v48 = v22;
         v49 = 2112;
-        v50 = v40;
+        v50 = kindCopy;
         v51 = 2112;
-        v52 = v17;
+        v52 = dCopy;
         LODWORD(v37) = 32;
         v36 = &v47;
         v23 = _os_log_send_and_compose_impl();
@@ -879,7 +879,7 @@ LABEL_6:
             }
 
             v13 = v31 + v13;
-            v34 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [*(*(&v41 + 1) + 8 * i) longLongValue], v7);
+            v34 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [*(*(&v41 + 1) + 8 * i) longLongValue], database);
             [(DownloadEntity *)v34 setValue:[NSNumber forProperty:"numberWithDouble:" numberWithDouble:v13], @"order_key"];
           }
 
@@ -889,17 +889,17 @@ LABEL_6:
         while (v30);
       }
 
-      [(DownloadsChangeset *)v39->super._changeset addDownloadChangeTypes:1];
-      [(DownloadsChangeset *)v39->super._changeset addDownloadKind:v40];
+      [(DownloadsChangeset *)selfCopy->super._changeset addDownloadChangeTypes:1];
+      [(DownloadsChangeset *)selfCopy->super._changeset addDownloadKind:kindCopy];
     }
   }
 
   return 1;
 }
 
-- (void)reconcileSoftwareDownloads:(id)a3 fromITunesStore:(BOOL)a4
+- (void)reconcileSoftwareDownloads:(id)downloads fromITunesStore:(BOOL)store
 {
-  if (a4)
+  if (store)
   {
     v6 = [SSSQLiteCompoundPredicate predicateMatchingAnyPredicates:[NSArray arrayWithObjects:[SSSQLiteComparisonPredicate predicateWithProperty:@"is_from_store" equalToLongLong:0], [SSSQLiteComparisonPredicate predicateWithProperty:@"is_restore" equalToLongLong:1], 0]];
   }
@@ -923,15 +923,15 @@ LABEL_6:
     v13 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v13 shouldLog];
+  shouldLog = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog;
   }
 
   if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_INFO))
@@ -944,7 +944,7 @@ LABEL_6:
     v38 = 138412546;
     v39 = objc_opt_class();
     v40 = 2048;
-    v41 = [a3 count];
+    v41 = [downloads count];
     LODWORD(v35) = 22;
     v33 = &v38;
     v16 = _os_log_send_and_compose_impl();
@@ -964,7 +964,7 @@ LABEL_6:
   v36[1] = 3221225472;
   v36[2] = sub_100093C24;
   v36[3] = &unk_1003272D8;
-  v36[4] = a3;
+  v36[4] = downloads;
   [+[DownloadEntity queryWithDatabase:predicate:](DownloadEntity queryWithDatabase:-[DownloadsSession database](self predicate:{"database", v33), v11), "enumeratePersistentIDsAndProperties:count:usingBlock:", &v37, 1, v36}];
   if ([v12 count])
   {
@@ -974,15 +974,15 @@ LABEL_6:
       v19 = +[SSLogConfig sharedConfig];
     }
 
-    v20 = [v19 shouldLog];
+    shouldLog2 = [v19 shouldLog];
     if ([v19 shouldLogToDisk])
     {
-      v21 = v20 | 2;
+      v21 = shouldLog2 | 2;
     }
 
     else
     {
-      v21 = v20;
+      v21 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v19 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -1018,15 +1018,15 @@ LABEL_6:
       v27 = +[SSLogConfig sharedConfig];
     }
 
-    v28 = [v27 shouldLog];
+    shouldLog3 = [v27 shouldLog];
     if ([v27 shouldLogToDisk])
     {
-      v29 = v28 | 2;
+      v29 = shouldLog3 | 2;
     }
 
     else
     {
-      v29 = v28;
+      v29 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v27 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -1054,7 +1054,7 @@ LABEL_6:
   }
 }
 
-- (BOOL)resetDownloadsMatchingPredicate:(id)a3 isUserInitiated:(BOOL)a4
+- (BOOL)resetDownloadsMatchingPredicate:(id)predicate isUserInitiated:(BOOL)initiated
 {
   v16 = 0;
   v17 = &v16;
@@ -1071,12 +1071,12 @@ LABEL_6:
   v10[1] = 3221225472;
   v10[2] = sub_100093E9C;
   v10[3] = &unk_100327300;
-  v11 = [(DownloadsSession *)self database];
-  v12 = self;
-  v15 = a4;
+  database = [(DownloadsSession *)self database];
+  selfCopy = self;
+  initiatedCopy = initiated;
   v13 = v7;
   v14 = &v16;
-  [+[DownloadEntity queryWithDatabase:predicate:](DownloadEntity queryWithDatabase:v11 predicate:{a3), "enumeratePersistentIDsAndProperties:count:usingBlock:", v20, 6, v10}];
+  [+[DownloadEntity queryWithDatabase:predicate:](DownloadEntity queryWithDatabase:database predicate:{predicate), "enumeratePersistentIDsAndProperties:count:usingBlock:", v20, 6, v10}];
   if (*(v17 + 24) == 1 && [v7 count])
   {
     [(DownloadsChangeset *)self->super._changeset addDownloadsToPipelineWithIDs:v7];
@@ -1087,9 +1087,9 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)resetDownloadsWithIdentifiers:(id)a3 isUserInitiated:(BOOL)a4
+- (BOOL)resetDownloadsWithIdentifiers:(id)identifiers isUserInitiated:(BOOL)initiated
 {
-  v4 = a4;
+  initiatedCopy = initiated;
   v15 = objc_alloc_init(NSMutableOrderedSet);
   v22[0] = @"is_automatic";
   v22[1] = @"download_state.blocked_reason";
@@ -1101,7 +1101,7 @@ LABEL_6:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  v7 = [identifiers countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1112,19 +1112,19 @@ LABEL_6:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(identifiers);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v11 longLongValue], -[DownloadsSession database](self, "database"));
         [(DownloadEntity *)v12 getValues:v20 forProperties:v22 count:6];
-        if ([(DownloadsTransaction *)self _resetDownload:v12 withValues:v20 isUserIntiated:v4])
+        if ([(DownloadsTransaction *)self _resetDownload:v12 withValues:v20 isUserIntiated:initiatedCopy])
         {
           [v15 addObject:v11];
         }
       }
 
-      v8 = [a3 countByEnumeratingWithState:&v16 objects:v21 count:16];
+      v8 = [identifiers countByEnumeratingWithState:&v16 objects:v21 count:16];
     }
 
     while (v8);
@@ -1139,15 +1139,15 @@ LABEL_6:
   return v13 != 0;
 }
 
-- (BOOL)restartDownloadsWithIdentifiers:(id)a3
+- (BOOL)restartDownloadsWithIdentifiers:(id)identifiers
 {
-  v5 = [(DownloadsSession *)self database];
+  database = [(DownloadsSession *)self database];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  obj = a3;
-  v6 = [a3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  obj = identifiers;
+  v6 = [identifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1163,7 +1163,7 @@ LABEL_6:
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v10 longLongValue], v5);
+        v12 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [v10 longLongValue], database);
         [(DownloadsChangeset *)self->super._changeset addDownloadKind:[(DownloadEntity *)v12 downloadKind]];
         [(DownloadsChangeset *)self->super._changeset addStatusChangedDownloadID:[(DownloadEntity *)v12 persistentID]];
 
@@ -1181,21 +1181,21 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)retryDownloadWithIdentifier:(int64_t)a3
+- (BOOL)retryDownloadWithIdentifier:(int64_t)identifier
 {
-  v4 = [[NSOrderedSet alloc] initWithObjects:{+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", a3), 0}];
+  v4 = [[NSOrderedSet alloc] initWithObjects:{+[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", identifier), 0}];
   LOBYTE(self) = [(DownloadsTransaction *)self retryDownloadsWithIdentifiers:v4];
 
   return self;
 }
 
-- (BOOL)retryDownloadsWithIdentifiers:(id)a3
+- (BOOL)retryDownloadsWithIdentifiers:(id)identifiers
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [identifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1207,7 +1207,7 @@ LABEL_6:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(identifiers);
         }
 
         v9 = -[DownloadEntity initWithPersistentID:inDatabase:]([DownloadEntity alloc], "initWithPersistentID:inDatabase:", [*(*(&v11 + 1) + 8 * v8) longLongValue], -[DownloadsSession database](self, "database"));
@@ -1217,7 +1217,7 @@ LABEL_6:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [identifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1226,66 +1226,66 @@ LABEL_6:
   return 1;
 }
 
-- (BOOL)updateDownloadEntityWithIdentifier:(int64_t)a3 withDownload:(id)a4
+- (BOOL)updateDownloadEntityWithIdentifier:(int64_t)identifier withDownload:(id)download
 {
-  v7 = [[DownloadEntity alloc] initWithPersistentID:a3 inDatabase:[(DownloadsSession *)self database]];
-  v8 = [a4 externalPropertyValues];
-  if (![v8 objectForKey:SSDownloadExternalPropertyPolicy])
+  v7 = [[DownloadEntity alloc] initWithPersistentID:identifier inDatabase:[(DownloadsSession *)self database]];
+  externalPropertyValues = [download externalPropertyValues];
+  if (![externalPropertyValues objectForKey:SSDownloadExternalPropertyPolicy])
   {
-    v9 = [a4 downloadPolicy];
-    if (v9)
+    downloadPolicy = [download downloadPolicy];
+    if (downloadPolicy)
     {
-      [a4 setValue:+[NSNumber numberWithLongLong:](NSNumber forProperty:{"numberWithLongLong:", -[DownloadPolicyManager addDownloadPolicy:](-[DownloadsSession policyManager](self, "policyManager"), "addDownloadPolicy:", v9)), @"policy_id"}];
+      [download setValue:+[NSNumber numberWithLongLong:](NSNumber forProperty:{"numberWithLongLong:", -[DownloadPolicyManager addDownloadPolicy:](-[DownloadsSession policyManager](self, "policyManager"), "addDownloadPolicy:", downloadPolicy)), @"policy_id"}];
     }
   }
 
-  if (v8)
+  if (externalPropertyValues)
   {
-    [(DownloadsExternalTransaction *)self setExternalPropertyValues:v8 forDownloadWithID:a3];
+    [(DownloadsExternalTransaction *)self setExternalPropertyValues:externalPropertyValues forDownloadWithID:identifier];
   }
 
-  -[DownloadEntity setValuesWithDictionary:](v7, "setValuesWithDictionary:", [a4 propertyValues]);
-  v10 = [(DownloadEntity *)v7 setAssetsUsingDownload:a4];
+  -[DownloadEntity setValuesWithDictionary:](v7, "setValuesWithDictionary:", [download propertyValues]);
+  v10 = [(DownloadEntity *)v7 setAssetsUsingDownload:download];
   if (v10)
   {
-    v11 = [a4 valueForProperty:@"kind"];
+    v11 = [download valueForProperty:@"kind"];
     if (SSDownloadKindIsMediaKind())
     {
-      v12 = [(DownloadEntity *)v7 copyDownloadingIPodLibraryItem];
-      if (v12)
+      copyDownloadingIPodLibraryItem = [(DownloadEntity *)v7 copyDownloadingIPodLibraryItem];
+      if (copyDownloadingIPodLibraryItem)
       {
-        v13 = v12;
-        [(DownloadsChangeset *)self->super._changeset addIPodLibraryItem:v12];
+        v13 = copyDownloadingIPodLibraryItem;
+        [(DownloadsChangeset *)self->super._changeset addIPodLibraryItem:copyDownloadingIPodLibraryItem];
       }
     }
 
     [(DownloadsChangeset *)self->super._changeset addDownloadChangeTypes:16];
     [(DownloadsChangeset *)self->super._changeset addDownloadKind:v11];
-    [(DownloadsChangeset *)self->super._changeset addDownloadToPipelineWithID:a3];
-    [(DownloadsChangeset *)self->super._changeset addUpdatedDownloadID:a3];
+    [(DownloadsChangeset *)self->super._changeset addDownloadToPipelineWithID:identifier];
+    [(DownloadsChangeset *)self->super._changeset addUpdatedDownloadID:identifier];
     [(DownloadsChangeset *)self->super._changeset unionChangeset:v10];
   }
 
   return v10 != 0;
 }
 
-- (void)setValue:(id)a3 forExternalProperty:(id)a4 ofDownloadID:(int64_t)a5
+- (void)setValue:(id)value forExternalProperty:(id)property ofDownloadID:(int64_t)d
 {
-  if ([a4 isEqualToString:SSDownloadExternalPropertyPolicy])
+  if ([property isEqualToString:SSDownloadExternalPropertyPolicy])
   {
 
-    [(DownloadsTransaction *)self _setPolicy:a3 forDownloadWithID:a5];
+    [(DownloadsTransaction *)self _setPolicy:value forDownloadWithID:d];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = DownloadsTransaction;
-    [(DownloadsExternalTransaction *)&v9 setValue:a3 forExternalProperty:a4 ofDownloadID:a5];
+    [(DownloadsExternalTransaction *)&v9 setValue:value forExternalProperty:property ofDownloadID:d];
   }
 }
 
-- (id)_addEffectiveClientWithBundleID:(id)a3 database:(id)a4
+- (id)_addEffectiveClientWithBundleID:(id)d database:(id)database
 {
   v17 = 0;
   v18 = &v17;
@@ -1293,18 +1293,18 @@ LABEL_6:
   v20 = sub_100094970;
   v21 = sub_100094980;
   v22 = 0;
-  v6 = [SSSQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:a3];
+  v6 = [SSSQLiteComparisonPredicate predicateWithProperty:@"bundle_id" equalToValue:d];
   v23 = @"effective_client_id";
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10009498C;
   v16[3] = &unk_100327328;
   v16[4] = &v17;
-  [+[DownloadApplicationIdentifierEntity queryWithDatabase:predicate:](DownloadApplicationIdentifierEntity queryWithDatabase:a4 predicate:{v6), "enumeratePersistentIDsAndProperties:count:usingBlock:", &v23, 1, v16}];
+  [+[DownloadApplicationIdentifierEntity queryWithDatabase:predicate:](DownloadApplicationIdentifierEntity queryWithDatabase:database predicate:{v6), "enumeratePersistentIDsAndProperties:count:usingBlock:", &v23, 1, v16}];
   v7 = v18[5];
   if (!v7)
   {
-    v8 = [DownloadApplicationIdentifierEntity maxValueForProperty:@"effective_client_id" predicate:0 database:a4];
+    v8 = [DownloadApplicationIdentifierEntity maxValueForProperty:@"effective_client_id" predicate:0 database:database];
     v9 = [NSNumber alloc];
     if ([v8 longLongValue] >= 999)
     {
@@ -1319,7 +1319,7 @@ LABEL_6:
     v11 = [v9 initWithLongLong:v10];
     v18[5] = v11;
     v12 = [NSDictionary alloc];
-    v13 = [v12 initWithObjectsAndKeys:{v18[5], @"effective_client_id", a3, @"bundle_id", 0}];
+    v13 = [v12 initWithObjectsAndKeys:{v18[5], @"effective_client_id", d, @"bundle_id", 0}];
 
     v7 = v18[5];
   }
@@ -1329,9 +1329,9 @@ LABEL_6:
   return v14;
 }
 
-- (id)_copyEffectiveBundleIDForDownload:(id)a3
+- (id)_copyEffectiveBundleIDForDownload:(id)download
 {
-  v4 = [a3 valueForProperty:@"override_audit_token_data"];
+  v4 = [download valueForProperty:@"override_audit_token_data"];
   if (v4)
   {
     v5 = v4;
@@ -1349,10 +1349,10 @@ LABEL_6:
 
   else
   {
-    result = [a3 valueForProperty:@"application_id.bundle_id"];
+    result = [download valueForProperty:@"application_id.bundle_id"];
     if (!result)
     {
-      v7 = [a3 valueForProperty:@"client_id"];
+      v7 = [download valueForProperty:@"client_id"];
 
       return v7;
     }
@@ -1361,22 +1361,22 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_moveDownloadWithID:(int64_t)a3 relativeToDownloadWithID:(int64_t)a4 comparisonType:(int64_t)a5
+- (BOOL)_moveDownloadWithID:(int64_t)d relativeToDownloadWithID:(int64_t)iD comparisonType:(int64_t)type
 {
-  v8 = [[DownloadEntity alloc] initWithPersistentID:a3 inDatabase:[(DownloadsSession *)self database]];
-  v9 = [(DownloadEntity *)v8 downloadKind];
-  if (v9)
+  v8 = [[DownloadEntity alloc] initWithPersistentID:d inDatabase:[(DownloadsSession *)self database]];
+  downloadKind = [(DownloadEntity *)v8 downloadKind];
+  if (downloadKind)
   {
-    v10 = v9;
-    v11 = [[DownloadEntity alloc] initWithPersistentID:a4 inDatabase:[(DownloadsSession *)self database]];
+    v10 = downloadKind;
+    v11 = [[DownloadEntity alloc] initWithPersistentID:iD inDatabase:[(DownloadsSession *)self database]];
     v12 = [(DownloadEntity *)v11 valueForProperty:@"order_key"];
     v13 = v12 != 0;
     if (v12)
     {
       [v12 doubleValue];
       v15 = v14;
-      [(DownloadsTransaction *)self _orderKeyAdjacentToOrderKey:a5 comparisonType:?];
-      if (a5 == 3)
+      [(DownloadsTransaction *)self _orderKeyAdjacentToOrderKey:type comparisonType:?];
+      if (type == 3)
       {
         v17 = v16;
       }
@@ -1400,13 +1400,13 @@ LABEL_6:
   return v13;
 }
 
-- (id)_newTransactionForDownload:(id)a3 inDatabase:(id)a4
+- (id)_newTransactionForDownload:(id)download inDatabase:(id)database
 {
   v6 = objc_alloc_init(NSMutableDictionary);
-  v7 = [a3 valueForProperty:@"kind"];
+  v7 = [download valueForProperty:@"kind"];
   if ([v7 isEqualToString:SSDownloadKindSoftwareApplication])
   {
-    if ([objc_msgSend(a3 valueForProperty:{@"is_automatic", "integerValue"}] == 2)
+    if ([objc_msgSend(download valueForProperty:{@"is_automatic", "integerValue"}] == 2)
     {
       v8 = 2;
     }
@@ -1423,19 +1423,19 @@ LABEL_6:
   }
 
   [v6 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", v8), @"type"}];
-  v9 = [a3 valueForProperty:@"bundle_id"];
+  v9 = [download valueForProperty:@"bundle_id"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v6 setObject:v9 forKey:@"bundle_id"];
   }
 
-  v10 = [[TransactionEntity alloc] initWithPropertyValues:v6 inDatabase:a4];
+  v10 = [[TransactionEntity alloc] initWithPropertyValues:v6 inDatabase:database];
 
   return v10;
 }
 
-- (double)_orderKeyAdjacentToOrderKey:(double)a3 comparisonType:(int64_t)a4
+- (double)_orderKeyAdjacentToOrderKey:(double)key comparisonType:(int64_t)type
 {
   v15 = 0;
   v16 = &v15;
@@ -1446,13 +1446,13 @@ LABEL_6:
   v7 = objc_alloc_init(SSSQLiteQueryDescriptor);
   [v7 setEntityClass:objc_opt_class()];
   [v7 setLimitCount:1];
-  if (a4 == 3)
+  if (type == 3)
   {
     [v7 setOrderingDirections:{+[NSArray arrayWithObject:](NSArray, "arrayWithObject:", SSSQLiteOrderDescending)}];
   }
 
   [v7 setOrderingProperties:{+[NSArray arrayWithObject:](NSArray, "arrayWithObject:", @"order_key"}];
-  [v7 setPredicate:{+[SSSQLiteComparisonPredicate predicateWithProperty:value:comparisonType:](SSSQLiteComparisonPredicate, "predicateWithProperty:value:comparisonType:", @"order_key", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a3), a4)}];
+  [v7 setPredicate:{+[SSSQLiteComparisonPredicate predicateWithProperty:value:comparisonType:](SSSQLiteComparisonPredicate, "predicateWithProperty:value:comparisonType:", @"order_key", +[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", key), type)}];
   v8 = [[SSSQLiteQuery alloc] initWithDatabase:-[DownloadsSession database](self descriptor:{"database"), v7}];
   v21 = @"order_key";
   v14[0] = _NSConcreteStackBlock;
@@ -1472,14 +1472,14 @@ LABEL_6:
   else
   {
     [objc_opt_class() orderKeyIncrement];
-    if (a4 == 5)
+    if (type == 5)
     {
-      v11 = v12 + a3;
+      v11 = v12 + key;
     }
 
     else
     {
-      v11 = a3 - v12;
+      v11 = key - v12;
     }
   }
 
@@ -1487,15 +1487,15 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)_resetDownload:(id)a3 withValues:(const void *)a4 isUserIntiated:(BOOL)a5
+- (BOOL)_resetDownload:(id)download withValues:(const void *)values isUserIntiated:(BOOL)intiated
 {
-  v5 = a5;
-  v9 = [*a4 integerValue];
-  v10 = ([a4[4] isEqualToString:SSDownloadPhaseFailed] & 1) != 0 || (objc_msgSend(a4[4], "isEqualToString:", SSDownloadPhasePaused) & 1) != 0 || objc_msgSend(a4[1], "integerValue") != 0;
-  v11 = [a4[2] BOOLValue];
-  if (v9)
+  intiatedCopy = intiated;
+  integerValue = [*values integerValue];
+  v10 = ([values[4] isEqualToString:SSDownloadPhaseFailed] & 1) != 0 || (objc_msgSend(values[4], "isEqualToString:", SSDownloadPhasePaused) & 1) != 0 || objc_msgSend(values[1], "integerValue") != 0;
+  bOOLValue = [values[2] BOOLValue];
+  if (integerValue)
   {
-    v12 = v11;
+    v12 = bOOLValue;
   }
 
   else
@@ -1514,26 +1514,26 @@ LABEL_6:
   [v14 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", 0), @"download_state.blocked_reason"}];
   [v14 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", 0), @"store_preorder_id"}];
   [v14 setObject:+[NSNumber numberWithInteger:](NSNumber forKey:{"numberWithInteger:", 0), @"download_state.store_queue_refresh_count"}];
-  v15 = [a3 persistentID];
-  v16 = v9 == 0 || v10;
+  persistentID = [download persistentID];
+  v16 = integerValue == 0 || v10;
   v17 = +[SSLogConfig sharedDaemonConfig];
   v18 = v17;
-  if (v16 || !v5)
+  if (v16 || !intiatedCopy)
   {
     if (!v17)
     {
       v18 = +[SSLogConfig sharedConfig];
     }
 
-    v27 = [v18 shouldLog];
+    shouldLog = [v18 shouldLog];
     if ([v18 shouldLogToDisk])
     {
-      v28 = v27 | 2;
+      v28 = shouldLog | 2;
     }
 
     else
     {
-      v28 = v27;
+      v28 = shouldLog;
     }
 
     if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_INFO))
@@ -1546,7 +1546,7 @@ LABEL_6:
       v35 = 138412546;
       v36 = objc_opt_class();
       v37 = 2048;
-      v38 = v15;
+      v38 = persistentID;
       LODWORD(v34) = 22;
       v33 = &v35;
       v29 = _os_log_send_and_compose_impl();
@@ -1570,15 +1570,15 @@ LABEL_6:
       v18 = +[SSLogConfig sharedConfig];
     }
 
-    v19 = [v18 shouldLog];
+    shouldLog2 = [v18 shouldLog];
     if ([v18 shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog2 | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_INFO))
@@ -1591,7 +1591,7 @@ LABEL_6:
       v35 = 138412546;
       v36 = objc_opt_class();
       v37 = 2048;
-      v38 = v15;
+      v38 = persistentID;
       LODWORD(v34) = 22;
       v33 = &v35;
       v21 = _os_log_send_and_compose_impl();
@@ -1612,26 +1612,26 @@ LABEL_6:
     v25 = [v24 initWithDownloadKind:SSDownloadKindSoftwareApplication URLBagType:0];
     [v14 setObject:+[NSNumber numberWithLongLong:](NSNumber forKey:{"numberWithLongLong:", -[DownloadPolicyManager addDownloadPolicy:](-[DownloadsSession policyManager](self, "policyManager"), "addDownloadPolicy:", v25)), @"policy_id"}];
 
-    [(DownloadsChangeset *)self->super._changeset addPolicyChangedDownloadID:v15];
+    [(DownloadsChangeset *)self->super._changeset addPolicyChangedDownloadID:persistentID];
     v26 = 19;
   }
 
-  if ([a4[5] integerValue])
+  if ([values[5] integerValue])
   {
     v26 |= 0x20uLL;
-    [(DownloadsChangeset *)self->super._changeset addRestorableDownloadID:v15];
+    [(DownloadsChangeset *)self->super._changeset addRestorableDownloadID:persistentID];
   }
 
   [(DownloadsChangeset *)self->super._changeset addDownloadChangeTypes:v26];
-  [(DownloadsChangeset *)self->super._changeset addDownloadKind:a4[3]];
-  [(DownloadsChangeset *)self->super._changeset addStatusChangedDownloadID:v15];
-  [(DownloadsChangeset *)self->super._changeset addUpdatedDownloadID:v15];
-  v13 = [a3 setValuesWithDictionary:v14];
+  [(DownloadsChangeset *)self->super._changeset addDownloadKind:values[3]];
+  [(DownloadsChangeset *)self->super._changeset addStatusChangedDownloadID:persistentID];
+  [(DownloadsChangeset *)self->super._changeset addUpdatedDownloadID:persistentID];
+  v13 = [download setValuesWithDictionary:v14];
 
   return v13;
 }
 
-- (void)_setPolicy:(id)a3 forDownloadWithID:(int64_t)a4
+- (void)_setPolicy:(id)policy forDownloadWithID:(int64_t)d
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1663,11 +1663,11 @@ LABEL_6:
     }
   }
 
-  v9 = [[DownloadEntity alloc] initWithPersistentID:a4 inDatabase:[(DownloadsSession *)self database]];
+  v9 = [[DownloadEntity alloc] initWithPersistentID:d inDatabase:[(DownloadsSession *)self database]];
   [(DownloadEntity *)v9 setValue:[NSNumber forProperty:"numberWithLongLong:" numberWithLongLong:v6], @"policy_id"];
   [(DownloadsChangeset *)self->super._changeset addDownloadChangeTypes:17];
-  [(DownloadsChangeset *)self->super._changeset addPolicyChangedDownloadID:a4];
-  [(DownloadsChangeset *)self->super._changeset addUpdatedDownloadID:a4];
+  [(DownloadsChangeset *)self->super._changeset addPolicyChangedDownloadID:d];
+  [(DownloadsChangeset *)self->super._changeset addUpdatedDownloadID:d];
 }
 
 @end

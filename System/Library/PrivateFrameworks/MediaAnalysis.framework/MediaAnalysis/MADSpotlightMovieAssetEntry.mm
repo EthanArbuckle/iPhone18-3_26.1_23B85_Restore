@@ -1,23 +1,23 @@
 @interface MADSpotlightMovieAssetEntry
-+ (id)entryWithAsset:(id)a3;
-- (MADSpotlightMovieAssetEntry)initWithAsset:(id)a3;
++ (id)entryWithAsset:(id)asset;
+- (MADSpotlightMovieAssetEntry)initWithAsset:(id)asset;
 - (int)consumeSandboxExtension;
 - (void)dealloc;
 @end
 
 @implementation MADSpotlightMovieAssetEntry
 
-- (MADSpotlightMovieAssetEntry)initWithAsset:(id)a3
+- (MADSpotlightMovieAssetEntry)initWithAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = MADSpotlightMovieAssetEntry;
   v6 = [(MADSpotlightMovieAssetEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
-    v7->_previousStatus = [v5 status];
+    objc_storeStrong(&v6->_asset, asset);
+    v7->_previousStatus = [assetCopy status];
     v7->_status = 0;
     v7->_sandboxHandle = -1;
   }
@@ -25,10 +25,10 @@
   return v7;
 }
 
-+ (id)entryWithAsset:(id)a3
++ (id)entryWithAsset:(id)asset
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithAsset:v3];
+  assetCopy = asset;
+  v4 = [objc_alloc(objc_opt_class()) initWithAsset:assetCopy];
 
   return v4;
 }
@@ -52,8 +52,8 @@
     return 0;
   }
 
-  v3 = [(MADManagedSpotlightEntry *)self->_asset sandboxToken];
-  [v3 UTF8String];
+  sandboxToken = [(MADManagedSpotlightEntry *)self->_asset sandboxToken];
+  [sandboxToken UTF8String];
   self->_sandboxHandle = sandbox_extension_consume();
 
   if ((self->_sandboxHandle & 0x8000000000000000) == 0)
@@ -66,9 +66,9 @@
     v5 = VCPLogToOSLogType[3];
     if (os_log_type_enabled(&_os_log_default, v5))
     {
-      v6 = [(MADManagedSpotlightEntry *)self->_asset uniqueIdentifier];
+      uniqueIdentifier = [(MADManagedSpotlightEntry *)self->_asset uniqueIdentifier];
       v7 = 138412290;
-      v8 = v6;
+      v8 = uniqueIdentifier;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v5, "[%@] Failed to consume sandbox extension", &v7, 0xCu);
     }
   }

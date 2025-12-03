@@ -1,38 +1,38 @@
 @interface CHMetrics
 - (BOOL)isEnabled;
-- (BOOL)isEventType:(unint64_t)a3 inList:(vector<unsigned)long;
-- (CHMetrics)initWithEngine:(id)a3 audioSessionID:(unsigned int)a4 sessionIsShared:(BOOL)a5 isSPI:(BOOL)a6;
-- (float)getLoopsForAdvancedPlayer:(id)a3 endTime:(double)a4;
-- (float)getLoopsForPlayer:(id)a3 endTime:(double)a4;
+- (BOOL)isEventType:(unint64_t)type inList:(vector<unsigned)long;
+- (CHMetrics)initWithEngine:(id)engine audioSessionID:(unsigned int)d sessionIsShared:(BOOL)shared isSPI:(BOOL)i;
+- (float)getLoopsForAdvancedPlayer:(id)player endTime:(double)time;
+- (float)getLoopsForPlayer:(id)player endTime:(double)time;
 - (id).cxx_construct;
-- (id)continousDictionary:(id)a3 slot:(unint64_t)a4 intensity:(float)a5;
-- (id)getIDForPlayer:(id)a3;
-- (id)getMetricsForPlayer:(id)a3;
-- (id)intensityBinKeyFromValue:(float)a3;
-- (id)legacyTransientDictionary:(id)a3 eventType:(unint64_t)a4 intensity:(float)a5;
-- (id)transientDictionary:(id)a3 index:(unint64_t)a4 intensity:(float)a5;
-- (void)addPatternLibraryMetric:(id)a3;
+- (id)continousDictionary:(id)dictionary slot:(unint64_t)slot intensity:(float)intensity;
+- (id)getIDForPlayer:(id)player;
+- (id)getMetricsForPlayer:(id)player;
+- (id)intensityBinKeyFromValue:(float)value;
+- (id)legacyTransientDictionary:(id)dictionary eventType:(unint64_t)type intensity:(float)intensity;
+- (id)transientDictionary:(id)dictionary index:(unint64_t)index intensity:(float)intensity;
+- (void)addPatternLibraryMetric:(id)metric;
 - (void)dealloc;
-- (void)dispatchOnLocal:(id)a3;
-- (void)handleActionForPlayer:(id)a3 action:(int64_t)a4 time:(double)a5 isAdvanced:(BOOL)a6;
+- (void)dispatchOnLocal:(id)local;
+- (void)handleActionForPlayer:(id)player action:(int64_t)action time:(double)time isAdvanced:(BOOL)advanced;
 - (void)handleEngineStart;
 - (void)handleEngineStop;
-- (void)handleFinishedForPlayersAtTime:(double)a3;
-- (void)handleInitForPlayer:(id)a3 events:(id)a4 isAdvanced:(BOOL)a5 patternID:(id)a6;
+- (void)handleFinishedForPlayersAtTime:(double)time;
+- (void)handleInitForPlayer:(id)player events:(id)events isAdvanced:(BOOL)advanced patternID:(id)d;
 - (void)handleParamCurveEncountered;
-- (void)logMetric:(id)a3 value:(id)a4;
-- (void)logPatternLibraryMetric:(id)a3;
-- (void)logPowerLogMetric:(id)a3;
-- (void)markAdvancedPlaybackAction:(id)a3 action:(int64_t)a4 time:(float)a5;
-- (void)markPlaybackAction:(id)a3 action:(int64_t)a4 time:(float)a5;
-- (void)prepareAdvancedPlaybackData:(id)a3 events:(id)a4;
-- (void)prepareData:(id)a3 events:(id)a4;
-- (void)preparePlaybackData:(id)a3 events:(id)a4;
-- (void)removePlaybackData:(id)a3;
-- (void)resetAdvancedPlaybackData:(id)a3;
-- (void)resetPlaybackData:(id)a3;
-- (void)retainData:(id)a3 forTestingPlayer:(id)a4;
-- (void)sendDetailedMetricsForPlayerID:(id)a3 endTime:(float)a4;
+- (void)logMetric:(id)metric value:(id)value;
+- (void)logPatternLibraryMetric:(id)metric;
+- (void)logPowerLogMetric:(id)metric;
+- (void)markAdvancedPlaybackAction:(id)action action:(int64_t)a4 time:(float)time;
+- (void)markPlaybackAction:(id)action action:(int64_t)a4 time:(float)time;
+- (void)prepareAdvancedPlaybackData:(id)data events:(id)events;
+- (void)prepareData:(id)data events:(id)events;
+- (void)preparePlaybackData:(id)data events:(id)events;
+- (void)removePlaybackData:(id)data;
+- (void)resetAdvancedPlaybackData:(id)data;
+- (void)resetPlaybackData:(id)data;
+- (void)retainData:(id)data forTestingPlayer:(id)player;
+- (void)sendDetailedMetricsForPlayerID:(id)d endTime:(float)time;
 - (void)sendPatternLibraryMetrics;
 - (void)setMetricsTestModeEnabled;
 - (void)setReporter;
@@ -109,22 +109,22 @@ LABEL_9:
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 code];
+      code = [v7 code];
     }
 
     else
     {
-      v9 = 0;
+      code = 0;
     }
 
-    v12 = [MEMORY[0x277CCA8D8] mainBundle];
-    v13 = [v12 bundleIdentifier];
-    if (!v13 || ([MEMORY[0x277CCA8D8] mainBundle], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "bundleIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v3, "isEqual:", @"Unknown") & 1) != 0))
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    if (!bundleIdentifier || ([MEMORY[0x277CCA8D8] mainBundle], v2 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "bundleIdentifier"), v3 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v3, "isEqual:", @"Unknown") & 1) != 0))
     {
-      v16 = [MEMORY[0x277CCAC38] processInfo];
-      v15 = [v16 processName];
+      processInfo = [MEMORY[0x277CCAC38] processInfo];
+      processName = [processInfo processName];
 
-      if (!v13)
+      if (!bundleIdentifier)
       {
         goto LABEL_17;
       }
@@ -132,18 +132,18 @@ LABEL_9:
 
     else
     {
-      v14 = [MEMORY[0x277CCA8D8] mainBundle];
-      v15 = [v14 bundleIdentifier];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      processName = [mainBundle2 bundleIdentifier];
     }
 
 LABEL_17:
     v35 = @"HostApplicationDisplayID";
-    v36[0] = v15;
+    v36[0] = processName;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v36 forKeys:&v35 count:1];
     v18 = self->_reporterID;
     CAReportingClientSetConfiguration();
 
-    if (v9)
+    if (code)
     {
       goto LABEL_20;
     }
@@ -184,7 +184,7 @@ LABEL_18:
     goto LABEL_27;
   }
 
-  v9 = 0;
+  code = 0;
 LABEL_20:
   if (kHMETScope)
   {
@@ -213,7 +213,7 @@ LABEL_20:
     v31 = 2112;
     v32 = engineID;
     v33 = 1024;
-    v34 = v9;
+    v34 = code;
     _os_log_impl(&dword_21569A000, v19, OS_LOG_TYPE_ERROR, "%25s:%-5d %s: unable to set reporter for engine %@: error %d", buf, 0x2Cu);
   }
 
@@ -411,10 +411,10 @@ LABEL_10:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (CHMetrics)initWithEngine:(id)a3 audioSessionID:(unsigned int)a4 sessionIsShared:(BOOL)a5 isSPI:(BOOL)a6
+- (CHMetrics)initWithEngine:(id)engine audioSessionID:(unsigned int)d sessionIsShared:(BOOL)shared isSPI:(BOOL)i
 {
   v90[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  engineCopy = engine;
   v37.receiver = self;
   v37.super_class = CHMetrics;
   v11 = [(CHMetrics *)&v37 init];
@@ -450,7 +450,7 @@ LABEL_29:
     *&buf[18] = 2080;
     *&buf[20] = "[CHMetrics initWithEngine:audioSessionID:sessionIsShared:isSPI:]";
     *&buf[28] = 2112;
-    *&buf[30] = v10;
+    *&buf[30] = engineCopy;
     _os_log_impl(&dword_21569A000, v13, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: initializing metrics for engine %@", buf, 0x26u);
   }
 
@@ -461,14 +461,14 @@ LABEL_9:
     v16 = *(v11 + 4);
     *(v11 + 4) = v15;
 
-    v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%p", v10];
+    engineCopy = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%p", engineCopy];
     v18 = *(v11 + 2);
-    *(v11 + 2) = v17;
+    *(v11 + 2) = engineCopy;
 
     *(v11 + 1) = 1;
-    *(v11 + 6) = a4;
-    v11[28] = a5;
-    v11[29] = a6;
+    *(v11 + 6) = d;
+    v11[28] = shared;
+    v11[29] = i;
     [v11 setReporter];
     v19 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v20 = *(v11 + 21);
@@ -479,11 +479,11 @@ LABEL_9:
     *(v11 + 20) = v21;
 
     *(v11 + 5) = 0x3F3333333ECCCCCDLL;
-    v23 = [v10 serverConfig];
-    v24 = v23;
-    if (v23)
+    serverConfig = [engineCopy serverConfig];
+    v24 = serverConfig;
+    if (serverConfig)
     {
-      [v23 hapticTransientIDs];
+      [serverConfig hapticTransientIDs];
     }
 
     else
@@ -505,11 +505,11 @@ LABEL_9:
     *(v11 + 8) = *&buf[16];
     memset(buf, 0, 24);
 
-    v27 = [v10 serverConfig];
-    v28 = v27;
-    if (v27)
+    serverConfig2 = [engineCopy serverConfig];
+    v28 = serverConfig2;
+    if (serverConfig2)
     {
-      [v27 hapticContinuousSustainedIDs];
+      [serverConfig2 hapticContinuousSustainedIDs];
     }
 
     else
@@ -531,11 +531,11 @@ LABEL_9:
     *(v11 + 11) = *&buf[16];
     memset(buf, 0, 24);
 
-    v30 = [v10 serverConfig];
-    v31 = v30;
-    if (v30)
+    serverConfig3 = [engineCopy serverConfig];
+    v31 = serverConfig3;
+    if (serverConfig3)
     {
-      [v30 hapticContinuousNonsustainedIDs];
+      [serverConfig3 hapticContinuousNonsustainedIDs];
     }
 
     else
@@ -691,11 +691,11 @@ LABEL_11:
   [(CHMetrics *)self logMetric:v2 value:&unk_28279D810];
 }
 
-- (void)handleInitForPlayer:(id)a3 events:(id)a4 isAdvanced:(BOOL)a5 patternID:(id)a6
+- (void)handleInitForPlayer:(id)player events:(id)events isAdvanced:(BOOL)advanced patternID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  playerCopy = player;
+  eventsCopy = events;
+  dCopy = d;
   if (self->_isSPI)
   {
     v13 = @"initPatternPlayer_SPI";
@@ -707,18 +707,18 @@ LABEL_11:
   }
 
   [(CHMetrics *)self logMetric:v13 value:&unk_28279D810];
-  if (!v12)
+  if (!dCopy)
   {
-    v14 = [(CHMetrics *)self getIDForPlayer:v10];
+    v14 = [(CHMetrics *)self getIDForPlayer:playerCopy];
     objc_initWeak(&location, self);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __61__CHMetrics_handleInitForPlayer_events_isAdvanced_patternID___block_invoke;
     v16[3] = &unk_2781C91E8;
     objc_copyWeak(&v19, &location);
-    v20 = a5;
+    advancedCopy = advanced;
     v17 = v14;
-    v18 = v11;
+    v18 = eventsCopy;
     v15 = v14;
     [(CHMetrics *)self dispatchOnLocal:v16];
 
@@ -746,20 +746,20 @@ void __61__CHMetrics_handleInitForPlayer_events_isAdvanced_patternID___block_inv
   }
 }
 
-- (void)handleActionForPlayer:(id)a3 action:(int64_t)a4 time:(double)a5 isAdvanced:(BOOL)a6
+- (void)handleActionForPlayer:(id)player action:(int64_t)action time:(double)time isAdvanced:(BOOL)advanced
 {
-  v10 = a3;
-  v11 = [(CHMetrics *)self getIDForPlayer:v10];
+  playerCopy = player;
+  v11 = [(CHMetrics *)self getIDForPlayer:playerCopy];
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __58__CHMetrics_handleActionForPlayer_action_time_isAdvanced___block_invoke;
   v13[3] = &unk_2781C9210;
   objc_copyWeak(v15, &location);
-  v16 = a6;
+  advancedCopy = advanced;
   v14 = v11;
-  v15[1] = a4;
-  v15[2] = *&a5;
+  v15[1] = action;
+  v15[2] = *&time;
   v12 = v11;
   [(CHMetrics *)self dispatchOnLocal:v13];
 
@@ -788,7 +788,7 @@ void __58__CHMetrics_handleActionForPlayer_action_time_isAdvanced___block_invoke
   }
 }
 
-- (void)handleFinishedForPlayersAtTime:(double)a3
+- (void)handleFinishedForPlayersAtTime:(double)time
 {
   v19 = *MEMORY[0x277D85DE8];
   if (kHMETScope)
@@ -827,7 +827,7 @@ LABEL_8:
   v9[2] = __44__CHMetrics_handleFinishedForPlayersAtTime___block_invoke;
   v9[3] = &unk_2781C9238;
   objc_copyWeak(v10, buf);
-  v10[1] = *&a3;
+  v10[1] = *&time;
   [(CHMetrics *)self dispatchOnLocal:v9];
   objc_destroyWeak(v10);
   objc_destroyWeak(buf);
@@ -876,17 +876,17 @@ void __44__CHMetrics_handleFinishedForPlayersAtTime___block_invoke(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getIDForPlayer:(id)a3
+- (id)getIDForPlayer:(id)player
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p", a3];
+  player = [MEMORY[0x277CCACA8] stringWithFormat:@"%p", player];
 
-  return v3;
+  return player;
 }
 
-- (void)dispatchOnLocal:(id)a3
+- (void)dispatchOnLocal:(id)local
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  localCopy = local;
   if (kHMETScope)
   {
     if (*(kHMETScope + 8))
@@ -897,7 +897,7 @@ void __44__CHMetrics_handleFinishedForPlayersAtTime___block_invoke(uint64_t a1)
         v6 = v5;
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
         {
-          v7 = MEMORY[0x21606F540](v4);
+          v7 = MEMORY[0x21606F540](localCopy);
           *buf = 136315906;
           v14 = "CHMetrics.mm";
           v15 = 1024;
@@ -917,8 +917,8 @@ void __44__CHMetrics_handleFinishedForPlayersAtTime___block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __29__CHMetrics_dispatchOnLocal___block_invoke;
   block[3] = &unk_2781C9260;
-  v12 = v4;
-  v9 = v4;
+  v12 = localCopy;
+  v9 = localCopy;
   dispatch_async(dispatchQueue, block);
 
   v10 = *MEMORY[0x277D85DE8];
@@ -953,11 +953,11 @@ void __29__CHMetrics_dispatchOnLocal___block_invoke(uint64_t a1)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logMetric:(id)a3 value:(id)a4
+- (void)logMetric:(id)metric value:(id)value
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metricCopy = metric;
+  valueCopy = value;
   if (kHMETScope)
   {
     v8 = *kHMETScope;
@@ -982,22 +982,22 @@ void __29__CHMetrics_dispatchOnLocal___block_invoke(uint64_t a1)
     v17 = 2080;
     v18 = "[CHMetrics logMetric:value:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = metricCopy;
     _os_log_impl(&dword_21569A000, v8, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: logging metrics for %@", buf, 0x26u);
   }
 
 LABEL_8:
-  v10 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v7, v6, 0}];
+  v10 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{valueCopy, metricCopy, 0}];
   reporterID = self->_reporterID;
   CAReportingClientSendMessage();
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logPowerLogMetric:(id)a3
+- (void)logPowerLogMetric:(id)metric
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricCopy = metric;
   if (kHMETScope)
   {
     v5 = *kHMETScope;
@@ -1022,13 +1022,13 @@ LABEL_8:
     v16 = 2080;
     v17 = "[CHMetrics logPowerLogMetric:]";
     v18 = 2112;
-    v19 = v4;
+    v19 = metricCopy;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: logging PowerLog metrics for %@", buf, 0x26u);
   }
 
 LABEL_8:
   v10 = @"EngineState";
-  v11 = v4;
+  v11 = metricCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   reporterID = self->_reporterID;
   CAReportingClientSendMessage();
@@ -1036,34 +1036,34 @@ LABEL_8:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPatternLibraryMetric:(id)a3
+- (void)addPatternLibraryMetric:(id)metric
 {
-  v8 = a3;
-  if (v8)
+  metricCopy = metric;
+  if (metricCopy)
   {
-    v4 = [(NSMutableDictionary *)self->_patternLibraryData objectForKey:v8];
+    v4 = [(NSMutableDictionary *)self->_patternLibraryData objectForKey:metricCopy];
 
     if (v4)
     {
       v5 = MEMORY[0x277CCABB0];
-      v6 = [(NSMutableDictionary *)self->_patternLibraryData objectForKeyedSubscript:v8];
+      v6 = [(NSMutableDictionary *)self->_patternLibraryData objectForKeyedSubscript:metricCopy];
       v7 = [v5 numberWithInt:{objc_msgSend(v6, "intValue") + 1}];
-      [(NSMutableDictionary *)self->_patternLibraryData setObject:v7 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_patternLibraryData setObject:v7 forKeyedSubscript:metricCopy];
     }
 
     else
     {
-      [(NSMutableDictionary *)self->_patternLibraryData setObject:&unk_28279D810 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_patternLibraryData setObject:&unk_28279D810 forKeyedSubscript:metricCopy];
     }
   }
 }
 
-- (void)logPatternLibraryMetric:(id)a3
+- (void)logPatternLibraryMetric:(id)metric
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  metricCopy = metric;
+  v5 = metricCopy;
+  if (metricCopy && [metricCopy length])
   {
     if (kHMETScope)
     {
@@ -1109,25 +1109,25 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendDetailedMetricsForPlayerID:(id)a3 endTime:(float)a4
+- (void)sendDetailedMetricsForPlayerID:(id)d endTime:(float)time
 {
   v104 = *MEMORY[0x277D85DE8];
-  v74 = a3;
+  dCopy = d;
   v69 = [(NSMutableDictionary *)self->_playerData objectForKeyedSubscript:?];
   v68 = [v69 objectForKeyedSubscript:@"transientData"];
   v67 = [v69 objectForKeyedSubscript:@"continuousData"];
   v6 = [v69 objectForKeyedSubscript:@"isAdvanced"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v75 = [v69 objectForKeyedSubscript:@"advancedPlayback"];
     if (!v75 || ([v75 objectForKeyedSubscript:@"playbackLastAction"], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
     {
       if (kHMETScope)
       {
-        v12 = *kHMETScope;
-        if (!v12)
+        allValues2 = *kHMETScope;
+        if (!allValues2)
         {
           goto LABEL_79;
         }
@@ -1135,11 +1135,11 @@ LABEL_11:
 
       else
       {
-        v12 = MEMORY[0x277D86220];
+        allValues2 = MEMORY[0x277D86220];
         v17 = MEMORY[0x277D86220];
       }
 
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+      if (!os_log_type_enabled(allValues2, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_78;
       }
@@ -1158,12 +1158,12 @@ LABEL_11:
     [v9 floatValue];
     v11 = v10;
 
-    if (v11 > a4)
+    if (v11 > time)
     {
       if (kHMETScope)
       {
-        v12 = *kHMETScope;
-        if (!v12)
+        allValues2 = *kHMETScope;
+        if (!allValues2)
         {
           goto LABEL_79;
         }
@@ -1171,11 +1171,11 @@ LABEL_11:
 
       else
       {
-        v12 = MEMORY[0x277D86220];
+        allValues2 = MEMORY[0x277D86220];
         v64 = MEMORY[0x277D86220];
       }
 
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+      if (!os_log_type_enabled(allValues2, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_78;
       }
@@ -1188,11 +1188,11 @@ LABEL_11:
       v95 = "[CHMetrics sendDetailedMetricsForPlayerID:endTime:]";
       v18 = "%25s:%-5d %s: skipping metrics - first start time > end time";
 LABEL_77:
-      _os_log_impl(&dword_21569A000, v12, OS_LOG_TYPE_DEBUG, v18, buf, 0x1Cu);
+      _os_log_impl(&dword_21569A000, allValues2, OS_LOG_TYPE_DEBUG, v18, buf, 0x1Cu);
       goto LABEL_78;
     }
 
-    [(CHMetrics *)self getLoopsForAdvancedPlayer:v69 endTime:a4];
+    [(CHMetrics *)self getLoopsForAdvancedPlayer:v69 endTime:time];
     v21 = v20;
     v22 = [v69 objectForKeyedSubscript:@"advancedPlayback"];
     [(CHMetrics *)self resetAdvancedPlaybackData:v22];
@@ -1205,8 +1205,8 @@ LABEL_77:
     {
       if (kHMETScope)
       {
-        v12 = *kHMETScope;
-        if (!v12)
+        allValues2 = *kHMETScope;
+        if (!allValues2)
         {
           goto LABEL_79;
         }
@@ -1214,11 +1214,11 @@ LABEL_77:
 
       else
       {
-        v12 = MEMORY[0x277D86220];
+        allValues2 = MEMORY[0x277D86220];
         v19 = MEMORY[0x277D86220];
       }
 
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+      if (!os_log_type_enabled(allValues2, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_78;
       }
@@ -1237,12 +1237,12 @@ LABEL_77:
     [v14 floatValue];
     v16 = v15;
 
-    if (v16 > a4)
+    if (v16 > time)
     {
       if (kHMETScope)
       {
-        v12 = *kHMETScope;
-        if (!v12)
+        allValues2 = *kHMETScope;
+        if (!allValues2)
         {
           goto LABEL_79;
         }
@@ -1250,11 +1250,11 @@ LABEL_77:
 
       else
       {
-        v12 = MEMORY[0x277D86220];
+        allValues2 = MEMORY[0x277D86220];
         v65 = MEMORY[0x277D86220];
       }
 
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
+      if (!os_log_type_enabled(allValues2, OS_LOG_TYPE_DEBUG))
       {
         goto LABEL_78;
       }
@@ -1269,7 +1269,7 @@ LABEL_77:
       goto LABEL_77;
     }
 
-    [(CHMetrics *)self getLoopsForPlayer:v69 endTime:a4];
+    [(CHMetrics *)self getLoopsForPlayer:v69 endTime:time];
     v21 = v23;
     v22 = [v69 objectForKeyedSubscript:@"playback"];
     [(CHMetrics *)self resetPlaybackData:v22];
@@ -1299,7 +1299,7 @@ LABEL_32:
       v96 = 2112;
       v97 = engineID;
       v98 = 2112;
-      v99 = v74;
+      v99 = dCopy;
       v100 = 2048;
       v101 = [v68 count];
       v102 = 2048;
@@ -1318,9 +1318,9 @@ LABEL_32:
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
-  v28 = [v68 allValues];
-  obj = v28;
-  v29 = [v28 countByEnumeratingWithState:&v80 objects:v89 count:16];
+  allValues = [v68 allValues];
+  obj = allValues;
+  v29 = [allValues countByEnumeratingWithState:&v80 objects:v89 count:16];
   if (!v29)
   {
     goto LABEL_52;
@@ -1388,11 +1388,11 @@ LABEL_48:
       if (self->_retainDataForTesting)
       {
         v43 = [(NSString *)v39 mutableCopy];
-        [(CHMetrics *)self retainData:v43 forTestingPlayer:v74];
+        [(CHMetrics *)self retainData:v43 forTestingPlayer:dCopy];
       }
     }
 
-    v28 = obj;
+    allValues = obj;
     v29 = [obj countByEnumeratingWithState:&v80 objects:v89 count:16];
   }
 
@@ -1406,9 +1406,9 @@ LABEL_53:
     v79 = 0u;
     v76 = 0u;
     v77 = 0u;
-    v12 = [v67 allValues];
-    obja = v12;
-    v44 = [v12 countByEnumeratingWithState:&v76 objects:v86 count:16];
+    allValues2 = [v67 allValues];
+    obja = allValues2;
+    v44 = [allValues2 countByEnumeratingWithState:&v76 objects:v86 count:16];
     if (!v44)
     {
       goto LABEL_78;
@@ -1483,11 +1483,11 @@ LABEL_66:
         if (self->_retainDataForTesting)
         {
           v63 = [(NSString *)v59 mutableCopy];
-          [(CHMetrics *)self retainData:v63 forTestingPlayer:v74];
+          [(CHMetrics *)self retainData:v63 forTestingPlayer:dCopy];
         }
       }
 
-      v12 = obja;
+      allValues2 = obja;
       v44 = [obja countByEnumeratingWithState:&v76 objects:v86 count:16];
       if (!v44)
       {
@@ -1503,10 +1503,10 @@ LABEL_79:
   v66 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markPlaybackAction:(id)a3 action:(int64_t)a4 time:(float)a5
+- (void)markPlaybackAction:(id)action action:(int64_t)a4 time:(float)time
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  actionCopy = action;
   if (kHMETScope)
   {
     v9 = *kHMETScope;
@@ -1532,29 +1532,29 @@ LABEL_79:
     v51 = 2080;
     v52 = "[CHMetrics markPlaybackAction:action:time:]";
     v53 = 2048;
-    v54 = *&a4;
+    timeCopy = *&a4;
     v55 = 2112;
     v56 = *&engineID;
     v57 = 2048;
-    v58 = v8;
+    v58 = actionCopy;
     _os_log_impl(&dword_21569A000, v9, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: marking action %ld for engine %@ player %p", &v47, 0x3Au);
   }
 
 LABEL_8:
   +[CHMetrics currentTime];
-  if (v12 > a5)
+  if (v12 > time)
   {
     +[CHMetrics currentTime];
-    a5 = v13;
+    time = v13;
   }
 
-  v14 = [(NSMutableDictionary *)self->_playerData objectForKeyedSubscript:v8];
+  v14 = [(NSMutableDictionary *)self->_playerData objectForKeyedSubscript:actionCopy];
   v15 = [v14 objectForKeyedSubscript:@"playback"];
   v16 = [v15 objectForKeyedSubscript:@"playbackLastAction"];
   v17 = [v15 objectForKeyedSubscript:@"edgeCase"];
-  v18 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
 
-  if ((v18 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     if (*&a4 != 0.0)
     {
@@ -1571,7 +1571,7 @@ LABEL_8:
     {
       v21 = [v15 objectForKeyedSubscript:@"firstStartTime"];
       [v21 floatValue];
-      v23 = a5 < v22;
+      v23 = time < v22;
 
       if (!v23)
       {
@@ -1579,7 +1579,7 @@ LABEL_17:
         if (v16)
         {
           [(PlaybackAction *)v16 time];
-          if (a5 < v26)
+          if (time < v26)
           {
             if (kHMETScope)
             {
@@ -1607,7 +1607,7 @@ LABEL_17:
               v51 = 2080;
               v52 = "[CHMetrics markPlaybackAction:action:time:]";
               v53 = 2048;
-              v54 = a5;
+              timeCopy = time;
               v55 = 2048;
               v56 = v43;
               _os_log_impl(&dword_21569A000, v42, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: edge case: action time out of order %g < %g", &v47, 0x30u);
@@ -1619,15 +1619,15 @@ LABEL_44:
             goto LABEL_45;
           }
 
-          v29 = [(PlaybackAction *)v16 action];
-          if (a4 == 3 && !v29 || !([(PlaybackAction *)v16 action]| a4))
+          action = [(PlaybackAction *)v16 action];
+          if (a4 == 3 && !action || !([(PlaybackAction *)v16 action]| a4))
           {
             [(PlaybackAction *)v16 time];
             v32 = v31;
             [(PlaybackAction *)v16 setAction:a4];
-            *&v33 = a5;
+            *&v33 = time;
             [(PlaybackAction *)v16 setTime:v33];
-            v34 = (a5 - v32) + 0.0;
+            v34 = (time - v32) + 0.0;
 LABEL_34:
             v36 = MEMORY[0x277CCABB0];
             v37 = [v15 objectForKeyedSubscript:@"playbackDuration"];
@@ -1639,8 +1639,8 @@ LABEL_34:
             goto LABEL_45;
           }
 
-          v30 = [(PlaybackAction *)v16 action];
-          if (*&a4 != 0.0 || v30 != 3)
+          action2 = [(PlaybackAction *)v16 action];
+          if (*&a4 != 0.0 || action2 != 3)
           {
             if (kHMETScope)
             {
@@ -1710,13 +1710,13 @@ LABEL_34:
 
         [(PlaybackAction *)v16 setAction:0];
         v34 = 0.0;
-        *&v35 = a5;
+        *&v35 = time;
         [(PlaybackAction *)v16 setTime:v35];
         goto LABEL_34;
       }
     }
 
-    *&v24 = a5;
+    *&v24 = time;
     v25 = [MEMORY[0x277CCABB0] numberWithFloat:v24];
     [v15 setObject:v25 forKeyedSubscript:@"firstStartTime"];
 
@@ -1728,10 +1728,10 @@ LABEL_45:
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markAdvancedPlaybackAction:(id)a3 action:(int64_t)a4 time:(float)a5
+- (void)markAdvancedPlaybackAction:(id)action action:(int64_t)a4 time:(float)time
 {
   v59 = *MEMORY[0x277D85DE8];
-  v8 = COERCE_DOUBLE(a3);
+  v8 = COERCE_DOUBLE(action);
   if (kHMETScope)
   {
     v9 = *kHMETScope;
@@ -1757,9 +1757,9 @@ LABEL_45:
     v51 = 2080;
     v52 = "[CHMetrics markAdvancedPlaybackAction:action:time:]";
     v53 = 2048;
-    v54 = *&a4;
+    timeCopy = *&a4;
     v55 = 2112;
-    v56 = *&engineID;
+    timeCopy2 = *&engineID;
     v57 = 2112;
     v58 = v8;
     _os_log_impl(&dword_21569A000, v9, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: marking advanced action %ld for engine %@ player %@", &v47, 0x3Au);
@@ -1767,19 +1767,19 @@ LABEL_45:
 
 LABEL_8:
   +[CHMetrics currentTime];
-  if (v12 > a5)
+  if (v12 > time)
   {
     +[CHMetrics currentTime];
-    a5 = v13;
+    time = v13;
   }
 
   v14 = [(NSMutableDictionary *)self->_playerData objectForKeyedSubscript:*&v8];
   v15 = [v14 objectForKeyedSubscript:@"advancedPlayback"];
   v16 = [v15 objectForKeyedSubscript:@"playbackLastAction"];
   v17 = [v15 objectForKeyedSubscript:@"edgeCase"];
-  v18 = [v17 BOOLValue];
+  bOOLValue = [v17 BOOLValue];
 
-  if ((v18 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     if (*&a4 != 0.0)
     {
@@ -1796,7 +1796,7 @@ LABEL_8:
     {
       v21 = [v15 objectForKeyedSubscript:@"firstStartTime"];
       [v21 floatValue];
-      v23 = a5 < v22;
+      v23 = time < v22;
 
       if (!v23)
       {
@@ -1804,7 +1804,7 @@ LABEL_17:
         if (v16)
         {
           [(PlaybackAction *)v16 time];
-          if (a5 < v26)
+          if (time < v26)
           {
             if (kHMETScope)
             {
@@ -1834,9 +1834,9 @@ LABEL_36:
               v51 = 2080;
               v52 = "[CHMetrics markAdvancedPlaybackAction:action:time:]";
               v53 = 2048;
-              v54 = a5;
+              timeCopy = time;
               v55 = 2048;
-              v56 = v35;
+              timeCopy2 = v35;
               _os_log_impl(&dword_21569A000, v34, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: edge case: action time out of order %g < %g", &v47, 0x30u);
             }
 
@@ -1847,7 +1847,7 @@ LABEL_36:
           if ([(PlaybackAction *)v16 action]== 1 && (a4 | 2) == 2)
           {
             [(PlaybackAction *)v16 time];
-            v29 = a5 - v30;
+            v29 = time - v30;
             if (kHMETScope)
             {
               v31 = *kHMETScope;
@@ -1874,9 +1874,9 @@ LABEL_36:
               v51 = 2080;
               v52 = "[CHMetrics markAdvancedPlaybackAction:action:time:]";
               v53 = 2048;
-              v54 = v29;
+              timeCopy = v29;
               v55 = 2048;
-              v56 = a5;
+              timeCopy2 = time;
               v57 = 2048;
               v58 = v39;
               _os_log_impl(&dword_21569A000, v38, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: paused duration: %g = %g - %g", &v47, 0x3Au);
@@ -1921,7 +1921,7 @@ LABEL_36:
 
           [(PlaybackAction *)v16 setAction:0];
           v29 = 0.0;
-          *&v32 = a5;
+          *&v32 = time;
           [(PlaybackAction *)v16 setTime:v32];
         }
 
@@ -1934,13 +1934,13 @@ LABEL_45:
         [v15 setObject:v44 forKeyedSubscript:@"pausedDuration"];
 
         [(PlaybackAction *)v16 setAction:a4];
-        *&v45 = a5;
+        *&v45 = time;
         [(PlaybackAction *)v16 setTime:v45];
         goto LABEL_46;
       }
     }
 
-    *&v24 = a5;
+    *&v24 = time;
     v25 = [MEMORY[0x277CCABB0] numberWithFloat:v24];
     [v15 setObject:v25 forKeyedSubscript:@"firstStartTime"];
 
@@ -1952,29 +1952,29 @@ LABEL_46:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetPlaybackData:(id)a3
+- (void)resetPlaybackData:(id)data
 {
-  v3 = a3;
-  [v3 setObject:&unk_28279D7F0 forKeyedSubscript:@"playbackDuration"];
-  [v3 setObject:0 forKeyedSubscript:@"playbackLastAction"];
-  [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"edgeCase"];
-  [v3 setObject:&unk_28279D800 forKeyedSubscript:@"firstStartTime"];
+  dataCopy = data;
+  [dataCopy setObject:&unk_28279D7F0 forKeyedSubscript:@"playbackDuration"];
+  [dataCopy setObject:0 forKeyedSubscript:@"playbackLastAction"];
+  [dataCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"edgeCase"];
+  [dataCopy setObject:&unk_28279D800 forKeyedSubscript:@"firstStartTime"];
 }
 
-- (void)resetAdvancedPlaybackData:(id)a3
+- (void)resetAdvancedPlaybackData:(id)data
 {
-  v3 = a3;
-  [v3 setObject:&unk_28279D7F0 forKeyedSubscript:@"pausedDuration"];
-  [v3 setObject:0 forKeyedSubscript:@"playbackLastAction"];
-  [v3 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"edgeCase"];
-  [v3 setObject:&unk_28279D800 forKeyedSubscript:@"firstStartTime"];
+  dataCopy = data;
+  [dataCopy setObject:&unk_28279D7F0 forKeyedSubscript:@"pausedDuration"];
+  [dataCopy setObject:0 forKeyedSubscript:@"playbackLastAction"];
+  [dataCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"edgeCase"];
+  [dataCopy setObject:&unk_28279D800 forKeyedSubscript:@"firstStartTime"];
 }
 
-- (void)prepareData:(id)a3 events:(id)a4
+- (void)prepareData:(id)data events:(id)events
 {
   v93 = *MEMORY[0x277D85DE8];
-  v69 = a3;
-  v68 = a4;
+  dataCopy = data;
+  eventsCopy = events;
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
   v71 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v70 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -1982,7 +1982,7 @@ LABEL_46:
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v7 = v68;
+  v7 = eventsCopy;
   v8 = [v7 countByEnumeratingWithState:&v81 objects:v92 count:16];
   if (v8)
   {
@@ -1999,16 +1999,16 @@ LABEL_46:
         v11 = *(*(&v81 + 1) + 8 * i);
         if (![v11 eventCategory])
         {
-          v12 = [v11 fixedParamCount];
-          if (v12 < 1)
+          fixedParamCount = [v11 fixedParamCount];
+          if (fixedParamCount < 1)
           {
             v18 = 0.0;
           }
 
           else
           {
-            v13 = v12 + 1;
-            v14 = 16 * v12;
+            v13 = fixedParamCount + 1;
+            v14 = 16 * fixedParamCount;
             v15 = 0.0;
             do
             {
@@ -2043,24 +2043,24 @@ LABEL_46:
             v6 = v28;
           }
 
-          v29 = [v11 eventType];
+          eventType = [v11 eventType];
           v78 = 0;
           v79 = 0;
           v80 = 0;
           std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v78, self->_hapticContinuousSustainedIDs.__begin_, self->_hapticContinuousSustainedIDs.__end_, self->_hapticContinuousSustainedIDs.__end_ - self->_hapticContinuousSustainedIDs.__begin_);
-          if ([(CHMetrics *)self isEventType:v29 inList:&v78])
+          if ([(CHMetrics *)self isEventType:eventType inList:&v78])
           {
             v30 = 1;
           }
 
           else
           {
-            v31 = [v11 eventType];
+            eventType2 = [v11 eventType];
             __p = 0;
             v76 = 0;
             v77 = 0;
             std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&__p, self->_hapticContinuousNonsustainedIDs.__begin_, self->_hapticContinuousNonsustainedIDs.__end_, self->_hapticContinuousNonsustainedIDs.__end_ - self->_hapticContinuousNonsustainedIDs.__begin_);
-            v30 = [(CHMetrics *)self isEventType:v31 inList:&__p];
+            v30 = [(CHMetrics *)self isEventType:eventType2 inList:&__p];
             if (__p)
             {
               v76 = __p;
@@ -2092,7 +2092,7 @@ LABEL_46:
               v32 += 16;
             }
 
-            v42 = [v11 eventType];
+            eventType3 = [v11 eventType];
             if (v34)
             {
               *&v43 = v35;
@@ -2103,7 +2103,7 @@ LABEL_46:
               *&v43 = 1.0;
             }
 
-            v44 = [(CHMetrics *)self continousDictionary:v71 slot:v42 >> 8 intensity:v43];
+            v44 = [(CHMetrics *)self continousDictionary:v71 slot:eventType3 >> 8 intensity:v43];
             v45 = MEMORY[0x277CCABB0];
             v46 = [v44 objectForKeyedSubscript:@"Duration"];
             [v46 floatValue];
@@ -2122,12 +2122,12 @@ LABEL_46:
 
           else
           {
-            v36 = [v11 eventType];
+            eventType4 = [v11 eventType];
             v72 = 0;
             v73 = 0;
             v74 = 0;
             std::vector<unsigned long>::__init_with_size[abi:ne200100]<unsigned long *,unsigned long *>(&v72, self->_hapticTransientIDs.__begin_, self->_hapticTransientIDs.__end_, self->_hapticTransientIDs.__end_ - self->_hapticTransientIDs.__begin_);
-            v37 = [(CHMetrics *)self isEventType:v36 inList:&v72];
+            v37 = [(CHMetrics *)self isEventType:eventType4 inList:&v72];
             if (v72)
             {
               v73 = v72;
@@ -2152,7 +2152,7 @@ LABEL_46:
                 v38 += 16;
               }
 
-              v59 = [v11 eventType];
+              eventType5 = [v11 eventType];
               if (v39)
               {
                 *&v60 = v41;
@@ -2163,7 +2163,7 @@ LABEL_46:
                 *&v60 = 1.0;
               }
 
-              v44 = [(CHMetrics *)self transientDictionary:v70 index:v59 >> 8 intensity:v60];
+              v44 = [(CHMetrics *)self transientDictionary:v70 index:eventType5 >> 8 intensity:v60];
               v61 = MEMORY[0x277CCABB0];
               v53 = [v44 objectForKeyedSubscript:@"EventCount"];
               v54 = [v61 numberWithInteger:{(objc_msgSend(v53, "intValue") + 1)}];
@@ -2194,7 +2194,7 @@ LABEL_46:
                 v55 += 16;
               }
 
-              v62 = [v11 eventType];
+              eventType6 = [v11 eventType];
               if (v56)
               {
                 *&v63 = v58;
@@ -2205,7 +2205,7 @@ LABEL_46:
                 *&v63 = 1.0;
               }
 
-              v44 = [(CHMetrics *)self legacyTransientDictionary:v70 eventType:v62 intensity:v63];
+              v44 = [(CHMetrics *)self legacyTransientDictionary:v70 eventType:eventType6 intensity:v63];
               v64 = MEMORY[0x277CCABB0];
               v53 = [v44 objectForKeyedSubscript:@"EventCount"];
               v54 = [v64 numberWithInteger:{(objc_msgSend(v53, "intValue") + 1)}];
@@ -2250,18 +2250,18 @@ LABEL_46:
   }
 
 LABEL_65:
-  [v69 setObject:v71 forKeyedSubscript:@"continuousData"];
-  [v69 setObject:v70 forKeyedSubscript:@"transientData"];
-  [v69 setObject:v6 forKeyedSubscript:@"patternDuration"];
+  [dataCopy setObject:v71 forKeyedSubscript:@"continuousData"];
+  [dataCopy setObject:v70 forKeyedSubscript:@"transientData"];
+  [dataCopy setObject:v6 forKeyedSubscript:@"patternDuration"];
 
   v67 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preparePlaybackData:(id)a3 events:(id)a4
+- (void)preparePlaybackData:(id)data events:(id)events
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  eventsCopy = events;
   if (kHMETScope)
   {
     v8 = *kHMETScope;
@@ -2289,27 +2289,27 @@ LABEL_65:
     v20 = 2112;
     v21 = engineID;
     v22 = 2112;
-    v23 = v6;
+    v23 = dataCopy;
     _os_log_impl(&dword_21569A000, v8, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: preparing playback data for engine %@ player %@", &v14, 0x30u);
   }
 
 LABEL_8:
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v11 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"isAdvanced"];
-  [(CHMetrics *)self prepareData:v11 events:v7];
+  [(CHMetrics *)self prepareData:v11 events:eventsCopy];
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v11 setObject:v12 forKeyedSubscript:@"playback"];
   [(CHMetrics *)self resetPlaybackData:v12];
-  [(NSMutableDictionary *)self->_playerData setObject:v11 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_playerData setObject:v11 forKeyedSubscript:dataCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareAdvancedPlaybackData:(id)a3 events:(id)a4
+- (void)prepareAdvancedPlaybackData:(id)data events:(id)events
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  eventsCopy = events;
   if (kHMETScope)
   {
     v8 = *kHMETScope;
@@ -2337,26 +2337,26 @@ LABEL_8:
     v20 = 2112;
     v21 = engineID;
     v22 = 2112;
-    v23 = v6;
+    v23 = dataCopy;
     _os_log_impl(&dword_21569A000, v8, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: preparing advanced playback data for engine %@ player %@", &v14, 0x30u);
   }
 
 LABEL_8:
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v11 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"isAdvanced"];
-  [(CHMetrics *)self prepareData:v11 events:v7];
+  [(CHMetrics *)self prepareData:v11 events:eventsCopy];
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v11 setObject:v12 forKeyedSubscript:@"advancedPlayback"];
   [(CHMetrics *)self resetAdvancedPlaybackData:v12];
-  [(NSMutableDictionary *)self->_playerData setObject:v11 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_playerData setObject:v11 forKeyedSubscript:dataCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePlaybackData:(id)a3
+- (void)removePlaybackData:(id)data
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if (kHMETScope)
   {
     v5 = *kHMETScope;
@@ -2384,25 +2384,25 @@ LABEL_8:
     v15 = 2112;
     v16 = engineID;
     v17 = 2112;
-    v18 = v4;
+    v18 = dataCopy;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: removing playback data for engine %@ player %@", &v9, 0x30u);
   }
 
 LABEL_8:
-  [(NSMutableDictionary *)self->_playerData removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_playerData removeObjectForKey:dataCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (float)getLoopsForPlayer:(id)a3 endTime:(double)a4
+- (float)getLoopsForPlayer:(id)player endTime:(double)time
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"playback"];
+  playerCopy = player;
+  v6 = [playerCopy objectForKeyedSubscript:@"playback"];
   v7 = [v6 objectForKeyedSubscript:@"edgeCase"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (!v8)
+  if (!bOOLValue)
   {
     v11 = [v6 objectForKeyedSubscript:@"playbackDuration"];
     [v11 floatValue];
@@ -2412,13 +2412,13 @@ LABEL_8:
     [v14 floatValue];
     v16 = v15;
 
-    v17 = [v5 objectForKeyedSubscript:@"patternDuration"];
+    v17 = [playerCopy objectForKeyedSubscript:@"patternDuration"];
     [v17 floatValue];
     v19 = v18;
 
     v20 = [v6 objectForKeyedSubscript:@"playbackLastAction"];
     v9 = v20;
-    v21 = a4 - v16;
+    v21 = time - v16;
     if (v13 == 0.0 && ![v20 action]&& v19 > v21)
     {
       v13 = v21;
@@ -2504,15 +2504,15 @@ LABEL_28:
   return v10;
 }
 
-- (float)getLoopsForAdvancedPlayer:(id)a3 endTime:(double)a4
+- (float)getLoopsForAdvancedPlayer:(id)player endTime:(double)time
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"advancedPlayback"];
+  playerCopy = player;
+  v6 = [playerCopy objectForKeyedSubscript:@"advancedPlayback"];
   v7 = [v6 objectForKeyedSubscript:@"edgeCase"];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     if (kHMETScope)
     {
@@ -2549,7 +2549,7 @@ LABEL_14:
   [v10 floatValue];
   v12 = v11;
 
-  v13 = [v5 objectForKeyedSubscript:@"patternDuration"];
+  v13 = [playerCopy objectForKeyedSubscript:@"patternDuration"];
   [v13 floatValue];
   v15 = v14;
 
@@ -2558,7 +2558,7 @@ LABEL_14:
   v18 = v17;
 
   v19 = [v6 objectForKeyedSubscript:@"playbackLastAction"];
-  if ([v19 action] == 3 && (objc_msgSend(v19, "time"), v20 < a4))
+  if ([v19 action] == 3 && (objc_msgSend(v19, "time"), v20 < time))
   {
     [v19 time];
     v22 = (v21 - v12) - v18;
@@ -2566,7 +2566,7 @@ LABEL_14:
 
   else
   {
-    v22 = a4 - v12 - v18;
+    v22 = time - v12 - v18;
   }
 
   v23 = v22 / v15;
@@ -2576,13 +2576,13 @@ LABEL_15:
   return v23;
 }
 
-- (BOOL)isEventType:(unint64_t)a3 inList:(vector<unsigned)long
+- (BOOL)isEventType:(unint64_t)type inList:(vector<unsigned)long
 {
   begin = a4->__begin_;
   end = a4->__end_;
   if (a4->__begin_ != end)
   {
-    while (*begin != a3)
+    while (*begin != type)
     {
       if (++begin == end)
       {
@@ -2595,14 +2595,14 @@ LABEL_15:
   return begin != end;
 }
 
-- (id)continousDictionary:(id)a3 slot:(unint64_t)a4 intensity:(float)a5
+- (id)continousDictionary:(id)dictionary slot:(unint64_t)slot intensity:(float)intensity
 {
-  v8 = a3;
-  v9 = [(CHMetrics *)self continuousSharpnessSlotKeyFromSlotValue:a4];
-  *&v10 = a5;
+  dictionaryCopy = dictionary;
+  v9 = [(CHMetrics *)self continuousSharpnessSlotKeyFromSlotValue:slot];
+  *&v10 = intensity;
   v11 = [(CHMetrics *)self intensityBinKeyFromValue:v10];
   v12 = [v9 stringByAppendingString:v11];
-  v13 = [v8 objectForKey:v12];
+  v13 = [dictionaryCopy objectForKey:v12];
   if (!v13)
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -2610,67 +2610,67 @@ LABEL_15:
     [v13 setObject:v11 forKeyedSubscript:@"Intensity"];
     [v13 setObject:&unk_28279D7F0 forKeyedSubscript:@"Duration"];
     [v13 setObject:&unk_28279D828 forKeyedSubscript:@"EventCount"];
-    [v8 setObject:v13 forKey:v12];
+    [dictionaryCopy setObject:v13 forKey:v12];
   }
 
   return v13;
 }
 
-- (id)legacyTransientDictionary:(id)a3 eventType:(unint64_t)a4 intensity:(float)a5
+- (id)legacyTransientDictionary:(id)dictionary eventType:(unint64_t)type intensity:(float)intensity
 {
-  v8 = a3;
-  v16 = a4;
-  v9 = std::__hash_table<std::__hash_value_type<AVHapticPlayerParameterType,float>,std::__unordered_map_hasher<AVHapticPlayerParameterType,std::__hash_value_type<AVHapticPlayerParameterType,float>,std::hash<AVHapticPlayerParameterType>,std::equal_to<AVHapticPlayerParameterType>,true>,std::__unordered_map_equal<AVHapticPlayerParameterType,std::__hash_value_type<AVHapticPlayerParameterType,float>,std::equal_to<AVHapticPlayerParameterType>,std::hash<AVHapticPlayerParameterType>,true>,std::allocator<std::__hash_value_type<AVHapticPlayerParameterType,float>>>::find<AVHapticPlayerParameterType>(&self->_legacyHapticTransientEventTypeMap.__table_.__bucket_list_.__ptr_, &v16);
+  dictionaryCopy = dictionary;
+  typeCopy = type;
+  v9 = std::__hash_table<std::__hash_value_type<AVHapticPlayerParameterType,float>,std::__unordered_map_hasher<AVHapticPlayerParameterType,std::__hash_value_type<AVHapticPlayerParameterType,float>,std::hash<AVHapticPlayerParameterType>,std::equal_to<AVHapticPlayerParameterType>,true>,std::__unordered_map_equal<AVHapticPlayerParameterType,std::__hash_value_type<AVHapticPlayerParameterType,float>,std::equal_to<AVHapticPlayerParameterType>,std::hash<AVHapticPlayerParameterType>,true>,std::allocator<std::__hash_value_type<AVHapticPlayerParameterType,float>>>::find<AVHapticPlayerParameterType>(&self->_legacyHapticTransientEventTypeMap.__table_.__bucket_list_.__ptr_, &typeCopy);
   if (!v9)
   {
     std::__throw_out_of_range[abi:ne200100]("unordered_map::at: key not found");
   }
 
   v10 = v9[3];
-  *&v11 = a5;
+  *&v11 = intensity;
   v12 = [(CHMetrics *)self intensityBinKeyFromValue:v11];
   v13 = [v10 stringByAppendingString:v12];
-  v14 = [v8 objectForKey:v13];
+  v14 = [dictionaryCopy objectForKey:v13];
   if (!v14)
   {
     v14 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v14 setObject:v10 forKeyedSubscript:@"EventType"];
     [v14 setObject:v12 forKeyedSubscript:@"Intensity"];
     [v14 setObject:&unk_28279D828 forKeyedSubscript:@"EventCount"];
-    [v8 setObject:v14 forKey:v13];
+    [dictionaryCopy setObject:v14 forKey:v13];
   }
 
   return v14;
 }
 
-- (id)transientDictionary:(id)a3 index:(unint64_t)a4 intensity:(float)a5
+- (id)transientDictionary:(id)dictionary index:(unint64_t)index intensity:(float)intensity
 {
-  v8 = a3;
-  v9 = [(CHMetrics *)self transientSharpnessIndexKeyFromIndexValue:a4];
-  *&v10 = a5;
+  dictionaryCopy = dictionary;
+  v9 = [(CHMetrics *)self transientSharpnessIndexKeyFromIndexValue:index];
+  *&v10 = intensity;
   v11 = [(CHMetrics *)self intensityBinKeyFromValue:v10];
   v12 = [v9 stringByAppendingString:v11];
-  v13 = [v8 objectForKey:v12];
+  v13 = [dictionaryCopy objectForKey:v12];
   if (!v13)
   {
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v13 setObject:v9 forKeyedSubscript:@"EventType"];
     [v13 setObject:v11 forKeyedSubscript:@"Intensity"];
     [v13 setObject:&unk_28279D828 forKeyedSubscript:@"EventCount"];
-    [v8 setObject:v13 forKey:v12];
+    [dictionaryCopy setObject:v13 forKey:v12];
   }
 
   return v13;
 }
 
-- (id)intensityBinKeyFromValue:(float)a3
+- (id)intensityBinKeyFromValue:(float)value
 {
-  if (self->_CHMetricsIntensityBin1To2Value > a3)
+  if (self->_CHMetricsIntensityBin1To2Value > value)
   {
     return @"IntensityBin1";
   }
 
-  if (self->_CHMetricsIntensityBin2To3Value <= a3)
+  if (self->_CHMetricsIntensityBin2To3Value <= value)
   {
     return @"IntensityBin3";
   }
@@ -2719,10 +2719,10 @@ LABEL_8:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getMetricsForPlayer:(id)a3
+- (id)getMetricsForPlayer:(id)player
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  playerCopy = player;
   if (kHMETScope)
   {
     v5 = *kHMETScope;
@@ -2750,12 +2750,12 @@ LABEL_8:
     v18 = 2112;
     v19 = engineID;
     v20 = 2112;
-    v21 = v4;
+    v21 = playerCopy;
     _os_log_impl(&dword_21569A000, v5, OS_LOG_TYPE_DEBUG, "%25s:%-5d %s: retrieving metrics for engine %@ player %@", &v12, 0x30u);
   }
 
 LABEL_8:
-  v8 = [(CHMetrics *)self getIDForPlayer:v4];
+  v8 = [(CHMetrics *)self getIDForPlayer:playerCopy];
   v9 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v8];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -2763,11 +2763,11 @@ LABEL_8:
   return v9;
 }
 
-- (void)retainData:(id)a3 forTestingPlayer:(id)a4
+- (void)retainData:(id)data forTestingPlayer:(id)player
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  playerCopy = player;
   if (kHMETScope)
   {
     v8 = *kHMETScope;
@@ -2792,33 +2792,33 @@ LABEL_8:
     v56 = 2080;
     v57 = "[CHMetrics retainData:forTestingPlayer:]";
     v58 = 2112;
-    v59 = v7;
+    v59 = playerCopy;
     _os_log_impl(&dword_21569A000, v8, OS_LOG_TYPE_INFO, "%25s:%-5d %s: adding test player data for player %@", buf, 0x26u);
   }
 
 LABEL_8:
-  v10 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v7];
+  v10 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:playerCopy];
   v11 = v10 == 0;
 
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [(NSMutableDictionary *)self->_dataForTesting setObject:v12 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_dataForTesting setObject:v12 forKeyedSubscript:playerCopy];
   }
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [v6 objectForKeyedSubscript:@"EventType"];
-  v15 = [v6 objectForKeyedSubscript:@"Intensity"];
+  v14 = [dataCopy objectForKeyedSubscript:@"EventType"];
+  v15 = [dataCopy objectForKeyedSubscript:@"Intensity"];
   v16 = [v13 stringWithFormat:@"%@%@", v14, v15];
 
-  v17 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v7];
+  v17 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:playerCopy];
   v18 = [v17 objectForKeyedSubscript:v16];
   LOBYTE(v15) = v18 == 0;
 
   if (v15)
   {
-    v20 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v7];
-    [v20 setValue:v6 forKey:v16];
+    v20 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:playerCopy];
+    [v20 setValue:dataCopy forKey:v16];
     goto LABEL_29;
   }
 
@@ -2840,7 +2840,7 @@ LABEL_8:
   v22 = v19;
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
-    v23 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v7];
+    v23 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:playerCopy];
     v24 = [v23 objectForKeyedSubscript:v16];
     *buf = 136315906;
     v53 = "CHMetrics.mm";
@@ -2874,12 +2874,12 @@ LABEL_23:
       v56 = 2080;
       v57 = "[CHMetrics retainData:forTestingPlayer:]";
       v58 = 2112;
-      v59 = v6;
+      v59 = dataCopy;
       _os_log_impl(&dword_21569A000, v25, OS_LOG_TYPE_INFO, "%25s:%-5d %s: %@", buf, 0x26u);
     }
   }
 
-  v27 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v7];
+  v27 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:playerCopy];
   v28 = [v27 objectForKeyedSubscript:v16];
   v29 = [v28 objectForKeyedSubscript:@"Duration"];
   v30 = v29 == 0;
@@ -2887,28 +2887,28 @@ LABEL_23:
   if (!v30)
   {
     v31 = MEMORY[0x277CCABB0];
-    v51 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v7];
+    v51 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:playerCopy];
     v32 = [v51 objectForKeyedSubscript:v16];
     v33 = [v32 objectForKeyedSubscript:@"Duration"];
     [v33 floatValue];
     v35 = v34;
-    v36 = [v6 objectForKeyedSubscript:@"Duration"];
+    v36 = [dataCopy objectForKeyedSubscript:@"Duration"];
     [v36 floatValue];
     *&v38 = v35 + v37;
     v39 = [v31 numberWithFloat:v38];
-    v40 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v7];
+    v40 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:playerCopy];
     v41 = [v40 objectForKeyedSubscript:v16];
     [v41 setObject:v39 forKeyedSubscript:@"Duration"];
   }
 
   v42 = MEMORY[0x277CCABB0];
-  v20 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v7];
+  v20 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:playerCopy];
   v43 = [v20 objectForKeyedSubscript:v16];
   v44 = [v43 objectForKeyedSubscript:@"EventCount"];
-  v45 = [v44 intValue];
-  v46 = [v6 objectForKeyedSubscript:@"EventCount"];
-  v47 = [v42 numberWithInt:{objc_msgSend(v46, "intValue") + v45}];
-  v48 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:v7];
+  intValue = [v44 intValue];
+  v46 = [dataCopy objectForKeyedSubscript:@"EventCount"];
+  v47 = [v42 numberWithInt:{objc_msgSend(v46, "intValue") + intValue}];
+  v48 = [(NSMutableDictionary *)self->_dataForTesting objectForKeyedSubscript:playerCopy];
   v49 = [v48 objectForKeyedSubscript:v16];
   [v49 setObject:v47 forKeyedSubscript:@"EventCount"];
 

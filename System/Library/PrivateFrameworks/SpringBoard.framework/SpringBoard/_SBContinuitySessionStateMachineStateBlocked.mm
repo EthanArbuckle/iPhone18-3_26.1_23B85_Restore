@@ -1,50 +1,50 @@
 @interface _SBContinuitySessionStateMachineStateBlocked
 - (_SBContinuitySessionStateMachineClientExternallyBlockedReasonsProvider)clientExternallyBlockedReasonsProvider;
-- (_SBContinuitySessionStateMachineStateBlocked)initWithSystemEventMonitor:(id)a3;
+- (_SBContinuitySessionStateMachineStateBlocked)initWithSystemEventMonitor:(id)monitor;
 - (void)_evaluateClientExternallyBlockedReasons;
 - (void)_evaluateSystemEvents;
-- (void)_reevaluateStateForReason:(id)a3;
-- (void)appendDescriptionToStream:(id)a3;
-- (void)continuitySessionSystemEventMonitor:(id)a3 eventOccurred:(id)a4;
-- (void)enteredStateFrom:(unint64_t)a3;
+- (void)_reevaluateStateForReason:(id)reason;
+- (void)appendDescriptionToStream:(id)stream;
+- (void)continuitySessionSystemEventMonitor:(id)monitor eventOccurred:(id)occurred;
+- (void)enteredStateFrom:(unint64_t)from;
 - (void)invalidate;
-- (void)noteClientConnectedWithInitialExternallyBlockedReasons:(id)a3;
+- (void)noteClientConnectedWithInitialExternallyBlockedReasons:(id)reasons;
 - (void)noteClientDidUpdateExternallyBlockedReasons;
 @end
 
 @implementation _SBContinuitySessionStateMachineStateBlocked
 
-- (_SBContinuitySessionStateMachineStateBlocked)initWithSystemEventMonitor:(id)a3
+- (_SBContinuitySessionStateMachineStateBlocked)initWithSystemEventMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   v9.receiver = self;
   v9.super_class = _SBContinuitySessionStateMachineStateBlocked;
   v6 = [(_SBContinuitySessionStateMachineStateBlocked *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_systemEventMonitor, a3);
+    objc_storeStrong(&v6->_systemEventMonitor, monitor);
     [(SBContinuitySessionSystemEventMonitor *)v7->_systemEventMonitor addObserver:v7];
   }
 
   return v7;
 }
 
-- (void)noteClientConnectedWithInitialExternallyBlockedReasons:(id)a3
+- (void)noteClientConnectedWithInitialExternallyBlockedReasons:(id)reasons
 {
   self->_clientConnected = 1;
-  objc_storeStrong(&self->_blockedReasons_client, a3);
+  objc_storeStrong(&self->_blockedReasons_client, reasons);
 
   [(_SBContinuitySessionStateMachineStateBlocked *)self _reevaluateStateForReason:@"client connected"];
 }
 
-- (void)enteredStateFrom:(unint64_t)a3
+- (void)enteredStateFrom:(unint64_t)from
 {
   self->_isCurrentState = 1;
   [(_SBContinuitySessionStateMachineStateBlocked *)self _evaluateClientExternallyBlockedReasons];
   [(_SBContinuitySessionStateMachineStateBlocked *)self _evaluateSystemEvents];
   v5 = MEMORY[0x277CCACA8];
-  v7 = NSStringFromSBContinuitySessionState(a3);
+  v7 = NSStringFromSBContinuitySessionState(from);
   v6 = [v5 stringWithFormat:@"entered state from: %@", v7];
   [(_SBContinuitySessionStateMachineStateBlocked *)self _reevaluateStateForReason:v6];
 }
@@ -56,13 +56,13 @@
   [(_SBContinuitySessionStateMachineStateBlocked *)self _reevaluateStateForReason:@"client updated externally blocked reasons"];
 }
 
-- (void)continuitySessionSystemEventMonitor:(id)a3 eventOccurred:(id)a4
+- (void)continuitySessionSystemEventMonitor:(id)monitor eventOccurred:(id)occurred
 {
-  v5 = a4;
+  occurredCopy = occurred;
   [(_SBContinuitySessionStateMachineStateBlocked *)self _evaluateSystemEvents];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"system monitor event occurred: %@", v5];
+  occurredCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"system monitor event occurred: %@", occurredCopy];
 
-  [(_SBContinuitySessionStateMachineStateBlocked *)self _reevaluateStateForReason:v6];
+  [(_SBContinuitySessionStateMachineStateBlocked *)self _reevaluateStateForReason:occurredCopy];
 }
 
 - (void)invalidate
@@ -77,24 +77,24 @@
   self->_invalidStateHandler = 0;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
+  streamCopy = stream;
+  collectionLineBreakNoneStyle = [MEMORY[0x277CF0C10] collectionLineBreakNoneStyle];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74___SBContinuitySessionStateMachineStateBlocked_appendDescriptionToStream___block_invoke;
   v7[3] = &unk_2783A92D8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v6 overlayStyle:v5 block:v7];
+  v8 = streamCopy;
+  selfCopy = self;
+  v6 = streamCopy;
+  [v6 overlayStyle:collectionLineBreakNoneStyle block:v7];
 }
 
 - (void)_evaluateClientExternallyBlockedReasons
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"_SBContinuitySessionStateMachineStateBlocked.m" lineNumber:133 description:@"Must have _SBContinuitySessionStateMachineExternallyBlockedReasonsProvider"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"_SBContinuitySessionStateMachineStateBlocked.m" lineNumber:133 description:@"Must have _SBContinuitySessionStateMachineExternallyBlockedReasonsProvider"];
 }
 
 - (void)_evaluateSystemEvents
@@ -112,17 +112,17 @@
   }
 }
 
-- (void)_reevaluateStateForReason:(id)a3
+- (void)_reevaluateStateForReason:(id)reason
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   if (self->_isCurrentState)
   {
     v5 = SBLogContinuitySession();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = v4;
+      v15 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "[State.Blocked] Re-evaluating state for reason: %{public}@", &v14, 0xCu);
     }
 
@@ -178,9 +178,9 @@
       v8 = SBLogContinuitySession();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v9 = [v7 bs_array];
+        bs_array = [v7 bs_array];
         v14 = 138543362;
-        v15 = v9;
+        v15 = bs_array;
         _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "[State.Blocked] still blocked by %{public}@", &v14, 0xCu);
       }
 

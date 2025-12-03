@@ -1,10 +1,10 @@
 @interface SharedDefaults
 + (id)defaults;
 + (int64_t)currentMeasureUnits;
-+ (void)setupSpecifier:(id)a3;
++ (void)setupSpecifier:(id)specifier;
 - (SharedDefaults)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SharedDefaults
@@ -16,9 +16,9 @@
   v2 = [(SharedDefaults *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v4 = [objc_opt_class() measureUnits];
-    [v3 addObserver:v2 forKeyPath:v4 options:5 context:0];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    measureUnits = [objc_opt_class() measureUnits];
+    [standardUserDefaults addObserver:v2 forKeyPath:measureUnits options:5 context:0];
   }
 
   return v2;
@@ -26,9 +26,9 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [objc_opt_class() measureUnits];
-  [v3 removeObserver:self forKeyPath:v4];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  measureUnits = [objc_opt_class() measureUnits];
+  [standardUserDefaults removeObserver:self forKeyPath:measureUnits];
 
   v5.receiver = self;
   v5.super_class = SharedDefaults;
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __26__SharedDefaults_defaults__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaults_onceToken[0] != -1)
   {
     dispatch_once(defaults_onceToken, block);
@@ -59,11 +59,11 @@ uint64_t __26__SharedDefaults_defaults__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)setupSpecifier:(id)a3
++ (void)setupSpecifier:(id)specifier
 {
-  v10 = a3;
-  v4 = [v10 propertyForKey:*MEMORY[0x277D3FEF8]];
-  v5 = [v10 propertyForKey:*MEMORY[0x277D3FFF0]];
+  specifierCopy = specifier;
+  v4 = [specifierCopy propertyForKey:*MEMORY[0x277D3FEF8]];
+  v5 = [specifierCopy propertyForKey:*MEMORY[0x277D3FFF0]];
   v6 = v5;
   if (v4)
   {
@@ -77,26 +77,26 @@ uint64_t __26__SharedDefaults_defaults__block_invoke(uint64_t a1)
 
   if (!v7 && [v4 isEqualToString:@"com.apple.measure"])
   {
-    v8 = [a1 getDefaultValues];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    getDefaultValues = [self getDefaultValues];
+    v9 = [getDefaultValues objectForKeyedSubscript:v6];
     if (v9)
     {
-      [v10 setProperty:v9 forKey:*MEMORY[0x277D3FEF0]];
+      [specifierCopy setProperty:v9 forKey:*MEMORY[0x277D3FEF0]];
     }
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  v8 = [objc_opt_class() measureUnits];
-  v9 = [v7 isEqualToString:v8];
+  pathCopy = path;
+  measureUnits = [objc_opt_class() measureUnits];
+  v9 = [pathCopy isEqualToString:measureUnits];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v11 = [objc_opt_class() measureUnits];
-    v13 = [v10 valueForKeyPath:v11];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    measureUnits2 = [objc_opt_class() measureUnits];
+    v13 = [standardUserDefaults valueForKeyPath:measureUnits2];
 
     if (v13)
     {
@@ -114,10 +114,10 @@ uint64_t __26__SharedDefaults_defaults__block_invoke(uint64_t a1)
 
 + (int64_t)currentMeasureUnits
 {
-  v2 = [a1 defaults];
-  v3 = [v2 cachedMeasureUnits];
+  defaults = [self defaults];
+  cachedMeasureUnits = [defaults cachedMeasureUnits];
 
-  return v3;
+  return cachedMeasureUnits;
 }
 
 @end

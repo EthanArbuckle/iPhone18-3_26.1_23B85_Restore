@@ -7,10 +7,10 @@
 - (void)performBackgroundTask
 {
   v56 = *MEMORY[0x1E69E9840];
-  v3 = [(PXCMMActionPerformer *)self session];
-  v4 = [v3 sourceType];
+  session = [(PXCMMActionPerformer *)self session];
+  sourceType = [session sourceType];
 
-  if (v4)
+  if (sourceType)
   {
     v35 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCMMErrorDomain" code:-1006 debugDescription:@"Publish to shared streams is only supported from Photos"];
     [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:0 error:v35];
@@ -18,16 +18,16 @@
 
   else
   {
-    v5 = [(PXCMMActionPerformer *)self session];
-    v6 = [v5 viewModel];
-    v7 = [v6 selectionManager];
-    v8 = [v7 selectionSnapshot];
+    session2 = [(PXCMMActionPerformer *)self session];
+    viewModel = [session2 viewModel];
+    selectionManager = [viewModel selectionManager];
+    selectionSnapshot = [selectionManager selectionSnapshot];
 
-    v9 = [v8 dataSource];
-    v10 = [v9 totalNumberOfItems];
+    dataSource = [selectionSnapshot dataSource];
+    totalNumberOfItems = [dataSource totalNumberOfItems];
 
-    v11 = [v8 selectedIndexPaths];
-    v12 = [v11 count];
+    selectedIndexPaths = [selectionSnapshot selectedIndexPaths];
+    v12 = [selectedIndexPaths count];
 
     v13 = PLSharingGetLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -35,68 +35,68 @@
       *buf = 134218240;
       *&buf[4] = v12;
       *&buf[12] = 2048;
-      *&buf[14] = v10;
+      *&buf[14] = totalNumberOfItems;
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "Publishing to shared stream with %lu assets selected out of %lu", buf, 0x16u);
     }
 
-    v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:v10];
-    if (v8)
+    v14 = [MEMORY[0x1E695DF70] arrayWithCapacity:totalNumberOfItems];
+    if (selectionSnapshot)
     {
-      v15 = [v8 dataSource];
-      v16 = [v8 selectedIndexPaths];
+      dataSource2 = [selectionSnapshot dataSource];
+      selectedIndexPaths2 = [selectionSnapshot selectedIndexPaths];
       v49[0] = MEMORY[0x1E69E9820];
       v49[1] = 3221225472;
       v49[2] = __66__PXCMMPublishToSharedStreamActionPerformer_performBackgroundTask__block_invoke;
       v49[3] = &unk_1E7744508;
       v50 = v14;
-      v17 = v15;
+      v17 = dataSource2;
       v51 = v17;
-      [v16 enumerateItemIndexPathsUsingBlock:v49];
+      [selectedIndexPaths2 enumerateItemIndexPathsUsingBlock:v49];
 
-      v18 = [v17 identifier];
+      identifier = [v17 identifier];
       *&buf[8] = xmmword_1A5380D10;
-      *buf = v18;
+      *buf = identifier;
       v53 = 0x7FFFFFFFFFFFFFFFLL;
       v19 = [v17 assetCollectionAtSectionIndexPath:buf];
       if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v20 = [v19 localizedTitle];
+        localizedTitle = [v19 localizedTitle];
       }
 
       else
       {
-        v20 = 0;
+        localizedTitle = 0;
       }
     }
 
     else
     {
-      v20 = 0;
+      localizedTitle = 0;
     }
 
     v21 = MEMORY[0x1E696AEC0];
-    v22 = [MEMORY[0x1E696AFB0] UUID];
-    v23 = [v22 UUIDString];
-    v24 = [v23 substringToIndex:4];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v24 = [uUIDString substringToIndex:4];
     v25 = [v21 stringWithFormat:@"CMM-Test-%@", v24];
 
-    if (v20)
+    if (localizedTitle)
     {
-      v26 = [v25 stringByAppendingString:v20];
+      v26 = [v25 stringByAppendingString:localizedTitle];
 
       v25 = v26;
     }
 
-    v27 = [MEMORY[0x1E69BE670] cloudSharingPhotoLibrary];
+    cloudSharingPhotoLibrary = [MEMORY[0x1E69BE670] cloudSharingPhotoLibrary];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
     v53 = __Block_byref_object_copy__146941;
     v54 = __Block_byref_object_dispose__146942;
     v55 = 0;
-    v28 = [(PXCMMActionPerformer *)self session];
-    v29 = [v28 viewModel];
-    v30 = [v29 recipients];
+    session3 = [(PXCMMActionPerformer *)self session];
+    viewModel2 = [session3 viewModel];
+    recipients = [viewModel2 recipients];
 
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
@@ -104,9 +104,9 @@
     v44[3] = &unk_1E77448A8;
     v48 = buf;
     v45 = v25;
-    v31 = v27;
+    v31 = cloudSharingPhotoLibrary;
     v46 = v31;
-    v32 = v30;
+    v32 = recipients;
     v47 = v32;
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
@@ -118,7 +118,7 @@
     v39 = 0u;
     v43 = 1;
     v42 = buf;
-    v40 = self;
+    selfCopy = self;
     v34 = v45;
     v41 = v34;
     [v31 performTransaction:v44 completionHandler:v36];

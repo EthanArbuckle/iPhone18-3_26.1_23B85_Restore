@@ -1,11 +1,11 @@
 @interface ICImageCache
 - (ICImageCache)init;
-- (id)imageForKey:(id)a3;
+- (id)imageForKey:(id)key;
 - (void)receivedMemoryWarning;
 - (void)registerForMemoryWarnings;
 - (void)removeAllImages;
-- (void)removeImageForKey:(id)a3;
-- (void)setImage:(id)a3 forKey:(id)a4;
+- (void)removeImageForKey:(id)key;
+- (void)setImage:(id)image forKey:(id)key;
 - (void)unregisterForMemoryWarnings;
 @end
 
@@ -25,80 +25,80 @@
   return v2;
 }
 
-- (void)setImage:(id)a3 forKey:(id)a4
+- (void)setImage:(id)image forKey:(id)key
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [v16 size];
+  imageCopy = image;
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [imageCopy size];
   v9 = v8;
-  [v16 size];
+  [imageCopy size];
   v11 = v10;
-  [v16 scale];
+  [imageCopy scale];
   if ((v12 * (v9 * v11)) <= 0x100000)
   {
-    v15 = [(ICImageCache *)v7 imageCache];
-    [v15 setObject:v16 forKey:v6];
+    imageCache = [(ICImageCache *)selfCopy imageCache];
+    [imageCache setObject:imageCopy forKey:keyCopy];
   }
 
   else
   {
-    v13 = [(ICImageCache *)v7 bigImageCache];
+    bigImageCache = [(ICImageCache *)selfCopy bigImageCache];
 
-    if (!v13)
+    if (!bigImageCache)
     {
       v14 = [objc_alloc(MEMORY[0x277D361F8]) initWithMaxSize:3];
-      [(ICImageCache *)v7 setBigImageCache:v14];
+      [(ICImageCache *)selfCopy setBigImageCache:v14];
     }
 
-    v15 = [(ICImageCache *)v7 bigImageCache];
-    [v15 setObject:v16 forKey:v6];
+    imageCache = [(ICImageCache *)selfCopy bigImageCache];
+    [imageCache setObject:imageCopy forKey:keyCopy];
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeImageForKey:(id)a3
+- (void)removeImageForKey:(id)key
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ICImageCache *)v4 bigImageCache];
-  [v5 removeObjectForKey:v7];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  bigImageCache = [(ICImageCache *)selfCopy bigImageCache];
+  [bigImageCache removeObjectForKey:keyCopy];
 
-  v6 = [(ICImageCache *)v4 imageCache];
-  [v6 removeObjectForKey:v7];
+  imageCache = [(ICImageCache *)selfCopy imageCache];
+  [imageCache removeObjectForKey:keyCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)imageForKey:(id)a3
+- (id)imageForKey:(id)key
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ICImageCache *)v5 imageCache];
-  v7 = [v6 objectForKey:v4];
+  keyCopy = key;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageCache = [(ICImageCache *)selfCopy imageCache];
+  v7 = [imageCache objectForKey:keyCopy];
 
   if (!v7)
   {
-    v8 = [(ICImageCache *)v5 bigImageCache];
-    v7 = [v8 objectForKey:v4];
+    bigImageCache = [(ICImageCache *)selfCopy bigImageCache];
+    v7 = [bigImageCache objectForKey:keyCopy];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
 - (void)removeAllImages
 {
-  v3 = [(ICImageCache *)self imageCache];
-  [v3 removeAllObjects];
+  imageCache = [(ICImageCache *)self imageCache];
+  [imageCache removeAllObjects];
 
-  v4 = [(ICImageCache *)self bigImageCache];
-  [v4 removeAllObjects];
+  bigImageCache = [(ICImageCache *)self bigImageCache];
+  [bigImageCache removeAllObjects];
 }
 
 - (void)registerForMemoryWarnings
@@ -107,13 +107,13 @@
   [(ICImageCache *)self setMemoryWarningEventSource:v3];
 
   objc_initWeak(&location, self);
-  v4 = [(ICImageCache *)self memoryWarningEventSource];
+  memoryWarningEventSource = [(ICImageCache *)self memoryWarningEventSource];
   v6 = MEMORY[0x277D85DD0];
   v7 = 3221225472;
   v8 = __41__ICImageCache_registerForMemoryWarnings__block_invoke;
   v9 = &unk_278194FB8;
   objc_copyWeak(&v10, &location);
-  dispatch_source_set_event_handler(v4, &v6);
+  dispatch_source_set_event_handler(memoryWarningEventSource, &v6);
 
   v5 = [(ICImageCache *)self memoryWarningEventSource:v6];
   dispatch_resume(v5);
@@ -130,19 +130,19 @@ void __41__ICImageCache_registerForMemoryWarnings__block_invoke(uint64_t a1)
 
 - (void)unregisterForMemoryWarnings
 {
-  v3 = [(ICImageCache *)self memoryWarningEventSource];
+  memoryWarningEventSource = [(ICImageCache *)self memoryWarningEventSource];
 
-  if (v3)
+  if (memoryWarningEventSource)
   {
-    v4 = [(ICImageCache *)self memoryWarningEventSource];
-    dispatch_source_cancel(v4);
+    memoryWarningEventSource2 = [(ICImageCache *)self memoryWarningEventSource];
+    dispatch_source_cancel(memoryWarningEventSource2);
   }
 }
 
 - (void)receivedMemoryWarning
 {
-  v2 = [(ICImageCache *)self bigImageCache];
-  [v2 removeAllObjects];
+  bigImageCache = [(ICImageCache *)self bigImageCache];
+  [bigImageCache removeAllObjects];
 }
 
 @end

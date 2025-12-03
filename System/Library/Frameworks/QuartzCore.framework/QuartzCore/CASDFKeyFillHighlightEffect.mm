@@ -1,22 +1,22 @@
 @interface CASDFKeyFillHighlightEffect
 + (id)defaultValues;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)configureLayer:(void *)a3 transaction:(void *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)configureLayer:(void *)layer transaction:(void *)transaction;
 - (void)dealloc;
 @end
 
 @implementation CASDFKeyFillHighlightEffect
 
-- (void)configureLayer:(void *)a3 transaction:(void *)a4
+- (void)configureLayer:(void *)layer transaction:(void *)transaction
 {
   v64 = *MEMORY[0x1E69E9840];
   v60 = 0uLL;
   v61 = 0;
-  v7 = [(CASDFKeyFillHighlightEffect *)self keyColor];
-  if (v7)
+  keyColor = [(CASDFKeyFillHighlightEffect *)self keyColor];
+  if (keyColor)
   {
-    v9 = v7;
-    v10 = CA::Context::current_colorspace(a4, v8);
+    v9 = keyColor;
+    v10 = CA::Context::current_colorspace(transaction, v8);
     CA::Render::convert_cgcolor(v9, v10, &v60, 0, v11);
   }
 
@@ -30,11 +30,11 @@
   v17 = v16;
   [(CASDFKeyFillHighlightEffect *)self keySpreadOffset];
   v19 = v18;
-  v20 = [(CASDFKeyFillHighlightEffect *)self fillColor];
-  if (v20)
+  fillColor = [(CASDFKeyFillHighlightEffect *)self fillColor];
+  if (fillColor)
   {
-    v22 = v20;
-    v23 = CA::Context::current_colorspace(a4, v21);
+    v22 = fillColor;
+    v23 = CA::Context::current_colorspace(transaction, v21);
     CA::Render::convert_cgcolor(v22, v23, &v60, 0, v24);
   }
 
@@ -77,40 +77,40 @@
   v47 = v46;
   [(CASDFKeyFillHighlightEffect *)self curvature];
   v49 = v48;
-  v50 = [(CASDFKeyFillHighlightEffect *)self global];
-  *(a3 + 136) = 8;
-  *(a3 + 24) = v62;
-  *(a3 + 10) = v63;
-  *(a3 + 11) = v55;
-  *(a3 + 12) = v57;
-  *(a3 + 13) = v58;
-  *(a3 + 14) = v59;
-  *(a3 + 60) = v60;
-  *(a3 + 19) = v61;
-  *(a3 + 20) = v56;
-  *(a3 + 21) = v54;
-  *(a3 + 22) = v53;
-  *(a3 + 23) = v52;
-  *(a3 + 24) = v51;
-  *(a3 + 25) = v35;
-  *(a3 + 26) = v37;
-  *(a3 + 27) = v39;
-  *(a3 + 28) = v41;
-  *(a3 + 29) = v43;
-  *(a3 + 30) = v45;
-  *(a3 + 31) = v47;
-  *(a3 + 32) = v49;
-  *(a3 + 132) = v50;
-  *(a3 + 135) = 0;
-  *(a3 + 133) = 0;
+  global = [(CASDFKeyFillHighlightEffect *)self global];
+  *(layer + 136) = 8;
+  *(layer + 24) = v62;
+  *(layer + 10) = v63;
+  *(layer + 11) = v55;
+  *(layer + 12) = v57;
+  *(layer + 13) = v58;
+  *(layer + 14) = v59;
+  *(layer + 60) = v60;
+  *(layer + 19) = v61;
+  *(layer + 20) = v56;
+  *(layer + 21) = v54;
+  *(layer + 22) = v53;
+  *(layer + 23) = v52;
+  *(layer + 24) = v51;
+  *(layer + 25) = v35;
+  *(layer + 26) = v37;
+  *(layer + 27) = v39;
+  *(layer + 28) = v41;
+  *(layer + 29) = v43;
+  *(layer + 30) = v45;
+  *(layer + 31) = v47;
+  *(layer + 32) = v49;
+  *(layer + 132) = global;
+  *(layer + 135) = 0;
+  *(layer + 133) = 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = CASDFKeyFillHighlightEffect;
-  v4 = [(CASDFEffect *)&v6 copyWithZone:a3];
+  v4 = [(CASDFEffect *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[2] = CGColorRetain(self->_keyColor);

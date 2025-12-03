@@ -4,32 +4,32 @@
 - (id)_currentHostType;
 - (id)currentSyncState;
 - (void)_cancelExistingSyncSession;
-- (void)_handleAssetMetricsMessage:(id)a3 fromLink:(id)a4;
-- (void)_handleCapabilitiesMessage:(id)a3 fromLink:(id)a4;
-- (void)_handleFinishedSyncingMetadataMessage:(id)a3 fromLink:(id)a4;
-- (void)_handleHostInfoMessage:(id)a3 fromLink:(id)a4;
-- (void)_handleRequestingSyncMessage:(id)a3 fromLink:(id)a4;
-- (void)_handleSyncFailedMessage:(id)a3 fromLink:(id)a4;
-- (void)_handleSyncStatusMessage:(id)a3 fromLink:(id)a4;
-- (void)_reconcileSyncWithMessage:(id)a3;
+- (void)_handleAssetMetricsMessage:(id)message fromLink:(id)link;
+- (void)_handleCapabilitiesMessage:(id)message fromLink:(id)link;
+- (void)_handleFinishedSyncingMetadataMessage:(id)message fromLink:(id)link;
+- (void)_handleHostInfoMessage:(id)message fromLink:(id)link;
+- (void)_handleRequestingSyncMessage:(id)message fromLink:(id)link;
+- (void)_handleSyncFailedMessage:(id)message fromLink:(id)link;
+- (void)_handleSyncStatusMessage:(id)message fromLink:(id)link;
+- (void)_reconcileSyncWithMessage:(id)message;
 - (void)_reportLocalProgress;
 - (void)_reset;
 - (void)_sendDiskUsage;
-- (void)_sendDiskUsageWithUpdatedDataClasses:(id)a3;
+- (void)_sendDiskUsageWithUpdatedDataClasses:(id)classes;
 - (void)_sendInstalledAssets;
 - (void)_sendSyncAllowed;
-- (void)assetLink:(id)a3 didUpdateOverallProgress:(double)a4;
-- (void)cancelSyncOnMessageLink:(id)a3;
-- (void)environmentMonitorDidChangePower:(id)a3;
-- (void)initiateSyncForLibrary:(id)a3 onMessageLink:(id)a4;
-- (void)messageLinkWasClosed:(id)a3;
-- (void)messageLinkWasInitialized:(id)a3;
-- (void)messageLinkWasOpened:(id)a3;
-- (void)session:(id)a3 didBeginSessionTask:(id)a4;
-- (void)session:(id)a3 didUpdateSessionTask:(id)a4;
-- (void)session:(id)a3 willBeginSessionTask:(id)a4;
-- (void)sessionDidFinish:(id)a3;
-- (void)sessionWillBegin:(id)a3;
+- (void)assetLink:(id)link didUpdateOverallProgress:(double)progress;
+- (void)cancelSyncOnMessageLink:(id)link;
+- (void)environmentMonitorDidChangePower:(id)power;
+- (void)initiateSyncForLibrary:(id)library onMessageLink:(id)link;
+- (void)messageLinkWasClosed:(id)closed;
+- (void)messageLinkWasInitialized:(id)initialized;
+- (void)messageLinkWasOpened:(id)opened;
+- (void)session:(id)session didBeginSessionTask:(id)task;
+- (void)session:(id)session didUpdateSessionTask:(id)task;
+- (void)session:(id)session willBeginSessionTask:(id)task;
+- (void)sessionDidFinish:(id)finish;
+- (void)sessionWillBegin:(id)begin;
 @end
 
 @implementation ATLegacyDeviceSyncManager
@@ -88,7 +88,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Resetting.", &v8, 0xCu);
   }
 
@@ -126,9 +126,9 @@
   currentMessageLink = self->_currentMessageLink;
   if (currentMessageLink)
   {
-    v5 = [(ATConcreteMessageLink *)currentMessageLink identifier];
+    identifier = [(ATConcreteMessageLink *)currentMessageLink identifier];
 
-    if (v5)
+    if (identifier)
     {
       v48 = 0u;
       v49 = 0u;
@@ -151,8 +151,8 @@
 
             v10 = *(*(&v46 + 1) + 8 * i);
             v11 = objc_alloc_init(MEMORY[0x277CEA470]);
-            v12 = [(ATConcreteMessageLink *)self->_currentMessageLink identifier];
-            [v11 setLibraryID:v12];
+            identifier2 = [(ATConcreteMessageLink *)self->_currentMessageLink identifier];
+            [v11 setLibraryID:identifier2];
 
             [v11 setDataClass:v10];
             [v11 setSyncStage:self->_currentStage];
@@ -169,13 +169,13 @@
             [v11 setWirelessSync:{-[ATLockdownMessageLink isWifiConnection](self->_currentMessageLink, "isWifiConnection")}];
             if ([v11 totalAssetCount])
             {
-              v15 = [v11 completedAssetCount];
-              *&v16 = v15 / [v11 totalAssetCount];
+              completedAssetCount = [v11 completedAssetCount];
+              *&v16 = completedAssetCount / [v11 totalAssetCount];
               [v11 setProgress:v16];
             }
 
-            v17 = [MEMORY[0x277CE5438] sharedMonitor];
-            [v17 updateStatus:v11];
+            mEMORY[0x277CE5438] = [MEMORY[0x277CE5438] sharedMonitor];
+            [mEMORY[0x277CE5438] updateStatus:v11];
           }
 
           v7 = [(NSMutableArray *)obj countByEnumeratingWithState:&v46 objects:v52 count:16];
@@ -186,52 +186,52 @@
     }
   }
 
-  v18 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v19 = [MEMORY[0x277CCABB0] numberWithInt:self->_syncSession != 0];
-  [v18 setObject:v19 forKey:@"Enabled"];
+  [dictionary setObject:v19 forKey:@"Enabled"];
 
   v20 = MEMORY[0x277CCABB0];
   v21 = self->_currentMessageLink;
   if (v21)
   {
-    v22 = [(ATLockdownMessageLink *)v21 isWifiConnection];
+    isWifiConnection = [(ATLockdownMessageLink *)v21 isWifiConnection];
   }
 
   else
   {
-    v22 = 0;
+    isWifiConnection = 0;
   }
 
-  v23 = [v20 numberWithInt:v22];
-  [v18 setObject:v23 forKey:@"Wireless"];
+  v23 = [v20 numberWithInt:isWifiConnection];
+  [dictionary setObject:v23 forKey:@"Wireless"];
 
   v24 = [MEMORY[0x277CCABB0] numberWithBool:self->_automaticSync];
-  [v18 setObject:v24 forKey:@"AutoSync"];
+  [dictionary setObject:v24 forKey:@"AutoSync"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_currentStage];
-  [v18 setObject:v25 forKey:@"SyncStage"];
+  [dictionary setObject:v25 forKey:@"SyncStage"];
 
   v26 = [(NSMutableArray *)self->_messageLinks valueForKey:@"identifier"];
-  [v18 setObject:v26 forKey:@"ConnectedLibraries"];
+  [dictionary setObject:v26 forKey:@"ConnectedLibraries"];
 
-  v27 = [(ATConcreteMessageLink *)self->_currentMessageLink identifier];
+  identifier3 = [(ATConcreteMessageLink *)self->_currentMessageLink identifier];
 
-  if (v27)
+  if (identifier3)
   {
-    v28 = [(ATConcreteMessageLink *)self->_currentMessageLink identifier];
-    [v18 setObject:v28 forKey:@"ActiveLibrary"];
+    identifier4 = [(ATConcreteMessageLink *)self->_currentMessageLink identifier];
+    [dictionary setObject:identifier4 forKey:@"ActiveLibrary"];
   }
 
   currentDataclass = self->_currentDataclass;
   if (currentDataclass)
   {
-    [v18 setObject:currentDataclass forKey:@"Dataclass"];
+    [dictionary setObject:currentDataclass forKey:@"Dataclass"];
   }
 
   currentStatus = self->_currentStatus;
   if (currentStatus)
   {
-    [v18 setObject:currentStatus forKey:@"StatusMessage"];
+    [dictionary setObject:currentStatus forKey:@"StatusMessage"];
   }
 
   if (self->_currentStage == 4)
@@ -239,13 +239,13 @@
     v31 = [v3 totalAssetCountForDataClasses:self->_dataclasses];
     v32 = [v3 completedAssetCountForDataClasses:self->_dataclasses];
     v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v31];
-    [v18 setObject:v33 forKey:@"AssetCount"];
+    [dictionary setObject:v33 forKey:@"AssetCount"];
 
     v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v32];
-    [v18 setObject:v34 forKey:@"CurrentAssetNum"];
+    [dictionary setObject:v34 forKey:@"CurrentAssetNum"];
 
     v35 = [MEMORY[0x277CCABB0] numberWithDouble:self->_currentOverallProgress];
-    [v18 setObject:v35 forKey:@"OverallProgress"];
+    [dictionary setObject:v35 forKey:@"OverallProgress"];
 
     currentAsset = self->_currentAsset;
     if (currentAsset)
@@ -253,44 +253,44 @@
       v37 = MEMORY[0x277CCABB0];
       [(ATAsset *)currentAsset downloadProgress];
       v38 = [v37 numberWithFloat:?];
-      [v18 setObject:v38 forKey:@"AssetProgress"];
+      [dictionary setObject:v38 forKey:@"AssetProgress"];
 
-      v39 = [(ATAsset *)self->_currentAsset identifier];
+      identifier5 = [(ATAsset *)self->_currentAsset identifier];
 
-      if (v39)
+      if (identifier5)
       {
-        v40 = [(ATAsset *)self->_currentAsset identifier];
-        [v18 setObject:v40 forKey:@"CurrentAssetID"];
+        identifier6 = [(ATAsset *)self->_currentAsset identifier];
+        [dictionary setObject:identifier6 forKey:@"CurrentAssetID"];
       }
 
-      v41 = [(ATAsset *)self->_currentAsset prettyName];
+      prettyName = [(ATAsset *)self->_currentAsset prettyName];
 
-      if (v41)
+      if (prettyName)
       {
-        v42 = [(ATAsset *)self->_currentAsset prettyName];
-        [v18 setObject:v42 forKey:@"CurrentAsset"];
+        prettyName2 = [(ATAsset *)self->_currentAsset prettyName];
+        [dictionary setObject:prettyName2 forKey:@"CurrentAsset"];
       }
     }
 
-    v43 = [v3 assetProgressForAllDataclasses];
-    [v18 setObject:v43 forKey:@"DataclassProgress"];
+    assetProgressForAllDataclasses = [v3 assetProgressForAllDataclasses];
+    [dictionary setObject:assetProgressForAllDataclasses forKey:@"DataclassProgress"];
   }
 
-  v44 = [MEMORY[0x277CE5438] sharedMonitor];
-  [v44 updateStatusValuesWithDictionary:v18];
+  mEMORY[0x277CE5438]2 = [MEMORY[0x277CE5438] sharedMonitor];
+  [mEMORY[0x277CE5438]2 updateStatusValuesWithDictionary:dictionary];
 }
 
-- (void)_reconcileSyncWithMessage:(id)a3
+- (void)_reconcileSyncWithMessage:(id)message
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   self->_currentStage = 3;
   v5 = [MEMORY[0x277CBEB98] setWithObjects:{@"Media", @"Book", @"Application", @"Photo", @"Podcasts", 0}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = [(ATSession *)self->_syncSession sessionTasksWithGroupingKey:@"ATLegacySyncSessionTaskGroupingKey"];
   v6 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
@@ -308,26 +308,26 @@
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
-        v11 = [v4 parameterForKey:@"SyncTypes"];
-        v12 = [v10 dataClass];
-        v13 = [v11 objectForKey:v12];
-        v14 = [v13 unsignedIntValue];
+        v11 = [messageCopy parameterForKey:@"SyncTypes"];
+        dataClass = [v10 dataClass];
+        v13 = [v11 objectForKey:dataClass];
+        unsignedIntValue = [v13 unsignedIntValue];
 
-        v15 = [v4 parameterForKey:@"DataclassAnchors"];
-        v16 = [v10 dataClass];
-        v17 = [v15 objectForKey:v16];
+        v15 = [messageCopy parameterForKey:@"DataclassAnchors"];
+        dataClass2 = [v10 dataClass];
+        v17 = [v15 objectForKey:dataClass2];
 
-        v18 = [v10 dataClass];
-        LODWORD(v16) = [v5 containsObject:v18];
+        dataClass3 = [v10 dataClass];
+        LODWORD(dataClass2) = [v5 containsObject:dataClass3];
 
-        if (v16 && v14)
+        if (dataClass2 && unsignedIntValue)
         {
-          dataClassesWithUpdatedDiskUsage = v21->_dataClassesWithUpdatedDiskUsage;
-          v20 = [v10 dataClass];
-          [(NSMutableSet *)dataClassesWithUpdatedDiskUsage addObject:v20];
+          dataClassesWithUpdatedDiskUsage = selfCopy->_dataClassesWithUpdatedDiskUsage;
+          dataClass4 = [v10 dataClass];
+          [(NSMutableSet *)dataClassesWithUpdatedDiskUsage addObject:dataClass4];
         }
 
-        [v10 reconcileWithAnchor:v17 syncType:v14];
+        [v10 reconcileWithAnchor:v17 syncType:unsignedIntValue];
 
         ++v9;
       }
@@ -339,29 +339,29 @@
     while (v7);
   }
 
-  [(ATLegacyDeviceSyncManager *)v21 _reportLocalProgress];
+  [(ATLegacyDeviceSyncManager *)selfCopy _reportLocalProgress];
 }
 
 - (void)_sendSyncAllowed
 {
   v39 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
   v32 = ATGetDisabledAssetTypes(self->_clientController);
-  v4 = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
-  v5 = [v4 isDeviceClassCUnlocked];
+  mEMORY[0x277D7FBE8] = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
+  isDeviceClassCUnlocked = [mEMORY[0x277D7FBE8] isDeviceClassCUnlocked];
 
-  v30 = [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25D18]];
-  v29 = [v3 effectiveBoolValueForSetting:*MEMORY[0x277D25D20]];
-  v28 = [v3 isEphemeralMultiUser];
-  v25 = v3;
-  v6 = [v3 cloudConfigurationDetails];
-  v7 = [v6 objectForKey:*MEMORY[0x277D26360]];
+  v30 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25D18]];
+  v29 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25D20]];
+  isEphemeralMultiUser = [mEMORY[0x277D262A0] isEphemeralMultiUser];
+  v25 = mEMORY[0x277D262A0];
+  cloudConfigurationDetails = [mEMORY[0x277D262A0] cloudConfigurationDetails];
+  v7 = [cloudConfigurationDetails objectForKey:*MEMORY[0x277D26360]];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v31 = self;
+  selfCopy = self;
   obj = self->_messageLinks;
   v33 = [(NSMutableArray *)obj countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v33)
@@ -378,7 +378,7 @@
         }
 
         v9 = *(*(&v34 + 1) + 8 * v8);
-        currentMessageLink = v31->_currentMessageLink;
+        currentMessageLink = selfCopy->_currentMessageLink;
         if (currentMessageLink)
         {
           v11 = v9 == currentMessageLink;
@@ -390,20 +390,20 @@
         }
 
         v12 = v11;
-        v13 = v12 & v5;
+        v13 = v12 & isDeviceClassCUnlocked;
         if (v13 == 1)
         {
-          v14 = [MEMORY[0x277D7FA90] sharedMonitor];
-          v15 = [v14 isCharging];
+          mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+          isCharging = [mEMORY[0x277D7FA90] isCharging];
         }
 
         else
         {
-          v15 = 0;
+          isCharging = 0;
         }
 
         v16 = objc_opt_new();
-        v17 = [MEMORY[0x277CCABB0] numberWithBool:v15];
+        v17 = [MEMORY[0x277CCABB0] numberWithBool:isCharging];
         [v16 setObject:v17 forKey:@"AutoSync"];
 
         v18 = [MEMORY[0x277CCABB0] numberWithBool:v13];
@@ -411,7 +411,7 @@
 
         [v16 setObject:v32 forKey:@"DisabledAssetTypes"];
         [v16 setObject:MEMORY[0x277CBEC38] forKey:@"PurgeAllowed"];
-        v19 = [MEMORY[0x277CCABB0] numberWithBool:v5 ^ 1];
+        v19 = [MEMORY[0x277CCABB0] numberWithBool:isDeviceClassCUnlocked ^ 1];
         [v16 setObject:v19 forKey:@"DataProtected"];
 
         v20 = [MEMORY[0x277CCABB0] numberWithBool:v30 != 2];
@@ -420,7 +420,7 @@
         v21 = [MEMORY[0x277CCABB0] numberWithBool:v29 != 2];
         [v16 setObject:v21 forKey:@"AppRemovalAllowed"];
 
-        v22 = [MEMORY[0x277CCABB0] numberWithBool:v28];
+        v22 = [MEMORY[0x277CCABB0] numberWithBool:isEphemeralMultiUser];
         [v16 setObject:v22 forKey:@"EducationModeEnabled"];
 
         v23 = [MEMORY[0x277CCABB0] numberWithBool:1];
@@ -445,19 +445,19 @@
   }
 }
 
-- (void)_sendDiskUsageWithUpdatedDataClasses:(id)a3
+- (void)_sendDiskUsageWithUpdatedDataClasses:(id)classes
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  classesCopy = classes;
   v5 = _ATLogCategoryiTunesSync();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = classesCopy;
     _os_log_impl(&dword_223819000, v5, OS_LOG_TYPE_DEFAULT, "Sending updated disk usage with updated dataclasses %{public}@", buf, 0xCu);
   }
 
-  if (v4)
+  if (classesCopy)
   {
     diskUsageProvider = self->_diskUsageProvider;
     v10[0] = MEMORY[0x277D85DD0];
@@ -465,7 +465,7 @@
     v10[2] = __66__ATLegacyDeviceSyncManager__sendDiskUsageWithUpdatedDataClasses___block_invoke;
     v10[3] = &unk_2784E55F0;
     v10[4] = self;
-    [(ATDeviceDiskUsageProvider *)diskUsageProvider getCurrentUsageWithUpdatedDataClasses:v4 withCompletion:v10];
+    [(ATDeviceDiskUsageProvider *)diskUsageProvider getCurrentUsageWithUpdatedDataClasses:classesCopy withCompletion:v10];
   }
 
   else
@@ -602,15 +602,15 @@ void __66__ATLegacyDeviceSyncManager__sendDiskUsageWithUpdatedDataClasses___bloc
     _os_log_impl(&dword_223819000, v6, OS_LOG_TYPE_DEFAULT, "Sending disk usage. lastUpdate=%.2fs ago", buf, 0xCu);
   }
 
-  v7 = [(ATDeviceDiskUsageProvider *)self->_diskUsageProvider getCurrentUsage];
-  v8 = ![v7 count] || self->_lastDiskUsageUpdateTime == 0.0 || v5 > 600.0;
-  if ([v7 count])
+  getCurrentUsage = [(ATDeviceDiskUsageProvider *)self->_diskUsageProvider getCurrentUsage];
+  v8 = ![getCurrentUsage count] || self->_lastDiskUsageUpdateTime == 0.0 || v5 > 600.0;
+  if ([getCurrentUsage count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v17 = self;
+    selfCopy = self;
     v9 = self->_messageLinks;
     v10 = [(NSMutableArray *)v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v10)
@@ -627,7 +627,7 @@ void __66__ATLegacyDeviceSyncManager__sendDiskUsageWithUpdatedDataClasses___bloc
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [MEMORY[0x277CEA448] messageWithName:@"AssetMetrics" parameters:v7];
+          v15 = [MEMORY[0x277CEA448] messageWithName:@"AssetMetrics" parameters:getCurrentUsage];
           [v14 sendMessage:v15 withCompletion:&__block_literal_global_265];
         }
 
@@ -637,7 +637,7 @@ void __66__ATLegacyDeviceSyncManager__sendDiskUsageWithUpdatedDataClasses___bloc
       while (v11);
     }
 
-    self = v17;
+    self = selfCopy;
   }
 
   if (v8)
@@ -709,7 +709,7 @@ void __43__ATLegacyDeviceSyncManager__sendDiskUsage__block_invoke_3(uint64_t a1)
 - (void)_sendInstalledAssets
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -733,10 +733,10 @@ void __43__ATLegacyDeviceSyncManager__sendDiskUsage__block_invoke_3(uint64_t a1)
         v9 = [(ATClientController *)self->_clientController clientForDataclass:v8];
         if (objc_opt_respondsToSelector())
         {
-          v10 = [v9 installedAssets];
-          if (v10)
+          installedAssets = [v9 installedAssets];
+          if (installedAssets)
           {
-            [v3 setObject:v10 forKey:v8];
+            [dictionary setObject:installedAssets forKey:v8];
           }
         }
       }
@@ -767,7 +767,7 @@ void __43__ATLegacyDeviceSyncManager__sendDiskUsage__block_invoke_3(uint64_t a1)
         }
 
         v16 = *(*(&v19 + 1) + 8 * j);
-        v17 = [MEMORY[0x277CEA448] messageWithName:@"InstalledAssets" parameters:v3];
+        v17 = [MEMORY[0x277CEA448] messageWithName:@"InstalledAssets" parameters:dictionary];
         [v16 sendMessage:v17 withCompletion:&__block_literal_global_262];
       }
 
@@ -778,30 +778,30 @@ void __43__ATLegacyDeviceSyncManager__sendDiskUsage__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)_handleSyncStatusMessage:(id)a3 fromLink:(id)a4
+- (void)_handleSyncStatusMessage:(id)message fromLink:(id)link
 {
-  v5 = [a3 parameterForKey:{@"StatusMessage", a4}];
+  v5 = [message parameterForKey:{@"StatusMessage", link}];
   objc_storeStrong(&self->_currentStatus, v5);
   [(ATSession *)self->_syncSession setLocalizedDescription:v5];
   [(ATLegacyDeviceSyncManager *)self _reportLocalProgress];
 }
 
-- (void)_handleAssetMetricsMessage:(id)a3 fromLink:(id)a4
+- (void)_handleAssetMetricsMessage:(id)message fromLink:(id)link
 {
-  v5 = [a3 parameterForKey:{@"Dataclasses", a4}];
+  v5 = [message parameterForKey:{@"Dataclasses", link}];
   [(ATLegacyDeviceSyncManager *)self _sendDiskUsageWithUpdatedDataClasses:v5];
 }
 
-- (void)_handleSyncFailedMessage:(id)a3 fromLink:(id)a4
+- (void)_handleSyncFailedMessage:(id)message fromLink:(id)link
 {
-  v11 = a3;
-  v6 = a4;
+  messageCopy = message;
+  linkCopy = link;
   if (self->_syncSession)
   {
-    v7 = [v11 sessionNumber];
-    if (v7 == [MEMORY[0x277CEA448] currentSessionNumber])
+    sessionNumber = [messageCopy sessionNumber];
+    if (sessionNumber == [MEMORY[0x277CEA448] currentSessionNumber])
     {
-      v8 = [v11 parameterForKey:@"ErrorCode"];
+      v8 = [messageCopy parameterForKey:@"ErrorCode"];
       v9 = [v8 intValue] == 2 ? 8 : 1;
 
       v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"ATError" code:v9 userInfo:0];
@@ -817,11 +817,11 @@ void __43__ATLegacyDeviceSyncManager__sendDiskUsage__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)_handleFinishedSyncingMetadataMessage:(id)a3 fromLink:(id)a4
+- (void)_handleFinishedSyncingMetadataMessage:(id)message fromLink:(id)link
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  linkCopy = link;
   syncSession = self->_syncSession;
   if (!syncSession || ([(ATSession *)syncSession isCancelled]& 1) != 0 || [(ATSession *)self->_syncSession isFinished])
   {
@@ -829,30 +829,30 @@ void __43__ATLegacyDeviceSyncManager__sendDiskUsage__block_invoke_3(uint64_t a1)
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v20 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_223819000, v9, OS_LOG_TYPE_ERROR, "%{public}@ no active sync session - failing sync", buf, 0xCu);
     }
 
-    v10 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F52D0 session:{objc_msgSend(v6, "sessionNumber")}];
-    [v7 sendMessage:v10 withCompletion:&__block_literal_global_185];
+    v10 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F52D0 session:{objc_msgSend(messageCopy, "sessionNumber")}];
+    [linkCopy sendMessage:v10 withCompletion:&__block_literal_global_185];
   }
 
   else
   {
-    v11 = [v6 sessionNumber];
-    if (v11 == [MEMORY[0x277CEA448] currentSessionNumber])
+    sessionNumber = [messageCopy sessionNumber];
+    if (sessionNumber == [MEMORY[0x277CEA448] currentSessionNumber])
     {
-      v10 = [v6 parameterForKey:@"PurgeDataBytes"];
-      v12 = [v10 unsignedLongLongValue];
-      if (v12)
+      v10 = [messageCopy parameterForKey:@"PurgeDataBytes"];
+      unsignedLongLongValue = [v10 unsignedLongLongValue];
+      if (unsignedLongLongValue)
       {
-        v13 = v12;
+        v13 = unsignedLongLongValue;
         [(ATSession *)self->_syncSession setSuspended:1];
         v14 = _ATLogCategoryiTunesSync();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543618;
-          v20 = self;
+          selfCopy3 = self;
           v21 = 2048;
           *v22 = v13;
           _os_log_impl(&dword_223819000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ Requesting purge for %lld bytes", buf, 0x16u);
@@ -872,7 +872,7 @@ void __43__ATLegacyDeviceSyncManager__sendDiskUsage__block_invoke_3(uint64_t a1)
         self->_cacheDeleteToken = CacheDeletePurgeSpaceWithInfo();
       }
 
-      [(ATLegacyDeviceSyncManager *)self _reconcileSyncWithMessage:v6];
+      [(ATLegacyDeviceSyncManager *)self _reconcileSyncWithMessage:messageCopy];
     }
 
     else
@@ -881,9 +881,9 @@ void __43__ATLegacyDeviceSyncManager__sendDiskUsage__block_invoke_3(uint64_t a1)
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138544130;
-        v20 = self;
+        selfCopy3 = self;
         v21 = 1024;
-        *v22 = [v6 sessionNumber];
+        *v22 = [messageCopy sessionNumber];
         *&v22[4] = 1024;
         *&v22[6] = [MEMORY[0x277CEA448] currentSessionNumber];
         v23 = 2114;
@@ -891,8 +891,8 @@ void __43__ATLegacyDeviceSyncManager__sendDiskUsage__block_invoke_3(uint64_t a1)
         _os_log_impl(&dword_223819000, v18, OS_LOG_TYPE_ERROR, "%{public}@ Session numbers are different - ATLegacyMessage:(%d), ATLegacySession:(%d), ignoring message %{public}@ and cancelling current sync session", buf, 0x22u);
       }
 
-      v10 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F52F8 session:{objc_msgSend(v6, "sessionNumber")}];
-      [v7 sendMessage:v10 withCompletion:&__block_literal_global_213];
+      v10 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F52F8 session:{objc_msgSend(messageCopy, "sessionNumber")}];
+      [linkCopy sendMessage:v10 withCompletion:&__block_literal_global_213];
       [(ATLegacyDeviceSyncManager *)self _cancelExistingSyncSession];
     }
   }
@@ -969,12 +969,12 @@ uint64_t __76__ATLegacyDeviceSyncManager__handleFinishedSyncingMetadataMessage_f
   }
 }
 
-- (void)_handleRequestingSyncMessage:(id)a3 fromLink:(id)a4
+- (void)_handleRequestingSyncMessage:(id)message fromLink:(id)link
 {
   v117 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 parameterForKey:@"HostInfo"];
+  messageCopy = message;
+  linkCopy = link;
+  v8 = [messageCopy parameterForKey:@"HostInfo"];
   if (v8)
   {
     defaults = self->_defaults;
@@ -999,12 +999,12 @@ uint64_t __76__ATLegacyDeviceSyncManager__handleFinishedSyncingMetadataMessage_f
 LABEL_12:
       [MEMORY[0x277D262A0] sharedConnection];
       v15 = v16 = self;
-      v17 = [v15 isEphemeralMultiUser];
+      isEphemeralMultiUser = [v15 isEphemeralMultiUser];
       v94 = v16;
-      v18 = [(ATLegacyDeviceSyncManager *)v16 _currentHostType];
-      v19 = [v18 isEqualToString:@"Configurator"];
+      _currentHostType = [(ATLegacyDeviceSyncManager *)v16 _currentHostType];
+      v19 = [_currentHostType isEqualToString:@"Configurator"];
 
-      if (v17 && (v19 & 1) == 0)
+      if (isEphemeralMultiUser && (v19 & 1) == 0)
       {
         v20 = _ATLogCategoryiTunesSync();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1013,36 +1013,36 @@ LABEL_12:
           _os_log_impl(&dword_223819000, v20, OS_LOG_TYPE_ERROR, "Sending sync disallowed because we are in multi-user mode", buf, 2u);
         }
 
-        v21 = objc_opt_new();
-        [(__CFString *)v21 setObject:&unk_2836F5128 forKey:@"ErrorCode"];
+        identifier = objc_opt_new();
+        [(__CFString *)identifier setObject:&unk_2836F5128 forKey:@"ErrorCode"];
         v22 = [MEMORY[0x277CCABB0] numberWithBool:1];
-        [(__CFString *)v21 setObject:v22 forKey:@"EducationModeEnabled"];
+        [(__CFString *)identifier setObject:v22 forKey:@"EducationModeEnabled"];
 
-        v23 = [v15 cloudConfigurationDetails];
-        v24 = [v23 objectForKey:*MEMORY[0x277D26360]];
+        cloudConfigurationDetails = [v15 cloudConfigurationDetails];
+        v24 = [cloudConfigurationDetails objectForKey:*MEMORY[0x277D26360]];
 
         if (v24)
         {
-          [(__CFString *)v21 setObject:v24 forKey:@"ManagedOrganizationName"];
+          [(__CFString *)identifier setObject:v24 forKey:@"ManagedOrganizationName"];
         }
 
-        v25 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:v21 session:{objc_msgSend(v6, "sessionNumber")}];
+        v25 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:identifier session:{objc_msgSend(messageCopy, "sessionNumber")}];
         v26 = &__block_literal_global_129;
 LABEL_19:
-        [(ATLegacyMessageLink *)v7 sendMessage:v25 withCompletion:v26];
+        [(ATLegacyMessageLink *)linkCopy sendMessage:v25 withCompletion:v26];
 LABEL_68:
 
         goto LABEL_69;
       }
 
-      v21 = [(ATConcreteMessageLink *)v94->_currentMessageLink identifier];
-      v27 = [v6 parameterForKey:@"HostInfo"];
+      identifier = [(ATConcreteMessageLink *)v94->_currentMessageLink identifier];
+      v27 = [messageCopy parameterForKey:@"HostInfo"];
       v91 = [v27 objectForKey:@"LibraryID"];
 
       currentMessageLink = v94->_currentMessageLink;
-      if (currentMessageLink != v7 && currentMessageLink && v21)
+      if (currentMessageLink != linkCopy && currentMessageLink && identifier)
       {
-        if (![v91 isEqualToString:v21])
+        if (![v91 isEqualToString:identifier])
         {
           v40 = _ATLogCategoryiTunesSync();
           v24 = v91;
@@ -1051,11 +1051,11 @@ LABEL_68:
             *buf = 138543618;
             v114 = v91;
             v115 = 2114;
-            v116 = v21;
+            v116 = identifier;
             _os_log_impl(&dword_223819000, v40, OS_LOG_TYPE_ERROR, "Sending sync disallowed message to %{public}@, already syncing with %{public}@", buf, 0x16u);
           }
 
-          v25 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F5258 session:{objc_msgSend(v6, "sessionNumber")}];
+          v25 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F5258 session:{objc_msgSend(messageCopy, "sessionNumber")}];
           v26 = &__block_literal_global_136;
           goto LABEL_19;
         }
@@ -1064,7 +1064,7 @@ LABEL_68:
       }
 
       v90 = v15;
-      if (currentMessageLink == v7 && v94->_localSyncRequestCanceled)
+      if (currentMessageLink == linkCopy && v94->_localSyncRequestCanceled)
       {
         v29 = _ATLogCategoryiTunesSync();
         v24 = v91;
@@ -1075,16 +1075,16 @@ LABEL_68:
           _os_log_impl(&dword_223819000, v29, OS_LOG_TYPE_ERROR, "Sending sync canceled message to %{public}@, canceled before we started", buf, 0xCu);
         }
 
-        v25 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F5280 session:{objc_msgSend(v6, "sessionNumber")}];
-        [(ATLegacyMessageLink *)v7 sendMessage:v25 withCompletion:&__block_literal_global_145];
+        v25 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F5280 session:{objc_msgSend(messageCopy, "sessionNumber")}];
+        [(ATLegacyMessageLink *)linkCopy sendMessage:v25 withCompletion:&__block_literal_global_145];
         v94->_localSyncRequestCanceled = 0;
       }
 
       else
       {
-        v87 = v21;
-        v88 = v7;
-        v30 = [v6 parameterForKey:@"HostInfo"];
+        v87 = identifier;
+        v88 = linkCopy;
+        v30 = [messageCopy parameterForKey:@"HostInfo"];
         v31 = [v30 objectForKey:@"Grappa"];
         v32 = ATGrappaEstablishSession(v31, &v94->_grappaId);
 
@@ -1092,26 +1092,26 @@ LABEL_68:
         if (v32)
         {
           [(ATLegacyDeviceSyncManager *)v94 _cancelExistingSyncSession];
-          [MEMORY[0x277CEA448] setSessionNumber:{objc_msgSend(v6, "sessionNumber")}];
-          objc_storeStrong(&v94->_currentMessageLink, a4);
+          [MEMORY[0x277CEA448] setSessionNumber:{objc_msgSend(messageCopy, "sessionNumber")}];
+          objc_storeStrong(&v94->_currentMessageLink, link);
           v33 = v94->_defaults;
-          v34 = [v6 parameterForKey:@"HostInfo"];
+          v34 = [messageCopy parameterForKey:@"HostInfo"];
           v35 = ATGetDisabledAssetTypes(v94->_clientController);
           [(ATUserDefaults *)v33 updateHostInfo:v34 disabledAssetTypes:v35];
 
-          v36 = [v6 parameterForKey:@"Dataclasses"];
+          v36 = [messageCopy parameterForKey:@"Dataclasses"];
           v37 = [v36 mutableCopy];
           dataclasses = v94->_dataclasses;
           v94->_dataclasses = v37;
 
           v94->_localSyncRequest = 0;
           v85 = v8;
-          v86 = v6;
+          v86 = messageCopy;
           v84 = v12;
           if ([(ATLegacyDeviceSyncManager *)v94 _currentLinkIsWifiConnection])
           {
-            v39 = [MEMORY[0x277D7FA90] sharedMonitor];
-            v94->_automaticSync = [v39 isCharging];
+            mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+            v94->_automaticSync = [mEMORY[0x277D7FA90] isCharging];
           }
 
           else
@@ -1127,8 +1127,8 @@ LABEL_68:
           syncSession = v94->_syncSession;
           v94->_syncSession = v44;
 
-          v46 = [MEMORY[0x277CE5430] sharedSessionServer];
-          [v46 addSession:v94->_syncSession];
+          mEMORY[0x277CE5430] = [MEMORY[0x277CE5430] sharedSessionServer];
+          [mEMORY[0x277CE5430] addSession:v94->_syncSession];
 
           [(ATSession *)v94->_syncSession addObserver:v94];
           v105 = 0u;
@@ -1167,8 +1167,8 @@ LABEL_68:
 
           [(ATSession *)v94->_syncSession start];
           [(ATLegacyDeviceSyncManager *)v94 _sendInstalledAssets];
-          v55 = v6;
-          v56 = [v6 parameterForKey:@"HostInfo"];
+          v55 = messageCopy;
+          v56 = [messageCopy parameterForKey:@"HostInfo"];
           v93 = [v56 objectForKey:@"Version"];
 
           v101 = 0u;
@@ -1193,21 +1193,21 @@ LABEL_68:
                 v61 = *(*(&v99 + 1) + 8 * j);
                 v62 = v55;
                 v63 = [v55 parameterForKey:{@"DataclassAnchors", v83}];
-                v64 = [v61 dataClass];
-                v65 = [v63 objectForKey:v64];
+                dataClass = [v61 dataClass];
+                v65 = [v63 objectForKey:dataClass];
 
                 [v61 prepareWithHostAnchor:v65 version:v93];
-                v66 = [v61 error];
+                error = [v61 error];
 
-                if (v66)
+                if (error)
                 {
-                  v67 = [v61 error];
+                  error2 = [v61 error];
 
-                  [(ATSession *)v94->_syncSession setError:v67];
+                  [(ATSession *)v94->_syncSession setError:error2];
                   [(ATSession *)v94->_syncSession cancel];
-                  v21 = v87;
-                  v7 = v88;
-                  v6 = v62;
+                  identifier = v87;
+                  linkCopy = v88;
+                  messageCopy = v62;
                   goto LABEL_66;
                 }
 
@@ -1224,7 +1224,7 @@ LABEL_68:
             }
           }
 
-          v67 = objc_alloc_init(MEMORY[0x277CBEB38]);
+          error2 = objc_alloc_init(MEMORY[0x277CBEB38]);
           v95 = 0u;
           v96 = 0u;
           v97 = 0u;
@@ -1249,8 +1249,8 @@ LABEL_68:
                 v75 = [(ATClientController *)v68->_clientController clientForDataclass:v74, v83];
                 if (objc_opt_respondsToSelector())
                 {
-                  v76 = [v75 currentSyncAnchor];
-                  [v67 setObject:v76 forKey:v74];
+                  currentSyncAnchor = [v75 currentSyncAnchor];
+                  [error2 setObject:currentSyncAnchor forKey:v74];
 
                   v68 = v94;
                 }
@@ -1262,17 +1262,17 @@ LABEL_68:
             while (v71);
           }
 
-          v77 = [MEMORY[0x277CBEB38] dictionary];
-          [v77 setObject:v89 forKey:@"Grappa"];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          [dictionary setObject:v89 forKey:@"Grappa"];
           v78 = MEMORY[0x277CEA448];
           v107[0] = @"DataclassAnchors";
           v107[1] = @"DeviceInfo";
-          v108[0] = v67;
-          v108[1] = v77;
+          v108[0] = error2;
+          v108[1] = dictionary;
           [MEMORY[0x277CBEAC0] dictionaryWithObjects:v108 forKeys:v107 count:2];
           v80 = v79 = v68;
           v81 = [v78 messageWithName:@"ReadyForSync" parameters:v80];
-          v7 = v88;
+          linkCopy = v88;
           [(ATLegacyMessageLink *)v88 sendMessage:v81 withCompletion:&__block_literal_global_177];
 
           v79->_currentStage = 2;
@@ -1280,8 +1280,8 @@ LABEL_68:
           v79->_currentDataclass = &stru_2836EC190;
 
           [(ATLegacyDeviceSyncManager *)v79 _reportLocalProgress];
-          v6 = v86;
-          v21 = v87;
+          messageCopy = v86;
+          identifier = v87;
 LABEL_66:
           v42 = v93;
 
@@ -1299,10 +1299,10 @@ LABEL_66:
             _os_log_impl(&dword_223819000, v41, OS_LOG_TYPE_ERROR, "Grappa session could not be established. Aborting", buf, 2u);
           }
 
-          v42 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F52A8 session:{objc_msgSend(v6, "sessionNumber")}];
-          v7 = v88;
+          v42 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F52A8 session:{objc_msgSend(messageCopy, "sessionNumber")}];
+          linkCopy = v88;
           [(ATLegacyMessageLink *)v88 sendMessage:v42 withCompletion:&__block_literal_global_157];
-          v21 = v87;
+          identifier = v87;
         }
 
         v24 = v91;
@@ -1328,8 +1328,8 @@ LABEL_66:
     _os_log_impl(&dword_223819000, v14, OS_LOG_TYPE_ERROR, "Sending sync disallowed, incompatible version: %{public}@ vs. %{public}@ required", buf, 0x16u);
   }
 
-  v15 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F5230 session:{objc_msgSend(v6, "sessionNumber")}];
-  [(ATLegacyMessageLink *)v7 sendMessage:v15 withCompletion:&__block_literal_global_113];
+  v15 = [MEMORY[0x277CEA448] messageWithName:@"SyncFailed" parameters:&unk_2836F5230 session:{objc_msgSend(messageCopy, "sessionNumber")}];
+  [(ATLegacyMessageLink *)linkCopy sendMessage:v15 withCompletion:&__block_literal_global_113];
 LABEL_69:
 }
 
@@ -1349,32 +1349,32 @@ void __67__ATLegacyDeviceSyncManager__handleRequestingSyncMessage_fromLink___blo
   }
 }
 
-- (void)_handleHostInfoMessage:(id)a3 fromLink:(id)a4
+- (void)_handleHostInfoMessage:(id)message fromLink:(id)link
 {
   defaults = self->_defaults;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 parameterForKey:@"HostInfo"];
+  linkCopy = link;
+  messageCopy = message;
+  v9 = [messageCopy parameterForKey:@"HostInfo"];
   v10 = ATGetDisabledAssetTypes(self->_clientController);
   [(ATUserDefaults *)defaults updateHostInfo:v9 disabledAssetTypes:v10];
 
-  v11 = [v8 parameterForKey:@"LocalCloudSupport"];
+  v11 = [messageCopy parameterForKey:@"LocalCloudSupport"];
 
-  [v7 setHostSupportsLocalCloudDownloads:{objc_msgSend(v11, "BOOLValue")}];
+  [linkCopy setHostSupportsLocalCloudDownloads:{objc_msgSend(v11, "BOOLValue")}];
 
   [(ATLegacyDeviceSyncManager *)self _reportLocalProgress];
 }
 
-- (void)_handleCapabilitiesMessage:(id)a3 fromLink:(id)a4
+- (void)_handleCapabilitiesMessage:(id)message fromLink:(id)link
 {
-  v6 = a4;
-  v7 = [a3 parameterForKey:@"LibraryID"];
-  [v6 setIdentifier:v7];
+  linkCopy = link;
+  v7 = [message parameterForKey:@"LibraryID"];
+  [linkCopy setIdentifier:v7];
 
   [(ATLegacyDeviceSyncManager *)self _reportLocalProgress];
 }
 
-- (void)assetLink:(id)a3 didUpdateOverallProgress:(double)a4
+- (void)assetLink:(id)link didUpdateOverallProgress:(double)progress
 {
   workQueue = self->_workQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1382,21 +1382,21 @@ void __67__ATLegacyDeviceSyncManager__handleRequestingSyncMessage_fromLink___blo
   v5[2] = __64__ATLegacyDeviceSyncManager_assetLink_didUpdateOverallProgress___block_invoke;
   v5[3] = &unk_2784E5578;
   v5[4] = self;
-  *&v5[5] = a4;
+  *&v5[5] = progress;
   dispatch_async(workQueue, v5);
 }
 
-- (void)sessionDidFinish:(id)a3
+- (void)sessionDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ATLegacyDeviceSyncManager_sessionDidFinish___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = finishCopy;
+  selfCopy = self;
+  v6 = finishCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -1579,17 +1579,17 @@ LABEL_32:
   return SBSSetStatusBarShowsSyncActivity();
 }
 
-- (void)sessionWillBegin:(id)a3
+- (void)sessionWillBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ATLegacyDeviceSyncManager_sessionWillBegin___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = beginCopy;
+  selfCopy = self;
+  v6 = beginCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -1628,20 +1628,20 @@ uint64_t __46__ATLegacyDeviceSyncManager_sessionWillBegin___block_invoke(uint64_
   return result;
 }
 
-- (void)session:(id)a3 willBeginSessionTask:(id)a4
+- (void)session:(id)session willBeginSessionTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ATLegacyDeviceSyncManager_session_willBeginSessionTask___block_invoke;
   block[3] = &unk_2784E59B0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = taskCopy;
+  v9 = taskCopy;
+  v10 = sessionCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1662,20 +1662,20 @@ void __58__ATLegacyDeviceSyncManager_session_willBeginSessionTask___block_invoke
   }
 }
 
-- (void)session:(id)a3 didBeginSessionTask:(id)a4
+- (void)session:(id)session didBeginSessionTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__ATLegacyDeviceSyncManager_session_didBeginSessionTask___block_invoke;
   block[3] = &unk_2784E59B0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = taskCopy;
+  v9 = taskCopy;
+  v10 = sessionCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1694,20 +1694,20 @@ void __57__ATLegacyDeviceSyncManager_session_didBeginSessionTask___block_invoke(
   }
 }
 
-- (void)session:(id)a3 didUpdateSessionTask:(id)a4
+- (void)session:(id)session didUpdateSessionTask:(id)task
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__ATLegacyDeviceSyncManager_session_didUpdateSessionTask___block_invoke;
   block[3] = &unk_2784E59B0;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = sessionCopy;
+  selfCopy = self;
+  v14 = taskCopy;
+  v9 = taskCopy;
+  v10 = sessionCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -1757,7 +1757,7 @@ void __58__ATLegacyDeviceSyncManager_session_didUpdateSessionTask___block_invoke
   }
 }
 
-- (void)environmentMonitorDidChangePower:(id)a3
+- (void)environmentMonitorDidChangePower:(id)power
 {
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1768,17 +1768,17 @@ void __58__ATLegacyDeviceSyncManager_session_didUpdateSessionTask___block_invoke
   dispatch_async(workQueue, block);
 }
 
-- (void)messageLinkWasClosed:(id)a3
+- (void)messageLinkWasClosed:(id)closed
 {
-  v4 = a3;
+  closedCopy = closed;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ATLegacyDeviceSyncManager_messageLinkWasClosed___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = closedCopy;
+  v6 = closedCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -1833,17 +1833,17 @@ void __50__ATLegacyDeviceSyncManager_messageLinkWasClosed___block_invoke(uint64_
   [v8 updateStatusWithValue:v9 forKey:@"ConnectedLibraries"];
 }
 
-- (void)messageLinkWasInitialized:(id)a3
+- (void)messageLinkWasInitialized:(id)initialized
 {
-  v4 = a3;
+  initializedCopy = initialized;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__ATLegacyDeviceSyncManager_messageLinkWasInitialized___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = initializedCopy;
+  selfCopy = self;
+  v6 = initializedCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -1910,17 +1910,17 @@ uint64_t __55__ATLegacyDeviceSyncManager_messageLinkWasInitialized___block_invok
   return [v2 _sendSyncAllowed];
 }
 
-- (void)messageLinkWasOpened:(id)a3
+- (void)messageLinkWasOpened:(id)opened
 {
-  v4 = a3;
+  openedCopy = opened;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ATLegacyDeviceSyncManager_messageLinkWasOpened___block_invoke;
   v7[3] = &unk_2784E5960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = openedCopy;
+  selfCopy = self;
+  v6 = openedCopy;
   dispatch_sync(workQueue, v7);
 }
 
@@ -2145,23 +2145,23 @@ void __50__ATLegacyDeviceSyncManager_messageLinkWasOpened___block_invoke_14(uint
 {
   v16 = *MEMORY[0x277D85DE8];
   syncSession = self->_syncSession;
-  v3 = [(ATLegacyDeviceSyncManager *)self _currentLinkIsWifiConnection];
-  v4 = [MEMORY[0x277D7FA90] sharedMonitor];
-  if ([v4 isCharging])
+  _currentLinkIsWifiConnection = [(ATLegacyDeviceSyncManager *)self _currentLinkIsWifiConnection];
+  mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+  if ([mEMORY[0x277D7FA90] isCharging])
   {
-    v5 = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
-    v6 = [v5 isDeviceClassCUnlocked];
+    mEMORY[0x277D7FBE8] = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
+    isDeviceClassCUnlocked = [mEMORY[0x277D7FBE8] isDeviceClassCUnlocked];
   }
 
   else
   {
-    v6 = 0;
+    isDeviceClassCUnlocked = 0;
   }
 
   v7 = MEMORY[0x277CBEAC0];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:syncSession != 0];
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v3];
-  v10 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:_currentLinkIsWifiConnection];
+  v10 = [MEMORY[0x277CCABB0] numberWithBool:isDeviceClassCUnlocked];
   v11 = [v7 dictionaryWithObjectsAndKeys:{v8, @"Syncing", v9, @"Wireless", v10, @"Automatic", 0}];
 
   v12 = _ATLogCategoryiTunesSync();
@@ -2175,17 +2175,17 @@ void __50__ATLegacyDeviceSyncManager_messageLinkWasOpened___block_invoke_14(uint
   return v11;
 }
 
-- (void)cancelSyncOnMessageLink:(id)a3
+- (void)cancelSyncOnMessageLink:(id)link
 {
-  v4 = a3;
+  linkCopy = link;
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__ATLegacyDeviceSyncManager_cancelSyncOnMessageLink___block_invoke;
   v7[3] = &unk_2784E5960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = linkCopy;
+  v6 = linkCopy;
   dispatch_async(workQueue, v7);
 }
 
@@ -2204,18 +2204,18 @@ void *__53__ATLegacyDeviceSyncManager_cancelSyncOnMessageLink___block_invoke(voi
   return result;
 }
 
-- (void)initiateSyncForLibrary:(id)a3 onMessageLink:(id)a4
+- (void)initiateSyncForLibrary:(id)library onMessageLink:(id)link
 {
-  v6 = a4;
+  linkCopy = link;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__ATLegacyDeviceSyncManager_initiateSyncForLibrary_onMessageLink___block_invoke;
   block[3] = &unk_2784E5520;
-  v11 = self;
+  selfCopy = self;
   v12 = a2;
-  v10 = v6;
-  v8 = v6;
+  v10 = linkCopy;
+  v8 = linkCopy;
   dispatch_async(workQueue, block);
 }
 
@@ -2252,13 +2252,13 @@ void __66__ATLegacyDeviceSyncManager_initiateSyncForLibrary_onMessageLink___bloc
     diskUsageProvider = v2->_diskUsageProvider;
     v2->_diskUsageProvider = v7;
 
-    v9 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     messageLinks = v2->_messageLinks;
-    v2->_messageLinks = v9;
+    v2->_messageLinks = array;
 
-    v11 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     dataclasses = v2->_dataclasses;
-    v2->_dataclasses = v11;
+    v2->_dataclasses = array2;
 
     currentAsset = v2->_currentAsset;
     v2->_currentAsset = 0;
@@ -2271,18 +2271,18 @@ void __66__ATLegacyDeviceSyncManager_initiateSyncForLibrary_onMessageLink___bloc
     workQueue = v2->_workQueue;
     v2->_workQueue = v16;
 
-    v18 = [MEMORY[0x277D7FA90] sharedMonitor];
-    [v18 registerObserver:v2];
+    mEMORY[0x277D7FA90] = [MEMORY[0x277D7FA90] sharedMonitor];
+    [mEMORY[0x277D7FA90] registerObserver:v2];
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, _ATBuddyCallback, @"com.apple.purplebuddy.setupdone", 0, 0);
-    v20 = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
+    mEMORY[0x277D7FBE8] = [MEMORY[0x277D7FBE8] sharedSecurityInfo];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __33__ATLegacyDeviceSyncManager_init__block_invoke;
     v22[3] = &unk_2784E5938;
     v23 = v2;
-    [v20 performBlockAfterFirstUnlock:v22];
+    [mEMORY[0x277D7FBE8] performBlockAfterFirstUnlock:v22];
   }
 
   return v2;

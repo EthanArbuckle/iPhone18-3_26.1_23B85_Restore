@@ -1,23 +1,23 @@
 @interface NSBoundedByPredicateOperator
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NSBoundedByPredicateOperator
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v5 = [(NSBoundedByPredicateOperator *)self operatorType];
-  v6 = [(NSPredicateOperator *)self modifier];
+  operatorType = [(NSBoundedByPredicateOperator *)self operatorType];
+  modifier = [(NSPredicateOperator *)self modifier];
 
-  return [v4 _newOperatorWithType:v5 modifier:v6 options:0];
+  return [v4 _newOperatorWithType:operatorType modifier:modifier options:0];
 }
 
-- (BOOL)performPrimitiveOperationUsingObject:(id)a3 andObject:(id)a4
+- (BOOL)performPrimitiveOperationUsingObject:(id)object andObject:(id)andObject
 {
   result = 0;
-  if (!a3 || !a4)
+  if (!object || !andObject)
   {
     return result;
   }
@@ -26,24 +26,24 @@
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
-    v22 = [NSString stringWithFormat:@"Can't use boundedBy operator with rhs %@ (not an array)", a4];
+    andObject = [NSString stringWithFormat:@"Can't use boundedBy operator with rhs %@ (not an array)", andObject];
 LABEL_21:
-    v25 = v22;
+    v25 = andObject;
     v23 = v20;
     v24 = v21;
     goto LABEL_25;
   }
 
-  if ([a4 count] != 2)
+  if ([andObject count] != 2)
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
-    v22 = [NSString stringWithFormat:@"Can't use boundedBy operator with rhs %@ (wrong number of elements)", a4];
+    andObject = [NSString stringWithFormat:@"Can't use boundedBy operator with rhs %@ (wrong number of elements)", andObject];
     goto LABEL_21;
   }
 
-  v7 = [a4 objectAtIndex:0];
-  v8 = [a4 objectAtIndex:1];
+  v7 = [andObject objectAtIndex:0];
+  v8 = [andObject objectAtIndex:1];
   if (!objc_lookUpClass("CLLocation"))
   {
     v23 = MEMORY[0x1E695DF30];
@@ -56,7 +56,7 @@ LABEL_21:
   {
     v20 = MEMORY[0x1E695DF30];
     v21 = *MEMORY[0x1E695D940];
-    v22 = [NSString stringWithFormat:@"Can't use boundedBy operator with rhs %@ (wrong class, should be CLLocation)", a4];
+    andObject = [NSString stringWithFormat:@"Can't use boundedBy operator with rhs %@ (wrong class, should be CLLocation)", andObject];
     goto LABEL_21;
   }
 
@@ -87,7 +87,7 @@ LABEL_25:
   [v8 coordinate];
   v14 = v13;
   v16 = v15;
-  [a3 coordinate];
+  [object coordinate];
   v19 = v14 <= v18;
   if (v18 > v10)
   {

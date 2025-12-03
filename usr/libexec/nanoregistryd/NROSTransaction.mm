@@ -1,6 +1,6 @@
 @interface NROSTransaction
-+ (NROSTransaction)transactionWithName:(id)a3;
-- (NROSTransaction)initWithName:(id)a3;
++ (NROSTransaction)transactionWithName:(id)name;
+- (NROSTransaction)initWithName:(id)name;
 - (id)description;
 - (void)dealloc;
 @end
@@ -22,26 +22,26 @@
   return [@"NROSTransaction: " stringByAppendingString:name];
 }
 
-+ (NROSTransaction)transactionWithName:(id)a3
++ (NROSTransaction)transactionWithName:(id)name
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithName:v4];
+  nameCopy = name;
+  v5 = [[self alloc] initWithName:nameCopy];
 
   return v5;
 }
 
-- (NROSTransaction)initWithName:(id)a3
+- (NROSTransaction)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = NROSTransaction;
   v5 = [(NROSTransaction *)&v14 init];
   if (v5)
   {
     v6 = objc_opt_new();
-    v7 = [v6 UUIDString];
-    v8 = [v7 substringToIndex:4];
-    v9 = [NSString stringWithFormat:@"%@.%@", v4, v8];
+    uUIDString = [v6 UUIDString];
+    v8 = [uUIDString substringToIndex:4];
+    v9 = [NSString stringWithFormat:@"%@.%@", nameCopy, v8];
     name = v5->_name;
     v5->_name = v9;
 

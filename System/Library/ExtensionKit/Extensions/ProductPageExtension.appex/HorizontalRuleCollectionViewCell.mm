@@ -1,12 +1,12 @@
 @interface HorizontalRuleCollectionViewCell
-- (_TtC20ProductPageExtension32HorizontalRuleCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC20ProductPageExtension32HorizontalRuleCollectionViewCell)initWithCoder:(id)coder;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)layoutSubviews;
 @end
 
 @implementation HorizontalRuleCollectionViewCell
 
-- (_TtC20ProductPageExtension32HorizontalRuleCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension32HorizontalRuleCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC20ProductPageExtension32HorizontalRuleCollectionViewCell_itemLayoutContext;
   v5 = sub_10076341C();
@@ -27,13 +27,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000681B4();
 }
 
 - (void)_dynamicUserInterfaceTraitDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000683FC();
 }
 

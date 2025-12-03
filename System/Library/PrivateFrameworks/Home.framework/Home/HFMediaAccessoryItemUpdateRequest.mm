@@ -1,32 +1,32 @@
 @interface HFMediaAccessoryItemUpdateRequest
 - (HFMediaAccessoryItemUpdateRequest)init;
-- (HFMediaAccessoryItemUpdateRequest)initWithMediaProfileContainer:(id)a3 valueSource:(id)a4;
-- (id)_disambiguateMultipleAccessoryResponses:(id)a3 forMediaSystem:(id)a4;
+- (HFMediaAccessoryItemUpdateRequest)initWithMediaProfileContainer:(id)container valueSource:(id)source;
+- (id)_disambiguateMultipleAccessoryResponses:(id)responses forMediaSystem:(id)system;
 - (id)_parentMediaSystem;
 - (id)accessories;
-- (id)updateWithOptions:(id)a3;
-- (void)_appendRestartStatusMessageForAccessory:(id)a3 toResults:(id)a4;
-- (void)_appendSplitMediaAccountWarningForAccessory:(id)a3 toResults:(id)a4;
-- (void)_appendSplitMediaAccountWarningIfNeededForAccessory:(id)a3 toResults:(id)a4;
+- (id)updateWithOptions:(id)options;
+- (void)_appendRestartStatusMessageForAccessory:(id)accessory toResults:(id)results;
+- (void)_appendSplitMediaAccountWarningForAccessory:(id)accessory toResults:(id)results;
+- (void)_appendSplitMediaAccountWarningIfNeededForAccessory:(id)accessory toResults:(id)results;
 @end
 
 @implementation HFMediaAccessoryItemUpdateRequest
 
-- (HFMediaAccessoryItemUpdateRequest)initWithMediaProfileContainer:(id)a3 valueSource:(id)a4
+- (HFMediaAccessoryItemUpdateRequest)initWithMediaProfileContainer:(id)container valueSource:(id)source
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  containerCopy = container;
+  sourceCopy = source;
+  if (!containerCopy)
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"HFMediaAccessoryLikeItem.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFMediaAccessoryLikeItem.m" lineNumber:63 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer"}];
   }
 
-  v10 = [v8 hf_mediaValueSource];
+  hf_mediaValueSource = [containerCopy hf_mediaValueSource];
 
-  if (v10)
+  if (hf_mediaValueSource)
   {
-    if (v9)
+    if (sourceCopy)
     {
       goto LABEL_5;
     }
@@ -34,17 +34,17 @@
 
   else
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"HFMediaAccessoryLikeItem.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer.hf_mediaValueSource"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFMediaAccessoryLikeItem.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"mediaProfileContainer.hf_mediaValueSource"}];
 
-    if (v9)
+    if (sourceCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v20 = [MEMORY[0x277CCA890] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"HFMediaAccessoryLikeItem.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"valueSource"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"HFMediaAccessoryLikeItem.m" lineNumber:65 description:{@"Invalid parameter not satisfying: %@", @"valueSource"}];
 
 LABEL_5:
   v21.receiver = self;
@@ -53,15 +53,15 @@ LABEL_5:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_valueSource, a4);
-    v13 = [v8 hf_mediaValueSource];
+    objc_storeStrong(&v11->_valueSource, source);
+    hf_mediaValueSource2 = [containerCopy hf_mediaValueSource];
     mediaValueSource = v12->_mediaValueSource;
-    v12->_mediaValueSource = v13;
+    v12->_mediaValueSource = hf_mediaValueSource2;
 
-    objc_storeStrong(&v12->_mediaProfile, a3);
-    v15 = [v8 hf_home];
+    objc_storeStrong(&v12->_mediaProfile, container);
+    hf_home = [containerCopy hf_home];
     home = v12->_home;
-    v12->_home = v15;
+    v12->_home = hf_home;
   }
 
   return v12;
@@ -69,31 +69,31 @@ LABEL_5:
 
 - (HFMediaAccessoryItemUpdateRequest)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithMediaProfileContainer_valueSource_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFMediaAccessoryLikeItem.m" lineNumber:80 description:{@"%s is unavailable; use %@ instead", "-[HFMediaAccessoryItemUpdateRequest init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFMediaAccessoryLikeItem.m" lineNumber:80 description:{@"%s is unavailable; use %@ instead", "-[HFMediaAccessoryItemUpdateRequest init]", v5}];
 
   return 0;
 }
 
-- (id)updateWithOptions:(id)a3
+- (id)updateWithOptions:(id)options
 {
   v76 = *MEMORY[0x277D85DE8];
-  v4 = [(HFMediaAccessoryItemUpdateRequest *)self home];
-  v5 = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
-  v6 = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
-  v7 = [v6 hf_home];
-  v8 = [HFCharacteristicValueDisplayMetadata displayMetadataForMediaProfile:v5 withContextProvider:v7];
+  home = [(HFMediaAccessoryItemUpdateRequest *)self home];
+  mediaProfile = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
+  mediaProfile2 = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
+  hf_home = [mediaProfile2 hf_home];
+  v8 = [HFCharacteristicValueDisplayMetadata displayMetadataForMediaProfile:mediaProfile withContextProvider:hf_home];
 
-  v51 = [(HFMediaAccessoryItemUpdateRequest *)self valueSource];
-  v53 = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
-  if ([v4 hf_isMediaAccessoryProfileValid:?])
+  valueSource = [(HFMediaAccessoryItemUpdateRequest *)self valueSource];
+  mediaProfile3 = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
+  if ([home hf_isMediaAccessoryProfileValid:?])
   {
     v45 = v8;
-    v46 = v4;
-    v9 = [(HFMediaAccessoryItemUpdateRequest *)self _parentMediaSystem];
+    v46 = home;
+    _parentMediaSystem = [(HFMediaAccessoryItemUpdateRequest *)self _parentMediaSystem];
     v49 = objc_opt_new();
-    v50 = self;
+    selfCopy = self;
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
@@ -113,13 +113,13 @@ LABEL_5:
           }
 
           v11 = *(*(&v71 + 1) + 8 * i);
-          v12 = [v11 mediaProfile];
-          v13 = [v53 hf_home];
-          v14 = [HFCharacteristicValueDisplayMetadata displayMetadataForMediaProfile:v12 withContextProvider:v13];
+          mediaProfile4 = [v11 mediaProfile];
+          hf_home2 = [mediaProfile3 hf_home];
+          v14 = [HFCharacteristicValueDisplayMetadata displayMetadataForMediaProfile:mediaProfile4 withContextProvider:hf_home2];
 
-          v15 = [v11 mediaProfile];
+          mediaProfile5 = [v11 mediaProfile];
           objc_opt_class();
-          v16 = v15;
+          v16 = mediaProfile5;
           if (objc_opt_isKindOfClass())
           {
             v17 = v16;
@@ -132,60 +132,60 @@ LABEL_5:
 
           v18 = v17;
 
-          v19 = [v18 components];
+          components = [v18 components];
           v70[0] = MEMORY[0x277D85DD0];
           v70[1] = 3221225472;
           v70[2] = __55__HFMediaAccessoryItemUpdateRequest_updateWithOptions___block_invoke;
           v70[3] = &unk_277DF7F50;
           v70[4] = v11;
-          v20 = [v19 na_firstObjectPassingTest:v70];
-          v21 = [v20 role];
+          v20 = [components na_firstObjectPassingTest:v70];
+          role = [v20 role];
 
-          if (v21)
+          if (role)
           {
             v22 = 1;
           }
 
           else
           {
-            v22 = v9 == 0;
+            v22 = _parentMediaSystem == 0;
           }
 
           if (!v22)
           {
-            v23 = [v9 components];
+            components2 = [_parentMediaSystem components];
             v69[0] = MEMORY[0x277D85DD0];
             v69[1] = 3221225472;
             v69[2] = __55__HFMediaAccessoryItemUpdateRequest_updateWithOptions___block_invoke_2;
             v69[3] = &unk_277DF7F50;
             v69[4] = v11;
-            v24 = [v23 na_firstObjectPassingTest:v69];
-            v21 = [v24 role];
+            v24 = [components2 na_firstObjectPassingTest:v69];
+            role = [v24 role];
           }
 
-          v25 = [v16 settings];
-          v26 = [v16 mediaSession];
+          settings = [v16 settings];
+          mediaSession = [v16 mediaSession];
           v27 = MEMORY[0x277D2C900];
           v57[0] = MEMORY[0x277D85DD0];
           v57[1] = 3221225472;
           v57[2] = __55__HFMediaAccessoryItemUpdateRequest_updateWithOptions___block_invoke_3;
           v57[3] = &unk_277DFDBB8;
-          v58 = v53;
+          v58 = mediaProfile3;
           v59 = v11;
           v60 = v14;
-          v61 = v51;
-          v62 = v25;
-          v63 = v26;
+          v61 = valueSource;
+          v62 = settings;
+          v63 = mediaSession;
           v64 = v18;
-          v65 = v9;
+          v65 = _parentMediaSystem;
           v66 = v16;
-          v67 = v21;
-          v68 = v50;
-          v28 = v21;
+          v67 = role;
+          v68 = selfCopy;
+          v28 = role;
           v29 = v16;
           v30 = v18;
-          v31 = v26;
-          v32 = v25;
+          v31 = mediaSession;
+          v32 = settings;
           v33 = v14;
           v34 = [v27 futureWithBlock:v57];
           [v49 addObject:v34];
@@ -198,20 +198,20 @@ LABEL_5:
     }
 
     v35 = MEMORY[0x277D2C900];
-    v36 = [MEMORY[0x277D2C938] mainThreadScheduler];
-    v37 = [v35 combineAllFutures:v49 ignoringErrors:1 scheduler:v36];
+    mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+    v37 = [v35 combineAllFutures:v49 ignoringErrors:1 scheduler:mainThreadScheduler];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __55__HFMediaAccessoryItemUpdateRequest_updateWithOptions___block_invoke_4;
     v54[3] = &unk_277DF43F0;
-    v54[4] = v50;
-    v55 = v9;
+    v54[4] = selfCopy;
+    v55 = _parentMediaSystem;
     v8 = v45;
     v56 = v45;
-    v38 = v9;
+    v38 = _parentMediaSystem;
     v39 = [v37 flatMap:v54];
 
-    v4 = v46;
+    home = v46;
   }
 
   else
@@ -302,23 +302,23 @@ id __55__HFMediaAccessoryItemUpdateRequest_updateWithOptions___block_invoke_4(ui
   return v5;
 }
 
-- (id)_disambiguateMultipleAccessoryResponses:(id)a3 forMediaSystem:(id)a4
+- (id)_disambiguateMultipleAccessoryResponses:(id)responses forMediaSystem:(id)system
 {
   v66 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count] > 1)
+  responsesCopy = responses;
+  systemCopy = system;
+  if ([responsesCopy count] > 1)
   {
-    if ([v6 count] < 3)
+    if ([responsesCopy count] < 3)
     {
-      v16 = [v7 home];
-      v17 = [HFCharacteristicValueDisplayMetadata displayMetadataForMediaProfile:v7 withContextProvider:v16];
+      home = [systemCopy home];
+      v17 = [HFCharacteristicValueDisplayMetadata displayMetadataForMediaProfile:systemCopy withContextProvider:home];
 
-      v18 = [(HFMediaAccessoryItemUpdateRequest *)self valueSource];
+      valueSource = [(HFMediaAccessoryItemUpdateRequest *)self valueSource];
       v50 = v17;
-      v19 = [HFServiceLikeItemResultFactory populateStandardResultsForHomeKitObject:v7 withBackingAccessory:0 displayMetadata:v17 readResponse:0 batteryLevelResults:0 valueSource:v18 updateOptions:0];
+      v19 = [HFServiceLikeItemResultFactory populateStandardResultsForHomeKitObject:systemCopy withBackingAccessory:0 displayMetadata:v17 readResponse:0 batteryLevelResults:0 valueSource:valueSource updateOptions:0];
 
-      v51 = v7;
+      v51 = systemCopy;
       if (_MergedGlobals_282 != -1)
       {
         dispatch_once(&_MergedGlobals_282, &__block_literal_global_58_2);
@@ -328,15 +328,15 @@ id __55__HFMediaAccessoryItemUpdateRequest_updateWithOptions___block_invoke_4(ui
       v21 = objc_opt_new();
       v48 = v20;
       [v21 setKeysToSkip:v20];
-      v22 = [v6 firstObject];
-      v23 = [v6 lastObject];
+      firstObject = [responsesCopy firstObject];
+      lastObject = [responsesCopy lastObject];
       v47 = v21;
-      v24 = [v21 combineResultDictionary:v22 withResultDictionary:v23 reconcilationHandler:&__block_literal_global_64_0];
-      v13 = [v24 mutableCopy];
+      v24 = [v21 combineResultDictionary:firstObject withResultDictionary:lastObject reconcilationHandler:&__block_literal_global_64_0];
+      firstObject3 = [v24 mutableCopy];
 
       v25 = [MEMORY[0x277CBEB58] set];
-      v52 = v6;
-      v26 = [v6 arrayByAddingObject:v19];
+      v52 = responsesCopy;
+      v26 = [responsesCopy arrayByAddingObject:v19];
       v59 = 0u;
       v60 = 0u;
       v61 = 0u;
@@ -403,14 +403,14 @@ id __55__HFMediaAccessoryItemUpdateRequest_updateWithOptions___block_invoke_4(ui
             }
 
             v39 = *(*(&v53 + 1) + 8 * j);
-            [v13 removeObjectForKey:v39];
-            v40 = [v33 allKeys];
-            v41 = [v40 containsObject:v39];
+            [firstObject3 removeObjectForKey:v39];
+            allKeys = [v33 allKeys];
+            v41 = [allKeys containsObject:v39];
 
             if (v41)
             {
               v42 = [v33 objectForKeyedSubscript:v39];
-              [v13 setObject:v42 forKeyedSubscript:v39];
+              [firstObject3 setObject:v42 forKeyedSubscript:v39];
             }
           }
 
@@ -420,25 +420,25 @@ id __55__HFMediaAccessoryItemUpdateRequest_updateWithOptions___block_invoke_4(ui
         while (v36);
       }
 
-      v7 = v51;
-      v6 = v52;
+      systemCopy = v51;
+      responsesCopy = v52;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[HFMediaAccessoryItemUpdateRequest _disambiguateMultipleAccessoryResponses:forMediaSystem:]"];
-      [v14 handleFailureInFunction:v15 file:@"HFMediaAccessoryLikeItem.m" lineNumber:179 description:{@"HFMediaAccessoryItem only accepts speaker pairs at this time. %@", v6}];
+      [currentHandler handleFailureInFunction:v15 file:@"HFMediaAccessoryLikeItem.m" lineNumber:179 description:{@"HFMediaAccessoryItem only accepts speaker pairs at this time. %@", responsesCopy}];
 
-      v13 = MEMORY[0x277CBEC10];
+      firstObject3 = MEMORY[0x277CBEC10];
     }
   }
 
   else
   {
     objc_opt_class();
-    v8 = [v6 firstObject];
-    v9 = [v8 objectForKeyedSubscript:@"symptom"];
+    firstObject2 = [responsesCopy firstObject];
+    v9 = [firstObject2 objectForKeyedSubscript:@"symptom"];
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
@@ -451,21 +451,21 @@ id __55__HFMediaAccessoryItemUpdateRequest_updateWithOptions___block_invoke_4(ui
 
     v11 = v10;
 
-    v12 = [(HFMediaAccessoryItemUpdateRequest *)self _parentMediaSystem];
-    if (v12 && [v11 type] == 11)
+    _parentMediaSystem = [(HFMediaAccessoryItemUpdateRequest *)self _parentMediaSystem];
+    if (_parentMediaSystem && [v11 type] == 11)
     {
-      v13 = MEMORY[0x277CBEC10];
+      firstObject3 = MEMORY[0x277CBEC10];
     }
 
     else
     {
-      v13 = [v6 firstObject];
+      firstObject3 = [responsesCopy firstObject];
     }
   }
 
   v43 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return firstObject3;
 }
 
 void __92__HFMediaAccessoryItemUpdateRequest__disambiguateMultipleAccessoryResponses_forMediaSystem___block_invoke_2()
@@ -545,75 +545,75 @@ BOOL __92__HFMediaAccessoryItemUpdateRequest__disambiguateMultipleAccessoryRespo
 
 - (id)accessories
 {
-  v2 = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
-  v3 = [v2 accessories];
+  mediaProfile = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
+  accessories = [mediaProfile accessories];
 
-  return v3;
+  return accessories;
 }
 
 - (id)_parentMediaSystem
 {
-  v3 = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
-  if ([v3 isItemGroup])
+  mediaProfile = [(HFMediaAccessoryItemUpdateRequest *)self mediaProfile];
+  if ([mediaProfile isItemGroup])
   {
-    v4 = v3;
+    v4 = mediaProfile;
   }
 
   else
   {
-    v5 = [(HFMediaAccessoryItemUpdateRequest *)self home];
-    v6 = [v3 accessories];
-    v7 = [v6 anyObject];
-    v4 = [v5 hf_mediaSystemForAccessory:v7];
+    home = [(HFMediaAccessoryItemUpdateRequest *)self home];
+    accessories = [mediaProfile accessories];
+    anyObject = [accessories anyObject];
+    v4 = [home hf_mediaSystemForAccessory:anyObject];
   }
 
   return v4;
 }
 
-- (void)_appendSplitMediaAccountWarningIfNeededForAccessory:(id)a3 toResults:(id)a4
+- (void)_appendSplitMediaAccountWarningIfNeededForAccessory:(id)accessory toResults:(id)results
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mediaProfile];
-  v10 = [v9 hf_homePodIsCapableOfShowingSplitAccountError];
+  accessoryCopy = accessory;
+  resultsCopy = results;
+  mediaProfile = [accessoryCopy mediaProfile];
+  hf_homePodIsCapableOfShowingSplitAccountError = [mediaProfile hf_homePodIsCapableOfShowingSplitAccountError];
 
-  v11 = [v7 mediaProfile];
-  v12 = [v11 hf_settingsValueManager];
+  mediaProfile2 = [accessoryCopy mediaProfile];
+  hf_settingsValueManager = [mediaProfile2 hf_settingsValueManager];
 
-  v13 = [v12 valueForSettingAtKeyPath:@"root.home.dismissedHomePodHasNonMemberMediaAccountWarning"];
-  v14 = [v13 BOOLValue];
+  v13 = [hf_settingsValueManager valueForSettingAtKeyPath:@"root.home.dismissedHomePodHasNonMemberMediaAccountWarning"];
+  bOOLValue = [v13 BOOLValue];
 
   v15 = HFLogForCategory(5uLL);
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v26 = self;
+    selfCopy = self;
     v27 = 2112;
     v28 = v16;
     v29 = 1024;
-    v30 = v14;
+    v30 = bOOLValue;
     _os_log_impl(&dword_20D9BF000, v15, OS_LOG_TYPE_DEFAULT, "%@:%@ Was the Split Account warning dismissed? [%d]", buf, 0x1Cu);
   }
 
-  if (!(v14 & 1 | ((v10 & 1) == 0)))
+  if (!(bOOLValue & 1 | ((hf_homePodIsCapableOfShowingSplitAccountError & 1) == 0)))
   {
     objc_initWeak(buf, self);
-    v17 = [v7 mediaProfile];
-    v18 = [v17 hf_homePodSupportsMultiUserLanguage];
+    mediaProfile3 = [accessoryCopy mediaProfile];
+    hf_homePodSupportsMultiUserLanguage = [mediaProfile3 hf_homePodSupportsMultiUserLanguage];
 
-    if (v18)
+    if (hf_homePodSupportsMultiUserLanguage)
     {
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __99__HFMediaAccessoryItemUpdateRequest__appendSplitMediaAccountWarningIfNeededForAccessory_toResults___block_invoke;
       v21[3] = &unk_277DFA570;
       objc_copyWeak(v24, buf);
-      v22 = v7;
-      v23 = v8;
+      v22 = accessoryCopy;
+      v23 = resultsCopy;
       v24[1] = a2;
-      v19 = [v18 addCompletionBlock:v21];
+      v19 = [hf_homePodSupportsMultiUserLanguage addCompletionBlock:v21];
 
       objc_destroyWeak(v24);
     }
@@ -711,47 +711,47 @@ void __99__HFMediaAccessoryItemUpdateRequest__appendSplitMediaAccountWarningIfNe
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendSplitMediaAccountWarningForAccessory:(id)a3 toResults:(id)a4
+- (void)_appendSplitMediaAccountWarningForAccessory:(id)accessory toResults:(id)results
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  resultsCopy = results;
   v7 = HFLogForCategory(5uLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v11 = 138412546;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
     v14 = v8;
     _os_log_impl(&dword_20D9BF000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ Displaying Split Account Badge", &v11, 0x16u);
   }
 
   v9 = _HFLocalizedStringWithDefaultValue(@"HFMediaAccessorySplitMediaAccountErrorDescription", @"HFMediaAccessorySplitMediaAccountErrorDescription", 1);
-  [v6 setObject:v9 forKeyedSubscript:@"detailedControlDescription"];
+  [resultsCopy setObject:v9 forKeyedSubscript:@"detailedControlDescription"];
 
-  [v6 setObject:&unk_2825244C8 forKeyedSubscript:@"badge"];
+  [resultsCopy setObject:&unk_2825244C8 forKeyedSubscript:@"badge"];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_appendRestartStatusMessageForAccessory:(id)a3 toResults:(id)a4
+- (void)_appendRestartStatusMessageForAccessory:(id)accessory toResults:(id)results
 {
   v52 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 hf_isHomePod])
+  accessoryCopy = accessory;
+  resultsCopy = results;
+  if ([accessoryCopy hf_isHomePod])
   {
-    v40 = self;
-    v9 = [v7 mediaProfile];
-    v10 = [v9 hf_settingsAdapterManager];
-    v11 = [v10 adapterForIdentifier:@"DeviceOptions"];
+    selfCopy = self;
+    mediaProfile = [accessoryCopy mediaProfile];
+    hf_settingsAdapterManager = [mediaProfile hf_settingsAdapterManager];
+    v11 = [hf_settingsAdapterManager adapterForIdentifier:@"DeviceOptions"];
 
-    v12 = [v7 uniqueIdentifier];
-    if (v12)
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+    if (uniqueIdentifier)
     {
       v13 = +[HFMediaAccessoryUtility sharedInstance];
-      v14 = [v7 uniqueIdentifier];
-      v15 = [v14 UUIDString];
-      v16 = [v13 isHomePodRestartingCurrently:v15];
+      uniqueIdentifier2 = [accessoryCopy uniqueIdentifier];
+      uUIDString = [uniqueIdentifier2 UUIDString];
+      v16 = [v13 isHomePodRestartingCurrently:uUIDString];
     }
 
     else
@@ -759,13 +759,13 @@ void __99__HFMediaAccessoryItemUpdateRequest__appendSplitMediaAccountWarningIfNe
       v16 = 0;
     }
 
-    v17 = [v7 uniqueIdentifier];
-    if (v17)
+    uniqueIdentifier3 = [accessoryCopy uniqueIdentifier];
+    if (uniqueIdentifier3)
     {
       v18 = +[HFMediaAccessoryUtility sharedInstance];
-      v19 = [v7 uniqueIdentifier];
-      v20 = [v19 UUIDString];
-      v21 = [v18 isHomePodRestartInitiated:v20];
+      uniqueIdentifier4 = [accessoryCopy uniqueIdentifier];
+      uUIDString2 = [uniqueIdentifier4 UUIDString];
+      v21 = [v18 isHomePodRestartInitiated:uUIDString2];
     }
 
     else
@@ -778,7 +778,7 @@ void __99__HFMediaAccessoryItemUpdateRequest__appendSplitMediaAccountWarningIfNe
     {
       v36 = NSStringFromSelector(a2);
       *buf = 138413314;
-      v45 = v40;
+      v45 = selfCopy;
       v46 = 2112;
       v47 = v36;
       v48 = 1024;
@@ -786,7 +786,7 @@ void __99__HFMediaAccessoryItemUpdateRequest__appendSplitMediaAccountWarningIfNe
       *&v49[4] = 1024;
       *&v49[6] = v16;
       v50 = 1024;
-      v51 = [v11 isAccessoryReachableOverRapport];
+      isAccessoryReachableOverRapport = [v11 isAccessoryReachableOverRapport];
       _os_log_debug_impl(&dword_20D9BF000, v22, OS_LOG_TYPE_DEBUG, "%@:%@ isHomePodRestartInitiated=[%d], isHomePodRestarting[%d], isAccessoryReachableOverRapport [%d]", buf, 0x28u);
     }
 
@@ -795,11 +795,11 @@ void __99__HFMediaAccessoryItemUpdateRequest__appendSplitMediaAccountWarningIfNe
     {
       v37 = NSStringFromSelector(a2);
       *buf = 138412802;
-      v45 = v40;
+      v45 = selfCopy;
       v46 = 2112;
       v47 = v37;
       v48 = 2112;
-      *v49 = v8;
+      *v49 = resultsCopy;
       _os_log_debug_impl(&dword_20D9BF000, v23, OS_LOG_TYPE_DEBUG, "%@:%@ Existing results = [%@]", buf, 0x20u);
     }
 
@@ -809,7 +809,7 @@ void __99__HFMediaAccessoryItemUpdateRequest__appendSplitMediaAccountWarningIfNe
       {
 LABEL_24:
         v34 = _HFLocalizedStringWithDefaultValue(@"HFMediaAccessoryStateDescriptionCurrentlyRestartingAccessory", @"HFMediaAccessoryStateDescriptionCurrentlyRestartingAccessory", 1);
-        [v8 setObject:v34 forKeyedSubscript:@"detailedControlDescription"];
+        [resultsCopy setObject:v34 forKeyedSubscript:@"detailedControlDescription"];
 
 LABEL_25:
         goto LABEL_26;
@@ -823,31 +823,31 @@ LABEL_25:
         v24 = HFLogForCategory(0);
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
-          v38 = [v7 uniqueIdentifier];
-          v39 = [v38 UUIDString];
+          uniqueIdentifier5 = [accessoryCopy uniqueIdentifier];
+          uUIDString3 = [uniqueIdentifier5 UUIDString];
           *buf = 138412290;
-          v45 = v39;
+          v45 = uUIDString3;
           _os_log_debug_impl(&dword_20D9BF000, v24, OS_LOG_TYPE_DEBUG, "*** Solo Accessory is reachable over Rapport..%@", buf, 0xCu);
         }
 
         v25 = +[HFMediaAccessoryUtility sharedInstance];
-        v26 = [v7 uniqueIdentifier];
-        v27 = [v26 UUIDString];
-        [v25 markUUIDReachableViaRapport:v27];
+        uniqueIdentifier6 = [accessoryCopy uniqueIdentifier];
+        uUIDString4 = [uniqueIdentifier6 UUIDString];
+        [v25 markUUIDReachableViaRapport:uUIDString4];
 
         v28 = +[HFMediaAccessoryUtility sharedInstance];
-        v29 = [v7 uniqueIdentifier];
-        v30 = [v29 UUIDString];
-        [v28 updateHomePodAccessoryRestartState:3 with:v30];
+        uniqueIdentifier7 = [accessoryCopy uniqueIdentifier];
+        uUIDString5 = [uniqueIdentifier7 UUIDString];
+        [v28 updateHomePodAccessoryRestartState:3 with:uUIDString5];
 
-        v31 = [v8 objectForKeyedSubscript:@"longErrorDescription"];
+        v31 = [resultsCopy objectForKeyedSubscript:@"longErrorDescription"];
         v32 = _HFLocalizedStringWithDefaultValue(@"HFMediaAccessoryStateDescriptionCurrentlyRestartingAccessory", @"HFMediaAccessoryStateDescriptionCurrentlyRestartingAccessory", 1);
-        LODWORD(v30) = [v31 isEqualToString:v32];
+        LODWORD(uUIDString5) = [v31 isEqualToString:v32];
 
-        if (v30)
+        if (uUIDString5)
         {
-          [v8 removeObjectForKey:@"detailedControlDescription"];
-          [v8 removeObjectForKey:@"badge"];
+          [resultsCopy removeObjectForKey:@"detailedControlDescription"];
+          [resultsCopy removeObjectForKey:@"badge"];
         }
       }
 
@@ -861,8 +861,8 @@ LABEL_25:
       block[1] = 3221225472;
       block[2] = __87__HFMediaAccessoryItemUpdateRequest__appendRestartStatusMessageForAccessory_toResults___block_invoke;
       block[3] = &unk_277DF3370;
-      v42 = v7;
-      v43 = v40;
+      v42 = accessoryCopy;
+      v43 = selfCopy;
       dispatch_after(v33, MEMORY[0x277D85CD0], block);
     }
 

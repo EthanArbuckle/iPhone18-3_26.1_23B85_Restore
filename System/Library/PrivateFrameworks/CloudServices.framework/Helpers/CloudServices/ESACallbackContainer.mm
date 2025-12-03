@@ -1,18 +1,18 @@
 @interface ESACallbackContainer
-- (ESACallbackContainer)initWithCallback:(id)a3;
+- (ESACallbackContainer)initWithCallback:(id)callback;
 @end
 
 @implementation ESACallbackContainer
 
-- (ESACallbackContainer)initWithCallback:(id)a3
+- (ESACallbackContainer)initWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v10.receiver = self;
   v10.super_class = ESACallbackContainer;
   v5 = [(ESACallbackContainer *)&v10 init];
   if (v5)
   {
-    v6 = objc_retainBlock(v4);
+    v6 = objc_retainBlock(callbackCopy);
     callback = v5->_callback;
     v5->_callback = v6;
 

@@ -1,9 +1,9 @@
 @interface UAFAssetStatus
-+ (BOOL)dictationAvailableForLanguage:(id)a3;
++ (BOOL)dictationAvailableForLanguage:(id)language;
 + (id)mockAssetStatus;
-+ (id)stringFromUAFAssetState:(unint64_t)a3;
-- (UAFAssetStatus)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)stringFromUAFAssetState:(unint64_t)state;
+- (UAFAssetStatus)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UAFAssetStatus
@@ -17,8 +17,8 @@
     goto LABEL_24;
   }
 
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [v2 persistentDomainForName:@"com.apple.siri.asset"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [standardUserDefaults persistentDomainForName:@"com.apple.siri.asset"];
 
   v4 = [v3 objectForKey:@"Mock Download State"];
   if (v4)
@@ -118,37 +118,37 @@ LABEL_24:
   return v9;
 }
 
-+ (id)stringFromUAFAssetState:(unint64_t)a3
++ (id)stringFromUAFAssetState:(unint64_t)state
 {
-  if (a3 - 1 > 5)
+  if (state - 1 > 5)
   {
     return @"UAFAssetStateUnknown";
   }
 
   else
   {
-    return off_1E7FFDE00[a3 - 1];
+    return off_1E7FFDE00[state - 1];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInteger:state forKey:@"state"];
-  [v5 encodeObject:self->_value forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:state forKey:@"state"];
+  [coderCopy encodeObject:self->_value forKey:@"value"];
 }
 
-- (UAFAssetStatus)initWithCoder:(id)a3
+- (UAFAssetStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UAFAssetStatus;
   v5 = [(UAFAssetStatus *)&v9 init];
   if (v5)
   {
-    v5->_state = [v4 decodeIntegerForKey:@"state"];
-    v6 = [v4 decodeObjectForKey:@"value"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"state"];
+    v6 = [coderCopy decodeObjectForKey:@"value"];
     value = v5->_value;
     v5->_value = v6;
   }
@@ -156,14 +156,14 @@ LABEL_24:
   return v5;
 }
 
-+ (BOOL)dictationAvailableForLanguage:(id)a3
++ (BOOL)dictationAvailableForLanguage:(id)language
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  languageCopy = language;
+  v4 = languageCopy;
+  if (languageCopy)
   {
-    v5 = [v3 stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
+    v5 = [languageCopy stringByReplacingOccurrencesOfString:@"_" withString:@"-"];
     v6 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -192,10 +192,10 @@ LABEL_24:
 
     v8 = v7;
     _Block_object_dispose(&v27, 8);
-    v9 = [v7 sharedPreferences];
-    v10 = [v9 offlineDictationStatus];
-    v11 = v10;
-    if (!v10)
+    sharedPreferences = [v7 sharedPreferences];
+    offlineDictationStatus = [sharedPreferences offlineDictationStatus];
+    v11 = offlineDictationStatus;
+    if (!offlineDictationStatus)
     {
       v12 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -209,7 +209,7 @@ LABEL_24:
       goto LABEL_40;
     }
 
-    v12 = [v10 objectForKeyedSubscript:v5];
+    v12 = [offlineDictationStatus objectForKeyedSubscript:v5];
     if (!v12)
     {
       v16 = UAFGetLogCategory(&UAFLogContextAssetUtilities);
@@ -267,12 +267,12 @@ LABEL_24:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v16 BOOLValue];
+        bOOLValue = [v16 BOOLValue];
       }
 
       else
       {
-        v17 = 0;
+        bOOLValue = 0;
       }
 
       v27 = 0;
@@ -303,15 +303,15 @@ LABEL_24:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v23 = [v19 BOOLValue];
+            bOOLValue2 = [v19 BOOLValue];
           }
 
           else
           {
-            v23 = 0;
+            bOOLValue2 = 0;
           }
 
-          v18 = v17 & v23;
+          v18 = bOOLValue & bOOLValue2;
           goto LABEL_38;
         }
 

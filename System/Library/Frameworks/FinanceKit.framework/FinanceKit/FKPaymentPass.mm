@@ -1,79 +1,79 @@
 @interface FKPaymentPass
-- (BOOL)isEqual:(id)a3;
-- (FKPaymentPass)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FKPaymentPass)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FKPaymentPass
 
-- (FKPaymentPass)initWithCoder:(id)a3
+- (FKPaymentPass)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v42.receiver = self;
   v42.super_class = FKPaymentPass;
   v5 = [(FKPaymentPass *)&v42 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
     uniqueID = v5->_uniqueID;
     v5->_uniqueID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v10;
 
     v12 = objc_alloc(MEMORY[0x1E695DFD8]);
     v13 = objc_opt_class();
     v14 = [v12 initWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"associatedApplicationIdentifiers"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"associatedApplicationIdentifiers"];
     associatedApplicationIdentifiers = v5->_associatedApplicationIdentifiers;
     v5->_associatedApplicationIdentifiers = v15;
 
     v17 = objc_alloc(MEMORY[0x1E695DFD8]);
     v18 = objc_opt_class();
     v19 = [v17 initWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"associatedStoreIdentifiers"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"associatedStoreIdentifiers"];
     associatedStoreIdentifiers = v5->_associatedStoreIdentifiers;
     v5->_associatedStoreIdentifiers = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountIdentifier"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryAccountIdentifier"];
     primaryAccountIdentifier = v5->_primaryAccountIdentifier;
     v5->_primaryAccountIdentifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"issuerCountryCode"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"issuerCountryCode"];
     issuerCountryCode = v5->_issuerCountryCode;
     v5->_issuerCountryCode = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryPaymentApplicationPaymentType"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryPaymentApplicationPaymentType"];
     primaryPaymentApplicationPaymentType = v5->_primaryPaymentApplicationPaymentType;
     v5->_primaryPaymentApplicationPaymentType = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
     organizationName = v5->_organizationName;
     v5->_organizationName = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     localizedDescription = v5->_localizedDescription;
     v5->_localizedDescription = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryPaymentApplicationDisplayName"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryPaymentApplicationDisplayName"];
     primaryPaymentApplicationDisplayName = v5->_primaryPaymentApplicationDisplayName;
     v5->_primaryPaymentApplicationDisplayName = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerOrgID"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerOrgID"];
     partnerOrgID = v5->_partnerOrgID;
     v5->_partnerOrgID = v34;
 
     v36 = objc_alloc(MEMORY[0x1E695DFD8]);
     v37 = objc_opt_class();
     v38 = [v36 initWithObjects:{v37, objc_opt_class(), 0}];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"paymentApplications"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"paymentApplications"];
     paymentApplications = v5->_paymentApplications;
     v5->_paymentApplications = v39;
   }
@@ -81,26 +81,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueID = self->_uniqueID;
-  v5 = a3;
-  [v5 encodeObject:uniqueID forKey:@"uniqueID"];
-  [v5 encodeObject:self->_serialNumber forKey:@"serialNumber"];
-  [v5 encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
-  [v5 encodeObject:self->_associatedApplicationIdentifiers forKey:@"associatedApplicationIdentifiers"];
-  [v5 encodeObject:self->_associatedStoreIdentifiers forKey:@"associatedStoreIdentifiers"];
-  [v5 encodeObject:self->_primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
-  [v5 encodeObject:self->_issuerCountryCode forKey:@"issuerCountryCode"];
-  [v5 encodeObject:self->_primaryPaymentApplicationPaymentType forKey:@"primaryPaymentApplicationPaymentType"];
-  [v5 encodeObject:self->_organizationName forKey:@"organizationName"];
-  [v5 encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
-  [v5 encodeObject:self->_primaryPaymentApplicationDisplayName forKey:@"primaryPaymentApplicationDisplayName"];
-  [v5 encodeObject:self->_partnerOrgID forKey:@"partnerOrgID"];
-  [v5 encodeObject:self->_paymentApplications forKey:@"paymentApplications"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueID forKey:@"uniqueID"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
+  [coderCopy encodeObject:self->_associatedApplicationIdentifiers forKey:@"associatedApplicationIdentifiers"];
+  [coderCopy encodeObject:self->_associatedStoreIdentifiers forKey:@"associatedStoreIdentifiers"];
+  [coderCopy encodeObject:self->_primaryAccountIdentifier forKey:@"primaryAccountIdentifier"];
+  [coderCopy encodeObject:self->_issuerCountryCode forKey:@"issuerCountryCode"];
+  [coderCopy encodeObject:self->_primaryPaymentApplicationPaymentType forKey:@"primaryPaymentApplicationPaymentType"];
+  [coderCopy encodeObject:self->_organizationName forKey:@"organizationName"];
+  [coderCopy encodeObject:self->_localizedDescription forKey:@"localizedDescription"];
+  [coderCopy encodeObject:self->_primaryPaymentApplicationDisplayName forKey:@"primaryPaymentApplicationDisplayName"];
+  [coderCopy encodeObject:self->_partnerOrgID forKey:@"partnerOrgID"];
+  [coderCopy encodeObject:self->_paymentApplications forKey:@"paymentApplications"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(FKPaymentPass);
   v5 = [(NSString *)self->_uniqueID copy];
@@ -179,16 +179,16 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (FKEqualObjects(self->_serialNumber, v6[2]) && FKEqualObjects(self->_uniqueID, v6[1]) && FKEqualObjects(self->_passTypeIdentifier, v6[3]) && FKEqualObjects(self->_associatedApplicationIdentifiers, v6[4]) && FKEqualObjects(self->_associatedStoreIdentifiers, v6[5]) && FKEqualObjects(self->_primaryAccountIdentifier, v6[7]) && FKEqualObjects(self->_issuerCountryCode, v6[6]) && FKEqualObjects(self->_primaryPaymentApplicationPaymentType, v6[10]) && FKEqualObjects(self->_organizationName, v6[8]) && FKEqualObjects(self->_localizedDescription, v6[9]) && FKEqualObjects(self->_primaryPaymentApplicationDisplayName, v6[11]) && FKEqualObjects(self->_partnerOrgID, v6[12]))

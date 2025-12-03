@@ -1,5 +1,5 @@
 @interface BackgroundMediaHostViewController
-- (_TtC8VideosUI33BackgroundMediaHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8VideosUI33BackgroundMediaHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)vui_viewDidLayoutSubviews;
 @end
 
@@ -7,18 +7,18 @@
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3F47568();
 }
 
-- (_TtC8VideosUI33BackgroundMediaHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI33BackgroundMediaHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1E3F47A04();
 }
 

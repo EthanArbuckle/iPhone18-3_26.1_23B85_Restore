@@ -1,24 +1,24 @@
 @interface PHAssetAestheticProperties
 + (id)propertiesToFetch;
 - (PHAssetAestheticProperties)initWithDefaultValues;
-- (PHAssetAestheticProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetAestheticProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetAestheticProperties
 
-- (PHAssetAestheticProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetAestheticProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v91.receiver = self;
   v91.super_class = PHAssetAestheticProperties;
   v10 = [(PHAssetAestheticProperties *)&v91 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    if (prefetchedCopy)
     {
       v12 = @"computedAttributes.wellFramedSubjectScore";
     }
@@ -28,16 +28,16 @@
       v12 = @"wellFramedSubjectScore";
     }
 
-    v13 = [v8 objectForKey:v12];
+    v13 = [dictionaryCopy objectForKey:v12];
 
     if (v13)
     {
-      v14 = [v8 objectForKeyedSubscript:v12];
+      v14 = [dictionaryCopy objectForKeyedSubscript:v12];
       [v14 floatValue];
       v11->_wellFramedSubjectScore = v15;
 
-      v16 = !v5;
-      if (v5)
+      v16 = !prefetchedCopy;
+      if (prefetchedCopy)
       {
         v17 = @"computedAttributes.wellChosenSubjectScore";
       }
@@ -47,7 +47,7 @@
         v17 = @"wellChosenSubjectScore";
       }
 
-      if (v5)
+      if (prefetchedCopy)
       {
         v18 = @"computedAttributes.tastefullyBlurredScore";
       }
@@ -57,7 +57,7 @@
         v18 = @"tastefullyBlurredScore";
       }
 
-      if (v5)
+      if (prefetchedCopy)
       {
         v19 = @"computedAttributes.sharplyFocusedSubjectScore";
       }
@@ -67,7 +67,7 @@
         v19 = @"sharplyFocusedSubjectScore";
       }
 
-      if (v5)
+      if (prefetchedCopy)
       {
         v20 = @"computedAttributes.wellTimedShotScore";
       }
@@ -77,7 +77,7 @@
         v20 = @"wellTimedShotScore";
       }
 
-      if (v5)
+      if (prefetchedCopy)
       {
         v21 = @"computedAttributes.pleasantLightingScore";
       }
@@ -87,7 +87,7 @@
         v21 = @"pleasantLightingScore";
       }
 
-      if (v5)
+      if (prefetchedCopy)
       {
         v22 = @"computedAttributes.pleasantReflectionsScore";
       }
@@ -222,83 +222,83 @@
 
       v89 = v35;
       v90 = v36;
-      v37 = [v8 objectForKeyedSubscript:v17];
+      v37 = [dictionaryCopy objectForKeyedSubscript:v17];
       [v37 floatValue];
       v11->_wellChosenSubjectScore = v38;
 
-      v39 = [v8 objectForKeyedSubscript:v18];
+      v39 = [dictionaryCopy objectForKeyedSubscript:v18];
       [v39 floatValue];
       v11->_tastefullyBlurredScore = v40;
 
-      v41 = [v8 objectForKeyedSubscript:v19];
+      v41 = [dictionaryCopy objectForKeyedSubscript:v19];
       [v41 floatValue];
       v11->_sharplyFocusedSubjectScore = v42;
 
-      v43 = [v8 objectForKeyedSubscript:v20];
+      v43 = [dictionaryCopy objectForKeyedSubscript:v20];
       [v43 floatValue];
       v11->_wellTimedShotScore = v44;
 
-      v45 = [v8 objectForKeyedSubscript:v21];
+      v45 = [dictionaryCopy objectForKeyedSubscript:v21];
       [v45 floatValue];
       v11->_pleasantLightingScore = v46;
 
-      v47 = [v8 objectForKeyedSubscript:v22];
+      v47 = [dictionaryCopy objectForKeyedSubscript:v22];
       [v47 floatValue];
       v11->_pleasantReflectionsScore = v48;
 
-      v49 = [v8 objectForKeyedSubscript:v23];
+      v49 = [dictionaryCopy objectForKeyedSubscript:v23];
       [v49 floatValue];
       v11->_harmoniousColorScore = v50;
 
-      v51 = [v8 objectForKeyedSubscript:v78];
+      v51 = [dictionaryCopy objectForKeyedSubscript:v78];
       [v51 floatValue];
       v11->_livelyColorScore = v52;
 
-      v53 = [v8 objectForKeyedSubscript:v79];
+      v53 = [dictionaryCopy objectForKeyedSubscript:v79];
       [v53 floatValue];
       v11->_pleasantSymmetryScore = v54;
 
-      v55 = [v8 objectForKeyedSubscript:v80];
+      v55 = [dictionaryCopy objectForKeyedSubscript:v80];
       [v55 floatValue];
       v11->_pleasantPatternScore = v56;
 
-      v57 = [v8 objectForKeyedSubscript:v81];
+      v57 = [dictionaryCopy objectForKeyedSubscript:v81];
       [v57 floatValue];
       v11->_immersivenessScore = v58;
 
-      v59 = [v8 objectForKeyedSubscript:v82];
+      v59 = [dictionaryCopy objectForKeyedSubscript:v82];
       [v59 floatValue];
       v11->_pleasantPerspectiveScore = v60;
 
-      v61 = [v8 objectForKeyedSubscript:v83];
+      v61 = [dictionaryCopy objectForKeyedSubscript:v83];
       [v61 floatValue];
       v11->_pleasantPostProcessingScore = v62;
 
-      v63 = [v8 objectForKeyedSubscript:v84];
+      v63 = [dictionaryCopy objectForKeyedSubscript:v84];
       [v63 floatValue];
       v11->_noiseScore = v64;
 
-      v65 = [v8 objectForKeyedSubscript:v85];
+      v65 = [dictionaryCopy objectForKeyedSubscript:v85];
       [v65 floatValue];
       v11->_failureScore = v66;
 
-      v67 = [v8 objectForKeyedSubscript:v86];
+      v67 = [dictionaryCopy objectForKeyedSubscript:v86];
       [v67 floatValue];
       v11->_pleasantCompositionScore = v68;
 
-      v69 = [v8 objectForKeyedSubscript:v87];
+      v69 = [dictionaryCopy objectForKeyedSubscript:v87];
       [v69 floatValue];
       v11->_interestingSubjectScore = v70;
 
-      v71 = [v8 objectForKeyedSubscript:v88];
+      v71 = [dictionaryCopy objectForKeyedSubscript:v88];
       [v71 floatValue];
       v11->_intrusiveObjectPresenceScore = v72;
 
-      v73 = [v8 objectForKeyedSubscript:v89];
+      v73 = [dictionaryCopy objectForKeyedSubscript:v89];
       [v73 floatValue];
       v11->_pleasantCameraTiltScore = v74;
 
-      v75 = [v8 objectForKeyedSubscript:v90];
+      v75 = [dictionaryCopy objectForKeyedSubscript:v90];
       [v75 floatValue];
       v11->_lowLight = v76;
     }

@@ -1,50 +1,50 @@
 @interface VOTBrailleGestureHalfPattern
-+ (id)halfPatternWithDictionaryRepresentation:(id)a3;
-+ (id)halfPatternWithDots:(id)a3;
-+ (id)halfPatternWithTopDot:(id)a3 middleDot:(id)a4 bottomDot:(id)a5 fourthDot:(id)a6;
++ (id)halfPatternWithDictionaryRepresentation:(id)representation;
++ (id)halfPatternWithDots:(id)dots;
++ (id)halfPatternWithTopDot:(id)dot middleDot:(id)middleDot bottomDot:(id)bottomDot fourthDot:(id)fourthDot;
 - (NSDictionary)dictionaryRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)dotArrayReversed:(BOOL)a3;
+- (id)dotArrayReversed:(BOOL)reversed;
 - (unint64_t)count;
 @end
 
 @implementation VOTBrailleGestureHalfPattern
 
-+ (id)halfPatternWithTopDot:(id)a3 middleDot:(id)a4 bottomDot:(id)a5 fourthDot:(id)a6
++ (id)halfPatternWithTopDot:(id)dot middleDot:(id)middleDot bottomDot:(id)bottomDot fourthDot:(id)fourthDot
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = objc_alloc_init(a1);
-  [v14 setTopDot:v13];
+  fourthDotCopy = fourthDot;
+  bottomDotCopy = bottomDot;
+  middleDotCopy = middleDot;
+  dotCopy = dot;
+  v14 = objc_alloc_init(self);
+  [v14 setTopDot:dotCopy];
 
-  [v14 setMiddleDot:v12];
-  [v14 setBottomDot:v11];
+  [v14 setMiddleDot:middleDotCopy];
+  [v14 setBottomDot:bottomDotCopy];
 
-  [v14 setFourthDot:v10];
+  [v14 setFourthDot:fourthDotCopy];
 
   return v14;
 }
 
-+ (id)halfPatternWithDictionaryRepresentation:(id)a3
++ (id)halfPatternWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  v6 = [v4 objectForKeyedSubscript:@"TopDot"];
+  representationCopy = representation;
+  v5 = objc_alloc_init(self);
+  v6 = [representationCopy objectForKeyedSubscript:@"TopDot"];
   v7 = sub_10003D658(v6);
   [v5 setTopDot:v7];
 
-  v8 = [v4 objectForKeyedSubscript:@"MiddleDot"];
+  v8 = [representationCopy objectForKeyedSubscript:@"MiddleDot"];
   v9 = sub_10003D658(v8);
   [v5 setMiddleDot:v9];
 
-  v10 = [v4 objectForKeyedSubscript:@"BottomDot"];
+  v10 = [representationCopy objectForKeyedSubscript:@"BottomDot"];
   v11 = sub_10003D658(v10);
   [v5 setBottomDot:v11];
 
-  v12 = [v4 objectForKeyedSubscript:@"FourthDot"];
+  v12 = [representationCopy objectForKeyedSubscript:@"FourthDot"];
 
   v13 = sub_10003D658(v12);
   [v5 setFourthDot:v13];
@@ -52,13 +52,13 @@
   return v5;
 }
 
-+ (id)halfPatternWithDots:(id)a3
++ (id)halfPatternWithDots:(id)dots
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  if ([v4 count])
+  dotsCopy = dots;
+  v5 = objc_alloc_init(self);
+  if ([dotsCopy count])
   {
-    v6 = [v4 objectAtIndexedSubscript:0];
+    v6 = [dotsCopy objectAtIndexedSubscript:0];
     [v5 setTopDot:v6];
   }
 
@@ -67,79 +67,79 @@
     [v5 setTopDot:0];
   }
 
-  if ([v4 count] <= 1)
+  if ([dotsCopy count] <= 1)
   {
     [v5 setMiddleDot:0];
   }
 
   else
   {
-    v7 = [v4 objectAtIndexedSubscript:1];
+    v7 = [dotsCopy objectAtIndexedSubscript:1];
     [v5 setMiddleDot:v7];
   }
 
-  if ([v4 count] <= 2)
+  if ([dotsCopy count] <= 2)
   {
     [v5 setBottomDot:0];
   }
 
   else
   {
-    v8 = [v4 objectAtIndexedSubscript:2];
+    v8 = [dotsCopy objectAtIndexedSubscript:2];
     [v5 setBottomDot:v8];
   }
 
-  if ([v4 count] <= 3)
+  if ([dotsCopy count] <= 3)
   {
     [v5 setFourthDot:0];
   }
 
   else
   {
-    v9 = [v4 objectAtIndexedSubscript:3];
+    v9 = [dotsCopy objectAtIndexedSubscript:3];
     [v5 setFourthDot:v9];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
-  v5 = [(VOTBrailleGestureHalfPattern *)self topDot];
-  v6 = [(VOTBrailleGestureHalfPattern *)self middleDot];
-  v7 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
-  v8 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
-  v9 = [v4 halfPatternWithTopDot:v5 middleDot:v6 bottomDot:v7 fourthDot:v8];
+  topDot = [(VOTBrailleGestureHalfPattern *)self topDot];
+  middleDot = [(VOTBrailleGestureHalfPattern *)self middleDot];
+  bottomDot = [(VOTBrailleGestureHalfPattern *)self bottomDot];
+  fourthDot = [(VOTBrailleGestureHalfPattern *)self fourthDot];
+  v9 = [v4 halfPatternWithTopDot:topDot middleDot:middleDot bottomDot:bottomDot fourthDot:fourthDot];
 
   return v9;
 }
 
 - (unint64_t)count
 {
-  v3 = [(VOTBrailleGestureHalfPattern *)self topDot];
+  topDot = [(VOTBrailleGestureHalfPattern *)self topDot];
 
-  v4 = [(VOTBrailleGestureHalfPattern *)self middleDot];
+  middleDot = [(VOTBrailleGestureHalfPattern *)self middleDot];
 
   v5 = 1;
-  if (v3)
+  if (topDot)
   {
     v5 = 2;
   }
 
-  if (v4)
+  if (middleDot)
   {
     v6 = v5;
   }
 
   else
   {
-    v6 = v3 != 0;
+    v6 = topDot != 0;
   }
 
-  v7 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
+  bottomDot = [(VOTBrailleGestureHalfPattern *)self bottomDot];
 
-  if (v7)
+  if (bottomDot)
   {
     v8 = v6 + 1;
   }
@@ -149,9 +149,9 @@
     v8 = v6;
   }
 
-  v9 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
+  fourthDot = [(VOTBrailleGestureHalfPattern *)self fourthDot];
 
-  if (v9)
+  if (fourthDot)
   {
     return v8 + 1;
   }
@@ -167,11 +167,11 @@
   v10.receiver = self;
   v10.super_class = VOTBrailleGestureHalfPattern;
   v3 = [(VOTBrailleGestureHalfPattern *)&v10 description];
-  v4 = [(VOTBrailleGestureHalfPattern *)self topDot];
-  v5 = [(VOTBrailleGestureHalfPattern *)self middleDot];
-  v6 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
-  v7 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
-  v8 = [v3 stringByAppendingFormat:@" - top: %@, middle: %@, bottom: %@, fourth: %@", v4, v5, v6, v7];
+  topDot = [(VOTBrailleGestureHalfPattern *)self topDot];
+  middleDot = [(VOTBrailleGestureHalfPattern *)self middleDot];
+  bottomDot = [(VOTBrailleGestureHalfPattern *)self bottomDot];
+  fourthDot = [(VOTBrailleGestureHalfPattern *)self fourthDot];
+  v8 = [v3 stringByAppendingFormat:@" - top: %@, middle: %@, bottom: %@, fourth: %@", topDot, middleDot, bottomDot, fourthDot];
 
   return v8;
 }
@@ -179,117 +179,117 @@
 - (NSDictionary)dictionaryRepresentation
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(VOTBrailleGestureHalfPattern *)self topDot];
+  topDot = [(VOTBrailleGestureHalfPattern *)self topDot];
 
-  if (v4)
+  if (topDot)
   {
-    v5 = [(VOTBrailleGestureHalfPattern *)self topDot];
-    v6 = sub_10003D714(v5);
+    topDot2 = [(VOTBrailleGestureHalfPattern *)self topDot];
+    v6 = sub_10003D714(topDot2);
     [v3 setObject:v6 forKeyedSubscript:@"TopDot"];
   }
 
-  v7 = [(VOTBrailleGestureHalfPattern *)self middleDot];
+  middleDot = [(VOTBrailleGestureHalfPattern *)self middleDot];
 
-  if (v7)
+  if (middleDot)
   {
-    v8 = [(VOTBrailleGestureHalfPattern *)self middleDot];
-    v9 = sub_10003D714(v8);
+    middleDot2 = [(VOTBrailleGestureHalfPattern *)self middleDot];
+    v9 = sub_10003D714(middleDot2);
     [v3 setObject:v9 forKeyedSubscript:@"MiddleDot"];
   }
 
-  v10 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
+  bottomDot = [(VOTBrailleGestureHalfPattern *)self bottomDot];
 
-  if (v10)
+  if (bottomDot)
   {
-    v11 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
-    v12 = sub_10003D714(v11);
+    bottomDot2 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
+    v12 = sub_10003D714(bottomDot2);
     [v3 setObject:v12 forKeyedSubscript:@"BottomDot"];
   }
 
-  v13 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
+  fourthDot = [(VOTBrailleGestureHalfPattern *)self fourthDot];
 
-  if (v13)
+  if (fourthDot)
   {
-    v14 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
-    v15 = sub_10003D714(v14);
+    fourthDot2 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
+    v15 = sub_10003D714(fourthDot2);
     [v3 setObject:v15 forKeyedSubscript:@"FourthDot"];
   }
 
   return v3;
 }
 
-- (id)dotArrayReversed:(BOOL)a3
+- (id)dotArrayReversed:(BOOL)reversed
 {
-  v3 = a3;
+  reversedCopy = reversed;
   v5 = +[NSMutableArray array];
-  if (v3)
+  if (reversedCopy)
   {
-    v6 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
+    fourthDot = [(VOTBrailleGestureHalfPattern *)self fourthDot];
 
-    if (v6)
+    if (fourthDot)
     {
-      v7 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
-      [v5 addObject:v7];
+      fourthDot2 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
+      [v5 addObject:fourthDot2];
     }
 
-    v8 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
+    bottomDot = [(VOTBrailleGestureHalfPattern *)self bottomDot];
 
-    if (v8)
+    if (bottomDot)
     {
-      v9 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
-      [v5 addObject:v9];
+      bottomDot2 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
+      [v5 addObject:bottomDot2];
     }
 
-    v10 = [(VOTBrailleGestureHalfPattern *)self middleDot];
+    middleDot = [(VOTBrailleGestureHalfPattern *)self middleDot];
 
-    if (v10)
+    if (middleDot)
     {
-      v11 = [(VOTBrailleGestureHalfPattern *)self middleDot];
-      [v5 addObject:v11];
+      middleDot2 = [(VOTBrailleGestureHalfPattern *)self middleDot];
+      [v5 addObject:middleDot2];
     }
 
-    v12 = [(VOTBrailleGestureHalfPattern *)self topDot];
+    topDot = [(VOTBrailleGestureHalfPattern *)self topDot];
 
-    if (v12)
+    if (topDot)
     {
-      v13 = [(VOTBrailleGestureHalfPattern *)self topDot];
+      topDot2 = [(VOTBrailleGestureHalfPattern *)self topDot];
 LABEL_18:
-      v21 = v13;
-      [v5 addObject:v13];
+      v21 = topDot2;
+      [v5 addObject:topDot2];
     }
   }
 
   else
   {
-    v14 = [(VOTBrailleGestureHalfPattern *)self topDot];
+    topDot3 = [(VOTBrailleGestureHalfPattern *)self topDot];
 
-    if (v14)
+    if (topDot3)
     {
-      v15 = [(VOTBrailleGestureHalfPattern *)self topDot];
-      [v5 addObject:v15];
+      topDot4 = [(VOTBrailleGestureHalfPattern *)self topDot];
+      [v5 addObject:topDot4];
     }
 
-    v16 = [(VOTBrailleGestureHalfPattern *)self middleDot];
+    middleDot3 = [(VOTBrailleGestureHalfPattern *)self middleDot];
 
-    if (v16)
+    if (middleDot3)
     {
-      v17 = [(VOTBrailleGestureHalfPattern *)self middleDot];
-      [v5 addObject:v17];
+      middleDot4 = [(VOTBrailleGestureHalfPattern *)self middleDot];
+      [v5 addObject:middleDot4];
     }
 
-    v18 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
+    bottomDot3 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
 
-    if (v18)
+    if (bottomDot3)
     {
-      v19 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
-      [v5 addObject:v19];
+      bottomDot4 = [(VOTBrailleGestureHalfPattern *)self bottomDot];
+      [v5 addObject:bottomDot4];
     }
 
-    v20 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
+    fourthDot3 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
 
-    if (v20)
+    if (fourthDot3)
     {
-      v13 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
+      topDot2 = [(VOTBrailleGestureHalfPattern *)self fourthDot];
       goto LABEL_18;
     }
   }

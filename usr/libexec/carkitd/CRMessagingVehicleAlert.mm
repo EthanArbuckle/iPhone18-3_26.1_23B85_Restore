@@ -1,35 +1,35 @@
 @interface CRMessagingVehicleAlert
-- (BOOL)presentAlertWithCompletion:(id)a3;
-- (CRMessagingVehicleAlert)initWithMessagingVehicle:(id)a3;
+- (BOOL)presentAlertWithCompletion:(id)completion;
+- (CRMessagingVehicleAlert)initWithMessagingVehicle:(id)vehicle;
 @end
 
 @implementation CRMessagingVehicleAlert
 
-- (CRMessagingVehicleAlert)initWithMessagingVehicle:(id)a3
+- (CRMessagingVehicleAlert)initWithMessagingVehicle:(id)vehicle
 {
-  v5 = a3;
+  vehicleCopy = vehicle;
   v9.receiver = self;
   v9.super_class = CRMessagingVehicleAlert;
   v6 = [(CRMessagingVehicleAlert *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_messagingVehicle, a3);
+    objc_storeStrong(&v6->_messagingVehicle, vehicle);
   }
 
   return v7;
 }
 
-- (BOOL)presentAlertWithCompletion:(id)a3
+- (BOOL)presentAlertWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CRMessagingVehicleAlert *)self messagingVehicle];
+  completionCopy = completion;
+  messagingVehicle = [(CRMessagingVehicleAlert *)self messagingVehicle];
 
-  if (v5)
+  if (messagingVehicle)
   {
     v8.receiver = self;
     v8.super_class = CRMessagingVehicleAlert;
-    v6 = [(CRAlert *)&v8 presentAlertWithCompletion:v4];
+    v6 = [(CRAlert *)&v8 presentAlertWithCompletion:completionCopy];
   }
 
   else

@@ -2,8 +2,8 @@
 - (CGPoint)end;
 - (CGPoint)start;
 - (CGRect)rect;
-- (UIDebuggingZoomLineView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (UIDebuggingZoomLineView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)updateLabelFrame;
 @end
 
@@ -11,8 +11,8 @@
 
 - (void)updateLabelFrame
 {
-  v3 = [(UIDebuggingZoomLineView *)self direction];
-  if (v3 == 1)
+  direction = [(UIDebuggingZoomLineView *)self direction];
+  if (direction == 1)
   {
     [(UIDebuggingZoomLineView *)self start];
     v21 = v20;
@@ -37,8 +37,8 @@
       v28 = 2.0;
     }
 
-    v29 = [(UIDebuggingZoomLineView *)self lineLabel];
-    [v29 setFrame:{v25, v28, 50.0, 20.0}];
+    lineLabel = [(UIDebuggingZoomLineView *)self lineLabel];
+    [lineLabel setFrame:{v25, v28, 50.0, 20.0}];
 
     v15 = MEMORY[0x1E696AEC0];
     [(UIDebuggingZoomLineView *)self end];
@@ -49,7 +49,7 @@
 
   else
   {
-    if (v3)
+    if (direction)
     {
       return;
     }
@@ -82,8 +82,8 @@
       v13 = 2.0;
     }
 
-    v14 = [(UIDebuggingZoomLineView *)self lineLabel];
-    [v14 setFrame:{v12, v13, 50.0, 20.0}];
+    lineLabel2 = [(UIDebuggingZoomLineView *)self lineLabel];
+    [lineLabel2 setFrame:{v12, v13, 50.0, 20.0}];
 
     v15 = MEMORY[0x1E696AEC0];
     [(UIDebuggingZoomLineView *)self end];
@@ -93,15 +93,15 @@
   }
 
   v34 = [v15 stringWithFormat:@"%.1f", *&v19];
-  v33 = [(UIDebuggingZoomLineView *)self lineLabel];
-  [v33 setText:v34];
+  lineLabel3 = [(UIDebuggingZoomLineView *)self lineLabel];
+  [lineLabel3 setText:v34];
 }
 
-- (UIDebuggingZoomLineView)initWithFrame:(CGRect)a3
+- (UIDebuggingZoomLineView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = UIDebuggingZoomLineView;
-  v3 = [(UIView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor clearColor];
@@ -126,12 +126,12 @@
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(UIDebuggingZoomLineView *)self updateLabelFrame];
   v8 = +[UIColor redColor];
   [v8 set];

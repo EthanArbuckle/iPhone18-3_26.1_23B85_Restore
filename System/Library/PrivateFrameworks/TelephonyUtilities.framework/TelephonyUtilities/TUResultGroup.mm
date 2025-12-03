@@ -1,44 +1,44 @@
 @interface TUResultGroup
-- (TUResultGroup)initWithTitle:(id)a3 results:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TUResultGroup)initWithTitle:(id)title results:(id)results;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)groupType;
-- (void)removeSearchItem:(id)a3;
+- (void)removeSearchItem:(id)item;
 @end
 
 @implementation TUResultGroup
 
-- (TUResultGroup)initWithTitle:(id)a3 results:(id)a4
+- (TUResultGroup)initWithTitle:(id)title results:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  resultsCopy = results;
   v12.receiver = self;
   v12.super_class = TUResultGroup;
   v8 = [(TUResultGroup *)&v12 init];
   if (v8)
   {
-    if ([v6 length])
+    if ([titleCopy length])
     {
-      v9 = [[TUGroupTitle alloc] initWithString:v6];
+      v9 = [[TUGroupTitle alloc] initWithString:titleCopy];
       title = v8->_title;
       v8->_title = v9;
     }
 
-    objc_storeStrong(&v8->_resultsCache, a4);
+    objc_storeStrong(&v8->_resultsCache, results);
   }
 
   return v8;
 }
 
-- (void)removeSearchItem:(id)a3
+- (void)removeSearchItem:(id)item
 {
-  v4 = a3;
-  v5 = [(TUResultGroup *)self resultsCache];
-  [v5 removeObject:v4];
+  itemCopy = item;
+  resultsCache = [(TUResultGroup *)self resultsCache];
+  [resultsCache removeObject:itemCopy];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (v4)
   {
@@ -51,8 +51,8 @@
 
 - (unint64_t)groupType
 {
-  v3 = [(TUResultGroup *)self results];
-  v4 = [v3 lastObject];
+  results = [(TUResultGroup *)self results];
+  lastObject = [results lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -61,8 +61,8 @@
     return 0;
   }
 
-  v7 = [(TUResultGroup *)self results];
-  v8 = [v7 lastObject];
+  results2 = [(TUResultGroup *)self results];
+  lastObject2 = [results2 lastObject];
   objc_opt_class();
   v9 = objc_opt_isKindOfClass();
 
@@ -71,8 +71,8 @@
     return 1;
   }
 
-  v10 = [(TUResultGroup *)self results];
-  v11 = [v10 lastObject];
+  results3 = [(TUResultGroup *)self results];
+  lastObject3 = [results3 lastObject];
   objc_opt_class();
   v12 = objc_opt_isKindOfClass();
 

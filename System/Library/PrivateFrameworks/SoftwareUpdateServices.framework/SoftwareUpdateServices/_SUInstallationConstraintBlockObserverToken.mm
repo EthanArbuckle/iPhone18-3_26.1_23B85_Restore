@@ -1,21 +1,21 @@
 @interface _SUInstallationConstraintBlockObserverToken
-- (_SUInstallationConstraintBlockObserverToken)initWithObserver:(id)a3;
+- (_SUInstallationConstraintBlockObserverToken)initWithObserver:(id)observer;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation _SUInstallationConstraintBlockObserverToken
 
-- (_SUInstallationConstraintBlockObserverToken)initWithObserver:(id)a3
+- (_SUInstallationConstraintBlockObserverToken)initWithObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v15.receiver = self;
   v15.super_class = _SUInstallationConstraintBlockObserverToken;
   v5 = [(_SUInstallationConstraintBlockObserverToken *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_observer, v4);
+    objc_storeWeak(&v5->_observer, observerCopy);
     v7 = SULogInstallConstraints();
     SULogDebugForSubsystem(v7, @"[Token] Create: %@", v8, v9, v10, v11, v12, v13, v6);
   }

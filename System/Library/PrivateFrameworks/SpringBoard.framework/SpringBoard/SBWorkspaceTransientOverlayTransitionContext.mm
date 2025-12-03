@@ -1,8 +1,8 @@
 @interface SBWorkspaceTransientOverlayTransitionContext
 - (SBWindowScene)windowScene;
 - (SBWorkspaceTransientOverlayTransitionContext)init;
-- (id)compactDescriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)compactDescriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 @end
 
 @implementation SBWorkspaceTransientOverlayTransitionContext
@@ -21,11 +21,11 @@
   return result;
 }
 
-- (id)compactDescriptionBuilderWithMultilinePrefix:(id)a3
+- (id)compactDescriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v11.receiver = self;
   v11.super_class = SBWorkspaceTransientOverlayTransitionContext;
-  v4 = [(SBWorkspaceTransitionContext *)&v11 compactDescriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBWorkspaceTransitionContext *)&v11 compactDescriptionBuilderWithMultilinePrefix:prefix];
   v5 = [v4 appendObject:self->_transientOverlay withName:@"transientOverlay" skipIfNil:1];
   transitionType = self->_transitionType;
   v7 = @"dismissal";
@@ -49,20 +49,20 @@
   return v4;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = SBWorkspaceTransientOverlayTransitionContext;
-  v4 = a3;
-  v5 = [(SBWorkspaceTransitionContext *)&v12 descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v5 = [(SBWorkspaceTransitionContext *)&v12 descriptionBuilderWithMultilinePrefix:prefixCopy];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__SBWorkspaceTransientOverlayTransitionContext_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_2783A92D8;
   v6 = v5;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

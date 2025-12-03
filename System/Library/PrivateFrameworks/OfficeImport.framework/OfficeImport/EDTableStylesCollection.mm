@@ -1,25 +1,25 @@
 @interface EDTableStylesCollection
-- (id)objectWithName:(id)a3;
-- (void)setDefaultPivotStyleName:(id)a3;
-- (void)setDefaultTableStyleName:(id)a3;
+- (id)objectWithName:(id)name;
+- (void)setDefaultPivotStyleName:(id)name;
+- (void)setDefaultTableStyleName:(id)name;
 @end
 
 @implementation EDTableStylesCollection
 
-- (id)objectWithName:(id)a3
+- (id)objectWithName:(id)name
 {
-  v4 = a3;
-  if (v4 && (v5 = [(EDCollection *)self count]) != 0)
+  nameCopy = name;
+  if (nameCopy && (v5 = [(EDCollection *)self count]) != 0)
   {
     v6 = 0;
     while (1)
     {
       v7 = [(EDCollection *)self objectAtIndex:v6];
-      v8 = [v7 name];
-      v9 = v8;
-      if (v8)
+      name = [v7 name];
+      v9 = name;
+      if (name)
       {
-        if ([v8 isEqualToString:v4])
+        if ([name isEqualToString:nameCopy])
         {
           break;
         }
@@ -41,25 +41,25 @@ LABEL_7:
   return v7;
 }
 
-- (void)setDefaultTableStyleName:(id)a3
+- (void)setDefaultTableStyleName:(id)name
 {
-  v5 = a3;
-  if (self->mDefaultTableStyleName != v5)
+  nameCopy = name;
+  if (self->mDefaultTableStyleName != nameCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mDefaultTableStyleName, a3);
-    v5 = v6;
+    v6 = nameCopy;
+    objc_storeStrong(&self->mDefaultTableStyleName, name);
+    nameCopy = v6;
   }
 }
 
-- (void)setDefaultPivotStyleName:(id)a3
+- (void)setDefaultPivotStyleName:(id)name
 {
-  v5 = a3;
-  if (self->mDefaultPivotStyleName != v5)
+  nameCopy = name;
+  if (self->mDefaultPivotStyleName != nameCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->mDefaultPivotStyleName, a3);
-    v5 = v6;
+    v6 = nameCopy;
+    objc_storeStrong(&self->mDefaultPivotStyleName, name);
+    nameCopy = v6;
   }
 }
 

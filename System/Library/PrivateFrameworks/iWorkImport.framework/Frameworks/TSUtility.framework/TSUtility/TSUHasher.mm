@@ -1,10 +1,10 @@
 @interface TSUHasher
-+ (BOOL)addFileToSha1HashWithFileHandle:(id)a3 hashContext:(CC_SHA1state_st *)a4 error:(id *)a5;
-+ (id)computeSha1WithFile:(id)a3 error:(id *)a4;
-+ (id)computeSha1WithFileOrDirectory:(id)a3 error:(id *)a4;
++ (BOOL)addFileToSha1HashWithFileHandle:(id)handle hashContext:(CC_SHA1state_st *)context error:(id *)error;
++ (id)computeSha1WithFile:(id)file error:(id *)error;
++ (id)computeSha1WithFileOrDirectory:(id)directory error:(id *)error;
 - (TSUHasher)init;
-- (void)addObject:(id)a3;
-- (void)addRange:(_NSRange)a3;
+- (void)addObject:(id)object;
+- (void)addRange:(_NSRange)range;
 @end
 
 @implementation TSUHasher
@@ -22,32 +22,32 @@
   return result;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = [a3 hash];
+  v4 = [object hash];
 
   [(TSUHasher *)self p_appendUnsignedInteger:v4];
 }
 
-- (void)addRange:(_NSRange)a3
+- (void)addRange:(_NSRange)range
 {
-  length = a3.length;
-  [(TSUHasher *)self p_appendUnsignedInteger:a3.location];
+  length = range.length;
+  [(TSUHasher *)self p_appendUnsignedInteger:range.location];
 
   [(TSUHasher *)self p_appendUnsignedInteger:length];
 }
 
-+ (id)computeSha1WithFile:(id)a3 error:(id *)a4
++ (id)computeSha1WithFile:(id)file error:(id *)error
 {
-  v5 = a3;
+  fileCopy = file;
   v11 = 0;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7 isDirectory:&v11];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [fileCopy path];
+  v8 = [defaultManager fileExistsAtPath:path isDirectory:&v11];
 
   if (v8 && (v11 & 1) == 0)
   {
-    v9 = [TSUHasher computeSha1WithFileOrDirectory:v5 error:a4];
+    v9 = [TSUHasher computeSha1WithFileOrDirectory:fileCopy error:error];
   }
 
   else
@@ -58,29 +58,29 @@
   return v9;
 }
 
-+ (id)computeSha1WithFileOrDirectory:(id)a3 error:(id *)a4
++ (id)computeSha1WithFileOrDirectory:(id)directory error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v5 path];
-  v8 = [v6 fileExistsAtPath:v7];
+  directoryCopy = directory;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [directoryCopy path];
+  v8 = [defaultManager fileExistsAtPath:path];
 
   if (v8)
   {
     memset(&c, 0, sizeof(c));
     CC_SHA1_Init(&c);
     v15 = 0;
-    v9 = [TSUHasher addFileToSha1HashWithFileHandle:v5 hashContext:&c error:&v15];
+    v9 = [TSUHasher addFileToSha1HashWithFileHandle:directoryCopy hashContext:&c error:&v15];
     v10 = v15;
     v11 = v10;
     if (!v9 || v10)
     {
-      if (a4)
+      if (error)
       {
         v13 = v10;
         v12 = 0;
-        *a4 = v11;
+        *error = v11;
       }
 
       else
@@ -104,19 +104,19 @@
   return v12;
 }
 
-+ (BOOL)addFileToSha1HashWithFileHandle:(id)a3 hashContext:(CC_SHA1state_st *)a4 error:(id *)a5
++ (BOOL)addFileToSha1HashWithFileHandle:(id)handle hashContext:(CC_SHA1state_st *)context error:(id *)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  handleCopy = handle;
   v38 = 0;
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v7 path];
-  [v8 fileExistsAtPath:v9 isDirectory:&v38];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [handleCopy path];
+  [defaultManager fileExistsAtPath:path isDirectory:&v38];
 
   if (v38 != 1)
   {
     v32 = 0;
-    v15 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:v7 error:&v32];
+    v15 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:handleCopy error:&v32];
     v24 = v32;
     v12 = v24;
     if (v15)
@@ -139,21 +139,21 @@
           goto LABEL_30;
         }
 
-        CC_SHA1_Update(a4, [v25 bytes], objc_msgSend(v25, "length"));
+        CC_SHA1_Update(context, [v25 bytes], objc_msgSend(v25, "length"));
       }
 
-      if (a5)
+      if (error)
       {
         v28 = v26;
-        *a5 = v27;
+        *error = v27;
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       v29 = v24;
       v11 = 0;
-      *a5 = v12;
+      *error = v12;
       goto LABEL_30;
     }
 
@@ -161,12 +161,12 @@
     goto LABEL_30;
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 1;
-  v12 = [v10 enumeratorAtURL:v7 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:1 errorHandler:0];
+  v12 = [defaultManager2 enumeratorAtURL:handleCopy includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:1 errorHandler:0];
 
-  v13 = [v12 allObjects];
-  v14 = [v13 sortedArrayUsingComparator:&unk_28862B2D0];
+  allObjects = [v12 allObjects];
+  v14 = [allObjects sortedArrayUsingComparator:&unk_28862B2D0];
 
   v36 = 0u;
   v37 = 0u;
@@ -189,14 +189,14 @@
 
         v20 = *(*(&v34 + 1) + 8 * i);
         v33 = 0;
-        v21 = [TSUHasher addFileToSha1HashWithFileHandle:v20 hashContext:a4 error:&v33];
+        v21 = [TSUHasher addFileToSha1HashWithFileHandle:v20 hashContext:context error:&v33];
         v22 = v33;
         if (!v21 || v22 != 0)
         {
-          if (a5)
+          if (error)
           {
             v22 = v22;
-            *a5 = v22;
+            *error = v22;
           }
 
           v11 = 0;

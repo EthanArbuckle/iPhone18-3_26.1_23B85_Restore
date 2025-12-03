@@ -1,22 +1,22 @@
 @interface TSPFileResourceCache
-+ (id)cacheDirectoryURLWithSignature:(id)a3 sharedGroupContainer:(BOOL)a4;
-- (BOOL)cachedResourceExistsForInfo:(id)a3;
++ (id)cacheDirectoryURLWithSignature:(id)signature sharedGroupContainer:(BOOL)container;
+- (BOOL)cachedResourceExistsForInfo:(id)info;
 - (NSString)description;
-- (TSPFileResourceCache)initWithURL:(id)a3;
-- (id)fileURLInCacheForResourceInfo:(id)a3;
-- (void)cacheResourceAtURL:(id)a3 forInfo:(id)a4 copy:(BOOL)a5 completionQueue:(id)a6 completionHandler:(id)a7;
+- (TSPFileResourceCache)initWithURL:(id)l;
+- (id)fileURLInCacheForResourceInfo:(id)info;
+- (void)cacheResourceAtURL:(id)l forInfo:(id)info copy:(BOOL)copy completionQueue:(id)queue completionHandler:(id)handler;
 - (void)purge;
 @end
 
 @implementation TSPFileResourceCache
 
-+ (id)cacheDirectoryURLWithSignature:(id)a3 sharedGroupContainer:(BOOL)a4
++ (id)cacheDirectoryURLWithSignature:(id)signature sharedGroupContainer:(BOOL)container
 {
-  v4 = a4;
-  v5 = a3;
+  containerCopy = container;
+  signatureCopy = signature;
   v8 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v6, v7);
   v11 = v8;
-  if (v4)
+  if (containerCopy)
   {
     v12 = objc_msgSend_tsu_containerURLForDefaultSecurityApplicationGroupIdentifier(v8, v9, v10);
     v14 = objc_msgSend_URLByAppendingPathComponent_(v12, v13, @"Library");
@@ -78,7 +78,7 @@ LABEL_12:
     v16 = objc_msgSend_tsu_fileURLWithPath_(v25, v27, v26);
   }
 
-  v28 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v16, v24, v5, 1);
+  v28 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v16, v24, signatureCopy, 1);
   v34 = 0;
   if ((objc_msgSend_createDirectoryAtURL_withIntermediateDirectories_attributes_error_(v11, v29, v28, 1, 0, &v34) & 1) == 0 && qword_280A530B0 != -1)
   {
@@ -88,10 +88,10 @@ LABEL_12:
   return v28;
 }
 
-- (TSPFileResourceCache)initWithURL:(id)a3
+- (TSPFileResourceCache)initWithURL:(id)l
 {
-  v5 = a3;
-  if ((objc_msgSend_isFileURL(v5, v6, v7) & 1) == 0)
+  lCopy = l;
+  if ((objc_msgSend_isFileURL(lCopy, v6, v7) & 1) == 0)
   {
     sub_276BD6AC4();
   }
@@ -102,7 +102,7 @@ LABEL_12:
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_cacheURL, a3);
+    objc_storeStrong(&v8->_cacheURL, l);
     v10 = objc_opt_new();
     ioOperationQueue = v9->_ioOperationQueue;
     v9->_ioOperationQueue = v10;
@@ -130,39 +130,39 @@ LABEL_12:
   return v9;
 }
 
-- (id)fileURLInCacheForResourceInfo:(id)a3
+- (id)fileURLInCacheForResourceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v7 = objc_msgSend_cacheURL(self, v5, v6);
-  v10 = objc_msgSend_resourceIdentifier(v4, v8, v9);
+  v10 = objc_msgSend_resourceIdentifier(infoCopy, v8, v9);
 
   v12 = objc_msgSend_URLByAppendingPathComponent_(v7, v11, v10);
 
   return v12;
 }
 
-- (BOOL)cachedResourceExistsForInfo:(id)a3
+- (BOOL)cachedResourceExistsForInfo:(id)info
 {
-  v3 = objc_msgSend_fileURLForResourceInfo_(self, a2, a3);
+  v3 = objc_msgSend_fileURLForResourceInfo_(self, a2, info);
   v5 = objc_msgSend_checkResourceIsReachableAndReturnError_(v3, v4, 0);
 
   return v5;
 }
 
-- (void)cacheResourceAtURL:(id)a3 forInfo:(id)a4 copy:(BOOL)a5 completionQueue:(id)a6 completionHandler:(id)a7
+- (void)cacheResourceAtURL:(id)l forInfo:(id)info copy:(BOOL)copy completionQueue:(id)queue completionHandler:(id)handler
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v18 = objc_msgSend_fileURLInCacheForResourceInfo_(self, v16, v13);
+  lCopy = l;
+  infoCopy = info;
+  queueCopy = queue;
+  handlerCopy = handler;
+  v18 = objc_msgSend_fileURLInCacheForResourceInfo_(self, v16, infoCopy);
   if (v18)
   {
-    v31 = a5;
-    v19 = objc_msgSend_readingIntentWithURL_options_(MEMORY[0x277CCA9E0], v17, v12, 1);
+    copyCopy = copy;
+    v19 = objc_msgSend_readingIntentWithURL_options_(MEMORY[0x277CCA9E0], v17, lCopy, 1);
     v21 = objc_msgSend_writingIntentWithURL_options_(MEMORY[0x277CCA9E0], v20, v18, 8);
-    v32 = v12;
+    v32 = lCopy;
     if (qword_280A530B0 != -1)
     {
       sub_276BD6BA0();
@@ -181,20 +181,20 @@ LABEL_12:
     v35[4] = self;
     v35[5] = v19;
     v35[6] = v21;
-    v36 = v13;
-    v39 = v31;
-    v38 = v15;
-    v37 = v14;
+    v36 = infoCopy;
+    v39 = copyCopy;
+    v38 = handlerCopy;
+    v37 = queueCopy;
     objc_msgSend_tsp_coordinateAccessWithIntents_queue_byAccessor_(v24, v28, v26, ioOperationQueue, v35);
 
-    v12 = v32;
+    lCopy = v32;
   }
 
   else
   {
     if (qword_280A530B0 == -1)
     {
-      if (!v15)
+      if (!handlerCopy)
       {
         goto LABEL_5;
       }
@@ -203,26 +203,26 @@ LABEL_12:
     else
     {
       sub_276BD6BB4();
-      if (!v15)
+      if (!handlerCopy)
       {
         goto LABEL_5;
       }
     }
 
-    if (v14)
+    if (queueCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = sub_276AE8BA0;
       block[3] = &unk_27A6E4E90;
-      v34 = v15;
-      dispatch_async(v14, block);
+      v34 = handlerCopy;
+      dispatch_async(queueCopy, block);
     }
 
     else
     {
       v30 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x277CCA9B8], v17, *MEMORY[0x277CCA738], -1002, 0);
-      (*(v15 + 2))(v15, 0, v30);
+      (*(handlerCopy + 2))(handlerCopy, 0, v30);
     }
   }
 

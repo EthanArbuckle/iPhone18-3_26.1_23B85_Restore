@@ -1,62 +1,62 @@
 @interface HFStateDumpBuilderContext
-+ (HFStateDumpBuilderContext)contextWithDetailLevel:(unint64_t)a3;
-- (HFStateDumpBuilderContext)initWithContext:(id)a3;
-- (HFStateDumpBuilderContext)initWithDetailLevel:(unint64_t)a3;
++ (HFStateDumpBuilderContext)contextWithDetailLevel:(unint64_t)level;
+- (HFStateDumpBuilderContext)initWithContext:(id)context;
+- (HFStateDumpBuilderContext)initWithDetailLevel:(unint64_t)level;
 - (NSDictionary)userInfo;
 - (NSSet)objectsToExclude;
-- (id)copyWithDetailLevel:(unint64_t)a3;
-- (id)copyWithOutputStyle:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithDetailLevel:(unint64_t)level;
+- (id)copyWithOutputStyle:(unint64_t)style;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)derivedOutputStyle;
 @end
 
 @implementation HFStateDumpBuilderContext
 
-+ (HFStateDumpBuilderContext)contextWithDetailLevel:(unint64_t)a3
++ (HFStateDumpBuilderContext)contextWithDetailLevel:(unint64_t)level
 {
-  v3 = [[a1 alloc] initWithDetailLevel:a3];
+  v3 = [[self alloc] initWithDetailLevel:level];
 
   return v3;
 }
 
-- (HFStateDumpBuilderContext)initWithDetailLevel:(unint64_t)a3
+- (HFStateDumpBuilderContext)initWithDetailLevel:(unint64_t)level
 {
   v5.receiver = self;
   v5.super_class = HFStateDumpBuilderContext;
   result = [(HFStateDumpBuilderContext *)&v5 init];
   if (result)
   {
-    result->_detailLevel = a3;
+    result->_detailLevel = level;
   }
 
   return result;
 }
 
-- (HFStateDumpBuilderContext)initWithContext:(id)a3
+- (HFStateDumpBuilderContext)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = HFStateDumpBuilderContext;
   v5 = [(HFStateDumpBuilderContext *)&v13 init];
   if (v5)
   {
-    v5->_detailLevel = [v4 detailLevel];
-    v5->_outputStyle = [v4 outputStyle];
-    v6 = [v4 objectsToExclude];
+    v5->_detailLevel = [contextCopy detailLevel];
+    v5->_outputStyle = [contextCopy outputStyle];
+    objectsToExclude = [contextCopy objectsToExclude];
     objectsToExclude = v5->_objectsToExclude;
-    v5->_objectsToExclude = v6;
+    v5->_objectsToExclude = objectsToExclude;
 
-    v8 = [v4 userInfo];
+    userInfo = [contextCopy userInfo];
     userInfo = v5->_userInfo;
-    v5->_userInfo = v8;
+    v5->_userInfo = userInfo;
 
-    v10 = [v4 multilinePrefix];
+    multilinePrefix = [contextCopy multilinePrefix];
     multilinePrefix = v5->_multilinePrefix;
-    v5->_multilinePrefix = v10;
+    v5->_multilinePrefix = multilinePrefix;
 
-    v5->_excludePrimaryID = [v4 excludePrimaryID];
-    v5->_includeVolatileObjects = [v4 includeVolatileObjects];
+    v5->_excludePrimaryID = [contextCopy excludePrimaryID];
+    v5->_includeVolatileObjects = [contextCopy includeVolatileObjects];
   }
 
   return v5;
@@ -91,31 +91,31 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HFStateDumpBuilderContext allocWithZone:a3];
+  v4 = [HFStateDumpBuilderContext allocWithZone:zone];
 
   return [(HFStateDumpBuilderContext *)v4 initWithContext:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HFMutableStateDumpBuilderContext allocWithZone:a3];
+  v4 = [HFMutableStateDumpBuilderContext allocWithZone:zone];
 
   return [(HFStateDumpBuilderContext *)v4 initWithContext:self];
 }
 
-- (id)copyWithDetailLevel:(unint64_t)a3
+- (id)copyWithDetailLevel:(unint64_t)level
 {
   v4 = [(HFStateDumpBuilderContext *)self mutableCopy];
-  [v4 setDetailLevel:a3];
+  [v4 setDetailLevel:level];
   return v4;
 }
 
-- (id)copyWithOutputStyle:(unint64_t)a3
+- (id)copyWithOutputStyle:(unint64_t)style
 {
   v4 = [(HFStateDumpBuilderContext *)self mutableCopy];
-  [v4 setOutputStyle:a3];
+  [v4 setOutputStyle:style];
   return v4;
 }
 
@@ -123,10 +123,10 @@
 {
   if (![(HFStateDumpBuilderContext *)self outputStyle])
   {
-    v3 = [(HFStateDumpBuilderContext *)self detailLevel];
-    if (v3 < 3)
+    detailLevel = [(HFStateDumpBuilderContext *)self detailLevel];
+    if (detailLevel < 3)
     {
-      return v3 + 1;
+      return detailLevel + 1;
     }
   }
 

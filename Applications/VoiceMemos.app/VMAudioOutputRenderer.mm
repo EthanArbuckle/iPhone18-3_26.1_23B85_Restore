@@ -1,16 +1,16 @@
 @interface VMAudioOutputRenderer
-- (BOOL)prepareToRender:(id)a3 inputBlock:(id)a4 error:(id *)a5;
-- (BOOL)startAndReturnError:(id *)a3;
-- (OpaqueAudioComponentInstance)_createTimeStretch:(AudioStreamBasicDescription *)a3 maxFramesPerRender:(unsigned int)a4 error:(id *)a5;
-- (VMAudioOutputRenderer)initWithQueue:(id)a3;
+- (BOOL)prepareToRender:(id)render inputBlock:(id)block error:(id *)error;
+- (BOOL)startAndReturnError:(id *)error;
+- (OpaqueAudioComponentInstance)_createTimeStretch:(AudioStreamBasicDescription *)stretch maxFramesPerRender:(unsigned int)render error:(id *)error;
+- (VMAudioOutputRenderer)initWithQueue:(id)queue;
 - (VMAudioOutputRendererDelegate)delegate;
 - (double)currentSampleTime;
 - (float)rate;
-- (id)_createPollingBlock:(id)a3;
-- (id)_createQueue:(BOOL)a3;
+- (id)_createPollingBlock:(id)block;
+- (id)_createQueue:(BOOL)queue;
 - (id)_sourceNodeInputBlock;
-- (void)_handleAVAudioEngineConfigurationChangeNotification:(id)a3;
-- (void)_prepareAudioUnits:(AudioStreamBasicDescription *)a3 maxFramesPerRender:(unsigned int)a4;
+- (void)_handleAVAudioEngineConfigurationChangeNotification:(id)notification;
+- (void)_prepareAudioUnits:(AudioStreamBasicDescription *)units maxFramesPerRender:(unsigned int)render;
 - (void)_prepareRenderChainIfNeeded;
 - (void)_resetRenderTimes;
 - (void)_resetTimeStretchAudioUnit;
@@ -21,17 +21,17 @@
 - (void)registerNotifications;
 - (void)reset;
 - (void)sendEmptyQueueSignal;
-- (void)setRate:(float)a3;
-- (void)startPollingTimer:(double)a3;
+- (void)setRate:(float)rate;
+- (void)startPollingTimer:(double)timer;
 - (void)stopPollingTimer;
 - (void)unprepare;
 @end
 
 @implementation VMAudioOutputRenderer
 
-- (VMAudioOutputRenderer)initWithQueue:(id)a3
+- (VMAudioOutputRenderer)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = VMAudioOutputRenderer;
   v5 = [(VMAudioOutputRenderer *)&v17 init];
@@ -41,9 +41,9 @@
     audioEngine = v5->_audioEngine;
     v5->_audioEngine = v6;
 
-    if (v4)
+    if (queueCopy)
     {
-      v8 = v4;
+      v8 = queueCopy;
     }
 
     else
@@ -75,9 +75,9 @@
   return v5;
 }
 
-- (id)_createQueue:(BOOL)a3
+- (id)_createQueue:(BOOL)queue
 {
-  if (a3)
+  if (queue)
   {
     v3 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, -1);
   }
@@ -136,32 +136,32 @@
   }
 }
 
-- (BOOL)prepareToRender:(id)a3 inputBlock:(id)a4 error:(id *)a5
+- (BOOL)prepareToRender:(id)render inputBlock:(id)block error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  renderCopy = render;
+  blockCopy = block;
   [(VMAudioOutputRenderer *)self unprepare];
-  v11 = [v9 isStandard];
-  if (v11)
+  isStandard = [renderCopy isStandard];
+  if (isStandard)
   {
-    objc_storeStrong(&self->_processingFormat, a3);
+    objc_storeStrong(&self->_processingFormat, render);
     self->_maxBufferFill = 12288;
-    v12 = [(VMAudioOutputRenderer *)self _createPollingBlock:v10];
+    v12 = [(VMAudioOutputRenderer *)self _createPollingBlock:blockCopy];
     inputPollingBlock = self->_inputPollingBlock;
     self->_inputPollingBlock = v12;
 
-    sub_100057FF0(&self->_ringBuffer, 2 * self->_maxBufferFill, [v9 channelCount], 0);
+    sub_100057FF0(&self->_ringBuffer, 2 * self->_maxBufferFill, [renderCopy channelCount], 0);
   }
 
-  else if (a5)
+  else if (error)
   {
     v16 = NSLocalizedDescriptionKey;
     v17 = @"VMAudioOutputRenderer must use deinterleaved float PCM format";
     v14 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-    *a5 = [NSError errorWithDomain:RCVoiceMemosErrorDomain code:1 userInfo:v14];
+    *error = [NSError errorWithDomain:RCVoiceMemosErrorDomain code:1 userInfo:v14];
   }
 
-  return v11;
+  return isStandard;
 }
 
 - (void)_prepareRenderChainIfNeeded
@@ -176,66 +176,66 @@
   {
     v3 = [AVAudioSourceNode alloc];
     processingFormat = self->_processingFormat;
-    v5 = [(VMAudioOutputRenderer *)self _sourceNodeInputBlock];
-    v6 = [v3 initWithFormat:processingFormat renderBlock:v5];
+    _sourceNodeInputBlock = [(VMAudioOutputRenderer *)self _sourceNodeInputBlock];
+    v6 = [v3 initWithFormat:processingFormat renderBlock:_sourceNodeInputBlock];
     sourceNode = self->_sourceNode;
     self->_sourceNode = v6;
 
     [(AVAudioEngine *)self->_audioEngine attachNode:self->_sourceNode];
     [(AVAudioEngine *)self->_audioEngine connect:self->_sourceNode to:self->_mixerNode format:self->_processingFormat];
-    v8 = [(VMAudioOutputRenderer *)self delegate];
-    v9 = [v8 audioEngineOutputNodeAccessQueue];
+    delegate = [(VMAudioOutputRenderer *)self delegate];
+    audioEngineOutputNodeAccessQueue = [delegate audioEngineOutputNodeAccessQueue];
 
-    if (v9)
+    if (audioEngineOutputNodeAccessQueue)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100058288;
       block[3] = &unk_10028AE58;
       block[4] = self;
-      dispatch_sync(v9, block);
+      dispatch_sync(audioEngineOutputNodeAccessQueue, block);
     }
 
     else
     {
       audioEngine = self->_audioEngine;
       mixerNode = self->_mixerNode;
-      v12 = [(AVAudioEngine *)audioEngine outputNode];
-      [(AVAudioEngine *)audioEngine connect:mixerNode to:v12 format:0];
+      outputNode = [(AVAudioEngine *)audioEngine outputNode];
+      [(AVAudioEngine *)audioEngine connect:mixerNode to:outputNode format:0];
     }
 
     [(AVAudioEngine *)self->_audioEngine prepare];
-    v13 = [(AVAudioSourceNode *)self->_sourceNode AUAudioUnit];
-    v14 = [v13 maximumFramesToRender];
+    aUAudioUnit = [(AVAudioSourceNode *)self->_sourceNode AUAudioUnit];
+    maximumFramesToRender = [aUAudioUnit maximumFramesToRender];
 
-    v15 = [(AVAudioFormat *)self->_processingFormat streamDescription];
-    if (v14 <= 0x1000)
+    streamDescription = [(AVAudioFormat *)self->_processingFormat streamDescription];
+    if (maximumFramesToRender <= 0x1000)
     {
       v16 = 4096;
     }
 
     else
     {
-      v16 = v14;
+      v16 = maximumFramesToRender;
     }
 
-    v17 = *&v15->mSampleRate;
-    v18 = *&v15->mBytesPerPacket;
-    v22 = *&v15->mBitsPerChannel;
+    v17 = *&streamDescription->mSampleRate;
+    v18 = *&streamDescription->mBytesPerPacket;
+    v22 = *&streamDescription->mBitsPerChannel;
     v21[0] = v17;
     v21[1] = v18;
     [(VMAudioOutputRenderer *)self _prepareAudioUnits:v21 maxFramesPerRender:v16];
   }
 }
 
-- (void)_prepareAudioUnits:(AudioStreamBasicDescription *)a3 maxFramesPerRender:(unsigned int)a4
+- (void)_prepareAudioUnits:(AudioStreamBasicDescription *)units maxFramesPerRender:(unsigned int)render
 {
-  v4 = *&a4;
+  v4 = *&render;
   [(VMAudioOutputRenderer *)self _tearDownTimeStretch];
-  v7 = *&a3->mBytesPerPacket;
-  v14 = *&a3->mSampleRate;
+  v7 = *&units->mBytesPerPacket;
+  v14 = *&units->mSampleRate;
   v15 = v7;
-  v16 = *&a3->mBitsPerChannel;
+  v16 = *&units->mBitsPerChannel;
   v13 = 0;
   v8 = [(VMAudioOutputRenderer *)self _createTimeStretch:&v14 maxFramesPerRender:v4 error:&v13];
   v9 = v13;
@@ -255,10 +255,10 @@
   }
 
   enhanceProcessor = self->_enhanceProcessor;
-  v12 = *&a3->mBytesPerPacket;
-  v14 = *&a3->mSampleRate;
+  v12 = *&units->mBytesPerPacket;
+  v14 = *&units->mSampleRate;
   v15 = v12;
-  v16 = *&a3->mBitsPerChannel;
+  v16 = *&units->mBitsPerChannel;
   [(VMProcessor *)enhanceProcessor prepareWithFormat:&v14 maxFramesPerRender:v4];
 }
 
@@ -279,7 +279,7 @@
   [v3 addObserver:self selector:"_handleAVAudioEngineConfigurationChangeNotification:" name:AVAudioEngineConfigurationChangeNotification object:self->_audioEngine];
 }
 
-- (void)_handleAVAudioEngineConfigurationChangeNotification:(id)a3
+- (void)_handleAVAudioEngineConfigurationChangeNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -289,7 +289,7 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (BOOL)startAndReturnError:(id *)a3
+- (BOOL)startAndReturnError:(id *)error
 {
   if (self->_processingFormat)
   {
@@ -313,7 +313,7 @@
       self->_playbackSampleIndexAtStart = v10;
       [(VMAudioOutputRenderer *)self _resetRenderTimes];
       [(VMAudioOutputRenderer *)self _resetTimeStretchAudioUnit];
-      if (![(AVAudioEngine *)self->_audioEngine startAndReturnError:a3])
+      if (![(AVAudioEngine *)self->_audioEngine startAndReturnError:error])
       {
         v12 = 0;
         goto LABEL_12;
@@ -329,7 +329,7 @@
 
   else
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
@@ -338,7 +338,7 @@
     v16 = @"VMAudioOutputRenderer - prepareToRender must be called before starting render";
     v5 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     [NSError errorWithDomain:RCVoiceMemosErrorDomain code:1 userInfo:v5];
-    *a3 = v12 = 0;
+    *error = v12 = 0;
   }
 
 LABEL_12:
@@ -370,11 +370,11 @@ LABEL_12:
   }
 }
 
-- (void)startPollingTimer:(double)a3
+- (void)startPollingTimer:(double)timer
 {
   if (self->_inputPollingBlock)
   {
-    v4 = [[VMDispatchTimer alloc] init:self->_inputPollingQueue leeway:self->_inputPollingBlock queue:a3 block:a3 * 0.5];
+    v4 = [[VMDispatchTimer alloc] init:self->_inputPollingQueue leeway:self->_inputPollingBlock queue:timer block:timer * 0.5];
     inputPollingTimer = self->_inputPollingTimer;
     self->_inputPollingTimer = v4;
   }
@@ -444,17 +444,17 @@ LABEL_12:
   }
 }
 
-- (id)_createPollingBlock:(id)a3
+- (id)_createPollingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100058C7C;
   v8[3] = &unk_10028AE80;
   objc_copyWeak(&v10, &location);
-  v9 = v4;
-  v5 = v4;
+  v9 = blockCopy;
+  v5 = blockCopy;
   v6 = objc_retainBlock(v8);
 
   objc_destroyWeak(&v10);
@@ -476,13 +476,13 @@ LABEL_12:
   return v2;
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
-  self->_timeStretchRate = a3;
+  self->_timeStretchRate = rate;
   timeStretchAudiounit = self->_timeStretchAudiounit;
   if (timeStretchAudiounit)
   {
-    AudioUnitSetParameter(timeStretchAudiounit, 0, 0, 0, a3, 0);
+    AudioUnitSetParameter(timeStretchAudiounit, 0, 0, 0, rate, 0);
   }
 }
 
@@ -500,18 +500,18 @@ LABEL_12:
   return result;
 }
 
-- (OpaqueAudioComponentInstance)_createTimeStretch:(AudioStreamBasicDescription *)a3 maxFramesPerRender:(unsigned int)a4 error:(id *)a5
+- (OpaqueAudioComponentInstance)_createTimeStretch:(AudioStreamBasicDescription *)stretch maxFramesPerRender:(unsigned int)render error:(id *)error
 {
   v22 = 0;
   inData[0] = sub_100058FE8;
   inData[1] = self;
   v8 = sub_100095AC4(0x61756663u, 0x6970746Fu, &v22);
-  v9 = sub_1000959C0(v8, a5);
+  v9 = sub_1000959C0(v8, error);
   result = v22;
   if (v9)
   {
-    v11 = sub_100095EFC(v22, a4);
-    if (sub_1000959C0(v11, a5) && (v12 = *&a3->mBytesPerPacket, v18 = *&a3->mSampleRate, v19 = v12, v20 = *&a3->mBitsPerChannel, v13 = sub_100095B14(v22, &v18, 1), sub_1000959C0(v13, a5)) && (v14 = *&a3->mBytesPerPacket, v18 = *&a3->mSampleRate, v19 = v14, v20 = *&a3->mBitsPerChannel, v15 = sub_100095B14(v22, &v18, 0), sub_1000959C0(v15, a5)) && (v16 = AudioUnitSetProperty(v22, 0x17u, 1u, 0, inData, 0x10u), sub_1000959C0(v16, a5)) && (v17 = AudioUnitInitialize(v22), sub_1000959C0(v17, a5)))
+    v11 = sub_100095EFC(v22, render);
+    if (sub_1000959C0(v11, error) && (v12 = *&stretch->mBytesPerPacket, v18 = *&stretch->mSampleRate, v19 = v12, v20 = *&stretch->mBitsPerChannel, v13 = sub_100095B14(v22, &v18, 1), sub_1000959C0(v13, error)) && (v14 = *&stretch->mBytesPerPacket, v18 = *&stretch->mSampleRate, v19 = v14, v20 = *&stretch->mBitsPerChannel, v15 = sub_100095B14(v22, &v18, 0), sub_1000959C0(v15, error)) && (v16 = AudioUnitSetProperty(v22, 0x17u, 1u, 0, inData, 0x10u), sub_1000959C0(v16, error)) && (v17 = AudioUnitInitialize(v22), sub_1000959C0(v17, error)))
     {
       return v22;
     }

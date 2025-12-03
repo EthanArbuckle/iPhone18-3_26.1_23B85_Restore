@@ -1,35 +1,35 @@
 @interface MBDriveOperation
-+ (id)stringForType:(int)a3;
-- (MBDriveOperation)initWithType:(int)a3 count:(int64_t)a4 size:(int64_t)a5 duration:(double)a6;
++ (id)stringForType:(int)type;
+- (MBDriveOperation)initWithType:(int)type count:(int64_t)count size:(int64_t)size duration:(double)duration;
 - (id)description;
 @end
 
 @implementation MBDriveOperation
 
-+ (id)stringForType:(int)a3
++ (id)stringForType:(int)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1000FE100[a3];
+    return off_1000FE100[type];
   }
 }
 
-- (MBDriveOperation)initWithType:(int)a3 count:(int64_t)a4 size:(int64_t)a5 duration:(double)a6
+- (MBDriveOperation)initWithType:(int)type count:(int64_t)count size:(int64_t)size duration:(double)duration
 {
-  v8 = a4;
-  if (a4 < -1)
+  countCopy = count;
+  if (count < -1)
   {
     v13 = 112;
   }
 
   else
   {
-    if (a4 < 0x80000000)
+    if (count < 0x80000000)
     {
       goto LABEL_3;
     }
@@ -39,12 +39,12 @@
 
   sub_10009EC18(a2, self, v13);
 LABEL_3:
-  if (a5 <= -2)
+  if (size <= -2)
   {
     sub_10009EC98(a2, self);
   }
 
-  if (a6 < 0.0)
+  if (duration < 0.0)
   {
     sub_10009ED0C(a2, self);
   }
@@ -54,10 +54,10 @@ LABEL_3:
   result = [(MBDriveOperation *)&v14 init];
   if (result)
   {
-    result->_type = a3;
-    result->_count = v8;
-    result->_size = a5;
-    result->_duration = a6;
+    result->_type = type;
+    result->_count = countCopy;
+    result->_size = size;
+    result->_duration = duration;
   }
 
   return result;

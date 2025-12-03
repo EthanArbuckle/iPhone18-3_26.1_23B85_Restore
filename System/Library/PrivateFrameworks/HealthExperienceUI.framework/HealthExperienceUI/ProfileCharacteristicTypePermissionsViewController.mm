@@ -1,59 +1,59 @@
 @interface ProfileCharacteristicTypePermissionsViewController
-+ (id)orderedSectionIdentifiersForProfile:(int64_t)a3;
++ (id)orderedSectionIdentifiersForProfile:(int64_t)profile;
 - (BOOL)_shouldDisplayNameInFooters;
-- (ProfileCharacteristicTypePermissionsViewController)initWithCoder:(id)a3;
-- (ProfileCharacteristicTypePermissionsViewController)initWithHealthStore:(id)a3 characteristicType:(id)a4 firstName:(id)a5;
-- (ProfileCharacteristicTypePermissionsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (ProfileCharacteristicTypePermissionsViewController)initWithStyle:(int64_t)a3;
-- (id)_sourceForIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)_profileSectionIdentifierForIndex:(int64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_fetchAuthorizationRecordsBySourceForCharacteristic:(id)a3;
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7;
+- (ProfileCharacteristicTypePermissionsViewController)initWithCoder:(id)coder;
+- (ProfileCharacteristicTypePermissionsViewController)initWithHealthStore:(id)store characteristicType:(id)type firstName:(id)name;
+- (ProfileCharacteristicTypePermissionsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (ProfileCharacteristicTypePermissionsViewController)initWithStyle:(int64_t)style;
+- (id)_sourceForIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)_profileSectionIdentifierForIndex:(int64_t)index;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_fetchAuthorizationRecordsBySourceForCharacteristic:(id)characteristic;
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error;
 - (void)_setupFooterView;
-- (void)setSourceListDataSource:(id)a3;
-- (void)sourceListDataSourceDidUpdate:(id)a3;
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSourceListDataSource:(id)source;
+- (void)sourceListDataSourceDidUpdate:(id)update;
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ProfileCharacteristicTypePermissionsViewController
 
-- (ProfileCharacteristicTypePermissionsViewController)initWithHealthStore:(id)a3 characteristicType:(id)a4 firstName:(id)a5
+- (ProfileCharacteristicTypePermissionsViewController)initWithHealthStore:(id)store characteristicType:(id)type firstName:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  typeCopy = type;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = ProfileCharacteristicTypePermissionsViewController;
   v12 = [(ProfileCharacteristicTypePermissionsViewController *)&v24 initWithStyle:1];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_healthStore, a3);
+    objc_storeStrong(&v12->_healthStore, store);
     v14 = [MEMORY[0x1E69A4380] sharedInstanceForHealthStore:v13->_healthStore];
     displayTypeController = v13->_displayTypeController;
     v13->_displayTypeController = v14;
 
-    objc_storeStrong(&v13->_firstName, a5);
+    objc_storeStrong(&v13->_firstName, name);
     v16 = [objc_alloc(MEMORY[0x1E696BF50]) initWithHealthStore:v13->_healthStore];
     authorizationStore = v13->_authorizationStore;
     v13->_authorizationStore = v16;
 
-    objc_storeStrong(&v13->_characteristicType, a4);
+    objc_storeStrong(&v13->_characteristicType, type);
     v13->_isLoaded = 0;
     v18 = [(HKDisplayTypeController *)v13->_displayTypeController displayTypeForObjectType:v13->_characteristicType];
     displayType = v13->_displayType;
     v13->_displayType = v18;
 
-    v20 = [v9 profileIdentifier];
-    v21 = +[ProfileCharacteristicTypePermissionsViewController orderedSectionIdentifiersForProfile:](ProfileCharacteristicTypePermissionsViewController, "orderedSectionIdentifiersForProfile:", [v20 type]);
+    profileIdentifier = [storeCopy profileIdentifier];
+    v21 = +[ProfileCharacteristicTypePermissionsViewController orderedSectionIdentifiersForProfile:](ProfileCharacteristicTypePermissionsViewController, "orderedSectionIdentifiersForProfile:", [profileIdentifier type]);
     orderedSectionIdentifiers = v13->_orderedSectionIdentifiers;
     v13->_orderedSectionIdentifiers = v21;
   }
@@ -61,7 +61,7 @@
   return v13;
 }
 
-- (ProfileCharacteristicTypePermissionsViewController)initWithStyle:(int64_t)a3
+- (ProfileCharacteristicTypePermissionsViewController)initWithStyle:(int64_t)style
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D940];
@@ -71,14 +71,14 @@
   return 0;
 }
 
-- (ProfileCharacteristicTypePermissionsViewController)initWithCoder:(id)a3
+- (ProfileCharacteristicTypePermissionsViewController)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ProfileCharacteristicTypePermissionsViewController;
-  return [(ProfileCharacteristicTypePermissionsViewController *)&v4 initWithCoder:a3];
+  return [(ProfileCharacteristicTypePermissionsViewController *)&v4 initWithCoder:coder];
 }
 
-- (ProfileCharacteristicTypePermissionsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ProfileCharacteristicTypePermissionsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D940];
@@ -88,17 +88,17 @@
   return 0;
 }
 
-- (void)setSourceListDataSource:(id)a3
+- (void)setSourceListDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   sourceListDataSource = self->_sourceListDataSource;
-  if (sourceListDataSource != v5)
+  if (sourceListDataSource != sourceCopy)
   {
-    v7 = v5;
+    v7 = sourceCopy;
     [(HKSourceListDataSource *)sourceListDataSource unregisterObserver:self];
-    objc_storeStrong(&self->_sourceListDataSource, a3);
+    objc_storeStrong(&self->_sourceListDataSource, source);
     [(HKSourceListDataSource *)self->_sourceListDataSource registerObserver:self];
-    v5 = v7;
+    sourceCopy = v7;
   }
 }
 
@@ -111,9 +111,9 @@
   displayType = self->_displayType;
   self->_displayType = v3;
 
-  v5 = [(HKDisplayType *)self->_displayType localization];
-  v6 = [v5 summary];
-  v7 = [v6 length];
+  localization = [(HKDisplayType *)self->_displayType localization];
+  summary = [localization summary];
+  v7 = [summary length];
 
   if (v7)
   {
@@ -123,18 +123,18 @@
   }
 
   v10 = *MEMORY[0x1E69A40D0];
-  v11 = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
-  [v11 setEstimatedRowHeight:v10];
+  tableView = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
+  [tableView setEstimatedRowHeight:v10];
 
-  v12 = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
-  [v12 reloadData];
+  tableView2 = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
+  [tableView2 reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ProfileCharacteristicTypePermissionsViewController;
-  [(ProfileCharacteristicTypePermissionsViewController *)&v4 viewWillAppear:a3];
+  [(ProfileCharacteristicTypePermissionsViewController *)&v4 viewWillAppear:appear];
   [(ProfileCharacteristicTypePermissionsViewController *)self _gatherDataAndRefreshUI];
   if (self->_footerView)
   {
@@ -151,52 +151,52 @@
     [v3 addSubview:self->_footerView];
     [(WDDisplayTypeDescriptionTableFooterView *)self->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
     v19 = MEMORY[0x1E696ACD8];
-    v24 = [(WDDisplayTypeDescriptionTableFooterView *)self->_footerView leadingAnchor];
-    v25 = [v3 layoutMarginsGuide];
-    v23 = [v25 leadingAnchor];
-    v22 = [v24 constraintEqualToAnchor:v23];
+    leadingAnchor = [(WDDisplayTypeDescriptionTableFooterView *)self->_footerView leadingAnchor];
+    layoutMarginsGuide = [v3 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[0] = v22;
-    v20 = [(WDDisplayTypeDescriptionTableFooterView *)self->_footerView trailingAnchor];
-    v21 = [v3 layoutMarginsGuide];
-    v18 = [v21 trailingAnchor];
-    v4 = [v20 constraintEqualToAnchor:v18];
+    trailingAnchor = [(WDDisplayTypeDescriptionTableFooterView *)self->_footerView trailingAnchor];
+    layoutMarginsGuide2 = [v3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v4 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[1] = v4;
-    v5 = [(WDDisplayTypeDescriptionTableFooterView *)self->_footerView topAnchor];
-    v6 = [v3 topAnchor];
-    v7 = [v5 constraintEqualToAnchor:v6];
+    topAnchor = [(WDDisplayTypeDescriptionTableFooterView *)self->_footerView topAnchor];
+    topAnchor2 = [v3 topAnchor];
+    v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v26[2] = v7;
-    v8 = [(WDDisplayTypeDescriptionTableFooterView *)self->_footerView bottomAnchor];
-    v9 = [v3 bottomAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    bottomAnchor = [(WDDisplayTypeDescriptionTableFooterView *)self->_footerView bottomAnchor];
+    bottomAnchor2 = [v3 bottomAnchor];
+    v10 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[3] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:4];
     [v19 activateConstraints:v11];
 
-    v12 = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
-    [v12 bounds];
+    tableView = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
+    [tableView bounds];
     Width = CGRectGetWidth(v27);
 
     LODWORD(v14) = 1148846080;
     LODWORD(v15) = 1112014848;
     [v3 systemLayoutSizeFittingSize:Width withHorizontalFittingPriority:0.0 verticalFittingPriority:{v14, v15}];
     [v3 setFrame:{0.0, 0.0, Width, v16}];
-    v17 = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
-    [v17 setTableFooterView:v3];
+    tableView2 = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
+    [tableView2 setTableFooterView:v3];
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v10.receiver = self;
   v10.super_class = ProfileCharacteristicTypePermissionsViewController;
-  [(ProfileCharacteristicTypePermissionsViewController *)&v10 traitCollectionDidChange:v4];
-  if (v4)
+  [(ProfileCharacteristicTypePermissionsViewController *)&v10 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(ProfileCharacteristicTypePermissionsViewController *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(ProfileCharacteristicTypePermissionsViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -220,7 +220,7 @@ void __79__ProfileCharacteristicTypePermissionsViewController_traitCollectionDid
   [v3 endUpdates];
 }
 
-- (void)_fetchAuthorizationRecordsBySourceForCharacteristic:(id)a3
+- (void)_fetchAuthorizationRecordsBySourceForCharacteristic:(id)characteristic
 {
   authorizationStore = self->_authorizationStore;
   v4[0] = MEMORY[0x1E69E9820];
@@ -228,7 +228,7 @@ void __79__ProfileCharacteristicTypePermissionsViewController_traitCollectionDid
   v4[2] = __106__ProfileCharacteristicTypePermissionsViewController__fetchAuthorizationRecordsBySourceForCharacteristic___block_invoke;
   v4[3] = &unk_1E7EEB6F8;
   v4[4] = self;
-  [(HKAuthorizationStore *)authorizationStore fetchAuthorizationRecordsForType:a3 completion:v4];
+  [(HKAuthorizationStore *)authorizationStore fetchAuthorizationRecordsForType:characteristic completion:v4];
 }
 
 void __106__ProfileCharacteristicTypePermissionsViewController__fetchAuthorizationRecordsBySourceForCharacteristic___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -271,30 +271,30 @@ void __106__ProfileCharacteristicTypePermissionsViewController__fetchAuthorizati
   [v7 fetchSources];
 }
 
-- (void)_handleReturnedImage:(id)a3 forSource:(id)a4 cell:(id)a5 tableView:(id)a6 fetchError:(id)a7
+- (void)_handleReturnedImage:(id)image forSource:(id)source cell:(id)cell tableView:(id)view fetchError:(id)error
 {
-  v17 = a3;
-  v12 = a5;
-  if (v17 && !a7)
+  imageCopy = image;
+  cellCopy = cell;
+  if (imageCopy && !error)
   {
-    v13 = a4;
-    v14 = [a6 indexPathForCell:v12];
+    sourceCopy = source;
+    v14 = [view indexPathForCell:cellCopy];
     v15 = [(ProfileCharacteristicTypePermissionsViewController *)self _sourceForIndexPath:v14];
-    v16 = [v15 source];
+    source = [v15 source];
 
-    LODWORD(v15) = [v16 isEqual:v13];
+    LODWORD(v15) = [source isEqual:sourceCopy];
     if (v15)
     {
-      [v12 setIconImage:v17];
+      [cellCopy setIconImage:imageCopy];
     }
   }
 }
 
-+ (id)orderedSectionIdentifiersForProfile:(int64_t)a3
++ (id)orderedSectionIdentifiersForProfile:(int64_t)profile
 {
   v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{&unk_1F38466C0, 0}];
   v5 = v4;
-  if (a3 == 1)
+  if (profile == 1)
   {
     [v4 addObject:&unk_1F38466D8];
   }
@@ -302,30 +302,30 @@ void __106__ProfileCharacteristicTypePermissionsViewController__fetchAuthorizati
   return v5;
 }
 
-- (int64_t)_profileSectionIdentifierForIndex:(int64_t)a3
+- (int64_t)_profileSectionIdentifierForIndex:(int64_t)index
 {
-  v3 = [(NSArray *)self->_orderedSectionIdentifiers objectAtIndexedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSArray *)self->_orderedSectionIdentifiers objectAtIndexedSubscript:index];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)_shouldDisplayNameInFooters
 {
-  v2 = [(HKHealthStore *)self->_healthStore profileIdentifier];
-  v3 = [v2 type] == 3;
+  profileIdentifier = [(HKHealthStore *)self->_healthStore profileIdentifier];
+  v3 = [profileIdentifier type] == 3;
 
   return v3;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(ProfileCharacteristicTypePermissionsViewController *)self _profileSectionIdentifierForIndex:a4];
+  v5 = [(ProfileCharacteristicTypePermissionsViewController *)self _profileSectionIdentifierForIndex:section];
   if (v5 == 1)
   {
-    v6 = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
-    v7 = [v6 sources];
-    v8 = [v7 orderedResearchStudySources];
+    sourceListDataSource = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
+    sources = [sourceListDataSource sources];
+    orderedResearchStudySources = [sources orderedResearchStudySources];
   }
 
   else
@@ -335,13 +335,13 @@ void __106__ProfileCharacteristicTypePermissionsViewController__fetchAuthorizati
       return 0;
     }
 
-    v6 = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
-    v7 = [v6 sources];
-    v8 = [v7 orderedAppSources];
+    sourceListDataSource = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
+    sources = [sourceListDataSource sources];
+    orderedResearchStudySources = [sources orderedAppSources];
   }
 
-  v9 = v8;
-  v10 = [v8 count];
+  v9 = orderedResearchStudySources;
+  v10 = [orderedResearchStudySources count];
   if (v10 <= 1)
   {
     v11 = 1;
@@ -355,24 +355,24 @@ void __106__ProfileCharacteristicTypePermissionsViewController__fetchAuthorizati
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   if (!self->_isLoaded)
   {
     v14 = objc_alloc_init(MEMORY[0x1E69A4040]);
     goto LABEL_16;
   }
 
-  v9 = -[ProfileCharacteristicTypePermissionsViewController _profileSectionIdentifierForIndex:](self, "_profileSectionIdentifierForIndex:", [v7 section]);
+  v9 = -[ProfileCharacteristicTypePermissionsViewController _profileSectionIdentifierForIndex:](self, "_profileSectionIdentifierForIndex:", [pathCopy section]);
   if (v9 == 1)
   {
-    v18 = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
-    v19 = [v18 sources];
-    v20 = [v19 orderedResearchStudySources];
-    v21 = [v20 count];
+    sourceListDataSource = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
+    sources = [sourceListDataSource sources];
+    orderedResearchStudySources = [sources orderedResearchStudySources];
+    v21 = [orderedResearchStudySources count];
 
     if (!v21)
     {
@@ -386,10 +386,10 @@ void __106__ProfileCharacteristicTypePermissionsViewController__fetchAuthorizati
 
   else if (!v9)
   {
-    v10 = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
-    v11 = [v10 sources];
-    v12 = [v11 orderedAppSources];
-    v13 = [v12 count];
+    sourceListDataSource2 = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
+    sources2 = [sourceListDataSource2 sources];
+    orderedAppSources = [sources2 orderedAppSources];
+    v13 = [orderedAppSources count];
 
     if (!v13)
     {
@@ -399,19 +399,19 @@ void __106__ProfileCharacteristicTypePermissionsViewController__fetchAuthorizati
       v17 = @"APPS_NONE";
 LABEL_15:
       v32 = [v15 localizedStringForKey:v17 value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
-      v33 = [v14 textLabel];
-      [v33 setText:v32];
+      textLabel = [v14 textLabel];
+      [textLabel setText:v32];
 
-      v34 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-      v35 = [v14 textLabel];
-      [v35 setTextColor:v34];
+      secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+      textLabel2 = [v14 textLabel];
+      [textLabel2 setTextColor:secondaryLabelColor];
 
       [v14 setSelectionStyle:0];
       goto LABEL_16;
     }
   }
 
-  v22 = [v6 dequeueReusableCellWithIdentifier:@"source"];
+  v22 = [viewCopy dequeueReusableCellWithIdentifier:@"source"];
   if (!v22)
   {
     v22 = [objc_alloc(MEMORY[0x1E69A44E8]) initWithStyle:0 reuseIdentifier:@"source"];
@@ -423,15 +423,15 @@ LABEL_15:
   if (v23)
   {
     v24 = [(NSDictionary *)self->_characteristicAuthorizationRecordsBySource objectForKeyedSubscript:v23];
-    v25 = [v23 source];
-    v26 = [v25 name];
+    source = [v23 source];
+    name = [source name];
 
-    [v22 setDisplayText:v26];
+    [v22 setDisplayText:name];
     [v24 status];
     [v22 setOn:HKAuthorizationStatusAllowsReading()];
     objc_initWeak(&location, self);
-    v27 = [MEMORY[0x1E69A40F0] sharedImageManager];
-    v28 = [v23 source];
+    mEMORY[0x1E69A40F0] = [MEMORY[0x1E69A40F0] sharedImageManager];
+    source2 = [v23 source];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __86__ProfileCharacteristicTypePermissionsViewController_tableView_cellForRowAtIndexPath___block_invoke;
@@ -446,8 +446,8 @@ LABEL_15:
     v38 = v23;
     v30 = v29;
     v39 = v30;
-    v40 = v6;
-    [v27 loadIconForSource:v28 syncHandler:v42 asyncHandler:v37];
+    v40 = viewCopy;
+    [mEMORY[0x1E69A40F0] loadIconForSource:source2 syncHandler:v42 asyncHandler:v37];
 
     v14 = v30;
     objc_destroyWeak(&v41);
@@ -496,22 +496,22 @@ void __86__ProfileCharacteristicTypePermissionsViewController_tableView_cellForR
   [WeakRetained _handleReturnedImage:v2 forSource:v3 cell:*(a1 + 48) tableView:*(a1 + 56) fetchError:*(a1 + 64)];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v8 = a4;
+  cellCopy = cell;
   if (objc_opt_respondsToSelector())
   {
-    [v8 iconSize];
+    [cellCopy iconSize];
     v6 = v5;
-    [v8 layoutMargins];
-    [v8 setSeparatorInset:{0.0, v6 + v7 * 2.0, 0.0, 0.0}];
+    [cellCopy layoutMargins];
+    [cellCopy setSeparatorInset:{0.0, v6 + v7 * 2.0, 0.0, 0.0}];
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v4 = [(ProfileCharacteristicTypePermissionsViewController *)self _profileSectionIdentifierForIndex:a4];
+  v4 = [(ProfileCharacteristicTypePermissionsViewController *)self _profileSectionIdentifierForIndex:section];
   if (!v4)
   {
     v5 = @"APPS_READ_ACCESS_HEADER";
@@ -543,39 +543,39 @@ LABEL_8:
     v10 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
     [v9 setFont:v10];
 
-    v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [v9 setTextColor:v11];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [v9 setTextColor:secondaryLabelColor];
 
     [v9 setNumberOfLines:0];
     [v9 setLineBreakMode:0];
-    v12 = [v8 contentView];
-    [v12 addSubview:v9];
+    contentView = [v8 contentView];
+    [contentView addSubview:v9];
 
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     v27 = MEMORY[0x1E696ACD8];
-    v35 = [v9 leadingAnchor];
-    v36 = [v8 contentView];
-    v34 = [v36 layoutMarginsGuide];
-    v33 = [v34 leadingAnchor];
-    v32 = [v35 constraintEqualToAnchor:v33];
+    leadingAnchor = [v9 leadingAnchor];
+    contentView2 = [v8 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v37[0] = v32;
-    v30 = [v9 trailingAnchor];
-    v31 = [v8 contentView];
-    v29 = [v31 layoutMarginsGuide];
-    v28 = [v29 trailingAnchor];
-    v26 = [v30 constraintEqualToAnchor:v28];
+    trailingAnchor = [v9 trailingAnchor];
+    contentView3 = [v8 contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v37[1] = v26;
-    v24 = [v9 topAnchor];
-    v25 = [v8 contentView];
-    v23 = [v25 layoutMarginsGuide];
-    v22 = [v23 topAnchor];
-    v13 = [v24 constraintEqualToAnchor:v22];
+    topAnchor = [v9 topAnchor];
+    contentView4 = [v8 contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[2] = v13;
-    v14 = [v9 bottomAnchor];
-    v15 = [v8 contentView];
-    v16 = [v15 layoutMarginsGuide];
-    v17 = [v16 bottomAnchor];
-    [v14 constraintEqualToAnchor:v17];
+    bottomAnchor = [v9 bottomAnchor];
+    contentView5 = [v8 contentView];
+    layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v19 = v18 = v7;
     v37[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
@@ -592,10 +592,10 @@ LABEL_11:
   return v8;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   v49[4] = *MEMORY[0x1E69E9840];
-  v5 = [(ProfileCharacteristicTypePermissionsViewController *)self _profileSectionIdentifierForIndex:a4];
+  v5 = [(ProfileCharacteristicTypePermissionsViewController *)self _profileSectionIdentifierForIndex:section];
   if (v5 != 1)
   {
     if (v5)
@@ -609,9 +609,9 @@ LABEL_11:
       v6 = MEMORY[0x1E696AEC0];
       v7 = WDBundle();
       v8 = [v7 localizedStringForKey:@"DATA_TYPE_SHARING_APPS_EXPLANATION_%@%@" value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable-Tinker"];
-      v9 = [(HKDisplayType *)self->_displayType localization];
-      v10 = [v9 embeddedDisplayName];
-      v11 = [v6 stringWithFormat:v8, v10, self->_firstName];
+      localization = [(HKDisplayType *)self->_displayType localization];
+      embeddedDisplayName = [localization embeddedDisplayName];
+      v11 = [v6 stringWithFormat:v8, embeddedDisplayName, self->_firstName];
 
 LABEL_14:
       goto LABEL_15;
@@ -631,9 +631,9 @@ LABEL_14:
     v16 = @"DATA_TYPE_SHARING_APPS_EXPLANATION";
 LABEL_13:
     v8 = [v15 localizedStringForKey:v16 value:&stru_1F3823B88 table:@"WellnessDashboard-Localizable"];
-    v17 = [(HKDisplayType *)self->_displayType localization];
-    v18 = [v17 embeddedDisplayName];
-    v11 = [v14 stringWithFormat:v8, v18];
+    localization2 = [(HKDisplayType *)self->_displayType localization];
+    embeddedDisplayName2 = [localization2 embeddedDisplayName];
+    v11 = [v14 stringWithFormat:v8, embeddedDisplayName2];
 
     goto LABEL_14;
   }
@@ -661,40 +661,40 @@ LABEL_15:
   v21 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   [v20 setFont:v21];
 
-  v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v20 setTextColor:v22];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v20 setTextColor:secondaryLabelColor];
 
   [v20 setNumberOfLines:0];
   [v20 setLineBreakMode:0];
-  v23 = [v19 contentView];
-  [v23 addSubview:v20];
+  contentView = [v19 contentView];
+  [contentView addSubview:v20];
 
   [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
   v38 = MEMORY[0x1E696ACD8];
-  v46 = [v20 leadingAnchor];
-  v47 = [v19 contentView];
-  v45 = [v47 layoutMarginsGuide];
-  v44 = [v45 leadingAnchor];
-  v43 = [v46 constraintEqualToAnchor:v44];
+  leadingAnchor = [v20 leadingAnchor];
+  contentView2 = [v19 contentView];
+  layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v49[0] = v43;
-  v41 = [v20 trailingAnchor];
-  v42 = [v19 contentView];
-  v40 = [v42 layoutMarginsGuide];
-  v39 = [v40 trailingAnchor];
-  v37 = [v41 constraintEqualToAnchor:v39];
+  trailingAnchor = [v20 trailingAnchor];
+  contentView3 = [v19 contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+  v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v49[1] = v37;
-  v34 = [v20 topAnchor];
-  v35 = [v19 contentView];
-  v24 = [v35 layoutMarginsGuide];
-  v25 = [v24 topAnchor];
-  v26 = [v34 constraintEqualToAnchor:v25];
+  topAnchor = [v20 topAnchor];
+  contentView4 = [v19 contentView];
+  layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+  topAnchor2 = [layoutMarginsGuide3 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v49[2] = v26;
-  v27 = [v20 bottomAnchor];
+  bottomAnchor = [v20 bottomAnchor];
   v48 = v19;
-  v28 = [v19 contentView];
-  v29 = [v28 layoutMarginsGuide];
-  v30 = [v29 bottomAnchor];
-  v31 = [v27 constraintEqualToAnchor:v30];
+  contentView5 = [v19 contentView];
+  layoutMarginsGuide4 = [contentView5 layoutMarginsGuide];
+  bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v49[3] = v31;
   v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:4];
   [v38 activateConstraints:v32];
@@ -704,26 +704,26 @@ LABEL_16:
   return v48;
 }
 
-- (id)_sourceForIndexPath:(id)a3
+- (id)_sourceForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[ProfileCharacteristicTypePermissionsViewController _profileSectionIdentifierForIndex:](self, "_profileSectionIdentifierForIndex:", [v4 section]);
+  pathCopy = path;
+  v5 = -[ProfileCharacteristicTypePermissionsViewController _profileSectionIdentifierForIndex:](self, "_profileSectionIdentifierForIndex:", [pathCopy section]);
   if (v5 == 1)
   {
-    v6 = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
-    v7 = [v6 sources];
-    v8 = [v7 orderedResearchStudySources];
+    sourceListDataSource = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
+    sources = [sourceListDataSource sources];
+    orderedResearchStudySources = [sources orderedResearchStudySources];
     goto LABEL_5;
   }
 
   if (!v5)
   {
-    v6 = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
-    v7 = [v6 sources];
-    v8 = [v7 orderedAppSources];
+    sourceListDataSource = [(ProfileCharacteristicTypePermissionsViewController *)self sourceListDataSource];
+    sources = [sourceListDataSource sources];
+    orderedResearchStudySources = [sources orderedAppSources];
 LABEL_5:
-    v9 = v8;
-    v10 = [v8 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    v9 = orderedResearchStudySources;
+    v10 = [orderedResearchStudySources objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     goto LABEL_7;
   }
@@ -734,20 +734,20 @@ LABEL_7:
   return v10;
 }
 
-- (void)switchCellValueChanged:(id)a3 value:(BOOL)a4
+- (void)switchCellValueChanged:(id)changed value:(BOOL)value
 {
-  v4 = a4;
+  valueCopy = value;
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
-  v8 = [v7 indexPathForCell:v6];
+  changedCopy = changed;
+  tableView = [(ProfileCharacteristicTypePermissionsViewController *)self tableView];
+  v8 = [tableView indexPathForCell:changedCopy];
 
   v9 = [(ProfileCharacteristicTypePermissionsViewController *)self _sourceForIndexPath:v8];
   v10 = [(NSDictionary *)self->_characteristicAuthorizationRecordsBySource objectForKeyedSubscript:v9];
-  v11 = [v10 requestedSharing];
-  if (v4)
+  requestedSharing = [v10 requestedSharing];
+  if (valueCopy)
   {
-    if (v11 && ([v10 status], (HKAuthorizationStatusAllowsSharing() & 1) != 0))
+    if (requestedSharing && ([v10 status], (HKAuthorizationStatusAllowsSharing() & 1) != 0))
     {
       v12 = 101;
     }
@@ -758,7 +758,7 @@ LABEL_7:
     }
   }
 
-  else if (v11 && ([v10 status], (HKAuthorizationStatusAllowsSharing() & 1) != 0))
+  else if (requestedSharing && ([v10 status], (HKAuthorizationStatusAllowsSharing() & 1) != 0))
   {
     v12 = 102;
   }
@@ -775,15 +775,15 @@ LABEL_7:
   v15 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
   v23[0] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-  v17 = [v9 source];
-  v18 = [v17 bundleIdentifier];
+  source = [v9 source];
+  bundleIdentifier = [source bundleIdentifier];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __83__ProfileCharacteristicTypePermissionsViewController_switchCellValueChanged_value___block_invoke;
   v20[3] = &unk_1E7EEB458;
   v21 = v13;
   v19 = v13;
-  [(HKAuthorizationStore *)authorizationStore setAuthorizationStatuses:v16 authorizationModes:MEMORY[0x1E695E0F8] forBundleIdentifier:v18 options:0 completion:v20];
+  [(HKAuthorizationStore *)authorizationStore setAuthorizationStatuses:v16 authorizationModes:MEMORY[0x1E695E0F8] forBundleIdentifier:bundleIdentifier options:0 completion:v20];
 }
 
 void __83__ProfileCharacteristicTypePermissionsViewController_switchCellValueChanged_value___block_invoke(uint64_t a1, char a2, void *a3)
@@ -800,16 +800,16 @@ void __83__ProfileCharacteristicTypePermissionsViewController_switchCellValueCha
   }
 }
 
-- (void)sourceListDataSourceDidUpdate:(id)a3
+- (void)sourceListDataSourceDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __84__ProfileCharacteristicTypePermissionsViewController_sourceListDataSourceDidUpdate___block_invoke;
   v6[3] = &unk_1E7EEB560;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = updateCopy;
+  selfCopy = self;
+  v5 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 

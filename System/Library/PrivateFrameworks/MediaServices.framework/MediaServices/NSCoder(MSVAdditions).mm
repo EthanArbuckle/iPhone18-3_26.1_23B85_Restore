@@ -8,8 +8,8 @@
 
 - (id)decodeTCCIdentityForKey:()MSVAdditions
 {
-  [a1 decodeInt64ForKey:@"tccType"];
-  v2 = [a1 decodeObjectOfClass:objc_opt_class() forKey:@"tccIdentifier"];
+  [self decodeInt64ForKey:@"tccType"];
+  v2 = [self decodeObjectOfClass:objc_opt_class() forKey:@"tccIdentifier"];
   v3 = v2;
   if (v2)
   {
@@ -34,14 +34,14 @@
     v7 = [v4 stringWithUTF8String:tcc_identity_get_identifier()];
     type = tcc_identity_get_type();
 
-    [a1 encodeObject:v7 forKey:@"tccIdentifier"];
-    [a1 encodeInt64:type forKey:@"tccType"];
+    [self encodeObject:v7 forKey:@"tccIdentifier"];
+    [self encodeInt64:type forKey:@"tccType"];
   }
 }
 
 - (void)msv_userInfo
 {
-  v1 = objc_getAssociatedObject(a1, _MSVCoderUserInfoKey);
+  v1 = objc_getAssociatedObject(self, _MSVCoderUserInfoKey);
   v2 = v1;
   if (v1)
   {

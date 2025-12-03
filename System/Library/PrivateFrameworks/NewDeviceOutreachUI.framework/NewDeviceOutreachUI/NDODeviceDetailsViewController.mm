@@ -1,12 +1,12 @@
 @interface NDODeviceDetailsViewController
-- (NDODeviceDetailsViewController)initWithCoder:(id)a3;
-- (NDODeviceDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (NDODeviceDetailsViewController)initWithViewControllerCreation:(id)a3;
+- (NDODeviceDetailsViewController)initWithCoder:(id)coder;
+- (NDODeviceDetailsViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (NDODeviceDetailsViewController)initWithViewControllerCreation:(id)creation;
 - (id)createViewController;
 - (id)refreshSpecifiers;
-- (void)embedViewControllerWithController:(id)a3;
+- (void)embedViewControllerWithController:(id)controller;
 - (void)loadCoverageDetailsContentViewController;
-- (void)setCreateViewController:(id)a3;
+- (void)setCreateViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -34,9 +34,9 @@
   return v3;
 }
 
-- (void)setCreateViewController:(id)a3
+- (void)setCreateViewController:(id)controller
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(controller);
   if (v4)
   {
     v5 = v4;
@@ -55,13 +55,13 @@
   v9 = *(self + OBJC_IVAR___NDODeviceDetailsViewController_createViewController + 8);
   *v7 = v6;
   v7[1] = v4;
-  v10 = self;
+  selfCopy = self;
   sub_25BDA8480(v8);
 }
 
 - (id)refreshSpecifiers
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_25BDD022C();
   v5 = v4;
 
@@ -81,19 +81,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   NDODeviceDetailsViewController.viewDidLoad()();
 }
 
-- (NDODeviceDetailsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NDODeviceDetailsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_25BDDFE48();
     v6 = (self + OBJC_IVAR___NDODeviceDetailsViewController_createViewController);
     *v6 = 0;
     v6[1] = 0;
-    v7 = a4;
+    bundleCopy = bundle;
     v8 = sub_25BDDFE38();
   }
 
@@ -102,26 +102,26 @@
     v9 = (self + OBJC_IVAR___NDODeviceDetailsViewController_createViewController);
     *v9 = 0;
     v9[1] = 0;
-    v10 = a4;
+    bundleCopy2 = bundle;
     v8 = 0;
   }
 
   v13.receiver = self;
   v13.super_class = NDODeviceDetailsViewController;
-  v11 = [(NDODeviceDetailsViewController *)&v13 initWithNibName:v8 bundle:a4];
+  v11 = [(NDODeviceDetailsViewController *)&v13 initWithNibName:v8 bundle:bundle];
 
   return v11;
 }
 
-- (NDODeviceDetailsViewController)initWithCoder:(id)a3
+- (NDODeviceDetailsViewController)initWithCoder:(id)coder
 {
   v3 = (self + OBJC_IVAR___NDODeviceDetailsViewController_createViewController);
   *v3 = 0;
   v3[1] = 0;
   v7.receiver = self;
   v7.super_class = NDODeviceDetailsViewController;
-  v4 = a3;
-  v5 = [(NDODeviceDetailsViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NDODeviceDetailsViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -130,9 +130,9 @@
   return v5;
 }
 
-- (NDODeviceDetailsViewController)initWithViewControllerCreation:(id)a3
+- (NDODeviceDetailsViewController)initWithViewControllerCreation:(id)creation
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(creation);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = [(NDODeviceDetailsViewController *)self init];
@@ -149,15 +149,15 @@
 
 - (void)loadCoverageDetailsContentViewController
 {
-  v2 = self;
+  selfCopy = self;
   sub_25BDD0FF0();
 }
 
-- (void)embedViewControllerWithController:(id)a3
+- (void)embedViewControllerWithController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_25BDD14A4(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_25BDD14A4(controller);
 }
 
 @end

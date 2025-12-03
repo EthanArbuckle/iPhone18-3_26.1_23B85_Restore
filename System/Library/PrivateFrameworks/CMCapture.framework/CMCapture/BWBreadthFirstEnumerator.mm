@@ -1,5 +1,5 @@
 @interface BWBreadthFirstEnumerator
-- (BWBreadthFirstEnumerator)initWithGraph:(id)a3;
+- (BWBreadthFirstEnumerator)initWithGraph:(id)graph;
 - (id)nextObject;
 - (uint64_t)addChildren:(uint64_t)result;
 - (uint64_t)nextObject;
@@ -8,7 +8,7 @@
 
 @implementation BWBreadthFirstEnumerator
 
-- (BWBreadthFirstEnumerator)initWithGraph:(id)a3
+- (BWBreadthFirstEnumerator)initWithGraph:(id)graph
 {
   v17.receiver = self;
   v17.super_class = BWBreadthFirstEnumerator;
@@ -21,8 +21,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [a3 _sourceNodes];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+    _sourceNodes = [graph _sourceNodes];
+    v6 = [_sourceNodes countByEnumeratingWithState:&v13 objects:v12 count:16];
     if (v6)
     {
       v7 = v6;
@@ -33,7 +33,7 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_sourceNodes);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
@@ -41,7 +41,7 @@
           [(BWNodeEnumerator *)v4 _updateVisitedCount:v10];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+        v7 = [_sourceNodes countByEnumeratingWithState:&v13 objects:v12 count:16];
       }
 
       while (v7);
@@ -62,17 +62,17 @@
 {
   if ([(NSMutableArray *)self->_queue count])
   {
-    v3 = [(NSMutableArray *)self->_queue firstObject];
+    firstObject = [(NSMutableArray *)self->_queue firstObject];
     [(NSMutableArray *)self->_queue removeObjectAtIndex:0];
 LABEL_7:
-    [(BWBreadthFirstEnumerator *)self addChildren:v3];
-    return v3;
+    [(BWBreadthFirstEnumerator *)self addChildren:firstObject];
+    return firstObject;
   }
 
   if ([(NSMutableArray *)self->_holdQueue count])
   {
     [(BWBreadthFirstEnumerator *)&self->_holdQueue nextObject];
-    v3 = v5;
+    firstObject = v5;
     goto LABEL_7;
   }
 
@@ -125,10 +125,10 @@ LABEL_7:
 
 - (uint64_t)nextObject
 {
-  *a3 = [*a1 firstObject];
-  [*a1 removeObjectAtIndex:0];
-  [*a2 addObjectsFromArray:*a1];
-  v5 = *a1;
+  *a3 = [*self firstObject];
+  [*self removeObjectAtIndex:0];
+  [*a2 addObjectsFromArray:*self];
+  v5 = *self;
 
   return [v5 removeAllObjects];
 }

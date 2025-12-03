@@ -1,12 +1,12 @@
 @interface ECEmailAddress
-+ (id)_cachedEmailAddressForString:(id)a3 generator:(id)a4;
-+ (id)emailAddressWithString:(id)a3;
-+ (id)emailAddressesFromStrings:(id)a3 invalidAddresses:(id *)a4;
-- (BOOL)_createComponentsFrom:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (ECEmailAddress)initWithCoder:(id)a3;
-- (ECEmailAddress)initWithString:(id)a3;
++ (id)_cachedEmailAddressForString:(id)string generator:(id)generator;
++ (id)emailAddressWithString:(id)string;
++ (id)emailAddressesFromStrings:(id)strings invalidAddresses:(id *)addresses;
+- (BOOL)_createComponentsFrom:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (ECEmailAddress)initWithCoder:(id)coder;
+- (ECEmailAddress)initWithString:(id)string;
 - (NSArray)groupList;
 - (NSString)debugDescription;
 - (NSString)domainStrippingTopLevelDomain;
@@ -14,11 +14,11 @@
 - (NSString)highLevelDomain;
 - (NSString)highLevelDomainStrippingTopLevelDomain;
 - (NSString)stringValue;
-- (id)_initWithComponents:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)_initWithComponents:(id)components;
+- (id)valueForUndefinedKey:(id)key;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ECEmailAddress
@@ -34,21 +34,21 @@
 
 - (NSArray)groupList
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  groupList = v2->_groupList;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  groupList = selfCopy->_groupList;
   if (!groupList)
   {
-    v4 = [(ECEmailAddressComponents *)v2->_components groupList];
-    v5 = [v4 ef_map:&__block_literal_global_6];
-    v6 = v2->_groupList;
-    v2->_groupList = v5;
+    groupList = [(ECEmailAddressComponents *)selfCopy->_components groupList];
+    v5 = [groupList ef_map:&__block_literal_global_6];
+    v6 = selfCopy->_groupList;
+    selfCopy->_groupList = v5;
 
-    groupList = v2->_groupList;
+    groupList = selfCopy->_groupList;
   }
 
   v7 = groupList;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
@@ -56,40 +56,40 @@
 - (NSString)ef_publicDescription
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(ECEmailAddress *)self groupList];
-  if (!v3)
+  groupList = [(ECEmailAddress *)self groupList];
+  if (!groupList)
   {
-    v14 = [MEMORY[0x277D07148] currentDevice];
-    v15 = [v14 isInternal];
+    currentDevice = [MEMORY[0x277D07148] currentDevice];
+    isInternal = [currentDevice isInternal];
 
     v16 = MEMORY[0x277D07198];
-    if (v15)
+    if (isInternal)
     {
-      v17 = [(ECEmailAddress *)self simpleAddress];
-      v18 = [(ECEmailAddress *)self localPart];
-      v19 = [(ECEmailAddress *)self domain];
-      v6 = [v16 ec_partiallyRedactedStringForAddress:v17 localPart:v18 domain:v19];
+      simpleAddress = [(ECEmailAddress *)self simpleAddress];
+      localPart = [(ECEmailAddress *)self localPart];
+      domain = [(ECEmailAddress *)self domain];
+      v6 = [v16 ec_partiallyRedactedStringForAddress:simpleAddress localPart:localPart domain:domain];
 
 LABEL_18:
       goto LABEL_19;
     }
 
-    v17 = [(ECEmailAddress *)self simpleAddress];
-    v21 = [v16 fullyRedactedStringForString:v17];
+    simpleAddress = [(ECEmailAddress *)self simpleAddress];
+    v21 = [v16 fullyRedactedStringForString:simpleAddress];
 LABEL_17:
     v6 = v21;
     goto LABEL_18;
   }
 
-  v4 = [MEMORY[0x277D07148] currentDevice];
-  v5 = [v4 isInternal];
+  currentDevice2 = [MEMORY[0x277D07148] currentDevice];
+  isInternal2 = [currentDevice2 isInternal];
 
-  if (!v5)
+  if (!isInternal2)
   {
-    v20 = [v3 ef_compactMapSelector:sel_simpleAddress];
-    v17 = [v20 componentsJoinedByString:&stru_284041D88];
+    v20 = [groupList ef_compactMapSelector:sel_simpleAddress];
+    simpleAddress = [v20 componentsJoinedByString:&stru_284041D88];
 
-    v21 = [MEMORY[0x277D07198] fullyRedactedStringForString:v17];
+    v21 = [MEMORY[0x277D07198] fullyRedactedStringForString:simpleAddress];
     goto LABEL_17;
   }
 
@@ -98,7 +98,7 @@ LABEL_17:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v3;
+  v7 = groupList;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
@@ -119,8 +119,8 @@ LABEL_17:
           [v6 appendString:{@", ", v24}];
         }
 
-        v13 = [v12 ef_publicDescription];
-        [v6 appendString:v13];
+        ef_publicDescription = [v12 ef_publicDescription];
+        [v6 appendString:ef_publicDescription];
 
         v10 = 0;
       }
@@ -142,23 +142,23 @@ LABEL_19:
 
 - (NSString)highLevelDomain
 {
-  v2 = [(ECEmailAddress *)self domain];
-  v3 = [v2 _lp_highLevelDomainFromHost];
+  domain = [(ECEmailAddress *)self domain];
+  _lp_highLevelDomainFromHost = [domain _lp_highLevelDomainFromHost];
 
-  return v3;
+  return _lp_highLevelDomainFromHost;
 }
 
-+ (id)emailAddressesFromStrings:(id)a3 invalidAddresses:(id *)a4
++ (id)emailAddressesFromStrings:(id)strings invalidAddresses:(id *)addresses
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = a3;
+  stringsCopy = strings;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v16;
+  v7 = stringsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -191,10 +191,10 @@ LABEL_19:
     while (v8);
   }
 
-  if (a4)
+  if (addresses)
   {
     v13 = v5;
-    *a4 = v5;
+    *addresses = v5;
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -202,25 +202,25 @@ LABEL_19:
   return v6;
 }
 
-+ (id)emailAddressWithString:(id)a3
++ (id)emailAddressWithString:(id)string
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithString:v4];
+  stringCopy = string;
+  v5 = [[self alloc] initWithString:stringCopy];
 
   return v5;
 }
 
-- (ECEmailAddress)initWithString:(id)a3
+- (ECEmailAddress)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_opt_class();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __33__ECEmailAddress_initWithString___block_invoke;
   v10[3] = &unk_27874B800;
-  v6 = self;
-  v11 = v6;
-  v7 = v4;
+  selfCopy = self;
+  v11 = selfCopy;
+  v7 = stringCopy;
   v12 = v7;
   v8 = [v5 _cachedEmailAddressForString:v7 generator:v10];
 
@@ -242,15 +242,15 @@ id __33__ECEmailAddress_initWithString___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)_createComponentsFrom:(id)a3
+- (BOOL)_createComponentsFrom:(id)from
 {
-  v4 = a3;
-  v5 = [[ECEmailAddressComponents alloc] initWithString:v4];
-  v6 = [(ECEmailAddressComponents *)v5 _nts_isValidDomain];
-  v7 = v6;
+  fromCopy = from;
+  v5 = [[ECEmailAddressComponents alloc] initWithString:fromCopy];
+  _nts_isValidDomain = [(ECEmailAddressComponents *)v5 _nts_isValidDomain];
+  v7 = _nts_isValidDomain;
   if (self)
   {
-    v8 = v6;
+    v8 = _nts_isValidDomain;
   }
 
   else
@@ -267,15 +267,15 @@ id __33__ECEmailAddress_initWithString___block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)_initWithComponents:(id)a3
+- (id)_initWithComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v9.receiver = self;
   v9.super_class = ECEmailAddress;
   v5 = [(ECEmailAddress *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [componentsCopy copy];
     components = v5->_components;
     v5->_components = v6;
 
@@ -285,30 +285,30 @@ id __33__ECEmailAddress_initWithString___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (ECEmailAddress)initWithCoder:(id)a3
+- (ECEmailAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_stringValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_stringValue"];
   v6 = [(ECEmailAddress *)self initWithString:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ECEmailAddress *)self stringValue];
-  [v5 encodeObject:v4 forKey:@"EFPropertyKey_stringValue"];
+  coderCopy = coder;
+  stringValue = [(ECEmailAddress *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"EFPropertyKey_stringValue"];
 }
 
 - (NSString)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ECEmailAddress *)self stringValue];
-  v6 = [(ECEmailAddress *)self components];
-  v7 = [v6 debugDescription];
-  v8 = [v3 stringWithFormat:@"<%@: %p> %@ components=%@", v4, self, v5, v7];
+  stringValue = [(ECEmailAddress *)self stringValue];
+  components = [(ECEmailAddress *)self components];
+  v7 = [components debugDescription];
+  v8 = [v3 stringWithFormat:@"<%@: %p> %@ components=%@", v4, self, stringValue, v7];
 
   return v8;
 }
@@ -325,16 +325,16 @@ id __33__ECEmailAddress_initWithString___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v8 = 1;
     goto LABEL_7;
@@ -344,8 +344,8 @@ id __33__ECEmailAddress_initWithString___block_invoke(uint64_t a1)
   if (objc_opt_isKindOfClass())
   {
     components = self->_components;
-    v7 = [(ECEmailAddress *)v5 components];
-    v8 = [(ECEmailAddressComponents *)components isEqual:v7];
+    components = [(ECEmailAddress *)v5 components];
+    v8 = [(ECEmailAddressComponents *)components isEqual:components];
   }
 
   else
@@ -359,24 +359,24 @@ LABEL_7:
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v5 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"ECEmailAddress.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"[otherAddress isKindOfClass:ECEmailAddress.class]"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ECEmailAddress.m" lineNumber:188 description:{@"Invalid parameter not satisfying: %@", @"[otherAddress isKindOfClass:ECEmailAddress.class]"}];
   }
 
-  v6 = [(ECEmailAddress *)self simpleAddress];
-  v7 = [v5 simpleAddress];
-  v8 = [v6 compare:v7];
+  simpleAddress = [(ECEmailAddress *)self simpleAddress];
+  simpleAddress2 = [compareCopy simpleAddress];
+  v8 = [simpleAddress compare:simpleAddress2];
 
   return v8;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = ECEmailAddress;
@@ -401,34 +401,34 @@ id __27__ECEmailAddress_groupList__block_invoke(uint64_t a1, void *a2)
   return v2;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v3 = [(ECEmailAddressComponents *)self->_components valueForKey:a3];
+  v3 = [(ECEmailAddressComponents *)self->_components valueForKey:key];
 
   return v3;
 }
 
 - (NSString)highLevelDomainStrippingTopLevelDomain
 {
-  v2 = [(ECEmailAddress *)self highLevelDomain];
-  v3 = [v2 _lp_hostByStrippingTopLevelDomain];
+  highLevelDomain = [(ECEmailAddress *)self highLevelDomain];
+  _lp_hostByStrippingTopLevelDomain = [highLevelDomain _lp_hostByStrippingTopLevelDomain];
 
-  return v3;
+  return _lp_hostByStrippingTopLevelDomain;
 }
 
 - (NSString)domainStrippingTopLevelDomain
 {
-  v2 = [(ECEmailAddress *)self domain];
-  v3 = [v2 _lp_hostByStrippingTopLevelDomain];
+  domain = [(ECEmailAddress *)self domain];
+  _lp_hostByStrippingTopLevelDomain = [domain _lp_hostByStrippingTopLevelDomain];
 
-  return v3;
+  return _lp_hostByStrippingTopLevelDomain;
 }
 
-+ (id)_cachedEmailAddressForString:(id)a3 generator:(id)a4
++ (id)_cachedEmailAddressForString:(id)string generator:(id)generator
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  stringCopy = string;
+  generatorCopy = generator;
+  if (stringCopy)
   {
     if (sharedCache_onceToken != -1)
     {
@@ -440,8 +440,8 @@ id __27__ECEmailAddress_groupList__block_invoke(uint64_t a1, void *a2)
     v11[1] = 3221225472;
     v11[2] = __57__ECEmailAddress__cachedEmailAddressForString_generator___block_invoke;
     v11[3] = &unk_27874B848;
-    v12 = v6;
-    v8 = [v7 objectForKey:v5 generator:v11];
+    v12 = generatorCopy;
+    v8 = [v7 objectForKey:stringCopy generator:v11];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())

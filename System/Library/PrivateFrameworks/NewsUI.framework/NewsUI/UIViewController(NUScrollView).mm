@@ -8,7 +8,7 @@
 - (void)nu_adjustInsetsForScrollView:()NUScrollView
 {
   v8 = a3;
-  v4 = [a1 findSafeAreaInsetsProviderForScrollView:?];
+  v4 = [self findSafeAreaInsetsProviderForScrollView:?];
   if (v4)
   {
     [v8 _setAutomaticContentOffsetAdjustmentEnabled:0];
@@ -27,25 +27,25 @@
 
 - (id)findSafeAreaInsetsProviderForScrollView:()NUScrollView
 {
-  v3 = [a3 superview];
-  if (v3)
+  superview = [a3 superview];
+  if (superview)
   {
     do
     {
-      if ([v3 conformsToProtocol:&unk_286E4D260])
+      if ([superview conformsToProtocol:&unk_286E4D260])
       {
         break;
       }
 
-      v4 = [v3 superview];
+      v3Superview = [superview superview];
 
-      v3 = v4;
+      superview = v3Superview;
     }
 
-    while (v4);
+    while (v3Superview);
   }
 
-  return v3;
+  return superview;
 }
 
 @end

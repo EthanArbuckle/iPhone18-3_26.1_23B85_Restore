@@ -6,12 +6,12 @@
 
 - (uint64_t)addMathIndicators
 {
-  result = [a1 length];
+  result = [self length];
   if (result)
   {
-    [a1 insertString:@"$" atIndex:0];
+    [self insertString:@"$" atIndex:0];
 
-    return [a1 appendString:@"$"];
+    return [self appendString:@"$"];
   }
 
   return result;

@@ -1,17 +1,17 @@
 @interface AAUIProfileSummaryView
 + (double)desiredHeight;
-- (AAUIProfileSummaryView)initWithName:(id)a3 email:(id)a4 image:(id)a5;
+- (AAUIProfileSummaryView)initWithName:(id)name email:(id)email image:(id)image;
 - (void)layoutSubviews;
-- (void)setHidesPhoto:(BOOL)a3;
+- (void)setHidesPhoto:(BOOL)photo;
 @end
 
 @implementation AAUIProfileSummaryView
 
-- (AAUIProfileSummaryView)initWithName:(id)a3 email:(id)a4 image:(id)a5
+- (AAUIProfileSummaryView)initWithName:(id)name email:(id)email image:(id)image
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  emailCopy = email;
+  imageCopy = image;
   v35.receiver = self;
   v35.super_class = AAUIProfileSummaryView;
   v11 = *MEMORY[0x1E695F058];
@@ -21,20 +21,20 @@
   v15 = [(AAUIProfileSummaryView *)&v35 initWithFrame:*MEMORY[0x1E695F058], v12, v13, v14];
   if (v15)
   {
-    v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v10];
+    v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:imageCopy];
     profileImageView = v15->_profileImageView;
     v15->_profileImageView = v16;
 
     [(AAUIProfileSummaryView *)v15 addSubview:v15->_profileImageView];
     v18 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDCF8]];
-    if ([v8 length])
+    if ([nameCopy length])
     {
-      v19 = v8;
+      v19 = nameCopy;
     }
 
     else
     {
-      v19 = v9;
+      v19 = emailCopy;
     }
 
     v20 = MEMORY[0x1E69DCC10];
@@ -56,7 +56,7 @@
     emailLabel = v15->_emailLabel;
     v15->_emailLabel = v27;
 
-    [(UILabel *)v15->_emailLabel setText:v9];
+    [(UILabel *)v15->_emailLabel setText:emailCopy];
     v29 = v15->_emailLabel;
     v30 = MEMORY[0x1E69DB878];
     [v18 scaledValueForValue:15.0];
@@ -65,8 +65,8 @@
 
     [(UILabel *)v15->_emailLabel setNumberOfLines:1];
     v32 = v15->_emailLabel;
-    v33 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v32 setTextColor:v33];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v32 setTextColor:secondaryLabelColor];
 
     [(AAUIProfileSummaryView *)v15 addSubview:v15->_emailLabel];
   }
@@ -74,11 +74,11 @@
   return v15;
 }
 
-- (void)setHidesPhoto:(BOOL)a3
+- (void)setHidesPhoto:(BOOL)photo
 {
-  if (self->_hidesPhoto != a3)
+  if (self->_hidesPhoto != photo)
   {
-    if (a3)
+    if (photo)
     {
       [(UIImageView *)self->_profileImageView removeFromSuperview];
     }
@@ -95,13 +95,13 @@
   v39.receiver = self;
   v39.super_class = AAUIProfileSummaryView;
   [(AAUIProfileSummaryView *)&v39 layoutSubviews];
-  v3 = [(AAUIProfileSummaryView *)self superview];
+  superview = [(AAUIProfileSummaryView *)self superview];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v5 = [(AAUIProfileSummaryView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  traitCollection = [(AAUIProfileSummaryView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v8 = (isKindOfClass ^ 1) & IsAccessibilityCategory;
   [(UIImageView *)self->_profileImageView frame];
@@ -219,8 +219,8 @@ LABEL_6:
 
 + (double)desiredHeight
 {
-  v2 = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [*MEMORY[0x1E69DDA98] preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!IsAccessibilityCategory)
   {

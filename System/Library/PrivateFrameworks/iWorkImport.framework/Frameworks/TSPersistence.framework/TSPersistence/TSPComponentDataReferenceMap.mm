@@ -1,42 +1,42 @@
 @interface TSPComponentDataReferenceMap
-- (TSPComponentDataReferenceMap)initWithDataToObjectReferenceMap:(id)a3 objectToDataReferenceMap:(id)a4 objectIdentifiersWithoutUUID:(id)a5;
+- (TSPComponentDataReferenceMap)initWithDataToObjectReferenceMap:(id)map objectToDataReferenceMap:(id)referenceMap objectIdentifiersWithoutUUID:(id)d;
 - (id)description;
-- (id)initFromMessage:(const void *)a3 componentObjectUUIDMap:(id)a4 needsUpgrade:(BOOL *)a5;
-- (void)saveToMessage:(void *)a3;
+- (id)initFromMessage:(const void *)message componentObjectUUIDMap:(id)map needsUpgrade:(BOOL *)upgrade;
+- (void)saveToMessage:(void *)message;
 @end
 
 @implementation TSPComponentDataReferenceMap
 
-- (TSPComponentDataReferenceMap)initWithDataToObjectReferenceMap:(id)a3 objectToDataReferenceMap:(id)a4 objectIdentifiersWithoutUUID:(id)a5
+- (TSPComponentDataReferenceMap)initWithDataToObjectReferenceMap:(id)map objectToDataReferenceMap:(id)referenceMap objectIdentifiersWithoutUUID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  mapCopy = map;
+  referenceMapCopy = referenceMap;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = TSPComponentDataReferenceMap;
   v12 = [(TSPComponentDataReferenceMap *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_dataToObjectReferenceMap, a3);
-    objc_storeStrong(&v13->_objectToDataReferenceMap, a4);
-    objc_storeStrong(&v13->_objectIdentifiersWithoutUUID, a5);
+    objc_storeStrong(&v12->_dataToObjectReferenceMap, map);
+    objc_storeStrong(&v13->_objectToDataReferenceMap, referenceMap);
+    objc_storeStrong(&v13->_objectIdentifiersWithoutUUID, d);
   }
 
   return v13;
 }
 
-- (id)initFromMessage:(const void *)a3 componentObjectUUIDMap:(id)a4 needsUpgrade:(BOOL *)a5
+- (id)initFromMessage:(const void *)message componentObjectUUIDMap:(id)map needsUpgrade:(BOOL *)upgrade
 {
-  v9 = a4;
-  v10 = *(a3 + 26);
+  mapCopy = map;
+  v10 = *(message + 26);
   if (v10 < 1)
   {
     LOBYTE(v20) = 0;
     v21 = 0;
     v22 = 0;
     v23 = 0;
-    if (a5)
+    if (upgrade)
     {
       goto LABEL_35;
     }
@@ -46,7 +46,7 @@
 
   v11 = [_TtC13TSPersistence22TSPMutableReferenceMap alloc];
   v13 = objc_msgSend_initWithCapacity_(v11, v12, v10);
-  v14 = *(a3 + 14);
+  v14 = *(message + 14);
   if (v14)
   {
     v15 = (v14 + 8);
@@ -57,7 +57,7 @@
     v15 = 0;
   }
 
-  v16 = *(a3 + 26);
+  v16 = *(message + 26);
   if (v16)
   {
     v17 = 0;
@@ -77,10 +77,10 @@
     v17 = 0;
   }
 
-  v52 = a5;
+  upgradeCopy = upgrade;
   v24 = [_TtC13TSPersistence22TSPMutableReferenceMap alloc];
   v22 = objc_msgSend_initWithCapacity_(v24, v25, v17);
-  v26 = *(a3 + 14);
+  v26 = *(message + 14);
   if (v26)
   {
     v27 = (v26 + 8);
@@ -91,7 +91,7 @@
     v27 = 0;
   }
 
-  v20 = *(a3 + 26);
+  v20 = *(message + 26);
   if (v20)
   {
     v21 = 0;
@@ -137,7 +137,7 @@
               objc_msgSend_incrementReferenceFromIdentifier_toIdentifier_increment_(v22, v41, v39, v29, v40);
             }
 
-            v42 = objc_msgSend_objectUUIDForIdentifier_(v9, v33, v39);
+            v42 = objc_msgSend_objectUUIDForIdentifier_(mapCopy, v33, v39);
 
             if (!v42)
             {
@@ -170,9 +170,9 @@ LABEL_33:
       if (++v27 == v56)
       {
         v23 = v13;
-        a5 = v52;
+        upgrade = upgradeCopy;
         LOBYTE(v20) = v55;
-        if (v52)
+        if (upgradeCopy)
         {
           goto LABEL_35;
         }
@@ -184,11 +184,11 @@ LABEL_33:
 
   v21 = 0;
   v23 = v13;
-  a5 = v52;
-  if (v52)
+  upgrade = upgradeCopy;
+  if (upgradeCopy)
   {
 LABEL_35:
-    *a5 = v20 & 1;
+    *upgrade = v20 & 1;
   }
 
 LABEL_36:
@@ -199,14 +199,14 @@ LABEL_36:
   return v50;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
   dataToObjectReferenceMap = self->_dataToObjectReferenceMap;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_276AA4FB8;
   v4[3] = &unk_27A6E66A0;
-  v4[4] = a3;
+  v4[4] = message;
   objc_msgSend_enumerateReferencesUsingBlock_(dataToObjectReferenceMap, a2, v4);
 }
 

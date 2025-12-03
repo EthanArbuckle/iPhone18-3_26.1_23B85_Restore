@@ -1,10 +1,10 @@
 @interface ChangeHistoryEventRetryDetails
-+ (id)_predicateForEvent:(id)a3;
-+ (id)_predicateForRecordUniqueID:(id)a3 recordType:(int64_t)a4;
-+ (id)retryDateForEvent:(id)a3 inDatabase:(id)a4;
-+ (void)deleteRetryDetailsForEventUniqueIdentifier:(id)a3 recordType:(int64_t)a4 inDatabase:(id)a5;
-+ (void)increaseRetryIntervalForRecordUniqueIdenifier:(id)a3 recordType:(int64_t)a4 inDatabase:(id)a5;
-- (ChangeHistoryEventRetryDetails)initWithRecordUniqueIdenifier:(id)a3 recordType:(int64_t)a4 inDatabase:(id)a5;
++ (id)_predicateForEvent:(id)event;
++ (id)_predicateForRecordUniqueID:(id)d recordType:(int64_t)type;
++ (id)retryDateForEvent:(id)event inDatabase:(id)database;
++ (void)deleteRetryDetailsForEventUniqueIdentifier:(id)identifier recordType:(int64_t)type inDatabase:(id)database;
++ (void)increaseRetryIntervalForRecordUniqueIdenifier:(id)idenifier recordType:(int64_t)type inDatabase:(id)database;
+- (ChangeHistoryEventRetryDetails)initWithRecordUniqueIdenifier:(id)idenifier recordType:(int64_t)type inDatabase:(id)database;
 - (id)retryDate;
 - (int64_t)retryInterval;
 - (void)increaseRetryInterval;
@@ -12,29 +12,29 @@
 
 @implementation ChangeHistoryEventRetryDetails
 
-- (ChangeHistoryEventRetryDetails)initWithRecordUniqueIdenifier:(id)a3 recordType:(int64_t)a4 inDatabase:(id)a5
+- (ChangeHistoryEventRetryDetails)initWithRecordUniqueIdenifier:(id)idenifier recordType:(int64_t)type inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
+  databaseCopy = database;
+  idenifierCopy = idenifier;
   v10 = objc_alloc_init(NSMutableDictionary);
-  [v10 setObjectOrNull:v9 forKey:@"event_unique_identifier"];
+  [v10 setObjectOrNull:idenifierCopy forKey:@"event_unique_identifier"];
 
-  v11 = [NSNumber numberWithInteger:a4];
+  v11 = [NSNumber numberWithInteger:type];
   [v10 setObjectOrNull:v11 forKey:@"event_record_type"];
 
   v14.receiver = self;
   v14.super_class = ChangeHistoryEventRetryDetails;
-  v12 = [(SQLiteEntity *)&v14 initWithPropertyValues:v10 inDatabase:v8];
+  v12 = [(SQLiteEntity *)&v14 initWithPropertyValues:v10 inDatabase:databaseCopy];
 
   return v12;
 }
 
 - (void)increaseRetryInterval
 {
-  v3 = [(ChangeHistoryEventRetryDetails *)self retryInterval];
-  if ((v3 + 1) < 9)
+  retryInterval = [(ChangeHistoryEventRetryDetails *)self retryInterval];
+  if ((retryInterval + 1) < 9)
   {
-    v4 = v3 + 1;
+    v4 = retryInterval + 1;
   }
 
   else
@@ -53,51 +53,51 @@
   [(SQLiteEntity *)self setValuesWithDictionary:v5];
 }
 
-+ (void)increaseRetryIntervalForRecordUniqueIdenifier:(id)a3 recordType:(int64_t)a4 inDatabase:(id)a5
++ (void)increaseRetryIntervalForRecordUniqueIdenifier:(id)idenifier recordType:(int64_t)type inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _predicateForRecordUniqueID:v8 recordType:a4];
-  v11 = [a1 anyInDatabase:v9 predicate:v10];
+  idenifierCopy = idenifier;
+  databaseCopy = database;
+  v10 = [self _predicateForRecordUniqueID:idenifierCopy recordType:type];
+  v11 = [self anyInDatabase:databaseCopy predicate:v10];
 
   if (!v11)
   {
-    v11 = [[ChangeHistoryEventRetryDetails alloc] initWithRecordUniqueIdenifier:v8 recordType:a4 inDatabase:v9];
+    v11 = [[ChangeHistoryEventRetryDetails alloc] initWithRecordUniqueIdenifier:idenifierCopy recordType:type inDatabase:databaseCopy];
   }
 
   [(ChangeHistoryEventRetryDetails *)v11 increaseRetryInterval];
-  v12 = [(ChangeHistoryEventRetryDetails *)v11 retryDate];
-  v13 = [(ChangeHistoryEventRetryDetails *)v11 retryInterval];
+  retryDate = [(ChangeHistoryEventRetryDetails *)v11 retryDate];
+  retryInterval = [(ChangeHistoryEventRetryDetails *)v11 retryInterval];
   v14 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543874;
-    v16 = v8;
+    v16 = idenifierCopy;
     v17 = 2114;
-    v18 = v12;
+    v18 = retryDate;
     v19 = 2050;
-    v20 = v13;
+    v20 = retryInterval;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Updating ChangeHistoryEventRetryDetails for recordUniqueID %{public}@ with retryDate %{public}@ and retryInterval %{public}ld", &v15, 0x20u);
   }
 }
 
-+ (id)retryDateForEvent:(id)a3 inDatabase:(id)a4
++ (id)retryDateForEvent:(id)event inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForEvent:a3];
-  v8 = [a1 anyInDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForEvent:event];
+  v8 = [self anyInDatabase:databaseCopy predicate:v7];
 
-  v9 = [v8 retryDate];
+  retryDate = [v8 retryDate];
 
-  return v9;
+  return retryDate;
 }
 
-+ (void)deleteRetryDetailsForEventUniqueIdentifier:(id)a3 recordType:(int64_t)a4 inDatabase:(id)a5
++ (void)deleteRetryDetailsForEventUniqueIdentifier:(id)identifier recordType:(int64_t)type inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [a1 _predicateForRecordUniqueID:v8 recordType:a4];
-  v11 = [a1 anyInDatabase:v9 predicate:v10];
+  identifierCopy = identifier;
+  databaseCopy = database;
+  v10 = [self _predicateForRecordUniqueID:identifierCopy recordType:type];
+  v11 = [self anyInDatabase:databaseCopy predicate:v10];
 
   if (v11)
   {
@@ -105,9 +105,9 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = v8;
+      v14 = identifierCopy;
       v15 = 2050;
-      v16 = a4;
+      typeCopy = type;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Deleting ChangeHistoryEventRetryDetails for recordUniqueID %{public}@ and recordType %{public}ld", &v13, 0x16u);
     }
 
@@ -115,22 +115,22 @@
   }
 }
 
-+ (id)_predicateForEvent:(id)a3
++ (id)_predicateForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [v4 recordUniqueID];
-  v6 = [v4 recordType];
+  eventCopy = event;
+  recordUniqueID = [eventCopy recordUniqueID];
+  recordType = [eventCopy recordType];
 
-  v7 = [a1 _predicateForRecordUniqueID:v5 recordType:v6];
+  v7 = [self _predicateForRecordUniqueID:recordUniqueID recordType:recordType];
 
   return v7;
 }
 
-+ (id)_predicateForRecordUniqueID:(id)a3 recordType:(int64_t)a4
++ (id)_predicateForRecordUniqueID:(id)d recordType:(int64_t)type
 {
-  v5 = [SQLiteComparisonPredicate predicateWithProperty:@"event_unique_identifier" equalToValue:a3];
+  v5 = [SQLiteComparisonPredicate predicateWithProperty:@"event_unique_identifier" equalToValue:d];
   v11[0] = v5;
-  v6 = [NSNumber numberWithInteger:a4];
+  v6 = [NSNumber numberWithInteger:type];
   v7 = [SQLiteComparisonPredicate predicateWithProperty:@"event_record_type" equalToValue:v6];
   v11[1] = v7;
   v8 = [NSArray arrayWithObjects:v11 count:2];
@@ -142,9 +142,9 @@
 - (int64_t)retryInterval
 {
   v2 = [(SQLiteEntity *)self valueForProperty:@"retry_interval"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (id)retryDate

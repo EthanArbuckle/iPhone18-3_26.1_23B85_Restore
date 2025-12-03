@@ -1,21 +1,21 @@
 @interface OAXDrawingState
-- (OAXDrawingState)initWithClient:(id)a3;
+- (OAXDrawingState)initWithClient:(id)client;
 - (id)appVersion;
-- (id)blipRefForURL:(id)a3;
-- (id)blipRefWithURL:(id)a3 blipArray:(id)a4 blipURLtoIndexMap:(id)a5;
-- (id)bulletBlipRefForURL:(id)a3;
+- (id)blipRefForURL:(id)l;
+- (id)blipRefWithURL:(id)l blipArray:(id)array blipURLtoIndexMap:(id)map;
+- (id)bulletBlipRefForURL:(id)l;
 - (id)documentState;
-- (id)drawableForShapeId:(unsigned int)a3;
+- (id)drawableForShapeId:(unsigned int)id;
 - (id)popGroup;
-- (id)vmlShapeIdForDrawableId:(unsigned int)a3;
+- (id)vmlShapeIdForDrawableId:(unsigned int)id;
 - (void)clearTargetBlipCollection;
 - (void)resetForNewDrawing;
-- (void)setDocumentState:(id)a3;
-- (void)setDrawable:(id)a3 forShapeId:(unsigned int)a4;
-- (void)setTargetBlipCollection:(id)a3;
-- (void)setTargetBulletBlipArray:(id)a3;
-- (void)setVmlShapeId:(id)a3 forDrawableId:(unsigned int)a4;
-- (void)setupNSForXMLFormat:(int)a3;
+- (void)setDocumentState:(id)state;
+- (void)setDrawable:(id)drawable forShapeId:(unsigned int)id;
+- (void)setTargetBlipCollection:(id)collection;
+- (void)setTargetBulletBlipArray:(id)array;
+- (void)setVmlShapeId:(id)id forDrawableId:(unsigned int)drawableId;
+- (void)setupNSForXMLFormat:(int)format;
 @end
 
 @implementation OAXDrawingState
@@ -30,10 +30,10 @@
 
 - (id)popGroup
 {
-  v3 = [(OAXDrawingState *)self peekGroup];
+  peekGroup = [(OAXDrawingState *)self peekGroup];
   [(NSMutableArray *)self->mGroupStack removeLastObject];
 
-  return v3;
+  return peekGroup;
 }
 
 - (id)documentState
@@ -52,16 +52,16 @@
   self->mSrcURLToTgtBlipIndexMap = 0;
 }
 
-- (OAXDrawingState)initWithClient:(id)a3
+- (OAXDrawingState)initWithClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   v15.receiver = self;
   v15.super_class = OAXDrawingState;
   v6 = [(OCXState *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mClient, a3);
+    objc_storeStrong(&v6->mClient, client);
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     mShapeIdMap = v7->mShapeIdMap;
     v7->mShapeIdMap = v8;
@@ -80,67 +80,67 @@
 
 - (id)appVersion
 {
-  v2 = [(OAXDrawingState *)self packagePart];
-  v3 = [v2 package];
-  v4 = [v3 properties];
-  v5 = [v4 appVersion];
+  packagePart = [(OAXDrawingState *)self packagePart];
+  package = [packagePart package];
+  properties = [package properties];
+  appVersion = [properties appVersion];
 
-  return v5;
+  return appVersion;
 }
 
-- (id)drawableForShapeId:(unsigned int)a3
+- (id)drawableForShapeId:(unsigned int)id
 {
   mShapeIdMap = self->mShapeIdMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:id];
   v5 = [(NSMutableDictionary *)mShapeIdMap objectForKey:v4];
 
   return v5;
 }
 
-- (void)setDrawable:(id)a3 forShapeId:(unsigned int)a4
+- (void)setDrawable:(id)drawable forShapeId:(unsigned int)id
 {
-  v4 = *&a4;
-  v11 = a3;
+  v4 = *&id;
+  drawableCopy = drawable;
   mShapeIdMap = self->mShapeIdMap;
   v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v4];
   v8 = [(NSMutableDictionary *)mShapeIdMap objectForKey:v7];
 
-  [v11 setId:v4];
+  [drawableCopy setId:v4];
   v9 = self->mShapeIdMap;
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v4];
-  [(NSMutableDictionary *)v9 setObject:v11 forKey:v10];
+  [(NSMutableDictionary *)v9 setObject:drawableCopy forKey:v10];
 }
 
-- (id)vmlShapeIdForDrawableId:(unsigned int)a3
+- (id)vmlShapeIdForDrawableId:(unsigned int)id
 {
   mDrawableIdToVmlShapeIdMap = self->mDrawableIdToVmlShapeIdMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:id];
   v5 = [(NSMutableDictionary *)mDrawableIdToVmlShapeIdMap objectForKey:v4];
 
   return v5;
 }
 
-- (void)setVmlShapeId:(id)a3 forDrawableId:(unsigned int)a4
+- (void)setVmlShapeId:(id)id forDrawableId:(unsigned int)drawableId
 {
-  v8 = a3;
+  idCopy = id;
   mDrawableIdToVmlShapeIdMap = self->mDrawableIdToVmlShapeIdMap;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a4];
-  [(NSMutableDictionary *)mDrawableIdToVmlShapeIdMap setObject:v8 forKey:v7];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:drawableId];
+  [(NSMutableDictionary *)mDrawableIdToVmlShapeIdMap setObject:idCopy forKey:v7];
 }
 
-- (void)setDocumentState:(id)a3
+- (void)setDocumentState:(id)state
 {
-  v4 = a3;
-  objc_storeWeak(&self->mDocumentState, v4);
-  -[OAXDrawingState setupNSForXMLFormat:](self, "setupNSForXMLFormat:", [v4 xmlFormat]);
+  stateCopy = state;
+  objc_storeWeak(&self->mDocumentState, stateCopy);
+  -[OAXDrawingState setupNSForXMLFormat:](self, "setupNSForXMLFormat:", [stateCopy xmlFormat]);
 }
 
-- (void)setTargetBlipCollection:(id)a3
+- (void)setTargetBlipCollection:(id)collection
 {
-  v8 = a3;
-  if (self->mTgtBlipCollection != v8)
+  collectionCopy = collection;
+  if (self->mTgtBlipCollection != collectionCopy)
   {
-    objc_storeStrong(&self->mTgtBlipCollection, a3);
+    objc_storeStrong(&self->mTgtBlipCollection, collection);
   }
 
   mSrcURLToTgtBlipIndexMap = self->mSrcURLToTgtBlipIndexMap;
@@ -154,10 +154,10 @@
   self->mSrcURLToTgtBlipIndexMap = v6;
 }
 
-- (void)setTargetBulletBlipArray:(id)a3
+- (void)setTargetBulletBlipArray:(id)array
 {
-  v7 = a3;
-  objc_storeStrong(&self->mTgtBulletBlips, a3);
+  arrayCopy = array;
+  objc_storeStrong(&self->mTgtBulletBlips, array);
   if (self->mTgtBulletBlips)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -166,67 +166,67 @@
   }
 }
 
-- (id)blipRefWithURL:(id)a3 blipArray:(id)a4 blipURLtoIndexMap:(id)a5
+- (id)blipRefWithURL:(id)l blipArray:(id)array blipURLtoIndexMap:(id)map
 {
-  v8 = a3;
-  v43 = a4;
-  v9 = a5;
-  if (v8)
+  lCopy = l;
+  arrayCopy = array;
+  mapCopy = map;
+  if (lCopy)
   {
-    v10 = [(OCPPackagePart *)self->mPackagePart package];
-    v11 = [v10 partForLocation:v8];
+    package = [(OCPPackagePart *)self->mPackagePart package];
+    v11 = [package partForLocation:lCopy];
 
     if (v11)
     {
-      v12 = [v11 location];
-      v13 = [v12 path];
+      location = [v11 location];
+      path = [location path];
 
-      v14 = [v13 lastPathComponent];
-      v42 = [v14 stringByDeletingPathExtension];
-      v15 = [v9 objectForKey:v13];
+      lastPathComponent = [path lastPathComponent];
+      stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+      v15 = [mapCopy objectForKey:path];
       v41 = v15;
       if (v15)
       {
-        v16 = [v15 intValue];
-        v17 = [v43 objectAtIndex:v16];
-        v18 = [v17 referenceCount];
-        ++*v18;
-        v19 = [OADBlipRef blipRefWithIndex:v16 name:v42 blip:0];
+        intValue = [v15 intValue];
+        v17 = [arrayCopy objectAtIndex:intValue];
+        referenceCount = [v17 referenceCount];
+        ++*referenceCount;
+        v19 = [OADBlipRef blipRefWithIndex:intValue name:stringByDeletingPathExtension blip:0];
       }
 
       else
       {
-        v39 = v14;
-        v20 = [(OCPPackagePart *)self->mPackagePart package];
-        v21 = [v20 contentTypeForPartLocation:v8];
+        v39 = lastPathComponent;
+        package2 = [(OCPPackagePart *)self->mPackagePart package];
+        v21 = [package2 contentTypeForPartLocation:lCopy];
 
         v40 = v21;
         v22 = [OADBlipRef blipTypeForContentType:v21];
-        if (v22 || ([v8 pathExtension], v23 = objc_claimAutoreleasedReturnValue(), v22 = +[OADBlipRef blipTypeForExtension:](OADBlipRef, "blipTypeForExtension:", v23), v23, v22) || (context = objc_autoreleasePoolPush(), -[OCPPackagePart package](self->mPackagePart, "package"), v37 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v37, "partForLocation:", v8), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "data"), v25 = objc_claimAutoreleasedReturnValue(), v22 = +[OADBlipRef blipTypeForImageData:](OADBlipRef, "blipTypeForImageData:", v25), v25, v24, v37, objc_autoreleasePoolPop(context), v22))
+        if (v22 || ([lCopy pathExtension], v23 = objc_claimAutoreleasedReturnValue(), v22 = +[OADBlipRef blipTypeForExtension:](OADBlipRef, "blipTypeForExtension:", v23), v23, v22) || (context = objc_autoreleasePoolPush(), -[OCPPackagePart package](self->mPackagePart, "package"), v37 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v37, "partForLocation:", lCopy), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "data"), v25 = objc_claimAutoreleasedReturnValue(), v22 = +[OADBlipRef blipTypeForImageData:](OADBlipRef, "blipTypeForImageData:", v25), v25, v24, v37, objc_autoreleasePoolPop(context), v22))
         {
           v26 = [[OADSubBlip alloc] initWithData:0 type:v22];
           v27 = [OAXBlipContext alloc];
-          v28 = [(OCPPackagePart *)self->mPackagePart package];
-          v29 = [(OCXDelayedMediaContext *)v27 initWithTargetLocation:v8 package:v28];
+          package3 = [(OCPPackagePart *)self->mPackagePart package];
+          v29 = [(OCXDelayedMediaContext *)v27 initWithTargetLocation:lCopy package:package3];
 
           v38 = v29;
           [(OCDDelayedNode *)v26 setDelayedContext:v29];
-          v30 = [v11 data];
-          -[OADSubBlip setSizeInBytes:](v26, "setSizeInBytes:", [v30 length]);
+          data = [v11 data];
+          -[OADSubBlip setSizeInBytes:](v26, "setSizeInBytes:", [data length]);
 
           v31 = objc_alloc_init(OADBlip);
           [(OADBlip *)v31 setMainSubBlip:v26];
-          [v43 addObject:v31];
+          [arrayCopy addObject:v31];
           *[(OADBlip *)v31 referenceCount]= 1;
-          v32 = [v43 count] - 1;
+          v32 = [arrayCopy count] - 1;
           v33 = [MEMORY[0x277CCABB0] numberWithInt:v32];
-          [v9 setObject:v33 forKey:v13];
+          [mapCopy setObject:v33 forKey:path];
 
-          v19 = [OADBlipRef blipRefWithIndex:v32 name:v42 blip:0];
-          v34 = [(OCPPackagePart *)self->mPackagePart package];
-          [v34 resetPartForLocation:v8];
+          v19 = [OADBlipRef blipRefWithIndex:v32 name:stringByDeletingPathExtension blip:0];
+          package4 = [(OCPPackagePart *)self->mPackagePart package];
+          [package4 resetPartForLocation:lCopy];
 
-          v14 = v39;
+          lastPathComponent = v39;
         }
 
         else
@@ -252,17 +252,17 @@
   return v19;
 }
 
-- (id)blipRefForURL:(id)a3
+- (id)blipRefForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(OADBlipCollection *)self->mTgtBlipCollection blips];
-  v6 = [(OAXDrawingState *)self blipRefWithURL:v4 blipArray:v5 blipURLtoIndexMap:self->mSrcURLToTgtBlipIndexMap];
+  lCopy = l;
+  blips = [(OADBlipCollection *)self->mTgtBlipCollection blips];
+  v6 = [(OAXDrawingState *)self blipRefWithURL:lCopy blipArray:blips blipURLtoIndexMap:self->mSrcURLToTgtBlipIndexMap];
 
   if (v6)
   {
-    v7 = [v6 index];
-    v8 = [v6 name];
-    v9 = [OADBlipRef blipRefWithIndex:(v7 + 1) name:v8 blip:0];
+    index = [v6 index];
+    name = [v6 name];
+    v9 = [OADBlipRef blipRefWithIndex:(index + 1) name:name blip:0];
   }
 
   else
@@ -273,21 +273,21 @@
   return v9;
 }
 
-- (id)bulletBlipRefForURL:(id)a3
+- (id)bulletBlipRefForURL:(id)l
 {
-  v3 = [(OAXDrawingState *)self blipRefWithURL:a3 blipArray:self->mTgtBulletBlips blipURLtoIndexMap:self->mSrcURLToTgtBulletBlipIndexMap];
+  v3 = [(OAXDrawingState *)self blipRefWithURL:l blipArray:self->mTgtBulletBlips blipURLtoIndexMap:self->mSrcURLToTgtBulletBlipIndexMap];
 
   return v3;
 }
 
-- (void)setupNSForXMLFormat:(int)a3
+- (void)setupNSForXMLFormat:(int)format
 {
   v35.receiver = self;
   v35.super_class = OAXDrawingState;
   [(OCXState *)&v35 setupNSForXMLFormat:?];
   v5 = [CXNamespace alloc];
   v6 = v5;
-  if (a3)
+  if (format)
   {
     v7 = [[CXNamespace alloc] initWithUri:"http://schemas.openxmlformats.org/drawingml/2006/main"];
     v8 = [(CXNamespace *)v6 initWithUri:"http://purl.oclc.org/ooxml/drawingml/main" fallbackNamespace:v7];

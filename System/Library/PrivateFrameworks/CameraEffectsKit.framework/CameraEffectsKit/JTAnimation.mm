@@ -1,51 +1,51 @@
 @interface JTAnimation
-+ (void)performAnimation:(id)a3 curve:(int64_t)a4 duration:(double)a5 completion:(id)a6 delay:(double)a7 userInteractionEnabled:(BOOL)a8;
-+ (void)performAnimation:(id)a3 timingParameters:(id)a4 duration:(double)a5 completion:(id)a6 delay:(double)a7 userInteractionEnabled:(BOOL)a8;
-+ (void)performWithAnimator:(id)a3 animation:(id)a4 duration:(double)a5 completion:(id)a6 delay:(double)a7 userInteractionEnabled:(BOOL)a8;
++ (void)performAnimation:(id)animation curve:(int64_t)curve duration:(double)duration completion:(id)completion delay:(double)delay userInteractionEnabled:(BOOL)enabled;
++ (void)performAnimation:(id)animation timingParameters:(id)parameters duration:(double)duration completion:(id)completion delay:(double)delay userInteractionEnabled:(BOOL)enabled;
++ (void)performWithAnimator:(id)animator animation:(id)animation duration:(double)duration completion:(id)completion delay:(double)delay userInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation JTAnimation
 
-+ (void)performAnimation:(id)a3 curve:(int64_t)a4 duration:(double)a5 completion:(id)a6 delay:(double)a7 userInteractionEnabled:(BOOL)a8
++ (void)performAnimation:(id)animation curve:(int64_t)curve duration:(double)duration completion:(id)completion delay:(double)delay userInteractionEnabled:(BOOL)enabled
 {
-  v8 = a8;
+  enabledCopy = enabled;
   v13 = MEMORY[0x277D75D40];
-  v14 = a6;
-  v15 = a3;
-  v16 = [[v13 alloc] initWithDuration:a4 curve:v15 animations:a5];
-  [JTAnimation performWithAnimator:v16 animation:v15 duration:v14 completion:v8 delay:a5 userInteractionEnabled:a7];
+  completionCopy = completion;
+  animationCopy = animation;
+  v16 = [[v13 alloc] initWithDuration:curve curve:animationCopy animations:duration];
+  [JTAnimation performWithAnimator:v16 animation:animationCopy duration:completionCopy completion:enabledCopy delay:duration userInteractionEnabled:delay];
 }
 
-+ (void)performAnimation:(id)a3 timingParameters:(id)a4 duration:(double)a5 completion:(id)a6 delay:(double)a7 userInteractionEnabled:(BOOL)a8
++ (void)performAnimation:(id)animation timingParameters:(id)parameters duration:(double)duration completion:(id)completion delay:(double)delay userInteractionEnabled:(BOOL)enabled
 {
-  v8 = a8;
+  enabledCopy = enabled;
   v13 = MEMORY[0x277D75D40];
-  v14 = a6;
-  v15 = a4;
-  v16 = a3;
-  v17 = [[v13 alloc] initWithDuration:v15 timingParameters:a5];
+  completionCopy = completion;
+  parametersCopy = parameters;
+  animationCopy = animation;
+  v17 = [[v13 alloc] initWithDuration:parametersCopy timingParameters:duration];
 
-  [JTAnimation performWithAnimator:v17 animation:v16 duration:v14 completion:v8 delay:a5 userInteractionEnabled:a7];
+  [JTAnimation performWithAnimator:v17 animation:animationCopy duration:completionCopy completion:enabledCopy delay:duration userInteractionEnabled:delay];
 }
 
-+ (void)performWithAnimator:(id)a3 animation:(id)a4 duration:(double)a5 completion:(id)a6 delay:(double)a7 userInteractionEnabled:(BOOL)a8
++ (void)performWithAnimator:(id)animator animation:(id)animation duration:(double)duration completion:(id)completion delay:(double)delay userInteractionEnabled:(BOOL)enabled
 {
-  v8 = a8;
-  v14 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v12)
+  enabledCopy = enabled;
+  animatorCopy = animator;
+  animationCopy = animation;
+  completionCopy = completion;
+  if (animationCopy)
   {
-    [v14 addAnimations:v12];
+    [animatorCopy addAnimations:animationCopy];
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    [v14 addCompletion:v13];
+    [animatorCopy addCompletion:completionCopy];
   }
 
-  [v14 setUserInteractionEnabled:v8];
-  [v14 startAnimationAfterDelay:a7];
+  [animatorCopy setUserInteractionEnabled:enabledCopy];
+  [animatorCopy startAnimationAfterDelay:delay];
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface HUVoiceProfileOnboardingFlow
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (HUVoiceProfileOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
-- (id)processUserInput:(id)a3;
-- (void)checkIfStillRequiredFromCurrentResults:(id)a3;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (HUVoiceProfileOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
+- (id)processUserInput:(id)input;
+- (void)checkIfStillRequiredFromCurrentResults:(id)results;
 @end
 
 @implementation HUVoiceProfileOnboardingFlow
 
-- (HUVoiceProfileOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HUVoiceProfileOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v20.receiver = self;
   v20.super_class = HUVoiceProfileOnboardingFlow;
   v9 = [(HUVoiceProfileOnboardingFlow *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a4);
+    objc_storeStrong(&v9->_home, home);
     v11 = objc_alloc_init(MEMORY[0x277D2C900]);
     readyFuture = v10->_readyFuture;
     v10->_readyFuture = v11;
 
     objc_initWeak(&location, v10);
-    v13 = [objc_opt_class() needsOnboardingForHome:v8 options:v7];
+    v13 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __58__HUVoiceProfileOnboardingFlow_initWithUsageOptions_home___block_invoke;
@@ -232,73 +232,73 @@ void __58__HUVoiceProfileOnboardingFlow_initWithUsageOptions_home___block_invoke
   [v4 finishWithResult:MEMORY[0x277CBEC38]];
 }
 
-- (void)checkIfStillRequiredFromCurrentResults:(id)a3
+- (void)checkIfStillRequiredFromCurrentResults:(id)results
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"HULanguageOnboardingKey_PersonalDeviceSiriLanguageChanged_HasVoiceProfile"];
+  resultsCopy = results;
+  v6 = [resultsCopy objectForKeyedSubscript:@"HULanguageOnboardingKey_PersonalDeviceSiriLanguageChanged_HasVoiceProfile"];
   if (!v6)
   {
-    v9 = [v5 objectForKeyedSubscript:@"HULanguageOnboardingKey_PersonalDeviceSiriLanguageChanged_MissingVoiceProfile"];
-    if (v9)
+    onboardingFuture2 = [resultsCopy objectForKeyedSubscript:@"HULanguageOnboardingKey_PersonalDeviceSiriLanguageChanged_MissingVoiceProfile"];
+    if (onboardingFuture2)
     {
-      v10 = HFLogForCategory();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      onboardingFuture = HFLogForCategory();
+      if (os_log_type_enabled(onboardingFuture, OS_LOG_TYPE_DEFAULT))
       {
         v11 = NSStringFromSelector(a2);
         v17 = 138413058;
-        v18 = self;
+        selfCopy7 = self;
         v19 = 2112;
         v20 = v11;
         v21 = 2112;
-        v22 = v9;
+        v22 = onboardingFuture2;
         v23 = 2112;
-        v24 = self;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@ 'Hey Siri' Voice Profile for %@ needed, will run %@", &v17, 0x2Au);
+        selfCopy8 = self;
+        _os_log_impl(&dword_20CEB6000, onboardingFuture, OS_LOG_TYPE_DEFAULT, "%@:%@ 'Hey Siri' Voice Profile for %@ needed, will run %@", &v17, 0x2Au);
 LABEL_14:
       }
     }
 
     else
     {
-      v12 = [(HUVoiceProfileOnboardingFlow *)self initialCheckedResult];
-      v10 = HFLogForCategory();
-      v13 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-      if (v12)
+      initialCheckedResult = [(HUVoiceProfileOnboardingFlow *)self initialCheckedResult];
+      onboardingFuture = HFLogForCategory();
+      v13 = os_log_type_enabled(onboardingFuture, OS_LOG_TYPE_DEFAULT);
+      if (initialCheckedResult)
       {
         if (v13)
         {
           v14 = NSStringFromSelector(a2);
-          v15 = [(HUVoiceProfileOnboardingFlow *)self initialCheckedLanguage];
+          initialCheckedLanguage = [(HUVoiceProfileOnboardingFlow *)self initialCheckedLanguage];
           v17 = 138413058;
-          v18 = self;
+          selfCopy7 = self;
           v19 = 2112;
           v20 = v14;
           v21 = 2112;
-          v22 = v15;
+          v22 = initialCheckedLanguage;
           v23 = 2112;
-          v24 = self;
-          _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@ As calculated at init time, the 'Hey Siri' Voice Profile for %@ already exists, will skip %@", &v17, 0x2Au);
+          selfCopy8 = self;
+          _os_log_impl(&dword_20CEB6000, onboardingFuture, OS_LOG_TYPE_DEFAULT, "%@:%@ As calculated at init time, the 'Hey Siri' Voice Profile for %@ already exists, will skip %@", &v17, 0x2Au);
         }
 
-        v10 = [(HUVoiceProfileOnboardingFlow *)self onboardingFuture];
-        [v10 finishWithNoResult];
+        onboardingFuture = [(HUVoiceProfileOnboardingFlow *)self onboardingFuture];
+        [onboardingFuture finishWithNoResult];
         goto LABEL_15;
       }
 
       if (v13)
       {
         v11 = NSStringFromSelector(a2);
-        v16 = [(HUVoiceProfileOnboardingFlow *)self initialCheckedLanguage];
+        initialCheckedLanguage2 = [(HUVoiceProfileOnboardingFlow *)self initialCheckedLanguage];
         v17 = 138413058;
-        v18 = self;
+        selfCopy7 = self;
         v19 = 2112;
         v20 = v11;
         v21 = 2112;
-        v22 = v16;
+        v22 = initialCheckedLanguage2;
         v23 = 2112;
-        v24 = self;
-        _os_log_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_DEFAULT, "%@:%@ As calculated at init time, the 'Hey Siri' Voice Profile for %@ does not exist, will run %@", &v17, 0x2Au);
+        selfCopy8 = self;
+        _os_log_impl(&dword_20CEB6000, onboardingFuture, OS_LOG_TYPE_DEFAULT, "%@:%@ As calculated at init time, the 'Hey Siri' Voice Profile for %@ does not exist, will run %@", &v17, 0x2Au);
 
         goto LABEL_14;
       }
@@ -314,50 +314,50 @@ LABEL_15:
   {
     v8 = NSStringFromSelector(a2);
     v17 = 138413058;
-    v18 = self;
+    selfCopy7 = self;
     v19 = 2112;
     v20 = v8;
     v21 = 2112;
     v22 = v6;
     v23 = 2112;
-    v24 = self;
+    selfCopy8 = self;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ 'Hey Siri' Voice Profile for %@ already exists, will skip %@", &v17, 0x2Au);
   }
 
-  v9 = [(HUVoiceProfileOnboardingFlow *)self onboardingFuture];
-  [v9 finishWithNoResult];
+  onboardingFuture2 = [(HUVoiceProfileOnboardingFlow *)self onboardingFuture];
+  [onboardingFuture2 finishWithNoResult];
 LABEL_16:
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"HUVoiceProfileOnboardingKey_UserInput"];
+  inputCopy = input;
+  v6 = [inputCopy objectForKeyedSubscript:@"HUVoiceProfileOnboardingKey_UserInput"];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v19 = self;
+    selfCopy = self;
     v20 = 2112;
     v21 = v8;
     v22 = 2112;
-    v23 = v5;
+    v23 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", buf, 0x20u);
   }
 
   if ([v6 integerValue] && objc_msgSend(v6, "integerValue") != 1)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HUVoiceProfileOnboardingFlow.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUVoiceProfileOnboardingValue_SetupHeySiri_Completed) || (userInputValue.integerValue == HUVoiceProfileOnboardingValue_SetupHeySiri_Cancelled)"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUVoiceProfileOnboardingFlow.m" lineNumber:198 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HUVoiceProfileOnboardingValue_SetupHeySiri_Completed) || (userInputValue.integerValue == HUVoiceProfileOnboardingValue_SetupHeySiri_Cancelled)"}];
   }
 
   v9 = objc_alloc(MEMORY[0x277D14C98]);
-  v10 = [(HUVoiceProfileOnboardingFlow *)self home];
-  v11 = [(HUVoiceProfileOnboardingFlow *)self home];
-  v12 = [v11 currentUser];
-  v13 = [v9 initWithHome:v10 user:v12 nameStyle:0];
+  home = [(HUVoiceProfileOnboardingFlow *)self home];
+  home2 = [(HUVoiceProfileOnboardingFlow *)self home];
+  currentUser = [home2 currentUser];
+  v13 = [v9 initWithHome:home user:currentUser nameStyle:0];
 
   if ([v13 hasDismissedVoiceProfileOnboarding])
   {
@@ -369,20 +369,20 @@ LABEL_16:
     [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v6, "integerValue") == 0}];
   }
   v14 = ;
-  [v5 setObject:v14 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
+  [inputCopy setObject:v14 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
 
-  [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_FinishedOnboarding"];
+  [inputCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_FinishedOnboarding"];
   -[HUVoiceProfileOnboardingFlow setShouldAbortThisOnboardingFlowGroup:](self, "setShouldAbortThisOnboardingFlowGroup:", [v6 integerValue] == 1);
-  v15 = [(HUVoiceProfileOnboardingFlow *)self onboardingFuture];
-  [v15 finishWithNoResult];
+  onboardingFuture = [(HUVoiceProfileOnboardingFlow *)self onboardingFuture];
+  [onboardingFuture finishWithNoResult];
 
   return 0;
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  optionsCopy = options;
   if (([MEMORY[0x277D14CE8] isAMac] & 1) != 0 || objc_msgSend(MEMORY[0x277D14CE8], "isAVisionPro"))
   {
     v9 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC28]];
@@ -390,15 +390,15 @@ LABEL_16:
 
   else
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v10 = MEMORY[0x277D2C900];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__HUVoiceProfileOnboardingFlow_needsOnboardingForHome_options___block_invoke;
     v12[3] = &unk_277DBCAB8;
     objc_copyWeak(v15, &location);
-    v13 = v7;
-    v14 = v8;
+    v13 = homeCopy;
+    v14 = optionsCopy;
     v15[1] = a2;
     v9 = [v10 futureWithBlock:v12];
 

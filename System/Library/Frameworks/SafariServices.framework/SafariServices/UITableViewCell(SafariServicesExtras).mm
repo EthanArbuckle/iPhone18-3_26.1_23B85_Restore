@@ -8,7 +8,7 @@
 
 - (void)sf_setUsesVibrantSelection:()SafariServicesExtras
 {
-  v5 = [a1 selectedBackgroundView];
+  selectedBackgroundView = [self selectedBackgroundView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -17,14 +17,14 @@
     if ((isKindOfClass & 1) == 0)
     {
       v7 = objc_alloc_init(SFVibrantCellSelectionBackgroundView);
-      [a1 setSelectedBackgroundView:v7];
+      [self setSelectedBackgroundView:v7];
     }
   }
 
   else if (isKindOfClass)
   {
 
-    [a1 setSelectedBackgroundView:0];
+    [self setSelectedBackgroundView:0];
   }
 }
 
@@ -32,10 +32,10 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = objc_getAssociatedObject(a1, dynamicImageTraitCollectionRegistrationKey);
+  v8 = objc_getAssociatedObject(self, dynamicImageTraitCollectionRegistrationKey);
   if (v8)
   {
-    [a1 unregisterForTraitChanges:v8];
+    [self unregisterForTraitChanges:v8];
   }
 
   if (v6)
@@ -46,16 +46,16 @@
     aBlock[3] = &unk_1E8494258;
     v12 = v6;
     v9 = _Block_copy(aBlock);
-    v9[2](v9, a1, 0);
-    v10 = [a1 registerForTraitChanges:v7 withHandler:v9];
+    v9[2](v9, self, 0);
+    v10 = [self registerForTraitChanges:v7 withHandler:v9];
 
-    objc_setAssociatedObject(a1, dynamicImageTraitCollectionRegistrationKey, v10, 3);
+    objc_setAssociatedObject(self, dynamicImageTraitCollectionRegistrationKey, v10, 3);
     v8 = v10;
   }
 
   else
   {
-    objc_setAssociatedObject(a1, dynamicImageTraitCollectionRegistrationKey, 0, 3);
+    objc_setAssociatedObject(self, dynamicImageTraitCollectionRegistrationKey, 0, 3);
   }
 }
 
@@ -63,8 +63,8 @@
 {
   v4 = MEMORY[0x1E69DD1B8];
   v5 = a3;
-  v6 = [v4 systemTraitsAffectingColorAppearance];
-  [a1 sf_registerDynamicImageProvider:v5 forTraitChanges:v6];
+  systemTraitsAffectingColorAppearance = [v4 systemTraitsAffectingColorAppearance];
+  [self sf_registerDynamicImageProvider:v5 forTraitChanges:systemTraitsAffectingColorAppearance];
 }
 
 @end

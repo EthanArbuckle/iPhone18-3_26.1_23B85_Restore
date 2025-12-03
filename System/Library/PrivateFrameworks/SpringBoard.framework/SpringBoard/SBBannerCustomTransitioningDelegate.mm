@@ -1,15 +1,15 @@
 @interface SBBannerCustomTransitioningDelegate
-- (id)animationControllerForDismissedController:(id)a3 userInfo:(id)a4;
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5 userInfo:(id)a6;
-- (id)animatorForDismissalTransitionWithStyle:(int64_t)a3;
-- (id)animatorForPresentationTransitionWithStyle:(int64_t)a3;
+- (id)animationControllerForDismissedController:(id)controller userInfo:(id)info;
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController userInfo:(id)info;
+- (id)animatorForDismissalTransitionWithStyle:(int64_t)style;
+- (id)animatorForPresentationTransitionWithStyle:(int64_t)style;
 @end
 
 @implementation SBBannerCustomTransitioningDelegate
 
-- (id)animationControllerForDismissedController:(id)a3 userInfo:(id)a4
+- (id)animationControllerForDismissedController:(id)controller userInfo:(id)info
 {
-  v5 = [a4 objectForKeyedSubscript:*MEMORY[0x277D68070]];
+  v5 = [info objectForKeyedSubscript:*MEMORY[0x277D68070]];
   v6 = objc_opt_class();
   v7 = v5;
   if (v6)
@@ -42,9 +42,9 @@
   return v10;
 }
 
-- (id)animationControllerForPresentedController:(id)a3 presentingController:(id)a4 sourceController:(id)a5 userInfo:(id)a6
+- (id)animationControllerForPresentedController:(id)controller presentingController:(id)presentingController sourceController:(id)sourceController userInfo:(id)info
 {
-  v7 = [a6 objectForKeyedSubscript:{*MEMORY[0x277D68070], a4, a5}];
+  v7 = [info objectForKeyedSubscript:{*MEMORY[0x277D68070], presentingController, sourceController}];
   v8 = objc_opt_class();
   v9 = v7;
   if (v8)
@@ -77,12 +77,12 @@
   return v12;
 }
 
-- (id)animatorForPresentationTransitionWithStyle:(int64_t)a3
+- (id)animatorForPresentationTransitionWithStyle:(int64_t)style
 {
   v3 = 0;
-  if (a3 > 1)
+  if (style > 1)
   {
-    switch(a3)
+    switch(style)
     {
       case 2:
         v4 = off_27839EF38;
@@ -110,7 +110,7 @@
   }
 
   v4 = off_2783A22D0;
-  if (!a3)
+  if (!style)
   {
     if (!_UISolariumEnabled())
     {
@@ -120,7 +120,7 @@
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
 LABEL_15:
     v3 = [objc_alloc(*v4) initForPresenting:1];
@@ -131,12 +131,12 @@ LABEL_16:
   return v3;
 }
 
-- (id)animatorForDismissalTransitionWithStyle:(int64_t)a3
+- (id)animatorForDismissalTransitionWithStyle:(int64_t)style
 {
   v3 = 0;
-  if (a3 > 1)
+  if (style > 1)
   {
-    switch(a3)
+    switch(style)
     {
       case 2:
         v4 = off_27839EF38;
@@ -164,7 +164,7 @@ LABEL_16:
   }
 
   v4 = off_2783A22D0;
-  if (!a3)
+  if (!style)
   {
     if (!_UISolariumEnabled())
     {
@@ -174,7 +174,7 @@ LABEL_16:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (style == 1)
   {
 LABEL_15:
     v3 = [objc_alloc(*v4) initForPresenting:0];

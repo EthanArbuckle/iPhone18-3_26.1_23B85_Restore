@@ -1,5 +1,5 @@
 @interface _ADDeviceRouterResultMutation
-- (_ADDeviceRouterResultMutation)initWithBase:(id)a3;
+- (_ADDeviceRouterResultMutation)initWithBase:(id)base;
 - (id)getCommandRelayProxyIdentifier;
 - (id)getContextIdentifier;
 - (id)getError;
@@ -13,45 +13,45 @@
 {
   if ((*&self->_mutationFlags & 2) != 0)
   {
-    v2 = self->_peerInfo;
+    peerInfo = self->_peerInfo;
   }
 
   else
   {
-    v2 = [(ADDeviceRouterResult *)self->_base peerInfo];
+    peerInfo = [(ADDeviceRouterResult *)self->_base peerInfo];
   }
 
-  return v2;
+  return peerInfo;
 }
 
 - (id)getError
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_error;
+    error = self->_error;
   }
 
   else
   {
-    v2 = [(ADDeviceRouterResult *)self->_base error];
+    error = [(ADDeviceRouterResult *)self->_base error];
   }
 
-  return v2;
+  return error;
 }
 
 - (id)getCommandRelayProxyIdentifier
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_commandRelayProxyIdentifier;
+    commandRelayProxyIdentifier = self->_commandRelayProxyIdentifier;
   }
 
   else
   {
-    v2 = [(ADDeviceRouterResult *)self->_base commandRelayProxyIdentifier];
+    commandRelayProxyIdentifier = [(ADDeviceRouterResult *)self->_base commandRelayProxyIdentifier];
   }
 
-  return v2;
+  return commandRelayProxyIdentifier;
 }
 
 - (int64_t)getProximity
@@ -71,27 +71,27 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_contextIdentifier;
+    contextIdentifier = self->_contextIdentifier;
   }
 
   else
   {
-    v2 = [(ADDeviceRouterResult *)self->_base contextIdentifier];
+    contextIdentifier = [(ADDeviceRouterResult *)self->_base contextIdentifier];
   }
 
-  return v2;
+  return contextIdentifier;
 }
 
-- (_ADDeviceRouterResultMutation)initWithBase:(id)a3
+- (_ADDeviceRouterResultMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _ADDeviceRouterResultMutation;
   v6 = [(_ADDeviceRouterResultMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

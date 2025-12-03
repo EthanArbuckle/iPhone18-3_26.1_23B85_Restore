@@ -1,29 +1,29 @@
 @interface RMStoreXPCConnection
-+ (id)storeXPCConnection:(id)a3;
-- (RMStoreXPCConnection)initWithXPCConnection:(id)a3;
++ (id)storeXPCConnection:(id)connection;
+- (RMStoreXPCConnection)initWithXPCConnection:(id)connection;
 - (void)dealloc;
 @end
 
 @implementation RMStoreXPCConnection
 
-+ (id)storeXPCConnection:(id)a3
++ (id)storeXPCConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [[RMStoreXPCConnection alloc] initWithXPCConnection:v3];
+  connectionCopy = connection;
+  v4 = [[RMStoreXPCConnection alloc] initWithXPCConnection:connectionCopy];
 
   return v4;
 }
 
-- (RMStoreXPCConnection)initWithXPCConnection:(id)a3
+- (RMStoreXPCConnection)initWithXPCConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = RMStoreXPCConnection;
   v6 = [(RMStoreXPCConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
@@ -31,12 +31,12 @@
 
 - (void)dealloc
 {
-  v3 = [(RMStoreXPCConnection *)self connection];
+  connection = [(RMStoreXPCConnection *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(RMStoreXPCConnection *)self connection];
-    [v4 invalidate];
+    connection2 = [(RMStoreXPCConnection *)self connection];
+    [connection2 invalidate];
 
     connection = self->_connection;
     self->_connection = 0;

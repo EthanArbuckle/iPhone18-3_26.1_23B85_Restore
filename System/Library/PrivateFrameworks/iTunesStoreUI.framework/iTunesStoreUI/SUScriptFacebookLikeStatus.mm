@@ -1,8 +1,8 @@
 @interface SUScriptFacebookLikeStatus
-+ (id)webScriptNameForKeyName:(id)a3;
++ (id)webScriptNameForKeyName:(id)name;
 + (void)initialize;
 - (NSArray)friends;
-- (SUScriptFacebookLikeStatus)initWithLikeStatusDictionary:(id)a3;
+- (SUScriptFacebookLikeStatus)initWithLikeStatusDictionary:(id)dictionary;
 - (id)isLikedByMe;
 - (id)scriptAttributeKeys;
 - (unint64_t)friendLikeCount;
@@ -12,14 +12,14 @@
 
 @implementation SUScriptFacebookLikeStatus
 
-- (SUScriptFacebookLikeStatus)initWithLikeStatusDictionary:(id)a3
+- (SUScriptFacebookLikeStatus)initWithLikeStatusDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = SUScriptFacebookLikeStatus;
   v4 = [(SUScriptObject *)&v6 init];
   if (v4)
   {
-    v4->_dictionary = [a3 copy];
+    v4->_dictionary = [dictionary copy];
   }
 
   return v4;
@@ -42,7 +42,7 @@
 - (NSArray)friends
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [(NSDictionary *)self->_dictionary objectForKey:ISWeakLinkedStringConstantForString()];
   v13 = 0u;
   v14 = 0u;
@@ -83,7 +83,7 @@
         v11 = v10;
         if (v10)
         {
-          [(NSArray *)v3 addObject:v10];
+          [(NSArray *)array addObject:v10];
         }
       }
 
@@ -93,7 +93,7 @@
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)globalLikeCount
@@ -115,14 +115,14 @@
   return *v3;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_76 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptFacebookLikeStatus;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
@@ -132,14 +132,14 @@
 {
   v4.receiver = self;
   v4.super_class = SUScriptFacebookLikeStatus;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_76 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_76 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __KeyMapping_76 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{@"friendLikeCount", @"friends", @"friends", @"globalLikeCount", @"globalLikeCount", @"isLikedByMe", @"isLikedByMe", 0}];
   }

@@ -4,24 +4,24 @@
 + (id)shortDescription;
 + (void)initialize;
 - (HAPAccessoryReachabilityClient)init;
-- (HAPAccessoryReachabilityClient)initWithIdentifier:(id)a3 profile:(id)a4 operationQueue:(id)a5;
+- (HAPAccessoryReachabilityClient)initWithIdentifier:(id)identifier profile:(id)profile operationQueue:(id)queue;
 - (HAPAccessoryReachabilityDelegate)delegate;
 - (NSString)description;
 - (id)shortDescription;
-- (void)_enterState:(int64_t)a3;
+- (void)_enterState:(int64_t)state;
 - (void)_poll;
 - (void)_processProfile;
 - (void)_runStateMachine;
 - (void)_stop;
-- (void)_timerDidFire:(id)a3;
+- (void)_timerDidFire:(id)fire;
 - (void)_wait;
 - (void)confirm;
 - (void)kick;
-- (void)setDelegate:(id)a3;
-- (void)setProfile:(id)a3;
-- (void)startWithCompletionHandler:(id)a3;
-- (void)stopWithCompletionHandler:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setProfile:(id)profile;
+- (void)startWithCompletionHandler:(id)handler;
+- (void)stopWithCompletionHandler:(id)handler;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HAPAccessoryReachabilityClient
@@ -40,11 +40,11 @@
   return [v2 shortDescription];
 }
 
-- (void)_timerDidFire:(id)a3
+- (void)_timerDidFire:(id)fire
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
+  fireCopy = fire;
+  v6 = fireCopy;
   if (self)
   {
     activityTimer = self->_activityTimer;
@@ -55,12 +55,12 @@
     activityTimer = 0;
   }
 
-  if ([v5 isEqual:activityTimer])
+  if ([fireCopy isEqual:activityTimer])
   {
-    v8 = [(HAPAccessoryReachabilityClient *)self state];
-    if ((v8 - 1) >= 3)
+    state = [(HAPAccessoryReachabilityClient *)self state];
+    if ((state - 1) >= 3)
     {
-      if (!v8)
+      if (!state)
       {
         [(HAPAccessoryReachabilityClient *)self _enterState:1];
       }
@@ -69,7 +69,7 @@
     else
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
@@ -89,18 +89,18 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fireCopy = fire;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     v9 = HMFGetLogIdentifier();
     v10 = NSStringFromSelector(a2);
-    identifier = v7->_identifier;
+    identifier = selfCopy->_identifier;
     *buf = 138543874;
     v20 = v9;
     v21 = 2112;
@@ -111,10 +111,10 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  objc_initWeak(buf, v7);
-  if (v7)
+  objc_initWeak(buf, selfCopy);
+  if (selfCopy)
   {
-    operationQueue = v7->_operationQueue;
+    operationQueue = selfCopy->_operationQueue;
   }
 
   else
@@ -128,7 +128,7 @@
   v16[2] = __47__HAPAccessoryReachabilityClient_timerDidFire___block_invoke;
   v16[3] = &unk_2786D6EB0;
   objc_copyWeak(&v18, buf);
-  v14 = v5;
+  v14 = fireCopy;
   v17 = v14;
   [(HAP2SerializedOperationQueue *)v13 addBlock:v16];
 
@@ -164,14 +164,14 @@ void __47__HAPAccessoryReachabilityClient_timerDidFire___block_invoke(uint64_t a
 
 - (void)_poll
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_operationQueue;
   }
 
   [(HAPAccessoryReachabilityClient *)self assertCurrentQueue];
-  WeakRetained = objc_loadWeakRetained(&v2->_delegate);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
   [WeakRetained pollAccessory];
 }
 
@@ -221,32 +221,32 @@ void __47__HAPAccessoryReachabilityClient_timerDidFire___block_invoke(uint64_t a
 - (void)_processProfile
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = [(HAPAccessoryReachabilityClient *)self profile];
-  [v4 sleepInterval];
+  profile = [(HAPAccessoryReachabilityClient *)self profile];
+  [profile sleepInterval];
   v6 = v5;
 
-  v7 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v8 = v7;
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v8 = mEMORY[0x277D0F8D0];
   if (v6 <= 0.0)
   {
-    v12 = [v7 preferenceForKey:@"kReachabilityDefaultTestInterval"];
-    v13 = [v12 numberValue];
-    self->_confirmInterval = [v13 unsignedIntValue];
+    v12 = [mEMORY[0x277D0F8D0] preferenceForKey:@"kReachabilityDefaultTestInterval"];
+    numberValue = [v12 numberValue];
+    self->_confirmInterval = [numberValue unsignedIntValue];
 
     self->_confirmInterval = fmax(self->_confirmInterval, 1.0);
   }
 
   else
   {
-    v9 = [v7 preferenceForKey:@"kReachabilityDefaultSleepyTestInterval"];
-    v10 = [v9 numberValue];
-    v11 = [v10 unsignedIntValue];
+    v9 = [mEMORY[0x277D0F8D0] preferenceForKey:@"kReachabilityDefaultSleepyTestInterval"];
+    numberValue2 = [v9 numberValue];
+    unsignedIntValue = [numberValue2 unsignedIntValue];
 
-    self->_confirmInterval = fmax((v6 + v6) * 1.15, fmax(v11, 1.0));
+    self->_confirmInterval = fmax((v6 + v6) * 1.15, fmax(unsignedIntValue, 1.0));
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -257,7 +257,7 @@ void __47__HAPAccessoryReachabilityClient_timerDidFire___block_invoke(uint64_t a
     v22 = 2112;
     v23 = v18;
     v24 = 2112;
-    v25 = v15;
+    v25 = selfCopy;
     _os_log_impl(&dword_22AADC000, v16, OS_LOG_TYPE_DEBUG, "%{public}@%@: %@", &v20, 0x20u);
   }
 
@@ -265,23 +265,23 @@ void __47__HAPAccessoryReachabilityClient_timerDidFire___block_invoke(uint64_t a
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enterState:(int64_t)a3
+- (void)_enterState:(int64_t)state
 {
-  v4 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_operationQueue;
   }
 
   [(HAPAccessoryReachabilityClient *)self assertCurrentQueue];
-  v4->_state = a3;
+  selfCopy->_state = state;
 
-  [(HAPAccessoryReachabilityClient *)v4 _runStateMachine];
+  [(HAPAccessoryReachabilityClient *)selfCopy _runStateMachine];
 }
 
 - (void)_runStateMachine
 {
-  v2 = self;
+  selfCopy = self;
   v19 = *MEMORY[0x277D85DE8];
   if (self)
   {
@@ -290,7 +290,7 @@ void __47__HAPAccessoryReachabilityClient_timerDidFire___block_invoke(uint64_t a
 
   [(HAPAccessoryReachabilityClient *)self assertCurrentQueue];
   v3 = objc_autoreleasePoolPush();
-  v4 = v2;
+  v4 = selfCopy;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -341,14 +341,14 @@ void __47__HAPAccessoryReachabilityClient_timerDidFire___block_invoke(uint64_t a
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = HMFGetLogIdentifier();
     v8 = NSStringFromSelector(a2);
     v9 = v8;
-    state = v5->_state;
+    state = selfCopy->_state;
     if (state > 3)
     {
       v11 = @"unknown";
@@ -359,7 +359,7 @@ void __47__HAPAccessoryReachabilityClient_timerDidFire___block_invoke(uint64_t a
       v11 = off_2786D4528[state];
     }
 
-    identifier = v5->_identifier;
+    identifier = selfCopy->_identifier;
     *buf = 138544130;
     v18 = v7;
     v19 = 2112;
@@ -376,11 +376,11 @@ void __47__HAPAccessoryReachabilityClient_timerDidFire___block_invoke(uint64_t a
   v16[1] = 3221225472;
   v16[2] = __41__HAPAccessoryReachabilityClient_confirm__block_invoke;
   v16[3] = &unk_2786D6CA0;
-  v16[4] = v5;
+  v16[4] = selfCopy;
   v13 = MEMORY[0x231885210](v16);
-  if (v5)
+  if (selfCopy)
   {
-    operationQueue = v5->_operationQueue;
+    operationQueue = selfCopy->_operationQueue;
   }
 
   else
@@ -420,14 +420,14 @@ uint64_t __41__HAPAccessoryReachabilityClient_confirm__block_invoke(uint64_t a1)
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v7 = HMFGetLogIdentifier();
     v8 = NSStringFromSelector(a2);
     v9 = v8;
-    state = v5->_state;
+    state = selfCopy->_state;
     if (state > 3)
     {
       v11 = @"unknown";
@@ -438,7 +438,7 @@ uint64_t __41__HAPAccessoryReachabilityClient_confirm__block_invoke(uint64_t a1)
       v11 = off_2786D4528[state];
     }
 
-    identifier = v5->_identifier;
+    identifier = selfCopy->_identifier;
     *buf = 138544130;
     v18 = v7;
     v19 = 2112;
@@ -455,11 +455,11 @@ uint64_t __41__HAPAccessoryReachabilityClient_confirm__block_invoke(uint64_t a1)
   v16[1] = 3221225472;
   v16[2] = __38__HAPAccessoryReachabilityClient_kick__block_invoke;
   v16[3] = &unk_2786D6CA0;
-  v16[4] = v5;
+  v16[4] = selfCopy;
   v13 = MEMORY[0x231885210](v16);
-  if (v5)
+  if (selfCopy)
   {
-    operationQueue = v5->_operationQueue;
+    operationQueue = selfCopy->_operationQueue;
   }
 
   else
@@ -486,16 +486,16 @@ unint64_t __38__HAPAccessoryReachabilityClient_kick__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)stopWithCompletionHandler:(id)a3
+- (void)stopWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __60__HAPAccessoryReachabilityClient_stopWithCompletionHandler___block_invoke;
   v11 = &unk_2786D65D8;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x231885210](&v8);
   if (self)
   {
@@ -507,7 +507,7 @@ unint64_t __38__HAPAccessoryReachabilityClient_kick__block_invoke(uint64_t a1)
     operationQueue = 0;
   }
 
-  [(HAP2SerializedOperationQueue *)operationQueue addBlock:v6, v8, v9, v10, v11, v12];
+  [(HAP2SerializedOperationQueue *)operationQueue addBlock:v6, v8, v9, v10, v11, selfCopy];
 }
 
 uint64_t __60__HAPAccessoryReachabilityClient_stopWithCompletionHandler___block_invoke(uint64_t a1)
@@ -528,16 +528,16 @@ uint64_t __60__HAPAccessoryReachabilityClient_stopWithCompletionHandler___block_
   return result;
 }
 
-- (void)startWithCompletionHandler:(id)a3
+- (void)startWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __61__HAPAccessoryReachabilityClient_startWithCompletionHandler___block_invoke;
   v11 = &unk_2786D65D8;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x231885210](&v8);
   if (self)
   {
@@ -549,7 +549,7 @@ uint64_t __60__HAPAccessoryReachabilityClient_stopWithCompletionHandler___block_
     operationQueue = 0;
   }
 
-  [(HAP2SerializedOperationQueue *)operationQueue addBlock:v6, v8, v9, v10, v11, v12];
+  [(HAP2SerializedOperationQueue *)operationQueue addBlock:v6, v8, v9, v10, v11, selfCopy];
 }
 
 void __61__HAPAccessoryReachabilityClient_startWithCompletionHandler___block_invoke(uint64_t a1)
@@ -588,16 +588,16 @@ void __61__HAPAccessoryReachabilityClient_startWithCompletionHandler___block_inv
   }
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __45__HAPAccessoryReachabilityClient_setProfile___block_invoke;
   v11 = &unk_2786D7050;
-  v12 = self;
-  v13 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v13 = profileCopy;
+  v5 = profileCopy;
   v6 = MEMORY[0x231885210](&v8);
   if (self)
   {
@@ -609,7 +609,7 @@ void __61__HAPAccessoryReachabilityClient_startWithCompletionHandler___block_inv
     operationQueue = 0;
   }
 
-  [(HAP2SerializedOperationQueue *)operationQueue addBlock:v6, v8, v9, v10, v11, v12];
+  [(HAP2SerializedOperationQueue *)operationQueue addBlock:v6, v8, v9, v10, v11, selfCopy];
 }
 
 uint64_t __45__HAPAccessoryReachabilityClient_setProfile___block_invoke(uint64_t a1)
@@ -624,9 +624,9 @@ uint64_t __45__HAPAccessoryReachabilityClient_setProfile___block_invoke(uint64_t
   return [v5 _processProfile];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   if (self)
   {
     propertyLock = self->_propertyLock;
@@ -642,8 +642,8 @@ uint64_t __45__HAPAccessoryReachabilityClient_setProfile___block_invoke(uint64_t
   v7[2] = __46__HAPAccessoryReachabilityClient_setDelegate___block_invoke;
   v7[3] = &unk_2786D7050;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   [(HAP2PropertyLock *)propertyLock performWritingBlock:v7];
 }
 
@@ -664,30 +664,30 @@ uint64_t __45__HAPAccessoryReachabilityClient_setProfile___block_invoke(uint64_t
   }
 
   v6 = identifier;
-  v7 = [(HAPAccessoryReachabilityClient *)self state];
-  if (v7 > 3)
+  state = [(HAPAccessoryReachabilityClient *)self state];
+  if (state > 3)
   {
     v8 = @"unknown";
   }
 
   else
   {
-    v8 = off_2786D4528[v7];
+    v8 = off_2786D4528[state];
   }
 
   [(HAPAccessoryReachabilityClient *)self confirmInterval];
   v10 = v9;
-  v11 = [(HAPAccessoryReachabilityClient *)self profile];
-  v12 = [v4 stringWithFormat:@"%@ identifier=%@ state=%@, confirmInterval=%f, profile=%@", v3, v6, v8, v10, v11];
+  profile = [(HAPAccessoryReachabilityClient *)self profile];
+  v12 = [v4 stringWithFormat:@"%@ identifier=%@ state=%@, confirmInterval=%f, profile=%@", v3, v6, v8, v10, profile];
 
   return v12;
 }
 
-- (HAPAccessoryReachabilityClient)initWithIdentifier:(id)a3 profile:(id)a4 operationQueue:(id)a5
+- (HAPAccessoryReachabilityClient)initWithIdentifier:(id)identifier profile:(id)profile operationQueue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  profileCopy = profile;
+  queueCopy = queue;
   v21.receiver = self;
   v21.super_class = HAPAccessoryReachabilityClient;
   v11 = [(HAPAccessoryReachabilityClient *)&v21 init];
@@ -695,15 +695,15 @@ uint64_t __45__HAPAccessoryReachabilityClient_setProfile___block_invoke(uint64_t
   if (v11)
   {
     v11->_state = 3;
-    v13 = [v8 copy];
+    v13 = [identifierCopy copy];
     identifier = v12->_identifier;
     v12->_identifier = v13;
 
-    v15 = [v9 copyWithZone:0];
+    v15 = [profileCopy copyWithZone:0];
     profile = v12->_profile;
     v12->_profile = v15;
 
-    objc_storeStrong(&v12->_operationQueue, a5);
+    objc_storeStrong(&v12->_operationQueue, queue);
     v17 = [HAP2PropertyLock lockWithName:@"HAPAccessoryReachabilityClient.propertyLock"];
     propertyLock = v12->_propertyLock;
     v12->_propertyLock = v17;

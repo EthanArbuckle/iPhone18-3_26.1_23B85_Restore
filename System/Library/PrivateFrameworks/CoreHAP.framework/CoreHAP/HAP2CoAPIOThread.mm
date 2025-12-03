@@ -1,34 +1,34 @@
 @interface HAP2CoAPIOThread
-- (BOOL)_processQueueEntry:(id)a3 context:(coap_context_t *)a4;
-- (BOOL)_processQueueWithContext:(coap_context_t *)a3;
-- (BOOL)_processSessionBlock:(id)a3 consumer:(id)a4 context:(coap_context_t *)a5;
-- (HAP2CoAPIOThread)initWithQualityOfService:(int64_t)a3 delegate:(id)a4;
-- (HAP2CoAPIOThread)initWithQualityOfService:(int64_t)a3 delegate:(id)a4 dateProvider:(id)a5;
+- (BOOL)_processQueueEntry:(id)entry context:(coap_context_t *)context;
+- (BOOL)_processQueueWithContext:(coap_context_t *)context;
+- (BOOL)_processSessionBlock:(id)block consumer:(id)consumer context:(coap_context_t *)context;
+- (HAP2CoAPIOThread)initWithQualityOfService:(int64_t)service delegate:(id)delegate;
+- (HAP2CoAPIOThread)initWithQualityOfService:(int64_t)service delegate:(id)delegate dateProvider:(id)provider;
 - (coap_context_t)_createContext;
 - (id)completedQueue;
 - (id)consumerInfo;
 - (id)delegate;
 - (id)queue;
-- (void)_cleanupWithContext:(coap_context_t *)a3;
-- (void)_enqueue:(id)a3;
-- (void)_registerConsumer:(id)a3 context:(coap_context_t *)a4;
-- (void)_unregisterConsumer:(id)a3;
+- (void)_cleanupWithContext:(coap_context_t *)context;
+- (void)_enqueue:(id)_enqueue;
+- (void)_registerConsumer:(id)consumer context:(coap_context_t *)context;
+- (void)_unregisterConsumer:(id)consumer;
 - (void)_wakeUpThread;
 - (void)cancel;
 - (void)dealloc;
 - (void)main;
-- (void)queueSessionBlockForConsumer:(id)a3 sessionBlock:(id)a4 withTimeout:(double)a5 requiresCompletion:(BOOL)a6;
-- (void)queueSessionCompletionForConsumer:(id)a3;
-- (void)registerConsumer:(id)a3;
-- (void)unregisterConsumer:(id)a3;
+- (void)queueSessionBlockForConsumer:(id)consumer sessionBlock:(id)block withTimeout:(double)timeout requiresCompletion:(BOOL)completion;
+- (void)queueSessionCompletionForConsumer:(id)consumer;
+- (void)registerConsumer:(id)consumer;
+- (void)unregisterConsumer:(id)consumer;
 @end
 
 @implementation HAP2CoAPIOThread
 
-- (BOOL)_processSessionBlock:(id)a3 consumer:(id)a4 context:(coap_context_t *)a5
+- (BOOL)_processSessionBlock:(id)block consumer:(id)consumer context:(coap_context_t *)context
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  consumerCopy = consumer;
   [(HAP2CoAPIOThread *)self _assertIsCurrentThread];
   v10 = MEMORY[0x277CCACA8];
   v11 = objc_opt_class();
@@ -40,37 +40,37 @@
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v14 = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
+  consumerInfo = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __58__HAP2CoAPIOThread__processSessionBlock_consumer_context___block_invoke;
   v17[3] = &unk_2786D5EC8;
-  v15 = v9;
+  v15 = consumerCopy;
   v18 = v15;
   v19 = &v20;
-  [v14 hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
+  [consumerInfo hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
 
-  v8[2](v8, a5, v21[3]);
+  blockCopy[2](blockCopy, context, v21[3]);
   [v24 invalidate];
-  LOBYTE(a5) = v21[3] != 0;
+  LOBYTE(context) = v21[3] != 0;
 
   _Block_object_dispose(&v20, 8);
   __HMFActivityScopeLeave();
 
-  return a5;
+  return context;
 }
 
 - (id)consumerInfo
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [a1 _assertIsCurrentThread];
-    a1 = v2[12];
+    selfCopy = self;
+    [self _assertIsCurrentThread];
+    self = selfCopy[12];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __58__HAP2CoAPIOThread__processSessionBlock_consumer_context___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -86,9 +86,9 @@ void __58__HAP2CoAPIOThread__processSessionBlock_consumer_context___block_invoke
   }
 }
 
-- (void)_unregisterConsumer:(id)a3
+- (void)_unregisterConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   [(HAP2CoAPIOThread *)self _assertIsCurrentThread];
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
@@ -102,21 +102,21 @@ void __58__HAP2CoAPIOThread__processSessionBlock_consumer_context___block_invoke
   v19 = __Block_byref_object_copy__20180;
   v20 = __Block_byref_object_dispose__20181;
   v21 = 0;
-  v9 = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
+  consumerInfo = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __40__HAP2CoAPIOThread__unregisterConsumer___block_invoke;
   v12[3] = &unk_2786D5EA0;
-  v10 = v4;
-  v14 = self;
+  v10 = consumerCopy;
+  selfCopy = self;
   v15 = &v16;
   v13 = v10;
-  [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
+  [consumerInfo hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
 
   if (v17[5])
   {
-    v11 = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
-    [v11 removeObjectsAtIndexes:v17[5]];
+    consumerInfo2 = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
+    [consumerInfo2 removeObjectsAtIndexes:v17[5]];
   }
 
   [v22 invalidate];
@@ -187,9 +187,9 @@ void __40__HAP2CoAPIOThread__unregisterConsumer___block_invoke(uint64_t a1, void
   }
 }
 
-- (void)_registerConsumer:(id)a3 context:(coap_context_t *)a4
+- (void)_registerConsumer:(id)consumer context:(coap_context_t *)context
 {
-  v6 = a3;
+  consumerCopy = consumer;
   [(HAP2CoAPIOThread *)self _assertIsCurrentThread];
   v7 = MEMORY[0x277CCACA8];
   v8 = objc_opt_class();
@@ -197,27 +197,27 @@ void __40__HAP2CoAPIOThread__unregisterConsumer___block_invoke(uint64_t a1, void
   v10 = [v7 stringWithFormat:@"%@ Register (IO Thread)", v9];
 
   v14 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v10];
-  v11 = [[HAP2CoAPIOConsumerInfo alloc] initWithConsumer:v6];
-  v12 = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
-  [v12 addObject:v11];
+  v11 = [[HAP2CoAPIOConsumerInfo alloc] initWithConsumer:consumerCopy];
+  consumerInfo = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
+  [consumerInfo addObject:v11];
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 didRegister];
+    [consumerCopy didRegister];
   }
 
-  if (a4)
+  if (context)
   {
-    -[HAP2CoAPIOConsumerInfo setSession:](v11, "setSession:", [v6 shouldOpenSessionWithContext:a4]);
+    -[HAP2CoAPIOConsumerInfo setSession:](v11, "setSession:", [consumerCopy shouldOpenSessionWithContext:context]);
     if ([(HAP2CoAPIOConsumerInfo *)v11 session])
     {
-      v13 = [(HAP2CoAPIOConsumerInfo *)v11 session];
-      if (!v13)
+      session = [(HAP2CoAPIOConsumerInfo *)v11 session];
+      if (!session)
       {
         __assert_rtn("coap_session_set_app_data", "coap_session.c", 86, "session");
       }
 
-      *(v13 + 344) = v6;
+      *(session + 344) = consumerCopy;
     }
   }
 
@@ -226,19 +226,19 @@ void __40__HAP2CoAPIOThread__unregisterConsumer___block_invoke(uint64_t a1, void
   __HMFActivityScopeLeave();
 }
 
-- (BOOL)_processQueueEntry:(id)a3 context:(coap_context_t *)a4
+- (BOOL)_processQueueEntry:(id)entry context:(coap_context_t *)context
 {
-  v6 = a3;
+  entryCopy = entry;
   [(HAP2CoAPIOThread *)self _assertIsCurrentThread];
-  if (!v6)
+  if (!entryCopy)
   {
     v7 = 0;
     v11 = 0;
     goto LABEL_12;
   }
 
-  v7 = v6[1];
-  v8 = v6[2];
+  v7 = entryCopy[1];
+  v8 = entryCopy[2];
   if (v8 == 8)
   {
     if (self)
@@ -255,14 +255,14 @@ void __40__HAP2CoAPIOThread__unregisterConsumer___block_invoke(uint64_t a1, void
     v14 = 3221225472;
     v15 = __47__HAP2CoAPIOThread__processQueueEntry_context___block_invoke;
     v16 = &unk_2786D7050;
-    v17 = self;
-    v18 = v6;
+    selfCopy = self;
+    v18 = entryCopy;
     [(HAP2Lock *)lock performBlock:&v13];
 
 LABEL_11:
-    v11 = v6[3];
+    v11 = entryCopy[3];
 LABEL_12:
-    v9 = [(HAP2CoAPIOThread *)self _processSessionBlock:v11 consumer:v7 context:a4, v13, v14, v15, v16, v17];
+    selfCopy = [(HAP2CoAPIOThread *)self _processSessionBlock:v11 consumer:v7 context:context, v13, v14, v15, v16, selfCopy];
     goto LABEL_13;
   }
 
@@ -277,12 +277,12 @@ LABEL_12:
     goto LABEL_11;
   }
 
-  [(HAP2CoAPIOThread *)self _registerConsumer:v7 context:a4];
+  [(HAP2CoAPIOThread *)self _registerConsumer:v7 context:context];
 LABEL_7:
-  v9 = 0;
+  selfCopy = 0;
 LABEL_13:
 
-  return v9;
+  return selfCopy;
 }
 
 uint64_t __47__HAP2CoAPIOThread__processQueueEntry_context___block_invoke(uint64_t a1)
@@ -296,7 +296,7 @@ uint64_t __47__HAP2CoAPIOThread__processQueueEntry_context___block_invoke(uint64
   return [v1 addObject:*(a1 + 40)];
 }
 
-- (void)_cleanupWithContext:(coap_context_t *)a3
+- (void)_cleanupWithContext:(coap_context_t *)context
 {
   [(HAP2CoAPIOThread *)self _assertIsCurrentThread];
   v19 = 0;
@@ -331,11 +331,11 @@ uint64_t __47__HAP2CoAPIOThread__processQueueEntry_context___block_invoke(uint64
   [(HAP2Lock *)v6 performBlock:v12];
 
   [v20[5] hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_20202];
-  v7 = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_68];
+  consumerInfo = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
+  [consumerInfo hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_68];
 
-  v8 = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
-  [v8 removeAllObjects];
+  consumerInfo2 = [(HAP2CoAPIOThread *)&self->super.super.isa consumerInfo];
+  [consumerInfo2 removeAllObjects];
 
   if (self)
   {
@@ -357,7 +357,7 @@ uint64_t __47__HAP2CoAPIOThread__processQueueEntry_context___block_invoke(uint64
   [(HAP2Lock *)v10 performBlock:v11];
 
   [v14[5] hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_70];
-  coap_free_context(a3);
+  coap_free_context(context);
   _Block_object_dispose(&v13, 8);
 
   _Block_object_dispose(&v19, 8);
@@ -474,20 +474,20 @@ uint64_t __40__HAP2CoAPIOThread__cleanupWithContext___block_invoke_2(uint64_t a1
 
 - (id)queue
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [a1[13] assertOwner];
-    a1 = v2[9];
+    selfCopy = self;
+    [self[13] assertOwner];
+    self = selfCopy[9];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)_processQueueWithContext:(coap_context_t *)a3
+- (BOOL)_processQueueWithContext:(coap_context_t *)context
 {
-  v3 = MEMORY[0x28223BE20](self, a2, a3);
+  v3 = MEMORY[0x28223BE20](self, a2, context);
   v5 = v4;
   v6 = v3;
   v411 = *MEMORY[0x277D85DE8];
@@ -3148,15 +3148,15 @@ void __45__HAP2CoAPIOThread__processQueueWithContext___block_invoke_62(uint64_t 
 
 - (id)completedQueue
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    [a1[13] assertOwner];
-    a1 = v2[11];
+    selfCopy = self;
+    [self[13] assertOwner];
+    self = selfCopy[11];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __45__HAP2CoAPIOThread__processQueueWithContext___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -3749,9 +3749,9 @@ LABEL_108:
   return v4;
 }
 
-- (void)_enqueue:(id)a3
+- (void)_enqueue:(id)_enqueue
 {
-  v4 = a3;
+  _enqueueCopy = _enqueue;
   if (self)
   {
     lock = self->_lock;
@@ -3766,9 +3766,9 @@ LABEL_108:
   v8 = 3221225472;
   v9 = __29__HAP2CoAPIOThread__enqueue___block_invoke;
   v10 = &unk_2786D7050;
-  v11 = v4;
-  v12 = self;
-  v6 = v4;
+  v11 = _enqueueCopy;
+  selfCopy = self;
+  v6 = _enqueueCopy;
   [(HAP2Lock *)lock performBlock:&v7];
   [(HAP2CoAPIOThread *)self _wakeUpThread:v7];
 }
@@ -3848,26 +3848,26 @@ LABEL_5:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queueSessionCompletionForConsumer:(id)a3
+- (void)queueSessionCompletionForConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"%@ Session Block Complete", v7];
 
   v10 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v8];
-  v9 = [[HAP2CoAPIOThreadQueueEntry alloc] initWithConsumer:v4 operationType:0x10 sessionBlock:0 timeout:v10 activity:0.0];
+  v9 = [[HAP2CoAPIOThreadQueueEntry alloc] initWithConsumer:consumerCopy operationType:0x10 sessionBlock:0 timeout:v10 activity:0.0];
   [(HAP2CoAPIOThread *)self _enqueue:v9];
 
   __HMFActivityScopeLeave();
 }
 
-- (void)queueSessionBlockForConsumer:(id)a3 sessionBlock:(id)a4 withTimeout:(double)a5 requiresCompletion:(BOOL)a6
+- (void)queueSessionBlockForConsumer:(id)consumer sessionBlock:(id)block withTimeout:(double)timeout requiresCompletion:(BOOL)completion
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a4;
+  completionCopy = completion;
+  consumerCopy = consumer;
+  blockCopy = block;
   v12 = MEMORY[0x277CCACA8];
   v13 = objc_opt_class();
   v14 = NSStringFromClass(v13);
@@ -3875,7 +3875,7 @@ LABEL_5:
 
   v16 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v15];
   v17 = [HAP2CoAPIOThreadQueueEntry alloc];
-  if (v6)
+  if (completionCopy)
   {
     v18 = 8;
   }
@@ -3885,37 +3885,37 @@ LABEL_5:
     v18 = 4;
   }
 
-  v19 = [(HAP2CoAPIOThreadQueueEntry *)&v17->super.isa initWithConsumer:v10 operationType:v18 sessionBlock:v11 timeout:v16 activity:a5];
+  v19 = [(HAP2CoAPIOThreadQueueEntry *)&v17->super.isa initWithConsumer:consumerCopy operationType:v18 sessionBlock:blockCopy timeout:v16 activity:timeout];
   [(HAP2CoAPIOThread *)self _enqueue:v19];
 
   __HMFActivityScopeLeave();
 }
 
-- (void)unregisterConsumer:(id)a3
+- (void)unregisterConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"%@ Unregister", v7];
 
   v10 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v8];
-  v9 = [[HAP2CoAPIOThreadQueueEntry alloc] initWithConsumer:v4 operationType:2 sessionBlock:0 timeout:v10 activity:0.0];
+  v9 = [[HAP2CoAPIOThreadQueueEntry alloc] initWithConsumer:consumerCopy operationType:2 sessionBlock:0 timeout:v10 activity:0.0];
   [(HAP2CoAPIOThread *)self _enqueue:v9];
 
   __HMFActivityScopeLeave();
 }
 
-- (void)registerConsumer:(id)a3
+- (void)registerConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   v5 = MEMORY[0x277CCACA8];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
   v8 = [v5 stringWithFormat:@"%@ Register", v7];
 
   v10 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:v8];
-  v9 = [[HAP2CoAPIOThreadQueueEntry alloc] initWithConsumer:v4 operationType:1 sessionBlock:0 timeout:v10 activity:0.0];
+  v9 = [[HAP2CoAPIOThreadQueueEntry alloc] initWithConsumer:consumerCopy operationType:1 sessionBlock:0 timeout:v10 activity:0.0];
   [(HAP2CoAPIOThread *)self _enqueue:v9];
 
   __HMFActivityScopeLeave();
@@ -3937,13 +3937,13 @@ LABEL_5:
     _os_log_impl(&dword_22AADC000, v4, OS_LOG_TYPE_INFO, "Coap IO thread started", buf, 2u);
   }
 
-  v5 = [(HAP2CoAPIOThread *)&self->super.super.isa delegate];
-  [v5 didStart];
+  delegate = [(HAP2CoAPIOThread *)&self->super.super.isa delegate];
+  [delegate didStart];
 
   log_handler = coapLogHandler;
   coap_set_log_level(7);
   coap_startup();
-  v6 = [(HAP2CoAPIOThread *)self _createContext];
+  _createContext = [(HAP2CoAPIOThread *)self _createContext];
   do
   {
     if (([(HAP2CoAPIOThread *)self isCancelled]& 1) != 0)
@@ -3952,7 +3952,7 @@ LABEL_5:
     }
 
     v7 = objc_autoreleasePoolPush();
-    v8 = [(HAP2CoAPIOThread *)self _processQueueWithContext:v6];
+    v8 = [(HAP2CoAPIOThread *)self _processQueueWithContext:_createContext];
     objc_autoreleasePoolPop(v7);
   }
 
@@ -3970,13 +3970,13 @@ LABEL_5:
   }
 
   [(HAP2CoAPIOThread *)self _processQueueWithContext:0];
-  if (v6)
+  if (_createContext)
   {
-    [(HAP2CoAPIOThread *)self _cleanupWithContext:v6];
+    [(HAP2CoAPIOThread *)self _cleanupWithContext:_createContext];
   }
 
-  v10 = [(HAP2CoAPIOThread *)&self->super.super.isa delegate];
-  [v10 didStop];
+  delegate2 = [(HAP2CoAPIOThread *)&self->super.super.isa delegate];
+  [delegate2 didStop];
 
   if (hap2LogInitialize_onceToken != -1)
   {
@@ -4031,23 +4031,23 @@ LABEL_5:
   [(HAP2CoAPIOThread *)&v5 dealloc];
 }
 
-- (HAP2CoAPIOThread)initWithQualityOfService:(int64_t)a3 delegate:(id)a4 dateProvider:(id)a5
+- (HAP2CoAPIOThread)initWithQualityOfService:(int64_t)service delegate:(id)delegate dateProvider:(id)provider
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  delegateCopy = delegate;
+  providerCopy = provider;
   v47.receiver = self;
   v47.super_class = HAP2CoAPIOThread;
   v10 = [(HAP2CoAPIOThread *)&v47 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v12 = [HAP2Lock lockWithName:@"HAP2CoAPIOThread.lock"];
     lock = v11->_lock;
     v11->_lock = v12;
 
-    objc_storeStrong(&v11->_dateProvider, a5);
+    objc_storeStrong(&v11->_dateProvider, provider);
     v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
     consumerInfo = v11->_consumerInfo;
     v11->_consumerInfo = v14;
@@ -4068,11 +4068,11 @@ LABEL_5:
     zombieSessions = v11->_zombieSessions;
     v11->_zombieSessions = v22;
 
-    v24 = [MEMORY[0x277D0F8D0] sharedPreferences];
-    v25 = [v24 preferenceForKey:@"COAPDefaultFlowControlMessageCount"];
+    mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+    v25 = [mEMORY[0x277D0F8D0] preferenceForKey:@"COAPDefaultFlowControlMessageCount"];
 
-    v26 = [v25 numberValue];
-    v11->_pendingMessagesThreshold = [v26 unsignedIntegerValue];
+    numberValue = [v25 numberValue];
+    v11->_pendingMessagesThreshold = [numberValue unsignedIntegerValue];
 
     v27 = [MEMORY[0x277CBEB58] setWithCapacity:v11->_pendingMessagesThreshold];
     pendingMessages = v11->_pendingMessages;
@@ -4172,7 +4172,7 @@ LABEL_24:
     v39 = [v36 stringWithFormat:@"com.apple.CoreHAP.%@", v38];
     [(HAP2CoAPIOThread *)v11 setName:v39];
 
-    [(HAP2CoAPIOThread *)v11 setQualityOfService:a3];
+    [(HAP2CoAPIOThread *)v11 setQualityOfService:service];
   }
 
   v40 = v11;
@@ -4182,11 +4182,11 @@ LABEL_25:
   return v40;
 }
 
-- (HAP2CoAPIOThread)initWithQualityOfService:(int64_t)a3 delegate:(id)a4
+- (HAP2CoAPIOThread)initWithQualityOfService:(int64_t)service delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v7 = objc_opt_new();
-  v8 = [(HAP2CoAPIOThread *)self initWithQualityOfService:a3 delegate:v6 dateProvider:v7];
+  v8 = [(HAP2CoAPIOThread *)self initWithQualityOfService:service delegate:delegateCopy dateProvider:v7];
 
   return v8;
 }

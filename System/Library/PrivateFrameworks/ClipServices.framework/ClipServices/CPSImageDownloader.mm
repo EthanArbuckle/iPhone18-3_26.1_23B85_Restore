@@ -1,7 +1,7 @@
 @interface CPSImageDownloader
 - (CPSImageDownloader)init;
-- (void)_downloadImageWithURL:(id)a3 completionHandler:(id)a4;
-- (void)downloadImageWithURL:(id)a3 completionHandler:(id)a4;
+- (void)_downloadImageWithURL:(id)l completionHandler:(id)handler;
+- (void)downloadImageWithURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation CPSImageDownloader
@@ -14,15 +14,15 @@
   if (v2)
   {
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.ClipServices.%@.%p", objc_opt_class(), v2];
-    v4 = [v3 UTF8String];
+    uTF8String = [v3 UTF8String];
     v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_DEFAULT, 0);
-    v6 = dispatch_queue_create(v4, v5);
+    v6 = dispatch_queue_create(uTF8String, v5);
     queue = v2->_queue;
     v2->_queue = v6;
 
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     requests = v2->_requests;
-    v2->_requests = v8;
+    v2->_requests = dictionary;
 
     v10 = v2;
   }
@@ -30,33 +30,33 @@
   return v2;
 }
 
-- (void)downloadImageWithURL:(id)a3 completionHandler:(id)a4
+- (void)downloadImageWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__CPSImageDownloader_downloadImageWithURL_completionHandler___block_invoke;
   block[3] = &unk_278DCDCF8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = lCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
   dispatch_async(queue, block);
 }
 
-- (void)_downloadImageWithURL:(id)a3 completionHandler:(id)a4
+- (void)_downloadImageWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  lCopy = l;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
-    if (v6)
+    if (lCopy)
     {
-      v9 = [(NSMutableDictionary *)self->_requests objectForKeyedSubscript:v6];
+      v9 = [(NSMutableDictionary *)self->_requests objectForKeyedSubscript:lCopy];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __62__CPSImageDownloader__downloadImageWithURL_completionHandler___block_invoke;
@@ -66,7 +66,7 @@
       v26 = v10;
       v11 = MEMORY[0x245D3D5F0](v24);
       v12 = MEMORY[0x245D3D5F0]();
-      [(NSMutableDictionary *)self->_requests setObject:v12 forKeyedSubscript:v6];
+      [(NSMutableDictionary *)self->_requests setObject:v12 forKeyedSubscript:lCopy];
 
       if (!v10)
       {
@@ -75,12 +75,12 @@
         v22[2] = __62__CPSImageDownloader__downloadImageWithURL_completionHandler___block_invoke_2;
         v22[3] = &unk_278DCE1D8;
         v22[4] = self;
-        v13 = v6;
+        v13 = lCopy;
         v23 = v13;
         v14 = MEMORY[0x245D3D5F0](v22);
         v15 = MEMORY[0x277CCAD30];
-        v16 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-        v17 = [v15 sessionWithConfiguration:v16];
+        defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+        v17 = [v15 sessionWithConfiguration:defaultSessionConfiguration];
 
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
@@ -95,7 +95,7 @@
 
     else
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }

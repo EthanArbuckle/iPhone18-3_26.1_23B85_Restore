@@ -1,8 +1,8 @@
 @interface HSModel
-- (BOOL)getHSModelForEngineMajorVersion:(unint64_t)a3 minorVersion:(unint64_t)a4 numHSModels:(unint64_t)a5 modelBuffer:(char *)a6 length:(unint64_t)a7;
+- (BOOL)getHSModelForEngineMajorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion numHSModels:(unint64_t)models modelBuffer:(char *)buffer length:(unint64_t)length;
 - (HSModel)init;
-- (void)scheduleCoreSpeechTask:(unint64_t)a3 minorVersion:(unint64_t)a4 downloadedModels:(id)a5 preinstalledModels:(id)a6;
-- (void)setDelegate:(id)a3;
+- (void)scheduleCoreSpeechTask:(unint64_t)task minorVersion:(unint64_t)version downloadedModels:(id)models preinstalledModels:(id)preinstalledModels;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation HSModel
@@ -23,59 +23,59 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000123C;
   v7[3] = &unk_1000204C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegateCopy;
+  v6 = delegateCopy;
   dispatch_sync(queue, v7);
 }
 
-- (BOOL)getHSModelForEngineMajorVersion:(unint64_t)a3 minorVersion:(unint64_t)a4 numHSModels:(unint64_t)a5 modelBuffer:(char *)a6 length:(unint64_t)a7
+- (BOOL)getHSModelForEngineMajorVersion:(unint64_t)version minorVersion:(unint64_t)minorVersion numHSModels:(unint64_t)models modelBuffer:(char *)buffer length:(unint64_t)length
 {
   v13 = +[NSMutableArray array];
   v14 = +[NSMutableArray array];
   v15 = "valid";
-  if (!a6)
+  if (!buffer)
   {
     v15 = "NULL";
   }
 
-  v42 = a7;
-  NSLog(@"getHSModelForEngineMajorVersion: majorVersion=%lu minorVersion=%lu numHSModels=%lu buffer=%s length=%zu\n", a3, a4, a5, v15, a7);
-  if (!a6)
+  lengthCopy = length;
+  NSLog(@"getHSModelForEngineMajorVersion: majorVersion=%lu minorVersion=%lu numHSModels=%lu buffer=%s length=%zu\n", version, minorVersion, models, v15, length);
+  if (!buffer)
   {
     NSLog(@"Empty buffer\n", v36);
     goto LABEL_30;
   }
 
-  v39 = a3;
-  v40 = a4;
-  v38 = self;
-  v41 = a5;
-  if (!a5)
+  versionCopy = version;
+  minorVersionCopy = minorVersion;
+  selfCopy = self;
+  modelsCopy = models;
+  if (!models)
   {
     v21 = 0;
     v20 = 0;
     v19 = 0;
     v18 = 0;
 LABEL_25:
-    if (v21 == v41)
+    if (v21 == modelsCopy)
     {
-      NSLog(@"Requesting HSModel: majorVersion=%lu minorVersion=%lu assetCount=%d downloaded[%lu] preInstalled[%lu], on Queue: %@\n", v39, v40, v21, [v13 count], objc_msgSend(v14, "count"), v38->_queue);
-      [(HSModel *)v38 scheduleCoreSpeechTask:v39 minorVersion:v40 downloadedModels:v13 preinstalledModels:v14];
+      NSLog(@"Requesting HSModel: majorVersion=%lu minorVersion=%lu assetCount=%d downloaded[%lu] preInstalled[%lu], on Queue: %@\n", versionCopy, minorVersionCopy, v21, [v13 count], objc_msgSend(v14, "count"), selfCopy->_queue);
+      [(HSModel *)selfCopy scheduleCoreSpeechTask:versionCopy minorVersion:minorVersionCopy downloadedModels:v13 preinstalledModels:v14];
 
       LOBYTE(v20) = 1;
       goto LABEL_27;
     }
 
-    NSLog(@"assetCount %u != numHSModels %lu\n", v21, v41);
+    NSLog(@"assetCount %u != numHSModels %lu\n", v21, modelsCopy);
 LABEL_29:
 
 LABEL_30:
@@ -83,10 +83,10 @@ LABEL_30:
     goto LABEL_27;
   }
 
-  v16 = a7;
-  if (a7 < 4)
+  lengthCopy2 = length;
+  if (length < 4)
   {
-    NSLog(@"Invalid length=%zu\n", a7);
+    NSLog(@"Invalid length=%zu\n", length);
     goto LABEL_30;
   }
 
@@ -98,19 +98,19 @@ LABEL_30:
   v22 = 0;
   while (1)
   {
-    v23 = a6[v17];
+    v23 = buffer[v17];
     if (v23 >= 2)
     {
-      NSLog(@"Unexpected modelType = 0x%x\n", a6[v17], v37);
+      NSLog(@"Unexpected modelType = 0x%x\n", buffer[v17], v37);
       goto LABEL_29;
     }
 
     v24 = v13;
     v25 = (v22 + 2);
-    v26 = a6[v22 + 1];
-    if (v16 - v25 <= v26)
+    v26 = buffer[v22 + 1];
+    if (lengthCopy2 - v25 <= v26)
     {
-      NSLog(@"Bad buffer: remaining bytes %lu is less than localeCodeLen %d\n", v16 - v25, v26);
+      NSLog(@"Bad buffer: remaining bytes %lu is less than localeCodeLen %d\n", lengthCopy2 - v25, v26);
 LABEL_34:
 
       goto LABEL_37;
@@ -120,7 +120,7 @@ LABEL_34:
     {
     }
 
-    v20 = [[NSString alloc] initWithBytes:&a6[v25] length:v26 encoding:4];
+    v20 = [[NSString alloc] initWithBytes:&buffer[v25] length:v26 encoding:4];
     if (!v20)
     {
       NSLog(@"Failed to create localeCode\n");
@@ -130,10 +130,10 @@ LABEL_34:
 
     v27 = v25 + v26;
     v28 = (v25 + v26 + 1);
-    v29 = a6[v27];
-    if (v42 - v28 < v29)
+    v29 = buffer[v27];
+    if (lengthCopy - v28 < v29)
     {
-      NSLog(@"Bad buffer: remaining bytes %lu is less than hashLen %d\n", v42 - v28, v29);
+      NSLog(@"Bad buffer: remaining bytes %lu is less than hashLen %d\n", lengthCopy - v28, v29);
       goto LABEL_34;
     }
 
@@ -141,7 +141,7 @@ LABEL_34:
     {
     }
 
-    v30 = [[NSString alloc] initWithBytes:&a6[v28] length:v29 encoding:4];
+    v30 = [[NSString alloc] initWithBytes:&buffer[v28] length:v29 encoding:4];
     if (!v30)
     {
       NSLog(@"Failed to create hash\n");
@@ -193,9 +193,9 @@ LABEL_34:
 
     [v34 addObject:v18];
     v21 = (v21 + 1);
-    v16 = v42;
+    lengthCopy2 = lengthCopy;
     v22 = v17;
-    if (v42 - 3 <= v17)
+    if (lengthCopy - 3 <= v17)
     {
       goto LABEL_25;
     }
@@ -213,10 +213,10 @@ LABEL_27:
   return v20;
 }
 
-- (void)scheduleCoreSpeechTask:(unint64_t)a3 minorVersion:(unint64_t)a4 downloadedModels:(id)a5 preinstalledModels:(id)a6
+- (void)scheduleCoreSpeechTask:(unint64_t)task minorVersion:(unint64_t)version downloadedModels:(id)models preinstalledModels:(id)preinstalledModels
 {
-  v10 = a5;
-  v11 = a6;
+  modelsCopy = models;
+  preinstalledModelsCopy = preinstalledModels;
   if (self->delegate)
   {
     v15[0] = _NSConcreteStackBlock;
@@ -243,7 +243,7 @@ LABEL_27:
 
     v14 = v13;
     _Block_object_dispose(&v16, 8);
-    [v13 voiceTriggerRTModelForVersion:a3 minorVersion:a4 downloadedModels:v10 preinstalledModels:v11 completion:v12];
+    [v13 voiceTriggerRTModelForVersion:task minorVersion:version downloadedModels:modelsCopy preinstalledModels:preinstalledModelsCopy completion:v12];
   }
 
   else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))

@@ -1,23 +1,23 @@
 @interface AVAudioDeviceTestProcessingChain
-- (AVAudioDeviceTestProcessingChain)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (AVAudioDeviceTestProcessingChain)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AVAudioDeviceTestProcessingChain
 
-- (AVAudioDeviceTestProcessingChain)initWithCoder:(id)a3
+- (AVAudioDeviceTestProcessingChain)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = AVAudioDeviceTestProcessingChain;
   v5 = [(AVAudioDeviceTestProcessingChain *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"graphURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"graphURL"];
     graphURL = v5->_graphURL;
     v5->_graphURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"processingStripURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"processingStripURL"];
     processingStripURL = v5->_processingStripURL;
     v5->_processingStripURL = v8;
   }
@@ -25,12 +25,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   graphURL = self->_graphURL;
-  v5 = a3;
-  [v5 encodeObject:graphURL forKey:@"graphURL"];
-  [v5 encodeObject:self->_processingStripURL forKey:@"processingStripURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:graphURL forKey:@"graphURL"];
+  [coderCopy encodeObject:self->_processingStripURL forKey:@"processingStripURL"];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface SKUIBrowseHeaderCollectionViewCell
-- (SKUIBrowseHeaderCollectionViewCell)initWithFrame:(CGRect)a3;
+- (SKUIBrowseHeaderCollectionViewCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SKUIBrowseHeaderCollectionViewCell
 
-- (SKUIBrowseHeaderCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUIBrowseHeaderCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIBrowseHeaderCollectionViewCell initWithFrame:];
@@ -17,13 +17,13 @@
 
   v18.receiver = self;
   v18.super_class = SKUIBrowseHeaderCollectionViewCell;
-  v8 = [(SKUICollectionViewCell *)&v18 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUICollectionViewCell *)&v18 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v10 = [(SKUIBrowseHeaderCollectionViewCell *)v8 contentView];
+    contentView = [(SKUIBrowseHeaderCollectionViewCell *)height contentView];
     v11 = [MEMORY[0x277D75348] colorWithWhite:0.94 alpha:1.0];
-    [v10 setBackgroundColor:v11];
+    [contentView setBackgroundColor:v11];
 
     [(SKUIBrowseHeaderCollectionViewCell *)v9 setUserInteractionEnabled:0];
     v12 = objc_alloc_init(SKUIGroupedHeaderView);
@@ -32,12 +32,12 @@
 
     [(SKUIGroupedHeaderView *)v9->_headerView setAutoresizingMask:18];
     v14 = v9->_headerView;
-    v15 = [(SKUIBrowseHeaderCollectionViewCell *)v9 contentView];
-    [v15 bounds];
+    contentView2 = [(SKUIBrowseHeaderCollectionViewCell *)v9 contentView];
+    [contentView2 bounds];
     [(SKUIGroupedHeaderView *)v14 setFrame:?];
 
-    v16 = [(SKUIBrowseHeaderCollectionViewCell *)v9 contentView];
-    [v16 addSubview:v9->_headerView];
+    contentView3 = [(SKUIBrowseHeaderCollectionViewCell *)v9 contentView];
+    [contentView3 addSubview:v9->_headerView];
   }
 
   return v9;

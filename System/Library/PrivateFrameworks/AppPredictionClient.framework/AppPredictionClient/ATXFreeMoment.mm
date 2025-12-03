@@ -1,60 +1,60 @@
 @interface ATXFreeMoment
-- (ATXFreeMoment)initWithCoder:(id)a3;
-- (ATXFreeMoment)initWithDateRange:(id)a3 score:(double)a4;
+- (ATXFreeMoment)initWithCoder:(id)coder;
+- (ATXFreeMoment)initWithDateRange:(id)range score:(double)score;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXFreeMoment
 
-- (ATXFreeMoment)initWithDateRange:(id)a3 score:(double)a4
+- (ATXFreeMoment)initWithDateRange:(id)range score:(double)score
 {
-  v7 = a3;
+  rangeCopy = range;
   v11.receiver = self;
   v11.super_class = ATXFreeMoment;
   v8 = [(ATXFreeMoment *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_dateRange, a3);
-    v9->_score = a4;
+    objc_storeStrong(&v8->_dateRange, range);
+    v9->_score = score;
   }
 
   return v9;
 }
 
-- (ATXFreeMoment)initWithCoder:(id)a3
+- (ATXFreeMoment)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateRange"];
-  [v4 decodeDoubleForKey:@"score"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateRange"];
+  [coderCopy decodeDoubleForKey:@"score"];
   v7 = v6;
 
   v8 = [(ATXFreeMoment *)self initWithDateRange:v5 score:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ATXFreeMoment *)self dateRange];
-  [v5 encodeObject:v4 forKey:@"dateRange"];
+  coderCopy = coder;
+  dateRange = [(ATXFreeMoment *)self dateRange];
+  [coderCopy encodeObject:dateRange forKey:@"dateRange"];
 
   [(ATXFreeMoment *)self score];
-  [v5 encodeDouble:@"score" forKey:?];
+  [coderCopy encodeDouble:@"score" forKey:?];
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = MEMORY[0x1E696AB78];
-  v5 = [(ATXFreeMoment *)self dateRange];
-  v6 = [v5 startDate];
-  v7 = [v4 localizedStringFromDate:v6 dateStyle:1 timeStyle:1];
+  dateRange = [(ATXFreeMoment *)self dateRange];
+  startDate = [dateRange startDate];
+  v7 = [v4 localizedStringFromDate:startDate dateStyle:1 timeStyle:1];
   v8 = MEMORY[0x1E696AB78];
-  v9 = [(ATXFreeMoment *)self dateRange];
-  v10 = [v9 endDate];
-  v11 = [v8 localizedStringFromDate:v10 dateStyle:1 timeStyle:1];
+  dateRange2 = [(ATXFreeMoment *)self dateRange];
+  endDate = [dateRange2 endDate];
+  v11 = [v8 localizedStringFromDate:endDate dateStyle:1 timeStyle:1];
   [(ATXFreeMoment *)self score];
   v13 = [v3 initWithFormat:@"<Start: %@, End: %@, Score: %f>", v7, v11, v12];
 

@@ -21,7 +21,7 @@
 
 - (void)pcsIdentityChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_2250E2E28();
 }
 

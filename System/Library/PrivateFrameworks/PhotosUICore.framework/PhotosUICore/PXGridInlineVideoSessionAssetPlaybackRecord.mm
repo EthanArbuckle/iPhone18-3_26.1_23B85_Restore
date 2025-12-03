@@ -2,20 +2,20 @@
 + (OS_dispatch_queue)videoSessionQueue;
 - (CGAffineTransform)preferredTransform;
 - (NSString)videoStatusDescription;
-- (PXGridInlineVideoSessionAssetPlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 spriteReference:(id)a5 playLivePhotosWithSettlingEffectIfPossible:(BOOL)a6;
+- (PXGridInlineVideoSessionAssetPlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider spriteReference:(id)reference playLivePhotosWithSettlingEffectIfPossible:(BOOL)possible;
 - (PXVideoSession)videoSession;
 - (__CVBuffer)currentPixelBuffer;
-- (void)_configureVideoSession:(id)a3;
-- (void)_setCurrentPixelBuffer:(__CVBuffer *)a3;
-- (void)_videoQueue_ensureVideoSessionWithDesiredPlayState:(int64_t)a3;
+- (void)_configureVideoSession:(id)session;
+- (void)_setCurrentPixelBuffer:(__CVBuffer *)buffer;
+- (void)_videoQueue_ensureVideoSessionWithDesiredPlayState:(int64_t)state;
 - (void)_videoQueue_relinquishVideoSession;
 - (void)_videoQueue_updateCurrentPixelBuffer;
 - (void)dealloc;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
 - (void)prepareForInvisible;
 - (void)prepareForVisible;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setVideoSession:(id)a3;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setVideoSession:(id)session;
 @end
 
 @implementation PXGridInlineVideoSessionAssetPlaybackRecord
@@ -44,29 +44,29 @@
   return currentPixelBuffer;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXGridInlineVideoSessionAssetPlaybackRecordVideoSessionObservableContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXGridInlineVideoSessionAssetPlaybackRecordVideoSessionObservableContext != context)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXGridInlineVideoSessionAssetPlaybackRecord.m" lineNumber:258 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGridInlineVideoSessionAssetPlaybackRecord.m" lineNumber:258 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if ((v6 & 0x400) != 0)
+  v10 = observableCopy;
+  if ((changeCopy & 0x400) != 0)
   {
     objc_initWeak(&location, self);
-    v11 = [objc_opt_class() videoSessionQueue];
+    videoSessionQueue = [objc_opt_class() videoSessionQueue];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __76__PXGridInlineVideoSessionAssetPlaybackRecord_observable_didChange_context___block_invoke;
     v13[3] = &unk_1E774C318;
     objc_copyWeak(&v14, &location);
-    dispatch_async(v11, v13);
+    dispatch_async(videoSessionQueue, v13);
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -79,12 +79,12 @@ void __76__PXGridInlineVideoSessionAssetPlaybackRecord_observable_didChange_cont
   [WeakRetained _videoQueue_updateCurrentPixelBuffer];
 }
 
-- (void)setVideoSession:(id)a3
+- (void)setVideoSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   os_unfair_lock_lock(&self->_ivarLock);
   videoSession = self->_videoSession;
-  self->_videoSession = v4;
+  self->_videoSession = sessionCopy;
 
   os_unfair_lock_unlock(&self->_ivarLock);
 }
@@ -98,11 +98,11 @@ void __76__PXGridInlineVideoSessionAssetPlaybackRecord_observable_didChange_cont
   return v3;
 }
 
-- (void)_setCurrentPixelBuffer:(__CVBuffer *)a3
+- (void)_setCurrentPixelBuffer:(__CVBuffer *)buffer
 {
   os_unfair_lock_lock(&self->_ivarLock);
   currentPixelBuffer = self->_currentPixelBuffer;
-  if (currentPixelBuffer == a3)
+  if (currentPixelBuffer == buffer)
   {
 
     os_unfair_lock_unlock(&self->_ivarLock);
@@ -111,39 +111,39 @@ void __76__PXGridInlineVideoSessionAssetPlaybackRecord_observable_didChange_cont
   else
   {
     CVPixelBufferRelease(currentPixelBuffer);
-    self->_currentPixelBuffer = CVPixelBufferRetain(a3);
+    self->_currentPixelBuffer = CVPixelBufferRetain(buffer);
     os_unfair_lock_unlock(&self->_ivarLock);
-    v6 = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self pixelBufferDidChangeHandler];
+    pixelBufferDidChangeHandler = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self pixelBufferDidChangeHandler];
 
-    if (v6)
+    if (pixelBufferDidChangeHandler)
     {
-      v7 = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self pixelBufferDidChangeHandler];
-      v7[2]();
+      pixelBufferDidChangeHandler2 = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self pixelBufferDidChangeHandler];
+      pixelBufferDidChangeHandler2[2]();
     }
   }
 }
 
 - (void)_videoQueue_updateCurrentPixelBuffer
 {
-  v3 = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self videoSession];
-  v4 = [v3 currentPixelBuffer];
+  videoSession = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self videoSession];
+  currentPixelBuffer = [videoSession currentPixelBuffer];
 
-  [(PXGridInlineVideoSessionAssetPlaybackRecord *)self _setCurrentPixelBuffer:v4];
+  [(PXGridInlineVideoSessionAssetPlaybackRecord *)self _setCurrentPixelBuffer:currentPixelBuffer];
 }
 
-- (void)_configureVideoSession:(id)a3
+- (void)_configureVideoSession:(id)session
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sessionCopy = session;
+  v5 = sessionCopy;
+  if (sessionCopy)
   {
-    [v4 setVolume:1 withFade:0.0];
+    [sessionCopy setVolume:1 withFade:0.0];
     [v5 setPreventsSleepDuringVideoPlayback:0];
     [v5 setAllowsExternalPlayback:0];
-    v6 = [(PXGridInlinePlaybackRecord *)self displayAsset];
-    v7 = [v6 playbackStyle];
+    displayAsset = [(PXGridInlinePlaybackRecord *)self displayAsset];
+    playbackStyle = [displayAsset playbackStyle];
 
-    if (v7 == 5 || v7 == 3)
+    if (playbackStyle == 5 || playbackStyle == 3)
     {
       v8 = *(MEMORY[0x1E6960C98] + 16);
       v12 = *MEMORY[0x1E6960C98];
@@ -167,33 +167,33 @@ void __76__PXGridInlineVideoSessionAssetPlaybackRecord_observable_didChange_cont
 
 - (void)_videoQueue_relinquishVideoSession
 {
-  v4 = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self videoSession];
-  [v4 cancelPixelBufferOutputWithRequestIdentifier:self->_bufferRequestIdentifier];
+  videoSession = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self videoSession];
+  [videoSession cancelPixelBufferOutputWithRequestIdentifier:self->_bufferRequestIdentifier];
   v3 = +[PXVideoSessionManager sharedInstance];
-  [v3 checkInVideoSession:v4];
+  [v3 checkInVideoSession:videoSession];
 
   [(PXGridInlineVideoSessionAssetPlaybackRecord *)self setVideoSession:0];
   [(PXGridInlineVideoSessionAssetPlaybackRecord *)self _setCurrentPixelBuffer:0];
 }
 
-- (void)_videoQueue_ensureVideoSessionWithDesiredPlayState:(int64_t)a3
+- (void)_videoQueue_ensureVideoSessionWithDesiredPlayState:(int64_t)state
 {
-  v5 = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self videoSession];
-  if (!v5)
+  videoSession = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self videoSession];
+  if (!videoSession)
   {
-    v6 = [(PXGridInlinePlaybackRecord *)self displayAsset];
-    v7 = [v6 playbackStyle];
+    displayAsset = [(PXGridInlinePlaybackRecord *)self displayAsset];
+    playbackStyle = [displayAsset playbackStyle];
     v8 = objc_alloc_init(PXVideoSessionManagerDisplayAssetOptions);
     [(PXVideoSessionManagerDisplayAssetOptions *)v8 setShouldPlayLivePhotosWithSettlingEffectIfPossible:self->_playLivePhotosWithSettlingEffectIfPossible];
     [(PXVideoSessionManagerDisplayAssetOptions *)v8 setShouldStabilizeLivePhotosIfPossible:1];
-    [(PXVideoSessionManagerDisplayAssetOptions *)v8 setIsAudioAllowed:v7 != 3];
+    [(PXVideoSessionManagerDisplayAssetOptions *)v8 setIsAudioAllowed:playbackStyle != 3];
     [(PXVideoSessionManagerDisplayAssetOptions *)v8 setShouldCrossfadeLivePhotosWhenLooping:1];
     [(PXGridInlinePlaybackRecord *)self bestVideoTimeRange];
     v14[0] = v14[3];
     v14[1] = v14[4];
     v14[2] = v14[5];
     [(PXVideoSessionManagerDisplayAssetOptions *)v8 setLivePhotoLoopTimeRange:v14];
-    if (v7 == 5)
+    if (playbackStyle == 5)
     {
       v9 = 1;
     }
@@ -205,26 +205,26 @@ void __76__PXGridInlineVideoSessionAssetPlaybackRecord_observable_didChange_cont
 
     [(PXVideoSessionManagerDisplayAssetOptions *)v8 setAudioSessionKind:v9];
     v10 = +[PXVideoSessionManager sharedInstance];
-    v11 = [(PXGridInlinePlaybackRecord *)self displayAsset];
-    v12 = [(PXGridInlinePlaybackRecord *)self mediaProvider];
-    v5 = [v10 videoSessionForAsset:v11 withOptions:v8 mediaProvider:v12];
+    displayAsset2 = [(PXGridInlinePlaybackRecord *)self displayAsset];
+    mediaProvider = [(PXGridInlinePlaybackRecord *)self mediaProvider];
+    videoSession = [v10 videoSessionForAsset:displayAsset2 withOptions:v8 mediaProvider:mediaProvider];
 
-    if ([v6 playbackStyle] != 3)
+    if ([displayAsset playbackStyle] != 3)
     {
-      [v5 prewarmVideoView];
+      [videoSession prewarmVideoView];
     }
 
-    [v5 loadIfNeededWithPriority:0];
-    [v5 registerChangeObserver:self context:PXGridInlineVideoSessionAssetPlaybackRecordVideoSessionObservableContext];
-    [v5 requestPixelBufferOutputWithRequestIdentifier:self->_bufferRequestIdentifier maxOutputSize:{1920.0, 1080.0}];
+    [videoSession loadIfNeededWithPriority:0];
+    [videoSession registerChangeObserver:self context:PXGridInlineVideoSessionAssetPlaybackRecordVideoSessionObservableContext];
+    [videoSession requestPixelBufferOutputWithRequestIdentifier:self->_bufferRequestIdentifier maxOutputSize:{1920.0, 1080.0}];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __98__PXGridInlineVideoSessionAssetPlaybackRecord__videoQueue_ensureVideoSessionWithDesiredPlayState___block_invoke;
     v13[3] = &unk_1E7731640;
     v13[4] = self;
-    v13[5] = a3;
-    [v5 performChanges:v13 withPresentationContext:0 presenter:0];
-    [(PXGridInlineVideoSessionAssetPlaybackRecord *)self setVideoSession:v5];
+    v13[5] = state;
+    [videoSession performChanges:v13 withPresentationContext:0 presenter:0];
+    [(PXGridInlineVideoSessionAssetPlaybackRecord *)self setVideoSession:videoSession];
   }
 }
 
@@ -238,42 +238,42 @@ void __98__PXGridInlineVideoSessionAssetPlaybackRecord__videoQueue_ensureVideoSe
 
 - (void)prepareForInvisible
 {
-  v3 = [objc_opt_class() videoSessionQueue];
+  videoSessionQueue = [objc_opt_class() videoSessionQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66__PXGridInlineVideoSessionAssetPlaybackRecord_prepareForInvisible__block_invoke;
   block[3] = &unk_1E774C648;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(videoSessionQueue, block);
 }
 
 - (void)prepareForVisible
 {
   if (!self->_playLivePhotosWithSettlingEffectIfPossible)
   {
-    v3 = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self desiredPlayState];
-    v4 = [objc_opt_class() videoSessionQueue];
+    desiredPlayState = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self desiredPlayState];
+    videoSessionQueue = [objc_opt_class() videoSessionQueue];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __64__PXGridInlineVideoSessionAssetPlaybackRecord_prepareForVisible__block_invoke;
     v5[3] = &unk_1E77498A0;
     v5[4] = self;
-    v5[5] = v3;
-    dispatch_async(v4, v5);
+    v5[5] = desiredPlayState;
+    dispatch_async(videoSessionQueue, v5);
   }
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
-  self->_desiredPlayState = a3;
-  v5 = [objc_opt_class() videoSessionQueue];
+  self->_desiredPlayState = state;
+  videoSessionQueue = [objc_opt_class() videoSessionQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __67__PXGridInlineVideoSessionAssetPlaybackRecord_setDesiredPlayState___block_invoke;
   v6[3] = &unk_1E77498A0;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_async(v5, v6);
+  v6[5] = state;
+  dispatch_async(videoSessionQueue, v6);
 }
 
 void __67__PXGridInlineVideoSessionAssetPlaybackRecord_setDesiredPlayState___block_invoke(uint64_t a1)
@@ -301,19 +301,19 @@ void __67__PXGridInlineVideoSessionAssetPlaybackRecord_setDesiredPlayState___blo
 
 - (NSString)videoStatusDescription
 {
-  v2 = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self videoSession];
-  v3 = v2;
-  if (v2)
+  videoSession = [(PXGridInlineVideoSessionAssetPlaybackRecord *)self videoSession];
+  v3 = videoSession;
+  if (videoSession)
   {
-    v4 = [v2 statusDescription];
+    statusDescription = [videoSession statusDescription];
   }
 
   else
   {
-    v4 = @"Video Not Loaded";
+    statusDescription = @"Video Not Loaded";
   }
 
-  return v4;
+  return statusDescription;
 }
 
 - (void)dealloc
@@ -332,24 +332,24 @@ void __67__PXGridInlineVideoSessionAssetPlaybackRecord_setDesiredPlayState___blo
   [(PXGridInlineVideoSessionAssetPlaybackRecord *)&v6 dealloc];
 }
 
-- (PXGridInlineVideoSessionAssetPlaybackRecord)initWithDisplayAsset:(id)a3 mediaProvider:(id)a4 spriteReference:(id)a5 playLivePhotosWithSettlingEffectIfPossible:(BOOL)a6
+- (PXGridInlineVideoSessionAssetPlaybackRecord)initWithDisplayAsset:(id)asset mediaProvider:(id)provider spriteReference:(id)reference playLivePhotosWithSettlingEffectIfPossible:(BOOL)possible
 {
-  v10 = a3;
+  assetCopy = asset;
   v24.receiver = self;
   v24.super_class = PXGridInlineVideoSessionAssetPlaybackRecord;
-  v11 = [(PXGridInlinePlaybackRecord *)&v24 initWithDisplayAsset:v10 mediaProvider:a4 geometryReference:a5];
+  v11 = [(PXGridInlinePlaybackRecord *)&v24 initWithDisplayAsset:assetCopy mediaProvider:provider geometryReference:reference];
   v12 = v11;
   if (v11)
   {
-    PXUpdateInlinePlaybackRecordForPhotoKit(v11, v10);
+    PXUpdateInlinePlaybackRecordForPhotoKit(v11, assetCopy);
     v12->_ivarLock._os_unfair_lock_opaque = 0;
-    v12->_playLivePhotosWithSettlingEffectIfPossible = a6;
+    v12->_playLivePhotosWithSettlingEffectIfPossible = possible;
     v13 = MEMORY[0x1E696AEC0];
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [MEMORY[0x1E696AFB0] UUID];
-    v17 = [v16 UUIDString];
-    v18 = [v13 stringWithFormat:@"%@-%@", v15, v17];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v18 = [v13 stringWithFormat:@"%@-%@", v15, uUIDString];
 
     if (v12->_playLivePhotosWithSettlingEffectIfPossible)
     {

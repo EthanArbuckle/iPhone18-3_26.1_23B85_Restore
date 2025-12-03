@@ -1,17 +1,17 @@
 @interface OKPageViewZone
 - (CGRect)frame;
-- (OKPageViewZone)initWithFrame:(CGRect)a3;
+- (OKPageViewZone)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 @end
 
 @implementation OKPageViewZone
 
-- (OKPageViewZone)initWithFrame:(CGRect)a3
+- (OKPageViewZone)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10.receiver = self;
   v10.super_class = OKPageViewZone;
   v7 = [(OKPageViewZone *)&v10 init];

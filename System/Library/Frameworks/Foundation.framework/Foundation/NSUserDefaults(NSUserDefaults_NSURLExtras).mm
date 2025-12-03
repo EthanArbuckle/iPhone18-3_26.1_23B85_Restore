@@ -8,13 +8,13 @@
 
 + (__CFString)_web_preferredLanguageCode
 {
-  v2 = [a1 standardUserDefaults];
+  standardUserDefaults = [self standardUserDefaults];
   os_unfair_lock_lock(&_MergedGlobals_127);
   v3 = qword_1ED43FC58;
   v4 = qword_1ED43FC58;
   if (!qword_1ED43FC58)
   {
-    v5 = [v2 stringArrayForKey:@"AppleLanguages"];
+    v5 = [standardUserDefaults stringArrayForKey:@"AppleLanguages"];
     if ([v5 count])
     {
       v4 = [objc_msgSend(objc_msgSend(v5 objectAtIndex:{0), "_web_HTTPStyleLanguageCode"), "copy"}];
@@ -32,7 +32,7 @@
   os_unfair_lock_unlock(&_MergedGlobals_127);
   if (!v3)
   {
-    [a1 _web_addDefaultsChangeObserver];
+    [self _web_addDefaultsChangeObserver];
   }
 
   return v6;

@@ -11,18 +11,18 @@
   v3 = a3;
   if ([v3 length] == 8)
   {
-    v4 = [v3 bytes];
+    bytes = [v3 bytes];
 
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:bswap64(*v4)];
-    [v5 description];
+    hmbDescription = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:bswap64(*bytes)];
+    [hmbDescription description];
   }
 
   else
   {
     v6 = MEMORY[0x277CCACA8];
-    v5 = [v3 hmbDescription];
+    hmbDescription = [v3 hmbDescription];
 
-    [v6 stringWithFormat:@"<MALFORMED NUMBER: %@>", v5];
+    [v6 stringWithFormat:@"<MALFORMED NUMBER: %@>", hmbDescription];
   }
   v7 = ;
 
@@ -34,8 +34,8 @@
   v3 = a3;
   if ([v3 length] == 8)
   {
-    v4 = [v3 bytes];
-    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:bswap64(*v4)];
+    bytes = [v3 bytes];
+    v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:bswap64(*bytes)];
   }
 
   else

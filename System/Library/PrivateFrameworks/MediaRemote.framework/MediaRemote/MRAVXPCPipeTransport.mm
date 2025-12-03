@@ -1,28 +1,28 @@
 @interface MRAVXPCPipeTransport
-- (BOOL)getInputStream:(id *)a3 outputStream:(id *)a4 userInfo:(id)a5;
+- (BOOL)getInputStream:(id *)stream outputStream:(id *)outputStream userInfo:(id)info;
 - (BOOL)shouldUseSystemAuthenticationPrompt;
-- (MRAVXPCPipeTransport)initWithOutputDevice:(id)a3 pipeEndpoint:(id)a4;
+- (MRAVXPCPipeTransport)initWithOutputDevice:(id)device pipeEndpoint:(id)endpoint;
 - (NSString)description;
-- (id)createConnectionWithUserInfo:(id)a3;
+- (id)createConnectionWithUserInfo:(id)info;
 - (id)error;
 - (void)_onQueue_resetStreams;
 - (void)dealloc;
 - (void)reset;
-- (void)sendData:(id)a3;
-- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)a3;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)sendData:(id)data;
+- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)prompt;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation MRAVXPCPipeTransport
 
-- (MRAVXPCPipeTransport)initWithOutputDevice:(id)a3 pipeEndpoint:(id)a4
+- (MRAVXPCPipeTransport)initWithOutputDevice:(id)device pipeEndpoint:(id)endpoint
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  deviceCopy = device;
+  endpointCopy = endpoint;
+  v10 = endpointCopy;
+  if (deviceCopy)
   {
-    if (v9)
+    if (endpointCopy)
     {
       goto LABEL_3;
     }
@@ -49,7 +49,7 @@ LABEL_3:
     serialQueue = v11->_serialQueue;
     v11->_serialQueue = v13;
 
-    objc_storeStrong(&v11->_outputDevice, a3);
+    objc_storeStrong(&v11->_outputDevice, device);
     v15 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v10];
     pipeConnection = v11->_pipeConnection;
     v11->_pipeConnection = v15;
@@ -182,7 +182,7 @@ intptr_t __58__MRAVXPCPipeTransport_initWithOutputDevice_pipeEndpoint___block_in
   return v3;
 }
 
-- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)a3
+- (void)setShouldUseSystemAuthenticationPrompt:(BOOL)prompt
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -190,7 +190,7 @@ intptr_t __58__MRAVXPCPipeTransport_initWithOutputDevice_pipeEndpoint___block_in
   v4[2] = __63__MRAVXPCPipeTransport_setShouldUseSystemAuthenticationPrompt___block_invoke;
   v4[3] = &unk_1E769BBE0;
   v4[4] = self;
-  v5 = a3;
+  promptCopy = prompt;
   dispatch_sync(serialQueue, v4);
 }
 
@@ -224,11 +224,11 @@ void __29__MRAVXPCPipeTransport_error__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)createConnectionWithUserInfo:(id)a3
+- (id)createConnectionWithUserInfo:(id)info
 {
   v8 = 0;
   v9 = 0;
-  v3 = [(MRAVXPCPipeTransport *)self getInputStream:&v9 outputStream:&v8 userInfo:a3];
+  v3 = [(MRAVXPCPipeTransport *)self getInputStream:&v9 outputStream:&v8 userInfo:info];
   v4 = v9;
   v5 = v8;
   v6 = 0;
@@ -240,7 +240,7 @@ void __29__MRAVXPCPipeTransport_error__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (BOOL)getInputStream:(id *)a3 outputStream:(id *)a4 userInfo:(id)a5
+- (BOOL)getInputStream:(id *)stream outputStream:(id *)outputStream userInfo:(id)info
 {
   v20 = 0;
   v21 = &v20;
@@ -277,14 +277,14 @@ void __29__MRAVXPCPipeTransport_error__block_invoke(uint64_t a1)
   block[7] = v12;
   block[8] = &v14;
   dispatch_sync(serialQueue, block);
-  if (a3)
+  if (stream)
   {
-    *a3 = v21[5];
+    *stream = v21[5];
   }
 
-  if (a4)
+  if (outputStream)
   {
-    *a4 = v15[5];
+    *outputStream = v15[5];
   }
 
   _Block_object_dispose(v10, 8);
@@ -348,20 +348,20 @@ void *__61__MRAVXPCPipeTransport_getInputStream_outputStream_userInfo___block_in
   dispatch_sync(serialQueue, block);
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a4 == 2)
+  if (event == 2)
   {
     inputStreamInternal = self->_inputStreamInternal;
-    if (inputStreamInternal == a3)
+    if (inputStreamInternal == stream)
     {
       v6 = [(NSInputStream *)inputStreamInternal read:v10 maxLength:35840];
       if (v6)
       {
         v7 = [MEMORY[0x1E695DEF0] dataWithBytes:v10 length:v6];
-        v8 = [(NSXPCConnection *)self->_pipeConnection remoteObjectProxy];
-        [v8 sendData:v7];
+        remoteObjectProxy = [(NSXPCConnection *)self->_pipeConnection remoteObjectProxy];
+        [remoteObjectProxy sendData:v7];
       }
     }
   }
@@ -369,9 +369,9 @@ void *__61__MRAVXPCPipeTransport_getInputStream_outputStream_userInfo___block_in
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendData:(id)a3
+- (void)sendData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_initWeak(&location, self);
   runLoop = self->_runLoop;
   v7[0] = MEMORY[0x1E69E9820];
@@ -379,7 +379,7 @@ void *__61__MRAVXPCPipeTransport_getInputStream_outputStream_userInfo___block_in
   v7[2] = __33__MRAVXPCPipeTransport_sendData___block_invoke;
   v7[3] = &unk_1E769B150;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = dataCopy;
   v8 = v6;
   [(NSRunLoop *)runLoop performBlock:v7];
 

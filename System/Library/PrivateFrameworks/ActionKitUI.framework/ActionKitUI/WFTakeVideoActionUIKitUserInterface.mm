@@ -1,23 +1,23 @@
 @interface WFTakeVideoActionUIKitUserInterface
-+ (int64_t)cameraDeviceFromString:(id)a3;
-+ (int64_t)qualityFromString:(id)a3;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithOutput:(id)a3 error:(id)a4;
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4;
-- (void)imagePickerControllerDidCancel:(id)a3;
-- (void)showWithQuality:(id)a3 device:(id)a4 startImmediately:(BOOL)a5 completionHandler:(id)a6;
++ (int64_t)cameraDeviceFromString:(id)string;
++ (int64_t)qualityFromString:(id)string;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithOutput:(id)output error:(id)error;
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info;
+- (void)imagePickerControllerDidCancel:(id)cancel;
+- (void)showWithQuality:(id)quality device:(id)device startImmediately:(BOOL)immediately completionHandler:(id)handler;
 @end
 
 @implementation WFTakeVideoActionUIKitUserInterface
 
-- (void)imagePickerControllerDidCancel:(id)a3
+- (void)imagePickerControllerDidCancel:(id)cancel
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __70__WFTakeVideoActionUIKitUserInterface_imagePickerControllerDidCancel___block_invoke;
   v3[3] = &unk_278C37538;
   v3[4] = self;
-  [a3 dismissViewControllerAnimated:1 completion:v3];
+  [cancel dismissViewControllerAnimated:1 completion:v3];
 }
 
 void __70__WFTakeVideoActionUIKitUserInterface_imagePickerControllerDidCancel___block_invoke(uint64_t a1)
@@ -27,27 +27,27 @@ void __70__WFTakeVideoActionUIKitUserInterface_imagePickerControllerDidCancel___
   [v1 finishWithOutput:0 error:v2];
 }
 
-- (void)imagePickerController:(id)a3 didFinishPickingMediaWithInfo:(id)a4
+- (void)imagePickerController:(id)controller didFinishPickingMediaWithInfo:(id)info
 {
   v6 = *MEMORY[0x277D76A78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 objectForKey:v6];
-  v10 = [v7 objectForKey:*MEMORY[0x277D76A70]];
+  infoCopy = info;
+  controllerCopy = controller;
+  v9 = [infoCopy objectForKey:v6];
+  v10 = [infoCopy objectForKey:*MEMORY[0x277D76A70]];
 
   v11 = [MEMORY[0x277D79F68] typeWithString:v10];
-  v12 = [v11 fileExtension];
+  fileExtension = [v11 fileExtension];
 
-  if (!v12)
+  if (!fileExtension)
   {
-    v13 = [v9 wfFileType];
+    wfFileType = [v9 wfFileType];
 
-    v11 = v13;
+    v11 = wfFileType;
   }
 
   v14 = MEMORY[0x277CCACA8];
-  v15 = [v11 fileExtension];
-  v16 = [v14 wf_datedFilenameWithTypeString:@"Movie" fileExtension:v15];
+  fileExtension2 = [v11 fileExtension];
+  v16 = [v14 wf_datedFilenameWithTypeString:@"Movie" fileExtension:fileExtension2];
 
   v17 = [MEMORY[0x277CFC3C8] fileWithURL:v9 options:3 ofType:0 proposedFilename:v16];
   v19[0] = MEMORY[0x277D85DD0];
@@ -57,36 +57,36 @@ void __70__WFTakeVideoActionUIKitUserInterface_imagePickerControllerDidCancel___
   v19[4] = self;
   v20 = v17;
   v18 = v17;
-  [v8 dismissViewControllerAnimated:1 completion:v19];
+  [controllerCopy dismissViewControllerAnimated:1 completion:v19];
 }
 
-- (void)finishWithOutput:(id)a3 error:(id)a4
+- (void)finishWithOutput:(id)output error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFTakeVideoActionUIKitUserInterface *)self completionHandler];
+  outputCopy = output;
+  errorCopy = error;
+  completionHandler = [(WFTakeVideoActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFTakeVideoActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFTakeVideoActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, outputCopy, errorCopy);
   }
 
   [(WFTakeVideoActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__WFTakeVideoActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFTakeVideoActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -101,60 +101,60 @@ uint64_t __79__WFTakeVideoActionUIKitUserInterface_cancelPresentationWithComplet
   return v4();
 }
 
-- (void)showWithQuality:(id)a3 device:(id)a4 startImmediately:(BOOL)a5 completionHandler:(id)a6
+- (void)showWithQuality:(id)quality device:(id)device startImmediately:(BOOL)immediately completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  if (v11)
+  qualityCopy = quality;
+  deviceCopy = device;
+  handlerCopy = handler;
+  if (qualityCopy)
   {
-    if (v12)
+    if (deviceCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFTakeVideoActionUIKitUserInterface.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"device"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFTakeVideoActionUIKitUserInterface.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"device"}];
 
-    if (v13)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFTakeVideoActionUIKitUserInterface.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFTakeVideoActionUIKitUserInterface.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_4;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"WFTakeVideoActionUIKitUserInterface.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"quality"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFTakeVideoActionUIKitUserInterface.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"quality"}];
 
-  if (!v12)
+  if (!deviceCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v13)
+  if (!handlerCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  [(WFTakeVideoActionUIKitUserInterface *)self setCompletionHandler:v13];
+  [(WFTakeVideoActionUIKitUserInterface *)self setCompletionHandler:handlerCopy];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __97__WFTakeVideoActionUIKitUserInterface_showWithQuality_device_startImmediately_completionHandler___block_invoke;
   block[3] = &unk_278C36F40;
   block[4] = self;
-  v20 = v12;
-  v21 = v11;
-  v22 = a5;
-  v14 = v11;
-  v15 = v12;
+  v20 = deviceCopy;
+  v21 = qualityCopy;
+  immediatelyCopy = immediately;
+  v14 = qualityCopy;
+  v15 = deviceCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -201,12 +201,12 @@ uint64_t __97__WFTakeVideoActionUIKitUserInterface_showWithQuality_device_startI
   return result;
 }
 
-+ (int64_t)cameraDeviceFromString:(id)a3
++ (int64_t)cameraDeviceFromString:(id)string
 {
-  v3 = a3;
-  if (![v3 isEqualToString:*MEMORY[0x277CE8960]] || (v4 = 0, (objc_msgSend(MEMORY[0x277D755C8], "isCameraDeviceAvailable:", 0) & 1) == 0))
+  stringCopy = string;
+  if (![stringCopy isEqualToString:*MEMORY[0x277CE8960]] || (v4 = 0, (objc_msgSend(MEMORY[0x277D755C8], "isCameraDeviceAvailable:", 0) & 1) == 0))
   {
-    if (![v3 isEqualToString:*MEMORY[0x277CE8958]] || (v4 = 1, (objc_msgSend(MEMORY[0x277D755C8], "isCameraDeviceAvailable:", 1) & 1) == 0))
+    if (![stringCopy isEqualToString:*MEMORY[0x277CE8958]] || (v4 = 1, (objc_msgSend(MEMORY[0x277D755C8], "isCameraDeviceAvailable:", 1) & 1) == 0))
     {
       v4 = 0;
     }
@@ -215,15 +215,15 @@ uint64_t __97__WFTakeVideoActionUIKitUserInterface_showWithQuality_device_startI
   return v4;
 }
 
-+ (int64_t)qualityFromString:(id)a3
++ (int64_t)qualityFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CE8970]])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:*MEMORY[0x277CE8970]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CE8968]])
+  else if ([stringCopy isEqualToString:*MEMORY[0x277CE8968]])
   {
     v4 = 2;
   }

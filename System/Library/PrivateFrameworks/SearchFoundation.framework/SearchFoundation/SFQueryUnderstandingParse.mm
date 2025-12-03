@@ -1,121 +1,121 @@
 @interface SFQueryUnderstandingParse
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFQueryUnderstandingParse)initWithCoder:(id)a3;
-- (SFQueryUnderstandingParse)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFQueryUnderstandingParse)initWithCoder:(id)coder;
+- (SFQueryUnderstandingParse)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFQueryUnderstandingParse
 
 - (unint64_t)hash
 {
-  v3 = [(SFQueryUnderstandingParse *)self queryIntentType];
-  v4 = [(SFQueryUnderstandingParse *)self hasUnspecifiedTokens]^ v3;
-  v5 = [(SFQueryUnderstandingParse *)self hasSortCriteriaTokens];
-  v6 = v4 ^ v5 ^ [(SFQueryUnderstandingParse *)self hasLocationTokens];
-  v7 = [(SFQueryUnderstandingParse *)self hasActionTokens];
-  v8 = v7 ^ [(SFQueryUnderstandingParse *)self hasMediaTypeTokens];
+  queryIntentType = [(SFQueryUnderstandingParse *)self queryIntentType];
+  v4 = [(SFQueryUnderstandingParse *)self hasUnspecifiedTokens]^ queryIntentType;
+  hasSortCriteriaTokens = [(SFQueryUnderstandingParse *)self hasSortCriteriaTokens];
+  v6 = v4 ^ hasSortCriteriaTokens ^ [(SFQueryUnderstandingParse *)self hasLocationTokens];
+  hasActionTokens = [(SFQueryUnderstandingParse *)self hasActionTokens];
+  v8 = hasActionTokens ^ [(SFQueryUnderstandingParse *)self hasMediaTypeTokens];
   v9 = v6 ^ v8 ^ [(SFQueryUnderstandingParse *)self hasVisualQualityTokens];
-  v10 = [(SFQueryUnderstandingParse *)self hasNounTokens];
-  v11 = v10 ^ [(SFQueryUnderstandingParse *)self hasTimeTokens];
+  hasNounTokens = [(SFQueryUnderstandingParse *)self hasNounTokens];
+  v11 = hasNounTokens ^ [(SFQueryUnderstandingParse *)self hasTimeTokens];
   v12 = v11 ^ [(SFQueryUnderstandingParse *)self hasEventTokens];
   v13 = v9 ^ v12 ^ [(SFQueryUnderstandingParse *)self hasGenericLocationTokens];
-  v14 = [(SFQueryUnderstandingParse *)self hasCaptureDeviceTokens];
-  v15 = v14 ^ [(SFQueryUnderstandingParse *)self hasFavoritedTokens];
+  hasCaptureDeviceTokens = [(SFQueryUnderstandingParse *)self hasCaptureDeviceTokens];
+  v15 = hasCaptureDeviceTokens ^ [(SFQueryUnderstandingParse *)self hasFavoritedTokens];
   v16 = v15 ^ [(SFQueryUnderstandingParse *)self hasSourceAppTokens];
   v17 = v16 ^ [(SFQueryUnderstandingParse *)self hasPersonTokens];
   v18 = v13 ^ v17 ^ [(SFQueryUnderstandingParse *)self hasPersonSenderTokens];
-  v19 = [(SFQueryUnderstandingParse *)self spotlightQueryIntent];
-  v20 = v19 ^ [(SFQueryUnderstandingParse *)self isUnsafeQuery];
+  spotlightQueryIntent = [(SFQueryUnderstandingParse *)self spotlightQueryIntent];
+  v20 = spotlightQueryIntent ^ [(SFQueryUnderstandingParse *)self isUnsafeQuery];
   return v18 ^ v20 ^ [(SFQueryUnderstandingParse *)self isBlocklistedQuery];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v24) = 1;
   }
 
-  else if ([(SFQueryUnderstandingParse *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(SFQueryUnderstandingParse *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(SFQueryUnderstandingParse *)self queryIntentType];
-    if (v6 != [(SFQueryUnderstandingParse *)v5 queryIntentType])
+    v5 = equalCopy;
+    queryIntentType = [(SFQueryUnderstandingParse *)self queryIntentType];
+    if (queryIntentType != [(SFQueryUnderstandingParse *)v5 queryIntentType])
     {
       goto LABEL_21;
     }
 
-    v7 = [(SFQueryUnderstandingParse *)self hasUnspecifiedTokens];
-    if (v7 != [(SFQueryUnderstandingParse *)v5 hasUnspecifiedTokens])
+    hasUnspecifiedTokens = [(SFQueryUnderstandingParse *)self hasUnspecifiedTokens];
+    if (hasUnspecifiedTokens != [(SFQueryUnderstandingParse *)v5 hasUnspecifiedTokens])
     {
       goto LABEL_21;
     }
 
-    v8 = [(SFQueryUnderstandingParse *)self hasSortCriteriaTokens];
-    if (v8 != [(SFQueryUnderstandingParse *)v5 hasSortCriteriaTokens])
+    hasSortCriteriaTokens = [(SFQueryUnderstandingParse *)self hasSortCriteriaTokens];
+    if (hasSortCriteriaTokens != [(SFQueryUnderstandingParse *)v5 hasSortCriteriaTokens])
     {
       goto LABEL_21;
     }
 
-    v9 = [(SFQueryUnderstandingParse *)self hasLocationTokens];
-    if (v9 != [(SFQueryUnderstandingParse *)v5 hasLocationTokens])
+    hasLocationTokens = [(SFQueryUnderstandingParse *)self hasLocationTokens];
+    if (hasLocationTokens != [(SFQueryUnderstandingParse *)v5 hasLocationTokens])
     {
       goto LABEL_21;
     }
 
-    v10 = [(SFQueryUnderstandingParse *)self hasActionTokens];
-    if (v10 != [(SFQueryUnderstandingParse *)v5 hasActionTokens])
+    hasActionTokens = [(SFQueryUnderstandingParse *)self hasActionTokens];
+    if (hasActionTokens != [(SFQueryUnderstandingParse *)v5 hasActionTokens])
     {
       goto LABEL_21;
     }
 
-    v11 = [(SFQueryUnderstandingParse *)self hasMediaTypeTokens];
-    if (v11 != [(SFQueryUnderstandingParse *)v5 hasMediaTypeTokens])
+    hasMediaTypeTokens = [(SFQueryUnderstandingParse *)self hasMediaTypeTokens];
+    if (hasMediaTypeTokens != [(SFQueryUnderstandingParse *)v5 hasMediaTypeTokens])
     {
       goto LABEL_21;
     }
 
-    v12 = [(SFQueryUnderstandingParse *)self hasVisualQualityTokens];
-    if (v12 != [(SFQueryUnderstandingParse *)v5 hasVisualQualityTokens])
+    hasVisualQualityTokens = [(SFQueryUnderstandingParse *)self hasVisualQualityTokens];
+    if (hasVisualQualityTokens != [(SFQueryUnderstandingParse *)v5 hasVisualQualityTokens])
     {
       goto LABEL_21;
     }
 
-    v13 = [(SFQueryUnderstandingParse *)self hasNounTokens];
-    if (v13 != [(SFQueryUnderstandingParse *)v5 hasNounTokens])
+    hasNounTokens = [(SFQueryUnderstandingParse *)self hasNounTokens];
+    if (hasNounTokens != [(SFQueryUnderstandingParse *)v5 hasNounTokens])
     {
       goto LABEL_21;
     }
 
-    v14 = [(SFQueryUnderstandingParse *)self hasTimeTokens];
-    if (v14 != [(SFQueryUnderstandingParse *)v5 hasTimeTokens])
+    hasTimeTokens = [(SFQueryUnderstandingParse *)self hasTimeTokens];
+    if (hasTimeTokens != [(SFQueryUnderstandingParse *)v5 hasTimeTokens])
     {
       goto LABEL_21;
     }
 
-    v15 = [(SFQueryUnderstandingParse *)self hasEventTokens];
-    if (v15 != [(SFQueryUnderstandingParse *)v5 hasEventTokens])
+    hasEventTokens = [(SFQueryUnderstandingParse *)self hasEventTokens];
+    if (hasEventTokens != [(SFQueryUnderstandingParse *)v5 hasEventTokens])
     {
       goto LABEL_21;
     }
 
-    v16 = [(SFQueryUnderstandingParse *)self hasGenericLocationTokens];
-    if (v16 != [(SFQueryUnderstandingParse *)v5 hasGenericLocationTokens])
+    hasGenericLocationTokens = [(SFQueryUnderstandingParse *)self hasGenericLocationTokens];
+    if (hasGenericLocationTokens != [(SFQueryUnderstandingParse *)v5 hasGenericLocationTokens])
     {
       goto LABEL_21;
     }
 
-    v17 = [(SFQueryUnderstandingParse *)self hasCaptureDeviceTokens];
-    if (v17 == [(SFQueryUnderstandingParse *)v5 hasCaptureDeviceTokens]&& (v18 = [(SFQueryUnderstandingParse *)self hasFavoritedTokens], v18 == [(SFQueryUnderstandingParse *)v5 hasFavoritedTokens]) && (v19 = [(SFQueryUnderstandingParse *)self hasSourceAppTokens], v19 == [(SFQueryUnderstandingParse *)v5 hasSourceAppTokens]) && (v20 = [(SFQueryUnderstandingParse *)self hasPersonTokens], v20 == [(SFQueryUnderstandingParse *)v5 hasPersonTokens]) && (v21 = [(SFQueryUnderstandingParse *)self hasPersonSenderTokens], v21 == [(SFQueryUnderstandingParse *)v5 hasPersonSenderTokens]) && (v22 = [(SFQueryUnderstandingParse *)self spotlightQueryIntent], v22 == [(SFQueryUnderstandingParse *)v5 spotlightQueryIntent]) && (v23 = [(SFQueryUnderstandingParse *)self isUnsafeQuery], v23 == [(SFQueryUnderstandingParse *)v5 isUnsafeQuery]))
+    hasCaptureDeviceTokens = [(SFQueryUnderstandingParse *)self hasCaptureDeviceTokens];
+    if (hasCaptureDeviceTokens == [(SFQueryUnderstandingParse *)v5 hasCaptureDeviceTokens]&& (v18 = [(SFQueryUnderstandingParse *)self hasFavoritedTokens], v18 == [(SFQueryUnderstandingParse *)v5 hasFavoritedTokens]) && (v19 = [(SFQueryUnderstandingParse *)self hasSourceAppTokens], v19 == [(SFQueryUnderstandingParse *)v5 hasSourceAppTokens]) && (v20 = [(SFQueryUnderstandingParse *)self hasPersonTokens], v20 == [(SFQueryUnderstandingParse *)v5 hasPersonTokens]) && (v21 = [(SFQueryUnderstandingParse *)self hasPersonSenderTokens], v21 == [(SFQueryUnderstandingParse *)v5 hasPersonSenderTokens]) && (v22 = [(SFQueryUnderstandingParse *)self spotlightQueryIntent], v22 == [(SFQueryUnderstandingParse *)v5 spotlightQueryIntent]) && (v23 = [(SFQueryUnderstandingParse *)self isUnsafeQuery], v23 == [(SFQueryUnderstandingParse *)v5 isUnsafeQuery]))
     {
-      v26 = [(SFQueryUnderstandingParse *)self isBlocklistedQuery];
-      v24 = v26 ^ [(SFQueryUnderstandingParse *)v5 isBlocklistedQuery]^ 1;
+      isBlocklistedQuery = [(SFQueryUnderstandingParse *)self isBlocklistedQuery];
+      v24 = isBlocklistedQuery ^ [(SFQueryUnderstandingParse *)v5 isBlocklistedQuery]^ 1;
     }
 
     else
@@ -133,9 +133,9 @@ LABEL_21:
   return v24;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setQueryIntentType:{-[SFQueryUnderstandingParse queryIntentType](self, "queryIntentType")}];
   [v4 setHasUnspecifiedTokens:{-[SFQueryUnderstandingParse hasUnspecifiedTokens](self, "hasUnspecifiedTokens")}];
   [v4 setHasSortCriteriaTokens:{-[SFQueryUnderstandingParse hasSortCriteriaTokens](self, "hasSortCriteriaTokens")}];
@@ -161,31 +161,31 @@ LABEL_21:
 - (NSData)jsonData
 {
   v2 = [[_SFPBQueryUnderstandingParse alloc] initWithFacade:self];
-  v3 = [(_SFPBQueryUnderstandingParse *)v2 jsonData];
+  jsonData = [(_SFPBQueryUnderstandingParse *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBQueryUnderstandingParse alloc] initWithFacade:self];
-  v3 = [(_SFPBQueryUnderstandingParse *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBQueryUnderstandingParse *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBQueryUnderstandingParse alloc] initWithFacade:self];
-  v5 = [(_SFPBQueryUnderstandingParse *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBQueryUnderstandingParse *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFQueryUnderstandingParse)initWithCoder:(id)a3
+- (SFQueryUnderstandingParse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBQueryUnderstandingParse alloc] initWithData:v5];
   v7 = [(SFQueryUnderstandingParse *)self initWithProtobuf:v6];
@@ -193,107 +193,107 @@ LABEL_21:
   return v7;
 }
 
-- (SFQueryUnderstandingParse)initWithProtobuf:(id)a3
+- (SFQueryUnderstandingParse)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v8.receiver = self;
   v8.super_class = SFQueryUnderstandingParse;
   v5 = [(SFQueryUnderstandingParse *)&v8 init];
   if (v5)
   {
-    if ([v4 queryIntentType])
+    if ([protobufCopy queryIntentType])
     {
-      -[SFQueryUnderstandingParse setQueryIntentType:](v5, "setQueryIntentType:", [v4 queryIntentType]);
+      -[SFQueryUnderstandingParse setQueryIntentType:](v5, "setQueryIntentType:", [protobufCopy queryIntentType]);
     }
 
-    if ([v4 hasUnspecifiedTokens])
+    if ([protobufCopy hasUnspecifiedTokens])
     {
-      -[SFQueryUnderstandingParse setHasUnspecifiedTokens:](v5, "setHasUnspecifiedTokens:", [v4 hasUnspecifiedTokens]);
+      -[SFQueryUnderstandingParse setHasUnspecifiedTokens:](v5, "setHasUnspecifiedTokens:", [protobufCopy hasUnspecifiedTokens]);
     }
 
-    if ([v4 hasSortCriteriaTokens])
+    if ([protobufCopy hasSortCriteriaTokens])
     {
-      -[SFQueryUnderstandingParse setHasSortCriteriaTokens:](v5, "setHasSortCriteriaTokens:", [v4 hasSortCriteriaTokens]);
+      -[SFQueryUnderstandingParse setHasSortCriteriaTokens:](v5, "setHasSortCriteriaTokens:", [protobufCopy hasSortCriteriaTokens]);
     }
 
-    if ([v4 hasLocationTokens])
+    if ([protobufCopy hasLocationTokens])
     {
-      -[SFQueryUnderstandingParse setHasLocationTokens:](v5, "setHasLocationTokens:", [v4 hasLocationTokens]);
+      -[SFQueryUnderstandingParse setHasLocationTokens:](v5, "setHasLocationTokens:", [protobufCopy hasLocationTokens]);
     }
 
-    if ([v4 hasActionTokens])
+    if ([protobufCopy hasActionTokens])
     {
-      -[SFQueryUnderstandingParse setHasActionTokens:](v5, "setHasActionTokens:", [v4 hasActionTokens]);
+      -[SFQueryUnderstandingParse setHasActionTokens:](v5, "setHasActionTokens:", [protobufCopy hasActionTokens]);
     }
 
-    if ([v4 hasMediaTypeTokens])
+    if ([protobufCopy hasMediaTypeTokens])
     {
-      -[SFQueryUnderstandingParse setHasMediaTypeTokens:](v5, "setHasMediaTypeTokens:", [v4 hasMediaTypeTokens]);
+      -[SFQueryUnderstandingParse setHasMediaTypeTokens:](v5, "setHasMediaTypeTokens:", [protobufCopy hasMediaTypeTokens]);
     }
 
-    if ([v4 hasVisualQualityTokens])
+    if ([protobufCopy hasVisualQualityTokens])
     {
-      -[SFQueryUnderstandingParse setHasVisualQualityTokens:](v5, "setHasVisualQualityTokens:", [v4 hasVisualQualityTokens]);
+      -[SFQueryUnderstandingParse setHasVisualQualityTokens:](v5, "setHasVisualQualityTokens:", [protobufCopy hasVisualQualityTokens]);
     }
 
-    if ([v4 hasNounTokens])
+    if ([protobufCopy hasNounTokens])
     {
-      -[SFQueryUnderstandingParse setHasNounTokens:](v5, "setHasNounTokens:", [v4 hasNounTokens]);
+      -[SFQueryUnderstandingParse setHasNounTokens:](v5, "setHasNounTokens:", [protobufCopy hasNounTokens]);
     }
 
-    if ([v4 hasTimeTokens])
+    if ([protobufCopy hasTimeTokens])
     {
-      -[SFQueryUnderstandingParse setHasTimeTokens:](v5, "setHasTimeTokens:", [v4 hasTimeTokens]);
+      -[SFQueryUnderstandingParse setHasTimeTokens:](v5, "setHasTimeTokens:", [protobufCopy hasTimeTokens]);
     }
 
-    if ([v4 hasEventTokens])
+    if ([protobufCopy hasEventTokens])
     {
-      -[SFQueryUnderstandingParse setHasEventTokens:](v5, "setHasEventTokens:", [v4 hasEventTokens]);
+      -[SFQueryUnderstandingParse setHasEventTokens:](v5, "setHasEventTokens:", [protobufCopy hasEventTokens]);
     }
 
-    if ([v4 hasGenericLocationTokens])
+    if ([protobufCopy hasGenericLocationTokens])
     {
-      -[SFQueryUnderstandingParse setHasGenericLocationTokens:](v5, "setHasGenericLocationTokens:", [v4 hasGenericLocationTokens]);
+      -[SFQueryUnderstandingParse setHasGenericLocationTokens:](v5, "setHasGenericLocationTokens:", [protobufCopy hasGenericLocationTokens]);
     }
 
-    if ([v4 hasCaptureDeviceTokens])
+    if ([protobufCopy hasCaptureDeviceTokens])
     {
-      -[SFQueryUnderstandingParse setHasCaptureDeviceTokens:](v5, "setHasCaptureDeviceTokens:", [v4 hasCaptureDeviceTokens]);
+      -[SFQueryUnderstandingParse setHasCaptureDeviceTokens:](v5, "setHasCaptureDeviceTokens:", [protobufCopy hasCaptureDeviceTokens]);
     }
 
-    if ([v4 hasFavoritedTokens])
+    if ([protobufCopy hasFavoritedTokens])
     {
-      -[SFQueryUnderstandingParse setHasFavoritedTokens:](v5, "setHasFavoritedTokens:", [v4 hasFavoritedTokens]);
+      -[SFQueryUnderstandingParse setHasFavoritedTokens:](v5, "setHasFavoritedTokens:", [protobufCopy hasFavoritedTokens]);
     }
 
-    if ([v4 hasSourceAppTokens])
+    if ([protobufCopy hasSourceAppTokens])
     {
-      -[SFQueryUnderstandingParse setHasSourceAppTokens:](v5, "setHasSourceAppTokens:", [v4 hasSourceAppTokens]);
+      -[SFQueryUnderstandingParse setHasSourceAppTokens:](v5, "setHasSourceAppTokens:", [protobufCopy hasSourceAppTokens]);
     }
 
-    if ([v4 hasPersonTokens])
+    if ([protobufCopy hasPersonTokens])
     {
-      -[SFQueryUnderstandingParse setHasPersonTokens:](v5, "setHasPersonTokens:", [v4 hasPersonTokens]);
+      -[SFQueryUnderstandingParse setHasPersonTokens:](v5, "setHasPersonTokens:", [protobufCopy hasPersonTokens]);
     }
 
-    if ([v4 hasPersonSenderTokens])
+    if ([protobufCopy hasPersonSenderTokens])
     {
-      -[SFQueryUnderstandingParse setHasPersonSenderTokens:](v5, "setHasPersonSenderTokens:", [v4 hasPersonSenderTokens]);
+      -[SFQueryUnderstandingParse setHasPersonSenderTokens:](v5, "setHasPersonSenderTokens:", [protobufCopy hasPersonSenderTokens]);
     }
 
-    if ([v4 spotlightQueryIntent])
+    if ([protobufCopy spotlightQueryIntent])
     {
-      -[SFQueryUnderstandingParse setSpotlightQueryIntent:](v5, "setSpotlightQueryIntent:", [v4 spotlightQueryIntent]);
+      -[SFQueryUnderstandingParse setSpotlightQueryIntent:](v5, "setSpotlightQueryIntent:", [protobufCopy spotlightQueryIntent]);
     }
 
-    if ([v4 isUnsafeQuery])
+    if ([protobufCopy isUnsafeQuery])
     {
-      -[SFQueryUnderstandingParse setIsUnsafeQuery:](v5, "setIsUnsafeQuery:", [v4 isUnsafeQuery]);
+      -[SFQueryUnderstandingParse setIsUnsafeQuery:](v5, "setIsUnsafeQuery:", [protobufCopy isUnsafeQuery]);
     }
 
-    if ([v4 isBlocklistedQuery])
+    if ([protobufCopy isBlocklistedQuery])
     {
-      -[SFQueryUnderstandingParse setIsBlocklistedQuery:](v5, "setIsBlocklistedQuery:", [v4 isBlocklistedQuery]);
+      -[SFQueryUnderstandingParse setIsBlocklistedQuery:](v5, "setIsBlocklistedQuery:", [protobufCopy isBlocklistedQuery]);
     }
 
     v6 = v5;

@@ -1,45 +1,45 @@
 @interface SSPlistDataReader
-- (BOOL)doesBundleExistInAppAllowList:(id)a3;
+- (BOOL)doesBundleExistInAppAllowList:(id)list;
 - (NSArray)blocklist;
 - (NSMutableArray)allKeys;
-- (SSPlistDataReader)initWithPlistContainer:(_MDPlistContainer *)a3;
-- (SSPlistDataReader)initWithPlistContainer:(_MDPlistContainer *)a3 obj:(id *)a4;
-- (double)doubleValueForBundle:(id)a3;
-- (double)doubleValueForKey:(const char *)a3;
-- (int64_t)intValueForBundle:(id)a3 defaultValue:(int64_t)a4;
-- (int64_t)intValueForKey:(const char *)a3 defaultValue:(int64_t)a4;
+- (SSPlistDataReader)initWithPlistContainer:(_MDPlistContainer *)container;
+- (SSPlistDataReader)initWithPlistContainer:(_MDPlistContainer *)container obj:(id *)obj;
+- (double)doubleValueForBundle:(id)bundle;
+- (double)doubleValueForKey:(const char *)key;
+- (int64_t)intValueForBundle:(id)bundle defaultValue:(int64_t)value;
+- (int64_t)intValueForKey:(const char *)key defaultValue:(int64_t)value;
 - (unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation SSPlistDataReader
 
-- (SSPlistDataReader)initWithPlistContainer:(_MDPlistContainer *)a3 obj:(id *)a4
+- (SSPlistDataReader)initWithPlistContainer:(_MDPlistContainer *)container obj:(id *)obj
 {
   v10.receiver = self;
   v10.super_class = SSPlistDataReader;
   v6 = [(SSPlistDataReader *)&v10 init];
   v7 = v6;
-  if (a3 && v6)
+  if (container && v6)
   {
-    v6->_container = CFRetain(a3);
-    var2 = a4->var2;
-    *&v7->_obj.containerBytes = *&a4->var0;
+    v6->_container = CFRetain(container);
+    var2 = obj->var2;
+    *&v7->_obj.containerBytes = *&obj->var0;
     v7->_obj.reference = var2;
   }
 
   return v7;
 }
 
-- (SSPlistDataReader)initWithPlistContainer:(_MDPlistContainer *)a3
+- (SSPlistDataReader)initWithPlistContainer:(_MDPlistContainer *)container
 {
   v9.receiver = self;
   v9.super_class = SSPlistDataReader;
   v4 = [(SSPlistDataReader *)&v9 init];
   v5 = v4;
-  if (a3 && v4)
+  if (container && v4)
   {
-    v4->_container = CFRetain(a3);
+    v4->_container = CFRetain(container);
     _MDPlistGetRootPlistObjectFromPlist();
     *&v5->_obj.containerBytes = v7;
     v5->_obj.reference = v8;
@@ -96,11 +96,11 @@ void __28__SSPlistDataReader_allKeys__block_invoke(uint64_t a1, uint64_t a2)
 
 - (NSArray)blocklist
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_container)
   {
-    v8 = v3;
+    v8 = array;
     v6 = *&self->_obj.containerBytes;
     reference = self->_obj.reference;
     _MDPlistDictionaryIterate();
@@ -122,22 +122,22 @@ void __30__SSPlistDataReader_blocklist__block_invoke(uint64_t a1, uint64_t a2, u
   }
 }
 
-- (BOOL)doesBundleExistInAppAllowList:(id)a3
+- (BOOL)doesBundleExistInAppAllowList:(id)list
 {
   if (!self->_container)
   {
     return 0;
   }
 
-  [a3 UTF8String];
+  [list UTF8String];
   obj = self->_obj;
   return _MDPlistDictionaryGetPlistObjectForKey() != 0;
 }
 
-- (double)doubleValueForKey:(const char *)a3
+- (double)doubleValueForKey:(const char *)key
 {
   v3 = -1.0;
-  if (a3)
+  if (key)
   {
     if (self->_container)
     {
@@ -153,18 +153,18 @@ void __30__SSPlistDataReader_blocklist__block_invoke(uint64_t a1, uint64_t a2, u
   return v3;
 }
 
-- (double)doubleValueForBundle:(id)a3
+- (double)doubleValueForBundle:(id)bundle
 {
-  v4 = [a3 lowercaseString];
-  -[SSPlistDataReader doubleValueForKey:](self, "doubleValueForKey:", [v4 UTF8String]);
+  lowercaseString = [bundle lowercaseString];
+  -[SSPlistDataReader doubleValueForKey:](self, "doubleValueForKey:", [lowercaseString UTF8String]);
   v6 = v5;
 
   return v6;
 }
 
-- (int64_t)intValueForKey:(const char *)a3 defaultValue:(int64_t)a4
+- (int64_t)intValueForKey:(const char *)key defaultValue:(int64_t)value
 {
-  if (a3)
+  if (key)
   {
     if (self->_container)
     {
@@ -176,13 +176,13 @@ void __30__SSPlistDataReader_blocklist__block_invoke(uint64_t a1, uint64_t a2, u
     }
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)intValueForBundle:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)intValueForBundle:(id)bundle defaultValue:(int64_t)value
 {
-  v6 = [a3 lowercaseString];
-  v7 = -[SSPlistDataReader intValueForKey:defaultValue:](self, "intValueForKey:defaultValue:", [v6 UTF8String], a4);
+  lowercaseString = [bundle lowercaseString];
+  v7 = -[SSPlistDataReader intValueForKey:defaultValue:](self, "intValueForKey:defaultValue:", [lowercaseString UTF8String], value);
 
   return v7;
 }

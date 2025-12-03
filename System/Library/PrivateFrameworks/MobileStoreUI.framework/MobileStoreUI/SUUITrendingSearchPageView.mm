@@ -1,20 +1,20 @@
 @interface SUUITrendingSearchPageView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUITrendingSearchPageView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUITrendingSearchPageView)initWithFrame:(CGRect)frame;
 - (SUUITrendingSearchPageViewDelegate)delegate;
 - (UIEdgeInsets)contentInset;
-- (void)_buttonAction:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setPage:(id)a3;
+- (void)_buttonAction:(id)action;
+- (void)setBackgroundColor:(id)color;
+- (void)setPage:(id)page;
 @end
 
 @implementation SUUITrendingSearchPageView
 
-- (SUUITrendingSearchPageView)initWithFrame:(CGRect)a3
+- (SUUITrendingSearchPageView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUUITrendingSearchPageView;
-  v3 = [(SUUITrendingSearchPageView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUITrendingSearchPageView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [SUUITrendingSearchView alloc];
@@ -40,16 +40,16 @@
   return result;
 }
 
-- (void)setPage:(id)a3
+- (void)setPage:(id)page
 {
-  v5 = a3;
-  if (self->_page != v5)
+  pageCopy = page;
+  if (self->_page != pageCopy)
   {
-    objc_storeStrong(&self->_page, a3);
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    objc_storeStrong(&self->_page, page);
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v7 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v8 = 0;
     }
@@ -57,24 +57,24 @@
     else
     {
       v9 = MEMORY[0x277D756B8];
-      v10 = [(SUUITrendingSearchPageView *)self page];
-      v11 = [v10 title];
-      v8 = [v9 SUUITrending_defaultLabelWithText:v11];
+      page = [(SUUITrendingSearchPageView *)self page];
+      title = [page title];
+      v8 = [v9 SUUITrending_defaultLabelWithText:title];
     }
 
     [(SUUITrendingSearchView *)self->_trendingSearchView setTrendingTitleView:v8];
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v13 = [(SUUITrendingSearchPage *)self->_page searches];
+    searches = [(SUUITrendingSearchPage *)self->_page searches];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __38__SUUITrendingSearchPageView_setPage___block_invoke;
     v18 = &unk_2798FCB90;
-    v19 = self;
+    selfCopy = self;
     v20 = v12;
     v14 = v12;
-    [v13 enumerateObjectsUsingBlock:&v15];
+    [searches enumerateObjectsUsingBlock:&v15];
 
-    [(SUUITrendingSearchView *)self->_trendingSearchView setTrendingSearchViews:v14, v15, v16, v17, v18, v19];
+    [(SUUITrendingSearchView *)self->_trendingSearchView setTrendingSearchViews:v14, v15, v16, v17, v18, selfCopy];
   }
 }
 
@@ -88,35 +88,35 @@ void __38__SUUITrendingSearchPageView_setPage___block_invoke(uint64_t a1, void *
   [*(a1 + 40) addObject:v5];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   trendingSearchView = self->_trendingSearchView;
-  v5 = a3;
-  [(SUUITrendingSearchView *)trendingSearchView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SUUITrendingSearchView *)trendingSearchView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUITrendingSearchPageView;
-  [(SUUITrendingSearchPageView *)&v6 setBackgroundColor:v5];
+  [(SUUITrendingSearchPageView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   LODWORD(v3) = 1148846080;
   LODWORD(v4) = 1112014848;
-  [(SUUITrendingSearchView *)self->_trendingSearchView systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:v3, v4];
+  [(SUUITrendingSearchView *)self->_trendingSearchView systemLayoutSizeFittingSize:fits.width withHorizontalFittingPriority:fits.height verticalFittingPriority:v3, v4];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   page = self->_page;
-  v5 = a3;
-  v6 = [(SUUITrendingSearchPage *)page searches];
-  v7 = [(SUUITrendingSearchView *)self->_trendingSearchView trendingSearchViews];
-  v8 = [v7 indexOfObjectIdenticalTo:v5];
+  actionCopy = action;
+  searches = [(SUUITrendingSearchPage *)page searches];
+  trendingSearchViews = [(SUUITrendingSearchView *)self->_trendingSearchView trendingSearchViews];
+  v8 = [trendingSearchViews indexOfObjectIdenticalTo:actionCopy];
 
-  v10 = [v6 objectAtIndex:v8];
+  v10 = [searches objectAtIndex:v8];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained trendingSearchPageView:self didSelectSearch:v10];

@@ -1,19 +1,19 @@
 @interface _MRAVEndpointDescriptorProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsConnectionType:(id)a3;
+- (int)StringAsConnectionType:(id)type;
 - (int)connectionType;
 - (unint64_t)hash;
-- (void)addOutputDevices:(id)a3;
-- (void)addPersonalOutputDevices:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCanModifyGroupMembership:(BOOL)a3;
-- (void)setHasIsLocalEndpoint:(BOOL)a3;
-- (void)setHasIsProxyGroupPlayer:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addOutputDevices:(id)devices;
+- (void)addPersonalOutputDevices:(id)devices;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCanModifyGroupMembership:(BOOL)membership;
+- (void)setHasIsLocalEndpoint:(BOOL)endpoint;
+- (void)setHasIsProxyGroupPlayer:(BOOL)player;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRAVEndpointDescriptorProtobuf
@@ -31,27 +31,27 @@
   }
 }
 
-- (void)addOutputDevices:(id)a3
+- (void)addOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   outputDevices = self->_outputDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!outputDevices)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_outputDevices;
     self->_outputDevices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     outputDevices = self->_outputDevices;
   }
 
-  [(NSMutableArray *)outputDevices addObject:v4];
+  [(NSMutableArray *)outputDevices addObject:devicesCopy];
 }
 
-- (void)setHasIsLocalEndpoint:(BOOL)a3
+- (void)setHasIsLocalEndpoint:(BOOL)endpoint
 {
-  if (a3)
+  if (endpoint)
   {
     v3 = 4;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsProxyGroupPlayer:(BOOL)a3
+- (void)setHasIsProxyGroupPlayer:(BOOL)player
 {
-  if (a3)
+  if (player)
   {
     v3 = 8;
   }
@@ -79,40 +79,40 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsConnectionType:(id)a3
+- (int)StringAsConnectionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Local"])
+  else if ([typeCopy isEqualToString:@"Local"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Direct"])
+  else if ([typeCopy isEqualToString:@"Direct"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Relay"])
+  else if ([typeCopy isEqualToString:@"Relay"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"AirPlaySender"])
+  else if ([typeCopy isEqualToString:@"AirPlaySender"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"RemoteHosted"])
+  else if ([typeCopy isEqualToString:@"RemoteHosted"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"LocalHosted"])
+  else if ([typeCopy isEqualToString:@"LocalHosted"])
   {
     v4 = 6;
   }
@@ -125,9 +125,9 @@
   return v4;
 }
 
-- (void)setHasCanModifyGroupMembership:(BOOL)a3
+- (void)setHasCanModifyGroupMembership:(BOOL)membership
 {
-  if (a3)
+  if (membership)
   {
     v3 = 2;
   }
@@ -140,22 +140,22 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addPersonalOutputDevices:(id)a3
+- (void)addPersonalOutputDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   personalOutputDevices = self->_personalOutputDevices;
-  v8 = v4;
+  v8 = devicesCopy;
   if (!personalOutputDevices)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_personalOutputDevices;
     self->_personalOutputDevices = v6;
 
-    v4 = v8;
+    devicesCopy = v8;
     personalOutputDevices = self->_personalOutputDevices;
   }
 
-  [(NSMutableArray *)personalOutputDevices addObject:v4];
+  [(NSMutableArray *)personalOutputDevices addObject:devicesCopy];
 }
 
 - (id)description
@@ -164,8 +164,8 @@
   v8.receiver = self;
   v8.super_class = _MRAVEndpointDescriptorProtobuf;
   v4 = [(_MRAVEndpointDescriptorProtobuf *)&v8 description];
-  v5 = [(_MRAVEndpointDescriptorProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRAVEndpointDescriptorProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -173,12 +173,12 @@
 - (id)dictionaryRepresentation
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
@@ -209,8 +209,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v36 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -225,8 +225,8 @@
   designatedGroupLeader = self->_designatedGroupLeader;
   if (designatedGroupLeader)
   {
-    v15 = [(_MRAVOutputDeviceDescriptorProtobuf *)designatedGroupLeader dictionaryRepresentation];
-    [v4 setObject:v15 forKey:@"designatedGroupLeader"];
+    dictionaryRepresentation2 = [(_MRAVOutputDeviceDescriptorProtobuf *)designatedGroupLeader dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"designatedGroupLeader"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -308,8 +308,8 @@ LABEL_24:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation3 = [*(*(&v32 + 1) + 8 * j) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation3];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
@@ -326,10 +326,10 @@ LABEL_24:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -450,50 +450,50 @@ LABEL_22:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v14 = a3;
+  toCopy = to;
   if (self->_name)
   {
-    [v14 setName:?];
+    [toCopy setName:?];
   }
 
   if (self->_uniqueIdentifier)
   {
-    [v14 setUniqueIdentifier:?];
+    [toCopy setUniqueIdentifier:?];
   }
 
   if ([(_MRAVEndpointDescriptorProtobuf *)self outputDevicesCount])
   {
-    [v14 clearOutputDevices];
-    v4 = [(_MRAVEndpointDescriptorProtobuf *)self outputDevicesCount];
-    if (v4)
+    [toCopy clearOutputDevices];
+    outputDevicesCount = [(_MRAVEndpointDescriptorProtobuf *)self outputDevicesCount];
+    if (outputDevicesCount)
     {
-      v5 = v4;
+      v5 = outputDevicesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(_MRAVEndpointDescriptorProtobuf *)self outputDevicesAtIndex:i];
-        [v14 addOutputDevices:v7];
+        [toCopy addOutputDevices:v7];
       }
     }
   }
 
   if (self->_designatedGroupLeader)
   {
-    [v14 setDesignatedGroupLeader:?];
+    [toCopy setDesignatedGroupLeader:?];
   }
 
-  v8 = v14;
+  v8 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
-    v14[65] = self->_isLocalEndpoint;
-    v14[68] |= 4u;
+    toCopy[65] = self->_isLocalEndpoint;
+    toCopy[68] |= 4u;
   }
 
   if (self->_instanceIdentifier)
   {
-    [v14 setInstanceIdentifier:?];
-    v8 = v14;
+    [toCopy setInstanceIdentifier:?];
+    v8 = toCopy;
   }
 
   has = self->_has;
@@ -534,29 +534,29 @@ LABEL_18:
 LABEL_19:
   if ([(_MRAVEndpointDescriptorProtobuf *)self personalOutputDevicesCount])
   {
-    [v14 clearPersonalOutputDevices];
-    v10 = [(_MRAVEndpointDescriptorProtobuf *)self personalOutputDevicesCount];
-    if (v10)
+    [toCopy clearPersonalOutputDevices];
+    personalOutputDevicesCount = [(_MRAVEndpointDescriptorProtobuf *)self personalOutputDevicesCount];
+    if (personalOutputDevicesCount)
     {
-      v11 = v10;
+      v11 = personalOutputDevicesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(_MRAVEndpointDescriptorProtobuf *)self personalOutputDevicesAtIndex:j];
-        [v14 addPersonalOutputDevices:v13];
+        [toCopy addPersonalOutputDevices:v13];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v39 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
-  v8 = [(NSString *)self->_uniqueIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_uniqueIdentifier copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
@@ -579,7 +579,7 @@ LABEL_19:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v33 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v33 + 1) + 8 * i) copyWithZone:zone];
         [v5 addOutputDevices:v15];
       }
 
@@ -589,7 +589,7 @@ LABEL_19:
     while (v12);
   }
 
-  v16 = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_designatedGroupLeader copyWithZone:a3];
+  v16 = [(_MRAVOutputDeviceDescriptorProtobuf *)self->_designatedGroupLeader copyWithZone:zone];
   v17 = *(v5 + 16);
   *(v5 + 16) = v16;
 
@@ -599,7 +599,7 @@ LABEL_19:
     *(v5 + 68) |= 4u;
   }
 
-  v18 = [(NSString *)self->_instanceIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_instanceIdentifier copyWithZone:zone];
   v19 = *(v5 + 24);
   *(v5 + 24) = v18;
 
@@ -655,7 +655,7 @@ LABEL_14:
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v29 + 1) + 8 * j) copyWithZone:{a3, v29}];
+        v26 = [*(*(&v29 + 1) + 8 * j) copyWithZone:{zone, v29}];
         [v5 addPersonalOutputDevices:v26];
       }
 
@@ -669,16 +669,16 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
   name = self->_name;
-  if (name | *(v4 + 4))
+  if (name | *(equalCopy + 4))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -687,7 +687,7 @@ LABEL_14:
   }
 
   uniqueIdentifier = self->_uniqueIdentifier;
-  if (uniqueIdentifier | *(v4 + 7))
+  if (uniqueIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)uniqueIdentifier isEqual:?])
     {
@@ -696,7 +696,7 @@ LABEL_14:
   }
 
   outputDevices = self->_outputDevices;
-  if (outputDevices | *(v4 + 5))
+  if (outputDevices | *(equalCopy + 5))
   {
     if (![(NSMutableArray *)outputDevices isEqual:?])
     {
@@ -705,7 +705,7 @@ LABEL_14:
   }
 
   designatedGroupLeader = self->_designatedGroupLeader;
-  if (designatedGroupLeader | *(v4 + 2))
+  if (designatedGroupLeader | *(equalCopy + 2))
   {
     if (![(_MRAVOutputDeviceDescriptorProtobuf *)designatedGroupLeader isEqual:?])
     {
@@ -714,36 +714,36 @@ LABEL_14:
   }
 
   has = self->_has;
-  v10 = *(v4 + 68);
+  v10 = *(equalCopy + 68);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0)
+    if ((*(equalCopy + 68) & 4) == 0)
     {
       goto LABEL_39;
     }
 
-    v13 = *(v4 + 65);
+    v13 = *(equalCopy + 65);
     if (self->_isLocalEndpoint)
     {
-      if ((*(v4 + 65) & 1) == 0)
+      if ((*(equalCopy + 65) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 65))
+    else if (*(equalCopy + 65))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_39;
   }
 
   instanceIdentifier = self->_instanceIdentifier;
-  if (instanceIdentifier | *(v4 + 3))
+  if (instanceIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)instanceIdentifier isEqual:?])
     {
@@ -753,50 +753,50 @@ LABEL_14:
     has = self->_has;
   }
 
-  v12 = *(v4 + 68);
+  v12 = *(equalCopy + 68);
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 68) & 8) == 0)
+    if ((*(equalCopy + 68) & 8) == 0)
     {
       goto LABEL_39;
     }
 
-    v14 = *(v4 + 66);
+    v14 = *(equalCopy + 66);
     if (self->_isProxyGroupPlayer)
     {
-      if ((*(v4 + 66) & 1) == 0)
+      if ((*(equalCopy + 66) & 1) == 0)
       {
         goto LABEL_39;
       }
     }
 
-    else if (*(v4 + 66))
+    else if (*(equalCopy + 66))
     {
       goto LABEL_39;
     }
   }
 
-  else if ((*(v4 + 68) & 8) != 0)
+  else if ((*(equalCopy + 68) & 8) != 0)
   {
     goto LABEL_39;
   }
 
   if (has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_connectionType != *(v4 + 2))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_connectionType != *(equalCopy + 2))
     {
       goto LABEL_39;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_39;
   }
 
   if ((has & 2) == 0)
   {
-    if ((*(v4 + 68) & 2) == 0)
+    if ((*(equalCopy + 68) & 2) == 0)
     {
       goto LABEL_34;
     }
@@ -806,28 +806,28 @@ LABEL_39:
     goto LABEL_40;
   }
 
-  if ((*(v4 + 68) & 2) == 0)
+  if ((*(equalCopy + 68) & 2) == 0)
   {
     goto LABEL_39;
   }
 
-  v18 = *(v4 + 64);
+  v18 = *(equalCopy + 64);
   if (self->_canModifyGroupMembership)
   {
-    if ((*(v4 + 64) & 1) == 0)
+    if ((*(equalCopy + 64) & 1) == 0)
     {
       goto LABEL_39;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_39;
   }
 
 LABEL_34:
   personalOutputDevices = self->_personalOutputDevices;
-  if (personalOutputDevices | *(v4 + 6))
+  if (personalOutputDevices | *(equalCopy + 6))
   {
     v16 = [(NSMutableArray *)personalOutputDevices isEqual:?];
   }
@@ -897,16 +897,16 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSMutableArray *)self->_personalOutputDevices hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 4))
+  fromCopy = from;
+  if (*(fromCopy + 4))
   {
     [(_MRAVEndpointDescriptorProtobuf *)self setName:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(_MRAVEndpointDescriptorProtobuf *)self setUniqueIdentifier:?];
   }
@@ -915,7 +915,7 @@ LABEL_7:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v6)
   {
@@ -940,7 +940,7 @@ LABEL_7:
   }
 
   designatedGroupLeader = self->_designatedGroupLeader;
-  v11 = *(v4 + 2);
+  v11 = *(fromCopy + 2);
   if (designatedGroupLeader)
   {
     if (v11)
@@ -954,23 +954,23 @@ LABEL_7:
     [(_MRAVEndpointDescriptorProtobuf *)self setDesignatedGroupLeader:?];
   }
 
-  if ((*(v4 + 68) & 4) != 0)
+  if ((*(fromCopy + 68) & 4) != 0)
   {
-    self->_isLocalEndpoint = *(v4 + 65);
+    self->_isLocalEndpoint = *(fromCopy + 65);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(_MRAVEndpointDescriptorProtobuf *)self setInstanceIdentifier:?];
   }
 
-  v12 = *(v4 + 68);
+  v12 = *(fromCopy + 68);
   if ((v12 & 8) != 0)
   {
-    self->_isProxyGroupPlayer = *(v4 + 66);
+    self->_isProxyGroupPlayer = *(fromCopy + 66);
     *&self->_has |= 8u;
-    v12 = *(v4 + 68);
+    v12 = *(fromCopy + 68);
     if ((v12 & 1) == 0)
     {
 LABEL_23:
@@ -983,17 +983,17 @@ LABEL_23:
     }
   }
 
-  else if ((*(v4 + 68) & 1) == 0)
+  else if ((*(fromCopy + 68) & 1) == 0)
   {
     goto LABEL_23;
   }
 
-  self->_connectionType = *(v4 + 2);
+  self->_connectionType = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 68) & 2) != 0)
+  if ((*(fromCopy + 68) & 2) != 0)
   {
 LABEL_24:
-    self->_canModifyGroupMembership = *(v4 + 64);
+    self->_canModifyGroupMembership = *(fromCopy + 64);
     *&self->_has |= 2u;
   }
 
@@ -1002,7 +1002,7 @@ LABEL_25:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = *(v4 + 6);
+  v13 = *(fromCopy + 6);
   v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v14)
   {

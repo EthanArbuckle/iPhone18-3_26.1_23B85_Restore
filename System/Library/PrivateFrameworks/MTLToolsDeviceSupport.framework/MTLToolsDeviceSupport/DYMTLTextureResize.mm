@@ -1,30 +1,30 @@
 @interface DYMTLTextureResize
-+ (id)forDevice:(id)a3;
-- (DYMTLTextureResize)initWithDevice:(id)a3;
-- (id)_texture2DFromTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 depthPlane:(unint64_t)a6 commandBuffer:(id)a7;
-- (id)dataTypeForReturnType:(id)a3;
-- (id)generateFragmentFunctionForPixelFormat:(unint64_t)a3 texture:(id)a4;
-- (id)generateThumbnailFromTexture:(id)a3 commandBuffer:(id)a4 resolution:(id *)a5 withFence:(id)a6;
-- (id)resolveMultisampleTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 commandBuffer:(id)a7;
-- (id)returnTypeForPixelFormat:(unint64_t)a3;
-- (id)stencilTextureFromTexture:(id)a3 commandBuffer:(id)a4;
-- (id)textureFromTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 commandBuffer:(id)a7;
-- (id)textureTypeForPixelFormat:(unint64_t)a3;
-- (void)resizeTexture:(id)a3 resolution:(id *)a4 level:(unint64_t)a5 slice:(unint64_t)a6 depthPlane:(unint64_t)a7 inBuffer:(id)a8 withType:(unsigned int)a9 completion:(id)a10;
++ (id)forDevice:(id)device;
+- (DYMTLTextureResize)initWithDevice:(id)device;
+- (id)_texture2DFromTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane commandBuffer:(id)buffer;
+- (id)dataTypeForReturnType:(id)type;
+- (id)generateFragmentFunctionForPixelFormat:(unint64_t)format texture:(id)texture;
+- (id)generateThumbnailFromTexture:(id)texture commandBuffer:(id)buffer resolution:(id *)resolution withFence:(id)fence;
+- (id)resolveMultisampleTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level depthPlane:(unint64_t)plane commandBuffer:(id)buffer;
+- (id)returnTypeForPixelFormat:(unint64_t)format;
+- (id)stencilTextureFromTexture:(id)texture commandBuffer:(id)buffer;
+- (id)textureFromTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level depthPlane:(unint64_t)plane commandBuffer:(id)buffer;
+- (id)textureTypeForPixelFormat:(unint64_t)format;
+- (void)resizeTexture:(id)texture resolution:(id *)resolution level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane inBuffer:(id)buffer withType:(unsigned int)type completion:(id)self0;
 @end
 
 @implementation DYMTLTextureResize
 
-- (DYMTLTextureResize)initWithDevice:(id)a3
+- (DYMTLTextureResize)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v42.receiver = self;
   v42.super_class = DYMTLTextureResize;
   v6 = [(DYMTLTextureResize *)&v42 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     device = v7->_device;
     v41 = 0;
     v9 = [(MTLDevice *)device newLibraryWithSource:@"#include <metal_stdlib>\nusing namespace metal;\nstruct VertexOutput\n{\n    vec<float options:4> pos [[position]];\n    vec<float error:2> uv;\n};\nvertex VertexOutput passthroughVertex(uint vid [[ vertex_id ]], \n                                      constant vec<float, 4> *pos_data [[ buffer(0) ]], \n                                      constant vec<float, 2> *uv_data [[ buffer(1) ]])\n{\n    VertexOutput out;\n    out.pos = pos_data[vid];\n    out.uv = uv_data[vid];\n    return out;\n}\nfragment float4 texturedQuadFragmentDepth(VertexOutput in [[ stage_in ]], \n                                     depth2d<float> tex [[ texture(0) ]], \n                                     sampler samp [[ sampler(0) ]])\n{\nfloat sample = tex.sample(samp, in.uv);\nreturn float4(sample, sample, sample, 1.0);\n}\nfragment float4 texturedQuadFragmentStencil(VertexOutput in [[ stage_in ]], \n                                     depth2d<float> tex [[ texture(0) ]], \n                                     sampler samp [[ sampler(0) ]])\n{\nfloat sample = tex.sample(samp, in.uv);\nreturn float4(sample, sample, sample, 1.0);\n}\nfragment float4 texturedQuadFragment(VertexOutput in [[ stage_in ]], \n                                     texture2d<float> tex [[ texture(0) ]], \n                                     sampler samp [[ sampler(0) ]])\n{\nreturn tex.sample(samp, in.uv);\n}", 0, &v41];
@@ -113,43 +113,43 @@
   return v7;
 }
 
-- (id)stencilTextureFromTexture:(id)a3 commandBuffer:(id)a4
+- (id)stencilTextureFromTexture:(id)texture commandBuffer:(id)buffer
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 pixelFormat] == 260)
+  textureCopy = texture;
+  bufferCopy = buffer;
+  if ([textureCopy pixelFormat] == 260)
   {
-    if (([v6 usage] & 0x10) == 0)
+    if (([textureCopy usage] & 0x10) == 0)
     {
-      v8 = MakeMTLTextureDescriptorFromTexture(v6);
+      v8 = MakeMTLTextureDescriptorFromTexture(textureCopy);
       [v8 setUsage:17];
-      v9 = [(DYMTLTextureResize *)self device];
-      v10 = [v9 newTextureWithDescriptor:v8];
+      device = [(DYMTLTextureResize *)self device];
+      v10 = [device newTextureWithDescriptor:v8];
 
-      v11 = [v7 blitCommandEncoder];
+      blitCommandEncoder = [bufferCopy blitCommandEncoder];
       memset(v18, 0, sizeof(v18));
-      v17[0] = [v6 width];
-      v17[1] = [v6 height];
+      v17[0] = [textureCopy width];
+      v17[1] = [textureCopy height];
       v17[2] = 1;
       memset(v16, 0, sizeof(v16));
-      [v11 copyFromTexture:v6 sourceSlice:0 sourceLevel:0 sourceOrigin:v18 sourceSize:v17 toTexture:v10 destinationSlice:0 destinationLevel:0 destinationOrigin:v16];
-      [v11 endEncoding];
+      [blitCommandEncoder copyFromTexture:textureCopy sourceSlice:0 sourceLevel:0 sourceOrigin:v18 sourceSize:v17 toTexture:v10 destinationSlice:0 destinationLevel:0 destinationOrigin:v16];
+      [blitCommandEncoder endEncoding];
 
-      v6 = v10;
+      textureCopy = v10;
     }
 
-    v12 = [v6 pixelFormat];
-    if (v12 == 260)
+    pixelFormat = [textureCopy pixelFormat];
+    if (pixelFormat == 260)
     {
       v13 = 261;
     }
 
     else
     {
-      v13 = v12;
+      v13 = pixelFormat;
     }
 
-    v14 = [v6 newTextureViewWithPixelFormat:v13];
+    v14 = [textureCopy newTextureViewWithPixelFormat:v13];
   }
 
   else
@@ -160,93 +160,93 @@
   return v14;
 }
 
-- (id)resolveMultisampleTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 commandBuffer:(id)a7
+- (id)resolveMultisampleTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level depthPlane:(unint64_t)plane commandBuffer:(id)buffer
 {
-  v12 = a3;
-  v13 = a7;
-  if ([v12 textureType] != 4 && objc_msgSend(v12, "textureType") != 8)
+  textureCopy = texture;
+  bufferCopy = buffer;
+  if ([textureCopy textureType] != 4 && objc_msgSend(textureCopy, "textureType") != 8)
   {
     v16 = 0;
     goto LABEL_15;
   }
 
-  v14 = MakeMTLTextureDescriptorFromTexture(v12);
+  v14 = MakeMTLTextureDescriptorFromTexture(textureCopy);
   [v14 setUsage:1];
-  v15 = [(DYMTLTextureResize *)self device];
-  v16 = [v15 newTextureWithDescriptor:v14];
+  device = [(DYMTLTextureResize *)self device];
+  v16 = [device newTextureWithDescriptor:v14];
 
-  v17 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  v18 = [v12 pixelFormat];
-  if (v18 <= 252)
+  renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  pixelFormat = [textureCopy pixelFormat];
+  if (pixelFormat <= 252)
   {
-    if (v18 == 250 || v18 == 252)
+    if (pixelFormat == 250 || pixelFormat == 252)
     {
-      v19 = [v17 depthAttachment];
-      [v19 setTexture:v12];
-      [v19 setLevel:a5];
-      [v19 setSlice:a4];
-      [v19 setDepthPlane:a6];
-      [v19 setResolveTexture:v16];
-      [v19 setLoadAction:1];
-      [v19 setStoreAction:2];
+      depthAttachment = [renderPassDescriptor depthAttachment];
+      [depthAttachment setTexture:textureCopy];
+      [depthAttachment setLevel:level];
+      [depthAttachment setSlice:slice];
+      [depthAttachment setDepthPlane:plane];
+      [depthAttachment setResolveTexture:v16];
+      [depthAttachment setLoadAction:1];
+      [depthAttachment setStoreAction:2];
       goto LABEL_14;
     }
 
 LABEL_13:
-    v21 = [v17 colorAttachments];
-    v19 = [v21 objectAtIndexedSubscript:0];
+    colorAttachments = [renderPassDescriptor colorAttachments];
+    depthAttachment = [colorAttachments objectAtIndexedSubscript:0];
 
-    [v19 setTexture:v12];
-    [v19 setLevel:a5];
-    [v19 setSlice:a4];
-    [v19 setDepthPlane:a6];
-    [v19 setResolveTexture:v16];
-    [v19 setLoadAction:1];
-    [v19 setStoreAction:2];
+    [depthAttachment setTexture:textureCopy];
+    [depthAttachment setLevel:level];
+    [depthAttachment setSlice:slice];
+    [depthAttachment setDepthPlane:plane];
+    [depthAttachment setResolveTexture:v16];
+    [depthAttachment setLoadAction:1];
+    [depthAttachment setStoreAction:2];
     goto LABEL_14;
   }
 
-  if (v18 != 253)
+  if (pixelFormat != 253)
   {
-    if (v18 == 260)
+    if (pixelFormat == 260)
     {
-      v19 = [v17 depthAttachment];
-      [v19 setTexture:v12];
-      [v19 setLevel:a5];
-      [v19 setSlice:a4];
-      [v19 setDepthPlane:a6];
-      [v19 setResolveTexture:v16];
-      [v19 setLoadAction:1];
-      [v19 setStoreAction:2];
-      v20 = [v17 stencilAttachment];
-      [v20 setTexture:v12];
-      [v20 setLevel:a5];
-      [v20 setSlice:a4];
-      [v20 setDepthPlane:a6];
-      [v20 setResolveTexture:v16];
-      [v20 setLoadAction:1];
-      [v20 setStoreAction:2];
+      depthAttachment = [renderPassDescriptor depthAttachment];
+      [depthAttachment setTexture:textureCopy];
+      [depthAttachment setLevel:level];
+      [depthAttachment setSlice:slice];
+      [depthAttachment setDepthPlane:plane];
+      [depthAttachment setResolveTexture:v16];
+      [depthAttachment setLoadAction:1];
+      [depthAttachment setStoreAction:2];
+      stencilAttachment = [renderPassDescriptor stencilAttachment];
+      [stencilAttachment setTexture:textureCopy];
+      [stencilAttachment setLevel:level];
+      [stencilAttachment setSlice:slice];
+      [stencilAttachment setDepthPlane:plane];
+      [stencilAttachment setResolveTexture:v16];
+      [stencilAttachment setLoadAction:1];
+      [stencilAttachment setStoreAction:2];
 
       goto LABEL_14;
     }
 
-    if (v18 != 261)
+    if (pixelFormat != 261)
     {
       goto LABEL_13;
     }
   }
 
-  v19 = [v17 stencilAttachment];
-  [v19 setTexture:v12];
-  [v19 setLevel:a5];
-  [v19 setSlice:a4];
-  [v19 setDepthPlane:a6];
-  [v19 setResolveTexture:v16];
-  [v19 setLoadAction:1];
-  [v19 setStoreAction:2];
+  depthAttachment = [renderPassDescriptor stencilAttachment];
+  [depthAttachment setTexture:textureCopy];
+  [depthAttachment setLevel:level];
+  [depthAttachment setSlice:slice];
+  [depthAttachment setDepthPlane:plane];
+  [depthAttachment setResolveTexture:v16];
+  [depthAttachment setLoadAction:1];
+  [depthAttachment setStoreAction:2];
 LABEL_14:
 
-  v22 = [v13 renderCommandEncoderWithDescriptor:v17];
+  v22 = [bufferCopy renderCommandEncoderWithDescriptor:renderPassDescriptor];
   [v22 endEncoding];
 
 LABEL_15:
@@ -254,10 +254,10 @@ LABEL_15:
   return v16;
 }
 
-- (id)returnTypeForPixelFormat:(unint64_t)a3
+- (id)returnTypeForPixelFormat:(unint64_t)format
 {
   result = 0;
-  switch(a3)
+  switch(format)
   {
     case 1uLL:
     case 0xAuLL:
@@ -403,7 +403,7 @@ LABEL_15:
       result = @"int4";
       break;
     default:
-      if (a3 - 554 < 2)
+      if (format - 554 < 2)
       {
 LABEL_2:
         result = @"float4";
@@ -415,10 +415,10 @@ LABEL_2:
   return result;
 }
 
-- (id)textureTypeForPixelFormat:(unint64_t)a3
+- (id)textureTypeForPixelFormat:(unint64_t)format
 {
   result = 0;
-  switch(a3)
+  switch(format)
   {
     case 1uLL:
     case 0xAuLL:
@@ -552,7 +552,7 @@ LABEL_2:
       result = @"int";
       break;
     default:
-      if (a3 - 554 < 2)
+      if (format - 554 < 2)
       {
 LABEL_2:
         result = @"float";
@@ -564,20 +564,20 @@ LABEL_2:
   return result;
 }
 
-- (id)dataTypeForReturnType:(id)a3
+- (id)dataTypeForReturnType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"int"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"uint") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"float"))
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"int"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"uint") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"float"))
   {
     v4 = @".x";
   }
 
-  else if ([v3 isEqualToString:@"int2"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"uint2") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"float2"))
+  else if ([typeCopy isEqualToString:@"int2"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"uint2") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"float2"))
   {
     v4 = @".xy";
   }
 
-  else if (([v3 isEqualToString:@"int4"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"uint4") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"float4"))
+  else if (([typeCopy isEqualToString:@"int4"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"uint4") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"float4"))
   {
     v4 = @".xyzw";
   }
@@ -590,11 +590,11 @@ LABEL_2:
   return v4;
 }
 
-- (id)generateFragmentFunctionForPixelFormat:(unint64_t)a3 texture:(id)a4
+- (id)generateFragmentFunctionForPixelFormat:(unint64_t)format texture:(id)texture
 {
-  v6 = a4;
+  textureCopy = texture;
   fragmentFunctionForPixelFormatCache = self->_fragmentFunctionForPixelFormatCache;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:format];
   v9 = [(NSMutableDictionary *)fragmentFunctionForPixelFormatCache objectForKeyedSubscript:v8];
 
   if (v9)
@@ -602,10 +602,10 @@ LABEL_2:
     goto LABEL_19;
   }
 
-  v10 = [(DYMTLTextureResize *)self returnTypeForPixelFormat:a3];
-  v11 = [(DYMTLTextureResize *)self textureTypeForPixelFormat:a3];
+  v10 = [(DYMTLTextureResize *)self returnTypeForPixelFormat:format];
+  v11 = [(DYMTLTextureResize *)self textureTypeForPixelFormat:format];
   v12 = [(DYMTLTextureResize *)self dataTypeForReturnType:v10];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 isSparse] & 1) == 0)
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([textureCopy isSparse] & 1) == 0)
   {
     v13 = @"tex.sparse_sample(samp, in.uv).value()";
   }
@@ -634,7 +634,7 @@ LABEL_2:
     v25 = v27;
     v9 = [v19 newFunctionWithName:@"texturedQuadFragment"];
     v20 = self->_fragmentFunctionForPixelFormatCache;
-    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:format];
     [(NSMutableDictionary *)v20 setObject:v9 forKey:v21];
 
     v16 = v24;
@@ -655,26 +655,26 @@ LABEL_19:
   return v22;
 }
 
-- (id)generateThumbnailFromTexture:(id)a3 commandBuffer:(id)a4 resolution:(id *)a5 withFence:(id)a6
+- (id)generateThumbnailFromTexture:(id)texture commandBuffer:(id)buffer resolution:(id *)resolution withFence:(id)fence
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  textureCopy = texture;
+  bufferCopy = buffer;
+  fenceCopy = fence;
   v13 = 0;
-  if (!v10 || !v11)
+  if (!textureCopy || !bufferCopy)
   {
     goto LABEL_33;
   }
 
-  v14 = [v10 width];
-  v15 = [v10 height];
-  v16 = v15;
-  var0 = a5->var0;
-  if (v14 < a5->var0 && v15 < a5->var1 && a5->var2)
+  width = [textureCopy width];
+  height = [textureCopy height];
+  v16 = height;
+  var0 = resolution->var0;
+  if (width < resolution->var0 && height < resolution->var1 && resolution->var2)
   {
-    v18 = var0 / v14;
-    v14 = (v18 * v14);
-    v16 = (v18 * v15);
+    v18 = var0 / width;
+    width = (v18 * width);
+    v16 = (v18 * height);
     v19 = 24;
   }
 
@@ -684,17 +684,17 @@ LABEL_19:
   }
 
   v53 = v19;
-  if ((v14 > var0 || v16 > a5->var1) && a5->var2)
+  if ((width > var0 || v16 > resolution->var1) && resolution->var2)
   {
-    var1 = a5->var1;
+    var1 = resolution->var1;
     if (v16 <= var1)
     {
-      if (v14 <= var0)
+      if (width <= var0)
       {
 LABEL_17:
-        if (v14 <= 8)
+        if (width <= 8)
         {
-          v14 = 8;
+          width = 8;
         }
 
         if (v16 <= 0x10)
@@ -706,100 +706,100 @@ LABEL_17:
       }
 
       v24 = var0;
-      v26 = v14;
+      v26 = width;
     }
 
     else
     {
-      v21 = [v10 height];
-      v22 = [v10 width];
-      v23 = [v10 height];
+      height2 = [textureCopy height];
+      width2 = [textureCopy width];
+      height3 = [textureCopy height];
       v24 = var0;
-      v25 = var1 / v21;
-      v14 = (v25 * v22);
-      v16 = (v25 * v23);
-      v26 = v14;
-      if (v14 <= var0)
+      v25 = var1 / height2;
+      width = (v25 * width2);
+      v16 = (v25 * height3);
+      v26 = width;
+      if (width <= var0)
       {
         goto LABEL_17;
       }
     }
 
     v27 = v24 / v26;
-    v14 = (v27 * v26);
+    width = (v27 * v26);
     v16 = (v27 * v16);
     goto LABEL_17;
   }
 
 LABEL_21:
-  v28 = [v10 pixelFormat];
-  v29 = v28;
-  if (v28 == 1)
+  pixelFormat = [textureCopy pixelFormat];
+  v29 = pixelFormat;
+  if (pixelFormat == 1)
   {
     v29 = 10;
   }
 
-  else if ((v28 - 1) >= 0x7D)
+  else if ((pixelFormat - 1) >= 0x7D)
   {
-    if ((v28 - 250) > 0xB)
+    if ((pixelFormat - 250) > 0xB)
     {
       v29 = 90;
     }
 
     else
     {
-      v29 = qword_257AB6F30[v28 - 250];
+      v29 = qword_257AB6F30[pixelFormat - 250];
     }
   }
 
-  v30 = MakeMTLTextureDescriptorFromTexture(v10);
+  v30 = MakeMTLTextureDescriptorFromTexture(textureCopy);
   [v30 setPixelFormat:v29];
-  [v30 setWidth:v14];
+  [v30 setWidth:width];
   [v30 setHeight:v16];
   [v30 setUsage:4];
   [v30 setStorageMode:0];
-  v31 = [(DYMTLTextureResize *)self device];
-  v32 = [v31 newTextureWithDescriptor:v30];
+  device = [(DYMTLTextureResize *)self device];
+  v32 = [device newTextureWithDescriptor:v30];
 
   v33 = objc_opt_new();
-  v34 = [v33 colorAttachments];
-  v35 = [v34 objectAtIndexedSubscript:0];
+  colorAttachments = [v33 colorAttachments];
+  v35 = [colorAttachments objectAtIndexedSubscript:0];
   [v35 setTexture:v32];
 
-  v36 = [v33 colorAttachments];
-  v37 = [v36 objectAtIndexedSubscript:0];
+  colorAttachments2 = [v33 colorAttachments];
+  v37 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v37 setLoadAction:2];
 
-  v38 = [v33 colorAttachments];
-  v39 = [v38 objectAtIndexedSubscript:0];
+  colorAttachments3 = [v33 colorAttachments];
+  v39 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v39 setStoreAction:1];
 
-  v40 = [(MTLRenderPipelineDescriptor *)self->_thumbnailPipelineDescriptor colorAttachments];
-  v41 = [v40 objectAtIndexedSubscript:0];
+  colorAttachments4 = [(MTLRenderPipelineDescriptor *)self->_thumbnailPipelineDescriptor colorAttachments];
+  v41 = [colorAttachments4 objectAtIndexedSubscript:0];
   [v41 setPixelFormat:v29];
 
-  v42 = [(MTLRenderPipelineDescriptor *)self->_thumbnailPipelineDescriptor colorAttachments];
-  v43 = [v42 objectAtIndexedSubscript:0];
+  colorAttachments5 = [(MTLRenderPipelineDescriptor *)self->_thumbnailPipelineDescriptor colorAttachments];
+  v43 = [colorAttachments5 objectAtIndexedSubscript:0];
   [v43 setBlendingEnabled:0];
 
-  v44 = [(DYMTLTextureResize *)self generateFragmentFunctionForPixelFormat:v29 texture:v10];
+  v44 = [(DYMTLTextureResize *)self generateFragmentFunctionForPixelFormat:v29 texture:textureCopy];
   [(MTLRenderPipelineDescriptor *)self->_thumbnailPipelineDescriptor setFragmentFunction:v44];
 
-  v45 = [(DYMTLTextureResize *)self device];
+  device2 = [(DYMTLTextureResize *)self device];
   thumbnailPipelineDescriptor = self->_thumbnailPipelineDescriptor;
   v57 = 0;
-  v47 = [v45 newRenderPipelineStateWithDescriptor:thumbnailPipelineDescriptor error:&v57];
+  v47 = [device2 newRenderPipelineStateWithDescriptor:thumbnailPipelineDescriptor error:&v57];
   v48 = v57;
   thumbnailPipeline = self->_thumbnailPipeline;
   self->_thumbnailPipeline = v47;
 
   if (self->_thumbnailPipeline)
   {
-    v50 = [v11 renderCommandEncoderWithDescriptor:v33];
+    v50 = [bufferCopy renderCommandEncoderWithDescriptor:v33];
     v51 = v50;
-    if (v12)
+    if (fenceCopy)
     {
-      [v50 waitForFence:v12 beforeStages:2];
+      [v50 waitForFence:fenceCopy beforeStages:2];
     }
 
     [v51 setRenderPipelineState:self->_thumbnailPipeline];
@@ -813,7 +813,7 @@ LABEL_21:
     *&v55[3] = [v32 height];
     v56 = xmmword_257AB6E70;
     [v51 setViewport:v55];
-    [v51 setFragmentTexture:v10 atIndex:0];
+    [v51 setFragmentTexture:textureCopy atIndex:0];
     [v51 drawIndexedPrimitives:3 indexCount:6 indexType:1 indexBuffer:self->_quadIndicies indexBufferOffset:0];
     [v51 endEncoding];
     v13 = v32;
@@ -829,217 +829,217 @@ LABEL_33:
   return v13;
 }
 
-- (id)textureFromTexture:(id)a3 slice:(unint64_t)a4 level:(unint64_t)a5 depthPlane:(unint64_t)a6 commandBuffer:(id)a7
+- (id)textureFromTexture:(id)texture slice:(unint64_t)slice level:(unint64_t)level depthPlane:(unint64_t)plane commandBuffer:(id)buffer
 {
-  v11 = a3;
-  v12 = a7;
-  if (![v11 width] || !objc_msgSend(v11, "height"))
+  textureCopy = texture;
+  bufferCopy = buffer;
+  if (![textureCopy width] || !objc_msgSend(textureCopy, "height"))
   {
     v20 = 0;
     goto LABEL_27;
   }
 
-  if ([v11 textureType] == 2 && objc_msgSend(v11, "mipmapLevelCount") == 1 && (objc_msgSend(v11, "usage") & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v11, "isSparse") & 1) == 0)
+  if ([textureCopy textureType] == 2 && objc_msgSend(textureCopy, "mipmapLevelCount") == 1 && (objc_msgSend(textureCopy, "usage") & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(textureCopy, "isSparse") & 1) == 0)
   {
-    v23 = v11;
+    v23 = textureCopy;
     goto LABEL_34;
   }
 
-  if ([v11 usage] & 1) != 0 && objc_msgSend(v11, "textureType") && objc_msgSend(v11, "textureType") != 1 && objc_msgSend(v11, "textureType") != 7 && objc_msgSend(v11, "textureType") != 9 && ((objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend(v11, "isSparse")))
+  if ([textureCopy usage] & 1) != 0 && objc_msgSend(textureCopy, "textureType") && objc_msgSend(textureCopy, "textureType") != 1 && objc_msgSend(textureCopy, "textureType") != 7 && objc_msgSend(textureCopy, "textureType") != 9 && ((objc_opt_respondsToSelector() & 1) == 0 || (objc_msgSend(textureCopy, "isSparse")))
   {
-    v23 = [v11 newTextureViewWithPixelFormat:objc_msgSend(v11 textureType:"pixelFormat") levels:2 slices:a5, 1, a4, 1];
+    v23 = [textureCopy newTextureViewWithPixelFormat:objc_msgSend(textureCopy textureType:"pixelFormat") levels:2 slices:level, 1, slice, 1];
 LABEL_34:
     v20 = v23;
     goto LABEL_27;
   }
 
-  v13 = [v11 width];
-  v14 = [v11 height];
-  if (a5)
+  width = [textureCopy width];
+  height = [textureCopy height];
+  if (level)
   {
-    v15 = a5;
+    levelCopy = level;
     do
     {
-      if (v13 <= 1)
+      if (width <= 1)
       {
-        v13 = 1;
+        width = 1;
       }
 
       else
       {
-        v13 >>= 1;
+        width >>= 1;
       }
 
-      if (v14 <= 1)
+      if (height <= 1)
       {
-        v14 = 1;
+        height = 1;
       }
 
       else
       {
-        v14 >>= 1;
+        height >>= 1;
       }
 
-      --v15;
+      --levelCopy;
     }
 
-    while (v15);
+    while (levelCopy);
   }
 
-  v16 = MakeMTLTextureDescriptorFromTexture(v11);
-  [v16 setWidth:v13];
-  [v16 setHeight:v14];
+  v16 = MakeMTLTextureDescriptorFromTexture(textureCopy);
+  [v16 setWidth:width];
+  [v16 setHeight:height];
   [v16 setUsage:17];
-  if ([v11 textureType] == 9)
+  if ([textureCopy textureType] == 9)
   {
-    v17 = [(DYMTLTextureResize *)self device];
-    v18 = [v17 maxTextureWidth2D];
+    device = [(DYMTLTextureResize *)self device];
+    maxTextureWidth2D = [device maxTextureWidth2D];
 
-    if (v13 > v18)
+    if (width > maxTextureWidth2D)
     {
-      [v16 setWidth:v18];
-      v13 = v18;
+      [v16 setWidth:maxTextureWidth2D];
+      width = maxTextureWidth2D;
     }
   }
 
-  v19 = [(DYMTLTextureResize *)self device];
-  v20 = [v19 newTextureWithDescriptor:v16];
+  device2 = [(DYMTLTextureResize *)self device];
+  v20 = [device2 newTextureWithDescriptor:v16];
 
-  v21 = [v12 blitCommandEncoder];
+  blitCommandEncoder = [bufferCopy blitCommandEncoder];
   v27[0] = 0;
   v27[1] = 0;
-  v27[2] = a6;
-  v26[0] = v13;
-  v26[1] = v14;
+  v27[2] = plane;
+  v26[0] = width;
+  v26[1] = height;
   v26[2] = 1;
   memset(v25, 0, sizeof(v25));
-  [v21 copyFromTexture:v11 sourceSlice:a4 sourceLevel:a5 sourceOrigin:v27 sourceSize:v26 toTexture:v20 destinationSlice:0 destinationLevel:0 destinationOrigin:v25];
-  [v21 endEncoding];
+  [blitCommandEncoder copyFromTexture:textureCopy sourceSlice:slice sourceLevel:level sourceOrigin:v27 sourceSize:v26 toTexture:v20 destinationSlice:0 destinationLevel:0 destinationOrigin:v25];
+  [blitCommandEncoder endEncoding];
 
 LABEL_27:
 
   return v20;
 }
 
-- (id)_texture2DFromTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 depthPlane:(unint64_t)a6 commandBuffer:(id)a7
+- (id)_texture2DFromTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane commandBuffer:(id)buffer
 {
-  v12 = a3;
-  v13 = a7;
+  textureCopy = texture;
+  bufferCopy = buffer;
   v14 = objc_opt_new();
   [v14 setTextureType:2];
-  [v14 setPixelFormat:objc_msgSend(v12, "pixelFormat")];
-  v15 = [v12 width];
-  if (v15 >> a4 <= 1)
+  [v14 setPixelFormat:objc_msgSend(textureCopy, "pixelFormat")];
+  width = [textureCopy width];
+  if (width >> level <= 1)
   {
     v16 = 1;
   }
 
   else
   {
-    v16 = v15 >> a4;
+    v16 = width >> level;
   }
 
   [v14 setWidth:v16];
-  v17 = [v12 height];
-  if (v17 >> a4 <= 1)
+  height = [textureCopy height];
+  if (height >> level <= 1)
   {
     v18 = 1;
   }
 
   else
   {
-    v18 = v17 >> a4;
+    v18 = height >> level;
   }
 
   [v14 setHeight:v18];
   [v14 setUsage:{objc_msgSend(v14, "usage") | 1}];
-  v19 = [(DYMTLTextureResize *)self device];
-  v20 = [v19 newTextureWithDescriptor:v14];
+  device = [(DYMTLTextureResize *)self device];
+  v20 = [device newTextureWithDescriptor:v14];
 
-  if ([v12 textureType] != 4)
+  if ([textureCopy textureType] != 4)
   {
-    v21 = [v13 blitCommandEncoder];
+    blitCommandEncoder = [bufferCopy blitCommandEncoder];
     v30[0] = 0;
     v30[1] = 0;
-    v30[2] = a6;
+    v30[2] = plane;
     v29[0] = [v20 width];
     v29[1] = [v20 height];
     v29[2] = 1;
     memset(v28, 0, sizeof(v28));
-    [v21 copyFromTexture:v12 sourceSlice:a5 sourceLevel:a4 sourceOrigin:v30 sourceSize:v29 toTexture:v20 destinationSlice:0 destinationLevel:0 destinationOrigin:v28];
-    [v21 endEncoding];
+    [blitCommandEncoder copyFromTexture:textureCopy sourceSlice:slice sourceLevel:level sourceOrigin:v30 sourceSize:v29 toTexture:v20 destinationSlice:0 destinationLevel:0 destinationOrigin:v28];
+    [blitCommandEncoder endEncoding];
     goto LABEL_19;
   }
 
-  v21 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  v22 = [v20 pixelFormat];
-  if (v22 > 259)
+  blitCommandEncoder = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  pixelFormat = [v20 pixelFormat];
+  if (pixelFormat > 259)
   {
-    if ((v22 - 260) < 2)
+    if ((pixelFormat - 260) < 2)
     {
-      v23 = [v21 depthAttachment];
-      [v23 setTexture:v12];
-      [v23 setLevel:a4];
-      [v23 setSlice:a5];
-      [v23 setDepthPlane:a6];
-      [v23 setResolveTexture:v20];
-      [v23 setLoadAction:1];
-      [v23 setStoreAction:2];
-      v24 = [v21 stencilAttachment];
-      [v24 setTexture:v12];
-      [v24 setLevel:a4];
-      [v24 setSlice:a5];
-      [v24 setDepthPlane:a6];
-      [v24 setResolveTexture:v20];
-      [v24 setLoadAction:1];
-      [v24 setStoreAction:2];
+      depthAttachment = [blitCommandEncoder depthAttachment];
+      [depthAttachment setTexture:textureCopy];
+      [depthAttachment setLevel:level];
+      [depthAttachment setSlice:slice];
+      [depthAttachment setDepthPlane:plane];
+      [depthAttachment setResolveTexture:v20];
+      [depthAttachment setLoadAction:1];
+      [depthAttachment setStoreAction:2];
+      stencilAttachment = [blitCommandEncoder stencilAttachment];
+      [stencilAttachment setTexture:textureCopy];
+      [stencilAttachment setLevel:level];
+      [stencilAttachment setSlice:slice];
+      [stencilAttachment setDepthPlane:plane];
+      [stencilAttachment setResolveTexture:v20];
+      [stencilAttachment setLoadAction:1];
+      [stencilAttachment setStoreAction:2];
 
       goto LABEL_18;
     }
 
 LABEL_17:
-    v25 = [v21 colorAttachments];
-    v23 = [v25 objectAtIndexedSubscript:0];
+    colorAttachments = [blitCommandEncoder colorAttachments];
+    depthAttachment = [colorAttachments objectAtIndexedSubscript:0];
 
-    [v23 setTexture:v12];
-    [v23 setLevel:a4];
-    [v23 setSlice:a5];
-    [v23 setDepthPlane:a6];
-    [v23 setResolveTexture:v20];
-    [v23 setLoadAction:1];
-    [v23 setStoreAction:2];
+    [depthAttachment setTexture:textureCopy];
+    [depthAttachment setLevel:level];
+    [depthAttachment setSlice:slice];
+    [depthAttachment setDepthPlane:plane];
+    [depthAttachment setResolveTexture:v20];
+    [depthAttachment setLoadAction:1];
+    [depthAttachment setStoreAction:2];
     goto LABEL_18;
   }
 
-  if (v22 == 250 || v22 == 252)
+  if (pixelFormat == 250 || pixelFormat == 252)
   {
-    v23 = [v21 depthAttachment];
-    [v23 setTexture:v12];
-    [v23 setLevel:a4];
-    [v23 setSlice:a5];
-    [v23 setDepthPlane:a6];
-    [v23 setResolveTexture:v20];
-    [v23 setLoadAction:1];
-    [v23 setStoreAction:2];
+    depthAttachment = [blitCommandEncoder depthAttachment];
+    [depthAttachment setTexture:textureCopy];
+    [depthAttachment setLevel:level];
+    [depthAttachment setSlice:slice];
+    [depthAttachment setDepthPlane:plane];
+    [depthAttachment setResolveTexture:v20];
+    [depthAttachment setLoadAction:1];
+    [depthAttachment setStoreAction:2];
     goto LABEL_18;
   }
 
-  if (v22 != 253)
+  if (pixelFormat != 253)
   {
     goto LABEL_17;
   }
 
-  v23 = [v21 stencilAttachment];
-  [v23 setTexture:v12];
-  [v23 setLevel:a4];
-  [v23 setSlice:a5];
-  [v23 setDepthPlane:a6];
-  [v23 setResolveTexture:v20];
-  [v23 setLoadAction:1];
-  [v23 setStoreAction:2];
+  depthAttachment = [blitCommandEncoder stencilAttachment];
+  [depthAttachment setTexture:textureCopy];
+  [depthAttachment setLevel:level];
+  [depthAttachment setSlice:slice];
+  [depthAttachment setDepthPlane:plane];
+  [depthAttachment setResolveTexture:v20];
+  [depthAttachment setLoadAction:1];
+  [depthAttachment setStoreAction:2];
 LABEL_18:
 
-  v26 = [v13 renderCommandEncoderWithDescriptor:v21];
+  v26 = [bufferCopy renderCommandEncoderWithDescriptor:blitCommandEncoder];
   [v26 endEncoding];
 
 LABEL_19:
@@ -1047,71 +1047,71 @@ LABEL_19:
   return v20;
 }
 
-- (void)resizeTexture:(id)a3 resolution:(id *)a4 level:(unint64_t)a5 slice:(unint64_t)a6 depthPlane:(unint64_t)a7 inBuffer:(id)a8 withType:(unsigned int)a9 completion:(id)a10
+- (void)resizeTexture:(id)texture resolution:(id *)resolution level:(unint64_t)level slice:(unint64_t)slice depthPlane:(unint64_t)plane inBuffer:(id)buffer withType:(unsigned int)type completion:(id)self0
 {
-  v16 = a3;
-  v17 = a8;
-  v53 = a10;
-  if (v17)
+  textureCopy = texture;
+  bufferCopy = buffer;
+  completionCopy = completion;
+  if (bufferCopy)
   {
-    [v16 width];
-    [v16 height];
-    if (!a4->var2)
+    [textureCopy width];
+    [textureCopy height];
+    if (!resolution->var2)
     {
       goto LABEL_11;
     }
 
-    v20 = a4;
-    var0 = a4->var0;
-    var1 = v20->var1;
-    v21 = [v16 height];
-    v22 = [v16 width];
-    v23 = [v16 height];
-    v24 = var1 / v21;
-    v25 = (v24 * v22);
+    resolutionCopy = resolution;
+    var0 = resolution->var0;
+    var1 = resolutionCopy->var1;
+    height = [textureCopy height];
+    width = [textureCopy width];
+    height2 = [textureCopy height];
+    v24 = var1 / height;
+    v25 = (v24 * width);
     if (v25 > var0)
     {
-      v26 = [v16 width];
-      v27 = [v16 width];
-      v23 = [v16 height];
-      v24 = var0 / v26;
-      v25 = (v24 * v27);
+      width2 = [textureCopy width];
+      width3 = [textureCopy width];
+      height2 = [textureCopy height];
+      v24 = var0 / width2;
+      v25 = (v24 * width3);
     }
 
-    if (v25 && (v24 * v23) != 0)
+    if (v25 && (v24 * height2) != 0)
     {
 LABEL_11:
-      v29 = [v16 pixelFormat];
+      pixelFormat = [textureCopy pixelFormat];
       v30 = 55;
       v31 = 90;
-      if ((v29 & 0xFFFFFFFFFFFFFFFELL) == 0x104)
+      if ((pixelFormat & 0xFFFFFFFFFFFFFFFELL) == 0x104)
       {
         v31 = 55;
       }
 
-      if (v29 == 253)
+      if (pixelFormat == 253)
       {
         v31 = 10;
       }
 
-      if (v29 == 252)
+      if (pixelFormat == 252)
       {
         v31 = 55;
       }
 
-      if (v29 != 250)
+      if (pixelFormat != 250)
       {
         v30 = v31;
       }
 
-      if ((v29 - 1) >= 0x7D)
+      if ((pixelFormat - 1) >= 0x7D)
       {
         v32 = v30;
       }
 
       else
       {
-        v32 = v29;
+        v32 = pixelFormat;
       }
 
       v33 = [MEMORY[0x277CD7058] texture2DDescriptorWithPixelFormat:v32 width:? height:? mipmapped:?];
@@ -1121,30 +1121,30 @@ LABEL_11:
       [(MTLTextureDescriptor *)self->_thumbnailTextureDescriptor setUsage:[(MTLTextureDescriptor *)self->_thumbnailTextureDescriptor usage]| 4];
       [(MTLTextureDescriptor *)self->_thumbnailTextureDescriptor setResourceOptions:32];
       [(MTLTextureDescriptor *)self->_thumbnailTextureDescriptor setStorageMode:0];
-      v35 = [(DYMTLTextureResize *)self device];
-      v36 = [v35 newTextureWithDescriptor:self->_thumbnailTextureDescriptor];
+      device = [(DYMTLTextureResize *)self device];
+      v36 = [device newTextureWithDescriptor:self->_thumbnailTextureDescriptor];
 
-      v37 = [(MTLRenderPassDescriptor *)self->_thumbnailRenderPass colorAttachments];
-      v38 = [v37 objectAtIndexedSubscript:0];
+      colorAttachments = [(MTLRenderPassDescriptor *)self->_thumbnailRenderPass colorAttachments];
+      v38 = [colorAttachments objectAtIndexedSubscript:0];
       [v38 setTexture:v36];
 
-      v39 = v16;
+      v39 = textureCopy;
       if ([v39 textureType] != 2 || (objc_msgSend(v39, "usage") & 1) == 0)
       {
-        v40 = [(DYMTLTextureResize *)self _texture2DFromTexture:v39 level:a5 slice:a6 depthPlane:a7 commandBuffer:v17];
+        v40 = [(DYMTLTextureResize *)self _texture2DFromTexture:v39 level:level slice:slice depthPlane:plane commandBuffer:bufferCopy];
 
         v39 = v40;
       }
 
-      v41 = [(MTLRenderPipelineDescriptor *)self->_thumbnailPipelineDescriptor colorAttachments];
-      v42 = [v41 objectAtIndexedSubscript:0];
+      colorAttachments2 = [(MTLRenderPipelineDescriptor *)self->_thumbnailPipelineDescriptor colorAttachments];
+      v42 = [colorAttachments2 objectAtIndexedSubscript:0];
       [v42 setPixelFormat:v52];
 
-      v43 = [(MTLRenderPipelineDescriptor *)self->_thumbnailPipelineDescriptor colorAttachments];
-      v44 = [v43 objectAtIndexedSubscript:0];
+      colorAttachments3 = [(MTLRenderPipelineDescriptor *)self->_thumbnailPipelineDescriptor colorAttachments];
+      v44 = [colorAttachments3 objectAtIndexedSubscript:0];
       [v44 setBlendingEnabled:0];
 
-      switch(a9)
+      switch(type)
       {
         case 1u:
           v45 = 56;
@@ -1157,17 +1157,17 @@ LABEL_11:
           break;
         default:
 LABEL_32:
-          v46 = [(DYMTLTextureResize *)self device];
+          device2 = [(DYMTLTextureResize *)self device];
           thumbnailPipelineDescriptor = self->_thumbnailPipelineDescriptor;
           v60 = 0;
-          v48 = [v46 newRenderPipelineStateWithDescriptor:thumbnailPipelineDescriptor error:&v60];
+          v48 = [device2 newRenderPipelineStateWithDescriptor:thumbnailPipelineDescriptor error:&v60];
           v49 = v60;
           thumbnailPipeline = self->_thumbnailPipeline;
           self->_thumbnailPipeline = v48;
 
           if (self->_thumbnailPipeline)
           {
-            v51 = [v17 renderCommandEncoderWithDescriptor:self->_thumbnailRenderPass];
+            v51 = [bufferCopy renderCommandEncoderWithDescriptor:self->_thumbnailRenderPass];
             [v51 setRenderPipelineState:self->_thumbnailPipeline];
             [v51 setDepthStencilState:self->_thumbnailDepthStencilState];
             [v51 setFragmentSamplerState:self->_downscaleSampler atIndex:0];
@@ -1186,10 +1186,10 @@ LABEL_32:
             v54[1] = 3221225472;
             v54[2] = __99__DYMTLTextureResize_resizeTexture_resolution_level_slice_depthPlane_inBuffer_withType_completion___block_invoke;
             v54[3] = &unk_27984EA78;
-            v56 = v53;
+            v56 = completionCopy;
             v55 = v36;
             v57 = v52;
-            [v17 addCompletedHandler:v54];
+            [bufferCopy addCompletedHandler:v54];
           }
 
           goto LABEL_35;
@@ -1203,19 +1203,19 @@ LABEL_32:
 LABEL_35:
 }
 
-+ (id)forDevice:(id)a3
++ (id)forDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (+[DYMTLTextureResize forDevice:]::onceToken != -1)
   {
     +[DYMTLTextureResize forDevice:];
   }
 
-  v4 = [sDeviceThumbnailGenerator objectForKey:v3];
+  v4 = [sDeviceThumbnailGenerator objectForKey:deviceCopy];
   if (!v4)
   {
-    v4 = [[DYMTLTextureResize alloc] initWithDevice:v3];
-    [sDeviceThumbnailGenerator setObject:v4 forKey:v3];
+    v4 = [[DYMTLTextureResize alloc] initWithDevice:deviceCopy];
+    [sDeviceThumbnailGenerator setObject:v4 forKey:deviceCopy];
   }
 
   return v4;

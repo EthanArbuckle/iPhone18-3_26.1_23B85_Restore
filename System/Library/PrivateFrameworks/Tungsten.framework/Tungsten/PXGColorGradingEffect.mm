@@ -1,8 +1,8 @@
 @interface PXGColorGradingEffect
-- (BOOL)isEqual:(id)a3;
-- (PXGColorGradingEffect)initWithEntityManager:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PXGColorGradingEffect)initWithEntityManager:(id)manager;
 - (unint64_t)hash;
-- (void)setColorLookupCube:(id)a3;
+- (void)setColorLookupCube:(id)cube;
 @end
 
 @implementation PXGColorGradingEffect
@@ -12,29 +12,29 @@
   v7.receiver = self;
   v7.super_class = PXGColorGradingEffect;
   v3 = [(PXGColorGradingEffect *)&v7 hash];
-  v4 = [(PXGColorGradingEffect *)self colorLookupCube];
-  v5 = [v4 hash];
+  colorLookupCube = [(PXGColorGradingEffect *)self colorLookupCube];
+  v5 = [colorLookupCube hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 colorLookupCube];
-    v7 = [(PXGColorGradingEffect *)self colorLookupCube];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    colorLookupCube = [v5 colorLookupCube];
+    colorLookupCube2 = [(PXGColorGradingEffect *)self colorLookupCube];
+    v8 = colorLookupCube2;
+    if (colorLookupCube == colorLookupCube2)
     {
     }
 
     else
     {
-      v9 = [v6 isEqual:v7];
+      v9 = [colorLookupCube isEqual:colorLookupCube2];
 
       if ((v9 & 1) == 0)
       {
@@ -42,12 +42,12 @@
       }
     }
 
-    v11 = [v5 effectId];
-    if (v11 == [(PXGEffect *)self effectId])
+    effectId = [v5 effectId];
+    if (effectId == [(PXGEffect *)self effectId])
     {
-      v12 = [v5 entityManager];
-      v13 = [(PXGEffect *)self entityManager];
-      v10 = v12 == v13;
+      entityManager = [v5 entityManager];
+      entityManager2 = [(PXGEffect *)self entityManager];
+      v10 = entityManager == entityManager2;
 
 LABEL_10:
       goto LABEL_11;
@@ -64,13 +64,13 @@ LABEL_11:
   return v10;
 }
 
-- (void)setColorLookupCube:(id)a3
+- (void)setColorLookupCube:(id)cube
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_colorLookupCube != v5 && ![(PXGColorLookupCube *)v5 isEqual:?]|| ([(PXGUniform *)self->_cubeUniform textureProvider], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  cubeCopy = cube;
+  v6 = cubeCopy;
+  if (self->_colorLookupCube != cubeCopy && ![(PXGColorLookupCube *)cubeCopy isEqual:?]|| ([(PXGUniform *)self->_cubeUniform textureProvider], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
-    objc_storeStrong(&self->_colorLookupCube, a3);
+    objc_storeStrong(&self->_colorLookupCube, cube);
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __44__PXGColorGradingEffect_setColorLookupCube___block_invoke;
@@ -89,15 +89,15 @@ LABEL_11:
     }
 
     [(PXGUniform *)self->_grayUniform setFloat4Value:v9];
-    v10 = [(PXGColorLookupCube *)v8 edgeSize];
-    if (v10 <= 1)
+    edgeSize = [(PXGColorLookupCube *)v8 edgeSize];
+    if (edgeSize <= 1)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = v10;
+      v12 = edgeSize;
     }
 
     *v11.i32 = v12;
@@ -115,12 +115,12 @@ id __44__PXGColorGradingEffect_setColorLookupCube___block_invoke(uint64_t a1, ui
   return v4;
 }
 
-- (PXGColorGradingEffect)initWithEntityManager:(id)a3
+- (PXGColorGradingEffect)initWithEntityManager:(id)manager
 {
   v17[3] = *MEMORY[0x277D85DE8];
   v16.receiver = self;
   v16.super_class = PXGColorGradingEffect;
-  v3 = [(PXGEffect *)&v16 initWithEntityManager:a3];
+  v3 = [(PXGEffect *)&v16 initWithEntityManager:manager];
   if (v3)
   {
     v4 = [[PXGUniform alloc] initWithName:@"cube" type:5];

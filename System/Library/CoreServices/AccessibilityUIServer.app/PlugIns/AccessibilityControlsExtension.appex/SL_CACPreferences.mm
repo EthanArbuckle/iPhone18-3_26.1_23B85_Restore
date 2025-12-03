@@ -6,9 +6,9 @@
 - (BOOL)showTextResponseUponRecognition;
 - (SL_CACPreferences)init;
 - (id)alwaysShowOverlayType;
-- (void)setAlwaysShowOverlayType:(id)a3;
-- (void)setAttentionAware:(BOOL)a3;
-- (void)setShowHints:(BOOL)a3;
+- (void)setAlwaysShowOverlayType:(id)type;
+- (void)setAttentionAware:(BOOL)aware;
+- (void)setShowHints:(BOOL)hints;
 @end
 
 @implementation SL_CACPreferences
@@ -50,9 +50,9 @@
 
     v4 = v3;
     _Block_object_dispose(&v10, 8);
-    v5 = [v3 sharedPreferences];
+    sharedPreferences = [v3 sharedPreferences];
     cacPrefs = v2->_cacPrefs;
-    v2->_cacPrefs = v5;
+    v2->_cacPrefs = sharedPreferences;
   }
 
   return v2;
@@ -60,34 +60,34 @@
 
 - (BOOL)showTextResponseUponRecognition
 {
-  v2 = [(SL_CACPreferences *)self cacPrefs];
-  v3 = [v2 showTextResponseUponRecognition];
+  cacPrefs = [(SL_CACPreferences *)self cacPrefs];
+  showTextResponseUponRecognition = [cacPrefs showTextResponseUponRecognition];
 
-  return v3;
+  return showTextResponseUponRecognition;
 }
 
 - (BOOL)playSoundUponRecognition
 {
-  v2 = [(SL_CACPreferences *)self cacPrefs];
-  v3 = [v2 playSoundUponRecognition];
+  cacPrefs = [(SL_CACPreferences *)self cacPrefs];
+  playSoundUponRecognition = [cacPrefs playSoundUponRecognition];
 
-  return v3;
+  return playSoundUponRecognition;
 }
 
 - (BOOL)showHints
 {
-  v2 = [(SL_CACPreferences *)self cacPrefs];
-  v3 = [v2 userHintsFeatures] == 3;
+  cacPrefs = [(SL_CACPreferences *)self cacPrefs];
+  v3 = [cacPrefs userHintsFeatures] == 3;
 
   return v3;
 }
 
-- (void)setShowHints:(BOOL)a3
+- (void)setShowHints:(BOOL)hints
 {
-  v3 = a3;
-  v4 = [(SL_CACPreferences *)self cacPrefs];
-  v6 = v4;
-  if (v3)
+  hintsCopy = hints;
+  cacPrefs = [(SL_CACPreferences *)self cacPrefs];
+  v6 = cacPrefs;
+  if (hintsCopy)
   {
     v5 = 3;
   }
@@ -97,39 +97,39 @@
     v5 = 0;
   }
 
-  [v4 setUserHintsFeatures:v5];
+  [cacPrefs setUserHintsFeatures:v5];
 }
 
 - (id)alwaysShowOverlayType
 {
-  v2 = [(SL_CACPreferences *)self cacPrefs];
-  v3 = [v2 alwaysShowOverlayType];
+  cacPrefs = [(SL_CACPreferences *)self cacPrefs];
+  alwaysShowOverlayType = [cacPrefs alwaysShowOverlayType];
 
-  return v3;
+  return alwaysShowOverlayType;
 }
 
-- (void)setAlwaysShowOverlayType:(id)a3
+- (void)setAlwaysShowOverlayType:(id)type
 {
-  v4 = a3;
-  v5 = [(SL_CACPreferences *)self cacPrefs];
-  [v5 setAlwaysShowOverlayType:v4];
+  typeCopy = type;
+  cacPrefs = [(SL_CACPreferences *)self cacPrefs];
+  [cacPrefs setAlwaysShowOverlayType:typeCopy];
 }
 
 - (BOOL)attentionAware
 {
-  v2 = [(SL_CACPreferences *)self cacPrefs];
-  v3 = [v2 attentionAwareAction];
-  v4 = [v3 isEqualToString:@"SleepAndWake"];
+  cacPrefs = [(SL_CACPreferences *)self cacPrefs];
+  attentionAwareAction = [cacPrefs attentionAwareAction];
+  v4 = [attentionAwareAction isEqualToString:@"SleepAndWake"];
 
   return v4;
 }
 
-- (void)setAttentionAware:(BOOL)a3
+- (void)setAttentionAware:(BOOL)aware
 {
-  v3 = a3;
-  v4 = [(SL_CACPreferences *)self cacPrefs];
-  v6 = v4;
-  if (v3)
+  awareCopy = aware;
+  cacPrefs = [(SL_CACPreferences *)self cacPrefs];
+  v6 = cacPrefs;
+  if (awareCopy)
   {
     v5 = @"SleepAndWake";
   }
@@ -139,7 +139,7 @@
     v5 = @"None";
   }
 
-  [v4 setAttentionAwareAction:v5];
+  [cacPrefs setAttentionAwareAction:v5];
 }
 
 @end

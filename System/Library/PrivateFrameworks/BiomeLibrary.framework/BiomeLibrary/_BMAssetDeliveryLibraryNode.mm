@@ -8,7 +8,7 @@
 + (id)sublibraries
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [a1 UAF];
+  v2 = [self UAF];
   v6[0] = v2;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 

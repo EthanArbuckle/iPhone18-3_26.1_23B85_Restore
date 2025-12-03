@@ -2,52 +2,52 @@
 - (BOOL)_dismissesOnTap;
 - (BOOL)_reducesWhitePoint;
 - (BOOL)_shouldCancelInteractiveDismissGesture;
-- (BOOL)dismissForDismissType:(int64_t)a3 completion:(id)a4;
-- (BOOL)handleEvent:(id)a3;
+- (BOOL)dismissForDismissType:(int64_t)type completion:(id)completion;
+- (BOOL)handleEvent:(id)event;
 - (CSRemoteContentHostViewController)hostViewController;
-- (CSRemoteContentModalViewController)initWithContentDefinition:(id)a3 preferences:(id)a4 hostViewController:(id)a5 authenticationStatusProvider:(id)a6;
+- (CSRemoteContentModalViewController)initWithContentDefinition:(id)definition preferences:(id)preferences hostViewController:(id)controller authenticationStatusProvider:(id)provider;
 - (CSRemoteContentViewControllerDelegate)delegate;
 - (id)_newDisplayLayoutElement;
 - (int64_t)_backgroundStyle;
 - (int64_t)_dateTimeStyle;
 - (int64_t)_homeGestureMode;
-- (void)_addChildHostViewController:(id)a3;
+- (void)_addChildHostViewController:(id)controller;
 - (void)_createProperties;
-- (void)_dismissForced:(BOOL)a3 animated:(BOOL)a4;
+- (void)_dismissForced:(BOOL)forced animated:(BOOL)animated;
 - (void)_removeChildHostViewController;
-- (void)_setCornerRounded:(BOOL)a3;
-- (void)_setUserHasInteractedSinceWake:(BOOL)a3;
-- (void)_updateContentAlpha:(double)a3 interactive:(BOOL)a4;
-- (void)_updateContentScale:(double)a3 interactive:(BOOL)a4;
-- (void)_updateDisplayLayoutElementForActivation:(id)a3;
+- (void)_setCornerRounded:(BOOL)rounded;
+- (void)_setUserHasInteractedSinceWake:(BOOL)wake;
+- (void)_updateContentAlpha:(double)alpha interactive:(BOOL)interactive;
+- (void)_updateContentScale:(double)scale interactive:(BOOL)interactive;
+- (void)_updateDisplayLayoutElementForActivation:(id)activation;
 - (void)_updateForPropertyChanged;
 - (void)_updateGrabberViewVisibility;
 - (void)_updateSecondaryActionButtonText;
-- (void)addGrabberView:(id)a3;
-- (void)aggregateAppearance:(id)a3;
-- (void)aggregateBehavior:(id)a3;
+- (void)addGrabberView:(id)view;
+- (void)aggregateAppearance:(id)appearance;
+- (void)aggregateBehavior:(id)behavior;
 - (void)dealloc;
 - (void)didReceiveTouch;
-- (void)handleBottomEdgeGestureBegan:(id)a3;
-- (void)handleBottomEdgeGestureChanged:(id)a3;
-- (void)handleBottomEdgeGestureEnded:(id)a3;
-- (void)handleSecondaryActionForView:(id)a3;
+- (void)handleBottomEdgeGestureBegan:(id)began;
+- (void)handleBottomEdgeGestureChanged:(id)changed;
+- (void)handleBottomEdgeGestureEnded:(id)ended;
+- (void)handleSecondaryActionForView:(id)view;
 - (void)loadView;
 - (void)remoteDidChangeStyle;
-- (void)setHostViewController:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setHostViewController:(id)controller;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)viewDidLoad;
 @end
 
 @implementation CSRemoteContentModalViewController
 
-- (CSRemoteContentModalViewController)initWithContentDefinition:(id)a3 preferences:(id)a4 hostViewController:(id)a5 authenticationStatusProvider:(id)a6
+- (CSRemoteContentModalViewController)initWithContentDefinition:(id)definition preferences:(id)preferences hostViewController:(id)controller authenticationStatusProvider:(id)provider
 {
   v61 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  definitionCopy = definition;
+  preferencesCopy = preferences;
+  controllerCopy = controller;
+  providerCopy = provider;
   v49.receiver = self;
   v49.super_class = CSRemoteContentModalViewController;
   v15 = [(CSRemoteContentModalViewController *)&v49 init];
@@ -57,12 +57,12 @@
     goto LABEL_7;
   }
 
-  if (v11 && v12 && v13 && v14)
+  if (definitionCopy && preferencesCopy && controllerCopy && providerCopy)
   {
-    objc_storeStrong(&v15->_definition, a3);
-    objc_storeStrong(&v16->_remoteContentPreferences, a4);
-    objc_storeStrong(&v16->_authenticationStatusProvider, a6);
-    objc_storeWeak(&v16->_hostViewController, v13);
+    objc_storeStrong(&v15->_definition, definition);
+    objc_storeStrong(&v16->_remoteContentPreferences, preferences);
+    objc_storeStrong(&v16->_authenticationStatusProvider, provider);
+    objc_storeWeak(&v16->_hostViewController, controllerCopy);
     v17 = +[CSLockScreenDomain rootSettings];
     lockScreenSettings = v16->_lockScreenSettings;
     v16->_lockScreenSettings = v17;
@@ -74,29 +74,29 @@
 
     v21 = objc_opt_new();
     v22 = [v21 priority:40];
-    v23 = [(CSCoverSheetViewControllerBase *)v16 appearanceIdentifier];
-    v24 = [v22 identifier:v23];
+    appearanceIdentifier = [(CSCoverSheetViewControllerBase *)v16 appearanceIdentifier];
+    v24 = [v22 identifier:appearanceIdentifier];
     content = v16->_content;
     v16->_content = v24;
 
     v26 = objc_opt_new();
     v27 = [v26 priority:40];
-    v28 = [(CSCoverSheetViewControllerBase *)v16 appearanceIdentifier];
-    v29 = [v27 identifier:v28];
+    appearanceIdentifier2 = [(CSCoverSheetViewControllerBase *)v16 appearanceIdentifier];
+    v29 = [v27 identifier:appearanceIdentifier2];
     dateTimeComponent = v16->_dateTimeComponent;
     v16->_dateTimeComponent = v29;
 
     v31 = objc_opt_new();
     v32 = [v31 priority:40];
-    v33 = [(CSCoverSheetViewControllerBase *)v16 appearanceIdentifier];
-    v34 = [v32 identifier:v33];
+    appearanceIdentifier3 = [(CSCoverSheetViewControllerBase *)v16 appearanceIdentifier];
+    v34 = [v32 identifier:appearanceIdentifier3];
     proudLockComponent = v16->_proudLockComponent;
     v16->_proudLockComponent = v34;
 
     v36 = objc_opt_new();
     v37 = [v36 priority:40];
-    v38 = [(CSCoverSheetViewControllerBase *)v16 appearanceIdentifier];
-    v39 = [v37 identifier:v38];
+    appearanceIdentifier4 = [(CSCoverSheetViewControllerBase *)v16 appearanceIdentifier];
+    v39 = [v37 identifier:appearanceIdentifier4];
     quickActionsComponent = v16->_quickActionsComponent;
     v16->_quickActionsComponent = v39;
 
@@ -109,9 +109,9 @@
     v16->_components = v41;
 
     v43 = +[CSLockScreenDomain rootSettings];
-    v44 = [v43 dashBoardRemoteContentSettings];
+    dashBoardRemoteContentSettings = [v43 dashBoardRemoteContentSettings];
     remoteContentSettings = v16->_remoteContentSettings;
-    v16->_remoteContentSettings = v44;
+    v16->_remoteContentSettings = dashBoardRemoteContentSettings;
 
     [(PTSettings *)v16->_remoteContentSettings addKeyObserver:v16];
 LABEL_7:
@@ -125,13 +125,13 @@ LABEL_7:
     *buf = 138544386;
     v52 = v16;
     v53 = 1024;
-    v54 = v11 != 0;
+    v54 = definitionCopy != 0;
     v55 = 1024;
-    v56 = v12 != 0;
+    v56 = preferencesCopy != 0;
     v57 = 1024;
-    v58 = v13 != 0;
+    v58 = controllerCopy != 0;
     v59 = 1024;
-    v60 = v14 != 0;
+    v60 = providerCopy != 0;
     _os_log_impl(&dword_21EB05000, v47, OS_LOG_TYPE_DEFAULT, "%{public}@: Missing required parameters for init; definition: %d, preferences: %d, hostVC: %d, authenticationStatusProvider: %d", buf, 0x24u);
   }
 
@@ -158,8 +158,8 @@ LABEL_11:
 {
   [(CSRemoteContentModalViewController *)self _createProperties];
   v3 = [CSRemoteContentModalView alloc];
-  v4 = [MEMORY[0x277D759A0] mainScreen];
-  [v4 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v7 = [(CSRemoteContentModalView *)v3 initWithFrame:?];
 
   [(CSRemoteContentModalView *)v7 setTouchDelegate:self];
@@ -167,8 +167,8 @@ LABEL_11:
   [(CSModalView *)v7 setDelegate:self];
   [(CSRemoteContentModalView *)v7 setAutoresizingMask:18];
   [(CSModalView *)v7 setWantsEnhancedSecondaryActionButton:1];
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  [(CSModalView *)v7 setSecondaryActionButtonTextColor:v5];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [(CSModalView *)v7 setSecondaryActionButtonTextColor:whiteColor];
 
   [(CSRemoteContentModalViewController *)self setView:v7];
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
@@ -186,33 +186,33 @@ LABEL_11:
   [(CSRemoteContentModalViewController *)self _updateSecondaryActionButtonText];
 }
 
-- (void)setHostViewController:(id)a3
+- (void)setHostViewController:(id)controller
 {
-  obj = a3;
-  v4 = [(CSRemoteContentModalViewController *)self _removeChildHostViewController];
+  obj = controller;
+  _removeChildHostViewController = [(CSRemoteContentModalViewController *)self _removeChildHostViewController];
   if (obj)
   {
     objc_storeWeak(&self->_hostViewController, obj);
-    v4 = [(CSRemoteContentModalViewController *)self isViewLoaded];
-    if (v4)
+    _removeChildHostViewController = [(CSRemoteContentModalViewController *)self isViewLoaded];
+    if (_removeChildHostViewController)
     {
-      v4 = [(CSRemoteContentModalViewController *)self _addChildHostViewController:obj];
+      _removeChildHostViewController = [(CSRemoteContentModalViewController *)self _addChildHostViewController:obj];
     }
   }
 
-  MEMORY[0x2821F9730](v4);
+  MEMORY[0x2821F9730](_removeChildHostViewController);
 }
 
-- (BOOL)dismissForDismissType:(int64_t)a3 completion:(id)a4
+- (BOOL)dismissForDismissType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-  [WeakRetained didDismissForDismissType:a3];
+  [WeakRetained didDismissForDismissType:type];
 
   v8 = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(a3) = [v8 remoteContentViewController:self requestsDismissalForType:a3 completion:v6];
+  LOBYTE(type) = [v8 remoteContentViewController:self requestsDismissalForType:type completion:completionCopy];
 
-  return a3;
+  return type;
 }
 
 - (void)remoteDidChangeStyle
@@ -238,13 +238,13 @@ LABEL_11:
   [(CSCoverSheetViewControllerBase *)self updateBehaviorForController:self];
 }
 
-- (void)aggregateAppearance:(id)a3
+- (void)aggregateAppearance:(id)appearance
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appearanceCopy = appearance;
   v62.receiver = self;
   v62.super_class = CSRemoteContentModalViewController;
-  [(CSModalViewControllerBase *)&v62 aggregateAppearance:v4];
+  [(CSModalViewControllerBase *)&v62 aggregateAppearance:appearanceCopy];
   if (!self->_remoteContentPreferences)
   {
     goto LABEL_53;
@@ -255,8 +255,8 @@ LABEL_11:
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v6 = [v4 components];
-  v7 = [v6 countByEnumeratingWithState:&v58 objects:v64 count:16];
+  components = [appearanceCopy components];
+  v7 = [components countByEnumeratingWithState:&v58 objects:v64 count:16];
   if (v7)
   {
     v8 = v7;
@@ -267,18 +267,18 @@ LABEL_11:
       {
         if (*v59 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(components);
         }
 
         v11 = *(*(&v58 + 1) + 8 * i);
-        v12 = [v11 type];
-        if (v12 > 0x1C || ((1 << v12) & 0x1FFFADED) == 0)
+        type = [v11 type];
+        if (type > 0x1C || ((1 << type) & 0x1FFFADED) == 0)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v58 objects:v64 count:16];
+      v8 = [components countByEnumeratingWithState:&v58 objects:v64 count:16];
     }
 
     while (v8);
@@ -303,7 +303,7 @@ LABEL_11:
           objc_enumerationMutation(v14);
         }
 
-        [v4 removeComponent:*(*(&v54 + 1) + 8 * j)];
+        [appearanceCopy removeComponent:*(*(&v54 + 1) + 8 * j)];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v54 objects:v63 count:16];
@@ -315,7 +315,7 @@ LABEL_11:
   v19 = +[CSComponent footerCallToActionLabel];
   v20 = [v19 priority:40];
   v21 = [v20 hidden:1];
-  [v4 addComponent:v21];
+  [appearanceCopy addComponent:v21];
 
   LODWORD(v21) = [(CSRemoteContentModalViewController *)self shouldHideHomeAffordance];
   v22 = objc_opt_new();
@@ -331,30 +331,30 @@ LABEL_11:
     [v23 suppressTeachableMomentsAnimation:1];
   }
   v25 = ;
-  [v4 addComponent:v25];
+  [appearanceCopy addComponent:v25];
 
-  [v4 addComponent:self->_content];
-  [v4 addComponent:self->_proudLockComponent];
-  [v4 addComponent:self->_quickActionsComponent];
+  [appearanceCopy addComponent:self->_content];
+  [appearanceCopy addComponent:self->_proudLockComponent];
+  [appearanceCopy addComponent:self->_quickActionsComponent];
   v26 = +[CSComponent backgroundContent];
   v27 = [v26 priority:40];
   v28 = [v27 hidden:1];
-  [v4 addComponent:v28];
+  [appearanceCopy addComponent:v28];
 
   v29 = +[CSComponent pageContent];
   v30 = [v29 priority:40];
   v31 = [v30 hidden:1];
-  [v4 addComponent:v31];
+  [appearanceCopy addComponent:v31];
 
-  v32 = [(CSRemoteContentModalViewController *)self _backgroundStyle];
-  v33 = [(CSRemoteContentModalViewController *)self _dateTimeStyle];
+  _backgroundStyle = [(CSRemoteContentModalViewController *)self _backgroundStyle];
+  _dateTimeStyle = [(CSRemoteContentModalViewController *)self _dateTimeStyle];
   if (self->_remoteContentPreferences)
   {
-    v34 = v33;
-    if (v32 > 2)
+    v34 = _dateTimeStyle;
+    if (_backgroundStyle > 2)
     {
-      v37 = (v32 - 3) > 1;
-      if ((v32 - 3) <= 1)
+      v37 = (_backgroundStyle - 3) > 1;
+      if ((_backgroundStyle - 3) <= 1)
       {
         v36 = 7;
       }
@@ -367,15 +367,15 @@ LABEL_11:
       v35 = !v37;
     }
 
-    else if (v32)
+    else if (_backgroundStyle)
     {
-      if (v32 == 1)
+      if (_backgroundStyle == 1)
       {
         v35 = 0;
         v36 = 5;
       }
 
-      else if (v32 == 2)
+      else if (_backgroundStyle == 2)
       {
         v35 = 1;
         v36 = 6;
@@ -398,14 +398,14 @@ LABEL_11:
     v39 = [v38 priority:40];
     v40 = [MEMORY[0x277CCABB0] numberWithInteger:v36];
     v41 = [v39 style:v40];
-    [v4 addComponent:v41];
+    [appearanceCopy addComponent:v41];
 
     if (v35)
     {
       v42 = objc_alloc(MEMORY[0x277D760A8]);
-      v43 = [MEMORY[0x277D75348] whiteColor];
-      v44 = [v42 initWithStyle:1 contentColor:v43];
-      [v4 setLegibilitySettings:v44];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v44 = [v42 initWithStyle:1 contentColor:whiteColor];
+      [appearanceCopy setLegibilitySettings:v44];
     }
 
     if (v34 == 2)
@@ -439,11 +439,11 @@ LABEL_48:
       v47 = +[CSComponent quickActions];
       v48 = [v47 priority:40];
       v49 = [v48 hidden:1];
-      [v4 addComponent:v49];
+      [appearanceCopy addComponent:v49];
     }
   }
 
-  [v4 addComponent:self->_dateTimeComponent];
+  [appearanceCopy addComponent:self->_dateTimeComponent];
   if ([(CSRemoteContentModalViewController *)self _reducesWhitePoint])
   {
     [(CSRemoteContentModalViewController *)self _backgroundStyle];
@@ -451,30 +451,30 @@ LABEL_48:
     v51 = [v50 priority:40];
     v52 = [v51 lighterReduction:BSSettingFlagForBool()];
     v53 = [v52 hidden:0];
-    [v4 addComponent:v53];
+    [appearanceCopy addComponent:v53];
   }
 
 LABEL_53:
 }
 
-- (void)aggregateBehavior:(id)a3
+- (void)aggregateBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v8.receiver = self;
   v8.super_class = CSRemoteContentModalViewController;
-  [(CSModalViewControllerBase *)&v8 aggregateBehavior:v4];
-  [v4 addRestrictedCapabilities:0x2000];
+  [(CSModalViewControllerBase *)&v8 aggregateBehavior:behaviorCopy];
+  [behaviorCopy addRestrictedCapabilities:0x2000];
   if ([(CSRemoteContentModalViewController *)self shouldCaptureHomeGesture])
   {
-    [v4 addRestrictedCapabilities:4096];
+    [behaviorCopy addRestrictedCapabilities:4096];
   }
 
   else
   {
-    [v4 removeRestrictedCapabilities:4096];
+    [behaviorCopy removeRestrictedCapabilities:4096];
   }
 
-  [v4 removeRestrictedCapabilities:130];
+  [behaviorCopy removeRestrictedCapabilities:130];
   WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
 
   if (WeakRetained)
@@ -506,20 +506,20 @@ LABEL_53:
     v7 = 2;
   }
 
-  [v4 setIdleTimerMode:v6];
-  [v4 setIdleTimerDuration:v7];
+  [behaviorCopy setIdleTimerMode:v6];
+  [behaviorCopy setIdleTimerDuration:v7];
 }
 
 - (id)_newDisplayLayoutElement
 {
-  v2 = [(SBSRemoteContentDefinition *)self->_definition serviceName];
-  if (v2)
+  serviceName = [(SBSRemoteContentDefinition *)self->_definition serviceName];
+  if (serviceName)
   {
-    v3 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:v2];
+    v3 = [objc_alloc(MEMORY[0x277D66A50]) initWithIdentifier:serviceName];
     [v3 setFillsDisplayBounds:1];
     [v3 setLayoutRole:6];
     [v3 setUIApplicationElement:1];
-    [v3 setBundleIdentifier:v2];
+    [v3 setBundleIdentifier:serviceName];
   }
 
   else
@@ -530,16 +530,16 @@ LABEL_53:
   return v3;
 }
 
-- (void)_updateDisplayLayoutElementForActivation:(id)a3
+- (void)_updateDisplayLayoutElementForActivation:(id)activation
 {
   v5.receiver = self;
   v5.super_class = CSRemoteContentModalViewController;
-  v4 = a3;
-  [(CSCoverSheetViewControllerBase *)&v5 _updateDisplayLayoutElementForActivation:v4];
-  [v4 sb_setTransitioning:{(-[CSRemoteContentModalViewController _appearState](self, "_appearState", v5.receiver, v5.super_class) & 0xFFFFFFFD) == 1}];
+  activationCopy = activation;
+  [(CSCoverSheetViewControllerBase *)&v5 _updateDisplayLayoutElementForActivation:activationCopy];
+  [activationCopy sb_setTransitioning:{(-[CSRemoteContentModalViewController _appearState](self, "_appearState", v5.receiver, v5.super_class) & 0xFFFFFFFD) == 1}];
 }
 
-- (void)handleSecondaryActionForView:(id)a3
+- (void)handleSecondaryActionForView:(id)view
 {
   v4 = [CSAction actionWithType:3];
   [(CSCoverSheetViewControllerBase *)self sendAction:v4];
@@ -562,11 +562,11 @@ LABEL_53:
   }
 }
 
-- (void)_setUserHasInteractedSinceWake:(BOOL)a3
+- (void)_setUserHasInteractedSinceWake:(BOOL)wake
 {
-  if (self->_userHasInteractedSinceWake != a3)
+  if (self->_userHasInteractedSinceWake != wake)
   {
-    self->_userHasInteractedSinceWake = a3;
+    self->_userHasInteractedSinceWake = wake;
     [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self];
 
     [(CSCoverSheetViewControllerBase *)self updateBehaviorForController:self];
@@ -581,9 +581,9 @@ LABEL_53:
   self->_scaleProperty = v3;
 
   [(UIViewFloatAnimatableProperty *)self->_scaleProperty setValue:1.0];
-  v5 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
   scaleSettings = self->_scaleSettings;
-  self->_scaleSettings = v5;
+  self->_scaleSettings = initWithDefaultValues;
 
   [(SBFFluidBehaviorSettings *)self->_scaleSettings setBehaviorType:2];
   [(SBFFluidBehaviorSettings *)self->_scaleSettings setDampingRatio:1.0];
@@ -593,9 +593,9 @@ LABEL_53:
   self->_alphaProperty = v7;
 
   [(UIViewFloatAnimatableProperty *)self->_alphaProperty setValue:1.0];
-  v9 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+  initWithDefaultValues2 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
   alphaSettings = self->_alphaSettings;
-  self->_alphaSettings = v9;
+  self->_alphaSettings = initWithDefaultValues2;
 
   [(SBFFluidBehaviorSettings *)self->_alphaSettings setBehaviorType:1];
   [(SBFFluidBehaviorSettings *)self->_alphaSettings setDampingRatio:1.0];
@@ -674,27 +674,27 @@ void __55__CSRemoteContentModalViewController__createProperties__block_invoke(ui
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_hostViewController);
-    v13 = [WeakRetained view];
-    [v13 setAlpha:v10];
+    view = [WeakRetained view];
+    [view setAlpha:v10];
   }
 
   [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self];
 }
 
-- (void)addGrabberView:(id)a3
+- (void)addGrabberView:(id)view
 {
-  v8 = a3;
-  objc_storeStrong(&self->_grabberView, a3);
+  viewCopy = view;
+  objc_storeStrong(&self->_grabberView, view);
   if (SBFEffectiveHomeButtonType() == 2)
   {
     grabberView = self->_grabberView;
-    v6 = [(CSModalViewControllerBase *)self view];
-    [v6 bounds];
+    view = [(CSModalViewControllerBase *)self view];
+    [view bounds];
     [(UIView *)grabberView setFrame:?];
 
     [(UIView *)self->_grabberView setAutoresizingMask:18];
-    v7 = [(CSModalViewControllerBase *)self view];
-    [v7 addSubview:self->_grabberView];
+    view2 = [(CSModalViewControllerBase *)self view];
+    [view2 addSubview:self->_grabberView];
   }
 
   [(CSRemoteContentModalViewController *)self _updateGrabberViewVisibility];
@@ -711,17 +711,17 @@ void __55__CSRemoteContentModalViewController__createProperties__block_invoke(ui
 
   else
   {
-    v4 = [(CSModalViewControllerBase *)self view];
-    [v4 addSubview:self->_grabberView];
+    view = [(CSModalViewControllerBase *)self view];
+    [view addSubview:self->_grabberView];
   }
 }
 
-- (void)handleBottomEdgeGestureBegan:(id)a3
+- (void)handleBottomEdgeGestureBegan:(id)began
 {
-  v4 = a3;
+  beganCopy = began;
   [(CSRemoteContentModalViewController *)self _setCornerRounded:1];
-  v5 = [(CSModalViewControllerBase *)self view];
-  [v4 translationInView:v5];
+  view = [(CSModalViewControllerBase *)self view];
+  [beganCopy translationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -736,11 +736,11 @@ void __55__CSRemoteContentModalViewController__createProperties__block_invoke(ui
   }
 }
 
-- (void)handleBottomEdgeGestureChanged:(id)a3
+- (void)handleBottomEdgeGestureChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSModalViewControllerBase *)self view];
-  [v4 translationInView:v5];
+  changedCopy = changed;
+  view = [(CSModalViewControllerBase *)self view];
+  [changedCopy translationInView:view];
   v7 = v6;
   v9 = v8;
 
@@ -756,7 +756,7 @@ void __55__CSRemoteContentModalViewController__createProperties__block_invoke(ui
   [(CSRemoteContentModalViewController *)self _updateContentAlpha:1 interactive:0x3FEB333333333333, 1, 0x3FF0000000000000, 1];
 }
 
-- (void)handleBottomEdgeGestureEnded:(id)a3
+- (void)handleBottomEdgeGestureEnded:(id)ended
 {
   [(CSRemoteContentModalViewController *)self _updateContentScale:0 interactive:1.0];
   [(CSRemoteContentModalViewController *)self _updateContentAlpha:0 interactive:1.0];
@@ -779,13 +779,13 @@ void __55__CSRemoteContentModalViewController__createProperties__block_invoke(ui
   }
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if (self->_lockScreenSettings == v9)
+  settingsCopy = settings;
+  keyCopy = key;
+  if (self->_lockScreenSettings == settingsCopy)
   {
-    if ([v6 isEqualToString:@"unlockRubberBandFeedbackIntensity"])
+    if ([keyCopy isEqualToString:@"unlockRubberBandFeedbackIntensity"])
     {
       v7 = [objc_alloc(MEMORY[0x277D755F0]) initWithStyle:{-[CSLockScreenSettings unlockRubberBandFeedbackIntensity](self->_lockScreenSettings, "unlockRubberBandFeedbackIntensity")}];
       rubberBandFeedbackGenerator = self->_rubberBandFeedbackGenerator;
@@ -793,37 +793,37 @@ void __55__CSRemoteContentModalViewController__createProperties__block_invoke(ui
     }
   }
 
-  else if (self->_remoteContentSettings == v9)
+  else if (self->_remoteContentSettings == settingsCopy)
   {
     [(CSCoverSheetViewControllerBase *)self updateAppearanceForController:self];
   }
 }
 
-- (void)_setCornerRounded:(BOOL)a3
+- (void)_setCornerRounded:(BOOL)rounded
 {
-  v3 = a3;
-  v5 = [(CSModalViewControllerBase *)self view];
-  v6 = v5;
-  if (v3)
+  roundedCopy = rounded;
+  view = [(CSModalViewControllerBase *)self view];
+  v6 = view;
+  if (roundedCopy)
   {
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    v8 = [v7 traitCollection];
-    [v8 displayCornerRadius];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    [traitCollection displayCornerRadius];
     [v6 _setContinuousCornerRadius:?];
   }
 
   else
   {
-    [v5 _setContinuousCornerRadius:0.0];
+    [view _setContinuousCornerRadius:0.0];
   }
 
-  v9 = [(CSModalViewControllerBase *)self view];
-  [v9 setClipsToBounds:v3];
+  view2 = [(CSModalViewControllerBase *)self view];
+  [view2 setClipsToBounds:roundedCopy];
 }
 
-- (void)_updateContentScale:(double)a3 interactive:(BOOL)a4
+- (void)_updateContentScale:(double)scale interactive:(BOOL)interactive
 {
-  if (a4)
+  if (interactive)
   {
     v4 = 5;
   }
@@ -839,12 +839,12 @@ void __55__CSRemoteContentModalViewController__createProperties__block_invoke(ui
   v8[2] = __70__CSRemoteContentModalViewController__updateContentScale_interactive___block_invoke;
   v8[3] = &unk_27838C888;
   v8[4] = self;
-  *&v8[5] = a3;
+  *&v8[5] = scale;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__CSRemoteContentModalViewController__updateContentScale_interactive___block_invoke_2;
   v6[3] = &unk_27838DB60;
-  v7 = a4;
+  interactiveCopy = interactive;
   v6[4] = self;
   [MEMORY[0x277D75D18] sb_animateWithSettings:scaleSettings mode:v4 animations:v8 completion:v6];
 }
@@ -859,9 +859,9 @@ uint64_t __70__CSRemoteContentModalViewController__updateContentScale_interactiv
   return result;
 }
 
-- (void)_updateContentAlpha:(double)a3 interactive:(BOOL)a4
+- (void)_updateContentAlpha:(double)alpha interactive:(BOOL)interactive
 {
-  v4 = !a4;
+  v4 = !interactive;
   alphaSettings = self->_alphaSettings;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -878,7 +878,7 @@ uint64_t __70__CSRemoteContentModalViewController__updateContentScale_interactiv
   }
 
   v7[4] = self;
-  *&v7[5] = a3;
+  *&v7[5] = alpha;
   [MEMORY[0x277D75D18] sb_animateWithSettings:alphaSettings mode:v6 animations:v7 completion:0];
 }
 
@@ -924,15 +924,15 @@ uint64_t __70__CSRemoteContentModalViewController__updateContentScale_interactiv
   }
 }
 
-- (void)_dismissForced:(BOOL)a3 animated:(BOOL)a4
+- (void)_dismissForced:(BOOL)forced animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  if (![(CSRemoteContentModalViewController *)self suppressesDismissalGesture]|| v5)
+  animatedCopy = animated;
+  forcedCopy = forced;
+  if (![(CSRemoteContentModalViewController *)self suppressesDismissalGesture]|| forcedCopy)
   {
     self->_dismissing = 1;
     v7 = 0.3;
-    if (!v4)
+    if (!animatedCopy)
     {
       v7 = 0.0;
     }
@@ -983,28 +983,28 @@ void __62__CSRemoteContentModalViewController__dismissForced_animated___block_in
     v5 = [v3 localizedStringForKey:@"BEDTIME_DISMISS" value:&stru_28302FDA0 table:@"CoverSheet"];
   }
 
-  v4 = [(CSModalViewControllerBase *)self viewIfLoaded];
-  [v4 setSecondaryActionButtonText:v5];
+  viewIfLoaded = [(CSModalViewControllerBase *)self viewIfLoaded];
+  [viewIfLoaded setSecondaryActionButtonText:v5];
 }
 
-- (BOOL)handleEvent:(id)a3
+- (BOOL)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = CSRemoteContentModalViewController;
-  if (-[CSCoverSheetViewControllerBase handleEvent:](&v8, sel_handleEvent_, v4) && ([v4 isConsumable] & 1) != 0)
+  if (-[CSCoverSheetViewControllerBase handleEvent:](&v8, sel_handleEvent_, eventCopy) && ([eventCopy isConsumable] & 1) != 0)
   {
     goto LABEL_6;
   }
 
-  v5 = [v4 type];
-  if (v5 == 22)
+  type = [eventCopy type];
+  if (type == 22)
   {
     [(CSRemoteContentModalViewController *)self didReceiveTouch];
     goto LABEL_8;
   }
 
-  if (v5 != 25)
+  if (type != 25)
   {
 LABEL_8:
     v6 = 0;
@@ -1019,16 +1019,16 @@ LABEL_9:
   return v6;
 }
 
-- (void)_addChildHostViewController:(id)a3
+- (void)_addChildHostViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66__CSRemoteContentModalViewController__addChildHostViewController___block_invoke;
   v6[3] = &unk_27838BA70;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = controllerCopy;
+  selfCopy = self;
+  v5 = controllerCopy;
   [(CSRemoteContentModalViewController *)self bs_addChildViewController:v5 animated:1 transitionBlock:v6];
 }
 

@@ -1,18 +1,18 @@
 @interface RPSystemBroadcastPickerView
-- (RPSystemBroadcastPickerView)initWithCoder:(id)a3;
-- (RPSystemBroadcastPickerView)initWithFrame:(CGRect)a3;
+- (RPSystemBroadcastPickerView)initWithCoder:(id)coder;
+- (RPSystemBroadcastPickerView)initWithFrame:(CGRect)frame;
 - (void)addBroadcastPickerButton;
-- (void)buttonPressed:(id)a3;
+- (void)buttonPressed:(id)pressed;
 - (void)screenCaptureChanged;
 @end
 
 @implementation RPSystemBroadcastPickerView
 
-- (RPSystemBroadcastPickerView)initWithCoder:(id)a3
+- (RPSystemBroadcastPickerView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = RPSystemBroadcastPickerView;
-  v3 = [(RPSystemBroadcastPickerView *)&v6 initWithCoder:a3];
+  v3 = [(RPSystemBroadcastPickerView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (RPSystemBroadcastPickerView)initWithFrame:(CGRect)a3
+- (RPSystemBroadcastPickerView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = RPSystemBroadcastPickerView;
-  v3 = [(RPSystemBroadcastPickerView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(RPSystemBroadcastPickerView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -53,20 +53,20 @@
   [(UIButton *)v7 setFrame:v16.origin.x, v16.origin.y, v16.size.width, v16.size.height];
   [(UIButton *)self->_broadcastPickerButton setImage:v4 forState:0];
   v8 = self->_broadcastPickerButton;
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [(UIButton *)v8 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UIButton *)v8 setBackgroundColor:clearColor];
 
   [(UIButton *)self->_broadcastPickerButton setAutoresizingMask:18];
   [(UIButton *)self->_broadcastPickerButton addTarget:self action:sel_buttonPressed_ forControlEvents:64];
-  v10 = [(UIButton *)self->_broadcastPickerButton imageView];
-  [v10 setContentMode:2];
+  imageView = [(UIButton *)self->_broadcastPickerButton imageView];
+  [imageView setContentMode:2];
 
-  v11 = [(RPSystemBroadcastPickerView *)self broadcastPickerButton];
-  [(RPSystemBroadcastPickerView *)self addSubview:v11];
+  broadcastPickerButton = [(RPSystemBroadcastPickerView *)self broadcastPickerButton];
+  [(RPSystemBroadcastPickerView *)self addSubview:broadcastPickerButton];
 
   [(RPSystemBroadcastPickerView *)self screenCaptureChanged];
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel_screenCaptureChanged name:*MEMORY[0x277D76E90] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_screenCaptureChanged name:*MEMORY[0x277D76E90] object:0];
 }
 
 - (void)screenCaptureChanged
@@ -112,10 +112,10 @@ void __51__RPSystemBroadcastPickerView_screenCaptureChanged__block_invoke(uint64
   [*(*(a1 + 32) + 424) setTintColor:v5];
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pressedCopy = pressed;
   if (__RPLogLevel <= 1 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136446466;

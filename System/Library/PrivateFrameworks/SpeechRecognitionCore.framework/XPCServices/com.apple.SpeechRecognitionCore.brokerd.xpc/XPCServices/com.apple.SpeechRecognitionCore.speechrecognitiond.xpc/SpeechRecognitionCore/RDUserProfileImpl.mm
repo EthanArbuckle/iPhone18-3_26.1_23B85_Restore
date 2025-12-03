@@ -1,36 +1,36 @@
 @interface RDUserProfileImpl
-- (RDUserProfileImpl)initWithLanguage:(id)a3 assetPath:(id)a4;
+- (RDUserProfileImpl)initWithLanguage:(id)language assetPath:(id)path;
 - (id)readUserProfileFromCache;
-- (void)adaptUserProfileWithUserData:(id)a3;
-- (void)addPhraseToUserProfileWithIPAprons:(id)a3 wordTag:(id)a4 phrase:(id)a5 pronsArray:(id)a6;
-- (void)addPhraseToUserProfileWithTemplateName:(id)a3 wordTag:(id)a4 phrase:(id)a5;
-- (void)addWordsToUserProfileWithTemplateName:(id)a3 wordArrays:(id)a4;
-- (void)updateUserProfileWithPersonalData:(BOOL)a3 completion:(id)a4;
+- (void)adaptUserProfileWithUserData:(id)data;
+- (void)addPhraseToUserProfileWithIPAprons:(id)aprons wordTag:(id)tag phrase:(id)phrase pronsArray:(id)array;
+- (void)addPhraseToUserProfileWithTemplateName:(id)name wordTag:(id)tag phrase:(id)phrase;
+- (void)addWordsToUserProfileWithTemplateName:(id)name wordArrays:(id)arrays;
+- (void)updateUserProfileWithPersonalData:(BOOL)data completion:(id)completion;
 - (void)writeOutUserDataToJson;
 - (void)writeUserProfileToCache;
 @end
 
 @implementation RDUserProfileImpl
 
-- (RDUserProfileImpl)initWithLanguage:(id)a3 assetPath:(id)a4
+- (RDUserProfileImpl)initWithLanguage:(id)language assetPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  languageCopy = language;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = RDUserProfileImpl;
   v8 = [(RDUserProfileImpl *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    [(RDUserProfileImpl *)v8 setLanguage:v6];
-    [(RDUserProfileImpl *)v9 setAssetPath:v7];
+    [(RDUserProfileImpl *)v8 setLanguage:languageCopy];
+    [(RDUserProfileImpl *)v9 setAssetPath:pathCopy];
     v10 = [(NSString *)v9->_assetPath stringByAppendingPathComponent:@"mini.json"];
     v11 = [(NSString *)v9->_assetPath stringByAppendingPathComponent:@"ncs"];
     v12 = [v11 stringByAppendingPathComponent:@"en_US_napg.json"];
     v13 = [v11 stringByAppendingPathComponent:@"vocdelta.voc"];
     v14 = [v11 stringByAppendingPathComponent:@"pg.voc"];
     v15 = [v11 stringByAppendingPathComponent:@"mrec.psh"];
-    v16 = [[_EARUserProfile alloc] initWithConfiguration:v10 language:v6 overrides:0 sdapiOverrides:v12 emptyVoc:v13 pgVoc:v14 paramsetHolder:v15];
+    v16 = [[_EARUserProfile alloc] initWithConfiguration:v10 language:languageCopy overrides:0 sdapiOverrides:v12 emptyVoc:v13 pgVoc:v14 paramsetHolder:v15];
     userProfile = v9->_userProfile;
     v9->_userProfile = v16;
   }
@@ -38,9 +38,9 @@
   return v9;
 }
 
-- (void)updateUserProfileWithPersonalData:(BOOL)a3 completion:(id)a4
+- (void)updateUserProfileWithPersonalData:(BOOL)data completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = RXOSLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -51,10 +51,10 @@
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = [(RDUserProfileImpl *)self readUserProfileFromCache];
+  readUserProfileFromCache = [(RDUserProfileImpl *)self readUserProfileFromCache];
   v11 = RXOSLog();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-  if (v10)
+  if (readUserProfileFromCache)
   {
     if (v12)
     {
@@ -62,7 +62,7 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Re-using existing profile data", buf, 2u);
     }
 
-    [(_EARUserProfile *)self->_userProfile readUserProfile:v10];
+    [(_EARUserProfile *)self->_userProfile readUserProfile:readUserProfileFromCache];
   }
 
   else
@@ -86,9 +86,9 @@
   v15[1] = 3221225472;
   v15[2] = sub_10004BEF8;
   v15[3] = &unk_1000FFC60;
-  v17 = a3;
+  dataCopy = data;
   v15[4] = self;
-  v14 = v6;
+  v14 = completionCopy;
   v16 = v14;
   [RDUserData fetchUserDataWithLanguage:v13 keepGoing:v18 completion:v15];
 
@@ -215,9 +215,9 @@ LABEL_29:
   v8 = v28;
   if (v7)
   {
-    v9 = [(RDUserProfileImpl *)self dataProfile];
-    v10 = v9;
-    if (!v9)
+    dataProfile = [(RDUserProfileImpl *)self dataProfile];
+    v10 = dataProfile;
+    if (!dataProfile)
     {
       v11 = RXOSLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -231,7 +231,7 @@ LABEL_29:
 
     v33[0] = @"data";
     v33[1] = @"version";
-    v34[0] = v9;
+    v34[0] = dataProfile;
     v34[1] = @"4.0";
     v33[2] = @"language";
     v34[2] = v6;
@@ -330,11 +330,11 @@ LABEL_21:
   v17 = 0;
   v5 = v4;
   v6 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [v7 stringByAppendingPathComponent:@"/SpeechRecognitionCore"];
+    v8 = [firstObject stringByAppendingPathComponent:@"/SpeechRecognitionCore"];
     v9 = +[NSFileManager defaultManager];
     v10 = [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v17];
 
@@ -383,14 +383,14 @@ LABEL_21:
   }
 }
 
-- (void)addWordsToUserProfileWithTemplateName:(id)a3 wordArrays:(id)a4
+- (void)addWordsToUserProfileWithTemplateName:(id)name wordArrays:(id)arrays
 {
-  v6 = a3;
+  nameCopy = name;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a4;
+  obj = arrays;
   v7 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -415,7 +415,7 @@ LABEL_21:
         v16 = v12;
         v13 = v12;
         [v11 enumerateKeysAndObjectsUsingBlock:v15];
-        [(_EARUserProfile *)self->_userProfile addWordWithParts:v13 templateName:v6];
+        [(_EARUserProfile *)self->_userProfile addWordWithParts:v13 templateName:nameCopy];
 
         v10 = v10 + 1;
       }
@@ -428,17 +428,17 @@ LABEL_21:
   }
 }
 
-- (void)addPhraseToUserProfileWithTemplateName:(id)a3 wordTag:(id)a4 phrase:(id)a5
+- (void)addPhraseToUserProfileWithTemplateName:(id)name wordTag:(id)tag phrase:(id)phrase
 {
-  v19 = a3;
-  v7 = a4;
-  v8 = a5;
+  nameCopy = name;
+  tagCopy = tag;
+  phraseCopy = phrase;
   v9 = +[NSMutableArray array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v8;
+  obj = phraseCopy;
   v10 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
@@ -457,7 +457,7 @@ LABEL_21:
         v14 = *(*(&v21 + 1) + 8 * v13);
         v15 = [_EARWordPart alloc];
         v16 = +[NSSet set];
-        v17 = [v15 initWithOrthography:v14 pronunciations:v16 tag:sub_10004CECC(v7)];
+        v17 = [v15 initWithOrthography:v14 pronunciations:v16 tag:sub_10004CECC(tagCopy)];
 
         [v9 addObject:v17];
         v13 = v13 + 1;
@@ -470,42 +470,42 @@ LABEL_21:
     while (v11);
   }
 
-  [(_EARUserProfile *)self->_userProfile addWordWithParts:v9 templateName:v19];
+  [(_EARUserProfile *)self->_userProfile addWordWithParts:v9 templateName:nameCopy];
 }
 
-- (void)addPhraseToUserProfileWithIPAprons:(id)a3 wordTag:(id)a4 phrase:(id)a5 pronsArray:(id)a6
+- (void)addPhraseToUserProfileWithIPAprons:(id)aprons wordTag:(id)tag phrase:(id)phrase pronsArray:(id)array
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
+  tagCopy = tag;
+  phraseCopy = phrase;
+  arrayCopy = array;
+  apronsCopy = aprons;
   v14 = +[NSMutableArray array];
   v15 = [_EARWordPart alloc];
-  v16 = [NSSet setWithArray:v12];
-  v17 = [v15 initWithOrthography:v11 pronunciations:v16 tagName:v10 frequency:1];
+  v16 = [NSSet setWithArray:arrayCopy];
+  v17 = [v15 initWithOrthography:phraseCopy pronunciations:v16 tagName:tagCopy frequency:1];
 
   v18 = RXOSLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
     v19 = 138413058;
-    v20 = v11;
+    v20 = phraseCopy;
     v21 = 2112;
-    v22 = v12;
+    v22 = arrayCopy;
     v23 = 2112;
-    v24 = v10;
+    v24 = tagCopy;
     v25 = 2048;
     v26 = 1;
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "Adding orthography %@ with IPA %@, wordTag: %@, frequency: %lu", &v19, 0x2Au);
   }
 
   [v14 addObject:v17];
-  [(_EARUserProfile *)self->_userProfile addWordWithParts:v14 templateName:v13];
+  [(_EARUserProfile *)self->_userProfile addWordWithParts:v14 templateName:apronsCopy];
 }
 
-- (void)adaptUserProfileWithUserData:(id)a3
+- (void)adaptUserProfileWithUserData:(id)data
 {
-  v4 = [a3 contactsWords];
-  [(RDUserProfileImpl *)self addWordsToUserProfileWithTemplateName:@"\\NT-contact" wordArrays:v4];
+  contactsWords = [data contactsWords];
+  [(RDUserProfileImpl *)self addWordsToUserProfileWithTemplateName:@"\\NT-contact" wordArrays:contactsWords];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface MTRWebRTCTransportRequestorClusterOfferParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRWebRTCTransportRequestorClusterOfferParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -38,26 +38,26 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWebRTCTransportRequestorClusterOfferParams);
-  v5 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self webRTCSessionID];
-  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setWebRTCSessionID:v5];
+  webRTCSessionID = [(MTRWebRTCTransportRequestorClusterOfferParams *)self webRTCSessionID];
+  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setWebRTCSessionID:webRTCSessionID];
 
   v6 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self sdp];
   [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setSdp:v6];
 
-  v7 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceServers];
-  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setIceServers:v7];
+  iceServers = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceServers];
+  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setIceServers:iceServers];
 
-  v8 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceTransportPolicy];
-  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setIceTransportPolicy:v8];
+  iceTransportPolicy = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceTransportPolicy];
+  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setIceTransportPolicy:iceTransportPolicy];
 
-  v9 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self timedInvokeTimeoutMs];
-  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setTimedInvokeTimeoutMs:v9];
+  timedInvokeTimeoutMs = [(MTRWebRTCTransportRequestorClusterOfferParams *)self timedInvokeTimeoutMs];
+  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v10 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self serverSideProcessingTimeout];
-  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setServerSideProcessingTimeout:v10];
+  serverSideProcessingTimeout = [(MTRWebRTCTransportRequestorClusterOfferParams *)self serverSideProcessingTimeout];
+  [(MTRWebRTCTransportRequestorClusterOfferParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -72,34 +72,34 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v38 = *MEMORY[0x277D85DE8];
-  v26 = 0;
+  unsignedShortValue = 0;
   v31 = 0;
   v27 = 0uLL;
   v28 = 0;
   v25[0] = 0;
   v25[1] = 0;
   v24 = v25;
-  v4 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self webRTCSessionID];
-  v26 = [v4 unsignedShortValue];
+  webRTCSessionID = [(MTRWebRTCTransportRequestorClusterOfferParams *)self webRTCSessionID];
+  unsignedShortValue = [webRTCSessionID unsignedShortValue];
 
   v5 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self sdp];
   v6 = v5;
   sub_238DB9BD8(buf, [v5 UTF8String], objc_msgSend(v5, "lengthOfBytesUsingEncoding:", 4));
 
   v27 = *buf;
-  v7 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceServers];
-  LOBYTE(v5) = v7 == 0;
+  iceServers = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceServers];
+  LOBYTE(v5) = iceServers == 0;
 
   if ((v5 & 1) == 0)
   {
     v28 = 1;
     v29 = 0;
     v30 = 0;
-    v8 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceServers];
-    v9 = [v8 count] == 0;
+    iceServers2 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceServers];
+    v9 = [iceServers2 count] == 0;
 
     if (!v9)
     {
@@ -110,16 +110,16 @@
     v30 = 0;
   }
 
-  v10 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceTransportPolicy];
-  v11 = v10 == 0;
+  iceTransportPolicy = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceTransportPolicy];
+  v11 = iceTransportPolicy == 0;
 
   if (!v11)
   {
     v31 = 1;
     v32 = 0uLL;
-    v12 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceTransportPolicy];
-    v13 = v12;
-    sub_238DB9BD8(buf, [v12 UTF8String], objc_msgSend(v12, "lengthOfBytesUsingEncoding:", 4));
+    iceTransportPolicy2 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self iceTransportPolicy];
+    v13 = iceTransportPolicy2;
+    sub_238DB9BD8(buf, [iceTransportPolicy2 UTF8String], objc_msgSend(iceTransportPolicy2, "lengthOfBytesUsingEncoding:", 4));
 
     v32 = *buf;
   }
@@ -134,7 +134,7 @@
     v37 = 0;
     sub_238EA16C4(&v34, &v23, 0);
     sub_2393C7BF0(buf, &v34, 0xFFFFFFFF);
-    v15 = sub_238F33CD8(&v26, buf, 0x100uLL);
+    v15 = sub_238F33CD8(&unsignedShortValue, buf, 0x100uLL);
     v16 = v15;
     if (v15 || (v15 = sub_238DD2EFC(buf, &v23), v16 = v15, v15))
     {
@@ -143,8 +143,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v23);
-      v15 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v23);
+      v15 = sub_2393C7114(reader, 21, 256);
       v17 = v21;
       v16 = v15;
     }
@@ -172,19 +172,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRWebRTCTransportRequestorClusterOfferParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -195,7 +195,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x908800000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

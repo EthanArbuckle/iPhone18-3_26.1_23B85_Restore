@@ -1,5 +1,5 @@
 @interface InstallationNSProgress
-- (_TtC14MarketplaceKit22InstallationNSProgress)initWithParent:(id)a3 userInfo:(id)a4;
+- (_TtC14MarketplaceKit22InstallationNSProgress)initWithParent:(id)parent userInfo:(id)info;
 - (void)cancel;
 - (void)pause;
 - (void)resume;
@@ -9,23 +9,23 @@
 
 - (void)pause
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D965C628(1, 1);
 }
 
 - (void)resume
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D965C628(0, 1);
 }
 
 - (void)cancel
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D965C628(2, 1);
 }
 
-- (_TtC14MarketplaceKit22InstallationNSProgress)initWithParent:(id)a3 userInfo:(id)a4
+- (_TtC14MarketplaceKit22InstallationNSProgress)initWithParent:(id)parent userInfo:(id)info
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

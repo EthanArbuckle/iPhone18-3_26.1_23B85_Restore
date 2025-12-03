@@ -1,14 +1,14 @@
 @interface NRNSXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)setDelegate:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation NRNSXPCListener
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  objc_storeWeak(&self->_listenerDelegate, a3);
-  if (a3)
+  objc_storeWeak(&self->_listenerDelegate, delegate);
+  if (delegate)
   {
     [(NRNSXPCListener *)&v6 setDelegate:self, v5.receiver, v5.super_class, self, NRNSXPCListener];
   }
@@ -19,10 +19,10 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [[NRNSXPCConnection alloc] initWithConnection:v5];
+  connectionCopy = connection;
+  v6 = [[NRNSXPCConnection alloc] initWithConnection:connectionCopy];
 
   WeakRetained = objc_loadWeakRetained(&self->_listenerDelegate);
   LOBYTE(self) = [WeakRetained listener:self shouldAcceptNewConnection:v6];

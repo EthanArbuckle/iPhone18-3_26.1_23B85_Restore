@@ -1,5 +1,5 @@
 @interface AXMMediaAnalysisCaptionsResult
-- (AXMMediaAnalysisCaptionsResult)initWithCoder:(id)a3;
+- (AXMMediaAnalysisCaptionsResult)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -9,8 +9,8 @@
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"AXMMediaAnalysisCaptionsResult<%p>", self];
-  v4 = [(AXMMediaAnalysisCaptionsResult *)self imageCaptionResults];
-  v5 = [v4 count];
+  imageCaptionResults = [(AXMMediaAnalysisCaptionsResult *)self imageCaptionResults];
+  v5 = [imageCaptionResults count];
 
   if (v5)
   {
@@ -19,8 +19,8 @@
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(AXMMediaAnalysisCaptionsResult *)self imageCaptionResults];
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    imageCaptionResults2 = [(AXMMediaAnalysisCaptionsResult *)self imageCaptionResults];
+    v7 = [imageCaptionResults2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -31,18 +31,18 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(imageCaptionResults2);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 text];
+          text = [v11 text];
           v13 = MEMORY[0x1E696AD98];
           [v11 confidence];
           v14 = [v13 numberWithDouble:?];
-          [v3 appendFormat:@"  - Text: '%@' Confidence: %@\n", v12, v14];
+          [v3 appendFormat:@"  - Text: '%@' Confidence: %@\n", text, v14];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [imageCaptionResults2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -57,15 +57,15 @@
   return v3;
 }
 
-- (AXMMediaAnalysisCaptionsResult)initWithCoder:(id)a3
+- (AXMMediaAnalysisCaptionsResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = AXMMediaAnalysisCaptionsResult;
   v5 = [(AXMMediaAnalysisCaptionsResult *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageCaptionResults"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageCaptionResults"];
     imageCaptionResults = v5->_imageCaptionResults;
     v5->_imageCaptionResults = v6;
   }

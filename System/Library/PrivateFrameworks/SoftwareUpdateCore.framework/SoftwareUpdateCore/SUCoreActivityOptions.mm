@@ -1,11 +1,11 @@
 @interface SUCoreActivityOptions
 - (SUCoreActivityOptions)init;
-- (SUCoreActivityOptions)initWithCoder:(id)a3;
-- (id)_stringForPriority:(int)a3;
-- (id)_stringForTriState:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUCoreActivityOptions)initWithCoder:(id)coder;
+- (id)_stringForPriority:(int)priority;
+- (id)_stringForTriState:(int)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreActivityOptions
@@ -35,71 +35,71 @@
   return v3;
 }
 
-- (SUCoreActivityOptions)initWithCoder:(id)a3
+- (SUCoreActivityOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SUCoreActivityOptions;
   v5 = [(SUCoreActivityOptions *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"runDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"runDate"];
     runDate = v5->_runDate;
     v5->_runDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batteryLevelGreaterThan"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batteryLevelGreaterThan"];
     batteryLevelGreaterThan = v5->_batteryLevelGreaterThan;
     v5->_batteryLevelGreaterThan = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"batteryLevelLessThan"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"batteryLevelLessThan"];
     batteryLevelLessThan = v5->_batteryLevelLessThan;
     v5->_batteryLevelLessThan = v10;
 
-    v5->_plugInState = [v4 decodeIntForKey:@"pluginState"];
-    v5->_screenOnState = [v4 decodeIntForKey:@"screenOnState"];
-    v5->_networkState = [v4 decodeIntForKey:@"networkState"];
-    v5->_wifiState = [v4 decodeIntForKey:@"wifiState"];
-    v5->_waking = [v4 decodeIntForKey:@"waking"];
-    v5->_phoneCallState = [v4 decodeIntForKey:@"phoneCallState"];
-    v5->_carplayState = [v4 decodeIntForKey:@"carplayState"];
-    v5->_mediaPlayingState = [v4 decodeIntForKey:@"mediaPlayingState"];
-    v5->_priority = [v4 decodeIntForKey:@"priority"];
+    v5->_plugInState = [coderCopy decodeIntForKey:@"pluginState"];
+    v5->_screenOnState = [coderCopy decodeIntForKey:@"screenOnState"];
+    v5->_networkState = [coderCopy decodeIntForKey:@"networkState"];
+    v5->_wifiState = [coderCopy decodeIntForKey:@"wifiState"];
+    v5->_waking = [coderCopy decodeIntForKey:@"waking"];
+    v5->_phoneCallState = [coderCopy decodeIntForKey:@"phoneCallState"];
+    v5->_carplayState = [coderCopy decodeIntForKey:@"carplayState"];
+    v5->_mediaPlayingState = [coderCopy decodeIntForKey:@"mediaPlayingState"];
+    v5->_priority = [coderCopy decodeIntForKey:@"priority"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   runDate = self->_runDate;
-  v5 = a3;
-  [v5 encodeObject:runDate forKey:@"runDate"];
-  [v5 encodeObject:self->_batteryLevelGreaterThan forKey:@"batteryLevelGreaterThan"];
-  [v5 encodeObject:self->_batteryLevelLessThan forKey:@"batteryLevelLessThan"];
-  [v5 encodeInt:self->_plugInState forKey:@"pluginState"];
-  [v5 encodeInt:self->_screenOnState forKey:@"screenOnState"];
-  [v5 encodeInt:self->_networkState forKey:@"networkState"];
-  [v5 encodeInt:self->_wifiState forKey:@"wifiState"];
-  [v5 encodeInt:self->_waking forKey:@"waking"];
-  [v5 encodeInt:self->_phoneCallState forKey:@"phoneCallState"];
-  [v5 encodeInt:self->_carplayState forKey:@"carplayState"];
-  [v5 encodeInt:self->_mediaPlayingState forKey:@"mediaPlayingState"];
-  [v5 encodeInt:self->_mediaPlayingState forKey:@"priority"];
+  coderCopy = coder;
+  [coderCopy encodeObject:runDate forKey:@"runDate"];
+  [coderCopy encodeObject:self->_batteryLevelGreaterThan forKey:@"batteryLevelGreaterThan"];
+  [coderCopy encodeObject:self->_batteryLevelLessThan forKey:@"batteryLevelLessThan"];
+  [coderCopy encodeInt:self->_plugInState forKey:@"pluginState"];
+  [coderCopy encodeInt:self->_screenOnState forKey:@"screenOnState"];
+  [coderCopy encodeInt:self->_networkState forKey:@"networkState"];
+  [coderCopy encodeInt:self->_wifiState forKey:@"wifiState"];
+  [coderCopy encodeInt:self->_waking forKey:@"waking"];
+  [coderCopy encodeInt:self->_phoneCallState forKey:@"phoneCallState"];
+  [coderCopy encodeInt:self->_carplayState forKey:@"carplayState"];
+  [coderCopy encodeInt:self->_mediaPlayingState forKey:@"mediaPlayingState"];
+  [coderCopy encodeInt:self->_mediaPlayingState forKey:@"priority"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SUCoreActivityOptions *)self runDate];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  runDate = [(SUCoreActivityOptions *)self runDate];
+  v7 = [runDate copyWithZone:zone];
   [v5 setRunDate:v7];
 
-  v8 = [(SUCoreActivityOptions *)self batteryLevelGreaterThan];
-  v9 = [v8 copyWithZone:a3];
+  batteryLevelGreaterThan = [(SUCoreActivityOptions *)self batteryLevelGreaterThan];
+  v9 = [batteryLevelGreaterThan copyWithZone:zone];
   [v5 setBatteryLevelGreaterThan:v9];
 
-  v10 = [(SUCoreActivityOptions *)self batteryLevelLessThan];
-  v11 = [v10 copyWithZone:a3];
+  batteryLevelLessThan = [(SUCoreActivityOptions *)self batteryLevelLessThan];
+  v11 = [batteryLevelLessThan copyWithZone:zone];
   [v5 setBatteryLevelLessThan:v11];
 
   [v5 setPlugInState:{-[SUCoreActivityOptions plugInState](self, "plugInState")}];
@@ -114,28 +114,28 @@
   return v5;
 }
 
-- (id)_stringForTriState:(int)a3
+- (id)_stringForTriState:(int)state
 {
-  if (a3 > 2)
+  if (state > 2)
   {
     return @"UNKNOWN";
   }
 
   else
   {
-    return off_27892D178[a3];
+    return off_27892D178[state];
   }
 }
 
-- (id)_stringForPriority:(int)a3
+- (id)_stringForPriority:(int)priority
 {
   v3 = @"Default(Utility)";
-  if (a3 == 1)
+  if (priority == 1)
   {
     v3 = @"Maintenance";
   }
 
-  if (a3 == 2)
+  if (priority == 2)
   {
     return @"Utility";
   }

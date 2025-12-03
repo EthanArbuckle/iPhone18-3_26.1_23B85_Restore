@@ -1,24 +1,24 @@
 @interface HUPersonalRequestsOnboardingFlow
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (HUPersonalRequestsOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
-- (id)processUserInput:(id)a3;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (HUPersonalRequestsOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
+- (id)processUserInput:(id)input;
 @end
 
 @implementation HUPersonalRequestsOnboardingFlow
 
-- (HUPersonalRequestsOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HUPersonalRequestsOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v17.receiver = self;
   v17.super_class = HUPersonalRequestsOnboardingFlow;
   v8 = [(HUPersonalRequestsOnboardingFlow *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_home, a4);
+    objc_storeStrong(&v8->_home, home);
     objc_initWeak(&location, v9);
-    v10 = [objc_opt_class() needsOnboardingForHome:v7 options:v6];
+    v10 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __62__HUPersonalRequestsOnboardingFlow_initWithUsageOptions_home___block_invoke;
@@ -71,30 +71,30 @@ void __62__HUPersonalRequestsOnboardingFlow_initWithUsageOptions_home___block_in
   }
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 objectForKeyedSubscript:@"HUPersonalRequestsOnboardingKey_UserInput"];
+  inputCopy = input;
+  v6 = [inputCopy objectForKeyedSubscript:@"HUPersonalRequestsOnboardingKey_UserInput"];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = NSStringFromSelector(a2);
     v14 = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = v8;
     v18 = 2112;
-    v19 = v5;
+    v19 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", &v14, 0x20u);
   }
 
   if ([v6 integerValue] == 1)
   {
     v9 = [HUPersonalRequestsCustomizeViewController alloc];
-    v10 = [v5 objectForKeyedSubscript:@"HUPersonalRequestsOnboardingKey_FMFDevice"];
-    v11 = [(HUPersonalRequestsOnboardingFlow *)self home];
-    v12 = [(HUPersonalRequestsCustomizeViewController *)v9 initWithLocationDevice:v10 home:v11];
+    onboardingFuture = [inputCopy objectForKeyedSubscript:@"HUPersonalRequestsOnboardingKey_FMFDevice"];
+    home = [(HUPersonalRequestsOnboardingFlow *)self home];
+    v12 = [(HUPersonalRequestsCustomizeViewController *)v9 initWithLocationDevice:onboardingFuture home:home];
   }
 
   else
@@ -105,8 +105,8 @@ void __62__HUPersonalRequestsOnboardingFlow_initWithUsageOptions_home___block_in
       goto LABEL_11;
     }
 
-    v10 = [(HUPersonalRequestsOnboardingFlow *)self onboardingFuture];
-    [v10 finishWithNoResult];
+    onboardingFuture = [(HUPersonalRequestsOnboardingFlow *)self onboardingFuture];
+    [onboardingFuture finishWithNoResult];
     v12 = 0;
   }
 
@@ -115,10 +115,10 @@ LABEL_11:
   return v12;
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  optionsCopy = options;
   if (([MEMORY[0x277D14CE8] isAMac] & 1) != 0 || objc_msgSend(MEMORY[0x277D14CE8], "isAVisionPro"))
   {
     v9 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC28]];
@@ -126,15 +126,15 @@ LABEL_11:
 
   else
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v10 = MEMORY[0x277D2C900];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __67__HUPersonalRequestsOnboardingFlow_needsOnboardingForHome_options___block_invoke;
     v12[3] = &unk_277DBCAB8;
     objc_copyWeak(v15, &location);
-    v13 = v7;
-    v14 = v8;
+    v13 = homeCopy;
+    v14 = optionsCopy;
     v15[1] = a2;
     v9 = [v10 futureWithBlock:v12];
 

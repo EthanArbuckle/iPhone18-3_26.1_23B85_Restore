@@ -1,20 +1,20 @@
 @interface PBStreamReader
-+ (id)readProtoBuffersOfClass:(Class)a3 fromFile:(id)a4 error:(id *)a5;
++ (id)readProtoBuffersOfClass:(Class)class fromFile:(id)file error:(id *)error;
 @end
 
 @implementation PBStreamReader
 
-+ (id)readProtoBuffersOfClass:(Class)a3 fromFile:(id)a4 error:(id *)a5
++ (id)readProtoBuffersOfClass:(Class)class fromFile:(id)file error:(id *)error
 {
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AC08] defaultManager];
-  if ([v8 fileExistsAtPath:v7])
+  fileCopy = file;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if ([defaultManager fileExistsAtPath:fileCopy])
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10 = objc_autoreleasePoolPush();
-    v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:v7 options:0 error:a5];
+    v11 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithContentsOfFile:fileCopy options:0 error:error];
     v12 = v11;
-    if (*a5)
+    if (*error)
     {
 
       objc_autoreleasePoolPop(v10);
@@ -30,13 +30,13 @@
         do
         {
           v15 = objc_autoreleasePoolPush();
-          v16 = [(PBDataReader *)v14 readProtoBuffer];
-          if (v16)
+          readProtoBuffer = [(PBDataReader *)v14 readProtoBuffer];
+          if (readProtoBuffer)
           {
-            v17 = [[a3 alloc] initWithData:v16];
+            v17 = [[class alloc] initWithData:readProtoBuffer];
             if (v17)
             {
-              [v9 addObject:v17];
+              [array addObject:v17];
             }
           }
 
@@ -48,11 +48,11 @@
 
       if ([(PBDataReader *)v14 hasError])
       {
-        *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PBRequesterErrorDomain" code:6005 userInfo:0];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"PBRequesterErrorDomain" code:6005 userInfo:0];
       }
 
       objc_autoreleasePoolPop(context);
-      v13 = v9;
+      v13 = array;
     }
   }
 

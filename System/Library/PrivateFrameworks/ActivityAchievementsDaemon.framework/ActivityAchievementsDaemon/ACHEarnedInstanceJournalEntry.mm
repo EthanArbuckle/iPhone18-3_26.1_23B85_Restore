@@ -1,45 +1,45 @@
 @interface ACHEarnedInstanceJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (ACHEarnedInstanceJournalEntry)initWithCoder:(id)a3;
-- (ACHEarnedInstanceJournalEntry)initWithEarnedInstance:(id)a3 provenance:(int64_t)a4 useLegacySyncIdentity:(BOOL)a5 action:(int64_t)a6;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (ACHEarnedInstanceJournalEntry)initWithCoder:(id)coder;
+- (ACHEarnedInstanceJournalEntry)initWithEarnedInstance:(id)instance provenance:(int64_t)provenance useLegacySyncIdentity:(BOOL)identity action:(int64_t)action;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ACHEarnedInstanceJournalEntry
 
-- (ACHEarnedInstanceJournalEntry)initWithEarnedInstance:(id)a3 provenance:(int64_t)a4 useLegacySyncIdentity:(BOOL)a5 action:(int64_t)a6
+- (ACHEarnedInstanceJournalEntry)initWithEarnedInstance:(id)instance provenance:(int64_t)provenance useLegacySyncIdentity:(BOOL)identity action:(int64_t)action
 {
-  v11 = a3;
+  instanceCopy = instance;
   v15.receiver = self;
   v15.super_class = ACHEarnedInstanceJournalEntry;
   v12 = [(ACHEarnedInstanceJournalEntry *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_action = a6;
-    objc_storeStrong(&v12->_earnedInstance, a3);
-    v13->_provenance = a4;
-    v13->_useLegacySyncIdentity = a5;
+    v12->_action = action;
+    objc_storeStrong(&v12->_earnedInstance, instance);
+    v13->_provenance = provenance;
+    v13->_useLegacySyncIdentity = identity;
   }
 
   return v13;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v9 = [v6 database];
+  database = [profileCopy database];
   v30 = 0;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __58__ACHEarnedInstanceJournalEntry_applyEntries_withProfile___block_invoke;
   v25[3] = &unk_278490FC0;
-  v26 = v5;
-  v27 = v6;
+  v26 = entriesCopy;
+  v27 = profileCopy;
   v10 = v7;
   v28 = v10;
   v11 = v8;
@@ -52,7 +52,7 @@
   v23 = v12;
   v13 = v26;
   v24 = v13;
-  v14 = [(HDHealthEntity *)ACHEarnedInstanceEntity performWriteTransactionWithHealthDatabase:v9 error:&v30 block:v25 inaccessibilityHandler:v22];
+  v14 = [(HDHealthEntity *)ACHEarnedInstanceEntity performWriteTransactionWithHealthDatabase:database error:&v30 block:v25 inaccessibilityHandler:v22];
   v15 = v30;
 
   if (v14)
@@ -196,16 +196,16 @@ uint64_t __58__ACHEarnedInstanceJournalEntry_applyEntries_withProfile___block_in
   return v6;
 }
 
-- (ACHEarnedInstanceJournalEntry)initWithCoder:(id)a3
+- (ACHEarnedInstanceJournalEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ACHEarnedInstanceJournalEntry;
-  v5 = [(HDJournalEntry *)&v11 initWithCoder:v4];
+  v5 = [(HDJournalEntry *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_action = [v4 decodeIntegerForKey:@"action"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"earnedInstance"];
+    v5->_action = [coderCopy decodeIntegerForKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"earnedInstance"];
     if ([v6 length])
     {
       v7 = [objc_alloc(MEMORY[0x277CE8CF8]) initWithData:v6];
@@ -215,38 +215,38 @@ uint64_t __58__ACHEarnedInstanceJournalEntry_applyEntries_withProfile___block_in
         earnedInstance = v5->_earnedInstance;
         v5->_earnedInstance = v8;
 
-        -[ACHEarnedInstance setKey:](v5->_earnedInstance, "setKey:", [v4 decodeInt64ForKey:@"persistentID"]);
+        -[ACHEarnedInstance setKey:](v5->_earnedInstance, "setKey:", [coderCopy decodeInt64ForKey:@"persistentID"]);
       }
     }
 
-    v5->_provenance = [v4 decodeInt64ForKey:@"provenance"];
+    v5->_provenance = [coderCopy decodeInt64ForKey:@"provenance"];
     v5->_useLegacySyncIdentity = 1;
-    if ([v4 containsValueForKey:@"useLegacySyncIdentity"])
+    if ([coderCopy containsValueForKey:@"useLegacySyncIdentity"])
     {
-      v5->_useLegacySyncIdentity = [v4 decodeBoolForKey:@"useLegacySyncIdentity"];
+      v5->_useLegacySyncIdentity = [coderCopy decodeBoolForKey:@"useLegacySyncIdentity"];
     }
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  [v8 encodeInteger:self->_action forKey:@"action"];
-  v4 = [(ACHEarnedInstanceJournalEntry *)self earnedInstance];
+  coderCopy = coder;
+  [coderCopy encodeInteger:self->_action forKey:@"action"];
+  earnedInstance = [(ACHEarnedInstanceJournalEntry *)self earnedInstance];
   v5 = ACHCodableFromEarnedInstance();
 
-  v6 = [v5 data];
-  if ([v6 length])
+  data = [v5 data];
+  if ([data length])
   {
-    [v8 encodeObject:v6 forKey:@"earnedInstance"];
-    v7 = [(ACHEarnedInstanceJournalEntry *)self earnedInstance];
-    [v8 encodeInt64:objc_msgSend(v7 forKey:{"key"), @"persistentID"}];
+    [coderCopy encodeObject:data forKey:@"earnedInstance"];
+    earnedInstance2 = [(ACHEarnedInstanceJournalEntry *)self earnedInstance];
+    [coderCopy encodeInt64:objc_msgSend(earnedInstance2 forKey:{"key"), @"persistentID"}];
   }
 
-  [v8 encodeInt64:self->_provenance forKey:@"provenance"];
-  [v8 encodeBool:self->_useLegacySyncIdentity forKey:@"useLegacySyncIdentity"];
+  [coderCopy encodeInt64:self->_provenance forKey:@"provenance"];
+  [coderCopy encodeBool:self->_useLegacySyncIdentity forKey:@"useLegacySyncIdentity"];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface IDSBlastDoorConnectionHelper
 + (id)getBlastDoorSharedConnection;
-- (BOOL)commandEnabledForBlastDoor:(id)a3 topic:(id)a4;
-- (BOOL)removeAllowlistedKey:(id)a3 fromPayload:(id)a4;
+- (BOOL)commandEnabledForBlastDoor:(id)door topic:(id)topic;
+- (BOOL)removeAllowlistedKey:(id)key fromPayload:(id)payload;
 - (IDSBlastDoorConnectionHelper)init;
-- (void)addAllowlistedKey:(id)a3 toValidatedPayload:(id)a4 fromOriginalPayload:(id)a5;
-- (void)auditMissingHeaderKeys:(id)a3 target:(id)a4;
-- (void)diffuseAPSUserPayload:(id)a3 topic:(id)a4 withCompletionBlock:(id)a5;
-- (void)diffuseClientMessage:(id)a3 context:(id)a4 withCompletionBlock:(id)a5;
-- (void)writeBlastDoorPayloadToDiskIfNecessary:(id)a3 withContext:(id)a4;
+- (void)addAllowlistedKey:(id)key toValidatedPayload:(id)payload fromOriginalPayload:(id)originalPayload;
+- (void)auditMissingHeaderKeys:(id)keys target:(id)target;
+- (void)diffuseAPSUserPayload:(id)payload topic:(id)topic withCompletionBlock:(id)block;
+- (void)diffuseClientMessage:(id)message context:(id)context withCompletionBlock:(id)block;
+- (void)writeBlastDoorPayloadToDiskIfNecessary:(id)necessary withContext:(id)context;
 @end
 
 @implementation IDSBlastDoorConnectionHelper
@@ -18,7 +18,7 @@
   block[1] = 3221225472;
   block[2] = sub_1A7B24960;
   block[3] = &unk_1E77DD328;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1EB2B8600 != -1)
   {
     dispatch_once(&qword_1EB2B8600, block);
@@ -43,11 +43,11 @@
   return v2;
 }
 
-- (void)diffuseAPSUserPayload:(id)a3 topic:(id)a4 withCompletionBlock:(id)a5
+- (void)diffuseAPSUserPayload:(id)payload topic:(id)topic withCompletionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  payloadCopy = payload;
+  topicCopy = topic;
+  blockCopy = block;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v19 = OSLogHandleForIDSCategory();
@@ -84,15 +84,15 @@
 LABEL_15:
     _IDSLogV(0, @"IDSFoundation", @"IDSBlastDoorConnectionHelper", v20);
 LABEL_16:
-    (*(v10 + 2))(v10, v8, 0, 0);
+    (*(blockCopy + 2))(blockCopy, payloadCopy, 0, 0);
     goto LABEL_17;
   }
 
   v11 = objc_opt_class();
-  v12 = sub_1A7B0A094(v11, v8, @"c");
-  v13 = [(IDSBlastDoorConnectionHelper *)self commandEnabledForBlastDoor:v12 topic:v9];
+  v12 = sub_1A7B0A094(v11, payloadCopy, @"c");
+  v13 = [(IDSBlastDoorConnectionHelper *)self commandEnabledForBlastDoor:v12 topic:topicCopy];
 
-  v14 = [v8 mutableCopy];
+  v14 = [payloadCopy mutableCopy];
   v15 = [(IDSBlastDoorConnectionHelper *)self removeAllowlistedKey:@"i" fromPayload:v14];
   v16 = [(IDSBlastDoorConnectionHelper *)self removeAllowlistedKey:@"i" fromPayload:v14];
   idsBlastDoor = self->_idsBlastDoor;
@@ -101,9 +101,9 @@ LABEL_16:
   v22[2] = sub_1A7B24D20;
   v22[3] = &unk_1E77DD350;
   v27 = v13;
-  v23 = v8;
-  v25 = self;
-  v26 = v10;
+  v23 = payloadCopy;
+  selfCopy = self;
+  v26 = blockCopy;
   v28 = v15;
   v24 = v14;
   v29 = v16;
@@ -113,48 +113,48 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)diffuseClientMessage:(id)a3 context:(id)a4 withCompletionBlock:(id)a5
+- (void)diffuseClientMessage:(id)message context:(id)context withCompletionBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  contextCopy = context;
+  blockCopy = block;
   v11 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v9 dictionaryRepresentation];
+    dictionaryRepresentation = [contextCopy dictionaryRepresentation];
     *buf = 138412290;
-    v20 = v12;
+    v20 = dictionaryRepresentation;
     _os_log_impl(&dword_1A7AD9000, v11, OS_LOG_TYPE_DEFAULT, "Sending with context %@", buf, 0xCu);
   }
 
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
-    v16 = [v9 dictionaryRepresentation];
+    dictionaryRepresentation2 = [contextCopy dictionaryRepresentation];
     _IDSLogV(0, @"IDSFoundation", @"IDSBlastDoorConnectionHelper", @"Sending with context %@");
   }
 
-  [(IDSBlastDoorConnectionHelper *)self writeBlastDoorPayloadToDiskIfNecessary:v8 withContext:v9, v16];
+  [(IDSBlastDoorConnectionHelper *)self writeBlastDoorPayloadToDiskIfNecessary:messageCopy withContext:contextCopy, dictionaryRepresentation2];
   idsBlastDoor = self->_idsBlastDoor;
-  v14 = [v9 dictionaryRepresentation];
+  dictionaryRepresentation3 = [contextCopy dictionaryRepresentation];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = sub_1A7B251D4;
   v17[3] = &unk_1E77DD3A0;
-  v18 = v10;
-  v15 = v10;
-  [idsBlastDoor unpackClientMessage:v8 context:v14 resultHandler:v17];
+  v18 = blockCopy;
+  v15 = blockCopy;
+  [idsBlastDoor unpackClientMessage:messageCopy context:dictionaryRepresentation3 resultHandler:v17];
 }
 
-- (BOOL)removeAllowlistedKey:(id)a3 fromPayload:(id)a4
+- (BOOL)removeAllowlistedKey:(id)key fromPayload:(id)payload
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKey:v6];
-  if (v8 && ([v6 isEqualToString:@"i"] && ((v9 = objc_opt_class(), (objc_msgSend(v9, "isSubclassOfClass:", objc_opt_class()) & 1) != 0) || (v10 = objc_opt_class(), (objc_msgSend(v10, "isSubclassOfClass:", objc_opt_class()) & 1) != 0)) || objc_msgSend(v6, "isEqualToString:", @"b") && ((v11 = objc_opt_class(), (objc_msgSend(v11, "isSubclassOfClass:", objc_opt_class()) & 1) != 0) || (v12 = objc_opt_class(), objc_msgSend(v12, "isSubclassOfClass:", objc_opt_class())))))
+  keyCopy = key;
+  payloadCopy = payload;
+  v8 = [payloadCopy objectForKey:keyCopy];
+  if (v8 && ([keyCopy isEqualToString:@"i"] && ((v9 = objc_opt_class(), (objc_msgSend(v9, "isSubclassOfClass:", objc_opt_class()) & 1) != 0) || (v10 = objc_opt_class(), (objc_msgSend(v10, "isSubclassOfClass:", objc_opt_class()) & 1) != 0)) || objc_msgSend(keyCopy, "isEqualToString:", @"b") && ((v11 = objc_opt_class(), (objc_msgSend(v11, "isSubclassOfClass:", objc_opt_class()) & 1) != 0) || (v12 = objc_opt_class(), objc_msgSend(v12, "isSubclassOfClass:", objc_opt_class())))))
   {
-    [v7 removeObjectForKey:v6];
+    [payloadCopy removeObjectForKey:keyCopy];
     v13 = 1;
   }
 
@@ -171,7 +171,7 @@ LABEL_17:
   v29 = [&unk_1F1B20AE0 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v29)
   {
-    v27 = v7;
+    v27 = payloadCopy;
     v28 = *v36;
     do
     {
@@ -183,7 +183,7 @@ LABEL_17:
         }
 
         v15 = *(*(&v35 + 1) + 8 * i);
-        v16 = [v7 objectForKey:v15];
+        v16 = [payloadCopy objectForKey:v15];
 
         if (v16)
         {
@@ -194,7 +194,7 @@ LABEL_17:
           v34 = 0u;
           v18 = objc_opt_class();
           v30 = v15;
-          v19 = sub_1A7B0A094(v18, v7, v15);
+          v19 = sub_1A7B0A094(v18, payloadCopy, v15);
           v20 = [v19 countByEnumeratingWithState:&v31 objects:v39 count:16];
           if (v20)
           {
@@ -210,7 +210,7 @@ LABEL_17:
                 }
 
                 v24 = [*(*(&v31 + 1) + 8 * j) mutableCopy];
-                v13 |= [(IDSBlastDoorConnectionHelper *)self removeAllowlistedKey:v6 fromPayload:v24];
+                v13 |= [(IDSBlastDoorConnectionHelper *)self removeAllowlistedKey:keyCopy fromPayload:v24];
                 [v17 addObject:v24];
               }
 
@@ -220,7 +220,7 @@ LABEL_17:
             while (v21);
           }
 
-          v7 = v27;
+          payloadCopy = v27;
           [v27 setObject:v17 forKey:v30];
         }
       }
@@ -234,16 +234,16 @@ LABEL_17:
   return v13 & 1;
 }
 
-- (void)addAllowlistedKey:(id)a3 toValidatedPayload:(id)a4 fromOriginalPayload:(id)a5
+- (void)addAllowlistedKey:(id)key toValidatedPayload:(id)payload fromOriginalPayload:(id)originalPayload
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 objectForKey:v8];
+  keyCopy = key;
+  payloadCopy = payload;
+  originalPayloadCopy = originalPayload;
+  v11 = [originalPayloadCopy objectForKey:keyCopy];
   if (v11)
   {
-    [v9 setObject:v11 forKey:v8];
+    [payloadCopy setObject:v11 forKey:keyCopy];
   }
 
   v25 = v11;
@@ -265,28 +265,28 @@ LABEL_17:
         }
 
         v13 = *(*(&v28 + 1) + 8 * i);
-        v14 = [v10 objectForKey:v13];
+        v14 = [originalPayloadCopy objectForKey:v13];
 
         if (v14)
         {
           v15 = objc_opt_class();
-          v16 = sub_1A7B0A094(v15, v10, v13);
+          v16 = sub_1A7B0A094(v15, originalPayloadCopy, v13);
           v17 = objc_opt_class();
-          v18 = v9;
-          v19 = sub_1A7B0A094(v17, v9, v13);
+          v18 = payloadCopy;
+          v19 = sub_1A7B0A094(v17, payloadCopy, v13);
           if ([v16 count])
           {
             v20 = 0;
             do
             {
               v21 = [v16 objectAtIndexedSubscript:v20];
-              v22 = [v21 objectForKey:v8];
+              v22 = [v21 objectForKey:keyCopy];
 
               if (v22)
               {
                 v23 = [v19 objectAtIndex:v20];
                 v24 = [v16 objectAtIndex:v20];
-                [(IDSBlastDoorConnectionHelper *)self addAllowlistedKey:v8 toValidatedPayload:v23 fromOriginalPayload:v24];
+                [(IDSBlastDoorConnectionHelper *)self addAllowlistedKey:keyCopy toValidatedPayload:v23 fromOriginalPayload:v24];
               }
 
               ++v20;
@@ -295,7 +295,7 @@ LABEL_17:
             while ([v16 count] > v20);
           }
 
-          v9 = v18;
+          payloadCopy = v18;
         }
       }
 
@@ -306,36 +306,36 @@ LABEL_17:
   }
 }
 
-- (void)auditMissingHeaderKeys:(id)a3 target:(id)a4
+- (void)auditMissingHeaderKeys:(id)keys target:(id)target
 {
   v5 = MEMORY[0x1E695DFD8];
-  v6 = a4;
-  v7 = a3;
+  targetCopy = target;
+  keysCopy = keys;
   v8 = [v5 alloc];
-  v9 = [v6 allKeys];
+  allKeys = [targetCopy allKeys];
 
-  v10 = [v8 initWithArray:v9];
+  v10 = [v8 initWithArray:allKeys];
   v11 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v12 = [v7 allKeys];
+  allKeys2 = [keysCopy allKeys];
 
-  v13 = [v11 initWithArray:v12];
+  v13 = [v11 initWithArray:allKeys2];
   [v13 minusSet:v10];
   if ([v13 count])
   {
-    v14 = [MEMORY[0x1E69A60E0] daemon];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
+    daemon = [MEMORY[0x1E69A60E0] daemon];
+    if (os_log_type_enabled(daemon, OS_LOG_TYPE_FAULT))
     {
-      sub_1A7E11FF4(v13, v14);
+      sub_1A7E11FF4(v13, daemon);
     }
   }
 }
 
-- (BOOL)commandEnabledForBlastDoor:(id)a3 topic:(id)a4
+- (BOOL)commandEnabledForBlastDoor:(id)door topic:(id)topic
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isEqualToString:@"com.apple.sps.push"])
+  doorCopy = door;
+  topicCopy = topic;
+  if ([topicCopy isEqualToString:@"com.apple.sps.push"])
   {
 LABEL_3:
     v8 = _os_feature_enabled_impl();
@@ -343,8 +343,8 @@ LABEL_3:
 
   else
   {
-    v7 = [v5 intValue];
-    switch(v7)
+    intValue = [doorCopy intValue];
+    switch(intValue)
     {
       case 1:
       case 2:
@@ -610,7 +610,7 @@ LABEL_3:
 
         goto LABEL_6;
       default:
-        if (v7 == 315)
+        if (intValue == 315)
         {
           goto LABEL_3;
         }
@@ -620,7 +620,7 @@ LABEL_8:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v12 = v5;
+          v12 = doorCopy;
           _os_log_impl(&dword_1A7AD9000, v10, OS_LOG_TYPE_DEFAULT, "BlastDoor: Command {%@} not handled in switch case, defaulting to NO", buf, 0xCu);
         }
 
@@ -638,69 +638,69 @@ LABEL_6:
   return v8;
 }
 
-- (void)writeBlastDoorPayloadToDiskIfNecessary:(id)a3 withContext:(id)a4
+- (void)writeBlastDoorPayloadToDiskIfNecessary:(id)necessary withContext:(id)context
 {
   v36 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  necessaryCopy = necessary;
+  contextCopy = context;
   if (CUTIsInternalInstall() && [MEMORY[0x1E69A6180] isWriteBlastDoorPayloadsToDiskEnabled])
   {
-    v7 = [MEMORY[0x1E69A6180] writePushPayloadsToDiskPath];
+    writePushPayloadsToDiskPath = [MEMORY[0x1E69A6180] writePushPayloadsToDiskPath];
 
-    if (v7)
+    if (writePushPayloadsToDiskPath)
     {
-      v8 = [MEMORY[0x1E69A6180] writePushPayloadsToDiskPath];
+      writePushPayloadsToDiskPath2 = [MEMORY[0x1E69A6180] writePushPayloadsToDiskPath];
     }
 
     else
     {
-      v8 = @"/var/mobile/Library/IdentityServices/";
+      writePushPayloadsToDiskPath2 = @"/var/mobile/Library/IdentityServices/";
     }
 
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v6 command];
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v12 = [v11 UUIDString];
-    v13 = [v9 stringWithFormat:@"%@-client-payload-%@.data", v10, v12];
+    command = [contextCopy command];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    v13 = [v9 stringWithFormat:@"%@-client-payload-%@.data", command, uUIDString];
 
     v14 = MEMORY[0x1E695DFF8];
-    v15 = [(__CFString *)v8 stringByAppendingPathComponent:v13];
+    v15 = [(__CFString *)writePushPayloadsToDiskPath2 stringByAppendingPathComponent:v13];
     v16 = [v14 fileURLWithPath:v15];
 
     v17 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v16 absoluteString];
+      absoluteString = [v16 absoluteString];
       *buf = 138412546;
-      v33 = v18;
+      v33 = absoluteString;
       v34 = 2112;
-      v35 = v5;
+      v35 = necessaryCopy;
       _os_log_impl(&dword_1A7AD9000, v17, OS_LOG_TYPE_DEFAULT, "Writing BlastDoor payload to disk: {%@} message: %@", buf, 0x16u);
     }
 
     if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
     {
-      v27 = [v16 absoluteString];
-      v28 = v5;
+      absoluteString2 = [v16 absoluteString];
+      v28 = necessaryCopy;
       _IDSLogV(0, @"IDSFoundation", @"IDSPushHandler", @"Writing BlastDoor payload to disk: {%@} message: %@");
     }
 
     v31 = 0;
-    v19 = [MEMORY[0x1E696AE40] dataWithPropertyList:v5 format:200 options:0 error:{&v31, v27, v28}];
+    v19 = [MEMORY[0x1E696AE40] dataWithPropertyList:necessaryCopy format:200 options:0 error:{&v31, absoluteString2, v28}];
     v20 = v31;
     if (v19)
     {
-      v21 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v22 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/var/mobile/Library/IdentityServices/" isDirectory:1];
       v30 = v20;
-      [v21 createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:0 error:&v30];
+      [defaultManager createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:0 error:&v30];
       v23 = v30;
 
       v29 = v23;
-      LODWORD(v21) = [v19 writeToURL:v16 options:1 error:&v29];
+      LODWORD(defaultManager) = [v19 writeToURL:v16 options:1 error:&v29];
       v20 = v29;
 
-      if (v21)
+      if (defaultManager)
       {
         v24 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))

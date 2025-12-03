@@ -6,8 +6,8 @@
 
 - (NSString)unifiedContactIdentifier
 {
-  v2 = self;
-  v3 = [(CKUserIdentity *)v2 contactIdentifiers];
+  selfCopy = self;
+  contactIdentifiers = [(CKUserIdentity *)selfCopy contactIdentifiers];
   v4 = sub_1132C();
 
   if (v4[2])

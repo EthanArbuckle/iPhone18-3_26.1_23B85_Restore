@@ -1,25 +1,25 @@
 @interface AMDSimpleHash
-+ (unsigned)getBase:(unsigned int)a3;
-- (AMDSimpleHash)initWithCapacity:(unsigned int)a3;
-- (BOOL)addForKey:(unint64_t)a3 theValue:(unint64_t)a4;
-- (BOOL)getValueForKey:(unint64_t)a3 into:(unint64_t *)a4;
-- (BOOL)removeKey:(unint64_t)a3 andSaveValueInto:(unint64_t *)a4;
-- (void)getAllKeysInto:(unint64_t *)a3;
++ (unsigned)getBase:(unsigned int)base;
+- (AMDSimpleHash)initWithCapacity:(unsigned int)capacity;
+- (BOOL)addForKey:(unint64_t)key theValue:(unint64_t)value;
+- (BOOL)getValueForKey:(unint64_t)key into:(unint64_t *)into;
+- (BOOL)removeKey:(unint64_t)key andSaveValueInto:(unint64_t *)into;
+- (void)getAllKeysInto:(unint64_t *)into;
 - (void)removeAllKeys;
 @end
 
 @implementation AMDSimpleHash
 
-- (AMDSimpleHash)initWithCapacity:(unsigned int)a3
+- (AMDSimpleHash)initWithCapacity:(unsigned int)capacity
 {
   v18 = a2;
-  v17 = a3;
+  capacityCopy = capacity;
   v19 = 0;
   v16.receiver = self;
   v16.super_class = AMDSimpleHash;
   v19 = [(AMDSimpleHash *)&v16 init];
   objc_storeStrong(&v19, v19);
-  v3 = [AMDSimpleHash getBase:v17];
+  v3 = [AMDSimpleHash getBase:capacityCopy];
   [(AMDSimpleHash *)v19 setModuloBase:v3];
   [(AMDSimpleHash *)v19 setNumEntries:0];
   v15 = 8 * [(AMDSimpleHash *)v19 moduloBase];
@@ -36,8 +36,8 @@
   v6 = malloc_type_calloc([(AMDSimpleHash *)v19 moduloBase], 1uLL, 0x100004077774924uLL);
   [(AMDSimpleHash *)v19 setMetadata:v6];
   v11 = MEMORY[0x277CBEA90];
-  v10 = [(AMDSimpleHash *)v19 metadata];
-  v12 = [v11 dataWithBytesNoCopy:v10 length:{-[AMDSimpleHash moduloBase](v19, "moduloBase")}];
+  metadata = [(AMDSimpleHash *)v19 metadata];
+  v12 = [v11 dataWithBytesNoCopy:metadata length:{-[AMDSimpleHash moduloBase](v19, "moduloBase")}];
   [(AMDSimpleHash *)v19 setMetadataStorage:?];
   MEMORY[0x277D82BD8](v12);
   v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -48,74 +48,74 @@
   return v14;
 }
 
-- (BOOL)addForKey:(unint64_t)a3 theValue:(unint64_t)a4
+- (BOOL)addForKey:(unint64_t)key theValue:(unint64_t)value
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v15 = a3 % [(AMDSimpleHash *)self moduloBase];
+  v15 = key % [(AMDSimpleHash *)self moduloBase];
   v14 = [(AMDSimpleHash *)self metadata][v15];
   if (v14)
   {
     if (v14 == 1)
     {
-      v10 = [(AMDSimpleHash *)self collisionMap];
+      collisionMap = [(AMDSimpleHash *)self collisionMap];
       v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[AMDSimpleHash values](self, "values")[8 * v15]}];
       v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[AMDSimpleHash keys](self, "keys")[8 * v15]}];
-      [(NSMutableDictionary *)v10 setObject:v9 forKey:?];
+      [(NSMutableDictionary *)collisionMap setObject:v9 forKey:?];
       MEMORY[0x277D82BD8](v8);
       MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v10);
-      v13 = [(AMDSimpleHash *)self collisionMap];
-      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-      [(NSMutableDictionary *)v13 setObject:v12 forKey:?];
+      MEMORY[0x277D82BD8](collisionMap);
+      collisionMap2 = [(AMDSimpleHash *)self collisionMap];
+      v12 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:value];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:key];
+      [(NSMutableDictionary *)collisionMap2 setObject:v12 forKey:?];
       MEMORY[0x277D82BD8](v11);
       MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
+      MEMORY[0x277D82BD8](collisionMap2);
       [(AMDSimpleHash *)self metadata][v15] = 2;
     }
 
     else
     {
-      v7 = [(AMDSimpleHash *)self collisionMap];
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
-      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-      [(NSMutableDictionary *)v7 setObject:v6 forKey:?];
+      collisionMap3 = [(AMDSimpleHash *)self collisionMap];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:value];
+      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:key];
+      [(NSMutableDictionary *)collisionMap3 setObject:v6 forKey:?];
       MEMORY[0x277D82BD8](v5);
       MEMORY[0x277D82BD8](v6);
-      MEMORY[0x277D82BD8](v7);
+      MEMORY[0x277D82BD8](collisionMap3);
     }
   }
 
   else
   {
-    [(AMDSimpleHash *)self values][8 * v15] = a4;
+    [(AMDSimpleHash *)self values][8 * v15] = value;
     [(AMDSimpleHash *)self metadata][v15] = 1;
-    [(AMDSimpleHash *)self keys][8 * v15] = a3;
+    [(AMDSimpleHash *)self keys][8 * v15] = key;
   }
 
   [(AMDSimpleHash *)self setNumEntries:[(AMDSimpleHash *)self numEntries]+ 1];
   return 1;
 }
 
-- (BOOL)getValueForKey:(unint64_t)a3 into:(unint64_t *)a4
+- (BOOL)getValueForKey:(unint64_t)key into:(unint64_t *)into
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  v10 = a4;
-  v9 = a3 % [(AMDSimpleHash *)self moduloBase];
-  v8 = [(AMDSimpleHash *)v13 metadata][v9];
+  keyCopy = key;
+  intoCopy = into;
+  v9 = key % [(AMDSimpleHash *)self moduloBase];
+  v8 = [(AMDSimpleHash *)selfCopy metadata][v9];
   if (v8)
   {
     if (v8 == 1)
     {
-      if ([(AMDSimpleHash *)v13 keys][8 * v9] == v11)
+      if ([(AMDSimpleHash *)selfCopy keys][8 * v9] == keyCopy)
       {
-        *v10 = [(AMDSimpleHash *)v13 values][8 * v9];
+        *intoCopy = [(AMDSimpleHash *)selfCopy values][8 * v9];
         v14 = 1;
       }
 
@@ -127,14 +127,14 @@
 
     else
     {
-      v6 = [(AMDSimpleHash *)v13 collisionMap];
-      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
-      location = [(NSMutableDictionary *)v6 objectForKey:?];
+      collisionMap = [(AMDSimpleHash *)selfCopy collisionMap];
+      v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:keyCopy];
+      location = [(NSMutableDictionary *)collisionMap objectForKey:?];
       MEMORY[0x277D82BD8](v5);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](collisionMap);
       if (location)
       {
-        *v10 = [location longLongValue];
+        *intoCopy = [location longLongValue];
         v14 = 1;
       }
 
@@ -155,25 +155,25 @@
   return v14 & 1;
 }
 
-- (BOOL)removeKey:(unint64_t)a3 andSaveValueInto:(unint64_t *)a4
+- (BOOL)removeKey:(unint64_t)key andSaveValueInto:(unint64_t *)into
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = a4;
-  v10 = a3 % [(AMDSimpleHash *)self moduloBase];
-  v9 = [(AMDSimpleHash *)v14 metadata][v10];
+  keyCopy = key;
+  intoCopy = into;
+  v10 = key % [(AMDSimpleHash *)self moduloBase];
+  v9 = [(AMDSimpleHash *)selfCopy metadata][v10];
   if (v9)
   {
     if (v9 == 1)
     {
-      if ([(AMDSimpleHash *)v14 keys][8 * v10] == v12)
+      if ([(AMDSimpleHash *)selfCopy keys][8 * v10] == keyCopy)
       {
-        [(AMDSimpleHash *)v14 metadata][v10] = 0;
-        [(AMDSimpleHash *)v14 setNumEntries:[(AMDSimpleHash *)v14 numEntries]- 1];
-        if (v11)
+        [(AMDSimpleHash *)selfCopy metadata][v10] = 0;
+        [(AMDSimpleHash *)selfCopy setNumEntries:[(AMDSimpleHash *)selfCopy numEntries]- 1];
+        if (intoCopy)
         {
-          *v11 = [(AMDSimpleHash *)v14 values][8 * v10];
+          *intoCopy = [(AMDSimpleHash *)selfCopy values][8 * v10];
         }
 
         v15 = 1;
@@ -187,19 +187,19 @@
 
     else
     {
-      [(AMDSimpleHash *)v14 setNumEntries:[(AMDSimpleHash *)v14 numEntries]- 1];
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v12];
-      v6 = [(AMDSimpleHash *)v14 collisionMap];
-      location = [(NSMutableDictionary *)v6 objectForKey:v8];
-      MEMORY[0x277D82BD8](v6);
+      [(AMDSimpleHash *)selfCopy setNumEntries:[(AMDSimpleHash *)selfCopy numEntries]- 1];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:keyCopy];
+      collisionMap = [(AMDSimpleHash *)selfCopy collisionMap];
+      location = [(NSMutableDictionary *)collisionMap objectForKey:v8];
+      MEMORY[0x277D82BD8](collisionMap);
       if (location)
       {
-        v5 = [(AMDSimpleHash *)v14 collisionMap];
-        [(NSMutableDictionary *)v5 removeObjectForKey:v8];
-        MEMORY[0x277D82BD8](v5);
-        if (v11)
+        collisionMap2 = [(AMDSimpleHash *)selfCopy collisionMap];
+        [(NSMutableDictionary *)collisionMap2 removeObjectForKey:v8];
+        MEMORY[0x277D82BD8](collisionMap2);
+        if (intoCopy)
         {
-          *v11 = [location longLongValue];
+          *intoCopy = [location longLongValue];
         }
 
         v15 = 1;
@@ -231,29 +231,29 @@
   [(AMDSimpleHash *)self keys];
   [(AMDSimpleHash *)self moduloBase];
   __memset_chk();
-  v2 = [(AMDSimpleHash *)self collisionMap];
-  [(NSMutableDictionary *)v2 removeAllObjects];
-  MEMORY[0x277D82BD8](v2);
+  collisionMap = [(AMDSimpleHash *)self collisionMap];
+  [(NSMutableDictionary *)collisionMap removeAllObjects];
+  MEMORY[0x277D82BD8](collisionMap);
   [(AMDSimpleHash *)self setNumEntries:0];
 }
 
-- (void)getAllKeysInto:(unint64_t *)a3
+- (void)getAllKeysInto:(unint64_t *)into
 {
   v19 = *MEMORY[0x277D85DE8];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
-  for (i = 0; i < [(AMDSimpleHash *)v17 moduloBase]; ++i)
+  intoCopy = into;
+  for (i = 0; i < [(AMDSimpleHash *)selfCopy moduloBase]; ++i)
   {
-    v13 = [(AMDSimpleHash *)v17 metadata][i];
+    v13 = [(AMDSimpleHash *)selfCopy metadata][i];
     if (v13 == 1)
     {
-      *v15++ = [(AMDSimpleHash *)v17 keys][8 * i];
+      *intoCopy++ = [(AMDSimpleHash *)selfCopy keys][8 * i];
     }
   }
 
   memset(__b, 0, sizeof(__b));
-  obj = [(AMDSimpleHash *)v17 collisionMap];
+  obj = [(AMDSimpleHash *)selfCopy collisionMap];
   v10 = [(NSMutableDictionary *)obj countByEnumeratingWithState:__b objects:v18 count:16];
   if (v10)
   {
@@ -269,8 +269,8 @@
       }
 
       v12 = *(__b[1] + 8 * v7);
-      v3 = [v12 longLongValue];
-      *v15++ = v3;
+      longLongValue = [v12 longLongValue];
+      *intoCopy++ = longLongValue;
       ++v7;
       v8 = v4;
       if (v5 + 1 >= v4)
@@ -289,11 +289,11 @@
   *MEMORY[0x277D85DE8];
 }
 
-+ (unsigned)getBase:(unsigned int)a3
++ (unsigned)getBase:(unsigned int)base
 {
   for (i = 0; i < numPrimes; ++i)
   {
-    if (primes[i] >= 2 * a3)
+    if (primes[i] >= 2 * base)
     {
       return primes[i];
     }

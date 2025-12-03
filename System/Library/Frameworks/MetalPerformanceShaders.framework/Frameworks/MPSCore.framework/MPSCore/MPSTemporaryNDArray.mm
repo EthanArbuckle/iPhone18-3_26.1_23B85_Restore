@@ -1,10 +1,10 @@
 @interface MPSTemporaryNDArray
 + (MPSTemporaryNDArray)temporaryNDArrayWithCommandBuffer:(id)commandBuffer descriptor:(MPSNDArrayDescriptor *)descriptor;
 + (id)defaultAllocator;
-- (MPSTemporaryNDArray)initWithCommandBuffer:(id)a3 descriptor:(id)a4;
-- (MPSTemporaryNDArray)initWithCommandBuffer:(id)a3 descriptor:(id)a4 buffer:(id)a5;
+- (MPSTemporaryNDArray)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor;
+- (MPSTemporaryNDArray)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor buffer:(id)a5;
 - (id)debugDescription;
-- (id)temporaryArrayViewWithCommandBuffer:(id)a3 computeEncoder:(id)a4 descriptor:(id)a5 aliasing:(unint64_t)a6;
+- (id)temporaryArrayViewWithCommandBuffer:(id)buffer computeEncoder:(id)encoder descriptor:(id)descriptor aliasing:(unint64_t)aliasing;
 - (void)dealloc;
 - (void)setReadCount:(NSUInteger)readCount;
 @end
@@ -30,9 +30,9 @@
   return result;
 }
 
-- (MPSTemporaryNDArray)initWithCommandBuffer:(id)a3 descriptor:(id)a4
+- (MPSTemporaryNDArray)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor
 {
-  if (!a3)
+  if (!buffer)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -42,7 +42,7 @@
     goto LABEL_13;
   }
 
-  if (!a4)
+  if (!descriptor)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -57,10 +57,10 @@ LABEL_13:
     return 0;
   }
 
-  v8 = objc_msgSend_device(a3, a2, a3, a4, v4);
+  v8 = objc_msgSend_device(buffer, a2, buffer, descriptor, v4);
   v19.receiver = self;
   v19.super_class = MPSTemporaryNDArray;
-  result = [(MPSNDArray *)&v19 initWithDevice:v8 descriptor:a4];
+  result = [(MPSNDArray *)&v19 initWithDevice:v8 descriptor:descriptor];
   if (result)
   {
     p_buffer = &result->super._buffer;
@@ -76,22 +76,22 @@ LABEL_13:
       requestedSize = result->super._buffer._requestedSize;
     }
 
-    MPSAutoBuffer::InitDeferredUsingTextureCache(p_buffer, requestedSize, a3, v12, v13);
+    MPSAutoBuffer::InitDeferredUsingTextureCache(p_buffer, requestedSize, buffer, v12, v13);
     result = v16;
     v16->_readCount = 1;
     v16->_childRefCount = 1;
-    v16->_commandBuffer = a3;
+    v16->_commandBuffer = buffer;
     v16->super._isTemporary = 1;
   }
 
   return result;
 }
 
-- (MPSTemporaryNDArray)initWithCommandBuffer:(id)a3 descriptor:(id)a4 buffer:(id)a5
+- (MPSTemporaryNDArray)initWithCommandBuffer:(id)buffer descriptor:(id)descriptor buffer:(id)a5
 {
-  if (!a3)
+  if (!buffer)
   {
-    v7 = self;
+    selfCopy2 = self;
     if (MTLReportFailureTypeEnabled())
     {
       goto LABEL_9;
@@ -100,9 +100,9 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!descriptor)
   {
-    v7 = self;
+    selfCopy2 = self;
     if (MTLReportFailureTypeEnabled())
     {
 LABEL_9:
@@ -123,7 +123,7 @@ LABEL_10:
   {
     result->_readCount = 1;
     result->_childRefCount = 1;
-    result->_commandBuffer = a3;
+    result->_commandBuffer = buffer;
     result->super._isTemporary = 1;
   }
 
@@ -132,7 +132,7 @@ LABEL_10:
 
 + (MPSTemporaryNDArray)temporaryNDArrayWithCommandBuffer:(id)commandBuffer descriptor:(MPSNDArrayDescriptor *)descriptor
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   v13 = objc_msgSend_initWithCommandBuffer_descriptor_(v6, v7, commandBuffer, descriptor, v8);
   if (v13)
   {
@@ -165,17 +165,17 @@ LABEL_10:
   {
     if (!v3)
     {
-      v6 = self;
+      selfCopy = self;
       v7 = readCount;
       v8 = MTLReportFailureTypeEnabled();
       readCount = v7;
       v9 = v8;
-      self = v6;
+      self = selfCopy;
       if (v9)
       {
         MTLReportFailure();
         readCount = v7;
-        self = v6;
+        self = selfCopy;
       }
     }
 
@@ -184,23 +184,23 @@ LABEL_10:
     {
       do
       {
-        v4 = self;
+        selfCopy2 = self;
         self = self->super._parent;
       }
 
       while (self && self->super._isTemporary);
-      v5 = v4->_childRefCount - 1;
-      v4->_childRefCount = v5;
+      v5 = selfCopy2->_childRefCount - 1;
+      selfCopy2->_childRefCount = v5;
       if (!v5)
       {
 
-        MPSAutoBuffer::ReleaseTemporaryBuffer(&v4->super._buffer);
+        MPSAutoBuffer::ReleaseTemporaryBuffer(&selfCopy2->super._buffer);
       }
     }
   }
 }
 
-- (id)temporaryArrayViewWithCommandBuffer:(id)a3 computeEncoder:(id)a4 descriptor:(id)a5 aliasing:(unint64_t)a6
+- (id)temporaryArrayViewWithCommandBuffer:(id)buffer computeEncoder:(id)encoder descriptor:(id)descriptor aliasing:(unint64_t)aliasing
 {
   if (self->super._isTemporary)
   {
@@ -217,9 +217,9 @@ LABEL_10:
 
   v35.receiver = self;
   v35.super_class = MPSTemporaryNDArray;
-  v9 = [(MPSNDArray *)&v35 arrayViewWithCommandBuffer:a3 computeEncoder:a4 descriptor:a5 destinationArray:0 aliasing:a6 & 0xFFFFFFFFFFFFFFF3 | 4];
+  v9 = [(MPSNDArray *)&v35 arrayViewWithCommandBuffer:buffer computeEncoder:encoder descriptor:descriptor destinationArray:0 aliasing:aliasing & 0xFFFFFFFFFFFFFFF3 | 4];
   v10 = v9;
-  if (v9 && a3 && (v9[608] & 1) == 0)
+  if (v9 && buffer && (v9[608] & 1) == 0)
   {
     v11 = [MPSTemporaryNDArray alloc];
     v17 = objc_msgSend_descriptor(v10, v12, v13, v14, v15);
@@ -230,7 +230,7 @@ LABEL_10:
       explicit = atomic_load_explicit(v10 + 65, memory_order_acquire);
     }
 
-    v19 = objc_msgSend_initWithCommandBuffer_descriptor_buffer_(v11, v16, a3, v17, explicit);
+    v19 = objc_msgSend_initWithCommandBuffer_descriptor_buffer_(v11, v16, buffer, v17, explicit);
     v21 = *(v10 + 21);
     v20 = *(v10 + 22);
     v23 = *(v10 + 23);

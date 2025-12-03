@@ -1,7 +1,7 @@
 @interface PHPTTFullScreenContainerViewController
-- (PHPTTFullScreenContainerViewController)initWithBannerPresentationManager:(id)a3;
-- (id)pttViewControllerWithBannerPresentationManager:(id)a3;
-- (void)callStateChangedNotification:(id)a3;
+- (PHPTTFullScreenContainerViewController)initWithBannerPresentationManager:(id)manager;
+- (id)pttViewControllerWithBannerPresentationManager:(id)manager;
+- (void)callStateChangedNotification:(id)notification;
 - (void)dealloc;
 - (void)setupConstraints;
 - (void)viewDidLoad;
@@ -9,9 +9,9 @@
 
 @implementation PHPTTFullScreenContainerViewController
 
-- (PHPTTFullScreenContainerViewController)initWithBannerPresentationManager:(id)a3
+- (PHPTTFullScreenContainerViewController)initWithBannerPresentationManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PHPTTFullScreenContainerViewController;
   v5 = [(PHPTTFullScreenContainerViewController *)&v13 initWithNibName:0 bundle:0];
@@ -22,7 +22,7 @@
     v7 = +[NSNotificationCenter defaultCenter];
     [v7 addObserver:v6 selector:"callStateChangedNotification:" name:TUBargeCallStatusChangedNotification object:0];
 
-    v8 = [(PHPTTFullScreenContainerViewController *)v6 pttViewControllerWithBannerPresentationManager:v4];
+    v8 = [(PHPTTFullScreenContainerViewController *)v6 pttViewControllerWithBannerPresentationManager:managerCopy];
     pttFullScreenViewController = v6->_pttFullScreenViewController;
     v6->_pttFullScreenViewController = v8;
 
@@ -30,9 +30,9 @@
     {
       [(PHPTTFullScreenContainerViewController *)v6 addChildViewController:?];
       [(UIViewController *)v6->_pttFullScreenViewController didMoveToParentViewController:v6];
-      v10 = [(PHPTTFullScreenContainerViewController *)v6 view];
-      v11 = [(UIViewController *)v6->_pttFullScreenViewController view];
-      [v10 addSubview:v11];
+      view = [(PHPTTFullScreenContainerViewController *)v6 view];
+      view2 = [(UIViewController *)v6->_pttFullScreenViewController view];
+      [view addSubview:view2];
 
       [(PHPTTFullScreenContainerViewController *)v6 setupConstraints];
     }
@@ -62,21 +62,21 @@
 {
   firstValue = [(UIViewController *)self->_pttFullScreenViewController view];
   [firstValue setTranslatesAutoresizingMaskIntoConstraints:0];
-  v3 = [(PHPTTFullScreenContainerViewController *)self view];
+  view = [(PHPTTFullScreenContainerViewController *)self view];
   v4 = _NSDictionaryOfVariableBindings(@"pttFullScreenView", firstValue, 0);
   v5 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[pttFullScreenView]|" options:0 metrics:0 views:v4];
-  [v3 addConstraints:v5];
+  [view addConstraints:v5];
 
-  v6 = [(PHPTTFullScreenContainerViewController *)self view];
+  view2 = [(PHPTTFullScreenContainerViewController *)self view];
   v7 = _NSDictionaryOfVariableBindings(@"pttFullScreenView", firstValue, 0);
   v8 = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[pttFullScreenView]|" options:0 metrics:0 views:v7];
-  [v6 addConstraints:v8];
+  [view2 addConstraints:v8];
 }
 
-- (void)callStateChangedNotification:(id)a3
+- (void)callStateChangedNotification:(id)notification
 {
-  v4 = [a3 object];
-  if ([v4 isPTT] && objc_msgSend(v4, "status") - 5 <= 1)
+  object = [notification object];
+  if ([object isPTT] && objc_msgSend(object, "status") - 5 <= 1)
   {
     v5 = sub_100004F84();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -89,10 +89,10 @@
   }
 }
 
-- (id)pttViewControllerWithBannerPresentationManager:(id)a3
+- (id)pttViewControllerWithBannerPresentationManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
+  managerCopy = manager;
+  selfCopy = self;
   v6 = PHPTTFullScreenContainerViewController.pttViewController(bannnerPresentationManager:)();
 
   return v6;

@@ -1,5 +1,5 @@
 @interface MFContentErrorDocument
-- (MFContentErrorDocument)initWithMimePart:(id)a3;
+- (MFContentErrorDocument)initWithMimePart:(id)part;
 - (NSString)content;
 - (void)dealloc;
 @end
@@ -13,19 +13,19 @@
   [(MFContentErrorDocument *)&v2 dealloc];
 }
 
-- (MFContentErrorDocument)initWithMimePart:(id)a3
+- (MFContentErrorDocument)initWithMimePart:(id)part
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  partCopy = part;
   v15.receiver = self;
   v15.super_class = MFContentErrorDocument;
   v5 = [(MFContentErrorDocument *)&v15 init];
   if (v5)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [v4 type];
-    v8 = [v4 subtype];
-    v9 = [v6 stringWithFormat:@"This message cannot be displayed because of the way it is formatted. Ask the sender to send it again using a different format or email program.\n\n%@/%@", v7, v8];
+    type = [partCopy type];
+    subtype = [partCopy subtype];
+    v9 = [v6 stringWithFormat:@"This message cannot be displayed because of the way it is formatted. Ask the sender to send it again using a different format or email program.\n\n%@/%@", type, subtype];
 
     v16 = *MEMORY[0x277CCA450];
     v17[0] = v9;
@@ -42,10 +42,10 @@
 
 - (NSString)content
 {
-  v2 = [(MFContentErrorDocument *)self error];
-  v3 = [v2 localizedDescription];
+  error = [(MFContentErrorDocument *)self error];
+  localizedDescription = [error localizedDescription];
 
-  return v3;
+  return localizedDescription;
 }
 
 @end

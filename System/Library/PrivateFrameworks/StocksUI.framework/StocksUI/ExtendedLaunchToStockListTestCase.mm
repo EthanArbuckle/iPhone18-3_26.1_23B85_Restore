@@ -1,17 +1,17 @@
 @interface ExtendedLaunchToStockListTestCase
 - (NSString)testName;
 - (_TtC8StocksUI33ExtendedLaunchToStockListTestCase)init;
-- (void)runTestWithContext:(id)a3 completion:(id)a4;
+- (void)runTestWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation ExtendedLaunchToStockListTestCase
 
-- (void)runTestWithContext:(id)a3 completion:(id)a4
+- (void)runTestWithContext:(id)context completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = self;
+  selfCopy = self;
   sub_220888FBC();
   v8 = swift_allocObject();
   *(v8 + 16) = sub_2204C9E0C;

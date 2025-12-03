@@ -1,19 +1,19 @@
 @interface SGRemoteObjectProxy
-+ (id)_copyInvocationToHeapIfNeeded:(id)a3;
-- (SGRemoteObjectProxy)initWithConnection:(id)a3 queuesRequestsIfBusy:(BOOL)a4;
-- (SGRemoteObjectProxy)initWithInProcessSuggestManager:(id)a3;
-- (void)_forwardStackInvocation:(id)a3;
++ (id)_copyInvocationToHeapIfNeeded:(id)needed;
+- (SGRemoteObjectProxy)initWithConnection:(id)connection queuesRequestsIfBusy:(BOOL)busy;
+- (SGRemoteObjectProxy)initWithInProcessSuggestManager:(id)manager;
+- (void)_forwardStackInvocation:(id)invocation;
 @end
 
 @implementation SGRemoteObjectProxy
 
-- (void)_forwardStackInvocation:(id)a3
+- (void)_forwardStackInvocation:(id)invocation
 {
-  v5 = [SGRemoteObjectProxy _copyInvocationToHeapIfNeeded:a3];
+  v5 = [SGRemoteObjectProxy _copyInvocationToHeapIfNeeded:invocation];
   v6 = objc_autoreleasePoolPush();
-  v7 = [v5 target];
+  target = [v5 target];
 
-  if (v7 != self)
+  if (target != self)
   {
     v62.receiver = self;
     v62.super_class = SGRemoteObjectProxy;
@@ -65,12 +65,12 @@ LABEL_28:
     }
 
     v41 = v19;
-    v20 = [v5 methodSignature];
-    v21 = [v20 numberOfArguments];
+    methodSignature = [v5 methodSignature];
+    numberOfArguments = [methodSignature numberOfArguments];
 
-    v22 = [v5 methodSignature];
-    v23 = v21 - 1;
-    v24 = [v22 getArgumentTypeAtIndex:v23];
+    methodSignature2 = [v5 methodSignature];
+    v23 = numberOfArguments - 1;
+    v24 = [methodSignature2 getArgumentTypeAtIndex:v23];
     if (*v24 == 64 && v24[1] == 63)
     {
       v39 = v24[2];
@@ -149,16 +149,16 @@ LABEL_28:
     if (self->_queuesRequestsIfBusy || ![MEMORY[0x1E69C5D10] waitForSemaphore:v16 timeoutSeconds:0.0])
     {
       v41[2](v41);
-      v26 = [(SGDaemonConnection *)self->_connection remoteObjectProxy];
-      [v5 invokeWithTarget:v26];
+      remoteObjectProxy = [(SGDaemonConnection *)self->_connection remoteObjectProxy];
+      [v5 invokeWithTarget:remoteObjectProxy];
 
-      v27 = [(SGDaemonConnection *)self->_connection xpcConnection];
+      xpcConnection = [(SGDaemonConnection *)self->_connection xpcConnection];
       v53[0] = MEMORY[0x1E69E9820];
       v53[1] = 3221225472;
       v53[2] = __47__SGRemoteObjectProxy__forwardStackInvocation___block_invoke_7;
       v53[3] = &unk_1E7EFD118;
       v54 = v12;
-      [v27 addBarrierBlock:v53];
+      [xpcConnection addBarrierBlock:v53];
     }
 
     goto LABEL_28;
@@ -285,65 +285,65 @@ void __47__SGRemoteObjectProxy__forwardStackInvocation___block_invoke()
   objc_autoreleasePoolPop(v0);
 }
 
-- (SGRemoteObjectProxy)initWithInProcessSuggestManager:(id)a3
+- (SGRemoteObjectProxy)initWithInProcessSuggestManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = SGRemoteObjectProxy;
   v6 = [(SGRemoteObjectProxy *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_inProcessSuggestManager, a3);
+    objc_storeStrong(&v6->_inProcessSuggestManager, manager);
   }
 
   return v7;
 }
 
-- (SGRemoteObjectProxy)initWithConnection:(id)a3 queuesRequestsIfBusy:(BOOL)a4
+- (SGRemoteObjectProxy)initWithConnection:(id)connection queuesRequestsIfBusy:(BOOL)busy
 {
-  v7 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = SGRemoteObjectProxy;
   v8 = [(SGRemoteObjectProxy *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a3);
-    v9->_queuesRequestsIfBusy = a4;
+    objc_storeStrong(&v8->_connection, connection);
+    v9->_queuesRequestsIfBusy = busy;
   }
 
   return v9;
 }
 
-+ (id)_copyInvocationToHeapIfNeeded:(id)a3
++ (id)_copyInvocationToHeapIfNeeded:(id)needed
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (malloc_size(v5))
+  neededCopy = needed;
+  if (malloc_size(neededCopy))
   {
-    v6 = v5;
+    v6 = neededCopy;
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = [v5 methodSignature];
-    v9 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:v8];
-    v10 = [v5 target];
-    [v9 setTarget:v10];
+    methodSignature = [neededCopy methodSignature];
+    v9 = [MEMORY[0x1E695DF50] invocationWithMethodSignature:methodSignature];
+    target = [neededCopy target];
+    [v9 setTarget:target];
 
-    if ([v8 numberOfArguments])
+    if ([methodSignature numberOfArguments])
     {
       v11 = 0;
-      if ([v8 numberOfArguments])
+      if ([methodSignature numberOfArguments])
       {
         v12 = 0;
         v13 = 1;
         do
         {
           sizep[0] = 0;
-          NSGetSizeAndAlignment([v8 getArgumentTypeAtIndex:{v12, 0}], sizep, alignp);
+          NSGetSizeAndAlignment([methodSignature getArgumentTypeAtIndex:{v12, 0}], sizep, alignp);
           if (v11 <= sizep[0])
           {
             v11 = sizep[0];
@@ -357,7 +357,7 @@ void __47__SGRemoteObjectProxy__forwardStackInvocation___block_invoke()
           ++v12;
         }
 
-        while (v12 < [v8 numberOfArguments]);
+        while (v12 < [methodSignature numberOfArguments]);
       }
 
       else
@@ -398,16 +398,16 @@ void __47__SGRemoteObjectProxy__forwardStackInvocation___block_invoke()
       }
 
       *sizep = *alignp;
-      if ([v8 numberOfArguments])
+      if ([methodSignature numberOfArguments])
       {
         v16 = 0;
         do
         {
-          [v5 getArgument:sizep atIndex:v16];
+          [neededCopy getArgument:sizep atIndex:v16];
           [v9 setArgument:sizep atIndex:v16++];
         }
 
-        while (v16 < [v8 numberOfArguments]);
+        while (v16 < [methodSignature numberOfArguments]);
       }
 
       if ((sizep[1] & 1) == 0)
@@ -420,8 +420,8 @@ void __47__SGRemoteObjectProxy__forwardStackInvocation___block_invoke()
 
     if (!malloc_size(v6))
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:a1 file:@"SGSuggestionsService.m" lineNumber:177 description:{@"expected invocation copy %p (%@) to be heap allocated", v6, v6}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SGSuggestionsService.m" lineNumber:177 description:{@"expected invocation copy %p (%@) to be heap allocated", v6, v6}];
     }
 
     objc_autoreleasePoolPop(v7);

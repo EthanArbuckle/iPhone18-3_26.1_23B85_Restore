@@ -1,12 +1,12 @@
 @interface WLDRateLimiter
 - (BOOL)_claimToken;
 - (WLDRateLimiter)init;
-- (WLDRateLimiter)initWithRate:(unint64_t)a3 burst:(unint64_t)a4;
+- (WLDRateLimiter)initWithRate:(unint64_t)rate burst:(unint64_t)burst;
 - (unint64_t)burst;
 - (unint64_t)rate;
 - (void)_addToken;
-- (void)setBurst:(unint64_t)a3;
-- (void)setRate:(unint64_t)a3;
+- (void)setBurst:(unint64_t)burst;
+- (void)setRate:(unint64_t)rate;
 @end
 
 @implementation WLDRateLimiter
@@ -18,7 +18,7 @@
   return 0;
 }
 
-- (WLDRateLimiter)initWithRate:(unint64_t)a3 burst:(unint64_t)a4
+- (WLDRateLimiter)initWithRate:(unint64_t)rate burst:(unint64_t)burst
 {
   v17.receiver = self;
   v17.super_class = WLDRateLimiter;
@@ -26,9 +26,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_rate = a3;
-    v6->_burst = a4;
-    v6->_tokens = a4;
+    v6->_rate = rate;
+    v6->_burst = burst;
+    v6->_tokens = burst;
     v8 = dispatch_queue_create("WLDRateLimiterAccess", 0);
     accessQueue = v7->_accessQueue;
     v7->_accessQueue = v8;
@@ -65,7 +65,7 @@ void __37__WLDRateLimiter_initWithRate_burst___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setRate:(unint64_t)a3
+- (void)setRate:(unint64_t)rate
 {
   accessQueue = self->_accessQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -73,7 +73,7 @@ void __37__WLDRateLimiter_initWithRate_burst___block_invoke(uint64_t a1)
   v4[2] = __26__WLDRateLimiter_setRate___block_invoke;
   v4[3] = &unk_100045980;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = rate;
   dispatch_sync(accessQueue, v4);
 }
 
@@ -112,7 +112,7 @@ void __26__WLDRateLimiter_setRate___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setBurst:(unint64_t)a3
+- (void)setBurst:(unint64_t)burst
 {
   accessQueue = self->_accessQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -120,7 +120,7 @@ void __26__WLDRateLimiter_setRate___block_invoke(uint64_t a1)
   v4[2] = __27__WLDRateLimiter_setBurst___block_invoke;
   v4[3] = &unk_100045980;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = burst;
   dispatch_sync(accessQueue, v4);
 }
 

@@ -1,35 +1,35 @@
 @interface SKDiskImageCreateParams
-+ (id)getDescriptorWithEncryption:(int64_t)a3;
-+ (id)getDescriptorWithFormat:(int64_t)a3;
++ (id)getDescriptorWithEncryption:(int64_t)encryption;
++ (id)getDescriptorWithFormat:(int64_t)format;
 + (id)getDiskImageEncryptionDescriptors;
 + (id)getDiskImageFormatDescriptors;
-- (SKDiskImageCreateParams)initWithCoder:(id)a3;
-- (SKDiskImageCreateParams)initWithDisk:(id)a3 format:(int64_t)a4;
-- (SKDiskImageCreateParams)initWithDiskImage:(id)a3 format:(int64_t)a4 shadowURLs:(id)a5;
-- (SKDiskImageCreateParams)initWithFormat:(int64_t)a3 sourceImage:(id)a4 sourceFolder:(id)a5 volumeName:(id)a6 numBlocks:(unint64_t)a7 fsFormat:(id)a8 shadowURLs:(id)a9;
-- (SKDiskImageCreateParams)initWithNumBlocks:(unint64_t)a3 volumeName:(id)a4 format:(int64_t)a5;
+- (SKDiskImageCreateParams)initWithCoder:(id)coder;
+- (SKDiskImageCreateParams)initWithDisk:(id)disk format:(int64_t)format;
+- (SKDiskImageCreateParams)initWithDiskImage:(id)image format:(int64_t)format shadowURLs:(id)ls;
+- (SKDiskImageCreateParams)initWithFormat:(int64_t)format sourceImage:(id)image sourceFolder:(id)folder volumeName:(id)name numBlocks:(unint64_t)blocks fsFormat:(id)fsFormat shadowURLs:(id)ls;
+- (SKDiskImageCreateParams)initWithNumBlocks:(unint64_t)blocks volumeName:(id)name format:(int64_t)format;
 - (id)description;
-- (id)diConvertParamsWithOutputURL:(id)a3 error:(id *)a4;
-- (id)diCreateParamsWithURL:(id)a3 error:(id *)a4;
-- (id)diCreatorFromFolderWithURL:(id)a3 error:(id *)a4;
+- (id)diConvertParamsWithOutputURL:(id)l error:(id *)error;
+- (id)diCreateParamsWithURL:(id)l error:(id *)error;
+- (id)diCreatorFromFolderWithURL:(id)l error:(id *)error;
 - (id)redactedDescription;
 - (unint64_t)diReadPassphraseExtraFlags;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPassphrase:(const char *)a3 encryptionMethod:(int64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPassphrase:(const char *)passphrase encryptionMethod:(int64_t)method;
 @end
 
 @implementation SKDiskImageCreateParams
 
-+ (id)getDescriptorWithFormat:(int64_t)a3
++ (id)getDescriptorWithFormat:(int64_t)format
 {
-  if ((a3 - 1) > 6)
+  if ((format - 1) > 6)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_279D1F7D8[a3 - 1];
+    v4 = *off_279D1F7D8[format - 1];
     v5 = objc_opt_new();
   }
 
@@ -38,29 +38,29 @@
 
 + (id)getDiskImageFormatDescriptors
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   for (i = 0; i != 8; ++i)
   {
-    v5 = [a1 getDescriptorWithFormat:i];
+    v5 = [self getDescriptorWithFormat:i];
     if (v5)
     {
-      [v3 addObject:v5];
+      [array addObject:v5];
     }
   }
 
-  return v3;
+  return array;
 }
 
-+ (id)getDescriptorWithEncryption:(int64_t)a3
++ (id)getDescriptorWithEncryption:(int64_t)encryption
 {
-  if (a3 > 2)
+  if (encryption > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_279D1F810[a3];
+    v4 = *off_279D1F810[encryption];
     v5 = objc_opt_new();
   }
 
@@ -69,17 +69,17 @@
 
 + (id)getDiskImageEncryptionDescriptors
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   for (i = 0; i != 3; ++i)
   {
-    v5 = [a1 getDescriptorWithEncryption:i];
+    v5 = [self getDescriptorWithEncryption:i];
     if (v5)
     {
-      [v3 addObject:v5];
+      [array addObject:v5];
     }
   }
 
-  return v3;
+  return array;
 }
 
 - (unint64_t)diReadPassphraseExtraFlags
@@ -95,115 +95,115 @@
   }
 }
 
-- (SKDiskImageCreateParams)initWithFormat:(int64_t)a3 sourceImage:(id)a4 sourceFolder:(id)a5 volumeName:(id)a6 numBlocks:(unint64_t)a7 fsFormat:(id)a8 shadowURLs:(id)a9
+- (SKDiskImageCreateParams)initWithFormat:(int64_t)format sourceImage:(id)image sourceFolder:(id)folder volumeName:(id)name numBlocks:(unint64_t)blocks fsFormat:(id)fsFormat shadowURLs:(id)ls
 {
-  v23 = a4;
-  v22 = a5;
-  v15 = a6;
-  v16 = a8;
-  v17 = a9;
+  imageCopy = image;
+  folderCopy = folder;
+  nameCopy = name;
+  fsFormatCopy = fsFormat;
+  lsCopy = ls;
   v24.receiver = self;
   v24.super_class = SKDiskImageCreateParams;
   v18 = [(SKDiskImageCreateParams *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_sourceImage, a4);
-    objc_storeStrong(&v19->_sourceFolder, a5);
-    v19->_format = a3;
-    v19->_numBlocks = a7;
-    objc_storeStrong(&v19->_volumeName, a6);
+    objc_storeStrong(&v18->_sourceImage, image);
+    objc_storeStrong(&v19->_sourceFolder, folder);
+    v19->_format = format;
+    v19->_numBlocks = blocks;
+    objc_storeStrong(&v19->_volumeName, name);
     v19->_stdinPassPhrase = 0;
     v19->_encryption = 0;
-    objc_storeStrong(&v19->_fsFormat, a8);
-    objc_storeStrong(&v19->_shadowURLs, a9);
+    objc_storeStrong(&v19->_fsFormat, fsFormat);
+    objc_storeStrong(&v19->_shadowURLs, ls);
   }
 
   return v19;
 }
 
-- (SKDiskImageCreateParams)initWithNumBlocks:(unint64_t)a3 volumeName:(id)a4 format:(int64_t)a5
+- (SKDiskImageCreateParams)initWithNumBlocks:(unint64_t)blocks volumeName:(id)name format:(int64_t)format
 {
-  v8 = a4;
+  nameCopy = name;
   v9 = [SKFilesystem filesystemFor:@"apfs"];
-  v10 = [(SKDiskImageCreateParams *)self initWithNumBlocks:a3 volumeName:v8 format:a5 fsFormat:v9];
+  v10 = [(SKDiskImageCreateParams *)self initWithNumBlocks:blocks volumeName:nameCopy format:format fsFormat:v9];
 
   return v10;
 }
 
-- (SKDiskImageCreateParams)initWithDisk:(id)a3 format:(int64_t)a4
+- (SKDiskImageCreateParams)initWithDisk:(id)disk format:(int64_t)format
 {
   v6 = MEMORY[0x277CBEBC0];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [a3 diskIdentifier];
-  v9 = [v7 stringWithFormat:@"/dev/%@", v8];
+  diskIdentifier = [disk diskIdentifier];
+  v9 = [v7 stringWithFormat:@"/dev/%@", diskIdentifier];
   v10 = [v6 fileURLWithPath:v9];
-  v11 = [(SKDiskImageCreateParams *)self initWithFormat:a4 sourceImage:v10 sourceFolder:0 volumeName:0 numBlocks:0];
+  v11 = [(SKDiskImageCreateParams *)self initWithFormat:format sourceImage:v10 sourceFolder:0 volumeName:0 numBlocks:0];
 
   return v11;
 }
 
-- (SKDiskImageCreateParams)initWithDiskImage:(id)a3 format:(int64_t)a4 shadowURLs:(id)a5
+- (SKDiskImageCreateParams)initWithDiskImage:(id)image format:(int64_t)format shadowURLs:(id)ls
 {
-  v8 = a5;
-  v9 = [a3 imageURL];
-  v10 = [(SKDiskImageCreateParams *)self initWithFormat:a4 sourceImage:v9 sourceFolder:0 volumeName:0 numBlocks:0 fsFormat:0 shadowURLs:v8];
+  lsCopy = ls;
+  imageURL = [image imageURL];
+  v10 = [(SKDiskImageCreateParams *)self initWithFormat:format sourceImage:imageURL sourceFolder:0 volumeName:0 numBlocks:0 fsFormat:0 shadowURLs:lsCopy];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SKDiskImageCreateParams *)self sourceImage];
-  [v4 encodeObject:v5 forKey:@"sourceImage"];
+  coderCopy = coder;
+  sourceImage = [(SKDiskImageCreateParams *)self sourceImage];
+  [coderCopy encodeObject:sourceImage forKey:@"sourceImage"];
 
-  v6 = [(SKDiskImageCreateParams *)self sourceFolder];
-  [v4 encodeObject:v6 forKey:@"sourceFolder"];
+  sourceFolder = [(SKDiskImageCreateParams *)self sourceFolder];
+  [coderCopy encodeObject:sourceFolder forKey:@"sourceFolder"];
 
-  [v4 encodeInt64:-[SKDiskImageCreateParams format](self forKey:{"format"), @"format"}];
-  [v4 encodeInt64:-[SKDiskImageCreateParams numBlocks](self forKey:{"numBlocks"), @"numBlocks"}];
-  v7 = [(SKDiskImageCreateParams *)self volumeName];
-  [v4 encodeObject:v7 forKey:@"volumeName"];
+  [coderCopy encodeInt64:-[SKDiskImageCreateParams format](self forKey:{"format"), @"format"}];
+  [coderCopy encodeInt64:-[SKDiskImageCreateParams numBlocks](self forKey:{"numBlocks"), @"numBlocks"}];
+  volumeName = [(SKDiskImageCreateParams *)self volumeName];
+  [coderCopy encodeObject:volumeName forKey:@"volumeName"];
 
-  [v4 encodeBool:-[SKDiskImageCreateParams stdinPassPhrase](self forKey:{"stdinPassPhrase"), @"stdinPassPhrase"}];
-  [v4 encodeInt64:-[SKDiskImageCreateParams encryption](self forKey:{"encryption"), @"encryption"}];
-  v8 = [(SKDiskImageCreateParams *)self fsFormat];
-  [v4 encodeObject:v8 forKey:@"fsFormat"];
+  [coderCopy encodeBool:-[SKDiskImageCreateParams stdinPassPhrase](self forKey:{"stdinPassPhrase"), @"stdinPassPhrase"}];
+  [coderCopy encodeInt64:-[SKDiskImageCreateParams encryption](self forKey:{"encryption"), @"encryption"}];
+  fsFormat = [(SKDiskImageCreateParams *)self fsFormat];
+  [coderCopy encodeObject:fsFormat forKey:@"fsFormat"];
 
-  v9 = [(SKDiskImageCreateParams *)self shadowURLs];
-  [v4 encodeObject:v9 forKey:@"shadowURLs"];
+  shadowURLs = [(SKDiskImageCreateParams *)self shadowURLs];
+  [coderCopy encodeObject:shadowURLs forKey:@"shadowURLs"];
 }
 
-- (SKDiskImageCreateParams)initWithCoder:(id)a3
+- (SKDiskImageCreateParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SKDiskImageCreateParams;
   v5 = [(SKDiskImageCreateParams *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"sourceImage"];
+    v6 = [coderCopy decodeObjectForKey:@"sourceImage"];
     sourceImage = v5->_sourceImage;
     v5->_sourceImage = v6;
 
-    v8 = [v4 decodeObjectForKey:@"sourceFolder"];
+    v8 = [coderCopy decodeObjectForKey:@"sourceFolder"];
     sourceFolder = v5->_sourceFolder;
     v5->_sourceFolder = v8;
 
-    v5->_format = [v4 decodeInt64ForKey:@"format"];
-    v5->_numBlocks = [v4 decodeInt64ForKey:@"numBlocks"];
-    v10 = [v4 decodeObjectForKey:@"volumeName"];
+    v5->_format = [coderCopy decodeInt64ForKey:@"format"];
+    v5->_numBlocks = [coderCopy decodeInt64ForKey:@"numBlocks"];
+    v10 = [coderCopy decodeObjectForKey:@"volumeName"];
     volumeName = v5->_volumeName;
     v5->_volumeName = v10;
 
-    v5->_stdinPassPhrase = [v4 decodeBoolForKey:@"stdinPassPhrase"];
-    v5->_encryption = [v4 decodeInt64ForKey:@"encryption"];
-    v12 = [v4 decodeObjectForKey:@"fsFormat"];
+    v5->_stdinPassPhrase = [coderCopy decodeBoolForKey:@"stdinPassPhrase"];
+    v5->_encryption = [coderCopy decodeInt64ForKey:@"encryption"];
+    v12 = [coderCopy decodeObjectForKey:@"fsFormat"];
     fsFormat = v5->_fsFormat;
     v5->_fsFormat = v12;
 
-    v14 = [v4 decodeObjectForKey:@"shadowURLs"];
+    v14 = [coderCopy decodeObjectForKey:@"shadowURLs"];
     shadowURLs = v5->_shadowURLs;
     v5->_shadowURLs = v14;
   }
@@ -219,20 +219,20 @@
   sourceImage = self->_sourceImage;
   if (sourceImage)
   {
-    v7 = [(NSURL *)self->_sourceImage absoluteString];
+    absoluteString = [(NSURL *)self->_sourceImage absoluteString];
   }
 
   else if (self->_sourceFolder)
   {
-    v7 = @"<folder>";
+    absoluteString = @"<folder>";
   }
 
   else
   {
-    v7 = 0;
+    absoluteString = 0;
   }
 
-  v8 = [v3 stringWithFormat:@"<%@: { source: %@, format: %d, numBlocks: %lld }>", v5, v7, self->_format, self->_numBlocks];
+  v8 = [v3 stringWithFormat:@"<%@: { source: %@, format: %d, numBlocks: %lld }>", v5, absoluteString, self->_format, self->_numBlocks];
   if (sourceImage)
   {
   }
@@ -257,11 +257,11 @@
   return v8;
 }
 
-- (id)diCreateParamsWithURL:(id)a3 error:(id *)a4
+- (id)diCreateParamsWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(SKDiskImageCreateParams *)self format];
-  switch(v7)
+  lCopy = l;
+  format = [(SKDiskImageCreateParams *)self format];
+  switch(format)
   {
     case 1:
       v8 = 0x277D055B0;
@@ -273,36 +273,36 @@
       v8 = 0x277D055A8;
       break;
     default:
-      v15 = [SKError nilWithSKErrorCode:250 error:a4];
+      v15 = [SKError nilWithSKErrorCode:250 error:error];
       v9 = 0;
       goto LABEL_17;
   }
 
-  v9 = [objc_alloc(*v8) initWithURL:v6 numBlocks:-[SKDiskImageCreateParams numBlocks](self error:{"numBlocks"), a4}];
+  v9 = [objc_alloc(*v8) initWithURL:lCopy numBlocks:-[SKDiskImageCreateParams numBlocks](self error:{"numBlocks"), error}];
   if (v9)
   {
     [v9 setReadPassphraseFlags:{objc_msgSend(v9, "readPassphraseFlags") | -[SKDiskImageCreateParams diReadPassphraseExtraFlags](self, "diReadPassphraseExtraFlags")}];
-    v10 = [(SKDiskImageCreateParams *)self encryption];
-    if (v10 == 2)
+    encryption = [(SKDiskImageCreateParams *)self encryption];
+    if (encryption == 2)
     {
       v11 = 2;
     }
 
     else
     {
-      v11 = v10 == 1;
+      v11 = encryption == 1;
     }
 
     [v9 setEncryptionMethod:v11];
-    v12 = [(SKDiskImageCreateParams *)self temporaryPassphrase];
+    temporaryPassphrase = [(SKDiskImageCreateParams *)self temporaryPassphrase];
 
-    if (!v12)
+    if (!temporaryPassphrase)
     {
       goto LABEL_14;
     }
 
-    v13 = [(SKDiskImageCreateParams *)self temporaryPassphrase];
-    v14 = [v9 setPassphrase:objc_msgSend(v13 encryptionMethod:"buf") error:{objc_msgSend(v9, "encryptionMethod"), a4}];
+    temporaryPassphrase2 = [(SKDiskImageCreateParams *)self temporaryPassphrase];
+    v14 = [v9 setPassphrase:objc_msgSend(temporaryPassphrase2 encryptionMethod:"buf") error:{objc_msgSend(v9, "encryptionMethod"), error}];
 
     if (v14)
     {
@@ -320,30 +320,30 @@ LABEL_17:
   return v15;
 }
 
-- (id)diConvertParamsWithOutputURL:(id)a3 error:(id *)a4
+- (id)diConvertParamsWithOutputURL:(id)l error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 URLByResolvingSymlinksInPath];
-  v8 = [v7 absoluteString];
-  v9 = [(SKDiskImageCreateParams *)self sourceImage];
-  v10 = [v9 URLByResolvingSymlinksInPath];
-  v11 = [v10 absoluteString];
-  if (![v8 isEqualToString:v11])
+  lCopy = l;
+  uRLByResolvingSymlinksInPath = [lCopy URLByResolvingSymlinksInPath];
+  absoluteString = [uRLByResolvingSymlinksInPath absoluteString];
+  sourceImage = [(SKDiskImageCreateParams *)self sourceImage];
+  uRLByResolvingSymlinksInPath2 = [sourceImage URLByResolvingSymlinksInPath];
+  absoluteString2 = [uRLByResolvingSymlinksInPath2 absoluteString];
+  if (![absoluteString isEqualToString:absoluteString2])
   {
 
     goto LABEL_7;
   }
 
-  v12 = [(SKDiskImageCreateParams *)self shadowURLs];
+  shadowURLs = [(SKDiskImageCreateParams *)self shadowURLs];
 
-  if (v12)
+  if (shadowURLs)
   {
 LABEL_7:
     v18 = objc_alloc(MEMORY[0x277D055A0]);
-    v16 = [(SKDiskImageCreateParams *)self sourceImage];
-    v19 = [(SKDiskImageCreateParams *)self shadowURLs];
-    v17 = [v18 initWithInputURL:v16 outputURL:v6 shadowURLs:v19 error:a4];
+    sourceImage2 = [(SKDiskImageCreateParams *)self sourceImage];
+    shadowURLs2 = [(SKDiskImageCreateParams *)self shadowURLs];
+    v17 = [v18 initWithInputURL:sourceImage2 outputURL:lCopy shadowURLs:shadowURLs2 error:error];
 
     goto LABEL_8;
   }
@@ -351,17 +351,17 @@ LABEL_7:
   v13 = SKGetOSLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(SKDiskImageCreateParams *)self sourceImage];
+    sourceImage3 = [(SKDiskImageCreateParams *)self sourceImage];
     v30 = 136315394;
     v31 = "[SKDiskImageCreateParams diConvertParamsWithOutputURL:error:]";
     v32 = 2112;
-    v33 = v14;
+    v33 = sourceImage3;
     _os_log_impl(&dword_26BBB8000, v13, OS_LOG_TYPE_DEFAULT, "%s: Creating image in place %@", &v30, 0x16u);
   }
 
   v15 = objc_alloc(MEMORY[0x277D055A0]);
-  v16 = [(SKDiskImageCreateParams *)self sourceImage];
-  v17 = [v15 initForInplaceWithURL:v16 error:a4];
+  sourceImage2 = [(SKDiskImageCreateParams *)self sourceImage];
+  v17 = [v15 initForInplaceWithURL:sourceImage2 error:error];
 LABEL_8:
 
   if (!v17)
@@ -372,30 +372,30 @@ LABEL_8:
   v20 = SKFormatToDIFormat([(SKDiskImageCreateParams *)self format]);
   if (!v20)
   {
-    v26 = [SKError nilWithSKErrorCode:250 error:a4];
+    v26 = [SKError nilWithSKErrorCode:250 error:error];
     goto LABEL_19;
   }
 
   [v17 setOutputFormat:v20];
   [v17 setReadPassphraseFlags:{objc_msgSend(v17, "readPassphraseFlags") | -[SKDiskImageCreateParams diReadPassphraseExtraFlags](self, "diReadPassphraseExtraFlags")}];
-  v21 = [(SKDiskImageCreateParams *)self encryption];
-  if (v21 == 2)
+  encryption = [(SKDiskImageCreateParams *)self encryption];
+  if (encryption == 2)
   {
     v22 = 2;
   }
 
   else
   {
-    v22 = v21 == 1;
+    v22 = encryption == 1;
   }
 
   [v17 setEncryptionMethod:v22];
-  v23 = [(SKDiskImageCreateParams *)self temporaryPassphrase];
+  temporaryPassphrase = [(SKDiskImageCreateParams *)self temporaryPassphrase];
 
-  if (v23)
+  if (temporaryPassphrase)
   {
-    v24 = [(SKDiskImageCreateParams *)self temporaryPassphrase];
-    v25 = [v17 setPassphrase:objc_msgSend(v24 encryptionMethod:"buf") error:{objc_msgSend(v17, "encryptionMethod"), a4}];
+    temporaryPassphrase2 = [(SKDiskImageCreateParams *)self temporaryPassphrase];
+    v25 = [v17 setPassphrase:objc_msgSend(temporaryPassphrase2 encryptionMethod:"buf") error:{objc_msgSend(v17, "encryptionMethod"), error}];
 
     if (v25)
     {
@@ -419,11 +419,11 @@ LABEL_20:
   return v27;
 }
 
-- (id)diCreatorFromFolderWithURL:(id)a3 error:(id *)a4
+- (id)diCreatorFromFolderWithURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x277D055D8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithURL:v7 error:a4];
+  lCopy = l;
+  v8 = [[v6 alloc] initWithURL:lCopy error:error];
 
   if (v8)
   {
@@ -431,29 +431,29 @@ LABEL_20:
     if (v9)
     {
       v10 = v9;
-      v11 = [(SKDiskImageCreateParams *)self volumeName];
-      [v8 setVolumeName:v11];
+      volumeName = [(SKDiskImageCreateParams *)self volumeName];
+      [v8 setVolumeName:volumeName];
 
       [v8 setImageFormat:v10];
       [v8 setReadPassphraseFlags:{objc_msgSend(v8, "readPassphraseFlags") | -[SKDiskImageCreateParams diReadPassphraseExtraFlags](self, "diReadPassphraseExtraFlags")}];
-      v12 = [(SKDiskImageCreateParams *)self encryption];
-      if (v12 == 2)
+      encryption = [(SKDiskImageCreateParams *)self encryption];
+      if (encryption == 2)
       {
         v13 = 2;
       }
 
       else
       {
-        v13 = v12 == 1;
+        v13 = encryption == 1;
       }
 
       [v8 setEncryptionMethod:v13];
-      v14 = [(SKDiskImageCreateParams *)self temporaryPassphrase];
+      temporaryPassphrase = [(SKDiskImageCreateParams *)self temporaryPassphrase];
 
-      if (v14)
+      if (temporaryPassphrase)
       {
-        v15 = [(SKDiskImageCreateParams *)self temporaryPassphrase];
-        [v8 setPassphrase:objc_msgSend(v15 encryptionMethod:{"buf"), objc_msgSend(v8, "encryptionMethod")}];
+        temporaryPassphrase2 = [(SKDiskImageCreateParams *)self temporaryPassphrase];
+        [v8 setPassphrase:objc_msgSend(temporaryPassphrase2 encryptionMethod:{"buf"), objc_msgSend(v8, "encryptionMethod")}];
 
         [(SKDiskImageCreateParams *)self setTemporaryPassphrase:0];
       }
@@ -463,7 +463,7 @@ LABEL_20:
 
     else
     {
-      v16 = [SKError nilWithSKErrorCode:250 error:a4];
+      v16 = [SKError nilWithSKErrorCode:250 error:error];
     }
 
     v17 = v16;
@@ -477,12 +477,12 @@ LABEL_20:
   return v17;
 }
 
-- (void)setPassphrase:(const char *)a3 encryptionMethod:(int64_t)a4
+- (void)setPassphrase:(const char *)passphrase encryptionMethod:(int64_t)method
 {
-  v6 = [[SKTemporaryPassphrase alloc] initWithPassphrase:a3];
+  v6 = [[SKTemporaryPassphrase alloc] initWithPassphrase:passphrase];
   [(SKDiskImageCreateParams *)self setTemporaryPassphrase:v6];
 
-  [(SKDiskImageCreateParams *)self setEncryption:a4];
+  [(SKDiskImageCreateParams *)self setEncryption:method];
 }
 
 @end

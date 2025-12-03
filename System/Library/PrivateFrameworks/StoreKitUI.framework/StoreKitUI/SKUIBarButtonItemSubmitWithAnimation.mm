@@ -1,14 +1,14 @@
 @interface SKUIBarButtonItemSubmitWithAnimation
-- (SKUIBarButtonItemSubmitWithAnimation)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5;
-- (void)animateWithCompletion:(id)a3;
+- (SKUIBarButtonItemSubmitWithAnimation)initWithTitle:(id)title target:(id)target action:(SEL)action;
+- (void)animateWithCompletion:(id)completion;
 @end
 
 @implementation SKUIBarButtonItemSubmitWithAnimation
 
-- (SKUIBarButtonItemSubmitWithAnimation)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5
+- (SKUIBarButtonItemSubmitWithAnimation)initWithTitle:(id)title target:(id)target action:(SEL)action
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  targetCopy = target;
   v32.receiver = self;
   v32.super_class = SKUIBarButtonItemSubmitWithAnimation;
   v10 = [(SKUIBarButtonItemSubmitWithAnimation *)&v32 init];
@@ -18,42 +18,42 @@
     button = v10->_button;
     v10->_button = v11;
 
-    [(UIButton *)v10->_button setTitle:v8 forState:0];
+    [(UIButton *)v10->_button setTitle:titleCopy forState:0];
     [(UIButton *)v10->_button setContentMode:4];
     [(UIButton *)v10->_button setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIButton *)v10->_button addTarget:v9 action:a5 forControlEvents:64];
-    v13 = [(UIButton *)v10->_button heightAnchor];
+    [(UIButton *)v10->_button addTarget:targetCopy action:action forControlEvents:64];
+    heightAnchor = [(UIButton *)v10->_button heightAnchor];
     [MEMORY[0x277CDD370] PPMConfirmedValueWithValue:36.0 newValue:40.0];
-    v14 = [v13 constraintEqualToConstant:?];
+    v14 = [heightAnchor constraintEqualToConstant:?];
     [v14 setActive:1];
 
-    v15 = [MEMORY[0x277D75230] borderedButtonConfiguration];
-    v16 = [MEMORY[0x277D75348] tertiaryLabelColor];
-    [v15 setBaseBackgroundColor:v16];
+    borderedButtonConfiguration = [MEMORY[0x277D75230] borderedButtonConfiguration];
+    tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+    [borderedButtonConfiguration setBaseBackgroundColor:tertiaryLabelColor];
 
-    [(UIButton *)v10->_button setConfiguration:v15];
+    [(UIButton *)v10->_button setConfiguration:borderedButtonConfiguration];
     v17 = [MEMORY[0x277D755B8] systemImageNamed:@"checkmark"];
     v18 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v17];
     imageView = v10->_imageView;
     v10->_imageView = v18;
 
-    v20 = [MEMORY[0x277D75348] whiteColor];
-    [(UIImageView *)v10->_imageView setTintColor:v20];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIImageView *)v10->_imageView setTintColor:whiteColor];
 
     [(UIImageView *)v10->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v10->_button addSubview:v10->_imageView];
-    v21 = [(UIImageView *)v10->_imageView centerXAnchor];
-    v22 = [(UIButton *)v10->_button centerXAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22];
+    centerXAnchor = [(UIImageView *)v10->_imageView centerXAnchor];
+    centerXAnchor2 = [(UIButton *)v10->_button centerXAnchor];
+    v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v23 setActive:1];
 
-    v24 = [(UIImageView *)v10->_imageView centerYAnchor];
-    v25 = [(UIButton *)v10->_button centerYAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    centerYAnchor = [(UIImageView *)v10->_imageView centerYAnchor];
+    centerYAnchor2 = [(UIButton *)v10->_button centerYAnchor];
+    v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v26 setActive:1];
 
-    v27 = [(UIImageView *)v10->_imageView layer];
-    [v27 setOpacity:0.0];
+    layer = [(UIImageView *)v10->_imageView layer];
+    [layer setOpacity:0.0];
 
     CGAffineTransformMakeScale(&v31, 0.0, 0.0);
     v28 = v10->_imageView;
@@ -65,9 +65,9 @@
   return v10;
 }
 
-- (void)animateWithCompletion:(id)a3
+- (void)animateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = MEMORY[0x277D75D18];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -79,8 +79,8 @@
   v7[2] = __62__SKUIBarButtonItemSubmitWithAnimation_animateWithCompletion___block_invoke_2;
   v7[3] = &unk_2781F85E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 animateWithDuration:v9 animations:v7 completion:0.1];
 }
 

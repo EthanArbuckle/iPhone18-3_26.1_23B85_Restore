@@ -9,26 +9,26 @@
 - (void)openExistingAudioFile;
 - (void)resetState;
 - (void)resumeRecording;
-- (void)setRecording:(BOOL)a3;
-- (void)startRecordingForRaiseGesture:(BOOL)a3 shouldPlaySound:(BOOL)a4;
-- (void)stopRecordingAndPlaySound:(BOOL)a3 completion:(id)a4;
-- (void)voiceController:(id)a3 didUpdateAveragePower:(float)a4;
-- (void)voiceControllerDidFinishRecording:(id)a3 successfully:(BOOL)a4;
-- (void)voiceControllerDidStartRecording:(id)a3;
-- (void)voiceControllerRecordBufferAvailable:(id)a3 buffer:(id)a4;
+- (void)setRecording:(BOOL)recording;
+- (void)startRecordingForRaiseGesture:(BOOL)gesture shouldPlaySound:(BOOL)sound;
+- (void)stopRecordingAndPlaySound:(BOOL)sound completion:(id)completion;
+- (void)voiceController:(id)controller didUpdateAveragePower:(float)power;
+- (void)voiceControllerDidFinishRecording:(id)recording successfully:(BOOL)successfully;
+- (void)voiceControllerDidStartRecording:(id)recording;
+- (void)voiceControllerRecordBufferAvailable:(id)available buffer:(id)buffer;
 @end
 
 @implementation CKAudioRecorder
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CKVoiceController *)self->_voiceController setDelegate:0];
   [(CKVoiceController *)self->_voiceController releaseAudioSession];
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v4 setIdleTimerDisabled:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setIdleTimerDisabled:0];
 
   v5.receiver = self;
   v5.super_class = CKAudioRecorder;
@@ -51,12 +51,12 @@
 
 - (double)duration
 {
-  v2 = [(CKAudioRecorder *)self startDate];
-  if (v2)
+  startDate = [(CKAudioRecorder *)self startDate];
+  if (startDate)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     v4 = v3;
-    [v2 timeIntervalSinceReferenceDate];
+    [startDate timeIntervalSinceReferenceDate];
     v6 = v4 - v5;
   }
 
@@ -68,10 +68,10 @@
   return v6;
 }
 
-- (void)startRecordingForRaiseGesture:(BOOL)a3 shouldPlaySound:(BOOL)a4
+- (void)startRecordingForRaiseGesture:(BOOL)gesture shouldPlaySound:(BOOL)sound
 {
-  v4 = a4;
-  v5 = a3;
+  soundCopy = sound;
+  gestureCopy = gesture;
   v21 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
   {
@@ -79,16 +79,16 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v20 = v5;
+      v20 = gestureCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "startRecordingForRaiseGesture: %d", buf, 8u);
     }
   }
 
   [(CKAudioRecorder *)self setRecording:1];
-  v8 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v8 setIdleTimerDisabled:1];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setIdleTimerDisabled:1];
 
-  if (v5)
+  if (gestureCopy)
   {
     v9 = 1768764005;
   }
@@ -98,12 +98,12 @@
     v9 = 1768780647;
   }
 
-  [(CKAudioRecorder *)self setShouldPlayStartSound:v4 & ~v5];
-  v10 = [(CKAudioRecorder *)self voiceController];
-  v11 = v10;
-  if (v10)
+  [(CKAudioRecorder *)self setShouldPlayStartSound:soundCopy & ~gestureCopy];
+  voiceController = [(CKAudioRecorder *)self voiceController];
+  v11 = voiceController;
+  if (voiceController)
   {
-    [(CKVoiceController *)v10 setActivationMode:v9];
+    [(CKVoiceController *)voiceController setActivationMode:v9];
   }
 
   else
@@ -144,8 +144,8 @@
 {
   v14 = *MEMORY[0x1E69E9840];
   outAudioFile = [(CKAudioRecorder *)self fileID];
-  v3 = [(CKAudioRecorder *)self fileURL];
-  v4 = AudioFileOpenURL(v3, kAudioFileReadWritePermission, 0x63616666u, &outAudioFile);
+  fileURL = [(CKAudioRecorder *)self fileURL];
+  v4 = AudioFileOpenURL(fileURL, kAudioFileReadWritePermission, 0x63616666u, &outAudioFile);
 
   v5 = IMOSLoggingEnabled();
   if (v4)
@@ -162,8 +162,8 @@
       }
     }
 
-    v8 = [(CKAudioRecorder *)self voiceController];
-    [(CKAudioRecorder *)self voiceControllerDidFinishRecording:v8 successfully:0];
+    voiceController = [(CKAudioRecorder *)self voiceController];
+    [(CKAudioRecorder *)self voiceControllerDidFinishRecording:voiceController successfully:0];
   }
 
   else
@@ -173,9 +173,9 @@
       v9 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
-        v10 = [(CKAudioRecorder *)self fileURL];
+        fileURL2 = [(CKAudioRecorder *)self fileURL];
         *buf = 138412290;
-        v13 = v10;
+        v13 = fileURL2;
         _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Opened existing audio file with fileURL: %@", buf, 0xCu);
       }
     }
@@ -189,10 +189,10 @@
   v25 = *MEMORY[0x1E69E9840];
   outAudioFile = 0;
   v3 = CKAttachmentTmpFileURL(@"Audio Message.caf");
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v3 URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  uRLByDeletingLastPathComponent = [v3 URLByDeletingLastPathComponent];
   v20 = 0;
-  [v4 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v20];
+  [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v20];
   v6 = v20;
 
   if (v6)
@@ -202,17 +202,17 @@
       v7 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [v3 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent2 = [v3 URLByDeletingLastPathComponent];
         LODWORD(buf.mSampleRate) = 138412546;
-        *(&buf.mSampleRate + 4) = v8;
+        *(&buf.mSampleRate + 4) = uRLByDeletingLastPathComponent2;
         LOWORD(buf.mFormatFlags) = 2112;
         *(&buf.mFormatFlags + 2) = v6;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "[NSFileManager createDirectoryAtURL:%@] failed with error %@", &buf, 0x16u);
       }
     }
 
-    v9 = [(CKAudioRecorder *)self voiceController];
-    [(CKAudioRecorder *)self voiceControllerDidFinishRecording:v9 successfully:0];
+    voiceController = [(CKAudioRecorder *)self voiceController];
+    [(CKAudioRecorder *)self voiceControllerDidFinishRecording:voiceController successfully:0];
 
     goto LABEL_24;
   }
@@ -239,8 +239,8 @@
     }
 
 LABEL_12:
-    v13 = [(CKAudioRecorder *)self voiceController];
-    [(CKAudioRecorder *)self voiceControllerDidFinishRecording:v13 successfully:0];
+    voiceController2 = [(CKAudioRecorder *)self voiceController];
+    [(CKAudioRecorder *)self voiceControllerDidFinishRecording:voiceController2 successfully:0];
 
     goto LABEL_24;
   }
@@ -280,38 +280,38 @@ LABEL_12:
 LABEL_24:
 }
 
-- (void)stopRecordingAndPlaySound:(BOOL)a3 completion:(id)a4
+- (void)stopRecordingAndPlaySound:(BOOL)sound completion:(id)completion
 {
-  v4 = a3;
+  soundCopy = sound;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = _Block_copy(v6);
+      v8 = _Block_copy(completionCopy);
       v12[0] = 67109890;
-      v12[1] = v4;
+      v12[1] = soundCopy;
       v13 = 2112;
       v14 = v8;
       v15 = 1024;
-      v16 = [(CKAudioRecorder *)self isCancelled];
+      isCancelled = [(CKAudioRecorder *)self isCancelled];
       v17 = 1024;
-      v18 = [(CKAudioRecorder *)self isRecording];
+      isRecording = [(CKAudioRecorder *)self isRecording];
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "stopRecordingAndPlaySound: %d completion: %@ (cancelled: %d isRecording: %d)", v12, 0x1Eu);
     }
   }
 
-  v9 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v9 setIdleTimerDisabled:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setIdleTimerDisabled:0];
 
   if ([(CKAudioRecorder *)self isRecording])
   {
-    [(CKAudioRecorder *)self setShouldPlayStopSound:v4];
-    [(CKAudioRecorder *)self setCompletion:v6];
-    v10 = [(CKAudioRecorder *)self voiceController];
-    [v10 stop];
+    [(CKAudioRecorder *)self setShouldPlayStopSound:soundCopy];
+    [(CKAudioRecorder *)self setCompletion:completionCopy];
+    voiceController = [(CKAudioRecorder *)self voiceController];
+    [voiceController stop];
   }
 
   else
@@ -326,9 +326,9 @@ LABEL_24:
       }
     }
 
-    if (v6)
+    if (completionCopy)
     {
-      (*(v6 + 2))(v6, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -345,9 +345,9 @@ LABEL_24:
     }
   }
 
-  v4 = [(CKAudioRecorder *)self completion];
+  completion = [(CKAudioRecorder *)self completion];
 
-  if (v4)
+  if (completion)
   {
     if (IMOSLoggingEnabled())
     {
@@ -367,44 +367,44 @@ LABEL_24:
   }
 }
 
-- (void)voiceControllerDidStartRecording:(id)a3
+- (void)voiceControllerDidStartRecording:(id)recording
 {
-  v4 = [MEMORY[0x1E695DF00] date];
-  [(CKAudioRecorder *)self setStartDate:v4];
+  date = [MEMORY[0x1E695DF00] date];
+  [(CKAudioRecorder *)self setStartDate:date];
 
-  v5 = [(CKAudioRecorder *)self delegate];
+  delegate = [(CKAudioRecorder *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(CKAudioRecorder *)self delegate];
-    [v7 audioRecorderDidStartRecording:self];
+    delegate2 = [(CKAudioRecorder *)self delegate];
+    [delegate2 audioRecorderDidStartRecording:self];
   }
 
   if ([(CKAudioRecorder *)self shouldPlayStartSound])
   {
-    v8 = [(CKAudioRecorder *)self voiceController];
-    [v8 playAlertSoundForType:1];
+    voiceController = [(CKAudioRecorder *)self voiceController];
+    [voiceController playAlertSoundForType:1];
   }
 }
 
-- (void)voiceControllerDidFinishRecording:(id)a3 successfully:(BOOL)a4
+- (void)voiceControllerDidFinishRecording:(id)recording successfully:(BOOL)successfully
 {
-  v4 = a4;
+  successfullyCopy = successfully;
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  recordingCopy = recording;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 67109120;
-      v26 = v4;
+      v26 = successfullyCopy;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "voiceControllerDidFinishRecording:successfully: %d", buf, 8u);
     }
   }
 
-  if (v4)
+  if (successfullyCopy)
   {
     [(CKAudioRecorder *)self duration];
     if (v8 < 0.5)
@@ -423,9 +423,9 @@ LABEL_24:
     }
   }
 
-  v10 = [(CKAudioRecorder *)self fileURL];
-  v11 = [(CKAudioRecorder *)self fileID];
-  if (v11)
+  fileURL = [(CKAudioRecorder *)self fileURL];
+  fileID = [(CKAudioRecorder *)self fileID];
+  if (fileID)
   {
     if (IMOSLoggingEnabled())
     {
@@ -437,18 +437,18 @@ LABEL_24:
       }
     }
 
-    AudioFileClose(v11);
+    AudioFileClose(fileID);
   }
 
-  if (v4 && ![(CKAudioRecorder *)self isCancelled])
+  if (successfullyCopy && ![(CKAudioRecorder *)self isCancelled])
   {
     v23 = *MEMORY[0x1E69A6F80];
     v24 = MEMORY[0x1E695E118];
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v15 = +[CKMediaObjectManager sharedInstance];
-    v16 = [v15 mediaObjectWithFileURL:v10 filename:0 transcoderUserInfo:v14];
+    v16 = [v15 mediaObjectWithFileURL:fileURL filename:0 transcoderUserInfo:v14];
 
-    [v16 setTemporaryFileURL:v10];
+    [v16 setTemporaryFileURL:fileURL];
     [v16 setTotalPacketsCount:{-[CKAudioRecorder totalPacketsCount](self, "totalPacketsCount")}];
     v13 = [CKComposition audioCompositionWithMediaObject:v16];
   }
@@ -458,10 +458,10 @@ LABEL_24:
     v13 = 0;
   }
 
-  v17 = [(CKAudioRecorder *)self voiceController];
+  voiceController = [(CKAudioRecorder *)self voiceController];
   if ([(CKAudioRecorder *)self shouldPlayStopSound])
   {
-    if (v4)
+    if (successfullyCopy)
     {
       if ([(CKAudioRecorder *)self isCancelled])
       {
@@ -479,48 +479,48 @@ LABEL_24:
       v18 = 3;
     }
 
-    [v17 playAlertSoundForType:v18];
+    [voiceController playAlertSoundForType:v18];
   }
 
-  [v17 releaseAudioSession];
+  [voiceController releaseAudioSession];
   [(CKAudioRecorder *)self setRecording:0];
-  v19 = [(CKAudioRecorder *)self completion];
-  v20 = v19;
-  if (v19)
+  completion = [(CKAudioRecorder *)self completion];
+  v20 = completion;
+  if (completion)
   {
-    (*(v19 + 16))(v19, v13);
+    (*(completion + 16))(completion, v13);
   }
 
-  if (!v4)
+  if (!successfullyCopy)
   {
-    v21 = [(CKAudioRecorder *)self delegate];
-    [v21 audioRecorderRecordingDidFail:self];
+    delegate = [(CKAudioRecorder *)self delegate];
+    [delegate audioRecorderRecordingDidFail:self];
   }
 
   if (![(CKAudioRecorder *)self isPaused]|| [(CKAudioRecorder *)self isCancelled])
   {
     [(CKAudioRecorder *)self resetState];
-    v22 = [MEMORY[0x1E696AC08] defaultManager];
-    [v22 removeItemAtURL:v10 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:fileURL error:0];
   }
 }
 
-- (void)voiceControllerRecordBufferAvailable:(id)a3 buffer:(id)a4
+- (void)voiceControllerRecordBufferAvailable:(id)available buffer:(id)buffer
 {
   *&v25[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 packetDescriptionCount];
-  v9 = [v7 bytesDataSize];
-  v10 = v9;
-  if (v8 && v9)
+  availableCopy = available;
+  bufferCopy = buffer;
+  packetDescriptionCount = [bufferCopy packetDescriptionCount];
+  bytesDataSize = [bufferCopy bytesDataSize];
+  v10 = bytesDataSize;
+  if (packetDescriptionCount && bytesDataSize)
   {
-    v11 = [v7 packetDescriptions];
+    packetDescriptions = [bufferCopy packetDescriptions];
     v12 = 0;
     while (1)
     {
-      v13 = *v11;
-      if ((*v11 & 0x8000000000000000) != 0)
+      v13 = *packetDescriptions;
+      if ((*packetDescriptions & 0x8000000000000000) != 0)
       {
         if ((IMOSLoggingEnabled() & 1) == 0)
         {
@@ -539,17 +539,17 @@ LABEL_24:
         goto LABEL_19;
       }
 
-      v14 = *(v11 + 12);
+      v14 = *(packetDescriptions + 12);
       if (v14 > v10)
       {
         break;
       }
 
       ++v12;
-      v11 += 16;
-      if (v8 == v12)
+      packetDescriptions += 16;
+      if (packetDescriptionCount == v12)
       {
-        LODWORD(v12) = v8;
+        LODWORD(v12) = packetDescriptionCount;
         goto LABEL_20;
       }
     }
@@ -572,8 +572,8 @@ LABEL_19:
 
 LABEL_20:
     ioNumPackets = v12;
-    v19 = [(CKAudioRecorder *)self totalPacketsCount];
-    v20 = AudioFileWritePackets(-[CKAudioRecorder fileID](self, "fileID"), 0, v10, [v7 packetDescriptions], v19, &ioNumPackets, objc_msgSend(v7, "data"));
+    totalPacketsCount = [(CKAudioRecorder *)self totalPacketsCount];
+    v20 = AudioFileWritePackets(-[CKAudioRecorder fileID](self, "fileID"), 0, v10, [bufferCopy packetDescriptions], totalPacketsCount, &ioNumPackets, objc_msgSend(bufferCopy, "data"));
     if (v20 && IMOSLoggingEnabled())
     {
       v21 = OSLogHandleForIMFoundationCategory();
@@ -586,7 +586,7 @@ LABEL_20:
       }
     }
 
-    [(CKAudioRecorder *)self setTotalPacketsCount:v19 + ioNumPackets];
+    [(CKAudioRecorder *)self setTotalPacketsCount:totalPacketsCount + ioNumPackets];
   }
 
   else if (IMOSLoggingEnabled())
@@ -595,7 +595,7 @@ LABEL_20:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      v25[0] = v8;
+      v25[0] = packetDescriptionCount;
       LOWORD(v25[1]) = 1024;
       *(&v25[1] + 2) = v10;
       _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "AVVCAudioBuffer contains %d packet descriptions, size %d. Ignoring", buf, 0xEu);
@@ -603,11 +603,11 @@ LABEL_20:
   }
 }
 
-- (void)voiceController:(id)a3 didUpdateAveragePower:(float)a4
+- (void)voiceController:(id)controller didUpdateAveragePower:(float)power
 {
-  v6 = [(CKAudioRecorder *)self delegate];
-  *&v5 = a4;
-  [v6 audioRecorderDidUpdateAveragePower:v5];
+  delegate = [(CKAudioRecorder *)self delegate];
+  *&v5 = power;
+  [delegate audioRecorderDidUpdateAveragePower:v5];
 }
 
 - (void)resumeRecording
@@ -631,20 +631,20 @@ LABEL_20:
 
 - (float)averagePower
 {
-  v2 = [(CKAudioRecorder *)self voiceController];
-  [v2 averagePower];
+  voiceController = [(CKAudioRecorder *)self voiceController];
+  [voiceController averagePower];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRecording:(BOOL)a3
+- (void)setRecording:(BOOL)recording
 {
-  if (self->_recording != a3)
+  if (self->_recording != recording)
   {
-    self->_recording = a3;
-    v5 = [(CKAudioRecorder *)self delegate];
-    [v5 audioRecorderRecordingDidChange:self];
+    self->_recording = recording;
+    delegate = [(CKAudioRecorder *)self delegate];
+    [delegate audioRecorderRecordingDidChange:self];
   }
 }
 
@@ -660,11 +660,11 @@ LABEL_20:
     }
   }
 
-  v4 = [(CKAudioRecorder *)self voiceController];
-  [v4 setDelegate:0];
+  voiceController = [(CKAudioRecorder *)self voiceController];
+  [voiceController setDelegate:0];
 
-  v5 = [(CKAudioRecorder *)self voiceController];
-  [v5 cleanup];
+  voiceController2 = [(CKAudioRecorder *)self voiceController];
+  [voiceController2 cleanup];
 
   [(CKAudioRecorder *)self setVoiceController:0];
   [(CKAudioRecorder *)self setRecording:0];

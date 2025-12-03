@@ -1,15 +1,15 @@
 @interface PaperDocumentViewController_ScrollViewObserver
 - (_TtC8PaperKit46PaperDocumentViewController_ScrollViewObserver)init;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 @end
 
 @implementation PaperDocumentViewController_ScrollViewObserver
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v5 = a3;
-  v6 = self;
-  PaperDocumentViewController_ScrollViewObserver._observeScrollViewDidScroll(_:)(a3);
+  scrollCopy = scroll;
+  selfCopy = self;
+  PaperDocumentViewController_ScrollViewObserver._observeScrollViewDidScroll(_:)(scroll);
 }
 
 - (_TtC8PaperKit46PaperDocumentViewController_ScrollViewObserver)init

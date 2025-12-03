@@ -1,15 +1,15 @@
 @interface ATXAnchorModelPBActionMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsActionType:(id)a3;
+- (int)StringAsActionType:(id)type;
 - (int)actionType;
 - (unint64_t)hash;
-- (void)addActionUUIDMetadata:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActionUUIDMetadata:(id)metadata;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXAnchorModelPBActionMetadata
@@ -27,20 +27,20 @@
   }
 }
 
-- (int)StringAsActionType:(id)a3
+- (int)StringAsActionType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"ANCHOR_ACTION_TYPE_OTHER"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"ANCHOR_ACTION_TYPE_OTHER"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_ACTION_TYPE_INTENT"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_ACTION_TYPE_INTENT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ANCHOR_ACTION_TYPE_NSUA"])
+  else if ([typeCopy isEqualToString:@"ANCHOR_ACTION_TYPE_NSUA"])
   {
     v4 = 2;
   }
@@ -53,22 +53,22 @@
   return v4;
 }
 
-- (void)addActionUUIDMetadata:(id)a3
+- (void)addActionUUIDMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   actionUUIDMetadatas = self->_actionUUIDMetadatas;
-  v8 = v4;
+  v8 = metadataCopy;
   if (!actionUUIDMetadatas)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_actionUUIDMetadatas;
     self->_actionUUIDMetadatas = v6;
 
-    v4 = v8;
+    metadataCopy = v8;
     actionUUIDMetadatas = self->_actionUUIDMetadatas;
   }
 
-  [(NSMutableArray *)actionUUIDMetadatas addObject:v4];
+  [(NSMutableArray *)actionUUIDMetadatas addObject:metadataCopy];
 }
 
 - (id)description
@@ -77,8 +77,8 @@
   v8.receiver = self;
   v8.super_class = ATXAnchorModelPBActionMetadata;
   v4 = [(ATXAnchorModelPBActionMetadata *)&v8 description];
-  v5 = [(ATXAnchorModelPBActionMetadata *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXAnchorModelPBActionMetadata *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -86,7 +86,7 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     actionType = self->_actionType;
@@ -100,21 +100,21 @@
       v5 = off_2785A22C0[actionType];
     }
 
-    [v3 setObject:v5 forKey:@"actionType"];
+    [dictionary setObject:v5 forKey:@"actionType"];
   }
 
   appLaunchMetadata = self->_appLaunchMetadata;
   if (appLaunchMetadata)
   {
-    v7 = [(ATXAnchorModelPBAppLaunchMetadata *)appLaunchMetadata dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"appLaunchMetadata"];
+    dictionaryRepresentation = [(ATXAnchorModelPBAppLaunchMetadata *)appLaunchMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"appLaunchMetadata"];
   }
 
   actionKeyMetadata = self->_actionKeyMetadata;
   if (actionKeyMetadata)
   {
-    v9 = [(ATXAnchorModelPBActionKeyMetadata *)actionKeyMetadata dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"actionKeyMetadata"];
+    dictionaryRepresentation2 = [(ATXAnchorModelPBActionKeyMetadata *)actionKeyMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"actionKeyMetadata"];
   }
 
   if ([(NSMutableArray *)self->_actionUUIDMetadatas count])
@@ -139,8 +139,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation3 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation3];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -149,18 +149,18 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"actionUUIDMetadata"];
+    [dictionary setObject:v10 forKey:@"actionUUIDMetadata"];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     actionType = self->_actionType;
@@ -212,19 +212,19 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[4] = self->_actionType;
-    *(v4 + 40) |= 1u;
+    toCopy[4] = self->_actionType;
+    *(toCopy + 40) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if (self->_appLaunchMetadata)
   {
-    [v4 setAppLaunchMetadata:?];
+    [toCopy setAppLaunchMetadata:?];
   }
 
   if (self->_actionKeyMetadata)
@@ -235,10 +235,10 @@
   if ([(ATXAnchorModelPBActionMetadata *)self actionUUIDMetadatasCount])
   {
     [v9 clearActionUUIDMetadatas];
-    v5 = [(ATXAnchorModelPBActionMetadata *)self actionUUIDMetadatasCount];
-    if (v5)
+    actionUUIDMetadatasCount = [(ATXAnchorModelPBActionMetadata *)self actionUUIDMetadatasCount];
+    if (actionUUIDMetadatasCount)
     {
-      v6 = v5;
+      v6 = actionUUIDMetadatasCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(ATXAnchorModelPBActionMetadata *)self actionUUIDMetadataAtIndex:i];
@@ -248,10 +248,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -259,11 +259,11 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(ATXAnchorModelPBAppLaunchMetadata *)self->_appLaunchMetadata copyWithZone:a3];
+  v7 = [(ATXAnchorModelPBAppLaunchMetadata *)self->_appLaunchMetadata copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(ATXAnchorModelPBActionKeyMetadata *)self->_actionKeyMetadata copyWithZone:a3];
+  v9 = [(ATXAnchorModelPBActionKeyMetadata *)self->_actionKeyMetadata copyWithZone:zone];
   v10 = v6[1];
   v6[1] = v9;
 
@@ -287,7 +287,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v19 + 1) + 8 * v15) copyWithZone:{a3, v19}];
+        v16 = [*(*(&v19 + 1) + 8 * v15) copyWithZone:{zone, v19}];
         [v6 addActionUUIDMetadata:v16];
 
         ++v15;
@@ -304,24 +304,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_actionType != *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_actionType != *(equalCopy + 4))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -329,13 +329,13 @@ LABEL_13:
   }
 
   appLaunchMetadata = self->_appLaunchMetadata;
-  if (appLaunchMetadata | *(v4 + 4) && ![(ATXAnchorModelPBAppLaunchMetadata *)appLaunchMetadata isEqual:?])
+  if (appLaunchMetadata | *(equalCopy + 4) && ![(ATXAnchorModelPBAppLaunchMetadata *)appLaunchMetadata isEqual:?])
   {
     goto LABEL_13;
   }
 
   actionKeyMetadata = self->_actionKeyMetadata;
-  if (actionKeyMetadata | *(v4 + 1))
+  if (actionKeyMetadata | *(equalCopy + 1))
   {
     if (![(ATXAnchorModelPBActionKeyMetadata *)actionKeyMetadata isEqual:?])
     {
@@ -344,7 +344,7 @@ LABEL_13:
   }
 
   actionUUIDMetadatas = self->_actionUUIDMetadatas;
-  if (actionUUIDMetadatas | *(v4 + 3))
+  if (actionUUIDMetadatas | *(equalCopy + 3))
   {
     v9 = [(NSMutableArray *)actionUUIDMetadatas isEqual:?];
   }
@@ -376,14 +376,14 @@ LABEL_14:
   return v4 ^ v5 ^ [(NSMutableArray *)self->_actionUUIDMetadatas hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[10])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[10])
   {
-    self->_actionType = v4[4];
+    self->_actionType = fromCopy[4];
     *&self->_has |= 1u;
   }
 

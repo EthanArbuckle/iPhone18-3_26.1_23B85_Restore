@@ -1,13 +1,13 @@
 @interface NTK_PUPhotoEditAdjustmentControl
-- (BOOL)_setContentPropertyKey:(id)a3 withValue:(id)a4 forState:(unint64_t)a5;
-- (NTK_PUPhotoEditAdjustmentControl)initWithFrame:(CGRect)a3;
-- (id)_contentForState:(unint64_t)a3;
+- (BOOL)_setContentPropertyKey:(id)key withValue:(id)value forState:(unint64_t)state;
+- (NTK_PUPhotoEditAdjustmentControl)initWithFrame:(CGRect)frame;
+- (id)_contentForState:(unint64_t)state;
 - (id)_currentImage;
-- (id)colorForState:(unint64_t)a3;
-- (id)imageForState:(unint64_t)a3;
+- (id)colorForState:(unint64_t)state;
+- (id)imageForState:(unint64_t)state;
 - (void)_layoutImageView;
 - (void)_resetAllValues;
-- (void)_setContent:(id)a3 forState:(unint64_t)a4;
+- (void)_setContent:(id)content forState:(unint64_t)state;
 - (void)_setup;
 - (void)_setupImageView;
 - (void)_updateFormatter;
@@ -19,23 +19,23 @@
 - (void)_updateSubviews;
 - (void)layoutSubviews;
 - (void)resetToDefaults;
-- (void)setDefaultColor:(id)a3;
-- (void)setDisplayMappedValue:(BOOL)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setImage:(id)a3 forState:(unint64_t)a4;
-- (void)setSelected:(BOOL)a3;
-- (void)setShouldShowCircularRing:(BOOL)a3;
-- (void)setShouldShowValueLabel:(BOOL)a3;
-- (void)setValue:(double)a3;
+- (void)setDefaultColor:(id)color;
+- (void)setDisplayMappedValue:(BOOL)value;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setImage:(id)image forState:(unint64_t)state;
+- (void)setSelected:(BOOL)selected;
+- (void)setShouldShowCircularRing:(BOOL)ring;
+- (void)setShouldShowValueLabel:(BOOL)label;
+- (void)setValue:(double)value;
 @end
 
 @implementation NTK_PUPhotoEditAdjustmentControl
 
-- (NTK_PUPhotoEditAdjustmentControl)initWithFrame:(CGRect)a3
+- (NTK_PUPhotoEditAdjustmentControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NTK_PUPhotoEditAdjustmentControl;
-  v3 = [(NTK_PUPhotoEditAdjustmentControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTK_PUPhotoEditAdjustmentControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -108,14 +108,14 @@
   self->_defaultValue = 0.0;
   self->_identityValue = 0.0;
   defaultColor = self->_defaultColor;
-  v4 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v4 setRingColor:defaultColor];
+  circularIndicatorView = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView setRingColor:defaultColor];
 }
 
 - (void)resetToDefaults
 {
-  v3 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v3 resetToDefaults];
+  circularIndicatorView = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView resetToDefaults];
 
   [(NTK_PUPhotoEditAdjustmentControl *)self _resetAllValues];
 }
@@ -154,8 +154,8 @@
     PXRectGetCenter();
     v7 = v6;
     v9 = v8;
-    v10 = [(NTK_PUPhotoEditAdjustmentControl *)self imageView];
-    [v10 setCenter:{v7, v9}];
+    imageView = [(NTK_PUPhotoEditAdjustmentControl *)self imageView];
+    [imageView setCenter:{v7, v9}];
   }
 }
 
@@ -169,25 +169,25 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  circularIndicatorView = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView setFrame:{v4, v6, v8, v10}];
 
   [(NTK_PUPhotoEditAdjustmentControl *)self bounds];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(NTK_PUPhotoEditAdjustmentControl *)self valueLabel];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  valueLabel = [(NTK_PUPhotoEditAdjustmentControl *)self valueLabel];
+  [valueLabel setFrame:{v13, v15, v17, v19}];
 
   [(NTK_PUPhotoEditAdjustmentControl *)self _updateImageView];
   [(NTK_PUPhotoEditAdjustmentControl *)self _layoutImageView];
   [(NTK_PUPhotoEditAdjustmentControl *)self _updateRingVisibility];
 }
 
-- (void)_setContent:(id)a3 forState:(unint64_t)a4
+- (void)_setContent:(id)content forState:(unint64_t)state
 {
-  v10 = a3;
+  contentCopy = content;
   if (!self->_stateToContentMap)
   {
     v6 = +[NSMapTable weakToStrongObjectsMapTable];
@@ -195,26 +195,26 @@
     self->_stateToContentMap = v6;
   }
 
-  v8 = [(NTK_PUPhotoEditAdjustmentControl *)self stateToContentMap];
-  v9 = [NSNumber numberWithUnsignedInteger:a4];
-  if (v10)
+  stateToContentMap = [(NTK_PUPhotoEditAdjustmentControl *)self stateToContentMap];
+  v9 = [NSNumber numberWithUnsignedInteger:state];
+  if (contentCopy)
   {
-    [v8 setObject:v10 forKey:v9];
+    [stateToContentMap setObject:contentCopy forKey:v9];
   }
 
   else
   {
-    [v8 removeObjectForKey:v9];
+    [stateToContentMap removeObjectForKey:v9];
   }
 }
 
-- (id)_contentForState:(unint64_t)a3
+- (id)_contentForState:(unint64_t)state
 {
   if (self->_stateToContentMap)
   {
-    v4 = [(NTK_PUPhotoEditAdjustmentControl *)self stateToContentMap];
-    v5 = [NSNumber numberWithUnsignedInteger:a3];
-    v6 = [v4 objectForKey:v5];
+    stateToContentMap = [(NTK_PUPhotoEditAdjustmentControl *)self stateToContentMap];
+    v5 = [NSNumber numberWithUnsignedInteger:state];
+    v6 = [stateToContentMap objectForKey:v5];
   }
 
   else
@@ -225,116 +225,116 @@
   return v6;
 }
 
-- (BOOL)_setContentPropertyKey:(id)a3 withValue:(id)a4 forState:(unint64_t)a5
+- (BOOL)_setContentPropertyKey:(id)key withValue:(id)value forState:(unint64_t)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NTK_PUPhotoEditAdjustmentControl *)self _contentForState:a5];
+  keyCopy = key;
+  valueCopy = value;
+  v10 = [(NTK_PUPhotoEditAdjustmentControl *)self _contentForState:state];
   if (!v10)
   {
     v10 = objc_alloc_init(NTK_PUPhotoEditAdjustmentControlContent);
-    [(NTK_PUPhotoEditAdjustmentControl *)self _setContent:v10 forState:a5];
+    [(NTK_PUPhotoEditAdjustmentControl *)self _setContent:v10 forState:state];
   }
 
-  v11 = [(NTK_PUPhotoEditAdjustmentControlContent *)v10 valueForKey:v8];
-  if (v11 == v9)
+  v11 = [(NTK_PUPhotoEditAdjustmentControlContent *)v10 valueForKey:keyCopy];
+  if (v11 == valueCopy)
   {
     LOBYTE(v12) = 0;
   }
 
   else
   {
-    v12 = [v9 isEqual:v11] ^ 1;
+    v12 = [valueCopy isEqual:v11] ^ 1;
   }
 
-  [(NTK_PUPhotoEditAdjustmentControlContent *)v10 setValue:v9 forKey:v8];
+  [(NTK_PUPhotoEditAdjustmentControlContent *)v10 setValue:valueCopy forKey:keyCopy];
 
   return v12;
 }
 
-- (void)setImage:(id)a3 forState:(unint64_t)a4
+- (void)setImage:(id)image forState:(unint64_t)state
 {
-  if ([(NTK_PUPhotoEditAdjustmentControl *)self _setContentPropertyKey:@"image" withValue:a3 forState:a4])
+  if ([(NTK_PUPhotoEditAdjustmentControl *)self _setContentPropertyKey:@"image" withValue:image forState:state])
   {
 
     [(NTK_PUPhotoEditAdjustmentControl *)self _updateImageView];
   }
 }
 
-- (id)imageForState:(unint64_t)a3
+- (id)imageForState:(unint64_t)state
 {
-  v4 = [(NTK_PUPhotoEditAdjustmentControl *)self _contentForState:a3];
-  v5 = [v4 image];
+  v4 = [(NTK_PUPhotoEditAdjustmentControl *)self _contentForState:state];
+  image = [v4 image];
 
-  if (!v5)
+  if (!image)
   {
     v6 = [(NTK_PUPhotoEditAdjustmentControl *)self _contentForState:0];
-    v5 = [v6 image];
+    image = [v6 image];
   }
 
-  return v5;
+  return image;
 }
 
-- (id)colorForState:(unint64_t)a3
+- (id)colorForState:(unint64_t)state
 {
-  v4 = [(NTK_PUPhotoEditAdjustmentControl *)self _contentForState:a3];
-  v5 = [v4 color];
+  v4 = [(NTK_PUPhotoEditAdjustmentControl *)self _contentForState:state];
+  color = [v4 color];
 
-  if (!v5)
+  if (!color)
   {
     v6 = [(NTK_PUPhotoEditAdjustmentControl *)self _contentForState:0];
-    v5 = [v6 color];
+    color = [v6 color];
   }
 
-  return v5;
+  return color;
 }
 
 - (id)_currentImage
 {
-  v3 = [(NTK_PUPhotoEditAdjustmentControl *)self state];
+  state = [(NTK_PUPhotoEditAdjustmentControl *)self state];
 
-  return [(NTK_PUPhotoEditAdjustmentControl *)self imageForState:v3];
+  return [(NTK_PUPhotoEditAdjustmentControl *)self imageForState:state];
 }
 
-- (void)setDefaultColor:(id)a3
+- (void)setDefaultColor:(id)color
 {
-  v5 = a3;
-  if (self->_defaultColor != v5)
+  colorCopy = color;
+  if (self->_defaultColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_defaultColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_defaultColor, color);
     [(NTK_PUPhotoEditAdjustmentControl *)self _updateSubviewColors];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v3 = a3;
-  if ([(NTK_PUPhotoEditAdjustmentControl *)self isSelected]!= a3)
+  selectedCopy = selected;
+  if ([(NTK_PUPhotoEditAdjustmentControl *)self isSelected]!= selected)
   {
     v5.receiver = self;
     v5.super_class = NTK_PUPhotoEditAdjustmentControl;
-    [(NTK_PUPhotoEditAdjustmentControl *)&v5 setSelected:v3];
+    [(NTK_PUPhotoEditAdjustmentControl *)&v5 setSelected:selectedCopy];
     [(NTK_PUPhotoEditAdjustmentControl *)self setNeedsLayout];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(NTK_PUPhotoEditAdjustmentControl *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(NTK_PUPhotoEditAdjustmentControl *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = NTK_PUPhotoEditAdjustmentControl;
-    [(NTK_PUPhotoEditAdjustmentControl *)&v5 setEnabled:v3];
+    [(NTK_PUPhotoEditAdjustmentControl *)&v5 setEnabled:enabledCopy];
     [(NTK_PUPhotoEditAdjustmentControl *)self setNeedsLayout];
   }
 }
 
-- (void)setValue:(double)a3
+- (void)setValue:(double)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
     [(NTK_PUPhotoEditAdjustmentControl *)self minValue];
     [(NTK_PUPhotoEditAdjustmentControl *)self maxValue];
@@ -345,29 +345,29 @@
   }
 }
 
-- (void)setShouldShowValueLabel:(BOOL)a3
+- (void)setShouldShowValueLabel:(BOOL)label
 {
-  if (self->_shouldShowValueLabel != a3)
+  if (self->_shouldShowValueLabel != label)
   {
-    self->_shouldShowValueLabel = a3;
+    self->_shouldShowValueLabel = label;
     [(NTK_PUPhotoEditAdjustmentControl *)self _updateSubviewVisibility];
   }
 }
 
-- (void)setDisplayMappedValue:(BOOL)a3
+- (void)setDisplayMappedValue:(BOOL)value
 {
-  if (self->_displayMappedValue != a3)
+  if (self->_displayMappedValue != value)
   {
-    self->_displayMappedValue = a3;
+    self->_displayMappedValue = value;
     [(NTK_PUPhotoEditAdjustmentControl *)self _updateFormatter];
   }
 }
 
-- (void)setShouldShowCircularRing:(BOOL)a3
+- (void)setShouldShowCircularRing:(BOOL)ring
 {
-  if (self->_shouldShowCircularRing != a3)
+  if (self->_shouldShowCircularRing != ring)
   {
-    self->_shouldShowCircularRing = a3;
+    self->_shouldShowCircularRing = ring;
     [(NTK_PUPhotoEditAdjustmentControl *)self _updateRingVisibility];
   }
 }
@@ -404,8 +404,8 @@
     v3 = 0.0;
   }
 
-  v4 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v4 setAlpha:v3];
+  circularIndicatorView = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView setAlpha:v3];
 }
 
 - (void)_updateSubviewVisibility
@@ -420,8 +420,8 @@
     v3 = 1.0;
   }
 
-  v4 = [(NTK_PUPhotoEditAdjustmentControl *)self imageView];
-  [v4 setAlpha:v3];
+  imageView = [(NTK_PUPhotoEditAdjustmentControl *)self imageView];
+  [imageView setAlpha:v3];
 
   if ([(NTK_PUPhotoEditAdjustmentControl *)self shouldShowValueLabel])
   {
@@ -433,8 +433,8 @@
     v5 = 0.0;
   }
 
-  v6 = [(NTK_PUPhotoEditAdjustmentControl *)self valueLabel];
-  [v6 setAlpha:v5];
+  valueLabel = [(NTK_PUPhotoEditAdjustmentControl *)self valueLabel];
+  [valueLabel setAlpha:v5];
 }
 
 - (void)_updateSubviews
@@ -446,31 +446,31 @@
 
 - (void)_updateSubviewColors
 {
-  v3 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v3 currentValue];
+  circularIndicatorView = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView currentValue];
   v5 = v4;
 
   if (v5 <= 0.0)
   {
     defaultColor = self->_defaultColor;
-    v7 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-    [v7 setRingColor:defaultColor];
+    circularIndicatorView2 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+    [circularIndicatorView2 setRingColor:defaultColor];
   }
 
   else
   {
     alternateColor = self->_alternateColor;
-    v7 = [(NTK_PUPhotoEditAdjustmentControl *)self traitCollection];
-    v8 = [(UIColor *)alternateColor resolvedColorWithTraitCollection:v7];
-    v9 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-    [v9 setRingColor:v8];
+    circularIndicatorView2 = [(NTK_PUPhotoEditAdjustmentControl *)self traitCollection];
+    v8 = [(UIColor *)alternateColor resolvedColorWithTraitCollection:circularIndicatorView2];
+    circularIndicatorView3 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+    [circularIndicatorView3 setRingColor:v8];
   }
 
   [(UIImageView *)self->_imageView setTintColor:self->_defaultColor];
-  v13 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  v11 = [v13 ringColor];
-  v12 = [(NTK_PUPhotoEditAdjustmentControl *)self valueLabel];
-  [v12 setTextColor:v11];
+  circularIndicatorView4 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  ringColor = [circularIndicatorView4 ringColor];
+  valueLabel = [(NTK_PUPhotoEditAdjustmentControl *)self valueLabel];
+  [valueLabel setTextColor:ringColor];
 }
 
 - (void)_updateFormatter
@@ -485,8 +485,8 @@
     v3 = &off_4B708;
   }
 
-  v4 = [(NTK_PUPhotoEditAdjustmentControl *)self formatter];
-  [v4 setMultiplier:v3];
+  formatter = [(NTK_PUPhotoEditAdjustmentControl *)self formatter];
+  [formatter setMultiplier:v3];
 }
 
 - (void)_updateSubviewValues
@@ -497,8 +497,8 @@
   v5 = 0.0;
   if (v4 < v6)
   {
-    v7 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-    [v7 minValue];
+    circularIndicatorView = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+    [circularIndicatorView minValue];
     v5 = v8;
   }
 
@@ -510,8 +510,8 @@
   v14 = v13;
   [(NTK_PUPhotoEditAdjustmentControl *)self maxValue];
   v16 = v15;
-  v17 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v17 maxValue];
+  circularIndicatorView2 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView2 maxValue];
   if (v16 > v12)
   {
     if (v10 >= v14)
@@ -538,8 +538,8 @@ LABEL_10:
     v19 = 0.0;
   }
 
-  v20 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
-  [v20 setCurrentValue:v19];
+  circularIndicatorView3 = [(NTK_PUPhotoEditAdjustmentControl *)self circularIndicatorView];
+  [circularIndicatorView3 setCurrentValue:v19];
 
   if (![(NTK_PUPhotoEditAdjustmentControl *)self displayMappedValue])
   {
@@ -550,8 +550,8 @@ LABEL_10:
   formatter = self->_formatter;
   v25 = [NSNumber numberWithDouble:v19];
   v23 = [(NSNumberFormatter *)formatter stringFromNumber:v25];
-  v24 = [(NTK_PUPhotoEditAdjustmentControl *)self valueLabel];
-  [v24 setText:v23];
+  valueLabel = [(NTK_PUPhotoEditAdjustmentControl *)self valueLabel];
+  [valueLabel setText:v23];
 }
 
 @end

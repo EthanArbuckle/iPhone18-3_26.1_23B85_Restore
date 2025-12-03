@@ -1,15 +1,15 @@
 @interface IDSCrossDeviceTransport
 + (BOOL)isIDSEndpointEnabled;
-- (IDSCrossDeviceTransport)initWithServiceName:(id)a3;
-- (unint64_t)deliverMessage:(id)a3 toEndpoint:(id)a4;
-- (void)addDelegate:(id)a3 endpoint:(id)a4;
+- (IDSCrossDeviceTransport)initWithServiceName:(id)name;
+- (unint64_t)deliverMessage:(id)message toEndpoint:(id)endpoint;
+- (void)addDelegate:(id)delegate endpoint:(id)endpoint;
 - (void)dealloc;
 - (void)registerIDSService;
-- (void)removeDelegate:(id)a3 endpoint:(id)a4;
-- (void)sendMessage:(id)a3 toIDSDevices:(id)a4 toEndpoint:(id)a5 validFor:(double)a6 reply:(id)a7;
-- (void)sendMessage:(id)a3 toIDSDevicesMatching:(id)a4 toEndpoint:(id)a5 reply:(id)a6;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)removeDelegate:(id)delegate endpoint:(id)endpoint;
+- (void)sendMessage:(id)message toIDSDevices:(id)devices toEndpoint:(id)endpoint validFor:(double)for reply:(id)reply;
+- (void)sendMessage:(id)message toIDSDevicesMatching:(id)matching toEndpoint:(id)endpoint reply:(id)reply;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 - (void)unregisterIDSService;
 @end
 
@@ -39,9 +39,9 @@
   [(IDSCrossDeviceTransport *)&v3 dealloc];
 }
 
-- (IDSCrossDeviceTransport)initWithServiceName:(id)a3
+- (IDSCrossDeviceTransport)initWithServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = IDSCrossDeviceTransport;
   v6 = [(IDSCrossDeviceTransport *)&v11 init];
@@ -52,7 +52,7 @@
     idsServiceQueue = v6->_idsServiceQueue;
     v6->_idsServiceQueue = v8;
 
-    objc_storeStrong(&v6->_serviceName, a3);
+    objc_storeStrong(&v6->_serviceName, name);
   }
 
   return v6;
@@ -80,9 +80,9 @@
         _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_INFO, "Registering for IDSService %@", &v15, 0xCu);
       }
 
-      v11 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       endpointsRegistry = self->_endpointsRegistry;
-      self->_endpointsRegistry = v11;
+      self->_endpointsRegistry = dictionary;
 
       v13 = [MEMORY[0x277CBEB58] set];
       delegateRegistry = self->_delegateRegistry;
@@ -144,19 +144,19 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessage:(id)a3 toIDSDevicesMatching:(id)a4 toEndpoint:(id)a5 reply:(id)a6
+- (void)sendMessage:(id)message toIDSDevicesMatching:(id)matching toEndpoint:(id)endpoint reply:(id)reply
 {
   v60 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  matchingCopy = matching;
+  endpointCopy = endpoint;
+  replyCopy = reply;
   v14 = [MEMORY[0x277CBEB58] set];
-  v15 = [(IDSService *)self->_idsService devices];
-  v16 = v15;
-  if (v11)
+  devices = [(IDSService *)self->_idsService devices];
+  v16 = devices;
+  if (matchingCopy)
   {
-    v17 = [v15 filteredArrayUsingPredicate:v11];
+    v17 = [devices filteredArrayUsingPredicate:matchingCopy];
 
     v18 = crossdeviceLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -164,7 +164,7 @@
       *buf = 134218498;
       v55 = [v17 count];
       v56 = 2112;
-      v57 = v11;
+      v57 = matchingCopy;
       v58 = 2112;
       v59 = v17;
       _os_log_impl(&dword_241804000, v18, OS_LOG_TYPE_INFO, "%ld IDSDevices matched with %@: %@", buf, 0x20u);
@@ -186,12 +186,12 @@
 
   if ([v17 count])
   {
-    v36 = self;
+    selfCopy = self;
     v37 = v17;
-    v38 = v13;
-    v39 = v12;
-    v40 = v11;
-    v41 = v10;
+    v38 = replyCopy;
+    v39 = endpointCopy;
+    v40 = matchingCopy;
+    v41 = messageCopy;
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -243,14 +243,14 @@
       v42[2] = __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_reply___block_invoke;
       v42[3] = &unk_278CF1F58;
       v43 = v14;
-      v13 = v38;
+      replyCopy = v38;
       v44 = v38;
-      v10 = v41;
-      v12 = v39;
-      [(IDSCrossDeviceTransport *)v36 sendMessage:v41 toIDSDevices:v43 toEndpoint:v39 reply:v42];
+      messageCopy = v41;
+      endpointCopy = v39;
+      [(IDSCrossDeviceTransport *)selfCopy sendMessage:v41 toIDSDevices:v43 toEndpoint:v39 reply:v42];
 
       v27 = v43;
-      v11 = v40;
+      matchingCopy = v40;
       v17 = v37;
 LABEL_31:
 
@@ -258,9 +258,9 @@ LABEL_31:
     }
 
     v33 = crossdeviceLogHandle();
-    v11 = v40;
-    v10 = v41;
-    v12 = v39;
+    matchingCopy = v40;
+    messageCopy = v41;
+    endpointCopy = v39;
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
       v34 = [v19 count];
@@ -270,7 +270,7 @@ LABEL_31:
     }
 
     v17 = v37;
-    v13 = v38;
+    replyCopy = v38;
     if (v38)
     {
       v49 = @"count";
@@ -289,11 +289,11 @@ LABEL_31:
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v55 = v11;
+      v55 = matchingCopy;
       _os_log_impl(&dword_241804000, v28, OS_LOG_TYPE_DEFAULT, "Did not find IDS devices that match %@", buf, 0xCu);
     }
 
-    if (v13)
+    if (replyCopy)
     {
       v52 = @"count";
       v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v17, "count")}];
@@ -302,9 +302,9 @@ LABEL_31:
       v31 = &v53;
       v32 = &v52;
 LABEL_30:
-      v27 = [v30 dictionaryWithObjects:v31 forKeys:v32 count:{1, v36}];
+      v27 = [v30 dictionaryWithObjects:v31 forKeys:v32 count:{1, selfCopy}];
 
-      (*(v13 + 2))(v13, 0, v27, 0);
+      (*(replyCopy + 2))(replyCopy, 0, v27, 0);
       goto LABEL_31;
     }
   }
@@ -359,22 +359,22 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendMessage:(id)a3 toIDSDevices:(id)a4 toEndpoint:(id)a5 validFor:(double)a6 reply:(id)a7
+- (void)sendMessage:(id)message toIDSDevices:(id)devices toEndpoint:(id)endpoint validFor:(double)for reply:(id)reply
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = COERCE_DOUBLE(a4);
-  v14 = a5;
-  v15 = a7;
+  messageCopy = message;
+  v13 = COERCE_DOUBLE(devices);
+  endpointCopy = endpoint;
+  replyCopy = reply;
   if ([*&v13 count])
   {
-    v16 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{v14, @"endpoint", v12, @"message", 0}];
-    v17 = 0;
-    if (a6 > 0.0)
+    v16 = [MEMORY[0x277CBEB38] dictionaryWithObjectsAndKeys:{endpointCopy, @"endpoint", messageCopy, @"message", 0}];
+    dictionary = 0;
+    if (for > 0.0)
     {
-      v18 = [MEMORY[0x277CBEAA8] date];
-      [v18 timeIntervalSince1970];
-      v20 = v19 + a6;
+      date = [MEMORY[0x277CBEAA8] date];
+      [date timeIntervalSince1970];
+      v20 = v19 + for;
 
       v21 = [MEMORY[0x277CCABB0] numberWithDouble:v20];
       [v16 setObject:v21 forKey:@"ttl"];
@@ -383,30 +383,30 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
         *buf = 134218240;
-        v38 = a6;
+        forCopy = for;
         v39 = 2048;
         v40 = v20;
         _os_log_impl(&dword_241804000, v22, OS_LOG_TYPE_DEBUG, "IDS message will expire in %.0lf seconds at %{time_t}ld", buf, 0x16u);
       }
 
-      v17 = [MEMORY[0x277CBEB38] dictionary];
-      v23 = [MEMORY[0x277CCABB0] numberWithDouble:a6 + 30.0];
-      [v17 setObject:v23 forKeyedSubscript:*MEMORY[0x277D18650]];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      v23 = [MEMORY[0x277CCABB0] numberWithDouble:for + 30.0];
+      [dictionary setObject:v23 forKeyedSubscript:*MEMORY[0x277D18650]];
 
-      [v17 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D18678]];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D18678]];
     }
 
     v24 = crossdeviceLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v38 = v13;
+      forCopy = v13;
       _os_log_impl(&dword_241804000, v24, OS_LOG_TYPE_DEBUG, "Ready to send to IDS destinations with identifiers: %@", buf, 0xCu);
     }
 
     v35 = 0.0;
     v36 = 0;
-    v25 = [(IDSService *)self->_idsService sendMessage:v16 toDestinations:*&v13 priority:300 options:v17 identifier:&v35 error:&v36];
+    v25 = [(IDSService *)self->_idsService sendMessage:v16 toDestinations:*&v13 priority:300 options:dictionary identifier:&v35 error:&v36];
     v26 = crossdeviceLogHandle();
     v27 = os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT);
     if (v25)
@@ -416,18 +416,18 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
         v28 = v35;
         v29 = [*&v13 count];
         *buf = 138412546;
-        v38 = v28;
+        forCopy = v28;
         v39 = 2048;
         v40 = v29;
         _os_log_impl(&dword_241804000, v26, OS_LOG_TYPE_DEFAULT, "Request to send IDS message %@ to %ld destinations was successful.", buf, 0x16u);
       }
 
-      if (v15)
+      if (replyCopy)
       {
         v43 = @"IDSMessageIdentifier";
         *v44 = v35;
         v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:&v43 count:1];
-        v15[2](v15, 1, v30, 0);
+        replyCopy[2](replyCopy, 1, v30, 0);
       }
     }
 
@@ -438,7 +438,7 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
         v32 = v35;
         v33 = [*&v13 count];
         *buf = 138412802;
-        v38 = v32;
+        forCopy = v32;
         v39 = 2048;
         v40 = v33;
         v41 = 2112;
@@ -446,9 +446,9 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
         _os_log_impl(&dword_241804000, v26, OS_LOG_TYPE_DEFAULT, "Request to send IDS message %@ to %ld destinations failed. %@", buf, 0x20u);
       }
 
-      if (v15)
+      if (replyCopy)
       {
-        v15[2](v15, 0, 0, v36);
+        replyCopy[2](replyCopy, 0, 0, v36);
       }
     }
   }
@@ -459,77 +459,77 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v13;
+      forCopy = v13;
       _os_log_impl(&dword_241804000, v31, OS_LOG_TYPE_DEFAULT, "Invalid IDS destinations: %@", buf, 0xCu);
     }
 
-    if (v15)
+    if (replyCopy)
     {
-      v15[2](v15, 0, 0, 0);
+      replyCopy[2](replyCopy, 0, 0, 0);
     }
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDelegate:(id)a3 endpoint:(id)a4
+- (void)addDelegate:(id)delegate endpoint:(id)endpoint
 {
-  v10 = a4;
+  endpointCopy = endpoint;
   endpointsRegistry = self->_endpointsRegistry;
-  v7 = a3;
-  v8 = [(NSMutableDictionary *)endpointsRegistry objectForKeyedSubscript:v10];
+  delegateCopy = delegate;
+  v8 = [(NSMutableDictionary *)endpointsRegistry objectForKeyedSubscript:endpointCopy];
   if (v8)
   {
     v9 = v8;
-    [v8 addObject:v7];
+    [v8 addObject:delegateCopy];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CBEB18] arrayWithObject:v7];
-    [(NSMutableDictionary *)self->_endpointsRegistry setObject:v9 forKeyedSubscript:v10];
+    v9 = [MEMORY[0x277CBEB18] arrayWithObject:delegateCopy];
+    [(NSMutableDictionary *)self->_endpointsRegistry setObject:v9 forKeyedSubscript:endpointCopy];
   }
 
-  [(NSMutableSet *)self->_delegateRegistry addObject:v7];
+  [(NSMutableSet *)self->_delegateRegistry addObject:delegateCopy];
 }
 
-- (void)removeDelegate:(id)a3 endpoint:(id)a4
+- (void)removeDelegate:(id)delegate endpoint:(id)endpoint
 {
-  v8 = a3;
-  v6 = [(NSMutableDictionary *)self->_endpointsRegistry objectForKeyedSubscript:a4];
+  delegateCopy = delegate;
+  v6 = [(NSMutableDictionary *)self->_endpointsRegistry objectForKeyedSubscript:endpoint];
   v7 = v6;
   if (v6)
   {
-    [v6 removeObject:v8];
+    [v6 removeObject:delegateCopy];
   }
 
-  [(NSMutableSet *)self->_delegateRegistry removeObject:v8];
+  [(NSMutableSet *)self->_delegateRegistry removeObject:delegateCopy];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
   v32 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v21 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v11)
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@" (context: %@)", v11];
+    contextCopy = [MEMORY[0x277CCACA8] stringWithFormat:@" (context: %@)", contextCopy];
   }
 
   else
   {
-    v12 = &stru_285368168;
+    contextCopy = &stru_285368168;
   }
 
   v13 = crossdeviceLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v29 = v10;
+    v29 = identifierCopy;
     v30 = 2112;
-    v31 = v12;
+    v31 = contextCopy;
     _os_log_impl(&dword_241804000, v13, OS_LOG_TYPE_INFO, "Delivered message via IDS with identifier: %@%@", buf, 0x16u);
   }
 
@@ -537,8 +537,8 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v14 = [(NSMutableSet *)self->_delegateRegistry allObjects];
-  v15 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  allObjects = [(NSMutableSet *)self->_delegateRegistry allObjects];
+  v15 = [allObjects countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v15)
   {
     v16 = v15;
@@ -549,17 +549,17 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
       {
         if (*v24 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allObjects);
         }
 
         v19 = *(*(&v23 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          [v19 messageWithIdentifierHasBeenDelivered:v10];
+          [v19 messageWithIdentifierHasBeenDelivered:identifierCopy];
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v16 = [allObjects countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v16);
@@ -568,61 +568,61 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v42 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (v16)
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v17 = [MEMORY[0x277CCACA8] stringWithFormat:@" (context: %@)", v16];
+    contextCopy = [MEMORY[0x277CCACA8] stringWithFormat:@" (context: %@)", contextCopy];
   }
 
   else
   {
-    v17 = &stru_285368168;
+    contextCopy = &stru_285368168;
   }
 
   v18 = crossdeviceLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v37 = v15;
+    v37 = dCopy;
     v38 = 2112;
-    v39 = v14;
+    v39 = messageCopy;
     v40 = 2112;
-    v41 = v17;
+    v41 = contextCopy;
     _os_log_impl(&dword_241804000, v18, OS_LOG_TYPE_DEFAULT, "Received incoming message via IDS from %@, message %@%@", buf, 0x20u);
   }
 
-  v19 = [v12 deviceForFromID:v15];
+  v19 = [serviceCopy deviceForFromID:dCopy];
 
   if (v19)
   {
-    v35 = self;
-    v20 = [v14 objectForKeyedSubscript:@"endpoint"];
-    v21 = [v14 objectForKeyedSubscript:@"ttl"];
-    v22 = [v14 objectForKeyedSubscript:@"message"];
+    selfCopy = self;
+    v20 = [messageCopy objectForKeyedSubscript:@"endpoint"];
+    v21 = [messageCopy objectForKeyedSubscript:@"ttl"];
+    v22 = [messageCopy objectForKeyedSubscript:@"message"];
     if (v21)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v33 = v13;
-        v23 = [v21 longValue];
+        v33 = accountCopy;
+        longValue = [v21 longValue];
         v24 = crossdeviceLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
           *buf = 134217984;
-          v37 = v23;
+          v37 = longValue;
           _os_log_impl(&dword_241804000, v24, OS_LOG_TYPE_INFO, "Message is valid until %{time_t}ld", buf, 0xCu);
         }
 
-        v32 = v23;
-        v25 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v23];
+        v32 = longValue;
+        v25 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:longValue];
         [v25 timeIntervalSinceNow];
         if (v26 < 0.0)
         {
@@ -634,22 +634,22 @@ void __77__IDSCrossDeviceTransport_sendMessage_toIDSDevicesMatching_toEndpoint_r
             _os_log_impl(&dword_241804000, v27, OS_LOG_TYPE_DEFAULT, "Received message expired at %{time_t}ld. Will NOT deliver to endpoint.", buf, 0xCu);
           }
 
-          v13 = v33;
+          accountCopy = v33;
 LABEL_25:
 
           goto LABEL_26;
         }
 
-        v13 = v33;
+        accountCopy = v33;
       }
     }
 
     if (v20 && v22)
     {
-      v34 = v12;
-      v28 = v17;
-      v29 = v13;
-      v30 = [(IDSCrossDeviceTransport *)v35 deliverMessage:v22 toEndpoint:v20];
+      v34 = serviceCopy;
+      v28 = contextCopy;
+      v29 = accountCopy;
+      v30 = [(IDSCrossDeviceTransport *)selfCopy deliverMessage:v22 toEndpoint:v20];
       v25 = crossdeviceLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
@@ -658,9 +658,9 @@ LABEL_25:
         _os_log_impl(&dword_241804000, v25, OS_LOG_TYPE_INFO, "Delivered message to %ld receivers", buf, 0xCu);
       }
 
-      v13 = v29;
-      v17 = v28;
-      v12 = v34;
+      accountCopy = v29;
+      contextCopy = v28;
+      serviceCopy = v34;
     }
 
     else
@@ -671,7 +671,7 @@ LABEL_25:
         *buf = 138412546;
         v37 = v20;
         v38 = 2112;
-        v39 = v14;
+        v39 = messageCopy;
         _os_log_impl(&dword_241804000, v25, OS_LOG_TYPE_ERROR, "Invalid endpoint (%@) or failed to unwrap correctly. Dropping message %@", buf, 0x16u);
       }
     }
@@ -691,23 +691,23 @@ LABEL_26:
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)deliverMessage:(id)a3 toEndpoint:(id)a4
+- (unint64_t)deliverMessage:(id)message toEndpoint:(id)endpoint
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  endpointCopy = endpoint;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v8 = [(NSMutableDictionary *)self->_endpointsRegistry objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_endpointsRegistry objectForKeyedSubscript:endpointCopy];
   if (v8)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __53__IDSCrossDeviceTransport_deliverMessage_toEndpoint___block_invoke;
     v13[3] = &unk_278CF1F80;
-    v14 = v6;
+    v14 = messageCopy;
     v15 = &v16;
     [v8 enumerateObjectsUsingBlock:v13];
     v9 = v14;
@@ -719,7 +719,7 @@ LABEL_26:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v21 = v7;
+      v21 = endpointCopy;
       _os_log_impl(&dword_241804000, v9, OS_LOG_TYPE_ERROR, "Unknown endpoint received: %@", buf, 0xCu);
     }
   }

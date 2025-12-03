@@ -1,15 +1,15 @@
 @interface STASWorkoutVoiceAvailabilityProvider
 - (BOOL)isFeatureSupported;
 - (STASWorkoutVoiceAvailabilityProvider)init;
-- (STASWorkoutVoiceAvailabilityProvider)initWithConnection:(id)a3;
+- (STASWorkoutVoiceAvailabilityProvider)initWithConnection:(id)connection;
 @end
 
 @implementation STASWorkoutVoiceAvailabilityProvider
 
-- (STASWorkoutVoiceAvailabilityProvider)initWithConnection:(id)a3
+- (STASWorkoutVoiceAvailabilityProvider)initWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = sub_19080(v3);
+  connectionCopy = connection;
+  v4 = sub_19080(connectionCopy);
 
   return v4;
 }
@@ -17,7 +17,7 @@
 - (BOOL)isFeatureSupported
 {
   v2 = *(&self->super.isa + OBJC_IVAR___STASWorkoutVoiceAvailabilityProvider_bridgedValue);
-  v3 = self;
+  selfCopy = self;
   LOBYTE(v2) = sub_22334();
 
   return v2 & 1;

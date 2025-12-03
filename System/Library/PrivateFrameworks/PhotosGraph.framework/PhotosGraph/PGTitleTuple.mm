@@ -1,6 +1,6 @@
 @interface PGTitleTuple
-- (BOOL)isEqual:(id)a3;
-- (PGTitleTuple)initWithWithTitle:(id)a3 subtitle:(id)a4 locationNames:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PGTitleTuple)initWithWithTitle:(id)title subtitle:(id)subtitle locationNames:(id)names;
 - (id)description;
 @end
 
@@ -18,10 +18,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_17;
@@ -34,17 +34,17 @@
   }
 
   title = self->_title;
-  v8 = [(PGTitleTuple *)v4 title];
-  v9 = v8;
-  if (title == v8)
+  title = [(PGTitleTuple *)equalCopy title];
+  v9 = title;
+  if (title == title)
   {
   }
 
   else
   {
     v10 = self->_title;
-    v11 = [(PGTitleTuple *)v4 title];
-    LODWORD(v10) = [(PGTitle *)v10 isEqual:v11];
+    title2 = [(PGTitleTuple *)equalCopy title];
+    LODWORD(v10) = [(PGTitle *)v10 isEqual:title2];
 
     if (!v10)
     {
@@ -53,13 +53,13 @@
   }
 
   subtitle = self->_subtitle;
-  v13 = [(PGTitleTuple *)v4 subtitle];
-  v14 = v13;
-  if (subtitle != v13)
+  subtitle = [(PGTitleTuple *)equalCopy subtitle];
+  v14 = subtitle;
+  if (subtitle != subtitle)
   {
     v15 = self->_subtitle;
-    v16 = [(PGTitleTuple *)v4 subtitle];
-    LODWORD(v15) = [(PGTitle *)v15 isEqual:v16];
+    subtitle2 = [(PGTitleTuple *)equalCopy subtitle];
+    LODWORD(v15) = [(PGTitle *)v15 isEqual:subtitle2];
 
     if (v15)
     {
@@ -73,8 +73,8 @@ LABEL_3:
 
 LABEL_13:
   locationNames = self->_locationNames;
-  v18 = [(PGTitleTuple *)v4 locationNames];
-  if (locationNames == v18)
+  locationNames = [(PGTitleTuple *)equalCopy locationNames];
+  if (locationNames == locationNames)
   {
     v6 = 1;
   }
@@ -82,28 +82,28 @@ LABEL_13:
   else
   {
     v19 = self->_locationNames;
-    v20 = [(PGTitleTuple *)v4 locationNames];
-    v6 = [(NSArray *)v19 isEqual:v20];
+    locationNames2 = [(PGTitleTuple *)equalCopy locationNames];
+    v6 = [(NSArray *)v19 isEqual:locationNames2];
   }
 
 LABEL_17:
   return v6;
 }
 
-- (PGTitleTuple)initWithWithTitle:(id)a3 subtitle:(id)a4 locationNames:(id)a5
+- (PGTitleTuple)initWithWithTitle:(id)title subtitle:(id)subtitle locationNames:(id)names
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  namesCopy = names;
   v15.receiver = self;
   v15.super_class = PGTitleTuple;
   v12 = [(PGTitleTuple *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_title, a3);
-    objc_storeStrong(&v13->_subtitle, a4);
-    objc_storeStrong(&v13->_locationNames, a5);
+    objc_storeStrong(&v12->_title, title);
+    objc_storeStrong(&v13->_subtitle, subtitle);
+    objc_storeStrong(&v13->_locationNames, names);
   }
 
   return v13;

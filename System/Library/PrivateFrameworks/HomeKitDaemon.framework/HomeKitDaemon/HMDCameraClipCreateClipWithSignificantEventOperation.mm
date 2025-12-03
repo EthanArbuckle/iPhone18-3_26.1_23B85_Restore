@@ -1,7 +1,7 @@
 @interface HMDCameraClipCreateClipWithSignificantEventOperation
 + (id)logCategory;
-- (HMDCameraClipCreateClipWithSignificantEventOperation)initWithClipModelID:(id)a3 localZone:(id)a4 significantEvent:(id)a5 targetFragmentDuration:(double)a6 clipStartDate:(id)a7 quality:(int64_t)a8 encryptionManager:(id)a9;
-- (HMDCameraClipCreateClipWithSignificantEventOperation)initWithClipModelID:(id)a3 localZone:(id)a4 significantEvent:(id)a5 targetFragmentDuration:(double)a6 clipStartDate:(id)a7 quality:(int64_t)a8 encryptionManager:(id)a9 dataSource:(id)a10;
+- (HMDCameraClipCreateClipWithSignificantEventOperation)initWithClipModelID:(id)d localZone:(id)zone significantEvent:(id)event targetFragmentDuration:(double)duration clipStartDate:(id)date quality:(int64_t)quality encryptionManager:(id)manager;
+- (HMDCameraClipCreateClipWithSignificantEventOperation)initWithClipModelID:(id)d localZone:(id)zone significantEvent:(id)event targetFragmentDuration:(double)duration clipStartDate:(id)date quality:(int64_t)quality encryptionManager:(id)manager dataSource:(id)self0;
 - (id)attributeDescriptions;
 - (id)modelsToAdd;
 @end
@@ -13,7 +13,7 @@
   v19[3] = *MEMORY[0x277D85DE8];
   v18.receiver = self;
   v18.super_class = HMDCameraClipCreateClipWithSignificantEventOperation;
-  v3 = [(HMDCameraClipAddSignificantEventOperation *)&v18 attributeDescriptions];
+  attributeDescriptions = [(HMDCameraClipAddSignificantEventOperation *)&v18 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
   v5 = MEMORY[0x277CCABB0];
   [(HMDCameraClipCreateClipWithSignificantEventOperation *)self targetFragmentDuration];
@@ -21,8 +21,8 @@
   v7 = [v4 initWithName:@"Target Fragment Duration" value:v6];
   v19[0] = v7;
   v8 = objc_alloc(MEMORY[0x277D0F778]);
-  v9 = [(HMDCameraClipCreateClipWithSignificantEventOperation *)self clipStartDate];
-  v10 = [v8 initWithName:@"Clip Start Date" value:v9];
+  clipStartDate = [(HMDCameraClipCreateClipWithSignificantEventOperation *)self clipStartDate];
+  v10 = [v8 initWithName:@"Clip Start Date" value:clipStartDate];
   v19[1] = v10;
   v11 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMDCameraClipCreateClipWithSignificantEventOperation *)self quality];
@@ -30,7 +30,7 @@
   v13 = [v11 initWithName:@"Quality" value:v12];
   v19[2] = v13;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:3];
-  v15 = [v3 arrayByAddingObjectsFromArray:v14];
+  v15 = [attributeDescriptions arrayByAddingObjectsFromArray:v14];
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -41,12 +41,12 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = [HMDCameraClipModel alloc];
-  v4 = [(HMDCameraClipOperation *)self clipModelID];
+  clipModelID = [(HMDCameraClipOperation *)self clipModelID];
   v5 = +[HMDCameraClipModel sentinelParentUUID];
-  v6 = [(HMBModel *)v3 initWithModelID:v4 parentModelID:v5];
+  v6 = [(HMBModel *)v3 initWithModelID:clipModelID parentModelID:v5];
 
-  v7 = [(HMDCameraClipCreateClipWithSignificantEventOperation *)self clipStartDate];
-  [(HMDCameraClipModel *)v6 setStartDate:v7];
+  clipStartDate = [(HMDCameraClipCreateClipWithSignificantEventOperation *)self clipStartDate];
+  [(HMDCameraClipModel *)v6 setStartDate:clipStartDate];
 
   [(HMDCameraClipModel *)v6 setIsComplete:MEMORY[0x277CBEC28]];
   [(HMDCameraClipModel *)v6 setDuration:&unk_283E74F18];
@@ -62,8 +62,8 @@
   [(HMDCameraClipModel *)v6 setVideoStreamingAsset:v10];
 
   [(HMDCameraClipModel *)v6 setVideoMetadataArray:MEMORY[0x277CBEBF8]];
-  v11 = [(HMDCameraClipCreateClipWithSignificantEventOperation *)self encryptionManager];
-  v12 = [v11 key];
+  encryptionManager = [(HMDCameraClipCreateClipWithSignificantEventOperation *)self encryptionManager];
+  v12 = [encryptionManager key];
   [(HMDCameraClipModel *)v6 setEncryptionKey:v12];
 
   [(HMDCameraClipModel *)v6 setEncryptionScheme:&unk_283E74F30];
@@ -75,7 +75,7 @@
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -89,67 +89,67 @@
   }
 
   objc_autoreleasePoolPop(v14);
-  v23.receiver = v15;
+  v23.receiver = selfCopy;
   v23.super_class = HMDCameraClipCreateClipWithSignificantEventOperation;
-  v19 = [(HMDCameraClipAddSignificantEventOperation *)&v23 modelsToAdd];
-  v20 = [v19 setByAddingObject:v6];
+  modelsToAdd = [(HMDCameraClipAddSignificantEventOperation *)&v23 modelsToAdd];
+  v20 = [modelsToAdd setByAddingObject:v6];
 
   v21 = *MEMORY[0x277D85DE8];
 
   return v20;
 }
 
-- (HMDCameraClipCreateClipWithSignificantEventOperation)initWithClipModelID:(id)a3 localZone:(id)a4 significantEvent:(id)a5 targetFragmentDuration:(double)a6 clipStartDate:(id)a7 quality:(int64_t)a8 encryptionManager:(id)a9 dataSource:(id)a10
+- (HMDCameraClipCreateClipWithSignificantEventOperation)initWithClipModelID:(id)d localZone:(id)zone significantEvent:(id)event targetFragmentDuration:(double)duration clipStartDate:(id)date quality:(int64_t)quality encryptionManager:(id)manager dataSource:(id)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a7;
-  v21 = a9;
-  v22 = a10;
-  if (!v17)
+  dCopy = d;
+  zoneCopy = zone;
+  eventCopy = event;
+  dateCopy = date;
+  managerCopy = manager;
+  sourceCopy = source;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v18)
+  if (!zoneCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!eventCopy)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (a6 <= 0.0)
+  if (duration <= 0.0)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  if (!v20)
+  if (!dateCopy)
   {
 LABEL_15:
     _HMFPreconditionFailure();
     goto LABEL_16;
   }
 
-  if (!v21)
+  if (!managerCopy)
   {
 LABEL_16:
     _HMFPreconditionFailure();
     goto LABEL_17;
   }
 
-  v23 = v22;
-  if (!v22)
+  v23 = sourceCopy;
+  if (!sourceCopy)
   {
 LABEL_17:
     v29 = _HMFPreconditionFailure();
@@ -158,31 +158,31 @@ LABEL_17:
 
   v38.receiver = self;
   v38.super_class = HMDCameraClipCreateClipWithSignificantEventOperation;
-  v24 = [(HMDCameraClipAddSignificantEventOperation *)&v38 initWithClipModelID:v17 localZone:v18 significantEvent:v19 dataSource:v22];
+  v24 = [(HMDCameraClipAddSignificantEventOperation *)&v38 initWithClipModelID:dCopy localZone:zoneCopy significantEvent:eventCopy dataSource:sourceCopy];
   v25 = v24;
   if (v24)
   {
-    v24->_targetFragmentDuration = a6;
-    v26 = [v20 copy];
+    v24->_targetFragmentDuration = duration;
+    v26 = [dateCopy copy];
     clipStartDate = v25->_clipStartDate;
     v25->_clipStartDate = v26;
 
-    v25->_quality = a8;
-    objc_storeStrong(&v25->_encryptionManager, a9);
+    v25->_quality = quality;
+    objc_storeStrong(&v25->_encryptionManager, manager);
   }
 
   return v25;
 }
 
-- (HMDCameraClipCreateClipWithSignificantEventOperation)initWithClipModelID:(id)a3 localZone:(id)a4 significantEvent:(id)a5 targetFragmentDuration:(double)a6 clipStartDate:(id)a7 quality:(int64_t)a8 encryptionManager:(id)a9
+- (HMDCameraClipCreateClipWithSignificantEventOperation)initWithClipModelID:(id)d localZone:(id)zone significantEvent:(id)event targetFragmentDuration:(double)duration clipStartDate:(id)date quality:(int64_t)quality encryptionManager:(id)manager
 {
-  v16 = a9;
-  v17 = a7;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  managerCopy = manager;
+  dateCopy = date;
+  eventCopy = event;
+  zoneCopy = zone;
+  dCopy = d;
   v21 = objc_alloc_init(HMDCameraClipOperationDataSource);
-  v22 = [(HMDCameraClipCreateClipWithSignificantEventOperation *)self initWithClipModelID:v20 localZone:v19 significantEvent:v18 targetFragmentDuration:v17 clipStartDate:a8 quality:v16 encryptionManager:a6 dataSource:v21];
+  v22 = [(HMDCameraClipCreateClipWithSignificantEventOperation *)self initWithClipModelID:dCopy localZone:zoneCopy significantEvent:eventCopy targetFragmentDuration:dateCopy clipStartDate:quality quality:managerCopy encryptionManager:duration dataSource:v21];
 
   return v22;
 }

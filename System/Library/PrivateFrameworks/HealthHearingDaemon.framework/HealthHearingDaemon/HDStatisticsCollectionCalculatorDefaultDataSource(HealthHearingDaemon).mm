@@ -16,7 +16,7 @@
 
   v26 = 0;
   v10 = 1;
-  v11 = [a1 addValuesForQuantitySamples:v8 calculator:v9 includeSeries:1 error:&v26];
+  v11 = [self addValuesForQuantitySamples:v8 calculator:v9 includeSeries:1 error:&v26];
   v12 = v26;
   v13 = v12;
   if (v11)
@@ -24,12 +24,12 @@
     goto LABEL_17;
   }
 
-  v14 = [v12 hearing_isExpectedError];
+  hearing_isExpectedError = [v12 hearing_isExpectedError];
   _HKInitializeLogging();
   v15 = MEMORY[0x277CCC2C8];
   v16 = *MEMORY[0x277CCC2C8];
   v17 = *MEMORY[0x277CCC2C8];
-  if (v14)
+  if (hearing_isExpectedError)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -44,8 +44,8 @@
 
   if (([v13 hearing_isExpectedError] & 1) == 0)
   {
-    v19 = [v9 dateInterval];
-    [v9 setDateInterval:v19];
+    dateInterval = [v9 dateInterval];
+    [v9 setDateInterval:dateInterval];
 
     _HKInitializeLogging();
     v20 = *v15;
@@ -57,7 +57,7 @@
 
     v24 = 0;
     v10 = 1;
-    v21 = [a1 addValuesForQuantitySamples:v8 calculator:v9 includeSeries:1 error:&v24];
+    v21 = [self addValuesForQuantitySamples:v8 calculator:v9 includeSeries:1 error:&v24];
     v13 = v24;
     if (v21)
     {
@@ -72,7 +72,7 @@
     }
   }
 
-  if (![a1 addValuesForQuantitySamples:v8 calculator:v9 includeSeries:0 error:a5])
+  if (![self addValuesForQuantitySamples:v8 calculator:v9 includeSeries:0 error:a5])
   {
     v18 = 0;
     goto LABEL_18;

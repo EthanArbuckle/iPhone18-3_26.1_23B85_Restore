@@ -1,26 +1,26 @@
 @interface BKImageColorAnalyzer
-+ (double)colorLuminance:(CGColor *)a3;
-+ (id)analyzeColor:(id)a3;
++ (double)colorLuminance:(CGColor *)luminance;
++ (id)analyzeColor:(id)color;
 @end
 
 @implementation BKImageColorAnalyzer
 
-+ (id)analyzeColor:(id)a3
++ (id)analyzeColor:(id)color
 {
-  v3 = [a3 CGImage];
-  Width = CGImageGetWidth(v3);
-  Height = CGImageGetHeight(v3);
+  cGImage = [color CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   v6 = 0;
   if (Width && Height)
   {
     v7 = sub_1000A4730();
     if (v7)
     {
-      CopyWithColorSpace = CGImageCreateCopyWithColorSpace(v3, v7);
+      CopyWithColorSpace = CGImageCreateCopyWithColorSpace(cGImage, v7);
       v9 = CopyWithColorSpace;
       if (CopyWithColorSpace)
       {
-        v3 = CopyWithColorSpace;
+        cGImage = CopyWithColorSpace;
       }
     }
 
@@ -37,7 +37,7 @@
       v14.origin.y = CGPointZero.y;
       v14.size.width = 22.0;
       v14.size.height = 22.0;
-      CGContextDrawImage(v10, v14, v3);
+      CGContextDrawImage(v10, v14, cGImage);
     }
 
     if (v9)
@@ -72,9 +72,9 @@ LABEL_17:
   return v6;
 }
 
-+ (double)colorLuminance:(CGColor *)a3
++ (double)colorLuminance:(CGColor *)luminance
 {
-  sub_1000576C0(v4, a3);
+  sub_1000576C0(v4, luminance);
   sub_1000579F4(v4);
   return result;
 }

@@ -1,14 +1,14 @@
 @interface BKHIDUISensorController
 + (id)sharedInstance;
-- (BKHIDUISensorController)initWithSensorConfiguration:(id)a3 displayBrightnessController:(id)a4;
-- (id)addSensorModeChangeObserver:(id)a3;
+- (BKHIDUISensorController)initWithSensorConfiguration:(id)configuration displayBrightnessController:(id)controller;
+- (id)addSensorModeChangeObserver:(id)observer;
 - (id)sensorCharacteristics;
-- (unint64_t)requestEstimatedProximityEventsWithTimeout:(double)a3 versionedPID:(int64_t)a4;
+- (unint64_t)requestEstimatedProximityEventsWithTimeout:(double)timeout versionedPID:(int64_t)d;
 - (void)_cancelEstimatedProx;
-- (void)applySensorMode:(id)a3 requestOrigin:(int64_t)a4;
+- (void)applySensorMode:(id)mode requestOrigin:(int64_t)origin;
 - (void)proximityDidUnoccludeAfterScreenWake;
-- (void)removeModesForVersionedPID:(int64_t)a3;
-- (void)requestProximityStatusEventForReason:(id)a3 versionedPID:(int64_t)a4;
+- (void)removeModesForVersionedPID:(int64_t)d;
+- (void)requestProximityStatusEventForReason:(id)reason versionedPID:(int64_t)d;
 - (void)resetCalibration;
 @end
 
@@ -35,21 +35,21 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeModesForVersionedPID:(int64_t)a3
+- (void)removeModesForVersionedPID:(int64_t)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  sub_100037394(self, a3);
+  sub_100037394(self, d);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)requestProximityStatusEventForReason:(id)a3 versionedPID:(int64_t)a4
+- (void)requestProximityStatusEventForReason:(id)reason versionedPID:(int64_t)d
 {
-  v6 = a3;
+  reasonCopy = reason;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v7 = v6;
+  v7 = reasonCopy;
   if (self)
   {
     os_unfair_lock_assert_owner(&self->_lock);
@@ -100,7 +100,7 @@ LABEL_7:
     }
 
     versionedPIDToClient = self->_versionedPIDToClient;
-    v12 = [NSNumber numberWithLongLong:a4];
+    v12 = [NSNumber numberWithLongLong:d];
     v13 = [(NSMutableDictionary *)versionedPIDToClient objectForKeyedSubscript:v12];
     v14 = v13;
     if (v13)
@@ -112,12 +112,12 @@ LABEL_7:
 
     v16 = [(BKSHIDUISensorMode *)self->_prevailingMode mutableCopy];
     [v16 setPostEventWithCurrentDetectionMask:1];
-    v17 = [v16 reason];
+    reason = [v16 reason];
     v18 = NSStringFromBSVersionedPID();
-    v19 = [v17 stringByAppendingFormat:@" + %@ (pid:%@)", v7, v18];
+    v19 = [reason stringByAppendingFormat:@" + %@ (pid:%@)", v7, v18];
     [v16 setReason:v19];
 
-    [v16 setVersionedPID:a4];
+    [v16 setVersionedPID:d];
     sub_100037ABC(self, v16);
     if (v15)
     {
@@ -126,7 +126,7 @@ LABEL_7:
 
     else
     {
-      sub_100037394(self, a4);
+      sub_100037394(self, d);
     }
   }
 
@@ -135,7 +135,7 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (unint64_t)requestEstimatedProximityEventsWithTimeout:(double)a3 versionedPID:(int64_t)a4
+- (unint64_t)requestEstimatedProximityEventsWithTimeout:(double)timeout versionedPID:(int64_t)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
@@ -178,7 +178,7 @@ LABEL_24:
     goto LABEL_7;
   }
 
-  v11 = dispatch_time(0, (a3 * 1000000000.0));
+  v11 = dispatch_time(0, (timeout * 1000000000.0));
   estimatedProxShutoffTimer = self->_estimatedProxShutoffTimer;
   v13 = BKLogUISensor();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -187,7 +187,7 @@ LABEL_24:
     if (v14)
     {
       *buf = 134217984;
-      *&buf[4] = a3;
+      *&buf[4] = timeout;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Starting estimated prox timer with timeout %gs", buf, 0xCu);
     }
 
@@ -196,9 +196,9 @@ LABEL_24:
       v15 = BKLogUISensor();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v30 = [(BKHIDUISensorController *)self estimatedProxPowerAssertionID];
+        estimatedProxPowerAssertionID = [(BKHIDUISensorController *)self estimatedProxPowerAssertionID];
         *buf = 67109120;
-        *&buf[4] = v30;
+        *&buf[4] = estimatedProxPowerAssertionID;
         _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Trying to enable estimated proximity events, but we already have a power assertion taken out with id: %d", buf, 8u);
       }
     }
@@ -239,7 +239,7 @@ LABEL_24:
       [(BKHIDUISensorController *)self setEstimatedProxPowerAssertionID:v19];
     }
 
-    v20 = sub_1000371D0(self, a4, 1);
+    v20 = sub_1000371D0(self, d, 1);
     v21 = v20;
     if (v20)
     {
@@ -258,7 +258,7 @@ LABEL_24:
     *&buf[16] = sub_100038128;
     v35 = &unk_1000FAD78;
     v36 = v23;
-    v37 = a4;
+    dCopy = d;
     v24 = v23;
     v25 = [BKSHIDUISensorMode buildModeForReason:@"estimatedProx" builder:buf];
     sub_100037BC8(v21, v25);
@@ -290,7 +290,7 @@ LABEL_24:
   if (v14)
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = timeout;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Restarting estimated prox timer with timeout %gs", buf, 0xCu);
   }
 
@@ -301,9 +301,9 @@ LABEL_8:
   return v9;
 }
 
-- (id)addSensorModeChangeObserver:(id)a3
+- (id)addSensorModeChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   observerAssertion = self->_observerAssertion;
@@ -317,21 +317,21 @@ LABEL_8:
   }
 
   v8 = [objc_opt_class() description];
-  v9 = [(BSCompoundAssertion *)observerAssertion acquireForReason:v8 withContext:v4];
+  v9 = [(BSCompoundAssertion *)observerAssertion acquireForReason:v8 withContext:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v9;
 }
 
-- (void)applySensorMode:(id)a3 requestOrigin:(int64_t)a4
+- (void)applySensorMode:(id)mode requestOrigin:(int64_t)origin
 {
-  v6 = a3;
+  modeCopy = mode;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  sub_100037ABC(self, v6);
+  sub_100037ABC(self, modeCopy);
 
-  if (a4 == 1 && self->_launchTimeLockedMode)
+  if (origin == 1 && self->_launchTimeLockedMode)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -377,10 +377,10 @@ LABEL_8:
   return v3;
 }
 
-- (BKHIDUISensorController)initWithSensorConfiguration:(id)a3 displayBrightnessController:(id)a4
+- (BKHIDUISensorController)initWithSensorConfiguration:(id)configuration displayBrightnessController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  controllerCopy = controller;
   v14.receiver = self;
   v14.super_class = BKHIDUISensorController;
   v9 = [(BKHIDUISensorController *)&v14 init];
@@ -388,8 +388,8 @@ LABEL_8:
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v9->_sensor, a3);
-    objc_storeStrong(&v10->_displayBrightnessController, a4);
+    objc_storeStrong(&v9->_sensor, configuration);
+    objc_storeStrong(&v10->_displayBrightnessController, controller);
     v11 = [BKSHIDUISensorMode buildModeForReason:@"backboardd launch" builder:&stru_1000FACF0];
     launchTimeLockedMode = v10->_launchTimeLockedMode;
     v10->_launchTimeLockedMode = v11;

@@ -1,31 +1,31 @@
 @interface SPRemoteInterfaceKeyedArchiverDelegate
-- (id)archiver:(id)a3 willEncodeObject:(id)a4;
-- (void)archiver:(id)a3 didEncodeObject:(id)a4;
+- (id)archiver:(id)archiver willEncodeObject:(id)object;
+- (void)archiver:(id)archiver didEncodeObject:(id)object;
 @end
 
 @implementation SPRemoteInterfaceKeyedArchiverDelegate
 
-- (id)archiver:(id)a3 willEncodeObject:(id)a4
+- (id)archiver:(id)archiver willEncodeObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   getUIImageClass();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = objectCopy;
     self->_imageIsNamed = [v6 _isNamed];
     [v6 _setNamed:0];
   }
 
-  return v5;
+  return objectCopy;
 }
 
-- (void)archiver:(id)a3 didEncodeObject:(id)a4
+- (void)archiver:(id)archiver didEncodeObject:(id)object
 {
-  v5 = a4;
+  objectCopy = object;
   getUIImageClass();
   if (objc_opt_isKindOfClass())
   {
-    [v5 _setNamed:self->_imageIsNamed];
+    [objectCopy _setNamed:self->_imageIsNamed];
   }
 }
 

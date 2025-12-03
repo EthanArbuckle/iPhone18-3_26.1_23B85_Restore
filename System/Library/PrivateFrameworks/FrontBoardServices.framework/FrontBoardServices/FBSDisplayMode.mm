@@ -1,37 +1,37 @@
 @interface FBSDisplayMode
 + (id)_emptyMode;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)nativePixelSize;
 - (CGSize)pixelSize;
 - (CGSize)size;
 - (FBSDisplayMode)init;
-- (FBSDisplayMode)initWithCoder:(id)a3;
-- (FBSDisplayMode)initWithXPCDictionary:(id)a3;
-- (id)_copyWithOverrideSize:(CGSize)a3;
-- (id)_copyWithOverrideSize:(CGSize)a3 scale:(double)a4 refreshRate:(double)a5;
-- (id)_initWithCADisplayMode:(id)a3 scale:(double)a4 rotation:(int64_t)a5;
-- (id)_initWithWidth:(unint64_t)a3 height:(unint64_t)a4 preferredScale:(unint64_t)a5 scaleOverride:(double)a6 refreshRate:(double)a7 gamut:(int64_t)a8 hdr:(int64_t)a9 rotation:(int64_t)a10 virtual:(BOOL)a11 validityCheck:(int64_t)a12;
+- (FBSDisplayMode)initWithCoder:(id)coder;
+- (FBSDisplayMode)initWithXPCDictionary:(id)dictionary;
+- (id)_copyWithOverrideSize:(CGSize)size;
+- (id)_copyWithOverrideSize:(CGSize)size scale:(double)scale refreshRate:(double)rate;
+- (id)_initWithCADisplayMode:(id)mode scale:(double)scale rotation:(int64_t)rotation;
+- (id)_initWithWidth:(unint64_t)width height:(unint64_t)height preferredScale:(unint64_t)scale scaleOverride:(double)override refreshRate:(double)rate gamut:(int64_t)gamut hdr:(int64_t)hdr rotation:(int64_t)self0 virtual:(BOOL)self1 validityCheck:(int64_t)self2;
 - (id)_referenceSizeDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation FBSDisplayMode
 
 - (unint64_t)hash
 {
-  v3 = [off_1E76BC9C8 builder];
-  v4 = [v3 appendSizeT:self->_width];
-  v5 = [v3 appendSizeT:self->_height];
-  v6 = [v3 appendSizeT:self->_preferredScale];
-  v7 = [v3 appendCGFloat:self->_scaleOverride];
-  v8 = [v3 appendDouble:self->_refreshRate];
-  v9 = [v3 appendInteger:self->_gamut];
-  v10 = [v3 appendInteger:self->_hdr];
-  v11 = [v3 appendInteger:self->_rotation];
-  v12 = [v3 appendBool:self->_virtual];
-  v13 = [v3 hash];
+  builder = [off_1E76BC9C8 builder];
+  v4 = [builder appendSizeT:self->_width];
+  v5 = [builder appendSizeT:self->_height];
+  v6 = [builder appendSizeT:self->_preferredScale];
+  v7 = [builder appendCGFloat:self->_scaleOverride];
+  v8 = [builder appendDouble:self->_refreshRate];
+  v9 = [builder appendInteger:self->_gamut];
+  v10 = [builder appendInteger:self->_hdr];
+  v11 = [builder appendInteger:self->_rotation];
+  v12 = [builder appendBool:self->_virtual];
+  v13 = [builder hash];
 
   return v13;
 }
@@ -124,7 +124,7 @@ uint64_t __28__FBSDisplayMode__emptyMode__block_invoke()
     v13 = 2114;
     v14 = v10;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2114;
     v18 = @"FBSDisplayMode.m";
     v19 = 1024;
@@ -138,59 +138,59 @@ uint64_t __28__FBSDisplayMode__emptyMode__block_invoke()
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithCADisplayMode:(id)a3 scale:(double)a4 rotation:(int64_t)a5
+- (id)_initWithCADisplayMode:(id)mode scale:(double)scale rotation:(int64_t)rotation
 {
-  v9 = a3;
-  if (!v9)
+  modeCopy = mode;
+  if (!modeCopy)
   {
     [FBSDisplayMode _initWithCADisplayMode:a2 scale:self rotation:?];
   }
 
-  v10 = [v9 width];
-  v11 = [v9 height];
-  v12 = [v9 preferredScale];
-  [v9 refreshRate];
+  width = [modeCopy width];
+  height = [modeCopy height];
+  preferredScale = [modeCopy preferredScale];
+  [modeCopy refreshRate];
   v14 = v13;
-  v15 = [v9 colorGamut];
-  v16 = FBSDisplayGamutFromCADisplayGamut(v15);
-  v17 = [v9 hdrMode];
+  colorGamut = [modeCopy colorGamut];
+  v16 = FBSDisplayGamutFromCADisplayGamut(colorGamut);
+  hdrMode = [modeCopy hdrMode];
   LOBYTE(v20) = 0;
-  v18 = [(FBSDisplayMode *)self _initWithWidth:v10 height:v11 preferredScale:v12 scaleOverride:v16 refreshRate:FBSDisplayHDRModeFromCADisplayHDRMode(v17) gamut:a5 hdr:a4 rotation:v14 virtual:v20 validityCheck:1];
+  v18 = [(FBSDisplayMode *)self _initWithWidth:width height:height preferredScale:preferredScale scaleOverride:v16 refreshRate:FBSDisplayHDRModeFromCADisplayHDRMode(hdrMode) gamut:rotation hdr:scale rotation:v14 virtual:v20 validityCheck:1];
 
   return v18;
 }
 
-- (id)_initWithWidth:(unint64_t)a3 height:(unint64_t)a4 preferredScale:(unint64_t)a5 scaleOverride:(double)a6 refreshRate:(double)a7 gamut:(int64_t)a8 hdr:(int64_t)a9 rotation:(int64_t)a10 virtual:(BOOL)a11 validityCheck:(int64_t)a12
+- (id)_initWithWidth:(unint64_t)width height:(unint64_t)height preferredScale:(unint64_t)scale scaleOverride:(double)override refreshRate:(double)rate gamut:(int64_t)gamut hdr:(int64_t)hdr rotation:(int64_t)self0 virtual:(BOOL)self1 validityCheck:(int64_t)self2
 {
   v28.receiver = self;
   v28.super_class = FBSDisplayMode;
   v21 = [(FBSDisplayMode *)&v28 init];
   if (v21)
   {
-    v21->_width = a3;
-    v21->_height = a4;
-    v21->_preferredScale = a5;
+    v21->_width = width;
+    v21->_height = height;
+    v21->_preferredScale = scale;
     BSFloatEqualToFloat();
   }
 
-  if (a12 != 3)
+  if (check != 3)
   {
     v22 = objc_opt_class();
     v23 = objc_opt_class();
-    if (a5 == -1 || a4 + 1 < 2 || a3 + 1 < 2 || v22 != v23)
+    if (scale == -1 || height + 1 < 2 || width + 1 < 2 || v22 != v23)
     {
       goto LABEL_16;
     }
 
-    if (!a5)
+    if (!scale)
     {
       BSFloatIsZero();
     }
 
-    if (a6 < 0.0 || a7 <= 0.0 || !FBSDisplayGamutIsValid(a8) || !FBSDisplayHDRModeIsValid(a9) || !FBSDisplayRotationIsValid(a10))
+    if (override < 0.0 || rate <= 0.0 || !FBSDisplayGamutIsValid(gamut) || !FBSDisplayHDRModeIsValid(hdr) || !FBSDisplayRotationIsValid(rotation))
     {
 LABEL_16:
-      if (a12 == 2)
+      if (check == 2)
       {
         v25 = FBLogCommon();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -198,12 +198,12 @@ LABEL_16:
           [FBSDisplayMode _initWithWidth:v25 height:? preferredScale:? scaleOverride:? refreshRate:? gamut:? hdr:? rotation:? virtual:? validityCheck:?];
         }
 
-        v24 = 0;
+        currentHandler = 0;
       }
 
       else
       {
-        if (a12 == 1)
+        if (check == 1)
         {
           v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"FBSDisplayMode cannot be configured as requested : %@", 0];
           if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -215,8 +215,8 @@ LABEL_16:
           _bs_set_crash_log_message();
         }
 
-        v24 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v24 handleFailureInMethod:a2 object:0 file:@"FBSDisplayMode.m" lineNumber:113 description:{@"FBSDisplayMode cannot be configured as requested : %@", 0}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:0 file:@"FBSDisplayMode.m" lineNumber:113 description:{@"FBSDisplayMode cannot be configured as requested : %@", 0}];
       }
     }
   }
@@ -224,95 +224,95 @@ LABEL_16:
   return 0;
 }
 
-- (id)_copyWithOverrideSize:(CGSize)a3
+- (id)_copyWithOverrideSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(FBSDisplayMode *)self pointScale];
 
   return [(FBSDisplayMode *)self _copyWithOverrideSize:width scale:height, v6];
 }
 
-- (id)_copyWithOverrideSize:(CGSize)a3 scale:(double)a4 refreshRate:(double)a5
+- (id)_copyWithOverrideSize:(CGSize)size scale:(double)scale refreshRate:(double)rate
 {
   if ((self->_rotation | 2) == 3)
   {
-    height = a3.height;
-    a3.height = a3.width;
+    height = size.height;
+    size.height = size.width;
   }
 
   else
   {
-    height = a3.width;
+    height = size.width;
   }
 
   LOBYTE(v8) = 1;
-  return [objc_alloc(objc_opt_class()) _initWithWidth:(height * a4) height:(a3.height * a4) preferredScale:a4 scaleOverride:self->_gamut refreshRate:self->_hdr gamut:self->_rotation hdr:a4 rotation:a5 virtual:v8 validityCheck:1];
+  return [objc_alloc(objc_opt_class()) _initWithWidth:(height * scale) height:(size.height * scale) preferredScale:scale scaleOverride:self->_gamut refreshRate:self->_hdr gamut:self->_rotation hdr:scale rotation:rate virtual:v8 validityCheck:1];
 }
 
-- (FBSDisplayMode)initWithCoder:(id)a3
+- (FBSDisplayMode)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"width"];
-  v6 = [v4 decodeInt64ForKey:@"height"];
-  v7 = [v4 decodeInt64ForKey:@"preferredScale"];
-  [v4 decodeDoubleForKey:@"scaleOverride"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"width"];
+  v6 = [coderCopy decodeInt64ForKey:@"height"];
+  v7 = [coderCopy decodeInt64ForKey:@"preferredScale"];
+  [coderCopy decodeDoubleForKey:@"scaleOverride"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"refreshRate"];
+  [coderCopy decodeDoubleForKey:@"refreshRate"];
   v11 = v10;
-  v12 = [v4 decodeIntegerForKey:@"gamut"];
-  v13 = [v4 decodeIntegerForKey:@"hdr"];
-  v14 = [v4 decodeIntegerForKey:@"rotation"];
-  v15 = [v4 decodeBoolForKey:@"virtual"];
+  v12 = [coderCopy decodeIntegerForKey:@"gamut"];
+  v13 = [coderCopy decodeIntegerForKey:@"hdr"];
+  v14 = [coderCopy decodeIntegerForKey:@"rotation"];
+  v15 = [coderCopy decodeBoolForKey:@"virtual"];
 
   LOBYTE(v17) = v15;
   return [(FBSDisplayMode *)self _initWithWidth:v5 height:v6 preferredScale:v7 scaleOverride:v12 refreshRate:v13 gamut:v14 hdr:v9 rotation:v11 virtual:v17 validityCheck:2];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt64:self->_width forKey:@"width"];
-  [v5 encodeInt64:self->_height forKey:@"height"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_width forKey:@"width"];
+  [coderCopy encodeInt64:self->_height forKey:@"height"];
   preferredScale = self->_preferredScale;
   if (preferredScale)
   {
-    [v5 encodeInt64:preferredScale forKey:@"preferredScale"];
+    [coderCopy encodeInt64:preferredScale forKey:@"preferredScale"];
   }
 
   BSFloatIsZero();
 }
 
-- (FBSDisplayMode)initWithXPCDictionary:(id)a3
+- (FBSDisplayMode)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_value(v4, [@"scaleOverride" UTF8String]);
-  uint64 = xpc_dictionary_get_uint64(v4, [@"width" UTF8String]);
-  v7 = xpc_dictionary_get_uint64(v4, [@"height" UTF8String]);
-  v8 = xpc_dictionary_get_uint64(v4, [@"preferredScale" UTF8String]);
+  dictionaryCopy = dictionary;
+  v5 = xpc_dictionary_get_value(dictionaryCopy, [@"scaleOverride" UTF8String]);
+  uint64 = xpc_dictionary_get_uint64(dictionaryCopy, [@"width" UTF8String]);
+  v7 = xpc_dictionary_get_uint64(dictionaryCopy, [@"height" UTF8String]);
+  v8 = xpc_dictionary_get_uint64(dictionaryCopy, [@"preferredScale" UTF8String]);
   value = 0.0;
   if (v5 && object_getClass(v5) == MEMORY[0x1E69E9E88])
   {
     value = xpc_double_get_value(v5);
   }
 
-  v10 = xpc_dictionary_get_double(v4, [@"refreshRate" UTF8String]);
-  int64 = xpc_dictionary_get_int64(v4, [@"gamut" UTF8String]);
-  v12 = xpc_dictionary_get_int64(v4, [@"hdr" UTF8String]);
-  v13 = xpc_dictionary_get_int64(v4, [@"rotation" UTF8String]);
-  LOBYTE(v16) = xpc_dictionary_get_BOOL(v4, [@"virtual" UTF8String]);
+  v10 = xpc_dictionary_get_double(dictionaryCopy, [@"refreshRate" UTF8String]);
+  int64 = xpc_dictionary_get_int64(dictionaryCopy, [@"gamut" UTF8String]);
+  v12 = xpc_dictionary_get_int64(dictionaryCopy, [@"hdr" UTF8String]);
+  v13 = xpc_dictionary_get_int64(dictionaryCopy, [@"rotation" UTF8String]);
+  LOBYTE(v16) = xpc_dictionary_get_BOOL(dictionaryCopy, [@"virtual" UTF8String]);
   v14 = [(FBSDisplayMode *)self _initWithWidth:uint64 height:v7 preferredScale:v8 scaleOverride:int64 refreshRate:v12 gamut:v13 hdr:value rotation:v10 virtual:v16 validityCheck:2];
 
   return v14;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
-    xdict = v4;
-    xpc_dictionary_set_uint64(v4, [@"width" UTF8String], self->_width);
+    xdict = dictionaryCopy;
+    xpc_dictionary_set_uint64(dictionaryCopy, [@"width" UTF8String], self->_width);
     xpc_dictionary_set_uint64(xdict, [@"height" UTF8String], self->_height);
     if (self->_preferredScale)
     {
@@ -323,16 +323,16 @@ LABEL_16:
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [off_1E76BC9C0 builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [off_1E76BC9C0 builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   width = self->_width;
   v50[0] = MEMORY[0x1E69E9820];
   v50[1] = 3221225472;
   v50[2] = __26__FBSDisplayMode_isEqual___block_invoke;
   v50[3] = &unk_1E76BF6C0;
-  v7 = v4;
+  v7 = equalCopy;
   v51 = v7;
   v8 = [v5 appendSizeT:width counterpart:v50];
   height = self->_height;

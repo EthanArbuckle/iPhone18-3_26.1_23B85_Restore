@@ -1,19 +1,19 @@
 @interface NSError
 - (BOOL)_maps_isCancellation;
-- (BOOL)_maps_isErrorOfDomain:(id)a3 code:(int64_t)a4;
+- (BOOL)_maps_isErrorOfDomain:(id)domain code:(int64_t)code;
 @end
 
 @implementation NSError
 
-- (BOOL)_maps_isErrorOfDomain:(id)a3 code:(int64_t)a4
+- (BOOL)_maps_isErrorOfDomain:(id)domain code:(int64_t)code
 {
-  v6 = a3;
-  v7 = [(NSError *)self domain];
-  v8 = [v7 isEqualToString:v6];
+  domainCopy = domain;
+  domain = [(NSError *)self domain];
+  v8 = [domain isEqualToString:domainCopy];
 
   if (v8)
   {
-    v9 = [(NSError *)self code]== a4;
+    v9 = [(NSError *)self code]== code;
   }
 
   else
@@ -26,8 +26,8 @@
 
 - (BOOL)_maps_isCancellation
 {
-  v3 = [(NSError *)self domain];
-  if ([v3 isEqualToString:NSCocoaErrorDomain])
+  domain = [(NSError *)self domain];
+  if ([domain isEqualToString:NSCocoaErrorDomain])
   {
     v4 = [(NSError *)self code]== 3072;
   }

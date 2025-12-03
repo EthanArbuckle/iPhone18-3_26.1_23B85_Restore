@@ -1,58 +1,58 @@
 @interface PXWidgetCompositionSpec
-- (PXWidgetCompositionSpec)initWithExtendedTraitCollection:(id)a3 widgetSpec:(id)a4;
-- (id)headerSpecForWidgetContentLayoutStyle:(int64_t)a3;
+- (PXWidgetCompositionSpec)initWithExtendedTraitCollection:(id)collection widgetSpec:(id)spec;
+- (id)headerSpecForWidgetContentLayoutStyle:(int64_t)style;
 @end
 
 @implementation PXWidgetCompositionSpec
 
-- (id)headerSpecForWidgetContentLayoutStyle:(int64_t)a3
+- (id)headerSpecForWidgetContentLayoutStyle:(int64_t)style
 {
-  switch(a3)
+  switch(style)
   {
     case 2:
       goto LABEL_4;
     case 1:
-      v3 = [(PXWidgetCompositionSpec *)self _headerSpecForFlushedContent];
+      _headerSpecForFlushedContent = [(PXWidgetCompositionSpec *)self _headerSpecForFlushedContent];
       break;
     case 0:
 LABEL_4:
-      v3 = [(PXWidgetCompositionSpec *)self _defaultHeaderSpec];
+      _headerSpecForFlushedContent = [(PXWidgetCompositionSpec *)self _defaultHeaderSpec];
       break;
     default:
-      v3 = 0;
+      _headerSpecForFlushedContent = 0;
       break;
   }
 
-  return v3;
+  return _headerSpecForFlushedContent;
 }
 
-- (PXWidgetCompositionSpec)initWithExtendedTraitCollection:(id)a3 widgetSpec:(id)a4
+- (PXWidgetCompositionSpec)initWithExtendedTraitCollection:(id)collection widgetSpec:(id)spec
 {
-  v6 = a3;
-  v7 = a4;
+  collectionCopy = collection;
+  specCopy = spec;
   v20.receiver = self;
   v20.super_class = PXWidgetCompositionSpec;
   v8 = [(PXWidgetCompositionSpec *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_widgetSpec, a4);
-    v10 = [v6 layoutSizeClass];
-    v11 = [v6 userInterfaceIdiom];
-    v9->_orientation = v11 == 5;
-    if (v11 == 5)
+    objc_storeStrong(&v8->_widgetSpec, spec);
+    layoutSizeClass = [collectionCopy layoutSizeClass];
+    userInterfaceIdiom = [collectionCopy userInterfaceIdiom];
+    v9->_orientation = userInterfaceIdiom == 5;
+    if (userInterfaceIdiom == 5)
     {
       v12 = 1000;
     }
 
     else
     {
-      if (v10 == 2)
+      if (layoutSizeClass == 2)
       {
         v13 = +[PXPhotosDetailsSettings sharedInstance];
-        v14 = [v13 allowMultiColumnLayout];
+        allowMultiColumnLayout = [v13 allowMultiColumnLayout];
         v15 = 1;
-        if (v14)
+        if (allowMultiColumnLayout)
         {
           v15 = 2;
         }
@@ -60,7 +60,7 @@ LABEL_4:
         v9->_maximumNumberOfColumns = v15;
 
 LABEL_10:
-        [v7 contentGuideInsets];
+        [specCopy contentGuideInsets];
         v19[0] = MEMORY[0x1E69E9820];
         v19[1] = 3221225472;
         v19[2] = __70__PXWidgetCompositionSpec_initWithExtendedTraitCollection_widgetSpec___block_invoke;

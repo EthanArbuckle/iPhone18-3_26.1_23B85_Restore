@@ -1,8 +1,8 @@
 @interface _HDCDASampleEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (BOOL)generateCodableRepresentationsForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 maxBytesPerRepresentation:(int64_t)a5 error:(id *)a6 handler:(id)a7;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (BOOL)generateCodableRepresentationsForPersistentID:(int64_t)d row:(HDSQLiteRow *)row maxBytesPerRepresentation:(int64_t)representation error:(id *)error handler:(id)handler;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -11,15 +11,15 @@
 - (id)orderedProperties
 {
   v12[5] = *MEMORY[0x277D85DE8];
-  v3 = [(HDEntityEncoder *)self purpose];
-  if (v3 == 1)
+  purpose = [(HDEntityEncoder *)self purpose];
+  if (purpose == 1)
   {
     v11 = @"document_data";
     v4 = &v11;
     goto LABEL_5;
   }
 
-  if (!v3)
+  if (!purpose)
   {
     v12[0] = @"document_data";
     v4 = v12;
@@ -34,19 +34,19 @@ LABEL_5:
 
   v5 = 0;
 LABEL_7:
-  v6 = [(HDEntityEncoder *)self superclassEncoder];
-  v7 = [v6 orderedProperties];
-  v8 = [v5 arrayByAddingObjectsFromArray:v7];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v8 = [v5 arrayByAddingObjectsFromArray:orderedProperties];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -73,10 +73,10 @@ LABEL_7:
   return v10;
 }
 
-- (BOOL)generateCodableRepresentationsForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 maxBytesPerRepresentation:(int64_t)a5 error:(id *)a6 handler:(id)a7
+- (BOOL)generateCodableRepresentationsForPersistentID:(int64_t)d row:(HDSQLiteRow *)row maxBytesPerRepresentation:(int64_t)representation error:(id *)error handler:(id)handler
 {
-  v13 = a7;
-  v14 = [(_HDCDASampleEntityEncoder *)self codableRepresentationForPersistentID:a3 row:a4 error:a6];
+  handlerCopy = handler;
+  v14 = [(_HDCDASampleEntityEncoder *)self codableRepresentationForPersistentID:d row:row error:error];
   v15 = v14;
   if (!v14)
   {
@@ -85,22 +85,22 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [v14 encodedByteCount];
-  v17 = [objc_opt_class() estimatedEncodedSize];
-  if (v16 <= v17)
+  encodedByteCount = [v14 encodedByteCount];
+  estimatedEncodedSize = [objc_opt_class() estimatedEncodedSize];
+  if (encodedByteCount <= estimatedEncodedSize)
   {
-    v16 = v17;
+    encodedByteCount = estimatedEncodedSize;
   }
 
-  if (v16 > a5)
+  if (encodedByteCount > representation)
   {
-    v18 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"encoded size (%ld) > maximum (%ld) so this entity will by skipped", v16, a5}];
+    v18 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"encoded size (%ld) > maximum (%ld) so this entity will by skipped", encodedByteCount, representation}];
     if (v18)
     {
-      if (a6)
+      if (error)
       {
         v19 = v18;
-        *a6 = v18;
+        *error = v18;
       }
 
       else
@@ -112,32 +112,32 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v20 = v13[2](v13, v15, v16, 1, a6) != 2;
+  v20 = handlerCopy[2](handlerCopy, v15, encodedByteCount, 1, error) != 2;
 LABEL_12:
 
   return v20;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCD098]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCD098]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
-    v13 = [(HDEntityEncoder *)self encodingOptions];
-    v14 = v13;
-    if (v13)
+    encodingOptions = [(HDEntityEncoder *)self encodingOptions];
+    v14 = encodingOptions;
+    if (encodingOptions)
     {
-      v15 = [v13 objectForKey:@"IncludeCDADocument"];
+      v15 = [encodingOptions objectForKey:@"IncludeCDADocument"];
 
       v16 = [v14 objectForKey:@"IncludeCDADocumentData"];
 
@@ -162,7 +162,7 @@ LABEL_11:
         v22 = HDSQLiteColumnWithNameAsString();
         v23 = HDSQLiteColumnWithNameAsString();
         v24 = HDSQLiteColumnWithNameAsString();
-        [v10 _applyPropertiesWithOmittedFlags:v18 compressedDocumentData:v20 title:v21 patientName:v22 authorName:v23 custodianName:v24];
+        [objectCopy _applyPropertiesWithOmittedFlags:v18 compressedDocumentData:v20 title:v21 patientName:v22 authorName:v23 custodianName:v24];
 
         goto LABEL_12;
       }

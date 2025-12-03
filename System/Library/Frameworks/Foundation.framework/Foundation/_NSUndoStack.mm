@@ -10,20 +10,20 @@
 - (id)popUndoObject;
 - (id)undoActionInfo;
 - (id)userInfo;
-- (unint64_t)popAllActionsForConnectionUUID:(id)a3;
+- (unint64_t)popAllActionsForConnectionUUID:(id)d;
 - (unint64_t)topLevelGroupCount;
 - (void)_removeBottom;
 - (void)dealloc;
 - (void)markBegin;
 - (void)markEnd;
-- (void)push:(id)a3;
+- (void)push:(id)push;
 - (void)removeAllObjects;
-- (void)removeAllObjectsWithTarget:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)setDiscardable:(BOOL)a3;
-- (void)setGroupIdentifier:(id)a3;
+- (void)removeAllObjectsWithTarget:(id)target;
+- (void)removeObject:(id)object;
+- (void)setDiscardable:(BOOL)discardable;
+- (void)setGroupIdentifier:(id)identifier;
 - (void)setMax:(unint64_t)max;
-- (void)setUserInfo:(id)a3;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation _NSUndoStack
@@ -142,25 +142,25 @@ LABEL_7:
   }
 }
 
-- (void)push:(id)a3
+- (void)push:(id)push
 {
   head = self->_head;
-  *(a3 + 1) = head;
-  previous = a3;
+  *(push + 1) = head;
+  previous = push;
   if (head)
   {
     previous = head->previous;
   }
 
-  *(a3 + 2) = previous;
+  *(push + 2) = previous;
   v8 = self->_head;
   if (v8)
   {
-    v8->previous = a3;
+    v8->previous = push;
   }
 
-  self->_head = a3;
-  if ([a3 isEndMark])
+  self->_head = push;
+  if ([push isEndMark])
   {
     nestingLevel = self->_nestingLevel;
     if (!nestingLevel)
@@ -187,7 +187,7 @@ LABEL_7:
     }
   }
 
-  else if ([a3 isBeginMark])
+  else if ([push isBeginMark])
   {
     v12 = self->_nestingLevel;
     if (!v12)
@@ -279,10 +279,10 @@ LABEL_12:
   return head;
 }
 
-- (void)setGroupIdentifier:(id)a3
+- (void)setGroupIdentifier:(id)identifier
 {
-  v6 = [(_NSUndoStack *)self _beginMark];
-  if (!v6)
+  _beginMark = [(_NSUndoStack *)self _beginMark];
+  if (!_beginMark)
   {
     v7 = NSStringFromSelector(a2);
     v8 = objc_opt_class();
@@ -290,7 +290,7 @@ LABEL_12:
     objc_exception_throw(v9);
   }
 
-  [v6 setGroupIdentifier:a3];
+  [_beginMark setGroupIdentifier:identifier];
 }
 
 - (id)groupIdentifier
@@ -321,21 +321,21 @@ LABEL_12:
 
 - (BOOL)isDiscardable
 {
-  v2 = [(_NSUndoStack *)self _beginMark];
-  if (v2)
+  _beginMark = [(_NSUndoStack *)self _beginMark];
+  if (_beginMark)
   {
 
-    LOBYTE(v2) = [v2 isDiscardable];
+    LOBYTE(_beginMark) = [_beginMark isDiscardable];
   }
 
-  return v2;
+  return _beginMark;
 }
 
-- (void)setDiscardable:(BOOL)a3
+- (void)setDiscardable:(BOOL)discardable
 {
-  v3 = a3;
-  v6 = [(_NSUndoStack *)self _beginMark];
-  if (!v6)
+  discardableCopy = discardable;
+  _beginMark = [(_NSUndoStack *)self _beginMark];
+  if (!_beginMark)
   {
     v7 = NSStringFromSelector(a2);
     v8 = objc_opt_class();
@@ -343,7 +343,7 @@ LABEL_12:
     objc_exception_throw(v9);
   }
 
-  [v6 setDiscardable:v3];
+  [_beginMark setDiscardable:discardableCopy];
 }
 
 - (id)userInfo
@@ -358,10 +358,10 @@ LABEL_12:
   return result;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v6 = [(_NSUndoStack *)self _beginMark];
-  if (!v6)
+  _beginMark = [(_NSUndoStack *)self _beginMark];
+  if (!_beginMark)
   {
     v7 = NSStringFromSelector(a2);
     v8 = objc_opt_class();
@@ -369,7 +369,7 @@ LABEL_12:
     objc_exception_throw(v9);
   }
 
-  [v6 setUserInfo:a3];
+  [_beginMark setUserInfo:info];
 }
 
 - (BOOL)popAndInvoke
@@ -418,7 +418,7 @@ LABEL_11:
   return v6;
 }
 
-- (void)removeAllObjectsWithTarget:(id)a3
+- (void)removeAllObjectsWithTarget:(id)target
 {
   head = self->_head;
   if (head)
@@ -428,13 +428,13 @@ LABEL_11:
     nestingLevel = self->_nestingLevel;
     while (1)
     {
-      v9 = [(_NSUndoObject *)head isEndMark];
-      v10 = nestingLevel + v9;
-      v11 = v9 | v7;
-      v12 = [(_NSUndoObject *)head isBeginMark];
-      nestingLevel = (v12 & v11) != 0 ? v10 - 1 : v10;
-      v7 = (v12 & v11 ^ 1 | (v10 != 1)) & v11;
-      if ([(_NSUndoObject *)head target]== a3 && ![(_NSUndoObject *)head isBeginMark]&& ![(_NSUndoObject *)head isEndMark])
+      isEndMark = [(_NSUndoObject *)head isEndMark];
+      v10 = nestingLevel + isEndMark;
+      v11 = isEndMark | v7;
+      isBeginMark = [(_NSUndoObject *)head isBeginMark];
+      nestingLevel = (isBeginMark & v11) != 0 ? v10 - 1 : v10;
+      v7 = (isBeginMark & v11 ^ 1 | (v10 != 1)) & v11;
+      if ([(_NSUndoObject *)head target]== target && ![(_NSUndoObject *)head isBeginMark]&& ![(_NSUndoObject *)head isEndMark])
       {
         break;
       }
@@ -506,28 +506,28 @@ LABEL_22:
   }
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v4 = *(a3 + 1);
-  v3 = *(a3 + 2);
+  v4 = *(object + 1);
+  v3 = *(object + 2);
   if (v4)
   {
     *(v4 + 16) = v3;
     if (*(v3 + 8))
     {
-      *(v3 + 8) = *(a3 + 1);
+      *(v3 + 8) = *(object + 1);
     }
   }
 
   else
   {
     *(v3 + 8) = 0;
-    self->_head->previous = *(a3 + 2);
+    self->_head->previous = *(object + 2);
   }
 
-  if (self->_head == a3)
+  if (self->_head == object)
   {
-    self->_head = *(a3 + 1);
+    self->_head = *(object + 1);
   }
 
   MEMORY[0x1EEE66BE0]();
@@ -554,7 +554,7 @@ LABEL_22:
   return result;
 }
 
-- (unint64_t)popAllActionsForConnectionUUID:(id)a3
+- (unint64_t)popAllActionsForConnectionUUID:(id)d
 {
   head = self->_head;
   if (!head)
@@ -572,8 +572,8 @@ LABEL_22:
       goto LABEL_10;
     }
 
-    v8 = [(_NSUndoObject *)head userInfo];
-    v9 = [objc_msgSend(v8 objectForKey:{_NSUndoManagerRemoteConnectionIDUserInfoKey), "isEqual:", a3}];
+    userInfo = [(_NSUndoObject *)head userInfo];
+    v9 = [objc_msgSend(userInfo objectForKey:{_NSUndoManagerRemoteConnectionIDUserInfoKey), "isEqual:", d}];
     v10 = --nestingLevel ? v6 : head;
     if (v9)
     {
@@ -647,8 +647,8 @@ LABEL_10:
     __assert_rtn("[_NSUndoStack oldestUndoActionDate]", "NSUndoManager.m", 2159, "[_head->previous isBeginMark]");
   }
 
-  v4 = [(_NSUndoObject *)self->_head->previous userInfo];
-  result = [v4 objectForKey:_NSUndoManagerDateUserInfoKey];
+  userInfo = [(_NSUndoObject *)self->_head->previous userInfo];
+  result = [userInfo objectForKey:_NSUndoManagerDateUserInfoKey];
   if (!result)
   {
     __assert_rtn("[_NSUndoStack oldestUndoActionDate]", "NSUndoManager.m", 2161, "result");
@@ -705,8 +705,8 @@ LABEL_10:
           v7 = objc_alloc_init(NSUUID);
           if ([(_NSUndoObject *)head userInfo])
           {
-            v8 = [(_NSUndoObject *)head userInfo];
-            [v8 setObject:v7 forKey:_NSUndoManagerRemoteIDUserInfoKey];
+            userInfo = [(_NSUndoObject *)head userInfo];
+            [userInfo setObject:v7 forKey:_NSUndoManagerRemoteIDUserInfoKey];
           }
 
           else

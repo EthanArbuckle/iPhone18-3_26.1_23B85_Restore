@@ -26,13 +26,13 @@
     v16 = MEMORY[0x1E695DF30];
     v17 = *MEMORY[0x1E695D940];
     v23 = @"url";
-    v18 = v6;
+    null = v6;
     if (!v6)
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v24[0] = v18;
+    v24[0] = null;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
     v20 = [v16 exceptionWithName:v17 reason:@"invalid url" userInfo:v19];
     v21 = v20;
@@ -47,12 +47,12 @@
   v8 = MEMORY[0x1E696AE18];
   v9 = *MEMORY[0x1E696A6E0];
   v22 = v6;
-  v10 = [v22 path];
-  v11 = [v8 predicateWithFormat:@"%K.URLByDeletingLastPathComponent.path = %@", v9, v10];
+  path = [v22 path];
+  v11 = [v8 predicateWithFormat:@"%K.URLByDeletingLastPathComponent.path = %@", v9, path];
 
-  [a1 setPredicate:v11];
+  [self setPredicate:v11];
   v12 = [v7 copy];
-  [a1 setSearchScopes:v12];
+  [self setSearchScopes:v12];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -67,7 +67,7 @@
   v5 = MEMORY[0x1E695DEC8];
   v6 = a3;
   v7 = [v5 arrayWithObjects:&v9 count:3];
-  [a1 br_setupForMonitoringChildrenOfFolderAtURL:v6 searchScopes:{v7, v9, v10, v11, v12}];
+  [self br_setupForMonitoringChildrenOfFolderAtURL:v6 searchScopes:{v7, v9, v10, v11, v12}];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -77,22 +77,22 @@
   v26[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 isFileURL];
-  if (v8)
+  isFileURL = [v6 isFileURL];
+  if (isFileURL)
   {
-    v9 = [v6 path];
-    if (v9)
+    path = [v6 path];
+    if (path)
     {
-      v10 = v9;
+      null = path;
       v11 = MEMORY[0x1E696AE18];
       v12 = *MEMORY[0x1E696A6E0];
       v13 = v6;
-      v14 = [v13 path];
-      v15 = [v11 predicateWithFormat:@"%K.path = %@", v12, v14];
+      path2 = [v13 path];
+      v15 = [v11 predicateWithFormat:@"%K.path = %@", v12, path2];
 
-      [a1 setPredicate:v15];
+      [self setPredicate:v15];
       v16 = [v7 copy];
-      [a1 setSearchScopes:v16];
+      [self setSearchScopes:v16];
 
 LABEL_10:
       goto LABEL_11;
@@ -111,13 +111,13 @@ LABEL_10:
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
     v25 = @"url";
-    v10 = v6;
+    null = v6;
     if (!v6)
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v26[0] = v10;
+    v26[0] = null;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v22 = [v19 exceptionWithName:v20 reason:@"invalid url" userInfo:v21];
     [v22 raise];
@@ -128,11 +128,11 @@ LABEL_10:
     }
   }
 
-  v8 = 0;
+  isFileURL = 0;
 LABEL_11:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v8;
+  return isFileURL;
 }
 
 - (uint64_t)br_setupForMonitoringItemAtURL:()BRCCloudDocsAdditions
@@ -145,7 +145,7 @@ LABEL_11:
   v5 = MEMORY[0x1E695DEC8];
   v6 = a3;
   v7 = [v5 arrayWithObjects:&v11 count:3];
-  v8 = [a1 br_setupForMonitoringItemAtURL:v6 searchScopes:{v7, v11, v12, v13, v14}];
+  v8 = [self br_setupForMonitoringItemAtURL:v6 searchScopes:{v7, v11, v12, v13, v14}];
 
   v9 = *MEMORY[0x1E69E9840];
   return v8;
@@ -156,22 +156,22 @@ LABEL_11:
   v26[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [v6 isFileURL];
-  if (v8)
+  isFileURL = [v6 isFileURL];
+  if (isFileURL)
   {
-    v9 = [v6 path];
-    if (v9)
+    path = [v6 path];
+    if (path)
     {
-      v10 = v9;
+      null = path;
       v11 = MEMORY[0x1E696AE18];
       v12 = *MEMORY[0x1E696A6E0];
       v13 = v6;
-      v14 = [v13 path];
-      v15 = [v11 predicateWithFormat:@"%K.URLByDeletingLastPathComponent.path = %@", v12, v14];
+      path2 = [v13 path];
+      v15 = [v11 predicateWithFormat:@"%K.URLByDeletingLastPathComponent.path = %@", v12, path2];
 
-      [a1 setPredicate:v15];
+      [self setPredicate:v15];
       v16 = [v7 copy];
-      [a1 setSearchScopes:v16];
+      [self setSearchScopes:v16];
 
 LABEL_10:
       goto LABEL_11;
@@ -190,13 +190,13 @@ LABEL_10:
     v19 = MEMORY[0x1E695DF30];
     v20 = *MEMORY[0x1E695D940];
     v25 = @"url";
-    v10 = v6;
+    null = v6;
     if (!v6)
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v26[0] = v10;
+    v26[0] = null;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v22 = [v19 exceptionWithName:v20 reason:@"invalid url" userInfo:v21];
     [v22 raise];
@@ -207,11 +207,11 @@ LABEL_10:
     }
   }
 
-  v8 = 0;
+  isFileURL = 0;
 LABEL_11:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v8;
+  return isFileURL;
 }
 
 - (uint64_t)br_setupForMonitoringChildrenOfItemAtURL:()BRCCloudDocsAdditions
@@ -224,7 +224,7 @@ LABEL_11:
   v5 = MEMORY[0x1E695DEC8];
   v6 = a3;
   v7 = [v5 arrayWithObjects:&v11 count:3];
-  v8 = [a1 br_setupForMonitoringChildrenOfItemAtURL:v6 searchScopes:{v7, v11, v12, v13, v14}];
+  v8 = [self br_setupForMonitoringChildrenOfItemAtURL:v6 searchScopes:{v7, v11, v12, v13, v14}];
 
   v9 = *MEMORY[0x1E69E9840];
   return v8;

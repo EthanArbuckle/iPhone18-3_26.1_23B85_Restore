@@ -1,19 +1,19 @@
 @interface PKDiscoveryInlineImageMediaShelfView
-- (PKDiscoveryInlineImageMediaShelfView)initWithShelf:(id)a3;
+- (PKDiscoveryInlineImageMediaShelfView)initWithShelf:(id)shelf;
 - (void)_loadImageFromBundle;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
+- (void)setImage:(id)image animated:(BOOL)animated;
 @end
 
 @implementation PKDiscoveryInlineImageMediaShelfView
 
-- (PKDiscoveryInlineImageMediaShelfView)initWithShelf:(id)a3
+- (PKDiscoveryInlineImageMediaShelfView)initWithShelf:(id)shelf
 {
   v4 = MEMORY[0x1E69DCAE0];
-  v5 = a3;
+  shelfCopy = shelf;
   v6 = [[v4 alloc] initWithImage:0];
   v9.receiver = self;
   v9.super_class = PKDiscoveryInlineImageMediaShelfView;
-  v7 = [(PKDiscoveryInlineCaptionedMediaShelfView *)&v9 initWithShelf:v5 mediaView:v6];
+  v7 = [(PKDiscoveryInlineCaptionedMediaShelfView *)&v9 initWithShelf:shelfCopy mediaView:v6];
 
   if (v7 && [(PKDiscoveryMedia *)v7->super._media type]== 3)
   {
@@ -23,27 +23,27 @@
   return v7;
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (animatedCopy)
   {
     v7 = MEMORY[0x1E69DD250];
-    v8 = [(PKDiscoveryInlineImageMediaShelfView *)self imageMediaView];
+    imageMediaView = [(PKDiscoveryInlineImageMediaShelfView *)self imageMediaView];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __58__PKDiscoveryInlineImageMediaShelfView_setImage_animated___block_invoke;
     v10[3] = &unk_1E8010A10;
     v10[4] = self;
-    v11 = v6;
-    [v7 transitionWithView:v8 duration:5242880 options:v10 animations:0 completion:0.300000012];
+    v11 = imageCopy;
+    [v7 transitionWithView:imageMediaView duration:5242880 options:v10 animations:0 completion:0.300000012];
   }
 
   else
   {
-    v9 = [(PKDiscoveryInlineImageMediaShelfView *)self imageMediaView];
-    [v9 setImage:v6];
+    imageMediaView2 = [(PKDiscoveryInlineImageMediaShelfView *)self imageMediaView];
+    [imageMediaView2 setImage:imageCopy];
   }
 }
 
@@ -55,12 +55,12 @@ void __58__PKDiscoveryInlineImageMediaShelfView_setImage_animated___block_invoke
 
 - (void)_loadImageFromBundle
 {
-  v3 = [(PKDiscoveryMedia *)self->super._media bundleImageName];
-  v4 = [(PKDiscoveryMedia *)self->super._media bundle];
-  v5 = v4;
-  if (v4)
+  bundleImageName = [(PKDiscoveryMedia *)self->super._media bundleImageName];
+  bundle = [(PKDiscoveryMedia *)self->super._media bundle];
+  v5 = bundle;
+  if (bundle)
   {
-    v6 = v4;
+    v6 = bundle;
   }
 
   else
@@ -70,9 +70,9 @@ void __58__PKDiscoveryInlineImageMediaShelfView_setImage_animated___block_invoke
 
   v7 = v6;
 
-  if (v3)
+  if (bundleImageName)
   {
-    v9 = [MEMORY[0x1E69DCAB8] imageNamed:v3 inBundle:v7];
+    v9 = [MEMORY[0x1E69DCAB8] imageNamed:bundleImageName inBundle:v7];
   }
 
   else
@@ -80,8 +80,8 @@ void __58__PKDiscoveryInlineImageMediaShelfView_setImage_animated___block_invoke
     v9 = 0;
   }
 
-  v8 = [(PKDiscoveryInlineImageMediaShelfView *)self imageMediaView];
-  [v8 setImage:v9];
+  imageMediaView = [(PKDiscoveryInlineImageMediaShelfView *)self imageMediaView];
+  [imageMediaView setImage:v9];
 }
 
 @end

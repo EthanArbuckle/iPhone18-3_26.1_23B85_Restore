@@ -1,11 +1,11 @@
 @interface CTLazuliGroupChatInformation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCTLazuliGroupChatInformation:(id)a3;
-- (CTLazuliGroupChatInformation)initWithCoder:(id)a3;
-- (CTLazuliGroupChatInformation)initWithReflection:(const void *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCTLazuliGroupChatInformation:(id)information;
+- (CTLazuliGroupChatInformation)initWithCoder:(id)coder;
+- (CTLazuliGroupChatInformation)initWithReflection:(const void *)reflection;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTLazuliGroupChatInformation
@@ -13,30 +13,30 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@", objc_opt_class()];
-  v4 = [(CTLazuliGroupChatInformation *)self participants];
-  [v3 appendFormat:@", participants = %@", v4];
+  participants = [(CTLazuliGroupChatInformation *)self participants];
+  [v3 appendFormat:@", participants = %@", participants];
 
-  v5 = [(CTLazuliGroupChatInformation *)self conversationID];
-  [v3 appendFormat:@", conversationID = %@", v5];
+  conversationID = [(CTLazuliGroupChatInformation *)self conversationID];
+  [v3 appendFormat:@", conversationID = %@", conversationID];
 
-  v6 = [(CTLazuliGroupChatInformation *)self contributionID];
-  [v3 appendFormat:@", contributionID = %@", v6];
+  contributionID = [(CTLazuliGroupChatInformation *)self contributionID];
+  [v3 appendFormat:@", contributionID = %@", contributionID];
 
-  v7 = [(CTLazuliGroupChatInformation *)self remoteUri];
-  [v3 appendFormat:@", remoteUri = %@", v7];
+  remoteUri = [(CTLazuliGroupChatInformation *)self remoteUri];
+  [v3 appendFormat:@", remoteUri = %@", remoteUri];
 
-  v8 = [(CTLazuliGroupChatInformation *)self subject];
-  [v3 appendFormat:@", subject = %@", v8];
+  subject = [(CTLazuliGroupChatInformation *)self subject];
+  [v3 appendFormat:@", subject = %@", subject];
 
-  v9 = [(CTLazuliGroupChatInformation *)self icon];
-  [v3 appendFormat:@", icon = %@", v9];
+  icon = [(CTLazuliGroupChatInformation *)self icon];
+  [v3 appendFormat:@", icon = %@", icon];
 
-  v10 = [(CTLazuliGroupChatInformation *)self mastermind];
-  [v3 appendFormat:@", mastermind = %@", v10];
+  mastermind = [(CTLazuliGroupChatInformation *)self mastermind];
+  [v3 appendFormat:@", mastermind = %@", mastermind];
 
-  v11 = [(CTLazuliGroupChatInformation *)self secure];
+  secure = [(CTLazuliGroupChatInformation *)self secure];
   v12 = "no";
-  if (v11)
+  if (secure)
   {
     v12 = "yes";
   }
@@ -47,16 +47,16 @@
   return v3;
 }
 
-- (BOOL)isEqualToCTLazuliGroupChatInformation:(id)a3
+- (BOOL)isEqualToCTLazuliGroupChatInformation:(id)information
 {
-  v5 = a3;
-  v6 = [(CTLazuliGroupChatInformation *)self participants];
-  v7 = [v5 participants];
-  if (v6 != v7)
+  informationCopy = information;
+  participants = [(CTLazuliGroupChatInformation *)self participants];
+  participants2 = [informationCopy participants];
+  if (participants != participants2)
   {
-    v42 = [(CTLazuliGroupChatInformation *)self participants];
-    v39 = [v5 participants];
-    if (![v42 isEqualToCTLazuliGroupChatParticipantList:?])
+    participants3 = [(CTLazuliGroupChatInformation *)self participants];
+    participants4 = [informationCopy participants];
+    if (![participants3 isEqualToCTLazuliGroupChatParticipantList:?])
     {
       LOBYTE(v8) = 0;
 LABEL_35:
@@ -65,24 +65,24 @@ LABEL_35:
     }
   }
 
-  v9 = [(CTLazuliGroupChatInformation *)self conversationID];
-  v10 = [v5 conversationID];
-  if (v9 == v10 || (-[CTLazuliGroupChatInformation conversationID](self, "conversationID"), v40 = objc_claimAutoreleasedReturnValue(), [v5 conversationID], v36 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v40, "isEqualToCTLazuliGroupChatConversationID:")))
+  conversationID = [(CTLazuliGroupChatInformation *)self conversationID];
+  conversationID2 = [informationCopy conversationID];
+  if (conversationID == conversationID2 || (-[CTLazuliGroupChatInformation conversationID](self, "conversationID"), v40 = objc_claimAutoreleasedReturnValue(), [informationCopy conversationID], v36 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v40, "isEqualToCTLazuliGroupChatConversationID:")))
   {
-    v41 = [(CTLazuliGroupChatInformation *)self contributionID];
-    v11 = [v5 contributionID];
-    if (v41 != v11)
+    contributionID = [(CTLazuliGroupChatInformation *)self contributionID];
+    contributionID2 = [informationCopy contributionID];
+    if (contributionID != contributionID2)
     {
-      v37 = [(CTLazuliGroupChatInformation *)self contributionID];
-      v32 = [v5 contributionID];
-      if (![v37 isEqualToCTLazuliGroupChatContributionID:?])
+      contributionID3 = [(CTLazuliGroupChatInformation *)self contributionID];
+      contributionID4 = [informationCopy contributionID];
+      if (![contributionID3 isEqualToCTLazuliGroupChatContributionID:?])
       {
         LOBYTE(v8) = 0;
-        v12 = v41;
+        v12 = contributionID;
 LABEL_31:
 
 LABEL_32:
-        if (v9 == v10)
+        if (conversationID == conversationID2)
         {
           goto LABEL_34;
         }
@@ -91,22 +91,22 @@ LABEL_32:
       }
     }
 
-    v38 = [(CTLazuliGroupChatInformation *)self remoteUri];
-    v34 = [v5 remoteUri];
-    if (v38 != v34)
+    remoteUri = [(CTLazuliGroupChatInformation *)self remoteUri];
+    remoteUri2 = [informationCopy remoteUri];
+    if (remoteUri != remoteUri2)
     {
-      v33 = [(CTLazuliGroupChatInformation *)self remoteUri];
-      v28 = [v5 remoteUri];
-      if (![v33 isEqualToCTLazuliGroupChatUri:?])
+      remoteUri3 = [(CTLazuliGroupChatInformation *)self remoteUri];
+      remoteUri4 = [informationCopy remoteUri];
+      if (![remoteUri3 isEqualToCTLazuliGroupChatUri:?])
       {
         LOBYTE(v8) = 0;
-        v13 = v38;
-        v14 = v34;
+        v13 = remoteUri;
+        v14 = remoteUri2;
 LABEL_29:
 
 LABEL_30:
-        v12 = v41;
-        if (v41 == v11)
+        v12 = contributionID;
+        if (contributionID == contributionID2)
         {
           goto LABEL_32;
         }
@@ -115,23 +115,23 @@ LABEL_30:
       }
     }
 
-    v35 = [(CTLazuliGroupChatInformation *)self subject];
-    v30 = [v5 subject];
-    if (v35 != v30)
+    subject = [(CTLazuliGroupChatInformation *)self subject];
+    subject2 = [informationCopy subject];
+    if (subject != subject2)
     {
-      v29 = [(CTLazuliGroupChatInformation *)self subject];
-      v25 = [v5 subject];
-      if (![v29 isEqualToCTLazuliGroupChatSubject:?])
+      subject3 = [(CTLazuliGroupChatInformation *)self subject];
+      subject4 = [informationCopy subject];
+      if (![subject3 isEqualToCTLazuliGroupChatSubject:?])
       {
         LOBYTE(v8) = 0;
-        v15 = v35;
-        v16 = v30;
+        v15 = subject;
+        v16 = subject2;
 LABEL_27:
 
 LABEL_28:
-        v13 = v38;
-        v14 = v34;
-        if (v38 == v34)
+        v13 = remoteUri;
+        v14 = remoteUri2;
+        if (remoteUri == remoteUri2)
         {
           goto LABEL_30;
         }
@@ -140,23 +140,23 @@ LABEL_28:
       }
     }
 
-    v31 = [(CTLazuliGroupChatInformation *)self icon];
-    v27 = [v5 icon];
-    if (v31 != v27)
+    icon = [(CTLazuliGroupChatInformation *)self icon];
+    icon2 = [informationCopy icon];
+    if (icon != icon2)
     {
-      v26 = [(CTLazuliGroupChatInformation *)self icon];
-      v23 = [v5 icon];
-      if (![v26 isEqualToCTLazuliGroupChatIcon:?])
+      icon3 = [(CTLazuliGroupChatInformation *)self icon];
+      icon4 = [informationCopy icon];
+      if (![icon3 isEqualToCTLazuliGroupChatIcon:?])
       {
         LOBYTE(v8) = 0;
-        v17 = v31;
-        v18 = v27;
+        v17 = icon;
+        v18 = icon2;
 LABEL_25:
 
 LABEL_26:
-        v15 = v35;
-        v16 = v30;
-        if (v35 == v30)
+        v15 = subject;
+        v16 = subject2;
+        if (subject == subject2)
         {
           goto LABEL_28;
         }
@@ -165,13 +165,13 @@ LABEL_26:
       }
     }
 
-    v19 = [(CTLazuliGroupChatInformation *)self mastermind];
-    v20 = [v5 mastermind];
-    if (v19 == v20 || (-[CTLazuliGroupChatInformation mastermind](self, "mastermind"), v24 = objc_claimAutoreleasedReturnValue(), [v5 mastermind], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "isEqualToCTLazuliGroupChatParticipant:", v3)))
+    mastermind = [(CTLazuliGroupChatInformation *)self mastermind];
+    mastermind2 = [informationCopy mastermind];
+    if (mastermind == mastermind2 || (-[CTLazuliGroupChatInformation mastermind](self, "mastermind"), v24 = objc_claimAutoreleasedReturnValue(), [informationCopy mastermind], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "isEqualToCTLazuliGroupChatParticipant:", v3)))
     {
-      v21 = [(CTLazuliGroupChatInformation *)self secure];
-      v8 = v21 ^ [v5 secure] ^ 1;
-      if (v19 == v20)
+      secure = [(CTLazuliGroupChatInformation *)self secure];
+      v8 = secure ^ [informationCopy secure] ^ 1;
+      if (mastermind == mastermind2)
       {
         goto LABEL_24;
       }
@@ -183,9 +183,9 @@ LABEL_26:
     }
 
 LABEL_24:
-    v17 = v31;
-    v18 = v27;
-    if (v31 == v27)
+    v17 = icon;
+    v18 = icon2;
+    if (icon == icon2)
     {
       goto LABEL_26;
     }
@@ -197,7 +197,7 @@ LABEL_24:
 LABEL_33:
 
 LABEL_34:
-  if (v6 != v7)
+  if (participants != participants2)
   {
     goto LABEL_35;
   }
@@ -207,134 +207,134 @@ LABEL_36:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliGroupChatInformation *)self isEqualToCTLazuliGroupChatInformation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CTLazuliGroupChatInformation *)self isEqualToCTLazuliGroupChatInformation:v5];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [CTLazuliGroupChatInformation allocWithZone:?];
-  v6 = [(CTLazuliGroupChatParticipantList *)self->_participants copyWithZone:a3];
+  v6 = [(CTLazuliGroupChatParticipantList *)self->_participants copyWithZone:zone];
   [(CTLazuliGroupChatInformation *)v5 setParticipants:v6];
 
-  v7 = [(CTLazuliGroupChatConversationID *)self->_conversationID copyWithZone:a3];
+  v7 = [(CTLazuliGroupChatConversationID *)self->_conversationID copyWithZone:zone];
   [(CTLazuliGroupChatInformation *)v5 setConversationID:v7];
 
-  v8 = [(CTLazuliGroupChatContributionID *)self->_contributionID copyWithZone:a3];
+  v8 = [(CTLazuliGroupChatContributionID *)self->_contributionID copyWithZone:zone];
   [(CTLazuliGroupChatInformation *)v5 setContributionID:v8];
 
-  v9 = [(CTLazuliGroupChatUri *)self->_remoteUri copyWithZone:a3];
+  v9 = [(CTLazuliGroupChatUri *)self->_remoteUri copyWithZone:zone];
   [(CTLazuliGroupChatInformation *)v5 setRemoteUri:v9];
 
-  v10 = [(CTLazuliGroupChatSubject *)self->_subject copyWithZone:a3];
+  v10 = [(CTLazuliGroupChatSubject *)self->_subject copyWithZone:zone];
   [(CTLazuliGroupChatInformation *)v5 setSubject:v10];
 
-  v11 = [(CTLazuliGroupChatIcon *)self->_icon copyWithZone:a3];
+  v11 = [(CTLazuliGroupChatIcon *)self->_icon copyWithZone:zone];
   [(CTLazuliGroupChatInformation *)v5 setIcon:v11];
 
-  v12 = [(CTLazuliGroupChatParticipant *)self->_mastermind copyWithZone:a3];
+  v12 = [(CTLazuliGroupChatParticipant *)self->_mastermind copyWithZone:zone];
   [(CTLazuliGroupChatInformation *)v5 setMastermind:v12];
 
   [(CTLazuliGroupChatInformation *)v5 setSecure:self->_secure];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_participants forKey:@"kParticipantsKey"];
-  [v4 encodeObject:self->_conversationID forKey:@"kConversationIDKey"];
-  [v4 encodeObject:self->_contributionID forKey:@"kContributionIDKey"];
-  [v4 encodeObject:self->_remoteUri forKey:@"kRemoteUriKey"];
-  [v4 encodeObject:self->_subject forKey:@"kSubjectKey"];
-  [v4 encodeObject:self->_icon forKey:@"kIconKey"];
-  [v4 encodeObject:self->_mastermind forKey:@"kMastermindKey"];
-  [v4 encodeBool:self->_secure forKey:@"kSecureKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_participants forKey:@"kParticipantsKey"];
+  [coderCopy encodeObject:self->_conversationID forKey:@"kConversationIDKey"];
+  [coderCopy encodeObject:self->_contributionID forKey:@"kContributionIDKey"];
+  [coderCopy encodeObject:self->_remoteUri forKey:@"kRemoteUriKey"];
+  [coderCopy encodeObject:self->_subject forKey:@"kSubjectKey"];
+  [coderCopy encodeObject:self->_icon forKey:@"kIconKey"];
+  [coderCopy encodeObject:self->_mastermind forKey:@"kMastermindKey"];
+  [coderCopy encodeBool:self->_secure forKey:@"kSecureKey"];
 }
 
-- (CTLazuliGroupChatInformation)initWithCoder:(id)a3
+- (CTLazuliGroupChatInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = CTLazuliGroupChatInformation;
   v5 = [(CTLazuliGroupChatInformation *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kParticipantsKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kParticipantsKey"];
     participants = v5->_participants;
     v5->_participants = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kConversationIDKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kConversationIDKey"];
     conversationID = v5->_conversationID;
     v5->_conversationID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kContributionIDKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kContributionIDKey"];
     contributionID = v5->_contributionID;
     v5->_contributionID = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kRemoteUriKey"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kRemoteUriKey"];
     remoteUri = v5->_remoteUri;
     v5->_remoteUri = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kSubjectKey"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSubjectKey"];
     subject = v5->_subject;
     v5->_subject = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kIconKey"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kIconKey"];
     icon = v5->_icon;
     v5->_icon = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kMastermindKey"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kMastermindKey"];
     mastermind = v5->_mastermind;
     v5->_mastermind = v18;
 
-    v5->_secure = [v4 decodeBoolForKey:@"kSecureKey"];
+    v5->_secure = [coderCopy decodeBoolForKey:@"kSecureKey"];
   }
 
   return v5;
 }
 
-- (CTLazuliGroupChatInformation)initWithReflection:(const void *)a3
+- (CTLazuliGroupChatInformation)initWithReflection:(const void *)reflection
 {
   v24.receiver = self;
   v24.super_class = CTLazuliGroupChatInformation;
   v4 = [(CTLazuliGroupChatInformation *)&v24 init];
   if (v4)
   {
-    v5 = [[CTLazuliGroupChatParticipantList alloc] initWithReflection:a3];
+    v5 = [[CTLazuliGroupChatParticipantList alloc] initWithReflection:reflection];
     participants = v4->_participants;
     v4->_participants = v5;
 
-    v7 = [[CTLazuliGroupChatConversationID alloc] initWithReflection:a3 + 48];
+    v7 = [[CTLazuliGroupChatConversationID alloc] initWithReflection:reflection + 48];
     conversationID = v4->_conversationID;
     v4->_conversationID = v7;
 
-    v9 = [[CTLazuliGroupChatContributionID alloc] initWithReflection:a3 + 72];
+    v9 = [[CTLazuliGroupChatContributionID alloc] initWithReflection:reflection + 72];
     contributionID = v4->_contributionID;
     v4->_contributionID = v9;
 
-    if (*(a3 + 168) == 1)
+    if (*(reflection + 168) == 1)
     {
       v11 = [CTLazuliGroupChatUri alloc];
-      if ((*(a3 + 168) & 1) == 0)
+      if ((*(reflection + 168) & 1) == 0)
       {
         goto LABEL_16;
       }
 
-      v12 = [(CTLazuliGroupChatUri *)v11 initWithReflection:a3 + 96];
+      v12 = [(CTLazuliGroupChatUri *)v11 initWithReflection:reflection + 96];
     }
 
     else
@@ -345,15 +345,15 @@ LABEL_36:
     remoteUri = v4->_remoteUri;
     v4->_remoteUri = v12;
 
-    if (*(a3 + 200) == 1)
+    if (*(reflection + 200) == 1)
     {
       v14 = [CTLazuliGroupChatSubject alloc];
-      if ((*(a3 + 200) & 1) == 0)
+      if ((*(reflection + 200) & 1) == 0)
       {
         goto LABEL_16;
       }
 
-      v15 = [(CTLazuliGroupChatSubject *)v14 initWithReflection:a3 + 176];
+      v15 = [(CTLazuliGroupChatSubject *)v14 initWithReflection:reflection + 176];
     }
 
     else
@@ -364,25 +364,25 @@ LABEL_36:
     subject = v4->_subject;
     v4->_subject = v15;
 
-    if (*(a3 + 280) != 1)
+    if (*(reflection + 280) != 1)
     {
       v18 = 0;
       goto LABEL_14;
     }
 
     v17 = [CTLazuliGroupChatIcon alloc];
-    if (*(a3 + 280))
+    if (*(reflection + 280))
     {
-      v18 = [(CTLazuliGroupChatIcon *)v17 initWithReflection:a3 + 208];
+      v18 = [(CTLazuliGroupChatIcon *)v17 initWithReflection:reflection + 208];
 LABEL_14:
       icon = v4->_icon;
       v4->_icon = v18;
 
-      v20 = [[CTLazuliGroupChatParticipant alloc] initWithReflection:a3 + 288];
+      v20 = [[CTLazuliGroupChatParticipant alloc] initWithReflection:reflection + 288];
       mastermind = v4->_mastermind;
       v4->_mastermind = v20;
 
-      v4->_secure = *(a3 + 320);
+      v4->_secure = *(reflection + 320);
       return v4;
     }
 

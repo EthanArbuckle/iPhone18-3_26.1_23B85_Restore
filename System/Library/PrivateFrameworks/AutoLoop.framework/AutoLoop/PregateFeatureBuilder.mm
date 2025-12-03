@@ -1,9 +1,9 @@
 @interface PregateFeatureBuilder
 - (PregateFeatureBuilder)init;
 - (id).cxx_construct;
-- (int)fillVector:(void *)a3 withPerFrameStats:(id)a4;
+- (int)fillVector:(void *)vector withPerFrameStats:(id)stats;
 - (int)processBlurVectors;
-- (int)processFullDictionary:(BOOL)a3;
+- (int)processFullDictionary:(BOOL)dictionary;
 - (int)processMovieMetadata;
 - (int)processOffsetVectors;
 - (int)processPresentationTimes;
@@ -17,21 +17,21 @@
 - (int)processVideoFaceInfo;
 - (int)processVideoInternal;
 - (int)readPerFrameMetadataToArrays;
-- (int)standardProcessKey:(id)a3 addToDictionary:(id)a4;
+- (int)standardProcessKey:(id)key addToDictionary:(id)dictionary;
 - (void)buildFullDictionary;
 @end
 
 @implementation PregateFeatureBuilder
 
-- (int)fillVector:(void *)a3 withPerFrameStats:(id)a4
+- (int)fillVector:(void *)vector withPerFrameStats:(id)stats
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  *(a3 + 1) = *a3;
+  statsCopy = stats;
+  *(vector + 1) = *vector;
   movieMetadata = self->_movieMetadata;
   if (movieMetadata)
   {
-    sub_2418F052C(a3, [(NSArray *)movieMetadata count]);
+    sub_2418F052C(vector, [(NSArray *)movieMetadata count]);
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -42,7 +42,7 @@
     if (v9)
     {
       v10 = *v32;
-      v29 = v6;
+      v29 = statsCopy;
       do
       {
         for (i = 0; i != v9; ++i)
@@ -57,28 +57,28 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v13 BOOLValue];
+            bOOLValue = [v13 BOOLValue];
           }
 
           else
           {
-            v14 = 0;
+            bOOLValue = 0;
           }
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v12 objectForKeyedSubscript:v6];
+            v15 = [v12 objectForKeyedSubscript:statsCopy];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
               [v15 floatValue];
-              v18 = *(a3 + 1);
-              v17 = *(a3 + 2);
+              v18 = *(vector + 1);
+              v17 = *(vector + 2);
               if (v18 >= v17)
               {
-                v20 = *a3;
-                v21 = v18 - *a3;
+                v20 = *vector;
+                v21 = v18 - *vector;
                 v22 = v21 >> 2;
                 v23 = (v21 >> 2) + 1;
                 if (v23 >> 62)
@@ -101,22 +101,22 @@
 
                 if (v26)
                 {
-                  sub_2418DB6FC(a3, v26);
+                  sub_2418DB6FC(vector, v26);
                 }
 
                 *(4 * v22) = v16;
                 v19 = 4 * v22 + 4;
                 memcpy(0, v20, v21);
-                v27 = *a3;
-                *a3 = 0;
-                *(a3 + 1) = v19;
-                *(a3 + 2) = 0;
+                v27 = *vector;
+                *vector = 0;
+                *(vector + 1) = v19;
+                *(vector + 2) = 0;
                 if (v27)
                 {
                   operator delete(v27);
                 }
 
-                v6 = v29;
+                statsCopy = v29;
               }
 
               else
@@ -125,10 +125,10 @@
                 v19 = (v18 + 1);
               }
 
-              *(a3 + 1) = v19;
+              *(vector + 1) = v19;
             }
 
-            else if (!v14)
+            else if (!bOOLValue)
             {
               v8 = -4443998;
             }
@@ -156,47 +156,47 @@
   return v8;
 }
 
-- (int)standardProcessKey:(id)a3 addToDictionary:(id)a4
+- (int)standardProcessKey:(id)key addToDictionary:(id)dictionary
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  dictionaryCopy = dictionary;
   __p = 0;
   v30 = 0;
   v31 = 0;
-  v8 = [(PregateFeatureBuilder *)self fillVector:&__p withPerFrameStats:v6];
+  v8 = [(PregateFeatureBuilder *)self fillVector:&__p withPerFrameStats:keyCopy];
   v9 = __p;
   if (!v8 && v30 != __p)
   {
     v27 = 0;
     v28 = 0;
     sub_2418F005C(&__p, &v27, &v28 + 1, &v28, &v27 + 1);
-    v10 = [@"pregate_" stringByAppendingString:v6];
+    v10 = [@"pregate_" stringByAppendingString:keyCopy];
     v11 = [v10 stringByAppendingString:@"_mean"];
 
     LODWORD(v12) = v27;
     v13 = [MEMORY[0x277CCABB0] numberWithFloat:v12];
-    [v7 setObject:v13 forKeyedSubscript:v11];
+    [dictionaryCopy setObject:v13 forKeyedSubscript:v11];
 
-    v14 = [@"pregate_" stringByAppendingString:v6];
+    v14 = [@"pregate_" stringByAppendingString:keyCopy];
     v15 = [v14 stringByAppendingString:@"_max"];
 
     LODWORD(v16) = v28;
     v17 = [MEMORY[0x277CCABB0] numberWithFloat:v16];
-    [v7 setObject:v17 forKeyedSubscript:v15];
+    [dictionaryCopy setObject:v17 forKeyedSubscript:v15];
 
-    v18 = [@"pregate_" stringByAppendingString:v6];
+    v18 = [@"pregate_" stringByAppendingString:keyCopy];
     v19 = [v18 stringByAppendingString:@"_min"];
 
     LODWORD(v20) = HIDWORD(v28);
     v21 = [MEMORY[0x277CCABB0] numberWithFloat:v20];
-    [v7 setObject:v21 forKeyedSubscript:v19];
+    [dictionaryCopy setObject:v21 forKeyedSubscript:v19];
 
-    v22 = [@"pregate_" stringByAppendingString:v6];
+    v22 = [@"pregate_" stringByAppendingString:keyCopy];
     v23 = [v22 stringByAppendingString:@"_sd"];
 
     LODWORD(v24) = HIDWORD(v27);
     v25 = [MEMORY[0x277CCABB0] numberWithFloat:v24];
-    [v7 setObject:v25 forKeyedSubscript:v23];
+    [dictionaryCopy setObject:v25 forKeyedSubscript:v23];
 
     v9 = __p;
   }
@@ -1202,18 +1202,18 @@ LABEL_9:
   result = [(ExifMetadataExtractor *)irisStillExtractor processFile];
   if (!result)
   {
-    v5 = [(ExifMetadataExtractor *)self->irisStillExtractor metadataDictionary];
+    metadataDictionary = [(ExifMetadataExtractor *)self->irisStillExtractor metadataDictionary];
     stillImageMetadata = self->_stillImageMetadata;
-    self->_stillImageMetadata = v5;
+    self->_stillImageMetadata = metadataDictionary;
 
     if (self->_stillImageMetadata)
     {
       result = [(PregateFeatureBuilder *)self processStillImageMetadata];
       if (!result)
       {
-        v7 = [(ExifMetadataExtractor *)self->irisStillExtractor facesArray];
+        facesArray = [(ExifMetadataExtractor *)self->irisStillExtractor facesArray];
         facesArray = self->_facesArray;
-        self->_facesArray = v7;
+        self->_facesArray = facesArray;
 
         return MEMORY[0x2821F9670](self, sel_processStillImageFaceData);
       }
@@ -1239,18 +1239,18 @@ LABEL_9:
   result = [(IrisVideoMetadataExtractor *)irisVideoExtractor processFile];
   if (!result)
   {
-    v5 = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor framesMetadataArray];
+    framesMetadataArray = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor framesMetadataArray];
     movieMetadata = self->_movieMetadata;
-    self->_movieMetadata = v5;
+    self->_movieMetadata = framesMetadataArray;
 
     if (self->_movieMetadata)
     {
       result = [(PregateFeatureBuilder *)self processMovieMetadata];
       if (!result)
       {
-        v7 = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor videoTrackMetadataDict];
+        videoTrackMetadataDict = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor videoTrackMetadataDict];
         videoTrackMetadataDict = self->_videoTrackMetadataDict;
-        self->_videoTrackMetadataDict = v7;
+        self->_videoTrackMetadataDict = videoTrackMetadataDict;
 
         if (self->_videoTrackMetadataDict)
         {
@@ -1312,34 +1312,34 @@ LABEL_9:
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
   v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
-  v4 = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor allMetadata];
-  [v12 setObject:v4 forKeyedSubscript:@"FullMetadata"];
+  allMetadata = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor allMetadata];
+  [v12 setObject:allMetadata forKeyedSubscript:@"FullMetadata"];
 
-  v5 = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor framesMetadataArray];
-  [v12 setObject:v5 forKeyedSubscript:@"framesMetadata"];
+  framesMetadataArray = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor framesMetadataArray];
+  [v12 setObject:framesMetadataArray forKeyedSubscript:@"framesMetadata"];
 
-  v6 = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor videoTrackMetadataDict];
-  [v12 setObject:v6 forKeyedSubscript:@"videoTrackMetadata"];
+  videoTrackMetadataDict = [(IrisVideoMetadataExtractor *)self->irisVideoExtractor videoTrackMetadataDict];
+  [v12 setObject:videoTrackMetadataDict forKeyedSubscript:@"videoTrackMetadata"];
 
   [(NSMutableDictionary *)v3 setObject:v12 forKeyedSubscript:@"videoMetadata"];
   v7 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:0];
-  v8 = [(ExifMetadataExtractor *)self->irisStillExtractor allMetadata];
-  [v7 setObject:v8 forKeyedSubscript:@"fullMetadata"];
+  allMetadata2 = [(ExifMetadataExtractor *)self->irisStillExtractor allMetadata];
+  [v7 setObject:allMetadata2 forKeyedSubscript:@"fullMetadata"];
 
-  v9 = [(ExifMetadataExtractor *)self->irisStillExtractor metadataDictionary];
-  [v7 setObject:v9 forKeyedSubscript:@"stillFrameData"];
+  metadataDictionary = [(ExifMetadataExtractor *)self->irisStillExtractor metadataDictionary];
+  [v7 setObject:metadataDictionary forKeyedSubscript:@"stillFrameData"];
 
-  v10 = [(ExifMetadataExtractor *)self->irisStillExtractor facesArray];
-  [v7 setObject:v10 forKeyedSubscript:@"facesArray"];
+  facesArray = [(ExifMetadataExtractor *)self->irisStillExtractor facesArray];
+  [v7 setObject:facesArray forKeyedSubscript:@"facesArray"];
 
   [(NSMutableDictionary *)v3 setObject:v7 forKeyedSubscript:@"stillMetadata"];
   fullFeaturesDict = self->fullFeaturesDict;
   self->fullFeaturesDict = v3;
 }
 
-- (int)processFullDictionary:(BOOL)a3
+- (int)processFullDictionary:(BOOL)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   fullFeaturesDict = self->fullFeaturesDict;
   self->fullFeaturesDict = 0;
 
@@ -1354,8 +1354,8 @@ LABEL_9:
   if (irisStillExtractor)
   {
     [(ExifMetadataExtractor *)irisStillExtractor setSaveAllMetadata:1];
-    v9 = [(PregateFeatureBuilder *)self processStillInternal];
-    if (v9 && !v3)
+    processStillInternal = [(PregateFeatureBuilder *)self processStillInternal];
+    if (processStillInternal && !dictionaryCopy)
     {
       goto LABEL_10;
     }
@@ -1363,19 +1363,19 @@ LABEL_9:
 
   else
   {
-    v9 = 0;
+    processStillInternal = 0;
   }
 
   irisVideoExtractor = self->irisVideoExtractor;
   if (irisVideoExtractor)
   {
     [(IrisVideoMetadataExtractor *)irisVideoExtractor setSaveAllMetadata:1];
-    v9 = [(PregateFeatureBuilder *)self processVideoInternal];
+    processStillInternal = [(PregateFeatureBuilder *)self processVideoInternal];
   }
 
 LABEL_10:
   [(PregateFeatureBuilder *)self buildFullDictionary];
-  return v9;
+  return processStillInternal;
 }
 
 - (id).cxx_construct

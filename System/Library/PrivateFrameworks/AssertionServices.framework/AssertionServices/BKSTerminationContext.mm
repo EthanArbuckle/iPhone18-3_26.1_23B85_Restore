@@ -1,9 +1,9 @@
 @interface BKSTerminationContext
 + (id)context;
 + (id)terminationAssertionContext;
-- (BOOL)_isEqualToTerminationContext:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)_isEqualToTerminationContext:(id)context;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BKSTerminationContext
@@ -24,15 +24,15 @@
   return v2;
 }
 
-- (BOOL)_isEqualToTerminationContext:(id)a3
+- (BOOL)_isEqualToTerminationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   exceptionCode = self->_exceptionCode;
-  if (exceptionCode == [v4 exceptionCode])
+  if (exceptionCode == [contextCopy exceptionCode])
   {
     explanation = self->_explanation;
-    v7 = [v4 explanation];
-    v8 = [(NSString *)explanation isEqualToString:v7];
+    explanation = [contextCopy explanation];
+    v8 = [(NSString *)explanation isEqualToString:explanation];
   }
 
   else
@@ -43,12 +43,12 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(BKSTerminationContext *)self _isEqualToTerminationContext:v4];
+    v5 = [(BKSTerminationContext *)self _isEqualToTerminationContext:equalCopy];
   }
 
   else
@@ -59,7 +59,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[BKSTerminationContext allocWithZone:?]];
   [(BKSTerminationContext *)v4 setExceptionCode:self->_exceptionCode];

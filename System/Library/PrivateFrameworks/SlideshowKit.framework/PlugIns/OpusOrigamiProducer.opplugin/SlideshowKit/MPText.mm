@@ -1,15 +1,15 @@
 @interface MPText
-+ (MPText)textWithAttributedString:(id)a3;
++ (MPText)textWithAttributedString:(id)string;
 - (BOOL)isOriginal;
 - (MPText)init;
-- (MPText)initWithAttributedString:(id)a3;
+- (MPText)initWithAttributedString:(id)string;
 - (double)displayDuration;
 - (double)displayStartTime;
 - (double)displayTime;
 - (double)maxFontSize;
 - (double)textAreaAspectRatio;
 - (id)action;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)defaultString;
 - (id)nearestPlug;
 - (id)plainString;
@@ -17,30 +17,30 @@
 - (int64_t)index;
 - (void)checkForMaxFontSize;
 - (void)checkForPlacesLabel;
-- (void)copyStruct:(id)a3;
+- (void)copyStruct:(id)struct;
 - (void)dealloc;
-- (void)setAttributedString:(id)a3;
-- (void)setParent:(id)a3;
-- (void)setPlainString:(id)a3;
-- (void)setText:(id)a3;
+- (void)setAttributedString:(id)string;
+- (void)setParent:(id)parent;
+- (void)setPlainString:(id)string;
+- (void)setText:(id)text;
 @end
 
 @implementation MPText
 
-+ (MPText)textWithAttributedString:(id)a3
++ (MPText)textWithAttributedString:(id)string
 {
-  v3 = [[a1 alloc] initWithAttributedString:a3];
+  v3 = [[self alloc] initWithAttributedString:string];
 
   return v3;
 }
 
-- (MPText)initWithAttributedString:(id)a3
+- (MPText)initWithAttributedString:(id)string
 {
   v4 = [(MPText *)self init];
   v5 = v4;
   if (v4)
   {
-    [(MPTextInternal *)v4->_internal setAttributedString:a3];
+    [(MPTextInternal *)v4->_internal setAttributedString:string];
   }
 
   return v5;
@@ -61,9 +61,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 copyStruct:self->_internal];
   return v4;
 }
@@ -83,9 +83,9 @@
   [(MPText *)&v4 dealloc];
 }
 
-- (void)setAttributedString:(id)a3
+- (void)setAttributedString:(id)string
 {
-  if (([a3 isEqualToAttributedString:{-[MPTextInternal attributedString](self->_internal, "attributedString")}] & 1) == 0)
+  if (([string isEqualToAttributedString:{-[MPTextInternal attributedString](self->_internal, "attributedString")}] & 1) == 0)
   {
     if ([(MPText *)self parentEffect])
     {
@@ -99,7 +99,7 @@
       v6 = 1;
     }
 
-    v7 = [[NSMutableAttributedString alloc] initWithAttributedString:a3];
+    v7 = [[NSMutableAttributedString alloc] initWithAttributedString:string];
     v8 = v7;
     if (v5)
     {
@@ -120,10 +120,10 @@
     [(MPText *)self checkForPlacesLabel];
     if (self->_text)
     {
-      v10 = [(MPTextInternal *)self->_internal attributedString];
+      attributedString = [(MPTextInternal *)self->_internal attributedString];
       text = self->_text;
 
-      [(MCText *)text setAttributedString:v10];
+      [(MCText *)text setAttributedString:attributedString];
     }
   }
 }
@@ -131,7 +131,7 @@
 - (id)subtitleSlide
 {
   v2 = [-[MPText parentEffect](self "parentEffect")];
-  v3 = [v2 parentLayer];
+  parentLayer = [v2 parentLayer];
   v4 = [+[MPStyleManager sharedManager](MPStyleManager "sharedManager")];
   if (v4 == &dword_0 + 2)
   {
@@ -139,7 +139,7 @@
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [objc_msgSend(v3 objectInEffectContainersAtIndex:{objc_msgSend(v2, "index") + 1), "effects"}];
+    v10 = [objc_msgSend(parentLayer objectInEffectContainersAtIndex:{objc_msgSend(v2, "index") + 1), "effects"}];
     result = [v10 countByEnumeratingWithState:&v23 objects:v32 count:16];
     if (result)
     {
@@ -185,7 +185,7 @@ LABEL_14:
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v15 = [objc_msgSend(v3 objectInEffectContainersAtIndex:{objc_msgSend(v2, "index") - 1), "effects", 0}];
+    v15 = [objc_msgSend(parentLayer objectInEffectContainersAtIndex:{objc_msgSend(v2, "index") - 1), "effects", 0}];
     result = [v15 countByEnumeratingWithState:&v19 objects:v31 count:16];
     if (result)
     {
@@ -227,8 +227,8 @@ LABEL_24:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v5 = [v2 effects];
-    result = [v5 countByEnumeratingWithState:&v27 objects:v33 count:16];
+    effects = [v2 effects];
+    result = [effects countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (result)
     {
       v7 = result;
@@ -239,7 +239,7 @@ LABEL_5:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(effects);
         }
 
         result = [objc_msgSend(*(*(&v27 + 1) + 8 * v9) "slides")];
@@ -250,7 +250,7 @@ LABEL_5:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v27 objects:v33 count:16];
+          v7 = [effects countByEnumeratingWithState:&v27 objects:v33 count:16];
           result = 0;
           if (v7)
           {
@@ -283,9 +283,9 @@ LABEL_5:
 
   else
   {
-    v6 = [(MPEffectSupport *)parent texts];
+    texts = [(MPEffectSupport *)parent texts];
 
-    return [v6 indexOfObject:self];
+    return [texts indexOfObject:self];
   }
 }
 
@@ -357,13 +357,13 @@ LABEL_5:
   }
 
   location = NSRangeFromString([-[MPText parentEffect](self "parentEffect")]).location;
-  v4 = [(MPText *)self index];
+  index = [(MPText *)self index];
   result = 3.75;
-  if (v4 | location)
+  if (index | location)
   {
-    v6 = [(MPText *)self index];
+    index2 = [(MPText *)self index];
     result = 2.75;
-    if (v6 <= 0)
+    if (index2 <= 0)
     {
       return 0.0;
     }
@@ -374,10 +374,10 @@ LABEL_5:
 
 - (double)textAreaAspectRatio
 {
-  v2 = [(MPText *)self parentEffect];
-  if (v2)
+  parentEffect = [(MPText *)self parentEffect];
+  if (parentEffect)
   {
-    v3 = v2;
+    parentContainer = parentEffect;
     v4 = 1.0;
     while (1)
     {
@@ -387,24 +387,24 @@ LABEL_5:
         return v4;
       }
 
-      if ([v3 conformsToProtocol:&OBJC_PROTOCOL___MPGeometrySupport])
+      if ([parentContainer conformsToProtocol:&OBJC_PROTOCOL___MPGeometrySupport])
       {
-        [v3 size];
+        [parentContainer size];
         v6 = v5;
-        [v3 size];
+        [parentContainer size];
         v4 = v4 * (v6 / v7);
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v3 = [v3 parentContainer];
+        parentContainer = [parentContainer parentContainer];
       }
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [v3 parentLayer];
+        parentLayer = [parentContainer parentLayer];
       }
 
       else
@@ -427,12 +427,12 @@ LABEL_5:
           }
         }
 
-        v8 = [v3 parent];
+        parentLayer = [parentContainer parent];
       }
 
-      v3 = v8;
+      parentContainer = parentLayer;
 LABEL_16:
-      if (!v3)
+      if (!parentContainer)
       {
         return v4;
       }
@@ -444,35 +444,35 @@ LABEL_16:
 
 - (id)defaultString
 {
-  v3 = [(MPText *)self parentEffect];
+  parentEffect = [(MPText *)self parentEffect];
   v4 = +[MPEffectManager sharedManager];
-  v5 = [v3 effectID];
-  v6 = [v3 presetID];
-  v7 = [(MPText *)self index];
+  effectID = [parentEffect effectID];
+  presetID = [parentEffect presetID];
+  index = [(MPText *)self index];
 
-  return [v4 defaultStringForTextInEffectID:v5 presetID:v6 atIndex:v7];
+  return [v4 defaultStringForTextInEffectID:effectID presetID:presetID atIndex:index];
 }
 
 - (double)maxFontSize
 {
-  v3 = [(MPText *)self parentEffect];
+  parentEffect = [(MPText *)self parentEffect];
   v4 = +[MPEffectManager sharedManager];
-  v5 = [v3 effectID];
-  v6 = [v3 presetID];
-  v7 = [(MPText *)self index];
+  effectID = [parentEffect effectID];
+  presetID = [parentEffect presetID];
+  index = [(MPText *)self index];
 
-  [v4 maxFontSizeInEffectID:v5 presetID:v6 atIndex:v7];
+  [v4 maxFontSizeInEffectID:effectID presetID:presetID atIndex:index];
   return result;
 }
 
 - (BOOL)isOriginal
 {
-  v3 = [(MPEffectSupport *)self->_parent parentDocument];
-  if (v3)
+  parentDocument = [(MPEffectSupport *)self->_parent parentDocument];
+  if (parentDocument)
   {
-    v4 = v3;
-    LODWORD(v3) = [objc_msgSend(-[MPText parentEffect](self "parentEffect")];
-    if (v3)
+    v4 = parentDocument;
+    LODWORD(parentDocument) = [objc_msgSend(-[MPText parentEffect](self "parentEffect")];
+    if (parentDocument)
     {
       v5 = [v4 authoringOptionForKey:kMPAuthoringPlaceLabels];
       v6 = NSRangeFromString([-[MPText parentEffect](self "parentEffect")]);
@@ -483,8 +483,8 @@ LABEL_16:
         if ([(MPText *)self index]< 1)
         {
 LABEL_33:
-          LOBYTE(v3) = 0;
-          return v3;
+          LOBYTE(parentDocument) = 0;
+          return parentDocument;
         }
 
         v18 = [objc_msgSend(v8 objectAtIndex:{-[MPText index](self, "index") - 1), "objectForKey:", @"photos"}];
@@ -617,24 +617,24 @@ LABEL_11:
       }
 
 LABEL_31:
-      LOBYTE(v3) = 1;
+      LOBYTE(parentDocument) = 1;
     }
   }
 
-  return v3;
+  return parentDocument;
 }
 
 - (id)plainString
 {
-  v2 = [(MCText *)self->_text attributedString];
+  attributedString = [(MCText *)self->_text attributedString];
 
-  return [(NSAttributedString *)v2 string];
+  return [(NSAttributedString *)attributedString string];
 }
 
-- (void)setPlainString:(id)a3
+- (void)setPlainString:(id)string
 {
   v5 = [[NSMutableAttributedString alloc] initWithAttributedString:{-[MPText attributedString](self, "attributedString")}];
-  [v5 replaceCharactersInRange:0 withString:{objc_msgSend(v5, "length"), a3}];
+  [v5 replaceCharactersInRange:0 withString:{objc_msgSend(v5, "length"), string}];
   [(MPText *)self setAttributedString:v5];
 }
 
@@ -646,9 +646,9 @@ LABEL_31:
   return [v3 actionForKey:v4];
 }
 
-- (void)copyStruct:(id)a3
+- (void)copyStruct:(id)struct
 {
-  v4 = [objc_msgSend(a3 "attributedString")];
+  v4 = [objc_msgSend(struct "attributedString")];
   internal = self->_internal;
 
   [(MPTextInternal *)internal setAttributedString:v4];
@@ -656,12 +656,12 @@ LABEL_31:
 
 - (id)nearestPlug
 {
-  v2 = [(MPText *)self parentEffect];
+  parentEffect = [(MPText *)self parentEffect];
 
-  return [v2 nearestPlug];
+  return [parentEffect nearestPlug];
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   text = self->_text;
   if (text)
@@ -670,35 +670,35 @@ LABEL_31:
     self->_text = 0;
   }
 
-  v6 = a3;
-  self->_text = v6;
-  if (v6)
+  textCopy = text;
+  self->_text = textCopy;
+  if (textCopy)
   {
-    v7 = [(MPTextInternal *)self->_internal attributedString];
+    attributedString = [(MPTextInternal *)self->_internal attributedString];
     v8 = self->_text;
 
-    [(MCText *)v8 setAttributedString:v7];
+    [(MCText *)v8 setAttributedString:attributedString];
   }
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if (a3 && self->_parent)
+  if (parent && self->_parent)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"A text may one have one parent.  Please remove it first.  This is unsupported." userInfo:0, v3, v4]);
   }
 
-  self->_parent = a3;
+  self->_parent = parent;
 
   [(MPText *)self checkForMaxFontSize];
 }
 
 - (void)checkForPlacesLabel
 {
-  v3 = [(MPEffectSupport *)self->_parent parentDocument];
-  if (v3)
+  parentDocument = [(MPEffectSupport *)self->_parent parentDocument];
+  if (parentDocument)
   {
-    v4 = v3;
+    v4 = parentDocument;
     if ([objc_msgSend(-[MPText parentEffect](self "parentEffect")])
     {
       v24 = v4;

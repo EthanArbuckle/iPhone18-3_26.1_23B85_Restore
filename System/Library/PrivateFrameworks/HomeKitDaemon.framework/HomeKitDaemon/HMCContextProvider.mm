@@ -1,84 +1,84 @@
 @interface HMCContextProvider
-- (HMCContextProvider)initWithContext:(id)a3;
-- (id)futureInContext:(id)a3;
-- (void)performBlock:(id)a3;
-- (void)registerForChangesOfDatabaseModels:(id)a3 orWithModelIDs:(id)a4 changeMask:(unint64_t)a5 selector:(SEL)a6;
+- (HMCContextProvider)initWithContext:(id)context;
+- (id)futureInContext:(id)context;
+- (void)performBlock:(id)block;
+- (void)registerForChangesOfDatabaseModels:(id)models orWithModelIDs:(id)ds changeMask:(unint64_t)mask selector:(SEL)selector;
 - (void)removeAllRegistrations;
-- (void)unsafeSynchronousBlock:(id)a3;
+- (void)unsafeSynchronousBlock:(id)block;
 @end
 
 @implementation HMCContextProvider
 
 - (void)removeAllRegistrations
 {
-  v3 = [(HMCContextProvider *)self redirections];
-  [v3 hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_238102];
+  redirections = [(HMCContextProvider *)self redirections];
+  [redirections hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_238102];
 
-  v4 = [(HMCContextProvider *)self redirections];
-  [v4 removeAllObjects];
+  redirections2 = [(HMCContextProvider *)self redirections];
+  [redirections2 removeAllObjects];
 }
 
-- (void)registerForChangesOfDatabaseModels:(id)a3 orWithModelIDs:(id)a4 changeMask:(unint64_t)a5 selector:(SEL)a6
+- (void)registerForChangesOfDatabaseModels:(id)models orWithModelIDs:(id)ds changeMask:(unint64_t)mask selector:(SEL)selector
 {
-  v11 = MEMORY[0x277CBEBF8];
-  if (a3)
+  dsCopy = MEMORY[0x277CBEBF8];
+  if (models)
   {
-    v12 = a3;
+    modelsCopy = models;
   }
 
   else
   {
-    v12 = MEMORY[0x277CBEBF8];
+    modelsCopy = MEMORY[0x277CBEBF8];
   }
 
-  if (a4)
+  if (ds)
   {
-    v11 = a4;
+    dsCopy = ds;
   }
 
-  v13 = v11;
-  v14 = v12;
-  v15 = a4;
-  v21 = a3;
-  v16 = [(HMCContextProvider *)self redirections];
-  v17 = [(HMCContextProvider *)self context];
-  v18 = [v17 partition];
-  v19 = [v18 redirections];
-  v20 = [v19 addTarget:self selector:a6 changeMask:a5 forChangesOfObjectsWithModelType:v14 forChangesOfObjectsWithModelID:v13];
+  v13 = dsCopy;
+  v14 = modelsCopy;
+  dsCopy2 = ds;
+  modelsCopy2 = models;
+  redirections = [(HMCContextProvider *)self redirections];
+  context = [(HMCContextProvider *)self context];
+  partition = [context partition];
+  redirections2 = [partition redirections];
+  v20 = [redirections2 addTarget:self selector:selector changeMask:mask forChangesOfObjectsWithModelType:v14 forChangesOfObjectsWithModelID:v13];
 
-  [v16 addObject:v20];
+  [redirections addObject:v20];
 }
 
-- (id)futureInContext:(id)a3
+- (id)futureInContext:(id)context
 {
-  v4 = a3;
-  v5 = [(HMCContextProvider *)self context];
+  contextCopy = context;
+  context = [(HMCContextProvider *)self context];
   v6 = MEMORY[0x277D0F7C0];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __38__HMCContextProvider_futureInContext___block_invoke;
   v11[3] = &unk_278683B08;
-  v12 = v5;
-  v13 = v4;
-  v7 = v5;
-  v8 = v4;
+  v12 = context;
+  v13 = contextCopy;
+  v7 = context;
+  v8 = contextCopy;
   v9 = [v6 inContext:v7 perform:v11];
 
   return v9;
 }
 
-- (void)unsafeSynchronousBlock:(id)a3
+- (void)unsafeSynchronousBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMCContextProvider *)self context];
+  blockCopy = block;
+  context = [(HMCContextProvider *)self context];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__HMCContextProvider_unsafeSynchronousBlock___block_invoke;
   v8[3] = &unk_27868A7A0;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = context;
+  v10 = blockCopy;
+  v6 = blockCopy;
+  v7 = context;
   [v7 unsafeSynchronousBlock:v8];
 }
 
@@ -92,18 +92,18 @@ uint64_t __45__HMCContextProvider_unsafeSynchronousBlock___block_invoke(uint64_t
   return [*(a1 + 32) reset];
 }
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMCContextProvider *)self context];
+  blockCopy = block;
+  context = [(HMCContextProvider *)self context];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__HMCContextProvider_performBlock___block_invoke;
   v8[3] = &unk_27868A7A0;
-  v9 = v5;
-  v10 = v4;
-  v6 = v5;
-  v7 = v4;
+  v9 = context;
+  v10 = blockCopy;
+  v6 = context;
+  v7 = blockCopy;
   [v6 performBlock:v8];
 }
 
@@ -115,19 +115,19 @@ void __35__HMCContextProvider_performBlock___block_invoke(uint64_t a1)
   [v3 reset];
 }
 
-- (HMCContextProvider)initWithContext:(id)a3
+- (HMCContextProvider)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = HMCContextProvider;
   v6 = [(HMCContextProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
-    v8 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v6->_context, context);
+    array = [MEMORY[0x277CBEB18] array];
     redirections = v7->_redirections;
-    v7->_redirections = v8;
+    v7->_redirections = array;
   }
 
   return v7;

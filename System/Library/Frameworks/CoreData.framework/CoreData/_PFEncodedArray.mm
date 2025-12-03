@@ -1,7 +1,7 @@
 @interface _PFEncodedArray
 - (id)description;
 - (id)mutableCopy;
-- (void)_replaceObject:(id)a3 atIndex:(unint64_t)a4;
+- (void)_replaceObject:(id)object atIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -38,12 +38,12 @@
   return [v3 initWithObjects:&self[1] count:count];
 }
 
-- (void)_replaceObject:(id)a3 atIndex:(unint64_t)a4
+- (void)_replaceObject:(id)object atIndex:(unint64_t)index
 {
-  v7 = a3;
-  v8 = (&self->super.super.isa + a4);
+  objectCopy = object;
+  v8 = (&self->super.super.isa + index);
 
-  v8[3] = a3;
+  v8[3] = object;
 }
 
 @end

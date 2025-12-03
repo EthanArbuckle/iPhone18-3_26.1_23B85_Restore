@@ -1,21 +1,21 @@
 @interface AWDWiFiMetricRssiHistory
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)bcnFrmsHistoryAtIndex:(unint64_t)a3;
-- (int)bcnPerHistoryAtIndex:(unint64_t)a3;
-- (int)fwTxFrmsHistoryAtIndex:(unint64_t)a3;
-- (int)fwTxPerHistoryAtIndex:(unint64_t)a3;
-- (int)rssiHistoryAtIndex:(unint64_t)a3;
-- (int)txFrmsHistoryAtIndex:(unint64_t)a3;
-- (int)txPerHistoryAtIndex:(unint64_t)a3;
+- (int)bcnFrmsHistoryAtIndex:(unint64_t)index;
+- (int)bcnPerHistoryAtIndex:(unint64_t)index;
+- (int)fwTxFrmsHistoryAtIndex:(unint64_t)index;
+- (int)fwTxPerHistoryAtIndex:(unint64_t)index;
+- (int)rssiHistoryAtIndex:(unint64_t)index;
+- (int)txFrmsHistoryAtIndex:(unint64_t)index;
+- (int)txPerHistoryAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGatewayARPHistory:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasGatewayARPHistory:(BOOL)history;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricRssiHistory
@@ -34,93 +34,93 @@
   [(AWDWiFiMetricRssiHistory *)&v3 dealloc];
 }
 
-- (int)rssiHistoryAtIndex:(unint64_t)a3
+- (int)rssiHistoryAtIndex:(unint64_t)index
 {
   p_rssiHistorys = &self->_rssiHistorys;
   count = self->_rssiHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_rssiHistorys->list[a3];
+  return p_rssiHistorys->list[index];
 }
 
-- (int)txPerHistoryAtIndex:(unint64_t)a3
+- (int)txPerHistoryAtIndex:(unint64_t)index
 {
   p_txPerHistorys = &self->_txPerHistorys;
   count = self->_txPerHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_txPerHistorys->list[a3];
+  return p_txPerHistorys->list[index];
 }
 
-- (int)txFrmsHistoryAtIndex:(unint64_t)a3
+- (int)txFrmsHistoryAtIndex:(unint64_t)index
 {
   p_txFrmsHistorys = &self->_txFrmsHistorys;
   count = self->_txFrmsHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_txFrmsHistorys->list[a3];
+  return p_txFrmsHistorys->list[index];
 }
 
-- (int)fwTxPerHistoryAtIndex:(unint64_t)a3
+- (int)fwTxPerHistoryAtIndex:(unint64_t)index
 {
   p_fwTxPerHistorys = &self->_fwTxPerHistorys;
   count = self->_fwTxPerHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_fwTxPerHistorys->list[a3];
+  return p_fwTxPerHistorys->list[index];
 }
 
-- (int)fwTxFrmsHistoryAtIndex:(unint64_t)a3
+- (int)fwTxFrmsHistoryAtIndex:(unint64_t)index
 {
   p_fwTxFrmsHistorys = &self->_fwTxFrmsHistorys;
   count = self->_fwTxFrmsHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_fwTxFrmsHistorys->list[a3];
+  return p_fwTxFrmsHistorys->list[index];
 }
 
-- (int)bcnPerHistoryAtIndex:(unint64_t)a3
+- (int)bcnPerHistoryAtIndex:(unint64_t)index
 {
   p_bcnPerHistorys = &self->_bcnPerHistorys;
   count = self->_bcnPerHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_bcnPerHistorys->list[a3];
+  return p_bcnPerHistorys->list[index];
 }
 
-- (int)bcnFrmsHistoryAtIndex:(unint64_t)a3
+- (int)bcnFrmsHistoryAtIndex:(unint64_t)index
 {
   p_bcnFrmsHistorys = &self->_bcnFrmsHistorys;
   count = self->_bcnFrmsHistorys.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%lu) is out of range (%lu)", index, count), 0), "raise"}];
   }
 
-  return p_bcnFrmsHistorys->list[a3];
+  return p_bcnFrmsHistorys->list[index];
 }
 
-- (void)setHasGatewayARPHistory:(BOOL)a3
+- (void)setHasGatewayARPHistory:(BOOL)history
 {
-  if (a3)
+  if (history)
   {
     v3 = 2;
   }
@@ -142,28 +142,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"rssiHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"txPerHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"txFrmsHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"fwTxPerHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"fwTxFrmsHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"bcnPerHistory"];
-  [v3 setObject:PBRepeatedInt32NSArray() forKey:@"bcnFrmsHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"rssiHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"txPerHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"txFrmsHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"fwTxPerHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"fwTxFrmsHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"bcnPerHistory"];
+  [dictionary setObject:PBRepeatedInt32NSArray() forKey:@"bcnFrmsHistory"];
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gatewayARPHistory), @"gatewayARPHistory"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_gatewayARPHistory), @"gatewayARPHistory"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -270,122 +270,122 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 22) = self->_timestamp;
-    *(a3 + 188) |= 1u;
+    *(to + 22) = self->_timestamp;
+    *(to + 188) |= 1u;
   }
 
   if ([(AWDWiFiMetricRssiHistory *)self rssiHistorysCount])
   {
-    [a3 clearRssiHistorys];
-    v5 = [(AWDWiFiMetricRssiHistory *)self rssiHistorysCount];
-    if (v5)
+    [to clearRssiHistorys];
+    rssiHistorysCount = [(AWDWiFiMetricRssiHistory *)self rssiHistorysCount];
+    if (rssiHistorysCount)
     {
-      v6 = v5;
+      v6 = rssiHistorysCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addRssiHistory:{-[AWDWiFiMetricRssiHistory rssiHistoryAtIndex:](self, "rssiHistoryAtIndex:", i)}];
+        [to addRssiHistory:{-[AWDWiFiMetricRssiHistory rssiHistoryAtIndex:](self, "rssiHistoryAtIndex:", i)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricRssiHistory *)self txPerHistorysCount])
   {
-    [a3 clearTxPerHistorys];
-    v8 = [(AWDWiFiMetricRssiHistory *)self txPerHistorysCount];
-    if (v8)
+    [to clearTxPerHistorys];
+    txPerHistorysCount = [(AWDWiFiMetricRssiHistory *)self txPerHistorysCount];
+    if (txPerHistorysCount)
     {
-      v9 = v8;
+      v9 = txPerHistorysCount;
       for (j = 0; j != v9; ++j)
       {
-        [a3 addTxPerHistory:{-[AWDWiFiMetricRssiHistory txPerHistoryAtIndex:](self, "txPerHistoryAtIndex:", j)}];
+        [to addTxPerHistory:{-[AWDWiFiMetricRssiHistory txPerHistoryAtIndex:](self, "txPerHistoryAtIndex:", j)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricRssiHistory *)self txFrmsHistorysCount])
   {
-    [a3 clearTxFrmsHistorys];
-    v11 = [(AWDWiFiMetricRssiHistory *)self txFrmsHistorysCount];
-    if (v11)
+    [to clearTxFrmsHistorys];
+    txFrmsHistorysCount = [(AWDWiFiMetricRssiHistory *)self txFrmsHistorysCount];
+    if (txFrmsHistorysCount)
     {
-      v12 = v11;
+      v12 = txFrmsHistorysCount;
       for (k = 0; k != v12; ++k)
       {
-        [a3 addTxFrmsHistory:{-[AWDWiFiMetricRssiHistory txFrmsHistoryAtIndex:](self, "txFrmsHistoryAtIndex:", k)}];
+        [to addTxFrmsHistory:{-[AWDWiFiMetricRssiHistory txFrmsHistoryAtIndex:](self, "txFrmsHistoryAtIndex:", k)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricRssiHistory *)self fwTxPerHistorysCount])
   {
-    [a3 clearFwTxPerHistorys];
-    v14 = [(AWDWiFiMetricRssiHistory *)self fwTxPerHistorysCount];
-    if (v14)
+    [to clearFwTxPerHistorys];
+    fwTxPerHistorysCount = [(AWDWiFiMetricRssiHistory *)self fwTxPerHistorysCount];
+    if (fwTxPerHistorysCount)
     {
-      v15 = v14;
+      v15 = fwTxPerHistorysCount;
       for (m = 0; m != v15; ++m)
       {
-        [a3 addFwTxPerHistory:{-[AWDWiFiMetricRssiHistory fwTxPerHistoryAtIndex:](self, "fwTxPerHistoryAtIndex:", m)}];
+        [to addFwTxPerHistory:{-[AWDWiFiMetricRssiHistory fwTxPerHistoryAtIndex:](self, "fwTxPerHistoryAtIndex:", m)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricRssiHistory *)self fwTxFrmsHistorysCount])
   {
-    [a3 clearFwTxFrmsHistorys];
-    v17 = [(AWDWiFiMetricRssiHistory *)self fwTxFrmsHistorysCount];
-    if (v17)
+    [to clearFwTxFrmsHistorys];
+    fwTxFrmsHistorysCount = [(AWDWiFiMetricRssiHistory *)self fwTxFrmsHistorysCount];
+    if (fwTxFrmsHistorysCount)
     {
-      v18 = v17;
+      v18 = fwTxFrmsHistorysCount;
       for (n = 0; n != v18; ++n)
       {
-        [a3 addFwTxFrmsHistory:{-[AWDWiFiMetricRssiHistory fwTxFrmsHistoryAtIndex:](self, "fwTxFrmsHistoryAtIndex:", n)}];
+        [to addFwTxFrmsHistory:{-[AWDWiFiMetricRssiHistory fwTxFrmsHistoryAtIndex:](self, "fwTxFrmsHistoryAtIndex:", n)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricRssiHistory *)self bcnPerHistorysCount])
   {
-    [a3 clearBcnPerHistorys];
-    v20 = [(AWDWiFiMetricRssiHistory *)self bcnPerHistorysCount];
-    if (v20)
+    [to clearBcnPerHistorys];
+    bcnPerHistorysCount = [(AWDWiFiMetricRssiHistory *)self bcnPerHistorysCount];
+    if (bcnPerHistorysCount)
     {
-      v21 = v20;
+      v21 = bcnPerHistorysCount;
       for (ii = 0; ii != v21; ++ii)
       {
-        [a3 addBcnPerHistory:{-[AWDWiFiMetricRssiHistory bcnPerHistoryAtIndex:](self, "bcnPerHistoryAtIndex:", ii)}];
+        [to addBcnPerHistory:{-[AWDWiFiMetricRssiHistory bcnPerHistoryAtIndex:](self, "bcnPerHistoryAtIndex:", ii)}];
       }
     }
   }
 
   if ([(AWDWiFiMetricRssiHistory *)self bcnFrmsHistorysCount])
   {
-    [a3 clearBcnFrmsHistorys];
-    v23 = [(AWDWiFiMetricRssiHistory *)self bcnFrmsHistorysCount];
-    if (v23)
+    [to clearBcnFrmsHistorys];
+    bcnFrmsHistorysCount = [(AWDWiFiMetricRssiHistory *)self bcnFrmsHistorysCount];
+    if (bcnFrmsHistorysCount)
     {
-      v24 = v23;
+      v24 = bcnFrmsHistorysCount;
       for (jj = 0; jj != v24; ++jj)
       {
-        [a3 addBcnFrmsHistory:{-[AWDWiFiMetricRssiHistory bcnFrmsHistoryAtIndex:](self, "bcnFrmsHistoryAtIndex:", jj)}];
+        [to addBcnFrmsHistory:{-[AWDWiFiMetricRssiHistory bcnFrmsHistoryAtIndex:](self, "bcnFrmsHistoryAtIndex:", jj)}];
       }
     }
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 46) = self->_gatewayARPHistory;
-    *(a3 + 188) |= 2u;
+    *(to + 46) = self->_gatewayARPHistory;
+    *(to + 188) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -409,21 +409,21 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  IsEqual = [a3 isMemberOfClass:objc_opt_class()];
+  IsEqual = [equal isMemberOfClass:objc_opt_class()];
   if (IsEqual)
   {
-    v6 = *(a3 + 188);
+    v6 = *(equal + 188);
     if (*&self->_has)
     {
-      if ((*(a3 + 188) & 1) == 0 || self->_timestamp != *(a3 + 22))
+      if ((*(equal + 188) & 1) == 0 || self->_timestamp != *(equal + 22))
       {
         goto LABEL_18;
       }
     }
 
-    else if (*(a3 + 188))
+    else if (*(equal + 188))
     {
 LABEL_18:
       LOBYTE(IsEqual) = 0;
@@ -451,10 +451,10 @@ LABEL_18:
                 IsEqual = PBRepeatedInt32IsEqual();
                 if (IsEqual)
                 {
-                  LOBYTE(IsEqual) = (*(a3 + 188) & 2) == 0;
+                  LOBYTE(IsEqual) = (*(equal + 188) & 2) == 0;
                   if ((*&self->_has & 2) != 0)
                   {
-                    if ((*(a3 + 188) & 2) == 0 || self->_gatewayARPHistory != *(a3 + 46))
+                    if ((*(equal + 188) & 2) == 0 || self->_gatewayARPHistory != *(equal + 46))
                     {
                       goto LABEL_18;
                     }
@@ -505,87 +505,87 @@ LABEL_18:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 188))
+  if (*(from + 188))
   {
-    self->_timestamp = *(a3 + 22);
+    self->_timestamp = *(from + 22);
     *&self->_has |= 1u;
   }
 
-  v5 = [a3 rssiHistorysCount];
-  if (v5)
+  rssiHistorysCount = [from rssiHistorysCount];
+  if (rssiHistorysCount)
   {
-    v6 = v5;
+    v6 = rssiHistorysCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDWiFiMetricRssiHistory addRssiHistory:](self, "addRssiHistory:", [a3 rssiHistoryAtIndex:i]);
+      -[AWDWiFiMetricRssiHistory addRssiHistory:](self, "addRssiHistory:", [from rssiHistoryAtIndex:i]);
     }
   }
 
-  v8 = [a3 txPerHistorysCount];
-  if (v8)
+  txPerHistorysCount = [from txPerHistorysCount];
+  if (txPerHistorysCount)
   {
-    v9 = v8;
+    v9 = txPerHistorysCount;
     for (j = 0; j != v9; ++j)
     {
-      -[AWDWiFiMetricRssiHistory addTxPerHistory:](self, "addTxPerHistory:", [a3 txPerHistoryAtIndex:j]);
+      -[AWDWiFiMetricRssiHistory addTxPerHistory:](self, "addTxPerHistory:", [from txPerHistoryAtIndex:j]);
     }
   }
 
-  v11 = [a3 txFrmsHistorysCount];
-  if (v11)
+  txFrmsHistorysCount = [from txFrmsHistorysCount];
+  if (txFrmsHistorysCount)
   {
-    v12 = v11;
+    v12 = txFrmsHistorysCount;
     for (k = 0; k != v12; ++k)
     {
-      -[AWDWiFiMetricRssiHistory addTxFrmsHistory:](self, "addTxFrmsHistory:", [a3 txFrmsHistoryAtIndex:k]);
+      -[AWDWiFiMetricRssiHistory addTxFrmsHistory:](self, "addTxFrmsHistory:", [from txFrmsHistoryAtIndex:k]);
     }
   }
 
-  v14 = [a3 fwTxPerHistorysCount];
-  if (v14)
+  fwTxPerHistorysCount = [from fwTxPerHistorysCount];
+  if (fwTxPerHistorysCount)
   {
-    v15 = v14;
+    v15 = fwTxPerHistorysCount;
     for (m = 0; m != v15; ++m)
     {
-      -[AWDWiFiMetricRssiHistory addFwTxPerHistory:](self, "addFwTxPerHistory:", [a3 fwTxPerHistoryAtIndex:m]);
+      -[AWDWiFiMetricRssiHistory addFwTxPerHistory:](self, "addFwTxPerHistory:", [from fwTxPerHistoryAtIndex:m]);
     }
   }
 
-  v17 = [a3 fwTxFrmsHistorysCount];
-  if (v17)
+  fwTxFrmsHistorysCount = [from fwTxFrmsHistorysCount];
+  if (fwTxFrmsHistorysCount)
   {
-    v18 = v17;
+    v18 = fwTxFrmsHistorysCount;
     for (n = 0; n != v18; ++n)
     {
-      -[AWDWiFiMetricRssiHistory addFwTxFrmsHistory:](self, "addFwTxFrmsHistory:", [a3 fwTxFrmsHistoryAtIndex:n]);
+      -[AWDWiFiMetricRssiHistory addFwTxFrmsHistory:](self, "addFwTxFrmsHistory:", [from fwTxFrmsHistoryAtIndex:n]);
     }
   }
 
-  v20 = [a3 bcnPerHistorysCount];
-  if (v20)
+  bcnPerHistorysCount = [from bcnPerHistorysCount];
+  if (bcnPerHistorysCount)
   {
-    v21 = v20;
+    v21 = bcnPerHistorysCount;
     for (ii = 0; ii != v21; ++ii)
     {
-      -[AWDWiFiMetricRssiHistory addBcnPerHistory:](self, "addBcnPerHistory:", [a3 bcnPerHistoryAtIndex:ii]);
+      -[AWDWiFiMetricRssiHistory addBcnPerHistory:](self, "addBcnPerHistory:", [from bcnPerHistoryAtIndex:ii]);
     }
   }
 
-  v23 = [a3 bcnFrmsHistorysCount];
-  if (v23)
+  bcnFrmsHistorysCount = [from bcnFrmsHistorysCount];
+  if (bcnFrmsHistorysCount)
   {
-    v24 = v23;
+    v24 = bcnFrmsHistorysCount;
     for (jj = 0; jj != v24; ++jj)
     {
-      -[AWDWiFiMetricRssiHistory addBcnFrmsHistory:](self, "addBcnFrmsHistory:", [a3 bcnFrmsHistoryAtIndex:jj]);
+      -[AWDWiFiMetricRssiHistory addBcnFrmsHistory:](self, "addBcnFrmsHistory:", [from bcnFrmsHistoryAtIndex:jj]);
     }
   }
 
-  if ((*(a3 + 188) & 2) != 0)
+  if ((*(from + 188) & 2) != 0)
   {
-    self->_gatewayARPHistory = *(a3 + 46);
+    self->_gatewayARPHistory = *(from + 46);
     *&self->_has |= 2u;
   }
 }

@@ -1,14 +1,14 @@
 @interface MTLSharedTextureHandle
-- (MTLSharedTextureHandle)initWithCoder:(id)a3;
-- (MTLSharedTextureHandle)initWithIOSurface:(__IOSurface *)a3 label:(id)a4;
-- (MTLSharedTextureHandle)initWithMachPort:(unsigned int)a3;
+- (MTLSharedTextureHandle)initWithCoder:(id)coder;
+- (MTLSharedTextureHandle)initWithIOSurface:(__IOSurface *)surface label:(id)label;
+- (MTLSharedTextureHandle)initWithMachPort:(unsigned int)port;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MTLSharedTextureHandle
 
-- (MTLSharedTextureHandle)initWithIOSurface:(__IOSurface *)a3 label:(id)a4
+- (MTLSharedTextureHandle)initWithIOSurface:(__IOSurface *)surface label:(id)label
 {
   v9.receiver = self;
   v9.super_class = MTLSharedTextureHandle;
@@ -16,10 +16,10 @@
   if (v6)
   {
     v6->_priv = malloc_type_calloc(0x18uLL, 1uLL, 0xA00402214FCE6uLL);
-    CFRetain(a3);
-    *v6->_priv = a3;
-    *(v6->_priv + 2) = [a4 copy];
-    v7 = _copyIOSurfaceDevice(a3);
+    CFRetain(surface);
+    *v6->_priv = surface;
+    *(v6->_priv + 2) = [label copy];
+    v7 = _copyIOSurfaceDevice(surface);
     *(v6->_priv + 1) = v7;
     if (!v7)
     {
@@ -31,7 +31,7 @@
   return v6;
 }
 
-- (MTLSharedTextureHandle)initWithCoder:(id)a3
+- (MTLSharedTextureHandle)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = MTLSharedTextureHandle;
@@ -39,13 +39,13 @@
   if (v4)
   {
     *(v4 + 1) = malloc_type_calloc(0x18uLL, 1uLL, 0xA00402214FCE6uLL);
-    **(v4 + 1) = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"ioSurface"];
+    **(v4 + 1) = [coder decodeObjectOfClass:objc_opt_class() forKey:@"ioSurface"];
     CFRetain(**(v4 + 1));
     v5 = _copyIOSurfaceDevice(**(v4 + 1));
     *(*(v4 + 1) + 8) = v5;
     if (v5)
     {
-      *(*(v4 + 1) + 16) = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+      *(*(v4 + 1) + 16) = [coder decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     }
 
     else
@@ -58,15 +58,15 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:*self->_priv forKey:@"ioSurface"];
+  [coder encodeObject:*self->_priv forKey:@"ioSurface"];
   v5 = *(self->_priv + 2);
 
-  [a3 encodeObject:v5 forKey:@"label"];
+  [coder encodeObject:v5 forKey:@"label"];
 }
 
-- (MTLSharedTextureHandle)initWithMachPort:(unsigned int)a3
+- (MTLSharedTextureHandle)initWithMachPort:(unsigned int)port
 {
   v7.receiver = self;
   v7.super_class = MTLSharedTextureHandle;
@@ -74,7 +74,7 @@
   if (v4)
   {
     *(v4 + 1) = malloc_type_calloc(0x18uLL, 1uLL, 0xA00402214FCE6uLL);
-    **(v4 + 1) = IOSurfaceLookupFromMachPort(a3);
+    **(v4 + 1) = IOSurfaceLookupFromMachPort(port);
     v5 = _copyIOSurfaceDevice(**(v4 + 1));
     *(*(v4 + 1) + 8) = v5;
     if (!v5)

@@ -1,16 +1,16 @@
 @interface SSDistributedNotificationCenter
 - (NSString)namedPort;
-- (SSDistributedNotificationCenter)initWithNamedPort:(id)a3;
-- (id)addObserverForName:(id)a3 queue:(id)a4 usingBlock:(id)a5;
-- (void)_distributedNotificationMessage:(id)a3 connection:(id)a4;
-- (void)_sendRegistrationMessage:(int64_t)a3 name:(id)a4;
+- (SSDistributedNotificationCenter)initWithNamedPort:(id)port;
+- (id)addObserverForName:(id)name queue:(id)queue usingBlock:(id)block;
+- (void)_distributedNotificationMessage:(id)message connection:(id)connection;
+- (void)_sendRegistrationMessage:(int64_t)message name:(id)name;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation SSDistributedNotificationCenter
 
-- (SSDistributedNotificationCenter)initWithNamedPort:(id)a3
+- (SSDistributedNotificationCenter)initWithNamedPort:(id)port
 {
   v25 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -21,15 +21,15 @@
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -59,7 +59,7 @@
     }
   }
 
-  if ([a3 length])
+  if ([port length])
   {
     v22.receiver = self;
     v22.super_class = SSDistributedNotificationCenter;
@@ -68,7 +68,7 @@
     {
       v18->_dispatchQueue = dispatch_queue_create("com.apple.StoreServices.SSDistributedNotificationCenter", 0);
       v18->_observers = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v18->_portName = [a3 copy];
+      v18->_portName = [port copy];
     }
   }
 
@@ -97,7 +97,7 @@
   [(SSDistributedNotificationCenter *)&v4 dealloc];
 }
 
-- (id)addObserverForName:(id)a3 queue:(id)a4 usingBlock:(id)a5
+- (id)addObserverForName:(id)name queue:(id)queue usingBlock:(id)block
 {
   v31 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -108,15 +108,15 @@
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -146,7 +146,7 @@
     }
   }
 
-  if (![a3 length])
+  if (![name length])
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Invalid name"];
 LABEL_21:
@@ -154,7 +154,7 @@ LABEL_21:
     return v22;
   }
 
-  if (!a5)
+  if (!block)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Invalid block"];
     goto LABEL_21;
@@ -164,20 +164,20 @@ LABEL_21:
   *(&v28 + 1) = &v28;
   v29 = 0x2020000000;
   v30 = 1;
-  v22 = [[SSDistributedNotificationCenterObserver alloc] initWithName:a3 queue:a4 block:a5];
+  v22 = [[SSDistributedNotificationCenterObserver alloc] initWithName:name queue:queue block:block];
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __71__SSDistributedNotificationCenter_addObserverForName_queue_usingBlock___block_invoke;
   block[3] = &unk_1E84B0DA0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = name;
   block[6] = v22;
   block[7] = &v28;
   dispatch_sync(dispatchQueue, block);
   if (*(*(&v28 + 1) + 24) == 1)
   {
-    [(SSDistributedNotificationCenter *)self _sendRegistrationMessage:42 name:a3];
+    [(SSDistributedNotificationCenter *)self _sendRegistrationMessage:42 name:name];
   }
 
   _Block_object_dispose(&v28, 8);
@@ -241,7 +241,7 @@ uint64_t __71__SSDistributedNotificationCenter_addObserverForName_queue_usingBlo
   return v2;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v30 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -252,15 +252,15 @@ uint64_t __71__SSDistributedNotificationCenter_addObserverForName_queue_usingBlo
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -305,7 +305,7 @@ uint64_t __71__SSDistributedNotificationCenter_addObserverForName_queue_usingBlo
   block[2] = __50__SSDistributedNotificationCenter_removeObserver___block_invoke;
   block[3] = &unk_1E84B0DC8;
   block[4] = self;
-  block[5] = a3;
+  block[5] = observer;
   block[6] = &v25;
   block[7] = &v21;
   dispatch_sync(dispatchQueue, block);
@@ -373,14 +373,14 @@ uint64_t __50__SSDistributedNotificationCenter_removeObserver___block_invoke(uin
   return result;
 }
 
-- (void)_distributedNotificationMessage:(id)a3 connection:(id)a4
+- (void)_distributedNotificationMessage:(id)message connection:(id)connection
 {
   v20 = *MEMORY[0x1E69E9840];
   objc_opt_class();
-  v6 = SSXPCDictionaryCopyCFObjectWithClass(a3, "1");
+  v6 = SSXPCDictionaryCopyCFObjectWithClass(message, "1");
   if ([(__CFArray *)v6 length])
   {
-    v7 = self;
+    selfCopy = self;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -419,13 +419,13 @@ uint64_t __50__SSDistributedNotificationCenter_removeObserver___block_invoke(uin
   }
 }
 
-- (void)_sendRegistrationMessage:(int64_t)a3 name:(id)a4
+- (void)_sendRegistrationMessage:(int64_t)message name:(id)name
 {
   v7 = [[SSXPCConnection alloc] initWithServiceName:@"com.apple.itunesstored.xpc"];
   v8 = xpc_dictionary_create(0, 0, 0);
-  xpc_dictionary_set_int64(v8, "0", a3);
+  xpc_dictionary_set_int64(v8, "0", message);
   SSXPCDictionarySetCFObject(v8, "1", self->_portName);
-  SSXPCDictionarySetCFObject(v8, "2", a4);
+  SSXPCDictionarySetCFObject(v8, "2", name);
   v9 = dispatch_semaphore_create(0);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;

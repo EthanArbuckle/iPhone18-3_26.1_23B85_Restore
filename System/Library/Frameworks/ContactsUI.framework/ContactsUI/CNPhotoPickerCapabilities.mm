@@ -44,8 +44,8 @@ void __53__CNPhotoPickerCapabilities_allowsPhotoLibraryAccess__block_invoke()
 {
   v2 = 1;
   v3 = [MEMORY[0x1E69DCAD0] isSourceTypeAvailable:1];
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v4 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v2 = [*MEMORY[0x1E69DDA98] applicationState] != 2;
   }
@@ -72,8 +72,8 @@ uint64_t __47__CNPhotoPickerCapabilities_isCameraTCCEnabled__block_invoke()
 
 + (BOOL)allowsAvatarFaceTracking
 {
-  v2 = [a1 allowsCameraAccess];
-  if (v2)
+  allowsCameraAccess = [self allowsCameraAccess];
+  if (allowsCameraAccess)
   {
     v8 = 0;
     v9 = &v8;
@@ -91,29 +91,29 @@ uint64_t __47__CNPhotoPickerCapabilities_isCameraTCCEnabled__block_invoke()
     _Block_object_dispose(&v8, 8);
     if (v3)
     {
-      LOBYTE(v2) = v3();
+      LOBYTE(allowsCameraAccess) = v3();
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL CNSoftLinkAVTUIIsFacetrackingSupported(void)"];
-      [v5 handleFailureInFunction:v6 file:@"CNUIAvatarSoftLink.h" lineNumber:31 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v6 file:@"CNUIAvatarSoftLink.h" lineNumber:31 description:{@"%s", dlerror()}];
 
       __break(1u);
     }
   }
 
-  return v2;
+  return allowsCameraAccess;
 }
 
 + (BOOL)allowsAvatarStoreAccess
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 entitlementVerifier];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  entitlementVerifier = [currentEnvironment entitlementVerifier];
   v4 = *MEMORY[0x1E69964C8];
   v12 = 0;
-  v5 = [v3 currentProcessHasBooleanEntitlement:v4 error:&v12];
+  v5 = [entitlementVerifier currentProcessHasBooleanEntitlement:v4 error:&v12];
   v6 = v12;
 
   if ((v5 & 1) == 0)
@@ -174,9 +174,9 @@ uint64_t __47__CNPhotoPickerCapabilities_isCameraTCCEnabled__block_invoke()
     return v4();
   }
 
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL CNSoftLinkAVTUIAreAvatarsSupported(void)"];
-  [v8 handleFailureInFunction:v9 file:@"CNUIAvatarSoftLink.h" lineNumber:30 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v9 file:@"CNUIAvatarSoftLink.h" lineNumber:30 description:{@"%s", dlerror()}];
 
   __break(1u);
   return result;

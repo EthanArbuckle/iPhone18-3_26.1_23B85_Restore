@@ -1,15 +1,15 @@
 @interface JavaNioMemoryBlock_NonMovableHeapBlock
-- (JavaNioMemoryBlock_NonMovableHeapBlock)initWithByteArray:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5;
+- (JavaNioMemoryBlock_NonMovableHeapBlock)initWithByteArray:(id)array withLong:(int64_t)long withLong:(int64_t)withLong;
 - (void)dealloc;
 @end
 
 @implementation JavaNioMemoryBlock_NonMovableHeapBlock
 
-- (JavaNioMemoryBlock_NonMovableHeapBlock)initWithByteArray:(id)a3 withLong:(int64_t)a4 withLong:(int64_t)a5
+- (JavaNioMemoryBlock_NonMovableHeapBlock)initWithByteArray:(id)array withLong:(int64_t)long withLong:(int64_t)withLong
 {
-  self->super.address_ = a4;
-  self->super.size_ = a5;
-  JreStrongAssign(&self->array_, a3);
+  self->super.address_ = long;
+  self->super.size_ = withLong;
+  JreStrongAssign(&self->array_, array);
   return self;
 }
 

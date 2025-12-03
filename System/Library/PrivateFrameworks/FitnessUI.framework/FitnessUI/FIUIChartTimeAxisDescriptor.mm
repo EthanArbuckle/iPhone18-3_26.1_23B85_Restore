@@ -1,27 +1,27 @@
 @interface FIUIChartTimeAxisDescriptor
-+ (unint64_t)_spacingIntervalFromAxisSpacing:(id)a3;
++ (unint64_t)_spacingIntervalFromAxisSpacing:(id)spacing;
 - (BOOL)_validateProperties;
 - (FIUIChartTimeAxisDescriptor)init;
-- (id)_hourMinuteFormatterWithTextStyle:(unint64_t)a3;
-- (id)_labelAtIndex:(unint64_t)a3;
-- (id)_labelsForSpacingInterval:(unint64_t)a3 withSpacing:(id)a4 textStyle:(unint64_t)a5;
-- (id)_newSubLabelFromDate:(id)a3 withTimeInterval:(unint64_t)a4 textStyle:(unint64_t)a5;
-- (id)_startDateFromTimeInterval:(unint64_t)a3;
-- (id)_stringFromDate:(id)a3 withTimeInterval:(unint64_t)a4 textStyle:(unint64_t)a5 forceAMPM:(BOOL)a6;
-- (id)_subLabelAtIndex:(unint64_t)a3;
-- (id)_subLabelsForSpacingInterval:(unint64_t)a3 withSpacing:(id)a4 textStyle:(unint64_t)a5;
+- (id)_hourMinuteFormatterWithTextStyle:(unint64_t)style;
+- (id)_labelAtIndex:(unint64_t)index;
+- (id)_labelsForSpacingInterval:(unint64_t)interval withSpacing:(id)spacing textStyle:(unint64_t)style;
+- (id)_newSubLabelFromDate:(id)date withTimeInterval:(unint64_t)interval textStyle:(unint64_t)style;
+- (id)_startDateFromTimeInterval:(unint64_t)interval;
+- (id)_stringFromDate:(id)date withTimeInterval:(unint64_t)interval textStyle:(unint64_t)style forceAMPM:(BOOL)m;
+- (id)_subLabelAtIndex:(unint64_t)index;
+- (id)_subLabelsForSpacingInterval:(unint64_t)interval withSpacing:(id)spacing textStyle:(unint64_t)style;
 - (id)axisLabels;
 - (id)axisSubLabels;
-- (id)dayFormatter:(unint64_t)a3;
-- (id)hourFormatter:(unint64_t)a3;
-- (id)monthFormatter:(unint64_t)a3;
-- (id)positionForLabelAtIndex:(unint64_t)a3;
-- (id)positionForSubLabelAtIndex:(unint64_t)a3;
-- (id)textForLabelAtIndex:(unint64_t)a3;
-- (id)textForSubLabelAtIndex:(unint64_t)a3;
-- (id)weekdayFormatter:(unint64_t)a3;
-- (id)yearFormatter:(unint64_t)a3;
-- (int64_t)_hourComponentFromDate:(id)a3;
+- (id)dayFormatter:(unint64_t)formatter;
+- (id)hourFormatter:(unint64_t)formatter;
+- (id)monthFormatter:(unint64_t)formatter;
+- (id)positionForLabelAtIndex:(unint64_t)index;
+- (id)positionForSubLabelAtIndex:(unint64_t)index;
+- (id)textForLabelAtIndex:(unint64_t)index;
+- (id)textForSubLabelAtIndex:(unint64_t)index;
+- (id)weekdayFormatter:(unint64_t)formatter;
+- (id)yearFormatter:(unint64_t)formatter;
+- (int64_t)_hourComponentFromDate:(id)date;
 - (unint64_t)numLabels;
 - (unint64_t)numSubLabels;
 - (void)_clearCache;
@@ -29,11 +29,11 @@
 - (void)_generateAxisLabels;
 - (void)_generateAxisSubLabels;
 - (void)invalidateCaches;
-- (void)selectLabel:(BOOL)a3 atIndex:(unint64_t)a4;
-- (void)setAxisSpacing:(id)a3;
-- (void)setMaxValue:(id)a3;
-- (void)setMinValue:(id)a3;
-- (void)setSubAxisSpacing:(id)a3;
+- (void)selectLabel:(BOOL)label atIndex:(unint64_t)index;
+- (void)setAxisSpacing:(id)spacing;
+- (void)setMaxValue:(id)value;
+- (void)setMinValue:(id)value;
+- (void)setSubAxisSpacing:(id)spacing;
 @end
 
 @implementation FIUIChartTimeAxisDescriptor
@@ -52,9 +52,9 @@
     cachedAxisSubLabels = v3->_cachedAxisSubLabels;
     v3->_cachedAxisSubLabels = 0;
 
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     cachedAxisLabelColors = v3->_cachedAxisLabelColors;
-    v3->_cachedAxisLabelColors = v6;
+    v3->_cachedAxisLabelColors = array;
 
     v3->_hideClippedLabels = 0;
     v8 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
@@ -80,58 +80,58 @@
   return v3;
 }
 
-- (void)setAxisSpacing:(id)a3
+- (void)setAxisSpacing:(id)spacing
 {
-  objc_storeStrong(&self->_axisSpacing, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_axisSpacing, spacing);
+  spacingCopy = spacing;
   cachedAxisLabels = self->_cachedAxisLabels;
   self->_cachedAxisLabels = 0;
 
   [(NSMutableArray *)self->_cachedAxisLabelColors removeAllObjects];
 }
 
-- (void)setSubAxisSpacing:(id)a3
+- (void)setSubAxisSpacing:(id)spacing
 {
-  objc_storeStrong(&self->_subAxisSpacing, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_subAxisSpacing, spacing);
+  spacingCopy = spacing;
   cachedAxisSubLabels = self->_cachedAxisSubLabels;
   self->_cachedAxisSubLabels = 0;
 }
 
-- (id)_hourMinuteFormatterWithTextStyle:(unint64_t)a3
+- (id)_hourMinuteFormatterWithTextStyle:(unint64_t)style
 {
   hourMinuteFormatters = self->_hourMinuteFormatters;
   if (!hourMinuteFormatters)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_hourMinuteFormatters;
-    self->_hourMinuteFormatters = v6;
+    self->_hourMinuteFormatters = dictionary;
 
     hourMinuteFormatters = self->_hourMinuteFormatters;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:style];
   v9 = [(NSMutableDictionary *)hourMinuteFormatters objectForKeyedSubscript:v8];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v9 setDateStyle:0];
-    if (a3 <= 2)
+    if (style <= 2)
     {
-      if (a3 >= 2)
+      if (style >= 2)
       {
-        if (a3 == 2)
+        if (style == 2)
         {
           [v9 setTimeStyle:1];
           if ((_FIUICPTimeFormatIs24HourMode() & 1) == 0)
           {
-            v15 = [MEMORY[0x1E695DF58] currentLocale];
+            currentLocale = [MEMORY[0x1E695DF58] currentLocale];
             v19[0] = 0;
             v19[1] = 0;
             v18[0] = 0;
             v18[1] = 0;
-            v16 = GetFormatAndHourFieldRangesFor_ha(v15, v19, v18);
+            v16 = GetFormatAndHourFieldRangesFor_ha(currentLocale, v19, v18);
             if (v19[0] >= v18[0])
             {
               v17 = @"ah:mm";
@@ -150,9 +150,9 @@
       }
     }
 
-    else if (a3 - 3 >= 2)
+    else if (style - 3 >= 2)
     {
-      if (a3 == 5)
+      if (style == 5)
       {
         v10 = v9;
         v11 = 2;
@@ -160,11 +160,11 @@
 
       else
       {
-        if (a3 != 6)
+        if (style != 6)
         {
 LABEL_12:
           v12 = self->_hourMinuteFormatters;
-          v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+          v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:style];
           [(NSMutableDictionary *)v12 setObject:v9 forKeyedSubscript:v13];
 
           goto LABEL_13;
@@ -189,40 +189,40 @@ LABEL_13:
   return v9;
 }
 
-- (id)hourFormatter:(unint64_t)a3
+- (id)hourFormatter:(unint64_t)formatter
 {
   hourFormatters = self->_hourFormatters;
   if (!hourFormatters)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_hourFormatters;
-    self->_hourFormatters = v6;
+    self->_hourFormatters = dictionary;
 
     hourFormatters = self->_hourFormatters;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
   v9 = [(NSMutableDictionary *)hourFormatters objectForKeyedSubscript:v8];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v10 = [MEMORY[0x1E695DF58] currentLocale];
-    [v9 setLocale:v10];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v9 setLocale:currentLocale];
 
     v11 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v12 = [v9 locale];
-    [v11 setLocale:v12];
+    locale = [v9 locale];
+    [v11 setLocale:locale];
 
     [v11 setTimeStyle:1];
-    v13 = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
-    v14 = [v13 mutableCopy];
+    alphanumericCharacterSet = [MEMORY[0x1E696AB08] alphanumericCharacterSet];
+    v14 = [alphanumericCharacterSet mutableCopy];
 
-    v15 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-    [v14 formUnionWithCharacterSet:v15];
+    whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+    [v14 formUnionWithCharacterSet:whitespaceCharacterSet];
 
-    v16 = [MEMORY[0x1E695DF00] date];
-    v17 = [v11 stringFromDate:v16];
+    date = [MEMORY[0x1E695DF00] date];
+    v17 = [v11 stringFromDate:date];
     v18 = [v17 stringByTrimmingCharactersInSet:v14];
 
     if ([v18 length])
@@ -237,31 +237,31 @@ LABEL_13:
 
     v20 = _FIUICPTimeFormatIs24HourMode();
     v21 = @"h";
-    if (v20 && a3 <= 7)
+    if (v20 && formatter <= 7)
     {
-      v21 = off_1E878C9D8[a3];
+      v21 = off_1E878C9D8[formatter];
     }
 
-    if (a3 != 1)
+    if (formatter != 1)
     {
-      if (a3)
+      if (formatter)
       {
-        if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+        if ((formatter & 0xFFFFFFFFFFFFFFFELL) == 2)
         {
-          v22 = [MEMORY[0x1E695DF58] currentLocale];
+          currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
           v32[0] = 0;
           v32[1] = 0;
           v31[0] = 0;
           v31[1] = 0;
-          v23 = GetFormatAndHourFieldRangesFor_ha(v22, v32, v31);
+          v23 = GetFormatAndHourFieldRangesFor_ha(currentLocale2, v32, v31);
           v24 = @"ah";
-          if (a3 == 3)
+          if (formatter == 3)
           {
             v24 = @"a h";
           }
 
           v25 = @"h a";
-          if (a3 != 3)
+          if (formatter != 3)
           {
             v25 = @"ha";
           }
@@ -281,30 +281,30 @@ LABEL_13:
 
         else
         {
-          if (a3 == 6)
+          if (formatter == 6)
           {
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@mm a", v21, v19];
           }
 
           else
           {
-            if (a3 != 5 && a3 != 4)
+            if (formatter != 5 && formatter != 4)
             {
               goto LABEL_30;
             }
 
             [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@mm", v21, v19];
           }
-          v22 = ;
+          currentLocale2 = ;
           v27 = v9;
-          v26 = v22;
+          v26 = currentLocale2;
         }
 
         [v27 setDateFormat:v26];
 
 LABEL_30:
         v28 = self->_hourFormatters;
-        v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+        v29 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
         [(NSMutableDictionary *)v28 setObject:v9 forKeyedSubscript:v29];
 
         goto LABEL_31;
@@ -322,164 +322,164 @@ LABEL_31:
   return v9;
 }
 
-- (id)dayFormatter:(unint64_t)a3
+- (id)dayFormatter:(unint64_t)formatter
 {
   dayFormatters = self->_dayFormatters;
   if (!dayFormatters)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_dayFormatters;
-    self->_dayFormatters = v6;
+    self->_dayFormatters = dictionary;
 
     dayFormatters = self->_dayFormatters;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
   v9 = [(NSMutableDictionary *)dayFormatters objectForKeyedSubscript:v8];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v10 = [MEMORY[0x1E695DF58] currentLocale];
-    [v9 setLocale:v10];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v9 setLocale:currentLocale];
 
-    if (a3 <= 6 && ((1 << a3) & 0x73) != 0)
+    if (formatter <= 6 && ((1 << formatter) & 0x73) != 0)
     {
       [v9 setDateFormat:@"d"];
     }
 
     v11 = self->_dayFormatters;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
     [(NSMutableDictionary *)v11 setObject:v9 forKeyedSubscript:v12];
   }
 
   return v9;
 }
 
-- (id)weekdayFormatter:(unint64_t)a3
+- (id)weekdayFormatter:(unint64_t)formatter
 {
   weekdayFormatters = self->_weekdayFormatters;
   if (!weekdayFormatters)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_weekdayFormatters;
-    self->_weekdayFormatters = v6;
+    self->_weekdayFormatters = dictionary;
 
     weekdayFormatters = self->_weekdayFormatters;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
   v9 = [(NSMutableDictionary *)weekdayFormatters objectForKeyedSubscript:v8];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v10 = [MEMORY[0x1E695DF58] currentLocale];
-    [v9 setLocale:v10];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v9 setLocale:currentLocale];
 
-    if (a3 <= 6 && ((0x73u >> a3) & 1) != 0)
+    if (formatter <= 6 && ((0x73u >> formatter) & 1) != 0)
     {
-      [v9 setDateFormat:off_1E878CA18[a3]];
+      [v9 setDateFormat:off_1E878CA18[formatter]];
     }
 
     v11 = self->_weekdayFormatters;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
     [(NSMutableDictionary *)v11 setObject:v9 forKeyedSubscript:v12];
   }
 
   return v9;
 }
 
-- (id)monthFormatter:(unint64_t)a3
+- (id)monthFormatter:(unint64_t)formatter
 {
   monthFormatters = self->_monthFormatters;
   if (!monthFormatters)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_monthFormatters;
-    self->_monthFormatters = v6;
+    self->_monthFormatters = dictionary;
 
     monthFormatters = self->_monthFormatters;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
   v9 = [(NSMutableDictionary *)monthFormatters objectForKeyedSubscript:v8];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v10 = [MEMORY[0x1E695DF58] currentLocale];
-    [v9 setLocale:v10];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v9 setLocale:currentLocale];
 
-    if (a3 <= 6 && ((0x73u >> a3) & 1) != 0)
+    if (formatter <= 6 && ((0x73u >> formatter) & 1) != 0)
     {
-      [v9 setDateFormat:off_1E878CA50[a3]];
+      [v9 setDateFormat:off_1E878CA50[formatter]];
     }
 
     v11 = self->_monthFormatters;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
     [(NSMutableDictionary *)v11 setObject:v9 forKeyedSubscript:v12];
   }
 
   return v9;
 }
 
-- (id)yearFormatter:(unint64_t)a3
+- (id)yearFormatter:(unint64_t)formatter
 {
   yearFormatters = self->_yearFormatters;
   if (!yearFormatters)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = self->_yearFormatters;
-    self->_yearFormatters = v6;
+    self->_yearFormatters = dictionary;
 
     yearFormatters = self->_yearFormatters;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
   v9 = [(NSMutableDictionary *)yearFormatters objectForKeyedSubscript:v8];
 
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v10 = [MEMORY[0x1E695DF58] currentLocale];
-    [v9 setLocale:v10];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    [v9 setLocale:currentLocale];
 
-    if (a3 <= 6 && ((1 << a3) & 0x73) != 0)
+    if (formatter <= 6 && ((1 << formatter) & 0x73) != 0)
     {
       [v9 setDateFormat:@"YYYY"];
     }
 
     v11 = self->_yearFormatters;
-    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:formatter];
     [(NSMutableDictionary *)v11 setObject:v9 forKeyedSubscript:v12];
   }
 
   return v9;
 }
 
-- (void)setMinValue:(id)a3
+- (void)setMinValue:(id)value
 {
-  v4 = a3;
-  if ([self->_minValue compare:v4])
+  valueCopy = value;
+  if ([self->_minValue compare:valueCopy])
   {
     [(FIUIChartTimeAxisDescriptor *)self _clearCache];
   }
 
   minValue = self->_minValue;
-  self->_minValue = v4;
+  self->_minValue = valueCopy;
 }
 
-- (void)setMaxValue:(id)a3
+- (void)setMaxValue:(id)value
 {
-  v4 = a3;
-  if ([self->_maxValue compare:v4])
+  valueCopy = value;
+  if ([self->_maxValue compare:valueCopy])
   {
     [(FIUIChartTimeAxisDescriptor *)self _clearCache];
   }
 
   maxValue = self->_maxValue;
-  self->_maxValue = v4;
+  self->_maxValue = valueCopy;
 }
 
 - (void)invalidateCaches
@@ -572,9 +572,9 @@ LABEL_31:
 
 - (BOOL)_validateProperties
 {
-  v3 = [(FIUIChartTimeAxisDescriptor *)self minValue];
-  v4 = [(FIUIChartTimeAxisDescriptor *)self maxValue];
-  v5 = [v3 compare:v4];
+  minValue = [(FIUIChartTimeAxisDescriptor *)self minValue];
+  maxValue = [(FIUIChartTimeAxisDescriptor *)self maxValue];
+  v5 = [minValue compare:maxValue];
 
   if (v5 == 1)
   {
@@ -606,34 +606,34 @@ LABEL_4:
   return axisSpacing;
 }
 
-- (id)_labelsForSpacingInterval:(unint64_t)a3 withSpacing:(id)a4 textStyle:(unint64_t)a5
+- (id)_labelsForSpacingInterval:(unint64_t)interval withSpacing:(id)spacing textStyle:(unint64_t)style
 {
-  v27 = a4;
-  v25 = a3;
-  v7 = [(FIUIChartTimeAxisDescriptor *)self _startDateFromTimeInterval:a3];
-  v8 = [(FIUIChartTimeAxisDescriptor *)self maxValue];
-  v9 = v8;
-  v28 = 0;
-  if (v7 && v8)
+  spacingCopy = spacing;
+  intervalCopy = interval;
+  v7 = [(FIUIChartTimeAxisDescriptor *)self _startDateFromTimeInterval:interval];
+  maxValue = [(FIUIChartTimeAxisDescriptor *)self maxValue];
+  v9 = maxValue;
+  array = 0;
+  if (v7 && maxValue)
   {
-    v28 = [MEMORY[0x1E695DF70] array];
-    v29 = [MEMORY[0x1E695DF00] date];
+    array = [MEMORY[0x1E695DF70] array];
+    date = [MEMORY[0x1E695DF00] date];
     v24 = v7;
     v10 = v7;
-    v11 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     forceAMPMOnFirstLabel = self->_forceAMPMOnFirstLabel;
-    v13 = [v11 component:32 fromDate:v10];
+    v13 = [currentCalendar component:32 fromDate:v10];
     if (([v10 hk_isAfterDate:v9] & 1) == 0)
     {
       v14 = v13 < 12;
       do
       {
         v15 = v10;
-        v10 = [v11 dateByAddingComponents:v27 toDate:v10 options:{0, v24}];
-        v16 = [v11 component:32 fromDate:v10] < 12;
+        v10 = [currentCalendar dateByAddingComponents:spacingCopy toDate:v10 options:{0, v24}];
+        v16 = [currentCalendar component:32 fromDate:v10] < 12;
         v17 = objc_alloc_init(FIUIChartAxisLabel);
         v18 = forceAMPMOnFirstLabel || self->_useMinMaxLabelPlacement;
-        v19 = [(FIUIChartTimeAxisDescriptor *)self _stringFromDate:v15 withTimeInterval:v25 textStyle:a5 forceAMPM:v18];
+        v19 = [(FIUIChartTimeAxisDescriptor *)self _stringFromDate:v15 withTimeInterval:intervalCopy textStyle:style forceAMPM:v18];
         [(FIUIChartAxisLabel *)v17 setText:v19];
         [(FIUIChartAxisLabel *)v17 setLocation:v15];
         [(FIUIChartAxisLabel *)v17 setLabelColor:self->_unhighlightedLabelColor];
@@ -642,11 +642,11 @@ LABEL_4:
           [(FIUIChartAxisLabel *)v17 setUseReversePlacement:1];
         }
 
-        v20 = [v10 hk_isAfterDate:v29];
+        v20 = [v10 hk_isAfterDate:date];
         p_unhighlightedLabelColor = &self->_unhighlightedLabelColor;
         if (v20)
         {
-          v22 = [v15 hk_isBeforeDate:v29];
+          v22 = [v15 hk_isBeforeDate:date];
           p_unhighlightedLabelColor = &self->_unhighlightedLabelColor;
           if (v22)
           {
@@ -656,7 +656,7 @@ LABEL_4:
         }
 
         [(NSMutableArray *)self->_cachedAxisLabelColors addObject:*p_unhighlightedLabelColor];
-        [v28 addObject:v17];
+        [array addObject:v17];
         forceAMPMOnFirstLabel = v14 != v16 && self->_forceAMPMOnFirstLabel;
 
         v14 = v16;
@@ -668,60 +668,60 @@ LABEL_4:
     v7 = v24;
   }
 
-  return v28;
+  return array;
 }
 
-- (int64_t)_hourComponentFromDate:(id)a3
+- (int64_t)_hourComponentFromDate:(id)date
 {
   v3 = MEMORY[0x1E695DEE8];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:32 fromDate:v4];
+  dateCopy = date;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:32 fromDate:dateCopy];
 
-  v7 = [v6 hour];
-  return v7;
+  hour = [v6 hour];
+  return hour;
 }
 
-- (id)_newSubLabelFromDate:(id)a3 withTimeInterval:(unint64_t)a4 textStyle:(unint64_t)a5
+- (id)_newSubLabelFromDate:(id)date withTimeInterval:(unint64_t)interval textStyle:(unint64_t)style
 {
-  v8 = a3;
+  dateCopy = date;
   v9 = objc_alloc_init(FIUIChartAxisLabel);
-  v10 = [(FIUIChartTimeAxisDescriptor *)self _stringFromDate:v8 withTimeInterval:a4 textStyle:a5 forceAMPM:0];
+  v10 = [(FIUIChartTimeAxisDescriptor *)self _stringFromDate:dateCopy withTimeInterval:interval textStyle:style forceAMPM:0];
   v11 = v10;
   if (self->_subAxisCapitalize)
   {
-    v12 = [v10 localizedUppercaseString];
+    localizedUppercaseString = [v10 localizedUppercaseString];
 
-    v11 = v12;
+    v11 = localizedUppercaseString;
   }
 
   [(FIUIChartAxisLabel *)v9 setText:v11];
-  [(FIUIChartAxisLabel *)v9 setLocation:v8];
+  [(FIUIChartAxisLabel *)v9 setLocation:dateCopy];
   [(FIUIChartAxisLabel *)v9 setLabelColor:self->_unhighlightedSubLabelColor];
 
   return v9;
 }
 
-- (id)_subLabelsForSpacingInterval:(unint64_t)a3 withSpacing:(id)a4 textStyle:(unint64_t)a5
+- (id)_subLabelsForSpacingInterval:(unint64_t)interval withSpacing:(id)spacing textStyle:(unint64_t)style
 {
-  v7 = a4;
-  v8 = [(FIUIChartTimeAxisDescriptor *)self _startDateFromTimeInterval:a3];
-  v9 = [(FIUIChartTimeAxisDescriptor *)self maxValue];
-  v10 = v9;
-  v11 = 0;
-  if (v8 && v9)
+  spacingCopy = spacing;
+  v8 = [(FIUIChartTimeAxisDescriptor *)self _startDateFromTimeInterval:interval];
+  maxValue = [(FIUIChartTimeAxisDescriptor *)self maxValue];
+  v10 = maxValue;
+  array = 0;
+  if (v8 && maxValue)
   {
-    v11 = [MEMORY[0x1E695DF70] array];
-    v12 = [MEMORY[0x1E695DF00] date];
+    array = [MEMORY[0x1E695DF70] array];
+    date = [MEMORY[0x1E695DF00] date];
     v19 = v8;
     v13 = v8;
-    v14 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     if (([v13 hk_isAfterDate:v10] & 1) == 0)
     {
       while (1)
       {
         v15 = v13;
-        v13 = [v14 dateByAddingComponents:v7 toDate:v13 options:{0, v19}];
+        v13 = [currentCalendar dateByAddingComponents:spacingCopy toDate:v13 options:{0, v19}];
         if (!self->_generateSubAxisDescriptorOnlyForNoonMidnight)
         {
           break;
@@ -733,14 +733,14 @@ LABEL_4:
           goto LABEL_15;
         }
 
-        v17 = [(FIUIChartTimeAxisDescriptor *)self _newSubLabelFromDate:v15 withTimeInterval:a3 textStyle:a5];
-        if ([v13 hk_isAfterDate:v12] && (objc_msgSend(v15, "hk_isBeforeDate:", v12) & 1) != 0)
+        v17 = [(FIUIChartTimeAxisDescriptor *)self _newSubLabelFromDate:v15 withTimeInterval:interval textStyle:style];
+        if ([v13 hk_isAfterDate:date] && (objc_msgSend(v15, "hk_isBeforeDate:", date) & 1) != 0)
         {
           goto LABEL_13;
         }
 
 LABEL_14:
-        [v11 addObject:v17];
+        [array addObject:v17];
 
 LABEL_15:
         if ([v13 hk_isAfterDate:v10])
@@ -749,8 +749,8 @@ LABEL_15:
         }
       }
 
-      v17 = [(FIUIChartTimeAxisDescriptor *)self _newSubLabelFromDate:v15 withTimeInterval:a3 textStyle:a5];
-      if (![v13 hk_isAfterDate:v12] || !objc_msgSend(v15, "hk_isBeforeDate:", v12))
+      v17 = [(FIUIChartTimeAxisDescriptor *)self _newSubLabelFromDate:v15 withTimeInterval:interval textStyle:style];
+      if (![v13 hk_isAfterDate:date] || !objc_msgSend(v15, "hk_isBeforeDate:", date))
       {
         goto LABEL_14;
       }
@@ -765,18 +765,18 @@ LABEL_16:
     v8 = v19;
   }
 
-  return v11;
+  return array;
 }
 
-- (id)_startDateFromTimeInterval:(unint64_t)a3
+- (id)_startDateFromTimeInterval:(unint64_t)interval
 {
-  v4 = [(FIUIChartTimeAxisDescriptor *)self minValue];
+  minValue = [(FIUIChartTimeAxisDescriptor *)self minValue];
 
-  if (v4)
+  if (minValue)
   {
     anchorRule = self->_anchorRule;
-    v6 = [(FIUIChartTimeAxisDescriptor *)self minValue];
-    v7 = [(FIUIChartDateAnchorRule *)anchorRule generateAnchorFromDate:v6];
+    minValue2 = [(FIUIChartTimeAxisDescriptor *)self minValue];
+    v7 = [(FIUIChartDateAnchorRule *)anchorRule generateAnchorFromDate:minValue2];
   }
 
   else
@@ -787,22 +787,22 @@ LABEL_16:
   return v7;
 }
 
-- (id)_stringFromDate:(id)a3 withTimeInterval:(unint64_t)a4 textStyle:(unint64_t)a5 forceAMPM:(BOOL)a6
+- (id)_stringFromDate:(id)date withTimeInterval:(unint64_t)interval textStyle:(unint64_t)style forceAMPM:(BOOL)m
 {
-  v9 = a3;
+  dateCopy = date;
   v10 = 0;
-  if (a4 > 2)
+  if (interval > 2)
   {
-    switch(a4)
+    switch(interval)
     {
       case 3uLL:
-        v11 = [(FIUIChartTimeAxisDescriptor *)self dayFormatter:a5];
+        v11 = [(FIUIChartTimeAxisDescriptor *)self dayFormatter:style];
         break;
       case 4uLL:
-        v11 = [(FIUIChartTimeAxisDescriptor *)self monthFormatter:a5];
+        v11 = [(FIUIChartTimeAxisDescriptor *)self monthFormatter:style];
         break;
       case 5uLL:
-        v11 = [(FIUIChartTimeAxisDescriptor *)self yearFormatter:a5];
+        v11 = [(FIUIChartTimeAxisDescriptor *)self yearFormatter:style];
         break;
       default:
         goto LABEL_24;
@@ -811,53 +811,53 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  if (!a4)
+  if (!interval)
   {
-    v11 = [(FIUIChartTimeAxisDescriptor *)self _hourMinuteFormatterWithTextStyle:a5];
+    v11 = [(FIUIChartTimeAxisDescriptor *)self _hourMinuteFormatterWithTextStyle:style];
 LABEL_22:
     v14 = v11;
-    v15 = [v11 stringFromDate:v9];
+    v15 = [v11 stringFromDate:dateCopy];
     goto LABEL_23;
   }
 
-  if (a4 != 1)
+  if (interval != 1)
   {
-    if (a4 != 2)
+    if (interval != 2)
     {
       goto LABEL_24;
     }
 
-    v11 = [(FIUIChartTimeAxisDescriptor *)self weekdayFormatter:a5];
+    v11 = [(FIUIChartTimeAxisDescriptor *)self weekdayFormatter:style];
     goto LABEL_22;
   }
 
-  if (a5 != 7)
+  if (style != 7)
   {
-    [(FIUIChartTimeAxisDescriptor *)self _hourComponentFromDate:v9];
-    if (a5 & 0xFFFFFFFFFFFFFFFELL) == 2 && (_FIUICPTimeFormatIs24HourMode())
+    [(FIUIChartTimeAxisDescriptor *)self _hourComponentFromDate:dateCopy];
+    if (style & 0xFFFFFFFFFFFFFFFELL) == 2 && (_FIUICPTimeFormatIs24HourMode())
     {
-      v16 = self;
-      v17 = 1;
+      selfCopy3 = self;
+      styleCopy = 1;
     }
 
     else
     {
-      v16 = self;
-      v17 = a5;
+      selfCopy3 = self;
+      styleCopy = style;
     }
 
     goto LABEL_21;
   }
 
-  v12 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v13 = [v12 component:32 fromDate:v9];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v13 = [currentCalendar component:32 fromDate:dateCopy];
 
   if (v13 != 12)
   {
-    v16 = self;
-    v17 = 4;
+    selfCopy3 = self;
+    styleCopy = 4;
 LABEL_21:
-    v11 = [(FIUIChartTimeAxisDescriptor *)v16 hourFormatter:v17];
+    v11 = [(FIUIChartTimeAxisDescriptor *)selfCopy3 hourFormatter:styleCopy];
     goto LABEL_22;
   }
 
@@ -871,10 +871,10 @@ LABEL_24:
   return v10;
 }
 
-+ (unint64_t)_spacingIntervalFromAxisSpacing:(id)a3
++ (unint64_t)_spacingIntervalFromAxisSpacing:(id)spacing
 {
-  v3 = a3;
-  v4 = [v3 day];
+  spacingCopy = spacing;
+  v4 = [spacingCopy day];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -885,26 +885,26 @@ LABEL_24:
     v5 = v4;
   }
 
-  v6 = [v3 weekOfYear];
-  v7 = [v3 month];
-  if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+  weekOfYear = [spacingCopy weekOfYear];
+  month = [spacingCopy month];
+  if (month == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v7;
+    v8 = month;
   }
 
-  v9 = [v3 year];
+  year = [spacingCopy year];
 
-  if ((v9 - 1) <= 0x7FFFFFFFFFFFFFFDLL && !v8)
+  if ((year - 1) <= 0x7FFFFFFFFFFFFFFDLL && !v8)
   {
     return 5;
   }
 
-  v11 = (v6 - 1) >= 0x7FFFFFFFFFFFFFFELL && v5 <= 0;
+  v11 = (weekOfYear - 1) >= 0x7FFFFFFFFFFFFFFELL && v5 <= 0;
   v12 = 3;
   if (v11)
   {
@@ -932,10 +932,10 @@ LABEL_24:
   }
 }
 
-- (id)_labelAtIndex:(unint64_t)a3
+- (id)_labelAtIndex:(unint64_t)index
 {
-  v4 = [(FIUIChartTimeAxisDescriptor *)self axisLabels];
-  v5 = [v4 objectAtIndex:a3];
+  axisLabels = [(FIUIChartTimeAxisDescriptor *)self axisLabels];
+  v5 = [axisLabels objectAtIndex:index];
 
   return v5;
 }
@@ -954,57 +954,57 @@ LABEL_24:
 
 - (unint64_t)numLabels
 {
-  v2 = [(FIUIChartTimeAxisDescriptor *)self axisLabels];
-  v3 = [v2 count];
+  axisLabels = [(FIUIChartTimeAxisDescriptor *)self axisLabels];
+  v3 = [axisLabels count];
 
   return v3;
 }
 
-- (id)positionForLabelAtIndex:(unint64_t)a3
+- (id)positionForLabelAtIndex:(unint64_t)index
 {
-  v3 = [(FIUIChartTimeAxisDescriptor *)self _labelAtIndex:a3];
-  v4 = [v3 location];
+  v3 = [(FIUIChartTimeAxisDescriptor *)self _labelAtIndex:index];
+  location = [v3 location];
 
-  return v4;
+  return location;
 }
 
-- (id)textForLabelAtIndex:(unint64_t)a3
+- (id)textForLabelAtIndex:(unint64_t)index
 {
-  v3 = [(FIUIChartTimeAxisDescriptor *)self _labelAtIndex:a3];
-  v4 = [v3 text];
+  v3 = [(FIUIChartTimeAxisDescriptor *)self _labelAtIndex:index];
+  text = [v3 text];
 
-  return v4;
+  return text;
 }
 
-- (void)selectLabel:(BOOL)a3 atIndex:(unint64_t)a4
+- (void)selectLabel:(BOOL)label atIndex:(unint64_t)index
 {
-  v5 = a3;
-  if ([(FIUIChartTimeAxisDescriptor *)self numLabels]<= a4)
+  labelCopy = label;
+  if ([(FIUIChartTimeAxisDescriptor *)self numLabels]<= index)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(FIUIChartTimeAxisDescriptor *)self _labelAtIndex:a4];
+    v7 = [(FIUIChartTimeAxisDescriptor *)self _labelAtIndex:index];
   }
 
   v10 = v7;
-  if (v5)
+  if (labelCopy)
   {
     [v7 setLabelColor:self->_selectedLabelColor];
   }
 
   else
   {
-    if ([(NSMutableArray *)self->_cachedAxisLabelColors count]<= a4)
+    if ([(NSMutableArray *)self->_cachedAxisLabelColors count]<= index)
     {
       v8 = self->_unhighlightedLabelColor;
     }
 
     else
     {
-      v8 = [(NSMutableArray *)self->_cachedAxisLabelColors objectAtIndexedSubscript:a4];
+      v8 = [(NSMutableArray *)self->_cachedAxisLabelColors objectAtIndexedSubscript:index];
     }
 
     v9 = v8;
@@ -1012,12 +1012,12 @@ LABEL_24:
   }
 }
 
-- (id)_subLabelAtIndex:(unint64_t)a3
+- (id)_subLabelAtIndex:(unint64_t)index
 {
   if (self->_subAxisSpacing)
   {
-    v4 = [(FIUIChartTimeAxisDescriptor *)self axisSubLabels];
-    v5 = [v4 objectAtIndex:a3];
+    axisSubLabels = [(FIUIChartTimeAxisDescriptor *)self axisSubLabels];
+    v5 = [axisSubLabels objectAtIndex:index];
   }
 
   else
@@ -1057,42 +1057,42 @@ LABEL_24:
     return 0;
   }
 
-  v2 = [(FIUIChartTimeAxisDescriptor *)self axisSubLabels];
-  v3 = [v2 count];
+  axisSubLabels = [(FIUIChartTimeAxisDescriptor *)self axisSubLabels];
+  v3 = [axisSubLabels count];
 
   return v3;
 }
 
-- (id)positionForSubLabelAtIndex:(unint64_t)a3
+- (id)positionForSubLabelAtIndex:(unint64_t)index
 {
   if (self->_subAxisSpacing)
   {
-    v3 = [(FIUIChartTimeAxisDescriptor *)self _subLabelAtIndex:a3];
-    v4 = [v3 location];
+    v3 = [(FIUIChartTimeAxisDescriptor *)self _subLabelAtIndex:index];
+    location = [v3 location];
   }
 
   else
   {
-    v4 = 0;
+    location = 0;
   }
 
-  return v4;
+  return location;
 }
 
-- (id)textForSubLabelAtIndex:(unint64_t)a3
+- (id)textForSubLabelAtIndex:(unint64_t)index
 {
   if (self->_subAxisSpacing)
   {
-    v3 = [(FIUIChartTimeAxisDescriptor *)self _subLabelAtIndex:a3];
-    v4 = [v3 text];
+    v3 = [(FIUIChartTimeAxisDescriptor *)self _subLabelAtIndex:index];
+    text = [v3 text];
   }
 
   else
   {
-    v4 = 0;
+    text = 0;
   }
 
-  return v4;
+  return text;
 }
 
 @end

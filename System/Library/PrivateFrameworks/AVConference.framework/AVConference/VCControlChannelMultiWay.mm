@@ -1,45 +1,45 @@
 @interface VCControlChannelMultiWay
-+ (id)allocPayoadDataFromVTPPacket:(VCBlockBuffer_t *)a3 vpktFlags:(tagVPKTFLAG *)a4 channelDataFormat:(tagVCIDSChannelDataFormat *)a5;
-- (BOOL)addActiveParticipant:(unint64_t)a3 participantUUID:(id)a4 withConfiguration:(id *)a5;
-- (BOOL)decryptWithMKI:(void *)a3 data:(char *)a4 size:(int)a5 sequenceNumber:(unsigned __int16)a6;
-- (BOOL)encryptData:(char *)a3 size:(int)a4 sequenceNumber:(unsigned __int16)a5;
-- (BOOL)isParticipantActive:(unint64_t)a3;
-- (BOOL)sendReliableMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5 timeout:(unsigned int)a6 withOptions:(id)a7 completion:(id)a8;
-- (BOOL)sendReliableMessageAndWait:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5;
-- (BOOL)sendReliableMessageAndWait:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5 timeout:(id)a6 withOptions:(id)a7;
-- (VCControlChannelMultiWay)initWithTransportSessionID:(unsigned int)a3 reportingAgent:(opaqueRTCReporting *)a4 mode:(int)a5;
-- (id)copyDialogForParticipantID:(id)a3;
++ (id)allocPayoadDataFromVTPPacket:(VCBlockBuffer_t *)packet vpktFlags:(tagVPKTFLAG *)flags channelDataFormat:(tagVCIDSChannelDataFormat *)format;
+- (BOOL)addActiveParticipant:(unint64_t)participant participantUUID:(id)d withConfiguration:(id *)configuration;
+- (BOOL)decryptWithMKI:(void *)i data:(char *)data size:(int)size sequenceNumber:(unsigned __int16)number;
+- (BOOL)encryptData:(char *)data size:(int)size sequenceNumber:(unsigned __int16)number;
+- (BOOL)isParticipantActive:(unint64_t)active;
+- (BOOL)sendReliableMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d timeout:(unsigned int)timeout withOptions:(id)options completion:(id)completion;
+- (BOOL)sendReliableMessageAndWait:(id)wait withTopic:(id)topic participantID:(unint64_t)d;
+- (BOOL)sendReliableMessageAndWait:(id)wait withTopic:(id)topic participantID:(unint64_t)d timeout:(id)timeout withOptions:(id)options;
+- (VCControlChannelMultiWay)initWithTransportSessionID:(unsigned int)d reportingAgent:(opaqueRTCReporting *)agent mode:(int)mode;
+- (id)copyDialogForParticipantID:(id)d;
 - (id)lastUsedMKIBytes;
-- (id)remoteParticipantIDFromChannelDataFormat:(tagVCIDSChannelDataFormat *)a3;
-- (int)getKeyDerivationCryptoSet:(id *)a3 withKeyMaterial:(id)a4 derivedSSRC:(unsigned int *)a5;
-- (int)protocolVersionforParticipantID:(id)a3;
-- (int)updateEncryption:(id *)a3 derivedSSRC:(unsigned int)a4;
-- (void)addNewKeyMaterial:(id)a3;
+- (id)remoteParticipantIDFromChannelDataFormat:(tagVCIDSChannelDataFormat *)format;
+- (int)getKeyDerivationCryptoSet:(id *)set withKeyMaterial:(id)material derivedSSRC:(unsigned int *)c;
+- (int)protocolVersionforParticipantID:(id)d;
+- (int)updateEncryption:(id *)encryption derivedSSRC:(unsigned int)c;
+- (void)addNewKeyMaterial:(id)material;
 - (void)dealloc;
 - (void)deregisterPeriodicTask;
 - (void)finalizeEncryption;
 - (void)flushActiveMessages;
 - (void)flushRealTimeReportingStats;
 - (void)flushReportingStats;
-- (void)initializeSRTPInfo:(tagSRTPINFO *)a3;
+- (void)initializeSRTPInfo:(tagSRTPINFO *)info;
 - (void)lastUsedMKIBytes;
-- (void)messageReceived:(id)a3 participantInfo:(tagVCIDSChannelDataFormat *)a4;
-- (void)periodicTask:(void *)a3;
-- (void)processParticipantRemoval:(id)a3;
+- (void)messageReceived:(id)received participantInfo:(tagVCIDSChannelDataFormat *)info;
+- (void)periodicTask:(void *)task;
+- (void)processParticipantRemoval:(id)removal;
 - (void)registerPeriodicTask;
-- (void)removeActiveParticipant:(unint64_t)a3;
+- (void)removeActiveParticipant:(unint64_t)participant;
 - (void)removeAllActiveParticipants;
-- (void)reportSignificantHandshakeDelaySymptomForParticipantID:(id)a3;
-- (void)scheduleAfter:(unsigned int)a3 block:(id)a4;
-- (void)sendReliableMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5;
-- (void)sendUnreliableMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5;
-- (void)setCurrentSendMKIWithKeyMaterial:(id)a3;
-- (void)setEncryptionWithEncryptionMaterial:(id *)a3;
+- (void)reportSignificantHandshakeDelaySymptomForParticipantID:(id)d;
+- (void)scheduleAfter:(unsigned int)after block:(id)block;
+- (void)sendReliableMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d;
+- (void)sendUnreliableMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d;
+- (void)setCurrentSendMKIWithKeyMaterial:(id)material;
+- (void)setEncryptionWithEncryptionMaterial:(id *)material;
 - (void)start;
 - (void)stop;
-- (void)updateEncryptionWithEncryptionMaterial:(id *)a3;
-- (void)updateEncryptionWithKeyMaterial:(id)a3;
-- (void)updateTransactionIDWithKeyMaterial:(id)a3;
+- (void)updateEncryptionWithEncryptionMaterial:(id *)material;
+- (void)updateEncryptionWithKeyMaterial:(id)material;
+- (void)updateTransactionIDWithKeyMaterial:(id)material;
 @end
 
 @implementation VCControlChannelMultiWay
@@ -51,27 +51,27 @@
   cryptors = self->_cryptors;
 }
 
-- (void)initializeSRTPInfo:(tagSRTPINFO *)a3
+- (void)initializeSRTPInfo:(tagSRTPINFO *)info
 {
-  *&a3->policy.cipherMode = xmmword_1DBD474F0;
-  *&a3->policy.authenticationMode = 1;
-  a3->policy.sessionAuthenticationTagLength = 4;
-  a3->operatingMode = 2;
-  *&a3->mediaKeyLength = 0x1000000010;
+  *&info->policy.cipherMode = xmmword_1DBD474F0;
+  *&info->policy.authenticationMode = 1;
+  info->policy.sessionAuthenticationTagLength = 4;
+  info->operatingMode = 2;
+  *&info->mediaKeyLength = 0x1000000010;
 }
 
-- (void)updateEncryptionWithEncryptionMaterial:(id *)a3
+- (void)updateEncryptionWithEncryptionMaterial:(id *)material
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  var5 = a3->var5;
-  if (a3->var4 >= 32)
+  var5 = material->var5;
+  if (material->var4 >= 32)
   {
     var4 = 32;
   }
 
   else
   {
-    var4 = a3->var4;
+    var4 = material->var4;
   }
 
   v14[0] = 0;
@@ -87,13 +87,13 @@
 
   v13 = 0u;
   memset(v12, 0, sizeof(v12));
-  DWORD1(v12[4]) = ByteToHex(v12, 65, a3, var4);
-  HIDWORD(v13) = ByteToHex(&v12[4] + 8, 65, a3->var0.var1, 14);
+  DWORD1(v12[4]) = ByteToHex(v12, 65, material, var4);
+  HIDWORD(v13) = ByteToHex(&v12[4] + 8, 65, material->var0.var1, 14);
   v11[0] = 0xAAAAAAAAAAAAAAAALL;
   v11[1] = 0xAAAAAAAAAAAAAAAALL;
   [objc_msgSend(MEMORY[0x1E696AFB0] "UUID")];
   VCMediaKeyIndex_ReleaseAndCopyNewValue(v14, [VCMediaKeyIndex newMKIWithBytes:v11 bufferSize:16]);
-  if ([(VCControlChannelMultiWay *)self updateEncryption:v12 derivedSSRC:a3->var1]< 0)
+  if ([(VCControlChannelMultiWay *)self updateEncryption:v12 derivedSSRC:material->var1]< 0)
   {
     SRTPClearKeyDerivationInfo(v12);
     if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -126,11 +126,11 @@
     v10 = 0;
     v9 = 0u;
     memset(v8, 0, sizeof(v8));
-    DWORD1(v8[4]) = ByteToHex(v8, 65, &a3->var2, v7);
-    HIDWORD(v9) = ByteToHex(&v8[4] + 8, 65, a3->var2.var1, 14);
+    DWORD1(v8[4]) = ByteToHex(v8, 65, &material->var2, v7);
+    HIDWORD(v9) = ByteToHex(&v8[4] + 8, 65, material->var2.var1, 14);
     [objc_msgSend(MEMORY[0x1E696AFB0] "UUID")];
     VCMediaKeyIndex_ReleaseAndCopyNewValue(&v10, [VCMediaKeyIndex newMKIWithBytes:v11 bufferSize:16]);
-    if ([(VCControlChannelMultiWay *)self updateEncryption:v8 derivedSSRC:a3->var3]< 0)
+    if ([(VCControlChannelMultiWay *)self updateEncryption:v8 derivedSSRC:material->var3]< 0)
     {
       SRTPClearKeyDerivationInfo(v12);
       SRTPClearKeyDerivationInfo(v8);
@@ -166,10 +166,10 @@
   }
 }
 
-- (void)updateEncryptionWithKeyMaterial:(id)a3
+- (void)updateEncryptionWithKeyMaterial:(id)material
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [a3 objectForKeyedSubscript:@"SecurityKeyIndex"];
+  v5 = [material objectForKeyedSubscript:@"SecurityKeyIndex"];
   if ([(NSMutableDictionary *)self->_cryptors objectForKeyedSubscript:v5])
   {
     if (VRTraceGetErrorLogLevelForModule() >= 5)
@@ -202,7 +202,7 @@
     v12 = 0u;
     memset(buf, 0, sizeof(buf));
     v10 = 0;
-    if ([(VCControlChannelMultiWay *)self getKeyDerivationCryptoSet:buf withKeyMaterial:a3 derivedSSRC:&v10]< 0)
+    if ([(VCControlChannelMultiWay *)self getKeyDerivationCryptoSet:buf withKeyMaterial:material derivedSSRC:&v10]< 0)
     {
       SRTPClearKeyDerivationInfo(buf);
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -231,17 +231,17 @@
         }
       }
 
-      else if ([objc_msgSend(a3 objectForKeyedSubscript:{@"SecurityLocallyGenerated", v9), "BOOLValue"}])
+      else if ([objc_msgSend(material objectForKeyedSubscript:{@"SecurityLocallyGenerated", v9), "BOOLValue"}])
       {
-        [(VCControlChannelMultiWay *)self setCurrentSendMKIWithKeyMaterial:a3];
+        [(VCControlChannelMultiWay *)self setCurrentSendMKIWithKeyMaterial:material];
       }
     }
   }
 }
 
-- (void)setCurrentSendMKIWithKeyMaterial:(id)a3
+- (void)setCurrentSendMKIWithKeyMaterial:(id)material
 {
-  v4 = [a3 objectForKeyedSubscript:@"SecurityKeyIndex"];
+  v4 = [material objectForKeyedSubscript:@"SecurityKeyIndex"];
   if (v4)
   {
     v5 = v4;
@@ -274,22 +274,22 @@
   }
 }
 
-- (int)getKeyDerivationCryptoSet:(id *)a3 withKeyMaterial:(id)a4 derivedSSRC:(unsigned int *)a5
+- (int)getKeyDerivationCryptoSet:(id *)set withKeyMaterial:(id)material derivedSSRC:(unsigned int *)c
 {
   v24[2] = *MEMORY[0x1E69E9840];
   v5 = -2145255423;
-  if (a3)
+  if (set)
   {
-    v9 = [a4 objectForKeyedSubscript:@"SecurityKey"];
-    v10 = [a4 objectForKeyedSubscript:@"SecuritySalt"];
+    v9 = [material objectForKeyedSubscript:@"SecurityKey"];
+    v10 = [material objectForKeyedSubscript:@"SecuritySalt"];
     if (v9 && v10 != 0)
     {
       v12 = v10;
-      v13 = [a4 objectForKeyedSubscript:@"SecurityKeyIndex"];
+      v13 = [material objectForKeyedSubscript:@"SecurityKeyIndex"];
       v24[0] = 0xAAAAAAAAAAAAAAAALL;
       v24[1] = 0xAAAAAAAAAAAAAAAALL;
       [v13 fullKeyBytes:v24];
-      *a5 = v24[0];
+      *c = v24[0];
       v14 = [v9 length];
       v15 = v14;
       v16 = 32;
@@ -324,9 +324,9 @@
 
       [v9 getBytes:v21 length:v17];
       [v12 getBytes:&v24[-1] - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0) length:v16];
-      a3->var1 = ByteToHex(a3, 65, v21, v17);
-      a3->var3 = ByteToHex(a3->var2, 65, &v24[-1] - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0), v16);
-      VCMediaKeyIndex_ReleaseAndCopyNewValue(&a3->var4, v13);
+      set->var1 = ByteToHex(set, 65, v21, v17);
+      set->var3 = ByteToHex(set->var2, 65, &v24[-1] - ((v16 + 15) & 0xFFFFFFFFFFFFFFF0), v16);
+      VCMediaKeyIndex_ReleaseAndCopyNewValue(&set->var4, v13);
       return 0;
     }
   }
@@ -334,11 +334,11 @@
   return v5;
 }
 
-- (int)updateEncryption:(id *)a3 derivedSSRC:(unsigned int)a4
+- (int)updateEncryption:(id *)encryption derivedSSRC:(unsigned int)c
 {
   v49[1] = *MEMORY[0x1E69E9840];
-  p_var4 = &a3->var4;
-  if ([(NSMutableDictionary *)self->_cryptors objectForKeyedSubscript:a3->var4])
+  p_var4 = &encryption->var4;
+  if ([(NSMutableDictionary *)self->_cryptors objectForKeyedSubscript:encryption->var4])
   {
     [VCControlChannelMultiWay(Encryption) updateEncryption:&v18 derivedSSRC:?];
     return v18;
@@ -371,8 +371,8 @@
     v46 = 0u;
     v47 = 0u;
     [(VCControlChannelMultiWay *)self initializeSRTPInfo:v26];
-    DWORD2(v27) = a4;
-    SRTPDeriveMediaKeyInfo(v26, v48, a3);
+    DWORD2(v27) = c;
+    SRTPDeriveMediaKeyInfo(v26, v48, encryption);
     if (v8)
     {
       v9 = v8;
@@ -456,9 +456,9 @@
   return v9;
 }
 
-- (BOOL)encryptData:(char *)a3 size:(int)a4 sequenceNumber:(unsigned __int16)a5
+- (BOOL)encryptData:(char *)data size:(int)size sequenceNumber:(unsigned __int16)number
 {
-  v5 = a5;
+  numberCopy = number;
   v25 = *MEMORY[0x1E69E9840];
   v7 = [(NSMutableDictionary *)self->_cryptors objectForKeyedSubscript:self->_currentSendMKI];
   if (VRTraceGetErrorLogLevelForModule() >= 8)
@@ -480,7 +480,7 @@
         v21 = 2112;
         v22 = currentSendMKI;
         v23 = 1024;
-        v24 = v5;
+        v24 = numberCopy;
         _os_log_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d encryptData: with currentSendMKI='%@', sequenceNumber=%d", &v15, 0x2Cu);
         if (!v7)
         {
@@ -505,7 +505,7 @@ LABEL_8:
       v21 = 2112;
       v22 = v13;
       v23 = 1024;
-      v24 = v5;
+      v24 = numberCopy;
       _os_log_debug_impl(&dword_1DB56E000, v9, OS_LOG_TYPE_DEBUG, " [%s] %s:%d encryptData: with currentSendMKI='%@', sequenceNumber=%d", &v15, 0x2Cu);
       if (v7)
       {
@@ -540,9 +540,9 @@ LABEL_13:
   return v12;
 }
 
-- (BOOL)decryptWithMKI:(void *)a3 data:(char *)a4 size:(int)a5 sequenceNumber:(unsigned __int16)a6
+- (BOOL)decryptWithMKI:(void *)i data:(char *)data size:(int)size sequenceNumber:(unsigned __int16)number
 {
-  v6 = a6;
+  numberCopy = number;
   v26 = *MEMORY[0x1E69E9840];
   v8 = [(NSMutableDictionary *)self->_cryptors objectForKeyedSubscript:?];
   if (!v8)
@@ -569,7 +569,7 @@ LABEL_13:
         v22 = 2112;
         v23 = currentReceiveMKI;
         v24 = 1024;
-        v25 = v6;
+        v25 = numberCopy;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d decryptWithMKI: currentReceiveMKI='%@', sequenceNumber=%d", &v16, 0x2Cu);
         if (!v8)
         {
@@ -594,7 +594,7 @@ LABEL_10:
       v22 = 2112;
       v23 = v14;
       v24 = 1024;
-      v25 = v6;
+      v25 = numberCopy;
       _os_log_debug_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEBUG, " [%s] %s:%d decryptWithMKI: currentReceiveMKI='%@', sequenceNumber=%d", &v16, 0x2Cu);
       if (v8)
       {
@@ -629,7 +629,7 @@ LABEL_15:
   return v13;
 }
 
-- (VCControlChannelMultiWay)initWithTransportSessionID:(unsigned int)a3 reportingAgent:(opaqueRTCReporting *)a4 mode:(int)a5
+- (VCControlChannelMultiWay)initWithTransportSessionID:(unsigned int)d reportingAgent:(opaqueRTCReporting *)agent mode:(int)mode
 {
   v43 = *MEMORY[0x1E69E9840];
   +[VCVTPWrapper startVTP];
@@ -646,13 +646,13 @@ LABEL_15:
     }
 
     v11->_activeParticipants = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:32];
-    v11->_transportSessionID = a3;
+    v11->_transportSessionID = d;
     v11->_vfdMessage = v10;
     v11->_dialogs = objc_alloc_init(MEMORY[0x1E695DF90]);
     VTP_SetSocketMode(v11->_vfdMessage, 2);
     VTP_SetPktType(v11->_vfdMessage, 0x10000);
     VTP_SetTransportSessionID(v11->_vfdMessage, v11->_transportSessionID);
-    v11->super.super._reportingAgent = a4;
+    v11->super.super._reportingAgent = agent;
     [(VCControlChannelMultiWay *)v11 flushReportingStats];
     [(VCControlChannelMultiWay *)v11 registerPeriodicTask];
     if (objc_opt_class() == v11)
@@ -717,7 +717,7 @@ LABEL_15:
       v35 = 2112;
       v36 = v12;
       v37 = 2048;
-      v38 = v11;
+      selfCopy = v11;
       v39 = 1024;
       v40 = v22;
       v17 = " [%s] %s:%d %@(%p) Created VCControlChannelMultiWay object for sessionID '%d'";
@@ -730,7 +730,7 @@ LABEL_20:
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(37);
     v11->_sequentialKeyMaterialQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.VCControlChannelMultiWay.sequentialKeyMaterialQueue", 0, CustomRootQueue);
 LABEL_21:
-    if (!a5)
+    if (!mode)
     {
       [(VCControlChannelMultiWay *)v11 initializeEncryption];
     }
@@ -778,7 +778,7 @@ LABEL_21:
         v35 = 2112;
         v36 = v13;
         v37 = 2048;
-        v38 = self;
+        selfCopy = self;
         v39 = 1024;
         v40 = -1;
         v41 = 1024;
@@ -1203,27 +1203,27 @@ LABEL_16:
   }
 }
 
-+ (id)allocPayoadDataFromVTPPacket:(VCBlockBuffer_t *)a3 vpktFlags:(tagVPKTFLAG *)a4 channelDataFormat:(tagVCIDSChannelDataFormat *)a5
++ (id)allocPayoadDataFromVTPPacket:(VCBlockBuffer_t *)packet vpktFlags:(tagVPKTFLAG *)flags channelDataFormat:(tagVCIDSChannelDataFormat *)format
 {
-  if (!a3)
+  if (!packet)
   {
     +[VCControlChannelMultiWay allocPayoadDataFromVTPPacket:vpktFlags:channelDataFormat:];
     return v10;
   }
 
-  if (!a4)
+  if (!flags)
   {
     +[VCControlChannelMultiWay allocPayoadDataFromVTPPacket:vpktFlags:channelDataFormat:];
     return v10;
   }
 
-  if (!a5)
+  if (!format)
   {
     +[VCControlChannelMultiWay allocPayoadDataFromVTPPacket:vpktFlags:channelDataFormat:];
     return v10;
   }
 
-  var2 = a3->var2;
+  var2 = packet->var2;
   if (!var2)
   {
     +[VCControlChannelMultiWay allocPayoadDataFromVTPPacket:vpktFlags:channelDataFormat:];
@@ -1242,20 +1242,20 @@ LABEL_16:
     return v10;
   }
 
-  result = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:a3->var2 + 1 length:a3->var1 - 1];
+  result = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBytes:packet->var2 + 1 length:packet->var1 - 1];
   if (!result)
   {
     +[VCControlChannelMultiWay allocPayoadDataFromVTPPacket:vpktFlags:channelDataFormat:];
     return v10;
   }
 
-  p_var19 = &a4->var19;
-  if (!a4->var19.participantIDIsSet)
+  p_var19 = &flags->var19;
+  if (!flags->var19.participantIDIsSet)
   {
     p_var19 = 0;
   }
 
-  *a5 = p_var19;
+  *format = p_var19;
   return result;
 }
 
@@ -1268,12 +1268,12 @@ LABEL_16:
   objc_sync_exit(self);
   if (dialogs)
   {
-    v4 = [(NSMutableDictionary *)dialogs allKeys];
+    allKeys = [(NSMutableDictionary *)dialogs allKeys];
     v9 = 0u;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v8 count:16];
+    v5 = [allKeys countByEnumeratingWithState:&v9 objects:v8 count:16];
     if (v5)
     {
       v6 = *v10;
@@ -1284,14 +1284,14 @@ LABEL_16:
         {
           if (*v10 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allKeys);
           }
 
           [-[NSMutableDictionary objectForKeyedSubscript:](dialogs objectForKeyedSubscript:{*(*(&v9 + 1) + 8 * v7++)), "flushActiveTransactions"}];
         }
 
         while (v5 != v7);
-        v5 = [v4 countByEnumeratingWithState:&v9 objects:v8 count:16];
+        v5 = [allKeys countByEnumeratingWithState:&v9 objects:v8 count:16];
       }
 
       while (v5);
@@ -1301,12 +1301,12 @@ LABEL_16:
   [(VCControlChannelMultiWay *)self flushReportingStats];
 }
 
-- (id)remoteParticipantIDFromChannelDataFormat:(tagVCIDSChannelDataFormat *)a3
+- (id)remoteParticipantIDFromChannelDataFormat:(tagVCIDSChannelDataFormat *)format
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (format)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3->participantID];
+    v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:format->participantID];
   }
 
   else
@@ -1347,10 +1347,10 @@ LABEL_16:
   return v4;
 }
 
-- (void)messageReceived:(id)a3 participantInfo:(tagVCIDSChannelDataFormat *)a4
+- (void)messageReceived:(id)received participantInfo:(tagVCIDSChannelDataFormat *)info
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = [(VCControlChannelMultiWay *)self remoteParticipantIDFromChannelDataFormat:a4];
+  v6 = [(VCControlChannelMultiWay *)self remoteParticipantIDFromChannelDataFormat:info];
   v25 = 0;
   v23 = 0;
   v24 = 0;
@@ -1363,7 +1363,7 @@ LABEL_16:
   }
 
   v8 = v7;
-  v9 = [v7 processMessageData:a3 participantID:v6 topic:&v23 transactionID:&v24 messageStatus:&v25 isInternalMessage:&v22];
+  v9 = [v7 processMessageData:received participantID:v6 topic:&v23 transactionID:&v24 messageStatus:&v25 isInternalMessage:&v22];
 
   if ((v22 & 1) == 0)
   {
@@ -1496,18 +1496,18 @@ LABEL_5:
   }
 }
 
-- (BOOL)sendReliableMessageAndWait:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5
+- (BOOL)sendReliableMessageAndWait:(id)wait withTopic:(id)topic participantID:(unint64_t)d
 {
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[VCControlChannel reliableMessageResendInterval](self, "reliableMessageResendInterval")}];
 
-  return [(VCControlChannelMultiWay *)self sendReliableMessageAndWait:a3 withTopic:a4 participantID:a5 timeout:v9 withOptions:0];
+  return [(VCControlChannelMultiWay *)self sendReliableMessageAndWait:wait withTopic:topic participantID:d timeout:v9 withOptions:0];
 }
 
-- (id)copyDialogForParticipantID:(id)a3
+- (id)copyDialogForParticipantID:(id)d
 {
   v35 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_dialogs, "objectForKeyedSubscript:", [a3 stringValue]);
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_dialogs, "objectForKeyedSubscript:", [d stringValue]);
   if (v5)
   {
     if (objc_opt_class() != self)
@@ -1541,11 +1541,11 @@ LABEL_5:
           v27 = 1024;
           v28 = 398;
           v29 = 2112;
-          v30 = v6;
+          dCopy4 = v6;
           v31 = 2048;
-          v32 = self;
+          selfCopy4 = self;
           v33 = 2112;
-          v34 = a3;
+          dCopy6 = d;
           v11 = " [%s] %s:%d %@(%p) sendMessage: found existing dialog for participantID='%@'";
 LABEL_27:
           v17 = v13;
@@ -1568,11 +1568,11 @@ LABEL_27:
       v27 = 1024;
       v28 = 398;
       v29 = 2112;
-      v30 = v6;
+      dCopy4 = v6;
       v31 = 2048;
-      v32 = self;
+      selfCopy4 = self;
       v33 = 2112;
-      v34 = a3;
+      dCopy6 = d;
       v21 = " [%s] %s:%d %@(%p) sendMessage: found existing dialog for participantID='%@'";
 LABEL_35:
       _os_log_debug_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_DEBUG, v21, &v23, 0x3Au);
@@ -1609,7 +1609,7 @@ LABEL_35:
     v27 = 1024;
     v28 = 398;
     v29 = 2112;
-    v30 = a3;
+    dCopy4 = d;
     v11 = " [%s] %s:%d sendMessage: found existing dialog for participantID='%@'";
 LABEL_21:
     v17 = v9;
@@ -1651,7 +1651,7 @@ LABEL_28:
     v27 = 1024;
     v28 = 400;
     v29 = 2112;
-    v30 = a3;
+    dCopy4 = d;
     v11 = " [%s] %s:%d sendMessage: could not find existing dialog for participantID='%@'";
     goto LABEL_21;
   }
@@ -1688,11 +1688,11 @@ LABEL_28:
     v27 = 1024;
     v28 = 400;
     v29 = 2112;
-    v30 = v7;
+    dCopy4 = v7;
     v31 = 2048;
-    v32 = self;
+    selfCopy4 = self;
     v33 = 2112;
-    v34 = a3;
+    dCopy6 = d;
     v21 = " [%s] %s:%d %@(%p) sendMessage: could not find existing dialog for participantID='%@'";
     goto LABEL_35;
   }
@@ -1706,11 +1706,11 @@ LABEL_28:
     v27 = 1024;
     v28 = 400;
     v29 = 2112;
-    v30 = v7;
+    dCopy4 = v7;
     v31 = 2048;
-    v32 = self;
+    selfCopy4 = self;
     v33 = 2112;
-    v34 = a3;
+    dCopy6 = d;
     v11 = " [%s] %s:%d %@(%p) sendMessage: could not find existing dialog for participantID='%@'";
     goto LABEL_27;
   }
@@ -1720,7 +1720,7 @@ LABEL_38:
   return v5;
 }
 
-- (BOOL)sendReliableMessageAndWait:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5 timeout:(id)a6 withOptions:(id)a7
+- (BOOL)sendReliableMessageAndWait:(id)wait withTopic:(id)topic participantID:(unint64_t)d timeout:(id)timeout withOptions:(id)options
 {
   v57 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1739,13 +1739,13 @@ LABEL_38:
         v51 = 1024;
         v52 = 407;
         v53 = 2112;
-        v54 = a3;
+        waitCopy2 = wait;
         v55 = 1024;
         *v56 = transportSessionID;
         *&v56[4] = 2048;
-        *&v56[6] = a5;
+        *&v56[6] = d;
         *&v56[14] = 2112;
-        *&v56[16] = a6;
+        *&v56[16] = timeout;
         v17 = " [%s] %s:%d VCControlChannelMultiWay: sendReliableMessageAndWait: message '%@' for sessionID '%d', participantID '%llu', timeout '%@'";
         v18 = v15;
         v19 = 64;
@@ -1781,17 +1781,17 @@ LABEL_11:
         v51 = 1024;
         v52 = 407;
         v53 = 2112;
-        v54 = v13;
+        waitCopy2 = v13;
         v55 = 2048;
         *v56 = self;
         *&v56[8] = 2112;
-        *&v56[10] = a3;
+        *&v56[10] = wait;
         *&v56[18] = 1024;
         *&v56[20] = v22;
         *&v56[24] = 2048;
-        *&v56[26] = a5;
+        *&v56[26] = d;
         *&v56[34] = 2112;
-        *&v56[36] = a6;
+        *&v56[36] = timeout;
         v17 = " [%s] %s:%d %@(%p) VCControlChannelMultiWay: sendReliableMessageAndWait: message '%@' for sessionID '%d', participantID '%llu', timeout '%@'";
         v18 = v21;
         v19 = 84;
@@ -1834,15 +1834,15 @@ LABEL_11:
       v51 = 1024;
       v52 = 410;
       v53 = 2112;
-      v54 = v33;
+      waitCopy2 = v33;
       v55 = 2048;
       *v56 = self;
       *&v56[8] = 2112;
-      *&v56[10] = a3;
+      *&v56[10] = wait;
       *&v56[18] = 2112;
-      *&v56[20] = a4;
+      *&v56[20] = topic;
       *&v56[28] = 2048;
-      *&v56[30] = a5;
+      *&v56[30] = d;
       v37 = " [%s] %s:%d %@(%p) Attempt to send reliable message=%@ with topic=%@ to participantID=%llu when Control Channel is not started. Ignoring...";
       v38 = v40;
       v41 = 78;
@@ -1869,11 +1869,11 @@ LABEL_11:
     v51 = 1024;
     v52 = 410;
     v53 = 2112;
-    v54 = a3;
+    waitCopy2 = wait;
     v55 = 2112;
-    *v56 = a4;
+    *v56 = topic;
     *&v56[8] = 2048;
-    *&v56[10] = a5;
+    *&v56[10] = d;
     v37 = " [%s] %s:%d Attempt to send reliable message=%@ with topic=%@ to participantID=%llu when Control Channel is not started. Ignoring...";
     v38 = v36;
 LABEL_46:
@@ -1883,7 +1883,7 @@ LABEL_47:
     goto LABEL_18;
   }
 
-  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a5];
+  v23 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v24 = [(VCControlChannelMultiWay *)self copyDialogForParticipantID:v23];
   v25 = v24;
   if (!v24)
@@ -1937,17 +1937,17 @@ LABEL_18:
     v51 = 1024;
     v52 = 413;
     v53 = 2112;
-    v54 = v34;
+    waitCopy2 = v34;
     v55 = 2048;
     *v56 = self;
     *&v56[8] = 2048;
-    *&v56[10] = a5;
+    *&v56[10] = d;
     v37 = " [%s] %s:%d %@(%p) Could not create dialog for unknown participantID='%llu'";
     v38 = v43;
     goto LABEL_46;
   }
 
-  v26 = [v24 sendReliableMessage:a3 withTopic:a4 timeout:a6 withOptions:a7];
+  v26 = [v24 sendReliableMessage:wait withTopic:topic timeout:timeout withOptions:options];
 
   if (v26)
   {
@@ -1965,14 +1965,14 @@ LABEL_18:
 
   [(VCObject *)self reportingAgent];
   v45[1] = @"SymptomReporterOptionalKeyCCMEssageTopic";
-  v46[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{a5, @"SymptomReporterOptionalKeyParticipantID"}];
-  v29 = @"NoTopic";
-  if (a4)
+  v46[0] = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{d, @"SymptomReporterOptionalKeyParticipantID"}];
+  topicCopy = @"NoTopic";
+  if (topic)
   {
-    v29 = a4;
+    topicCopy = topic;
   }
 
-  v46[1] = v29;
+  v46[1] = topicCopy;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:2];
   reportingSymptom();
   if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -1981,7 +1981,7 @@ LABEL_18:
     v31 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      v32 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a5];
+      v32 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
       *buf = 136316162;
       v48 = v30;
       v49 = 2080;
@@ -1989,9 +1989,9 @@ LABEL_18:
       v51 = 1024;
       v52 = 427;
       v53 = 2112;
-      v54 = v32;
+      waitCopy2 = v32;
       v55 = 2112;
-      *v56 = a4;
+      *v56 = topic;
       _os_log_error_impl(&dword_1DB56E000, v31, OS_LOG_TYPE_ERROR, " [%s] %s:%d Generated 'CCReliableDataNotReceived' symptom for participantID=%@ with topic=%@", buf, 0x30u);
     }
   }
@@ -2001,10 +2001,10 @@ LABEL_18:
   return v27;
 }
 
-- (BOOL)sendReliableMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5 timeout:(unsigned int)a6 withOptions:(id)a7 completion:(id)a8
+- (BOOL)sendReliableMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d timeout:(unsigned int)timeout withOptions:(id)options completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a8)
+  if (completion)
   {
     asyncProcessingQueue = self->super._asyncProcessingQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -2012,12 +2012,12 @@ LABEL_18:
     block[2] = __103__VCControlChannelMultiWay_sendReliableMessage_withTopic_participantID_timeout_withOptions_completion___block_invoke;
     block[3] = &unk_1E85F8B00;
     block[4] = self;
-    block[5] = a3;
-    v16 = a6;
-    block[6] = a4;
-    block[7] = a7;
-    block[8] = a8;
-    block[9] = a5;
+    block[5] = message;
+    timeoutCopy = timeout;
+    block[6] = topic;
+    block[7] = options;
+    block[8] = completion;
+    block[9] = d;
     dispatch_async(asyncProcessingQueue, block);
   }
 
@@ -2060,13 +2060,13 @@ LABEL_18:
         v23 = 2112;
         v24 = v12;
         v25 = 2048;
-        v26 = self;
+        selfCopy = self;
         _os_log_error_impl(&dword_1DB56E000, v14, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) completion should not be nil", buf, 0x30u);
       }
     }
   }
 
-  return a8 != 0;
+  return completion != 0;
 }
 
 uint64_t __103__VCControlChannelMultiWay_sendReliableMessage_withTopic_participantID_timeout_withOptions_completion___block_invoke(uint64_t a1)
@@ -2077,7 +2077,7 @@ uint64_t __103__VCControlChannelMultiWay_sendReliableMessage_withTopic_participa
   return v2();
 }
 
-- (void)sendReliableMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5
+- (void)sendReliableMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d
 {
   v35 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -2096,11 +2096,11 @@ uint64_t __103__VCControlChannelMultiWay_sendReliableMessage_withTopic_participa
         v25 = 1024;
         v26 = 453;
         v27 = 2112;
-        v28 = a3;
+        messageCopy = message;
         v29 = 1024;
         *v30 = transportSessionID;
         *&v30[4] = 2048;
-        *&v30[6] = a5;
+        *&v30[6] = d;
         v13 = " [%s] %s:%d VCControlChannelMultiWay: sendReliableMessage: message '%@' for sessionID '%d', participantID '%llu's";
         v14 = v11;
         v15 = 54;
@@ -2136,15 +2136,15 @@ LABEL_11:
         v25 = 1024;
         v26 = 453;
         v27 = 2112;
-        v28 = v9;
+        messageCopy = v9;
         v29 = 2048;
         *v30 = self;
         *&v30[8] = 2112;
-        *&v30[10] = a3;
+        *&v30[10] = message;
         v31 = 1024;
         v32 = v18;
         v33 = 2048;
-        v34 = a5;
+        dCopy = d;
         v13 = " [%s] %s:%d %@(%p) VCControlChannelMultiWay: sendReliableMessage: message '%@' for sessionID '%d', participantID '%llu's";
         v14 = v17;
         v15 = 74;
@@ -2159,9 +2159,9 @@ LABEL_11:
   v20[2] = __72__VCControlChannelMultiWay_sendReliableMessage_withTopic_participantID___block_invoke;
   v20[3] = &unk_1E85F4AB8;
   v20[4] = self;
-  v20[5] = a3;
-  v20[6] = a4;
-  v20[7] = a5;
+  v20[5] = message;
+  v20[6] = topic;
+  v20[7] = d;
   dispatch_async(asyncProcessingQueue, v20);
 }
 
@@ -2197,7 +2197,7 @@ uint64_t __72__VCControlChannelMultiWay_sendReliableMessage_withTopic_participan
   return result;
 }
 
-- (void)sendUnreliableMessage:(id)a3 withTopic:(id)a4 participantID:(unint64_t)a5
+- (void)sendUnreliableMessage:(id)message withTopic:(id)topic participantID:(unint64_t)d
 {
   v35 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -2216,11 +2216,11 @@ uint64_t __72__VCControlChannelMultiWay_sendReliableMessage_withTopic_participan
         v25 = 1024;
         v26 = 469;
         v27 = 2112;
-        v28 = a3;
+        messageCopy = message;
         v29 = 1024;
         *v30 = transportSessionID;
         *&v30[4] = 2048;
-        *&v30[6] = a5;
+        *&v30[6] = d;
         v13 = " [%s] %s:%d VCControlChannelMultiWay: sendUnreliableMessage: message '%@' for sessionID '%d', participantID '%llu'";
         v14 = v11;
         v15 = 54;
@@ -2256,15 +2256,15 @@ LABEL_11:
         v25 = 1024;
         v26 = 469;
         v27 = 2112;
-        v28 = v9;
+        messageCopy = v9;
         v29 = 2048;
         *v30 = self;
         *&v30[8] = 2112;
-        *&v30[10] = a3;
+        *&v30[10] = message;
         v31 = 1024;
         v32 = v18;
         v33 = 2048;
-        v34 = a5;
+        dCopy = d;
         v13 = " [%s] %s:%d %@(%p) VCControlChannelMultiWay: sendUnreliableMessage: message '%@' for sessionID '%d', participantID '%llu'";
         v14 = v17;
         v15 = 74;
@@ -2279,9 +2279,9 @@ LABEL_11:
   v20[2] = __74__VCControlChannelMultiWay_sendUnreliableMessage_withTopic_participantID___block_invoke;
   v20[3] = &unk_1E85F4AB8;
   v20[4] = self;
-  v20[5] = a3;
-  v20[6] = a4;
-  v20[7] = a5;
+  v20[5] = message;
+  v20[6] = topic;
+  v20[7] = d;
   dispatch_async(asyncProcessingQueue, v20);
 }
 
@@ -2301,17 +2301,17 @@ void __74__VCControlChannelMultiWay_sendUnreliableMessage_withTopic_participantI
   }
 }
 
-- (BOOL)addActiveParticipant:(unint64_t)a3 participantUUID:(id)a4 withConfiguration:(id *)a5
+- (BOOL)addActiveParticipant:(unint64_t)participant participantUUID:(id)d withConfiguration:(id *)configuration
 {
   v53 = *MEMORY[0x1E69E9840];
-  if (!a5)
+  if (!configuration)
   {
     [VCControlChannelMultiWay addActiveParticipant:&v39 participantUUID:? withConfiguration:?];
     return v39;
   }
 
   objc_sync_enter(self);
-  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_activeParticipants, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3]))
+  if (-[NSMutableDictionary objectForKeyedSubscript:](self->_activeParticipants, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:participant]))
   {
     if (objc_opt_class() == self)
     {
@@ -2334,7 +2334,7 @@ void __74__VCControlChannelMultiWay_sendUnreliableMessage_withTopic_participantI
       v43 = 1024;
       v44 = 488;
       v45 = 2048;
-      v46 = a3;
+      participantCopy3 = participant;
       v28 = " [%s] %s:%d API misuse! Participant '%llu' has alrady been added to the list of active participants! Ignoring...";
       v29 = v36;
       v30 = 38;
@@ -2371,11 +2371,11 @@ void __74__VCControlChannelMultiWay_sendUnreliableMessage_withTopic_participantI
       v43 = 1024;
       v44 = 488;
       v45 = 2112;
-      v46 = v34;
+      participantCopy3 = v34;
       v47 = 2048;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 2048;
-      v50 = a3;
+      participantCopy4 = participant;
       v28 = " [%s] %s:%d %@(%p) API misuse! Participant '%llu' has alrady been added to the list of active participants! Ignoring...";
       v29 = v38;
       v30 = 58;
@@ -2384,13 +2384,13 @@ void __74__VCControlChannelMultiWay_sendUnreliableMessage_withTopic_participantI
     goto LABEL_29;
   }
 
-  var0 = a5->var0;
+  var0 = configuration->var0;
   if (var0 != 2)
   {
     if (var0 == 1)
     {
       v10 = [VCControlChannelDialogV1 alloc];
-      v11 = -[VCControlChannelDialogV1 initWithSessionID:participantID:participantUUID:optionalTopics:participantConfig:transactionDelegate:](v10, "initWithSessionID:participantID:participantUUID:optionalTopics:participantConfig:transactionDelegate:", self->_transportSessionID, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3], a4, self->super._optionalTopics, a5, self);
+      v11 = -[VCControlChannelDialogV1 initWithSessionID:participantID:participantUUID:optionalTopics:participantConfig:transactionDelegate:](v10, "initWithSessionID:participantID:participantUUID:optionalTopics:participantConfig:transactionDelegate:", self->_transportSessionID, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:participant], d, self->super._optionalTopics, configuration, self);
       goto LABEL_7;
     }
 
@@ -2415,7 +2415,7 @@ void __74__VCControlChannelMultiWay_sendUnreliableMessage_withTopic_participantI
       v43 = 1024;
       v44 = 499;
       v45 = 1024;
-      LODWORD(v46) = var0;
+      LODWORD(participantCopy3) = var0;
       v28 = " [%s] %s:%d Wrong version of protocol supplied '%u'. Ignoring...";
       v29 = v27;
       v30 = 34;
@@ -2452,11 +2452,11 @@ void __74__VCControlChannelMultiWay_sendUnreliableMessage_withTopic_participantI
       v43 = 1024;
       v44 = 499;
       v45 = 2112;
-      v46 = v15;
+      participantCopy3 = v15;
       v47 = 2048;
-      v48 = self;
+      selfCopy3 = self;
       v49 = 1024;
-      LODWORD(v50) = var0;
+      LODWORD(participantCopy4) = var0;
       v28 = " [%s] %s:%d %@(%p) Wrong version of protocol supplied '%u'. Ignoring...";
       v29 = v32;
       v30 = 54;
@@ -2470,13 +2470,13 @@ LABEL_30:
   }
 
   v12 = [VCControlChannelDialogV2 alloc];
-  v11 = -[VCControlChannelDialogV2 initWithSessionID:participantID:participantUUID:participantConfig:transactionDelegate:](v12, "initWithSessionID:participantID:participantUUID:participantConfig:transactionDelegate:", self->_transportSessionID, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3], a4, a5, self);
+  v11 = -[VCControlChannelDialogV2 initWithSessionID:participantID:participantUUID:participantConfig:transactionDelegate:](v12, "initWithSessionID:participantID:participantUUID:participantConfig:transactionDelegate:", self->_transportSessionID, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:participant], d, configuration, self);
 LABEL_7:
   [(VCObject *)v11 setReportingAgent:self->super.super._reportingAgent];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_dialogs, "setObject:forKeyedSubscript:", v11, [objc_msgSend(MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{a3), "stringValue"}]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_dialogs, "setObject:forKeyedSubscript:", v11, [objc_msgSend(MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{participant), "stringValue"}]);
 
   v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:var0];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_activeParticipants, "setObject:forKeyedSubscript:", v13, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_activeParticipants, "setObject:forKeyedSubscript:", v13, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:participant]);
   if (objc_opt_class() == self)
   {
     if (VRTraceGetErrorLogLevelForModule() < 6)
@@ -2499,9 +2499,9 @@ LABEL_7:
     v43 = 1024;
     v44 = 506;
     v45 = 2048;
-    v46 = a3;
+    participantCopy3 = participant;
     v47 = 1024;
-    LODWORD(v48) = transportSessionID;
+    LODWORD(selfCopy3) = transportSessionID;
     v19 = " [%s] %s:%d addActiveParticipant:'%llu' for sessionID '%d'";
     v20 = v17;
     v21 = 44;
@@ -2539,11 +2539,11 @@ LABEL_7:
     v43 = 1024;
     v44 = 506;
     v45 = 2112;
-    v46 = v14;
+    participantCopy3 = v14;
     v47 = 2048;
-    v48 = self;
+    selfCopy3 = self;
     v49 = 2048;
-    v50 = a3;
+    participantCopy4 = participant;
     v51 = 1024;
     v52 = v24;
     v19 = " [%s] %s:%d %@(%p) addActiveParticipant:'%llu' for sessionID '%d'";
@@ -2559,18 +2559,18 @@ LABEL_31:
   return v25;
 }
 
-- (void)processParticipantRemoval:(id)a3
+- (void)processParticipantRemoval:(id)removal
 {
   objc_sync_enter(self);
-  [(NSMutableDictionary *)self->_activeParticipants removeObjectForKey:a3];
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_dialogs, "objectForKeyedSubscript:", [a3 stringValue]);
-  -[NSMutableDictionary removeObjectForKey:](self->_dialogs, "removeObjectForKey:", [a3 stringValue]);
+  [(NSMutableDictionary *)self->_activeParticipants removeObjectForKey:removal];
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_dialogs, "objectForKeyedSubscript:", [removal stringValue]);
+  -[NSMutableDictionary removeObjectForKey:](self->_dialogs, "removeObjectForKey:", [removal stringValue]);
   objc_sync_exit(self);
 
   [v5 flushActiveTransactions];
 }
 
-- (void)removeActiveParticipant:(unint64_t)a3
+- (void)removeActiveParticipant:(unint64_t)participant
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
@@ -2591,9 +2591,9 @@ LABEL_31:
         v22 = 1024;
         v23 = 528;
         v24 = 2048;
-        v25 = a3;
+        participantCopy = participant;
         v26 = 1024;
-        LODWORD(v27) = transportSessionID;
+        LODWORD(selfCopy) = transportSessionID;
         v10 = " [%s] %s:%d removeActiveParticipant:Removed participant '%llu' for sessionID '%d'";
         v11 = v8;
         v12 = 44;
@@ -2629,11 +2629,11 @@ LABEL_11:
         v22 = 1024;
         v23 = 528;
         v24 = 2112;
-        v25 = v6;
+        participantCopy = v6;
         v26 = 2048;
-        v27 = self;
+        selfCopy = self;
         v28 = 2048;
-        v29 = a3;
+        participantCopy2 = participant;
         v30 = 1024;
         v31 = v15;
         v10 = " [%s] %s:%d %@(%p) removeActiveParticipant:Removed participant '%llu' for sessionID '%d'";
@@ -2667,14 +2667,14 @@ uint64_t __52__VCControlChannelMultiWay_removeActiveParticipant___block_invoke(u
 {
   v40 = *MEMORY[0x1E69E9840];
   objc_sync_enter(self);
-  v3 = [(NSMutableDictionary *)self->_activeParticipants allKeys];
+  allKeys = [(NSMutableDictionary *)self->_activeParticipants allKeys];
   objc_sync_exit(self);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v4 = v3;
-  v5 = [v3 countByEnumeratingWithState:&v36 objects:v35 count:16];
+  v4 = allKeys;
+  v5 = [allKeys countByEnumeratingWithState:&v36 objects:v35 count:16];
   if (v5)
   {
     v7 = *v37;
@@ -2709,7 +2709,7 @@ uint64_t __52__VCControlChannelMultiWay_removeActiveParticipant___block_invoke(u
               v27 = 2112;
               v28 = v9;
               v29 = 1024;
-              LODWORD(v30) = transportSessionID;
+              LODWORD(selfCopy) = transportSessionID;
               v14 = v18;
               v15 = " [%s] %s:%d Removed participant '%@' for sessionID '%d'";
               v16 = 44;
@@ -2742,7 +2742,7 @@ uint64_t __52__VCControlChannelMultiWay_removeActiveParticipant___block_invoke(u
               v27 = 2112;
               v28 = v10;
               v29 = 2048;
-              v30 = self;
+              selfCopy = self;
               v31 = 2112;
               v32 = v9;
               v33 = 1024;
@@ -2765,16 +2765,16 @@ LABEL_15:
   }
 }
 
-- (void)scheduleAfter:(unsigned int)a3 block:(id)a4
+- (void)scheduleAfter:(unsigned int)after block:(id)block
 {
   v8[5] = *MEMORY[0x1E69E9840];
-  v6 = dispatch_time(0, 1000000000 * a3);
+  v6 = dispatch_time(0, 1000000000 * after);
   asyncProcessingQueue = self->super._asyncProcessingQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__VCControlChannelMultiWay_scheduleAfter_block___block_invoke;
   v8[3] = &unk_1E85F7268;
-  v8[4] = a4;
+  v8[4] = block;
   dispatch_after(v6, asyncProcessingQueue, v8);
 }
 
@@ -2789,17 +2789,17 @@ uint64_t __48__VCControlChannelMultiWay_scheduleAfter_block___block_invoke(uint6
   return result;
 }
 
-- (void)updateTransactionIDWithKeyMaterial:(id)a3
+- (void)updateTransactionIDWithKeyMaterial:(id)material
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (![objc_msgSend(a3 objectForKeyedSubscript:{@"SecurityLocallyGenerated", "BOOLValue"}])
+  if (![objc_msgSend(material objectForKeyedSubscript:{@"SecurityLocallyGenerated", "BOOLValue"}])
   {
     return;
   }
 
   if (self->_currentSendMKI)
   {
-    if (VCMediaKeyIndex_isEqual(self->_currentSendMKI, [a3 objectForKeyedSubscript:@"SecurityKeyIndex"]))
+    if (VCMediaKeyIndex_isEqual(self->_currentSendMKI, [material objectForKeyedSubscript:@"SecurityKeyIndex"]))
     {
       return;
     }
@@ -2841,7 +2841,7 @@ uint64_t __48__VCControlChannelMultiWay_scheduleAfter_block___block_invoke(uint6
           v32 = 2112;
           v33 = v9;
           v34 = 2048;
-          v35 = self;
+          selfCopy2 = self;
           v36 = 2048;
           v37 = v7;
           v18 = " [%s] %s:%d %@(%p) Reset transactionID=%llu";
@@ -2882,7 +2882,7 @@ LABEL_30:
     return;
   }
 
-  v10 = [objc_msgSend(a3 objectForKeyedSubscript:{@"SecurityMaxSequenceNumber", "unsignedLongLongValue"}];
+  v10 = [objc_msgSend(material objectForKeyedSubscript:{@"SecurityMaxSequenceNumber", "unsignedLongLongValue"}];
   v11 = v10;
   v12 = &self->_transactionID;
   do
@@ -2944,7 +2944,7 @@ LABEL_30:
       v32 = 2112;
       v33 = v15;
       v34 = 2048;
-      v35 = self;
+      selfCopy2 = self;
       v36 = 2048;
       v37 = v11;
       v18 = " [%s] %s:%d %@(%p) Initialized transactionID=%llu";
@@ -2956,7 +2956,7 @@ LABEL_29:
   }
 }
 
-- (void)addNewKeyMaterial:(id)a3
+- (void)addNewKeyMaterial:(id)material
 {
   block[6] = *MEMORY[0x1E69E9840];
   if (self->_isEncryptionEnabled)
@@ -2967,7 +2967,7 @@ LABEL_29:
     block[2] = __46__VCControlChannelMultiWay_addNewKeyMaterial___block_invoke;
     block[3] = &unk_1E85F37F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = material;
     dispatch_async(sequentialKeyMaterialQueue, block);
   }
 }
@@ -2981,7 +2981,7 @@ uint64_t __46__VCControlChannelMultiWay_addNewKeyMaterial___block_invoke(uint64_
   return [v2 updateEncryptionWithKeyMaterial:v3];
 }
 
-- (void)setEncryptionWithEncryptionMaterial:(id *)a3
+- (void)setEncryptionWithEncryptionMaterial:(id *)material
 {
   v28 = *MEMORY[0x1E69E9840];
   if (self->_isEncryptionEnabled)
@@ -2990,27 +2990,27 @@ uint64_t __46__VCControlChannelMultiWay_addNewKeyMaterial___block_invoke(uint64_
     v12[1] = v12;
     v12[2] = 0x10810000000;
     v12[3] = &unk_1DBF04739;
-    v3 = *&a3->var2.var2;
-    v25 = *&a3->var2.var1[15];
+    v3 = *&material->var2.var2;
+    v25 = *&material->var2.var1[15];
     v26 = v3;
-    v27 = *&a3->var5;
-    v4 = *&a3->var2.var0[32];
-    v21 = *&a3->var2.var0[16];
+    v27 = *&material->var5;
+    v4 = *&material->var2.var0[32];
+    v21 = *&material->var2.var0[16];
     v22 = v4;
-    v5 = *&a3->var2.var0[64];
-    v23 = *&a3->var2.var0[48];
+    v5 = *&material->var2.var0[64];
+    v23 = *&material->var2.var0[48];
     v24 = v5;
-    v6 = *&a3->var0.var1[15];
-    v17 = *&a3->var0.var0[64];
+    v6 = *&material->var0.var1[15];
+    v17 = *&material->var0.var0[64];
     v18 = v6;
-    v7 = *a3->var2.var0;
-    v19 = *&a3->var0.var2;
+    v7 = *material->var2.var0;
+    v19 = *&material->var0.var2;
     v20 = v7;
-    v8 = *&a3->var0.var0[16];
-    v13 = *a3->var0.var0;
+    v8 = *&material->var0.var0[16];
+    v13 = *material->var0.var0;
     v14 = v8;
-    v9 = *&a3->var0.var0[48];
-    v15 = *&a3->var0.var0[32];
+    v9 = *&material->var0.var0[48];
+    v15 = *&material->var0.var0[32];
     v16 = v9;
     sequentialKeyMaterialQueue = self->_sequentialKeyMaterialQueue;
     v11[0] = MEMORY[0x1E69E9820];
@@ -3024,10 +3024,10 @@ uint64_t __46__VCControlChannelMultiWay_addNewKeyMaterial___block_invoke(uint64_
   }
 }
 
-- (BOOL)isParticipantActive:(unint64_t)a3
+- (BOOL)isParticipantActive:(unint64_t)active
 {
   objc_sync_enter(self);
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_activeParticipants, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3]) != 0;
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_activeParticipants, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:active]) != 0;
   objc_sync_exit(self);
   return v5;
 }
@@ -3085,7 +3085,7 @@ uint64_t __46__VCControlChannelMultiWay_addNewKeyMaterial___block_invoke(uint64_
           v11 = 2112;
           v12 = v5;
           v13 = 2048;
-          v14 = self;
+          selfCopy = self;
           _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) currentSendMKI is nil", v8, 0x30u);
         }
       }
@@ -3095,28 +3095,28 @@ uint64_t __46__VCControlChannelMultiWay_addNewKeyMaterial___block_invoke(uint64_
   }
 }
 
-- (int)protocolVersionforParticipantID:(id)a3
+- (int)protocolVersionforParticipantID:(id)d
 {
   objc_sync_enter(self);
-  if (a3)
+  if (d)
   {
-    v5 = [(NSMutableDictionary *)self->_activeParticipants objectForKeyedSubscript:a3];
+    v5 = [(NSMutableDictionary *)self->_activeParticipants objectForKeyedSubscript:d];
     if (v5)
     {
-      LODWORD(a3) = [v5 unsignedIntValue];
+      LODWORD(d) = [v5 unsignedIntValue];
     }
 
     else
     {
-      LODWORD(a3) = 0;
+      LODWORD(d) = 0;
     }
   }
 
   objc_sync_exit(self);
-  return a3;
+  return d;
 }
 
-- (void)reportSignificantHandshakeDelaySymptomForParticipantID:(id)a3
+- (void)reportSignificantHandshakeDelaySymptomForParticipantID:(id)d
 {
   block[6] = *MEMORY[0x1E69E9840];
   sequentialKeyMaterialQueue = self->_sequentialKeyMaterialQueue;
@@ -3125,11 +3125,11 @@ uint64_t __46__VCControlChannelMultiWay_addNewKeyMaterial___block_invoke(uint64_
   block[2] = __83__VCControlChannelMultiWay_reportSignificantHandshakeDelaySymptomForParticipantID___block_invoke;
   block[3] = &unk_1E85F37F0;
   block[4] = self;
-  block[5] = a3;
+  block[5] = d;
   dispatch_async(sequentialKeyMaterialQueue, block);
 }
 
-- (void)periodicTask:(void *)a3
+- (void)periodicTask:(void *)task
 {
   v5 = micro();
   lastUpdateTimestamp = self->super._lastUpdateTimestamp;
@@ -3195,14 +3195,14 @@ uint64_t __46__VCControlChannelMultiWay_addNewKeyMaterial___block_invoke(uint64_
 
   self->super._minReceivedRate = v19;
   self->super._bytesReceivedToReport += v15;
-  if (a3)
+  if (task)
   {
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._minSentRate), @"CCMinBytesSent"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._maxSentRate), @"CCMaxBytesSent"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._bytesSentToReport), @"CCRawBytesSent"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._minReceivedRate), @"CCMinBytesReceived"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._maxReceivedRate), @"CCMaxBytesReceived"}];
-    [a3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._bytesReceivedToReport), @"CCRawBytesReceived"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._minSentRate), @"CCMinBytesSent"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._maxSentRate), @"CCMaxBytesSent"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._bytesSentToReport), @"CCRawBytesSent"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._minReceivedRate), @"CCMinBytesReceived"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._maxReceivedRate), @"CCMaxBytesReceived"}];
+    [task setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", self->super._bytesReceivedToReport), @"CCRawBytesReceived"}];
 
     [(VCControlChannelMultiWay *)self flushRealTimeReportingStats];
   }

@@ -1,43 +1,43 @@
 @interface MediaSetupNavigationController
-- (BOOL)presentationControllerShouldDismiss:(id)a3;
-- (MediaSetupNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (MediaSetupNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (MediaSetupNavigationController)initWithRootViewController:(id)a3;
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss;
+- (MediaSetupNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (MediaSetupNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (MediaSetupNavigationController)initWithRootViewController:(id)controller;
 - (void)_willAppearInRemoteViewController;
-- (void)beginRequestWithExtensionContext:(id)a3;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)presentationControllerWillDismiss:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)presentationControllerWillDismiss:(id)dismiss;
 - (void)viewDidLoad;
 @end
 
 @implementation MediaSetupNavigationController
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000F7D8(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_10000F7D8(contextCopy);
 }
 
 - (void)_willAppearInRemoteViewController
 {
-  v2 = self;
+  selfCopy = self;
   sub_100010018();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100010394();
 }
 
-- (MediaSetupNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (MediaSetupNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
-  if (!a3)
+  if (!class)
   {
     ObjCClassMetadata = 0;
-    if (a4)
+    if (toolbarClass)
     {
       goto LABEL_3;
     }
@@ -48,7 +48,7 @@ LABEL_5:
   }
 
   ObjCClassMetadata = swift_getObjCClassMetadata();
-  if (!a4)
+  if (!toolbarClass)
   {
     goto LABEL_5;
   }
@@ -58,17 +58,17 @@ LABEL_3:
   return sub_1000106C4(ObjCClassMetadata, v6);
 }
 
-- (MediaSetupNavigationController)initWithRootViewController:(id)a3
+- (MediaSetupNavigationController)initWithRootViewController:(id)controller
 {
-  v3 = a3;
-  v4 = sub_100015240(v3);
+  controllerCopy = controller;
+  v4 = sub_100015240(controllerCopy);
 
   return v4;
 }
 
-- (MediaSetupNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (MediaSetupNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_1000258CC();
     v7 = v6;
@@ -80,37 +80,37 @@ LABEL_3:
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1000108E4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1000108E4(v5, v7, bundle);
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_10001539C();
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1000154A8();
 }
 
-- (BOOL)presentationControllerShouldDismiss:(id)a3
+- (BOOL)presentationControllerShouldDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   LOBYTE(self) = sub_1000155B4();
 
   return self & 1;
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_1000156B4();
 }
 

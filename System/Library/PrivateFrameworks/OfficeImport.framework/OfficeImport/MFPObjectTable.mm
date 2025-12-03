@@ -1,7 +1,7 @@
 @interface MFPObjectTable
 - (MFPObjectTable)init;
-- (id)objectAtIndex:(int)a3;
-- (void)setObject:(id)a3 atIndex:(int)a4;
+- (id)objectAtIndex:(int)index;
+- (void)setObject:(id)object atIndex:(int)index;
 @end
 
 @implementation MFPObjectTable
@@ -21,20 +21,20 @@
   return v2;
 }
 
-- (id)objectAtIndex:(int)a3
+- (id)objectAtIndex:(int)index
 {
-  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:*&a3];
+  v4 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:*&index];
   v5 = [(NSMutableDictionary *)self->mObjects objectForKey:v4];
 
   return v5;
 }
 
-- (void)setObject:(id)a3 atIndex:(int)a4
+- (void)setObject:(id)object atIndex:(int)index
 {
-  v4 = *&a4;
-  v7 = a3;
+  v4 = *&index;
+  objectCopy = object;
   v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInt:v4];
-  [(NSMutableDictionary *)self->mObjects setObject:v7 forKey:v6];
+  [(NSMutableDictionary *)self->mObjects setObject:objectCopy forKey:v6];
 }
 
 @end

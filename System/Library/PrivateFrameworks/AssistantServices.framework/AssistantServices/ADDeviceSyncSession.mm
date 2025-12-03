@@ -1,41 +1,41 @@
 @interface ADDeviceSyncSession
-- (ADDeviceSyncSession)initWithQueue:(id)a3 deviceIdentifier:(id)a4 dataConsumersByType:(id)a5 dataProvidersByType:(id)a6 messageSenders:(id)a7;
-- (BOOL)_handlePulledDeltaWithIncrementalChanges:(id)a3 forDataType:(id)a4;
-- (BOOL)_handlePulledSnapshot:(id)a3 forDataType:(id)a4;
-- (BOOL)_handlePushedOrPulledGeneration:(unint64_t)a3 forDataType:(id)a4;
-- (void)_handlePingWithCompletion:(id)a3;
-- (void)_handlePullDeltaForDataType:(id)a3 generation:(unint64_t)a4 limit:(unint64_t)a5 completion:(id)a6;
-- (void)_handlePullGenerationsForDataTypes:(id)a3 completion:(id)a4;
-- (void)_handlePullSnapshotForDataType:(id)a3 completion:(id)a4;
-- (void)_handlePushGenerationsByDataType:(id)a3 completion:(id)a4;
+- (ADDeviceSyncSession)initWithQueue:(id)queue deviceIdentifier:(id)identifier dataConsumersByType:(id)type dataProvidersByType:(id)byType messageSenders:(id)senders;
+- (BOOL)_handlePulledDeltaWithIncrementalChanges:(id)changes forDataType:(id)type;
+- (BOOL)_handlePulledSnapshot:(id)snapshot forDataType:(id)type;
+- (BOOL)_handlePushedOrPulledGeneration:(unint64_t)generation forDataType:(id)type;
+- (void)_handlePingWithCompletion:(id)completion;
+- (void)_handlePullDeltaForDataType:(id)type generation:(unint64_t)generation limit:(unint64_t)limit completion:(id)completion;
+- (void)_handlePullGenerationsForDataTypes:(id)types completion:(id)completion;
+- (void)_handlePullSnapshotForDataType:(id)type completion:(id)completion;
+- (void)_handlePushGenerationsByDataType:(id)type completion:(id)completion;
 - (void)_invalidate;
-- (void)_pingWithCompletion:(id)a3;
-- (void)_pullDeltaForDataType:(id)a3 generation:(unint64_t)a4 limit:(unint64_t)a5 completion:(id)a6;
-- (void)_pullGenerationsForDataTypes:(id)a3 completion:(id)a4;
-- (void)_pullSnapshotForDataType:(id)a3 completion:(id)a4;
-- (void)_pushGenerationsByDataType:(id)a3 completion:(id)a4;
-- (void)_receiveMessage:(id)a3 completion:(id)a4;
-- (void)_sendMessage:(id)a3 completion:(id)a4;
+- (void)_pingWithCompletion:(id)completion;
+- (void)_pullDeltaForDataType:(id)type generation:(unint64_t)generation limit:(unint64_t)limit completion:(id)completion;
+- (void)_pullGenerationsForDataTypes:(id)types completion:(id)completion;
+- (void)_pullSnapshotForDataType:(id)type completion:(id)completion;
+- (void)_pushGenerationsByDataType:(id)type completion:(id)completion;
+- (void)_receiveMessage:(id)message completion:(id)completion;
+- (void)_sendMessage:(id)message completion:(id)completion;
 - (void)dealloc;
 - (void)invalidate;
-- (void)pushGenerationsByDataTypes:(id)a3;
-- (void)receiveMessage:(id)a3 completion:(id)a4;
-- (void)sendMessage:(id)a3 completion:(id)a4;
+- (void)pushGenerationsByDataTypes:(id)types;
+- (void)receiveMessage:(id)message completion:(id)completion;
+- (void)sendMessage:(id)message completion:(id)completion;
 @end
 
 @implementation ADDeviceSyncSession
 
-- (void)_pullSnapshotForDataType:(id)a3 completion:(id)a4
+- (void)_pullSnapshotForDataType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   v8 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v23 = "[ADDeviceSyncSession _pullSnapshotForDataType:completion:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s dataType = %@", buf, 0x16u);
   }
 
@@ -45,9 +45,9 @@
   v19[1] = 3221225472;
   v19[2] = sub_10014E380;
   v19[3] = &unk_1005134F8;
-  v20 = v6;
+  v20 = typeCopy;
   v21 = outgoingSequence;
-  v10 = v6;
+  v10 = typeCopy;
   v11 = [ADDeviceSyncMessage newWithBuilder:v19];
   v12 = self->_queue;
   v15[0] = _NSConcreteStackBlock;
@@ -55,28 +55,28 @@
   v15[2] = sub_10014E40C;
   v15[3] = &unk_1005134D0;
   v16 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v18 = outgoingSequence;
   v13 = v12;
-  v14 = v7;
+  v14 = completionCopy;
   [(ADDeviceSyncSession *)self _sendMessage:v11 completion:v15];
 }
 
-- (void)_pullDeltaForDataType:(id)a3 generation:(unint64_t)a4 limit:(unint64_t)a5 completion:(id)a6
+- (void)_pullDeltaForDataType:(id)type generation:(unint64_t)generation limit:(unint64_t)limit completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  typeCopy = type;
+  completionCopy = completion;
   v12 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v29 = "[ADDeviceSyncSession _pullDeltaForDataType:generation:limit:completion:]";
     v30 = 2112;
-    v31 = v10;
+    v31 = typeCopy;
     v32 = 2048;
-    v33 = a4;
+    generationCopy = generation;
     v34 = 2048;
-    v35 = a5;
+    limitCopy = limit;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s dataType = %@, generation = %llu, limit = %llu", buf, 0x2Au);
   }
 
@@ -86,11 +86,11 @@
   v23[1] = 3221225472;
   v23[2] = sub_10014EB3C;
   v23[3] = &unk_100513570;
-  v24 = v10;
+  v24 = typeCopy;
   v25 = outgoingSequence;
-  v26 = a4;
-  v27 = a5;
-  v14 = v10;
+  generationCopy2 = generation;
+  limitCopy2 = limit;
+  v14 = typeCopy;
   v15 = [ADDeviceSyncMessage newWithBuilder:v23];
   v16 = self->_queue;
   v19[0] = _NSConcreteStackBlock;
@@ -98,24 +98,24 @@
   v19[2] = sub_10014EBCC;
   v19[3] = &unk_1005134D0;
   v20 = v16;
-  v21 = v11;
+  v21 = completionCopy;
   v22 = outgoingSequence;
   v17 = v16;
-  v18 = v11;
+  v18 = completionCopy;
   [(ADDeviceSyncSession *)self _sendMessage:v15 completion:v19];
 }
 
-- (void)_pullGenerationsForDataTypes:(id)a3 completion:(id)a4
+- (void)_pullGenerationsForDataTypes:(id)types completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  completionCopy = completion;
   v8 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v23 = "[ADDeviceSyncSession _pullGenerationsForDataTypes:completion:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = typesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s dataTypes = %@", buf, 0x16u);
   }
 
@@ -125,9 +125,9 @@
   v19[1] = 3221225472;
   v19[2] = sub_10014F2D0;
   v19[3] = &unk_1005134F8;
-  v20 = v6;
+  v20 = typesCopy;
   v21 = outgoingSequence;
-  v10 = v6;
+  v10 = typesCopy;
   v11 = [ADDeviceSyncMessage newWithBuilder:v19];
   v12 = self->_queue;
   v15[0] = _NSConcreteStackBlock;
@@ -135,24 +135,24 @@
   v15[2] = sub_10014F35C;
   v15[3] = &unk_1005134D0;
   v16 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v18 = outgoingSequence;
   v13 = v12;
-  v14 = v7;
+  v14 = completionCopy;
   [(ADDeviceSyncSession *)self _sendMessage:v11 completion:v15];
 }
 
-- (void)_pushGenerationsByDataType:(id)a3 completion:(id)a4
+- (void)_pushGenerationsByDataType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   v8 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v23 = "[ADDeviceSyncSession _pushGenerationsByDataType:completion:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s generationsByDataType = %@", buf, 0x16u);
   }
 
@@ -162,9 +162,9 @@
   v19[1] = 3221225472;
   v19[2] = sub_10014FA60;
   v19[3] = &unk_1005134F8;
-  v20 = v6;
+  v20 = typeCopy;
   v21 = outgoingSequence;
-  v10 = v6;
+  v10 = typeCopy;
   v11 = [ADDeviceSyncMessage newWithBuilder:v19];
   v12 = self->_queue;
   v15[0] = _NSConcreteStackBlock;
@@ -172,16 +172,16 @@
   v15[2] = sub_10014FAEC;
   v15[3] = &unk_1005134D0;
   v16 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v18 = outgoingSequence;
   v13 = v12;
-  v14 = v7;
+  v14 = completionCopy;
   [(ADDeviceSyncSession *)self _sendMessage:v11 completion:v15];
 }
 
-- (void)_pingWithCompletion:(id)a3
+- (void)_pingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
@@ -204,17 +204,17 @@
   v11[2] = sub_10015012C;
   v11[3] = &unk_1005134D0;
   v12 = v8;
-  v13 = v4;
+  v13 = completionCopy;
   v14 = outgoingSequence;
   v9 = v8;
-  v10 = v4;
+  v10 = completionCopy;
   [(ADDeviceSyncSession *)self _sendMessage:v7 completion:v11];
 }
 
-- (void)_sendMessage:(id)a3 completion:(id)a4
+- (void)_sendMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
@@ -224,12 +224,12 @@
     v38 = 2112;
     v39 = deviceIdentifier;
     v40 = 2112;
-    v41 = v6;
+    v41 = messageCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, outgoingMessage = %@", buf, 0x20u);
   }
 
-  v22 = v7;
-  v10 = [[ADDeviceSyncMessageSendingContext alloc] initWithQueue:self->_queue deviceIdentifier:self->_deviceIdentifier timeoutDuration:v7 completion:16.0];
+  v22 = completionCopy;
+  v10 = [[ADDeviceSyncMessageSendingContext alloc] initWithQueue:self->_queue deviceIdentifier:self->_deviceIdentifier timeoutDuration:completionCopy completion:16.0];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
@@ -288,7 +288,7 @@
         v23[3] = &unk_100513488;
         v24 = v10;
         v25 = v21;
-        [v21 sendMessage:v6 completion:v23];
+        [v21 sendMessage:messageCopy completion:v23];
 
         v20 = v20 + 1;
       }
@@ -301,23 +301,23 @@
   }
 }
 
-- (void)_handlePullSnapshotForDataType:(id)a3 completion:(id)a4
+- (void)_handlePullSnapshotForDataType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   v8 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v18 = "[ADDeviceSyncSession _handlePullSnapshotForDataType:completion:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s dataType = %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v9 = [(NSDictionary *)self->_dataProvidersByType objectForKey:v6];
+    v9 = [(NSDictionary *)self->_dataProvidersByType objectForKey:typeCopy];
     if (v9)
     {
       v10 = self->_queue;
@@ -326,15 +326,15 @@
       v14[2] = sub_100150A78;
       v14[3] = &unk_100513460;
       v15 = v10;
-      v16 = v7;
+      v16 = completionCopy;
       v11 = v10;
       [v9 getSnapshotWithCompletion:v14];
     }
 
     else
     {
-      v12 = [[NSString alloc] initWithFormat:@"No data provider for data type %@.", v6];
-      v11 = [AFError errorWithCode:2410 description:v12 underlyingError:0];
+      typeCopy = [[NSString alloc] initWithFormat:@"No data provider for data type %@.", typeCopy];
+      v11 = [AFError errorWithCode:2410 description:typeCopy underlyingError:0];
 
       v13 = AFSiriLogContextDeviceSync;
       if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_ERROR))
@@ -346,32 +346,32 @@
         _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s error = %@", buf, 0x16u);
       }
 
-      (*(v7 + 2))(v7, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, v11);
     }
   }
 }
 
-- (void)_handlePullDeltaForDataType:(id)a3 generation:(unint64_t)a4 limit:(unint64_t)a5 completion:(id)a6
+- (void)_handlePullDeltaForDataType:(id)type generation:(unint64_t)generation limit:(unint64_t)limit completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  typeCopy = type;
+  completionCopy = completion;
   v12 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315906;
     v22 = "[ADDeviceSyncSession _handlePullDeltaForDataType:generation:limit:completion:]";
     v23 = 2112;
-    v24 = v10;
+    v24 = typeCopy;
     v25 = 2048;
-    v26 = a4;
+    generationCopy = generation;
     v27 = 2048;
-    v28 = a5;
+    limitCopy = limit;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%s dataType = %@, generation = %llu, limit = %llu", buf, 0x2Au);
   }
 
-  if (v11)
+  if (completionCopy)
   {
-    v13 = [(NSDictionary *)self->_dataProvidersByType objectForKey:v10];
+    v13 = [(NSDictionary *)self->_dataProvidersByType objectForKey:typeCopy];
     if (v13)
     {
       v14 = self->_queue;
@@ -380,15 +380,15 @@
       v18[2] = sub_100150F10;
       v18[3] = &unk_10051DDC0;
       v19 = v14;
-      v20 = v11;
+      v20 = completionCopy;
       v15 = v14;
-      [v13 getIncrementalChangesAfterGeneration:a4 limit:a5 completion:v18];
+      [v13 getIncrementalChangesAfterGeneration:generation limit:limit completion:v18];
     }
 
     else
     {
-      v16 = [[NSString alloc] initWithFormat:@"No data provider for data type %@.", v10];
-      v15 = [AFError errorWithCode:2410 description:v16 underlyingError:0];
+      typeCopy = [[NSString alloc] initWithFormat:@"No data provider for data type %@.", typeCopy];
+      v15 = [AFError errorWithCode:2410 description:typeCopy underlyingError:0];
 
       v17 = AFSiriLogContextDeviceSync;
       if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_ERROR))
@@ -400,47 +400,47 @@
         _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%s error = %@", buf, 0x16u);
       }
 
-      (*(v11 + 2))(v11, 0, v15);
+      (*(completionCopy + 2))(completionCopy, 0, v15);
     }
   }
 }
 
-- (void)_handlePullGenerationsForDataTypes:(id)a3 completion:(id)a4
+- (void)_handlePullGenerationsForDataTypes:(id)types completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typesCopy = types;
+  completionCopy = completion;
   v8 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v38 = "[ADDeviceSyncSession _handlePullGenerationsForDataTypes:completion:]";
     v39 = 2112;
-    v40 = v6;
+    v40 = typesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s dataTypes = %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     queue = self->_queue;
     v9 = dispatch_group_create();
-    v10 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+    v10 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(typesCopy, "count")}];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v21 = v6;
-    if (v6)
+    v21 = typesCopy;
+    if (typesCopy)
     {
-      v11 = v6;
+      allKeys = typesCopy;
     }
 
     else
     {
-      v11 = [(NSDictionary *)self->_dataProvidersByType allKeys];
+      allKeys = [(NSDictionary *)self->_dataProvidersByType allKeys];
     }
 
-    v12 = v11;
-    v13 = [v11 countByEnumeratingWithState:&v32 objects:v36 count:{16, v7}];
+    v12 = allKeys;
+    v13 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:{16, completionCopy}];
     if (v13)
     {
       v14 = v13;
@@ -482,26 +482,26 @@
     block[2] = sub_10015150C;
     block[3] = &unk_10051E088;
     v24 = v10;
-    v6 = v21;
+    typesCopy = v21;
     v25 = v21;
-    v7 = v20;
+    completionCopy = v20;
     v26 = v20;
     v19 = v10;
     dispatch_group_notify(v9, queue, block);
   }
 }
 
-- (void)_handlePushGenerationsByDataType:(id)a3 completion:(id)a4
+- (void)_handlePushGenerationsByDataType:(id)type completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  completionCopy = completion;
   v8 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     *&buf[4] = "[ADDeviceSyncSession _handlePushGenerationsByDataType:completion:]";
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = typeCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s generationsByDataType = %@", buf, 0x16u);
   }
 
@@ -515,8 +515,8 @@
   v14[3] = &unk_100513410;
   v14[4] = self;
   v14[5] = buf;
-  [v6 enumerateKeysAndObjectsUsingBlock:v14];
-  if (v7)
+  [typeCopy enumerateKeysAndObjectsUsingBlock:v14];
+  if (completionCopy)
   {
     if (*(*&buf[8] + 24))
     {
@@ -526,8 +526,8 @@
     else
     {
       v10 = [NSString alloc];
-      v11 = [v6 allKeys];
-      v12 = [v10 initWithFormat:@"No data consumer for data types %@.", v11];
+      allKeys = [typeCopy allKeys];
+      v12 = [v10 initWithFormat:@"No data consumer for data types %@.", allKeys];
       v9 = [AFError errorWithCode:2411 description:v12 underlyingError:0];
 
       if (v9)
@@ -544,15 +544,15 @@
       }
     }
 
-    v7[2](v7, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_handlePingWithCompletion:(id)a3
+- (void)_handlePingWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
@@ -561,16 +561,16 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s ", &v5, 0xCu);
   }
 
-  if (v3)
+  if (completionCopy)
   {
-    v3[2](v3, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_receiveMessage:(id)a3 completion:(id)a4
+- (void)_receiveMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
@@ -580,7 +580,7 @@
     v62 = 2112;
     v63 = deviceIdentifier;
     v64 = 2112;
-    v65 = v6;
+    v65 = messageCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s deviceIdentifier = %@, incomingMessage = %@", buf, 0x20u);
   }
 
@@ -588,16 +588,16 @@
   v54[1] = 3221225472;
   v55 = sub_100151FD0;
   v56 = &unk_10051E088;
-  v57 = self;
-  v10 = v7;
+  selfCopy = self;
+  v10 = completionCopy;
   v59 = v10;
-  v11 = v6;
+  v11 = messageCopy;
   v58 = v11;
   v48[0] = _NSConcreteStackBlock;
   v48[1] = 3221225472;
   v49 = sub_100152074;
   v50 = &unk_100513348;
-  v51 = self;
+  selfCopy2 = self;
   v12 = v10;
   v53 = v12;
   v13 = v11;
@@ -606,7 +606,7 @@
   v42[1] = 3221225472;
   v43 = sub_100152138;
   v44 = &unk_100513398;
-  v45 = self;
+  selfCopy3 = self;
   v14 = v12;
   v47 = v14;
   v15 = v13;
@@ -615,14 +615,14 @@
   v36[1] = 3221225472;
   v37 = sub_1001521FC;
   v38 = &unk_1005133C0;
-  v39 = self;
+  selfCopy4 = self;
   v41 = v14;
   v40 = v15;
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v31 = sub_1001522F0;
   v32 = &unk_1005133E8;
-  v33 = self;
+  selfCopy5 = self;
   v16 = v41;
   v35 = v16;
   v34 = v40;
@@ -632,39 +632,39 @@
   v20 = v42;
   v21 = v36;
   v22 = v30;
-  v23 = [v17 type];
+  type = [v17 type];
   v24 = 0;
-  if (v23 > 4)
+  if (type > 4)
   {
-    switch(v23)
+    switch(type)
     {
       case 5:
         v27 = v21;
-        v28 = [v17 commandPullGenerationsRequest];
-        v24 = v28 != 0;
-        if (v28)
+        commandPullGenerationsRequest = [v17 commandPullGenerationsRequest];
+        v24 = commandPullGenerationsRequest != 0;
+        if (commandPullGenerationsRequest)
         {
-          v43(v20, v28);
+          v43(v20, commandPullGenerationsRequest);
         }
 
         break;
       case 7:
         v27 = v21;
-        v28 = [v17 commandPullDeltaRequest];
-        v24 = v28 != 0;
-        if (v28)
+        commandPullGenerationsRequest = [v17 commandPullDeltaRequest];
+        v24 = commandPullGenerationsRequest != 0;
+        if (commandPullGenerationsRequest)
         {
-          v37(v27, v28);
+          v37(v27, commandPullGenerationsRequest);
         }
 
         break;
       case 9:
         v25 = v21;
-        v26 = [v17 commandPullSnapshotRequest];
-        v24 = v26 != 0;
-        if (v26)
+        commandPullSnapshotRequest = [v17 commandPullSnapshotRequest];
+        v24 = commandPullSnapshotRequest != 0;
+        if (commandPullSnapshotRequest)
         {
-          v31(v22, v26);
+          v31(v22, commandPullSnapshotRequest);
         }
 
 LABEL_13:
@@ -679,21 +679,21 @@ LABEL_13:
     goto LABEL_20;
   }
 
-  if (v23 == 1)
+  if (type == 1)
   {
     v55(v18);
     v24 = 1;
     goto LABEL_20;
   }
 
-  if (v23 == 3)
+  if (type == 3)
   {
     v25 = v21;
-    v26 = [v17 commandPushGenerationsRequest];
-    v24 = v26 != 0;
-    if (v26)
+    commandPullSnapshotRequest = [v17 commandPushGenerationsRequest];
+    v24 = commandPullSnapshotRequest != 0;
+    if (commandPullSnapshotRequest)
     {
-      v49(v19, v26);
+      v49(v19, commandPullSnapshotRequest);
     }
 
     goto LABEL_13;
@@ -708,36 +708,36 @@ LABEL_20:
   }
 }
 
-- (BOOL)_handlePulledSnapshot:(id)a3 forDataType:(id)a4
+- (BOOL)_handlePulledSnapshot:(id)snapshot forDataType:(id)type
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_dataConsumersByType objectForKey:a4];
+  snapshotCopy = snapshot;
+  v7 = [(NSDictionary *)self->_dataConsumersByType objectForKey:type];
   v8 = v7;
   if (v7)
   {
-    [v7 applySnapshot:v6 fromDeviceWithIdentifier:self->_deviceIdentifier];
+    [v7 applySnapshot:snapshotCopy fromDeviceWithIdentifier:self->_deviceIdentifier];
   }
 
   return v8 != 0;
 }
 
-- (BOOL)_handlePulledDeltaWithIncrementalChanges:(id)a3 forDataType:(id)a4
+- (BOOL)_handlePulledDeltaWithIncrementalChanges:(id)changes forDataType:(id)type
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_dataConsumersByType objectForKey:a4];
+  changesCopy = changes;
+  v7 = [(NSDictionary *)self->_dataConsumersByType objectForKey:type];
   v8 = v7;
   if (v7)
   {
-    [v7 applyIncrementalChanges:v6 fromDeviceWithIdentifier:self->_deviceIdentifier];
+    [v7 applyIncrementalChanges:changesCopy fromDeviceWithIdentifier:self->_deviceIdentifier];
   }
 
   return v8 != 0;
 }
 
-- (BOOL)_handlePushedOrPulledGeneration:(unint64_t)a3 forDataType:(id)a4
+- (BOOL)_handlePushedOrPulledGeneration:(unint64_t)generation forDataType:(id)type
 {
-  v6 = a4;
-  v7 = [(NSDictionary *)self->_dataConsumersByType objectForKey:v6];
+  typeCopy = type;
+  v7 = [(NSDictionary *)self->_dataConsumersByType objectForKey:typeCopy];
   if (v7)
   {
     v8 = self->_queue;
@@ -748,12 +748,12 @@ LABEL_20:
     v12[2] = sub_100152D50;
     v12[3] = &unk_1005132F8;
     v13 = v7;
-    v14 = self;
-    v17[1] = a3;
+    selfCopy = self;
+    v17[1] = generation;
     v10 = v8;
     v15 = v10;
     objc_copyWeak(v17, &location);
-    v16 = v6;
+    v16 = typeCopy;
     [v13 getGenerationForDeviceWithIdentifier:deviceIdentifier completion:v12];
 
     objc_destroyWeak(v17);
@@ -778,37 +778,37 @@ LABEL_20:
   self->_messageSenders = 0;
 }
 
-- (void)sendMessage:(id)a3 completion:(id)a4
+- (void)sendMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001532AC;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = messageCopy;
   dispatch_async(queue, block);
 }
 
-- (void)receiveMessage:(id)a3 completion:(id)a4
+- (void)receiveMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100153380;
   block[3] = &unk_10051E088;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = messageCopy;
   dispatch_async(queue, block);
 }
 
@@ -823,43 +823,43 @@ LABEL_20:
   dispatch_async(queue, block);
 }
 
-- (void)pushGenerationsByDataTypes:(id)a3
+- (void)pushGenerationsByDataTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001534A4;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = typesCopy;
+  v6 = typesCopy;
   dispatch_async(queue, v7);
 }
 
-- (ADDeviceSyncSession)initWithQueue:(id)a3 deviceIdentifier:(id)a4 dataConsumersByType:(id)a5 dataProvidersByType:(id)a6 messageSenders:(id)a7
+- (ADDeviceSyncSession)initWithQueue:(id)queue deviceIdentifier:(id)identifier dataConsumersByType:(id)type dataProvidersByType:(id)byType messageSenders:(id)senders
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  queueCopy = queue;
+  identifierCopy = identifier;
+  typeCopy = type;
+  byTypeCopy = byType;
+  sendersCopy = senders;
   v31.receiver = self;
   v31.super_class = ADDeviceSyncSession;
   v18 = [(ADDeviceSyncSession *)&v31 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_queue, a3);
-    v20 = [v14 copy];
+    objc_storeStrong(&v18->_queue, queue);
+    v20 = [identifierCopy copy];
     deviceIdentifier = v19->_deviceIdentifier;
     v19->_deviceIdentifier = v20;
 
-    v22 = [v15 copy];
+    v22 = [typeCopy copy];
     dataConsumersByType = v19->_dataConsumersByType;
     v19->_dataConsumersByType = v22;
 
-    v24 = [v16 copy];
+    v24 = [byTypeCopy copy];
     dataProvidersByType = v19->_dataProvidersByType;
     v19->_dataProvidersByType = v24;
 
@@ -867,8 +867,8 @@ LABEL_20:
     v29[1] = 3221225472;
     v29[2] = sub_100153624;
     v29[3] = &unk_100513280;
-    v30 = v14;
-    v26 = [v17 objectsPassingTest:v29];
+    v30 = identifierCopy;
+    v26 = [sendersCopy objectsPassingTest:v29];
     messageSenders = v19->_messageSenders;
     v19->_messageSenders = v26;
   }

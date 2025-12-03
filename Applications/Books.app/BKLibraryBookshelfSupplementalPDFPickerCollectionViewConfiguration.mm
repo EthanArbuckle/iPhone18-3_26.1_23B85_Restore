@@ -1,29 +1,29 @@
 @interface BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration
-- (BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration)initWithCollection:(id)a3 storePlaylistID:(id)a4 fromActionMenu:(BOOL)a5;
+- (BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration)initWithCollection:(id)collection storePlaylistID:(id)d fromActionMenu:(BOOL)menu;
 - (id)sortControlConfig;
 - (id)supplementalContentPDFTitle;
 @end
 
 @implementation BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration
 
-- (BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration)initWithCollection:(id)a3 storePlaylistID:(id)a4 fromActionMenu:(BOOL)a5
+- (BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration)initWithCollection:(id)collection storePlaylistID:(id)d fromActionMenu:(BOOL)menu
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  menuCopy = menu;
+  collectionCopy = collection;
+  dCopy = d;
   v14.receiver = self;
   v14.super_class = BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration;
   v10 = [(BKLibraryBookshelfSupplementalPDFPickerCollectionViewConfiguration *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v10 setCollection:v8];
-    v12 = [v8 collectionID];
-    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v11 setCollectionID:v12];
+    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v10 setCollection:collectionCopy];
+    collectionID = [collectionCopy collectionID];
+    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v11 setCollectionID:collectionID];
 
-    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v11 setSupplementalContentStorePlaylistID:v9];
+    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v11 setSupplementalContentStorePlaylistID:dCopy];
     [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v11 setInitialViewMode:2];
-    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v11 setFromActionMenu:v5];
+    [(BKLibraryBookshelfLibraryBaseViewConfiguration *)v11 setFromActionMenu:menuCopy];
   }
 
   return v11;
@@ -36,12 +36,12 @@
   [(BKLibrarySortByMode *)v4 setSortMode:2];
   [(BKLibrarySortByMode *)v4 setTitle:&stru_100A30A68];
   [(BKLibrarySortByMode *)v4 setLabel:&stru_100A30A68];
-  v5 = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self supplementalContentStorePlaylistID];
-  v6 = [BKLibraryManager predicateForSupplementalContentLibraryAssetsWithStorePlaylistID:v5];
+  supplementalContentStorePlaylistID = [(BKLibraryBookshelfLibraryBaseViewConfiguration *)self supplementalContentStorePlaylistID];
+  v6 = [BKLibraryManager predicateForSupplementalContentLibraryAssetsWithStorePlaylistID:supplementalContentStorePlaylistID];
   [(BKLibrarySortByMode *)v4 setAllowExplicitPredicate:v6];
 
-  v7 = [(BKLibrarySortByMode *)v4 allowExplicitPredicate];
-  v15[0] = v7;
+  allowExplicitPredicate = [(BKLibrarySortByMode *)v4 allowExplicitPredicate];
+  v15[0] = allowExplicitPredicate;
   v8 = +[BKLibraryManager predicateToExcludeLibraryAssetsWithExplicitContent];
   v15[1] = v8;
   v9 = [NSArray arrayWithObjects:v15 count:2];

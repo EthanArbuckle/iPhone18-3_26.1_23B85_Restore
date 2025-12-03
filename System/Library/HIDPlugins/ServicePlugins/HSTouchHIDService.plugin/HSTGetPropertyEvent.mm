@@ -1,14 +1,14 @@
 @interface HSTGetPropertyEvent
-- (BOOL)decodeFromMap:(void *)a3;
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (id).cxx_construct;
-- (void)encodeToMap:(void *)a3;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation HSTGetPropertyEvent
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   v6.receiver = self;
   v6.super_class = HSTGetPropertyEvent;
@@ -19,20 +19,20 @@
     p_key = p_key->__rep_.__l.__data_;
   }
 
-  HSUtil::Encoder::encodeString(a3, HSUtil::CoderKey::Literal<(char)107,(char)101,(char)121>::Key, p_key->__rep_.__s.__data_);
-  HSUtil::Encoder::encodeObject(a3, HSUtil::CoderKey::Literal<(char)118,(char)97,(char)108,(char)117,(char)101>::Key, self->value);
+  HSUtil::Encoder::encodeString(map, HSUtil::CoderKey::Literal<(char)107,(char)101,(char)121>::Key, p_key->__rep_.__s.__data_);
+  HSUtil::Encoder::encodeObject(map, HSUtil::CoderKey::Literal<(char)118,(char)97,(char)108,(char)117,(char)101>::Key, self->value);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
   v8.receiver = self;
   v8.super_class = HSTGetPropertyEvent;
   if ([(HSTEvent *)&v8 decodeFromMap:?])
   {
-    HSUtil::Decoder::decodeString(a3, HSUtil::CoderKey::Literal<(char)107,(char)101,(char)121>::Key, __b);
+    HSUtil::Decoder::decodeString(map, HSUtil::CoderKey::Literal<(char)107,(char)101,(char)121>::Key, __b);
     std::string::assign(&self->key, __b[5]);
     HSUtil::Buffer::~Buffer(__b);
-    if (*a3)
+    if (*map)
     {
       memset(__b, 170, sizeof(__b));
       basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTEvent.mm", __b);
@@ -44,11 +44,11 @@
 
     else
     {
-      v6 = HSUtil::Decoder::decodeObject(a3, HSUtil::CoderKey::Literal<(char)118,(char)97,(char)108,(char)117,(char)101>::Key);
+      v6 = HSUtil::Decoder::decodeObject(map, HSUtil::CoderKey::Literal<(char)118,(char)97,(char)108,(char)117,(char)101>::Key);
       value = self->value;
       self->value = v6;
 
-      if (!*a3)
+      if (!*map)
       {
         return 1;
       }
@@ -75,26 +75,26 @@
   return 0;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 2;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue16(a3, 0xEAu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue16(encode, 0xEAu, 0);
   }
 
-  [(HSTGetPropertyEvent *)self encodeToMap:a3];
-  if (!*a3)
+  [(HSTGetPropertyEvent *)self encodeToMap:encode];
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -103,8 +103,8 @@
   v10 = v5;
   v11 = v5;
   v9 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v9);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v9);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTEvent.mm", __b);

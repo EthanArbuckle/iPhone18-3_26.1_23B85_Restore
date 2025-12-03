@@ -1,30 +1,30 @@
 @interface NANDTelemetry_NandGBBSweepDaily
 + (BOOL)shouldRegisterActivity;
-+ (void)setGBBXpcCritiria:(id)a3;
-- (BOOL)_createDirectoryAt:(id)a3;
-- (NANDTelemetry_NandGBBSweepDaily)initWithXpcActivityMgr:(id)a3 persistentStateMgr:(id)a4 privacyMgr:(id)a5;
-- (id)_getBlockStr:(unsigned int)a3;
-- (id)_getReasonString:(unsigned int)a3;
-- (int)uploadFile:(id)a3 description:(id)a4;
++ (void)setGBBXpcCritiria:(id)critiria;
+- (BOOL)_createDirectoryAt:(id)at;
+- (NANDTelemetry_NandGBBSweepDaily)initWithXpcActivityMgr:(id)mgr persistentStateMgr:(id)stateMgr privacyMgr:(id)privacyMgr;
+- (id)_getBlockStr:(unsigned int)str;
+- (id)_getReasonString:(unsigned int)string;
+- (int)uploadFile:(id)file description:(id)description;
 - (void)_checkTestHook;
-- (void)_cleanItemAt:(id)a3;
-- (void)_doCleanup:(id)a3;
+- (void)_cleanItemAt:(id)at;
+- (void)_doCleanup:(id)cleanup;
 - (void)_fillSweepParams;
 - (void)_gatherRadarInfo;
-- (void)_sweepBlock:(id *)a3;
-- (void)_writeCounters:(id)a3 counters:(id)a4;
-- (void)getDefects:(unint64_t *)a3;
+- (void)_sweepBlock:(id *)block;
+- (void)_writeCounters:(id)counters counters:(id)a4;
+- (void)getDefects:(unint64_t *)defects;
 - (void)markGBBAsSwept;
 - (void)runActivity;
 @end
 
 @implementation NANDTelemetry_NandGBBSweepDaily
 
-- (NANDTelemetry_NandGBBSweepDaily)initWithXpcActivityMgr:(id)a3 persistentStateMgr:(id)a4 privacyMgr:(id)a5
+- (NANDTelemetry_NandGBBSweepDaily)initWithXpcActivityMgr:(id)mgr persistentStateMgr:(id)stateMgr privacyMgr:(id)privacyMgr
 {
   v9.receiver = self;
   v9.super_class = NANDTelemetry_NandGBBSweepDaily;
-  v5 = [(NANDTelemetry_Base *)&v9 initWithXpcActivityMgr:a3 persistentStateMgr:a4 privacyMgr:a5];
+  v5 = [(NANDTelemetry_Base *)&v9 initWithXpcActivityMgr:mgr persistentStateMgr:stateMgr privacyMgr:privacyMgr];
   v6 = v5;
   if (v5)
   {
@@ -39,11 +39,11 @@
   return v6;
 }
 
-- (BOOL)_createDirectoryAt:(id)a3
+- (BOOL)_createDirectoryAt:(id)at
 {
-  v3 = a3;
+  atCopy = at;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+  v5 = [v4 createDirectoryAtPath:atCopy withIntermediateDirectories:1 attributes:0 error:0];
 
   if (v5)
   {
@@ -51,7 +51,7 @@
     v10 = NSFilePosixPermissions;
     v11 = &off_1000BFF90;
     v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-    [v6 setAttributes:v7 ofItemAtPath:v3 error:0];
+    [v6 setAttributes:v7 ofItemAtPath:atCopy error:0];
   }
 
   else
@@ -59,16 +59,16 @@
     v8 = oslog;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      sub_100049BCC(v3, v8);
+      sub_100049BCC(atCopy, v8);
     }
   }
 
   return v5;
 }
 
-- (void)_doCleanup:(id)a3
+- (void)_doCleanup:(id)cleanup
 {
-  v4 = a3;
+  cleanupCopy = cleanup;
   if ([(NANDTelemetry_NandGBBSweepDaily *)self sweepError]== 8)
   {
     goto LABEL_5;
@@ -86,23 +86,23 @@ LABEL_5:
   byte_1000D8260 = 0;
   if ((byte_1000D8268 & 1) == 0)
   {
-    [(NANDTelemetry_NandGBBSweepDaily *)self _cleanItemAt:v4];
+    [(NANDTelemetry_NandGBBSweepDaily *)self _cleanItemAt:cleanupCopy];
   }
 
   word_1000D8262 = 0;
 LABEL_9:
 }
 
-- (void)_cleanItemAt:(id)a3
+- (void)_cleanItemAt:(id)at
 {
-  v3 = a3;
+  atCopy = at;
   v4 = +[NSFileManager defaultManager];
-  [v4 removeItemAtPath:v3 error:0];
+  [v4 removeItemAtPath:atCopy error:0];
 }
 
-- (void)_writeCounters:(id)a3 counters:(id)a4
+- (void)_writeCounters:(id)counters counters:(id)a4
 {
-  v5 = a3;
+  countersCopy = counters;
   v6 = a4;
   v7 = v6;
   if (v6)
@@ -112,7 +112,7 @@ LABEL_9:
     v6 = v9;
     if (!v6)
     {
-      [v8 writeToFile:v5 atomically:1];
+      [v8 writeToFile:countersCopy atomically:1];
       v6 = 0;
     }
   }
@@ -125,28 +125,28 @@ LABEL_9:
 
 - (void)_fillSweepParams
 {
-  v3 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
-  LODWORD(xmmword_1000D826C) = v3->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var0;
-  v4 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
-  DWORD1(xmmword_1000D826C) = v4->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var1;
-  v5 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
-  DWORD2(xmmword_1000D826C) = v5->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var2;
-  v6 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
-  HIDWORD(xmmword_1000D826C) = v6->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var3;
-  v7 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
-  dword_1000D827C = v7->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var4;
+  sweepInfo = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
+  LODWORD(xmmword_1000D826C) = sweepInfo->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var0;
+  sweepInfo2 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
+  DWORD1(xmmword_1000D826C) = sweepInfo2->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var1;
+  sweepInfo3 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
+  DWORD2(xmmword_1000D826C) = sweepInfo3->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var2;
+  sweepInfo4 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
+  HIDWORD(xmmword_1000D826C) = sweepInfo4->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var3;
+  sweepInfo5 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
+  dword_1000D827C = sweepInfo5->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var4;
   v8 = sub_10003DA34(*([(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo]+ 7 * [(NANDTelemetry_NandGBBSweepDaily *)self currBlock]+ 6));
   dword_1000D8280 = 0;
   dword_1000D8284 = v8;
   unk_1000D8288 = xmmword_100094390;
-  v9 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
-  dword_1000D8298 = v9->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var6;
+  sweepInfo6 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
+  dword_1000D8298 = sweepInfo6->var1[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]].var6;
 }
 
 - (void)_gatherRadarInfo
 {
-  v3 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-  v4 = [NSString stringWithFormat:@"%@/description.txt", v3];
+  blockPath = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+  v4 = [NSString stringWithFormat:@"%@/description.txt", blockPath];
   [v4 UTF8String];
   __strcpy_chk();
 
@@ -168,40 +168,40 @@ LABEL_9:
   {
     v14 = CopyWhitelistedNANDFTLInfo(1, v7, v8, v9, v10, v11, v12, v13);
     v15 = CopyWhitelistedNANDMSPInfo();
-    v16 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-    v17 = [NSString stringWithFormat:@"%@/FTLCounters.json", v16];
+    blockPath2 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+    v17 = [NSString stringWithFormat:@"%@/FTLCounters.json", blockPath2];
     [(NANDTelemetry_NandGBBSweepDaily *)self _writeCounters:v17 counters:v14];
 
-    v18 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-    v19 = [NSString stringWithFormat:@"%@/MSPCounters.json", v18];
+    blockPath3 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+    v19 = [NSString stringWithFormat:@"%@/MSPCounters.json", blockPath3];
     [(NANDTelemetry_NandGBBSweepDaily *)self _writeCounters:v19 counters:v15];
 
-    v20 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-    v21 = [NSString stringWithFormat:@"%@/Defects.txt", v20];
+    blockPath4 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+    v21 = [NSString stringWithFormat:@"%@/Defects.txt", blockPath4];
     print_grown_defects_ext([v21 UTF8String]);
 
-    v22 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-    v23 = [NSString stringWithFormat:@"%@/ErrorLog.txt", v22];
+    blockPath5 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+    v23 = [NSString stringWithFormat:@"%@/ErrorLog.txt", blockPath5];
     sub_10003D53C([v23 UTF8String]);
 
     print_geometry(__filename);
   }
 }
 
-- (id)_getReasonString:(unsigned int)a3
+- (id)_getReasonString:(unsigned int)string
 {
-  if (a3 - 1 > 0x13)
+  if (string - 1 > 0x13)
   {
     return @"UNKNOWN_REASON";
   }
 
   else
   {
-    return off_10009C9B0[a3 - 1];
+    return off_10009C9B0[string - 1];
   }
 }
 
-- (id)_getBlockStr:(unsigned int)a3
+- (id)_getBlockStr:(unsigned int)str
 {
   if (byte_1000D8260 == 1)
   {
@@ -210,8 +210,8 @@ LABEL_9:
 
   else
   {
-    v6 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
-    v5 = v6->var11[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]];
+    sweepInfo = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
+    v5 = sweepInfo->var11[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]];
   }
 
   v7 = DWORD1(xmmword_1000D826C);
@@ -219,8 +219,8 @@ LABEL_9:
   v8 = DWORD2(xmmword_1000D826C);
   v9 = HIDWORD(xmmword_1000D826C);
   v10 = dword_1000D827C;
-  v17 = a3;
-  if (v5 >= a3)
+  strCopy = str;
+  if (v5 >= str)
   {
     v11 = @"Token";
   }
@@ -234,21 +234,21 @@ LABEL_9:
   v13 = [(NANDTelemetry_NandGBBSweepDaily *)self _getReasonString:dword_1000D8298];
   v14 = [NSString stringWithFormat:@"MSP%d_Channel%d_Die%d_Plane%d_Block%d_Page%@_Mode%d_Reason%@", v16, v7, v8, v9, v10, v11, v12, v13];
 
-  if (v5 < v17)
+  if (v5 < strCopy)
   {
   }
 
   return v14;
 }
 
-- (void)_sweepBlock:(id *)a3
+- (void)_sweepBlock:(id *)block
 {
-  var10 = a3->var10;
+  var10 = block->var10;
   v25 = objc_alloc_init(NSMutableArray);
   if ((byte_1000D8260 & 1) == 0)
   {
-    v5 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-    v6 = [(NANDTelemetry_NandGBBSweepDaily *)self _createDirectoryAt:v5];
+    blockPath = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+    v6 = [(NANDTelemetry_NandGBBSweepDaily *)self _createDirectoryAt:blockPath];
 
     if ((v6 & 1) == 0)
     {
@@ -278,20 +278,20 @@ LABEL_9:
         goto LABEL_23;
       }
 
-      v12 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-      v13 = [NSString stringWithFormat:@"%@/Sweep_Wordline_%d.bin", v12, dword_1000D8280];
+      blockPath2 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+      dword_1000D8280 = [NSString stringWithFormat:@"%@/Sweep_Wordline_%d.bin", blockPath2, dword_1000D8280];
 
       v14 = oslog;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v15 = dword_1000D8280;
-        v16 = v13;
+        v16 = dword_1000D8280;
         v17 = v14;
-        v18 = [v13 UTF8String];
+        uTF8String = [dword_1000D8280 UTF8String];
         *buf = 67109378;
         v27 = v15;
         v28 = 2080;
-        v29 = v18;
+        v29 = uTF8String;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Sweeping WL %d, into %s", buf, 0x12u);
       }
 
@@ -300,8 +300,8 @@ LABEL_9:
       [(NANDTelemetry_NandGBBSweepDaily *)self ctl];
       [(NANDTelemetry_NandGBBSweepDaily *)self sweepBuf];
       [(NANDTelemetry_NandGBBSweepDaily *)self sweepBufSize];
-      v8 = v13;
-      [v13 UTF8String];
+      v8 = dword_1000D8280;
+      [dword_1000D8280 UTF8String];
       [(NANDTelemetry_NandGBBSweepDaily *)self setSweepError:Do_NVMeCTL_WL_Sweep()];
       v19 = +[NSDate date];
       [v19 timeIntervalSinceDate:v9];
@@ -316,7 +316,7 @@ LABEL_9:
       if (dword_1000D8280 != dword_1000D8264 && !(dword_1000D8280 % 0x64u))
       {
         [NANDTelemetry_NandGBBSweepDaily _compressRange:"_compressRange:startWL:endWL:content:" startWL:var10 endWL:? content:?];
-        v23 = [(NANDTelemetry_NandGBBSweepDaily *)self compressedPath];
+        compressedPath = [(NANDTelemetry_NandGBBSweepDaily *)self compressedPath];
         CompressFiles();
 
         v22 = dword_1000D8280;
@@ -345,8 +345,8 @@ LABEL_23:
 {
   if (os_variant_has_internal_content())
   {
-    v3 = [(NANDTelemetry_Base *)self stateMgr];
-    v5 = [v3 getValueForKey:@"gbb_test_mode"];
+    stateMgr = [(NANDTelemetry_Base *)self stateMgr];
+    v5 = [stateMgr getValueForKey:@"gbb_test_mode"];
 
     v4 = v5;
     if (v5)
@@ -531,8 +531,8 @@ LABEL_60:
     if ((v4 & 1) == 0)
     {
       [(NANDTelemetry_NandGBBSweepDaily *)self _fillSweepParams];
-      v16 = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
-      dword_1000D829C = v16->var11[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]];
+      sweepInfo = [(NANDTelemetry_NandGBBSweepDaily *)self sweepInfo];
+      dword_1000D829C = sweepInfo->var11[[(NANDTelemetry_NandGBBSweepDaily *)self currBlock]];
     }
 
     v17 = [(NANDTelemetry_NandGBBSweepDaily *)self _getBlockStr:DWORD1(v42)];
@@ -540,8 +540,8 @@ LABEL_60:
     v18 = [NSString stringWithFormat:@"%@/%@", @"/private/var/db/NANDTelemetryServices/GBBCollection", v17];
     [(NANDTelemetry_NandGBBSweepDaily *)self setBlockPath:v18];
 
-    v19 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-    v20 = [NSString stringWithFormat:@"%@/%@_%@.tar", v19, v17, v36];
+    blockPath = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+    v20 = [NSString stringWithFormat:@"%@/%@_%@.tar", blockPath, v17, v36];
     [(NANDTelemetry_NandGBBSweepDaily *)self setCompressedPath:v20];
 
     v21 = [(NANDTelemetry_NandGBBSweepDaily *)self _getReasonString:dword_1000D8298];
@@ -549,8 +549,8 @@ LABEL_60:
 
     if ((v4 & 1) == 0)
     {
-      v23 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-      v24 = [(NANDTelemetry_NandGBBSweepDaily *)self _createDirectoryAt:v23];
+      blockPath2 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+      v24 = [(NANDTelemetry_NandGBBSweepDaily *)self _createDirectoryAt:blockPath2];
 
       if ((v24 & 1) == 0)
       {
@@ -563,24 +563,24 @@ LABEL_60:
     v6 = v34;
     if ([(NANDTelemetry_NandGBBSweepDaily *)self sweepError])
     {
-      v32 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-      [(NANDTelemetry_NandGBBSweepDaily *)self _doCleanup:v32];
+      blockPath3 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+      [(NANDTelemetry_NandGBBSweepDaily *)self _doCleanup:blockPath3];
 
       goto LABEL_42;
     }
 
     [(NANDTelemetry_NandGBBSweepDaily *)self _gatherRadarInfo];
     [(NANDTelemetry_NandGBBSweepDaily *)self _compressRange:DWORD2(v42) startWL:dword_1000D8264 endWL:DWORD2(v42) content:v35];
-    v25 = [(NANDTelemetry_NandGBBSweepDaily *)self compressedPath];
+    compressedPath = [(NANDTelemetry_NandGBBSweepDaily *)self compressedPath];
     CompressFiles();
 
-    v26 = [(NANDTelemetry_NandGBBSweepDaily *)self compressedPath];
-    [(NANDTelemetry_NandGBBSweepDaily *)self uploadFile:v26 description:v22];
+    compressedPath2 = [(NANDTelemetry_NandGBBSweepDaily *)self compressedPath];
+    [(NANDTelemetry_NandGBBSweepDaily *)self uploadFile:compressedPath2 description:v22];
 
     [(NANDTelemetry_NandGBBSweepDaily *)self markGBBAsSwept];
     --dword_1000D82A0;
-    v27 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
-    [(NANDTelemetry_NandGBBSweepDaily *)self _doCleanup:v27];
+    blockPath4 = [(NANDTelemetry_NandGBBSweepDaily *)self blockPath];
+    [(NANDTelemetry_NandGBBSweepDaily *)self _doCleanup:blockPath4];
 
     if (v4)
     {
@@ -662,32 +662,32 @@ LABEL_42:
   }
 }
 
-- (int)uploadFile:(id)a3 description:(id)a4
+- (int)uploadFile:(id)file description:(id)description
 {
   if (byte_1000D8268)
   {
     return 1;
   }
 
-  ASPCarryLog_UploadFileToDP(a3, @"com.apple.nand.autoGBBCollection", @"AutomaticGBBSweep", a4, 0, @"tar");
+  ASPCarryLog_UploadFileToDP(file, @"com.apple.nand.autoGBBCollection", @"AutomaticGBBSweep", description, 0, @"tar");
   return 0;
 }
 
-- (void)getDefects:(unint64_t *)a3
+- (void)getDefects:(unint64_t *)defects
 {
   if ([(NANDTelemetry_NandGBBSweepDaily *)self wasSigtermReceived])
   {
     return 0;
   }
 
-  return sub_10003DE14(269, a3);
+  return sub_10003DE14(269, defects);
 }
 
 - (void)markGBBAsSwept
 {
   v3 = malloc_type_valloc(0x50uLL, 0x100004052888210uLL);
-  v4 = [(NANDTelemetry_NandGBBSweepDaily *)self wasSigtermReceived];
-  if (!v3 || (v4 & 1) != 0)
+  wasSigtermReceived = [(NANDTelemetry_NandGBBSweepDaily *)self wasSigtermReceived];
+  if (!v3 || (wasSigtermReceived & 1) != 0)
   {
     if (!v3)
     {
@@ -706,9 +706,9 @@ LABEL_42:
   free(v3);
 }
 
-+ (void)setGBBXpcCritiria:(id)a3
++ (void)setGBBXpcCritiria:(id)critiria
 {
-  xdict = a3;
+  xdict = critiria;
   xpc_dictionary_set_BOOL(xdict, XPC_ACTIVITY_REPEATING, 1);
   xpc_dictionary_set_BOOL(xdict, XPC_ACTIVITY_ALLOW_BATTERY, 1);
   xpc_dictionary_set_int64(xdict, XPC_ACTIVITY_INTERVAL, XPC_ACTIVITY_INTERVAL_1_DAY);

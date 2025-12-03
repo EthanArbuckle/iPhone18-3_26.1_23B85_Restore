@@ -1,12 +1,12 @@
 @interface SearchAction
-- (SearchAction)initWithSearchItem:(id)a3 alongRoute:(BOOL)isMPREnabled;
+- (SearchAction)initWithSearchItem:(id)item alongRoute:(BOOL)isMPREnabled;
 @end
 
 @implementation SearchAction
 
-- (SearchAction)initWithSearchItem:(id)a3 alongRoute:(BOOL)isMPREnabled
+- (SearchAction)initWithSearchItem:(id)item alongRoute:(BOOL)isMPREnabled
 {
-  v7 = a3;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = SearchAction;
   v8 = [(SearchAction *)&v16 init];
@@ -16,31 +16,31 @@
     goto LABEL_13;
   }
 
-  objc_storeStrong(&v8->_searchItem, a3);
+  objc_storeStrong(&v8->_searchItem, item);
   v10 = +[MNNavigationService sharedService];
   [v10 state];
   IsNavigating = MNNavigationServiceStateIsNavigating();
 
   v12 = +[MNNavigationService sharedService];
-  v13 = [v12 navigationTransportType];
+  navigationTransportType = [v12 navigationTransportType];
   IsEnabled_Maps420 = 0;
-  if (v13 > 2)
+  if (navigationTransportType > 2)
   {
-    if (v13 == 3)
+    if (navigationTransportType == 3)
     {
       IsEnabled_Maps420 = MapsFeature_IsEnabled_Maps420();
       goto LABEL_10;
     }
 
-    if (v13 != 6)
+    if (navigationTransportType != 6)
     {
       goto LABEL_8;
     }
   }
 
-  else if (v13 != 1)
+  else if (navigationTransportType != 1)
   {
-    if (v13 == 2)
+    if (navigationTransportType == 2)
     {
       IsEnabled_Maps420 = MapsFeature_IsEnabled_Maps182();
       goto LABEL_10;

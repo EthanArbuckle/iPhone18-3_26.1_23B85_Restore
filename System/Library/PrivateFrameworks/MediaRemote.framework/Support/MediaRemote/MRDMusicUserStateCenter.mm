@@ -6,16 +6,16 @@
 - (MRUserIdentity)localActiveIdentity;
 - (NSArray)localUserIdentities;
 - (NSArray)localUserStates;
-- (id)identityForHomeUserIdentifier:(id)a3;
-- (id)identityForUserState:(id)a3;
+- (id)identityForHomeUserIdentifier:(id)identifier;
+- (id)identityForUserState:(id)state;
 - (id)stateCenter;
 - (void)checkPendingIdentityCompletions;
-- (void)handleRegisteredApplicationsChangedNotification:(id)a3;
-- (void)handleiTunesNotification:(id)a3;
+- (void)handleRegisteredApplicationsChangedNotification:(id)notification;
+- (void)handleiTunesNotification:(id)notification;
 - (void)postCloudStateChanged;
 - (void)registerNotifications;
 - (void)updateIsMusicAppInstalled;
-- (void)userIdentityForDSID:(id)a3 completion:(id)a4;
+- (void)userIdentityForDSID:(id)d completion:(id)completion;
 @end
 
 @implementation MRDMusicUserStateCenter
@@ -34,15 +34,15 @@
 
 - (NSArray)localUserIdentities
 {
-  v3 = [(MRDMusicUserStateCenter *)self stateCenter];
-  v4 = [v3 allUserStates];
+  stateCenter = [(MRDMusicUserStateCenter *)self stateCenter];
+  allUserStates = [stateCenter allUserStates];
 
   v5 = +[NSMutableArray array];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = allUserStates;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -91,9 +91,9 @@
 - (MRDMediaUserState)localActiveUserState
 {
   v3 = [MRDMediaUserState alloc];
-  v4 = [(MRDMusicUserStateCenter *)self stateCenter];
-  v5 = [v4 activeUserState];
-  v6 = [(MRDMediaUserState *)v3 initWithUserState:v5];
+  stateCenter = [(MRDMusicUserStateCenter *)self stateCenter];
+  activeUserState = [stateCenter activeUserState];
+  v6 = [(MRDMediaUserState *)v3 initWithUserState:activeUserState];
 
   return v6;
 }
@@ -108,19 +108,19 @@
 
 - (NSArray)localUserStates
 {
-  v2 = [(MRDMusicUserStateCenter *)self stateCenter];
-  v3 = [v2 allUserStates];
-  v4 = [v3 msv_map:&stru_1004B8338];
+  stateCenter = [(MRDMusicUserStateCenter *)self stateCenter];
+  allUserStates = [stateCenter allUserStates];
+  v4 = [allUserStates msv_map:&stru_1004B8338];
 
   return v4;
 }
 
 - (MRUserIdentity)localActiveIdentity
 {
-  v2 = [(MRDMusicUserStateCenter *)self localActiveUserState];
-  v3 = [v2 userIdentity];
+  localActiveUserState = [(MRDMusicUserStateCenter *)self localActiveUserState];
+  userIdentity = [localActiveUserState userIdentity];
 
-  return v3;
+  return userIdentity;
 }
 
 - (MRDMusicUserStateCenter)init
@@ -168,27 +168,27 @@
   [v6 addObserver:self selector:"handleRegisteredApplicationsChangedNotification:" name:@"com.apple.LaunchServices.applicationUnregistered" object:0 suspensionBehavior:3];
 }
 
-- (void)userIdentityForDSID:(id)a3 completion:(id)a4
+- (void)userIdentityForDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(MRDMusicUserStateCenter *)self stateCenter];
-  v9 = [v8 allUserStates];
+  stateCenter = [(MRDMusicUserStateCenter *)self stateCenter];
+  allUserStates = [stateCenter allUserStates];
   v190[0] = _NSConcreteStackBlock;
   v190[1] = 3221225472;
   v190[2] = sub_10006DF18;
   v190[3] = &unk_1004B82F8;
-  v10 = v6;
+  v10 = dCopy;
   v191 = v10;
-  v11 = [v9 msv_firstWhere:v190];
+  v11 = [allUserStates msv_firstWhere:v190];
 
-  v12 = [v11 music];
-  v13 = v12;
-  if (!v12)
+  music = [v11 music];
+  v13 = music;
+  if (!music)
   {
-    v24 = [(MRDMusicUserStateCenter *)self finishedWaitingForCloudStateDSIDs];
-    v25 = [v24 containsObject:v10];
+    finishedWaitingForCloudStateDSIDs = [(MRDMusicUserStateCenter *)self finishedWaitingForCloudStateDSIDs];
+    v25 = [finishedWaitingForCloudStateDSIDs containsObject:v10];
 
     if ((v25 & 1) == 0)
     {
@@ -204,35 +204,35 @@
     goto LABEL_157;
   }
 
-  v14 = [v12 userProfile];
-  v15 = [v14 socialProfile];
-  v16 = [v15 socialProfileID];
+  userProfile = [music userProfile];
+  socialProfile = [userProfile socialProfile];
+  socialProfileID = [socialProfile socialProfileID];
 
-  if (v16)
+  if (socialProfileID)
   {
     v186 = v11;
-    v187 = v7;
-    v17 = [v13 userProfile];
-    v18 = [(__CFString *)v17 socialProfile];
-    v19 = [v18 socialProfileID];
-    v20 = [v13 userProfile];
-    v21 = [v20 socialProfile];
-    v22 = [v21 name];
-    v23 = [MRUserIdentity resolvableIdentityWithIdentifier:v19 displayName:v22];
+    v187 = completionCopy;
+    userProfile2 = [v13 userProfile];
+    socialProfile2 = [(__CFString *)userProfile2 socialProfile];
+    socialProfileID2 = [socialProfile2 socialProfileID];
+    userProfile3 = [v13 userProfile];
+    socialProfile3 = [userProfile3 socialProfile];
+    name = [socialProfile3 name];
+    v23 = [MRUserIdentity resolvableIdentityWithIdentifier:socialProfileID2 displayName:name];
 
     goto LABEL_155;
   }
 
-  v27 = [v13 userProfile];
-  v28 = [v27 name];
+  userProfile4 = [v13 userProfile];
+  name2 = [userProfile4 name];
 
-  if (!v28)
+  if (!name2)
   {
     goto LABEL_157;
   }
 
   v186 = v11;
-  v187 = v7;
+  v187 = completionCopy;
   v29 = _MRLogForCategory();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
@@ -259,7 +259,7 @@
   *buf = 4001;
   CC_SHA1_Init(&buf[8]);
   v31 = v30;
-  v32 = [v31 UTF8String];
+  uTF8String = [v31 UTF8String];
   v33 = [v31 length];
   v34 = v33;
   if (*buf > 3000)
@@ -268,12 +268,12 @@
     {
       if (*buf == 3001)
       {
-        sub_100070F58(&buf[8], v32, v33);
+        sub_100070F58(&buf[8], uTF8String, v33);
       }
 
       else if (*buf == 4000)
       {
-        CC_MD5_Update(&buf[8], v32, v33);
+        CC_MD5_Update(&buf[8], uTF8String, v33);
       }
     }
 
@@ -282,13 +282,13 @@
       switch(*buf)
       {
         case 0xFA1:
-          CC_SHA1_Update(&buf[8], v32, v33);
+          CC_SHA1_Update(&buf[8], uTF8String, v33);
           break;
         case 0x10A0:
-          CC_SHA256_Update(&buf[8], v32, v33);
+          CC_SHA256_Update(&buf[8], uTF8String, v33);
           break;
         case 0x11A0:
-          CC_SHA512_Update(&buf[8], v32, v33);
+          CC_SHA512_Update(&buf[8], uTF8String, v33);
           break;
       }
     }
@@ -302,7 +302,7 @@
     {
       if (*buf == 3000)
       {
-        sub_100070DB4(&buf[8], v32, v33);
+        sub_100070DB4(&buf[8], uTF8String, v33);
       }
 
       goto LABEL_79;
@@ -323,18 +323,18 @@ LABEL_78:
 
         if (v33 == 1)
         {
-          v70[16] = *v32;
+          v70[16] = *uTF8String;
           goto LABEL_78;
         }
 
 LABEL_62:
-        memcpy(v70 + 16, v32, v33);
+        memcpy(v70 + 16, uTF8String, v33);
         goto LABEL_78;
       }
 
       if (v33 == 2)
       {
-        v75 = *v32;
+        v75 = *uTF8String;
       }
 
       else
@@ -344,8 +344,8 @@ LABEL_62:
           goto LABEL_62;
         }
 
-        v75 = *v32;
-        v70[18] = v32[2];
+        v75 = *uTF8String;
+        v70[18] = uTF8String[2];
       }
 
       *(v70 + 8) = v75;
@@ -366,7 +366,7 @@ LABEL_62:
           LOBYTE(v73) = buf[16];
           v71 = HIBYTE(*&buf[16]);
           LOBYTE(v74) = buf[18];
-          v76 = *v32;
+          v76 = *uTF8String;
         }
 
         goto LABEL_68;
@@ -374,23 +374,23 @@ LABEL_62:
 
       LOBYTE(v73) = buf[16];
       v71 = HIBYTE(*&buf[16]);
-      v74 = *v32;
+      v74 = *uTF8String;
     }
 
     else
     {
       if (!buf[19])
       {
-        v73 = *v32;
-        v71 = *v32 >> 8;
-        v74 = HIWORD(*v32);
-        v76 = HIBYTE(*v32);
+        v73 = *uTF8String;
+        v71 = *uTF8String >> 8;
+        v74 = HIWORD(*uTF8String);
+        v76 = HIBYTE(*uTF8String);
         goto LABEL_68;
       }
 
       LOBYTE(v73) = buf[16];
-      LOBYTE(v71) = *v32;
-      v74 = *(v32 + 1);
+      LOBYTE(v71) = *uTF8String;
+      v74 = *(uTF8String + 1);
     }
 
     v76 = v74 >> 8;
@@ -401,8 +401,8 @@ LABEL_68:
     LODWORD(v79) = HIDWORD(v79);
     v80 = 5 * (v79 >> 19) - 430675100;
     *&buf[8] = v80;
-    v81 = &v32[-buf[19] + 4];
-    v82 = &v32[v72 - buf[19]];
+    v81 = &uTF8String[-buf[19] + 4];
+    v82 = &uTF8String[v72 - buf[19]];
     while (v81 < v82)
     {
       v83 = *v81;
@@ -464,7 +464,7 @@ LABEL_68:
   if (v33 >= 8 - v37)
   {
     v40 = 8 * v37;
-    v41 = v32;
+    v41 = uTF8String;
     v42 = v194 & 0xFFFFFFFFFFFFFFLL;
     do
     {
@@ -484,7 +484,7 @@ LABEL_68:
     *(&v193 + 1) = v48;
     *&buf[8] = v47 ^ v42;
     *&buf[16] = v49 ^ __ROR8__(v44, 47);
-    v32 += v38;
+    uTF8String += v38;
     *&v194 = (v38 + v35) << 56;
     v34 = v39;
 LABEL_25:
@@ -496,8 +496,8 @@ LABEL_25:
       v53 = v193;
       do
       {
-        v54 = *v32;
-        v32 += 8;
+        v54 = *uTF8String;
+        uTF8String += 8;
         v55 = v52 ^ v54;
         v56 = v51 + v50;
         v57 = v56 ^ __ROR8__(v50, 51);
@@ -530,7 +530,7 @@ LABEL_25:
     v64 = v34;
     do
     {
-      v65 = *v32++;
+      v65 = *uTF8String++;
       v63 |= v65 << v62;
       v62 += 8;
       --v64;
@@ -821,7 +821,7 @@ LABEL_108:
         }
 
 LABEL_168:
-        v17 = @"0";
+        userProfile2 = @"0";
         goto LABEL_154;
       }
 
@@ -864,7 +864,7 @@ LABEL_167:
       v184 = [NSString stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
       [v183 handleFailureInFunction:v184 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
-      v17 = &stru_1004D2058;
+      userProfile2 = &stru_1004D2058;
       goto LABEL_154;
     }
 
@@ -918,17 +918,17 @@ LABEL_167:
 
   v167 = [v133 initWithBytesNoCopy:v134 length:v135 encoding:4 freeWhenDone:{1, MRUserIdentity}];
 LABEL_153:
-  v17 = v167;
+  userProfile2 = v167;
 LABEL_154:
 
-  v18 = [(__CFString *)v17 substringToIndex:7];
-  v19 = [v13 userProfile];
-  v20 = [v19 name];
-  v23 = [v185 basicIdentityWithIdentifier:v18 displayName:v20];
+  socialProfile2 = [(__CFString *)userProfile2 substringToIndex:7];
+  socialProfileID2 = [v13 userProfile];
+  userProfile3 = [socialProfileID2 name];
+  v23 = [v185 basicIdentityWithIdentifier:socialProfile2 displayName:userProfile3];
 LABEL_155:
 
   v11 = v186;
-  v7 = v187;
+  completionCopy = v187;
   if (v23)
   {
     os_unfair_lock_unlock(&self->_lock);
@@ -939,27 +939,27 @@ LABEL_165:
   }
 
 LABEL_157:
-  v168 = [(MRDMusicUserStateCenter *)self finishedWaitingForCloudStateDSIDs];
-  v169 = [v168 containsObject:v10];
+  finishedWaitingForCloudStateDSIDs2 = [(MRDMusicUserStateCenter *)self finishedWaitingForCloudStateDSIDs];
+  v169 = [finishedWaitingForCloudStateDSIDs2 containsObject:v10];
 
   if ((v169 & 1) == 0)
   {
-    v170 = [(MRDMusicUserStateCenter *)self dsidToPendingCompletionMap];
+    dsidToPendingCompletionMap = [(MRDMusicUserStateCenter *)self dsidToPendingCompletionMap];
 
-    if (!v170)
+    if (!dsidToPendingCompletionMap)
     {
       v171 = +[NSMutableDictionary dictionary];
       [(MRDMusicUserStateCenter *)self setDsidToPendingCompletionMap:v171];
     }
 
-    v172 = [(MRDMusicUserStateCenter *)self dsidToPendingCompletionMap];
-    v173 = [v172 objectForKeyedSubscript:v10];
+    dsidToPendingCompletionMap2 = [(MRDMusicUserStateCenter *)self dsidToPendingCompletionMap];
+    v173 = [dsidToPendingCompletionMap2 objectForKeyedSubscript:v10];
 
     if (!v173)
     {
       v174 = +[NSMutableArray array];
-      v175 = [(MRDMusicUserStateCenter *)self dsidToPendingCompletionMap];
-      [v175 setObject:v174 forKeyedSubscript:v10];
+      dsidToPendingCompletionMap3 = [(MRDMusicUserStateCenter *)self dsidToPendingCompletionMap];
+      [dsidToPendingCompletionMap3 setObject:v174 forKeyedSubscript:v10];
 
       v176 = dispatch_time(0, 5000000000);
       v177 = MRGroupSessionSubsystemGetQueue();
@@ -972,20 +972,20 @@ LABEL_157:
       dispatch_after(v176, v177, block);
     }
 
-    v178 = [(MRDMusicUserStateCenter *)self dsidToPendingCompletionMap];
-    v179 = [v178 objectForKeyedSubscript:v10];
-    v180 = objc_retainBlock(v7);
+    dsidToPendingCompletionMap4 = [(MRDMusicUserStateCenter *)self dsidToPendingCompletionMap];
+    v179 = [dsidToPendingCompletionMap4 objectForKeyedSubscript:v10];
+    v180 = objc_retainBlock(completionCopy);
     [v179 addObject:v180];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v181 = [(MRDMusicUserStateCenter *)self finishedWaitingForCloudStateDSIDs];
-  v182 = [v181 containsObject:v10];
+  finishedWaitingForCloudStateDSIDs3 = [(MRDMusicUserStateCenter *)self finishedWaitingForCloudStateDSIDs];
+  v182 = [finishedWaitingForCloudStateDSIDs3 containsObject:v10];
 
   if (v182)
   {
     v23 = [NSError msv_errorWithDomain:MRGroupSessionError code:4 debugDescription:@"No identity found for dsid."];
-    (*(v7 + 2))(v7, 0, v23);
+    (*(completionCopy + 2))(completionCopy, 0, v23);
     goto LABEL_165;
   }
 
@@ -994,21 +994,21 @@ LABEL_166:
 
 - (void)checkPendingIdentityCompletions
 {
-  v2 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(MRDMusicUserStateCenter *)v2 dsidToPendingCompletionMap];
-  v4 = [v3 count];
+  dsidToPendingCompletionMap = [(MRDMusicUserStateCenter *)selfCopy dsidToPendingCompletionMap];
+  v4 = [dsidToPendingCompletionMap count];
 
   if (v4)
   {
-    v5 = [(MRDMusicUserStateCenter *)v2 stateCenter];
-    v6 = [v5 allUserStates];
+    stateCenter = [(MRDMusicUserStateCenter *)selfCopy stateCenter];
+    allUserStates = [stateCenter allUserStates];
 
     v200 = 0u;
     v201 = 0u;
     v198 = 0u;
     v199 = 0u;
-    v7 = v6;
+    v7 = allUserStates;
     v8 = [v7 countByEnumeratingWithState:&v198 objects:v202 count:16];
     if (!v8)
     {
@@ -1030,15 +1030,15 @@ LABEL_166:
         }
 
         v12 = *(*(&v198 + 1) + 8 * i);
-        v13 = [v12 dsid];
+        dsid = [v12 dsid];
 
-        if (v13)
+        if (dsid)
         {
-          v14 = [v12 dsid];
-          v15 = [v14 stringValue];
+          dsid2 = [v12 dsid];
+          stringValue = [dsid2 stringValue];
 
-          v16 = [(MRDMusicUserStateCenter *)v2 dsidToPendingCompletionMap];
-          v17 = [v16 objectForKeyedSubscript:v15];
+          dsidToPendingCompletionMap2 = [(MRDMusicUserStateCenter *)selfCopy dsidToPendingCompletionMap];
+          v17 = [dsidToPendingCompletionMap2 objectForKeyedSubscript:stringValue];
 
           if (!v17)
           {
@@ -1046,33 +1046,33 @@ LABEL_166:
           }
 
           v194 = v17;
-          v18 = [v12 music];
-          v19 = v18;
-          if (!v18)
+          music = [v12 music];
+          v19 = music;
+          if (!music)
           {
             goto LABEL_177;
           }
 
-          v192 = v15;
-          v20 = [v18 userProfile];
-          v21 = [v20 socialProfile];
-          v22 = [v21 socialProfileID];
+          v192 = stringValue;
+          userProfile = [music userProfile];
+          socialProfile = [userProfile socialProfile];
+          socialProfileID = [socialProfile socialProfileID];
 
           v193 = v19;
-          if (v22)
+          if (socialProfileID)
           {
-            v191 = [v19 userProfile];
-            v23 = [v191 socialProfile];
-            v24 = [v23 socialProfileID];
-            v25 = [v19 userProfile];
-            v26 = [v25 socialProfile];
-            [v26 name];
+            userProfile2 = [v19 userProfile];
+            socialProfile2 = [userProfile2 socialProfile];
+            socialProfileID2 = [socialProfile2 socialProfileID];
+            userProfile3 = [v19 userProfile];
+            socialProfile3 = [userProfile3 socialProfile];
+            [socialProfile3 name];
             v27 = v9;
             v28 = v7;
-            v30 = v29 = v2;
-            v31 = [MRUserIdentity resolvableIdentityWithIdentifier:v24 displayName:v30];
+            v30 = v29 = selfCopy;
+            v31 = [MRUserIdentity resolvableIdentityWithIdentifier:socialProfileID2 displayName:v30];
 
-            v2 = v29;
+            selfCopy = v29;
             v7 = v28;
             v9 = v27;
 
@@ -1080,11 +1080,11 @@ LABEL_166:
 LABEL_175:
 
             v10 = v190;
-            v15 = v192;
+            stringValue = v192;
             if (v31)
             {
-              v185 = [(MRDMusicUserStateCenter *)v2 dsidToPendingCompletionMap];
-              [v185 setObject:0 forKeyedSubscript:v192];
+              dsidToPendingCompletionMap3 = [(MRDMusicUserStateCenter *)selfCopy dsidToPendingCompletionMap];
+              [dsidToPendingCompletionMap3 setObject:0 forKeyedSubscript:v192];
 
               v186 = MRGroupSessionSubsystemGetNotificationQueue();
               block[0] = _NSConcreteStackBlock;
@@ -1107,12 +1107,12 @@ LABEL_178:
             continue;
           }
 
-          v32 = [v19 userProfile];
-          v33 = [v32 name];
+          userProfile4 = [v19 userProfile];
+          name = [userProfile4 name];
 
-          v15 = v192;
+          stringValue = v192;
           v19 = v193;
-          if (!v33)
+          if (!name)
           {
             goto LABEL_177;
           }
@@ -1141,7 +1141,7 @@ LABEL_178:
           *buf = 4001;
           CC_SHA1_Init(&buf[8]);
           v36 = v35;
-          v37 = [v36 UTF8String];
+          uTF8String = [v36 UTF8String];
           v38 = [v36 length];
           v39 = v38;
           if (*buf > 3000)
@@ -1150,12 +1150,12 @@ LABEL_178:
             {
               if (*buf == 3001)
               {
-                sub_100070F58(&buf[8], v37, v38);
+                sub_100070F58(&buf[8], uTF8String, v38);
               }
 
               else if (*buf == 4000)
               {
-                CC_MD5_Update(&buf[8], v37, v38);
+                CC_MD5_Update(&buf[8], uTF8String, v38);
               }
             }
 
@@ -1164,13 +1164,13 @@ LABEL_178:
               switch(*buf)
               {
                 case 0xFA1:
-                  CC_SHA1_Update(&buf[8], v37, v38);
+                  CC_SHA1_Update(&buf[8], uTF8String, v38);
                   break;
                 case 0x10A0:
-                  CC_SHA256_Update(&buf[8], v37, v38);
+                  CC_SHA256_Update(&buf[8], uTF8String, v38);
                   break;
                 case 0x11A0:
-                  CC_SHA512_Update(&buf[8], v37, v38);
+                  CC_SHA512_Update(&buf[8], uTF8String, v38);
                   break;
               }
             }
@@ -1204,7 +1204,7 @@ LABEL_178:
               if (v38 >= 8 - v42)
               {
                 v45 = 8 * v42;
-                v46 = v37;
+                v46 = uTF8String;
                 v47 = v204 & 0xFFFFFFFFFFFFFFLL;
                 do
                 {
@@ -1224,7 +1224,7 @@ LABEL_178:
                 *&buf[32] = v53;
                 *&buf[8] = v52 ^ v47;
                 *&buf[16] = v54 ^ __ROR8__(v49, 47);
-                v37 = (v37 + v43);
+                uTF8String = (uTF8String + v43);
                 *&v204 = (v43 + v40) << 56;
                 v39 = v44;
                 goto LABEL_29;
@@ -1242,8 +1242,8 @@ LABEL_29:
                 v56 = *&buf[32];
                 do
                 {
-                  v59 = *v37;
-                  v37 += 4;
+                  v59 = *uTF8String;
+                  uTF8String += 4;
                   v60 = v56 ^ v59;
                   v61 = v55 + v57;
                   v62 = v61 ^ __ROR8__(v57, 51);
@@ -1276,8 +1276,8 @@ LABEL_29:
               v69 = v39;
               do
               {
-                v70 = *v37;
-                v37 = (v37 + 1);
+                v70 = *uTF8String;
+                uTF8String = (uTF8String + 1);
                 v68 |= v70 << v67;
                 v67 += 8;
                 --v69;
@@ -1543,11 +1543,11 @@ LABEL_166:
                       v19 = v193;
 LABEL_174:
 
-                      v191 = v182;
-                      v23 = [(__CFString *)v182 substringToIndex:7];
-                      v24 = [v19 userProfile];
-                      v25 = [v24 name];
-                      v31 = [MRUserIdentity basicIdentityWithIdentifier:v23 displayName:v25];
+                      userProfile2 = v182;
+                      socialProfile2 = [(__CFString *)v182 substringToIndex:7];
+                      socialProfileID2 = [v19 userProfile];
+                      userProfile3 = [socialProfileID2 name];
+                      v31 = [MRUserIdentity basicIdentityWithIdentifier:socialProfile2 displayName:userProfile3];
                       goto LABEL_175;
                     }
 
@@ -1737,7 +1737,7 @@ LABEL_119:
           {
             if (*buf == 3000)
             {
-              sub_100070DB4(&buf[8], v37, v38);
+              sub_100070DB4(&buf[8], uTF8String, v38);
             }
 
             goto LABEL_83;
@@ -1759,18 +1759,18 @@ LABEL_82:
 
               if (v75 == 1)
               {
-                *v76 = *v37;
+                *v76 = *uTF8String;
                 goto LABEL_82;
               }
 
 LABEL_66:
-              memcpy(v76, v37, v75);
+              memcpy(v76, uTF8String, v75);
               goto LABEL_82;
             }
 
             if (v75 == 2)
             {
-              v80 = *v37;
+              v80 = *uTF8String;
             }
 
             else
@@ -1780,8 +1780,8 @@ LABEL_66:
                 goto LABEL_66;
               }
 
-              v80 = *v37;
-              v76[2] = *(v37 + 2);
+              v80 = *uTF8String;
+              v76[2] = *(uTF8String + 2);
             }
 
             *v76 = v80;
@@ -1795,7 +1795,7 @@ LABEL_66:
             {
               v78 = buf[16];
               v77 = HIBYTE(*&buf[16]);
-              v79 = *v37;
+              v79 = *uTF8String;
 LABEL_71:
               v81 = v79;
               v82 = v79 >> 8;
@@ -1811,7 +1811,7 @@ LABEL_71:
                 v78 = buf[16];
                 v77 = HIBYTE(*&buf[16]);
                 v81 = buf[18];
-                v82 = *v37;
+                v82 = *uTF8String;
               }
             }
           }
@@ -1821,15 +1821,15 @@ LABEL_71:
             if (buf[19])
             {
               v78 = buf[16];
-              v77 = *v37;
-              v79 = *(v37 + 1);
+              v77 = *uTF8String;
+              v79 = *(uTF8String + 1);
               goto LABEL_71;
             }
 
-            v77 = BYTE1(*v37);
-            v78 = *v37;
-            v81 = BYTE2(*v37);
-            v82 = HIBYTE(*v37);
+            v77 = BYTE1(*uTF8String);
+            v78 = *uTF8String;
+            v81 = BYTE2(*uTF8String);
+            v82 = HIBYTE(*uTF8String);
           }
 
           v83 = (v81 << 16) | (v82 << 24) | v78 | (v77 << 8);
@@ -1837,8 +1837,8 @@ LABEL_71:
           LODWORD(v84) = HIDWORD(v84);
           v85 = 5 * (v84 >> 19) - 430675100;
           *&buf[8] = v85;
-          v86 = (v37 - buf[19] + 4);
-          v87 = v37 + (v74 & 0xFFFFFFFFFFFFFFFCLL) - buf[19];
+          v86 = (uTF8String - buf[19] + 4);
+          v87 = uTF8String + (v74 & 0xFFFFFFFFFFFFFFFCLL) - buf[19];
           while (v86 < v87)
           {
             v88 = *v86++;
@@ -1884,38 +1884,38 @@ LABEL_181:
     }
   }
 
-  os_unfair_lock_unlock(&v2->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 }
 
-- (id)identityForUserState:(id)a3
+- (id)identityForUserState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 music];
-  v5 = v4;
-  if (!v4)
+  stateCopy = state;
+  music = [stateCopy music];
+  v5 = music;
+  if (!music)
   {
     goto LABEL_6;
   }
 
-  v6 = [v4 userProfile];
-  v7 = [v6 socialProfile];
-  v8 = [v7 socialProfileID];
+  userProfile = [music userProfile];
+  socialProfile = [userProfile socialProfile];
+  socialProfileID = [socialProfile socialProfileID];
 
-  if (!v8)
+  if (!socialProfileID)
   {
-    v16 = [v5 userProfile];
-    v17 = [v16 name];
+    userProfile2 = [v5 userProfile];
+    name = [userProfile2 name];
 
-    if (v17)
+    if (name)
     {
-      v18 = [v3 dsid];
-      v19 = [v18 stringValue];
+      dsid = [stateCopy dsid];
+      stringValue = [dsid stringValue];
 
-      v20 = v19;
+      v20 = stringValue;
       memset(v71, 0, sizeof(v71));
       CC_SHA1_Init(v71);
-      v9 = v20;
-      CC_SHA1_Update(v71, [v9 UTF8String], objc_msgSend(v9, "length"));
+      userProfile4 = v20;
+      CC_SHA1_Update(v71, [userProfile4 UTF8String], objc_msgSend(userProfile4, "length"));
 
       memset(&v72[8], 0, 64);
       *v72 = 4001;
@@ -2058,7 +2058,7 @@ LABEL_181:
             }
 
 LABEL_59:
-            v10 = @"0";
+            socialProfile2 = @"0";
             goto LABEL_53;
           }
 
@@ -2101,7 +2101,7 @@ LABEL_58:
           v70 = [NSString stringWithUTF8String:"NSString * _Nonnull _MSVHashGetDigest(MSVHash)"];
           [v69 handleFailureInFunction:v70 file:@"MSVHasher+Algorithms.h" lineNumber:356 description:@"Cannot obtain digest from unknown hasher algorithm"];
 
-          v10 = &stru_1004D2058;
+          socialProfile2 = &stru_1004D2058;
           goto LABEL_53;
         }
 
@@ -2155,13 +2155,13 @@ LABEL_58:
 
       v67 = [v33 initWithBytesNoCopy:v34 length:v35 encoding:4 freeWhenDone:{1, 4001, *v71}];
 LABEL_52:
-      v10 = v67;
+      socialProfile2 = v67;
 LABEL_53:
 
-      v11 = [(__CFString *)v10 substringToIndex:7];
-      v12 = [v5 userProfile];
-      v13 = [v12 name];
-      v15 = [MRUserIdentity basicIdentityWithIdentifier:v11 displayName:v13];
+      socialProfileID2 = [(__CFString *)socialProfile2 substringToIndex:7];
+      userProfile3 = [v5 userProfile];
+      name2 = [userProfile3 name];
+      v15 = [MRUserIdentity basicIdentityWithIdentifier:socialProfileID2 displayName:name2];
       goto LABEL_54;
     }
 
@@ -2170,13 +2170,13 @@ LABEL_6:
     goto LABEL_55;
   }
 
-  v9 = [v5 userProfile];
-  v10 = [v9 socialProfile];
-  v11 = [(__CFString *)v10 socialProfileID];
-  v12 = [v5 userProfile];
-  v13 = [v12 socialProfile];
-  v14 = [v13 name];
-  v15 = [MRUserIdentity resolvableIdentityWithIdentifier:v11 displayName:v14];
+  userProfile4 = [v5 userProfile];
+  socialProfile2 = [userProfile4 socialProfile];
+  socialProfileID2 = [(__CFString *)socialProfile2 socialProfileID];
+  userProfile3 = [v5 userProfile];
+  name2 = [userProfile3 socialProfile];
+  v13Name = [name2 name];
+  v15 = [MRUserIdentity resolvableIdentityWithIdentifier:socialProfileID2 displayName:v13Name];
 
 LABEL_54:
 LABEL_55:
@@ -2184,17 +2184,17 @@ LABEL_55:
   return v15;
 }
 
-- (id)identityForHomeUserIdentifier:(id)a3
+- (id)identityForHomeUserIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MRDMusicUserStateCenter *)self stateCenter];
-  v6 = [v5 allUserStates];
+  identifierCopy = identifier;
+  stateCenter = [(MRDMusicUserStateCenter *)self stateCenter];
+  allUserStates = [stateCenter allUserStates];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v6;
+  v7 = allUserStates;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -2210,8 +2210,8 @@ LABEL_55:
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 homeUserIDs];
-        v14 = [v13 containsObject:v4];
+        homeUserIDs = [v12 homeUserIDs];
+        v14 = [homeUserIDs containsObject:identifierCopy];
 
         if (v14)
         {
@@ -2239,8 +2239,8 @@ LABEL_11:
 - (void)updateIsMusicAppInstalled
 {
   v3 = +[LSApplicationWorkspace defaultWorkspace];
-  v4 = [(MRDMusicUserStateCenter *)self musicApplicationBundleIdentifier];
-  v5 = [v3 applicationIsInstalled:v4];
+  musicApplicationBundleIdentifier = [(MRDMusicUserStateCenter *)self musicApplicationBundleIdentifier];
+  v5 = [v3 applicationIsInstalled:musicApplicationBundleIdentifier];
 
   os_unfair_lock_lock(&self->_lock);
   LODWORD(v3) = self->_isMusicAppInstalled;
@@ -2272,13 +2272,13 @@ LABEL_11:
   }
 }
 
-- (void)handleRegisteredApplicationsChangedNotification:(id)a3
+- (void)handleRegisteredApplicationsChangedNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  v7 = [v4 objectForKeyedSubscript:@"bundleIDs"];
+  userInfo = [notification userInfo];
+  v7 = [userInfo objectForKeyedSubscript:@"bundleIDs"];
 
-  v5 = [(MRDMusicUserStateCenter *)self musicApplicationBundleIdentifier];
-  v6 = [v7 containsObject:v5];
+  musicApplicationBundleIdentifier = [(MRDMusicUserStateCenter *)self musicApplicationBundleIdentifier];
+  v6 = [v7 containsObject:musicApplicationBundleIdentifier];
 
   if (v6)
   {
@@ -2286,7 +2286,7 @@ LABEL_11:
   }
 }
 
-- (void)handleiTunesNotification:(id)a3
+- (void)handleiTunesNotification:(id)notification
 {
   [(MRDMusicUserStateCenter *)self postCloudStateChanged];
 

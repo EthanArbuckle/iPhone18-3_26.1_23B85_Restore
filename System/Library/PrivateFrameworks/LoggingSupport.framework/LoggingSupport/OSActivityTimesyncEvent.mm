@@ -1,10 +1,10 @@
 @interface OSActivityTimesyncEvent
-- (OSActivityTimesyncEvent)initWithEntry:(os_activity_stream_entry_s *)a3;
+- (OSActivityTimesyncEvent)initWithEntry:(os_activity_stream_entry_s *)entry;
 @end
 
 @implementation OSActivityTimesyncEvent
 
-- (OSActivityTimesyncEvent)initWithEntry:(os_activity_stream_entry_s *)a3
+- (OSActivityTimesyncEvent)initWithEntry:(os_activity_stream_entry_s *)entry
 {
   v16 = *MEMORY[0x277D85DE8];
   v13.receiver = self;
@@ -12,19 +12,19 @@
   v4 = [(OSActivityTimesyncEvent *)&v13 init];
   if (v4)
   {
-    v5 = *(&a3->var8.var12.var11 + 4);
+    v5 = *(&entry->var8.var12.var11 + 4);
     if ((v5 & 1) == 0)
     {
-      if (*(&a3->var8.var12.var12 + 4))
+      if (*(&entry->var8.var12.var12 + 4))
       {
         v6 = "=== system wallclock time adjusted";
 LABEL_15:
-        [(OSActivityEvent *)v4 fillFromStreamEntry:a3 eventMessage:v6 persisted:1];
+        [(OSActivityEvent *)v4 fillFromStreamEntry:entry eventMessage:v6 persisted:1];
         goto LABEL_16;
       }
 
       memset(out, 0, 37);
-      uuid_unparse_upper(&a3->var8.var12.var9, out);
+      uuid_unparse_upper(&entry->var8.var12.var9, out);
       v12 = out;
       v9 = "=== system boot: %s";
 LABEL_14:
@@ -35,7 +35,7 @@ LABEL_14:
 
     if ((v5 & 2) == 0)
     {
-      v7 = *(&a3->var8.var12 + 124);
+      v7 = *(&entry->var8.var12 + 124);
       if (v7 <= 6)
       {
         if (v7 == 1)

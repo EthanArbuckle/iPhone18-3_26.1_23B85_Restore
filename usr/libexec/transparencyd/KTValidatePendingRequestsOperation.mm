@@ -1,30 +1,30 @@
 @interface KTValidatePendingRequestsOperation
-- (KTValidatePendingRequestsOperation)initWithApplication:(id)a3 dependencies:(id)a4 opId:(id)a5;
-- (id)createChainOfErrorsFromRequestFailures:(id)a3;
-- (id)createErrorFromRequestFailure:(id)a3 underlyingError:(id)a4;
-- (id)onRequestMOCFailExpiredRequest:(id)a3 error:(id)a4;
+- (KTValidatePendingRequestsOperation)initWithApplication:(id)application dependencies:(id)dependencies opId:(id)id;
+- (id)createChainOfErrorsFromRequestFailures:(id)failures;
+- (id)createErrorFromRequestFailure:(id)failure underlyingError:(id)error;
+- (id)onRequestMOCFailExpiredRequest:(id)request error:(id)error;
 - (void)groupStart;
-- (void)handleKTRequest:(id)a3 queryRequest:(id)a4 queryResponse:(id)a5 completionHandler:(id)a6;
-- (void)handleKTRequestDownload:(id)a3 context:(id)a4;
-- (void)saveRequestFailure:(id)a3 failure:(id)a4;
+- (void)handleKTRequest:(id)request queryRequest:(id)queryRequest queryResponse:(id)response completionHandler:(id)handler;
+- (void)handleKTRequestDownload:(id)download context:(id)context;
+- (void)saveRequestFailure:(id)failure failure:(id)a4;
 @end
 
 @implementation KTValidatePendingRequestsOperation
 
-- (KTValidatePendingRequestsOperation)initWithApplication:(id)a3 dependencies:(id)a4 opId:(id)a5
+- (KTValidatePendingRequestsOperation)initWithApplication:(id)application dependencies:(id)dependencies opId:(id)id
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  applicationCopy = application;
+  dependenciesCopy = dependencies;
+  idCopy = id;
   v20.receiver = self;
   v20.super_class = KTValidatePendingRequestsOperation;
   v12 = [(KTGroupOperation *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_deps, a4);
-    objc_storeStrong(&v13->_application, a3);
-    [(KTValidatePendingRequestsOperation *)v13 setBackgroundOpId:v11];
+    objc_storeStrong(&v12->_deps, dependencies);
+    objc_storeStrong(&v13->_application, application);
+    [(KTValidatePendingRequestsOperation *)v13 setBackgroundOpId:idCopy];
     v14 = +[NSMutableArray array];
     [(KTValidatePendingRequestsOperation *)v13 setErrors:v14];
 
@@ -61,97 +61,97 @@
   v4 = objc_alloc_init(NSOperation);
   [(KTValidatePendingRequestsOperation *)self setFinishedOp:v4];
 
-  v5 = [(KTValidatePendingRequestsOperation *)self finishedOp];
-  [(KTGroupOperation *)self dependOnBeforeGroupFinished:v5];
+  finishedOp = [(KTValidatePendingRequestsOperation *)self finishedOp];
+  [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
   objc_initWeak(buf, self);
-  v6 = [(KTValidatePendingRequestsOperation *)self deps];
-  v7 = [v6 contextStore];
-  v8 = [(KTValidatePendingRequestsOperation *)self application];
-  v9 = [(KTValidatePendingRequestsOperation *)self deps];
-  v10 = [v9 logClient];
+  deps = [(KTValidatePendingRequestsOperation *)self deps];
+  contextStore = [deps contextStore];
+  application = [(KTValidatePendingRequestsOperation *)self application];
+  deps2 = [(KTValidatePendingRequestsOperation *)self deps];
+  logClient = [deps2 logClient];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10001A89C;
   v11[3] = &unk_100317A10;
   objc_copyWeak(&v12, buf);
-  [v7 contextForApplication:v8 logClient:v10 fetchState:1 completionHandler:v11];
+  [contextStore contextForApplication:application logClient:logClient fetchState:1 completionHandler:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(buf);
 }
 
-- (void)handleKTRequestDownload:(id)a3 context:(id)a4
+- (void)handleKTRequestDownload:(id)download context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  downloadCopy = download;
+  contextCopy = context;
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10001B2BC;
   v8[3] = &unk_100317A80;
   objc_copyWeak(&v9, &location);
-  [v7 fetchQueryForKTRequest:v6 userInitiated:0 completionHandler:v8];
+  [contextCopy fetchQueryForKTRequest:downloadCopy userInitiated:0 completionHandler:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)handleKTRequest:(id)a3 queryRequest:(id)a4 queryResponse:(id)a5 completionHandler:(id)a6
+- (void)handleKTRequest:(id)request queryRequest:(id)queryRequest queryResponse:(id)response completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  queryRequestCopy = queryRequest;
+  responseCopy = response;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v14 = [v10 requestId];
-  v15 = [(KTValidatePendingRequestsOperation *)self deps];
-  v16 = [v15 contextStore];
-  v17 = [(KTValidatePendingRequestsOperation *)self application];
-  v18 = [(KTValidatePendingRequestsOperation *)self deps];
-  v19 = [v18 logClient];
+  requestId = [requestCopy requestId];
+  deps = [(KTValidatePendingRequestsOperation *)self deps];
+  contextStore = [deps contextStore];
+  application = [(KTValidatePendingRequestsOperation *)self application];
+  deps2 = [(KTValidatePendingRequestsOperation *)self deps];
+  logClient = [deps2 logClient];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_10001B950;
   v24[3] = &unk_100317B10;
   objc_copyWeak(&v29, &location);
-  v20 = v14;
+  v20 = requestId;
   v25 = v20;
-  v21 = v13;
+  v21 = handlerCopy;
   v28 = v21;
-  v22 = v11;
+  v22 = queryRequestCopy;
   v26 = v22;
-  v23 = v12;
+  v23 = responseCopy;
   v27 = v23;
-  [v16 contextForApplication:v17 logClient:v19 fetchState:1 completionHandler:v24];
+  [contextStore contextForApplication:application logClient:logClient fetchState:1 completionHandler:v24];
 
   objc_destroyWeak(&v29);
   objc_destroyWeak(&location);
 }
 
-- (id)onRequestMOCFailExpiredRequest:(id)a3 error:(id)a4
+- (id)onRequestMOCFailExpiredRequest:(id)request error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isDeleted])
+  requestCopy = request;
+  errorCopy = error;
+  if ([requestCopy isDeleted])
   {
-    v8 = [[NSUUID alloc] initWithUUIDBytes:&unk_1002D4650];
+    requestId2 = [[NSUUID alloc] initWithUUIDBytes:&unk_1002D4650];
   }
 
   else
   {
-    [v6 requestTime];
+    [requestCopy requestTime];
     v10 = v9 + kKTMaximumMergeDelayMs / 1000.0;
     if (v10 >= CFAbsoluteTimeGetCurrent())
     {
-      v8 = 0;
+      requestId2 = 0;
     }
 
     else
     {
-      v11 = [v6 failures];
-      v12 = [(KTValidatePendingRequestsOperation *)self createChainOfErrorsFromRequestFailures:v11];
+      failures = [requestCopy failures];
+      v12 = [(KTValidatePendingRequestsOperation *)self createChainOfErrorsFromRequestFailures:failures];
 
-      v13 = [TransparencyError errorWithError:v7 underlyingError:v12];
+      v13 = [TransparencyError errorWithError:errorCopy underlyingError:v12];
       v14 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-213 underlyingError:v13 description:@"failed to download query response for request"];
 
       if (qword_10038BC00 != -1)
@@ -163,64 +163,64 @@
       if (os_log_type_enabled(qword_10038BC08, OS_LOG_TYPE_ERROR))
       {
         v16 = v15;
-        v17 = [v6 requestId];
+        requestId = [requestCopy requestId];
         v28 = 138543874;
-        v29 = v17;
+        v29 = requestId;
         v30 = 2112;
         v31 = v14;
         v32 = 2112;
-        v33 = v7;
+        v33 = errorCopy;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "ValidatePendingRequests: Request validation failed after MMD for requestId %{public}@, error: %@, underlyingError: %@", &v28, 0x20u);
       }
 
-      v18 = [(KTValidatePendingRequestsOperation *)self deps];
-      v19 = [v18 dataStore];
+      deps = [(KTValidatePendingRequestsOperation *)self deps];
+      dataStore = [deps dataStore];
       v20 = objc_opt_class();
-      v21 = [v6 managedObjectContext];
-      v22 = [v20 createRequestFailure:v21];
+      managedObjectContext = [requestCopy managedObjectContext];
+      v22 = [v20 createRequestFailure:managedObjectContext];
 
       [v22 setErrorCode:-213];
       [v22 setErrorDomain:@"TransparencyErrorVerify"];
-      [v22 setRequest:v6];
-      [v6 setVerificationResult:0];
+      [v22 setRequest:requestCopy];
+      [requestCopy setVerificationResult:0];
       v23 = +[TransparencyAnalytics logger];
-      v24 = [v6 type];
-      v25 = [(KTValidatePendingRequestsOperation *)self application];
-      v26 = [KTContext validateEventName:v24 application:v25];
+      type = [requestCopy type];
+      application = [(KTValidatePendingRequestsOperation *)self application];
+      v26 = [KTContext validateEventName:type application:application];
       [v23 logResultForEvent:v26 hardFailure:1 result:v14];
 
-      v8 = [v6 requestId];
+      requestId2 = [requestCopy requestId];
     }
   }
 
-  return v8;
+  return requestId2;
 }
 
-- (void)saveRequestFailure:(id)a3 failure:(id)a4
+- (void)saveRequestFailure:(id)failure failure:(id)a4
 {
   v6 = a4;
-  v7 = a3;
-  v8 = [(KTValidatePendingRequestsOperation *)self deps];
-  v9 = [v8 dataStore];
+  failureCopy = failure;
+  deps = [(KTValidatePendingRequestsOperation *)self deps];
+  dataStore = [deps dataStore];
   v10 = objc_opt_class();
-  v11 = [v7 managedObjectContext];
-  v13 = [v10 createRequestFailure:v11];
+  managedObjectContext = [failureCopy managedObjectContext];
+  v13 = [v10 createRequestFailure:managedObjectContext];
 
   [v13 setErrorCode:{objc_msgSend(v6, "code")}];
-  v12 = [v6 domain];
+  domain = [v6 domain];
 
-  [v13 setErrorDomain:v12];
-  [v13 setRequest:v7];
+  [v13 setErrorDomain:domain];
+  [v13 setRequest:failureCopy];
 }
 
-- (id)createChainOfErrorsFromRequestFailures:(id)a3
+- (id)createChainOfErrorsFromRequestFailures:(id)failures
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 allObjects];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObjects = [failures allObjects];
+  v5 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -234,7 +234,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allObjects);
         }
 
         v7 = [(KTValidatePendingRequestsOperation *)self createErrorFromRequestFailure:*(*(&v12 + 1) + 8 * v9) underlyingError:v10];
@@ -244,7 +244,7 @@
       }
 
       while (v6 != v9);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -258,14 +258,14 @@
   return v7;
 }
 
-- (id)createErrorFromRequestFailure:(id)a3 underlyingError:(id)a4
+- (id)createErrorFromRequestFailure:(id)failure underlyingError:(id)error
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 errorDomain];
-  v8 = [v6 errorCode];
+  errorCopy = error;
+  failureCopy = failure;
+  errorDomain = [failureCopy errorDomain];
+  errorCode = [failureCopy errorCode];
 
-  v9 = [TransparencyError errorWithDomain:v7 code:v8 underlyingError:v5 description:0];
+  v9 = [TransparencyError errorWithDomain:errorDomain code:errorCode underlyingError:errorCopy description:0];
 
   return v9;
 }

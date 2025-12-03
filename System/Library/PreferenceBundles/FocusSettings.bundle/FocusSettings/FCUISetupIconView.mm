@@ -1,6 +1,6 @@
 @interface FCUISetupIconView
 - (void)layoutSubviews;
-- (void)setBackgroundColorForModeColorName:(id)a3;
+- (void)setBackgroundColorForModeColorName:(id)name;
 @end
 
 @implementation FCUISetupIconView
@@ -15,9 +15,9 @@
   [(FCUISetupIconView *)self setClipsToBounds:1];
 }
 
-- (void)setBackgroundColorForModeColorName:(id)a3
+- (void)setBackgroundColorForModeColorName:(id)name
 {
-  aSelectorName = a3;
+  aSelectorName = name;
   if ([(NSString *)aSelectorName length])
   {
     v4 = NSSelectorFromString(aSelectorName);

@@ -1,9 +1,9 @@
 @interface TMTimeSynthesizerMonitor
 - (TMTimeSynthesizerMonitor)init;
 - (void)dealloc;
-- (void)resetRejectCountsForReason:(int64_t)a3 rtc:(double)a4;
-- (void)sendConsecutiveRejectsAnalyticsAtRtc:(double)a3 forReason:(int64_t)a4 withTime:(id)a5;
-- (void)synthesizer:(id)a3 rejectedTimeInput:(id)a4;
+- (void)resetRejectCountsForReason:(int64_t)reason rtc:(double)rtc;
+- (void)sendConsecutiveRejectsAnalyticsAtRtc:(double)rtc forReason:(int64_t)reason withTime:(id)time;
+- (void)synthesizer:(id)synthesizer rejectedTimeInput:(id)input;
 @end
 
 @implementation TMTimeSynthesizerMonitor
@@ -29,7 +29,7 @@
   [(TMTimeSynthesizerMonitor *)&v3 dealloc];
 }
 
-- (void)resetRejectCountsForReason:(int64_t)a3 rtc:(double)a4
+- (void)resetRejectCountsForReason:(int64_t)reason rtc:(double)rtc
 {
   if ([(TMTimeSynthesizerMonitor *)self previousRejectsExist])
   {
@@ -40,36 +40,36 @@
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "resetting reject counts", v8, 2u);
     }
 
-    [(TMTimeSynthesizerMonitor *)self sendConsecutiveRejectsAnalyticsAtRtc:a3 forReason:0 withTime:a4];
+    [(TMTimeSynthesizerMonitor *)self sendConsecutiveRejectsAnalyticsAtRtc:reason forReason:0 withTime:rtc];
     [(NSMutableDictionary *)[(TMTimeSynthesizerMonitor *)self sourceRejects] removeAllObjects];
   }
 }
 
-- (void)synthesizer:(id)a3 rejectedTimeInput:(id)a4
+- (void)synthesizer:(id)synthesizer rejectedTimeInput:(id)input
 {
-  if ([&off_10002C768 containsObject:{objc_msgSend(a4, "source", a3)}])
+  if ([&off_10002C768 containsObject:{objc_msgSend(input, "source", synthesizer)}])
   {
-    v6 = -[NSMutableDictionary objectForKey:](-[TMTimeSynthesizerMonitor sourceRejects](self, "sourceRejects"), "objectForKey:", [a4 source]);
+    v6 = -[NSMutableDictionary objectForKey:](-[TMTimeSynthesizerMonitor sourceRejects](self, "sourceRejects"), "objectForKey:", [input source]);
     if (v6)
     {
-      -[NSMutableDictionary setObject:forKeyedSubscript:](-[TMTimeSynthesizerMonitor sourceRejects](self, "sourceRejects"), "setObject:forKeyedSubscript:", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 intValue] + 1), objc_msgSend(a4, "source"));
+      -[NSMutableDictionary setObject:forKeyedSubscript:](-[TMTimeSynthesizerMonitor sourceRejects](self, "sourceRejects"), "setObject:forKeyedSubscript:", +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 intValue] + 1), objc_msgSend(input, "source"));
     }
 
     else
     {
-      -[NSMutableDictionary setObject:forKey:](-[TMTimeSynthesizerMonitor sourceRejects](self, "sourceRejects"), "setObject:forKey:", &off_10002C640, [a4 source]);
+      -[NSMutableDictionary setObject:forKey:](-[TMTimeSynthesizerMonitor sourceRejects](self, "sourceRejects"), "setObject:forKey:", &off_10002C640, [input source]);
     }
 
     v8 = qword_100033218;
     if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = [a4 source];
+      source = [input source];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "source %@ has been rejected by Secure Filter, incrementing count", &v9, 0xCu);
     }
 
-    [a4 rtc_s];
-    [(TMTimeSynthesizerMonitor *)self sendConsecutiveRejectsAnalyticsAtRtc:3 forReason:a4 withTime:?];
+    [input rtc_s];
+    [(TMTimeSynthesizerMonitor *)self sendConsecutiveRejectsAnalyticsAtRtc:3 forReason:input withTime:?];
   }
 
   else
@@ -78,24 +78,24 @@
     if (os_log_type_enabled(qword_100033218, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = [a4 source];
+      source = [input source];
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "source %@ is not being tracked by TMTimeSynthesizerMonitor", &v9, 0xCu);
     }
   }
 }
 
-- (void)sendConsecutiveRejectsAnalyticsAtRtc:(double)a3 forReason:(int64_t)a4 withTime:(id)a5
+- (void)sendConsecutiveRejectsAnalyticsAtRtc:(double)rtc forReason:(int64_t)reason withTime:(id)time
 {
   v8 = [NSMutableDictionary dictionaryWithDictionary:[(TMTimeSynthesizerMonitor *)self sourceRejects]];
-  if (a5)
+  if (time)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    [a5 utc_s];
+    [time utc_s];
     [(NSMutableDictionary *)v8 setObject:[NSNumber forKey:"numberWithDouble:" numberWithDouble:?], @"difference"];
   }
 
-  [(NSMutableDictionary *)v8 setObject:[NSNumber forKey:"numberWithDouble:" numberWithDouble:a3], @"rtc_s"];
-  [(NSMutableDictionary *)v8 setObject:[NSNumber forKey:"numberWithInteger:" numberWithInteger:a4], @"report_reason"];
+  [(NSMutableDictionary *)v8 setObject:[NSNumber forKey:"numberWithDouble:" numberWithDouble:rtc], @"rtc_s"];
+  [(NSMutableDictionary *)v8 setObject:[NSNumber forKey:"numberWithInteger:" numberWithInteger:reason], @"report_reason"];
   AnalyticsSendEventLazy();
 }
 

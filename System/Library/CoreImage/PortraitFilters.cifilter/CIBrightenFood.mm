@@ -23,7 +23,7 @@
     return 0;
   }
 
-  v4 = [(CIBrightenFood *)self _brightenFood];
+  _brightenFood = [(CIBrightenFood *)self _brightenFood];
   [(NSNumber *)self->super.inputPShift floatValue];
   v6 = v5;
   [(NSNumber *)self->super.inputTShift floatValue];
@@ -39,7 +39,7 @@
   v21[3] = [NSNumber numberWithFloat:v11, inputImage, self->super.inputStrength, self->super.inputSat];
   *&v19 = v8 * v10;
   v21[4] = [NSNumber numberWithFloat:v19];
-  return [v4 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v21, 5), v12, v14, v16, v18}];
+  return [_brightenFood applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v21, 5), v12, v14, v16, v18}];
 }
 
 @end

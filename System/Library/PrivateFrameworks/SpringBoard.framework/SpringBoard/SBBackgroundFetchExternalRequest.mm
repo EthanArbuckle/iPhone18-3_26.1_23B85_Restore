@@ -1,15 +1,15 @@
 @interface SBBackgroundFetchExternalRequest
-- (id)initForAppInfo:(id)a3;
+- (id)initForAppInfo:(id)info;
 - (void)dealloc;
 - (void)execute;
 @end
 
 @implementation SBBackgroundFetchExternalRequest
 
-- (id)initForAppInfo:(id)a3
+- (id)initForAppInfo:(id)info
 {
-  v5 = a3;
-  if (!v5)
+  infoCopy = info;
+  if (!infoCopy)
   {
     [(SBBackgroundFetchExternalRequest *)a2 initForAppInfo:?];
   }
@@ -26,7 +26,7 @@
     v21 = __Block_byref_object_dispose__148;
     v22 = objc_alloc(MEMORY[0x277D754E0]);
     v7 = +[SBBackgroundMultitaskingManager sharedInstance];
-    v8 = [v7 _createBackgroundFetchTaskForAppInfo:v5];
+    v8 = [v7 _createBackgroundFetchTaskForAppInfo:infoCopy];
 
     objc_storeStrong(&v6->_task, v8);
     v9 = v18[5];

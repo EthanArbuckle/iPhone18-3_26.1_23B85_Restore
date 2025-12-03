@@ -1,13 +1,13 @@
 @interface CHIntegrationTest
 - (CHIntegrationTest)init;
-- (void)populateSampleAppLaunchEmbeddingWithCompletion:(id)a3;
+- (void)populateSampleAppLaunchEmbeddingWithCompletion:(id)completion;
 @end
 
 @implementation CHIntegrationTest
 
-- (void)populateSampleAppLaunchEmbeddingWithCompletion:(id)a3
+- (void)populateSampleAppLaunchEmbeddingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = ch_test_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -15,7 +15,7 @@
     _os_log_impl(&dword_243B92000, v5, OS_LOG_TYPE_DEFAULT, "CHIntegrationTest populateSampleAppLaunchEmbedding api called", v6, 2u);
   }
 
-  [(CHIntegrationTestProtocol *)self->_xpcClient populateSampleAppLaunchEmbeddingWithCompletion:v4];
+  [(CHIntegrationTestProtocol *)self->_xpcClient populateSampleAppLaunchEmbeddingWithCompletion:completionCopy];
 }
 
 - (CHIntegrationTest)init

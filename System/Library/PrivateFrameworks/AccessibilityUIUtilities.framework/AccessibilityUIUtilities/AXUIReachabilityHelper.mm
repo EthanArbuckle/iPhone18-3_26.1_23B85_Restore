@@ -1,7 +1,7 @@
 @interface AXUIReachabilityHelper
 + (id)sharedHelper;
-- (double)reachabilityOffsetForPayload:(id)a3;
-- (void)animateForReachability:(id)a3 payload:(id)a4 completion:(id)a5;
+- (double)reachabilityOffsetForPayload:(id)payload;
+- (void)animateForReachability:(id)reachability payload:(id)payload completion:(id)completion;
 @end
 
 @implementation AXUIReachabilityHelper
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __38__AXUIReachabilityHelper_sharedHelper__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedHelper_onceToken != -1)
   {
     dispatch_once(&sharedHelper_onceToken, block);
@@ -30,37 +30,37 @@ uint64_t __38__AXUIReachabilityHelper_sharedHelper__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (double)reachabilityOffsetForPayload:(id)a3
+- (double)reachabilityOffsetForPayload:(id)payload
 {
-  v3 = [a3 objectForKeyedSubscript:@"offset"];
+  v3 = [payload objectForKeyedSubscript:@"offset"];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)animateForReachability:(id)a3 payload:(id)a4 completion:(id)a5
+- (void)animateForReachability:(id)reachability payload:(id)payload completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  reachabilityCopy = reachability;
+  payloadCopy = payload;
+  completionCopy = completion;
   v11 = MEMORY[0x1E69DD250];
-  v12 = [[AXUIReachabilityAnimationBehaviorSettings alloc] initWithPayload:v9];
+  v12 = [[AXUIReachabilityAnimationBehaviorSettings alloc] initWithPayload:payloadCopy];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __68__AXUIReachabilityHelper_animateForReachability_payload_completion___block_invoke;
   v18[3] = &unk_1E812E6F0;
   v18[4] = self;
-  v19 = v9;
-  v20 = v8;
+  v19 = payloadCopy;
+  v20 = reachabilityCopy;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __68__AXUIReachabilityHelper_animateForReachability_payload_completion___block_invoke_2;
   v16[3] = &unk_1E812E718;
-  v17 = v10;
-  v13 = v10;
-  v14 = v8;
-  v15 = v9;
+  v17 = completionCopy;
+  v13 = completionCopy;
+  v14 = reachabilityCopy;
+  v15 = payloadCopy;
   [v11 _animateUsingSpringBehavior:v12 tracking:0 animations:v18 completion:v16];
 }
 

@@ -1,22 +1,22 @@
 @interface PPTHostedPageGoToSeeAllTest
 - (PPTHostedPageGoToSeeAllTest)init;
-- (PPTHostedPageGoToSeeAllTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6;
+- (PPTHostedPageGoToSeeAllTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test;
 - (void)startTest;
 @end
 
 @implementation PPTHostedPageGoToSeeAllTest
 
-- (PPTHostedPageGoToSeeAllTest)initWithName:(id)a3 options:(id)a4 testDefinition:(id)a5 isMainTest:(BOOL)a6
+- (PPTHostedPageGoToSeeAllTest)initWithName:(id)name options:(id)options testDefinition:(id)definition isMainTest:(BOOL)test
 {
   v8 = sub_1007A2254();
   v10 = v9;
-  if (a4)
+  if (options)
   {
-    a4 = sub_1007A2044();
+    options = sub_1007A2044();
   }
 
   v11 = sub_1007A2044();
-  v12 = sub_10025F678(v8, v10, a4, v11, a6);
+  v12 = sub_10025F678(v8, v10, options, v11, test);
 
   return v12;
 }
@@ -26,14 +26,14 @@
   v3 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v3 - 8);
   v5 = &v11 - v4;
-  v6 = self;
-  [(PPTBasicTest *)v6 setTestTimeout:30];
-  [(PPTBasicTest *)v6 setRunning:1];
-  [(PPTBasicTest *)v6 startPPTTest];
+  selfCopy = self;
+  [(PPTBasicTest *)selfCopy setTestTimeout:30];
+  [(PPTBasicTest *)selfCopy setRunning:1];
+  [(PPTBasicTest *)selfCopy startPPTTest];
   v7 = sub_1007A2744();
   (*(*(v7 - 8) + 56))(v5, 1, 1, v7);
   sub_1007A26F4();
-  v8 = v6;
+  v8 = selfCopy;
   v9 = sub_1007A26E4();
   v10 = swift_allocObject();
   v10[2] = v9;

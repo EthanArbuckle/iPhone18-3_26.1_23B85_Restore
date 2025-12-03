@@ -3,10 +3,10 @@
 - (NSDictionary)activeRequestsByTransactionID;
 - (NSDictionary)remoteIDSDestinations;
 - (NSString)description;
-- (void)removeActiveRequestForTransactionID:(id)a3;
-- (void)setActiveRequest:(id)a3 forTransactionID:(id)a4;
-- (void)setActiveRequestsByTransactionID:(id)a3;
-- (void)setRemoteIDSDestinations:(id)a3;
+- (void)removeActiveRequestForTransactionID:(id)d;
+- (void)setActiveRequest:(id)request forTransactionID:(id)d;
+- (void)setActiveRequestsByTransactionID:(id)d;
+- (void)setRemoteIDSDestinations:(id)destinations;
 @end
 
 @implementation FTMomentsControllerSession
@@ -26,10 +26,10 @@
   return v2.super.isa;
 }
 
-- (void)setRemoteIDSDestinations:(id)a3
+- (void)setRemoteIDSDestinations:(id)destinations
 {
   v4 = sub_10003980C();
-  v5 = self;
+  selfCopy = self;
   sub_10002832C(v4, &OBJC_IVAR___FTMomentsControllerSession_remoteIDSDestinations);
 }
 
@@ -42,17 +42,17 @@
   return v2.super.isa;
 }
 
-- (void)setActiveRequestsByTransactionID:(id)a3
+- (void)setActiveRequestsByTransactionID:(id)d
 {
   type metadata accessor for LivePhotosMomentsRequest();
   v4 = sub_10003980C();
-  v5 = self;
+  selfCopy = self;
   sub_10002832C(v4, &OBJC_IVAR___FTMomentsControllerSession_activeRequestsByTransactionID);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000283E8();
 
   v3 = sub_10003985C();
@@ -60,19 +60,19 @@
   return v3;
 }
 
-- (void)setActiveRequest:(id)a3 forTransactionID:(id)a4
+- (void)setActiveRequest:(id)request forTransactionID:(id)d
 {
   sub_10003986C();
-  v6 = a3;
-  v7 = self;
-  sub_100028FF8(v6);
+  requestCopy = request;
+  selfCopy = self;
+  sub_100028FF8(requestCopy);
 }
 
-- (void)removeActiveRequestForTransactionID:(id)a3
+- (void)removeActiveRequestForTransactionID:(id)d
 {
   v4 = sub_10003986C();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100029110(v4, v6);
 }
 

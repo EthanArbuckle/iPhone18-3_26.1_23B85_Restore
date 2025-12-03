@@ -13,7 +13,7 @@
   y = sourcePoint.y;
   x = sourcePoint.x;
   v7 = identifier;
-  v8 = objc_alloc_init(a1);
+  v8 = objc_alloc_init(self);
   v9 = v8;
   if (v7)
   {
@@ -22,8 +22,8 @@
 
   else
   {
-    v10 = [MEMORY[0x1E696AFB0] UUID];
-    [v9 setIdentifier:v10];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [v9 setIdentifier:uUID];
   }
 
   [v9 setSourcePoint:{x, y}];
@@ -35,13 +35,13 @@
 
 - (id)description
 {
-  v3 = [self _ui_descriptionBuilder];
-  v4 = [(UIEditMenuConfiguration *)self identifier];
-  v5 = [v3 appendName:@"identifier" object:v4];
+  _ui_descriptionBuilder = [self _ui_descriptionBuilder];
+  identifier = [(UIEditMenuConfiguration *)self identifier];
+  v5 = [_ui_descriptionBuilder appendName:@"identifier" object:identifier];
 
   [(UIEditMenuConfiguration *)self sourcePoint];
   v6 = NSStringFromCGPoint(v14);
-  v7 = [v3 appendName:@"sourcePoint" object:v6];
+  v7 = [_ui_descriptionBuilder appendName:@"sourcePoint" object:v6];
 
   v8 = [(UIEditMenuConfiguration *)self preferredArrowDirection]- 1;
   if (v8 > 3)
@@ -54,10 +54,10 @@
     v9 = off_1E712ABE8[v8];
   }
 
-  v10 = [v3 appendName:@"arrowDirection" object:v9];
-  v11 = [v3 string];
+  v10 = [_ui_descriptionBuilder appendName:@"arrowDirection" object:v9];
+  string = [_ui_descriptionBuilder string];
 
-  return v11;
+  return string;
 }
 
 - (CGPoint)sourcePoint

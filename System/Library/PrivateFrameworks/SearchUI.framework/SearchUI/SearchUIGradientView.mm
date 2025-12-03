@@ -1,6 +1,6 @@
 @interface SearchUIGradientView
 - (SearchUIGradientView)init;
-- (void)setColors:(id)a3;
+- (void)setColors:(id)colors;
 @end
 
 @implementation SearchUIGradientView
@@ -12,31 +12,31 @@
   return [(SearchUIGradientView *)&v3 init];
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([v5 isEqualToArray:self->_colors] & 1) == 0)
+  colorsCopy = colors;
+  if (([colorsCopy isEqualToArray:self->_colors] & 1) == 0)
   {
-    objc_storeStrong(&self->_colors, a3);
-    if ([v5 count] == 1)
+    objc_storeStrong(&self->_colors, colors);
+    if ([colorsCopy count] == 1)
     {
-      v6 = [(SearchUIGradientView *)self layer];
-      [v6 setColors:0];
+      layer = [(SearchUIGradientView *)self layer];
+      [layer setColors:0];
 
-      v7 = [v5 firstObject];
-      v8 = self;
-      v9 = v7;
+      firstObject = [colorsCopy firstObject];
+      selfCopy2 = self;
+      v9 = firstObject;
     }
 
     else
     {
-      v7 = objc_opt_new();
+      firstObject = objc_opt_new();
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v10 = v5;
+      v10 = colorsCopy;
       v11 = [v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v11)
       {
@@ -53,7 +53,7 @@
             }
 
             v15 = *(*(&v17 + 1) + 8 * v14);
-            [v7 addObject:{objc_msgSend(v15, "CGColor", v17)}];
+            [firstObject addObject:{objc_msgSend(v15, "CGColor", v17)}];
             ++v14;
           }
 
@@ -64,14 +64,14 @@
         while (v12);
       }
 
-      v16 = [(SearchUIGradientView *)self layer];
-      [v16 setColors:v7];
+      layer2 = [(SearchUIGradientView *)self layer];
+      [layer2 setColors:firstObject];
 
-      v8 = self;
+      selfCopy2 = self;
       v9 = 0;
     }
 
-    [(SearchUIGradientView *)v8 setBackgroundColor:v9, v17];
+    [(SearchUIGradientView *)selfCopy2 setBackgroundColor:v9, v17];
   }
 }
 

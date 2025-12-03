@@ -5,42 +5,42 @@
 - (BOOL)_shouldDeferSeekToDelegate;
 - (NSDate)currentDate;
 - (id)_currentItemForCurrentSegment;
-- (id)_currentItemForSegmentType:(int64_t)a3;
+- (id)_currentItemForSegmentType:(int64_t)type;
 - (id)_initInternal;
-- (id)addBoundaryTimeObserverForSegment:(id)a3 offsetsIntoSegment:(id)a4 queue:(id)a5 usingBlock:(id)a6;
-- (id)addPeriodicTimeObserverForInterval:(id *)a3 queue:(id)a4 usingBlock:(id)a5;
+- (id)addBoundaryTimeObserverForSegment:(id)segment offsetsIntoSegment:(id)intoSegment queue:(id)queue usingBlock:(id)block;
+- (id)addPeriodicTimeObserverForInterval:(id *)interval queue:(id)queue usingBlock:(id)block;
 - (int)_createSeekID;
-- (int)_deferOrIssueSeekOnFigTimelineForID:(int)a3 time:(id *)a4 toleranceBefore:(id *)a5 toleranceAfter:(id *)a6 options:(__CFDictionary *)a7;
+- (int)_deferOrIssueSeekOnFigTimelineForID:(int)d time:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after options:(__CFDictionary *)options;
 - (int64_t)_currentSegmentTypeOfCurrentSnapshot;
 - (void)_addInterstitialPlayerListeners;
 - (void)_addListener;
-- (void)_attachCoordinator:(OpaqueFigPlayerInterstitialCoordinator *)a3;
-- (void)_attachInterstitialPlayer:(id)a3;
-- (void)_attachToItem:(id)a3;
-- (void)_cancelPendingSeekAndRegisterSeekID:(int)a3 seekTime:(id *)a4 withCompletionHandler:(id)a5;
+- (void)_attachCoordinator:(OpaqueFigPlayerInterstitialCoordinator *)coordinator;
+- (void)_attachInterstitialPlayer:(id)player;
+- (void)_attachToItem:(id)item;
+- (void)_cancelPendingSeekAndRegisterSeekID:(int)d seekTime:(id *)time withCompletionHandler:(id)handler;
 - (void)_cancelPendingSeeks;
 - (void)_clearCachedSeekWithLock;
 - (void)_ensureObserversHandleSnapshotSegmentsChanged;
-- (void)_informDelegateOfSeekForTimeIfNecessary:(id *)a3;
+- (void)_informDelegateOfSeekForTimeIfNecessary:(id *)necessary;
 - (void)_issueCachedSeekIfNecessary;
 - (void)_removeInterstitialPlayerListeners;
 - (void)_removeListeners;
-- (void)_resetPlaybackCoordinatorTimelineExpectations:(__CFDictionary *)a3;
-- (void)_seekToDate:(id)a3 options:(__CFDictionary *)a4 completionHandler:(id)a5;
-- (void)_seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 options:(__CFDictionary *)a6 completionHandler:(id)a7;
-- (void)_setInitialSeekState:(int)a3 time:(id *)a4 date:(id)a5 toleranceBefore:(id *)a6 toleranceAfter:(id *)a7 options:(__CFDictionary *)a8;
-- (void)_unregisterInvokeAndReleasePendingSeekCompletionHandlerForSeekID:(int)a3 finished:(BOOL)a4;
+- (void)_resetPlaybackCoordinatorTimelineExpectations:(__CFDictionary *)expectations;
+- (void)_seekToDate:(id)date options:(__CFDictionary *)options completionHandler:(id)handler;
+- (void)_seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after options:(__CFDictionary *)options completionHandler:(id)handler;
+- (void)_setInitialSeekState:(int)state time:(id *)time date:(id)date toleranceBefore:(id *)before toleranceAfter:(id *)after options:(__CFDictionary *)options;
+- (void)_unregisterInvokeAndReleasePendingSeekCompletionHandlerForSeekID:(int)d finished:(BOOL)finished;
 - (void)dealloc;
-- (void)removeTimeObserver:(id)a3;
-- (void)seekToDate:(id)a3 completionHandler:(id)a4;
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6;
+- (void)removeTimeObserver:(id)observer;
+- (void)seekToDate:(id)date completionHandler:(id)handler;
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler;
 @end
 
 @implementation AVPlayerItemIntegratedTimeline
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -87,10 +87,10 @@
   [(AVPlayerItemIntegratedTimeline *)&v5 dealloc];
 }
 
-- (void)_attachToItem:(id)a3
+- (void)_attachToItem:(id)item
 {
-  v5 = [a3 _copyFigPlaybackItem];
-  v6 = v5;
+  _copyFigPlaybackItem = [item _copyFigPlaybackItem];
+  v6 = _copyFigPlaybackItem;
   if (self->_figTimeline)
   {
     v7 = 1;
@@ -98,35 +98,35 @@
 
   else
   {
-    v7 = v5 == 0;
+    v7 = _copyFigPlaybackItem == 0;
   }
 
   if (!v7)
   {
     FigItemIntegratedTimelineCreate();
     [(AVPlayerItemIntegratedTimeline *)self _addListener];
-    self->_weakReferenceToPrimaryItem = [[AVWeakReference alloc] initWithReferencedObject:a3];
+    self->_weakReferenceToPrimaryItem = [[AVWeakReference alloc] initWithReferencedObject:item];
     if ([(NSArray *)[(AVPlayerItemIntegratedTimelineSnapshot *)[(AVPlayerItemIntegratedTimeline *)self currentSnapshot] segments] count])
     {
-      v8 = [MEMORY[0x1E695DF90] dictionary];
-      [v8 setObject:@"AVPlayerIntegratedTimelineSnapshotsOutOfSyncReasonSegmentsChanged" forKey:@"AVPlayerIntegratedTimelineSnapshotsOutOfSyncReasonKey"];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:@"AVPlayerIntegratedTimelineSnapshotsOutOfSyncReasonSegmentsChanged" forKey:@"AVPlayerIntegratedTimelineSnapshotsOutOfSyncReasonKey"];
       [(AVPlayerItemIntegratedTimeline *)self _issueCachedSeekIfNecessary];
       [(AVPlayerItemIntegratedTimeline *)self _ensureObserversHandleSnapshotSegmentsChanged];
-      v9 = [MEMORY[0x1E696AD80] notificationWithName:@"AVPlayerIntegratedTimelineSnapshotsOutOfSyncNotification" object:self userInfo:v8];
+      v9 = [MEMORY[0x1E696AD80] notificationWithName:@"AVPlayerIntegratedTimelineSnapshotsOutOfSyncNotification" object:self userInfo:dictionary];
       [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
     }
 
     goto LABEL_10;
   }
 
-  if (v5)
+  if (_copyFigPlaybackItem)
   {
 LABEL_10:
     CFRelease(v6);
   }
 }
 
-- (void)_attachCoordinator:(OpaqueFigPlayerInterstitialCoordinator *)a3
+- (void)_attachCoordinator:(OpaqueFigPlayerInterstitialCoordinator *)coordinator
 {
   figTimeline = self->_figTimeline;
   if (figTimeline)
@@ -136,16 +136,16 @@ LABEL_10:
     {
       v6 = *MEMORY[0x1E6971E58];
 
-      v5(figTimeline, v6, a3);
+      v5(figTimeline, v6, coordinator);
     }
   }
 }
 
-- (void)_attachInterstitialPlayer:(id)a3
+- (void)_attachInterstitialPlayer:(id)player
 {
-  if (a3 && !self->_weakReferenceToInterstitialPlayer)
+  if (player && !self->_weakReferenceToInterstitialPlayer)
   {
-    self->_weakReferenceToInterstitialPlayer = [[AVWeakReference alloc] initWithReferencedObject:a3];
+    self->_weakReferenceToInterstitialPlayer = [[AVWeakReference alloc] initWithReferencedObject:player];
 
     [(AVPlayerItemIntegratedTimeline *)self _addInterstitialPlayerListeners];
   }
@@ -314,9 +314,9 @@ LABEL_21:
 
 - (int64_t)_currentSegmentTypeOfCurrentSnapshot
 {
-  v2 = [(AVPlayerItemIntegratedTimelineSnapshot *)[(AVPlayerItemIntegratedTimeline *)self currentSnapshot] currentSegment];
+  currentSegment = [(AVPlayerItemIntegratedTimelineSnapshot *)[(AVPlayerItemIntegratedTimeline *)self currentSnapshot] currentSegment];
 
-  return [(AVPlayerItemSegment *)v2 segmentType];
+  return [(AVPlayerItemSegment *)currentSegment segmentType];
 }
 
 - (int)_createSeekID
@@ -328,18 +328,18 @@ LABEL_21:
   return nextSeekIDToGenerate;
 }
 
-- (void)_cancelPendingSeekAndRegisterSeekID:(int)a3 seekTime:(id *)a4 withCompletionHandler:(id)a5
+- (void)_cancelPendingSeekAndRegisterSeekID:(int)d seekTime:(id *)time withCompletionHandler:(id)handler
 {
   FigSimpleMutexLock();
   pendingSeekID = self->_pendingSeekID;
   seekCompletionHandler = self->_seekCompletionHandler;
-  self->_pendingSeekID = a3;
-  var3 = a4->var3;
-  *&self->_pendingSeekTime.value = *&a4->var0;
+  self->_pendingSeekID = d;
+  var3 = time->var3;
+  *&self->_pendingSeekTime.value = *&time->var0;
   self->_pendingSeekTime.epoch = var3;
-  if (a5)
+  if (handler)
   {
-    v12 = [a5 copy];
+    v12 = [handler copy];
   }
 
   else
@@ -362,14 +362,14 @@ LABEL_21:
   }
 }
 
-- (void)_unregisterInvokeAndReleasePendingSeekCompletionHandlerForSeekID:(int)a3 finished:(BOOL)a4
+- (void)_unregisterInvokeAndReleasePendingSeekCompletionHandlerForSeekID:(int)d finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   FigSimpleMutexLock();
   pendingSeekID = self->_pendingSeekID;
   if (pendingSeekID)
   {
-    v8 = pendingSeekID == a3;
+    v8 = pendingSeekID == d;
   }
 
   else
@@ -395,7 +395,7 @@ LABEL_21:
         fig_log_call_emit_and_clean_up_after_send_and_compose();
       }
 
-      seekCompletionHandler[2](seekCompletionHandler, v4);
+      seekCompletionHandler[2](seekCompletionHandler, finishedCopy);
     }
   }
 
@@ -428,18 +428,18 @@ LABEL_21:
   }
 }
 
-- (void)_informDelegateOfSeekForTimeIfNecessary:(id *)a3
+- (void)_informDelegateOfSeekForTimeIfNecessary:(id *)necessary
 {
   if (objc_loadWeak(&self->_seekDelegate))
   {
     objc_loadWeak(&self->_seekDelegate);
     if (objc_opt_respondsToSelector())
     {
-      v5 = [(AVPlayerItemIntegratedTimeline *)self currentSnapshot];
+      currentSnapshot = [(AVPlayerItemIntegratedTimeline *)self currentSnapshot];
       Weak = objc_loadWeak(&self->_seekDelegate);
-      if (v5)
+      if (currentSnapshot)
       {
-        [(AVPlayerItemIntegratedTimelineSnapshot *)v5 currentTime];
+        [(AVPlayerItemIntegratedTimelineSnapshot *)currentSnapshot currentTime];
       }
 
       else
@@ -447,8 +447,8 @@ LABEL_21:
         memset(v9, 0, sizeof(v9));
       }
 
-      v7 = *&a3->var0;
-      var3 = a3->var3;
+      v7 = *&necessary->var0;
+      var3 = necessary->var3;
       [Weak integratedTimeline:self willSeekToTime:&v7 currentTime:v9];
     }
   }
@@ -457,13 +457,13 @@ LABEL_21:
 - (BOOL)_shouldDeferSeekToDelegate
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(AVPlayerItemIntegratedTimelineSnapshot *)[(AVPlayerItemIntegratedTimeline *)self currentSnapshot] segments];
-  v4 = [(NSArray *)v3 count];
+  segments = [(AVPlayerItemIntegratedTimelineSnapshot *)[(AVPlayerItemIntegratedTimeline *)self currentSnapshot] segments];
+  v4 = [(NSArray *)segments count];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(NSArray *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [(NSArray *)segments countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -474,18 +474,18 @@ LABEL_21:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(segments);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) interstitialEvent];
-        if (v9 && [v9 timelineOccupancy])
+        interstitialEvent = [*(*(&v13 + 1) + 8 * i) interstitialEvent];
+        if (interstitialEvent && [interstitialEvent timelineOccupancy])
         {
           v10 = 1;
           goto LABEL_12;
         }
       }
 
-      v6 = [(NSArray *)v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [(NSArray *)segments countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -507,9 +507,9 @@ LABEL_12:
   return Weak;
 }
 
-- (int)_deferOrIssueSeekOnFigTimelineForID:(int)a3 time:(id *)a4 toleranceBefore:(id *)a5 toleranceAfter:(id *)a6 options:(__CFDictionary *)a7
+- (int)_deferOrIssueSeekOnFigTimelineForID:(int)d time:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after options:(__CFDictionary *)options
 {
-  v11 = *&a3;
+  v11 = *&d;
   v28 = *MEMORY[0x1E69E9840];
   if ([(AVPlayerItemIntegratedTimeline *)self _shouldDeferSeekToDelegate])
   {
@@ -522,26 +522,26 @@ LABEL_12:
     }
 
     Weak = objc_loadWeak(&self->_seekDelegate);
-    time = *a4;
-    v25 = *&a5->var0;
-    var3 = a5->var3;
-    v23 = *&a6->var0;
-    v24 = a6->var3;
+    time = *time;
+    v25 = *&before->var0;
+    var3 = before->var3;
+    v23 = *&after->var0;
+    v24 = after->var3;
     [Weak integratedTimeline:self didRequestSeekToTime:&time seekID:v11 toleranceBefore:&v25 toleranceAfter:&v23];
     return 0;
   }
 
   else
   {
-    time = *a4;
+    time = *time;
     [(AVPlayerItemIntegratedTimeline *)self _informDelegateOfSeekForTimeIfNecessary:&time];
     figTimeline = self->_figTimeline;
-    *&type.value = *&a4->var0;
-    type.epoch = a4->var3;
-    v20 = *&a5->var0;
-    v21 = a5->var3;
-    v18 = *&a6->var0;
-    v19 = a6->var3;
+    *&type.value = *&time->var0;
+    type.epoch = time->var3;
+    v20 = *&before->var0;
+    v21 = before->var3;
+    v18 = *&after->var0;
+    v19 = after->var3;
     v15 = *(*(CMBaseObjectGetVTable() + 16) + 32);
     if (v15)
     {
@@ -550,7 +550,7 @@ LABEL_12:
       var3 = v21;
       v23 = v18;
       v24 = v19;
-      return v15(figTimeline, v11, &time, &v25, &v23, a7);
+      return v15(figTimeline, v11, &time, &v25, &v23, options);
     }
 
     else
@@ -648,22 +648,22 @@ LABEL_16:
   }
 }
 
-- (void)_setInitialSeekState:(int)a3 time:(id *)a4 date:(id)a5 toleranceBefore:(id *)a6 toleranceAfter:(id *)a7 options:(__CFDictionary *)a8
+- (void)_setInitialSeekState:(int)state time:(id *)time date:(id)date toleranceBefore:(id *)before toleranceAfter:(id *)after options:(__CFDictionary *)options
 {
-  MutableCopy = CFDictionaryCreateMutableCopy(*MEMORY[0x1E695E480], 0, a8);
+  MutableCopy = CFDictionaryCreateMutableCopy(*MEMORY[0x1E695E480], 0, options);
   FigCFDictionarySetBoolean();
   FigSimpleMutexLock();
-  self->_initialSeekID = a3;
-  var3 = a4->var3;
-  *(&self->_initialSeekID + 1) = *&a4->var0;
+  self->_initialSeekID = state;
+  var3 = time->var3;
+  *(&self->_initialSeekID + 1) = *&time->var0;
   *&self->_initialTime.flags = var3;
-  v16 = *&a7->var0;
-  self->_initialToleranceAfter.epoch = a7->var3;
+  v16 = *&after->var0;
+  self->_initialToleranceAfter.epoch = after->var3;
   *&self->_initialToleranceAfter.value = v16;
-  v17 = *&a6->var0;
-  self->_initialToleranceBefore.epoch = a6->var3;
+  v17 = *&before->var0;
+  self->_initialToleranceBefore.epoch = before->var3;
   *&self->_initialToleranceBefore.value = v17;
-  self->_initialDate = a5;
+  self->_initialDate = date;
   self->_initialOptions = MutableCopy;
 
   FigSimpleMutexUnlock();
@@ -678,38 +678,38 @@ LABEL_16:
   [(AVPlayerItemIntegratedTimeline *)self _unregisterInvokeAndReleasePendingSeekCompletionHandlerForSeekID:pendingSeekID finished:0];
 }
 
-- (void)_seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 options:(__CFDictionary *)a6 completionHandler:(id)a7
+- (void)_seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after options:(__CFDictionary *)options completionHandler:(id)handler
 {
-  v13 = [(AVPlayerItemIntegratedTimeline *)self _createSeekID];
+  _createSeekID = [(AVPlayerItemIntegratedTimeline *)self _createSeekID];
   v14 = [(NSArray *)[(AVPlayerItemIntegratedTimelineSnapshot *)[(AVPlayerItemIntegratedTimeline *)self currentSnapshot] segments] count];
-  v19 = *a3;
-  [(AVPlayerItemIntegratedTimeline *)self _cancelPendingSeekAndRegisterSeekID:v13 seekTime:&v19 withCompletionHandler:a7];
+  v19 = *time;
+  [(AVPlayerItemIntegratedTimeline *)self _cancelPendingSeekAndRegisterSeekID:_createSeekID seekTime:&v19 withCompletionHandler:handler];
   if (self->_figTimeline && v14)
   {
-    [(AVPlayerItemIntegratedTimeline *)self _resetPlaybackCoordinatorTimelineExpectations:a6];
-    v19 = *a3;
-    v17 = *&a4->var0;
-    var3 = a4->var3;
-    v15 = *&a5->var0;
-    v16 = a5->var3;
-    if ([(AVPlayerItemIntegratedTimeline *)self _deferOrIssueSeekOnFigTimelineForID:v13 time:&v19 toleranceBefore:&v17 toleranceAfter:&v15 options:a6])
+    [(AVPlayerItemIntegratedTimeline *)self _resetPlaybackCoordinatorTimelineExpectations:options];
+    v19 = *time;
+    v17 = *&before->var0;
+    var3 = before->var3;
+    v15 = *&after->var0;
+    v16 = after->var3;
+    if ([(AVPlayerItemIntegratedTimeline *)self _deferOrIssueSeekOnFigTimelineForID:_createSeekID time:&v19 toleranceBefore:&v17 toleranceAfter:&v15 options:options])
     {
-      [(AVPlayerItemIntegratedTimeline *)self _unregisterInvokeAndReleasePendingSeekCompletionHandlerForSeekID:v13 finished:0];
+      [(AVPlayerItemIntegratedTimeline *)self _unregisterInvokeAndReleasePendingSeekCompletionHandlerForSeekID:_createSeekID finished:0];
     }
   }
 
   else
   {
-    v19 = *a3;
-    v17 = *&a4->var0;
-    var3 = a4->var3;
-    v15 = *&a5->var0;
-    v16 = a5->var3;
-    [(AVPlayerItemIntegratedTimeline *)self _setInitialSeekState:v13 time:&v19 date:0 toleranceBefore:&v17 toleranceAfter:&v15 options:a6];
+    v19 = *time;
+    v17 = *&before->var0;
+    var3 = before->var3;
+    v15 = *&after->var0;
+    v16 = after->var3;
+    [(AVPlayerItemIntegratedTimeline *)self _setInitialSeekState:_createSeekID time:&v19 date:0 toleranceBefore:&v17 toleranceAfter:&v15 options:options];
   }
 }
 
-- (void)seekToTime:(id *)a3 toleranceBefore:(id *)a4 toleranceAfter:(id *)a5 completionHandler:(id)a6
+- (void)seekToTime:(id *)time toleranceBefore:(id *)before toleranceAfter:(id *)after completionHandler:(id)handler
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v16[0] = *MEMORY[0x1E6972C98];
@@ -718,29 +718,29 @@ LABEL_16:
   v17[0] = v11;
   v17[1] = &unk_1F0AD3538;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
-  v15 = *a3;
-  v14 = *a4;
-  v13 = *a5;
-  [(AVPlayerItemIntegratedTimeline *)self _seekToTime:&v15 toleranceBefore:&v14 toleranceAfter:&v13 options:v12 completionHandler:a6];
+  v15 = *time;
+  v14 = *before;
+  v13 = *after;
+  [(AVPlayerItemIntegratedTimeline *)self _seekToTime:&v15 toleranceBefore:&v14 toleranceAfter:&v13 options:v12 completionHandler:handler];
 }
 
-- (void)_seekToDate:(id)a3 options:(__CFDictionary *)a4 completionHandler:(id)a5
+- (void)_seekToDate:(id)date options:(__CFDictionary *)options completionHandler:(id)handler
 {
-  v9 = [(AVPlayerItemIntegratedTimeline *)self _createSeekID];
+  _createSeekID = [(AVPlayerItemIntegratedTimeline *)self _createSeekID];
   v10 = [(NSArray *)[(AVPlayerItemIntegratedTimelineSnapshot *)[(AVPlayerItemIntegratedTimeline *)self currentSnapshot] segments] count];
   v14 = *MEMORY[0x1E6960C70];
   v19 = *MEMORY[0x1E6960C70];
   v11 = *(MEMORY[0x1E6960C70] + 16);
   v20 = v11;
-  [(AVPlayerItemIntegratedTimeline *)self _cancelPendingSeekAndRegisterSeekID:v9 seekTime:&v19 withCompletionHandler:a5];
+  [(AVPlayerItemIntegratedTimeline *)self _cancelPendingSeekAndRegisterSeekID:_createSeekID seekTime:&v19 withCompletionHandler:handler];
   if (self->_figTimeline && v10)
   {
-    [(AVPlayerItemIntegratedTimeline *)self _resetPlaybackCoordinatorTimelineExpectations:a4];
+    [(AVPlayerItemIntegratedTimeline *)self _resetPlaybackCoordinatorTimelineExpectations:options];
     figTimeline = self->_figTimeline;
     v13 = *(*(CMBaseObjectGetVTable() + 16) + 40);
-    if (!v13 || v13(figTimeline, v9, a3, a4))
+    if (!v13 || v13(figTimeline, _createSeekID, date, options))
     {
-      [(AVPlayerItemIntegratedTimeline *)self _unregisterInvokeAndReleasePendingSeekCompletionHandlerForSeekID:v9 finished:0];
+      [(AVPlayerItemIntegratedTimeline *)self _unregisterInvokeAndReleasePendingSeekCompletionHandlerForSeekID:_createSeekID finished:0];
     }
   }
 
@@ -752,11 +752,11 @@ LABEL_16:
     v18 = v11;
     v15 = v14;
     v16 = v11;
-    [(AVPlayerItemIntegratedTimeline *)self _setInitialSeekState:v9 time:&v19 date:a3 toleranceBefore:&v17 toleranceAfter:&v15 options:a4];
+    [(AVPlayerItemIntegratedTimeline *)self _setInitialSeekState:_createSeekID time:&v19 date:date toleranceBefore:&v17 toleranceAfter:&v15 options:options];
   }
 }
 
-- (void)seekToDate:(id)a3 completionHandler:(id)a4
+- (void)seekToDate:(id)date completionHandler:(id)handler
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = *MEMORY[0x1E6972C98];
@@ -764,10 +764,10 @@ LABEL_16:
   v8[1] = *MEMORY[0x1E6972C90];
   v9[0] = v7;
   v9[1] = &unk_1F0AD3538;
-  -[AVPlayerItemIntegratedTimeline _seekToDate:options:completionHandler:](self, "_seekToDate:options:completionHandler:", a3, [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2], a4);
+  -[AVPlayerItemIntegratedTimeline _seekToDate:options:completionHandler:](self, "_seekToDate:options:completionHandler:", date, [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2], handler);
 }
 
-- (void)_resetPlaybackCoordinatorTimelineExpectations:(__CFDictionary *)a3
+- (void)_resetPlaybackCoordinatorTimelineExpectations:(__CFDictionary *)expectations
 {
   v4 = [-[AVWeakReference referencedObject](self->_weakReferenceToPrimaryItem "referencedObject")];
   [v4 _playbackCoordinatorWithoutTriggeringFullSetup];
@@ -791,18 +791,18 @@ LABEL_16:
 {
   v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   weakReference = self->_weakReference;
-  v5 = [(AVWeakReference *)self->_weakReferenceToInterstitialPlayer referencedObject];
+  referencedObject = [(AVWeakReference *)self->_weakReferenceToInterstitialPlayer referencedObject];
 
-  [v3 addListenerWithWeakReference:weakReference callback:avitemintegratedtimeline_interstitialPlayer_fpNotificationCallback name:@"AVPlayerCurrentItemDidChangeNotification" object:v5 flags:0];
+  [v3 addListenerWithWeakReference:weakReference callback:avitemintegratedtimeline_interstitialPlayer_fpNotificationCallback name:@"AVPlayerCurrentItemDidChangeNotification" object:referencedObject flags:0];
 }
 
 - (void)_removeInterstitialPlayerListeners
 {
   v3 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
   weakReference = self->_weakReference;
-  v5 = [(AVWeakReference *)self->_weakReferenceToInterstitialPlayer referencedObject];
+  referencedObject = [(AVWeakReference *)self->_weakReferenceToInterstitialPlayer referencedObject];
 
-  [v3 removeListenerWithWeakReference:weakReference callback:avitemintegratedtimeline_interstitialPlayer_fpNotificationCallback name:@"AVPlayerCurrentItemDidChangeNotification" object:v5];
+  [v3 removeListenerWithWeakReference:weakReference callback:avitemintegratedtimeline_interstitialPlayer_fpNotificationCallback name:@"AVPlayerCurrentItemDidChangeNotification" object:referencedObject];
 }
 
 - (void)_removeListeners
@@ -821,13 +821,13 @@ LABEL_16:
   }
 }
 
-- (id)_currentItemForSegmentType:(int64_t)a3
+- (id)_currentItemForSegmentType:(int64_t)type
 {
-  if (a3)
+  if (type)
   {
-    v4 = [(AVPlayerItemIntegratedTimeline *)self _interstitialPlayer];
+    _interstitialPlayer = [(AVPlayerItemIntegratedTimeline *)self _interstitialPlayer];
 
-    return [v4 currentItem];
+    return [_interstitialPlayer currentItem];
   }
 
   else
@@ -839,16 +839,16 @@ LABEL_16:
 
 - (id)_currentItemForCurrentSegment
 {
-  v3 = [(AVPlayerItemIntegratedTimeline *)self _currentSegmentTypeOfCurrentSnapshot];
+  _currentSegmentTypeOfCurrentSnapshot = [(AVPlayerItemIntegratedTimeline *)self _currentSegmentTypeOfCurrentSnapshot];
 
-  return [(AVPlayerItemIntegratedTimeline *)self _currentItemForSegmentType:v3];
+  return [(AVPlayerItemIntegratedTimeline *)self _currentItemForSegmentType:_currentSegmentTypeOfCurrentSnapshot];
 }
 
-- (id)addPeriodicTimeObserverForInterval:(id *)a3 queue:(id)a4 usingBlock:(id)a5
+- (id)addPeriodicTimeObserverForInterval:(id *)interval queue:(id)queue usingBlock:(id)block
 {
   v9 = [AVPlayerItemIntegratedTimelinePeriodicObserver alloc];
-  v14 = *a3;
-  v10 = [(AVPlayerItemIntegratedTimelinePeriodicObserver *)v9 initWithInterval:&v14 queue:a4 block:a5 integratedTimeline:self];
+  v14 = *interval;
+  v10 = [(AVPlayerItemIntegratedTimelinePeriodicObserver *)v9 initWithInterval:&v14 queue:queue block:block integratedTimeline:self];
   [(AVPlayerItemIntegratedTimelinePeriodicObserver *)v10 rescheduleObserverWithSnapshot:[(AVPlayerItemIntegratedTimeline *)self currentSnapshot] itemToSchedule:[(AVPlayerItemIntegratedTimeline *)self _currentItemForCurrentSegment]];
   stateQueue = self->_stateQueue;
   v13[0] = MEMORY[0x1E69E9820];
@@ -861,10 +861,10 @@ LABEL_16:
   return v10;
 }
 
-- (id)addBoundaryTimeObserverForSegment:(id)a3 offsetsIntoSegment:(id)a4 queue:(id)a5 usingBlock:(id)a6
+- (id)addBoundaryTimeObserverForSegment:(id)segment offsetsIntoSegment:(id)intoSegment queue:(id)queue usingBlock:(id)block
 {
-  v8 = [[AVPlayerItemIntegratedTimelineBoundaryObserver alloc] initWithSegment:a3 offsetTimes:a4 queue:a5 block:a6];
-  -[AVPlayerItemIntegratedTimelineBoundaryObserver rescheduleObserverWithSnapshot:itemToSchedule:](v8, "rescheduleObserverWithSnapshot:itemToSchedule:", -[AVPlayerItemIntegratedTimeline currentSnapshot](self, "currentSnapshot"), -[AVPlayerItemIntegratedTimeline _currentItemForSegmentType:](self, "_currentItemForSegmentType:", [a3 segmentType]));
+  v8 = [[AVPlayerItemIntegratedTimelineBoundaryObserver alloc] initWithSegment:segment offsetTimes:intoSegment queue:queue block:block];
+  -[AVPlayerItemIntegratedTimelineBoundaryObserver rescheduleObserverWithSnapshot:itemToSchedule:](v8, "rescheduleObserverWithSnapshot:itemToSchedule:", -[AVPlayerItemIntegratedTimeline currentSnapshot](self, "currentSnapshot"), -[AVPlayerItemIntegratedTimeline _currentItemForSegmentType:](self, "_currentItemForSegmentType:", [segment segmentType]));
   stateQueue = self->_stateQueue;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -876,7 +876,7 @@ LABEL_16:
   return v8;
 }
 
-- (void)removeTimeObserver:(id)a3
+- (void)removeTimeObserver:(id)observer
 {
   stateQueue = self->_stateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -884,7 +884,7 @@ LABEL_16:
   v4[2] = __93__AVPlayerItemIntegratedTimeline_AVPlayerItemIntegratedTimelineObserver__removeTimeObserver___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = observer;
   dispatch_sync(stateQueue, v4);
 }
 

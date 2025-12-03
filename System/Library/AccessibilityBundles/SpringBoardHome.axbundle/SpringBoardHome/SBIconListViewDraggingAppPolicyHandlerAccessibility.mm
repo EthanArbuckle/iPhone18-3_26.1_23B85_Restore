@@ -1,36 +1,36 @@
 @interface SBIconListViewDraggingAppPolicyHandlerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (Class)_accessibilityIconViewclass;
-- (id)_accessibilityFindIconIntersectingDraggedIconForDropSession:(id)a3;
+- (id)_accessibilityFindIconIntersectingDraggedIconForDropSession:(id)session;
 - (id)_axCurrentIconListView;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4;
-- (void)handleSpringLoadOnIconView:(id)a3;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end;
+- (void)handleSpringLoadOnIconView:(id)view;
 @end
 
 @implementation SBIconListViewDraggingAppPolicyHandlerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIconListViewDraggingAppPolicyHandler" hasInstanceMethod:@"draggingDestinationDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListViewDraggingDestinationDelegate" hasInstanceMethod:@"iconListView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconListViewDraggingAppPolicyHandler" hasInstanceMethod:@"handleSpringLoadOnIconView:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBIconListViewDraggingDestinationDelegate" hasInstanceMethod:@"targetItemForSpringLoadingInteractionInView:atLocation:forDropSession:" withFullSignature:{"@", "@", "{CGPoint=dd}", "@", 0}];
-  [v3 validateClass:@"SBIconListViewDraggingAppPolicyHandler" hasInstanceMethod:@"dropInteraction:sessionDidEnd:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"SBIconListViewDraggingAppPolicyHandler" hasInstanceMethod:@"dropInteraction:performDrop:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"SBIconView" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconView"];
-  [v3 validateClass:@"SBIconView" hasClassMethod:@"defaultIconImageSize" withFullSignature:{"{CGSize=dd}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIconListViewDraggingAppPolicyHandler" hasInstanceMethod:@"draggingDestinationDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListViewDraggingDestinationDelegate" hasInstanceMethod:@"iconListView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconListViewDraggingAppPolicyHandler" hasInstanceMethod:@"handleSpringLoadOnIconView:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBIconListViewDraggingDestinationDelegate" hasInstanceMethod:@"targetItemForSpringLoadingInteractionInView:atLocation:forDropSession:" withFullSignature:{"@", "@", "{CGPoint=dd}", "@", 0}];
+  [validationsCopy validateClass:@"SBIconListViewDraggingAppPolicyHandler" hasInstanceMethod:@"dropInteraction:sessionDidEnd:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconListViewDraggingAppPolicyHandler" hasInstanceMethod:@"dropInteraction:performDrop:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceMethod:@"icon" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconView"];
+  [validationsCopy validateClass:@"SBIconView" hasClassMethod:@"defaultIconImageSize" withFullSignature:{"{CGSize=dd}", 0}];
 }
 
-- (void)handleSpringLoadOnIconView:(id)a3
+- (void)handleSpringLoadOnIconView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     [SBAXIconFolderOpeningTimer invalidate];
-    objc_initWeak(&location, v4);
+    objc_initWeak(&location, viewCopy);
     v5 = MEMORY[0x29EDB8E68];
     v9[0] = MEMORY[0x29EDCA5F8];
     v9[1] = 3221225472;
@@ -50,7 +50,7 @@
   {
     v8.receiver = self;
     v8.super_class = SBIconListViewDraggingAppPolicyHandlerAccessibility;
-    [(SBIconListViewDraggingAppPolicyHandlerAccessibility *)&v8 handleSpringLoadOnIconView:v4];
+    [(SBIconListViewDraggingAppPolicyHandlerAccessibility *)&v8 handleSpringLoadOnIconView:viewCopy];
   }
 }
 
@@ -73,12 +73,12 @@ void __82__SBIconListViewDraggingAppPolicyHandlerAccessibility_handleSpringLoadO
   return v3;
 }
 
-- (id)_accessibilityFindIconIntersectingDraggedIconForDropSession:(id)a3
+- (id)_accessibilityFindIconIntersectingDraggedIconForDropSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(SBIconListViewDraggingAppPolicyHandlerAccessibility *)self safeValueForKey:@"draggingDestinationDelegate"];
-  v6 = [(SBIconListViewDraggingAppPolicyHandlerAccessibility *)self _axCurrentIconListView];
-  [v4 locationInView:v6];
+  _axCurrentIconListView = [(SBIconListViewDraggingAppPolicyHandlerAccessibility *)self _axCurrentIconListView];
+  [sessionCopy locationInView:_axCurrentIconListView];
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
@@ -87,8 +87,8 @@ void __82__SBIconListViewDraggingAppPolicyHandlerAccessibility_handleSpringLoadO
   v19 = 0;
   v10 = MEMORY[0x29EDCA5F8];
   v11 = v5;
-  v12 = v6;
-  v13 = v4;
+  v12 = _axCurrentIconListView;
+  v13 = sessionCopy;
   AXPerformSafeBlock();
   v7 = v15[5];
 
@@ -105,19 +105,19 @@ uint64_t __115__SBIconListViewDraggingAppPolicyHandlerAccessibility__accessibili
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)dropInteraction:(id)a3 sessionDidEnd:(id)a4
+- (void)dropInteraction:(id)interaction sessionDidEnd:(id)end
 {
   v4.receiver = self;
   v4.super_class = SBIconListViewDraggingAppPolicyHandlerAccessibility;
-  [(SBIconListViewDraggingAppPolicyHandlerAccessibility *)&v4 dropInteraction:a3 sessionDidEnd:a4];
+  [(SBIconListViewDraggingAppPolicyHandlerAccessibility *)&v4 dropInteraction:interaction sessionDidEnd:end];
   SBAXPerformingAXDrag = 0;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v4.receiver = self;
   v4.super_class = SBIconListViewDraggingAppPolicyHandlerAccessibility;
-  [(SBIconListViewDraggingAppPolicyHandlerAccessibility *)&v4 dropInteraction:a3 performDrop:a4];
+  [(SBIconListViewDraggingAppPolicyHandlerAccessibility *)&v4 dropInteraction:interaction performDrop:drop];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 

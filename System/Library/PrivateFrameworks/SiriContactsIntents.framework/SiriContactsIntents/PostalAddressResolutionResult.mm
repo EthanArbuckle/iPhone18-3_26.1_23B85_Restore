@@ -1,24 +1,24 @@
 @interface PostalAddressResolutionResult
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3;
-+ (id)confirmationRequiredWithPostalAddressToConfirm:(id)a3;
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3;
-+ (id)disambiguationWithPostalAddresssToDisambiguate:(id)a3;
-+ (id)successWithResolvedObject:(id)a3;
-+ (id)successWithResolvedPostalAddress:(id)a3;
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm;
++ (id)confirmationRequiredWithPostalAddressToConfirm:(id)confirm;
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate;
++ (id)disambiguationWithPostalAddresssToDisambiguate:(id)disambiguate;
++ (id)successWithResolvedObject:(id)object;
++ (id)successWithResolvedPostalAddress:(id)address;
 @end
 
 @implementation PostalAddressResolutionResult
 
-+ (id)successWithResolvedPostalAddress:(id)a3
++ (id)successWithResolvedPostalAddress:(id)address
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static PostalAddressResolutionResult.success(with:)(v4);
+  addressCopy = address;
+  v5 = static PostalAddressResolutionResult.success(with:)(addressCopy);
 
   return v5;
 }
 
-+ (id)disambiguationWithPostalAddresssToDisambiguate:(id)a3
++ (id)disambiguationWithPostalAddresssToDisambiguate:(id)disambiguate
 {
   type metadata accessor for PostalAddress();
   v3 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -28,23 +28,23 @@
   return v4;
 }
 
-+ (id)confirmationRequiredWithPostalAddressToConfirm:(id)a3
++ (id)confirmationRequiredWithPostalAddressToConfirm:(id)confirm
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static PostalAddressResolutionResult.confirmationRequired(with:)(a3);
+  confirmCopy = confirm;
+  v5 = static PostalAddressResolutionResult.confirmationRequired(with:)(confirm);
 
   return v5;
 }
 
-+ (id)successWithResolvedObject:(id)a3
++ (id)successWithResolvedObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   static PostalAddressResolutionResult.success(with:)();
   return static PostalAddressResolutionResult.disambiguation(with:)();
 }
 
-+ (id)disambiguationWithObjectsToDisambiguate:(id)a3
++ (id)disambiguationWithObjectsToDisambiguate:(id)disambiguate
 {
   type metadata accessor for INObject();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -52,9 +52,9 @@
   return static PostalAddressResolutionResult.confirmationRequired(with:)();
 }
 
-+ (id)confirmationRequiredWithObjectToConfirm:(id)a3
++ (id)confirmationRequiredWithObjectToConfirm:(id)confirm
 {
-  v3 = a3;
+  confirmCopy = confirm;
   static PostalAddressResolutionResult.confirmationRequired(with:)();
   return PostalAddressResolutionResult.__allocating_init(JSONDictionary:intent:)();
 }

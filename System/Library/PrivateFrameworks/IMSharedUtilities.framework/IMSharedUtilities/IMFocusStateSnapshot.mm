@@ -1,17 +1,17 @@
 @interface IMFocusStateSnapshot
-+ (id)_dndContactHandleForAddress:(id)a3;
-- (BOOL)_overlapsConversationWithHandles:(id)a3;
-- (BOOL)matchesConversationWithHandleStrings:(id)a3;
-- (BOOL)matchesConversationWithHandles:(id)a3;
-- (IMFocusStateSnapshot)initWithConfiguration:(id)a3;
++ (id)_dndContactHandleForAddress:(id)address;
+- (BOOL)_overlapsConversationWithHandles:(id)handles;
+- (BOOL)matchesConversationWithHandleStrings:(id)strings;
+- (BOOL)matchesConversationWithHandles:(id)handles;
+- (IMFocusStateSnapshot)initWithConfiguration:(id)configuration;
 @end
 
 @implementation IMFocusStateSnapshot
 
-- (IMFocusStateSnapshot)initWithConfiguration:(id)a3
+- (IMFocusStateSnapshot)initWithConfiguration:(id)configuration
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v53.receiver = self;
   v53.super_class = IMFocusStateSnapshot;
   v5 = [(IMFocusStateSnapshot *)&v53 init];
@@ -20,31 +20,31 @@
     goto LABEL_35;
   }
 
-  v5->_configurationType = [v4 senderConfigurationType];
+  v5->_configurationType = [configurationCopy senderConfigurationType];
   v39 = [MEMORY[0x1E695DFA8] set];
   v6 = [MEMORY[0x1E695DFA8] set];
-  v7 = [v4 senderConfigurationType];
+  senderConfigurationType = [configurationCopy senderConfigurationType];
   v36 = v5;
-  v37 = v4;
-  if (v7)
+  v37 = configurationCopy;
+  if (senderConfigurationType)
   {
-    if (v7 != 1)
+    if (senderConfigurationType != 1)
     {
       v10 = 0;
       goto LABEL_8;
     }
 
-    v8 = [v4 senderConfiguration];
-    v9 = [v8 deniedContacts];
+    senderConfiguration = [configurationCopy senderConfiguration];
+    deniedContacts = [senderConfiguration deniedContacts];
   }
 
   else
   {
-    v8 = [v4 senderConfiguration];
-    v9 = [v8 allowedContacts];
+    senderConfiguration = [configurationCopy senderConfiguration];
+    deniedContacts = [senderConfiguration allowedContacts];
   }
 
-  v10 = v9;
+  v10 = deniedContacts;
 
 LABEL_8:
   v51 = 0u;
@@ -67,20 +67,20 @@ LABEL_8:
         }
 
         v14 = *(*(&v49 + 1) + 8 * i);
-        v15 = [v14 contactIdentifier];
+        contactIdentifier = [v14 contactIdentifier];
 
-        if (v15)
+        if (contactIdentifier)
         {
-          v16 = [v14 contactIdentifier];
-          [v39 addObject:v16];
+          contactIdentifier2 = [v14 contactIdentifier];
+          [v39 addObject:contactIdentifier2];
         }
 
         v47 = 0u;
         v48 = 0u;
         v45 = 0u;
         v46 = 0u;
-        v17 = [v14 phoneNumbers];
-        v18 = [v17 countByEnumeratingWithState:&v45 objects:v55 count:16];
+        phoneNumbers = [v14 phoneNumbers];
+        v18 = [phoneNumbers countByEnumeratingWithState:&v45 objects:v55 count:16];
         if (v18)
         {
           v19 = v18;
@@ -91,7 +91,7 @@ LABEL_8:
             {
               if (*v46 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(phoneNumbers);
               }
 
               v22 = *(*(&v45 + 1) + 8 * j);
@@ -110,7 +110,7 @@ LABEL_8:
               [v6 addObject:v25];
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v45 objects:v55 count:16];
+            v19 = [phoneNumbers countByEnumeratingWithState:&v45 objects:v55 count:16];
           }
 
           while (v19);
@@ -120,8 +120,8 @@ LABEL_8:
         v44 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v26 = [v14 emailAddresses];
-        v27 = [v26 countByEnumeratingWithState:&v41 objects:v54 count:16];
+        emailAddresses = [v14 emailAddresses];
+        v27 = [emailAddresses countByEnumeratingWithState:&v41 objects:v54 count:16];
         if (v27)
         {
           v28 = v27;
@@ -132,13 +132,13 @@ LABEL_8:
             {
               if (*v42 != v29)
               {
-                objc_enumerationMutation(v26);
+                objc_enumerationMutation(emailAddresses);
               }
 
               [v6 addObject:*(*(&v41 + 1) + 8 * k)];
             }
 
-            v28 = [v26 countByEnumeratingWithState:&v41 objects:v54 count:16];
+            v28 = [emailAddresses countByEnumeratingWithState:&v41 objects:v54 count:16];
           }
 
           while (v28);
@@ -160,16 +160,16 @@ LABEL_8:
   handles = v36->_handles;
   v36->_handles = v33;
 
-  v4 = v37;
+  configurationCopy = v37;
 LABEL_35:
 
   return v5;
 }
 
-+ (id)_dndContactHandleForAddress:(id)a3
++ (id)_dndContactHandleForAddress:(id)address
 {
-  v3 = a3;
-  if ([v3 _appearsToBeEmail])
+  addressCopy = address;
+  if ([addressCopy _appearsToBeEmail])
   {
     v4 = 1;
   }
@@ -180,7 +180,7 @@ LABEL_35:
   }
 
   v5 = objc_alloc_init(MEMORY[0x1AC570AA0](@"DNDMutableContactHandle", @"DoNotDisturb"));
-  [v5 setValue:v3];
+  [v5 setValue:addressCopy];
 
   [v5 setType:v4];
   v6 = [v5 copy];
@@ -188,16 +188,16 @@ LABEL_35:
   return v6;
 }
 
-- (BOOL)matchesConversationWithHandleStrings:(id)a3
+- (BOOL)matchesConversationWithHandleStrings:(id)strings
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  stringsCopy = strings;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(stringsCopy, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = stringsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -230,18 +230,18 @@ LABEL_35:
   return v12;
 }
 
-- (BOOL)matchesConversationWithHandles:(id)a3
+- (BOOL)matchesConversationWithHandles:(id)handles
 {
-  v4 = a3;
-  v5 = [(IMFocusStateSnapshot *)self configurationType];
-  if (v5 == 1)
+  handlesCopy = handles;
+  configurationType = [(IMFocusStateSnapshot *)self configurationType];
+  if (configurationType == 1)
   {
-    v8 = [(IMFocusStateSnapshot *)self handles];
-    v9 = [v8 count];
+    handles = [(IMFocusStateSnapshot *)self handles];
+    v9 = [handles count];
 
     if (v9)
     {
-      LODWORD(self) = ![(IMFocusStateSnapshot *)self _overlapsConversationWithHandles:v4];
+      LODWORD(self) = ![(IMFocusStateSnapshot *)self _overlapsConversationWithHandles:handlesCopy];
       goto LABEL_9;
     }
 
@@ -250,17 +250,17 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  if (v5)
+  if (configurationType)
   {
     goto LABEL_7;
   }
 
-  v6 = [(IMFocusStateSnapshot *)self handles];
-  v7 = [v6 count];
+  handles2 = [(IMFocusStateSnapshot *)self handles];
+  v7 = [handles2 count];
 
   if (v7)
   {
-    LOBYTE(self) = [(IMFocusStateSnapshot *)self _overlapsConversationWithHandles:v4];
+    LOBYTE(self) = [(IMFocusStateSnapshot *)self _overlapsConversationWithHandles:handlesCopy];
   }
 
   else
@@ -273,15 +273,15 @@ LABEL_9:
   return self;
 }
 
-- (BOOL)_overlapsConversationWithHandles:(id)a3
+- (BOOL)_overlapsConversationWithHandles:(id)handles
 {
   v25 = *MEMORY[0x1E69E9840];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  handlesCopy = handles;
+  v5 = [handlesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -292,16 +292,16 @@ LABEL_9:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(handlesCopy);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
-        v10 = [v9 contactIdentifier];
-        if (!v10 || (v11 = v10, -[IMFocusStateSnapshot contactIdentifiers](self, "contactIdentifiers"), v12 = objc_claimAutoreleasedReturnValue(), [v9 contactIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "containsObject:", v13), v13, v12, v11, (v14 & 1) == 0))
+        contactIdentifier = [v9 contactIdentifier];
+        if (!contactIdentifier || (v11 = contactIdentifier, -[IMFocusStateSnapshot contactIdentifiers](self, "contactIdentifiers"), v12 = objc_claimAutoreleasedReturnValue(), [v9 contactIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v12, "containsObject:", v13), v13, v12, v11, (v14 & 1) == 0))
         {
-          v15 = [(IMFocusStateSnapshot *)self handles];
-          v16 = [v9 value];
-          v17 = [v15 containsObject:v16];
+          handles = [(IMFocusStateSnapshot *)self handles];
+          value = [v9 value];
+          v17 = [handles containsObject:value];
 
           if ((v17 & 1) == 0)
           {
@@ -313,7 +313,7 @@ LABEL_9:
         goto LABEL_14;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [handlesCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
       v18 = 0;
       if (v6)
       {

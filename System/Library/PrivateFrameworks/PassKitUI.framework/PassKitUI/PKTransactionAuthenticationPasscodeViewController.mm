@@ -1,36 +1,36 @@
 @interface PKTransactionAuthenticationPasscodeViewController
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result;
-- (PKTransactionAuthenticationPasscodeViewController)initWithPassUniqueIdentifier:(id)a3 transactionIdentifier:(id)a4 archivedAnalyticsSessionToken:(id)a5;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result;
+- (PKTransactionAuthenticationPasscodeViewController)initWithPassUniqueIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier archivedAnalyticsSessionToken:(id)token;
 - (PKTransactionAuthenticationPasscodeViewControllerDelegate)delegate;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_setRemoteVC:(id)a3 completion:(id)a4;
+- (void)_setRemoteVC:(id)c completion:(id)completion;
 - (void)dealloc;
 - (void)loadView;
 - (void)passcodeViewControllerDidCancel;
 - (void)passcodeViewControllerDidEndSessionExchange;
-- (void)passcodeViewControllerDidGenerateEncryptedPasscode:(id)a3;
-- (void)passcodeViewControllerRequestSessionExchangeTokenWithHandler:(id)a3;
-- (void)resetWithTransactionAuthenticationFailure:(int64_t)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)passcodeViewControllerDidGenerateEncryptedPasscode:(id)passcode;
+- (void)passcodeViewControllerRequestSessionExchangeTokenWithHandler:(id)handler;
+- (void)resetWithTransactionAuthenticationFailure:(int64_t)failure completion:(id)completion;
+- (void)setDelegate:(id)delegate;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKTransactionAuthenticationPasscodeViewController
 
-- (PKTransactionAuthenticationPasscodeViewController)initWithPassUniqueIdentifier:(id)a3 transactionIdentifier:(id)a4 archivedAnalyticsSessionToken:(id)a5
+- (PKTransactionAuthenticationPasscodeViewController)initWithPassUniqueIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier archivedAnalyticsSessionToken:(id)token
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  transactionIdentifierCopy = transactionIdentifier;
+  tokenCopy = token;
   v20.receiver = self;
   v20.super_class = PKTransactionAuthenticationPasscodeViewController;
   v12 = [(PKTransactionAuthenticationPasscodeViewController *)&v20 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_passUniqueIdentifier, a3);
-    objc_storeStrong(&v13->_transactionIdentifier, a4);
-    objc_storeStrong(&v13->_archivedAnalyticsSessionToken, a5);
+    objc_storeStrong(&v12->_passUniqueIdentifier, identifier);
+    objc_storeStrong(&v13->_transactionIdentifier, transactionIdentifier);
+    objc_storeStrong(&v13->_archivedAnalyticsSessionToken, token);
     v13->_delegateLock._os_unfair_lock_opaque = 0;
     objc_initWeak(&location, v13);
     [(PKTransactionAuthenticationPasscodeViewController *)v13 _beginDelayingPresentation:0 cancellationHandler:10.0];
@@ -104,7 +104,7 @@ void __134__PKTransactionAuthenticationPasscodeViewController_initWithPassUnique
   remoteVCRequest = self->_remoteVCRequest;
   if (remoteVCRequest)
   {
-    v4 = [(_UIAsyncInvocation *)remoteVCRequest invoke];
+    invoke = [(_UIAsyncInvocation *)remoteVCRequest invoke];
     v5 = self->_remoteVCRequest;
     self->_remoteVCRequest = 0;
   }
@@ -128,9 +128,9 @@ void __134__PKTransactionAuthenticationPasscodeViewController_initWithPassUnique
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)result
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)result
 {
-  if (self->_remoteVC != a3)
+  if (self->_remoteVC != container)
   {
     v7 = v4;
     v8 = v5;
@@ -147,9 +147,9 @@ void __134__PKTransactionAuthenticationPasscodeViewController_initWithPassUnique
   v5.receiver = self;
   v5.super_class = PKTransactionAuthenticationPasscodeViewController;
   [(PKTransactionAuthenticationPasscodeViewController *)&v5 loadView];
-  v3 = [(PKTransactionAuthenticationPasscodeViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKTransactionAuthenticationPasscodeViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
 - (void)viewWillLayoutSubviews
@@ -157,21 +157,21 @@ void __134__PKTransactionAuthenticationPasscodeViewController_initWithPassUnique
   v5.receiver = self;
   v5.super_class = PKTransactionAuthenticationPasscodeViewController;
   [(PKTransactionAuthenticationPasscodeViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(PKRemoteTransactionAuthenticationPasscodeViewController *)self->_remoteVC view];
-  v4 = [(PKTransactionAuthenticationPasscodeViewController *)self view];
-  [v4 bounds];
-  [v3 setFrame:?];
+  view = [(PKRemoteTransactionAuthenticationPasscodeViewController *)self->_remoteVC view];
+  view2 = [(PKTransactionAuthenticationPasscodeViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
-- (void)resetWithTransactionAuthenticationFailure:(int64_t)a3 completion:(id)a4
+- (void)resetWithTransactionAuthenticationFailure:(int64_t)failure completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   remoteVC = self->_remoteVC;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __106__PKTransactionAuthenticationPasscodeViewController_resetWithTransactionAuthenticationFailure_completion___block_invoke;
   v12[3] = &unk_1E8012C28;
-  v8 = v6;
+  v8 = completionCopy;
   v13 = v8;
   v9 = [(_UIRemoteViewController *)remoteVC serviceViewControllerProxyWithErrorHandler:v12];
   if (v9)
@@ -181,7 +181,7 @@ void __134__PKTransactionAuthenticationPasscodeViewController_initWithPassUnique
     v10[2] = __106__PKTransactionAuthenticationPasscodeViewController_resetWithTransactionAuthenticationFailure_completion___block_invoke_2;
     v10[3] = &unk_1E8010AD8;
     v11 = v8;
-    [v9 resetWithTransactionAuthenticationFailure:a3 completion:v10];
+    [v9 resetWithTransactionAuthenticationFailure:failure completion:v10];
   }
 
   else if (v8)
@@ -212,11 +212,11 @@ uint64_t __106__PKTransactionAuthenticationPasscodeViewController_resetWithTrans
   return result;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_delegateLock);
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->_delegateLock);
 }
@@ -230,44 +230,44 @@ uint64_t __106__PKTransactionAuthenticationPasscodeViewController_resetWithTrans
   return WeakRetained;
 }
 
-- (void)passcodeViewControllerRequestSessionExchangeTokenWithHandler:(id)a3
+- (void)passcodeViewControllerRequestSessionExchangeTokenWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PKTransactionAuthenticationPasscodeViewController *)self delegate];
-  [v5 passcodeViewController:self requestSessionExchangeTokenWithHandler:v4];
+  handlerCopy = handler;
+  delegate = [(PKTransactionAuthenticationPasscodeViewController *)self delegate];
+  [delegate passcodeViewController:self requestSessionExchangeTokenWithHandler:handlerCopy];
 }
 
 - (void)passcodeViewControllerDidEndSessionExchange
 {
-  v3 = [(PKTransactionAuthenticationPasscodeViewController *)self delegate];
-  [v3 passcodeViewControllerDidEndSessionExchange:self];
+  delegate = [(PKTransactionAuthenticationPasscodeViewController *)self delegate];
+  [delegate passcodeViewControllerDidEndSessionExchange:self];
 }
 
 - (void)passcodeViewControllerDidCancel
 {
-  v3 = [(PKTransactionAuthenticationPasscodeViewController *)self delegate];
-  [v3 passcodeViewControllerDidCancel:self];
+  delegate = [(PKTransactionAuthenticationPasscodeViewController *)self delegate];
+  [delegate passcodeViewControllerDidCancel:self];
 }
 
-- (void)passcodeViewControllerDidGenerateEncryptedPasscode:(id)a3
+- (void)passcodeViewControllerDidGenerateEncryptedPasscode:(id)passcode
 {
-  v4 = a3;
-  v5 = [(PKTransactionAuthenticationPasscodeViewController *)self delegate];
-  [v5 passcodeViewController:self didGenerateEncryptedPasscode:v4];
+  passcodeCopy = passcode;
+  delegate = [(PKTransactionAuthenticationPasscodeViewController *)self delegate];
+  [delegate passcodeViewController:self didGenerateEncryptedPasscode:passcodeCopy];
 }
 
-- (void)_setRemoteVC:(id)a3 completion:(id)a4
+- (void)_setRemoteVC:(id)c completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_remoteVC, a3);
+  cCopy = c;
+  completionCopy = completion;
+  objc_storeStrong(&self->_remoteVC, c);
   [(PKRemoteTransactionAuthenticationPasscodeViewController *)self->_remoteVC setDelegate:self];
   [(PKTransactionAuthenticationPasscodeViewController *)self addChildViewController:self->_remoteVC];
-  v9 = [(PKRemoteTransactionAuthenticationPasscodeViewController *)self->_remoteVC view];
-  v10 = [(PKTransactionAuthenticationPasscodeViewController *)self view];
-  [v10 addSubview:v9];
-  [v10 setNeedsLayout];
-  [v10 layoutIfNeeded];
+  view = [(PKRemoteTransactionAuthenticationPasscodeViewController *)self->_remoteVC view];
+  view2 = [(PKTransactionAuthenticationPasscodeViewController *)self view];
+  [view2 addSubview:view];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
   [(_UIRemoteViewController *)self->_remoteVC didMoveToParentViewController:self];
   [(PKTransactionAuthenticationPasscodeViewController *)self setNeedsStatusBarAppearanceUpdate];
   [(PKTransactionAuthenticationPasscodeViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
@@ -276,7 +276,7 @@ uint64_t __106__PKTransactionAuthenticationPasscodeViewController_resetWithTrans
   v19[1] = 3221225472;
   v19[2] = __77__PKTransactionAuthenticationPasscodeViewController__setRemoteVC_completion___block_invoke;
   v19[3] = &unk_1E8012C28;
-  v12 = v8;
+  v12 = completionCopy;
   v20 = v12;
   v13 = [(_UIRemoteViewController *)remoteVC serviceViewControllerProxyWithErrorHandler:v19];
   if (v13)

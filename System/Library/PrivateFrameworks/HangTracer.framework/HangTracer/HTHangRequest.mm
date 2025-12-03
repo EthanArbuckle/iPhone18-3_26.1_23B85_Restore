@@ -1,10 +1,10 @@
 @interface HTHangRequest
-+ (id)sandboxExtensionForPath:(id)a3;
-- (BOOL)_insertNSNumberInXPCDictionaryUsingKey:(const char *)a3 number:(id)a4 dict:(id)a5;
++ (id)sandboxExtensionForPath:(id)path;
+- (BOOL)_insertNSNumberInXPCDictionaryUsingKey:(const char *)key number:(id)number dict:(id)dict;
 - (id)_checkDirectoryPathIsValid;
-- (id)_createXPCDictionary:(id)a3;
-- (id)initRequest:(id)a3 error:(id *)a4;
-- (id)initRequestWithPath:(id)a3 dictionary:(id)a4 error:(id *)p_isa;
+- (id)_createXPCDictionary:(id)dictionary;
+- (id)initRequest:(id)request error:(id *)error;
+- (id)initRequestWithPath:(id)path dictionary:(id)dictionary error:(id *)p_isa;
 @end
 
 @implementation HTHangRequest
@@ -12,14 +12,14 @@
 - (id)_checkDirectoryPathIsValid
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v3 = [(HTHangRequest *)self sharedDirectoryPath];
+  sharedDirectoryPath = [(HTHangRequest *)self sharedDirectoryPath];
 
-  if (v3)
+  if (sharedDirectoryPath)
   {
     v22 = 0;
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v5 = [(HTHangRequest *)self sharedDirectoryPath];
-    v6 = [v4 fileExistsAtPath:v5 isDirectory:&v22];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    sharedDirectoryPath2 = [(HTHangRequest *)self sharedDirectoryPath];
+    v6 = [defaultManager fileExistsAtPath:sharedDirectoryPath2 isDirectory:&v22];
 
     if (v6)
     {
@@ -30,8 +30,8 @@
       }
 
       v17 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v18 = [(HTHangRequest *)self sharedDirectoryPath];
-      v12 = [v17 initWithFormat:@"File '%@' is not a directory.", v18];
+      sharedDirectoryPath3 = [(HTHangRequest *)self sharedDirectoryPath];
+      v12 = [v17 initWithFormat:@"File '%@' is not a directory.", sharedDirectoryPath3];
 
       v13 = MEMORY[0x1E696ABC0];
       v23 = *MEMORY[0x1E696A578];
@@ -44,8 +44,8 @@
     else
     {
       v10 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v11 = [(HTHangRequest *)self sharedDirectoryPath];
-      v12 = [v10 initWithFormat:@"File '%@' does not exist", v11];
+      sharedDirectoryPath4 = [(HTHangRequest *)self sharedDirectoryPath];
+      v12 = [v10 initWithFormat:@"File '%@' does not exist", sharedDirectoryPath4];
 
       v13 = MEMORY[0x1E696ABC0];
       v25 = *MEMORY[0x1E696A578];
@@ -74,104 +74,104 @@ LABEL_9:
   return v7;
 }
 
-- (BOOL)_insertNSNumberInXPCDictionaryUsingKey:(const char *)a3 number:(id)a4 dict:(id)a5
+- (BOOL)_insertNSNumberInXPCDictionaryUsingKey:(const char *)key number:(id)number dict:(id)dict
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 objCType];
-  if (*v9 == 66 && !v9[1])
+  numberCopy = number;
+  dictCopy = dict;
+  objCType = [numberCopy objCType];
+  if (*objCType == 66 && !objCType[1])
   {
-    xpc_dictionary_set_BOOL(v8, a3, [v7 BOOLValue]);
+    xpc_dictionary_set_BOOL(dictCopy, key, [numberCopy BOOLValue]);
 LABEL_35:
     v21 = 1;
     goto LABEL_36;
   }
 
-  v10 = [v7 objCType];
-  if (*v10 == 105 && !v10[1])
+  objCType2 = [numberCopy objCType];
+  if (*objCType2 == 105 && !objCType2[1])
   {
-    v23 = [v7 intValue];
+    intValue = [numberCopy intValue];
 LABEL_31:
-    v24 = v23;
+    v24 = intValue;
 LABEL_34:
-    xpc_dictionary_set_int64(v8, a3, v24);
+    xpc_dictionary_set_int64(dictCopy, key, v24);
     goto LABEL_35;
   }
 
-  v11 = [v7 objCType];
-  if (*v11 == 115 && !v11[1])
+  objCType3 = [numberCopy objCType];
+  if (*objCType3 == 115 && !objCType3[1])
   {
-    v23 = [v7 shortValue];
+    intValue = [numberCopy shortValue];
     goto LABEL_31;
   }
 
-  v12 = [v7 objCType];
-  if (*v12 == 113 && !v12[1])
+  objCType4 = [numberCopy objCType];
+  if (*objCType4 == 113 && !objCType4[1])
   {
     goto LABEL_27;
   }
 
-  v13 = [v7 objCType];
-  if (*v13 == 99 && !v13[1])
+  objCType5 = [numberCopy objCType];
+  if (*objCType5 == 99 && !objCType5[1])
   {
-    v23 = [v7 charValue];
+    intValue = [numberCopy charValue];
     goto LABEL_31;
   }
 
-  v14 = [v7 objCType];
-  if (*v14 == 113 && !v14[1])
+  objCType6 = [numberCopy objCType];
+  if (*objCType6 == 113 && !objCType6[1])
   {
 LABEL_27:
-    v22 = [v7 longValue];
+    longValue = [numberCopy longValue];
 LABEL_33:
-    v24 = v22;
+    v24 = longValue;
     goto LABEL_34;
   }
 
-  v15 = [v7 objCType];
-  if (*v15 == 113 && !v15[1])
+  objCType7 = [numberCopy objCType];
+  if (*objCType7 == 113 && !objCType7[1])
   {
-    v22 = [v7 longLongValue];
+    longValue = [numberCopy longLongValue];
     goto LABEL_33;
   }
 
-  v16 = [v7 objCType];
-  if (*v16 == 73 && !v16[1])
+  objCType8 = [numberCopy objCType];
+  if (*objCType8 == 73 && !objCType8[1])
   {
-    v26 = [v7 unsignedIntValue];
+    unsignedIntValue = [numberCopy unsignedIntValue];
 LABEL_41:
-    xpc_dictionary_set_uint64(v8, a3, v26);
+    xpc_dictionary_set_uint64(dictCopy, key, unsignedIntValue);
     goto LABEL_35;
   }
 
-  v17 = [v7 objCType];
-  if (*v17 == 81 && !v17[1])
+  objCType9 = [numberCopy objCType];
+  if (*objCType9 == 81 && !objCType9[1])
   {
-    v27 = [v7 unsignedLongValue];
+    unsignedLongValue = [numberCopy unsignedLongValue];
 LABEL_40:
-    v26 = v27;
+    unsignedIntValue = unsignedLongValue;
     goto LABEL_41;
   }
 
-  v18 = [v7 objCType];
-  if (*v18 == 81 && !v18[1])
+  objCType10 = [numberCopy objCType];
+  if (*objCType10 == 81 && !objCType10[1])
   {
-    v27 = [v7 unsignedLongLongValue];
+    unsignedLongValue = [numberCopy unsignedLongLongValue];
     goto LABEL_40;
   }
 
-  v19 = [v7 objCType];
-  if (*v19 == 100 && !v19[1])
+  objCType11 = [numberCopy objCType];
+  if (*objCType11 == 100 && !objCType11[1])
   {
-    [v7 doubleValue];
-    xpc_dictionary_set_double(v8, a3, v28);
+    [numberCopy doubleValue];
+    xpc_dictionary_set_double(dictCopy, key, v28);
     goto LABEL_35;
   }
 
   v20 = shared_ht_log_handle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    [HTHangRequest _insertNSNumberInXPCDictionaryUsingKey:v7 number:v20 dict:?];
+    [HTHangRequest _insertNSNumberInXPCDictionaryUsingKey:numberCopy number:v20 dict:?];
   }
 
   v21 = 0;
@@ -180,18 +180,18 @@ LABEL_36:
   return v21;
 }
 
-- (id)_createXPCDictionary:(id)a3
+- (id)_createXPCDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v4 = xpc_dictionary_create(0, 0, 0);
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v5 = v3;
+    v5 = dictionaryCopy;
     v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v6)
     {
@@ -236,11 +236,11 @@ LABEL_4:
           break;
         }
 
-        v14 = [v10 UTF8String];
+        uTF8String = [v10 UTF8String];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          xpc_dictionary_set_string(v4, v14, [v12 UTF8String]);
+          xpc_dictionary_set_string(v4, uTF8String, [v12 UTF8String]);
         }
 
         else
@@ -248,7 +248,7 @@ LABEL_4:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if (![(HTHangRequest *)self _insertNSNumberInXPCDictionaryUsingKey:v14 number:v12 dict:v4])
+            if (![(HTHangRequest *)self _insertNSNumberInXPCDictionaryUsingKey:uTF8String number:v12 dict:v4])
             {
               goto LABEL_28;
             }
@@ -273,7 +273,7 @@ LABEL_28:
             }
 
             [v12 timeIntervalSince1970];
-            xpc_dictionary_set_date(v4, v14, (v15 * 1000000000.0));
+            xpc_dictionary_set_date(v4, uTF8String, (v15 * 1000000000.0));
           }
         }
 
@@ -314,9 +314,9 @@ LABEL_29:
   return v16;
 }
 
-+ (id)sandboxExtensionForPath:(id)a3
++ (id)sandboxExtensionForPath:(id)path
 {
-  [a3 UTF8String];
+  [path UTF8String];
   v3 = *MEMORY[0x1E69E9BE0];
   v4 = sandbox_extension_issue_file();
   if (v4)
@@ -334,53 +334,53 @@ LABEL_29:
   return v6;
 }
 
-- (id)initRequest:(id)a3 error:(id *)a4
+- (id)initRequest:(id)request error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(HTHangRequest *)self _createXPCDictionary:v6];
+  requestCopy = request;
+  v7 = [(HTHangRequest *)self _createXPCDictionary:requestCopy];
   requestXPCDictionary = self->_requestXPCDictionary;
   self->_requestXPCDictionary = v7;
 
-  v9 = [(HTHangRequest *)self requestXPCDictionary];
+  requestXPCDictionary = [(HTHangRequest *)self requestXPCDictionary];
 
-  if (a4 && !v9)
+  if (error && !requestXPCDictionary)
   {
-    v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not create xpc_object_t request dictionary from dictionary '%@'", v6];
+    requestCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Could not create xpc_object_t request dictionary from dictionary '%@'", requestCopy];
     v11 = MEMORY[0x1E696ABC0];
     v17 = *MEMORY[0x1E696A578];
-    v18[0] = v10;
+    v18[0] = requestCopy;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v13 = [v11 errorWithDomain:@"kHTHangRequestError" code:0 userInfo:v12];
-    v14 = *a4;
-    *a4 = v13;
+    v14 = *error;
+    *error = v13;
   }
 
   v15 = *MEMORY[0x1E69E9840];
   return self;
 }
 
-- (id)initRequestWithPath:(id)a3 dictionary:(id)a4 error:(id *)p_isa
+- (id)initRequestWithPath:(id)path dictionary:(id)dictionary error:(id *)p_isa
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  objc_storeStrong(&self->_sharedDirectoryPath, a3);
-  v11 = [(HTHangRequest *)self _checkDirectoryPathIsValid];
-  if (!v11)
+  pathCopy = path;
+  dictionaryCopy = dictionary;
+  objc_storeStrong(&self->_sharedDirectoryPath, path);
+  _checkDirectoryPathIsValid = [(HTHangRequest *)self _checkDirectoryPathIsValid];
+  if (!_checkDirectoryPathIsValid)
   {
     v12 = [objc_opt_class() sandboxExtensionForPath:self->_sharedDirectoryPath];
     sandboxExtension = self->_sandboxExtension;
     self->_sandboxExtension = v12;
 
-    v14 = [(HTHangRequest *)self sandboxExtension];
+    sandboxExtension = [(HTHangRequest *)self sandboxExtension];
 
-    if (v14)
+    if (sandboxExtension)
     {
-      v15 = [v10 mutableCopy];
-      v16 = [(HTHangRequest *)self sandboxExtension];
+      v15 = [dictionaryCopy mutableCopy];
+      sandboxExtension2 = [(HTHangRequest *)self sandboxExtension];
       v17 = [MEMORY[0x1E696AEC0] stringWithCString:"sandboxExtension" encoding:4];
-      [v15 setObject:v16 forKeyedSubscript:v17];
+      [v15 setObject:sandboxExtension2 forKeyedSubscript:v17];
 
       self = [(HTHangRequest *)self initRequest:v15 error:p_isa];
       p_isa = &self->super.isa;
@@ -393,8 +393,8 @@ LABEL_29:
     }
 
     v20 = MEMORY[0x1E696AEC0];
-    v21 = [(HTHangRequest *)self sharedDirectoryPath];
-    v22 = [v20 stringWithFormat:@"Could not create sandbox extension for '%@'. This may be due to lack of sufficient permissions to access the directory.", v21];
+    sharedDirectoryPath = [(HTHangRequest *)self sharedDirectoryPath];
+    v22 = [v20 stringWithFormat:@"Could not create sandbox extension for '%@'. This may be due to lack of sufficient permissions to access the directory.", sharedDirectoryPath];
 
     v23 = MEMORY[0x1E696ABC0];
     v27 = *MEMORY[0x1E696A578];
@@ -409,7 +409,7 @@ LABEL_29:
 
   if (p_isa)
   {
-    objc_storeStrong(p_isa, v11);
+    objc_storeStrong(p_isa, _checkDirectoryPathIsValid);
 LABEL_4:
     p_isa = 0;
   }

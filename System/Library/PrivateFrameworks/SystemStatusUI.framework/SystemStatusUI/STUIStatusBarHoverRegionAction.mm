@@ -1,17 +1,17 @@
 @interface STUIStatusBarHoverRegionAction
-+ (id)_hoverActionForRegion:(int64_t)a3;
++ (id)_hoverActionForRegion:(int64_t)region;
 @end
 
 @implementation STUIStatusBarHoverRegionAction
 
-+ (id)_hoverActionForRegion:(int64_t)a3
++ (id)_hoverActionForRegion:(int64_t)region
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__STUIStatusBarHoverRegionAction__hoverActionForRegion___block_invoke;
   v5[3] = &__block_descriptor_40_e23_B16__0__STUIStatusBar_8l;
-  v5[4] = a3;
-  v3 = [a1 actionWithBlock:v5];
+  v5[4] = region;
+  v3 = [self actionWithBlock:v5];
 
   return v3;
 }

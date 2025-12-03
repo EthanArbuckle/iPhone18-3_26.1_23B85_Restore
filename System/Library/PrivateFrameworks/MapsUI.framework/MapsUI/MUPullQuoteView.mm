@@ -6,12 +6,12 @@
 
 - (void)_expand
 {
-  v3 = [(MUExpandingLabel *)self labelResizedBlock];
+  labelResizedBlock = [(MUExpandingLabel *)self labelResizedBlock];
 
-  if (v3)
+  if (labelResizedBlock)
   {
-    v4 = [(MUExpandingLabel *)self labelResizedBlock];
-    v4[2]();
+    labelResizedBlock2 = [(MUExpandingLabel *)self labelResizedBlock];
+    labelResizedBlock2[2]();
   }
 }
 

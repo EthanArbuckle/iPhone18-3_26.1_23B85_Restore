@@ -9,20 +9,20 @@
 - (void)configureForWeather
 {
   v2 = [objc_alloc(MEMORY[0x277CD4F50]) initWithEmphasisStyle:101];
-  [a1 setPreferredConfiguration:?];
+  [self setPreferredConfiguration:?];
 }
 
 - (void)configureForMuted
 {
   v2 = [objc_alloc(MEMORY[0x277CD4F50]) initWithEmphasisStyle:1];
-  [a1 setPreferredConfiguration:?];
+  [self setPreferredConfiguration:?];
 }
 
 - (void)configureForWeatherWind
 {
   v2 = objc_alloc(MEMORY[0x277CD4F50]);
   v3 = [v2 initWithEmphasisStyle:*MEMORY[0x277CD4D88]];
-  [a1 setPreferredConfiguration:?];
+  [self setPreferredConfiguration:?];
 }
 
 @end

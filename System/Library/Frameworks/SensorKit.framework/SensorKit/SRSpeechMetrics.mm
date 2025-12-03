@@ -1,23 +1,23 @@
 @interface SRSpeechMetrics
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (SRSpeechMetrics)init;
-- (SRSpeechMetrics)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRSpeechMetrics)initWithCoder:(id)a3;
-- (SRSpeechMetrics)initWithSessionIdentifier:(id)a3 sessionFlags:(unint64_t)a4 timestamp:(double)a5 audioLevel:(id)a6 speechRecognition:(id)a7 soundClassification:(id)a8 speechExpression:(id)a9;
-- (SRSpeechMetrics)initWithSessionIdentifier:(id)a3 sessionFlags:(unint64_t)a4 timestamp:(double)a5 timeSinceAudioStart:(double)a6 audioLevel:(id)a7 speechRecognition:(id)a8 soundClassification:(id)a9 speechExpression:(id)a10;
+- (SRSpeechMetrics)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRSpeechMetrics)initWithCoder:(id)coder;
+- (SRSpeechMetrics)initWithSessionIdentifier:(id)identifier sessionFlags:(unint64_t)flags timestamp:(double)timestamp audioLevel:(id)level speechRecognition:(id)recognition soundClassification:(id)classification speechExpression:(id)expression;
+- (SRSpeechMetrics)initWithSessionIdentifier:(id)identifier sessionFlags:(unint64_t)flags timestamp:(double)timestamp timeSinceAudioStart:(double)start audioLevel:(id)level speechRecognition:(id)recognition soundClassification:(id)classification speechExpression:(id)self0;
 - (id)binarySampleRepresentation;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRSpeechMetrics
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_1EE02AB58 = os_log_create("com.apple.SensorKit", "SRSpeechMetrics");
   }
@@ -30,7 +30,7 @@
   return 0;
 }
 
-- (SRSpeechMetrics)initWithSessionIdentifier:(id)a3 sessionFlags:(unint64_t)a4 timestamp:(double)a5 audioLevel:(id)a6 speechRecognition:(id)a7 soundClassification:(id)a8 speechExpression:(id)a9
+- (SRSpeechMetrics)initWithSessionIdentifier:(id)identifier sessionFlags:(unint64_t)flags timestamp:(double)timestamp audioLevel:(id)level speechRecognition:(id)recognition soundClassification:(id)classification speechExpression:(id)expression
 {
   v61 = *MEMORY[0x1E69E9840];
   if (qword_1EE02AB60 != -1)
@@ -39,20 +39,20 @@
   }
 
   os_unfair_lock_lock(&_MergedGlobals_8);
-  v43 = a3;
-  v16 = [qword_1EE02AB70 objectForKeyedSubscript:a3];
+  identifierCopy = identifier;
+  v16 = [qword_1EE02AB70 objectForKeyedSubscript:identifier];
   if (!v16)
   {
     v16 = [objc_msgSend(MEMORY[0x1E696AFB0] "UUID")];
-    [qword_1EE02AB70 setObject:v16 forKeyedSubscript:a3];
-    v17 = [MEMORY[0x1E696AD98] numberWithDouble:a5];
+    [qword_1EE02AB70 setObject:v16 forKeyedSubscript:identifier];
+    v17 = [MEMORY[0x1E696AD98] numberWithDouble:timestamp];
     [qword_1EE02AB68 setObject:v17 forKeyedSubscript:v16];
     os_unfair_lock_assert_owner(&_MergedGlobals_8);
-    v37 = a4;
-    v38 = a6;
-    v39 = a7;
-    v40 = a8;
-    v41 = a9;
+    flagsCopy = flags;
+    levelCopy = level;
+    recognitionCopy = recognition;
+    classificationCopy = classification;
+    expressionCopy = expression;
     if ([qword_1EE02AB68 count] >= 0x10)
     {
       v18 = [MEMORY[0x1E695DF70] arrayWithArray:{objc_msgSend(qword_1EE02AB68, "allKeys")}];
@@ -65,7 +65,7 @@
         {
           v20 = [v18 objectAtIndexedSubscript:v19];
           [qword_1EE02AB68 setObject:0 forKeyedSubscript:v20];
-          v21 = [MEMORY[0x1E695DF70] array];
+          array = [MEMORY[0x1E695DF70] array];
           v47 = 0u;
           v48 = 0u;
           v45 = 0u;
@@ -87,7 +87,7 @@
                 v26 = *(*(&v45 + 1) + 8 * i);
                 if ([objc_msgSend(qword_1EE02AB70 objectForKeyedSubscript:{v26), "isEqual:", v20}])
                 {
-                  [v21 addObject:v26];
+                  [array addObject:v26];
                 }
               }
 
@@ -97,7 +97,7 @@
             while (v23);
           }
 
-          [qword_1EE02AB70 removeObjectsForKeys:v21];
+          [qword_1EE02AB70 removeObjectsForKeys:array];
           v18 = v44;
           v27 = qword_1EE02AB58;
           if (os_log_type_enabled(qword_1EE02AB58, OS_LOG_TYPE_INFO))
@@ -124,29 +124,29 @@
       _os_log_impl(&dword_1C914D000, v28, OS_LOG_TYPE_INFO, "Detected a new audio session. Sessions in flight: %@, session times: %@", v51, 0x16u);
     }
 
-    a8 = v40;
-    a9 = v41;
-    a6 = v38;
-    a7 = v39;
-    a4 = v37;
+    classification = classificationCopy;
+    expression = expressionCopy;
+    level = levelCopy;
+    recognition = recognitionCopy;
+    flags = flagsCopy;
   }
 
   os_unfair_lock_unlock(&_MergedGlobals_8);
   os_unfair_lock_lock(&_MergedGlobals_8);
   [objc_msgSend(qword_1EE02AB68 objectForKeyedSubscript:{v16), "doubleValue"}];
   v30 = v29;
-  [objc_msgSend(a7 "speechRecognitionMetadata")];
-  v32 = a5 - v30 + v31;
+  [objc_msgSend(recognition "speechRecognitionMetadata")];
+  v32 = timestamp - v30 + v31;
   v33 = qword_1EE02AB58;
   if (os_log_type_enabled(qword_1EE02AB58, OS_LOG_TYPE_DEBUG))
   {
-    [objc_msgSend(a7 "speechRecognitionMetadata")];
+    [objc_msgSend(recognition "speechRecognitionMetadata")];
     *v51 = 138413314;
     v52 = v16;
     v53 = 2048;
     v54 = *&v30;
     v55 = 2048;
-    v56 = a5;
+    timestampCopy = timestamp;
     v57 = 2048;
     v58 = v36;
     v59 = 2048;
@@ -155,37 +155,37 @@
   }
 
   os_unfair_lock_unlock(&_MergedGlobals_8);
-  result = -[SRSpeechMetrics initWithSessionIdentifier:sessionFlags:timestamp:timeSinceAudioStart:audioLevel:speechRecognition:soundClassification:speechExpression:](self, "initWithSessionIdentifier:sessionFlags:timestamp:timeSinceAudioStart:audioLevel:speechRecognition:soundClassification:speechExpression:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@;%@", v16, v43], a4, a6, a7, a8, a9, a5, v32);
+  result = -[SRSpeechMetrics initWithSessionIdentifier:sessionFlags:timestamp:timeSinceAudioStart:audioLevel:speechRecognition:soundClassification:speechExpression:](self, "initWithSessionIdentifier:sessionFlags:timestamp:timeSinceAudioStart:audioLevel:speechRecognition:soundClassification:speechExpression:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@;%@", v16, identifierCopy], flags, level, recognition, classification, expression, timestamp, v32);
   v35 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (SRSpeechMetrics)initWithSessionIdentifier:(id)a3 sessionFlags:(unint64_t)a4 timestamp:(double)a5 timeSinceAudioStart:(double)a6 audioLevel:(id)a7 speechRecognition:(id)a8 soundClassification:(id)a9 speechExpression:(id)a10
+- (SRSpeechMetrics)initWithSessionIdentifier:(id)identifier sessionFlags:(unint64_t)flags timestamp:(double)timestamp timeSinceAudioStart:(double)start audioLevel:(id)level speechRecognition:(id)recognition soundClassification:(id)classification speechExpression:(id)self0
 {
   v22.receiver = self;
   v22.super_class = SRSpeechMetrics;
   v18 = [(SRSpeechMetrics *)&v22 init];
   if (v18)
   {
-    v18->_sessionIdentifier = [a3 copy];
-    v18->_sessionFlags = a4;
+    v18->_sessionIdentifier = [identifier copy];
+    v18->_sessionFlags = flags;
     [+[SRSensorDescription sensorDescriptionForSensor:](SRSensorDescription sensorDescriptionForSensor:{@"com.apple.SensorKit.speechMetrics.telephony", "roundingInterval"}];
     if (v19 == 0.0)
     {
-      v20 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:a5];
+      v20 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:timestamp];
     }
 
     else
     {
-      v20 = [MEMORY[0x1E695DF00] sr_dateWithTimeIntervalSinceReferenceDate:a5 roundedDownToNearest:v19];
+      v20 = [MEMORY[0x1E695DF00] sr_dateWithTimeIntervalSinceReferenceDate:timestamp roundedDownToNearest:v19];
     }
 
     v18->_timestamp = v20;
-    v18->_timeSinceAudioStart = a6;
-    v18->_audioLevel = a7;
-    v18->_speechRecognition = a8;
-    v18->_soundClassification = a9;
-    v18->_speechExpression = a10;
+    v18->_timeSinceAudioStart = start;
+    v18->_audioLevel = level;
+    v18->_speechRecognition = recognition;
+    v18->_soundClassification = classification;
+    v18->_speechExpression = expression;
   }
 
   return v18;
@@ -198,9 +198,9 @@
   [(SRSpeechMetrics *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v14) = 1;
     return v14;
@@ -220,18 +220,18 @@
     return v14;
   }
 
-  if (-[SRSpeechMetrics sessionIdentifier](self, "sessionIdentifier") || [a3 sessionIdentifier])
+  if (-[SRSpeechMetrics sessionIdentifier](self, "sessionIdentifier") || [equal sessionIdentifier])
   {
-    v14 = -[NSString isEqual:](-[SRSpeechMetrics sessionIdentifier](self, "sessionIdentifier", v10, v9, v6, v5, v27, v28, v7, v8), "isEqual:", [a3 sessionIdentifier]);
+    v14 = -[NSString isEqual:](-[SRSpeechMetrics sessionIdentifier](self, "sessionIdentifier", v10, v9, v6, v5, v27, v28, v7, v8), "isEqual:", [equal sessionIdentifier]);
     if (!v14)
     {
       return v14;
     }
   }
 
-  if (-[SRSpeechMetrics timestamp](self, "timestamp", v23, v24, v25, v26, v27, v28) || [a3 timestamp])
+  if (-[SRSpeechMetrics timestamp](self, "timestamp", v23, v24, v25, v26, v27, v28) || [equal timestamp])
   {
-    v14 = -[NSDate isEqual:](-[SRSpeechMetrics timestamp](self, "timestamp"), "isEqual:", [a3 timestamp]);
+    v14 = -[NSDate isEqual:](-[SRSpeechMetrics timestamp](self, "timestamp"), "isEqual:", [equal timestamp]);
     if (!v14)
     {
       return v14;
@@ -239,7 +239,7 @@
   }
 
   sessionFlags = self->_sessionFlags;
-  if (sessionFlags != [a3 sessionFlags])
+  if (sessionFlags != [equal sessionFlags])
   {
     LOBYTE(v14) = 0;
     return v14;
@@ -248,7 +248,7 @@
   speechRecognition = self->_speechRecognition;
   if (!speechRecognition)
   {
-    if (![a3 speechRecognition])
+    if (![equal speechRecognition])
     {
       goto LABEL_15;
     }
@@ -256,7 +256,7 @@
     speechRecognition = self->_speechRecognition;
   }
 
-  v14 = -[SFSpeechRecognitionResult isEqual:](speechRecognition, "isEqual:", [a3 speechRecognition]);
+  v14 = -[SFSpeechRecognitionResult isEqual:](speechRecognition, "isEqual:", [equal speechRecognition]);
   if (!v14)
   {
     return v14;
@@ -266,7 +266,7 @@ LABEL_15:
   soundClassification = self->_soundClassification;
   if (!soundClassification)
   {
-    if (![a3 soundClassification])
+    if (![equal soundClassification])
     {
       goto LABEL_19;
     }
@@ -274,7 +274,7 @@ LABEL_15:
     soundClassification = self->_soundClassification;
   }
 
-  v14 = -[SNClassificationResult isEqual:](soundClassification, "isEqual:", [a3 soundClassification]);
+  v14 = -[SNClassificationResult isEqual:](soundClassification, "isEqual:", [equal soundClassification]);
   if (!v14)
   {
     return v14;
@@ -287,11 +287,11 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if ([a3 speechExpression])
+  if ([equal speechExpression])
   {
     speechExpression = self->_speechExpression;
 LABEL_22:
-    v14 = -[SRSpeechExpression isEqual:](speechExpression, "isEqual:", [a3 speechExpression]);
+    v14 = -[SRSpeechExpression isEqual:](speechExpression, "isEqual:", [equal speechExpression]);
     if (!v14)
     {
       return v14;
@@ -301,11 +301,11 @@ LABEL_22:
   audioLevel = self->_audioLevel;
   if (!audioLevel)
   {
-    if (![a3 audioLevel])
+    if (![equal audioLevel])
     {
 LABEL_27:
       timeSinceAudioStart = self->_timeSinceAudioStart;
-      [a3 timeSinceAudioStart];
+      [equal timeSinceAudioStart];
       LOBYTE(v14) = timeSinceAudioStart == v21;
       return v14;
     }
@@ -313,7 +313,7 @@ LABEL_27:
     audioLevel = self->_audioLevel;
   }
 
-  v14 = -[SRAudioLevel isEqual:](audioLevel, "isEqual:", [a3 audioLevel]);
+  v14 = -[SRAudioLevel isEqual:](audioLevel, "isEqual:", [equal audioLevel]);
   if (v14)
   {
     goto LABEL_27;
@@ -341,69 +341,69 @@ LABEL_27:
   return [v3 stringWithFormat:@"%@ (%p): sessionIdentifier: %@, sessionFlags: %lu, timestamp: %@, timeSinceAudioStart: %f, audioLevel: %@, speechRecognition: %@, soundClassification: %@, speechExpression: %@", NSStringFromClass(v4), self, self->_sessionIdentifier, self->_sessionFlags, self->_timestamp, *&self->_timeSinceAudioStart, self->_audioLevel, self->_speechRecognition, self->_soundClassification, self->_speechExpression];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
-  [a3 encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_sessionFlags), @"sessionFlags"}];
+  [coder encodeObject:self->_sessionIdentifier forKey:@"sessionIdentifier"];
+  [coder encodeObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInteger:", self->_sessionFlags), @"sessionFlags"}];
   [(NSDate *)self->_timestamp timeIntervalSinceReferenceDate];
-  [a3 encodeDouble:@"timestamp" forKey:?];
-  [a3 encodeDouble:@"timeSinceAudioStart" forKey:self->_timeSinceAudioStart];
+  [coder encodeDouble:@"timestamp" forKey:?];
+  [coder encodeDouble:@"timeSinceAudioStart" forKey:self->_timeSinceAudioStart];
   audioLevel = self->_audioLevel;
   if (audioLevel)
   {
-    [a3 encodeObject:audioLevel forKey:@"audioLevel"];
+    [coder encodeObject:audioLevel forKey:@"audioLevel"];
   }
 
   speechRecognition = self->_speechRecognition;
   if (speechRecognition)
   {
-    [a3 encodeObject:speechRecognition forKey:@"speechRecogition"];
+    [coder encodeObject:speechRecognition forKey:@"speechRecogition"];
   }
 
   soundClassification = self->_soundClassification;
   if (soundClassification)
   {
-    [a3 encodeObject:soundClassification forKey:@"soundClassification"];
+    [coder encodeObject:soundClassification forKey:@"soundClassification"];
   }
 
   if (self->_speechExpression)
   {
 
-    [a3 encodeObject:? forKey:?];
+    [coder encodeObject:? forKey:?];
   }
 }
 
-- (SRSpeechMetrics)initWithCoder:(id)a3
+- (SRSpeechMetrics)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"sessionFlags"];
-  [a3 decodeDoubleForKey:@"timestamp"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"sessionFlags"];
+  [coder decodeDoubleForKey:@"timestamp"];
   v9 = v8;
-  [a3 decodeDoubleForKey:@"timeSinceAudioStart"];
+  [coder decodeDoubleForKey:@"timeSinceAudioStart"];
   v11 = v10;
-  v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"speechRecogition"];
-  v13 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"soundClassification"];
-  v14 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"speechExpression"];
-  v15 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"audioLevel"];
-  v16 = [v7 unsignedIntegerValue];
+  v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"speechRecogition"];
+  v13 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"soundClassification"];
+  v14 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"speechExpression"];
+  v15 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"audioLevel"];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return [(SRSpeechMetrics *)self initWithSessionIdentifier:v6 sessionFlags:v16 timestamp:v15 timeSinceAudioStart:v12 audioLevel:v13 speechRecognition:v14 soundClassification:v9 speechExpression:v11];
+  return [(SRSpeechMetrics *)self initWithSessionIdentifier:v6 sessionFlags:unsignedIntegerValue timestamp:v15 timeSinceAudioStart:v12 audioLevel:v13 speechRecognition:v14 soundClassification:v9 speechExpression:v11];
 }
 
-- (SRSpeechMetrics)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRSpeechMetrics)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
 
     v21 = qword_1EE02AB58;
@@ -426,7 +426,7 @@ LABEL_27:
     v10 = MEMORY[0x1E696ACD0];
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
-    v13 = [v10 unarchivedObjectOfClasses:objc_msgSend(v11 fromData:"setWithObjects:" error:{v12, objc_opt_class(), 0), a3, &v24}];
+    v13 = [v10 unarchivedObjectOfClasses:objc_msgSend(v11 fromData:"setWithObjects:" error:{v12, objc_opt_class(), 0), representation, &v24}];
     if (!v13)
     {
       v22 = qword_1EE02AB58;
@@ -477,7 +477,7 @@ LABEL_13:
       _os_log_impl(&dword_1C914D000, v18, OS_LOG_TYPE_INFO, "Found legacy data %{private}@", buf, 0xCu);
     }
 
-    result = [(SRSpeechMetrics *)v9 initWithSessionIdentifier:&stru_1F48BB5C0 sessionFlags:0 timestamp:0 audioLevel:v14 speechRecognition:0 soundClassification:0 speechExpression:SRAbsoluteTimeToCFAbsoluteTime(a5)];
+    result = [(SRSpeechMetrics *)v9 initWithSessionIdentifier:&stru_1F48BB5C0 sessionFlags:0 timestamp:0 audioLevel:v14 speechRecognition:0 soundClassification:0 speechExpression:SRAbsoluteTimeToCFAbsoluteTime(timestamp)];
   }
 
 LABEL_14:

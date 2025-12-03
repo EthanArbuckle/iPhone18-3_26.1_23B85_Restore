@@ -1,12 +1,12 @@
 @interface HFHeaterCoolerItemUtilities
-+ (id)targetHeatingCoolingModeValueInResponse:(id)a3;
++ (id)targetHeatingCoolingModeValueInResponse:(id)response;
 @end
 
 @implementation HFHeaterCoolerItemUtilities
 
-+ (id)targetHeatingCoolingModeValueInResponse:(id)a3
++ (id)targetHeatingCoolingModeValueInResponse:(id)response
 {
-  v3 = [a3 responseForCharacteristicType:*MEMORY[0x277CCFB18]];
+  v3 = [response responseForCharacteristicType:*MEMORY[0x277CCFB18]];
   v4 = [v3 valueWithExpectedClass:objc_opt_class()];
 
   return v4;

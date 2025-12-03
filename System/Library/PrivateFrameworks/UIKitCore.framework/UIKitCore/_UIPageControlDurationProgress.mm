@@ -1,35 +1,35 @@
 @interface _UIPageControlDurationProgress
-- (BOOL)_shouldAdvanceToPage:(int64_t)a3;
-- (_UIPageControlDurationProgress)initWithPageDuration:(double)a3;
-- (void)setDelegate:(id)a3;
+- (BOOL)_shouldAdvanceToPage:(int64_t)page;
+- (_UIPageControlDurationProgress)initWithPageDuration:(double)duration;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UIPageControlDurationProgress
 
-- (_UIPageControlDurationProgress)initWithPageDuration:(double)a3
+- (_UIPageControlDurationProgress)initWithPageDuration:(double)duration
 {
   v4.receiver = self;
   v4.super_class = _UIPageControlDurationProgress;
-  return [(UIPageControlTimerProgress *)&v4 initWithPreferredDuration:a3];
+  return [(UIPageControlTimerProgress *)&v4 initWithPreferredDuration:duration];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = _UIPageControlDurationProgress;
-  v4 = a3;
-  [(UIPageControlTimerProgress *)&v6 setDelegate:v4];
+  delegateCopy = delegate;
+  [(UIPageControlTimerProgress *)&v6 setDelegate:delegateCopy];
   v5 = objc_opt_respondsToSelector();
 
   *&self->_delegateImplements = *&self->_delegateImplements & 0xFE | v5 & 1;
 }
 
-- (BOOL)_shouldAdvanceToPage:(int64_t)a3
+- (BOOL)_shouldAdvanceToPage:(int64_t)page
 {
   if (*&self->_delegateImplements)
   {
-    v6 = [(UIPageControlProgress *)self delegate];
-    v7 = [v6 _pageControlDurationProgress:self shouldAdvanceToPage:a3];
+    delegate = [(UIPageControlProgress *)self delegate];
+    v7 = [delegate _pageControlDurationProgress:self shouldAdvanceToPage:page];
 
     return v7;
   }
@@ -38,7 +38,7 @@
   {
     v8.receiver = self;
     v8.super_class = _UIPageControlDurationProgress;
-    return [(UIPageControlTimerProgress *)&v8 _shouldAdvanceToPage:a3];
+    return [(UIPageControlTimerProgress *)&v8 _shouldAdvanceToPage:page];
   }
 }
 

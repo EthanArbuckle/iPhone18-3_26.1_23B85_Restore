@@ -1,15 +1,15 @@
 @interface RPNIProximityEstimator
 - (RPNIProximityEstimator)init;
 - (id)_createAndRunSession;
-- (void)activateWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)sendSampleForDevice:(id)a3;
-- (void)session:(id)a3 didFailWithError:(id)a4;
-- (void)session:(id)a3 didInvalidateWithError:(id)a4;
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6;
-- (void)sessionDidStartRunning:(id)a3;
-- (void)sessionSuspensionEnded:(id)a3;
-- (void)sessionWasSuspended:(id)a3;
+- (void)sendSampleForDevice:(id)device;
+- (void)session:(id)session didFailWithError:(id)error;
+- (void)session:(id)session didInvalidateWithError:(id)error;
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion;
+- (void)sessionDidStartRunning:(id)running;
+- (void)sessionSuspensionEnded:(id)ended;
+- (void)sessionWasSuspended:(id)suspended;
 @end
 
 @implementation RPNIProximityEstimator
@@ -29,17 +29,17 @@
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007EDB0;
   v7[3] = &unk_1001AD898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -54,17 +54,17 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)sendSampleForDevice:(id)a3
+- (void)sendSampleForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007F0EC;
   v7[3] = &unk_1001AB488;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deviceCopy;
+  selfCopy = self;
+  v6 = deviceCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -120,13 +120,13 @@
   return v8;
 }
 
-- (void)sessionDidStartRunning:(id)a3
+- (void)sessionDidStartRunning:(id)running
 {
-  v3 = a3;
-  v4 = v3;
+  runningCopy = running;
+  v4 = runningCopy;
   if (dword_1001D4478 <= 30)
   {
-    v6 = v3;
+    v6 = runningCopy;
     if (dword_1001D4478 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       sub_10011F974();
@@ -135,70 +135,70 @@
   }
 }
 
-- (void)session:(id)a3 object:(id)a4 didUpdateRegion:(id)a5 previousRegion:(id)a6
+- (void)session:(id)session object:(id)object didUpdateRegion:(id)region previousRegion:(id)previousRegion
 {
-  v17 = a4;
-  v9 = a5;
-  v10 = a6;
+  objectCopy = object;
+  regionCopy = region;
+  previousRegionCopy = previousRegion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   deviceRegionChangedHandler = self->_deviceRegionChangedHandler;
   if (deviceRegionChangedHandler)
   {
-    v12 = objc_retainBlock(deviceRegionChangedHandler);
-    v13 = [v9 devicePresencePreset];
+    deviceIdentifer2 = objc_retainBlock(deviceRegionChangedHandler);
+    devicePresencePreset = [regionCopy devicePresencePreset];
     innerPresencePreset = self->_innerPresencePreset;
     if (dword_1001D4478 <= 30 && (dword_1001D4478 != -1 || _LogCategory_Initialize()))
     {
-      sub_10011F9B4(v10, v9);
+      sub_10011F9B4(previousRegionCopy, regionCopy);
     }
 
-    v15 = v13 == innerPresencePreset;
-    v16 = [v17 deviceIdentifer];
-    (v12)[2](v12, v16, v15);
+    v15 = devicePresencePreset == innerPresencePreset;
+    deviceIdentifer = [objectCopy deviceIdentifer];
+    (deviceIdentifer2)[2](deviceIdentifer2, deviceIdentifer, v15);
 
     goto LABEL_6;
   }
 
   if (dword_1001D4478 <= 30 && (dword_1001D4478 != -1 || _LogCategory_Initialize()))
   {
-    v12 = [v17 deviceIdentifer];
+    deviceIdentifer2 = [objectCopy deviceIdentifer];
     LogPrintF();
 LABEL_6:
   }
 }
 
-- (void)session:(id)a3 didFailWithError:(id)a4
+- (void)session:(id)session didFailWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4478 <= 30 && (dword_1001D4478 != -1 || _LogCategory_Initialize()))
   {
     sub_10011FA40();
   }
 
-  v5 = [(RPNIProximityEstimator *)self _createAndRunSession];
+  _createAndRunSession = [(RPNIProximityEstimator *)self _createAndRunSession];
 }
 
-- (void)session:(id)a3 didInvalidateWithError:(id)a4
+- (void)session:(id)session didInvalidateWithError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4478 <= 30 && (dword_1001D4478 != -1 || _LogCategory_Initialize()))
   {
     sub_10011FA80();
   }
 
-  if ([(NISession *)self->_session isEqual:v9])
+  if ([(NISession *)self->_session isEqual:sessionCopy])
   {
     session = self->_session;
     self->_session = 0;
 
-    v8 = [(RPNIProximityEstimator *)self _createAndRunSession];
+    _createAndRunSession = [(RPNIProximityEstimator *)self _createAndRunSession];
   }
 }
 
-- (void)sessionWasSuspended:(id)a3
+- (void)sessionWasSuspended:(id)suspended
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4478 <= 30 && (dword_1001D4478 != -1 || _LogCategory_Initialize()))
@@ -207,7 +207,7 @@ LABEL_6:
   }
 }
 
-- (void)sessionSuspensionEnded:(id)a3
+- (void)sessionSuspensionEnded:(id)ended
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (dword_1001D4478 <= 30 && (dword_1001D4478 != -1 || _LogCategory_Initialize()))
@@ -215,7 +215,7 @@ LABEL_6:
     sub_10011FADC();
   }
 
-  v4 = [(RPNIProximityEstimator *)self _createAndRunSession];
+  _createAndRunSession = [(RPNIProximityEstimator *)self _createAndRunSession];
 }
 
 @end

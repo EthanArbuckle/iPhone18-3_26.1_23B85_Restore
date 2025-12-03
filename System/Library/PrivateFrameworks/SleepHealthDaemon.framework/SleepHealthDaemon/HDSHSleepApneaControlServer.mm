@@ -1,23 +1,23 @@
 @interface HDSHSleepApneaControlServer
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7;
-- (HDSHSleepApneaControlServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 analyzer:(id)a7 analysisScheduler:(id)a8;
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error;
+- (HDSHSleepApneaControlServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate analyzer:(id)analyzer analysisScheduler:(id)scheduler;
 - (id)_clientRemoteObjectProxy;
 @end
 
 @implementation HDSHSleepApneaControlServer
 
-- (HDSHSleepApneaControlServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 analyzer:(id)a7 analysisScheduler:(id)a8
+- (HDSHSleepApneaControlServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate analyzer:(id)analyzer analysisScheduler:(id)scheduler
 {
-  v15 = a7;
-  v16 = a8;
+  analyzerCopy = analyzer;
+  schedulerCopy = scheduler;
   v20.receiver = self;
   v20.super_class = HDSHSleepApneaControlServer;
-  v17 = [(HDStandardTaskServer *)&v20 initWithUUID:a3 configuration:a4 client:a5 delegate:a6];
+  v17 = [(HDStandardTaskServer *)&v20 initWithUUID:d configuration:configuration client:client delegate:delegate];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_analyzer, a7);
-    objc_storeStrong(&v18->_analysisScheduler, a8);
+    objc_storeStrong(&v17->_analyzer, analyzer);
+    objc_storeStrong(&v18->_analysisScheduler, scheduler);
   }
 
   return v18;
@@ -25,43 +25,43 @@
 
 - (id)_clientRemoteObjectProxy
 {
-  v2 = [(HDStandardTaskServer *)self client];
-  v3 = [v2 connection];
-  v4 = [v3 remoteObjectProxy];
+  client = [(HDStandardTaskServer *)self client];
+  connection = [client connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
 
-  return v4;
+  return remoteObjectProxy;
 }
 
-+ (id)createTaskServerWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6 error:(id *)a7
++ (id)createTaskServerWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 profile];
-  v16 = [v15 profileExtensionWithIdentifier:*MEMORY[0x277D62658]];
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  profile = [clientCopy profile];
+  v16 = [profile profileExtensionWithIdentifier:*MEMORY[0x277D62658]];
 
   if (v16)
   {
     v17 = [HDSHBreathingDisturbanceAnalyzer alloc];
-    v18 = [v13 profile];
-    v19 = [(HDSHBreathingDisturbanceAnalyzer *)v17 initWithProfile:v18];
+    profile2 = [clientCopy profile];
+    v19 = [(HDSHBreathingDisturbanceAnalyzer *)v17 initWithProfile:profile2];
 
     v20 = [HDSHSleepApneaControlServer alloc];
-    v21 = [v16 breathingDisturbanceAnalysisScheduler];
-    v22 = [(HDSHSleepApneaControlServer *)v20 initWithUUID:v11 configuration:v12 client:v13 delegate:v14 analyzer:v19 analysisScheduler:v21];
+    breathingDisturbanceAnalysisScheduler = [v16 breathingDisturbanceAnalysisScheduler];
+    v22 = [(HDSHSleepApneaControlServer *)v20 initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy analyzer:v19 analysisScheduler:breathingDisturbanceAnalysisScheduler];
   }
 
   else
   {
-    v21 = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Profile extension not found for class %@", objc_opt_class()}];
-    if (v21)
+    breathingDisturbanceAnalysisScheduler = [MEMORY[0x277CCA9B8] hk_error:3 format:{@"Profile extension not found for class %@", objc_opt_class()}];
+    if (breathingDisturbanceAnalysisScheduler)
     {
-      if (a7)
+      if (error)
       {
-        v23 = v21;
+        v23 = breathingDisturbanceAnalysisScheduler;
         v22 = 0;
-        *a7 = v21;
+        *error = breathingDisturbanceAnalysisScheduler;
       }
 
       else
@@ -70,7 +70,7 @@
         v22 = 0;
       }
 
-      v19 = v21;
+      v19 = breathingDisturbanceAnalysisScheduler;
     }
 
     else

@@ -1,26 +1,26 @@
 @interface MXCellularConditionMetric
-- (MXCellularConditionMetric)initWithCellularConditionTime:(id)a3;
-- (MXCellularConditionMetric)initWithCoder:(id)a3;
+- (MXCellularConditionMetric)initWithCellularConditionTime:(id)time;
+- (MXCellularConditionMetric)initWithCoder:(id)coder;
 - (id)toDictionary;
 @end
 
 @implementation MXCellularConditionMetric
 
-- (MXCellularConditionMetric)initWithCellularConditionTime:(id)a3
+- (MXCellularConditionMetric)initWithCellularConditionTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v10.receiver = self;
   v10.super_class = MXCellularConditionMetric;
   v5 = [(MXMetric *)&v10 init];
   if (v5)
   {
-    if (!v4)
+    if (!timeCopy)
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    v6 = [[MXHistogram alloc] initWithHistogramBucketData:v4];
+    v6 = [[MXHistogram alloc] initWithHistogramBucketData:timeCopy];
     histogrammedCellularConditionTime = v5->_histogrammedCellularConditionTime;
     v5->_histogrammedCellularConditionTime = v6;
   }
@@ -31,15 +31,15 @@ LABEL_6:
   return v8;
 }
 
-- (MXCellularConditionMetric)initWithCoder:(id)a3
+- (MXCellularConditionMetric)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MXCellularConditionMetric;
   v5 = [(MXMetric *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cellConditionTime"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cellConditionTime"];
     histogrammedCellularConditionTime = v5->_histogrammedCellularConditionTime;
     v5->_histogrammedCellularConditionTime = v6;
   }
@@ -53,8 +53,8 @@ LABEL_6:
   histogrammedCellularConditionTime = self->_histogrammedCellularConditionTime;
   if (histogrammedCellularConditionTime)
   {
-    v5 = [(MXHistogram *)histogrammedCellularConditionTime toDictionary];
-    [v3 setObject:v5 forKey:@"cellConditionTime"];
+    toDictionary = [(MXHistogram *)histogrammedCellularConditionTime toDictionary];
+    [v3 setObject:toDictionary forKey:@"cellConditionTime"];
   }
 
   return v3;

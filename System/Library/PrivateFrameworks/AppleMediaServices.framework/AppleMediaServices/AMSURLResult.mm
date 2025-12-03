@@ -1,11 +1,11 @@
 @interface AMSURLResult
-+ (id)URLResultPromiseWithTaskInfo:(id)a3 object:(id)a4;
-- (AMSURLResult)initWithResult:(id)a3;
-- (AMSURLResult)initWithTask:(id)a3 response:(id)a4 data:(id)a5 object:(id)a6 logUUID:(id)a7 taskMetrics:(id)a8 loadURLEventDictionary:(id)a9;
-- (AMSURLResult)initWithTaskInfo:(id)a3 object:(id)a4 loadURLEventDictionary:(id)a5;
++ (id)URLResultPromiseWithTaskInfo:(id)info object:(id)object;
+- (AMSURLResult)initWithResult:(id)result;
+- (AMSURLResult)initWithTask:(id)task response:(id)response data:(id)data object:(id)object logUUID:(id)d taskMetrics:(id)metrics loadURLEventDictionary:(id)dictionary;
+- (AMSURLResult)initWithTaskInfo:(id)info object:(id)object loadURLEventDictionary:(id)dictionary;
 - (NSDictionary)responseHeaders;
 - (NSString)responseCorrelationId;
-- (id)valueForHTTPHeaderField:(id)a3;
+- (id)valueForHTTPHeaderField:(id)field;
 - (int64_t)responseStatusCode;
 @end
 
@@ -13,69 +13,69 @@
 
 - (int64_t)responseStatusCode
 {
-  v2 = [(AMSURLResult *)self response];
-  v3 = [v2 ams_statusCode];
+  response = [(AMSURLResult *)self response];
+  ams_statusCode = [response ams_statusCode];
 
-  return v3;
+  return ams_statusCode;
 }
 
 - (NSDictionary)responseHeaders
 {
-  v2 = [(AMSURLResult *)self response];
-  v3 = [v2 ams_allHeaderFields];
+  response = [(AMSURLResult *)self response];
+  ams_allHeaderFields = [response ams_allHeaderFields];
 
-  return v3;
+  return ams_allHeaderFields;
 }
 
 - (NSString)responseCorrelationId
 {
-  v2 = [(AMSURLResult *)self response];
-  v3 = [v2 ams_valueForHTTPHeaderField:@"X-Apple-Jingle-Correlation-Key"];
+  response = [(AMSURLResult *)self response];
+  v3 = [response ams_valueForHTTPHeaderField:@"X-Apple-Jingle-Correlation-Key"];
 
   return v3;
 }
 
-- (AMSURLResult)initWithResult:(id)a3
+- (AMSURLResult)initWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 task];
-  v6 = [v4 response];
-  v7 = [v4 data];
-  v8 = [v4 object];
-  v9 = [v4 logUUID];
-  v10 = [v4 taskMetrics];
-  v11 = [v4 loadURLEventDictionary];
+  resultCopy = result;
+  task = [resultCopy task];
+  response = [resultCopy response];
+  data = [resultCopy data];
+  object = [resultCopy object];
+  logUUID = [resultCopy logUUID];
+  taskMetrics = [resultCopy taskMetrics];
+  loadURLEventDictionary = [resultCopy loadURLEventDictionary];
 
-  v12 = [(AMSURLResult *)self initWithTask:v5 response:v6 data:v7 object:v8 logUUID:v9 taskMetrics:v10 loadURLEventDictionary:v11];
+  v12 = [(AMSURLResult *)self initWithTask:task response:response data:data object:object logUUID:logUUID taskMetrics:taskMetrics loadURLEventDictionary:loadURLEventDictionary];
   return v12;
 }
 
-+ (id)URLResultPromiseWithTaskInfo:(id)a3 object:(id)a4
++ (id)URLResultPromiseWithTaskInfo:(id)info object:(id)object
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  objectCopy = object;
   v8 = objc_opt_new();
-  v9 = [v6 properties];
-  v10 = [v9 purchaseInfo];
+  properties = [infoCopy properties];
+  purchaseInfo = [properties purchaseInfo];
 
-  if (v10)
+  if (purchaseInfo)
   {
-    v11 = [v6 createMetricsContextForDecodedObject:v7];
+    v11 = [infoCopy createMetricsContextForDecodedObject:objectCopy];
     v12 = [AMSMetricsLoadURLEvent loadURLEventPromiseWithContext:v11];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __52__AMSURLResult_URLResultPromiseWithTaskInfo_object___block_invoke;
     v15[3] = &unk_1E73BD468;
-    v19 = a1;
-    v16 = v6;
+    selfCopy = self;
+    v16 = infoCopy;
     v17 = v8;
-    v18 = v7;
+    v18 = objectCopy;
     [v12 addFinishBlock:v15];
   }
 
   else
   {
-    v13 = [[a1 alloc] initWithTaskInfo:v6 object:v7 loadURLEventDictionary:0];
+    v13 = [[self alloc] initWithTaskInfo:infoCopy object:objectCopy loadURLEventDictionary:0];
     [v8 finishWithResult:v13];
   }
 
@@ -121,47 +121,47 @@ void __52__AMSURLResult_URLResultPromiseWithTaskInfo_object___block_invoke(uint6
   [v13 finishWithResult:v18];
 }
 
-- (AMSURLResult)initWithTaskInfo:(id)a3 object:(id)a4 loadURLEventDictionary:(id)a5
+- (AMSURLResult)initWithTaskInfo:(id)info object:(id)object loadURLEventDictionary:(id)dictionary
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 task];
-  v12 = [v10 response];
-  v13 = [v10 data];
-  v14 = [v10 properties];
-  v15 = [v14 logUUID];
-  v16 = [v10 metrics];
+  dictionaryCopy = dictionary;
+  objectCopy = object;
+  infoCopy = info;
+  task = [infoCopy task];
+  response = [infoCopy response];
+  data = [infoCopy data];
+  properties = [infoCopy properties];
+  logUUID = [properties logUUID];
+  metrics = [infoCopy metrics];
 
-  v17 = [(AMSURLResult *)self initWithTask:v11 response:v12 data:v13 object:v9 logUUID:v15 taskMetrics:v16 loadURLEventDictionary:v8];
+  v17 = [(AMSURLResult *)self initWithTask:task response:response data:data object:objectCopy logUUID:logUUID taskMetrics:metrics loadURLEventDictionary:dictionaryCopy];
   return v17;
 }
 
-- (AMSURLResult)initWithTask:(id)a3 response:(id)a4 data:(id)a5 object:(id)a6 logUUID:(id)a7 taskMetrics:(id)a8 loadURLEventDictionary:(id)a9
+- (AMSURLResult)initWithTask:(id)task response:(id)response data:(id)data object:(id)object logUUID:(id)d taskMetrics:(id)metrics loadURLEventDictionary:(id)dictionary
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  taskCopy = task;
+  responseCopy = response;
+  dataCopy = data;
+  objectCopy = object;
+  dCopy = d;
+  metricsCopy = metrics;
+  dictionaryCopy = dictionary;
   v30.receiver = self;
   v30.super_class = AMSURLResult;
   v19 = [(AMSURLResult *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_task, a3);
-    objc_storeStrong(&v20->_response, a4);
-    objc_storeStrong(&v20->_data, a5);
-    objc_storeStrong(&v20->_object, a6);
-    v21 = [v16 copy];
+    objc_storeStrong(&v19->_task, task);
+    objc_storeStrong(&v20->_response, response);
+    objc_storeStrong(&v20->_data, data);
+    objc_storeStrong(&v20->_object, object);
+    v21 = [dCopy copy];
     logUUID = v20->_logUUID;
     v20->_logUUID = v21;
 
-    objc_storeStrong(&v20->_taskMetrics, a8);
-    v23 = [v18 copy];
+    objc_storeStrong(&v20->_taskMetrics, metrics);
+    v23 = [dictionaryCopy copy];
     loadURLEventDictionary = v20->_loadURLEventDictionary;
     v20->_loadURLEventDictionary = v23;
   }
@@ -169,11 +169,11 @@ void __52__AMSURLResult_URLResultPromiseWithTaskInfo_object___block_invoke(uint6
   return v20;
 }
 
-- (id)valueForHTTPHeaderField:(id)a3
+- (id)valueForHTTPHeaderField:(id)field
 {
-  v4 = a3;
-  v5 = [(AMSURLResult *)self response];
-  v6 = [v5 ams_valueForHTTPHeaderField:v4];
+  fieldCopy = field;
+  response = [(AMSURLResult *)self response];
+  v6 = [response ams_valueForHTTPHeaderField:fieldCopy];
 
   return v6;
 }

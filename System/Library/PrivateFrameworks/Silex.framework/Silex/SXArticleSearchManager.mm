@@ -1,11 +1,11 @@
 @interface SXArticleSearchManager
 - (SXArticleSearchManager)init;
-- (id)moveHighlightWithContext:(id)a3 icc:(id)a4;
-- (id)searchItems:(id)a3 withContext:(id)a4 icc:(id)a5;
-- (unint64_t)searchTextStorage:(id)a3 forContext:(id)a4 withOptions:(unint64_t)a5 icc:(id)a6 currentCount:(unint64_t)a7;
-- (void)activateHighlightAtIndex:(unint64_t)a3 icc:(id)a4 isActive:(BOOL)a5 keyboardHeight:(unint64_t)a6;
-- (void)clearSearchHighlights:(id)a3;
-- (void)reloadWithItems:(id)a3 icc:(id)a4;
+- (id)moveHighlightWithContext:(id)context icc:(id)icc;
+- (id)searchItems:(id)items withContext:(id)context icc:(id)icc;
+- (unint64_t)searchTextStorage:(id)storage forContext:(id)context withOptions:(unint64_t)options icc:(id)icc currentCount:(unint64_t)count;
+- (void)activateHighlightAtIndex:(unint64_t)index icc:(id)icc isActive:(BOOL)active keyboardHeight:(unint64_t)height;
+- (void)clearSearchHighlights:(id)highlights;
+- (void)reloadWithItems:(id)items icc:(id)icc;
 @end
 
 @implementation SXArticleSearchManager
@@ -21,9 +21,9 @@
     highlightController = v2->_highlightController;
     v2->_highlightController = v3;
 
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     highlights = v2->_highlights;
-    v2->_highlights = v5;
+    v2->_highlights = array;
 
     v2->_activeIndex = -1;
     v2->_isFirstOccurrence = 1;
@@ -32,26 +32,26 @@
   return v2;
 }
 
-- (id)searchItems:(id)a3 withContext:(id)a4 icc:(id)a5
+- (id)searchItems:(id)items withContext:(id)context icc:(id)icc
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SXArticleSearchManager *)self highlights];
-  v12 = [v11 count];
+  itemsCopy = items;
+  contextCopy = context;
+  iccCopy = icc;
+  highlights = [(SXArticleSearchManager *)self highlights];
+  v12 = [highlights count];
 
   if (v12)
   {
-    [(SXArticleSearchManager *)self clearSearchHighlights:v10];
+    [(SXArticleSearchManager *)self clearSearchHighlights:iccCopy];
   }
 
-  v13 = -[SXArticleSearchManager tskSearchOptions:](self, "tskSearchOptions:", [v9 options]);
+  v13 = -[SXArticleSearchManager tskSearchOptions:](self, "tskSearchOptions:", [contextCopy options]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v14 = v8;
+  v14 = itemsCopy;
   v15 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v15)
   {
@@ -67,7 +67,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v17 += [(SXArticleSearchManager *)self searchTextStorage:*(*(&v22 + 1) + 8 * i) forContext:v9 withOptions:v13 icc:v10 currentCount:v17, v22];
+        v17 += [(SXArticleSearchManager *)self searchTextStorage:*(*(&v22 + 1) + 8 * i) forContext:contextCopy withOptions:v13 icc:iccCopy currentCount:v17, v22];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -86,17 +86,17 @@
   return v20;
 }
 
-- (unint64_t)searchTextStorage:(id)a3 forContext:(id)a4 withOptions:(unint64_t)a5 icc:(id)a6 currentCount:(unint64_t)a7
+- (unint64_t)searchTextStorage:(id)storage forContext:(id)context withOptions:(unint64_t)options icc:(id)icc currentCount:(unint64_t)count
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = [(SXTangierTextRenderCollectorItem *)v11 storage];
-  v15 = [(SXTangierTextRenderCollectorItem *)v11 flowInfo];
-  v16 = [v13 repForInfo:v15];
+  storageCopy = storage;
+  contextCopy = context;
+  iccCopy = icc;
+  storage = [(SXTangierTextRenderCollectorItem *)storageCopy storage];
+  flowInfo = [(SXTangierTextRenderCollectorItem *)storageCopy flowInfo];
+  v16 = [iccCopy repForInfo:flowInfo];
 
-  v17 = [(SXTangierTextRenderCollectorItem *)v11 flowLayoutWithICC:v13];
-  v18 = [v12 searchTerm];
+  v17 = [(SXTangierTextRenderCollectorItem *)storageCopy flowLayoutWithICC:iccCopy];
+  searchTerm = [contextCopy searchTerm];
   v48 = 0;
   v49 = &v48;
   v50 = 0x2020000000;
@@ -110,10 +110,10 @@
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x3010000000;
-  v45 = 0;
+  range = 0;
   v46 = 0;
   v44[3] = &unk_1D83A8029;
-  v45 = [v14 range];
+  range = [storage range];
   v46 = v19;
   v20 = TSUProtocolCast();
   if (v20 && (objc_opt_respondsToSelector() & 1) != 0)
@@ -122,29 +122,29 @@
     v30[1] = 3221225472;
     v30[2] = __84__SXArticleSearchManager_searchTextStorage_forContext_withOptions_icc_currentCount___block_invoke;
     v30[3] = &unk_1E8501150;
-    v31 = v14;
-    v28 = v18;
-    v21 = v18;
+    v31 = storage;
+    v28 = searchTerm;
+    v21 = searchTerm;
     v22 = v17;
-    v23 = a5;
+    optionsCopy = options;
     v24 = v21;
-    v42 = v23;
+    v42 = optionsCopy;
     v32 = v21;
     v39 = v44;
-    v33 = v12;
+    v33 = contextCopy;
     v40 = v47;
     v34 = v16;
     v35 = v22;
-    v36 = self;
-    v37 = v11;
-    v38 = v13;
+    selfCopy = self;
+    v37 = storageCopy;
+    v38 = iccCopy;
     v41 = &v48;
-    v43 = a7;
-    v25 = [v20 searchForString:v24 options:v23 onHit:v30];
+    countCopy = count;
+    v25 = [v20 searchForString:v24 options:optionsCopy onHit:v30];
     [(SXArticleSearchManager *)self setActiveIndex:0];
     [(SXArticleSearchManager *)self setIsFirstOccurrence:0];
     v17 = v22;
-    v18 = v28;
+    searchTerm = v28;
     if (v25)
     {
       while (([v25 isComplete] & 1) == 0)
@@ -285,31 +285,31 @@ void __84__SXArticleSearchManager_searchTextStorage_forContext_withOptions_icc_c
   }
 }
 
-- (void)activateHighlightAtIndex:(unint64_t)a3 icc:(id)a4 isActive:(BOOL)a5 keyboardHeight:(unint64_t)a6
+- (void)activateHighlightAtIndex:(unint64_t)index icc:(id)icc isActive:(BOOL)active keyboardHeight:(unint64_t)height
 {
-  v7 = a5;
-  v40 = a4;
-  if (!v7)
+  activeCopy = active;
+  iccCopy = icc;
+  if (!activeCopy)
   {
-    v10 = [(SXArticleSearchManager *)self highlightController];
-    [v10 removeActiveLayers];
+    highlightController = [(SXArticleSearchManager *)self highlightController];
+    [highlightController removeActiveLayers];
   }
 
-  v11 = [(SXArticleSearchManager *)self highlights];
-  v38 = a3;
-  v12 = [v11 objectAtIndexedSubscript:a3];
+  highlights = [(SXArticleSearchManager *)self highlights];
+  indexCopy = index;
+  v12 = [highlights objectAtIndexedSubscript:index];
 
-  v13 = [v12 rects];
-  v14 = [v13 count];
+  rects = [v12 rects];
+  v14 = [rects count];
 
   if (v14)
   {
     v15 = 0;
-    v39 = v7;
+    v39 = activeCopy;
     do
     {
       [v12 rects];
-      v17 = v16 = a6;
+      v17 = v16 = height;
       v18 = [v17 objectAtIndexedSubscript:v15];
 
       [v18 CGRectValue];
@@ -317,87 +317,87 @@ void __84__SXArticleSearchManager_searchTextStorage_forContext_withOptions_icc_c
       v22 = v21;
       v24 = v23;
       v26 = v25;
-      v27 = [v12 ranges];
-      v28 = [v27 objectAtIndexedSubscript:v15];
+      ranges = [v12 ranges];
+      v28 = [ranges objectAtIndexedSubscript:v15];
 
-      v29 = [v28 rangeValue];
+      rangeValue = [v28 rangeValue];
       v31 = v30;
-      v32 = [(SXArticleSearchManager *)self highlightController];
-      v33 = [v12 item];
+      highlightController2 = [(SXArticleSearchManager *)self highlightController];
+      item = [v12 item];
       LOBYTE(v37) = 0;
-      v34 = v29;
-      a6 = v16;
-      [v32 applyHighlightForStorage:v33 withRect:v34 inRange:v31 icc:v40 isActive:v39 keyboardHeight:v16 isReload:{v20, v22, v24, v26, v37}];
+      v34 = rangeValue;
+      height = v16;
+      [highlightController2 applyHighlightForStorage:item withRect:v34 inRange:v31 icc:iccCopy isActive:v39 keyboardHeight:v16 isReload:{v20, v22, v24, v26, v37}];
 
       ++v15;
-      v35 = [v12 rects];
-      v36 = [v35 count];
+      rects2 = [v12 rects];
+      v36 = [rects2 count];
     }
 
     while (v15 < v36);
   }
 
-  [(SXArticleSearchManager *)self setActiveIndex:v38];
+  [(SXArticleSearchManager *)self setActiveIndex:indexCopy];
 }
 
-- (id)moveHighlightWithContext:(id)a3 icc:(id)a4
+- (id)moveHighlightWithContext:(id)context icc:(id)icc
 {
-  v6 = a3;
-  v7 = a4;
-  -[SXArticleSearchManager activateHighlightAtIndex:icc:isActive:keyboardHeight:](self, "activateHighlightAtIndex:icc:isActive:keyboardHeight:", [v6 index], v7, 0, objc_msgSend(v6, "keyboardHeight"));
-  v8 = [v6 index];
-  v9 = [v6 action];
-  if (v9 == 2)
+  contextCopy = context;
+  iccCopy = icc;
+  -[SXArticleSearchManager activateHighlightAtIndex:icc:isActive:keyboardHeight:](self, "activateHighlightAtIndex:icc:isActive:keyboardHeight:", [contextCopy index], iccCopy, 0, objc_msgSend(contextCopy, "keyboardHeight"));
+  index = [contextCopy index];
+  action = [contextCopy action];
+  if (action == 2)
   {
-    if (v8)
+    if (index)
     {
-      --v8;
+      --index;
     }
 
     else
     {
-      v12 = [(SXArticleSearchManager *)self highlights];
-      v8 = [v12 count] - 1;
+      highlights = [(SXArticleSearchManager *)self highlights];
+      index = [highlights count] - 1;
     }
   }
 
-  else if (v9 == 1)
+  else if (action == 1)
   {
-    v10 = [(SXArticleSearchManager *)self highlights];
-    v11 = [v10 count];
+    highlights2 = [(SXArticleSearchManager *)self highlights];
+    v11 = [highlights2 count];
 
-    if (v8 + 1 < v11)
+    if (index + 1 < v11)
     {
-      ++v8;
+      ++index;
     }
 
     else
     {
-      v8 = 0;
+      index = 0;
     }
   }
 
-  [(SXArticleSearchManager *)self setActiveIndex:v8];
-  -[SXArticleSearchManager activateHighlightAtIndex:icc:isActive:keyboardHeight:](self, "activateHighlightAtIndex:icc:isActive:keyboardHeight:", v8, v7, 1, [v6 keyboardHeight]);
-  v13 = -[SXSearchResults initWithTotal:index:]([SXSearchResults alloc], "initWithTotal:index:", [v6 total], -[SXArticleSearchManager activeIndex](self, "activeIndex"));
+  [(SXArticleSearchManager *)self setActiveIndex:index];
+  -[SXArticleSearchManager activateHighlightAtIndex:icc:isActive:keyboardHeight:](self, "activateHighlightAtIndex:icc:isActive:keyboardHeight:", index, iccCopy, 1, [contextCopy keyboardHeight]);
+  v13 = -[SXSearchResults initWithTotal:index:]([SXSearchResults alloc], "initWithTotal:index:", [contextCopy total], -[SXArticleSearchManager activeIndex](self, "activeIndex"));
 
   return v13;
 }
 
-- (void)reloadWithItems:(id)a3 icc:(id)a4
+- (void)reloadWithItems:(id)items icc:(id)icc
 {
   v72 = *MEMORY[0x1E69E9840];
-  v49 = a3;
-  v54 = a4;
-  v6 = [(SXArticleSearchManager *)self highlights];
-  v7 = [v6 count];
+  itemsCopy = items;
+  iccCopy = icc;
+  highlights = [(SXArticleSearchManager *)self highlights];
+  v7 = [highlights count];
 
   if (v7)
   {
-    v8 = [(SXArticleSearchManager *)self highlightController];
-    [v8 clearHighlights];
+    highlightController = [(SXArticleSearchManager *)self highlightController];
+    [highlightController clearHighlights];
 
-    v46 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v65 = 0u;
     v66 = 0u;
     v67 = 0u;
@@ -407,7 +407,7 @@ void __84__SXArticleSearchManager_searchTextStorage_forContext_withOptions_icc_c
     if (v50)
     {
       v48 = *v66;
-      v53 = self;
+      selfCopy = self;
       do
       {
         for (i = 0; i != v50; ++i)
@@ -422,7 +422,7 @@ void __84__SXArticleSearchManager_searchTextStorage_forContext_withOptions_icc_c
           v62 = 0u;
           v63 = 0u;
           v64 = 0u;
-          v10 = v49;
+          v10 = itemsCopy;
           v11 = [v10 countByEnumeratingWithState:&v61 objects:v70 count:16];
           if (v11)
           {
@@ -439,10 +439,10 @@ LABEL_9:
               }
 
               v15 = *(*(&v61 + 1) + 8 * v14);
-              v16 = [(SXTangierTextRenderCollectorItem *)v15 componentIdentifier];
-              v17 = [v56 item];
-              v18 = [(SXTangierTextRenderCollectorItem *)v17 componentIdentifier];
-              v19 = [v16 isEqualToString:v18];
+              componentIdentifier = [(SXTangierTextRenderCollectorItem *)v15 componentIdentifier];
+              item = [v56 item];
+              componentIdentifier2 = [(SXTangierTextRenderCollectorItem *)item componentIdentifier];
+              v19 = [componentIdentifier isEqualToString:componentIdentifier2];
 
               if (v19)
               {
@@ -471,16 +471,16 @@ LABEL_9:
             }
 
             v21 = v20;
-            v22 = [(SXTangierTextRenderCollectorItem *)v20 flowInfo];
-            v55 = [v54 repForInfo:v22];
+            flowInfo = [(SXTangierTextRenderCollectorItem *)v20 flowInfo];
+            v55 = [iccCopy repForInfo:flowInfo];
 
-            v23 = [MEMORY[0x1E695DF70] array];
+            array2 = [MEMORY[0x1E695DF70] array];
             v57 = 0u;
             v58 = 0u;
             v59 = 0u;
             v60 = 0u;
-            v52 = [v56 ranges];
-            v24 = [v52 countByEnumeratingWithState:&v57 objects:v69 count:16];
+            ranges = [v56 ranges];
+            v24 = [ranges countByEnumeratingWithState:&v57 objects:v69 count:16];
             if (v24)
             {
               v25 = v24;
@@ -491,12 +491,12 @@ LABEL_9:
                 {
                   if (*v58 != v26)
                   {
-                    objc_enumerationMutation(v52);
+                    objc_enumerationMutation(ranges);
                   }
 
-                  v28 = [*(*(&v57 + 1) + 8 * j) rangeValue];
+                  rangeValue = [*(*(&v57 + 1) + 8 * j) rangeValue];
                   v30 = v29;
-                  v31 = [MEMORY[0x1E69D5728] selectionWithRange:{v28, v29}];
+                  v31 = [MEMORY[0x1E69D5728] selectionWithRange:{rangeValue, v29}];
                   [v55 rectForSelection:v31];
                   v33 = v32;
                   v35 = v34;
@@ -504,27 +504,27 @@ LABEL_9:
                   v39 = v38;
 
                   v40 = [MEMORY[0x1E696B098] valueWithCGRect:{v33, v35, v37, v39}];
-                  [v23 addObject:v40];
+                  [array2 addObject:v40];
 
-                  v41 = [(SXArticleSearchManager *)v53 highlightController];
+                  highlightController2 = [(SXArticleSearchManager *)selfCopy highlightController];
                   LOBYTE(v45) = 1;
-                  [v41 applyHighlightForStorage:v21 withRect:v28 inRange:v30 icc:v54 isActive:objc_msgSend(v56 keyboardHeight:"index") == -[SXArticleSearchManager activeIndex](v53 isReload:{"activeIndex"), 0, v33, v35, v37, v39, v45}];
+                  [highlightController2 applyHighlightForStorage:v21 withRect:rangeValue inRange:v30 icc:iccCopy isActive:objc_msgSend(v56 keyboardHeight:"index") == -[SXArticleSearchManager activeIndex](selfCopy isReload:{"activeIndex"), 0, v33, v35, v37, v39, v45}];
                 }
 
-                v25 = [v52 countByEnumeratingWithState:&v57 objects:v69 count:16];
+                v25 = [ranges countByEnumeratingWithState:&v57 objects:v69 count:16];
               }
 
               while (v25);
             }
 
             v42 = [SXSearchHighlight alloc];
-            v43 = [v56 ranges];
+            ranges2 = [v56 ranges];
             v10 = v21;
-            v44 = -[SXSearchHighlight initWithRects:ranges:item:index:](v42, "initWithRects:ranges:item:index:", v23, v43, v21, [v56 index]);
+            v44 = -[SXSearchHighlight initWithRects:ranges:item:index:](v42, "initWithRects:ranges:item:index:", array2, ranges2, v21, [v56 index]);
 
-            [v46 addObject:v44];
+            [array addObject:v44];
             i = v51;
-            self = v53;
+            self = selfCopy;
           }
 
 LABEL_25:
@@ -536,19 +536,19 @@ LABEL_25:
       while (v50);
     }
 
-    [(SXArticleSearchManager *)self setHighlights:v46];
+    [(SXArticleSearchManager *)self setHighlights:array];
   }
 }
 
-- (void)clearSearchHighlights:(id)a3
+- (void)clearSearchHighlights:(id)highlights
 {
-  [a3 setShowGrayOverlay:0];
+  [highlights setShowGrayOverlay:0];
   [(SXArticleSearchManager *)self setIsFirstOccurrence:1];
-  v4 = [(SXArticleSearchManager *)self highlightController];
-  [v4 clearHighlights];
+  highlightController = [(SXArticleSearchManager *)self highlightController];
+  [highlightController clearHighlights];
 
-  v5 = [(SXArticleSearchManager *)self highlights];
-  [v5 removeAllObjects];
+  highlights = [(SXArticleSearchManager *)self highlights];
+  [highlights removeAllObjects];
 
   [(SXArticleSearchManager *)self setActiveIndex:-1];
 }

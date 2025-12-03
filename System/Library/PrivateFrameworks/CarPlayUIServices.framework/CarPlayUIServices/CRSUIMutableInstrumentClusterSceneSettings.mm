@@ -1,7 +1,7 @@
 @interface CRSUIMutableInstrumentClusterSceneSettings
 - (NSNumber)frameRateLimit;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)mapStyle;
 - (unint64_t)displayLocation;
 - (unint64_t)hostedAltScreenPresentationType;
@@ -10,165 +10,165 @@
 - (unint64_t)showsCompass;
 - (unint64_t)showsETA;
 - (unint64_t)showsSpeedLimit;
-- (void)setDisplayLocation:(unint64_t)a3;
-- (void)setFrameRateLimit:(id)a3;
-- (void)setHostedAltScreenPresentationType:(unint64_t)a3;
-- (void)setItemType:(unint64_t)a3;
-- (void)setLayoutJustification:(unint64_t)a3;
-- (void)setMapStyle:(int64_t)a3;
-- (void)setShowsCompass:(unint64_t)a3;
-- (void)setShowsETA:(unint64_t)a3;
-- (void)setShowsSpeedLimit:(unint64_t)a3;
+- (void)setDisplayLocation:(unint64_t)location;
+- (void)setFrameRateLimit:(id)limit;
+- (void)setHostedAltScreenPresentationType:(unint64_t)type;
+- (void)setItemType:(unint64_t)type;
+- (void)setLayoutJustification:(unint64_t)justification;
+- (void)setMapStyle:(int64_t)style;
+- (void)setShowsCompass:(unint64_t)compass;
+- (void)setShowsETA:(unint64_t)a;
+- (void)setShowsSpeedLimit:(unint64_t)limit;
 @end
 
 @implementation CRSUIMutableInstrumentClusterSceneSettings
 
 - (unint64_t)itemType
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273408];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273408];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)setItemType:(unint64_t)a3
+- (void)setItemType:(unint64_t)type
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:4293273408];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [otherSettings setObject:v4 forSetting:4293273408];
 }
 
 - (unint64_t)layoutJustification
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273409];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273409];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)setLayoutJustification:(unint64_t)a3
+- (void)setLayoutJustification:(unint64_t)justification
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:4293273409];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:justification];
+  [otherSettings setObject:v4 forSetting:4293273409];
 }
 
 - (unint64_t)showsCompass
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273410];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273410];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)setShowsCompass:(unint64_t)a3
+- (void)setShowsCompass:(unint64_t)compass
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:4293273410];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:compass];
+  [otherSettings setObject:v4 forSetting:4293273410];
 }
 
 - (unint64_t)showsSpeedLimit
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273411];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273411];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)setShowsSpeedLimit:(unint64_t)a3
+- (void)setShowsSpeedLimit:(unint64_t)limit
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:4293273411];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:limit];
+  [otherSettings setObject:v4 forSetting:4293273411];
 }
 
 - (unint64_t)showsETA
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273412];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273412];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)setShowsETA:(unint64_t)a3
+- (void)setShowsETA:(unint64_t)a
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:4293273412];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a];
+  [otherSettings setObject:v4 forSetting:4293273412];
 }
 
 - (NSNumber)frameRateLimit
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422722];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422722];
 
   return v3;
 }
 
-- (void)setFrameRateLimit:(id)a3
+- (void)setFrameRateLimit:(id)limit
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:3152422722];
+  limitCopy = limit;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:limitCopy forSetting:3152422722];
 }
 
 - (int64_t)mapStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3152422721];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3152422721];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (void)setMapStyle:(int64_t)a3
+- (void)setMapStyle:(int64_t)style
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:3152422721];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:style];
+  [otherSettings setObject:v4 forSetting:3152422721];
 }
 
 - (unint64_t)hostedAltScreenPresentationType
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273415];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273415];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)setHostedAltScreenPresentationType:(unint64_t)a3
+- (void)setHostedAltScreenPresentationType:(unint64_t)type
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:4293273415];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  [otherSettings setObject:v4 forSetting:4293273415];
 }
 
 - (unint64_t)displayLocation
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4293273416];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4293273416];
 
-  v4 = [v3 unsignedIntegerValue];
-  return v4;
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)setDisplayLocation:(unint64_t)a3
+- (void)setDisplayLocation:(unint64_t)location
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:4293273416];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:location];
+  [otherSettings setObject:v4 forSetting:4293273416];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CRSUIInstrumentClusterSceneSettings allocWithZone:a3];
+  v4 = [CRSUIInstrumentClusterSceneSettings allocWithZone:zone];
 
   return [(FBSSettings *)v4 initWithSettings:self];
 }

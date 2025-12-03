@@ -1,12 +1,12 @@
 @interface CNWallpaperMetadata
 + (id)log;
-- (BOOL)isEqual:(id)a3;
-- (CNWallpaperMetadata)initWithCoder:(id)a3;
-- (CNWallpaperMetadata)initWithDataRepresentation:(id)a3;
-- (CNWallpaperMetadata)initWithFontDescription:(id)a3 fontColorDescription:(id)a4 backgroundColorDescription:(id)a5 extensionBundleID:(id)a6 vertical:(BOOL)a7;
+- (BOOL)isEqual:(id)equal;
+- (CNWallpaperMetadata)initWithCoder:(id)coder;
+- (CNWallpaperMetadata)initWithDataRepresentation:(id)representation;
+- (CNWallpaperMetadata)initWithFontDescription:(id)description fontColorDescription:(id)colorDescription backgroundColorDescription:(id)backgroundColorDescription extensionBundleID:(id)d vertical:(BOOL)vertical;
 - (NSData)dataRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNWallpaperMetadata
@@ -32,37 +32,37 @@ uint64_t __26__CNWallpaperMetadata_log__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (CNWallpaperMetadata)initWithFontDescription:(id)a3 fontColorDescription:(id)a4 backgroundColorDescription:(id)a5 extensionBundleID:(id)a6 vertical:(BOOL)a7
+- (CNWallpaperMetadata)initWithFontDescription:(id)description fontColorDescription:(id)colorDescription backgroundColorDescription:(id)backgroundColorDescription extensionBundleID:(id)d vertical:(BOOL)vertical
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  descriptionCopy = description;
+  colorDescriptionCopy = colorDescription;
+  backgroundColorDescriptionCopy = backgroundColorDescription;
+  dCopy = d;
   v21.receiver = self;
   v21.super_class = CNWallpaperMetadata;
   v17 = [(CNWallpaperMetadata *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_fontDescription, a3);
-    objc_storeStrong(&v18->_fontColorDescription, a4);
-    objc_storeStrong(&v18->_backgroundColorDescription, a5);
-    objc_storeStrong(&v18->_extensionBundleID, a6);
-    v18->_vertical = a7;
+    objc_storeStrong(&v17->_fontDescription, description);
+    objc_storeStrong(&v18->_fontColorDescription, colorDescription);
+    objc_storeStrong(&v18->_backgroundColorDescription, backgroundColorDescription);
+    objc_storeStrong(&v18->_extensionBundleID, d);
+    v18->_vertical = vertical;
     v19 = v18;
   }
 
   return v18;
 }
 
-- (CNWallpaperMetadata)initWithDataRepresentation:(id)a3
+- (CNWallpaperMetadata)initWithDataRepresentation:(id)representation
 {
-  if (a3)
+  if (representation)
   {
     v4 = MEMORY[0x1E696ACD0];
-    v5 = a3;
+    representationCopy = representation;
     v17 = 0;
-    v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v17];
+    v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:&v17];
 
     v7 = v17;
     if (v6)
@@ -110,10 +110,10 @@ uint64_t __26__CNWallpaperMetadata_log__block_invoke()
   return v2;
 }
 
-- (CNWallpaperMetadata)initWithCoder:(id)a3
+- (CNWallpaperMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"version"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"version"];
   if (v5 >= 3)
   {
     v31 = v5;
@@ -123,7 +123,7 @@ uint64_t __26__CNWallpaperMetadata_log__block_invoke()
       [(CNWallpaperMetadata *)v31 initWithCoder:v32, v33, v34, v35, v36, v37, v38];
     }
 
-    v30 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -132,7 +132,7 @@ uint64_t __26__CNWallpaperMetadata_log__block_invoke()
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"_fontDescription"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"_fontDescription"];
     v11 = [v10 copy];
     fontDescription = self->_fontDescription;
     self->_fontDescription = v11;
@@ -141,7 +141,7 @@ uint64_t __26__CNWallpaperMetadata_log__block_invoke()
     v14 = objc_opt_class();
     v15 = objc_opt_class();
     v16 = [v13 setWithObjects:{v14, v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"_fontColorDescription"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"_fontColorDescription"];
     v18 = [v17 copy];
     fontColorDescription = self->_fontColorDescription;
     self->_fontColorDescription = v18;
@@ -150,57 +150,57 @@ uint64_t __26__CNWallpaperMetadata_log__block_invoke()
     v21 = objc_opt_class();
     v22 = objc_opt_class();
     v23 = [v20 setWithObjects:{v21, v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"_backgroundColorDescription"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"_backgroundColorDescription"];
     v25 = [v24 copy];
     backgroundColorDescription = self->_backgroundColorDescription;
     self->_backgroundColorDescription = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_extensionBundleID"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_extensionBundleID"];
     v28 = [v27 copy];
     extensionBundleID = self->_extensionBundleID;
     self->_extensionBundleID = v28;
 
-    self->_vertical = [v4 decodeBoolForKey:@"_vertical"];
-    v30 = self;
+    self->_vertical = [coderCopy decodeBoolForKey:@"_vertical"];
+    selfCopy = self;
   }
 
-  return v30;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:2 forKey:@"version"];
-  [v4 encodeObject:self->_fontDescription forKey:@"_fontDescription"];
-  [v4 encodeObject:self->_fontColorDescription forKey:@"_fontColorDescription"];
-  [v4 encodeObject:self->_backgroundColorDescription forKey:@"_backgroundColorDescription"];
-  [v4 encodeObject:self->_extensionBundleID forKey:@"_extensionBundleID"];
-  [v4 encodeBool:self->_vertical forKey:@"_vertical"];
+  coderCopy = coder;
+  [coderCopy encodeInt:2 forKey:@"version"];
+  [coderCopy encodeObject:self->_fontDescription forKey:@"_fontDescription"];
+  [coderCopy encodeObject:self->_fontColorDescription forKey:@"_fontColorDescription"];
+  [coderCopy encodeObject:self->_backgroundColorDescription forKey:@"_backgroundColorDescription"];
+  [coderCopy encodeObject:self->_extensionBundleID forKey:@"_extensionBundleID"];
+  [coderCopy encodeBool:self->_vertical forKey:@"_vertical"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CNWallpaperMetadata);
-  v5 = [(CNWallpaperMetadata *)self fontDescription];
-  [(CNWallpaperMetadata *)v4 setFontDescription:v5];
+  fontDescription = [(CNWallpaperMetadata *)self fontDescription];
+  [(CNWallpaperMetadata *)v4 setFontDescription:fontDescription];
 
-  v6 = [(CNWallpaperMetadata *)self fontColorDescription];
-  [(CNWallpaperMetadata *)v4 setFontColorDescription:v6];
+  fontColorDescription = [(CNWallpaperMetadata *)self fontColorDescription];
+  [(CNWallpaperMetadata *)v4 setFontColorDescription:fontColorDescription];
 
-  v7 = [(CNWallpaperMetadata *)self backgroundColorDescription];
-  [(CNWallpaperMetadata *)v4 setBackgroundColorDescription:v7];
+  backgroundColorDescription = [(CNWallpaperMetadata *)self backgroundColorDescription];
+  [(CNWallpaperMetadata *)v4 setBackgroundColorDescription:backgroundColorDescription];
 
-  v8 = [(CNWallpaperMetadata *)self extensionBundleID];
-  [(CNWallpaperMetadata *)v4 setExtensionBundleID:v8];
+  extensionBundleID = [(CNWallpaperMetadata *)self extensionBundleID];
+  [(CNWallpaperMetadata *)v4 setExtensionBundleID:extensionBundleID];
 
   [(CNWallpaperMetadata *)v4 setVertical:[(CNWallpaperMetadata *)self isVertical]];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v14) = 1;
   }
@@ -208,10 +208,10 @@ uint64_t __26__CNWallpaperMetadata_log__block_invoke()
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNWallpaperMetadata fontDescription](self, "fontDescription"), v6 = -[CNWallpaperMetadata fontDescription](v4, "fontDescription"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNWallpaperMetadata fontColorDescription](self, "fontColorDescription"), v8 = -[CNWallpaperMetadata fontColorDescription](v4, "fontColorDescription"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNWallpaperMetadata backgroundColorDescription](self, "backgroundColorDescription"), v10 = -[CNWallpaperMetadata backgroundColorDescription](v4, "backgroundColorDescription"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)) && ((v11 = -[CNWallpaperMetadata extensionBundleID](self, "extensionBundleID"), v12 = -[CNWallpaperMetadata extensionBundleID](v4, "extensionBundleID"), !(v11 | v12)) || objc_msgSend(v11, "isEqual:", v12)))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && ((v5 = -[CNWallpaperMetadata fontDescription](self, "fontDescription"), v6 = -[CNWallpaperMetadata fontDescription](equalCopy, "fontDescription"), !(v5 | v6)) || [v5 isEqual:v6]) && ((v7 = -[CNWallpaperMetadata fontColorDescription](self, "fontColorDescription"), v8 = -[CNWallpaperMetadata fontColorDescription](equalCopy, "fontColorDescription"), !(v7 | v8)) || objc_msgSend(v7, "isEqual:", v8)) && ((v9 = -[CNWallpaperMetadata backgroundColorDescription](self, "backgroundColorDescription"), v10 = -[CNWallpaperMetadata backgroundColorDescription](equalCopy, "backgroundColorDescription"), !(v9 | v10)) || objc_msgSend(v9, "isEqual:", v10)) && ((v11 = -[CNWallpaperMetadata extensionBundleID](self, "extensionBundleID"), v12 = -[CNWallpaperMetadata extensionBundleID](equalCopy, "extensionBundleID"), !(v11 | v12)) || objc_msgSend(v11, "isEqual:", v12)))
     {
-      v13 = [(CNWallpaperMetadata *)self isVertical];
-      v14 = v13 ^ [(CNWallpaperMetadata *)v4 isVertical]^ 1;
+      isVertical = [(CNWallpaperMetadata *)self isVertical];
+      v14 = isVertical ^ [(CNWallpaperMetadata *)equalCopy isVertical]^ 1;
     }
 
     else

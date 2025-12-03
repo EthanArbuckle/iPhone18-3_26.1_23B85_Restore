@@ -1,21 +1,21 @@
 @interface FigCaptureCameraCalibrationDataSinkConfiguration
-- (BOOL)isEqual:(id)a3;
-- (FigCaptureCameraCalibrationDataSinkConfiguration)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (FigCaptureCameraCalibrationDataSinkConfiguration)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (id)description;
 @end
 
 @implementation FigCaptureCameraCalibrationDataSinkConfiguration
 
-- (FigCaptureCameraCalibrationDataSinkConfiguration)initWithXPCEncoding:(id)a3
+- (FigCaptureCameraCalibrationDataSinkConfiguration)initWithXPCEncoding:(id)encoding
 {
   v6.receiver = self;
   v6.super_class = FigCaptureCameraCalibrationDataSinkConfiguration;
   v4 = [(FigCaptureSinkConfiguration *)&v6 initWithXPCEncoding:?];
   if (v4)
   {
-    *(&v4->super._deferredStartEnabled + 1) = xpc_dictionary_get_BOOL(a3, "cameraCalibrationDataDiscardsLateData");
+    *(&v4->super._deferredStartEnabled + 1) = xpc_dictionary_get_BOOL(encoding, "cameraCalibrationDataDiscardsLateData");
   }
 
   return v4;
@@ -25,9 +25,9 @@
 {
   v5.receiver = self;
   v5.super_class = FigCaptureCameraCalibrationDataSinkConfiguration;
-  v3 = [(FigCaptureSinkConfiguration *)&v5 copyXPCEncoding];
-  xpc_dictionary_set_BOOL(v3, "cameraCalibrationDataDiscardsLateData", [(FigCaptureCameraCalibrationDataSinkConfiguration *)self discardsLateCameraCalibrationData]);
-  return v3;
+  copyXPCEncoding = [(FigCaptureSinkConfiguration *)&v5 copyXPCEncoding];
+  xpc_dictionary_set_BOOL(copyXPCEncoding, "cameraCalibrationDataDiscardsLateData", [(FigCaptureCameraCalibrationDataSinkConfiguration *)self discardsLateCameraCalibrationData]);
+  return copyXPCEncoding;
 }
 
 - (id)description
@@ -37,16 +37,16 @@
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ discards:%d", -[FigCaptureSinkConfiguration description](&v3, sel_description), -[FigCaptureCameraCalibrationDataSinkConfiguration discardsLateCameraCalibrationData](self, "discardsLateCameraCalibrationData")];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = FigCaptureCameraCalibrationDataSinkConfiguration;
-  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:a3];
+  v4 = [(FigCaptureSinkConfiguration *)&v6 copyWithZone:zone];
   [v4 setDiscardsLateCameraCalibrationData:{-[FigCaptureCameraCalibrationDataSinkConfiguration discardsLateCameraCalibrationData](self, "discardsLateCameraCalibrationData")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8.receiver = self;
   v8.super_class = FigCaptureCameraCalibrationDataSinkConfiguration;
@@ -56,8 +56,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FigCaptureCameraCalibrationDataSinkConfiguration *)self discardsLateCameraCalibrationData];
-      LOBYTE(v5) = v6 ^ [a3 discardsLateCameraCalibrationData] ^ 1;
+      discardsLateCameraCalibrationData = [(FigCaptureCameraCalibrationDataSinkConfiguration *)self discardsLateCameraCalibrationData];
+      LOBYTE(v5) = discardsLateCameraCalibrationData ^ [equal discardsLateCameraCalibrationData] ^ 1;
     }
 
     else

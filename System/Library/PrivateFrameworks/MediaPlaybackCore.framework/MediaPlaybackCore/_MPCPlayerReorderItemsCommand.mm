@@ -1,59 +1,59 @@
 @interface _MPCPlayerReorderItemsCommand
-- (BOOL)canMoveItem:(id)a3;
-- (id)limitedDisplayIndexPathForMovingIndexPath:(id)a3 toProprosedIndexPath:(id)a4;
-- (id)limitedIndexPathForMovingIndexPath:(id)a3 toProprosedIndexPath:(id)a4;
-- (id)moveItem:(id)a3 afterItem:(id)a4;
-- (id)moveItem:(id)a3 beforeItem:(id)a4;
+- (BOOL)canMoveItem:(id)item;
+- (id)limitedDisplayIndexPathForMovingIndexPath:(id)path toProprosedIndexPath:(id)indexPath;
+- (id)limitedIndexPathForMovingIndexPath:(id)path toProprosedIndexPath:(id)indexPath;
+- (id)moveItem:(id)item afterItem:(id)afterItem;
+- (id)moveItem:(id)item beforeItem:(id)beforeItem;
 @end
 
 @implementation _MPCPlayerReorderItemsCommand
 
-- (id)moveItem:(id)a3 beforeItem:(id)a4
+- (id)moveItem:(id)item beforeItem:(id)beforeItem
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_MPCPlayerCommand *)self response];
-  v9 = [v6 indexPath];
-  v10 = [v7 indexPath];
-  v11 = [(_MPCPlayerReorderItemsCommand *)self limitedIndexPathForMovingIndexPath:v9 toProprosedIndexPath:v10];
+  itemCopy = item;
+  beforeItemCopy = beforeItem;
+  response = [(_MPCPlayerCommand *)self response];
+  indexPath = [itemCopy indexPath];
+  indexPath2 = [beforeItemCopy indexPath];
+  v11 = [(_MPCPlayerReorderItemsCommand *)self limitedIndexPathForMovingIndexPath:indexPath toProprosedIndexPath:indexPath2];
 
-  v12 = [v7 indexPath];
-  LODWORD(v10) = [v11 isEqual:v12];
+  indexPath3 = [beforeItemCopy indexPath];
+  LODWORD(indexPath2) = [v11 isEqual:indexPath3];
 
-  if (v10)
+  if (indexPath2)
   {
-    v13 = [v6 metadataObject];
-    v14 = [v13 identifiers];
-    v15 = [v14 contentItemID];
+    metadataObject = [itemCopy metadataObject];
+    identifiers = [metadataObject identifiers];
+    contentItemID = [identifiers contentItemID];
 
-    v16 = [v7 metadataObject];
-    v17 = [v16 identifiers];
-    v18 = [v17 contentItemID];
+    metadataObject2 = [beforeItemCopy metadataObject];
+    identifiers2 = [metadataObject2 identifiers];
+    contentItemID2 = [identifiers2 contentItemID];
 
-    if ([v15 length] && objc_msgSend(v18, "length"))
+    if ([contentItemID length] && objc_msgSend(contentItemID2, "length"))
     {
       v19 = MEMORY[0x1E695DF90];
       v20 = *MEMORY[0x1E69B1138];
       v48[0] = *MEMORY[0x1E69B10C8];
       v48[1] = v20;
-      v45 = v18;
-      v46 = v15;
-      v49[0] = v15;
-      v49[1] = v18;
+      v45 = contentItemID2;
+      v46 = contentItemID;
+      v49[0] = contentItemID;
+      v49[1] = contentItemID2;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:2];
       v47 = [v19 dictionaryWithDictionary:v21];
 
-      v44 = [v8 tracklist];
-      v22 = [v44 items];
-      v23 = [v8 tracklist];
-      v24 = [v23 items];
-      v25 = [v24 totalItemCount] - 1;
+      tracklist = [response tracklist];
+      items = [tracklist items];
+      tracklist2 = [response tracklist];
+      items2 = [tracklist2 items];
+      v25 = [items2 totalItemCount] - 1;
 
-      v26 = [v8 tracklist];
-      v27 = [v26 items];
-      v28 = [v7 indexPath];
-      v29 = [v27 globalIndexForIndexPath:v28] - 1;
+      tracklist3 = [response tracklist];
+      items3 = [tracklist3 items];
+      indexPath4 = [beforeItemCopy indexPath];
+      v29 = [items3 globalIndexForIndexPath:indexPath4] - 1;
 
       if (v25 >= v29)
       {
@@ -65,32 +65,32 @@
         v30 = v25;
       }
 
-      v31 = [v22 indexPathForGlobalIndex:v30];
+      v31 = [items indexPathForGlobalIndex:v30];
 
       if (v31)
       {
-        v32 = [v8 tracklist];
-        v33 = [v32 items];
-        v34 = [v33 itemAtIndexPath:v31];
+        tracklist4 = [response tracklist];
+        items4 = [tracklist4 items];
+        v34 = [items4 itemAtIndexPath:v31];
 
-        v35 = [v34 metadataObject];
-        v36 = [v35 identifiers];
-        v37 = [v36 contentItemID];
+        metadataObject3 = [v34 metadataObject];
+        identifiers3 = [metadataObject3 identifiers];
+        contentItemID3 = [identifiers3 contentItemID];
 
-        if ([v37 length])
+        if ([contentItemID3 length])
         {
-          [v47 setObject:v37 forKeyedSubscript:*MEMORY[0x1E69B1130]];
+          [v47 setObject:contentItemID3 forKeyedSubscript:*MEMORY[0x1E69B1130]];
         }
       }
 
       v38 = [MPCPlayerCommandRequest alloc];
-      v39 = [v8 controller];
-      v40 = [v8 request];
-      v41 = [v40 label];
-      v42 = [(MPCPlayerCommandRequest *)v38 initWithMediaRemoteCommand:130 options:v47 controller:v39 label:v41];
+      controller = [response controller];
+      request = [response request];
+      label = [request label];
+      v42 = [(MPCPlayerCommandRequest *)v38 initWithMediaRemoteCommand:130 options:v47 controller:controller label:label];
 
-      v18 = v45;
-      v15 = v46;
+      contentItemID2 = v45;
+      contentItemID = v46;
     }
 
     else
@@ -107,50 +107,50 @@
   return v42;
 }
 
-- (id)moveItem:(id)a3 afterItem:(id)a4
+- (id)moveItem:(id)item afterItem:(id)afterItem
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_MPCPlayerCommand *)self response];
-  v9 = [v8 tracklist];
-  v10 = [v6 indexPath];
-  v11 = [v9 displayIndexPathForStructuredIndexPath:v10];
+  itemCopy = item;
+  afterItemCopy = afterItem;
+  response = [(_MPCPlayerCommand *)self response];
+  tracklist = [response tracklist];
+  indexPath = [itemCopy indexPath];
+  v11 = [tracklist displayIndexPathForStructuredIndexPath:indexPath];
 
-  v12 = [v8 tracklist];
-  v13 = [v7 indexPath];
-  v14 = [v12 displayIndexPathForStructuredIndexPath:v13];
+  tracklist2 = [response tracklist];
+  indexPath2 = [afterItemCopy indexPath];
+  v14 = [tracklist2 displayIndexPathForStructuredIndexPath:indexPath2];
 
   v15 = v14;
   v16 = [(_MPCPlayerReorderItemsCommand *)self limitedDisplayIndexPathForMovingIndexPath:v11 toProprosedIndexPath:v15];
   if ([v16 isEqual:v15])
   {
-    v17 = [v6 metadataObject];
-    v18 = [v17 identifiers];
-    v19 = [v18 contentItemID];
+    metadataObject = [itemCopy metadataObject];
+    identifiers = [metadataObject identifiers];
+    contentItemID = [identifiers contentItemID];
 
-    v20 = [v7 metadataObject];
-    v21 = [v20 identifiers];
-    v22 = [v21 contentItemID];
+    metadataObject2 = [afterItemCopy metadataObject];
+    identifiers2 = [metadataObject2 identifiers];
+    contentItemID2 = [identifiers2 contentItemID];
 
-    if ([v19 length] && objc_msgSend(v22, "length"))
+    if ([contentItemID length] && objc_msgSend(contentItemID2, "length"))
     {
       v23 = *MEMORY[0x1E69B1130];
       v33[0] = *MEMORY[0x1E69B10C8];
       v33[1] = v23;
-      v34[0] = v19;
-      v34[1] = v22;
+      v34[0] = contentItemID;
+      v34[1] = contentItemID2;
       v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v34 forKeys:v33 count:2];
       v29 = [MPCPlayerCommandRequest alloc];
-      [v8 controller];
-      v24 = v31 = v22;
-      [v8 request];
-      v25 = v32 = v19;
-      v26 = [v25 label];
-      v27 = [(MPCPlayerCommandRequest *)v29 initWithMediaRemoteCommand:130 options:v30 controller:v24 label:v26];
+      [response controller];
+      v24 = v31 = contentItemID2;
+      [response request];
+      v25 = v32 = contentItemID;
+      label = [v25 label];
+      v27 = [(MPCPlayerCommandRequest *)v29 initWithMediaRemoteCommand:130 options:v30 controller:v24 label:label];
 
-      v19 = v32;
-      v22 = v31;
+      contentItemID = v32;
+      contentItemID2 = v31;
     }
 
     else
@@ -167,31 +167,31 @@
   return v27;
 }
 
-- (id)limitedDisplayIndexPathForMovingIndexPath:(id)a3 toProprosedIndexPath:(id)a4
+- (id)limitedDisplayIndexPathForMovingIndexPath:(id)path toProprosedIndexPath:(id)indexPath
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v7 isEqual:v8])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if ([pathCopy isEqual:indexPathCopy])
   {
-    v9 = v7;
+    v9 = pathCopy;
   }
 
   else
   {
     v36 = a2;
-    v37 = self;
-    v10 = [(_MPCPlayerCommand *)self response];
-    v11 = [v10 tracklist];
-    v12 = [v11 displayItems];
-    v13 = [v12 globalIndexForIndexPath:v7];
+    selfCopy = self;
+    response = [(_MPCPlayerCommand *)self response];
+    tracklist = [response tracklist];
+    displayItems = [tracklist displayItems];
+    v13 = [displayItems globalIndexForIndexPath:pathCopy];
 
-    v14 = [v10 tracklist];
-    v15 = [v14 displayItems];
-    v39 = v8;
-    v16 = [v15 globalIndexForIndexPath:v8];
+    tracklist2 = [response tracklist];
+    displayItems2 = [tracklist2 displayItems];
+    v39 = indexPathCopy;
+    v16 = [displayItems2 globalIndexForIndexPath:indexPathCopy];
 
-    v40 = v7;
-    v41 = [v7 section];
+    v40 = pathCopy;
+    section = [pathCopy section];
     if (v16 > v13)
     {
       v17 = 1;
@@ -214,20 +214,20 @@
       v20 = v13;
       while (1)
       {
-        v21 = [v10 tracklist];
-        v22 = [v21 items];
-        v23 = [v22 indexPathForGlobalIndex:v20];
+        tracklist3 = [response tracklist];
+        items = [tracklist3 items];
+        v23 = [items indexPathForGlobalIndex:v20];
 
-        v24 = [v10 builder];
-        v25 = [v10 chain];
-        v26 = [v24 playerItemEditingStyleFlags:0 atIndexPath:v23 chain:v25];
+        builder = [response builder];
+        chain = [response chain];
+        v26 = [builder playerItemEditingStyleFlags:0 atIndexPath:v23 chain:chain];
 
-        v27 = [v10 tracklist];
-        v28 = [v27 displayItems];
-        v29 = [v28 indexPathForGlobalIndex:v20];
+        tracklist4 = [response tracklist];
+        displayItems3 = [tracklist4 displayItems];
+        v29 = [displayItems3 indexPathForGlobalIndex:v20];
 
-        v30 = [v29 section];
-        if ((v26 & 1) == 0 || v41 != v30)
+        section2 = [v29 section];
+        if ((v26 & 1) == 0 || section != section2)
         {
           break;
         }
@@ -249,67 +249,67 @@
         }
       }
 
-      v32 = [v10 tracklist];
-      v33 = [v32 displayItems];
-      v9 = [v33 indexPathForGlobalIndex:v20 + v38];
+      tracklist5 = [response tracklist];
+      displayItems4 = [tracklist5 displayItems];
+      v9 = [displayItems4 indexPathForGlobalIndex:v20 + v38];
 
       if (!v9)
       {
-        v35 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v35 handleFailureInMethod:v36 object:v37 file:@"MPCPlayerResponseTracklist.m" lineNumber:1045 description:@"Invalid section collection (2)."];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:v36 object:selfCopy file:@"MPCPlayerResponseTracklist.m" lineNumber:1045 description:@"Invalid section collection (2)."];
       }
 
-      v8 = v39;
-      v7 = v40;
+      indexPathCopy = v39;
+      pathCopy = v40;
     }
 
     else
     {
 LABEL_19:
-      v8 = v39;
+      indexPathCopy = v39;
       v9 = v39;
-      v7 = v40;
+      pathCopy = v40;
     }
   }
 
   return v9;
 }
 
-- (id)limitedIndexPathForMovingIndexPath:(id)a3 toProprosedIndexPath:(id)a4
+- (id)limitedIndexPathForMovingIndexPath:(id)path toProprosedIndexPath:(id)indexPath
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqual:v7])
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if ([pathCopy isEqual:indexPathCopy])
   {
-    v8 = v6;
+    v8 = pathCopy;
   }
 
   else
   {
-    v9 = [(_MPCPlayerCommand *)self response];
-    v10 = [v9 tracklist];
-    v11 = [v10 displayIndexPathForStructuredIndexPath:v6];
+    response = [(_MPCPlayerCommand *)self response];
+    tracklist = [response tracklist];
+    v11 = [tracklist displayIndexPathForStructuredIndexPath:pathCopy];
 
-    v12 = [v9 tracklist];
-    v13 = [v12 displayIndexPathForStructuredIndexPath:v7];
+    tracklist2 = [response tracklist];
+    v13 = [tracklist2 displayIndexPathForStructuredIndexPath:indexPathCopy];
 
     v14 = [(_MPCPlayerReorderItemsCommand *)self limitedDisplayIndexPathForMovingIndexPath:v11 toProprosedIndexPath:v13];
-    v15 = [v9 tracklist];
-    v8 = [v15 structuredIndexPathForDisplayIndexPath:v14];
+    tracklist3 = [response tracklist];
+    v8 = [tracklist3 structuredIndexPathForDisplayIndexPath:v14];
   }
 
   return v8;
 }
 
-- (BOOL)canMoveItem:(id)a3
+- (BOOL)canMoveItem:(id)item
 {
-  v4 = a3;
-  v5 = [(_MPCPlayerCommand *)self response];
-  v6 = [v5 builder];
-  v7 = [v4 indexPath];
+  itemCopy = item;
+  response = [(_MPCPlayerCommand *)self response];
+  builder = [response builder];
+  indexPath = [itemCopy indexPath];
 
-  v8 = [v5 chain];
-  v9 = [v6 playerItemEditingStyleFlags:0 atIndexPath:v7 chain:v8];
+  chain = [response chain];
+  v9 = [builder playerItemEditingStyleFlags:0 atIndexPath:indexPath chain:chain];
 
   return v9 & 1;
 }

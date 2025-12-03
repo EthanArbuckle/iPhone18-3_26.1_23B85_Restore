@@ -1,9 +1,9 @@
 @interface FTProactiveWidgetEventTracker
 - (FTProactiveWidgetEventTracker)init;
-- (FTProactiveWidgetEventTracker)initWithMaxRowCount:(unint64_t)a3 trackedEvents:(unint64_t)a4;
-- (void)widgetDidAppearAtDate:(id)a3 withTrackableWidgetState:(id)a4;
-- (void)widgetDidDisappearAtDate:(id)a3 withTrackableWidgetState:(id)a4;
-- (void)widgetPerformedUpdateWithTodayResults:(id)a3 fetchInfo:(id)a4 error:(id)a5 updateFetchDuration:(double)a6;
+- (FTProactiveWidgetEventTracker)initWithMaxRowCount:(unint64_t)count trackedEvents:(unint64_t)events;
+- (void)widgetDidAppearAtDate:(id)date withTrackableWidgetState:(id)state;
+- (void)widgetDidDisappearAtDate:(id)date withTrackableWidgetState:(id)state;
+- (void)widgetPerformedUpdateWithTodayResults:(id)results fetchInfo:(id)info error:(id)error updateFetchDuration:(double)duration;
 @end
 
 @implementation FTProactiveWidgetEventTracker
@@ -31,7 +31,7 @@
   objc_exception_throw(v4);
 }
 
-- (FTProactiveWidgetEventTracker)initWithMaxRowCount:(unint64_t)a3 trackedEvents:(unint64_t)a4
+- (FTProactiveWidgetEventTracker)initWithMaxRowCount:(unint64_t)count trackedEvents:(unint64_t)events
 {
   v17.receiver = self;
   v17.super_class = FTProactiveWidgetEventTracker;
@@ -39,12 +39,12 @@
   v7 = v6;
   if (v6)
   {
-    v6->_trackedEvents = a4;
-    v8 = [[NTHeadlineEngagementEventTracker alloc] initWithMaxRowCount:a3];
+    v6->_trackedEvents = events;
+    v8 = [[NTHeadlineEngagementEventTracker alloc] initWithMaxRowCount:count];
     headlineEngagementEventTracker = v7->_headlineEngagementEventTracker;
     v7->_headlineEngagementEventTracker = v8;
 
-    v10 = [[FTWidgetAppearanceEventTracker alloc] initWithMaxRowCount:a3];
+    v10 = [[FTWidgetAppearanceEventTracker alloc] initWithMaxRowCount:count];
     widgetAppearanceEventTracker = v7->_widgetAppearanceEventTracker;
     v7->_widgetAppearanceEventTracker = v10;
 
@@ -60,56 +60,56 @@
   return v7;
 }
 
-- (void)widgetDidAppearAtDate:(id)a3 withTrackableWidgetState:(id)a4
+- (void)widgetDidAppearAtDate:(id)date withTrackableWidgetState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  dateCopy = date;
+  stateCopy = state;
+  if (!stateCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000C86B4();
   }
 
   if (([(FTProactiveWidgetEventTracker *)self trackedEvents]& 1) != 0)
   {
-    v8 = [v7 fetchInfoForVisibleResults];
-    v9 = [v8 todaySourceIdentifier];
-    v10 = [v8 appConfigTreatmentID];
-    v11 = [v7 appearanceType];
-    v12 = [(FTProactiveWidgetEventTracker *)self widgetAppearanceEventTracker];
-    [v12 trackAppearanceAtDate:v6 withHeadlineSource:v9 appConfigTreatmentID:v10 appearanceType:v11 allItemsCount:{objc_msgSend(v7, "allItemsCount")}];
+    fetchInfoForVisibleResults = [stateCopy fetchInfoForVisibleResults];
+    todaySourceIdentifier = [fetchInfoForVisibleResults todaySourceIdentifier];
+    appConfigTreatmentID = [fetchInfoForVisibleResults appConfigTreatmentID];
+    appearanceType = [stateCopy appearanceType];
+    widgetAppearanceEventTracker = [(FTProactiveWidgetEventTracker *)self widgetAppearanceEventTracker];
+    [widgetAppearanceEventTracker trackAppearanceAtDate:dateCopy withHeadlineSource:todaySourceIdentifier appConfigTreatmentID:appConfigTreatmentID appearanceType:appearanceType allItemsCount:{objc_msgSend(stateCopy, "allItemsCount")}];
 
-    v13 = [(FTProactiveWidgetEventTracker *)self widgetLingerEventTracker];
-    [v13 trackWidgetLingerEventExtremity:0 atDate:v6 withTodaySource:v9 appConfigTreatmentID:v10 widgetDisplayMode:objc_msgSend(v7 appearanceType:{"activeDisplayMode"), v11}];
+    widgetLingerEventTracker = [(FTProactiveWidgetEventTracker *)self widgetLingerEventTracker];
+    [widgetLingerEventTracker trackWidgetLingerEventExtremity:0 atDate:dateCopy withTodaySource:todaySourceIdentifier appConfigTreatmentID:appConfigTreatmentID widgetDisplayMode:objc_msgSend(stateCopy appearanceType:{"activeDisplayMode"), appearanceType}];
   }
 }
 
-- (void)widgetDidDisappearAtDate:(id)a3 withTrackableWidgetState:(id)a4
+- (void)widgetDidDisappearAtDate:(id)date withTrackableWidgetState:(id)state
 {
-  v12 = a3;
-  v6 = a4;
+  dateCopy = date;
+  stateCopy = state;
   if (([(FTProactiveWidgetEventTracker *)self trackedEvents]& 1) != 0)
   {
-    v7 = [(FTProactiveWidgetEventTracker *)self widgetAppearanceEventTracker];
-    [v7 trackDisappearance];
+    widgetAppearanceEventTracker = [(FTProactiveWidgetEventTracker *)self widgetAppearanceEventTracker];
+    [widgetAppearanceEventTracker trackDisappearance];
 
-    v8 = [v6 fetchInfoForVisibleResults];
-    v9 = [(FTProactiveWidgetEventTracker *)self widgetLingerEventTracker];
-    v10 = [v8 todaySourceIdentifier];
-    v11 = [v8 appConfigTreatmentID];
-    [v9 trackWidgetLingerEventExtremity:1 atDate:v12 withTodaySource:v10 appConfigTreatmentID:v11 widgetDisplayMode:objc_msgSend(v6 appearanceType:{"activeDisplayMode"), objc_msgSend(v6, "appearanceType")}];
+    fetchInfoForVisibleResults = [stateCopy fetchInfoForVisibleResults];
+    widgetLingerEventTracker = [(FTProactiveWidgetEventTracker *)self widgetLingerEventTracker];
+    todaySourceIdentifier = [fetchInfoForVisibleResults todaySourceIdentifier];
+    appConfigTreatmentID = [fetchInfoForVisibleResults appConfigTreatmentID];
+    [widgetLingerEventTracker trackWidgetLingerEventExtremity:1 atDate:dateCopy withTodaySource:todaySourceIdentifier appConfigTreatmentID:appConfigTreatmentID widgetDisplayMode:objc_msgSend(stateCopy appearanceType:{"activeDisplayMode"), objc_msgSend(stateCopy, "appearanceType")}];
   }
 }
 
-- (void)widgetPerformedUpdateWithTodayResults:(id)a3 fetchInfo:(id)a4 error:(id)a5 updateFetchDuration:(double)a6
+- (void)widgetPerformedUpdateWithTodayResults:(id)results fetchInfo:(id)info error:(id)error updateFetchDuration:(double)duration
 {
-  v13 = a4;
-  v9 = a5;
+  infoCopy = info;
+  errorCopy = error;
   if (([(FTProactiveWidgetEventTracker *)self trackedEvents]& 2) != 0)
   {
-    v10 = [(FTProactiveWidgetEventTracker *)self widgetUpdateEventTracker];
-    v11 = [v13 todaySourceIdentifier];
-    v12 = [v13 appConfigTreatmentID];
-    [v10 trackUpdateWithTodaySource:v11 appConfigTreatmentID:v12 error:v9 updateFetchDuration:objc_msgSend(v13 wifiReachable:"wifiReachable") cellularRadioAccessTechnology:{objc_msgSend(v13, "cellularRadioAccessTechnology"), a6}];
+    widgetUpdateEventTracker = [(FTProactiveWidgetEventTracker *)self widgetUpdateEventTracker];
+    todaySourceIdentifier = [infoCopy todaySourceIdentifier];
+    appConfigTreatmentID = [infoCopy appConfigTreatmentID];
+    [widgetUpdateEventTracker trackUpdateWithTodaySource:todaySourceIdentifier appConfigTreatmentID:appConfigTreatmentID error:errorCopy updateFetchDuration:objc_msgSend(infoCopy wifiReachable:"wifiReachable") cellularRadioAccessTechnology:{objc_msgSend(infoCopy, "cellularRadioAccessTechnology"), duration}];
   }
 }
 

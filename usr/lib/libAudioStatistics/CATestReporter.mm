@@ -11,11 +11,11 @@
   {
     v14.receiver = self;
     v14.super_class = CATestReporter;
-    v3 = [(CAReporter *)&v14 initWithNewReporterID];
-    v4 = v3;
-    if (v3)
+    initWithNewReporterID = [(CAReporter *)&v14 initWithNewReporterID];
+    initWithNewReporterID2 = initWithNewReporterID;
+    if (initWithNewReporterID)
     {
-      v13.receiver = v3;
+      v13.receiver = initWithNewReporterID;
       v13.super_class = CATestReporter;
       [(CAReporter *)&v13 setServiceType:11];
     }
@@ -35,28 +35,28 @@
 
     v12.receiver = self;
     v12.super_class = CATestReporter;
-    v4 = [(CAReporter *)&v12 initWithNewReporterID];
-    if (v4)
+    initWithNewReporterID2 = [(CAReporter *)&v12 initWithNewReporterID];
+    if (initWithNewReporterID2)
     {
       v6 = *AA_ClientCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(CAReporter *)v4 reporterID];
+        reporterID = [(CAReporter *)initWithNewReporterID2 reporterID];
         *buf = 136315650;
         v16 = "CAReportingClient.mm";
         v17 = 1024;
         v18 = 482;
         v19 = 2048;
-        v20 = v7;
+        v20 = reporterID;
         _os_log_impl(&dword_296C89000, v6, OS_LOG_TYPE_DEFAULT, "%25s:%-5d CATestReporter initWithNewReporterID { careporter_id=%lli }", buf, 0x1Cu);
       }
 
       v8 = +[CAReportingClient sharedInstance];
-      [v8 setServiceType:11 reporterID:{-[CAReporter reporterID](v4, "reporterID")}];
+      [v8 setServiceType:11 reporterID:{-[CAReporter reporterID](initWithNewReporterID2, "reporterID")}];
     }
   }
 
-  v9 = v4;
+  v9 = initWithNewReporterID2;
 
   v10 = *MEMORY[0x29EDCA608];
   return v9;

@@ -1,22 +1,22 @@
 @interface MPFileValidationManager
-+ (BOOL)validateFiles:(id)a3 allowAudio:(BOOL)a4 allowImages:(BOOL)a5 allowMovies:(BOOL)a6 extensionsOnly:(BOOL)a7;
-+ (id)resolveAliasPath:(id)a3;
-+ (void)checkFileExtension:(id)a3 isAudio:(BOOL *)a4 isImage:(BOOL *)a5 isVideo:(BOOL *)a6;
++ (BOOL)validateFiles:(id)files allowAudio:(BOOL)audio allowImages:(BOOL)images allowMovies:(BOOL)movies extensionsOnly:(BOOL)only;
++ (id)resolveAliasPath:(id)path;
++ (void)checkFileExtension:(id)extension isAudio:(BOOL *)audio isImage:(BOOL *)image isVideo:(BOOL *)video;
 @end
 
 @implementation MPFileValidationManager
 
-+ (BOOL)validateFiles:(id)a3 allowAudio:(BOOL)a4 allowImages:(BOOL)a5 allowMovies:(BOOL)a6 extensionsOnly:(BOOL)a7
++ (BOOL)validateFiles:(id)files allowAudio:(BOOL)audio allowImages:(BOOL)images allowMovies:(BOOL)movies extensionsOnly:(BOOL)only
 {
-  v7 = a6;
-  v12 = [a3 count];
+  moviesCopy = movies;
+  v12 = [files count];
   if (v12)
   {
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    v13 = [files countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -27,21 +27,21 @@
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(files);
           }
 
           v17 = *(*(&v21 + 1) + 8 * i);
           v20 = 0;
           v19 = 0;
-          [a1 checkFileExtension:v17 isAudio:&v19 isImage:&v20 isVideo:&v20 + 1];
-          if ((v20 & 0x100) == 0 && (v19 & 1) == 0 && v20 != 1 || !a4 && (HIBYTE(v20) & v7 & 1) == 0 && (v19 & 1) != 0 || !a5 && (v20 & 1) != 0 || HIBYTE(v20) && !a4 && !v7)
+          [self checkFileExtension:v17 isAudio:&v19 isImage:&v20 isVideo:&v20 + 1];
+          if ((v20 & 0x100) == 0 && (v19 & 1) == 0 && v20 != 1 || !audio && (HIBYTE(v20) & moviesCopy & 1) == 0 && (v19 & 1) != 0 || !images && (v20 & 1) != 0 || HIBYTE(v20) && !audio && !moviesCopy)
           {
             LOBYTE(v12) = 0;
             return v12;
           }
         }
 
-        v14 = [a3 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v14 = [files countByEnumeratingWithState:&v21 objects:v25 count:16];
         LOBYTE(v12) = 1;
         if (v14)
         {
@@ -61,32 +61,32 @@
   return v12;
 }
 
-+ (void)checkFileExtension:(id)a3 isAudio:(BOOL *)a4 isImage:(BOOL *)a5 isVideo:(BOOL *)a6
++ (void)checkFileExtension:(id)extension isAudio:(BOOL *)audio isImage:(BOOL *)image isVideo:(BOOL *)video
 {
   v12 = 0;
-  if (a3 && [+[NSFileManager fileExistsAtPath:"fileExistsAtPath:isDirectory:"]
+  if (extension && [+[NSFileManager fileExistsAtPath:"fileExistsAtPath:isDirectory:"]
   {
-    if (a4)
+    if (audio)
     {
-      *a4 = 0;
+      *audio = 0;
     }
 
-    if (a6)
+    if (video)
     {
-      *a6 = 0;
+      *video = 0;
     }
 
-    if (a5)
+    if (image)
     {
-      *a5 = 0;
+      *image = 0;
     }
 
-    v10 = [a3 pathExtension];
-    if ([v10 length])
+    pathExtension = [extension pathExtension];
+    if ([pathExtension length])
     {
-      if (![v10 caseInsensitiveCompare:@"jpg"] || !objc_msgSend(v10, "caseInsensitiveCompare:", @"jpeg") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"gif") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"tif") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"tiff") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"pdf") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"tga") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"png") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"bmp") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"sgi") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"pct") || !objc_msgSend(v10, "caseInsensitiveCompare:", @"psd"))
+      if (![pathExtension caseInsensitiveCompare:@"jpg"] || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"jpeg") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"gif") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"tif") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"tiff") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"pdf") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"tga") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"png") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"bmp") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"sgi") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"pct") || !objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"psd"))
       {
-        if (!a5)
+        if (!image)
         {
           return;
         }
@@ -94,17 +94,17 @@
         goto LABEL_45;
       }
 
-      if ([v10 caseInsensitiveCompare:@"mov"] && objc_msgSend(v10, "caseInsensitiveCompare:", @"qt") && objc_msgSend(v10, "caseInsensitiveCompare:", @"mp4") && objc_msgSend(v10, "caseInsensitiveCompare:", @"mpg") && objc_msgSend(v10, "caseInsensitiveCompare:", @"mpeg") && objc_msgSend(v10, "caseInsensitiveCompare:", @"m4v") && objc_msgSend(v10, "caseInsensitiveCompare:", @"dv") && objc_msgSend(v10, "caseInsensitiveCompare:", @"avi") && objc_msgSend(v10, "caseInsensitiveCompare:", @"3g2") && objc_msgSend(v10, "caseInsensitiveCompare:", @"3gp"))
+      if ([pathExtension caseInsensitiveCompare:@"mov"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"qt") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"mp4") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"mpg") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"mpeg") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"m4v") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"dv") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"avi") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"3g2") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"3gp"))
       {
-        if ([v10 caseInsensitiveCompare:@"mp3"] && objc_msgSend(v10, "caseInsensitiveCompare:", @"m4a") && objc_msgSend(v10, "caseInsensitiveCompare:", @"m4p") && objc_msgSend(v10, "caseInsensitiveCompare:", @"aac") && objc_msgSend(v10, "caseInsensitiveCompare:", @"aif") && objc_msgSend(v10, "caseInsensitiveCompare:", @"aifc") && objc_msgSend(v10, "caseInsensitiveCompare:", @"aiff") && objc_msgSend(v10, "caseInsensitiveCompare:", @"wav"))
+        if ([pathExtension caseInsensitiveCompare:@"mp3"] && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"m4a") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"m4p") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"aac") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"aif") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"aifc") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"aiff") && objc_msgSend(pathExtension, "caseInsensitiveCompare:", @"wav"))
         {
-          v11 = [v10 caseInsensitiveCompare:@"qtz"];
-          if (!a6)
+          v11 = [pathExtension caseInsensitiveCompare:@"qtz"];
+          if (!video)
           {
             return;
           }
 
-          a5 = a6;
+          image = video;
           if (v11)
           {
             return;
@@ -113,25 +113,25 @@
 
         else
         {
-          a5 = a4;
-          if (!a4)
+          image = audio;
+          if (!audio)
           {
             return;
           }
         }
 
 LABEL_45:
-        *a5 = 1;
+        *image = 1;
         return;
       }
 
-      if (a4)
+      if (audio)
       {
-        *a4 = 1;
+        *audio = 1;
       }
 
-      a5 = a6;
-      if (a6)
+      image = video;
+      if (video)
       {
         goto LABEL_45;
       }
@@ -139,7 +139,7 @@ LABEL_45:
   }
 }
 
-+ (id)resolveAliasPath:(id)a3
++ (id)resolveAliasPath:(id)path
 {
   v3 = [[NSURL fileURLWithPath:?]];
   v8 = 0;

@@ -1,31 +1,31 @@
 @interface AlertActionTrailingImageView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension28AlertActionTrailingImageView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension28AlertActionTrailingImageView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)tintColorDidChange;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AlertActionTrailingImageView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100508088();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for AlertActionTrailingImageView();
   v4 = v8.receiver;
-  v5 = a3;
-  [(AlertActionTrailingImageView *)&v8 traitCollectionDidChange:v5];
-  v6 = [v4 traitCollection];
-  v7 = [v6 layoutDirection];
+  changeCopy = change;
+  [(AlertActionTrailingImageView *)&v8 traitCollectionDidChange:changeCopy];
+  traitCollection = [v4 traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
-  if (!v5 || v7 != [v5 layoutDirection])
+  if (!changeCopy || layoutDirection != [changeCopy layoutDirection])
   {
     [v4 setNeedsLayout];
   }
@@ -38,8 +38,8 @@
   v2 = v5.receiver;
   [(AlertActionTrailingImageView *)&v5 tintColorDidChange];
   v3 = *&v2[OBJC_IVAR____TtC22SubscribePageExtension28AlertActionTrailingImageView_label];
-  v4 = [v2 tintColor];
-  [v3 setTextColor:v4];
+  tintColor = [v2 tintColor];
+  [v3 setTextColor:tintColor];
 }
 
 - (CGSize)intrinsicContentSize
@@ -50,10 +50,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   v5 = sub_100508614(width);
   v7 = v6;
 
@@ -64,7 +64,7 @@
   return result;
 }
 
-- (_TtC22SubscribePageExtension28AlertActionTrailingImageView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension28AlertActionTrailingImageView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

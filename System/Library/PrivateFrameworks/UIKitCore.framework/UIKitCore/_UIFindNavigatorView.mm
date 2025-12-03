@@ -3,46 +3,46 @@
 - (BOOL)becomeFirstResponder;
 - (BOOL)resignFirstResponder;
 - (CGSize)intrinsicContentSize;
-- (_UIFindNavigatorView)initWithFrame:(CGRect)a3;
+- (_UIFindNavigatorView)initWithFrame:(CGRect)frame;
 - (_UIFindNavigatorViewDelegate)findNavigatorDelegate;
-- (id)_createNavigatorLayoutForTraitCollection:(id)a3;
+- (id)_createNavigatorLayoutForTraitCollection:(id)collection;
 - (id)_linearFocusMovementSequences;
 - (id)suggestedFindMenuItems;
-- (void)_handleSearchMenuItem:(id)a3;
+- (void)_handleSearchMenuItem:(id)item;
 - (void)_invalidateSearchSession;
 - (void)_navigatorHostingTypeChanged;
 - (void)_preferredBackgroundColorChanged;
-- (void)_setNavigatorLayout:(id)a3;
-- (void)find:(id)a3;
+- (void)_setNavigatorLayout:(id)layout;
+- (void)find:(id)find;
 - (void)layoutSubviews;
 - (void)safeAreaInsetsDidChange;
-- (void)setAssistantBarStyle:(int64_t)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setVisibleSeparatorEdges:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setAssistantBarStyle:(int64_t)style;
+- (void)setMode:(int64_t)mode;
+- (void)setVisibleSeparatorEdges:(unint64_t)edges;
+- (void)traitCollectionDidChange:(id)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _UIFindNavigatorView
 
-- (_UIFindNavigatorView)initWithFrame:(CGRect)a3
+- (_UIFindNavigatorView)initWithFrame:(CGRect)frame
 {
   v130[1] = *MEMORY[0x1E69E9840];
   v129.receiver = self;
   v129.super_class = _UIFindNavigatorView;
-  v115 = [(UIInputView *)&v129 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v115 = [(UIInputView *)&v129 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v115)
   {
-    v3 = [(UIView *)v115 _inheritedRenderConfig];
-    v4 = [v3 colorAdaptiveBackground];
+    _inheritedRenderConfig = [(UIView *)v115 _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-    if (v4)
+    if (colorAdaptiveBackground)
     {
       [(UIInputView *)v115 _setSuppressBackgroundStyling:1];
     }
 
-    v5 = [(UIView *)v115 traitCollection];
-    v6 = [(_UIFindNavigatorView *)v115 _createNavigatorLayoutForTraitCollection:v5];
+    traitCollection = [(UIView *)v115 traitCollection];
+    v6 = [(_UIFindNavigatorView *)v115 _createNavigatorLayoutForTraitCollection:traitCollection];
 
     [v6 addMaterialToViewIfNeeded:v115];
     v7 = v115;
@@ -64,10 +64,10 @@
 
     [v7[80] setHidden:1];
     [v7 addSubview:v7[80]];
-    v14 = [v7 _inheritedRenderConfig];
-    LODWORD(v5) = [v14 colorAdaptiveBackground];
+    _inheritedRenderConfig2 = [v7 _inheritedRenderConfig];
+    LODWORD(traitCollection) = [_inheritedRenderConfig2 colorAdaptiveBackground];
 
-    if (v5)
+    if (traitCollection)
     {
       v15 = [UIImage _systemImageNamed:@"checkmark"];
       v111 = +[UIButtonConfiguration _tintedGlassButtonConfiguration];
@@ -75,8 +75,8 @@
       v16 = +[UIColor systemBlueColor];
       [v111 setBaseBackgroundColor:v16];
 
-      v17 = [v6 preferredMaximumContentSizeCategory];
-      v18 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" maximumContentSizeCategory:v17];
+      preferredMaximumContentSizeCategory = [v6 preferredMaximumContentSizeCategory];
+      v18 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" maximumContentSizeCategory:preferredMaximumContentSizeCategory];
       [v18 pointSize];
       v20 = v19;
 
@@ -112,8 +112,8 @@
     [v7[91] setTranslatesAutoresizingMaskIntoConstraints:0];
     [v7[91] setAccessibilityIdentifier:@"find.doneButton"];
     [v7[91] setPointerInteractionEnabled:1];
-    v27 = [v6 preferredMaximumContentSizeCategory];
-    v28 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" maximumContentSizeCategory:v27];
+    preferredMaximumContentSizeCategory2 = [v6 preferredMaximumContentSizeCategory];
+    v28 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleBody" maximumContentSizeCategory:preferredMaximumContentSizeCategory2];
     [v28 pointSize];
     v30 = v29;
 
@@ -150,28 +150,28 @@
     v43 = _UILocalizedString(@"FIND", @"Find in text", @"Find");
     [v7[95] setPlaceholder:v43];
 
-    v44 = [v40 preferredMaximumContentSizeCategory];
-    [v7[95] setMaximumContentSizeCategory:v44];
+    preferredMaximumContentSizeCategory3 = [v40 preferredMaximumContentSizeCategory];
+    [v7[95] setMaximumContentSizeCategory:preferredMaximumContentSizeCategory3];
 
     [v7[95] setAccessibilityIdentifier:@"find.searchField"];
     v112 = [v40 commonButtonConfigWithImageName:@"magnifyingglass.and.chevron.down" isAccessory:1];
-    v45 = [v40 preferredSymbolConfigurationForImageForTextFields];
-    [v112 setPreferredSymbolConfigurationForImage:v45];
+    preferredSymbolConfigurationForImageForTextFields = [v40 preferredSymbolConfigurationForImageForTextFields];
+    [v112 setPreferredSymbolConfigurationForImage:preferredSymbolConfigurationForImageForTextFields];
 
     [v112 setMacIdiomStyle:2];
     obj = [(UIButton *)_UIFindNavigatorSearchFieldButton buttonWithConfiguration:v112 primaryAction:0];
     [obj setUsesSquareIntrinsicSize:1];
     [obj setPreferredBehavioralStyle:1];
-    v46 = [v40 preferredMaximumContentSizeCategory];
-    [obj setMaximumContentSizeCategory:v46];
+    preferredMaximumContentSizeCategory4 = [v40 preferredMaximumContentSizeCategory];
+    [obj setMaximumContentSizeCategory:preferredMaximumContentSizeCategory4];
 
     [obj setAccessibilityIdentifier:@"find.settingsButton"];
     objc_storeStrong(v7 + 92, obj);
     [v7[92] setShowsMenuAsPrimaryAction:1];
     [v7[95] setLeftView:v7[92]];
     [v7[95] setLeftViewMode:3];
-    v47 = [v7 _inheritedRenderConfig];
-    LODWORD(v39) = [v47 colorAdaptiveBackground];
+    _inheritedRenderConfig3 = [v7 _inheritedRenderConfig];
+    LODWORD(v39) = [_inheritedRenderConfig3 colorAdaptiveBackground];
 
     if (v39)
     {
@@ -190,18 +190,18 @@
     [v7[96] setPlaceholder:v50];
 
     [v7[96] setAccessibilityIdentifier:@"find.replaceField"];
-    v51 = [v40 preferredMaximumContentSizeCategory];
-    [v7[96] setMaximumContentSizeCategory:v51];
+    preferredMaximumContentSizeCategory5 = [v40 preferredMaximumContentSizeCategory];
+    [v7[96] setMaximumContentSizeCategory:preferredMaximumContentSizeCategory5];
 
-    v52 = [v7 _inheritedRenderConfig];
-    v53 = [v52 colorAdaptiveBackground];
+    _inheritedRenderConfig4 = [v7 _inheritedRenderConfig];
+    colorAdaptiveBackground2 = [_inheritedRenderConfig4 colorAdaptiveBackground];
 
-    if (v53)
+    if (colorAdaptiveBackground2)
     {
-      v54 = [v7 traitCollection];
-      v55 = [v54 userInterfaceIdiom];
+      traitCollection2 = [v7 traitCollection];
+      userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
       v56 = 23.0;
-      if (!v55)
+      if (!userInterfaceIdiom)
       {
         v56 = 17.0;
       }
@@ -212,12 +212,12 @@
     }
 
     v109 = [v40 commonButtonConfigWithImageName:@"pencil" isAccessory:1];
-    v57 = [v40 preferredSymbolConfigurationForImageForTextFields];
-    [v109 setPreferredSymbolConfigurationForImage:v57];
+    preferredSymbolConfigurationForImageForTextFields2 = [v40 preferredSymbolConfigurationForImageForTextFields];
+    [v109 setPreferredSymbolConfigurationForImage:preferredSymbolConfigurationForImageForTextFields2];
 
     v113 = [(UIButton *)_UIFindNavigatorSearchFieldButton buttonWithConfiguration:v109 primaryAction:0];
-    v58 = [v40 preferredMaximumContentSizeCategory];
-    [v113 setMaximumContentSizeCategory:v58];
+    preferredMaximumContentSizeCategory6 = [v40 preferredMaximumContentSizeCategory];
+    [v113 setMaximumContentSizeCategory:preferredMaximumContentSizeCategory6];
 
     [v113 setPreferredBehavioralStyle:1];
     [v113 setUsesSquareIntrinsicSize:1];
@@ -225,10 +225,10 @@
     [v7[96] setLeftView:v113];
     [v7[96] setLeftViewMode:3];
     v107 = _UILocalizedString(@"REPLACE", @"Button whose action replaces text", @"Replace");
-    v59 = [v7 _inheritedRenderConfig];
-    v60 = [v59 colorAdaptiveBackground];
+    _inheritedRenderConfig5 = [v7 _inheritedRenderConfig];
+    colorAdaptiveBackground3 = [_inheritedRenderConfig5 colorAdaptiveBackground];
 
-    if (v60)
+    if (colorAdaptiveBackground3)
     {
       v108 = [v40 commonButtonConfigWithTitle:v107 isGlass:1];
       [v108 setCornerStyle:4];
@@ -239,8 +239,8 @@
       v108 = [v40 commonButtonConfigWithTitle:v107 isGlass:0];
     }
 
-    v61 = [v7 traitCollection];
-    v62 = [v61 horizontalSizeClass] == 1;
+    traitCollection3 = [v7 traitCollection];
+    v62 = [traitCollection3 horizontalSizeClass] == 1;
 
     if (v62)
     {
@@ -259,16 +259,16 @@
     v7[99] = v64;
 
     [v7[99] setTranslatesAutoresizingMaskIntoConstraints:0];
-    v66 = [v40 preferredMaximumContentSizeCategory];
-    [v7[99] setMaximumContentSizeCategory:v66];
+    preferredMaximumContentSizeCategory7 = [v40 preferredMaximumContentSizeCategory];
+    [v7[99] setMaximumContentSizeCategory:preferredMaximumContentSizeCategory7];
 
     [v7[99] setEnabled:0];
     [v7[99] setAccessibilityIdentifier:@"find.replaceButton"];
     [v7[99] setPointerInteractionEnabled:1];
-    v67 = [v7 _inheritedRenderConfig];
-    v68 = [v67 colorAdaptiveBackground];
+    _inheritedRenderConfig6 = [v7 _inheritedRenderConfig];
+    colorAdaptiveBackground4 = [_inheritedRenderConfig6 colorAdaptiveBackground];
 
-    if (v68)
+    if (colorAdaptiveBackground4)
     {
       v74 = +[UIColor tertiarySystemFillColor];
       [v7[99] setBackgroundColor:v74];
@@ -286,8 +286,8 @@
     v78 = [UIMenu menuWithChildren:v77];
     [v7[99] setMenu:v78];
 
-    v79 = [v40 usesNextAndPreviousArrows];
-    if (v79)
+    usesNextAndPreviousArrows = [v40 usesNextAndPreviousArrows];
+    if (usesNextAndPreviousArrows)
     {
       v80 = @"chevron.backward";
     }
@@ -298,7 +298,7 @@
     }
 
     v81 = [v40 commonButtonConfigWithImageName:v80 isAccessory:0];
-    if (v79)
+    if (usesNextAndPreviousArrows)
     {
       v82 = @"chevron.forward";
     }
@@ -309,13 +309,13 @@
     }
 
     v83 = [v40 commonButtonConfigWithImageName:v82 isAccessory:0];
-    v84 = [v7 _inheritedRenderConfig];
-    v85 = [v84 colorAdaptiveBackground];
+    _inheritedRenderConfig7 = [v7 _inheritedRenderConfig];
+    colorAdaptiveBackground5 = [_inheritedRenderConfig7 colorAdaptiveBackground];
 
-    if (v85)
+    if (colorAdaptiveBackground5)
     {
-      v86 = [v40 preferredMaximumContentSizeCategory];
-      v87 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleSubhead" maximumContentSizeCategory:v86];
+      preferredMaximumContentSizeCategory8 = [v40 preferredMaximumContentSizeCategory];
+      v87 = [off_1E70ECC18 _preferredFontForTextStyle:@"UICTFontTextStyleSubhead" maximumContentSizeCategory:preferredMaximumContentSizeCategory8];
       [v87 pointSize];
       v89 = v88;
 
@@ -344,8 +344,8 @@
 
     [v93[98] setTranslatesAutoresizingMaskIntoConstraints:0];
     [v93[98] setMinimumContentSizeCategory:@"UICTContentSizeCategoryM"];
-    v97 = [v40 preferredMaximumContentSizeCategory];
-    [v93[98] setMaximumContentSizeCategory:v97];
+    preferredMaximumContentSizeCategory9 = [v40 preferredMaximumContentSizeCategory];
+    [v93[98] setMaximumContentSizeCategory:preferredMaximumContentSizeCategory9];
 
     [v93[98] setAccessibilityIdentifier:@"find.previousButton"];
     v116[0] = MEMORY[0x1E69E9820];
@@ -362,12 +362,12 @@
 
     [v98[97] setTranslatesAutoresizingMaskIntoConstraints:0];
     [v98[97] setMinimumContentSizeCategory:@"UICTContentSizeCategoryM"];
-    v102 = [v40 preferredMaximumContentSizeCategory];
-    [v98[97] setMaximumContentSizeCategory:v102];
+    preferredMaximumContentSizeCategory10 = [v40 preferredMaximumContentSizeCategory];
+    [v98[97] setMaximumContentSizeCategory:preferredMaximumContentSizeCategory10];
 
     [v98[97] setAccessibilityIdentifier:@"find.nextButton"];
-    v103 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v103 addObserver:v98 selector:sel__preferredContentSizeDidChange name:@"UIContentSizeCategoryDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v98 selector:sel__preferredContentSizeDidChange name:@"UIContentSizeCategoryDidChangeNotification" object:0];
 
     [v98 _setNavigatorLayout:v40];
     objc_destroyWeak(&v118);
@@ -381,35 +381,35 @@
   return v115;
 }
 
-- (void)_setNavigatorLayout:(id)a3
+- (void)_setNavigatorLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   if (![(_UIFindNavigatorViewLayout *)self->_layout isEqual:?])
   {
     [(UIView *)self->_layout removeFromSuperview];
-    objc_storeStrong(&self->_layout, a3);
+    objc_storeStrong(&self->_layout, layout);
     [(UIView *)self addSubview:self->_layout];
-    [v5 setNextResultButton:self->_nextResultButton];
-    [v5 setPreviousResultButton:self->_previousResultButton];
-    [v5 setDoneButton:self->_doneButton];
-    [v5 setReplaceButton:self->_replaceButton];
-    [v5 setSearchTextField:self->_searchTextField];
-    [v5 setReplaceTextField:self->_replaceTextField];
-    [v5 setAssistantBarStyle:self->_assistantBarStyle];
-    [v5 setUsesAssistantBarHeight:self->_intrinsicHeightDerivedFromAssistantBar];
-    [v5 preferredCornerRadius];
+    [layoutCopy setNextResultButton:self->_nextResultButton];
+    [layoutCopy setPreviousResultButton:self->_previousResultButton];
+    [layoutCopy setDoneButton:self->_doneButton];
+    [layoutCopy setReplaceButton:self->_replaceButton];
+    [layoutCopy setSearchTextField:self->_searchTextField];
+    [layoutCopy setReplaceTextField:self->_replaceTextField];
+    [layoutCopy setAssistantBarStyle:self->_assistantBarStyle];
+    [layoutCopy setUsesAssistantBarHeight:self->_intrinsicHeightDerivedFromAssistantBar];
+    [layoutCopy preferredCornerRadius];
     [(UIView *)self _setCornerRadius:?];
     [(_UIFindNavigatorView *)self _preferredBackgroundColorChanged];
-    [v5 prepareForLayout];
-    [v5 setReplaceFieldVisible:self->_mode == 1];
+    [layoutCopy prepareForLayout];
+    [layoutCopy setReplaceFieldVisible:self->_mode == 1];
   }
 }
 
-- (id)_createNavigatorLayoutForTraitCollection:(id)a3
+- (id)_createNavigatorLayoutForTraitCollection:(id)collection
 {
-  v3 = a3;
+  collectionCopy = collection;
   v4 = off_1E70EB6E0;
-  if ([v3 userInterfaceIdiom] && objc_msgSend(v3, "horizontalSizeClass") != 1)
+  if ([collectionCopy userInterfaceIdiom] && objc_msgSend(collectionCopy, "horizontalSizeClass") != 1)
   {
     v4 = off_1E70EB6D8;
   }
@@ -420,11 +420,11 @@
   return v6;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   [(_UIFindNavigatorView *)self _navigatorHostingTypeChanged];
-  v4 = [(UIView *)self traitCollection];
-  v5 = [(_UIFindNavigatorView *)self _createNavigatorLayoutForTraitCollection:v4];
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = [(_UIFindNavigatorView *)self _createNavigatorLayoutForTraitCollection:traitCollection];
 
   [(_UIFindNavigatorView *)self _setNavigatorLayout:v5];
 }
@@ -437,19 +437,19 @@
   [(UIView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = _UIFindNavigatorView;
-  [(UIView *)&v4 willMoveToWindow:a3];
+  [(UIView *)&v4 willMoveToWindow:window];
   [(_UIFindNavigatorView *)self _navigatorHostingTypeChanged];
 }
 
 - (void)_navigatorHostingTypeChanged
 {
-  v3 = [(UIResponder *)self _ui_findNavigatorResponder];
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v3 hostingTypeForTraitCollection:v4];
+  _ui_findNavigatorResponder = [(UIResponder *)self _ui_findNavigatorResponder];
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = [_ui_findNavigatorResponder hostingTypeForTraitCollection:traitCollection];
 
   [(UIView *)self setTranslatesAutoresizingMaskIntoConstraints:v5 != 1];
 
@@ -460,8 +460,8 @@
 {
   if (self->_usesOpaqueBackground)
   {
-    v3 = [(_UIFindNavigatorViewLayout *)self->_layout preferredOpaqueBackgroundColor];
-    [(UIView *)self setBackgroundColor:v3];
+    preferredOpaqueBackgroundColor = [(_UIFindNavigatorViewLayout *)self->_layout preferredOpaqueBackgroundColor];
+    [(UIView *)self setBackgroundColor:preferredOpaqueBackgroundColor];
   }
 
   else
@@ -471,18 +471,18 @@
   }
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     [(_UIFindNavigatorViewLayout *)self->_layout setReplaceFieldVisible:?];
-    v7 = [(UIView *)self _inheritedRenderConfig];
-    if ([v7 colorAdaptiveBackground])
+    _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+    if ([_inheritedRenderConfig colorAdaptiveBackground])
     {
-      v8 = [(UIView *)self traitCollection];
-      v9 = [v8 userInterfaceIdiom];
+      traitCollection = [(UIView *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      if (v9)
+      if (userInterfaceIdiom)
       {
         goto LABEL_9;
       }
@@ -492,18 +492,18 @@
       [(UITextField *)self->_searchTextField setBackgroundColor:v10];
 
       [(UISearchTextField *)self->_replaceTextField setBorderStyle:0];
-      v7 = +[UIColor tertiarySystemFillColor];
-      [(UITextField *)self->_replaceTextField setBackgroundColor:v7];
+      _inheritedRenderConfig = +[UIColor tertiarySystemFillColor];
+      [(UITextField *)self->_replaceTextField setBackgroundColor:_inheritedRenderConfig];
     }
   }
 
-  else if (!a3)
+  else if (!mode)
   {
     [(_UIFindNavigatorViewLayout *)self->_layout setReplaceFieldVisible:0];
-    v5 = [(UIView *)self _inheritedRenderConfig];
-    v6 = [v5 colorAdaptiveBackground];
+    _inheritedRenderConfig2 = [(UIView *)self _inheritedRenderConfig];
+    colorAdaptiveBackground = [_inheritedRenderConfig2 colorAdaptiveBackground];
 
-    if (v6)
+    if (colorAdaptiveBackground)
     {
       [(UITextField *)self->_searchTextField setBackgroundColor:0];
       [(UISearchTextField *)self->_searchTextField setBorderStyle:3];
@@ -511,32 +511,32 @@
   }
 
 LABEL_9:
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
+    self->_mode = mode;
     [(UIView *)self invalidateIntrinsicContentSize];
     WeakRetained = objc_loadWeakRetained(&self->_findNavigatorDelegate);
-    [WeakRetained findNavigator:self didChangeMode:a3];
+    [WeakRetained findNavigator:self didChangeMode:mode];
   }
 }
 
 - (BOOL)_replacementEnabled
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_findNavigatorDelegate);
-  LOBYTE(v2) = [WeakRetained findNavigatorShouldShowReplacementOption:v2];
+  LOBYTE(selfCopy) = [WeakRetained findNavigatorShouldShowReplacementOption:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setAssistantBarStyle:(int64_t)a3
+- (void)setAssistantBarStyle:(int64_t)style
 {
-  v5 = [(UIView *)self traitCollection];
-  v6 = [(_UIFindNavigatorView *)self _createNavigatorLayoutForTraitCollection:v5];
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = [(_UIFindNavigatorView *)self _createNavigatorLayoutForTraitCollection:traitCollection];
 
   [(_UIFindNavigatorView *)self _setNavigatorLayout:v6];
-  self->_assistantBarStyle = a3;
-  [(_UIFindNavigatorViewLayout *)self->_layout setAssistantBarStyle:a3];
+  self->_assistantBarStyle = style;
+  [(_UIFindNavigatorViewLayout *)self->_layout setAssistantBarStyle:style];
   [(UIView *)self setNeedsLayout];
 }
 
@@ -613,41 +613,41 @@ LABEL_9:
   [WeakRetained findNavigatorDidInvalidateSearchSession:self];
 }
 
-- (void)_handleSearchMenuItem:(id)a3
+- (void)_handleSearchMenuItem:(id)item
 {
-  v10 = a3;
-  v4 = [v10 identifier];
+  itemCopy = item;
+  identifier = [itemCopy identifier];
 
-  if (v4 == @"find")
+  if (identifier == @"find")
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = 0;
 LABEL_8:
-    [(_UIFindNavigatorView *)v8 setMode:v9];
+    [(_UIFindNavigatorView *)selfCopy2 setMode:v9];
     goto LABEL_11;
   }
 
-  v5 = [v10 identifier];
+  identifier2 = [itemCopy identifier];
 
-  if (v5 == @"replace")
+  if (identifier2 == @"replace")
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = 1;
     goto LABEL_8;
   }
 
-  v6 = [v10 identifier];
+  identifier3 = [itemCopy identifier];
 
-  if (v6 == @"matchCase")
+  if (identifier3 == @"matchCase")
   {
     [(_UIFindNavigatorView *)self setMatchCase:[(_UIFindNavigatorView *)self matchCase]^ 1];
   }
 
   else
   {
-    v7 = [v10 identifier];
+    identifier4 = [itemCopy identifier];
 
-    if (v7 != @"wholeWords")
+    if (identifier4 != @"wholeWords")
     {
       goto LABEL_11;
     }
@@ -667,34 +667,34 @@ LABEL_11:
   return result;
 }
 
-- (void)setVisibleSeparatorEdges:(unint64_t)a3
+- (void)setVisibleSeparatorEdges:(unint64_t)edges
 {
-  v5 = [(UIView *)self _inheritedRenderConfig];
-  v6 = [v5 colorAdaptiveBackground];
+  _inheritedRenderConfig = [(UIView *)self _inheritedRenderConfig];
+  colorAdaptiveBackground = [_inheritedRenderConfig colorAdaptiveBackground];
 
-  if (v6)
+  if (colorAdaptiveBackground)
   {
-    a3 = 0;
+    edges = 0;
   }
 
-  self->_visibleSeparatorEdges = a3;
+  self->_visibleSeparatorEdges = edges;
   p_separatorViews = &self->_separatorViews;
-  [(UIView *)p_separatorViews->left setHidden:(a3 & 2) == 0];
-  [(UIView *)p_separatorViews->right setHidden:(a3 & 8) == 0];
+  [(UIView *)p_separatorViews->left setHidden:(edges & 2) == 0];
+  [(UIView *)p_separatorViews->right setHidden:(edges & 8) == 0];
   bottom = p_separatorViews->bottom;
 
-  [(UIView *)bottom setHidden:(a3 & 4) == 0];
+  [(UIView *)bottom setHidden:(edges & 4) == 0];
 }
 
 - (BOOL)becomeFirstResponder
 {
-  v3 = [(UIView *)self->_searchTextField isFirstResponder];
-  v4 = [(UISearchTextField *)self->_searchTextField becomeFirstResponder];
-  v5 = v4;
-  if (!v3 && v4)
+  isFirstResponder = [(UIView *)self->_searchTextField isFirstResponder];
+  becomeFirstResponder = [(UISearchTextField *)self->_searchTextField becomeFirstResponder];
+  v5 = becomeFirstResponder;
+  if (!isFirstResponder && becomeFirstResponder)
   {
-    v6 = [(_UIFindNavigatorSearchTextField *)self->_searchTextField text];
-    v7 = [v6 length];
+    text = [(_UIFindNavigatorSearchTextField *)self->_searchTextField text];
+    v7 = [text length];
 
     if (v7)
     {
@@ -737,7 +737,7 @@ LABEL_11:
   return v5;
 }
 
-- (void)find:(id)a3
+- (void)find:(id)find
 {
   if (![(UIView *)self->_searchTextField isFirstResponder])
   {
@@ -756,8 +756,8 @@ LABEL_11:
   [(UIView *)&v33 layoutSubviews];
   if ([(_UIFindNavigatorView *)self visibleSeparatorEdges])
   {
-    v3 = [(UIView *)self traitCollection];
-    [v3 displayScale];
+    traitCollection = [(UIView *)self traitCollection];
+    [traitCollection displayScale];
     v5 = 1.0 / v4;
 
     [(UIView *)self bounds];

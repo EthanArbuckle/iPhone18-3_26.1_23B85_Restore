@@ -1,26 +1,26 @@
 @interface _PASArgSubcommand
-+ (_PASArgSubcommand)subcommandWithName:(id)a3 help:(id)a4 handler:(id)a5;
-+ (id)simpleSubcommandWithHelpGenerator:(id)a3 name:(id)a4 help:(id)a5 handler:(id)a6;
-- (_PASArgSubcommand)initWithName:(id)a3 help:(id)a4 handler:(id)a5;
-- (id)customUsageHelpWithUsageOverride:(id)a3 positionalArgString:(id)a4 optionHelpOverride:(id)a5 additionalHelpText:(id)a6;
++ (_PASArgSubcommand)subcommandWithName:(id)name help:(id)help handler:(id)handler;
++ (id)simpleSubcommandWithHelpGenerator:(id)generator name:(id)name help:(id)help handler:(id)handler;
+- (_PASArgSubcommand)initWithName:(id)name help:(id)help handler:(id)handler;
+- (id)customUsageHelpWithUsageOverride:(id)override positionalArgString:(id)string optionHelpOverride:(id)helpOverride additionalHelpText:(id)text;
 - (id)description;
-- (void)registerOption:(id)a3;
+- (void)registerOption:(id)option;
 @end
 
 @implementation _PASArgSubcommand
 
-- (id)customUsageHelpWithUsageOverride:(id)a3 positionalArgString:(id)a4 optionHelpOverride:(id)a5 additionalHelpText:(id)a6
+- (id)customUsageHelpWithUsageOverride:(id)override positionalArgString:(id)string optionHelpOverride:(id)helpOverride additionalHelpText:(id)text
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  overrideCopy = override;
+  stringCopy = string;
+  helpOverrideCopy = helpOverride;
+  textCopy = text;
   v14 = [MEMORY[0x1E696AD60] stringWithFormat:@"%@ -- %@\n\n", self->_name, self->_helpDescription];
   v15 = v14;
-  if (v10)
+  if (overrideCopy)
   {
-    [v14 appendString:v10];
-    if (!v11)
+    [v14 appendString:overrideCopy];
+    if (!stringCopy)
     {
       goto LABEL_4;
     }
@@ -29,25 +29,25 @@
   }
 
   v23 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v17 = [MEMORY[0x1E696AE30] processInfo];
-  v18 = [v17 processName];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
   name = self->_name;
-  v20 = [(_PASArgSubcommand *)self optionShortHelp];
-  v21 = [v23 initWithFormat:@"Usage:\n%@ %@%@", v18, name, v20];
+  optionShortHelp = [(_PASArgSubcommand *)self optionShortHelp];
+  v21 = [v23 initWithFormat:@"Usage:\n%@ %@%@", processName, name, optionShortHelp];
   [v15 appendString:v21];
 
-  if (v11)
+  if (stringCopy)
   {
 LABEL_3:
-    [v15 appendString:v11];
+    [v15 appendString:stringCopy];
     [v15 appendString:@"\n"];
   }
 
 LABEL_4:
-  if (v12)
+  if (helpOverrideCopy)
   {
-    [v15 appendString:v12];
-    if (!v13)
+    [v15 appendString:helpOverrideCopy];
+    if (!textCopy)
     {
       goto LABEL_7;
     }
@@ -55,13 +55,13 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v22 = [(_PASArgSubcommand *)self optionLongHelp];
-  [v15 appendString:v22];
+  optionLongHelp = [(_PASArgSubcommand *)self optionLongHelp];
+  [v15 appendString:optionLongHelp];
 
-  if (v13)
+  if (textCopy)
   {
 LABEL_6:
-    [v15 appendString:v13];
+    [v15 appendString:textCopy];
   }
 
 LABEL_7:
@@ -69,15 +69,15 @@ LABEL_7:
   return v15;
 }
 
-- (void)registerOption:(id)a3
+- (void)registerOption:(id)option
 {
-  v6 = a3;
-  [(NSMutableArray *)self->_registeredOptions addObject:v6];
-  if ([v6 required])
+  optionCopy = option;
+  [(NSMutableArray *)self->_registeredOptions addObject:optionCopy];
+  if ([optionCopy required])
   {
     requiredOptions = self->_requiredOptions;
-    v5 = [v6 name];
-    [(NSMutableSet *)requiredOptions addObject:v5];
+    name = [optionCopy name];
+    [(NSMutableSet *)requiredOptions addObject:name];
   }
 }
 
@@ -122,23 +122,23 @@ LABEL_7:
   return v3;
 }
 
-- (_PASArgSubcommand)initWithName:(id)a3 help:(id)a4 handler:(id)a5
+- (_PASArgSubcommand)initWithName:(id)name help:(id)help handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 length])
+  nameCopy = name;
+  helpCopy = help;
+  handlerCopy = handler;
+  if ([nameCopy length])
   {
-    if (v11)
+    if (helpCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"helpDescription"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"helpDescription"}];
 
-    if (v12)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -146,23 +146,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"name.length > 0"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:157 description:{@"Invalid parameter not satisfying: %@", @"name.length > 0"}];
 
-  if (!v11)
+  if (!helpCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:159 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
 LABEL_4:
   v25.receiver = self;
@@ -171,9 +171,9 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_name, a3);
-    objc_storeStrong(&v14->_helpDescription, a4);
-    v15 = MEMORY[0x1AC566DD0](v12);
+    objc_storeStrong(&v13->_name, name);
+    objc_storeStrong(&v14->_helpDescription, help);
+    v15 = MEMORY[0x1AC566DD0](handlerCopy);
     handler = v14->_handler;
     v14->_handler = v15;
 
@@ -189,39 +189,39 @@ LABEL_4:
   return v14;
 }
 
-+ (id)simpleSubcommandWithHelpGenerator:(id)a3 name:(id)a4 help:(id)a5 handler:(id)a6
++ (id)simpleSubcommandWithHelpGenerator:(id)generator name:(id)name help:(id)help handler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v14)
+  generatorCopy = generator;
+  nameCopy = name;
+  helpCopy = help;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"_PASArgParser.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASArgParser.m" lineNumber:183 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
   }
 
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __73___PASArgSubcommand_simpleSubcommandWithHelpGenerator_name_help_handler___block_invoke;
   v21[3] = &unk_1E77F1C40;
-  v22 = v11;
-  v23 = v14;
-  v15 = v14;
-  v16 = v11;
-  v17 = [_PASArgSubcommand subcommandWithName:v12 help:v13 handler:v21];
+  v22 = generatorCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = generatorCopy;
+  v17 = [_PASArgSubcommand subcommandWithName:nameCopy help:helpCopy handler:v21];
   v18 = [_PASArgOption optionWithName:@"help" shortName:@"h" help:@"Display a help page."];
   [v17 registerOption:v18];
 
   return v17;
 }
 
-+ (_PASArgSubcommand)subcommandWithName:(id)a3 help:(id)a4 handler:(id)a5
++ (_PASArgSubcommand)subcommandWithName:(id)name help:(id)help handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithName:v10 help:v9 handler:v8];
+  handlerCopy = handler;
+  helpCopy = help;
+  nameCopy = name;
+  v11 = [[self alloc] initWithName:nameCopy help:helpCopy handler:handlerCopy];
 
   return v11;
 }

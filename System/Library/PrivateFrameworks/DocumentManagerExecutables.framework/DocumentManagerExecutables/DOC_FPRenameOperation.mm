@@ -1,8 +1,8 @@
 @interface DOC_FPRenameOperation
 - (NSString)actionNameForUndoing;
-- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)a3 newDisplayName:(id)a4;
-- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)a3 newFileName:(id)a4;
-- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)a3 newName:(id)a4;
+- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)item newDisplayName:(id)name;
+- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)item newFileName:(id)name;
+- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)item newName:(id)name;
 - (id)operationForRedoing;
 - (id)operationForUndoing;
 @end
@@ -40,7 +40,7 @@
 
 - (id)operationForRedoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FPRenameOperation.operationForRedoing()();
 
   return v3;
@@ -48,27 +48,27 @@
 
 - (id)operationForUndoing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DOC_FPRenameOperation.operationForUndoing()();
 
   return v3;
 }
 
-- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)a3 newName:(id)a4
+- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)item newName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)a3 newFileName:(id)a4
+- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)item newFileName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)a3 newDisplayName:(id)a4
+- (_TtC26DocumentManagerExecutablesP33_3DF2C731D711A9239F302026BC8371EA21DOC_FPRenameOperation)initWithItem:(id)item newDisplayName:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

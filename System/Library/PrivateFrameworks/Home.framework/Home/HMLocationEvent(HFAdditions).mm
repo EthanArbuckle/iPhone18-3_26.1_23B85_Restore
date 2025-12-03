@@ -25,8 +25,8 @@
 - (uint64_t)hf_eventType
 {
   v2 = objc_opt_class();
-  v3 = [a1 region];
-  v4 = [v2 hf_locationEventTypeForRegion:v3];
+  region = [self region];
+  v4 = [v2 hf_locationEventTypeForRegion:region];
 
   return v4;
 }
@@ -51,30 +51,30 @@
 
   if (v9)
   {
-    v10 = [v6 location];
+    location = [v6 location];
 
-    if (v10)
+    if (location)
     {
-      v11 = [v6 location];
-      [v11 coordinate];
-      v10 = [v9 containsCoordinate:?];
+      location2 = [v6 location];
+      [location2 coordinate];
+      location = [v9 containsCoordinate:?];
     }
   }
 
   else
   {
-    v10 = 0;
+    location = 0;
   }
 
-  return v10;
+  return location;
 }
 
 - (uint64_t)hf_isRegionAtHome:()HFAdditions
 {
   v4 = a3;
   v5 = objc_opt_class();
-  v6 = [a1 region];
-  v7 = [v5 hf_isRegion:v6 atHome:v4];
+  region = [self region];
+  v7 = [v5 hf_isRegion:region atHome:v4];
 
   return v7;
 }

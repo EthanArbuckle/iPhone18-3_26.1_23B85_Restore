@@ -8,22 +8,22 @@
 
 - (uint64_t)hf_generatedByHomeAppForDebuggingPurposes
 {
-  v1 = objc_getAssociatedObject(a1, @"kHMSymptomhf_generatedByHomeAppForDebuggingPurposesKey");
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, @"kHMSymptomhf_generatedByHomeAppForDebuggingPurposesKey");
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)hf_setGeneratedByHomeAppForDebuggingPurposes:()HFAdditions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  objc_setAssociatedObject(a1, @"kHMSymptomhf_generatedByHomeAppForDebuggingPurposesKey", v2, 0x301);
+  objc_setAssociatedObject(self, @"kHMSymptomhf_generatedByHomeAppForDebuggingPurposesKey", v2, 0x301);
 }
 
 - (id)hf_shortDescription
 {
-  v1 = [a1 type];
-  switch(v1)
+  type = [self type];
+  switch(type)
   {
     case 1:
     case 2:
@@ -66,14 +66,14 @@
       v3 = @"HFSymptomDescriptionVPNProfileExpired";
       goto LABEL_18;
     default:
-      if ((v1 - 100) <= 0xF && ((1 << (v1 - 100)) & 0xF00F) != 0)
+      if ((type - 100) <= 0xF && ((1 << (type - 100)) & 0xF00F) != 0)
       {
         v3 = @"HFSymptomDescriptionProblemNetworkIssue";
       }
 
       else
       {
-        if (v1 != 999)
+        if (type != 999)
         {
           v2 = 0;
           goto LABEL_19;

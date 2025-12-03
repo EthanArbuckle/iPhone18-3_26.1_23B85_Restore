@@ -1,57 +1,57 @@
 @interface MOCategoryUsage
-+ (id)descriptionOfAppCategory:(unint64_t)a3;
-- (MOCategoryUsage)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)descriptionOfAppCategory:(unint64_t)category;
+- (MOCategoryUsage)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOCategoryUsage
 
-+ (id)descriptionOfAppCategory:(unint64_t)a3
++ (id)descriptionOfAppCategory:(unint64_t)category
 {
-  if (a3 > 0x11)
+  if (category > 0x11)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_278773210[a3];
+    return off_278773210[category];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   duration = self->_duration;
-  v5 = a3;
-  [v5 encodeObject:duration forKey:@"duration"];
-  [v5 encodeInteger:self->_appCategory forKey:@"appCategory"];
+  coderCopy = coder;
+  [coderCopy encodeObject:duration forKey:@"duration"];
+  [coderCopy encodeInteger:self->_appCategory forKey:@"appCategory"];
 }
 
-- (MOCategoryUsage)initWithCoder:(id)a3
+- (MOCategoryUsage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MOCategoryUsage;
   v5 = [(MOCategoryUsage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"duration"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"duration"];
     duration = v5->_duration;
     v5->_duration = v6;
 
-    v5->_appCategory = [v4 decodeIntegerForKey:@"appCategory"];
+    v5->_appCategory = [coderCopy decodeIntegerForKey:@"appCategory"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MOCategoryUsage);
-  v5 = [(MOCategoryUsage *)self duration];
-  [(MOCategoryUsage *)v4 setDuration:v5];
+  duration = [(MOCategoryUsage *)self duration];
+  [(MOCategoryUsage *)v4 setDuration:duration];
 
   [(MOCategoryUsage *)v4 setAppCategory:[(MOCategoryUsage *)self appCategory]];
   return v4;

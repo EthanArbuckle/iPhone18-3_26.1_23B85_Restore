@@ -1,10 +1,10 @@
 @interface MLCDropoutLayer
 + (MLCDropoutLayer)layerWithRate:(float)rate seed:(NSUInteger)seed;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (BOOL)isSupportedShapeForTensorSources:(id)a3;
-- (MLCDropoutLayer)initWithRate:(float)a3 seed:(unint64_t)a4;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (BOOL)isSupportedShapeForTensorSources:(id)sources;
+- (MLCDropoutLayer)initWithRate:(float)rate seed:(unint64_t)seed;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
 @end
 
@@ -12,38 +12,38 @@
 
 + (MLCDropoutLayer)layerWithRate:(float)rate seed:(NSUInteger)seed
 {
-  v6 = [a1 alloc];
+  v6 = [self alloc];
   *&v7 = rate;
   v8 = [v6 initWithRate:seed seed:v7];
 
   return v8;
 }
 
-- (MLCDropoutLayer)initWithRate:(float)a3 seed:(unint64_t)a4
+- (MLCDropoutLayer)initWithRate:(float)rate seed:(unint64_t)seed
 {
   v7.receiver = self;
   v7.super_class = MLCDropoutLayer;
   result = [(MLCLayer *)&v7 initWithLabel:@"Dropout"];
   if (result)
   {
-    result->_rate = a3;
-    result->_seed = a4;
+    result->_rate = rate;
+    result->_seed = seed;
   }
 
   return result;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v34 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 objectAtIndexedSubscript:0];
-  v13 = [v12 descriptor];
-  v14 = [v13 dataType];
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  v12 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor = [v12 descriptor];
+  dataType = [descriptor dataType];
 
-  if (![(MLCLayer *)MLCDropoutLayer supportsDataType:v14 onDevice:v9])
+  if (![(MLCLayer *)MLCDropoutLayer supportsDataType:dataType onDevice:deviceCopy])
   {
     v20 = +[MLCLog framework];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -52,21 +52,21 @@
       *buf = 138412802;
       v29 = v23;
       v30 = 1024;
-      v31 = v14;
+      v31 = dataType;
       v32 = 2112;
-      v33 = v9;
+      v33 = deviceCopy;
       _os_log_error_impl(&dword_238C1D000, v20, OS_LOG_TYPE_ERROR, "%@: dropout layer with data type = %d is not supported on a device = %@", buf, 0x1Cu);
     }
 
     goto LABEL_10;
   }
 
-  v15 = [v9 computeEngine];
+  computeEngine = [deviceCopy computeEngine];
   [(MLCDropoutLayer *)self rate];
   v17 = v16;
-  v18 = [(MLCDropoutLayer *)self seed];
+  seed = [(MLCDropoutLayer *)self seed];
   LODWORD(v19) = v17;
-  v20 = [v15 dropoutLayerWithRate:v18 seed:v19];
+  v20 = [computeEngine dropoutLayerWithRate:seed seed:v19];
 
   if (!v20 || ![v20 count])
   {
@@ -81,45 +81,45 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v21 = [v9 computeEngine];
-  v22 = [v21 compileLayerDeviceOps:v20 sourceTensors:v10 resultTensor:v11];
+  computeEngine2 = [deviceCopy computeEngine];
+  v22 = [computeEngine2 compileLayerDeviceOps:v20 sourceTensors:tensorsCopy resultTensor:tensorCopy];
 
   v27.receiver = self;
   v27.super_class = MLCDropoutLayer;
-  [(MLCLayer *)&v27 bindDevice:v9 deviceOps:v20];
+  [(MLCLayer *)&v27 bindDevice:deviceCopy deviceOps:v20];
 LABEL_11:
 
   v25 = *MEMORY[0x277D85DE8];
   return v22;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
-  v3 = a3;
+  sourcesCopy = sources;
   v4 = [MEMORY[0x277CBEBF8] mutableCopy];
   for (i = 0; ; ++i)
   {
-    v6 = [v3 objectAtIndexedSubscript:0];
-    v7 = [v6 descriptor];
-    v8 = [v7 shape];
-    v9 = [v8 count];
+    v6 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor = [v6 descriptor];
+    shape = [descriptor shape];
+    v9 = [shape count];
 
     if (i >= v9)
     {
       break;
     }
 
-    v10 = [v3 objectAtIndexedSubscript:0];
-    v11 = [v10 descriptor];
-    v12 = [v11 shape];
-    v13 = [v12 objectAtIndexedSubscript:i];
+    v10 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor2 = [v10 descriptor];
+    shape2 = [descriptor2 shape];
+    v13 = [shape2 objectAtIndexedSubscript:i];
     [v4 setObject:v13 atIndexedSubscript:i];
   }
 
   v14 = [v4 copy];
-  v15 = [v3 objectAtIndexedSubscript:0];
-  v16 = [v15 descriptor];
-  v17 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v14, [v16 dataType]);
+  v15 = [sourcesCopy objectAtIndexedSubscript:0];
+  descriptor3 = [v15 descriptor];
+  v17 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v14, [descriptor3 dataType]);
 
   v18 = [MLCTensor tensorWithDescriptor:v17];
 
@@ -133,10 +133,10 @@ LABEL_11:
   v5 = NSStringFromClass(v4);
   [(MLCDropoutLayer *)self rate];
   v7 = v6;
-  v8 = [(MLCDropoutLayer *)self seed];
-  v9 = [(MLCLayer *)self conditionalTreeNode];
-  v10 = [(MLCLayer *)self resultTensors];
-  v11 = [v3 stringWithFormat:@"%@: { rate=%f : seed=%lu : conditionalTreeNode=%@ : resultTensor=%@ }", v5, *&v7, v8, v9, v10];
+  seed = [(MLCDropoutLayer *)self seed];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v11 = [v3 stringWithFormat:@"%@: { rate=%f : seed=%lu : conditionalTreeNode=%@ : resultTensor=%@ }", v5, *&v7, seed, conditionalTreeNode, resultTensors];
 
   return v11;
 }
@@ -146,25 +146,25 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayer *)self layerID];
+  layerID = [(MLCLayer *)self layerID];
   [(MLCDropoutLayer *)self rate];
-  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Rate: %.03f    Seed: %lu</FONT>>", v5, v6, v7, -[MLCDropoutLayer seed](self, "seed")];
+  v8 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Rate: %.03f    Seed: %lu</FONT>>", v5, layerID, v7, -[MLCDropoutLayer seed](self, "seed")];
 
   return v8;
 }
 
-- (BOOL)isSupportedShapeForTensorSources:(id)a3
+- (BOOL)isSupportedShapeForTensorSources:(id)sources
 {
-  v3 = a3;
-  if ([v3 count])
+  sourcesCopy = sources;
+  if ([sourcesCopy count])
   {
     v4 = 0;
     do
     {
-      v5 = [v3 objectAtIndexedSubscript:v4];
-      v6 = [v5 descriptor];
-      v7 = [v6 shape];
-      v8 = [v7 count];
+      v5 = [sourcesCopy objectAtIndexedSubscript:v4];
+      descriptor = [v5 descriptor];
+      shape = [descriptor shape];
+      v8 = [shape count];
 
       v9 = v8 > 1;
       if (v8 <= 1)
@@ -175,7 +175,7 @@ LABEL_11:
       ++v4;
     }
 
-    while (v4 < [v3 count]);
+    while (v4 < [sourcesCopy count]);
   }
 
   else

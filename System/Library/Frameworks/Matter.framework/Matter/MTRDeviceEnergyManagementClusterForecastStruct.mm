@@ -1,6 +1,6 @@
 @interface MTRDeviceEnergyManagementClusterForecastStruct
 - (MTRDeviceEnergyManagementClusterForecastStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -35,9 +35,9 @@
     isPausable = v3->_isPausable;
     v3->_isPausable = &unk_284C3E588;
 
-    v11 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     slots = v3->_slots;
-    v3->_slots = v11;
+    v3->_slots = array;
 
     forecastUpdateReason = v3->_forecastUpdateReason;
     v3->_forecastUpdateReason = &unk_284C3E588;
@@ -46,35 +46,35 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDeviceEnergyManagementClusterForecastStruct);
-  v5 = [(MTRDeviceEnergyManagementClusterForecastStruct *)self forecastID];
-  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setForecastID:v5];
+  forecastID = [(MTRDeviceEnergyManagementClusterForecastStruct *)self forecastID];
+  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setForecastID:forecastID];
 
-  v6 = [(MTRDeviceEnergyManagementClusterForecastStruct *)self activeSlotNumber];
-  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setActiveSlotNumber:v6];
+  activeSlotNumber = [(MTRDeviceEnergyManagementClusterForecastStruct *)self activeSlotNumber];
+  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setActiveSlotNumber:activeSlotNumber];
 
-  v7 = [(MTRDeviceEnergyManagementClusterForecastStruct *)self startTime];
-  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setStartTime:v7];
+  startTime = [(MTRDeviceEnergyManagementClusterForecastStruct *)self startTime];
+  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setStartTime:startTime];
 
-  v8 = [(MTRDeviceEnergyManagementClusterForecastStruct *)self endTime];
-  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setEndTime:v8];
+  endTime = [(MTRDeviceEnergyManagementClusterForecastStruct *)self endTime];
+  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setEndTime:endTime];
 
-  v9 = [(MTRDeviceEnergyManagementClusterForecastStruct *)self earliestStartTime];
-  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setEarliestStartTime:v9];
+  earliestStartTime = [(MTRDeviceEnergyManagementClusterForecastStruct *)self earliestStartTime];
+  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setEarliestStartTime:earliestStartTime];
 
-  v10 = [(MTRDeviceEnergyManagementClusterForecastStruct *)self latestEndTime];
-  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setLatestEndTime:v10];
+  latestEndTime = [(MTRDeviceEnergyManagementClusterForecastStruct *)self latestEndTime];
+  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setLatestEndTime:latestEndTime];
 
-  v11 = [(MTRDeviceEnergyManagementClusterForecastStruct *)self isPausable];
-  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setIsPausable:v11];
+  isPausable = [(MTRDeviceEnergyManagementClusterForecastStruct *)self isPausable];
+  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setIsPausable:isPausable];
 
-  v12 = [(MTRDeviceEnergyManagementClusterForecastStruct *)self slots];
-  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setSlots:v12];
+  slots = [(MTRDeviceEnergyManagementClusterForecastStruct *)self slots];
+  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setSlots:slots];
 
-  v13 = [(MTRDeviceEnergyManagementClusterForecastStruct *)self forecastUpdateReason];
-  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setForecastUpdateReason:v13];
+  forecastUpdateReason = [(MTRDeviceEnergyManagementClusterForecastStruct *)self forecastUpdateReason];
+  [(MTRDeviceEnergyManagementClusterForecastStruct *)v4 setForecastUpdateReason:forecastUpdateReason];
 
   return v4;
 }

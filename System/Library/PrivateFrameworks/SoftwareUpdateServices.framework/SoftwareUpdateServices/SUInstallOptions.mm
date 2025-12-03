@@ -1,9 +1,9 @@
 @interface SUInstallOptions
 - (SUInstallOptions)init;
-- (SUInstallOptions)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUInstallOptions)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUInstallOptions
@@ -21,9 +21,9 @@
     v2->_managed = 0;
     v2->_skipActivationCheck = 0;
     v2->_automaticInstallation = 0;
-    v4 = [(SUOptionsBase *)v2 defaultClientName];
+    defaultClientName = [(SUOptionsBase *)v2 defaultClientName];
     clientName = v3->_clientName;
-    v3->_clientName = v4;
+    v3->_clientName = defaultClientName;
 
     v3->_ignorableConstraints = 0;
   }
@@ -31,42 +31,42 @@
   return v3;
 }
 
-- (SUInstallOptions)initWithCoder:(id)a3
+- (SUInstallOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SUInstallOptions;
   v5 = [(SUOptionsBase *)&v8 init];
   if (v5)
   {
-    -[SUInstallOptions setDarkBoot:](v5, "setDarkBoot:", [v4 decodeBoolForKey:@"darkBootKey"]);
-    -[SUInstallOptions setRequired:](v5, "setRequired:", [v4 decodeBoolForKey:@"requiredKey"]);
-    -[SUInstallOptions setManaged:](v5, "setManaged:", [v4 decodeBoolForKey:@"managedKey"]);
-    -[SUInstallOptions setSkipActivationCheck:](v5, "setSkipActivationCheck:", [v4 decodeBoolForKey:@"skipActivationCheck"]);
-    -[SUInstallOptions setAutomaticInstallation:](v5, "setAutomaticInstallation:", [v4 decodeBoolForKey:@"automaticInstallation"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientNameKey"];
+    -[SUInstallOptions setDarkBoot:](v5, "setDarkBoot:", [coderCopy decodeBoolForKey:@"darkBootKey"]);
+    -[SUInstallOptions setRequired:](v5, "setRequired:", [coderCopy decodeBoolForKey:@"requiredKey"]);
+    -[SUInstallOptions setManaged:](v5, "setManaged:", [coderCopy decodeBoolForKey:@"managedKey"]);
+    -[SUInstallOptions setSkipActivationCheck:](v5, "setSkipActivationCheck:", [coderCopy decodeBoolForKey:@"skipActivationCheck"]);
+    -[SUInstallOptions setAutomaticInstallation:](v5, "setAutomaticInstallation:", [coderCopy decodeBoolForKey:@"automaticInstallation"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientNameKey"];
     [(SUInstallOptions *)v5 setClientName:v6];
 
-    -[SUInstallOptions setIgnorableConstraints:](v5, "setIgnorableConstraints:", [v4 decodeIntegerForKey:@"ignorableConstraintsKey"]);
+    -[SUInstallOptions setIgnorableConstraints:](v5, "setIgnorableConstraints:", [coderCopy decodeIntegerForKey:@"ignorableConstraintsKey"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   darkBoot = self->_darkBoot;
-  v5 = a3;
-  [v5 encodeBool:darkBoot forKey:@"darkBootKey"];
-  [v5 encodeBool:self->_required forKey:@"requiredKey"];
-  [v5 encodeBool:self->_managed forKey:@"managedKey"];
-  [v5 encodeBool:self->_skipActivationCheck forKey:@"skipActivationCheck"];
-  [v5 encodeBool:self->_automaticInstallation forKey:@"automaticInstallation"];
-  [v5 encodeObject:self->_clientName forKey:@"clientNameKey"];
-  [v5 encodeInteger:self->_ignorableConstraints forKey:@"ignorableConstraintsKey"];
+  coderCopy = coder;
+  [coderCopy encodeBool:darkBoot forKey:@"darkBootKey"];
+  [coderCopy encodeBool:self->_required forKey:@"requiredKey"];
+  [coderCopy encodeBool:self->_managed forKey:@"managedKey"];
+  [coderCopy encodeBool:self->_skipActivationCheck forKey:@"skipActivationCheck"];
+  [coderCopy encodeBool:self->_automaticInstallation forKey:@"automaticInstallation"];
+  [coderCopy encodeObject:self->_clientName forKey:@"clientNameKey"];
+  [coderCopy encodeInteger:self->_ignorableConstraints forKey:@"ignorableConstraintsKey"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setDarkBoot:self->_darkBoot];
@@ -82,7 +82,7 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SUInstallOptions *)self clientName];
+  clientName = [(SUInstallOptions *)self clientName];
   v5 = @"NO";
   if ([(SUInstallOptions *)self isDarkBoot])
   {
@@ -130,7 +130,7 @@
   }
 
   v10 = SUStringFromInstallationConstraints([(SUInstallOptions *)self ignorableConstraints]);
-  v11 = [v3 stringWithFormat:@"\n            ClientName: %@\n            DarkBoot: %@\n            isManaged: %@\n            skipActivationCheck: %@\n            automaticInstallation: %@\n            Installation required: %@\n            IgnorableConstraints: %@\n", v4, v6, v7, v8, v9, v5, v10];
+  v11 = [v3 stringWithFormat:@"\n            ClientName: %@\n            DarkBoot: %@\n            isManaged: %@\n            skipActivationCheck: %@\n            automaticInstallation: %@\n            Installation required: %@\n            IgnorableConstraints: %@\n", clientName, v6, v7, v8, v9, v5, v10];
 
   return v11;
 }

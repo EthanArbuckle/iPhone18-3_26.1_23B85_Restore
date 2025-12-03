@@ -1,7 +1,7 @@
 @interface REMNSPersistentHistoryTransaction
-- (BOOL)isEqual:(id)a3;
-- (REMNSPersistentHistoryTransaction)initWithCoder:(id)a3;
-- (REMNSPersistentHistoryTransaction)initWithStorage:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMNSPersistentHistoryTransaction)initWithCoder:(id)coder;
+- (REMNSPersistentHistoryTransaction)initWithStorage:(id)storage;
 - (id)accountID;
 - (id)author;
 - (id)changes;
@@ -9,16 +9,16 @@
 - (id)storeID;
 - (id)timestamp;
 - (id)token;
-- (void)_resolveAccountID:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_resolveAccountID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMNSPersistentHistoryTransaction
 
-- (REMNSPersistentHistoryTransaction)initWithStorage:(id)a3
+- (REMNSPersistentHistoryTransaction)initWithStorage:(id)storage
 {
-  v5 = a3;
-  if (v5)
+  storageCopy = storage;
+  if (storageCopy)
   {
     v10.receiver = self;
     v10.super_class = REMNSPersistentHistoryTransaction;
@@ -26,115 +26,115 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_storage, a3);
+      objc_storeStrong(&v6->_storage, storage);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)_resolveAccountID:(id)a3
+- (void)_resolveAccountID:(id)d
 {
-  v4 = a3;
-  v5 = [(REMNSPersistentHistoryTransaction *)self storage];
-  [v5 setAccountID:v4];
+  dCopy = d;
+  storage = [(REMNSPersistentHistoryTransaction *)self storage];
+  [storage setAccountID:dCopy];
 }
 
 - (id)description
 {
   v15 = MEMORY[0x1E696AEC0];
-  v3 = [(REMNSPersistentHistoryTransaction *)self storage];
-  v4 = [v3 transactionNumber];
-  v5 = [(REMNSPersistentHistoryTransaction *)self timestamp];
-  v6 = [(REMNSPersistentHistoryTransaction *)self storeID];
-  v7 = [(REMNSPersistentHistoryTransaction *)self storage];
-  v8 = [v7 contextName];
-  v9 = [(REMNSPersistentHistoryTransaction *)self author];
-  v10 = [(REMNSPersistentHistoryTransaction *)self changes];
-  v11 = [v10 count];
-  v12 = [(REMNSPersistentHistoryTransaction *)self token];
-  v13 = [v15 stringWithFormat:@"<REMNSPersistentHistoryTransaction - txnNo(%lld) timestamp(%@) storeID(%@) contextName(%@) author(%@) chgCount(%ld) token(%@)>", v4, v5, v6, v8, v9, v11, v12];
+  storage = [(REMNSPersistentHistoryTransaction *)self storage];
+  transactionNumber = [storage transactionNumber];
+  timestamp = [(REMNSPersistentHistoryTransaction *)self timestamp];
+  storeID = [(REMNSPersistentHistoryTransaction *)self storeID];
+  storage2 = [(REMNSPersistentHistoryTransaction *)self storage];
+  contextName = [storage2 contextName];
+  author = [(REMNSPersistentHistoryTransaction *)self author];
+  changes = [(REMNSPersistentHistoryTransaction *)self changes];
+  v11 = [changes count];
+  token = [(REMNSPersistentHistoryTransaction *)self token];
+  v13 = [v15 stringWithFormat:@"<REMNSPersistentHistoryTransaction - txnNo(%lld) timestamp(%@) storeID(%@) contextName(%@) author(%@) chgCount(%ld) token(%@)>", transactionNumber, timestamp, storeID, contextName, author, v11, token];
 
   return v13;
 }
 
 - (id)timestamp
 {
-  v2 = [(REMNSPersistentHistoryTransaction *)self storage];
-  v3 = [v2 timestamp];
+  storage = [(REMNSPersistentHistoryTransaction *)self storage];
+  timestamp = [storage timestamp];
 
-  return v3;
+  return timestamp;
 }
 
 - (id)changes
 {
-  v2 = [(REMNSPersistentHistoryTransaction *)self storage];
-  v3 = [v2 changes];
+  storage = [(REMNSPersistentHistoryTransaction *)self storage];
+  changes = [storage changes];
 
-  return v3;
+  return changes;
 }
 
 - (id)token
 {
-  v2 = [(REMNSPersistentHistoryTransaction *)self storage];
-  v3 = [v2 token];
+  storage = [(REMNSPersistentHistoryTransaction *)self storage];
+  token = [storage token];
 
-  return v3;
+  return token;
 }
 
 - (id)accountID
 {
-  v2 = [(REMNSPersistentHistoryTransaction *)self storage];
-  v3 = [v2 accountID];
+  storage = [(REMNSPersistentHistoryTransaction *)self storage];
+  accountID = [storage accountID];
 
-  return v3;
+  return accountID;
 }
 
 - (id)storeID
 {
-  v2 = [(REMNSPersistentHistoryTransaction *)self storage];
-  v3 = [v2 storeID];
+  storage = [(REMNSPersistentHistoryTransaction *)self storage];
+  storeID = [storage storeID];
 
-  return v3;
+  return storeID;
 }
 
 - (id)author
 {
-  v2 = [(REMNSPersistentHistoryTransaction *)self storage];
-  v3 = [v2 author];
+  storage = [(REMNSPersistentHistoryTransaction *)self storage];
+  author = [storage author];
 
-  return v3;
+  return author;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMNSPersistentHistoryTransaction *)self storage];
-  [v4 encodeObject:v5 forKey:@"storage"];
+  coderCopy = coder;
+  storage = [(REMNSPersistentHistoryTransaction *)self storage];
+  [coderCopy encodeObject:storage forKey:@"storage"];
 }
 
-- (REMNSPersistentHistoryTransaction)initWithCoder:(id)a3
+- (REMNSPersistentHistoryTransaction)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storage"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storage"];
   v6 = [(REMNSPersistentHistoryTransaction *)self initWithStorage:v5];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(REMNSPersistentHistoryTransaction *)v6 storage];
-  v8 = [v7 changes];
+  storage = [(REMNSPersistentHistoryTransaction *)v6 storage];
+  changes = [storage changes];
 
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v9 = [changes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -146,14 +146,14 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(changes);
         }
 
         [*(*(&v15 + 1) + 8 * v12++) setInternal_ChangeTransaction:v6];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [changes countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -163,33 +163,33 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMNSPersistentHistoryTransaction *)self storage];
-      v8 = [(REMNSPersistentHistoryTransaction *)v6 storage];
-      if (v7 == v8)
+      storage = [(REMNSPersistentHistoryTransaction *)self storage];
+      storage2 = [(REMNSPersistentHistoryTransaction *)v6 storage];
+      if (storage == storage2)
       {
         v11 = 1;
       }
 
       else
       {
-        v9 = [(REMNSPersistentHistoryTransaction *)self storage];
-        v10 = [(REMNSPersistentHistoryTransaction *)v6 storage];
-        v11 = [v9 isEqual:v10];
+        storage3 = [(REMNSPersistentHistoryTransaction *)self storage];
+        storage4 = [(REMNSPersistentHistoryTransaction *)v6 storage];
+        v11 = [storage3 isEqual:storage4];
       }
     }
 

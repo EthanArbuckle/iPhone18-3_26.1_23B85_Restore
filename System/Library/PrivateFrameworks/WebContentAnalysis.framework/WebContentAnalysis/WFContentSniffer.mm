@@ -1,28 +1,28 @@
 @interface WFContentSniffer
-+ (BOOL)MIMETypeIsHTMLOrText:(id)a3;
-+ (BOOL)isGIF:(id)a3;
-+ (BOOL)isHTML:(id)a3;
-+ (BOOL)isJPEG:(id)a3;
-+ (BOOL)isOctetStream:(id)a3;
-+ (BOOL)isSWF:(id)a3;
-+ (BOOL)isXHTML:(id)a3;
-+ (id)MIMETypeForData:(id)a3;
-+ (id)MIMETypeForData:(id)a3 andString:(id)a4;
-+ (id)MIMETypeForString:(id)a3;
++ (BOOL)MIMETypeIsHTMLOrText:(id)text;
++ (BOOL)isGIF:(id)f;
++ (BOOL)isHTML:(id)l;
++ (BOOL)isJPEG:(id)g;
++ (BOOL)isOctetStream:(id)stream;
++ (BOOL)isSWF:(id)f;
++ (BOOL)isXHTML:(id)l;
++ (id)MIMETypeForData:(id)data;
++ (id)MIMETypeForData:(id)data andString:(id)string;
++ (id)MIMETypeForString:(id)string;
 @end
 
 @implementation WFContentSniffer
 
-+ (id)MIMETypeForString:(id)a3
++ (id)MIMETypeForString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:1];
+  v4 = [string dataUsingEncoding:1];
 
-  return [WFContentSniffer MIMETypeForData:v4 andString:a3];
+  return [WFContentSniffer MIMETypeForData:v4 andString:string];
 }
 
-+ (id)MIMETypeForData:(id)a3
++ (id)MIMETypeForData:(id)data
 {
-  v4 = [a3 length];
+  v4 = [data length];
   if (v4 >= 0x400)
   {
     v5 = 1024;
@@ -33,72 +33,72 @@
     v5 = v4;
   }
 
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(a3 length:"bytes") encoding:{v5, 1}];
-  v7 = [WFContentSniffer MIMETypeForData:a3 andString:v6];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:objc_msgSend(data length:"bytes") encoding:{v5, 1}];
+  v7 = [WFContentSniffer MIMETypeForData:data andString:v6];
 
   return v7;
 }
 
-+ (BOOL)MIMETypeIsHTMLOrText:(id)a3
++ (BOOL)MIMETypeIsHTMLOrText:(id)text
 {
-  if (!a3)
+  if (!text)
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"text/html"] & 1) != 0 || (objc_msgSend(a3, "isEqualToString:", @"application/xhtml+xml"))
+  if ([text isEqualToString:@"text/html"] & 1) != 0 || (objc_msgSend(text, "isEqualToString:", @"application/xhtml+xml"))
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"text/plain"];
+  return [text isEqualToString:@"text/plain"];
 }
 
-+ (id)MIMETypeForData:(id)a3 andString:(id)a4
++ (id)MIMETypeForData:(id)data andString:(id)string
 {
   result = 0;
-  if (a3 && a4)
+  if (data && string)
   {
-    if ([WFContentSniffer isXML:a4])
+    if ([WFContentSniffer isXML:string])
     {
-      v7 = [WFContentSniffer isXHTML:a4];
+      v7 = [WFContentSniffer isXHTML:string];
       v8 = @"application/xml";
       v9 = @"application/xhtml+xml";
     }
 
     else
     {
-      if ([WFContentSniffer isHTML:a4])
+      if ([WFContentSniffer isHTML:string])
       {
         return @"text/html";
       }
 
-      if ([WFContentSniffer isGIF:a4])
+      if ([WFContentSniffer isGIF:string])
       {
         return @"image/gif";
       }
 
-      if ([WFContentSniffer isJPEG:a3])
+      if ([WFContentSniffer isJPEG:data])
       {
         return @"image/jpeg";
       }
 
-      if ([WFContentSniffer isPDF:a4])
+      if ([WFContentSniffer isPDF:string])
       {
         return @"application/pdf";
       }
 
-      if ([WFContentSniffer isPNG:a3])
+      if ([WFContentSniffer isPNG:data])
       {
         return @"image/png";
       }
 
-      if ([WFContentSniffer isSWF:a4])
+      if ([WFContentSniffer isSWF:string])
       {
         return @"application/x-shockwave-flash";
       }
 
-      v7 = [WFContentSniffer isWord:a3];
+      v7 = [WFContentSniffer isWord:data];
       v8 = @"text/plain";
       v9 = @"application/msword";
     }
@@ -117,25 +117,25 @@
   return result;
 }
 
-+ (BOOL)isHTML:(id)a3
++ (BOOL)isHTML:(id)l
 {
-  if ([a3 WF_containsString:@"<html" options:1])
+  if ([l WF_containsString:@"<html" options:1])
   {
     return 1;
   }
 
-  return [a3 WF_containsString:@"</html" options:1];
+  return [l WF_containsString:@"</html" options:1];
 }
 
-+ (BOOL)isXHTML:(id)a3
++ (BOOL)isXHTML:(id)l
 {
-  if (([a3 WF_containsString:@"<html" options:1] & 1) == 0 && !objc_msgSend(a3, "WF_containsString:options:", @"</html", 1))
+  if (([l WF_containsString:@"<html" options:1] & 1) == 0 && !objc_msgSend(l, "WF_containsString:options:", @"</html", 1))
   {
     return 0;
   }
 
   v4 = 1;
-  if (([a3 WF_containsString:@"xmlns" options:1] & 1) == 0)
+  if (([l WF_containsString:@"xmlns" options:1] & 1) == 0)
   {
     return 0;
   }
@@ -143,44 +143,44 @@
   return v4;
 }
 
-+ (BOOL)isGIF:(id)a3
++ (BOOL)isGIF:(id)f
 {
-  if ([a3 hasPrefix:@"GIF87a"])
+  if ([f hasPrefix:@"GIF87a"])
   {
     return 1;
   }
 
-  return [a3 hasPrefix:@"GIF89a"];
+  return [f hasPrefix:@"GIF89a"];
 }
 
-+ (BOOL)isJPEG:(id)a3
++ (BOOL)isJPEG:(id)g
 {
-  if ([a3 length] < 3)
+  if ([g length] < 3)
   {
     return 0;
   }
 
-  v5 = [a3 bytes];
-  return *v5 == 55551 && *(v5 + 2) == 255;
+  bytes = [g bytes];
+  return *bytes == 55551 && *(bytes + 2) == 255;
 }
 
-+ (BOOL)isSWF:(id)a3
++ (BOOL)isSWF:(id)f
 {
-  if ([a3 hasPrefix:@"FWS"])
+  if ([f hasPrefix:@"FWS"])
   {
     return 1;
   }
 
-  return [a3 hasPrefix:@"CWS"];
+  return [f hasPrefix:@"CWS"];
 }
 
-+ (BOOL)isOctetStream:(id)a3
++ (BOOL)isOctetStream:(id)stream
 {
-  v4 = [a3 bytes];
-  v5 = [a3 length];
+  bytes = [stream bytes];
+  v5 = [stream length];
   if (v5)
   {
-    v6 = *v4;
+    v6 = *bytes;
     if ((v6 - 1) >= 8)
     {
       v8 = 1;
@@ -203,7 +203,7 @@
           break;
         }
 
-        v6 = v4[v8++];
+        v6 = bytes[v8++];
       }
 
       while ((v6 - 1) >= 8);

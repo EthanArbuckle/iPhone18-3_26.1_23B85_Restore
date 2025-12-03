@@ -1,49 +1,49 @@
 @interface PSESchemaPSEMediaEntitySimilarity
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PSESchemaPSEMediaEntitySimilarity)initWithDictionary:(id)a3;
-- (PSESchemaPSEMediaEntitySimilarity)initWithJSON:(id)a3;
+- (PSESchemaPSEMediaEntitySimilarity)initWithDictionary:(id)dictionary;
+- (PSESchemaPSEMediaEntitySimilarity)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsSameMediaAlbum:(BOOL)a3;
-- (void)setHasIsSameMediaArtist:(BOOL)a3;
-- (void)setHasIsSameMediaItem:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsSameMediaAlbum:(BOOL)album;
+- (void)setHasIsSameMediaArtist:(BOOL)artist;
+- (void)setHasIsSameMediaItem:(BOOL)item;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSESchemaPSEMediaEntitySimilarity
 
-- (PSESchemaPSEMediaEntitySimilarity)initWithDictionary:(id)a3
+- (PSESchemaPSEMediaEntitySimilarity)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PSESchemaPSEMediaEntitySimilarity;
   v5 = [(PSESchemaPSEMediaEntitySimilarity *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isSameMediaTitle"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isSameMediaTitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEMediaEntitySimilarity setIsSameMediaTitle:](v5, "setIsSameMediaTitle:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"isSameMediaArtist"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"isSameMediaArtist"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEMediaEntitySimilarity setIsSameMediaArtist:](v5, "setIsSameMediaArtist:", [v7 BOOLValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"isSameMediaAlbum"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"isSameMediaAlbum"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PSESchemaPSEMediaEntitySimilarity setIsSameMediaAlbum:](v5, "setIsSameMediaAlbum:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"isSameMediaItem"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"isSameMediaItem"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (PSESchemaPSEMediaEntitySimilarity)initWithJSON:(id)a3
+- (PSESchemaPSEMediaEntitySimilarity)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PSESchemaPSEMediaEntitySimilarity *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PSESchemaPSEMediaEntitySimilarity *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PSESchemaPSEMediaEntitySimilarity *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSEMediaEntitySimilarity isSameMediaAlbum](self, "isSameMediaAlbum")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isSameMediaAlbum"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isSameMediaAlbum"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -118,7 +118,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSEMediaEntitySimilarity isSameMediaArtist](self, "isSameMediaArtist")}];
-  [v3 setObject:v8 forKeyedSubscript:@"isSameMediaArtist"];
+  [dictionary setObject:v8 forKeyedSubscript:@"isSameMediaArtist"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -134,19 +134,19 @@ LABEL_4:
 
 LABEL_11:
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSEMediaEntitySimilarity isSameMediaItem](self, "isSameMediaItem")}];
-  [v3 setObject:v9 forKeyedSubscript:@"isSameMediaItem"];
+  [dictionary setObject:v9 forKeyedSubscript:@"isSameMediaItem"];
 
   if (*&self->_has)
   {
 LABEL_5:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[PSESchemaPSEMediaEntitySimilarity isSameMediaTitle](self, "isSameMediaTitle")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isSameMediaTitle"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isSameMediaTitle"];
   }
 
 LABEL_6:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -203,16 +203,16 @@ LABEL_5:
   return v3 ^ v2 ^ v4 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[12];
+  v6 = equalCopy[12];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -221,13 +221,13 @@ LABEL_5:
   if (*&has)
   {
     isSameMediaTitle = self->_isSameMediaTitle;
-    if (isSameMediaTitle != [v4 isSameMediaTitle])
+    if (isSameMediaTitle != [equalCopy isSameMediaTitle])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -239,13 +239,13 @@ LABEL_5:
   if (v8)
   {
     isSameMediaArtist = self->_isSameMediaArtist;
-    if (isSameMediaArtist != [v4 isSameMediaArtist])
+    if (isSameMediaArtist != [equalCopy isSameMediaArtist])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[12];
+    v6 = equalCopy[12];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -257,10 +257,10 @@ LABEL_5:
   if (v10)
   {
     isSameMediaAlbum = self->_isSameMediaAlbum;
-    if (isSameMediaAlbum == [v4 isSameMediaAlbum])
+    if (isSameMediaAlbum == [equalCopy isSameMediaAlbum])
     {
       has = self->_has;
-      v6 = v4[12];
+      v6 = equalCopy[12];
       goto LABEL_14;
     }
 
@@ -279,7 +279,7 @@ LABEL_14:
   if (v12)
   {
     isSameMediaItem = self->_isSameMediaItem;
-    if (isSameMediaItem != [v4 isSameMediaItem])
+    if (isSameMediaItem != [equalCopy isSameMediaItem])
     {
       goto LABEL_18;
     }
@@ -291,9 +291,9 @@ LABEL_19:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -340,9 +340,9 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)setHasIsSameMediaItem:(BOOL)a3
+- (void)setHasIsSameMediaItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     v3 = 8;
   }
@@ -355,9 +355,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsSameMediaAlbum:(BOOL)a3
+- (void)setHasIsSameMediaAlbum:(BOOL)album
 {
-  if (a3)
+  if (album)
   {
     v3 = 4;
   }
@@ -370,9 +370,9 @@ LABEL_6:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasIsSameMediaArtist:(BOOL)a3
+- (void)setHasIsSameMediaArtist:(BOOL)artist
 {
-  if (a3)
+  if (artist)
   {
     v3 = 2;
   }

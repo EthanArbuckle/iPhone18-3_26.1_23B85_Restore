@@ -1,9 +1,9 @@
 @interface VoiceOverGestureDirectionDetailController
 - (VoiceOverGestureDirectionDetailController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateTableCheckedSelection:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateTableCheckedSelection:(id)selection;
 @end
 
 @implementation VoiceOverGestureDirectionDetailController
@@ -23,13 +23,13 @@
     v9[4] = __Block_byref_object_dispose_;
     v4 = v2;
     v10 = v4;
-    v5 = [MEMORY[0x277CE7E20] sharedInstance];
+    mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __49__VoiceOverGestureDirectionDetailController_init__block_invoke;
     v8[3] = &unk_278B90D48;
     v8[4] = v9;
-    [v5 registerUpdateBlock:v8 forRetrieveSelector:sel_voiceOverNavigationDirectionMode withListener:v4];
+    [mEMORY[0x277CE7E20] registerUpdateBlock:v8 forRetrieveSelector:sel_voiceOverNavigationDirectionMode withListener:v4];
 
     v6 = v4;
     _Block_object_dispose(v9, 8);
@@ -68,13 +68,13 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = VoiceOverGestureDirectionDetailController;
-  v5 = [(VoiceOverGestureDirectionDetailController *)&v12 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
-  v7 = [v6 objectForKey:@"VoiceOverNavigationDirectionMode"];
+  v5 = [(VoiceOverGestureDirectionDetailController *)&v12 tableView:view cellForRowAtIndexPath:path];
+  accessibilityDomainAccessor = [(AccessibilityBridgeBaseController *)self accessibilityDomainAccessor];
+  v7 = [accessibilityDomainAccessor objectForKey:@"VoiceOverNavigationDirectionMode"];
 
   if (v7)
   {
@@ -86,8 +86,8 @@
     v8 = &unk_284E7E570;
   }
 
-  v9 = [v5 specifier];
-  v10 = [v9 propertyForKey:@"GestureDirectionMode"];
+  specifier = [v5 specifier];
+  v10 = [specifier propertyForKey:@"GestureDirectionMode"];
 
   if (v10)
   {
@@ -97,34 +97,34 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = VoiceOverGestureDirectionDetailController;
-  v7 = a4;
-  v8 = [(VoiceOverGestureDirectionDetailController *)&v12 tableView:v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:@"GestureDirectionMode"];
+  pathCopy = path;
+  v8 = [(VoiceOverGestureDirectionDetailController *)&v12 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:@"GestureDirectionMode"];
 
   if (v10)
   {
     [(AccessibilityBridgeBaseController *)self setGizmoAccessibilityPref:v10 forKey:@"VoiceOverNavigationDirectionMode"];
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  [(VoiceOverGestureDirectionDetailController *)self updateTableCheckedSelection:v7];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  [(VoiceOverGestureDirectionDetailController *)self updateTableCheckedSelection:pathCopy];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 postNotificationName:@"AXVoiceOverReloadNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"AXVoiceOverReloadNotification" object:0];
 }
 
-- (void)updateTableCheckedSelection:(id)a3
+- (void)updateTableCheckedSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   v5 = *MEMORY[0x277D3FC60];
-  v11 = v4;
-  v6 = [*(&self->super.super.super.super.super.super.isa + v5) numberOfRowsInSection:{objc_msgSend(v4, "section")}];
+  v11 = selectionCopy;
+  v6 = [*(&self->super.super.super.super.super.super.isa + v5) numberOfRowsInSection:{objc_msgSend(selectionCopy, "section")}];
   if (v6 >= 1)
   {
     v7 = v6;

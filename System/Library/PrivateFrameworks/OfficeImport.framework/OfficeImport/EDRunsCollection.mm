@@ -1,20 +1,20 @@
 @interface EDRunsCollection
-- (void)addRun:(id)a3 baseStyle:(id)a4;
+- (void)addRun:(id)run baseStyle:(id)style;
 @end
 
 @implementation EDRunsCollection
 
-- (void)addRun:(id)a3 baseStyle:(id)a4
+- (void)addRun:(id)run baseStyle:(id)style
 {
-  v6 = a3;
-  v7 = a4;
+  runCopy = run;
+  styleCopy = style;
   v8 = [(EDCollection *)self count];
   if (v8)
   {
     v9 = [(EDCollection *)self objectAtIndex:v8 - 1];
-    v10 = [v9 font];
+    font = [v9 font];
 
-    if (!v10)
+    if (!font)
     {
       goto LABEL_6;
     }
@@ -22,19 +22,19 @@
 
   else
   {
-    v10 = [v7 font];
-    if (!v10)
+    font = [styleCopy font];
+    if (!font)
     {
 LABEL_6:
       v13.receiver = self;
       v13.super_class = EDRunsCollection;
-      [(EDSortedCollection *)&v13 addObject:v6];
+      [(EDSortedCollection *)&v13 addObject:runCopy];
       goto LABEL_7;
     }
   }
 
-  v11 = [v6 font];
-  v12 = [v10 isEqual:v11];
+  font2 = [runCopy font];
+  v12 = [font isEqual:font2];
 
   if ((v12 & 1) == 0)
   {

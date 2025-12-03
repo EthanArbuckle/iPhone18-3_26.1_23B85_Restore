@@ -1,32 +1,32 @@
 @interface QSSelectionHighlightView
-- (QSSelectionHighlightView)initWithFrame:(CGRect)a3;
+- (QSSelectionHighlightView)initWithFrame:(CGRect)frame;
 - (UIColor)selectionColor;
 - (UIColor)underlineColor;
 - (void)_processSelectionRects;
-- (void)setHighlightSelectionRects:(id)a3;
+- (void)setHighlightSelectionRects:(id)rects;
 @end
 
 @implementation QSSelectionHighlightView
 
-- (QSSelectionHighlightView)initWithFrame:(CGRect)a3
+- (QSSelectionHighlightView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = QSSelectionHighlightView;
-  v3 = [(QSSelectionHighlightView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(QSSelectionHighlightView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(QSSelectionHighlightView *)v3 setUserInteractionEnabled:0];
-    v5 = [(QSSelectionHighlightView *)v4 layer];
-    [v5 setAllowsHitTesting:0];
+    layer = [(QSSelectionHighlightView *)v4 layer];
+    [layer setAllowsHitTesting:0];
 
     [(QSSelectionHighlightView *)v4 setAutoresizingMask:18];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(QSSelectionHighlightView *)v4 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(QSSelectionHighlightView *)v4 setBackgroundColor:clearColor];
 
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     viewCache = v4->_viewCache;
-    v4->_viewCache = v7;
+    v4->_viewCache = array;
 
     v9 = v4;
   }
@@ -44,10 +44,10 @@
 
   else
   {
-    v4 = [(QSSelectionHighlightView *)self traitCollection];
-    v5 = [v4 userInterfaceStyle];
+    traitCollection = [(QSSelectionHighlightView *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v5 == 2)
+    if (userInterfaceStyle == 2)
     {
       v6 = 0.67;
       v7 = 0.35;
@@ -72,20 +72,20 @@
   underlineColor = self->_underlineColor;
   if (underlineColor)
   {
-    v3 = underlineColor;
+    labelColor = underlineColor;
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DC888] labelColor];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
   }
 
-  return v3;
+  return labelColor;
 }
 
-- (void)setHighlightSelectionRects:(id)a3
+- (void)setHighlightSelectionRects:(id)rects
 {
-  objc_storeStrong(&self->_highlightSelectionRects, a3);
+  objc_storeStrong(&self->_highlightSelectionRects, rects);
 
   [(QSSelectionHighlightView *)self _processSelectionRects];
 }
@@ -137,8 +137,8 @@
           if (v6 >= [(NSMutableArray *)self->_viewCache count])
           {
             v24 = [[QSSelectionHighlightDetailedView alloc] initWithFrame:v30, v8, v9, v10];
-            v25 = [MEMORY[0x1E69DC888] clearColor];
-            [(QSSelectionHighlightDetailedView *)v24 setBackgroundColor:v25];
+            clearColor = [MEMORY[0x1E69DC888] clearColor];
+            [(QSSelectionHighlightDetailedView *)v24 setBackgroundColor:clearColor];
 
             [(NSMutableArray *)self->_viewCache addObject:v24];
             [(QSSelectionHighlightView *)self addSubview:v24];
@@ -150,12 +150,12 @@
           }
 
           [(QSSelectionHighlightDetailedView *)v24 setDisplayRect:v13, v15, v17, v19];
-          v26 = [(QSSelectionHighlightView *)self underlineColor];
-          [(QSSelectionHighlightDetailedView *)v24 setUnderlineColor:v26];
+          underlineColor = [(QSSelectionHighlightView *)self underlineColor];
+          [(QSSelectionHighlightDetailedView *)v24 setUnderlineColor:underlineColor];
 
           [(QSSelectionHighlightDetailedView *)v24 setSentenceHighlight:[(QSSelectionHighlightView *)self sentenceHighlight]];
-          v27 = [(QSSelectionHighlightView *)self selectionColor];
-          [(QSSelectionHighlightDetailedView *)v24 setSelectionColor:v27];
+          selectionColor = [(QSSelectionHighlightView *)self selectionColor];
+          [(QSSelectionHighlightDetailedView *)v24 setSelectionColor:selectionColor];
 
           [(QSSelectionHighlightDetailedView *)v24 setHidden:0];
           ++v6;

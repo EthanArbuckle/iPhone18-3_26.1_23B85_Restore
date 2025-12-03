@@ -1,12 +1,12 @@
 @interface ObservabilityXPCTimerActivityDelegate
 - (APXPCActivityCriteria)criteria;
-- (BOOL)runActivity:(id)a3;
+- (BOOL)runActivity:(id)activity;
 - (NSString)taskID;
 - (_TtC16promotedcontentd37ObservabilityXPCTimerActivityDelegate)init;
-- (id)checkinWithCriteria:(id)a3;
-- (void)deferActivity:(id)a3 completionHandler:(id)a4;
-- (void)setTaskID:(id)a3;
-- (void)terminateActivity:(id)a3;
+- (id)checkinWithCriteria:(id)criteria;
+- (void)deferActivity:(id)activity completionHandler:(id)handler;
+- (void)setTaskID:(id)d;
+- (void)terminateActivity:(id)activity;
 @end
 
 @implementation ObservabilityXPCTimerActivityDelegate
@@ -19,7 +19,7 @@
   return v2;
 }
 
-- (void)setTaskID:(id)a3
+- (void)setTaskID:(id)d
 {
   v4 = sub_100398F58();
   v5 = (self + OBJC_IVAR____TtC16promotedcontentd37ObservabilityXPCTimerActivityDelegate_taskID);
@@ -29,24 +29,24 @@
 
 - (APXPCActivityCriteria)criteria
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001F6250();
 
   return v3;
 }
 
-- (BOOL)runActivity:(id)a3
+- (BOOL)runActivity:(id)activity
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1001F6454(v4);
+  activityCopy = activity;
+  selfCopy = self;
+  LOBYTE(self) = sub_1001F6454(activityCopy);
 
   return self & 1;
 }
 
-- (void)deferActivity:(id)a3 completionHandler:(id)a4
+- (void)deferActivity:(id)activity completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = self + OBJC_IVAR____TtC16promotedcontentd37ObservabilityXPCTimerActivityDelegate_delegate;
@@ -58,7 +58,7 @@
     *(v10 + 16) = sub_1001F6D24;
     *(v10 + 24) = v6;
     v11 = *(v8 + 24);
-    v12 = self;
+    selfCopy = self;
 
     v11(sub_1001F6D3C, v10, ObjectType, v8);
     swift_unknownObjectRelease();
@@ -73,7 +73,7 @@
   }
 }
 
-- (void)terminateActivity:(id)a3
+- (void)terminateActivity:(id)activity
 {
   v4 = self + OBJC_IVAR____TtC16promotedcontentd37ObservabilityXPCTimerActivityDelegate_delegate;
   if (swift_unknownObjectWeakLoadStrong())
@@ -81,17 +81,17 @@
     v5 = *(v4 + 1);
     ObjectType = swift_getObjectType();
     v7 = *(v5 + 24);
-    v8 = self;
+    selfCopy = self;
     v7(ExperimentationErrorType.rawValue.getter, 0, ObjectType, v5);
     swift_unknownObjectRelease();
   }
 }
 
-- (id)checkinWithCriteria:(id)a3
+- (id)checkinWithCriteria:(id)criteria
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1001F6828(a3);
+  selfCopy = self;
+  sub_1001F6828(criteria);
   swift_unknownObjectRelease();
 
   return 0;

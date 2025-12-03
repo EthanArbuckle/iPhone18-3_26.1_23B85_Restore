@@ -1,5 +1,5 @@
 @interface PLThumbnailCascadingDownscaleContext
-- (BOOL)downscaleImageSurface:(__IOSurface *)a3 destinationCount:(int)a4 sizes:(id *)a5 cropModes:(int *)a6 pixelFormat:(unsigned int)a7 bytesPerRowAlignment:(int)a8 destinationData:(id)a9;
+- (BOOL)downscaleImageSurface:(__IOSurface *)surface destinationCount:(int)count sizes:(id *)sizes cropModes:(int *)modes pixelFormat:(unsigned int)format bytesPerRowAlignment:(int)alignment destinationData:(id)data;
 - (PLThumbnailCascadingDownscaleContext)init;
 - (void)dealloc;
 - (void)discardContexts;
@@ -37,14 +37,14 @@
   return v2;
 }
 
-- (BOOL)downscaleImageSurface:(__IOSurface *)a3 destinationCount:(int)a4 sizes:(id *)a5 cropModes:(int *)a6 pixelFormat:(unsigned int)a7 bytesPerRowAlignment:(int)a8 destinationData:(id)a9
+- (BOOL)downscaleImageSurface:(__IOSurface *)surface destinationCount:(int)count sizes:(id *)sizes cropModes:(int *)modes pixelFormat:(unsigned int)format bytesPerRowAlignment:(int)alignment destinationData:(id)data
 {
-  v13 = *&a4;
+  v13 = *&count;
   v46 = *MEMORY[0x1E69E9840];
-  v16 = a9;
-  if (a3)
+  dataCopy = data;
+  if (surface)
   {
-    v36 = a8;
+    alignmentCopy = alignment;
     v17 = PLBackendGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
@@ -54,8 +54,8 @@
     }
 
     [(PLThumbnailContextCleanupTimer *)self->_idleCleanupTimer startOrRestartTimer];
-    IOSurfaceGetWidth(a3);
-    IOSurfaceGetHeight(a3);
+    IOSurfaceGetWidth(surface);
+    IOSurfaceGetHeight(surface);
     v32[1] = PLSizeMake() >> 32;
     [(NSLock *)self->_lock lock];
     if (!self->_portraitContext)
@@ -67,15 +67,15 @@
         _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Downscale context: Creating CMPhotoCascadeContexts", buf, 2u);
       }
 
-      IOSurfaceGetPixelFormat(a3);
+      IOSurfaceGetPixelFormat(surface);
       self->_portraitContext = CMPhotoCascadingDownscaleCreate();
-      IOSurfaceGetPixelFormat(a3);
+      IOSurfaceGetPixelFormat(surface);
       self->_landscapeContext = CMPhotoCascadingDownscaleCreate();
     }
 
-    v33 = a7;
-    v34 = a5;
-    v37 = a6;
+    formatCopy = format;
+    sizesCopy = sizes;
+    modesCopy = modes;
     [(NSLock *)self->_lock unlock];
     v32[0] = v32;
     v35 = v13;
@@ -96,8 +96,8 @@
     v41 = 0u;
     v40 = 0u;
     v39 = 0u;
-    v38 = v16;
-    v22 = v16;
+    v38 = dataCopy;
+    v22 = dataCopy;
     v23 = [v22 countByEnumeratingWithState:&v39 objects:v43 count:{16, v32[0]}];
     if (v23)
     {
@@ -130,7 +130,7 @@
     v29 = CMPhotoCascadingDownscale();
     [(NSLock *)self->_lock unlock];
     v30 = v29 == 0;
-    v16 = v38;
+    dataCopy = v38;
   }
 
   else

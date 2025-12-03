@@ -1,10 +1,10 @@
 @interface HKChangesSyncRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKChangesSyncRequest)init;
-- (HKChangesSyncRequest)initWithCoder:(id)a3;
-- (HKChangesSyncRequest)initWithPush:(BOOL)a3 pull:(BOOL)a4 lite:(BOOL)a5;
-- (id)requestByMergingRequest:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKChangesSyncRequest)initWithCoder:(id)coder;
+- (HKChangesSyncRequest)initWithPush:(BOOL)push pull:(BOOL)pull lite:(BOOL)lite;
+- (id)requestByMergingRequest:(id)request;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKChangesSyncRequest
@@ -19,71 +19,71 @@
   return 0;
 }
 
-- (HKChangesSyncRequest)initWithPush:(BOOL)a3 pull:(BOOL)a4 lite:(BOOL)a5
+- (HKChangesSyncRequest)initWithPush:(BOOL)push pull:(BOOL)pull lite:(BOOL)lite
 {
   v9.receiver = self;
   v9.super_class = HKChangesSyncRequest;
   result = [(HKChangesSyncRequest *)&v9 init];
   if (result)
   {
-    result->_push = a3;
-    result->_pull = a4;
-    result->_lite = a5;
+    result->_push = push;
+    result->_pull = pull;
+    result->_lite = lite;
   }
 
   return result;
 }
 
-- (id)requestByMergingRequest:(id)a3
+- (id)requestByMergingRequest:(id)request
 {
-  v4 = a3;
-  if (v4)
+  requestCopy = request;
+  if (requestCopy)
   {
     v5 = [HKChangesSyncRequest alloc];
-    v6 = ([v4 push] & 1) != 0 || self->_push;
-    v8 = ([v4 pull] & 1) != 0 || self->_pull;
-    v9 = ([v4 lite] & 1) != 0 || self->_lite;
-    v7 = [(HKChangesSyncRequest *)v5 initWithPush:v6 pull:v8 lite:v9];
+    v6 = ([requestCopy push] & 1) != 0 || self->_push;
+    v8 = ([requestCopy pull] & 1) != 0 || self->_pull;
+    v9 = ([requestCopy lite] & 1) != 0 || self->_lite;
+    selfCopy = [(HKChangesSyncRequest *)v5 initWithPush:v6 pull:v8 lite:v9];
   }
 
   else
   {
-    v7 = self;
+    selfCopy = self;
   }
 
-  v10 = v7;
+  v10 = selfCopy;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_push == objc_msgSend(v4, "push") && self->_pull == objc_msgSend(v4, "pull") && self->_lite == objc_msgSend(v4, "lite");
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_push == objc_msgSend(equalCopy, "push") && self->_pull == objc_msgSend(equalCopy, "pull") && self->_lite == objc_msgSend(equalCopy, "lite");
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   push = self->_push;
-  v5 = a3;
-  [v5 encodeBool:push forKey:@"push"];
-  [v5 encodeBool:self->_pull forKey:@"pull"];
-  [v5 encodeBool:self->_lite forKey:@"lite"];
+  coderCopy = coder;
+  [coderCopy encodeBool:push forKey:@"push"];
+  [coderCopy encodeBool:self->_pull forKey:@"pull"];
+  [coderCopy encodeBool:self->_lite forKey:@"lite"];
 }
 
-- (HKChangesSyncRequest)initWithCoder:(id)a3
+- (HKChangesSyncRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = HKChangesSyncRequest;
   v5 = [(HKChangesSyncRequest *)&v7 init];
   if (v5)
   {
-    v5->_push = [v4 decodeBoolForKey:@"push"];
-    v5->_pull = [v4 decodeBoolForKey:@"pull"];
-    v5->_lite = [v4 decodeBoolForKey:@"lite"];
+    v5->_push = [coderCopy decodeBoolForKey:@"push"];
+    v5->_pull = [coderCopy decodeBoolForKey:@"pull"];
+    v5->_lite = [coderCopy decodeBoolForKey:@"lite"];
   }
 
   return v5;

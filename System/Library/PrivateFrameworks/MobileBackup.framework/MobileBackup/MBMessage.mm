@@ -1,17 +1,17 @@
 @interface MBMessage
 + (id)_allowedClasses;
-+ (id)messageWithName:(id)a3 arguments:(id)a4;
-+ (id)messageWithName:(id)a3 arguments:(id)a4 personaIdentifier:(id)a5;
-- (MBMessage)initWithName:(id)a3 arguments:(id)a4;
++ (id)messageWithName:(id)name arguments:(id)arguments;
++ (id)messageWithName:(id)name arguments:(id)arguments personaIdentifier:(id)identifier;
+- (MBMessage)initWithName:(id)name arguments:(id)arguments;
 - (NSString)description;
-- (id)_initWithXPCObject:(id)a3;
+- (id)_initWithXPCObject:(id)object;
 - (id)_xpcObject;
 - (void)_xpcObject;
-- (void)archiver:(id)a3 didEncodeObject:(id)a4;
+- (void)archiver:(id)archiver didEncodeObject:(id)object;
 - (void)sendReply;
-- (void)setError:(id)a3;
-- (void)setReply:(id)a3;
-- (void)setReplyError:(id)a3;
+- (void)setError:(id)error;
+- (void)setReply:(id)reply;
+- (void)setReplyError:(id)error;
 @end
 
 @implementation MBMessage
@@ -92,16 +92,16 @@ uint64_t __28__MBMessage__allowedClasses__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)_initWithXPCObject:(id)a3
+- (id)_initWithXPCObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v22.receiver = self;
   v22.super_class = MBMessage;
   v6 = [(MBMessage *)&v22 init];
   p_isa = &v6->super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcObject, a3);
+    objc_storeStrong(&v6->_xpcObject, object);
     length = 0;
     data = xpc_dictionary_get_data(p_isa[2], "messageInfo", &length);
     if (data)
@@ -126,8 +126,8 @@ uint64_t __28__MBMessage__allowedClasses__block_invoke()
     }
 
     v13 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v9 error:0];
-    v14 = [objc_opt_class() _allowedClasses];
-    v15 = [v13 decodeObjectOfClasses:v14 forKey:*MEMORY[0x1E696A508]];
+    _allowedClasses = [objc_opt_class() _allowedClasses];
+    v15 = [v13 decodeObjectOfClasses:_allowedClasses forKey:*MEMORY[0x1E696A508]];
     v16 = p_isa[v11];
     p_isa[v11] = v15;
 
@@ -139,36 +139,36 @@ uint64_t __28__MBMessage__allowedClasses__block_invoke()
   return p_isa;
 }
 
-+ (id)messageWithName:(id)a3 arguments:(id)a4 personaIdentifier:(id)a5
++ (id)messageWithName:(id)name arguments:(id)arguments personaIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[MBMessage alloc] initWithName:v9 arguments:v8];
+  identifierCopy = identifier;
+  argumentsCopy = arguments;
+  nameCopy = name;
+  v10 = [[MBMessage alloc] initWithName:nameCopy arguments:argumentsCopy];
 
-  if (v7)
+  if (identifierCopy)
   {
-    v11 = [(MBMessage *)v10 messageInfo];
-    [v11 setObject:v7 forKeyedSubscript:@"personaIdentifier"];
+    messageInfo = [(MBMessage *)v10 messageInfo];
+    [messageInfo setObject:identifierCopy forKeyedSubscript:@"personaIdentifier"];
   }
 
   return v10;
 }
 
-+ (id)messageWithName:(id)a3 arguments:(id)a4
++ (id)messageWithName:(id)name arguments:(id)arguments
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MBMessage alloc] initWithName:v6 arguments:v5];
+  argumentsCopy = arguments;
+  nameCopy = name;
+  v7 = [[MBMessage alloc] initWithName:nameCopy arguments:argumentsCopy];
 
   return v7;
 }
 
-- (MBMessage)initWithName:(id)a3 arguments:(id)a4
+- (MBMessage)initWithName:(id)name arguments:(id)arguments
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  nameCopy = name;
+  argumentsCopy = arguments;
+  if (!nameCopy)
   {
     [MBMessage initWithName:a2 arguments:self];
   }
@@ -179,14 +179,14 @@ uint64_t __28__MBMessage__allowedClasses__block_invoke()
   if (v9)
   {
     v10 = objc_alloc(MEMORY[0x1E695DF90]);
-    v11 = [v7 copy];
+    v11 = [nameCopy copy];
     v12 = [v10 initWithObjectsAndKeys:{v11, @"name", 0}];
     messageInfo = v9->_messageInfo;
     v9->_messageInfo = v12;
 
-    if (v8)
+    if (argumentsCopy)
     {
-      [(NSMutableDictionary *)v9->_messageInfo setObject:v8 forKeyedSubscript:@"arguments"];
+      [(NSMutableDictionary *)v9->_messageInfo setObject:argumentsCopy forKeyedSubscript:@"arguments"];
     }
 
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -197,17 +197,17 @@ uint64_t __28__MBMessage__allowedClasses__block_invoke()
   return v9;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    [(NSMutableDictionary *)self->_messageInfo setObject:a3 forKeyedSubscript:@"error"];
+    [(NSMutableDictionary *)self->_messageInfo setObject:error forKeyedSubscript:@"error"];
   }
 }
 
-- (void)archiver:(id)a3 didEncodeObject:(id)a4
+- (void)archiver:(id)archiver didEncodeObject:(id)object
 {
-  v4 = a4;
+  objectCopy = object;
   if (MBIsInternalInstall())
   {
     v5 = objc_opt_class();
@@ -230,30 +230,30 @@ uint64_t __28__MBMessage__allowedClasses__block_invoke()
 - (void)sendReply
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(MBMessage *)self replyError];
+  replyError = [(MBMessage *)self replyError];
   v4 = xpc_dictionary_get_remote_connection(self->_xpcObject);
   reply = xpc_dictionary_create_reply(self->_xpcObject);
   v6 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [v6 setDelegate:self];
   [v6 encodeObject:self->_replyInfo forKey:*MEMORY[0x1E696A508]];
   [v6 finishEncoding];
-  v7 = [v6 encodedData];
-  v8 = xpc_data_create([v7 bytes], objc_msgSend(v7, "length"));
+  encodedData = [v6 encodedData];
+  v8 = xpc_data_create([encodedData bytes], objc_msgSend(encodedData, "length"));
   xpc_dictionary_set_value(reply, "replyInfo", v8);
-  if (v3)
+  if (replyError)
   {
     v9 = MBGetDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(MBMessage *)self name];
+      name = [(MBMessage *)self name];
       *buf = 138543618;
-      v20 = v10;
+      v20 = name;
       v21 = 2112;
-      v22 = v3;
+      v22 = replyError;
       _os_log_impl(&dword_1DEB5D000, v9, OS_LOG_TYPE_DEFAULT, "Sending reply for %{public}@: %@", buf, 0x16u);
 
-      v11 = [(MBMessage *)self name];
-      _MBLog(@"Df", "Sending reply for %{public}@: %@", v12, v13, v14, v15, v16, v17, v11);
+      name2 = [(MBMessage *)self name];
+      _MBLog(@"Df", "Sending reply for %{public}@: %@", v12, v13, v14, v15, v16, v17, name2);
     }
   }
 
@@ -262,19 +262,19 @@ uint64_t __28__MBMessage__allowedClasses__block_invoke()
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setReply:(id)a3
+- (void)setReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
-    [(NSMutableDictionary *)self->_replyInfo setObject:a3 forKeyedSubscript:@"info"];
+    [(NSMutableDictionary *)self->_replyInfo setObject:reply forKeyedSubscript:@"info"];
   }
 }
 
-- (void)setReplyError:(id)a3
+- (void)setReplyError:(id)error
 {
-  if (a3)
+  if (error)
   {
-    [(NSMutableDictionary *)self->_replyInfo setObject:a3 forKeyedSubscript:@"error"];
+    [(NSMutableDictionary *)self->_replyInfo setObject:error forKeyedSubscript:@"error"];
   }
 }
 
@@ -301,13 +301,13 @@ uint64_t __28__MBMessage__allowedClasses__block_invoke()
   v4 = MBGetDefaultLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
   {
-    v5 = *a1;
+    v5 = *self;
     *buf = 138412546;
     v13 = v5;
     v14 = 2112;
     v15 = a2;
     _os_log_impl(&dword_1DEB5D000, v4, OS_LOG_TYPE_ERROR, "Failed to archive the message (%@): %@", buf, 0x16u);
-    _MBLog(@"E ", "Failed to archive the message (%@): %@", v6, v7, v8, v9, v10, v11, *a1);
+    _MBLog(@"E ", "Failed to archive the message (%@): %@", v6, v7, v8, v9, v10, v11, *self);
   }
 
   __assert_rtn("[MBMessage _xpcObject]", "MBConnection.m", 363, "0");

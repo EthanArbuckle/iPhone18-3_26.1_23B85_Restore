@@ -1,11 +1,11 @@
 @interface PSDSyncRestrictionNotifier
 - (PSDSyncRestrictionNotifier)init;
-- (PSDSyncRestrictionNotifier)initWithScheduler:(id)a3;
-- (int)notifyTokenWithName:(id)a3;
+- (PSDSyncRestrictionNotifier)initWithScheduler:(id)scheduler;
+- (int)notifyTokenWithName:(id)name;
 - (void)dealloc;
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5;
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4;
-- (void)setNotifyToken:(int)a3 withValue:(unint64_t)a4 withNotificationName:(id)a5;
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block;
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session;
+- (void)setNotifyToken:(int)token withValue:(unint64_t)value withNotificationName:(id)name;
 - (void)setSyncComplete;
 @end
 
@@ -19,19 +19,19 @@
   return v4;
 }
 
-- (PSDSyncRestrictionNotifier)initWithScheduler:(id)a3
+- (PSDSyncRestrictionNotifier)initWithScheduler:(id)scheduler
 {
-  v4 = a3;
+  schedulerCopy = scheduler;
   v10.receiver = self;
   v10.super_class = PSDSyncRestrictionNotifier;
   v5 = [(PSDSyncRestrictionNotifier *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_scheduler, v4);
+    v7 = objc_storeWeak(&v5->_scheduler, schedulerCopy);
     v6->_lastSyncSwitchIDNotifyToken = -1;
     v8 = v7;
-    [v4 addSchedulerObserver:v6];
+    [schedulerCopy addSchedulerObserver:v6];
   }
 
   return v6;
@@ -47,30 +47,30 @@
   [(PSDSyncRestrictionNotifier *)&v4 dealloc];
 }
 
-- (void)scheduler:(id)a3 willStartSyncSession:(id)a4
+- (void)scheduler:(id)scheduler willStartSyncSession:(id)session
 {
   lastSyncSwitchIDNotifyToken = self->_lastSyncSwitchIDNotifyToken;
   v6 = PSYLastSyncSwitchIDNotification;
   if (lastSyncSwitchIDNotifyToken == -1)
   {
-    lastSyncSwitchIDNotifyToken = [(PSDSyncRestrictionNotifier *)self notifyTokenWithName:PSYLastSyncSwitchIDNotification, a4];
+    lastSyncSwitchIDNotifyToken = [(PSDSyncRestrictionNotifier *)self notifyTokenWithName:PSYLastSyncSwitchIDNotification, session];
     self->_lastSyncSwitchIDNotifyToken = lastSyncSwitchIDNotifyToken;
   }
 
   [(PSDSyncRestrictionNotifier *)self setNotifyToken:lastSyncSwitchIDNotifyToken withValue:-1 withNotificationName:v6];
 }
 
-- (void)scheduler:(id)a3 didClearSyncSession:(id)a4 withBlock:(id)a5
+- (void)scheduler:(id)scheduler didClearSyncSession:(id)session withBlock:(id)block
 {
-  v6 = a5;
+  blockCopy = block;
   [(PSDSyncRestrictionNotifier *)self setSyncComplete];
-  v6[2]();
+  blockCopy[2]();
 }
 
 - (void)setSyncComplete
 {
   v3 = +[PSYRegistrySingleton registry];
-  v4 = [v3 switchIndex];
+  switchIndex = [v3 switchIndex];
 
   lastSyncSwitchIDNotifyToken = self->_lastSyncSwitchIDNotifyToken;
   v6 = PSYLastSyncSwitchIDNotification;
@@ -80,14 +80,14 @@
     self->_lastSyncSwitchIDNotifyToken = lastSyncSwitchIDNotifyToken;
   }
 
-  [(PSDSyncRestrictionNotifier *)self setNotifyToken:lastSyncSwitchIDNotifyToken withValue:v4 withNotificationName:v6];
+  [(PSDSyncRestrictionNotifier *)self setNotifyToken:lastSyncSwitchIDNotifyToken withValue:switchIndex withNotificationName:v6];
 }
 
-- (int)notifyTokenWithName:(id)a3
+- (int)notifyTokenWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   out_token = -1;
-  if (notify_register_check([v3 UTF8String], &out_token))
+  if (notify_register_check([nameCopy UTF8String], &out_token))
   {
     v4 = psd_log();
     v5 = os_log_type_enabled(v4, OS_LOG_TYPE_ERROR);
@@ -97,7 +97,7 @@
       v6 = psd_log();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        sub_10001A9FC(v3, v6);
+        sub_10001A9FC(nameCopy, v6);
       }
     }
   }
@@ -107,12 +107,12 @@
   return v7;
 }
 
-- (void)setNotifyToken:(int)a3 withValue:(unint64_t)a4 withNotificationName:(id)a5
+- (void)setNotifyToken:(int)token withValue:(unint64_t)value withNotificationName:(id)name
 {
-  v7 = a5;
+  nameCopy = name;
   v8 = psd_log();
   v9 = v8;
-  if (a3 == -1)
+  if (token == -1)
   {
     v12 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
 
@@ -121,7 +121,7 @@
       v13 = psd_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        sub_10001AA88(v7, v13);
+        sub_10001AA88(nameCopy, v13);
       }
     }
   }
@@ -136,15 +136,15 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543618;
-        v15 = v7;
+        v15 = nameCopy;
         v16 = 2048;
-        v17 = a4;
+        valueCopy = value;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Updating token %{public}@ with value %lld", &v14, 0x16u);
       }
     }
 
-    notify_set_state(a3, a4);
-    notify_post([v7 UTF8String]);
+    notify_set_state(token, value);
+    notify_post([nameCopy UTF8String]);
   }
 }
 

@@ -1,8 +1,8 @@
 @interface SpatialLayoutDelegate
-- (CGPoint)pointForDate:(double)a3;
+- (CGPoint)pointForDate:(double)date;
 - (CGRect)displayedRect;
 - (_TtC14CalendarWidget21SpatialLayoutDelegate)init;
-- (double)dateForPoint:(CGPoint)a3;
+- (double)dateForPoint:(CGPoint)point;
 - (double)hourHeight;
 @end
 
@@ -36,19 +36,19 @@
   return result;
 }
 
-- (double)dateForPoint:(CGPoint)a3
+- (double)dateForPoint:(CGPoint)point
 {
-  y = a3.y;
-  v4 = self;
+  y = point.y;
+  selfCopy = self;
   sub_1E47F3BC4(v5, y);
   v7 = v6;
 
   return v7;
 }
 
-- (CGPoint)pointForDate:(double)a3
+- (CGPoint)pointForDate:(double)date
 {
-  v3 = self;
+  selfCopy = self;
   sub_1E47F3EA0();
   v5 = v4;
 

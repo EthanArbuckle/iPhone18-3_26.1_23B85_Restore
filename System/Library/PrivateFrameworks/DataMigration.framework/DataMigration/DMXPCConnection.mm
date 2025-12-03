@@ -1,63 +1,63 @@
 @interface DMXPCConnection
-- (BOOL)hasEntitlement:(id)a3;
-- (DMXPCConnection)initWithConnection:(id)a3;
-- (DMXPCConnection)initWithServiceName:(id)a3;
-- (id)sendMessageSync:(id)a3;
-- (void)_handleMessage:(id)a3;
-- (void)sendMessage:(id)a3 replyHandler:(id)a4;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (DMXPCConnection)initWithConnection:(id)connection;
+- (DMXPCConnection)initWithServiceName:(id)name;
+- (id)sendMessageSync:(id)sync;
+- (void)_handleMessage:(id)message;
+- (void)sendMessage:(id)message replyHandler:(id)handler;
 - (void)targetForegroundUserSessionIfNecessary;
 @end
 
 @implementation DMXPCConnection
 
-- (DMXPCConnection)initWithConnection:(id)a3
+- (DMXPCConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v13.receiver = self;
   v13.super_class = DMXPCConnection;
   v6 = [(DMXPCConnection *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = dispatch_queue_create("com.apple.dmxpcservice.client", 0);
     queue = v7->_queue;
     v7->_queue = v8;
 
-    xpc_connection_set_target_queue(v5, v7->_queue);
+    xpc_connection_set_target_queue(connectionCopy, v7->_queue);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __38__DMXPCConnection_initWithConnection___block_invoke;
     handler[3] = &unk_2788551E8;
     v12 = v7;
-    xpc_connection_set_event_handler(v5, handler);
+    xpc_connection_set_event_handler(connectionCopy, handler);
   }
 
   return v7;
 }
 
-- (DMXPCConnection)initWithServiceName:(id)a3
+- (DMXPCConnection)initWithServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v23.receiver = self;
   v23.super_class = DMXPCConnection;
   v6 = [(DMXPCConnection *)&v23 init];
   if (v6)
   {
     v7 = v6;
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.dmxpcservice.%@", v5];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.dmxpcservice.reply.%@", v5];
-    v10 = dispatch_queue_create([v8 UTF8String], 0);
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.dmxpcservice.%@", nameCopy];
+    nameCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.dmxpcservice.reply.%@", nameCopy];
+    v10 = dispatch_queue_create([nameCopy UTF8String], 0);
     queue = v7->_queue;
     v7->_queue = v10;
 
-    v12 = dispatch_queue_create([v9 UTF8String], 0);
+    v12 = dispatch_queue_create([nameCopy2 UTF8String], 0);
     replyQueue = v7->_replyQueue;
     v7->_replyQueue = v12;
 
     _DMLogFunc(v3, 7, @"DMXPCConnection calling xpc_init_services");
     MEMORY[0x2318EDE10]();
-    mach_service = xpc_connection_create_mach_service([v5 UTF8String], v7->_queue, 0);
+    mach_service = xpc_connection_create_mach_service([nameCopy UTF8String], v7->_queue, 0);
     connection = v7->_connection;
     v7->_connection = mach_service;
 
@@ -103,16 +103,16 @@
   }
 }
 
-- (void)_handleMessage:(id)a3
+- (void)_handleMessage:(id)message
 {
-  v6 = a3;
+  messageCopy = message;
   v4 = MEMORY[0x2318EDE00]();
   if (v4 == MEMORY[0x277D86468])
   {
     messageHandler = self->_messageHandler;
     if (!messageHandler)
     {
-      [(DMXPCConnection *)self handleMessage:v6];
+      [(DMXPCConnection *)self handleMessage:messageCopy];
       goto LABEL_11;
     }
 
@@ -124,7 +124,7 @@
     goto LABEL_11;
   }
 
-  if (v6 == MEMORY[0x277D863F0])
+  if (messageCopy == MEMORY[0x277D863F0])
   {
     messageHandler = self->_interruptionHandler;
     if (!messageHandler)
@@ -135,13 +135,13 @@
     goto LABEL_10;
   }
 
-  if (v6 == MEMORY[0x277D863F8])
+  if (messageCopy == MEMORY[0x277D863F8])
   {
     messageHandler = self->_invalidationHandler;
     if (messageHandler)
     {
 LABEL_10:
-      messageHandler[2](messageHandler, v6);
+      messageHandler[2](messageHandler, messageCopy);
     }
   }
 
@@ -150,36 +150,36 @@ LABEL_11:
   MEMORY[0x2821F96F8]();
 }
 
-- (void)sendMessage:(id)a3 replyHandler:(id)a4
+- (void)sendMessage:(id)message replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DMXPCConnection *)self connection];
+  handlerCopy = handler;
+  messageCopy = message;
+  connection = [(DMXPCConnection *)self connection];
   replyQueue = self->_replyQueue;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __44__DMXPCConnection_sendMessage_replyHandler___block_invoke;
   handler[3] = &unk_278855210;
-  v12 = v6;
-  v10 = v6;
-  xpc_connection_send_message_with_reply(v8, v7, replyQueue, handler);
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  xpc_connection_send_message_with_reply(connection, messageCopy, replyQueue, handler);
 }
 
-- (id)sendMessageSync:(id)a3
+- (id)sendMessageSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(DMXPCConnection *)self connection];
-  v6 = xpc_connection_send_message_with_reply_sync(v5, v4);
+  syncCopy = sync;
+  connection = [(DMXPCConnection *)self connection];
+  v6 = xpc_connection_send_message_with_reply_sync(connection, syncCopy);
 
   return v6;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v5 = a3;
+  entitlementCopy = entitlement;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(DMXPCConnection *)self connection];
+  connection = [(DMXPCConnection *)self connection];
   xpc_connection_get_audit_token();
 
   v7 = *MEMORY[0x277CBED08];
@@ -189,7 +189,7 @@ LABEL_11:
   {
     v9 = v8;
     *token.val = 0;
-    v10 = SecTaskCopyValueForEntitlement(v8, v5, &token);
+    v10 = SecTaskCopyValueForEntitlement(v8, entitlementCopy, &token);
     if (*token.val)
     {
       _DMLogFunc(v3, 3, @"hasEntitlement: %@ did fail to copy value with error %@");

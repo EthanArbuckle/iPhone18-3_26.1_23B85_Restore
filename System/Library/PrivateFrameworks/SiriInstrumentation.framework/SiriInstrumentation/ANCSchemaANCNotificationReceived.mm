@@ -1,31 +1,31 @@
 @interface ANCSchemaANCNotificationReceived
-- (ANCSchemaANCNotificationReceived)initWithDictionary:(id)a3;
-- (ANCSchemaANCNotificationReceived)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ANCSchemaANCNotificationReceived)initWithDictionary:(id)dictionary;
+- (ANCSchemaANCNotificationReceived)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAppCategory:(BOOL)a3;
-- (void)setHasBobbleEnabled:(BOOL)a3;
-- (void)setHasBobbleSupported:(BOOL)a3;
-- (void)setHasIsTimeSensitiveAnnouncement:(BOOL)a3;
-- (void)setHasTargetPlatform:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAppCategory:(BOOL)category;
+- (void)setHasBobbleEnabled:(BOOL)enabled;
+- (void)setHasBobbleSupported:(BOOL)supported;
+- (void)setHasIsTimeSensitiveAnnouncement:(BOOL)announcement;
+- (void)setHasTargetPlatform:(BOOL)platform;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ANCSchemaANCNotificationReceived
 
-- (ANCSchemaANCNotificationReceived)initWithDictionary:(id)a3
+- (ANCSchemaANCNotificationReceived)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = ANCSchemaANCNotificationReceived;
   v5 = [(ANCSchemaANCNotificationReceived *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"announcementCategory"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"announcementCategory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -33,14 +33,14 @@
     }
 
     v23 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"targetPlatform"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"targetPlatform"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ANCSchemaANCNotificationReceived setTargetPlatform:](v5, "setTargetPlatform:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:{@"connectedAudioDevice", v7}];
+    v8 = [dictionaryCopy objectForKeyedSubscript:{@"connectedAudioDevice", v7}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,21 +48,21 @@
       [(ANCSchemaANCNotificationReceived *)v5 setConnectedAudioDevice:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isTimeSensitiveAnnouncement"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isTimeSensitiveAnnouncement"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ANCSchemaANCNotificationReceived setIsTimeSensitiveAnnouncement:](v5, "setIsTimeSensitiveAnnouncement:", [v10 BOOLValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"appCategory"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"appCategory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ANCSchemaANCNotificationReceived setAppCategory:](v5, "setAppCategory:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"linkId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       [(ANCSchemaANCNotificationReceived *)v5 setLinkId:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"backgroundContent"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"backgroundContent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -78,7 +78,7 @@
       [(ANCSchemaANCNotificationReceived *)v5 setBackgroundContent:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"notificationMetadata"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"notificationMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,14 +86,14 @@
       [(ANCSchemaANCNotificationReceived *)v5 setNotificationMetadata:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"bobbleEnabled"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"bobbleEnabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ANCSchemaANCNotificationReceived setBobbleEnabled:](v5, "setBobbleEnabled:", [v18 intValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"bobbleSupported"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"bobbleSupported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -106,30 +106,30 @@
   return v5;
 }
 
-- (ANCSchemaANCNotificationReceived)initWithJSON:(id)a3
+- (ANCSchemaANCNotificationReceived)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ANCSchemaANCNotificationReceived *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ANCSchemaANCNotificationReceived *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ANCSchemaANCNotificationReceived *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -142,7 +142,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
@@ -157,20 +157,20 @@
       v6 = off_1E78D1668[v5];
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"announcementCategory"];
+    [dictionary setObject:v6 forKeyedSubscript:@"announcementCategory"];
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v7 = [(ANCSchemaANCNotificationReceived *)self appCategory];
+    appCategory = [(ANCSchemaANCNotificationReceived *)self appCategory];
     v8 = @"ANCAPPCATEGORY_UNKNOWN";
-    if (v7 == 1)
+    if (appCategory == 1)
     {
       v8 = @"ANCAPPCATEGORY_FIRST_PARTY";
     }
 
-    if (v7 == 2)
+    if (appCategory == 2)
     {
       v9 = @"ANCAPPCATEGORY_THIRD_PARTY";
     }
@@ -180,36 +180,36 @@
       v9 = v8;
     }
 
-    [v3 setObject:v9 forKeyedSubscript:@"appCategory"];
+    [dictionary setObject:v9 forKeyedSubscript:@"appCategory"];
   }
 
   if (self->_backgroundContent)
   {
-    v10 = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    backgroundContent = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
+    dictionaryRepresentation = [backgroundContent dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"backgroundContent"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"backgroundContent"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"backgroundContent"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"backgroundContent"];
     }
   }
 
   v13 = self->_has;
   if ((v13 & 0x10) != 0)
   {
-    v14 = [(ANCSchemaANCNotificationReceived *)self bobbleEnabled];
+    bobbleEnabled = [(ANCSchemaANCNotificationReceived *)self bobbleEnabled];
     v15 = @"ANCFEATUREENABLEMENTSTATUS_UNKNOWN";
-    if (v14 == 1)
+    if (bobbleEnabled == 1)
     {
       v15 = @"ANCFEATUREENABLEMENTSTATUS_ENABLED";
     }
 
-    if (v14 == 2)
+    if (bobbleEnabled == 2)
     {
       v16 = @"ANCFEATUREENABLEMENTSTATUS_DISABLED";
     }
@@ -219,20 +219,20 @@
       v16 = v15;
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"bobbleEnabled"];
+    [dictionary setObject:v16 forKeyedSubscript:@"bobbleEnabled"];
     v13 = self->_has;
   }
 
   if ((v13 & 0x20) != 0)
   {
-    v17 = [(ANCSchemaANCNotificationReceived *)self bobbleSupported];
+    bobbleSupported = [(ANCSchemaANCNotificationReceived *)self bobbleSupported];
     v18 = @"ANCFEATURESUPPORTSTATUS_UNKNOWN";
-    if (v17 == 1)
+    if (bobbleSupported == 1)
     {
       v18 = @"ANCFEATURESUPPORTSTATUS_SUPPORTED";
     }
 
-    if (v17 == 2)
+    if (bobbleSupported == 2)
     {
       v19 = @"ANCFEATURESUPPORTSTATUS_UNSUPPORTED";
     }
@@ -242,60 +242,60 @@
       v19 = v18;
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"bobbleSupported"];
+    [dictionary setObject:v19 forKeyedSubscript:@"bobbleSupported"];
   }
 
   if (self->_connectedAudioDevice)
   {
-    v20 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    connectedAudioDevice = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
+    dictionaryRepresentation2 = [connectedAudioDevice dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"connectedAudioDevice"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"connectedAudioDevice"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"connectedAudioDevice"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"connectedAudioDevice"];
     }
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[ANCSchemaANCNotificationReceived isTimeSensitiveAnnouncement](self, "isTimeSensitiveAnnouncement")}];
-    [v3 setObject:v23 forKeyedSubscript:@"isTimeSensitiveAnnouncement"];
+    [dictionary setObject:v23 forKeyedSubscript:@"isTimeSensitiveAnnouncement"];
   }
 
   if (self->_linkId)
   {
-    v24 = [(ANCSchemaANCNotificationReceived *)self linkId];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    linkId = [(ANCSchemaANCNotificationReceived *)self linkId];
+    dictionaryRepresentation3 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v26 forKeyedSubscript:@"linkId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_notificationMetadata)
   {
-    v27 = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
-    v28 = [v27 dictionaryRepresentation];
-    if (v28)
+    notificationMetadata = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
+    dictionaryRepresentation4 = [notificationMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v28 forKeyedSubscript:@"notificationMetadata"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"notificationMetadata"];
     }
 
     else
     {
-      v29 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v29 forKeyedSubscript:@"notificationMetadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"notificationMetadata"];
     }
   }
 
@@ -312,12 +312,12 @@
       v31 = off_1E78D16A8[v30];
     }
 
-    [v3 setObject:v31 forKeyedSubscript:@"targetPlatform"];
+    [dictionary setObject:v31 forKeyedSubscript:@"targetPlatform"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -394,16 +394,16 @@ LABEL_13:
   return v4 ^ v3 ^ v6 ^ v7 ^ v5 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_36;
   }
 
   has = self->_has;
-  v6 = v4[64];
+  v6 = equalCopy[64];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_36;
@@ -412,13 +412,13 @@ LABEL_13:
   if (*&has)
   {
     announcementCategory = self->_announcementCategory;
-    if (announcementCategory != [v4 announcementCategory])
+    if (announcementCategory != [equalCopy announcementCategory])
     {
       goto LABEL_36;
     }
 
     has = self->_has;
-    v6 = v4[64];
+    v6 = equalCopy[64];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -430,26 +430,26 @@ LABEL_13:
   if (v8)
   {
     targetPlatform = self->_targetPlatform;
-    if (targetPlatform != [v4 targetPlatform])
+    if (targetPlatform != [equalCopy targetPlatform])
     {
       goto LABEL_36;
     }
   }
 
-  v10 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
-  v11 = [v4 connectedAudioDevice];
-  if ((v10 != 0) == (v11 == 0))
+  connectedAudioDevice = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
+  connectedAudioDevice2 = [equalCopy connectedAudioDevice];
+  if ((connectedAudioDevice != 0) == (connectedAudioDevice2 == 0))
   {
     goto LABEL_35;
   }
 
-  v12 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
-  if (v12)
+  connectedAudioDevice3 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
+  if (connectedAudioDevice3)
   {
-    v13 = v12;
-    v14 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
-    v15 = [v4 connectedAudioDevice];
-    v16 = [v14 isEqual:v15];
+    v13 = connectedAudioDevice3;
+    connectedAudioDevice4 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
+    connectedAudioDevice5 = [equalCopy connectedAudioDevice];
+    v16 = [connectedAudioDevice4 isEqual:connectedAudioDevice5];
 
     if (!v16)
     {
@@ -463,7 +463,7 @@ LABEL_13:
 
   v17 = self->_has;
   v18 = (*&v17 >> 2) & 1;
-  v19 = v4[64];
+  v19 = equalCopy[64];
   if (v18 != ((v19 >> 2) & 1))
   {
     goto LABEL_36;
@@ -472,13 +472,13 @@ LABEL_13:
   if (v18)
   {
     isTimeSensitiveAnnouncement = self->_isTimeSensitiveAnnouncement;
-    if (isTimeSensitiveAnnouncement != [v4 isTimeSensitiveAnnouncement])
+    if (isTimeSensitiveAnnouncement != [equalCopy isTimeSensitiveAnnouncement])
     {
       goto LABEL_36;
     }
 
     v17 = self->_has;
-    v19 = v4[64];
+    v19 = equalCopy[64];
   }
 
   v21 = (*&v17 >> 3) & 1;
@@ -490,26 +490,26 @@ LABEL_13:
   if (v21)
   {
     appCategory = self->_appCategory;
-    if (appCategory != [v4 appCategory])
+    if (appCategory != [equalCopy appCategory])
     {
       goto LABEL_36;
     }
   }
 
-  v10 = [(ANCSchemaANCNotificationReceived *)self linkId];
-  v11 = [v4 linkId];
-  if ((v10 != 0) == (v11 == 0))
+  connectedAudioDevice = [(ANCSchemaANCNotificationReceived *)self linkId];
+  connectedAudioDevice2 = [equalCopy linkId];
+  if ((connectedAudioDevice != 0) == (connectedAudioDevice2 == 0))
   {
     goto LABEL_35;
   }
 
-  v23 = [(ANCSchemaANCNotificationReceived *)self linkId];
-  if (v23)
+  linkId = [(ANCSchemaANCNotificationReceived *)self linkId];
+  if (linkId)
   {
-    v24 = v23;
-    v25 = [(ANCSchemaANCNotificationReceived *)self linkId];
-    v26 = [v4 linkId];
-    v27 = [v25 isEqual:v26];
+    v24 = linkId;
+    linkId2 = [(ANCSchemaANCNotificationReceived *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v27 = [linkId2 isEqual:linkId3];
 
     if (!v27)
     {
@@ -521,20 +521,20 @@ LABEL_13:
   {
   }
 
-  v10 = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
-  v11 = [v4 backgroundContent];
-  if ((v10 != 0) == (v11 == 0))
+  connectedAudioDevice = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
+  connectedAudioDevice2 = [equalCopy backgroundContent];
+  if ((connectedAudioDevice != 0) == (connectedAudioDevice2 == 0))
   {
     goto LABEL_35;
   }
 
-  v28 = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
-  if (v28)
+  backgroundContent = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
+  if (backgroundContent)
   {
-    v29 = v28;
-    v30 = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
-    v31 = [v4 backgroundContent];
-    v32 = [v30 isEqual:v31];
+    v29 = backgroundContent;
+    backgroundContent2 = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
+    backgroundContent3 = [equalCopy backgroundContent];
+    v32 = [backgroundContent2 isEqual:backgroundContent3];
 
     if (!v32)
     {
@@ -546,22 +546,22 @@ LABEL_13:
   {
   }
 
-  v10 = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
-  v11 = [v4 notificationMetadata];
-  if ((v10 != 0) == (v11 == 0))
+  connectedAudioDevice = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
+  connectedAudioDevice2 = [equalCopy notificationMetadata];
+  if ((connectedAudioDevice != 0) == (connectedAudioDevice2 == 0))
   {
 LABEL_35:
 
     goto LABEL_36;
   }
 
-  v33 = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
-  if (v33)
+  notificationMetadata = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
+  if (notificationMetadata)
   {
-    v34 = v33;
-    v35 = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
-    v36 = [v4 notificationMetadata];
-    v37 = [v35 isEqual:v36];
+    v34 = notificationMetadata;
+    notificationMetadata2 = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
+    notificationMetadata3 = [equalCopy notificationMetadata];
+    v37 = [notificationMetadata2 isEqual:notificationMetadata3];
 
     if (!v37)
     {
@@ -575,25 +575,25 @@ LABEL_35:
 
   v40 = self->_has;
   v41 = (*&v40 >> 4) & 1;
-  v42 = v4[64];
+  v42 = equalCopy[64];
   if (v41 == ((v42 >> 4) & 1))
   {
     if (v41)
     {
       bobbleEnabled = self->_bobbleEnabled;
-      if (bobbleEnabled != [v4 bobbleEnabled])
+      if (bobbleEnabled != [equalCopy bobbleEnabled])
       {
         goto LABEL_36;
       }
 
       v40 = self->_has;
-      v42 = v4[64];
+      v42 = equalCopy[64];
     }
 
     v44 = (*&v40 >> 5) & 1;
     if (v44 == ((v42 >> 5) & 1))
     {
-      if (!v44 || (bobbleSupported = self->_bobbleSupported, bobbleSupported == [v4 bobbleSupported]))
+      if (!v44 || (bobbleSupported = self->_bobbleSupported, bobbleSupported == [equalCopy bobbleSupported]))
       {
         v38 = 1;
         goto LABEL_37;
@@ -608,9 +608,9 @@ LABEL_37:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -623,11 +623,11 @@ LABEL_37:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
+  connectedAudioDevice = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
 
-  if (v5)
+  if (connectedAudioDevice)
   {
-    v6 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
+    connectedAudioDevice2 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
     PBDataWriterWriteSubmessage();
   }
 
@@ -643,27 +643,27 @@ LABEL_37:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(ANCSchemaANCNotificationReceived *)self linkId];
+  linkId = [(ANCSchemaANCNotificationReceived *)self linkId];
 
-  if (v8)
+  if (linkId)
   {
-    v9 = [(ANCSchemaANCNotificationReceived *)self linkId];
+    linkId2 = [(ANCSchemaANCNotificationReceived *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
+  backgroundContent = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
 
-  if (v10)
+  if (backgroundContent)
   {
-    v11 = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
+    backgroundContent2 = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
+  notificationMetadata = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
 
-  if (v12)
+  if (notificationMetadata)
   {
-    v13 = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
+    notificationMetadata2 = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -680,9 +680,9 @@ LABEL_37:
   }
 }
 
-- (void)setHasBobbleSupported:(BOOL)a3
+- (void)setHasBobbleSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 32;
   }
@@ -695,9 +695,9 @@ LABEL_37:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasBobbleEnabled:(BOOL)a3
+- (void)setHasBobbleEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 16;
   }
@@ -710,9 +710,9 @@ LABEL_37:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasAppCategory:(BOOL)a3
+- (void)setHasAppCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 8;
   }
@@ -725,9 +725,9 @@ LABEL_37:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsTimeSensitiveAnnouncement:(BOOL)a3
+- (void)setHasIsTimeSensitiveAnnouncement:(BOOL)announcement
 {
-  if (a3)
+  if (announcement)
   {
     v3 = 4;
   }
@@ -740,9 +740,9 @@ LABEL_37:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasTargetPlatform:(BOOL)a3
+- (void)setHasTargetPlatform:(BOOL)platform
 {
-  if (a3)
+  if (platform)
   {
     v3 = 2;
   }
@@ -755,44 +755,44 @@ LABEL_37:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = ANCSchemaANCNotificationReceived;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  connectedAudioDevice = [(ANCSchemaANCNotificationReceived *)self connectedAudioDevice];
+  v7 = [connectedAudioDevice applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(ANCSchemaANCNotificationReceived *)self deleteConnectedAudioDevice];
   }
 
-  v9 = [(ANCSchemaANCNotificationReceived *)self linkId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  linkId = [(ANCSchemaANCNotificationReceived *)self linkId];
+  v10 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(ANCSchemaANCNotificationReceived *)self deleteLinkId];
   }
 
-  v12 = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  backgroundContent = [(ANCSchemaANCNotificationReceived *)self backgroundContent];
+  v13 = [backgroundContent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(ANCSchemaANCNotificationReceived *)self deleteBackgroundContent];
   }
 
-  v15 = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  notificationMetadata = [(ANCSchemaANCNotificationReceived *)self notificationMetadata];
+  v16 = [notificationMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(ANCSchemaANCNotificationReceived *)self deleteNotificationMetadata];
   }

@@ -1,5 +1,5 @@
 @interface WalkSuggestionProvider
-- (BOOL)enumerateActivitySummariesFromDateComponents:(id)a3 toDateComponents:(id)a4 error:(id *)a5 handler:(id)a6;
+- (BOOL)enumerateActivitySummariesFromDateComponents:(id)components toDateComponents:(id)dateComponents error:(id *)error handler:(id)handler;
 - (_TtC23FitnessCoachingServices22WalkSuggestionProvider)init;
 - (id)currentCalendar;
 - (id)currentDate;
@@ -24,7 +24,7 @@
   __swift_project_boxed_opaque_existential_1((&self->super.isa + OBJC_IVAR____TtC23FitnessCoachingServices22WalkSuggestionProvider_dateProvider), *&self->dateProvider[OBJC_IVAR____TtC23FitnessCoachingServices22WalkSuggestionProvider_dateProvider + 16]);
   v8 = off_283AE99E0;
   type metadata accessor for DateProvider();
-  v9 = self;
+  selfCopy = self;
   v8(v7);
 
   v10 = sub_2278C67D0();
@@ -41,7 +41,7 @@
   MEMORY[0x28223BE20](v3);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   __swift_project_boxed_opaque_existential_1((&self->super.isa + OBJC_IVAR____TtC23FitnessCoachingServices22WalkSuggestionProvider_dateProvider), *&self->dateProvider[OBJC_IVAR____TtC23FitnessCoachingServices22WalkSuggestionProvider_dateProvider + 16]);
-  v8 = self;
+  selfCopy = self;
   sub_227804920();
 
   v9 = sub_2278C68B0();
@@ -50,7 +50,7 @@
   return v9;
 }
 
-- (BOOL)enumerateActivitySummariesFromDateComponents:(id)a3 toDateComponents:(id)a4 error:(id *)a5 handler:(id)a6
+- (BOOL)enumerateActivitySummariesFromDateComponents:(id)components toDateComponents:(id)dateComponents error:(id *)error handler:(id)handler
 {
   v6 = sub_2278C65D0();
   v7 = *(v6 - 8);

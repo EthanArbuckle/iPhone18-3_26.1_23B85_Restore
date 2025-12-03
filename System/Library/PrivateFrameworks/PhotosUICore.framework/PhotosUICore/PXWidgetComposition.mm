@@ -1,39 +1,39 @@
 @interface PXWidgetComposition
-- (BOOL)_shouldFocusOnTilingController:(id)a3;
-- (BOOL)_shouldUseEdgeToEdgeLayoutForWidget:(id)a3;
-- (BOOL)element:(id)a3 requestViewControllerDismissalAnimated:(BOOL)a4;
-- (BOOL)element:(id)a3 transitionToViewController:(id)a4 withTransitionType:(int64_t)a5;
+- (BOOL)_shouldFocusOnTilingController:(id)controller;
+- (BOOL)_shouldUseEdgeToEdgeLayoutForWidget:(id)widget;
+- (BOOL)element:(id)element requestViewControllerDismissalAnimated:(BOOL)animated;
+- (BOOL)element:(id)element transitionToViewController:(id)controller withTransitionType:(int64_t)type;
 - (CGPoint)_lastContentAdjustmentOffset;
-- (CGRect)frameForWidget:(id)a3;
+- (CGRect)frameForWidget:(id)widget;
 - (PXScrollViewController)scrollViewController;
 - (PXWidgetComposition)init;
-- (PXWidgetComposition)initWithScrollViewController:(id)a3;
+- (PXWidgetComposition)initWithScrollViewController:(id)controller;
 - (PXWidgetCompositionDelegate)delegate;
-- (id)elementUndoManager:(id)a3;
-- (id)elementViewController:(id)a3;
-- (id)headerTilingControllerForWidget:(id)a3;
-- (id)presentationEnvironmentForElement:(id)a3;
+- (id)elementUndoManager:(id)manager;
+- (id)elementViewController:(id)controller;
+- (id)headerTilingControllerForWidget:(id)widget;
+- (id)presentationEnvironmentForElement:(id)element;
 - (id)tilingControllers;
-- (id)widgetAtLocation:(CGPoint)a3;
-- (int64_t)_loadingPriorityForElement:(id)a3;
-- (void)_setDidLayoutWidgets:(BOOL)a3;
-- (void)_setElements:(id)a3;
+- (id)widgetAtLocation:(CGPoint)location;
+- (int64_t)_loadingPriorityForElement:(id)element;
+- (void)_setDidLayoutWidgets:(BOOL)widgets;
+- (void)_setElements:(id)elements;
 - (void)_setNeedsUpdateWidgetLoading;
 - (void)_updateElements;
 - (void)_updateElementsSpec;
 - (void)_updateElementsToLoadIfNeeded;
 - (void)_updateFocusedTilingController;
-- (void)elementHasLoadedContentDataDidChange:(id)a3;
-- (void)elementNeedsLayout:(id)a3 preferredAnimationOptions:(id)a4 originatingTilingController:(id)a5;
+- (void)elementHasLoadedContentDataDidChange:(id)change;
+- (void)elementNeedsLayout:(id)layout preferredAnimationOptions:(id)options originatingTilingController:(id)controller;
 - (void)invalidatePreferredContentHeightForAllWidgets;
-- (void)performWidgetLoadingChange:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setMinimumWidgetLoadingPriority:(int64_t)a3;
-- (void)setShouldLoadAllWidgets:(BOOL)a3;
-- (void)setShouldLoadVisibleWidgets:(BOOL)a3;
-- (void)setShouldUnloadAllWidgets:(BOOL)a3;
-- (void)setSpec:(id)a3;
-- (void)setWidgets:(id)a3;
+- (void)performWidgetLoadingChange:(id)change;
+- (void)setDelegate:(id)delegate;
+- (void)setMinimumWidgetLoadingPriority:(int64_t)priority;
+- (void)setShouldLoadAllWidgets:(BOOL)widgets;
+- (void)setShouldLoadVisibleWidgets:(BOOL)widgets;
+- (void)setShouldUnloadAllWidgets:(BOOL)widgets;
+- (void)setSpec:(id)spec;
+- (void)setWidgets:(id)widgets;
 - (void)updateComposition;
 @end
 
@@ -62,23 +62,23 @@
   return WeakRetained;
 }
 
-- (id)elementUndoManager:(id)a3
+- (id)elementUndoManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(PXWidgetComposition *)self delegate];
-  v6 = [v4 widget];
+  managerCopy = manager;
+  delegate = [(PXWidgetComposition *)self delegate];
+  widget = [managerCopy widget];
 
-  v7 = [v5 widgetComposition:self undoManagerForWidget:v6];
+  v7 = [delegate widgetComposition:self undoManagerForWidget:widget];
 
   return v7;
 }
 
-- (id)presentationEnvironmentForElement:(id)a3
+- (id)presentationEnvironmentForElement:(id)element
 {
   if (self->_delegateFlags.respondsToPresentationEnvironment)
   {
-    v4 = [(PXWidgetComposition *)self delegate];
-    v5 = [v4 presentationEnvironmentForWidgetComposition:self];
+    delegate = [(PXWidgetComposition *)self delegate];
+    v5 = [delegate presentationEnvironmentForWidgetComposition:self];
   }
 
   else
@@ -89,66 +89,66 @@
   return v5;
 }
 
-- (BOOL)element:(id)a3 requestViewControllerDismissalAnimated:(BOOL)a4
+- (BOOL)element:(id)element requestViewControllerDismissalAnimated:(BOOL)animated
 {
   if (!self->_delegateFlags.respondsToRequestViewControllerDismissalAnimated)
   {
     return 0;
   }
 
-  v4 = a4;
-  v6 = [(PXWidgetComposition *)self delegate];
-  LOBYTE(v4) = [v6 widgetComposition:self requestViewControllerDismissalAnimated:v4];
+  animatedCopy = animated;
+  delegate = [(PXWidgetComposition *)self delegate];
+  LOBYTE(animatedCopy) = [delegate widgetComposition:self requestViewControllerDismissalAnimated:animatedCopy];
 
-  return v4;
+  return animatedCopy;
 }
 
-- (BOOL)element:(id)a3 transitionToViewController:(id)a4 withTransitionType:(int64_t)a5
+- (BOOL)element:(id)element transitionToViewController:(id)controller withTransitionType:(int64_t)type
 {
   if (!self->_delegateFlags.respondsToWidgetTransitionToViewControllerWithTransitionType)
   {
     return 0;
   }
 
-  v8 = a4;
-  v9 = a3;
-  v10 = [(PXWidgetComposition *)self delegate];
-  v11 = [v9 widget];
+  controllerCopy = controller;
+  elementCopy = element;
+  delegate = [(PXWidgetComposition *)self delegate];
+  widget = [elementCopy widget];
 
-  LOBYTE(a5) = [v10 widgetComposition:self widget:v11 transitionToViewController:v8 withTransitionType:a5];
-  return a5;
+  LOBYTE(type) = [delegate widgetComposition:self widget:widget transitionToViewController:controllerCopy withTransitionType:type];
+  return type;
 }
 
-- (id)elementViewController:(id)a3
+- (id)elementViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PXWidgetComposition *)self delegate];
-  v6 = [v4 widget];
+  controllerCopy = controller;
+  delegate = [(PXWidgetComposition *)self delegate];
+  widget = [controllerCopy widget];
 
-  v7 = [v5 widgetComposition:self viewControllerHostingWidget:v6];
+  v7 = [delegate widgetComposition:self viewControllerHostingWidget:widget];
 
   return v7;
 }
 
-- (void)elementHasLoadedContentDataDidChange:(id)a3
+- (void)elementHasLoadedContentDataDidChange:(id)change
 {
-  v6 = a3;
-  v4 = [(PXWidgetComposition *)self delegate];
+  changeCopy = change;
+  delegate = [(PXWidgetComposition *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 widget];
-    [v4 widgetComposition:self widgetHasLoadedContentDataDidChange:v5];
+    widget = [changeCopy widget];
+    [delegate widgetComposition:self widgetHasLoadedContentDataDidChange:widget];
   }
 }
 
-- (void)elementNeedsLayout:(id)a3 preferredAnimationOptions:(id)a4 originatingTilingController:(id)a5
+- (void)elementNeedsLayout:(id)layout preferredAnimationOptions:(id)options originatingTilingController:(id)controller
 {
-  v7 = a5;
-  v8 = a4;
+  controllerCopy = controller;
+  optionsCopy = options;
   v9 = objc_alloc_init(PXTilingControllerCompositionInvalidationContext);
-  [(PXTilingControllerCompositionInvalidationContext *)v9 setAnimationOptions:v8];
+  [(PXTilingControllerCompositionInvalidationContext *)v9 setAnimationOptions:optionsCopy];
 
-  [(PXTilingControllerCompositionInvalidationContext *)v9 setOriginatingTilingController:v7];
+  [(PXTilingControllerCompositionInvalidationContext *)v9 setOriginatingTilingController:controllerCopy];
   [(PXTilingControllerComposition *)self invalidateCompositionWithContext:v9];
 }
 
@@ -159,8 +159,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(PXWidgetComposition *)self _elements];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _elements = [(PXWidgetComposition *)self _elements];
+  v3 = [_elements countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -171,56 +171,56 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_elements);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
-        v8 = [v7 widget];
-        [v7 widgetPreferredContentHeightForWidthDidChange:v8];
+        widget = [v7 widget];
+        [v7 widgetPreferredContentHeightForWidthDidChange:widget];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [_elements countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
   }
 }
 
-- (id)headerTilingControllerForWidget:(id)a3
+- (id)headerTilingControllerForWidget:(id)widget
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  widgetCopy = widget;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(PXWidgetComposition *)self _elements];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-  if (v6)
+  _elements = [(PXWidgetComposition *)self _elements];
+  headerTilingController = [_elements countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (headerTilingController)
   {
     v7 = *v14;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != headerTilingController; i = i + 1)
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_elements);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 widget];
-        v11 = [v10 isEqual:v4];
+        widget = [v9 widget];
+        v11 = [widget isEqual:widgetCopy];
 
         if (v11)
         {
-          v6 = [v9 headerTilingController];
+          headerTilingController = [v9 headerTilingController];
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
-      if (v6)
+      headerTilingController = [_elements countByEnumeratingWithState:&v13 objects:v17 count:16];
+      if (headerTilingController)
       {
         continue;
       }
@@ -231,13 +231,13 @@
 
 LABEL_11:
 
-  return v6;
+  return headerTilingController;
 }
 
-- (CGRect)frameForWidget:(id)a3
+- (CGRect)frameForWidget:(id)widget
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  widgetCopy = widget;
   x = *MEMORY[0x1E695F050];
   y = *(MEMORY[0x1E695F050] + 8);
   width = *(MEMORY[0x1E695F050] + 16);
@@ -246,8 +246,8 @@ LABEL_11:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v9 = [(PXWidgetComposition *)self _elements];
-  v10 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  _elements = [(PXWidgetComposition *)self _elements];
+  v10 = [_elements countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v10)
   {
     v11 = v10;
@@ -258,30 +258,30 @@ LABEL_11:
       {
         if (*v47 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(_elements);
         }
 
         v14 = *(*(&v46 + 1) + 8 * i);
-        v15 = [v14 widget];
+        widget = [v14 widget];
 
-        if (v15 == v4)
+        if (widget == widgetCopy)
         {
-          v16 = [v14 contentTilingController];
-          v17 = __38__PXWidgetComposition_frameForWidget___block_invoke(v16);
+          contentTilingController = [v14 contentTilingController];
+          v17 = __38__PXWidgetComposition_frameForWidget___block_invoke(contentTilingController);
           v44 = v18;
           v45 = v17;
           v42 = v20;
           v43 = v19;
 
-          v21 = [v14 headerTilingController];
-          v22 = __38__PXWidgetComposition_frameForWidget___block_invoke(v21);
+          headerTilingController = [v14 headerTilingController];
+          v22 = __38__PXWidgetComposition_frameForWidget___block_invoke(headerTilingController);
           v40 = v23;
           v41 = v22;
           v38 = v25;
           v39 = v24;
 
-          v26 = [v14 footerTilingController];
-          v27 = __38__PXWidgetComposition_frameForWidget___block_invoke(v26);
+          footerTilingController = [v14 footerTilingController];
+          v27 = __38__PXWidgetComposition_frameForWidget___block_invoke(footerTilingController);
           v29 = v28;
           v31 = v30;
           v33 = v32;
@@ -313,7 +313,7 @@ LABEL_11:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v46 objects:v50 count:16];
+      v11 = [_elements countByEnumeratingWithState:&v46 objects:v50 count:16];
       if (v11)
       {
         continue;
@@ -372,47 +372,47 @@ double __38__PXWidgetComposition_frameForWidget___block_invoke(void *a1)
   return v15;
 }
 
-- (id)widgetAtLocation:(CGPoint)a3
+- (id)widgetAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v24 = *MEMORY[0x1E69E9840];
   v6 = +[PXTilingCoordinateSpaceConverter defaultConverter];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [(PXWidgetComposition *)self _elements];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
-  if (v8)
+  _elements = [(PXWidgetComposition *)self _elements];
+  widget = [_elements countByEnumeratingWithState:&v19 objects:v23 count:16];
+  if (widget)
   {
     v9 = *v20;
     while (2)
     {
-      for (i = 0; i != v8; i = i + 1)
+      for (i = 0; i != widget; i = i + 1)
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_elements);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [v11 contentTilingController];
-        v13 = [v12 targetLayout];
-        [v13 contentBounds];
-        [v6 convertRect:objc_msgSend(v13 fromCoordinateSpaceIdentifier:"coordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{objc_msgSend(v12, "contentCoordinateSpaceIdentifier"), v14, v15, v16, v17}];
+        contentTilingController = [v11 contentTilingController];
+        targetLayout = [contentTilingController targetLayout];
+        [targetLayout contentBounds];
+        [v6 convertRect:objc_msgSend(targetLayout fromCoordinateSpaceIdentifier:"coordinateSpaceIdentifier") toCoordinateSpaceIdentifier:{objc_msgSend(contentTilingController, "contentCoordinateSpaceIdentifier"), v14, v15, v16, v17}];
         v26.x = x;
         v26.y = y;
         if (CGRectContainsPoint(v27, v26))
         {
-          v8 = [v11 widget];
+          widget = [v11 widget];
 
           goto LABEL_11;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
-      if (v8)
+      widget = [_elements countByEnumeratingWithState:&v19 objects:v23 count:16];
+      if (widget)
       {
         continue;
       }
@@ -423,7 +423,7 @@ double __38__PXWidgetComposition_frameForWidget___block_invoke(void *a1)
 
 LABEL_11:
 
-  return v8;
+  return widget;
 }
 
 - (void)_updateElementsToLoadIfNeeded
@@ -432,19 +432,19 @@ LABEL_11:
   if (self->_needsUpdateFlags.elementsToLoad)
   {
     self->_needsUpdateFlags.elementsToLoad = 0;
-    v3 = [(PXWidgetComposition *)self shouldLoadAllWidgets];
-    v4 = [(PXWidgetComposition *)self shouldLoadVisibleWidgets];
-    v5 = [(PXWidgetComposition *)self shouldUnloadAllWidgets];
-    v6 = [(PXWidgetComposition *)self scrollViewController];
-    [v6 visibleRect];
+    shouldLoadAllWidgets = [(PXWidgetComposition *)self shouldLoadAllWidgets];
+    shouldLoadVisibleWidgets = [(PXWidgetComposition *)self shouldLoadVisibleWidgets];
+    shouldUnloadAllWidgets = [(PXWidgetComposition *)self shouldUnloadAllWidgets];
+    scrollViewController = [(PXWidgetComposition *)self scrollViewController];
+    [scrollViewController visibleRect];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
 
-    v15 = [(PXWidgetComposition *)self _didLayoutWidgets];
+    _didLayoutWidgets = [(PXWidgetComposition *)self _didLayoutWidgets];
     v40 = +[PXTilingCoordinateSpaceConverter defaultConverter];
-    v44 = [(PXWidgetComposition *)self minimumWidgetLoadingPriority];
+    minimumWidgetLoadingPriority = [(PXWidgetComposition *)self minimumWidgetLoadingPriority];
     v50 = 0u;
     v51 = 0u;
     v52 = 0u;
@@ -454,17 +454,17 @@ LABEL_11:
     if (v16)
     {
       v18 = v16;
-      v42 = v4 && v15;
+      v42 = shouldLoadVisibleWidgets && _didLayoutWidgets;
       v19 = *v51;
       *&v17 = 134218240;
       v39 = v17;
       v20 = 0x7FFFFFFFFFFFFFFFLL;
       v43 = *v51;
-      v41 = v3;
+      v41 = shouldLoadAllWidgets;
       do
       {
         v21 = 0;
-        v22 = v44;
+        v22 = minimumWidgetLoadingPriority;
         do
         {
           if (*v51 != v19)
@@ -473,12 +473,12 @@ LABEL_11:
           }
 
           v23 = *(*(&v50 + 1) + 8 * v21);
-          if (v5)
+          if (shouldUnloadAllWidgets)
           {
             goto LABEL_32;
           }
 
-          if (v3 || v42 && ([*(*(&v50 + 1) + 8 * v21) contentTilingController], v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "targetLayout"), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "contentBounds"), objc_msgSend(v40, "convertRect:fromCoordinateSpaceIdentifier:toCoordinateSpaceIdentifier:", objc_msgSend(v32, "coordinateSpaceIdentifier"), objc_msgSend(v31, "contentCoordinateSpaceIdentifier"), v33, v34, v35, v36), v62.origin.x = v8, v62.origin.y = v10, v62.size.width = v12, v62.size.height = v14, v37 = CGRectIntersectsRect(v61, v62), v32, v19 = v43, v31, v22 = v44, v37))
+          if (shouldLoadAllWidgets || v42 && ([*(*(&v50 + 1) + 8 * v21) contentTilingController], v31 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v31, "targetLayout"), v32 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v32, "contentBounds"), objc_msgSend(v40, "convertRect:fromCoordinateSpaceIdentifier:toCoordinateSpaceIdentifier:", objc_msgSend(v32, "coordinateSpaceIdentifier"), objc_msgSend(v31, "contentCoordinateSpaceIdentifier"), v33, v34, v35, v36), v62.origin.x = v8, v62.origin.y = v10, v62.size.width = v12, v62.size.height = v14, v37 = CGRectIntersectsRect(v61, v62), v32, v19 = v43, v31, v22 = minimumWidgetLoadingPriority, v37))
           {
             if (v20 == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -489,8 +489,8 @@ LABEL_11:
                 v49 = 0u;
                 v46 = 0u;
                 v47 = 0u;
-                v24 = [(PXWidgetComposition *)self _elements];
-                v25 = [v24 countByEnumeratingWithState:&v46 objects:v58 count:16];
+                _elements = [(PXWidgetComposition *)self _elements];
+                v25 = [_elements countByEnumeratingWithState:&v46 objects:v58 count:16];
                 if (v25)
                 {
                   v26 = v25;
@@ -502,7 +502,7 @@ LABEL_11:
                     {
                       if (*v47 != v28)
                       {
-                        objc_enumerationMutation(v24);
+                        objc_enumerationMutation(_elements);
                       }
 
                       v30 = [(PXWidgetComposition *)self _loadingPriorityForElement:*(*(&v46 + 1) + 8 * i), v39];
@@ -512,7 +512,7 @@ LABEL_11:
                       }
                     }
 
-                    v26 = [v24 countByEnumeratingWithState:&v46 objects:v58 count:16];
+                    v26 = [_elements countByEnumeratingWithState:&v46 objects:v58 count:16];
                   }
 
                   while (v26);
@@ -527,32 +527,32 @@ LABEL_11:
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
                 {
                   *buf = v39;
-                  v55 = self;
+                  selfCopy = self;
                   v56 = 1024;
                   v57 = v27;
                   _os_log_impl(&dword_1A3C1C000, v38, OS_LOG_TYPE_DEBUG, "[PXWidgetComposition: %p] maximumAvailablePriority=%i", buf, 0x12u);
                 }
 
                 v19 = v43;
-                v22 = v44;
-                if (v44 >= v27)
+                v22 = minimumWidgetLoadingPriority;
+                if (minimumWidgetLoadingPriority >= v27)
                 {
                   v20 = v27;
                 }
 
                 else
                 {
-                  v20 = v44;
+                  v20 = minimumWidgetLoadingPriority;
                 }
 
-                v3 = v41;
+                shouldLoadAllWidgets = v41;
               }
             }
 
             if ([(PXWidgetComposition *)self _loadingPriorityForElement:v23, v39]>= v20)
             {
 LABEL_32:
-              [v23 setShouldLoadWidgetContent:{!v5, v39}];
+              [v23 setShouldLoadWidgetContent:{!shouldUnloadAllWidgets, v39}];
             }
           }
 
@@ -572,34 +572,34 @@ LABEL_32:
 {
   if (!self->_isPerformingWidgetLoadingChange)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXWidgetComposition.m" lineNumber:592 description:@"not inside performWidgetLoadingChange:"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetComposition.m" lineNumber:592 description:@"not inside performWidgetLoadingChange:"];
   }
 }
 
-- (void)performWidgetLoadingChange:(id)a3
+- (void)performWidgetLoadingChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   isPerformingWidgetLoadingChange = self->_isPerformingWidgetLoadingChange;
   self->_isPerformingWidgetLoadingChange = 1;
-  v6 = v4;
-  if (v4)
+  v6 = changeCopy;
+  if (changeCopy)
   {
-    v4[2](v4);
-    v4 = v6;
+    changeCopy[2](changeCopy);
+    changeCopy = v6;
   }
 
   self->_isPerformingWidgetLoadingChange = isPerformingWidgetLoadingChange;
   if (!isPerformingWidgetLoadingChange)
   {
     [(PXWidgetComposition *)self _updateWidgetLoadingIfNeeded];
-    v4 = v6;
+    changeCopy = v6;
   }
 }
 
-- (void)_setDidLayoutWidgets:(BOOL)a3
+- (void)_setDidLayoutWidgets:(BOOL)widgets
 {
-  if (self->__didLayoutWidgets != a3)
+  if (self->__didLayoutWidgets != widgets)
   {
     v7 = v3;
     v8 = v4;
@@ -608,14 +608,14 @@ LABEL_32:
     v5[2] = __44__PXWidgetComposition__setDidLayoutWidgets___block_invoke;
     v5[3] = &unk_1E7749428;
     v5[4] = self;
-    v6 = a3;
+    widgetsCopy = widgets;
     [(PXWidgetComposition *)self performWidgetLoadingChange:v5];
   }
 }
 
-- (void)setShouldUnloadAllWidgets:(BOOL)a3
+- (void)setShouldUnloadAllWidgets:(BOOL)widgets
 {
-  if (self->_shouldUnloadAllWidgets != a3)
+  if (self->_shouldUnloadAllWidgets != widgets)
   {
     v7 = v3;
     v8 = v4;
@@ -624,14 +624,14 @@ LABEL_32:
     v5[2] = __49__PXWidgetComposition_setShouldUnloadAllWidgets___block_invoke;
     v5[3] = &unk_1E7749428;
     v5[4] = self;
-    v6 = a3;
+    widgetsCopy = widgets;
     [(PXWidgetComposition *)self performWidgetLoadingChange:v5];
   }
 }
 
-- (void)setShouldLoadAllWidgets:(BOOL)a3
+- (void)setShouldLoadAllWidgets:(BOOL)widgets
 {
-  if (self->_shouldLoadAllWidgets != a3)
+  if (self->_shouldLoadAllWidgets != widgets)
   {
     v7 = v3;
     v8 = v4;
@@ -640,14 +640,14 @@ LABEL_32:
     v5[2] = __47__PXWidgetComposition_setShouldLoadAllWidgets___block_invoke;
     v5[3] = &unk_1E7749428;
     v5[4] = self;
-    v6 = a3;
+    widgetsCopy = widgets;
     [(PXWidgetComposition *)self performWidgetLoadingChange:v5];
   }
 }
 
-- (void)setShouldLoadVisibleWidgets:(BOOL)a3
+- (void)setShouldLoadVisibleWidgets:(BOOL)widgets
 {
-  if (self->_shouldLoadVisibleWidgets != a3)
+  if (self->_shouldLoadVisibleWidgets != widgets)
   {
     v7 = v3;
     v8 = v4;
@@ -656,14 +656,14 @@ LABEL_32:
     v5[2] = __51__PXWidgetComposition_setShouldLoadVisibleWidgets___block_invoke;
     v5[3] = &unk_1E7749428;
     v5[4] = self;
-    v6 = a3;
+    widgetsCopy = widgets;
     [(PXWidgetComposition *)self performWidgetLoadingChange:v5];
   }
 }
 
-- (void)setMinimumWidgetLoadingPriority:(int64_t)a3
+- (void)setMinimumWidgetLoadingPriority:(int64_t)priority
 {
-  if (self->_minimumWidgetLoadingPriority != a3)
+  if (self->_minimumWidgetLoadingPriority != priority)
   {
     v5[6] = v3;
     v5[7] = v4;
@@ -672,69 +672,69 @@ LABEL_32:
     v5[2] = __55__PXWidgetComposition_setMinimumWidgetLoadingPriority___block_invoke;
     v5[3] = &unk_1E77498A0;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = priority;
     [(PXWidgetComposition *)self performWidgetLoadingChange:v5];
   }
 }
 
-- (int64_t)_loadingPriorityForElement:(id)a3
+- (int64_t)_loadingPriorityForElement:(id)element
 {
   if (!self->_delegateFlags.respondsToLoadingPriorityForWidget)
   {
     return 0;
   }
 
-  v4 = a3;
-  v5 = [(PXWidgetComposition *)self delegate];
-  v6 = [v4 widget];
+  elementCopy = element;
+  delegate = [(PXWidgetComposition *)self delegate];
+  widget = [elementCopy widget];
 
-  v7 = [v5 widgetComposition:self loadingPriorityForWidget:v6];
+  v7 = [delegate widgetComposition:self loadingPriorityForWidget:widget];
   return v7;
 }
 
-- (BOOL)_shouldUseEdgeToEdgeLayoutForWidget:(id)a3
+- (BOOL)_shouldUseEdgeToEdgeLayoutForWidget:(id)widget
 {
   if (!self->_delegateFlags.respondsToShouldUseEdgeToEdgeLayoutForWidget)
   {
     return 0;
   }
 
-  v3 = self;
-  v4 = a3;
-  v5 = [(PXWidgetComposition *)v3 delegate];
-  LOBYTE(v3) = [v5 widgetComposition:v3 shouldUseEdgeToEdgeLayoutForWidget:v4];
+  selfCopy = self;
+  widgetCopy = widget;
+  delegate = [(PXWidgetComposition *)selfCopy delegate];
+  LOBYTE(selfCopy) = [delegate widgetComposition:selfCopy shouldUseEdgeToEdgeLayoutForWidget:widgetCopy];
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)updateComposition
 {
   v111 = *MEMORY[0x1E69E9840];
-  v39 = [(PXWidgetComposition *)self spec];
-  if (!v39)
+  spec = [(PXWidgetComposition *)self spec];
+  if (!spec)
   {
-    v36 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v36 handleFailureInMethod:a2 object:self file:@"PXWidgetComposition.m" lineNumber:237 description:@"missing spec"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetComposition.m" lineNumber:237 description:@"missing spec"];
   }
 
-  v2 = [(PXTilingControllerComposition *)self input];
-  v3 = [(PXTilingControllerComposition *)self output];
-  v37 = [(PXWidgetComposition *)self _elements];
-  v45 = [v39 widgetSpec];
-  v4 = [v39 maximumNumberOfColumns];
-  [v2 referenceSize];
+  input = [(PXTilingControllerComposition *)self input];
+  output = [(PXTilingControllerComposition *)self output];
+  _elements = [(PXWidgetComposition *)self _elements];
+  widgetSpec = [spec widgetSpec];
+  maximumNumberOfColumns = [spec maximumNumberOfColumns];
+  [input referenceSize];
   v6 = v5;
-  [v2 contentInset];
+  [input contentInset];
   v8 = v7;
   v42 = v10;
   v43 = v9;
   v41 = v11;
-  v12 = [v39 widgetSpec];
-  [v12 interWidgetSpacing];
+  widgetSpec2 = [spec widgetSpec];
+  [widgetSpec2 interWidgetSpacing];
   v14 = v13;
   v16 = v15;
 
-  v17 = [v39 orientation];
+  orientation = [spec orientation];
   v105 = 0;
   v106 = &v105;
   v108 = &unk_1A561E057;
@@ -743,17 +743,17 @@ LABEL_32:
   v109 = *MEMORY[0x1E695F058];
   v110 = v18;
   *(&v109 + 1) = v8;
-  if (!v17)
+  if (!orientation)
   {
     *&v110 = v6;
   }
 
   v19 = objc_alloc_init(_PXWidgetCompositionElementScanner);
-  [(_PXWidgetCompositionElementScanner *)v19 setElements:v37];
+  [(_PXWidgetCompositionElementScanner *)v19 setElements:_elements];
   [(_PXWidgetCompositionElementScanner *)v19 setReferenceWidth:v6];
   [(_PXWidgetCompositionElementScanner *)v19 setInterColumnSpacing:v14];
-  [(_PXWidgetCompositionElementScanner *)v19 setMaximumNumberOfColumns:v4];
-  -[_PXWidgetCompositionElementScanner setOrientation:](v19, "setOrientation:", [v39 orientation]);
+  [(_PXWidgetCompositionElementScanner *)v19 setMaximumNumberOfColumns:maximumNumberOfColumns];
+  -[_PXWidgetCompositionElementScanner setOrientation:](v19, "setOrientation:", [spec orientation]);
   objc_initWeak(&location, self);
   v102[0] = MEMORY[0x1E69E9820];
   v102[1] = 3221225472;
@@ -781,9 +781,9 @@ LABEL_32:
   v87[1] = v87;
   v87[2] = 0x2020000000;
   v87[3] = 1;
-  v44 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
-  v38 = [(PXWidgetComposition *)self _focusedTilingController];
-  [v38 invalidateLayoutPreferredVisibleOrigin];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  _focusedTilingController = [(PXWidgetComposition *)self _focusedTilingController];
+  [_focusedTilingController invalidateLayoutPreferredVisibleOrigin];
   while (![(_PXWidgetCompositionElementScanner *)v19 isAtEnd])
   {
     v81 = 0;
@@ -794,7 +794,7 @@ LABEL_32:
     v86 = 0;
     MinX = CGRectGetMinX(v106[1]);
     v82[5] = CGRectGetMaxY(v106[1]);
-    if (!v17 && CGRectGetHeight(v106[1]) > 0.0)
+    if (!orientation && CGRectGetHeight(v106[1]) > 0.0)
     {
       v82[5] = v16 + v82[5];
     }
@@ -820,24 +820,24 @@ LABEL_32:
       v47[1] = 3221225472;
       v47[2] = __40__PXWidgetComposition_updateComposition__block_invoke_2;
       v47[3] = &unk_1E77381F8;
-      v48 = v3;
-      v49 = v45;
+      v48 = output;
+      v49 = widgetSpec;
       v53 = v80;
       v54 = &v81;
       v63 = v8;
       v64 = v43;
       v65 = v42;
       v66 = v41;
-      v50 = v2;
-      v51 = v44;
-      v52 = self;
+      v50 = input;
+      v51 = strongToStrongObjectsMapTable;
+      selfCopy = self;
       v55 = &v98;
       v56 = &v90;
       v57 = &v94;
       v58 = v88;
       v59 = v87;
       v60 = &v71;
-      v70 = v17 == 0;
+      v70 = orientation == 0;
       v67 = v14;
       v68 = v16;
       v69 = v6;
@@ -863,8 +863,8 @@ LABEL_32:
 
     else
     {
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:self file:@"PXWidgetComposition.m" lineNumber:436 description:@"couldn't scan all widgets"];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXWidgetComposition.m" lineNumber:436 description:@"couldn't scan all widgets"];
     }
 
     _Block_object_dispose(v80, 8);
@@ -873,36 +873,36 @@ LABEL_32:
 
   if (*(v91 + 24) == 1)
   {
-    [v45 distanceBetweenFooterBaselineAndBottom];
+    [widgetSpec distanceBetweenFooterBaselineAndBottom];
   }
 
   else
   {
-    [v45 distanceBetweenFooterlessWidgetContentBottomAndBottom];
+    [widgetSpec distanceBetweenFooterlessWidgetContentBottomAndBottom];
     v26 = v25;
-    [v45 contentGuideInsets];
+    [widgetSpec contentGuideInsets];
     v24 = v26 - v27;
   }
 
   v106[1].size.height = v24 + v106[1].size.height;
-  [v2 tilingControllersRequestingFocus];
-  v29 = v28 = self;
+  [input tilingControllersRequestingFocus];
+  v29 = selfCopy2 = self;
   if ([v29 count])
   {
-    v30 = [v29 lastObject];
-    [(PXWidgetComposition *)self _setFocusedTilingController:v30];
+    lastObject = [v29 lastObject];
+    [(PXWidgetComposition *)self _setFocusedTilingController:lastObject];
 
-    v28 = self;
+    selfCopy2 = self;
   }
 
-  v31 = [(PXWidgetComposition *)v28 _focusedTilingController];
+  _focusedTilingController2 = [(PXWidgetComposition *)selfCopy2 _focusedTilingController];
 
-  if (v31)
+  if (_focusedTilingController2)
   {
-    v32 = [v44 objectForKey:v31];
+    v32 = [strongToStrongObjectsMapTable objectForKey:_focusedTilingController2];
     if (v32)
     {
-      v33 = v31;
+      v33 = _focusedTilingController2;
     }
 
     else
@@ -914,10 +914,10 @@ LABEL_32:
 
     if (v32)
     {
-      v35 = [v44 objectForKey:v31];
+      v35 = [strongToStrongObjectsMapTable objectForKey:_focusedTilingController2];
       [v35 CGPointValue];
 
-      [v2 originForTilingController:v31];
+      [input originForTilingController:_focusedTilingController2];
       PXPointSubtract();
     }
   }
@@ -965,12 +965,12 @@ void __40__PXWidgetComposition_updateComposition__block_invoke_2(uint64_t a1, vo
   PXPointIsNull();
 }
 
-- (BOOL)_shouldFocusOnTilingController:(id)a3
+- (BOOL)_shouldFocusOnTilingController:(id)controller
 {
-  v3 = [a3 currentLayout];
-  if (v3)
+  currentLayout = [controller currentLayout];
+  if (currentLayout)
   {
-    [v3 visibleRect];
+    [currentLayout visibleRect];
     PXRectGetCenter();
   }
 
@@ -980,15 +980,15 @@ void __40__PXWidgetComposition_updateComposition__block_invoke_2(uint64_t a1, vo
 - (void)_updateFocusedTilingController
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [(PXWidgetComposition *)self _focusedTilingController];
-  if (![(PXWidgetComposition *)self _shouldFocusOnTilingController:v3])
+  _focusedTilingController = [(PXWidgetComposition *)self _focusedTilingController];
+  if (![(PXWidgetComposition *)self _shouldFocusOnTilingController:_focusedTilingController])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v4 = [(PXWidgetComposition *)self _elements];
-    v5 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+    _elements = [(PXWidgetComposition *)self _elements];
+    v5 = [_elements countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v5)
     {
       v6 = v5;
@@ -999,30 +999,30 @@ void __40__PXWidgetComposition_updateComposition__block_invoke_2(uint64_t a1, vo
         {
           if (*v26 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_elements);
           }
 
           v9 = *(*(&v25 + 1) + 8 * i);
-          v10 = [v9 widget];
+          widget = [v9 widget];
           v11 = objc_opt_respondsToSelector();
 
           if (v11)
           {
-            v12 = [v9 widget];
-            v13 = [v12 wantsFocus];
+            widget2 = [v9 widget];
+            wantsFocus = [widget2 wantsFocus];
 
-            if (v13)
+            if (wantsFocus)
             {
-              v20 = [v9 contentTilingController];
+              contentTilingController = [v9 contentTilingController];
 
-              [(PXWidgetComposition *)self _setFocusedTilingController:v20];
-              v3 = v20;
+              [(PXWidgetComposition *)self _setFocusedTilingController:contentTilingController];
+              _focusedTilingController = contentTilingController;
               goto LABEL_23;
             }
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v25 objects:v30 count:16];
+        v6 = [_elements countByEnumeratingWithState:&v25 objects:v30 count:16];
         if (v6)
         {
           continue;
@@ -1036,8 +1036,8 @@ void __40__PXWidgetComposition_updateComposition__block_invoke_2(uint64_t a1, vo
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v14 = [(PXWidgetComposition *)self _elements];
-    v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+    _elements2 = [(PXWidgetComposition *)self _elements];
+    v15 = [_elements2 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v15)
     {
       v16 = v15;
@@ -1048,18 +1048,18 @@ void __40__PXWidgetComposition_updateComposition__block_invoke_2(uint64_t a1, vo
         {
           if (*v22 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(_elements2);
           }
 
-          v19 = [*(*(&v21 + 1) + 8 * j) contentTilingController];
-          if ([(PXWidgetComposition *)self _shouldFocusOnTilingController:v19])
+          contentTilingController2 = [*(*(&v21 + 1) + 8 * j) contentTilingController];
+          if ([(PXWidgetComposition *)self _shouldFocusOnTilingController:contentTilingController2])
           {
 
             goto LABEL_22;
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
+        v16 = [_elements2 countByEnumeratingWithState:&v21 objects:v29 count:16];
         if (v16)
         {
           continue;
@@ -1069,11 +1069,11 @@ void __40__PXWidgetComposition_updateComposition__block_invoke_2(uint64_t a1, vo
       }
     }
 
-    v19 = v3;
+    contentTilingController2 = _focusedTilingController;
 LABEL_22:
 
-    [(PXWidgetComposition *)self _setFocusedTilingController:v19];
-    v3 = v19;
+    [(PXWidgetComposition *)self _setFocusedTilingController:contentTilingController2];
+    _focusedTilingController = contentTilingController2;
   }
 
 LABEL_23:
@@ -1087,8 +1087,8 @@ LABEL_23:
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(PXWidgetComposition *)self _elements];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _elements = [(PXWidgetComposition *)self _elements];
+  v5 = [_elements countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1099,21 +1099,21 @@ LABEL_23:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_elements);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 contentTilingController];
-        [v3 addObject:v10];
+        contentTilingController = [v9 contentTilingController];
+        [v3 addObject:contentTilingController];
 
-        v11 = [v9 headerTilingController];
-        [v3 addObject:v11];
+        headerTilingController = [v9 headerTilingController];
+        [v3 addObject:headerTilingController];
 
-        v12 = [v9 footerTilingController];
-        [v3 addObject:v12];
+        footerTilingController = [v9 footerTilingController];
+        [v3 addObject:footerTilingController];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [_elements countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1125,13 +1125,13 @@ LABEL_23:
 - (void)_updateElementsSpec
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(PXWidgetComposition *)self spec];
+  spec = [(PXWidgetComposition *)self spec];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(PXWidgetComposition *)self _elements];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  _elements = [(PXWidgetComposition *)self _elements];
+  v5 = [_elements countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1143,26 +1143,26 @@ LABEL_23:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_elements);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setSpec:v3];
+        [*(*(&v9 + 1) + 8 * v8++) setSpec:spec];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [_elements countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_setElements:(id)a3
+- (void)_setElements:(id)elements
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self->__elements != v4 && ([(NSArray *)v4 isEqual:?]& 1) == 0)
+  elementsCopy = elements;
+  v5 = elementsCopy;
+  if (self->__elements != elementsCopy && ([(NSArray *)elementsCopy isEqual:?]& 1) == 0)
   {
     v26 = 0u;
     v27 = 0u;
@@ -1237,14 +1237,14 @@ LABEL_23:
 - (void)_updateElements
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(PXWidgetComposition *)self scrollViewController];
-  v4 = [(PXWidgetComposition *)self widgets];
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  scrollViewController = [(PXWidgetComposition *)self scrollViewController];
+  widgets = [(PXWidgetComposition *)self widgets];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(widgets, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = widgets;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
@@ -1260,7 +1260,7 @@ LABEL_23:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [PXWidgetCompositionElement elementWithWidget:*(*(&v21 + 1) + 8 * v10) scrollViewController:v3];
+        v11 = [PXWidgetCompositionElement elementWithWidget:*(*(&v21 + 1) + 8 * v10) scrollViewController:scrollViewController];
         [v5 addObject:v11];
 
         ++v10;
@@ -1305,27 +1305,27 @@ LABEL_23:
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v6 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     [(PXTilingControllerComposition *)self invalidateComposition];
     [(PXWidgetComposition *)self _invalidateElementsSpec];
-    v5 = v6;
+    specCopy = v6;
   }
 }
 
-- (void)setWidgets:(id)a3
+- (void)setWidgets:(id)widgets
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_widgets != v4)
+  widgetsCopy = widgets;
+  v5 = widgetsCopy;
+  if (self->_widgets != widgetsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = widgetsCopy;
+    v6 = [(NSArray *)widgetsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -1339,9 +1339,9 @@ LABEL_23:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -1358,17 +1358,17 @@ LABEL_23:
   }
 }
 
-- (PXWidgetComposition)initWithScrollViewController:(id)a3
+- (PXWidgetComposition)initWithScrollViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = PXWidgetComposition;
   v5 = [(PXWidgetComposition *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    v7 = objc_storeWeak(&v5->_scrollViewController, v4);
-    [v4 registerObserver:v6];
+    v7 = objc_storeWeak(&v5->_scrollViewController, controllerCopy);
+    [controllerCopy registerObserver:v6];
   }
 
   return v6;
@@ -1376,8 +1376,8 @@ LABEL_23:
 
 - (PXWidgetComposition)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXWidgetComposition.m" lineNumber:74 description:@"invalid initializer"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXWidgetComposition.m" lineNumber:74 description:@"invalid initializer"];
 
   return 0;
 }

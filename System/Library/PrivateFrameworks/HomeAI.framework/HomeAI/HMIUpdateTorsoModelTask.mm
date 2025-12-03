@@ -1,20 +1,20 @@
 @interface HMIUpdateTorsoModelTask
-- (HMIUpdateTorsoModelTask)initWithTaskID:(int)a3 homeUUID:(id)a4 torsoAnnotations:(id)a5;
+- (HMIUpdateTorsoModelTask)initWithTaskID:(int)d homeUUID:(id)iD torsoAnnotations:(id)annotations;
 - (void)mainInsideAutoreleasePool;
 @end
 
 @implementation HMIUpdateTorsoModelTask
 
-- (HMIUpdateTorsoModelTask)initWithTaskID:(int)a3 homeUUID:(id)a4 torsoAnnotations:(id)a5
+- (HMIUpdateTorsoModelTask)initWithTaskID:(int)d homeUUID:(id)iD torsoAnnotations:(id)annotations
 {
-  v6 = *&a3;
-  v8 = a5;
+  v6 = *&d;
+  annotationsCopy = annotations;
   v13.receiver = self;
   v13.super_class = HMIUpdateTorsoModelTask;
-  v9 = [(HMIHomeTask *)&v13 initWithTaskID:v6 homeUUID:a4 timeout:60.0];
+  v9 = [(HMIHomeTask *)&v13 initWithTaskID:v6 homeUUID:iD timeout:60.0];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [annotationsCopy copy];
     torsoAnnotations = v9->_torsoAnnotations;
     v9->_torsoAnnotations = v10;
   }
@@ -26,17 +26,17 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = +[HMIPersonsModelManager sharedInstance];
-  v4 = [(HMIHomeTask *)self homeUUID];
-  v5 = [(HMIUpdateTorsoModelTask *)self torsoAnnotations];
-  v6 = [v5 allObjects];
+  homeUUID = [(HMIHomeTask *)self homeUUID];
+  torsoAnnotations = [(HMIUpdateTorsoModelTask *)self torsoAnnotations];
+  allObjects = [torsoAnnotations allObjects];
   v13 = 0;
-  v7 = [v3 updateTorsoModelForHome:v4 torsoAnnotations:v6 error:&v13];
+  v7 = [v3 updateTorsoModelForHome:homeUUID torsoAnnotations:allObjects error:&v13];
   v8 = v13;
 
   if ((v7 & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -49,7 +49,7 @@
     }
 
     objc_autoreleasePoolPop(v9);
-    [(HMFOperation *)v10 cancelWithError:v8];
+    [(HMFOperation *)selfCopy cancelWithError:v8];
   }
 
   [(HMFOperation *)self finish];

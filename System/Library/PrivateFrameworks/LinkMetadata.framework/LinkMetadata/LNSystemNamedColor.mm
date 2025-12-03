@@ -1,25 +1,25 @@
 @interface LNSystemNamedColor
-- (BOOL)isEqual:(id)a3;
-- (LNSystemNamedColor)initWithCoder:(id)a3;
-- (LNSystemNamedColor)initWithSystemColor:(unint64_t)a3 variant:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNSystemNamedColor)initWithCoder:(id)coder;
+- (LNSystemNamedColor)initWithSystemColor:(unint64_t)color variant:(unint64_t)variant;
 - (id)description;
-- (id)initUnsafeWithSystemColor:(unint64_t)a3 variant:(unint64_t)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)initUnsafeWithSystemColor:(unint64_t)color variant:(unint64_t)variant;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSystemNamedColor
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
     goto LABEL_10;
   }
 
-  v6 = v4;
+  v6 = equalCopy;
   if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -27,34 +27,34 @@
     goto LABEL_7;
   }
 
-  v7 = [(LNSystemNamedColor *)self systemColor];
-  if (v7 != [(LNSystemNamedColor *)v6 systemColor])
+  systemColor = [(LNSystemNamedColor *)self systemColor];
+  if (systemColor != [(LNSystemNamedColor *)v6 systemColor])
   {
 LABEL_7:
     v9 = 0;
     goto LABEL_8;
   }
 
-  v8 = [(LNSystemNamedColor *)self colorVariant];
-  v9 = v8 == [(LNSystemNamedColor *)v6 colorVariant];
+  colorVariant = [(LNSystemNamedColor *)self colorVariant];
+  v9 = colorVariant == [(LNSystemNamedColor *)v6 colorVariant];
 LABEL_8:
 
 LABEL_10:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNSystemNamedColor systemColor](self forKey:{"systemColor"), @"systemColor"}];
-  [v4 encodeInteger:-[LNSystemNamedColor colorVariant](self forKey:{"colorVariant"), @"colorVariant"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNSystemNamedColor systemColor](self forKey:{"systemColor"), @"systemColor"}];
+  [coderCopy encodeInteger:-[LNSystemNamedColor colorVariant](self forKey:{"colorVariant"), @"colorVariant"}];
 }
 
-- (LNSystemNamedColor)initWithCoder:(id)a3
+- (LNSystemNamedColor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"systemColor"];
-  v6 = [v4 decodeIntegerForKey:@"colorVariant"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"systemColor"];
+  v6 = [coderCopy decodeIntegerForKey:@"colorVariant"];
 
   return [(LNSystemNamedColor *)self initWithSystemColor:v5 variant:v6];
 }
@@ -69,19 +69,19 @@ LABEL_10:
   return v6;
 }
 
-- (LNSystemNamedColor)initWithSystemColor:(unint64_t)a3 variant:(unint64_t)a4
+- (LNSystemNamedColor)initWithSystemColor:(unint64_t)color variant:(unint64_t)variant
 {
-  v4 = 0;
-  if (a3 <= 0xD && a4 <= 1)
+  selfCopy = 0;
+  if (color <= 0xD && variant <= 1)
   {
     self = [LNSystemNamedColor initUnsafeWithSystemColor:"initUnsafeWithSystemColor:variant:" variant:?];
-    v4 = self;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)initUnsafeWithSystemColor:(unint64_t)a3 variant:(unint64_t)a4
+- (id)initUnsafeWithSystemColor:(unint64_t)color variant:(unint64_t)variant
 {
   v9.receiver = self;
   v9.super_class = LNSystemNamedColor;
@@ -89,8 +89,8 @@ LABEL_10:
   v7 = v6;
   if (v6)
   {
-    [(LNSystemNamedColor *)v6 setSystemColor:a3];
-    [(LNSystemNamedColor *)v7 setColorVariant:a4];
+    [(LNSystemNamedColor *)v6 setSystemColor:color];
+    [(LNSystemNamedColor *)v7 setColorVariant:variant];
   }
 
   return v7;

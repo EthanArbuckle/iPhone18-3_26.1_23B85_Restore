@@ -1,15 +1,15 @@
 @interface ASORateLimiter
 - (ASORateLimiter)init;
-- (ASORateLimiter)initWithRequestsPerSecond:(double)a3 timeWindow:(double)a4;
+- (ASORateLimiter)initWithRequestsPerSecond:(double)second timeWindow:(double)window;
 - (BOOL)recordAttempt;
 @end
 
 @implementation ASORateLimiter
 
-- (ASORateLimiter)initWithRequestsPerSecond:(double)a3 timeWindow:(double)a4
+- (ASORateLimiter)initWithRequestsPerSecond:(double)second timeWindow:(double)window
 {
   v7 = objc_allocWithZone(type metadata accessor for RateLimiter());
-  sub_10000F970(v7, a3, a4);
+  sub_10000F970(v7, second, window);
   v9 = v8;
   swift_getObjectType();
   v10 = *((swift_isaMask & self->super.isa) + 0x30);
@@ -20,7 +20,7 @@
 
 - (BOOL)recordAttempt
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10000FC74();
 
   return v3;

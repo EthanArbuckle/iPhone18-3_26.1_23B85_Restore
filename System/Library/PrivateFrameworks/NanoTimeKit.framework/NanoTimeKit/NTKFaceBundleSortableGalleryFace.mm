@@ -1,14 +1,14 @@
 @interface NTKFaceBundleSortableGalleryFace
-- (NTKFaceBundleSortableGalleryFace)initWithFace:(id)a3 priority:(unint64_t)a4;
-- (int64_t)compare:(id)a3;
+- (NTKFaceBundleSortableGalleryFace)initWithFace:(id)face priority:(unint64_t)priority;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation NTKFaceBundleSortableGalleryFace
 
-- (NTKFaceBundleSortableGalleryFace)initWithFace:(id)a3 priority:(unint64_t)a4
+- (NTKFaceBundleSortableGalleryFace)initWithFace:(id)face priority:(unint64_t)priority
 {
-  v7 = a3;
-  if (v7)
+  faceCopy = face;
+  if (faceCopy)
   {
     v12.receiver = self;
     v12.super_class = NTKFaceBundleSortableGalleryFace;
@@ -16,38 +16,38 @@
     v9 = v8;
     if (v8)
     {
-      v8->_priority = a4;
-      objc_storeStrong(&v8->_face, a3);
+      v8->_priority = priority;
+      objc_storeStrong(&v8->_face, face);
     }
 
     self = v9;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NTKFaceBundleSortableGalleryFace *)self priority];
-    if ([v4 priority] == v5)
+    priority = [(NTKFaceBundleSortableGalleryFace *)self priority];
+    if ([compareCopy priority] == priority)
     {
-      v6 = [(NTKFaceBundleSortableGalleryFace *)self face];
-      v7 = [v4 face];
-      v8 = [v6 name];
-      v9 = v8;
-      if (v8)
+      face = [(NTKFaceBundleSortableGalleryFace *)self face];
+      face2 = [compareCopy face];
+      name = [face name];
+      v9 = name;
+      if (name)
       {
-        v10 = v8;
+        v10 = name;
       }
 
       else
@@ -57,11 +57,11 @@
 
       v11 = v10;
 
-      v12 = [v7 name];
-      v13 = v12;
-      if (v12)
+      name2 = [face2 name];
+      v13 = name2;
+      if (name2)
       {
-        v14 = v12;
+        v14 = name2;
       }
 
       else
@@ -76,8 +76,8 @@
 
     else
     {
-      v17 = [v4 priority];
-      if (v17 < [(NTKFaceBundleSortableGalleryFace *)self priority])
+      priority2 = [compareCopy priority];
+      if (priority2 < [(NTKFaceBundleSortableGalleryFace *)self priority])
       {
         v16 = -1;
       }

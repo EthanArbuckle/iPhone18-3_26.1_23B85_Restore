@@ -1,23 +1,23 @@
 @interface VTTemporalNoiseFilterImplementation
-- (BOOL)_checkForDiscontinuity:(id)a3;
-- (BOOL)_validateParameters:(id)a3 error:(id *)a4;
+- (BOOL)_checkForDiscontinuity:(id)discontinuity;
+- (BOOL)_validateParameters:(id)parameters error:(id *)error;
 - (BOOL)finishProcessing;
-- (BOOL)processWithParams:(id)a3 completionHandler:(id)a4 error:(id *)a5;
-- (BOOL)processWithParams:(id)a3 error:(id *)a4;
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4;
-- (PendingFrameItem)_createPendingFrame:(id *)a3 inputFrame:(id)a4;
-- (PendingFrameItem)_findFrameInQueue:(id *)a3;
+- (BOOL)processWithParams:(id)params completionHandler:(id)handler error:(id *)error;
+- (BOOL)processWithParams:(id)params error:(id *)error;
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error;
+- (PendingFrameItem)_createPendingFrame:(id *)frame inputFrame:(id)inputFrame;
+- (PendingFrameItem)_findFrameInQueue:(id *)queue;
 - (VTTemporalNoiseFilterImplementation)init;
-- (int)_completeFrame:(PendingFrameItem *)a3;
-- (int)_processFrame:(id)a3 outputFrame:(id)a4 useClientProvidedOutputFrame:(unsigned __int8)a5;
-- (int)_processReferenceFrameIfNotProcessed:(id)a3;
-- (int)_processSourceFrameIfNotProcessed:(id)a3 completionHandler:(id)a4;
-- (int)_setFilterStrength:(int)a3;
+- (int)_completeFrame:(PendingFrameItem *)frame;
+- (int)_processFrame:(id)frame outputFrame:(id)outputFrame useClientProvidedOutputFrame:(unsigned __int8)providedOutputFrame;
+- (int)_processReferenceFrameIfNotProcessed:(id)processed;
+- (int)_processSourceFrameIfNotProcessed:(id)processed completionHandler:(id)handler;
+- (int)_setFilterStrength:(int)strength;
 - (void)_clearStaledPendingFramesFromQueue;
 - (void)_completeFrames;
-- (void)_freePendingFrame:(PendingFrameItem *)a3;
+- (void)_freePendingFrame:(PendingFrameItem *)frame;
 - (void)dealloc;
-- (void)handleEmittedFrame:(__CVBuffer *)a3 presentationTimestamp:(id *)a4 status:(int)a5 infoFlags:(unsigned int)a6;
+- (void)handleEmittedFrame:(__CVBuffer *)frame presentationTimestamp:(id *)timestamp status:(int)status infoFlags:(unsigned int)flags;
 @end
 
 @implementation VTTemporalNoiseFilterImplementation
@@ -45,10 +45,10 @@
   return v3;
 }
 
-- (BOOL)startSessionWithConfiguration:(id)a3 error:(id *)a4
+- (BOOL)startSessionWithConfiguration:(id)configuration error:(id *)error
 {
-  UInt32 = a3;
-  if (!a3)
+  UInt32 = configuration;
+  if (!configuration)
   {
     [VTTemporalNoiseFilterImplementation startSessionWithConfiguration:? error:?];
     Mutable = 0;
@@ -56,7 +56,7 @@
     goto LABEL_21;
   }
 
-  self->_configuration = a3;
+  self->_configuration = configuration;
   filterInternal = self->filterInternal;
   filterInternal->var9 = 100;
   filterInternal->var7 = **&MEMORY[0x1E6960C70];
@@ -94,10 +94,10 @@ LABEL_17:
     v14 = v11;
 LABEL_21:
     v12 = 0;
-    if (a4 && v14)
+    if (error && v14)
     {
       v12 = 0;
-      *a4 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"VTFrameProcessorErrorDomain" code:v14 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"VTFrameProcessorErrorDomain" code:v14 userInfo:0];
     }
 
     goto LABEL_12;
@@ -134,18 +134,18 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)processWithParams:(id)a3 completionHandler:(id)a4 error:(id *)a5
+- (BOOL)processWithParams:(id)params completionHandler:(id)handler error:(id *)error
 {
   v43 = *MEMORY[0x1E69E9840];
-  v9 = [a3 nextFrames];
-  v10 = [a3 previousFrames];
+  nextFrames = [params nextFrames];
+  previousFrames = [params previousFrames];
   v38 = 0;
   v39 = 0;
   v40 = 0;
-  v11 = [a3 sourceFrame];
-  if (v11)
+  sourceFrame = [params sourceFrame];
+  if (sourceFrame)
   {
-    [v11 presentationTimeStamp];
+    [sourceFrame presentationTimeStamp];
   }
 
   else
@@ -155,17 +155,17 @@ LABEL_12:
     v40 = 0;
   }
 
-  if (![(VTTemporalNoiseFilterImplementation *)self _validateParameters:a3 error:a5])
+  if (![(VTTemporalNoiseFilterImplementation *)self _validateParameters:params error:error])
   {
     v27 = 0;
     v26 = 0;
     goto LABEL_30;
   }
 
-  if ([(VTTemporalNoiseFilterImplementation *)self _checkForDiscontinuity:a3])
+  if ([(VTTemporalNoiseFilterImplementation *)self _checkForDiscontinuity:params])
   {
     [(VTTemporalNoiseFilterImplementation *)self _completeFrames];
-    [a3 filterStrength];
+    [params filterStrength];
     self->filterInternal->var9 = (v12 * 100.0);
     v13 = [(VTTemporalNoiseFilterImplementation *)self _setFilterStrength:?];
     if (v13)
@@ -178,7 +178,7 @@ LABEL_12:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v14 = [v10 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  v14 = [previousFrames countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v14)
   {
     v15 = v14;
@@ -189,7 +189,7 @@ LABEL_9:
     {
       if (*v35 != v16)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(previousFrames);
       }
 
       v13 = [(VTTemporalNoiseFilterImplementation *)self _processReferenceFrameIfNotProcessed:*(*(&v34 + 1) + 8 * v17)];
@@ -200,7 +200,7 @@ LABEL_9:
 
       if (v15 == ++v17)
       {
-        v15 = [v10 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        v15 = [previousFrames countByEnumeratingWithState:&v34 objects:v42 count:16];
         if (v15)
         {
           goto LABEL_9;
@@ -211,7 +211,7 @@ LABEL_9:
     }
   }
 
-  v13 = [(VTTemporalNoiseFilterImplementation *)self _processSourceFrameIfNotProcessed:a3 completionHandler:a4];
+  v13 = [(VTTemporalNoiseFilterImplementation *)self _processSourceFrameIfNotProcessed:params completionHandler:handler];
   if (v13)
   {
 LABEL_28:
@@ -220,15 +220,15 @@ LABEL_28:
 LABEL_30:
     v28 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"VTFrameProcessorErrorDomain" code:v26 userInfo:0];
     v29 = v28;
-    if (a5)
+    if (error)
     {
-      *a5 = v28;
+      *error = v28;
     }
 
     [(VTTemporalNoiseFilterImplementation *)self _completeFrames];
     if ((v27 & 1) == 0)
     {
-      (*(a4 + 2))(a4, a3, v29);
+      (*(handler + 2))(handler, params, v29);
     }
 
     return 0;
@@ -238,7 +238,7 @@ LABEL_30:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v18 = [v9 countByEnumeratingWithState:&v30 objects:v41 count:16];
+  v18 = [nextFrames countByEnumeratingWithState:&v30 objects:v41 count:16];
   if (v18)
   {
     v19 = v18;
@@ -250,7 +250,7 @@ LABEL_30:
       {
         if (*v31 != v20)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(nextFrames);
         }
 
         v22 = [(VTTemporalNoiseFilterImplementation *)self _processReferenceFrameIfNotProcessed:*(*(&v30 + 1) + 8 * v21)];
@@ -265,7 +265,7 @@ LABEL_30:
       }
 
       while (v19 != v21);
-      v19 = [v9 countByEnumeratingWithState:&v30 objects:v41 count:16];
+      v19 = [nextFrames countByEnumeratingWithState:&v30 objects:v41 count:16];
       if (v19)
       {
         continue;
@@ -275,8 +275,8 @@ LABEL_30:
     }
   }
 
-  v23 = [v9 count];
-  if (v23 < -[VTTemporalNoiseFilterConfiguration nextFrameCount](self->_configuration, "nextFrameCount") || (v24 = [v10 count], v24 < -[VTTemporalNoiseFilterConfiguration previousFrameCount](self->_configuration, "previousFrameCount")))
+  v23 = [nextFrames count];
+  if (v23 < -[VTTemporalNoiseFilterConfiguration nextFrameCount](self->_configuration, "nextFrameCount") || (v24 = [previousFrames count], v24 < -[VTTemporalNoiseFilterConfiguration previousFrameCount](self->_configuration, "previousFrameCount")))
   {
     [(VTTemporalNoiseFilterImplementation *)self _completeFrames];
   }
@@ -284,7 +284,7 @@ LABEL_30:
   return 1;
 }
 
-- (BOOL)processWithParams:(id)a3 error:(id *)a4
+- (BOOL)processWithParams:(id)params error:(id *)error
 {
   dispatch_group_enter(self->filterInternal->var4);
   v8[0] = MEMORY[0x1E69E9820];
@@ -292,10 +292,10 @@ LABEL_30:
   v8[2] = __63__VTTemporalNoiseFilterImplementation_processWithParams_error___block_invoke;
   v8[3] = &unk_1E72C8E50;
   v8[4] = self;
-  v8[5] = a4;
-  LOBYTE(a4) = [(VTTemporalNoiseFilterImplementation *)self processWithParams:a3 completionHandler:v8 error:a4];
+  v8[5] = error;
+  LOBYTE(error) = [(VTTemporalNoiseFilterImplementation *)self processWithParams:params completionHandler:v8 error:error];
   dispatch_group_wait(self->filterInternal->var4, 0xFFFFFFFFFFFFFFFFLL);
-  return a4;
+  return error;
 }
 
 void __63__VTTemporalNoiseFilterImplementation_processWithParams_error___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -312,23 +312,23 @@ void __63__VTTemporalNoiseFilterImplementation_processWithParams_error___block_i
   dispatch_group_leave(*(*(*(a1 + 32) + 8) + 32));
 }
 
-- (BOOL)_checkForDiscontinuity:(id)a3
+- (BOOL)_checkForDiscontinuity:(id)discontinuity
 {
   v47 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6960C70];
   value = *MEMORY[0x1E6960C70];
   timescale = *(MEMORY[0x1E6960C70] + 8);
-  if (([a3 hasDiscontinuity] & 1) == 0)
+  if (([discontinuity hasDiscontinuity] & 1) == 0)
   {
     var9 = self->filterInternal->var9;
-    [a3 filterStrength];
+    [discontinuity filterStrength];
     if ((v8 * 100.0) == var9)
     {
       memset(&v40, 0, sizeof(v40));
-      v9 = [a3 sourceFrame];
-      if (v9)
+      sourceFrame = [discontinuity sourceFrame];
+      if (sourceFrame)
       {
-        [v9 presentationTimeStamp];
+        [sourceFrame presentationTimeStamp];
       }
 
       else
@@ -336,12 +336,12 @@ void __63__VTTemporalNoiseFilterImplementation_processWithParams_error___block_i
         memset(&v40, 0, sizeof(v40));
       }
 
-      if ((self->filterInternal->var7.var2 & 1) == 0 || ![objc_msgSend(a3 "previousFrames")])
+      if ((self->filterInternal->var7.var2 & 1) == 0 || ![objc_msgSend(discontinuity "previousFrames")])
       {
         goto LABEL_13;
       }
 
-      v10 = [objc_msgSend(a3 "previousFrames")];
+      v10 = [objc_msgSend(discontinuity "previousFrames")];
       filterInternal = self->filterInternal;
       if (v10)
       {
@@ -357,15 +357,15 @@ void __63__VTTemporalNoiseFilterImplementation_processWithParams_error___block_i
       if (!CMTimeCompare(&time1, &time2))
       {
 LABEL_13:
-        v31 = self;
+        selfCopy = self;
         flags = *(v5 + 12);
         epoch = *(v5 + 16);
         v38 = 0u;
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
-        v14 = [a3 previousFrames];
-        v15 = [v14 countByEnumeratingWithState:&v36 objects:v43 count:16];
+        previousFrames = [discontinuity previousFrames];
+        v15 = [previousFrames countByEnumeratingWithState:&v36 objects:v43 count:16];
         if (v15)
         {
           v16 = v15;
@@ -376,7 +376,7 @@ LABEL_15:
           {
             if (*v37 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(previousFrames);
             }
 
             v19 = *(*(&v36 + 1) + 8 * v18);
@@ -420,7 +420,7 @@ LABEL_15:
             timescale = time2.timescale;
             if (v16 == ++v18)
             {
-              v16 = [v14 countByEnumeratingWithState:&v36 objects:v43 count:16];
+              v16 = [previousFrames countByEnumeratingWithState:&v36 objects:v43 count:16];
               if (v16)
               {
                 goto LABEL_15;
@@ -440,7 +440,7 @@ LABEL_28:
             v20 = v40.flags;
             timescale = v40.timescale;
             v21 = v40.epoch;
-            v22 = v31->filterInternal;
+            v22 = selfCopy->filterInternal;
             if (v22->var7.var2)
             {
               time2 = v40;
@@ -450,7 +450,7 @@ LABEL_28:
                 goto LABEL_49;
               }
 
-              v22 = v31->filterInternal;
+              v22 = selfCopy->filterInternal;
             }
 
             v22->var7 = v40;
@@ -458,8 +458,8 @@ LABEL_28:
             v33 = 0u;
             v34 = 0u;
             v35 = 0u;
-            v23 = [a3 nextFrames];
-            v24 = [v23 countByEnumeratingWithState:&v32 objects:v42 count:16];
+            nextFrames = [discontinuity nextFrames];
+            v24 = [nextFrames countByEnumeratingWithState:&v32 objects:v42 count:16];
             if (!v24)
             {
               return 0;
@@ -473,7 +473,7 @@ LABEL_35:
             {
               if (*v33 != v26)
               {
-                objc_enumerationMutation(v23);
+                objc_enumerationMutation(nextFrames);
               }
 
               v28 = *(*(&v32 + 1) + 8 * v27);
@@ -517,7 +517,7 @@ LABEL_35:
               timescale = time2.timescale;
               if (v25 == ++v27)
               {
-                v25 = [v23 countByEnumeratingWithState:&v32 objects:v42 count:16];
+                v25 = [nextFrames countByEnumeratingWithState:&v32 objects:v42 count:16];
                 if (v25)
                 {
                   goto LABEL_35;
@@ -545,52 +545,52 @@ LABEL_49:
   return 1;
 }
 
-- (BOOL)_validateParameters:(id)a3 error:(id *)a4
+- (BOOL)_validateParameters:(id)parameters error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
   [(VTTemporalNoiseFilterConfiguration *)self->_configuration sourcePixelBufferAttributes];
   [(VTTemporalNoiseFilterConfiguration *)self->_configuration destinationPixelBufferAttributes];
-  v7 = [a3 sourceFrame];
-  v8 = [a3 destinationFrame];
-  if (![objc_msgSend(a3 "sourceFrame")])
+  sourceFrame = [parameters sourceFrame];
+  destinationFrame = [parameters destinationFrame];
+  if (![objc_msgSend(parameters "sourceFrame")])
   {
     [VTTemporalNoiseFilterImplementation _validateParameters:? error:?];
     goto LABEL_29;
   }
 
-  if (![objc_msgSend(a3 "destinationFrame")])
+  if (![objc_msgSend(parameters "destinationFrame")])
   {
     [VTTemporalNoiseFilterImplementation _validateParameters:? error:?];
     goto LABEL_29;
   }
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType([objc_msgSend(a3 "sourceFrame")]);
-  [v7 buffer];
+  PixelFormatType = CVPixelBufferGetPixelFormatType([objc_msgSend(parameters "sourceFrame")]);
+  [sourceFrame buffer];
   if (!CVPixelBufferIsCompatibleWithAttributes())
   {
     [VTTemporalNoiseFilterImplementation _validateParameters:? error:?];
     goto LABEL_29;
   }
 
-  [v8 buffer];
+  [destinationFrame buffer];
   if (!CVPixelBufferIsCompatibleWithAttributes())
   {
     [VTTemporalNoiseFilterImplementation _validateParameters:? error:?];
     goto LABEL_29;
   }
 
-  if (CVPixelBufferGetPixelFormatType([objc_msgSend(a3 "destinationFrame")]) != PixelFormatType)
+  if (CVPixelBufferGetPixelFormatType([objc_msgSend(parameters "destinationFrame")]) != PixelFormatType)
   {
     [VTTemporalNoiseFilterImplementation _validateParameters:? error:?];
 LABEL_29:
     result = 0;
-    if (a4)
+    if (error)
     {
       if (v32)
       {
         v23 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"VTFrameProcessorErrorDomain" code:v32 userInfo:0];
         result = 0;
-        *a4 = v23;
+        *error = v23;
       }
     }
 
@@ -601,8 +601,8 @@ LABEL_29:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = [a3 previousFrames];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  previousFrames = [parameters previousFrames];
+  v11 = [previousFrames countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -613,7 +613,7 @@ LABEL_29:
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(previousFrames);
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
@@ -631,7 +631,7 @@ LABEL_29:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v12 = [previousFrames countByEnumeratingWithState:&v28 objects:v34 count:16];
       if (v12)
       {
         continue;
@@ -645,8 +645,8 @@ LABEL_29:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [a3 nextFrames];
-  v17 = [v16 countByEnumeratingWithState:&v24 objects:v33 count:16];
+  nextFrames = [parameters nextFrames];
+  v17 = [nextFrames countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v17)
   {
     v18 = v17;
@@ -657,7 +657,7 @@ LABEL_29:
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(nextFrames);
         }
 
         v21 = *(*(&v24 + 1) + 8 * j);
@@ -675,7 +675,7 @@ LABEL_29:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      v18 = [nextFrames countByEnumeratingWithState:&v24 objects:v33 count:16];
       if (v18)
       {
         continue;
@@ -688,9 +688,9 @@ LABEL_29:
   return 1;
 }
 
-- (int)_setFilterStrength:(int)a3
+- (int)_setFilterStrength:(int)strength
 {
-  valuePtr = a3;
+  valuePtr = strength;
   v4 = CFNumberCreate(*MEMORY[0x1E695E480], kCFNumberIntType, &valuePtr);
   v5 = VTSessionSetProperty(self->filterInternal->var0, @"FilterStrength", v4);
   if (v4)
@@ -709,12 +709,12 @@ LABEL_29:
   }
 }
 
-- (PendingFrameItem)_findFrameInQueue:(id *)a3
+- (PendingFrameItem)_findFrameInQueue:(id *)queue
 {
   for (i = self->filterInternal->var5.var0; i; i = i->var9.var0)
   {
     time1 = i->var2;
-    v6 = *a3;
+    v6 = *queue;
     if (!CMTimeCompare(&time1, &v6))
     {
       break;
@@ -724,32 +724,32 @@ LABEL_29:
   return i;
 }
 
-- (void)_freePendingFrame:(PendingFrameItem *)a3
+- (void)_freePendingFrame:(PendingFrameItem *)frame
 {
-  if (a3)
+  if (frame)
   {
-    var8 = a3->var8;
+    var8 = frame->var8;
     if (var8)
     {
       _Block_release(var8);
     }
 
-    var5 = a3->var5;
+    var5 = frame->var5;
     if (var5)
     {
       CFRelease(var5);
     }
 
-    free(a3);
+    free(frame);
   }
 }
 
-- (int)_processSourceFrameIfNotProcessed:(id)a3 completionHandler:(id)a4
+- (int)_processSourceFrameIfNotProcessed:(id)processed completionHandler:(id)handler
 {
-  v7 = [a3 sourceFrame];
-  v8 = [a3 destinationFrame];
+  sourceFrame = [processed sourceFrame];
+  destinationFrame = [processed destinationFrame];
   FigSimpleMutexLock();
-  if (!v7)
+  if (!sourceFrame)
   {
     v16 = 0;
     v17 = 0;
@@ -769,16 +769,16 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  [v7 presentationTimeStamp];
+  [sourceFrame presentationTimeStamp];
   v9 = [(VTTemporalNoiseFilterImplementation *)self _findFrameInQueue:&v16];
   if (v9)
   {
     goto LABEL_5;
   }
 
-  [v7 presentationTimeStamp];
+  [sourceFrame presentationTimeStamp];
 LABEL_7:
-  v12 = [(VTTemporalNoiseFilterImplementation *)self _createPendingFrame:&v16 inputFrame:v7];
+  v12 = [(VTTemporalNoiseFilterImplementation *)self _createPendingFrame:&v16 inputFrame:sourceFrame];
   if (!v12)
   {
     [VTTemporalNoiseFilterImplementation _processSourceFrameIfNotProcessed:? completionHandler:?];
@@ -791,8 +791,8 @@ LABEL_14:
   v10 = v12;
   v11 = 1;
 LABEL_9:
-  v10->var8 = _Block_copy(a4);
-  v10->var1 = a3;
+  v10->var8 = _Block_copy(handler);
+  v10->var1 = processed;
   if ((v11 & 1) == 0)
   {
     if (v10->var4)
@@ -811,18 +811,18 @@ LABEL_9:
   v13 = !self->filterInternal->var10;
   v10->var3 = v13;
   FigSimpleMutexUnlock();
-  return [(VTTemporalNoiseFilterImplementation *)self _processFrame:v7 outputFrame:v8 useClientProvidedOutputFrame:v13];
+  return [(VTTemporalNoiseFilterImplementation *)self _processFrame:sourceFrame outputFrame:destinationFrame useClientProvidedOutputFrame:v13];
 }
 
-- (int)_processReferenceFrameIfNotProcessed:(id)a3
+- (int)_processReferenceFrameIfNotProcessed:(id)processed
 {
   FigSimpleMutexLock();
   filterInternal = self->filterInternal;
   if (filterInternal->var8.var2)
   {
-    if (a3)
+    if (processed)
     {
-      [a3 presentationTimeStamp];
+      [processed presentationTimeStamp];
       filterInternal = self->filterInternal;
     }
 
@@ -841,17 +841,17 @@ LABEL_12:
     }
   }
 
-  if (a3)
+  if (processed)
   {
-    [a3 presentationTimeStamp];
+    [processed presentationTimeStamp];
     if (![(VTTemporalNoiseFilterImplementation *)self _findFrameInQueue:&time1])
     {
-      [a3 presentationTimeStamp];
+      [processed presentationTimeStamp];
 LABEL_14:
-      if ([(VTTemporalNoiseFilterImplementation *)self _createPendingFrame:&time1 inputFrame:a3])
+      if ([(VTTemporalNoiseFilterImplementation *)self _createPendingFrame:&time1 inputFrame:processed])
       {
         FigSimpleMutexUnlock();
-        return [(VTTemporalNoiseFilterImplementation *)self _processFrame:a3 outputFrame:0 useClientProvidedOutputFrame:0];
+        return [(VTTemporalNoiseFilterImplementation *)self _processFrame:processed outputFrame:0 useClientProvidedOutputFrame:0];
       }
 
       [VTTemporalNoiseFilterImplementation _processReferenceFrameIfNotProcessed:?];
@@ -874,31 +874,31 @@ LABEL_14:
   return 0;
 }
 
-- (int)_processFrame:(id)a3 outputFrame:(id)a4 useClientProvidedOutputFrame:(unsigned __int8)a5
+- (int)_processFrame:(id)frame outputFrame:(id)outputFrame useClientProvidedOutputFrame:(unsigned __int8)providedOutputFrame
 {
-  v5 = a5;
-  v9 = [a3 buffer];
+  providedOutputFrameCopy = providedOutputFrame;
+  buffer = [frame buffer];
   v16 = 0uLL;
   v17 = 0;
-  if (a3)
+  if (frame)
   {
-    [a3 presentationTimeStamp];
+    [frame presentationTimeStamp];
   }
 
   var0 = self->filterInternal->var0;
-  if (v5)
+  if (providedOutputFrameCopy)
   {
-    v11 = [a4 buffer];
+    buffer2 = [outputFrame buffer];
     v14 = v16;
     v15 = v17;
-    v12 = VTTemporalFilterSessionProcessFrameWithOutputPixelBuffer(var0, v9, v11, &v14, 0);
+    v12 = VTTemporalFilterSessionProcessFrameWithOutputPixelBuffer(var0, buffer, buffer2, &v14, 0);
   }
 
   else
   {
     v14 = v16;
     v15 = v17;
-    v12 = VTTemporalFilterSessionProcessFrame(var0, v9, &v14, 0);
+    v12 = VTTemporalFilterSessionProcessFrame(var0, buffer, &v14, 0);
   }
 
   if (v12)
@@ -912,18 +912,18 @@ LABEL_14:
   }
 }
 
-- (void)handleEmittedFrame:(__CVBuffer *)a3 presentationTimestamp:(id *)a4 status:(int)a5 infoFlags:(unsigned int)a6
+- (void)handleEmittedFrame:(__CVBuffer *)frame presentationTimestamp:(id *)timestamp status:(int)status infoFlags:(unsigned int)flags
 {
   FigSimpleMutexLock();
-  v14 = *a4;
+  v14 = *timestamp;
   v11 = [(VTTemporalNoiseFilterImplementation *)self _findFrameInQueue:&v14];
   if (v11)
   {
     v12 = v11;
     v11->var4 = 1;
-    if (a3)
+    if (frame)
     {
-      v13 = CFRetain(a3);
+      v13 = CFRetain(frame);
     }
 
     else
@@ -932,8 +932,8 @@ LABEL_14:
     }
 
     v12->var5 = v13;
-    v12->var6 = a5;
-    v12->var7 = a6;
+    v12->var6 = status;
+    v12->var7 = flags;
     if (v12->var1)
     {
       [(VTTemporalNoiseFilterImplementation *)self _completeFrame:v12];
@@ -943,13 +943,13 @@ LABEL_14:
   FigSimpleMutexUnlock();
 }
 
-- (int)_completeFrame:(PendingFrameItem *)a3
+- (int)_completeFrame:(PendingFrameItem *)frame
 {
-  var1 = a3->var1;
-  if (var1 && a3->var8)
+  var1 = frame->var1;
+  if (var1 && frame->var8)
   {
     v6 = var1;
-    var5 = a3->var5;
+    var5 = frame->var5;
     if (var5)
     {
       v8 = CFRetain(var5);
@@ -960,11 +960,11 @@ LABEL_14:
       v8 = 0;
     }
 
-    v20 = *&a3->var2.var0;
-    var3 = a3->var2.var3;
-    v9 = _Block_copy(a3->var8);
-    var6 = a3->var6;
-    v11 = a3->var3;
+    v20 = *&frame->var2.var0;
+    var3 = frame->var2.var3;
+    v9 = _Block_copy(frame->var8);
+    var6 = frame->var6;
+    v11 = frame->var3;
     filterInternal = self->filterInternal;
     filterInternal->var8.var3 = var3;
     *&filterInternal->var8.var0 = v20;
@@ -1104,18 +1104,18 @@ LABEL_14:
   [(VTTemporalNoiseFilterImplementation *)&v4 dealloc];
 }
 
-- (PendingFrameItem)_createPendingFrame:(id *)a3 inputFrame:(id)a4
+- (PendingFrameItem)_createPendingFrame:(id *)frame inputFrame:(id)inputFrame
 {
   v7 = malloc_type_calloc(1uLL, 0x50uLL, 0x10A0040B0CC2D8EuLL);
   v8 = v7;
   if (v7)
   {
-    v9 = *&a3->var0;
-    v7->var2.var3 = a3->var3;
+    v9 = *&frame->var0;
+    v7->var2.var3 = frame->var3;
     *&v7->var2.var0 = v9;
-    v10 = a4;
+    inputFrameCopy = inputFrame;
     v8->var5 = 0;
-    v8->var0 = v10;
+    v8->var0 = inputFrameCopy;
     v8->var1 = 0;
     v8->var3 = 0;
     v8->var9.var0 = self->filterInternal->var5.var0;

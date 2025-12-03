@@ -11,19 +11,19 @@
   if (outputFeatureChannels % (subPixelScaleFactor * subPixelScaleFactor))
   {
     v5 = subPixelScaleFactor;
-    v6 = self;
+    selfCopy = self;
     v7 = MTLReportFailureTypeEnabled();
-    outputFeatureChannels = v6->super._outputFeatureChannels;
+    outputFeatureChannels = selfCopy->super._outputFeatureChannels;
     if (v7)
     {
       MTLReportFailure();
-      self = v6;
-      outputFeatureChannels = v6->super._outputFeatureChannels;
+      self = selfCopy;
+      outputFeatureChannels = selfCopy->super._outputFeatureChannels;
     }
 
     else
     {
-      self = v6;
+      self = selfCopy;
     }
 
     subPixelScaleFactor = v5;
@@ -45,19 +45,19 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v8 = self;
+  selfCopy2 = self;
   v9 = subPixelScaleFactor;
   v10 = MTLReportFailureTypeEnabled();
   subPixelScaleFactor = v9;
   v11 = v10;
-  self = v8;
+  self = selfCopy2;
   if (!v11)
   {
     goto LABEL_4;
   }
 
   MTLReportFailure();
-  v8->super._subPixelScaleFactor = v9;
+  selfCopy2->super._subPixelScaleFactor = v9;
 }
 
 @end

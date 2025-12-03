@@ -1,17 +1,17 @@
 @interface _CDPerfMetricFamily
-+ (_CDPerfMetricFamily)perfMetricFamilyWithName:(id)a3;
-- (_CDPerfMetricFamily)initWithName:(id)a3;
++ (_CDPerfMetricFamily)perfMetricFamilyWithName:(id)name;
+- (_CDPerfMetricFamily)initWithName:(id)name;
 - (id)allPerfMetrics;
 - (id)description;
-- (id)perfMetricWithName:(id)a3;
-- (id)perfMetricWithName:(id)a3 string:(id)a4;
+- (id)perfMetricWithName:(id)name;
+- (id)perfMetricWithName:(id)name string:(id)string;
 @end
 
 @implementation _CDPerfMetricFamily
 
-+ (_CDPerfMetricFamily)perfMetricFamilyWithName:(id)a3
++ (_CDPerfMetricFamily)perfMetricFamilyWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -28,9 +28,9 @@
   v8[1] = 3221225472;
   v8[2] = __48___CDPerfMetricFamily_perfMetricFamilyWithName___block_invoke;
   v8[3] = &unk_1E7367398;
-  v9 = v3;
+  v9 = nameCopy;
   v10 = &v11;
-  v5 = v3;
+  v5 = nameCopy;
   dispatch_sync(v4, v8);
   v6 = v12[5];
 
@@ -39,16 +39,16 @@
   return v6;
 }
 
-- (_CDPerfMetricFamily)initWithName:(id)a3
+- (_CDPerfMetricFamily)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = _CDPerfMetricFamily;
   v6 = [(_CDPerfMetricFamily *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
     v8 = objc_opt_new();
     perfMetrics = v7->_perfMetrics;
     v7->_perfMetrics = v8;
@@ -57,10 +57,10 @@
   return v7;
 }
 
-- (id)perfMetricWithName:(id)a3 string:(id)a4
+- (id)perfMetricWithName:(id)name string:(id)string
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  stringCopy = string;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -73,11 +73,11 @@
   v13[2] = __49___CDPerfMetricFamily_perfMetricWithName_string___block_invoke;
   v13[3] = &unk_1E73673C0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = nameCopy;
+  v15 = stringCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
+  v9 = stringCopy;
+  v10 = nameCopy;
   dispatch_sync(v8, v13);
   v11 = v18[5];
 
@@ -86,9 +86,9 @@
   return v11;
 }
 
-- (id)perfMetricWithName:(id)a3
+- (id)perfMetricWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -100,10 +100,10 @@
   block[1] = 3221225472;
   block[2] = __42___CDPerfMetricFamily_perfMetricWithName___block_invoke;
   block[3] = &unk_1E7367248;
-  v10 = v4;
+  v10 = nameCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = nameCopy;
   dispatch_sync(v5, block);
   v7 = v13[5];
 
@@ -138,11 +138,11 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_CDPerfMetricFamily *)self name];
+  name = [(_CDPerfMetricFamily *)self name];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(_CDPerfMetricFamily *)self perfMetrics];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-  v10 = [v3 stringWithFormat:@"%@: { name=%@, metrics.count=%@ }", v5, v6, v9];
+  perfMetrics = [(_CDPerfMetricFamily *)self perfMetrics];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(perfMetrics, "count")}];
+  v10 = [v3 stringWithFormat:@"%@: { name=%@, metrics.count=%@ }", v5, name, v9];
 
   return v10;
 }

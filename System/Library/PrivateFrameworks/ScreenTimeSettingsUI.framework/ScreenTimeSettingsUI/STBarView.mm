@@ -1,35 +1,35 @@
 @interface STBarView
 - (BOOL)isDarkened;
-- (STBarView)initWithDataPoint:(id)a3 useVibrancy:(BOOL)a4;
-- (void)setColor:(id)a3;
-- (void)setDarkened:(BOOL)a3;
-- (void)setDataPoint:(id)a3;
+- (STBarView)initWithDataPoint:(id)point useVibrancy:(BOOL)vibrancy;
+- (void)setColor:(id)color;
+- (void)setDarkened:(BOOL)darkened;
+- (void)setDataPoint:(id)point;
 - (void)setUpSectionHeightConstraints;
 - (void)setUpSections;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation STBarView
 
-- (STBarView)initWithDataPoint:(id)a3 useVibrancy:(BOOL)a4
+- (STBarView)initWithDataPoint:(id)point useVibrancy:(BOOL)vibrancy
 {
-  v7 = a3;
+  pointCopy = point;
   v20.receiver = self;
   v20.super_class = STBarView;
   v8 = [(STBarView *)&v20 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v9 = v8;
   if (v8)
   {
-    v8->_useVibrancy = a4;
-    objc_storeStrong(&v8->_dataPoint, a3);
+    v8->_useVibrancy = vibrancy;
+    objc_storeStrong(&v8->_dataPoint, point);
     [(STBarView *)v9 setUpSections];
     v10 = objc_opt_new();
     darkenedView = v9->_darkenedView;
     v9->_darkenedView = v10;
 
     [(UIView *)v9->_darkenedView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v12 = [MEMORY[0x277D75348] systemBlackColor];
-    [(UIView *)v9->_darkenedView setBackgroundColor:v12];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(UIView *)v9->_darkenedView setBackgroundColor:systemBlackColor];
 
     [(UIView *)v9->_darkenedView setAlpha:0.15];
     [(UIView *)v9->_darkenedView setHidden:1];
@@ -42,8 +42,8 @@
     [v16 activateConstraints:v17];
 
     [(STBarView *)v9 _setContinuousCornerRadius:2.0];
-    v18 = [(STBarView *)v9 layer];
-    [v18 setMaskedCorners:3];
+    layer = [(STBarView *)v9 layer];
+    [layer setMaskedCorners:3];
 
     [(STBarView *)v9 setClipsToBounds:1];
   }
@@ -51,23 +51,23 @@
   return v9;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v19.receiver = self;
   v19.super_class = STBarView;
-  [(STBarView *)&v19 traitCollectionDidChange:v4];
+  [(STBarView *)&v19 traitCollectionDidChange:changeCopy];
   if ([(STBarView *)self useVibrancy])
   {
-    if (!v4 || (v5 = [v4 userInterfaceStyle], -[STBarView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceStyle"), v6, v5 != v7))
+    if (!changeCopy || (v5 = [changeCopy userInterfaceStyle], -[STBarView traitCollection](self, "traitCollection"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "userInterfaceStyle"), v6, v5 != v7))
     {
       v17 = 0u;
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = [(STBarView *)self sectionViews];
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+      sectionViews = [(STBarView *)self sectionViews];
+      v9 = [sectionViews countByEnumeratingWithState:&v15 objects:v20 count:16];
       if (v9)
       {
         v10 = v9;
@@ -78,15 +78,15 @@
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(sectionViews);
             }
 
             v13 = *(*(&v15 + 1) + 8 * i);
-            v14 = [v13 backgroundColor];
-            [STUsageColors updateVibrancyStylingForView:v13 withUsageColor:v14];
+            backgroundColor = [v13 backgroundColor];
+            [STUsageColors updateVibrancyStylingForView:v13 withUsageColor:backgroundColor];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+          v10 = [sectionViews countByEnumeratingWithState:&v15 objects:v20 count:16];
         }
 
         while (v10);
@@ -95,19 +95,19 @@
   }
 }
 
-- (void)setDataPoint:(id)a3
+- (void)setDataPoint:(id)point
 {
-  v5 = a3;
+  pointCopy = point;
   dataPoint = self->_dataPoint;
-  if (dataPoint != v5)
+  if (dataPoint != pointCopy)
   {
-    v11 = v5;
-    v7 = [(STUsageReportGraphDataPoint *)dataPoint segments];
-    v8 = [v7 count];
-    v9 = [(STUsageReportGraphDataPoint *)v11 segments];
-    v10 = [v9 count];
+    v11 = pointCopy;
+    segments = [(STUsageReportGraphDataPoint *)dataPoint segments];
+    v8 = [segments count];
+    segments2 = [(STUsageReportGraphDataPoint *)v11 segments];
+    v10 = [segments2 count];
 
-    objc_storeStrong(&self->_dataPoint, a3);
+    objc_storeStrong(&self->_dataPoint, point);
     if (v8 == v10)
     {
       dataPoint = [(STBarView *)self setUpSectionHeightConstraints];
@@ -118,35 +118,35 @@
       dataPoint = [(STBarView *)self setUpSections];
     }
 
-    v5 = v11;
+    pointCopy = v11;
   }
 
-  MEMORY[0x2821F96F8](dataPoint, v5);
+  MEMORY[0x2821F96F8](dataPoint, pointCopy);
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   color = self->_color;
-  if (color != v4 && ([(UIColor *)color isEqual:v4]& 1) == 0)
+  if (color != colorCopy && ([(UIColor *)color isEqual:colorCopy]& 1) == 0)
   {
-    v6 = [(UIColor *)v4 copy];
+    v6 = [(UIColor *)colorCopy copy];
     v7 = self->_color;
     self->_color = v6;
 
-    v8 = [(STBarView *)self dataPoint];
-    v9 = [v8 segments];
+    dataPoint = [(STBarView *)self dataPoint];
+    segments = [dataPoint segments];
 
-    v10 = [(STBarView *)self sectionViews];
+    sectionViews = [(STBarView *)self sectionViews];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __22__STBarView_setColor___block_invoke;
     v12[3] = &unk_279B7CE18;
-    v13 = v4;
-    v14 = v9;
-    v15 = self;
-    v11 = v9;
-    [v10 enumerateObjectsUsingBlock:v12];
+    v13 = colorCopy;
+    v14 = segments;
+    selfCopy = self;
+    v11 = segments;
+    [sectionViews enumerateObjectsUsingBlock:v12];
   }
 }
 
@@ -174,24 +174,24 @@ void __22__STBarView_setColor___block_invoke(uint64_t a1, void *a2, uint64_t a3)
 
 - (BOOL)isDarkened
 {
-  v2 = [(STBarView *)self darkenedView];
-  v3 = [v2 isHidden];
+  darkenedView = [(STBarView *)self darkenedView];
+  isHidden = [darkenedView isHidden];
 
-  return v3 ^ 1;
+  return isHidden ^ 1;
 }
 
-- (void)setDarkened:(BOOL)a3
+- (void)setDarkened:(BOOL)darkened
 {
-  v3 = a3;
-  v5 = [(STBarView *)self darkenedView];
-  v6 = v5;
-  if (v3)
+  darkenedCopy = darkened;
+  darkenedView = [(STBarView *)self darkenedView];
+  v6 = darkenedView;
+  if (darkenedCopy)
   {
-    [(STBarView *)self bringSubviewToFront:v5];
-    v5 = v6;
+    [(STBarView *)self bringSubviewToFront:darkenedView];
+    darkenedView = v6;
   }
 
-  [v5 setHidden:!v3];
+  [darkenedView setHidden:!darkenedCopy];
 }
 
 - (void)setUpSections
@@ -201,8 +201,8 @@ void __22__STBarView_setColor___block_invoke(uint64_t a1, void *a2, uint64_t a3)
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v3 = [(STBarView *)self sectionViews];
-  v4 = [v3 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  sectionViews = [(STBarView *)self sectionViews];
+  v4 = [sectionViews countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v4)
   {
     v5 = *v37;
@@ -213,23 +213,23 @@ void __22__STBarView_setColor___block_invoke(uint64_t a1, void *a2, uint64_t a3)
       {
         if (*v37 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sectionViews);
         }
 
         [*(*(&v36 + 1) + 8 * v6++) removeFromSuperview];
       }
 
       while (v4 != v6);
-      v4 = [v3 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v4 = [sectionViews countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v4);
   }
 
-  v7 = [(STBarView *)self dataPoint];
-  v8 = [v7 segments];
+  dataPoint = [(STBarView *)self dataPoint];
+  segments = [dataPoint segments];
 
-  v9 = [v8 count];
+  v9 = [segments count];
   v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v9];
   if (v9)
   {
@@ -242,8 +242,8 @@ void __22__STBarView_setColor___block_invoke(uint64_t a1, void *a2, uint64_t a3)
   }
 
   v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v11];
-  v13 = [(STBarView *)self heightAnchor];
-  v14 = [(STBarView *)self color];
+  heightAnchor = [(STBarView *)self heightAnchor];
+  color = [(STBarView *)self color];
   v30 = 0;
   v31 = &v30;
   v32 = 0x3032000000;
@@ -254,21 +254,21 @@ void __22__STBarView_setColor___block_invoke(uint64_t a1, void *a2, uint64_t a3)
   v22[1] = 3221225472;
   v22[2] = __26__STBarView_setUpSections__block_invoke;
   v22[3] = &unk_279B7CE40;
-  v15 = v14;
+  v15 = color;
   v23 = v15;
-  v24 = self;
+  selfCopy = self;
   v28 = &v30;
   v29 = v9;
-  v16 = v13;
+  v16 = heightAnchor;
   v25 = v16;
   v17 = v12;
   v26 = v17;
   v18 = v10;
   v27 = v18;
-  [v8 enumerateObjectsUsingBlock:v22];
-  v19 = [v31[5] topAnchor];
-  v20 = [(STBarView *)self topAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  [segments enumerateObjectsUsingBlock:v22];
+  topAnchor = [v31[5] topAnchor];
+  topAnchor2 = [(STBarView *)self topAnchor];
+  v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v21 setActive:1];
 
   [(STBarView *)self setSectionViews:v18];
@@ -357,8 +357,8 @@ void __26__STBarView_setUpSections__block_invoke(uint64_t a1, void *a2, unint64_
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v3 = [(STBarView *)self sectionHeightConstraints];
-  v4 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  sectionHeightConstraints = [(STBarView *)self sectionHeightConstraints];
+  v4 = [sectionHeightConstraints countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
@@ -370,42 +370,42 @@ void __26__STBarView_setUpSections__block_invoke(uint64_t a1, void *a2, unint64_
       {
         if (*v30 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sectionHeightConstraints);
         }
 
         [*(*(&v29 + 1) + 8 * v7++) setActive:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v5 = [sectionHeightConstraints countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(STBarView *)self dataPoint];
-  v9 = [v8 segments];
+  dataPoint = [(STBarView *)self dataPoint];
+  segments = [dataPoint segments];
 
-  v10 = [v9 count];
-  v11 = [(STBarView *)self sectionViews];
-  v12 = [(STBarView *)self heightAnchor];
-  v13 = [(STBarView *)self color];
+  v10 = [segments count];
+  sectionViews = [(STBarView *)self sectionViews];
+  heightAnchor = [(STBarView *)self heightAnchor];
+  color = [(STBarView *)self color];
   v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v10];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __42__STBarView_setUpSectionHeightConstraints__block_invoke;
   v22 = &unk_279B7CE68;
-  v23 = v11;
-  v24 = v13;
-  v25 = self;
-  v26 = v12;
+  v23 = sectionViews;
+  v24 = color;
+  selfCopy = self;
+  v26 = heightAnchor;
   v27 = v14;
   v28 = v10;
   v15 = v14;
-  v16 = v12;
-  v17 = v13;
-  v18 = v11;
-  [v9 enumerateObjectsUsingBlock:&v19];
+  v16 = heightAnchor;
+  v17 = color;
+  v18 = sectionViews;
+  [segments enumerateObjectsUsingBlock:&v19];
   [(STBarView *)self setSectionHeightConstraints:v15, v19, v20, v21, v22];
 }
 

@@ -1,28 +1,28 @@
 @interface BKTextHighlightView
-+ (int)bkTextHighlightTypeForIMTextHighlightType:(unint64_t)a3;
-- (BKTextHighlightView)initWithFrame:(CGRect)a3;
-- (CGRect)_safeInsetRect:(CGRect)a3 widthInset:(double)a4 heightInset:(double)a5;
++ (int)bkTextHighlightTypeForIMTextHighlightType:(unint64_t)type;
+- (BKTextHighlightView)initWithFrame:(CGRect)frame;
+- (CGRect)_safeInsetRect:(CGRect)rect widthInset:(double)inset heightInset:(double)heightInset;
 - (UIEdgeInsets)contentInsets;
 - (id)_selectionImage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)didMoveToSuperview;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlightType:(int)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlightType:(int)type;
 - (void)updateHighlightImage;
 @end
 
 @implementation BKTextHighlightView
 
-- (BKTextHighlightView)initWithFrame:(CGRect)a3
+- (BKTextHighlightView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = BKTextHighlightView;
-  v3 = [(BKTextHighlightView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKTextHighlightView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(BKTextHighlightView *)v3 layer];
-    [v5 setMasksToBounds:1];
+    layer = [(BKTextHighlightView *)v3 layer];
+    [layer setMasksToBounds:1];
 
     [(BKTextHighlightView *)v4 setOpaque:0];
     [(BKTextHighlightView *)v4 setUserInteractionEnabled:1];
@@ -31,17 +31,17 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKTextHighlightView alloc];
   [(BKTextHighlightView *)self frame];
   v5 = [(BKTextHighlightView *)v4 initWithFrame:?];
   [(BKTextHighlightView *)v5 setHighlightType:[(BKTextHighlightView *)self highlightType]];
-  v6 = [(BKTextHighlightView *)self owner];
-  [(BKTextHighlightView *)v5 setOwner:v6];
+  owner = [(BKTextHighlightView *)self owner];
+  [(BKTextHighlightView *)v5 setOwner:owner];
 
-  v7 = [(BKTextHighlightView *)self image];
-  [(BKTextHighlightView *)v5 setImage:v7];
+  image = [(BKTextHighlightView *)self image];
+  [(BKTextHighlightView *)v5 setImage:image];
 
   [(BKTextHighlightView *)self currentScale];
   [(BKTextHighlightView *)v5 setCurrentScale:?];
@@ -49,11 +49,11 @@
   return v5;
 }
 
-+ (int)bkTextHighlightTypeForIMTextHighlightType:(unint64_t)a3
++ (int)bkTextHighlightTypeForIMTextHighlightType:(unint64_t)type
 {
-  if (a3 - 1 < 3)
+  if (type - 1 < 3)
   {
-    return a3;
+    return type;
   }
 
   else
@@ -67,27 +67,27 @@
   v4.receiver = self;
   v4.super_class = BKTextHighlightView;
   [(BKTextHighlightView *)&v4 didMoveToSuperview];
-  v3 = [(BKTextHighlightView *)self image];
+  image = [(BKTextHighlightView *)self image];
 
-  if (!v3)
+  if (!image)
   {
     [(BKTextHighlightView *)self updateHighlightImage];
   }
 }
 
-- (CGRect)_safeInsetRect:(CGRect)a3 widthInset:(double)a4 heightInset:(double)a5
+- (CGRect)_safeInsetRect:(CGRect)rect widthInset:(double)inset heightInset:(double)heightInset
 {
-  if (a3.size.width <= a4 + a4)
+  if (rect.size.width <= inset + inset)
   {
-    a4 = 0.0;
+    inset = 0.0;
   }
 
-  if (a3.size.height <= a5 + a5)
+  if (rect.size.height <= heightInset + heightInset)
   {
-    a5 = 0.0;
+    heightInset = 0.0;
   }
 
-  return CGRectInset(a3, a4, a5);
+  return CGRectInset(rect, inset, heightInset);
 }
 
 - (id)_selectionImage
@@ -160,19 +160,19 @@ LABEL_7:
   [(BKTextHighlightView *)self frame];
   if (CGRectGetWidth(v33) != 0.0)
   {
-    v3 = [(BKTextHighlightView *)self superview];
+    superview = [(BKTextHighlightView *)self superview];
 
-    if (v3)
+    if (superview)
     {
       [(BKTextHighlightView *)self setHidden:1];
       if (self->_type > 3u)
       {
-        v29 = 0;
+        _selectionImage = 0;
       }
 
       else
       {
-        v29 = [(BKTextHighlightView *)self _selectionImage];
+        _selectionImage = [(BKTextHighlightView *)self _selectionImage];
       }
 
       [(BKTextHighlightView *)self frame];
@@ -203,13 +203,13 @@ LABEL_7:
       v37.size.height = v13;
       MinY = CGRectGetMinY(v37);
       CGContextTranslateCTM(CurrentContext, v16, v17 - MinY);
-      v19 = [(BKTextHighlightView *)self superview];
-      v20 = [v19 layer];
-      [v20 renderInContext:CurrentContext];
+      superview2 = [(BKTextHighlightView *)self superview];
+      layer = [superview2 layer];
+      [layer renderInContext:CurrentContext];
 
       v21 = UIGraphicsGetImageFromCurrentImageContext();
       UIGraphicsEndImageContext();
-      if (v29)
+      if (_selectionImage)
       {
         v32.width = v5;
         v32.height = v7;
@@ -218,7 +218,7 @@ LABEL_7:
         CGContextSaveGState(v22);
         [(BKTextHighlightView *)self lightenBlend];
         [(BKTextHighlightView *)self bounds];
-        [v29 drawInRect:0 blendMode:? alpha:?];
+        [_selectionImage drawInRect:0 blendMode:? alpha:?];
         if (!self->_type)
         {
           CGContextSetBlendMode(v22, kCGBlendModeSourceAtop);
@@ -265,18 +265,18 @@ LABEL_7:
   }
 }
 
-- (void)setHighlightType:(int)a3
+- (void)setHighlightType:(int)type
 {
-  if (self->_type != a3)
+  if (self->_type != type)
   {
-    self->_type = a3;
+    self->_type = type;
     [(BKTextHighlightView *)self updateHighlightImage];
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  v13 = CGRectIntegral(a3);
+  v13 = CGRectIntegral(frame);
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;

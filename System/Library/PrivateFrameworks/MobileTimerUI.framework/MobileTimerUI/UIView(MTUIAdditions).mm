@@ -6,9 +6,9 @@
 
 - (double)mtui_boundsCenter
 {
-  [a1 bounds];
+  [self bounds];
   MidX = CGRectGetMidX(v4);
-  [a1 bounds];
+  [self bounds];
   CGRectGetMidY(v5);
   return MidX;
 }

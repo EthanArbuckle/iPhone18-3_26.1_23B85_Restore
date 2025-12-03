@@ -1,36 +1,36 @@
 @interface STDevice
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDevice:(id)a3;
-- (STDevice)deviceWithAppliedChange:(id)a3;
-- (STDevice)initWithCoder:(id)a3;
-- (STDevice)initWithID:(id)a3 name:(id)a4 platform:(int64_t)a5 apps:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDevice:(id)device;
+- (STDevice)deviceWithAppliedChange:(id)change;
+- (STDevice)initWithCoder:(id)coder;
+- (STDevice)initWithID:(id)d name:(id)name platform:(int64_t)platform apps:(id)apps;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STDevice
 
-- (STDevice)initWithID:(id)a3 name:(id)a4 platform:(int64_t)a5 apps:(id)a6
+- (STDevice)initWithID:(id)d name:(id)name platform:(int64_t)platform apps:(id)apps
 {
   v20.receiver = self;
   v20.super_class = STDevice;
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
+  appsCopy = apps;
+  nameCopy = name;
+  dCopy = d;
   v12 = [(STDevice *)&v20 init];
-  v13 = [v11 copy];
+  v13 = [dCopy copy];
 
   deviceID = v12->_deviceID;
   v12->_deviceID = v13;
 
-  v15 = [v10 copy];
+  v15 = [nameCopy copy];
   name = v12->_name;
   v12->_name = v15;
 
-  v12->_platform = a5;
-  v17 = [v9 copy];
+  v12->_platform = platform;
+  v17 = [appsCopy copy];
 
   apps = v12->_apps;
   v12->_apps = v17;
@@ -38,25 +38,25 @@
   return v12;
 }
 
-- (STDevice)deviceWithAppliedChange:(id)a3
+- (STDevice)deviceWithAppliedChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 deviceID];
-  v6 = [(STDevice *)self deviceID];
-  v7 = [v5 isEqualToDeviceID:v6];
+  changeCopy = change;
+  deviceID = [changeCopy deviceID];
+  deviceID2 = [(STDevice *)self deviceID];
+  v7 = [deviceID isEqualToDeviceID:deviceID2];
 
-  if (v7 && (v8 = [v4 platform], v8 == -[STDevice platform](self, "platform")))
+  if (v7 && (v8 = [changeCopy platform], v8 == -[STDevice platform](self, "platform")))
   {
     v26 = v8;
-    v28 = v5;
-    v9 = [v4 installedApps];
-    v25 = [v4 removedApps];
-    v10 = [v25 valueForKeyPath:@"bundleIdentifier"];
-    v11 = [(STDevice *)self apps];
-    v12 = [v11 mutableCopy];
+    v28 = deviceID;
+    installedApps = [changeCopy installedApps];
+    removedApps = [changeCopy removedApps];
+    v10 = [removedApps valueForKeyPath:@"bundleIdentifier"];
+    apps = [(STDevice *)self apps];
+    v12 = [apps mutableCopy];
 
-    v27 = v9;
-    [v12 unionSet:v9];
+    v27 = installedApps;
+    [v12 unionSet:installedApps];
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -77,8 +77,8 @@
           }
 
           v18 = *(*(&v29 + 1) + 8 * i);
-          v19 = [v18 bundleIdentifier];
-          v20 = [v10 containsObject:v19];
+          bundleIdentifier = [v18 bundleIdentifier];
+          v20 = [v10 containsObject:bundleIdentifier];
 
           if (v20)
           {
@@ -93,9 +93,9 @@
     }
 
     v21 = [STDevice alloc];
-    v22 = [v4 deviceName];
-    v5 = v28;
-    v23 = [(STDevice *)v21 initWithID:v28 name:v22 platform:v26 apps:v12];
+    deviceName = [changeCopy deviceName];
+    deviceID = v28;
+    v23 = [(STDevice *)v21 initWithID:v28 name:deviceName platform:v26 apps:v12];
   }
 
   else
@@ -109,8 +109,8 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(STDevice *)self deviceID];
-  v5 = [(STDevice *)self name];
+  deviceID = [(STDevice *)self deviceID];
+  name = [(STDevice *)self name];
   v6 = [(STDevice *)self platform]- 1;
   if (v6 > 4)
   {
@@ -122,21 +122,21 @@
     v7 = off_1001A3A90[v6];
   }
 
-  v8 = [(STDevice *)self apps];
-  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ { DeviceID: %@, Name: %@, Platform: %@, App Count: %lu }>", v3, v4, v5, v7, [v8 count]);
+  apps = [(STDevice *)self apps];
+  v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<%@ { DeviceID: %@, Name: %@, Platform: %@, App Count: %lu }>", v3, deviceID, name, v7, [apps count]);
 
   return v9;
 }
 
-- (STDevice)initWithCoder:(id)a3
+- (STDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v7 = [v4 decodeIntegerForKey:@"platform"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v7 = [coderCopy decodeIntegerForKey:@"platform"];
   v8 = objc_opt_class();
   v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"apps"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"apps"];
 
   v11 = [NSSet setWithArray:v10];
 
@@ -144,24 +144,24 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(STDevice *)self deviceID];
-  [v4 encodeObject:v5 forKey:@"deviceID"];
+  coderCopy = coder;
+  deviceID = [(STDevice *)self deviceID];
+  [coderCopy encodeObject:deviceID forKey:@"deviceID"];
 
-  v6 = [(STDevice *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(STDevice *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v4 encodeInteger:-[STDevice platform](self forKey:{"platform"), @"platform"}];
-  v8 = [(STDevice *)self apps];
-  v7 = [v8 allObjects];
-  [v4 encodeObject:v7 forKey:@"apps"];
+  [coderCopy encodeInteger:-[STDevice platform](self forKey:{"platform"), @"platform"}];
+  apps = [(STDevice *)self apps];
+  allObjects = [apps allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"apps"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   deviceID = self->_deviceID;
   name = self->_name;
   platform = self->_platform;
@@ -170,10 +170,10 @@
   return [v4 initWithID:deviceID name:name platform:platform apps:apps];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -183,7 +183,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STDevice *)self isEqualToDevice:v4];
+      v5 = [(STDevice *)self isEqualToDevice:equalCopy];
     }
 
     else
@@ -195,27 +195,27 @@
   return v5;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  v4 = a3;
-  if (v4 == self)
+  deviceCopy = device;
+  if (deviceCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    v5 = [(STDevice *)self deviceID];
-    v6 = [(STDevice *)v4 deviceID];
-    if ([v5 isEqualToDeviceID:v6])
+    deviceID = [(STDevice *)self deviceID];
+    deviceID2 = [(STDevice *)deviceCopy deviceID];
+    if ([deviceID isEqualToDeviceID:deviceID2])
     {
-      v7 = [(STDevice *)self name];
-      v8 = [(STDevice *)v4 name];
-      if ([v7 isEqualToString:v8] && (v9 = -[STDevice platform](self, "platform"), v9 == -[STDevice platform](v4, "platform")))
+      name = [(STDevice *)self name];
+      name2 = [(STDevice *)deviceCopy name];
+      if ([name isEqualToString:name2] && (v9 = -[STDevice platform](self, "platform"), v9 == -[STDevice platform](deviceCopy, "platform")))
       {
-        v10 = [(STDevice *)self apps];
-        v11 = [(STDevice *)v4 apps];
-        v12 = [v10 isEqualToSet:v11];
+        apps = [(STDevice *)self apps];
+        apps2 = [(STDevice *)deviceCopy apps];
+        v12 = [apps isEqualToSet:apps2];
       }
 
       else
@@ -235,8 +235,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(STDevice *)self deviceID];
-  v3 = [v2 hash];
+  deviceID = [(STDevice *)self deviceID];
+  v3 = [deviceID hash];
 
   return v3;
 }

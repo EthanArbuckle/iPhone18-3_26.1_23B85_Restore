@@ -1,10 +1,10 @@
 @interface WFPPTDispatcher
-+ (BOOL)dispatchTest:(id)a3;
++ (BOOL)dispatchTest:(id)test;
 @end
 
 @implementation WFPPTDispatcher
 
-+ (BOOL)dispatchTest:(id)a3
++ (BOOL)dispatchTest:(id)test
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

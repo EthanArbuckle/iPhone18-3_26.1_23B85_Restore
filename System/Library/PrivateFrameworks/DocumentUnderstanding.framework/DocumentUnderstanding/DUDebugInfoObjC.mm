@@ -1,13 +1,13 @@
 @interface DUDebugInfoObjC
 - (DUDebugInfoObjC)init;
-- (void)setDebugString:(id)a3;
+- (void)setDebugString:(id)string;
 @end
 
 @implementation DUDebugInfoObjC
 
-- (void)setDebugString:(id)a3
+- (void)setDebugString:(id)string
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(string, a2, string, v3, v4);
   objc_msgSend_setDebugString_(self->_underlying, v6, v9, v7, v8);
 }
 

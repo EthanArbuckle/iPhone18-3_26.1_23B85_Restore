@@ -3,14 +3,14 @@
 - (MPAnimationPath)init;
 - (id)animatedKey;
 - (id)animatedParent;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)key;
 - (id)parentDocument;
 - (void)dealloc;
-- (void)setAnimationPath:(id)a3;
-- (void)setIsTriggered:(BOOL)a3;
-- (void)setParent:(id)a3;
+- (void)setAnimationPath:(id)path;
+- (void)setIsTriggered:(BOOL)triggered;
+- (void)setParent:(id)parent;
 @end
 
 @implementation MPAnimationPath
@@ -50,9 +50,9 @@
   [(MPAnimationPath *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setIsTriggered:{-[MPAnimationPath isTriggered](self, "isTriggered")}];
   return v4;
 }
@@ -80,9 +80,9 @@
   return [v2 lastObject];
 }
 
-- (void)setIsTriggered:(BOOL)a3
+- (void)setIsTriggered:(BOOL)triggered
 {
-  self->_isTriggered = a3;
+  self->_isTriggered = triggered;
   animationPath = self->_animationPath;
   if (animationPath)
   {
@@ -90,14 +90,14 @@
   }
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if (a3 && self->_parentObject)
+  if (parent && self->_parentObject)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"A animation path may one have one parent.  Please remove it first.  This is unsupported." userInfo:0, v3, v4]);
   }
 
-  self->_parentObject = a3;
+  self->_parentObject = parent;
 }
 
 - (id)animatedParent
@@ -115,8 +115,8 @@
 
 - (id)animatedKey
 {
-  v2 = self;
-  for (i = self->_parentObject; i; v2 = [(MPAnimationPath *)v2 parent])
+  selfCopy = self;
+  for (i = self->_parentObject; i; selfCopy = [(MPAnimationPath *)selfCopy parent])
   {
     if (([(MPAnimationSupport *)i conformsToProtocol:&OBJC_PROTOCOL___MPAnimationSupport]& 1) != 0)
     {
@@ -126,7 +126,7 @@
     i = [(MPAnimationSupport *)i parent];
   }
 
-  return [(MPAnimationPath *)v2 key];
+  return [(MPAnimationPath *)selfCopy key];
 }
 
 - (id)parentDocument
@@ -139,9 +139,9 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(MPAnimationSupport *)self->_parentObject parentEffect];
+    parentEffect = [(MPAnimationSupport *)self->_parentObject parentEffect];
 LABEL_4:
-    parentObject = [-[MPAnimationSupport parentContainer](v3 "parentContainer")];
+    parentObject = [-[MPAnimationSupport parentContainer](parentEffect "parentContainer")];
     goto LABEL_8;
   }
 
@@ -163,7 +163,7 @@ LABEL_4:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v3 = self->_parentObject;
+          parentEffect = self->_parentObject;
           goto LABEL_4;
         }
 
@@ -192,7 +192,7 @@ LABEL_8:
   return [(MPAnimationSupport *)parentObject parentDocument];
 }
 
-- (void)setAnimationPath:(id)a3
+- (void)setAnimationPath:(id)path
 {
   animationPath = self->_animationPath;
   if (animationPath)
@@ -201,13 +201,13 @@ LABEL_8:
     self->_animationPath = 0;
   }
 
-  v6 = a3;
-  self->_animationPath = v6;
-  if (v6)
+  pathCopy = path;
+  self->_animationPath = pathCopy;
+  if (pathCopy)
   {
     isTriggered = self->_isTriggered;
 
-    [(MCAnimationPath *)v6 setIsTriggered:isTriggered];
+    [(MCAnimationPath *)pathCopy setIsTriggered:isTriggered];
   }
 }
 

@@ -33,9 +33,9 @@
   if (![(TPSCallingLineIdRestrictionBundleController *)&v7 isHidden]&& (+[UIApplication isRunningInStoreDemoMode]& 1) == 0)
   {
     v2 = +[UIDevice currentDevice];
-    v3 = [v2 userInterfaceIdiom];
+    userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-    if (v3 != &dword_0 + 1)
+    if (userInterfaceIdiom != &dword_0 + 1)
     {
       return 0;
     }
@@ -58,13 +58,13 @@
   {
     v21.receiver = self;
     v21.super_class = TPSCallingLineIdRestrictionBundleController;
-    v4 = [(TPSCallingLineIdRestrictionBundleController *)&v21 subscriptions];
-    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [v4 count]);
+    subscriptions = [(TPSCallingLineIdRestrictionBundleController *)&v21 subscriptions];
+    v5 = +[NSMutableOrderedSet orderedSetWithCapacity:](NSMutableOrderedSet, "orderedSetWithCapacity:", [subscriptions count]);
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v4;
+    v6 = subscriptions;
     v7 = [v6 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v7)
     {
@@ -82,8 +82,8 @@
           v11 = *(*(&v17 + 1) + 8 * i);
           if (([v11 isSimHidden] & 1) == 0)
           {
-            v12 = [(TPSCallingLineIdRestrictionBundleController *)self telephonyController];
-            v13 = [v12 supportsSystemCapabilityCallerIDForSubscriptionContext:v11];
+            telephonyController = [(TPSCallingLineIdRestrictionBundleController *)self telephonyController];
+            v13 = [telephonyController supportsSystemCapabilityCallerIDForSubscriptionContext:v11];
 
             if (v13)
             {

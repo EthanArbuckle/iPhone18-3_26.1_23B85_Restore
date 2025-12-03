@@ -1,8 +1,8 @@
 @interface _UIScrollDynamicsiOSMac
-- (CGPoint)positionAfterDuration:(double)a3;
-- (CGVector)velocityAfterDuration:(double)a3;
+- (CGPoint)positionAfterDuration:(double)duration;
+- (CGVector)velocityAfterDuration:(double)duration;
 - (_UIScrollDynamicsiOSMac)init;
-- (double)speedAfterDuration:(double)a3;
+- (double)speedAfterDuration:(double)duration;
 - (void)calculateDecelerationTarget;
 - (void)calculateToReachDecelerationTarget;
 @end
@@ -38,7 +38,7 @@
       *buf = 138412802;
       v76 = v63;
       v77 = 2048;
-      v78 = self;
+      selfCopy = self;
       v79 = 2112;
       v80 = v64;
       _os_log_impl(&dword_188A29000, v61, OS_LOG_TYPE_ERROR, "[%@(0x%lx) %@]", buf, 0x20u);
@@ -68,7 +68,7 @@
   v21 = vnegq_f64(v20);
   v70 = *vbslq_s8(v21, v19, v74).i64;
   *&v69 = vbslq_s8(v21, v19, v73).u64[0];
-  v22 = [(_UIScrollDynamics *)self shouldRoundCalculations];
+  shouldRoundCalculations = [(_UIScrollDynamics *)self shouldRoundCalculations];
   decelerationRate = self->_decelerationRate;
   v66 = v14;
   v24 = v14 + v70 * (decelerationRate * pow(fabs(*v74.i64) / (decelerationRate * 4.0), 1.33333333));
@@ -79,18 +79,18 @@
     v25 = v26;
   }
 
-  if (v22)
+  if (shouldRoundCalculations)
   {
     v24 = v25;
   }
 
   p_destinationIgnoringRubberbanding = &self->_destinationIgnoringRubberbanding;
   self->_destinationIgnoringRubberbanding.x = v24;
-  v28 = [(_UIScrollDynamics *)self shouldRoundCalculations];
+  shouldRoundCalculations2 = [(_UIScrollDynamics *)self shouldRoundCalculations];
   v29 = self->_decelerationRate;
   v65 = v16;
   v30 = v16 + v69 * (v29 * pow(fabs(*v73.i64) / (v29 * 4.0), 1.33333333));
-  if (v28)
+  if (shouldRoundCalculations2)
   {
     v31 = ceil(v30 + -0.5);
     v32 = floor(v30 + 0.5);
@@ -247,7 +247,7 @@ LABEL_37:
       *buf = 138412802;
       v69 = *&v54;
       v70 = 2048;
-      v71 = self;
+      selfCopy = self;
       v72 = 2112;
       v73 = *&v55;
       _os_log_impl(&dword_188A29000, v52, OS_LOG_TYPE_ERROR, "[%@(0x%lx) %@]", buf, 0x20u);
@@ -308,10 +308,10 @@ LABEL_37:
     }
   }
 
-  v24 = [(_UIScrollDynamics *)self shouldRoundCalculations];
+  shouldRoundCalculations = [(_UIScrollDynamics *)self shouldRoundCalculations];
   v25 = self->_decelerationRate;
   v26 = v65 * (v25 * pow(fabs(*v66.i64) / (v25 * 4.0), 1.33333333));
-  if (v24)
+  if (shouldRoundCalculations)
   {
     v27 = ceil(v26 + -0.5);
     v28 = floor(v26 + 0.5);
@@ -451,7 +451,7 @@ LABEL_37:
       *buf = 134218752;
       v69 = durationUntilStop;
       v70 = 2048;
-      v71 = *&v61;
+      selfCopy = *&v61;
       v72 = 2048;
       v73 = v35;
       v74 = 2048;
@@ -461,11 +461,11 @@ LABEL_37:
   }
 }
 
-- (double)speedAfterDuration:(double)a3
+- (double)speedAfterDuration:(double)duration
 {
   if ([(_UIScrollDynamicsiOSMac *)self isRubberBandingAfterDuration:?])
   {
-    v15 = a3 - self->_durationUntilRubberband;
+    v15 = duration - self->_durationUntilRubberband;
     v14 = exp(v15 * -20.0 / 1.6);
     v5 = exp((v15 + 0.001) * -20.0 / 1.6);
     v6 = vdupq_n_s64(0x40D3880000000000uLL);
@@ -478,15 +478,15 @@ LABEL_37:
 
   else
   {
-    v12 = self->_durationUntilStopIgnoringRubberbanding - a3;
+    v12 = self->_durationUntilStopIgnoringRubberbanding - duration;
     v13 = self->_decelerationRate * 4.0;
     return pow(v12, 3.0) * v13;
   }
 }
 
-- (CGVector)velocityAfterDuration:(double)a3
+- (CGVector)velocityAfterDuration:(double)duration
 {
-  [(_UIScrollDynamicsiOSMac *)self speedAfterDuration:a3];
+  [(_UIScrollDynamicsiOSMac *)self speedAfterDuration:duration];
   v5 = v4;
   [(_UIScrollDynamics *)self initialContentOffset];
   v7 = v6;
@@ -502,7 +502,7 @@ LABEL_37:
   return result;
 }
 
-- (CGPoint)positionAfterDuration:(double)a3
+- (CGPoint)positionAfterDuration:(double)duration
 {
   [(_UIScrollDynamics *)self initialContentOffset];
   v6 = v5;
@@ -511,14 +511,14 @@ LABEL_37:
   v10 = v9;
   v12 = v11;
   durationUntilRubberband = self->_durationUntilRubberband;
-  v14 = durationUntilRubberband <= a3 && durationUntilRubberband >= 0.0;
+  v14 = durationUntilRubberband <= duration && durationUntilRubberband >= 0.0;
   if (v14)
   {
-    v15 = a3 - durationUntilRubberband;
+    v15 = duration - durationUntilRubberband;
     rubberBandingAxis = self->_rubberBandingAxis;
     if (rubberBandingAxis == 2)
     {
-      v25 = [(_UIScrollDynamics *)self shouldRoundCalculations];
+      shouldRoundCalculations = [(_UIScrollDynamics *)self shouldRoundCalculations];
       y = self->_initialRubberbandingOrigin.y;
       dy = self->_initialRubberbandingVelocity.dy;
       v28 = exp(v15 * -20.0 / 1.6);
@@ -529,7 +529,7 @@ LABEL_37:
       }
 
       v30 = v28 * (v15 * v29 * -0.31 - y);
-      if (v25)
+      if (shouldRoundCalculations)
       {
         v31 = ceil(v30 + -0.5);
         v32 = floor(v30 + 0.5);
@@ -549,7 +549,7 @@ LABEL_37:
 
     else if (rubberBandingAxis == 1)
     {
-      v17 = [(_UIScrollDynamics *)self shouldRoundCalculations];
+      shouldRoundCalculations2 = [(_UIScrollDynamics *)self shouldRoundCalculations];
       x = self->_initialRubberbandingOrigin.x;
       dx = self->_initialRubberbandingVelocity.dx;
       v20 = exp(v15 * -20.0 / 1.6);
@@ -560,7 +560,7 @@ LABEL_37:
       }
 
       v22 = v20 * (v15 * v21 * -0.31 - x);
-      if (v17)
+      if (shouldRoundCalculations2)
       {
         v23 = ceil(v22 + -0.5);
         v24 = floor(v22 + 0.5);
@@ -588,7 +588,7 @@ LABEL_37:
 
   else
   {
-    v34 = fmax(self->_durationUntilStopIgnoringRubberbanding - a3, 0.0);
+    v34 = fmax(self->_durationUntilStopIgnoringRubberbanding - duration, 0.0);
     decelerationRate = self->_decelerationRate;
     v36 = (linearDisplacementIgnoringRubberbanding - decelerationRate * pow(v34, 4.0)) / linearDisplacementIgnoringRubberbanding;
     if (v14 && self->_rubberBandingAxis == 1)
@@ -596,9 +596,9 @@ LABEL_37:
       goto LABEL_30;
     }
 
-    v37 = [(_UIScrollDynamics *)self shouldRoundCalculations];
+    shouldRoundCalculations3 = [(_UIScrollDynamics *)self shouldRoundCalculations];
     v38 = v36 * (self->_destinationIgnoringRubberbanding.x - v6);
-    if (v37)
+    if (shouldRoundCalculations3)
     {
       v39 = ceil(v38 + -0.5);
       v40 = floor(v38 + 0.5);
@@ -617,9 +617,9 @@ LABEL_37:
     if (!v14 || self->_rubberBandingAxis != 2)
     {
 LABEL_30:
-      v41 = [(_UIScrollDynamics *)self shouldRoundCalculations];
+      shouldRoundCalculations4 = [(_UIScrollDynamics *)self shouldRoundCalculations];
       v42 = v36 * (self->_destinationIgnoringRubberbanding.y - v8);
-      if (v41)
+      if (shouldRoundCalculations4)
       {
         v43 = ceil(v42 + -0.5);
         v44 = floor(v42 + 0.5);

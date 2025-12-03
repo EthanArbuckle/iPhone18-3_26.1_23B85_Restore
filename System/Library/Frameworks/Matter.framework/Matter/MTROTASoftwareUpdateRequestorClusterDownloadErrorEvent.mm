@@ -1,6 +1,6 @@
 @interface MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent
 - (MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent);
-  v5 = [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)self softwareVersion];
-  [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)v4 setSoftwareVersion:v5];
+  softwareVersion = [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)self softwareVersion];
+  [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)v4 setSoftwareVersion:softwareVersion];
 
-  v6 = [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)self bytesDownloaded];
-  [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)v4 setBytesDownloaded:v6];
+  bytesDownloaded = [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)self bytesDownloaded];
+  [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)v4 setBytesDownloaded:bytesDownloaded];
 
-  v7 = [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)self progressPercent];
-  [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)v4 setProgressPercent:v7];
+  progressPercent = [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)self progressPercent];
+  [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)v4 setProgressPercent:progressPercent];
 
-  v8 = [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)self platformCode];
-  [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)v4 setPlatformCode:v8];
+  platformCode = [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)self platformCode];
+  [(MTROTASoftwareUpdateRequestorClusterDownloadErrorEvent *)v4 setPlatformCode:platformCode];
 
   return v4;
 }

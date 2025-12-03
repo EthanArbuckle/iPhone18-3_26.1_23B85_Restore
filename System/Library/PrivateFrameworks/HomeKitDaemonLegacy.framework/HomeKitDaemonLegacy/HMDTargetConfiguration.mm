@@ -1,8 +1,8 @@
 @interface HMDTargetConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMDTargetConfiguration)init;
-- (HMDTargetConfiguration)initWithAccessory:(id)a3 buttonConfiguration:(id)a4;
-- (HMDTargetConfiguration)initWithIdentifier:(id)a3 name:(id)a4 category:(int64_t)a5 buttonConfiguration:(id)a6;
+- (HMDTargetConfiguration)initWithAccessory:(id)accessory buttonConfiguration:(id)configuration;
+- (HMDTargetConfiguration)initWithIdentifier:(id)identifier name:(id)name category:(int64_t)category buttonConfiguration:(id)configuration;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -11,26 +11,26 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDTargetConfiguration *)self identifier];
-  v3 = [v2 unsignedIntegerValue];
+  identifier = [(HMDTargetConfiguration *)self identifier];
+  unsignedIntegerValue = [identifier unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == v4)
+    if (self == equalCopy)
     {
       v10 = 1;
     }
 
     else
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -44,10 +44,10 @@
 
       v7 = v6;
 
-      v8 = [(HMDTargetConfiguration *)self identifier];
-      v9 = [(HMDTargetConfiguration *)v7 identifier];
+      identifier = [(HMDTargetConfiguration *)self identifier];
+      identifier2 = [(HMDTargetConfiguration *)v7 identifier];
 
-      v10 = [v8 isEqual:v9];
+      v10 = [identifier isEqual:identifier2];
     }
   }
 
@@ -59,53 +59,53 @@
   return v10;
 }
 
-- (HMDTargetConfiguration)initWithAccessory:(id)a3 buttonConfiguration:(id)a4
+- (HMDTargetConfiguration)initWithAccessory:(id)accessory buttonConfiguration:(id)configuration
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 home];
-  if (v8)
+  accessoryCopy = accessory;
+  configurationCopy = configuration;
+  home = [accessoryCopy home];
+  if (home)
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [v6 uuid];
-    v11 = [v8 uuid];
-    v12 = [v9 numberWithUnsignedInt:{identifierForTargetWithUUID(v10, v11)}];
+    uuid = [accessoryCopy uuid];
+    uuid2 = [home uuid];
+    v12 = [v9 numberWithUnsignedInt:{identifierForTargetWithUUID(uuid, uuid2)}];
 
-    v13 = [v6 name];
-    v14 = [v6 category];
-    v15 = mapTargetCategory(v14);
+    name = [accessoryCopy name];
+    category = [accessoryCopy category];
+    v15 = mapTargetCategory(category);
 
-    v16 = [(HMDTargetConfiguration *)self initWithIdentifier:v12 name:v13 category:v15 buttonConfiguration:v7];
+    v16 = [(HMDTargetConfiguration *)self initWithIdentifier:v12 name:name category:v15 buttonConfiguration:configurationCopy];
     if (v16)
     {
-      v17 = [v6 uuid];
+      uuid3 = [accessoryCopy uuid];
       uuid = v16->_uuid;
-      v16->_uuid = v17;
+      v16->_uuid = uuid3;
     }
 
-    v19 = v16;
+    selfCopy = v16;
 
-    v20 = v19;
+    v20 = selfCopy;
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v6 name];
-      v25 = [v6 uuid];
-      v26 = [v25 UUIDString];
+      name2 = [accessoryCopy name];
+      uuid4 = [accessoryCopy uuid];
+      uUIDString = [uuid4 UUIDString];
       v29 = 138543874;
       v30 = v23;
       v31 = 2112;
-      v32 = v24;
+      v32 = name2;
       v33 = 2112;
-      v34 = v26;
+      v34 = uUIDString;
       _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_INFO, "%{public}@Attempting to create a target with an accessory %@/%@ that is not configured with a home", &v29, 0x20u);
     }
 
@@ -120,46 +120,46 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDTargetConfiguration *)self name];
-  v5 = [(HMDTargetConfiguration *)self identifier];
-  v6 = [(HMDTargetConfiguration *)self category];
+  name = [(HMDTargetConfiguration *)self name];
+  identifier = [(HMDTargetConfiguration *)self identifier];
+  category = [(HMDTargetConfiguration *)self category];
   v7 = @"Unknown";
-  if (v6 == 25)
+  if (category == 25)
   {
     v7 = @"HomePod";
   }
 
-  if (v6 == 24)
+  if (category == 24)
   {
     v7 = @"AppleTV";
   }
 
   v8 = v7;
-  v9 = [(HMDTargetConfiguration *)self buttonConfiguration];
-  v10 = buttonConfigurationAsString(v9);
-  v11 = [v3 stringWithFormat:@"Name: %@, Identifier: %@, Category: %@, ButtonConfiguration: %@", v4, v5, v8, v10];
+  buttonConfiguration = [(HMDTargetConfiguration *)self buttonConfiguration];
+  v10 = buttonConfigurationAsString(buttonConfiguration);
+  v11 = [v3 stringWithFormat:@"Name: %@, Identifier: %@, Category: %@, ButtonConfiguration: %@", name, identifier, v8, v10];
 
   return v11;
 }
 
-- (HMDTargetConfiguration)initWithIdentifier:(id)a3 name:(id)a4 category:(int64_t)a5 buttonConfiguration:(id)a6
+- (HMDTargetConfiguration)initWithIdentifier:(id)identifier name:(id)name category:(int64_t)category buttonConfiguration:(id)configuration
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = HMDTargetConfiguration;
   v14 = [(HMDTargetConfiguration *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    v16 = [v12 copy];
+    objc_storeStrong(&v14->_identifier, identifier);
+    v16 = [nameCopy copy];
     name = v15->_name;
     v15->_name = v16;
 
-    v15->_category = a5;
-    v18 = [v13 copy];
+    v15->_category = category;
+    v18 = [configurationCopy copy];
     buttonConfiguration = v15->_buttonConfiguration;
     v15->_buttonConfiguration = v18;
   }

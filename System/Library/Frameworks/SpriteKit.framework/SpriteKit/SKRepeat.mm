@@ -1,12 +1,12 @@
 @interface SKRepeat
-+ (id)repeatAction:(id)a3 count:(unint64_t)a4;
-+ (id)repeatActionForever:(id)a3;
++ (id)repeatAction:(id)action count:(unint64_t)count;
++ (id)repeatActionForever:(id)forever;
 - (SKRepeat)init;
-- (SKRepeat)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SKRepeat)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)reversedAction;
 - (id)subactions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SKRepeat
@@ -23,12 +23,12 @@
   return 0;
 }
 
-- (SKRepeat)initWithCoder:(id)a3
+- (SKRepeat)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SKRepeat;
-  if ([(SKAction *)&v7 initWithCoder:v4])
+  if ([(SKAction *)&v7 initWithCoder:coderCopy])
   {
     operator new();
   }
@@ -38,37 +38,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SKRepeat;
-  [(SKAction *)&v8 encodeWithCoder:v4];
+  [(SKAction *)&v8 encodeWithCoder:coderCopy];
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_mycaction->var21];
-  [v4 encodeObject:v5 forKey:@"_timesToRepeat"];
+  [coderCopy encodeObject:v5 forKey:@"_timesToRepeat"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_mycaction->var20];
-  [v4 encodeObject:v6 forKey:@"_timesRepeated"];
+  [coderCopy encodeObject:v6 forKey:@"_timesRepeated"];
 
-  [v4 encodeObject:self->_repeatedAction forKey:@"_repeatedAction"];
+  [coderCopy encodeObject:self->_repeatedAction forKey:@"_repeatedAction"];
   v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_mycaction->var22];
-  [v4 encodeObject:v7 forKey:@"_forever"];
+  [coderCopy encodeObject:v7 forKey:@"_forever"];
 }
 
-+ (id)repeatAction:(id)a3 count:(unint64_t)a4
++ (id)repeatAction:(id)action count:(unint64_t)count
 {
-  v5 = a3;
-  if (v5)
+  actionCopy = action;
+  if (actionCopy)
   {
     v6 = objc_alloc_init(SKRepeat);
-    v7 = [v5 copy];
+    v7 = [actionCopy copy];
     repeatedAction = v6->_repeatedAction;
     v6->_repeatedAction = v7;
 
     SKCReferencedAction::setReferencedCAction(v6->_mycaction, [(SKAction *)v6->_repeatedAction caction]);
-    v6->_mycaction->var21 = a4;
-    [v5 duration];
-    [(SKAction *)v6 setDuration:v9 * a4];
+    v6->_mycaction->var21 = count;
+    [actionCopy duration];
+    [(SKAction *)v6 setDuration:v9 * count];
   }
 
   else
@@ -80,13 +80,13 @@
   return v6;
 }
 
-+ (id)repeatActionForever:(id)a3
++ (id)repeatActionForever:(id)forever
 {
-  v3 = a3;
-  if (v3)
+  foreverCopy = forever;
+  if (foreverCopy)
   {
     v4 = objc_alloc_init(SKRepeat);
-    v5 = [v3 copy];
+    v5 = [foreverCopy copy];
     repeatedAction = v4->_repeatedAction;
     v4->_repeatedAction = v5;
 
@@ -112,7 +112,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   mycaction = self->_mycaction;
   repeatedAction = self->_repeatedAction;
@@ -132,8 +132,8 @@
 
 - (id)reversedAction
 {
-  v3 = [(SKAction *)self->_repeatedAction reversedAction];
-  v4 = [SKRepeat repeatAction:v3 count:self->_mycaction->var21];
+  reversedAction = [(SKAction *)self->_repeatedAction reversedAction];
+  v4 = [SKRepeat repeatAction:reversedAction count:self->_mycaction->var21];
 
   *(v4[2] + 136) = self->_mycaction->var22;
 

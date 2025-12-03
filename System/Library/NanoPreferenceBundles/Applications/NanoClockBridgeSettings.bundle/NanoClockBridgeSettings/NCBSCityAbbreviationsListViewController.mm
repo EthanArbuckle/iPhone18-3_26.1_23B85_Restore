@@ -1,17 +1,17 @@
 @interface NCBSCityAbbreviationsListViewController
-- (NCBSCityAbbreviationsListViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_getCityAbbrev:(id)a3;
+- (NCBSCityAbbreviationsListViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_getCityAbbrev:(id)abbrev;
 - (id)specifiers;
 - (void)dealloc;
 @end
 
 @implementation NCBSCityAbbreviationsListViewController
 
-- (NCBSCityAbbreviationsListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (NCBSCityAbbreviationsListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v7.receiver = self;
   v7.super_class = NCBSCityAbbreviationsListViewController;
-  v4 = [(NCBSCityAbbreviationsListViewController *)&v7 initWithNibName:a3 bundle:a4];
+  v4 = [(NCBSCityAbbreviationsListViewController *)&v7 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -63,14 +63,14 @@
   return v3;
 }
 
-- (id)_getCityAbbrev:(id)a3
+- (id)_getCityAbbrev:(id)abbrev
 {
-  v3 = a3;
+  abbrevCopy = abbrev;
   v4 = +[NCBSWorldCityDisplayListModel sharedInstance];
-  v5 = [v3 userInfo];
+  userInfo = [abbrevCopy userInfo];
 
-  v6 = [v5 unsignedIntegerValue];
-  v7 = [v4 cityDisplayAbbreviationForIndex:v6];
+  unsignedIntegerValue = [userInfo unsignedIntegerValue];
+  v7 = [v4 cityDisplayAbbreviationForIndex:unsignedIntegerValue];
 
   return v7;
 }

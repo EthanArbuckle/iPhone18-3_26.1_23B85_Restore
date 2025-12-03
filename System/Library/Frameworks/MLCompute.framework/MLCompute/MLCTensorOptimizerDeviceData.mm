@@ -1,7 +1,7 @@
 @interface MLCTensorOptimizerDeviceData
 + (id)optimizerDeviceData;
 - (MLCTensorOptimizerDeviceData)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -9,7 +9,7 @@
 
 + (id)optimizerDeviceData
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -60,9 +60,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }

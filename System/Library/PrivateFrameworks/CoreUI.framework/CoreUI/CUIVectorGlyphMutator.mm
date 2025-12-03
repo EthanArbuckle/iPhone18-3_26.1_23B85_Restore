@@ -1,26 +1,26 @@
 @interface CUIVectorGlyphMutator
-+ ($57208586A15A58339C904728178D1914)createInterpolatedPointsFromPoints:(id)a3 ultralightDeltas:(id)a4 blackDeltas:(id)a5 withScalars:(id)a6;
-+ ($57208586A15A58339C904728178D1914)deltaArrayFrom:(id)a3 to:(id)a4;
-+ ($57208586A15A58339C904728178D1914)pointArrayFromPath:(CGPath *)a3;
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)_scalarsForGlyphContinuousWeight:(double)a3 inDictionary:(id)a4 shouldClamp:(BOOL)a5;
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)scalarsForGlyphContinuousWeight:(double)a3 glyphContinuousSize:(double)a4;
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)scalarsForGlyphWeight:(int64_t)a3 glyphSize:(int64_t)a4;
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)transformForGlyphContinuousSize:(double)a3;
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)transformForGlyphSize:(int64_t)a3;
-+ (double)realloc_cgfloat_array:(double *)a3 withNewCount:(unint64_t)a4;
++ ($57208586A15A58339C904728178D1914)createInterpolatedPointsFromPoints:(id)points ultralightDeltas:(id)deltas blackDeltas:(id)blackDeltas withScalars:(id)scalars;
++ ($57208586A15A58339C904728178D1914)deltaArrayFrom:(id)from to:(id)to;
++ ($57208586A15A58339C904728178D1914)pointArrayFromPath:(CGPath *)path;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)_scalarsForGlyphContinuousWeight:(double)weight inDictionary:(id)dictionary shouldClamp:(BOOL)clamp;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)scalarsForGlyphContinuousWeight:(double)weight glyphContinuousSize:(double)size;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)scalarsForGlyphWeight:(int64_t)weight glyphSize:(int64_t)size;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)transformForGlyphContinuousSize:(double)size;
++ ($F24F406B2B787EFB06265DBA3D28CBD5)transformForGlyphSize:(int64_t)size;
++ (double)realloc_cgfloat_array:(double *)realloc_cgfloat_array withNewCount:(unint64_t)count;
 + (id)_interpolationData;
-+ (id)createFloatDeltasFrom:(id)a3 to:(id)a4;
-+ (id)createInterpolatedFloatsFromFloats:(id)a3 ultralightDeltas:(id)a4 blackDeltas:(id)a5 withScalars:(id)a6;
-- ($57208586A15A58339C904728178D1914)applyDeltasWithScalars:(id)a3;
-- ($57208586A15A58339C904728178D1914)applyDeltasWithScalars:(id)a3 andTransform:(id)a4;
++ (id)createFloatDeltasFrom:(id)from to:(id)to;
++ (id)createInterpolatedFloatsFromFloats:(id)floats ultralightDeltas:(id)deltas blackDeltas:(id)blackDeltas withScalars:(id)scalars;
+- ($57208586A15A58339C904728178D1914)applyDeltasWithScalars:(id)scalars;
+- ($57208586A15A58339C904728178D1914)applyDeltasWithScalars:(id)scalars andTransform:(id)transform;
 - ($57208586A15A58339C904728178D1914)blackDeltas;
 - ($57208586A15A58339C904728178D1914)originPoints;
 - ($57208586A15A58339C904728178D1914)ultralightDeltas;
-- (CGPath)cgPathFrom:(id)a3;
-- (CUIVectorGlyphMutator)initWithPointSize:(double)a3 regular:(id)a4 ultralight:(id)a5 black:(id)a6;
-- (id)clipStrokeKeyframesForPath:(id)a3 scalars:(id)a4;
-- (id)pathForScalars:(id)a3 andTransform:(id)a4;
-- (void)convertDistance0:(float)a3 distance1:(float)a4 elementIndex0Out:(unint64_t *)a5 distance0Out:(float *)a6 elementIndex1Out:(unint64_t *)a7 distance1Out:(float *)a8 subpath0:(unint64_t)a9 subpath1:(unint64_t)a10 data:(CUIVectorGlyphPathLengthData *)a11;
+- (CGPath)cgPathFrom:(id)from;
+- (CUIVectorGlyphMutator)initWithPointSize:(double)size regular:(id)regular ultralight:(id)ultralight black:(id)black;
+- (id)clipStrokeKeyframesForPath:(id)path scalars:(id)scalars;
+- (id)pathForScalars:(id)scalars andTransform:(id)transform;
+- (void)convertDistance0:(float)distance0 distance1:(float)distance1 elementIndex0Out:(unint64_t *)out distance0Out:(float *)distance0Out elementIndex1Out:(unint64_t *)index1Out distance1Out:(float *)distance1Out subpath0:(unint64_t)subpath0 subpath1:(unint64_t)self0 data:(CUIVectorGlyphPathLengthData *)self1;
 - (void)dealloc;
 @end
 
@@ -202,23 +202,23 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
   return result;
 }
 
-- (CUIVectorGlyphMutator)initWithPointSize:(double)a3 regular:(id)a4 ultralight:(id)a5 black:(id)a6
+- (CUIVectorGlyphMutator)initWithPointSize:(double)size regular:(id)regular ultralight:(id)ultralight black:(id)black
 {
   v52.receiver = self;
   v52.super_class = CUIVectorGlyphMutator;
   v10 = [(CUIVectorGlyphMutator *)&v52 init];
   if (v10)
   {
-    v10->_originPath = a4;
-    v10->_ultralightPath = a5;
-    v10->_blackPath = a6;
-    [(CUIVectorGlyphMutator *)v10 setPointSize:a3];
-    v11 = +[CUIVectorGlyphMutator pointArrayFromPath:](CUIVectorGlyphMutator, "pointArrayFromPath:", [a4 path]);
+    v10->_originPath = regular;
+    v10->_ultralightPath = ultralight;
+    v10->_blackPath = black;
+    [(CUIVectorGlyphMutator *)v10 setPointSize:size];
+    v11 = +[CUIVectorGlyphMutator pointArrayFromPath:](CUIVectorGlyphMutator, "pointArrayFromPath:", [regular path]);
     v13 = v12;
-    v14 = +[CUIVectorGlyphMutator pointArrayFromPath:](CUIVectorGlyphMutator, "pointArrayFromPath:", [a5 path]);
+    v14 = +[CUIVectorGlyphMutator pointArrayFromPath:](CUIVectorGlyphMutator, "pointArrayFromPath:", [ultralight path]);
     v16 = v15;
-    v46 = a6;
-    v24 = +[CUIVectorGlyphMutator pointArrayFromPath:](CUIVectorGlyphMutator, "pointArrayFromPath:", [a6 path]);
+    blackCopy = black;
+    v24 = +[CUIVectorGlyphMutator pointArrayFromPath:](CUIVectorGlyphMutator, "pointArrayFromPath:", [black path]);
     v25 = v17;
     if (v13 != v16 || v13 != v17)
     {
@@ -233,56 +233,56 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
     [(CUIVectorGlyphMutator *)v10 setBlackDeltas:v28, v29];
     free(v14);
     free(v24);
-    v30 = [a4 encodedClipStrokeKeyframes];
-    v31 = [a5 encodedClipStrokeKeyframes];
-    v32 = [v46 encodedClipStrokeKeyframes];
-    if (v30)
+    encodedClipStrokeKeyframes = [regular encodedClipStrokeKeyframes];
+    encodedClipStrokeKeyframes2 = [ultralight encodedClipStrokeKeyframes];
+    encodedClipStrokeKeyframes3 = [blackCopy encodedClipStrokeKeyframes];
+    if (encodedClipStrokeKeyframes)
     {
-      if (v31)
+      if (encodedClipStrokeKeyframes2)
       {
-        v33 = v32;
-        if (v32)
+        v33 = encodedClipStrokeKeyframes3;
+        if (encodedClipStrokeKeyframes3)
         {
-          v34 = [v30 length];
-          if (v34 == [v31 length])
+          v34 = [encodedClipStrokeKeyframes length];
+          if (v34 == [encodedClipStrokeKeyframes2 length])
           {
-            v35 = [v30 length];
+            v35 = [encodedClipStrokeKeyframes length];
             if (v35 == [v33 length])
             {
               v50 = 0;
               v51 = 0;
               v49 = 0;
-              v36 = [v30 validate:&v51];
-              v37 = [v31 validate:&v50];
+              v36 = [encodedClipStrokeKeyframes validate:&v51];
+              v37 = [encodedClipStrokeKeyframes2 validate:&v50];
               v38 = [v33 validate:&v49];
               if (v36)
               {
                 if (v37 && v38 && v51 == v50 && v51 == v49)
                 {
-                  v39 = [v30 rawKeyframesOffset];
-                  v40 = [v30 length];
-                  while (v39 < v40)
+                  rawKeyframesOffset = [encodedClipStrokeKeyframes rawKeyframesOffset];
+                  v40 = [encodedClipStrokeKeyframes length];
+                  while (rawKeyframesOffset < v40)
                   {
                     v47 = 0;
                     v48 = 0;
-                    [v30 getBytes:&v48 + 4 range:{v39, 4}];
-                    [v31 getBytes:&v48 range:{v39, 4}];
+                    [encodedClipStrokeKeyframes getBytes:&v48 + 4 range:{rawKeyframesOffset, 4}];
+                    [encodedClipStrokeKeyframes2 getBytes:&v48 range:{rawKeyframesOffset, 4}];
                     LODWORD(v41) = HIDWORD(v48);
                     if (*(&v48 + 1) != *&v48)
                     {
                       return v10;
                     }
 
-                    [v33 getBytes:&v48 range:{v39, 4, v41}];
+                    [v33 getBytes:&v48 range:{rawKeyframesOffset, 4, v41}];
                     LODWORD(v42) = HIDWORD(v48);
                     if (*(&v48 + 1) != *&v48)
                     {
                       return v10;
                     }
 
-                    v43 = v39 + 8;
-                    [v30 getBytes:&v47 + 4 range:{v43, 4, v42}];
-                    [v31 getBytes:&v47 range:{v43, 4}];
+                    v43 = rawKeyframesOffset + 8;
+                    [encodedClipStrokeKeyframes getBytes:&v47 + 4 range:{v43, 4, v42}];
+                    [encodedClipStrokeKeyframes2 getBytes:&v47 range:{v43, 4}];
                     if (floorf(*(&v47 + 1)) != floorf(*&v47))
                     {
                       return v10;
@@ -295,8 +295,8 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
                     }
 
                     v44 = v43 + 4;
-                    [v30 getBytes:&v47 + 4 range:{v44, 4}];
-                    [v31 getBytes:&v47 range:{v44, 4}];
+                    [encodedClipStrokeKeyframes getBytes:&v47 + 4 range:{v44, 4}];
+                    [encodedClipStrokeKeyframes2 getBytes:&v47 range:{v44, 4}];
                     if (floorf(*(&v47 + 1)) != floorf(*&v47))
                     {
                       return v10;
@@ -308,13 +308,13 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
                       return v10;
                     }
 
-                    v40 = [v30 length];
-                    v39 = v44 + 4;
+                    v40 = [encodedClipStrokeKeyframes length];
+                    rawKeyframesOffset = v44 + 4;
                   }
 
-                  v10->_originClipStrokeKeyframes = [a4 encodedClipStrokeKeyframes];
-                  v10->_ultralightClipStrokeKeyframes = [a5 encodedClipStrokeKeyframes];
-                  v10->_blackClipStrokeKeyframes = [v46 encodedClipStrokeKeyframes];
+                  v10->_originClipStrokeKeyframes = [regular encodedClipStrokeKeyframes];
+                  v10->_ultralightClipStrokeKeyframes = [ultralight encodedClipStrokeKeyframes];
+                  v10->_blackClipStrokeKeyframes = [blackCopy encodedClipStrokeKeyframes];
                 }
               }
             }
@@ -327,18 +327,18 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
   return v10;
 }
 
-- ($57208586A15A58339C904728178D1914)applyDeltasWithScalars:(id)a3
+- ($57208586A15A58339C904728178D1914)applyDeltasWithScalars:(id)scalars
 {
-  v3 = [(CUIVectorGlyphMutator *)self applyDeltasWithScalars:a3.var0 andTransform:a3.var1, 1.0, 0.0];
+  v3 = [(CUIVectorGlyphMutator *)self applyDeltasWithScalars:scalars.var0 andTransform:scalars.var1, 1.0, 0.0];
   result.var1 = v4;
   result.var0 = v3;
   return result;
 }
 
-- ($57208586A15A58339C904728178D1914)applyDeltasWithScalars:(id)a3 andTransform:(id)a4
+- ($57208586A15A58339C904728178D1914)applyDeltasWithScalars:(id)scalars andTransform:(id)transform
 {
-  __B = a4;
-  v5 = [objc_opt_class() createInterpolatedPointsFromPoints:self->_originPoints.pointComponents ultralightDeltas:self->_originPoints.numPoints blackDeltas:self->_ultralightDeltas.deltaComponents withScalars:{self->_ultralightDeltas.numDeltas, self->_blackDeltas.deltaComponents, self->_blackDeltas.numDeltas, a3.var0, a3.var1}];
+  __B = transform;
+  v5 = [objc_opt_class() createInterpolatedPointsFromPoints:self->_originPoints.pointComponents ultralightDeltas:self->_originPoints.numPoints blackDeltas:self->_ultralightDeltas.deltaComponents withScalars:{self->_ultralightDeltas.numDeltas, self->_blackDeltas.deltaComponents, self->_blackDeltas.numDeltas, scalars.var0, scalars.var1}];
   v7 = v6;
   vDSP_vsmulD(v5, 1, &__B.var0, v5, 1, 2 * self->_ultralightDeltas.numDeltas);
   var1 = __B.var1;
@@ -352,15 +352,15 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
   return result;
 }
 
-+ ($57208586A15A58339C904728178D1914)createInterpolatedPointsFromPoints:(id)a3 ultralightDeltas:(id)a4 blackDeltas:(id)a5 withScalars:(id)a6
++ ($57208586A15A58339C904728178D1914)createInterpolatedPointsFromPoints:(id)points ultralightDeltas:(id)deltas blackDeltas:(id)blackDeltas withScalars:(id)scalars
 {
-  var1 = a4.var1;
-  v7 = a3.var1;
-  var0 = a3.var0;
-  __B = a6;
-  v9 = 2 * a4.var1;
-  v10 = (&v14 - 2 * a4.var1);
-  vDSP_vsmsmaD(a4.var0, 1, &__B.var0, a5.var0, 1, &__B.var1, v10, 1, 2 * a4.var1);
+  var1 = deltas.var1;
+  v7 = points.var1;
+  var0 = points.var0;
+  __B = scalars;
+  v9 = 2 * deltas.var1;
+  v10 = (&v14 - 2 * deltas.var1);
+  vDSP_vsmsmaD(deltas.var0, 1, &__B.var0, blackDeltas.var0, 1, &__B.var1, v10, 1, 2 * deltas.var1);
   v11 = malloc_type_malloc(16 * var1, 0x100004000313F17uLL);
   vDSP_vaddD(var0, 1, v10, 1, v11, 1, v9);
   v12 = v11;
@@ -370,43 +370,43 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
   return result;
 }
 
-+ (id)createInterpolatedFloatsFromFloats:(id)a3 ultralightDeltas:(id)a4 blackDeltas:(id)a5 withScalars:(id)a6
++ (id)createInterpolatedFloatsFromFloats:(id)floats ultralightDeltas:(id)deltas blackDeltas:(id)blackDeltas withScalars:(id)scalars
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v11 = [a3 length] >> 2;
+  var1 = scalars.var1;
+  var0 = scalars.var0;
+  v11 = [floats length] >> 2;
   v12 = var0;
   v13 = var1;
   v16 = v13;
   v17 = v12;
-  v14 = [[NSMutableData alloc] initWithLength:{objc_msgSend(a3, "length")}];
-  MEMORY[0x193AC7440]([a4 bytes], 1, &v17, objc_msgSend(a5, "bytes"), 1, &v16, objc_msgSend(v14, "mutableBytes"), 1, v11);
-  MEMORY[0x193AC73B0]([a3 bytes], 1, objc_msgSend(v14, "bytes"), 1, objc_msgSend(v14, "mutableBytes"), 1, v11);
+  v14 = [[NSMutableData alloc] initWithLength:{objc_msgSend(floats, "length")}];
+  MEMORY[0x193AC7440]([deltas bytes], 1, &v17, objc_msgSend(blackDeltas, "bytes"), 1, &v16, objc_msgSend(v14, "mutableBytes"), 1, v11);
+  MEMORY[0x193AC73B0]([floats bytes], 1, objc_msgSend(v14, "bytes"), 1, objc_msgSend(v14, "mutableBytes"), 1, v11);
   return v14;
 }
 
-- (void)convertDistance0:(float)a3 distance1:(float)a4 elementIndex0Out:(unint64_t *)a5 distance0Out:(float *)a6 elementIndex1Out:(unint64_t *)a7 distance1Out:(float *)a8 subpath0:(unint64_t)a9 subpath1:(unint64_t)a10 data:(CUIVectorGlyphPathLengthData *)a11
+- (void)convertDistance0:(float)distance0 distance1:(float)distance1 elementIndex0Out:(unint64_t *)out distance0Out:(float *)distance0Out elementIndex1Out:(unint64_t *)index1Out distance1Out:(float *)distance1Out subpath0:(unint64_t)subpath0 subpath1:(unint64_t)self0 data:(CUIVectorGlyphPathLengthData *)self1
 {
-  numElements = a11->numElements;
+  numElements = data->numElements;
   if (numElements)
   {
     v12 = 0;
-    subpathLengths = a11->subpathLengths;
-    v14 = (a3 - floorf(a3)) * subpathLengths[a9];
-    v15 = (a4 - floorf(a4)) * subpathLengths[a10];
-    v16 = fminf(a9, a10);
-    v17 = fmaxf(a9, a10);
-    elementToSubpath = a11->elementToSubpath;
+    subpathLengths = data->subpathLengths;
+    v14 = (distance0 - floorf(distance0)) * subpathLengths[subpath0];
+    v15 = (distance1 - floorf(distance1)) * subpathLengths[subpath1];
+    v16 = fminf(subpath0, subpath1);
+    v17 = fmaxf(subpath0, subpath1);
+    elementToSubpath = data->elementToSubpath;
     do
     {
       v19 = elementToSubpath[v12];
       if (v19 >= v16)
       {
-        v20 = &a11->elementLengths[v12];
+        v20 = &data->elementLengths[v12];
         var0 = v20->var0;
         var1 = v20->var1;
         v23 = v20->var0 + var1;
-        v24 = *a6 != -1.0 || v23 <= v14;
+        v24 = *distance0Out != -1.0 || v23 <= v14;
         v25 = fabsf(var1);
         if (!v24)
         {
@@ -416,11 +416,11 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
             v26 = (v14 - var0) / var1;
           }
 
-          *a5 = v12;
-          *a6 = v26;
+          *out = v12;
+          *distance0Out = v26;
         }
 
-        if (*a8 == -1.0 && v23 > v15)
+        if (*distance1Out == -1.0 && v23 > v15)
         {
           v28 = 0.0;
           if (v25 >= 0.00000011921)
@@ -428,8 +428,8 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
             v28 = (v15 - var0) / var1;
           }
 
-          *a7 = v12;
-          *a8 = v28;
+          *index1Out = v12;
+          *distance1Out = v28;
         }
 
         if (v19 > v17)
@@ -437,7 +437,7 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
           return;
         }
 
-        numElements = a11->numElements;
+        numElements = data->numElements;
       }
 
       ++v12;
@@ -447,19 +447,19 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
   }
 }
 
-- (id)clipStrokeKeyframesForPath:(id)a3 scalars:(id)a4
+- (id)clipStrokeKeyframesForPath:(id)path scalars:(id)scalars
 {
   if (!self->_originClipStrokeKeyframes)
   {
     return 0;
   }
 
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v6 = a3;
-  if (a3)
+  var1 = scalars.var1;
+  var0 = scalars.var0;
+  pathCopy = path;
+  if (path)
   {
-    [a3 lengthData];
+    [path lengthData];
     v8 = *(&v124 + 1);
   }
 
@@ -514,9 +514,9 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
     return v14;
   }
 
-  if (v6)
+  if (pathCopy)
   {
-    [v6 lengthData];
+    [pathCopy lengthData];
     v15 = v115;
   }
 
@@ -571,10 +571,10 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
     return v14;
   }
 
-  if (v6)
+  if (pathCopy)
   {
-    [v6 lengthData];
-    LODWORD(v6) = *(&v105 + 1) != 0;
+    [pathCopy lengthData];
+    LODWORD(pathCopy) = *(&v105 + 1) != 0;
   }
 
   else
@@ -622,34 +622,34 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
 
   [(CUIVectorGlyphPath *)v25 lengthData];
   v14 = 0;
-  if ((v6 & v22 & v24) == 1)
+  if ((pathCopy & v22 & v24) == 1)
   {
     if (v97[4])
     {
       v14 = [NSMutableData dataWithCapacity:[(NSData *)self->_originClipStrokeKeyframes length]];
-      v26 = [(NSData *)self->_originClipStrokeKeyframes rawKeyframesOffset];
-      [(NSMutableData *)v14 appendBytes:[(NSData *)self->_originClipStrokeKeyframes bytes] length:v26];
-      if (v26 < [(NSData *)self->_originClipStrokeKeyframes length])
+      rawKeyframesOffset = [(NSData *)self->_originClipStrokeKeyframes rawKeyframesOffset];
+      [(NSMutableData *)v14 appendBytes:[(NSData *)self->_originClipStrokeKeyframes bytes] length:rawKeyframesOffset];
+      if (rawKeyframesOffset < [(NSData *)self->_originClipStrokeKeyframes length])
       {
         while (1)
         {
           v96 = 0;
           v97[0] = 0;
           v95 = 0;
-          [(NSData *)self->_originClipStrokeKeyframes getBytes:v97 + 4 range:v26, 4];
+          [(NSData *)self->_originClipStrokeKeyframes getBytes:v97 + 4 range:rawKeyframesOffset, 4];
           [(NSMutableData *)v14 appendBytes:v97 + 4 length:4];
           v94 = 0;
-          [(NSData *)self->_originClipStrokeKeyframes getBytes:v97 range:v26 + 4, 4];
-          [(NSData *)self->_ultralightClipStrokeKeyframes getBytes:&v94 + 4 range:v26 + 4, 4];
-          [(NSData *)self->_blackClipStrokeKeyframes getBytes:&v94 range:v26 + 4, 4];
+          [(NSData *)self->_originClipStrokeKeyframes getBytes:v97 range:rawKeyframesOffset + 4, 4];
+          [(NSData *)self->_ultralightClipStrokeKeyframes getBytes:&v94 + 4 range:rawKeyframesOffset + 4, 4];
+          [(NSData *)self->_blackClipStrokeKeyframes getBytes:&v94 range:rawKeyframesOffset + 4, 4];
           *&v27 = var0 * (*(&v94 + 1) - *v97);
           *&v28 = var1 * (*&v94 - *v97);
           v94 = __PAIR64__(v27, v28);
           *v97 = (*v97 + *&v27) + *&v28;
           [(NSMutableData *)v14 appendBytes:v97 length:4];
-          [(NSData *)self->_originClipStrokeKeyframes getBytes:&v96 + 4 range:v26 + 8, 4];
-          v29 = v26 + 12;
-          [(NSData *)self->_originClipStrokeKeyframes getBytes:&v96 range:v26 + 12, 4];
+          [(NSData *)self->_originClipStrokeKeyframes getBytes:&v96 + 4 range:rawKeyframesOffset + 8, 4];
+          v29 = rawKeyframesOffset + 12;
+          [(NSData *)self->_originClipStrokeKeyframes getBytes:&v96 range:rawKeyframesOffset + 12, 4];
           v31 = v96;
           v92 = 0;
           v93 = 0;
@@ -693,8 +693,8 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
             break;
           }
 
-          [(NSData *)self->_ultralightClipStrokeKeyframes getBytes:&v95 + 4 range:v26 + 8, 4, v36];
-          [(NSData *)self->_ultralightClipStrokeKeyframes getBytes:&v95 range:v26 + 12, 4];
+          [(NSData *)self->_ultralightClipStrokeKeyframes getBytes:&v95 + 4 range:rawKeyframesOffset + 8, 4, v36];
+          [(NSData *)self->_ultralightClipStrokeKeyframes getBytes:&v95 range:rawKeyframesOffset + 12, 4];
           v38 = v95;
           v39 = self->_ultralightPath;
           if (v39)
@@ -724,8 +724,8 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
             break;
           }
 
-          [(NSData *)self->_blackClipStrokeKeyframes getBytes:&v95 + 4 range:v26 + 8, 4, v41];
-          [(NSData *)self->_blackClipStrokeKeyframes getBytes:&v95 range:v26 + 12, 4];
+          [(NSData *)self->_blackClipStrokeKeyframes getBytes:&v95 + 4 range:rawKeyframesOffset + 8, 4, v41];
+          [(NSData *)self->_blackClipStrokeKeyframes getBytes:&v95 range:rawKeyframesOffset + 12, 4];
           v43 = v95;
           v44 = self->_blackPath;
           if (v44)
@@ -870,7 +870,7 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
           *(&v96 + 1) = v75 + v34;
           [(NSMutableData *)v14 appendBytes:&v96 + 4 length:4];
           [(NSMutableData *)v14 appendBytes:&v96 length:4];
-          v26 += 16;
+          rawKeyframesOffset += 16;
           if (v29 + 4 >= [(NSData *)self->_originClipStrokeKeyframes length])
           {
             return v14;
@@ -885,11 +885,11 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
   return v14;
 }
 
-- (id)pathForScalars:(id)a3 andTransform:(id)a4
+- (id)pathForScalars:(id)scalars andTransform:(id)transform
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v7 = [(CUIVectorGlyphMutator *)self applyDeltasWithScalars:a3.var0 andTransform:a3.var1, a4.var0, a4.var1];
+  var1 = scalars.var1;
+  var0 = scalars.var0;
+  v7 = [(CUIVectorGlyphMutator *)self applyDeltasWithScalars:scalars.var0 andTransform:scalars.var1, transform.var0, transform.var1];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = __53__CUIVectorGlyphMutator_pathForScalars_andTransform___block_invoke;
@@ -900,20 +900,20 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
   return [CUIVectorGlyphPath createWithPath:[(CUIVectorGlyphMutator *)self cgPathFrom:v7 clipStrokeKeyframeProvider:v8], v10];
 }
 
-+ (double)realloc_cgfloat_array:(double *)a3 withNewCount:(unint64_t)a4
++ (double)realloc_cgfloat_array:(double *)realloc_cgfloat_array withNewCount:(unint64_t)count
 {
-  result = malloc_type_realloc(a3, 8 * a4, 0x100004000313F17uLL);
+  result = malloc_type_realloc(realloc_cgfloat_array, 8 * count, 0x100004000313F17uLL);
   if (!result)
   {
-    free(a3);
+    free(realloc_cgfloat_array);
     [NSException raise:@"FailedRealloc" format:@"Requested size was not available"];
-    return a3;
+    return realloc_cgfloat_array;
   }
 
   return result;
 }
 
-+ ($57208586A15A58339C904728178D1914)pointArrayFromPath:(CGPath *)a3
++ ($57208586A15A58339C904728178D1914)pointArrayFromPath:(CGPath *)path
 {
   v19 = 0;
   v20 = &v19;
@@ -933,16 +933,16 @@ id __43__CUIVectorGlyphMutator__interpolationData__block_invoke()
   block[3] = &unk_1E7250F68;
   block[6] = &v15;
   block[7] = &v19;
-  block[4] = a1;
+  block[4] = self;
   block[5] = &v11;
   block[8] = 50;
-  CGPathApplyWithBlock(a3, block);
+  CGPathApplyWithBlock(path, block);
   v5 = v16[3];
   v6 = v12[3];
   v7 = v20[3];
   if (v5 != v6)
   {
-    v7 = [a1 realloc_cgfloat_array:v20[3] withNewCount:2 * v6];
+    v7 = [self realloc_cgfloat_array:v20[3] withNewCount:2 * v6];
     v20[3] = v7;
     v5 = v12[3];
   }
@@ -1044,18 +1044,18 @@ char *__44__CUIVectorGlyphMutator_pointArrayFromPath___block_invoke(char *result
   return result;
 }
 
-+ ($57208586A15A58339C904728178D1914)deltaArrayFrom:(id)a3 to:(id)a4
++ ($57208586A15A58339C904728178D1914)deltaArrayFrom:(id)from to:(id)to
 {
-  if (a3.var1 != a4.var1)
+  if (from.var1 != to.var1)
   {
     +[CUIVectorGlyphMutator deltaArrayFrom:to:];
   }
 
-  var0 = a4.var0;
-  var1 = a3.var1;
-  v6 = a3.var0;
-  v7 = 2 * a3.var1;
-  v8 = malloc_type_malloc(16 * a3.var1, 0x100004000313F17uLL);
+  var0 = to.var0;
+  var1 = from.var1;
+  v6 = from.var0;
+  v7 = 2 * from.var1;
+  v8 = malloc_type_malloc(16 * from.var1, 0x100004000313F17uLL);
   vDSP_vsubD(v6, 1, var0, 1, v8, 1, v7);
   v9 = v8;
   v10 = var1;
@@ -1064,37 +1064,37 @@ char *__44__CUIVectorGlyphMutator_pointArrayFromPath___block_invoke(char *result
   return result;
 }
 
-+ (id)createFloatDeltasFrom:(id)a3 to:(id)a4
++ (id)createFloatDeltasFrom:(id)from to:(id)to
 {
-  v6 = [a3 length];
-  if (v6 != [a4 length])
+  v6 = [from length];
+  if (v6 != [to length])
   {
     +[CUIVectorGlyphMutator createFloatDeltasFrom:to:];
   }
 
-  v7 = [[NSMutableData alloc] initWithLength:{objc_msgSend(a3, "length")}];
-  MEMORY[0x193AC7470]([a3 bytes], 1, objc_msgSend(a4, "bytes"), 1, objc_msgSend(v7, "mutableBytes"), 1, objc_msgSend(a3, "length") >> 2);
+  v7 = [[NSMutableData alloc] initWithLength:{objc_msgSend(from, "length")}];
+  MEMORY[0x193AC7470]([from bytes], 1, objc_msgSend(to, "bytes"), 1, objc_msgSend(v7, "mutableBytes"), 1, objc_msgSend(from, "length") >> 2);
   return v7;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)transformForGlyphSize:(int64_t)a3
++ ($F24F406B2B787EFB06265DBA3D28CBD5)transformForGlyphSize:(int64_t)size
 {
   v3 = 0.0;
-  if (a3 < 2)
+  if (size < 2)
   {
     v4 = 1.0;
   }
 
   else
   {
-    if (a3 == 2)
+    if (size == 2)
     {
       v5 = &_CUIVectorGlyphContinuousSizeMedium;
       goto LABEL_7;
     }
 
     v4 = 0.0;
-    if (a3 == 3)
+    if (size == 3)
     {
       v5 = &_CUIVectorGlyphContinuousSizeLarge;
 LABEL_7:
@@ -1108,10 +1108,10 @@ LABEL_7:
   return result;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)transformForGlyphContinuousSize:(double)a3
++ ($F24F406B2B787EFB06265DBA3D28CBD5)transformForGlyphContinuousSize:(double)size
 {
   v3 = 0;
-  while (*&kCoreThemeContinuousGlyphSizes[v3] != a3)
+  while (*&kCoreThemeContinuousGlyphSizes[v3] != size)
   {
     if (++v3 == 3)
     {
@@ -1121,26 +1121,26 @@ LABEL_7:
 
   if (kCoreThemeDiscreteGlyphSizes[v3])
   {
-    [a1 transformForGlyphSize:?];
+    [self transformForGlyphSize:?];
     goto LABEL_8;
   }
 
 LABEL_7:
-  v4 = a3 * -0.352294922 + 0.352294922;
+  v4 = size * -0.352294922 + 0.352294922;
 LABEL_8:
   result.var1 = v4;
-  result.var0 = a3;
+  result.var0 = size;
   return result;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)_scalarsForGlyphContinuousWeight:(double)a3 inDictionary:(id)a4 shouldClamp:(BOOL)a5
++ ($F24F406B2B787EFB06265DBA3D28CBD5)_scalarsForGlyphContinuousWeight:(double)weight inDictionary:(id)dictionary shouldClamp:(BOOL)clamp
 {
-  if (!a4)
+  if (!dictionary)
   {
     +[CUIVectorGlyphMutator _scalarsForGlyphContinuousWeight:inDictionary:shouldClamp:];
   }
 
-  v7 = [a4 objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a4, a5)}];
+  v7 = [dictionary objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", dictionary, clamp)}];
   if (v7)
   {
     goto LABEL_5;
@@ -1151,7 +1151,7 @@ LABEL_8:
   v11 = v9;
   if (vabdd_f64(v9, v8) < 2.22044605e-16)
   {
-    v7 = [a4 objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v8)}];
+    v7 = [dictionary objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v8)}];
     if (!v7)
     {
       +[CUIVectorGlyphMutator _scalarsForGlyphContinuousWeight:inDictionary:shouldClamp:];
@@ -1163,8 +1163,8 @@ LABEL_5:
     goto LABEL_20;
   }
 
-  v14 = [a4 objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v9)}];
-  v15 = [a4 objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v10)}];
+  v14 = [dictionary objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v9)}];
+  v15 = [dictionary objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v10)}];
   if (!v14)
   {
     +[CUIVectorGlyphMutator _scalarsForGlyphContinuousWeight:inDictionary:shouldClamp:];
@@ -1180,12 +1180,12 @@ LABEL_5:
   v18 = v17;
   v20 = v19;
   [v16 deltaScalarsValue];
-  v23 = (a3 - v10) / (v11 - v10);
+  v23 = (weight - v10) / (v11 - v10);
   v24 = v21 + (v18 - v21) * v23;
   v25 = v22 + (v20 - v22) * v23;
-  v26 = (a3 - v11) / (v11 - v10) + 1.0;
+  v26 = (weight - v11) / (v11 - v10) + 1.0;
   v27 = v21 + (v18 - v21) * v26;
-  if (v11 < a3)
+  if (v11 < weight)
   {
     v25 = v22 + (v20 - v22) * v26;
   }
@@ -1195,10 +1195,10 @@ LABEL_5:
     v27 = v24;
   }
 
-  v28 = (v10 - a3) / (v11 - v10) + 1.0;
+  v28 = (v10 - weight) / (v11 - v10) + 1.0;
   v12 = v18 + (v21 - v18) * v28;
   v13 = v20 + (v22 - v20) * v28;
-  if (v10 <= a3)
+  if (v10 <= weight)
   {
     v12 = v27;
     v13 = v25;
@@ -1210,23 +1210,23 @@ LABEL_20:
   return result;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)scalarsForGlyphContinuousWeight:(double)a3 glyphContinuousSize:(double)a4
++ ($F24F406B2B787EFB06265DBA3D28CBD5)scalarsForGlyphContinuousWeight:(double)weight glyphContinuousSize:(double)size
 {
-  v7 = [a1 _interpolationData];
-  v8 = [v7 objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", a4)}];
+  _interpolationData = [self _interpolationData];
+  v8 = [_interpolationData objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", size)}];
   if (v8)
   {
     v9 = v8;
-    v10 = a1;
-    v11 = a3;
+    selfCopy2 = self;
+    weightCopy2 = weight;
   }
 
   else
   {
-    v12 = _segmentForGlyphContinuousSize(0, a4);
+    v12 = _segmentForGlyphContinuousSize(0, size);
     v14 = v13;
-    v15 = [v7 objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v13)}];
-    v16 = [v7 objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v12)}];
+    v15 = [_interpolationData objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v13)}];
+    v16 = [_interpolationData objectForKeyedSubscript:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:", v12)}];
     if (!v15)
     {
       +[CUIVectorGlyphMutator scalarsForGlyphContinuousWeight:glyphContinuousSize:];
@@ -1241,36 +1241,36 @@ LABEL_20:
     v18 = v14 - v12;
     if (fabs(v14 - v12) >= 2.22044605e-16)
     {
-      [a1 _scalarsForGlyphContinuousWeight:v15 inDictionary:0 shouldClamp:a3];
+      [self _scalarsForGlyphContinuousWeight:v15 inDictionary:0 shouldClamp:weight];
       v22 = v21;
       v24 = v23;
-      [a1 _scalarsForGlyphContinuousWeight:v17 inDictionary:0 shouldClamp:a3];
-      v25 = (a4 - v12) / v18;
+      [self _scalarsForGlyphContinuousWeight:v17 inDictionary:0 shouldClamp:weight];
+      v25 = (size - v12) / v18;
       v19 = v26 + (v22 - v26) * v25;
       v20 = v27 + (v24 - v27) * v25;
       goto LABEL_13;
     }
 
-    v10 = a1;
-    v11 = a3;
+    selfCopy2 = self;
+    weightCopy2 = weight;
     v9 = v17;
   }
 
-  [v10 _scalarsForGlyphContinuousWeight:v9 inDictionary:0 shouldClamp:v11];
+  [selfCopy2 _scalarsForGlyphContinuousWeight:v9 inDictionary:0 shouldClamp:weightCopy2];
 LABEL_13:
   result.var1 = v20;
   result.var0 = v19;
   return result;
 }
 
-+ ($F24F406B2B787EFB06265DBA3D28CBD5)scalarsForGlyphWeight:(int64_t)a3 glyphSize:(int64_t)a4
++ ($F24F406B2B787EFB06265DBA3D28CBD5)scalarsForGlyphWeight:(int64_t)weight glyphSize:(int64_t)size
 {
-  [a1 transformForGlyphSize:a4];
-  if (a3 > 4)
+  [self transformForGlyphSize:size];
+  if (weight > 4)
   {
-    if (a3 <= 6)
+    if (weight <= 6)
     {
-      if (a3 == 5)
+      if (weight == 5)
       {
         v8 = &_CUIVectorGlyphContinuousWeightMedium;
       }
@@ -1283,7 +1283,7 @@ LABEL_13:
 
     else
     {
-      switch(a3)
+      switch(weight)
       {
         case 7:
           v8 = &_CUIVectorGlyphContinuousWeightBold;
@@ -1302,15 +1302,15 @@ LABEL_13:
     goto LABEL_22;
   }
 
-  if (a3 > 1)
+  if (weight > 1)
   {
-    if (a3 == 2)
+    if (weight == 2)
     {
       v8 = &_CUIVectorGlyphContinuousWeightThin;
       goto LABEL_22;
     }
 
-    if (a3 == 3)
+    if (weight == 3)
     {
       v8 = &_CUIVectorGlyphContinuousWeightLight;
       goto LABEL_22;
@@ -1319,14 +1319,14 @@ LABEL_13:
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!weight)
   {
 LABEL_16:
     v8 = &_CUIVectorGlyphContinuousWeightRegular;
     goto LABEL_22;
   }
 
-  if (a3 != 1)
+  if (weight != 1)
   {
     goto LABEL_23;
   }
@@ -1335,27 +1335,27 @@ LABEL_16:
 LABEL_22:
   v4 = *v8;
 LABEL_23:
-  v9 = [objc_msgSend(a1 "_interpolationData")];
+  v9 = [objc_msgSend(self "_interpolationData")];
   if (!v9)
   {
     +[CUIVectorGlyphMutator scalarsForGlyphWeight:glyphSize:];
   }
 
-  [a1 _scalarsForGlyphContinuousWeight:v9 inDictionary:1 shouldClamp:v4];
+  [self _scalarsForGlyphContinuousWeight:v9 inDictionary:1 shouldClamp:v4];
   result.var1 = v11;
   result.var0 = v10;
   return result;
 }
 
-- (CGPath)cgPathFrom:(id)a3
+- (CGPath)cgPathFrom:(id)from
 {
-  var0 = a3.var0;
+  var0 = from.var0;
   Mutable = CGPathCreateMutable();
   v9[0] = 0;
   v9[1] = v9;
   v9[2] = 0x2020000000;
   v10 = 0;
-  v6 = [(CUIVectorGlyphPath *)self->_originPath path];
+  path = [(CUIVectorGlyphPath *)self->_originPath path];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __36__CUIVectorGlyphMutator_cgPathFrom___block_invoke;
@@ -1363,7 +1363,7 @@ LABEL_23:
   block[5] = Mutable;
   block[6] = var0;
   block[4] = v9;
-  CGPathApplyWithBlock(v6, block);
+  CGPathApplyWithBlock(path, block);
   free(var0);
   CFAutorelease(Mutable);
   _Block_object_dispose(v9, 8);

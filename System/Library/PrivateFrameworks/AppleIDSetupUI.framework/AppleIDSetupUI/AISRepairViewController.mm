@@ -1,21 +1,21 @@
 @interface AISRepairViewController
-- (AISRepairViewController)initWithContext:(id)a3;
+- (AISRepairViewController)initWithContext:(id)context;
 - (void)_updateAutoDismissal;
 - (void)viewDidLoad;
 @end
 
 @implementation AISRepairViewController
 
-- (AISRepairViewController)initWithContext:(id)a3
+- (AISRepairViewController)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = AISRepairViewController;
   v6 = [(AISRepairViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
     v7->_shouldAutoDismiss = 1;
   }
 
@@ -29,73 +29,73 @@
   v54.super_class = AISRepairViewController;
   [(AISRepairViewController *)&v54 viewDidLoad];
   v3 = [__AISRepairViewController alloc];
-  v4 = [(AISRepairViewController *)self context];
-  v5 = [(AISRepairViewController *)self reportHandler];
-  v6 = [(__AISRepairViewController *)v3 initWithContext:v4 reportHandler:v5];
+  context = [(AISRepairViewController *)self context];
+  reportHandler = [(AISRepairViewController *)self reportHandler];
+  v6 = [(__AISRepairViewController *)v3 initWithContext:context reportHandler:reportHandler];
   viewController = self->_viewController;
   self->_viewController = v6;
 
-  v8 = [(AISRepairViewController *)self viewController];
-  v9 = [v8 view];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  viewController = [(AISRepairViewController *)self viewController];
+  view = [viewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(AISRepairViewController *)self viewController];
-  [v10 willMoveToParentViewController:self];
+  viewController2 = [(AISRepairViewController *)self viewController];
+  [viewController2 willMoveToParentViewController:self];
 
   [(AISRepairViewController *)self addChildViewController:self->_viewController];
-  v11 = [(AISRepairViewController *)self view];
-  v12 = [(AISRepairViewController *)self viewController];
-  v13 = [v12 view];
-  [v11 addSubview:v13];
+  view2 = [(AISRepairViewController *)self view];
+  viewController3 = [(AISRepairViewController *)self viewController];
+  view3 = [viewController3 view];
+  [view2 addSubview:view3];
 
   v37 = MEMORY[0x277CCAAD0];
-  v53 = [(AISRepairViewController *)self viewController];
-  v52 = [v53 view];
-  v50 = [v52 topAnchor];
-  v51 = [(AISRepairViewController *)self view];
-  v49 = [v51 topAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  viewController4 = [(AISRepairViewController *)self viewController];
+  view4 = [viewController4 view];
+  topAnchor = [view4 topAnchor];
+  view5 = [(AISRepairViewController *)self view];
+  topAnchor2 = [view5 topAnchor];
+  v48 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v55[0] = v48;
-  v47 = [(AISRepairViewController *)self viewController];
-  v46 = [v47 view];
-  v44 = [v46 bottomAnchor];
-  v45 = [(AISRepairViewController *)self view];
-  v43 = [v45 bottomAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  viewController5 = [(AISRepairViewController *)self viewController];
+  view6 = [viewController5 view];
+  bottomAnchor = [view6 bottomAnchor];
+  view7 = [(AISRepairViewController *)self view];
+  bottomAnchor2 = [view7 bottomAnchor];
+  v42 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v55[1] = v42;
-  v41 = [(AISRepairViewController *)self viewController];
-  v40 = [v41 view];
-  v38 = [v40 leadingAnchor];
-  v39 = [(AISRepairViewController *)self view];
-  v36 = [v39 leadingAnchor];
-  v35 = [v38 constraintEqualToAnchor:v36];
+  viewController6 = [(AISRepairViewController *)self viewController];
+  view8 = [viewController6 view];
+  leadingAnchor = [view8 leadingAnchor];
+  view9 = [(AISRepairViewController *)self view];
+  leadingAnchor2 = [view9 leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v55[2] = v35;
-  v34 = [(AISRepairViewController *)self viewController];
-  v33 = [v34 view];
-  v31 = [v33 trailingAnchor];
-  v32 = [(AISRepairViewController *)self view];
-  v30 = [v32 trailingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  viewController7 = [(AISRepairViewController *)self viewController];
+  view10 = [viewController7 view];
+  trailingAnchor = [view10 trailingAnchor];
+  view11 = [(AISRepairViewController *)self view];
+  trailingAnchor2 = [view11 trailingAnchor];
+  v29 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v55[3] = v29;
-  v28 = [(AISRepairViewController *)self viewController];
-  v27 = [v28 view];
-  v25 = [v27 centerXAnchor];
-  v26 = [(AISRepairViewController *)self view];
-  v14 = [v26 centerXAnchor];
-  v15 = [v25 constraintEqualToAnchor:v14];
+  viewController8 = [(AISRepairViewController *)self viewController];
+  view12 = [viewController8 view];
+  centerXAnchor = [view12 centerXAnchor];
+  view13 = [(AISRepairViewController *)self view];
+  centerXAnchor2 = [view13 centerXAnchor];
+  v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v55[4] = v15;
-  v16 = [(AISRepairViewController *)self viewController];
-  v17 = [v16 view];
-  v18 = [v17 centerYAnchor];
-  v19 = [(AISRepairViewController *)self view];
-  v20 = [v19 centerYAnchor];
-  v21 = [v18 constraintEqualToAnchor:v20];
+  viewController9 = [(AISRepairViewController *)self viewController];
+  view14 = [viewController9 view];
+  centerYAnchor = [view14 centerYAnchor];
+  view15 = [(AISRepairViewController *)self view];
+  centerYAnchor2 = [view15 centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v55[5] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v55 count:6];
   [v37 activateConstraints:v22];
 
-  v23 = [(AISRepairViewController *)self viewController];
-  [v23 didMoveToParentViewController:self];
+  viewController10 = [(AISRepairViewController *)self viewController];
+  [viewController10 didMoveToParentViewController:self];
 
   [(AISRepairViewController *)self _updateAutoDismissal];
   v24 = *MEMORY[0x277D85DE8];
@@ -103,14 +103,14 @@
 
 - (void)_updateAutoDismissal
 {
-  v3 = [(AISRepairViewController *)self viewController];
+  viewController = [(AISRepairViewController *)self viewController];
 
-  if (v3)
+  if (viewController)
   {
     if ([(AISRepairViewController *)self shouldAutoDismiss])
     {
-      v4 = [(AISRepairViewController *)self navigationController];
-      v5 = v4 == 0;
+      navigationController = [(AISRepairViewController *)self navigationController];
+      v5 = navigationController == 0;
     }
 
     else
@@ -118,8 +118,8 @@
       v5 = 0;
     }
 
-    v6 = [(AISRepairViewController *)self viewController];
-    [v6 setShouldAutoDismiss:v5];
+    viewController2 = [(AISRepairViewController *)self viewController];
+    [viewController2 setShouldAutoDismiss:v5];
   }
 }
 

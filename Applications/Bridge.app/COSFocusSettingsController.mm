@@ -1,8 +1,8 @@
 @interface COSFocusSettingsController
-- (id)pairSyncState:(id)a3;
+- (id)pairSyncState:(id)state;
 - (id)specifiers;
-- (void)_updateFooterTextForSettingsGroupSpecifier:(id)a3 syncEnabled:(BOOL)a4;
-- (void)setPairSyncState:(id)a3 specifier:(id)a4;
+- (void)_updateFooterTextForSettingsGroupSpecifier:(id)specifier syncEnabled:(BOOL)enabled;
+- (void)setPairSyncState:(id)state specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -38,13 +38,13 @@
   return v4;
 }
 
-- (void)_updateFooterTextForSettingsGroupSpecifier:(id)a3 syncEnabled:(BOOL)a4
+- (void)_updateFooterTextForSettingsGroupSpecifier:(id)specifier syncEnabled:(BOOL)enabled
 {
-  v4 = a4;
-  v5 = a3;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = v6;
-  if (v4)
+  if (enabledCopy)
   {
     v7 = @"FOCUS_SYNC_FOOTER_ON";
   }
@@ -55,7 +55,7 @@
   }
 
   v8 = [v6 localizedStringForKey:v7 value:&stru_10026E598 table:@"DoNotDisturb"];
-  [v5 setProperty:v8 forKey:PSFooterTextGroupKey];
+  [specifierCopy setProperty:v8 forKey:PSFooterTextGroupKey];
 }
 
 - (void)viewDidLoad
@@ -67,7 +67,7 @@
   [v3 setDelegate:self];
 }
 
-- (id)pairSyncState:(id)a3
+- (id)pairSyncState:(id)state
 {
   v3 = +[PBBGatewayManager sharedManager];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 pairSyncEnabled]);
@@ -75,20 +75,20 @@
   return v4;
 }
 
-- (void)setPairSyncState:(id)a3 specifier:(id)a4
+- (void)setPairSyncState:(id)state specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
+  bOOLValue = [state BOOLValue];
   v6 = +[PBBGatewayManager sharedManager];
-  [v6 setPairSyncEnabled:v5];
+  [v6 setPairSyncEnabled:bOOLValue];
 
   v11 = [(COSFocusSettingsController *)self specifierForID:@"FOCUS_SHARE_GROUP_ID"];
-  [(COSFocusSettingsController *)self _updateFooterTextForSettingsGroupSpecifier:v11 syncEnabled:v5];
+  [(COSFocusSettingsController *)self _updateFooterTextForSettingsGroupSpecifier:v11 syncEnabled:bOOLValue];
   v7 = [(COSFocusSettingsController *)self indexPathForSpecifier:v11];
-  v8 = [v7 section];
+  section = [v7 section];
 
-  v9 = [(COSFocusSettingsController *)self table];
-  v10 = [NSIndexSet indexSetWithIndex:v8];
-  [v9 reloadSections:v10 withRowAnimation:5];
+  table = [(COSFocusSettingsController *)self table];
+  v10 = [NSIndexSet indexSetWithIndex:section];
+  [table reloadSections:v10 withRowAnimation:5];
 }
 
 @end

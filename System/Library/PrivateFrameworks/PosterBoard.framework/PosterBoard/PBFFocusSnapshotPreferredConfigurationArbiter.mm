@@ -1,30 +1,30 @@
 @interface PBFFocusSnapshotPreferredConfigurationArbiter
-+ (void)determineDesiredConfigurations:(id *)a3 preferredConfiguration:(id *)a4 snapshotDefinition:(id *)a5 fromSwitcherConfiguration:(id)a6 configurationType:(int64_t)a7 variantType:(int64_t)a8 options:(unint64_t)a9 andFocusModeUUID:(id)a10 maxCount:(unint64_t)a11;
++ (void)determineDesiredConfigurations:(id *)configurations preferredConfiguration:(id *)configuration snapshotDefinition:(id *)definition fromSwitcherConfiguration:(id)switcherConfiguration configurationType:(int64_t)type variantType:(int64_t)variantType options:(unint64_t)options andFocusModeUUID:(id)self0 maxCount:(unint64_t)self1;
 @end
 
 @implementation PBFFocusSnapshotPreferredConfigurationArbiter
 
-+ (void)determineDesiredConfigurations:(id *)a3 preferredConfiguration:(id *)a4 snapshotDefinition:(id *)a5 fromSwitcherConfiguration:(id)a6 configurationType:(int64_t)a7 variantType:(int64_t)a8 options:(unint64_t)a9 andFocusModeUUID:(id)a10 maxCount:(unint64_t)a11
++ (void)determineDesiredConfigurations:(id *)configurations preferredConfiguration:(id *)configuration snapshotDefinition:(id *)definition fromSwitcherConfiguration:(id)switcherConfiguration configurationType:(int64_t)type variantType:(int64_t)variantType options:(unint64_t)options andFocusModeUUID:(id)self0 maxCount:(unint64_t)self1
 {
-  v16 = a11;
+  countCopy2 = count;
   v51[1] = *MEMORY[0x277D85DE8];
-  v17 = a6;
-  v18 = a10;
-  v19 = [v17 configurations];
+  switcherConfigurationCopy = switcherConfiguration;
+  dCopy = d;
+  configurations = [switcherConfigurationCopy configurations];
   v48[0] = MEMORY[0x277D85DD0];
   v48[1] = 3221225472;
   v48[2] = __212__PBFFocusSnapshotPreferredConfigurationArbiter_determineDesiredConfigurations_preferredConfiguration_snapshotDefinition_fromSwitcherConfiguration_configurationType_variantType_options_andFocusModeUUID_maxCount___block_invoke;
   v48[3] = &unk_2782C6CD0;
-  v20 = v18;
+  v20 = dCopy;
   v49 = v20;
-  v21 = v17;
+  v21 = switcherConfigurationCopy;
   v50 = v21;
-  v22 = [v19 bs_filter:v48];
+  v22 = [configurations bs_filter:v48];
 
-  if ((a7 + 1) < 2)
+  if ((type + 1) < 2)
   {
-    v23 = [v21 selectedConfiguration];
-    if (!v23)
+    selectedConfiguration = [v21 selectedConfiguration];
+    if (!selectedConfiguration)
     {
       goto LABEL_8;
     }
@@ -34,7 +34,7 @@ LABEL_6:
     v46[1] = 3221225472;
     v46[2] = __212__PBFFocusSnapshotPreferredConfigurationArbiter_determineDesiredConfigurations_preferredConfiguration_snapshotDefinition_fromSwitcherConfiguration_configurationType_variantType_options_andFocusModeUUID_maxCount___block_invoke_2;
     v46[3] = &unk_2782C6498;
-    v24 = v23;
+    v24 = selectedConfiguration;
     v47 = v24;
     v25 = [v22 sortedArrayUsingComparator:v46];
 
@@ -47,10 +47,10 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  if (a7 == 1)
+  if (type == 1)
   {
-    v23 = [v21 activeConfiguration];
-    if (v23)
+    selectedConfiguration = [v21 activeConfiguration];
+    if (selectedConfiguration)
     {
       goto LABEL_6;
     }
@@ -65,35 +65,35 @@ LABEL_8:
 
 LABEL_9:
   v26 = [v22 count];
-  if ((a9 & 2) != 0 && !v26)
+  if ((options & 2) != 0 && !v26)
   {
-    v27 = [v21 activeConfiguration];
-    v51[0] = v27;
+    activeConfiguration = [v21 activeConfiguration];
+    v51[0] = activeConfiguration;
     [MEMORY[0x277CBEA60] arrayWithObjects:v51 count:1];
     v28 = v21;
-    v29 = a5;
+    definitionCopy = definition;
     v30 = v20;
-    v31 = a4;
-    v32 = a8;
-    v34 = v33 = a3;
+    configurationCopy = configuration;
+    variantTypeCopy = variantType;
+    v34 = v33 = configurations;
 
     v22 = v34;
-    a3 = v33;
-    a8 = v32;
-    a4 = v31;
+    configurations = v33;
+    variantType = variantTypeCopy;
+    configuration = configurationCopy;
     v20 = v30;
-    a5 = v29;
+    definition = definitionCopy;
     v21 = v28;
-    v16 = a11;
+    countCopy2 = count;
   }
 
 LABEL_12:
-  if (v16)
+  if (countCopy2)
   {
     v35 = [v22 count];
-    if (v35 >= v16)
+    if (v35 >= countCopy2)
     {
-      v36 = v16;
+      v36 = countCopy2;
     }
 
     else
@@ -106,9 +106,9 @@ LABEL_12:
     v22 = v37;
   }
 
-  if ((a8 + 1) >= 2)
+  if ((variantType + 1) >= 2)
   {
-    if (a8 != 1)
+    if (variantType != 1)
     {
       goto LABEL_31;
     }
@@ -125,31 +125,31 @@ LABEL_12:
   if (!v38)
   {
 LABEL_31:
-    [PBFFocusSnapshotPreferredConfigurationArbiter determineDesiredConfigurations:a2 preferredConfiguration:a1 snapshotDefinition:? fromSwitcherConfiguration:? configurationType:? variantType:? options:? andFocusModeUUID:? maxCount:?];
+    [PBFFocusSnapshotPreferredConfigurationArbiter determineDesiredConfigurations:a2 preferredConfiguration:self snapshotDefinition:? fromSwitcherConfiguration:? configurationType:? variantType:? options:? andFocusModeUUID:? maxCount:?];
   }
 
-  if (a4)
+  if (configuration)
   {
     v40 = v24;
-    *a4 = v24;
+    *configuration = v24;
   }
 
-  if (a5)
+  if (definition)
   {
     v41 = v39;
-    *a5 = v39;
+    *definition = v39;
   }
 
-  if (a3)
+  if (configurations)
   {
     v42 = v22;
-    *a3 = v22;
+    *configurations = v22;
   }
 
-  if (a5)
+  if (definition)
   {
     v43 = v39;
-    *a5 = v39;
+    *definition = v39;
   }
 }
 

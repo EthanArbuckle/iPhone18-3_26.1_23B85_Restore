@@ -1,13 +1,13 @@
 @interface CRLSVGParser
-+ (id)bezierPathFromSVGPathDAttribute:(id)a3;
++ (id)bezierPathFromSVGPathDAttribute:(id)attribute;
 @end
 
 @implementation CRLSVGParser
 
-+ (id)bezierPathFromSVGPathDAttribute:(id)a3
++ (id)bezierPathFromSVGPathDAttribute:(id)attribute
 {
-  v67 = a3;
-  v3 = [v67 cStringUsingEncoding:4];
+  attributeCopy = attribute;
+  v3 = [attributeCopy cStringUsingEncoding:4];
   if (!v3)
   {
     goto LABEL_120;

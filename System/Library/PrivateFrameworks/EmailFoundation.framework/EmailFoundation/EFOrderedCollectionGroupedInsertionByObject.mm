@@ -1,24 +1,24 @@
 @interface EFOrderedCollectionGroupedInsertionByObject
-- (EFOrderedCollectionGroupedInsertionByObject)initWithObjects:(id)a3 previousObject:(id)a4 nextObject:(id)a5 isMove:(BOOL)a6;
+- (EFOrderedCollectionGroupedInsertionByObject)initWithObjects:(id)objects previousObject:(id)object nextObject:(id)nextObject isMove:(BOOL)move;
 @end
 
 @implementation EFOrderedCollectionGroupedInsertionByObject
 
-- (EFOrderedCollectionGroupedInsertionByObject)initWithObjects:(id)a3 previousObject:(id)a4 nextObject:(id)a5 isMove:(BOOL)a6
+- (EFOrderedCollectionGroupedInsertionByObject)initWithObjects:(id)objects previousObject:(id)object nextObject:(id)nextObject isMove:(BOOL)move
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  objectsCopy = objects;
+  objectCopy = object;
+  nextObjectCopy = nextObject;
   v17.receiver = self;
   v17.super_class = EFOrderedCollectionGroupedInsertionByObject;
   v14 = [(EFOrderedCollectionGroupedInsertionByObject *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_objects, a3);
-    objc_storeStrong(&v15->_previousObject, a4);
-    objc_storeStrong(&v15->_nextObject, a5);
-    v15->_isMove = a6;
+    objc_storeStrong(&v14->_objects, objects);
+    objc_storeStrong(&v15->_previousObject, object);
+    objc_storeStrong(&v15->_nextObject, nextObject);
+    v15->_isMove = move;
   }
 
   return v15;

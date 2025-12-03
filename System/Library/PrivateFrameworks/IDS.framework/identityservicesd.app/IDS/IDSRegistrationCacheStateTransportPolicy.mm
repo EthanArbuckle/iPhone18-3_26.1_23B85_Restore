@@ -1,13 +1,13 @@
 @interface IDSRegistrationCacheStateTransportPolicy
-+ (BOOL)shouldQueryUpdateOfParams:(id)a3;
++ (BOOL)shouldQueryUpdateOfParams:(id)params;
 @end
 
 @implementation IDSRegistrationCacheStateTransportPolicy
 
-+ (BOOL)shouldQueryUpdateOfParams:(id)a3
++ (BOOL)shouldQueryUpdateOfParams:(id)params
 {
-  v3 = [a3 command];
-  v4 = [v3 integerValue] == 101;
+  command = [params command];
+  v4 = [command integerValue] == 101;
 
   return v4;
 }

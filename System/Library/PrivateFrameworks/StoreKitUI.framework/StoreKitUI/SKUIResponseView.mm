@@ -1,24 +1,24 @@
 @interface SKUIResponseView
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForSubtitleLabel:(id)a3 context:(id)a4;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUIResponseView)initWithFrame:(CGRect)a3;
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForSubtitleLabel:(id)label context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUIResponseView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SKUIResponseView
 
-- (SKUIResponseView)initWithFrame:(CGRect)a3
+- (SKUIResponseView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -33,24 +33,24 @@
 
   v23.receiver = self;
   v23.super_class = SKUIResponseView;
-  v16 = [(SKUIViewReuseView *)&v23 initWithFrame:x, y, width, height];
-  if (v16)
+  height = [(SKUIViewReuseView *)&v23 initWithFrame:x, y, width, height];
+  if (height)
   {
     v17 = MEMORY[0x277D755B8];
     v18 = SKUIBundle();
     v19 = [v17 imageNamed:@"Reply" inBundle:v18];
 
     v20 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v19];
-    replyImageView = v16->_replyImageView;
-    v16->_replyImageView = v20;
+    replyImageView = height->_replyImageView;
+    height->_replyImageView = v20;
 
-    [(SKUIResponseView *)v16 addSubview:v16->_replyImageView];
+    [(SKUIResponseView *)height addSubview:height->_replyImageView];
   }
 
-  return v16;
+  return height;
 }
 
-+ (BOOL)prefetchResourcesForViewElement:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForViewElement:(id)element reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -67,10 +67,10 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -83,8 +83,8 @@
     }
   }
 
-  [v6 defaultItemWidthForViewElement:v7];
-  [a1 sizeThatFitsWidth:v7 viewElement:v6 context:?];
+  [contextCopy defaultItemWidthForViewElement:elementCopy];
+  [self sizeThatFitsWidth:elementCopy viewElement:contextCopy context:?];
   v17 = v16;
   v19 = v18;
 
@@ -95,10 +95,10 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -115,11 +115,11 @@
   v19[1] = 3221225472;
   v19[2] = __62__SKUIResponseView_requestLayoutForViewElement_width_context___block_invoke;
   v19[3] = &unk_2781FF580;
-  v21 = a4;
-  v20 = v9;
-  v22 = a1;
-  v18 = v9;
-  [v8 enumerateChildrenUsingBlock:v19];
+  widthCopy = width;
+  v20 = contextCopy;
+  selfCopy = self;
+  v18 = contextCopy;
+  [elementCopy enumerateChildrenUsingBlock:v19];
 }
 
 void __62__SKUIResponseView_requestLayoutForViewElement_width_context___block_invoke(uint64_t a1, void *a2)
@@ -164,10 +164,10 @@ LABEL_10:
 LABEL_11:
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  v7 = a4;
-  v8 = a5;
+  elementCopy = element;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -185,7 +185,7 @@ LABEL_11:
   v32 = 0x3010000000;
   v33 = &unk_215F8ACD7;
   v34 = *MEMORY[0x277CBF3A8];
-  *&v34 = a3;
+  *&v34 = width;
   v29[0] = 0;
   v29[1] = v29;
   v29[2] = 0x2020000000;
@@ -198,13 +198,13 @@ LABEL_11:
   v22[1] = 3221225472;
   v22[2] = __58__SKUIResponseView_sizeThatFitsWidth_viewElement_context___block_invoke;
   v22[3] = &unk_2781FD320;
-  v27 = a3;
-  v17 = v8;
+  widthCopy = width;
+  v17 = contextCopy;
   v23 = v17;
   v24 = &v30;
   v25 = v29;
   v26 = v28;
-  [v7 enumerateChildrenUsingBlock:v22];
+  [elementCopy enumerateChildrenUsingBlock:v22];
   v18 = v31[4];
   v19 = v31[5];
 
@@ -251,20 +251,20 @@ void __58__SKUIResponseView_sizeThatFitsWidth_viewElement_context___block_invoke
   ++*(*(*(a1 + 48) + 8) + 24);
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
+  elementCopy = element;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__SKUIResponseView_reloadWithViewElement_width_context___block_invoke;
   v12[3] = &unk_2781F95C8;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = elementCopy;
+  widthCopy = width;
+  v14 = contextCopy;
+  v10 = contextCopy;
+  v11 = elementCopy;
   [(SKUIViewReuseView *)self modifyUsingBlock:v12];
 }
 
@@ -339,13 +339,13 @@ LABEL_8:
 LABEL_9:
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SKUIResponseView *)self contentInset:a3.width];
+  width = fits.width;
+  [(SKUIResponseView *)self contentInset:fits.width];
   v6 = v5;
   v9 = width - (v7 + 17.5) - v8;
-  v10 = [(SKUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SKUIViewReuseView *)self allExistingViews];
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x2020000000;
@@ -362,7 +362,7 @@ LABEL_9:
   v14[5] = &v15;
   v14[6] = v19;
   *&v14[7] = v9;
-  [v10 enumerateObjectsUsingBlock:v14];
+  [allExistingViews enumerateObjectsUsingBlock:v14];
   v11 = v16[3];
   _Block_object_dispose(&v15, 8);
   _Block_object_dispose(v19, 8);
@@ -438,7 +438,7 @@ void __33__SKUIResponseView_sizeThatFits___block_invoke(uint64_t a1, void *a2, u
   v16 = v15;
   v18 = v17 + 17.5;
   v19 = v8 - (v17 + 17.5) - v15;
-  v20 = [(SKUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SKUIViewReuseView *)self allExistingViews];
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
@@ -464,10 +464,10 @@ void __33__SKUIResponseView_sizeThatFits___block_invoke(uint64_t a1, void *a2, u
   v25[13] = v6;
   *&v25[14] = v8;
   v25[15] = v10;
-  [v20 enumerateObjectsUsingBlock:v25];
-  v21 = [(SKUIResponseView *)self replyImageView];
-  [v21 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
-  [v21 setFrame:{0.0, v12, v22, v23}];
+  [allExistingViews enumerateObjectsUsingBlock:v25];
+  replyImageView = [(SKUIResponseView *)self replyImageView];
+  [replyImageView sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  [replyImageView setFrame:{0.0, v12, v22, v23}];
 
   _Block_object_dispose(v27, 8);
   _Block_object_dispose(v28, 8);
@@ -551,27 +551,27 @@ void __34__SKUIResponseView_layoutSubviews__block_invoke(uint64_t a1, void *a2, 
   }
 }
 
-+ (id)_attributedStringForSubtitleLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForSubtitleLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SKUIViewElementFontWithStyle(v7);
+  labelCopy = label;
+  contextCopy = context;
+  style = [labelCopy style];
+  v8 = SKUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = SKUIFontPreferredFontForTextStyle(21);
   }
 
-  v9 = [v6 tintColor];
-  v10 = SKUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  v10 = SKUIViewElementPlainColorWithStyle(style, tintColor);
 
   if (!v10)
   {
     v10 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.3];
   }
 
-  v11 = [v5 text];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  text = [labelCopy text];
+  v12 = [text attributedStringWithDefaultFont:v8 foregroundColor:v10 style:style];
 
   return v12;
 }

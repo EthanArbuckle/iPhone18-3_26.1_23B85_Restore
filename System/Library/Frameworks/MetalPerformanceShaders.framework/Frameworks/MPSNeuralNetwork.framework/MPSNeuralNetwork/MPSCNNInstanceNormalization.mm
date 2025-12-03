@@ -3,11 +3,11 @@
 - (MPSCNNInstanceNormalization)initWithDevice:(id)device dataSource:(id)dataSource;
 - (MPSCNNInstanceNormalizationGradientState)resultStateForSourceImage:(MPSImage *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImage *)destinationImage;
 - (MPSCNNInstanceNormalizationGradientState)temporaryResultStateForCommandBuffer:(id)commandBuffer sourceImage:(MPSImage *)sourceImage sourceStates:(NSArray *)sourceStates destinationImage:(MPSImage *)destinationImage;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)reloadDataSourceDeprecated:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)reloadDataSourceDeprecated:(id)deprecated;
 - (void)reloadGammaAndBetaWithCommandBuffer:(id)commandBuffer gammaAndBetaState:(MPSCNNNormalizationGammaAndBetaState *)gammaAndBetaState;
 @end
 
@@ -240,7 +240,7 @@ LABEL_14:
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v64.receiver = self;
@@ -279,8 +279,8 @@ LABEL_14:
         v46 = strlen(v44);
         if (v46)
         {
-          objc_msgSend_encodeBytes_length_forKey_(a3, v47, v45, v46 + 1, @"kMPSCNNInstanceNormalization.s", v48, v49, v50);
-          objc_msgSend_encodeObject_forKey_(a3, v51, dataSource, @"kMPSCNNInstanceNormalization.o", v52, v53, v54, v55);
+          objc_msgSend_encodeBytes_length_forKey_(coder, v47, v45, v46 + 1, @"kMPSCNNInstanceNormalization.s", v48, v49, v50);
+          objc_msgSend_encodeObject_forKey_(coder, v51, dataSource, @"kMPSCNNInstanceNormalization.o", v52, v53, v54, v55);
         }
       }
     }
@@ -289,7 +289,7 @@ LABEL_14:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v21.receiver = self;
   v21.super_class = MPSCNNInstanceNormalization;
@@ -301,7 +301,7 @@ LABEL_14:
     dataSource = self->_dataSource;
     if (v8)
     {
-      v17 = objc_msgSend_copyWithZone_device_(dataSource, v9, a3, a4, v11, v12, v13, v14);
+      v17 = objc_msgSend_copyWithZone_device_(dataSource, v9, zone, device, v11, v12, v13, v14);
       v7[43] = v17;
       if (!v17)
       {
@@ -314,7 +314,7 @@ LABEL_7:
 
     if (v15)
     {
-      v18 = objc_msgSend_copyWithZone_(dataSource, v9, a3, v10, v11, v12, v13, v14);
+      v18 = objc_msgSend_copyWithZone_(dataSource, v9, zone, v10, v11, v12, v13, v14);
       v7[43] = v18;
       if (v18)
       {
@@ -340,17 +340,17 @@ LABEL_9:
   return v7;
 }
 
-- (void)reloadDataSourceDeprecated:(id)a3
+- (void)reloadDataSourceDeprecated:(id)deprecated
 {
-  self->_numberOfFeatureChannels = objc_msgSend_numberOfFeatureChannels(a3, a2, a3, v3, v4, v5, v6, v7);
+  self->_numberOfFeatureChannels = objc_msgSend_numberOfFeatureChannels(deprecated, a2, deprecated, v3, v4, v5, v6, v7);
   if (objc_opt_respondsToSelector())
   {
-    objc_msgSend_epsilon(a3, v10, v11, v12, v13, v14, v15, v16);
+    objc_msgSend_epsilon(deprecated, v10, v11, v12, v13, v14, v15, v16);
     self->_epsilon = v17;
   }
 
-  v18 = objc_msgSend_gamma(a3, v10, v11, v12, v13, v14, v15, v16);
-  v33 = objc_msgSend_beta(a3, v19, v20, v21, v22, v23, v24, v25);
+  v18 = objc_msgSend_gamma(deprecated, v10, v11, v12, v13, v14, v15, v16);
+  v33 = objc_msgSend_beta(deprecated, v19, v20, v21, v22, v23, v24, v25);
   if (v18)
   {
     gamma = self->_gamma;

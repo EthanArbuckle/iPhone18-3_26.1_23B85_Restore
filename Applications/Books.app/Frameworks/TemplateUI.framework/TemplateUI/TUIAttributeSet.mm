@@ -2,41 +2,41 @@
 + (id)allSupportedAttributes;
 + (id)globallySupportedAttributes;
 + (id)set;
-+ (id)setWithArray:(id)a3;
++ (id)setWithArray:(id)array;
 + (id)supportedAttributesSize;
 + (id)supportedAttributesSizeAndIntrinsic;
 + (id)supportedAttributesStyling;
 + (id)supportedAttributesTextStyling;
-- (BOOL)containsAttribute:(unsigned __int16)a3;
-- (TUIAttributeSet)initWithArray:(id)a3;
-- (TUIAttributeSet)initWithOther:(id)a3;
-- (TUIAttributeSet)initWithSet:(id)a3;
+- (BOOL)containsAttribute:(unsigned __int16)attribute;
+- (TUIAttributeSet)initWithArray:(id)array;
+- (TUIAttributeSet)initWithOther:(id)other;
+- (TUIAttributeSet)initWithSet:(id)set;
 - (id).cxx_construct;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (id)setByAddingAttributesFromArray:(id)a3;
-- (id)setByAddingAttributesFromSet:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (id)setByAddingAttributesFromArray:(id)array;
+- (id)setByAddingAttributesFromSet:(id)set;
 @end
 
 @implementation TUIAttributeSet
 
 + (id)set
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)setWithArray:(id)a3
++ (id)setWithArray:(id)array
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithArray:v4];
+  arrayCopy = array;
+  v5 = [[self alloc] initWithArray:arrayCopy];
 
   return v5;
 }
 
-- (TUIAttributeSet)initWithArray:(id)a3
+- (TUIAttributeSet)initWithArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v16.receiver = self;
   v16.super_class = TUIAttributeSet;
   v5 = [(TUIAttributeSet *)&v16 init];
@@ -46,7 +46,7 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v4;
+    v6 = arrayCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {
@@ -79,9 +79,9 @@
   return v5;
 }
 
-- (TUIAttributeSet)initWithSet:(id)a3
+- (TUIAttributeSet)initWithSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v16.receiver = self;
   v16.super_class = TUIAttributeSet;
   v5 = [(TUIAttributeSet *)&v16 init];
@@ -91,7 +91,7 @@
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = v4;
+    v6 = setCopy;
     v7 = [v6 countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v7)
     {
@@ -124,64 +124,64 @@
   return v5;
 }
 
-- (TUIAttributeSet)initWithOther:(id)a3
+- (TUIAttributeSet)initWithOther:(id)other
 {
-  v4 = a3;
+  otherCopy = other;
   v9.receiver = self;
   v9.super_class = TUIAttributeSet;
   v5 = [(TUIAttributeSet *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (otherCopy && v5)
   {
-    v7 = *(v4 + 8);
-    *(v5 + 24) = *(v4 + 24);
+    v7 = *(otherCopy + 8);
+    *(v5 + 24) = *(otherCopy + 24);
     *(v5 + 8) = v7;
   }
 
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [TUIMutableAttributeSet allocWithZone:a3];
+  v4 = [TUIMutableAttributeSet allocWithZone:zone];
 
   return [(TUIAttributeSet *)v4 initWithOther:self];
 }
 
-- (BOOL)containsAttribute:(unsigned __int16)a3
+- (BOOL)containsAttribute:(unsigned __int16)attribute
 {
-  if (a3 == 0xFFFF)
+  if (attribute == 0xFFFF)
   {
     LOBYTE(v3) = 0;
   }
 
   else
   {
-    if (a3 >= 0x100u)
+    if (attribute >= 0x100u)
     {
       sub_8BEBC("bitset test argument out of range");
     }
 
-    return (*(self->_bitset.__first_ + ((a3 >> 3) & 0x1FF8)) >> a3) & 1;
+    return (*(self->_bitset.__first_ + ((attribute >> 3) & 0x1FF8)) >> attribute) & 1;
   }
 
   return v3;
 }
 
-- (id)setByAddingAttributesFromSet:(id)a3
+- (id)setByAddingAttributesFromSet:(id)set
 {
-  v4 = a3;
+  setCopy = set;
   v5 = [(TUIAttributeSet *)self mutableCopy];
-  [v5 unionSet:v4];
+  [v5 unionSet:setCopy];
 
   return v5;
 }
 
-- (id)setByAddingAttributesFromArray:(id)a3
+- (id)setByAddingAttributesFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(TUIAttributeSet *)self mutableCopy];
-  v6 = [TUIAttributeSet setWithArray:v4];
+  v6 = [TUIAttributeSet setWithArray:arrayCopy];
   [v5 unionSet:v6];
 
   return v5;
@@ -217,7 +217,7 @@
   block[1] = 3221225472;
   block[2] = sub_173138;
   block[3] = &unk_25F0F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2E6860 != -1)
   {
     dispatch_once(&qword_2E6860, block);
@@ -234,7 +234,7 @@
   block[1] = 3221225472;
   block[2] = sub_173638;
   block[3] = &unk_25F0F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2E6870 != -1)
   {
     dispatch_once(&qword_2E6870, block);
@@ -251,7 +251,7 @@
   block[1] = 3221225472;
   block[2] = sub_1737FC;
   block[3] = &unk_25F0F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2E6880 != -1)
   {
     dispatch_once(&qword_2E6880, block);
@@ -268,7 +268,7 @@
   block[1] = 3221225472;
   block[2] = sub_173A78;
   block[3] = &unk_25F0F0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_2E6890 != -1)
   {
     dispatch_once(&qword_2E6890, block);

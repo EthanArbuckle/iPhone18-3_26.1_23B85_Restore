@@ -6,10 +6,10 @@
 
 - (uint64_t)re_actionIdentifierHashValue
 {
-  v2 = [a1 bytes];
-  v3 = [a1 length];
+  bytes = [self bytes];
+  v3 = [self length];
 
-  return REHashDataUInt64(v2, v3);
+  return REHashDataUInt64(bytes, v3);
 }
 
 @end

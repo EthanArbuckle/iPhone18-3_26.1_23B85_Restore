@@ -1,14 +1,14 @@
 @interface UTSService
-- (id)loadCollectionInfo:(id)a3;
+- (id)loadCollectionInfo:(id)info;
 @end
 
 @implementation UTSService
 
-- (id)loadCollectionInfo:(id)a3
+- (id)loadCollectionInfo:(id)info
 {
   swift_getObjectType();
   sub_100052058();
-  v4 = a3;
+  infoCopy = info;
   v5 = static JSContext.requiredCurrent.getter();
   v6 = JSContext.propagateErrorsToExceptions(_:)();
 

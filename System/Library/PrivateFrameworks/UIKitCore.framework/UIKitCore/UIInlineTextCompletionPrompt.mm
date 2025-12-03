@@ -1,23 +1,23 @@
 @interface UIInlineTextCompletionPrompt
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (UIInlineTextCompletionPrompt)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (UIInlineTextCompletionPrompt)initWithFrame:(CGRect)frame;
 - (UITextCompletionAcceptanceDelegate)delegate;
 - (int)textEffectsVisibilityLevel;
 - (void)accept;
 - (void)dealloc;
 - (void)removePromptSubviews;
-- (void)setTextCompletion:(id)a3 inRect:(CGRect)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setTextCompletion:(id)completion inRect:(CGRect)rect;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation UIInlineTextCompletionPrompt
 
-- (UIInlineTextCompletionPrompt)initWithFrame:(CGRect)a3
+- (UIInlineTextCompletionPrompt)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UIInlineTextCompletionPrompt;
-  v3 = [(UIView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -34,17 +34,17 @@
 
 - (int)textEffectsVisibilityLevel
 {
-  v2 = [(UIView *)self superview];
-  v3 = [v2 textEffectsVisibilityLevel];
+  superview = [(UIView *)self superview];
+  textEffectsVisibilityLevel = [superview textEffectsVisibilityLevel];
 
-  if (v3 <= 8)
+  if (textEffectsVisibilityLevel <= 8)
   {
     return 8;
   }
 
   else
   {
-    return v3;
+    return textEffectsVisibilityLevel;
   }
 }
 
@@ -65,45 +65,45 @@
   self->_textCompletionView = 0;
 }
 
-- (void)setTextCompletion:(id)a3 inRect:(CGRect)a4
+- (void)setTextCompletion:(id)completion inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v129 = *MEMORY[0x1E69E9840];
-  v10 = a3 == 0;
-  v11 = a3;
-  v12 = [v11 copy];
+  v10 = completion == 0;
+  completionCopy = completion;
+  v12 = [completionCopy copy];
   textCompletionCandidate = self->_textCompletionCandidate;
   self->_textCompletionCandidate = v12;
 
-  v14 = [v11 candidate];
-  v15 = [v14 copy];
+  candidate = [completionCopy candidate];
+  v15 = [candidate copy];
   textCompletion = self->_textCompletion;
   self->_textCompletion = v15;
 
-  v17 = [v11 input];
+  input = [completionCopy input];
 
-  v18 = [v17 copy];
+  v18 = [input copy];
   typedText = self->_typedText;
   self->_typedText = v18;
 
   [(UIInlineTextCompletionPrompt *)self removePromptSubviews];
   [(UIView *)self setHidden:v10];
   v20 = +[UIKeyboardImpl activeInstance];
-  v21 = [v20 inputOverlayContainer];
+  inputOverlayContainer = [v20 inputOverlayContainer];
 
-  if (a3)
+  if (completion)
   {
-    v22 = [(UIView *)self superview];
+    superview = [(UIView *)self superview];
 
-    if (!v22)
+    if (!superview)
     {
-      [v21 addSubview:self];
+      [inputOverlayContainer addSubview:self];
     }
 
-    v23 = v21;
+    v23 = inputOverlayContainer;
     v24 = +[UIKeyboard currentDocumentState];
     [v24 clientFrameInWindow];
     v26 = v25;
@@ -112,15 +112,15 @@
     v32 = v31;
     v33 = v23;
     v34 = +[UIKeyboardImpl activeInstance];
-    v35 = [v34 inputDelegate];
+    inputDelegate = [v34 inputDelegate];
 
-    v36 = [v35 textInputView];
+    textInputView = [inputDelegate textInputView];
 
-    if (v33 && v36)
+    if (v33 && textInputView)
     {
       v37 = +[UIKeyboardImpl activeInstance];
-      v38 = [v35 textInputView];
-      [v37 convertRectToAutocorrectRect:v38 delegateView:v33 container:{v26, v28, v30, v32}];
+      textInputView2 = [inputDelegate textInputView];
+      [v37 convertRectToAutocorrectRect:textInputView2 delegateView:v33 container:{v26, v28, v30, v32}];
       v26 = v39;
       v28 = v40;
       v30 = v41;
@@ -133,8 +133,8 @@
     v130.size.height = v32;
     if (CGRectIsNull(v130))
     {
-      v43 = [v33 window];
-      [v43 frame];
+      window = [v33 window];
+      [window frame];
       v26 = v44;
       v28 = v45;
       v30 = v46;
@@ -200,8 +200,8 @@
     aRect.origin.x = v57;
     v59 = v54;
 
-    v60 = [objc_opt_self() mainScreen];
-    [v60 scale];
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen scale];
     v62 = v61;
 
     v63 = floor(x * v62) / v62;
@@ -354,8 +354,8 @@
       [UIView animateWithDuration:24 delay:&aRect.size options:0 animations:0.5 completion:0.5];
     }
 
-    v94 = [(UIView *)self window];
-    if ([v94 _isTextEffectsWindow])
+    window2 = [(UIView *)self window];
+    if ([window2 _isTextEffectsWindow])
     {
       v95 = +[UIPeripheralHost sharedInstance];
       [v95 _inputViewRectToAvoid];
@@ -363,11 +363,11 @@
       v99 = v98;
       v101 = v100;
       v103 = v102;
-      v104 = [(UIView *)self window];
-      v105 = [(UIView *)self superview];
+      window3 = [(UIView *)self window];
+      superview2 = [(UIView *)self superview];
       [(UIView *)self frame];
-      [v105 convertRect:0 toView:?];
-      [v104 convertRect:0 toWindow:?];
+      [superview2 convertRect:0 toView:?];
+      [window3 convertRect:0 toWindow:?];
       v147.origin.x = v106;
       v147.origin.y = v107;
       v147.size.width = v108;
@@ -390,37 +390,37 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
+  y = inside.y;
+  x = inside.x;
+  selfCopy = self;
   textCompletionView = self->_textCompletionView;
-  v8 = a4;
-  [(UIView *)textCompletionView convertPoint:v6 fromView:x, y];
-  LOBYTE(v6) = [(UIView *)textCompletionView pointInside:v8 withEvent:?];
+  eventCopy = event;
+  [(UIView *)textCompletionView convertPoint:selfCopy fromView:x, y];
+  LOBYTE(selfCopy) = [(UIView *)textCompletionView pointInside:eventCopy withEvent:?];
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)accept
 {
-  v3 = [(UIInlineTextCompletionPrompt *)self textCompletionCandidate];
+  textCompletionCandidate = [(UIInlineTextCompletionPrompt *)self textCompletionCandidate];
 
-  if (v3)
+  if (textCompletionCandidate)
   {
-    v5 = [(UIInlineTextCompletionPrompt *)self delegate];
-    v4 = [(UIInlineTextCompletionPrompt *)self textCompletionCandidate];
-    [v5 acceptTextCompletion:v4];
+    delegate = [(UIInlineTextCompletionPrompt *)self delegate];
+    textCompletionCandidate2 = [(UIInlineTextCompletionPrompt *)self textCompletionCandidate];
+    [delegate acceptTextCompletion:textCompletionCandidate2];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   textCompletionView = self->_textCompletionView;
-  v6 = a4;
+  eventCopy = event;
   [(UIView *)textCompletionView frame];
-  v7 = [(UIInlineTextCompletionPrompt *)self pointInside:v6 withEvent:?];
+  v7 = [(UIInlineTextCompletionPrompt *)self pointInside:eventCopy withEvent:?];
 
   if (self->_touchDown && v7)
   {
@@ -430,10 +430,10 @@
   self->_touchDown = 0;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  if ([v4 _isGestureType:0] && objc_msgSend(v4, "numberOfTouchesRequired") == 1 && objc_msgSend(v4, "numberOfTapsRequired") == 1 || objc_msgSend(v4, "_isGestureType:", 1) && objc_msgSend(v4, "numberOfTouchesRequired") == 1)
+  beginCopy = begin;
+  if ([beginCopy _isGestureType:0] && objc_msgSend(beginCopy, "numberOfTouchesRequired") == 1 && objc_msgSend(beginCopy, "numberOfTapsRequired") == 1 || objc_msgSend(beginCopy, "_isGestureType:", 1) && objc_msgSend(beginCopy, "numberOfTouchesRequired") == 1)
   {
     v5 = 0;
   }
@@ -442,7 +442,7 @@
   {
     v7.receiver = self;
     v7.super_class = UIInlineTextCompletionPrompt;
-    v5 = [(UIView *)&v7 gestureRecognizerShouldBegin:v4];
+    v5 = [(UIView *)&v7 gestureRecognizerShouldBegin:beginCopy];
   }
 
   return v5;

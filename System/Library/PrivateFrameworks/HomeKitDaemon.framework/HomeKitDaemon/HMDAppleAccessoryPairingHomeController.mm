@@ -1,53 +1,53 @@
 @interface HMDAppleAccessoryPairingHomeController
 + (id)logCategory;
-- (BOOL)handleMessage:(id)a3 from:(id)a4;
-- (HMDAppleAccessoryPairingHomeController)initWithState:(id)a3 homeManager:(id)a4 dataSource:(id)a5;
+- (BOOL)handleMessage:(id)message from:(id)from;
+- (HMDAppleAccessoryPairingHomeController)initWithState:(id)state homeManager:(id)manager dataSource:(id)source;
 - (id)logIdentifier;
 - (id)workContext;
-- (void)_handleDeviceNotification:(id)a3;
+- (void)_handleDeviceNotification:(id)notification;
 - (void)checkDeviceVersionAndSendUpgrade;
 - (void)cleanupLegacyZone;
-- (void)localZone:(id)a3 didProcessModelCreation:(id)a4;
-- (void)localZone:(id)a3 didProcessModelDeletion:(id)a4;
-- (void)localZone:(id)a3 didProcessModelUpdate:(id)a4;
+- (void)localZone:(id)zone didProcessModelCreation:(id)creation;
+- (void)localZone:(id)zone didProcessModelDeletion:(id)deletion;
+- (void)localZone:(id)zone didProcessModelUpdate:(id)update;
 - (void)postNotificationOfDeviceUpdated;
-- (void)postSoftwareUpdateEventForDescriptor:(id)a3;
-- (void)postSoftwareUpdateEventForSoftwareUpdate:(id)a3;
-- (void)processHMDAppleMediaAccessoryModel:(id)a3;
-- (void)processHMDResidentDeviceModel:(id)a3;
-- (void)startWithLocalZone:(id)a3;
-- (void)timerDidFire:(id)a3;
+- (void)postSoftwareUpdateEventForDescriptor:(id)descriptor;
+- (void)postSoftwareUpdateEventForSoftwareUpdate:(id)update;
+- (void)processHMDAppleMediaAccessoryModel:(id)model;
+- (void)processHMDResidentDeviceModel:(id)model;
+- (void)startWithLocalZone:(id)zone;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDAppleAccessoryPairingHomeController
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v3 = [v2 accessory];
-  v4 = [v3 uuid];
-  v5 = [v4 UUIDString];
+  state = [(HMDAppleAccessoryPairingHomeController *)self state];
+  accessory = [state accessory];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
-- (void)processHMDAppleMediaAccessoryModel:(id)a3
+- (void)processHMDAppleMediaAccessoryModel:(id)model
 {
   v78 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 deviceUUID];
-  if (v5)
+  modelCopy = model;
+  deviceUUID = [modelCopy deviceUUID];
+  if (deviceUUID)
   {
   }
 
   else
   {
-    v14 = [v4 device];
+    device = [modelCopy device];
 
-    if (v14)
+    if (device)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -55,7 +55,7 @@
         v72 = 138543618;
         v73 = v18;
         v74 = 2112;
-        v75 = v4;
+        v75 = modelCopy;
         _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@Accessory model does not yet have a device identifier: %@", &v72, 0x16u);
       }
 
@@ -64,25 +64,25 @@
     }
   }
 
-  v6 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v7 = [v6 deviceIdentifier];
+  state = [(HMDAppleAccessoryPairingHomeController *)self state];
+  deviceIdentifier = [state deviceIdentifier];
 
-  if (v7)
+  if (deviceIdentifier)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDAppleAccessoryPairingHomeController *)v9 state];
-      v13 = [v12 deviceIdentifier];
+      state2 = [(HMDAppleAccessoryPairingHomeController *)selfCopy2 state];
+      deviceIdentifier2 = [state2 deviceIdentifier];
       v72 = 138543874;
       v73 = v11;
       v74 = 2112;
-      v75 = v13;
+      v75 = deviceIdentifier2;
       v76 = 2112;
-      v77 = v4;
+      v77 = modelCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Already have a device identifier %@ for %@", &v72, 0x20u);
     }
 
@@ -91,24 +91,24 @@
 
   else
   {
-    v19 = [v4 device];
-    v20 = [v19 identifier];
-    v21 = [v20 UUIDString];
-    v22 = v21;
-    if (v21)
+    device2 = [modelCopy device];
+    identifier = [device2 identifier];
+    uUIDString = [identifier UUIDString];
+    v22 = uUIDString;
+    if (uUIDString)
     {
-      v23 = v21;
+      deviceUUID2 = uUIDString;
     }
 
     else
     {
-      v23 = [v4 deviceUUID];
+      deviceUUID2 = [modelCopy deviceUUID];
     }
 
-    v24 = v23;
+    v24 = deviceUUID2;
 
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy3 = self;
     v27 = HMFGetOSLogHandle();
     v28 = os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT);
     if (v24)
@@ -116,13 +116,13 @@
       if (v28)
       {
         v29 = HMFGetLogIdentifier();
-        v30 = [(HMDAppleAccessoryPairingHomeController *)v26 state];
-        v31 = [v30 accessory];
-        v32 = [v31 uuid];
+        state3 = [(HMDAppleAccessoryPairingHomeController *)selfCopy3 state];
+        accessory = [state3 accessory];
+        uuid = [accessory uuid];
         v72 = 138543874;
         v73 = v29;
         v74 = 2112;
-        v75 = v32;
+        v75 = uuid;
         v76 = 2112;
         v77 = v24;
         _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@Looks like deviceIdentifier for %@ is: %@", &v72, 0x20u);
@@ -130,12 +130,12 @@
 
       objc_autoreleasePoolPop(v25);
       v33 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v24];
-      v34 = [(HMDAppleAccessoryPairingHomeController *)v26 state];
-      [v34 setDeviceIdentifier:v33];
+      state4 = [(HMDAppleAccessoryPairingHomeController *)selfCopy3 state];
+      [state4 setDeviceIdentifier:v33];
 
-      v35 = [(HMDAppleAccessoryPairingHomeController *)v26 dataSource];
-      v36 = [(HMDAppleAccessoryPairingHomeController *)v26 state];
-      [v35 updatePairingAccessoryState:v36];
+      dataSource = [(HMDAppleAccessoryPairingHomeController *)selfCopy3 dataSource];
+      state5 = [(HMDAppleAccessoryPairingHomeController *)selfCopy3 state];
+      [dataSource updatePairingAccessoryState:state5];
     }
 
     else
@@ -146,7 +146,7 @@
         v72 = 138543618;
         v73 = v37;
         v74 = 2112;
-        v75 = v4;
+        v75 = modelCopy;
         _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@Still don't have a device identifier for %@", &v72, 0x16u);
       }
 
@@ -154,25 +154,25 @@
     }
   }
 
-  v38 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v39 = [v38 device];
+  state6 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  device3 = [state6 device];
 
-  if (v39)
+  if (device3)
   {
     v40 = objc_autoreleasePoolPush();
-    v41 = self;
+    selfCopy4 = self;
     v42 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
     {
       v43 = HMFGetLogIdentifier();
-      v44 = [(HMDAppleAccessoryPairingHomeController *)v41 state];
-      v45 = [v44 device];
+      state7 = [(HMDAppleAccessoryPairingHomeController *)selfCopy4 state];
+      device4 = [state7 device];
       v72 = 138543874;
       v73 = v43;
       v74 = 2112;
-      v75 = v45;
+      v75 = device4;
       v76 = 2112;
-      v77 = v4;
+      v77 = modelCopy;
       _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@Already have a device %@ for %@", &v72, 0x20u);
     }
 
@@ -181,11 +181,11 @@
 
   else
   {
-    v46 = [v4 device];
-    if (v46)
+    device5 = [modelCopy device];
+    if (device5)
     {
       v47 = objc_autoreleasePoolPush();
-      v48 = self;
+      selfCopy5 = self;
       v49 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
@@ -193,35 +193,35 @@
         v72 = 138543618;
         v73 = v50;
         v74 = 2112;
-        v75 = v46;
+        v75 = device5;
         _os_log_impl(&dword_229538000, v49, OS_LOG_TYPE_DEFAULT, "%{public}@And we have a device representation: %@", &v72, 0x16u);
       }
 
       objc_autoreleasePoolPop(v47);
-      v51 = [(HMDAppleAccessoryPairingHomeController *)v48 state];
-      [v51 setDevice:v46];
+      state8 = [(HMDAppleAccessoryPairingHomeController *)selfCopy5 state];
+      [state8 setDevice:device5];
 
-      v52 = [(HMDAppleAccessoryPairingHomeController *)v48 dataSource];
-      v53 = [(HMDAppleAccessoryPairingHomeController *)v48 state];
-      [v52 updatePairingAccessoryState:v53];
+      dataSource2 = [(HMDAppleAccessoryPairingHomeController *)selfCopy5 dataSource];
+      state9 = [(HMDAppleAccessoryPairingHomeController *)selfCopy5 state];
+      [dataSource2 updatePairingAccessoryState:state9];
     }
   }
 
-  v54 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v55 = [v54 device];
-  if (v55)
+  state10 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  device6 = [state10 device];
+  if (device6)
   {
-    v56 = v55;
+    device7 = device6;
 
 LABEL_34:
-    v57 = [(HMDAppleAccessoryPairingHomeController *)self dataSource];
-    v58 = [v57 hh1ControllerIdentity];
+    dataSource3 = [(HMDAppleAccessoryPairingHomeController *)self dataSource];
+    hh1ControllerIdentity = [dataSource3 hh1ControllerIdentity];
 
     v59 = objc_autoreleasePoolPush();
-    v60 = self;
+    selfCopy6 = self;
     v61 = HMFGetOSLogHandle();
     v62 = v61;
-    if (v58)
+    if (hh1ControllerIdentity)
     {
       if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
       {
@@ -229,15 +229,15 @@ LABEL_34:
         v72 = 138543874;
         v73 = v63;
         v74 = 2112;
-        v75 = v56;
+        v75 = device7;
         v76 = 2112;
-        v77 = v58;
+        v77 = hh1ControllerIdentity;
         _os_log_impl(&dword_229538000, v62, OS_LOG_TYPE_DEFAULT, "%{public}@Updated pairing identity for device %@: %@", &v72, 0x20u);
       }
 
       objc_autoreleasePoolPop(v59);
       v64 = +[HMDIdentityRegistry sharedRegistry];
-      [v64 registerIdentity:v58 device:v56 object:v60];
+      [v64 registerIdentity:hh1ControllerIdentity device:device7 object:selfCopy6];
     }
 
     else
@@ -256,30 +256,30 @@ LABEL_34:
     goto LABEL_42;
   }
 
-  v56 = [v4 device];
+  device7 = [modelCopy device];
 
-  if (v56)
+  if (device7)
   {
     goto LABEL_34;
   }
 
 LABEL_42:
-  v66 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v67 = [v66 device];
-  if (v67)
+  state11 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  device8 = [state11 device];
+  if (device8)
   {
 
 LABEL_45:
-    v70 = [(HMDAppleAccessoryPairingHomeController *)self upgradeCheckTimer];
-    [v70 fire];
+    upgradeCheckTimer = [(HMDAppleAccessoryPairingHomeController *)self upgradeCheckTimer];
+    [upgradeCheckTimer fire];
 
     goto LABEL_46;
   }
 
-  v68 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v69 = [v68 deviceIdentifier];
+  state12 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  deviceIdentifier3 = [state12 deviceIdentifier];
 
-  if (v69)
+  if (deviceIdentifier3)
   {
     goto LABEL_45;
   }
@@ -289,45 +289,45 @@ LABEL_46:
   v71 = *MEMORY[0x277D85DE8];
 }
 
-- (void)processHMDResidentDeviceModel:(id)a3
+- (void)processHMDResidentDeviceModel:(id)model
 {
-  v4 = [a3 device];
-  v5 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  [v5 setDevice:v4];
+  device = [model device];
+  state = [(HMDAppleAccessoryPairingHomeController *)self state];
+  [state setDevice:device];
 
-  v6 = [(HMDAppleAccessoryPairingHomeController *)self dataSource];
-  v7 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  [v6 updatePairingAccessoryState:v7];
+  dataSource = [(HMDAppleAccessoryPairingHomeController *)self dataSource];
+  state2 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  [dataSource updatePairingAccessoryState:state2];
 
-  v8 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v9 = [v8 device];
-  v10 = [v9 identifier];
-  v11 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v12 = [v11 deviceIdentifier];
-  v13 = [v10 isEqual:v12];
+  state3 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  device2 = [state3 device];
+  identifier = [device2 identifier];
+  state4 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  deviceIdentifier = [state4 deviceIdentifier];
+  v13 = [identifier isEqual:deviceIdentifier];
 
   if (v13)
   {
-    v14 = [(HMDAppleAccessoryPairingHomeController *)self upgradeCheckTimer];
-    [v14 fire];
+    upgradeCheckTimer = [(HMDAppleAccessoryPairingHomeController *)self upgradeCheckTimer];
+    [upgradeCheckTimer fire];
   }
 }
 
-- (void)localZone:(id)a3 didProcessModelUpdate:(id)a4
+- (void)localZone:(id)zone didProcessModelUpdate:(id)update
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 model];
-  v9 = [v8 convertToHMDModelObject];
+  zoneCopy = zone;
+  updateCopy = update;
+  model = [updateCopy model];
+  convertToHMDModelObject = [model convertToHMDModelObject];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 debugString:0];
+    v14 = [convertToHMDModelObject debugString:0];
     v22 = 138543618;
     v23 = v13;
     v24 = 2112;
@@ -336,7 +336,7 @@ LABEL_46:
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = v9;
+  v15 = convertToHMDModelObject;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -352,7 +352,7 @@ LABEL_46:
 
   if (v17)
   {
-    [(HMDAppleAccessoryPairingHomeController *)v11 processHMDAppleMediaAccessoryModel:v17];
+    [(HMDAppleAccessoryPairingHomeController *)selfCopy processHMDAppleMediaAccessoryModel:v17];
   }
 
   v18 = v15;
@@ -371,27 +371,27 @@ LABEL_46:
 
   if (v20)
   {
-    [(HMDAppleAccessoryPairingHomeController *)v11 processHMDResidentDeviceModel:v20];
+    [(HMDAppleAccessoryPairingHomeController *)selfCopy processHMDResidentDeviceModel:v20];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localZone:(id)a3 didProcessModelDeletion:(id)a4
+- (void)localZone:(id)zone didProcessModelDeletion:(id)deletion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 model];
-  v9 = [v8 convertToHMDModelObject];
+  zoneCopy = zone;
+  deletionCopy = deletion;
+  model = [deletionCopy model];
+  convertToHMDModelObject = [model convertToHMDModelObject];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 debugString:0];
+    v14 = [convertToHMDModelObject debugString:0];
     v25 = 138543618;
     v26 = v13;
     v27 = 2112;
@@ -400,16 +400,16 @@ LABEL_46:
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = [v9 uuid];
-  v16 = [(HMDAppleAccessoryPairingHomeController *)v11 state];
-  v17 = [v16 accessory];
-  v18 = [v17 uuid];
-  v19 = [v15 hmf_isEqualToUUID:v18];
+  uuid = [convertToHMDModelObject uuid];
+  state = [(HMDAppleAccessoryPairingHomeController *)selfCopy state];
+  accessory = [state accessory];
+  uuid2 = [accessory uuid];
+  v19 = [uuid hmf_isEqualToUUID:uuid2];
 
   if (v19)
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v11;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
@@ -426,21 +426,21 @@ LABEL_46:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localZone:(id)a3 didProcessModelCreation:(id)a4
+- (void)localZone:(id)zone didProcessModelCreation:(id)creation
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 model];
-  v9 = [v8 convertToHMDModelObject];
+  zoneCopy = zone;
+  creationCopy = creation;
+  model = [creationCopy model];
+  convertToHMDModelObject = [model convertToHMDModelObject];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 debugString:0];
+    v14 = [convertToHMDModelObject debugString:0];
     v19 = 138543618;
     v20 = v13;
     v21 = 2112;
@@ -449,7 +449,7 @@ LABEL_46:
   }
 
   objc_autoreleasePoolPop(v10);
-  v15 = v9;
+  v15 = convertToHMDModelObject;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -465,18 +465,18 @@ LABEL_46:
 
   if (v17)
   {
-    [(HMDAppleAccessoryPairingHomeController *)v11 processHMDResidentDeviceModel:v17];
+    [(HMDAppleAccessoryPairingHomeController *)selfCopy processHMDResidentDeviceModel:v17];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeviceNotification:(id)a3
+- (void)_handleDeviceNotification:(id)notification
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -487,53 +487,53 @@ LABEL_46:
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDAppleAccessoryPairingHomeController *)v6 checkDeviceVersionAndSendUpgrade];
+  [(HMDAppleAccessoryPairingHomeController *)selfCopy checkDeviceVersionAndSendUpgrade];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postSoftwareUpdateEventForDescriptor:(id)a3
+- (void)postSoftwareUpdateEventForDescriptor:(id)descriptor
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v6 = [v5 accessory];
-  v7 = [v6 uuid];
-  v8 = [v7 UUIDString];
+  descriptorCopy = descriptor;
+  state = [(HMDAppleAccessoryPairingHomeController *)self state];
+  accessory = [state accessory];
+  uuid = [accessory uuid];
+  uUIDString = [uuid UUIDString];
 
-  if (v8)
+  if (uUIDString)
   {
     v9 = objc_alloc(MEMORY[0x277CD1E50]);
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
-    v10 = [v9 initWithDescriptor:v4 eventSource:v8 eventTimestamp:?];
-    v11 = [(HMDAppleAccessoryPairingHomeController *)self state];
-    v12 = [v11 accessory];
-    v13 = [v12 uuid];
+    v10 = [v9 initWithDescriptor:descriptorCopy eventSource:uUIDString eventTimestamp:?];
+    state2 = [(HMDAppleAccessoryPairingHomeController *)self state];
+    accessory2 = [state2 accessory];
+    uuid2 = [accessory2 uuid];
 
-    v14 = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
-    v15 = [(HMDAppleAccessoryPairingHomeController *)self state];
-    v16 = [v15 homeUUID];
-    v17 = [v14 _homeWithUUID:v16];
+    homeManager = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
+    state3 = [(HMDAppleAccessoryPairingHomeController *)self state];
+    homeUUID = [state3 homeUUID];
+    v17 = [homeManager _homeWithUUID:homeUUID];
 
-    v18 = [v17 uuid];
-    v19 = v18;
-    if (v13 && v18)
+    uuid3 = [v17 uuid];
+    v19 = uuid3;
+    if (uuid2 && uuid3)
     {
-      v20 = [MEMORY[0x277CD16F0] topicFromSuffixID:*MEMORY[0x277CCEA98] homeUUID:v18 accessoryUUID:v13];
+      v20 = [MEMORY[0x277CD16F0] topicFromSuffixID:*MEMORY[0x277CCEA98] homeUUID:uuid3 accessoryUUID:uuid2];
       if (v20)
       {
-        v21 = [(HMDAppleAccessoryPairingHomeController *)self state];
-        [v21 setLastPostedSoftwareUpdateDescriptor:v4];
+        state4 = [(HMDAppleAccessoryPairingHomeController *)self state];
+        [state4 setLastPostedSoftwareUpdateDescriptor:descriptorCopy];
 
-        v22 = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
-        v23 = [v22 eventForwarder];
-        [v23 forwardEvent:v10 topic:v20 completion:0];
+        homeManager2 = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
+        eventForwarder = [homeManager2 eventForwarder];
+        [eventForwarder forwardEvent:v10 topic:v20 completion:0];
       }
 
       else
       {
         v32 = objc_autoreleasePoolPush();
-        v33 = self;
+        selfCopy = self;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
@@ -544,7 +544,7 @@ LABEL_46:
           v40 = 2112;
           v41 = v19;
           v42 = 2112;
-          v43 = v13;
+          v43 = uuid2;
           _os_log_impl(&dword_229538000, v34, OS_LOG_TYPE_ERROR, "%{public}@Failed to get SU topic with homeUUID: %@, accessoryUUID: %@", buf, 0x20u);
 
           v32 = v37;
@@ -557,7 +557,7 @@ LABEL_46:
     else
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = self;
+      selfCopy2 = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -567,7 +567,7 @@ LABEL_46:
         v40 = 2112;
         v41 = v19;
         v42 = 2112;
-        v43 = v13;
+        v43 = uuid2;
         _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_ERROR, "%{public}@Unexpected nil value in homeUUID: %@, accessoryUUID: %@", buf, 0x20u);
       }
 
@@ -578,7 +578,7 @@ LABEL_46:
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy3 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -594,28 +594,28 @@ LABEL_46:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postSoftwareUpdateEventForSoftwareUpdate:(id)a3
+- (void)postSoftwareUpdateEventForSoftwareUpdate:(id)update
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 state];
-  if (v5 <= 2)
+  updateCopy = update;
+  state = [updateCopy state];
+  if (state <= 2)
   {
-    v40 = self;
+    selfCopy4 = self;
     v6 = 3;
     v7 = 14;
     v8 = 15;
-    if (v5 != 2)
+    if (state != 2)
     {
       v8 = 0;
     }
 
-    if (v5 != 1)
+    if (state != 1)
     {
       v7 = v8;
     }
 
-    if (v5)
+    if (state)
     {
       v6 = v7;
     }
@@ -623,19 +623,19 @@ LABEL_46:
     goto LABEL_17;
   }
 
-  if (v5 == 3)
+  if (state == 3)
   {
-    v40 = self;
+    selfCopy4 = self;
     v6 = 9;
 LABEL_17:
     v35 = v6;
 LABEL_18:
     v13 = objc_alloc(MEMORY[0x277CD1E48]);
-    v39 = [v4 downloadSize];
+    downloadSize = [updateCopy downloadSize];
     v32 = v13;
-    if (v39)
+    if (downloadSize)
     {
-      v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "downloadSize")}];
+      v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(updateCopy, "downloadSize")}];
     }
 
     else
@@ -643,55 +643,55 @@ LABEL_18:
       v41 = 0;
     }
 
-    v38 = [v4 documentationMetadata];
-    v37 = [v38 URL];
-    v29 = [v37 absoluteURL];
-    v34 = [v4 documentationMetadata];
-    v33 = [v34 digest];
-    [v33 algorithm];
+    documentationMetadata = [updateCopy documentationMetadata];
+    v37 = [documentationMetadata URL];
+    absoluteURL = [v37 absoluteURL];
+    documentationMetadata2 = [updateCopy documentationMetadata];
+    digest = [documentationMetadata2 digest];
+    [digest algorithm];
     v26 = HMFDigestAlgorithmToString();
-    v31 = [v4 documentationMetadata];
-    v30 = [v31 digest];
-    v27 = [v30 value];
+    documentationMetadata3 = [updateCopy documentationMetadata];
+    digest2 = [documentationMetadata3 digest];
+    value = [digest2 value];
     v14 = MEMORY[0x277CCABB0];
-    v28 = [v4 version];
-    v15 = [v14 numberWithUnsignedInteger:{objc_msgSend(v28, "majorVersion")}];
+    version = [updateCopy version];
+    v15 = [v14 numberWithUnsignedInteger:{objc_msgSend(version, "majorVersion")}];
     v16 = MEMORY[0x277CCABB0];
-    v17 = [v4 version];
-    v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(v17, "minorVersion")}];
+    version2 = [updateCopy version];
+    v18 = [v16 numberWithUnsignedInteger:{objc_msgSend(version2, "minorVersion")}];
     v19 = MEMORY[0x277CCABB0];
-    v20 = [v4 version];
-    v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(v20, "updateVersion")}];
-    v22 = [v4 version];
-    v23 = [v22 buildVersion];
+    version3 = [updateCopy version];
+    v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(version3, "updateVersion")}];
+    version4 = [updateCopy version];
+    buildVersion = [version4 buildVersion];
     LOBYTE(v25) = 1;
-    v36 = [v32 initWithStatus:v35 downloadSize:v41 humanReadableUpdateName:0 rampEnabled:0 errorCode:0 serverAssetURL:v29 serverAssetAlgorithm:v26 serverAssetMeasurement:v27 majorVersion:v15 minorVersion:v18 updateVersion:v21 buildVersion:v23 softwareVersionRequiresMetadata:v25];
+    v36 = [v32 initWithStatus:v35 downloadSize:v41 humanReadableUpdateName:0 rampEnabled:0 errorCode:0 serverAssetURL:absoluteURL serverAssetAlgorithm:v26 serverAssetMeasurement:value majorVersion:v15 minorVersion:v18 updateVersion:v21 buildVersion:buildVersion softwareVersionRequiresMetadata:v25];
 
-    if (v39)
+    if (downloadSize)
     {
     }
 
-    [(HMDAppleAccessoryPairingHomeController *)v40 postSoftwareUpdateEventForDescriptor:v36];
+    [(HMDAppleAccessoryPairingHomeController *)selfCopy4 postSoftwareUpdateEventForDescriptor:v36];
 
     goto LABEL_24;
   }
 
-  if (v5 == 4)
+  if (state == 4)
   {
-    v40 = self;
+    selfCopy4 = self;
     v6 = 2;
     goto LABEL_17;
   }
 
-  if (v5 != 5)
+  if (state != 5)
   {
-    v40 = self;
+    selfCopy4 = self;
     v35 = 0;
     goto LABEL_18;
   }
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy5 = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
@@ -710,46 +710,46 @@ LABEL_24:
 - (void)checkDeviceVersionAndSendUpgrade
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v4 = [v3 deviceIdentifier];
-  if (v4)
+  state = [(HMDAppleAccessoryPairingHomeController *)self state];
+  deviceIdentifier = [state deviceIdentifier];
+  if (deviceIdentifier)
   {
 
     goto LABEL_4;
   }
 
-  v5 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v6 = [v5 device];
+  state2 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  device = [state2 device];
 
-  if (v6)
+  if (device)
   {
 LABEL_4:
-    v7 = [(HMDAppleAccessoryPairingHomeController *)self dataSource];
-    v8 = [(HMDAppleAccessoryPairingHomeController *)self state];
-    v9 = [v8 device];
-    v10 = [v9 identifier];
-    v11 = [v7 deviceForIdentifier:v10];
+    dataSource = [(HMDAppleAccessoryPairingHomeController *)self dataSource];
+    state3 = [(HMDAppleAccessoryPairingHomeController *)self state];
+    device2 = [state3 device];
+    identifier = [device2 identifier];
+    v11 = [dataSource deviceForIdentifier:identifier];
 
     if (!v11)
     {
       goto LABEL_10;
     }
 
-    v12 = [v11 version];
-    if (!v12)
+    version = [v11 version];
+    if (!version)
     {
       goto LABEL_10;
     }
 
-    v13 = v12;
-    v14 = [v11 version];
+    v13 = version;
+    version2 = [v11 version];
     v15 = +[HMDHomeKitVersion version10];
-    v16 = [v14 isAtLeastVersion:v15];
+    v16 = [version2 isAtLeastVersion:v15];
 
     if (v16)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
@@ -760,15 +760,15 @@ LABEL_4:
       }
 
       objc_autoreleasePoolPop(v17);
-      [(HMDAppleAccessoryPairingHomeController *)v18 postNotificationOfDeviceUpdated];
-      [(HMDAppleAccessoryPairingHomeController *)v18 cleanupLegacyZone];
+      [(HMDAppleAccessoryPairingHomeController *)selfCopy postNotificationOfDeviceUpdated];
+      [(HMDAppleAccessoryPairingHomeController *)selfCopy cleanupLegacyZone];
     }
 
     else
     {
 LABEL_10:
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy2 = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
@@ -779,20 +779,20 @@ LABEL_10:
       }
 
       objc_autoreleasePoolPop(v21);
-      v25 = [(HMDAppleAccessoryPairingHomeController *)v22 workContext];
+      workContext = [(HMDAppleAccessoryPairingHomeController *)selfCopy2 workContext];
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = __74__HMDAppleAccessoryPairingHomeController_checkDeviceVersionAndSendUpgrade__block_invoke;
       v31[3] = &unk_27868A728;
-      v31[4] = v22;
-      [v25 performBlock:v31];
+      v31[4] = selfCopy2;
+      [workContext performBlock:v31];
     }
 
     goto LABEL_14;
   }
 
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy3 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
@@ -1021,46 +1021,46 @@ uint64_t __74__HMDAppleAccessoryPairingHomeController_checkDeviceVersionAndSendU
 
 - (void)postNotificationOfDeviceUpdated
 {
-  v3 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v14 = [v3 lastPostedSoftwareUpdateDescriptor];
+  state = [(HMDAppleAccessoryPairingHomeController *)self state];
+  lastPostedSoftwareUpdateDescriptor = [state lastPostedSoftwareUpdateDescriptor];
 
-  if (v14)
+  if (lastPostedSoftwareUpdateDescriptor)
   {
-    [v14 setStatus:2];
-    [(HMDAppleAccessoryPairingHomeController *)self postSoftwareUpdateEventForDescriptor:v14];
+    [lastPostedSoftwareUpdateDescriptor setStatus:2];
+    [(HMDAppleAccessoryPairingHomeController *)self postSoftwareUpdateEventForDescriptor:lastPostedSoftwareUpdateDescriptor];
   }
 
-  v4 = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
-  v5 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v6 = [v5 homeUUID];
-  v7 = [v4 _homeWithUUID:v6];
+  homeManager = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
+  state2 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  homeUUID = [state2 homeUUID];
+  v7 = [homeManager _homeWithUUID:homeUUID];
 
-  v8 = [(HMDAppleAccessoryPairingHomeController *)self state];
-  v9 = [v8 accessory];
-  v10 = [v9 uuid];
-  v11 = [v7 accessoryWithUUID:v10];
+  state3 = [(HMDAppleAccessoryPairingHomeController *)self state];
+  accessory = [state3 accessory];
+  uuid = [accessory uuid];
+  v11 = [v7 accessoryWithUUID:uuid];
 
   if (v11)
   {
-    v12 = [(HMDAppleAccessoryPairingHomeController *)self dataSource];
-    v13 = [v12 bulletinBoard];
-    [v13 insertHH2SoftwareUpdateCompleteEventBulletinForAccessory:v11];
+    dataSource = [(HMDAppleAccessoryPairingHomeController *)self dataSource];
+    bulletinBoard = [dataSource bulletinBoard];
+    [bulletinBoard insertHH2SoftwareUpdateCompleteEventBulletinForAccessory:v11];
   }
 }
 
 - (void)cleanupLegacyZone
 {
-  v3 = [(HMDAppleAccessoryPairingHomeController *)self upgradeCheckTimer];
-  [v3 suspend];
+  upgradeCheckTimer = [(HMDAppleAccessoryPairingHomeController *)self upgradeCheckTimer];
+  [upgradeCheckTimer suspend];
 
-  v4 = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
-  v5 = [v4 workQueue];
+  homeManager = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
+  workQueue = [homeManager workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __59__HMDAppleAccessoryPairingHomeController_cleanupLegacyZone__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v5, block);
+  dispatch_async(workQueue, block);
 }
 
 void __59__HMDAppleAccessoryPairingHomeController_cleanupLegacyZone__block_invoke(uint64_t a1)
@@ -1155,43 +1155,43 @@ void __53__HMDAppleAccessoryPairingHomeController_workContext__block_invoke(uint
   workContext__hmf_once_v21 = v4;
 }
 
-- (void)startWithLocalZone:(id)a3
+- (void)startWithLocalZone:(id)zone
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  zoneCopy = zone;
   if (!self->_localZone)
   {
-    objc_storeStrong(&self->_localZone, a3);
-    v6 = [(HMDAppleAccessoryPairingHomeController *)self localZone];
-    [v6 addObserverForAllModels:self];
+    objc_storeStrong(&self->_localZone, zone);
+    localZone = [(HMDAppleAccessoryPairingHomeController *)self localZone];
+    [localZone addObserverForAllModels:self];
 
-    v7 = [(HMDAppleAccessoryPairingHomeController *)self localZone];
-    [v7 startUp];
+    localZone2 = [(HMDAppleAccessoryPairingHomeController *)self localZone];
+    [localZone2 startUp];
 
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [(HMDAppleAccessoryPairingHomeController *)v9 state];
-      v13 = [v12 cloudZoneID];
-      v14 = [v13 name];
+      state = [(HMDAppleAccessoryPairingHomeController *)selfCopy state];
+      cloudZoneID = [state cloudZoneID];
+      name = [cloudZoneID name];
       *buf = 138543618;
       v29 = v11;
       v30 = 2112;
-      v31 = v14;
+      v31 = name;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@Starting state machine for zone: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v15 = [(HMDAppleAccessoryPairingHomeController *)v9 localZone];
-    v16 = [v15 mirror];
+    localZone3 = [(HMDAppleAccessoryPairingHomeController *)selfCopy localZone];
+    mirror = [localZone3 mirror];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = v16;
+      v17 = mirror;
     }
 
     else
@@ -1208,17 +1208,17 @@ void __53__HMDAppleAccessoryPairingHomeController_workContext__block_invoke(uint
     v27[1] = 3221225472;
     v27[2] = __61__HMDAppleAccessoryPairingHomeController_startWithLocalZone___block_invoke;
     v27[3] = &unk_27868A200;
-    v27[4] = v9;
+    v27[4] = selfCopy;
     v22 = [v21 addSuccessBlock:v27];
 
-    v23 = [v18 startUp];
+    startUp = [v18 startUp];
 
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __61__HMDAppleAccessoryPairingHomeController_startWithLocalZone___block_invoke_92;
     v26[3] = &unk_27868A200;
-    v26[4] = v9;
-    v24 = [v23 addSuccessBlock:v26];
+    v26[4] = selfCopy;
+    v24 = [startUp addSuccessBlock:v26];
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -1381,43 +1381,43 @@ void __61__HMDAppleAccessoryPairingHomeController_startWithLocalZone___block_inv
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)handleMessage:(id)a3 from:(id)a4
+- (BOOL)handleMessage:(id)message from:(id)from
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuidForKey:*MEMORY[0x277CCF0B0]];
-  v9 = [v6 name];
-  v10 = [v9 isEqual:*MEMORY[0x277CD2070]];
+  messageCopy = message;
+  fromCopy = from;
+  v8 = [messageCopy uuidForKey:*MEMORY[0x277CCF0B0]];
+  name = [messageCopy name];
+  v10 = [name isEqual:*MEMORY[0x277CD2070]];
 
   if (v10)
   {
-    v11 = [(HMDAppleAccessoryPairingHomeController *)self state];
-    v12 = [v11 accessory];
-    v13 = [v12 uuid];
-    v14 = [v8 isEqual:v13];
+    state = [(HMDAppleAccessoryPairingHomeController *)self state];
+    accessory = [state accessory];
+    uuid = [accessory uuid];
+    v14 = [v8 isEqual:uuid];
 
     if (v14)
     {
-      v15 = [v7 uuid];
-      v16 = [(HMDAppleAccessoryPairingHomeController *)self state];
-      [v16 setHomeUUID:v15];
+      uuid2 = [fromCopy uuid];
+      state2 = [(HMDAppleAccessoryPairingHomeController *)self state];
+      [state2 setHomeUUID:uuid2];
 
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = HMFGetLogIdentifier();
-        v21 = [(HMDAppleAccessoryPairingHomeController *)v18 state];
-        v22 = [v21 accessory];
-        v23 = [v22 uuid];
-        [v7 uuid];
+        state3 = [(HMDAppleAccessoryPairingHomeController *)selfCopy state];
+        accessory2 = [state3 accessory];
+        uuid3 = [accessory2 uuid];
+        [fromCopy uuid];
         v24 = v38 = v17;
         *buf = 138543874;
         v42 = v20;
         v43 = 2112;
-        v44 = v23;
+        v44 = uuid3;
         v45 = 2112;
         v46 = v24;
         _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Adding Legacy HomePod %@ To Home: %@", buf, 0x20u);
@@ -1426,38 +1426,38 @@ void __61__HMDAppleAccessoryPairingHomeController_startWithLocalZone___block_inv
       }
 
       objc_autoreleasePoolPop(v17);
-      v25 = [(HMDAppleAccessoryPairingHomeController *)v18 state];
-      [v25 setState:1];
+      state4 = [(HMDAppleAccessoryPairingHomeController *)selfCopy state];
+      [state4 setState:1];
 
-      v26 = [(HMDAppleAccessoryPairingHomeController *)v18 dataSource];
-      v27 = [(HMDAppleAccessoryPairingHomeController *)v18 state];
-      [v26 updatePairingAccessoryState:v27];
+      dataSource = [(HMDAppleAccessoryPairingHomeController *)selfCopy dataSource];
+      state5 = [(HMDAppleAccessoryPairingHomeController *)selfCopy state];
+      [dataSource updatePairingAccessoryState:state5];
     }
   }
 
   else
   {
-    v28 = [v6 name];
-    v29 = [v28 isEqual:*MEMORY[0x277CD24F0]];
+    name2 = [messageCopy name];
+    v29 = [name2 isEqual:*MEMORY[0x277CD24F0]];
 
     if (v29)
     {
-      v30 = [(HMDAppleAccessoryPairingHomeController *)self state];
-      v31 = [v30 accessory];
-      v32 = [v31 uuid];
-      v33 = [v8 isEqual:v32];
+      state6 = [(HMDAppleAccessoryPairingHomeController *)self state];
+      accessory3 = [state6 accessory];
+      uuid4 = [accessory3 uuid];
+      v33 = [v8 isEqual:uuid4];
 
       if (v33)
       {
-        v34 = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
-        v35 = [v34 workQueue];
+        homeManager = [(HMDAppleAccessoryPairingHomeController *)self homeManager];
+        workQueue = [homeManager workQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __61__HMDAppleAccessoryPairingHomeController_handleMessage_from___block_invoke;
         block[3] = &unk_27868A750;
         block[4] = self;
         v40 = v8;
-        dispatch_async(v35, block);
+        dispatch_async(workQueue, block);
       }
     }
   }
@@ -1474,40 +1474,40 @@ void __61__HMDAppleAccessoryPairingHomeController_handleMessage_from___block_inv
   v4 = [v5 removeModelIDs:v2 options:v3];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDAppleAccessoryPairingHomeController *)self upgradeCheckTimer];
+  fireCopy = fire;
+  upgradeCheckTimer = [(HMDAppleAccessoryPairingHomeController *)self upgradeCheckTimer];
 
-  if (v5 == v4)
+  if (upgradeCheckTimer == fireCopy)
   {
 
     [(HMDAppleAccessoryPairingHomeController *)self checkDeviceVersionAndSendUpgrade];
   }
 }
 
-- (HMDAppleAccessoryPairingHomeController)initWithState:(id)a3 homeManager:(id)a4 dataSource:(id)a5
+- (HMDAppleAccessoryPairingHomeController)initWithState:(id)state homeManager:(id)manager dataSource:(id)source
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  stateCopy = state;
+  managerCopy = manager;
+  sourceCopy = source;
   v18.receiver = self;
   v18.super_class = HMDAppleAccessoryPairingHomeController;
   v12 = [(HMDAppleAccessoryPairingHomeController *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_state, a3);
-    objc_storeStrong(&v13->_homeManager, a4);
-    objc_storeStrong(&v13->_dataSource, a5);
-    v14 = [v11 timerWithInterval:12 options:120.0];
+    objc_storeStrong(&v12->_state, state);
+    objc_storeStrong(&v13->_homeManager, manager);
+    objc_storeStrong(&v13->_dataSource, source);
+    v14 = [sourceCopy timerWithInterval:12 options:120.0];
     upgradeCheckTimer = v13->_upgradeCheckTimer;
     v13->_upgradeCheckTimer = v14;
 
     [(HMFTimer *)v13->_upgradeCheckTimer setDelegate:v13];
     v13->_suppressedQueries = 0;
-    v16 = [v11 notificationCenter];
-    [v16 addObserver:v13 selector:sel__handleDeviceNotification_ name:@"HMDAppleAccountManagerResolved" object:0];
+    notificationCenter = [sourceCopy notificationCenter];
+    [notificationCenter addObserver:v13 selector:sel__handleDeviceNotification_ name:@"HMDAppleAccountManagerResolved" object:0];
   }
 
   return v13;

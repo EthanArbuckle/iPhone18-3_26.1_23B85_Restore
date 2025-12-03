@@ -1,38 +1,38 @@
 @interface _UIHostedTextServiceSession
-+ (id)showServiceForText:(id)a3 selectedTextRange:(_NSRange)a4 type:(int64_t)a5 fromRect:(CGRect)a6 inView:(id)a7;
-+ (id)showServiceForText:(id)a3 type:(int64_t)a4 fromRect:(CGRect)a5 inView:(id)a6;
-+ (id)showServiceForType:(int64_t)a3 withContext:(id)a4;
-- (void)dismissTextServiceAnimated:(BOOL)a3;
++ (id)showServiceForText:(id)text selectedTextRange:(_NSRange)range type:(int64_t)type fromRect:(CGRect)rect inView:(id)view;
++ (id)showServiceForText:(id)text type:(int64_t)type fromRect:(CGRect)rect inView:(id)view;
++ (id)showServiceForType:(int64_t)type withContext:(id)context;
+- (void)dismissTextServiceAnimated:(BOOL)animated;
 @end
 
 @implementation _UIHostedTextServiceSession
 
-+ (id)showServiceForType:(int64_t)a3 withContext:(id)a4
++ (id)showServiceForType:(int64_t)type withContext:(id)context
 {
-  v4 = [[a1 alloc] initWithType:a3];
+  v4 = [[self alloc] initWithType:type];
 
   return v4;
 }
 
-+ (id)showServiceForText:(id)a3 type:(int64_t)a4 fromRect:(CGRect)a5 inView:(id)a6
++ (id)showServiceForText:(id)text type:(int64_t)type fromRect:(CGRect)rect inView:(id)view
 {
-  v6 = [[a1 alloc] initWithType:a4];
+  v6 = [[self alloc] initWithType:type];
 
   return v6;
 }
 
-+ (id)showServiceForText:(id)a3 selectedTextRange:(_NSRange)a4 type:(int64_t)a5 fromRect:(CGRect)a6 inView:(id)a7
++ (id)showServiceForText:(id)text selectedTextRange:(_NSRange)range type:(int64_t)type fromRect:(CGRect)rect inView:(id)view
 {
-  v7 = [[a1 alloc] initWithType:a5];
+  v7 = [[self alloc] initWithType:type];
 
   return v7;
 }
 
-- (void)dismissTextServiceAnimated:(BOOL)a3
+- (void)dismissTextServiceAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(_UIHostedTextServiceSession *)self delegate];
-  [v5 dismissHostedTextServiceSession:self animated:v3];
+  animatedCopy = animated;
+  delegate = [(_UIHostedTextServiceSession *)self delegate];
+  [delegate dismissHostedTextServiceSession:self animated:animatedCopy];
 }
 
 @end

@@ -1,14 +1,14 @@
 @interface OADTextWarp
 + (id)nullWarp;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation OADTextWarp
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

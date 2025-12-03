@@ -1,49 +1,49 @@
 @interface HKOverlayPillValueProvidingFactory
-+ (id)overlayPillValueProviderForDisplayType:(id)a3 selectedRangeFormatter:(id)a4 interfaceLayout:(int64_t)a5;
-+ (int64_t)interfaceLayoutForController:(id)a3;
++ (id)overlayPillValueProviderForDisplayType:(id)type selectedRangeFormatter:(id)formatter interfaceLayout:(int64_t)layout;
++ (int64_t)interfaceLayoutForController:(id)controller;
 @end
 
 @implementation HKOverlayPillValueProvidingFactory
 
-+ (id)overlayPillValueProviderForDisplayType:(id)a3 selectedRangeFormatter:(id)a4 interfaceLayout:(int64_t)a5
++ (id)overlayPillValueProviderForDisplayType:(id)type selectedRangeFormatter:(id)formatter interfaceLayout:(int64_t)layout
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 behavior];
-  v10 = [v9 chartsRelativeData];
+  typeCopy = type;
+  formatterCopy = formatter;
+  behavior = [typeCopy behavior];
+  chartsRelativeData = [behavior chartsRelativeData];
 
-  if (v10)
+  if (chartsRelativeData)
   {
     v11 = HKOverlayRoomPillValueProviderRelativeData;
   }
 
   else
   {
-    v12 = [v7 objectType];
-    v13 = [v12 identifier];
+    objectType = [typeCopy objectType];
+    identifier = [objectType identifier];
     v14 = *MEMORY[0x1E696B698];
 
-    if (v13 == v14)
+    if (identifier == v14)
     {
       v11 = HKOverlayRoomPillValueProviderSleep;
     }
 
     else
     {
-      v15 = [v7 objectType];
-      v16 = [v15 identifier];
+      objectType2 = [typeCopy objectType];
+      identifier2 = [objectType2 identifier];
       v17 = *MEMORY[0x1E696C6A8];
 
-      if (v16 == v17)
+      if (identifier2 == v17)
       {
         v11 = HKOverlayRoomPillValueProviderBalance;
       }
 
       else
       {
-        if (v8)
+        if (formatterCopy)
         {
-          v18 = [[HKOverlayRoomPillValueProviderCurrentValue alloc] initWithSelectedRangeFormatter:v8 interfaceLayout:a5];
+          v18 = [[HKOverlayRoomPillValueProviderCurrentValue alloc] initWithSelectedRangeFormatter:formatterCopy interfaceLayout:layout];
           goto LABEL_11;
         }
 
@@ -59,12 +59,12 @@ LABEL_11:
   return v19;
 }
 
-+ (int64_t)interfaceLayoutForController:(id)a3
++ (int64_t)interfaceLayoutForController:(id)controller
 {
-  v3 = [a3 view];
-  v4 = [v3 effectiveUserInterfaceLayoutDirection];
+  view = [controller view];
+  effectiveUserInterfaceLayoutDirection = [view effectiveUserInterfaceLayoutDirection];
 
-  return v4;
+  return effectiveUserInterfaceLayoutDirection;
 }
 
 @end

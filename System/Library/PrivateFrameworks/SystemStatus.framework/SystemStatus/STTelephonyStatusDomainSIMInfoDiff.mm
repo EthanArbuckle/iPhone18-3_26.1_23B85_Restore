@@ -1,160 +1,160 @@
 @interface STTelephonyStatusDomainSIMInfoDiff
-+ (id)diffFromInfo:(id)a3 toInfo:(id)a4;
-+ (void)_resolveCombinedChanges:(uint64_t)a3 forObjectEntry:(void *)a4 baseChanges:;
++ (id)diffFromInfo:(id)info toInfo:(id)toInfo;
++ (void)_resolveCombinedChanges:(uint64_t)changes forObjectEntry:(void *)entry baseChanges:;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
 - (STTelephonyStatusDomainSIMInfoDiff)init;
-- (STTelephonyStatusDomainSIMInfoDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
-- (id)infoByApplyingToInfo:(id)a3;
+- (STTelephonyStatusDomainSIMInfoDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
+- (id)infoByApplyingToInfo:(id)info;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableInfo:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithChanges:(void *)a1;
+- (void)applyToMutableInfo:(id)info;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithChanges:(void *)changes;
 @end
 
 @implementation STTelephonyStatusDomainSIMInfoDiff
 
-+ (id)diffFromInfo:(id)a3 toInfo:(id)a4
++ (id)diffFromInfo:(id)info toInfo:(id)toInfo
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  toInfoCopy = toInfo;
   v7 = objc_alloc_init(MEMORY[0x1E698E700]);
-  v8 = [v6 isSIMPresent];
-  if (v8 != [v5 isSIMPresent])
+  isSIMPresent = [toInfoCopy isSIMPresent];
+  if (isSIMPresent != [infoCopy isSIMPresent])
   {
     [v7 setFlag:BSSettingFlagForBool() forSetting:0];
   }
 
-  v9 = [v6 isBootstrap];
-  if (v9 != [v5 isBootstrap])
+  isBootstrap = [toInfoCopy isBootstrap];
+  if (isBootstrap != [infoCopy isBootstrap])
   {
     [v7 setFlag:BSSettingFlagForBool() forSetting:1];
   }
 
-  v10 = [v6 label];
-  v11 = [v5 label];
-  if (([v11 isEqualToString:v10] & 1) == 0)
+  label = [toInfoCopy label];
+  label2 = [infoCopy label];
+  if (([label2 isEqualToString:label] & 1) == 0)
   {
-    if (v10)
+    if (label)
     {
-      [v7 setObject:v10 forSetting:2];
+      [v7 setObject:label forSetting:2];
     }
 
-    else if (v11)
+    else if (label2)
     {
       [v7 setFlag:0 forSetting:2];
     }
   }
 
-  v12 = [v6 shortLabel];
-  v13 = [v5 shortLabel];
-  if (([v13 isEqualToString:v12] & 1) == 0)
+  shortLabel = [toInfoCopy shortLabel];
+  shortLabel2 = [infoCopy shortLabel];
+  if (([shortLabel2 isEqualToString:shortLabel] & 1) == 0)
   {
-    if (v12)
+    if (shortLabel)
     {
-      [v7 setObject:v12 forSetting:3];
+      [v7 setObject:shortLabel forSetting:3];
     }
 
-    else if (v13)
+    else if (shortLabel2)
     {
       [v7 setFlag:0 forSetting:3];
     }
   }
 
-  v37 = v11;
-  v14 = [v6 signalStrengthBars];
-  if ([v5 signalStrengthBars] != v14)
+  v37 = label2;
+  signalStrengthBars = [toInfoCopy signalStrengthBars];
+  if ([infoCopy signalStrengthBars] != signalStrengthBars)
   {
-    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
+    v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:signalStrengthBars];
     [v7 setObject:v15 forSetting:4];
   }
 
-  v16 = [v6 maxSignalStrengthBars];
-  if ([v5 maxSignalStrengthBars] != v16)
+  maxSignalStrengthBars = [toInfoCopy maxSignalStrengthBars];
+  if ([infoCopy maxSignalStrengthBars] != maxSignalStrengthBars)
   {
-    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16];
+    v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:maxSignalStrengthBars];
     [v7 setObject:v17 forSetting:5];
   }
 
-  v18 = [v6 serviceState];
-  if ([v5 serviceState] != v18)
+  serviceState = [toInfoCopy serviceState];
+  if ([infoCopy serviceState] != serviceState)
   {
-    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v18];
+    v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:serviceState];
     [v7 setObject:v19 forSetting:6];
   }
 
-  v20 = [v6 cellularServiceState];
-  if ([v5 cellularServiceState] != v20)
+  cellularServiceState = [toInfoCopy cellularServiceState];
+  if ([infoCopy cellularServiceState] != cellularServiceState)
   {
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v20];
+    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:cellularServiceState];
     [v7 setObject:v21 forSetting:7];
   }
 
-  v22 = [v6 serviceDescription];
-  v23 = [v5 serviceDescription];
-  if (([v23 isEqualToString:v22] & 1) == 0)
+  serviceDescription = [toInfoCopy serviceDescription];
+  serviceDescription2 = [infoCopy serviceDescription];
+  if (([serviceDescription2 isEqualToString:serviceDescription] & 1) == 0)
   {
-    if (v22)
+    if (serviceDescription)
     {
-      [v7 setObject:v22 forSetting:8];
+      [v7 setObject:serviceDescription forSetting:8];
     }
 
-    else if (v23)
+    else if (serviceDescription2)
     {
       [v7 setFlag:0 forSetting:8];
     }
   }
 
-  v24 = [v6 secondaryServiceDescription];
-  v25 = [v5 secondaryServiceDescription];
-  if (([v25 isEqualToString:v24] & 1) == 0)
+  secondaryServiceDescription = [toInfoCopy secondaryServiceDescription];
+  secondaryServiceDescription2 = [infoCopy secondaryServiceDescription];
+  if (([secondaryServiceDescription2 isEqualToString:secondaryServiceDescription] & 1) == 0)
   {
-    if (v24)
+    if (secondaryServiceDescription)
     {
-      [v7 setObject:v24 forSetting:9];
+      [v7 setObject:secondaryServiceDescription forSetting:9];
     }
 
-    else if (v25)
+    else if (secondaryServiceDescription2)
     {
       [v7 setFlag:0 forSetting:9];
     }
   }
 
-  v35 = v10;
-  v26 = v13;
-  v27 = [v6 dataNetworkType];
-  if ([v5 dataNetworkType] != v27)
+  v35 = label;
+  v26 = shortLabel2;
+  dataNetworkType = [toInfoCopy dataNetworkType];
+  if ([infoCopy dataNetworkType] != dataNetworkType)
   {
-    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v27];
+    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dataNetworkType];
     [v7 setObject:v28 forSetting:10];
   }
 
-  v29 = [v6 isProvidingDataConnection];
-  if (v29 != [v5 isProvidingDataConnection])
+  isProvidingDataConnection = [toInfoCopy isProvidingDataConnection];
+  if (isProvidingDataConnection != [infoCopy isProvidingDataConnection])
   {
     [v7 setFlag:BSSettingFlagForBool() forSetting:11];
   }
 
-  v30 = [v6 isPreferredForDataConnections];
-  if (v30 != [v5 isPreferredForDataConnections])
+  isPreferredForDataConnections = [toInfoCopy isPreferredForDataConnections];
+  if (isPreferredForDataConnections != [infoCopy isPreferredForDataConnections])
   {
     [v7 setFlag:BSSettingFlagForBool() forSetting:12];
   }
 
-  v31 = [v6 isRegisteredWithoutCellular];
-  if (v31 != [v5 isRegisteredWithoutCellular])
+  isRegisteredWithoutCellular = [toInfoCopy isRegisteredWithoutCellular];
+  if (isRegisteredWithoutCellular != [infoCopy isRegisteredWithoutCellular])
   {
     [v7 setFlag:BSSettingFlagForBool() forSetting:13];
   }
 
-  v32 = [v6 isCallForwardingEnabled];
-  if (v32 != [v5 isCallForwardingEnabled])
+  isCallForwardingEnabled = [toInfoCopy isCallForwardingEnabled];
+  if (isCallForwardingEnabled != [infoCopy isCallForwardingEnabled])
   {
     [v7 setFlag:BSSettingFlagForBool() forSetting:14];
   }
@@ -164,23 +164,23 @@
   return v33;
 }
 
-- (void)initWithChanges:(void *)a1
+- (void)initWithChanges:(void *)changes
 {
   v3 = a2;
-  if (a1)
+  if (changes)
   {
-    v7.receiver = a1;
+    v7.receiver = changes;
     v7.super_class = STTelephonyStatusDomainSIMInfoDiff;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    changes = objc_msgSendSuper2(&v7, sel_init);
+    if (changes)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = changes[1];
+      changes[1] = v4;
     }
   }
 
-  return a1;
+  return changes;
 }
 
 - (STTelephonyStatusDomainSIMInfoDiff)init
@@ -191,17 +191,17 @@
   return v4;
 }
 
-- (id)infoByApplyingToInfo:(id)a3
+- (id)infoByApplyingToInfo:(id)info
 {
-  v4 = [a3 mutableCopy];
+  v4 = [info mutableCopy];
   [(STTelephonyStatusDomainSIMInfoDiff *)self applyToMutableInfo:v4];
 
   return v4;
 }
 
-- (void)applyToMutableInfo:(id)a3
+- (void)applyToMutableInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   if (self)
   {
     changes = self->_changes;
@@ -216,7 +216,7 @@
   v11[1] = 3221225472;
   v11[2] = __57__STTelephonyStatusDomainSIMInfoDiff_applyToMutableInfo___block_invoke;
   v11[3] = &unk_1E85DDF78;
-  v6 = v4;
+  v6 = infoCopy;
   v12 = v6;
   v7 = changes;
   [(BSSettings *)v7 enumerateFlagsWithBlock:v11];
@@ -424,9 +424,9 @@ LABEL_21:
   return [(STTelephonyStatusDomainSIMInfoDiff *)self isEmpty];
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -442,9 +442,9 @@ LABEL_21:
 
     v6 = changes;
     v7 = [(BSSettings *)v6 mutableCopy];
-    if (v4)
+    if (diffCopy)
     {
-      v8 = v4[1];
+      v8 = diffCopy[1];
     }
 
     else
@@ -470,50 +470,50 @@ LABEL_21:
   return v10;
 }
 
-+ (void)_resolveCombinedChanges:(uint64_t)a3 forObjectEntry:(void *)a4 baseChanges:
++ (void)_resolveCombinedChanges:(uint64_t)changes forObjectEntry:(void *)entry baseChanges:
 {
   v8 = a2;
-  v6 = a4;
+  entryCopy = entry;
   objc_opt_self();
-  if (![v8 flagForSetting:a3])
+  if (![v8 flagForSetting:changes])
   {
-    v7 = [v8 objectForSetting:a3];
+    v7 = [v8 objectForSetting:changes];
 
     if (v7)
     {
-      if ([v6 flagForSetting:a3])
+      if ([entryCopy flagForSetting:changes])
       {
-        [v8 setObject:0 forSetting:a3];
+        [v8 setObject:0 forSetting:changes];
       }
 
       else
       {
-        [v8 setFlag:0x7FFFFFFFFFFFFFFFLL forSetting:a3];
+        [v8 setFlag:0x7FFFFFFFFFFFFFFFLL forSetting:changes];
       }
     }
   }
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STTelephonyStatusDomainSIMInfoDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   if (self)
   {
     self = self->_changes;
@@ -523,8 +523,8 @@ LABEL_21:
   v10[1] = 3221225472;
   v10[2] = __46__STTelephonyStatusDomainSIMInfoDiff_isEqual___block_invoke;
   v10[3] = &unk_1E85DDCD8;
-  v11 = v4;
-  v6 = v4;
+  v11 = equalCopy;
+  v6 = equalCopy;
   v7 = [v5 appendObject:self counterpart:v10];
   v8 = [v5 isEqual];
 
@@ -547,8 +547,8 @@ id __46__STTelephonyStatusDomainSIMInfoDiff_isEqual___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
     changes = self->_changes;
@@ -559,13 +559,13 @@ id __46__STTelephonyStatusDomainSIMInfoDiff_isEqual___block_invoke(uint64_t a1)
     changes = 0;
   }
 
-  v6 = [v3 appendObject:changes];
+  v6 = [builder appendObject:changes];
   v7 = [v4 hash];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -577,13 +577,13 @@ id __46__STTelephonyStatusDomainSIMInfoDiff_isEqual___block_invoke(uint64_t a1)
     changes = 0;
   }
 
-  [a3 encodeObject:changes forKey:@"changes"];
+  [coder encodeObject:changes forKey:@"changes"];
 }
 
-- (STTelephonyStatusDomainSIMInfoDiff)initWithCoder:(id)a3
+- (STTelephonyStatusDomainSIMInfoDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"changes"];
 
   v6 = [(STTelephonyStatusDomainSIMInfoDiff *)self initWithChanges:v5];
   return v6;
@@ -591,42 +591,42 @@ id __46__STTelephonyStatusDomainSIMInfoDiff_isEqual___block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(STTelephonyStatusDomainSIMInfoDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STTelephonyStatusDomainSIMInfoDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyStatusDomainSIMInfoDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STTelephonyStatusDomainSIMInfoDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STTelephonyStatusDomainSIMInfoDiff *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STTelephonyStatusDomainSIMInfoDiff *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __86__STTelephonyStatusDomainSIMInfoDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v11[3] = &unk_1E85DDD00;
-    v11[4] = a1;
-    v7 = v6;
+    v11[4] = self;
+    v7 = succinctDescriptionBuilder;
     v12 = v7;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v11];
 

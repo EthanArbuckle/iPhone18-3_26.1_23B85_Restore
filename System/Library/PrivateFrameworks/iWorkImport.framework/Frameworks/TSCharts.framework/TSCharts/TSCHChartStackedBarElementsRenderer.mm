@@ -1,12 +1,12 @@
 @interface TSCHChartStackedBarElementsRenderer
-- (CGPath)clippingPathForRect:(CGRect)a3 inGroupIndex:(unint64_t)a4 series:(id)a5 withContext:(CGContext *)a6 relativelyPositive:(BOOL)a7 stackRects:(id)a8 forceRoundedCornersOff:(BOOL)a9;
-- (id)stackRectsWithContext:(CGContext *)a3;
-- (void)renderRoundedCornerElementStrokeIntoContext:(CGContext *)a3 stroke:(id)a4 clippingPath:(CGPath *)a5 elementRenderRect:(CGRect)a6;
+- (CGPath)clippingPathForRect:(CGRect)rect inGroupIndex:(unint64_t)index series:(id)series withContext:(CGContext *)context relativelyPositive:(BOOL)positive stackRects:(id)rects forceRoundedCornersOff:(BOOL)off;
+- (id)stackRectsWithContext:(CGContext *)context;
+- (void)renderRoundedCornerElementStrokeIntoContext:(CGContext *)context stroke:(id)stroke clippingPath:(CGPath *)path elementRenderRect:(CGRect)rect;
 @end
 
 @implementation TSCHChartStackedBarElementsRenderer
 
-- (id)stackRectsWithContext:(CGContext *)a3
+- (id)stackRectsWithContext:(CGContext *)context
 {
   v7 = objc_msgSend_model(self, a2, v3, v4, v5);
   v12 = objc_msgSend_chartInfo(v7, v8, v9, v10, v11);
@@ -50,7 +50,7 @@
         v75[1] = &unk_27A6B6F38;
         v77 = &v81;
         v76 = v34;
-        objc_msgSend_enumerateElementsForSeries_context_elementCount_groupIndexes_elementRects_clipRects_forBlock_(self, v65, v66, v67, v68, v39, a3, v61, v63, v64, v62, v74, v71);
+        objc_msgSend_enumerateElementsForSeries_context_elementCount_groupIndexes_elementRects_clipRects_forBlock_(self, v65, v66, v67, v68, v39, context, v61, v63, v64, v62, v74, v71);
         v7 = v55;
         if (v78)
         {
@@ -83,14 +83,14 @@
   return v69;
 }
 
-- (CGPath)clippingPathForRect:(CGRect)a3 inGroupIndex:(unint64_t)a4 series:(id)a5 withContext:(CGContext *)a6 relativelyPositive:(BOOL)a7 stackRects:(id)a8 forceRoundedCornersOff:(BOOL)a9
+- (CGPath)clippingPathForRect:(CGRect)rect inGroupIndex:(unint64_t)index series:(id)series withContext:(CGContext *)context relativelyPositive:(BOOL)positive stackRects:(id)rects forceRoundedCornersOff:(BOOL)off
 {
-  v11 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  v16 = a5;
-  v18 = a8;
-  if (a9)
+  positiveCopy = positive;
+  height = rect.size.height;
+  width = rect.size.width;
+  seriesCopy = series;
+  rectsCopy = rects;
+  if (off)
   {
     goto LABEL_6;
   }
@@ -121,7 +121,7 @@ LABEL_6:
     {
       v47 = objc_msgSend_model(self, v43, v46, v44, v45);
       v52 = objc_msgSend_chartInfo(v47, v48, v49, v50, v51);
-      v53 = sub_2762A204C(a4, v18, v52, v11, self->super._vertical);
+      v53 = sub_2762A204C(index, rectsCopy, v52, positiveCopy, self->super._vertical);
 
       v41 = CFAutorelease(v53);
     }
@@ -132,19 +132,19 @@ LABEL_7:
   return v41;
 }
 
-- (void)renderRoundedCornerElementStrokeIntoContext:(CGContext *)a3 stroke:(id)a4 clippingPath:(CGPath *)a5 elementRenderRect:(CGRect)a6
+- (void)renderRoundedCornerElementStrokeIntoContext:(CGContext *)context stroke:(id)stroke clippingPath:(CGPath *)path elementRenderRect:(CGRect)rect
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v12 = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  strokeCopy = stroke;
   CGContextClipToRectSafe();
-  objc_msgSend_applyToContext_insideStroke_(v12, v13, v14, v15, v16, a3, 1);
+  objc_msgSend_applyToContext_insideStroke_(strokeCopy, v13, v14, v15, v16, context, 1);
 
-  v18 = sub_2762A1B4C(a5, v17, x, y, width, height);
+  v18 = sub_2762A1B4C(path, v17, x, y, width, height);
   CGContextAddPathSafe();
-  CGContextStrokePath(a3);
+  CGContextStrokePath(context);
 
   CGPathRelease(v18);
 }

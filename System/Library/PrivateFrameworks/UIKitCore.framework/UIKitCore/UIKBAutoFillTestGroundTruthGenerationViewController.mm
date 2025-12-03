@@ -1,30 +1,30 @@
 @interface UIKBAutoFillTestGroundTruthGenerationViewController
-- (UIKBAutoFillTestGroundTruthGenerationViewController)initWithAutoFillTestViewController:(id)a3;
+- (UIKBAutoFillTestGroundTruthGenerationViewController)initWithAutoFillTestViewController:(id)controller;
 - (UIKBAutoFillTestGroundTruthGenerationViewControllerDelegate)delegate;
-- (int64_t)taggerView:(id)a3 selectedTypeForTextFieldRequest:(id)a4;
-- (void)_cancelBarButtonItemAction:(id)a3;
-- (void)_enumerateSubviewsOfRootView:(id)a3 usingBlock:(id)a4;
-- (void)_moveTaggerHighlightViewOverView:(id)a3;
+- (int64_t)taggerView:(id)view selectedTypeForTextFieldRequest:(id)request;
+- (void)_cancelBarButtonItemAction:(id)action;
+- (void)_enumerateSubviewsOfRootView:(id)view usingBlock:(id)block;
+- (void)_moveTaggerHighlightViewOverView:(id)view;
 - (void)_removeTaggerHighlightView;
-- (void)taggerView:(id)a3 didTagTextFieldRequest:(id)a4 withSelectedType:(int64_t)a5;
-- (void)taggerView:(id)a3 willTagRequest:(id)a4;
-- (void)taggerViewDidFinish:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)taggerView:(id)view didTagTextFieldRequest:(id)request withSelectedType:(int64_t)type;
+- (void)taggerView:(id)view willTagRequest:(id)request;
+- (void)taggerViewDidFinish:(id)finish;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation UIKBAutoFillTestGroundTruthGenerationViewController
 
-- (UIKBAutoFillTestGroundTruthGenerationViewController)initWithAutoFillTestViewController:(id)a3
+- (UIKBAutoFillTestGroundTruthGenerationViewController)initWithAutoFillTestViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = UIKBAutoFillTestGroundTruthGenerationViewController;
   v6 = [(UIViewController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_testViewController, a3);
+    objc_storeStrong(&v6->_testViewController, controller);
     v8 = objc_alloc_init(UIKBAutoFillTestExpectedResult);
     expectedResult = v7->_expectedResult;
     v7->_expectedResult = v8;
@@ -35,21 +35,21 @@
   return v7;
 }
 
-- (void)_enumerateSubviewsOfRootView:(id)a3 usingBlock:(id)a4
+- (void)_enumerateSubviewsOfRootView:(id)view usingBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
-  [v7 addObject:v5];
-  if ([v7 count])
+  viewCopy = view;
+  blockCopy = block;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [array addObject:viewCopy];
+  if ([array count])
   {
     while (1)
     {
-      v9 = [v7 firstObject];
-      [v7 removeObjectAtIndex:0];
+      firstObject = [array firstObject];
+      [array removeObjectAtIndex:0];
       v11 = 0;
-      v6[2](v6, v9, &v11 + 1, &v11);
+      blockCopy[2](blockCopy, firstObject, &v11 + 1, &v11);
       if (v11 == 1)
       {
         break;
@@ -57,11 +57,11 @@
 
       if ((v11 & 0x100) == 0)
       {
-        v10 = [v9 subviews];
-        [v7 addObjectsFromArray:v10];
+        subviews = [firstObject subviews];
+        [array addObjectsFromArray:subviews];
       }
 
-      if (![v7 count])
+      if (![array count])
       {
         goto LABEL_8;
       }
@@ -79,28 +79,28 @@ LABEL_8:
   [(UIViewController *)&v47 viewDidLoad];
   [(UIViewController *)self setTitle:@"AutoFill Test Case"];
   v3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:sel__cancelBarButtonItemAction_];
-  v4 = [(UIViewController *)self navigationItem];
-  [v4 setLeftBarButtonItem:v3];
+  navigationItem = [(UIViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v3];
 
-  v5 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   v6 = +[UIColor whiteColor];
-  [v5 setBackgroundColor:v6];
+  [view setBackgroundColor:v6];
 
   v7 = [UIScrollView alloc];
-  [v5 bounds];
+  [view bounds];
   v8 = [(UIScrollView *)v7 initWithFrame:?];
   scrollView = self->_scrollView;
   self->_scrollView = v8;
 
   [(UIView *)self->_scrollView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 addSubview:self->_scrollView];
+  [view addSubview:self->_scrollView];
   [(UIViewController *)self addChildViewController:self->_testViewController];
-  v46 = [(UIViewController *)self->_testViewController view];
-  [v46 frame];
+  view2 = [(UIViewController *)self->_testViewController view];
+  [view2 frame];
   v11 = v10;
   v13 = v12;
-  [v46 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-  [(UIView *)self->_scrollView addSubview:v46];
+  [view2 setFrame:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  [(UIView *)self->_scrollView addSubview:view2];
   [(UIScrollView *)self->_scrollView setContentSize:v11, v13];
   [(UIViewController *)self->_testViewController didMoveToParentViewController:self];
   v14 = [[UIKBAutoFillTestTaggerView alloc] initWithFrame:0.0, 0.0, 320.0, 280.0];
@@ -109,41 +109,41 @@ LABEL_8:
 
   [(UIKBAutoFillTestTaggerView *)self->_taggerView setDelegate:self];
   [(UIView *)self->_taggerView setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v5 addSubview:self->_taggerView];
+  [view addSubview:self->_taggerView];
   v34 = MEMORY[0x1E69977A0];
-  v44 = [(UIView *)self->_scrollView topAnchor];
-  v45 = [v5 safeAreaLayoutGuide];
-  v43 = [v45 topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  topAnchor = [(UIView *)self->_scrollView topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v49[0] = v42;
-  v41 = [(UIView *)self->_scrollView leadingAnchor];
-  v40 = [v5 leadingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  leadingAnchor = [(UIView *)self->_scrollView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v39 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v49[1] = v39;
-  v37 = [(UIView *)self->_scrollView trailingAnchor];
-  v36 = [v5 trailingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36];
+  trailingAnchor = [(UIView *)self->_scrollView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v49[2] = v35;
-  v33 = [(UIView *)self->_scrollView bottomAnchor];
-  v32 = [(UIView *)self->_taggerView topAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  bottomAnchor = [(UIView *)self->_scrollView bottomAnchor];
+  topAnchor3 = [(UIView *)self->_taggerView topAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:topAnchor3];
   v49[3] = v31;
-  v30 = [(UIView *)self->_taggerView leadingAnchor];
-  v29 = [v5 leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  leadingAnchor3 = [(UIView *)self->_taggerView leadingAnchor];
+  leadingAnchor4 = [view leadingAnchor];
+  v28 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v49[4] = v28;
-  v27 = [(UIView *)self->_taggerView trailingAnchor];
-  v16 = v5;
-  v38 = v5;
-  v17 = [v5 trailingAnchor];
-  v18 = [v27 constraintEqualToAnchor:v17];
+  trailingAnchor3 = [(UIView *)self->_taggerView trailingAnchor];
+  v16 = view;
+  v38 = view;
+  trailingAnchor4 = [view trailingAnchor];
+  v18 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v49[5] = v18;
-  v19 = [(UIView *)self->_taggerView bottomAnchor];
-  v20 = [v16 bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  bottomAnchor2 = [(UIView *)self->_taggerView bottomAnchor];
+  bottomAnchor3 = [v16 bottomAnchor];
+  v21 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v49[6] = v21;
-  v22 = [(UIView *)self->_taggerView heightAnchor];
-  v23 = [v22 constraintEqualToConstant:280.0];
+  heightAnchor = [(UIView *)self->_taggerView heightAnchor];
+  v23 = [heightAnchor constraintEqualToConstant:280.0];
   v49[7] = v23;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v49 count:8];
   [v34 activateConstraints:v24];
@@ -154,7 +154,7 @@ LABEL_8:
   [(UIKBAutoFillTestTaggerView *)self->_taggerView setTagRequests:v26];
 }
 
-- (void)_cancelBarButtonItemAction:(id)a3
+- (void)_cancelBarButtonItemAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -163,23 +163,23 @@ LABEL_8:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v11.receiver = self;
   v11.super_class = UIKBAutoFillTestGroundTruthGenerationViewController;
-  [(UIViewController *)&v11 viewDidAppear:a3];
-  v4 = [MEMORY[0x1E695DF70] array];
+  [(UIViewController *)&v11 viewDidAppear:appear];
+  array = [MEMORY[0x1E695DF70] array];
   v5 = [[UIKBAutoFillTestTagRequest alloc] initWithRequestType:0 view:0];
-  [v4 addObject:v5];
+  [array addObject:v5];
 
-  v6 = [(UIViewController *)self->_testViewController view];
+  view = [(UIViewController *)self->_testViewController view];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __69__UIKBAutoFillTestGroundTruthGenerationViewController_viewDidAppear___block_invoke;
   v9[3] = &unk_1E710D920;
-  v10 = v4;
-  v7 = v4;
-  [(UIKBAutoFillTestGroundTruthGenerationViewController *)self _enumerateSubviewsOfRootView:v6 usingBlock:v9];
+  v10 = array;
+  v7 = array;
+  [(UIKBAutoFillTestGroundTruthGenerationViewController *)self _enumerateSubviewsOfRootView:view usingBlock:v9];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -275,9 +275,9 @@ uint64_t __69__UIKBAutoFillTestGroundTruthGenerationViewController_viewDidAppear
   return v29;
 }
 
-- (void)_moveTaggerHighlightViewOverView:(id)a3
+- (void)_moveTaggerHighlightViewOverView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (!self->_highlightView)
   {
     v5 = objc_alloc_init(UIView);
@@ -287,8 +287,8 @@ uint64_t __69__UIKBAutoFillTestGroundTruthGenerationViewController_viewDidAppear
     v7 = [UIColor colorWithWhite:0.2 alpha:0.8];
     [(UIView *)self->_highlightView setBackgroundColor:v7];
 
-    v8 = [(UIView *)self->_highlightView layer];
-    [v8 setAllowsGroupBlending:1];
+    layer = [(UIView *)self->_highlightView layer];
+    [layer setAllowsGroupBlending:1];
 
     v9 = objc_alloc_init(UIView);
     highlightBox = self->_highlightBox;
@@ -298,18 +298,18 @@ uint64_t __69__UIKBAutoFillTestGroundTruthGenerationViewController_viewDidAppear
     [(UIView *)self->_highlightBox setBackgroundColor:v11];
 
     v12 = *MEMORY[0x1E69798E8];
-    v13 = [(UIView *)self->_highlightBox layer];
-    [v13 setCompositingFilter:v12];
+    layer2 = [(UIView *)self->_highlightBox layer];
+    [layer2 setCompositingFilter:v12];
 
-    v14 = [(UIView *)self->_highlightBox layer];
-    [v14 setCornerRadius:8.0];
+    layer3 = [(UIView *)self->_highlightBox layer];
+    [layer3 setCornerRadius:8.0];
 
-    v15 = [(UIView *)self->_highlightBox layer];
-    [v15 setMasksToBounds:1];
+    layer4 = [(UIView *)self->_highlightBox layer];
+    [layer4 setMasksToBounds:1];
 
     v16 = *MEMORY[0x1E69796E8];
-    v17 = [(UIView *)self->_highlightBox layer];
-    [v17 setCornerCurve:v16];
+    layer5 = [(UIView *)self->_highlightBox layer];
+    [layer5 setCornerCurve:v16];
 
     [(UIView *)self->_highlightView addSubview:self->_highlightBox];
   }
@@ -319,21 +319,21 @@ uint64_t __69__UIKBAutoFillTestGroundTruthGenerationViewController_viewDidAppear
   [(UIScrollView *)self->_scrollView contentSize];
   [(UIView *)self->_highlightView setFrame:0.0, 0.0, v19, v20];
   scrollView = self->_scrollView;
-  [v4 frame];
+  [viewCopy frame];
   v23 = v22;
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = [v4 superview];
-  [(UIView *)scrollView convertRect:v30 fromView:v23, v25, v27, v29];
+  superview = [viewCopy superview];
+  [(UIView *)scrollView convertRect:superview fromView:v23, v25, v27, v29];
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v38 = v37;
 
-  v39 = [(UIView *)self->_highlightView superview];
+  superview2 = [(UIView *)self->_highlightView superview];
 
-  if (!v39)
+  if (!superview2)
   {
     [(UIView *)self->_scrollView addSubview:self->_highlightView];
     [(UIView *)self->_highlightBox setFrame:v32, v34, v36, v38];
@@ -374,7 +374,7 @@ uint64_t __69__UIKBAutoFillTestGroundTruthGenerationViewController_viewDidAppear
   [UIView animateWithDuration:131076 delay:v3 options:v2 animations:0.25 completion:0.0];
 }
 
-- (void)taggerViewDidFinish:(id)a3
+- (void)taggerViewDidFinish:(id)finish
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -383,13 +383,13 @@ uint64_t __69__UIKBAutoFillTestGroundTruthGenerationViewController_viewDidAppear
   }
 }
 
-- (void)taggerView:(id)a3 willTagRequest:(id)a4
+- (void)taggerView:(id)view willTagRequest:(id)request
 {
-  v5 = [a4 view];
-  v6 = v5;
-  if (v5)
+  view = [request view];
+  v6 = view;
+  if (view)
   {
-    [(UIKBAutoFillTestGroundTruthGenerationViewController *)self _moveTaggerHighlightViewOverView:v5];
+    [(UIKBAutoFillTestGroundTruthGenerationViewController *)self _moveTaggerHighlightViewOverView:view];
   }
 
   else
@@ -398,20 +398,20 @@ uint64_t __69__UIKBAutoFillTestGroundTruthGenerationViewController_viewDidAppear
   }
 }
 
-- (int64_t)taggerView:(id)a3 selectedTypeForTextFieldRequest:(id)a4
+- (int64_t)taggerView:(id)view selectedTypeForTextFieldRequest:(id)request
 {
   expectedResult = self->_expectedResult;
-  v5 = [a4 view];
-  v6 = -[UIKBAutoFillTestExpectedResult typeForTextFieldWithTag:](expectedResult, "typeForTextFieldWithTag:", [v5 tag]);
+  view = [request view];
+  v6 = -[UIKBAutoFillTestExpectedResult typeForTextFieldWithTag:](expectedResult, "typeForTextFieldWithTag:", [view tag]);
 
   return v6;
 }
 
-- (void)taggerView:(id)a3 didTagTextFieldRequest:(id)a4 withSelectedType:(int64_t)a5
+- (void)taggerView:(id)view didTagTextFieldRequest:(id)request withSelectedType:(int64_t)type
 {
   expectedResult = self->_expectedResult;
-  v7 = [a4 view];
-  -[UIKBAutoFillTestExpectedResult setType:forTextFieldWithTag:](expectedResult, "setType:forTextFieldWithTag:", a5, [v7 tag]);
+  view = [request view];
+  -[UIKBAutoFillTestExpectedResult setType:forTextFieldWithTag:](expectedResult, "setType:forTextFieldWithTag:", type, [view tag]);
 }
 
 - (UIKBAutoFillTestGroundTruthGenerationViewControllerDelegate)delegate

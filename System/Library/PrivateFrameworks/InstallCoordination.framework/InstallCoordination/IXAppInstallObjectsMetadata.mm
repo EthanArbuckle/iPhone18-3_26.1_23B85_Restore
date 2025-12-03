@@ -1,6 +1,6 @@
 @interface IXAppInstallObjectsMetadata
 - (IXAppInstallObjectsMetadata)init;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 @end
 
 @implementation IXAppInstallObjectsMetadata
@@ -21,12 +21,12 @@
   return v3;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   [(IXAppInstallObjectsMetadata *)self setCount:[(IXAppInstallObjectsMetadata *)self count]+ 1];
-  v5 = [(IXAppInstallObjectsMetadata *)self instances];
-  [v5 addObject:v4];
+  instances = [(IXAppInstallObjectsMetadata *)self instances];
+  [instances addObject:objectCopy];
 }
 
 @end

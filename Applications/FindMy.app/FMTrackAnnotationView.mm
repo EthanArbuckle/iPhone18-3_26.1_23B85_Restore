@@ -1,6 +1,6 @@
 @interface FMTrackAnnotationView
-- (_TtC6FindMy21FMTrackAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (_TtC6FindMy21FMTrackAnnotationView)initWithCoder:(id)a3;
+- (_TtC6FindMy21FMTrackAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (_TtC6FindMy21FMTrackAnnotationView)initWithCoder:(id)coder;
 - (void)prepareForDisplay;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)prepareForDisplay
 {
-  v2 = self;
+  selfCopy = self;
   sub_100433DA0();
 }
 
-- (_TtC6FindMy21FMTrackAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC6FindMy21FMTrackAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     swift_unknownObjectRetain();
@@ -29,18 +29,18 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for FMTrackAnnotationView();
-  v7 = [(FMTrackAnnotationView *)&v9 initWithAnnotation:a3 reuseIdentifier:v6];
+  v7 = [(FMTrackAnnotationView *)&v9 initWithAnnotation:annotation reuseIdentifier:v6];
 
   swift_unknownObjectRelease();
   return v7;
 }
 
-- (_TtC6FindMy21FMTrackAnnotationView)initWithCoder:(id)a3
+- (_TtC6FindMy21FMTrackAnnotationView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for FMTrackAnnotationView();
-  v4 = a3;
-  v5 = [(FMTrackAnnotationView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(FMTrackAnnotationView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,17 +1,17 @@
 @interface CLEEDCoexMonitorPower
-- (CLEEDCoexMonitorPower)initWithQueue:(id)a3 mitigationConfig:(MitigationsConfig *)a4 cachedCoexMetricData:(id)a5 eventCB:(id)a6 coexMetricUpdateCB:(id)a7;
+- (CLEEDCoexMonitorPower)initWithQueue:(id)queue mitigationConfig:(MitigationsConfig *)config cachedCoexMetricData:(id)data eventCB:(id)b coexMetricUpdateCB:(id)cB;
 - (id).cxx_construct;
 - (id)getMitigationForCurrentlevel;
 - (void)computePowerLevelDurationForCA;
 - (void)dealloc;
-- (void)processPowerLevelForCA:(unsigned int)a3;
+- (void)processPowerLevelForCA:(unsigned int)a;
 - (void)queryPeakPowerLevel;
-- (void)updateCoexMetricDict:(id *)a3 forCASubmission:(BOOL)a4;
+- (void)updateCoexMetricDict:(id *)dict forCASubmission:(BOOL)submission;
 @end
 
 @implementation CLEEDCoexMonitorPower
 
-- (CLEEDCoexMonitorPower)initWithQueue:(id)a3 mitigationConfig:(MitigationsConfig *)a4 cachedCoexMetricData:(id)a5 eventCB:(id)a6 coexMetricUpdateCB:(id)a7
+- (CLEEDCoexMonitorPower)initWithQueue:(id)queue mitigationConfig:(MitigationsConfig *)config cachedCoexMetricData:(id)data eventCB:(id)b coexMetricUpdateCB:(id)cB
 {
   if (qword_1025D4660 != -1)
   {
@@ -26,11 +26,11 @@
     *buf = 136446978;
     v46 = "[CLEEDCoexMonitorPower initWithQueue:mitigationConfig:cachedCoexMetricData:eventCB:coexMetricUpdateCB:]";
     v47 = 2114;
-    v48 = a3;
+    queueCopy = queue;
     v49 = 2082;
     v50 = v14;
     v51 = 2114;
-    v52 = a6;
+    bCopy = b;
     _os_log_impl(dword_100000000, v13, OS_LOG_TYPE_DEFAULT, "#EED2CXPB,%{public}s[queue:%{public}@,peakPowerConfig:%{public}s,mitigationCB:%{public}@]", buf, 0x2Au);
     if (SHIBYTE(v41) < 0)
     {
@@ -60,11 +60,11 @@
     *__p = 136446978;
     *&__p[4] = "[CLEEDCoexMonitorPower initWithQueue:mitigationConfig:cachedCoexMetricData:eventCB:coexMetricUpdateCB:]";
     v39 = 2114;
-    v40 = a3;
+    queueCopy2 = queue;
     v41 = 2082;
     v42 = v28;
     v43 = 2114;
-    v44 = a6;
+    bCopy2 = b;
     v29 = _os_log_send_and_compose_impl();
     if (v37 < 0)
     {
@@ -83,29 +83,29 @@
   v15 = [(CLEEDCoexMonitorPower *)&v35 init];
   if (v15)
   {
-    dispatch_assert_queue_V2(a3);
-    *(v15 + 1) = a3;
-    *(v15 + 2) = _Block_copy(a6);
-    *(v15 + 25) = _Block_copy(a7);
+    dispatch_assert_queue_V2(queue);
+    *(v15 + 1) = queue;
+    *(v15 + 2) = _Block_copy(b);
+    *(v15 + 25) = _Block_copy(cB);
     *(v15 + 24) = 0;
-    v16 = *&a4->cellular.enabled;
-    *(v15 + 2) = a4->nominal;
+    v16 = *&config->cellular.enabled;
+    *(v15 + 2) = config->nominal;
     *(v15 + 3) = v16;
-    v17 = *&a4->cellular.rsrpSamplesToAvg;
-    v18 = *&a4->cellular.belowThresholdParams.maxStreamingBitrateKbps;
-    v19 = *&a4->thermal.moderate.maxFramerateFps;
-    *(v15 + 6) = *&a4->thermal.light.maxFramerateFps;
+    v17 = *&config->cellular.rsrpSamplesToAvg;
+    v18 = *&config->cellular.belowThresholdParams.maxStreamingBitrateKbps;
+    v19 = *&config->thermal.moderate.maxFramerateFps;
+    *(v15 + 6) = *&config->thermal.light.maxFramerateFps;
     *(v15 + 7) = v19;
     *(v15 + 4) = v17;
     *(v15 + 5) = v18;
-    v20 = *&a4->thermal.heavyAndGreater.maxFramerateFps;
-    light = a4->peakPower.light;
-    heavyAndGreater = a4->peakPower.heavyAndGreater;
-    *(v15 + 10) = a4->peakPower.moderate;
+    v20 = *&config->thermal.heavyAndGreater.maxFramerateFps;
+    light = config->peakPower.light;
+    heavyAndGreater = config->peakPower.heavyAndGreater;
+    *(v15 + 10) = config->peakPower.moderate;
     *(v15 + 11) = heavyAndGreater;
     *(v15 + 8) = v20;
     *(v15 + 9) = light;
-    *(v15 + 26) = [[CLEEDCoexPowerForCA alloc] initWithCoexMetricDict:a5];
+    *(v15 + 26) = [[CLEEDCoexPowerForCA alloc] initWithCoexMetricDict:data];
     if ((*(v15 + 140) & 1) == 0)
     {
       v23 = *(v15 + 1);
@@ -295,15 +295,15 @@
   p_fMitigationConfig = &self->fMitigationConfig;
   if (self->fMitigationConfig.peakPower.enabled)
   {
-    v4 = [(CLEEDCoexMonitorPower *)self currentPowerLevel];
-    if (v4 <= 19)
+    currentPowerLevel = [(CLEEDCoexMonitorPower *)self currentPowerLevel];
+    if (currentPowerLevel <= 19)
     {
-      if (!v4)
+      if (!currentPowerLevel)
       {
         goto LABEL_17;
       }
 
-      if (v4 == 10)
+      if (currentPowerLevel == 10)
       {
         p_fMitigationConfig = &self->fMitigationConfig.peakPower.light;
         goto LABEL_17;
@@ -312,13 +312,13 @@
 
     else
     {
-      if (v4 == 20)
+      if (currentPowerLevel == 20)
       {
         p_fMitigationConfig = &self->fMitigationConfig.peakPower.moderate;
         goto LABEL_17;
       }
 
-      if (v4 == 30 || v4 == 40)
+      if (currentPowerLevel == 30 || currentPowerLevel == 40)
       {
         p_fMitigationConfig = &self->fMitigationConfig.peakPower.heavyAndGreater;
         goto LABEL_17;
@@ -355,11 +355,11 @@ LABEL_17:
   v8 = qword_1025D4668;
   if (os_log_type_enabled(qword_1025D4668, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(CLEEDCoexMonitorPower *)self currentPowerLevel];
+    currentPowerLevel2 = [(CLEEDCoexMonitorPower *)self currentPowerLevel];
     *buf = 136446722;
     v12 = "[CLEEDCoexMonitorPower getMitigationForCurrentlevel]";
     v13 = 1026;
-    v14 = v9;
+    v14 = currentPowerLevel2;
     v15 = 2114;
     v16 = v6;
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEFAULT, "#EED2CXPB,%{public}s, PowerLevel:%{public}u, Mitigation:%{public}@", buf, 0x1Cu);
@@ -373,18 +373,18 @@ LABEL_17:
   return v6;
 }
 
-- (void)processPowerLevelForCA:(unsigned int)a3
+- (void)processPowerLevelForCA:(unsigned int)a
 {
-  v3 = *&a3;
+  v3 = *&a;
   if (!self->fInitialValueReceived)
   {
-    [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] setPeakPowerAtStartOfCall:*&a3];
+    [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] setPeakPowerAtStartOfCall:*&a];
 LABEL_6:
     [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] setMaxPeakPowerInCall:v3];
     goto LABEL_7;
   }
 
-  if ([(CLEEDCoexMonitorPower *)self currentPowerLevel]== a3)
+  if ([(CLEEDCoexMonitorPower *)self currentPowerLevel]== a)
   {
     goto LABEL_8;
   }
@@ -409,12 +409,12 @@ LABEL_8:
 
 - (void)computePowerLevelDurationForCA
 {
-  v3 = [(CLEEDCoexMonitorPower *)self currentPowerLevel];
-  if (v3 <= 19)
+  currentPowerLevel = [(CLEEDCoexMonitorPower *)self currentPowerLevel];
+  if (currentPowerLevel <= 19)
   {
-    if (v3)
+    if (currentPowerLevel)
     {
-      if (v3 == 10)
+      if (currentPowerLevel == 10)
       {
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] currentpeakPowerStartTime];
         if (v11 > 0.0)
@@ -424,9 +424,9 @@ LABEL_8:
           Current = CFAbsoluteTimeGetCurrent();
           [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] currentpeakPowerStartTime];
           v16 = v13 + vabdd_f64(Current, v15);
-          v17 = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
+          fCoexPowerForCA = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
 
-          [(CLEEDCoexPowerForCA *)v17 setPeakPowerLightDuration:v16];
+          [(CLEEDCoexPowerForCA *)fCoexPowerForCA setPeakPowerLightDuration:v16];
         }
       }
     }
@@ -441,16 +441,16 @@ LABEL_8:
         v35 = CFAbsoluteTimeGetCurrent();
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] currentpeakPowerStartTime];
         v37 = v34 + vabdd_f64(v35, v36);
-        v38 = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
+        fCoexPowerForCA2 = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
 
-        [(CLEEDCoexPowerForCA *)v38 setPeakPowerNominalDuration:v37];
+        [(CLEEDCoexPowerForCA *)fCoexPowerForCA2 setPeakPowerNominalDuration:v37];
       }
     }
   }
 
   else
   {
-    switch(v3)
+    switch(currentPowerLevel)
     {
       case 20:
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] currentpeakPowerStartTime];
@@ -461,9 +461,9 @@ LABEL_8:
           v21 = CFAbsoluteTimeGetCurrent();
           [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] currentpeakPowerStartTime];
           v23 = v20 + vabdd_f64(v21, v22);
-          v24 = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
+          fCoexPowerForCA3 = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
 
-          [(CLEEDCoexPowerForCA *)v24 setPeakPowerModerateDuration:v23];
+          [(CLEEDCoexPowerForCA *)fCoexPowerForCA3 setPeakPowerModerateDuration:v23];
         }
 
         break;
@@ -476,9 +476,9 @@ LABEL_8:
           v28 = CFAbsoluteTimeGetCurrent();
           [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] currentpeakPowerStartTime];
           v30 = v27 + vabdd_f64(v28, v29);
-          v31 = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
+          fCoexPowerForCA4 = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
 
-          [(CLEEDCoexPowerForCA *)v31 setPeakPowerHeavyDuration:v30];
+          [(CLEEDCoexPowerForCA *)fCoexPowerForCA4 setPeakPowerHeavyDuration:v30];
         }
 
         break;
@@ -491,9 +491,9 @@ LABEL_8:
           v7 = CFAbsoluteTimeGetCurrent();
           [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] currentpeakPowerStartTime];
           v9 = v6 + vabdd_f64(v7, v8);
-          v10 = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
+          fCoexPowerForCA5 = [(CLEEDCoexMonitorPower *)self fCoexPowerForCA];
 
-          [(CLEEDCoexPowerForCA *)v10 setPeakPowerCriticalDuration:v9];
+          [(CLEEDCoexPowerForCA *)fCoexPowerForCA5 setPeakPowerCriticalDuration:v9];
         }
 
         break;
@@ -501,33 +501,33 @@ LABEL_8:
   }
 }
 
-- (void)updateCoexMetricDict:(id *)a3 forCASubmission:(BOOL)a4
+- (void)updateCoexMetricDict:(id *)dict forCASubmission:(BOOL)submission
 {
-  if (a3 && *a3)
+  if (dict && *dict)
   {
-    v5 = a4;
+    submissionCopy = submission;
     if ([(CLEEDCoexMonitorPower *)self fCoexPowerForCA])
     {
-      if (v5)
+      if (submissionCopy)
       {
         [(CLEEDCoexMonitorPower *)self computePowerLevelDurationForCA];
-        v7 = *a3;
+        v7 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerNominalDuration];
         LODWORD(v9) = vcvtpd_s64_f64(v8 * 1000.0);
         [v7 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v9), @"peakPowerNominalDuration"}];
-        v10 = *a3;
+        v10 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerLightDuration];
         LODWORD(v12) = vcvtpd_s64_f64(v11 * 1000.0);
         [v10 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v12), @"peakPowerLightDuration"}];
-        v13 = *a3;
+        v13 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerModerateDuration];
         LODWORD(v15) = vcvtpd_s64_f64(v14 * 1000.0);
         [v13 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v15), @"peakPowerModerateDuration"}];
-        v16 = *a3;
+        v16 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerHeavyDuration];
         LODWORD(v18) = vcvtpd_s64_f64(v17 * 1000.0);
         [v16 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", v18), @"peakPowerHeavyDuration"}];
-        v19 = *a3;
+        v19 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerCriticalDuration];
         LODWORD(v21) = vcvtpd_s64_f64(v20 * 1000.0);
         v22 = [NSNumber numberWithInt:v21];
@@ -536,31 +536,31 @@ LABEL_8:
 
       else
       {
-        v26 = *a3;
+        v26 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerNominalDuration];
         [v26 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"peakPowerNominalDuration"}];
-        v27 = *a3;
+        v27 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerLightDuration];
         [v27 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"peakPowerLightDuration"}];
-        v28 = *a3;
+        v28 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerModerateDuration];
         [v28 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"peakPowerModerateDuration"}];
-        v29 = *a3;
+        v29 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerHeavyDuration];
         [v29 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"peakPowerHeavyDuration"}];
-        v30 = *a3;
+        v30 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerCriticalDuration];
         [v30 setValue:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"peakPowerCriticalDuration"}];
-        v19 = *a3;
+        v19 = *dict;
         [(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] currentpeakPowerStartTime];
         v22 = [NSNumber numberWithDouble:?];
         v23 = @"currentpeakPowerStartTime";
       }
 
       [v19 setValue:v22 forKey:v23];
-      [*a3 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", -[CLEEDCoexPowerForCA peakPowerAtStartOfCall](-[CLEEDCoexMonitorPower fCoexPowerForCA](self, "fCoexPowerForCA"), "peakPowerAtStartOfCall")), @"peakPowerAtStartOfCall"}];
-      [*a3 setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", -[CLEEDCoexPowerForCA maxPeakPowerInCall](-[CLEEDCoexMonitorPower fCoexPowerForCA](self, "fCoexPowerForCA"), "maxPeakPowerInCall")), @"maxPeakPowerInCall"}];
-      v31 = *a3;
+      [*dict setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", -[CLEEDCoexPowerForCA peakPowerAtStartOfCall](-[CLEEDCoexMonitorPower fCoexPowerForCA](self, "fCoexPowerForCA"), "peakPowerAtStartOfCall")), @"peakPowerAtStartOfCall"}];
+      [*dict setValue:+[NSNumber numberWithInt:](NSNumber forKey:{"numberWithInt:", -[CLEEDCoexPowerForCA maxPeakPowerInCall](-[CLEEDCoexMonitorPower fCoexPowerForCA](self, "fCoexPowerForCA"), "maxPeakPowerInCall")), @"maxPeakPowerInCall"}];
+      v31 = *dict;
       v32 = [NSNumber numberWithInt:[(CLEEDCoexPowerForCA *)[(CLEEDCoexMonitorPower *)self fCoexPowerForCA] peakPowerAtEndOfCall]];
 
       [v31 setValue:v32 forKey:@"peakPowerAtEndOfCall"];

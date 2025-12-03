@@ -1,15 +1,15 @@
 @interface MSDDemoPeerPairingManager
 + (id)sharedInstance;
-- (BOOL)_savePairedPeer:(id)a3;
+- (BOOL)_savePairedPeer:(id)peer;
 - (BOOL)_setupPairingManagerIfNeeded;
-- (id)_findPairedPeerWithUUID:(id)a3;
+- (id)_findPairedPeerWithUUID:(id)d;
 - (id)_getAllPairedPeers;
 - (id)_readPairedPeersIntoData;
-- (void)_restorePairedPeersFromData:(id)a3;
+- (void)_restorePairedPeersFromData:(id)data;
 - (void)preservePairedPeersData;
-- (void)removePairedPeer:(id)a3 withCompletion:(id)a4;
+- (void)removePairedPeer:(id)peer withCompletion:(id)completion;
 - (void)restorePairedPeersDataIfNeeded;
-- (void)updateDeviceNameForPairedPeerOfUUID:(id)a3 withNewName:(id)a4;
+- (void)updateDeviceNameForPairedPeerOfUUID:(id)d withNewName:(id)name;
 @end
 
 @implementation MSDDemoPeerPairingManager
@@ -63,8 +63,8 @@
     v7 = 0;
   }
 
-  v9 = [(MSDDemoPeerPairingManager *)self _readPairedPeersIntoData];
-  if (!v9)
+  _readPairedPeersIntoData = [(MSDDemoPeerPairingManager *)self _readPairedPeersIntoData];
+  if (!_readPairedPeersIntoData)
   {
     v14 = sub_100063A54();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -76,7 +76,7 @@
   }
 
   v10 = +[MSDCryptoHandler sharedInstance];
-  v11 = [v10 performCryptoWithSecretKeyOnData:v9 isDecipher:0];
+  v11 = [v10 performCryptoWithSecretKeyOnData:_readPairedPeersIntoData isDecipher:0];
 
   if (!v11)
   {
@@ -180,25 +180,25 @@ LABEL_13:
   }
 }
 
-- (void)updateDeviceNameForPairedPeerOfUUID:(id)a3 withNewName:(id)a4
+- (void)updateDeviceNameForPairedPeerOfUUID:(id)d withNewName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  nameCopy = name;
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543618;
-    v12 = v7;
+    v12 = nameCopy;
     v13 = 2114;
-    v14 = v6;
+    v14 = dCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "MSDDemoPeerPairingManager: Assign new name '%{public}@' to paired peer '%{public}@'", &v11, 0x16u);
   }
 
-  v9 = [(MSDDemoPeerPairingManager *)self _findPairedPeerWithUUID:v6];
+  v9 = [(MSDDemoPeerPairingManager *)self _findPairedPeerWithUUID:dCopy];
   v10 = v9;
   if (v9)
   {
-    [v9 setName:v7];
+    [v9 setName:nameCopy];
     [(MSDDemoPeerPairingManager *)self _savePairedPeer:v10];
   }
 
@@ -208,15 +208,15 @@ LABEL_13:
   }
 }
 
-- (void)removePairedPeer:(id)a3 withCompletion:(id)a4
+- (void)removePairedPeer:(id)peer withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  completionCopy = completion;
   v8 = sub_100063A54();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = peerCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "MSDDemoPeerPairingManager: Remove paired peer with ID '%{public}@'", &buf, 0xCu);
   }
 
@@ -226,11 +226,11 @@ LABEL_13:
   v30 = sub_100041278;
   v31 = sub_100041288;
   v32 = 0;
-  v9 = [(MSDDemoPeerPairingManager *)self _findPairedPeerWithUUID:v6];
+  v9 = [(MSDDemoPeerPairingManager *)self _findPairedPeerWithUUID:peerCopy];
   if (v9)
   {
     v10 = dispatch_semaphore_create(0);
-    v11 = [(MSDDemoPeerPairingManager *)self pairingManager];
+    pairingManager = [(MSDDemoPeerPairingManager *)self pairingManager];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_100041290;
@@ -238,12 +238,12 @@ LABEL_13:
     p_buf = &buf;
     v12 = v9;
     v24 = v12;
-    v13 = v10;
-    v25 = v13;
-    [v11 removePairedPeer:v12 options:4 completion:v23];
+    peerCopy = v10;
+    v25 = peerCopy;
+    [pairingManager removePairedPeer:v12 options:4 completion:v23];
 
     v14 = dispatch_time(0, 5000000000);
-    if (dispatch_semaphore_wait(v13, v14))
+    if (dispatch_semaphore_wait(peerCopy, v14))
     {
       v15 = sub_100063A54();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -271,22 +271,22 @@ LABEL_13:
 
     v20 = *(&buf + 1);
     v27 = *(*(&buf + 1) + 40);
-    v13 = [NSString stringWithFormat:@"Failed to find peer with ID '%@'", v6];
-    sub_1000C13D8(&v27, 3727741104, @"Cannot find specified demo peer.", v13);
+    peerCopy = [NSString stringWithFormat:@"Failed to find peer with ID '%@'", peerCopy];
+    sub_1000C13D8(&v27, 3727741104, @"Cannot find specified demo peer.", peerCopy);
     v21 = v27;
     v18 = *(v20 + 40);
     *(v20 + 40) = v21;
   }
 
-  v7[2](v7, *(*(&buf + 1) + 40));
+  completionCopy[2](completionCopy, *(*(&buf + 1) + 40));
   _Block_object_dispose(&buf, 8);
 }
 
 - (BOOL)_setupPairingManagerIfNeeded
 {
-  v3 = [(MSDDemoPeerPairingManager *)self pairingManager];
+  pairingManager = [(MSDDemoPeerPairingManager *)self pairingManager];
 
-  if (v3)
+  if (pairingManager)
   {
     return 1;
   }
@@ -296,27 +296,27 @@ LABEL_13:
   [(MSDDemoPeerPairingManager *)self setPairingManager:v5];
 
   v6 = dispatch_get_global_queue(21, 0);
-  v7 = [(MSDDemoPeerPairingManager *)self pairingManager];
-  [v7 setDispatchQueue:v6];
+  pairingManager2 = [(MSDDemoPeerPairingManager *)self pairingManager];
+  [pairingManager2 setDispatchQueue:v6];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100041508;
   v14[3] = &unk_100169C78;
   objc_copyWeak(&v15, &location);
-  v8 = [(MSDDemoPeerPairingManager *)self pairingManager];
-  [v8 setInterruptionHandler:v14];
+  pairingManager3 = [(MSDDemoPeerPairingManager *)self pairingManager];
+  [pairingManager3 setInterruptionHandler:v14];
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100041574;
   v12[3] = &unk_100169C78;
   objc_copyWeak(&v13, &location);
-  v9 = [(MSDDemoPeerPairingManager *)self pairingManager];
-  [v9 setInvalidationHandler:v12];
+  pairingManager4 = [(MSDDemoPeerPairingManager *)self pairingManager];
+  [pairingManager4 setInvalidationHandler:v12];
 
-  v10 = [(MSDDemoPeerPairingManager *)self pairingManager];
-  v4 = v10 != 0;
+  pairingManager5 = [(MSDDemoPeerPairingManager *)self pairingManager];
+  v4 = pairingManager5 != 0;
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
@@ -341,7 +341,7 @@ LABEL_13:
   v18 = 0;
   if ([(MSDDemoPeerPairingManager *)self _setupPairingManagerIfNeeded])
   {
-    v4 = [(MSDDemoPeerPairingManager *)self pairingManager];
+    pairingManager = [(MSDDemoPeerPairingManager *)self pairingManager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100041814;
@@ -350,7 +350,7 @@ LABEL_13:
     v15 = &v16;
     v5 = v3;
     v13 = v5;
-    [v4 getPairedPeersWithOptions:134 completion:v12];
+    [pairingManager getPairedPeersWithOptions:134 completion:v12];
 
     v6 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v5, v6))
@@ -388,9 +388,9 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)_savePairedPeer:(id)a3
+- (BOOL)_savePairedPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = dispatch_semaphore_create(0);
   v17 = 0;
   v18[0] = &v17;
@@ -400,7 +400,7 @@ LABEL_5:
   v19 = 0;
   if ([(MSDDemoPeerPairingManager *)self _setupPairingManagerIfNeeded])
   {
-    v6 = [(MSDDemoPeerPairingManager *)self pairingManager];
+    pairingManager = [(MSDDemoPeerPairingManager *)self pairingManager];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100041AC0;
@@ -408,7 +408,7 @@ LABEL_5:
     v16 = &v17;
     v7 = v5;
     v15 = v7;
-    [v6 savePairedPeer:v4 options:5 completion:v14];
+    [pairingManager savePairedPeer:peerCopy options:5 completion:v14];
 
     v8 = dispatch_time(0, 5000000000);
     if (dispatch_semaphore_wait(v7, v8))
@@ -431,7 +431,7 @@ LABEL_5:
       v13 = sub_100063A54();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        sub_1000D0CB4(v4, v18);
+        sub_1000D0CB4(peerCopy, v18);
       }
     }
 
@@ -452,10 +452,10 @@ LABEL_6:
   return v9;
 }
 
-- (void)_restorePairedPeersFromData:(id)a3
+- (void)_restorePairedPeersFromData:(id)data
 {
   v21 = 0;
-  v4 = [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:a3 error:&v21];
+  v4 = [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:data error:&v21];
   v5 = v21;
   v6 = v5;
   if (v4)
@@ -485,9 +485,9 @@ LABEL_6:
           v13 = sub_100063A54();
           if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v12 detailedDescription];
+            detailedDescription = [v12 detailedDescription];
             *buf = 138543362;
-            v23 = v14;
+            v23 = detailedDescription;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "MSDDemoPeerPairingManager: Saving paired peer: %{public}@", buf, 0xCu);
           }
 
@@ -510,18 +510,18 @@ LABEL_6:
   }
 }
 
-- (id)_findPairedPeerWithUUID:(id)a3
+- (id)_findPairedPeerWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(MSDDemoPeerPairingManager *)self _getAllPairedPeers];
-  v6 = v5;
-  if (v5)
+  dCopy = d;
+  _getAllPairedPeers = [(MSDDemoPeerPairingManager *)self _getAllPairedPeers];
+  v6 = _getAllPairedPeers;
+  if (_getAllPairedPeers)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = v5;
+    v7 = _getAllPairedPeers;
     v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
@@ -536,9 +536,9 @@ LABEL_6:
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 identifier];
-          v13 = [v12 UUIDString];
-          v14 = [v13 isEqualToString:v4];
+          identifier = [v11 identifier];
+          uUIDString = [identifier UUIDString];
+          v14 = [uUIDString isEqualToString:dCopy];
 
           if (v14)
           {
@@ -570,11 +570,11 @@ LABEL_12:
 
 - (id)_readPairedPeersIntoData
 {
-  v2 = [(MSDDemoPeerPairingManager *)self _getAllPairedPeers];
-  v3 = v2;
-  if (v2)
+  _getAllPairedPeers = [(MSDDemoPeerPairingManager *)self _getAllPairedPeers];
+  v3 = _getAllPairedPeers;
+  if (_getAllPairedPeers)
   {
-    [v2 enumerateObjectsUsingBlock:&stru_10016AC30];
+    [_getAllPairedPeers enumerateObjectsUsingBlock:&stru_10016AC30];
     v9 = 0;
     v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v9];
     v5 = v9;

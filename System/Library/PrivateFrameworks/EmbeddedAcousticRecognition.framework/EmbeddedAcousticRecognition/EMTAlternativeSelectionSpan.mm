@@ -1,18 +1,18 @@
 @interface EMTAlternativeSelectionSpan
-- (EMTAlternativeSelectionSpan)initWithSource:(_NSRange)a3 projection:(_NSRange)a4 alternatives:(id)a5;
+- (EMTAlternativeSelectionSpan)initWithSource:(_NSRange)source projection:(_NSRange)projection alternatives:(id)alternatives;
 - (_NSRange)projection;
 - (_NSRange)source;
 @end
 
 @implementation EMTAlternativeSelectionSpan
 
-- (EMTAlternativeSelectionSpan)initWithSource:(_NSRange)a3 projection:(_NSRange)a4 alternatives:(id)a5
+- (EMTAlternativeSelectionSpan)initWithSource:(_NSRange)source projection:(_NSRange)projection alternatives:(id)alternatives
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3.length;
-  v9 = a3.location;
-  v11 = a5;
+  length = projection.length;
+  location = projection.location;
+  v8 = source.length;
+  v9 = source.location;
+  alternativesCopy = alternatives;
   v15.receiver = self;
   v15.super_class = EMTAlternativeSelectionSpan;
   v12 = [(EMTAlternativeSelectionSpan *)&v15 init];
@@ -23,7 +23,7 @@
     v12->_source.length = v8;
     v12->_projection.location = location;
     v12->_projection.length = length;
-    objc_storeStrong(&v12->_alternatives, a5);
+    objc_storeStrong(&v12->_alternatives, alternatives);
   }
 
   return v13;

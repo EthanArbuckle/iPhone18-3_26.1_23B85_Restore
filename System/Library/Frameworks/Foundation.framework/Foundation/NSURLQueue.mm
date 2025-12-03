@@ -1,13 +1,13 @@
 @interface NSURLQueue
-- (BOOL)remove:(id)a3;
+- (BOOL)remove:(id)remove;
 - (NSURLQueue)init;
 - (id)peek;
-- (id)peekAt:(unint64_t)a3;
+- (id)peekAt:(unint64_t)at;
 - (id)take;
-- (int64_t)indexOf:(id)a3;
+- (int64_t)indexOf:(id)of;
 - (void)clear;
 - (void)dealloc;
-- (void)put:(id)a3;
+- (void)put:(id)put;
 @end
 
 @implementation NSURLQueue
@@ -41,14 +41,14 @@
   [(NSURLQueue *)&v3 dealloc];
 }
 
-- (void)put:(id)a3
+- (void)put:(id)put
 {
   [self->monitor lock];
   tail = self->tail;
   v6 = +[NSURLQueue newNode];
   self->tail = v6;
   v6->next = 0;
-  self->tail->object = a3;
+  self->tail->object = put;
   if (tail)
   {
     tail->next = self->tail;
@@ -114,33 +114,33 @@
   return object;
 }
 
-- (id)peekAt:(unint64_t)a3
+- (id)peekAt:(unint64_t)at
 {
   [self->monitor lock];
-  if (self->count <= a3)
+  if (self->count <= at)
   {
     count = 0;
   }
 
   else
   {
-    v5 = a3 + 1;
-    v6 = self;
+    v5 = at + 1;
+    selfCopy = self;
     do
     {
-      v6 = v6->head;
+      selfCopy = selfCopy->head;
       --v5;
     }
 
     while (v5);
-    count = v6->count;
+    count = selfCopy->count;
   }
 
   [self->monitor unlock];
   return count;
 }
 
-- (BOOL)remove:(id)a3
+- (BOOL)remove:(id)remove
 {
   [self->monitor lock];
   head = self->head;
@@ -151,7 +151,7 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  if (head->object != a3)
+  if (head->object != remove)
   {
     v6 = self->head;
     while (1)
@@ -164,7 +164,7 @@ LABEL_7:
 
       v8 = v6;
       v6 = v6->next;
-      if (next->object == a3)
+      if (next->object == remove)
       {
         goto LABEL_9;
       }
@@ -176,15 +176,15 @@ LABEL_7:
 LABEL_9:
   if (head == next)
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = v8;
+    selfCopy = v8;
   }
 
-  v10->head = next->next;
+  selfCopy->head = next->next;
   if (self->tail == next)
   {
     self->tail = v8;
@@ -221,14 +221,14 @@ LABEL_15:
   [monitor unlock];
 }
 
-- (int64_t)indexOf:(id)a3
+- (int64_t)indexOf:(id)of
 {
   [self->monitor lock];
   head = self->head;
   if (head)
   {
     v6 = 0;
-    while (head->object != a3)
+    while (head->object != of)
     {
       ++v6;
       head = head->next;

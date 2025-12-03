@@ -1,56 +1,56 @@
 @interface TSPReferenceOrderedSet
-- (BOOL)addItem:(id)a3;
-- (BOOL)containsItem:(id)a3;
-- (BOOL)removeItem:(id)a3;
-- (TSPReferenceOrderedSet)initWithCapacity:(unint64_t)a3;
+- (BOOL)addItem:(id)item;
+- (BOOL)containsItem:(id)item;
+- (BOOL)removeItem:(id)item;
+- (TSPReferenceOrderedSet)initWithCapacity:(unint64_t)capacity;
 - (id)allObjects;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)enumerateItemsUsingBlock:(id)a3;
-- (void)minusSet:(id)a3;
-- (void)unionSet:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)enumerateItemsUsingBlock:(id)block;
+- (void)minusSet:(id)set;
+- (void)unionSet:(id)set;
 @end
 
 @implementation TSPReferenceOrderedSet
 
-- (TSPReferenceOrderedSet)initWithCapacity:(unint64_t)a3
+- (TSPReferenceOrderedSet)initWithCapacity:(unint64_t)capacity
 {
   v5.receiver = self;
   v5.super_class = TSPReferenceOrderedSet;
   result = [(TSPReferenceOrderedSet *)&v5 init];
   if (result)
   {
-    result->_capacity = a3;
+    result->_capacity = capacity;
   }
 
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v9 = objc_msgSend_initWithCapacity_(v7, v8, self->_capacity);
   v11 = v9;
   if (v9)
   {
     *(v9 + 56) = self->_count;
-    v12 = objc_msgSend_mutableCopyWithZone_(self->_items, v10, a3);
+    v12 = objc_msgSend_mutableCopyWithZone_(self->_items, v10, zone);
     v13 = v11[2];
     v11[2] = v12;
 
-    v15 = objc_msgSend_mutableCopyWithZone_(self->_objectsIndexSet, v14, a3);
+    v15 = objc_msgSend_mutableCopyWithZone_(self->_objectsIndexSet, v14, zone);
     v16 = v11[3];
     v11[3] = v15;
 
-    v18 = objc_msgSend_mutableCopyWithZone_(self->_removedObjectsIndexSet, v17, a3);
+    v18 = objc_msgSend_mutableCopyWithZone_(self->_removedObjectsIndexSet, v17, zone);
     v19 = v11[4];
     v11[4] = v18;
 
-    v21 = objc_msgSend_mutableCopyWithZone_(self->_lazyReferencesIndexSet, v20, a3);
+    v21 = objc_msgSend_mutableCopyWithZone_(self->_lazyReferencesIndexSet, v20, zone);
     v22 = v11[5];
     v11[5] = v21;
 
-    v24 = objc_msgSend_mutableCopyWithZone_(self->_removedLazyReferencesIndexSet, v23, a3);
+    v24 = objc_msgSend_mutableCopyWithZone_(self->_removedLazyReferencesIndexSet, v23, zone);
     v25 = v11[6];
     v11[6] = v24;
   }
@@ -58,15 +58,15 @@
   return v11;
 }
 
-- (BOOL)containsItem:(id)a3
+- (BOOL)containsItem:(id)item
 {
-  if (!a3 || !self->_count)
+  if (!item || !self->_count)
   {
     return 0;
   }
 
-  v5 = objc_msgSend_tsp_identifier(a3, a2, a3);
-  if ((objc_msgSend_tsp_isLazyReference(a3, v6, v7) & 1) == 0)
+  v5 = objc_msgSend_tsp_identifier(item, a2, item);
+  if ((objc_msgSend_tsp_isLazyReference(item, v6, v7) & 1) == 0)
   {
     if ((objc_msgSend_containsIndex_(self->_removedObjectsIndexSet, v8, v5) & 1) == 0)
     {
@@ -89,9 +89,9 @@ LABEL_9:
   return objc_msgSend_containsIndex_(v12, v9, v5);
 }
 
-- (BOOL)addItem:(id)a3
+- (BOOL)addItem:(id)item
 {
-  if (!a3)
+  if (!item)
   {
     LOBYTE(v14) = 0;
     return v14;
@@ -105,8 +105,8 @@ LABEL_9:
     self->_items = v7;
   }
 
-  v9 = objc_msgSend_tsp_identifier(a3, a2, a3);
-  if (objc_msgSend_tsp_isLazyReference(a3, v10, v11))
+  v9 = objc_msgSend_tsp_identifier(item, a2, item);
+  if (objc_msgSend_tsp_isLazyReference(item, v10, v11))
   {
     if (objc_msgSend_containsIndex_(self->_lazyReferencesIndexSet, v12, v9))
     {
@@ -124,7 +124,7 @@ LABEL_19:
       return v14;
     }
 
-    objc_msgSend_addObject_(self->_items, v13, a3);
+    objc_msgSend_addObject_(self->_items, v13, item);
     ++self->_count;
     lazyReferencesIndexSet = self->_lazyReferencesIndexSet;
     if (!lazyReferencesIndexSet)
@@ -143,7 +143,7 @@ LABEL_18:
 
   if ((objc_msgSend_containsIndex_(self->_objectsIndexSet, v12, v9) & 1) == 0)
   {
-    objc_msgSend_addObject_(self->_items, v16, a3);
+    objc_msgSend_addObject_(self->_items, v16, item);
     ++self->_count;
     lazyReferencesIndexSet = self->_objectsIndexSet;
     if (!lazyReferencesIndexSet)
@@ -170,30 +170,30 @@ LABEL_16:
   return v14;
 }
 
-- (BOOL)removeItem:(id)a3
+- (BOOL)removeItem:(id)item
 {
-  v3 = self;
+  selfCopy = self;
   LOBYTE(self) = 0;
-  if (!a3 || !v3->_count)
+  if (!item || !selfCopy->_count)
   {
     return self;
   }
 
-  v5 = objc_msgSend_tsp_identifier(a3, a2, a3);
-  if (objc_msgSend_tsp_isLazyReference(a3, v6, v7))
+  v5 = objc_msgSend_tsp_identifier(item, a2, item);
+  if (objc_msgSend_tsp_isLazyReference(item, v6, v7))
   {
-    if ((objc_msgSend_containsIndex_(v3->_removedLazyReferencesIndexSet, v8, v5) & 1) == 0)
+    if ((objc_msgSend_containsIndex_(selfCopy->_removedLazyReferencesIndexSet, v8, v5) & 1) == 0)
     {
-      LODWORD(self) = objc_msgSend_containsIndex_(v3->_lazyReferencesIndexSet, v9, v5);
+      LODWORD(self) = objc_msgSend_containsIndex_(selfCopy->_lazyReferencesIndexSet, v9, v5);
       if (self)
       {
-        removedLazyReferencesIndexSet = v3->_removedLazyReferencesIndexSet;
+        removedLazyReferencesIndexSet = selfCopy->_removedLazyReferencesIndexSet;
         if (!removedLazyReferencesIndexSet)
         {
           v12 = objc_alloc(MEMORY[0x277CCAB58]);
           v14 = objc_msgSend_initWithIndex_(v12, v13, v5);
-          removedObjectsIndexSet = v3->_removedLazyReferencesIndexSet;
-          v3->_removedLazyReferencesIndexSet = v14;
+          removedObjectsIndexSet = selfCopy->_removedLazyReferencesIndexSet;
+          selfCopy->_removedLazyReferencesIndexSet = v14;
 LABEL_14:
 
           goto LABEL_15;
@@ -210,39 +210,39 @@ LABEL_9:
     return self;
   }
 
-  if (objc_msgSend_containsIndex_(v3->_removedObjectsIndexSet, v8, v5))
+  if (objc_msgSend_containsIndex_(selfCopy->_removedObjectsIndexSet, v8, v5))
   {
     goto LABEL_9;
   }
 
-  LODWORD(self) = objc_msgSend_containsIndex_(v3->_objectsIndexSet, v16, v5);
+  LODWORD(self) = objc_msgSend_containsIndex_(selfCopy->_objectsIndexSet, v16, v5);
   if (self)
   {
-    removedLazyReferencesIndexSet = v3->_removedObjectsIndexSet;
+    removedLazyReferencesIndexSet = selfCopy->_removedObjectsIndexSet;
     if (!removedLazyReferencesIndexSet)
     {
       v17 = objc_alloc(MEMORY[0x277CCAB58]);
       v19 = objc_msgSend_initWithIndex_(v17, v18, v5);
-      removedObjectsIndexSet = v3->_removedObjectsIndexSet;
-      v3->_removedObjectsIndexSet = v19;
+      removedObjectsIndexSet = selfCopy->_removedObjectsIndexSet;
+      selfCopy->_removedObjectsIndexSet = v19;
       goto LABEL_14;
     }
 
 LABEL_12:
     objc_msgSend_addIndex_(removedLazyReferencesIndexSet, v10, v5);
 LABEL_15:
-    --v3->_count;
+    --selfCopy->_count;
     LOBYTE(self) = 1;
   }
 
   return self;
 }
 
-- (void)enumerateItemsUsingBlock:(id)a3
+- (void)enumerateItemsUsingBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && self->_count)
+  blockCopy = block;
+  if (blockCopy && self->_count)
   {
     v24 = 0;
     v20 = 0u;
@@ -269,7 +269,7 @@ LABEL_5:
         v18 = (objc_msgSend_tsp_isLazyReference(v13, v15, v16) & 1) != 0 ? objc_msgSend_containsIndex_(self->_removedLazyReferencesIndexSet, v17, v14) : objc_msgSend_containsIndex_(self->_removedObjectsIndexSet, v17, v14);
         if ((v18 & 1) == 0)
         {
-          v4[2](v4, v13, &v24);
+          blockCopy[2](blockCopy, v13, &v24);
         }
 
         if (v24)
@@ -294,9 +294,9 @@ LABEL_5:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unionSet:(id)a3
+- (void)unionSet:(id)set
 {
-  v5 = objc_msgSend_count(a3, a2, a3);
+  v5 = objc_msgSend_count(set, a2, set);
   if (v5)
   {
     if (!self->_items)
@@ -322,15 +322,15 @@ LABEL_5:
     v12[2] = sub_276AC6704;
     v12[3] = &unk_27A6E6B38;
     v12[4] = self;
-    objc_msgSend_enumerateItemsUsingBlock_(a3, v6, v12);
+    objc_msgSend_enumerateItemsUsingBlock_(set, v6, v12);
   }
 }
 
-- (void)minusSet:(id)a3
+- (void)minusSet:(id)set
 {
   if (self->_count)
   {
-    v5 = objc_msgSend_count(a3, a2, a3);
+    v5 = objc_msgSend_count(set, a2, set);
     if (v5)
     {
       if (self->_count <= v5)
@@ -340,7 +340,7 @@ LABEL_5:
         v7[2] = sub_276AC6814;
         v7[3] = &unk_27A6E6B60;
         v7[4] = self;
-        v7[5] = a3;
+        v7[5] = set;
         objc_msgSend_enumerateItemsUsingBlock_(self, v6, v7);
       }
 
@@ -351,7 +351,7 @@ LABEL_5:
         v8[2] = sub_276AC6808;
         v8[3] = &unk_27A6E6B38;
         v8[4] = self;
-        objc_msgSend_enumerateItemsUsingBlock_(a3, v6, v8);
+        objc_msgSend_enumerateItemsUsingBlock_(set, v6, v8);
       }
     }
   }

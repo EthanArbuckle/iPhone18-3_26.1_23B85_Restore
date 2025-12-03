@@ -1,7 +1,7 @@
 @interface ATXAppLaunchLogger
 + (id)sharedInstance;
 - (id)_init;
-- (void)logAppLaunchFrom:(unint64_t)a3 at:(id)a4;
+- (void)logAppLaunchFrom:(unint64_t)from at:(id)at;
 @end
 
 @implementation ATXAppLaunchLogger
@@ -41,20 +41,20 @@ void __36__ATXAppLaunchLogger_sharedInstance__block_invoke()
   return result;
 }
 
-- (void)logAppLaunchFrom:(unint64_t)a3 at:(id)a4
+- (void)logAppLaunchFrom:(unint64_t)from at:(id)at
 {
-  v7 = a4;
+  atCopy = at;
   queue = self->super._queue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __42__ATXAppLaunchLogger_logAppLaunchFrom_at___block_invoke;
   v14[3] = &unk_278599E28;
   v14[4] = self;
-  v15 = v7;
-  v16 = a3;
+  v15 = atCopy;
+  fromCopy = from;
   v9 = v14;
   v10 = queue;
-  v11 = v7;
+  v11 = atCopy;
   sel_getName(a2);
   v12 = os_transaction_create();
   block[0] = MEMORY[0x277D85DD0];

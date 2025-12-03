@@ -1,6 +1,6 @@
 @interface UAAuditToken
 - (BOOL)isSandboxed;
-- (UAAuditToken)initWithAuditToken:(id *)a3;
+- (UAAuditToken)initWithAuditToken:(id *)token;
 - (id)debugDescription;
 - (id)description;
 - (int)asid;
@@ -10,7 +10,7 @@
 - (unsigned)euid;
 - (unsigned)rgid;
 - (unsigned)ruid;
-- (void)getValue:(void *)a3;
+- (void)getValue:(void *)value;
 @end
 
 @implementation UAAuditToken
@@ -36,20 +36,20 @@
 - (id)description
 {
   v3 = [(UAAuditToken *)self pid];
-  v4 = [(UAAuditToken *)self pidVersion];
-  v5 = [(UAAuditToken *)self euid];
-  v6 = [(UAAuditToken *)self ruid];
-  v7 = [(UAAuditToken *)self egid];
-  v8 = [(UAAuditToken *)self rgid];
-  v9 = [(UAAuditToken *)self asid];
-  v10 = [(UAAuditToken *)self isSandboxed];
+  pidVersion = [(UAAuditToken *)self pidVersion];
+  euid = [(UAAuditToken *)self euid];
+  ruid = [(UAAuditToken *)self ruid];
+  egid = [(UAAuditToken *)self egid];
+  rgid = [(UAAuditToken *)self rgid];
+  asid = [(UAAuditToken *)self asid];
+  isSandboxed = [(UAAuditToken *)self isSandboxed];
   v11 = @"NO";
-  if (v10)
+  if (isSandboxed)
   {
     v11 = @"YES";
   }
 
-  return [NSString stringWithFormat:@"[pid=%d/%d uid=%d/%d gid=%d/%d asid=%d sb=%@]", v3, v4, v5, v6, v7, v8, v9, v11];
+  return [NSString stringWithFormat:@"[pid=%d/%d uid=%d/%d gid=%d/%d asid=%d sb=%@]", v3, pidVersion, euid, ruid, egid, rgid, asid, v11];
 }
 
 - (int)pidVersion
@@ -105,26 +105,26 @@
   return asidp;
 }
 
-- (UAAuditToken)initWithAuditToken:(id *)a3
+- (UAAuditToken)initWithAuditToken:(id *)token
 {
   v6.receiver = self;
   v6.super_class = UAAuditToken;
   result = [(UAAuditToken *)&v6 init];
   if (result)
   {
-    v5 = *&a3->var0[4];
-    *result->_auditTokenValue.val = *a3->var0;
+    v5 = *&token->var0[4];
+    *result->_auditTokenValue.val = *token->var0;
     *&result->_auditTokenValue.val[4] = v5;
   }
 
   return result;
 }
 
-- (void)getValue:(void *)a3
+- (void)getValue:(void *)value
 {
   v3 = *&self->_auditTokenValue.val[4];
-  *a3 = *self->_auditTokenValue.val;
-  *(a3 + 1) = v3;
+  *value = *self->_auditTokenValue.val;
+  *(value + 1) = v3;
 }
 
 - (id)debugDescription

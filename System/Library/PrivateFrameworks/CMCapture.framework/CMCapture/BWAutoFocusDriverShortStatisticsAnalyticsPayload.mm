@@ -37,12 +37,12 @@
 
 - (id)eventDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   portType = self->_portType;
   if (portType)
   {
-    [v3 setObject:portType forKeyedSubscript:@"portType"];
+    [dictionary setObject:portType forKeyedSubscript:@"portType"];
   }
 
   afDriverShortStatistics = self->_afDriverShortStatistics;

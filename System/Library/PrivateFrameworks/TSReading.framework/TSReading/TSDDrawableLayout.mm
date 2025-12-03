@@ -10,14 +10,14 @@
 - (int)wrapFitType;
 - (int)wrapType;
 - (void)dealloc;
-- (void)dragBy:(CGPoint)a3;
+- (void)dragBy:(CGPoint)by;
 - (void)i_invalidateWrap;
 - (void)invalidate;
 - (void)invalidateExteriorWrap;
 - (void)invalidateParentForWrap;
 - (void)parentDidChange;
-- (void)processChangedProperty:(int)a3;
-- (void)setGeometry:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)setGeometry:(id)geometry;
 @end
 
 @implementation TSDDrawableLayout
@@ -40,10 +40,10 @@
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
-  if (v11)
+  exteriorTextWrap = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
+  if (exteriorTextWrap)
   {
-    [v11 margin];
+    [exteriorTextWrap margin];
     if (v12 > 0.0)
     {
       v13 = -v12;
@@ -107,23 +107,23 @@
   result = self->mCachedWrapPolygon;
   if (!result)
   {
-    v4 = [(TSDDrawableLayout *)self i_wrapPath];
-    v5 = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
-    if (v5 && (v6 = v5, [v5 margin], v7 > 0.0))
+    i_wrapPath = [(TSDDrawableLayout *)self i_wrapPath];
+    exteriorTextWrap = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
+    if (exteriorTextWrap && (v6 = exteriorTextWrap, [exteriorTextWrap margin], v7 > 0.0))
     {
-      if ([(TSDBezierPath *)v4 elementCount]>= 1001)
+      if ([(TSDBezierPath *)i_wrapPath elementCount]>= 1001)
       {
         [(TSDLayoutGeometry *)[(TSDAbstractLayout *)self geometry] size];
-        v4 = [TSDBezierPath bezierPathWithRect:TSDRectWithSize()];
+        i_wrapPath = [TSDBezierPath bezierPathWithRect:TSDRectWithSize()];
       }
 
       [v6 margin];
-      v8 = [TSDBezierPath bezierPathByOffsettingPath:v4 joinStyle:"bezierPathByOffsettingPath:joinStyle:withThreshold:" withThreshold:1];
+      v8 = [TSDBezierPath bezierPathByOffsettingPath:i_wrapPath joinStyle:"bezierPathByOffsettingPath:joinStyle:withThreshold:" withThreshold:1];
     }
 
     else
     {
-      v8 = [(TSDBezierPath *)v4 copy];
+      v8 = [(TSDBezierPath *)i_wrapPath copy];
     }
 
     v9 = v8;
@@ -135,9 +135,9 @@
     result = self->mCachedWrapPolygon;
     if (!result)
     {
-      v11 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDDrawableLayout wrapPolygon]"];
-      [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableLayout.m"), 118, @"invalid nil value for '%s'", "mCachedWrapPolygon"}];
+      [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDrawableLayout.m"), 118, @"invalid nil value for '%s'", "mCachedWrapPolygon"}];
       return self->mCachedWrapPolygon;
     }
   }
@@ -147,49 +147,49 @@
 
 - (BOOL)isHTMLWrap
 {
-  v2 = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
-  if (v2)
+  exteriorTextWrap = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
+  if (exteriorTextWrap)
   {
 
-    LOBYTE(v2) = [v2 isHTMLWrap];
+    LOBYTE(exteriorTextWrap) = [exteriorTextWrap isHTMLWrap];
   }
 
-  return v2;
+  return exteriorTextWrap;
 }
 
 - (int)wrapType
 {
-  v2 = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
-  if (v2)
+  exteriorTextWrap = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
+  if (exteriorTextWrap)
   {
 
-    LODWORD(v2) = [v2 type];
+    LODWORD(exteriorTextWrap) = [exteriorTextWrap type];
   }
 
-  return v2;
+  return exteriorTextWrap;
 }
 
 - (int)wrapDirection
 {
-  v2 = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
-  if (!v2)
+  exteriorTextWrap = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
+  if (!exteriorTextWrap)
   {
     return 2;
   }
 
-  return [v2 direction];
+  return [exteriorTextWrap direction];
 }
 
 - (int)wrapFitType
 {
-  v2 = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
-  if (v2)
+  exteriorTextWrap = [(TSDInfo *)[(TSDLayout *)self info] exteriorTextWrap];
+  if (exteriorTextWrap)
   {
 
-    LODWORD(v2) = [v2 fitType];
+    LODWORD(exteriorTextWrap) = [exteriorTextWrap fitType];
   }
 
-  return v2;
+  return exteriorTextWrap;
 }
 
 - (void)invalidate
@@ -208,18 +208,18 @@
   self->mCachedExternalWrapPath = 0;
 }
 
-- (void)dragBy:(CGPoint)a3
+- (void)dragBy:(CGPoint)by
 {
   v4.receiver = self;
   v4.super_class = TSDDrawableLayout;
-  [(TSDLayout *)&v4 dragBy:a3.x, a3.y];
+  [(TSDLayout *)&v4 dragBy:by.x, by.y];
   [(TSDDrawableLayout *)self invalidateParentForWrap];
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v5 = [(TSDAbstractLayout *)self geometry];
-  if (!v5)
+  geometry = [(TSDAbstractLayout *)self geometry];
+  if (!geometry)
   {
     if (!self->mCachedWrapPolygon)
     {
@@ -229,22 +229,22 @@
     goto LABEL_8;
   }
 
-  v6 = v5;
-  if ([(TSDLayoutGeometry *)v5 isEqual:a3]|| !self->mCachedWrapPolygon)
+  v6 = geometry;
+  if ([(TSDLayoutGeometry *)geometry isEqual:geometry]|| !self->mCachedWrapPolygon)
   {
     goto LABEL_11;
   }
 
-  if ([(TSDLayoutGeometry *)v6 differsInMoreThanTranslationFrom:a3])
+  if ([(TSDLayoutGeometry *)v6 differsInMoreThanTranslationFrom:geometry])
   {
 LABEL_8:
     [(TSDDrawableLayout *)self invalidateExteriorWrap];
     goto LABEL_11;
   }
 
-  if (a3)
+  if (geometry)
   {
-    [a3 transform];
+    [geometry transform];
     v8 = *&v19.a;
     v9 = *&v19.c;
     v10 = *&v19.tx;
@@ -267,15 +267,15 @@ LABEL_8:
 LABEL_11:
   v18.receiver = self;
   v18.super_class = TSDDrawableLayout;
-  [(TSDAbstractLayout *)&v18 setGeometry:a3];
+  [(TSDAbstractLayout *)&v18 setGeometry:geometry];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v5.receiver = self;
   v5.super_class = TSDDrawableLayout;
   [(TSDLayout *)&v5 processChangedProperty:?];
-  if (a3 == 521)
+  if (property == 521)
   {
     [(TSDDrawableLayout *)self invalidateExteriorWrap];
   }
@@ -291,20 +291,20 @@ LABEL_11:
 
 - (void)i_invalidateWrap
 {
-  v3 = [(TSDAbstractLayout *)self parent];
-  if (v3)
+  parent = [(TSDAbstractLayout *)self parent];
+  if (parent)
   {
-    v4 = v3;
+    parent2 = parent;
     while ((objc_opt_respondsToSelector() & 1) == 0)
     {
-      v4 = [(TSDAbstractLayout *)v4 parent];
-      if (!v4)
+      parent2 = [(TSDAbstractLayout *)parent2 parent];
+      if (!parent2)
       {
         return;
       }
     }
 
-    [(TSDAbstractLayout *)v4 wrappableChildInvalidated:self];
+    [(TSDAbstractLayout *)parent2 wrappableChildInvalidated:self];
   }
 }
 

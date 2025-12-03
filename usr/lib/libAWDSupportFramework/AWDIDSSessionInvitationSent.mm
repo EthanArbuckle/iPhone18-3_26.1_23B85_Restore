@@ -1,14 +1,14 @@
 @interface AWDIDSSessionInvitationSent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNumberOfRecipients:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasNumberOfRecipients:(BOOL)recipients;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDIDSSessionInvitationSent
@@ -21,9 +21,9 @@
   [(AWDIDSSessionInvitationSent *)&v3 dealloc];
 }
 
-- (void)setHasNumberOfRecipients:(BOOL)a3
+- (void)setHasNumberOfRecipients:(BOOL)recipients
 {
-  if (a3)
+  if (recipients)
   {
     v3 = 2;
   }
@@ -45,27 +45,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   guid = self->_guid;
   if (guid)
   {
-    [v3 setObject:guid forKey:@"guid"];
+    [dictionary setObject:guid forKey:@"guid"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfRecipients), @"numberOfRecipients"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_numberOfRecipients), @"numberOfRecipients"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -86,29 +86,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 28) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 28) |= 1u;
   }
 
   if (self->_guid)
   {
-    [a3 setGuid:?];
+    [to setGuid:?];
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 6) = self->_numberOfRecipients;
-    *(a3 + 28) |= 2u;
+    *(to + 6) = self->_numberOfRecipients;
+    *(to + 28) |= 2u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -116,7 +116,7 @@
     *(v5 + 28) |= 1u;
   }
 
-  *(v6 + 16) = [(NSString *)self->_guid copyWithZone:a3];
+  *(v6 + 16) = [(NSString *)self->_guid copyWithZone:zone];
   if ((*&self->_has & 2) != 0)
   {
     *(v6 + 24) = self->_numberOfRecipients;
@@ -126,22 +126,22 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 28);
+    v7 = *(equal + 28);
     if (has)
     {
-      if ((*(a3 + 28) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 28) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 28))
+    else if (*(equal + 28))
     {
 LABEL_14:
       LOBYTE(v5) = 0;
@@ -149,7 +149,7 @@ LABEL_14:
     }
 
     guid = self->_guid;
-    if (guid | *(a3 + 2))
+    if (guid | *(equal + 2))
     {
       v5 = [(NSString *)guid isEqual:?];
       if (!v5)
@@ -160,10 +160,10 @@ LABEL_14:
       has = self->_has;
     }
 
-    LOBYTE(v5) = (*(a3 + 28) & 2) == 0;
+    LOBYTE(v5) = (*(equal + 28) & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((*(a3 + 28) & 2) == 0 || self->_numberOfRecipients != *(a3 + 6))
+      if ((*(equal + 28) & 2) == 0 || self->_numberOfRecipients != *(equal + 6))
       {
         goto LABEL_14;
       }
@@ -201,22 +201,22 @@ LABEL_14:
   return v4 ^ v3 ^ v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 28))
+  if (*(from + 28))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(AWDIDSSessionInvitationSent *)self setGuid:?];
   }
 
-  if ((*(a3 + 28) & 2) != 0)
+  if ((*(from + 28) & 2) != 0)
   {
-    self->_numberOfRecipients = *(a3 + 6);
+    self->_numberOfRecipients = *(from + 6);
     *&self->_has |= 2u;
   }
 }

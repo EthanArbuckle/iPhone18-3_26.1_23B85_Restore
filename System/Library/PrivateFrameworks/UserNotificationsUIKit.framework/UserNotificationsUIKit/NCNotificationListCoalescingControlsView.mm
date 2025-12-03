@@ -2,13 +2,13 @@
 - (BOOL)_isClearButtonExpanded;
 - (BOOL)adjustForContentSizeCategoryChange;
 - (BOOL)dismissModalFullScreenIfNeeded;
-- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)space;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NCNotificationListCoalescingControlsViewDelegate)delegate;
 - (UIEdgeInsets)_edgeInsets;
 - (double)_effectiveButtonHeight;
 - (double)_effectiveHorizontalPadding;
-- (double)_effectiveValue:(double)a3;
+- (double)_effectiveValue:(double)value;
 - (double)_effectiveVerticalPadding;
 - (double)_imageDimension;
 - (id)_clearButton;
@@ -16,37 +16,37 @@
 - (id)_newClearButton;
 - (id)_newRestackButton;
 - (id)_restackButtonTitle;
-- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)a3;
+- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)content;
 - (void)_configureToggleControlPairIfNecessary;
-- (void)_handleClearAll:(id)a3;
-- (void)_handleClearPrimaryAction:(id)a3;
-- (void)_handleClearTouchUpInside:(id)a3;
-- (void)_handleRestackPrimaryAction:(id)a3;
-- (void)_handleRestackTouchUpInside:(id)a3;
+- (void)_handleClearAll:(id)all;
+- (void)_handleClearPrimaryAction:(id)action;
+- (void)_handleClearTouchUpInside:(id)inside;
+- (void)_handleRestackPrimaryAction:(id)action;
+- (void)_handleRestackTouchUpInside:(id)inside;
 - (void)_layoutToggleControlPair;
 - (void)layoutSubviews;
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3;
-- (void)setClearAllText:(id)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)toggleControlDidBeginClickInteraction:(id)a3;
-- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)a3;
-- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)a3;
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category;
+- (void)setClearAllText:(id)text;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)toggleControlDidBeginClickInteraction:(id)interaction;
+- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)content;
+- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)content;
 @end
 
 @implementation NCNotificationListCoalescingControlsView
 
 - (BOOL)dismissModalFullScreenIfNeeded
 {
-  v2 = [(NCNotificationListCoalescingControlsView *)self _clearButton];
-  v3 = [v2 dismissModalFullScreenIfNeeded];
+  _clearButton = [(NCNotificationListCoalescingControlsView *)self _clearButton];
+  dismissModalFullScreenIfNeeded = [_clearButton dismissModalFullScreenIfNeeded];
 
-  return v3;
+  return dismissModalFullScreenIfNeeded;
 }
 
-- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)a3
+- (BOOL)shouldReceiveTouchAtPointInWindowSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
+  y = space.y;
+  x = space.x;
   [(NCNotificationListCoalescingControlsView *)self bounds];
   [(NCNotificationListCoalescingControlsView *)self convertRect:0 toView:?];
   v8.x = x;
@@ -55,11 +55,11 @@
   return [(NCNotificationListCoalescingControlsView *)self _isClearButtonExpanded]&& v6;
 }
 
-- (void)setClearAllText:(id)a3
+- (void)setClearAllText:(id)text
 {
-  objc_storeStrong(&self->_clearAllText, a3);
-  v5 = a3;
-  [(NCToggleControlPair *)self->_toggleControlPair setClearAllText:v5];
+  objc_storeStrong(&self->_clearAllText, text);
+  textCopy = text;
+  [(NCToggleControlPair *)self->_toggleControlPair setClearAllText:textCopy];
 }
 
 - (void)layoutSubviews
@@ -71,10 +71,10 @@
   [(NCNotificationListCoalescingControlsView *)self _layoutToggleControlPair];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(NCNotificationListCoalescingControlsView *)self _configureToggleControlPairIfNecessary];
   toggleControlPair = self->_toggleControlPair;
 
@@ -84,17 +84,17 @@
   return result;
 }
 
-- (void)setAdjustsFontForContentSizeCategory:(BOOL)a3
+- (void)setAdjustsFontForContentSizeCategory:(BOOL)category
 {
-  v3 = a3;
-  v5 = [(NCNotificationListCoalescingControlsView *)self adjustsFontForContentSizeCategory];
-  if (v3)
+  categoryCopy = category;
+  adjustsFontForContentSizeCategory = [(NCNotificationListCoalescingControlsView *)self adjustsFontForContentSizeCategory];
+  if (categoryCopy)
   {
     [(NCNotificationListCoalescingControlsView *)self _configureToggleControlPairIfNecessary];
   }
 
-  [(NCToggleControlPair *)self->_toggleControlPair setAdjustsFontForContentSizeCategory:v3];
-  if (v5 != [(NCNotificationListCoalescingControlsView *)self adjustsFontForContentSizeCategory])
+  [(NCToggleControlPair *)self->_toggleControlPair setAdjustsFontForContentSizeCategory:categoryCopy];
+  if (adjustsFontForContentSizeCategory != [(NCNotificationListCoalescingControlsView *)self adjustsFontForContentSizeCategory])
   {
     toggleControlPair = self->_toggleControlPair;
 
@@ -110,19 +110,19 @@
   return [(NCToggleControlPair *)toggleControlPair adjustsFontForContentSizeCategory];
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  objc_storeStrong(&self->_materialGroupNameBase, a3);
-  v5 = a3;
-  [(NCToggleControlPair *)self->_toggleControlPair setMaterialGroupNameBase:v5];
+  objc_storeStrong(&self->_materialGroupNameBase, base);
+  baseCopy = base;
+  [(NCToggleControlPair *)self->_toggleControlPair setMaterialGroupNameBase:baseCopy];
 }
 
-- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)a3
+- (id)containerViewForToggleControlClickInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationListCoalescingControlsView *)self delegate];
+  delegate = [(NCNotificationListCoalescingControlsView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 containerViewForCoalescingControlsPreviewInteractionPresentedContent:self];
+    v5 = [delegate containerViewForCoalescingControlsPreviewInteractionPresentedContent:self];
   }
 
   else
@@ -133,30 +133,30 @@
   return v5;
 }
 
-- (void)toggleControlDidBeginClickInteraction:(id)a3
+- (void)toggleControlDidBeginClickInteraction:(id)interaction
 {
-  v4 = [(NCNotificationListCoalescingControlsView *)self delegate];
+  delegate = [(NCNotificationListCoalescingControlsView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListCoalescingControlsViewDidBeginPreviewInteraction:self];
+    [delegate notificationListCoalescingControlsViewDidBeginPreviewInteraction:self];
   }
 }
 
-- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)a3
+- (void)toggleControlDidPresentClickInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationListCoalescingControlsView *)self delegate];
+  delegate = [(NCNotificationListCoalescingControlsView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListCoalescingControlsViewDidPresentPreviewInteractionPresentedContent:self];
+    [delegate notificationListCoalescingControlsViewDidPresentPreviewInteractionPresentedContent:self];
   }
 }
 
-- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)a3
+- (void)toggleControlDidDismssClickInteractionPresentedContent:(id)content
 {
-  v4 = [(NCNotificationListCoalescingControlsView *)self delegate];
+  delegate = [(NCNotificationListCoalescingControlsView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 notificationListCoalescingControlsViewDidDismissPreviewInteractionPresentedContent:self];
+    [delegate notificationListCoalescingControlsViewDidDismissPreviewInteractionPresentedContent:self];
   }
 }
 
@@ -196,12 +196,12 @@
   return result;
 }
 
-- (double)_effectiveValue:(double)a3
+- (double)_effectiveValue:(double)value
 {
   if ([(NCNotificationListCoalescingControlsView *)self adjustsFontForContentSizeCategory])
   {
     v4 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-    [v4 _scaledValueForValue:a3];
+    [v4 _scaledValueForValue:value];
     _NCMainScreenScale();
     UIRoundToScale();
   }
@@ -329,9 +329,9 @@ uint64_t __82__NCNotificationListCoalescingControlsView__configureToggleControlP
   [(NCToggleControlPair *)self->_toggleControlPair sizeThatFits:v7, v9];
   v12 = v11;
   v14 = v13;
-  v15 = [(NCNotificationListCoalescingControlsView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(NCNotificationListCoalescingControlsView *)self _shouldReverseLayoutDirection];
   v16 = 0.0;
-  if ((v15 & 1) == 0)
+  if ((_shouldReverseLayoutDirection & 1) == 0)
   {
     v19.origin.x = v4;
     v19.origin.y = v6;
@@ -345,7 +345,7 @@ uint64_t __82__NCNotificationListCoalescingControlsView__configureToggleControlP
   [(NCToggleControlPair *)toggleControlPair setFrame:v16, 0.0, v12, v14];
 }
 
-- (void)_handleRestackTouchUpInside:(id)a3
+- (void)_handleRestackTouchUpInside:(id)inside
 {
   if ([(NCNotificationListCoalescingControlsView *)self _isClearButtonExpanded])
   {
@@ -357,7 +357,7 @@ uint64_t __82__NCNotificationListCoalescingControlsView__configureToggleControlP
   }
 }
 
-- (void)_handleRestackPrimaryAction:(id)a3
+- (void)_handleRestackPrimaryAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -366,7 +366,7 @@ uint64_t __82__NCNotificationListCoalescingControlsView__configureToggleControlP
   }
 }
 
-- (void)_handleClearTouchUpInside:(id)a3
+- (void)_handleClearTouchUpInside:(id)inside
 {
   if (![(NCNotificationListCoalescingControlsView *)self _isClearButtonExpanded])
   {
@@ -378,7 +378,7 @@ uint64_t __82__NCNotificationListCoalescingControlsView__configureToggleControlP
   }
 }
 
-- (void)_handleClearPrimaryAction:(id)a3
+- (void)_handleClearPrimaryAction:(id)action
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -387,7 +387,7 @@ uint64_t __82__NCNotificationListCoalescingControlsView__configureToggleControlP
   }
 }
 
-- (void)_handleClearAll:(id)a3
+- (void)_handleClearAll:(id)all
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -395,24 +395,24 @@ uint64_t __82__NCNotificationListCoalescingControlsView__configureToggleControlP
     [WeakRetained notificationListCoalescingControlsViewRequestsClearAll:self];
   }
 
-  v4 = [(NCNotificationListCoalescingControlsView *)self _clearButton];
-  [v4 dismissModalFullScreenIfNeeded];
+  _clearButton = [(NCNotificationListCoalescingControlsView *)self _clearButton];
+  [_clearButton dismissModalFullScreenIfNeeded];
 }
 
 - (id)_clearButton
 {
-  v2 = [(NCToggleControlPair *)self->_toggleControlPair toggleControls];
-  v3 = [v2 lastObject];
+  toggleControls = [(NCToggleControlPair *)self->_toggleControlPair toggleControls];
+  lastObject = [toggleControls lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (BOOL)_isClearButtonExpanded
 {
-  v2 = [(NCNotificationListCoalescingControlsView *)self _clearButton];
-  v3 = [v2 isExpanded];
+  _clearButton = [(NCNotificationListCoalescingControlsView *)self _clearButton];
+  isExpanded = [_clearButton isExpanded];
 
-  return v3;
+  return isExpanded;
 }
 
 - (NCNotificationListCoalescingControlsViewDelegate)delegate

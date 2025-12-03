@@ -1,17 +1,17 @@
 @interface SNNMILListValue
-- (SNNMILListValue)initWithValues:(id)a3;
+- (SNNMILListValue)initWithValues:(id)values;
 @end
 
 @implementation SNNMILListValue
 
-- (SNNMILListValue)initWithValues:(id)a3
+- (SNNMILListValue)initWithValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v8.receiver = self;
   v8.super_class = SNNMILListValue;
   v5 = [(SNNMILValue *)&v8 init];
   values = v5->_values;
-  v5->_values = v4;
+  v5->_values = valuesCopy;
 
   return v5;
 }

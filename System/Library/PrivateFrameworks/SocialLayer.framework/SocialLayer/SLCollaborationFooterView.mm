@@ -1,34 +1,34 @@
 @interface SLCollaborationFooterView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SLCollaborationFooterView)initWithModel:(id)a3 maxWidth:(double)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SLCollaborationFooterView)initWithModel:(id)model maxWidth:(double)width;
 - (SLCollaborationFooterViewDelegate)delegate;
-- (double)expectedHeightForWidth:(double)a3;
-- (id)makePlaceholderSlotContentForStyle:(id)a3;
-- (void)renderRemoteContentForLayerContextID:(unint64_t)a3 style:(id)a4 yield:(id)a5;
-- (void)updateWithNewModel:(id)a3;
+- (double)expectedHeightForWidth:(double)width;
+- (id)makePlaceholderSlotContentForStyle:(id)style;
+- (void)renderRemoteContentForLayerContextID:(unint64_t)d style:(id)style yield:(id)yield;
+- (void)updateWithNewModel:(id)model;
 @end
 
 @implementation SLCollaborationFooterView
 
-- (SLCollaborationFooterView)initWithModel:(id)a3 maxWidth:(double)a4
+- (SLCollaborationFooterView)initWithModel:(id)model maxWidth:(double)width
 {
-  v6 = a3;
+  modelCopy = model;
   v7 = objc_opt_class();
   v11.receiver = self;
   v11.super_class = SLCollaborationFooterView;
-  v8 = [(SLRemoteView *)&v11 initWithServiceProxyClass:v7 maxWidth:a4];
+  v8 = [(SLRemoteView *)&v11 initWithServiceProxyClass:v7 maxWidth:width];
   model = v8->_model;
-  v8->_model = v6;
+  v8->_model = modelCopy;
 
   [(SLCollaborationFooterView *)v8 updateRemoteRenderingEnabled];
   return v8;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(SLCollaborationFooterView *)self expectedHeightForWidth:a3.width, a3.height];
+  width = fits.width;
+  [(SLCollaborationFooterView *)self expectedHeightForWidth:fits.width, fits.height];
   v5 = v4;
   v6 = width;
   result.height = v5;
@@ -49,54 +49,54 @@
   return result;
 }
 
-- (double)expectedHeightForWidth:(double)a3
+- (double)expectedHeightForWidth:(double)width
 {
   [(SLRemoteView *)self maxWidth];
-  v6 = SL_CGFloatApproximatelyEqualToFloat(a3, v5);
+  v6 = SL_CGFloatApproximatelyEqualToFloat(width, v5);
   v7 = 0.0;
   if (v6)
   {
-    v8 = [(SLRemoteView *)self slotView];
-    [v8 intrinsicContentSize];
+    slotView = [(SLRemoteView *)self slotView];
+    [slotView intrinsicContentSize];
     v7 = v9;
   }
 
   return v7;
 }
 
-- (void)updateWithNewModel:(id)a3
+- (void)updateWithNewModel:(id)model
 {
-  v8 = a3;
-  v5 = [(SLCollaborationFooterView *)self model];
-  v6 = [v8 isEqual:v5];
+  modelCopy = model;
+  model = [(SLCollaborationFooterView *)self model];
+  v6 = [modelCopy isEqual:model];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_model, a3);
+    objc_storeStrong(&self->_model, model);
     [(SLCollaborationFooterView *)self updateRemoteRenderingEnabled];
-    v7 = [(SLRemoteView *)self slotView];
-    [v7 _updateContent];
+    slotView = [(SLRemoteView *)self slotView];
+    [slotView _updateContent];
   }
 }
 
-- (id)makePlaceholderSlotContentForStyle:(id)a3
+- (id)makePlaceholderSlotContentForStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   v5 = [SLDFooterViewEmptySlotContent alloc];
   [(SLRemoteView *)self maxWidth];
-  v6 = [(SLDFooterViewEmptySlotContent *)v5 initWithStyle:v4 maxWidth:0 forRemote:?];
+  v6 = [(SLDFooterViewEmptySlotContent *)v5 initWithStyle:styleCopy maxWidth:0 forRemote:?];
 
   return v6;
 }
 
-- (void)renderRemoteContentForLayerContextID:(unint64_t)a3 style:(id)a4 yield:(id)a5
+- (void)renderRemoteContentForLayerContextID:(unint64_t)d style:(id)style yield:(id)yield
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SLRemoteView *)self serviceProxy];
-  v11 = [v10 synchronousRemoteService];
+  styleCopy = style;
+  yieldCopy = yield;
+  serviceProxy = [(SLRemoteView *)self serviceProxy];
+  synchronousRemoteService = [serviceProxy synchronousRemoteService];
 
-  v12 = [(SLCollaborationFooterView *)self model];
+  model = [(SLCollaborationFooterView *)self model];
   [(SLRemoteView *)self maxWidth];
   v14 = v13;
   v17[0] = MEMORY[0x277D85DD0];
@@ -104,11 +104,11 @@
   v17[2] = __78__SLCollaborationFooterView_renderRemoteContentForLayerContextID_style_yield___block_invoke;
   v17[3] = &unk_2789270A8;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v15 = v9;
-  v16 = v8;
-  [v11 footerViewForModel:v12 style:v16 maxWidth:a3 layerContextID:v17 reply:v14];
+  v18 = styleCopy;
+  v19 = yieldCopy;
+  v15 = yieldCopy;
+  v16 = styleCopy;
+  [synchronousRemoteService footerViewForModel:model style:v16 maxWidth:d layerContextID:v17 reply:v14];
 }
 
 void __78__SLCollaborationFooterView_renderRemoteContentForLayerContextID_style_yield___block_invoke(uint64_t a1, void *a2)

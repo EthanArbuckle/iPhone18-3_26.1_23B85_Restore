@@ -31,11 +31,11 @@
   v10 = a6;
   v11 = MEMORY[0x277CBEB38];
   v12 = a3;
-  v13 = [v11 dictionary];
-  v14 = v13;
+  dictionary = [v11 dictionary];
+  v14 = dictionary;
   if (v10)
   {
-    [v13 addEntriesFromDictionary:v10];
+    [dictionary addEntriesFromDictionary:v10];
   }
 
   [v14 setObject:v9 forKey:*MEMORY[0x277CCA450]];

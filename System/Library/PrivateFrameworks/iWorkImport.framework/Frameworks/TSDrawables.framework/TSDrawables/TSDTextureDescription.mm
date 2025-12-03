@@ -1,9 +1,9 @@
 @interface TSDTextureDescription
-+ (TSDTextureDescription)descriptionWithSession:(id)a3;
-+ (TSDTextureDescription)descriptionWithTextureDescription:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (TSDTextureDescription)descriptionWithSession:(id)session;
++ (TSDTextureDescription)descriptionWithTextureDescription:(id)description;
+- (BOOL)isEqual:(id)equal;
 - (TSDAnimationSession)session;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 - (void)reset;
@@ -11,34 +11,34 @@
 
 @implementation TSDTextureDescription
 
-+ (TSDTextureDescription)descriptionWithSession:(id)a3
++ (TSDTextureDescription)descriptionWithSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v4 = objc_alloc_init(TSDTextureDescription);
-  objc_msgSend_setSession_(v4, v5, v3);
+  objc_msgSend_setSession_(v4, v5, sessionCopy);
   objc_msgSend_setStage_(v4, v6, 0);
   objc_msgSend_setDeliveryStyle_(v4, v7, 0);
   objc_msgSend_setByGlyphStyle_(v4, v8, 0);
   objc_msgSend_setChildRepByGlyphStyle_(v4, v9, 0);
-  shouldForceTextureGeneration = objc_msgSend_shouldForceTextureGeneration(v3, v10, v11);
+  shouldForceTextureGeneration = objc_msgSend_shouldForceTextureGeneration(sessionCopy, v10, v11);
   objc_msgSend_setShouldForceTextureGeneration_(v4, v13, shouldForceTextureGeneration);
-  shouldUseSourceImage = objc_msgSend_shouldUseSourceImage(v3, v14, v15);
+  shouldUseSourceImage = objc_msgSend_shouldUseSourceImage(sessionCopy, v14, v15);
 
   objc_msgSend_setShouldUseSourceImage_(v4, v17, shouldUseSourceImage);
 
   return v4;
 }
 
-+ (TSDTextureDescription)descriptionWithTextureDescription:(id)a3
++ (TSDTextureDescription)descriptionWithTextureDescription:(id)description
 {
-  v3 = objc_msgSend_copy(a3, a2, a3);
+  v3 = objc_msgSend_copy(description, a2, description);
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDTextureDescription, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDTextureDescription, a2, zone);
   v7 = objc_msgSend_init(v4, v5, v6);
   v10 = objc_msgSend_session(self, v8, v9);
   objc_msgSend_setSession_(v7, v11, v10);
@@ -94,12 +94,12 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  equalCopy = equal;
+  if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
+    v5 = equalCopy;
     v8 = objc_msgSend_session(self, v6, v7);
     v13 = objc_msgSend_session(v5, v9, v10);
     if (v8 == v13

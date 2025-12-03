@@ -1,27 +1,27 @@
 @interface HKSimulatedWatchNotificationQuickLookView
-- (HKSimulatedWatchNotificationQuickLookView)initWithIconImage:(id)a3 titleText:(id)a4 detailText:(id)a5 tintColor:(id)a6;
+- (HKSimulatedWatchNotificationQuickLookView)initWithIconImage:(id)image titleText:(id)text detailText:(id)detailText tintColor:(id)color;
 - (void)_layoutQuickLook;
 - (void)_setUpSubviews;
 @end
 
 @implementation HKSimulatedWatchNotificationQuickLookView
 
-- (HKSimulatedWatchNotificationQuickLookView)initWithIconImage:(id)a3 titleText:(id)a4 detailText:(id)a5 tintColor:(id)a6
+- (HKSimulatedWatchNotificationQuickLookView)initWithIconImage:(id)image titleText:(id)text detailText:(id)detailText tintColor:(id)color
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  imageCopy = image;
+  textCopy = text;
+  detailTextCopy = detailText;
+  colorCopy = color;
   v17.receiver = self;
   v17.super_class = HKSimulatedWatchNotificationQuickLookView;
   v14 = [(HKSimulatedWatchNotificationQuickLookView *)&v17 initWithFrame:0.0, 0.0, 142.0, 195.0];
   v15 = v14;
   if (v14)
   {
-    [(HKSimulatedWatchNotificationQuickLookView *)v14 setIconImage:v10];
-    [(HKSimulatedWatchNotificationQuickLookView *)v15 setTitleLabelText:v11];
-    [(HKSimulatedWatchNotificationQuickLookView *)v15 setDetailLabelText:v12];
-    [(HKSimulatedWatchNotificationQuickLookView *)v15 setTintColor:v13];
+    [(HKSimulatedWatchNotificationQuickLookView *)v14 setIconImage:imageCopy];
+    [(HKSimulatedWatchNotificationQuickLookView *)v15 setTitleLabelText:textCopy];
+    [(HKSimulatedWatchNotificationQuickLookView *)v15 setDetailLabelText:detailTextCopy];
+    [(HKSimulatedWatchNotificationQuickLookView *)v15 setTintColor:colorCopy];
     [(HKSimulatedWatchNotificationQuickLookView *)v15 _setUpSubviews];
     [(HKSimulatedWatchNotificationQuickLookView *)v15 _layoutQuickLook];
   }
@@ -42,8 +42,8 @@
   self->_quickLookTitleContainer = v5;
 
   v7 = self->_quickLookTitleContainer;
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)v7 setBackgroundColor:v8];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)v7 setBackgroundColor:clearColor];
 
   [(HKSimulatedWatchNotificationQuickLookView *)self addSubview:self->_quickLookTitleContainer];
   v9 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -52,14 +52,14 @@
 
   [(UILabel *)self->_quickLookTitleLabel setMinimumScaleFactor:0.8];
   v11 = self->_quickLookTitleLabel;
-  v12 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)v11 setTextColor:v12];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)v11 setTextColor:whiteColor];
 
   [(UILabel *)self->_quickLookTitleLabel setTextAlignment:1];
   [(UILabel *)self->_quickLookTitleLabel setLineBreakMode:4];
   v13 = self->_quickLookTitleLabel;
-  v14 = [MEMORY[0x1E69DC888] clearColor];
-  [(UILabel *)v13 setBackgroundColor:v14];
+  clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+  [(UILabel *)v13 setBackgroundColor:clearColor2];
 
   [(UILabel *)self->_quickLookTitleLabel setNumberOfLines:2];
   [(UIView *)self->_quickLookTitleContainer addSubview:self->_quickLookTitleLabel];
@@ -68,8 +68,8 @@
   self->_quickLookSubtitleContainer = v15;
 
   v17 = self->_quickLookSubtitleContainer;
-  v18 = [MEMORY[0x1E69DC888] clearColor];
-  [(UIView *)v17 setBackgroundColor:v18];
+  clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+  [(UIView *)v17 setBackgroundColor:clearColor3];
 
   [(HKSimulatedWatchNotificationQuickLookView *)self addSubview:self->_quickLookSubtitleContainer];
   v19 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -86,7 +86,7 @@
 - (void)_layoutQuickLook
 {
   v3 = self->_titleLabelText;
-  v4 = [(NSString *)self->_detailLabelText localizedUppercaseString];
+  localizedUppercaseString = [(NSString *)self->_detailLabelText localizedUppercaseString];
   v5 = [MEMORY[0x1E69DB878] systemFontOfSize:19.0];
   v6 = [MEMORY[0x1E69DB878] systemFontOfSize:14.0];
   [(UILabel *)self->_quickLookTitleLabel setFont:v5];
@@ -99,16 +99,16 @@
   if (v8 <= 25.0)
   {
     [(UILabel *)quickLookSubtitleLabel setNumberOfLines:2];
-    v18 = [v4 length];
-    v19 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v20 = [v19 mutableCopy];
+    v18 = [localizedUppercaseString length];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v20 = [defaultParagraphStyle mutableCopy];
 
     [v20 setLineSpacing:2.5];
     [v20 setAlignment:1];
     [v20 setLineBreakMode:0];
     LODWORD(v21) = 1.0;
     [v20 setHyphenationFactor:v21];
-    v22 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v4];
+    v22 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:localizedUppercaseString];
     [v22 addAttribute:*MEMORY[0x1E69DB650] value:self->_tintColor range:{0, v18}];
     [v22 addAttribute:*MEMORY[0x1E69DB648] value:v6 range:{0, v18}];
     [v22 addAttribute:*MEMORY[0x1E69DB688] value:v20 range:{0, v18}];
@@ -126,7 +126,7 @@
   {
     [(UILabel *)quickLookSubtitleLabel setAttributedText:0];
     [(UILabel *)self->_quickLookSubtitleLabel setLineBreakMode:4];
-    [(UILabel *)self->_quickLookSubtitleLabel setText:v4];
+    [(UILabel *)self->_quickLookSubtitleLabel setText:localizedUppercaseString];
     [(UILabel *)self->_quickLookSubtitleLabel setTextColor:self->_tintColor];
     [(UILabel *)self->_quickLookSubtitleLabel sizeToFit];
     [(UILabel *)self->_quickLookSubtitleLabel frame];

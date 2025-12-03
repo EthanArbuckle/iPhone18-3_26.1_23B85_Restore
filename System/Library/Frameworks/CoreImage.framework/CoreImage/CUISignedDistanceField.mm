@@ -46,10 +46,10 @@
     v33.size.height = v12;
     v34 = CGRectInset(v33, -1.0, -1.0);
     v22 = [(CIImage *)v21 imageByCroppingToRect:v34.origin.x, v34.origin.y, v34.size.width, v34.size.height];
-    v23 = [(CUISignedDistanceField *)self _remappingKernel];
+    _remappingKernel = [(CUISignedDistanceField *)self _remappingKernel];
     [(CIImage *)v22 extent];
     v29 = v22;
-    return [v23 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v29, 1), v24, v25, v26, v27}];
+    return [_remappingKernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", &v29, 1), v24, v25, v26, v27}];
   }
 
   else

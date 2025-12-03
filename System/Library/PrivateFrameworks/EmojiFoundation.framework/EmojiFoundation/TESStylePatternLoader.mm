@@ -1,14 +1,14 @@
 @interface TESStylePatternLoader
-- (TESStylePatternLoader)initWithLocaleIdentifier:(id)a3;
+- (TESStylePatternLoader)initWithLocaleIdentifier:(id)identifier;
 @end
 
 @implementation TESStylePatternLoader
 
-- (TESStylePatternLoader)initWithLocaleIdentifier:(id)a3
+- (TESStylePatternLoader)initWithLocaleIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = TESStylePatternLoader;
-  v3 = [(TESLocalizedPListLoader *)&v6 initWithLocaleIdentifier:a3];
+  v3 = [(TESLocalizedPListLoader *)&v6 initWithLocaleIdentifier:identifier];
   v4 = v3;
   if (v3)
   {

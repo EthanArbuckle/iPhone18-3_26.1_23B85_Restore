@@ -1,7 +1,7 @@
 @interface CompassComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-- (CompassComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_templateNoData:(BOOL)a3 calibrated:(BOOL)a4 heading:(id)a5;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
+- (CompassComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_templateNoData:(BOOL)data calibrated:(BOOL)calibrated heading:(id)heading;
 - (id)newTemplate;
 - (id)randomizedTemplate;
 - (id)sampleTemplate;
@@ -9,9 +9,9 @@
 
 @implementation CompassComplicationDataSource
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  if (!objc_msgSend_supportsUrsa(a4, a2, a3, a4))
+  if (!objc_msgSend_supportsUrsa(device, a2, family, device))
   {
 LABEL_6:
     LOBYTE(v9) = 0;
@@ -30,8 +30,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v9 = 0x14DDu >> a3;
-  if (a3 > 0xC)
+  v9 = 0x14DDu >> family;
+  if (family > 0xC)
   {
     LOBYTE(v9) = 0;
   }
@@ -39,11 +39,11 @@ LABEL_6:
   return v9 & 1;
 }
 
-- (CompassComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (CompassComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = CompassComplicationDataSource;
-  return [(NanoCompassBaseComplicationDataSource *)&v6 initWithComplication:a3 family:a4 forDevice:a5 mode:1];
+  return [(NanoCompassBaseComplicationDataSource *)&v6 initWithComplication:complication family:family forDevice:device mode:1];
 }
 
 - (id)sampleTemplate
@@ -72,14 +72,14 @@ LABEL_6:
   return v7;
 }
 
-- (id)_templateNoData:(BOOL)a3 calibrated:(BOOL)a4 heading:(id)a5
+- (id)_templateNoData:(BOOL)data calibrated:(BOOL)calibrated heading:(id)heading
 {
-  v5 = a4;
-  v6 = a3;
+  calibratedCopy = calibrated;
+  dataCopy = data;
   v101[2] = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v12 = v8;
-  v13 = !v5 | v6;
+  headingCopy = heading;
+  v12 = headingCopy;
+  v13 = !calibratedCopy | dataCopy;
   if (v13 == 1)
   {
 

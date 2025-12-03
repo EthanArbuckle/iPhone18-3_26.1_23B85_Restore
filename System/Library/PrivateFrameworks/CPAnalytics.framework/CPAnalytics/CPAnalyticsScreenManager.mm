@@ -1,25 +1,25 @@
 @interface CPAnalyticsScreenManager
-+ (BOOL)_isValidTabIdentifierChangedEvent:(id)a3;
-+ (BOOL)isDebugScreenForViewName:(id)a3;
-+ (BOOL)isValidScreenViewEvent:(id)a3;
-+ (id)viewNameFromCombined:(id)a3;
++ (BOOL)_isValidTabIdentifierChangedEvent:(id)event;
++ (BOOL)isDebugScreenForViewName:(id)name;
++ (BOOL)isValidScreenViewEvent:(id)event;
++ (id)viewNameFromCombined:(id)combined;
 - (CPAnalytics)cpAnalyticsInstance;
-- (CPAnalyticsScreenManager)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4;
-- (id)getDynamicProperty:(id)a3 forEventName:(id)a4 payloadForSystemPropertyExtraction:(id)a5;
-- (id)screenViewNameAt:(unint64_t)a3;
-- (void)_handleUnknownViewIfNeeded:(id)a3;
-- (void)_initializeScreenViewTrackers:(id)a3;
-- (void)_resetSessionWithTime:(id)a3;
-- (void)_sendCPAnalyticsScreenViewEventWithEndTime:(id)a3;
-- (void)_trackView:(id)a3 withEventName:(id)a4 viewID:(id)a5 eventTime:(id)a6;
-- (void)_updateAppLifeCycle:(id)a3;
-- (void)_updateCurrentScreenToViewName:(id)a3 withEventTime:(id)a4;
-- (void)_updateCurrentTabIdentifier:(id)a3;
-- (void)_updateScreenTracking:(id)a3;
-- (void)_updateTabTracking:(id)a3;
-- (void)processEvent:(id)a3;
-- (void)registerSystemProperties:(id)a3;
-- (void)updateWithConfig:(id)a3;
+- (CPAnalyticsScreenManager)initWithConfig:(id)config cpAnalyticsInstance:(id)instance;
+- (id)getDynamicProperty:(id)property forEventName:(id)name payloadForSystemPropertyExtraction:(id)extraction;
+- (id)screenViewNameAt:(unint64_t)at;
+- (void)_handleUnknownViewIfNeeded:(id)needed;
+- (void)_initializeScreenViewTrackers:(id)trackers;
+- (void)_resetSessionWithTime:(id)time;
+- (void)_sendCPAnalyticsScreenViewEventWithEndTime:(id)time;
+- (void)_trackView:(id)view withEventName:(id)name viewID:(id)d eventTime:(id)time;
+- (void)_updateAppLifeCycle:(id)cycle;
+- (void)_updateCurrentScreenToViewName:(id)name withEventTime:(id)time;
+- (void)_updateCurrentTabIdentifier:(id)identifier;
+- (void)_updateScreenTracking:(id)tracking;
+- (void)_updateTabTracking:(id)tracking;
+- (void)processEvent:(id)event;
+- (void)registerSystemProperties:(id)properties;
+- (void)updateWithConfig:(id)config;
 @end
 
 @implementation CPAnalyticsScreenManager
@@ -31,95 +31,95 @@
   return WeakRetained;
 }
 
-- (id)getDynamicProperty:(id)a3 forEventName:(id)a4 payloadForSystemPropertyExtraction:(id)a5
+- (id)getDynamicProperty:(id)property forEventName:(id)name payloadForSystemPropertyExtraction:(id)extraction
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 isEqualToString:@"cpa_common_appSection"])
+  propertyCopy = property;
+  extractionCopy = extraction;
+  if ([propertyCopy isEqualToString:@"cpa_common_appSection"])
   {
-    v9 = [(CPAnalyticsScreenManager *)self currentTabIdentifierDescription];
+    currentTabIdentifierDescription = [(CPAnalyticsScreenManager *)self currentTabIdentifierDescription];
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"cpa_common_currentScreen"])
+  if ([propertyCopy isEqualToString:@"cpa_common_currentScreen"])
   {
-    v9 = [(CPAnalyticsScreenManager *)self currentScreenViewName];
+    currentTabIdentifierDescription = [(CPAnalyticsScreenManager *)self currentScreenViewName];
     goto LABEL_9;
   }
 
-  if (([v7 isEqualToString:@"cpa_ui_priorScreen1"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"cpa_common_priorScreen"))
+  if (([propertyCopy isEqualToString:@"cpa_ui_priorScreen1"] & 1) != 0 || objc_msgSend(propertyCopy, "isEqualToString:", @"cpa_common_priorScreen"))
   {
-    v10 = self;
+    selfCopy9 = self;
     v11 = 1;
 LABEL_8:
-    v9 = [(CPAnalyticsScreenManager *)v10 screenViewNameAt:v11];
+    currentTabIdentifierDescription = [(CPAnalyticsScreenManager *)selfCopy9 screenViewNameAt:v11];
     goto LABEL_9;
   }
 
-  if ([v7 isEqualToString:@"cpa_ui_priorScreen2"])
+  if ([propertyCopy isEqualToString:@"cpa_ui_priorScreen2"])
   {
-    v10 = self;
+    selfCopy9 = self;
     v11 = 2;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"cpa_ui_priorScreen3"])
+  if ([propertyCopy isEqualToString:@"cpa_ui_priorScreen3"])
   {
-    v10 = self;
+    selfCopy9 = self;
     v11 = 3;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"cpa_ui_priorScreen4"])
+  if ([propertyCopy isEqualToString:@"cpa_ui_priorScreen4"])
   {
-    v10 = self;
+    selfCopy9 = self;
     v11 = 4;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"cpa_ui_priorScreen5"])
+  if ([propertyCopy isEqualToString:@"cpa_ui_priorScreen5"])
   {
-    v10 = self;
+    selfCopy9 = self;
     v11 = 5;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"cpa_ui_priorScreen6"])
+  if ([propertyCopy isEqualToString:@"cpa_ui_priorScreen6"])
   {
-    v10 = self;
+    selfCopy9 = self;
     v11 = 6;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"cpa_ui_priorScreen7"])
+  if ([propertyCopy isEqualToString:@"cpa_ui_priorScreen7"])
   {
-    v10 = self;
+    selfCopy9 = self;
     v11 = 7;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"cpa_ui_priorScreen8"])
+  if ([propertyCopy isEqualToString:@"cpa_ui_priorScreen8"])
   {
-    v10 = self;
+    selfCopy9 = self;
     v11 = 8;
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"cpa_ui_priorScreen9"])
+  if ([propertyCopy isEqualToString:@"cpa_ui_priorScreen9"])
   {
-    v10 = self;
+    selfCopy9 = self;
     v11 = 9;
     goto LABEL_8;
   }
 
-  if (![v7 isEqualToString:@"cpa_common_numScreensViewed"])
+  if (![propertyCopy isEqualToString:@"cpa_common_numScreensViewed"])
   {
-    if ([v7 isEqualToString:@"cpa_isTrackedScreenView"] && (objc_msgSend(v8, "objectForKeyedSubscript:", @"className"), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    if ([propertyCopy isEqualToString:@"cpa_isTrackedScreenView"] && (objc_msgSend(extractionCopy, "objectForKeyedSubscript:", @"className"), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v15 = v14;
       v16 = MEMORY[0x277CCABB0];
-      v17 = [(CPAnalyticsScreenManager *)self namesOfViewsToTrack];
-      v12 = [v16 numberWithBool:{objc_msgSend(v17, "containsObject:", v15)}];
+      namesOfViewsToTrack = [(CPAnalyticsScreenManager *)self namesOfViewsToTrack];
+      v12 = [v16 numberWithBool:{objc_msgSend(namesOfViewsToTrack, "containsObject:", v15)}];
     }
 
     else
@@ -130,67 +130,67 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CPAnalyticsScreenManager screensViewCount](self, "screensViewCount")}];
+  currentTabIdentifierDescription = [MEMORY[0x277CCABB0] numberWithInteger:{-[CPAnalyticsScreenManager screensViewCount](self, "screensViewCount")}];
 LABEL_9:
-  v12 = v9;
+  v12 = currentTabIdentifierDescription;
 LABEL_10:
 
   return v12;
 }
 
-- (void)registerSystemProperties:(id)a3
+- (void)registerSystemProperties:(id)properties
 {
-  v4 = a3;
-  [v4 addDynamicProperty:@"cpa_common_appSection" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_common_currentScreen" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_common_priorScreen" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_ui_priorScreen1" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_ui_priorScreen2" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_ui_priorScreen3" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_ui_priorScreen4" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_ui_priorScreen5" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_ui_priorScreen6" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_ui_priorScreen7" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_ui_priorScreen8" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_ui_priorScreen9" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_common_numScreensViewed" withProvider:self];
-  [v4 addDynamicProperty:@"cpa_isTrackedScreenView" withProvider:self];
+  propertiesCopy = properties;
+  [propertiesCopy addDynamicProperty:@"cpa_common_appSection" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_common_currentScreen" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_common_priorScreen" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_ui_priorScreen1" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_ui_priorScreen2" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_ui_priorScreen3" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_ui_priorScreen4" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_ui_priorScreen5" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_ui_priorScreen6" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_ui_priorScreen7" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_ui_priorScreen8" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_ui_priorScreen9" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_common_numScreensViewed" withProvider:self];
+  [propertiesCopy addDynamicProperty:@"cpa_isTrackedScreenView" withProvider:self];
 }
 
-- (void)_sendCPAnalyticsScreenViewEventWithEndTime:(id)a3
+- (void)_sendCPAnalyticsScreenViewEventWithEndTime:(id)time
 {
-  v22 = a3;
-  v4 = [(CPAnalyticsScreenManager *)self priorViews];
-  if ([v4 count])
+  timeCopy = time;
+  priorViews = [(CPAnalyticsScreenManager *)self priorViews];
+  if ([priorViews count])
   {
-    v5 = [(CPAnalyticsScreenManager *)self currentScreenStartTime];
+    currentScreenStartTime = [(CPAnalyticsScreenManager *)self currentScreenStartTime];
 
-    if (!v5)
+    if (!currentScreenStartTime)
     {
       goto LABEL_8;
     }
 
-    v6 = [(CPAnalyticsScreenManager *)self currentScreenStartTime];
-    [v22 timeIntervalSinceDate:v6];
+    currentScreenStartTime2 = [(CPAnalyticsScreenManager *)self currentScreenStartTime];
+    [timeCopy timeIntervalSinceDate:currentScreenStartTime2];
     v8 = v7;
 
-    v4 = [MEMORY[0x277CCABB0] numberWithDouble:round(v8 * 100.0) / 100.0];
+    priorViews = [MEMORY[0x277CCABB0] numberWithDouble:round(v8 * 100.0) / 100.0];
     v9 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[CPAnalyticsScreenManager priorViewsMaxIndex](self, "priorViewsMaxIndex") + 2}];
     v10 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CPAnalyticsScreenManager screensViewCount](self, "screensViewCount")}];
     [v9 setObject:v10 forKey:@"cpa_common_numScreensViewed"];
 
-    [v9 setObject:v4 forKey:@"cpa_ui_timeOnScreen"];
-    v11 = [(CPAnalyticsScreenManager *)self currentScreenViewName];
-    [v9 setObject:v11 forKey:@"cpa_common_currentScreen"];
+    [v9 setObject:priorViews forKey:@"cpa_ui_timeOnScreen"];
+    currentScreenViewName = [(CPAnalyticsScreenManager *)self currentScreenViewName];
+    [v9 setObject:currentScreenViewName forKey:@"cpa_common_currentScreen"];
 
     v12 = [(CPAnalyticsScreenManager *)self screenViewNameAt:1];
     [v9 setObject:v12 forKey:@"cpa_common_priorScreen"];
 
-    v13 = [(CPAnalyticsScreenManager *)self currentTabIdentifierDescription];
-    [v9 setObject:v13 forKey:@"cpa_common_appSection"];
+    currentTabIdentifierDescription = [(CPAnalyticsScreenManager *)self currentTabIdentifierDescription];
+    [v9 setObject:currentTabIdentifierDescription forKey:@"cpa_common_appSection"];
 
-    v14 = [(CPAnalyticsScreenManager *)self priorViews];
-    v15 = [v14 count];
+    priorViews2 = [(CPAnalyticsScreenManager *)self priorViews];
+    v15 = [priorViews2 count];
 
     if (v15 >= 2)
     {
@@ -202,38 +202,38 @@ LABEL_10:
         [v9 setObject:v17 forKey:v18];
 
         ++v16;
-        v19 = [(CPAnalyticsScreenManager *)self priorViews];
-        v20 = [v19 count];
+        priorViews3 = [(CPAnalyticsScreenManager *)self priorViews];
+        v20 = [priorViews3 count];
       }
 
       while (v16 < v20);
     }
 
-    v21 = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
-    [v21 sendEvent:@"com.apple.photos.CPAnalytics.screenView" withPayload:v9];
+    cpAnalyticsInstance = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
+    [cpAnalyticsInstance sendEvent:@"com.apple.photos.CPAnalytics.screenView" withPayload:v9];
   }
 
 LABEL_8:
 }
 
-- (void)_updateCurrentScreenToViewName:(id)a3 withEventTime:(id)a4
+- (void)_updateCurrentScreenToViewName:(id)name withEventTime:(id)time
 {
-  v6 = a4;
-  v7 = a3;
-  [(CPAnalyticsScreenManager *)self _sendCPAnalyticsScreenViewEventWithEndTime:v6];
-  [(CPAnalyticsScreenManager *)self setCurrentScreenStartTime:v6];
+  timeCopy = time;
+  nameCopy = name;
+  [(CPAnalyticsScreenManager *)self _sendCPAnalyticsScreenViewEventWithEndTime:timeCopy];
+  [(CPAnalyticsScreenManager *)self setCurrentScreenStartTime:timeCopy];
 
-  v8 = [(CPAnalyticsScreenManager *)self priorViews];
-  [v8 insertObject:v7 atIndex:0];
+  priorViews = [(CPAnalyticsScreenManager *)self priorViews];
+  [priorViews insertObject:nameCopy atIndex:0];
 
-  v9 = [(CPAnalyticsScreenManager *)self priorViews];
-  v10 = [v9 count];
-  v11 = [(CPAnalyticsScreenManager *)self priorViewsMaxIndex];
+  priorViews2 = [(CPAnalyticsScreenManager *)self priorViews];
+  v10 = [priorViews2 count];
+  priorViewsMaxIndex = [(CPAnalyticsScreenManager *)self priorViewsMaxIndex];
 
-  if (v10 > v11)
+  if (v10 > priorViewsMaxIndex)
   {
-    v12 = [(CPAnalyticsScreenManager *)self priorViews];
-    [v12 removeLastObject];
+    priorViews3 = [(CPAnalyticsScreenManager *)self priorViews];
+    [priorViews3 removeLastObject];
   }
 
   v13 = [(CPAnalyticsScreenManager *)self screensViewCount]+ 1;
@@ -241,103 +241,103 @@ LABEL_8:
   [(CPAnalyticsScreenManager *)self setScreensViewCount:v13];
 }
 
-- (void)_trackView:(id)a3 withEventName:(id)a4 viewID:(id)a5 eventTime:(id)a6
+- (void)_trackView:(id)view withEventName:(id)name viewID:(id)d eventTime:(id)time
 {
-  v25 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [CPAnalyticsScreenManager combinedViewName:v25 withID:a5];
-  if ([@"com.apple.photos.CPAnalytics.viewDidDisappear" isEqualToString:v10])
+  viewCopy = view;
+  nameCopy = name;
+  timeCopy = time;
+  v12 = [CPAnalyticsScreenManager combinedViewName:viewCopy withID:d];
+  if ([@"com.apple.photos.CPAnalytics.viewDidDisappear" isEqualToString:nameCopy])
   {
-    v13 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
-    v14 = [v13 lastObject];
-    v15 = [v12 isEqualToString:v14];
+    currentlyOpenViews = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
+    lastObject = [currentlyOpenViews lastObject];
+    v15 = [v12 isEqualToString:lastObject];
 
-    v16 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
-    v17 = v16;
+    currentlyOpenViews2 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
+    v17 = currentlyOpenViews2;
     if (!v15)
     {
-      [v16 removeObject:v12];
+      [currentlyOpenViews2 removeObject:v12];
       goto LABEL_10;
     }
 
-    v18 = [v16 count];
+    v18 = [currentlyOpenViews2 count];
 
     if (v18 == 1)
     {
-      [(CPAnalyticsScreenManager *)self _sendCPAnalyticsScreenViewEventWithEndTime:v11];
+      [(CPAnalyticsScreenManager *)self _sendCPAnalyticsScreenViewEventWithEndTime:timeCopy];
       [(CPAnalyticsScreenManager *)self setCurrentScreenStartTime:0];
     }
 
-    v19 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
-    [v19 removeObject:v12];
+    currentlyOpenViews3 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
+    [currentlyOpenViews3 removeObject:v12];
 
-    v20 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
-    v21 = [v20 count];
+    currentlyOpenViews4 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
+    v21 = [currentlyOpenViews4 count];
 
     if (v21)
     {
-      v22 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
-      v23 = [v22 lastObject];
-      v17 = [CPAnalyticsScreenManager viewNameFromCombined:v23];
+      currentlyOpenViews5 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
+      lastObject2 = [currentlyOpenViews5 lastObject];
+      v17 = [CPAnalyticsScreenManager viewNameFromCombined:lastObject2];
 
-      [(CPAnalyticsScreenManager *)self _updateCurrentScreenToViewName:v17 withEventTime:v11];
+      [(CPAnalyticsScreenManager *)self _updateCurrentScreenToViewName:v17 withEventTime:timeCopy];
 LABEL_10:
     }
   }
 
-  else if ([@"com.apple.photos.CPAnalytics.viewDidAppear" isEqualToString:v10])
+  else if ([@"com.apple.photos.CPAnalytics.viewDidAppear" isEqualToString:nameCopy])
   {
-    v24 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
-    [v24 addObject:v12];
+    currentlyOpenViews6 = [(CPAnalyticsScreenManager *)self currentlyOpenViews];
+    [currentlyOpenViews6 addObject:v12];
 
-    [(CPAnalyticsScreenManager *)self _updateCurrentScreenToViewName:v25 withEventTime:v11];
-    [(CPAnalyticsScreenManager *)self _updateCurrentTabIdentifier:v10];
+    [(CPAnalyticsScreenManager *)self _updateCurrentScreenToViewName:viewCopy withEventTime:timeCopy];
+    [(CPAnalyticsScreenManager *)self _updateCurrentTabIdentifier:nameCopy];
   }
 }
 
-- (void)_resetSessionWithTime:(id)a3
+- (void)_resetSessionWithTime:(id)time
 {
-  v6 = a3;
+  timeCopy = time;
   if ([(CPAnalyticsScreenManager *)self foregroundEventCount])
   {
-    v4 = [(CPAnalyticsScreenManager *)self currentScreenViewName];
+    currentScreenViewName = [(CPAnalyticsScreenManager *)self currentScreenViewName];
     [(CPAnalyticsScreenManager *)self setScreensViewCount:0];
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{-[CPAnalyticsScreenManager priorViewsMaxIndex](self, "priorViewsMaxIndex")}];
     [(CPAnalyticsScreenManager *)self setPriorViews:v5];
 
-    if (v4)
+    if (currentScreenViewName)
     {
-      [(CPAnalyticsScreenManager *)self _updateCurrentScreenToViewName:v4 withEventTime:v6];
+      [(CPAnalyticsScreenManager *)self _updateCurrentScreenToViewName:currentScreenViewName withEventTime:timeCopy];
     }
   }
 }
 
-- (void)_initializeScreenViewTrackers:(id)a3
+- (void)_initializeScreenViewTrackers:(id)trackers
 {
-  v11 = a3;
-  [(CPAnalyticsScreenManager *)self updateWithConfig:v11];
+  trackersCopy = trackers;
+  [(CPAnalyticsScreenManager *)self updateWithConfig:trackersCopy];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   [(CPAnalyticsScreenManager *)self setCurrentlyOpenViews:v4];
 
   self->_priorViewsMaxIndex = 10;
-  v5 = [v11 objectForKey:@"maxPriorViews"];
+  v5 = [trackersCopy objectForKey:@"maxPriorViews"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v11 objectForKey:@"maxPriorViews"];
-    v8 = [v7 unsignedIntegerValue];
+    v7 = [trackersCopy objectForKey:@"maxPriorViews"];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-    if (v8 <= 1)
+    if (unsignedIntegerValue <= 1)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = v8;
+      v9 = unsignedIntegerValue;
     }
 
     if (v9 >= 0x3E8)
@@ -356,38 +356,38 @@ LABEL_10:
   [(CPAnalyticsScreenManager *)self setForegroundEventCount:0];
 }
 
-- (id)screenViewNameAt:(unint64_t)a3
+- (id)screenViewNameAt:(unint64_t)at
 {
-  v5 = [(CPAnalyticsScreenManager *)self priorViews];
-  v6 = [v5 count];
+  priorViews = [(CPAnalyticsScreenManager *)self priorViews];
+  v6 = [priorViews count];
 
-  if (v6 <= a3)
+  if (v6 <= at)
   {
     v8 = @"NoScreenName";
   }
 
   else
   {
-    v7 = [(CPAnalyticsScreenManager *)self priorViews];
-    v8 = [v7 objectAtIndex:a3];
+    priorViews2 = [(CPAnalyticsScreenManager *)self priorViews];
+    v8 = [priorViews2 objectAtIndex:at];
   }
 
   return v8;
 }
 
-- (void)_handleUnknownViewIfNeeded:(id)a3
+- (void)_handleUnknownViewIfNeeded:(id)needed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 propertyForKey:@"className"];
-  v6 = [(CPAnalyticsScreenManager *)self namesOfViewsToIgnore];
-  if ([v6 containsObject:v5])
+  neededCopy = needed;
+  v5 = [neededCopy propertyForKey:@"className"];
+  namesOfViewsToIgnore = [(CPAnalyticsScreenManager *)self namesOfViewsToIgnore];
+  if ([namesOfViewsToIgnore containsObject:v5])
   {
     goto LABEL_8;
   }
 
-  v7 = [(CPAnalyticsScreenManager *)self namesOfViewsToTrack];
-  if ([v7 containsObject:v5])
+  namesOfViewsToTrack = [(CPAnalyticsScreenManager *)self namesOfViewsToTrack];
+  if ([namesOfViewsToTrack containsObject:v5])
   {
 LABEL_7:
 
@@ -399,14 +399,14 @@ LABEL_8:
 
   if ((v8 & 1) == 0)
   {
-    v6 = [v4 copyRawPayload];
-    v7 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v6];
-    v9 = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
-    v10 = [v9 systemProperties];
+    namesOfViewsToIgnore = [neededCopy copyRawPayload];
+    namesOfViewsToTrack = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:namesOfViewsToIgnore];
+    cpAnalyticsInstance = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
+    systemProperties = [cpAnalyticsInstance systemProperties];
 
-    v11 = [v4 name];
-    v12 = [v10 propertyForKey:@"cpa_common_processName" forEventName:v11 payloadForSystemPropertyExtraction:0];
-    [v7 setObject:v12 forKeyedSubscript:@"cpa_common_processName"];
+    name = [neededCopy name];
+    v12 = [systemProperties propertyForKey:@"cpa_common_processName" forEventName:name payloadForSystemPropertyExtraction:0];
+    [namesOfViewsToTrack setObject:v12 forKeyedSubscript:@"cpa_common_processName"];
 
     v13 = CPAnalyticsLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -416,8 +416,8 @@ LABEL_8:
       _os_log_debug_impl(&dword_24260A000, v13, OS_LOG_TYPE_DEBUG, "Unknown view: %@. Add this view to 'appState' destination in CP Analytics config.", &v16, 0xCu);
     }
 
-    v14 = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
-    [v14 sendEvent:@"com.apple.photos.CPAnalytics.ScreenManager.unknownView" withPayload:v7];
+    cpAnalyticsInstance2 = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
+    [cpAnalyticsInstance2 sendEvent:@"com.apple.photos.CPAnalytics.ScreenManager.unknownView" withPayload:namesOfViewsToTrack];
 
     goto LABEL_7;
   }
@@ -427,115 +427,115 @@ LABEL_9:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCurrentTabIdentifier:(id)a3
+- (void)_updateCurrentTabIdentifier:(id)identifier
 {
-  if ([@"com.apple.photos.CPAnalytics.viewDidAppear" isEqualToString:a3])
+  if ([@"com.apple.photos.CPAnalytics.viewDidAppear" isEqualToString:identifier])
   {
-    v4 = [(CPAnalyticsScreenManager *)self pendingTabIdentifierDescription];
+    pendingTabIdentifierDescription = [(CPAnalyticsScreenManager *)self pendingTabIdentifierDescription];
 
-    if (v4)
+    if (pendingTabIdentifierDescription)
     {
-      v5 = [(CPAnalyticsScreenManager *)self pendingTabIdentifierDescription];
-      [(CPAnalyticsScreenManager *)self setCurrentTabIdentifierDescription:v5];
+      pendingTabIdentifierDescription2 = [(CPAnalyticsScreenManager *)self pendingTabIdentifierDescription];
+      [(CPAnalyticsScreenManager *)self setCurrentTabIdentifierDescription:pendingTabIdentifierDescription2];
 
       [(CPAnalyticsScreenManager *)self setPendingTabIdentifierDescription:0];
     }
   }
 }
 
-- (void)_updateTabTracking:(id)a3
+- (void)_updateTabTracking:(id)tracking
 {
-  v5 = a3;
+  trackingCopy = tracking;
   if ([CPAnalyticsScreenManager _isValidTabIdentifierChangedEvent:?])
   {
-    v4 = [v5 propertyForKey:@"tabIdentifierDescription"];
+    v4 = [trackingCopy propertyForKey:@"tabIdentifierDescription"];
     [(CPAnalyticsScreenManager *)self setPendingTabIdentifierDescription:v4];
   }
 }
 
-- (void)_updateScreenTracking:(id)a3
+- (void)_updateScreenTracking:(id)tracking
 {
-  v10 = a3;
+  trackingCopy = tracking;
   if ([CPAnalyticsScreenManager isValidScreenViewEvent:?])
   {
-    v4 = [v10 propertyForKey:@"className"];
-    v5 = [v10 propertyForKey:@"viewID"];
-    v6 = [(CPAnalyticsScreenManager *)self namesOfViewsToTrack];
-    v7 = [v6 containsObject:v4];
+    v4 = [trackingCopy propertyForKey:@"className"];
+    v5 = [trackingCopy propertyForKey:@"viewID"];
+    namesOfViewsToTrack = [(CPAnalyticsScreenManager *)self namesOfViewsToTrack];
+    v7 = [namesOfViewsToTrack containsObject:v4];
 
     if (v7)
     {
-      v8 = [v10 name];
-      v9 = [v10 timestamp];
-      [(CPAnalyticsScreenManager *)self _trackView:v4 withEventName:v8 viewID:v5 eventTime:v9];
+      name = [trackingCopy name];
+      timestamp = [trackingCopy timestamp];
+      [(CPAnalyticsScreenManager *)self _trackView:v4 withEventName:name viewID:v5 eventTime:timestamp];
     }
 
     else
     {
-      [(CPAnalyticsScreenManager *)self _handleUnknownViewIfNeeded:v10];
+      [(CPAnalyticsScreenManager *)self _handleUnknownViewIfNeeded:trackingCopy];
     }
   }
 }
 
-- (void)_updateAppLifeCycle:(id)a3
+- (void)_updateAppLifeCycle:(id)cycle
 {
-  v14 = a3;
-  v4 = [v14 name];
-  v5 = [v4 isEqualToString:@"com.apple.photos.CPAnalytics.appDidBecomeActive"];
+  cycleCopy = cycle;
+  name = [cycleCopy name];
+  v5 = [name isEqualToString:@"com.apple.photos.CPAnalytics.appDidBecomeActive"];
 
   if (v5)
   {
-    v6 = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
-    -[CPAnalyticsScreenManager setAppVisiblePeriodSignpostID:](self, "setAppVisiblePeriodSignpostID:", [v6 startSignpost]);
+    cpAnalyticsInstance = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
+    -[CPAnalyticsScreenManager setAppVisiblePeriodSignpostID:](self, "setAppVisiblePeriodSignpostID:", [cpAnalyticsInstance startSignpost]);
 
-    v7 = [v14 timestamp];
-    [(CPAnalyticsScreenManager *)self _resetSessionWithTime:v7];
+    timestamp = [cycleCopy timestamp];
+    [(CPAnalyticsScreenManager *)self _resetSessionWithTime:timestamp];
 
     [(CPAnalyticsScreenManager *)self setForegroundEventCount:[(CPAnalyticsScreenManager *)self foregroundEventCount]+ 1];
   }
 
   else
   {
-    v8 = [v14 name];
-    v9 = [v8 isEqualToString:@"com.apple.photos.CPAnalytics.appWillResignActive"];
+    name2 = [cycleCopy name];
+    v9 = [name2 isEqualToString:@"com.apple.photos.CPAnalytics.appWillResignActive"];
 
     if (v9)
     {
-      v10 = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
-      v11 = [(CPAnalyticsScreenManager *)self appVisiblePeriodSignpostID];
-      v12 = [v14 copyRawPayload];
-      [v10 endSignpost:v11 forEventName:@"com.apple.photos.CPAnalytics.signpost.appVisiblePeriod" withPayload:v12];
+      cpAnalyticsInstance2 = [(CPAnalyticsScreenManager *)self cpAnalyticsInstance];
+      appVisiblePeriodSignpostID = [(CPAnalyticsScreenManager *)self appVisiblePeriodSignpostID];
+      copyRawPayload = [cycleCopy copyRawPayload];
+      [cpAnalyticsInstance2 endSignpost:appVisiblePeriodSignpostID forEventName:@"com.apple.photos.CPAnalytics.signpost.appVisiblePeriod" withPayload:copyRawPayload];
 
       [(CPAnalyticsScreenManager *)self setAppVisiblePeriodSignpostID:0];
-      v13 = [v14 timestamp];
-      [(CPAnalyticsScreenManager *)self _sendCPAnalyticsScreenViewEventWithEndTime:v13];
+      timestamp2 = [cycleCopy timestamp];
+      [(CPAnalyticsScreenManager *)self _sendCPAnalyticsScreenViewEventWithEndTime:timestamp2];
 
       [(CPAnalyticsScreenManager *)self setCurrentScreenStartTime:0];
     }
   }
 }
 
-- (void)processEvent:(id)a3
+- (void)processEvent:(id)event
 {
-  v4 = a3;
-  [(CPAnalyticsScreenManager *)self _updateAppLifeCycle:v4];
-  [(CPAnalyticsScreenManager *)self _updateScreenTracking:v4];
-  [(CPAnalyticsScreenManager *)self _updateTabTracking:v4];
+  eventCopy = event;
+  [(CPAnalyticsScreenManager *)self _updateAppLifeCycle:eventCopy];
+  [(CPAnalyticsScreenManager *)self _updateScreenTracking:eventCopy];
+  [(CPAnalyticsScreenManager *)self _updateTabTracking:eventCopy];
 }
 
-- (void)updateWithConfig:(id)a3
+- (void)updateWithConfig:(id)config
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"trackViews"];
+  configCopy = config;
+  v5 = [configCopy objectForKeyedSubscript:@"trackViews"];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [v4 objectForKeyedSubscript:@"trackViews"];
-    v8 = [(CPAnalyticsScreenManager *)self namesOfViewsToIgnore];
-    v9 = [v8 copy];
+    v7 = [configCopy objectForKeyedSubscript:@"trackViews"];
+    namesOfViewsToIgnore = [(CPAnalyticsScreenManager *)self namesOfViewsToIgnore];
+    v9 = [namesOfViewsToIgnore copy];
 
     v40 = 0u;
     v41 = 0u;
@@ -583,21 +583,21 @@ LABEL_9:
     }
 
     namesOfViewsToTrack = self->_namesOfViewsToTrack;
-    v17 = [v4 objectForKeyedSubscript:@"trackViews"];
+    v17 = [configCopy objectForKeyedSubscript:@"trackViews"];
     v18 = [(NSSet *)namesOfViewsToTrack setByAddingObjectsFromArray:v17];
     v19 = self->_namesOfViewsToTrack;
     self->_namesOfViewsToTrack = v18;
   }
 
-  v20 = [v4 objectForKeyedSubscript:@"ignoreViews"];
+  v20 = [configCopy objectForKeyedSubscript:@"ignoreViews"];
   objc_opt_class();
   v21 = objc_opt_isKindOfClass();
 
   if (v21)
   {
-    v22 = [v4 objectForKeyedSubscript:@"ignoreViews"];
-    v23 = [(CPAnalyticsScreenManager *)self namesOfViewsToTrack];
-    v9 = [v23 copy];
+    v22 = [configCopy objectForKeyedSubscript:@"ignoreViews"];
+    namesOfViewsToTrack = [(CPAnalyticsScreenManager *)self namesOfViewsToTrack];
+    v9 = [namesOfViewsToTrack copy];
 
     v36 = 0u;
     v37 = 0u;
@@ -645,7 +645,7 @@ LABEL_9:
     }
 
     namesOfViewsToIgnore = self->_namesOfViewsToIgnore;
-    v10 = [v4 objectForKeyedSubscript:@"ignoreViews"];
+    v10 = [configCopy objectForKeyedSubscript:@"ignoreViews"];
     v31 = [(NSSet *)namesOfViewsToIgnore setByAddingObjectsFromArray:v10];
     p_super = &self->_namesOfViewsToIgnore->super;
     self->_namesOfViewsToIgnore = v31;
@@ -655,10 +655,10 @@ LABEL_27:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (CPAnalyticsScreenManager)initWithConfig:(id)a3 cpAnalyticsInstance:(id)a4
+- (CPAnalyticsScreenManager)initWithConfig:(id)config cpAnalyticsInstance:(id)instance
 {
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  instanceCopy = instance;
   v15.receiver = self;
   v15.super_class = CPAnalyticsScreenManager;
   v8 = [(CPAnalyticsScreenManager *)&v15 init];
@@ -672,27 +672,27 @@ LABEL_27:
     namesOfViewsToIgnore = v8->_namesOfViewsToIgnore;
     v8->_namesOfViewsToIgnore = v11;
 
-    v13 = [v7 systemProperties];
-    [(CPAnalyticsScreenManager *)v8 registerSystemProperties:v13];
+    systemProperties = [instanceCopy systemProperties];
+    [(CPAnalyticsScreenManager *)v8 registerSystemProperties:systemProperties];
 
-    [(CPAnalyticsScreenManager *)v8 _initializeScreenViewTrackers:v6];
-    [(CPAnalyticsScreenManager *)v8 setCpAnalyticsInstance:v7];
+    [(CPAnalyticsScreenManager *)v8 _initializeScreenViewTrackers:configCopy];
+    [(CPAnalyticsScreenManager *)v8 setCpAnalyticsInstance:instanceCopy];
     [(CPAnalyticsScreenManager *)v8 setCurrentTabIdentifierDescription:@"NoScreenName"];
   }
 
   return v8;
 }
 
-+ (BOOL)_isValidTabIdentifierChangedEvent:(id)a3
++ (BOOL)_isValidTabIdentifierChangedEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 name];
-  v5 = [@"com.apple.photos.CPAnalytics.tabIdentifierChanged" isEqualToString:v4];
+  eventCopy = event;
+  name = [eventCopy name];
+  v5 = [@"com.apple.photos.CPAnalytics.tabIdentifierChanged" isEqualToString:name];
 
   if (v5)
   {
-    v6 = [v3 propertyForKey:@"tabIdentifierDescription"];
+    v6 = [eventCopy propertyForKey:@"tabIdentifierDescription"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     if ((isKindOfClass & 1) == 0)
@@ -700,11 +700,11 @@ LABEL_27:
       v8 = CPAnalyticsLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v11 = [v3 name];
+        name2 = [eventCopy name];
         v12 = 138412546;
         v13 = v6;
         v14 = 2112;
-        v15 = v11;
+        v15 = name2;
         _os_log_debug_impl(&dword_24260A000, v8, OS_LOG_TYPE_DEBUG, "Tab identifier description '%@' is not a string for event %@.", &v12, 0x16u);
       }
     }
@@ -719,36 +719,36 @@ LABEL_27:
   return isKindOfClass & 1;
 }
 
-+ (id)viewNameFromCombined:(id)a3
++ (id)viewNameFromCombined:(id)combined
 {
-  v3 = [a3 componentsSeparatedByString:@"//"];
-  v4 = [v3 firstObject];
+  v3 = [combined componentsSeparatedByString:@"//"];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-+ (BOOL)isValidScreenViewEvent:(id)a3
++ (BOOL)isValidScreenViewEvent:(id)event
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 name];
-  if ([@"com.apple.photos.CPAnalytics.viewDidAppear" isEqualToString:v4])
+  eventCopy = event;
+  name = [eventCopy name];
+  if ([@"com.apple.photos.CPAnalytics.viewDidAppear" isEqualToString:name])
   {
 
     goto LABEL_4;
   }
 
-  v5 = [v3 name];
-  v6 = [@"com.apple.photos.CPAnalytics.viewDidDisappear" isEqualToString:v5];
+  name2 = [eventCopy name];
+  v6 = [@"com.apple.photos.CPAnalytics.viewDidDisappear" isEqualToString:name2];
 
   if (v6)
   {
 LABEL_4:
-    v7 = [v3 propertyForKey:@"className"];
+    v7 = [eventCopy propertyForKey:@"className"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v3 propertyForKey:@"viewID"];
+      v8 = [eventCopy propertyForKey:@"viewID"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -758,15 +758,15 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v9 = CPAnalyticsLog();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+      name4 = CPAnalyticsLog();
+      if (os_log_type_enabled(name4, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v3 name];
+        name3 = [eventCopy name];
         v13 = 138412546;
         v14 = v8;
         v15 = 2112;
-        v16 = v12;
-        _os_log_debug_impl(&dword_24260A000, v9, OS_LOG_TYPE_DEBUG, "View ID '%@' is not a number for event %@.", &v13, 0x16u);
+        v16 = name3;
+        _os_log_debug_impl(&dword_24260A000, name4, OS_LOG_TYPE_DEBUG, "View ID '%@' is not a number for event %@.", &v13, 0x16u);
       }
     }
 
@@ -780,11 +780,11 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v9 = [v3 name];
+      name4 = [eventCopy name];
       v13 = 138412546;
       v14 = v7;
       v15 = 2112;
-      v16 = v9;
+      v16 = name4;
       _os_log_debug_impl(&dword_24260A000, v8, OS_LOG_TYPE_DEBUG, "Class name '%@' is not a string for event %@.", &v13, 0x16u);
     }
 
@@ -797,13 +797,13 @@ LABEL_14:
   return v6;
 }
 
-+ (BOOL)isDebugScreenForViewName:(id)a3
++ (BOOL)isDebugScreenForViewName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = 1;
-  if ([v3 rangeOfString:@"debug" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([nameCopy rangeOfString:@"debug" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [v3 hasPrefix:@"PXSettings"];
+    v4 = [nameCopy hasPrefix:@"PXSettings"];
   }
 
   return v4;

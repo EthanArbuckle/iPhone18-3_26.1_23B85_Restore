@@ -1,5 +1,5 @@
 @interface ATXDefaultHomeScreenItemTilerGridSize4
-- (BOOL)_shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:(id)a3;
+- (BOOL)_shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:(id)blueprint;
 - (id)_tilingBlueprint;
 - (id)tiledHomeScreenItems;
 - (void)_tilingBlueprint;
@@ -10,10 +10,10 @@
 - (id)tiledHomeScreenItems
 {
   v3 = objc_opt_new();
-  v4 = [(ATXDefaultHomeScreenItemTilerGridSize4 *)self _tilingBlueprint];
-  if (v4)
+  _tilingBlueprint = [(ATXDefaultHomeScreenItemTilerGridSize4 *)self _tilingBlueprint];
+  if (_tilingBlueprint)
   {
-    v5 = [(ATXDefaultHomeScreenItemTilerGridSize4 *)self _shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:v4];
+    v5 = [(ATXDefaultHomeScreenItemTilerGridSize4 *)self _shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:_tilingBlueprint];
     if (v5)
     {
       v6 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self addFirstPod:v3];
@@ -26,25 +26,25 @@
 
     if ([(ATXDefaultHomeScreenItemTilerPodBuilder *)self targetNumberOfSuggestions])
     {
-      v7 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self targetNumberOfSuggestions];
+      targetNumberOfSuggestions = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self targetNumberOfSuggestions];
     }
 
     else
     {
-      v7 = 7;
+      targetNumberOfSuggestions = 7;
     }
 
     do
     {
-      if ([v3 count] >= v7 && (v6 & 1) == 0)
+      if ([v3 count] >= targetNumberOfSuggestions && (v6 & 1) == 0)
       {
         break;
       }
 
-      v8 = [v4 objectAtIndexedSubscript:{v6 % objc_msgSend(v4, "count")}];
-      v9 = [v8 integerValue];
+      v8 = [_tilingBlueprint objectAtIndexedSubscript:{v6 % objc_msgSend(_tilingBlueprint, "count")}];
+      integerValue = [v8 integerValue];
 
-      v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self addPod:v3 podType:v9 allowAlternatePodTypeAsBackup:v5 podsAdded:v6];
+      v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self addPod:v3 podType:integerValue allowAlternatePodTypeAsBackup:v5 podsAdded:v6];
       v6 += v10;
     }
 
@@ -95,17 +95,17 @@
   return 0;
 }
 
-- (BOOL)_shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:(id)a3
+- (BOOL)_shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:(id)blueprint
 {
-  v3 = a3;
-  if ([v3 isEqualToArray:&unk_1F3E608B8])
+  blueprintCopy = blueprint;
+  if ([blueprintCopy isEqualToArray:&unk_1F3E608B8])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToArray:&unk_1F3E608D0];
+    v4 = [blueprintCopy isEqualToArray:&unk_1F3E608D0];
   }
 
   return v4;
@@ -115,7 +115,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 134217984;
-  v4 = [a1 widgetFamilyMask];
+  widgetFamilyMask = [self widgetFamilyMask];
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "ATXDefaultHomeScreenItemTilerGridSize4: no tiling blueprint for the requested size family: %lu", &v3, 0xCu);
 }
 

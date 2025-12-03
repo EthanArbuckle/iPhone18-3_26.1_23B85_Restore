@@ -1,17 +1,17 @@
 @interface WLSourceDeviceHandshakeParser
-- (BOOL)parseData:(id)a3 modifyingSourceDevice:(id)a4 completion:(id)a5;
-- (id)_parseConnectionFailureReasons:(_xmlNode *)a3;
-- (void)_parseDeviceInfoNode:(_xmlNode *)a3 modifyingSourceDevice:(id)a4;
+- (BOOL)parseData:(id)data modifyingSourceDevice:(id)device completion:(id)completion;
+- (id)_parseConnectionFailureReasons:(_xmlNode *)reasons;
+- (void)_parseDeviceInfoNode:(_xmlNode *)node modifyingSourceDevice:(id)device;
 @end
 
 @implementation WLSourceDeviceHandshakeParser
 
-- (BOOL)parseData:(id)a3 modifyingSourceDevice:(id)a4 completion:(id)a5
+- (BOOL)parseData:(id)data modifyingSourceDevice:(id)device completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  Memory = xmlReadMemory([v7 bytes], objc_msgSend(v7, "length"), 0, 0, 0);
+  dataCopy = data;
+  deviceCopy = device;
+  completionCopy = completion;
+  Memory = xmlReadMemory([dataCopy bytes], objc_msgSend(dataCopy, "length"), 0, 0, 0);
   if (!Memory)
   {
     goto LABEL_15;
@@ -42,13 +42,13 @@ LABEL_15:
           if (Content)
           {
             v17 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:Content];
-            [v8 setApi:v17];
+            [deviceCopy setApi:v17];
           }
         }
 
         else if ([v15 isEqualToString:@"device_info"])
         {
-          [(WLSourceDeviceHandshakeParser *)self _parseDeviceInfoNode:children modifyingSourceDevice:v8];
+          [(WLSourceDeviceHandshakeParser *)self _parseDeviceInfoNode:children modifyingSourceDevice:deviceCopy];
           v14 = 1;
         }
       }
@@ -65,17 +65,17 @@ LABEL_15:
   }
 
   xmlFreeDoc(v11);
-  v9[2](v9, v14 & 1);
+  completionCopy[2](completionCopy, v14 & 1);
   v18 = 1;
 LABEL_18:
 
   return v18;
 }
 
-- (void)_parseDeviceInfoNode:(_xmlNode *)a3 modifyingSourceDevice:(id)a4
+- (void)_parseDeviceInfoNode:(_xmlNode *)node modifyingSourceDevice:(id)device
 {
-  v41 = a4;
-  for (i = a3->children; i; i = i->next)
+  deviceCopy = device;
+  for (i = node->children; i; i = i->next)
   {
     name = i->name;
     if (name)
@@ -85,7 +85,7 @@ LABEL_18:
         Content = xmlNodeGetContent(i);
         if (Content)
         {
-          [v41 setHttpPort:atoi(Content)];
+          [deviceCopy setHttpPort:atoi(Content)];
         }
 
         continue;
@@ -96,7 +96,7 @@ LABEL_18:
         v10 = xmlNodeGetContent(i);
         if (v10)
         {
-          [v41 setSocketPort:atoi(v10)];
+          [deviceCopy setSocketPort:atoi(v10)];
         }
 
         continue;
@@ -108,7 +108,7 @@ LABEL_18:
         if (v11)
         {
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v11];
-          [v41 setName:v8];
+          [deviceCopy setName:v8];
 LABEL_47:
         }
       }
@@ -119,7 +119,7 @@ LABEL_47:
         if (v12)
         {
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v12];
-          [v41 setPersistentIdentifier:v8];
+          [deviceCopy setPersistentIdentifier:v8];
           goto LABEL_47;
         }
       }
@@ -130,7 +130,7 @@ LABEL_47:
         if (v13)
         {
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v13];
-          [v41 setOsAPIVersion:v8];
+          [deviceCopy setOsAPIVersion:v8];
           goto LABEL_47;
         }
       }
@@ -141,7 +141,7 @@ LABEL_47:
         if (v14)
         {
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v14];
-          [v41 setHardwareBrand:v8];
+          [deviceCopy setHardwareBrand:v8];
           goto LABEL_47;
         }
       }
@@ -152,7 +152,7 @@ LABEL_47:
         if (v15)
         {
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v15];
-          [v41 setHardwareModel:v8];
+          [deviceCopy setHardwareModel:v8];
           goto LABEL_47;
         }
       }
@@ -163,7 +163,7 @@ LABEL_47:
         if (v16)
         {
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v16];
-          [v41 setHardwareDesign:v8];
+          [deviceCopy setHardwareDesign:v8];
           goto LABEL_47;
         }
       }
@@ -174,7 +174,7 @@ LABEL_47:
         if (v17)
         {
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v17];
-          [v41 setHardwareMaker:v8];
+          [deviceCopy setHardwareMaker:v8];
           goto LABEL_47;
         }
       }
@@ -185,7 +185,7 @@ LABEL_47:
         {
           if (!strcmp(name, "supports_file_length"))
           {
-            [v41 setSupportsFileLength:1];
+            [deviceCopy setSupportsFileLength:1];
             continue;
           }
 
@@ -200,17 +200,17 @@ LABEL_47:
             v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v19];
             if ([v8 isEqualToString:@"display"])
             {
-              [v41 setCanAddDisplay:1];
+              [deviceCopy setCanAddDisplay:1];
             }
 
             else if ([v8 isEqualToString:@"accessibility"])
             {
-              [v41 setCanAddAccessibility:1];
+              [deviceCopy setCanAddAccessibility:1];
             }
 
             else if ([v8 isEqualToString:@"files"])
             {
-              [v41 setCanAddFiles:1];
+              [deviceCopy setCanAddFiles:1];
             }
           }
 
@@ -223,7 +223,7 @@ LABEL_47:
             }
 
             v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v20];
-            [v41 setClientVersion:v8];
+            [deviceCopy setClientVersion:v8];
           }
 
           else
@@ -234,9 +234,9 @@ LABEL_47:
               if (v21)
               {
                 v22 = [MEMORY[0x277CCABB0] numberWithChar:*v21];
-                v39 = [v22 BOOLValue];
+                bOOLValue = [v22 BOOLValue];
 
-                [v41 setIsSelectingDataTypeInHandshake:v39];
+                [deviceCopy setIsSelectingDataTypeInHandshake:bOOLValue];
               }
 
               continue;
@@ -248,12 +248,12 @@ LABEL_47:
               if (v23)
               {
                 v40 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v23];
-                v24 = [v40 lowercaseString];
-                v38 = [v24 isEqualToString:@"api/2.0"];
+                lowercaseString = [v40 lowercaseString];
+                v38 = [lowercaseString isEqualToString:@"api/2.0"];
 
                 if (v38)
                 {
-                  [v41 setUseMigrationKit:1];
+                  [deviceCopy setUseMigrationKit:1];
                 }
               }
 
@@ -269,7 +269,7 @@ LABEL_47:
               }
 
               v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v25];
-              [v41 setApiLevel:v8];
+              [deviceCopy setApiLevel:v8];
             }
 
             else if (!strcmp(name, "brand"))
@@ -281,7 +281,7 @@ LABEL_47:
               }
 
               v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v26];
-              [v41 setBrand:v8];
+              [deviceCopy setBrand:v8];
             }
 
             else if (!strcmp(name, "locale"))
@@ -293,7 +293,7 @@ LABEL_47:
               }
 
               v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v27];
-              [v41 setLocale:v8];
+              [deviceCopy setLocale:v8];
             }
 
             else if (!strcmp(name, "model"))
@@ -305,7 +305,7 @@ LABEL_47:
               }
 
               v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v28];
-              [v41 setModel:v8];
+              [deviceCopy setModel:v8];
             }
 
             else if (!strcmp(name, "os_version"))
@@ -317,7 +317,7 @@ LABEL_47:
               }
 
               v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v29];
-              [v41 setOsVersion:v8];
+              [deviceCopy setOsVersion:v8];
             }
 
             else if (!strcmp(name, "version"))
@@ -329,7 +329,7 @@ LABEL_47:
               }
 
               v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v30];
-              [v41 setVersion:v8];
+              [deviceCopy setVersion:v8];
             }
 
             else
@@ -346,7 +346,7 @@ LABEL_47:
               }
 
               v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v7];
-              [v41 setVersionCode:v8];
+              [deviceCopy setVersionCode:v8];
             }
           }
 
@@ -357,43 +357,43 @@ LABEL_47:
         if (v18)
         {
           v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:v18];
-          [v41 setHardwareProduct:v8];
+          [deviceCopy setHardwareProduct:v8];
           goto LABEL_47;
         }
       }
     }
   }
 
-  v31 = [v41 persistentIdentifier];
-  v32 = [v31 length];
+  persistentIdentifier = [deviceCopy persistentIdentifier];
+  v32 = [persistentIdentifier length];
 
   if (!v32)
   {
     if ([MEMORY[0x277D7B890] isInternal])
     {
       v33 = MEMORY[0x277CCACA8];
-      v34 = [v41 ipAddress];
-      v35 = [v41 name];
-      v36 = [v33 stringWithFormat:@"%@.%@", v34, v35];
-      [v41 setPersistentIdentifier:v36];
+      ipAddress = [deviceCopy ipAddress];
+      name = [deviceCopy name];
+      v36 = [v33 stringWithFormat:@"%@.%@", ipAddress, name];
+      [deviceCopy setPersistentIdentifier:v36];
     }
 
     else
     {
-      v34 = [MEMORY[0x277CCAD78] UUID];
-      v35 = [v34 UUIDString];
-      [v41 setPersistentIdentifier:v35];
+      ipAddress = [MEMORY[0x277CCAD78] UUID];
+      name = [ipAddress UUIDString];
+      [deviceCopy setPersistentIdentifier:name];
     }
 
-    v37 = [v41 persistentIdentifier];
+    persistentIdentifier2 = [deviceCopy persistentIdentifier];
     _WLLog();
   }
 }
 
-- (id)_parseConnectionFailureReasons:(_xmlNode *)a3
+- (id)_parseConnectionFailureReasons:(_xmlNode *)reasons
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  for (i = a3->children; i; i = i->next)
+  for (i = reasons->children; i; i = i->next)
   {
     name = i->name;
     if (name)

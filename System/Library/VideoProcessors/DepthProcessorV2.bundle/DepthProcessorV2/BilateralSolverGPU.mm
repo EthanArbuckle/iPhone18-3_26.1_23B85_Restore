@@ -1,34 +1,34 @@
 @interface BilateralSolverGPU
-- (BilateralSolverGPU)initWithWidth:(unsigned int)a3 height:(unsigned int)a4 maxVertices:(unint64_t)a5 metalContext:(id)a6;
-- (int)_doBistochastizeWithCommandBuffer:(id)a3 t_tex:(id)a4 c_tex:(id)a5 nIterations:(int)a6;
-- (int)_doPCGWithCommandBuffer:(id)a3 nIterations:(int)a4;
-- (int)_doSliceTrilinearWithCommandBuffer:(id)a3 ref_tex:(id)a4 o_tex:(id)a5;
-- (int)_doSliceWithCommandBuffer:(id)a3 o_tex:(id)a4;
-- (void)_prepareResources:(id)a3;
+- (BilateralSolverGPU)initWithWidth:(unsigned int)width height:(unsigned int)height maxVertices:(unint64_t)vertices metalContext:(id)context;
+- (int)_doBistochastizeWithCommandBuffer:(id)buffer t_tex:(id)t_tex c_tex:(id)c_tex nIterations:(int)iterations;
+- (int)_doPCGWithCommandBuffer:(id)buffer nIterations:(int)iterations;
+- (int)_doSliceTrilinearWithCommandBuffer:(id)buffer ref_tex:(id)ref_tex o_tex:(id)o_tex;
+- (int)_doSliceWithCommandBuffer:(id)buffer o_tex:(id)o_tex;
+- (void)_prepareResources:(id)resources;
 - (void)_setupBuffer;
 - (void)_setupPipelines;
 @end
 
 @implementation BilateralSolverGPU
 
-- (BilateralSolverGPU)initWithWidth:(unsigned int)a3 height:(unsigned int)a4 maxVertices:(unint64_t)a5 metalContext:(id)a6
+- (BilateralSolverGPU)initWithWidth:(unsigned int)width height:(unsigned int)height maxVertices:(unint64_t)vertices metalContext:(id)context
 {
-  v11 = a6;
-  if (!v11)
+  contextCopy = context;
+  if (!contextCopy)
   {
     sub_29573DB24();
 LABEL_11:
-    v24 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!width)
   {
     sub_29573DAAC();
     goto LABEL_11;
   }
 
-  if (!a4)
+  if (!height)
   {
     sub_29573DA34();
     goto LABEL_11;
@@ -41,19 +41,19 @@ LABEL_11:
   if (v12)
   {
     v12->_useTrilinearInterpolation = 1;
-    v12->_width = a3;
-    v12->_height = a4;
-    v12->_maxVertices = a5;
-    objc_storeStrong(&v12->_metalContext, a6);
+    v12->_width = width;
+    v12->_height = height;
+    v12->_maxVertices = vertices;
+    objc_storeStrong(&v12->_metalContext, context);
     objc_msgSend__setupPipelines(v13, v14, v15, v16, v17, v18);
     objc_msgSend__setupBuffer(v13, v19, v20, v21, v22, v23);
   }
 
   self = v13;
-  v24 = self;
+  selfCopy = self;
 LABEL_7:
 
-  return v24;
+  return selfCopy;
 }
 
 - (void)_setupPipelines
@@ -139,25 +139,25 @@ LABEL_7:
   while ((v74 & 1) != 0);
 }
 
-- (void)_prepareResources:(id)a3
+- (void)_prepareResources:(id)resources
 {
-  v4 = a3;
-  v10 = objc_msgSend_hashTableSize(v4, v5, v6, v7, v8, v9);
+  resourcesCopy = resources;
+  v10 = objc_msgSend_hashTableSize(resourcesCopy, v5, v6, v7, v8, v9);
   width = self->_width;
   height = self->_height;
   self->_threadGroupInfo.dispatchThreadgroups.width = (v10 + 127) >> 7;
   *&self->_threadGroupInfo.dispatchThreadgroups.height = vdupq_n_s64(1uLL);
   *&self->_threadGroupInfo.threadsPerThreadgroup.width = xmmword_2957431C0;
   self->_threadGroupInfo.threadsPerThreadgroup.depth = 1;
-  v17 = objc_msgSend_hash_table(v4, v12, v13, v14, v15, v16);
+  v17 = objc_msgSend_hash_table(resourcesCopy, v12, v13, v14, v15, v16);
   v18 = *(v17 + 24 * (v10 - 1) + 20);
-  v24 = objc_msgSend_blur_table(v4, v19, v20, v21, v22, v23);
-  v30 = objc_msgSend_coord_indices(v4, v25, v26, v27, v28, v29);
-  v131 = objc_msgSend_coord_table(v4, v31, v32, v33, v34, v35);
-  v132 = objc_msgSend_hash_matrix(v4, v36, v37, v38, v39, v40);
-  v46 = objc_msgSend_interp_indices(v4, v41, v42, v43, v44, v45);
-  v134 = objc_msgSend_interp_table(v4, v47, v48, v49, v50, v51);
-  v135 = objc_msgSend_interp_pad(v4, v52, v53, v54, v55, v56);
+  v24 = objc_msgSend_blur_table(resourcesCopy, v19, v20, v21, v22, v23);
+  v30 = objc_msgSend_coord_indices(resourcesCopy, v25, v26, v27, v28, v29);
+  v131 = objc_msgSend_coord_table(resourcesCopy, v31, v32, v33, v34, v35);
+  v132 = objc_msgSend_hash_matrix(resourcesCopy, v36, v37, v38, v39, v40);
+  v46 = objc_msgSend_interp_indices(resourcesCopy, v41, v42, v43, v44, v45);
+  v134 = objc_msgSend_interp_table(resourcesCopy, v47, v48, v49, v50, v51);
+  v135 = objc_msgSend_interp_pad(resourcesCopy, v52, v53, v54, v55, v56);
 
   v57 = *(v46 + 4 * v10);
   v63 = objc_msgSend_device(self->_metalContext, v58, v59, v60, v61, v62);
@@ -203,13 +203,13 @@ LABEL_7:
   self->_gridInterpPadBuffer = v129;
 }
 
-- (int)_doBistochastizeWithCommandBuffer:(id)a3 t_tex:(id)a4 c_tex:(id)a5 nIterations:(int)a6
+- (int)_doBistochastizeWithCommandBuffer:(id)buffer t_tex:(id)t_tex c_tex:(id)c_tex nIterations:(int)iterations
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  bufferCopy = buffer;
+  t_texCopy = t_tex;
+  c_texCopy = c_tex;
   *&self->_idxDnBufIn = 0;
-  v18 = objc_msgSend_computeCommandEncoder(v10, v13, v14, v15, v16, v17);
+  v18 = objc_msgSend_computeCommandEncoder(bufferCopy, v13, v14, v15, v16, v17);
   objc_msgSend_setComputePipelineState_(v18, v19, self->_computePipelines[0], v20, v21, v22);
   objc_msgSend_setBuffer_offset_atIndex_(v18, v23, self->_gridHashBuffer, 0, 0, v24);
   objc_msgSend_setBuffer_offset_atIndex_(v18, v25, self->_gridBlurBuffer, 0, 1, v26);
@@ -222,12 +222,12 @@ LABEL_7:
   objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v18, v32, &v108, &threadsPerThreadgroup, v33, v34);
   objc_msgSend_endEncoding(v18, v35, v36, v37, v38, v39);
 
-  if (a6 >= 2)
+  if (iterations >= 2)
   {
-    v45 = a6 - 1;
+    v45 = iterations - 1;
     do
     {
-      v46 = objc_msgSend_computeCommandEncoder(v10, v40, v41, v42, v43, v44);
+      v46 = objc_msgSend_computeCommandEncoder(bufferCopy, v40, v41, v42, v43, v44);
       objc_msgSend_setComputePipelineState_(v46, v47, self->_computePipelines[1], v48, v49, v50);
       objc_msgSend_setBuffer_offset_atIndex_(v46, v51, self->_gridHashBuffer, 0, 0, v52);
       objc_msgSend_setBuffer_offset_atIndex_(v46, v53, self->_gridBlurBuffer, 0, 1, v54);
@@ -247,14 +247,14 @@ LABEL_7:
     while (v45);
   }
 
-  v69 = objc_msgSend_computeCommandEncoder(v10, v40, v41, v42, v43, v44);
+  v69 = objc_msgSend_computeCommandEncoder(bufferCopy, v40, v41, v42, v43, v44);
   objc_msgSend_setComputePipelineState_(v69, v70, self->_computePipelines[2], v71, v72, v73);
   objc_msgSend_setBuffer_offset_atIndex_(v69, v74, self->_gridHashBuffer, 0, 0, v75);
   objc_msgSend_setBuffer_offset_atIndex_(v69, v76, self->_gridBlurBuffer, 0, 1, v77);
   objc_msgSend_setBuffer_offset_atIndex_(v69, v78, self->_gridCoordIndicesBuffer, 0, 2, v79);
   objc_msgSend_setBuffer_offset_atIndex_(v69, v80, self->_gridCoordTableBuffer, 0, 3, v81);
-  objc_msgSend_setTexture_atIndex_(v69, v82, v11, 0, v83, v84);
-  objc_msgSend_setTexture_atIndex_(v69, v85, v12, 1, v86, v87);
+  objc_msgSend_setTexture_atIndex_(v69, v82, t_texCopy, 0, v83, v84);
+  objc_msgSend_setTexture_atIndex_(v69, v85, c_texCopy, 1, v86, v87);
   objc_msgSend_setBuffer_offset_atIndex_(v69, v88, Dn_buf[self->_idxDnBufIn], 0, 4, v89);
   objc_msgSend_setBuffer_offset_atIndex_(v69, v90, self->_A_buf, 0, 5, v91);
   objc_msgSend_setBuffer_offset_atIndex_(v69, v92, self->_b_buf, 0, 6, v93);
@@ -269,9 +269,9 @@ LABEL_7:
   return 0;
 }
 
-- (int)_doPCGWithCommandBuffer:(id)a3 nIterations:(int)a4
+- (int)_doPCGWithCommandBuffer:(id)buffer nIterations:(int)iterations
 {
-  v6 = a3;
+  bufferCopy = buffer;
   v12 = objc_msgSend_device(self->_metalContext, v7, v8, v9, v10, v11);
   v16 = objc_msgSend_newBufferWithLength_options_(v12, v13, 4, 0, v14, v15);
 
@@ -281,7 +281,7 @@ LABEL_7:
   v31 = objc_msgSend_device(self->_metalContext, v26, v27, v28, v29, v30);
   v35 = objc_msgSend_newBufferWithLength_options_(v31, v32, 1, 0, v33, v34);
 
-  v41 = objc_msgSend_computeCommandEncoder(v6, v36, v37, v38, v39, v40);
+  v41 = objc_msgSend_computeCommandEncoder(bufferCopy, v36, v37, v38, v39, v40);
   objc_msgSend_setComputePipelineState_(v41, v42, self->_computePipelines[3], v43, v44, v45);
   objc_msgSend_setBuffer_offset_atIndex_(v41, v46, self->_gridHashBuffer, 0, 0, v47);
   objc_msgSend_setBuffer_offset_atIndex_(v41, v48, self->_gridBlurBuffer, 0, 1, v49);
@@ -301,7 +301,7 @@ LABEL_7:
   objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v41, v69, &v206, &threadsPerThreadgroup, v70, v71);
   objc_msgSend_endEncoding(v41, v72, v73, v74, v75, v76);
 
-  if (a4 < 1)
+  if (iterations < 1)
   {
     v87 = v16;
   }
@@ -313,11 +313,11 @@ LABEL_7:
     x_buf = self->_x_buf;
     do
     {
-      v204 = a4;
+      iterationsCopy = iterations;
       v83 = objc_msgSend_device(self->_metalContext, v77, v78, v79, v80, v81, Dn_buf);
       v87 = objc_msgSend_newBufferWithLength_options_(v83, v84, 4, 0, v85, v86);
 
-      v93 = objc_msgSend_computeCommandEncoder(v6, v88, v89, v90, v91, v92);
+      v93 = objc_msgSend_computeCommandEncoder(bufferCopy, v88, v89, v90, v91, v92);
       objc_msgSend_setComputePipelineState_(v93, v94, self->_computePipelines[4], v95, v96, v97);
       objc_msgSend_setBuffer_offset_atIndex_(v93, v98, self->_gridHashBuffer, 0, 0, v99);
       objc_msgSend_setBuffer_offset_atIndex_(v93, v100, self->_gridBlurBuffer, 0, 1, v101);
@@ -334,7 +334,7 @@ LABEL_7:
       objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v93, v116, &v206, &threadsPerThreadgroup, v117, v118);
       objc_msgSend_endEncoding(v93, v119, v120, v121, v122, v123);
 
-      v129 = objc_msgSend_computeCommandEncoder(v6, v124, v125, v126, v127, v128);
+      v129 = objc_msgSend_computeCommandEncoder(bufferCopy, v124, v125, v126, v127, v128);
       objc_msgSend_setComputePipelineState_(v129, v130, self->_computePipelines[5], v131, v132, v133);
       objc_msgSend_setBuffer_offset_atIndex_(v129, v134, self->_A_buf, 0, 0, v135);
       objc_msgSend_setBuffer_offset_atIndex_(v129, v136, x_buf[self->_idxSwapBufIn], 0, 1, v137);
@@ -355,7 +355,7 @@ LABEL_7:
       objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v129, v160, &v206, &threadsPerThreadgroup, v161, v162);
       objc_msgSend_endEncoding(v129, v163, v164, v165, v166, v167);
 
-      v173 = objc_msgSend_computeCommandEncoder(v6, v168, v169, v170, v171, v172);
+      v173 = objc_msgSend_computeCommandEncoder(bufferCopy, v168, v169, v170, v171, v172);
       objc_msgSend_setComputePipelineState_(v173, v174, self->_computePipelines[6], v175, v176, v177);
       objc_msgSend_setBuffer_offset_atIndex_(v173, v178, self->_s_buf, 0, 0, v179);
       objc_msgSend_setBuffer_offset_atIndex_(v173, v180, d_buf[self->_idxSwapBufIn], 0, 1, v181);
@@ -372,30 +372,30 @@ LABEL_7:
 
       self->_idxSwapBufIn ^= 1u;
       v16 = v87;
-      --a4;
+      --iterations;
     }
 
-    while (v204 != 1);
+    while (iterationsCopy != 1);
   }
 
   return 0;
 }
 
-- (int)_doSliceWithCommandBuffer:(id)a3 o_tex:(id)a4
+- (int)_doSliceWithCommandBuffer:(id)buffer o_tex:(id)o_tex
 {
   width = self->_width;
   height = self->_height;
   v8 = self->_computePipelines[7];
-  v9 = a4;
-  v10 = a3;
+  o_texCopy = o_tex;
+  bufferCopy = buffer;
   LODWORD(v8) = objc_msgSend_threadExecutionWidth(v8, v11, v12, v13, v14, v15);
   v21 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[7], v16, v17, v18, v19, v20) / v8;
-  v27 = objc_msgSend_computeCommandEncoder(v10, v22, v23, v24, v25, v26);
+  v27 = objc_msgSend_computeCommandEncoder(bufferCopy, v22, v23, v24, v25, v26);
 
   objc_msgSend_setComputePipelineState_(v27, v28, self->_computePipelines[7], v29, v30, v31);
   objc_msgSend_setTexture_atIndex_(v27, v32, self->_gridHashMatrix, 0, v33, v34);
   objc_msgSend_setBuffer_offset_atIndex_(v27, v35, self->_x_buf[self->_idxSwapBufIn], 0, 0, v36);
-  objc_msgSend_setTexture_atIndex_(v27, v37, v9, 1, v38, v39);
+  objc_msgSend_setTexture_atIndex_(v27, v37, o_texCopy, 1, v38, v39);
 
   v50[0] = (width + v8 - 1) / v8;
   v50[1] = (height + v21 - 1) / v21;
@@ -409,17 +409,17 @@ LABEL_7:
   return 0;
 }
 
-- (int)_doSliceTrilinearWithCommandBuffer:(id)a3 ref_tex:(id)a4 o_tex:(id)a5
+- (int)_doSliceTrilinearWithCommandBuffer:(id)buffer ref_tex:(id)ref_tex o_tex:(id)o_tex
 {
   width = self->_width;
   height = self->_height;
   v10 = self->_computePipelines[8];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  LODWORD(a3) = objc_msgSend_threadExecutionWidth(v10, v14, v15, v16, v17, v18);
-  v24 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[8], v19, v20, v21, v22, v23) / a3;
-  v30 = objc_msgSend_computeCommandEncoder(v13, v25, v26, v27, v28, v29);
+  o_texCopy = o_tex;
+  ref_texCopy = ref_tex;
+  bufferCopy = buffer;
+  LODWORD(buffer) = objc_msgSend_threadExecutionWidth(v10, v14, v15, v16, v17, v18);
+  v24 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->_computePipelines[8], v19, v20, v21, v22, v23) / buffer;
+  v30 = objc_msgSend_computeCommandEncoder(bufferCopy, v25, v26, v27, v28, v29);
 
   objc_msgSend_setComputePipelineState_(v30, v31, self->_computePipelines[8], v32, v33, v34);
   objc_msgSend_setTexture_atIndex_(v30, v35, self->_gridHashMatrix, 0, v36, v37);
@@ -427,14 +427,14 @@ LABEL_7:
   objc_msgSend_setBuffer_offset_atIndex_(v30, v40, self->_gridInterpTableBuffer, 0, 1, v41);
   objc_msgSend_setBuffer_offset_atIndex_(v30, v42, self->_gridInterpPadBuffer, 0, 2, v43);
   objc_msgSend_setBuffer_offset_atIndex_(v30, v44, self->_x_buf[self->_idxSwapBufIn], 0, 3, v45);
-  objc_msgSend_setTexture_atIndex_(v30, v46, v12, 1, v47, v48);
+  objc_msgSend_setTexture_atIndex_(v30, v46, ref_texCopy, 1, v47, v48);
 
-  objc_msgSend_setTexture_atIndex_(v30, v49, v11, 2, v50, v51);
+  objc_msgSend_setTexture_atIndex_(v30, v49, o_texCopy, 2, v50, v51);
   objc_msgSend_setBytes_length_atIndex_(v30, v52, &self->_params, 20, 4, v53);
-  v64[0] = (a3 + (width >> 1) - 1) / a3;
+  v64[0] = (buffer + (width >> 1) - 1) / buffer;
   v64[1] = (v24 + (height >> 1) - 1) / v24;
   v64[2] = 1;
-  v63[0] = a3;
+  v63[0] = buffer;
   v63[1] = v24;
   v63[2] = 1;
   objc_msgSend_dispatchThreadgroups_threadsPerThreadgroup_(v30, v54, v64, v63, v55, v56);

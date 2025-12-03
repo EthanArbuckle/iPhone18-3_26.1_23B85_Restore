@@ -1,10 +1,10 @@
 @interface TSPWrittenComponentMetadataDictionary
 - (TSPWrittenComponentMetadataDictionary)init;
-- (TSPWrittenComponentMetadataDictionary)initWithCapacity:(unint64_t)a3;
-- (id)metadataForComponentIdentifier:(int64_t)a3;
+- (TSPWrittenComponentMetadataDictionary)initWithCapacity:(unint64_t)capacity;
+- (id)metadataForComponentIdentifier:(int64_t)identifier;
 - (void)dealloc;
-- (void)enumerateMetadataUsingBlock:(id)a3;
-- (void)setMetadata:(id)a3 forComponentIdentifier:(int64_t)a4;
+- (void)enumerateMetadataUsingBlock:(id)block;
+- (void)setMetadata:(id)metadata forComponentIdentifier:(int64_t)identifier;
 @end
 
 @implementation TSPWrittenComponentMetadataDictionary
@@ -21,7 +21,7 @@
   return 0;
 }
 
-- (TSPWrittenComponentMetadataDictionary)initWithCapacity:(unint64_t)a3
+- (TSPWrittenComponentMetadataDictionary)initWithCapacity:(unint64_t)capacity
 {
   v4.receiver = self;
   v4.super_class = TSPWrittenComponentMetadataDictionary;
@@ -47,17 +47,17 @@
   [(TSPWrittenComponentMetadataDictionary *)&v5 dealloc];
 }
 
-- (void)setMetadata:(id)a3 forComponentIdentifier:(int64_t)a4
+- (void)setMetadata:(id)metadata forComponentIdentifier:(int64_t)identifier
 {
-  a3;
+  metadata;
   map = self->_map;
   sub_2769DB7AC();
 }
 
-- (id)metadataForComponentIdentifier:(int64_t)a3
+- (id)metadataForComponentIdentifier:(int64_t)identifier
 {
-  v5 = a3;
-  v3 = sub_2769ABC64(self->_map, &v5);
+  identifierCopy = identifier;
+  v3 = sub_2769ABC64(self->_map, &identifierCopy);
   if (v3)
   {
     v3 = v3[3];
@@ -66,10 +66,10 @@
   return v3;
 }
 
-- (void)enumerateMetadataUsingBlock:(id)a3
+- (void)enumerateMetadataUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v6 = 0;
     v5 = self->_map + 16;
@@ -81,7 +81,7 @@
         break;
       }
 
-      (*(v4 + 2))(v4, v5[2], v5[3], &v6);
+      (*(blockCopy + 2))(blockCopy, v5[2], v5[3], &v6);
     }
 
     while ((v6 & 1) == 0);

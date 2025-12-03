@@ -1,6 +1,6 @@
 @interface TSCH3DGetSelectionKnobsPositionsRenderProcessor
 - (tmat4x4<float>)modelViewNormalizedProjection;
-- (void)submit:(id)a3;
+- (void)submit:(id)submit;
 @end
 
 @implementation TSCH3DGetSelectionKnobsPositionsRenderProcessor
@@ -34,10 +34,10 @@
   return result;
 }
 
-- (void)submit:(id)a3
+- (void)submit:(id)submit
 {
   v145 = *MEMORY[0x277D85DE8];
-  v123 = a3;
+  submitCopy = submit;
   v8 = objc_msgSend_sceneObjectDelegate(self, v4, v5, v6, v7);
   v13 = objc_msgSend_geometry(v8, v9, v10, v11, v12);
 

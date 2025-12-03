@@ -1,5 +1,5 @@
 @interface PKPaletteController
-- (BOOL)_shouldOverridePaletteViewTraitCollectionTo:(id)a3;
+- (BOOL)_shouldOverridePaletteViewTraitCollectionTo:(id)to;
 - (BOOL)_shouldPaletteUseCompactHorizontalSizeClass;
 - (BOOL)isPaletteVisible;
 - (CGRect)adjustedWindowSceneBounds;
@@ -9,11 +9,11 @@
 - (int64_t)_adjustedUserInterfaceSizeClass;
 - (int64_t)palettePosition;
 - (void)_handleKeyboard;
-- (void)_handleMoreButton:(id)a3;
+- (void)_handleMoreButton:(id)button;
 - (void)_handleRedo;
-- (void)_handleTextInputReturnKeyStateChanged:(id)a3;
+- (void)_handleTextInputReturnKeyStateChanged:(id)changed;
 - (void)_handleUndo;
-- (void)_presentMoreOptionsPopoverFromButton:(id)a3;
+- (void)_presentMoreOptionsPopoverFromButton:(id)button;
 - (void)_updatePaletteUI;
 - (void)_updatePaletteViewTraitCollection;
 - (void)_updatePaletteWithApplicationSpecificItems;
@@ -22,15 +22,15 @@
 - (void)_updateTrailingBarButtons;
 - (void)_updateUndoRedoEnabledState;
 - (void)dealloc;
-- (void)floatingKeyboardControllerWillHide:(id)a3;
-- (void)floatingKeyboardControllerWillShow:(id)a3;
-- (void)installInView:(id)a3;
-- (void)moreOptionsViewControllerDidSelectOpenPencilSettings:(id)a3;
-- (void)moreOptionsViewControllerDidSelectTapToRadar:(id)a3;
-- (void)moreOptionsViewControllerDidToggleAutoHide:(id)a3;
-- (void)setAdjustedWindowSceneBounds:(CGRect)a3;
-- (void)setFirstResponder:(id)a3;
-- (void)setPaletteVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)floatingKeyboardControllerWillHide:(id)hide;
+- (void)floatingKeyboardControllerWillShow:(id)show;
+- (void)installInView:(id)view;
+- (void)moreOptionsViewControllerDidSelectOpenPencilSettings:(id)settings;
+- (void)moreOptionsViewControllerDidSelectTapToRadar:(id)radar;
+- (void)moreOptionsViewControllerDidToggleAutoHide:(id)hide;
+- (void)setAdjustedWindowSceneBounds:(CGRect)bounds;
+- (void)setFirstResponder:(id)responder;
+- (void)setPaletteVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion;
 - (void)tearDown;
 @end
 
@@ -44,10 +44,10 @@
   v2 = [(PKPaletteController *)&v25 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__handleTextInputResponderCapabilitiesChanged_ name:*MEMORY[0x1E69DE6D8] object:0];
-    [v3 addObserver:v2 selector:sel__handleTextInputReturnKeyStateChanged_ name:*MEMORY[0x1E69DE6F0] object:0];
-    [v3 addObserver:v2 selector:sel__recognitionLocaleIdentifierDidChange_ name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleTextInputResponderCapabilitiesChanged_ name:*MEMORY[0x1E69DE6D8] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleTextInputReturnKeyStateChanged_ name:*MEMORY[0x1E69DE6F0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__recognitionLocaleIdentifierDidChange_ name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
     v4 = objc_alloc_init(PKPaletteFloatingKeyboardController);
     v5 = *(v2 + 14);
     *(v2 + 14) = v4;
@@ -57,8 +57,8 @@
     v7 = *(v2 + 15);
     *(v2 + 15) = v6;
 
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v8 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     *(v2 + 16) = v9;
     *(v2 + 17) = v10;
     *(v2 + 18) = v11;
@@ -68,8 +68,8 @@
     v14 = *(v2 + 11);
     *(v2 + 11) = v13;
 
-    v15 = [(PKPaletteFloatingKeyboardController *)*(v2 + 14) keyboardSelectionMenu];
-    [*(v2 + 11) setKeyboardSelectionMenu:v15];
+    keyboardSelectionMenu = [(PKPaletteFloatingKeyboardController *)*(v2 + 14) keyboardSelectionMenu];
+    [*(v2 + 11) setKeyboardSelectionMenu:keyboardSelectionMenu];
 
     [*(v2 + 11) addTarget:v2 action:sel__handleKeyboard forControlEvents:64];
     v16 = +[PKPaletteButton returnKeyButton];
@@ -99,30 +99,30 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE6D8] object:0];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DE6F0] object:0];
-  [v3 removeObserver:self name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE6D8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE6F0] object:0];
+  [defaultCenter removeObserver:self name:@"PKTextInputSettingsRecognitionLocaleIdentifierDidChangeNotification" object:0];
 
   v4.receiver = self;
   v4.super_class = PKPaletteController;
   [(PKPaletteController *)&v4 dealloc];
 }
 
-- (void)setAdjustedWindowSceneBounds:(CGRect)a3
+- (void)setAdjustedWindowSceneBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(self->_adjustedWindowSceneBounds, a3))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectEqualToRect(self->_adjustedWindowSceneBounds, bounds))
   {
     self->_adjustedWindowSceneBounds.origin.x = x;
     self->_adjustedWindowSceneBounds.origin.y = y;
     self->_adjustedWindowSceneBounds.size.width = width;
     self->_adjustedWindowSceneBounds.size.height = height;
-    v8 = [(PKPaletteController *)self _paletteView];
-    [v8 paletteHostingWindowSceneDidChangeBounds:self];
+    _paletteView = [(PKPaletteController *)self _paletteView];
+    [_paletteView paletteHostingWindowSceneDidChangeBounds:self];
 
     [(PKPaletteController *)self _updatePaletteUI];
   }
@@ -131,43 +131,43 @@
 - (void)_updatePaletteUI
 {
   v3 = +[PKTextInputSettings sharedSettings];
-  v4 = [v3 recognitionLocaleIdentifier];
-  v5 = [(PKPaletteController *)self _paletteView];
-  [v5 setLocaleIdentifier:v4];
+  recognitionLocaleIdentifier = [v3 recognitionLocaleIdentifier];
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  [_paletteView setLocaleIdentifier:recognitionLocaleIdentifier];
 
   [(PKPaletteController *)self adjustedWindowSceneBounds];
   v7 = v6;
-  v8 = [(PKPaletteController *)self paletteHostViewWidthConstraint];
-  [v8 setConstant:v7];
+  paletteHostViewWidthConstraint = [(PKPaletteController *)self paletteHostViewWidthConstraint];
+  [paletteHostViewWidthConstraint setConstant:v7];
 
   [(PKPaletteController *)self adjustedWindowSceneBounds];
   v10 = v9;
-  v11 = [(PKPaletteController *)self paletteHostViewHeightConstraint];
-  [v11 setConstant:v10];
+  paletteHostViewHeightConstraint = [(PKPaletteController *)self paletteHostViewHeightConstraint];
+  [paletteHostViewHeightConstraint setConstant:v10];
 
   [(PKPaletteController *)self _updatePaletteViewTraitCollection];
 }
 
 - (void)_updatePaletteViewTraitCollection
 {
-  v4 = [(PKPaletteController *)self _adjustedHorizontalSizeClassTraitCollection];
+  _adjustedHorizontalSizeClassTraitCollection = [(PKPaletteController *)self _adjustedHorizontalSizeClassTraitCollection];
   if ([(PKPaletteController *)self _shouldOverridePaletteViewTraitCollectionTo:?])
   {
-    v3 = [(PKPaletteController *)self _hostView];
-    [v3 _setLocalOverrideTraitCollection:v4];
+    _hostView = [(PKPaletteController *)self _hostView];
+    [_hostView _setLocalOverrideTraitCollection:_adjustedHorizontalSizeClassTraitCollection];
   }
 }
 
-- (BOOL)_shouldOverridePaletteViewTraitCollectionTo:(id)a3
+- (BOOL)_shouldOverridePaletteViewTraitCollectionTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PKPaletteController *)self delegate];
+  toCopy = to;
+  delegate = [(PKPaletteController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(PKPaletteController *)self delegate];
-    v8 = [v7 paletteController:self shouldOverridePaletteViewTraitCollectionTo:v4];
+    delegate2 = [(PKPaletteController *)self delegate];
+    v8 = [delegate2 paletteController:self shouldOverridePaletteViewTraitCollectionTo:toCopy];
   }
 
   else
@@ -180,10 +180,10 @@
 
 - (id)_adjustedHorizontalSizeClassTraitCollection
 {
-  v2 = [(PKPaletteController *)self _adjustedUserInterfaceSizeClass];
+  _adjustedUserInterfaceSizeClass = [(PKPaletteController *)self _adjustedUserInterfaceSizeClass];
   v3 = MEMORY[0x1E69DD1B8];
 
-  return [v3 traitCollectionWithHorizontalSizeClass:v2];
+  return [v3 traitCollectionWithHorizontalSizeClass:_adjustedUserInterfaceSizeClass];
 }
 
 - (int64_t)_adjustedUserInterfaceSizeClass
@@ -201,10 +201,10 @@
 
 - (BOOL)_shouldPaletteUseCompactHorizontalSizeClass
 {
-  v3 = [(PKPaletteController *)self _paletteView];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  if (([v5 interfaceOrientation] - 3) >= 2)
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  window = [_paletteView window];
+  windowScene = [window windowScene];
+  if (([windowScene interfaceOrientation] - 3) >= 2)
   {
   }
 
@@ -212,8 +212,8 @@
   {
     [(PKPaletteController *)self adjustedWindowSceneBounds];
     v7 = v6;
-    v8 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v8 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v10 = v9 / 3.0;
 
     if (v7 <= v10)
@@ -222,10 +222,10 @@
     }
   }
 
-  v12 = [(PKPaletteController *)self _paletteView];
-  v13 = [v12 window];
-  v14 = [v13 windowScene];
-  if (([v14 interfaceOrientation] - 1) > 1)
+  _paletteView2 = [(PKPaletteController *)self _paletteView];
+  window2 = [_paletteView2 window];
+  windowScene2 = [window2 windowScene];
+  if (([windowScene2 interfaceOrientation] - 1) > 1)
   {
     v11 = 0;
   }
@@ -234,35 +234,35 @@
   {
     [(PKPaletteController *)self adjustedWindowSceneBounds];
     v16 = v15;
-    v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v17 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
     v11 = v16 < v18;
   }
 
   return v11;
 }
 
-- (void)installInView:(id)a3
+- (void)installInView:(id)view
 {
   location[3] = *MEMORY[0x1E69E9840];
-  v39 = a3;
+  viewCopy = view;
   v4 = os_log_create("com.apple.pencilkit", "PKPalette");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     LODWORD(location[0]) = 138412290;
-    *(location + 4) = v39;
+    *(location + 4) = viewCopy;
     _os_log_debug_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEBUG, "Installing palette UI in view: %@", location, 0xCu);
   }
 
   v5 = objc_alloc_init(PKUCBPaletteView);
   [(PKPaletteController *)self set_paletteView:v5];
 
-  v6 = [v39 window];
-  v7 = [v6 rootViewController];
-  v8 = [v7 childViewControllers];
-  v9 = [v8 firstObject];
-  v10 = [(PKPaletteController *)self _paletteView];
-  [v10 setPalettePopoverPresentingController:v9];
+  window = [viewCopy window];
+  rootViewController = [window rootViewController];
+  childViewControllers = [rootViewController childViewControllers];
+  firstObject = [childViewControllers firstObject];
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  [_paletteView setPalettePopoverPresentingController:firstObject];
 
   objc_initWeak(location, self);
   v40[0] = MEMORY[0x1E69E9820];
@@ -270,44 +270,44 @@
   v40[2] = __37__PKPaletteController_installInView___block_invoke;
   v40[3] = &unk_1E82DAE98;
   objc_copyWeak(&v41, location);
-  v11 = [(PKPaletteController *)self _paletteView];
-  [v11 setReturnKeyHandler:v40];
+  _paletteView2 = [(PKPaletteController *)self _paletteView];
+  [_paletteView2 setReturnKeyHandler:v40];
 
   v12 = [PKPaletteHostView alloc];
-  v13 = [(PKPaletteController *)self _paletteView];
-  v14 = [(PKPaletteHostView *)v12 initWithPaletteView:v13];
+  _paletteView3 = [(PKPaletteController *)self _paletteView];
+  v14 = [(PKPaletteHostView *)v12 initWithPaletteView:_paletteView3];
   [(PKPaletteController *)self set_hostView:v14];
 
-  v15 = [(PKPaletteController *)self _hostView];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  _hostView = [(PKPaletteController *)self _hostView];
+  [_hostView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v16 = [(PKPaletteController *)self _hostView];
-  [v39 addSubview:v16];
+  _hostView2 = [(PKPaletteController *)self _hostView];
+  [viewCopy addSubview:_hostView2];
 
-  v17 = [(PKPaletteController *)self _hostView];
-  v18 = [v17 widthAnchor];
+  _hostView3 = [(PKPaletteController *)self _hostView];
+  widthAnchor = [_hostView3 widthAnchor];
   [(PKPaletteController *)self adjustedWindowSceneBounds];
-  v20 = [v18 constraintEqualToConstant:v19];
+  v20 = [widthAnchor constraintEqualToConstant:v19];
   paletteHostViewWidthConstraint = self->_paletteHostViewWidthConstraint;
   self->_paletteHostViewWidthConstraint = v20;
 
-  v22 = [(PKPaletteController *)self _hostView];
-  v23 = [v22 heightAnchor];
+  _hostView4 = [(PKPaletteController *)self _hostView];
+  heightAnchor = [_hostView4 heightAnchor];
   [(PKPaletteController *)self adjustedWindowSceneBounds];
-  v25 = [v23 constraintEqualToConstant:v24];
+  v25 = [heightAnchor constraintEqualToConstant:v24];
   paletteHostViewHeightConstraint = self->_paletteHostViewHeightConstraint;
   self->_paletteHostViewHeightConstraint = v25;
 
   v38 = MEMORY[0x1E696ACD8];
-  v27 = [(PKPaletteController *)self _hostView];
-  v28 = [v27 topAnchor];
-  v29 = [v39 topAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  _hostView5 = [(PKPaletteController *)self _hostView];
+  topAnchor = [_hostView5 topAnchor];
+  topAnchor2 = [viewCopy topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[0] = v30;
-  v31 = [(PKPaletteController *)self _hostView];
-  v32 = [v31 leftAnchor];
-  v33 = [v39 leftAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  _hostView6 = [(PKPaletteController *)self _hostView];
+  leftAnchor = [_hostView6 leftAnchor];
+  leftAnchor2 = [viewCopy leftAnchor];
+  v34 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v35 = self->_paletteHostViewWidthConstraint;
   v36 = self->_paletteHostViewHeightConstraint;
   v42[1] = v34;
@@ -337,36 +337,36 @@ void __37__PKPaletteController_installInView___block_invoke(uint64_t a1)
     _os_log_debug_impl(&dword_1C7CCA000, v3, OS_LOG_TYPE_DEBUG, "Tearing down palette UI", v6, 2u);
   }
 
-  v4 = [(PKPaletteController *)self floatingKeyboardController];
-  [(PKPaletteFloatingKeyboardController *)v4 dismissWithReason:?];
+  floatingKeyboardController = [(PKPaletteController *)self floatingKeyboardController];
+  [(PKPaletteFloatingKeyboardController *)floatingKeyboardController dismissWithReason:?];
 
-  v5 = [(PKPaletteController *)self _hostView];
-  [v5 removeFromSuperview];
+  _hostView = [(PKPaletteController *)self _hostView];
+  [_hostView removeFromSuperview];
 }
 
 - (BOOL)isPaletteVisible
 {
-  v2 = [(PKPaletteController *)self _hostView];
-  v3 = [v2 isPaletteVisible];
+  _hostView = [(PKPaletteController *)self _hostView];
+  isPaletteVisible = [_hostView isPaletteVisible];
 
-  return v3;
+  return isPaletteVisible;
 }
 
-- (void)setPaletteVisible:(BOOL)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)setPaletteVisible:(BOOL)visible animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [(PKPaletteController *)self isPaletteVisible];
-  v10 = v9 ^ v6;
-  if (v9 && !v6)
+  animatedCopy = animated;
+  visibleCopy = visible;
+  completionCopy = completion;
+  isPaletteVisible = [(PKPaletteController *)self isPaletteVisible];
+  v10 = isPaletteVisible ^ visibleCopy;
+  if (isPaletteVisible && !visibleCopy)
   {
-    v11 = [(PKPaletteController *)self floatingKeyboardController];
-    [(PKPaletteFloatingKeyboardController *)v11 dismissWithReason:?];
+    floatingKeyboardController = [(PKPaletteController *)self floatingKeyboardController];
+    [(PKPaletteFloatingKeyboardController *)floatingKeyboardController dismissWithReason:?];
   }
 
-  v12 = [(PKPaletteController *)self _hostView];
-  [v12 setPaletteVisible:v6 animated:v5 completion:v8];
+  _hostView = [(PKPaletteController *)self _hostView];
+  [_hostView setPaletteVisible:visibleCopy animated:animatedCopy completion:completionCopy];
 
   if (v10)
   {
@@ -377,19 +377,19 @@ void __37__PKPaletteController_installInView___block_invoke(uint64_t a1)
 
 - (int64_t)palettePosition
 {
-  v2 = [(PKPaletteController *)self _paletteView];
-  v3 = [v2 palettePosition];
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  palettePosition = [_paletteView palettePosition];
 
-  return v3;
+  return palettePosition;
 }
 
-- (void)setFirstResponder:(id)a3
+- (void)setFirstResponder:(id)responder
 {
   p_firstResponder = &self->_firstResponder;
-  v6 = a3;
-  if (*p_firstResponder != v6)
+  responderCopy = responder;
+  if (*p_firstResponder != responderCopy)
   {
-    objc_storeStrong(&self->_firstResponder, a3);
+    objc_storeStrong(&self->_firstResponder, responder);
     if (*p_firstResponder)
     {
       [(PKPaletteController *)self _updatePaletteWithApplicationSpecificItems];
@@ -407,22 +407,22 @@ void __37__PKPaletteController_installInView___block_invoke(uint64_t a1)
   v3 = +[PKPaletteButton undoButton];
   [(PKPaletteController *)self setUndoButton:v3];
 
-  v4 = [(PKPaletteController *)self undoButton];
-  [v4 addTarget:self action:sel__handleUndo forControlEvents:64];
+  undoButton = [(PKPaletteController *)self undoButton];
+  [undoButton addTarget:self action:sel__handleUndo forControlEvents:64];
 
   v5 = +[PKPaletteButton redoButton];
   [(PKPaletteController *)self setRedoButton:v5];
 
-  v6 = [(PKPaletteController *)self redoButton];
-  [v6 addTarget:self action:sel__handleRedo forControlEvents:64];
+  redoButton = [(PKPaletteController *)self redoButton];
+  [redoButton addTarget:self action:sel__handleRedo forControlEvents:64];
 
-  v7 = [(PKPaletteController *)self undoButton];
-  v11[0] = v7;
-  v8 = [(PKPaletteController *)self redoButton];
-  v11[1] = v8;
+  undoButton2 = [(PKPaletteController *)self undoButton];
+  v11[0] = undoButton2;
+  redoButton2 = [(PKPaletteController *)self redoButton];
+  v11[1] = redoButton2;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
-  v10 = [(PKPaletteController *)self _paletteView];
-  [v10 setLeadingBarButtons:v9];
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  [_paletteView setLeadingBarButtons:v9];
 
   [(PKPaletteController *)self _updateTrailingBarButtons];
   [(PKPaletteController *)self _updateUndoRedoEnabledState];
@@ -432,75 +432,75 @@ void __37__PKPaletteController_installInView___block_invoke(uint64_t a1)
 {
   if (+[PKPaletteKeyboardUtilities textInputReturnKeyTypeForEditing](PKPaletteKeyboardUtilities, "textInputReturnKeyTypeForEditing") && (+[PKTextInputSettings sharedSettings](PKTextInputSettings, "sharedSettings"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 hideDefaultReturnKeyWhenSpecialReturnKeyIsPresent], v3, v4))
   {
-    v5 = [(PKPaletteController *)self trailingButtonsWithoutReturnKey];
+    trailingButtonsWithoutReturnKey = [(PKPaletteController *)self trailingButtonsWithoutReturnKey];
   }
 
   else
   {
-    v5 = [(PKPaletteController *)self trailingButtonsWithReturnKey];
+    trailingButtonsWithoutReturnKey = [(PKPaletteController *)self trailingButtonsWithReturnKey];
   }
 
-  v7 = v5;
-  v6 = [(PKPaletteController *)self _paletteView];
-  [v6 setTrailingBarButtons:v7];
+  v7 = trailingButtonsWithoutReturnKey;
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  [_paletteView setTrailingBarButtons:v7];
 }
 
 - (void)_updateUndoRedoEnabledState
 {
   v7 = +[PKPaletteKeyboardUtilities textInputUndoManagerForEditing];
-  v3 = [v7 canUndo];
-  v4 = [(PKPaletteController *)self undoButton];
-  [v4 setEnabled:v3];
+  canUndo = [v7 canUndo];
+  undoButton = [(PKPaletteController *)self undoButton];
+  [undoButton setEnabled:canUndo];
 
-  v5 = [v7 canRedo];
-  v6 = [(PKPaletteController *)self redoButton];
-  [v6 setEnabled:v5];
+  canRedo = [v7 canRedo];
+  redoButton = [(PKPaletteController *)self redoButton];
+  [redoButton setEnabled:canRedo];
 }
 
 - (void)_updatePaletteWithApplicationSpecificItems
 {
-  v3 = [(PKPaletteController *)self _paletteView];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v13 = [v5 keyboardSceneDelegate];
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  window = [_paletteView window];
+  windowScene = [window windowScene];
+  keyboardSceneDelegate = [windowScene keyboardSceneDelegate];
 
   if ([(PKPaletteController *)self isPaletteVisible]&& ([(PKPaletteController *)self firstResponder], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    [v13 setShouldSuppressInputAssistantUpdates:1];
-    v7 = [(PKPaletteController *)self firstResponder];
-    v8 = [v7 inputAssistantItem];
-    v9 = [(PKPaletteController *)self inputAssistantButtonProvider];
-    [v9 setInputAssistantItem:v8];
+    [keyboardSceneDelegate setShouldSuppressInputAssistantUpdates:1];
+    firstResponder = [(PKPaletteController *)self firstResponder];
+    inputAssistantItem = [firstResponder inputAssistantItem];
+    inputAssistantButtonProvider = [(PKPaletteController *)self inputAssistantButtonProvider];
+    [inputAssistantButtonProvider setInputAssistantItem:inputAssistantItem];
 
-    v10 = [(PKPaletteController *)self inputAssistantButtonProvider];
-    v11 = [v10 buttonsForCurrentConfiguration];
-    v12 = [(PKPaletteController *)self _paletteView];
-    [v12 setCenteredBarButtons:v11];
+    inputAssistantButtonProvider2 = [(PKPaletteController *)self inputAssistantButtonProvider];
+    buttonsForCurrentConfiguration = [inputAssistantButtonProvider2 buttonsForCurrentConfiguration];
+    _paletteView2 = [(PKPaletteController *)self _paletteView];
+    [_paletteView2 setCenteredBarButtons:buttonsForCurrentConfiguration];
   }
 
   else
   {
-    [v13 setShouldSuppressInputAssistantUpdates:0];
-    v10 = [(PKPaletteController *)self inputAssistantButtonProvider];
-    [v10 setInputAssistantItem:0];
+    [keyboardSceneDelegate setShouldSuppressInputAssistantUpdates:0];
+    inputAssistantButtonProvider2 = [(PKPaletteController *)self inputAssistantButtonProvider];
+    [inputAssistantButtonProvider2 setInputAssistantItem:0];
   }
 }
 
 - (void)_updateReturnKey
 {
   v3 = +[PKPaletteKeyboardUtilities textInputReturnKeyTypeForEditing];
-  v4 = [(PKPaletteController *)self _paletteView];
-  [v4 setReturnKeyType:v3];
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  [_paletteView setReturnKeyType:v3];
 
   v5 = +[PKPaletteKeyboardUtilities isReturnKeyEnabled];
-  v6 = [(PKPaletteController *)self returnKeyButton];
-  [v6 setEnabled:v5];
+  returnKeyButton = [(PKPaletteController *)self returnKeyButton];
+  [returnKeyButton setEnabled:v5];
 
-  v7 = [(PKPaletteController *)self _paletteView];
-  [v7 setReturnKeyEnabled:v5];
+  _paletteView2 = [(PKPaletteController *)self _paletteView];
+  [_paletteView2 setReturnKeyEnabled:v5];
 }
 
-- (void)_handleTextInputReturnKeyStateChanged:(id)a3
+- (void)_handleTextInputReturnKeyStateChanged:(id)changed
 {
   [(PKPaletteController *)self _updateReturnKey];
 
@@ -525,66 +525,66 @@ void __37__PKPaletteController_installInView___block_invoke(uint64_t a1)
 
 - (void)_handleKeyboard
 {
-  v2 = [(PKPaletteController *)self floatingKeyboardController];
-  [(PKPaletteFloatingKeyboardController *)v2 presentOrDismissIfPresented];
+  floatingKeyboardController = [(PKPaletteController *)self floatingKeyboardController];
+  [(PKPaletteFloatingKeyboardController *)floatingKeyboardController presentOrDismissIfPresented];
 }
 
-- (void)_handleMoreButton:(id)a3
+- (void)_handleMoreButton:(id)button
 {
-  v7 = a3;
-  v4 = [(PKPaletteController *)self _paletteView];
-  v5 = [v4 isPalettePresentingPopover];
+  buttonCopy = button;
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  isPalettePresentingPopover = [_paletteView isPalettePresentingPopover];
 
-  if (v5)
+  if (isPalettePresentingPopover)
   {
-    v6 = [(PKPaletteController *)self _paletteView];
-    [v6 dismissPalettePopoverWithCompletion:0];
+    _paletteView2 = [(PKPaletteController *)self _paletteView];
+    [_paletteView2 dismissPalettePopoverWithCompletion:0];
   }
 
   else
   {
-    [(PKPaletteController *)self _presentMoreOptionsPopoverFromButton:v7];
+    [(PKPaletteController *)self _presentMoreOptionsPopoverFromButton:buttonCopy];
   }
 }
 
-- (void)_presentMoreOptionsPopoverFromButton:(id)a3
+- (void)_presentMoreOptionsPopoverFromButton:(id)button
 {
   v41[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  buttonCopy = button;
   v5 = objc_alloc_init(PKPaletteMoreOptionsViewController);
   [(PKPaletteMoreOptionsViewController *)v5 setShouldShowFingerDrawsOption:0];
-  v6 = [(PKPaletteController *)self _hostView];
-  v7 = [v6 traitCollection];
-  v8 = [(PKPaletteController *)self _hostView];
-  v9 = [v8 window];
-  v10 = [v9 windowScene];
-  [(PKPaletteMoreOptionsViewController *)v5 setShouldShowAutoMinimizeOption:!PKUseCompactSize(v7, v10)];
+  _hostView = [(PKPaletteController *)self _hostView];
+  traitCollection = [_hostView traitCollection];
+  _hostView2 = [(PKPaletteController *)self _hostView];
+  window = [_hostView2 window];
+  windowScene = [window windowScene];
+  [(PKPaletteMoreOptionsViewController *)v5 setShouldShowAutoMinimizeOption:!PKUseCompactSize(traitCollection, windowScene)];
 
   [(PKPaletteMoreOptionsViewController *)v5 setShouldShowTapToRadarOption:1];
   v11 = +[PKHandwritingEducationPaneSettings sharedInstance];
   [(PKPaletteMoreOptionsViewController *)v5 setShouldShowResetHandwritingEducationPane:[(PKHandwritingEducationPaneSettings *)v11 canShowResetPaneInPalette]];
 
-  v12 = [MEMORY[0x1E69DC938] currentDevice];
-  -[PKPaletteMoreOptionsViewController setShouldShowOpenPencilSettingsOption:](v5, "setShouldShowOpenPencilSettingsOption:", [v12 _supportsPencil]);
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  -[PKPaletteMoreOptionsViewController setShouldShowOpenPencilSettingsOption:](v5, "setShouldShowOpenPencilSettingsOption:", [currentDevice _supportsPencil]);
 
-  v13 = [(PKPaletteController *)self _paletteView];
-  -[PKPaletteMoreOptionsViewController setAutoHideOn:](v5, "setAutoHideOn:", [v13 isAutoHideEnabled]);
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  -[PKPaletteMoreOptionsViewController setAutoHideOn:](v5, "setAutoHideOn:", [_paletteView isAutoHideEnabled]);
 
   [(PKPaletteMoreOptionsViewController *)v5 setDelegate:self];
   [(PKPaletteMoreOptionsViewController *)v5 setModalPresentationStyle:7];
-  v14 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
-  [v14 setDelegate:self];
+  popoverPresentationController = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
+  [popoverPresentationController setDelegate:self];
 
-  v15 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
-  [v15 _setIgnoresKeyboardNotifications:1];
+  popoverPresentationController2 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
+  [popoverPresentationController2 _setIgnoresKeyboardNotifications:1];
 
-  v16 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
-  [v16 _setShouldDisableInteractionDuringTransitions:0];
+  popoverPresentationController3 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
+  [popoverPresentationController3 _setShouldDisableInteractionDuringTransitions:0];
 
-  v17 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
-  [v17 setSourceView:v4];
+  popoverPresentationController4 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
+  [popoverPresentationController4 setSourceView:buttonCopy];
 
-  [v4 bounds];
+  [buttonCopy bounds];
   v19 = v18;
   v21 = v20;
   v23 = v22;
@@ -599,58 +599,58 @@ void __37__PKPaletteController_installInView___block_invoke(uint64_t a1)
   y = v43.origin.y;
   width = v43.size.width;
   height = v43.size.height;
-  v30 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
-  [v30 setSourceRect:{x, y, width, height}];
+  popoverPresentationController5 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
+  [popoverPresentationController5 setSourceRect:{x, y, width, height}];
 
-  v31 = [(PKPaletteController *)self _paletteView];
-  v32 = [v31 paletteViewHosting];
-  v33 = [v32 hostingView];
-  v41[0] = v33;
+  _paletteView2 = [(PKPaletteController *)self _paletteView];
+  paletteViewHosting = [_paletteView2 paletteViewHosting];
+  hostingView = [paletteViewHosting hostingView];
+  v41[0] = hostingView;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:1];
-  v35 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
-  [v35 setPassthroughViews:v34];
+  popoverPresentationController6 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
+  [popoverPresentationController6 setPassthroughViews:v34];
 
-  v36 = [(PKPaletteController *)self _paletteView];
-  v37 = [v36 palettePopoverPermittedArrowDirections];
-  v38 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
-  [v38 setPermittedArrowDirections:v37];
+  _paletteView3 = [(PKPaletteController *)self _paletteView];
+  palettePopoverPermittedArrowDirections = [_paletteView3 palettePopoverPermittedArrowDirections];
+  popoverPresentationController7 = [(PKPaletteMoreOptionsViewController *)v5 popoverPresentationController];
+  [popoverPresentationController7 setPermittedArrowDirections:palettePopoverPermittedArrowDirections];
 
-  v39 = [(PKPaletteController *)self _paletteView];
-  v40 = [v39 palettePopoverPresentingController];
-  [v40 presentViewController:v5 animated:1 completion:0];
+  _paletteView4 = [(PKPaletteController *)self _paletteView];
+  palettePopoverPresentingController = [_paletteView4 palettePopoverPresentingController];
+  [palettePopoverPresentingController presentViewController:v5 animated:1 completion:0];
 }
 
-- (void)floatingKeyboardControllerWillShow:(id)a3
+- (void)floatingKeyboardControllerWillShow:(id)show
 {
-  v4 = [(PKPaletteController *)self delegate];
-  [v4 paletteControllerFloatingKeyboardWillShow:self];
+  delegate = [(PKPaletteController *)self delegate];
+  [delegate paletteControllerFloatingKeyboardWillShow:self];
 }
 
-- (void)floatingKeyboardControllerWillHide:(id)a3
+- (void)floatingKeyboardControllerWillHide:(id)hide
 {
-  v4 = [(PKPaletteController *)self delegate];
-  [v4 paletteControllerFloatingKeyboardWillHide:self];
+  delegate = [(PKPaletteController *)self delegate];
+  [delegate paletteControllerFloatingKeyboardWillHide:self];
 }
 
-- (void)moreOptionsViewControllerDidToggleAutoHide:(id)a3
+- (void)moreOptionsViewControllerDidToggleAutoHide:(id)hide
 {
-  v4 = a3;
-  v5 = [v4 isAutoHideOn];
-  v6 = [(PKPaletteController *)self _paletteView];
-  [v6 setAutoHideEnabled:v5];
+  hideCopy = hide;
+  isAutoHideOn = [hideCopy isAutoHideOn];
+  _paletteView = [(PKPaletteController *)self _paletteView];
+  [_paletteView setAutoHideEnabled:isAutoHideOn];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __66__PKPaletteController_moreOptionsViewControllerDidToggleAutoHide___block_invoke;
   v11[3] = &unk_1E82D7148;
   v11[4] = self;
-  [v4 dismissViewControllerAnimated:1 completion:v11];
+  [hideCopy dismissViewControllerAnimated:1 completion:v11];
 
   v7 = +[PKStatisticsManager sharedStatisticsManager];
-  v8 = [(PKPaletteController *)self _paletteView];
-  v9 = [v8 isAutoHideEnabled];
-  v10 = [(PKPaletteController *)self _paletteView];
-  -[PKStatisticsManager recordAutoMinimizeEnabledDidChange:type:](v7, v9, [v10 paletteViewType]);
+  _paletteView2 = [(PKPaletteController *)self _paletteView];
+  isAutoHideEnabled = [_paletteView2 isAutoHideEnabled];
+  _paletteView3 = [(PKPaletteController *)self _paletteView];
+  -[PKStatisticsManager recordAutoMinimizeEnabledDidChange:type:](v7, isAutoHideEnabled, [_paletteView3 paletteViewType]);
 }
 
 void __66__PKPaletteController_moreOptionsViewControllerDidToggleAutoHide___block_invoke(uint64_t a1)
@@ -661,14 +661,14 @@ void __66__PKPaletteController_moreOptionsViewControllerDidToggleAutoHide___bloc
   [v2 paletteViewStateDidChangeAutoHide:v3];
 }
 
-- (void)moreOptionsViewControllerDidSelectTapToRadar:(id)a3
+- (void)moreOptionsViewControllerDidSelectTapToRadar:(id)radar
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __68__PKPaletteController_moreOptionsViewControllerDidSelectTapToRadar___block_invoke;
   v3[3] = &unk_1E82D7148;
   v3[4] = self;
-  [a3 dismissViewControllerAnimated:1 completion:v3];
+  [radar dismissViewControllerAnimated:1 completion:v3];
 }
 
 void __68__PKPaletteController_moreOptionsViewControllerDidSelectTapToRadar___block_invoke(uint64_t a1)
@@ -677,14 +677,14 @@ void __68__PKPaletteController_moreOptionsViewControllerDidSelectTapToRadar___bl
   [v1 execute];
 }
 
-- (void)moreOptionsViewControllerDidSelectOpenPencilSettings:(id)a3
+- (void)moreOptionsViewControllerDidSelectOpenPencilSettings:(id)settings
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __76__PKPaletteController_moreOptionsViewControllerDidSelectOpenPencilSettings___block_invoke;
   v3[3] = &unk_1E82D7148;
   v3[4] = self;
-  [a3 dismissViewControllerAnimated:1 completion:v3];
+  [settings dismissViewControllerAnimated:1 completion:v3];
 }
 
 - (CGRect)adjustedWindowSceneBounds

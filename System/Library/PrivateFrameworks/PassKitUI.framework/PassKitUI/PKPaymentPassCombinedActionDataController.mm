@@ -1,36 +1,36 @@
 @interface PKPaymentPassCombinedActionDataController
-- (PKPaymentPassCombinedActionDataController)initWithPass:(id)a3 actionGroups:(id)a4 paymentDataProvider:(id)a5 webService:(id)a6 balanceModel:(id)a7 mode:(unint64_t)a8;
-- (void)combinedActionViewControllerDidCancel:(id)a3;
-- (void)combinedActionViewControllerDidFinish:(id)a3;
-- (void)fetchViewController:(id)a3;
-- (void)remoteGroupActionsViewControllerDidCancel:(id)a3;
-- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)a3;
-- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)a3;
+- (PKPaymentPassCombinedActionDataController)initWithPass:(id)pass actionGroups:(id)groups paymentDataProvider:(id)provider webService:(id)service balanceModel:(id)model mode:(unint64_t)mode;
+- (void)combinedActionViewControllerDidCancel:(id)cancel;
+- (void)combinedActionViewControllerDidFinish:(id)finish;
+- (void)fetchViewController:(id)controller;
+- (void)remoteGroupActionsViewControllerDidCancel:(id)cancel;
+- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)group;
+- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)payment;
 @end
 
 @implementation PKPaymentPassCombinedActionDataController
 
-- (PKPaymentPassCombinedActionDataController)initWithPass:(id)a3 actionGroups:(id)a4 paymentDataProvider:(id)a5 webService:(id)a6 balanceModel:(id)a7 mode:(unint64_t)a8
+- (PKPaymentPassCombinedActionDataController)initWithPass:(id)pass actionGroups:(id)groups paymentDataProvider:(id)provider webService:(id)service balanceModel:(id)model mode:(unint64_t)mode
 {
-  v25 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  passCopy = pass;
+  groupsCopy = groups;
+  providerCopy = provider;
+  serviceCopy = service;
+  modelCopy = model;
   v26.receiver = self;
   v26.super_class = PKPaymentPassCombinedActionDataController;
   v18 = [(PKPaymentPassCombinedActionDataController *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_pass, a3);
-    objc_storeStrong(&v19->_actionGroups, a4);
-    objc_storeStrong(&v19->_paymentDataProvider, a5);
-    objc_storeStrong(&v19->_webService, a6);
-    objc_storeStrong(&v19->_transitBalanceModel, a7);
-    v19->_mode = a8;
-    v20 = [v17 displayableCommutePlanActions];
-    v21 = [v20 pk_objectsPassingTest:&__block_literal_global_110];
+    objc_storeStrong(&v18->_pass, pass);
+    objc_storeStrong(&v19->_actionGroups, groups);
+    objc_storeStrong(&v19->_paymentDataProvider, provider);
+    objc_storeStrong(&v19->_webService, service);
+    objc_storeStrong(&v19->_transitBalanceModel, model);
+    v19->_mode = mode;
+    displayableCommutePlanActions = [modelCopy displayableCommutePlanActions];
+    v21 = [displayableCommutePlanActions pk_objectsPassingTest:&__block_literal_global_110];
     actions = v19->_actions;
     v19->_actions = v21;
   }
@@ -54,9 +54,9 @@ uint64_t __120__PKPaymentPassCombinedActionDataController_initWithPass_actionGro
   return v3;
 }
 
-- (void)fetchViewController:(id)a3
+- (void)fetchViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(NSArray *)self->_actionGroups count];
   v6 = [(NSArray *)self->_actions count];
   mode = self->_mode;
@@ -73,7 +73,7 @@ uint64_t __120__PKPaymentPassCombinedActionDataController_initWithPass_actionGro
       v17[1] = 3221225472;
       v17[2] = __65__PKPaymentPassCombinedActionDataController_fetchViewController___block_invoke;
       v17[3] = &unk_1E80198B8;
-      v18 = v4;
+      v18 = controllerCopy;
       [(PKPaymentPassActionDataController *)v14 fetchViewController:v17];
 
       goto LABEL_14;
@@ -90,16 +90,16 @@ uint64_t __120__PKPaymentPassCombinedActionDataController_initWithPass_actionGro
   if (!v5)
   {
 LABEL_9:
-    (*(v4 + 2))(v4, 0, 0);
+    (*(controllerCopy + 2))(controllerCopy, 0, 0);
     goto LABEL_14;
   }
 
   if (v5 == 1)
   {
-    v8 = [(NSArray *)self->_actionGroups firstObject];
-    if (v8)
+    firstObject = [(NSArray *)self->_actionGroups firstObject];
+    if (firstObject)
     {
-      v9 = [[PKRemoteActionGroupViewController alloc] initWithPass:self->_pass actionGroup:v8 paymentDataProvider:self->_paymentDataProvider webService:self->_webService];
+      v9 = [[PKRemoteActionGroupViewController alloc] initWithPass:self->_pass actionGroup:firstObject paymentDataProvider:self->_paymentDataProvider webService:self->_webService];
       agController = self->_agController;
       self->_agController = v9;
 
@@ -112,7 +112,7 @@ LABEL_9:
       v11 = 0;
     }
 
-    (*(v4 + 2))(v4, v11, 0);
+    (*(controllerCopy + 2))(controllerCopy, v11, 0);
   }
 
   else
@@ -122,7 +122,7 @@ LABEL_9:
     self->_combinedController = v15;
 
     [(PKCombinedActionViewController *)self->_combinedController setDelegate:self];
-    (*(v4 + 2))(v4, self->_combinedController, 0);
+    (*(controllerCopy + 2))(controllerCopy, self->_combinedController, 0);
   }
 
 LABEL_14:
@@ -151,89 +151,89 @@ void __65__PKPaymentPassCombinedActionDataController_fetchViewController___block
 LABEL_6:
 }
 
-- (void)combinedActionViewControllerDidCancel:(id)a3
+- (void)combinedActionViewControllerDidCancel:(id)cancel
 {
-  v3 = a3;
-  v5 = [v3 navigationController];
-  if ([v5 pk_settings_useStateDrivenNavigation])
+  cancelCopy = cancel;
+  navigationController = [cancelCopy navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v5 pk_settings_popViewController];
+    [navigationController pk_settings_popViewController];
   }
 
   else
   {
-    v4 = [v5 popViewControllerAnimated:1];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 
-  [v3 setDelegate:0];
+  [cancelCopy setDelegate:0];
 }
 
-- (void)combinedActionViewControllerDidFinish:(id)a3
+- (void)combinedActionViewControllerDidFinish:(id)finish
 {
-  v3 = a3;
-  v5 = [v3 navigationController];
-  if ([v5 pk_settings_useStateDrivenNavigation])
+  finishCopy = finish;
+  navigationController = [finishCopy navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v5 pk_settings_popViewController];
+    [navigationController pk_settings_popViewController];
   }
 
   else
   {
-    v4 = [v5 popViewControllerAnimated:1];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 
-  [v3 setDelegate:0];
+  [finishCopy setDelegate:0];
 }
 
-- (void)remoteGroupActionsViewControllerDidCancel:(id)a3
+- (void)remoteGroupActionsViewControllerDidCancel:(id)cancel
 {
-  v3 = a3;
-  v5 = [v3 navigationController];
-  if ([v5 pk_settings_useStateDrivenNavigation])
+  cancelCopy = cancel;
+  navigationController = [cancelCopy navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v5 pk_settings_popViewController];
+    [navigationController pk_settings_popViewController];
   }
 
   else
   {
-    v4 = [v5 popViewControllerAnimated:1];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 
-  [v3 setDelegate:0];
+  [cancelCopy setDelegate:0];
 }
 
-- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)a3
+- (void)remoteGroupActionsViewControllerDidPerformFetchActionGroup:(id)group
 {
-  v3 = a3;
-  v5 = [v3 navigationController];
-  if ([v5 pk_settings_useStateDrivenNavigation])
+  groupCopy = group;
+  navigationController = [groupCopy navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v5 pk_settings_popViewController];
+    [navigationController pk_settings_popViewController];
   }
 
   else
   {
-    v4 = [v5 popViewControllerAnimated:1];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 
-  [v3 setDelegate:0];
+  [groupCopy setDelegate:0];
 }
 
-- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)a3
+- (void)remoteGroupActionsViewControllerDidPerformPayment:(id)payment
 {
-  v3 = a3;
-  v5 = [v3 navigationController];
-  if ([v5 pk_settings_useStateDrivenNavigation])
+  paymentCopy = payment;
+  navigationController = [paymentCopy navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v5 pk_settings_popViewController];
+    [navigationController pk_settings_popViewController];
   }
 
   else
   {
-    v4 = [v5 popViewControllerAnimated:1];
+    v4 = [navigationController popViewControllerAnimated:1];
   }
 
-  [v3 setDelegate:0];
+  [paymentCopy setDelegate:0];
 }
 
 @end

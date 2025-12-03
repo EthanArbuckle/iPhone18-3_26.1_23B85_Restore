@@ -1,7 +1,7 @@
 @interface MTAlertController
 - (MTAlertController)init;
 - (id)alertIdentifier;
-- (void)presentAnimated:(BOOL)a3 completion:(id)a4;
+- (void)presentAnimated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation MTAlertController
@@ -21,47 +21,47 @@
   return v3;
 }
 
-- (void)presentAnimated:(BOOL)a3 completion:(id)a4
+- (void)presentAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D75D28] mt_rootViewController];
-  v8 = [v7 mt_topViewController];
+  animatedCopy = animated;
+  completionCopy = completion;
+  mt_rootViewController = [MEMORY[0x277D75D28] mt_rootViewController];
+  mt_topViewController = [mt_rootViewController mt_topViewController];
 
   if ([(MTAlertController *)self replacesExistingAlert]&& (objc_opt_class(), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v9 = v8;
-    v10 = [v9 alertIdentifier];
-    v11 = [(MTAlertController *)self alertIdentifier];
-    v12 = [v10 isEqualToString:v11];
+    v9 = mt_topViewController;
+    alertIdentifier = [v9 alertIdentifier];
+    alertIdentifier2 = [(MTAlertController *)self alertIdentifier];
+    v12 = [alertIdentifier isEqualToString:alertIdentifier2];
 
     if (v12)
     {
-      if (v6)
+      if (completionCopy)
       {
-        v6[2](v6);
+        completionCopy[2](completionCopy);
       }
     }
 
     else
     {
-      v13 = [v9 presentingViewController];
+      presentingViewController = [v9 presentingViewController];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __48__MTAlertController_presentAnimated_completion___block_invoke;
       v15[3] = &unk_2782BEB30;
-      v16 = v13;
-      v17 = self;
-      v19 = v4;
-      v18 = v6;
-      v14 = v13;
-      [v14 dismissViewControllerAnimated:v4 completion:v15];
+      v16 = presentingViewController;
+      selfCopy = self;
+      v19 = animatedCopy;
+      v18 = completionCopy;
+      v14 = presentingViewController;
+      [v14 dismissViewControllerAnimated:animatedCopy completion:v15];
     }
   }
 
   else
   {
-    [v8 presentViewController:self animated:v4 completion:v6];
+    [mt_topViewController presentViewController:self animated:animatedCopy completion:completionCopy];
   }
 }
 
@@ -69,16 +69,16 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(MTAlertController *)self title];
-  v5 = [(MTAlertController *)self message];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  title = [(MTAlertController *)self title];
+  message = [(MTAlertController *)self message];
+  v6 = [v3 stringWithFormat:@"%@ %@", title, message];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [(MTAlertController *)self actions];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  actions = [(MTAlertController *)self actions];
+  v8 = [actions countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -89,16 +89,16 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(actions);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
         [v6 appendString:@" "];
-        v13 = [v12 title];
-        [v6 appendString:v13];
+        title2 = [v12 title];
+        [v6 appendString:title2];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [actions countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);

@@ -1,16 +1,16 @@
 @interface LSBundleInfoCachedValues
-- (BOOL)BOOLForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
 - (LSBundleInfoCachedValues)init;
-- (id)URLForKey:(id)a3;
+- (id)URLForKey:(id)key;
 - (id)_expensiveDictionaryRepresentation;
-- (id)_initWithKeys:(id)a3 forDictionary:(id)a4;
-- (id)arrayForKey:(id)a3 withValuesOfClass:(Class)a4;
-- (id)dictionaryForKey:(id)a3 valuesOfClass:(Class)a4;
-- (id)numberForKey:(id)a3;
-- (id)objectForKey:(id)a3 checkingKeyClass:(Class)a4 checkingValueClass:(Class)a5;
-- (id)objectForKey:(id)a3 ofType:(Class)a4;
-- (id)objectsForKeys:(id)a3;
-- (id)stringForKey:(id)a3;
+- (id)_initWithKeys:(id)keys forDictionary:(id)dictionary;
+- (id)arrayForKey:(id)key withValuesOfClass:(Class)class;
+- (id)dictionaryForKey:(id)key valuesOfClass:(Class)class;
+- (id)numberForKey:(id)key;
+- (id)objectForKey:(id)key checkingKeyClass:(Class)class checkingValueClass:(Class)valueClass;
+- (id)objectForKey:(id)key ofType:(Class)type;
+- (id)objectsForKeys:(id)keys;
+- (id)stringForKey:(id)key;
 @end
 
 @implementation LSBundleInfoCachedValues
@@ -23,43 +23,43 @@
   return v4;
 }
 
-- (id)_initWithKeys:(id)a3 forDictionary:(id)a4
+- (id)_initWithKeys:(id)keys forDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  keysCopy = keys;
+  dictionaryCopy = dictionary;
+  if (!keysCopy)
   {
     [LSBundleInfoCachedValues _initWithKeys:a2 forDictionary:self];
   }
 
   v15.receiver = self;
   v15.super_class = LSBundleInfoCachedValues;
-  v9 = [(LSPropertyList *)&v15 _init];
-  if (v9)
+  _init = [(LSPropertyList *)&v15 _init];
+  if (_init)
   {
-    v10 = [v7 copy];
-    v11 = v9[1];
-    v9[1] = v10;
+    v10 = [keysCopy copy];
+    v11 = _init[1];
+    _init[1] = v10;
 
-    v12 = [v8 copy];
-    v13 = v9[2];
-    v9[2] = v12;
+    v12 = [dictionaryCopy copy];
+    v13 = _init[2];
+    _init[2] = v12;
   }
 
-  return v9;
+  return _init;
 }
 
-- (id)objectForKey:(id)a3 ofType:(Class)a4
+- (id)objectForKey:(id)key ofType:(Class)type
 {
-  v6 = a3;
-  if (![(NSSet *)self->_keys containsObject:v6])
+  keyCopy = key;
+  if (![(NSSet *)self->_keys containsObject:keyCopy])
   {
     [LSBundleInfoCachedValues objectForKey:ofType:];
   }
 
-  v7 = [(NSDictionary *)self->_values objectForKey:v6];
+  v7 = [(NSDictionary *)self->_values objectForKey:keyCopy];
   v8 = v7;
-  if (a4 && v7 && (objc_opt_isKindOfClass() & 1) == 0)
+  if (type && v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
     v8 = 0;
@@ -68,30 +68,30 @@
   return v8;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v4 = a3;
-  if (![(NSSet *)self->_keys containsObject:v4])
+  keyCopy = key;
+  if (![(NSSet *)self->_keys containsObject:keyCopy])
   {
     [LSBundleInfoCachedValues BOOLForKey:];
   }
 
-  v5 = [(NSDictionary *)self->_values _LS_BoolForKey:v4];
+  v5 = [(NSDictionary *)self->_values _LS_BoolForKey:keyCopy];
 
   return v5;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  if (![(NSSet *)self->_keys containsObject:v4])
+  keyCopy = key;
+  if (![(NSSet *)self->_keys containsObject:keyCopy])
   {
     [LSBundleInfoCachedValues numberForKey:];
   }
 
   values = self->_values;
   v6 = objc_opt_class();
-  v7 = [(NSDictionary *)values objectForKey:v4];
+  v7 = [(NSDictionary *)values objectForKey:keyCopy];
   v8 = v7;
   if (v6)
   {
@@ -112,17 +112,17 @@
   return v8;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
-  if (![(NSSet *)self->_keys containsObject:v4])
+  keyCopy = key;
+  if (![(NSSet *)self->_keys containsObject:keyCopy])
   {
     [LSBundleInfoCachedValues URLForKey:];
   }
 
   values = self->_values;
   v6 = objc_opt_class();
-  v7 = [(NSDictionary *)values objectForKey:v4];
+  v7 = [(NSDictionary *)values objectForKey:keyCopy];
   v8 = v7;
   if (v6)
   {
@@ -143,17 +143,17 @@
   return v8;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  if (![(NSSet *)self->_keys containsObject:v4])
+  keyCopy = key;
+  if (![(NSSet *)self->_keys containsObject:keyCopy])
   {
     [LSBundleInfoCachedValues stringForKey:];
   }
 
   values = self->_values;
   v6 = objc_opt_class();
-  v7 = [(NSDictionary *)values objectForKey:v4];
+  v7 = [(NSDictionary *)values objectForKey:keyCopy];
   v8 = v7;
   if (v6)
   {
@@ -174,18 +174,18 @@
   return v8;
 }
 
-- (id)arrayForKey:(id)a3 withValuesOfClass:(Class)a4
+- (id)arrayForKey:(id)key withValuesOfClass:(Class)class
 {
-  v6 = a3;
-  v16 = a4;
-  if (![(NSSet *)self->_keys containsObject:v6])
+  keyCopy = key;
+  classCopy = class;
+  if (![(NSSet *)self->_keys containsObject:keyCopy])
   {
     [LSBundleInfoCachedValues arrayForKey:withValuesOfClass:];
   }
 
   values = self->_values;
   v8 = objc_opt_class();
-  v9 = [(NSDictionary *)values objectForKey:v6];
+  v9 = [(NSDictionary *)values objectForKey:keyCopy];
   v10 = v9;
   if (v8)
   {
@@ -205,7 +205,7 @@
 
   if (v10)
   {
-    v12 = a4 == 0;
+    v12 = class == 0;
   }
 
   else
@@ -215,7 +215,7 @@
 
   if (!v12)
   {
-    v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&v16 count:1];
+    v13 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:&classCopy count:1];
     v14 = _LSIsArrayWithValuesOfClasses(v10, v13);
 
     if ((v14 & 1) == 0)
@@ -228,17 +228,17 @@
   return v10;
 }
 
-- (id)dictionaryForKey:(id)a3 valuesOfClass:(Class)a4
+- (id)dictionaryForKey:(id)key valuesOfClass:(Class)class
 {
-  v6 = a3;
-  if (![(NSSet *)self->_keys containsObject:v6])
+  keyCopy = key;
+  if (![(NSSet *)self->_keys containsObject:keyCopy])
   {
     [LSBundleInfoCachedValues dictionaryForKey:valuesOfClass:];
   }
 
   values = self->_values;
   v8 = objc_opt_class();
-  v9 = [(NSDictionary *)values objectForKey:v6];
+  v9 = [(NSDictionary *)values objectForKey:keyCopy];
   v10 = v9;
   if (v8)
   {
@@ -256,7 +256,7 @@
     v10 = 0;
   }
 
-  if (a4 && v10 && (_LSIsDictionaryWithKeysAndValuesOfClass(v10, 0, a4) & 1) == 0)
+  if (class && v10 && (_LSIsDictionaryWithKeysAndValuesOfClass(v10, 0, class) & 1) == 0)
   {
 
     v10 = 0;
@@ -265,32 +265,32 @@
   return v10;
 }
 
-- (id)objectsForKeys:(id)a3
+- (id)objectsForKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [[LSBundleInfoCachedValues alloc] _initWithKeys:v4 forDictionary:self->_values];
+  keysCopy = keys;
+  v5 = [[LSBundleInfoCachedValues alloc] _initWithKeys:keysCopy forDictionary:self->_values];
 
   return v5;
 }
 
-- (id)objectForKey:(id)a3 checkingKeyClass:(Class)a4 checkingValueClass:(Class)a5
+- (id)objectForKey:(id)key checkingKeyClass:(Class)class checkingValueClass:(Class)valueClass
 {
-  v8 = a3;
-  if (objc_opt_class() == a4)
+  keyCopy = key;
+  if (objc_opt_class() == class)
   {
-    v9 = [(LSBundleInfoCachedValues *)self arrayForKey:v8 withValuesOfClass:a5];
+    v9 = [(LSBundleInfoCachedValues *)self arrayForKey:keyCopy withValuesOfClass:valueClass];
   }
 
   else
   {
-    if (objc_opt_class() == a4)
+    if (objc_opt_class() == class)
     {
-      [(LSBundleInfoCachedValues *)self dictionaryForKey:v8 valuesOfClass:a5];
+      [(LSBundleInfoCachedValues *)self dictionaryForKey:keyCopy valuesOfClass:valueClass];
     }
 
     else
     {
-      [(LSBundleInfoCachedValues *)self objectForKey:v8 ofType:a4];
+      [(LSBundleInfoCachedValues *)self objectForKey:keyCopy ofType:class];
     }
     v9 = ;
   }

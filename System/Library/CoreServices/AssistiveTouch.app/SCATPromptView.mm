@@ -1,21 +1,21 @@
 @interface SCATPromptView
 - (void)_updatePromptBackdropViewMask;
 - (void)layoutSubviews;
-- (void)setPrompt:(id)a3;
+- (void)setPrompt:(id)prompt;
 @end
 
 @implementation SCATPromptView
 
-- (void)setPrompt:(id)a3
+- (void)setPrompt:(id)prompt
 {
-  v17 = a3;
-  v4 = [(SCATPromptView *)self prompt];
-  v5 = [v4 isEqualToString:v17];
+  promptCopy = prompt;
+  prompt = [(SCATPromptView *)self prompt];
+  v5 = [prompt isEqualToString:promptCopy];
 
-  v6 = v17;
+  v6 = promptCopy;
   if ((v5 & 1) == 0)
   {
-    if ([v17 length])
+    if ([promptCopy length])
     {
       v7 = +[SCATStyleProvider sharedStyleProvider];
       if (!self->_backdropView)
@@ -43,18 +43,18 @@
         self->_promptLabel = v12;
 
         [(UILabel *)self->_promptLabel setTextAlignment:1];
-        v14 = [v7 pointPickerPromptTextColor];
-        [(UILabel *)self->_promptLabel setTextColor:v14];
+        pointPickerPromptTextColor = [v7 pointPickerPromptTextColor];
+        [(UILabel *)self->_promptLabel setTextColor:pointPickerPromptTextColor];
 
-        v15 = [v7 pointPickerPromptFont];
-        [(UILabel *)self->_promptLabel setFont:v15];
+        pointPickerPromptFont = [v7 pointPickerPromptFont];
+        [(UILabel *)self->_promptLabel setFont:pointPickerPromptFont];
 
         [(UILabel *)self->_promptLabel setNumberOfLines:0];
         [(SCATPromptView *)self addSubview:self->_promptLabel];
         promptLabel = self->_promptLabel;
       }
 
-      [(UILabel *)promptLabel setText:v17];
+      [(UILabel *)promptLabel setText:promptCopy];
       [(SCATPromptView *)self setNeedsLayout];
     }
 
@@ -69,7 +69,7 @@
       self->_backdropView = 0;
     }
 
-    v6 = v17;
+    v6 = promptCopy;
   }
 }
 
@@ -82,8 +82,8 @@
 
   if (_UISolariumEnabled())
   {
-    v8 = [(UIVisualEffectView *)self->_backdropView layer];
-    [v8 setCornerRadius:v7];
+    layer = [(UIVisualEffectView *)self->_backdropView layer];
+    [layer setCornerRadius:v7];
 
     backdropView = self->_backdropView;
 
@@ -111,9 +111,9 @@
     v15 = v14;
     v17 = v16;
     v18 = v4 + (v8 - v14) * 0.5;
-    v19 = [(SCATPromptView *)self position];
+    position = [(SCATPromptView *)self position];
     v20 = v6 + v10 * 0.5;
-    if (!v19)
+    if (!position)
     {
       v20 = v6;
     }

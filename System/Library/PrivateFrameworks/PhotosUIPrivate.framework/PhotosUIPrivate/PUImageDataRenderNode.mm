@@ -2,9 +2,9 @@
 - (BOOL)_isInputValid;
 - (CGSize)baseImageSize;
 - (CGSize)renderedImageSize;
-- (PUImageDataRenderNode)initWithImageInfoNode:(id)a3 videoURLNode:(id)a4 compositionController:(id)a5 livePhotoPairingIdentifier:(id)a6 jpegCompression:(double)a7;
+- (PUImageDataRenderNode)initWithImageInfoNode:(id)node videoURLNode:(id)lNode compositionController:(id)controller livePhotoPairingIdentifier:(id)identifier jpegCompression:(double)compression;
 - (id)_editSource;
-- (void)_handleRenderCompletedWithJpegData:(id)a3 baseSize:(CGSize)a4 editedSize:(CGSize)a5;
+- (void)_handleRenderCompletedWithJpegData:(id)data baseSize:(CGSize)size editedSize:(CGSize)editedSize;
 - (void)run;
 @end
 
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (void)_handleRenderCompletedWithJpegData:(id)a3 baseSize:(CGSize)a4 editedSize:(CGSize)a5
+- (void)_handleRenderCompletedWithJpegData:(id)data baseSize:(CGSize)size editedSize:(CGSize)editedSize
 {
-  self->_renderedImageSize = a5;
-  self->_baseImageSize = a4;
-  objc_storeStrong(&self->_imageData, a3);
+  self->_renderedImageSize = editedSize;
+  self->_baseImageSize = size;
+  objc_storeStrong(&self->_imageData, data);
 
   [(PXRunNode *)self complete];
 }
@@ -52,12 +52,12 @@
   v5 = *MEMORY[0x1E695F060];
   self->_renderedImageSize = *MEMORY[0x1E695F060];
   self->_baseImageSize = v5;
-  v6 = [(PUImageDataRenderNode *)self _editSource];
-  if (v6)
+  _editSource = [(PUImageDataRenderNode *)self _editSource];
+  if (_editSource)
   {
-    v7 = [objc_alloc(MEMORY[0x1E69BE658]) initWithEditSource:v6];
-    v8 = [(PUImageDataRenderNode *)self compositionController];
-    [v7 setCompositionController:v8];
+    v7 = [objc_alloc(MEMORY[0x1E69BE658]) initWithEditSource:_editSource];
+    compositionController = [(PUImageDataRenderNode *)self compositionController];
+    [v7 setCompositionController:compositionController];
 
     [(PUImageDataRenderNode *)self jpegCompression];
     v10 = v9;
@@ -106,25 +106,25 @@ void __28__PUImageDataRenderNode_run__block_invoke(uint64_t a1, void *a2, double
 {
   if ([(PUImageDataRenderNode *)self _isInputValid])
   {
-    v3 = [(PUImageDataRenderNode *)self imageDataNode];
-    v4 = [v3 imageDataURL];
+    imageDataNode = [(PUImageDataRenderNode *)self imageDataNode];
+    imageDataURL = [imageDataNode imageDataURL];
 
-    v5 = [(PUImageDataRenderNode *)self imageDataNode];
-    v6 = [v5 imageDataUTI];
+    imageDataNode2 = [(PUImageDataRenderNode *)self imageDataNode];
+    imageDataUTI = [imageDataNode2 imageDataUTI];
 
-    v7 = [(PUImageDataRenderNode *)self imageDataNode];
-    v8 = [v7 useEmbeddedPreview];
+    imageDataNode3 = [(PUImageDataRenderNode *)self imageDataNode];
+    useEmbeddedPreview = [imageDataNode3 useEmbeddedPreview];
 
-    v9 = [(PUVideoURLNode *)self->_videoURLNode videoURL];
+    videoURL = [(PUVideoURLNode *)self->_videoURLNode videoURL];
 
-    if (v9)
+    if (videoURL)
     {
       if (self->_livePhotoPairingIdentifier)
       {
-        v10 = [objc_alloc(MEMORY[0x1E69BE660]) initWithURL:v4 type:v6 image:0 useEmbeddedPreview:v8];
+        v10 = [objc_alloc(MEMORY[0x1E69BE660]) initWithURL:imageDataURL type:imageDataUTI image:0 useEmbeddedPreview:useEmbeddedPreview];
         v11 = objc_alloc(MEMORY[0x1E69BE880]);
-        v12 = [(PUVideoURLNode *)self->_videoURLNode videoURL];
-        v13 = [v11 initWithVideoURL:v12];
+        videoURL2 = [(PUVideoURLNode *)self->_videoURLNode videoURL];
+        v13 = [v11 initWithVideoURL:videoURL2];
 
         v14 = [objc_alloc(MEMORY[0x1E69BE518]) initWithPhotoSource:v10 videoComplement:v13];
       }
@@ -132,14 +132,14 @@ void __28__PUImageDataRenderNode_run__block_invoke(uint64_t a1, void *a2, double
       else
       {
         v15 = objc_alloc(MEMORY[0x1E69BE880]);
-        v16 = [(PUVideoURLNode *)self->_videoURLNode videoURL];
-        v14 = [v15 initWithVideoURL:v16];
+        videoURL3 = [(PUVideoURLNode *)self->_videoURLNode videoURL];
+        v14 = [v15 initWithVideoURL:videoURL3];
       }
     }
 
     else
     {
-      v14 = [objc_alloc(MEMORY[0x1E69BE660]) initWithURL:v4 type:v6 image:0 useEmbeddedPreview:v8];
+      v14 = [objc_alloc(MEMORY[0x1E69BE660]) initWithURL:imageDataURL type:imageDataUTI image:0 useEmbeddedPreview:useEmbeddedPreview];
     }
   }
 
@@ -153,13 +153,13 @@ void __28__PUImageDataRenderNode_run__block_invoke(uint64_t a1, void *a2, double
 
 - (BOOL)_isInputValid
 {
-  v3 = [(PUImageDataRenderNode *)self imageDataNode];
-  v4 = [v3 imageDataURL];
+  imageDataNode = [(PUImageDataRenderNode *)self imageDataNode];
+  imageDataURL = [imageDataNode imageDataURL];
 
-  v5 = [(PUImageDataRenderNode *)self imageDataNode];
-  [v5 imageExifOrientation];
+  imageDataNode2 = [(PUImageDataRenderNode *)self imageDataNode];
+  [imageDataNode2 imageExifOrientation];
 
-  if (v4)
+  if (imageDataURL)
   {
     IsValid = PLOrientationIsValid();
   }
@@ -169,12 +169,12 @@ void __28__PUImageDataRenderNode_run__block_invoke(uint64_t a1, void *a2, double
     IsValid = 0;
   }
 
-  v7 = [(PUImageDataRenderNode *)self videoURLNode];
-  v8 = [v7 videoURL];
-  if (v8)
+  videoURLNode = [(PUImageDataRenderNode *)self videoURLNode];
+  videoURL = [videoURLNode videoURL];
+  if (videoURL)
   {
-    v9 = [(PUImageDataRenderNode *)self livePhotoPairingIdentifier];
-    v10 = v9 == 0;
+    livePhotoPairingIdentifier = [(PUImageDataRenderNode *)self livePhotoPairingIdentifier];
+    v10 = livePhotoPairingIdentifier == 0;
   }
 
   else
@@ -185,46 +185,46 @@ void __28__PUImageDataRenderNode_run__block_invoke(uint64_t a1, void *a2, double
   return v10 | IsValid;
 }
 
-- (PUImageDataRenderNode)initWithImageInfoNode:(id)a3 videoURLNode:(id)a4 compositionController:(id)a5 livePhotoPairingIdentifier:(id)a6 jpegCompression:(double)a7
+- (PUImageDataRenderNode)initWithImageInfoNode:(id)node videoURLNode:(id)lNode compositionController:(id)controller livePhotoPairingIdentifier:(id)identifier jpegCompression:(double)compression
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  if (!v16)
+  nodeCopy = node;
+  lNodeCopy = lNode;
+  controllerCopy = controller;
+  identifierCopy = identifier;
+  if (!controllerCopy)
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"PUImageDataRenderNode.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"compositionController"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUImageDataRenderNode.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"compositionController"}];
 
-    if (v14)
+    if (nodeCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_11:
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:self file:@"PUImageDataRenderNode.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"imageInfoNode"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUImageDataRenderNode.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"imageInfoNode"}];
 
     goto LABEL_3;
   }
 
-  if (!v14)
+  if (!nodeCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  if (a7 > 1.0 || a7 < 0.0)
+  if (compression > 1.0 || compression < 0.0)
   {
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"PUImageDataRenderNode.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"jpegCompression <= 1 && jpegCompression >= 0"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUImageDataRenderNode.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"jpegCompression <= 1 && jpegCompression >= 0"}];
   }
 
-  v18 = [MEMORY[0x1E695DF70] arrayWithObject:v14];
+  v18 = [MEMORY[0x1E695DF70] arrayWithObject:nodeCopy];
   v19 = v18;
-  if (v15)
+  if (lNodeCopy)
   {
-    [v18 addObject:v15];
+    [v18 addObject:lNodeCopy];
   }
 
   v29.receiver = self;
@@ -232,17 +232,17 @@ LABEL_3:
   v20 = [(PXRunNode *)&v29 initWithDependencies:v19];
   if (v20)
   {
-    v21 = [v16 copy];
+    v21 = [controllerCopy copy];
     compositionController = v20->_compositionController;
     v20->_compositionController = v21;
 
-    objc_storeStrong(&v20->_imageDataNode, a3);
-    v20->_jpegCompression = a7;
-    v23 = [v17 copy];
+    objc_storeStrong(&v20->_imageDataNode, node);
+    v20->_jpegCompression = compression;
+    v23 = [identifierCopy copy];
     livePhotoPairingIdentifier = v20->_livePhotoPairingIdentifier;
     v20->_livePhotoPairingIdentifier = v23;
 
-    objc_storeStrong(&v20->_videoURLNode, a4);
+    objc_storeStrong(&v20->_videoURLNode, lNode);
   }
 
   return v20;

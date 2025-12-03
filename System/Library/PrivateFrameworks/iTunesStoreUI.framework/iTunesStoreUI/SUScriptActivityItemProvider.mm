@@ -1,32 +1,32 @@
 @interface SUScriptActivityItemProvider
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (SUActivityItemProvider)nativeActivityItemProvider;
-- (SUScriptActivityItemProvider)initWithMIMEType:(id)a3;
+- (SUScriptActivityItemProvider)initWithMIMEType:(id)type;
 - (WebScriptObject)itemFunction;
-- (id)_newPlaceholderWithMIMEType:(id)a3;
-- (id)activitySupportsMIMEType:(id)a3;
+- (id)_newPlaceholderWithMIMEType:(id)type;
+- (id)activitySupportsMIMEType:(id)type;
 - (id)scriptAttributeKeys;
-- (void)_finishItemWithItem:(id)a3;
-- (void)_finishPreviewWithImage:(id)a3;
-- (void)activityItemProvider:(id)a3 provideItemUsingBlock:(id)a4;
+- (void)_finishItemWithItem:(id)item;
+- (void)_finishPreviewWithImage:(id)image;
+- (void)activityItemProvider:(id)provider provideItemUsingBlock:(id)block;
 - (void)dealloc;
-- (void)setItem:(id)a3;
-- (void)setItemFunction:(id)a3;
-- (void)setPreviewImageWithURLString:(id)a3;
+- (void)setItem:(id)item;
+- (void)setItemFunction:(id)function;
+- (void)setPreviewImageWithURLString:(id)string;
 @end
 
 @implementation SUScriptActivityItemProvider
 
-- (SUScriptActivityItemProvider)initWithMIMEType:(id)a3
+- (SUScriptActivityItemProvider)initWithMIMEType:(id)type
 {
   v6.receiver = self;
   v6.super_class = SUScriptActivityItemProvider;
   v4 = [(SUScriptObject *)&v6 init];
   if (v4)
   {
-    v4->_mimeType = [a3 copy];
+    v4->_mimeType = [type copy];
   }
 
   return v4;
@@ -61,7 +61,7 @@
   return v6;
 }
 
-- (id)activitySupportsMIMEType:(id)a3
+- (id)activitySupportsMIMEType:(id)type
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -70,7 +70,7 @@
     goto LABEL_7;
   }
 
-  v5 = [(SUScriptActivityItemProvider *)self _newPlaceholderWithMIMEType:a3];
+  v5 = [(SUScriptActivityItemProvider *)self _newPlaceholderWithMIMEType:type];
   if (!v5)
   {
 LABEL_7:
@@ -79,11 +79,11 @@ LABEL_7:
   }
 
   v6 = v5;
-  v7 = [(SUActivityItemProvider *)[(SUScriptActivityItemProvider *)self nativeActivityItemProvider] suActivity];
-  LOBYTE(v7) = -[UIActivity canPerformWithActivityItems:](v7, "canPerformWithActivityItems:", [MEMORY[0x1E695DEC8] arrayWithObject:v6]);
+  suActivity = [(SUActivityItemProvider *)[(SUScriptActivityItemProvider *)self nativeActivityItemProvider] suActivity];
+  LOBYTE(suActivity) = -[UIActivity canPerformWithActivityItems:](suActivity, "canPerformWithActivityItems:", [MEMORY[0x1E695DEC8] arrayWithObject:v6]);
 
   v8 = MEMORY[0x1E695E4D0];
-  if ((v7 & 1) == 0)
+  if ((suActivity & 1) == 0)
   {
     v8 = MEMORY[0x1E695E4C0];
   }
@@ -91,16 +91,16 @@ LABEL_7:
   return *v8;
 }
 
-- (void)setItem:(id)a3
+- (void)setItem:(id)item
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass)
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !item) || (isKindOfClass)
   {
-    v5 = self;
-    v6 = 0;
+    selfCopy2 = self;
+    itemCopy = 0;
 LABEL_3:
 
-    [(SUScriptActivityItemProvider *)v5 _finishItemWithItem:v6];
+    [(SUScriptActivityItemProvider *)selfCopy2 _finishItemWithItem:itemCopy];
     return;
   }
 
@@ -109,7 +109,7 @@ LABEL_3:
   {
     if ([(NSString *)self->_mimeType isEqualToString:@"text/url"])
     {
-      v13 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
+      v13 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:item];
       [(SUScriptActivityItemProvider *)self _finishItemWithItem:v13];
 
       return;
@@ -117,14 +117,14 @@ LABEL_3:
 
     if ([(NSString *)self->_mimeType hasPrefix:@"text/"])
     {
-      v5 = self;
-      v6 = a3;
+      selfCopy2 = self;
+      itemCopy = item;
       goto LABEL_3;
     }
 
     if ([(NSString *)self->_mimeType hasPrefix:@"image/"])
     {
-      v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
+      v9 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:item];
       v10 = [(SUScriptObject *)self newImageWithURL:v9];
       if (v10)
       {
@@ -163,10 +163,10 @@ uint64_t __40__SUScriptActivityItemProvider_setItem___block_invoke(uint64_t a1, 
   return [v3 _finishItemWithItem:a2];
 }
 
-- (void)setPreviewImageWithURLString:(id)a3
+- (void)setPreviewImageWithURLString:(id)string
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !a3) || (isKindOfClass)
+  if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), !string) || (isKindOfClass)
   {
 
     [(SUScriptActivityItemProvider *)self _finishPreviewWithImage:0];
@@ -177,7 +177,7 @@ uint64_t __40__SUScriptActivityItemProvider_setItem___block_invoke(uint64_t a1, 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:a3];
+      v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:string];
       if (v6)
       {
         v7 = v6;
@@ -223,26 +223,26 @@ uint64_t __61__SUScriptActivityItemProvider_setPreviewImageWithURLString___block
 - (WebScriptObject)itemFunction
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SUScriptFunction *)self->_itemFunction scriptObject];
+  scriptObject = [(SUScriptFunction *)self->_itemFunction scriptObject];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return scriptObject;
 }
 
-- (void)setItemFunction:(id)a3
+- (void)setItemFunction:(id)function
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    functionCopy = 0;
     v6 = 1;
     goto LABEL_3;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
+  functionCopy = 0;
   v6 = 1;
-  if (!a3 || (isKindOfClass & 1) != 0)
+  if (!function || (isKindOfClass & 1) != 0)
   {
 LABEL_3:
     [(SUScriptFunction *)self->_itemFunction setThisObject:0];
@@ -254,7 +254,7 @@ LABEL_3:
 
     else
     {
-      v8 = [[SUScriptFunction alloc] initWithScriptObject:v5];
+      v8 = [[SUScriptFunction alloc] initWithScriptObject:functionCopy];
       self->_itemFunction = v8;
 
       [(SUScriptFunction *)v8 setThisObject:self];
@@ -267,7 +267,7 @@ LABEL_3:
   if (objc_opt_isKindOfClass())
   {
     v6 = 0;
-    v5 = a3;
+    functionCopy = function;
     goto LABEL_3;
   }
 
@@ -276,12 +276,12 @@ LABEL_3:
   [v9 throwException:@"Invalid argument"];
 }
 
-- (void)activityItemProvider:(id)a3 provideItemUsingBlock:(id)a4
+- (void)activityItemProvider:(id)provider provideItemUsingBlock:(id)block
 {
   [(SUScriptObject *)self lock];
   v6 = self->_itemFunction;
 
-  self->_itemBlock = [a4 copy];
+  self->_itemBlock = [block copy];
   [(SUScriptObject *)self unlock];
   if (v6)
   {
@@ -296,9 +296,9 @@ LABEL_3:
 
   else
   {
-    v8 = *(a4 + 2);
+    v8 = *(block + 2);
 
-    v8(a4, 0);
+    v8(block, 0);
   }
 }
 
@@ -352,11 +352,11 @@ uint64_t __75__SUScriptActivityItemProvider_activityItemProvider_provideItemUsin
   return result;
 }
 
-- (void)_finishItemWithItem:(id)a3
+- (void)_finishItemWithItem:(id)item
 {
   [(SUScriptObject *)self lock];
 
-  self->_item = a3;
+  self->_item = item;
   self->_loadState = 2;
   if (self->_previewLoadState == 1)
   {
@@ -370,14 +370,14 @@ uint64_t __75__SUScriptActivityItemProvider_activityItemProvider_provideItemUsin
     [(SUScriptObject *)self unlock];
     if (v5)
     {
-      v5[2](v5, a3);
+      v5[2](v5, item);
     }
   }
 }
 
-- (void)_finishPreviewWithImage:(id)a3
+- (void)_finishPreviewWithImage:(id)image
 {
-  [(SUActivityItemProvider *)[(SUScriptActivityItemProvider *)self nativeActivityItemProvider] setSUPreviewImage:a3];
+  [(SUActivityItemProvider *)[(SUScriptActivityItemProvider *)self nativeActivityItemProvider] setSUPreviewImage:image];
   [(SUScriptObject *)self lock];
   self->_previewLoadState = 2;
   if (self->_loadState == 2)
@@ -400,9 +400,9 @@ uint64_t __75__SUScriptActivityItemProvider_activityItemProvider_provideItemUsin
   }
 }
 
-- (id)_newPlaceholderWithMIMEType:(id)a3
+- (id)_newPlaceholderWithMIMEType:(id)type
 {
-  if ([a3 isEqualToString:@"text/url"])
+  if ([type isEqualToString:@"text/url"])
   {
     v4 = objc_alloc(MEMORY[0x1E695DFF8]);
 
@@ -411,14 +411,14 @@ uint64_t __75__SUScriptActivityItemProvider_activityItemProvider_provideItemUsin
 
   else
   {
-    if ([a3 hasPrefix:@"text/"])
+    if ([type hasPrefix:@"text/"])
     {
       v6 = MEMORY[0x1E696AEC0];
     }
 
     else
     {
-      if (![a3 hasPrefix:@"image/"])
+      if (![type hasPrefix:@"image/"])
       {
         return 0;
       }
@@ -430,27 +430,27 @@ uint64_t __75__SUScriptActivityItemProvider_activityItemProvider_provideItemUsin
   }
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_71 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptActivityItemProvider;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_53, 3);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_53, 3);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptActivityItemProvider;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -460,14 +460,14 @@ uint64_t __75__SUScriptActivityItemProvider_activityItemProvider_provideItemUsin
 {
   v4.receiver = self;
   v4.super_class = SUScriptActivityItemProvider;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_71 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_71 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_53 = sel_activitySupportsMIMEType_;
     *algn_1EBF3B808 = @"activitySupportsMIMEType";

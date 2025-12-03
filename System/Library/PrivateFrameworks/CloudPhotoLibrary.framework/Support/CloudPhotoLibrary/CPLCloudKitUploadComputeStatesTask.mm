@@ -1,40 +1,40 @@
 @interface CPLCloudKitUploadComputeStatesTask
-- (CPLCloudKitUploadComputeStatesTask)initWithController:(id)a3 computeStates:(id)a4 scope:(id)a5 sharedScope:(id)a6 targetMapping:(id)a7 transportScopeMapping:(id)a8 knownRecords:(id)a9 completionHandler:(id)a10;
+- (CPLCloudKitUploadComputeStatesTask)initWithController:(id)controller computeStates:(id)states scope:(id)scope sharedScope:(id)sharedScope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping knownRecords:(id)records completionHandler:(id)self0;
 - (void)_getEncryptionHelper;
 - (void)_getTemporaryFolder;
-- (void)_uploadComputeStatesWithTemporaryFolderURL:(id)a3;
+- (void)_uploadComputeStatesWithTemporaryFolderURL:(id)l;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitUploadComputeStatesTask
 
-- (CPLCloudKitUploadComputeStatesTask)initWithController:(id)a3 computeStates:(id)a4 scope:(id)a5 sharedScope:(id)a6 targetMapping:(id)a7 transportScopeMapping:(id)a8 knownRecords:(id)a9 completionHandler:(id)a10
+- (CPLCloudKitUploadComputeStatesTask)initWithController:(id)controller computeStates:(id)states scope:(id)scope sharedScope:(id)sharedScope targetMapping:(id)mapping transportScopeMapping:(id)scopeMapping knownRecords:(id)records completionHandler:(id)self0
 {
-  v16 = a4;
-  v30 = a5;
-  v29 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
-  v20 = a10;
+  statesCopy = states;
+  scopeCopy = scope;
+  sharedScopeCopy = sharedScope;
+  mappingCopy = mapping;
+  scopeMappingCopy = scopeMapping;
+  recordsCopy = records;
+  handlerCopy = handler;
   v31.receiver = self;
   v31.super_class = CPLCloudKitUploadComputeStatesTask;
-  v21 = [(CPLCloudKitTransportTask *)&v31 initWithController:a3];
+  v21 = [(CPLCloudKitTransportTask *)&v31 initWithController:controller];
   if (v21)
   {
-    v22 = [v16 copy];
+    v22 = [statesCopy copy];
     computeStates = v21->_computeStates;
     v21->_computeStates = v22;
 
-    objc_storeStrong(&v21->_scope, a5);
-    objc_storeStrong(&v21->_sharedScope, a6);
-    objc_storeStrong(&v21->_targetMapping, a7);
-    [(CPLCloudKitTransportTask *)v21 setTransportScopeMapping:v18];
-    v24 = [v19 copy];
+    objc_storeStrong(&v21->_scope, scope);
+    objc_storeStrong(&v21->_sharedScope, sharedScope);
+    objc_storeStrong(&v21->_targetMapping, mapping);
+    [(CPLCloudKitTransportTask *)v21 setTransportScopeMapping:scopeMappingCopy];
+    v24 = [recordsCopy copy];
     knownRecords = v21->_knownRecords;
     v21->_knownRecords = v24;
 
-    v26 = [v20 copy];
+    v26 = [handlerCopy copy];
     completionHandler = v21->_completionHandler;
     v21->_completionHandler = v26;
   }
@@ -78,15 +78,15 @@
   [(CPLCloudKitTransportTask *)self getTemporaryFolderWithCompletionHandler:v2];
 }
 
-- (void)_uploadComputeStatesWithTemporaryFolderURL:(id)a3
+- (void)_uploadComputeStatesWithTemporaryFolderURL:(id)l
 {
-  v32 = a3;
+  lCopy = l;
   v4 = [[NSMutableDictionary alloc] initWithCapacity:{-[NSArray count](self->_computeStates, "count")}];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v31 = self;
+  selfCopy = self;
   v5 = self->_computeStates;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v6)
@@ -103,10 +103,10 @@
         }
 
         v10 = *(*(&v42 + 1) + 8 * i);
-        v11 = [v10 itemScopedIdentifier];
-        if (v11)
+        itemScopedIdentifier = [v10 itemScopedIdentifier];
+        if (itemScopedIdentifier)
         {
-          [v4 setObject:v10 forKeyedSubscript:v11];
+          [v4 setObject:v10 forKeyedSubscript:itemScopedIdentifier];
         }
 
         else if ((_CPLSilentLogging & 1) == 0)
@@ -127,24 +127,24 @@
     while (v7);
   }
 
-  v13 = [(CPLEngineScope *)v31->_scope scopeIdentifier];
-  v14 = [(CPLCloudKitTransportTask *)v31 cloudKitScopeForScopeIdentifier:v13];
+  scopeIdentifier = [(CPLEngineScope *)selfCopy->_scope scopeIdentifier];
+  v14 = [(CPLCloudKitTransportTask *)selfCopy cloudKitScopeForScopeIdentifier:scopeIdentifier];
 
-  v15 = [v14 zoneID];
+  zoneID = [v14 zoneID];
 
-  if (v15)
+  if (zoneID)
   {
-    sharedScope = v31->_sharedScope;
+    sharedScope = selfCopy->_sharedScope;
     if (sharedScope)
     {
-      v17 = [(CPLEngineScope *)sharedScope scopeIdentifier];
-      v18 = [(CPLCloudKitTransportTask *)v31 cloudKitScopeForScopeIdentifier:v17];
+      scopeIdentifier2 = [(CPLEngineScope *)sharedScope scopeIdentifier];
+      v18 = [(CPLCloudKitTransportTask *)selfCopy cloudKitScopeForScopeIdentifier:scopeIdentifier2];
 
-      v19 = [v18 zoneID];
+      zoneID2 = [v18 zoneID];
 
-      if (!v19)
+      if (!zoneID2)
       {
-        completionHandler = v31->_completionHandler;
+        completionHandler = selfCopy->_completionHandler;
         v21 = [CPLErrors cplErrorWithCode:80 description:@"Missing required shared zone"];
         completionHandler[2](completionHandler, 0, v21);
 LABEL_25:
@@ -158,13 +158,13 @@ LABEL_25:
       v18 = 0;
     }
 
-    v23 = [(CPLCloudKitTransportTask *)v31 controller];
-    v21 = [v23 zoneIdentificationForCloudKitScope:v14 engineScope:v31->_scope];
+    controller = [(CPLCloudKitTransportTask *)selfCopy controller];
+    v21 = [controller zoneIdentificationForCloudKitScope:v14 engineScope:selfCopy->_scope];
 
-    if (v18 && v31->_sharedScope)
+    if (v18 && selfCopy->_sharedScope)
     {
-      v24 = [(CPLCloudKitTransportTask *)v31 controller];
-      v30 = [v24 zoneIdentificationForCloudKitScope:v18 engineScope:v31->_sharedScope];
+      controller2 = [(CPLCloudKitTransportTask *)selfCopy controller];
+      v30 = [controller2 zoneIdentificationForCloudKitScope:v18 engineScope:selfCopy->_sharedScope];
     }
 
     else
@@ -173,36 +173,36 @@ LABEL_25:
     }
 
     v25 = objc_alloc_init(NSMutableArray);
-    v26 = [v4 allKeys];
-    targetMapping = v31->_targetMapping;
-    knownRecords = v31->_knownRecords;
+    allKeys = [v4 allKeys];
+    targetMapping = selfCopy->_targetMapping;
+    knownRecords = selfCopy->_knownRecords;
     v40[0] = _NSConcreteStackBlock;
     v40[1] = 3221225472;
     v40[2] = sub_1000881D8;
     v40[3] = &unk_1002761D0;
-    v40[4] = v31;
+    v40[4] = selfCopy;
     v41 = v4;
     v35[0] = _NSConcreteStackBlock;
     v35[1] = 3221225472;
     v35[2] = sub_100088508;
     v35[3] = &unk_1002761F8;
     v36 = v41;
-    v37 = v32;
-    v38 = v31;
+    v37 = lCopy;
+    v38 = selfCopy;
     v39 = v25;
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
     v33[2] = sub_1000888A4;
     v33[3] = &unk_100272268;
-    v33[4] = v31;
+    v33[4] = selfCopy;
     v34 = v39;
     v28 = v39;
-    [(CPLCloudKitTransportTask *)v31 updatePrivatePropertiesOnAssetsWithScopedIdentifiers:v26 desiredKeys:&off_1002913E0 destinationZoneIdentification:v21 sharedZoneIdentification:v30 targetMapping:targetMapping knownRecords:knownRecords shouldUpdateRecord:v40 updateBlock:v35 completionHandler:v33];
+    [(CPLCloudKitTransportTask *)selfCopy updatePrivatePropertiesOnAssetsWithScopedIdentifiers:allKeys desiredKeys:&off_1002913E0 destinationZoneIdentification:v21 sharedZoneIdentification:v30 targetMapping:targetMapping knownRecords:knownRecords shouldUpdateRecord:v40 updateBlock:v35 completionHandler:v33];
 
     goto LABEL_25;
   }
 
-  v22 = v31->_completionHandler;
+  v22 = selfCopy->_completionHandler;
   v18 = [CPLErrors cplErrorWithCode:80 description:@"Missing required zone"];
   v22[2](v22, 0, v18);
 LABEL_26:

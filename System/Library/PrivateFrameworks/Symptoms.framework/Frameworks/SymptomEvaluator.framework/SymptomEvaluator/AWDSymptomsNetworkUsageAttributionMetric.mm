@@ -1,26 +1,26 @@
 @interface AWDSymptomsNetworkUsageAttributionMetric
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNetworkType:(id)a3;
+- (int)StringAsNetworkType:(id)type;
 - (int)networkType;
 - (int)usageAttributedTo;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNetworkType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasUsageAttributedTo:(BOOL)a3;
-- (void)setHasUsageBytes:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNetworkType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasUsageAttributedTo:(BOOL)to;
+- (void)setHasUsageBytes:(BOOL)bytes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsNetworkUsageAttributionMetric
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -46,9 +46,9 @@
   }
 }
 
-- (void)setHasNetworkType:(BOOL)a3
+- (void)setHasNetworkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -61,20 +61,20 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsNetworkType:(id)a3
+- (int)StringAsNetworkType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([typeCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([typeCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -100,9 +100,9 @@
   }
 }
 
-- (void)setHasUsageAttributedTo:(BOOL)a3
+- (void)setHasUsageAttributedTo:(BOOL)to
 {
-  if (a3)
+  if (to)
   {
     v3 = 16;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasUsageBytes:(BOOL)a3
+- (void)setHasUsageBytes:(BOOL)bytes
 {
-  if (a3)
+  if (bytes)
   {
     v3 = 4;
   }
@@ -136,20 +136,20 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsNetworkUsageAttributionMetric;
   v4 = [(AWDSymptomsNetworkUsageAttributionMetric *)&v8 description];
-  v5 = [(AWDSymptomsNetworkUsageAttributionMetric *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsNetworkUsageAttributionMetric *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -180,7 +180,7 @@ LABEL_3:
     v9 = off_278989EF8[v8];
   }
 
-  [v3 setObject:v9 forKey:@"networkType"];
+  [dictionary setObject:v9 forKey:@"networkType"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -205,7 +205,7 @@ LABEL_15:
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", self->_usageAttributedTo];
   }
 
-  [v3 setObject:v10 forKey:@"usageAttributedTo"];
+  [dictionary setObject:v10 forKey:@"usageAttributedTo"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -221,23 +221,23 @@ LABEL_5:
 
 LABEL_19:
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_usageBytes];
-  [v3 setObject:v11 forKey:@"usageBytes"];
+  [dictionary setObject:v11 forKey:@"usageBytes"];
 
   if (*&self->_has)
   {
 LABEL_6:
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_flowsImpactedCount];
-    [v3 setObject:v5 forKey:@"flowsImpactedCount"];
+    [dictionary setObject:v5 forKey:@"flowsImpactedCount"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -303,14 +303,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = self->_timestamp;
-    *(v4 + 40) |= 2u;
+    toCopy[2] = self->_timestamp;
+    *(toCopy + 40) |= 2u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -329,8 +329,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v4 + 8) = self->_networkType;
-  *(v4 + 40) |= 8u;
+  *(toCopy + 8) = self->_networkType;
+  *(toCopy + 40) |= 8u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -344,8 +344,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  *(v4 + 9) = self->_usageAttributedTo;
-  *(v4 + 40) |= 0x10u;
+  *(toCopy + 9) = self->_usageAttributedTo;
+  *(toCopy + 40) |= 0x10u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -359,21 +359,21 @@ LABEL_5:
   }
 
 LABEL_13:
-  v4[3] = self->_usageBytes;
-  *(v4 + 40) |= 4u;
+  toCopy[3] = self->_usageBytes;
+  *(toCopy + 40) |= 4u;
   if (*&self->_has)
   {
 LABEL_6:
-    v4[1] = self->_flowsImpactedCount;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = self->_flowsImpactedCount;
+    *(toCopy + 40) |= 1u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -440,23 +440,23 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_26:
     v5 = 0;
@@ -465,47 +465,47 @@ LABEL_26:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 40) & 8) == 0 || self->_networkType != *(v4 + 8))
+    if ((*(equalCopy + 40) & 8) == 0 || self->_networkType != *(equalCopy + 8))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 40) & 8) != 0)
+  else if ((*(equalCopy + 40) & 8) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 40) & 0x10) == 0 || self->_usageAttributedTo != *(v4 + 9))
+    if ((*(equalCopy + 40) & 0x10) == 0 || self->_usageAttributedTo != *(equalCopy + 9))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 40) & 0x10) != 0)
+  else if ((*(equalCopy + 40) & 0x10) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 40) & 4) == 0 || self->_usageBytes != *(v4 + 3))
+    if ((*(equalCopy + 40) & 4) == 0 || self->_usageBytes != *(equalCopy + 3))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 40) & 4) != 0)
+  else if ((*(equalCopy + 40) & 4) != 0)
   {
     goto LABEL_26;
   }
 
-  v5 = (*(v4 + 40) & 1) == 0;
+  v5 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_flowsImpactedCount != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_flowsImpactedCount != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
@@ -586,15 +586,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 40);
+  fromCopy = from;
+  v5 = *(fromCopy + 40);
   if ((v5 & 2) != 0)
   {
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v5 = *(v4 + 40);
+    v5 = *(fromCopy + 40);
     if ((v5 & 8) == 0)
     {
 LABEL_3:
@@ -607,14 +607,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 40) & 8) == 0)
+  else if ((*(fromCopy + 40) & 8) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_networkType = *(v4 + 8);
+  self->_networkType = *(fromCopy + 8);
   *&self->_has |= 8u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -627,9 +627,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_usageAttributedTo = *(v4 + 9);
+  self->_usageAttributedTo = *(fromCopy + 9);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 40);
+  v5 = *(fromCopy + 40);
   if ((v5 & 4) == 0)
   {
 LABEL_5:
@@ -642,12 +642,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_usageBytes = *(v4 + 3);
+  self->_usageBytes = *(fromCopy + 3);
   *&self->_has |= 4u;
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
 LABEL_6:
-    self->_flowsImpactedCount = *(v4 + 1);
+    self->_flowsImpactedCount = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

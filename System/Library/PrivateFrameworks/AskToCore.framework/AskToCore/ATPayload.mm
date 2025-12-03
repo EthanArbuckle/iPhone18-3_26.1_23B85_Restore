@@ -1,13 +1,13 @@
 @interface ATPayload
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)allResponses;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
 - (_TtC9AskToCore9ATPayload)init;
-- (_TtC9AskToCore9ATPayload)initWithDictionaryRepresentation:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(void *)a3;
+- (_TtC9AskToCore9ATPayload)initWithDictionaryRepresentation:(id)representation error:(id *)error;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATPayload
@@ -36,9 +36,9 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v5 = [objc_allocWithZone(swift_getObjectType()) initWithCopying_];
+  initWithCopying_ = [objc_allocWithZone(swift_getObjectType()) initWithCopying_];
   v3 = sub_2410DF8C0();
 
   return v3;
@@ -46,7 +46,7 @@
 
 - (NSDictionary)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ATPayload.dictionaryRepresentation.getter();
 
   if (v3)
@@ -62,7 +62,7 @@
   return v4;
 }
 
-- (_TtC9AskToCore9ATPayload)initWithDictionaryRepresentation:(id)a3 error:(id *)a4
+- (_TtC9AskToCore9ATPayload)initWithDictionaryRepresentation:(id)representation error:(id *)error
 {
   v4 = sub_2410DF050();
   swift_getObjectType();
@@ -71,18 +71,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  ATPayload.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  ATPayload.encode(with:)(coderCopy);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_2410DF4E0();
     swift_unknownObjectRelease();
@@ -91,7 +91,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = ATPayload.isEqual(_:)(v8);
@@ -102,7 +102,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ATPayload.hash.getter();
 
   return v3;
@@ -110,7 +110,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ATPayload.description.getter();
 
   v3 = sub_2410DF0A0();

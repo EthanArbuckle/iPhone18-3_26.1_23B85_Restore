@@ -1,7 +1,7 @@
 @interface NTKZeusFontLoader
-+ (id)_fontVariationAttributesForInlineWidth:(double)a3;
++ (id)_fontVariationAttributesForInlineWidth:(double)width;
 + (id)capeCodFontDescriptor;
-+ (id)capeCodInlineFontDescriptorWithInlineWidth:(double)a3;
++ (id)capeCodInlineFontDescriptorWithInlineWidth:(double)width;
 + (id)carrickFontDescriptor;
 + (id)clipperFontDescriptor;
 + (id)espaceFontDescriptor;
@@ -57,7 +57,7 @@
   return v3;
 }
 
-+ (id)capeCodInlineFontDescriptorWithInlineWidth:(double)a3
++ (id)capeCodInlineFontDescriptorWithInlineWidth:(double)width
 {
   if (qword_58828 != -1)
   {
@@ -66,7 +66,7 @@
 
   v5 = [qword_58820 copy];
   v6 = objc_opt_new();
-  v7 = [a1 _fontVariationAttributesForInlineWidth:a3];
+  v7 = [self _fontVariationAttributesForInlineWidth:width];
   [v6 setObject:v7 forKey:kCTFontVariationAttribute];
   v8 = objc_opt_new();
   if ([v8 count])
@@ -79,10 +79,10 @@
   return v9;
 }
 
-+ (id)_fontVariationAttributesForInlineWidth:(double)a3
++ (id)_fontVariationAttributesForInlineWidth:(double)width
 {
   v4 = objc_opt_new();
-  v5 = [NSNumber numberWithDouble:a3];
+  v5 = [NSNumber numberWithDouble:width];
   v6 = [NSNumber numberWithUnsignedInt:TextToFourCharCode()];
   [v4 setObject:v5 forKey:v6];
 

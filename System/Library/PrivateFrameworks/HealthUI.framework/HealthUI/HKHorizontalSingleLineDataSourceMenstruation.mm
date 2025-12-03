@@ -1,25 +1,25 @@
 @interface HKHorizontalSingleLineDataSourceMenstruation
-- (void)applyMarkStyleToPoint:(id)a3 sample:(id)a4;
+- (void)applyMarkStyleToPoint:(id)point sample:(id)sample;
 @end
 
 @implementation HKHorizontalSingleLineDataSourceMenstruation
 
-- (void)applyMarkStyleToPoint:(id)a3 sample:(id)a4
+- (void)applyMarkStyleToPoint:(id)point sample:(id)sample
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = [v5 metadata];
-  v7 = [v6 valueForKey:*MEMORY[0x1E696BB28]];
-  v8 = [v7 BOOLValue];
+  pointCopy = point;
+  sampleCopy = sample;
+  metadata = [sampleCopy metadata];
+  v7 = [metadata valueForKey:*MEMORY[0x1E696BB28]];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     v9 = 1;
   }
 
   else
   {
-    if ([v5 value] != 5)
+    if ([sampleCopy value] != 5)
     {
       goto LABEL_6;
     }
@@ -27,7 +27,7 @@
     v9 = 3;
   }
 
-  [v10 setMarkStyle:v9];
+  [pointCopy setMarkStyle:v9];
 LABEL_6:
 }
 

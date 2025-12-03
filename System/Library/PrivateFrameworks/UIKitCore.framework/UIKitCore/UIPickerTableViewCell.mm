@@ -1,20 +1,20 @@
 @interface UIPickerTableViewCell
-- (UIPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)_tapAction:(id)a3;
+- (UIPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)_tapAction:(id)action;
 @end
 
 @implementation UIPickerTableViewCell
 
-- (UIPickerTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (UIPickerTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = UIPickerTableViewCell;
-  v4 = [(UITableViewCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(UITableViewCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(UIView *)v4 traitCollection];
-    v7 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [v6 userInterfaceIdiom]);
+    traitCollection = [(UIView *)v4 traitCollection];
+    v7 = +[UIPickerView _styleForIdiom:](UIPickerView, "_styleForIdiom:", [traitCollection userInterfaceIdiom]);
     style = v5->_style;
     v5->_style = v7;
 
@@ -28,9 +28,9 @@
   return v5;
 }
 
-- (void)_tapAction:(id)a3
+- (void)_tapAction:(id)action
 {
-  if ([a3 state] == 3)
+  if ([action state] == 3)
   {
     pickerTable = self->pickerTable;
     v5 = [(UITableView *)pickerTable indexPathForCell:self];

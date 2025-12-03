@@ -1,56 +1,56 @@
 @interface UIFont
-+ (id)_thinSystemFontWithDialerCharacteristicsOfSize:(double)a3;
-+ (id)phPreferredBoldFontForTextStyle:(id)a3;
-+ (id)phPreferredFontForTextStyle:(id)a3;
-+ (id)phPreferredItalicFontForTextStyle:(id)a3;
-+ (id)phPreferredTightLeadingFontForTextStyle:(id)a3;
++ (id)_thinSystemFontWithDialerCharacteristicsOfSize:(double)size;
++ (id)phPreferredBoldFontForTextStyle:(id)style;
++ (id)phPreferredFontForTextStyle:(id)style;
++ (id)phPreferredItalicFontForTextStyle:(id)style;
++ (id)phPreferredTightLeadingFontForTextStyle:(id)style;
 - (UIFont)withCaseSensitiveAttribute;
 @end
 
 @implementation UIFont
 
-+ (id)phPreferredFontForTextStyle:(id)a3
++ (id)phPreferredFontForTextStyle:(id)style
 {
-  v3 = [UIFontDescriptor phPreferredFontDescriptorForTextStyle:a3];
+  v3 = [UIFontDescriptor phPreferredFontDescriptorForTextStyle:style];
   v4 = [UIFont fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
-+ (id)phPreferredBoldFontForTextStyle:(id)a3
++ (id)phPreferredBoldFontForTextStyle:(id)style
 {
-  v3 = [UIFontDescriptor phPreferredFontDescriptorForTextStyle:a3 addingSymbolicTraits:2];
+  v3 = [UIFontDescriptor phPreferredFontDescriptorForTextStyle:style addingSymbolicTraits:2];
   v4 = [UIFont fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
-+ (id)phPreferredItalicFontForTextStyle:(id)a3
++ (id)phPreferredItalicFontForTextStyle:(id)style
 {
-  v3 = [UIFontDescriptor phPreferredFontDescriptorForTextStyle:a3 addingSymbolicTraits:1];
+  v3 = [UIFontDescriptor phPreferredFontDescriptorForTextStyle:style addingSymbolicTraits:1];
   v4 = [UIFont fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
-+ (id)phPreferredTightLeadingFontForTextStyle:(id)a3
++ (id)phPreferredTightLeadingFontForTextStyle:(id)style
 {
-  v3 = [UIFontDescriptor phPreferredFontDescriptorForTextStyle:a3 addingSymbolicTraits:0x8000];
+  v3 = [UIFontDescriptor phPreferredFontDescriptorForTextStyle:style addingSymbolicTraits:0x8000];
   v4 = [UIFont fontWithDescriptor:v3 size:0.0];
-  v5 = [v4 withCaseSensitiveAttribute];
+  withCaseSensitiveAttribute = [v4 withCaseSensitiveAttribute];
 
-  return v5;
+  return withCaseSensitiveAttribute;
 }
 
-+ (id)_thinSystemFontWithDialerCharacteristicsOfSize:(double)a3
++ (id)_thinSystemFontWithDialerCharacteristicsOfSize:(double)size
 {
-  v3 = [UIFont _thinSystemFontOfSize:a3];
-  v4 = [v3 withCaseSensitiveAttribute];
+  v3 = [UIFont _thinSystemFontOfSize:size];
+  withCaseSensitiveAttribute = [v3 withCaseSensitiveAttribute];
 
-  return v4;
+  return withCaseSensitiveAttribute;
 }
 
 - (UIFont)withCaseSensitiveAttribute
@@ -66,8 +66,8 @@
   v14 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-  v6 = [(UIFont *)self fontDescriptor];
-  v7 = [v6 fontDescriptorByAddingAttributes:v5];
+  fontDescriptor = [(UIFont *)self fontDescriptor];
+  v7 = [fontDescriptor fontDescriptorByAddingAttributes:v5];
 
   v8 = [UIFont fontWithDescriptor:v7 size:0.0];
 

@@ -1,7 +1,7 @@
 @interface TSPDecoderDataInfo
 - (TSPDecoderDataInfo)init;
-- (TSPDecoderDataInfo)initWithIdentifier:(int64_t)a3 digest:(id)a4 length:(unint64_t)a5 preferredFilename:(id)a6 documentResourceLocator:(id)a7 externalFilePath:(id)a8;
-- (TSPDecoderDataInfo)initWithMessage:(const void *)a3;
+- (TSPDecoderDataInfo)initWithIdentifier:(int64_t)identifier digest:(id)digest length:(unint64_t)length preferredFilename:(id)filename documentResourceLocator:(id)locator externalFilePath:(id)path;
+- (TSPDecoderDataInfo)initWithMessage:(const void *)message;
 @end
 
 @implementation TSPDecoderDataInfo
@@ -22,51 +22,51 @@
   objc_exception_throw(v13);
 }
 
-- (TSPDecoderDataInfo)initWithIdentifier:(int64_t)a3 digest:(id)a4 length:(unint64_t)a5 preferredFilename:(id)a6 documentResourceLocator:(id)a7 externalFilePath:(id)a8
+- (TSPDecoderDataInfo)initWithIdentifier:(int64_t)identifier digest:(id)digest length:(unint64_t)length preferredFilename:(id)filename documentResourceLocator:(id)locator externalFilePath:(id)path
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  digestCopy = digest;
+  filenameCopy = filename;
+  locatorCopy = locator;
+  pathCopy = path;
   v37.receiver = self;
   v37.super_class = TSPDecoderDataInfo;
   v18 = [(TSPDecoderDataInfo *)&v37 init];
   v21 = v18;
   if (v18)
   {
-    v18->_identifier = a3;
-    v22 = objc_msgSend_copy(v14, v19, v20);
+    v18->_identifier = identifier;
+    v22 = objc_msgSend_copy(digestCopy, v19, v20);
     digest = v21->_digest;
     v21->_digest = v22;
 
-    v26 = objc_msgSend_copy(v15, v24, v25);
+    v26 = objc_msgSend_copy(filenameCopy, v24, v25);
     preferredFilename = v21->_preferredFilename;
     v21->_preferredFilename = v26;
 
-    v30 = objc_msgSend_copy(v16, v28, v29);
+    v30 = objc_msgSend_copy(locatorCopy, v28, v29);
     documentResourceLocator = v21->_documentResourceLocator;
     v21->_documentResourceLocator = v30;
 
-    v34 = objc_msgSend_copy(v17, v32, v33);
+    v34 = objc_msgSend_copy(pathCopy, v32, v33);
     externalFilePath = v21->_externalFilePath;
     v21->_externalFilePath = v34;
 
-    v21->_length = a5;
+    v21->_length = length;
   }
 
   return v21;
 }
 
-- (TSPDecoderDataInfo)initWithMessage:(const void *)a3
+- (TSPDecoderDataInfo)initWithMessage:(const void *)message
 {
   v5 = [TSPDigest alloc];
-  v8 = objc_msgSend_initFromProtobufString_(v5, v6, *(a3 + 3) & 0xFFFFFFFFFFFFFFFELL);
+  v8 = objc_msgSend_initFromProtobufString_(v5, v6, *(message + 3) & 0xFFFFFFFFFFFFFFFELL);
   if (v8)
   {
-    v10 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v7, *(a3 + 4) & 0xFFFFFFFFFFFFFFFELL);
-    if ((*(a3 + 16) & 8) != 0)
+    v10 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v7, *(message + 4) & 0xFFFFFFFFFFFFFFFELL);
+    if ((*(message + 16) & 8) != 0)
     {
-      v11 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v9, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL);
+      v11 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v9, *(message + 6) & 0xFFFFFFFFFFFFFFFELL);
     }
 
     else
@@ -74,9 +74,9 @@
       v11 = 0;
     }
 
-    if ((*(a3 + 16) & 0x80) != 0)
+    if ((*(message + 16) & 0x80) != 0)
     {
-      v13 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v9, *(a3 + 10) & 0xFFFFFFFFFFFFFFFELL);
+      v13 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v9, *(message + 10) & 0xFFFFFFFFFFFFFFFELL);
     }
 
     else
@@ -85,22 +85,22 @@
     }
 
     v14 = &qword_276C14018;
-    if ((*(a3 + 4) & 0x8000) != 0)
+    if ((*(message + 4) & 0x8000) != 0)
     {
-      v14 = (a3 + 128);
+      v14 = (message + 128);
     }
 
-    self = objc_msgSend_initWithIdentifier_digest_length_preferredFilename_documentResourceLocator_externalFilePath_(self, v9, *(a3 + 14), v8, *v14, v10, v11, v13);
+    self = objc_msgSend_initWithIdentifier_digest_length_preferredFilename_documentResourceLocator_externalFilePath_(self, v9, *(message + 14), v8, *v14, v10, v11, v13);
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

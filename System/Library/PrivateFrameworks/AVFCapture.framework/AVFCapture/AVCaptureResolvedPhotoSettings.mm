@@ -1,9 +1,9 @@
 @interface AVCaptureResolvedPhotoSettings
-+ (id)resolvedSettingsWithUniqueID:(int64_t)a3 photoDimensions:(id)a4 rawPhotoDimensions:(id)a5 previewDimensions:(id)a6 embeddedThumbnailDimensions:(id)a7 rawEmbeddedThumbnailDimensions:(id)a8 livePhotoMovieEnabled:(BOOL)a9 livePhotoMovieDimensions:(id)a10 portraitEffectsMatteDimensions:(id)a11 hairSegmentationMatteDimensions:(id)a12 skinSegmentationMatteDimensions:(id)a13 teethSegmentationMatteDimensions:(id)a14 glassesSegmentationMatteDimensions:(id)a15 spatialOverCapturePhotoDimensions:(id)a16 turboModeEnabled:(BOOL)a17 flashEnabled:(BOOL)a18 redEyeReductionEnabled:(BOOL)a19 HDREnabled:(BOOL)a20 adjustedPhotoFiltersEnabled:(BOOL)a21 EV0PhotoDeliveryEnabled:(BOOL)a22 stillImageStabilizationEnabled:(BOOL)a23 virtualDeviceFusionEnabled:(BOOL)a24 squareCropEnabled:(BOOL)a25 deferredPhotoProxyDimensions:(id)a26 photoProcessingTimeRange:(id *)a27 contentAwareDistortionCorrectionEnabled:(BOOL)a28 spatialPhotoCaptureEnabled:(BOOL)a29 photoManifest:(id)a30 digitalFlashUserInterfaceHints:(unint64_t)a31 digitalFlashUserInterfaceRGBEstimate:(id)a32 captureBeforeResolvingSettingsEnabled:(BOOL)a33;
++ (id)resolvedSettingsWithUniqueID:(int64_t)d photoDimensions:(id)dimensions rawPhotoDimensions:(id)photoDimensions previewDimensions:(id)previewDimensions embeddedThumbnailDimensions:(id)thumbnailDimensions rawEmbeddedThumbnailDimensions:(id)embeddedThumbnailDimensions livePhotoMovieEnabled:(BOOL)enabled livePhotoMovieDimensions:(id)self0 portraitEffectsMatteDimensions:(id)self1 hairSegmentationMatteDimensions:(id)self2 skinSegmentationMatteDimensions:(id)self3 teethSegmentationMatteDimensions:(id)self4 glassesSegmentationMatteDimensions:(id)self5 spatialOverCapturePhotoDimensions:(id)self6 turboModeEnabled:(BOOL)self7 flashEnabled:(BOOL)self8 redEyeReductionEnabled:(BOOL)self9 HDREnabled:(BOOL)rEnabled adjustedPhotoFiltersEnabled:(BOOL)filtersEnabled EV0PhotoDeliveryEnabled:(BOOL)deliveryEnabled stillImageStabilizationEnabled:(BOOL)stabilizationEnabled virtualDeviceFusionEnabled:(BOOL)fusionEnabled squareCropEnabled:(BOOL)cropEnabled deferredPhotoProxyDimensions:(id)proxyDimensions photoProcessingTimeRange:(id *)range contentAwareDistortionCorrectionEnabled:(BOOL)correctionEnabled spatialPhotoCaptureEnabled:(BOOL)captureEnabled photoManifest:(id)d0 digitalFlashUserInterfaceHints:(unint64_t)d1 digitalFlashUserInterfaceRGBEstimate:(id)d2 captureBeforeResolvingSettingsEnabled:(BOOL)d3;
 - (CMTimeRange)photoProcessingTimeRange;
 - (CMVideoDimensions)dimensionsForSemanticSegmentationMatteOfType:(AVSemanticSegmentationMatteType)semanticSegmentationMatteType;
 - (CMVideoDimensions)embeddedThumbnailDimensions;
-- (id)_initWithUniqueID:(int64_t)a3 photoDimensions:(id)a4 rawPhotoDimensions:(id)a5 previewDimensions:(id)a6 embeddedThumbnailDimensions:(id)a7 rawEmbeddedThumbnailDimensions:(id)a8 livePhotoMovieEnabled:(BOOL)a9 livePhotoMovieDimensions:(id)a10 portraitEffectsMatteDimensions:(id)a11 hairSegmentationMatteDimensions:(id)a12 skinSegmentationMatteDimensions:(id)a13 teethSegmentationMatteDimensions:(id)a14 glassesSegmentationMatteDimensions:(id)a15 spatialOverCapturePhotoDimensions:(id)a16 turboModeEnabled:(BOOL)a17 flashEnabled:(BOOL)a18 redEyeReductionEnabled:(BOOL)a19 HDREnabled:(BOOL)a20 adjustedPhotoFiltersEnabled:(BOOL)a21 EV0PhotoDeliveryEnabled:(BOOL)a22 stillImageStabilizationEnabled:(BOOL)a23 virtualDeviceFusionEnabled:(BOOL)a24 squareCropEnabled:(BOOL)a25 deferredPhotoProxyDimensions:(id)a26 photoProcessingTimeRange:(id *)a27 contentAwareDistortionCorrectionEnabled:(BOOL)a28 spatialPhotoCaptureEnabled:(BOOL)a29 photoManifest:(id)a30 digitalFlashUserInterfaceHints:(unint64_t)a31 digitalFlashUserInterfaceRGBEstimate:(id)a32 captureBeforeResolvingSettingsEnabled:(BOOL)a33;
+- (id)_initWithUniqueID:(int64_t)d photoDimensions:(id)dimensions rawPhotoDimensions:(id)photoDimensions previewDimensions:(id)previewDimensions embeddedThumbnailDimensions:(id)thumbnailDimensions rawEmbeddedThumbnailDimensions:(id)embeddedThumbnailDimensions livePhotoMovieEnabled:(BOOL)enabled livePhotoMovieDimensions:(id)self0 portraitEffectsMatteDimensions:(id)self1 hairSegmentationMatteDimensions:(id)self2 skinSegmentationMatteDimensions:(id)self3 teethSegmentationMatteDimensions:(id)self4 glassesSegmentationMatteDimensions:(id)self5 spatialOverCapturePhotoDimensions:(id)self6 turboModeEnabled:(BOOL)self7 flashEnabled:(BOOL)self8 redEyeReductionEnabled:(BOOL)self9 HDREnabled:(BOOL)rEnabled adjustedPhotoFiltersEnabled:(BOOL)filtersEnabled EV0PhotoDeliveryEnabled:(BOOL)deliveryEnabled stillImageStabilizationEnabled:(BOOL)stabilizationEnabled virtualDeviceFusionEnabled:(BOOL)fusionEnabled squareCropEnabled:(BOOL)cropEnabled deferredPhotoProxyDimensions:(id)proxyDimensions photoProcessingTimeRange:(id *)range contentAwareDistortionCorrectionEnabled:(BOOL)correctionEnabled spatialPhotoCaptureEnabled:(BOOL)captureEnabled photoManifest:(id)d0 digitalFlashUserInterfaceHints:(unint64_t)d1 digitalFlashUserInterfaceRGBEstimate:(id)d2 captureBeforeResolvingSettingsEnabled:(BOOL)d3;
 - (id)debugDescription;
 - (id)description;
 - (id)digitalFlashUserInterfaceRGBEstimate;
@@ -13,26 +13,26 @@
 
 @implementation AVCaptureResolvedPhotoSettings
 
-+ (id)resolvedSettingsWithUniqueID:(int64_t)a3 photoDimensions:(id)a4 rawPhotoDimensions:(id)a5 previewDimensions:(id)a6 embeddedThumbnailDimensions:(id)a7 rawEmbeddedThumbnailDimensions:(id)a8 livePhotoMovieEnabled:(BOOL)a9 livePhotoMovieDimensions:(id)a10 portraitEffectsMatteDimensions:(id)a11 hairSegmentationMatteDimensions:(id)a12 skinSegmentationMatteDimensions:(id)a13 teethSegmentationMatteDimensions:(id)a14 glassesSegmentationMatteDimensions:(id)a15 spatialOverCapturePhotoDimensions:(id)a16 turboModeEnabled:(BOOL)a17 flashEnabled:(BOOL)a18 redEyeReductionEnabled:(BOOL)a19 HDREnabled:(BOOL)a20 adjustedPhotoFiltersEnabled:(BOOL)a21 EV0PhotoDeliveryEnabled:(BOOL)a22 stillImageStabilizationEnabled:(BOOL)a23 virtualDeviceFusionEnabled:(BOOL)a24 squareCropEnabled:(BOOL)a25 deferredPhotoProxyDimensions:(id)a26 photoProcessingTimeRange:(id *)a27 contentAwareDistortionCorrectionEnabled:(BOOL)a28 spatialPhotoCaptureEnabled:(BOOL)a29 photoManifest:(id)a30 digitalFlashUserInterfaceHints:(unint64_t)a31 digitalFlashUserInterfaceRGBEstimate:(id)a32 captureBeforeResolvingSettingsEnabled:(BOOL)a33
++ (id)resolvedSettingsWithUniqueID:(int64_t)d photoDimensions:(id)dimensions rawPhotoDimensions:(id)photoDimensions previewDimensions:(id)previewDimensions embeddedThumbnailDimensions:(id)thumbnailDimensions rawEmbeddedThumbnailDimensions:(id)embeddedThumbnailDimensions livePhotoMovieEnabled:(BOOL)enabled livePhotoMovieDimensions:(id)self0 portraitEffectsMatteDimensions:(id)self1 hairSegmentationMatteDimensions:(id)self2 skinSegmentationMatteDimensions:(id)self3 teethSegmentationMatteDimensions:(id)self4 glassesSegmentationMatteDimensions:(id)self5 spatialOverCapturePhotoDimensions:(id)self6 turboModeEnabled:(BOOL)self7 flashEnabled:(BOOL)self8 redEyeReductionEnabled:(BOOL)self9 HDREnabled:(BOOL)rEnabled adjustedPhotoFiltersEnabled:(BOOL)filtersEnabled EV0PhotoDeliveryEnabled:(BOOL)deliveryEnabled stillImageStabilizationEnabled:(BOOL)stabilizationEnabled virtualDeviceFusionEnabled:(BOOL)fusionEnabled squareCropEnabled:(BOOL)cropEnabled deferredPhotoProxyDimensions:(id)proxyDimensions photoProcessingTimeRange:(id *)range contentAwareDistortionCorrectionEnabled:(BOOL)correctionEnabled spatialPhotoCaptureEnabled:(BOOL)captureEnabled photoManifest:(id)d0 digitalFlashUserInterfaceHints:(unint64_t)d1 digitalFlashUserInterfaceRGBEstimate:(id)d2 captureBeforeResolvingSettingsEnabled:(BOOL)d3
 {
   v33 = objc_alloc(objc_opt_class());
-  v34 = *&a27->var0.var3;
-  v47[0] = *&a27->var0.var0;
+  v34 = *&range->var0.var3;
+  v47[0] = *&range->var0.var0;
   v47[1] = v34;
-  v47[2] = *&a27->var1.var1;
-  LOBYTE(v40) = a33;
-  LOWORD(v39) = __PAIR16__(a29, a28);
-  LOBYTE(v38) = a25;
-  HIBYTE(v37) = a24;
-  BYTE6(v37) = a23;
-  WORD2(v37) = __PAIR16__(a22, a21);
-  WORD1(v37) = __PAIR16__(a20, a19);
-  LOWORD(v37) = __PAIR16__(a18, a17);
-  LOBYTE(v36) = a9;
-  return [v33 _initWithUniqueID:a3 photoDimensions:a4 rawPhotoDimensions:a5 previewDimensions:a6 embeddedThumbnailDimensions:a7 rawEmbeddedThumbnailDimensions:a8 livePhotoMovieEnabled:v36 livePhotoMovieDimensions:a10 portraitEffectsMatteDimensions:a11 hairSegmentationMatteDimensions:a12 skinSegmentationMatteDimensions:a13 teethSegmentationMatteDimensions:a14 glassesSegmentationMatteDimensions:a15 spatialOverCapturePhotoDimensions:a16 turboModeEnabled:v37 flashEnabled:v38 redEyeReductionEnabled:a26 HDREnabled:v47 adjustedPhotoFiltersEnabled:v39 EV0PhotoDeliveryEnabled:a30 stillImageStabilizationEnabled:a31 virtualDeviceFusionEnabled:a32 squareCropEnabled:v40 deferredPhotoProxyDimensions:? photoProcessingTimeRange:? contentAwareDistortionCorrectionEnabled:? spatialPhotoCaptureEnabled:? photoManifest:? digitalFlashUserInterfaceHints:? digitalFlashUserInterfaceRGBEstimate:? captureBeforeResolvingSettingsEnabled:?];
+  v47[2] = *&range->var1.var1;
+  LOBYTE(v40) = settingsEnabled;
+  LOWORD(v39) = __PAIR16__(captureEnabled, correctionEnabled);
+  LOBYTE(v38) = cropEnabled;
+  HIBYTE(v37) = fusionEnabled;
+  BYTE6(v37) = stabilizationEnabled;
+  WORD2(v37) = __PAIR16__(deliveryEnabled, filtersEnabled);
+  WORD1(v37) = __PAIR16__(rEnabled, reductionEnabled);
+  LOWORD(v37) = __PAIR16__(flashEnabled, modeEnabled);
+  LOBYTE(v36) = enabled;
+  return [v33 _initWithUniqueID:d photoDimensions:dimensions rawPhotoDimensions:photoDimensions previewDimensions:previewDimensions embeddedThumbnailDimensions:thumbnailDimensions rawEmbeddedThumbnailDimensions:embeddedThumbnailDimensions livePhotoMovieEnabled:v36 livePhotoMovieDimensions:movieDimensions portraitEffectsMatteDimensions:matteDimensions hairSegmentationMatteDimensions:segmentationMatteDimensions skinSegmentationMatteDimensions:skinSegmentationMatteDimensions teethSegmentationMatteDimensions:teethSegmentationMatteDimensions glassesSegmentationMatteDimensions:glassesSegmentationMatteDimensions spatialOverCapturePhotoDimensions:capturePhotoDimensions turboModeEnabled:v37 flashEnabled:v38 redEyeReductionEnabled:proxyDimensions HDREnabled:v47 adjustedPhotoFiltersEnabled:v39 EV0PhotoDeliveryEnabled:manifest stillImageStabilizationEnabled:hints virtualDeviceFusionEnabled:estimate squareCropEnabled:v40 deferredPhotoProxyDimensions:? photoProcessingTimeRange:? contentAwareDistortionCorrectionEnabled:? spatialPhotoCaptureEnabled:? photoManifest:? digitalFlashUserInterfaceHints:? digitalFlashUserInterfaceRGBEstimate:? captureBeforeResolvingSettingsEnabled:?];
 }
 
-- (id)_initWithUniqueID:(int64_t)a3 photoDimensions:(id)a4 rawPhotoDimensions:(id)a5 previewDimensions:(id)a6 embeddedThumbnailDimensions:(id)a7 rawEmbeddedThumbnailDimensions:(id)a8 livePhotoMovieEnabled:(BOOL)a9 livePhotoMovieDimensions:(id)a10 portraitEffectsMatteDimensions:(id)a11 hairSegmentationMatteDimensions:(id)a12 skinSegmentationMatteDimensions:(id)a13 teethSegmentationMatteDimensions:(id)a14 glassesSegmentationMatteDimensions:(id)a15 spatialOverCapturePhotoDimensions:(id)a16 turboModeEnabled:(BOOL)a17 flashEnabled:(BOOL)a18 redEyeReductionEnabled:(BOOL)a19 HDREnabled:(BOOL)a20 adjustedPhotoFiltersEnabled:(BOOL)a21 EV0PhotoDeliveryEnabled:(BOOL)a22 stillImageStabilizationEnabled:(BOOL)a23 virtualDeviceFusionEnabled:(BOOL)a24 squareCropEnabled:(BOOL)a25 deferredPhotoProxyDimensions:(id)a26 photoProcessingTimeRange:(id *)a27 contentAwareDistortionCorrectionEnabled:(BOOL)a28 spatialPhotoCaptureEnabled:(BOOL)a29 photoManifest:(id)a30 digitalFlashUserInterfaceHints:(unint64_t)a31 digitalFlashUserInterfaceRGBEstimate:(id)a32 captureBeforeResolvingSettingsEnabled:(BOOL)a33
+- (id)_initWithUniqueID:(int64_t)d photoDimensions:(id)dimensions rawPhotoDimensions:(id)photoDimensions previewDimensions:(id)previewDimensions embeddedThumbnailDimensions:(id)thumbnailDimensions rawEmbeddedThumbnailDimensions:(id)embeddedThumbnailDimensions livePhotoMovieEnabled:(BOOL)enabled livePhotoMovieDimensions:(id)self0 portraitEffectsMatteDimensions:(id)self1 hairSegmentationMatteDimensions:(id)self2 skinSegmentationMatteDimensions:(id)self3 teethSegmentationMatteDimensions:(id)self4 glassesSegmentationMatteDimensions:(id)self5 spatialOverCapturePhotoDimensions:(id)self6 turboModeEnabled:(BOOL)self7 flashEnabled:(BOOL)self8 redEyeReductionEnabled:(BOOL)self9 HDREnabled:(BOOL)rEnabled adjustedPhotoFiltersEnabled:(BOOL)filtersEnabled EV0PhotoDeliveryEnabled:(BOOL)deliveryEnabled stillImageStabilizationEnabled:(BOOL)stabilizationEnabled virtualDeviceFusionEnabled:(BOOL)fusionEnabled squareCropEnabled:(BOOL)cropEnabled deferredPhotoProxyDimensions:(id)proxyDimensions photoProcessingTimeRange:(id *)range contentAwareDistortionCorrectionEnabled:(BOOL)correctionEnabled spatialPhotoCaptureEnabled:(BOOL)captureEnabled photoManifest:(id)d0 digitalFlashUserInterfaceHints:(unint64_t)d1 digitalFlashUserInterfaceRGBEstimate:(id)d2 captureBeforeResolvingSettingsEnabled:(BOOL)d3
 {
   v45.receiver = self;
   v45.super_class = AVCaptureResolvedPhotoSettings;
@@ -43,42 +43,42 @@
     v39->_internal = v40;
     if (v40)
     {
-      v40->uniqueID = a3;
-      v39->_internal->photoDimensions = a4;
-      v39->_internal->rawPhotoDimensions = a5;
-      v39->_internal->previewDimensions = a6;
-      v39->_internal->embeddedThumbnailDimensions = a7;
-      v39->_internal->rawEmbeddedThumbnailDimensions = a8;
-      v39->_internal->livePhotoMovieEnabled = a9;
-      v39->_internal->livePhotoMovieDimensions = a10;
-      v39->_internal->portraitEffectsMatteDimensions = a11;
-      v39->_internal->hairSegmentationMatteDimensions = a12;
-      v39->_internal->skinSegmentationMatteDimensions = a13;
-      v39->_internal->teethSegmentationMatteDimensions = a14;
-      v39->_internal->glassesSegmentationMatteDimensions = a15;
-      v39->_internal->spatialOverCapturePhotoDimensions = a16;
-      v39->_internal->turboModeEnabled = a17;
-      v39->_internal->flashEnabled = a18;
-      v39->_internal->redEyeReductionEnabled = a19;
-      v39->_internal->HDREnabled = a20;
-      v39->_internal->adjustedPhotoFiltersEnabled = a21;
-      v39->_internal->EV0PhotoDeliveryEnabled = a22;
-      v39->_internal->stillImageStabilizationEnabled = a23;
-      v39->_internal->virtualDeviceFusionEnabled = a24;
-      v39->_internal->squareCropEnabled = a25;
-      v39->_internal->deferredPhotoProxyDimensions = a26;
-      v41 = *&a27->var0.var0;
-      v42 = *&a27->var0.var3;
+      v40->uniqueID = d;
+      v39->_internal->photoDimensions = dimensions;
+      v39->_internal->rawPhotoDimensions = photoDimensions;
+      v39->_internal->previewDimensions = previewDimensions;
+      v39->_internal->embeddedThumbnailDimensions = thumbnailDimensions;
+      v39->_internal->rawEmbeddedThumbnailDimensions = embeddedThumbnailDimensions;
+      v39->_internal->livePhotoMovieEnabled = enabled;
+      v39->_internal->livePhotoMovieDimensions = movieDimensions;
+      v39->_internal->portraitEffectsMatteDimensions = matteDimensions;
+      v39->_internal->hairSegmentationMatteDimensions = segmentationMatteDimensions;
+      v39->_internal->skinSegmentationMatteDimensions = skinSegmentationMatteDimensions;
+      v39->_internal->teethSegmentationMatteDimensions = teethSegmentationMatteDimensions;
+      v39->_internal->glassesSegmentationMatteDimensions = glassesSegmentationMatteDimensions;
+      v39->_internal->spatialOverCapturePhotoDimensions = capturePhotoDimensions;
+      v39->_internal->turboModeEnabled = modeEnabled;
+      v39->_internal->flashEnabled = flashEnabled;
+      v39->_internal->redEyeReductionEnabled = reductionEnabled;
+      v39->_internal->HDREnabled = rEnabled;
+      v39->_internal->adjustedPhotoFiltersEnabled = filtersEnabled;
+      v39->_internal->EV0PhotoDeliveryEnabled = deliveryEnabled;
+      v39->_internal->stillImageStabilizationEnabled = stabilizationEnabled;
+      v39->_internal->virtualDeviceFusionEnabled = fusionEnabled;
+      v39->_internal->squareCropEnabled = cropEnabled;
+      v39->_internal->deferredPhotoProxyDimensions = proxyDimensions;
+      v41 = *&range->var0.var0;
+      v42 = *&range->var0.var3;
       internal = v39->_internal;
-      *&internal->photoProcessingTimeRange.duration.timescale = *&a27->var1.var1;
+      *&internal->photoProcessingTimeRange.duration.timescale = *&range->var1.var1;
       *&internal->photoProcessingTimeRange.start.epoch = v42;
       *&internal->photoProcessingTimeRange.start.value = v41;
-      v39->_internal->contentAwareDistortionCorrectionEnabled = a28;
-      v39->_internal->spatialPhotoCaptureEnabled = a29;
-      v39->_internal->photoManifest = [a30 copy];
-      v39->_internal->digitalFlashUserInterfaceHints = a31;
-      v39->_internal->digitalFlashUserInterfaceRGBEstimate = [a32 copy];
-      v39->_internal->captureBeforeResolvingSettingsEnabled = a33;
+      v39->_internal->contentAwareDistortionCorrectionEnabled = correctionEnabled;
+      v39->_internal->spatialPhotoCaptureEnabled = captureEnabled;
+      v39->_internal->photoManifest = [manifest copy];
+      v39->_internal->digitalFlashUserInterfaceHints = hints;
+      v39->_internal->digitalFlashUserInterfaceRGBEstimate = [estimate copy];
+      v39->_internal->captureBeforeResolvingSettingsEnabled = settingsEnabled;
     }
   }
 
@@ -100,7 +100,7 @@
 - (id)debugDescription
 {
   internal = self->_internal;
-  v4 = &stru_1F1CBCFE8;
+  height = &stru_1F1CBCFE8;
   if (internal->flashEnabled)
   {
     v5 = @" flash:ON";
@@ -201,7 +201,7 @@
     height = v18->rawPhotoDimensions.height;
     if (height >= 1)
     {
-      v4 = [*(v14 + 3776) stringWithFormat:@" raw:{%dx%d}", v18->rawPhotoDimensions.width, height];
+      height = [*(v14 + 3776) stringWithFormat:@" raw:{%dx%d}", v18->rawPhotoDimensions.width, height];
       v18 = self->_internal;
     }
   }
@@ -217,19 +217,19 @@
     v51 = [*(v14 + 3776) stringWithFormat:@" prev:{%dx%d}", width, v21];
   }
 
-  v22 = [(AVCaptureResolvedPhotoSettings *)self embeddedThumbnailDimensions];
+  embeddedThumbnailDimensions = [(AVCaptureResolvedPhotoSettings *)self embeddedThumbnailDimensions];
   v23 = &stru_1F1CBCFE8;
-  if (v22.width >= 1 && v22.height >= 1)
+  if (embeddedThumbnailDimensions.width >= 1 && embeddedThumbnailDimensions.height >= 1)
   {
-    v23 = [*(v14 + 3776) stringWithFormat:@" thumb:{%dx%d}", v22, HIDWORD(*&v22)];
+    v23 = [*(v14 + 3776) stringWithFormat:@" thumb:{%dx%d}", embeddedThumbnailDimensions, HIDWORD(*&embeddedThumbnailDimensions)];
   }
 
   v50 = v23;
-  v24 = [(AVCaptureResolvedPhotoSettings *)self rawEmbeddedThumbnailDimensions];
+  rawEmbeddedThumbnailDimensions = [(AVCaptureResolvedPhotoSettings *)self rawEmbeddedThumbnailDimensions];
   v25 = &stru_1F1CBCFE8;
-  if (v24.width >= 1 && v24.height >= 1)
+  if (rawEmbeddedThumbnailDimensions.width >= 1 && rawEmbeddedThumbnailDimensions.height >= 1)
   {
-    v25 = [*(v14 + 3776) stringWithFormat:@" raw-thumb:{%dx%d}", v24, HIDWORD(*&v24)];
+    v25 = [*(v14 + 3776) stringWithFormat:@" raw-thumb:{%dx%d}", rawEmbeddedThumbnailDimensions, HIDWORD(*&rawEmbeddedThumbnailDimensions)];
   }
 
   v49 = v25;
@@ -346,7 +346,7 @@
   lhs = v43->photoProcessingTimeRange.start;
   rhs = v43->photoProcessingTimeRange.duration;
   CMTimeAdd(&time, &lhs, &rhs);
-  return [MEMORY[0x1E696AEC0] stringWithFormat:@"uid:%lld %@%@%@%@%@%@%@%@%@%@%@%@%@%@%@", self->_internal->uniqueID, v53, v4, v51, v50, v49, v48, v47, v46, v30, v32, v34, v40, v39, v38, objc_msgSend(v41, "stringWithFormat:", @" time:%.3f-%.3f", *&Seconds, CMTimeGetSeconds(&time))];
+  return [MEMORY[0x1E696AEC0] stringWithFormat:@"uid:%lld %@%@%@%@%@%@%@%@%@%@%@%@%@%@%@", self->_internal->uniqueID, v53, height, v51, v50, v49, v48, v47, v46, v30, v32, v34, v40, v39, v38, objc_msgSend(v41, "stringWithFormat:", @" time:%.3f-%.3f", *&Seconds, CMTimeGetSeconds(&time))];
 }
 
 - (id)description

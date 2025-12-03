@@ -1,36 +1,36 @@
 @interface HUTriggerTimeConditionDetailEditorViewController
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4;
+- (Class)cellClassForItem:(id)item indexPath:(id)path;
 - (HFTimeRangeCondition)rangeCondition;
 - (HUTriggerTimeConditionDetailEditorDelegate)delegate;
-- (HUTriggerTimeConditionDetailEditorViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4;
-- (HUTriggerTimeConditionDetailEditorViewController)initWithRangeCondition:(id)a3 delegate:(id)a4;
+- (HUTriggerTimeConditionDetailEditorViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style;
+- (HUTriggerTimeConditionDetailEditorViewController)initWithRangeCondition:(id)condition delegate:(id)delegate;
 - (id)allCellClasses;
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3;
-- (void)_cancel:(id)a3;
-- (void)_done:(id)a3;
-- (void)datePickerCell:(id)a3 didSelectDate:(id)a4;
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5;
-- (void)significantEventOffsetPicker:(id)a3 didSelectOffset:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6;
+- (unint64_t)automaticDisablingReasonsForItem:(id)item;
+- (void)_cancel:(id)_cancel;
+- (void)_done:(id)_done;
+- (void)datePickerCell:(id)cell didSelectDate:(id)date;
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path;
+- (void)significantEventOffsetPicker:(id)picker didSelectOffset:(id)offset;
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
 @implementation HUTriggerTimeConditionDetailEditorViewController
 
-- (HUTriggerTimeConditionDetailEditorViewController)initWithItemManager:(id)a3 tableViewStyle:(int64_t)a4
+- (HUTriggerTimeConditionDetailEditorViewController)initWithItemManager:(id)manager tableViewStyle:(int64_t)style
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithItemManager_tableViewStyle_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUTriggerTimeConditionDetailEditorViewController.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerTimeConditionDetailEditorViewController initWithItemManager:tableViewStyle:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTriggerTimeConditionDetailEditorViewController.m" lineNumber:32 description:{@"%s is unavailable; use %@ instead", "-[HUTriggerTimeConditionDetailEditorViewController initWithItemManager:tableViewStyle:]", v7}];
 
   return 0;
 }
 
-- (HUTriggerTimeConditionDetailEditorViewController)initWithRangeCondition:(id)a3 delegate:(id)a4
+- (HUTriggerTimeConditionDetailEditorViewController)initWithRangeCondition:(id)condition delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HUTriggerTimeConditionDetailEditorItemManager alloc] initWithDelegate:self rangeCondition:v7];
+  delegateCopy = delegate;
+  conditionCopy = condition;
+  v8 = [[HUTriggerTimeConditionDetailEditorItemManager alloc] initWithDelegate:self rangeCondition:conditionCopy];
 
   v12.receiver = self;
   v12.super_class = HUTriggerTimeConditionDetailEditorViewController;
@@ -38,7 +38,7 @@
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->_delegate, v6);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
   }
 
   return v10;
@@ -46,10 +46,10 @@
 
 - (HFTimeRangeCondition)rangeCondition
 {
-  v2 = [(HUItemTableViewController *)self itemManager];
-  v3 = [v2 rangeCondition];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  rangeCondition = [itemManager rangeCondition];
 
-  return v3;
+  return rangeCondition;
 }
 
 - (void)viewDidLoad
@@ -57,32 +57,32 @@
   v9.receiver = self;
   v9.super_class = HUTriggerTimeConditionDetailEditorViewController;
   [(HUItemTableViewController *)&v9 viewDidLoad];
-  v3 = [(HUTriggerTimeConditionDetailEditorViewController *)self tableView];
-  [v3 setSeparatorStyle:1];
+  tableView = [(HUTriggerTimeConditionDetailEditorViewController *)self tableView];
+  [tableView setSeparatorStyle:1];
 
   v4 = _HULocalizedStringWithDefaultValue(@"HUTriggerTimeConditionDetailEditorTitle", @"HUTriggerTimeConditionDetailEditorTitle", 1);
   [(HUTriggerTimeConditionDetailEditorViewController *)self setTitle:v4];
 
   v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:1 target:self action:sel__cancel_];
-  v6 = [(HUTriggerTimeConditionDetailEditorViewController *)self navigationItem];
-  [v6 setLeftBarButtonItem:v5];
+  navigationItem = [(HUTriggerTimeConditionDetailEditorViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v5];
 
   v7 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:0 target:self action:sel__done_];
-  v8 = [(HUTriggerTimeConditionDetailEditorViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v7];
+  navigationItem2 = [(HUTriggerTimeConditionDetailEditorViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v7];
 }
 
-- (void)_cancel:(id)a3
+- (void)_cancel:(id)_cancel
 {
-  v4 = [(HUTriggerTimeConditionDetailEditorViewController *)self delegate];
-  [v4 timeConditionEditorDidCancel:self];
+  delegate = [(HUTriggerTimeConditionDetailEditorViewController *)self delegate];
+  [delegate timeConditionEditorDidCancel:self];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
-  v5 = [(HUTriggerTimeConditionDetailEditorViewController *)self delegate];
-  v4 = [(HUTriggerTimeConditionDetailEditorViewController *)self rangeCondition];
-  [v5 timeConditionEditor:self didFinishWithCondition:v4];
+  delegate = [(HUTriggerTimeConditionDetailEditorViewController *)self delegate];
+  rangeCondition = [(HUTriggerTimeConditionDetailEditorViewController *)self rangeCondition];
+  [delegate timeConditionEditor:self didFinishWithCondition:rangeCondition];
 }
 
 - (id)allCellClasses
@@ -92,11 +92,11 @@
   return [v2 setWithObjects:{v3, objc_opt_class(), 0}];
 }
 
-- (Class)cellClassForItem:(id)a3 indexPath:(id)a4
+- (Class)cellClassForItem:(id)item indexPath:(id)path
 {
-  v5 = a3;
-  v6 = [(HUItemTableViewController *)self itemManager];
-  v7 = [v6 primitiveConditionForPickerItem:v5];
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v7 = [itemManager primitiveConditionForPickerItem:itemCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
@@ -113,16 +113,16 @@
   return v8;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4 indexPath:(id)a5
+- (void)setupCell:(id)cell forItem:(id)item indexPath:(id)path
 {
-  v8 = a3;
+  cellCopy = cell;
   v10.receiver = self;
   v10.super_class = HUTriggerTimeConditionDetailEditorViewController;
-  [(HUItemTableViewController *)&v10 setupCell:v8 forItem:a4 indexPath:a5];
+  [(HUItemTableViewController *)&v10 setupCell:cellCopy forItem:item indexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v8 setDelegate:self];
+    [cellCopy setDelegate:self];
   }
 
   else
@@ -130,7 +130,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = cellCopy;
       [v9 setDelegate:self];
       [v9 setHideTitleLabel:1];
       [v9 setLeftMargin:8.0];
@@ -138,22 +138,22 @@
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 indexPath:(id)a5 animated:(BOOL)a6
+- (void)updateCell:(id)cell forItem:(id)item indexPath:(id)path animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
+  animatedCopy = animated;
+  cellCopy = cell;
   v29.receiver = self;
   v29.super_class = HUTriggerTimeConditionDetailEditorViewController;
-  v11 = a4;
-  [(HUItemTableViewController *)&v29 updateCell:v10 forItem:v11 indexPath:a5 animated:v6];
-  v12 = [(HUItemTableViewController *)self itemManager];
-  v13 = [v12 primitiveConditionForPickerItem:v11];
+  itemCopy = item;
+  [(HUItemTableViewController *)&v29 updateCell:cellCopy forItem:itemCopy indexPath:path animated:animatedCopy];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v13 = [itemManager primitiveConditionForPickerItem:itemCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v14 = objc_opt_class();
-    v15 = v10;
+    v15 = cellCopy;
     if (v15)
     {
       if (objc_opt_isKindOfClass())
@@ -172,16 +172,16 @@
         goto LABEL_9;
       }
 
-      v18 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
       v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v18 handleFailureInFunction:v19 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v14, objc_opt_class(), v29.receiver, v29.super_class}];
+      [currentHandler handleFailureInFunction:v19 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v14, objc_opt_class(), v29.receiver, v29.super_class}];
     }
 
     v17 = 0;
 LABEL_9:
 
-    v20 = [v13 dateComponents];
-    [v17 setTimeComponents:v20];
+    dateComponents = [v13 dateComponents];
+    [v17 setTimeComponents:dateComponents];
 LABEL_22:
 
     goto LABEL_23;
@@ -191,7 +191,7 @@ LABEL_22:
   if (objc_opt_isKindOfClass())
   {
     v21 = objc_opt_class();
-    v22 = v10;
+    v22 = cellCopy;
     if (v22)
     {
       if (objc_opt_isKindOfClass())
@@ -210,22 +210,22 @@ LABEL_22:
         goto LABEL_18;
       }
 
-      v24 = [MEMORY[0x277CCA890] currentHandler];
+      currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
       v25 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-      [v24 handleFailureInFunction:v25 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v21, objc_opt_class(), v29.receiver, v29.super_class}];
+      [currentHandler2 handleFailureInFunction:v25 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v21, objc_opt_class(), v29.receiver, v29.super_class}];
     }
 
     v17 = 0;
 LABEL_18:
 
-    v20 = v13;
-    v26 = [v20 significantEvent];
-    [v17 setSignificantEvent:v26];
+    dateComponents = v13;
+    significantEvent = [dateComponents significantEvent];
+    [v17 setSignificantEvent:significantEvent];
 
-    v27 = [v20 offset];
-    if (v27)
+    offset = [dateComponents offset];
+    if (offset)
     {
-      [v17 setCurrentOffset:v27];
+      [v17 setCurrentOffset:offset];
     }
 
     else
@@ -240,22 +240,22 @@ LABEL_18:
 LABEL_23:
 }
 
-- (unint64_t)automaticDisablingReasonsForItem:(id)a3
+- (unint64_t)automaticDisablingReasonsForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(HUItemTableViewController *)self itemManager];
-  v6 = [v5 startConditionPickerItem];
-  v7 = v6;
-  if (v6 == v4)
+  itemCopy = item;
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  startConditionPickerItem = [itemManager startConditionPickerItem];
+  v7 = startConditionPickerItem;
+  if (startConditionPickerItem == itemCopy)
   {
 
     goto LABEL_5;
   }
 
-  v8 = [(HUItemTableViewController *)self itemManager];
-  v9 = [v8 endConditionPickerItem];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  endConditionPickerItem = [itemManager2 endConditionPickerItem];
 
-  if (v9 == v4)
+  if (endConditionPickerItem == itemCopy)
   {
 LABEL_5:
     v10 = 1;
@@ -264,25 +264,25 @@ LABEL_5:
 
   v12.receiver = self;
   v12.super_class = HUTriggerTimeConditionDetailEditorViewController;
-  v10 = [(HUItemTableViewController *)&v12 automaticDisablingReasonsForItem:v4];
+  v10 = [(HUItemTableViewController *)&v12 automaticDisablingReasonsForItem:itemCopy];
 LABEL_6:
 
   return v10;
 }
 
-- (void)significantEventOffsetPicker:(id)a3 didSelectOffset:(id)a4
+- (void)significantEventOffsetPicker:(id)picker didSelectOffset:(id)offset
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUTriggerTimeConditionDetailEditorViewController *)self tableView];
-  v22 = [v8 indexPathForCell:v7];
+  offsetCopy = offset;
+  pickerCopy = picker;
+  tableView = [(HUTriggerTimeConditionDetailEditorViewController *)self tableView];
+  v22 = [tableView indexPathForCell:pickerCopy];
 
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v22];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:v22];
 
   v11 = objc_opt_class();
-  v12 = [(HUItemTableViewController *)self itemManager];
-  v13 = [v12 primitiveConditionForPickerItem:v10];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  v13 = [itemManager2 primitiveConditionForPickerItem:v10];
   if (v13)
   {
     if (objc_opt_isKindOfClass())
@@ -301,38 +301,38 @@ LABEL_6:
       goto LABEL_8;
     }
 
-    v16 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v16 handleFailureInFunction:v17 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v17 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v11, objc_opt_class()}];
   }
 
   v15 = 0;
 LABEL_8:
 
   v18 = objc_alloc(MEMORY[0x277D14B70]);
-  v19 = [v15 significantEvent];
-  v20 = [v18 initWithSignificantEvent:v19 offset:v6 comparisonType:{objc_msgSend(v15, "comparisonType")}];
+  significantEvent = [v15 significantEvent];
+  v20 = [v18 initWithSignificantEvent:significantEvent offset:offsetCopy comparisonType:{objc_msgSend(v15, "comparisonType")}];
 
-  v21 = [(HUItemTableViewController *)self itemManager];
-  [v21 setPrimitiveCondition:v20 forPickerItem:v10];
+  itemManager3 = [(HUItemTableViewController *)self itemManager];
+  [itemManager3 setPrimitiveCondition:v20 forPickerItem:v10];
 }
 
-- (void)datePickerCell:(id)a3 didSelectDate:(id)a4
+- (void)datePickerCell:(id)cell didSelectDate:(id)date
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUTriggerTimeConditionDetailEditorViewController *)self tableView];
-  v22 = [v8 indexPathForCell:v7];
+  dateCopy = date;
+  cellCopy = cell;
+  tableView = [(HUTriggerTimeConditionDetailEditorViewController *)self tableView];
+  v22 = [tableView indexPathForCell:cellCopy];
 
-  v9 = [(HUItemTableViewController *)self itemManager];
-  v10 = [v9 displayedItemAtIndexPath:v22];
+  itemManager = [(HUItemTableViewController *)self itemManager];
+  v10 = [itemManager displayedItemAtIndexPath:v22];
 
-  v11 = [MEMORY[0x277CBEA80] currentCalendar];
-  v12 = [v11 components:96 fromDate:v6];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v12 = [currentCalendar components:96 fromDate:dateCopy];
 
   v13 = objc_opt_class();
-  v14 = [(HUItemTableViewController *)self itemManager];
-  v15 = [v14 primitiveConditionForPickerItem:v10];
+  itemManager2 = [(HUItemTableViewController *)self itemManager];
+  v15 = [itemManager2 primitiveConditionForPickerItem:v10];
   if (v15)
   {
     if (objc_opt_isKindOfClass())
@@ -351,17 +351,17 @@ LABEL_8:
       goto LABEL_8;
     }
 
-    v18 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v18 handleFailureInFunction:v19 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v13, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v19 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v13, objc_opt_class()}];
   }
 
   v17 = 0;
 LABEL_8:
 
   v20 = [objc_alloc(MEMORY[0x277D145F0]) initWithDateComponents:v12 comparisonType:{objc_msgSend(v17, "comparisonType")}];
-  v21 = [(HUItemTableViewController *)self itemManager];
-  [v21 setPrimitiveCondition:v20 forPickerItem:v10];
+  itemManager3 = [(HUItemTableViewController *)self itemManager];
+  [itemManager3 setPrimitiveCondition:v20 forPickerItem:v10];
 }
 
 - (HUTriggerTimeConditionDetailEditorDelegate)delegate

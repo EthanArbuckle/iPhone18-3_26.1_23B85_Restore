@@ -1,17 +1,17 @@
 @interface TSDContainerRep
-+ (id)childrenFromLayoutInContainerRep:(id)a3;
-+ (id)containerRep:(id)a3 hitRep:(CGPoint)a4 withGesture:(id)a5 passingTest:(id)a6;
-- (BOOL)shouldHitTestChildImageRep:(id)a3;
++ (id)childrenFromLayoutInContainerRep:(id)rep;
++ (id)containerRep:(id)rep hitRep:(CGPoint)hitRep withGesture:(id)gesture passingTest:(id)test;
+- (BOOL)shouldHitTestChildImageRep:(id)rep;
 @end
 
 @implementation TSDContainerRep
 
-+ (id)childrenFromLayoutInContainerRep:(id)a3
++ (id)childrenFromLayoutInContainerRep:(id)rep
 {
-  v4 = [a3 childReps];
-  v5 = [objc_msgSend(a3 "layout")];
+  childReps = [rep childReps];
+  v5 = [objc_msgSend(rep "layout")];
   v6 = [v5 count];
-  if (v6 == [v4 count])
+  if (v6 == [childReps count])
   {
     v29 = 0u;
     v30 = 0u;
@@ -33,7 +33,7 @@ LABEL_4:
         }
 
         v12 = *(*(&v27 + 1) + 8 * v11);
-        if ([objc_msgSend(v4 objectAtIndex:{v9), "layout"}] != v12)
+        if ([objc_msgSend(childReps objectAtIndex:{v9), "layout"}] != v12)
         {
           break;
         }
@@ -63,7 +63,7 @@ LABEL_10:
 
       v14 = v13;
       v15 = 0;
-      while ([objc_msgSend(v4 objectAtIndex:{v15), "parentRep"}] == a3)
+      while ([objc_msgSend(childReps objectAtIndex:{v15), "parentRep"}] == rep)
       {
         if (v14 == ++v15)
         {
@@ -73,7 +73,7 @@ LABEL_10:
     }
   }
 
-  v4 = +[NSMutableArray array];
+  childReps = +[NSMutableArray array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -94,26 +94,26 @@ LABEL_10:
         }
 
         v20 = *(*(&v23 + 1) + 8 * v19);
-        v21 = [objc_msgSend(a3 "canvas")];
+        v21 = [objc_msgSend(rep "canvas")];
         if (v21)
         {
           goto LABEL_24;
         }
 
         v21 = [objc_alloc(objc_msgSend(v20 "repClassOverride"))];
-        [objc_msgSend(a3 "canvas")];
+        [objc_msgSend(rep "canvas")];
         if (objc_opt_respondsToSelector())
         {
-          [objc_msgSend(objc_msgSend(a3 "canvas")];
+          [objc_msgSend(objc_msgSend(rep "canvas")];
         }
 
         if (v21)
         {
 LABEL_24:
-          [v4 addObject:v21];
+          [childReps addObject:v21];
         }
 
-        [v21 setParentRep:a3];
+        [v21 setParentRep:rep];
         v19 = v19 + 1;
       }
 
@@ -125,19 +125,19 @@ LABEL_24:
   }
 
 LABEL_27:
-  [v4 makeObjectsPerformSelector:"updateChildrenFromLayout"];
-  return v4;
+  [childReps makeObjectsPerformSelector:"updateChildrenFromLayout"];
+  return childReps;
 }
 
-+ (id)containerRep:(id)a3 hitRep:(CGPoint)a4 withGesture:(id)a5 passingTest:(id)a6
++ (id)containerRep:(id)rep hitRep:(CGPoint)hitRep withGesture:(id)gesture passingTest:(id)test
 {
-  y = a4.y;
-  x = a4.x;
+  y = hitRep.y;
+  x = hitRep.x;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = [objc_msgSend(a3 "childRepsForHitTesting")];
+  v9 = [objc_msgSend(rep "childRepsForHitTesting")];
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v10)
   {
@@ -170,7 +170,7 @@ LABEL_27:
           v17 = 0uLL;
         }
 
-        v19 = [v14 hitRep:a5 withGesture:a6 passingTest:{vaddq_f64(v18, vmlaq_f64(vmulq_n_f64(v17, y), v24, v16))}];
+        v19 = [v14 hitRep:gesture withGesture:test passingTest:{vaddq_f64(v18, vmlaq_f64(vmulq_n_f64(v17, y), v24, v16))}];
         if (v19)
         {
           return v19;
@@ -187,9 +187,9 @@ LABEL_27:
     }
   }
 
-  v20 = [a3 hitRep:{x, y}];
+  v20 = [rep hitRep:{x, y}];
   v21 = v20;
-  if (a6 && v20 && !(*(a6 + 2))(a6, v20))
+  if (test && v20 && !(*(test + 2))(test, v20))
   {
     return 0;
   }
@@ -197,13 +197,13 @@ LABEL_27:
   return v21;
 }
 
-- (BOOL)shouldHitTestChildImageRep:(id)a3
+- (BOOL)shouldHitTestChildImageRep:(id)rep
 {
   objc_opt_class();
   [(TSDContainerRep *)self parentRep];
   v5 = TSUDynamicCast();
 
-  return [v5 shouldHitTestChildImageRep:a3];
+  return [v5 shouldHitTestChildImageRep:rep];
 }
 
 @end

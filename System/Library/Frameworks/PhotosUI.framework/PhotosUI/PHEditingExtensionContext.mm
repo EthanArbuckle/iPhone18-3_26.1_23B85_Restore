@@ -3,35 +3,35 @@
 + (id)_extensionAuxiliaryVendorProtocol;
 - (id)_contentEditingController;
 - (void)_releaseSandboxExtensions;
-- (void)beginContentEditingWithCompletionHandler:(id)a3;
-- (void)cancelContentEditingWithResponseHandler:(id)a3;
+- (void)beginContentEditingWithCompletionHandler:(id)handler;
+- (void)cancelContentEditingWithResponseHandler:(id)handler;
 - (void)dealloc;
 - (void)finishContentEditing;
-- (void)queryHandlingCapabilityForAdjustmentData:(id)a3 withResponseHandler:(id)a4;
-- (void)queryShouldShowCancelConfirmationWithResponseHandler:(id)a3;
-- (void)setUndoManagerForBarButtons:(id)a3;
+- (void)queryHandlingCapabilityForAdjustmentData:(id)data withResponseHandler:(id)handler;
+- (void)queryShouldShowCancelConfirmationWithResponseHandler:(id)handler;
+- (void)setUndoManagerForBarButtons:(id)buttons;
 @end
 
 @implementation PHEditingExtensionContext
 
-- (void)setUndoManagerForBarButtons:(id)a3
+- (void)setUndoManagerForBarButtons:(id)buttons
 {
-  objc_storeStrong(&self->_undoManagerForBarButtons, a3);
-  v5 = a3;
-  v6 = [(PHEditingExtensionContext *)self undoAdapter];
-  [v6 setUndoManager:v5];
+  objc_storeStrong(&self->_undoManagerForBarButtons, buttons);
+  buttonsCopy = buttons;
+  undoAdapter = [(PHEditingExtensionContext *)self undoAdapter];
+  [undoAdapter setUndoManager:buttonsCopy];
 }
 
-- (void)cancelContentEditingWithResponseHandler:(id)a3
+- (void)cancelContentEditingWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__PHEditingExtensionContext_cancelContentEditingWithResponseHandler___block_invoke;
   v6[3] = &unk_1E83F7840;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -98,9 +98,9 @@ intptr_t __49__PHEditingExtensionContext_finishContentEditing__block_invoke_3(ui
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)beginContentEditingWithCompletionHandler:(id)a3
+- (void)beginContentEditingWithCompletionHandler:(id)handler
 {
-  v12 = a3;
+  handlerCopy = handler;
   [(PHEditingExtensionContext *)self _releaseSandboxExtensions];
   v44[0] = 0;
   v44[1] = v44;
@@ -143,11 +143,11 @@ intptr_t __49__PHEditingExtensionContext_finishContentEditing__block_invoke_3(ui
   v32[4] = __Block_byref_object_dispose_;
   v33 = 0;
   v4 = dispatch_group_create();
-  v5 = [(PHEditingExtensionContext *)self inputItems];
-  v6 = [v5 firstObject];
+  inputItems = [(PHEditingExtensionContext *)self inputItems];
+  firstObject = [inputItems firstObject];
 
-  v7 = [v6 attachments];
-  v8 = [v7 firstObject];
+  attachments = [firstObject attachments];
+  firstObject2 = [attachments firstObject];
 
   dispatch_group_enter(v4);
   v9 = PUEditingInitialPayloadTypeIdentifier;
@@ -162,10 +162,10 @@ intptr_t __49__PHEditingExtensionContext_finishContentEditing__block_invoke_3(ui
   v28 = v34;
   v29 = v37;
   v23 = v10;
-  v24 = self;
+  selfCopy = self;
   v30 = v40;
   v31 = v38;
-  [v8 loadItemForTypeIdentifier:v9 options:0 completionHandler:v22];
+  [firstObject2 loadItemForTypeIdentifier:v9 options:0 completionHandler:v22];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__PHEditingExtensionContext_beginContentEditingWithCompletionHandler___block_invoke_2;
@@ -177,9 +177,9 @@ intptr_t __49__PHEditingExtensionContext_finishContentEditing__block_invoke_3(ui
   v19 = v37;
   v20 = v42;
   block[4] = self;
-  v14 = v12;
+  v14 = handlerCopy;
   v21 = v32;
-  v11 = v12;
+  v11 = handlerCopy;
   dispatch_group_notify(v10, MEMORY[0x1E69E96A0], block);
 
   _Block_object_dispose(v32, 8);
@@ -384,13 +384,13 @@ uint64_t __70__PHEditingExtensionContext_beginContentEditingWithCompletionHandle
   return result;
 }
 
-- (void)queryShouldShowCancelConfirmationWithResponseHandler:(id)a3
+- (void)queryShouldShowCancelConfirmationWithResponseHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHEditingExtensionContext.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"responseHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHEditingExtensionContext.m" lineNumber:93 description:{@"Invalid parameter not satisfying: %@", @"responseHandler"}];
   }
 
   v17[0] = 0;
@@ -413,9 +413,9 @@ uint64_t __70__PHEditingExtensionContext_beginContentEditingWithCompletionHandle
   v11[1] = 3221225472;
   v11[2] = __82__PHEditingExtensionContext_queryShouldShowCancelConfirmationWithResponseHandler___block_invoke_2;
   v11[3] = &unk_1E83F7750;
-  v12 = v5;
+  v12 = handlerCopy;
   v13 = v17;
-  v9 = v5;
+  v9 = handlerCopy;
   dispatch_group_notify(v7, v8, v11);
 
   _Block_object_dispose(v17, 8);
@@ -431,20 +431,20 @@ void __82__PHEditingExtensionContext_queryShouldShowCancelConfirmationWithRespon
   dispatch_group_leave(v3);
 }
 
-- (void)queryHandlingCapabilityForAdjustmentData:(id)a3 withResponseHandler:(id)a4
+- (void)queryHandlingCapabilityForAdjustmentData:(id)data withResponseHandler:(id)handler
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v7)
+  dataCopy = data;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PHEditingExtensionContext.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"responseHandler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHEditingExtensionContext.m" lineNumber:86 description:{@"Invalid parameter not satisfying: %@", @"responseHandler"}];
   }
 
-  v8 = [(PHEditingExtensionContext *)self _contentEditingController];
-  v9 = [v8 canHandleAdjustmentData:v11];
+  _contentEditingController = [(PHEditingExtensionContext *)self _contentEditingController];
+  v9 = [_contentEditingController canHandleAdjustmentData:dataCopy];
 
-  v7[2](v7, v9);
+  handlerCopy[2](handlerCopy, v9);
 }
 
 - (void)_releaseSandboxExtensions
@@ -470,16 +470,16 @@ void __82__PHEditingExtensionContext_queryShouldShowCancelConfirmationWithRespon
 
 - (id)_contentEditingController
 {
-  v4 = [(PHEditingExtensionContext *)self _principalObject];
-  if (([v4 conformsToProtocol:&unk_1F4DC9930] & 1) == 0)
+  _principalObject = [(PHEditingExtensionContext *)self _principalObject];
+  if (([_principalObject conformsToProtocol:&unk_1F4DC9930] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v6 handleFailureInMethod:a2 object:self file:@"PHEditingExtensionContext.m" lineNumber:68 description:{@"%@ not conforming to PHContentEditingController", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHEditingExtensionContext.m" lineNumber:68 description:{@"%@ not conforming to PHContentEditingController", v8}];
   }
 
-  return v4;
+  return _principalObject;
 }
 
 - (void)dealloc

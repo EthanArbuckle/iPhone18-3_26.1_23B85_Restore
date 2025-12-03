@@ -1,6 +1,6 @@
 @interface AGXG18PFamilyResourceGroup
-- (AGXG18PFamilyResourceGroup)initWithDevice:(void *)a3 resources:(const void *)a4 count:(unint64_t)a5;
-- (BOOL)containsResource:(id)a3;
+- (AGXG18PFamilyResourceGroup)initWithDevice:(void *)device resources:(const void *)resources count:(unint64_t)count;
+- (BOOL)containsResource:(id)resource;
 - (void)dealloc;
 @end
 
@@ -65,9 +65,9 @@ void __37__AGXG18PFamilyResourceGroup_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)containsResource:(id)a3
+- (BOOL)containsResource:(id)resource
 {
-  v3 = *(a3 + *MEMORY[0x29EDC5638]);
+  v3 = *(resource + *MEMORY[0x29EDC5638]);
   if (v3)
   {
     return (*(v3 + ((self->_resourceGroup >> 3) & 0x1FF8)) >> self->_resourceGroup) & 1;
@@ -81,7 +81,7 @@ void __37__AGXG18PFamilyResourceGroup_dealloc__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (AGXG18PFamilyResourceGroup)initWithDevice:(void *)a3 resources:(const void *)a4 count:(unint64_t)a5
+- (AGXG18PFamilyResourceGroup)initWithDevice:(void *)device resources:(const void *)resources count:(unint64_t)count
 {
   v12.receiver = self;
   v12.super_class = AGXG18PFamilyResourceGroup;
@@ -89,7 +89,7 @@ void __37__AGXG18PFamilyResourceGroup_dealloc__block_invoke(uint64_t a1)
   if (result)
   {
     result->_initedResourceGroup = 0;
-    if (!a5)
+    if (!count)
     {
       goto LABEL_6;
     }
@@ -106,9 +106,9 @@ void __37__AGXG18PFamilyResourceGroup_dealloc__block_invoke(uint64_t a1)
     block[2] = __61__AGXG18PFamilyResourceGroup_initWithDevice_resources_count___block_invoke;
     block[3] = &unk_29F341118;
     block[4] = result;
-    block[5] = a3;
-    block[6] = a4;
-    block[7] = a5;
+    block[5] = device;
+    block[6] = resources;
+    block[7] = count;
     v9 = result;
     dispatch_sync(resource_group_queue(void)::_resourceGroupQueue, block);
     result = v9;

@@ -1,62 +1,62 @@
 @interface POLoginConfiguration
-+ (POLoginConfiguration)configurationWithOpenIdConfigurationURL:(id)a3 clientID:(id)a4 issuer:(id)a5 completion:(id)a6;
-+ (POLoginConfiguration)configurationWithOpenIdConfigurationURL:(id)a3 identityProviderURL:(id)a4 clientId:(id)a5 issuer:(id)a6 completion:(id)a7;
-- (BOOL)setCustomAssertionRequestBodyClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomAssertionRequestHeaderClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomKeyExchangeRequestBodyClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomKeyExchangeRequestHeaderClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomKeyRequestBodyClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomKeyRequestHeaderClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomLoginRequestBodyClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomLoginRequestHeaderClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomRefreshRequestBodyClaims:(id)a3 returningError:(id *)a4;
-- (BOOL)setCustomRefreshRequestHeaderClaims:(id)a3 returningError:(id *)a4;
++ (POLoginConfiguration)configurationWithOpenIdConfigurationURL:(id)l clientID:(id)d issuer:(id)issuer completion:(id)completion;
++ (POLoginConfiguration)configurationWithOpenIdConfigurationURL:(id)l identityProviderURL:(id)rL clientId:(id)id issuer:(id)issuer completion:(id)completion;
+- (BOOL)setCustomAssertionRequestBodyClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomAssertionRequestHeaderClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomKeyExchangeRequestBodyClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomKeyExchangeRequestHeaderClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomKeyRequestBodyClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomKeyRequestHeaderClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomLoginRequestBodyClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomLoginRequestHeaderClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomRefreshRequestBodyClaims:(id)claims returningError:(id *)error;
+- (BOOL)setCustomRefreshRequestHeaderClaims:(id)claims returningError:(id *)error;
 - (NSString)uniqueIdentifierClaimName;
 - (NSURL)keyEndpointURL;
 - (NSURL)nonceEndpointURL;
-- (POLoginConfiguration)initWithClientID:(id)a3 issuer:(id)a4 tokenEndpointURL:(id)a5 jwksEndpointURL:(id)a6 audience:(id)a7;
-- (POLoginConfiguration)initWithCoder:(id)a3;
-- (POLoginConfiguration)initWithData:(id)a3;
+- (POLoginConfiguration)initWithClientID:(id)d issuer:(id)issuer tokenEndpointURL:(id)l jwksEndpointURL:(id)rL audience:(id)audience;
+- (POLoginConfiguration)initWithCoder:(id)coder;
+- (POLoginConfiguration)initWithData:(id)data;
 - (__SecKey)hpkeAuthPublicKey;
 - (__SecKey)loginRequestEncryptionPublicKey;
-- (id)_initWithClientId:(id)a3 issuer:(id)a4 tokenEndpointURL:(id)a5 jwksEndpointURL:(id)a6 audience:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dataRepresentationForDisplay:(BOOL)a3;
+- (id)_initWithClientId:(id)id issuer:(id)issuer tokenEndpointURL:(id)l jwksEndpointURL:(id)rL audience:(id)audience;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dataRepresentationForDisplay:(BOOL)display;
 - (id)description;
-- (id)mergedConfigurationWithUserLoginConfiguration:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHpkeAuthPublicKey:(__SecKey *)a3;
-- (void)setLoginRequestEncryptionPublicKey:(__SecKey *)a3;
+- (id)mergedConfigurationWithUserLoginConfiguration:(id)configuration;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHpkeAuthPublicKey:(__SecKey *)key;
+- (void)setLoginRequestEncryptionPublicKey:(__SecKey *)key;
 @end
 
 @implementation POLoginConfiguration
 
-- (POLoginConfiguration)initWithClientID:(id)a3 issuer:(id)a4 tokenEndpointURL:(id)a5 jwksEndpointURL:(id)a6 audience:(id)a7
+- (POLoginConfiguration)initWithClientID:(id)d issuer:(id)issuer tokenEndpointURL:(id)l jwksEndpointURL:(id)rL audience:(id)audience
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (![v12 length])
+  dCopy = d;
+  issuerCopy = issuer;
+  lCopy = l;
+  rLCopy = rL;
+  audienceCopy = audience;
+  if (![dCopy length])
   {
     v18 = __90__POLoginConfiguration_initWithClientID_issuer_tokenEndpointURL_jwksEndpointURL_audience___block_invoke();
 LABEL_6:
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_7;
   }
 
-  if (![v13 length])
+  if (![issuerCopy length])
   {
     v19 = __90__POLoginConfiguration_initWithClientID_issuer_tokenEndpointURL_jwksEndpointURL_audience___block_invoke_55();
     goto LABEL_6;
   }
 
-  self = [(POLoginConfiguration *)self _initWithClientId:v12 issuer:v13 tokenEndpointURL:v14 jwksEndpointURL:v15 audience:v16];
-  v17 = self;
+  self = [(POLoginConfiguration *)self _initWithClientId:dCopy issuer:issuerCopy tokenEndpointURL:lCopy jwksEndpointURL:rLCopy audience:audienceCopy];
+  selfCopy = self;
 LABEL_7:
 
-  return v17;
+  return selfCopy;
 }
 
 id __90__POLoginConfiguration_initWithClientID_issuer_tokenEndpointURL_jwksEndpointURL_audience___block_invoke()
@@ -83,29 +83,29 @@ id __90__POLoginConfiguration_initWithClientID_issuer_tokenEndpointURL_jwksEndpo
   return v0;
 }
 
-- (id)_initWithClientId:(id)a3 issuer:(id)a4 tokenEndpointURL:(id)a5 jwksEndpointURL:(id)a6 audience:(id)a7
+- (id)_initWithClientId:(id)id issuer:(id)issuer tokenEndpointURL:(id)l jwksEndpointURL:(id)rL audience:(id)audience
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  obj = a7;
-  v17 = a7;
-  v18 = 0;
-  v26 = v13;
-  if (v13 && v14 && v15 && v16)
+  idCopy = id;
+  issuerCopy = issuer;
+  lCopy = l;
+  rLCopy = rL;
+  obj = audience;
+  audienceCopy = audience;
+  selfCopy = 0;
+  v26 = idCopy;
+  if (idCopy && issuerCopy && lCopy && rLCopy)
   {
-    v19 = v17;
+    v19 = audienceCopy;
     v27.receiver = self;
     v27.super_class = POLoginConfiguration;
     v20 = [(POLoginConfiguration *)&v27 init];
     v21 = v20;
     if (v20)
     {
-      objc_storeStrong(&v20->_clientID, a3);
-      objc_storeStrong(&v21->_issuer, a4);
-      objc_storeStrong(&v21->_tokenEndpointURL, a5);
-      objc_storeStrong(&v21->_jwksEndpointURL, a6);
+      objc_storeStrong(&v20->_clientID, id);
+      objc_storeStrong(&v21->_issuer, issuer);
+      objc_storeStrong(&v21->_tokenEndpointURL, l);
+      objc_storeStrong(&v21->_jwksEndpointURL, rL);
       objc_storeStrong(&v21->_audience, obj);
       additionalScopes = v21->_additionalScopes;
       v21->_additionalScopes = @"urn:apple:platformsso";
@@ -115,41 +115,41 @@ id __90__POLoginConfiguration_initWithClientID_issuer_tokenEndpointURL_jwksEndpo
     }
 
     self = v21;
-    v18 = self;
-    v17 = v19;
+    selfCopy = self;
+    audienceCopy = v19;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-+ (POLoginConfiguration)configurationWithOpenIdConfigurationURL:(id)a3 clientID:(id)a4 issuer:(id)a5 completion:(id)a6
++ (POLoginConfiguration)configurationWithOpenIdConfigurationURL:(id)l clientID:(id)d issuer:(id)issuer completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v15 = [v13 URLByAppendingPathComponent:@"/.well-known/openid-configuration"];
-  [a1 configurationWithOpenIdConfigurationURL:v15 identityProviderURL:v13 clientId:v12 issuer:v11 completion:v10];
+  completionCopy = completion;
+  issuerCopy = issuer;
+  dCopy = d;
+  lCopy = l;
+  v15 = [lCopy URLByAppendingPathComponent:@"/.well-known/openid-configuration"];
+  [self configurationWithOpenIdConfigurationURL:v15 identityProviderURL:lCopy clientId:dCopy issuer:issuerCopy completion:completionCopy];
 
   return result;
 }
 
-+ (POLoginConfiguration)configurationWithOpenIdConfigurationURL:(id)a3 identityProviderURL:(id)a4 clientId:(id)a5 issuer:(id)a6 completion:(id)a7
++ (POLoginConfiguration)configurationWithOpenIdConfigurationURL:(id)l identityProviderURL:(id)rL clientId:(id)id issuer:(id)issuer completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+  lCopy = l;
+  rLCopy = rL;
+  idCopy = id;
+  issuerCopy = issuer;
+  completionCopy = completion;
+  ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__2;
   v36 = __Block_byref_object_dispose__2;
   v37 = objc_alloc_init(POSessionDelegate);
-  v17 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v16 delegate:v33[5] delegateQueue:0];
-  v18 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v11 cachePolicy:4 timeoutInterval:60.0];
+  v17 = [MEMORY[0x277CCAD30] sessionWithConfiguration:ephemeralSessionConfiguration delegate:v33[5] delegateQueue:0];
+  v18 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:lCopy cachePolicy:4 timeoutInterval:60.0];
   [v18 setHTTPMethod:@"GET"];
   [v18 addValue:@"application/json" forHTTPHeaderField:@"Accept"];
   v24 = MEMORY[0x277D85DD0];
@@ -157,11 +157,11 @@ id __90__POLoginConfiguration_initWithClientID_issuer_tokenEndpointURL_jwksEndpo
   v26 = __111__POLoginConfiguration_configurationWithOpenIdConfigurationURL_identityProviderURL_clientId_issuer_completion___block_invoke;
   v27 = &unk_279A3E798;
   v31 = &v32;
-  v19 = v15;
+  v19 = completionCopy;
   v30 = v19;
-  v20 = v13;
+  v20 = idCopy;
   v28 = v20;
-  v21 = v14;
+  v21 = issuerCopy;
   v29 = v21;
   v22 = [v17 dataTaskWithRequest:v18 completionHandler:&v24];
   [v22 resume];
@@ -351,13 +351,13 @@ id __111__POLoginConfiguration_configurationWithOpenIdConfigurationURL_identityP
   return nonceEndpointURL;
 }
 
-- (BOOL)setCustomAssertionRequestHeaderClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomAssertionRequestHeaderClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomAssertionRequestHeaderClaims:v8];
   }
 
@@ -365,10 +365,10 @@ id __111__POLoginConfiguration_configurationWithOpenIdConfigurationURL_identityP
   {
     v9 = __77__POLoginConfiguration_setCustomAssertionRequestHeaderClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -387,13 +387,13 @@ id __77__POLoginConfiguration_setCustomAssertionRequestHeaderClaims_returningErr
   return v0;
 }
 
-- (BOOL)setCustomAssertionRequestBodyClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomAssertionRequestBodyClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomAssertionRequestBodyClaims:v8];
   }
 
@@ -401,10 +401,10 @@ id __77__POLoginConfiguration_setCustomAssertionRequestHeaderClaims_returningErr
   {
     v9 = __75__POLoginConfiguration_setCustomAssertionRequestBodyClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -423,13 +423,13 @@ id __75__POLoginConfiguration_setCustomAssertionRequestBodyClaims_returningError
   return v0;
 }
 
-- (BOOL)setCustomLoginRequestHeaderClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomLoginRequestHeaderClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomLoginRequestHeaderClaims:v8];
   }
 
@@ -437,10 +437,10 @@ id __75__POLoginConfiguration_setCustomAssertionRequestBodyClaims_returningError
   {
     v9 = __73__POLoginConfiguration_setCustomLoginRequestHeaderClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -459,13 +459,13 @@ id __73__POLoginConfiguration_setCustomLoginRequestHeaderClaims_returningError__
   return v0;
 }
 
-- (BOOL)setCustomLoginRequestBodyClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomLoginRequestBodyClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomLoginRequestBodyClaims:v8];
   }
 
@@ -473,10 +473,10 @@ id __73__POLoginConfiguration_setCustomLoginRequestHeaderClaims_returningError__
   {
     v9 = __71__POLoginConfiguration_setCustomLoginRequestBodyClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -510,13 +510,13 @@ id __71__POLoginConfiguration_setCustomLoginRequestBodyClaims_returningError___b
   return uniqueIdentifierClaimName;
 }
 
-- (BOOL)setCustomRefreshRequestHeaderClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomRefreshRequestHeaderClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomRefreshRequestHeaderClaims:v8];
   }
 
@@ -524,10 +524,10 @@ id __71__POLoginConfiguration_setCustomLoginRequestBodyClaims_returningError___b
   {
     v9 = __75__POLoginConfiguration_setCustomRefreshRequestHeaderClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -546,13 +546,13 @@ id __75__POLoginConfiguration_setCustomRefreshRequestHeaderClaims_returningError
   return v0;
 }
 
-- (BOOL)setCustomRefreshRequestBodyClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomRefreshRequestBodyClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomRefreshRequestBodyClaims:v8];
   }
 
@@ -560,10 +560,10 @@ id __75__POLoginConfiguration_setCustomRefreshRequestHeaderClaims_returningError
   {
     v9 = __73__POLoginConfiguration_setCustomRefreshRequestBodyClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -595,9 +595,9 @@ id __73__POLoginConfiguration_setCustomRefreshRequestBodyClaims_returningError__
   }
 }
 
-- (void)setLoginRequestEncryptionPublicKey:(__SecKey *)a3
+- (void)setLoginRequestEncryptionPublicKey:(__SecKey *)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [POSecKeyHelper dataForEphemeralKey:?];
   }
@@ -624,13 +624,13 @@ id __73__POLoginConfiguration_setCustomRefreshRequestBodyClaims_returningError__
   return keyEndpointURL;
 }
 
-- (BOOL)setCustomKeyExchangeRequestHeaderClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomKeyExchangeRequestHeaderClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomKeyExchangeRequestHeaderClaims:v8];
   }
 
@@ -638,10 +638,10 @@ id __73__POLoginConfiguration_setCustomRefreshRequestBodyClaims_returningError__
   {
     v9 = __79__POLoginConfiguration_setCustomKeyExchangeRequestHeaderClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -660,13 +660,13 @@ id __79__POLoginConfiguration_setCustomKeyExchangeRequestHeaderClaims_returningE
   return v0;
 }
 
-- (BOOL)setCustomKeyExchangeRequestBodyClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomKeyExchangeRequestBodyClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomKeyExchangeRequestBodyClaims:v8];
   }
 
@@ -674,10 +674,10 @@ id __79__POLoginConfiguration_setCustomKeyExchangeRequestHeaderClaims_returningE
   {
     v9 = __77__POLoginConfiguration_setCustomKeyExchangeRequestBodyClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -696,13 +696,13 @@ id __77__POLoginConfiguration_setCustomKeyExchangeRequestBodyClaims_returningErr
   return v0;
 }
 
-- (BOOL)setCustomKeyRequestHeaderClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomKeyRequestHeaderClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomKeyRequestHeaderClaims:v8];
   }
 
@@ -710,10 +710,10 @@ id __77__POLoginConfiguration_setCustomKeyExchangeRequestBodyClaims_returningErr
   {
     v9 = __71__POLoginConfiguration_setCustomKeyRequestHeaderClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -732,13 +732,13 @@ id __71__POLoginConfiguration_setCustomKeyRequestHeaderClaims_returningError___b
   return v0;
 }
 
-- (BOOL)setCustomKeyRequestBodyClaims:(id)a3 returningError:(id *)a4
+- (BOOL)setCustomKeyRequestBodyClaims:(id)claims returningError:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:v6];
+  claimsCopy = claims;
+  v7 = [MEMORY[0x277CCAAA0] isValidJSONObject:claimsCopy];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [claimsCopy copy];
     [(POLoginConfiguration *)self setCustomKeyRequestBodyClaims:v8];
   }
 
@@ -746,10 +746,10 @@ id __71__POLoginConfiguration_setCustomKeyRequestHeaderClaims_returningError___b
   {
     v9 = __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___block_invoke();
     v8 = v9;
-    if (a4)
+    if (error)
     {
       v10 = v9;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -791,9 +791,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   return result;
 }
 
-- (void)setHpkeAuthPublicKey:(__SecKey *)a3
+- (void)setHpkeAuthPublicKey:(__SecKey *)key
 {
-  if (a3)
+  if (key)
   {
     v4 = [POSecKeyHelper dataForEphemeralKey:?];
   }
@@ -809,9 +809,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   MEMORY[0x2821F96F8](v4, hpkeAuthPublicKeyData);
 }
 
-- (id)dataRepresentationForDisplay:(BOOL)a3
+- (id)dataRepresentationForDisplay:(BOOL)display
 {
-  v188 = a3;
+  displayCopy = display;
   v237 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   clientID = self->_clientID;
@@ -826,13 +826,13 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v10 = NSStringFromSelector(sel_audience);
   [v4 setObject:audience forKeyedSubscript:v10];
 
-  v11 = [(NSURL *)self->_tokenEndpointURL absoluteString];
+  absoluteString = [(NSURL *)self->_tokenEndpointURL absoluteString];
   v12 = NSStringFromSelector(sel_tokenEndpointURL);
-  [v4 setObject:v11 forKeyedSubscript:v12];
+  [v4 setObject:absoluteString forKeyedSubscript:v12];
 
-  v13 = [(NSURL *)self->_jwksEndpointURL absoluteString];
+  absoluteString2 = [(NSURL *)self->_jwksEndpointURL absoluteString];
   v14 = NSStringFromSelector(sel_jwksEndpointURL);
-  [v4 setObject:v13 forKeyedSubscript:v14];
+  [v4 setObject:absoluteString2 forKeyedSubscript:v14];
 
   accountDisplayName = self->_accountDisplayName;
   v16 = NSStringFromSelector(sel_accountDisplayName);
@@ -864,8 +864,8 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
         }
 
         v25 = [POSecKeyHelper dataForCertificate:*(*(&v225 + 1) + 8 * i)];
-        v26 = [v25 psso_base64URLEncodedString];
-        [v19 addObject:v26];
+        psso_base64URLEncodedString = [v25 psso_base64URLEncodedString];
+        [v19 addObject:psso_base64URLEncodedString];
       }
 
       v22 = [(NSArray *)v20 countByEnumeratingWithState:&v225 objects:v236 count:16];
@@ -881,7 +881,7 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   }
 
   deviceContext = self->_deviceContext;
-  if (v188)
+  if (displayCopy)
   {
     [(NSData *)deviceContext psso_sha256HashString];
   }
@@ -894,7 +894,7 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v30 = NSStringFromSelector(sel_deviceContext);
   [v190 setObject:v29 forKeyedSubscript:v30];
 
-  if (v188)
+  if (displayCopy)
   {
     [POConstantCoreUtil stringForSEPBiometricPolicy:self->_userSEPKeyBiometricPolicy];
   }
@@ -907,9 +907,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v32 = NSStringFromSelector(sel_userSEPKeyBiometricPolicy);
   [v190 setObject:v31 forKeyedSubscript:v32];
 
-  v33 = [(NSURL *)self->_nonceEndpointURL absoluteString];
+  absoluteString3 = [(NSURL *)self->_nonceEndpointURL absoluteString];
   v34 = NSStringFromSelector(sel_nonceEndpointURL);
-  [v190 setObject:v33 forKeyedSubscript:v34];
+  [v190 setObject:absoluteString3 forKeyedSubscript:v34];
 
   nonceResponseKeypath = self->_nonceResponseKeypath;
   v36 = NSStringFromSelector(sel_nonceResponseKeypath);
@@ -944,9 +944,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
         }
 
         v46 = *(*(&v221 + 1) + 8 * j);
-        v47 = [v46 value];
-        v48 = [v46 name];
-        [v193 setObject:v47 forKeyedSubscript:v48];
+        value = [v46 value];
+        name = [v46 name];
+        [v193 setObject:value forKeyedSubscript:name];
       }
 
       v43 = [(NSArray *)v41 countByEnumeratingWithState:&v221 objects:v235 count:16];
@@ -1010,9 +1010,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
         }
 
         v69 = *(*(&v217 + 1) + 8 * k);
-        v70 = [v69 value];
-        v71 = [v69 name];
-        [v192 setObject:v70 forKeyedSubscript:v71];
+        value2 = [v69 value];
+        name2 = [v69 name];
+        [v192 setObject:value2 forKeyedSubscript:name2];
       }
 
       v66 = [(NSArray *)v64 countByEnumeratingWithState:&v217 objects:v234 count:16];
@@ -1049,9 +1049,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v82 = NSStringFromSelector(sel_groupResponseClaimName);
   [v190 setObject:groupResponseClaimName forKeyedSubscript:v82];
 
-  v83 = [(NSURL *)self->_refreshEndpointURL absoluteString];
+  absoluteString4 = [(NSURL *)self->_refreshEndpointURL absoluteString];
   v84 = NSStringFromSelector(sel_refreshEndpointURL);
-  [v190 setObject:v83 forKeyedSubscript:v84];
+  [v190 setObject:absoluteString4 forKeyedSubscript:v84];
 
   v191 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v213 = 0u;
@@ -1074,9 +1074,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
         }
 
         v90 = *(*(&v213 + 1) + 8 * m);
-        v91 = [v90 value];
-        v92 = [v90 name];
-        [v191 setObject:v91 forKeyedSubscript:v92];
+        value3 = [v90 value];
+        name3 = [v90 name];
+        [v191 setObject:value3 forKeyedSubscript:name3];
       }
 
       v87 = [(NSArray *)v85 countByEnumeratingWithState:&v213 objects:v233 count:16];
@@ -1119,8 +1119,8 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
           objc_enumerationMutation(v99);
         }
 
-        v104 = [*(*(&v209 + 1) + 8 * n) dictionaryRepresentation];
-        [v98 addObject:v104];
+        dictionaryRepresentation = [*(*(&v209 + 1) + 8 * n) dictionaryRepresentation];
+        [v98 addObject:dictionaryRepresentation];
       }
 
       v101 = [(NSArray *)v99 countByEnumeratingWithState:&v209 objects:v232 count:16];
@@ -1143,13 +1143,13 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v109 = NSStringFromSelector(sel_federationRequestURN);
   [v190 setObject:federationRequestURN forKeyedSubscript:v109];
 
-  v110 = [(NSURL *)self->_federationMexURL absoluteString];
+  absoluteString5 = [(NSURL *)self->_federationMexURL absoluteString];
   v111 = NSStringFromSelector(sel_federationMexURL);
-  [v190 setObject:v110 forKeyedSubscript:v111];
+  [v190 setObject:absoluteString5 forKeyedSubscript:v111];
 
-  v112 = [(NSURL *)self->_federationUserPreauthenticationURL absoluteString];
+  absoluteString6 = [(NSURL *)self->_federationUserPreauthenticationURL absoluteString];
   v113 = NSStringFromSelector(sel_federationUserPreauthenticationURL);
-  [v190 setObject:v112 forKeyedSubscript:v113];
+  [v190 setObject:absoluteString6 forKeyedSubscript:v113];
 
   federationMexURLKeypath = self->_federationMexURLKeypath;
   v115 = NSStringFromSelector(sel_federationMexURLKeypath);
@@ -1164,7 +1164,7 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v206 = 0u;
   v207 = 0u;
   v208 = 0u;
-  v189 = self;
+  selfCopy = self;
   v119 = self->_customFederationUserPreauthenticationRequestValues;
   v120 = [(NSArray *)v119 countByEnumeratingWithState:&v205 objects:v231 count:16];
   if (v120)
@@ -1181,9 +1181,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
         }
 
         v124 = *(*(&v205 + 1) + 8 * ii);
-        v125 = [v124 value];
-        v126 = [v124 name];
-        [v118 setObject:v125 forKeyedSubscript:v126];
+        value4 = [v124 value];
+        name4 = [v124 name];
+        [v118 setObject:value4 forKeyedSubscript:name4];
       }
 
       v121 = [(NSArray *)v119 countByEnumeratingWithState:&v205 objects:v231 count:16];
@@ -1198,8 +1198,8 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
     [v190 setObject:v118 forKeyedSubscript:v127];
   }
 
-  loginRequestEncryptionPublicKeyData = v189->__loginRequestEncryptionPublicKeyData;
-  if (v188)
+  loginRequestEncryptionPublicKeyData = selfCopy->__loginRequestEncryptionPublicKeyData;
+  if (displayCopy)
   {
     [(NSData *)loginRequestEncryptionPublicKeyData psso_sha256HashString];
   }
@@ -1212,8 +1212,8 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v130 = NSStringFromSelector(sel_loginRequestEncryptionPublicKey);
   [v190 setObject:v129 forKeyedSubscript:v130];
 
-  [(POLoginConfiguration *)v189 loginRequestEncryptionAlgorithm];
-  if (v188)
+  [(POLoginConfiguration *)selfCopy loginRequestEncryptionAlgorithm];
+  if (displayCopy)
     v129 = {;
     [POConstantCoreUtil stringForEncryptionAlgorithm:v129];
   }
@@ -1221,38 +1221,38 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v132 = NSStringFromSelector(sel_loginRequestEncryptionAlgorithm);
   [v190 setObject:v131 forKeyedSubscript:v132];
 
-  if (v188)
+  if (displayCopy)
   {
 
-    [(NSData *)v189->_loginRequestHpkePsk psso_sha256HashString];
+    [(NSData *)selfCopy->_loginRequestHpkePsk psso_sha256HashString];
   }
 
   else
   {
-    [(NSData *)v189->_loginRequestHpkePsk psso_base64URLEncodedString];
+    [(NSData *)selfCopy->_loginRequestHpkePsk psso_base64URLEncodedString];
   }
   v133 = ;
   v134 = NSStringFromSelector(sel_loginRequestHpkePsk);
   [v190 setObject:v133 forKeyedSubscript:v134];
 
-  v135 = [(NSData *)v189->_loginRequestHpkePsk_id psso_base64URLEncodedString];
+  psso_base64URLEncodedString2 = [(NSData *)selfCopy->_loginRequestHpkePsk_id psso_base64URLEncodedString];
   v136 = NSStringFromSelector(sel_loginRequestHpkePsk_id);
-  [v190 setObject:v135 forKeyedSubscript:v136];
+  [v190 setObject:psso_base64URLEncodedString2 forKeyedSubscript:v136];
 
-  v137 = [(NSData *)v189->_loginRequestEncryptionAPVPrefix psso_base64URLEncodedString];
+  psso_base64URLEncodedString3 = [(NSData *)selfCopy->_loginRequestEncryptionAPVPrefix psso_base64URLEncodedString];
   v138 = NSStringFromSelector(sel_loginRequestEncryptionAPVPrefix);
-  [v190 setObject:v137 forKeyedSubscript:v138];
+  [v190 setObject:psso_base64URLEncodedString3 forKeyedSubscript:v138];
 
-  v139 = [(NSURL *)v189->_keyEndpointURL absoluteString];
+  absoluteString7 = [(NSURL *)selfCopy->_keyEndpointURL absoluteString];
   v140 = NSStringFromSelector(sel_keyEndpointURL);
-  [v190 setObject:v139 forKeyedSubscript:v140];
+  [v190 setObject:absoluteString7 forKeyedSubscript:v140];
 
   v141 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v201 = 0u;
   v202 = 0u;
   v203 = 0u;
   v204 = 0u;
-  v142 = v189->_customKeyExchangeRequestValues;
+  v142 = selfCopy->_customKeyExchangeRequestValues;
   v143 = [(NSArray *)v142 countByEnumeratingWithState:&v201 objects:v230 count:16];
   if (v143)
   {
@@ -1268,9 +1268,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
         }
 
         v147 = *(*(&v201 + 1) + 8 * jj);
-        v148 = [v147 value];
-        v149 = [v147 name];
-        [v141 setObject:v148 forKeyedSubscript:v149];
+        value5 = [v147 value];
+        name5 = [v147 name];
+        [v141 setObject:value5 forKeyedSubscript:name5];
       }
 
       v144 = [(NSArray *)v142 countByEnumeratingWithState:&v201 objects:v230 count:16];
@@ -1285,11 +1285,11 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
     [v190 setObject:v141 forKeyedSubscript:v150];
   }
 
-  customKeyExchangeRequestHeaderClaims = v189->_customKeyExchangeRequestHeaderClaims;
+  customKeyExchangeRequestHeaderClaims = selfCopy->_customKeyExchangeRequestHeaderClaims;
   v152 = NSStringFromSelector(sel_customKeyExchangeRequestHeaderClaims);
   [v190 setObject:customKeyExchangeRequestHeaderClaims forKeyedSubscript:v152];
 
-  customKeyExchangeRequestBodyClaims = v189->_customKeyExchangeRequestBodyClaims;
+  customKeyExchangeRequestBodyClaims = selfCopy->_customKeyExchangeRequestBodyClaims;
   v154 = NSStringFromSelector(sel_customKeyExchangeRequestBodyClaims);
   [v190 setObject:customKeyExchangeRequestBodyClaims forKeyedSubscript:v154];
 
@@ -1298,7 +1298,7 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v198 = 0u;
   v199 = 0u;
   v200 = 0u;
-  v156 = v189->_customKeyRequestValues;
+  v156 = selfCopy->_customKeyRequestValues;
   v157 = [(NSArray *)v156 countByEnumeratingWithState:&v197 objects:v229 count:16];
   if (v157)
   {
@@ -1314,9 +1314,9 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
         }
 
         v161 = *(*(&v197 + 1) + 8 * kk);
-        v162 = [v161 value];
-        v163 = [v161 name];
-        [v155 setObject:v162 forKeyedSubscript:v163];
+        value6 = [v161 value];
+        name6 = [v161 name];
+        [v155 setObject:value6 forKeyedSubscript:name6];
       }
 
       v158 = [(NSArray *)v156 countByEnumeratingWithState:&v197 objects:v229 count:16];
@@ -1331,16 +1331,16 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
     [v190 setObject:v155 forKeyedSubscript:v164];
   }
 
-  customKeyRequestHeaderClaims = v189->_customKeyRequestHeaderClaims;
+  customKeyRequestHeaderClaims = selfCopy->_customKeyRequestHeaderClaims;
   v166 = NSStringFromSelector(sel_customKeyRequestHeaderClaims);
   [v190 setObject:customKeyRequestHeaderClaims forKeyedSubscript:v166];
 
-  customKeyRequestBodyClaims = v189->_customKeyRequestBodyClaims;
+  customKeyRequestBodyClaims = selfCopy->_customKeyRequestBodyClaims;
   v168 = NSStringFromSelector(sel_customKeyRequestBodyClaims);
   [v190 setObject:customKeyRequestBodyClaims forKeyedSubscript:v168];
 
-  hpkePsk = v189->_hpkePsk;
-  if (v188)
+  hpkePsk = selfCopy->_hpkePsk;
+  if (displayCopy)
   {
     [(NSData *)hpkePsk psso_sha256HashString];
   }
@@ -1353,18 +1353,18 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
   v171 = NSStringFromSelector(sel_hpkePsk);
   [v190 setObject:v170 forKeyedSubscript:v171];
 
-  v172 = [(NSData *)v189->_hpkePsk_id psso_base64URLEncodedString];
+  psso_base64URLEncodedString4 = [(NSData *)selfCopy->_hpkePsk_id psso_base64URLEncodedString];
   v173 = NSStringFromSelector(sel_hpkePsk_id);
-  [v190 setObject:v172 forKeyedSubscript:v173];
+  [v190 setObject:psso_base64URLEncodedString4 forKeyedSubscript:v173];
 
-  if (v188)
+  if (displayCopy)
   {
-    [(NSData *)v189->__hpkeAuthPublicKeyData psso_sha256HashString];
+    [(NSData *)selfCopy->__hpkeAuthPublicKeyData psso_sha256HashString];
   }
 
   else
   {
-    [(NSData *)v189->__hpkeAuthPublicKeyData psso_base64URLEncodedString];
+    [(NSData *)selfCopy->__hpkeAuthPublicKeyData psso_base64URLEncodedString];
   }
   v174 = ;
   v175 = NSStringFromSelector(sel_hpkeAuthPublicKey);
@@ -1372,8 +1372,8 @@ id __69__POLoginConfiguration_setCustomKeyRequestBodyClaims_returningError___blo
 
   v176 = objc_alloc_init(MEMORY[0x277CCAA68]);
   [v176 setFormatOptions:1907];
-  v177 = [MEMORY[0x277CBEAA8] date];
-  v178 = [v176 stringFromDate:v177];
+  date = [MEMORY[0x277CBEAA8] date];
+  v178 = [v176 stringFromDate:date];
   [v190 setObject:v178 forKeyedSubscript:@"created"];
 
   v196 = 0;
@@ -1420,11 +1420,11 @@ id __53__POLoginConfiguration_dataRepresentationForDisplay___block_invoke(uint64
   return v1;
 }
 
-- (POLoginConfiguration)initWithData:(id)a3
+- (POLoginConfiguration)initWithData:(id)data
 {
   v283 = *MEMORY[0x277D85DE8];
   v281 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:16 error:&v281];
+  v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:16 error:&v281];
   v5 = v281;
   v6 = v5;
   if (v5)
@@ -1435,7 +1435,7 @@ id __53__POLoginConfiguration_dataRepresentationForDisplay___block_invoke(uint64
     v279[3] = &unk_279A3DC48;
     v280 = v5;
     v7 = __37__POLoginConfiguration_initWithData___block_invoke(v279);
-    v8 = 0;
+    selfCopy = 0;
     v9 = v280;
   }
 
@@ -2010,11 +2010,11 @@ id __53__POLoginConfiguration_dataRepresentationForDisplay___block_invoke(uint64
 
     self = v27;
 
-    v8 = self;
+    selfCopy = self;
   }
 
   v247 = *MEMORY[0x277D85DE8];
-  return v8;
+  return selfCopy;
 }
 
 id __37__POLoginConfiguration_initWithData___block_invoke(uint64_t a1)
@@ -2092,93 +2092,93 @@ void __37__POLoginConfiguration_initWithData___block_invoke_7(uint64_t a1, uint6
   return v5;
 }
 
-- (id)mergedConfigurationWithUserLoginConfiguration:(id)a3
+- (id)mergedConfigurationWithUserLoginConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [(POLoginConfiguration *)self copy];
-  v6 = [v5 customAssertionRequestHeaderClaims];
-  v7 = v6;
+  customAssertionRequestHeaderClaims = [v5 customAssertionRequestHeaderClaims];
+  v7 = customAssertionRequestHeaderClaims;
   v8 = MEMORY[0x277CBEC10];
-  if (!v6)
+  if (!customAssertionRequestHeaderClaims)
   {
-    v6 = MEMORY[0x277CBEC10];
+    customAssertionRequestHeaderClaims = MEMORY[0x277CBEC10];
   }
 
-  v9 = [v6 mutableCopy];
+  v9 = [customAssertionRequestHeaderClaims mutableCopy];
 
-  v10 = [v4 customAssertionRequestHeaderClaims];
-  [v9 addEntriesFromDictionary:v10];
+  customAssertionRequestHeaderClaims2 = [configurationCopy customAssertionRequestHeaderClaims];
+  [v9 addEntriesFromDictionary:customAssertionRequestHeaderClaims2];
 
   [v5 setCustomAssertionRequestHeaderClaims:v9];
-  v11 = [v5 customAssertionRequestBodyClaims];
-  v12 = v11;
-  if (!v11)
+  customAssertionRequestBodyClaims = [v5 customAssertionRequestBodyClaims];
+  v12 = customAssertionRequestBodyClaims;
+  if (!customAssertionRequestBodyClaims)
   {
-    v11 = v8;
+    customAssertionRequestBodyClaims = v8;
   }
 
-  v13 = [v11 mutableCopy];
+  v13 = [customAssertionRequestBodyClaims mutableCopy];
 
-  v14 = [v4 customAssertionRequestBodyClaims];
-  [v13 addEntriesFromDictionary:v14];
+  customAssertionRequestBodyClaims2 = [configurationCopy customAssertionRequestBodyClaims];
+  [v13 addEntriesFromDictionary:customAssertionRequestBodyClaims2];
 
   [v5 setCustomAssertionRequestBodyClaims:v13];
-  v15 = [v5 customLoginRequestHeaderClaims];
-  v16 = v15;
-  if (!v15)
+  customLoginRequestHeaderClaims = [v5 customLoginRequestHeaderClaims];
+  v16 = customLoginRequestHeaderClaims;
+  if (!customLoginRequestHeaderClaims)
   {
-    v15 = v8;
+    customLoginRequestHeaderClaims = v8;
   }
 
-  v17 = [v15 mutableCopy];
+  v17 = [customLoginRequestHeaderClaims mutableCopy];
 
-  v18 = [v4 customLoginRequestHeaderClaims];
-  [v17 addEntriesFromDictionary:v18];
+  customLoginRequestHeaderClaims2 = [configurationCopy customLoginRequestHeaderClaims];
+  [v17 addEntriesFromDictionary:customLoginRequestHeaderClaims2];
 
   [v5 setCustomLoginRequestHeaderClaims:v17];
-  v19 = [v5 customLoginRequestBodyClaims];
-  v20 = v19;
-  if (!v19)
+  customLoginRequestBodyClaims = [v5 customLoginRequestBodyClaims];
+  v20 = customLoginRequestBodyClaims;
+  if (!customLoginRequestBodyClaims)
   {
-    v19 = v8;
+    customLoginRequestBodyClaims = v8;
   }
 
-  v21 = [v19 mutableCopy];
+  v21 = [customLoginRequestBodyClaims mutableCopy];
 
-  v22 = [v4 customLoginRequestBodyClaims];
+  customLoginRequestBodyClaims2 = [configurationCopy customLoginRequestBodyClaims];
 
-  [v21 addEntriesFromDictionary:v22];
+  [v21 addEntriesFromDictionary:customLoginRequestBodyClaims2];
   [v5 setCustomLoginRequestBodyClaims:v21];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [POLoginConfiguration alloc];
-  v5 = [(POLoginConfiguration *)self dataRepresentation];
-  v6 = [(POLoginConfiguration *)v4 initWithData:v5];
+  dataRepresentation = [(POLoginConfiguration *)self dataRepresentation];
+  v6 = [(POLoginConfiguration *)v4 initWithData:dataRepresentation];
 
   return v6;
 }
 
-- (POLoginConfiguration)initWithCoder:(id)a3
+- (POLoginConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_dataRepresentation);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(POLoginConfiguration *)self initWithData:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(POLoginConfiguration *)self dataRepresentation];
+  coderCopy = coder;
+  dataRepresentation = [(POLoginConfiguration *)self dataRepresentation];
   v5 = NSStringFromSelector(sel_dataRepresentation);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:dataRepresentation forKey:v5];
 }
 
 void __111__POLoginConfiguration_configurationWithOpenIdConfigurationURL_identityProviderURL_clientId_issuer_completion___block_invoke_cold_1(uint64_t a1)

@@ -1,7 +1,7 @@
 @interface MapsAppTestCuratedCollectionDetail
 - (BOOL)runTest;
-- (void)_dispatchAfterShortDelay:(id)a3;
-- (void)_performScrollTestOfScrollView:(id)a3 completion:(id)a4;
+- (void)_dispatchAfterShortDelay:(id)delay;
+- (void)_performScrollTestOfScrollView:(id)view completion:(id)completion;
 - (void)_scrollCuratedCollection;
 - (void)_setupAndPerformCuratedCollectionDetailsScrollTest;
 - (void)_setupForTest;
@@ -10,10 +10,10 @@
 
 @implementation MapsAppTestCuratedCollectionDetail
 
-- (void)_performScrollTestOfScrollView:(id)a3 completion:(id)a4
+- (void)_performScrollTestOfScrollView:(id)view completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  viewCopy = view;
   v7 = objc_alloc_init(UIScrollTestParameters);
   [v7 setIterations:1];
   [v7 setDelta:40.0];
@@ -23,31 +23,31 @@
   v9[1] = 3221225472;
   v9[2] = sub_100F001A8;
   v9[3] = &unk_10165CB08;
-  v10 = v5;
-  v8 = v5;
-  [v6 _performScrollTestWithParameters:v7 completionBlock:v9];
+  v10 = completionCopy;
+  v8 = completionCopy;
+  [viewCopy _performScrollTestWithParameters:v7 completionBlock:v9];
 }
 
-- (void)_dispatchAfterShortDelay:(id)a3
+- (void)_dispatchAfterShortDelay:(id)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v4 = dispatch_time(0, 1000000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100F00270;
   block[3] = &unk_101661760;
-  v7 = v3;
-  v5 = v3;
+  v7 = delayCopy;
+  v5 = delayCopy;
   dispatch_after(v4, &_dispatch_main_q, block);
 }
 
 - (void)_scrollCuratedCollection
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  v4 = [v3 pptTestScrollView];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestScrollView = [testCoordinator pptTestScrollView];
 
-  v5 = [(MapsAppTest *)self testName];
-  v6 = [v5 stringByAppendingString:@" - scroll"];
+  testName = [(MapsAppTest *)self testName];
+  v6 = [testName stringByAppendingString:@" - scroll"];
 
   [(MapsAppTest *)self startedSubTest:v6];
   objc_initWeak(&location, self);
@@ -76,11 +76,11 @@
 - (void)_startTestAndSelectAndScrollCuratedCollection
 {
   [(MapsAppTest *)self startedTest];
-  v3 = [(MapsAppTest *)self options];
-  v4 = [v3 _mapstest_mapItemIdentifier];
+  options = [(MapsAppTest *)self options];
+  _mapstest_mapItemIdentifier = [options _mapstest_mapItemIdentifier];
 
-  v5 = [(MapsAppTest *)self testCoordinator];
-  [v5 pptSelectCuratedGuideWithIdentifier:v4];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptSelectCuratedGuideWithIdentifier:_mapstest_mapItemIdentifier];
 
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
@@ -95,18 +95,18 @@
 
 - (void)_setupForTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  [v3 pptTestResetForLaunchURL];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  [testCoordinator pptTestResetForLaunchURL];
 
-  v4 = [(MapsAppTest *)self options];
-  v5 = [v4 _mapstest_mapType];
+  options = [(MapsAppTest *)self options];
+  _mapstest_mapType = [options _mapstest_mapType];
 
-  v6 = [(MapsAppTest *)self options];
-  v8 = [v6 _mapstest_mapRegion];
+  options2 = [(MapsAppTest *)self options];
+  _mapstest_mapRegion = [options2 _mapstest_mapRegion];
 
-  [(MapsAppTest *)self switchToMapType:v5];
-  v7 = [(MapsAppTest *)self mainVKMapView];
-  [v7 setMapRegion:v8 pitch:0.0 yaw:0.0];
+  [(MapsAppTest *)self switchToMapType:_mapstest_mapType];
+  mainVKMapView = [(MapsAppTest *)self mainVKMapView];
+  [mainVKMapView setMapRegion:_mapstest_mapRegion pitch:0.0 yaw:0.0];
 }
 
 - (void)_setupAndPerformCuratedCollectionDetailsScrollTest
@@ -129,10 +129,10 @@
   updatedDataFetchers = self->_updatedDataFetchers;
   self->_updatedDataFetchers = v3;
 
-  v5 = [(MapsAppTest *)self options];
-  v6 = [v5 _mapstest_isUsingSampleProactiveData];
+  options = [(MapsAppTest *)self options];
+  _mapstest_isUsingSampleProactiveData = [options _mapstest_isUsingSampleProactiveData];
 
-  if (v6)
+  if (_mapstest_isUsingSampleProactiveData)
   {
     v7 = dispatch_time(0, 1000000000);
     block[0] = _NSConcreteStackBlock;

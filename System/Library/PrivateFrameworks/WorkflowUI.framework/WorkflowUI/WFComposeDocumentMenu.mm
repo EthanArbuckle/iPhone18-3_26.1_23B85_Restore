@@ -1,17 +1,17 @@
 @interface WFComposeDocumentMenu
 - (NSString)placeholderName;
 - (UINavigationBar)navigationBar;
-- (WFComposeDocumentMenu)initWithWorkflow:(id)a3;
+- (WFComposeDocumentMenu)initWithWorkflow:(id)workflow;
 - (WFComposeDocumentMenuDelegate)delegate;
-- (id)findViewInNavigationBarWithName:(id)a3;
-- (id)findViewInView:(id)a3 withName:(id)a4;
-- (id)navigationItem:(id)a3 willBeginRenamingWithSuggestedTitle:(id)a4 selectedRange:(_NSRange *)a5;
+- (id)findViewInNavigationBarWithName:(id)name;
+- (id)findViewInView:(id)view withName:(id)name;
+- (id)navigationItem:(id)item willBeginRenamingWithSuggestedTitle:(id)title selectedRange:(_NSRange *)range;
 - (void)layoutIconView;
-- (void)navigationItem:(id)a3 didEndRenamingWithTitle:(id)a4;
-- (void)setDocumentMenuControlWithTitle:(id)a3 navigationItem:(id)a4;
-- (void)setIconViewHidden:(BOOL)a3;
-- (void)updateDocumentMenuWithNavigationItem:(id)a3;
-- (void)updateTitleInNavigationItem:(id)a3;
+- (void)navigationItem:(id)item didEndRenamingWithTitle:(id)title;
+- (void)setDocumentMenuControlWithTitle:(id)title navigationItem:(id)item;
+- (void)setIconViewHidden:(BOOL)hidden;
+- (void)updateDocumentMenuWithNavigationItem:(id)item;
+- (void)updateTitleInNavigationItem:(id)item;
 @end
 
 @implementation WFComposeDocumentMenu
@@ -30,13 +30,13 @@
   return WeakRetained;
 }
 
-- (void)navigationItem:(id)a3 didEndRenamingWithTitle:(id)a4
+- (void)navigationItem:(id)item didEndRenamingWithTitle:(id)title
 {
-  v6 = a4;
-  v7 = a3;
+  titleCopy = title;
+  itemCopy = item;
   [(WFComposeDocumentMenu *)self setRenameSessionActive:0];
-  v8 = [(WFComposeDocumentMenu *)self navigationBar];
-  [v8 setAccessibilityIdentifier:0];
+  navigationBar = [(WFComposeDocumentMenu *)self navigationBar];
+  [navigationBar setAccessibilityIdentifier:0];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -44,10 +44,10 @@
   block[3] = &unk_279EE8A78;
   block[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v9 = [(WFComposeDocumentMenu *)self delegate];
-  [v9 documentMenu:self renameShortcutToName:v6];
+  delegate = [(WFComposeDocumentMenu *)self delegate];
+  [delegate documentMenu:self renameShortcutToName:titleCopy];
 
-  [(WFComposeDocumentMenu *)self updateTitleInNavigationItem:v7];
+  [(WFComposeDocumentMenu *)self updateTitleInNavigationItem:itemCopy];
 }
 
 uint64_t __64__WFComposeDocumentMenu_navigationItem_didEndRenamingWithTitle___block_invoke(uint64_t a1)
@@ -73,12 +73,12 @@ uint64_t __64__WFComposeDocumentMenu_navigationItem_didEndRenamingWithTitle___bl
   return [v2 _modifyAnimationsWithPreferredFrameRateRange:1835010 updateReason:v4 animations:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
 }
 
-- (id)navigationItem:(id)a3 willBeginRenamingWithSuggestedTitle:(id)a4 selectedRange:(_NSRange *)a5
+- (id)navigationItem:(id)item willBeginRenamingWithSuggestedTitle:(id)title selectedRange:(_NSRange *)range
 {
-  v7 = a4;
+  titleCopy = title;
   [(WFComposeDocumentMenu *)self setRenameSessionActive:1];
-  v8 = [(WFComposeDocumentMenu *)self navigationBar];
-  [v8 setAccessibilityIdentifier:@"workflow.editor.navigationbar"];
+  navigationBar = [(WFComposeDocumentMenu *)self navigationBar];
+  [navigationBar setAccessibilityIdentifier:@"workflow.editor.navigationbar"];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -87,11 +87,11 @@ uint64_t __64__WFComposeDocumentMenu_navigationItem_didEndRenamingWithTitle___bl
   block[4] = self;
   v9 = MEMORY[0x277D85CD0];
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v10 = [v7 stringByReplacingOccurrencesOfString:@"‌        ‌" withString:&stru_2883A0E78];
+  v10 = [titleCopy stringByReplacingOccurrencesOfString:@"‌        ‌" withString:&stru_2883A0E78];
 
   v11 = [v10 length];
-  a5->location = 0;
-  a5->length = v11;
+  range->location = 0;
+  range->length = v11;
   v12 = dispatch_time(0, 100000000);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -176,18 +176,18 @@ uint64_t __90__WFComposeDocumentMenu_navigationItem_willBeginRenamingWithSuggest
   return [v2 _modifyAnimationsWithPreferredFrameRateRange:1835010 updateReason:v4 animations:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
 }
 
-- (id)findViewInView:(id)a3 withName:(id)a4
+- (id)findViewInView:(id)view withName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] arrayWithObject:v5];
+  viewCopy = view;
+  nameCopy = name;
+  v7 = [MEMORY[0x277CBEB18] arrayWithObject:viewCopy];
   v8 = v7;
   while ([v7 count])
   {
-    v9 = [v8 lastObject];
+    lastObject = [v8 lastObject];
     [v8 removeLastObject];
-    NSClassFromString(v6);
+    NSClassFromString(nameCopy);
     if (objc_opt_isKindOfClass())
     {
       goto LABEL_13;
@@ -197,8 +197,8 @@ uint64_t __90__WFComposeDocumentMenu_navigationItem_willBeginRenamingWithSuggest
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = [v9 subviews];
-    v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    subviews = [lastObject subviews];
+    v11 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v11)
     {
       v12 = v11;
@@ -209,13 +209,13 @@ uint64_t __90__WFComposeDocumentMenu_navigationItem_willBeginRenamingWithSuggest
         {
           if (*v17 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(subviews);
           }
 
           [v8 addObject:*(*(&v16 + 1) + 8 * i)];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v12 = [subviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v12);
@@ -224,19 +224,19 @@ uint64_t __90__WFComposeDocumentMenu_navigationItem_willBeginRenamingWithSuggest
     v7 = v8;
   }
 
-  v9 = 0;
+  lastObject = 0;
 LABEL_13:
 
-  return v9;
+  return lastObject;
 }
 
-- (id)findViewInNavigationBarWithName:(id)a3
+- (id)findViewInNavigationBarWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(WFComposeDocumentMenu *)self navigationBar];
-  if (v5)
+  nameCopy = name;
+  navigationBar = [(WFComposeDocumentMenu *)self navigationBar];
+  if (navigationBar)
   {
-    v6 = [(WFComposeDocumentMenu *)self findViewInView:v5 withName:v4];
+    v6 = [(WFComposeDocumentMenu *)self findViewInView:navigationBar withName:nameCopy];
   }
 
   else
@@ -247,29 +247,29 @@ LABEL_13:
   return v6;
 }
 
-- (void)setIconViewHidden:(BOOL)a3
+- (void)setIconViewHidden:(BOOL)hidden
 {
-  v3 = a3;
-  self->_iconViewHidden = a3;
-  v4 = [(WFComposeDocumentMenu *)self iconView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  self->_iconViewHidden = hidden;
+  iconView = [(WFComposeDocumentMenu *)self iconView];
+  [iconView setHidden:hiddenCopy];
 }
 
-- (void)setDocumentMenuControlWithTitle:(id)a3 navigationItem:(id)a4
+- (void)setDocumentMenuControlWithTitle:(id)title navigationItem:(id)item
 {
-  v5 = [(WFComposeDocumentMenu *)self workflow:a3];
-  v6 = [v5 resolvedAssociatedAppBundleIdentifier];
+  v5 = [(WFComposeDocumentMenu *)self workflow:title];
+  resolvedAssociatedAppBundleIdentifier = [v5 resolvedAssociatedAppBundleIdentifier];
 
-  if (v6 && (-[WFComposeDocumentMenu workflow](self, "workflow"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 shouldAutoUpdateAssociatedAppBundleIdentifier], v7, v8))
+  if (resolvedAssociatedAppBundleIdentifier && (-[WFComposeDocumentMenu workflow](self, "workflow"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 shouldAutoUpdateAssociatedAppBundleIdentifier], v7, v8))
   {
-    v9 = [objc_alloc(MEMORY[0x277D79DA8]) initWithBundleIdentifier:v6];
+    v11Icon = [objc_alloc(MEMORY[0x277D79DA8]) initWithBundleIdentifier:resolvedAssociatedAppBundleIdentifier];
   }
 
   else
   {
-    v10 = [(WFComposeDocumentMenu *)self workflow];
-    v11 = [v10 icon];
-    v9 = [v11 icon];
+    workflow = [(WFComposeDocumentMenu *)self workflow];
+    icon = [workflow icon];
+    v11Icon = [icon icon];
   }
 
   aBlock[0] = MEMORY[0x277D85DD0];
@@ -279,14 +279,14 @@ LABEL_13:
   aBlock[4] = self;
   v12 = _Block_copy(aBlock);
   v13 = v12;
-  if (v9)
+  if (v11Icon)
   {
-    v14 = [MEMORY[0x277D75128] sharedApplication];
-    v15 = [v14 applicationState];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    applicationState = [mEMORY[0x277D75128] applicationState];
 
-    if (!v15)
+    if (!applicationState)
     {
-      v16 = v9;
+      v16 = v11Icon;
       objc_opt_class();
       v17 = objc_opt_isKindOfClass() & 1;
       if (v17)
@@ -304,14 +304,14 @@ LABEL_13:
       if (v17)
       {
         v20 = MEMORY[0x277D79FC8];
-        v21 = [v16 bundleIdentifier];
+        bundleIdentifier = [v16 bundleIdentifier];
 
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __72__WFComposeDocumentMenu_setDocumentMenuControlWithTitle_navigationItem___block_invoke_3;
         v23[3] = &unk_279EE80E8;
         v24 = v13;
-        [v20 applicationIconImageForBundleIdentifier:v21 length:v23 scale:52.0 completionHandler:3.0];
+        [v20 applicationIconImageForBundleIdentifier:bundleIdentifier length:v23 scale:52.0 completionHandler:3.0];
 
         v22 = v24;
       }
@@ -375,20 +375,20 @@ void __72__WFComposeDocumentMenu_setDocumentMenuControlWithTitle_navigationItem_
 {
   if (![(WFComposeDocumentMenu *)self shouldAnchorIconViewToRenameTextField])
   {
-    v3 = [(WFComposeDocumentMenu *)self iconView];
-    v4 = [v3 superview];
-    v5 = [(WFComposeDocumentMenu *)self navigationBar];
+    iconView = [(WFComposeDocumentMenu *)self iconView];
+    superview = [iconView superview];
+    navigationBar = [(WFComposeDocumentMenu *)self navigationBar];
 
-    if (v4 != v5)
+    if (superview != navigationBar)
     {
-      v6 = [(WFComposeDocumentMenu *)self navigationBar];
-      v7 = [(WFComposeDocumentMenu *)self iconView];
-      [v6 addSubview:v7];
+      navigationBar2 = [(WFComposeDocumentMenu *)self navigationBar];
+      iconView2 = [(WFComposeDocumentMenu *)self iconView];
+      [navigationBar2 addSubview:iconView2];
     }
   }
 
-  v8 = [(WFComposeDocumentMenu *)self navigationBar];
-  [v8 layoutIfNeeded];
+  navigationBar3 = [(WFComposeDocumentMenu *)self navigationBar];
+  [navigationBar3 layoutIfNeeded];
 
   v56 = [(WFComposeDocumentMenu *)self findViewInNavigationBarWithName:@"_UINavigationBarTitleControl"];
   [v56 frame];
@@ -396,23 +396,23 @@ void __72__WFComposeDocumentMenu_setDocumentMenuControlWithTitle_navigationItem_
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(WFComposeDocumentMenu *)self navigationBar];
-  [v56 convertRect:v17 toView:{v10, v12, v14, v16}];
+  navigationBar4 = [(WFComposeDocumentMenu *)self navigationBar];
+  [v56 convertRect:navigationBar4 toView:{v10, v12, v14, v16}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(UIButton *)self->_iconView traitCollection];
-  [v26 displayScale];
+  traitCollection = [(UIButton *)self->_iconView traitCollection];
+  [traitCollection displayScale];
 
   if (![(WFComposeDocumentMenu *)self shouldAnchorIconViewToRenameTextField])
   {
-    v49 = [MEMORY[0x277D759A0] mainScreen];
-    v50 = [v49 traitCollection];
-    v51 = [v50 layoutDirection];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection2 = [mainScreen traitCollection];
+    layoutDirection = [traitCollection2 layoutDirection];
 
-    if (v51)
+    if (layoutDirection)
     {
       v59.origin.x = v19;
       v59.origin.y = v21;
@@ -433,29 +433,29 @@ void __72__WFComposeDocumentMenu_setDocumentMenuControlWithTitle_navigationItem_
     goto LABEL_14;
   }
 
-  v27 = [(WFComposeDocumentMenu *)self findViewInNavigationBarWithName:@"_UINavigationBarTitleRenameTextField"];
-  if (v27)
+  iconView3 = [(WFComposeDocumentMenu *)self findViewInNavigationBarWithName:@"_UINavigationBarTitleRenameTextField"];
+  if (iconView3)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v27 bounds];
+      [iconView3 bounds];
       v29 = v28;
       v31 = v30;
       v33 = v32;
       v35 = v34;
-      v36 = [(WFComposeDocumentMenu *)self navigationBar];
-      [v27 convertRect:v36 toView:{v29, v31, v33, v35}];
+      navigationBar5 = [(WFComposeDocumentMenu *)self navigationBar];
+      [iconView3 convertRect:navigationBar5 toView:{v29, v31, v33, v35}];
       v38 = v37;
       v40 = v39;
       v42 = v41;
       v44 = v43;
 
-      v45 = [MEMORY[0x277D759A0] mainScreen];
-      v46 = [v45 traitCollection];
-      v47 = [v46 layoutDirection];
+      mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+      traitCollection3 = [mainScreen2 traitCollection];
+      layoutDirection2 = [traitCollection3 layoutDirection];
 
-      if (v47)
+      if (layoutDirection2)
       {
         v58.origin.x = v38;
         v58.origin.y = v40;
@@ -478,42 +478,42 @@ void __72__WFComposeDocumentMenu_setDocumentMenuControlWithTitle_navigationItem_
       v54 = v55;
 
 LABEL_14:
-      v27 = [(WFComposeDocumentMenu *)self iconView];
-      [v27 setFrame:{v48, v54, 24.0, 24.0}];
+      iconView3 = [(WFComposeDocumentMenu *)self iconView];
+      [iconView3 setFrame:{v48, v54, 24.0, 24.0}];
     }
   }
 }
 
 - (NSString)placeholderName
 {
-  v3 = [(WFComposeDocumentMenu *)self workflow];
-  v4 = [v3 actions];
-  v5 = [v4 lastObject];
+  workflow = [(WFComposeDocumentMenu *)self workflow];
+  actions = [workflow actions];
+  lastObject = [actions lastObject];
 
-  v6 = [(WFComposeDocumentMenu *)self workflow];
-  v7 = [v6 actionsGroupedWithAction:v5];
+  workflow2 = [(WFComposeDocumentMenu *)self workflow];
+  v7 = [workflow2 actionsGroupedWithAction:lastObject];
 
-  v8 = [v7 firstObject];
-  v9 = v8;
-  v10 = 0;
-  if (v5 && v7 && v8)
+  firstObject = [v7 firstObject];
+  v9 = firstObject;
+  localizedName = 0;
+  if (lastObject && v7 && firstObject)
   {
-    v10 = [v8 localizedName];
+    localizedName = [firstObject localizedName];
   }
 
-  return v10;
+  return localizedName;
 }
 
-- (void)updateDocumentMenuWithNavigationItem:(id)a3
+- (void)updateDocumentMenuWithNavigationItem:(id)item
 {
-  v4 = a3;
-  [(WFComposeDocumentMenu *)self updateTitleInNavigationItem:v4];
+  itemCopy = item;
+  [(WFComposeDocumentMenu *)self updateTitleInNavigationItem:itemCopy];
   objc_initWeak(&location, self);
-  v5 = [(WFComposeDocumentMenu *)self workflow];
-  v6 = [v5 name];
-  [(WFComposeDocumentMenu *)self setDocumentMenuControlWithTitle:v6 navigationItem:v4];
+  workflow = [(WFComposeDocumentMenu *)self workflow];
+  name = [workflow name];
+  [(WFComposeDocumentMenu *)self setDocumentMenuControlWithTitle:name navigationItem:itemCopy];
 
-  [v4 setRenameDelegate:self];
+  [itemCopy setRenameDelegate:self];
   v7 = [(WFComposeDocumentMenu *)self findViewInNavigationBarWithName:@"_UINavigationBarTitleRenameTextField"];
   if (v7)
   {
@@ -542,7 +542,7 @@ LABEL_14:
   v12 = __62__WFComposeDocumentMenu_updateDocumentMenuWithNavigationItem___block_invoke;
   v13 = &unk_279EE8098;
   objc_copyWeak(&v14, &location);
-  [v4 setTitleMenuProvider:&v10];
+  [itemCopy setTitleMenuProvider:&v10];
   [(WFComposeDocumentMenu *)self layoutIconView:v10];
   objc_destroyWeak(&v14);
 
@@ -753,23 +753,23 @@ void __62__WFComposeDocumentMenu_updateDocumentMenuWithNavigationItem___block_in
   [v10 exportFileForDocumentMenu:WeakRetained sourceView:v1 sourceRect:{v3, v5, v7, v9}];
 }
 
-- (void)updateTitleInNavigationItem:(id)a3
+- (void)updateTitleInNavigationItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = _os_feature_enabled_impl();
-  v6 = [(WFComposeDocumentMenu *)self workflow];
-  v7 = v6;
+  workflow = [(WFComposeDocumentMenu *)self workflow];
+  workflow2 = workflow;
   if ((v5 & 1) == 0)
   {
-    if ([v6 isUntitled])
+    if ([workflow isUntitled])
     {
-      v9 = [(WFComposeDocumentMenu *)self placeholderName];
+      placeholderName = [(WFComposeDocumentMenu *)self placeholderName];
 
-      if (v9)
+      if (placeholderName)
       {
-        v8 = [(WFComposeDocumentMenu *)self placeholderName];
+        placeholderName2 = [(WFComposeDocumentMenu *)self placeholderName];
         v10 = 1;
-        v7 = v8;
+        workflow2 = placeholderName2;
         goto LABEL_8;
       }
     }
@@ -778,11 +778,11 @@ void __62__WFComposeDocumentMenu_updateDocumentMenuWithNavigationItem___block_in
     {
     }
 
-    v7 = [(WFComposeDocumentMenu *)self workflow];
-    v8 = [v7 name];
+    workflow2 = [(WFComposeDocumentMenu *)self workflow];
+    placeholderName2 = [workflow2 name];
     v10 = 0;
 LABEL_8:
-    v11 = [@"‌        ‌" stringByAppendingString:v8];
+    v11 = [@"‌        ‌" stringByAppendingString:placeholderName2];
     if (v10)
     {
       goto LABEL_10;
@@ -791,39 +791,39 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v8 = [v6 name];
-  v11 = [@"‌        ‌" stringByAppendingString:v8];
+  placeholderName2 = [workflow name];
+  v11 = [@"‌        ‌" stringByAppendingString:placeholderName2];
 LABEL_9:
 
 LABEL_10:
-  [v4 setTitle:v11];
+  [itemCopy setTitle:v11];
 }
 
-- (WFComposeDocumentMenu)initWithWorkflow:(id)a3
+- (WFComposeDocumentMenu)initWithWorkflow:(id)workflow
 {
-  v5 = a3;
+  workflowCopy = workflow;
   v37.receiver = self;
   v37.super_class = WFComposeDocumentMenu;
   v6 = [(WFComposeDocumentMenu *)&v37 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workflow, a3);
+    objc_storeStrong(&v6->_workflow, workflow);
     v7->_shouldAnchorIconViewToRenameTextField = 0;
     v8 = [MEMORY[0x277D75220] buttonWithType:0];
     iconView = v7->_iconView;
     v7->_iconView = v8;
 
     [(UIButton *)v7->_iconView setAdjustsImageWhenHighlighted:0];
-    v10 = [(UIButton *)v7->_iconView layer];
-    [v10 setShadowRadius:8.0];
+    layer = [(UIButton *)v7->_iconView layer];
+    [layer setShadowRadius:8.0];
 
-    v11 = [(UIButton *)v7->_iconView layer];
+    layer2 = [(UIButton *)v7->_iconView layer];
     LODWORD(v12) = 1036831949;
-    [v11 setShadowOpacity:v12];
+    [layer2 setShadowOpacity:v12];
 
-    v13 = [(UIButton *)v7->_iconView layer];
-    [v13 setShadowOffset:{0.0, 1.0}];
+    layer3 = [(UIButton *)v7->_iconView layer];
+    [layer3 setShadowOffset:{0.0, 1.0}];
 
     objc_initWeak(&location, v7);
     v14 = v7->_iconView;

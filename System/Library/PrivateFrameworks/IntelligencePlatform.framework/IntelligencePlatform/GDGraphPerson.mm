@@ -1,5 +1,5 @@
 @interface GDGraphPerson
-- (GDGraphPerson)initWithEntityIdentifierField:(id)a3 fullNamesField:(id)a4 prefixesField:(id)a5 givenNamesField:(id)a6 phoneticGivenNamesField:(id)a7 middleNamesField:(id)a8 phoneticMiddleNamesField:(id)a9 familyNamesField:(id)a10 phoneticFamilyNamesField:(id)a11 previousFamilyNamesField:(id)a12 suffixesField:(id)a13 nicknamesField:(id)a14 birthNamesField:(id)a15 birthdayField:(id)a16 occupationField:(id)a17 isFavoriteField:(id)a18 isCurrentUserField:(id)a19 isInferredDeviceUserField:(id)a20 associatedPeopleField:(id)a21 locationsField:(id)a22 employersField:(id)a23 topicsField:(id)a24 handlesField:(id)a25 identifiersField:(id)a26 contactIdentifierField:(id)a27 visualIdentifiersField:(id)a28 allBirthdayField:(id)a29 allOccupationField:(id)a30 allIsFavoriteField:(id)a31 allIsCurrentUserField:(id)a32 allIsInferredDeviceUserField:(id)a33 allContactIdentifierField:(id)a34;
+- (GDGraphPerson)initWithEntityIdentifierField:(id)field fullNamesField:(id)namesField prefixesField:(id)prefixesField givenNamesField:(id)givenNamesField phoneticGivenNamesField:(id)phoneticGivenNamesField middleNamesField:(id)middleNamesField phoneticMiddleNamesField:(id)phoneticMiddleNamesField familyNamesField:(id)self0 phoneticFamilyNamesField:(id)self1 previousFamilyNamesField:(id)self2 suffixesField:(id)self3 nicknamesField:(id)self4 birthNamesField:(id)self5 birthdayField:(id)self6 occupationField:(id)self7 isFavoriteField:(id)self8 isCurrentUserField:(id)self9 isInferredDeviceUserField:(id)deviceUserField associatedPeopleField:(id)peopleField locationsField:(id)locationsField employersField:(id)employersField topicsField:(id)topicsField handlesField:(id)handlesField identifiersField:(id)identifiersField contactIdentifierField:(id)identifierField visualIdentifiersField:(id)visualIdentifiersField allBirthdayField:(id)allBirthdayField allOccupationField:(id)field0 allIsFavoriteField:(id)field1 allIsCurrentUserField:(id)field2 allIsInferredDeviceUserField:(id)field3 allContactIdentifierField:(id)field4;
 - (NSPersonNameComponents)suggestedNameComponentsInner;
 - (int64_t)autonamingSuggestionReasonInner;
 @end
@@ -12,7 +12,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   GDGraphPerson.suggestedNameComponentsInner.getter(v6);
 
   v8 = sub_1ABF21BC4();
@@ -28,86 +28,86 @@
 
 - (int64_t)autonamingSuggestionReasonInner
 {
-  v2 = self;
+  selfCopy = self;
   v3 = GDGraphPerson.autonamingSuggestionReasonInner.getter();
 
   return v3;
 }
 
-- (GDGraphPerson)initWithEntityIdentifierField:(id)a3 fullNamesField:(id)a4 prefixesField:(id)a5 givenNamesField:(id)a6 phoneticGivenNamesField:(id)a7 middleNamesField:(id)a8 phoneticMiddleNamesField:(id)a9 familyNamesField:(id)a10 phoneticFamilyNamesField:(id)a11 previousFamilyNamesField:(id)a12 suffixesField:(id)a13 nicknamesField:(id)a14 birthNamesField:(id)a15 birthdayField:(id)a16 occupationField:(id)a17 isFavoriteField:(id)a18 isCurrentUserField:(id)a19 isInferredDeviceUserField:(id)a20 associatedPeopleField:(id)a21 locationsField:(id)a22 employersField:(id)a23 topicsField:(id)a24 handlesField:(id)a25 identifiersField:(id)a26 contactIdentifierField:(id)a27 visualIdentifiersField:(id)a28 allBirthdayField:(id)a29 allOccupationField:(id)a30 allIsFavoriteField:(id)a31 allIsCurrentUserField:(id)a32 allIsInferredDeviceUserField:(id)a33 allContactIdentifierField:(id)a34
+- (GDGraphPerson)initWithEntityIdentifierField:(id)field fullNamesField:(id)namesField prefixesField:(id)prefixesField givenNamesField:(id)givenNamesField phoneticGivenNamesField:(id)phoneticGivenNamesField middleNamesField:(id)middleNamesField phoneticMiddleNamesField:(id)phoneticMiddleNamesField familyNamesField:(id)self0 phoneticFamilyNamesField:(id)self1 previousFamilyNamesField:(id)self2 suffixesField:(id)self3 nicknamesField:(id)self4 birthNamesField:(id)self5 birthdayField:(id)self6 occupationField:(id)self7 isFavoriteField:(id)self8 isCurrentUserField:(id)self9 isInferredDeviceUserField:(id)deviceUserField associatedPeopleField:(id)peopleField locationsField:(id)locationsField employersField:(id)employersField topicsField:(id)topicsField handlesField:(id)handlesField identifiersField:(id)identifiersField contactIdentifierField:(id)identifierField visualIdentifiersField:(id)visualIdentifiersField allBirthdayField:(id)allBirthdayField allOccupationField:(id)field0 allIsFavoriteField:(id)field1 allIsCurrentUserField:(id)field2 allIsInferredDeviceUserField:(id)field3 allContactIdentifierField:(id)field4
 {
-  v77 = a3;
-  v49 = a4;
-  v76 = a4;
-  v75 = a5;
-  v74 = a6;
-  v73 = a7;
-  v50 = a8;
-  v72 = a8;
-  v71 = a9;
-  v70 = a10;
-  v69 = a11;
-  v68 = a12;
-  v67 = a13;
-  v66 = a14;
-  v65 = a15;
-  v64 = a16;
-  v63 = a17;
-  v62 = a18;
-  v61 = a19;
-  v60 = a20;
-  v39 = a21;
-  v40 = a22;
-  v41 = a23;
-  v58 = a24;
-  v42 = a25;
-  v43 = a26;
-  v59 = a27;
-  v57 = a28;
-  v56 = a29;
-  v55 = a30;
-  v54 = a31;
-  v53 = a32;
-  v51 = a33;
-  v44 = a34;
+  fieldCopy = field;
+  namesFieldCopy = namesField;
+  namesFieldCopy2 = namesField;
+  prefixesFieldCopy = prefixesField;
+  givenNamesFieldCopy = givenNamesField;
+  phoneticGivenNamesFieldCopy = phoneticGivenNamesField;
+  middleNamesFieldCopy = middleNamesField;
+  middleNamesFieldCopy2 = middleNamesField;
+  phoneticMiddleNamesFieldCopy = phoneticMiddleNamesField;
+  familyNamesFieldCopy = familyNamesField;
+  phoneticFamilyNamesFieldCopy = phoneticFamilyNamesField;
+  previousFamilyNamesFieldCopy = previousFamilyNamesField;
+  suffixesFieldCopy = suffixesField;
+  nicknamesFieldCopy = nicknamesField;
+  birthNamesFieldCopy = birthNamesField;
+  birthdayFieldCopy = birthdayField;
+  occupationFieldCopy = occupationField;
+  favoriteFieldCopy = favoriteField;
+  userFieldCopy = userField;
+  deviceUserFieldCopy = deviceUserField;
+  peopleFieldCopy = peopleField;
+  locationsFieldCopy = locationsField;
+  employersFieldCopy = employersField;
+  topicsFieldCopy = topicsField;
+  handlesFieldCopy = handlesField;
+  identifiersFieldCopy = identifiersField;
+  identifierFieldCopy = identifierField;
+  visualIdentifiersFieldCopy = visualIdentifiersField;
+  allBirthdayFieldCopy = allBirthdayField;
+  allOccupationFieldCopy = allOccupationField;
+  isFavoriteFieldCopy = isFavoriteField;
+  currentUserFieldCopy = currentUserField;
+  inferredDeviceUserFieldCopy = inferredDeviceUserField;
+  contactIdentifierFieldCopy = contactIdentifierField;
   v78.receiver = self;
   v78.super_class = GDGraphPerson;
   v45 = [(GDGraphPerson *)&v78 init];
   v46 = v45;
   if (v45)
   {
-    objc_storeStrong(&v45->_entityIdentifier, a3);
-    objc_storeStrong(&v46->_fullNames, v49);
-    objc_storeStrong(&v46->_prefixes, a5);
-    objc_storeStrong(&v46->_givenNames, a6);
-    objc_storeStrong(&v46->_phoneticGivenNames, a7);
-    objc_storeStrong(&v46->_middleNames, v50);
-    objc_storeStrong(&v46->_phoneticMiddleNames, a9);
-    objc_storeStrong(&v46->_familyNames, a10);
-    objc_storeStrong(&v46->_phoneticFamilyNames, a11);
-    objc_storeStrong(&v46->_previousFamilyNames, a12);
-    objc_storeStrong(&v46->_suffixes, a13);
-    objc_storeStrong(&v46->_nicknames, a14);
-    objc_storeStrong(&v46->_birthNames, a15);
-    objc_storeStrong(&v46->_birthday, a16);
-    objc_storeStrong(&v46->_occupation, a17);
-    objc_storeStrong(&v46->_isFavorite, a18);
-    objc_storeStrong(&v46->_isCurrentUser, a19);
-    objc_storeStrong(&v46->_isInferredDeviceUser, a20);
-    objc_storeStrong(&v46->_associatedPeople, a21);
-    objc_storeStrong(&v46->_locations, a22);
-    objc_storeStrong(&v46->_employers, a23);
-    objc_storeStrong(&v46->_topics, a24);
-    objc_storeStrong(&v46->_handles, a25);
-    objc_storeStrong(&v46->_identifiers, a26);
-    objc_storeStrong(&v46->_contactIdentifier, a27);
-    objc_storeStrong(&v46->_visualIdentifiers, a28);
-    objc_storeStrong(&v46->_allBirthday, a29);
-    objc_storeStrong(&v46->_allOccupation, a30);
-    objc_storeStrong(&v46->_allIsFavorite, a31);
-    objc_storeStrong(&v46->_allIsCurrentUser, a32);
-    objc_storeStrong(&v46->_allIsInferredDeviceUser, a33);
-    objc_storeStrong(&v46->_allContactIdentifier, a34);
+    objc_storeStrong(&v45->_entityIdentifier, field);
+    objc_storeStrong(&v46->_fullNames, namesFieldCopy);
+    objc_storeStrong(&v46->_prefixes, prefixesField);
+    objc_storeStrong(&v46->_givenNames, givenNamesField);
+    objc_storeStrong(&v46->_phoneticGivenNames, phoneticGivenNamesField);
+    objc_storeStrong(&v46->_middleNames, middleNamesFieldCopy);
+    objc_storeStrong(&v46->_phoneticMiddleNames, phoneticMiddleNamesField);
+    objc_storeStrong(&v46->_familyNames, familyNamesField);
+    objc_storeStrong(&v46->_phoneticFamilyNames, phoneticFamilyNamesField);
+    objc_storeStrong(&v46->_previousFamilyNames, previousFamilyNamesField);
+    objc_storeStrong(&v46->_suffixes, suffixesField);
+    objc_storeStrong(&v46->_nicknames, nicknamesField);
+    objc_storeStrong(&v46->_birthNames, birthNamesField);
+    objc_storeStrong(&v46->_birthday, birthdayField);
+    objc_storeStrong(&v46->_occupation, occupationField);
+    objc_storeStrong(&v46->_isFavorite, favoriteField);
+    objc_storeStrong(&v46->_isCurrentUser, userField);
+    objc_storeStrong(&v46->_isInferredDeviceUser, deviceUserField);
+    objc_storeStrong(&v46->_associatedPeople, peopleField);
+    objc_storeStrong(&v46->_locations, locationsField);
+    objc_storeStrong(&v46->_employers, employersField);
+    objc_storeStrong(&v46->_topics, topicsField);
+    objc_storeStrong(&v46->_handles, handlesField);
+    objc_storeStrong(&v46->_identifiers, identifiersField);
+    objc_storeStrong(&v46->_contactIdentifier, identifierField);
+    objc_storeStrong(&v46->_visualIdentifiers, visualIdentifiersField);
+    objc_storeStrong(&v46->_allBirthday, allBirthdayField);
+    objc_storeStrong(&v46->_allOccupation, allOccupationField);
+    objc_storeStrong(&v46->_allIsFavorite, isFavoriteField);
+    objc_storeStrong(&v46->_allIsCurrentUser, currentUserField);
+    objc_storeStrong(&v46->_allIsInferredDeviceUser, inferredDeviceUserField);
+    objc_storeStrong(&v46->_allContactIdentifier, contactIdentifierField);
   }
 
   return v46;

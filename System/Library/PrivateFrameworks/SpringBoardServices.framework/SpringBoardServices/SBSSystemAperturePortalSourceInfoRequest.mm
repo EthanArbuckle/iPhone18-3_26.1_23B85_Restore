@@ -1,32 +1,32 @@
 @interface SBSSystemAperturePortalSourceInfoRequest
 + (SBSPortalSource)_portalSource;
-+ (void)_setPortalSource:(id)a3;
-+ (void)rootWindowPortalSourceWithCompletion:(id)a3;
++ (void)_setPortalSource:(id)source;
++ (void)rootWindowPortalSourceWithCompletion:(id)completion;
 @end
 
 @implementation SBSSystemAperturePortalSourceInfoRequest
 
-+ (void)rootWindowPortalSourceWithCompletion:(id)a3
++ (void)rootWindowPortalSourceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   os_unfair_lock_lock(&_RequestLock);
-  v5 = [a1 _portalSource];
+  _portalSource = [self _portalSource];
 
-  if (v5 || ([MEMORY[0x1E696AAE8] mainBundle], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "bundleIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"com.apple.springboard"), v7, v6, (v8 & 1) != 0))
+  if (_portalSource || ([MEMORY[0x1E696AAE8] mainBundle], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "bundleIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", @"com.apple.springboard"), v7, v6, (v8 & 1) != 0))
   {
-    if (v4)
+    if (completionCopy)
     {
-      v9 = [a1 _portalSource];
-      v4[2](v4, v9);
+      _portalSource2 = [self _portalSource];
+      completionCopy[2](completionCopy, _portalSource2);
     }
   }
 
   else
   {
     v10 = MEMORY[0x1E698F498];
-    v11 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v12 = +[SBSSystemAperturePortalSourceInfoRequestServiceSpecification identifier];
-    v13 = [v10 endpointForMachName:v11 service:v12 instance:0];
+    v13 = [v10 endpointForMachName:defaultShellMachName service:v12 instance:0];
 
     if (v13)
     {
@@ -40,9 +40,9 @@
 
     [v14 configureConnection:&__block_literal_global_37];
     [v14 activate];
-    v15 = [v14 remoteTarget];
+    remoteTarget = [v14 remoteTarget];
 
-    if (v15)
+    if (remoteTarget)
     {
       v16 = SBLogSystemApertureHosting();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -51,14 +51,14 @@
         _os_log_impl(&dword_19169D000, v16, OS_LOG_TYPE_DEFAULT, "System Aperture Portal Source request connection handled-requested.", buf, 2u);
       }
 
-      v17 = [v14 remoteTarget];
+      remoteTarget2 = [v14 remoteTarget];
       v18 = MEMORY[0x1E69E9820];
       v19 = 3221225472;
       v20 = __81__SBSSystemAperturePortalSourceInfoRequest_rootWindowPortalSourceWithCompletion___block_invoke_8;
       v21 = &unk_1E73611A8;
-      v23 = a1;
-      v22 = v4;
-      [v17 rootWindowPortalSourceWithCompletion:&v18];
+      selfCopy = self;
+      v22 = completionCopy;
+      [remoteTarget2 rootWindowPortalSourceWithCompletion:&v18];
     }
 
     [v14 invalidate];
@@ -156,12 +156,12 @@ void __81__SBSSystemAperturePortalSourceInfoRequest_rootWindowPortalSourceWithCo
   return v2;
 }
 
-+ (void)_setPortalSource:(id)a3
++ (void)_setPortalSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   os_unfair_lock_lock(&_PortalSourceLock);
   v4 = _PortalSourceLock_SBSSystemApertureRootWindowPortalSource;
-  _PortalSourceLock_SBSSystemApertureRootWindowPortalSource = v3;
+  _PortalSourceLock_SBSSystemApertureRootWindowPortalSource = sourceCopy;
 
   os_unfair_lock_unlock(&_PortalSourceLock);
 }

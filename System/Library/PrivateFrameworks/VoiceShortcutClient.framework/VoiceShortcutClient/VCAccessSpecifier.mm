@@ -1,33 +1,33 @@
 @interface VCAccessSpecifier
-+ (id)accessSpecifierFilteredForAssociatedAppBundleIdentifier:(id)a3 bundleIdentifier:(id)a4;
-+ (id)accessSpecifierForAuditToken:(id *)a3;
++ (id)accessSpecifierFilteredForAssociatedAppBundleIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
++ (id)accessSpecifierForAuditToken:(id *)token;
 + (id)accessSpecifierForCurrentConnection;
 + (id)accessSpecifierForCurrentProcess;
-+ (id)accessSpecifierForTask:(__SecTask *)a3 auditToken:(id)a4 sandboxCapabilities:(int64_t)a5;
-+ (id)accessSpecifierForXPCConnection:(id)a3;
++ (id)accessSpecifierForTask:(__SecTask *)task auditToken:(id)token sandboxCapabilities:(int64_t)capabilities;
++ (id)accessSpecifierForXPCConnection:(id)connection;
 + (id)accessSpecifierUnrestricted;
-+ (id)accessSpecifierUnrestrictedWithAssociatedAppBundleIdentifier:(id)a3 bundleIdentifier:(id)a4;
++ (id)accessSpecifierUnrestrictedWithAssociatedAppBundleIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier;
 + (id)accessSpecifierWithNoAccess;
-+ (id)accessSpecifierWithNoAccessForBundleIdentifier:(id)a3;
++ (id)accessSpecifierWithNoAccessForBundleIdentifier:(id)identifier;
 - (BOOL)allowConnection;
 - (BOOL)allowFullRuntimeAccess;
-- (BOOL)allowLinkContextualActionRunningForBundleIdentifier:(id)a3;
+- (BOOL)allowLinkContextualActionRunningForBundleIdentifier:(id)identifier;
 - (BOOL)allowReadAccessForDonations;
 - (BOOL)allowReadAccessForSleepWorkflows;
 - (BOOL)allowReadAccessToShortcutsLibrary;
-- (BOOL)allowReadAccessToSingleStepShortcutsWithBundleIdentifier:(id)a3;
-- (BOOL)allowReadAccessToSuggestionsWithBundleIdentifier:(id)a3;
+- (BOOL)allowReadAccessToSingleStepShortcutsWithBundleIdentifier:(id)identifier;
+- (BOOL)allowReadAccessToSuggestionsWithBundleIdentifier:(id)identifier;
 - (BOOL)allowReadingOnScreenContent;
 - (BOOL)allowResettingAutomationConfirmationLevel;
 - (BOOL)allowShortcutImport;
 - (BOOL)allowWriteAccessForSleepWorkflows;
-- (BOOL)allowWriteAccessToSuggestionsWithBundleIdentifier:(id)a3;
+- (BOOL)allowWriteAccessToSuggestionsWithBundleIdentifier:(id)identifier;
 - (BOOL)isRemovalService;
 - (BOOL)isSettingsApp;
 - (BOOL)isSpringBoard;
 - (NSString)associatedAppBundleIdentifier;
 - (NSString)bundleIdentifier;
-- (VCAccessSpecifier)initWithSecTask:(__SecTask *)a3 auditToken:(id)a4 bundleIdentifier:(id)a5 associatedAppBundleIdentifier:(id)a6 entitlements:(int64_t)a7 sandboxCapabilities:(int64_t)a8;
+- (VCAccessSpecifier)initWithSecTask:(__SecTask *)task auditToken:(id)token bundleIdentifier:(id)identifier associatedAppBundleIdentifier:(id)bundleIdentifier entitlements:(int64_t)entitlements sandboxCapabilities:(int64_t)capabilities;
 - (id)associatedAppBundleIdentifierFromBundleRecord;
 - (id)bundleIdentifierFromTask;
 - (id)description;
@@ -42,7 +42,7 @@
   block[1] = 3221225472;
   block[2] = __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (accessSpecifierForCurrentProcess_onceToken != -1)
   {
     dispatch_once(&accessSpecifierForCurrentProcess_onceToken, block);
@@ -96,8 +96,8 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
     return 1;
   }
 
-  v4 = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
-  v3 = [v4 length] != 0;
+  associatedAppBundleIdentifier = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
+  v3 = [associatedAppBundleIdentifier length] != 0;
 
   return v3;
 }
@@ -108,7 +108,7 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(VCAccessSpecifier *)self entitlements];
+  entitlements = [(VCAccessSpecifier *)self entitlements];
   v20[0] = &unk_1F292CB20;
   v20[1] = &unk_1F292CB38;
   v21[0] = @"unrestricted";
@@ -140,7 +140,7 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
   v16 = __VCDescriptionOfEntitlements_block_invoke;
   v17 = &unk_1E7B00358;
   v18 = v8;
-  v19 = v6;
+  v19 = entitlements;
   v9 = v8;
   [v7 enumerateKeysAndObjectsUsingBlock:&v14];
   v10 = [v9 componentsJoinedByString:@" "];
@@ -197,24 +197,24 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
 
 - (BOOL)isRemovalService
 {
-  v2 = [(VCAccessSpecifier *)self bundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.shortcuts.appremoval"];
+  bundleIdentifier = [(VCAccessSpecifier *)self bundleIdentifier];
+  v3 = [bundleIdentifier isEqualToString:@"com.apple.shortcuts.appremoval"];
 
   return v3;
 }
 
 - (BOOL)isSpringBoard
 {
-  v2 = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.springboard"];
+  associatedAppBundleIdentifier = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
+  v3 = [associatedAppBundleIdentifier isEqualToString:@"com.apple.springboard"];
 
   return v3;
 }
 
 - (BOOL)isSettingsApp
 {
-  v2 = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
-  v3 = [v2 isEqualToString:@"com.apple.Preferences"];
+  associatedAppBundleIdentifier = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
+  v3 = [associatedAppBundleIdentifier isEqualToString:@"com.apple.Preferences"];
 
   return v3;
 }
@@ -249,9 +249,9 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
   return [(VCAccessSpecifier *)self hasEntitlements:32];
 }
 
-- (BOOL)allowLinkContextualActionRunningForBundleIdentifier:(id)a3
+- (BOOL)allowLinkContextualActionRunningForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(VCAccessSpecifier *)self allowFullRuntimeAccess])
   {
     v5 = 1;
@@ -259,27 +259,27 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
 
   else
   {
-    v6 = [(VCAccessSpecifier *)self auditToken];
+    auditToken = [(VCAccessSpecifier *)self auditToken];
 
-    if (v6)
+    if (auditToken)
     {
-      v7 = [MEMORY[0x1E69C7630] descriptor];
-      [v7 setValues:1];
+      descriptor = [MEMORY[0x1E69C7630] descriptor];
+      [descriptor setValues:1];
       v8 = MEMORY[0x1E69C7618];
       v9 = MEMORY[0x1E69C7610];
       v10 = MEMORY[0x1E69C7640];
-      v11 = [(VCAccessSpecifier *)self auditToken];
-      v12 = [v10 targetWithPid:{objc_msgSend(v11, "pid")}];
+      auditToken2 = [(VCAccessSpecifier *)self auditToken];
+      v12 = [v10 targetWithPid:{objc_msgSend(auditToken2, "pid")}];
       v13 = [v9 predicateMatchingTarget:v12];
-      v14 = [v8 statesForPredicate:v13 withDescriptor:v7 error:0];
+      v14 = [v8 statesForPredicate:v13 withDescriptor:descriptor error:0];
 
-      v15 = [v14 lastObject];
-      LODWORD(v12) = [v15 taskState];
+      lastObject = [v14 lastObject];
+      LODWORD(v12) = [lastObject taskState];
 
       if (v12 == 4)
       {
-        v16 = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
-        v5 = [v16 isEqualToString:v4];
+        associatedAppBundleIdentifier = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
+        v5 = [associatedAppBundleIdentifier isEqualToString:identifierCopy];
       }
 
       else
@@ -307,9 +307,9 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
   return [(VCAccessSpecifier *)self hasEntitlements:4];
 }
 
-- (BOOL)allowReadAccessToSuggestionsWithBundleIdentifier:(id)a3
+- (BOOL)allowReadAccessToSuggestionsWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(VCAccessSpecifier *)self allowUnrestrictedAccess])
   {
     v5 = 1;
@@ -317,16 +317,16 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
 
   else
   {
-    v6 = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
-    v5 = ([v6 isEqualToString:v4] & 1) != 0 || -[VCAccessSpecifier hasEntitlements:](self, "hasEntitlements:", 32);
+    associatedAppBundleIdentifier = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
+    v5 = ([associatedAppBundleIdentifier isEqualToString:identifierCopy] & 1) != 0 || -[VCAccessSpecifier hasEntitlements:](self, "hasEntitlements:", 32);
   }
 
   return v5;
 }
 
-- (BOOL)allowWriteAccessToSuggestionsWithBundleIdentifier:(id)a3
+- (BOOL)allowWriteAccessToSuggestionsWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(VCAccessSpecifier *)self allowUnrestrictedAccess])
   {
     v5 = 1;
@@ -334,16 +334,16 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
 
   else
   {
-    v6 = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
-    v5 = [v6 isEqualToString:v4];
+    associatedAppBundleIdentifier = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
+    v5 = [associatedAppBundleIdentifier isEqualToString:identifierCopy];
   }
 
   return v5;
 }
 
-- (BOOL)allowReadAccessToSingleStepShortcutsWithBundleIdentifier:(id)a3
+- (BOOL)allowReadAccessToSingleStepShortcutsWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(VCAccessSpecifier *)self allowUnrestrictedAccess]|| [(VCAccessSpecifier *)self hasEntitlements:4])
   {
     v5 = 1;
@@ -351,8 +351,8 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
 
   else
   {
-    v6 = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
-    v5 = [v6 isEqualToString:v4];
+    associatedAppBundleIdentifier = [(VCAccessSpecifier *)self associatedAppBundleIdentifier];
+    v5 = [associatedAppBundleIdentifier isEqualToString:identifierCopy];
   }
 
   return v5;
@@ -371,11 +371,11 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
 - (id)associatedAppBundleIdentifierFromBundleRecord
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(VCAccessSpecifier *)self bundleIdentifier];
-  if (v2)
+  bundleIdentifier = [(VCAccessSpecifier *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
     v9 = 0;
-    v3 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:v2 allowPlaceholder:0 error:&v9];
+    v3 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:&v9];
     v4 = v9;
     if (v3)
     {
@@ -411,9 +411,9 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
 - (NSString)associatedAppBundleIdentifier
 {
   associatedAppBundleIdentifier = self->_associatedAppBundleIdentifier;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (associatedAppBundleIdentifier == v4)
+  if (associatedAppBundleIdentifier == null)
   {
     v5 = 0;
   }
@@ -426,20 +426,20 @@ void __53__VCAccessSpecifier_accessSpecifierForCurrentProcess__block_invoke(uint
 
   else
   {
-    v6 = [(VCAccessSpecifier *)self associatedAppBundleIdentifierFromBundleRecord];
-    v5 = v6;
-    if (v6)
+    associatedAppBundleIdentifierFromBundleRecord = [(VCAccessSpecifier *)self associatedAppBundleIdentifierFromBundleRecord];
+    v5 = associatedAppBundleIdentifierFromBundleRecord;
+    if (associatedAppBundleIdentifierFromBundleRecord)
     {
-      v7 = v6;
+      null2 = associatedAppBundleIdentifierFromBundleRecord;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
     }
 
     associatedAppBundleIdentifier = self->_associatedAppBundleIdentifier;
-    self->_associatedAppBundleIdentifier = v7;
+    self->_associatedAppBundleIdentifier = null2;
   }
 
   return v5;
@@ -479,9 +479,9 @@ LABEL_7:
 - (NSString)bundleIdentifier
 {
   bundleIdentifier = self->_bundleIdentifier;
-  v4 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (bundleIdentifier == v4)
+  if (bundleIdentifier == null)
   {
     v5 = 0;
   }
@@ -494,60 +494,60 @@ LABEL_7:
 
   else
   {
-    v6 = [(VCAccessSpecifier *)self bundleIdentifierFromTask];
-    v5 = v6;
-    if (v6)
+    bundleIdentifierFromTask = [(VCAccessSpecifier *)self bundleIdentifierFromTask];
+    v5 = bundleIdentifierFromTask;
+    if (bundleIdentifierFromTask)
     {
-      v7 = v6;
+      null2 = bundleIdentifierFromTask;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E695DFB0] null];
+      null2 = [MEMORY[0x1E695DFB0] null];
     }
 
     bundleIdentifier = self->_bundleIdentifier;
-    self->_bundleIdentifier = v7;
+    self->_bundleIdentifier = null2;
   }
 
   return v5;
 }
 
-- (VCAccessSpecifier)initWithSecTask:(__SecTask *)a3 auditToken:(id)a4 bundleIdentifier:(id)a5 associatedAppBundleIdentifier:(id)a6 entitlements:(int64_t)a7 sandboxCapabilities:(int64_t)a8
+- (VCAccessSpecifier)initWithSecTask:(__SecTask *)task auditToken:(id)token bundleIdentifier:(id)identifier associatedAppBundleIdentifier:(id)bundleIdentifier entitlements:(int64_t)entitlements sandboxCapabilities:(int64_t)capabilities
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  tokenCopy = token;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v26.receiver = self;
   v26.super_class = VCAccessSpecifier;
   v18 = [(VCAccessSpecifier *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    v18->_task = a3;
-    if (a3)
+    v18->_task = task;
+    if (task)
     {
-      CFRetain(a3);
+      CFRetain(task);
     }
 
-    objc_storeStrong(&v19->_auditToken, a4);
-    v20 = [v16 copy];
+    objc_storeStrong(&v19->_auditToken, token);
+    v20 = [identifierCopy copy];
     bundleIdentifier = v19->_bundleIdentifier;
     v19->_bundleIdentifier = v20;
 
-    v22 = [v17 copy];
+    v22 = [bundleIdentifierCopy copy];
     associatedAppBundleIdentifier = v19->_associatedAppBundleIdentifier;
     v19->_associatedAppBundleIdentifier = v22;
 
-    v19->_entitlements = a7;
-    v19->_sandboxCapabilities = a8;
+    v19->_entitlements = entitlements;
+    v19->_sandboxCapabilities = capabilities;
     v24 = v19;
   }
 
   return v19;
 }
 
-+ (id)accessSpecifierForTask:(__SecTask *)a3 auditToken:(id)a4 sandboxCapabilities:(int64_t)a5
++ (id)accessSpecifierForTask:(__SecTask *)task auditToken:(id)token sandboxCapabilities:(int64_t)capabilities
 {
   v88[16] = *MEMORY[0x1E69E9840];
   v88[0] = @"com.apple.siri.VoiceShortcuts.xpc";
@@ -568,10 +568,10 @@ LABEL_7:
   v88[14] = @"com.apple.shortcuts.variable-injection";
   v88[15] = @"com.apple.shortcuts.file-bookmarks";
   v7 = MEMORY[0x1E695DEC8];
-  v84 = a4;
+  tokenCopy = token;
   [v7 arrayWithObjects:v88 count:16];
-  v83 = v86 = a3;
-  v8 = SecTaskCopyValuesForEntitlements(a3, v83, 0);
+  v83 = v86 = task;
+  v8 = SecTaskCopyValuesForEntitlements(task, v83, 0);
   v9 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.siri.VoiceShortcuts.xpc"];
   if (v9)
   {
@@ -594,7 +594,7 @@ LABEL_7:
 
   v11 = v10;
 
-  v82 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
   v12 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.library-read-access"];
   if (v12)
   {
@@ -617,7 +617,7 @@ LABEL_7:
 
   v14 = v13;
 
-  v81 = [v14 BOOLValue];
+  bOOLValue2 = [v14 BOOLValue];
   v15 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.home-resident"];
   if (v15)
   {
@@ -640,7 +640,7 @@ LABEL_7:
 
   v17 = v16;
 
-  v80 = [v17 BOOLValue];
+  bOOLValue3 = [v17 BOOLValue];
   v18 = [(__CFDictionary *)v8 objectForKeyedSubscript:v6];
   if (v18)
   {
@@ -663,7 +663,7 @@ LABEL_7:
 
   v20 = v19;
 
-  v79 = [v20 BOOLValue];
+  bOOLValue4 = [v20 BOOLValue];
   v21 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.health-access"];
   if (v21)
   {
@@ -686,7 +686,7 @@ LABEL_7:
 
   v23 = v22;
 
-  v78 = [v23 BOOLValue];
+  bOOLValue5 = [v23 BOOLValue];
   v24 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.background-running"];
   if (v24)
   {
@@ -709,7 +709,7 @@ LABEL_7:
 
   v26 = v25;
 
-  v77 = [v26 BOOLValue];
+  bOOLValue6 = [v26 BOOLValue];
   v27 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.contextual-actions-client"];
   if (v27)
   {
@@ -732,7 +732,7 @@ LABEL_7:
 
   v29 = v28;
 
-  v76 = [v29 BOOLValue];
+  bOOLValue7 = [v29 BOOLValue];
   v30 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.import-shortcuts"];
   if (v30)
   {
@@ -755,7 +755,7 @@ LABEL_7:
 
   v32 = v31;
 
-  v75 = [v32 BOOLValue];
+  bOOLValue8 = [v32 BOOLValue];
   v33 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.rootless.storage.shortcuts"];
   if (v33)
   {
@@ -778,7 +778,7 @@ LABEL_7:
 
   v35 = v34;
 
-  v74 = [v35 BOOLValue];
+  bOOLValue9 = [v35 BOOLValue];
   v36 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.on-screen-content-service"];
   if (v36)
   {
@@ -801,7 +801,7 @@ LABEL_7:
 
   v38 = v37;
 
-  v39 = [v38 BOOLValue];
+  bOOLValue10 = [v38 BOOLValue];
   v40 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.automation-confirmation-reset"];
   if (v40)
   {
@@ -824,7 +824,7 @@ LABEL_7:
 
   v42 = v41;
 
-  v43 = [v42 BOOLValue];
+  bOOLValue11 = [v42 BOOLValue];
   v44 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.background-runner"];
   if (v44)
   {
@@ -847,7 +847,7 @@ LABEL_7:
 
   v46 = v45;
 
-  v47 = [v46 BOOLValue];
+  bOOLValue12 = [v46 BOOLValue];
   v48 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.test-harness-runner"];
   if (v48)
   {
@@ -870,7 +870,7 @@ LABEL_7:
 
   v50 = v49;
 
-  v51 = [v50 BOOLValue];
+  bOOLValue13 = [v50 BOOLValue];
   v52 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.droplet-creation"];
   if (v52)
   {
@@ -893,7 +893,7 @@ LABEL_7:
 
   v54 = v53;
 
-  v55 = [v54 BOOLValue];
+  bOOLValue14 = [v54 BOOLValue];
   v56 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.stepwise-execution"];
   if (v56)
   {
@@ -916,7 +916,7 @@ LABEL_7:
 
   v58 = v57;
 
-  v59 = [v58 BOOLValue];
+  bOOLValue15 = [v58 BOOLValue];
   v60 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.variable-injection"];
   if (v60)
   {
@@ -939,7 +939,7 @@ LABEL_7:
 
   v62 = v61;
 
-  v63 = [v62 BOOLValue];
+  bOOLValue16 = [v62 BOOLValue];
   v64 = [(__CFDictionary *)v8 objectForKeyedSubscript:@"com.apple.shortcuts.file-bookmarks"];
   if (v64)
   {
@@ -960,78 +960,78 @@ LABEL_7:
     v65 = 0;
   }
 
-  v66 = v82;
-  if (v81)
+  v66 = bOOLValue;
+  if (bOOLValue2)
   {
-    v66 = v82 | 4;
+    v66 = bOOLValue | 4;
   }
 
-  if (v80)
+  if (bOOLValue3)
   {
     v66 |= 8uLL;
   }
 
-  if (v79)
+  if (bOOLValue4)
   {
     v66 |= 0x10uLL;
   }
 
-  if (v78)
+  if (bOOLValue5)
   {
     v66 |= 0x20uLL;
   }
 
-  if (v77)
+  if (bOOLValue6)
   {
     v66 |= 0x40uLL;
   }
 
-  if (v76)
+  if (bOOLValue7)
   {
     v66 |= 0x80uLL;
   }
 
-  if (v75)
+  if (bOOLValue8)
   {
     v66 |= 0x100uLL;
   }
 
-  if (v74)
+  if (bOOLValue9)
   {
     v66 |= 0x200uLL;
   }
 
-  if (v39)
+  if (bOOLValue10)
   {
     v66 |= 0x400uLL;
   }
 
-  if (v43)
+  if (bOOLValue11)
   {
     v66 |= 0x800uLL;
   }
 
-  if (v47)
+  if (bOOLValue12)
   {
     v66 |= 0x1000uLL;
   }
 
-  if (v51)
+  if (bOOLValue13)
   {
     v66 |= 0x2000uLL;
   }
 
-  if (v55)
+  if (bOOLValue14)
   {
     v66 |= 0x4000uLL;
   }
 
-  if (v59)
+  if (bOOLValue15)
   {
     v66 |= 0x8000uLL;
   }
 
-  if (v63)
+  if (bOOLValue16)
   {
     v67 = v66 | 0x10000;
   }
@@ -1043,8 +1043,8 @@ LABEL_7:
 
   v68 = v65;
 
-  v69 = [v68 BOOLValue];
-  if (v69)
+  bOOLValue17 = [v68 BOOLValue];
+  if (bOOLValue17)
   {
     v70 = v67 | 0x20000;
   }
@@ -1054,43 +1054,43 @@ LABEL_7:
     v70 = v67;
   }
 
-  v71 = [[a1 alloc] initWithSecTask:v86 auditToken:v84 bundleIdentifier:0 associatedAppBundleIdentifier:0 entitlements:v70 sandboxCapabilities:a5];
+  v71 = [[self alloc] initWithSecTask:v86 auditToken:tokenCopy bundleIdentifier:0 associatedAppBundleIdentifier:0 entitlements:v70 sandboxCapabilities:capabilities];
   v72 = *MEMORY[0x1E69E9840];
 
   return v71;
 }
 
-+ (id)accessSpecifierForAuditToken:(id *)a3
++ (id)accessSpecifierForAuditToken:(id *)token
 {
-  v5 = *&a3->var0[4];
-  *v12.val = *a3->var0;
+  v5 = *&token->var0[4];
+  *v12.val = *token->var0;
   *&v12.val[4] = v5;
   v6 = SecTaskCreateWithAuditToken(0, &v12);
   if (v6)
   {
     v7 = v6;
-    v8 = *&a3->var0[4];
-    *v12.val = *a3->var0;
+    v8 = *&token->var0[4];
+    *v12.val = *token->var0;
     *&v12.val[4] = v8;
     v9 = [MEMORY[0x1E698E620] tokenFromAuditToken:&v12];
-    v10 = [a1 accessSpecifierForTask:v7 auditToken:v9 sandboxCapabilities:0];
+    accessSpecifierWithNoAccess = [self accessSpecifierForTask:v7 auditToken:v9 sandboxCapabilities:0];
 
     CFRelease(v7);
   }
 
   else
   {
-    v10 = [a1 accessSpecifierWithNoAccess];
+    accessSpecifierWithNoAccess = [self accessSpecifierWithNoAccess];
   }
 
-  return v10;
+  return accessSpecifierWithNoAccess;
 }
 
-+ (id)accessSpecifierForXPCConnection:(id)a3
++ (id)accessSpecifierForXPCConnection:(id)connection
 {
-  if (a3)
+  if (connection)
   {
-    [a3 auditToken];
+    [connection auditToken];
   }
 
   else
@@ -1098,17 +1098,17 @@ LABEL_7:
     memset(v6, 0, sizeof(v6));
   }
 
-  v4 = [a1 accessSpecifierForAuditToken:v6];
+  v4 = [self accessSpecifierForAuditToken:v6];
 
   return v4;
 }
 
 + (id)accessSpecifierForCurrentConnection
 {
-  v3 = [MEMORY[0x1E696B0B8] currentConnection];
-  if (v3)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  if (currentConnection)
   {
-    v4 = [a1 accessSpecifierForXPCConnection:v3];
+    v4 = [self accessSpecifierForXPCConnection:currentConnection];
   }
 
   else
@@ -1119,48 +1119,48 @@ LABEL_7:
   return v4;
 }
 
-+ (id)accessSpecifierWithNoAccessForBundleIdentifier:(id)a3
++ (id)accessSpecifierWithNoAccessForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:v4 associatedAppBundleIdentifier:0 entitlements:0 sandboxCapabilities:0];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:identifierCopy associatedAppBundleIdentifier:0 entitlements:0 sandboxCapabilities:0];
 
   return v5;
 }
 
 + (id)accessSpecifierWithNoAccess
 {
-  v2 = [[a1 alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:0 associatedAppBundleIdentifier:0 entitlements:0 sandboxCapabilities:0];
+  v2 = [[self alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:0 associatedAppBundleIdentifier:0 entitlements:0 sandboxCapabilities:0];
 
   return v2;
 }
 
-+ (id)accessSpecifierFilteredForAssociatedAppBundleIdentifier:(id)a3 bundleIdentifier:(id)a4
++ (id)accessSpecifierFilteredForAssociatedAppBundleIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  if (!identifierCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"VCAccessSpecifier.m" lineNumber:265 description:{@"Invalid parameter not satisfying: %@", @"associatedAppBundleIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCAccessSpecifier.m" lineNumber:265 description:{@"Invalid parameter not satisfying: %@", @"associatedAppBundleIdentifier"}];
   }
 
-  v9 = [[a1 alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:v8 associatedAppBundleIdentifier:v7 entitlements:0 sandboxCapabilities:0];
+  v9 = [[self alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:bundleIdentifierCopy associatedAppBundleIdentifier:identifierCopy entitlements:0 sandboxCapabilities:0];
 
   return v9;
 }
 
-+ (id)accessSpecifierUnrestrictedWithAssociatedAppBundleIdentifier:(id)a3 bundleIdentifier:(id)a4
++ (id)accessSpecifierUnrestrictedWithAssociatedAppBundleIdentifier:(id)identifier bundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:v6 associatedAppBundleIdentifier:v7 entitlements:1 sandboxCapabilities:0];
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  v8 = [[self alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:bundleIdentifierCopy associatedAppBundleIdentifier:identifierCopy entitlements:1 sandboxCapabilities:0];
 
   return v8;
 }
 
 + (id)accessSpecifierUnrestricted
 {
-  v2 = [[a1 alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:0 associatedAppBundleIdentifier:0 entitlements:1 sandboxCapabilities:0];
+  v2 = [[self alloc] initWithSecTask:0 auditToken:0 bundleIdentifier:0 associatedAppBundleIdentifier:0 entitlements:1 sandboxCapabilities:0];
 
   return v2;
 }

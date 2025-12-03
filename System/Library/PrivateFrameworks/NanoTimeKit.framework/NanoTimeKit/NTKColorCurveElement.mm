@@ -1,20 +1,20 @@
 @interface NTKColorCurveElement
-- (NTKColorCurveElement)initWithColor:(id)a3 fraction:(float)a4;
+- (NTKColorCurveElement)initWithColor:(id)color fraction:(float)fraction;
 @end
 
 @implementation NTKColorCurveElement
 
-- (NTKColorCurveElement)initWithColor:(id)a3 fraction:(float)a4
+- (NTKColorCurveElement)initWithColor:(id)color fraction:(float)fraction
 {
-  v6 = a3;
+  colorCopy = color;
   v13.receiver = self;
   v13.super_class = NTKColorCurveElement;
   v7 = [(NTKColorCurveElement *)&v13 init];
   v8 = v7;
   if (v7)
   {
-    [(NTKColorCurveElement *)v7 setColor:v6];
-    *&v9 = a4;
+    [(NTKColorCurveElement *)v7 setColor:colorCopy];
+    *&v9 = fraction;
     [(NTKColorCurveElement *)v8 setFraction:v9];
     v10 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
     [(NTKColorCurveElement *)v8 setTimingFunction:v10];

@@ -1,28 +1,28 @@
 @interface IOHIDDeviceClass
 - (IOHIDDeviceClass)init;
-- (id)copyObsoleteDictionary:(id)a3;
-- (id)propertyForElementKey:(id)a3;
-- (int)close:(unsigned int)a3;
-- (int)copyMatchingElements:(id)a3 elements:(const __CFArray *)a4 options:(unsigned int)a5;
-- (int)getAsyncEventSource:(const void *)a3;
-- (int)getProperty:(id)a3 property:(const void *)a4;
-- (int)getReport:(int)a3 reportID:(unsigned int)a4 report:(char *)a5 reportLength:(int64_t *)a6 timeout:(unsigned int)a7 callback:(void *)a8 context:(void *)a9 options:(unsigned int)a10;
-- (int)getValue:(__IOHIDElement *)a3 value:(__IOHIDValue *)a4 timeout:(unsigned int)a5 callback:(void *)a6 context:(void *)a7 options:(unsigned int)a8;
+- (id)copyObsoleteDictionary:(id)dictionary;
+- (id)propertyForElementKey:(id)key;
+- (int)close:(unsigned int)close;
+- (int)copyMatchingElements:(id)elements elements:(const __CFArray *)a4 options:(unsigned int)options;
+- (int)getAsyncEventSource:(const void *)source;
+- (int)getProperty:(id)property property:(const void *)a4;
+- (int)getReport:(int)report reportID:(unsigned int)d report:(char *)a5 reportLength:(int64_t *)length timeout:(unsigned int)timeout callback:(void *)callback context:(void *)context options:(unsigned int)self0;
+- (int)getValue:(__IOHIDElement *)value value:(__IOHIDValue *)a4 timeout:(unsigned int)timeout callback:(void *)callback context:(void *)context options:(unsigned int)options;
 - (int)initConnect;
 - (int)initElements;
-- (int)probe:(id)a3 service:(unsigned int)a4 outScore:(int *)a5;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
-- (int)setInputReportCallback:(char *)a3 reportLength:(int64_t)a4 callback:(void *)a5 context:(void *)a6 options:(unsigned int)a7;
-- (int)setInputReportWithTimeStampCallback:(char *)a3 reportLength:(int64_t)a4 callback:(void *)a5 context:(void *)a6 options:(unsigned int)a7;
-- (int)setProperty:(id)a3 property:(id)a4;
-- (int)setReport:(int)a3 reportID:(unsigned int)a4 report:(const char *)a5 reportLength:(int64_t)a6 timeout:(unsigned int)a7 callback:(void *)a8 context:(void *)a9 options:(unsigned int)a10;
-- (int)setValue:(__IOHIDElement *)a3 value:(__IOHIDValue *)a4 timeout:(unsigned int)a5 callback:(void *)a6 context:(void *)a7 options:(unsigned int)a8;
-- (int)start:(id)a3 service:(unsigned int)a4;
+- (int)probe:(id)probe service:(unsigned int)service outScore:(int *)score;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
+- (int)setInputReportCallback:(char *)callback reportLength:(int64_t)length callback:(void *)a5 context:(void *)context options:(unsigned int)options;
+- (int)setInputReportWithTimeStampCallback:(char *)callback reportLength:(int64_t)length callback:(void *)a5 context:(void *)context options:(unsigned int)options;
+- (int)setProperty:(id)property property:(id)a4;
+- (int)setReport:(int)report reportID:(unsigned int)d report:(const char *)a5 reportLength:(int64_t)length timeout:(unsigned int)timeout callback:(void *)callback context:(void *)context options:(unsigned int)self0;
+- (int)setValue:(__IOHIDElement *)value value:(__IOHIDValue *)a4 timeout:(unsigned int)timeout callback:(void *)callback context:(void *)context options:(unsigned int)options;
+- (int)start:(id)start service:(unsigned int)service;
 - (void)dealloc;
 - (void)initPort;
 - (void)initQueue;
-- (void)releaseReport:(unint64_t)a3;
-- (void)valueAvailableCallback:(int)a3;
+- (void)releaseReport:(unint64_t)report;
+- (void)valueAvailableCallback:(int)callback;
 @end
 
 @implementation IOHIDDeviceClass
@@ -60,17 +60,17 @@
   return 0;
 }
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v5 = *&a3.var8;
-  v6 = *&a3.var0;
-  v8 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v5 = *&interface.var8;
+  v6 = *&interface.var0;
+  v8 = CFUUIDCreateFromUUIDBytes(0, interface);
   v9 = CFUUIDGetConstantUUIDWithBytes(*MEMORY[0x29EDB8EF0], 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   if (CFEqual(v8, v9) || (v10 = CFUUIDGetConstantUUIDWithBytes(0, 0xC2u, 0x44u, 0xE8u, 0x58u, 0x10u, 0x9Cu, 0x11u, 0xD4u, 0x91u, 0xD4u, 0, 0x50u, 0xE4u, 0xC6u, 0x42u, 0x6Fu), CFEqual(v8, v10)))
   {
     v11 = 16;
 LABEL_4:
-    *a4 = self + v11;
+    *outInterface = self + v11;
     CFRetain(self);
     Interface_outInterface = 0;
     goto LABEL_5;
@@ -92,7 +92,7 @@ LABEL_4:
 LABEL_15:
     v27 = [v21 alloc];
     v29 = objc_msgSend_initWithDevice_(v27, v28, self);
-    Interface_outInterface = objc_msgSend_queryInterface_outInterface_(v29, v30, v6, v5, a4);
+    Interface_outInterface = objc_msgSend_queryInterface_outInterface_(v29, v30, v6, v5, outInterface);
 
     goto LABEL_5;
   }
@@ -116,9 +116,9 @@ LABEL_5:
   return Interface_outInterface;
 }
 
-- (int)probe:(id)a3 service:(unsigned int)a4 outScore:(int *)a5
+- (int)probe:(id)probe service:(unsigned int)service outScore:(int *)score
 {
-  if (IOObjectConformsTo(a4, "IOHIDDevice"))
+  if (IOObjectConformsTo(service, "IOHIDDevice"))
   {
     return 0;
   }
@@ -129,9 +129,9 @@ LABEL_5:
   }
 }
 
-- (int)start:(id)a3 service:(unsigned int)a4
+- (int)start:(id)start service:(unsigned int)service
 {
-  v6 = IOObjectRetain(a4);
+  v6 = IOObjectRetain(service);
   v7 = v6;
   if (v6)
   {
@@ -141,25 +141,25 @@ LABEL_5:
   else
   {
     os_unfair_recursive_lock_lock_with_options();
-    self->_service = a4;
+    self->_service = service;
     os_unfair_recursive_lock_unlock();
   }
 
   return v7;
 }
 
-- (int)getProperty:(id)a3 property:(const void *)a4
+- (int)getProperty:(id)property property:(const void *)a4
 {
-  v6 = a3;
+  propertyCopy = property;
   if (a4)
   {
     os_unfair_recursive_lock_lock_with_options();
-    v8 = objc_msgSend_objectForKeyedSubscript_(self->_properties, v7, v6);
+    v8 = objc_msgSend_objectForKeyedSubscript_(self->_properties, v7, propertyCopy);
 
     os_unfair_recursive_lock_unlock();
     if (!v8)
     {
-      if (objc_msgSend_isEqualToString_(v6, v9, @"UniqueID"))
+      if (objc_msgSend_isEqualToString_(propertyCopy, v9, @"UniqueID"))
       {
         entryID = 0xAAAAAAAAAAAAAAAALL;
         IORegistryEntryGetRegistryEntryID(self->_service, &entryID);
@@ -168,23 +168,23 @@ LABEL_5:
 
       else
       {
-        isEqualToString = objc_msgSend_isEqualToString_(v6, v10, @"Built-In");
+        isEqualToString = objc_msgSend_isEqualToString_(propertyCopy, v10, @"Built-In");
         service = self->_service;
         if (isEqualToString)
         {
-          CFProperty = IORegistryEntryCreateCFProperty(service, v6, *MEMORY[0x29EDB8ED8], 0);
+          CFProperty = IORegistryEntryCreateCFProperty(service, propertyCopy, *MEMORY[0x29EDB8ED8], 0);
         }
 
         else
         {
-          CFProperty = IORegistryEntrySearchCFProperty(service, "IOService", v6, *MEMORY[0x29EDB8ED8], 3u);
+          CFProperty = IORegistryEntrySearchCFProperty(service, "IOService", propertyCopy, *MEMORY[0x29EDB8ED8], 3u);
         }
       }
 
       v8 = CFProperty;
       if (CFProperty)
       {
-        v17 = objc_msgSend_mutableCopy(v6, v12, v13);
+        v17 = objc_msgSend_mutableCopy(propertyCopy, v12, v13);
         os_unfair_recursive_lock_lock_with_options();
         objc_msgSend_setObject_forKeyedSubscript_(self->_properties, v18, v8, v17);
         os_unfair_recursive_lock_unlock();
@@ -204,41 +204,41 @@ LABEL_5:
   return v14;
 }
 
-- (int)getAsyncEventSource:(const void *)a3
+- (int)getAsyncEventSource:(const void *)source
 {
-  if (!a3)
+  if (!source)
   {
     return -536870206;
   }
 
-  objc_msgSend_initPort(self, a2, a3);
+  objc_msgSend_initPort(self, a2, source);
   os_unfair_recursive_lock_lock_with_options();
-  *a3 = self->_runLoopSource;
+  *source = self->_runLoopSource;
   os_unfair_recursive_lock_unlock();
   return 0;
 }
 
-- (id)propertyForElementKey:(id)a3
+- (id)propertyForElementKey:(id)key
 {
-  v3 = a3;
-  v5 = objc_msgSend_substringToIndex_(v3, v4, 1);
+  keyCopy = key;
+  v5 = objc_msgSend_substringToIndex_(keyCopy, v4, 1);
   v8 = objc_msgSend_lowercaseString(v5, v6, v7);
 
-  v10 = objc_msgSend_stringByReplacingCharactersInRange_withString_(v3, v9, 0, 1, v8);
+  v10 = objc_msgSend_stringByReplacingCharactersInRange_withString_(keyCopy, v9, 0, 1, v8);
 
   return v10;
 }
 
-- (id)copyObsoleteDictionary:(id)a3
+- (id)copyObsoleteDictionary:(id)dictionary
 {
   v122 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v109 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
   v120 = 0u;
-  obj = v3;
+  obj = dictionaryCopy;
   v110 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v117, v121, 16);
   if (v110)
   {
@@ -373,11 +373,11 @@ LABEL_5:
   return v109;
 }
 
-- (int)copyMatchingElements:(id)a3 elements:(const __CFArray *)a4 options:(unsigned int)a5
+- (int)copyMatchingElements:(id)elements elements:(const __CFArray *)a4 options:(unsigned int)options
 {
-  v5 = a5;
+  optionsCopy = options;
   v29 = *MEMORY[0x29EDCA608];
-  v10 = a3;
+  elementsCopy = elements;
   if (a4)
   {
     inited = objc_msgSend_initElements(self, v8, v9);
@@ -394,11 +394,11 @@ LABEL_5:
       v25[4] = self;
       v15 = v14;
       v26 = v15;
-      objc_msgSend_enumerateKeysAndObjectsUsingBlock_(v10, v16, v25);
+      objc_msgSend_enumerateKeysAndObjectsUsingBlock_(elementsCopy, v16, v25);
       v19 = objc_msgSend_count(v15, v17, v18);
       if (v19)
       {
-        if (v5)
+        if (optionsCopy)
         {
           v19 = objc_msgSend_copyObsoleteDictionary_(self, v20, v15);
         }
@@ -426,7 +426,7 @@ LABEL_5:
   return inited;
 }
 
-- (int)getValue:(__IOHIDElement *)a3 value:(__IOHIDValue *)a4 timeout:(unsigned int)a5 callback:(void *)a6 context:(void *)a7 options:(unsigned int)a8
+- (int)getValue:(__IOHIDElement *)value value:(__IOHIDValue *)a4 timeout:(unsigned int)timeout callback:(void *)callback context:(void *)context options:(unsigned int)options
 {
   v46 = *MEMORY[0x29EDCA608];
   v8 = -536870206;
@@ -459,7 +459,7 @@ LABEL_5:
   }
 
   v16 = [HIDLibElement alloc];
-  v19 = objc_msgSend_initWithElementRef_(v16, v17, a3);
+  v19 = objc_msgSend_initWithElementRef_(v16, v17, value);
   if (!v19)
   {
     v22 = 0;
@@ -487,15 +487,15 @@ LABEL_32:
     *a4 = objc_msgSend_valueRef(v22, v27, v28);
   }
 
-  if ((a8 & 0x10000) != 0)
+  if ((options & 0x10000) != 0)
   {
     v8 = 0;
     goto LABEL_32;
   }
 
-  if ((a8 & 0x40000) != 0 || objc_msgSend_type(v22, v27, v28) != 257)
+  if ((options & 0x40000) != 0 || objc_msgSend_type(v22, v27, v28) != 257)
   {
-    v45 = (a8 & 0x20000) == 0;
+    v45 = (options & 0x20000) == 0;
   }
 
   inputStruct = objc_msgSend_elementCookie(v22, v27, v28);
@@ -544,7 +544,7 @@ LABEL_26:
   return v8;
 }
 
-- (void)valueAvailableCallback:(int)a3
+- (void)valueAvailableCallback:(int)callback
 {
   value = 0xAAAAAAAAAAAAAAAALL;
   os_unfair_recursive_lock_lock_with_options();
@@ -607,13 +607,13 @@ LABEL_14:
   objc_msgSend_signalQueueEmpty(self->_queue, v6, v7, inputReportBufferLength);
 }
 
-- (int)setInputReportCallback:(char *)a3 reportLength:(int64_t)a4 callback:(void *)a5 context:(void *)a6 options:(unsigned int)a7
+- (int)setInputReportCallback:(char *)callback reportLength:(int64_t)length callback:(void *)a5 context:(void *)context options:(unsigned int)options
 {
   os_unfair_recursive_lock_lock_with_options();
   os_unfair_recursive_lock_lock_with_options();
-  self->_inputReportBuffer = a3;
-  self->_inputReportBufferLength = a4;
-  self->_inputReportContext = a6;
+  self->_inputReportBuffer = callback;
+  self->_inputReportBufferLength = length;
+  self->_inputReportContext = context;
   self->_inputReportCallback = a5;
   os_unfair_recursive_lock_unlock();
   os_unfair_recursive_lock_unlock();
@@ -628,12 +628,12 @@ LABEL_14:
   return 0;
 }
 
-- (int)setInputReportWithTimeStampCallback:(char *)a3 reportLength:(int64_t)a4 callback:(void *)a5 context:(void *)a6 options:(unsigned int)a7
+- (int)setInputReportWithTimeStampCallback:(char *)callback reportLength:(int64_t)length callback:(void *)a5 context:(void *)context options:(unsigned int)options
 {
   os_unfair_recursive_lock_lock_with_options();
-  self->_inputReportBuffer = a3;
-  self->_inputReportBufferLength = a4;
-  self->_inputReportContext = a6;
+  self->_inputReportBuffer = callback;
+  self->_inputReportBufferLength = length;
+  self->_inputReportContext = context;
   self->_inputReportTimestampCallback = a5;
   os_unfair_recursive_lock_unlock();
   objc_msgSend_initQueue(self, v12, v13);
@@ -647,10 +647,10 @@ LABEL_14:
   return 0;
 }
 
-- (void)releaseReport:(unint64_t)a3
+- (void)releaseReport:(unint64_t)report
 {
   v4[1] = *MEMORY[0x29EDCA608];
-  v4[0] = a3;
+  v4[0] = report;
   IOConnectCallScalarMethod(self->_connect, 0x11u, v4, 1u, 0, 0);
   v3 = *MEMORY[0x29EDCA608];
 }
@@ -1157,7 +1157,7 @@ LABEL_34:
   v24 = *MEMORY[0x29EDCA608];
 }
 
-- (int)close:(unsigned int)a3
+- (int)close:(unsigned int)close
 {
   os_unfair_recursive_lock_lock_with_options();
   if (self->_opened)
@@ -1188,11 +1188,11 @@ LABEL_34:
   return inited;
 }
 
-- (int)setProperty:(id)a3 property:(id)a4
+- (int)setProperty:(id)property property:(id)a4
 {
-  v6 = a3;
+  propertyCopy = property;
   v7 = a4;
-  v11 = objc_msgSend_mutableCopy(v6, v8, v9);
+  v11 = objc_msgSend_mutableCopy(propertyCopy, v8, v9);
   if (v7)
   {
     DeepCopy = CFPropertyListCreateDeepCopy(*MEMORY[0x29EDB8ED8], v7, 2uLL);
@@ -1203,7 +1203,7 @@ LABEL_34:
     DeepCopy = 0;
   }
 
-  if (objc_msgSend_isEqualToString_(v6, v10, @"IOHIDDeviceSuspend"))
+  if (objc_msgSend_isEqualToString_(propertyCopy, v10, @"IOHIDDeviceSuspend"))
   {
     if (self->_queue)
     {
@@ -1230,7 +1230,7 @@ LABEL_14:
     while (1)
     {
       v20 = off_29F34D1D8[v19];
-      if (objc_msgSend_isEqualToString_(v6, v21, v20))
+      if (objc_msgSend_isEqualToString_(propertyCopy, v21, v20))
       {
         break;
       }
@@ -1241,7 +1241,7 @@ LABEL_14:
       }
     }
 
-    v22 = IOConnectSetCFProperty(self->_connect, v6, v7);
+    v22 = IOConnectSetCFProperty(self->_connect, propertyCopy, v7);
   }
 
   os_unfair_recursive_lock_lock_with_options();
@@ -1251,7 +1251,7 @@ LABEL_14:
   return v22;
 }
 
-- (int)setValue:(__IOHIDElement *)a3 value:(__IOHIDValue *)a4 timeout:(unsigned int)a5 callback:(void *)a6 context:(void *)a7 options:(unsigned int)a8
+- (int)setValue:(__IOHIDElement *)value value:(__IOHIDValue *)a4 timeout:(unsigned int)timeout callback:(void *)callback context:(void *)context options:(unsigned int)options
 {
   v41 = *MEMORY[0x29EDCA608];
   v12 = -536870206;
@@ -1275,7 +1275,7 @@ LABEL_14:
   }
 
   v16 = [HIDLibElement alloc];
-  v19 = objc_msgSend_initWithElementRef_(v16, v17, a3);
+  v19 = objc_msgSend_initWithElementRef_(v16, v17, value);
   if (!v19)
   {
     v22 = 0;
@@ -1307,7 +1307,7 @@ LABEL_14:
     }
   }
 
-  if ((a8 & 0x10000) != 0)
+  if ((options & 0x10000) != 0)
   {
     v12 = 0;
     goto LABEL_17;
@@ -1353,19 +1353,19 @@ LABEL_17:
   return v12;
 }
 
-- (int)setReport:(int)a3 reportID:(unsigned int)a4 report:(const char *)a5 reportLength:(int64_t)a6 timeout:(unsigned int)a7 callback:(void *)a8 context:(void *)a9 options:(unsigned int)a10
+- (int)setReport:(int)report reportID:(unsigned int)d report:(const char *)a5 reportLength:(int64_t)length timeout:(unsigned int)timeout callback:(void *)callback context:(void *)context options:(unsigned int)self0
 {
   v28 = *MEMORY[0x29EDCA608];
   v16 = -536870212;
-  input[0] = a3;
-  input[1] = a4;
+  input[0] = report;
+  input[1] = d;
   v27 = 0;
   os_unfair_recursive_lock_lock_with_options();
   opened = self->_opened;
   os_unfair_recursive_lock_unlock();
   if (opened)
   {
-    if (a8)
+    if (callback)
     {
       sub_29D3F8D48();
       v27 = v18;
@@ -1373,13 +1373,13 @@ LABEL_17:
       if (v19)
       {
         v22 = v19;
-        *v19 = a3;
+        *v19 = report;
         *(v19 + 1) = a5;
-        v19[4] = a4;
-        *(v19 + 3) = a8;
-        *(v19 + 4) = a9;
+        v19[4] = d;
+        *(v19 + 3) = callback;
+        *(v19 + 4) = context;
         sub_29D3F8CE0(v19, v20, v21, 24);
-        v16 = IOConnectCallAsyncMethod(self->_connect, 0xDu, self->_port, reference, 3u, input, 3u, a5, a6, 0, 0, 0, 0);
+        v16 = IOConnectCallAsyncMethod(self->_connect, 0xDu, self->_port, reference, 3u, input, 3u, a5, length, 0, 0, 0, 0);
         if (v16)
         {
           free(v22);
@@ -1389,7 +1389,7 @@ LABEL_17:
 
     else
     {
-      v16 = IOConnectCallMethod(self->_connect, 0xDu, input, 3u, a5, a6, 0, 0, 0, 0);
+      v16 = IOConnectCallMethod(self->_connect, 0xDu, input, 3u, a5, length, 0, 0, 0, 0);
     }
   }
 
@@ -1402,12 +1402,12 @@ LABEL_17:
   return v16;
 }
 
-- (int)getReport:(int)a3 reportID:(unsigned int)a4 report:(char *)a5 reportLength:(int64_t *)a6 timeout:(unsigned int)a7 callback:(void *)a8 context:(void *)a9 options:(unsigned int)a10
+- (int)getReport:(int)report reportID:(unsigned int)d report:(char *)a5 reportLength:(int64_t *)length timeout:(unsigned int)timeout callback:(void *)callback context:(void *)context options:(unsigned int)self0
 {
   v33 = *MEMORY[0x29EDCA608];
   v10 = -536870212;
   v32 = 0;
-  v29 = *a6;
+  v29 = *length;
   if (v29 < 1)
   {
     v10 = -536870206;
@@ -1424,13 +1424,13 @@ LABEL_17:
       goto LABEL_10;
     }
 
-    input[0] = a3;
-    input[1] = a4;
-    if (!a8)
+    input[0] = report;
+    input[1] = d;
+    if (!callback)
     {
       v10 = sub_29D3EFB80(self->_connect, 0xCu, input, 3u, v18, v19, v20, v21, a5, &v29);
 LABEL_9:
-      *a6 = v29;
+      *length = v29;
       goto LABEL_10;
     }
 
@@ -1440,11 +1440,11 @@ LABEL_9:
     if (v23)
     {
       v26 = v23;
-      *v23 = a3;
+      *v23 = report;
       *(v23 + 1) = a5;
-      v23[4] = a4;
-      *(v23 + 3) = a8;
-      *(v23 + 4) = a9;
+      v23[4] = d;
+      *(v23 + 3) = callback;
+      *(v23 + 4) = context;
       sub_29D3F8CE0(v23, v24, v25, 24);
       v10 = IOConnectCallAsyncMethod(self->_connect, 0xCu, self->_port, reference, 3u, input, 3u, 0, 0, 0, 0, a5, &v29);
       if (v10)

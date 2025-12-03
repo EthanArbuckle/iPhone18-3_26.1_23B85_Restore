@@ -1,14 +1,14 @@
 @interface TTSAXResource
-+ (id)localizedName:(id)a3 forLanguage:(id)a4;
++ (id)localizedName:(id)name forLanguage:(id)language;
 - (AVSpeechSynthesisProviderVoice)synthesisProviderVoice;
 - (NSArray)languages;
 - (NSString)contentPath;
 - (NSString)name;
 - (NSString)voiceId;
 - (TTSAXResource)init;
-- (id)copyWithZone:(void *)a3;
-- (id)localizedNameForLanguage:(id)a3;
-- (id)nameAndFootprintForLanguage:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)localizedNameForLanguage:(id)language;
+- (id)nameAndFootprintForLanguage:(id)language;
 - (id)primaryLanguage;
 - (id)speechVoice;
 - (int64_t)assetSize;
@@ -18,16 +18,16 @@
 
 @implementation TTSAXResource
 
-+ (id)localizedName:(id)a3 forLanguage:(id)a4
++ (id)localizedName:(id)name forLanguage:(id)language
 {
   v5 = sub_1A957C0F8();
   v7 = v6;
-  if (a4)
+  if (language)
   {
     v8 = v5;
     v9 = sub_1A957C0F8();
     v5 = v8;
-    a4 = v10;
+    language = v10;
   }
 
   else
@@ -35,7 +35,7 @@
     v9 = 0;
   }
 
-  _sSo13TTSAXResourceC12TextToSpeechE13localizedName_11forLanguageS2S_SSSgtFZ_0(v5, v7, v9, a4);
+  _sSo13TTSAXResourceC12TextToSpeechE13localizedName_11forLanguageS2S_SSSgtFZ_0(v5, v7, v9, language);
 
   v11 = sub_1A957C0C8();
 
@@ -66,11 +66,11 @@
   return result;
 }
 
-- (id)localizedNameForLanguage:(id)a3
+- (id)localizedNameForLanguage:(id)language
 {
   v4 = sub_1A957C0F8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   TTSAXResource.localizedName(forLanguage:)(v8);
@@ -80,7 +80,7 @@
   return v9;
 }
 
-- (id)nameAndFootprintForLanguage:(id)a3
+- (id)nameAndFootprintForLanguage:(id)language
 {
   v4 = OBJC_IVAR___TTSAXResource_voice;
   swift_beginAccess();
@@ -137,12 +137,12 @@
 
 - (NSString)contentPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = *sub_1A9431E94();
   v4 = OBJC_IVAR___TTSAXResource_voice;
   swift_beginAccess();
-  memcpy(__dst, v2 + v4, sizeof(__dst));
-  memcpy(__src, v2 + v4, sizeof(__src));
+  memcpy(__dst, selfCopy + v4, sizeof(__dst));
+  memcpy(__src, selfCopy + v4, sizeof(__src));
   result = sub_1A932D058(__src);
   if (result == 1)
   {
@@ -215,7 +215,7 @@
   v7 = &v13[-((v6 + 15) & 0xFFFFFFFFFFFFFFF0) - 8];
   v8 = OBJC_IVAR___TTSAXResource_voice;
   swift_beginAccess();
-  memcpy(v14, &a1[v8], sizeof(v14));
+  memcpy(v14, &self[v8], sizeof(v14));
   result = sub_1A932D058(v14);
   if (result == 1)
   {
@@ -225,7 +225,7 @@
   else
   {
     memcpy(v13, v14, sizeof(v13));
-    v10 = a1;
+    selfCopy = self;
     CoreSynthesizer.Voice.primaryLocale.getter(v7);
     Locale.legacyIdentifier.getter();
 
@@ -251,7 +251,7 @@
 
   else
   {
-    v5 = self;
+    selfCopy = self;
     CoreSynthesizer.Voice.primaryLocales.getter(v10);
     swift_endAccess();
     v6 = v11;
@@ -334,7 +334,7 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   v4 = OBJC_IVAR___TTSAXResource_voice;
   swift_beginAccess();

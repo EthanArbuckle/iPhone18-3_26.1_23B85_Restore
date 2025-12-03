@@ -1,12 +1,12 @@
 @interface NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext
@@ -17,70 +17,70 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext;
   v4 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   product = self->_product;
   if (product)
   {
-    v5 = [(NPKProtoStandalonePaymentSetupProduct *)product dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"product"];
+    dictionaryRepresentation = [(NPKProtoStandalonePaymentSetupProduct *)product dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"product"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_allowsReaderModeEntry];
-    [v3 setObject:v6 forKey:@"allowsReaderModeEntry"];
+    [dictionary setObject:v6 forKey:@"allowsReaderModeEntry"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_product)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     allowsReaderModeEntry = self->_allowsReaderModeEntry;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_product)
   {
-    v5 = v4;
-    [v4 setProduct:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setProduct:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    v4[16] = self->_allowsReaderModeEntry;
-    v4[20] |= 1u;
+    toCopy[16] = self->_allowsReaderModeEntry;
+    toCopy[20] |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoStandalonePaymentSetupProduct *)self->_product copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoStandalonePaymentSetupProduct *)self->_product copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -93,16 +93,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
   product = self->_product;
-  if (product | *(v4 + 1))
+  if (product | *(equalCopy + 1))
   {
     if (![(NPKProtoStandalonePaymentSetupProduct *)product isEqual:?])
     {
@@ -110,10 +110,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) == 0)
+    if ((*(equalCopy + 20) & 1) == 0)
     {
 LABEL_6:
       v6 = 0;
@@ -122,13 +122,13 @@ LABEL_6:
 
     if (self->_allowsReaderModeEntry)
     {
-      if ((*(v4 + 16) & 1) == 0)
+      if ((*(equalCopy + 16) & 1) == 0)
       {
         goto LABEL_6;
       }
     }
 
-    else if (*(v4 + 16))
+    else if (*(equalCopy + 16))
     {
       goto LABEL_6;
     }
@@ -157,11 +157,11 @@ LABEL_7:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   product = self->_product;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (product)
   {
     if (!v6)
@@ -169,7 +169,7 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(NPKProtoStandalonePaymentSetupProduct *)product mergeFrom:?];
   }
 
@@ -180,15 +180,15 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(NPKProtoStandalonePaymentProvisioningFlowDigitalIssuanceAmountStepContext *)self setProduct:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
-    self->_allowsReaderModeEntry = *(v4 + 16);
+    self->_allowsReaderModeEntry = *(fromCopy + 16);
     *&self->_has |= 1u;
   }
 }

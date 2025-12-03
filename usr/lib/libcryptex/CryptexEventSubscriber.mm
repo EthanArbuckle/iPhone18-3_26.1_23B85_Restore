@@ -1,15 +1,15 @@
 @interface CryptexEventSubscriber
 + (NSMutableDictionary)subscribers;
 + (OS_dispatch_queue)streamQueue;
-+ (void)attachToStream:(id)a3 withRegistration:(id)a4;
-+ (void)detachFromStream:(id)a3;
++ (void)attachToStream:(id)stream withRegistration:(id)registration;
++ (void)detachFromStream:(id)stream;
 + (void)initializeEventStream;
-- (CryptexEventSubscriber)initWithFlags:(unint64_t)a3 name:(id)a4;
-- (id)_handleXPCEvent:(id)a3;
-- (id)registerForEvents:(unint64_t)a3 onQueue:(id)a4 withCompletion:(id)a5;
+- (CryptexEventSubscriber)initWithFlags:(unint64_t)flags name:(id)name;
+- (id)_handleXPCEvent:(id)event;
+- (id)registerForEvents:(unint64_t)events onQueue:(id)queue withCompletion:(id)completion;
 - (void)cancel;
 - (void)dealloc;
-- (void)handleXPCEvent:(id)a3;
+- (void)handleXPCEvent:(id)event;
 @end
 
 @implementation CryptexEventSubscriber
@@ -81,20 +81,20 @@ void __47__CryptexEventSubscriber_initializeEventStream__block_invoke_2(uint64_t
   [v7 handleXPCEvent:v3];
 }
 
-+ (void)attachToStream:(id)a3 withRegistration:(id)a4
++ (void)attachToStream:(id)stream withRegistration:(id)registration
 {
-  v5 = a3;
-  v6 = a4;
+  streamCopy = stream;
+  registrationCopy = registration;
   +[CryptexEventSubscriber initializeEventStream];
   v7 = +[CryptexEventSubscriber streamQueue];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __58__CryptexEventSubscriber_attachToStream_withRegistration___block_invoke;
   v10[3] = &unk_29EEA7660;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = streamCopy;
+  v12 = registrationCopy;
+  v8 = registrationCopy;
+  v9 = streamCopy;
   dispatch_async(v7, v10);
 }
 
@@ -112,17 +112,17 @@ void __58__CryptexEventSubscriber_attachToStream_withRegistration___block_invoke
   xpc_set_event();
 }
 
-+ (void)detachFromStream:(id)a3
++ (void)detachFromStream:(id)stream
 {
-  v3 = a3;
+  streamCopy = stream;
   +[CryptexEventSubscriber initializeEventStream];
   v4 = +[CryptexEventSubscriber streamQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __43__CryptexEventSubscriber_detachFromStream___block_invoke;
   block[3] = &unk_29EEA7688;
-  v7 = v3;
-  v5 = v3;
+  v7 = streamCopy;
+  v5 = streamCopy;
   dispatch_async(v4, block);
 }
 
@@ -138,10 +138,10 @@ void __43__CryptexEventSubscriber_detachFromStream___block_invoke(uint64_t a1)
   xpc_set_event();
 }
 
-- (CryptexEventSubscriber)initWithFlags:(unint64_t)a3 name:(id)a4
+- (CryptexEventSubscriber)initWithFlags:(unint64_t)flags name:(id)name
 {
-  v7 = a4;
-  if (v7)
+  nameCopy = name;
+  if (nameCopy)
   {
     v14.receiver = self;
     v14.super_class = CryptexEventSubscriber;
@@ -152,48 +152,48 @@ void __43__CryptexEventSubscriber_detachFromStream___block_invoke(uint64_t a1)
       log = v8->_log;
       v8->_log = v9;
 
-      v8->_flags = a3;
+      v8->_flags = flags;
       v8->_active = 0;
       queue = v8->_queue;
       v8->_queue = 0;
 
-      objc_storeStrong(&v8->_xpcEventName, a4);
+      objc_storeStrong(&v8->_xpcEventName, name);
     }
 
     self = v8;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)registerForEvents:(unint64_t)a3 onQueue:(id)a4 withCompletion:(id)a5
+- (id)registerForEvents:(unint64_t)events onQueue:(id)queue withCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  queueCopy = queue;
+  completionCopy = completion;
   v10 = xpc_dictionary_create(0, 0, 0);
-  if (v8)
+  if (queueCopy)
   {
-    if (v9)
+    if (completionCopy)
     {
-      [(CryptexEventSubscriber *)self setCallback:v9];
+      [(CryptexEventSubscriber *)self setCallback:completionCopy];
       v11 = dispatch_queue_attr_make_initially_inactive(0);
       v12 = dispatch_queue_create("com.apple.security.libcryptex.event_subscriber", v11);
 
       [(CryptexEventSubscriber *)self setQueue:v12];
-      v13 = [(CryptexEventSubscriber *)self queue];
-      dispatch_set_target_queue(v13, v8);
+      queue = [(CryptexEventSubscriber *)self queue];
+      dispatch_set_target_queue(queue, queueCopy);
 
-      v14 = [(CryptexEventSubscriber *)self queue];
-      dispatch_activate(v14);
+      queue2 = [(CryptexEventSubscriber *)self queue];
+      dispatch_activate(queue2);
 
       [(CryptexEventSubscriber *)self setActive:1];
-      v15 = cryptex_event_mask_ext_to_int(a3);
+      v15 = cryptex_event_mask_ext_to_int(events);
       xpc_dictionary_set_uint64(v10, "CryptexEventMask", v15);
       v16 = getprogname();
       xpc_dictionary_set_string(v10, "CryptexEventClientName", v16);
@@ -247,16 +247,16 @@ LABEL_13:
 
 - (void)cancel
 {
-  v3 = [(CryptexEventSubscriber *)self queue];
-  v4 = v3;
-  if (v3)
+  queue = [(CryptexEventSubscriber *)self queue];
+  v4 = queue;
+  if (queue)
   {
     block[0] = MEMORY[0x29EDCA5F8];
     block[1] = 3221225472;
     block[2] = __32__CryptexEventSubscriber_cancel__block_invoke;
     block[3] = &unk_29EEA7688;
     block[4] = self;
-    dispatch_async(v3, block);
+    dispatch_async(queue, block);
   }
 }
 
@@ -284,15 +284,15 @@ void __32__CryptexEventSubscriber_cancel__block_invoke(uint64_t a1)
   [(CryptexEventSubscriber *)&v3 dealloc];
 }
 
-- (id)_handleXPCEvent:(id)a3
+- (id)_handleXPCEvent:(id)event
 {
   v34 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  eventCopy = event;
   v30 = 0;
   v31 = 0;
   length = 0;
-  v5 = [(CryptexEventSubscriber *)self queue];
-  dispatch_assert_queue_V2(v5);
+  queue = [(CryptexEventSubscriber *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (![(CryptexEventSubscriber *)self active])
   {
@@ -301,9 +301,9 @@ void __32__CryptexEventSubscriber_cancel__block_invoke(uint64_t a1)
     goto LABEL_23;
   }
 
-  v6 = [(CryptexEventSubscriber *)self callback];
+  callback = [(CryptexEventSubscriber *)self callback];
 
-  if (!v6)
+  if (!callback)
   {
     v12 = [(CryptexEventSubscriber *)self log];
 
@@ -325,7 +325,7 @@ void __32__CryptexEventSubscriber_cancel__block_invoke(uint64_t a1)
     goto LABEL_22;
   }
 
-  if (_xpc_dictionary_try_get_uint64(v4, "CRYPTEX_EVENT_TYPE", &v31))
+  if (_xpc_dictionary_try_get_uint64(eventCopy, "CRYPTEX_EVENT_TYPE", &v31))
   {
     v7 = [(CryptexEventSubscriber *)self log];
 
@@ -353,7 +353,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (_xpc_dictionary_try_get_string(v4, "CRYPTEX_EVENT_CRYPTEX_NAME", &v30))
+  if (_xpc_dictionary_try_get_string(eventCopy, "CRYPTEX_EVENT_CRYPTEX_NAME", &v30))
   {
     v14 = [(CryptexEventSubscriber *)self log];
 
@@ -377,7 +377,7 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  data = xpc_dictionary_get_data(v4, "CRYPTEX_EVENT_INFO", &length);
+  data = xpc_dictionary_get_data(eventCopy, "CRYPTEX_EVENT_INFO", &length);
   if (data)
   {
     v18 = MEMORY[0x29EDBA0C0];
@@ -420,8 +420,8 @@ LABEL_22:
   }
 
   v25 = cryptex_event_type_int_to_ext(v31);
-  v26 = [(CryptexEventSubscriber *)self callback];
-  (v26)[2](v26, v25, v30, v10);
+  callback2 = [(CryptexEventSubscriber *)self callback];
+  (callback2)[2](callback2, v25, v30, v10);
 
 LABEL_23:
   v23 = *MEMORY[0x29EDCA608];
@@ -429,18 +429,18 @@ LABEL_23:
   return v11;
 }
 
-- (void)handleXPCEvent:(id)a3
+- (void)handleXPCEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(CryptexEventSubscriber *)self queue];
+  eventCopy = event;
+  queue = [(CryptexEventSubscriber *)self queue];
   v7[0] = MEMORY[0x29EDCA5F8];
   v7[1] = 3221225472;
   v7[2] = __41__CryptexEventSubscriber_handleXPCEvent___block_invoke;
   v7[3] = &unk_29EEA7660;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(queue, v7);
 }
 
 void __41__CryptexEventSubscriber_handleXPCEvent___block_invoke(uint64_t a1)

@@ -1,23 +1,23 @@
 @interface COSDisplayAndBrightnessController
 - (COSDisplayAndBrightnessController)init;
 - (NPSDomainAccessor)carouselDomainAccessor;
-- (id)activateOnCrownUpValue:(id)a3;
-- (id)activateOnWristRaiseValue:(id)a3;
-- (id)boldTextEnabled:(id)a3;
+- (id)activateOnCrownUpValue:(id)value;
+- (id)activateOnWristRaiseValue:(id)value;
+- (id)boldTextEnabled:(id)enabled;
 - (id)contentSizeCategories;
 - (id)specifiers;
-- (id)textSize:(id)a3;
-- (id)tritiumEnabled:(id)a3;
-- (void)_setupWakeSpecifiers:(id)a3;
-- (void)_synchronizeDomainWithAccessor:(id)a3 keys:(id)a4 withCompletion:(id)a5;
+- (id)textSize:(id)size;
+- (id)tritiumEnabled:(id)enabled;
+- (void)_setupWakeSpecifiers:(id)specifiers;
+- (void)_synchronizeDomainWithAccessor:(id)accessor keys:(id)keys withCompletion:(id)completion;
 - (void)dealloc;
 - (void)handleDidUnpair;
-- (void)setActivateOnCrownUpValue:(id)a3 specifier:(id)a4;
-- (void)setActivateOnWristRaiseValue:(id)a3 specifier:(id)a4;
-- (void)setBoldTextEnabled:(id)a3 specifier:(id)a4;
-- (void)setTextSize:(id)a3 specifier:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setActivateOnCrownUpValue:(id)value specifier:(id)specifier;
+- (void)setActivateOnWristRaiseValue:(id)value specifier:(id)specifier;
+- (void)setBoldTextEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTextSize:(id)size specifier:(id)specifier;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSDisplayAndBrightnessController
@@ -56,8 +56,8 @@
     v15 = +[NSNotificationCenter defaultCenter];
     [v15 addObserver:v2 selector:"handleDidUnpair" name:NRPairedDeviceRegistryDeviceDidUnpairNotification object:0];
 
-    v16 = [(COSDisplayAndBrightnessController *)v2 carouselDomainAccessor];
-    [(COSDisplayAndBrightnessController *)v2 _synchronizeDomainWithAccessor:v16 keys:0 withCompletion:0];
+    carouselDomainAccessor = [(COSDisplayAndBrightnessController *)v2 carouselDomainAccessor];
+    [(COSDisplayAndBrightnessController *)v2 _synchronizeDomainWithAccessor:carouselDomainAccessor keys:0 withCompletion:0];
   }
 
   return v2;
@@ -72,24 +72,24 @@
   [(COSDisplayAndBrightnessController *)&v4 dealloc];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = COSDisplayAndBrightnessController;
-  [(COSDisplayAndBrightnessController *)&v4 viewWillAppear:a3];
+  [(COSDisplayAndBrightnessController *)&v4 viewWillAppear:appear];
   [(COSDisplayAndBrightnessController *)self reloadSpecifierID:@"TRITIUM_ID"];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = COSDisplayAndBrightnessController;
-  [(COSDisplayAndBrightnessController *)&v9 viewDidAppear:a3];
+  [(COSDisplayAndBrightnessController *)&v9 viewDidAppear:appear];
   v3 = [_NSLocalizedStringResource alloc];
   v4 = +[NSLocale currentLocale];
   v5 = +[NSBundle mainBundle];
-  v6 = [v5 bundleURL];
-  v7 = [v3 initWithKey:@"DISPLAY_AND_BRIGHTNESS" table:@"Settings" locale:v4 bundleURL:v6];
+  bundleURL = [v5 bundleURL];
+  v7 = [v3 initWithKey:@"DISPLAY_AND_BRIGHTNESS" table:@"Settings" locale:v4 bundleURL:bundleURL];
 
   v8 = [NSURL URLWithString:@"bridge:root=DISPLAY_AND_BRIGHTNESS_ID"];
   [BPSWatchSettingsNavigationDonation emitNavigationEventForSystemSettingWithIconSpecifierIdentifier:@"DISPLAY_AND_BRIGHTNESS_ID" title:v7 localizedNavigationComponents:&__NSArray0__struct deepLink:v8];
@@ -126,8 +126,8 @@
     [(PSSpecifier *)v16 setProperty:v19 forKey:PSTableCellHeightKey];
 
     v21 = [v5 specifierForID:@"TEXT_SIZE_SLIDER_ID"];
-    v22 = [(COSDisplayAndBrightnessController *)self contentSizeCategories];
-    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v22 count] - 1);
+    contentSizeCategories = [(COSDisplayAndBrightnessController *)self contentSizeCategories];
+    v23 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [contentSizeCategories count] - 1);
     [v21 setProperty:v23 forKey:PSControlMaximumKey];
 
     v24 = BPSAccessoryHighlightColor();
@@ -143,9 +143,9 @@
     [v21 setProperty:v29 forKey:v20];
 
     v30 = +[NRPairedDeviceRegistry sharedInstance];
-    v31 = [v30 getActivePairedDevice];
+    getActivePairedDevice = [v30 getActivePairedDevice];
     v32 = [[NSUUID alloc] initWithUUIDString:@"6AABB66B-8E1B-4CAB-8FC4-AC577BA0AFB0"];
-    LOBYTE(v27) = [v31 supportsCapability:v32];
+    LOBYTE(v27) = [getActivePairedDevice supportsCapability:v32];
 
     if ((v27 & 1) == 0)
     {
@@ -166,13 +166,13 @@
   return v4;
 }
 
-- (void)setBoldTextEnabled:(id)a3 specifier:(id)a4
+- (void)setBoldTextEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Accessibility"];
-  [v5 setObject:v4 forKey:@"EnhancedTextLegibilityEnabled"];
+  [v5 setObject:enabledCopy forKey:@"EnhancedTextLegibilityEnabled"];
 
-  v6 = [v5 synchronize];
+  synchronize = [v5 synchronize];
   v7 = objc_opt_new();
   v10 = @"EnhancedTextLegibilityEnabled";
   v8 = [NSArray arrayWithObjects:&v10 count:1];
@@ -180,10 +180,10 @@
   [v7 synchronizeNanoDomain:@"com.apple.Accessibility" keys:v9];
 }
 
-- (id)boldTextEnabled:(id)a3
+- (id)boldTextEnabled:(id)enabled
 {
   v3 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Accessibility"];
-  v4 = [v3 synchronize];
+  synchronize = [v3 synchronize];
   v5 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 BOOLForKey:@"EnhancedTextLegibilityEnabled"]);
 
   return v5;
@@ -225,37 +225,37 @@
   return v3;
 }
 
-- (void)setTextSize:(id)a3 specifier:(id)a4
+- (void)setTextSize:(id)size specifier:(id)specifier
 {
-  v5 = [a3 integerValue];
-  v6 = [(COSDisplayAndBrightnessController *)self contentSizeCategories];
-  v11 = [v6 objectAtIndex:v5];
+  integerValue = [size integerValue];
+  contentSizeCategories = [(COSDisplayAndBrightnessController *)self contentSizeCategories];
+  v11 = [contentSizeCategories objectAtIndex:integerValue];
 
   v7 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.UIKit"];
   [v7 setObject:v11 forKey:@"UIPreferredContentSizeCategoryName"];
-  v8 = [v7 synchronize];
+  synchronize = [v7 synchronize];
   v9 = objc_opt_new();
   v10 = [NSSet setWithObject:@"UIPreferredContentSizeCategoryName"];
   [v9 synchronizeNanoDomain:@"com.apple.UIKit" keys:v10];
 }
 
-- (id)textSize:(id)a3
+- (id)textSize:(id)size
 {
   v4 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.UIKit"];
-  v5 = [v4 synchronize];
+  synchronize = [v4 synchronize];
   v6 = [v4 objectForKey:@"UIPreferredContentSizeCategoryName"];
   if (!v6)
   {
     v6 = UIContentSizeCategorySmall;
   }
 
-  v7 = [(COSDisplayAndBrightnessController *)self contentSizeCategories];
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 indexOfObject:v6]);
+  contentSizeCategories = [(COSDisplayAndBrightnessController *)self contentSizeCategories];
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [contentSizeCategories indexOfObject:v6]);
 
   return v8;
 }
 
-- (id)tritiumEnabled:(id)a3
+- (id)tritiumEnabled:(id)enabled
 {
   v3 = sub_1000EAC2C();
   v4 = +[NSBundle mainBundle];
@@ -275,41 +275,41 @@
   return v7;
 }
 
-- (void)setActivateOnWristRaiseValue:(id)a3 specifier:(id)a4
+- (void)setActivateOnWristRaiseValue:(id)value specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
-  [v6 setBool:v5 ^ 1 forKey:@"kDisallowWakeGestureSetting"];
+  bOOLValue = [value BOOLValue];
+  carouselDomainAccessor = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
+  [carouselDomainAccessor setBool:bOOLValue ^ 1 forKey:@"kDisallowWakeGestureSetting"];
 
-  v8 = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
+  carouselDomainAccessor2 = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
   v7 = [NSSet setWithObject:@"kDisallowWakeGestureSetting"];
-  [(COSDisplayAndBrightnessController *)self _synchronizeDomainWithAccessor:v8 keys:v7 withCompletion:&stru_10026B1B0];
+  [(COSDisplayAndBrightnessController *)self _synchronizeDomainWithAccessor:carouselDomainAccessor2 keys:v7 withCompletion:&stru_10026B1B0];
 }
 
-- (id)activateOnWristRaiseValue:(id)a3
+- (id)activateOnWristRaiseValue:(id)value
 {
-  v3 = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
-  v4 = [v3 BOOLForKey:@"kDisallowWakeGestureSetting"];
+  carouselDomainAccessor = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
+  v4 = [carouselDomainAccessor BOOLForKey:@"kDisallowWakeGestureSetting"];
 
   return [NSNumber numberWithInt:v4 ^ 1];
 }
 
-- (void)setActivateOnCrownUpValue:(id)a3 specifier:(id)a4
+- (void)setActivateOnCrownUpValue:(id)value specifier:(id)specifier
 {
-  v5 = [a3 BOOLValue];
-  v6 = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
-  [v6 setBool:v5 forKey:@"enableRotateToWake"];
+  bOOLValue = [value BOOLValue];
+  carouselDomainAccessor = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
+  [carouselDomainAccessor setBool:bOOLValue forKey:@"enableRotateToWake"];
 
-  v8 = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
+  carouselDomainAccessor2 = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
   v7 = [NSSet setWithObject:@"enableRotateToWake"];
-  [(COSDisplayAndBrightnessController *)self _synchronizeDomainWithAccessor:v8 keys:v7 withCompletion:0];
+  [(COSDisplayAndBrightnessController *)self _synchronizeDomainWithAccessor:carouselDomainAccessor2 keys:v7 withCompletion:0];
 }
 
-- (id)activateOnCrownUpValue:(id)a3
+- (id)activateOnCrownUpValue:(id)value
 {
   v7 = 0;
-  v3 = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
-  v4 = [v3 BOOLForKey:@"enableRotateToWake" keyExistsAndHasValidFormat:&v7];
+  carouselDomainAccessor = [(COSDisplayAndBrightnessController *)self carouselDomainAccessor];
+  v4 = [carouselDomainAccessor BOOLForKey:@"enableRotateToWake" keyExistsAndHasValidFormat:&v7];
 
   v5 = [NSNumber numberWithInt:v4 & 1 | ((v7 & 1) == 0)];
 
@@ -331,19 +331,19 @@
   return carouselDomainAccessor;
 }
 
-- (void)_synchronizeDomainWithAccessor:(id)a3 keys:(id)a4 withCompletion:(id)a5
+- (void)_synchronizeDomainWithAccessor:(id)accessor keys:(id)keys withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accessorCopy = accessor;
+  keysCopy = keys;
+  completionCopy = completion;
   v11 = sub_1000C1958();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v8 domain];
+    domain = [accessorCopy domain];
     *buf = 138412546;
-    v22 = v12;
+    v22 = domain;
     v23 = 2112;
-    v24 = v9;
+    v24 = keysCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "synchronizing %@ %@", buf, 0x16u);
   }
 
@@ -353,11 +353,11 @@
   v16[2] = sub_1000C2C00;
   v16[3] = &unk_10026B200;
   objc_copyWeak(&v20, buf);
-  v13 = v8;
+  v13 = accessorCopy;
   v17 = v13;
-  v14 = v9;
+  v14 = keysCopy;
   v18 = v14;
-  v15 = v10;
+  v15 = completionCopy;
   v19 = v15;
   [v13 synchronizeWithCompletionHandler:v16];
 
@@ -371,21 +371,21 @@
   self->_carouselDomainAccessor = 0;
 }
 
-- (void)_setupWakeSpecifiers:(id)a3
+- (void)_setupWakeSpecifiers:(id)specifiers
 {
-  v4 = a3;
+  specifiersCopy = specifiers;
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"WAKE_GROUP_LABEL" value:&stru_10026E598 table:@"DisplayAndBrightness-tritium"];
   v25 = [PSSpecifier groupSpecifierWithName:v6];
 
-  [v4 addObject:v25];
+  [specifiersCopy addObject:v25];
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"WAKE_ON_WRIST_RAISE" value:&stru_10026E598 table:@"DisplayAndBrightness-tritium"];
   v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:"setActivateOnWristRaiseValue:specifier:" get:"activateOnWristRaiseValue:" detail:0 cell:6 edit:0];
 
   v10 = PSIDKey;
   [v9 setProperty:@"WAKE_SCREEN_ON_WRIST_RAISE_SWITCH_ID" forKey:PSIDKey];
-  [v4 addObject:v9];
+  [specifiersCopy addObject:v9];
   v11 = sub_1000EAC2C();
   v12 = @"WAKE_ON_CROWN_UP";
   if (v11)
@@ -401,7 +401,7 @@
 
   [v16 setProperty:@"WAKE_SCREEN_ON_CROWN_UP_SWITCH_ID" forKey:v10];
   [v16 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
-  [v4 addObject:v16];
+  [specifiersCopy addObject:v16];
   v30[0] = PSTitleKey;
   v17 = +[NSBundle mainBundle];
   v18 = [v17 localizedStringForKey:@"WAKE_DURATION_LABEL" value:&stru_10026E598 table:@"DisplayAndBrightness-tritium"];
@@ -430,7 +430,7 @@
   v23 = +[NSBundle mainBundle];
   v24 = SpecifiersFromPlist();
 
-  [v4 addObjectsFromArray:{v24, 0}];
+  [specifiersCopy addObjectsFromArray:{v24, 0}];
 }
 
 @end

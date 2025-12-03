@@ -4,35 +4,35 @@
 - (BOOL)supportsExpanding;
 - (CGPoint)accessibilityActivationPoint;
 - (HACCContentModuleDelegate)delegate;
-- (HUICCCapsuleButton)initWithFrame:(CGRect)a3;
+- (HUICCCapsuleButton)initWithFrame:(CGRect)frame;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomActions;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (id)contentValue;
-- (int64_t)_indexToInsertFor:(id)a3;
-- (void)_setIsExpanded:(BOOL)a3;
+- (int64_t)_indexToInsertFor:(id)for;
+- (void)_setIsExpanded:(BOOL)expanded;
 - (void)_updateStackConstraints;
-- (void)addExpandedView:(id)a3;
+- (void)addExpandedView:(id)view;
 - (void)buttonTapped;
-- (void)removeExpandedView:(id)a3;
-- (void)setAccessoryView:(id)a3;
-- (void)setDimmingState:(BOOL)a3;
-- (void)setIconView:(id)a3;
-- (void)setIsExpanded:(BOOL)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)removeExpandedView:(id)view;
+- (void)setAccessoryView:(id)view;
+- (void)setDimmingState:(BOOL)state;
+- (void)setIconView:(id)view;
+- (void)setIsExpanded:(BOOL)expanded;
+- (void)setSubtitleText:(id)text;
+- (void)setTitleText:(id)text;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 @end
 
 @implementation HUICCCapsuleButton
 
-- (HUICCCapsuleButton)initWithFrame:(CGRect)a3
+- (HUICCCapsuleButton)initWithFrame:(CGRect)frame
 {
   v90[4] = *MEMORY[0x277D85DE8];
   v85.receiver = self;
   v85.super_class = HUICCCapsuleButton;
-  v3 = [(HUICCCapsuleButton *)&v85 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUICCCapsuleButton *)&v85 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -46,28 +46,28 @@
     [(UIView *)v4->_backgroundView setUserInteractionEnabled:1];
     [(HUICCCapsuleButton *)v4 insertSubview:v4->_backgroundView atIndex:0];
     v74 = MEMORY[0x277CCAAD0];
-    v84 = [(UIView *)v4->_backgroundView leadingAnchor];
-    v82 = [(HUICCCapsuleButton *)v4 leadingAnchor];
-    v80 = [v84 constraintEqualToAnchor:v82];
+    leadingAnchor = [(UIView *)v4->_backgroundView leadingAnchor];
+    leadingAnchor2 = [(HUICCCapsuleButton *)v4 leadingAnchor];
+    v80 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v90[0] = v80;
-    v78 = [(UIView *)v4->_backgroundView trailingAnchor];
-    v76 = [(HUICCCapsuleButton *)v4 trailingAnchor];
-    v7 = [v78 constraintEqualToAnchor:v76];
+    trailingAnchor = [(UIView *)v4->_backgroundView trailingAnchor];
+    trailingAnchor2 = [(HUICCCapsuleButton *)v4 trailingAnchor];
+    v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v90[1] = v7;
-    v8 = [(UIView *)v4->_backgroundView topAnchor];
-    v9 = [(HUICCCapsuleButton *)v4 topAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    topAnchor = [(UIView *)v4->_backgroundView topAnchor];
+    topAnchor2 = [(HUICCCapsuleButton *)v4 topAnchor];
+    v10 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v90[2] = v10;
-    v11 = [(UIView *)v4->_backgroundView bottomAnchor];
-    v12 = [(HUICCCapsuleButton *)v4 bottomAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    bottomAnchor = [(UIView *)v4->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(HUICCCapsuleButton *)v4 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v90[3] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v90 count:4];
     [v74 activateConstraints:v14];
 
     v15 = MEMORY[0x277CCAAD0];
-    v16 = [(HUICCCapsuleButton *)v4 heightAnchor];
-    v17 = [v16 constraintGreaterThanOrEqualToConstant:74.0];
+    heightAnchor = [(HUICCCapsuleButton *)v4 heightAnchor];
+    v17 = [heightAnchor constraintGreaterThanOrEqualToConstant:74.0];
     v89 = v17;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v89 count:1];
     [v15 activateConstraints:v18];
@@ -81,21 +81,21 @@
     [(UIStackView *)v4->_mainStack setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIView *)v4->_backgroundView addSubview:v4->_mainStack];
     v75 = MEMORY[0x277CCAAD0];
-    v83 = [(UIStackView *)v4->_mainStack leadingAnchor];
-    v81 = [(HUICCCapsuleButton *)v4 leadingAnchor];
-    v79 = [v83 constraintEqualToAnchor:v81];
+    leadingAnchor3 = [(UIStackView *)v4->_mainStack leadingAnchor];
+    leadingAnchor4 = [(HUICCCapsuleButton *)v4 leadingAnchor];
+    v79 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v88[0] = v79;
-    v77 = [(UIStackView *)v4->_mainStack trailingAnchor];
-    v21 = [(HUICCCapsuleButton *)v4 trailingAnchor];
-    v22 = [v77 constraintEqualToAnchor:v21];
+    trailingAnchor3 = [(UIStackView *)v4->_mainStack trailingAnchor];
+    trailingAnchor4 = [(HUICCCapsuleButton *)v4 trailingAnchor];
+    v22 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v88[1] = v22;
-    v23 = [(UIStackView *)v4->_mainStack topAnchor];
-    v24 = [(HUICCCapsuleButton *)v4 topAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24];
+    topAnchor3 = [(UIStackView *)v4->_mainStack topAnchor];
+    topAnchor4 = [(HUICCCapsuleButton *)v4 topAnchor];
+    v25 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v88[2] = v25;
-    v26 = [(UIStackView *)v4->_mainStack bottomAnchor];
-    v27 = [(HUICCCapsuleButton *)v4 bottomAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    bottomAnchor3 = [(UIStackView *)v4->_mainStack bottomAnchor];
+    bottomAnchor4 = [(HUICCCapsuleButton *)v4 bottomAnchor];
+    v28 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v88[3] = v28;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v88 count:4];
     [v75 activateConstraints:v29];
@@ -112,9 +112,9 @@
     [(UIStackView *)v4->_horizontalPillStack setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v4->_mainStack addArrangedSubview:v4->_horizontalPillStack];
     v32 = MEMORY[0x277CCAAD0];
-    v33 = [(HUICCCapsuleButton *)v4 horizontalPillStack];
-    v34 = [v33 heightAnchor];
-    v35 = [v34 constraintGreaterThanOrEqualToConstant:74.0];
+    horizontalPillStack = [(HUICCCapsuleButton *)v4 horizontalPillStack];
+    heightAnchor2 = [horizontalPillStack heightAnchor];
+    v35 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:74.0];
     v87 = v35;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v87 count:1];
     [v32 activateConstraints:v36];
@@ -126,11 +126,11 @@
     [(UIView *)v4->_iconViewContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIStackView *)v4->_horizontalPillStack addArrangedSubview:v4->_iconViewContainer];
     v39 = MEMORY[0x277CCAAD0];
-    v40 = [(UIView *)v4->_iconViewContainer heightAnchor];
-    v41 = [v40 constraintEqualToConstant:54.0];
+    heightAnchor3 = [(UIView *)v4->_iconViewContainer heightAnchor];
+    v41 = [heightAnchor3 constraintEqualToConstant:54.0];
     v86[0] = v41;
-    v42 = [(UIView *)v4->_iconViewContainer widthAnchor];
-    v43 = [v42 constraintEqualToConstant:54.0];
+    widthAnchor = [(UIView *)v4->_iconViewContainer widthAnchor];
+    v43 = [widthAnchor constraintEqualToConstant:54.0];
     v86[1] = v43;
     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:v86 count:2];
     [v39 activateConstraints:v44];
@@ -160,8 +160,8 @@
     [(UILabel *)v52 setFont:v54];
 
     v55 = v4->_titleLabel;
-    v56 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v55 setTextColor:v56];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v55 setTextColor:whiteColor];
 
     [(UILabel *)v4->_titleLabel setTextAlignment:1];
     [(UILabel *)v4->_titleLabel setClipsToBounds:0];
@@ -186,8 +186,8 @@
     [(UILabel *)v62 setFont:v64];
 
     v65 = v4->_subtitleLabel;
-    v66 = [MEMORY[0x277D75348] whiteColor];
-    [(UILabel *)v65 setTextColor:v66];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UILabel *)v65 setTextColor:whiteColor2];
 
     [(UILabel *)v4->_subtitleLabel setTextAlignment:1];
     [(UILabel *)v4->_subtitleLabel setClipsToBounds:0];
@@ -218,73 +218,73 @@
   return v4;
 }
 
-- (void)setIconView:(id)a3
+- (void)setIconView:(id)view
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_iconView, a3);
+  viewCopy = view;
+  objc_storeStrong(&self->_iconView, view);
   if (self->_iconView)
   {
-    v6 = [(HUICCCapsuleButton *)self iconViewContainer];
-    [v6 addSubview:self->_iconView];
+    iconViewContainer = [(HUICCCapsuleButton *)self iconViewContainer];
+    [iconViewContainer addSubview:self->_iconView];
 
     [(UIView *)self->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
     v7 = MEMORY[0x277CCAAD0];
-    v8 = [(UIView *)self->_iconView centerYAnchor];
+    centerYAnchor = [(UIView *)self->_iconView centerYAnchor];
     [(HUICCCapsuleButton *)self iconViewContainer];
-    v9 = v17 = v5;
-    v10 = [v9 centerYAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    v9 = v17 = viewCopy;
+    centerYAnchor2 = [v9 centerYAnchor];
+    v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v18[0] = v11;
-    v12 = [(UIView *)self->_iconView centerXAnchor];
-    v13 = [(HUICCCapsuleButton *)self iconViewContainer];
-    v14 = [v13 centerXAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    centerXAnchor = [(UIView *)self->_iconView centerXAnchor];
+    iconViewContainer2 = [(HUICCCapsuleButton *)self iconViewContainer];
+    centerXAnchor2 = [iconViewContainer2 centerXAnchor];
+    v15 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v18[1] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
     [v7 activateConstraints:v16];
 
-    v5 = v17;
+    viewCopy = v17;
   }
 }
 
-- (void)setAccessoryView:(id)a3
+- (void)setAccessoryView:(id)view
 {
   v26[4] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_accessoryView, a3);
+  viewCopy = view;
+  objc_storeStrong(&self->_accessoryView, view);
   if (self->_accessoryView)
   {
-    v6 = [(HUICCCapsuleButton *)self accessoryViewContainer];
-    [v6 addSubview:self->_accessoryView];
+    accessoryViewContainer = [(HUICCCapsuleButton *)self accessoryViewContainer];
+    [accessoryViewContainer addSubview:self->_accessoryView];
 
     [(UIView *)self->_accessoryView setTranslatesAutoresizingMaskIntoConstraints:0];
     v17 = MEMORY[0x277CCAAD0];
-    v23 = [(UIView *)self->_accessoryView leadingAnchor];
-    v24 = [(HUICCCapsuleButton *)self accessoryViewContainer];
-    v22 = [v24 leadingAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22];
+    leadingAnchor = [(UIView *)self->_accessoryView leadingAnchor];
+    accessoryViewContainer2 = [(HUICCCapsuleButton *)self accessoryViewContainer];
+    leadingAnchor2 = [accessoryViewContainer2 leadingAnchor];
+    v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v26[0] = v21;
-    v19 = [(UIView *)self->_accessoryView trailingAnchor];
-    v20 = [(HUICCCapsuleButton *)self accessoryViewContainer];
-    v18 = [v20 trailingAnchor];
-    v7 = [v19 constraintEqualToAnchor:v18];
+    trailingAnchor = [(UIView *)self->_accessoryView trailingAnchor];
+    accessoryViewContainer3 = [(HUICCCapsuleButton *)self accessoryViewContainer];
+    trailingAnchor2 = [accessoryViewContainer3 trailingAnchor];
+    v7 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v26[1] = v7;
-    v8 = [(UIView *)self->_accessoryView topAnchor];
+    topAnchor = [(UIView *)self->_accessoryView topAnchor];
     [(HUICCCapsuleButton *)self accessoryViewContainer];
-    v9 = v25 = v5;
-    v10 = [v9 topAnchor];
-    v11 = [v8 constraintEqualToAnchor:v10];
+    v9 = v25 = viewCopy;
+    topAnchor2 = [v9 topAnchor];
+    v11 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v26[2] = v11;
-    v12 = [(UIView *)self->_accessoryView bottomAnchor];
-    v13 = [(HUICCCapsuleButton *)self accessoryViewContainer];
-    v14 = [v13 bottomAnchor];
-    v15 = [v12 constraintEqualToAnchor:v14];
+    bottomAnchor = [(UIView *)self->_accessoryView bottomAnchor];
+    accessoryViewContainer4 = [(HUICCCapsuleButton *)self accessoryViewContainer];
+    bottomAnchor2 = [accessoryViewContainer4 bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v26[3] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:4];
     [v17 activateConstraints:v16];
 
-    v5 = v25;
+    viewCopy = v25;
   }
 }
 
@@ -292,96 +292,96 @@
 {
   v32[2] = *MEMORY[0x277D85DE8];
   v3 = HUICCLargeTextEnabled();
-  v4 = [(HUICCCapsuleButton *)self horizontalPillStack];
-  v5 = v4;
+  horizontalPillStack = [(HUICCCapsuleButton *)self horizontalPillStack];
+  v5 = horizontalPillStack;
   if (v3)
   {
-    [v4 setAxis:1];
+    [horizontalPillStack setAxis:1];
 
-    v6 = [(HUICCCapsuleButton *)self defaultLayouts];
+    defaultLayouts = [(HUICCCapsuleButton *)self defaultLayouts];
 
-    if (v6)
+    if (defaultLayouts)
     {
       v7 = MEMORY[0x277CCAAD0];
-      v8 = [(HUICCCapsuleButton *)self defaultLayouts];
-      [v7 deactivateConstraints:v8];
+      defaultLayouts2 = [(HUICCCapsuleButton *)self defaultLayouts];
+      [v7 deactivateConstraints:defaultLayouts2];
     }
 
-    v9 = [(HUICCCapsuleButton *)self largeTextLayouts];
+    largeTextLayouts = [(HUICCCapsuleButton *)self largeTextLayouts];
 
-    if (!v9)
+    if (!largeTextLayouts)
     {
-      v10 = [(HUICCCapsuleButton *)self accessoryViewContainer];
-      v11 = [v10 widthAnchor];
-      v12 = [v11 constraintLessThanOrEqualToConstant:54.0];
+      accessoryViewContainer = [(HUICCCapsuleButton *)self accessoryViewContainer];
+      widthAnchor = [accessoryViewContainer widthAnchor];
+      v12 = [widthAnchor constraintLessThanOrEqualToConstant:54.0];
       v32[0] = v12;
-      v13 = [(HUICCCapsuleButton *)self accessoryViewContainer];
-      v14 = [v13 heightAnchor];
-      v15 = [v14 constraintLessThanOrEqualToConstant:54.0];
+      accessoryViewContainer2 = [(HUICCCapsuleButton *)self accessoryViewContainer];
+      heightAnchor = [accessoryViewContainer2 heightAnchor];
+      v15 = [heightAnchor constraintLessThanOrEqualToConstant:54.0];
       v32[1] = v15;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
       [(HUICCCapsuleButton *)self setLargeTextLayouts:v16];
     }
 
     v17 = MEMORY[0x277CCAAD0];
-    v18 = [(HUICCCapsuleButton *)self largeTextLayouts];
+    largeTextLayouts2 = [(HUICCCapsuleButton *)self largeTextLayouts];
   }
 
   else
   {
-    [v4 setAxis:0];
+    [horizontalPillStack setAxis:0];
 
-    v19 = [(HUICCCapsuleButton *)self largeTextLayouts];
+    largeTextLayouts3 = [(HUICCCapsuleButton *)self largeTextLayouts];
 
-    if (v19)
+    if (largeTextLayouts3)
     {
       v20 = MEMORY[0x277CCAAD0];
-      v21 = [(HUICCCapsuleButton *)self largeTextLayouts];
-      [v20 deactivateConstraints:v21];
+      largeTextLayouts4 = [(HUICCCapsuleButton *)self largeTextLayouts];
+      [v20 deactivateConstraints:largeTextLayouts4];
     }
 
-    v22 = [(HUICCCapsuleButton *)self defaultLayouts];
+    defaultLayouts3 = [(HUICCCapsuleButton *)self defaultLayouts];
 
-    if (!v22)
+    if (!defaultLayouts3)
     {
-      v23 = [(HUICCCapsuleButton *)self accessoryViewContainer];
-      v24 = [v23 widthAnchor];
-      v25 = [v24 constraintEqualToConstant:54.0];
+      accessoryViewContainer3 = [(HUICCCapsuleButton *)self accessoryViewContainer];
+      widthAnchor2 = [accessoryViewContainer3 widthAnchor];
+      v25 = [widthAnchor2 constraintEqualToConstant:54.0];
       v31[0] = v25;
-      v26 = [(HUICCCapsuleButton *)self accessoryViewContainer];
-      v27 = [v26 heightAnchor];
-      v28 = [v27 constraintEqualToConstant:54.0];
+      accessoryViewContainer4 = [(HUICCCapsuleButton *)self accessoryViewContainer];
+      heightAnchor2 = [accessoryViewContainer4 heightAnchor];
+      v28 = [heightAnchor2 constraintEqualToConstant:54.0];
       v31[1] = v28;
       v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
       [(HUICCCapsuleButton *)self setDefaultLayouts:v29];
     }
 
     v17 = MEMORY[0x277CCAAD0];
-    v18 = [(HUICCCapsuleButton *)self defaultLayouts];
+    largeTextLayouts2 = [(HUICCCapsuleButton *)self defaultLayouts];
   }
 
-  v30 = v18;
-  [v17 activateConstraints:v18];
+  v30 = largeTextLayouts2;
+  [v17 activateConstraints:largeTextLayouts2];
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUICCCapsuleButton *)self titleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  titleLabel = [(HUICCCapsuleButton *)self titleLabel];
+  [titleLabel setText:textCopy];
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(HUICCCapsuleButton *)self subtitleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  subtitleLabel = [(HUICCCapsuleButton *)self subtitleLabel];
+  [subtitleLabel setText:textCopy];
 }
 
-- (void)setDimmingState:(BOOL)a3
+- (void)setDimmingState:(BOOL)state
 {
-  v3 = a3;
-  if (a3)
+  stateCopy = state;
+  if (state)
   {
     v5 = 0.3;
   }
@@ -391,122 +391,122 @@
     v5 = 1.0;
   }
 
-  v6 = [(HUICCCapsuleButton *)self mainStack];
-  [v6 setAlpha:v5];
+  mainStack = [(HUICCCapsuleButton *)self mainStack];
+  [mainStack setAlpha:v5];
 
-  [(HUICCCapsuleButton *)self setEnabled:!v3];
+  [(HUICCCapsuleButton *)self setEnabled:!stateCopy];
 }
 
-- (void)setIsExpanded:(BOOL)a3
+- (void)setIsExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  if ([(HUICCCapsuleButton *)self supportsExpanding]&& self->_isExpanded != v3)
+  expandedCopy = expanded;
+  if ([(HUICCCapsuleButton *)self supportsExpanding]&& self->_isExpanded != expandedCopy)
   {
 
-    [(HUICCCapsuleButton *)self _setIsExpanded:v3];
+    [(HUICCCapsuleButton *)self _setIsExpanded:expandedCopy];
   }
 }
 
-- (void)_setIsExpanded:(BOOL)a3
+- (void)_setIsExpanded:(BOOL)expanded
 {
-  v3 = a3;
-  self->_isExpanded = a3;
-  v5 = [(HUICCCapsuleButton *)self expandedStack];
-  v6 = v5;
+  expandedCopy = expanded;
+  self->_isExpanded = expanded;
+  expandedStack = [(HUICCCapsuleButton *)self expandedStack];
+  v6 = expandedStack;
   v7 = 0.0;
-  if (v3)
+  if (expandedCopy)
   {
     v7 = 1.0;
   }
 
-  [v5 setAlpha:v7];
+  [expandedStack setAlpha:v7];
 
-  v8 = [(HUICCCapsuleButton *)self expandedStack];
-  [v8 setHidden:!v3];
+  expandedStack2 = [(HUICCCapsuleButton *)self expandedStack];
+  [expandedStack2 setHidden:!expandedCopy];
 
-  v9 = [(HUICCCapsuleButton *)self delegate];
-  [v9 updateHeight];
+  delegate = [(HUICCCapsuleButton *)self delegate];
+  [delegate updateHeight];
 }
 
 - (BOOL)supportsExpanding
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HUICCCapsuleButton *)self module];
-  v4 = 1;
-  if (v3 <= 29)
+  module = [(HUICCCapsuleButton *)self module];
+  hearingAidReachable = 1;
+  if (module <= 29)
   {
-    if (!v3)
+    if (!module)
     {
-      v7 = [(HUICCCapsuleButton *)self delegate];
-      v8 = [v7 currentHearingDevice];
-      if (v8)
+      delegate = [(HUICCCapsuleButton *)self delegate];
+      currentHearingDevice = [delegate currentHearingDevice];
+      if (currentHearingDevice)
       {
-        v9 = [MEMORY[0x277D12DE8] sharedInstance];
-        v4 = [v9 hearingAidReachable];
+        mEMORY[0x277D12DE8] = [MEMORY[0x277D12DE8] sharedInstance];
+        hearingAidReachable = [mEMORY[0x277D12DE8] hearingAidReachable];
       }
 
       else
       {
-        v4 = 0;
+        hearingAidReachable = 0;
       }
 
       v10 = HCLogHearingAids();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(HUICCCapsuleButton *)self delegate];
-        v12 = [v11 currentHearingDevice];
-        v13 = [MEMORY[0x277D12DE8] sharedInstance];
+        delegate2 = [(HUICCCapsuleButton *)self delegate];
+        currentHearingDevice2 = [delegate2 currentHearingDevice];
+        mEMORY[0x277D12DE8]2 = [MEMORY[0x277D12DE8] sharedInstance];
         v14[0] = 67109376;
-        v14[1] = v12 != 0;
+        v14[1] = currentHearingDevice2 != 0;
         v15 = 1024;
-        v16 = [v13 hearingAidReachable];
+        hearingAidReachable2 = [mEMORY[0x277D12DE8]2 hearingAidReachable];
         _os_log_impl(&dword_252166000, v10, OS_LOG_TYPE_DEFAULT, "Status expand %d, %d", v14, 0xEu);
       }
 
-      return v4;
+      return hearingAidReachable;
     }
 
-    if (v3 != 24)
+    if (module != 24)
     {
       return 0;
     }
 
-    return v4;
+    return hearingAidReachable;
   }
 
-  if (v3 != 30)
+  if (module != 30)
   {
-    if (v3 != 32)
+    if (module != 32)
     {
-      if (v3 == 34)
+      if (module == 34)
       {
-        v5 = [(HUICCCapsuleButton *)self delegate];
-        v4 = [v5 showPMEExpandedOptions];
+        delegate3 = [(HUICCCapsuleButton *)self delegate];
+        hearingAidReachable = [delegate3 showPMEExpandedOptions];
 
-        return v4;
+        return hearingAidReachable;
       }
 
       return 0;
     }
 
-    return v4;
+    return hearingAidReachable;
   }
 
   return _os_feature_enabled_impl();
 }
 
-- (void)addExpandedView:(id)a3
+- (void)addExpandedView:(id)view
 {
-  v4 = a3;
-  v5 = [(HUICCCapsuleButton *)self expandedStack];
-  [v5 insertArrangedSubview:v4 atIndex:-[HUICCCapsuleButton _indexToInsertFor:](self withSeparator:{"_indexToInsertFor:", v4), -[HUICCCapsuleButton shouldAddSeparatorForView:](self, "shouldAddSeparatorForView:", v4)}];
+  viewCopy = view;
+  expandedStack = [(HUICCCapsuleButton *)self expandedStack];
+  [expandedStack insertArrangedSubview:viewCopy atIndex:-[HUICCCapsuleButton _indexToInsertFor:](self withSeparator:{"_indexToInsertFor:", viewCopy), -[HUICCCapsuleButton shouldAddSeparatorForView:](self, "shouldAddSeparatorForView:", viewCopy)}];
 
-  LODWORD(v5) = [(HUICCCapsuleButton *)self shouldAutoExpandForView:v4];
-  if (v5)
+  LODWORD(expandedStack) = [(HUICCCapsuleButton *)self shouldAutoExpandForView:viewCopy];
+  if (expandedStack)
   {
-    v6 = [(HUICCCapsuleButton *)self expandedStack];
-    v7 = [v6 arrangedSubviews];
-    v8 = [v7 count];
+    expandedStack2 = [(HUICCCapsuleButton *)self expandedStack];
+    arrangedSubviews = [expandedStack2 arrangedSubviews];
+    v8 = [arrangedSubviews count];
 
     if (v8)
     {
@@ -516,18 +516,18 @@
   }
 }
 
-- (int64_t)_indexToInsertFor:(id)a3
+- (int64_t)_indexToInsertFor:(id)for
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  forCopy = for;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(HUICCCapsuleButton *)self expandedStack];
-  v6 = [v5 arrangedSubviews];
+  expandedStack = [(HUICCCapsuleButton *)self expandedStack];
+  arrangedSubviews = [expandedStack arrangedSubviews];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -542,11 +542,11 @@
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v13 = *(*(&v16 + 1) + 8 * v11);
-        v14 = [v4 tag];
+        v14 = [forCopy tag];
         if (v14 < [v13 tag])
         {
           v9 = v12;
@@ -558,7 +558,7 @@
       }
 
       while (v8 != v11);
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [arrangedSubviews countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v8)
       {
         continue;
@@ -578,15 +578,15 @@ LABEL_12:
   return v9;
 }
 
-- (void)removeExpandedView:(id)a3
+- (void)removeExpandedView:(id)view
 {
-  v4 = a3;
-  v5 = [(HUICCCapsuleButton *)self expandedStack];
-  [v5 removeArrangedSubview:v4];
+  viewCopy = view;
+  expandedStack = [(HUICCCapsuleButton *)self expandedStack];
+  [expandedStack removeArrangedSubview:viewCopy];
 
-  v6 = [(HUICCCapsuleButton *)self expandedStack];
-  v7 = [v6 arrangedSubviews];
-  v8 = [v7 count];
+  expandedStack2 = [(HUICCCapsuleButton *)self expandedStack];
+  arrangedSubviews = [expandedStack2 arrangedSubviews];
+  v8 = [arrangedSubviews count];
 
   if (!v8)
   {
@@ -597,8 +597,8 @@ LABEL_12:
 
 - (void)buttonTapped
 {
-  v3 = [(HUICCCapsuleButton *)self delegate];
-  [v3 controlDidActivate:self];
+  delegate = [(HUICCCapsuleButton *)self delegate];
+  [delegate controlDidActivate:self];
 
   AXPerformBlockOnMainThreadAfterDelay();
 }
@@ -611,18 +611,18 @@ void __34__HUICCCapsuleButton_buttonTapped__block_invoke(uint64_t a1)
 
 - (id)accessibilityLabel
 {
-  v2 = [(HUICCCapsuleButton *)self titleLabel];
-  v3 = [v2 accessibilityLabel];
+  titleLabel = [(HUICCCapsuleButton *)self titleLabel];
+  accessibilityLabel = [titleLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(HUICCCapsuleButton *)self subtitleLabel];
-  v3 = [v2 accessibilityLabel];
+  subtitleLabel = [(HUICCCapsuleButton *)self subtitleLabel];
+  accessibilityLabel = [subtitleLabel accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityCustomActions
@@ -676,19 +676,19 @@ uint64_t __48__HUICCCapsuleButton_accessibilityCustomActions__block_invoke(uint6
 {
   v4.receiver = self;
   v4.super_class = HUICCCapsuleButton;
-  v2 = [(HUICCCapsuleButton *)&v4 accessibilityActivate];
+  accessibilityActivate = [(HUICCCapsuleButton *)&v4 accessibilityActivate];
   UIAccessibilityPostNotification(*MEMORY[0x277D76488], 0);
-  return v2;
+  return accessibilityActivate;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(HUICCCapsuleButton *)self titleLabel];
+  titleLabel = [(HUICCCapsuleButton *)self titleLabel];
 
-  if (v3)
+  if (titleLabel)
   {
-    v4 = [(HUICCCapsuleButton *)self titleLabel];
-    [v4 accessibilityActivationPoint];
+    titleLabel2 = [(HUICCCapsuleButton *)self titleLabel];
+    [titleLabel2 accessibilityActivationPoint];
     v6 = v5;
     v8 = v7;
 
@@ -712,47 +712,47 @@ uint64_t __48__HUICCCapsuleButton_accessibilityCustomActions__block_invoke(uint6
 {
   if ([(HUICCCapsuleButton *)self isExpanded])
   {
-    v3 = [(HUICCCapsuleButton *)self expandedStack];
-    v4 = [v3 arrangedSubviews];
-    v5 = [v4 mutableCopy];
+    expandedStack = [(HUICCCapsuleButton *)self expandedStack];
+    arrangedSubviews = [expandedStack arrangedSubviews];
+    array = [arrangedSubviews mutableCopy];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   if ([(HUICCCapsuleButton *)self shouldIncludeAccessoryViewInFooterViews])
   {
-    v6 = [(HUICCCapsuleButton *)self accessoryView];
+    accessoryView = [(HUICCCapsuleButton *)self accessoryView];
 
-    if (v6)
+    if (accessoryView)
     {
-      v7 = [(HUICCCapsuleButton *)self accessoryView];
-      [v5 insertObject:v7 atIndex:0];
+      accessoryView2 = [(HUICCCapsuleButton *)self accessoryView];
+      [array insertObject:accessoryView2 atIndex:0];
     }
   }
 
   if ([(HUICCCapsuleButton *)self shouldIncludeIconViewInFooterViews])
   {
-    v8 = [(HUICCCapsuleButton *)self iconView];
+    iconView = [(HUICCCapsuleButton *)self iconView];
 
-    if (v8)
+    if (iconView)
     {
-      v9 = [(HUICCCapsuleButton *)self iconView];
-      [v5 insertObject:v9 atIndex:0];
+      iconView2 = [(HUICCCapsuleButton *)self iconView];
+      [array insertObject:iconView2 atIndex:0];
     }
   }
 
-  return v5;
+  return array;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
-  v7 = [(HUICCCapsuleButton *)self requiredVisualStyleCategories];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-  v9 = [v7 containsObject:v8];
+  providerCopy = provider;
+  requiredVisualStyleCategories = [(HUICCCapsuleButton *)self requiredVisualStyleCategories];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:category];
+  v9 = [requiredVisualStyleCategories containsObject:v8];
 
   if (v9)
   {
@@ -760,8 +760,8 @@ uint64_t __48__HUICCCapsuleButton_accessibilityCustomActions__block_invoke(uint6
     v10[1] = 3221225472;
     v10[2] = __59__HUICCCapsuleButton_setVisualStylingProvider_forCategory___block_invoke;
     v10[3] = &unk_2796F6CA8;
-    v11 = v6;
-    v12 = self;
+    v11 = providerCopy;
+    selfCopy = self;
     dispatch_async(MEMORY[0x277D85CD0], v10);
   }
 }

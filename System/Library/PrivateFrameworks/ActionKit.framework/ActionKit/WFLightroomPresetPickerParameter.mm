@@ -3,10 +3,10 @@
 - (BOOL)isHidden;
 - (NSArray)possibleStates;
 - (WFAction)action;
-- (id)localizedLabelForPossibleState:(id)a3;
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4;
+- (id)localizedLabelForPossibleState:(id)state;
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key;
 - (void)possibleStatesDidChange;
-- (void)setAction:(id)a3;
+- (void)setAction:(id)action;
 @end
 
 @implementation WFLightroomPresetPickerParameter
@@ -18,12 +18,12 @@
   return WeakRetained;
 }
 
-- (void)action:(id)a3 parameterStateDidChangeForKey:(id)a4
+- (void)action:(id)action parameterStateDidChangeForKey:(id)key
 {
-  v5 = a4;
-  v6 = [(WFLightroomPresetPickerParameter *)self definition];
-  v7 = [v6 objectForKey:@"PresetGroupKey"];
-  v8 = [v5 isEqualToString:v7];
+  keyCopy = key;
+  definition = [(WFLightroomPresetPickerParameter *)self definition];
+  v7 = [definition objectForKey:@"PresetGroupKey"];
+  v8 = [keyCopy isEqualToString:v7];
 
   if (v8)
   {
@@ -32,12 +32,12 @@
   }
 }
 
-- (id)localizedLabelForPossibleState:(id)a3
+- (id)localizedLabelForPossibleState:(id)state
 {
-  v3 = [a3 value];
-  v4 = [v3 displayString];
+  value = [state value];
+  displayString = [value displayString];
 
-  return v4;
+  return displayString;
 }
 
 - (NSArray)possibleStates
@@ -45,14 +45,14 @@
   possibleStates = self->_possibleStates;
   if (!possibleStates)
   {
-    v4 = [(WFLightroomPresetPickerParameter *)self action];
-    v5 = [(WFLightroomPresetPickerParameter *)self definition];
-    v6 = [v5 objectForKey:@"PresetGroupKey"];
-    v7 = [v4 parameterStateForKey:v6];
+    action = [(WFLightroomPresetPickerParameter *)self action];
+    definition = [(WFLightroomPresetPickerParameter *)self definition];
+    v6 = [definition objectForKey:@"PresetGroupKey"];
+    v7 = [action parameterStateForKey:v6];
 
-    v8 = [objc_opt_class() presetsByGroup];
-    v9 = [v7 value];
-    v10 = [v8 objectForKey:v9];
+    presetsByGroup = [objc_opt_class() presetsByGroup];
+    value = [v7 value];
+    v10 = [presetsByGroup objectForKey:value];
 
     v11 = [v10 if_compactMap:&__block_literal_global_1168];
     v12 = self->_possibleStates;
@@ -75,8 +75,8 @@ id __50__WFLightroomPresetPickerParameter_possibleStates__block_invoke(uint64_t 
 
 - (BOOL)isHidden
 {
-  v2 = [(WFLightroomPresetPickerParameter *)self possibleStates];
-  v3 = [v2 count] == 0;
+  possibleStates = [(WFLightroomPresetPickerParameter *)self possibleStates];
+  v3 = [possibleStates count] == 0;
 
   return v3;
 }
@@ -91,14 +91,14 @@ id __50__WFLightroomPresetPickerParameter_possibleStates__block_invoke(uint64_t 
   [(WFLightroomPresetPickerParameter *)&v4 possibleStatesDidChange];
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   WeakRetained = objc_loadWeakRetained(&self->_action);
   [WeakRetained removeEventObserver:self];
 
-  objc_storeWeak(&self->_action, v4);
-  [v4 addEventObserver:self];
+  objc_storeWeak(&self->_action, actionCopy);
+  [actionCopy addEventObserver:self];
 
   [(WFLightroomPresetPickerParameter *)self possibleStatesDidChange];
 }

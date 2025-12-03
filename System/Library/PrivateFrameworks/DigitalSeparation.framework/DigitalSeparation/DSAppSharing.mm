@@ -1,29 +1,29 @@
 @interface DSAppSharing
-- (DSAppSharing)initWithTCCStore:(id)a3;
-- (id)newDictionaryWithApps:(id)a3;
-- (id)removeAppsWithNoPermissions:(id)a3;
-- (void)addApp:(id)a3 toMap:(id)a4 withLocationAuthorization:(unint64_t)a5;
-- (void)addApp:(id)a3 toMap:(id)a4 withService:(id)a5;
-- (void)addHealthPermissionsToAppMap:(id)a3 handler:(id)a4;
-- (void)addLocalNetworkPermissionsToAppMap:(id)a3 handler:(id)a4;
-- (void)addLocationPermissions:(id)a3;
-- (void)addTCCPermissionsToAppMap:(id)a3 handler:(id)a4;
-- (void)approvedBundleIdForKappa:(id)a3 handler:(id)a4;
-- (void)collectAppsWithAccessToService:(id)a3 appMap:(id)a4 completionHandler:(id)a5;
-- (void)collectPermissionsForApps:(id)a3 queue:(id)a4 handler:(id)a5;
-- (void)resetBackgroundAppRefresh:(id)a3 queue:(id)a4 handler:(id)a5;
-- (void)resetHealthPermissionsForApp:(id)a3 withCompletionHandler:(id)a4;
-- (void)resetPermission:(id)a3 forApp:(id)a4 handler:(id)a5;
-- (void)resetPermission:(id)a3 forApps:(id)a4 handler:(id)a5;
-- (void)resetPermissions:(id)a3 forApps:(id)a4 queue:(id)a5 handler:(id)a6;
-- (void)resetShortcutsAutomationTimer:(id)a3 handler:(id)a4;
+- (DSAppSharing)initWithTCCStore:(id)store;
+- (id)newDictionaryWithApps:(id)apps;
+- (id)removeAppsWithNoPermissions:(id)permissions;
+- (void)addApp:(id)app toMap:(id)map withLocationAuthorization:(unint64_t)authorization;
+- (void)addApp:(id)app toMap:(id)map withService:(id)service;
+- (void)addHealthPermissionsToAppMap:(id)map handler:(id)handler;
+- (void)addLocalNetworkPermissionsToAppMap:(id)map handler:(id)handler;
+- (void)addLocationPermissions:(id)permissions;
+- (void)addTCCPermissionsToAppMap:(id)map handler:(id)handler;
+- (void)approvedBundleIdForKappa:(id)kappa handler:(id)handler;
+- (void)collectAppsWithAccessToService:(id)service appMap:(id)map completionHandler:(id)handler;
+- (void)collectPermissionsForApps:(id)apps queue:(id)queue handler:(id)handler;
+- (void)resetBackgroundAppRefresh:(id)refresh queue:(id)queue handler:(id)handler;
+- (void)resetHealthPermissionsForApp:(id)app withCompletionHandler:(id)handler;
+- (void)resetPermission:(id)permission forApp:(id)app handler:(id)handler;
+- (void)resetPermission:(id)permission forApps:(id)apps handler:(id)handler;
+- (void)resetPermissions:(id)permissions forApps:(id)apps queue:(id)queue handler:(id)handler;
+- (void)resetShortcutsAutomationTimer:(id)timer handler:(id)handler;
 @end
 
 @implementation DSAppSharing
 
-- (DSAppSharing)initWithTCCStore:(id)a3
+- (DSAppSharing)initWithTCCStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
@@ -33,8 +33,8 @@
   }
 
   tccStore = self->_tccStore;
-  self->_tccStore = v4;
-  v9 = v4;
+  self->_tccStore = storeCopy;
+  v9 = storeCopy;
 
   v10 = objc_alloc_init(MEMORY[0x277CCD4D8]);
   healthKitStore = self->_healthKitStore;
@@ -50,25 +50,25 @@
   return self;
 }
 
-- (void)collectPermissionsForApps:(id)a3 queue:(id)a4 handler:(id)a5
+- (void)collectPermissionsForApps:(id)apps queue:(id)queue handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appsCopy = apps;
+  queueCopy = queue;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v11 = [(DSAppSharing *)self workQueue];
+  workQueue = [(DSAppSharing *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__DSAppSharing_collectPermissionsForApps_queue_handler___block_invoke;
   block[3] = &unk_278F72748;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = appsCopy;
+  v17 = queueCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
+  v14 = appsCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v19);
   objc_destroyWeak(&location);
@@ -166,16 +166,16 @@ void __56__DSAppSharing_collectPermissionsForApps_queue_handler___block_invoke_4
   dispatch_async(v7, block);
 }
 
-- (id)removeAppsWithNoPermissions:(id)a3
+- (id)removeAppsWithNoPermissions:(id)permissions
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  permissionsCopy = permissions;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = permissionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -208,62 +208,62 @@ void __56__DSAppSharing_collectPermissionsForApps_queue_handler___block_invoke_4
   return v4;
 }
 
-- (void)addApp:(id)a3 toMap:(id)a4 withLocationAuthorization:(unint64_t)a5
+- (void)addApp:(id)app toMap:(id)map withLocationAuthorization:(unint64_t)authorization
 {
-  v12 = a4;
-  v8 = a3;
-  v9 = [(DSAppSharing *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  mapCopy = map;
+  appCopy = app;
+  workQueue = [(DSAppSharing *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v10 = [v12 objectForKey:v8];
+  v10 = [mapCopy objectForKey:appCopy];
 
   if (v10)
   {
-    [v10 setLocationAuthorization:a5];
-    v11 = [v10 appID];
-    [v12 setValue:v10 forKey:v11];
+    [v10 setLocationAuthorization:authorization];
+    appID = [v10 appID];
+    [mapCopy setValue:v10 forKey:appID];
   }
 }
 
-- (void)addApp:(id)a3 toMap:(id)a4 withService:(id)a5
+- (void)addApp:(id)app toMap:(id)map withService:(id)service
 {
-  v14 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(DSAppSharing *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  mapCopy = map;
+  serviceCopy = service;
+  appCopy = app;
+  workQueue = [(DSAppSharing *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v11 = [v14 objectForKey:v9];
+  v11 = [mapCopy objectForKey:appCopy];
 
   if (v11)
   {
-    if ([DSUtilities isContactsTCC:v8])
+    if ([DSUtilities isContactsTCC:serviceCopy])
     {
 
-      v8 = @"DSContacts";
+      serviceCopy = @"DSContacts";
     }
 
-    v12 = [v11 permissionsGranted];
-    [v12 addObject:v8];
+    permissionsGranted = [v11 permissionsGranted];
+    [permissionsGranted addObject:serviceCopy];
 
-    v13 = [v11 appID];
-    [v14 setValue:v11 forKey:v13];
+    appID = [v11 appID];
+    [mapCopy setValue:v11 forKey:appID];
   }
 }
 
-- (id)newDictionaryWithApps:(id)a3
+- (id)newDictionaryWithApps:(id)apps
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DSAppSharing *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  appsCopy = apps;
+  workQueue = [(DSAppSharing *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v4;
+  v7 = appsCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v8)
   {
@@ -282,19 +282,19 @@ void __56__DSAppSharing_collectPermissionsForApps_queue_handler___block_invoke_4
         v12 = *(*(&v21 + 1) + 8 * v11);
         v13 = objc_alloc_init(DSApp);
         [(DSApp *)v13 setAppID:v12, v21];
-        v14 = [(DSApp *)v13 appID];
-        v15 = displayNameForApp(v14);
+        appID = [(DSApp *)v13 appID];
+        v15 = displayNameForApp(appID);
         [(DSApp *)v13 setDisplayName:v15];
 
-        v16 = [(DSApp *)v13 displayName];
+        displayName = [(DSApp *)v13 displayName];
 
-        if (v16)
+        if (displayName)
         {
           v17 = objc_alloc_init(MEMORY[0x277CBEB58]);
           [(DSApp *)v13 setPermissionsGranted:v17];
 
-          v18 = [(DSApp *)v13 appID];
-          [v6 setValue:v13 forKey:v18];
+          appID2 = [(DSApp *)v13 appID];
+          [v6 setValue:v13 forKey:appID2];
         }
 
         ++v11;
@@ -311,32 +311,32 @@ void __56__DSAppSharing_collectPermissionsForApps_queue_handler___block_invoke_4
   return v6;
 }
 
-- (void)collectAppsWithAccessToService:(id)a3 appMap:(id)a4 completionHandler:(id)a5
+- (void)collectAppsWithAccessToService:(id)service appMap:(id)map completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DSAppSharing *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  serviceCopy = service;
+  mapCopy = map;
+  handlerCopy = handler;
+  workQueue = [(DSAppSharing *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([DSApp skipTCCCheck:v8])
+  if ([DSApp skipTCCCheck:serviceCopy])
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   else
   {
     tccStore = self->_tccStore;
-    v13 = [(DSAppSharing *)self workQueue];
+    workQueue2 = [(DSAppSharing *)self workQueue];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __72__DSAppSharing_collectAppsWithAccessToService_appMap_completionHandler___block_invoke;
     v14[3] = &unk_278F72770;
-    v15 = v9;
-    v16 = self;
-    v17 = v8;
-    v18 = v10;
-    [(DSTCCStore *)tccStore appsWithPermissionGrantedForService:v17 queue:v13 completionHandler:v14];
+    v15 = mapCopy;
+    selfCopy = self;
+    v17 = serviceCopy;
+    v18 = handlerCopy;
+    [(DSTCCStore *)tccStore appsWithPermissionGrantedForService:v17 queue:workQueue2 completionHandler:v14];
   }
 }
 
@@ -383,19 +383,19 @@ void __72__DSAppSharing_collectAppsWithAccessToService_appMap_completionHandler_
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addTCCPermissionsToAppMap:(id)a3 handler:(id)a4
+- (void)addTCCPermissionsToAppMap:(id)map handler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v24 = a3;
-  v22 = a4;
-  v6 = [(DSAppSharing *)self workQueue];
-  dispatch_assert_queue_V2(v6);
+  mapCopy = map;
+  handlerCopy = handler;
+  workQueue = [(DSAppSharing *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v7 = dispatch_group_create();
   v8 = +[DSUtilities tccServices];
   v9 = +[DSUtilities contactsServices];
-  v10 = [v9 allObjects];
-  v11 = [v8 arrayByAddingObjectsFromArray:v10];
+  allObjects = [v9 allObjects];
+  v11 = [v8 arrayByAddingObjectsFromArray:allObjects];
 
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v31 = 0u;
@@ -426,7 +426,7 @@ void __72__DSAppSharing_collectAppsWithAccessToService_appMap_completionHandler_
         v28[3] = &unk_278F72798;
         v29 = v12;
         v30 = v7;
-        [(DSAppSharing *)self collectAppsWithAccessToService:v17 appMap:v24 completionHandler:v28];
+        [(DSAppSharing *)self collectAppsWithAccessToService:v17 appMap:mapCopy completionHandler:v28];
 
         ++v16;
       }
@@ -438,16 +438,16 @@ void __72__DSAppSharing_collectAppsWithAccessToService_appMap_completionHandler_
     while (v14);
   }
 
-  v18 = [(DSAppSharing *)self workQueue];
+  workQueue2 = [(DSAppSharing *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__DSAppSharing_addTCCPermissionsToAppMap_handler___block_invoke_2;
   block[3] = &unk_278F72600;
   v26 = v12;
-  v27 = v22;
+  v27 = handlerCopy;
   v19 = v12;
-  v20 = v22;
-  dispatch_group_notify(v7, v18, block);
+  v20 = handlerCopy;
+  dispatch_group_notify(v7, workQueue2, block);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -464,21 +464,21 @@ void __50__DSAppSharing_addTCCPermissionsToAppMap_handler___block_invoke(uint64_
   dispatch_group_leave(v4);
 }
 
-- (void)addLocationPermissions:(id)a3
+- (void)addLocationPermissions:(id)permissions
 {
-  v4 = a3;
-  v5 = [(DSAppSharing *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  permissionsCopy = permissions;
+  workQueue = [(DSAppSharing *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(DSTCCStore *)self->_tccStore appsWithLocationService];
+  appsWithLocationService = [(DSTCCStore *)self->_tccStore appsWithLocationService];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__DSAppSharing_addLocationPermissions___block_invoke;
   v8[3] = &unk_278F727C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = permissionsCopy;
+  v7 = permissionsCopy;
+  [appsWithLocationService enumerateKeysAndObjectsUsingBlock:v8];
 }
 
 void __39__DSAppSharing_addLocationPermissions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -491,13 +491,13 @@ void __39__DSAppSharing_addLocationPermissions___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)addHealthPermissionsToAppMap:(id)a3 handler:(id)a4
+- (void)addHealthPermissionsToAppMap:(id)map handler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = a4;
-  v7 = [(DSAppSharing *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  mapCopy = map;
+  handlerCopy = handler;
+  workQueue = [(DSAppSharing *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v8 = dispatch_group_create();
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -505,8 +505,8 @@ void __39__DSAppSharing_addLocationPermissions___block_invoke(uint64_t a1, void 
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v23 = v6;
-  obj = [v6 allKeys];
+  v23 = mapCopy;
+  obj = [mapCopy allKeys];
   v10 = [obj countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v10)
   {
@@ -531,7 +531,7 @@ void __39__DSAppSharing_addLocationPermissions___block_invoke(uint64_t a1, void 
         v27[2] = __53__DSAppSharing_addHealthPermissionsToAppMap_handler___block_invoke;
         v27[3] = &unk_278F72810;
         v28 = v8;
-        v29 = self;
+        selfCopy = self;
         v30 = v14;
         v31 = v23;
         v32 = v9;
@@ -547,16 +547,16 @@ void __39__DSAppSharing_addLocationPermissions___block_invoke(uint64_t a1, void 
     while (v11);
   }
 
-  v17 = [(DSAppSharing *)self workQueue];
+  workQueue2 = [(DSAppSharing *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__DSAppSharing_addHealthPermissionsToAppMap_handler___block_invoke_3;
   block[3] = &unk_278F72600;
   v25 = v9;
-  v26 = v21;
+  v26 = handlerCopy;
   v18 = v9;
-  v19 = v21;
-  dispatch_group_notify(v8, v17, block);
+  v19 = handlerCopy;
+  dispatch_group_notify(v8, workQueue2, block);
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -585,28 +585,28 @@ void __53__DSAppSharing_addHealthPermissionsToAppMap_handler___block_invoke(uint
   dispatch_group_leave(*(a1 + 32));
 }
 
-- (void)addLocalNetworkPermissionsToAppMap:(id)a3 handler:(id)a4
+- (void)addLocalNetworkPermissionsToAppMap:(id)map handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DSAppSharing *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  mapCopy = map;
+  handlerCopy = handler;
+  workQueue = [(DSAppSharing *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   tccStore = self->_tccStore;
   v10 = MEMORY[0x277CBEB98];
-  v11 = [v6 allKeys];
-  v12 = [v10 setWithArray:v11];
-  v13 = [(DSAppSharing *)self workQueue];
+  allKeys = [mapCopy allKeys];
+  v12 = [v10 setWithArray:allKeys];
+  workQueue2 = [(DSAppSharing *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __59__DSAppSharing_addLocalNetworkPermissionsToAppMap_handler___block_invoke;
   v16[3] = &unk_278F72838;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
-  v14 = v7;
-  v15 = v6;
-  [(DSTCCStore *)tccStore allAppsWithLocalNetworkAccess:v12 queue:v13 handler:v16];
+  v17 = mapCopy;
+  v18 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = mapCopy;
+  [(DSTCCStore *)tccStore allAppsWithLocalNetworkAccess:v12 queue:workQueue2 handler:v16];
 }
 
 void __59__DSAppSharing_addLocalNetworkPermissionsToAppMap_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -648,19 +648,19 @@ void __59__DSAppSharing_addLocalNetworkPermissionsToAppMap_handler___block_invok
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetPermission:(id)a3 forApps:(id)a4 handler:(id)a5
+- (void)resetPermission:(id)permission forApps:(id)apps handler:(id)handler
 {
   v34 = *MEMORY[0x277D85DE8];
-  v22 = a3;
-  v8 = a4;
-  v20 = a5;
+  permissionCopy = permission;
+  appsCopy = apps;
+  handlerCopy = handler;
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v10 = dispatch_group_create();
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v8;
+  obj = appsCopy;
   v11 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v11)
   {
@@ -684,7 +684,7 @@ void __59__DSAppSharing_addLocalNetworkPermissionsToAppMap_handler___block_invok
         v26[3] = &unk_278F72860;
         v27 = v9;
         v28 = v10;
-        [(DSAppSharing *)self resetPermission:v22 forApp:v15 handler:v26];
+        [(DSAppSharing *)self resetPermission:permissionCopy forApp:v15 handler:v26];
 
         ++v14;
       }
@@ -696,16 +696,16 @@ void __59__DSAppSharing_addLocalNetworkPermissionsToAppMap_handler___block_invok
     while (v12);
   }
 
-  v16 = [(DSAppSharing *)self workQueue];
+  workQueue = [(DSAppSharing *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__DSAppSharing_resetPermission_forApps_handler___block_invoke_2;
   block[3] = &unk_278F72600;
   v24 = v9;
-  v25 = v20;
+  v25 = handlerCopy;
   v17 = v9;
-  v18 = v20;
-  dispatch_group_notify(v10, v16, block);
+  v18 = handlerCopy;
+  dispatch_group_notify(v10, workQueue, block);
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -718,27 +718,27 @@ void __48__DSAppSharing_resetPermission_forApps_handler___block_invoke(uint64_t 
   dispatch_group_leave(v3);
 }
 
-- (void)resetPermissions:(id)a3 forApps:(id)a4 queue:(id)a5 handler:(id)a6
+- (void)resetPermissions:(id)permissions forApps:(id)apps queue:(id)queue handler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(DSAppSharing *)self workQueue];
+  permissionsCopy = permissions;
+  appsCopy = apps;
+  queueCopy = queue;
+  handlerCopy = handler;
+  workQueue = [(DSAppSharing *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__DSAppSharing_resetPermissions_forApps_queue_handler___block_invoke;
   block[3] = &unk_278F72928;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = permissionsCopy;
+  v21 = appsCopy;
+  v22 = queueCopy;
+  v23 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = queueCopy;
+  v17 = appsCopy;
+  v18 = permissionsCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __55__DSAppSharing_resetPermissions_forApps_queue_handler___block_invoke(uint64_t a1)
@@ -880,72 +880,72 @@ void __55__DSAppSharing_resetPermissions_forApps_queue_handler___block_invoke_6(
   dispatch_group_leave(v2);
 }
 
-- (void)resetPermission:(id)a3 forApp:(id)a4 handler:(id)a5
+- (void)resetPermission:(id)permission forApp:(id)app handler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([DSRestrictionStore isPermissionRestricted:v8]&& [(DSTCCStore *)self->_tccStore isServiceGranted:v8 forApp:v9])
+  permissionCopy = permission;
+  appCopy = app;
+  handlerCopy = handler;
+  if ([DSRestrictionStore isPermissionRestricted:permissionCopy]&& [(DSTCCStore *)self->_tccStore isServiceGranted:permissionCopy forApp:appCopy])
   {
     v11 = DSLog;
     if (os_log_type_enabled(DSLog, OS_LOG_TYPE_INFO))
     {
       v18 = 138412546;
-      v19 = v8;
+      v19 = permissionCopy;
       v20 = 2112;
-      v21 = v9;
+      v21 = appCopy;
       _os_log_impl(&dword_248C40000, v11, OS_LOG_TYPE_INFO, "Cannot reset permission %@ for app %@ due to screen time restrictions", &v18, 0x16u);
     }
 
     v12 = MEMORY[0x277CBEA60];
-    v13 = [DSError errorWithCode:7 serviceName:v8];
+    v13 = [DSError errorWithCode:7 serviceName:permissionCopy];
     v14 = [v12 arrayWithObject:v13];
-    v10[2](v10, v14);
+    handlerCopy[2](handlerCopy, v14);
   }
 
-  else if (([v8 isEqualToString:@"DSLocationAlways"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"DSLocationWhenInUse"))
+  else if (([permissionCopy isEqualToString:@"DSLocationAlways"] & 1) != 0 || objc_msgSend(permissionCopy, "isEqualToString:", @"DSLocationWhenInUse"))
   {
-    [(DSTCCStore *)self->_tccStore resetLocationPermissionForApp:v9];
-    v10[2](v10, 0);
+    [(DSTCCStore *)self->_tccStore resetLocationPermissionForApp:appCopy];
+    handlerCopy[2](handlerCopy, 0);
   }
 
-  else if ([v8 isEqualToString:@"DSHealth"])
+  else if ([permissionCopy isEqualToString:@"DSHealth"])
   {
-    [(DSAppSharing *)self resetHealthPermissionsForApp:v9 withCompletionHandler:v10];
+    [(DSAppSharing *)self resetHealthPermissionsForApp:appCopy withCompletionHandler:handlerCopy];
   }
 
   else
   {
-    if ([v8 isEqualToString:@"DSLocalNetwork"])
+    if ([permissionCopy isEqualToString:@"DSLocalNetwork"])
     {
       tccStore = self->_tccStore;
-      v17 = [(DSAppSharing *)self workQueue];
-      [(DSTCCStore *)tccStore resetLocalNetworkPermissionForApp:v9 queue:v17 handler:v10];
+      workQueue = [(DSAppSharing *)self workQueue];
+      [(DSTCCStore *)tccStore resetLocalNetworkPermissionForApp:appCopy queue:workQueue handler:handlerCopy];
     }
 
     else
     {
-      v17 = [(DSTCCStore *)self->_tccStore resetTCCPermission:v8 forApp:v9];
-      v10[2](v10, v17);
+      workQueue = [(DSTCCStore *)self->_tccStore resetTCCPermission:permissionCopy forApp:appCopy];
+      handlerCopy[2](handlerCopy, workQueue);
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetHealthPermissionsForApp:(id)a3 withCompletionHandler:(id)a4
+- (void)resetHealthPermissionsForApp:(id)app withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  handlerCopy = handler;
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __67__DSAppSharing_resetHealthPermissionsForApp_withCompletionHandler___block_invoke;
   v14 = &unk_278F72950;
-  v15 = v6;
-  v16 = v7;
-  v8 = v7;
-  v9 = v6;
+  v15 = appCopy;
+  v16 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = appCopy;
   v10 = MEMORY[0x24C1E7EB0](&v11);
   [(DSTCCStore *)self->_tccStore resetHealthPermissionsForApp:v9 withAuthorizationStore:self->_authorizationStore andCompletionHandler:v10, v11, v12, v13, v14];
 }
@@ -971,23 +971,23 @@ void __67__DSAppSharing_resetHealthPermissionsForApp_withCompletionHandler___blo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)resetBackgroundAppRefresh:(id)a3 queue:(id)a4 handler:(id)a5
+- (void)resetBackgroundAppRefresh:(id)refresh queue:(id)queue handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DSAppSharing *)self workQueue];
+  refreshCopy = refresh;
+  queueCopy = queue;
+  handlerCopy = handler;
+  workQueue = [(DSAppSharing *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__DSAppSharing_resetBackgroundAppRefresh_queue_handler___block_invoke;
   block[3] = &unk_278F729A0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_async(v11, block);
+  v16 = refreshCopy;
+  v17 = queueCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = queueCopy;
+  v14 = refreshCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __56__DSAppSharing_resetBackgroundAppRefresh_queue_handler___block_invoke(uint64_t a1)
@@ -1022,20 +1022,20 @@ void __56__DSAppSharing_resetBackgroundAppRefresh_queue_handler___block_invoke(u
   dispatch_async(v6, v7);
 }
 
-- (void)resetShortcutsAutomationTimer:(id)a3 handler:(id)a4
+- (void)resetShortcutsAutomationTimer:(id)timer handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DSAppSharing *)self workQueue];
+  timerCopy = timer;
+  handlerCopy = handler;
+  workQueue = [(DSAppSharing *)self workQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__DSAppSharing_resetShortcutsAutomationTimer_handler___block_invoke;
   v11[3] = &unk_278F726C8;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = timerCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = timerCopy;
+  dispatch_async(workQueue, v11);
 }
 
 void __54__DSAppSharing_resetShortcutsAutomationTimer_handler___block_invoke(uint64_t a1)
@@ -1065,23 +1065,23 @@ void __54__DSAppSharing_resetShortcutsAutomationTimer_handler___block_invoke(uin
   dispatch_async(v12, block);
 }
 
-- (void)approvedBundleIdForKappa:(id)a3 handler:(id)a4
+- (void)approvedBundleIdForKappa:(id)kappa handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  kappaCopy = kappa;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [(DSAppSharing *)self workQueue];
+  workQueue = [(DSAppSharing *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__DSAppSharing_approvedBundleIdForKappa_handler___block_invoke;
   block[3] = &unk_278F72748;
   objc_copyWeak(&v14, &location);
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = kappaCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = kappaCopy;
+  dispatch_async(workQueue, block);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);

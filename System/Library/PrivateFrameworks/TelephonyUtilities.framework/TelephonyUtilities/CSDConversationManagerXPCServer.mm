@@ -1,113 +1,113 @@
 @interface CSDConversationManagerXPCServer
-- (BOOL)_shouldSend:(id)a3;
-- (CSDConversationManagerXPCServer)initWithConversationManager:(id)a3 featureFlags:(id)a4;
-- (id)_advertisementsOnSystemForClient:(id)a3;
-- (id)_conversationsByGroupUUID:(id)a3 filteredForClient:(id)a4;
-- (id)_filter:(id)a3 withClient:(id)a4;
-- (void)activateConversationNoticeWithActionURL:(id)a3 bundleIdentifier:(id)a4;
-- (void)activateLink:(id)a3 completionHandler:(id)a4;
-- (void)activatedConversationLinks:(id)a3;
-- (void)activityAuthorizedBundleIdentifierState:(id)a3;
-- (void)addCollaborationDictionary:(id)a3 forConversationWithUUID:(id)a4 fromMe:(BOOL)a5;
-- (void)addCollaborationIdentifier:(id)a3 collaborationURL:(id)a4 cloudKitAppBundleIDs:(id)a5 forConversationUUID:(id)a6;
-- (void)addDisclosedCollaborationInitiator:(id)a3 toConversationUUID:(id)a4;
-- (void)addInvitedMemberHandles:(id)a3 toConversationLink:(id)a4 completionHandler:(id)a5;
-- (void)addRemoteMembers:(id)a3 otherInvitedHandles:(id)a4 invitationPreferences:(id)a5 toConversationWithUUID:(id)a6;
-- (void)addScreenSharingType:(unint64_t)a3 forConversationUUID:(id)a4;
-- (void)advertisementsOnSystem:(id)a3;
-- (void)approvePendingMember:(id)a3 forConversationUUID:(id)a4;
-- (void)buzzMember:(id)a3 destinationID:(id)a4 invitationContext:(id)a5 conversationUUID:(id)a6;
-- (void)cancelOrDenyScreenShareRequest:(id)a3 forConversationUUID:(id)a4;
-- (void)checkLinkValidity:(id)a3 completionHandler:(id)a4;
-- (void)conversationManager:(id)a3 activatedConversationLinksChanged:(id)a4;
-- (void)conversationManager:(id)a3 activeParticipant:(id)a4 addedHighlightToConversation:(id)a5 highlightIdentifier:(id)a6 oldHighlightIdentifier:(id)a7 isFirstAdd:(BOOL)a8;
-- (void)conversationManager:(id)a3 activeParticipant:(id)a4 removedHighlightFrom:(id)a5 highlightIdentifier:(id)a6;
-- (void)conversationManager:(id)a3 activityAuthorizationChangedForBundleIdentifier:(id)a4;
-- (void)conversationManager:(id)a3 addedCollaborationDictionary:(id)a4 forConversation:(id)a5;
-- (void)conversationManager:(id)a3 conversation:(id)a4 addedMembersLocally:(id)a5;
-- (void)conversationManager:(id)a3 conversation:(id)a4 appLaunchState:(unint64_t)a5 forActivitySession:(id)a6;
-- (void)conversationManager:(id)a3 conversation:(id)a4 buzzedMember:(id)a5;
-- (void)conversationManager:(id)a3 conversation:(id)a4 collaborationStateChanged:(int64_t)a5 highlightIdentifier:(id)a6;
-- (void)conversationManager:(id)a3 conversation:(id)a4 didChangeSceneAssociationForActivitySession:(id)a5;
-- (void)conversationManager:(id)a3 conversation:(id)a4 didChangeStateForActivitySession:(id)a5;
-- (void)conversationManager:(id)a3 conversation:(id)a4 participant:(id)a5 addedNotice:(id)a6;
-- (void)conversationManager:(id)a3 conversation:(id)a4 participant:(id)a5 didReact:(id)a6;
-- (void)conversationManager:(id)a3 conversation:(id)a4 participantDidStopReacting:(id)a5;
-- (void)conversationManager:(id)a3 conversation:(id)a4 receivedActivitySessionEvent:(id)a5;
-- (void)conversationManager:(id)a3 conversationScreenSharingChanged:(id)a4 forParticipant:(id)a5;
-- (void)conversationManager:(id)a3 conversationUpdateMessagesGroupPhoto:(id)a4;
-- (void)conversationManager:(id)a3 didChangeConversationAdvertisement:(id)a4;
-- (void)conversationManager:(id)a3 remoteScreenShareAttributesChanged:(id)a4 isLocallySharing:(BOOL)a5;
-- (void)conversationManager:(id)a3 remoteScreenShareEndedWithReason:(id)a4;
-- (void)conversationManager:(id)a3 screenSharingAvailableChanged:(BOOL)a4;
-- (void)conversationManager:(id)a3 sharePlayAvailableChanged:(BOOL)a4;
-- (void)conversationManager:(id)a3 trackedPendingMember:(id)a4 forConversationLink:(id)a5;
-- (void)conversationManager:(id)a3 updateIncomingPendingConversationsByGroupUUID:(id)a4;
-- (void)conversationsByGroupUUID:(id)a3;
-- (void)createActivitySession:(id)a3 onConversationWithUUID:(id)a4 options:(unint64_t)a5;
+- (BOOL)_shouldSend:(id)send;
+- (CSDConversationManagerXPCServer)initWithConversationManager:(id)manager featureFlags:(id)flags;
+- (id)_advertisementsOnSystemForClient:(id)client;
+- (id)_conversationsByGroupUUID:(id)d filteredForClient:(id)client;
+- (id)_filter:(id)_filter withClient:(id)client;
+- (void)activateConversationNoticeWithActionURL:(id)l bundleIdentifier:(id)identifier;
+- (void)activateLink:(id)link completionHandler:(id)handler;
+- (void)activatedConversationLinks:(id)links;
+- (void)activityAuthorizedBundleIdentifierState:(id)state;
+- (void)addCollaborationDictionary:(id)dictionary forConversationWithUUID:(id)d fromMe:(BOOL)me;
+- (void)addCollaborationIdentifier:(id)identifier collaborationURL:(id)l cloudKitAppBundleIDs:(id)ds forConversationUUID:(id)d;
+- (void)addDisclosedCollaborationInitiator:(id)initiator toConversationUUID:(id)d;
+- (void)addInvitedMemberHandles:(id)handles toConversationLink:(id)link completionHandler:(id)handler;
+- (void)addRemoteMembers:(id)members otherInvitedHandles:(id)handles invitationPreferences:(id)preferences toConversationWithUUID:(id)d;
+- (void)addScreenSharingType:(unint64_t)type forConversationUUID:(id)d;
+- (void)advertisementsOnSystem:(id)system;
+- (void)approvePendingMember:(id)member forConversationUUID:(id)d;
+- (void)buzzMember:(id)member destinationID:(id)d invitationContext:(id)context conversationUUID:(id)iD;
+- (void)cancelOrDenyScreenShareRequest:(id)request forConversationUUID:(id)d;
+- (void)checkLinkValidity:(id)validity completionHandler:(id)handler;
+- (void)conversationManager:(id)manager activatedConversationLinksChanged:(id)changed;
+- (void)conversationManager:(id)manager activeParticipant:(id)participant addedHighlightToConversation:(id)conversation highlightIdentifier:(id)identifier oldHighlightIdentifier:(id)highlightIdentifier isFirstAdd:(BOOL)add;
+- (void)conversationManager:(id)manager activeParticipant:(id)participant removedHighlightFrom:(id)from highlightIdentifier:(id)identifier;
+- (void)conversationManager:(id)manager activityAuthorizationChangedForBundleIdentifier:(id)identifier;
+- (void)conversationManager:(id)manager addedCollaborationDictionary:(id)dictionary forConversation:(id)conversation;
+- (void)conversationManager:(id)manager conversation:(id)conversation addedMembersLocally:(id)locally;
+- (void)conversationManager:(id)manager conversation:(id)conversation appLaunchState:(unint64_t)state forActivitySession:(id)session;
+- (void)conversationManager:(id)manager conversation:(id)conversation buzzedMember:(id)member;
+- (void)conversationManager:(id)manager conversation:(id)conversation collaborationStateChanged:(int64_t)changed highlightIdentifier:(id)identifier;
+- (void)conversationManager:(id)manager conversation:(id)conversation didChangeSceneAssociationForActivitySession:(id)session;
+- (void)conversationManager:(id)manager conversation:(id)conversation didChangeStateForActivitySession:(id)session;
+- (void)conversationManager:(id)manager conversation:(id)conversation participant:(id)participant addedNotice:(id)notice;
+- (void)conversationManager:(id)manager conversation:(id)conversation participant:(id)participant didReact:(id)react;
+- (void)conversationManager:(id)manager conversation:(id)conversation participantDidStopReacting:(id)reacting;
+- (void)conversationManager:(id)manager conversation:(id)conversation receivedActivitySessionEvent:(id)event;
+- (void)conversationManager:(id)manager conversationScreenSharingChanged:(id)changed forParticipant:(id)participant;
+- (void)conversationManager:(id)manager conversationUpdateMessagesGroupPhoto:(id)photo;
+- (void)conversationManager:(id)manager didChangeConversationAdvertisement:(id)advertisement;
+- (void)conversationManager:(id)manager remoteScreenShareAttributesChanged:(id)changed isLocallySharing:(BOOL)sharing;
+- (void)conversationManager:(id)manager remoteScreenShareEndedWithReason:(id)reason;
+- (void)conversationManager:(id)manager screenSharingAvailableChanged:(BOOL)changed;
+- (void)conversationManager:(id)manager sharePlayAvailableChanged:(BOOL)changed;
+- (void)conversationManager:(id)manager trackedPendingMember:(id)member forConversationLink:(id)link;
+- (void)conversationManager:(id)manager updateIncomingPendingConversationsByGroupUUID:(id)d;
+- (void)conversationsByGroupUUID:(id)d;
+- (void)createActivitySession:(id)session onConversationWithUUID:(id)d options:(unint64_t)options;
 - (void)dealloc;
-- (void)endActivitySession:(id)a3 onConversationWithUUID:(id)a4;
-- (void)fetchUpcomingNoticeWithCompletionHandler:(id)a3;
-- (void)generateLinkForConversationUUID:(id)a3 completionHandler:(id)a4;
-- (void)generateLinkWithInvitedMemberHandles:(id)a3 linkLifetimeScope:(int64_t)a4 completionHandler:(id)a5;
-- (void)getInactiveLinkWithCompletionHandler:(id)a3;
-- (void)getLatestRemoteScreenShareAttributesWithCompletionHandler:(id)a3;
-- (void)getMessagesGroupDetailsForConversationUUID:(id)a3 completionHandler:(id)a4;
-- (void)getNeedsDisclosureOfCollaborationInitiator:(id)a3 forConversationUUID:(id)a4 completionHandler:(id)a5;
-- (void)getScreenSharingAvailableWithCompletionHandler:(id)a3;
-- (void)getSharePlayAvailableWithCompletionHandler:(id)a3;
-- (void)incomingPendingConversationsByGroupUUID:(id)a3;
+- (void)endActivitySession:(id)session onConversationWithUUID:(id)d;
+- (void)fetchUpcomingNoticeWithCompletionHandler:(id)handler;
+- (void)generateLinkForConversationUUID:(id)d completionHandler:(id)handler;
+- (void)generateLinkWithInvitedMemberHandles:(id)handles linkLifetimeScope:(int64_t)scope completionHandler:(id)handler;
+- (void)getInactiveLinkWithCompletionHandler:(id)handler;
+- (void)getLatestRemoteScreenShareAttributesWithCompletionHandler:(id)handler;
+- (void)getMessagesGroupDetailsForConversationUUID:(id)d completionHandler:(id)handler;
+- (void)getNeedsDisclosureOfCollaborationInitiator:(id)initiator forConversationUUID:(id)d completionHandler:(id)handler;
+- (void)getScreenSharingAvailableWithCompletionHandler:(id)handler;
+- (void)getSharePlayAvailableWithCompletionHandler:(id)handler;
+- (void)incomingPendingConversationsByGroupUUID:(id)d;
 - (void)invalidate;
-- (void)invalidateLink:(id)a3 deleteReason:(int64_t)a4 completionHandler:(id)a5;
-- (void)joinConversationWithRequest:(id)a3;
-- (void)kickMember:(id)a3 conversationUUID:(id)a4;
-- (void)leaveActivitySession:(id)a3 onConversationWithUUID:(id)a4;
-- (void)leaveConversationWithUUID:(id)a3;
-- (void)markCollaborationWithIdentifierOpened:(id)a3 forConversationUUID:(id)a4;
+- (void)invalidateLink:(id)link deleteReason:(int64_t)reason completionHandler:(id)handler;
+- (void)joinConversationWithRequest:(id)request;
+- (void)kickMember:(id)member conversationUUID:(id)d;
+- (void)leaveActivitySession:(id)session onConversationWithUUID:(id)d;
+- (void)leaveConversationWithUUID:(id)d;
+- (void)markCollaborationWithIdentifierOpened:(id)opened forConversationUUID:(id)d;
 - (void)notifyClientsOfConversationsByGroupUUIDUpdate;
-- (void)notifyClientsOfMediaPrioritiesChangedForConversation:(id)a3;
+- (void)notifyClientsOfMediaPrioritiesChangedForConversation:(id)conversation;
 - (void)notifyClientsToConnectIfNecessary;
-- (void)prepareConversationWithUUID:(id)a3 withHandoffContext:(id)a4;
-- (void)presentDismissalAlertForActivitySessionWithUUID:(id)a3 onConversationWithUUID:(id)a4;
-- (void)pseudonymsByCallUUID:(id)a3;
+- (void)prepareConversationWithUUID:(id)d withHandoffContext:(id)context;
+- (void)presentDismissalAlertForActivitySessionWithUUID:(id)d onConversationWithUUID:(id)iD;
+- (void)pseudonymsByCallUUID:(id)d;
 - (void)refreshActiveConversations;
-- (void)registerClient:(id)a3;
-- (void)registerMessagesGroupUUIDForConversationUUID:(id)a3;
-- (void)rejectPendingMember:(id)a3 forConversationUUID:(id)a4;
-- (void)removeCollaborationIdentifier:(id)a3 forConversationUUID:(id)a4;
-- (void)removeConversationNoticeWithUUID:(id)a3;
-- (void)renewLink:(id)a3 expirationDate:(id)a4 reason:(unint64_t)a5 completionHandler:(id)a6;
-- (void)requestParticipantToShareScreen:(id)a3 forConversationUUID:(id)a4;
-- (void)setGridDisplayMode:(unint64_t)a3 forConversationWithUUID:(id)a4;
-- (void)setLinkName:(id)a3 forConversationLink:(id)a4 completionHandler:(id)a5;
-- (void)setLocalParticipantAudioVideoMode:(unint64_t)a3 forConversationUUID:(id)a4;
-- (void)setLocalParticipantCluster:(id)a3 forConversationUUID:(id)a4;
-- (void)setUsingAirplay:(BOOL)a3 onActivitySession:(id)a4 onConversationWithUUID:(id)a5;
-- (void)startTrackingCollaborationWithIdentifier:(id)a3 collaborationURL:(id)a4 cloudKitAppBundleIDs:(id)a5 forConversationUUID:(id)a6 completionHandler:(id)a7;
-- (void)unregisterClient:(id)a3;
-- (void)updateConversationWithUUID:(id)a3 participantPresentationContexts:(id)a4;
-- (void)updateExternalParticipants:(id)a3;
-- (void)updateLocalParticipantToAVLessWithPresentationMode:(unint64_t)a3 forConversationUUID:(id)a4;
-- (void)updateMessagesGroupName:(id)a3 onConversationWithUUID:(id)a4;
-- (void)updateMessagesGroupPhotoOnConversationWithUUID:(id)a3;
-- (void)updateRemoteControlStatus:(int64_t)a3 onConversationWithUUID:(id)a4;
+- (void)registerClient:(id)client;
+- (void)registerMessagesGroupUUIDForConversationUUID:(id)d;
+- (void)rejectPendingMember:(id)member forConversationUUID:(id)d;
+- (void)removeCollaborationIdentifier:(id)identifier forConversationUUID:(id)d;
+- (void)removeConversationNoticeWithUUID:(id)d;
+- (void)renewLink:(id)link expirationDate:(id)date reason:(unint64_t)reason completionHandler:(id)handler;
+- (void)requestParticipantToShareScreen:(id)screen forConversationUUID:(id)d;
+- (void)setGridDisplayMode:(unint64_t)mode forConversationWithUUID:(id)d;
+- (void)setLinkName:(id)name forConversationLink:(id)link completionHandler:(id)handler;
+- (void)setLocalParticipantAudioVideoMode:(unint64_t)mode forConversationUUID:(id)d;
+- (void)setLocalParticipantCluster:(id)cluster forConversationUUID:(id)d;
+- (void)setUsingAirplay:(BOOL)airplay onActivitySession:(id)session onConversationWithUUID:(id)d;
+- (void)startTrackingCollaborationWithIdentifier:(id)identifier collaborationURL:(id)l cloudKitAppBundleIDs:(id)ds forConversationUUID:(id)d completionHandler:(id)handler;
+- (void)unregisterClient:(id)client;
+- (void)updateConversationWithUUID:(id)d participantPresentationContexts:(id)contexts;
+- (void)updateExternalParticipants:(id)participants;
+- (void)updateLocalParticipantToAVLessWithPresentationMode:(unint64_t)mode forConversationUUID:(id)d;
+- (void)updateMessagesGroupName:(id)name onConversationWithUUID:(id)d;
+- (void)updateMessagesGroupPhotoOnConversationWithUUID:(id)d;
+- (void)updateRemoteControlStatus:(int64_t)status onConversationWithUUID:(id)d;
 @end
 
 @implementation CSDConversationManagerXPCServer
 
 - (void)refreshActiveConversations
 {
-  v3 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v4 refreshActiveParticipantsList];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager refreshActiveParticipantsList];
 }
 
-- (CSDConversationManagerXPCServer)initWithConversationManager:(id)a3 featureFlags:(id)a4
+- (CSDConversationManagerXPCServer)initWithConversationManager:(id)manager featureFlags:(id)flags
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  flagsCopy = flags;
   v22.receiver = self;
   v22.super_class = CSDConversationManagerXPCServer;
   v9 = [(CSDConversationManagerXPCServer *)&v22 init];
@@ -117,8 +117,8 @@
     queue = v9->_queue;
     v9->_queue = v10;
 
-    objc_storeStrong(&v9->_conversationManager, a3);
-    objc_storeStrong(&v9->_featureFlags, a4);
+    objc_storeStrong(&v9->_conversationManager, manager);
+    objc_storeStrong(&v9->_featureFlags, flags);
     [(CSDConversationManager *)v9->_conversationManager addDelegate:v9 queue:v9->_queue];
     v12 = [[CSDClientManager alloc] initWithSerialQueue:v9->_queue];
     clientManager = v9->_clientManager;
@@ -132,13 +132,13 @@
     v15 = v9;
     v21 = v15;
     dispatch_sync(v14, block);
-    v16 = [(CSDConversationManagerXPCServer *)v15 queue];
+    queue = [(CSDConversationManagerXPCServer *)v15 queue];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1001EB9A0;
     v18[3] = &unk_100619D38;
     v19 = v15;
-    dispatch_async(v16, v18);
+    dispatch_async(queue, v18);
   }
 
   return v9;
@@ -154,23 +154,23 @@
 
 - (void)invalidate
 {
-  v3 = [(CSDConversationManagerXPCServer *)self queue];
+  queue = [(CSDConversationManagerXPCServer *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001EBAEC;
   block[3] = &unk_100619D38;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)notifyClientsToConnectIfNecessary
 {
-  v3 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v5 = [v4 conversationsByUUID];
-  v6 = [v5 count];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  conversationsByUUID = [conversationManager conversationsByUUID];
+  v6 = [conversationsByUUID count];
 
   clientsShouldConnectToken = self->_clientsShouldConnectToken;
   if (v6)
@@ -187,28 +187,28 @@
   }
 }
 
-- (BOOL)_shouldSend:(id)a3
+- (BOOL)_shouldSend:(id)send
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self clientManager];
-  v6 = [v5 currentClient];
+  sendCopy = send;
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
 
-  if ([v6 isRemote])
+  if ([currentClient isRemote])
   {
-    v7 = [v4 provider];
-    v8 = [v7 isDefaultProvider];
+    provider = [sendCopy provider];
+    isDefaultProvider = [provider isDefaultProvider];
 
-    if ((v8 & 1) != 0 || (-[CSDConversationManagerXPCServer featureFlags](self, "featureFlags"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 groupFacetimeAsAServiceEnabled], v9, !v10))
+    if ((isDefaultProvider & 1) != 0 || (-[CSDConversationManagerXPCServer featureFlags](self, "featureFlags"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 groupFacetimeAsAServiceEnabled], v9, !v10))
     {
-      v16 = [(CSDConversationManagerXPCServer *)self featureFlags];
+      featureFlags = [(CSDConversationManagerXPCServer *)self featureFlags];
       if (TUGreenTeaLagunaEnabled())
       {
-        [v4 mergedRemoteMembers];
+        [sendCopy mergedRemoteMembers];
       }
 
       else
       {
-        [v4 remoteMembers];
+        [sendCopy remoteMembers];
       }
       v17 = ;
       v18 = [v17 count];
@@ -229,13 +229,13 @@
     else
     {
       v11 = +[CSDConversationProviderManager sharedInstance];
-      v12 = [v11 providerIdentifiersForClient:v6];
+      v12 = [v11 providerIdentifiersForClient:currentClient];
 
       if ([v12 count])
       {
-        v13 = [v4 provider];
-        v14 = [v13 identifier];
-        v15 = [v12 containsObject:v14];
+        provider2 = [sendCopy provider];
+        identifier = [provider2 identifier];
+        v15 = [v12 containsObject:identifier];
       }
 
       else
@@ -253,21 +253,21 @@
   return v15;
 }
 
-- (id)_conversationsByGroupUUID:(id)a3 filteredForClient:(id)a4
+- (id)_conversationsByGroupUUID:(id)d filteredForClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  clientCopy = client;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  if (v7)
+  if (clientCopy)
   {
-    v9 = [(CSDConversationManagerXPCServer *)self _filter:v6 withClient:v7];
+    v9 = [(CSDConversationManagerXPCServer *)self _filter:dCopy withClient:clientCopy];
   }
 
   else
   {
-    v9 = v6;
+    v9 = dCopy;
   }
 
   v10 = v9;
@@ -275,37 +275,37 @@
   return v10;
 }
 
-- (id)_advertisementsOnSystemForClient:(id)a3
+- (id)_advertisementsOnSystemForClient:(id)client
 {
-  v4 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v6 = [v5 advertisementsBySessionUUID];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  advertisementsBySessionUUID = [conversationManager advertisementsBySessionUUID];
 
-  return v6;
+  return advertisementsBySessionUUID;
 }
 
-- (id)_filter:(id)a3 withClient:(id)a4
+- (id)_filter:(id)_filter withClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isRemote])
+  _filterCopy = _filter;
+  clientCopy = client;
+  if ([clientCopy isRemote])
   {
     v8 = +[CSDConversationProviderManager sharedInstance];
-    v34 = v7;
-    v9 = [v8 providerIdentifiersForClient:v7];
+    v34 = clientCopy;
+    v9 = [v8 providerIdentifiersForClient:clientCopy];
 
     v10 = objc_alloc_init(NSMutableDictionary);
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v35 = v6;
-    v11 = v6;
+    v35 = _filterCopy;
+    v11 = _filterCopy;
     v12 = v9;
-    v13 = [v11 allValues];
-    v38 = [v13 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    allValues = [v11 allValues];
+    v38 = [allValues countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (!v38)
     {
       goto LABEL_24;
@@ -320,48 +320,48 @@
       {
         if (*v40 != v14)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(allValues);
         }
 
         v16 = *(*(&v39 + 1) + 8 * v15);
-        v17 = [v16 provider];
-        v18 = [v17 isDefaultProvider];
+        provider = [v16 provider];
+        isDefaultProvider = [provider isDefaultProvider];
 
-        if (!v18)
+        if (!isDefaultProvider)
         {
-          v20 = [v16 provider];
-          v21 = [v20 identifier];
-          if ([v12 containsObject:v21])
+          provider2 = [v16 provider];
+          identifier = [provider2 identifier];
+          if ([v12 containsObject:identifier])
           {
 
             goto LABEL_18;
           }
 
-          v25 = [(CSDConversationManagerXPCServer *)self featureFlags];
-          if ([v25 sharePlayInCallsEnabled])
+          featureFlags = [(CSDConversationManagerXPCServer *)self featureFlags];
+          if ([featureFlags sharePlayInCallsEnabled])
           {
             [v16 provider];
-            v26 = v13;
+            v26 = allValues;
             v27 = v10;
-            v28 = self;
+            selfCopy = self;
             v30 = v29 = v12;
-            v37 = [v30 isTelephonyWithSharePlayProvider];
+            isTelephonyWithSharePlayProvider = [v30 isTelephonyWithSharePlayProvider];
 
             v12 = v29;
-            self = v28;
+            self = selfCopy;
             v10 = v27;
-            v13 = v26;
+            allValues = v26;
             v14 = v36;
 
-            if (!v37)
+            if (!isTelephonyWithSharePlayProvider)
             {
               goto LABEL_20;
             }
 
 LABEL_18:
-            v20 = [v16 copy];
-            v21 = [v16 groupUUID];
-            [v10 setObject:v20 forKeyedSubscript:v21];
+            provider2 = [v16 copy];
+            identifier = [v16 groupUUID];
+            [v10 setObject:provider2 forKeyedSubscript:identifier];
           }
 
           else
@@ -371,7 +371,7 @@ LABEL_18:
           goto LABEL_20;
         }
 
-        v19 = [(CSDConversationManagerXPCServer *)self featureFlags];
+        featureFlags2 = [(CSDConversationManagerXPCServer *)self featureFlags];
         if (TUGreenTeaLagunaEnabled())
         {
           [v16 mergedRemoteMembers];
@@ -397,96 +397,96 @@ LABEL_20:
       }
 
       while (v38 != v15);
-      v31 = [v13 countByEnumeratingWithState:&v39 objects:v43 count:16];
+      v31 = [allValues countByEnumeratingWithState:&v39 objects:v43 count:16];
       v38 = v31;
       if (!v31)
       {
 LABEL_24:
 
         v32 = [v10 copy];
-        v7 = v34;
-        v6 = v35;
+        clientCopy = v34;
+        _filterCopy = v35;
         goto LABEL_26;
       }
     }
   }
 
-  v32 = v6;
+  v32 = _filterCopy;
 LABEL_26:
 
   return v32;
 }
 
-- (void)conversationsByGroupUUID:(id)a3
+- (void)conversationsByGroupUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self clientManager];
-  v10 = [v6 currentClient];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
 
-  v7 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v8 = [v7 conversationsByGroupUUID];
-  v9 = [(CSDConversationManagerXPCServer *)self _conversationsByGroupUUID:v8 filteredForClient:v10];
-  v4[2](v4, v9);
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  conversationsByGroupUUID = [conversationManager conversationsByGroupUUID];
+  v9 = [(CSDConversationManagerXPCServer *)self _conversationsByGroupUUID:conversationsByGroupUUID filteredForClient:currentClient];
+  dCopy[2](dCopy, v9);
 }
 
-- (void)advertisementsOnSystem:(id)a3
+- (void)advertisementsOnSystem:(id)system
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  systemCopy = system;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self clientManager];
-  v8 = [v6 currentClient];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
 
-  v7 = [(CSDConversationManagerXPCServer *)self _advertisementsOnSystemForClient:v8];
-  v4[2](v4, v7);
+  v7 = [(CSDConversationManagerXPCServer *)self _advertisementsOnSystemForClient:currentClient];
+  systemCopy[2](systemCopy, v7);
 }
 
-- (void)incomingPendingConversationsByGroupUUID:(id)a3
+- (void)incomingPendingConversationsByGroupUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v6 = [v7 incomingPendingConversationsByGroupUUID];
-  v4[2](v4, v6);
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  incomingPendingConversationsByGroupUUID = [conversationManager incomingPendingConversationsByGroupUUID];
+  dCopy[2](dCopy, incomingPendingConversationsByGroupUUID);
 }
 
-- (void)pseudonymsByCallUUID:(id)a3
+- (void)pseudonymsByCallUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v6 = [v7 pseudonymsByCallUUID];
-  v4[2](v4, v6);
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  pseudonymsByCallUUID = [conversationManager pseudonymsByCallUUID];
+  dCopy[2](dCopy, pseudonymsByCallUUID);
 }
 
-- (void)activityAuthorizedBundleIdentifierState:(id)a3
+- (void)activityAuthorizedBundleIdentifierState:(id)state
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v7 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v6 = [v7 activityAuthorizedBundleIdentifierState];
-  v4[2](v4, v6);
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  activityAuthorizedBundleIdentifierState = [conversationManager activityAuthorizedBundleIdentifierState];
+  stateCopy[2](stateCopy, activityAuthorizedBundleIdentifierState);
 }
 
-- (void)activatedConversationLinks:(id)a3
+- (void)activatedConversationLinks:(id)links
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  linksCopy = links;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
   v10 = 0;
-  v7 = [v6 activatedConversationLinksWithError:&v10];
+  v7 = [conversationManager activatedConversationLinksWithError:&v10];
   v8 = v10;
 
   if (v8)
@@ -500,32 +500,32 @@ LABEL_26:
 
   else
   {
-    v4[2](v4, v7);
+    linksCopy[2](linksCopy, v7);
   }
 }
 
-- (void)addRemoteMembers:(id)a3 otherInvitedHandles:(id)a4 invitationPreferences:(id)a5 toConversationWithUUID:(id)a6
+- (void)addRemoteMembers:(id)members otherInvitedHandles:(id)handles invitationPreferences:(id)preferences toConversationWithUUID:(id)d
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v14);
+  dCopy = d;
+  preferencesCopy = preferences;
+  handlesCopy = handles;
+  membersCopy = members;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v15 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v15 addRemoteMembers:v13 otherInvitedHandles:v12 invitationPreferences:v11 toConversationWithUUID:v10];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager addRemoteMembers:membersCopy otherInvitedHandles:handlesCopy invitationPreferences:preferencesCopy toConversationWithUUID:dCopy];
 }
 
-- (void)createActivitySession:(id)a3 onConversationWithUUID:(id)a4 options:(unint64_t)a5
+- (void)createActivitySession:(id)session onConversationWithUUID:(id)d options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v10);
+  sessionCopy = session;
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v11 = [(CSDConversationManagerXPCServer *)self clientManager];
-  v12 = [v11 currentClient];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
 
   v18 = 0;
   v19 = &v18;
@@ -536,520 +536,520 @@ LABEL_26:
   v17[2] = sub_1001EC894;
   v17[3] = &unk_10061D3F0;
   v17[4] = &v18;
-  sub_100004AA4(v12, @"override-activity-verification", v17, 0, "[CSDConversationManagerXPCServer createActivitySession:onConversationWithUUID:options:]");
-  if (*(v19 + 24) != 1 || ([v8 bundleIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
+  sub_100004AA4(currentClient, @"override-activity-verification", v17, 0, "[CSDConversationManagerXPCServer createActivitySession:onConversationWithUUID:options:]");
+  if (*(v19 + 24) != 1 || ([sessionCopy bundleIdentifier], v13 = objc_claimAutoreleasedReturnValue(), v13, !v13))
   {
-    v14 = [v12 processBundleIdentifier];
-    [v8 setBundleIdentifier:v14];
+    processBundleIdentifier = [currentClient processBundleIdentifier];
+    [sessionCopy setBundleIdentifier:processBundleIdentifier];
   }
 
-  v15 = [v8 bundleIdentifier];
+  bundleIdentifier = [sessionCopy bundleIdentifier];
 
-  if (v15)
+  if (bundleIdentifier)
   {
-    v16 = [(CSDConversationManagerXPCServer *)self conversationManager];
-    [v16 createActivitySession:v8 onConversationWithUUID:v9 options:a5 withCompletion:&stru_10061E340];
+    conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+    [conversationManager createActivitySession:sessionCopy onConversationWithUUID:dCopy options:options withCompletion:&stru_10061E340];
   }
 
   else
   {
-    v16 = sub_100004778();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+    conversationManager = sub_100004778();
+    if (os_log_type_enabled(conversationManager, OS_LOG_TYPE_ERROR))
     {
-      sub_10047AD64(v16);
+      sub_10047AD64(conversationManager);
     }
   }
 
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)leaveActivitySession:(id)a3 onConversationWithUUID:(id)a4
+- (void)leaveActivitySession:(id)session onConversationWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  sessionCopy = session;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 leaveActivitySession:v7 onConversationWithUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager leaveActivitySession:sessionCopy onConversationWithUUID:dCopy];
 }
 
-- (void)endActivitySession:(id)a3 onConversationWithUUID:(id)a4
+- (void)endActivitySession:(id)session onConversationWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  sessionCopy = session;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 endActivitySession:v7 onConversationWithUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager endActivitySession:sessionCopy onConversationWithUUID:dCopy];
 }
 
-- (void)setUsingAirplay:(BOOL)a3 onActivitySession:(id)a4 onConversationWithUUID:(id)a5
+- (void)setUsingAirplay:(BOOL)airplay onActivitySession:(id)session onConversationWithUUID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CSDConversationManagerXPCServer *)self clientManager];
-  v11 = [v10 currentClient];
+  sessionCopy = session;
+  dCopy = d;
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001ECAE8;
   v14[3] = &unk_10061BE38;
-  v17 = a3;
+  airplayCopy = airplay;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v12 = v9;
-  v13 = v8;
-  sub_100004AA4(v11, @"modify-activity-session-airplay", v14, 0, "[CSDConversationManagerXPCServer setUsingAirplay:onActivitySession:onConversationWithUUID:]");
+  v15 = sessionCopy;
+  v16 = dCopy;
+  v12 = dCopy;
+  v13 = sessionCopy;
+  sub_100004AA4(currentClient, @"modify-activity-session-airplay", v14, 0, "[CSDConversationManagerXPCServer setUsingAirplay:onActivitySession:onConversationWithUUID:]");
 }
 
-- (void)presentDismissalAlertForActivitySessionWithUUID:(id)a3 onConversationWithUUID:(id)a4
+- (void)presentDismissalAlertForActivitySessionWithUUID:(id)d onConversationWithUUID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  iDCopy = iD;
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 presentDismissalAlertForActivitySessionWithUUID:v7 onConversationWithUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager presentDismissalAlertForActivitySessionWithUUID:dCopy onConversationWithUUID:iDCopy];
 }
 
-- (void)joinConversationWithRequest:(id)a3
+- (void)joinConversationWithRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  requestCopy = request;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v6 joinConversationWithRequest:v4];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager joinConversationWithRequest:requestCopy];
 }
 
-- (void)leaveConversationWithUUID:(id)a3
+- (void)leaveConversationWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v6 leaveConversationWithUUID:v4];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager leaveConversationWithUUID:dCopy];
 }
 
-- (void)buzzMember:(id)a3 destinationID:(id)a4 invitationContext:(id)a5 conversationUUID:(id)a6
+- (void)buzzMember:(id)member destinationID:(id)d invitationContext:(id)context conversationUUID:(id)iD
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v14);
+  iDCopy = iD;
+  contextCopy = context;
+  dCopy = d;
+  memberCopy = member;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v15 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v15 buzzMember:v13 destinationID:v12 invitationContext:v11 conversationUUID:v10];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager buzzMember:memberCopy destinationID:dCopy invitationContext:contextCopy conversationUUID:iDCopy];
 }
 
-- (void)kickMember:(id)a3 conversationUUID:(id)a4
+- (void)kickMember:(id)member conversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  memberCopy = member;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 kickMember:v7 conversationUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager kickMember:memberCopy conversationUUID:dCopy];
 }
 
-- (void)addScreenSharingType:(unint64_t)a3 forConversationUUID:(id)a4
+- (void)addScreenSharingType:(unint64_t)type forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v8 addScreenSharingType:a3 forConversationUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager addScreenSharingType:type forConversationUUID:dCopy];
 }
 
-- (void)getLatestRemoteScreenShareAttributesWithCompletionHandler:(id)a3
+- (void)getLatestRemoteScreenShareAttributesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v6 getLatestRemoteScreenShareAttributesWithCompletionHandler:v4];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager getLatestRemoteScreenShareAttributesWithCompletionHandler:handlerCopy];
 }
 
-- (void)generateLinkForConversationUUID:(id)a3 completionHandler:(id)a4
+- (void)generateLinkForConversationUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  handlerCopy = handler;
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 generateLinkForConversationUUID:v7 completionHandler:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager generateLinkForConversationUUID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)generateLinkWithInvitedMemberHandles:(id)a3 linkLifetimeScope:(int64_t)a4 completionHandler:(id)a5
+- (void)generateLinkWithInvitedMemberHandles:(id)handles linkLifetimeScope:(int64_t)scope completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v10);
+  handlerCopy = handler;
+  handlesCopy = handles;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v11 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v11 generateLinkWithInvitedMemberHandles:v9 linkLifetimeScope:a4 completionHandler:v8];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager generateLinkWithInvitedMemberHandles:handlesCopy linkLifetimeScope:scope completionHandler:handlerCopy];
 }
 
-- (void)addInvitedMemberHandles:(id)a3 toConversationLink:(id)a4 completionHandler:(id)a5
+- (void)addInvitedMemberHandles:(id)handles toConversationLink:(id)link completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v11);
+  handlerCopy = handler;
+  linkCopy = link;
+  handlesCopy = handles;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v12 addInvitedMemberHandles:v10 toConversationLink:v9 completionHandler:v8];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager addInvitedMemberHandles:handlesCopy toConversationLink:linkCopy completionHandler:handlerCopy];
 }
 
-- (void)activateConversationNoticeWithActionURL:(id)a3 bundleIdentifier:(id)a4
+- (void)activateConversationNoticeWithActionURL:(id)l bundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  lCopy = l;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 activateConversationNoticeWithActionURL:v7 bundleIdentifier:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager activateConversationNoticeWithActionURL:lCopy bundleIdentifier:identifierCopy];
 }
 
-- (void)removeConversationNoticeWithUUID:(id)a3
+- (void)removeConversationNoticeWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v6 removeConversationNoticeWithUUID:v4];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager removeConversationNoticeWithUUID:dCopy];
 }
 
-- (void)getSharePlayAvailableWithCompletionHandler:(id)a3
+- (void)getSharePlayAvailableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v4[2](v4, [v6 isSharePlayAvailable]);
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  handlerCopy[2](handlerCopy, [conversationManager isSharePlayAvailable]);
 }
 
-- (void)getScreenSharingAvailableWithCompletionHandler:(id)a3
+- (void)getScreenSharingAvailableWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v4[2](v4, [v6 isScreenSharingAvailable]);
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  handlerCopy[2](handlerCopy, [conversationManager isScreenSharingAvailable]);
 }
 
-- (void)fetchUpcomingNoticeWithCompletionHandler:(id)a3
+- (void)fetchUpcomingNoticeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v6 fetchUpcomingNoticeWithCompletionHandler:v4];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager fetchUpcomingNoticeWithCompletionHandler:handlerCopy];
 }
 
-- (void)invalidateLink:(id)a3 deleteReason:(int64_t)a4 completionHandler:(id)a5
+- (void)invalidateLink:(id)link deleteReason:(int64_t)reason completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v10);
+  handlerCopy = handler;
+  linkCopy = link;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v11 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v11 invalidateLink:v9 deleteReason:a4 completionHandler:v8];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager invalidateLink:linkCopy deleteReason:reason completionHandler:handlerCopy];
 }
 
-- (void)renewLink:(id)a3 expirationDate:(id)a4 reason:(unint64_t)a5 completionHandler:(id)a6
+- (void)renewLink:(id)link expirationDate:(id)date reason:(unint64_t)reason completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v13 renewLink:v12 expirationDate:v11 reason:a5 completionHandler:v10];
+  handlerCopy = handler;
+  dateCopy = date;
+  linkCopy = link;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager renewLink:linkCopy expirationDate:dateCopy reason:reason completionHandler:handlerCopy];
 }
 
-- (void)checkLinkValidity:(id)a3 completionHandler:(id)a4
+- (void)checkLinkValidity:(id)validity completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  handlerCopy = handler;
+  validityCopy = validity;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 checkLinkValidity:v7 completionHandler:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager checkLinkValidity:validityCopy completionHandler:handlerCopy];
 }
 
-- (void)getInactiveLinkWithCompletionHandler:(id)a3
+- (void)getInactiveLinkWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  handlerCopy = handler;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v6 getInactiveLinkWithCompletionHandler:v4];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager getInactiveLinkWithCompletionHandler:handlerCopy];
 }
 
-- (void)activateLink:(id)a3 completionHandler:(id)a4
+- (void)activateLink:(id)link completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  handlerCopy = handler;
+  linkCopy = link;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 activateLink:v7 completionHandler:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager activateLink:linkCopy completionHandler:handlerCopy];
 }
 
-- (void)setLinkName:(id)a3 forConversationLink:(id)a4 completionHandler:(id)a5
+- (void)setLinkName:(id)name forConversationLink:(id)link completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v11);
+  handlerCopy = handler;
+  linkCopy = link;
+  nameCopy = name;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v12 setLinkName:v10 forConversationLink:v9 completionHandler:v8];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager setLinkName:nameCopy forConversationLink:linkCopy completionHandler:handlerCopy];
 }
 
-- (void)updateExternalParticipants:(id)a3
+- (void)updateExternalParticipants:(id)participants
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  participantsCopy = participants;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v6 updateExternalParticipants:v4];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager updateExternalParticipants:participantsCopy];
 }
 
-- (void)approvePendingMember:(id)a3 forConversationUUID:(id)a4
+- (void)approvePendingMember:(id)member forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  memberCopy = member;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 approvePendingMember:v7 forConversationUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager approvePendingMember:memberCopy forConversationUUID:dCopy];
 }
 
-- (void)rejectPendingMember:(id)a3 forConversationUUID:(id)a4
+- (void)rejectPendingMember:(id)member forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  memberCopy = member;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 rejectPendingMember:v7 forConversationUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager rejectPendingMember:memberCopy forConversationUUID:dCopy];
 }
 
-- (void)updateConversationWithUUID:(id)a3 participantPresentationContexts:(id)a4
+- (void)updateConversationWithUUID:(id)d participantPresentationContexts:(id)contexts
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  contextsCopy = contexts;
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 updateParticipantPresentationContexts:v6 onConversationWithUUID:v7];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager updateParticipantPresentationContexts:contextsCopy onConversationWithUUID:dCopy];
 }
 
-- (void)setGridDisplayMode:(unint64_t)a3 forConversationWithUUID:(id)a4
+- (void)setGridDisplayMode:(unint64_t)mode forConversationWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v8 setGridDisplayMode:a3 forConversationWithUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager setGridDisplayMode:mode forConversationWithUUID:dCopy];
 }
 
-- (void)registerClient:(id)a3
+- (void)registerClient:(id)client
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
+  clientCopy = client;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001EE144;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = clientCopy;
+  v6 = clientCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)unregisterClient:(id)a3
+- (void)unregisterClient:(id)client
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
+  clientCopy = client;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001EE24C;
   v7[3] = &unk_100619D88;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = clientCopy;
+  v6 = clientCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)setLocalParticipantAudioVideoMode:(unint64_t)a3 forConversationUUID:(id)a4
+- (void)setLocalParticipantAudioVideoMode:(unint64_t)mode forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v7 setLocalParticipantAudioVideoMode:a3 forConversationUUID:v6];
+  dCopy = d;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager setLocalParticipantAudioVideoMode:mode forConversationUUID:dCopy];
 }
 
-- (void)updateLocalParticipantToAVLessWithPresentationMode:(unint64_t)a3 forConversationUUID:(id)a4
+- (void)updateLocalParticipantToAVLessWithPresentationMode:(unint64_t)mode forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v7 updateLocalParticipantToAVLessWithPresentationMode:a3 forConversationUUID:v6];
+  dCopy = d;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager updateLocalParticipantToAVLessWithPresentationMode:mode forConversationUUID:dCopy];
 }
 
-- (void)registerMessagesGroupUUIDForConversationUUID:(id)a3
+- (void)registerMessagesGroupUUIDForConversationUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v5 registerMessagesGroupUUIDForConversationUUID:v4];
+  dCopy = d;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager registerMessagesGroupUUIDForConversationUUID:dCopy];
 }
 
-- (void)startTrackingCollaborationWithIdentifier:(id)a3 collaborationURL:(id)a4 cloudKitAppBundleIDs:(id)a5 forConversationUUID:(id)a6 completionHandler:(id)a7
+- (void)startTrackingCollaborationWithIdentifier:(id)identifier collaborationURL:(id)l cloudKitAppBundleIDs:(id)ds forConversationUUID:(id)d completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v17 startTrackingCollaborationWithIdentifier:v16 collaborationURL:v15 cloudKitAppBundleIDs:v14 forConversationUUID:v13 completionHandler:v12];
+  handlerCopy = handler;
+  dCopy = d;
+  dsCopy = ds;
+  lCopy = l;
+  identifierCopy = identifier;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager startTrackingCollaborationWithIdentifier:identifierCopy collaborationURL:lCopy cloudKitAppBundleIDs:dsCopy forConversationUUID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)addCollaborationIdentifier:(id)a3 collaborationURL:(id)a4 cloudKitAppBundleIDs:(id)a5 forConversationUUID:(id)a6
+- (void)addCollaborationIdentifier:(id)identifier collaborationURL:(id)l cloudKitAppBundleIDs:(id)ds forConversationUUID:(id)d
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v14 addHighlightIdentifier:v13 collaborationURL:v12 cloudKitAppBundleIDs:v11 forConversationUUID:v10];
+  dCopy = d;
+  dsCopy = ds;
+  lCopy = l;
+  identifierCopy = identifier;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager addHighlightIdentifier:identifierCopy collaborationURL:lCopy cloudKitAppBundleIDs:dsCopy forConversationUUID:dCopy];
 }
 
-- (void)removeCollaborationIdentifier:(id)a3 forConversationUUID:(id)a4
+- (void)removeCollaborationIdentifier:(id)identifier forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v8 removeHighlightIdentifier:v7 forConversationUUID:v6];
+  dCopy = d;
+  identifierCopy = identifier;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager removeHighlightIdentifier:identifierCopy forConversationUUID:dCopy];
 }
 
-- (void)markCollaborationWithIdentifierOpened:(id)a3 forConversationUUID:(id)a4
+- (void)markCollaborationWithIdentifierOpened:(id)opened forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v8 markCollaborationWithIdentifierOpened:v7 forConversationUUID:v6];
+  dCopy = d;
+  openedCopy = opened;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager markCollaborationWithIdentifierOpened:openedCopy forConversationUUID:dCopy];
 }
 
-- (void)addCollaborationDictionary:(id)a3 forConversationWithUUID:(id)a4 fromMe:(BOOL)a5
+- (void)addCollaborationDictionary:(id)dictionary forConversationWithUUID:(id)d fromMe:(BOOL)me
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v10);
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v11 = [(CSDConversationManagerXPCServer *)self clientManager];
-  v12 = [v11 currentClient];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
   v13 = TUEntitlementsModifyPendingCollaborationCapability;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1001EE778;
   v16[3] = &unk_10061BE38;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = a5;
-  v14 = v9;
-  v15 = v8;
-  sub_100004AA4(v12, v13, v16, 0, "[CSDConversationManagerXPCServer addCollaborationDictionary:forConversationWithUUID:fromMe:]");
+  v17 = dictionaryCopy;
+  v18 = dCopy;
+  meCopy = me;
+  v14 = dCopy;
+  v15 = dictionaryCopy;
+  sub_100004AA4(currentClient, v13, v16, 0, "[CSDConversationManagerXPCServer addCollaborationDictionary:forConversationWithUUID:fromMe:]");
 }
 
-- (void)getNeedsDisclosureOfCollaborationInitiator:(id)a3 forConversationUUID:(id)a4 completionHandler:(id)a5
+- (void)getNeedsDisclosureOfCollaborationInitiator:(id)initiator forConversationUUID:(id)d completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v11);
+  initiatorCopy = initiator;
+  dCopy = d;
+  handlerCopy = handler;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(CSDConversationManagerXPCServer *)self clientManager];
-  v13 = [v12 currentClient];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
   v14 = TUEntitlementsAccessCollaborationDisclosuresCapability;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1001EE974;
   v20[3] = &unk_10061AF98;
   v20[4] = self;
-  v21 = v8;
-  v22 = v9;
-  v23 = v10;
+  v21 = initiatorCopy;
+  v22 = dCopy;
+  v23 = handlerCopy;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1001EE9CC;
   v18[3] = &unk_10061A7E0;
   v19 = v23;
   v15 = v23;
-  v16 = v9;
-  v17 = v8;
-  sub_100004AA4(v13, v14, v20, v18, "[CSDConversationManagerXPCServer getNeedsDisclosureOfCollaborationInitiator:forConversationUUID:completionHandler:]");
+  v16 = dCopy;
+  v17 = initiatorCopy;
+  sub_100004AA4(currentClient, v14, v20, v18, "[CSDConversationManagerXPCServer getNeedsDisclosureOfCollaborationInitiator:forConversationUUID:completionHandler:]");
 }
 
-- (void)addDisclosedCollaborationInitiator:(id)a3 toConversationUUID:(id)a4
+- (void)addDisclosedCollaborationInitiator:(id)initiator toConversationUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  initiatorCopy = initiator;
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self clientManager];
-  v10 = [v9 currentClient];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
+  currentClient = [clientManager currentClient];
   v11 = TUEntitlementsAccessCollaborationDisclosuresCapability;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001EEBD4;
   v14[3] = &unk_100619E58;
   v14[4] = self;
-  v15 = v6;
-  v16 = v7;
-  v12 = v7;
-  v13 = v6;
-  sub_100004AA4(v10, v11, v14, 0, "[CSDConversationManagerXPCServer addDisclosedCollaborationInitiator:toConversationUUID:]");
+  v15 = initiatorCopy;
+  v16 = dCopy;
+  v12 = dCopy;
+  v13 = initiatorCopy;
+  sub_100004AA4(currentClient, v11, v14, 0, "[CSDConversationManagerXPCServer addDisclosedCollaborationInitiator:toConversationUUID:]");
 }
 
-- (void)getMessagesGroupDetailsForConversationUUID:(id)a3 completionHandler:(id)a4
+- (void)getMessagesGroupDetailsForConversationUUID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v9 = [v8 conversationsByUUID];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  dCopy = d;
+  handlerCopy = handler;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  conversationsByUUID = [conversationManager conversationsByUUID];
+  v10 = [conversationsByUUID objectForKeyedSubscript:dCopy];
 
   if (!v10)
   {
@@ -1057,7 +1057,7 @@ LABEL_26:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v6;
+      v31 = dCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "[WARN] Could not find conversation with conversationUUID %@", buf, 0xCu);
     }
 
@@ -1067,26 +1067,26 @@ LABEL_26:
   if (![(CSDConversationManagerXPCServer *)self _shouldSend:v10])
   {
 LABEL_9:
-    (*(v7 + 2))(v7, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     goto LABEL_18;
   }
 
-  v11 = [v10 messagesGroupUUID];
-  if (v11)
+  messagesGroupUUID = [v10 messagesGroupUUID];
+  if (messagesGroupUUID)
   {
-    v12 = [(CSDConversationManagerXPCServer *)self clientManager];
-    v13 = [v12 clientsPassingTest:&stru_10061E360];
-    v14 = [v13 firstObject];
+    clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
+    v13 = [clientManager clientsPassingTest:&stru_10061E360];
+    firstObject = [v13 firstObject];
 
-    if (v14)
+    if (firstObject)
     {
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_1001EF04C;
       v23[3] = &unk_10061E388;
-      v24 = v11;
-      v25 = v7;
-      [v14 performBlock:v23];
+      v24 = messagesGroupUUID;
+      v25 = handlerCopy;
+      [firstObject performBlock:v23];
 
       v15 = v24;
     }
@@ -1106,7 +1106,7 @@ LABEL_9:
       v22 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
       v15 = [NSError errorWithDomain:v21 code:1 userInfo:v22];
 
-      (*(v7 + 2))(v7, 0, 0, v15);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, v15);
     }
   }
 
@@ -1116,7 +1116,7 @@ LABEL_9:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v6;
+      v31 = dCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "[WARN] Conversation with conversationUUID %@ is not associated with a Messages group", buf, 0xCu);
     }
 
@@ -1124,560 +1124,560 @@ LABEL_9:
     v28 = NSLocalizedDescriptionKey;
     v29 = @"Conversation is not associated with a Messages group";
     v19 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
-    v14 = [NSError errorWithDomain:v18 code:2 userInfo:v19];
+    firstObject = [NSError errorWithDomain:v18 code:2 userInfo:v19];
 
-    (*(v7 + 2))(v7, 0, 0, v14);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, firstObject);
   }
 
 LABEL_18:
 }
 
-- (void)updateMessagesGroupName:(id)a3 onConversationWithUUID:(id)a4
+- (void)updateMessagesGroupName:(id)name onConversationWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  nameCopy = name;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 updateMessagesGroupName:v7 onConversationWithUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager updateMessagesGroupName:nameCopy onConversationWithUUID:dCopy];
 }
 
-- (void)updateMessagesGroupPhotoOnConversationWithUUID:(id)a3
+- (void)updateMessagesGroupPhotoOnConversationWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v6 updateMessagesGroupPhotoOnConversationWithUUID:v4];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager updateMessagesGroupPhotoOnConversationWithUUID:dCopy];
 }
 
-- (void)requestParticipantToShareScreen:(id)a3 forConversationUUID:(id)a4
+- (void)requestParticipantToShareScreen:(id)screen forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  screenCopy = screen;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 requestParticipantToShareScreen:v7 forConversationUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager requestParticipantToShareScreen:screenCopy forConversationUUID:dCopy];
 }
 
-- (void)cancelOrDenyScreenShareRequest:(id)a3 forConversationUUID:(id)a4
+- (void)cancelOrDenyScreenShareRequest:(id)request forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v8 cancelOrDenyScreenShareRequest:v7 forConversationUUID:v6];
+  dCopy = d;
+  requestCopy = request;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager cancelOrDenyScreenShareRequest:requestCopy forConversationUUID:dCopy];
 }
 
-- (void)prepareConversationWithUUID:(id)a3 withHandoffContext:(id)a4
+- (void)prepareConversationWithUUID:(id)d withHandoffContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  contextCopy = context;
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 prepareConversationWithUUID:v7 withHandoffContext:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager prepareConversationWithUUID:dCopy withHandoffContext:contextCopy];
 }
 
-- (void)setLocalParticipantCluster:(id)a3 forConversationUUID:(id)a4
+- (void)setLocalParticipantCluster:(id)cluster forConversationUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  clusterCopy = cluster;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v9 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v9 setLocalParticipantCluster:v7 forConversationUUID:v6];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager setLocalParticipantCluster:clusterCopy forConversationUUID:dCopy];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 addedMembersLocally:(id)a5
+- (void)conversationManager:(id)manager conversation:(id)conversation addedMembersLocally:(id)locally
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v9);
+  conversationCopy = conversation;
+  locallyCopy = locally;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v10 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001EF5E8;
   v14[3] = &unk_10061E3B0;
-  v15 = v7;
-  v16 = v8;
-  v11 = v8;
-  v12 = v7;
+  v15 = conversationCopy;
+  v16 = locallyCopy;
+  v11 = locallyCopy;
+  v12 = conversationCopy;
   v13 = NSStringFromSelector("conversation:addedMembersLocally:");
-  [v10 performBlockOnClients:v14 coalescedByIdentifier:v13];
+  [clientManager performBlockOnClients:v14 coalescedByIdentifier:v13];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 buzzedMember:(id)a5
+- (void)conversationManager:(id)manager conversation:(id)conversation buzzedMember:(id)member
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v9);
+  conversationCopy = conversation;
+  memberCopy = member;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v10 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001EF70C;
   v14[3] = &unk_10061E3B0;
-  v15 = v7;
-  v16 = v8;
-  v11 = v8;
-  v12 = v7;
+  v15 = conversationCopy;
+  v16 = memberCopy;
+  v11 = memberCopy;
+  v12 = conversationCopy;
   v13 = NSStringFromSelector("conversation:buzzedMember:");
-  [v10 performBlockOnClients:v14 coalescedByIdentifier:v13];
+  [clientManager performBlockOnClients:v14 coalescedByIdentifier:v13];
 }
 
-- (void)conversationManager:(id)a3 conversationUpdateMessagesGroupPhoto:(id)a4
+- (void)conversationManager:(id)manager conversationUpdateMessagesGroupPhoto:(id)photo
 {
-  v5 = a4;
-  v6 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v6);
+  photoCopy = photo;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v7 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001EF810;
   v10[3] = &unk_10061E3D8;
-  v11 = v5;
-  v8 = v5;
+  v11 = photoCopy;
+  v8 = photoCopy;
   v9 = NSStringFromSelector("conversationUpdatedMessagesGroupPhoto:");
-  [v7 performBlockOnClients:v10 coalescedByIdentifier:v9];
+  [clientManager performBlockOnClients:v10 coalescedByIdentifier:v9];
 }
 
-- (void)conversationManager:(id)a3 updateIncomingPendingConversationsByGroupUUID:(id)a4
+- (void)conversationManager:(id)manager updateIncomingPendingConversationsByGroupUUID:(id)d
 {
-  v5 = a4;
-  v6 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v6);
+  dCopy = d;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v7 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001EF914;
   v10[3] = &unk_10061E3D8;
-  v11 = v5;
-  v8 = v5;
+  v11 = dCopy;
+  v8 = dCopy;
   v9 = NSStringFromSelector("updateIncomingPendingConversationsByGroupUUID:");
-  [v7 performBlockOnClients:v10 coalescedByIdentifier:v9];
+  [clientManager performBlockOnClients:v10 coalescedByIdentifier:v9];
 }
 
-- (void)conversationManager:(id)a3 activatedConversationLinksChanged:(id)a4
+- (void)conversationManager:(id)manager activatedConversationLinksChanged:(id)changed
 {
-  v5 = a4;
-  v6 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v6);
+  changedCopy = changed;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v7 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001EFA18;
   v10[3] = &unk_10061E3D8;
-  v11 = v5;
-  v8 = v5;
+  v11 = changedCopy;
+  v8 = changedCopy;
   v9 = NSStringFromSelector("updateActivatedConversationLinks:");
-  [v7 performBlockOnClients:v10 coalescedByIdentifier:v9];
+  [clientManager performBlockOnClients:v10 coalescedByIdentifier:v9];
 }
 
 - (void)notifyClientsOfConversationsByGroupUUIDUpdate
 {
-  v3 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v4 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  v5 = [v4 conversationsByGroupUUID];
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  conversationsByGroupUUID = [conversationManager conversationsByGroupUUID];
 
-  v6 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001EFB38;
   v9[3] = &unk_10061E3B0;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = conversationsByGroupUUID;
+  v7 = conversationsByGroupUUID;
   v8 = NSStringFromSelector("updateConversationsByGroupUUID:");
-  [v6 performBlockOnClients:v9 coalescedByIdentifier:v8];
+  [clientManager performBlockOnClients:v9 coalescedByIdentifier:v8];
 }
 
-- (void)notifyClientsOfMediaPrioritiesChangedForConversation:(id)a3
+- (void)notifyClientsOfMediaPrioritiesChangedForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v5);
+  conversationCopy = conversation;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001EFCC0;
   v9[3] = &unk_10061E3D8;
-  v10 = v4;
-  v7 = v4;
+  v10 = conversationCopy;
+  v7 = conversationCopy;
   v8 = NSStringFromSelector("mediaPrioritiesChangedForConversation:");
-  [v6 filterClientsUsingPredicate:&stru_10061E3F8 andPerformBlock:v9 coalescedByIdentifier:v8];
+  [clientManager filterClientsUsingPredicate:&stru_10061E3F8 andPerformBlock:v9 coalescedByIdentifier:v8];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 participant:(id)a5 didReact:(id)a6
+- (void)conversationManager:(id)manager conversation:(id)conversation participant:(id)participant didReact:(id)react
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v12);
+  conversationCopy = conversation;
+  participantCopy = participant;
+  reactCopy = react;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v13 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1001EFE24;
   v18[3] = &unk_10061E440;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
+  v19 = conversationCopy;
+  v20 = participantCopy;
+  v21 = reactCopy;
+  v14 = reactCopy;
+  v15 = participantCopy;
+  v16 = conversationCopy;
   v17 = NSStringFromSelector("conversation:participant:didReact:");
-  [v13 filterClientsUsingPredicate:&stru_10061E418 andPerformBlock:v18 coalescedByIdentifier:v17];
+  [clientManager filterClientsUsingPredicate:&stru_10061E418 andPerformBlock:v18 coalescedByIdentifier:v17];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 participantDidStopReacting:(id)a5
+- (void)conversationManager:(id)manager conversation:(id)conversation participantDidStopReacting:(id)reacting
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v9);
+  conversationCopy = conversation;
+  reactingCopy = reacting;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v10 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001EFF60;
   v14[3] = &unk_10061E3B0;
-  v15 = v7;
-  v16 = v8;
-  v11 = v8;
-  v12 = v7;
+  v15 = conversationCopy;
+  v16 = reactingCopy;
+  v11 = reactingCopy;
+  v12 = conversationCopy;
   v13 = NSStringFromSelector("conversation:participantDidStopReacting:");
-  [v10 filterClientsUsingPredicate:&stru_10061E460 andPerformBlock:v14 coalescedByIdentifier:v13];
+  [clientManager filterClientsUsingPredicate:&stru_10061E460 andPerformBlock:v14 coalescedByIdentifier:v13];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 participant:(id)a5 addedNotice:(id)a6
+- (void)conversationManager:(id)manager conversation:(id)conversation participant:(id)participant addedNotice:(id)notice
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  conversationCopy = conversation;
+  participantCopy = participant;
+  noticeCopy = notice;
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v12 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1001F0098;
   v17[3] = &unk_10061E440;
-  v18 = v9;
-  v19 = v10;
-  v20 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v18 = conversationCopy;
+  v19 = participantCopy;
+  v20 = noticeCopy;
+  v13 = noticeCopy;
+  v14 = participantCopy;
+  v15 = conversationCopy;
   v16 = NSStringFromSelector("conversationManager:conversation:participant:addedNotice:");
-  [v12 performBlockOnClients:v17 coalescedByIdentifier:v16];
+  [clientManager performBlockOnClients:v17 coalescedByIdentifier:v16];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 receivedActivitySessionEvent:(id)a5
+- (void)conversationManager:(id)manager conversation:(id)conversation receivedActivitySessionEvent:(id)event
 {
-  v7 = a4;
-  v8 = a5;
+  conversationCopy = conversation;
+  eventCopy = event;
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v9 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001F01A8;
   v13[3] = &unk_10061E3B0;
-  v14 = v7;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v14 = conversationCopy;
+  v15 = eventCopy;
+  v10 = eventCopy;
+  v11 = conversationCopy;
   v12 = NSStringFromSelector("conversationManager:conversation:receivedActivitySessionEvent:");
-  [v9 performBlockOnClients:v13 coalescedByIdentifier:v12];
+  [clientManager performBlockOnClients:v13 coalescedByIdentifier:v12];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 appLaunchState:(unint64_t)a5 forActivitySession:(id)a6
+- (void)conversationManager:(id)manager conversation:(id)conversation appLaunchState:(unint64_t)state forActivitySession:(id)session
 {
-  v9 = a4;
-  v10 = a6;
+  conversationCopy = conversation;
+  sessionCopy = session;
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v11 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001F029C;
   v14[3] = &unk_10061E488;
-  v16 = v10;
-  v17 = a5;
-  v15 = v9;
-  v12 = v10;
-  v13 = v9;
-  [v11 performBlockOnClients:v14];
+  v16 = sessionCopy;
+  stateCopy = state;
+  v15 = conversationCopy;
+  v12 = sessionCopy;
+  v13 = conversationCopy;
+  [clientManager performBlockOnClients:v14];
 }
 
-- (void)conversationManager:(id)a3 activityAuthorizationChangedForBundleIdentifier:(id)a4
+- (void)conversationManager:(id)manager activityAuthorizationChangedForBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  managerCopy = manager;
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v6 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001F038C;
   v9[3] = &unk_10061E3D8;
-  v10 = v5;
-  v7 = v5;
+  v10 = managerCopy;
+  v7 = managerCopy;
   v8 = NSStringFromSelector("updateActivityAuthorizedBundleIdentifierState:");
-  [v6 performBlockOnClients:v9 coalescedByIdentifier:v8];
+  [clientManager performBlockOnClients:v9 coalescedByIdentifier:v8];
 }
 
-- (void)conversationManager:(id)a3 trackedPendingMember:(id)a4 forConversationLink:(id)a5
+- (void)conversationManager:(id)manager trackedPendingMember:(id)member forConversationLink:(id)link
 {
-  v7 = a4;
-  v8 = a5;
+  memberCopy = member;
+  linkCopy = link;
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v9 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001F04EC;
   v13[3] = &unk_10061E3B0;
-  v14 = v7;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v14 = memberCopy;
+  v15 = linkCopy;
+  v10 = linkCopy;
+  v11 = memberCopy;
   v12 = NSStringFromSelector("receivedTrackedPendingMember:forConversationLink:");
-  [v9 performBlockOnClients:v13 coalescedByIdentifier:v12];
+  [clientManager performBlockOnClients:v13 coalescedByIdentifier:v12];
 }
 
-- (void)conversationManager:(id)a3 conversationScreenSharingChanged:(id)a4 forParticipant:(id)a5
+- (void)conversationManager:(id)manager conversationScreenSharingChanged:(id)changed forParticipant:(id)participant
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDConversationManagerXPCServer *)self clientManager];
+  changedCopy = changed;
+  participantCopy = participant;
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001F05D0;
   v12[3] = &unk_10061E3B0;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v9 performBlockOnClients:v12];
+  v13 = changedCopy;
+  v14 = participantCopy;
+  v10 = participantCopy;
+  v11 = changedCopy;
+  [clientManager performBlockOnClients:v12];
 }
 
-- (void)conversationManager:(id)a3 didChangeConversationAdvertisement:(id)a4
+- (void)conversationManager:(id)manager didChangeConversationAdvertisement:(id)advertisement
 {
-  v5 = a4;
-  v6 = [(CSDConversationManagerXPCServer *)self clientManager];
+  advertisementCopy = advertisement;
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001F068C;
   v8[3] = &unk_10061E3D8;
-  v9 = v5;
-  v7 = v5;
-  [v6 performBlockOnClients:v8];
+  v9 = advertisementCopy;
+  v7 = advertisementCopy;
+  [clientManager performBlockOnClients:v8];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 didChangeStateForActivitySession:(id)a5
+- (void)conversationManager:(id)manager conversation:(id)conversation didChangeStateForActivitySession:(id)session
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDConversationManagerXPCServer *)self clientManager];
+  conversationCopy = conversation;
+  sessionCopy = session;
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001F0790;
   v13[3] = &unk_10061E3B0;
-  v14 = v7;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v14 = conversationCopy;
+  v15 = sessionCopy;
+  v10 = sessionCopy;
+  v11 = conversationCopy;
   v12 = NSStringFromSelector("conversation:didChangeStateForActivitySession:");
-  [v9 performBlockOnClients:v13 coalescedByIdentifier:v12];
+  [clientManager performBlockOnClients:v13 coalescedByIdentifier:v12];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 didChangeSceneAssociationForActivitySession:(id)a5
+- (void)conversationManager:(id)manager conversation:(id)conversation didChangeSceneAssociationForActivitySession:(id)session
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDConversationManagerXPCServer *)self clientManager];
+  conversationCopy = conversation;
+  sessionCopy = session;
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001F0874;
   v12[3] = &unk_10061E3B0;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
-  [v9 performBlockOnClients:v12];
+  v13 = conversationCopy;
+  v14 = sessionCopy;
+  v10 = sessionCopy;
+  v11 = conversationCopy;
+  [clientManager performBlockOnClients:v12];
 }
 
-- (void)conversationManager:(id)a3 remoteScreenShareAttributesChanged:(id)a4 isLocallySharing:(BOOL)a5
+- (void)conversationManager:(id)manager remoteScreenShareAttributesChanged:(id)changed isLocallySharing:(BOOL)sharing
 {
-  v7 = a4;
+  changedCopy = changed;
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v8 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001F0968;
   v11[3] = &unk_10061E4B0;
-  v12 = v7;
-  v13 = a5;
-  v9 = v7;
+  v12 = changedCopy;
+  sharingCopy = sharing;
+  v9 = changedCopy;
   v10 = NSStringFromSelector("remoteScreenShareAttributesChanged:isLocallySharing:");
-  [v8 performBlockOnClients:v11 coalescedByIdentifier:v10];
+  [clientManager performBlockOnClients:v11 coalescedByIdentifier:v10];
 }
 
-- (void)conversationManager:(id)a3 remoteScreenShareEndedWithReason:(id)a4
+- (void)conversationManager:(id)manager remoteScreenShareEndedWithReason:(id)reason
 {
-  v5 = a4;
+  reasonCopy = reason;
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v6 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001F0A58;
   v9[3] = &unk_10061E3D8;
-  v10 = v5;
-  v7 = v5;
+  v10 = reasonCopy;
+  v7 = reasonCopy;
   v8 = NSStringFromSelector("remoteScreenShareEndedWithReason:");
-  [v6 performBlockOnClients:v9 coalescedByIdentifier:v8];
+  [clientManager performBlockOnClients:v9 coalescedByIdentifier:v8];
 }
 
-- (void)conversationManager:(id)a3 sharePlayAvailableChanged:(BOOL)a4
+- (void)conversationManager:(id)manager sharePlayAvailableChanged:(BOOL)changed
 {
-  v5 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F0B10;
   v7[3] = &unk_10061E4D0;
-  v8 = a4;
+  changedCopy = changed;
   v6 = NSStringFromSelector("sharePlayAvailableChanged:");
-  [v5 performBlockOnClients:v7 coalescedByIdentifier:v6];
+  [clientManager performBlockOnClients:v7 coalescedByIdentifier:v6];
 }
 
-- (void)conversationManager:(id)a3 screenSharingAvailableChanged:(BOOL)a4
+- (void)conversationManager:(id)manager screenSharingAvailableChanged:(BOOL)changed
 {
-  v5 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F0BC8;
   v7[3] = &unk_10061E4D0;
-  v8 = a4;
+  changedCopy = changed;
   v6 = NSStringFromSelector("screenSharingAvailableChanged:");
-  [v5 performBlockOnClients:v7 coalescedByIdentifier:v6];
+  [clientManager performBlockOnClients:v7 coalescedByIdentifier:v6];
 }
 
-- (void)conversationManager:(id)a3 activeParticipant:(id)a4 addedHighlightToConversation:(id)a5 highlightIdentifier:(id)a6 oldHighlightIdentifier:(id)a7 isFirstAdd:(BOOL)a8
+- (void)conversationManager:(id)manager activeParticipant:(id)participant addedHighlightToConversation:(id)conversation highlightIdentifier:(id)identifier oldHighlightIdentifier:(id)highlightIdentifier isFirstAdd:(BOOL)add
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v17);
+  participantCopy = participant;
+  conversationCopy = conversation;
+  identifierCopy = identifier;
+  highlightIdentifierCopy = highlightIdentifier;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v18 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1001F0D48;
   v24[3] = &unk_10061E4F8;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v29 = a8;
-  v19 = v16;
-  v20 = v15;
-  v21 = v14;
-  v22 = v13;
+  v25 = participantCopy;
+  v26 = conversationCopy;
+  v27 = identifierCopy;
+  v28 = highlightIdentifierCopy;
+  addCopy = add;
+  v19 = highlightIdentifierCopy;
+  v20 = identifierCopy;
+  v21 = conversationCopy;
+  v22 = participantCopy;
   v23 = NSStringFromSelector("activeParticipant:addedHighlightToConversation:highlightIdentifier:oldHighlightIdentifier:isFirstAdd:");
-  [v18 performBlockOnClients:v24 coalescedByIdentifier:v23];
+  [clientManager performBlockOnClients:v24 coalescedByIdentifier:v23];
 }
 
-- (void)conversationManager:(id)a3 activeParticipant:(id)a4 removedHighlightFrom:(id)a5 highlightIdentifier:(id)a6
+- (void)conversationManager:(id)manager activeParticipant:(id)participant removedHighlightFrom:(id)from highlightIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v12);
+  participantCopy = participant;
+  fromCopy = from;
+  identifierCopy = identifier;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v13 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_1001F0EA0;
   v18[3] = &unk_10061E440;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v9;
+  v19 = participantCopy;
+  v20 = fromCopy;
+  v21 = identifierCopy;
+  v14 = identifierCopy;
+  v15 = fromCopy;
+  v16 = participantCopy;
   v17 = NSStringFromSelector("activeParticipant:removedHighlightFromConversation:highlightIdentifier:");
-  [v13 performBlockOnClients:v18 coalescedByIdentifier:v17];
+  [clientManager performBlockOnClients:v18 coalescedByIdentifier:v17];
 }
 
-- (void)conversationManager:(id)a3 conversation:(id)a4 collaborationStateChanged:(int64_t)a5 highlightIdentifier:(id)a6
+- (void)conversationManager:(id)manager conversation:(id)conversation collaborationStateChanged:(int64_t)changed highlightIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v11);
+  conversationCopy = conversation;
+  identifierCopy = identifier;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v12 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1001F0FD8;
   v16[3] = &unk_10061E488;
-  v18 = v10;
-  v19 = a5;
-  v17 = v9;
-  v13 = v10;
-  v14 = v9;
+  v18 = identifierCopy;
+  changedCopy = changed;
+  v17 = conversationCopy;
+  v13 = identifierCopy;
+  v14 = conversationCopy;
   v15 = NSStringFromSelector("conversation:collaborationStateChanged:highlightIdentifier:");
-  [v12 performBlockOnClients:v16 coalescedByIdentifier:v15];
+  [clientManager performBlockOnClients:v16 coalescedByIdentifier:v15];
 }
 
-- (void)conversationManager:(id)a3 addedCollaborationDictionary:(id)a4 forConversation:(id)a5
+- (void)conversationManager:(id)manager addedCollaborationDictionary:(id)dictionary forConversation:(id)conversation
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CSDConversationManagerXPCServer *)self queue];
-  dispatch_assert_queue_V2(v9);
+  dictionaryCopy = dictionary;
+  conversationCopy = conversation;
+  queue = [(CSDConversationManagerXPCServer *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(CSDConversationManagerXPCServer *)self notifyClientsToConnectIfNecessary];
-  v10 = [(CSDConversationManagerXPCServer *)self clientManager];
+  clientManager = [(CSDConversationManagerXPCServer *)self clientManager];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001F1100;
   v14[3] = &unk_10061E3B0;
-  v15 = v7;
-  v16 = v8;
-  v11 = v8;
-  v12 = v7;
+  v15 = dictionaryCopy;
+  v16 = conversationCopy;
+  v11 = conversationCopy;
+  v12 = dictionaryCopy;
   v13 = NSStringFromSelector("addedCollaborationDictionary:forConversation:");
-  [v10 performBlockOnClients:v14 coalescedByIdentifier:v13];
+  [clientManager performBlockOnClients:v14 coalescedByIdentifier:v13];
 }
 
-- (void)updateRemoteControlStatus:(int64_t)a3 onConversationWithUUID:(id)a4
+- (void)updateRemoteControlStatus:(int64_t)status onConversationWithUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(CSDConversationManagerXPCServer *)self conversationManager];
-  [v7 updateRemoteControlStatus:a3 onConversationWithUUID:v6];
+  dCopy = d;
+  conversationManager = [(CSDConversationManagerXPCServer *)self conversationManager];
+  [conversationManager updateRemoteControlStatus:status onConversationWithUUID:dCopy];
 }
 
 @end

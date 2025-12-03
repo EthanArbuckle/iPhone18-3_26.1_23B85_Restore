@@ -1,46 +1,46 @@
 @interface VCCompanionSyncOutgoingSession
-- (VCCompanionSyncOutgoingSession)initWithSYSession:(id)a3 service:(id)a4 syncDataHandlers:(id)a5 changeSet:(id)a6 metadata:(id)a7;
+- (VCCompanionSyncOutgoingSession)initWithSYSession:(id)session service:(id)service syncDataHandlers:(id)handlers changeSet:(id)set metadata:(id)metadata;
 - (double)progress;
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
-- (void)syncSession:(id)a3 successfullySynced:(id)a4;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
+- (void)syncSession:(id)session successfullySynced:(id)synced;
 @end
 
 @implementation VCCompanionSyncOutgoingSession
 
-- (void)syncSession:(id)a3 successfullySynced:(id)a4
+- (void)syncSession:(id)session successfullySynced:(id)synced
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 state] != 5)
+  sessionCopy = session;
+  syncedCopy = synced;
+  if ([sessionCopy state] != 5)
   {
-    v45 = v6;
-    v8 = [(VCCompanionSyncOutgoingSession *)self sentChanges];
+    v45 = sessionCopy;
+    sentChanges = [(VCCompanionSyncOutgoingSession *)self sentChanges];
     v56[0] = MEMORY[0x277D85DD0];
     v56[1] = 3221225472;
     v56[2] = __65__VCCompanionSyncOutgoingSession_syncSession_successfullySynced___block_invoke;
     v56[3] = &unk_2788FFB58;
-    v44 = v7;
-    v57 = v7;
-    v9 = [v8 indexesOfObjectsPassingTest:v56];
+    v44 = syncedCopy;
+    v57 = syncedCopy;
+    v9 = [sentChanges indexesOfObjectsPassingTest:v56];
 
-    v10 = [(VCCompanionSyncOutgoingSession *)self sentChanges];
-    v11 = [v10 objectsAtIndexes:v9];
+    sentChanges2 = [(VCCompanionSyncOutgoingSession *)self sentChanges];
+    v11 = [sentChanges2 objectsAtIndexes:v9];
 
-    v12 = [(VCCompanionSyncOutgoingSession *)self syncedChanges];
-    [v12 addObjectsFromArray:v11];
+    syncedChanges = [(VCCompanionSyncOutgoingSession *)self syncedChanges];
+    [syncedChanges addObjectsFromArray:v11];
 
-    v13 = [(VCCompanionSyncOutgoingSession *)self sentChanges];
+    sentChanges3 = [(VCCompanionSyncOutgoingSession *)self sentChanges];
     v43 = v9;
-    [v13 removeObjectsAtIndexes:v9];
+    [sentChanges3 removeObjectsAtIndexes:v9];
 
-    v14 = [(VCCompanionSyncSession *)self delegate];
+    delegate = [(VCCompanionSyncSession *)self delegate];
     [(VCCompanionSyncOutgoingSession *)self progress];
-    [v14 companionSyncSession:self didUpdateProgress:?];
+    [delegate companionSyncSession:self didUpdateProgress:?];
 
-    v15 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
-    v16 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
-    v17 = [v15 arrayByAddingObjectsFromArray:v16];
+    pendingChanges = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
+    pendingChanges2 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
+    v17 = [pendingChanges arrayByAddingObjectsFromArray:pendingChanges2];
 
     v42 = v11;
     v50 = VCPartitionMessages(v11);
@@ -59,7 +59,7 @@
 
     v19 = v18;
     v49 = *v53;
-    v48 = self;
+    selfCopy = self;
     while (1)
     {
       for (i = 0; i != v19; ++i)
@@ -83,30 +83,30 @@
 
           else
           {
-            v27 = [(VCCompanionSyncOutgoingSession *)self metadata];
-            v26 = [v27 objectForKeyedSubscript:v23];
+            metadata = [(VCCompanionSyncOutgoingSession *)self metadata];
+            v26 = [metadata objectForKeyedSubscript:v23];
 
-            self = v48;
+            self = selfCopy;
           }
 
-          v28 = [(VCCompanionSyncSession *)self service];
+          service = [(VCCompanionSyncSession *)self service];
           v51 = 0;
-          v29 = [v21 markChangesAsSynced:v24 withSyncService:v28 metadata:v26 error:&v51];
+          v29 = [v21 markChangesAsSynced:v24 withSyncService:service metadata:v26 error:&v51];
           v30 = v51;
 
           v31 = getWFWatchSyncLogObject();
           v32 = v31;
           if (v29)
           {
-            self = v48;
+            self = selfCopy;
             if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
             {
-              v33 = [(VCCompanionSyncSession *)v48 service];
+              service2 = [(VCCompanionSyncSession *)selfCopy service];
               v34 = [v24 count];
               *buf = 136315650;
               v59 = "[VCCompanionSyncOutgoingSession syncSession:successfullySynced:]";
               v60 = 2114;
-              v61 = v33;
+              v61 = service2;
               v62 = 2048;
               v63 = v34;
               v35 = v32;
@@ -119,15 +119,15 @@
 
           else
           {
-            self = v48;
+            self = selfCopy;
             if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
             {
-              v33 = [(VCCompanionSyncSession *)v48 service];
+              service2 = [(VCCompanionSyncSession *)selfCopy service];
               v39 = [v24 count];
               *buf = 136315906;
               v59 = "[VCCompanionSyncOutgoingSession syncSession:successfullySynced:]";
               v60 = 2114;
-              v61 = v33;
+              v61 = service2;
               v62 = 2048;
               v63 = v39;
               v64 = 2114;
@@ -150,8 +150,8 @@ LABEL_16:
       {
 LABEL_20:
 
-        v7 = v44;
-        v6 = v45;
+        syncedCopy = v44;
+        sessionCopy = v45;
         break;
       }
     }
@@ -169,33 +169,33 @@ uint64_t __65__VCCompanionSyncOutgoingSession_syncSession_successfullySynced___b
   return v4;
 }
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
   v30 = a2;
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  changesCopy = changes;
   v9 = getWFWatchSyncLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v32 = "[VCCompanionSyncOutgoingSession syncSession:enqueueChanges:error:]";
     v33 = 2114;
-    v34 = self;
+    selfCopy4 = self;
     v35 = 2114;
-    v36 = v7;
+    v36 = sessionCopy;
     _os_log_impl(&dword_23103C000, v9, OS_LOG_TYPE_DEFAULT, "%s %{public}@ -enqueueChanges called by %{public}@", buf, 0x20u);
   }
 
-  v10 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
-  v11 = [v10 firstObject];
+  pendingChanges = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
+  firstObject = [pendingChanges firstObject];
 
-  if (v11)
+  if (firstObject)
   {
     while (1)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = v8[2](v8, v11);
+      v13 = changesCopy[2](changesCopy, firstObject);
       v14 = getWFWatchSyncLogObject();
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
       if (!v13)
@@ -208,33 +208,33 @@ uint64_t __65__VCCompanionSyncOutgoingSession_syncSession_successfullySynced___b
         *buf = 136315650;
         v32 = "[VCCompanionSyncOutgoingSession syncSession:enqueueChanges:error:]";
         v33 = 2114;
-        v34 = self;
+        selfCopy4 = self;
         v35 = 2114;
-        v36 = v11;
+        v36 = firstObject;
         _os_log_impl(&dword_23103C000, v14, OS_LOG_TYPE_DEFAULT, "%s %{public}@ successfully enqueued change=%{public}@", buf, 0x20u);
       }
 
-      v16 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
-      v17 = [v16 indexOfObject:v11];
+      pendingChanges2 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
+      v17 = [pendingChanges2 indexOfObject:firstObject];
 
       if (v17)
       {
-        v22 = [MEMORY[0x277CCA890] currentHandler];
-        [v22 handleFailureInMethod:v30 object:self file:@"VCCompanionSyncOutgoingSession.m" lineNumber:74 description:@"Change should be the first pending change"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:v30 object:self file:@"VCCompanionSyncOutgoingSession.m" lineNumber:74 description:@"Change should be the first pending change"];
       }
 
-      v18 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
-      [v18 removeObjectAtIndex:0];
+      pendingChanges3 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
+      [pendingChanges3 removeObjectAtIndex:0];
 
-      v19 = [(VCCompanionSyncOutgoingSession *)self sentChanges];
-      [v19 addObject:v11];
+      sentChanges = [(VCCompanionSyncOutgoingSession *)self sentChanges];
+      [sentChanges addObject:firstObject];
 
       objc_autoreleasePoolPop(v12);
-      v20 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
-      v21 = [v20 firstObject];
+      pendingChanges4 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
+      firstObject2 = [pendingChanges4 firstObject];
 
-      v11 = v21;
-      if (!v21)
+      firstObject = firstObject2;
+      if (!firstObject2)
       {
         goto LABEL_14;
       }
@@ -245,9 +245,9 @@ uint64_t __65__VCCompanionSyncOutgoingSession_syncSession_successfullySynced___b
       *buf = 136315650;
       v32 = "[VCCompanionSyncOutgoingSession syncSession:enqueueChanges:error:]";
       v33 = 2114;
-      v34 = self;
+      selfCopy4 = self;
       v35 = 2114;
-      v36 = v11;
+      v36 = firstObject;
       _os_log_impl(&dword_23103C000, v14, OS_LOG_TYPE_DEFAULT, "%s %{public}@ stopped early, before sending change=%{public}@", buf, 0x20u);
     }
 
@@ -255,8 +255,8 @@ uint64_t __65__VCCompanionSyncOutgoingSession_syncSession_successfullySynced___b
   }
 
 LABEL_14:
-  v23 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
-  v24 = [v23 count];
+  pendingChanges5 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
+  v24 = [pendingChanges5 count];
 
   v25 = getWFWatchSyncLogObject();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -264,7 +264,7 @@ LABEL_14:
     *buf = 136315650;
     v32 = "[VCCompanionSyncOutgoingSession syncSession:enqueueChanges:error:]";
     v33 = 2114;
-    v34 = self;
+    selfCopy4 = self;
     v35 = 2048;
     v36 = v24;
     _os_log_impl(&dword_23103C000, v25, OS_LOG_TYPE_DEFAULT, "%s %{public}@ finished enqueuing changes, with %lu remaining changes", buf, 0x20u);
@@ -272,15 +272,15 @@ LABEL_14:
 
   if (v24)
   {
-    v26 = [(VCCompanionSyncSession *)self transaction];
+    transaction = [(VCCompanionSyncSession *)self transaction];
     os_transaction_needs_more_time();
     v27 = 1;
   }
 
   else
   {
-    v26 = [(VCCompanionSyncSession *)self delegate];
-    [v26 companionSyncSessionDidFinishSendingChanges:self];
+    transaction = [(VCCompanionSyncSession *)self delegate];
+    [transaction companionSyncSessionDidFinishSendingChanges:self];
     v27 = 2;
   }
 
@@ -290,28 +290,28 @@ LABEL_14:
 
 - (double)progress
 {
-  v3 = [(VCCompanionSyncOutgoingSession *)self syncedChanges];
-  v4 = [v3 count];
+  syncedChanges = [(VCCompanionSyncOutgoingSession *)self syncedChanges];
+  v4 = [syncedChanges count];
 
-  v5 = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
-  v6 = [v5 count];
-  v7 = [(VCCompanionSyncOutgoingSession *)self sentChanges];
-  v8 = v6 + v4 + [v7 count];
+  pendingChanges = [(VCCompanionSyncOutgoingSession *)self pendingChanges];
+  v6 = [pendingChanges count];
+  sentChanges = [(VCCompanionSyncOutgoingSession *)self sentChanges];
+  v8 = v6 + v4 + [sentChanges count];
 
   return v4 / v8;
 }
 
-- (VCCompanionSyncOutgoingSession)initWithSYSession:(id)a3 service:(id)a4 syncDataHandlers:(id)a5 changeSet:(id)a6 metadata:(id)a7
+- (VCCompanionSyncOutgoingSession)initWithSYSession:(id)session service:(id)service syncDataHandlers:(id)handlers changeSet:(id)set metadata:(id)metadata
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = v17;
-  if (v16)
+  sessionCopy = session;
+  serviceCopy = service;
+  handlersCopy = handlers;
+  setCopy = set;
+  metadataCopy = metadata;
+  v18 = metadataCopy;
+  if (setCopy)
   {
-    if (v17)
+    if (metadataCopy)
     {
       goto LABEL_3;
     }
@@ -319,8 +319,8 @@ LABEL_14:
 
   else
   {
-    v30 = [MEMORY[0x277CCA890] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"VCCompanionSyncOutgoingSession.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"changeSet"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"VCCompanionSyncOutgoingSession.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"changeSet"}];
 
     if (v18)
     {
@@ -328,16 +328,16 @@ LABEL_14:
     }
   }
 
-  v31 = [MEMORY[0x277CCA890] currentHandler];
-  [v31 handleFailureInMethod:a2 object:self file:@"VCCompanionSyncOutgoingSession.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"metadata"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"VCCompanionSyncOutgoingSession.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"metadata"}];
 
 LABEL_3:
   v32.receiver = self;
   v32.super_class = VCCompanionSyncOutgoingSession;
-  v19 = [(VCCompanionSyncSession *)&v32 initWithSYSession:v13 service:v14 syncDataHandlers:v15];
+  v19 = [(VCCompanionSyncSession *)&v32 initWithSYSession:sessionCopy service:serviceCopy syncDataHandlers:handlersCopy];
   if (v19)
   {
-    v20 = [v16 mutableCopy];
+    v20 = [setCopy mutableCopy];
     pendingChanges = v19->_pendingChanges;
     v19->_pendingChanges = v20;
 

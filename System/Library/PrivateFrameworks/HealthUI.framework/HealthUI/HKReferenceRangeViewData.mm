@@ -1,49 +1,49 @@
 @interface HKReferenceRangeViewData
-+ (id)_codedQuantityForValue:(id)a3;
-+ (id)_codedQuantityForValueCollection:(id)a3;
-+ (id)referenceRangeViewDataFromInspectableValueInRange:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)_codedQuantityForValue:(id)value;
++ (id)_codedQuantityForValueCollection:(id)collection;
++ (id)referenceRangeViewDataFromInspectableValueInRange:(id)range;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HKReferenceRangeViewData
 
-+ (id)referenceRangeViewDataFromInspectableValueInRange:(id)a3
++ (id)referenceRangeViewDataFromInspectableValueInRange:(id)range
 {
-  v4 = a3;
-  v5 = [v4 currentValue];
+  rangeCopy = range;
+  currentValue = [rangeCopy currentValue];
 
-  if (v5)
+  if (currentValue)
   {
-    v5 = objc_alloc_init(objc_opt_class());
-    v6 = [v4 currentValue];
-    v7 = [a1 _codedQuantityForValueCollection:v6];
-    v8 = [v7 numberValue];
-    [v5 setValue:v8];
+    currentValue = objc_alloc_init(objc_opt_class());
+    currentValue2 = [rangeCopy currentValue];
+    v7 = [self _codedQuantityForValueCollection:currentValue2];
+    numberValue = [v7 numberValue];
+    [currentValue setValue:numberValue];
 
-    v9 = [v4 currentValue];
-    v10 = [v9 displayString];
-    [v5 setValueString:v10];
+    currentValue3 = [rangeCopy currentValue];
+    displayString = [currentValue3 displayString];
+    [currentValue setValueString:displayString];
 
-    v11 = [v4 lowValue];
-    if (v11)
+    lowValue = [rangeCopy lowValue];
+    if (lowValue)
     {
     }
 
     else
     {
-      v12 = [v4 highValue];
+      highValue = [rangeCopy highValue];
 
-      if (!v12)
+      if (!highValue)
       {
         goto LABEL_18;
       }
     }
 
-    v13 = [v4 highValue];
-    v14 = [a1 _codedQuantityForValue:v13];
+    highValue2 = [rangeCopy highValue];
+    v14 = [self _codedQuantityForValue:highValue2];
 
-    v15 = [v4 lowValue];
-    v16 = [a1 _codedQuantityForValue:v15];
+    lowValue2 = [rangeCopy lowValue];
+    v16 = [self _codedQuantityForValue:lowValue2];
 
     v17 = 0.0;
     v18 = 0.0;
@@ -61,98 +61,98 @@
 
     if (vabdd_f64(v18, v17) > 2.22044605e-16)
     {
-      v21 = [v4 unitString];
-      [v5 setUnitString:v21];
+      unitString = [rangeCopy unitString];
+      [currentValue setUnitString:unitString];
 
       if (v16)
       {
         v22 = [MEMORY[0x1E696AD98] numberWithDouble:v17];
-        [v5 setRangeLow:v22];
+        [currentValue setRangeLow:v22];
       }
 
       else
       {
-        [v5 setRangeLow:0];
+        [currentValue setRangeLow:0];
       }
 
-      v23 = [v4 lowValue];
-      v24 = [v23 displayString];
-      [v5 setRangeLowString:v24];
+      lowValue3 = [rangeCopy lowValue];
+      displayString2 = [lowValue3 displayString];
+      [currentValue setRangeLowString:displayString2];
 
       if (v14)
       {
         v25 = [MEMORY[0x1E696AD98] numberWithDouble:v18];
-        [v5 setRangeHigh:v25];
+        [currentValue setRangeHigh:v25];
       }
 
       else
       {
-        [v5 setRangeHigh:0];
+        [currentValue setRangeHigh:0];
       }
 
-      v26 = [v4 highValue];
-      v27 = [v26 displayString];
-      [v5 setRangeHighString:v27];
+      highValue3 = [rangeCopy highValue];
+      displayString3 = [highValue3 displayString];
+      [currentValue setRangeHighString:displayString3];
     }
   }
 
 LABEL_18:
 
-  return v5;
+  return currentValue;
 }
 
-+ (id)_codedQuantityForValue:(id)a3
++ (id)_codedQuantityForValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 valueType];
-  if ((v4 - 5) >= 2)
+  valueCopy = value;
+  valueType = [valueCopy valueType];
+  if ((valueType - 5) >= 2)
   {
-    if (v4 == 1)
+    if (valueType == 1)
     {
-      v6 = [v3 ratioValue];
-      v5 = [v6 numerator];
+      ratioValue = [valueCopy ratioValue];
+      numerator = [ratioValue numerator];
     }
 
     else
     {
-      v5 = 0;
+      numerator = 0;
     }
   }
 
   else
   {
-    v5 = [v3 codedQuantityValue];
+    numerator = [valueCopy codedQuantityValue];
   }
 
-  return v5;
+  return numerator;
 }
 
-+ (id)_codedQuantityForValueCollection:(id)a3
++ (id)_codedQuantityForValueCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [v4 collectionType];
-  if ((v5 - 2) < 2)
+  collectionCopy = collection;
+  collectionType = [collectionCopy collectionType];
+  if ((collectionType - 2) < 2)
   {
-    v7 = [v4 inspectableValues];
-    v8 = [v7 firstObject];
-    v9 = [a1 _codedQuantityForValue:v8];
+    inspectableValues = [collectionCopy inspectableValues];
+    firstObject = [inspectableValues firstObject];
+    v9 = [self _codedQuantityForValue:firstObject];
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  if (v5 == 1)
+  if (collectionType == 1)
   {
-    v6 = [v4 min];
+    inspectableValue = [collectionCopy min];
     goto LABEL_7;
   }
 
-  if (!v5)
+  if (!collectionType)
   {
-    v6 = [v4 inspectableValue];
+    inspectableValue = [collectionCopy inspectableValue];
 LABEL_7:
-    v7 = v6;
-    v9 = [a1 _codedQuantityForValue:v6];
+    inspectableValues = inspectableValue;
+    v9 = [self _codedQuantityForValue:inspectableValue];
     goto LABEL_8;
   }
 
@@ -162,7 +162,7 @@ LABEL_9:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSString *)self->_valueString copy];

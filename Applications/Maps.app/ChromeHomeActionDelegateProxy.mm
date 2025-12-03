@@ -1,15 +1,15 @@
 @interface ChromeHomeActionDelegateProxy
 + (id)protocols;
-- (ChromeHomeActionDelegateProxy)initWithChromeViewController:(id)a3;
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4;
+- (ChromeHomeActionDelegateProxy)initWithChromeViewController:(id)controller;
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol;
 @end
 
 @implementation ChromeHomeActionDelegateProxy
 
-- (id)delegatesForSelector:(SEL)a3 protocol:(id)a4
+- (id)delegatesForSelector:(SEL)selector protocol:(id)protocol
 {
-  v5 = [(ChromeDelegateProxy *)self chromeViewController:a3];
-  v6 = [v5 homeActionDelegateForSelector:a3];
+  v5 = [(ChromeDelegateProxy *)self chromeViewController:selector];
+  v6 = [v5 homeActionDelegateForSelector:selector];
   v7 = v6;
   if (v6)
   {
@@ -25,24 +25,24 @@
   return v8;
 }
 
-- (ChromeHomeActionDelegateProxy)initWithChromeViewController:(id)a3
+- (ChromeHomeActionDelegateProxy)initWithChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7.receiver = self;
     v7.super_class = ChromeHomeActionDelegateProxy;
-    self = [(ChromeDelegateProxy *)&v7 initWithChromeViewController:v4];
-    v5 = self;
+    self = [(ChromeDelegateProxy *)&v7 initWithChromeViewController:controllerCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 + (id)protocols

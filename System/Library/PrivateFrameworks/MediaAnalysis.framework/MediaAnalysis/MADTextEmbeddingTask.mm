@@ -1,23 +1,23 @@
 @interface MADTextEmbeddingTask
-+ (BOOL)prewarmRequest:(id)a3 error:(id *)a4;
-- (BOOL)processInput:(id)a3 resource:(id)a4 result:(id *)a5 error:(id *)a6;
-- (id)embeddingFromMultiArray:(id)a3 version:(unint64_t)a4;
++ (BOOL)prewarmRequest:(id)request error:(id *)error;
+- (BOOL)processInput:(id)input resource:(id)resource result:(id *)result error:(id *)error;
+- (id)embeddingFromMultiArray:(id)array version:(unint64_t)version;
 - (int)run;
 @end
 
 @implementation MADTextEmbeddingTask
 
-+ (BOOL)prewarmRequest:(id)a3 error:(id *)a4
++ (BOOL)prewarmRequest:(id)request error:(id *)error
 {
   v77[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = +[MADTextEmbeddingResource sharedResource:extendedContextLength:](MADTextEmbeddingResource, "sharedResource:extendedContextLength:", [v5 version], objc_msgSend(v5, "extendedContextLength"));
+  requestCopy = request;
+  v6 = +[MADTextEmbeddingResource sharedResource:extendedContextLength:](MADTextEmbeddingResource, "sharedResource:extendedContextLength:", [requestCopy version], objc_msgSend(requestCopy, "extendedContextLength"));
   v7 = +[VCPMADResourceManager sharedManager];
   v8 = [v7 activateResource:v6];
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
-    [v5 version];
+    [requestCopy version];
     v9 = MADUnifiedEmbeddingVersionToString();
     *buf = 138412290;
     v73 = v9;
@@ -36,8 +36,8 @@
   }
 
   v14 = mach_continuous_time();
-  v15 = [v6 textEncoder];
-  if (!v15)
+  textEncoder = [v6 textEncoder];
+  if (!textEncoder)
   {
     v27 = 0;
 LABEL_27:
@@ -49,7 +49,7 @@ LABEL_27:
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to prewarm text encoder (%@)", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v28 = MEMORY[0x1E696ABC0];
       v29 = *MEMORY[0x1E696A768];
@@ -67,11 +67,11 @@ LABEL_44:
     goto LABEL_65;
   }
 
-  v16 = v15;
+  v16 = textEncoder;
   v17 = v8;
-  v18 = [v6 textEncoder];
+  textEncoder2 = [v6 textEncoder];
   v65 = 0;
-  v19 = [v18 loadResources:&v65];
+  v19 = [textEncoder2 loadResources:&v65];
   v64 = v65;
 
   if ((v19 & 1) == 0)
@@ -103,7 +103,7 @@ LABEL_44:
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v22, OS_SIGNPOST_EVENT, v24, "TextEmbeddingGeneration", "%{public, signpost.description:begin_time}llu Component=%{public, signpost.telemetry:string1}s  enableTelemetry=YES ", buf, 0x16u);
   }
 
-  if (![v5 computeThreshold])
+  if (![requestCopy computeThreshold])
   {
     goto LABEL_75;
   }
@@ -114,13 +114,13 @@ LABEL_44:
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO, "Prewarming text embedding calibration", buf, 2u);
   }
 
-  v25 = [v6 calibration];
-  v26 = [v25 loadResources];
+  calibration = [v6 calibration];
+  loadResources = [calibration loadResources];
 
-  if (!v26)
+  if (!loadResources)
   {
 LABEL_75:
-    if ([v5 computeSafety])
+    if ([requestCopy computeSafety])
     {
       if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
       {
@@ -129,10 +129,10 @@ LABEL_75:
       }
 
       v37 = mach_continuous_time();
-      v38 = [v6 safety];
-      v39 = [v38 loadResources];
+      safety = [v6 safety];
+      loadResources2 = [safety loadResources];
 
-      if (v39)
+      if (loadResources2)
       {
         if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
@@ -141,7 +141,7 @@ LABEL_75:
         }
 
         v27 = v64;
-        if (a4)
+        if (error)
         {
           v28 = MEMORY[0x1E696ABC0];
           v29 = *MEMORY[0x1E696A768];
@@ -172,7 +172,7 @@ LABEL_75:
     }
 
     [v17 reset];
-    if (![v5 calibrate] || objc_msgSend(v5, "version") != 3)
+    if (![requestCopy calibrate] || objc_msgSend(requestCopy, "version") != 3)
     {
       v36 = 1;
       v27 = v64;
@@ -204,10 +204,10 @@ LABEL_75:
     spid = v45;
 
     v49 = mach_continuous_time();
-    v50 = [v30 instance];
-    v51 = [v50 loadResources];
+    instance = [v30 instance];
+    loadResources3 = [instance loadResources];
 
-    if (v51)
+    if (loadResources3)
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
@@ -215,7 +215,7 @@ LABEL_75:
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to prewarm legacy text embedding calibration", buf, 2u);
       }
 
-      if (a4)
+      if (error)
       {
         v52 = MEMORY[0x1E696ABC0];
         v53 = *MEMORY[0x1E696A768];
@@ -223,7 +223,7 @@ LABEL_75:
         v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to prewarm legacy text embedding calibration"];
         v67 = v54;
         v55 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-        *a4 = [v52 errorWithDomain:v53 code:-50 userInfo:v55];
+        *error = [v52 errorWithDomain:v53 code:-50 userInfo:v55];
       }
 
       v36 = 0;
@@ -271,7 +271,7 @@ LABEL_75:
   }
 
   v27 = v64;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_44;
   }
@@ -287,26 +287,26 @@ LABEL_75:
 LABEL_32:
   v35 = [v31 dictionaryWithObjects:v32 forKeys:v33 count:1];
   [v28 errorWithDomain:v29 code:-50 userInfo:v35];
-  *a4 = v36 = 0;
+  *error = v36 = 0;
 LABEL_33:
 
 LABEL_65:
   return v36;
 }
 
-- (id)embeddingFromMultiArray:(id)a3 version:(unint64_t)a4
+- (id)embeddingFromMultiArray:(id)array version:(unint64_t)version
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 dataType];
-  if (v6 == 65552)
+  arrayCopy = array;
+  dataType = [arrayCopy dataType];
+  if (dataType == 65552)
   {
     v7 = 1;
     v8 = 1;
     goto LABEL_5;
   }
 
-  if (v6 == 65568)
+  if (dataType == 65568)
   {
     v7 = 0;
     v8 = 2;
@@ -322,8 +322,8 @@ LABEL_5:
     v14[2] = __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke;
     v14[3] = &unk_1E834D378;
     v14[4] = buf;
-    [v5 getBytesWithHandler:v14];
-    if (a4 - 1 <= 1)
+    [arrayCopy getBytesWithHandler:v14];
+    if (version - 1 <= 1)
     {
       v9 = MediaAnalysisApplyL2Norm(*(v16 + 5), v7);
       v10 = *(v16 + 5);
@@ -331,7 +331,7 @@ LABEL_5:
     }
 
     v11 = objc_alloc(MEMORY[0x1E69AE300]);
-    v12 = [v11 initWithVersion:a4 data:*(v16 + 5) type:v8];
+    v12 = [v11 initWithVersion:version data:*(v16 + 5) type:v8];
     _Block_object_dispose(buf, 8);
 
     goto LABEL_12;
@@ -340,7 +340,7 @@ LABEL_5:
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 67109120;
-    *&buf[4] = [v5 dataType];
+    *&buf[4] = [arrayCopy dataType];
     _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unsupported embedding data type (%d)", buf, 8u);
   }
 
@@ -358,25 +358,25 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
   *(v5 + 40) = v4;
 }
 
-- (BOOL)processInput:(id)a3 resource:(id)a4 result:(id *)a5 error:(id *)a6
+- (BOOL)processInput:(id)input resource:(id)resource result:(id *)result error:(id *)error
 {
   v186 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v149 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
+  inputCopy = input;
+  resourceCopy = resource;
+  array = [MEMORY[0x1E695DF70] array];
   v166 = 0u;
   v167 = 0u;
   v168 = 0u;
   v169 = 0u;
-  v148 = v7;
-  v9 = [v7 segments];
-  v10 = [v9 countByEnumeratingWithState:&v166 objects:v185 count:16];
+  v148 = inputCopy;
+  segments = [inputCopy segments];
+  v10 = [segments countByEnumeratingWithState:&v166 objects:v185 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v167;
     v150 = *v167;
-    v152 = v9;
+    v152 = segments;
     while (2)
     {
       v13 = 0;
@@ -385,7 +385,7 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
       {
         if (*v167 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(segments);
         }
 
         v14 = *(*(&v166 + 1) + 8 * v13);
@@ -393,10 +393,10 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
         if ([v14 type] == 1)
         {
           v16 = objc_alloc_init(MEMORY[0x1E6999158]);
-          v17 = [v14 text];
-          [v16 setString:v17];
+          text = [v14 text];
+          [v16 setString:text];
 
-          [v8 addObject:v16];
+          [array addObject:v16];
         }
 
         else
@@ -420,10 +420,10 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
               _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
             }
 
-            v29 = v149;
-            if (a6)
+            v29 = resourceCopy;
+            if (error)
             {
-              objc_storeStrong(a6, v58);
+              objc_storeStrong(error, v58);
             }
 
             objc_autoreleasePoolPop(context);
@@ -436,8 +436,8 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
           v163 = 0u;
           v164 = 0u;
           v165 = 0u;
-          v18 = [v16 tokenIDs];
-          v19 = [v18 countByEnumeratingWithState:&v162 objects:v184 count:16];
+          tokenIDs = [v16 tokenIDs];
+          v19 = [tokenIDs countByEnumeratingWithState:&v162 objects:v184 count:16];
           if (v19)
           {
             v20 = v19;
@@ -448,23 +448,23 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
               {
                 if (*v163 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(tokenIDs);
                 }
 
                 v23 = *(*(&v162 + 1) + 8 * i);
                 v24 = objc_alloc_init(MEMORY[0x1E6999178]);
                 [v24 setTokenID:v23];
-                [v8 addObject:v24];
+                [array addObject:v24];
               }
 
-              v20 = [v18 countByEnumeratingWithState:&v162 objects:v184 count:16];
+              v20 = [tokenIDs countByEnumeratingWithState:&v162 objects:v184 count:16];
             }
 
             while (v20);
           }
 
           v12 = v150;
-          v9 = v152;
+          segments = v152;
           v11 = v154;
           v15 = context;
         }
@@ -474,7 +474,7 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
       }
 
       while (v13 != v11);
-      v11 = [v9 countByEnumeratingWithState:&v166 objects:v185 count:16];
+      v11 = [segments countByEnumeratingWithState:&v166 objects:v185 count:16];
       if (v11)
       {
         continue;
@@ -486,7 +486,7 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
 
   v25 = MADRemoveBackgroundCachedMaskState;
   v26 = +[VCPMADResourceManager sharedManager];
-  v27 = [v26 activateResource:v149];
+  v27 = [v26 activateResource:resourceCopy];
 
   if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
@@ -496,10 +496,10 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
 
   v161 = 0;
   v28 = mach_continuous_time();
-  v29 = v149;
-  v30 = [v149 textEncoder];
+  v29 = resourceCopy;
+  textEncoder = [resourceCopy textEncoder];
   v160 = 0;
-  v31 = [v30 runOnInput:v8 output:&v161 error:&v160];
+  v31 = [textEncoder runOnInput:array output:&v161 error:&v160];
   v32 = v160;
 
   if ((v31 & 1) == 0)
@@ -512,24 +512,24 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
     v64 = [v62 stringWithFormat:@"Text encoding failed (%@)", v63];
     v181 = v64;
     v65 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v181 forKeys:&v180 count:1];
-    v36 = [v60 errorWithDomain:v61 code:-18 userInfo:v65];
+    request = [v60 errorWithDomain:v61 code:-18 userInfo:v65];
 
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v66 = [v36 description];
+      v66 = [request description];
       *buf = 138412290;
       v177 = v66;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
 
-    if (a6)
+    if (error)
     {
-      objc_storeStrong(a6, v36);
+      objc_storeStrong(error, request);
     }
 
     v53 = 0;
-    v9 = v32;
-    v29 = v149;
+    segments = v32;
+    v29 = resourceCopy;
     goto LABEL_111;
   }
 
@@ -547,10 +547,10 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
     _os_signpost_emit_with_name_impl(&dword_1C9B70000, v33, OS_SIGNPOST_EVENT, v35, "TextEmbeddingGeneration", "%{public, signpost.description:begin_time}llu Component=%{public, signpost.telemetry:string1}s  enableTelemetry=YES ", buf, 0x16u);
   }
 
-  v36 = [(MADServiceTextProcessingSubtask *)self request];
-  v37 = a5;
+  request = [(MADServiceTextProcessingSubtask *)self request];
+  resultCopy4 = result;
   contexta = v27;
-  if ([v36 computeThreshold])
+  if ([request computeThreshold])
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -567,15 +567,15 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
     v41 = v40;
     if (v39 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v40))
     {
-      v42 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
+      signpostPayload = [(MADServiceTextProcessingSubtask *)self signpostPayload];
       *buf = 138412290;
-      v177 = v42;
+      v177 = signpostPayload;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v41, OS_SIGNPOST_INTERVAL_BEGIN, v39, "MADTextEmbeddingThreshold", "%@", buf, 0xCu);
     }
 
     v43 = mach_continuous_time();
-    v44 = [v149 calibration];
-    v45 = [v44 processEmbedding:v161 bias:&v159 + 4 scale:&v159 threshold:&v158];
+    calibration = [resourceCopy calibration];
+    v45 = [calibration processEmbedding:v161 bias:&v159 + 4 scale:&v159 threshold:&v158];
 
     if (v45)
     {
@@ -597,9 +597,9 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
       }
 
       v27 = contexta;
-      if (a6)
+      if (error)
       {
-        objc_storeStrong(a6, v51);
+        objc_storeStrong(error, v51);
       }
 
       v53 = 0;
@@ -610,9 +610,9 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
     v71 = v70;
     if (v39 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v70))
     {
-      v72 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
+      signpostPayload2 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
       *buf = 138412290;
-      v177 = v72;
+      v177 = signpostPayload2;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v71, OS_SIGNPOST_INTERVAL_END, v39, "MADTextEmbeddingThreshold", "%@", buf, 0xCu);
     }
 
@@ -630,14 +630,14 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v73, OS_SIGNPOST_EVENT, v75, "TextEmbeddingGeneration", "%{public, signpost.description:begin_time}llu Component=%{public, signpost.telemetry:string1}s  enableTelemetry=YES ", buf, 0x16u);
     }
 
-    v69 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v149, "calibrationVersion")}];
+    v69 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(resourceCopy, "calibrationVersion")}];
     LODWORD(v76) = HIDWORD(v159);
     v68 = [MEMORY[0x1E696AD98] numberWithFloat:v76];
     LODWORD(v77) = v159;
     v67 = [MEMORY[0x1E696AD98] numberWithFloat:v77];
     LODWORD(v78) = v158;
     v151 = [MEMORY[0x1E696AD98] numberWithFloat:v78];
-    v37 = a5;
+    resultCopy4 = result;
     v25 = MADRemoveBackgroundCachedMaskState;
   }
 
@@ -649,7 +649,7 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
     v69 = 0;
   }
 
-  if ([v36 computeSafety])
+  if ([request computeSafety])
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -667,15 +667,15 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
     v82 = v81;
     if (v80 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v81))
     {
-      v83 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
+      signpostPayload3 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
       *buf = 138412290;
-      v177 = v83;
+      v177 = signpostPayload3;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v82, OS_SIGNPOST_INTERVAL_BEGIN, v80, "MADTextEmbeddingSafety", "%@", buf, 0xCu);
     }
 
     v84 = mach_continuous_time();
-    v85 = [v149 safety];
-    v86 = [v85 processEmbedding:v161 safetyScore:&v159 + 4 isSafe:&v159];
+    safety = [resourceCopy safety];
+    v86 = [safety processEmbedding:v161 safetyScore:&v159 + 4 isSafe:&v159];
 
     if (v86)
     {
@@ -698,9 +698,9 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
       }
 
       v27 = contexta;
-      if (a6)
+      if (error)
       {
-        objc_storeStrong(a6, v92);
+        objc_storeStrong(error, v92);
       }
 
       v53 = 0;
@@ -712,9 +712,9 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
     v96 = v95;
     if (v80 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v95))
     {
-      v97 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
+      signpostPayload4 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
       *buf = 138412290;
-      v177 = v97;
+      v177 = signpostPayload4;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v96, OS_SIGNPOST_INTERVAL_END, v80, "MADTextEmbeddingSafety", "%@", buf, 0xCu);
     }
 
@@ -731,20 +731,20 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v98, OS_SIGNPOST_EVENT, v100, "TextEmbeddingGeneration", "%{public, signpost.description:begin_time}llu Component=%{public, signpost.telemetry:string1}s  enableTelemetry=YES ", buf, 0x16u);
     }
 
-    v155 = v36;
+    v155 = request;
 
     LODWORD(v101) = HIDWORD(v159);
     v140 = [MEMORY[0x1E696AD98] numberWithFloat:v101];
     v94 = [MEMORY[0x1E696AD98] numberWithBool:v159];
     v27 = contexta;
-    v37 = a5;
+    resultCopy4 = result;
     v68 = v142;
     v25 = MADRemoveBackgroundCachedMaskState;
   }
 
   else
   {
-    v155 = v36;
+    v155 = request;
     v94 = 0;
     v140 = 0;
   }
@@ -761,8 +761,8 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
 
     v143 = v68;
     v102 = +[MADTextEmbeddingCalibrationResource sharedResource];
-    v103 = [&v25[38] sharedManager];
-    v104 = [v103 activateResource:v102];
+    sharedManager = [&v25[38] sharedManager];
+    v104 = [sharedManager activateResource:v102];
 
     v159 = 0;
     v105 = VCPSignPostLog();
@@ -772,9 +772,9 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
     v108 = v107;
     if (v106 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v107))
     {
-      v109 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
+      signpostPayload5 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
       *buf = 138412290;
-      v177 = v109;
+      v177 = signpostPayload5;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v108, OS_SIGNPOST_INTERVAL_BEGIN, v106, "MADTextEmbeddingCalibration", "%@", buf, 0xCu);
     }
 
@@ -782,8 +782,8 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
 
     v110 = mach_continuous_time();
     v139 = v102;
-    v111 = [v102 instance];
-    v112 = [v111 processEmbedding:v161 mean:&v159 + 4 standardDeviation:&v159];
+    instance = [v102 instance];
+    v112 = [instance processEmbedding:v161 mean:&v159 + 4 standardDeviation:&v159];
 
     if (v112)
     {
@@ -806,9 +806,9 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
       }
 
       v27 = contexta;
-      if (a6)
+      if (error)
       {
-        objc_storeStrong(a6, v119);
+        objc_storeStrong(error, v119);
       }
 
       v121 = 0;
@@ -823,9 +823,9 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
     v124 = v123;
     if (v106 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v123))
     {
-      v125 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
+      signpostPayload6 = [(MADServiceTextProcessingSubtask *)self signpostPayload];
       *buf = 138412290;
-      v177 = v125;
+      v177 = signpostPayload6;
       _os_signpost_emit_with_name_impl(&dword_1C9B70000, v124, OS_SIGNPOST_INTERVAL_END, v106, "MADTextEmbeddingCalibration", "%@", buf, 0xCu);
     }
 
@@ -852,7 +852,7 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
 
     v69 = &unk_1F49BC250;
     v27 = contexta;
-    v37 = a5;
+    resultCopy4 = result;
     v68 = v143;
   }
 
@@ -865,8 +865,8 @@ void __56__MADTextEmbeddingTask_embeddingFromMultiArray_version___block_invoke(u
   v133 = objc_alloc(MEMORY[0x1E69AE3F0]);
   v144 = v69;
   v134 = [v133 initWithEmbedding:v161 calibrationVersion:v69 mean:v122 standardDeviation:v121 bias:v68 scale:v67 threshold:v151];
-  v135 = *v37;
-  *v37 = v134;
+  v135 = *resultCopy4;
+  *resultCopy4 = v134;
 
   if (![v155 computeSafety])
   {
@@ -876,17 +876,17 @@ LABEL_107:
     goto LABEL_108;
   }
 
-  v136 = *v37;
+  v136 = *resultCopy4;
   v137 = v140;
   [v136 setSafetyScore:v140 isSafe:v94];
   v53 = 1;
 LABEL_108:
 
-  v36 = v155;
+  request = v155;
 LABEL_109:
 
 LABEL_110:
-  v9 = v153;
+  segments = v153;
 LABEL_111:
 
 LABEL_112:
@@ -903,48 +903,48 @@ LABEL_112:
   }
 
   v3 = mach_continuous_time();
-  v4 = [(MADServiceTextProcessingSubtask *)self request];
-  if ([v4 calibrate] && objc_msgSend(v4, "version") != 3)
+  request = [(MADServiceTextProcessingSubtask *)self request];
+  if ([request calibrate] && objc_msgSend(request, "version") != 3)
   {
-    v5 = [(MADServiceTextProcessingSubtask *)self request];
+    request2 = [(MADServiceTextProcessingSubtask *)self request];
     v30 = MEMORY[0x1E696ABC0];
     v31 = *MEMORY[0x1E696A768];
     v60 = *MEMORY[0x1E696A578];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Calibration only supported for MD3"];
-    v61[0] = v6;
+    array = [MEMORY[0x1E696AEC0] stringWithFormat:@"Calibration only supported for MD3"];
+    v61[0] = array;
     v32 = MEMORY[0x1E695DF20];
     v33 = v61;
     v34 = &v60;
 LABEL_43:
     v35 = [v32 dictionaryWithObjects:v33 forKeys:v34 count:1];
     v36 = [v30 errorWithDomain:v31 code:-18 userInfo:v35];
-    [v5 setError:v36];
+    [request2 setError:v36];
 
     goto LABEL_44;
   }
 
-  if ([v4 computeThreshold] && objc_msgSend(v4, "version") != 3 && objc_msgSend(v4, "version") != 4 && objc_msgSend(v4, "version") != 5 && objc_msgSend(v4, "version") != 7 && objc_msgSend(v4, "version") != 8 && objc_msgSend(v4, "version") != 9)
+  if ([request computeThreshold] && objc_msgSend(request, "version") != 3 && objc_msgSend(request, "version") != 4 && objc_msgSend(request, "version") != 5 && objc_msgSend(request, "version") != 7 && objc_msgSend(request, "version") != 8 && objc_msgSend(request, "version") != 9)
   {
-    v5 = [(MADServiceTextProcessingSubtask *)self request];
+    request2 = [(MADServiceTextProcessingSubtask *)self request];
     v30 = MEMORY[0x1E696ABC0];
     v31 = *MEMORY[0x1E696A768];
     v58 = *MEMORY[0x1E696A578];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Threshold calibration only supported for MD3-MD7"];
-    v59 = v6;
+    array = [MEMORY[0x1E696AEC0] stringWithFormat:@"Threshold calibration only supported for MD3-MD7"];
+    v59 = array;
     v32 = MEMORY[0x1E695DF20];
     v33 = &v59;
     v34 = &v58;
     goto LABEL_43;
   }
 
-  if ([v4 computeSafety] && objc_msgSend(v4, "version") != 5 && objc_msgSend(v4, "version") != 7 && objc_msgSend(v4, "version") != 8 && objc_msgSend(v4, "version") != 9)
+  if ([request computeSafety] && objc_msgSend(request, "version") != 5 && objc_msgSend(request, "version") != 7 && objc_msgSend(request, "version") != 8 && objc_msgSend(request, "version") != 9)
   {
-    v5 = [(MADServiceTextProcessingSubtask *)self request];
+    request2 = [(MADServiceTextProcessingSubtask *)self request];
     v30 = MEMORY[0x1E696ABC0];
     v31 = *MEMORY[0x1E696A768];
     v56 = *MEMORY[0x1E696A578];
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Safety only supported for MD5-MD7"];
-    v57 = v6;
+    array = [MEMORY[0x1E696AEC0] stringWithFormat:@"Safety only supported for MD5-MD7"];
+    v57 = array;
     v32 = MEMORY[0x1E695DF20];
     v33 = &v57;
     v34 = &v56;
@@ -952,18 +952,18 @@ LABEL_43:
   }
 
   v39 = v3;
-  v40 = v4;
-  v5 = +[MADTextEmbeddingResource sharedResource:extendedContextLength:](MADTextEmbeddingResource, "sharedResource:extendedContextLength:", [v4 version], objc_msgSend(v4, "extendedContextLength"));
-  v38 = [v5 isTextEncoderWarm];
-  v6 = [MEMORY[0x1E695DF70] array];
+  v40 = request;
+  request2 = +[MADTextEmbeddingResource sharedResource:extendedContextLength:](MADTextEmbeddingResource, "sharedResource:extendedContextLength:", [request version], objc_msgSend(request, "extendedContextLength"));
+  isTextEncoderWarm = [request2 isTextEncoderWarm];
+  array = [MEMORY[0x1E695DF70] array];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v7 = [(MADServiceTextProcessingSubtask *)self asset];
-  v8 = [v7 textInputs];
+  asset = [(MADServiceTextProcessingSubtask *)self asset];
+  textInputs = [asset textInputs];
 
-  v9 = [v8 countByEnumeratingWithState:&v42 objects:v55 count:16];
+  v9 = [textInputs countByEnumeratingWithState:&v42 objects:v55 count:16];
   if (v9)
   {
     v10 = v9;
@@ -975,23 +975,23 @@ LABEL_43:
       {
         if (*v43 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(textInputs);
         }
 
         v13 = *(*(&v42 + 1) + 8 * v12);
         v14 = objc_autoreleasePoolPush();
         *buf = 0;
         v41 = 0;
-        v15 = [(MADTextEmbeddingTask *)self processInput:v13 resource:v5 result:&v41 error:buf];
+        v15 = [(MADTextEmbeddingTask *)self processInput:v13 resource:request2 result:&v41 error:buf];
         if (v15)
         {
-          [v6 addObject:v41];
+          [array addObject:v41];
         }
 
         else
         {
-          v16 = [(MADServiceTextProcessingSubtask *)self request];
-          [v16 setError:*buf];
+          request3 = [(MADServiceTextProcessingSubtask *)self request];
+          [request3 setError:*buf];
         }
 
         objc_autoreleasePoolPop(v14);
@@ -1005,7 +1005,7 @@ LABEL_43:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v42 objects:v55 count:16];
+      v10 = [textInputs countByEnumeratingWithState:&v42 objects:v55 count:16];
       if (v10)
       {
         continue;
@@ -1015,8 +1015,8 @@ LABEL_43:
     }
   }
 
-  v17 = [(MADServiceTextProcessingSubtask *)self request];
-  [v17 setResults:v6];
+  request4 = [(MADServiceTextProcessingSubtask *)self request];
+  [request4 setResults:array];
 
   v18 = VCPSignPostPersistentLog();
   v19 = VCPSignPostPersistentLog();
@@ -1026,8 +1026,8 @@ LABEL_43:
   {
     v21 = qos_class_self();
     v22 = VCPMAQoSDescription(v21);
-    v23 = [v22 UTF8String];
-    if (v38)
+    uTF8String = [v22 UTF8String];
+    if (isTextEncoderWarm)
     {
       v24 = "Yes";
     }
@@ -1037,20 +1037,20 @@ LABEL_43:
       v24 = "No";
     }
 
-    v25 = [(MADServiceTextProcessingSubtask *)self asset];
-    v26 = [v25 textInputs];
-    v27 = [v26 count];
-    v28 = [v40 extendedContextLength];
+    asset2 = [(MADServiceTextProcessingSubtask *)self asset];
+    textInputs2 = [asset2 textInputs];
+    v27 = [textInputs2 count];
+    extendedContextLength = [v40 extendedContextLength];
     *buf = 134350082;
     v29 = 77;
     *&buf[4] = v39;
-    if (v28)
+    if (extendedContextLength)
     {
       v29 = 512;
     }
 
     v47 = 2082;
-    v48 = v23;
+    v48 = uTF8String;
     v49 = 2082;
     v50 = v24;
     v51 = 2050;
@@ -1063,12 +1063,12 @@ LABEL_43:
   if (MediaAnalysisLogLevel() < 6)
   {
 LABEL_41:
-    v4 = v40;
+    request = v40;
   }
 
   else
   {
-    v4 = v40;
+    request = v40;
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
       *buf = 0;

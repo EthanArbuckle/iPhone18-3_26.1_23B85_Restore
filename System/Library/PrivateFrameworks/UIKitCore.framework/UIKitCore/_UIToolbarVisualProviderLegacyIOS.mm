@@ -1,36 +1,36 @@
 @interface _UIToolbarVisualProviderLegacyIOS
 - (BOOL)toolbarIsSmall;
 - (CGRect)backgroundFrame;
-- (CGSize)defaultSizeForOrientation:(int64_t)a3;
-- (double)_edgeMarginForBorderedItem:(BOOL)a3 isText:(BOOL)a4;
+- (CGSize)defaultSizeForOrientation:(int64_t)orientation;
+- (double)_edgeMarginForBorderedItem:(BOOL)item isText:(BOOL)text;
 - (id)_currentCustomBackground;
-- (id)_positionToolbarButtons:(id)a3 ignoringItem:(id)a4 resetFontScaleAdjustment:(BOOL)a5 actuallyRepositionButtons:(BOOL)a6;
-- (id)_repositionedItemsFromItems:(id)a3 withBarButtonFrames:(id *)a4 withHitRects:(id *)a5 buttonIndexes:(id *)a6 textButtonIndexes:(id *)a7;
+- (id)_positionToolbarButtons:(id)buttons ignoringItem:(id)item resetFontScaleAdjustment:(BOOL)adjustment actuallyRepositionButtons:(BOOL)repositionButtons;
+- (id)_repositionedItemsFromItems:(id)items withBarButtonFrames:(id *)frames withHitRects:(id *)rects buttonIndexes:(id *)indexes textButtonIndexes:(id *)buttonIndexes;
 - (id)currentBackgroundView;
-- (void)_createViewsForItems:(id)a3;
-- (void)customViewChangedForButtonItem:(id)a3;
-- (void)drawBackgroundViewInRect:(CGRect)a3;
+- (void)_createViewsForItems:(id)items;
+- (void)customViewChangedForButtonItem:(id)item;
+- (void)drawBackgroundViewInRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setCustomBackgroundView:(id)a3;
+- (void)setCustomBackgroundView:(id)view;
 - (void)updateBackgroundGroupName;
 - (void)updateBarBackground;
 - (void)updateBarBackgroundSize;
-- (void)updateBarForStyle:(int64_t)a3;
-- (void)updateItemsForNewFrame:(id)a3;
-- (void)updateWithItems:(id)a3 fromOldItems:(id)a4 animate:(BOOL)a5;
+- (void)updateBarForStyle:(int64_t)style;
+- (void)updateItemsForNewFrame:(id)frame;
+- (void)updateWithItems:(id)items fromOldItems:(id)oldItems animate:(BOOL)animate;
 @end
 
 @implementation _UIToolbarVisualProviderLegacyIOS
 
-- (void)_createViewsForItems:(id)a3
+- (void)_createViewsForItems:(id)items
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -41,12 +41,12 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 view];
-        if (v10)
+        view = [v9 view];
+        if (view)
         {
 LABEL_7:
 
@@ -73,33 +73,33 @@ LABEL_11:
         }
 
 LABEL_12:
-        v12 = [v9 view];
+        view2 = [v9 view];
 
-        if (v12)
+        if (view2)
         {
           toolbar = self->super._toolbar;
-          v14 = [v9 view];
-          [(UIView *)toolbar addSubview:v14];
+          view3 = [v9 view];
+          [(UIView *)toolbar addSubview:view3];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)updateItemsForNewFrame:(id)a3
+- (void)updateItemsForNewFrame:(id)frame
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UIToolbar *)self->super._toolbar isMinibar];
+  frameCopy = frame;
+  isMinibar = [(UIToolbar *)self->super._toolbar isMinibar];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v4;
+  v6 = frameCopy;
   v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
@@ -115,27 +115,27 @@ LABEL_12:
         }
 
         v11 = *(*(&v25 + 1) + 8 * i);
-        v12 = [v11 view];
-        if (v12 && ([v11 isCustomViewItem] & 1) == 0)
+        view = [v11 view];
+        if (view && ([v11 isCustomViewItem] & 1) == 0)
         {
-          v19 = [v11 isMinibarView];
+          isMinibarView = [v11 isMinibarView];
 
-          if (v5 != v19)
+          if (isMinibar != isMinibarView)
           {
-            v20 = [v11 view];
-            v18 = [v20 superview];
+            view2 = [v11 view];
+            superview = [view2 superview];
 
-            if (v18)
+            if (superview)
             {
-              v21 = [v11 view];
-              [v21 removeFromSuperview];
+              view3 = [v11 view];
+              [view3 removeFromSuperview];
 
               v22 = [v11 createViewForToolbar:self->super._toolbar];
               [v11 setView:v22];
 
-              [v11 setIsMinibarView:v5];
-              v23 = [v11 view];
-              [v18 addSubview:v23];
+              [v11 setIsMinibarView:isMinibar];
+              view4 = [v11 view];
+              [superview addSubview:view4];
             }
 
             else
@@ -143,8 +143,8 @@ LABEL_12:
               v24 = [v11 createViewForToolbar:self->super._toolbar];
               [v11 setView:v24];
 
-              [v11 setIsMinibarView:v5];
-              v18 = 0;
+              [v11 setIsMinibarView:isMinibar];
+              superview = 0;
             }
 
             goto LABEL_17;
@@ -155,21 +155,21 @@ LABEL_12:
         {
         }
 
-        v13 = [v11 view];
-        if (v13)
+        view5 = [v11 view];
+        if (view5)
         {
-          v14 = v13;
-          v15 = [v11 isCustomViewItem];
+          v14 = view5;
+          isCustomViewItem = [v11 isCustomViewItem];
 
-          if (v15)
+          if (isCustomViewItem)
           {
-            v16 = [v11 view];
+            view6 = [v11 view];
             v17 = objc_opt_respondsToSelector();
 
             if (v17)
             {
-              v18 = [v11 view];
-              [v18 updateForMiniBarState:v5];
+              superview = [v11 view];
+              [superview updateForMiniBarState:isMinibar];
 LABEL_17:
 
               continue;
@@ -185,33 +185,33 @@ LABEL_17:
   }
 }
 
-- (id)_repositionedItemsFromItems:(id)a3 withBarButtonFrames:(id *)a4 withHitRects:(id *)a5 buttonIndexes:(id *)a6 textButtonIndexes:(id *)a7
+- (id)_repositionedItemsFromItems:(id)items withBarButtonFrames:(id *)frames withHitRects:(id *)rects buttonIndexes:(id *)indexes textButtonIndexes:(id *)buttonIndexes
 {
   v251 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [MEMORY[0x1E695DF70] array];
-  v206 = [MEMORY[0x1E695DF70] array];
-  v223 = self;
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  selfCopy = self;
   [(UIView *)self->super._toolbar bounds];
   v211 = v13;
   v224 = v14;
-  v15 = [v10 count];
+  v15 = [itemsCopy count];
   if (!v15)
   {
-    v197 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v197 handleFailureInMethod:a2 object:self file:@"_UIToolbarVisualProviderLegacyIOS.m" lineNumber:141 description:@"Can't get button frames when there are no items"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIToolbarVisualProviderLegacyIOS.m" lineNumber:141 description:@"Can't get button frames when there are no items"];
   }
 
-  v198 = a4;
-  v214 = v12;
-  v204 = [MEMORY[0x1E696AD50] indexSet];
-  v209 = [MEMORY[0x1E696AD50] indexSet];
+  framesCopy = frames;
+  v214 = array2;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  indexSet2 = [MEMORY[0x1E696AD50] indexSet];
   v237 = 0u;
   v238 = 0u;
   v239 = 0u;
   v240 = 0u;
-  obj = v10;
+  obj = itemsCopy;
   v16 = [obj countByEnumeratingWithState:&v237 objects:v250 count:16];
   if (v16)
   {
@@ -240,12 +240,12 @@ LABEL_17:
         else if ([v23 _flexible])
         {
           v24 = MEMORY[0x1E696B098];
-          v25 = [v23 view];
-          [v25 frame];
+          view = [v23 view];
+          [view frame];
           v26 = [v24 valueWithCGRect:?];
-          [v11 addObject:v26];
+          [array addObject:v26];
 
-          [v209 addIndex:v18];
+          [indexSet2 addIndex:v18];
           ++v19;
         }
 
@@ -256,8 +256,8 @@ LABEL_17:
 
         else
         {
-          v27 = [v23 view];
-          [v27 frame];
+          view2 = [v23 view];
+          [view2 frame];
           v29 = v28;
           v31 = v30;
           v33 = v32;
@@ -272,9 +272,9 @@ LABEL_17:
 
             else
             {
-              [v204 addIndex:v18];
-              [v27 sizeThatFits:{v33, v35}];
-              UICeilToViewScale(v223->super._toolbar);
+              [indexSet addIndex:v18];
+              [view2 sizeThatFits:{v33, v35}];
+              UICeilToViewScale(selfCopy->super._toolbar);
               v44 = v47;
             }
           }
@@ -306,9 +306,9 @@ LABEL_17:
             }
           }
 
-          [v209 addIndex:v18];
+          [indexSet2 addIndex:v18];
           v48 = [MEMORY[0x1E696B098] valueWithCGRect:{v29, v31, v44, v35}];
-          [v11 addObject:v48];
+          [array addObject:v48];
         }
 
         ++v18;
@@ -329,44 +329,44 @@ LABEL_17:
     v49 = 2;
   }
 
-  v50 = [obj firstObject];
-  v203 = [v50 view];
+  firstObject = [obj firstObject];
+  view3 = [firstObject view];
 
-  v51 = [obj lastObject];
-  v202 = [v51 view];
+  lastObject = [obj lastObject];
+  view4 = [lastObject view];
 
-  v52 = [obj firstObject];
-  v53 = [v52 view];
-  v54 = (objc_opt_respondsToSelector() & 1) != 0 && ([v53 _isBordered] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v52, "style") == 1;
+  firstObject2 = [obj firstObject];
+  view5 = [firstObject2 view];
+  v54 = (objc_opt_respondsToSelector() & 1) != 0 && ([view5 _isBordered] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(firstObject2, "style") == 1;
 
-  v55 = [obj lastObject];
-  v56 = [v55 view];
-  v57 = (objc_opt_respondsToSelector() & 1) != 0 && ([v56 _isBordered] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(v55, "style") == 1;
+  lastObject2 = [obj lastObject];
+  view6 = [lastObject2 view];
+  v57 = (objc_opt_respondsToSelector() & 1) != 0 && ([view6 _isBordered] & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || objc_msgSend(lastObject2, "style") == 1;
 
-  v58 = [v204 containsIndex:0];
-  v59 = [v204 containsIndex:v15 - 1];
-  [(_UIToolbarVisualProviderLegacyIOS *)v223 _edgeMarginForBorderedItem:v54 isText:v58];
+  v58 = [indexSet containsIndex:0];
+  v59 = [indexSet containsIndex:v15 - 1];
+  [(_UIToolbarVisualProviderLegacyIOS *)selfCopy _edgeMarginForBorderedItem:v54 isText:v58];
   v61 = v60;
-  [(_UIToolbarVisualProviderLegacyIOS *)v223 _edgeMarginForBorderedItem:v57 isText:v59];
+  [(_UIToolbarVisualProviderLegacyIOS *)selfCopy _edgeMarginForBorderedItem:v57 isText:v59];
   v63 = v62;
   v64 = 0.0;
   v65 = 0.0;
-  if (v203)
+  if (view3)
   {
-    [v203 alignmentRectInsets];
+    [view3 alignmentRectInsets];
     v65 = v66;
   }
 
-  if (v202)
+  if (view4)
   {
-    [v202 alignmentRectInsets];
+    [view4 alignmentRectInsets];
     v64 = v67;
   }
 
   v213 = 0;
   if (v20 == 2 && !v19)
   {
-    v213 = [v204 count] + v49 != v15;
+    v213 = [indexSet count] + v49 != v15;
   }
 
   v68 = v61 - v65;
@@ -426,16 +426,16 @@ LABEL_17:
 
             else
             {
-              v79 = [v76 view];
+              view7 = [v76 view];
               v80 = 0.0;
               if (objc_opt_respondsToSelector())
               {
                 v81 = 0.0;
-                if ([v79 _canGetPadding])
+                if ([view7 _canGetPadding])
                 {
-                  [v79 _paddingForLeft:1];
+                  [view7 _paddingForLeft:1];
                   v81 = v82;
-                  [v79 _paddingForLeft:0];
+                  [view7 _paddingForLeft:0];
                   v80 = v83;
                 }
               }
@@ -445,18 +445,18 @@ LABEL_17:
                 v81 = 0.0;
               }
 
-              v84 = [v11 objectAtIndexedSubscript:v71];
+              v84 = [array objectAtIndexedSubscript:v71];
               [v84 CGRectValue];
               v86 = v85;
               v88 = v87;
 
               if ([v76 _flexible])
               {
-                v89 = [v79 isMemberOfClass:objc_opt_class()];
+                v89 = [view7 isMemberOfClass:objc_opt_class()];
                 v90 = 0.0;
                 if ((v89 & 1) == 0)
                 {
-                  [v79 sizeThatFits:{v86, v88}];
+                  [view7 sizeThatFits:{v86, v88}];
                 }
               }
 
@@ -509,7 +509,7 @@ LABEL_17:
       v91 = v214;
       if (v247 >= 1)
       {
-        UICeilToViewScale(v223->super._toolbar);
+        UICeilToViewScale(selfCopy->super._toolbar);
       }
 
       v101 = v98 - (v68 + v248 + v246 * 10.0 - v100);
@@ -605,8 +605,8 @@ LABEL_156:
         continue;
       }
 
-      v116 = [v114 view];
-      v117 = [v11 objectAtIndexedSubscript:v109];
+      view8 = [v114 view];
+      v117 = [array objectAtIndexedSubscript:v109];
       [v117 CGRectValue];
       v119 = v118;
       v121 = v120;
@@ -614,9 +614,9 @@ LABEL_156:
       if ([v114 _flexible])
       {
         v122 = 0.0;
-        if (([v116 isMemberOfClass:objc_opt_class()] & 1) == 0)
+        if (([view8 isMemberOfClass:objc_opt_class()] & 1) == 0)
         {
-          [v116 sizeThatFits:{v119, v121}];
+          [view8 sizeThatFits:{v119, v121}];
           v122 = v123;
         }
       }
@@ -629,13 +629,13 @@ LABEL_156:
       v124 = 0.0;
       if (objc_opt_respondsToSelector())
       {
-        v125 = [v116 _canGetPadding];
+        _canGetPadding = [view8 _canGetPadding];
         v126 = 0.0;
-        if (v125)
+        if (_canGetPadding)
         {
-          [v116 _paddingForLeft:{1, 0.0}];
+          [view8 _paddingForLeft:{1, 0.0}];
           v124 = v127;
-          [v116 _paddingForLeft:0];
+          [view8 _paddingForLeft:0];
         }
       }
 
@@ -645,25 +645,25 @@ LABEL_156:
       }
 
       v220 = v126;
-      if ((objc_opt_respondsToSelector() & 1) != 0 && [v116 _useBarHeight])
+      if ((objc_opt_respondsToSelector() & 1) != 0 && [view8 _useBarHeight])
       {
         v121 = v224;
       }
 
-      UIRoundToViewScale(v223->super._toolbar);
+      UIRoundToViewScale(selfCopy->super._toolbar);
       v129 = v128;
-      v130 = [(UIToolbar *)v223->super._toolbar barPosition];
-      v132 = v130 != 1 && v130 != 4;
+      barPosition = [(UIToolbar *)selfCopy->super._toolbar barPosition];
+      v132 = barPosition != 1 && barPosition != 4;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v116 _backgroundVerticalPositionAdjustmentForBarMetrics:{-[UIToolbar isMinibar](v223->super._toolbar, "isMinibar")}];
+        [view8 _backgroundVerticalPositionAdjustmentForBarMetrics:{-[UIToolbar isMinibar](selfCopy->super._toolbar, "isMinibar")}];
         v129 = v129 + v133;
       }
 
       if (objc_opt_respondsToSelector())
       {
-        [v116 _setInTopBar:v132];
+        [view8 _setInTopBar:v132];
       }
 
       [v114 width];
@@ -707,7 +707,7 @@ LABEL_144:
         v122 = v210 + v122;
       }
 
-      [v116 frame];
+      [view8 frame];
       v256.origin.x = v142;
       v256.origin.y = v143;
       v256.size.width = v144;
@@ -718,7 +718,7 @@ LABEL_144:
       v253.size.height = v121;
       if (!CGRectEqualToRect(v253, v256))
       {
-        [v206 addObject:v114];
+        [array3 addObject:v114];
       }
 
       obja = v121;
@@ -727,8 +727,8 @@ LABEL_144:
       {
         v146 = fmin((v141 - (v110 + v111)) * 0.5, v212);
         v91 = v214;
-        v147 = [v214 lastObject];
-        [v147 CGRectValue];
+        lastObject3 = [v214 lastObject];
+        [lastObject3 CGRectValue];
         v149 = v148;
         v151 = v150;
         v153 = v152;
@@ -751,9 +751,9 @@ LABEL_144:
       }
 
       v160 = v122 + v146;
-      if (v109 == [v11 count] - 1)
+      if (v109 == [array count] - 1)
       {
-        [(UIView *)v223->super._toolbar bounds];
+        [(UIView *)selfCopy->super._toolbar bounds];
         MaxX = CGRectGetMaxX(v254);
         v162 = v217;
         v255.origin.x = v217;
@@ -779,9 +779,9 @@ LABEL_144:
       [v91 addObject:v166];
 
       v167 = [MEMORY[0x1E696B098] valueWithCGRect:{v162, v163, v122, v164}];
-      [v11 replaceObjectAtIndex:v109 withObject:v167];
+      [array replaceObjectAtIndex:v109 withObject:v167];
 
-      v168 = v116;
+      v168 = view8;
       ++v109;
 
       v108 = v168;
@@ -795,32 +795,32 @@ LABEL_144:
   while (v107);
 LABEL_161:
 
-  v169 = a5;
-  if (v198)
+  rectsCopy2 = rects;
+  if (framesCopy)
   {
-    if ((*(&v223->super._toolbar->super._viewFlags + 18) & 0x40) != 0 && v11 && [v11 count])
+    if ((*(&selfCopy->super._toolbar->super._viewFlags + 18) & 0x40) != 0 && array && [array count])
     {
-      [(UIView *)v223->super._toolbar bounds];
-      _UIRTLConvertAllLTRFramesToRTL(v11, v170, v171, v172, v173);
+      [(UIView *)selfCopy->super._toolbar bounds];
+      _UIRTLConvertAllLTRFramesToRTL(array, v170, v171, v172, v173);
     }
 
-    v174 = v11;
-    *v198 = v11;
+    v174 = array;
+    *framesCopy = array;
   }
 
-  if (a7)
+  if (buttonIndexes)
   {
-    *a7 = v204;
+    *buttonIndexes = indexSet;
   }
 
-  if (a6)
+  if (indexes)
   {
-    *a6 = v209;
+    *indexes = indexSet2;
   }
 
-  if (a5)
+  if (rects)
   {
-    if ((*(&v223->super._toolbar->super._viewFlags + 18) & 0x40) != 0 && v91 && [v91 count])
+    if ((*(&selfCopy->super._toolbar->super._viewFlags + 18) & 0x40) != 0 && v91 && [v91 count])
     {
       v225 = 0u;
       v226 = 0u;
@@ -847,7 +847,7 @@ LABEL_161:
             v184 = v183;
             v186 = v185;
             v188 = v187;
-            v189 = [v11 objectAtIndexedSubscript:v178];
+            v189 = [array objectAtIndexedSubscript:v178];
             [v189 CGRectValue];
             v191 = v182 + v186 - v190;
 
@@ -869,14 +869,14 @@ LABEL_161:
         while (v177);
       }
 
-      v169 = a5;
+      rectsCopy2 = rects;
     }
 
     v194 = v91;
-    *v169 = v91;
+    *rectsCopy2 = v91;
   }
 
-  v195 = v206;
+  v195 = array3;
 
   return v195;
 }
@@ -884,39 +884,39 @@ LABEL_161:
 - (void)layoutSubviews
 {
   [(_UIToolbarVisualProviderLegacyIOS *)self updateBarBackground];
-  v3 = [(UIView *)self->super._toolbar subviews];
+  subviews = [(UIView *)self->super._toolbar subviews];
   v4 = +[UIDevice currentDevice];
-  _UINavigationButtonUpdateAccessibilityBackgrounds(v3, [v4 _graphicsQuality] == 100, 0);
+  _UINavigationButtonUpdateAccessibilityBackgrounds(subviews, [v4 _graphicsQuality] == 100, 0);
 
   [(_UIToolbarVisualProviderLegacyIOS *)self positionToolbarButtonsAndResetFontScaleAdjustment:0];
 }
 
-- (id)_positionToolbarButtons:(id)a3 ignoringItem:(id)a4 resetFontScaleAdjustment:(BOOL)a5 actuallyRepositionButtons:(BOOL)a6
+- (id)_positionToolbarButtons:(id)buttons ignoringItem:(id)item resetFontScaleAdjustment:(BOOL)adjustment actuallyRepositionButtons:(BOOL)repositionButtons
 {
-  v131 = a6;
-  v6 = a5;
+  repositionButtonsCopy = repositionButtons;
+  adjustmentCopy = adjustment;
   v187 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  buttonsCopy = buttons;
+  itemCopy = item;
+  if (!buttonsCopy)
   {
-    v9 = [(UIToolbar *)self->super._toolbar items];
+    buttonsCopy = [(UIToolbar *)self->super._toolbar items];
   }
 
-  if (![v9 count])
+  if (![buttonsCopy count])
   {
-    v25 = [MEMORY[0x1E695DEC8] array];
+    array = [MEMORY[0x1E695DEC8] array];
     goto LABEL_115;
   }
 
-  if (v6)
+  if (adjustmentCopy)
   {
     v174 = 0u;
     v175 = 0u;
     v172 = 0u;
     v173 = 0u;
-    v11 = v9;
-    v12 = v9;
+    v11 = buttonsCopy;
+    v12 = buttonsCopy;
     v13 = [v12 countByEnumeratingWithState:&v172 objects:v185 count:16];
     if (v13)
     {
@@ -931,17 +931,17 @@ LABEL_161:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v172 + 1) + 8 * i) view];
+          view = [*(*(&v172 + 1) + 8 * i) view];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v18 = [v17 _info];
-            [v18 _setFontScaleAdjustment:1.0];
+            _info = [view _info];
+            [_info _setFontScaleAdjustment:1.0];
 
-            if ([v17 _wantsAccessibilityButtonShapes])
+            if ([view _wantsAccessibilityButtonShapes])
             {
-              v19 = [v17 _info];
-              [v19 sizeToFit];
+              _info2 = [view _info];
+              [_info2 sizeToFit];
             }
           }
         }
@@ -952,14 +952,14 @@ LABEL_161:
       while (v14);
     }
 
-    v9 = v11;
+    buttonsCopy = v11;
   }
 
   v171 = 0;
   v170 = 0;
   v169 = 0;
   v168 = 0;
-  v129 = [(_UIToolbarVisualProviderLegacyIOS *)self _repositionedItemsFromItems:v9 withBarButtonFrames:&v171 withHitRects:&v170 buttonIndexes:&v169 textButtonIndexes:&v168];
+  v129 = [(_UIToolbarVisualProviderLegacyIOS *)self _repositionedItemsFromItems:buttonsCopy withBarButtonFrames:&v171 withHitRects:&v170 buttonIndexes:&v169 textButtonIndexes:&v168];
   v20 = v171;
   v132 = v170;
   v127 = v169;
@@ -981,8 +981,8 @@ LABEL_161:
       [v23 objectEnumerator];
     }
     v26 = ;
-    v27 = [v26 nextObject];
-    [v27 CGRectValue];
+    nextObject = [v26 nextObject];
+    [nextObject CGRectValue];
     MinX = CGRectGetMinX(v189);
 
     v178 = 0u;
@@ -1055,8 +1055,8 @@ LABEL_161:
 LABEL_32:
   [(UIView *)self->super._toolbar bounds];
   v45 = v44;
-  v128 = v9;
-  v124 = v10;
+  v128 = buttonsCopy;
+  v124 = itemCopy;
   if (v44 > 0.0)
   {
     v166 = 0u;
@@ -1098,12 +1098,12 @@ LABEL_32:
     }
 
     v20 = v46;
-    v9 = v128;
+    buttonsCopy = v128;
   }
 
   if (v43)
   {
-    [v9 objectsAtIndexes:v137];
+    [buttonsCopy objectsAtIndexes:v137];
     v160 = 0u;
     v161 = 0u;
     v162 = 0u;
@@ -1125,24 +1125,24 @@ LABEL_32:
           }
 
           v61 = *(*(&v160 + 1) + 8 * k);
-          v62 = [v61 _appearanceStorage];
-          v63 = [v61 view];
-          v64 = [v63 _info];
-          v65 = [v64 _appearanceStorage];
+          _appearanceStorage = [v61 _appearanceStorage];
+          view2 = [v61 view];
+          _info3 = [view2 _info];
+          _appearanceStorage2 = [_info3 _appearanceStorage];
 
-          v66 = [v62 textAttributeForKey:v58 state:0];
+          v66 = [_appearanceStorage textAttributeForKey:v58 state:0];
           if (v66)
           {
 
 LABEL_59:
             v68 = 0;
-            v10 = v124;
+            itemCopy = v124;
             v20 = v59;
-            v9 = v128;
+            buttonsCopy = v128;
             goto LABEL_60;
           }
 
-          v67 = [v65 textAttributeForKey:v58 state:0];
+          v67 = [_appearanceStorage2 textAttributeForKey:v58 state:0];
 
           if (v67)
           {
@@ -1152,9 +1152,9 @@ LABEL_59:
 
         v56 = [recta countByEnumeratingWithState:&v160 objects:v183 count:16];
         v68 = 1;
-        v10 = v124;
+        itemCopy = v124;
         v20 = v59;
-        v9 = v128;
+        buttonsCopy = v128;
         if (v56)
         {
           continue;
@@ -1180,14 +1180,14 @@ LABEL_60:
   if (!v21)
   {
 LABEL_61:
-    v70 = v131;
+    v70 = repositionButtonsCopy;
     goto LABEL_62;
   }
 
-  v70 = v131;
-  if (v131)
+  v70 = repositionButtonsCopy;
+  if (repositionButtonsCopy)
   {
-    v69 = [v9 objectsAtIndexes:v137];
+    v69 = [buttonsCopy objectsAtIndexes:v137];
     v68 = 0;
   }
 
@@ -1206,13 +1206,13 @@ LABEL_62:
   {
     if ((*(&self->super._toolbar->super._viewFlags + 18) & 0x40) != 0)
     {
-      v72 = [v20 lastObject];
+      lastObject = [v20 lastObject];
       [v20 firstObject];
     }
 
     else
     {
-      v72 = [v20 firstObject];
+      lastObject = [v20 firstObject];
       [v20 lastObject];
     }
     v122 = ;
@@ -1228,15 +1228,15 @@ LABEL_62:
       v75 = v45;
     }
 
-    rectb = v72;
-    [v72 CGRectValue];
+    rectb = lastObject;
+    [lastObject CGRectValue];
     v76 = CGRectGetMinX(v195);
     v121 = [v20 count];
     v152 = 0u;
     v153 = 0u;
     v154 = 0u;
     v155 = 0u;
-    v77 = v9;
+    v77 = buttonsCopy;
     v78 = [v77 countByEnumeratingWithState:&v152 objects:v182 count:16];
     if (v78)
     {
@@ -1265,10 +1265,10 @@ LABEL_62:
 
             if ([v137 containsIndex:v82])
             {
-              v91 = [v87 view];
-              v92 = [v91 _isBorderedOtherThanAccessibility];
+              view3 = [v87 view];
+              _isBorderedOtherThanAccessibility = [view3 _isBorderedOtherThanAccessibility];
 
-              if ((v92 & 1) == 0)
+              if ((_isBorderedOtherThanAccessibility & 1) == 0)
               {
                 v85 = v85 + v90;
               }
@@ -1315,23 +1315,23 @@ LABEL_62:
           }
 
           v99 = *(*(&v148 + 1) + 8 * n);
-          v100 = [v99 view];
-          if (([v100 _isBorderedOtherThanAccessibility] & 1) == 0)
+          view4 = [v99 view];
+          if (([view4 _isBorderedOtherThanAccessibility] & 1) == 0)
           {
-            v101 = [v99 view];
-            v102 = [v101 _info];
-            [v102 _fontScaleAdjustment];
+            view5 = [v99 view];
+            _info4 = [view5 _info];
+            [_info4 _fontScaleAdjustment];
             v104 = v103;
 
             v105 = v104 == 0.0 ? 1.0 : v104;
             v106 = fmin(fmax(v96 * v105, 0.5), 1.0);
-            v107 = [v100 _info];
-            [v107 _setFontScaleAdjustment:v106];
+            _info5 = [view4 _info];
+            [_info5 _setFontScaleAdjustment:v106];
 
-            if ([v100 _wantsAccessibilityButtonShapes])
+            if ([view4 _wantsAccessibilityButtonShapes])
             {
-              v108 = [v100 _info];
-              [v108 sizeToFit];
+              _info6 = [view4 _info];
+              [_info6 sizeToFit];
             }
           }
         }
@@ -1346,14 +1346,14 @@ LABEL_62:
     v123[2](v123);
     v146 = v132;
     v147 = v80;
-    v25 = [(_UIToolbarVisualProviderLegacyIOS *)self _repositionedItemsFromItems:v77 withBarButtonFrames:&v147 withHitRects:&v146 buttonIndexes:0 textButtonIndexes:0];
+    array = [(_UIToolbarVisualProviderLegacyIOS *)self _repositionedItemsFromItems:v77 withBarButtonFrames:&v147 withHitRects:&v146 buttonIndexes:0 textButtonIndexes:0];
     v20 = v147;
 
     v109 = v146;
     v132 = v109;
-    v10 = v124;
-    v9 = v128;
-    if (!v131)
+    itemCopy = v124;
+    buttonsCopy = v128;
+    if (!repositionButtonsCopy)
     {
       goto LABEL_114;
     }
@@ -1362,14 +1362,14 @@ LABEL_62:
   }
 
   v73 = v71;
-  v25 = v129;
+  array = v129;
   if (v70)
   {
 LABEL_101:
     v110 = v20;
-    v130 = v25;
+    v130 = array;
     v73[2](v73);
-    [v9 objectsAtIndexes:v127];
+    [buttonsCopy objectsAtIndexes:v127];
     v142 = 0u;
     v143 = 0u;
     v144 = 0u;
@@ -1389,15 +1389,15 @@ LABEL_101:
             objc_enumerationMutation(rectc);
           }
 
-          v116 = [*(*(&v142 + 1) + 8 * ii) view];
-          [v116 alpha];
+          view6 = [*(*(&v142 + 1) + 8 * ii) view];
+          [view6 alpha];
           if (v117 == 0.0)
           {
             v138[0] = MEMORY[0x1E69E9820];
             v138[1] = 3221225472;
             v138[2] = __125___UIToolbarVisualProviderLegacyIOS__positionToolbarButtons_ignoringItem_resetFontScaleAdjustment_actuallyRepositionButtons___block_invoke_2;
             v138[3] = &unk_1E70F36D0;
-            v139 = v116;
+            v139 = view6;
             v140 = v110;
             v141 = v113;
             [UIView performWithoutAnimation:v138];
@@ -1409,14 +1409,14 @@ LABEL_101:
           {
             v118 = [v110 objectAtIndexedSubscript:v113];
             [v118 CGRectValue];
-            [v116 setFrame:?];
+            [view6 setFrame:?];
           }
 
           if (objc_opt_respondsToSelector())
           {
             v119 = [v132 objectAtIndexedSubscript:v113];
             [v119 CGRectValue];
-            [v116 _setButtonBarHitRect:?];
+            [view6 _setButtonBarHitRect:?];
           }
 
           ++v113;
@@ -1428,10 +1428,10 @@ LABEL_101:
       while (v112);
     }
 
-    v9 = v128;
-    v25 = v130;
+    buttonsCopy = v128;
+    array = v130;
     v73 = v123;
-    v10 = v124;
+    itemCopy = v124;
     v20 = v110;
   }
 
@@ -1439,24 +1439,24 @@ LABEL_114:
 
 LABEL_115:
 
-  return v25;
+  return array;
 }
 
-- (void)updateWithItems:(id)a3 fromOldItems:(id)a4 animate:(BOOL)a5
+- (void)updateWithItems:(id)items fromOldItems:(id)oldItems animate:(BOOL)animate
 {
-  v37 = a5;
+  animateCopy = animate;
   v60 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  [(_UIToolbarVisualProviderLegacyIOS *)self _createViewsForItems:v7];
-  v9 = [v8 mutableCopy];
-  v42 = self;
+  itemsCopy = items;
+  oldItemsCopy = oldItems;
+  [(_UIToolbarVisualProviderLegacyIOS *)self _createViewsForItems:itemsCopy];
+  v9 = [oldItemsCopy mutableCopy];
+  selfCopy = self;
   v38 = [(_UIToolbarVisualProviderLegacyIOS *)self _positionToolbarButtons:0 ignoringItem:0 resetFontScaleAdjustment:0 actuallyRepositionButtons:0];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v7;
+  obj = itemsCopy;
   v10 = [obj countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v10)
   {
@@ -1473,16 +1473,16 @@ LABEL_115:
         }
 
         v14 = *(*(&v54 + 1) + 8 * v13);
-        v15 = [v14 view];
-        if (v15)
+        view = [v14 view];
+        if (view)
         {
-          v16 = v15;
+          v16 = view;
           if (!v9 || [v9 indexOfObjectIdenticalTo:v14] == 0x7FFFFFFFFFFFFFFFLL)
           {
 
 LABEL_10:
-            v17 = [v14 view];
-            [v17 setAlpha:0.0];
+            view2 = [v14 view];
+            [view2 setAlpha:0.0];
 
             goto LABEL_11;
           }
@@ -1508,12 +1508,12 @@ LABEL_11:
   }
 
   [v9 removeObjectsInArray:obj];
-  v39 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v40 = v8;
+  v40 = oldItemsCopy;
   v20 = [v40 countByEnumeratingWithState:&v50 objects:v58 count:16];
   if (v20)
   {
@@ -1529,18 +1529,18 @@ LABEL_11:
         }
 
         v24 = *(*(&v50 + 1) + 8 * i);
-        v25 = [v24 view];
-        v26 = [v25 superview];
-        if (v26)
+        view3 = [v24 view];
+        superview = [view3 superview];
+        if (superview)
         {
-          v27 = v26;
-          v28 = [v24 view];
-          v29 = [v28 superview];
-          toolbar = v42->super._toolbar;
+          v27 = superview;
+          view4 = [v24 view];
+          superview2 = [view4 superview];
+          toolbar = selfCopy->super._toolbar;
 
-          if (v29 != toolbar)
+          if (superview2 != toolbar)
           {
-            [v39 addObject:v24];
+            [array addObject:v24];
           }
         }
 
@@ -1555,14 +1555,14 @@ LABEL_11:
     while (v21);
   }
 
-  [v9 removeObjectsInArray:v39];
+  [v9 removeObjectsInArray:array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __74___UIToolbarVisualProviderLegacyIOS_updateWithItems_fromOldItems_animate___block_invoke;
   aBlock[3] = &unk_1E70F6228;
   v31 = v9;
   v47 = v31;
-  v48 = v42;
+  v48 = selfCopy;
   v32 = obj;
   v49 = v32;
   v33 = _Block_copy(aBlock);
@@ -1575,7 +1575,7 @@ LABEL_11:
   v35 = v32;
   v45 = v35;
   v36 = _Block_copy(v43);
-  if (v37)
+  if (animateCopy)
   {
     [UIView animateWithDuration:v33 animations:v36 completion:0.2];
   }
@@ -1587,29 +1587,29 @@ LABEL_11:
   }
 }
 
-- (void)customViewChangedForButtonItem:(id)a3
+- (void)customViewChangedForButtonItem:(id)item
 {
-  v12 = a3;
-  v4 = [v12 customView];
-  if (v4)
+  itemCopy = item;
+  customView = [itemCopy customView];
+  if (customView)
   {
-    v5 = [(UIToolbar *)self->super._toolbar items];
-    v6 = [v5 indexOfObject:v12];
+    items = [(UIToolbar *)self->super._toolbar items];
+    v6 = [items indexOfObject:itemCopy];
 
-    v7 = [(UIView *)self->super._toolbar subviews];
-    v8 = [v7 count];
+    subviews = [(UIView *)self->super._toolbar subviews];
+    v8 = [subviews count];
 
     if (v6 >= v8)
     {
-      [(UIView *)self->super._toolbar addSubview:v4];
+      [(UIView *)self->super._toolbar addSubview:customView];
     }
 
     else
     {
-      v9 = [(UIView *)self->_backgroundView superview];
+      superview = [(UIView *)self->_backgroundView superview];
       toolbar = self->super._toolbar;
 
-      if (v9 == toolbar)
+      if (superview == toolbar)
       {
         v11 = v6 + 1;
       }
@@ -1619,16 +1619,16 @@ LABEL_11:
         v11 = v6;
       }
 
-      [(UIView *)self->super._toolbar insertSubview:v4 atIndex:v11];
+      [(UIView *)self->super._toolbar insertSubview:customView atIndex:v11];
     }
   }
 }
 
-- (void)setCustomBackgroundView:(id)a3
+- (void)setCustomBackgroundView:(id)view
 {
-  objc_storeStrong(&self->_customBackgroundView, a3);
-  v5 = a3;
-  [(_UIBarBackground *)self->_backgroundView setCustomBackgroundView:v5];
+  objc_storeStrong(&self->_customBackgroundView, view);
+  viewCopy = view;
+  [(_UIBarBackground *)self->_backgroundView setCustomBackgroundView:viewCopy];
 }
 
 - (id)currentBackgroundView
@@ -1660,21 +1660,21 @@ LABEL_11:
   [(UIView *)backgroundView setBounds:?];
 }
 
-- (void)updateBarForStyle:(int64_t)a3
+- (void)updateBarForStyle:(int64_t)style
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = [(UIToolbar *)self->super._toolbar barTintColor];
-  if (!v5)
+  barTintColor = [(UIToolbar *)self->super._toolbar barTintColor];
+  if (!barTintColor)
   {
     v6 = +[UIDevice currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    userInterfaceIdiom = [v6 userInterfaceIdiom];
 
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = [(UIToolbar *)self->super._toolbar items];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    items = [(UIToolbar *)self->super._toolbar items];
+    v9 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1685,37 +1685,37 @@ LABEL_11:
         {
           if (*v19 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(items);
           }
 
           v13 = *(*(&v18 + 1) + 8 * i);
-          if (v7 == 1 || ([*(*(&v18 + 1) + 8 * i) image], (v14 = objc_claimAutoreleasedReturnValue()) != 0) && (v15 = v14, v16 = objc_msgSend(v13, "_imageHasEffects"), v15, (v16 & 1) == 0))
+          if (userInterfaceIdiom == 1 || ([*(*(&v18 + 1) + 8 * i) image], (v14 = objc_claimAutoreleasedReturnValue()) != 0) && (v15 = v14, v16 = objc_msgSend(v13, "_imageHasEffects"), v15, (v16 & 1) == 0))
           {
             [v13 _updateView];
           }
 
-          v17 = [v13 view];
+          view = [v13 view];
           if (objc_opt_respondsToSelector())
           {
-            [v17 setBarStyle:a3];
+            [view setBarStyle:style];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v10 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v10);
     }
 
-    v5 = 0;
+    barTintColor = 0;
   }
 }
 
 - (void)updateBarBackground
 {
-  v3 = [(UIView *)self->super._toolbar _canDrawContent];
+  _canDrawContent = [(UIView *)self->super._toolbar _canDrawContent];
   backgroundView = self->_backgroundView;
-  if (v3)
+  if (_canDrawContent)
   {
     v5 = self->_backgroundView;
 
@@ -1747,70 +1747,70 @@ LABEL_11:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(UIToolbar *)self->super._toolbar barPosition];
-  v20 = v19 == 3;
-  v21 = v19 & 0xFFFFFFFFFFFFFFFELL;
-  [(_UIBarBackground *)self->_backgroundView setTopAligned:(v19 & 0xFFFFFFFFFFFFFFFELL) == 2];
+  barPosition = [(UIToolbar *)self->super._toolbar barPosition];
+  v20 = barPosition == 3;
+  v21 = barPosition & 0xFFFFFFFFFFFFFFFELL;
+  [(_UIBarBackground *)self->_backgroundView setTopAligned:(barPosition & 0xFFFFFFFFFFFFFFFELL) == 2];
   if (!self->_customBackgroundView)
   {
-    v26 = [(UIView *)self->super._toolbar traitCollection];
-    -[_UIBarBackgroundLayout setInterfaceIdiom:](self->_backgroundViewLayout, "setInterfaceIdiom:", [v26 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self->super._toolbar traitCollection];
+    -[_UIBarBackgroundLayout setInterfaceIdiom:](self->_backgroundViewLayout, "setInterfaceIdiom:", [traitCollection userInterfaceIdiom]);
 
-    v27 = [(UIView *)self->super._toolbar traitCollection];
-    -[_UIBarBackgroundLayout setInterfaceStyle:](self->_backgroundViewLayout, "setInterfaceStyle:", [v27 userInterfaceStyle]);
+    traitCollection2 = [(UIView *)self->super._toolbar traitCollection];
+    -[_UIBarBackgroundLayout setInterfaceStyle:](self->_backgroundViewLayout, "setInterfaceStyle:", [traitCollection2 userInterfaceStyle]);
 
-    v64 = [(UIToolbar *)self->super._toolbar isTranslucent];
-    v28 = [(UIToolbar *)self->super._toolbar barTintColor];
-    v29 = [(UIToolbar *)self->super._toolbar barStyle];
-    if (v29 == 4)
+    isTranslucent = [(UIToolbar *)self->super._toolbar isTranslucent];
+    barTintColor = [(UIToolbar *)self->super._toolbar barTintColor];
+    barStyle = [(UIToolbar *)self->super._toolbar barStyle];
+    if (barStyle == 4)
     {
-      v30 = [(UIToolbar *)self->super._toolbar _hidesShadow];
+      _hidesShadow = [(UIToolbar *)self->super._toolbar _hidesShadow];
     }
 
     else
     {
-      v31 = [(_UIToolbarVisualProviderLegacyIOS *)self _currentCustomBackground];
-      v32 = [(UIToolbar *)self->super._toolbar _hidesShadow];
-      v30 = v32;
-      if (v31)
+      _currentCustomBackground = [(_UIToolbarVisualProviderLegacyIOS *)self _currentCustomBackground];
+      _hidesShadow2 = [(UIToolbar *)self->super._toolbar _hidesShadow];
+      _hidesShadow = _hidesShadow2;
+      if (_currentCustomBackground)
       {
-        HIDWORD(v62) = v32;
-        [v31 size];
+        HIDWORD(v62) = _hidesShadow2;
+        [_currentCustomBackground size];
         v34 = v33;
-        [v31 capInsets];
+        [_currentCustomBackground capInsets];
         v37 = 0;
-        if (v19 == 3 && v35 == 0.0 && v36 == 0.0)
+        if (barPosition == 3 && v35 == 0.0 && v36 == 0.0)
         {
-          v38 = [(UIView *)self->super._toolbar window];
-          __UIStatusBarManagerForWindow(v38);
-          v39 = v28;
+          window = [(UIView *)self->super._toolbar window];
+          __UIStatusBarManagerForWindow(window);
+          v39 = barTintColor;
           v41 = v40 = v20;
           LODWORD(v62) = [v41 isStatusBarHidden];
 
           v20 = v40;
-          v28 = v39;
+          barTintColor = v39;
 
           v37 = (v34 == v18) & ~v62;
         }
 
         v65 = 0;
-        [v31 _isInvisibleAndGetIsTranslucent:{&v65, v62}];
-        if (v64)
+        [_currentCustomBackground _isInvisibleAndGetIsTranslucent:{&v65, v62}];
+        if (isTranslucent)
         {
-          [(_UIBarBackgroundLayoutLegacy *)self->_backgroundViewLayout configureImage:v31 forceTranslucent:(v65 & 1) == 0];
+          [(_UIBarBackgroundLayoutLegacy *)self->_backgroundViewLayout configureImage:_currentCustomBackground forceTranslucent:(v65 & 1) == 0];
         }
 
         else
         {
           v53 = self->_backgroundViewLayout;
-          if (v28)
+          if (barTintColor)
           {
-            [(_UIBarBackgroundLayoutLegacy *)v53 configureImage:v31 forceOpaque:v65 backgroundTintColor:v28];
+            [(_UIBarBackgroundLayoutLegacy *)v53 configureImage:_currentCustomBackground forceOpaque:v65 backgroundTintColor:barTintColor];
           }
 
           else
           {
-            [(_UIBarBackgroundLayoutLegacy *)v53 configureImage:v31 forceOpaque:v65 barStyle:v29];
+            [(_UIBarBackgroundLayoutLegacy *)v53 configureImage:_currentCustomBackground forceOpaque:v65 barStyle:barStyle];
           }
         }
 
@@ -1827,17 +1827,17 @@ LABEL_11:
 
         else
         {
-          v54 = v28;
-          v55 = [(UIToolbar *)self->super._toolbar __appearanceStorage];
-          v56 = v55;
+          v54 = barTintColor;
+          __appearanceStorage = [(UIToolbar *)self->super._toolbar __appearanceStorage];
+          v56 = __appearanceStorage;
           if (v21 == 2)
           {
-            [v55 topShadowImage];
+            [__appearanceStorage topShadowImage];
           }
 
           else
           {
-            [v55 shadowImage];
+            [__appearanceStorage shadowImage];
           }
           v46 = ;
 
@@ -1846,7 +1846,7 @@ LABEL_11:
           {
             [(_UIBarBackgroundLayoutLegacy *)v57 configureShadowImage:v46];
             v47 = 0.0;
-            v28 = v54;
+            barTintColor = v54;
             if (!v37)
             {
               goto LABEL_31;
@@ -1855,9 +1855,9 @@ LABEL_11:
 
           else
           {
-            [(_UIBarBackgroundLayoutLegacy *)v57 configureShadowForBarStyle:v29];
+            [(_UIBarBackgroundLayoutLegacy *)v57 configureShadowForBarStyle:barStyle];
             v47 = 0.0;
-            v28 = v54;
+            barTintColor = v54;
             if ((v37 & 1) == 0)
             {
               goto LABEL_31;
@@ -1865,13 +1865,13 @@ LABEL_11:
           }
         }
 
-        v58 = [(UIView *)self->super._toolbar window];
-        __UIStatusBarManagerForWindow(v58);
-        v60 = v59 = v28;
+        window2 = [(UIView *)self->super._toolbar window];
+        __UIStatusBarManagerForWindow(window2);
+        v60 = v59 = barTintColor;
         [v60 defaultStatusBarHeightInOrientation:1];
         v47 = v61;
 
-        v28 = v59;
+        barTintColor = v59;
 LABEL_31:
         [(_UIBarBackgroundLayoutLegacy *)self->_backgroundViewLayout setTopInset:v47];
 
@@ -1887,10 +1887,10 @@ LABEL_32:
       }
     }
 
-    v42 = [(UIView *)self->super._toolbar _screen];
-    v43 = [v42 _userInterfaceIdiom];
+    _screen = [(UIView *)self->super._toolbar _screen];
+    _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-    if (v43 == 3)
+    if (_userInterfaceIdiom == 3)
     {
       [(_UIBarBackgroundLayoutLegacy *)self->_backgroundViewLayout configureAsTransparent];
       v20 = 0;
@@ -1898,31 +1898,31 @@ LABEL_32:
 
     else
     {
-      if ([(UIToolbar *)self->super._toolbar _linkedBeforeWhitetailAndInitializedFromCoder]&& !v28 && ([(UIView *)self->super._toolbar backgroundColor], v44 = objc_claimAutoreleasedReturnValue(), v44, v44))
+      if ([(UIToolbar *)self->super._toolbar _linkedBeforeWhitetailAndInitializedFromCoder]&& !barTintColor && ([(UIView *)self->super._toolbar backgroundColor], v44 = objc_claimAutoreleasedReturnValue(), v44, v44))
       {
         [(_UIBarBackgroundLayoutLegacy *)self->_backgroundViewLayout configureAsTransparent];
       }
 
       else
       {
-        [(_UIBarBackgroundLayoutLegacy *)self->_backgroundViewLayout configureEffectForStyle:v29 backgroundTintColor:v28 forceOpaque:!v64];
+        [(_UIBarBackgroundLayoutLegacy *)self->_backgroundViewLayout configureEffectForStyle:barStyle backgroundTintColor:barTintColor forceOpaque:!isTranslucent];
       }
 
       [(_UIToolbarVisualProviderLegacyIOS *)self updateBackgroundGroupName];
     }
 
     v45 = self->_backgroundViewLayout;
-    if (v30)
+    if (_hidesShadow)
     {
       [(_UIBarBackgroundLayoutLegacy *)v45 configureWithoutShadow];
     }
 
     else
     {
-      [(_UIBarBackgroundLayoutLegacy *)v45 configureShadowForBarStyle:v29];
+      [(_UIBarBackgroundLayoutLegacy *)v45 configureShadowForBarStyle:barStyle];
     }
 
-    v31 = 0;
+    _currentCustomBackground = 0;
     v46 = 0;
     v47 = 0.0;
     goto LABEL_31;
@@ -1930,14 +1930,14 @@ LABEL_32:
 
   [(_UIBarBackgroundLayoutLegacy *)self->_backgroundViewLayout configureWithoutShadow];
   [(_UIBarBackgroundLayoutLegacy *)self->_backgroundViewLayout setTopInset:0.0];
-  if (v19 != 3)
+  if (barPosition != 3)
   {
     goto LABEL_32;
   }
 
 LABEL_9:
-  v22 = [(UIView *)self->super._toolbar window];
-  v23 = __UIStatusBarManagerForWindow(v22);
+  window3 = [(UIView *)self->super._toolbar window];
+  v23 = __UIStatusBarManagerForWindow(window3);
   [v23 statusBarHeight];
   v25 = v24;
 
@@ -1961,41 +1961,41 @@ LABEL_33:
 
 - (void)updateBackgroundGroupName
 {
-  v5 = [(UIView *)self->super._toolbar traitCollection];
+  traitCollection = [(UIView *)self->super._toolbar traitCollection];
   v3 = objc_opt_self();
-  v4 = [v5 objectForTrait:v3];
+  v4 = [traitCollection objectForTrait:v3];
   [(_UIBarBackground *)self->_backgroundView setGroupName:v4];
 }
 
 - (id)_currentCustomBackground
 {
-  v3 = [(UIToolbar *)self->super._toolbar _barPosition];
-  v4 = [(UIToolbar *)self->super._toolbar __appearanceStorage];
-  v5 = [v4 backgroundImageForBarPosition:v3 barMetrics:0];
+  _barPosition = [(UIToolbar *)self->super._toolbar _barPosition];
+  __appearanceStorage = [(UIToolbar *)self->super._toolbar __appearanceStorage];
+  v5 = [__appearanceStorage backgroundImageForBarPosition:_barPosition barMetrics:0];
 
-  if (v3 == 3 && v5 == 0)
+  if (_barPosition == 3 && v5 == 0)
   {
-    v3 = 2;
+    _barPosition = 2;
   }
 
   if (!v5)
   {
-    if (v3 == [(UIToolbar *)self->super._toolbar _barPosition])
+    if (_barPosition == [(UIToolbar *)self->super._toolbar _barPosition])
     {
       v5 = 0;
     }
 
     else
     {
-      v7 = [(UIToolbar *)self->super._toolbar __appearanceStorage];
-      v5 = [v7 backgroundImageForBarPosition:v3 barMetrics:0];
+      __appearanceStorage2 = [(UIToolbar *)self->super._toolbar __appearanceStorage];
+      v5 = [__appearanceStorage2 backgroundImageForBarPosition:_barPosition barMetrics:0];
     }
   }
 
-  v8 = [(UIToolbar *)self->super._toolbar isMinibar];
+  isMinibar = [(UIToolbar *)self->super._toolbar isMinibar];
   if (v5)
   {
-    v9 = !v8;
+    v9 = !isMinibar;
   }
 
   else
@@ -2005,26 +2005,26 @@ LABEL_33:
 
   if (!v9)
   {
-    v10 = [(UIToolbar *)self->super._toolbar __appearanceStorage];
-    v11 = [v10 backgroundImageForBarPosition:-[UIToolbar _barPosition](self->super._toolbar barMetrics:{"_barPosition"), 1}];
+    __appearanceStorage3 = [(UIToolbar *)self->super._toolbar __appearanceStorage];
+    v11 = [__appearanceStorage3 backgroundImageForBarPosition:-[UIToolbar _barPosition](self->super._toolbar barMetrics:{"_barPosition"), 1}];
 
     if (v11)
     {
-      v12 = v5;
+      __appearanceStorage4 = v5;
       v5 = v11;
     }
 
     else
     {
-      if (v3 == [(UIToolbar *)self->super._toolbar _barPosition])
+      if (_barPosition == [(UIToolbar *)self->super._toolbar _barPosition])
       {
 LABEL_19:
 
         goto LABEL_20;
       }
 
-      v12 = [(UIToolbar *)self->super._toolbar __appearanceStorage];
-      v13 = [v12 backgroundImageForBarPosition:v3 barMetrics:1];
+      __appearanceStorage4 = [(UIToolbar *)self->super._toolbar __appearanceStorage];
+      v13 = [__appearanceStorage4 backgroundImageForBarPosition:_barPosition barMetrics:1];
     }
 
     goto LABEL_19;
@@ -2035,18 +2035,18 @@ LABEL_20:
   return v5;
 }
 
-- (void)drawBackgroundViewInRect:(CGRect)a3
+- (void)drawBackgroundViewInRect:(CGRect)rect
 {
-  [(UIView *)self->super._toolbar bounds:a3.origin.x];
+  [(UIView *)self->super._toolbar bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIView *)self->super._toolbar superview];
-  [v12 safeAreaInsets];
+  superview = [(UIView *)self->super._toolbar superview];
+  [superview safeAreaInsets];
   v14 = v11 + v13;
 
-  v15 = [(UIToolbar *)self->super._toolbar _barPosition];
+  _barPosition = [(UIToolbar *)self->super._toolbar _barPosition];
   if ([(UIToolbar *)self->super._toolbar barStyle]== (UIBarStyleBlackTranslucent|UIBarStyleBlackOpaque))
   {
     v16 = +[UIColor clearColor];
@@ -2056,25 +2056,25 @@ LABEL_20:
     return;
   }
 
-  v17 = [(UIToolbar *)self->super._toolbar barStyle];
-  v41 = [(UIToolbar *)self->super._toolbar barTintColor];
-  v18 = [(UIToolbar *)self->super._toolbar _barTranslucence];
-  v19 = v18;
-  if (!v41)
+  barStyle = [(UIToolbar *)self->super._toolbar barStyle];
+  barTintColor = [(UIToolbar *)self->super._toolbar barTintColor];
+  _barTranslucence = [(UIToolbar *)self->super._toolbar _barTranslucence];
+  v19 = _barTranslucence;
+  if (!barTintColor)
   {
     v40 = v7;
-    if (v17 != UIBarStyleBlackTranslucent)
+    if (barStyle != UIBarStyleBlackTranslucent)
     {
-      if (v17 == UIBarStyleBlack)
+      if (barStyle == UIBarStyleBlack)
       {
-        if (v18 == 1)
+        if (_barTranslucence == 1)
         {
           goto LABEL_13;
         }
 
         v23 = v5;
         v24 = v9;
-        if (v15 == 1 || v15 == 4)
+        if (_barPosition == 1 || _barPosition == 4)
         {
           v25 = @"UIButtonBarMiniBlackOpaqueBackground.png";
           v26 = @"UIButtonBarBlackOpaqueBackground.png";
@@ -2091,7 +2091,7 @@ LABEL_20:
       {
         v23 = v5;
         v24 = v9;
-        if (v15 == 1 || v15 == 4)
+        if (_barPosition == 1 || _barPosition == 4)
         {
           v25 = @"UIButtonBarMiniDefaultBackground.png";
         }
@@ -2157,7 +2157,7 @@ LABEL_25:
 LABEL_13:
     v23 = v5;
     v24 = v9;
-    if (v15 == 1 || v15 == 4)
+    if (_barPosition == 1 || _barPosition == 4)
     {
       v25 = @"UIButtonBarMiniBlackTranslucentBackground.png";
       v26 = @"UIButtonBarBlackTranslucentBackground.png";
@@ -2172,7 +2172,7 @@ LABEL_13:
     goto LABEL_25;
   }
 
-  v20 = GetTintedToolbarBackgroundImage(v14, v41);
+  v20 = GetTintedToolbarBackgroundImage(v14, barTintColor);
   v21 = v20;
   if (v19 == 1)
   {
@@ -2188,12 +2188,12 @@ LABEL_13:
 LABEL_36:
 }
 
-- (CGSize)defaultSizeForOrientation:(int64_t)a3
+- (CGSize)defaultSizeForOrientation:(int64_t)orientation
 {
-  v4 = a3 - 3;
-  v5 = _UIUseMiniHeightInLandscape((a3 - 3) < 2);
-  v6 = [(UIView *)self->super._toolbar _screen];
-  [v6 bounds];
+  v4 = orientation - 3;
+  v5 = _UIUseMiniHeightInLandscape((orientation - 3) < 2);
+  _screen = [(UIView *)self->super._toolbar _screen];
+  [_screen bounds];
   if (v4 >= 2)
   {
     v9 = v7;
@@ -2221,10 +2221,10 @@ LABEL_36:
   return result;
 }
 
-- (double)_edgeMarginForBorderedItem:(BOOL)a3 isText:(BOOL)a4
+- (double)_edgeMarginForBorderedItem:(BOOL)item isText:(BOOL)text
 {
   toolbar = self->super._toolbar;
-  if (a4)
+  if (text)
   {
     [(UIView *)toolbar _textButtonMargin];
   }

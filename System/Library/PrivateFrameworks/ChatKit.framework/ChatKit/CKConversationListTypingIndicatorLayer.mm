@@ -8,19 +8,19 @@
 - (id)defaultBubbleColor
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 theme];
-  v4 = [v3 unselectedConversationListTypingIndicatorBubbleColor];
+  theme = [v2 theme];
+  unselectedConversationListTypingIndicatorBubbleColor = [theme unselectedConversationListTypingIndicatorBubbleColor];
 
-  return v4;
+  return unselectedConversationListTypingIndicatorBubbleColor;
 }
 
 - (id)defaultThinkingDotColor
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 theme];
-  v4 = [v3 unselectedConversationListTypingIndicatorDotColor];
+  theme = [v2 theme];
+  unselectedConversationListTypingIndicatorDotColor = [theme unselectedConversationListTypingIndicatorDotColor];
 
-  return v4;
+  return unselectedConversationListTypingIndicatorDotColor;
 }
 
 @end

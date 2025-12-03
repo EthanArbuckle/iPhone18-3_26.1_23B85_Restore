@@ -1,17 +1,17 @@
 @interface HalogenCalcTypeC
 - (BOOL)_allocBuffers;
-- (HalogenCalcTypeC)initWithParams:(int)a3 signalFrequency:(double)a4 sampleRate:(unint64_t)a5 tiaGain:(double)a6 adcGain:(double)a7 parasiticCap:(double)a8;
-- (double)_snr:(id)a3 withGain:(double)a4 hasSignalLevel:(double *)a5 hasNoiseLevel:(double *)a6;
-- (int)doCalibration:(id)a3 withCurrentData:(id)a4;
-- (int)doLiquidDetection:(id)a3 withCurrentData:(id)a4 isReceptacleEmpty:(BOOL)a5 isReceptacleWet:(BOOL)a6 withWetTransitionThreshold:(double)a7 withDryTransitionThreshold:(double)a8 pinParasitics:(double)a9 measurementType:(int)a10;
+- (HalogenCalcTypeC)initWithParams:(int)params signalFrequency:(double)frequency sampleRate:(unint64_t)rate tiaGain:(double)gain adcGain:(double)adcGain parasiticCap:(double)cap;
+- (double)_snr:(id)_snr withGain:(double)gain hasSignalLevel:(double *)level hasNoiseLevel:(double *)noiseLevel;
+- (int)doCalibration:(id)calibration withCurrentData:(id)data;
+- (int)doLiquidDetection:(id)detection withCurrentData:(id)data isReceptacleEmpty:(BOOL)empty isReceptacleWet:(BOOL)wet withWetTransitionThreshold:(double)threshold withDryTransitionThreshold:(double)transitionThreshold pinParasitics:(double)parasitics measurementType:(int)self0;
 - (void)_allocBuffers;
-- (void)_applyFractionalPhaseShift:(id)a3 withPhaseDelay:(double)a4;
-- (void)_applyGain:(double)a3 toData:(id)a4;
-- (void)_applyHanningWindow:(id)a3 withSize:(int)a4;
-- (void)_applyTiaGain:(id)a3 toCurrentData:(id)a4;
-- (void)_doMuxComp:(double)a3 withPhase:(double)a4;
+- (void)_applyFractionalPhaseShift:(id)shift withPhaseDelay:(double)delay;
+- (void)_applyGain:(double)gain toData:(id)data;
+- (void)_applyHanningWindow:(id)window withSize:(int)size;
+- (void)_applyTiaGain:(id)gain toCurrentData:(id)data;
+- (void)_doMuxComp:(double)comp withPhase:(double)phase;
 - (void)_freeBuffers;
-- (void)_goertzelSecondOrder:(id)a3 hasFftValue:(double *)a4 hasPhase:(double *)a5 withHanning:(BOOL)a6 amplitudeCorrectionFactor:(double)a7;
+- (void)_goertzelSecondOrder:(id)order hasFftValue:(double *)value hasPhase:(double *)phase withHanning:(BOOL)hanning amplitudeCorrectionFactor:(double)factor;
 - (void)_rcSolver;
 - (void)dealloc;
 - (void)setSeriesTotalImpedance:(HalogenCalcTypeC *)self;
@@ -19,7 +19,7 @@
 
 @implementation HalogenCalcTypeC
 
-- (HalogenCalcTypeC)initWithParams:(int)a3 signalFrequency:(double)a4 sampleRate:(unint64_t)a5 tiaGain:(double)a6 adcGain:(double)a7 parasiticCap:(double)a8
+- (HalogenCalcTypeC)initWithParams:(int)params signalFrequency:(double)frequency sampleRate:(unint64_t)rate tiaGain:(double)gain adcGain:(double)adcGain parasiticCap:(double)cap
 {
   v18.receiver = self;
   v18.super_class = HalogenCalcTypeC;
@@ -27,24 +27,24 @@
   v15 = v14;
   if (v14)
   {
-    v14->_nSamples = a3;
-    if (a3)
+    v14->_nSamples = params;
+    if (params)
     {
       v14->_sizeofSample = 8;
-      v14->_signalFrequency = a4;
-      if (a4 == 0.0)
+      v14->_signalFrequency = frequency;
+      if (frequency == 0.0)
       {
         [HalogenCalcTypeC initWithParams:v14 signalFrequency:&v19 sampleRate:? tiaGain:? adcGain:? parasiticCap:?];
       }
 
       else
       {
-        v14->_sampleRate = a5;
-        if (a5)
+        v14->_sampleRate = rate;
+        if (rate)
         {
-          v14->_tiaGain = a6;
-          v14->_adcGain = a7;
-          v14->_parasiticCap = a8;
+          v14->_tiaGain = gain;
+          v14->_adcGain = adcGain;
+          v14->_parasiticCap = cap;
           if ([(HalogenCalcTypeC *)v14 _allocBuffers])
           {
             fftsetupD = vDSP_create_fftsetupD(0xCuLL, 0);
@@ -142,14 +142,14 @@
   tmp3DataBuff = self->_tmp3DataBuff;
 }
 
-- (int)doCalibration:(id)a3 withCurrentData:(id)a4
+- (int)doCalibration:(id)calibration withCurrentData:(id)data
 {
   v18 = NAN;
   v19 = NAN;
-  [(HalogenCalcTypeC *)self _goertzelSecondOrder:a3 hasFftValue:&v19 hasPhase:&v18 withHanning:1 amplitudeCorrectionFactor:1.0];
+  [(HalogenCalcTypeC *)self _goertzelSecondOrder:calibration hasFftValue:&v19 hasPhase:&v18 withHanning:1 amplitudeCorrectionFactor:1.0];
   v16 = NAN;
   v17 = NAN;
-  [(HalogenCalcTypeC *)self _goertzelSecondOrder:a4 hasFftValue:&v17 hasPhase:&v16 withHanning:1 amplitudeCorrectionFactor:1.0];
+  [(HalogenCalcTypeC *)self _goertzelSecondOrder:data hasFftValue:&v17 hasPhase:&v16 withHanning:1 amplitudeCorrectionFactor:1.0];
   v7 = v19;
   v8 = v17;
   self->_calVoltageAmplitude = v19;
@@ -162,9 +162,9 @@
 
   else
   {
-    [(HalogenCalcTypeC *)self _snr:a3 withGain:&self->_calVoltageSignalLevel hasSignalLevel:&self->_calVoltageNoiseLevel hasNoiseLevel:1.0];
+    [(HalogenCalcTypeC *)self _snr:calibration withGain:&self->_calVoltageSignalLevel hasSignalLevel:&self->_calVoltageNoiseLevel hasNoiseLevel:1.0];
     self->_calVoltageSNR = v9;
-    [(HalogenCalcTypeC *)self _snr:a4 withGain:&self->_calCurrentSignalLevel hasSignalLevel:&self->_calCurrentNoiseLevel hasNoiseLevel:1.0];
+    [(HalogenCalcTypeC *)self _snr:data withGain:&self->_calCurrentSignalLevel hasSignalLevel:&self->_calCurrentNoiseLevel hasNoiseLevel:1.0];
     self->_calCurrentSNR = v10;
     calVoltageSNR = self->_calVoltageSNR;
     if (calVoltageSNR < 24.0 || v10 < 24.0)
@@ -187,18 +187,18 @@
   return result;
 }
 
-- (int)doLiquidDetection:(id)a3 withCurrentData:(id)a4 isReceptacleEmpty:(BOOL)a5 isReceptacleWet:(BOOL)a6 withWetTransitionThreshold:(double)a7 withDryTransitionThreshold:(double)a8 pinParasitics:(double)a9 measurementType:(int)a10
+- (int)doLiquidDetection:(id)detection withCurrentData:(id)data isReceptacleEmpty:(BOOL)empty isReceptacleWet:(BOOL)wet withWetTransitionThreshold:(double)threshold withDryTransitionThreshold:(double)transitionThreshold pinParasitics:(double)parasitics measurementType:(int)self0
 {
-  v11 = a6;
-  self->_pinParasitics = a9;
-  [(HalogenCalcTypeC *)self _applyGain:a4 toData:self->_adcGain, a8];
-  [(HalogenCalcTypeC *)self _applyGain:a3 toData:self->_adcGain];
+  wetCopy = wet;
+  self->_pinParasitics = parasitics;
+  [(HalogenCalcTypeC *)self _applyGain:data toData:self->_adcGain, transitionThreshold];
+  [(HalogenCalcTypeC *)self _applyGain:detection toData:self->_adcGain];
   *&v36 = NAN;
   v37 = NAN;
   v34 = -1;
   v35 = NAN;
-  [(HalogenCalcTypeC *)self _goertzelSecondOrder:a3 hasFftValue:&v36 hasPhase:&v35 withHanning:1 amplitudeCorrectionFactor:2.0];
-  [(HalogenCalcTypeC *)self _goertzelSecondOrder:a4 hasFftValue:&v37 hasPhase:&v34 withHanning:1 amplitudeCorrectionFactor:2.0];
+  [(HalogenCalcTypeC *)self _goertzelSecondOrder:detection hasFftValue:&v36 hasPhase:&v35 withHanning:1 amplitudeCorrectionFactor:2.0];
+  [(HalogenCalcTypeC *)self _goertzelSecondOrder:data hasFftValue:&v37 hasPhase:&v34 withHanning:1 amplitudeCorrectionFactor:2.0];
   v15 = *&v36;
   v16 = v37;
   self->_measurementCurrentAmplitude = v37;
@@ -210,13 +210,13 @@
     return 9;
   }
 
-  [(HalogenCalcTypeC *)self _applyFractionalPhaseShift:a4 withPhaseDelay:self->_currentPhaseCompensation / -360.0 / self->_signalFrequency * self->_sampleRate];
-  [(HalogenCalcTypeC *)self _applyGain:a4 toData:self->_currentGainCorrection];
-  [(HalogenCalcTypeC *)self _applyGain:a3 toData:self->_voltageGainCorrection];
-  [(HalogenCalcTypeC *)self _snr:a4 withGain:&self->_measurementCurrentSignalLevel hasSignalLevel:&self->_measurementCurrentNoiseLevel hasNoiseLevel:1.0];
+  [(HalogenCalcTypeC *)self _applyFractionalPhaseShift:data withPhaseDelay:self->_currentPhaseCompensation / -360.0 / self->_signalFrequency * self->_sampleRate];
+  [(HalogenCalcTypeC *)self _applyGain:data toData:self->_currentGainCorrection];
+  [(HalogenCalcTypeC *)self _applyGain:detection toData:self->_voltageGainCorrection];
+  [(HalogenCalcTypeC *)self _snr:data withGain:&self->_measurementCurrentSignalLevel hasSignalLevel:&self->_measurementCurrentNoiseLevel hasNoiseLevel:1.0];
   self->_measurementCurrentSNR = v17;
-  [(HalogenCalcTypeC *)self _applyTiaGain:a3 toCurrentData:a4];
-  [(HalogenCalcTypeC *)self _snr:a3 withGain:&self->_measurementVoltageSignalLevel hasSignalLevel:&self->_measurementVoltageNoiseLevel hasNoiseLevel:1.0];
+  [(HalogenCalcTypeC *)self _applyTiaGain:detection toCurrentData:data];
+  [(HalogenCalcTypeC *)self _snr:detection withGain:&self->_measurementVoltageSignalLevel hasSignalLevel:&self->_measurementVoltageNoiseLevel hasNoiseLevel:1.0];
   self->_measurementVoltageSNR = v18;
   if (v18 < 24.0 || self->_measurementCurrentSNR < 6.0)
   {
@@ -224,7 +224,7 @@
     return 8;
   }
 
-  [(HalogenCalcTypeC *)self _goertzelSecondOrder:a4 hasFftValue:&self->_measurementCurrentAmplitude hasPhase:&self->_measurementCurrentPhase withHanning:1 amplitudeCorrectionFactor:2.0];
+  [(HalogenCalcTypeC *)self _goertzelSecondOrder:data hasFftValue:&self->_measurementCurrentAmplitude hasPhase:&self->_measurementCurrentPhase withHanning:1 amplitudeCorrectionFactor:2.0];
   v19 = self->_measurementVoltagePhase - self->_measurementCurrentPhase;
   self->_goertzelImpedance = self->_measurementVoltageAmplitude / self->_measurementCurrentAmplitude;
   self->_goertzelPhase = v19;
@@ -236,11 +236,11 @@
     return 10;
   }
 
-  if (a10)
+  if (type)
   {
-    if (a10 != 1)
+    if (type != 1)
     {
-      if (a10 == 2)
+      if (type == 2)
       {
         resistanceInOhms = self->_resistanceInOhms;
         if (resistanceInOhms >= 4941.0 && capacitanceInNanoF <= 10.0 && resistanceInOhms <= 6039.0)
@@ -272,7 +272,7 @@
   else
   {
     v27 = self->_resistanceInOhms;
-    if (v11)
+    if (wetCopy)
     {
       if (v27 <= 0.0)
       {
@@ -358,11 +358,11 @@
   return v24;
 }
 
-- (void)_goertzelSecondOrder:(id)a3 hasFftValue:(double *)a4 hasPhase:(double *)a5 withHanning:(BOOL)a6 amplitudeCorrectionFactor:(double)a7
+- (void)_goertzelSecondOrder:(id)order hasFftValue:(double *)value hasPhase:(double *)phase withHanning:(BOOL)hanning amplitudeCorrectionFactor:(double)factor
 {
-  v8 = a6;
-  v13 = [a3 bytes];
-  v14 = [a3 length];
+  hanningCopy = hanning;
+  bytes = [order bytes];
+  v14 = [order length];
   sizeofSample = self->_sizeofSample;
   v16 = v14 / sizeofSample;
   v17 = __sincos_stret(self->_signalFrequency / self->_sampleRate * 6.28318531);
@@ -377,14 +377,14 @@
     do
     {
       v18 = v19;
-      if (v8)
+      if (hanningCopy)
       {
-        v23 = v21 * v19 + (1.0 - cos(v20 * 6.28318531 / v16)) * 0.5 * *(v13 + 8 * v20) * a7;
+        v23 = v21 * v19 + (1.0 - cos(v20 * 6.28318531 / v16)) * 0.5 * *(bytes + 8 * v20) * factor;
       }
 
       else
       {
-        v23 = *(v13 + 8 * v20) + v21 * v19;
+        v23 = *(bytes + 8 * v20) + v21 * v19;
       }
 
       v19 = v23 - v22;
@@ -397,22 +397,22 @@
 
   v24 = v19 - v18 * v17.__cosval;
   v25 = v17.__sinval * v18;
-  if (a4)
+  if (value)
   {
     v26 = sqrt(v25 * v25 + v24 * v24);
-    *a4 = (v26 + v26) / v16;
+    *value = (v26 + v26) / v16;
   }
 
-  if (a5)
+  if (phase)
   {
-    *a5 = atan2(v25, v24) * 180.0 / 3.14159265;
+    *phase = atan2(v25, v24) * 180.0 / 3.14159265;
   }
 }
 
-- (void)_applyGain:(double)a3 toData:(id)a4
+- (void)_applyGain:(double)gain toData:(id)data
 {
-  v7 = [a4 bytes];
-  v8 = [a4 length];
+  bytes = [data bytes];
+  v8 = [data length];
   sizeofSample = self->_sizeofSample;
   if (v8 >= sizeofSample)
   {
@@ -420,7 +420,7 @@
     v11 = v8 / sizeofSample;
     do
     {
-      *(v7 + 8 * v10) = *(v7 + 8 * v10) * a3;
+      *(bytes + 8 * v10) = *(bytes + 8 * v10) * gain;
       ++v10;
     }
 
@@ -428,11 +428,11 @@
   }
 }
 
-- (void)_applyTiaGain:(id)a3 toCurrentData:(id)a4
+- (void)_applyTiaGain:(id)gain toCurrentData:(id)data
 {
-  v6 = [a4 bytes];
-  v7 = [a3 bytes];
-  v8 = [a3 length];
+  bytes = [data bytes];
+  bytes2 = [gain bytes];
+  v8 = [gain length];
   sizeofSample = self->_sizeofSample;
   if (v8 >= sizeofSample)
   {
@@ -440,7 +440,7 @@
     v11 = v8 / sizeofSample;
     do
     {
-      *(v6 + 8 * v10) = (*(v6 + 8 * v10) - *(v7 + 8 * v10)) / self->_tiaGain;
+      *(bytes + 8 * v10) = (*(bytes + 8 * v10) - *(bytes2 + 8 * v10)) / self->_tiaGain;
       ++v10;
     }
 
@@ -448,13 +448,13 @@
   }
 }
 
-- (void)_applyHanningWindow:(id)a3 withSize:(int)a4
+- (void)_applyHanningWindow:(id)window withSize:(int)size
 {
-  LODWORD(v4) = a4;
-  v5 = [a3 bytes];
+  LODWORD(v4) = size;
+  bytes = [window bytes];
   if (v4 >= 1)
   {
-    v6 = v5;
+    v6 = bytes;
     v7 = (v4 + 1);
     v4 = v4;
     v8 = 1;
@@ -470,17 +470,17 @@
   }
 }
 
-- (void)_applyFractionalPhaseShift:(id)a3 withPhaseDelay:(double)a4
+- (void)_applyFractionalPhaseShift:(id)shift withPhaseDelay:(double)delay
 {
   v33 = -1;
-  v7 = [a3 bytes];
-  v8 = -a4;
-  [a3 appendBytes:&v7[objc_msgSend(a3 length:"length") / self->_sizeofSample - 1]];
-  if (a4 >= 1.0)
+  bytes = [shift bytes];
+  v8 = -delay;
+  [shift appendBytes:&bytes[objc_msgSend(shift length:"length") / self->_sizeofSample - 1]];
+  if (delay >= 1.0)
   {
     v9 = vcvtpd_s64_f64(v8);
-    v8 = -v9 - a4;
-    v33 = *v7;
+    v8 = -v9 - delay;
+    v33 = *bytes;
     if ((v9 & 0x80000000) != 0)
     {
       if (-v9 <= 1)
@@ -495,7 +495,7 @@
 
       do
       {
-        [a3 replaceBytesInRange:0 withBytes:0 length:{&v33, self->_sizeofSample}];
+        [shift replaceBytesInRange:0 withBytes:0 length:{&v33, self->_sizeofSample}];
         --v10;
       }
 
@@ -507,11 +507,11 @@
   {
     v11 = vcvtmd_s64_f64(v8);
     v8 = v8 - v11;
-    [a3 replaceBytesInRange:0 withBytes:self->_sizeofSample * v11 length:{0, 0}];
+    [shift replaceBytesInRange:0 withBytes:self->_sizeofSample * v11 length:{0, 0}];
   }
 
-  v12 = [a3 bytes];
-  v13 = [a3 length];
+  bytes2 = [shift bytes];
+  v13 = [shift length];
   sizeofSample = self->_sizeofSample;
   v15 = v13 / sizeofSample;
   if (v8 >= 0.0)
@@ -519,8 +519,8 @@
     if (v8 > 0.0 && v15 != 1)
     {
       v19 = 0;
-      v21 = *v12;
-      v20 = v12 + 1;
+      v21 = *bytes2;
+      v20 = bytes2 + 1;
       v22 = v21;
       do
       {
@@ -537,11 +537,11 @@
 
   else if (v15 >= 2)
   {
-    v16 = *v12;
+    v16 = *bytes2;
     for (i = 1; i < v15; ++i)
     {
-      v18 = v12[i];
-      v12[i] = v18 * (v8 + 1.0) - v16 * v8;
+      v18 = bytes2[i];
+      bytes2[i] = v18 * (v8 + 1.0) - v16 * v8;
       v16 = v18;
     }
   }
@@ -551,20 +551,20 @@
   {
     if (nSamples < v15)
     {
-      [a3 setLength:nSamples * sizeofSample];
+      [shift setLength:nSamples * sizeofSample];
     }
   }
 
   else
   {
-    [a3 increaseLengthBy:(nSamples - v15) * sizeofSample];
-    v25 = [a3 bytes];
+    [shift increaseLengthBy:(nSamples - v15) * sizeofSample];
+    bytes3 = [shift bytes];
     v26 = self->_nSamples;
     v27 = v26 - v15;
     if (v26 > v15)
     {
       v28 = 0;
-      v29 = *(v25 + 8 * v15 - 8);
+      v29 = *(bytes3 + 8 * v15 - 8);
       v30 = vdupq_n_s64(v27 - 1);
       do
       {
@@ -572,12 +572,12 @@
         v32 = vmovn_s64(vcgeq_u64(v30, vorrq_s8(vdupq_n_s64(v28), xmmword_25491C860)));
         if (v32.i8[0])
         {
-          *(v25 + 8 * v31) = v29;
+          *(bytes3 + 8 * v31) = v29;
         }
 
         if (v32.i8[4])
         {
-          *(v25 + 8 + 8 * v31) = v29;
+          *(bytes3 + 8 + 8 * v31) = v29;
         }
 
         v28 += 2;
@@ -588,33 +588,33 @@
   }
 }
 
-- (double)_snr:(id)a3 withGain:(double)a4 hasSignalLevel:(double *)a5 hasNoiseLevel:(double *)a6
+- (double)_snr:(id)_snr withGain:(double)gain hasSignalLevel:(double *)level hasNoiseLevel:(double *)noiseLevel
 {
-  v10 = [a3 bytes];
+  bytes = [_snr bytes];
   tmp1DataBuff = self->_tmp1DataBuff;
-  v12 = [(NSMutableData *)tmp1DataBuff bytes];
-  v13 = [(NSMutableData *)self->_tmp2DataBuff bytes];
-  v14 = [(NSMutableData *)self->_tmp3DataBuff bytes];
-  v22.realp = v12;
-  v22.imagp = v13;
-  memcpy(v12, v10, self->_sizeofSample << 11);
-  bzero(v13, self->_sizeofSample << 11);
-  [(HalogenCalcTypeC *)self _applyGain:tmp1DataBuff toData:a4, v12, v13];
+  bytes2 = [(NSMutableData *)tmp1DataBuff bytes];
+  bytes3 = [(NSMutableData *)self->_tmp2DataBuff bytes];
+  bytes4 = [(NSMutableData *)self->_tmp3DataBuff bytes];
+  v22.realp = bytes2;
+  v22.imagp = bytes3;
+  memcpy(bytes2, bytes, self->_sizeofSample << 11);
+  bzero(bytes3, self->_sizeofSample << 11);
+  [(HalogenCalcTypeC *)self _applyGain:tmp1DataBuff toData:gain, bytes2, bytes3];
   [(HalogenCalcTypeC *)self _applyHanningWindow:tmp1DataBuff withSize:2048];
   vDSP_fft_zripD(self->_fftContext, &v22, 1, 0xCuLL, 1);
   for (i = 0; i != 1024; ++i)
   {
-    v12[i] = v12[i] * 0.000244140625;
-    v16 = v13[i] * 0.000244140625;
-    v13[i] = v16;
-    *(v14 + i * 8) = v16 * v16 + v12[i] * v12[i];
+    bytes2[i] = bytes2[i] * 0.000244140625;
+    v16 = bytes3[i] * 0.000244140625;
+    bytes3[i] = v16;
+    *(bytes4 + i * 8) = v16 * v16 + bytes2[i] * bytes2[i];
   }
 
   v17 = 0;
   v18 = 0.0;
   do
   {
-    v18 = v18 + *(v14 + 32 + v17);
+    v18 = v18 + *(bytes4 + 32 + v17);
     v17 += 8;
   }
 
@@ -622,26 +622,26 @@
   v19 = 2.22507386e-308;
   for (j = 56; j != 0x2000; j += 8)
   {
-    v19 = v19 + *(v14 + j);
+    v19 = v19 + *(bytes4 + j);
   }
 
-  if (a5)
+  if (level)
   {
-    *a5 = v18;
+    *level = v18;
   }
 
-  if (a6)
+  if (noiseLevel)
   {
-    *a6 = v19;
+    *noiseLevel = v19;
   }
 
   return log10(v18 / v19) * 10.0;
 }
 
-- (void)_doMuxComp:(double)a3 withPhase:(double)a4
+- (void)_doMuxComp:(double)comp withPhase:(double)phase
 {
-  v6 = __sincos_stret(a4 * 3.14159265 / 180.0);
-  v7 = __divdc3(1.0, 0.0, v6.__cosval * a3 + v6.__sinval * a3 * 0.0, v6.__sinval * a3);
+  v6 = __sincos_stret(phase * 3.14159265 / 180.0);
+  v7 = __divdc3(1.0, 0.0, v6.__cosval * comp + v6.__sinval * comp * 0.0, v6.__sinval * comp);
   v8 = self->_parasiticCap + self->_pinParasitics;
   v10 = __divdc3(1.0, 0.0, v7 - self->_signalFrequency * 0.0 * v8, v9 + self->_signalFrequency * -6.28318531 * v8);
   v12 = v11;
@@ -754,7 +754,7 @@
     _os_log_impl(v2, v3, v4, v5, v6, 2u);
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 @end

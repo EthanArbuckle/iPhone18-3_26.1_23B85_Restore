@@ -1,6 +1,6 @@
 @interface AXReplayer
 + (id)replayer;
-- (void)replayWithName:(id)a3 attempts:(int64_t)a4 interval:(double)a5 async:(BOOL)a6 queue:(id)a7 replayBlock:(id)a8 completion:(id)a9;
+- (void)replayWithName:(id)name attempts:(int64_t)attempts interval:(double)interval async:(BOOL)async queue:(id)queue replayBlock:(id)block completion:(id)completion;
 @end
 
 @implementation AXReplayer
@@ -26,19 +26,19 @@ uint64_t __22__AXReplayer_replayer__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (void)replayWithName:(id)a3 attempts:(int64_t)a4 interval:(double)a5 async:(BOOL)a6 queue:(id)a7 replayBlock:(id)a8 completion:(id)a9
+- (void)replayWithName:(id)name attempts:(int64_t)attempts interval:(double)interval async:(BOOL)async queue:(id)queue replayBlock:(id)block completion:(id)completion
 {
-  v12 = a6;
-  v19 = a3;
-  v15 = a7;
-  v16 = a8;
-  v17 = a9;
-  if (!v16)
+  asyncCopy = async;
+  nameCopy = name;
+  queueCopy = queue;
+  blockCopy = block;
+  completionCopy = completion;
+  if (!blockCopy)
   {
     _AXAssert();
   }
 
-  v18 = [_AXReplayInstance replayBlock:v16 name:v19 attempts:a4 interval:v12 async:v15 queue:v17 completion:a5];
+  v18 = [_AXReplayInstance replayBlock:blockCopy name:nameCopy attempts:attempts interval:asyncCopy async:queueCopy queue:completionCopy completion:interval];
   [v18 dispatch];
 }
 

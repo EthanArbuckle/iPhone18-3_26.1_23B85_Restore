@@ -1,25 +1,25 @@
 @interface COSPreferencesListController
-- (BOOL)_newSystemAppSpecifiers:(id)a3 sameAs:(id)a4;
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3;
+- (BOOL)_newSystemAppSpecifiers:(id)specifiers sameAs:(id)as;
+- (BOOL)shouldDeferPushForSpecifierID:(id)d;
 - (COSPreferencesListController)init;
 - (PSController)categoryController;
-- (id)specifierForBundle:(id)a3;
+- (id)specifierForBundle:(id)bundle;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)_decorateInsertAndReloadSystemAppSpecifiers:(id)a3;
-- (void)_decorateSpecifierForLazyIconLoading:(id)a3;
-- (void)_removeSystemAppSpecifierFromCache:(id)a3;
-- (void)_showControllerFromSpecifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)_decorateInsertAndReloadSystemAppSpecifiers:(id)specifiers;
+- (void)_decorateSpecifierForLazyIconLoading:(id)loading;
+- (void)_removeSystemAppSpecifierFromCache:(id)cache;
+- (void)_showControllerFromSpecifier:(id)specifier;
 - (void)dealloc;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)insertContiguousSpecifiers:(id)a3 atIndex:(int64_t)a4 animated:(BOOL)a5;
-- (void)launchBridgeSetup:(id)a3;
-- (void)loadSystemAppSpecifiers:(id)a3;
-- (void)removeSystemAppSpecifiers:(id)a3;
-- (void)selectGeneralCategoryForced:(BOOL)a3 showController:(BOOL)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)insertContiguousSpecifiers:(id)specifiers atIndex:(int64_t)index animated:(BOOL)animated;
+- (void)launchBridgeSetup:(id)setup;
+- (void)loadSystemAppSpecifiers:(id)specifiers;
+- (void)removeSystemAppSpecifiers:(id)specifiers;
+- (void)selectGeneralCategoryForced:(BOOL)forced showController:(BOOL)controller;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation COSPreferencesListController
@@ -55,21 +55,21 @@
   v4 = *&self->super.BPSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v115 = [(COSPreferencesListController *)self bundle];
+    bundle = [(COSPreferencesListController *)self bundle];
     v120 = 0;
-    v5 = [(COSPreferencesListController *)self settingsFileName];
+    settingsFileName = [(COSPreferencesListController *)self settingsFileName];
     v6 = +[NSMutableArray array];
     v7 = [COSTinkerHealthSharingSetupDelegate tinkerDevice]_0();
     v8 = v7;
     obj = v6;
-    if (v5)
+    if (settingsFileName)
     {
       v107 = v3;
       v108 = v7;
       v9 = [NSMutableDictionary alloc];
-      v10 = [v115 resourcePath];
-      v110 = v5;
-      v11 = [v10 stringByAppendingPathComponent:v5];
+      resourcePath = [bundle resourcePath];
+      v110 = settingsFileName;
+      v11 = [resourcePath stringByAppendingPathComponent:settingsFileName];
       v12 = [v11 stringByAppendingPathExtension:@"plist"];
       v13 = [v9 initWithContentsOfFile:v12];
 
@@ -87,13 +87,13 @@
       v98 = SpecifiersFromPlist();
       v20 = v119;
 
-      v21 = [(COSPreferencesListController *)self settingsFileName];
-      v22 = [NSString stringWithFormat:@"%@-tinker", v21];
+      settingsFileName2 = [(COSPreferencesListController *)self settingsFileName];
+      v22 = [NSString stringWithFormat:@"%@-tinker", settingsFileName2];
 
       v23 = [NSMutableDictionary alloc];
-      v24 = [v115 resourcePath];
+      resourcePath2 = [bundle resourcePath];
       v105 = v22;
-      v25 = [v24 stringByAppendingPathComponent:v22];
+      v25 = [resourcePath2 stringByAppendingPathComponent:v22];
       v26 = [v25 stringByAppendingPathExtension:@"plist"];
       v27 = [v23 initWithContentsOfFile:v26];
 
@@ -106,13 +106,13 @@
 
       v103 = v30;
       [v98 addObjectsFromArray:{v30, &v118}];
-      v32 = [(COSPreferencesListController *)self settingsFileName];
-      v33 = [NSString stringWithFormat:@"%@-sting", v32];
+      settingsFileName3 = [(COSPreferencesListController *)self settingsFileName];
+      v33 = [NSString stringWithFormat:@"%@-sting", settingsFileName3];
 
       v34 = [NSMutableDictionary alloc];
-      v35 = [v115 resourcePath];
+      resourcePath3 = [bundle resourcePath];
       v102 = v33;
-      v36 = [v35 stringByAppendingPathComponent:v33];
+      v36 = [resourcePath3 stringByAppendingPathComponent:v33];
       v37 = [v36 stringByAppendingPathExtension:@"plist"];
       v38 = [v34 initWithContentsOfFile:v37];
 
@@ -129,21 +129,21 @@
       {
         v44 = [v41 objectAtIndexedSubscript:0];
         v45 = +[NSBundle mainBundle];
-        v46 = [v44 name];
-        v47 = [v45 localizedStringForKey:v46 value:&stru_10026E598 table:@"Localizable-N199"];
+        name = [v44 name];
+        v47 = [v45 localizedStringForKey:name value:&stru_10026E598 table:@"Localizable-N199"];
         [v44 setName:v47];
 
         [v98 insertObject:v44 atIndex:v43];
       }
 
       v100 = v41;
-      v48 = [(COSPreferencesListController *)self settingsFileName];
-      v49 = [NSString stringWithFormat:@"%@-elton", v48];
+      settingsFileName4 = [(COSPreferencesListController *)self settingsFileName];
+      v49 = [NSString stringWithFormat:@"%@-elton", settingsFileName4];
 
       v50 = [NSMutableDictionary alloc];
-      v51 = [v115 resourcePath];
+      resourcePath4 = [bundle resourcePath];
       v99 = v49;
-      v52 = [v51 stringByAppendingPathComponent:v49];
+      v52 = [resourcePath4 stringByAppendingPathComponent:v49];
       v53 = [v52 stringByAppendingPathExtension:@"plist"];
       v54 = [v50 initWithContentsOfFile:v53];
 
@@ -158,8 +158,8 @@
       {
         v60 = [v57 objectAtIndexedSubscript:0];
         v61 = +[NSBundle mainBundle];
-        v62 = [v60 name];
-        v63 = [v61 localizedStringForKey:v62 value:&stru_10026E598 table:@"Localizable-elton"];
+        name2 = [v60 name];
+        v63 = [v61 localizedStringForKey:name2 value:&stru_10026E598 table:@"Localizable-elton"];
         [v60 setName:v63];
 
         [v98 insertObject:v60 atIndex:v59];
@@ -172,7 +172,7 @@
 
       v3 = v107;
       v8 = v108;
-      v5 = v110;
+      settingsFileName = v110;
     }
 
     if ((sub_100007C2C() & 1) == 0)
@@ -180,18 +180,18 @@
       v64 = +[PSSpecifier emptyGroupSpecifier];
       [v64 setIdentifier:@"APPLE_APP_GROUP_ID"];
       [v6 addObject:v64];
-      v65 = [(COSPreferencesListController *)self systemAppSpecifiers];
+      systemAppSpecifiers = [(COSPreferencesListController *)self systemAppSpecifiers];
 
-      if (v65)
+      if (systemAppSpecifiers)
       {
-        v66 = [(COSPreferencesListController *)self systemAppSpecifiers];
-        [v6 addObjectsFromArray:v66];
+        systemAppSpecifiers2 = [(COSPreferencesListController *)self systemAppSpecifiers];
+        [v6 addObjectsFromArray:systemAppSpecifiers2];
       }
 
       if (v8)
       {
-        v67 = [(COSPreferencesListController *)self systemAppsSettingsManager];
-        [v67 buildSystemAppSettings];
+        systemAppsSettingsManager = [(COSPreferencesListController *)self systemAppsSettingsManager];
+        [systemAppsSettingsManager buildSystemAppSettings];
       }
     }
 
@@ -225,13 +225,13 @@
         v90 = [NSArray arrayWithObjects:&v129 count:1];
         v131 = v90;
         [NSDictionary dictionaryWithObjects:&v131 forKeys:&v130 count:1];
-        v92 = v91 = v5;
+        v92 = v91 = settingsFileName;
         +[NSBundle mainBundle];
         v94 = v93 = v8;
         v95 = SpecifiersFromPlist();
 
         v8 = v93;
-        v5 = v91;
+        settingsFileName = v91;
 
         v96 = [v95 specifierForID:{@"INTERNAL_SETTINGS", 0}];
         [v96 setProperty:@"CompanionInternalSettings" forKey:PSSpecifierSearchPlistKey];
@@ -266,7 +266,7 @@
     if ((HasCellularDataCapability & v73) == 1 && ([UIApp launchedToTest] & 1) == 0)
     {
       v109 = v8;
-      v111 = v5;
+      v111 = settingsFileName;
       if ((v70 & 1) == 0)
       {
         v76 = +[PSSpecifier emptyGroupSpecifier];
@@ -306,14 +306,14 @@
       [obj addObjectsFromArray:v81];
 
       v8 = v109;
-      v5 = v111;
+      settingsFileName = v111;
     }
 
     objc_storeStrong(&self->super.BPSListController_opaque[v3], v75);
-    v85 = [(COSPreferencesListController *)self additionalSpecifiers];
-    if ([v85 count])
+    additionalSpecifiers = [(COSPreferencesListController *)self additionalSpecifiers];
+    if ([additionalSpecifiers count])
     {
-      [v75 addObjectsFromArray:v85];
+      [v75 addObjectsFromArray:additionalSpecifiers];
     }
 
     if (PBShouldOfferBetterTogetherFlow())
@@ -349,15 +349,15 @@
   [(COSPreferencesListController *)&v4 dealloc];
 }
 
-- (id)specifierForBundle:(id)a3
+- (id)specifierForBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(COSPreferencesListController *)self specifiers];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  specifiers = [(COSPreferencesListController *)self specifiers];
+  v6 = [specifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -369,14 +369,14 @@
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(specifiers);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
         v12 = [v11 propertyForKey:v9];
-        v13 = [v12 lastPathComponent];
+        lastPathComponent = [v12 lastPathComponent];
 
-        if (v13 && ([v13 isEqualToString:v4] & 1) != 0)
+        if (lastPathComponent && ([lastPathComponent isEqualToString:bundleCopy] & 1) != 0)
         {
           v14 = v11;
 
@@ -384,7 +384,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [specifiers countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -400,35 +400,35 @@ LABEL_12:
   return v14;
 }
 
-- (void)loadSystemAppSpecifiers:(id)a3
+- (void)loadSystemAppSpecifiers:(id)specifiers
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10005C7F8;
   v5[3] = &unk_100268358;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  specifiersCopy = specifiers;
+  selfCopy = self;
+  v4 = specifiersCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (BOOL)_newSystemAppSpecifiers:(id)a3 sameAs:(id)a4
+- (BOOL)_newSystemAppSpecifiers:(id)specifiers sameAs:(id)as
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  specifiersCopy = specifiers;
+  asCopy = as;
+  v7 = [specifiersCopy count];
+  if (v7 == [asCopy count])
   {
-    if ([v5 count])
+    if ([specifiersCopy count])
     {
       v8 = 0;
       do
       {
-        v9 = [v5 objectAtIndexedSubscript:v8];
-        v10 = [v9 identifier];
-        v11 = [v6 objectAtIndexedSubscript:v8];
-        v12 = [v11 identifier];
-        v13 = [v10 isEqualToString:v12];
+        v9 = [specifiersCopy objectAtIndexedSubscript:v8];
+        identifier = [v9 identifier];
+        v11 = [asCopy objectAtIndexedSubscript:v8];
+        identifier2 = [v11 identifier];
+        v13 = [identifier isEqualToString:identifier2];
 
         if ((v13 & 1) == 0)
         {
@@ -438,7 +438,7 @@ LABEL_12:
         ++v8;
       }
 
-      while (v8 < [v5 count]);
+      while (v8 < [specifiersCopy count]);
     }
 
     else
@@ -455,14 +455,14 @@ LABEL_12:
   return v13;
 }
 
-- (void)_decorateInsertAndReloadSystemAppSpecifiers:(id)a3
+- (void)_decorateInsertAndReloadSystemAppSpecifiers:(id)specifiers
 {
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [a3 reverseObjectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  reverseObjectEnumerator = [specifiers reverseObjectEnumerator];
+  v5 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -473,7 +473,7 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -481,31 +481,31 @@ LABEL_12:
         [(COSPreferencesListController *)self insertSpecifier:v9 afterSpecifierID:@"APPLE_APP_GROUP_ID" animated:1];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [reverseObjectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)removeSystemAppSpecifiers:(id)a3
+- (void)removeSystemAppSpecifiers:(id)specifiers
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10005CDEC;
   v5[3] = &unk_100268358;
-  v6 = a3;
-  v7 = self;
-  v4 = v6;
+  specifiersCopy = specifiers;
+  selfCopy = self;
+  v4 = specifiersCopy;
   dispatch_async(&_dispatch_main_q, v5);
 }
 
-- (void)_decorateSpecifierForLazyIconLoading:(id)a3
+- (void)_decorateSpecifierForLazyIconLoading:(id)loading
 {
-  v3 = a3;
+  loadingCopy = loading;
   v4 = PSLazyIconAppID;
-  v10 = v3;
-  v5 = [v3 propertyForKey:PSLazyIconAppID];
+  v10 = loadingCopy;
+  v5 = [loadingCopy propertyForKey:PSLazyIconAppID];
 
   if (!v5)
   {
@@ -525,15 +525,15 @@ LABEL_12:
   }
 }
 
-- (void)_removeSystemAppSpecifierFromCache:(id)a3
+- (void)_removeSystemAppSpecifierFromCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(COSPreferencesListController *)self systemAppSpecifiers];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  systemAppSpecifiers = [(COSPreferencesListController *)self systemAppSpecifiers];
+  v6 = [systemAppSpecifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -543,12 +543,12 @@ LABEL_12:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(systemAppSpecifiers);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:cacheCopy];
 
         if (v11)
         {
@@ -557,7 +557,7 @@ LABEL_12:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [systemAppSpecifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -569,31 +569,31 @@ LABEL_12:
 
 LABEL_11:
 
-  v12 = [(COSPreferencesListController *)self systemAppSpecifiers];
-  [v12 removeObject:v6];
+  systemAppSpecifiers2 = [(COSPreferencesListController *)self systemAppSpecifiers];
+  [systemAppSpecifiers2 removeObject:v6];
 }
 
 - (PSController)categoryController
 {
-  v2 = [(COSPreferencesListController *)self splitViewController];
-  v3 = [v2 containerNavigationController];
+  splitViewController = [(COSPreferencesListController *)self splitViewController];
+  containerNavigationController = [splitViewController containerNavigationController];
 
-  v4 = [v3 viewControllers];
-  v5 = [v4 firstObject];
+  viewControllers = [containerNavigationController viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (void)launchBridgeSetup:(id)a3
+- (void)launchBridgeSetup:(id)setup
 {
   v3 = +[UIApplication sharedApplication];
   [v3 presentSetupFlowAnimated:1];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(COSPreferencesListController *)self specifierAtIndex:[(COSPreferencesListController *)self indexForIndexPath:v5]];
+  pathCopy = path;
+  v6 = [(COSPreferencesListController *)self specifierAtIndex:[(COSPreferencesListController *)self indexForIndexPath:pathCopy]];
   if (v6)
   {
     [(COSPreferencesListController *)self _showControllerFromSpecifier:v6];
@@ -605,19 +605,19 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v5;
+      v9 = pathCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "nil specifier at indexPath: %@", &v8, 0xCu);
     }
   }
 }
 
-- (void)selectGeneralCategoryForced:(BOOL)a3 showController:(BOOL)a4
+- (void)selectGeneralCategoryForced:(BOOL)forced showController:(BOOL)controller
 {
-  v4 = a4;
+  controllerCopy = controller;
   v7 = [(COSPreferencesListController *)self indexPathForIndex:[(COSPreferencesListController *)self indexOfGeneralController]];
   v8 = v7;
   v11 = v7;
-  if (!v7 || a3)
+  if (!v7 || forced)
   {
     if (!v7)
     {
@@ -641,7 +641,7 @@ LABEL_11:
 
   [*&self->super.BPSListController_opaque[v9] selectRowAtIndexPath:v8 animated:0 scrollPosition:0];
   v8 = v11;
-  if (v4)
+  if (controllerCopy)
   {
     [(COSPreferencesListController *)self tableView:*&self->super.BPSListController_opaque[v9] didSelectRowAtIndexPath:v11];
     v8 = v11;
@@ -650,14 +650,14 @@ LABEL_11:
 LABEL_9:
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = COSPreferencesListController;
-  [(COSPreferencesListController *)&v7 viewDidAppear:a3];
-  v4 = [(COSPreferencesListController *)self splitViewController];
-  v5 = [v4 view];
-  [v5 setUserInteractionEnabled:1];
+  [(COSPreferencesListController *)&v7 viewDidAppear:appear];
+  splitViewController = [(COSPreferencesListController *)self splitViewController];
+  view = [splitViewController view];
+  [view setUserInteractionEnabled:1];
 
   v6 = dispatch_get_global_queue(-2, 0);
   dispatch_async(v6, &stru_100269730);
@@ -673,37 +673,37 @@ LABEL_9:
   }
 }
 
-- (void)_showControllerFromSpecifier:(id)a3
+- (void)_showControllerFromSpecifier:(id)specifier
 {
-  v4 = [(COSPreferencesListController *)self selectSpecifier:a3];
+  v4 = [(COSPreferencesListController *)self selectSpecifier:specifier];
   if (v4)
   {
     v6 = v4;
-    v5 = [(COSPreferencesListController *)self splitViewController];
-    [v5 showInitialViewController:v6];
+    splitViewController = [(COSPreferencesListController *)self splitViewController];
+    [splitViewController showInitialViewController:v6];
 
     v4 = v6;
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = COSPreferencesListController;
-  v5 = [(COSPreferencesListController *)&v8 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(COSPreferencesListController *)&v8 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(COSPreferencesListController *)self splitViewController];
-    [v5 setForceHideDisclosureIndicator:{objc_msgSend(v6, "isCollapsed") ^ 1}];
+    splitViewController = [(COSPreferencesListController *)self splitViewController];
+    [v5 setForceHideDisclosureIndicator:{objc_msgSend(splitViewController, "isCollapsed") ^ 1}];
   }
 
   return v5;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v6 = OBJC_IVAR___PSViewController__rootController;
   WeakRetained = objc_loadWeakRetained(&self->super.BPSListController_opaque[OBJC_IVAR___PSViewController__rootController]);
   if ([WeakRetained _isTransitioning])
@@ -715,38 +715,38 @@ LABEL_4:
   }
 
   v8 = objc_loadWeakRetained(&self->super.BPSListController_opaque[v6]);
-  v9 = [v8 topViewController];
-  v10 = [v9 presentedViewController];
+  topViewController = [v8 topViewController];
+  presentedViewController = [topViewController presentedViewController];
 
-  if (v10)
+  if (presentedViewController)
   {
     goto LABEL_4;
   }
 
-  v11 = v5;
+  v11 = pathCopy;
 LABEL_5:
 
   return v11;
 }
 
-- (void)insertContiguousSpecifiers:(id)a3 atIndex:(int64_t)a4 animated:(BOOL)a5
+- (void)insertContiguousSpecifiers:(id)specifiers atIndex:(int64_t)index animated:(BOOL)animated
 {
   v10.receiver = self;
   v10.super_class = COSPreferencesListController;
-  [(COSPreferencesListController *)&v10 insertContiguousSpecifiers:a3 atIndex:a4 animated:a5];
-  v6 = [(COSPreferencesListController *)self specifierIDPendingPush];
-  v7 = [(COSPreferencesListController *)self specifierForID:v6];
+  [(COSPreferencesListController *)&v10 insertContiguousSpecifiers:specifiers atIndex:index animated:animated];
+  specifierIDPendingPush = [(COSPreferencesListController *)self specifierIDPendingPush];
+  v7 = [(COSPreferencesListController *)self specifierForID:specifierIDPendingPush];
 
   if (v7)
   {
     v8 = pbb_bridge_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(COSPreferencesListController *)self specifierIDPendingPush];
+      specifierIDPendingPush2 = [(COSPreferencesListController *)self specifierIDPendingPush];
       *buf = 136315394;
       v12 = "[COSPreferencesListController insertContiguousSpecifiers:atIndex:animated:]";
       v13 = 2112;
-      v14 = v9;
+      v14 = specifierIDPendingPush2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Pending url specifier has been inserted. Handling url for %@", buf, 0x16u);
     }
 
@@ -754,10 +754,10 @@ LABEL_5:
   }
 }
 
-- (BOOL)shouldDeferPushForSpecifierID:(id)a3
+- (BOOL)shouldDeferPushForSpecifierID:(id)d
 {
-  v4 = a3;
-  if (*&self->super.BPSListController_opaque[OBJC_IVAR___PSListController__specifiers] && ([(COSPreferencesListController *)self specifierForID:v4], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  dCopy = d;
+  if (*&self->super.BPSListController_opaque[OBJC_IVAR___PSListController__specifiers] && ([(COSPreferencesListController *)self specifierForID:dCopy], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v6 = pbb_bridge_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -765,7 +765,7 @@ LABEL_5:
       v9 = 136315394;
       v10 = "[COSPreferencesListController shouldDeferPushForSpecifierID:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = dCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: %@: YES", &v9, 0x16u);
     }
 
@@ -780,7 +780,7 @@ LABEL_5:
       v9 = 136315394;
       v10 = "[COSPreferencesListController shouldDeferPushForSpecifierID:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = dCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: %@: NO", &v9, 0x16u);
     }
 
@@ -790,27 +790,27 @@ LABEL_5:
   return v7;
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  completionCopy = completion;
   v8 = pbb_bridge_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(COSPreferencesListController *)self pendingURLResourceDictionary];
+    pendingURLResourceDictionary = [(COSPreferencesListController *)self pendingURLResourceDictionary];
     *buf = 136315394;
     v18 = "[COSPreferencesListController handleURL:withCompletion:]";
     v19 = 1024;
-    v20 = v9 != 0;
+    v20 = pendingURLResourceDictionary != 0;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: handling pending URL: %{BOOL}d", buf, 0x12u);
   }
 
-  v10 = [(COSPreferencesListController *)self pendingURLResourceDictionary];
+  pendingURLResourceDictionary2 = [(COSPreferencesListController *)self pendingURLResourceDictionary];
 
-  if (v10)
+  if (pendingURLResourceDictionary2)
   {
-    v11 = [(COSPreferencesListController *)self pendingURLResourceDictionary];
-    v12 = [v11 isEqualToDictionary:v6];
+    pendingURLResourceDictionary3 = [(COSPreferencesListController *)self pendingURLResourceDictionary];
+    v12 = [pendingURLResourceDictionary3 isEqualToDictionary:lCopy];
 
     if ((v12 & 1) == 0)
     {
@@ -824,7 +824,7 @@ LABEL_5:
     }
 
     v14 = +[UIApplication sharedApplication];
-    v15 = [v6 mutableCopy];
+    v15 = [lCopy mutableCopy];
     [v14 navigateToRootObjectWithURLDictionary:v15 animated:1];
   }
 
@@ -832,7 +832,7 @@ LABEL_5:
   {
     v16.receiver = self;
     v16.super_class = COSPreferencesListController;
-    [(COSPreferencesListController *)&v16 handleURL:v6 withCompletion:v7];
+    [(COSPreferencesListController *)&v16 handleURL:lCopy withCompletion:completionCopy];
   }
 }
 

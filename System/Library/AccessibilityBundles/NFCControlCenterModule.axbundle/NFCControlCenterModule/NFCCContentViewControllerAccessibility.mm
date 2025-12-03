@@ -1,19 +1,19 @@
 @interface NFCCContentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation NFCCContentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NFCCContentViewController" hasInstanceVariable:@"_contentView" withType:"NFCCContentView"];
-  [v3 validateClass:@"NFCCContentViewController" hasInstanceVariable:@"_moduleState" withType:"q"];
-  [v3 validateClass:@"NFCCContentView" hasInstanceVariable:@"_statusView" withType:"NFCCStatusView"];
-  [v3 validateClass:@"NFCCStatusView" hasInstanceVariable:@"_scanTagPromptLabelWrapper" withType:"NFCCWrappedLabel"];
-  [v3 validateClass:@"NFCCStatusView" hasInstanceVariable:@"_unavailablePromptLabelWrapper" withType:"NFCCWrappedLabel"];
-  [v3 validateClass:@"NFCCContentViewController" hasInstanceMethod:@"_setModuleState:animated:" withFullSignature:{"v", "q", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NFCCContentViewController" hasInstanceVariable:@"_contentView" withType:"NFCCContentView"];
+  [validationsCopy validateClass:@"NFCCContentViewController" hasInstanceVariable:@"_moduleState" withType:"q"];
+  [validationsCopy validateClass:@"NFCCContentView" hasInstanceVariable:@"_statusView" withType:"NFCCStatusView"];
+  [validationsCopy validateClass:@"NFCCStatusView" hasInstanceVariable:@"_scanTagPromptLabelWrapper" withType:"NFCCWrappedLabel"];
+  [validationsCopy validateClass:@"NFCCStatusView" hasInstanceVariable:@"_unavailablePromptLabelWrapper" withType:"NFCCWrappedLabel"];
+  [validationsCopy validateClass:@"NFCCContentViewController" hasInstanceMethod:@"_setModuleState:animated:" withFullSignature:{"v", "q", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

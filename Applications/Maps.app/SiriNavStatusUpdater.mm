@@ -1,20 +1,20 @@
 @interface SiriNavStatusUpdater
-- (SiriNavStatusUpdater)initWithNavigationService:(id)a3;
-- (void)_updateSiriNavStatusForNewNavigationServiceState:(unint64_t)a3;
+- (SiriNavStatusUpdater)initWithNavigationService:(id)service;
+- (void)_updateSiriNavStatusForNewNavigationServiceState:(unint64_t)state;
 @end
 
 @implementation SiriNavStatusUpdater
 
-- (void)_updateSiriNavStatusForNewNavigationServiceState:(unint64_t)a3
+- (void)_updateSiriNavStatusForNewNavigationServiceState:(unint64_t)state
 {
-  if (a3 - 4 >= 3)
+  if (state - 4 >= 3)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = a3 - 3;
+    v3 = state - 3;
   }
 
   if (self->_lastSentValue != v3)
@@ -33,23 +33,23 @@
   }
 }
 
-- (SiriNavStatusUpdater)initWithNavigationService:(id)a3
+- (SiriNavStatusUpdater)initWithNavigationService:(id)service
 {
-  v5 = a3;
+  serviceCopy = service;
   if (self)
   {
-    objc_storeStrong(&self->_navigationService, a3);
-    v6 = [(SiriNavStatusUpdater *)self _currentStateFromService];
+    objc_storeStrong(&self->_navigationService, service);
+    _currentStateFromService = [(SiriNavStatusUpdater *)self _currentStateFromService];
     self->_lastSentValue = 4;
     v7 = sub_100035E6C();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v9 = 134217984;
-      v10 = v6;
+      v10 = _currentStateFromService;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Starting Siri updater with navigation state: %lu", &v9, 0xCu);
     }
 
-    [(SiriNavStatusUpdater *)self _updateSiriNavStatusForNewNavigationServiceState:v6];
+    [(SiriNavStatusUpdater *)self _updateSiriNavStatusForNewNavigationServiceState:_currentStateFromService];
     [(MNNavigationService *)self->_navigationService registerObserver:self];
   }
 

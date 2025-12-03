@@ -9,19 +9,19 @@
 {
   v4.receiver = self;
   v4.super_class = MTApplication_iOS;
-  v2 = [(MTApplication *)&v4 delegate];
+  delegate = [(MTApplication *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
 - (id)nextResponder
 {
-  v2 = [(MTApplication_iOS *)self delegate];
-  v3 = [v2 internalAppDelegate];
+  delegate = [(MTApplication_iOS *)self delegate];
+  internalAppDelegate = [delegate internalAppDelegate];
 
-  v4 = [v3 commandController];
+  commandController = [internalAppDelegate commandController];
 
-  return v4;
+  return commandController;
 }
 
 @end

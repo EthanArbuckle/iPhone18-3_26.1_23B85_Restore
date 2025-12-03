@@ -8,8 +8,8 @@
 {
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v3 = [(CALayerAccessibility__UserNotificationsUI__QuartzCore *)self accessibilityIdentifier];
-    v4 = [v3 isEqualToString:@"NCBlockTouchesViewCALayer"];
+    accessibilityIdentifier = [(CALayerAccessibility__UserNotificationsUI__QuartzCore *)self accessibilityIdentifier];
+    v4 = [accessibilityIdentifier isEqualToString:@"NCBlockTouchesViewCALayer"];
 
     if (v4)
     {

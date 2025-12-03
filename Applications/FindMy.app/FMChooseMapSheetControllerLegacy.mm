@@ -1,14 +1,14 @@
 @interface FMChooseMapSheetControllerLegacy
-- (_TtC6FindMyP33_57E27A9BE53D2C5A673EFEC8E661CDD732FMChooseMapSheetControllerLegacy)initWithCoder:(id)a3;
-- (_TtC6FindMyP33_57E27A9BE53D2C5A673EFEC8E661CDD732FMChooseMapSheetControllerLegacy)initWithNibName:(id)a3 bundle:(id)a4;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (_TtC6FindMyP33_57E27A9BE53D2C5A673EFEC8E661CDD732FMChooseMapSheetControllerLegacy)initWithCoder:(id)coder;
+- (_TtC6FindMyP33_57E27A9BE53D2C5A673EFEC8E661CDD732FMChooseMapSheetControllerLegacy)initWithNibName:(id)name bundle:(id)bundle;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation FMChooseMapSheetControllerLegacy
 
-- (_TtC6FindMyP33_57E27A9BE53D2C5A673EFEC8E661CDD732FMChooseMapSheetControllerLegacy)initWithCoder:(id)a3
+- (_TtC6FindMyP33_57E27A9BE53D2C5A673EFEC8E661CDD732FMChooseMapSheetControllerLegacy)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC6FindMyP33_57E27A9BE53D2C5A673EFEC8E661CDD732FMChooseMapSheetControllerLegacy_blurredBackground;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for FMChooseMapSheetControllerLegacy.FMBlurredBackgroundView()) init];
@@ -19,10 +19,10 @@
   return result;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1001ABFCC(a3);
+  selfCopy = self;
+  sub_1001ABFCC(disappear);
 }
 
 - (void)viewDidLoad
@@ -35,16 +35,16 @@
   sub_1001AC410();
 }
 
-- (_TtC6FindMyP33_57E27A9BE53D2C5A673EFEC8E661CDD732FMChooseMapSheetControllerLegacy)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMyP33_57E27A9BE53D2C5A673EFEC8E661CDD732FMChooseMapSheetControllerLegacy)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  if ([a4 horizontalSizeClass] == 1)
+  if ([collection horizontalSizeClass] == 1)
   {
     return -1;
   }

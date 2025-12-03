@@ -1,34 +1,34 @@
 @interface TSPDirectoryPackageWriter
-- (TSPDirectoryPackageWriter)initWithURL:(id)a3 documentTargetURL:(id)a4 relativeURLForExternalData:(id)a5 packageIdentifier:(unsigned __int8)a6 documentProperties:(id)a7 documentMetadata:(id)a8 fileFormatVersion:(unint64_t)a9 updateType:(int64_t)a10 cloneMode:(BOOL)a11 documentSaveValidationPolicy:(id)a12 encryptionKey:(id)a13 originalDocumentPackage:(id)a14 originalSupportPackage:(id)a15 fileCoordinatorDelegate:(id)a16 progress:(id)a17 error:(id *)a18;
-- (id)linkOrCopyData:(id)a3 fromURL:(id)a4 fromTemporaryLocation:(BOOL)a5 decryptionInfo:(id)a6 preferredFilename:(id)a7 error:(id *)a8;
-- (id)newRawComponentWriteChannelWithPackageLocator:(id)a3 storeOutsideObjectArchive:(BOOL)a4;
-- (id)newRawDataWriteChannelForRelativePath:(id)a3 originalLastModificationDate:(id)a4 originalSize:(unint64_t)a5 originalCRC:(unsigned int)a6 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a7;
-- (id)packageEntryInfoForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4 packageURL:(id)a5;
-- (id)targetDataURLForPath:(id)a3;
+- (TSPDirectoryPackageWriter)initWithURL:(id)l documentTargetURL:(id)rL relativeURLForExternalData:(id)data packageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties documentMetadata:(id)metadata fileFormatVersion:(unint64_t)version updateType:(int64_t)self0 cloneMode:(BOOL)self1 documentSaveValidationPolicy:(id)self2 encryptionKey:(id)self3 originalDocumentPackage:(id)self4 originalSupportPackage:(id)self5 fileCoordinatorDelegate:(id)self6 progress:(id)self7 error:(id *)self8;
+- (id)linkOrCopyData:(id)data fromURL:(id)l fromTemporaryLocation:(BOOL)location decryptionInfo:(id)info preferredFilename:(id)filename error:(id *)error;
+- (id)newRawComponentWriteChannelWithPackageLocator:(id)locator storeOutsideObjectArchive:(BOOL)archive;
+- (id)newRawDataWriteChannelForRelativePath:(id)path originalLastModificationDate:(id)date originalSize:(unint64_t)size originalCRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate;
+- (id)packageEntryInfoForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive packageURL:(id)l;
+- (id)targetDataURLForPath:(id)path;
 @end
 
 @implementation TSPDirectoryPackageWriter
 
-- (TSPDirectoryPackageWriter)initWithURL:(id)a3 documentTargetURL:(id)a4 relativeURLForExternalData:(id)a5 packageIdentifier:(unsigned __int8)a6 documentProperties:(id)a7 documentMetadata:(id)a8 fileFormatVersion:(unint64_t)a9 updateType:(int64_t)a10 cloneMode:(BOOL)a11 documentSaveValidationPolicy:(id)a12 encryptionKey:(id)a13 originalDocumentPackage:(id)a14 originalSupportPackage:(id)a15 fileCoordinatorDelegate:(id)a16 progress:(id)a17 error:(id *)a18
+- (TSPDirectoryPackageWriter)initWithURL:(id)l documentTargetURL:(id)rL relativeURLForExternalData:(id)data packageIdentifier:(unsigned __int8)identifier documentProperties:(id)properties documentMetadata:(id)metadata fileFormatVersion:(unint64_t)version updateType:(int64_t)self0 cloneMode:(BOOL)self1 documentSaveValidationPolicy:(id)self2 encryptionKey:(id)self3 originalDocumentPackage:(id)self4 originalSupportPackage:(id)self5 fileCoordinatorDelegate:(id)self6 progress:(id)self7 error:(id *)self8
 {
-  v45 = a6;
-  v22 = a3;
-  v51 = a4;
-  v52 = a5;
-  v53 = a7;
-  v54 = a8;
-  v55 = a12;
-  v56 = a13;
-  v57 = a14;
-  v23 = a15;
-  v24 = a16;
-  v25 = a17;
+  identifierCopy = identifier;
+  lCopy = l;
+  rLCopy = rL;
+  dataCopy = data;
+  propertiesCopy = properties;
+  metadataCopy = metadata;
+  policyCopy = policy;
+  keyCopy = key;
+  packageCopy = package;
+  supportPackageCopy = supportPackage;
+  delegateCopy = delegate;
+  progressCopy = progress;
   v26 = +[NSFileManager defaultManager];
   v63 = 0;
-  v27 = v22;
-  LODWORD(v22) = [v26 createDirectoryAtURL:v22 withIntermediateDirectories:1 attributes:0 error:&v63];
+  v27 = lCopy;
+  LODWORD(lCopy) = [v26 createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:&v63];
   v28 = v63;
-  if (!v22)
+  if (!lCopy)
   {
     if (UnsafePointer != -1)
     {
@@ -40,16 +40,16 @@
     {
       v35 = objc_opt_class();
       v48 = NSStringFromClass(v35);
-      v36 = [v28 domain];
-      v37 = [v28 code];
+      domain = [v28 domain];
+      code = [v28 code];
       *buf = 138413314;
       v65 = v27;
       v66 = 2114;
       v67 = v48;
       v68 = 2114;
-      v69 = v36;
+      v69 = domain;
       v70 = 2048;
-      v71 = v37;
+      v71 = code;
       v72 = 2112;
       v73 = v28;
       _os_log_error_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to create document directory. URL=%@, error=errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -75,16 +75,16 @@
     {
       v41 = objc_opt_class();
       v49 = NSStringFromClass(v41);
-      v46 = [v28 domain];
-      v42 = [v28 code];
+      domain2 = [v28 domain];
+      code2 = [v28 code];
       *buf = 138413314;
       v65 = v29;
       v66 = 2114;
       v67 = v49;
       v68 = 2114;
-      v69 = v46;
+      v69 = domain2;
       v70 = 2048;
-      v71 = v42;
+      v71 = code2;
       v72 = 2112;
       v73 = v28;
       _os_log_error_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "Failed to create data directory in document package. URL=%@, error=errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -110,16 +110,16 @@
     {
       v43 = objc_opt_class();
       v50 = NSStringFromClass(v43);
-      v47 = [v28 domain];
-      v44 = [v28 code];
+      domain3 = [v28 domain];
+      code3 = [v28 code];
       *buf = 138413314;
       v65 = v29;
       v66 = 2114;
       v67 = v50;
       v68 = 2114;
-      v69 = v47;
+      v69 = domain3;
       v70 = 2048;
-      v71 = v44;
+      v71 = code3;
       v72 = 2112;
       v73 = v28;
       _os_log_error_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "Failed to create metadata directory in document package. URL=%@, error=errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -132,7 +132,7 @@ LABEL_20:
   v59.receiver = self;
   v59.super_class = TSPDirectoryPackageWriter;
   v60 = 0;
-  v32 = [(TSPPackageWriter *)&v59 initWithURL:v27 documentTargetURL:v51 relativeURLForExternalData:v52 packageIdentifier:v45 documentProperties:v53 documentMetadata:v54 fileFormatVersion:a9 updateType:a10 cloneMode:a11 documentSaveValidationPolicy:v55 encryptionKey:v56 originalDocumentPackage:v57 originalSupportPackage:v23 fileCoordinatorDelegate:v24 progress:v25 error:&v60];
+  v32 = [(TSPPackageWriter *)&v59 initWithURL:v27 documentTargetURL:rLCopy relativeURLForExternalData:dataCopy packageIdentifier:identifierCopy documentProperties:propertiesCopy documentMetadata:metadataCopy fileFormatVersion:version updateType:type cloneMode:mode documentSaveValidationPolicy:policyCopy encryptionKey:keyCopy originalDocumentPackage:packageCopy originalSupportPackage:supportPackageCopy fileCoordinatorDelegate:delegateCopy progress:progressCopy error:&v60];
   v28 = v60;
   if (v32)
   {
@@ -144,10 +144,10 @@ LABEL_20:
   }
 
 LABEL_21:
-  if (a18)
+  if (error)
   {
     [NSError tsp_ensureSaveErrorWithError:v28];
-    *a18 = v32 = 0;
+    *error = v32 = 0;
   }
 
   else
@@ -160,20 +160,20 @@ LABEL_24:
   return v32;
 }
 
-- (id)packageEntryInfoForComponentLocator:(id)a3 isStoredOutsideObjectArchive:(BOOL)a4 packageURL:(id)a5
+- (id)packageEntryInfoForComponentLocator:(id)locator isStoredOutsideObjectArchive:(BOOL)archive packageURL:(id)l
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (!v6)
+  archiveCopy = archive;
+  locatorCopy = locator;
+  lCopy = l;
+  if (!archiveCopy)
   {
     v29.receiver = self;
     v29.super_class = TSPDirectoryPackageWriter;
-    v21 = [(TSPPackageWriter *)&v29 packageEntryInfoForComponentLocator:v8 isStoredOutsideObjectArchive:0 packageURL:v9];
+    v21 = [(TSPPackageWriter *)&v29 packageEntryInfoForComponentLocator:locatorCopy isStoredOutsideObjectArchive:0 packageURL:lCopy];
     goto LABEL_26;
   }
 
-  if (!v8)
+  if (!locatorCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -193,7 +193,7 @@ LABEL_24:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (!v9)
+  if (!lCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -213,7 +213,7 @@ LABEL_24:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v14 = [TSPDirectoryPackage componentFileURLForPackageURL:v9 packageLocator:v8];
+  v14 = [TSPDirectoryPackage componentFileURLForPackageURL:lCopy packageLocator:locatorCopy];
   v33 = 0;
   v32 = 0;
   v15 = [v14 getResourceValue:&v33 forKey:NSURLFileSizeKey error:&v32];
@@ -231,19 +231,19 @@ LABEL_20:
     v22 = UnsafePointer;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v14 path];
+      path = [v14 path];
       v25 = objc_opt_class();
       v26 = NSStringFromClass(v25);
-      v27 = [v17 domain];
-      v28 = [v17 code];
+      domain = [v17 domain];
+      code = [v17 code];
       *buf = 138413314;
-      v35 = v24;
+      v35 = path;
       v36 = 2114;
       v37 = v26;
       v38 = 2114;
-      v39 = v27;
+      v39 = domain;
       v40 = 2048;
-      v41 = v28;
+      v41 = code;
       v42 = 2112;
       v43 = v17;
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Failed to retrieve encoded length and last modification date for path: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -274,14 +274,14 @@ LABEL_26:
   return v21;
 }
 
-- (id)newRawComponentWriteChannelWithPackageLocator:(id)a3 storeOutsideObjectArchive:(BOOL)a4
+- (id)newRawComponentWriteChannelWithPackageLocator:(id)locator storeOutsideObjectArchive:(BOOL)archive
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  archiveCopy = archive;
+  locatorCopy = locator;
+  v7 = locatorCopy;
+  if (archiveCopy)
   {
-    if (!v6)
+    if (!locatorCopy)
     {
       +[TSUAssertionHandler _atomicIncrementAssertCount];
       if (TSUAssertCat_init_token != -1)
@@ -305,9 +305,9 @@ LABEL_26:
     v11 = [TSPDirectoryPackage componentFileURLForPackageURL:v10 packageLocator:v7];
 
     v12 = +[NSFileManager defaultManager];
-    v13 = [v11 URLByDeletingLastPathComponent];
+    uRLByDeletingLastPathComponent = [v11 URLByDeletingLastPathComponent];
     v25 = 0;
-    v14 = [v12 createDirectoryAtURL:v13 withIntermediateDirectories:1 attributes:0 error:&v25];
+    v14 = [v12 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
     v15 = v25;
 
     if (v14)
@@ -333,16 +333,16 @@ LABEL_26:
       {
         v19 = objc_opt_class();
         v20 = NSStringFromClass(v19);
-        v21 = [v15 domain];
-        v22 = [v15 code];
+        domain = [v15 domain];
+        code = [v15 code];
         *buf = 138413314;
         v27 = v7;
         v28 = 2114;
         v29 = v20;
         v30 = 2114;
-        v31 = v21;
+        v31 = domain;
         v32 = 2048;
-        v33 = v22;
+        v33 = code;
         v34 = 2112;
         v35 = v15;
         _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Failed to create intermediate directories for component file %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -356,55 +356,55 @@ LABEL_26:
   {
     v23.receiver = self;
     v23.super_class = TSPDirectoryPackageWriter;
-    v16 = [(TSPPackageWriter *)&v23 newRawComponentWriteChannelWithPackageLocator:v6 storeOutsideObjectArchive:0];
+    v16 = [(TSPPackageWriter *)&v23 newRawComponentWriteChannelWithPackageLocator:locatorCopy storeOutsideObjectArchive:0];
   }
 
   return v16;
 }
 
-- (id)targetDataURLForPath:(id)a3
+- (id)targetDataURLForPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = [(TSPPackageWriter *)self URL];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:0];
+  v6 = [v5 URLByAppendingPathComponent:pathCopy isDirectory:0];
 
   return v6;
 }
 
-- (id)linkOrCopyData:(id)a3 fromURL:(id)a4 fromTemporaryLocation:(BOOL)a5 decryptionInfo:(id)a6 preferredFilename:(id)a7 error:(id *)a8
+- (id)linkOrCopyData:(id)data fromURL:(id)l fromTemporaryLocation:(BOOL)location decryptionInfo:(id)info preferredFilename:(id)filename error:(id *)error
 {
-  v11 = a5;
-  v14 = a3;
-  v51 = a4;
-  v15 = a6;
-  v48 = v14;
-  v49 = a7;
-  v16 = [(TSPPackageWriter *)self filenameForData:v14 preferredFilename:v49];
+  locationCopy = location;
+  dataCopy = data;
+  lCopy = l;
+  infoCopy = info;
+  v48 = dataCopy;
+  filenameCopy = filename;
+  v16 = [(TSPPackageWriter *)self filenameForData:dataCopy preferredFilename:filenameCopy];
   [@"Data" stringByAppendingPathComponent:v16];
-  v50 = v17 = v11;
+  v50 = v17 = locationCopy;
   v18 = [(TSPDirectoryPackageWriter *)self targetDataURLForPath:?];
   v54 = 0;
-  v19 = [(TSPPackageWriter *)self encryptionKey];
-  if (UnsafePointer(v15, v19, 0x100000))
+  encryptionKey = [(TSPPackageWriter *)self encryptionKey];
+  if (UnsafePointer(infoCopy, encryptionKey, 0x100000))
   {
-    v20 = UnsafePointer(v19, 0x100000);
+    mutableCryptoInfoCopy = UnsafePointer(encryptionKey, 0x100000);
   }
 
   else
   {
-    v20 = [v15 mutableCryptoInfoCopy];
+    mutableCryptoInfoCopy = [infoCopy mutableCryptoInfoCopy];
   }
 
-  v21 = v20;
-  if (![TSPFileManager linkOrCopyItemAtURL:v51 decryptionInfo:v15 toURL:v18 encryptionInfo:v20 canLink:[(TSPPackageWriter *)self canLinkData] encodedLength:&v54 error:a8])
+  v21 = mutableCryptoInfoCopy;
+  if (![TSPFileManager linkOrCopyItemAtURL:lCopy decryptionInfo:infoCopy toURL:v18 encryptionInfo:mutableCryptoInfoCopy canLink:[(TSPPackageWriter *)self canLinkData] encodedLength:&v54 error:error])
   {
     goto LABEL_24;
   }
 
-  v22 = [(TSPPackageWriter *)self documentSaveValidationPolicy];
-  v23 = [v22 updateDataModificationDate];
+  documentSaveValidationPolicy = [(TSPPackageWriter *)self documentSaveValidationPolicy];
+  updateDataModificationDate = [documentSaveValidationPolicy updateDataModificationDate];
 
-  if (v23)
+  if (updateDataModificationDate)
   {
     v24 = +[NSDate date];
     v53 = 0;
@@ -418,13 +418,13 @@ LABEL_26:
 
     else
     {
-      v27 = [(TSPPackageWriter *)self documentSaveValidationPolicy];
-      v28 = [v27 failToSaveIfUpdateDataModificationDateFails];
+      documentSaveValidationPolicy2 = [(TSPPackageWriter *)self documentSaveValidationPolicy];
+      failToSaveIfUpdateDataModificationDateFails = [documentSaveValidationPolicy2 failToSaveIfUpdateDataModificationDateFails];
 
-      v26 = v28 ^ 1;
-      if (a8)
+      v26 = failToSaveIfUpdateDataModificationDateFails ^ 1;
+      if (error)
       {
-        v29 = v28 ^ 1;
+        v29 = failToSaveIfUpdateDataModificationDateFails ^ 1;
       }
 
       else
@@ -435,7 +435,7 @@ LABEL_26:
       if ((v29 & 1) == 0)
       {
         v30 = v47;
-        *a8 = v47;
+        *error = v47;
       }
 
       if (UnsafePointer != -1)
@@ -448,18 +448,18 @@ LABEL_26:
       {
         v38 = objc_opt_class();
         v46 = NSStringFromClass(v38);
-        v45 = [v47 domain];
-        v39 = [v47 code];
+        domain = [v47 domain];
+        code = [v47 code];
         *buf = 67110402;
-        *v56 = v28 ^ 1;
+        *v56 = failToSaveIfUpdateDataModificationDateFails ^ 1;
         *&v56[4] = 2112;
         *&v56[6] = v18;
         *&v56[14] = 2114;
         *&v56[16] = v46;
         *&v56[24] = 2114;
-        *&v56[26] = v45;
+        *&v56[26] = domain;
         *&v56[34] = 2048;
-        *&v56[36] = v39;
+        *&v56[36] = code;
         *&v56[44] = 2112;
         *&v56[46] = v47;
         _os_log_error_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "Could not set modificationDate. success=%d targetURL=%@ errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x3Au);
@@ -472,7 +472,7 @@ LABEL_26:
     v26 = 1;
   }
 
-  if (v26 && v17 && (UnsafePointer(v15, v21) & 1) == 0)
+  if (v26 && v17 && (UnsafePointer(infoCopy, v21) & 1) == 0)
   {
     v52 = 0;
     v33 = [v18 setResourceValue:&__kCFBooleanFalse forKey:NSURLIsExcludedFromBackupKey error:&v52];
@@ -487,19 +487,19 @@ LABEL_26:
       v35 = UnsafePointer;
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
-        v40 = [v18 path];
+        path = [v18 path];
         v41 = objc_opt_class();
         v42 = NSStringFromClass(v41);
-        v43 = [v34 domain];
-        v44 = [v34 code];
+        domain2 = [v34 domain];
+        code2 = [v34 code];
         *buf = 138413314;
-        *v56 = v40;
+        *v56 = path;
         *&v56[8] = 2114;
         *&v56[10] = v42;
         *&v56[18] = 2114;
-        *&v56[20] = v43;
+        *&v56[20] = domain2;
         *&v56[28] = 2048;
-        *&v56[30] = v44;
+        *&v56[30] = code2;
         *&v56[38] = 2112;
         *&v56[40] = v34;
         _os_log_error_impl(&_mh_execute_header, v35, OS_LOG_TYPE_ERROR, "Failed to update attributes for data at URL %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -521,11 +521,11 @@ LABEL_33:
   return v32;
 }
 
-- (id)newRawDataWriteChannelForRelativePath:(id)a3 originalLastModificationDate:(id)a4 originalSize:(unint64_t)a5 originalCRC:(unsigned int)a6 forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)a7
+- (id)newRawDataWriteChannelForRelativePath:(id)path originalLastModificationDate:(id)date originalSize:(unint64_t)size originalCRC:(unsigned int)c forceCalculatingSizeAndCRCForPreservingLastModificationDate:(BOOL)modificationDate
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v9)
+  pathCopy = path;
+  dateCopy = date;
+  if (!pathCopy)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -545,11 +545,11 @@ LABEL_33:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v13 = [(TSPDirectoryPackageWriter *)self targetDataURLForPath:v9];
-  v14 = [v13 URLByDeletingLastPathComponent];
+  v13 = [(TSPDirectoryPackageWriter *)self targetDataURLForPath:pathCopy];
+  uRLByDeletingLastPathComponent = [v13 URLByDeletingLastPathComponent];
   v15 = +[NSFileManager defaultManager];
   v25 = 0;
-  v16 = [v15 createDirectoryAtURL:v14 withIntermediateDirectories:1 attributes:0 error:&v25];
+  v16 = [v15 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v25];
   v17 = v25;
 
   if (v16)
@@ -569,16 +569,16 @@ LABEL_33:
     {
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
-      v23 = [v17 domain];
-      v24 = [v17 code];
+      domain = [v17 domain];
+      code = [v17 code];
       *buf = 138413314;
-      v27 = v14;
+      v27 = uRLByDeletingLastPathComponent;
       v28 = 2114;
       v29 = v22;
       v30 = 2114;
-      v31 = v23;
+      v31 = domain;
       v32 = 2048;
-      v33 = v24;
+      v33 = code;
       v34 = 2112;
       v35 = v17;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Couldn't create directory at URL %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);

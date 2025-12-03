@@ -1,29 +1,29 @@
 @interface KTFlags
-- (BOOL)_onqueueContains:(id)a3;
-- (KTFlags)initWithQueue:(id)a3 flags:(id)a4;
-- (id)conditionForFlag:(id)a3;
+- (BOOL)_onqueueContains:(id)contains;
+- (KTFlags)initWithQueue:(id)queue flags:(id)flags;
+- (id)conditionForFlag:(id)flag;
 - (id)contentsAsString;
 - (id)description;
 - (id)dumpFlags;
-- (void)_onqueueRemoveFlag:(id)a3;
-- (void)_onqueueSetFlag:(id)a3;
-- (void)setFlag:(id)a3;
+- (void)_onqueueRemoveFlag:(id)flag;
+- (void)_onqueueSetFlag:(id)flag;
+- (void)setFlag:(id)flag;
 @end
 
 @implementation KTFlags
 
-- (KTFlags)initWithQueue:(id)a3 flags:(id)a4
+- (KTFlags)initWithQueue:(id)queue flags:(id)flags
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  flagsCopy = flags;
   v29.receiver = self;
   v29.super_class = KTFlags;
   v9 = [(KTFlags *)&v29 init];
   v10 = v9;
   if (v9)
   {
-    v24 = v7;
-    objc_storeStrong(&v9->_queue, a3);
+    v24 = queueCopy;
+    objc_storeStrong(&v9->_queue, queue);
     v11 = +[NSMutableSet set];
     flags = v10->_flags;
     v10->_flags = v11;
@@ -32,12 +32,12 @@
     flagConditions = v10->_flagConditions;
     v10->_flagConditions = v13;
 
-    objc_storeStrong(&v10->_allowableFlags, a4);
+    objc_storeStrong(&v10->_allowableFlags, flags);
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = v8;
+    v15 = flagsCopy;
     v16 = [v15 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v16)
     {
@@ -55,8 +55,8 @@
 
           v20 = *(*(&v25 + 1) + 8 * v19);
           v21 = objc_alloc_init(KTCondition);
-          v22 = [(KTFlags *)v10 flagConditions];
-          [v22 setObject:v21 forKeyedSubscript:v20];
+          flagConditions = [(KTFlags *)v10 flagConditions];
+          [flagConditions setObject:v21 forKeyedSubscript:v20];
 
           v19 = v19 + 1;
         }
@@ -68,7 +68,7 @@
       while (v17);
     }
 
-    v7 = v24;
+    queueCopy = v24;
   }
 
   return v10;
@@ -76,22 +76,22 @@
 
 - (id)description
 {
-  v2 = [(KTFlags *)self contentsAsString];
-  v3 = [NSString stringWithFormat:@"<KTFlags: %@>", v2];
+  contentsAsString = [(KTFlags *)self contentsAsString];
+  v3 = [NSString stringWithFormat:@"<KTFlags: %@>", contentsAsString];
 
   return v3;
 }
 
 - (id)contentsAsString
 {
-  v3 = [(KTFlags *)self flags];
-  v4 = [v3 count];
+  flags = [(KTFlags *)self flags];
+  v4 = [flags count];
 
   if (v4)
   {
-    v5 = [(KTFlags *)self flags];
-    v6 = [v5 allObjects];
-    v7 = [v6 componentsJoinedByString:{@", "}];
+    flags2 = [(KTFlags *)self flags];
+    allObjects = [flags2 allObjects];
+    v7 = [allObjects componentsJoinedByString:{@", "}];
   }
 
   else
@@ -104,73 +104,73 @@
 
 - (id)dumpFlags
 {
-  v2 = [(KTFlags *)self flags];
-  v3 = [v2 allObjects];
+  flags = [(KTFlags *)self flags];
+  allObjects = [flags allObjects];
 
-  return v3;
+  return allObjects;
 }
 
-- (BOOL)_onqueueContains:(id)a3
+- (BOOL)_onqueueContains:(id)contains
 {
-  v4 = a3;
-  v5 = [(KTFlags *)self queue];
-  dispatch_assert_queue_V2(v5);
+  containsCopy = contains;
+  queue = [(KTFlags *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(KTFlags *)self flags];
-  LOBYTE(v5) = [v6 containsObject:v4];
+  flags = [(KTFlags *)self flags];
+  LOBYTE(queue) = [flags containsObject:containsCopy];
 
-  return v5;
+  return queue;
 }
 
-- (void)_onqueueSetFlag:(id)a3
+- (void)_onqueueSetFlag:(id)flag
 {
-  v4 = a3;
-  v5 = [(KTFlags *)self queue];
-  dispatch_assert_queue_V2(v5);
+  flagCopy = flag;
+  queue = [(KTFlags *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(KTFlags *)self flags];
-  [v6 addObject:v4];
+  flags = [(KTFlags *)self flags];
+  [flags addObject:flagCopy];
 }
 
-- (id)conditionForFlag:(id)a3
+- (id)conditionForFlag:(id)flag
 {
-  v4 = a3;
-  v5 = [(KTFlags *)self flagConditions];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  flagCopy = flag;
+  flagConditions = [(KTFlags *)self flagConditions];
+  v6 = [flagConditions objectForKeyedSubscript:flagCopy];
 
   return v6;
 }
 
-- (void)setFlag:(id)a3
+- (void)setFlag:(id)flag
 {
-  v4 = a3;
-  v5 = [(KTFlags *)self queue];
+  flagCopy = flag;
+  queue = [(KTFlags *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100017158;
   v7[3] = &unk_100094F80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = flagCopy;
+  v6 = flagCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)_onqueueRemoveFlag:(id)a3
+- (void)_onqueueRemoveFlag:(id)flag
 {
-  v4 = a3;
-  v5 = [(KTFlags *)self queue];
-  dispatch_assert_queue_V2(v5);
+  flagCopy = flag;
+  queue = [(KTFlags *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(KTFlags *)self flags];
-  [v6 removeObject:v4];
+  flags = [(KTFlags *)self flags];
+  [flags removeObject:flagCopy];
 
-  v7 = [(KTFlags *)self flagConditions];
-  v8 = [v7 objectForKeyedSubscript:v4];
+  flagConditions = [(KTFlags *)self flagConditions];
+  v8 = [flagConditions objectForKeyedSubscript:flagCopy];
   [v8 fulfill];
 
   v10 = objc_alloc_init(KTCondition);
-  v9 = [(KTFlags *)self flagConditions];
-  [v9 setObject:v10 forKeyedSubscript:v4];
+  flagConditions2 = [(KTFlags *)self flagConditions];
+  [flagConditions2 setObject:v10 forKeyedSubscript:flagCopy];
 }
 
 @end

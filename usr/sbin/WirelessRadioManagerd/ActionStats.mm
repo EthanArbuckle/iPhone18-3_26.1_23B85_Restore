@@ -1,8 +1,8 @@
 @interface ActionStats
 - (ActionStats)init;
-- (ActionStats)initWithCoder:(id)a3;
+- (ActionStats)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ActionStats
@@ -24,34 +24,34 @@
   return v3;
 }
 
-- (ActionStats)initWithCoder:(id)a3
+- (ActionStats)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ActionStats;
   v4 = [(ActionStats *)&v6 init];
   if (v4)
   {
-    -[ActionStats setCount:](v4, "setCount:", [a3 decodeIntForKey:@"count"]);
-    [a3 decodeDoubleForKey:@"rewardMean"];
+    -[ActionStats setCount:](v4, "setCount:", [coder decodeIntForKey:@"count"]);
+    [coder decodeDoubleForKey:@"rewardMean"];
     [(ActionStats *)v4 setRewardMean:?];
-    [a3 decodeDoubleForKey:@"index"];
+    [coder decodeDoubleForKey:@"index"];
     [(ActionStats *)v4 setIndex:?];
-    -[ActionStats setIndexValid:](v4, "setIndexValid:", [a3 decodeBoolForKey:@"indexValid"]);
+    -[ActionStats setIndexValid:](v4, "setIndexValid:", [coder decodeBoolForKey:@"indexValid"]);
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeInt:-[ActionStats count](self forKey:{"count"), @"count"}];
+  [coder encodeInt:-[ActionStats count](self forKey:{"count"), @"count"}];
   [(ActionStats *)self rewardMean];
-  [a3 encodeDouble:@"rewardMean" forKey:?];
+  [coder encodeDouble:@"rewardMean" forKey:?];
   [(ActionStats *)self index];
-  [a3 encodeDouble:@"index" forKey:?];
-  v5 = [(ActionStats *)self indexValid];
+  [coder encodeDouble:@"index" forKey:?];
+  indexValid = [(ActionStats *)self indexValid];
 
-  [a3 encodeBool:v5 forKey:@"indexValid"];
+  [coder encodeBool:indexValid forKey:@"indexValid"];
 }
 
 - (void)dealloc

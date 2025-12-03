@@ -1,14 +1,14 @@
 @interface CKPosterRenderingTranscriptBackgroundView
 - (UIEdgeInsets)safeAreaInsets;
 - (_TtC7ChatKit41CKPosterRenderingTranscriptBackgroundView)init;
-- (_TtC7ChatKit41CKPosterRenderingTranscriptBackgroundView)initWithCoder:(id)a3;
-- (_TtC7ChatKit41CKPosterRenderingTranscriptBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC7ChatKit41CKPosterRenderingTranscriptBackgroundView)initWithCoder:(id)coder;
+- (_TtC7ChatKit41CKPosterRenderingTranscriptBackgroundView)initWithFrame:(CGRect)frame;
 - (_TtP7ChatKit49CKPosterRenderingTranscriptBackgroundViewDelegate_)delegate;
 @end
 
 @implementation CKPosterRenderingTranscriptBackgroundView
 
-- (_TtC7ChatKit41CKPosterRenderingTranscriptBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit41CKPosterRenderingTranscriptBackgroundView)initWithFrame:(CGRect)frame
 {
   swift_unknownObjectWeakInit();
   result = sub_190D58510();
@@ -16,7 +16,7 @@
   return result;
 }
 
-- (_TtC7ChatKit41CKPosterRenderingTranscriptBackgroundView)initWithCoder:(id)a3
+- (_TtC7ChatKit41CKPosterRenderingTranscriptBackgroundView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   result = sub_190D58510();

@@ -10,14 +10,14 @@
   v3 = objc_alloc_init(PKPassLibrary);
   [(DDRTaskEraseWalletPasses *)self setPassLibrary:v3];
 
-  v4 = [(DDRTaskEraseWalletPasses *)self passLibrary];
-  -[DDRTaskEraseWalletPasses setEstimatedTime:](self, "setEstimatedTime:", [v4 estimatedTimeToResetApplePay]);
+  passLibrary = [(DDRTaskEraseWalletPasses *)self passLibrary];
+  -[DDRTaskEraseWalletPasses setEstimatedTime:](self, "setEstimatedTime:", [passLibrary estimatedTimeToResetApplePay]);
 }
 
 - (void)run
 {
-  v2 = [(DDRTaskEraseWalletPasses *)self passLibrary];
-  [v2 resetApplePayWithDiagnosticReason:@"Device Data Reset"];
+  passLibrary = [(DDRTaskEraseWalletPasses *)self passLibrary];
+  [passLibrary resetApplePayWithDiagnosticReason:@"Device Data Reset"];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface MTPodcastPlaylistSettings
 - (int64_t)integerForEpisodesToShow;
-- (void)setNeedsUpdate:(BOOL)a3;
+- (void)setNeedsUpdate:(BOOL)update;
 @end
 
 @implementation MTPodcastPlaylistSettings
@@ -17,11 +17,11 @@
       case 5:
         return 10;
       case 6:
-        v5 = [(MTPodcastPlaylistSettings *)self playlist];
-        v6 = [v5 defaultSettings];
-        v7 = [v6 integerForEpisodesToShow];
+        playlist = [(MTPodcastPlaylistSettings *)self playlist];
+        defaultSettings = [playlist defaultSettings];
+        integerForEpisodesToShow = [defaultSettings integerForEpisodesToShow];
 
-        return v7;
+        return integerForEpisodesToShow;
       default:
         return 0;
     }
@@ -53,31 +53,31 @@
   return result;
 }
 
-- (void)setNeedsUpdate:(BOOL)a3
+- (void)setNeedsUpdate:(BOOL)update
 {
-  v3 = a3;
-  v5 = [(MTPodcastPlaylistSettings *)self playlist];
-  v6 = [v5 needsUpdate];
+  updateCopy = update;
+  playlist = [(MTPodcastPlaylistSettings *)self playlist];
+  needsUpdate = [playlist needsUpdate];
 
-  v7 = [(MTPodcastPlaylistSettings *)self flags];
-  if (((((v7 & 2) == 0) ^ v3) & 1) == 0)
+  flags = [(MTPodcastPlaylistSettings *)self flags];
+  if (((((flags & 2) == 0) ^ updateCopy) & 1) == 0)
   {
-    v8 = v3 | v6;
+    v8 = updateCopy | needsUpdate;
     v9 = 2;
-    if (!v3)
+    if (!updateCopy)
     {
       v9 = 0;
     }
 
-    [(MTPodcastPlaylistSettings *)self setFlags:v7 & 0xFFFFFFFFFFFFFFFDLL | v9];
-    v10 = [(MTPodcastPlaylistSettings *)self playlist];
-    [v10 setNeedsUpdate:v8 & 1];
+    [(MTPodcastPlaylistSettings *)self setFlags:flags & 0xFFFFFFFFFFFFFFFDLL | v9];
+    playlist2 = [(MTPodcastPlaylistSettings *)self playlist];
+    [playlist2 setNeedsUpdate:v8 & 1];
 
-    v11 = [(MTPodcastPlaylistSettings *)self playlistIfDefault];
-    v12 = [v11 needsUpdate];
+    playlistIfDefault = [(MTPodcastPlaylistSettings *)self playlistIfDefault];
+    needsUpdate2 = [playlistIfDefault needsUpdate];
 
-    v13 = [(MTPodcastPlaylistSettings *)self playlistIfDefault];
-    [v13 setNeedsUpdate:(v3 | v12) & 1];
+    playlistIfDefault2 = [(MTPodcastPlaylistSettings *)self playlistIfDefault];
+    [playlistIfDefault2 setNeedsUpdate:(updateCopy | needsUpdate2) & 1];
   }
 }
 

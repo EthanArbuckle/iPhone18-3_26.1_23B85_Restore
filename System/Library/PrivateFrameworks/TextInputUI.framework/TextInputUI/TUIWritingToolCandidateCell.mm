@@ -7,17 +7,17 @@
 
 - (id)cellBackgroundImage
 {
-  v3 = [(TUIWritingToolCandidateCell *)self isHighlighted];
-  v4 = [(TUICandidateBaseCell *)self style];
-  v5 = v4;
-  if (v3)
+  isHighlighted = [(TUIWritingToolCandidateCell *)self isHighlighted];
+  style = [(TUICandidateBaseCell *)self style];
+  v5 = style;
+  if (isHighlighted)
   {
-    [v4 highlightedCellBackgroundImage];
+    [style highlightedCellBackgroundImage];
   }
 
   else
   {
-    [v4 cellBackgroundImage];
+    [style cellBackgroundImage];
   }
   v6 = ;
 
@@ -26,17 +26,17 @@
 
 - (id)cellBackgroundColor
 {
-  v3 = [(TUIWritingToolCandidateCell *)self isHighlighted];
-  v4 = [(TUICandidateBaseCell *)self style];
-  v5 = v4;
-  if (v3)
+  isHighlighted = [(TUIWritingToolCandidateCell *)self isHighlighted];
+  style = [(TUICandidateBaseCell *)self style];
+  v5 = style;
+  if (isHighlighted)
   {
-    [v4 highlightedBackgroundColor];
+    [style highlightedBackgroundColor];
   }
 
   else
   {
-    [v4 cellBackgroundColor];
+    [style cellBackgroundColor];
   }
   v6 = ;
 

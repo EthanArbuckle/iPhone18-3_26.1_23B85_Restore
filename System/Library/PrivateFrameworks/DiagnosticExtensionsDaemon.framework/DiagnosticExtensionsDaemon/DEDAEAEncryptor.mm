@@ -1,28 +1,28 @@
 @interface DEDAEAEncryptor
-- (id)encryptLogsAtPath:(id)a3 toDirectory:(id)a4 withMetadata:(id)a5 anonymousDeviceUUID:(id)a6;
+- (id)encryptLogsAtPath:(id)path toDirectory:(id)directory withMetadata:(id)metadata anonymousDeviceUUID:(id)d;
 @end
 
 @implementation DEDAEAEncryptor
 
-- (id)encryptLogsAtPath:(id)a3 toDirectory:(id)a4 withMetadata:(id)a5 anonymousDeviceUUID:(id)a6
+- (id)encryptLogsAtPath:(id)path toDirectory:(id)directory withMetadata:(id)metadata anonymousDeviceUUID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  pathCopy = path;
+  directoryCopy = directory;
+  metadataCopy = metadata;
   v11 = +[DEDConfiguration sharedInstance];
   v12 = os_log_create([v11 loggingSubsystem], "ded-encryptor");
 
-  v13 = [v10 objectForKey:@"publicKey"];
+  v13 = [metadataCopy objectForKey:@"publicKey"];
 
   if (v13)
   {
     v14 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v13 options:0];
-    if ([MEMORY[0x277D051E0] isValidDirectory:v8])
+    if ([MEMORY[0x277D051E0] isValidDirectory:pathCopy])
     {
-      v15 = [v8 path];
-      v16 = [v15 fileSystemRepresentation];
+      path = [pathCopy path];
+      fileSystemRepresentation = [path fileSystemRepresentation];
 
-      v17 = AAPathListCreateWithDirectoryContents(v16, 0, 0, 0, 0, 0);
+      v17 = AAPathListCreateWithDirectoryContents(fileSystemRepresentation, 0, 0, 0, 0, 0);
       if (!v17)
       {
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -40,14 +40,14 @@ LABEL_35:
 
     else
     {
-      v19 = [v8 URLByDeletingLastPathComponent];
-      v20 = [v19 path];
-      v16 = [v20 fileSystemRepresentation];
+      uRLByDeletingLastPathComponent = [pathCopy URLByDeletingLastPathComponent];
+      path2 = [uRLByDeletingLastPathComponent path];
+      fileSystemRepresentation = [path2 fileSystemRepresentation];
 
-      v21 = [v8 lastPathComponent];
-      v22 = [v21 fileSystemRepresentation];
+      lastPathComponent = [pathCopy lastPathComponent];
+      fileSystemRepresentation2 = [lastPathComponent fileSystemRepresentation];
 
-      v17 = AAPathListCreateWithPath(v16, v22);
+      v17 = AAPathListCreateWithPath(fileSystemRepresentation, fileSystemRepresentation2);
       if (!v17)
       {
         if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -60,13 +60,13 @@ LABEL_35:
     }
 
     v23 = v17;
-    v24 = [v8 lastPathComponent];
-    v25 = [v24 stringByAppendingPathExtension:@"aea"];
+    lastPathComponent2 = [pathCopy lastPathComponent];
+    v25 = [lastPathComponent2 stringByAppendingPathExtension:@"aea"];
 
     v39 = v25;
-    v38 = [v9 URLByAppendingPathComponent:v25];
-    v26 = [v38 path];
-    v27 = AAFileStreamOpenWithPath([v26 fileSystemRepresentation], 513, 0x1A4u);
+    v38 = [directoryCopy URLByAppendingPathComponent:v25];
+    path3 = [v38 path];
+    v27 = AAFileStreamOpenWithPath([path3 fileSystemRepresentation], 513, 0x1A4u);
 
     if (!v27)
     {
@@ -81,7 +81,7 @@ LABEL_35:
       goto LABEL_34;
     }
 
-    v37 = v9;
+    v37 = directoryCopy;
     v28 = AEAContextCreateWithProfile(3u);
     AEAContextSetFieldBlob(v28, 0xAu, 1u, [v14 bytes], objc_msgSend(v14, "length"));
     AEAContextSetFieldUInt(v28, 3u, 0x801uLL);
@@ -96,7 +96,7 @@ LABEL_35:
         v33 = v32;
         if (v32)
         {
-          if (AAArchiveStreamWritePathList(v31, v23, v32, v16, 0, 0, 0, 0) < 0)
+          if (AAArchiveStreamWritePathList(v31, v23, v32, fileSystemRepresentation, 0, 0, 0, 0) < 0)
           {
             if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
             {
@@ -146,7 +146,7 @@ LABEL_35:
     AAPathListDestroy(v23);
     v18 = 0;
 LABEL_33:
-    v9 = v37;
+    directoryCopy = v37;
 LABEL_34:
 
     goto LABEL_35;

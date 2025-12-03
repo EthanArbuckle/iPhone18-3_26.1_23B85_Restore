@@ -1,66 +1,66 @@
 @interface TSCHChartGrid
-- (BOOL)contentsEqualToGrid:(id)a3;
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3;
-- (BOOL)p_name:(id)a3 isInArray:(id)a4;
+- (BOOL)contentsEqualToGrid:(id)grid;
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison;
+- (BOOL)p_name:(id)p_name isInArray:(id)array;
 - (TSCHChartGrid)init;
 - (TSCHNotifyOnModify)objectToNotify;
-- (id)columnIdForColumn:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createUUIDArrayWithCount:(unint64_t)a3;
+- (id)columnIdForColumn:(unint64_t)column;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createUUIDArrayWithCount:(unint64_t)count;
 - (id)description;
-- (id)extractColumnNames:(_NSRange)a3 returningColumnIds:(id *)a4 valueColumns:(id *)a5;
-- (id)extractGridValuesReturningRowNames:(id *)a3 rowIds:(id *)a4 columnNames:(id *)a5 columnIds:(id *)a6;
-- (id)extractRowNames:(_NSRange)a3 returningRowIds:(id *)a4 valueRows:(id *)a5;
-- (id)getNewColumnNameForLocale:(id)a3;
-- (id)getNewRowNameForLocale:(id)a3;
-- (id)gridAdapterForColumn:(unint64_t)a3;
+- (id)extractColumnNames:(_NSRange)names returningColumnIds:(id *)ids valueColumns:(id *)columns;
+- (id)extractGridValuesReturningRowNames:(id *)names rowIds:(id *)ids columnNames:(id *)columnNames columnIds:(id *)columnIds;
+- (id)extractRowNames:(_NSRange)names returningRowIds:(id *)ids valueRows:(id *)rows;
+- (id)getNewColumnNameForLocale:(id)locale;
+- (id)getNewRowNameForLocale:(id)locale;
+- (id)gridAdapterForColumn:(unint64_t)column;
 - (id)gridAdapterForColumnConstant;
 - (id)gridAdapterForColumnCount;
-- (id)gridAdapterForRow:(unint64_t)a3;
+- (id)gridAdapterForRow:(unint64_t)row;
 - (id)gridAdapterForRowConstant;
 - (id)gridAdapterForRowCount;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)nameForColumn:(unint64_t)a3;
-- (id)nameForRow:(unint64_t)a3;
-- (id)rowIdForRow:(unint64_t)a3;
-- (id)valueForRow:(unint64_t)a3 column:(unint64_t)a4;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (unint64_t)columnIndexForColumnId:(id)a3;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)nameForColumn:(unint64_t)column;
+- (id)nameForRow:(unint64_t)row;
+- (id)rowIdForRow:(unint64_t)row;
+- (id)valueForRow:(unint64_t)row column:(unint64_t)column;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (unint64_t)columnIndexForColumnId:(id)id;
 - (unint64_t)noAssertNumberOfColumns;
 - (unint64_t)numberOfColumns;
 - (unint64_t)numberOfRows;
-- (unint64_t)rowIndexForRowId:(id)a3;
+- (unint64_t)rowIndexForRowId:(id)id;
 - (void)adjustRowAndColumnNameListLength;
 - (void)generateRowColumnIdMaps;
-- (void)insertColumn:(unint64_t)a3 withName:(id)a4;
-- (void)insertColumn:(unint64_t)a3 withName:(id)a4 withId:(id)a5;
-- (void)insertColumnNames:(id)a3 at:(unint64_t)a4 withIds:(id)a5;
-- (void)insertColumnsAt:(unint64_t)a3 names:(id)a4 data:(id)a5 withIds:(id)a6;
-- (void)insertRow:(unint64_t)a3 withName:(id)a4;
-- (void)insertRow:(unint64_t)a3 withName:(id)a4 withId:(id)a5;
-- (void)insertRowsAt:(unint64_t)a3 names:(id)a4 data:(id)a5 withIds:(id)a6;
-- (void)insertRowsNames:(id)a3 at:(unint64_t)a4 withIds:(id)a5;
-- (void)loadFromPreUFFArchive:(const void *)a3;
-- (void)loadFromUnityArchive:(const void *)a3 chartInfo:(id)a4;
-- (void)moveColumns:(_NSRange)a3 afterColumn:(int64_t)a4;
-- (void)moveRows:(_NSRange)a3 afterRow:(int64_t)a4;
-- (void)p_adjustNameListLength:(BOOL)a3;
+- (void)insertColumn:(unint64_t)column withName:(id)name;
+- (void)insertColumn:(unint64_t)column withName:(id)name withId:(id)id;
+- (void)insertColumnNames:(id)names at:(unint64_t)at withIds:(id)ids;
+- (void)insertColumnsAt:(unint64_t)at names:(id)names data:(id)data withIds:(id)ids;
+- (void)insertRow:(unint64_t)row withName:(id)name;
+- (void)insertRow:(unint64_t)row withName:(id)name withId:(id)id;
+- (void)insertRowsAt:(unint64_t)at names:(id)names data:(id)data withIds:(id)ids;
+- (void)insertRowsNames:(id)names at:(unint64_t)at withIds:(id)ids;
+- (void)loadFromPreUFFArchive:(const void *)archive;
+- (void)loadFromUnityArchive:(const void *)archive chartInfo:(id)info;
+- (void)moveColumns:(_NSRange)columns afterColumn:(int64_t)column;
+- (void)moveRows:(_NSRange)rows afterRow:(int64_t)row;
+- (void)p_adjustNameListLength:(BOOL)length;
 - (void)p_updateColumnIndexMap;
-- (void)p_updateIdMapStartingAtIndex:(unint64_t)a3 isRow:(BOOL)a4;
+- (void)p_updateIdMapStartingAtIndex:(unint64_t)index isRow:(BOOL)row;
 - (void)p_updateRowIndexMap;
-- (void)removeColumn:(unint64_t)a3;
-- (void)removeRow:(unint64_t)a3;
-- (void)saveToUnityArchive:(void *)a3 forCopy:(BOOL)a4;
-- (void)setColumnIds:(id)a3;
-- (void)setDirection:(int)a3;
-- (void)setDirty:(BOOL)a3;
-- (void)setNameForColumn:(unint64_t)a3 toName:(id)a4;
-- (void)setNameForRow:(unint64_t)a3 toName:(id)a4;
-- (void)setRowIds:(id)a3;
-- (void)setValue:(id)a3 forRow:(unint64_t)a4 column:(unint64_t)a5;
-- (void)takeDataFromDictionary:(id)a3 rowIds:(id)a4 columnIds:(id)a5;
+- (void)removeColumn:(unint64_t)column;
+- (void)removeRow:(unint64_t)row;
+- (void)saveToUnityArchive:(void *)archive forCopy:(BOOL)copy;
+- (void)setColumnIds:(id)ids;
+- (void)setDirection:(int)direction;
+- (void)setDirty:(BOOL)dirty;
+- (void)setNameForColumn:(unint64_t)column toName:(id)name;
+- (void)setNameForRow:(unint64_t)row toName:(id)name;
+- (void)setRowIds:(id)ids;
+- (void)setValue:(id)value forRow:(unint64_t)row column:(unint64_t)column;
+- (void)takeDataFromDictionary:(id)dictionary rowIds:(id)ids columnIds:(id)columnIds;
 - (void)updateRowAndColumnIndexMaps;
-- (void)validateRowColumnIdMapsAndFix:(BOOL)a3;
+- (void)validateRowColumnIdMapsAndFix:(BOOL)fix;
 - (void)willModify;
 @end
 
@@ -112,10 +112,10 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   v16 = v15;
   if (v15)
@@ -134,7 +134,7 @@
       {
         v30 = v16[2];
         v31 = objc_msgSend_objectAtIndexedSubscript_(self->_rowNames, v24, v25, v26, v27, i);
-        v36 = objc_msgSend_copyWithZone_(v31, v32, v33, v34, v35, a3);
+        v36 = objc_msgSend_copyWithZone_(v31, v32, v33, v34, v35, zone);
         objc_msgSend_addObject_(v30, v37, v38, v39, v40, v36);
       }
     }
@@ -151,7 +151,7 @@
       {
         v54 = v16[3];
         v55 = objc_msgSend_objectAtIndexedSubscript_(self->_columnNames, v48, v49, v50, v51, j);
-        v60 = objc_msgSend_copyWithZone_(v55, v56, v57, v58, v59, a3);
+        v60 = objc_msgSend_copyWithZone_(v55, v56, v57, v58, v59, zone);
         objc_msgSend_addObject_(v54, v61, v62, v63, v64, v60);
       }
     }
@@ -168,7 +168,7 @@
       {
         v78 = v16[4];
         v79 = objc_msgSend_objectAtIndexedSubscript_(self->_values, v72, v73, v74, v75, k);
-        v84 = objc_msgSend_mutableCopyWithZone_(v79, v80, v81, v82, v83, a3);
+        v84 = objc_msgSend_mutableCopyWithZone_(v79, v80, v81, v82, v83, zone);
         objc_msgSend_addObject_(v78, v85, v86, v87, v88, v84);
       }
     }
@@ -179,13 +179,13 @@
   return v16;
 }
 
-- (BOOL)contentsEqualToGrid:(id)a3
+- (BOOL)contentsEqualToGrid:(id)grid
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  gridCopy = grid;
+  v5 = gridCopy;
+  if (gridCopy)
   {
-    if (self == v4)
+    if (self == gridCopy)
     {
       v56 = 1;
       goto LABEL_19;
@@ -283,39 +283,39 @@ LABEL_19:
   return v7;
 }
 
-- (id)nameForRow:(unint64_t)a3
+- (id)nameForRow:(unint64_t)row
 {
-  if (objc_msgSend_count(self->_rowNames, a2, v3, v4, v5) <= a3)
+  if (objc_msgSend_count(self->_rowNames, a2, v3, v4, v5) <= row)
   {
     v12 = &stru_288528678;
   }
 
   else
   {
-    v12 = objc_msgSend_objectAtIndexedSubscript_(self->_rowNames, v8, v9, v10, v11, a3);
+    v12 = objc_msgSend_objectAtIndexedSubscript_(self->_rowNames, v8, v9, v10, v11, row);
   }
 
   return v12;
 }
 
-- (id)nameForColumn:(unint64_t)a3
+- (id)nameForColumn:(unint64_t)column
 {
-  if (objc_msgSend_count(self->_columnNames, a2, v3, v4, v5) <= a3)
+  if (objc_msgSend_count(self->_columnNames, a2, v3, v4, v5) <= column)
   {
     v12 = &stru_288528678;
   }
 
   else
   {
-    v12 = objc_msgSend_objectAtIndexedSubscript_(self->_columnNames, v8, v9, v10, v11, a3);
+    v12 = objc_msgSend_objectAtIndexedSubscript_(self->_columnNames, v8, v9, v10, v11, column);
   }
 
   return v12;
 }
 
-- (id)valueForRow:(unint64_t)a3 column:(unint64_t)a4
+- (id)valueForRow:(unint64_t)row column:(unint64_t)column
 {
-  if (objc_msgSend_count(self->_values, a2, v4, v5, v6) <= a3)
+  if (objc_msgSend_count(self->_values, a2, v4, v5, v6) <= row)
   {
     v14 = 0;
     v19 = objc_msgSend_count(0, v10, v11, v12, v13);
@@ -323,18 +323,18 @@ LABEL_19:
 
   else
   {
-    v14 = objc_msgSend_objectAtIndexedSubscript_(self->_values, v10, v11, v12, v13, a3);
+    v14 = objc_msgSend_objectAtIndexedSubscript_(self->_values, v10, v11, v12, v13, row);
     v19 = objc_msgSend_count(v14, v15, v16, v17, v18);
   }
 
-  if (v19 <= a4)
+  if (v19 <= column)
   {
     v24 = 0;
   }
 
   else
   {
-    v24 = objc_msgSend_objectAtIndexedSubscript_(v14, v20, v21, v22, v23, a4);
+    v24 = objc_msgSend_objectAtIndexedSubscript_(v14, v20, v21, v22, v23, column);
   }
 
   v25 = objc_msgSend_null(MEMORY[0x277CBEB68], v20, v21, v22, v23);
@@ -353,20 +353,20 @@ LABEL_19:
   return v26;
 }
 
-- (id)rowIdForRow:(unint64_t)a3
+- (id)rowIdForRow:(unint64_t)row
 {
-  if (objc_msgSend_numberOfRows(self, a2, v3, v4, v5) <= a3)
+  if (objc_msgSend_numberOfRows(self, a2, v3, v4, v5) <= row)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCHChartGrid rowIdForRow:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartGrid.m");
     v23 = objc_msgSend_numberOfRows(self, v19, v20, v21, v22);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v24, v25, v26, v27, v13, v18, 196, 0, "Index passed %lu is greater than number of rows %lu", a3, v23);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v24, v25, v26, v27, v13, v18, 196, 0, "Index passed %lu is greater than number of rows %lu", row, v23);
 
     objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v28, v29, v30, v31);
   }
 
-  if (objc_msgSend_count(self->_mutableRowIds, v8, v9, v10, v11) <= a3)
+  if (objc_msgSend_count(self->_mutableRowIds, v8, v9, v10, v11) <= row)
   {
     v37 = 0;
   }
@@ -374,27 +374,27 @@ LABEL_19:
   else
   {
     objc_opt_class();
-    v36 = objc_msgSend_objectAtIndexedSubscript_(self->_mutableRowIds, v32, v33, v34, v35, a3);
+    v36 = objc_msgSend_objectAtIndexedSubscript_(self->_mutableRowIds, v32, v33, v34, v35, row);
     v37 = TSUCheckedDynamicCast();
   }
 
   return v37;
 }
 
-- (id)columnIdForColumn:(unint64_t)a3
+- (id)columnIdForColumn:(unint64_t)column
 {
-  if (objc_msgSend_numberOfColumns(self, a2, v3, v4, v5) <= a3)
+  if (objc_msgSend_numberOfColumns(self, a2, v3, v4, v5) <= column)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, v9, v10, v11, "[TSCHChartGrid columnIdForColumn:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartGrid.m");
     v23 = objc_msgSend_numberOfColumns(self, v19, v20, v21, v22);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v24, v25, v26, v27, v13, v18, 201, 0, "Index passed %lu is greater than number of columns %lu", a3, v23);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v24, v25, v26, v27, v13, v18, 201, 0, "Index passed %lu is greater than number of columns %lu", column, v23);
 
     objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v28, v29, v30, v31);
   }
 
-  if (objc_msgSend_count(self->_mutableColumnIds, v8, v9, v10, v11) <= a3)
+  if (objc_msgSend_count(self->_mutableColumnIds, v8, v9, v10, v11) <= column)
   {
     v37 = 0;
   }
@@ -402,16 +402,16 @@ LABEL_19:
   else
   {
     objc_opt_class();
-    v36 = objc_msgSend_objectAtIndexedSubscript_(self->_mutableColumnIds, v32, v33, v34, v35, a3);
+    v36 = objc_msgSend_objectAtIndexedSubscript_(self->_mutableColumnIds, v32, v33, v34, v35, column);
     v37 = TSUCheckedDynamicCast();
   }
 
   return v37;
 }
 
-- (unint64_t)rowIndexForRowId:(id)a3
+- (unint64_t)rowIndexForRowId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -431,9 +431,9 @@ LABEL_19:
   return v12;
 }
 
-- (unint64_t)columnIndexForColumnId:(id)a3
+- (unint64_t)columnIndexForColumnId:(id)id
 {
-  if (!a3)
+  if (!id)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -490,16 +490,16 @@ LABEL_19:
   return v59;
 }
 
-- (BOOL)p_name:(id)a3 isInArray:(id)a4
+- (BOOL)p_name:(id)p_name isInArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  p_nameCopy = p_name;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = a4;
-  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, v8, v9, v10, &v19, v23, 16);
+  arrayCopy = array;
+  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v7, v8, v9, v10, &v19, v23, 16);
   if (v12)
   {
     v16 = *v20;
@@ -509,17 +509,17 @@ LABEL_19:
       {
         if (*v20 != v16)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
-        if (objc_msgSend_isEqualToString_(*(*(&v19 + 1) + 8 * i), v11, v13, v14, v15, v5, v19))
+        if (objc_msgSend_isEqualToString_(*(*(&v19 + 1) + 8 * i), v11, v13, v14, v15, p_nameCopy, v19))
         {
           LOBYTE(v12) = 1;
           goto LABEL_11;
         }
       }
 
-      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v11, v13, v14, v15, &v19, v23, 16);
+      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v11, v13, v14, v15, &v19, v23, 16);
       if (v12)
       {
         continue;
@@ -534,7 +534,7 @@ LABEL_11:
   return v12;
 }
 
-- (id)getNewColumnNameForLocale:(id)a3
+- (id)getNewColumnNameForLocale:(id)locale
 {
   if (self->_addingMultipleCols)
   {
@@ -546,7 +546,7 @@ LABEL_11:
     nextColNumber = 1;
   }
 
-  v9 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, v3, v4, v5, @"Untitled %ld", &stru_288528678, @"TSCharts");
+  v9 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, v3, v4, v5, @"Untitled %ld", &stru_288528678, @"TSCharts");
   v13 = 0;
   do
   {
@@ -562,7 +562,7 @@ LABEL_11:
   return v13;
 }
 
-- (id)getNewRowNameForLocale:(id)a3
+- (id)getNewRowNameForLocale:(id)locale
 {
   if (self->_addingMultipleRows)
   {
@@ -574,7 +574,7 @@ LABEL_11:
     nextRowNumber = 1;
   }
 
-  v9 = objc_msgSend_localizedStringForKey_value_table_(a3, a2, v3, v4, v5, @"Untitled %ld", &stru_288528678, @"TSCharts");
+  v9 = objc_msgSend_localizedStringForKey_value_table_(locale, a2, v3, v4, v5, @"Untitled %ld", &stru_288528678, @"TSCharts");
   v13 = 0;
   do
   {
@@ -590,9 +590,9 @@ LABEL_11:
   return v13;
 }
 
-- (void)p_adjustNameListLength:(BOOL)a3
+- (void)p_adjustNameListLength:(BOOL)length
 {
-  if (a3)
+  if (length)
   {
     v8 = objc_msgSend_noAssertNumberOfRows(self, a2, v3, v4, v5);
     v12 = 16;
@@ -660,14 +660,14 @@ LABEL_11:
   objc_msgSend_updateRowAndColumnIndexMaps(self, v36, v37, v38, v39);
 }
 
-- (void)validateRowColumnIdMapsAndFix:(BOOL)a3
+- (void)validateRowColumnIdMapsAndFix:(BOOL)fix
 {
-  v6 = a3;
+  fixCopy = fix;
   v8 = objc_msgSend_noAssertNumberOfRows(self, a2, v3, v4, v5);
   v13 = objc_msgSend_noAssertNumberOfColumns(self, v9, v10, v11, v12);
   if (v8 != objc_msgSend_count(self->_mutableRowIds, v14, v15, v16, v17) || v13 != objc_msgSend_count(self->_mutableColumnIds, v18, v19, v20, v21))
   {
-    if (self->_skipUUIDAssertions || v6)
+    if (self->_skipUUIDAssertions || fixCopy)
     {
 
       objc_msgSend_generateRowColumnIdMaps(self, v18, v19, v20, v21);
@@ -703,7 +703,7 @@ LABEL_11:
   }
 }
 
-- (id)createUUIDArrayWithCount:(unint64_t)a3
+- (id)createUUIDArrayWithCount:(unint64_t)count
 {
   for (i = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], a2, v3, v4, v5);
   {
@@ -747,16 +747,16 @@ LABEL_11:
   objc_msgSend_p_updateColumnMapStartingAtIndex_(self, a2, v2, v3, v4, 0);
 }
 
-- (void)p_updateIdMapStartingAtIndex:(unint64_t)a3 isRow:(BOOL)a4
+- (void)p_updateIdMapStartingAtIndex:(unint64_t)index isRow:(BOOL)row
 {
   v6 = 48;
-  if (a4)
+  if (row)
   {
     v6 = 40;
   }
 
   v7 = *(&self->super.isa + v6);
-  if (a4)
+  if (row)
   {
     v8 = 72;
   }
@@ -768,24 +768,24 @@ LABEL_11:
 
   v32 = v7;
   v9 = *(&self->super.isa + v8);
-  if (objc_msgSend_count(v32, v10, v11, v12, v13) > a3)
+  if (objc_msgSend_count(v32, v10, v11, v12, v13) > index)
   {
     do
     {
-      v18 = objc_msgSend_objectAtIndexedSubscript_(v32, v14, v15, v16, v17, a3);
-      v23 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v19, v20, v21, v22, a3);
+      v18 = objc_msgSend_objectAtIndexedSubscript_(v32, v14, v15, v16, v17, index);
+      v23 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v19, v20, v21, v22, index);
       objc_msgSend_setObject_forKeyedSubscript_(v9, v24, v25, v26, v27, v23, v18);
 
-      ++a3;
+      ++index;
     }
 
-    while (a3 < objc_msgSend_count(v32, v28, v29, v30, v31));
+    while (index < objc_msgSend_count(v32, v28, v29, v30, v31));
   }
 }
 
-- (void)setRowIds:(id)a3
+- (void)setRowIds:(id)ids
 {
-  v7 = objc_msgSend_mutableCopy(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_mutableCopy(ids, a2, v3, v4, v5);
   mutableRowIds = self->_mutableRowIds;
   self->_mutableRowIds = v7;
 
@@ -795,9 +795,9 @@ LABEL_11:
   objc_msgSend_p_updateRowIndexMap(self, v10, v11, v12, v13);
 }
 
-- (void)setColumnIds:(id)a3
+- (void)setColumnIds:(id)ids
 {
-  v7 = objc_msgSend_mutableCopy(a3, a2, v3, v4, v5);
+  v7 = objc_msgSend_mutableCopy(ids, a2, v3, v4, v5);
   mutableColumnIds = self->_mutableColumnIds;
   self->_mutableColumnIds = v7;
 
@@ -807,31 +807,31 @@ LABEL_11:
   MEMORY[0x2821F9670](self, sel_p_updateColumnIndexMap, v10, v11, v12);
 }
 
-- (void)setDirection:(int)a3
+- (void)setDirection:(int)direction
 {
-  if (self->_direction != a3)
+  if (self->_direction != direction)
   {
     objc_msgSend_willModify(self, a2, v4, v5, v6);
-    self->_direction = a3;
+    self->_direction = direction;
 
     objc_msgSend_setDirty_(self, v9, v10, v11, v12, 1);
   }
 }
 
-- (void)setDirty:(BOOL)a3
+- (void)setDirty:(BOOL)dirty
 {
-  if (self->_dirty != a3)
+  if (self->_dirty != dirty)
   {
     objc_msgSend_willModify(self, a2, v3, v4, v5);
-    self->_dirty = a3;
+    self->_dirty = dirty;
   }
 }
 
-- (void)insertRow:(unint64_t)a3 withName:(id)a4 withId:(id)a5
+- (void)insertRow:(unint64_t)row withName:(id)name withId:(id)id
 {
-  v65 = a4;
-  v9 = a5;
-  if (!v9)
+  nameCopy = name;
+  idCopy = id;
+  if (!idCopy)
   {
     if (!self->_skipUUIDAssertions)
     {
@@ -843,7 +843,7 @@ LABEL_11:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
     }
 
-    v9 = objc_msgSend_createUUID(self, v8, v10, v11, v12);
+    idCopy = objc_msgSend_createUUID(self, v8, v10, v11, v12);
   }
 
   v28 = objc_msgSend_numberOfColumns(self, v8, v10, v11, v12);
@@ -854,23 +854,23 @@ LABEL_11:
   }
 
   objc_msgSend_willModify(self, v38, v40, v41, v42);
-  objc_msgSend_insertObject_atIndex_(self->_values, v43, v44, v45, v46, v33, a3);
-  objc_msgSend_insertObject_atIndex_(self->_rowNames, v47, v48, v49, v50, v65, a3);
+  objc_msgSend_insertObject_atIndex_(self->_values, v43, v44, v45, v46, v33, row);
+  objc_msgSend_insertObject_atIndex_(self->_rowNames, v47, v48, v49, v50, nameCopy, row);
   mutableRowIds = self->_mutableRowIds;
   objc_opt_class();
   v52 = TSUCheckedDynamicCast();
-  objc_msgSend_insertObject_atIndex_(mutableRowIds, v53, v54, v55, v56, v52, a3);
+  objc_msgSend_insertObject_atIndex_(mutableRowIds, v53, v54, v55, v56, v52, row);
 
-  objc_msgSend_p_updateRowMapStartingAtIndex_(self, v57, v58, v59, v60, a3);
+  objc_msgSend_p_updateRowMapStartingAtIndex_(self, v57, v58, v59, v60, row);
   objc_msgSend_setDirty_(self, v61, v62, v63, v64, 1);
 }
 
-- (void)insertColumn:(unint64_t)a3 withName:(id)a4 withId:(id)a5
+- (void)insertColumn:(unint64_t)column withName:(id)name withId:(id)id
 {
   v70 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v10 = a5;
-  if (!v10)
+  nameCopy = name;
+  idCopy = id;
+  if (!idCopy)
   {
     if (!self->_skipUUIDAssertions)
     {
@@ -882,7 +882,7 @@ LABEL_11:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28);
     }
 
-    v10 = objc_msgSend_createUUID(self, v9, v11, v12, v13);
+    idCopy = objc_msgSend_createUUID(self, v9, v11, v12, v13);
   }
 
   objc_msgSend_willModify(self, v9, v11, v12, v13);
@@ -906,7 +906,7 @@ LABEL_11:
           objc_enumerationMutation(v34);
         }
 
-        objc_msgSend_insertObject_atIndex_(*(*(&v65 + 1) + 8 * i), v40, v41, v42, v43, v33, a3, v65);
+        objc_msgSend_insertObject_atIndex_(*(*(&v65 + 1) + 8 * i), v40, v41, v42, v43, v33, column, v65);
       }
 
       v44 = objc_msgSend_countByEnumeratingWithState_objects_count_(v34, v40, v41, v42, v43, &v65, v69, 16);
@@ -915,81 +915,81 @@ LABEL_11:
     while (v44);
   }
 
-  objc_msgSend_insertObject_atIndex_(self->_columnNames, v47, v48, v49, v50, v8, a3);
+  objc_msgSend_insertObject_atIndex_(self->_columnNames, v47, v48, v49, v50, nameCopy, column);
   mutableColumnIds = self->_mutableColumnIds;
   objc_opt_class();
   v52 = TSUCheckedDynamicCast();
-  objc_msgSend_insertObject_atIndex_(mutableColumnIds, v53, v54, v55, v56, v52, a3);
+  objc_msgSend_insertObject_atIndex_(mutableColumnIds, v53, v54, v55, v56, v52, column);
 
-  objc_msgSend_p_updateColumnMapStartingAtIndex_(self, v57, v58, v59, v60, a3);
+  objc_msgSend_p_updateColumnMapStartingAtIndex_(self, v57, v58, v59, v60, column);
   objc_msgSend_setDirty_(self, v61, v62, v63, v64, 1);
 }
 
-- (void)setNameForRow:(unint64_t)a3 toName:(id)a4
+- (void)setNameForRow:(unint64_t)row toName:(id)name
 {
-  v46 = a4;
-  if (objc_msgSend_count(self->_rowNames, v6, v7, v8, v9) <= a3)
+  nameCopy = name;
+  if (objc_msgSend_count(self->_rowNames, v6, v7, v8, v9) <= row)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "[TSCHChartGrid setNameForRow:toName:]");
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartGrid.m");
     v25 = objc_msgSend_count(self->_rowNames, v21, v22, v23, v24);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v26, v27, v28, v29, v15, v20, 496, 0, "invalid row index %lu to array of count %lu", a3, v25);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v26, v27, v28, v29, v15, v20, 496, 0, "invalid row index %lu to array of count %lu", row, v25);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }
 
-  if (objc_msgSend_count(self->_rowNames, v10, v11, v12, v13) > a3)
+  if (objc_msgSend_count(self->_rowNames, v10, v11, v12, v13) > row)
   {
     objc_msgSend_willModify(self, v34, v35, v36, v37);
-    objc_msgSend_replaceObjectAtIndex_withObject_(self->_rowNames, v38, v39, v40, v41, a3, v46);
+    objc_msgSend_replaceObjectAtIndex_withObject_(self->_rowNames, v38, v39, v40, v41, row, nameCopy);
     objc_msgSend_setDirty_(self, v42, v43, v44, v45, 1);
   }
 }
 
-- (void)setNameForColumn:(unint64_t)a3 toName:(id)a4
+- (void)setNameForColumn:(unint64_t)column toName:(id)name
 {
-  v46 = a4;
-  if (objc_msgSend_count(self->_columnNames, v6, v7, v8, v9) <= a3)
+  nameCopy = name;
+  if (objc_msgSend_count(self->_columnNames, v6, v7, v8, v9) <= column)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "[TSCHChartGrid setNameForColumn:toName:]");
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartGrid.m");
     v25 = objc_msgSend_count(self->_columnNames, v21, v22, v23, v24);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v26, v27, v28, v29, v15, v20, 505, 0, "invalid column index %lu to array of count %lu", a3, v25);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v14, v26, v27, v28, v29, v15, v20, 505, 0, "invalid column index %lu to array of count %lu", column, v25);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }
 
-  if (objc_msgSend_count(self->_columnNames, v10, v11, v12, v13) > a3)
+  if (objc_msgSend_count(self->_columnNames, v10, v11, v12, v13) > column)
   {
     objc_msgSend_willModify(self, v34, v35, v36, v37);
-    objc_msgSend_replaceObjectAtIndex_withObject_(self->_columnNames, v38, v39, v40, v41, a3, v46);
+    objc_msgSend_replaceObjectAtIndex_withObject_(self->_columnNames, v38, v39, v40, v41, column, nameCopy);
     objc_msgSend_setDirty_(self, v42, v43, v44, v45, 1);
   }
 }
 
-- (void)removeRow:(unint64_t)a3
+- (void)removeRow:(unint64_t)row
 {
   objc_msgSend_willModify(self, a2, v3, v4, v5);
-  if (objc_msgSend_count(self->_mutableRowIds, v8, v9, v10, v11) > a3)
+  if (objc_msgSend_count(self->_mutableRowIds, v8, v9, v10, v11) > row)
   {
-    objc_msgSend_removeObjectAtIndex_(self->_values, v12, v13, v14, v15, a3);
-    objc_msgSend_removeObjectAtIndex_(self->_rowNames, v16, v17, v18, v19, a3);
+    objc_msgSend_removeObjectAtIndex_(self->_values, v12, v13, v14, v15, row);
+    objc_msgSend_removeObjectAtIndex_(self->_rowNames, v16, v17, v18, v19, row);
     rowIdToIndexMap = self->_rowIdToIndexMap;
     objc_opt_class();
-    v25 = objc_msgSend_objectAtIndexedSubscript_(self->_mutableRowIds, v21, v22, v23, v24, a3);
+    v25 = objc_msgSend_objectAtIndexedSubscript_(self->_mutableRowIds, v21, v22, v23, v24, row);
     v26 = TSUCheckedDynamicCast();
     objc_msgSend_setObject_forKeyedSubscript_(rowIdToIndexMap, v27, v28, v29, v30, 0, v26);
 
-    objc_msgSend_removeObjectAtIndex_(self->_mutableRowIds, v31, v32, v33, v34, a3);
-    objc_msgSend_p_updateRowMapStartingAtIndex_(self, v35, v36, v37, v38, a3);
+    objc_msgSend_removeObjectAtIndex_(self->_mutableRowIds, v31, v32, v33, v34, row);
+    objc_msgSend_p_updateRowMapStartingAtIndex_(self, v35, v36, v37, v38, row);
   }
 
   objc_msgSend_setDirty_(self, v12, v13, v14, v15, 1);
 }
 
-- (void)removeColumn:(unint64_t)a3
+- (void)removeColumn:(unint64_t)column
 {
   v53 = *MEMORY[0x277D85DE8];
   objc_msgSend_willModify(self, a2, v3, v4, v5);
@@ -1013,7 +1013,7 @@ LABEL_11:
           objc_enumerationMutation(v8);
         }
 
-        objc_msgSend_removeObjectAtIndex_(*(*(&v48 + 1) + 8 * v20++), v14, v15, v16, v17, a3, v48);
+        objc_msgSend_removeObjectAtIndex_(*(*(&v48 + 1) + 8 * v20++), v14, v15, v16, v17, column, v48);
       }
 
       while (v18 != v20);
@@ -1023,29 +1023,29 @@ LABEL_11:
     while (v18);
   }
 
-  if (objc_msgSend_count(self->_mutableColumnIds, v21, v22, v23, v24) > a3)
+  if (objc_msgSend_count(self->_mutableColumnIds, v21, v22, v23, v24) > column)
   {
-    objc_msgSend_removeObjectAtIndex_(self->_columnNames, v25, v26, v27, v28, a3);
+    objc_msgSend_removeObjectAtIndex_(self->_columnNames, v25, v26, v27, v28, column);
     columnIdToIndexMap = self->_columnIdToIndexMap;
     objc_opt_class();
-    v34 = objc_msgSend_objectAtIndexedSubscript_(self->_mutableColumnIds, v30, v31, v32, v33, a3);
+    v34 = objc_msgSend_objectAtIndexedSubscript_(self->_mutableColumnIds, v30, v31, v32, v33, column);
     v35 = TSUCheckedDynamicCast();
     objc_msgSend_setObject_forKeyedSubscript_(columnIdToIndexMap, v36, v37, v38, v39, 0, v35);
 
-    objc_msgSend_removeObjectAtIndex_(self->_mutableColumnIds, v40, v41, v42, v43, a3);
-    objc_msgSend_p_updateColumnMapStartingAtIndex_(self, v44, v45, v46, v47, a3);
+    objc_msgSend_removeObjectAtIndex_(self->_mutableColumnIds, v40, v41, v42, v43, column);
+    objc_msgSend_p_updateColumnMapStartingAtIndex_(self, v44, v45, v46, v47, column);
   }
 
   objc_msgSend_setDirty_(self, v25, v26, v27, v28, 1, v48);
 }
 
-- (void)setValue:(id)a3 forRow:(unint64_t)a4 column:(unint64_t)a5
+- (void)setValue:(id)value forRow:(unint64_t)row column:(unint64_t)column
 {
-  v31 = a3;
+  valueCopy = value;
   objc_msgSend_willModify(self, v8, v9, v10, v11);
-  if (v31)
+  if (valueCopy)
   {
-    v16 = v31;
+    v16 = valueCopy;
   }
 
   else
@@ -1054,52 +1054,52 @@ LABEL_11:
   }
 
   v21 = v16;
-  v22 = objc_msgSend_objectAtIndexedSubscript_(self->_values, v17, v18, v19, v20, a4);
-  objc_msgSend_replaceObjectAtIndex_withObject_(v22, v23, v24, v25, v26, a5, v21);
+  v22 = objc_msgSend_objectAtIndexedSubscript_(self->_values, v17, v18, v19, v20, row);
+  objc_msgSend_replaceObjectAtIndex_withObject_(v22, v23, v24, v25, v26, column, v21);
 
   objc_msgSend_setDirty_(self, v27, v28, v29, v30, 1);
 }
 
-- (void)moveRows:(_NSRange)a3 afterRow:(int64_t)a4
+- (void)moveRows:(_NSRange)rows afterRow:(int64_t)row
 {
-  length = a3.length;
-  location = a3.location;
+  length = rows.length;
+  location = rows.location;
   v11 = objc_msgSend_p_uuidsForRows_(self, a2, v4, v5, v6);
   v23 = 0;
   v16 = objc_msgSend_extractRowNames_returningRowIds_valueRows_(self, v12, v13, v14, v15, location, length, 0, &v23);
   v18 = v23;
   v22 = 1 - length;
-  if (location >= a4)
+  if (location >= row)
   {
     v22 = 1;
   }
 
-  objc_msgSend_insertRowsAt_names_data_withIds_(self, v17, v19, v20, v21, v22 + a4, v16, v18, v11);
+  objc_msgSend_insertRowsAt_names_data_withIds_(self, v17, v19, v20, v21, v22 + row, v16, v18, v11);
 }
 
-- (void)moveColumns:(_NSRange)a3 afterColumn:(int64_t)a4
+- (void)moveColumns:(_NSRange)columns afterColumn:(int64_t)column
 {
-  length = a3.length;
-  location = a3.location;
+  length = columns.length;
+  location = columns.location;
   v11 = objc_msgSend_p_uuidsForColumns_(self, a2, v4, v5, v6);
   v23 = 0;
   v16 = objc_msgSend_extractColumnNames_returningColumnIds_valueColumns_(self, v12, v13, v14, v15, location, length, 0, &v23);
   v18 = v23;
   v22 = 1 - length;
-  if (location >= a4)
+  if (location >= column)
   {
     v22 = 1;
   }
 
-  objc_msgSend_insertColumnsAt_names_data_withIds_(self, v17, v19, v20, v21, v22 + a4, v16, v18, v11);
+  objc_msgSend_insertColumnsAt_names_data_withIds_(self, v17, v19, v20, v21, v22 + column, v16, v18, v11);
 }
 
-- (id)extractRowNames:(_NSRange)a3 returningRowIds:(id *)a4 valueRows:(id *)a5
+- (id)extractRowNames:(_NSRange)names returningRowIds:(id *)ids valueRows:(id *)rows
 {
-  length = a3.length;
-  location = a3.location;
+  length = names.length;
+  location = names.location;
   v14 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, v5, v6, v7);
-  if (a4)
+  if (ids)
   {
     v18 = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v15, v16, v17);
   }
@@ -1109,10 +1109,10 @@ LABEL_11:
     v18 = 0;
   }
 
-  v111 = a5;
-  if (a5)
+  rowsCopy = rows;
+  if (rows)
   {
-    a5 = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v15, v16, v17);
+    rows = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v15, v16, v17);
   }
 
   objc_msgSend_willModify(self, v13, v15, v16, v17);
@@ -1127,7 +1127,7 @@ LABEL_11:
     objc_msgSend_addObject_(v18, v34, v35, v36, v37, v33);
 
     v42 = objc_msgSend_objectAtIndexedSubscript_(self->_values, v38, v39, v40, v41, location);
-    objc_msgSend_addObject_(a5, v43, v44, v45, v46, v42);
+    objc_msgSend_addObject_(rows, v43, v44, v45, v46, v42);
 
     objc_msgSend_removeObjectAtIndex_(self->_rowNames, v47, v48, v49, v50, location);
     objc_msgSend_removeObjectAtIndex_(self->_values, v51, v52, v53, v54, location);
@@ -1142,9 +1142,9 @@ LABEL_11:
 
   objc_msgSend_p_updateRowMapStartingAtIndex_(self, v19, v20, v21, v22, location);
   objc_msgSend_setDirty_(self, v70, v71, v72, v73, 1);
-  if (a4)
+  if (ids)
   {
-    if (*a4)
+    if (*ids)
     {
       v78 = MEMORY[0x277D81150];
       v79 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v74, v75, v76, v77, "[TSCHChartGrid extractRowNames:returningRowIds:valueRows:]");
@@ -1155,12 +1155,12 @@ LABEL_11:
     }
 
     v93 = v18;
-    *a4 = v18;
+    *ids = v18;
   }
 
-  if (v111)
+  if (rowsCopy)
   {
-    if (*v111)
+    if (*rowsCopy)
     {
       v94 = MEMORY[0x277D81150];
       v95 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v74, v75, v76, v77, "[TSCHChartGrid extractRowNames:returningRowIds:valueRows:]");
@@ -1170,20 +1170,20 @@ LABEL_11:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v105, v106, v107, v108);
     }
 
-    v109 = a5;
-    *v111 = a5;
+    rowsCopy2 = rows;
+    *rowsCopy = rows;
   }
 
   return v14;
 }
 
-- (id)extractColumnNames:(_NSRange)a3 returningColumnIds:(id *)a4 valueColumns:(id *)a5
+- (id)extractColumnNames:(_NSRange)names returningColumnIds:(id *)ids valueColumns:(id *)columns
 {
-  length = a3.length;
-  location = a3.location;
+  length = names.length;
+  location = names.location;
   v142 = *MEMORY[0x277D85DE8];
   v14 = objc_msgSend_array(MEMORY[0x277CBEB18], a2, v5, v6, v7);
-  if (a4)
+  if (ids)
   {
     v18 = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v15, v16, v17);
   }
@@ -1193,8 +1193,8 @@ LABEL_11:
     v18 = 0;
   }
 
-  v135 = self;
-  if (!a5)
+  selfCopy = self;
+  if (!columns)
   {
     objc_msgSend_willModify(self, v13, v15, v16, v17);
 LABEL_19:
@@ -1215,9 +1215,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v131 = a4;
+  idsCopy = ids;
   v132 = v18;
-  v133 = a5;
+  columnsCopy = columns;
   v134 = v14;
   v139 = 0u;
   v140 = 0u;
@@ -1264,11 +1264,11 @@ LABEL_19:
     while (v38);
   }
 
-  a5 = v133;
+  columns = columnsCopy;
   v14 = v134;
-  a4 = v131;
+  ids = idsCopy;
   v18 = v132;
-  for (self = v135; length; --length)
+  for (self = selfCopy; length; --length)
   {
 LABEL_20:
     v57 = objc_msgSend_objectAtIndexedSubscript_(self->_columnNames, v24, v25, v26, v27, location);
@@ -1280,22 +1280,22 @@ LABEL_20:
     v71 = TSUCheckedDynamicCast();
     objc_msgSend_addObject_(v18, v72, v73, v74, v75, v71);
 
-    columnIdToIndexMap = v135->_columnIdToIndexMap;
+    columnIdToIndexMap = selfCopy->_columnIdToIndexMap;
     objc_opt_class();
-    v81 = objc_msgSend_objectAtIndexedSubscript_(v135->_mutableColumnIds, v77, v78, v79, v80, location);
+    v81 = objc_msgSend_objectAtIndexedSubscript_(selfCopy->_mutableColumnIds, v77, v78, v79, v80, location);
     v82 = TSUCheckedDynamicCast();
     objc_msgSend_setObject_forKeyedSubscript_(columnIdToIndexMap, v83, v84, v85, v86, 0, v82);
 
-    self = v135;
-    objc_msgSend_removeObjectAtIndex_(v135->_mutableColumnIds, v87, v88, v89, v90, location);
+    self = selfCopy;
+    objc_msgSend_removeObjectAtIndex_(selfCopy->_mutableColumnIds, v87, v88, v89, v90, location);
   }
 
 LABEL_21:
   objc_msgSend_p_updateColumnMapStartingAtIndex_(self, v24, v25, v26, v27, location);
   objc_msgSend_setDirty_(self, v91, v92, v93, v94, 1);
-  if (a4)
+  if (ids)
   {
-    if (*a4)
+    if (*ids)
     {
       v99 = MEMORY[0x277D81150];
       v100 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v95, v96, v97, v98, "[TSCHChartGrid extractColumnNames:returningColumnIds:valueColumns:]");
@@ -1306,12 +1306,12 @@ LABEL_21:
     }
 
     v114 = v18;
-    *a4 = v18;
+    *ids = v18;
   }
 
-  if (a5)
+  if (columns)
   {
-    if (*a5)
+    if (*columns)
     {
       v115 = MEMORY[0x277D81150];
       v116 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v95, v96, v97, v98, "[TSCHChartGrid extractColumnNames:returningColumnIds:valueColumns:]");
@@ -1321,18 +1321,18 @@ LABEL_21:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v126, v127, v128, v129);
     }
 
-    *a5 = v136;
+    *columns = v136;
   }
 
   return v14;
 }
 
-- (id)extractGridValuesReturningRowNames:(id *)a3 rowIds:(id *)a4 columnNames:(id *)a5 columnIds:(id *)a6
+- (id)extractGridValuesReturningRowNames:(id *)names rowIds:(id *)ids columnNames:(id *)columnNames columnIds:(id *)columnIds
 {
   objc_msgSend_willModify(self, a2, v6, v7, v8);
-  if (a3)
+  if (names)
   {
-    if (*a3)
+    if (*names)
     {
       v18 = MEMORY[0x277D81150];
       v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "[TSCHChartGrid extractGridValuesReturningRowNames:rowIds:columnNames:columnIds:]");
@@ -1342,16 +1342,16 @@ LABEL_21:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30, v31, v32);
     }
 
-    *a3 = objc_msgSend_copy(self->_rowNames, v14, v15, v16, v17);
+    *names = objc_msgSend_copy(self->_rowNames, v14, v15, v16, v17);
   }
 
   v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
   rowNames = self->_rowNames;
   self->_rowNames = v33;
 
-  if (a4)
+  if (ids)
   {
-    if (*a4)
+    if (*ids)
     {
       v39 = MEMORY[0x277D81150];
       v40 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v35, v36, v37, v38, "[TSCHChartGrid extractGridValuesReturningRowNames:rowIds:columnNames:columnIds:]");
@@ -1361,7 +1361,7 @@ LABEL_21:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v50, v51, v52, v53);
     }
 
-    *a4 = objc_msgSend_copy(self->_mutableRowIds, v35, v36, v37, v38);
+    *ids = objc_msgSend_copy(self->_mutableRowIds, v35, v36, v37, v38);
   }
 
   v54 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1372,9 +1372,9 @@ LABEL_21:
   rowIdToIndexMap = self->_rowIdToIndexMap;
   self->_rowIdToIndexMap = v56;
 
-  if (a5)
+  if (columnNames)
   {
-    if (*a5)
+    if (*columnNames)
     {
       v62 = MEMORY[0x277D81150];
       v63 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v58, v59, v60, v61, "[TSCHChartGrid extractGridValuesReturningRowNames:rowIds:columnNames:columnIds:]");
@@ -1384,16 +1384,16 @@ LABEL_21:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v73, v74, v75, v76);
     }
 
-    *a5 = objc_msgSend_copy(self->_columnNames, v58, v59, v60, v61);
+    *columnNames = objc_msgSend_copy(self->_columnNames, v58, v59, v60, v61);
   }
 
   v77 = objc_alloc_init(MEMORY[0x277CBEB18]);
   columnNames = self->_columnNames;
   self->_columnNames = v77;
 
-  if (a6)
+  if (columnIds)
   {
-    if (*a6)
+    if (*columnIds)
     {
       v83 = MEMORY[0x277D81150];
       v84 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v79, v80, v81, v82, "[TSCHChartGrid extractGridValuesReturningRowNames:rowIds:columnNames:columnIds:]");
@@ -1403,7 +1403,7 @@ LABEL_21:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v94, v95, v96, v97);
     }
 
-    *a6 = objc_msgSend_copy(self->_mutableColumnIds, v79, v80, v81, v82);
+    *columnIds = objc_msgSend_copy(self->_mutableColumnIds, v79, v80, v81, v82);
   }
 
   v98 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -1424,12 +1424,12 @@ LABEL_21:
   return v106;
 }
 
-- (void)insertRowsAt:(unint64_t)a3 names:(id)a4 data:(id)a5 withIds:(id)a6
+- (void)insertRowsAt:(unint64_t)at names:(id)names data:(id)data withIds:(id)ids
 {
-  v80 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (!objc_msgSend_count(v11, v12, v13, v14, v15))
+  namesCopy = names;
+  dataCopy = data;
+  idsCopy = ids;
+  if (!objc_msgSend_count(idsCopy, v12, v13, v14, v15))
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "[TSCHChartGrid insertRowsAt:names:data:withIds:]");
@@ -1440,16 +1440,16 @@ LABEL_21:
   }
 
   objc_msgSend_willModify(self, v16, v17, v18, v19);
-  v39 = objc_msgSend_count(v80, v35, v36, v37, v38);
+  v39 = objc_msgSend_count(namesCopy, v35, v36, v37, v38);
   if (v39 >= 1)
   {
     v44 = v39 + 1;
     do
     {
-      if (v10)
+      if (dataCopy)
       {
         objc_opt_class();
-        v49 = objc_msgSend_objectAtIndexedSubscript_(v10, v45, v46, v47, v48, v44 - 2);
+        v49 = objc_msgSend_objectAtIndexedSubscript_(dataCopy, v45, v46, v47, v48, v44 - 2);
         v50 = TSUCheckedDynamicCast();
       }
 
@@ -1458,16 +1458,16 @@ LABEL_21:
         v50 = objc_msgSend_array(MEMORY[0x277CBEB18], v40, v41, v42, v43);
       }
 
-      objc_msgSend_insertObject_atIndex_(self->_values, v51, v52, v53, v54, v50, a3);
+      objc_msgSend_insertObject_atIndex_(self->_values, v51, v52, v53, v54, v50, at);
       rowNames = self->_rowNames;
-      v60 = objc_msgSend_objectAtIndexedSubscript_(v80, v56, v57, v58, v59, v44 - 2);
-      objc_msgSend_insertObject_atIndex_(rowNames, v61, v62, v63, v64, v60, a3);
+      v60 = objc_msgSend_objectAtIndexedSubscript_(namesCopy, v56, v57, v58, v59, v44 - 2);
+      objc_msgSend_insertObject_atIndex_(rowNames, v61, v62, v63, v64, v60, at);
 
       mutableRowIds = self->_mutableRowIds;
       objc_opt_class();
-      v70 = objc_msgSend_objectAtIndexedSubscript_(v11, v66, v67, v68, v69, v44 - 2);
+      v70 = objc_msgSend_objectAtIndexedSubscript_(idsCopy, v66, v67, v68, v69, v44 - 2);
       v71 = TSUCheckedDynamicCast();
-      objc_msgSend_insertObject_atIndex_(mutableRowIds, v72, v73, v74, v75, v71, a3);
+      objc_msgSend_insertObject_atIndex_(mutableRowIds, v72, v73, v74, v75, v71, at);
 
       --v44;
     }
@@ -1475,16 +1475,16 @@ LABEL_21:
     while (v44 > 1);
   }
 
-  objc_msgSend_p_updateRowMapStartingAtIndex_(self, v40, v41, v42, v43, a3);
+  objc_msgSend_p_updateRowMapStartingAtIndex_(self, v40, v41, v42, v43, at);
   objc_msgSend_setDirty_(self, v76, v77, v78, v79, 1);
 }
 
-- (void)insertColumnsAt:(unint64_t)a3 names:(id)a4 data:(id)a5 withIds:(id)a6
+- (void)insertColumnsAt:(unint64_t)at names:(id)names data:(id)data withIds:(id)ids
 {
-  v91 = a4;
-  v89 = a5;
-  v10 = a6;
-  if (!objc_msgSend_count(v10, v11, v12, v13, v14))
+  namesCopy = names;
+  dataCopy = data;
+  idsCopy = ids;
+  if (!objc_msgSend_count(idsCopy, v11, v12, v13, v14))
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "[TSCHChartGrid insertColumnsAt:names:data:withIds:]");
@@ -1494,8 +1494,8 @@ LABEL_21:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v30, v31, v32, v33);
   }
 
-  objc_msgSend_willModify(self, v15, v16, v17, v18, v89);
-  v38 = objc_msgSend_count(v91, v34, v35, v36, v37);
+  objc_msgSend_willModify(self, v15, v16, v17, v18, dataCopy);
+  v38 = objc_msgSend_count(namesCopy, v34, v35, v36, v37);
   v43 = v38 - 1;
   if (v38 - 1 >= 0)
   {
@@ -1503,14 +1503,14 @@ LABEL_21:
     do
     {
       columnNames = self->_columnNames;
-      v46 = objc_msgSend_objectAtIndexedSubscript_(v91, v39, v40, v41, v42, v44);
-      objc_msgSend_insertObject_atIndex_(columnNames, v47, v48, v49, v50, v46, a3);
+      v46 = objc_msgSend_objectAtIndexedSubscript_(namesCopy, v39, v40, v41, v42, v44);
+      objc_msgSend_insertObject_atIndex_(columnNames, v47, v48, v49, v50, v46, at);
 
       mutableColumnIds = self->_mutableColumnIds;
       objc_opt_class();
-      v56 = objc_msgSend_objectAtIndexedSubscript_(v10, v52, v53, v54, v55, v44);
+      v56 = objc_msgSend_objectAtIndexedSubscript_(idsCopy, v52, v53, v54, v55, v44);
       v57 = TSUCheckedDynamicCast();
-      objc_msgSend_insertObject_atIndex_(mutableColumnIds, v58, v59, v60, v61, v57, a3);
+      objc_msgSend_insertObject_atIndex_(mutableColumnIds, v58, v59, v60, v61, v57, at);
 
       --v44;
     }
@@ -1518,7 +1518,7 @@ LABEL_21:
     while (v44 != -1);
   }
 
-  objc_msgSend_p_updateColumnMapStartingAtIndex_(self, v39, v40, v41, v42, a3);
+  objc_msgSend_p_updateColumnMapStartingAtIndex_(self, v39, v40, v41, v42, at);
   v66 = objc_msgSend_numberOfRows(self, v62, v63, v64, v65);
   if (v66)
   {
@@ -1533,7 +1533,7 @@ LABEL_21:
         do
         {
           v84 = objc_msgSend_objectAtIndexedSubscript_(v79, v78, v80, v81, v82, v83);
-          objc_msgSend_insertObject_atIndex_(v73, v85, v86, v87, v88, v84, a3);
+          objc_msgSend_insertObject_atIndex_(v73, v85, v86, v87, v88, v84, at);
 
           --v83;
         }
@@ -1546,11 +1546,11 @@ LABEL_21:
   objc_msgSend_setDirty_(self, v67, v68, v69, v70, 1);
 }
 
-- (void)insertRowsNames:(id)a3 at:(unint64_t)a4 withIds:(id)a5
+- (void)insertRowsNames:(id)names at:(unint64_t)at withIds:(id)ids
 {
-  v73 = a3;
-  v8 = a5;
-  if (!objc_msgSend_count(v8, v9, v10, v11, v12))
+  namesCopy = names;
+  idsCopy = ids;
+  if (!objc_msgSend_count(idsCopy, v9, v10, v11, v12))
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v14, v15, v16, "[TSCHChartGrid insertRowsNames:at:withIds:]");
@@ -1561,7 +1561,7 @@ LABEL_21:
   }
 
   objc_msgSend_willModify(self, v13, v14, v15, v16);
-  v36 = objc_msgSend_count(v73, v32, v33, v34, v35);
+  v36 = objc_msgSend_count(namesCopy, v32, v33, v34, v35);
   if (v36 >= 1)
   {
     v41 = v36 + 1;
@@ -1569,17 +1569,17 @@ LABEL_21:
     {
       values = self->_values;
       v43 = objc_msgSend_array(MEMORY[0x277CBEB18], v37, v38, v39, v40);
-      objc_msgSend_insertObject_atIndex_(values, v44, v45, v46, v47, v43, a4);
+      objc_msgSend_insertObject_atIndex_(values, v44, v45, v46, v47, v43, at);
 
       rowNames = self->_rowNames;
-      v53 = objc_msgSend_objectAtIndexedSubscript_(v73, v49, v50, v51, v52, v41 - 2);
-      objc_msgSend_insertObject_atIndex_(rowNames, v54, v55, v56, v57, v53, a4);
+      v53 = objc_msgSend_objectAtIndexedSubscript_(namesCopy, v49, v50, v51, v52, v41 - 2);
+      objc_msgSend_insertObject_atIndex_(rowNames, v54, v55, v56, v57, v53, at);
 
       mutableRowIds = self->_mutableRowIds;
       objc_opt_class();
-      v63 = objc_msgSend_objectAtIndexedSubscript_(v8, v59, v60, v61, v62, v41 - 2);
+      v63 = objc_msgSend_objectAtIndexedSubscript_(idsCopy, v59, v60, v61, v62, v41 - 2);
       v64 = TSUCheckedDynamicCast();
-      objc_msgSend_insertObject_atIndex_(mutableRowIds, v65, v66, v67, v68, v64, a4);
+      objc_msgSend_insertObject_atIndex_(mutableRowIds, v65, v66, v67, v68, v64, at);
 
       --v41;
     }
@@ -1587,42 +1587,42 @@ LABEL_21:
     while (v41 > 1);
   }
 
-  objc_msgSend_p_updateRowMapStartingAtIndex_(self, v37, v38, v39, v40, a4);
+  objc_msgSend_p_updateRowMapStartingAtIndex_(self, v37, v38, v39, v40, at);
   objc_msgSend_setDirty_(self, v69, v70, v71, v72, 1);
 }
 
-- (void)insertColumnNames:(id)a3 at:(unint64_t)a4 withIds:(id)a5
+- (void)insertColumnNames:(id)names at:(unint64_t)at withIds:(id)ids
 {
-  v77 = a3;
-  v8 = a5;
-  v13 = objc_msgSend_count(v77, v9, v10, v11, v12);
-  if (v13 != objc_msgSend_count(v8, v14, v15, v16, v17))
+  namesCopy = names;
+  idsCopy = ids;
+  v13 = objc_msgSend_count(namesCopy, v9, v10, v11, v12);
+  if (v13 != objc_msgSend_count(idsCopy, v14, v15, v16, v17))
   {
     v22 = MEMORY[0x277D81150];
     v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, v19, v20, v21, "[TSCHChartGrid insertColumnNames:at:withIds:]");
     v28 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v24, v25, v26, v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartGrid.m");
-    v33 = objc_msgSend_count(v8, v29, v30, v31, v32);
-    v38 = objc_msgSend_count(v77, v34, v35, v36, v37);
+    v33 = objc_msgSend_count(idsCopy, v29, v30, v31, v32);
+    v38 = objc_msgSend_count(namesCopy, v34, v35, v36, v37);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v22, v39, v40, v41, v42, v23, v28, 765, 0, "UUIDs count mismatch %lu expects %lu", v33, v38);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46);
   }
 
   objc_msgSend_willModify(self, v18, v19, v20, v21);
-  v52 = objc_msgSend_count(v77, v47, v48, v49, v50) - 1;
+  v52 = objc_msgSend_count(namesCopy, v47, v48, v49, v50) - 1;
   if (v52 >= 0)
   {
     do
     {
       columnNames = self->_columnNames;
-      v57 = objc_msgSend_objectAtIndexedSubscript_(v77, v51, v53, v54, v55, v52);
-      objc_msgSend_insertObject_atIndex_(columnNames, v58, v59, v60, v61, v57, a4);
+      v57 = objc_msgSend_objectAtIndexedSubscript_(namesCopy, v51, v53, v54, v55, v52);
+      objc_msgSend_insertObject_atIndex_(columnNames, v58, v59, v60, v61, v57, at);
 
       mutableColumnIds = self->_mutableColumnIds;
       objc_opt_class();
-      v67 = objc_msgSend_objectAtIndexedSubscript_(v8, v63, v64, v65, v66, v52);
+      v67 = objc_msgSend_objectAtIndexedSubscript_(idsCopy, v63, v64, v65, v66, v52);
       v68 = TSUCheckedDynamicCast();
-      objc_msgSend_insertObject_atIndex_(mutableColumnIds, v69, v70, v71, v72, v68, a4);
+      objc_msgSend_insertObject_atIndex_(mutableColumnIds, v69, v70, v71, v72, v68, at);
 
       --v52;
     }
@@ -1630,31 +1630,31 @@ LABEL_21:
     while (v52 != -1);
   }
 
-  objc_msgSend_p_updateColumnMapStartingAtIndex_(self, v51, v53, v54, v55, a4);
+  objc_msgSend_p_updateColumnMapStartingAtIndex_(self, v51, v53, v54, v55, at);
   objc_msgSend_setDirty_(self, v73, v74, v75, v76, 1);
 }
 
-- (void)takeDataFromDictionary:(id)a3 rowIds:(id)a4 columnIds:(id)a5
+- (void)takeDataFromDictionary:(id)dictionary rowIds:(id)ids columnIds:(id)columnIds
 {
   v187 = *MEMORY[0x277D85DE8];
-  v171 = a3;
-  v8 = a4;
-  v175 = a5;
+  dictionaryCopy = dictionary;
+  idsCopy = ids;
+  columnIdsCopy = columnIds;
   objc_msgSend_willModify(self, v9, v10, v11, v12);
-  if (!objc_msgSend_count(v8, v13, v14, v15, v16))
+  if (!objc_msgSend_count(idsCopy, v13, v14, v15, v16))
   {
     v21 = objc_msgSend_rowIds(self, v17, v18, v19, v20);
     v26 = objc_msgSend_copy(v21, v22, v23, v24, v25);
 
-    v8 = v26;
+    idsCopy = v26;
   }
 
-  if (!objc_msgSend_count(v175, v17, v18, v19, v20))
+  if (!objc_msgSend_count(columnIdsCopy, v17, v18, v19, v20))
   {
     v31 = objc_msgSend_columnIds(self, v27, v28, v29, v30);
     v36 = objc_msgSend_copy(v31, v32, v33, v34, v35);
 
-    v175 = v36;
+    columnIdsCopy = v36;
   }
 
   v37 = objc_msgSend_numberOfColumns(self, v27, v28, v29, v30);
@@ -1681,15 +1681,15 @@ LABEL_21:
     while (v48 != -1);
   }
 
-  v174 = v8;
-  objc_msgSend_objectForKey_(v171, v42, v44, v45, v46, @"_LOCALIZABLE_");
+  v174 = idsCopy;
+  objc_msgSend_objectForKey_(dictionaryCopy, v42, v44, v45, v46, @"_LOCALIZABLE_");
   v181 = 0u;
   v182 = 0u;
   v183 = 0u;
   v170 = v184 = 0u;
   v52 = objc_msgSend_objectForKey_(v170, v49, 0.0, v50, v51, @"RowNames");
   v57 = objc_msgSend_countByEnumeratingWithState_objects_count_(v52, v53, v54, v55, v56, &v181, v186, 16);
-  v176 = self;
+  selfCopy = self;
   if (v57)
   {
     v62 = v57;
@@ -1719,7 +1719,7 @@ LABEL_21:
           v77 = objc_msgSend_objectAtIndexedSubscript_(v174, v73, v74, v75, v76, v63);
           v78 = TSUCheckedDynamicCast();
 
-          self = v176;
+          self = selfCopy;
         }
 
         v64 = v67 + 1;
@@ -1766,7 +1766,7 @@ LABEL_21:
         }
 
         v97 = *(*(&v177 + 1) + 8 * v95);
-        if (v92 >= objc_msgSend_count(v175, v87, v88, v89, v90))
+        if (v92 >= objc_msgSend_count(columnIdsCopy, v87, v88, v89, v90))
         {
           v107 = 0;
         }
@@ -1774,10 +1774,10 @@ LABEL_21:
         else
         {
           objc_opt_class();
-          v106 = objc_msgSend_objectAtIndexedSubscript_(v175, v102, v103, v104, v105, v92);
+          v106 = objc_msgSend_objectAtIndexedSubscript_(columnIdsCopy, v102, v103, v104, v105, v92);
           v107 = TSUCheckedDynamicCast();
 
-          self = v176;
+          self = selfCopy;
         }
 
         v93 = v96 + 1;
@@ -1806,7 +1806,7 @@ LABEL_21:
     v113 = &selRef_applicationDidBecomeActive;
     do
     {
-      v114 = objc_msgSend_objectForKey_(v171, v108, v109, v110, v111, @"Values");
+      v114 = objc_msgSend_objectForKey_(dictionaryCopy, v108, v109, v110, v111, @"Values");
       v119 = objc_msgSend_objectAtIndex_(v114, v115, v116, v117, v118, v112);
 
       if (v93)
@@ -1846,7 +1846,7 @@ LABEL_21:
                 objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v149, v150, v151, v152, v153, v140, v146, 835, 0, "Unknown value type (%@) populating default chart data.", v148);
 
                 v113 = v145;
-                self = v176;
+                self = selfCopy;
                 objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v154, v155, v156, v157);
               }
             }
@@ -1868,7 +1868,7 @@ LABEL_21:
     while (v112 != v64);
   }
 
-  v163 = objc_msgSend_objectForKey_(v171, v108, v109, v110, v111, @"Direction");
+  v163 = objc_msgSend_objectForKey_(dictionaryCopy, v108, v109, v110, v111, @"Direction");
   if (objc_msgSend_isEqualToString_(v163, v164, v165, v166, v167, @"ByColumn"))
   {
     v168 = 2;
@@ -1882,18 +1882,18 @@ LABEL_21:
   self->_direction = v168;
 }
 
-- (id)gridAdapterForRow:(unint64_t)a3
+- (id)gridAdapterForRow:(unint64_t)row
 {
   v5 = [TSCHChartGridRowAdapter alloc];
-  v10 = objc_msgSend_initWithChartGrid_index_(v5, v6, v7, v8, v9, self, a3);
+  v10 = objc_msgSend_initWithChartGrid_index_(v5, v6, v7, v8, v9, self, row);
 
   return v10;
 }
 
-- (id)gridAdapterForColumn:(unint64_t)a3
+- (id)gridAdapterForColumn:(unint64_t)column
 {
   v5 = [TSCHChartGridColumnAdapter alloc];
-  v10 = objc_msgSend_initWithChartGrid_index_(v5, v6, v7, v8, v9, self, a3);
+  v10 = objc_msgSend_initWithChartGrid_index_(v5, v6, v7, v8, v9, self, column);
 
   return v10;
 }
@@ -1934,14 +1934,14 @@ LABEL_21:
   return v13;
 }
 
-- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)a3
+- (BOOL)isEquivalentForCrossDocumentPasteMasterComparison:(id)comparison
 {
-  if (self == a3)
+  if (self == comparison)
   {
     return 1;
   }
 
-  v4 = a3;
+  comparisonCopy = comparison;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -1958,9 +1958,9 @@ LABEL_21:
   return v10;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUDynamicCast();
 
@@ -2000,9 +2000,9 @@ LABEL_21:
   return v47;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v6 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   v8 = objc_alloc_init(TSCHChartGrid);
@@ -2050,7 +2050,7 @@ LABEL_21:
         {
           v70 = objc_msgSend_valueForRow_column_(self, v65, v66, v67, v68, v69, v64);
           v75 = objc_msgSend_valueForRow_column_(v7, v71, v72, v73, v74, v69, v64);
-          v79 = objc_msgSend_mixedObjectWithFraction_ofObject_(v70, v76, a3, v77, v78, v75);
+          v79 = objc_msgSend_mixedObjectWithFraction_ofObject_(v70, v76, fraction, v77, v78, v75);
           objc_msgSend_setValue_forRow_column_(v8, v80, v81, v82, v83, v79, v69, v64);
 
           ++v69;
@@ -2075,10 +2075,10 @@ LABEL_21:
   return WeakRetained;
 }
 
-- (void)loadFromPreUFFArchive:(const void *)a3
+- (void)loadFromPreUFFArchive:(const void *)archive
 {
-  self->_direction = *(a3 + 24);
-  v5 = *(a3 + 8);
+  self->_direction = *(archive + 24);
+  v5 = *(archive + 8);
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   rowNames = self->_rowNames;
   self->_rowNames = v6;
@@ -2089,7 +2089,7 @@ LABEL_21:
     do
     {
       v13 = self->_rowNames;
-      v14 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v8, v9, v10, v11, *(*(a3 + 5) + v12));
+      v14 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v8, v9, v10, v11, *(*(archive + 5) + v12));
       objc_msgSend_addObject_(v13, v15, v16, v17, v18, v14);
 
       v12 += 8;
@@ -2099,7 +2099,7 @@ LABEL_21:
     while (v5);
   }
 
-  v19 = *(a3 + 14);
+  v19 = *(archive + 14);
   v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
   columnNames = self->_columnNames;
   self->_columnNames = v20;
@@ -2110,7 +2110,7 @@ LABEL_21:
     do
     {
       v27 = self->_columnNames;
-      v28 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v22, v23, v24, v25, *(*(a3 + 8) + v26));
+      v28 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v22, v23, v24, v25, *(*(archive + 8) + v26));
       objc_msgSend_addObject_(v27, v29, v30, v31, v32, v28);
 
       v26 += 8;
@@ -2120,7 +2120,7 @@ LABEL_21:
     while (v19);
   }
 
-  v33 = *(a3 + 20);
+  v33 = *(archive + 20);
   v34 = objc_alloc_init(MEMORY[0x277CBEB18]);
   values = self->_values;
   self->_values = v34;
@@ -2131,7 +2131,7 @@ LABEL_21:
     v40 = 0;
     do
     {
-      v41 = *(*(a3 + 11) + 8 * v40 + 8);
+      v41 = *(*(archive + 11) + 8 * v40 + 8);
       v42 = *(v41 + 16);
       v44 = objc_msgSend_array(MEMORY[0x277CBEB18], v36, v37, v38, v39);
       if (v42 >= 1)
@@ -2157,31 +2157,31 @@ LABEL_21:
     while (v40 != v56);
   }
 
-  v55 = *(a3 + 100);
+  v55 = *(archive + 100);
 
   objc_msgSend_setDirty_(self, v36, v37, v38, v39, v55);
 }
 
-- (void)insertRow:(unint64_t)a3 withName:(id)a4
+- (void)insertRow:(unint64_t)row withName:(id)name
 {
-  v15 = a4;
+  nameCopy = name;
   v10 = objc_msgSend_createUUID(self, v6, v7, v8, v9);
-  objc_msgSend_insertRow_withName_withId_(self, v11, v12, v13, v14, a3, v15, v10);
+  objc_msgSend_insertRow_withName_withId_(self, v11, v12, v13, v14, row, nameCopy, v10);
 }
 
-- (void)insertColumn:(unint64_t)a3 withName:(id)a4
+- (void)insertColumn:(unint64_t)column withName:(id)name
 {
-  v15 = a4;
+  nameCopy = name;
   v10 = objc_msgSend_createUUID(self, v6, v7, v8, v9);
-  objc_msgSend_insertColumn_withName_withId_(self, v11, v12, v13, v14, a3, v15, v10);
+  objc_msgSend_insertColumn_withName_withId_(self, v11, v12, v13, v14, column, nameCopy, v10);
 }
 
-- (void)loadFromUnityArchive:(const void *)a3 chartInfo:(id)a4
+- (void)loadFromUnityArchive:(const void *)archive chartInfo:(id)info
 {
-  v146 = a4;
-  if (*(a3 + 26))
+  infoCopy = info;
+  if (*(archive + 26))
   {
-    v6 = *(a3 + 26);
+    v6 = *(archive + 26);
   }
 
   else
@@ -2189,8 +2189,8 @@ LABEL_21:
     v6 = &TSCH::_ChartGridArchive_default_instance_;
   }
 
-  v145 = a3;
-  self->_direction = *(a3 + 72);
+  archiveCopy = archive;
+  self->_direction = *(archive + 72);
   v7 = *(v6 + 8);
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   rowNames = self->_rowNames;
@@ -2202,7 +2202,7 @@ LABEL_21:
     do
     {
       v15 = self->_rowNames;
-      v16 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v10, v11, v12, v13, *(v6[5] + v14), v145);
+      v16 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v10, v11, v12, v13, *(v6[5] + v14), archiveCopy);
       objc_msgSend_addObject_(v15, v17, v18, v19, v20, v16);
 
       v14 += 8;
@@ -2223,7 +2223,7 @@ LABEL_21:
     do
     {
       v29 = self->_columnNames;
-      v30 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v24, v25, v26, v27, *(v6[8] + v28), v145);
+      v30 = objc_msgSend_tsp_stringWithProtobufString_(MEMORY[0x277CCACA8], v24, v25, v26, v27, *(v6[8] + v28), archiveCopy);
       objc_msgSend_addObject_(v29, v31, v32, v33, v34, v30);
 
       v28 += 8;
@@ -2253,7 +2253,7 @@ LABEL_21:
     while (v35);
   }
 
-  v48 = v145;
+  v48 = archiveCopy;
   if ((v6[2] & 1) == 0)
   {
     LOBYTE(v49) = 0;
@@ -2272,7 +2272,7 @@ LABEL_21:
   {
 LABEL_24:
     v91 = self->_mutableRowIds;
-    v73 = objc_msgSend_null(MEMORY[0x277CBEB68], v60, v61, v62, v63, v145);
+    v73 = objc_msgSend_null(MEMORY[0x277CBEB68], v60, v61, v62, v63, archiveCopy);
     v49 = objc_msgSend_indexOfObject_(v91, v92, v93, v94, v95, v73) == 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -2282,7 +2282,7 @@ LABEL_24:
     do
     {
       v65 = self->_mutableRowIds;
-      v66 = objc_msgSend_null(MEMORY[0x277CBEB68], v60, v61, v62, v63, v145);
+      v66 = objc_msgSend_null(MEMORY[0x277CBEB68], v60, v61, v62, v63, archiveCopy);
       objc_msgSend_addObject_(v65, v67, v68, v69, v70, v66);
 
       --v64;
@@ -2328,7 +2328,7 @@ LABEL_24:
 LABEL_36:
       v135 = self->_mutableColumnIds;
       objc_msgSend_null(MEMORY[0x277CBEB68], v105, v106, v107, v108);
-      v117 = v48 = v145;
+      v117 = v48 = archiveCopy;
       LOBYTE(v49) = objc_msgSend_indexOfObject_(v135, v136, v137, v138, v139, v117) == 0x7FFFFFFFFFFFFFFFLL;
 LABEL_41:
 
@@ -2375,16 +2375,16 @@ LABEL_41:
       }
 
       LOBYTE(v49) = 0;
-      v48 = v145;
+      v48 = archiveCopy;
       goto LABEL_41;
     }
   }
 
-  v48 = v145;
+  v48 = archiveCopy;
 LABEL_42:
   objc_msgSend_updateRowAndColumnIndexMaps(self, v105, v106, v107, v108);
 LABEL_43:
-  objc_msgSend_adjustRowAndColumnNameListLength(self, v38, v39, v40, v41, v145);
+  objc_msgSend_adjustRowAndColumnNameListLength(self, v38, v39, v40, v41, archiveCopy);
   if (!v49)
   {
     objc_msgSend_generateRowColumnIdMaps(self, v140, v141, v142, v143);
@@ -2397,32 +2397,32 @@ LABEL_43:
 
   else
   {
-    v144 = objc_msgSend_gridEqualToDefaultGrid(v146, v140, v141, v142, v143) ^ 1;
+    v144 = objc_msgSend_gridEqualToDefaultGrid(infoCopy, v140, v141, v142, v143) ^ 1;
   }
 
   objc_msgSend_setDirty_(self, v140, v141, v142, v143, v144 & 1);
 }
 
-- (void)saveToUnityArchive:(void *)a3 forCopy:(BOOL)a4
+- (void)saveToUnityArchive:(void *)archive forCopy:(BOOL)copy
 {
-  v4 = a4;
-  *(a3 + 10) |= 4u;
-  v7 = *(a3 + 26);
+  copyCopy = copy;
+  *(archive + 10) |= 4u;
+  v7 = *(archive + 26);
   if (!v7)
   {
-    v8 = *(a3 + 1);
+    v8 = *(archive + 1);
     if (v8)
     {
       v8 = *(v8 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v7 = google::protobuf::Arena::CreateMaybeMessage<TSCH::ChartGridArchive>(v8);
-    *(a3 + 26) = v7;
+    *(archive + 26) = v7;
   }
 
   v157 = objc_getAssociatedObject(self, qword_280A462E8);
   v13 = objc_msgSend_unsignedIntegerValue(v157, v9, v10, v11, v12);
-  if (v4 && (direction = v13) != 0 && self->_direction != v13)
+  if (copyCopy && (direction = v13) != 0 && self->_direction != v13)
   {
     v160 = self->_columnNames;
     v159 = self->_rowNames;
@@ -2441,8 +2441,8 @@ LABEL_43:
     direction = self->_direction;
   }
 
-  *(a3 + 10) |= 0x2000u;
-  *(a3 + 72) = direction;
+  *(archive + 10) |= 0x2000u;
+  *(archive + 72) = direction;
   v21 = objc_msgSend_count(v160, v15, v16, v17, v18);
   if (v21 >= 1)
   {
@@ -2642,7 +2642,7 @@ LABEL_40:
         v79 = 0;
         while (1)
         {
-          v80 = self;
+          selfCopy = self;
           v81 = objc_msgSend_objectAtIndexedSubscript_(self->_values, v68, v69, v70, v71, v79, v156);
           v86 = objc_msgSend_objectAtIndex_(v81, v82, v83, v84, v85, v72);
           v156 = &unk_2885724B0;
@@ -2656,7 +2656,7 @@ LABEL_40:
 
           v89 = *(v76 + 24);
           v90 = *v88;
-          self = v80;
+          self = selfCopy;
           if (v89 >= *v88)
           {
             if (v90 == *(v76 + 28))
@@ -2687,7 +2687,7 @@ LABEL_49:
           }
         }
 
-        self = v80;
+        self = selfCopy;
         goto LABEL_47;
       }
 
@@ -2814,8 +2814,8 @@ LABEL_87:
   }
 
   dirty = self->_dirty;
-  *(a3 + 10) |= 0x10000u;
-  *(a3 + 294) = dirty;
+  *(archive + 10) |= 0x10000u;
+  *(archive + 294) = dirty;
   objc_setAssociatedObject(self, qword_280A462E8, 0, 0x303);
 }
 

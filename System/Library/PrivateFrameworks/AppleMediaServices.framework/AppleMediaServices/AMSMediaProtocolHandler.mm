@@ -1,29 +1,29 @@
 @interface AMSMediaProtocolHandler
-- (AMSMediaProtocolHandler)initWithTokenService:(id)a3;
-- (void)handleResponse:(id)a3 task:(id)a4 completionHandler:(id)a5;
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 completionHandler:(id)a6;
+- (AMSMediaProtocolHandler)initWithTokenService:(id)service;
+- (void)handleResponse:(id)response task:(id)task completionHandler:(id)handler;
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect completionHandler:(id)handler;
 @end
 
 @implementation AMSMediaProtocolHandler
 
-- (AMSMediaProtocolHandler)initWithTokenService:(id)a3
+- (AMSMediaProtocolHandler)initWithTokenService:(id)service
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
     v7 = +[AMSUnitTests isRunningUnitTests];
     v8 = +[AMSLogConfig sharedMediaConfig];
-    v9 = v8;
+    defaultCenter = v8;
     if (v7)
     {
       if (!v8)
       {
-        v9 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v10 = [v9 OSLogObject];
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+      oSLogObject = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v11 = AMSLogKey();
         v12 = MEMORY[0x1E696AEC0];
@@ -43,7 +43,7 @@
         v15 = ;
         *buf = 138543362;
         v27 = v15;
-        _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@Expected a token service to be provided. The initialized instance will be unable to fetch media tokens.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Expected a token service to be provided. The initialized instance will be unable to fetch media tokens.", buf, 0xCu);
         if (v11)
         {
 
@@ -51,20 +51,20 @@
         }
       }
 
-      v9 = [MEMORY[0x1E696AD88] defaultCenter];
-      v16 = +[AMSLogConfig sharedMediaConfig];
-      [v9 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v16 userInfo:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      oSLogObject2 = +[AMSLogConfig sharedMediaConfig];
+      [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
     }
 
     else
     {
       if (!v8)
       {
-        v9 = +[AMSLogConfig sharedConfig];
+        defaultCenter = +[AMSLogConfig sharedConfig];
       }
 
-      v16 = [v9 OSLogObject];
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
+      oSLogObject2 = [defaultCenter OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
       {
         v17 = AMSLogKey();
         v18 = MEMORY[0x1E696AEC0];
@@ -84,7 +84,7 @@
         v21 = ;
         *buf = 138543362;
         v27 = v21;
-        _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_FAULT, "%{public}@Expected a token service to be provided. The initialized instance will be unable to fetch media tokens.", buf, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Expected a token service to be provided. The initialized instance will be unable to fetch media tokens.", buf, 0xCu);
         if (v17)
         {
 
@@ -100,30 +100,30 @@
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_tokenService, a3);
+    objc_storeStrong(&v22->_tokenService, service);
   }
 
   return v23;
 }
 
-- (void)handleResponse:(id)a3 task:(id)a4 completionHandler:(id)a5
+- (void)handleResponse:(id)response task:(id)task completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responseCopy = response;
+  taskCopy = task;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__AMSMediaProtocolHandler_handleResponse_task_completionHandler___block_invoke;
   v15[3] = &unk_1E73B8D70;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
-  v19 = v10;
+  v16 = taskCopy;
+  v17 = responseCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
   v14.receiver = self;
   v14.super_class = AMSMediaProtocolHandler;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v11 = handlerCopy;
+  v12 = responseCopy;
+  v13 = taskCopy;
   [(AMSURLProtocolHandler *)&v14 handleResponse:v12 task:v13 completionHandler:v15];
 }
 
@@ -225,23 +225,23 @@ void __65__AMSMediaProtocolHandler_handleResponse_task_completionHandler___block
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)reconfigureNewRequest:(id)a3 originalTask:(id)a4 redirect:(BOOL)a5 completionHandler:(id)a6
+- (void)reconfigureNewRequest:(id)request originalTask:(id)task redirect:(BOOL)redirect completionHandler:(id)handler
 {
-  v7 = a5;
-  v10 = a4;
-  v11 = a6;
+  redirectCopy = redirect;
+  taskCopy = task;
+  handlerCopy = handler;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __89__AMSMediaProtocolHandler_reconfigureNewRequest_originalTask_redirect_completionHandler___block_invoke;
   v15[3] = &unk_1E73B8DC0;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
+  v16 = taskCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
   v14.receiver = self;
   v14.super_class = AMSMediaProtocolHandler;
-  v12 = v11;
-  v13 = v10;
-  [(AMSURLProtocolHandler *)&v14 reconfigureNewRequest:a3 originalTask:v13 redirect:v7 completionHandler:v15];
+  v12 = handlerCopy;
+  v13 = taskCopy;
+  [(AMSURLProtocolHandler *)&v14 reconfigureNewRequest:request originalTask:v13 redirect:redirectCopy completionHandler:v15];
 }
 
 void __89__AMSMediaProtocolHandler_reconfigureNewRequest_originalTask_redirect_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)

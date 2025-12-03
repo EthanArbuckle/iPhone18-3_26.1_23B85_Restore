@@ -1,5 +1,5 @@
 @interface HealthDigitalSeparationEntry
-- (HealthDigitalSeparationEntry)initWithSharingEntry:(id)a3;
+- (HealthDigitalSeparationEntry)initWithSharingEntry:(id)entry;
 - (NSPersonNameComponents)nameComponents;
 - (NSString)emailAddress;
 - (NSString)phoneNumber;
@@ -7,15 +7,15 @@
 
 @implementation HealthDigitalSeparationEntry
 
-- (HealthDigitalSeparationEntry)initWithSharingEntry:(id)a3
+- (HealthDigitalSeparationEntry)initWithSharingEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   v9.receiver = self;
   v9.super_class = HealthDigitalSeparationEntry;
   v5 = [(HealthDigitalSeparationEntry *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [entryCopy copy];
     sharingEntry = v5->_sharingEntry;
     v5->_sharingEntry = v6;
   }
@@ -26,49 +26,49 @@
 - (NSPersonNameComponents)nameComponents
 {
   v3 = objc_alloc_init(NSPersonNameComponents);
-  v4 = [(HKSummarySharingEntry *)self->_sharingEntry firstName];
-  [v3 setGivenName:v4];
+  firstName = [(HKSummarySharingEntry *)self->_sharingEntry firstName];
+  [v3 setGivenName:firstName];
 
-  v5 = [(HKSummarySharingEntry *)self->_sharingEntry lastName];
-  [v3 setFamilyName:v5];
+  lastName = [(HKSummarySharingEntry *)self->_sharingEntry lastName];
+  [v3 setFamilyName:lastName];
 
   return v3;
 }
 
 - (NSString)emailAddress
 {
-  v3 = [(HKSummarySharingEntry *)self->_sharingEntry primaryContactIdentifier];
-  v4 = [v3 _appearsToBeEmail];
+  primaryContactIdentifier = [(HKSummarySharingEntry *)self->_sharingEntry primaryContactIdentifier];
+  _appearsToBeEmail = [primaryContactIdentifier _appearsToBeEmail];
 
-  if (v4)
+  if (_appearsToBeEmail)
   {
-    v5 = [(HKSummarySharingEntry *)self->_sharingEntry primaryContactIdentifier];
+    primaryContactIdentifier2 = [(HKSummarySharingEntry *)self->_sharingEntry primaryContactIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    primaryContactIdentifier2 = 0;
   }
 
-  return v5;
+  return primaryContactIdentifier2;
 }
 
 - (NSString)phoneNumber
 {
-  v3 = [(HKSummarySharingEntry *)self->_sharingEntry primaryContactIdentifier];
-  v4 = [v3 _appearsToBePhoneNumber];
+  primaryContactIdentifier = [(HKSummarySharingEntry *)self->_sharingEntry primaryContactIdentifier];
+  _appearsToBePhoneNumber = [primaryContactIdentifier _appearsToBePhoneNumber];
 
-  if (v4)
+  if (_appearsToBePhoneNumber)
   {
-    v5 = [(HKSummarySharingEntry *)self->_sharingEntry primaryContactIdentifier];
+    primaryContactIdentifier2 = [(HKSummarySharingEntry *)self->_sharingEntry primaryContactIdentifier];
   }
 
   else
   {
-    v5 = 0;
+    primaryContactIdentifier2 = 0;
   }
 
-  return v5;
+  return primaryContactIdentifier2;
 }
 
 @end

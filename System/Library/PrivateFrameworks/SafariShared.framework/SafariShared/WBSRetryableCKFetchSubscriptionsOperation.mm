@@ -3,10 +3,10 @@
 - (id)_makeOperation;
 - (id)fetchSubscriptionCompletionBlock;
 - (id)perSubscriptionCompletionBlock;
-- (void)_setUpOperation:(id)a3;
-- (void)setFetchSubscriptionCompletionBlock:(id)a3;
-- (void)setPerSubscriptionCompletionBlock:(id)a3;
-- (void)setSubscriptionIDs:(id)a3;
+- (void)_setUpOperation:(id)operation;
+- (void)setFetchSubscriptionCompletionBlock:(id)block;
+- (void)setPerSubscriptionCompletionBlock:(id)block;
+- (void)setSubscriptionIDs:(id)ds;
 @end
 
 @implementation WBSRetryableCKFetchSubscriptionsOperation
@@ -20,11 +20,11 @@
   return v3;
 }
 
-- (void)setSubscriptionIDs:(id)a3
+- (void)setSubscriptionIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [dsCopy copy];
 
   subscriptionIDs = self->_subscriptionIDs;
   self->_subscriptionIDs = v5;
@@ -43,11 +43,11 @@
   return v3;
 }
 
-- (void)setPerSubscriptionCompletionBlock:(id)a3
+- (void)setPerSubscriptionCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   perSubscriptionCompletionBlock = self->_perSubscriptionCompletionBlock;
   self->_perSubscriptionCompletionBlock = v5;
@@ -66,11 +66,11 @@
   return v3;
 }
 
-- (void)setFetchSubscriptionCompletionBlock:(id)a3
+- (void)setFetchSubscriptionCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock(&self->super.super._internalLock);
-  v5 = [v4 copy];
+  v5 = [blockCopy copy];
 
   fetchSubscriptionCompletionBlock = self->_fetchSubscriptionCompletionBlock;
   self->_fetchSubscriptionCompletionBlock = v5;
@@ -87,15 +87,15 @@
   return v2;
 }
 
-- (void)_setUpOperation:(id)a3
+- (void)_setUpOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v10.receiver = self;
   v10.super_class = WBSRetryableCKFetchSubscriptionsOperation;
-  [(WBSRetryableCKDatabaseOperation *)&v10 _setUpOperation:v4];
+  [(WBSRetryableCKDatabaseOperation *)&v10 _setUpOperation:operationCopy];
   if ([(NSMutableSet *)self->super.super._explicitlySetProperties containsObject:@"subscriptionIDs"])
   {
-    [v4 setSubscriptionIDs:self->_subscriptionIDs];
+    [operationCopy setSubscriptionIDs:self->_subscriptionIDs];
   }
 
   if (self->_perSubscriptionCompletionBlock)
@@ -106,7 +106,7 @@
     v7[2] = __61__WBSRetryableCKFetchSubscriptionsOperation__setUpOperation___block_invoke;
     v7[3] = &unk_1E7FCA068;
     objc_copyWeak(&v8, &location);
-    [v4 setPerSubscriptionCompletionBlock:v7];
+    [operationCopy setPerSubscriptionCompletionBlock:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -117,7 +117,7 @@
   v5[2] = __61__WBSRetryableCKFetchSubscriptionsOperation__setUpOperation___block_invoke_3;
   v5[3] = &unk_1E7FC9F00;
   objc_copyWeak(&v6, &location);
-  [v4 setFetchSubscriptionCompletionBlock:v5];
+  [operationCopy setFetchSubscriptionCompletionBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }

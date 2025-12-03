@@ -1,15 +1,15 @@
 @interface WPStorageAccessPromptQuirk
-- (WPStorageAccessPromptQuirk)initWithName:(id)a3 withDomainData:(id)a4;
+- (WPStorageAccessPromptQuirk)initWithName:(id)name withDomainData:(id)data;
 - (id)describeQuirkDomains;
 - (id)description;
 @end
 
 @implementation WPStorageAccessPromptQuirk
 
-- (WPStorageAccessPromptQuirk)initWithName:(id)a3 withDomainData:(id)a4
+- (WPStorageAccessPromptQuirk)initWithName:(id)name withDomainData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  dataCopy = data;
   v39.receiver = self;
   v39.super_class = WPStorageAccessPromptQuirk;
   v9 = [(WPStorageAccessPromptQuirk *)&v39 init];
@@ -48,7 +48,7 @@
     v14[6] = &v21;
     v14[7] = &v27;
     v14[8] = &v15;
-    [v8 enumerateKeysAndObjectsUsingBlock:v14];
+    [dataCopy enumerateKeysAndObjectsUsingBlock:v14];
     if ((v28[3] & 1) == 0)
     {
       v10 = v16[5];
@@ -66,7 +66,7 @@
       v9->_isValid = v11;
       if (v11 == 1)
       {
-        objc_storeStrong(&v9->_name, a3);
+        objc_storeStrong(&v9->_name, name);
         objc_storeStrong(&v9->_quirkDomains, v22[5]);
         objc_storeStrong(&v9->_triggerPages, v16[5]);
       }
@@ -232,17 +232,17 @@ void __50__WPStorageAccessPromptQuirk_describeQuirkDomains__block_invoke(uint64_
   {
     v3 = MEMORY[0x277CCACA8];
     name = self->_name;
-    v5 = [(WPStorageAccessPromptQuirk *)self describeQuirkDomains];
+    describeQuirkDomains = [(WPStorageAccessPromptQuirk *)self describeQuirkDomains];
     v6 = [(NSArray *)self->_triggerPages componentsJoinedByString:@", "];
-    v7 = [v3 stringWithFormat:@"%@ - %@ - [%@]", name, v5, v6];
+    describeQuirkDomains2 = [v3 stringWithFormat:@"%@ - %@ - [%@]", name, describeQuirkDomains, v6];
   }
 
   else
   {
-    v7 = [(WPStorageAccessPromptQuirk *)self describeQuirkDomains];
+    describeQuirkDomains2 = [(WPStorageAccessPromptQuirk *)self describeQuirkDomains];
   }
 
-  return v7;
+  return describeQuirkDomains2;
 }
 
 @end

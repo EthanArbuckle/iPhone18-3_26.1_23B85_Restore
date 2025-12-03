@@ -1,5 +1,5 @@
 @interface _NSCoreDataTaggedObjectID
-+ (Class)classWithStore:(id)a3 andEntity:(id)a4;
++ (Class)classWithStore:(id)store andEntity:(id)entity;
 + (void)initialize;
 - (BOOL)_isPersistentStoreAlive;
 - (BOOL)isTemporaryID;
@@ -137,17 +137,17 @@
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v19 = 138413826;
-      v20 = a1;
+      selfCopy8 = self;
       v21 = 2048;
-      v22 = a1;
+      selfCopy9 = self;
       v23 = 2112;
       v24 = NSStringFromClass(Class);
       v25 = 2048;
-      v26 = Class;
+      selfCopy10 = Class;
       v27 = 2048;
       v28 = _PFTaggedPointersPool;
       v29 = 2080;
-      ImageName = class_getImageName(a1);
+      ImageName = class_getImageName(self);
       v31 = 2080;
       v32 = class_getImageName(Class);
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Failure to initialize tagged pointers (classes don't match): %@:%p:%@:%p - %p\n%s\n%s\n", &v19, 0x48u);
@@ -161,16 +161,16 @@
 
     v9 = NSStringFromClass(Class);
     v10 = _PFTaggedPointersPool;
-    v11 = class_getImageName(a1);
+    v11 = class_getImageName(self);
     v12 = class_getImageName(Class);
     v19 = 138413826;
-    v20 = a1;
+    selfCopy8 = self;
     v21 = 2048;
-    v22 = a1;
+    selfCopy9 = self;
     v23 = 2112;
     v24 = v9;
     v25 = 2048;
-    v26 = Class;
+    selfCopy10 = Class;
     v27 = 2048;
     v28 = v10;
     v29 = 2080;
@@ -181,7 +181,7 @@
     goto LABEL_16;
   }
 
-  if (!*MEMORY[0x1E69E5908] || Class != a1 || _PFTaggedPointersPool)
+  if (!*MEMORY[0x1E69E5908] || Class != self || _PFTaggedPointersPool)
   {
     goto LABEL_7;
   }
@@ -206,17 +206,17 @@ LABEL_7:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     v19 = 138413826;
-    v20 = a1;
+    selfCopy8 = self;
     v21 = 2048;
-    v22 = a1;
+    selfCopy9 = self;
     v23 = 2112;
     v24 = NSStringFromClass(Class);
     v25 = 2048;
-    v26 = a1;
+    selfCopy10 = self;
     v27 = 2048;
     v28 = _PFTaggedPointersPool;
     v29 = 2080;
-    ImageName = class_getImageName(a1);
+    ImageName = class_getImageName(self);
     v31 = 2080;
     v32 = class_getImageName(Class);
     _os_log_error_impl(&dword_18565F000, v14, OS_LOG_TYPE_ERROR, "CoreData: fault: Failure to initialize tagged pointers (pool is NULL after initialization attempt): %@:%p:%@:%p - %p\n%s\n%s\n", &v19, 0x48u);
@@ -227,16 +227,16 @@ LABEL_7:
   {
     v15 = NSStringFromClass(Class);
     v16 = _PFTaggedPointersPool;
-    v17 = class_getImageName(a1);
+    v17 = class_getImageName(self);
     v18 = class_getImageName(Class);
     v19 = 138413826;
-    v20 = a1;
+    selfCopy8 = self;
     v21 = 2048;
-    v22 = a1;
+    selfCopy9 = self;
     v23 = 2112;
     v24 = v15;
     v25 = 2048;
-    v26 = a1;
+    selfCopy10 = self;
     v27 = 2048;
     v28 = v16;
     v29 = 2080;
@@ -254,10 +254,10 @@ LABEL_17:
 
 - (id)_retainedURIString
 {
-  v3 = [(_NSCoreDataTaggedObjectID *)self _storeIdentifier];
-  if (v3)
+  _storeIdentifier = [(_NSCoreDataTaggedObjectID *)self _storeIdentifier];
+  if (_storeIdentifier)
   {
-    v4 = v3;
+    v4 = _storeIdentifier;
   }
 
   else
@@ -288,7 +288,7 @@ LABEL_17:
   return [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@://%@/%@/p%qu", @"x-coredata", v4, -[_NSCoreDataTaggedObjectID entityName](self, "entityName"), v9 & v7, v11];
 }
 
-+ (Class)classWithStore:(id)a3 andEntity:(id)a4
++ (Class)classWithStore:(id)store andEntity:(id)entity
 {
   v28 = *MEMORY[0x1E69E9840];
   if (!_PFTaggedPointersPool)
@@ -297,20 +297,20 @@ LABEL_17:
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       *v27 = 138412546;
-      *&v27[4] = [a4 name];
+      *&v27[4] = [entity name];
       *&v27[12] = 2112;
-      *&v27[14] = a3;
+      *&v27[14] = store;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Fatal attempt to reserve a tagged pointer slot without a pool for '%@': %@\n", v27, 0x16u);
     }
 
     v25 = _PFLogGetLogStream(17);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
     {
-      v26 = [a4 name];
+      name = [entity name];
       *v27 = 138412546;
-      *&v27[4] = v26;
+      *&v27[4] = name;
       *&v27[12] = 2112;
-      *&v27[14] = a3;
+      *&v27[14] = store;
       _os_log_fault_impl(&dword_18565F000, v25, OS_LOG_TYPE_FAULT, "CoreData: Fatal attempt to reserve a tagged pointer slot without a pool for '%@': %@", v27, 0x16u);
     }
 
@@ -324,7 +324,7 @@ LABEL_17:
     v8 = atomic_load((_PFTaggedPointersPool + v6 + 16));
     if (!v8)
     {
-      atomic_compare_exchange_strong((_PFTaggedPointersPool + v6), &v8, a3);
+      atomic_compare_exchange_strong((_PFTaggedPointersPool + v6), &v8, store);
       if (!v8)
       {
         break;
@@ -335,15 +335,15 @@ LABEL_17:
     v6 += 32;
     if (v7 == 0x20000)
     {
-      result = [objc_opt_class() classWithStore:a3 andEntity:a4];
+      result = [objc_opt_class() classWithStore:store andEntity:entity];
       goto LABEL_7;
     }
   }
 
-  v11 = [a3 identifier];
-  v12 = [a4 name];
+  identifier = [store identifier];
+  name2 = [entity name];
   os_unfair_lock_lock_with_options();
-  v13 = [qword_1ED4BE980 member:v11];
+  v13 = [qword_1ED4BE980 member:identifier];
   if (v13)
   {
     v14 = v13;
@@ -351,11 +351,11 @@ LABEL_17:
 
   else
   {
-    v14 = [v11 copy];
+    v14 = [identifier copy];
     [qword_1ED4BE980 addObject:v14];
   }
 
-  v15 = [qword_1ED4BE980 member:v12];
+  v15 = [qword_1ED4BE980 member:name2];
   if (v15)
   {
     v16 = v15;
@@ -363,13 +363,13 @@ LABEL_17:
 
   else
   {
-    v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v12];
+    v16 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:name2];
     [qword_1ED4BE980 addObject:v16];
   }
 
   os_unfair_lock_unlock(&dword_1ED4BE974);
   v17 = _PFTaggedPointersPool + v6;
-  atomic_store(a4, (_PFTaggedPointersPool + v6 + 8));
+  atomic_store(entity, (_PFTaggedPointersPool + v6 + 8));
   v18 = atomic_load((v17 + 16));
   v19 = atomic_load((_PFTaggedPointersPool + v6 + 24));
   v20 = _PFTaggedPointersPool;

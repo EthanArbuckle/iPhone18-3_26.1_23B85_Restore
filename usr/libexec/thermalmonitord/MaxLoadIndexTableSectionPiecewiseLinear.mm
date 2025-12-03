@@ -1,20 +1,20 @@
 @interface MaxLoadIndexTableSectionPiecewiseLinear
-- (MaxLoadIndexTableSectionPiecewiseLinear)initWithDecisionTreeSectionControlEfforts:(id)a3 maxLIs:(id)a4 unconstrainedMaxLI:(unint64_t)a5;
-- (unint64_t)getControlEffortForMaxLI:(unint64_t)a3;
-- (unint64_t)getMaxLI:(unint64_t)a3;
+- (MaxLoadIndexTableSectionPiecewiseLinear)initWithDecisionTreeSectionControlEfforts:(id)efforts maxLIs:(id)is unconstrainedMaxLI:(unint64_t)i;
+- (unint64_t)getControlEffortForMaxLI:(unint64_t)i;
+- (unint64_t)getMaxLI:(unint64_t)i;
 @end
 
 @implementation MaxLoadIndexTableSectionPiecewiseLinear
 
-- (MaxLoadIndexTableSectionPiecewiseLinear)initWithDecisionTreeSectionControlEfforts:(id)a3 maxLIs:(id)a4 unconstrainedMaxLI:(unint64_t)a5
+- (MaxLoadIndexTableSectionPiecewiseLinear)initWithDecisionTreeSectionControlEfforts:(id)efforts maxLIs:(id)is unconstrainedMaxLI:(unint64_t)i
 {
   v22.receiver = self;
   v22.super_class = MaxLoadIndexTableSectionPiecewiseLinear;
   v8 = [(MaxLoadIndexTableSection *)&v22 init];
   if (v8)
   {
-    v9 = [a3 count];
-    if (v9 == [a4 count])
+    v9 = [efforts count];
+    if (v9 == [is count])
     {
       if (v9)
       {
@@ -23,13 +23,13 @@
           v10 = 0;
           v11 = 0;
           v12 = 0;
-          v8->_unconstrainedMaxLI = a5;
+          v8->_unconstrainedMaxLI = i;
           v8->_pointCount = v9;
           do
           {
             controlEfforts = v8->_controlEfforts;
-            v8->_controlEfforts[v12] = [objc_msgSend(a3 objectAtIndex:{v12), "unsignedIntegerValue"}];
-            v14 = [objc_msgSend(a4 objectAtIndex:{v12), "unsignedIntegerValue"}];
+            v8->_controlEfforts[v12] = [objc_msgSend(efforts objectAtIndex:{v12), "unsignedIntegerValue"}];
+            v14 = [objc_msgSend(is objectAtIndex:{v12), "unsignedIntegerValue"}];
             v15 = v14;
             v8->_maxLIs[v12] = v14;
             v16 = v8->_controlEfforts[v12];
@@ -82,20 +82,20 @@
   return v8;
 }
 
-- (unint64_t)getMaxLI:(unint64_t)a3
+- (unint64_t)getMaxLI:(unint64_t)i
 {
-  if (a3)
+  if (i)
   {
     v4 = self->_pointCount - 1;
-    v5 = self;
+    selfCopy = self;
     while (v4)
     {
-      v6 = v5->_controlEfforts[1];
-      v5 = (v5 + 8);
+      v6 = selfCopy->_controlEfforts[1];
+      selfCopy = (selfCopy + 8);
       --v4;
-      if (v6 >= a3)
+      if (v6 >= i)
       {
-        result = (v5->_controlEfforts[11] * (v6 - a3) + (a3 - v5->super._releaseRate) * v5->_maxLIs[0]) / (v6 - v5->super._releaseRate);
+        result = (selfCopy->_controlEfforts[11] * (v6 - i) + (i - selfCopy->super._releaseRate) * selfCopy->_maxLIs[0]) / (v6 - selfCopy->super._releaseRate);
         goto LABEL_10;
       }
     }
@@ -118,28 +118,28 @@ LABEL_10:
   return result;
 }
 
-- (unint64_t)getControlEffortForMaxLI:(unint64_t)a3
+- (unint64_t)getControlEffortForMaxLI:(unint64_t)i
 {
-  if (self->_unconstrainedMaxLI <= a3)
+  if (self->_unconstrainedMaxLI <= i)
   {
     return 0;
   }
 
   v4 = self->_pointCount - 1;
-  v5 = self;
+  selfCopy = self;
   while (v4)
   {
-    v6 = v5->_maxLIs[1];
-    v5 = (v5 + 8);
+    v6 = selfCopy->_maxLIs[1];
+    selfCopy = (selfCopy + 8);
     --v4;
-    if (a3 >= v6)
+    if (i >= v6)
     {
-      v7 = v5->_controlEfforts[11];
+      v7 = selfCopy->_controlEfforts[11];
       if (v7 == v6)
       {
-        if (a3 == v6)
+        if (i == v6)
         {
-          v8 = v5->_controlEfforts[0];
+          v8 = selfCopy->_controlEfforts[0];
         }
 
         else
@@ -150,7 +150,7 @@ LABEL_10:
 
       else
       {
-        v8 = (v5->_controlEfforts[0] * (v7 - a3) + v5->super._releaseRate * (a3 - v6)) / (v7 - v6);
+        v8 = (selfCopy->_controlEfforts[0] * (v7 - i) + selfCopy->super._releaseRate * (i - v6)) / (v7 - v6);
       }
 
       if (byte_1000AB2F8 == 1)
@@ -158,10 +158,10 @@ LABEL_10:
         v13 = qword_1000AB718;
         if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
         {
-          releaseRate = v5->super._releaseRate;
-          v15 = v5->_controlEfforts[0];
+          releaseRate = selfCopy->super._releaseRate;
+          v15 = selfCopy->_controlEfforts[0];
           v17 = 134219264;
-          v18 = v15;
+          iCopy2 = v15;
           v19 = 2048;
           v20 = releaseRate;
           v21 = 2048;
@@ -169,7 +169,7 @@ LABEL_10:
           v23 = 2048;
           v24 = v7;
           v25 = 2048;
-          v26 = a3;
+          iCopy = i;
           v27 = 2048;
           v28 = v8;
           v10 = "<Notice> Seeding: CE+1 %lu CE %lu maxLI+1 %lu maxLI %lu maxLI %lu CE %lu";
@@ -190,7 +190,7 @@ LABEL_10:
     if (os_log_type_enabled(qword_1000AB718, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134218240;
-      v18 = a3;
+      iCopy2 = i;
       v19 = 2048;
       v20 = v8;
       v10 = "<Notice> Seeding: Piecewise reverse DT maxLI:%lu controlEffort:%lu";

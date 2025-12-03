@@ -1,23 +1,23 @@
 @interface BKPDFAnnotationCounter
-- (BKPDFAnnotationCounter)initWithDocument:(CGPDFDocument *)a3;
+- (BKPDFAnnotationCounter)initWithDocument:(CGPDFDocument *)document;
 - (id)countMarkupAnnotations;
-- (void)_countMarkupAnnotationsInArray:(CGPDFArray *)a3 result:(id)a4;
-- (void)_visitPageTree:(CGPDFDictionary *)a3 visitBlock:(id)a4;
-- (void)countMarkupAnnotationsWithCompletion:(id)a3;
+- (void)_countMarkupAnnotationsInArray:(CGPDFArray *)array result:(id)result;
+- (void)_visitPageTree:(CGPDFDictionary *)tree visitBlock:(id)block;
+- (void)countMarkupAnnotationsWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)setDocument:(CGPDFDocument *)a3;
+- (void)setDocument:(CGPDFDocument *)document;
 @end
 
 @implementation BKPDFAnnotationCounter
 
-- (BKPDFAnnotationCounter)initWithDocument:(CGPDFDocument *)a3
+- (BKPDFAnnotationCounter)initWithDocument:(CGPDFDocument *)document
 {
   v6.receiver = self;
   v6.super_class = BKPDFAnnotationCounter;
   v4 = [(BKPDFAnnotationCounter *)&v6 init];
   if (v4)
   {
-    v4->_document = CGPDFDocumentRetain(a3);
+    v4->_document = CGPDFDocumentRetain(document);
   }
 
   return v4;
@@ -31,13 +31,13 @@
   [(BKPDFAnnotationCounter *)&v3 dealloc];
 }
 
-- (void)setDocument:(CGPDFDocument *)a3
+- (void)setDocument:(CGPDFDocument *)document
 {
-  if (self->_document != a3)
+  if (self->_document != document)
   {
-    CGPDFDocumentRetain(a3);
+    CGPDFDocumentRetain(document);
     CGPDFDocumentRelease(self->_document);
-    self->_document = a3;
+    self->_document = document;
   }
 }
 
@@ -61,9 +61,9 @@
   return v3;
 }
 
-- (void)countMarkupAnnotationsWithCompletion:(id)a3
+- (void)countMarkupAnnotationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = dispatch_get_global_queue(-2, 0);
   block[0] = _NSConcreteStackBlock;
@@ -71,18 +71,18 @@
   block[2] = sub_88DB4;
   block[3] = &unk_1E4010;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(v5, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_visitPageTree:(CGPDFDictionary *)a3 visitBlock:(id)a4
+- (void)_visitPageTree:(CGPDFDictionary *)tree visitBlock:(id)block
 {
-  v5 = a4;
-  if (v5)
+  blockCopy = block;
+  if (blockCopy)
   {
     Mutable = CFArrayCreateMutable(kCFAllocatorDefault, 0, &kCFTypeArrayCallBacks);
     if (Mutable)
@@ -92,10 +92,10 @@
       v11[1] = 3221225472;
       v11[2] = sub_89034;
       v11[3] = &unk_1E4CC0;
-      v12 = v5;
+      v12 = blockCopy;
       v13 = v7;
       v8 = objc_retainBlock(v11);
-      CFArrayAppendValue(v7, a3);
+      CFArrayAppendValue(v7, tree);
       while (CFArrayGetCount(v7))
       {
         ValueAtIndex = CFArrayGetValueAtIndex(v7, 0);
@@ -116,16 +116,16 @@
   }
 }
 
-- (void)_countMarkupAnnotationsInArray:(CGPDFArray *)a3 result:(id)a4
+- (void)_countMarkupAnnotationsInArray:(CGPDFArray *)array result:(id)result
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_89164;
   v7[3] = &unk_1E4CE8;
-  v8 = a4;
-  v5 = v8;
+  resultCopy = result;
+  v5 = resultCopy;
   v6 = objc_retainBlock(v7);
-  CGPDFArrayApplyBlock(a3, v6, 0);
+  CGPDFArrayApplyBlock(array, v6, 0);
 }
 
 @end

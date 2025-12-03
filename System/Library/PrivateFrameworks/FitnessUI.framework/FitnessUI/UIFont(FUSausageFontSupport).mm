@@ -21,11 +21,11 @@
 - (id)fu_fontWithCenteredColons
 {
   v6[1] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DB878] fu_alternateColonsFeatureSetting];
-  v6[0] = v2;
+  fu_alternateColonsFeatureSetting = [MEMORY[0x1E69DB878] fu_alternateColonsFeatureSetting];
+  v6[0] = fu_alternateColonsFeatureSetting;
   v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
 
-  v4 = [MEMORY[0x1E69DB878] fu_fontByApplyingFeatureSettings:v3 toFont:a1];
+  v4 = [MEMORY[0x1E69DB878] fu_fontByApplyingFeatureSettings:v3 toFont:self];
 
   return v4;
 }
@@ -45,8 +45,8 @@
 
 - (id)fu_fontWithSize:()FUSausageFontSupport
 {
-  v3 = [a1 fontDescriptor];
-  v4 = [MEMORY[0x1E69DB878] fontWithDescriptor:v3 size:a2];
+  fontDescriptor = [self fontDescriptor];
+  v4 = [MEMORY[0x1E69DB878] fontWithDescriptor:fontDescriptor size:a2];
 
   return v4;
 }
@@ -63,7 +63,7 @@
   v9[0] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
 
-  v5 = [MEMORY[0x1E69DB878] fu_fontByApplyingFeatureSettings:v4 toFont:a1];
+  v5 = [MEMORY[0x1E69DB878] fu_fontByApplyingFeatureSettings:v4 toFont:self];
 
   return v5;
 }
@@ -80,7 +80,7 @@
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
   v10[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v6 = [v2 fu_fontByApplyingFeatureSettings:v5 toFont:a1];
+  v6 = [v2 fu_fontByApplyingFeatureSettings:v5 toFont:self];
 
   return v6;
 }
@@ -97,7 +97,7 @@
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
   v10[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v6 = [v2 fu_fontByApplyingFeatureSettings:v5 toFont:a1];
+  v6 = [v2 fu_fontByApplyingFeatureSettings:v5 toFont:self];
 
   return v6;
 }
@@ -114,7 +114,7 @@
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
   v10[0] = v4;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v6 = [v2 fu_fontByApplyingFeatureSettings:v5 toFont:a1];
+  v6 = [v2 fu_fontByApplyingFeatureSettings:v5 toFont:self];
 
   return v6;
 }
@@ -125,7 +125,7 @@
   if (!v2)
   {
     NSLog(&cfstr_UnableToLoadRo.isa);
-    v2 = [MEMORY[0x1E69DB878] systemFontOfSize:a1];
+    v2 = [MEMORY[0x1E69DB878] systemFontOfSize:self];
   }
 
   return v2;
@@ -145,13 +145,13 @@
   }
 
   NSLog(&cfstr_UnableToLoadRo.isa);
-  v6 = [MEMORY[0x1E69DB878] systemFontOfSize:a1];
+  v6 = [MEMORY[0x1E69DB878] systemFontOfSize:self];
   if (a4)
   {
 LABEL_3:
-    v7 = [v6 fu_fontWithCenteredColons];
+    fu_fontWithCenteredColons = [v6 fu_fontWithCenteredColons];
 
-    v6 = v7;
+    v6 = fu_fontWithCenteredColons;
   }
 
 LABEL_4:
@@ -163,11 +163,11 @@ LABEL_4:
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v5 = a3;
-  v6 = [a4 fontDescriptor];
+  fontDescriptor = [a4 fontDescriptor];
   v11 = *MEMORY[0x1E69DB8B0];
   v12[0] = v5;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v8 = [v6 fontDescriptorByAddingAttributes:v7];
+  v8 = [fontDescriptor fontDescriptorByAddingAttributes:v7];
 
   v9 = [MEMORY[0x1E69DB878] fontWithDescriptor:v8 size:0.0];
 
@@ -180,9 +180,9 @@ LABEL_4:
   v5 = v4;
   if (a3)
   {
-    v6 = [v4 fu_fontWithCenteredColons];
+    fu_fontWithCenteredColons = [v4 fu_fontWithCenteredColons];
 
-    v5 = v6;
+    v5 = fu_fontWithCenteredColons;
   }
 
   return v5;
@@ -190,13 +190,13 @@ LABEL_4:
 
 + (id)fu_mediumFontOfSize:()FUSausageFontSupport centeredColons:
 {
-  v5 = [MEMORY[0x1E69DB878] systemFontOfSize:a1 weight:*MEMORY[0x1E69DB970]];
+  v5 = [MEMORY[0x1E69DB878] systemFontOfSize:self weight:*MEMORY[0x1E69DB970]];
   v6 = v5;
   if (a4)
   {
-    v7 = [v5 fu_fontWithCenteredColons];
+    fu_fontWithCenteredColons = [v5 fu_fontWithCenteredColons];
 
-    v6 = v7;
+    v6 = fu_fontWithCenteredColons;
   }
 
   return v6;
@@ -222,11 +222,11 @@ LABEL_4:
 {
   v24[1] = *MEMORY[0x1E69E9840];
   v8 = a4;
-  v9 = a1;
-  v10 = v9;
+  selfCopy = self;
+  v10 = selfCopy;
   if (a2 > 2.22044605e-16)
   {
-    [v9 pointSize];
+    [selfCopy pointSize];
     v12 = v11 * 0.5;
     [v10 pointSize];
     if (v13 >= v12)

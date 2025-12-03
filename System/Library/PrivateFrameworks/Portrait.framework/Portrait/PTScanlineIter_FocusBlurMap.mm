@@ -1,5 +1,5 @@
 @interface PTScanlineIter_FocusBlurMap
-- (PTScanlineIter_FocusBlurMap)initWithMask:(id)a3;
+- (PTScanlineIter_FocusBlurMap)initWithMask:(id)mask;
 - (_NSRange)nextRangeX;
 - (_NSRange)nextRangeY;
 - (void)_advanceToNextTile;
@@ -10,16 +10,16 @@
 
 @implementation PTScanlineIter_FocusBlurMap
 
-- (PTScanlineIter_FocusBlurMap)initWithMask:(id)a3
+- (PTScanlineIter_FocusBlurMap)initWithMask:(id)mask
 {
-  v5 = a3;
+  maskCopy = mask;
   v9.receiver = self;
   v9.super_class = PTScanlineIter_FocusBlurMap;
   v6 = [(PTScanlineIter_FocusBlurMap *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mask, a3);
+    objc_storeStrong(&v6->_mask, mask);
     [(PTScanlineIter_FocusBlurMap *)v7 reset];
   }
 
@@ -90,8 +90,8 @@
 
 - (void)reset
 {
-  v3 = [(PTScanlineMask_FocusBlurMap *)self->_mask region];
-  self->_currentTileRow = [v3 firstIndex];
+  region = [(PTScanlineMask_FocusBlurMap *)self->_mask region];
+  self->_currentTileRow = [region firstIndex];
 
   self->_currentTile = self->_currentTileRow;
 }
@@ -111,8 +111,8 @@
 
     do
     {
-      v5 = [(PTScanlineMask_FocusBlurMap *)self->_mask region];
-      self->_currentTileRow = [v5 indexGreaterThanIndex:self->_currentTileRow];
+      region = [(PTScanlineMask_FocusBlurMap *)self->_mask region];
+      self->_currentTileRow = [region indexGreaterThanIndex:self->_currentTileRow];
 
       if (self->_currentTileRow == 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -144,8 +144,8 @@
 
     if (v4 == v6)
     {
-      v7 = [(PTScanlineMask_FocusBlurMap *)self->_mask region];
-      self->_currentTile = [v7 indexGreaterThanIndex:self->_currentTile];
+      region = [(PTScanlineMask_FocusBlurMap *)self->_mask region];
+      self->_currentTile = [region indexGreaterThanIndex:self->_currentTile];
     }
   }
 }

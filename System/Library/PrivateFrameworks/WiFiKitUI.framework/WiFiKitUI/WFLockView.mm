@@ -1,28 +1,28 @@
 @interface WFLockView
-- (WFLockView)initWithFrame:(CGRect)a3;
-- (WFLockView)initWithTitle:(id)a3 viewToCover:(id)a4;
+- (WFLockView)initWithFrame:(CGRect)frame;
+- (WFLockView)initWithTitle:(id)title viewToCover:(id)cover;
 - (void)didMoveToSuperview;
 @end
 
 @implementation WFLockView
 
-- (WFLockView)initWithFrame:(CGRect)a3
+- (WFLockView)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = WFLockView;
-  v3 = [(WFLockView *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(WFLockView *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(WFLockView *)v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(WFLockView *)v3 setBackgroundColor:systemBackgroundColor];
 
     v5 = objc_alloc_init(MEMORY[0x277D756B8]);
     titleLabel = v3->titleLabel;
     v3->titleLabel = v5;
 
     [(UILabel *)v3->titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v7 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v3->titleLabel setTextColor:v7];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v3->titleLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v3->titleLabel setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)v3->titleLabel setNumberOfLines:0];
@@ -38,8 +38,8 @@
     v3->lockImage = v11;
 
     [(UIImageView *)v3->lockImage setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UIImageView *)v3->lockImage setTintColor:v13];
+    secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UIImageView *)v3->lockImage setTintColor:secondaryLabelColor2];
 
     v14 = [MEMORY[0x277D755D0] configurationWithPointSize:4 weight:-1 scale:140.0];
     [(UIImageView *)v3->lockImage setPreferredSymbolConfiguration:v14];
@@ -51,12 +51,12 @@
   return v3;
 }
 
-- (WFLockView)initWithTitle:(id)a3 viewToCover:(id)a4
+- (WFLockView)initWithTitle:(id)title viewToCover:(id)cover
 {
-  v6 = a3;
-  [a4 bounds];
+  titleCopy = title;
+  [cover bounds];
   v7 = [(WFLockView *)self initWithFrame:?];
-  [(UILabel *)v7->titleLabel setText:v6];
+  [(UILabel *)v7->titleLabel setText:titleCopy];
 
   return v7;
 }
@@ -67,45 +67,45 @@
   v33.receiver = self;
   v33.super_class = WFLockView;
   [(WFLockView *)&v33 didMoveToSuperview];
-  v3 = [(WFLockView *)self superview];
+  superview = [(WFLockView *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(WFLockView *)self superview];
-    v5 = [v4 safeAreaLayoutGuide];
+    superview2 = [(WFLockView *)self superview];
+    safeAreaLayoutGuide = [superview2 safeAreaLayoutGuide];
 
     v23 = MEMORY[0x277CCAAD0];
-    v32 = [(UILabel *)self->titleLabel centerXAnchor];
-    v31 = [v5 centerXAnchor];
-    v30 = [v32 constraintEqualToAnchor:v31];
+    centerXAnchor = [(UILabel *)self->titleLabel centerXAnchor];
+    centerXAnchor2 = [safeAreaLayoutGuide centerXAnchor];
+    v30 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v34[0] = v30;
-    v29 = [(UILabel *)self->titleLabel topAnchor];
-    v28 = [v5 centerYAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    topAnchor = [(UILabel *)self->titleLabel topAnchor];
+    centerYAnchor = [safeAreaLayoutGuide centerYAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:centerYAnchor];
     v34[1] = v27;
-    v26 = [(UILabel *)self->titleLabel leadingAnchor];
-    v25 = [v5 leadingAnchor];
-    v24 = [v26 constraintEqualToAnchor:v25];
+    leadingAnchor = [(UILabel *)self->titleLabel leadingAnchor];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v24 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v34[2] = v24;
-    v22 = [(UILabel *)self->titleLabel trailingAnchor];
-    v21 = [v5 trailingAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    trailingAnchor = [(UILabel *)self->titleLabel trailingAnchor];
+    trailingAnchor2 = [safeAreaLayoutGuide trailingAnchor];
+    v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v34[3] = v20;
-    v19 = [(UILabel *)self->titleLabel bottomAnchor];
-    v18 = [v5 bottomAnchor];
-    v17 = [v19 constraintLessThanOrEqualToAnchor:v18];
+    bottomAnchor = [(UILabel *)self->titleLabel bottomAnchor];
+    bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+    v17 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v34[4] = v17;
-    v16 = [(UIImageView *)self->lockImage centerXAnchor];
-    v6 = [v5 centerXAnchor];
-    v7 = [v16 constraintEqualToAnchor:v6];
+    centerXAnchor3 = [(UIImageView *)self->lockImage centerXAnchor];
+    centerXAnchor4 = [safeAreaLayoutGuide centerXAnchor];
+    v7 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v34[5] = v7;
-    v8 = [(UIImageView *)self->lockImage topAnchor];
-    v9 = [v5 topAnchor];
-    v10 = [v8 constraintGreaterThanOrEqualToAnchor:v9];
+    topAnchor2 = [(UIImageView *)self->lockImage topAnchor];
+    topAnchor3 = [safeAreaLayoutGuide topAnchor];
+    v10 = [topAnchor2 constraintGreaterThanOrEqualToAnchor:topAnchor3];
     v34[6] = v10;
-    v11 = [(UIImageView *)self->lockImage bottomAnchor];
-    v12 = [v5 centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    bottomAnchor3 = [(UIImageView *)self->lockImage bottomAnchor];
+    centerYAnchor2 = [safeAreaLayoutGuide centerYAnchor];
+    v13 = [bottomAnchor3 constraintEqualToAnchor:centerYAnchor2];
     v34[7] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:8];
     [v23 activateConstraints:v14];

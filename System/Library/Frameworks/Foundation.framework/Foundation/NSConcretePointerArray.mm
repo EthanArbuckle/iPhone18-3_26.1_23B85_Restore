@@ -1,24 +1,24 @@
 @interface NSConcretePointerArray
-- (BOOL)isEqual:(id)a3;
-- (NSConcretePointerArray)initWithCoder:(id)a3;
-- (NSConcretePointerArray)initWithOptions:(unint64_t)a3;
-- (NSConcretePointerArray)initWithPointerFunctions:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NSConcretePointerArray)initWithCoder:(id)coder;
+- (NSConcretePointerArray)initWithOptions:(unint64_t)options;
+- (NSConcretePointerArray)initWithPointerFunctions:(id)functions;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)pointerFunctions;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (unint64_t)hash;
-- (unint64_t)indexOfPointer:(void *)a3;
-- (void)addPointer:(void *)a3;
-- (void)arrayGrow:(unint64_t)a3;
+- (unint64_t)indexOfPointer:(void *)pointer;
+- (void)addPointer:(void *)pointer;
+- (void)arrayGrow:(unint64_t)grow;
 - (void)compact;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)insertPointer:(void *)a3 atIndex:(unint64_t)a4;
-- (void)pointerAtIndex:(unint64_t)a3;
-- (void)removePointer:(void *)a3;
-- (void)removePointerAtIndex:(unint64_t)a3;
-- (void)replacePointerAtIndex:(unint64_t)a3 withPointer:(void *)a4;
-- (void)setCount:(unint64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)insertPointer:(void *)pointer atIndex:(unint64_t)index;
+- (void)pointerAtIndex:(unint64_t)index;
+- (void)removePointer:(void *)pointer;
+- (void)removePointerAtIndex:(unint64_t)index;
+- (void)replacePointerAtIndex:(unint64_t)index withPointer:(void *)pointer;
+- (void)setCount:(unint64_t)count;
 @end
 
 @implementation NSConcretePointerArray
@@ -141,9 +141,9 @@ LABEL_8:
   }
 }
 
-- (NSConcretePointerArray)initWithOptions:(unint64_t)a3
+- (NSConcretePointerArray)initWithOptions:(unint64_t)options
 {
-  self->options = a3;
+  self->options = options;
   self->capacity = 4;
   self->count = 0;
   self->mutations = 0;
@@ -159,16 +159,16 @@ LABEL_8:
   return self;
 }
 
-- (NSConcretePointerArray)initWithPointerFunctions:(id)a3
+- (NSConcretePointerArray)initWithPointerFunctions:(id)functions
 {
-  if (!a3)
+  if (!functions)
   {
     v5 = [NSString stringWithFormat:@"*** [NSPointerArray %@] Functions cannot be NULL.", NSStringFromSelector(a2)];
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:v5 userInfo:0]);
   }
 
-  NSSliceInitWithSlice(&self->slice.items, a3 + 1);
+  NSSliceInitWithSlice(&self->slice.items, functions + 1);
   self->hasDynamicSlice = 1;
   self->capacity = 16;
   self->count = 0;
@@ -179,24 +179,24 @@ LABEL_8:
   return self;
 }
 
-- (NSConcretePointerArray)initWithCoder:(id)a3
+- (NSConcretePointerArray)initWithCoder:(id)coder
 {
   v12 = *MEMORY[0x1E69E9840];
   v11 = 0;
-  [a3 decodeValueOfObjCType:"i" at:&v11 size:4];
+  [coder decodeValueOfObjCType:"i" at:&v11 size:4];
   if ((_NSPointerFunctionCoding_isValidOptions(v11) & 1) == 0)
   {
 
-    [a3 failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Invalid NSPointerArray options for %d", v11)}];
+    [coder failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"Invalid NSPointerArray options for %d", v11)}];
     return 0;
   }
 
   v10 = 0;
-  [a3 decodeValueOfObjCType:"i" at:&v10 size:4];
+  [coder decodeValueOfObjCType:"i" at:&v10 size:4];
   if (v10 < 0)
   {
 
-    [a3 failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"NSPointerArray archive contains negative count"}];
+    [coder failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", @"NSPointerArray archive contains negative count"}];
     return 0;
   }
 
@@ -206,9 +206,9 @@ LABEL_8:
     if (v10 >= 1)
     {
       v6 = 0;
-      while (([a3 _containsNextUnkeyedObject] & 1) != 0)
+      while (([coder _containsNextUnkeyedObject] & 1) != 0)
       {
-        -[NSConcretePointerArray addPointer:](v5, "addPointer:", [a3 decodeObject]);
+        -[NSConcretePointerArray addPointer:](v5, "addPointer:", [coder decodeObject]);
         if (++v6 >= v10)
         {
           return v5;
@@ -217,7 +217,7 @@ LABEL_8:
 
       v8 = [NSError _readCorruptErrorWithFormat:@"Missing expected key while decoding NSPointerArray"];
 
-      [a3 failWithError:v8];
+      [coder failWithError:v8];
       return 0;
     }
   }
@@ -226,7 +226,7 @@ LABEL_8:
   {
     for (i = 0; i < v10; ++i)
     {
-      -[NSConcretePointerArray addPointer:](v5, "addPointer:", [a3 decodeObject]);
+      -[NSConcretePointerArray addPointer:](v5, "addPointer:", [coder decodeObject]);
     }
   }
 
@@ -243,14 +243,14 @@ LABEL_8:
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
@@ -261,15 +261,15 @@ LABEL_8:
     return 0;
   }
 
-  v6 = *(a3 + 5);
+  v6 = *(equal + 5);
   if (v6 != self->count)
   {
     return 0;
   }
 
   personalityProps = self->slice.personalityProps;
-  v8 = a3 + 8;
-  v9 = *(a3 + 3);
+  v8 = equal + 8;
+  v9 = *(equal + 3);
   if (*(personalityProps + 3) != *(v9 + 24) || *(personalityProps + 1) != *(v9 + 8))
   {
     return 0;
@@ -279,7 +279,7 @@ LABEL_8:
   {
     v11 = 0;
     v12 = 0;
-    p_internalProps = (a3 + 32);
+    p_internalProps = (equal + 32);
     while (1)
     {
       v14 = (*(self->slice.internalProps + 3))(&self->slice.items[v11], 0);
@@ -335,7 +335,7 @@ LABEL_26:
   return 1;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v26 = *MEMORY[0x1E69E9840];
   if (encodeWithCoder__onceToken != -1)
@@ -420,8 +420,8 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  [a3 encodeValueOfObjCType:"i" at:&self->options];
-  [a3 encodeValueOfObjCType:"i" at:&v20];
+  [coder encodeValueOfObjCType:"i" at:&self->options];
+  [coder encodeValueOfObjCType:"i" at:&v20];
   if (v20)
   {
     for (j = 0; j < v20; ++j)
@@ -429,17 +429,17 @@ LABEL_26:
       v16 = v8[j];
       if ((options & 7) == 5)
       {
-        [a3 encodeConditionalObject:v16];
+        [coder encodeConditionalObject:v16];
       }
 
       else
       {
-        [a3 encodeObject:v16];
+        [coder encodeObject:v16];
       }
     }
   }
 
-  [a3 encodeObject:0];
+  [coder encodeObject:0];
   free(v8);
 }
 
@@ -453,27 +453,27 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
   }
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
-  if (a3->var0)
+  if (state->var0)
   {
-    (*(self->slice.internalProps + 4))(a3->var3[0], a2);
-    var0 = a3->var0;
+    (*(self->slice.internalProps + 4))(state->var3[0], a2);
+    var0 = state->var0;
   }
 
   else
   {
-    a3->var2 = &self->mutations;
+    state->var2 = &self->mutations;
     if ((*(self->slice.internalProps + 1) & 1) == 0)
     {
-      a3->var1 = self->slice.items;
+      state->var1 = self->slice.items;
       result = self->count;
-      a3->var0 = result;
+      state->var0 = result;
       return result;
     }
 
     var0 = 0;
-    a3->var1 = a3->var3;
+    state->var1 = state->var3;
   }
 
   if (var0 >= self->count)
@@ -482,16 +482,16 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
   }
 
   v8 = (*(self->slice.internalProps + 3))(&self->slice.items[var0], 0);
-  ++a3->var0;
-  a3->var3[0] = v8;
+  ++state->var0;
+  state->var3[0] = v8;
   return 1;
 }
 
-- (void)arrayGrow:(unint64_t)a3
+- (void)arrayGrow:(unint64_t)grow
 {
   p_slice = &self->slice;
   items = self->slice.items;
-  v7 = (*(self->slice.internalProps + 1))(a3, a2);
+  v7 = (*(self->slice.internalProps + 1))(grow, a2);
   p_slice->items = v7;
   if (!v7)
   {
@@ -529,35 +529,35 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
   }
 
   (*(p_slice->internalProps + 2))(items, capacity);
-  self->capacity = a3;
+  self->capacity = grow;
 }
 
-- (void)pointerAtIndex:(unint64_t)a3
+- (void)pointerAtIndex:(unint64_t)index
 {
   count = self->count;
-  if (count <= a3)
+  if (count <= index)
   {
     if (_CFExecutableLinkedOnOrAfter())
     {
-      v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: attempt to access pointer at index %lu beyond bounds %lu", _NSMethodExceptionProem(self, a2), a3, self->count), 0}];
+      v10 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: attempt to access pointer at index %lu beyond bounds %lu", _NSMethodExceptionProem(self, a2), index, self->count), 0}];
       objc_exception_throw(v10);
     }
 
     count = self->count;
   }
 
-  if (count <= a3)
+  if (count <= index)
   {
     return 0;
   }
 
   p_slice = &self->slice;
-  v8 = (*(p_slice->internalProps + 3))(&p_slice->items[a3], 0);
+  v8 = (*(p_slice->internalProps + 3))(&p_slice->items[index], 0);
   (*(p_slice->internalProps + 5))();
   return v8;
 }
 
-- (void)addPointer:(void *)a3
+- (void)addPointer:(void *)pointer
 {
   count = self->count;
   if (count == self->capacity)
@@ -565,18 +565,18 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
     [(NSConcretePointerArray *)self arrayGrow:2 * count];
   }
 
-  if (a3)
+  if (pointer)
   {
     acquisitionProps = self->slice.acquisitionProps;
     v7 = *(acquisitionProps + 1);
     if (v7)
     {
-      a3 = v7(a3, *(self->slice.personalityProps + 1), *(acquisitionProps + 4));
+      pointer = v7(pointer, *(self->slice.personalityProps + 1), *(acquisitionProps + 4));
     }
   }
 
-  (*(self->slice.internalProps + 7))(self->slice.items, self->count, a3);
-  if (!a3)
+  (*(self->slice.internalProps + 7))(self->slice.items, self->count, pointer);
+  if (!pointer)
   {
     self->needsCompaction = 1;
   }
@@ -585,17 +585,17 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
   ++self->mutations;
 }
 
-- (void)removePointerAtIndex:(unint64_t)a3
+- (void)removePointerAtIndex:(unint64_t)index
 {
-  v3 = a3;
-  if (self->count <= a3)
+  indexCopy = index;
+  if (self->count <= index)
   {
-    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: attempt to remove pointer at index %lu beyond bounds %lu", _NSMethodExceptionProem(self, a2), a3, self->count), 0}];
+    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: attempt to remove pointer at index %lu beyond bounds %lu", _NSMethodExceptionProem(self, a2), index, self->count), 0}];
     objc_exception_throw(v13);
   }
 
   p_slice = &self->slice;
-  v6 = (*(self->slice.internalProps + 3))(&self->slice.items[a3], 0);
+  v6 = (*(self->slice.internalProps + 3))(&self->slice.items[index], 0);
   if (v6)
   {
     v7 = v6;
@@ -605,23 +605,23 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
       v8(v6, *(self->slice.personalityProps + 1));
     }
 
-    (*(self->slice.internalProps + 6))(&p_slice->items[v3]);
+    (*(self->slice.internalProps + 6))(&p_slice->items[indexCopy]);
     (*(self->slice.internalProps + 4))(v7);
   }
 
   count = self->count;
-  if (v3 + 1 < count)
+  if (indexCopy + 1 < count)
   {
-    v10 = 8 * v3 + 8;
+    v10 = 8 * indexCopy + 8;
     do
     {
       v11 = (*(self->slice.internalProps + 3))(p_slice->items + v10, 0);
-      (*(self->slice.internalProps + 7))(p_slice->items, v3, v11);
+      (*(self->slice.internalProps + 7))(p_slice->items, indexCopy, v11);
       (*(self->slice.internalProps + 4))(v11);
       (*(self->slice.internalProps + 6))(p_slice->items + v10);
       count = self->count;
-      v12 = v3 + 2;
-      ++v3;
+      v12 = indexCopy + 2;
+      ++indexCopy;
       v10 += 8;
     }
 
@@ -632,12 +632,12 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
   ++self->mutations;
 }
 
-- (void)insertPointer:(void *)a3 atIndex:(unint64_t)a4
+- (void)insertPointer:(void *)pointer atIndex:(unint64_t)index
 {
   count = self->count;
-  if (count < a4)
+  if (count < index)
   {
-    v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: attempt to insert pointer at index %lu beyond bounds %lu", _NSMethodExceptionProem(self, a2), a4, self->count), 0}];
+    v12 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: attempt to insert pointer at index %lu beyond bounds %lu", _NSMethodExceptionProem(self, a2), index, self->count), 0}];
     objc_exception_throw(v12);
   }
 
@@ -647,7 +647,7 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
     count = self->count;
   }
 
-  if (count > a4)
+  if (count > index)
   {
     v8 = 8 * count - 8;
     do
@@ -660,21 +660,21 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
       v8 -= 8;
     }
 
-    while (count > a4);
+    while (count > index);
   }
 
-  if (a3)
+  if (pointer)
   {
     acquisitionProps = self->slice.acquisitionProps;
     v11 = *(acquisitionProps + 1);
     if (v11)
     {
-      a3 = v11(a3, *(self->slice.personalityProps + 1), *(acquisitionProps + 4));
+      pointer = v11(pointer, *(self->slice.personalityProps + 1), *(acquisitionProps + 4));
     }
   }
 
-  (*(self->slice.internalProps + 7))(self->slice.items, a4, a3);
-  if (!a3)
+  (*(self->slice.internalProps + 7))(self->slice.items, index, pointer);
+  if (!pointer)
   {
     self->needsCompaction = 1;
   }
@@ -683,16 +683,16 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
   ++self->mutations;
 }
 
-- (void)replacePointerAtIndex:(unint64_t)a3 withPointer:(void *)a4
+- (void)replacePointerAtIndex:(unint64_t)index withPointer:(void *)pointer
 {
-  if (self->count <= a3)
+  if (self->count <= index)
   {
-    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: attempt to replace pointer at index %lu beyond bounds %lu", _NSMethodExceptionProem(self, a2), a3, self->count), 0}];
+    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: attempt to replace pointer at index %lu beyond bounds %lu", _NSMethodExceptionProem(self, a2), index, self->count), 0}];
     objc_exception_throw(v13);
   }
 
   p_slice = &self->slice;
-  v8 = (*(self->slice.internalProps + 3))(&self->slice.items[a3], 0);
+  v8 = (*(self->slice.internalProps + 3))(&self->slice.items[index], 0);
   if (v8)
   {
     v9 = v8;
@@ -702,22 +702,22 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
       v10(v8, *(self->slice.personalityProps + 1));
     }
 
-    (*(self->slice.internalProps + 6))(&p_slice->items[a3]);
+    (*(self->slice.internalProps + 6))(&p_slice->items[index]);
     (*(self->slice.internalProps + 4))(v9);
   }
 
-  if (a4)
+  if (pointer)
   {
     acquisitionProps = self->slice.acquisitionProps;
     v12 = *(acquisitionProps + 1);
     if (v12)
     {
-      a4 = v12(a4, *(self->slice.personalityProps + 1), *(acquisitionProps + 4));
+      pointer = v12(pointer, *(self->slice.personalityProps + 1), *(acquisitionProps + 4));
     }
   }
 
-  (*(self->slice.internalProps + 7))(p_slice->items, a3, a4);
-  if (!a4)
+  (*(self->slice.internalProps + 7))(p_slice->items, index, pointer);
+  if (!pointer)
   {
     self->needsCompaction = 1;
   }
@@ -725,15 +725,15 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
   ++self->mutations;
 }
 
-- (void)setCount:(unint64_t)a3
+- (void)setCount:(unint64_t)count
 {
-  if (self->count != a3)
+  if (self->count != count)
   {
     ++self->mutations;
     count = self->count;
-    if (count >= a3)
+    if (count >= count)
     {
-      if (count > a3)
+      if (count > count)
       {
         p_slice = &self->slice;
         do
@@ -763,25 +763,25 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
           count = self->count;
         }
 
-        while (count > a3);
+        while (count > count);
       }
     }
 
     else
     {
-      if (self->capacity < a3)
+      if (self->capacity < count)
       {
-        [(NSConcretePointerArray *)self arrayGrow:a3];
+        [(NSConcretePointerArray *)self arrayGrow:count];
       }
 
-      self->count = a3;
+      self->count = count;
     }
   }
 }
 
-- (unint64_t)indexOfPointer:(void *)a3
+- (unint64_t)indexOfPointer:(void *)pointer
 {
-  if (!a3)
+  if (!pointer)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -795,7 +795,7 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
       if (v6)
       {
         v7 = v6;
-        v8 = (*(self->slice.personalityProps + 3))(v6, a3, *(self->slice.personalityProps + 1));
+        v8 = (*(self->slice.personalityProps + 3))(v6, pointer, *(self->slice.personalityProps + 1));
         (*(self->slice.internalProps + 4))(v7);
         if (v8)
         {
@@ -815,9 +815,9 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)removePointer:(void *)a3
+- (void)removePointer:(void *)pointer
 {
-  if (a3 && self->count)
+  if (pointer && self->count)
   {
     p_slice = &self->slice;
     while (1)
@@ -826,7 +826,7 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
       if (v6)
       {
         v7 = v6;
-        if ((*(self->slice.personalityProps + 3))(v6, a3, *(self->slice.personalityProps + 1)))
+        if ((*(self->slice.personalityProps + 3))(v6, pointer, *(self->slice.personalityProps + 1)))
         {
           break;
         }
@@ -851,7 +851,7 @@ void __42__NSConcretePointerArray_encodeWithCoder___block_invoke()
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NSPointerArray allocWithZone:?], "initWithPointerFunctions:", [(NSConcretePointerArray *)self pointerFunctions]];
   count = self->count;

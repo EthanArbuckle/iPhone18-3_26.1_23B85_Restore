@@ -1,5 +1,5 @@
 @interface FCNewsTabiRecipeEventAggregationConditions
-- (FCNewsTabiRecipeEventAggregationConditions)initWithDictionary:(id)a3;
+- (FCNewsTabiRecipeEventAggregationConditions)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,42 +8,42 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [self->_cookModeViewed indentedDescription];
-  [v3 appendFormat:@"\n\tcookModeViewed: %@", v4];
+  indentedDescription = [self->_cookModeViewed indentedDescription];
+  [v3 appendFormat:@"\n\tcookModeViewed: %@", indentedDescription];
 
-  v5 = [self->_recipeSaved indentedDescription];
-  [v3 appendFormat:@"\n\trecipeSaved: %@", v5];
+  indentedDescription2 = [self->_recipeSaved indentedDescription];
+  [v3 appendFormat:@"\n\trecipeSaved: %@", indentedDescription2];
 
-  v6 = [self->_recipeViewed indentedDescription];
-  [v3 appendFormat:@"\n\trecipeViewed: %@", v6];
+  indentedDescription3 = [self->_recipeViewed indentedDescription];
+  [v3 appendFormat:@"\n\trecipeViewed: %@", indentedDescription3];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiRecipeEventAggregationConditions)initWithDictionary:(id)a3
+- (FCNewsTabiRecipeEventAggregationConditions)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = FCNewsTabiRecipeEventAggregationConditions;
   v5 = [(FCNewsTabiRecipeEventAggregationConditions *)&v19 init];
   if (v5)
   {
     v6 = [FCNewsTabiEventAggregationDurationEventConditions alloc];
-    v7 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"cookModeViewedConditions", 0);
+    v7 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"cookModeViewedConditions", 0);
     v8 = [(FCNewsTabiEventAggregationDurationEventConditions *)v6 initWithDictionary:v7];
     cookModeViewed = v5->_cookModeViewed;
     v5->_cookModeViewed = v8;
 
     v10 = [FCNewsTabiEventAggregationBaseEventConditions alloc];
-    v11 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"recipeSavedConditions", 0);
+    v11 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"recipeSavedConditions", 0);
     v12 = [(FCNewsTabiEventAggregationBaseEventConditions *)v10 initWithDictionary:v11];
     recipeSaved = v5->_recipeSaved;
     v5->_recipeSaved = v12;
 
     v14 = [FCNewsTabiEventAggregationDurationEventConditions alloc];
-    v15 = FCAppConfigurationDictionaryValueWithDefaultValue(v4, @"recipeViewedConditions", 0);
+    v15 = FCAppConfigurationDictionaryValueWithDefaultValue(dictionaryCopy, @"recipeViewedConditions", 0);
     v16 = [(FCNewsTabiEventAggregationDurationEventConditions *)v14 initWithDictionary:v15];
     recipeViewed = v5->_recipeViewed;
     v5->_recipeViewed = v16;

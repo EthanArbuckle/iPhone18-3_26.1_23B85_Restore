@@ -1,38 +1,38 @@
 @interface VOSCommandManager
-- (id)eventForKeyChord:(id)a3;
-- (id)eventForKeyChord:(id)a3 resolver:(id)a4 info:(id)a5;
-- (id)eventForTouchGesture:(id)a3 resolver:(id)a4 info:(id)a5;
+- (id)eventForKeyChord:(id)chord;
+- (id)eventForKeyChord:(id)chord resolver:(id)resolver info:(id)info;
+- (id)eventForTouchGesture:(id)gesture resolver:(id)resolver info:(id)info;
 @end
 
 @implementation VOSCommandManager
 
-- (id)eventForTouchGesture:(id)a3 resolver:(id)a4 info:(id)a5
+- (id)eventForTouchGesture:(id)gesture resolver:(id)resolver info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VOSCommandManager *)self commandForTouchGesture:v8 withResolver:v9];
-  v12 = [v11 votEventCommandName];
-  if (v12)
+  gestureCopy = gesture;
+  resolverCopy = resolver;
+  infoCopy = info;
+  v11 = [(VOSCommandManager *)self commandForTouchGesture:gestureCopy withResolver:resolverCopy];
+  votEventCommandName = [v11 votEventCommandName];
+  if (votEventCommandName)
   {
     if ([v11 commandType] == 1)
     {
-      v13 = [v11 siriShortcut];
+      siriShortcut = [v11 siriShortcut];
 
-      if (v13)
+      if (siriShortcut)
       {
-        if (!v10)
+        if (!infoCopy)
         {
-          v10 = objc_alloc_init(AXIndexMap);
+          infoCopy = objc_alloc_init(AXIndexMap);
         }
 
-        v14 = [v11 siriShortcut];
-        [v10 setObject:v14 forIndex:117];
+        siriShortcut2 = [v11 siriShortcut];
+        [infoCopy setObject:siriShortcut2 forIndex:117];
       }
     }
 
-    v15 = [VOTEvent touchEventWithCommand:v12 info:v10];
-    v16 = [VOTEventUserCommandContext contextWithCommand:v11 gesture:v8 keyChord:0 resolver:v9];
+    v15 = [VOTEvent touchEventWithCommand:votEventCommandName info:infoCopy];
+    v16 = [VOTEventUserCommandContext contextWithCommand:v11 gesture:gestureCopy keyChord:0 resolver:resolverCopy];
     [v15 setUserCommandContext:v16];
   }
 
@@ -47,43 +47,43 @@
     v19 = 138412802;
     v20 = v15;
     v21 = 2112;
-    v22 = v8;
+    v22 = gestureCopy;
     v23 = 2112;
-    v24 = v9;
+    v24 = resolverCopy;
     _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "resolved event '%@' for gesture '%@' with resolver '%@'", &v19, 0x20u);
   }
 
   return v15;
 }
 
-- (id)eventForKeyChord:(id)a3 resolver:(id)a4 info:(id)a5
+- (id)eventForKeyChord:(id)chord resolver:(id)resolver info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(VOSCommandManager *)self commandForKeyChord:v8 withResolver:v9];
-  v12 = [v11 votEventCommandName];
-  if (v12)
+  chordCopy = chord;
+  resolverCopy = resolver;
+  infoCopy = info;
+  v11 = [(VOSCommandManager *)self commandForKeyChord:chordCopy withResolver:resolverCopy];
+  votEventCommandName = [v11 votEventCommandName];
+  if (votEventCommandName)
   {
     if ([v11 commandType] == 1)
     {
-      v13 = [v11 siriShortcut];
+      siriShortcut = [v11 siriShortcut];
 
-      if (v13)
+      if (siriShortcut)
       {
-        v13 = objc_alloc_init(AXIndexMap);
-        v14 = [v11 siriShortcut];
-        [v13 setObject:v14 forIndex:117];
+        siriShortcut = objc_alloc_init(AXIndexMap);
+        siriShortcut2 = [v11 siriShortcut];
+        [siriShortcut setObject:siriShortcut2 forIndex:117];
       }
     }
 
     else
     {
-      v13 = 0;
+      siriShortcut = 0;
     }
 
-    v15 = [VOTEvent keyEventWithCommand:v12 keyInfo:v10 otherInfo:v13];
-    v16 = [VOTEventUserCommandContext contextWithCommand:v11 gesture:0 keyChord:v8 resolver:v9];
+    v15 = [VOTEvent keyEventWithCommand:votEventCommandName keyInfo:infoCopy otherInfo:siriShortcut];
+    v16 = [VOTEventUserCommandContext contextWithCommand:v11 gesture:0 keyChord:chordCopy resolver:resolverCopy];
     [v15 setUserCommandContext:v16];
   }
 
@@ -95,11 +95,11 @@
   return v15;
 }
 
-- (id)eventForKeyChord:(id)a3
+- (id)eventForKeyChord:(id)chord
 {
-  v4 = a3;
+  chordCopy = chord;
   v5 = +[VOSCommandResolver resolverForCurrentHost];
-  v6 = [(VOSCommandManager *)self eventForKeyChord:v4 resolver:v5 info:0];
+  v6 = [(VOSCommandManager *)self eventForKeyChord:chordCopy resolver:v5 info:0];
 
   return v6;
 }

@@ -1,49 +1,49 @@
 @interface RAPProblemNotListedQuestion
 - (NSString)localizedDescription;
-- (RAPProblemNotListedQuestion)initWithReport:(id)a3 parentQuestion:(id)a4;
-- (RAPProblemNotListedQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 localizedTitle:(id)a5;
+- (RAPProblemNotListedQuestion)initWithReport:(id)report parentQuestion:(id)question;
+- (RAPProblemNotListedQuestion)initWithReport:(id)report parentQuestion:(id)question localizedTitle:(id)title;
 - (UIImage)image;
-- (void)_fillSubmissionParameters:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
 @end
 
 @implementation RAPProblemNotListedQuestion
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v4 = a3;
-  [v4 setFeedbackType];
+  parametersCopy = parameters;
+  [parametersCopy setFeedbackType];
   v5.receiver = self;
   v5.super_class = RAPProblemNotListedQuestion;
-  [(RAPCommentQuestion *)&v5 _fillSubmissionParameters:v4];
+  [(RAPCommentQuestion *)&v5 _fillSubmissionParameters:parametersCopy];
 }
 
-- (RAPProblemNotListedQuestion)initWithReport:(id)a3 parentQuestion:(id)a4
+- (RAPProblemNotListedQuestion)initWithReport:(id)report parentQuestion:(id)question
 {
-  v6 = a4;
-  v7 = a3;
+  questionCopy = question;
+  reportCopy = report;
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"Other Issue [Report an Issue category]" value:@"localized string not found" table:0];
-  v10 = [(RAPProblemNotListedQuestion *)self initWithReport:v7 parentQuestion:v6 localizedTitle:v9];
+  v10 = [(RAPProblemNotListedQuestion *)self initWithReport:reportCopy parentQuestion:questionCopy localizedTitle:v9];
 
   return v10;
 }
 
-- (RAPProblemNotListedQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 localizedTitle:(id)a5
+- (RAPProblemNotListedQuestion)initWithReport:(id)report parentQuestion:(id)question localizedTitle:(id)title
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  titleCopy = title;
+  questionCopy = question;
+  reportCopy = report;
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"Information [Report a Problem]" value:@"localized string not found" table:0];
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"Describe the issue [Report an Issue]" value:@"localized string not found" table:0];
   v18.receiver = self;
   v18.super_class = RAPProblemNotListedQuestion;
-  v16 = [(RAPCommentQuestion *)&v18 initWithReport:v11 parentQuestion:v10 title:v13 placeholderText:v15 emphasis:2];
+  v16 = [(RAPCommentQuestion *)&v18 initWithReport:reportCopy parentQuestion:questionCopy title:v13 placeholderText:v15 emphasis:2];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_localizedTitle, a5);
+    objc_storeStrong(&v16->_localizedTitle, title);
   }
 
   return v16;

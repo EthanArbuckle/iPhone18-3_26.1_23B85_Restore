@@ -1,10 +1,10 @@
 @interface VKCVisualSearchResultItemView
-- (BOOL)containsVisualSearchItemAtPoint:(CGPoint)a3;
+- (BOOL)containsVisualSearchItemAtPoint:(CGPoint)point;
 - (CATransform3D)_pinEndTransform;
-- (CGPoint)_offsetForPinBubbleFrameWithDirection:(int64_t)a3 pinBubbleBounds:(CGRect)a4;
+- (CGPoint)_offsetForPinBubbleFrameWithDirection:(int64_t)direction pinBubbleBounds:(CGRect)bounds;
 - (CGPoint)pointForVisualSearchIcon;
 - (CGRect)_pinButtonRect;
-- (CGRect)_rectForViewSpace:(CGRect)a3;
+- (CGRect)_rectForViewSpace:(CGRect)space;
 - (CGRect)boundsFromVisualSearchResult;
 - (CGRect)currentImageRectForLayerContents;
 - (CGRect)rectForIndicatorDot;
@@ -13,36 +13,36 @@
 - (NSString)description;
 - (UIImage)imageForButton;
 - (UIImage)tintedImageForButton;
-- (VKCVisualSearchResultItemView)initWithVisualSearchResultItem:(id)a3;
+- (VKCVisualSearchResultItemView)initWithVisualSearchResultItem:(id)item;
 - (VKCVisualSearchResultItemViewDelegate)delegate;
 - (double)_screenZoomScale;
 - (double)contentSizeScaleFactor;
 - (id)_queryForProcessingResult;
 - (id)_queryString;
 - (id)_symbolNameForItem;
-- (id)circlePathForPinBubbleWithDirection:(int64_t)a3 withRadius:(double)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (id)trianglePathForPinBubbleWithDirection:(int64_t)a3 withRadius:(double)a4;
+- (id)circlePathForPinBubbleWithDirection:(int64_t)direction withRadius:(double)radius;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (id)trianglePathForPinBubbleWithDirection:(int64_t)direction withRadius:(double)radius;
 - (int64_t)_pinArrowDirection;
 - (int64_t)interfaceOrientation;
-- (void)_animatePin:(BOOL)a3;
-- (void)_didDismissVisualResultsPane:(id)a3;
+- (void)_animatePin:(BOOL)pin;
+- (void)_didDismissVisualResultsPane:(id)pane;
 - (void)_updateLayout;
-- (void)animateToVisualResultsPane:(BOOL)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)beginAnimatingDotAfterDelay:(double)a3;
+- (void)animateToVisualResultsPane:(BOOL)pane;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)beginAnimatingDotAfterDelay:(double)delay;
 - (void)dealloc;
-- (void)deviceOrientationDidChange:(id)a3;
+- (void)deviceOrientationDidChange:(id)change;
 - (void)didDismissVisualResultsPane;
 - (void)didFinishAnimatingDots;
-- (void)didTap:(id)a3;
+- (void)didTap:(id)tap;
 - (void)hideDots;
 - (void)layoutSubviews;
 - (void)removePulsing;
-- (void)setImageContentsInLayer:(id)a3 withMaterialLayer:(id)a4 withRect:(CGRect)a5;
-- (void)setImageContentsInLayer:(id)a3 withRect:(CGRect)a4;
-- (void)setInterfaceOrientation:(int64_t)a3;
+- (void)setImageContentsInLayer:(id)layer withMaterialLayer:(id)materialLayer withRect:(CGRect)rect;
+- (void)setImageContentsInLayer:(id)layer withRect:(CGRect)rect;
+- (void)setInterfaceOrientation:(int64_t)orientation;
 - (void)showLookupUIPaneForResultItem;
 - (void)showPinForTappedDot;
 - (void)showVisualResultsPane;
@@ -57,13 +57,13 @@
 {
   if (!self->_observingInteractionDidFinish)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v4 = getkDDRVInteractionDidFinishNotification_0();
-    [v3 removeObserver:self name:v4 object:0];
+    [defaultCenter removeObserver:self name:v4 object:0];
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x1E69DDCB8] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DDCB8] object:0];
 
   v6.receiver = self;
   v6.super_class = VKCVisualSearchResultItemView;
@@ -74,26 +74,26 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
-  v6 = [v5 queryID];
-  v7 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
-  v8 = [v7 analysis];
-  v9 = [v3 stringWithFormat:@"<%@: %p> queryID: %llu analysisID: %d", v4, self, v6, objc_msgSend(v8, "analysisRequestID")];
+  visualSearchResultItem = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
+  queryID = [visualSearchResultItem queryID];
+  visualSearchResultItem2 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
+  analysis = [visualSearchResultItem2 analysis];
+  v9 = [v3 stringWithFormat:@"<%@: %p> queryID: %llu analysisID: %d", v4, self, queryID, objc_msgSend(analysis, "analysisRequestID")];
 
   return v9;
 }
 
-- (VKCVisualSearchResultItemView)initWithVisualSearchResultItem:(id)a3
+- (VKCVisualSearchResultItemView)initWithVisualSearchResultItem:(id)item
 {
   v32[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemCopy = item;
   v31.receiver = self;
   v31.super_class = VKCVisualSearchResultItemView;
   v6 = [(VKCVisualSearchResultItemView *)&v31 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_visualSearchResultItem, a3);
+    objc_storeStrong(&v6->_visualSearchResultItem, item);
     v8 = objc_alloc_init(VKCLookupButton);
     lookupButton = v7->_lookupButton;
     v7->_lookupButton = v8;
@@ -101,13 +101,13 @@
     [(VKCVisualSearchResultItemView *)v7 lookupButtonSize];
     [(VKCLookupButton *)v7->_lookupButton setFrame:0.0, 0.0, v10, v10];
     [(VKCVisualSearchResultItemView *)v7 addSubview:v7->_lookupButton];
-    v11 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     iconInLookupButtonLayer = v7->_iconInLookupButtonLayer;
-    v7->_iconInLookupButtonLayer = v11;
+    v7->_iconInLookupButtonLayer = layer;
 
-    v13 = [MEMORY[0x1E6979398] layer];
+    layer2 = [MEMORY[0x1E6979398] layer];
     pulsingLayer = v7->_pulsingLayer;
-    v7->_pulsingLayer = v13;
+    v7->_pulsingLayer = layer2;
 
     [(VKCLookupButton *)v7->_lookupButton setAccessibilityIdentifier:@"com.apple.visionkit.visualSearchIndicator"];
     [(VKCVisualSearchResultItemView *)v7 setPulsing:1];
@@ -129,19 +129,19 @@
     block[1] = 3221225472;
     block[2] = __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_invoke;
     block[3] = &unk_1E7BE7438;
-    v27 = v5;
+    v27 = itemCopy;
     v21 = v7;
     v28 = v21;
     objc_copyWeak(&v29, &location);
     dispatch_async(v20, block);
 
     v21->_interfaceOrientation = 0;
-    v22 = [MEMORY[0x1E69DC938] currentDevice];
-    [v22 beginGeneratingDeviceOrientationNotifications];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    [currentDevice beginGeneratingDeviceOrientationNotifications];
 
-    v23 = [MEMORY[0x1E696AD88] defaultCenter];
-    v24 = [MEMORY[0x1E69DC938] currentDevice];
-    [v23 addObserver:v21 selector:sel_deviceOrientationDidChange_ name:*MEMORY[0x1E69DDCB8] object:v24];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+    [defaultCenter addObserver:v21 selector:sel_deviceOrientationDidChange_ name:*MEMORY[0x1E69DDCB8] object:currentDevice2];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
@@ -171,8 +171,8 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
 
 - (double)contentSizeScaleFactor
 {
-  v2 = [(VKCVisualSearchResultItemView *)self traitCollection];
-  [v2 vk_contentSizeScaleFactor];
+  traitCollection = [(VKCVisualSearchResultItemView *)self traitCollection];
+  [traitCollection vk_contentSizeScaleFactor];
   v4 = v3;
 
   return fmax(v4, 1.0);
@@ -180,50 +180,50 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
 
 - (CGRect)boundsFromVisualSearchResult
 {
-  v3 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
-  [v3 normalizedBoundingBox];
+  visualSearchResultItem = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
+  [visualSearchResultItem normalizedBoundingBox];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v12 contentsRect];
+  delegate = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate contentsRect];
   v14 = v13;
-  v15 = [(VKCVisualSearchResultItemView *)self superview];
-  [v15 bounds];
+  superview = [(VKCVisualSearchResultItemView *)self superview];
+  [superview bounds];
   v17 = v14 * v16;
-  v18 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v18 contentsRect];
+  delegate2 = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate2 contentsRect];
   v20 = v19;
-  v21 = [(VKCVisualSearchResultItemView *)self superview];
-  [v21 bounds];
+  superview2 = [(VKCVisualSearchResultItemView *)self superview];
+  [superview2 bounds];
   v23 = v20 * v22;
-  v24 = [(VKCVisualSearchResultItemView *)self superview];
-  [v24 bounds];
+  superview3 = [(VKCVisualSearchResultItemView *)self superview];
+  [superview3 bounds];
   v26 = v25;
-  v27 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v27 contentsRect];
+  delegate3 = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate3 contentsRect];
   v29 = v26 * v28;
-  v30 = [(VKCVisualSearchResultItemView *)self superview];
-  [v30 bounds];
+  superview4 = [(VKCVisualSearchResultItemView *)self superview];
+  [superview4 bounds];
   v32 = v31;
-  v33 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v33 contentsRect];
+  delegate4 = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate4 contentsRect];
   v35 = v32 * v34;
 
-  v36 = [(VKCVisualSearchResultItemView *)self superview];
-  [v36 bounds];
+  superview5 = [(VKCVisualSearchResultItemView *)self superview];
+  [superview5 bounds];
   v38 = v9 * v37;
-  v39 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v39 contentsRect];
+  delegate5 = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate5 contentsRect];
   v41 = v38 * v40;
 
-  v42 = [(VKCVisualSearchResultItemView *)self superview];
-  [v42 bounds];
+  superview6 = [(VKCVisualSearchResultItemView *)self superview];
+  [superview6 bounds];
   v44 = v11 * v43;
-  v45 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v45 contentsRect];
+  delegate6 = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate6 contentsRect];
   v47 = v44 * v46;
 
   v48 = round(v17 + v5 * v29);
@@ -239,22 +239,22 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
 
 - (CGPoint)pointForVisualSearchIcon
 {
-  v3 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
-  [v3 normalizedIconLocation];
+  visualSearchResultItem = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
+  [visualSearchResultItem normalizedIconLocation];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(VKCVisualSearchResultItemView *)self superview];
-  [v8 bounds];
+  superview = [(VKCVisualSearchResultItemView *)self superview];
+  [superview bounds];
   v10 = v5 * v9;
-  v11 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v11 contentsRect];
+  delegate = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate contentsRect];
   v13 = v10 * v12;
-  v14 = [(VKCVisualSearchResultItemView *)self superview];
-  [v14 bounds];
+  superview2 = [(VKCVisualSearchResultItemView *)self superview];
+  [superview2 bounds];
   v16 = v7 * v15;
-  v17 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v17 contentsRect];
+  delegate2 = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate2 contentsRect];
   v19 = v16 * v18;
 
   v20 = v13;
@@ -264,37 +264,37 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   return result;
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3
+- (void)setInterfaceOrientation:(int64_t)orientation
 {
   interfaceOrientation = self->_interfaceOrientation;
-  if (interfaceOrientation != a3)
+  if (interfaceOrientation != orientation)
   {
     if (interfaceOrientation)
     {
       [getDDRevealBridgeClass() underlyingViewDisappeared:self->_lookupButton];
     }
 
-    if (a3)
+    if (orientation)
     {
-      self->_interfaceOrientation = a3;
+      self->_interfaceOrientation = orientation;
     }
   }
 }
 
 - (int64_t)interfaceOrientation
 {
-  v2 = [(VKCVisualSearchResultItemView *)self window];
-  v3 = [v2 windowScene];
-  v4 = [v3 interfaceOrientation];
+  window = [(VKCVisualSearchResultItemView *)self window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return v4;
+  return interfaceOrientation;
 }
 
-- (void)deviceOrientationDidChange:(id)a3
+- (void)deviceOrientationDidChange:(id)change
 {
-  v5 = [(VKCVisualSearchResultItemView *)self window];
-  v4 = [v5 windowScene];
-  -[VKCVisualSearchResultItemView setInterfaceOrientation:](self, "setInterfaceOrientation:", [v4 interfaceOrientation]);
+  window = [(VKCVisualSearchResultItemView *)self window];
+  windowScene = [window windowScene];
+  -[VKCVisualSearchResultItemView setInterfaceOrientation:](self, "setInterfaceOrientation:", [windowScene interfaceOrientation]);
 }
 
 - (void)layoutSubviews
@@ -345,17 +345,17 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
     [(VKCVisualSearchResultItemView *)self _rectForViewSpace:0.0, 0.0, v23, v23];
     v25 = v24 / v23;
     [(VKCVisualSearchResultItemView *)self _transformForButtonScale];
-    v26 = [(VKCLookupButton *)self->_lookupButton layer];
+    layer = [(VKCLookupButton *)self->_lookupButton layer];
     v32 = v31;
-    [v26 setTransform:&v32];
+    [layer setTransform:&v32];
 
-    v27 = [(VKCLookupButton *)self->_lookupButton layer];
-    [v27 setBorderWidth:v25 + v25];
+    layer2 = [(VKCLookupButton *)self->_lookupButton layer];
+    [layer2 setBorderWidth:v25 + v25];
 
-    v28 = [MEMORY[0x1E69DC888] whiteColor];
-    v29 = [v28 CGColor];
-    v30 = [(VKCLookupButton *)self->_lookupButton layer];
-    [v30 setBorderColor:v29];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    cGColor = [whiteColor CGColor];
+    layer3 = [(VKCLookupButton *)self->_lookupButton layer];
+    [layer3 setBorderColor:cGColor];
 
     [(CALayer *)self->_iconInLookupButtonLayer setOpacity:0.0];
   }
@@ -369,46 +369,46 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
 
     [(VKCVisualSearchResultItemView *)self rectForIndicatorDot];
     [(VKCLookupButton *)self->_lookupButton setFrame:?];
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIView *)self->_lookupButton setVk_backgroundColor:v4];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIView *)self->_lookupButton setVk_backgroundColor:whiteColor2];
 
     [(VKCVisualSearchResultItemView *)self rectForIndicatorDot];
     v6 = v5 * 0.5;
-    v7 = [(VKCLookupButton *)self->_lookupButton layer];
-    [v7 setCornerRadius:v6];
+    layer4 = [(VKCLookupButton *)self->_lookupButton layer];
+    [layer4 setCornerRadius:v6];
 
-    v8 = [MEMORY[0x1E69DC888] blackColor];
-    v9 = [v8 CGColor];
-    v10 = [(VKCLookupButton *)self->_lookupButton layer];
-    [v10 setShadowColor:v9];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    cGColor2 = [blackColor CGColor];
+    layer5 = [(VKCLookupButton *)self->_lookupButton layer];
+    [layer5 setShadowColor:cGColor2];
 
-    v11 = [(VKCLookupButton *)self->_lookupButton layer];
+    layer6 = [(VKCLookupButton *)self->_lookupButton layer];
     LODWORD(v12) = 1053609165;
-    [v11 setShadowOpacity:v12];
+    [layer6 setShadowOpacity:v12];
 
-    v13 = [(VKCLookupButton *)self->_lookupButton layer];
-    [v13 setShadowRadius:4.0];
+    layer7 = [(VKCLookupButton *)self->_lookupButton layer];
+    [layer7 setShadowRadius:4.0];
 
-    v14 = [(VKCLookupButton *)self->_lookupButton layer];
-    [v14 setShadowOffset:{0.0, 5.0}];
+    layer8 = [(VKCLookupButton *)self->_lookupButton layer];
+    [layer8 setShadowOffset:{0.0, 5.0}];
 
-    v15 = [(VKCLookupButton *)self->_lookupButton layer];
-    [v15 setMasksToBounds:0];
+    layer9 = [(VKCLookupButton *)self->_lookupButton layer];
+    [layer9 setMasksToBounds:0];
 
-    v16 = [(VKCLookupButton *)self->_lookupButton layer];
-    [v16 setBorderWidth:0.0];
+    layer10 = [(VKCLookupButton *)self->_lookupButton layer];
+    [layer10 setBorderWidth:0.0];
 
     CATransform3DMakeScale(&v33, 1.0, 1.0, 1.0);
-    v17 = [(VKCLookupButton *)self->_lookupButton layer];
+    layer11 = [(VKCLookupButton *)self->_lookupButton layer];
     v32 = v33;
-    [v17 setTransform:&v32];
+    [layer11 setTransform:&v32];
 
-    v18 = [(CALayer *)self->_iconInLookupButtonLayer superlayer];
+    superlayer = [(CALayer *)self->_iconInLookupButtonLayer superlayer];
 
-    if (!v18)
+    if (!superlayer)
     {
-      v20 = [(VKCLookupButton *)self->_lookupButton layer];
-      [v20 addSublayer:self->_iconInLookupButtonLayer];
+      layer12 = [(VKCLookupButton *)self->_lookupButton layer];
+      [layer12 addSublayer:self->_iconInLookupButtonLayer];
     }
 
     LODWORD(v19) = 1.0;
@@ -421,17 +421,17 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   [(VKCVisualSearchResultItemView *)self updatePulsingLayer];
 }
 
-- (CGRect)_rectForViewSpace:(CGRect)a3
+- (CGRect)_rectForViewSpace:(CGRect)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(VKCVisualSearchResultItemView *)self window];
-  v9 = [v8 screen];
-  v10 = [v9 fixedCoordinateSpace];
-  v11 = [(VKCVisualSearchResultItemView *)self coordinateSpace];
-  [v10 convertRect:v11 toCoordinateSpace:{x, y, width, height}];
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  window = [(VKCVisualSearchResultItemView *)self window];
+  screen = [window screen];
+  fixedCoordinateSpace = [screen fixedCoordinateSpace];
+  coordinateSpace = [(VKCVisualSearchResultItemView *)self coordinateSpace];
+  [fixedCoordinateSpace convertRect:coordinateSpace toCoordinateSpace:{x, y, width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -451,14 +451,14 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
 - (UIImage)imageForButton
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = [(VKCVisualSearchResultItemView *)self _symbolNameForItem];
-  v5 = [v3 vk_symbolImageWithName:v4];
+  _symbolNameForItem = [(VKCVisualSearchResultItemView *)self _symbolNameForItem];
+  v5 = [v3 vk_symbolImageWithName:_symbolNameForItem];
 
   if (!v5)
   {
     v6 = MEMORY[0x1E69DCAB8];
-    v7 = [(VKCVisualSearchResultItemView *)self _defaultSymbolName];
-    v5 = [v6 vk_symbolImageWithName:v7];
+    _defaultSymbolName = [(VKCVisualSearchResultItemView *)self _defaultSymbolName];
+    v5 = [v6 vk_symbolImageWithName:_defaultSymbolName];
   }
 
   return v5;
@@ -470,31 +470,31 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   tintedImageForButton = self->_tintedImageForButton;
   if (!tintedImageForButton)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_tintedImageForButton)
     {
-      v5 = [(VKCVisualSearchResultItemView *)v4 imageForButton];
-      if (!v5)
+      imageForButton = [(VKCVisualSearchResultItemView *)selfCopy imageForButton];
+      if (!imageForButton)
       {
         v6 = os_log_create("com.apple.VisionKit", "com.apple.VisionKit.visualSearch");
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
         {
-          v7 = [(VKCVisualSearchResultItemView *)v4 visualSearchResultItem];
-          [(VKCVisualSearchResultItemView *)v7 tintedImageForButton];
+          visualSearchResultItem = [(VKCVisualSearchResultItemView *)selfCopy visualSearchResultItem];
+          [(VKCVisualSearchResultItemView *)visualSearchResultItem tintedImageForButton];
         }
 
         [VKAssert handleFailedAssertWithCondition:"((image) != nil)" functionName:"[VKCVisualSearchResultItemView tintedImageForButton]" simulateCrash:0 showAlert:0 format:@"Expected non-nil value for '%s'", "image"];
       }
 
       v8 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:1.0];
-      [v5 size];
-      v9 = [v5 vk_imageWithTint:v8 size:?];
+      [imageForButton size];
+      v9 = [imageForButton vk_imageWithTint:v8 size:?];
       v10 = self->_tintedImageForButton;
       self->_tintedImageForButton = v9;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     tintedImageForButton = self->_tintedImageForButton;
   }
@@ -504,10 +504,10 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
 
 - (id)_symbolNameForItem
 {
-  v2 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
-  v3 = [v2 glyphName];
+  visualSearchResultItem = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
+  glyphName = [visualSearchResultItem glyphName];
 
-  return v3;
+  return glyphName;
 }
 
 - (void)removePulsing
@@ -518,11 +518,11 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   [(CALayer *)pulsingLayer removeAllAnimations];
 }
 
-- (void)animateToVisualResultsPane:(BOOL)a3
+- (void)animateToVisualResultsPane:(BOOL)pane
 {
-  v3 = a3;
+  paneCopy = pane;
   v5 = @"animateOut";
-  if (a3)
+  if (pane)
   {
     v5 = @"animateIn";
   }
@@ -530,7 +530,7 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   v6 = v5;
   if (self->_pinLayer)
   {
-    [(VKCVisualSearchResultItemView *)self _animatePin:v3];
+    [(VKCVisualSearchResultItemView *)self _animatePin:paneCopy];
   }
 
   v7 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform"];
@@ -546,7 +546,7 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   v37 = 0u;
   v38 = 0u;
   [(VKCVisualSearchResultItemView *)self _transformForButtonScale];
-  if (v3)
+  if (paneCopy)
   {
     v33 = v41;
     v34 = v42;
@@ -615,7 +615,7 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   v20 = [MEMORY[0x1E696B098] valueWithBytes:v26 objCType:"{CATransform3D=dddddddddddddddd}"];
   [v7 setToValue:v20];
 
-  v21 = [(VKCLookupButton *)self->_lookupButton layer];
+  layer = [(VKCLookupButton *)self->_lookupButton layer];
   v25[4] = v33;
   v25[5] = v34;
   v25[6] = v35;
@@ -624,10 +624,10 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   v25[1] = v30;
   v25[2] = v31;
   v25[3] = v32;
-  [v21 setTransform:v25];
+  [layer setTransform:v25];
 
-  v22 = [(VKCLookupButton *)self->_lookupButton layer];
-  [v22 addAnimation:v7 forKey:@"buttonScaleAnimation"];
+  layer2 = [(VKCLookupButton *)self->_lookupButton layer];
+  [layer2 addAnimation:v7 forKey:@"buttonScaleAnimation"];
 
   v23 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v23 setDuration:0.2];
@@ -640,9 +640,9 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   [(CALayer *)self->_iconInLookupButtonLayer addAnimation:v23 forKey:@"iconImageAnimation"];
 }
 
-- (void)_animatePin:(BOOL)a3
+- (void)_animatePin:(BOOL)pin
 {
-  v3 = a3;
+  pinCopy = pin;
   v45[2] = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform"];
   [v5 setDamping:20.0];
@@ -650,7 +650,7 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   [v5 setDuration:0.4936];
   v6 = MEMORY[0x1E696B098];
   v7 = MEMORY[0x1E69792E8];
-  if (v3)
+  if (pinCopy)
   {
     [(VKCVisualSearchResultItemView *)self _pinEndTransform];
     v8 = [v6 valueWithBytes:v44 objCType:"{CATransform3D=dddddddddddddddd}"];
@@ -705,14 +705,14 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   [v22 setDuration:0.4936];
   [v22 setFromValue:v14];
   [v22 setToValue:v15];
-  v23 = [MEMORY[0x1E6979308] animation];
+  animation = [MEMORY[0x1E6979308] animation];
   v45[0] = v5;
   v45[1] = v22;
   v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:2];
-  [v23 setAnimations:v24];
+  [animation setAnimations:v24];
 
-  [v23 setDuration:0.4936];
-  if (v3)
+  [animation setDuration:0.4936];
+  if (pinCopy)
   {
     v25 = v7[5];
     v37 = v7[4];
@@ -747,7 +747,7 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   [(CALayer *)pinLayer setTransform:v32];
   *&v31 = v29;
   [(CALayer *)self->_pinLayer setOpacity:v31];
-  [(CALayer *)self->_pinLayer addAnimation:v23 forKey:@"pinAnimation"];
+  [(CALayer *)self->_pinLayer addAnimation:animation forKey:@"pinAnimation"];
 }
 
 - (CATransform3D)_pinEndTransform
@@ -758,8 +758,8 @@ void __64__VKCVisualSearchResultItemView_initWithVisualSearchResultItem___block_
   memset(&v18, 0, sizeof(v18));
   CATransform3DMakeScale(&v18, 0.01, 0.01, 0.01);
   memset(&v17, 0, sizeof(v17));
-  v9 = [(VKCVisualSearchResultItemView *)self _pinArrowDirection];
-  if (v9 == 3)
+  _pinArrowDirection = [(VKCVisualSearchResultItemView *)self _pinArrowDirection];
+  if (_pinArrowDirection == 3)
   {
     v13 = -0.5;
 LABEL_9:
@@ -768,13 +768,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v9 == 1)
+  if (_pinArrowDirection == 1)
   {
     v10 = 0.5;
     goto LABEL_6;
   }
 
-  if (v9)
+  if (_pinArrowDirection)
   {
     v13 = 0.5;
     goto LABEL_9;
@@ -799,9 +799,9 @@ LABEL_10:
   return CATransform3DConcat(retstr, &a, &v15);
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [a3 valueForKey:{@"animationName", a4}];
+  v5 = [stop valueForKey:{@"animationName", finished}];
   if ([v5 isEqualToString:@"animateOut"])
   {
     [(CALayer *)self->_pinLayer removeFromSuperlayer];
@@ -811,75 +811,75 @@ LABEL_10:
 
   else if ([v5 isEqualToString:@"animateIn"])
   {
-    v7 = [(VKCVisualSearchResultItemView *)self delegate];
-    v8 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
-    [v8 normalizedBoundingBox];
-    [v7 visualSearchItemView:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:?];
+    delegate = [(VKCVisualSearchResultItemView *)self delegate];
+    visualSearchResultItem = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
+    [visualSearchResultItem normalizedBoundingBox];
+    [delegate visualSearchItemView:self didTapVisualSearchIndicatorWithNormalizedBoundingBox:?];
 
     [(VKCVisualSearchResultItemView *)self showLookupUIPaneForResultItem];
   }
 
   else if ([v5 isEqualToString:@"dotAnimateIn"])
   {
-    v9 = [(VKCVisualSearchResultItemView *)self layer];
+    layer = [(VKCVisualSearchResultItemView *)self layer];
     LODWORD(v10) = 1.0;
-    [v9 setOpacity:v10];
+    [layer setOpacity:v10];
 
     CATransform3DMakeScale(&v13, 1.0, 1.0, 1.0);
-    v11 = [(VKCVisualSearchResultItemView *)self layer];
+    layer2 = [(VKCVisualSearchResultItemView *)self layer];
     v12 = v13;
-    [v11 setTransform:&v12];
+    [layer2 setTransform:&v12];
   }
 }
 
-- (void)setImageContentsInLayer:(id)a3 withRect:(CGRect)a4
+- (void)setImageContentsInLayer:(id)layer withRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v40 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  layerCopy = layer;
   VKMScaledRect(x, y, width, height, 0.5);
   v9 = VKMRectWithSize();
   v13 = VKMCenterRectOverRect(v9, v10, v11, v12, x, y, width, height);
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  if (self->_iconInLookupButtonLayer != v40 || ([(VKCVisualSearchResultItemView *)self currentImageRectForLayerContents], v43.origin.x = v13, v43.origin.y = v15, v43.size.width = v17, v43.size.height = v19, !CGRectEqualToRect(v42, v43)))
+  if (self->_iconInLookupButtonLayer != layerCopy || ([(VKCVisualSearchResultItemView *)self currentImageRectForLayerContents], v43.origin.x = v13, v43.origin.y = v15, v43.size.width = v17, v43.size.height = v19, !CGRectEqualToRect(v42, v43)))
   {
     [(VKCVisualSearchResultItemView *)self setCurrentImageRectForLayerContents:v13, v15, v17, v19];
-    v20 = [(VKCVisualSearchResultItemView *)self tintedImageForButton];
-    -[CALayer setContents:](v40, "setContents:", [v20 vk_cgImage]);
-    [v20 size];
+    tintedImageForButton = [(VKCVisualSearchResultItemView *)self tintedImageForButton];
+    -[CALayer setContents:](layerCopy, "setContents:", [tintedImageForButton vk_cgImage]);
+    [tintedImageForButton size];
     v23 = VKMFitOrFillSizeInRect(0, v21, v22, v13, v15, v17, v19);
     v25 = v24;
     v27 = v26;
     v29 = v28;
-    v30 = [(VKCVisualSearchResultItemView *)self window];
-    v31 = [v30 screen];
-    [v31 scale];
+    window = [(VKCVisualSearchResultItemView *)self window];
+    screen = [window screen];
+    [screen scale];
     v33 = VKMAliasRoundedRectForScale(v23, v25, v27, v29, v32);
     v35 = v34;
     v37 = v36;
     v39 = v38;
 
-    [(CALayer *)v40 setFrame:v33, v35, v37, v39];
+    [(CALayer *)layerCopy setFrame:v33, v35, v37, v39];
   }
 }
 
-- (void)setImageContentsInLayer:(id)a3 withMaterialLayer:(id)a4 withRect:(CGRect)a5
+- (void)setImageContentsInLayer:(id)layer withMaterialLayer:(id)materialLayer withRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = a3;
-  [(VKCVisualSearchResultItemView *)self setImageContentsInLayer:v12 withRect:x, y, width, height];
-  v14 = [v11 visualStylingProviderForCategory:*MEMORY[0x1E6997F20]];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  materialLayerCopy = materialLayer;
+  layerCopy = layer;
+  [(VKCVisualSearchResultItemView *)self setImageContentsInLayer:layerCopy withRect:x, y, width, height];
+  v14 = [materialLayerCopy visualStylingProviderForCategory:*MEMORY[0x1E6997F20]];
 
   v13 = [v14 visualStylingForStyle:*MEMORY[0x1E6997F40]];
-  [v12 mt_replaceAllVisualStylingWithStyling:v13];
+  [layerCopy mt_replaceAllVisualStylingWithStyling:v13];
 }
 
 - (void)showPinForTappedDot
@@ -888,40 +888,40 @@ LABEL_10:
   pinLayer = self->_pinLayer;
   self->_pinLayer = 0;
 
-  v4 = [MEMORY[0x1E6979398] layer];
+  layer = [MEMORY[0x1E6979398] layer];
   v5 = self->_pinLayer;
-  self->_pinLayer = v4;
+  self->_pinLayer = layer;
 
   LODWORD(v6) = 1.0;
   [(CALayer *)self->_pinLayer setOpacity:v6];
-  v7 = [(VKCVisualSearchResultItemView *)self layer];
-  [v7 addSublayer:self->_pinLayer];
+  layer2 = [(VKCVisualSearchResultItemView *)self layer];
+  [layer2 addSublayer:self->_pinLayer];
 
   [(VKCVisualSearchResultItemView *)self _pinSizeForViewScale];
   v9 = v8;
   [(VKCVisualSearchResultItemView *)self _screenZoomScale];
   v11 = v9 + v10 * -6.0;
-  v12 = [(VKCVisualSearchResultItemView *)self _pinArrowDirection];
+  _pinArrowDirection = [(VKCVisualSearchResultItemView *)self _pinArrowDirection];
   [(VKCVisualSearchResultItemView *)self updatePinLayerFrame];
-  v25 = [MEMORY[0x1E69794A0] layer];
+  layer3 = [MEMORY[0x1E69794A0] layer];
   [(CALayer *)self->_pinLayer bounds];
-  [v25 setFrame:?];
-  v13 = [(VKCVisualSearchResultItemView *)self trianglePathForPinBubbleWithDirection:v12 withRadius:v11];
-  v14 = [(VKCVisualSearchResultItemView *)self circlePathForPinBubbleWithDirection:v12 withRadius:v11];
+  [layer3 setFrame:?];
+  v13 = [(VKCVisualSearchResultItemView *)self trianglePathForPinBubbleWithDirection:_pinArrowDirection withRadius:v11];
+  v14 = [(VKCVisualSearchResultItemView *)self circlePathForPinBubbleWithDirection:_pinArrowDirection withRadius:v11];
   [v13 vk_appendBezierPath:v14];
 
-  [v25 setPath:{objc_msgSend(v13, "vk_CGPath")}];
+  [layer3 setPath:{objc_msgSend(v13, "vk_CGPath")}];
   v15 = objc_alloc_init(MEMORY[0x1E6997F68]);
   [v15 setRecipe:*MEMORY[0x1E6997EC0]];
   [v15 setWeighting:1.0];
   [(CALayer *)self->_pinLayer bounds];
   [v15 setFrame:?];
-  [v15 setMask:v25];
+  [v15 setMask:layer3];
   [(CALayer *)self->_pinLayer addSublayer:v15];
   [(UIView *)self vk_viewPointRatioFromWindow];
   v17 = v16;
-  v18 = [MEMORY[0x1E69DC888] blackColor];
-  -[CALayer setShadowColor:](self->_pinLayer, "setShadowColor:", [v18 CGColor]);
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  -[CALayer setShadowColor:](self->_pinLayer, "setShadowColor:", [blackColor CGColor]);
 
   v19 = v17 * 0.1;
   *&v19 = v17 * 0.1;
@@ -935,9 +935,9 @@ LABEL_10:
   y = v28.origin.y;
   width = v28.size.width;
   height = v28.size.height;
-  v24 = [MEMORY[0x1E6979398] layer];
-  [(VKCVisualSearchResultItemView *)self setImageContentsInLayer:v24 withMaterialLayer:v15 withRect:x, y, width, height];
-  [(CALayer *)self->_pinLayer addSublayer:v24];
+  layer4 = [MEMORY[0x1E6979398] layer];
+  [(VKCVisualSearchResultItemView *)self setImageContentsInLayer:layer4 withMaterialLayer:v15 withRect:x, y, width, height];
+  [(CALayer *)self->_pinLayer addSublayer:layer4];
 }
 
 - (CGRect)_pinButtonRect
@@ -975,31 +975,31 @@ LABEL_10:
 
 - (int64_t)_pinArrowDirection
 {
-  v3 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
-  v4 = [v3 domainInfo];
-  v5 = [v4 domain];
-  v6 = [v5 isEqual:@"com.apple.argos.domain_key.dogs"];
+  visualSearchResultItem = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
+  domainInfo = [visualSearchResultItem domainInfo];
+  domain = [domainInfo domain];
+  v6 = [domain isEqual:@"com.apple.argos.domain_key.dogs"];
 
   if (v6)
   {
     return 0;
   }
 
-  v8 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
-  v9 = [v8 domainInfo];
-  v10 = [v9 domain];
-  v11 = [v10 isEqual:@"com.apple.argos.domain_key.cats"];
+  visualSearchResultItem2 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
+  domainInfo2 = [visualSearchResultItem2 domainInfo];
+  domain2 = [domainInfo2 domain];
+  v11 = [domain2 isEqual:@"com.apple.argos.domain_key.cats"];
 
   return v11 ^ 1u;
 }
 
 - (void)updatePinLayerFrame
 {
-  v3 = [(VKCVisualSearchResultItemView *)self _pinArrowDirection];
+  _pinArrowDirection = [(VKCVisualSearchResultItemView *)self _pinArrowDirection];
   [(VKCVisualSearchResultItemView *)self _pinSizeForViewScale];
   v5 = v4;
   v7 = v6;
-  [(VKCVisualSearchResultItemView *)self _offsetForPinBubbleFrameWithDirection:v3 pinBubbleBounds:VKMRectWithSize()];
+  [(VKCVisualSearchResultItemView *)self _offsetForPinBubbleFrameWithDirection:_pinArrowDirection pinBubbleBounds:VKMRectWithSize()];
   v9 = v8;
   v11 = v10;
   [(VKCLookupButton *)self->_lookupButton frame];
@@ -1011,17 +1011,17 @@ LABEL_10:
   [(CALayer *)pinLayer setFrame:v20];
 }
 
-- (CGPoint)_offsetForPinBubbleFrameWithDirection:(int64_t)a3 pinBubbleBounds:(CGRect)a4
+- (CGPoint)_offsetForPinBubbleFrameWithDirection:(int64_t)direction pinBubbleBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
-  [(VKCVisualSearchResultItemView *)self _screenZoomScale:a4.origin.x];
+  [(VKCVisualSearchResultItemView *)self _screenZoomScale:bounds.origin.x];
   v11 = v10 * 3.0;
-  if (a3 > 1)
+  if (direction > 1)
   {
-    if (a3 == 2)
+    if (direction == 2)
     {
       [(VKCLookupButton *)self->_lookupButton frame];
       v14 = -0.5;
@@ -1030,7 +1030,7 @@ LABEL_10:
 
     else
     {
-      if (a3 != 3)
+      if (direction != 3)
       {
         goto LABEL_11;
       }
@@ -1044,9 +1044,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (direction)
   {
-    if (a3 == 1)
+    if (direction == 1)
     {
       v8 = width * -0.5;
       [(VKCLookupButton *)self->_lookupButton frame];
@@ -1069,25 +1069,25 @@ LABEL_11:
   return result;
 }
 
-- (id)circlePathForPinBubbleWithDirection:(int64_t)a3 withRadius:(double)a4
+- (id)circlePathForPinBubbleWithDirection:(int64_t)direction withRadius:(double)radius
 {
   [(CALayer *)self->_pinLayer bounds];
   v9 = VKMCenterOfRect(v5, v6, v7, v8);
-  v11 = VKMRectWithCenterAndSize(v9, v10, a4);
+  v11 = VKMRectWithCenterAndSize(v9, v10, radius);
   v12 = MEMORY[0x1E69DC728];
 
   return [v12 bezierPathWithOvalInRect:v11];
 }
 
-- (id)trianglePathForPinBubbleWithDirection:(int64_t)a3 withRadius:(double)a4
+- (id)trianglePathForPinBubbleWithDirection:(int64_t)direction withRadius:(double)radius
 {
-  v7 = a4 / 6.0;
+  v7 = radius / 6.0;
   [(CALayer *)self->_pinLayer bounds];
-  v9 = (v8 - a4) * 0.5 + 1.0;
+  v9 = (v8 - radius) * 0.5 + 1.0;
   v10 = objc_alloc_init(MEMORY[0x1E69DC728]);
-  if (a3 > 1)
+  if (direction > 1)
   {
-    if (a3 == 2)
+    if (direction == 2)
     {
       [(CALayer *)self->_pinLayer bounds];
       v22 = CGRectGetMaxX(v43) - v9;
@@ -1104,7 +1104,7 @@ LABEL_11:
 
     else
     {
-      if (a3 != 3)
+      if (direction != 3)
       {
         goto LABEL_12;
       }
@@ -1126,9 +1126,9 @@ LABEL_11:
     MaxY = v17 + CGRectGetMidY(v48);
   }
 
-  else if (a3)
+  else if (direction)
   {
-    if (a3 != 1)
+    if (direction != 1)
     {
       goto LABEL_12;
     }
@@ -1172,14 +1172,14 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)containsVisualSearchItemAtPoint:(CGPoint)a3
+- (BOOL)containsVisualSearchItemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(VKCVisualSearchResultItemView *)self _rectForViewSpace:VKMRectWithSize()];
   v7 = v6;
-  v8 = [(VKCVisualSearchResultItemView *)self lookupButton];
-  [v8 frame];
+  lookupButton = [(VKCVisualSearchResultItemView *)self lookupButton];
+  [lookupButton frame];
   v13 = VKMCenterOfRect(v9, v10, v11, v12);
   v15 = VKMRectWithCenterAndSize(v13, v14, v7);
   v17 = v16;
@@ -1196,41 +1196,41 @@ LABEL_12:
   return CGRectContainsPoint(*&v22, *&v26);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   if (([(VKCVisualSearchResultItemView *)self isHidden]& 1) != 0 || ![(VKCVisualSearchResultItemView *)self containsVisualSearchItemAtPoint:x, y])
   {
-    v7 = 0;
+    lookupButton = 0;
   }
 
   else
   {
-    v7 = [(VKCVisualSearchResultItemView *)self lookupButton];
+    lookupButton = [(VKCVisualSearchResultItemView *)self lookupButton];
   }
 
-  return v7;
+  return lookupButton;
 }
 
-- (void)didTap:(id)a3
+- (void)didTap:(id)tap
 {
-  [a3 locationInView:self];
+  [tap locationInView:self];
   v5 = v4;
   v7 = v6;
-  v8 = [(VKCVisualSearchResultItemView *)self delegate];
-  v9 = [v8 visualSearchItemView:self shouldBeginAtPoint:{v5, v7}];
+  delegate = [(VKCVisualSearchResultItemView *)self delegate];
+  v9 = [delegate visualSearchItemView:self shouldBeginAtPoint:{v5, v7}];
 
   if (v9)
   {
-    v10 = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
-    [v10 setCurrentInvocationType:1];
+    visualSearchResultItem = [(VKCVisualSearchResultItemView *)self visualSearchResultItem];
+    [visualSearchResultItem setCurrentInvocationType:1];
 
     [(VKCVisualSearchResultItemView *)self showVisualResultsPane];
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v4 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:self->_lookupButton];
   v5 = [MEMORY[0x1E69DCDB8] effectWithPreview:v4];
@@ -1239,7 +1239,7 @@ LABEL_12:
   return v6;
 }
 
-- (void)beginAnimatingDotAfterDelay:(double)a3
+- (void)beginAnimatingDotAfterDelay:(double)delay
 {
   v32[2] = *MEMORY[0x1E69E9840];
   [(VKCVisualSearchResultItemView *)self hideDots];
@@ -1287,20 +1287,20 @@ LABEL_12:
   v12 = [MEMORY[0x1E696B098] valueWithCATransform3D:&v16];
   [v6 setToValue:v12];
 
-  v13 = [MEMORY[0x1E6979308] animation];
-  [v13 setDuration:0.4];
+  animation = [MEMORY[0x1E6979308] animation];
+  [animation setDuration:0.4];
   v32[0] = v5;
   v32[1] = v6;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
-  [v13 setAnimations:v14];
+  [animation setAnimations:v14];
 
-  [v13 setBeginTime:CACurrentMediaTime() + a3];
-  [v13 setDelegate:self];
-  [v13 setValue:@"dotAnimateIn" forKey:@"animationName"];
-  [v13 setFillMode:*MEMORY[0x1E69797E8]];
-  [v13 setRemovedOnCompletion:0];
-  v15 = [(VKCVisualSearchResultItemView *)self layer];
-  [v15 addAnimation:v13 forKey:@"animateIn"];
+  [animation setBeginTime:CACurrentMediaTime() + delay];
+  [animation setDelegate:self];
+  [animation setValue:@"dotAnimateIn" forKey:@"animationName"];
+  [animation setFillMode:*MEMORY[0x1E69797E8]];
+  [animation setRemovedOnCompletion:0];
+  layer = [(VKCVisualSearchResultItemView *)self layer];
+  [layer addAnimation:animation forKey:@"animateIn"];
 }
 
 - (void)didFinishAnimatingDots
@@ -1309,9 +1309,9 @@ LABEL_12:
   {
     if (self->_automaticallyShowVisualSearchResults)
     {
-      v3 = [(VKCVisualSearchResultItemView *)self delegate];
+      delegate = [(VKCVisualSearchResultItemView *)self delegate];
       [(VKCVisualSearchResultItemView *)self bounds];
-      v8 = [v3 visualSearchItemView:self shouldBeginAtPoint:{VKMCenterOfRect(v4, v5, v6, v7)}];
+      v8 = [delegate visualSearchItemView:self shouldBeginAtPoint:{VKMCenterOfRect(v4, v5, v6, v7)}];
 
       if (v8)
       {
@@ -1325,8 +1325,8 @@ LABEL_12:
 - (void)hideDots
 {
   [(VKCVisualSearchResultItemView *)self setShouldShowDots:0];
-  v3 = [(VKCVisualSearchResultItemView *)self layer];
-  [v3 setOpacity:0.0];
+  layer = [(VKCVisualSearchResultItemView *)self layer];
+  [layer setOpacity:0.0];
 }
 
 - (void)showVisualResultsPane
@@ -1336,7 +1336,7 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v3, OS_LOG_TYPE_DEFAULT, "Visual search activated: %@", &v6, 0xCu);
   }
 
@@ -1345,10 +1345,10 @@ LABEL_12:
     self->_status = 1;
     self->_isShowingVisualResultsPane = 1;
     [(VKCVisualSearchResultItemView *)self updateIndicatorDotForState];
-    v4 = [(VKCVisualSearchResultItemView *)self traitCollection];
-    v5 = [v4 vk_hasCompactWidth];
+    traitCollection = [(VKCVisualSearchResultItemView *)self traitCollection];
+    vk_hasCompactWidth = [traitCollection vk_hasCompactWidth];
 
-    if (v5)
+    if (vk_hasCompactWidth)
     {
       [(VKCVisualSearchResultItemView *)self showPinForTappedDot];
       [(CALayer *)self->_pinLayer setOpacity:0.0];
@@ -1358,28 +1358,28 @@ LABEL_12:
   }
 }
 
-- (void)_didDismissVisualResultsPane:(id)a3
+- (void)_didDismissVisualResultsPane:(id)pane
 {
-  v4 = a3;
+  paneCopy = pane;
   v5 = objc_opt_class();
-  v6 = [v4 object];
+  object = [paneCopy object];
 
-  v14 = VKDynamicCast(v5, v6);
+  v14 = VKDynamicCast(v5, object);
 
   v7 = objc_opt_class();
-  v8 = [v14 clientHints];
-  v9 = VKDynamicCast(v7, v8);
+  clientHints = [v14 clientHints];
+  v9 = VKDynamicCast(v7, clientHints);
 
   if (v9)
   {
-    v10 = [(VKCVisualSearchResultItemView *)self currentRVItemID];
-    v11 = [v9 isEqualToString:v10];
+    currentRVItemID = [(VKCVisualSearchResultItemView *)self currentRVItemID];
+    v11 = [v9 isEqualToString:currentRVItemID];
 
     if (v11)
     {
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v13 = getkDDRVInteractionDidFinishNotification_0();
-      [v12 removeObserver:self name:v13 object:0];
+      [defaultCenter removeObserver:self name:v13 object:0];
 
       [(VKCVisualSearchResultItemView *)self setObservingInteractionDidFinish:0];
       [(VKCVisualSearchResultItemView *)self setCurrentRVItemID:0];
@@ -1395,7 +1395,7 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4335000, v3, OS_LOG_TYPE_DEFAULT, "Visual search pane was dismissed: %@", &v5, 0xCu);
   }
 
@@ -1404,8 +1404,8 @@ LABEL_12:
   [(VKCVisualSearchResultItemView *)self animateToVisualResultsPane:0];
   [(VKCVisualSearchResultItemView *)self updateIndicatorDotForState];
   [(VKCVisualSearchResultItemView *)self setNeedsLayout];
-  v4 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v4 visualSearchItemViewDidDismissController:self];
+  delegate = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate visualSearchItemViewDidDismissController:self];
 }
 
 - (id)_queryString
@@ -1421,7 +1421,7 @@ LABEL_12:
   objc_initWeak(&location, self);
   v3 = +[VKCImageAnalyzerRequest newQueryIDForParsec];
   v4 = objc_alloc(MEMORY[0x1E69C7520]);
-  v5 = [(VKCVisualSearchResultItemView *)self _queryString];
+  _queryString = [(VKCVisualSearchResultItemView *)self _queryString];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__VKCVisualSearchResultItemView__queryForProcessingResult__block_invoke;
@@ -1429,7 +1429,7 @@ LABEL_12:
   objc_copyWeak(v9, &location);
   v8[4] = self;
   v9[1] = v3;
-  v6 = [v4 initWithTitle:v5 clientIdentifier:@"com.apple.mediaanalysisd" userAgent:@"VisualIntelligence/1" queryID:v3 queryProvider:v8];
+  v6 = [v4 initWithTitle:_queryString clientIdentifier:@"com.apple.mediaanalysisd" userAgent:@"VisualIntelligence/1" queryID:v3 queryProvider:v8];
 
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
@@ -1575,10 +1575,10 @@ void __58__VKCVisualSearchResultItemView__queryForProcessingResult__block_invoke
 
 - (void)showLookupUIPaneForResultItem
 {
-  v3 = [(VKCVisualSearchResultItemView *)self _queryForProcessingResult];
+  _queryForProcessingResult = [(VKCVisualSearchResultItemView *)self _queryForProcessingResult];
   v4 = objc_alloc(MEMORY[0x1E69C7518]);
-  v5 = [(VKCVisualSearchResultItemView *)self _queryString];
-  v6 = [v4 initWithSearchQuery:v3 rangeInContext:{0x7FFFFFFFFFFFFFFFLL, objc_msgSend(v5, "length")}];
+  _queryString = [(VKCVisualSearchResultItemView *)self _queryString];
+  v6 = [v4 initWithSearchQuery:_queryForProcessingResult rangeInContext:{0x7FFFFFFFFFFFFFFFLL, objc_msgSend(_queryString, "length")}];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1586,22 +1586,22 @@ void __58__VKCVisualSearchResultItemView__queryForProcessingResult__block_invoke
   v13[3] = &unk_1E7BE3EF8;
   v13[4] = self;
   [v6 setReportAnIssueExtendedBlock:v13];
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(VKCVisualSearchResultItemView *)self setCurrentRVItemID:v8];
-  [v6 setClientHints:v8];
-  v9 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v9 addMetadataToVSFeedbackItem:v6];
+  [(VKCVisualSearchResultItemView *)self setCurrentRVItemID:uUIDString];
+  [v6 setClientHints:uUIDString];
+  delegate = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate addMetadataToVSFeedbackItem:v6];
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v11 = getkDDRVInteractionDidFinishNotification_0();
-  [v10 addObserver:self selector:sel__didDismissVisualResultsPane_ name:v11 object:0];
+  [defaultCenter addObserver:self selector:sel__didDismissVisualResultsPane_ name:v11 object:0];
 
   [(VKCVisualSearchResultItemView *)self setObservingInteractionDidFinish:1];
   [getDDRevealBridgeClass() performDefaultActionForRVItem:v6 view:self->_lookupButton location:0 fallbackMenuInteraction:MEMORY[0x1E695E0F8] context:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
-  v12 = [(VKCVisualSearchResultItemView *)self delegate];
-  [v12 visualSearchItemViewDidActivateVSItem:self];
+  delegate2 = [(VKCVisualSearchResultItemView *)self delegate];
+  [delegate2 visualSearchItemViewDidActivateVSItem:self];
 }
 
 void __62__VKCVisualSearchResultItemView_showLookupUIPaneForResultItem__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1646,7 +1646,7 @@ void __62__VKCVisualSearchResultItemView_showLookupUIPaneForResultItem__block_in
 - (void)tintedImageForButton
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1B4335000, log, OS_LOG_TYPE_ERROR, "imageForButton returned nil for Result item: %@", buf, 0xCu);
 }
 

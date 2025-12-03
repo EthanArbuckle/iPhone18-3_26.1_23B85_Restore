@@ -12,13 +12,13 @@
     return 0;
   }
 
-  v9 = [a1 c3dAnimation];
-  if (!v9)
+  c3dAnimation = [self c3dAnimation];
+  if (!c3dAnimation)
   {
     return 0;
   }
 
-  return C3DKeyframedAnimationEvaluate(v9, a4, a5, a2);
+  return C3DKeyframedAnimationEvaluate(c3dAnimation, a4, a5, a2);
 }
 
 @end

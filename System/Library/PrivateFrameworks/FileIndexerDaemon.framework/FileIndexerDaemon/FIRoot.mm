@@ -1,12 +1,12 @@
 @interface FIRoot
-- (void)subscription:(id)a3 handleEventAtPath:(id)a4 targetItemID:(unint64_t)a5 docID:(unsigned int)a6 eventID:(unint64_t)a7 flags:(unsigned int)a8;
-- (void)subscription:(id)a3 handleResetWithReason:(int64_t)a4;
-- (void)subscriptionDidHandleBatchOfEvents:(id)a3;
+- (void)subscription:(id)subscription handleEventAtPath:(id)path targetItemID:(unint64_t)d docID:(unsigned int)iD eventID:(unint64_t)eventID flags:(unsigned int)flags;
+- (void)subscription:(id)subscription handleResetWithReason:(int64_t)reason;
+- (void)subscriptionDidHandleBatchOfEvents:(id)events;
 @end
 
 @implementation FIRoot
 
-- (void)subscription:(id)a3 handleEventAtPath:(id)a4 targetItemID:(unint64_t)a5 docID:(unsigned int)a6 eventID:(unint64_t)a7 flags:(unsigned int)a8
+- (void)subscription:(id)subscription handleEventAtPath:(id)path targetItemID:(unint64_t)d docID:(unsigned int)iD eventID:(unint64_t)eventID flags:(unsigned int)flags
 {
   v12 = sub_24ABABEBC();
   v14 = v13;
@@ -32,23 +32,23 @@
   v19 = &v15[40 * v18];
   *(v19 + 4) = v12;
   *(v19 + 5) = v14;
-  *(v19 + 6) = a5;
-  *(v19 + 7) = a7;
-  *(v19 + 16) = a8;
+  *(v19 + 6) = d;
+  *(v19 + 7) = eventID;
+  *(v19 + 16) = flags;
   *&self->eventBatch[4] = v15;
   swift_endAccess();
 }
 
-- (void)subscription:(id)a3 handleResetWithReason:(int64_t)a4
+- (void)subscription:(id)subscription handleResetWithReason:(int64_t)reason
 {
-  v5 = a3;
+  subscriptionCopy = subscription;
 
-  sub_24AB932E0(a4);
+  sub_24AB932E0(reason);
 }
 
-- (void)subscriptionDidHandleBatchOfEvents:(id)a3
+- (void)subscriptionDidHandleBatchOfEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
 
   sub_24AB935DC();
 }

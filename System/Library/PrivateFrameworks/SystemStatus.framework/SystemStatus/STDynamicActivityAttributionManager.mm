@@ -1,17 +1,17 @@
 @interface STDynamicActivityAttributionManager
 - (STDynamicActivityAttributionManager)init;
-- (id)currentAttributedAppForClient:(id)a3;
-- (id)currentAttributionForAttribution:(id)a3;
-- (id)currentAttributionForClient:(id *)a3;
-- (id)currentAttributionKeyForClient:(id)a3;
-- (id)initWithLocalManager:(id *)a1;
+- (id)currentAttributedAppForClient:(id)client;
+- (id)currentAttributionForAttribution:(id)attribution;
+- (id)currentAttributionForClient:(id *)client;
+- (id)currentAttributionKeyForClient:(id)client;
+- (id)initWithLocalManager:(id *)manager;
 - (void)dealloc;
-- (void)setAttributionLocalizableKey:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5;
-- (void)setAttributionStringWithFormat:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5;
-- (void)setAttributionWebsiteString:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5;
-- (void)setLocalizableAttributionKey:(id)a3 andApplication:(id)a4 forClient:(id)a5;
-- (void)subscribeToUpdates:(id)a3;
-- (void)unsubscribeFromUpdates:(id)a3;
+- (void)setAttributionLocalizableKey:(id)key maskingClientAuditToken:(id *)token forClient:(id)client;
+- (void)setAttributionStringWithFormat:(id)format maskingClientAuditToken:(id *)token forClient:(id)client;
+- (void)setAttributionWebsiteString:(id)string maskingClientAuditToken:(id *)token forClient:(id)client;
+- (void)setLocalizableAttributionKey:(id)key andApplication:(id)application forClient:(id)client;
+- (void)subscribeToUpdates:(id)updates;
+- (void)unsubscribeFromUpdates:(id)updates;
 @end
 
 @implementation STDynamicActivityAttributionManager
@@ -32,61 +32,61 @@
   return v3;
 }
 
-- (id)initWithLocalManager:(id *)a1
+- (id)initWithLocalManager:(id *)manager
 {
   v4 = a2;
-  if (a1)
+  if (manager)
   {
-    v11.receiver = a1;
+    v11.receiver = manager;
     v11.super_class = STDynamicActivityAttributionManager;
     v5 = objc_msgSendSuper2(&v11, sel_init);
-    a1 = v5;
+    manager = v5;
     if (v5)
     {
       *(v5 + 2) = 0;
       v6 = [MEMORY[0x1E695DFA8] set];
-      v7 = a1[4];
-      a1[4] = v6;
+      v7 = manager[4];
+      manager[4] = v6;
 
-      objc_storeStrong(a1 + 2, a2);
+      objc_storeStrong(manager + 2, a2);
       if (!v4)
       {
         v8 = objc_alloc_init(STDynamicActivityAttributionMonitor);
-        v9 = a1[3];
-        a1[3] = v8;
+        v9 = manager[3];
+        manager[3] = v8;
 
-        [a1[3] activate];
+        [manager[3] activate];
       }
     }
   }
 
-  return a1;
+  return manager;
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_monitor;
   }
 
   [(STDynamicActivityAttributionManager *)self invalidate];
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = STDynamicActivityAttributionManager;
   [(STDynamicActivityAttributionManager *)&v3 dealloc];
 }
 
-- (id)currentAttributionKeyForClient:(id)a3
+- (id)currentAttributionKeyForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (self)
   {
     v5 = self->_localManager;
     if (v5)
     {
       v6 = v5;
-      v7 = [(STLocalDynamicActivityAttributionManager *)v5 currentAttributionKeyForClient:v4];
+      localizationKey = [(STLocalDynamicActivityAttributionManager *)v5 currentAttributionKeyForClient:clientCopy];
       goto LABEL_6;
     }
 
@@ -99,22 +99,22 @@
   }
 
   v9 = monitor;
-  v10 = [(STDynamicActivityAttributionMonitor *)v9 currentAttributions];
+  currentAttributions = [(STDynamicActivityAttributionMonitor *)v9 currentAttributions];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70__STDynamicActivityAttributionManager_currentAttributionKeyForClient___block_invoke;
   v14[3] = &unk_1E85DDDA0;
-  v11 = v4;
+  v11 = clientCopy;
 
   v15 = v11;
-  v12 = [v10 bs_firstObjectPassingTest:v14];
+  v12 = [currentAttributions bs_firstObjectPassingTest:v14];
 
-  v7 = [v12 localizationKey];
+  localizationKey = [v12 localizationKey];
 
   v6 = v15;
 LABEL_6:
 
-  return v7;
+  return localizationKey;
 }
 
 uint64_t __70__STDynamicActivityAttributionManager_currentAttributionKeyForClient___block_invoke(uint64_t a1, void *a2)
@@ -126,16 +126,16 @@ uint64_t __70__STDynamicActivityAttributionManager_currentAttributionKeyForClien
   return v5;
 }
 
-- (id)currentAttributedAppForClient:(id)a3
+- (id)currentAttributedAppForClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   if (self)
   {
     v5 = self->_localManager;
     if (v5)
     {
       v6 = v5;
-      v7 = [(STLocalDynamicActivityAttributionManager *)v5 currentAttributedAppForClient:v4];
+      bundleIdentifier = [(STLocalDynamicActivityAttributionManager *)v5 currentAttributedAppForClient:clientCopy];
       goto LABEL_6;
     }
 
@@ -148,22 +148,22 @@ uint64_t __70__STDynamicActivityAttributionManager_currentAttributionKeyForClien
   }
 
   v9 = monitor;
-  v10 = [(STDynamicActivityAttributionMonitor *)v9 currentAttributions];
+  currentAttributions = [(STDynamicActivityAttributionMonitor *)v9 currentAttributions];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __69__STDynamicActivityAttributionManager_currentAttributedAppForClient___block_invoke;
   v14[3] = &unk_1E85DDDA0;
-  v11 = v4;
+  v11 = clientCopy;
 
   v15 = v11;
-  v12 = [v10 bs_firstObjectPassingTest:v14];
+  v12 = [currentAttributions bs_firstObjectPassingTest:v14];
 
-  v7 = [v12 bundleIdentifier];
+  bundleIdentifier = [v12 bundleIdentifier];
 
   v6 = v15;
 LABEL_6:
 
-  return v7;
+  return bundleIdentifier;
 }
 
 uint64_t __69__STDynamicActivityAttributionManager_currentAttributedAppForClient___block_invoke(uint64_t a1, void *a2)
@@ -175,28 +175,28 @@ uint64_t __69__STDynamicActivityAttributionManager_currentAttributedAppForClient
   return v5;
 }
 
-- (id)currentAttributionForClient:(id *)a3
+- (id)currentAttributionForClient:(id *)client
 {
   if (self)
   {
-    v4 = self;
+    selfCopy = self;
     v5 = self->_localManager;
     if (v5)
     {
       v6 = v5;
-      v7 = *&a3->var0[4];
-      v11 = *a3->var0;
+      v7 = *&client->var0[4];
+      v11 = *client->var0;
       v12 = v7;
       v8 = [(STLocalDynamicActivityAttributionManager *)v5 currentAttributionForClient:&v11];
 
       goto LABEL_6;
     }
 
-    self = v4->_monitor;
+    self = selfCopy->_monitor;
   }
 
-  v9 = *&a3->var0[4];
-  v11 = *a3->var0;
+  v9 = *&client->var0[4];
+  v11 = *client->var0;
   v12 = v9;
   v8 = [(STDynamicActivityAttributionManager *)self attributionForClient:&v11];
 LABEL_6:
@@ -204,16 +204,16 @@ LABEL_6:
   return v8;
 }
 
-- (id)currentAttributionForAttribution:(id)a3
+- (id)currentAttributionForAttribution:(id)attribution
 {
-  v4 = a3;
+  attributionCopy = attribution;
   if (self)
   {
     v5 = self->_localManager;
     if (v5)
     {
       v6 = v5;
-      v7 = [(STLocalDynamicActivityAttributionManager *)v5 currentAttributionForAttribution:v4];
+      v7 = [(STLocalDynamicActivityAttributionManager *)v5 currentAttributionForAttribution:attributionCopy];
 
       goto LABEL_6;
     }
@@ -226,92 +226,92 @@ LABEL_6:
     monitor = 0;
   }
 
-  v7 = [(STDynamicActivityAttributionMonitor *)monitor attributionForAttribution:v4];
+  v7 = [(STDynamicActivityAttributionMonitor *)monitor attributionForAttribution:attributionCopy];
 LABEL_6:
 
   return v7;
 }
 
-- (void)setLocalizableAttributionKey:(id)a3 andApplication:(id)a4 forClient:(id)a5
+- (void)setLocalizableAttributionKey:(id)key andApplication:(id)application forClient:(id)client
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
+  keyCopy = key;
+  applicationCopy = application;
+  clientCopy = client;
   if (self)
   {
     v10 = self->_localManager;
     if (v10)
     {
       v11 = v10;
-      [(STLocalDynamicActivityAttributionManager *)v10 setLocalizableAttributionKey:v12 andApplication:v8 forClient:v9];
+      [(STLocalDynamicActivityAttributionManager *)v10 setLocalizableAttributionKey:keyCopy andApplication:applicationCopy forClient:clientCopy];
     }
   }
 }
 
-- (void)setAttributionLocalizableKey:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5
+- (void)setAttributionLocalizableKey:(id)key maskingClientAuditToken:(id *)token forClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  keyCopy = key;
+  clientCopy = client;
   if (self)
   {
     v10 = self->_localManager;
     if (v10)
     {
       v11 = v10;
-      v12 = *&a4->var0[4];
-      v13[0] = *a4->var0;
+      v12 = *&token->var0[4];
+      v13[0] = *token->var0;
       v13[1] = v12;
-      [(STLocalDynamicActivityAttributionManager *)v10 setAttributionLocalizableKey:v8 maskingClientAuditToken:v13 forClient:v9];
+      [(STLocalDynamicActivityAttributionManager *)v10 setAttributionLocalizableKey:keyCopy maskingClientAuditToken:v13 forClient:clientCopy];
     }
   }
 }
 
-- (void)setAttributionStringWithFormat:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5
+- (void)setAttributionStringWithFormat:(id)format maskingClientAuditToken:(id *)token forClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  formatCopy = format;
+  clientCopy = client;
   if (self)
   {
     v10 = self->_localManager;
     if (v10)
     {
       v11 = v10;
-      v12 = *&a4->var0[4];
-      v13[0] = *a4->var0;
+      v12 = *&token->var0[4];
+      v13[0] = *token->var0;
       v13[1] = v12;
-      [(STLocalDynamicActivityAttributionManager *)v10 setAttributionStringWithFormat:v8 maskingClientAuditToken:v13 forClient:v9];
+      [(STLocalDynamicActivityAttributionManager *)v10 setAttributionStringWithFormat:formatCopy maskingClientAuditToken:v13 forClient:clientCopy];
     }
   }
 }
 
-- (void)setAttributionWebsiteString:(id)a3 maskingClientAuditToken:(id *)a4 forClient:(id)a5
+- (void)setAttributionWebsiteString:(id)string maskingClientAuditToken:(id *)token forClient:(id)client
 {
-  v8 = a3;
-  v9 = a5;
+  stringCopy = string;
+  clientCopy = client;
   if (self)
   {
     v10 = self->_localManager;
     if (v10)
     {
       v11 = v10;
-      v12 = *&a4->var0[4];
-      v13[0] = *a4->var0;
+      v12 = *&token->var0[4];
+      v13[0] = *token->var0;
       v13[1] = v12;
-      [(STLocalDynamicActivityAttributionManager *)v10 setAttributionWebsiteString:v8 maskingClientAuditToken:v13 forClient:v9];
+      [(STLocalDynamicActivityAttributionManager *)v10 setAttributionWebsiteString:stringCopy maskingClientAuditToken:v13 forClient:clientCopy];
     }
   }
 }
 
-- (void)subscribeToUpdates:(id)a3
+- (void)subscribeToUpdates:(id)updates
 {
-  v4 = a3;
+  updatesCopy = updates;
   if (self)
   {
     v5 = self->_localManager;
     if (v5)
     {
       v6 = v5;
-      [(STLocalDynamicActivityAttributionManager *)v5 subscribeToUpdates:v4];
+      [(STLocalDynamicActivityAttributionManager *)v5 subscribeToUpdates:updatesCopy];
       goto LABEL_10;
     }
 
@@ -329,7 +329,7 @@ LABEL_6:
 
   v6 = lock_registeredClients;
   v9 = [(NSMutableSet *)v6 count];
-  [(NSMutableSet *)v6 addObject:v4];
+  [(NSMutableSet *)v6 addObject:updatesCopy];
   os_unfair_lock_unlock(p_clientLock);
   if (self)
   {
@@ -355,15 +355,15 @@ LABEL_6:
     objc_destroyWeak(&v19);
   }
 
-  v12 = [(STDynamicActivityAttributionMonitor *)v11 currentAttributions];
+  currentAttributions = [(STDynamicActivityAttributionMonitor *)v11 currentAttributions];
   v13 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__STDynamicActivityAttributionManager_subscribeToUpdates___block_invoke_2;
   block[3] = &unk_1E85DDD00;
-  v16 = v4;
-  v17 = v12;
-  v14 = v12;
+  v16 = updatesCopy;
+  v17 = currentAttributions;
+  v14 = currentAttributions;
   dispatch_async(v13, block);
 
   objc_destroyWeak(&location);
@@ -422,16 +422,16 @@ void __58__STDynamicActivityAttributionManager_subscribeToUpdates___block_invoke
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unsubscribeFromUpdates:(id)a3
+- (void)unsubscribeFromUpdates:(id)updates
 {
-  v10 = a3;
+  updatesCopy = updates;
   if (self)
   {
     v4 = self->_localManager;
     if (v4)
     {
       v5 = v4;
-      [(STLocalDynamicActivityAttributionManager *)v4 unsubscribeFromUpdates:v10];
+      [(STLocalDynamicActivityAttributionManager *)v4 unsubscribeFromUpdates:updatesCopy];
       goto LABEL_9;
     }
 
@@ -448,7 +448,7 @@ void __58__STDynamicActivityAttributionManager_subscribeToUpdates___block_invoke
   }
 
   v5 = lock_registeredClients;
-  [(NSMutableSet *)v5 removeObject:v10];
+  [(NSMutableSet *)v5 removeObject:updatesCopy];
   v8 = [(NSMutableSet *)v5 count];
   os_unfair_lock_unlock(p_clientLock);
   if (!v8)

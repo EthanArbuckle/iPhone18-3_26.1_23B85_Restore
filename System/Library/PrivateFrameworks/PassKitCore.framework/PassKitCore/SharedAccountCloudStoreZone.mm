@@ -1,24 +1,24 @@
 @interface SharedAccountCloudStoreZone
-+ (id)_predicateForSharedAccountCloudStorePID:(int64_t)a3;
-+ (id)_predicateForSharedAccountCloudStoreZoneWithAccountIdentifier:(id)a3 zoneName:(id)a4 access:(unint64_t)a5 sharedAccountCloudStorePID:(int64_t)a6;
++ (id)_predicateForSharedAccountCloudStorePID:(int64_t)d;
++ (id)_predicateForSharedAccountCloudStoreZoneWithAccountIdentifier:(id)identifier zoneName:(id)name access:(unint64_t)access sharedAccountCloudStorePID:(int64_t)d;
 + (id)_propertySettersForSharedAccountCloudStoreZone;
-+ (id)_sharedAccountCloudStoreZoneWithAccountIdentifier:(id)a3 zoneName:(id)a4 access:(unint64_t)a5 sharedAccountCloudStorePID:(int64_t)a6 inDatabase:(id)a7;
-+ (id)_sharedAccountCloudStoreZonesWithQuery:(id)a3;
-+ (id)associationPropertyForEntityClass:(Class)a3;
-+ (id)insertOrUpdateSharedAccountCloudStoreZones:(id)a3 forSharedAccountCloudStorePID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)sharedAccountCloudStoreZonesForSharedAccountCloudStorePID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deleteEntitiesForSharedAccountCloudStore:(id)a3 inDatabase:(id)a4;
-- (SharedAccountCloudStoreZone)initWithSharedAccountCloudStoreZone:(id)a3 forSharedAccountCloudStorePID:(int64_t)a4 inDatabase:(id)a5;
-- (id)_commonDictionaryForSharedAccountCloudStoreZone:(id)a3 forSharedAccountCloudStorePID:(int64_t)a4;
++ (id)_sharedAccountCloudStoreZoneWithAccountIdentifier:(id)identifier zoneName:(id)name access:(unint64_t)access sharedAccountCloudStorePID:(int64_t)d inDatabase:(id)database;
++ (id)_sharedAccountCloudStoreZonesWithQuery:(id)query;
++ (id)associationPropertyForEntityClass:(Class)class;
++ (id)insertOrUpdateSharedAccountCloudStoreZones:(id)zones forSharedAccountCloudStorePID:(int64_t)d inDatabase:(id)database;
++ (id)sharedAccountCloudStoreZonesForSharedAccountCloudStorePID:(int64_t)d inDatabase:(id)database;
++ (void)deleteEntitiesForSharedAccountCloudStore:(id)store inDatabase:(id)database;
+- (SharedAccountCloudStoreZone)initWithSharedAccountCloudStoreZone:(id)zone forSharedAccountCloudStorePID:(int64_t)d inDatabase:(id)database;
+- (id)_commonDictionaryForSharedAccountCloudStoreZone:(id)zone forSharedAccountCloudStorePID:(int64_t)d;
 - (id)sharedAccountCloudStoreZone;
-- (void)updateSharedAccountCloudStoreZone:(id)a3 forSharedAccountCloudStorePID:(int64_t)a4;
+- (void)updateSharedAccountCloudStoreZone:(id)zone forSharedAccountCloudStorePID:(int64_t)d;
 @end
 
 @implementation SharedAccountCloudStoreZone
 
-+ (id)associationPropertyForEntityClass:(Class)a3
++ (id)associationPropertyForEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return @"peanuts_pid";
   }
@@ -29,16 +29,16 @@
   }
 }
 
-+ (id)insertOrUpdateSharedAccountCloudStoreZones:(id)a3 forSharedAccountCloudStorePID:(int64_t)a4 inDatabase:(id)a5
++ (id)insertOrUpdateSharedAccountCloudStoreZones:(id)zones forSharedAccountCloudStorePID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a3;
-  v9 = a5;
+  zonesCopy = zones;
+  databaseCopy = database;
   v21 = objc_alloc_init(NSMutableArray);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = v8;
+  obj = zonesCopy;
   v10 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v10)
   {
@@ -54,18 +54,18 @@
         }
 
         v14 = *(*(&v22 + 1) + 8 * i);
-        v15 = [v14 accountIdentifier];
-        v16 = [v14 zoneName];
-        v17 = [a1 _sharedAccountCloudStoreZoneWithAccountIdentifier:v15 zoneName:v16 access:objc_msgSend(v14 sharedAccountCloudStorePID:"access") inDatabase:{a4, v9}];
+        accountIdentifier = [v14 accountIdentifier];
+        zoneName = [v14 zoneName];
+        v17 = [self _sharedAccountCloudStoreZoneWithAccountIdentifier:accountIdentifier zoneName:zoneName access:objc_msgSend(v14 sharedAccountCloudStorePID:"access") inDatabase:{d, databaseCopy}];
 
         if (v17)
         {
-          [v17 updateSharedAccountCloudStoreZone:v14 forSharedAccountCloudStorePID:a4];
+          [v17 updateSharedAccountCloudStoreZone:v14 forSharedAccountCloudStorePID:d];
         }
 
         else
         {
-          v17 = [[a1 alloc] initWithSharedAccountCloudStoreZone:v14 forSharedAccountCloudStorePID:a4 inDatabase:v9];
+          v17 = [[self alloc] initWithSharedAccountCloudStoreZone:v14 forSharedAccountCloudStorePID:d inDatabase:databaseCopy];
         }
 
         [v21 addObject:v17];
@@ -82,33 +82,33 @@
   return v18;
 }
 
-- (SharedAccountCloudStoreZone)initWithSharedAccountCloudStoreZone:(id)a3 forSharedAccountCloudStorePID:(int64_t)a4 inDatabase:(id)a5
+- (SharedAccountCloudStoreZone)initWithSharedAccountCloudStoreZone:(id)zone forSharedAccountCloudStorePID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [(SharedAccountCloudStoreZone *)self _commonDictionaryForSharedAccountCloudStoreZone:a3 forSharedAccountCloudStorePID:a4];
-  v10 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:v8];
+  databaseCopy = database;
+  v9 = [(SharedAccountCloudStoreZone *)self _commonDictionaryForSharedAccountCloudStoreZone:zone forSharedAccountCloudStorePID:d];
+  v10 = [(SQLiteEntity *)self initWithPropertyValues:v9 inDatabase:databaseCopy];
 
   return v10;
 }
 
-- (void)updateSharedAccountCloudStoreZone:(id)a3 forSharedAccountCloudStorePID:(int64_t)a4
+- (void)updateSharedAccountCloudStoreZone:(id)zone forSharedAccountCloudStorePID:(int64_t)d
 {
-  v5 = [(SharedAccountCloudStoreZone *)self _commonDictionaryForSharedAccountCloudStoreZone:a3 forSharedAccountCloudStorePID:a4];
+  v5 = [(SharedAccountCloudStoreZone *)self _commonDictionaryForSharedAccountCloudStoreZone:zone forSharedAccountCloudStorePID:d];
   [(SQLiteEntity *)self setValuesWithDictionary:v5];
 }
 
-+ (id)_predicateForSharedAccountCloudStoreZoneWithAccountIdentifier:(id)a3 zoneName:(id)a4 access:(unint64_t)a5 sharedAccountCloudStorePID:(int64_t)a6
++ (id)_predicateForSharedAccountCloudStoreZoneWithAccountIdentifier:(id)identifier zoneName:(id)name access:(unint64_t)access sharedAccountCloudStorePID:(int64_t)d
 {
-  v10 = a4;
-  v11 = [SQLiteComparisonPredicate predicateWithProperty:@"account_identifier" equalToValue:a3];
+  nameCopy = name;
+  v11 = [SQLiteComparisonPredicate predicateWithProperty:@"account_identifier" equalToValue:identifier];
   v19[0] = v11;
-  v12 = [SQLiteComparisonPredicate predicateWithProperty:@"zone_name" equalToValue:v10];
+  v12 = [SQLiteComparisonPredicate predicateWithProperty:@"zone_name" equalToValue:nameCopy];
 
   v19[1] = v12;
-  v13 = [NSNumber numberWithUnsignedInteger:a5];
+  v13 = [NSNumber numberWithUnsignedInteger:access];
   v14 = [SQLiteComparisonPredicate predicateWithProperty:@"access" equalToValue:v13];
   v19[2] = v14;
-  v15 = [a1 _predicateForSharedAccountCloudStorePID:a6];
+  v15 = [self _predicateForSharedAccountCloudStorePID:d];
   v19[3] = v15;
   v16 = [NSArray arrayWithObjects:v19 count:4];
   v17 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v16];
@@ -116,9 +116,9 @@
   return v17;
 }
 
-+ (id)_predicateForSharedAccountCloudStorePID:(int64_t)a3
++ (id)_predicateForSharedAccountCloudStorePID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"peanuts_pid" equalToValue:v3];
   v8 = v4;
   v5 = [NSArray arrayWithObjects:&v8 count:1];
@@ -127,31 +127,31 @@
   return v6;
 }
 
-+ (void)deleteEntitiesForSharedAccountCloudStore:(id)a3 inDatabase:(id)a4
++ (void)deleteEntitiesForSharedAccountCloudStore:(id)store inDatabase:(id)database
 {
-  v6 = a4;
-  v8 = [a1 _predicateForSharedAccountCloudStorePID:{objc_msgSend(a3, "persistentID")}];
-  v7 = [a1 queryWithDatabase:v6 predicate:v8];
+  databaseCopy = database;
+  v8 = [self _predicateForSharedAccountCloudStorePID:{objc_msgSend(store, "persistentID")}];
+  v7 = [self queryWithDatabase:databaseCopy predicate:v8];
 
   [v7 deleteAllEntities];
 }
 
-+ (id)sharedAccountCloudStoreZonesForSharedAccountCloudStorePID:(int64_t)a3 inDatabase:(id)a4
++ (id)sharedAccountCloudStoreZonesForSharedAccountCloudStorePID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForSharedAccountCloudStorePID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForSharedAccountCloudStorePID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _sharedAccountCloudStoreZonesWithQuery:v8];
+  v9 = [self _sharedAccountCloudStoreZonesWithQuery:v8];
 
   return v9;
 }
 
-+ (id)_sharedAccountCloudStoreZoneWithAccountIdentifier:(id)a3 zoneName:(id)a4 access:(unint64_t)a5 sharedAccountCloudStorePID:(int64_t)a6 inDatabase:(id)a7
++ (id)_sharedAccountCloudStoreZoneWithAccountIdentifier:(id)identifier zoneName:(id)name access:(unint64_t)access sharedAccountCloudStorePID:(int64_t)d inDatabase:(id)database
 {
-  v12 = a7;
-  v13 = [a1 _predicateForSharedAccountCloudStoreZoneWithAccountIdentifier:a3 zoneName:a4 access:a5 sharedAccountCloudStorePID:a6];
-  v14 = [a1 anyInDatabase:v12 predicate:v13];
+  databaseCopy = database;
+  v13 = [self _predicateForSharedAccountCloudStoreZoneWithAccountIdentifier:identifier zoneName:name access:access sharedAccountCloudStorePID:d];
+  v14 = [self anyInDatabase:databaseCopy predicate:v13];
 
   return v14;
 }
@@ -159,18 +159,18 @@
 - (id)sharedAccountCloudStoreZone
 {
   v3 = objc_alloc_init(PKSharedAccountCloudStoreZone);
-  v4 = [objc_opt_class() _propertySettersForSharedAccountCloudStoreZone];
-  v5 = [v4 allKeys];
+  _propertySettersForSharedAccountCloudStoreZone = [objc_opt_class() _propertySettersForSharedAccountCloudStoreZone];
+  allKeys = [_propertySettersForSharedAccountCloudStoreZone allKeys];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000CDA70;
   v11[3] = &unk_10083BEE0;
   v11[4] = self;
-  v12 = v4;
+  v12 = _propertySettersForSharedAccountCloudStoreZone;
   v6 = v3;
   v13 = v6;
-  v7 = v4;
-  [(SQLiteEntity *)self getValuesForProperties:v5 withApplier:v11];
+  v7 = _propertySettersForSharedAccountCloudStoreZone;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v11];
 
   v8 = v13;
   v9 = v6;
@@ -178,51 +178,51 @@
   return v6;
 }
 
-+ (id)_sharedAccountCloudStoreZonesWithQuery:(id)a3
++ (id)_sharedAccountCloudStoreZonesWithQuery:(id)query
 {
-  v4 = a3;
-  v5 = [a1 _propertySettersForSharedAccountCloudStoreZone];
+  queryCopy = query;
+  _propertySettersForSharedAccountCloudStoreZone = [self _propertySettersForSharedAccountCloudStoreZone];
   v6 = objc_alloc_init(NSMutableArray);
-  v7 = [v5 allKeys];
+  allKeys = [_propertySettersForSharedAccountCloudStoreZone allKeys];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000CDBF8;
   v12[3] = &unk_10083C998;
   v14 = v6;
-  v15 = a1;
-  v13 = v5;
+  selfCopy = self;
+  v13 = _propertySettersForSharedAccountCloudStoreZone;
   v8 = v6;
-  v9 = v5;
-  [v4 enumeratePersistentIDsAndProperties:v7 usingBlock:v12];
+  v9 = _propertySettersForSharedAccountCloudStoreZone;
+  [queryCopy enumeratePersistentIDsAndProperties:allKeys usingBlock:v12];
 
   v10 = [v8 copy];
 
   return v10;
 }
 
-- (id)_commonDictionaryForSharedAccountCloudStoreZone:(id)a3 forSharedAccountCloudStorePID:(int64_t)a4
+- (id)_commonDictionaryForSharedAccountCloudStoreZone:(id)zone forSharedAccountCloudStorePID:(int64_t)d
 {
-  v5 = a3;
+  zoneCopy = zone;
   v6 = +[NSMutableDictionary dictionary];
-  v7 = [NSNumber numberWithLongLong:a4];
+  v7 = [NSNumber numberWithLongLong:d];
   [v6 setObjectOrNull:v7 forKey:@"peanuts_pid"];
 
-  v8 = [v5 zoneName];
-  [v6 setObjectOrNull:v8 forKey:@"zone_name"];
+  zoneName = [zoneCopy zoneName];
+  [v6 setObjectOrNull:zoneName forKey:@"zone_name"];
 
-  v9 = [v5 accountIdentifier];
-  [v6 setObjectOrNull:v9 forKey:@"account_identifier"];
+  accountIdentifier = [zoneCopy accountIdentifier];
+  [v6 setObjectOrNull:accountIdentifier forKey:@"account_identifier"];
 
-  [v6 setInteger:objc_msgSend(v5 forKey:{"accountType"), @"account_type"}];
-  [v6 setInteger:objc_msgSend(v5 forKey:{"access"), @"access"}];
-  [v6 setInteger:objc_msgSend(v5 forKey:{"mode"), @"mode"}];
-  v10 = [v5 originatorAltDSID];
-  [v6 setObjectOrNull:v10 forKey:@"a"];
+  [v6 setInteger:objc_msgSend(zoneCopy forKey:{"accountType"), @"account_type"}];
+  [v6 setInteger:objc_msgSend(zoneCopy forKey:{"access"), @"access"}];
+  [v6 setInteger:objc_msgSend(zoneCopy forKey:{"mode"), @"mode"}];
+  originatorAltDSID = [zoneCopy originatorAltDSID];
+  [v6 setObjectOrNull:originatorAltDSID forKey:@"a"];
 
-  v11 = [v5 sharedUsersAltDSIDs];
+  sharedUsersAltDSIDs = [zoneCopy sharedUsersAltDSIDs];
 
-  v12 = [v11 allObjects];
-  v13 = [v12 componentsJoinedByString:{@", "}];
+  allObjects = [sharedUsersAltDSIDs allObjects];
+  v13 = [allObjects componentsJoinedByString:{@", "}];
   [v6 setObjectOrNull:v13 forKey:@"b"];
 
   return v6;

@@ -1,10 +1,10 @@
 @interface NRPBMigrationSetKeyResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBMigrationSetKeyResponse
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = NRPBMigrationSetKeyResponse;
   v3 = [(NRPBMigrationSetKeyResponse *)&v7 description];
-  v4 = [(NRPBMigrationSetKeyResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRPBMigrationSetKeyResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -32,7 +32,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -41,9 +41,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 2) = self->_errorCode;
@@ -53,18 +53,18 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
-  v5 = (*(v4 + 12) & 1) == 0;
+  v5 = (*(equalCopy + 12) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 12) & 1) != 0 && self->_errorCode == *(v4 + 2))
+    if ((*(equalCopy + 12) & 1) != 0 && self->_errorCode == *(equalCopy + 2))
     {
       v5 = 1;
       goto LABEL_7;

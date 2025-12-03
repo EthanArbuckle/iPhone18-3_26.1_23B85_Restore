@@ -1,75 +1,75 @@
 @interface GKAchievementDescriptionCacheObject
 - (id)internalRepresentation;
-- (void)updateWithServerRepresentation:(id)a3;
+- (void)updateWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKAchievementDescriptionCacheObject
 
-- (void)updateWithServerRepresentation:(id)a3
+- (void)updateWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v5 = dispatch_get_current_queue();
   if (dispatch_queue_get_specific(v5, @"com.apple.gamed.cachequeue") != @"com.apple.gamed.cachequeue")
   {
     v6 = +[NSThread callStackSymbols];
     v7 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKAchievementDescriptionCacheObject updateWithServerRepresentation:]", v6];
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v9 = [v8 lastPathComponent];
-    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKAchievementDescriptionCacheObject updateWithServerRepresentation:]", [v9 UTF8String], 1797);
+    lastPathComponent = [v8 lastPathComponent];
+    v10 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v7, "-[GKAchievementDescriptionCacheObject updateWithServerRepresentation:]", [lastPathComponent UTF8String], 1797);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v10];
   }
 
   v34.receiver = self;
   v34.super_class = GKAchievementDescriptionCacheObject;
-  [(GKCacheObject *)&v34 updateWithServerRepresentation:v4];
-  v11 = [v4 objectForKey:@"asc-resource-id"];
+  [(GKCacheObject *)&v34 updateWithServerRepresentation:representationCopy];
+  v11 = [representationCopy objectForKey:@"asc-resource-id"];
   [(GKAchievementDescriptionCacheObject *)self setAscResourceID:v11];
 
-  v12 = [v4 objectForKey:@"achievement-id"];
+  v12 = [representationCopy objectForKey:@"achievement-id"];
   [(GKAchievementDescriptionCacheObject *)self setIdentifier:v12];
 
-  v13 = [v4 objectForKey:@"group-achievement-id"];
+  v13 = [representationCopy objectForKey:@"group-achievement-id"];
   [(GKAchievementDescriptionCacheObject *)self setGroupIdentifier:v13];
 
-  v14 = [v4 objectForKey:@"achievement-title"];
+  v14 = [representationCopy objectForKey:@"achievement-title"];
   [(GKAchievementDescriptionCacheObject *)self setTitle:v14];
 
-  v15 = [v4 objectForKey:@"achievement-desc-after"];
+  v15 = [representationCopy objectForKey:@"achievement-desc-after"];
   [(GKAchievementDescriptionCacheObject *)self setAchievedDescription:v15];
 
-  v16 = [v4 objectForKey:@"achievement-desc-before"];
+  v16 = [representationCopy objectForKey:@"achievement-desc-before"];
   [(GKAchievementDescriptionCacheObject *)self setUnachievedDescription:v16];
 
-  v17 = [v4 objectForKey:@"achievement-max-value"];
+  v17 = [representationCopy objectForKey:@"achievement-max-value"];
   [(GKAchievementDescriptionCacheObject *)self setMaximumPoints:v17];
 
-  v18 = [v4 objectForKey:@"achievement-display-unachieved"];
+  v18 = [representationCopy objectForKey:@"achievement-display-unachieved"];
   -[GKAchievementDescriptionCacheObject setHidden:](self, "setHidden:", [v18 BOOLValue] ^ 1);
 
-  v19 = [v4 objectForKey:@"is-recyclable"];
+  v19 = [representationCopy objectForKey:@"is-recyclable"];
   -[GKAchievementDescriptionCacheObject setReplayable:](self, "setReplayable:", [v19 BOOLValue]);
 
-  v20 = [v4 objectForKeyedSubscript:@"activity-vendor-id"];
+  v20 = [representationCopy objectForKeyedSubscript:@"activity-vendor-id"];
   [(GKAchievementDescriptionCacheObject *)self setActivityIdentifier:v20];
 
-  v21 = [v4 objectForKeyedSubscript:@"activity-properties"];
+  v21 = [representationCopy objectForKeyedSubscript:@"activity-properties"];
   if (v21)
   {
     v22 = v21;
-    v23 = [v4 objectForKeyedSubscript:@"activity-properties"];
+    v23 = [representationCopy objectForKeyedSubscript:@"activity-properties"];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v25 = [v4 objectForKeyedSubscript:@"activity-properties"];
+      v25 = [representationCopy objectForKeyedSubscript:@"activity-properties"];
       v26 = [NSDictionary dictionaryWithDictionary:v25];
       [(GKAchievementDescriptionCacheObject *)self setActivityProperties:v26];
     }
   }
 
-  if ([GKAchievementDescriptionCacheObject getIsPrereleaseFromServerRep:v4])
+  if ([GKAchievementDescriptionCacheObject getIsPrereleaseFromServerRep:representationCopy])
   {
     v27 = 2;
   }
@@ -80,7 +80,7 @@
   }
 
   [(GKAchievementDescriptionCacheObject *)self setReleaseState:v27];
-  v28 = [v4 objectForKey:@"percentage-players-earned"];
+  v28 = [representationCopy objectForKey:@"percentage-players-earned"];
   v29 = v28;
   if (v28)
   {
@@ -89,7 +89,7 @@
     [(GKAchievementDescriptionCacheObject *)self setRarityPercent:v31];
   }
 
-  v32 = [v4 objectForKey:@"achievement-image-urls"];
+  v32 = [representationCopy objectForKey:@"achievement-image-urls"];
   if (v32)
   {
     v33 = [(GKCacheObject *)self updateImagesWithImageURLs:v32];
@@ -104,50 +104,50 @@
     v4 = +[NSThread callStackSymbols];
     v5 = [NSString stringWithFormat:@"%s not invoked on managed object context queue at %@", "[GKAchievementDescriptionCacheObject internalRepresentation]", v4];
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKCacheObject.m"];
-    v7 = [v6 lastPathComponent];
-    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKAchievementDescriptionCacheObject internalRepresentation]", [v7 UTF8String], 1827);
+    lastPathComponent = [v6 lastPathComponent];
+    v8 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_queueContext == (__bridge const void * _Nonnull)GKCacheQueueID)\n[%s (%s:%d)]", v5, "-[GKAchievementDescriptionCacheObject internalRepresentation]", [lastPathComponent UTF8String], 1827);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v8];
   }
 
   v9 = +[GKAchievementInternal internalRepresentation];
-  v10 = [(GKAchievementDescriptionCacheObject *)self ascResourceID];
-  [v9 setAscResourceID:v10];
+  ascResourceID = [(GKAchievementDescriptionCacheObject *)self ascResourceID];
+  [v9 setAscResourceID:ascResourceID];
 
-  v11 = [(GKAchievementDescriptionCacheObject *)self identifier];
-  [v9 setIdentifier:v11];
+  identifier = [(GKAchievementDescriptionCacheObject *)self identifier];
+  [v9 setIdentifier:identifier];
 
-  v12 = [(GKAchievementDescriptionCacheObject *)self title];
-  [v9 setTitle:v12];
+  title = [(GKAchievementDescriptionCacheObject *)self title];
+  [v9 setTitle:title];
 
-  v13 = [(GKAchievementDescriptionCacheObject *)self groupIdentifier];
-  [v9 setGroupIdentifier:v13];
+  groupIdentifier = [(GKAchievementDescriptionCacheObject *)self groupIdentifier];
+  [v9 setGroupIdentifier:groupIdentifier];
 
-  v14 = [(GKAchievementDescriptionCacheObject *)self achievedDescription];
-  [v9 setAchievedDescription:v14];
+  achievedDescription = [(GKAchievementDescriptionCacheObject *)self achievedDescription];
+  [v9 setAchievedDescription:achievedDescription];
 
-  v15 = [(GKAchievementDescriptionCacheObject *)self unachievedDescription];
-  [v9 setUnachievedDescription:v15];
+  unachievedDescription = [(GKAchievementDescriptionCacheObject *)self unachievedDescription];
+  [v9 setUnachievedDescription:unachievedDescription];
 
-  v16 = [(GKAchievementDescriptionCacheObject *)self maximumPoints];
-  [v9 setMaximumPoints:{objc_msgSend(v16, "unsignedIntegerValue")}];
+  maximumPoints = [(GKAchievementDescriptionCacheObject *)self maximumPoints];
+  [v9 setMaximumPoints:{objc_msgSend(maximumPoints, "unsignedIntegerValue")}];
 
   [v9 setHidden:{-[GKAchievementDescriptionCacheObject hidden](self, "hidden")}];
   [v9 setReplayable:{-[GKAchievementDescriptionCacheObject replayable](self, "replayable")}];
-  v17 = [(GKCacheObject *)self imageURLDictionary];
-  [v9 setIcons:v17];
+  imageURLDictionary = [(GKCacheObject *)self imageURLDictionary];
+  [v9 setIcons:imageURLDictionary];
 
-  v18 = [(GKAchievementDescriptionCacheObject *)self rarityPercent];
-  [v9 setRarityPercent:v18];
+  rarityPercent = [(GKAchievementDescriptionCacheObject *)self rarityPercent];
+  [v9 setRarityPercent:rarityPercent];
 
-  v19 = [(GKAchievementDescriptionCacheObject *)self activityIdentifier];
-  [v9 setActivityIdentifier:v19];
+  activityIdentifier = [(GKAchievementDescriptionCacheObject *)self activityIdentifier];
+  [v9 setActivityIdentifier:activityIdentifier];
 
-  v20 = [(GKAchievementDescriptionCacheObject *)self activityProperties];
-  if (v20)
+  activityProperties = [(GKAchievementDescriptionCacheObject *)self activityProperties];
+  if (activityProperties)
   {
-    v21 = [(GKAchievementDescriptionCacheObject *)self activityProperties];
-    [v9 setActivityProperties:v21];
+    activityProperties2 = [(GKAchievementDescriptionCacheObject *)self activityProperties];
+    [v9 setActivityProperties:activityProperties2];
   }
 
   else

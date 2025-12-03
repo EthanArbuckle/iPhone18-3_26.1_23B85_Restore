@@ -3,12 +3,12 @@
 - (CGPoint)center;
 - (CGRect)bounds;
 - (OKDynamicItemProxy)init;
-- (OKDynamicItemProxy)initWithProxiedObject:(id)a3;
+- (OKDynamicItemProxy)initWithProxiedObject:(id)object;
 - (void)dealloc;
-- (void)enforceInitialCenter:(CGPoint)a3 size:(CGSize)a4 andTransform:(CGAffineTransform *)a5;
+- (void)enforceInitialCenter:(CGPoint)center size:(CGSize)size andTransform:(CGAffineTransform *)transform;
 - (void)resetInitialValues;
-- (void)setCenter:(CGPoint)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setCenter:(CGPoint)center;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation OKDynamicItemProxy
@@ -41,13 +41,13 @@
   return v3;
 }
 
-- (OKDynamicItemProxy)initWithProxiedObject:(id)a3
+- (OKDynamicItemProxy)initWithProxiedObject:(id)object
 {
   v4 = [(OKDynamicItemProxy *)self init];
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_proxiedObject, a3);
+    objc_storeWeak(&v4->_proxiedObject, object);
   }
 
   return v5;
@@ -91,13 +91,13 @@
 
 - (void)resetInitialValues
 {
-  v3 = [(OKDynamicItemProxiedObject *)[(OKDynamicItemProxy *)self proxiedObject] parentWidgetView];
+  parentWidgetView = [(OKDynamicItemProxiedObject *)[(OKDynamicItemProxy *)self proxiedObject] parentWidgetView];
   [(OKDynamicItemProxiedObject *)[(OKDynamicItemProxy *)self proxiedObject] center];
   v6 = v4;
   v7 = v5;
-  if (v3)
+  if (parentWidgetView)
   {
-    [v3 convertPoint:objc_msgSend(objc_msgSend(v3 toView:{"pageViewController"), "view"), v4, v5}];
+    [parentWidgetView convertPoint:objc_msgSend(objc_msgSend(parentWidgetView toView:{"pageViewController"), "view"), v4, v5}];
     v6 = v8;
     v7 = v9;
   }
@@ -110,10 +110,10 @@
   self->_bounds.size.width = v12;
   self->_bounds.size.height = v13;
   memset(&v21, 0, sizeof(v21));
-  v14 = [(OKDynamicItemProxy *)self proxiedObject];
-  if (v14)
+  proxiedObject = [(OKDynamicItemProxy *)self proxiedObject];
+  if (proxiedObject)
   {
-    [(OKDynamicItemProxiedObject *)v14 dynamicsTransform];
+    [(OKDynamicItemProxiedObject *)proxiedObject dynamicsTransform];
   }
 
   else
@@ -121,20 +121,20 @@
     memset(&v21, 0, sizeof(v21));
   }
 
-  v15 = [(OKDynamicItemProxiedObject *)[(OKDynamicItemProxy *)self proxiedObject] parentWidgetView];
-  if (v15)
+  parentWidgetView2 = [(OKDynamicItemProxiedObject *)[(OKDynamicItemProxy *)self proxiedObject] parentWidgetView];
+  if (parentWidgetView2)
   {
-    v16 = v15;
+    parentWidgetView3 = parentWidgetView2;
     do
     {
-      [v16 transform];
+      [parentWidgetView3 transform];
       v18 = v21;
       CGAffineTransformConcat(&v20, &t1, &v18);
       v21 = v20;
-      v16 = [v16 parentWidgetView];
+      parentWidgetView3 = [parentWidgetView3 parentWidgetView];
     }
 
-    while (v16);
+    while (parentWidgetView3);
   }
 
   v17 = *&v21.c;
@@ -143,73 +143,73 @@
   *&self->_transform.tx = *&v21.tx;
 }
 
-- (void)enforceInitialCenter:(CGPoint)a3 size:(CGSize)a4 andTransform:(CGAffineTransform *)a5
+- (void)enforceInitialCenter:(CGPoint)center size:(CGSize)size andTransform:(CGAffineTransform *)transform
 {
-  self->_center = a3;
+  self->_center = center;
   self->_bounds.origin.x = 0.0;
   self->_bounds.origin.y = 0.0;
-  self->_bounds.size = a4;
-  v5 = *&a5->a;
-  v6 = *&a5->c;
-  *&self->_transform.tx = *&a5->tx;
+  self->_bounds.size = size;
+  v5 = *&transform->a;
+  v6 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v6;
   *&self->_transform.a = v5;
 }
 
-- (void)setCenter:(CGPoint)a3
+- (void)setCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(OKDynamicItemProxiedObject *)[(OKDynamicItemProxy *)self proxiedObject] parentWidgetView];
+  y = center.y;
+  x = center.x;
+  parentWidgetView = [(OKDynamicItemProxiedObject *)[(OKDynamicItemProxy *)self proxiedObject] parentWidgetView];
   self->_center.x = x;
   self->_center.y = y;
-  if (v6)
+  if (parentWidgetView)
   {
-    [v6 convertPoint:objc_msgSend(objc_msgSend(v6 fromView:{"pageViewController"), "view"), x, y}];
+    [parentWidgetView convertPoint:objc_msgSend(objc_msgSend(parentWidgetView fromView:{"pageViewController"), "view"), x, y}];
     x = v7;
     y = v8;
   }
 
-  v9 = [(OKDynamicItemProxy *)self proxiedObject];
+  proxiedObject = [(OKDynamicItemProxy *)self proxiedObject];
 
-  [(OKDynamicItemProxiedObject *)v9 setCenter:x, y];
+  [(OKDynamicItemProxiedObject *)proxiedObject setCenter:x, y];
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v5 = *&a3->a;
-  v6 = *&a3->c;
-  *&self->_transform.tx = *&a3->tx;
+  v5 = *&transform->a;
+  v6 = *&transform->c;
+  *&self->_transform.tx = *&transform->tx;
   *&self->_transform.c = v6;
   *&self->_transform.a = v5;
   v7 = *(MEMORY[0x277CBF2C0] + 16);
   *&v15.a = *MEMORY[0x277CBF2C0];
   *&v15.c = v7;
   *&v15.tx = *(MEMORY[0x277CBF2C0] + 32);
-  v8 = [(OKDynamicItemProxiedObject *)[(OKDynamicItemProxy *)self proxiedObject] parentWidgetView];
-  if (v8)
+  parentWidgetView = [(OKDynamicItemProxiedObject *)[(OKDynamicItemProxy *)self proxiedObject] parentWidgetView];
+  if (parentWidgetView)
   {
-    v9 = v8;
+    parentWidgetView2 = parentWidgetView;
     do
     {
-      [v9 transform];
+      [parentWidgetView2 transform];
       t1 = v15;
       CGAffineTransformConcat(&v15, &t1, &t2);
-      v9 = [v9 parentWidgetView];
+      parentWidgetView2 = [parentWidgetView2 parentWidgetView];
     }
 
-    while (v9);
+    while (parentWidgetView2);
   }
 
-  v10 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v10 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v10;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   t1 = v15;
   CGAffineTransformConcat(&v12, &t2, &t1);
-  v11 = [(OKDynamicItemProxy *)self proxiedObject];
+  proxiedObject = [(OKDynamicItemProxy *)self proxiedObject];
   t2 = v12;
-  [(OKDynamicItemProxiedObject *)v11 setDynamicsTransform:&t2];
+  [(OKDynamicItemProxiedObject *)proxiedObject setDynamicsTransform:&t2];
 }
 
 - (CGPoint)center

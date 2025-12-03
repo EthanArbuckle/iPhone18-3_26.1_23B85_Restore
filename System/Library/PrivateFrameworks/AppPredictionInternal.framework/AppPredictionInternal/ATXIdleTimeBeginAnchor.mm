@@ -1,12 +1,12 @@
 @interface ATXIdleTimeBeginAnchor
 + (double)minimumSecondsForBeingIdle;
-+ (double)weightedAverageOfHoursFromDates:(id)a3;
-+ (id)anchorOccurenceDateFromDuetEvent:(id)a3;
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4;
++ (double)weightedAverageOfHoursFromDates:(id)dates;
++ (id)anchorOccurenceDateFromDuetEvent:(id)event;
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate;
 + (id)filterBlock;
 + (id)predictNextAnchorOccurrenceDate;
 + (id)sampleEvent;
-+ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)a3 enterSelector:(SEL)a4 exitSelector:(SEL)a5;
++ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector;
 @end
 
 @implementation ATXIdleTimeBeginAnchor
@@ -26,7 +26,7 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __37__ATXIdleTimeBeginAnchor_filterBlock__block_invoke;
   aBlock[3] = &__block_descriptor_40_e31_B16__0___ATXGenericEventBase__8l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
 
   return v2;
@@ -58,21 +58,21 @@ BOOL __37__ATXIdleTimeBeginAnchor_filterBlock__block_invoke(uint64_t a1, void *a
   return v11;
 }
 
-+ (id)fetchAnchorOccurrencesBetweenStartDate:(id)a3 endDate:(id)a4
++ (id)fetchAnchorOccurrencesBetweenStartDate:(id)date endDate:(id)endDate
 {
   v5 = MEMORY[0x277CEBC40];
-  v6 = a4;
-  v7 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v8 = objc_alloc_init(v5);
   v9 = objc_opt_new();
-  v10 = [objc_opt_class() filterBlock];
+  filterBlock = [objc_opt_class() filterBlock];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __73__ATXIdleTimeBeginAnchor_fetchAnchorOccurrencesBetweenStartDate_endDate___block_invoke;
   v14[3] = &unk_278598F50;
   v15 = v9;
   v11 = v9;
-  [v8 enumerateDeviceScreenLockedStateEventsFromStartDate:v7 endDate:v6 filterBlock:v10 limit:1000000 ascending:1 block:v14];
+  [v8 enumerateDeviceScreenLockedStateEventsFromStartDate:dateCopy endDate:endDateCopy filterBlock:filterBlock limit:1000000 ascending:1 block:v14];
 
   v12 = [v11 _pas_filteredArrayWithTest:&__block_literal_global_43];
 
@@ -102,35 +102,35 @@ uint64_t __73__ATXIdleTimeBeginAnchor_fetchAnchorOccurrencesBetweenStartDate_end
   return 1;
 }
 
-+ (id)anchorOccurenceDateFromDuetEvent:(id)a3
++ (id)anchorOccurenceDateFromDuetEvent:(id)event
 {
   v3 = MEMORY[0x277CBEAA8];
-  v4 = a3;
+  eventCopy = event;
   v5 = [v3 alloc];
-  v6 = [v4 startDate];
+  startDate = [eventCopy startDate];
 
-  v7 = [v5 initWithTimeInterval:v6 sinceDate:-10800.0];
+  v7 = [v5 initWithTimeInterval:startDate sinceDate:-10800.0];
 
   return v7;
 }
 
-+ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)a3 enterSelector:(SEL)a4 exitSelector:(SEL)a5
++ (void)registerForNotificationsWithoutUsingContextStoreForObserver:(id)observer enterSelector:(SEL)selector exitSelector:(SEL)exitSelector
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [a1 predictNextAnchorOccurrenceDate];
+  observerCopy = observer;
+  predictNextAnchorOccurrenceDate = [self predictNextAnchorOccurrenceDate];
   v9 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = a1;
+    selfCopy2 = self;
     v22 = 2112;
-    v23 = v8;
+    v23 = predictNextAnchorOccurrenceDate;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "Inference (%@): Setting up XPC activity for IdleTimeBegin Anchor to fire at %@...", buf, 0x16u);
   }
 
   v10 = objc_opt_new();
-  [v8 timeIntervalSinceDate:v10];
+  [predictNextAnchorOccurrenceDate timeIntervalSinceDate:v10];
   v12 = v11;
 
   v13 = xpc_dictionary_create(0, 0, 0);
@@ -144,15 +144,15 @@ uint64_t __73__ATXIdleTimeBeginAnchor_fetchAnchorOccurrencesBetweenStartDate_end
   v17[1] = 3221225472;
   v17[2] = __113__ATXIdleTimeBeginAnchor_registerForNotificationsWithoutUsingContextStoreForObserver_enterSelector_exitSelector___block_invoke;
   v17[3] = &unk_278598F98;
-  v18 = v7;
-  v19 = a4;
-  v14 = v7;
+  v18 = observerCopy;
+  selectorCopy = selector;
+  v14 = observerCopy;
   xpc_activity_register("com.apple.duetexpertd.idle_time_begin_trigger", v13, v17);
   v15 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = a1;
+    selfCopy2 = self;
     _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "Inference (%@): Done setting up XPC activity for IdleTimeBegin Anchor.", buf, 0xCu);
   }
 
@@ -189,11 +189,11 @@ void __113__ATXIdleTimeBeginAnchor_registerForNotificationsWithoutUsingContextSt
   v4 = objc_opt_new();
   v5 = [v3 historicalAnchorOccurrenceDatesForAnchor:v4];
 
-  [a1 weightedAverageOfHoursFromDates:v5];
+  [self weightedAverageOfHoursFromDates:v5];
   __x = v6;
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v8 = objc_opt_new();
-  v9 = [v7 components:62 fromDate:v8];
+  v9 = [currentCalendar components:62 fromDate:v8];
 
   v10 = fmod(*__x.i64, 24.0);
   *v11.i64 = *__x.i64 - trunc(*__x.i64);
@@ -202,11 +202,11 @@ void __113__ATXIdleTimeBeginAnchor_registerForNotificationsWithoutUsingContextSt
   v13 = *vbslq_s8(vnegq_f64(v12), v11, __x).i64 * 60.0;
   [v9 setHour:v10];
   [v9 setMinute:v13];
-  v14 = [v7 dateFromComponents:v9];
+  v14 = [currentCalendar dateFromComponents:v9];
   [v14 timeIntervalSinceNow];
   if (v15 < -10.0)
   {
-    v16 = [v7 dateByAddingUnit:16 value:1 toDate:v14 options:0];
+    v16 = [currentCalendar dateByAddingUnit:16 value:1 toDate:v14 options:0];
 
     v14 = v16;
   }
@@ -226,18 +226,18 @@ void __113__ATXIdleTimeBeginAnchor_registerForNotificationsWithoutUsingContextSt
   return v14;
 }
 
-+ (double)weightedAverageOfHoursFromDates:(id)a3
++ (double)weightedAverageOfHoursFromDates:(id)dates
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEA80] currentCalendar];
+  datesCopy = dates;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __58__ATXIdleTimeBeginAnchor_weightedAverageOfHoursFromDates___block_invoke;
   v18[3] = &unk_278598FC0;
-  v5 = v4;
+  v5 = currentCalendar;
   v19 = v5;
   v20 = 96;
-  v6 = [v3 _pas_mappedArrayWithTransform:v18];
+  v6 = [datesCopy _pas_mappedArrayWithTransform:v18];
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;

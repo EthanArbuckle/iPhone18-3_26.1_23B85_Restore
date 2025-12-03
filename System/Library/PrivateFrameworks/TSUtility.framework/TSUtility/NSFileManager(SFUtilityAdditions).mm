@@ -17,7 +17,7 @@
 
 - (uint64_t)directoryUsage:()SFUtilityAdditions
 {
-  v4 = [a1 subpathsAtPath:?];
+  v4 = [self subpathsAtPath:?];
   v5 = [v4 count];
   if (!v5)
   {
@@ -51,18 +51,18 @@
 - (uint64_t)pathUsage:()SFUtilityAdditions
 {
   v11 = 0;
-  if (![a1 fileExistsAtPath:a3 isDirectory:&v11])
+  if (![self fileExistsAtPath:a3 isDirectory:&v11])
   {
     return 0;
   }
 
   if (v11 == 1)
   {
-    return [a1 directoryUsage:a3];
+    return [self directoryUsage:a3];
   }
 
   v10 = 0;
-  v6 = [a1 attributesOfItemAtPath:a3 error:&v10];
+  v6 = [self attributesOfItemAtPath:a3 error:&v10];
   if (!v6)
   {
     v7 = +[TSUAssertionHandler currentHandler];
@@ -79,15 +79,15 @@
   v42 = *MEMORY[0x277D85DE8];
   v40 = 0;
   v13 = objc_opt_new();
-  v14 = [a1 attributesOfItemAtPath:objc_msgSend(a4 error:{"path"), &v40}];
-  v15 = [v14 fileType];
-  if (!v15)
+  v14 = [self attributesOfItemAtPath:objc_msgSend(a4 error:{"path"), &v40}];
+  fileType = [v14 fileType];
+  if (!fileType)
   {
     goto LABEL_28;
   }
 
-  v16 = v15;
-  v17 = [v15 isEqualToString:*MEMORY[0x277CCA1F8]];
+  v16 = fileType;
+  v17 = [fileType isEqualToString:*MEMORY[0x277CCA1F8]];
   v18 = *MEMORY[0x277CCA1F0];
   if ((v17 & 1) == 0 && ([v16 isEqualToString:*MEMORY[0x277CCA1F0]] & 1) == 0 && (objc_msgSend(v16, "isEqualToString:", *MEMORY[0x277CCA1E8]) & 1) == 0)
   {
@@ -107,7 +107,7 @@
 
     else
     {
-      v20 = [a1 setAttributes:a3 ofItemAtPath:objc_msgSend(a4 error:{"path"), &v40}];
+      v20 = [self setAttributes:a3 ofItemAtPath:objc_msgSend(a4 error:{"path"), &v40}];
     }
   }
 
@@ -131,7 +131,7 @@
     goto LABEL_29;
   }
 
-  v22 = [a1 contentsOfDirectoryAtURL:a4 includingPropertiesForKeys:0 options:0 error:&v40];
+  v22 = [self contentsOfDirectoryAtURL:a4 includingPropertiesForKeys:0 options:0 error:&v40];
   if (!v22)
   {
 LABEL_28:
@@ -162,7 +162,7 @@ LABEL_28:
         objc_enumerationMutation(v23);
       }
 
-      v28 = [a1 _setAttributes:a3 ofItemAtURL:*(*(&v36 + 1) + 8 * i) recursively:1 error:&v40 shouldUpdateAttributesHandler:a7];
+      v28 = [self _setAttributes:a3 ofItemAtURL:*(*(&v36 + 1) + 8 * i) recursively:1 error:&v40 shouldUpdateAttributesHandler:a7];
     }
 
     v20 = v28;
@@ -216,9 +216,9 @@ LABEL_32:
     *a5 = 0;
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v37 = 0;
-  if (!a3 || !a4 || (v9 = v8, ![v8 fileExistsAtPath:objc_msgSend(a3 isDirectory:{"path"), &v37}]) || v37 != 1 || !objc_msgSend(v9, "fileExistsAtPath:isDirectory:", objc_msgSend(a4, "path"), &v37) || (v37 & 1) == 0)
+  if (!a3 || !a4 || (v9 = defaultManager, ![defaultManager fileExistsAtPath:objc_msgSend(a3 isDirectory:{"path"), &v37}]) || v37 != 1 || !objc_msgSend(v9, "fileExistsAtPath:isDirectory:", objc_msgSend(a4, "path"), &v37) || (v37 & 1) == 0)
   {
     v25 = +[TSUAssertionHandler currentHandler];
     v26 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSFileManager(SFUtilityAdditions) applyFileAttributesFromDocumentAtURL:toDocumentAtURL:error:]"];
@@ -263,23 +263,23 @@ LABEL_32:
     return 0;
   }
 
-  v12 = [v11 nextObject];
-  if (!v12)
+  nextObject = [v11 nextObject];
+  if (!nextObject)
   {
     return 1;
   }
 
-  v13 = v12;
+  nextObject2 = nextObject;
   LODWORD(v14) = 1;
   v35 = *MEMORY[0x277CCA050];
   v36 = v11;
   do
   {
     v15 = [objc_msgSend(a4 "path")];
-    v16 = [v11 fileAttributes];
-    if (v16)
+    fileAttributes = [v11 fileAttributes];
+    if (fileAttributes)
     {
-      v17 = [v9 setAttributes:v16 ofItemAtPath:v15 error:&v38];
+      v17 = [v9 setAttributes:fileAttributes ofItemAtPath:v15 error:&v38];
       v18 = v17;
       if (a5 && (v17 & 1) == 0 && !*a5)
       {
@@ -317,22 +317,22 @@ LABEL_32:
 
       v20 = +[TSUAssertionHandler currentHandler];
       v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSFileManager(SFUtilityAdditions) applyFileAttributesFromDocumentAtURL:toDocumentAtURL:error:]"];
-      [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/NSFileManager_SFUAdditions.mm"), 212, @"Could not get file attributes for: %@", objc_msgSend(objc_msgSend(a3, "path"), "stringByAppendingPathComponent:", v13)}];
+      [v20 handleFailureInFunction:v21 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/sf/NSFileManager_SFUAdditions.mm"), 212, @"Could not get file attributes for: %@", objc_msgSend(objc_msgSend(a3, "path"), "stringByAppendingPathComponent:", nextObject2)}];
       v14 = 0;
       v11 = v36;
     }
 
-    v13 = [v11 nextObject];
+    nextObject2 = [v11 nextObject];
   }
 
-  while (v13);
+  while (nextObject2);
   return v14;
 }
 
 - (uint64_t)setAttributes:()SFUtilityAdditions ofItemAtURL:recursively:error:
 {
   v7 = a5;
-  v9 = [a1 _setAttributes:a3 ofItemAtURL:a4 recursively:a5 error:a6 shouldUpdateAttributesHandler:0];
+  v9 = [self _setAttributes:a3 ofItemAtURL:a4 recursively:a5 error:a6 shouldUpdateAttributesHandler:0];
   v10 = v9;
   if (a6 && (v9 & 1) == 0)
   {
@@ -363,7 +363,7 @@ LABEL_32:
   v15[3] = &unk_279D662C0;
   v15[4] = a5;
   v15[5] = a4;
-  return [a1 _setAttributes:v13 ofItemAtURL:a3 recursively:a6 error:a7 shouldUpdateAttributesHandler:v15];
+  return [self _setAttributes:v13 ofItemAtURL:a3 recursively:a6 error:a7 shouldUpdateAttributesHandler:v15];
 }
 
 - (uint64_t)changeFileProtectionAtURL:()SFUtilityAdditions fromProtection:toProtection:recursively:error:
@@ -390,7 +390,7 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  result = [a1 _changeFileProtectionAtURL:a3 fromProtection:? toProtection:? recursively:? error:?];
+  result = [self _changeFileProtectionAtURL:a3 fromProtection:? toProtection:? recursively:? error:?];
   if (a7 && (result & 1) == 0)
   {
     v11 = +[TSUAssertionHandler currentHandler];
@@ -460,20 +460,20 @@ LABEL_9:
 {
   v26 = *MEMORY[0x277D85DE8];
   v24 = 0;
-  v9 = [a1 attributesOfItemAtPath:objc_msgSend(a3 error:{"path"), &v24}];
+  v9 = [self attributesOfItemAtPath:objc_msgSend(a3 error:{"path"), &v24}];
   if ([v24 code] == 260)
   {
     return 1;
   }
 
-  v10 = [v9 fileType];
-  if (!v10)
+  fileType = [v9 fileType];
+  if (!fileType)
   {
     return 1;
   }
 
-  v11 = v10;
-  if ([v10 isEqualToString:*MEMORY[0x277CCA1F0]])
+  v11 = fileType;
+  if ([fileType isEqualToString:*MEMORY[0x277CCA1F0]])
   {
     return (*(a5 + 16))(a5, [v9 objectForKey:*MEMORY[0x277CCA1B0]]);
   }
@@ -483,7 +483,7 @@ LABEL_9:
     return 1;
   }
 
-  v14 = [a1 contentsOfDirectoryAtURL:a3 includingPropertiesForKeys:0 options:0 error:0];
+  v14 = [self contentsOfDirectoryAtURL:a3 includingPropertiesForKeys:0 options:0 error:0];
   if (!v14)
   {
     return 1;
@@ -511,7 +511,7 @@ LABEL_12:
       objc_enumerationMutation(v15);
     }
 
-    result = [a1 _fileProtectionAtURL:*(*(&v20 + 1) + 8 * v19) recursively:1 passesTest:a5];
+    result = [self _fileProtectionAtURL:*(*(&v20 + 1) + 8 * v19) recursively:1 passesTest:a5];
     if (!result)
     {
       return result;
@@ -537,9 +537,9 @@ LABEL_12:
   v6[1] = 3221225472;
   v6[2] = __80__NSFileManager_SFUtilityAdditions__hasAtLeastFileProtection_atURL_recursively___block_invoke;
   v6[3] = &unk_279D662E8;
-  v6[4] = a1;
+  v6[4] = self;
   v6[5] = a3;
-  return [a1 _fileProtectionAtURL:a4 recursively:a5 passesTest:v6];
+  return [self _fileProtectionAtURL:a4 recursively:a5 passesTest:v6];
 }
 
 - (uint64_t)hasAtMostFileProtection:()SFUtilityAdditions atURL:recursively:
@@ -548,15 +548,15 @@ LABEL_12:
   v6[1] = 3221225472;
   v6[2] = __79__NSFileManager_SFUtilityAdditions__hasAtMostFileProtection_atURL_recursively___block_invoke;
   v6[3] = &unk_279D662E8;
-  v6[4] = a1;
+  v6[4] = self;
   v6[5] = a3;
-  return [a1 _fileProtectionAtURL:a4 recursively:a5 passesTest:v6];
+  return [self _fileProtectionAtURL:a4 recursively:a5 passesTest:v6];
 }
 
 - (uint64_t)_logFileProtectionAtURL:()SFUtilityAdditions recursively:indent:
 {
   v22 = *MEMORY[0x277D85DE8];
-  result = [objc_msgSend(a1 attributesOfItemAtPath:objc_msgSend(a3 error:{"path"), 0), "fileType"}];
+  result = [objc_msgSend(self attributesOfItemAtPath:objc_msgSend(a3 error:{"path"), 0), "fileType"}];
   if (result)
   {
     v10 = result;
@@ -566,7 +566,7 @@ LABEL_12:
       result = [v10 isEqualToString:*MEMORY[0x277CCA1E8]];
       if (result && a4 != 0)
       {
-        result = [a1 contentsOfDirectoryAtURL:a3 includingPropertiesForKeys:0 options:0 error:0];
+        result = [self contentsOfDirectoryAtURL:a3 includingPropertiesForKeys:0 options:0 error:0];
         if (result)
         {
           v12 = result;
@@ -595,7 +595,7 @@ LABEL_12:
                   objc_enumerationMutation(v12);
                 }
 
-                [a1 _logFileProtectionAtURL:*(*(&v17 + 1) + 8 * v16++) recursively:1 indent:v13];
+                [self _logFileProtectionAtURL:*(*(&v17 + 1) + 8 * v16++) recursively:1 indent:v13];
               }
 
               while (v14 != v16);

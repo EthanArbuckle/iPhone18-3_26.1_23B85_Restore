@@ -1,76 +1,76 @@
 @interface BKSearchViewController
 - (BESearchResultTableViewCell)dummySearchResultsCell;
 - (BKSearchLoadingTableViewCell)dummySearchLoadingCell;
-- (BKSearchViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BKSearchViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (BKSearchViewControllerDelegate)searchDelegate;
 - (BOOL)_isRTL;
 - (BOOL)_shouldShowSearchResultsView;
 - (BOOL)searchStringIsPageNumber;
-- (CGSize)_preferredContentSizeIsMinimum:(BOOL *)a3;
+- (CGSize)_preferredContentSizeIsMinimum:(BOOL *)minimum;
 - (double)_resultsEstimatedRowHeight;
 - (double)_resultsHeaderHeight;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
 - (id)_escapedSearchString;
-- (id)_loadingCellForTableView:(id)a3;
-- (id)_resultsCellForRow:(unint64_t)a3 inTableView:(id)a4;
-- (id)environmentOverrideViewForSearchController:(id)a3;
-- (id)physicalPageMapForPageTitle:(id)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (id)_loadingCellForTableView:(id)view;
+- (id)_resultsCellForRow:(unint64_t)row inTableView:(id)view;
+- (id)environmentOverrideViewForSearchController:(id)controller;
+- (id)physicalPageMapForPageTitle:(id)title;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (id)searchController;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_analyticsSubmitInBookSearchEventWithSearchText:(id)a3;
+- (void)_analyticsSubmitInBookSearchEventWithSearchText:(id)text;
 - (void)_buildConstraints;
-- (void)_configureLoadingCell:(id)a3;
-- (void)_configureResultsCell:(id)a3 forRow:(unint64_t)a4 inTableView:(id)a5;
-- (void)_reloadResultsAndResizeIfNecessary:(BOOL)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)_configureLoadingCell:(id)cell;
+- (void)_configureResultsCell:(id)cell forRow:(unint64_t)row inTableView:(id)view;
+- (void)_reloadResultsAndResizeIfNecessary:(BOOL)necessary;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 - (void)_updateCancelButton;
-- (void)_updateContentSize:(BOOL)a3;
+- (void)_updateContentSize:(BOOL)size;
 - (void)_updateFooterConstraint;
-- (void)_updateLoadingCell:(id)a3;
+- (void)_updateLoadingCell:(id)cell;
 - (void)_updateWebsearchButtonsStatus;
 - (void)dealloc;
 - (void)didReceiveMemoryWarning;
-- (void)handleDone:(id)a3;
-- (void)openURLUsingNSString:(id)a3;
+- (void)handleDone:(id)done;
+- (void)openURLUsingNSString:(id)string;
 - (void)paginationComplete;
 - (void)releaseViews;
-- (void)revealSearchResult:(id)a3 animated:(BOOL)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchControllerFinishedSearchingChapter:(id)a3;
-- (void)searchControllerWillBeginSearching:(id)a3 reportAnalytics:(BOOL)a4;
-- (void)searchEncyclopediaForString:(id)a3;
-- (void)searchWeb:(id)a3;
-- (void)searchWebForString:(id)a3;
-- (void)searchWikipedia:(id)a3;
-- (void)setPaginationController:(id)a3;
-- (void)setSearchString:(id)a3;
-- (void)setShowPhysicalPages:(BOOL)a3;
-- (void)setTheme:(id)a3;
+- (void)revealSearchResult:(id)result animated:(BOOL)animated;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchControllerFinishedSearchingChapter:(id)chapter;
+- (void)searchControllerWillBeginSearching:(id)searching reportAnalytics:(BOOL)analytics;
+- (void)searchEncyclopediaForString:(id)string;
+- (void)searchWeb:(id)web;
+- (void)searchWebForString:(id)string;
+- (void)searchWikipedia:(id)wikipedia;
+- (void)setPaginationController:(id)controller;
+- (void)setSearchString:(id)string;
+- (void)setShowPhysicalPages:(BOOL)pages;
+- (void)setTheme:(id)theme;
 - (void)stylizeForTheme;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation BKSearchViewController
 
-- (BKSearchViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (BKSearchViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = BKSearchViewController;
-  v4 = [(BKViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(BKViewController *)&v8 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = +[UITraitCollection bc_allAPITraits];
@@ -151,8 +151,8 @@
   self->_container = v7;
 
   [(UIView *)self->_container setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [(BKSearchViewController *)self view];
-  [v9 addSubview:self->_container];
+  view = [(BKSearchViewController *)self view];
+  [view addSubview:self->_container];
 
   v10 = objc_alloc_init(BEHairlineDividerView);
   headerDividerView = self->_headerDividerView;
@@ -184,20 +184,20 @@
   [(UITableView *)self->_resultsTable registerClass:objc_opt_class() forCellReuseIdentifier:kBESearchTableViewCellResultsNightIdentifier];
   [(UITableView *)self->_resultsTable setContentInset:0.0, 0.0, -1.0, 0.0];
   [(UIView *)self->_container addSubview:self->_resultsTable];
-  v16 = [(BKSearchViewController *)self p_setupStandardUISearchController];
-  [(BKSearchViewController *)self setUiSearchController:v16];
+  p_setupStandardUISearchController = [(BKSearchViewController *)self p_setupStandardUISearchController];
+  [(BKSearchViewController *)self setUiSearchController:p_setupStandardUISearchController];
 
-  v17 = [(BKSearchViewController *)self uiSearchController];
-  [v17 setSearchResultsUpdater:self];
+  uiSearchController = [(BKSearchViewController *)self uiSearchController];
+  [uiSearchController setSearchResultsUpdater:self];
 
-  v18 = [(BKSearchViewController *)self uiSearchController];
-  v19 = [v18 searchBar];
-  [v19 setDelegate:self];
+  uiSearchController2 = [(BKSearchViewController *)self uiSearchController];
+  searchBar = [uiSearchController2 searchBar];
+  [searchBar setDelegate:self];
 
-  LODWORD(v18) = self->_contentType;
+  LODWORD(uiSearchController2) = self->_contentType;
   v20 = AEBundle();
   v21 = v20;
-  if (v18 == 2)
+  if (uiSearchController2 == 2)
   {
     v22 = @"In this PDF";
   }
@@ -208,9 +208,9 @@
   }
 
   v23 = [v20 localizedStringForKey:v22 value:&stru_1E7188 table:0];
-  v24 = [(BKSearchViewController *)self uiSearchController];
-  v25 = [v24 searchBar];
-  [v25 setPlaceholder:v23];
+  uiSearchController3 = [(BKSearchViewController *)self uiSearchController];
+  searchBar2 = [uiSearchController3 searchBar];
+  [searchBar2 setPlaceholder:v23];
 
   LODWORD(v23) = self->_contentType;
   v26 = AEBundle();
@@ -226,13 +226,13 @@
   }
 
   v29 = [v26 localizedStringForKey:v28 value:&stru_1E7188 table:0];
-  v30 = [(BKSearchViewController *)self navigationItem];
-  [v30 setTitle:v29];
+  navigationItem = [(BKSearchViewController *)self navigationItem];
+  [navigationItem setTitle:v29];
 
-  v31 = [(BKSearchViewController *)self uiSearchController];
-  v32 = [v31 searchBar];
+  uiSearchController4 = [(BKSearchViewController *)self uiSearchController];
+  searchBar3 = [uiSearchController4 searchBar];
   searchField = self->_searchField;
-  self->_searchField = v32;
+  self->_searchField = searchBar3;
 
   v34 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
   footer = self->_footer;
@@ -260,12 +260,12 @@
 
   [(UIButton *)self->_googleButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_footer addSubview:self->_googleButton];
-  v45 = [(UIButton *)self->_googleButton titleLabel];
-  [v45 setFont:v42];
+  titleLabel = [(UIButton *)self->_googleButton titleLabel];
+  [titleLabel setFont:v42];
   [v42 pointSize];
-  [v45 setMinimumScaleFactor:8.0 / v46];
-  [v45 setAdjustsFontSizeToFitWidth:1];
-  [v45 setTextAlignment:1];
+  [titleLabel setMinimumScaleFactor:8.0 / v46];
+  [titleLabel setAdjustsFontSizeToFitWidth:1];
+  [titleLabel setTextAlignment:1];
   if ([(BKSearchViewController *)self _isRTL])
   {
     v47 = 2;
@@ -293,12 +293,12 @@
 
   [(UIButton *)self->_wikipediaButton setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIView *)self->_footer addSubview:self->_wikipediaButton];
-  v55 = [(UIButton *)self->_wikipediaButton titleLabel];
-  [v55 setFont:v42];
+  titleLabel2 = [(UIButton *)self->_wikipediaButton titleLabel];
+  [titleLabel2 setFont:v42];
   [v42 pointSize];
-  [v55 setMinimumScaleFactor:8.0 / v56];
-  [v55 setAdjustsFontSizeToFitWidth:1];
-  [v55 setTextAlignment:1];
+  [titleLabel2 setMinimumScaleFactor:8.0 / v56];
+  [titleLabel2 setAdjustsFontSizeToFitWidth:1];
+  [titleLabel2 setTextAlignment:1];
   if ([(BKSearchViewController *)self _isRTL])
   {
     v57 = 1;
@@ -329,32 +329,32 @@
 - (void)_buildConstraints
 {
   headerDividerView = self->_headerDividerView;
-  v4 = [(BEHairlineDividerView *)headerDividerView constraints];
-  [(BEHairlineDividerView *)headerDividerView removeConstraints:v4];
+  constraints = [(BEHairlineDividerView *)headerDividerView constraints];
+  [(BEHairlineDividerView *)headerDividerView removeConstraints:constraints];
 
   container = self->_container;
-  v6 = [(UIView *)container constraints];
-  [(UIView *)container removeConstraints:v6];
+  constraints2 = [(UIView *)container constraints];
+  [(UIView *)container removeConstraints:constraints2];
 
   resultsTable = self->_resultsTable;
-  v8 = [(UITableView *)resultsTable constraints];
-  [(UITableView *)resultsTable removeConstraints:v8];
+  constraints3 = [(UITableView *)resultsTable constraints];
+  [(UITableView *)resultsTable removeConstraints:constraints3];
 
   footer = self->_footer;
-  v10 = [(UIView *)footer constraints];
-  [(UIView *)footer removeConstraints:v10];
+  constraints4 = [(UIView *)footer constraints];
+  [(UIView *)footer removeConstraints:constraints4];
 
   googleButton = self->_googleButton;
-  v12 = [(UIButton *)googleButton constraints];
-  [(UIButton *)googleButton removeConstraints:v12];
+  constraints5 = [(UIButton *)googleButton constraints];
+  [(UIButton *)googleButton removeConstraints:constraints5];
 
   wikipediaButton = self->_wikipediaButton;
-  v14 = [(UIButton *)wikipediaButton constraints];
-  [(UIButton *)wikipediaButton removeConstraints:v14];
+  constraints6 = [(UIButton *)wikipediaButton constraints];
+  [(UIButton *)wikipediaButton removeConstraints:constraints6];
 
   footerTopBorderView = self->_footerTopBorderView;
-  v16 = [(BEHairlineDividerView *)footerTopBorderView constraints];
-  [(BEHairlineDividerView *)footerTopBorderView removeConstraints:v16];
+  constraints7 = [(BEHairlineDividerView *)footerTopBorderView constraints];
+  [(BEHairlineDividerView *)footerTopBorderView removeConstraints:constraints7];
 
   if (!self->_footerHeightConstraint)
   {
@@ -365,127 +365,127 @@
     [(NSLayoutConstraint *)self->_footerHeightConstraint setActive:1];
   }
 
-  v19 = [(BKSearchViewController *)self view];
-  v20 = [v19 safeAreaLayoutGuide];
-  v111 = [(BEHairlineDividerView *)self->_headerDividerView leftAnchor];
-  v110 = [v19 leftAnchor];
-  v109 = [v111 constraintEqualToAnchor:v110];
+  view = [(BKSearchViewController *)self view];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  leftAnchor = [(BEHairlineDividerView *)self->_headerDividerView leftAnchor];
+  leftAnchor2 = [view leftAnchor];
+  v109 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   v112[0] = v109;
-  v108 = [(BEHairlineDividerView *)self->_headerDividerView rightAnchor];
-  v107 = [v19 rightAnchor];
-  v106 = [v108 constraintEqualToAnchor:v107];
+  rightAnchor = [(BEHairlineDividerView *)self->_headerDividerView rightAnchor];
+  rightAnchor2 = [view rightAnchor];
+  v106 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   v112[1] = v106;
-  v105 = [(BEHairlineDividerView *)self->_headerDividerView topAnchor];
-  v104 = [(UIView *)self->_container topAnchor];
-  v103 = [v105 constraintEqualToAnchor:v104];
+  topAnchor = [(BEHairlineDividerView *)self->_headerDividerView topAnchor];
+  topAnchor2 = [(UIView *)self->_container topAnchor];
+  v103 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v112[2] = v103;
-  v102 = [(BEHairlineDividerView *)self->_headerDividerView heightAnchor];
+  heightAnchor = [(BEHairlineDividerView *)self->_headerDividerView heightAnchor];
   v21 = +[UIScreen mainScreen];
   [v21 scale];
   v23 = 1.0 / v22;
 
-  v101 = [v102 constraintEqualToConstant:v23];
+  v101 = [heightAnchor constraintEqualToConstant:v23];
   v112[3] = v101;
-  v100 = [(UIView *)self->_container topAnchor];
-  v99 = [v20 topAnchor];
-  v98 = [v100 constraintEqualToAnchor:v99];
+  topAnchor3 = [(UIView *)self->_container topAnchor];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  v98 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v112[4] = v98;
-  v97 = [(UIView *)self->_container leadingAnchor];
-  v96 = [v19 leadingAnchor];
-  v95 = [v97 constraintEqualToAnchor:v96];
+  leadingAnchor = [(UIView *)self->_container leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v95 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v112[5] = v95;
-  v94 = [(UIView *)self->_container trailingAnchor];
-  v93 = [v19 trailingAnchor];
-  v92 = [v94 constraintEqualToAnchor:v93];
+  trailingAnchor = [(UIView *)self->_container trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v92 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v112[6] = v92;
-  v91 = [(UIView *)self->_container bottomAnchor];
-  v90 = [v20 bottomAnchor];
-  v88 = [v91 constraintEqualToAnchor:v90];
+  bottomAnchor = [(UIView *)self->_container bottomAnchor];
+  bottomAnchor2 = [safeAreaLayoutGuide bottomAnchor];
+  v88 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v112[7] = v88;
-  v87 = [(UITableView *)self->_resultsTable leftAnchor];
-  v86 = [(UIView *)self->_container leftAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  leftAnchor3 = [(UITableView *)self->_resultsTable leftAnchor];
+  leftAnchor4 = [(UIView *)self->_container leftAnchor];
+  v85 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4];
   v112[8] = v85;
-  v84 = [(UITableView *)self->_resultsTable topAnchor];
-  v83 = [(BEHairlineDividerView *)self->_headerDividerView bottomAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  topAnchor5 = [(UITableView *)self->_resultsTable topAnchor];
+  bottomAnchor3 = [(BEHairlineDividerView *)self->_headerDividerView bottomAnchor];
+  v82 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3];
   v112[9] = v82;
-  v81 = [(UITableView *)self->_resultsTable rightAnchor];
-  v80 = [(UIView *)self->_container rightAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  rightAnchor3 = [(UITableView *)self->_resultsTable rightAnchor];
+  rightAnchor4 = [(UIView *)self->_container rightAnchor];
+  v79 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4];
   v112[10] = v79;
-  v78 = [(UITableView *)self->_resultsTable bottomAnchor];
-  v76 = [(UIView *)self->_footer topAnchor];
-  v75 = [v78 constraintEqualToAnchor:v76];
+  bottomAnchor4 = [(UITableView *)self->_resultsTable bottomAnchor];
+  topAnchor6 = [(UIView *)self->_footer topAnchor];
+  v75 = [bottomAnchor4 constraintEqualToAnchor:topAnchor6];
   v112[11] = v75;
-  v73 = [(UIView *)self->_footer leftAnchor];
-  v89 = v19;
-  v72 = [v19 leftAnchor];
-  v71 = [v73 constraintEqualToAnchor:v72];
+  leftAnchor5 = [(UIView *)self->_footer leftAnchor];
+  v89 = view;
+  leftAnchor6 = [view leftAnchor];
+  v71 = [leftAnchor5 constraintEqualToAnchor:leftAnchor6];
   v112[12] = v71;
-  v70 = [(UIView *)self->_footer rightAnchor];
-  v69 = [v19 rightAnchor];
-  v67 = [v70 constraintEqualToAnchor:v69];
+  rightAnchor5 = [(UIView *)self->_footer rightAnchor];
+  rightAnchor6 = [view rightAnchor];
+  v67 = [rightAnchor5 constraintEqualToAnchor:rightAnchor6];
   v112[13] = v67;
-  v66 = [(UIView *)self->_footer bottomAnchor];
-  v65 = [(UIView *)self->_container bottomAnchor];
-  v64 = [v66 constraintEqualToAnchor:v65];
+  bottomAnchor5 = [(UIView *)self->_footer bottomAnchor];
+  bottomAnchor6 = [(UIView *)self->_container bottomAnchor];
+  v64 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   v112[14] = v64;
-  v63 = [(UIView *)self->_footer widthAnchor];
-  v62 = [(UIView *)self->_container widthAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62];
+  widthAnchor = [(UIView *)self->_footer widthAnchor];
+  widthAnchor2 = [(UIView *)self->_container widthAnchor];
+  v61 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v112[15] = v61;
-  v60 = [(UIButton *)self->_googleButton leadingAnchor];
-  v74 = v20;
-  v59 = [v20 leadingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59 constant:15.0];
+  leadingAnchor3 = [(UIButton *)self->_googleButton leadingAnchor];
+  v74 = safeAreaLayoutGuide;
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  v58 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:15.0];
   v112[16] = v58;
-  v57 = [(UIButton *)self->_googleButton bottomAnchor];
-  v56 = [(UIView *)self->_footer bottomAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56];
+  bottomAnchor7 = [(UIButton *)self->_googleButton bottomAnchor];
+  bottomAnchor8 = [(UIView *)self->_footer bottomAnchor];
+  v55 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
   v112[17] = v55;
-  v54 = [(UIButton *)self->_googleButton widthAnchor];
-  v53 = [(UIView *)self->_footer widthAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53 multiplier:0.5 constant:-15.0];
+  widthAnchor3 = [(UIButton *)self->_googleButton widthAnchor];
+  widthAnchor4 = [(UIView *)self->_footer widthAnchor];
+  v52 = [widthAnchor3 constraintEqualToAnchor:widthAnchor4 multiplier:0.5 constant:-15.0];
   v112[18] = v52;
-  v68 = [(UIButton *)self->_googleButton heightAnchor];
-  v51 = [(UIView *)self->_footer heightAnchor];
-  v50 = [v68 constraintEqualToAnchor:v51];
+  heightAnchor2 = [(UIButton *)self->_googleButton heightAnchor];
+  heightAnchor3 = [(UIView *)self->_footer heightAnchor];
+  v50 = [heightAnchor2 constraintEqualToAnchor:heightAnchor3];
   v112[19] = v50;
-  v49 = [(UIButton *)self->_wikipediaButton trailingAnchor];
-  v48 = [v20 trailingAnchor];
-  v47 = [v49 constraintEqualToAnchor:v48 constant:-15.0];
+  trailingAnchor3 = [(UIButton *)self->_wikipediaButton trailingAnchor];
+  trailingAnchor4 = [safeAreaLayoutGuide trailingAnchor];
+  v47 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-15.0];
   v112[20] = v47;
-  v46 = [(UIButton *)self->_wikipediaButton bottomAnchor];
-  v45 = [(UIView *)self->_footer bottomAnchor];
-  v44 = [v46 constraintEqualToAnchor:v45];
+  bottomAnchor9 = [(UIButton *)self->_wikipediaButton bottomAnchor];
+  bottomAnchor10 = [(UIView *)self->_footer bottomAnchor];
+  v44 = [bottomAnchor9 constraintEqualToAnchor:bottomAnchor10];
   v112[21] = v44;
-  v43 = [(UIButton *)self->_wikipediaButton widthAnchor];
-  v42 = [(UIView *)self->_footer widthAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42 multiplier:0.5 constant:-15.0];
+  widthAnchor5 = [(UIButton *)self->_wikipediaButton widthAnchor];
+  widthAnchor6 = [(UIView *)self->_footer widthAnchor];
+  v41 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6 multiplier:0.5 constant:-15.0];
   v112[22] = v41;
-  v77 = [(UIButton *)self->_wikipediaButton heightAnchor];
-  v40 = [(UIView *)self->_footer heightAnchor];
-  v39 = [v77 constraintEqualToAnchor:v40];
+  heightAnchor4 = [(UIButton *)self->_wikipediaButton heightAnchor];
+  heightAnchor5 = [(UIView *)self->_footer heightAnchor];
+  v39 = [heightAnchor4 constraintEqualToAnchor:heightAnchor5];
   v112[23] = v39;
-  v38 = [(BEHairlineDividerView *)self->_footerTopBorderView leadingAnchor];
-  v37 = [(BEHairlineDividerView *)self->_footerTopBorderView leadingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  leadingAnchor5 = [(BEHairlineDividerView *)self->_footerTopBorderView leadingAnchor];
+  leadingAnchor6 = [(BEHairlineDividerView *)self->_footerTopBorderView leadingAnchor];
+  v36 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v112[24] = v36;
-  v24 = [(BEHairlineDividerView *)self->_footerTopBorderView topAnchor];
-  v25 = [(BEHairlineDividerView *)self->_footerTopBorderView topAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  topAnchor7 = [(BEHairlineDividerView *)self->_footerTopBorderView topAnchor];
+  topAnchor8 = [(BEHairlineDividerView *)self->_footerTopBorderView topAnchor];
+  v26 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v112[25] = v26;
-  v27 = [(BEHairlineDividerView *)self->_footerTopBorderView widthAnchor];
-  v28 = [(BEHairlineDividerView *)self->_footerTopBorderView widthAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  widthAnchor7 = [(BEHairlineDividerView *)self->_footerTopBorderView widthAnchor];
+  widthAnchor8 = [(BEHairlineDividerView *)self->_footerTopBorderView widthAnchor];
+  v29 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8];
   v112[26] = v29;
-  v30 = [(BEHairlineDividerView *)self->_footerTopBorderView heightAnchor];
+  heightAnchor6 = [(BEHairlineDividerView *)self->_footerTopBorderView heightAnchor];
   v31 = +[UIScreen mainScreen];
   [v31 scale];
   v33 = 1.0 / v32;
 
-  v34 = [v30 constraintEqualToConstant:v33];
+  v34 = [heightAnchor6 constraintEqualToConstant:v33];
   v112[27] = v34;
   v35 = [NSArray arrayWithObjects:v112 count:28];
   [NSLayoutConstraint activateConstraints:v35];
@@ -493,125 +493,125 @@
   [(UIView *)self->_footer setHidden:_UISolariumEnabled()];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = BKSearchViewController;
-  [(BKSearchViewController *)&v9 viewWillAppear:a3];
-  v4 = [(BKSearchViewController *)self ba_analyticsTracker];
+  [(BKSearchViewController *)&v9 viewWillAppear:appear];
+  ba_analyticsTracker = [(BKSearchViewController *)self ba_analyticsTracker];
 
-  if (!v4)
+  if (!ba_analyticsTracker)
   {
     v5 = [(BKSearchViewController *)self ba_setupNewAnalyticsTrackerWithName:@"ContentSearch"];
   }
 
   resultsTable = self->_resultsTable;
-  v7 = [(UITableView *)resultsTable indexPathForSelectedRow];
-  [(UITableView *)resultsTable deselectRowAtIndexPath:v7 animated:0];
+  indexPathForSelectedRow = [(UITableView *)resultsTable indexPathForSelectedRow];
+  [(UITableView *)resultsTable deselectRowAtIndexPath:indexPathForSelectedRow animated:0];
 
   [(BKSearchViewController *)self stylizeForTheme];
   [(BKSearchViewController *)self _updateCancelButton];
-  v8 = [(BKSearchViewController *)self searchDelegate];
-  [v8 searchViewControllerWillAppear:self];
+  searchDelegate = [(BKSearchViewController *)self searchDelegate];
+  [searchDelegate searchViewControllerWillAppear:self];
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = BKSearchViewController;
-  [(BKSearchViewController *)&v4 viewIsAppearing:a3];
+  [(BKSearchViewController *)&v4 viewIsAppearing:appearing];
   [(BKSearchViewController *)self _updateWebsearchButtonsStatus];
   [(BKSearchViewController *)self _updateContentSize:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v13.receiver = self;
   v13.super_class = BKSearchViewController;
-  [(BKSearchViewController *)&v13 viewDidAppear:a3];
-  v4 = [(BKSearchViewController *)self searchString];
-  [(UISearchBar *)self->_searchField setText:v4];
+  [(BKSearchViewController *)&v13 viewDidAppear:appear];
+  searchString = [(BKSearchViewController *)self searchString];
+  [(UISearchBar *)self->_searchField setText:searchString];
   if (_UISolariumEnabled())
   {
-    v5 = [(BKSearchViewController *)self uiSearchController];
-    [v5 setActive:1];
+    uiSearchController = [(BKSearchViewController *)self uiSearchController];
+    [uiSearchController setActive:1];
   }
 
   else
   {
-    if ([v4 length] <= 2 && !-[BKSearchViewController accessibilityRequiresActivateForSearchField](self, "accessibilityRequiresActivateForSearchField"))
+    if ([searchString length] <= 2 && !-[BKSearchViewController accessibilityRequiresActivateForSearchField](self, "accessibilityRequiresActivateForSearchField"))
     {
       [(UISearchBar *)self->_searchField becomeFirstResponder];
       goto LABEL_12;
     }
 
-    v6 = [(BKSearchViewController *)self searchController];
-    if ([v6 searchWasCompleted])
+    searchController = [(BKSearchViewController *)self searchController];
+    if ([searchController searchWasCompleted])
     {
 
       goto LABEL_12;
     }
 
-    v7 = [(BKSearchViewController *)self searchController];
-    v8 = [v7 isSearching];
+    searchController2 = [(BKSearchViewController *)self searchController];
+    isSearching = [searchController2 isSearching];
 
-    if (v8)
+    if (isSearching)
     {
       goto LABEL_12;
     }
 
-    v9 = [(BKSearchViewController *)self searchController];
-    v10 = [v9 results];
-    v11 = [v10 count];
+    searchController3 = [(BKSearchViewController *)self searchController];
+    results = [searchController3 results];
+    v11 = [results count];
 
-    v12 = [(BKSearchViewController *)self searchController];
-    v5 = v12;
+    searchController4 = [(BKSearchViewController *)self searchController];
+    uiSearchController = searchController4;
     if (v11)
     {
-      [v12 continueSearch];
+      [searchController4 continueSearch];
     }
 
     else
     {
-      [v12 beginSearchWithReportAnalytics:1];
+      [searchController4 beginSearchWithReportAnalytics:1];
     }
   }
 
 LABEL_12:
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v9.receiver = self;
   v9.super_class = BKSearchViewController;
-  [(BKSearchViewController *)&v9 viewDidDisappear:a3];
-  v4 = [(BKSearchViewController *)self searchController];
-  v5 = [v4 searchWasCompleted];
+  [(BKSearchViewController *)&v9 viewDidDisappear:disappear];
+  searchController = [(BKSearchViewController *)self searchController];
+  searchWasCompleted = [searchController searchWasCompleted];
 
-  if ((v5 & 1) == 0)
+  if ((searchWasCompleted & 1) == 0)
   {
-    v6 = [(BKSearchViewController *)self searchController];
-    [v6 pauseSearch];
+    searchController2 = [(BKSearchViewController *)self searchController];
+    [searchController2 pauseSearch];
   }
 
-  v7 = [(BKSearchViewController *)self uiSearchController];
-  [v7 setActive:0];
+  uiSearchController = [(BKSearchViewController *)self uiSearchController];
+  [uiSearchController setActive:0];
 
   [(BKSearchViewController *)self _updateWebsearchButtonsStatus];
   [(BKSearchViewController *)self _updateContentSize:0];
-  v8 = [(BKSearchViewController *)self searchDelegate];
-  [v8 searchViewControllerDidDisappear:self];
+  searchDelegate = [(BKSearchViewController *)self searchDelegate];
+  [searchDelegate searchViewControllerDidDisappear:self];
 }
 
-- (void)handleDone:(id)a3
+- (void)handleDone:(id)done
 {
-  v3 = [(BKSearchViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(BKSearchViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  [(BKSearchViewController *)self stylizeForTheme:a3];
+  [(BKSearchViewController *)self stylizeForTheme:change];
   [(BKSearchViewController *)self _updateCancelButton];
   [(BKSearchViewController *)self _updateWebsearchButtonsStatus];
 
@@ -622,13 +622,13 @@ LABEL_12:
 {
   if ([(BKSearchViewController *)self isViewLoaded])
   {
-    v3 = [(BKSearchViewController *)self view];
-    v4 = [v3 window];
+    view = [(BKSearchViewController *)self view];
+    window = [view window];
 
-    if (!v4)
+    if (!window)
     {
-      v5 = [(BKSearchViewController *)self searchController];
-      [v5 didReceiveMemoryWarning];
+      searchController = [(BKSearchViewController *)self searchController];
+      [searchController didReceiveMemoryWarning];
     }
   }
 
@@ -637,16 +637,16 @@ LABEL_12:
   [(BKSearchViewController *)&v6 didReceiveMemoryWarning];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v20.receiver = self;
   v20.super_class = BKSearchViewController;
-  [(BKSearchViewController *)&v20 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(BKSearchViewController *)self view];
-  [v8 bounds];
+  [(BKSearchViewController *)&v20 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  view = [(BKSearchViewController *)self view];
+  [view bounds];
   v10 = v9;
   v12 = v11;
 
@@ -655,12 +655,12 @@ LABEL_12:
     WeakRetained = objc_loadWeakRetained(&self->_searchDelegate);
     [WeakRetained searchViewController:self willTransitionToSize:{width, height}];
 
-    v15 = [(BKSearchViewController *)self sizeChangesRequireBookRepagination];
-    v16 = v15;
-    if (v15)
+    sizeChangesRequireBookRepagination = [(BKSearchViewController *)self sizeChangesRequireBookRepagination];
+    v16 = sizeChangesRequireBookRepagination;
+    if (sizeChangesRequireBookRepagination)
     {
-      v17 = [(BKSearchViewController *)self searchController];
-      [v17 cancelSearch];
+      searchController = [(BKSearchViewController *)self searchController];
+      [searchController cancelSearch];
     }
 
     v18[0] = _NSConcreteStackBlock;
@@ -671,7 +671,7 @@ LABEL_12:
     *&v18[5] = width;
     *&v18[6] = height;
     v19 = v16;
-    [v7 animateAlongsideTransition:0 completion:v18];
+    [coordinatorCopy animateAlongsideTransition:0 completion:v18];
   }
 }
 
@@ -688,36 +688,36 @@ LABEL_12:
   }
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v4 = a3;
+  themeCopy = theme;
   v7.receiver = self;
   v7.super_class = BKSearchViewController;
-  v5 = [(BKSearchViewController *)&v7 theme];
+  theme = [(BKSearchViewController *)&v7 theme];
 
-  if (v5 != v4)
+  if (theme != themeCopy)
   {
     v6.receiver = self;
     v6.super_class = BKSearchViewController;
-    [(BKSearchViewController *)&v6 setTheme:v4];
+    [(BKSearchViewController *)&v6 setTheme:themeCopy];
     [(BKSearchViewController *)self stylizeForTheme];
   }
 }
 
 - (void)stylizeForTheme
 {
-  v3 = [(BKSearchViewController *)self viewIfLoaded];
-  if (v3)
+  viewIfLoaded = [(BKSearchViewController *)self viewIfLoaded];
+  if (viewIfLoaded)
   {
-    v23 = v3;
-    v4 = [(BKSearchViewController *)self themePage];
-    v5 = [v4 backgroundColorForTraitEnvironment:self];
-    v6 = [v4 secondaryTextColor];
+    v23 = viewIfLoaded;
+    themePage = [(BKSearchViewController *)self themePage];
+    v5 = [themePage backgroundColorForTraitEnvironment:self];
+    secondaryTextColor = [themePage secondaryTextColor];
     v7 = [UIImage systemImageNamed:@"xmark.circle.fill"];
     v8 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleBody];
     v9 = [v7 imageWithConfiguration:v8];
 
-    v10 = [v9 imageWithTintColor:v6];
+    v10 = [v9 imageWithTintColor:secondaryTextColor];
 
     v11 = [v10 imageWithRenderingMode:1];
 
@@ -725,31 +725,31 @@ LABEL_12:
     v13 = [UIImageSymbolConfiguration configurationWithTextStyle:UIFontTextStyleBody];
     v14 = [v12 imageWithConfiguration:v13];
 
-    v15 = [v14 imageWithTintColor:v6];
+    v15 = [v14 imageWithTintColor:secondaryTextColor];
 
-    v16 = [v4 keyColor];
-    [v23 setTintColor:v16];
+    keyColor = [themePage keyColor];
+    [v23 setTintColor:keyColor];
 
     [(UIView *)self->_container setBackgroundColor:v5];
     [v23 setBackgroundColor:v5];
     [(UITableView *)self->_resultsTable setBackgroundColor:v5];
     [(UIView *)self->_footer setBackgroundColor:v5];
-    v17 = [v4 tableViewSeparatorColor];
-    [(UITableView *)self->_resultsTable setSeparatorColor:v17];
+    tableViewSeparatorColor = [themePage tableViewSeparatorColor];
+    [(UITableView *)self->_resultsTable setSeparatorColor:tableViewSeparatorColor];
 
-    v18 = [(BKSearchViewController *)self popoverPresentationController];
-    [v18 setBackgroundColor:v5];
+    popoverPresentationController = [(BKSearchViewController *)self popoverPresentationController];
+    [popoverPresentationController setBackgroundColor:v5];
 
-    v19 = [v4 separatorColor];
-    [(BEHairlineDividerView *)self->_headerDividerView setDividerColor:v19];
-    [(BEHairlineDividerView *)self->_footerTopBorderView setDividerColor:v19];
-    v20 = [v23 window];
-    if (v20)
+    separatorColor = [themePage separatorColor];
+    [(BEHairlineDividerView *)self->_headerDividerView setDividerColor:separatorColor];
+    [(BEHairlineDividerView *)self->_footerTopBorderView setDividerColor:separatorColor];
+    window = [v23 window];
+    if (window)
     {
-      v21 = v20;
-      v22 = [(BKSearchViewController *)self isModalSheet];
+      v21 = window;
+      isModalSheet = [(BKSearchViewController *)self isModalSheet];
 
-      if (v22)
+      if (isModalSheet)
       {
         [(BKSearchViewController *)self setNeedsStatusBarAppearanceUpdate];
       }
@@ -757,7 +757,7 @@ LABEL_12:
 
     [(UITableView *)self->_resultsTable reloadData];
 
-    v3 = v23;
+    viewIfLoaded = v23;
   }
 }
 
@@ -780,12 +780,12 @@ LABEL_12:
   return v6;
 }
 
-- (id)physicalPageMapForPageTitle:(id)a3
+- (id)physicalPageMapForPageTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(BKSearchViewController *)self searchController];
-  v6 = [v5 searchBook];
-  v7 = [v6 physicalPageMap];
+  titleCopy = title;
+  searchController = [(BKSearchViewController *)self searchController];
+  searchBook = [searchController searchBook];
+  physicalPageMap = [searchBook physicalPageMap];
 
   v14 = 0;
   v15 = &v14;
@@ -797,10 +797,10 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = sub_935A0;
   v11[3] = &unk_1E4ED8;
-  v8 = v4;
+  v8 = titleCopy;
   v12 = v8;
   v13 = &v14;
-  [v7 indexOfObjectWithOptions:1 passingTest:v11];
+  [physicalPageMap indexOfObjectWithOptions:1 passingTest:v11];
   v9 = v15[5];
 
   _Block_object_dispose(&v14, 8);
@@ -810,27 +810,27 @@ LABEL_12:
 
 - (BOOL)searchStringIsPageNumber
 {
-  v3 = [(BKSearchViewController *)self searchString];
+  searchString = [(BKSearchViewController *)self searchString];
   if ([(BKSearchViewController *)self showPhysicalPages])
   {
-    v4 = [(BKSearchViewController *)self physicalPageMapForPageTitle:v3];
+    v4 = [(BKSearchViewController *)self physicalPageMapForPageTitle:searchString];
     v5 = v4 != 0;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v6 = [v3 intValue];
-  if (v6 >= 1)
+  intValue = [searchString intValue];
+  if (intValue >= 1)
   {
-    v7 = v6;
-    v8 = [(BKSearchViewController *)self searchController];
-    v9 = [v8 pageCount];
+    v7 = intValue;
+    searchController = [(BKSearchViewController *)self searchController];
+    pageCount = [searchController pageCount];
 
-    if (v9 >= v7)
+    if (pageCount >= v7)
     {
       v4 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-      v10 = [v3 stringByTrimmingCharactersInSet:v4];
+      v10 = [searchString stringByTrimmingCharactersInSet:v4];
       v11 = [NSString stringWithFormat:@"%ld", v7];
       v5 = [v10 isEqualToString:v11];
 
@@ -851,35 +851,35 @@ LABEL_8:
     return 1;
   }
 
-  v4 = [(BKSearchViewController *)self searchString];
-  if ([v4 length] <= 2)
+  searchString = [(BKSearchViewController *)self searchString];
+  if ([searchString length] <= 2)
   {
-    v5 = [(BKSearchViewController *)self searchController];
-    v6 = [v5 results];
-    if ([v6 count])
+    searchController = [(BKSearchViewController *)self searchController];
+    results = [searchController results];
+    if ([results count])
     {
-      v3 = 1;
+      searchStringIsPageNumber = 1;
     }
 
     else
     {
-      v7 = [(BKSearchViewController *)self searchController];
-      if ([v7 searchWasCompleted])
+      searchController2 = [(BKSearchViewController *)self searchController];
+      if ([searchController2 searchWasCompleted])
       {
-        v3 = 1;
+        searchStringIsPageNumber = 1;
       }
 
       else
       {
-        v8 = [(BKSearchViewController *)self searchController];
-        if ([v8 isSearching])
+        searchController3 = [(BKSearchViewController *)self searchController];
+        if ([searchController3 isSearching])
         {
-          v3 = 1;
+          searchStringIsPageNumber = 1;
         }
 
         else
         {
-          v3 = [(BKSearchViewController *)self searchStringIsPageNumber];
+          searchStringIsPageNumber = [(BKSearchViewController *)self searchStringIsPageNumber];
         }
       }
     }
@@ -887,20 +887,20 @@ LABEL_8:
 
   else
   {
-    v3 = 1;
+    searchStringIsPageNumber = 1;
   }
 
-  return v3;
+  return searchStringIsPageNumber;
 }
 
-- (CGSize)_preferredContentSizeIsMinimum:(BOOL *)a3
+- (CGSize)_preferredContentSizeIsMinimum:(BOOL *)minimum
 {
   if (![(BKSearchViewController *)self isViewLoaded])
   {
     v7 = 0;
     width = CGSizeZero.width;
     height = CGSizeZero.height;
-    if (!a3)
+    if (!minimum)
     {
       goto LABEL_27;
     }
@@ -908,8 +908,8 @@ LABEL_8:
     goto LABEL_26;
   }
 
-  v5 = [(BKSearchViewController *)self view];
-  [v5 layoutIfNeeded];
+  view = [(BKSearchViewController *)self view];
+  [view layoutIfNeeded];
 
   if ([UIFont bc_contentSizeCategoryIsGreaterThan:UIContentSizeCategoryAccessibilityMedium])
   {
@@ -952,8 +952,8 @@ LABEL_8:
   }
 
   v16 = v13 + v15;
-  v17 = [(BKSearchViewController *)self _shouldShowSearchResultsView];
-  if (v17)
+  _shouldShowSearchResultsView = [(BKSearchViewController *)self _shouldShowSearchResultsView];
+  if (_shouldShowSearchResultsView)
   {
     [(UISearchBar *)self->_searchField frame];
     v18 = CGRectGetMaxY(v27) + 44.0;
@@ -979,10 +979,10 @@ LABEL_8:
 
   else
   {
-    v23 = [(BKSearchViewController *)self searchController];
-    v24 = [v23 isSearching];
+    searchController = [(BKSearchViewController *)self searchController];
+    isSearching = [searchController isSearching];
 
-    if (v24)
+    if (isSearching)
     {
       v21 = v16 + 44.0;
     }
@@ -996,12 +996,12 @@ LABEL_8:
   }
 
   [(UIView *)self->_container setAlpha:v22];
-  v7 = v17 ^ 1;
+  v7 = _shouldShowSearchResultsView ^ 1;
   height = ceil(v21);
-  if (a3)
+  if (minimum)
   {
 LABEL_26:
-    *a3 = v7;
+    *minimum = v7;
   }
 
 LABEL_27:
@@ -1016,41 +1016,41 @@ LABEL_27:
   if (_UISolariumEnabled())
   {
     v3 = +[UIDevice currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-    if (v4 == &dword_0 + 1)
+    if (userInterfaceIdiom == &dword_0 + 1)
     {
       if (([(BKSearchViewController *)self _isInPopoverPresentation]& 1) != 0)
       {
-        v8 = [(BKSearchViewController *)self navigationItem];
-        [v8 setRightBarButtonItem:0];
+        navigationItem = [(BKSearchViewController *)self navigationItem];
+        [navigationItem setRightBarButtonItem:0];
       }
 
       else
       {
-        v8 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"handleDone:"];
-        v7 = [(BKSearchViewController *)self navigationItem];
-        [v7 setRightBarButtonItem:v8];
+        navigationItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"handleDone:"];
+        navigationItem2 = [(BKSearchViewController *)self navigationItem];
+        [navigationItem2 setRightBarButtonItem:navigationItem];
       }
     }
   }
 
   else
   {
-    v5 = [(BKSearchViewController *)self isModalSheet];
+    isModalSheet = [(BKSearchViewController *)self isModalSheet];
     searchField = self->_searchField;
 
-    [(UISearchBar *)searchField setShowsCancelButton:v5];
+    [(UISearchBar *)searchField setShowsCancelButton:isModalSheet];
   }
 }
 
-- (void)_updateContentSize:(BOOL)a3
+- (void)_updateContentSize:(BOOL)size
 {
   v12 = 0;
   [(BKSearchViewController *)self _preferredContentSizeIsMinimum:&v12];
   v6 = v5;
   v8 = v7;
-  if ([(BKSearchViewController *)self resizeAnimationInProgress]&& a3)
+  if ([(BKSearchViewController *)self resizeAnimationInProgress]&& size)
   {
     [(BKSearchViewController *)self setResizeRequestPending:1];
   }
@@ -1087,20 +1087,20 @@ LABEL_27:
 
 - (void)_updateWebsearchButtonsStatus
 {
-  v3 = [(BKSearchViewController *)self searchString];
-  v4 = [v3 length];
+  searchString = [(BKSearchViewController *)self searchString];
+  v4 = [searchString length];
 
-  v5 = 1.0;
+  im_isCompactHeight = 1.0;
   if (!v4 && ([(BKSearchViewController *)self im_isCompactWidth]& 1) == 0)
   {
-    v5 = [(BKSearchViewController *)self im_isCompactHeight];
+    im_isCompactHeight = [(BKSearchViewController *)self im_isCompactHeight];
   }
 
   v6 = v4 != 0;
   [(UIButton *)self->_wikipediaButton setEnabled:v6];
   [(UIButton *)self->_googleButton setEnabled:v6];
-  [(UIButton *)self->_wikipediaButton setAlpha:v5];
-  [(UIButton *)self->_googleButton setAlpha:v5];
+  [(UIButton *)self->_wikipediaButton setAlpha:im_isCompactHeight];
+  [(UIButton *)self->_googleButton setAlpha:im_isCompactHeight];
 
   [(BKSearchViewController *)self _updateFooterConstraint];
 }
@@ -1134,9 +1134,9 @@ LABEL_27:
 
     else
     {
-      v7 = [(BKSearchViewController *)self im_isCompactHeight];
+      im_isCompactHeight = [(BKSearchViewController *)self im_isCompactHeight];
       v6 = 44.0;
-      if (!v7)
+      if (!im_isCompactHeight)
       {
         v6 = 0.0;
       }
@@ -1149,28 +1149,28 @@ LABEL_27:
   [(UIView *)container layoutIfNeeded];
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  v8 = a3;
-  v4 = [(UISearchBar *)self->_searchField text];
-  v5 = [v8 caseInsensitiveCompare:v4];
+  stringCopy = string;
+  text = [(UISearchBar *)self->_searchField text];
+  v5 = [stringCopy caseInsensitiveCompare:text];
 
   if (v5)
   {
-    [(UISearchBar *)self->_searchField setText:v8];
-    v6 = [(BKSearchViewController *)self searchController];
-    [v6 setSearchString:v8];
+    [(UISearchBar *)self->_searchField setText:stringCopy];
+    searchController = [(BKSearchViewController *)self searchController];
+    [searchController setSearchString:stringCopy];
 
-    v7 = [(BKSearchViewController *)self searchController];
-    [v7 beginSearchWithReportAnalytics:1];
+    searchController2 = [(BKSearchViewController *)self searchController];
+    [searchController2 beginSearchWithReportAnalytics:1];
   }
 }
 
-- (void)setShowPhysicalPages:(BOOL)a3
+- (void)setShowPhysicalPages:(BOOL)pages
 {
-  if (self->_showPhysicalPages != a3)
+  if (self->_showPhysicalPages != pages)
   {
-    self->_showPhysicalPages = a3;
+    self->_showPhysicalPages = pages;
     [(UITableView *)self->_resultsTable reloadData];
   }
 }
@@ -1183,12 +1183,12 @@ LABEL_27:
   [(UITableView *)resultsTable reloadData];
 }
 
-- (void)setPaginationController:(id)a3
+- (void)setPaginationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   paginationController = self->_paginationController;
-  v9 = v5;
-  if (paginationController != v5)
+  v9 = controllerCopy;
+  if (paginationController != controllerCopy)
   {
     if (paginationController)
     {
@@ -1196,7 +1196,7 @@ LABEL_27:
       [v7 removeObserver:self name:BKPaginationCompleteForBookNotification object:self->_paginationController];
     }
 
-    objc_storeStrong(&self->_paginationController, a3);
+    objc_storeStrong(&self->_paginationController, controller);
     if (self->_paginationController)
     {
       v8 = +[NSNotificationCenter defaultCenter];
@@ -1205,40 +1205,40 @@ LABEL_27:
   }
 }
 
-- (void)revealSearchResult:(id)a3 animated:(BOOL)a4
+- (void)revealSearchResult:(id)result animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
+  animatedCopy = animated;
+  resultCopy = result;
   WeakRetained = objc_loadWeakRetained(&self->_searchDelegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_searchDelegate);
-    [v8 searchViewController:self revealSearchResult:v9 animated:v4];
+    [v8 searchViewController:self revealSearchResult:resultCopy animated:animatedCopy];
   }
 }
 
-- (void)searchWebForString:(id)a3
+- (void)searchWebForString:(id)string
 {
-  [(BKSearchViewController *)self setSearchString:a3];
+  [(BKSearchViewController *)self setSearchString:string];
 
   [(BKSearchViewController *)self searchWeb:0];
 }
 
-- (void)searchEncyclopediaForString:(id)a3
+- (void)searchEncyclopediaForString:(id)string
 {
-  [(BKSearchViewController *)self setSearchString:a3];
+  [(BKSearchViewController *)self setSearchString:string];
 
   [(BKSearchViewController *)self searchWikipedia:0];
 }
 
-- (void)openURLUsingNSString:(id)a3
+- (void)openURLUsingNSString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
-    v5 = [[NSURL alloc] initWithString:v3];
+    stringCopy = string;
+    v5 = [[NSURL alloc] initWithString:stringCopy];
 
     if (v5)
     {
@@ -1250,17 +1250,17 @@ LABEL_27:
 
 - (id)_escapedSearchString
 {
-  v2 = [(BKSearchViewController *)self searchString];
+  searchString = [(BKSearchViewController *)self searchString];
   v3 = +[NSCharacterSet URLPathAllowedCharacterSet];
-  v4 = [v2 stringByAddingPercentEncodingWithAllowedCharacters:v3];
+  v4 = [searchString stringByAddingPercentEncodingWithAllowedCharacters:v3];
 
   return v4;
 }
 
-- (void)searchWeb:(id)a3
+- (void)searchWeb:(id)web
 {
-  v4 = [(BKSearchViewController *)self _escapedSearchString];
-  v6 = [NSString stringWithFormat:@"x-web-search://?%@", v4];
+  _escapedSearchString = [(BKSearchViewController *)self _escapedSearchString];
+  v6 = [NSString stringWithFormat:@"x-web-search://?%@", _escapedSearchString];
 
   v5 = v6;
   if (v6)
@@ -1270,7 +1270,7 @@ LABEL_27:
   }
 }
 
-- (void)searchWikipedia:(id)a3
+- (void)searchWikipedia:(id)wikipedia
 {
   v10 = +[NSLocale preferredLanguages];
   if ([v10 count])
@@ -1287,8 +1287,8 @@ LABEL_27:
 
   v6 = AEBundle();
   v7 = [v6 localizedStringForKey:@"https://%2$@.wikipedia.org/wiki/%1$@" value:&stru_1E7188 table:0];
-  v8 = [(BKSearchViewController *)self _escapedSearchString];
-  v9 = [NSString stringWithFormat:v7, v8, v5];
+  _escapedSearchString = [(BKSearchViewController *)self _escapedSearchString];
+  v9 = [NSString stringWithFormat:v7, _escapedSearchString, v5];
 
   if (v9)
   {
@@ -1296,45 +1296,45 @@ LABEL_27:
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(BKSearchViewController *)self searchController];
-  v7 = v6;
-  if (a4)
+  searchController = [(BKSearchViewController *)self searchController];
+  v7 = searchController;
+  if (section)
   {
-    v8 = [v6 results];
-    v9 = [v8 count];
+    results = [searchController results];
+    v9 = [results count];
 
-    v10 = v9 + [(BKSearchViewController *)self _shouldShowSearchResultsView];
+    searchStringIsPageNumber = v9 + [(BKSearchViewController *)self _shouldShowSearchResultsView];
   }
 
   else
   {
-    v10 = [(BKSearchViewController *)self searchStringIsPageNumber];
+    searchStringIsPageNumber = [(BKSearchViewController *)self searchStringIsPageNumber];
   }
 
-  return v10;
+  return searchStringIsPageNumber;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] == &dword_0 + 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] == &dword_0 + 1)
   {
-    v8 = [v7 row];
-    v9 = [(BKSearchViewController *)self searchController];
-    v10 = [v9 results];
-    v11 = [v10 count];
+    v8 = [pathCopy row];
+    searchController = [(BKSearchViewController *)self searchController];
+    results = [searchController results];
+    v11 = [results count];
 
     if (v8 == v11)
     {
-      [(BKSearchViewController *)self _loadingCellForTableView:v6];
+      [(BKSearchViewController *)self _loadingCellForTableView:viewCopy];
     }
 
     else
     {
-      -[BKSearchViewController _resultsCellForRow:inTableView:](self, "_resultsCellForRow:inTableView:", [v7 row], v6);
+      -[BKSearchViewController _resultsCellForRow:inTableView:](self, "_resultsCellForRow:inTableView:", [pathCopy row], viewCopy);
     }
     v16 = ;
     if (v16)
@@ -1345,13 +1345,13 @@ LABEL_27:
     goto LABEL_13;
   }
 
-  if ([v7 section])
+  if ([pathCopy section])
   {
     goto LABEL_13;
   }
 
-  v12 = [(BKSearchViewController *)self themePage];
-  v13 = [v12 isNight:self];
+  themePage = [(BKSearchViewController *)self themePage];
+  v13 = [themePage isNight:self];
   v14 = @"pageNumberCell";
   if (v13)
   {
@@ -1359,29 +1359,29 @@ LABEL_27:
   }
 
   v15 = v14;
-  v16 = [v6 dequeueReusableCellWithIdentifier:v15];
+  v16 = [viewCopy dequeueReusableCellWithIdentifier:v15];
   if (!v16)
   {
     v16 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:v15];
     v17 = [UIFont boldSystemFontOfSize:kBESearchResultFontSize];
-    v18 = [v16 textLabel];
-    [v18 setFont:v17];
+    textLabel = [v16 textLabel];
+    [textLabel setFont:v17];
 
     v19 = [UIView alloc];
-    v20 = [v16 contentView];
-    [v20 bounds];
+    contentView = [v16 contentView];
+    [contentView bounds];
     v21 = [v19 initWithFrame:?];
     [v16 setSelectedBackgroundView:v21];
   }
 
   v42 = v15;
-  v22 = [(BKSearchViewController *)self searchController];
-  v23 = [v22 searchString];
+  searchController2 = [(BKSearchViewController *)self searchController];
+  searchString = [searchController2 searchString];
 
-  v41 = v23;
+  v41 = searchString;
   if ([(BKSearchViewController *)self showPhysicalPages])
   {
-    v24 = [(BKSearchViewController *)self physicalPageMapForPageTitle:v23];
+    v24 = [(BKSearchViewController *)self physicalPageMapForPageTitle:searchString];
     v25 = [v24 valueForKey:@"name"];
 
     v26 = AEBundle();
@@ -1391,41 +1391,41 @@ LABEL_27:
 
   else
   {
-    v30 = [v23 integerValue];
-    v31 = [(BKSearchViewController *)self searchDelegate];
-    v25 = [v31 searchViewController:self chapterNameForSearchResult:0 pageNumber:v30];
+    integerValue = [searchString integerValue];
+    searchDelegate = [(BKSearchViewController *)self searchDelegate];
+    v25 = [searchDelegate searchViewController:self chapterNameForSearchResult:0 pageNumber:integerValue];
 
     v32 = AEBundle();
     v26 = v32;
     if (v25)
     {
       v27 = [v32 localizedStringForKey:@"Page %@ value:%@" table:{&stru_1E7188, 0}];
-      v33 = [NSNumberFormatter imaxLocalizedUnsignedInteger:v30 usesGroupingSeparator:0];
+      v33 = [NSNumberFormatter imaxLocalizedUnsignedInteger:integerValue usesGroupingSeparator:0];
       [NSString stringWithFormat:v27, v33, v25];
     }
 
     else
     {
       v27 = [v32 localizedStringForKey:@"Page %@" value:&stru_1E7188 table:0];
-      v33 = [NSNumberFormatter imaxLocalizedUnsignedInteger:v30 usesGroupingSeparator:0];
+      v33 = [NSNumberFormatter imaxLocalizedUnsignedInteger:integerValue usesGroupingSeparator:0];
       [NSString stringWithFormat:v27, v33, v40];
     }
     v28 = ;
   }
 
-  v34 = [v16 textLabel];
-  [v34 setText:v28];
+  textLabel2 = [v16 textLabel];
+  [textLabel2 setText:v28];
 
-  v35 = [(UITableView *)self->_resultsTable backgroundColor];
-  [v16 setBackgroundColor:v35];
+  backgroundColor = [(UITableView *)self->_resultsTable backgroundColor];
+  [v16 setBackgroundColor:backgroundColor];
 
-  v36 = [v12 primaryTextColor];
-  v37 = [v16 textLabel];
-  [v37 setTextColor:v36];
+  primaryTextColor = [themePage primaryTextColor];
+  textLabel3 = [v16 textLabel];
+  [textLabel3 setTextColor:primaryTextColor];
 
-  v38 = [v12 tableViewCellSelectedColor];
-  v39 = [v16 selectedBackgroundView];
-  [v39 setBackgroundColor:v38];
+  tableViewCellSelectedColor = [themePage tableViewCellSelectedColor];
+  selectedBackgroundView = [v16 selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:tableViewCellSelectedColor];
 
   if (!v16)
   {
@@ -1469,17 +1469,17 @@ LABEL_14:
   return dummySearchLoadingCell;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1)
+  viewCopy = view;
+  if (section == 1)
   {
     v7 = @"Text";
   }
 
   else
   {
-    if (a4 || ![(BKSearchViewController *)self searchStringIsPageNumber])
+    if (section || ![(BKSearchViewController *)self searchStringIsPageNumber])
     {
       v8 = 0;
       goto LABEL_8;
@@ -1492,37 +1492,37 @@ LABEL_14:
   v8 = [v9 localizedStringForKey:v7 value:&stru_1E7188 table:0];
 
 LABEL_8:
-  v10 = [(BKSearchViewController *)self themePage];
-  v11 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"BKSearchTableHeaderViewIdentifier"];
+  themePage = [(BKSearchViewController *)self themePage];
+  v11 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"BKSearchTableHeaderViewIdentifier"];
   if (!v11)
   {
     v11 = [[UITableViewHeaderFooterView alloc] initWithReuseIdentifier:@"BKSearchTableHeaderViewIdentifier"];
   }
 
-  v12 = [v11 textLabel];
-  [v12 setText:v8];
+  textLabel = [v11 textLabel];
+  [textLabel setText:v8];
 
-  v13 = [v10 secondaryTextColor];
-  v14 = [v11 textLabel];
-  [v14 setTextColor:v13];
+  secondaryTextColor = [themePage secondaryTextColor];
+  textLabel2 = [v11 textLabel];
+  [textLabel2 setTextColor:secondaryTextColor];
 
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_94CA4;
   v18[3] = &unk_1E4F00;
-  v19 = v10;
-  v20 = v6;
-  v15 = v6;
-  v16 = v10;
+  v19 = themePage;
+  v20 = viewCopy;
+  v15 = viewCopy;
+  v16 = themePage;
   [v11 _setBackgroundViewConfigurationProvider:v18];
 
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 1 || (v7 = 0.0, !a4) && [(BKSearchViewController *)self searchStringIsPageNumber])
+  viewCopy = view;
+  if (section == 1 || (v7 = 0.0, !section) && [(BKSearchViewController *)self searchStringIsPageNumber])
   {
     [(BKSearchViewController *)self _resultsHeaderHeight];
     v7 = v8;
@@ -1531,22 +1531,22 @@ LABEL_8:
   return v7;
 }
 
-- (void)_updateLoadingCell:(id)a3
+- (void)_updateLoadingCell:(id)cell
 {
-  v26 = a3;
-  v4 = [(BKSearchViewController *)self searchController];
-  v5 = [v4 isSearching];
+  cellCopy = cell;
+  searchController = [(BKSearchViewController *)self searchController];
+  isSearching = [searchController isSearching];
 
-  v6 = [v26 activityIndicator];
-  v7 = v6;
-  if (v5)
+  activityIndicator = [cellCopy activityIndicator];
+  v7 = activityIndicator;
+  if (isSearching)
   {
-    v8 = [v6 isAnimating];
+    isAnimating = [activityIndicator isAnimating];
 
-    if ((v8 & 1) == 0)
+    if ((isAnimating & 1) == 0)
     {
-      v9 = [v26 activityIndicator];
-      [v9 startAnimating];
+      activityIndicator2 = [cellCopy activityIndicator];
+      [activityIndicator2 startAnimating];
     }
 
     v10 = AEBundle();
@@ -1557,30 +1557,30 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  [v6 stopAnimating];
+  [activityIndicator stopAnimating];
 
-  v12 = [(BKSearchViewController *)self searchController];
-  v13 = [v12 wasAborted];
+  searchController2 = [(BKSearchViewController *)self searchController];
+  wasAborted = [searchController2 wasAborted];
 
-  if (v13)
+  if (wasAborted)
   {
     v14 = @"Search Cancelled";
     goto LABEL_11;
   }
 
-  v15 = [(BKSearchViewController *)self searchController];
-  v16 = [v15 hasPartialResults];
+  searchController3 = [(BKSearchViewController *)self searchController];
+  hasPartialResults = [searchController3 hasPartialResults];
 
-  if (v16)
+  if (hasPartialResults)
   {
     v14 = @"Load More…";
     goto LABEL_11;
   }
 
-  v17 = [(BKSearchViewController *)self searchController];
-  v18 = [v17 searchWasCompleted];
+  searchController4 = [(BKSearchViewController *)self searchController];
+  searchWasCompleted = [searchController4 searchWasCompleted];
 
-  if (v18)
+  if (searchWasCompleted)
   {
     v14 = @"Search Completed";
 LABEL_11:
@@ -1589,9 +1589,9 @@ LABEL_11:
 
     if (v11)
     {
-      v20 = [(BKSearchViewController *)self searchController];
-      v21 = [v20 results];
-      v22 = [v21 count];
+      searchController5 = [(BKSearchViewController *)self searchController];
+      results = [searchController5 results];
+      v22 = [results count];
 
       v23 = [NSString ae_searchResultDetailTextWithCount:v22];
       goto LABEL_14;
@@ -1603,45 +1603,45 @@ LABEL_11:
   v23 = 0;
   v11 = 0;
 LABEL_14:
-  v24 = [v26 textLabel];
-  [v24 setText:v11];
+  textLabel = [cellCopy textLabel];
+  [textLabel setText:v11];
 
-  v25 = [v26 detailTextLabel];
-  [v25 setText:v23];
+  detailTextLabel = [cellCopy detailTextLabel];
+  [detailTextLabel setText:v23];
 }
 
-- (void)_configureLoadingCell:(id)a3
+- (void)_configureLoadingCell:(id)cell
 {
-  if (a3)
+  if (cell)
   {
-    v3 = a3;
-    [v3 setSelectionStyle:0];
+    cellCopy = cell;
+    [cellCopy setSelectionStyle:0];
     v11 = [UIFont preferredFontForTextStyle:UIFontTextStyleTitle1];
     v4 = kBESearchResultFontSize;
     [v11 _scaledValueForValue:kBESearchResultFontSize];
     v5 = [UIFont systemFontOfSize:"systemFontOfSize:weight:" weight:?];
-    v6 = [v3 textLabel];
-    [v6 setFont:v5];
+    textLabel = [cellCopy textLabel];
+    [textLabel setFont:v5];
 
-    v7 = [v3 textLabel];
-    [v7 setTextAlignment:1];
+    textLabel2 = [cellCopy textLabel];
+    [textLabel2 setTextAlignment:1];
 
     [v11 _scaledValueForValue:v4];
     v8 = [UIFont systemFontOfSize:?];
-    v9 = [v3 textLabel];
-    [v9 setFont:v8];
+    textLabel3 = [cellCopy textLabel];
+    [textLabel3 setFont:v8];
 
-    v10 = [v3 detailTextLabel];
+    detailTextLabel = [cellCopy detailTextLabel];
 
-    [v10 setTextAlignment:1];
+    [detailTextLabel setTextAlignment:1];
   }
 }
 
-- (id)_loadingCellForTableView:(id)a3
+- (id)_loadingCellForTableView:(id)view
 {
-  v4 = a3;
-  v5 = [(BKSearchViewController *)self themePage];
-  v6 = [v5 isNight:self];
+  viewCopy = view;
+  themePage = [(BKSearchViewController *)self themePage];
+  v6 = [themePage isNight:self];
   v7 = @"loadingCell";
   if (v6)
   {
@@ -1649,7 +1649,7 @@ LABEL_14:
   }
 
   v8 = v7;
-  v9 = [v4 dequeueReusableCellWithIdentifier:v8];
+  v9 = [viewCopy dequeueReusableCellWithIdentifier:v8];
 
   if (!v9)
   {
@@ -1657,67 +1657,67 @@ LABEL_14:
     [(BKSearchViewController *)self _configureLoadingCell:v9];
   }
 
-  v10 = [v5 primaryTextColor];
-  v11 = [(UITableView *)self->_resultsTable backgroundColor];
-  [(BKSearchLoadingTableViewCell *)v9 setBackgroundColor:v11];
-  v12 = [(BKSearchLoadingTableViewCell *)v9 contentView];
-  [v12 setBackgroundColor:v11];
+  primaryTextColor = [themePage primaryTextColor];
+  backgroundColor = [(UITableView *)self->_resultsTable backgroundColor];
+  [(BKSearchLoadingTableViewCell *)v9 setBackgroundColor:backgroundColor];
+  contentView = [(BKSearchLoadingTableViewCell *)v9 contentView];
+  [contentView setBackgroundColor:backgroundColor];
 
-  v13 = [(BKSearchLoadingTableViewCell *)v9 activityIndicator];
-  [v13 setColor:v10];
+  activityIndicator = [(BKSearchLoadingTableViewCell *)v9 activityIndicator];
+  [activityIndicator setColor:primaryTextColor];
 
-  v14 = [(BKSearchLoadingTableViewCell *)v9 textLabel];
-  [v14 setTextColor:v10];
+  textLabel = [(BKSearchLoadingTableViewCell *)v9 textLabel];
+  [textLabel setTextColor:primaryTextColor];
 
-  v15 = [(BKSearchLoadingTableViewCell *)v9 detailTextLabel];
-  [v15 setTextColor:v10];
+  detailTextLabel = [(BKSearchLoadingTableViewCell *)v9 detailTextLabel];
+  [detailTextLabel setTextColor:primaryTextColor];
 
   [(BKSearchViewController *)self _updateLoadingCell:v9];
 
   return v9;
 }
 
-- (void)_configureResultsCell:(id)a3 forRow:(unint64_t)a4 inTableView:(id)a5
+- (void)_configureResultsCell:(id)cell forRow:(unint64_t)row inTableView:(id)view
 {
-  v62 = a3;
-  v9 = a5;
-  v10 = [(BKSearchViewController *)self themePage];
-  v11 = [v10 primaryTextColor];
-  v12 = [(UITableView *)self->_resultsTable backgroundColor];
-  v13 = [v62 titleLabel];
-  [v13 setTextColor:v11];
+  cellCopy = cell;
+  viewCopy = view;
+  themePage = [(BKSearchViewController *)self themePage];
+  primaryTextColor = [themePage primaryTextColor];
+  backgroundColor = [(UITableView *)self->_resultsTable backgroundColor];
+  titleLabel = [cellCopy titleLabel];
+  [titleLabel setTextColor:primaryTextColor];
 
-  v14 = [v62 resultLabel];
-  [v14 setTextColor:v11];
+  resultLabel = [cellCopy resultLabel];
+  [resultLabel setTextColor:primaryTextColor];
 
-  v15 = [v10 isNight:self];
+  v15 = [themePage isNight:self];
   if (v15)
   {
-    v16 = [v10 buttonTitleColor];
+    buttonTitleColor = [themePage buttonTitleColor];
   }
 
   else
   {
-    v16 = 0;
+    buttonTitleColor = 0;
   }
 
-  v17 = [v62 resultLabel];
-  [v17 setBoldColor:v16];
+  resultLabel2 = [cellCopy resultLabel];
+  [resultLabel2 setBoldColor:buttonTitleColor];
 
   if (v15)
   {
   }
 
-  v18 = [v10 secondaryTextColor];
-  v19 = [v62 pageNumberLabel];
-  [v19 setTextColor:v18];
+  secondaryTextColor = [themePage secondaryTextColor];
+  pageNumberLabel = [cellCopy pageNumberLabel];
+  [pageNumberLabel setTextColor:secondaryTextColor];
 
-  v20 = [v10 tableViewCellSelectedColor];
-  v21 = [v62 selectedBackgroundView];
-  [v21 setBackgroundColor:v20];
+  tableViewCellSelectedColor = [themePage tableViewCellSelectedColor];
+  selectedBackgroundView = [cellCopy selectedBackgroundView];
+  [selectedBackgroundView setBackgroundColor:tableViewCellSelectedColor];
 
-  [v62 setBackgroundColor:v12];
-  [v9 frame];
+  [cellCopy setBackgroundColor:backgroundColor];
+  [viewCopy frame];
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -1727,59 +1727,59 @@ LABEL_14:
   v64.origin.y = v25;
   v64.size.width = v27;
   v64.size.height = v29;
-  [v62 setMaxWidth:CGRectGetWidth(v64)];
-  v30 = [(BKSearchViewController *)self searchController];
-  v31 = [v30 results];
-  v32 = [v31 count];
+  [cellCopy setMaxWidth:CGRectGetWidth(v64)];
+  searchController = [(BKSearchViewController *)self searchController];
+  results = [searchController results];
+  v32 = [results count];
 
-  if (v32 > a4)
+  if (v32 > row)
   {
     objc_opt_class();
-    v33 = [(BKSearchViewController *)self searchController];
-    v34 = [v33 results];
-    v35 = [v34 objectAtIndex:a4];
+    searchController2 = [(BKSearchViewController *)self searchController];
+    results2 = [searchController2 results];
+    v35 = [results2 objectAtIndex:row];
     v36 = BUDynamicCast();
 
-    v37 = [(BKSearchViewController *)self searchDelegate];
-    v38 = [v37 searchViewController:self pageNumberForDocumentOrdinal:{objc_msgSend(v36, "ordinal")}];
+    searchDelegate = [(BKSearchViewController *)self searchDelegate];
+    v38 = [searchDelegate searchViewController:self pageNumberForDocumentOrdinal:{objc_msgSend(v36, "ordinal")}];
 
-    v39 = 0x7FFFFFFFFFFFFFFFLL;
-    if (v38 == 0x7FFFFFFFFFFFFFFFLL || (v39 = v38 + [v36 pageOffset], -[BKSearchViewController searchController](self, "searchController"), v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v40, "searchBook"), v34 = objc_claimAutoreleasedReturnValue(), v41 = objc_msgSend(v34, "suppressTOC"), v34, v40, (v41 & 1) != 0))
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
+    if (v38 == 0x7FFFFFFFFFFFFFFFLL || (integerValue = v38 + [v36 pageOffset], -[BKSearchViewController searchController](self, "searchController"), v40 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v40, "searchBook"), results2 = objc_claimAutoreleasedReturnValue(), v41 = objc_msgSend(results2, "suppressTOC"), results2, v40, (v41 & 1) != 0))
     {
       v42 = 0;
     }
 
     else
     {
-      v43 = [(BKSearchViewController *)self paginationController];
+      paginationController = [(BKSearchViewController *)self paginationController];
 
-      if (v43)
+      if (paginationController)
       {
-        v34 = [(BKSearchViewController *)self paginationController];
-        [v34 titleForChapterAtPageNumber:v39];
+        results2 = [(BKSearchViewController *)self paginationController];
+        [results2 titleForChapterAtPageNumber:integerValue];
       }
 
       else
       {
-        v34 = [(BKSearchViewController *)self searchDelegate];
-        [v34 searchViewController:self chapterNameForSearchResult:v36 pageNumber:v39];
+        results2 = [(BKSearchViewController *)self searchDelegate];
+        [results2 searchViewController:self chapterNameForSearchResult:v36 pageNumber:integerValue];
       }
       v42 = ;
     }
 
-    v44 = [(BKSearchViewController *)self showPhysicalPages];
-    if (v44 & 1) != 0 || (-[BKSearchViewController searchController](self, "searchController"), v34 = objc_claimAutoreleasedReturnValue(), [v34 searchBook], v5 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v5, "isFixedLayout")))
+    showPhysicalPages = [(BKSearchViewController *)self showPhysicalPages];
+    if (showPhysicalPages & 1) != 0 || (-[BKSearchViewController searchController](self, "searchController"), results2 = objc_claimAutoreleasedReturnValue(), [results2 searchBook], v5 = objc_claimAutoreleasedReturnValue(), (objc_msgSend(v5, "isFixedLayout")))
     {
-      v45 = [v36 pageTitle];
+      pageTitle = [v36 pageTitle];
 
-      if ((v44 & 1) == 0)
+      if ((showPhysicalPages & 1) == 0)
       {
       }
 
-      if (!v45)
+      if (!pageTitle)
       {
 LABEL_22:
-        if ((v39 - 1) <= 0x7FFFFFFFFFFFFFFDLL)
+        if ((integerValue - 1) <= 0x7FFFFFFFFFFFFFFDLL)
         {
           if (v42)
           {
@@ -1791,12 +1791,12 @@ LABEL_22:
             v46 = &stru_1E7188;
           }
 
-          v50 = [NSNumberFormatter imaxLocalizedUnsignedInteger:v39 usesGroupingSeparator:0];
+          v50 = [NSNumberFormatter imaxLocalizedUnsignedInteger:integerValue usesGroupingSeparator:0];
           goto LABEL_35;
         }
 
-        v47 = [v36 pageTitle];
-        v48 = [v47 length];
+        pageTitle2 = [v36 pageTitle];
+        v48 = [pageTitle2 length];
 
         if (v48)
         {
@@ -1805,32 +1805,32 @@ LABEL_22:
             v49 = AEBundle();
             v50 = &stru_1E7188;
             v51 = [v49 localizedStringForKey:@"%@ value:%@" table:{&stru_1E7188, 0}];
-            v52 = [v36 pageTitle];
-            v46 = [NSString stringWithFormat:v51, v42, v52];
+            pageTitle3 = [v36 pageTitle];
+            v46 = [NSString stringWithFormat:v51, v42, pageTitle3];
 
 LABEL_35:
-            v54 = [v62 titleLabel];
-            [v54 setText:v46];
+            titleLabel2 = [cellCopy titleLabel];
+            [titleLabel2 setText:v46];
 
-            v55 = [v36 text];
-            v56 = [v62 resultLabel];
-            [v56 setText:v55];
+            text = [v36 text];
+            resultLabel3 = [cellCopy resultLabel];
+            [resultLabel3 setText:text];
 
-            v57 = [v36 searchStringRange];
+            searchStringRange = [v36 searchStringRange];
             v59 = v58;
-            v60 = [v62 resultLabel];
-            [v60 setBoldRange:{v57, v59}];
+            resultLabel4 = [cellCopy resultLabel];
+            [resultLabel4 setBoldRange:{searchStringRange, v59}];
 
-            v61 = [v62 pageNumberLabel];
-            [v61 setText:v50];
+            pageNumberLabel2 = [cellCopy pageNumberLabel];
+            [pageNumberLabel2 setText:v50];
 
-            [v62 applyLabelFonts];
-            [v62 updateConstraintsIfNeeded];
+            [cellCopy applyLabelFonts];
+            [cellCopy updateConstraintsIfNeeded];
 
             goto LABEL_36;
           }
 
-          v53 = [v36 pageTitle];
+          pageTitle4 = [v36 pageTitle];
         }
 
         else
@@ -1842,16 +1842,16 @@ LABEL_35:
             goto LABEL_35;
           }
 
-          v53 = v42;
+          pageTitle4 = v42;
         }
 
-        v46 = v53;
+        v46 = pageTitle4;
         v50 = &stru_1E7188;
         goto LABEL_35;
       }
 
-      v34 = [v36 pageTitle];
-      v39 = [v34 integerValue];
+      results2 = [v36 pageTitle];
+      integerValue = [results2 integerValue];
     }
 
     else
@@ -1864,11 +1864,11 @@ LABEL_35:
 LABEL_36:
 }
 
-- (id)_resultsCellForRow:(unint64_t)a3 inTableView:(id)a4
+- (id)_resultsCellForRow:(unint64_t)row inTableView:(id)view
 {
-  v6 = a4;
-  v7 = [(BKSearchViewController *)self themePage];
-  v8 = [v7 isNight:self];
+  viewCopy = view;
+  themePage = [(BKSearchViewController *)self themePage];
+  v8 = [themePage isNight:self];
 
   v9 = &kBESearchTableViewCellResultsNightIdentifier;
   if (!v8)
@@ -1877,49 +1877,49 @@ LABEL_36:
   }
 
   v10 = *v9;
-  v11 = [v6 dequeueReusableCellWithIdentifier:v10];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v10];
   if (!v11)
   {
     v11 = [[BESearchResultTableViewCell alloc] initWithStyle:0 reuseIdentifier:v10];
   }
 
-  [(BKSearchViewController *)self _configureResultsCell:v11 forRow:a3 inTableView:v6];
+  [(BKSearchViewController *)self _configureResultsCell:v11 forRow:row inTableView:viewCopy];
 
   return v11;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] == &dword_0 + 1 && (v8 = objc_msgSend(v7, "row"), v8 >= (objc_msgSend(v6, "numberOfRowsInSection:", 1) - 1)) && (-[BKSearchViewController searchController](self, "searchController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "hasPartialResults"), v9, !v10))
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] == &dword_0 + 1 && (v8 = objc_msgSend(pathCopy, "row"), v8 >= (objc_msgSend(viewCopy, "numberOfRowsInSection:", 1) - 1)) && (-[BKSearchViewController searchController](self, "searchController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "hasPartialResults"), v9, !v10))
   {
     v11 = 0;
   }
 
   else
   {
-    v11 = v7;
+    v11 = pathCopy;
   }
 
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v18 = a3;
-  v6 = a4;
-  if ([v6 section] != &dword_0 + 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] != &dword_0 + 1)
   {
-    if ([v6 section])
+    if ([pathCopy section])
     {
       goto LABEL_14;
     }
 
-    v11 = [(BKSearchViewController *)self searchString];
+    searchString = [(BKSearchViewController *)self searchString];
     if ([(BKSearchViewController *)self showPhysicalPages])
     {
-      v12 = [(BKSearchViewController *)self physicalPageMapForPageTitle:v11];
+      v12 = [(BKSearchViewController *)self physicalPageMapForPageTitle:searchString];
       v13 = [v12 valueForKey:@"href"];
 
       if (!v13)
@@ -1929,45 +1929,45 @@ LABEL_12:
         goto LABEL_13;
       }
 
-      v14 = [[BKAnchorPathLocation alloc] initWithPath:v13];
+      searchString2 = [[BKAnchorPathLocation alloc] initWithPath:v13];
       WeakRetained = objc_loadWeakRetained(&self->_searchDelegate);
-      [WeakRetained searchViewController:self turnToLocation:v14 animated:1];
+      [WeakRetained searchViewController:self turnToLocation:searchString2 animated:1];
     }
 
     else
     {
       v13 = objc_loadWeakRetained(&self->_searchDelegate);
-      v14 = [(BKSearchViewController *)self searchString];
-      [v13 searchViewController:self turnToPageNumber:-[BKAnchorPathLocation intValue](v14 animated:{"intValue"), 1}];
+      searchString2 = [(BKSearchViewController *)self searchString];
+      [v13 searchViewController:self turnToPageNumber:-[BKAnchorPathLocation intValue](searchString2 animated:{"intValue"), 1}];
     }
 
     goto LABEL_12;
   }
 
-  v7 = [v6 row];
-  if (v7 >= ([v18 numberOfRowsInSection:1] - 1))
+  v7 = [pathCopy row];
+  if (v7 >= ([viewCopy numberOfRowsInSection:1] - 1))
   {
-    v16 = [(BKSearchViewController *)self searchController];
-    v17 = [v16 hasPartialResults];
+    searchController = [(BKSearchViewController *)self searchController];
+    hasPartialResults = [searchController hasPartialResults];
 
-    if (!v17)
+    if (!hasPartialResults)
     {
       goto LABEL_14;
     }
 
-    v11 = [(BKSearchViewController *)self searchController];
-    [v11 loadMore];
+    searchString = [(BKSearchViewController *)self searchController];
+    [searchString loadMore];
   }
 
   else
   {
     objc_opt_class();
-    v8 = [(BKSearchViewController *)self searchController];
-    v9 = [v8 results];
-    v10 = [v9 objectAtIndex:{objc_msgSend(v6, "row")}];
-    v11 = BUDynamicCast();
+    searchController2 = [(BKSearchViewController *)self searchController];
+    results = [searchController2 results];
+    v10 = [results objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+    searchString = BUDynamicCast();
 
-    [(BKSearchViewController *)self revealSearchResult:v11];
+    [(BKSearchViewController *)self revealSearchResult:searchString];
   }
 
 LABEL_13:
@@ -2026,11 +2026,11 @@ LABEL_14:
   return result;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = [(UISearchBar *)self->_searchField text];
-  v5 = [(BKSearchViewController *)self searchController];
-  [v5 setSearchString:v4];
+  text = [(UISearchBar *)self->_searchField text];
+  searchController = [(BKSearchViewController *)self searchController];
+  [searchController setSearchString:text];
 
   [(BKSearchViewController *)self _updateWebsearchButtonsStatus];
   [(BKSearchViewController *)self _updateContentSize:1];
@@ -2038,24 +2038,24 @@ LABEL_14:
   [(BKSearchViewController *)self _updateFooterConstraint];
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v17 = a3;
-  v4 = [v17 text];
-  v5 = [(BKSearchViewController *)self searchController];
-  v6 = [v5 searchString];
-  if ([v4 isEqualToString:v6])
+  clickedCopy = clicked;
+  text = [clickedCopy text];
+  searchController = [(BKSearchViewController *)self searchController];
+  searchString = [searchController searchString];
+  if ([text isEqualToString:searchString])
   {
-    v7 = [(BKSearchViewController *)self searchController];
-    v8 = [v7 results];
-    if (v8)
+    searchController2 = [(BKSearchViewController *)self searchController];
+    results = [searchController2 results];
+    if (results)
     {
-      v9 = v8;
-      v10 = [(BKSearchViewController *)self searchController];
-      v11 = [v10 results];
-      v12 = [v11 count];
+      v9 = results;
+      searchController3 = [(BKSearchViewController *)self searchController];
+      results2 = [searchController3 results];
+      v12 = [results2 count];
 
-      v13 = v17;
+      v13 = clickedCopy;
       if (v12)
       {
         goto LABEL_8;
@@ -2066,45 +2066,45 @@ LABEL_14:
   }
 
 LABEL_7:
-  v14 = [v17 text];
-  v15 = [(BKSearchViewController *)self searchController];
-  [v15 setSearchString:v14];
+  text2 = [clickedCopy text];
+  searchController4 = [(BKSearchViewController *)self searchController];
+  [searchController4 setSearchString:text2];
 
-  v16 = [(BKSearchViewController *)self searchController];
-  [v16 beginSearchWithReportAnalytics:1];
+  searchController5 = [(BKSearchViewController *)self searchController];
+  [searchController5 beginSearchWithReportAnalytics:1];
 
-  v13 = v17;
+  v13 = clickedCopy;
 LABEL_8:
   [v13 resignFirstResponder];
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   if (isPhone())
   {
-    v4 = [(BKSearchViewController *)self searchController];
-    [v4 pauseSearch];
+    searchController = [(BKSearchViewController *)self searchController];
+    [searchController pauseSearch];
 
     [(BKSearchViewController *)self revealSearchResult:0];
   }
 }
 
-- (void)searchControllerWillBeginSearching:(id)a3 reportAnalytics:(BOOL)a4
+- (void)searchControllerWillBeginSearching:(id)searching reportAnalytics:(BOOL)analytics
 {
-  v5 = [a3 searchString];
-  [(BKSearchViewController *)self _analyticsSubmitInBookSearchEventWithSearchText:v5];
+  searchString = [searching searchString];
+  [(BKSearchViewController *)self _analyticsSubmitInBookSearchEventWithSearchText:searchString];
 
   self->_maxContentHeightWasReached = 0;
 
   [(BKSearchViewController *)self _reloadResultsAndResizeIfNecessary:1];
 }
 
-- (void)_reloadResultsAndResizeIfNecessary:(BOOL)a3
+- (void)_reloadResultsAndResizeIfNecessary:(BOOL)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   if (![(BKSearchViewController *)self isModalSheet]&& !self->_maxContentHeightWasReached)
   {
-    [(BKSearchViewController *)self _updateContentSize:v3];
+    [(BKSearchViewController *)self _updateContentSize:necessaryCopy];
     [(BKSearchViewController *)self _updateFooterConstraint];
   }
 
@@ -2113,24 +2113,24 @@ LABEL_8:
   [(UITableView *)resultsTable reloadData];
 }
 
-- (void)searchControllerFinishedSearchingChapter:(id)a3
+- (void)searchControllerFinishedSearchingChapter:(id)chapter
 {
   v4 = [(BKSearchViewController *)self _loadingCellForTableView:self->_resultsTable];
   [(BKSearchViewController *)self _updateLoadingCell:v4];
 }
 
-- (id)environmentOverrideViewForSearchController:(id)a3
+- (id)environmentOverrideViewForSearchController:(id)controller
 {
   if ([(BKSearchViewController *)self isModalSheet])
   {
-    v4 = [(BKSearchViewController *)self viewIfLoaded];
-    v5 = [v4 window];
-    if (v5)
+    viewIfLoaded = [(BKSearchViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    if (window)
     {
-      v6 = v5;
-      v7 = [(BKSearchViewController *)self view];
+      v6 = window;
+      view = [(BKSearchViewController *)self view];
 
-      if (v7)
+      if (view)
       {
         goto LABEL_7;
       }
@@ -2141,53 +2141,53 @@ LABEL_8:
     }
   }
 
-  v8 = [(BKSearchViewController *)self searchDelegate];
-  v7 = [v8 environmentOverrideViewForSearchViewController:self];
+  searchDelegate = [(BKSearchViewController *)self searchDelegate];
+  view = [searchDelegate environmentOverrideViewForSearchViewController:self];
 
 LABEL_7:
 
-  return v7;
+  return view;
 }
 
 - (BOOL)_isRTL
 {
-  v2 = [(BKSearchViewController *)self view];
-  v3 = +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [v2 semanticContentAttribute]) == &dword_0 + 1;
+  view = [(BKSearchViewController *)self view];
+  v3 = +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [view semanticContentAttribute]) == &dword_0 + 1;
 
   return v3;
 }
 
-- (void)_analyticsSubmitInBookSearchEventWithSearchText:(id)a3
+- (void)_analyticsSubmitInBookSearchEventWithSearchText:(id)text
 {
-  v9 = [(BKSearchViewController *)self ba_effectiveAnalyticsTracker];
-  v4 = [(BKSearchViewController *)self searchDelegate];
-  v5 = [v4 readingSessionDataForSearchViewController:self];
+  ba_effectiveAnalyticsTracker = [(BKSearchViewController *)self ba_effectiveAnalyticsTracker];
+  searchDelegate = [(BKSearchViewController *)self searchDelegate];
+  v5 = [searchDelegate readingSessionDataForSearchViewController:self];
 
-  v6 = [(BKSearchViewController *)self searchDelegate];
-  v7 = [v6 contentDataForSearchViewController:self];
+  searchDelegate2 = [(BKSearchViewController *)self searchDelegate];
+  v7 = [searchDelegate2 contentDataForSearchViewController:self];
 
-  if (v9 && v5 && v7)
+  if (ba_effectiveAnalyticsTracker && v5 && v7)
   {
     v8 = +[BAEventReporter sharedReporter];
-    [v8 emitInBookSearchEventWithTracker:v9 readingSessionData:v5 contentData:v7];
+    [v8 emitInBookSearchEventWithTracker:ba_effectiveAnalyticsTracker readingSessionData:v5 contentData:v7];
   }
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [a3 view];
-  v10 = [v9 titleLabel];
-  [v10 bounds];
-  [v10 convertRect:v9 toView:?];
+  regionCopy = region;
+  requestCopy = request;
+  view = [interaction view];
+  titleLabel = [view titleLabel];
+  [titleLabel bounds];
+  [titleLabel convertRect:view toView:?];
   v12 = v11;
   v14 = v13;
-  [v7 rect];
+  [regionCopy rect];
   v16 = v15;
   v18 = v17;
 
-  [v8 location];
+  [requestCopy location];
   v20 = v19;
   v22 = v21;
 
@@ -2210,24 +2210,24 @@ LABEL_7:
   return v23;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = [a3 view];
-  v5 = [v4 titleLabel];
-  [v5 bounds];
+  view = [interaction view];
+  titleLabel = [view titleLabel];
+  [titleLabel bounds];
   v7 = v6 + -8.0;
   v9 = v8 + -4.0;
   v11 = v10 + 16.0;
   v13 = v12 + 8.0;
-  v14 = [v5 superview];
-  [v5 convertRect:v14 toView:{v7, v9, v11, v13}];
+  superview = [titleLabel superview];
+  [titleLabel convertRect:superview toView:{v7, v9, v11, v13}];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
   v23 = [UIPointerShape shapeWithRoundedRect:v16, v18, v20, v22];
-  v24 = [[UITargetedPreview alloc] initWithView:v5];
+  v24 = [[UITargetedPreview alloc] initWithView:titleLabel];
   v25 = [UIPointerHighlightEffect effectWithPreview:v24];
   v26 = [UIPointerStyle styleWithEffect:v25 shape:v23];
 

@@ -1,15 +1,15 @@
 @interface SKUIImageDataConsumer
 - (BOOL)isImagePlaceholderAvailable;
-- (id)imageForColor:(id)a3;
-- (id)imageForColor:(id)a3 size:(CGSize)a4;
-- (id)imageForImage:(id)a3;
-- (id)imagePlaceholderForColor:(id)a3;
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5;
+- (id)imageForColor:(id)color;
+- (id)imageForColor:(id)color size:(CGSize)size;
+- (id)imageForImage:(id)image;
+- (id)imagePlaceholderForColor:(id)color;
+- (id)objectForData:(id)data response:(id)response error:(id *)error;
 @end
 
 @implementation SKUIImageDataConsumer
 
-- (id)imageForColor:(id)a3
+- (id)imageForColor:(id)color
 {
   if (os_variant_has_internal_content())
   {
@@ -26,7 +26,7 @@
   return 0;
 }
 
-- (id)imageForColor:(id)a3 size:(CGSize)a4
+- (id)imageForColor:(id)color size:(CGSize)size
 {
   if (os_variant_has_internal_content())
   {
@@ -43,18 +43,18 @@
   return 0;
 }
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIImageDataConsumer imageForImage:];
   }
 
-  return v3;
+  return imageCopy;
 }
 
-- (id)imagePlaceholderForColor:(id)a3
+- (id)imagePlaceholderForColor:(id)color
 {
   if (os_variant_has_internal_content())
   {
@@ -88,18 +88,18 @@
   return 0;
 }
 
-- (id)objectForData:(id)a3 response:(id)a4 error:(id *)a5
+- (id)objectForData:(id)data response:(id)response error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIImageDataConsumer objectForData:response:error:];
   }
 
   v7 = objc_alloc(MEMORY[0x277D755B8]);
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
-  v9 = [v7 initWithData:v6 scale:?];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v9 = [v7 initWithData:dataCopy scale:?];
 
   if (v9)
   {

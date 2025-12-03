@@ -1,41 +1,41 @@
 @interface MAHandleGetNavigationStatus
-- (id)_maneuverETAForGuidanceState:(id)a3;
-- (id)_metersToMiles:(id)a3;
-- (id)_navigationVolumeForGuidanceState:(id)a3;
-- (id)_overallETAForGuidanceState:(id)a3;
-- (id)_routeForGuidanceState:(id)a3;
-- (id)_secondsToMinutes:(id)a3;
-- (id)_trafficIncidentAlertTypeForGuidanceState:(id)a3;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (id)_maneuverETAForGuidanceState:(id)state;
+- (id)_metersToMiles:(id)miles;
+- (id)_navigationVolumeForGuidanceState:(id)state;
+- (id)_overallETAForGuidanceState:(id)state;
+- (id)_routeForGuidanceState:(id)state;
+- (id)_secondsToMinutes:(id)minutes;
+- (id)_trafficIncidentAlertTypeForGuidanceState:(id)state;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation MAHandleGetNavigationStatus
 
-- (id)_routeForGuidanceState:(id)a3
+- (id)_routeForGuidanceState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 originalWaypointRouteData];
-  v5 = [v3 legacyRouteData];
-  v6 = [v3 navSessionData];
-  v7 = v6;
-  if (v4 || v5 || v6)
+  stateCopy = state;
+  originalWaypointRouteData = [stateCopy originalWaypointRouteData];
+  legacyRouteData = [stateCopy legacyRouteData];
+  navSessionData = [stateCopy navSessionData];
+  v7 = navSessionData;
+  if (originalWaypointRouteData || legacyRouteData || navSessionData)
   {
     v9 = objc_alloc_init(SALocalSearchRoute);
-    [v9 setRouteAsZilchBinary:v5];
+    [v9 setRouteAsZilchBinary:legacyRouteData];
     [v9 setSessionState:v7];
-    v10 = [v3 etaFilterData];
-    [v9 setEtaFilter:v10];
+    etaFilterData = [stateCopy etaFilterData];
+    [v9 setEtaFilter:etaFilterData];
 
-    v11 = [v3 incidentsOnRouteData];
-    [v9 setRouteIncidents:v11];
+    incidentsOnRouteData = [stateCopy incidentsOnRouteData];
+    [v9 setRouteIncidents:incidentsOnRouteData];
 
-    v12 = [v3 incidentsOnRouteOffsets];
-    [v9 setRouteIncidentOffsets:v12];
+    incidentsOnRouteOffsets = [stateCopy incidentsOnRouteOffsets];
+    [v9 setRouteIncidentOffsets:incidentsOnRouteOffsets];
 
-    v13 = [v3 evChargingMetadata];
-    [v9 setEvChargingMetadata:v13];
+    evChargingMetadata = [stateCopy evChargingMetadata];
+    [v9 setEvChargingMetadata:evChargingMetadata];
 
-    [v9 setOriginalWaypointRoute:v4];
+    [v9 setOriginalWaypointRoute:originalWaypointRouteData];
   }
 
   else
@@ -56,21 +56,21 @@
   return v9;
 }
 
-- (id)_maneuverETAForGuidanceState:(id)a3
+- (id)_maneuverETAForGuidanceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_alloc_init(SALocalSearchAceNavigationEta);
   v6 = objc_alloc_init(SADuration);
-  v7 = [v4 timeToNextManeuver];
-  v8 = [(MAHandleGetNavigationStatus *)self _secondsToMinutes:v7];
+  timeToNextManeuver = [stateCopy timeToNextManeuver];
+  v8 = [(MAHandleGetNavigationStatus *)self _secondsToMinutes:timeToNextManeuver];
   [v6 setValue:v8];
 
   [v6 setUnit:SADurationUnitMinutesValue];
   [v5 setTimeEta:v6];
   v9 = objc_alloc_init(SADistance);
-  v10 = [v4 distance];
+  distance = [stateCopy distance];
 
-  v11 = [(MAHandleGetNavigationStatus *)self _metersToMiles:v10];
+  v11 = [(MAHandleGetNavigationStatus *)self _metersToMiles:distance];
   [v9 setValue:v11];
 
   [v9 setUnit:SADistanceUnitMilesValue];
@@ -79,20 +79,20 @@
   return v5;
 }
 
-- (id)_overallETAForGuidanceState:(id)a3
+- (id)_overallETAForGuidanceState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = objc_alloc_init(SALocalSearchAceNavigationEta);
   v6 = objc_alloc_init(SADuration);
-  v7 = [v4 remainingMinutesOnRoute];
-  [v6 setValue:v7];
+  remainingMinutesOnRoute = [stateCopy remainingMinutesOnRoute];
+  [v6 setValue:remainingMinutesOnRoute];
 
   [v6 setUnit:SADurationUnitMinutesValue];
   [v5 setTimeEta:v6];
   v8 = objc_alloc_init(SADistance);
-  v9 = [v4 remainingDistanceOnRoute];
+  remainingDistanceOnRoute = [stateCopy remainingDistanceOnRoute];
 
-  v10 = [(MAHandleGetNavigationStatus *)self _metersToMiles:v9];
+  v10 = [(MAHandleGetNavigationStatus *)self _metersToMiles:remainingDistanceOnRoute];
   [v8 setValue:v10];
 
   [v8 setUnit:SADistanceUnitMilesValue];
@@ -101,11 +101,11 @@
   return v5;
 }
 
-- (id)_trafficIncidentAlertTypeForGuidanceState:(id)a3
+- (id)_trafficIncidentAlertTypeForGuidanceState:(id)state
 {
-  v3 = [a3 trafficIncidentAlert];
-  v4 = v3;
-  if (v3 && (v5 = [v3 type], (v5 - 1) <= 5))
+  trafficIncidentAlert = [state trafficIncidentAlert];
+  v4 = trafficIncidentAlert;
+  if (trafficIncidentAlert && (v5 = [trafficIncidentAlert type], (v5 - 1) <= 5))
   {
     v6 = **(&off_4AB90 + (v5 - 1));
   }
@@ -118,10 +118,10 @@
   return v6;
 }
 
-- (id)_navigationVolumeForGuidanceState:(id)a3
+- (id)_navigationVolumeForGuidanceState:(id)state
 {
-  v3 = [a3 navVolumeSetting];
-  if ([v3 isEqualToString:@"Loud Volume"])
+  navVolumeSetting = [state navVolumeSetting];
+  if ([navVolumeSetting isEqualToString:@"Loud Volume"])
   {
     v4 = &SALocalSearchNavigationVoiceVolumeLoudValue;
 LABEL_8:
@@ -129,13 +129,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:@"Normal Volume"])
+  if ([navVolumeSetting isEqualToString:@"Normal Volume"])
   {
     v4 = &SALocalSearchNavigationVoiceVolumeNormalValue;
     goto LABEL_8;
   }
 
-  if (([v3 isEqualToString:@"Low Volume"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"Off Volume"))
+  if (([navVolumeSetting isEqualToString:@"Low Volume"] & 1) != 0 || objc_msgSend(navVolumeSetting, "isEqualToString:", @"Off Volume"))
   {
     v4 = &SALocalSearchNavigationVoiceVolumeLowValue;
     goto LABEL_8;
@@ -147,25 +147,25 @@ LABEL_9:
   return v5;
 }
 
-- (id)_metersToMiles:(id)a3
+- (id)_metersToMiles:(id)miles
 {
-  [a3 doubleValue];
+  [miles doubleValue];
   v4 = v3 * 0.000621371192;
 
   return [NSNumber numberWithDouble:v4];
 }
 
-- (id)_secondsToMinutes:(id)a3
+- (id)_secondsToMinutes:(id)minutes
 {
-  [a3 doubleValue];
+  [minutes doubleValue];
   v4 = v3 / 60.0;
 
   return [NSNumber numberWithDouble:v4];
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
-  v5 = a3;
+  completionCopy = completion;
   v6 = [SACommandFailed alloc];
   v7 = [v6 initWithErrorCode:SALocalSearchNavigationNotRunningErrorCode];
   v8 = +[MKMapService sharedService];
@@ -175,18 +175,18 @@ LABEL_9:
   [v9 initializeBrokerConnectionIfNeeded];
   if ([v9 canReceiveMessages] && !objc_msgSend(v9, "isMapsBackgroundTaskSuspended"))
   {
-    v11 = objc_alloc_init(IPCGuidanceStateMessage);
-    v12 = [(MAHandleGetNavigationStatus *)self getRoute];
-    -[IPCGuidanceStateMessage setIncludeRoute:](v11, "setIncludeRoute:", [v12 BOOLValue]);
+    dictionary = objc_alloc_init(IPCGuidanceStateMessage);
+    getRoute = [(MAHandleGetNavigationStatus *)self getRoute];
+    -[IPCGuidanceStateMessage setIncludeRoute:](dictionary, "setIncludeRoute:", [getRoute BOOLValue]);
 
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1A5B8;
     v13[3] = &unk_4AB70;
     v13[4] = self;
-    v15 = v5;
+    v15 = completionCopy;
     v14 = v7;
-    [v9 getGuidanceState:v11 completion:v13];
+    [v9 getGuidanceState:dictionary completion:v13];
   }
 
   else
@@ -195,14 +195,14 @@ LABEL_9:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 67109376;
-      v17 = [v9 canReceiveMessages];
+      canReceiveMessages = [v9 canReceiveMessages];
       v18 = 1024;
-      v19 = [v9 isMapsBackgroundTaskSuspended];
+      isMapsBackgroundTaskSuspended = [v9 isMapsBackgroundTaskSuspended];
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "MAPS SIRI: Failed as IPC can't receive messages. canReceiveMessages: %d isMapsBackgroundTaskSuspended: %d", buf, 0xEu);
     }
 
-    v11 = [v7 dictionary];
-    (*(v5 + 2))(v5, v11);
+    dictionary = [v7 dictionary];
+    (*(completionCopy + 2))(completionCopy, dictionary);
   }
 }
 

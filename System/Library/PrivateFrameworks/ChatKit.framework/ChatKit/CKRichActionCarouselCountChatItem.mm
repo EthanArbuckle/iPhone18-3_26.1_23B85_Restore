@@ -1,5 +1,5 @@
 @interface CKRichActionCarouselCountChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CKRichActionCarouselCountChatItem)init;
 - (UIEdgeInsets)contentInsets;
 - (id)loadTranscriptText;
@@ -22,20 +22,20 @@
 
 - (id)loadTranscriptText
 {
-  v2 = self;
+  selfCopy = self;
   sub_190C0EC80();
   v4 = v3;
 
   return v4;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = self;
-  v7 = [(CKRichActionCarouselCountChatItem *)v6 loadTranscriptText];
-  [v7 boundingRectWithSize:3 options:0 context:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
+  loadTranscriptText = [(CKRichActionCarouselCountChatItem *)selfCopy loadTranscriptText];
+  [loadTranscriptText boundingRectWithSize:3 options:0 context:{width, height}];
   v9 = v8;
 
   v10 = 0.0;

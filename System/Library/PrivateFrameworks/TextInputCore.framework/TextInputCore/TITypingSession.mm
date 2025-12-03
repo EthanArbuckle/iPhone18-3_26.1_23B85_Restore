@@ -1,39 +1,39 @@
 @interface TITypingSession
-- (BOOL)testForRapidDeleteContextChange:(id)a3;
+- (BOOL)testForRapidDeleteContextChange:(id)change;
 - (NSString)description;
 - (NSUUID)sessionId;
 - (TITypingSession)init;
-- (TITypingSession)initWithCoder:(id)a3;
-- (TITypingSession)initWithLocale:(id)a3 keyboardLayout:(id)a4;
+- (TITypingSession)initWithCoder:(id)coder;
+- (TITypingSession)initWithLocale:(id)locale keyboardLayout:(id)layout;
 - (TIWordEntry)currentWord;
-- (_NSRange)safeRangeFromRange:(_NSRange)a3 fromArray:(id)a4;
+- (_NSRange)safeRangeFromRange:(_NSRange)range fromArray:(id)array;
 - (double)calibratedCurrentTimestamp;
-- (id)committedWordDeletionWithDocumentState:(id)a3 keyboardState:(id)a4;
-- (id)currentInputsInRange:(_NSRange)a3;
-- (id)currentLayoutsInRange:(_NSRange)a3;
-- (id)currentTouchesInRange:(_NSRange)a3;
-- (id)keyStringWithCode:(int64_t)a3 fromLayoutIndex:(id)a4;
-- (id)uncommittedWordDeletionFromInputsWithRange:(_NSRange)a3;
-- (void)acceptingCandidateWithTrigger:(id)a3;
-- (void)addDrawInputWithSyllableCount:(unint64_t)a3 keyboardState:(id)a4;
-- (void)addKeyInput:(id)a3 keyboardState:(id)a4;
-- (void)addTouchEvent:(id)a3;
-- (void)candidatesOffered:(id)a3 keyboardState:(id)a4;
-- (void)changingContextWithTrigger:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)endSessionWithTimestamp:(id)a3;
+- (id)committedWordDeletionWithDocumentState:(id)state keyboardState:(id)keyboardState;
+- (id)currentInputsInRange:(_NSRange)range;
+- (id)currentLayoutsInRange:(_NSRange)range;
+- (id)currentTouchesInRange:(_NSRange)range;
+- (id)keyStringWithCode:(int64_t)code fromLayoutIndex:(id)index;
+- (id)uncommittedWordDeletionFromInputsWithRange:(_NSRange)range;
+- (void)acceptingCandidateWithTrigger:(id)trigger;
+- (void)addDrawInputWithSyllableCount:(unint64_t)count keyboardState:(id)state;
+- (void)addKeyInput:(id)input keyboardState:(id)state;
+- (void)addTouchEvent:(id)event;
+- (void)candidatesOffered:(id)offered keyboardState:(id)state;
+- (void)changingContextWithTrigger:(id)trigger;
+- (void)encodeWithCoder:(id)coder;
+- (void)endSessionWithTimestamp:(id)timestamp;
 - (void)handleUncommittedWord;
-- (void)insertUncommittedUserAction:(id)a3;
-- (void)layoutDidChange:(id)a3 keyboardState:(id)a4;
-- (void)removeInputsAndTouchesWithRange:(_NSRange)a3;
-- (void)removeInputsInRange:(_NSRange)a3;
-- (void)removeLayoutsInRange:(_NSRange)a3;
-- (void)removeTouchesInRange:(_NSRange)a3;
+- (void)insertUncommittedUserAction:(id)action;
+- (void)layoutDidChange:(id)change keyboardState:(id)state;
+- (void)removeInputsAndTouchesWithRange:(_NSRange)range;
+- (void)removeInputsInRange:(_NSRange)range;
+- (void)removeLayoutsInRange:(_NSRange)range;
+- (void)removeTouchesInRange:(_NSRange)range;
 - (void)resetCurrentWord;
-- (void)resolveInputs:(id)a3 cancelledTextRange:(_NSRange *)a4 leadingBackspaceRange:(_NSRange *)a5 trailingTextRange:(_NSRange *)a6;
-- (void)setClientID:(id)a3 keyboardState:(id)a4;
-- (void)updateCachedStateAfterLastInputWithKeyboardState:(id)a3;
-- (void)updateCachedStateBeforeFirstInputWithKeyboardState:(id)a3;
+- (void)resolveInputs:(id)inputs cancelledTextRange:(_NSRange *)range leadingBackspaceRange:(_NSRange *)backspaceRange trailingTextRange:(_NSRange *)textRange;
+- (void)setClientID:(id)d keyboardState:(id)state;
+- (void)updateCachedStateAfterLastInputWithKeyboardState:(id)state;
+- (void)updateCachedStateBeforeFirstInputWithKeyboardState:(id)state;
 @end
 
 @implementation TITypingSession
@@ -80,20 +80,20 @@
   return result;
 }
 
-- (_NSRange)safeRangeFromRange:(_NSRange)a3 fromArray:(id)a4
+- (_NSRange)safeRangeFromRange:(_NSRange)range fromArray:(id)array
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = a4;
-  if (location >= [v6 count])
+  length = range.length;
+  location = range.location;
+  arrayCopy = array;
+  if (location >= [arrayCopy count])
   {
     length = 0;
     location = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  else if (location + length > [v6 count])
+  else if (location + length > [arrayCopy count])
   {
-    length = [v6 count] - location;
+    length = [arrayCopy count] - location;
   }
 
   v7 = location;
@@ -103,135 +103,135 @@
   return result;
 }
 
-- (void)removeLayoutsInRange:(_NSRange)a3
+- (void)removeLayoutsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(TITypingSession *)self currentWord];
-  v7 = [v6 touchLayoutsM];
-  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, v7];
+  length = range.length;
+  location = range.location;
+  currentWord = [(TITypingSession *)self currentWord];
+  touchLayoutsM = [currentWord touchLayoutsM];
+  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, touchLayoutsM];
   v10 = v9;
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [(TITypingSession *)self currentWord];
-    v11 = [v12 touchLayoutsM];
-    [v11 removeObjectsInRange:{v8, v10}];
+    currentWord2 = [(TITypingSession *)self currentWord];
+    touchLayoutsM2 = [currentWord2 touchLayoutsM];
+    [touchLayoutsM2 removeObjectsInRange:{v8, v10}];
   }
 }
 
-- (void)removeTouchesInRange:(_NSRange)a3
+- (void)removeTouchesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(TITypingSession *)self currentWord];
-  v7 = [v6 allTouchesM];
-  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, v7];
+  length = range.length;
+  location = range.location;
+  currentWord = [(TITypingSession *)self currentWord];
+  allTouchesM = [currentWord allTouchesM];
+  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, allTouchesM];
   v10 = v9;
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [(TITypingSession *)self currentWord];
-    v11 = [v12 allTouchesM];
-    [v11 removeObjectsInRange:{v8, v10}];
+    currentWord2 = [(TITypingSession *)self currentWord];
+    allTouchesM2 = [currentWord2 allTouchesM];
+    [allTouchesM2 removeObjectsInRange:{v8, v10}];
   }
 }
 
-- (void)removeInputsInRange:(_NSRange)a3
+- (void)removeInputsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(TITypingSession *)self currentWord];
-  v7 = [v6 allKeyboardInputsM];
-  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, v7];
+  length = range.length;
+  location = range.location;
+  currentWord = [(TITypingSession *)self currentWord];
+  allKeyboardInputsM = [currentWord allKeyboardInputsM];
+  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, allKeyboardInputsM];
   v10 = v9;
 
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = [(TITypingSession *)self currentWord];
-    v11 = [v12 allKeyboardInputsM];
-    [v11 removeObjectsInRange:{v8, v10}];
+    currentWord2 = [(TITypingSession *)self currentWord];
+    allKeyboardInputsM2 = [currentWord2 allKeyboardInputsM];
+    [allKeyboardInputsM2 removeObjectsInRange:{v8, v10}];
   }
 }
 
-- (id)currentLayoutsInRange:(_NSRange)a3
+- (id)currentLayoutsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(TITypingSession *)self currentWord];
-  v7 = [v6 touchLayoutsM];
-  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, v7];
+  length = range.length;
+  location = range.location;
+  currentWord = [(TITypingSession *)self currentWord];
+  touchLayoutsM = [currentWord touchLayoutsM];
+  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, touchLayoutsM];
   v10 = v9;
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v12 = [(TITypingSession *)self currentWord];
-    v13 = [v12 touchLayoutsM];
-    v14 = [v13 subarrayWithRange:{v8, v10}];
-    v11 = [v14 mutableCopy];
+    currentWord2 = [(TITypingSession *)self currentWord];
+    touchLayoutsM2 = [currentWord2 touchLayoutsM];
+    v14 = [touchLayoutsM2 subarrayWithRange:{v8, v10}];
+    array = [v14 mutableCopy];
   }
 
-  return v11;
+  return array;
 }
 
-- (id)currentTouchesInRange:(_NSRange)a3
+- (id)currentTouchesInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(TITypingSession *)self currentWord];
-  v7 = [v6 allTouchesM];
-  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, v7];
+  length = range.length;
+  location = range.location;
+  currentWord = [(TITypingSession *)self currentWord];
+  allTouchesM = [currentWord allTouchesM];
+  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, allTouchesM];
   v10 = v9;
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v12 = [(TITypingSession *)self currentWord];
-    v13 = [v12 allTouchesM];
-    v14 = [v13 subarrayWithRange:{v8, v10}];
-    v11 = [v14 mutableCopy];
+    currentWord2 = [(TITypingSession *)self currentWord];
+    allTouchesM2 = [currentWord2 allTouchesM];
+    v14 = [allTouchesM2 subarrayWithRange:{v8, v10}];
+    array = [v14 mutableCopy];
   }
 
-  return v11;
+  return array;
 }
 
-- (id)currentInputsInRange:(_NSRange)a3
+- (id)currentInputsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [(TITypingSession *)self currentWord];
-  v7 = [v6 allKeyboardInputsM];
-  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, v7];
+  length = range.length;
+  location = range.location;
+  currentWord = [(TITypingSession *)self currentWord];
+  allKeyboardInputsM = [currentWord allKeyboardInputsM];
+  v8 = [(TITypingSession *)self safeRangeFromRange:location fromArray:length, allKeyboardInputsM];
   v10 = v9;
 
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v11 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
   }
 
   else
   {
-    v12 = [(TITypingSession *)self currentWord];
-    v13 = [v12 allKeyboardInputsM];
-    v14 = [v13 subarrayWithRange:{v8, v10}];
-    v11 = [v14 mutableCopy];
+    currentWord2 = [(TITypingSession *)self currentWord];
+    allKeyboardInputsM2 = [currentWord2 allKeyboardInputsM];
+    v14 = [allKeyboardInputsM2 subarrayWithRange:{v8, v10}];
+    array = [v14 mutableCopy];
   }
 
-  return v11;
+  return array;
 }
 
-- (void)resolveInputs:(id)a3 cancelledTextRange:(_NSRange *)a4 leadingBackspaceRange:(_NSRange *)a5 trailingTextRange:(_NSRange *)a6
+- (void)resolveInputs:(id)inputs cancelledTextRange:(_NSRange *)range leadingBackspaceRange:(_NSRange *)backspaceRange trailingTextRange:(_NSRange *)textRange
 {
-  v9 = a3;
+  inputsCopy = inputs;
   v32 = 0;
   v33 = &v32;
   v34 = 0x2020000000;
@@ -254,13 +254,13 @@
   v18[2] = 0x3032000000;
   v18[3] = __Block_byref_object_copy__23396;
   v18[4] = __Block_byref_object_dispose__23397;
-  v19 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy__23396;
   v16[4] = __Block_byref_object_dispose__23397;
-  v17 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __92__TITypingSession_resolveInputs_cancelledTextRange_leadingBackspaceRange_trailingTextRange___block_invoke;
@@ -271,27 +271,27 @@
   v15[7] = &v20;
   v15[8] = &v32;
   v15[9] = &v28;
-  [v9 enumerateObjectsUsingBlock:v15];
+  [inputsCopy enumerateObjectsUsingBlock:v15];
   v11 = v21[3] + v29[3];
-  if (v11 >= [v9 count])
+  if (v11 >= [inputsCopy count])
   {
     v12 = 0;
   }
 
   else
   {
-    v12 = [v9 count] - v11;
+    v12 = [inputsCopy count] - v11;
     v10 = v11;
   }
 
   v13 = v29[3];
-  a4->location = v33[3];
-  a4->length = v13;
+  range->location = v33[3];
+  range->length = v13;
   v14 = v21[3];
-  a5->location = v25[3];
-  a5->length = v14;
-  a6->location = v10;
-  a6->length = v12;
+  backspaceRange->location = v25[3];
+  backspaceRange->length = v14;
+  textRange->location = v10;
+  textRange->length = v12;
   _Block_object_dispose(v16, 8);
 
   _Block_object_dispose(v18, 8);
@@ -345,100 +345,100 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)insertUncommittedUserAction:(id)a3
+- (void)insertUncommittedUserAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v15 = v4;
-    v5 = [(TITypingSession *)self userActionHistory];
-    v6 = [v5 count];
+    v15 = actionCopy;
+    userActionHistory = [(TITypingSession *)self userActionHistory];
+    v6 = [userActionHistory count];
 
     if (v6 >= 2)
     {
-      v7 = [(TITypingSession *)self userActionHistory];
-      v8 = [v7 lastObject];
+      userActionHistory2 = [(TITypingSession *)self userActionHistory];
+      lastObject = [userActionHistory2 lastObject];
 
-      v9 = [v8 actionType];
-      if (v9 != 2 && v9 != 12)
+      actionType = [lastObject actionType];
+      if (actionType != 2 && actionType != 12)
       {
-        if (v9 == 11)
+        if (actionType == 11)
         {
 
 LABEL_7:
-          v10 = [(TITypingSession *)self userActionHistory];
-          v11 = [(TITypingSession *)self userActionHistory];
-          [v10 insertObject:v15 atIndex:{objc_msgSend(v11, "count") - 1}];
+          userActionHistory3 = [(TITypingSession *)self userActionHistory];
+          userActionHistory4 = [(TITypingSession *)self userActionHistory];
+          [userActionHistory3 insertObject:v15 atIndex:{objc_msgSend(userActionHistory4, "count") - 1}];
 
 LABEL_13:
-          v4 = v15;
+          actionCopy = v15;
           goto LABEL_14;
         }
 
         goto LABEL_11;
       }
 
-      v12 = [v8 documentState];
-      v13 = [v12 contextBeforeInput];
-      if (v13 || ([v12 selectedText], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      documentState = [lastObject documentState];
+      contextBeforeInput = [documentState contextBeforeInput];
+      if (contextBeforeInput || ([documentState selectedText], (contextBeforeInput = objc_claimAutoreleasedReturnValue()) != 0))
       {
 
 LABEL_11:
         goto LABEL_12;
       }
 
-      v14 = [v12 contextAfterInput];
+      contextAfterInput = [documentState contextAfterInput];
 
-      if (!v14)
+      if (!contextAfterInput)
       {
         goto LABEL_7;
       }
     }
 
 LABEL_12:
-    v10 = [(TITypingSession *)self userActionHistory];
-    [v10 addObject:v15];
+    userActionHistory3 = [(TITypingSession *)self userActionHistory];
+    [userActionHistory3 addObject:v15];
     goto LABEL_13;
   }
 
 LABEL_14:
 }
 
-- (void)removeInputsAndTouchesWithRange:(_NSRange)a3
+- (void)removeInputsAndTouchesWithRange:(_NSRange)range
 {
-  v4 = 2 * a3.location;
-  v5 = 2 * a3.length;
+  v4 = 2 * range.location;
+  v5 = 2 * range.length;
   [(TITypingSession *)self removeInputsInRange:?];
   [(TITypingSession *)self removeTouchesInRange:v4, v5];
 
   [(TITypingSession *)self removeLayoutsInRange:v4, v5];
 }
 
-- (id)committedWordDeletionWithDocumentState:(id)a3 keyboardState:(id)a4
+- (id)committedWordDeletionWithDocumentState:(id)state keyboardState:(id)keyboardState
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[TIDeleteWordEvent alloc] initWithTIKeyboardState:v6];
+  keyboardStateCopy = keyboardState;
+  stateCopy = state;
+  v8 = [[TIDeleteWordEvent alloc] initWithTIKeyboardState:keyboardStateCopy];
 
-  [(TIUserAction *)v8 setDocumentState:v7];
-  v9 = [(TIWordEntry *)self->_currentWord allKeyboardInputs];
-  [(TIDeleteWordEvent *)v8 addKeyInputs:v9];
+  [(TIUserAction *)v8 setDocumentState:stateCopy];
+  allKeyboardInputs = [(TIWordEntry *)self->_currentWord allKeyboardInputs];
+  [(TIDeleteWordEvent *)v8 addKeyInputs:allKeyboardInputs];
 
-  v10 = [(TIWordEntry *)self->_currentWord allTouches];
-  v11 = [(TIWordEntry *)self->_currentWord touchLayouts];
-  [(TIDeleteWordEvent *)v8 addTouches:v10 withLayoutIDs:v11];
+  allTouches = [(TIWordEntry *)self->_currentWord allTouches];
+  touchLayouts = [(TIWordEntry *)self->_currentWord touchLayouts];
+  [(TIDeleteWordEvent *)v8 addTouches:allTouches withLayoutIDs:touchLayouts];
 
-  v12 = [(TIWordEntry *)self->_currentWord candidatesOffered];
-  [(TIDeleteWordEvent *)v8 addCandidatesOffered:v12];
+  candidatesOffered = [(TIWordEntry *)self->_currentWord candidatesOffered];
+  [(TIDeleteWordEvent *)v8 addCandidatesOffered:candidatesOffered];
 
-  v13 = [(TIDeleteWordEvent *)v8 allTouches];
-  v14 = [v13 lastObject];
-  [v14 timestamp];
+  allTouches2 = [(TIDeleteWordEvent *)v8 allTouches];
+  lastObject = [allTouches2 lastObject];
+  [lastObject timestamp];
   [(TIUserAction *)v8 setEndTime:?];
 
-  v15 = [(TIDeleteWordEvent *)v8 allTouches];
-  v16 = [v15 firstObject];
-  [v16 timestamp];
+  allTouches3 = [(TIDeleteWordEvent *)v8 allTouches];
+  firstObject = [allTouches3 firstObject];
+  [firstObject timestamp];
   [(TIUserAction *)v8 setStartTime:?];
 
   [(TITypingSession *)self calibratedCurrentTimestamp];
@@ -447,22 +447,22 @@ LABEL_14:
   return v8;
 }
 
-- (id)uncommittedWordDeletionFromInputsWithRange:(_NSRange)a3
+- (id)uncommittedWordDeletionFromInputsWithRange:(_NSRange)range
 {
-  if (a3.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (range.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     v3 = 0;
   }
 
   else
   {
-    length = a3.length;
-    location = a3.location;
-    v7 = LODWORD(a3.location) + LODWORD(a3.length);
-    v8 = [(NSMutableArray *)self->_cachedKeyboardStates objectAtIndexedSubscript:a3.location + a3.length];
-    v9 = [v8 documentState];
+    length = range.length;
+    location = range.location;
+    v7 = LODWORD(range.location) + LODWORD(range.length);
+    v8 = [(NSMutableArray *)self->_cachedKeyboardStates objectAtIndexedSubscript:range.location + range.length];
+    documentState = [v8 documentState];
     v3 = [[TIDeleteWordEvent alloc] initWithTIKeyboardState:v8];
-    [(TIUserAction *)v3 setDocumentState:v9];
+    [(TIUserAction *)v3 setDocumentState:documentState];
     v10 = 2 * length;
     v11 = [(TITypingSession *)self currentInputsInRange:location, length];
     [(TIDeleteWordEvent *)v3 setAllKeyboardInputsM:v11];
@@ -482,14 +482,14 @@ LABEL_14:
       [(TIDeleteWordEvent *)v3 setCandidatesOfferedM:v17];
     }
 
-    v18 = [(TIDeleteWordEvent *)v3 allTouches];
-    v19 = [v18 lastObject];
-    [v19 timestamp];
+    allTouches = [(TIDeleteWordEvent *)v3 allTouches];
+    lastObject = [allTouches lastObject];
+    [lastObject timestamp];
     [(TIUserAction *)v3 setEndTime:?];
 
-    v20 = [(TIDeleteWordEvent *)v3 allTouches];
-    v21 = [v20 firstObject];
-    [v21 timestamp];
+    allTouches2 = [(TIDeleteWordEvent *)v3 allTouches];
+    firstObject = [allTouches2 firstObject];
+    [firstObject timestamp];
     [(TIUserAction *)v3 setStartTime:?];
 
     [(TITypingSession *)self calibratedCurrentTimestamp];
@@ -514,9 +514,9 @@ LABEL_14:
     }
 
 LABEL_11:
-    v5 = [(TITypingSession *)self currentWord];
-    v6 = [v5 allKeyboardInputs];
-    v7 = [v6 count];
+    currentWord = [(TITypingSession *)self currentWord];
+    allKeyboardInputs = [currentWord allKeyboardInputs];
+    v7 = [allKeyboardInputs count];
 
     if (!v7)
     {
@@ -529,18 +529,18 @@ LABEL_11:
     v24 = 0;
     v21 = 0;
     v22 = 0;
-    v8 = [(TITypingSession *)self currentWord];
-    v9 = [v8 allKeyboardInputs];
-    [(TITypingSession *)self resolveInputs:v9 cancelledTextRange:&v25 leadingBackspaceRange:&v23 trailingTextRange:&v21];
+    currentWord2 = [(TITypingSession *)self currentWord];
+    allKeyboardInputs2 = [currentWord2 allKeyboardInputs];
+    [(TITypingSession *)self resolveInputs:allKeyboardInputs2 cancelledTextRange:&v25 leadingBackspaceRange:&v23 trailingTextRange:&v21];
 
     v10 = v23;
     if (v23 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v11 = [(TITypingSession *)self currentWord];
-      v12 = [v11 allKeyboardInputs];
-      v13 = [v12 count];
+      currentWord3 = [(TITypingSession *)self currentWord];
+      allKeyboardInputs3 = [currentWord3 allKeyboardInputs];
+      v13 = [allKeyboardInputs3 count];
 
-      v14 = [(TITypingSession *)self uncommittedWordEntryFromInputsWithRange:0 documentState:v13 cancelled:0, v21 == 0x7FFFFFFFFFFFFFFFLL];
+      0x7FFFFFFFFFFFFFFFLL = [(TITypingSession *)self uncommittedWordEntryFromInputsWithRange:0 documentState:v13 cancelled:0, v21 == 0x7FFFFFFFFFFFFFFFLL];
     }
 
     else
@@ -558,19 +558,19 @@ LABEL_11:
         v17 = v24;
         v18 = v22;
         v19 = [(NSMutableArray *)self->_cachedKeyboardStates objectAtIndexedSubscript:?];
-        v16 = [v19 documentState];
+        documentState = [v19 documentState];
 
-        v20 = [(TITypingSession *)self uncommittedWordEntryFromInputsWithRange:v10 documentState:v18 + v17 cancelled:v16, 0];
+        v20 = [(TITypingSession *)self uncommittedWordEntryFromInputsWithRange:v10 documentState:v18 + v17 cancelled:documentState, 0];
         [(TITypingSession *)self insertUncommittedUserAction:v20];
 
         goto LABEL_20;
       }
 
-      v14 = [(TITypingSession *)self uncommittedWordDeletionFromInputsWithRange:v10, v24];
+      0x7FFFFFFFFFFFFFFFLL = [(TITypingSession *)self uncommittedWordDeletionFromInputsWithRange:v10, v24];
     }
 
-    v16 = v14;
-    [(TITypingSession *)self insertUncommittedUserAction:v14];
+    documentState = 0x7FFFFFFFFFFFFFFFLL;
+    [(TITypingSession *)self insertUncommittedUserAction:0x7FFFFFFFFFFFFFFFLL];
 LABEL_20:
 
     [(TITypingSession *)self resetCurrentWord];
@@ -580,9 +580,9 @@ LABEL_20:
   v3 = [(NSMutableArray *)self->_cachedKeyboardStates objectAtIndexedSubscript:0];
   if (![v3 secureTextEntry])
   {
-    v4 = [(TITypingSession *)self didReceiveSecureFieldEvent];
+    didReceiveSecureFieldEvent = [(TITypingSession *)self didReceiveSecureFieldEvent];
 
-    if (v4)
+    if (didReceiveSecureFieldEvent)
     {
       goto LABEL_6;
     }
@@ -597,66 +597,66 @@ LABEL_7:
   [(TITypingSession *)self resetCurrentWord];
 }
 
-- (void)setClientID:(id)a3 keyboardState:(id)a4
+- (void)setClientID:(id)d keyboardState:(id)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  stateCopy = state;
   if (IXACanLogMessageAtLevel())
   {
     v8 = IXASessionEventsLogFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s CI clientID: '%@'", "-[TITypingSession setClientID:keyboardState:]", v6];
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s CI clientID: '%@'", "-[TITypingSession setClientID:keyboardState:]", dCopy];
       *buf = 138412290;
-      v12 = v10;
+      v12 = dCopy;
       _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
 
-  if (([v7 secureTextEntry] & 1) != 0 || -[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
+  if (([stateCopy secureTextEntry] & 1) != 0 || -[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
   {
     [(TITypingSession *)self setDidReceiveSecureFieldEvent:1];
   }
 
   else
   {
-    [(TITypingSession *)self setApplicationID:v6];
-    [(TITypingSession *)self updateCachedStateBeforeFirstInputWithKeyboardState:v7];
+    [(TITypingSession *)self setApplicationID:dCopy];
+    [(TITypingSession *)self updateCachedStateBeforeFirstInputWithKeyboardState:stateCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)changingContextWithTrigger:(id)a3
+- (void)changingContextWithTrigger:(id)trigger
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  triggerCopy = trigger;
   if (IXACanLogMessageAtLevel())
   {
     v5 = IXASessionEventsLogFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TC trigger: %@", "-[TITypingSession changingContextWithTrigger:]", v4];
+      triggerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TC trigger: %@", "-[TITypingSession changingContextWithTrigger:]", triggerCopy];
       *buf = 138412290;
-      v10 = v8;
+      v10 = triggerCopy;
       _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
 
   contextChangeTrigger = self->_contextChangeTrigger;
-  self->_contextChangeTrigger = v4;
+  self->_contextChangeTrigger = triggerCopy;
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)keyStringWithCode:(int64_t)a3 fromLayoutIndex:(id)a4
+- (id)keyStringWithCode:(int64_t)code fromLayoutIndex:(id)index
 {
-  v6 = a4;
-  v7 = [(TITypingSession *)self layouts];
-  v8 = [v6 integerValue];
+  indexCopy = index;
+  layouts = [(TITypingSession *)self layouts];
+  integerValue = [indexCopy integerValue];
 
-  v9 = [v7 objectAtIndexedSubscript:v8];
+  v9 = [layouts objectAtIndexedSubscript:integerValue];
 
   v13 = 0;
   v14 = &v13;
@@ -667,7 +667,7 @@ LABEL_7:
   v12[2] = __53__TITypingSession_keyStringWithCode_fromLayoutIndex___block_invoke;
   v12[3] = &unk_2787335F8;
   v12[4] = &v13;
-  v12[5] = a3;
+  v12[5] = code;
   [v9 enumerateKeysUsingBlock:v12];
   if (v14[3])
   {
@@ -930,72 +930,72 @@ LABEL_11:
   v89 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptingCandidateWithTrigger:(id)a3
+- (void)acceptingCandidateWithTrigger:(id)trigger
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  triggerCopy = trigger;
   if (IXACanLogMessageAtLevel())
   {
     v5 = IXASessionEventsLogFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TA trigger: %@", "-[TITypingSession acceptingCandidateWithTrigger:]", v4];
+      triggerCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TA trigger: %@", "-[TITypingSession acceptingCandidateWithTrigger:]", triggerCopy];
       *buf = 138412290;
-      v10 = v8;
+      v10 = triggerCopy;
       _os_log_debug_impl(&dword_22CA55000, v5, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
 
   candidateAcceptedTrigger = self->_candidateAcceptedTrigger;
-  self->_candidateAcceptedTrigger = v4;
+  self->_candidateAcceptedTrigger = triggerCopy;
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)candidatesOffered:(id)a3 keyboardState:(id)a4
+- (void)candidatesOffered:(id)offered keyboardState:(id)state
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  offeredCopy = offered;
+  stateCopy = state;
   if (IXACanLogMessageAtLevel())
   {
     v8 = IXASessionEventsLogFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       v14 = MEMORY[0x277CCACA8];
-      v15 = [v6 corrections];
-      v16 = [v15 autocorrection];
-      v17 = [v6 predictions];
-      v18 = [v14 stringWithFormat:@"%s CO autocorrection: %@ predictions: %@", "-[TITypingSession candidatesOffered:keyboardState:]", v16, v17];
+      corrections = [offeredCopy corrections];
+      autocorrection = [corrections autocorrection];
+      predictions = [offeredCopy predictions];
+      v18 = [v14 stringWithFormat:@"%s CO autocorrection: %@ predictions: %@", "-[TITypingSession candidatesOffered:keyboardState:]", autocorrection, predictions];
       *buf = 138412290;
       v20 = v18;
       _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
 
-  if (([v7 secureTextEntry] & 1) == 0 && !-[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
+  if (([stateCopy secureTextEntry] & 1) == 0 && !-[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
   {
-    v9 = [v6 corrections];
-    v10 = [v9 autocorrection];
-    if (v10)
+    corrections2 = [offeredCopy corrections];
+    autocorrection2 = [corrections2 autocorrection];
+    if (autocorrection2)
     {
     }
 
     else
     {
-      v11 = [v6 predictions];
+      predictions2 = [offeredCopy predictions];
 
-      if (!v11)
+      if (!predictions2)
       {
         goto LABEL_12;
       }
     }
 
-    v12 = [(TITypingSession *)self currentWord];
-    [v12 addCandidateOffered:v6];
+    currentWord = [(TITypingSession *)self currentWord];
+    [currentWord addCandidateOffered:offeredCopy];
 
-    [(NSMutableArray *)self->_cachedCandidatesOffered addObject:v6];
-    [(TITypingSession *)self updateCachedStateBeforeFirstInputWithKeyboardState:v7];
+    [(NSMutableArray *)self->_cachedCandidatesOffered addObject:offeredCopy];
+    [(TITypingSession *)self updateCachedStateBeforeFirstInputWithKeyboardState:stateCopy];
     goto LABEL_12;
   }
 
@@ -1005,29 +1005,29 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)layoutDidChange:(id)a3 keyboardState:(id)a4
+- (void)layoutDidChange:(id)change keyboardState:(id)state
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  stateCopy = state;
   if (IXACanLogMessageAtLevel())
   {
     v8 = IXASessionEventsLogFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s LC firstKeyString: '%s'", "-[TITypingSession layoutDidChange:keyboardState:]", objc_msgSend(v6, "firstKeyString")];
+      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s LC firstKeyString: '%s'", "-[TITypingSession layoutDidChange:keyboardState:]", objc_msgSend(changeCopy, "firstKeyString")];
       LODWORD(buf) = 138412290;
       *(&buf + 4) = v14;
       _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", &buf, 0xCu);
     }
   }
 
-  if (([v7 secureTextEntry] & 1) != 0 || -[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
+  if (([stateCopy secureTextEntry] & 1) != 0 || -[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
   {
     [(TITypingSession *)self setDidReceiveSecureFieldEvent:1];
   }
 
-  else if (v6)
+  else if (changeCopy)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -1037,27 +1037,27 @@ LABEL_12:
     v20 = &v19;
     v21 = 0x2020000000;
     v22 = -1;
-    v10 = [(TITypingSession *)self layouts];
+    layouts = [(TITypingSession *)self layouts];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __49__TITypingSession_layoutDidChange_keyboardState___block_invoke;
     v15[3] = &unk_2787335A8;
-    v11 = v6;
+    v11 = changeCopy;
     v16 = v11;
     p_buf = &buf;
     v18 = &v19;
-    [v10 enumerateObjectsUsingBlock:v15];
+    [layouts enumerateObjectsUsingBlock:v15];
 
     if (*(*(&buf + 1) + 24) == 1)
     {
       [(NSMutableArray *)self->_layouts addObject:v11];
-      v12 = [(TITypingSession *)self layouts];
-      v13 = [v12 count];
+      layouts2 = [(TITypingSession *)self layouts];
+      v13 = [layouts2 count];
       v20[3] = v13 - 1;
     }
 
     [(TITypingSession *)self setCurrentLayoutID:v20[3]];
-    [(TITypingSession *)self updateCachedStateBeforeFirstInputWithKeyboardState:v7];
+    [(TITypingSession *)self updateCachedStateBeforeFirstInputWithKeyboardState:stateCopy];
 
     _Block_object_dispose(&v19, 8);
     _Block_object_dispose(&buf, 8);
@@ -1079,18 +1079,18 @@ uint64_t __49__TITypingSession_layoutDidChange_keyboardState___block_invoke(uint
   return result;
 }
 
-- (void)addTouchEvent:(id)a3
+- (void)addTouchEvent:(id)event
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  eventCopy = event;
   if (IXACanLogMessageAtLevel())
   {
     v6 = IXASessionEventsLogFacility();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TO touch: %@", "-[TITypingSession addTouchEvent:]", v5];
+      eventCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s TO touch: %@", "-[TITypingSession addTouchEvent:]", eventCopy];
       *buf = 138412290;
-      v49 = v33;
+      v49 = eventCopy;
       _os_log_debug_impl(&dword_22CA55000, v6, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
@@ -1099,7 +1099,7 @@ uint64_t __49__TITypingSession_layoutDidChange_keyboardState___block_invoke(uint
   {
     if (!self->_timeCalibrationTouch)
     {
-      objc_storeStrong(&self->_timeCalibrationTouch, a3);
+      objc_storeStrong(&self->_timeCalibrationTouch, event);
       self->_calibratedTimeBase = CFAbsoluteTimeGetCurrent();
       v42 = 0u;
       v43 = 0u;
@@ -1121,7 +1121,7 @@ uint64_t __49__TITypingSession_layoutDidChange_keyboardState___block_invoke(uint
             }
 
             v12 = *(*(&v42 + 1) + 8 * i);
-            [v5 timestamp];
+            [eventCopy timestamp];
             v14 = v13;
             calibratedTimeBase = self->_calibratedTimeBase;
             [v12 occurenceTime];
@@ -1146,7 +1146,7 @@ uint64_t __49__TITypingSession_layoutDidChange_keyboardState___block_invoke(uint
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
       {
         v34 = MEMORY[0x277CCACA8];
-        [v5 timestamp];
+        [eventCopy timestamp];
         v36 = [v34 stringWithFormat:@"%s touch %lf", "-[TITypingSession addTouchEvent:]", v35];
         *buf = 138412290;
         v49 = v36;
@@ -1155,28 +1155,28 @@ uint64_t __49__TITypingSession_layoutDidChange_keyboardState___block_invoke(uint
     }
 
     v18 = objc_alloc_init(TIKBSessionTouchInfo);
-    [(TIKBSessionTouchInfo *)v18 setTouch:v5];
+    [(TIKBSessionTouchInfo *)v18 setTouch:eventCopy];
     [(TIKBSessionTouchInfo *)v18 setLayoutId:self->_currentLayoutID];
-    v19 = [(TITypingSession *)self touchesHistory];
-    v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "pathIndex")}];
-    v21 = [v19 objectForKey:v20];
+    touchesHistory = [(TITypingSession *)self touchesHistory];
+    v20 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(eventCopy, "pathIndex")}];
+    v21 = [touchesHistory objectForKey:v20];
 
-    if (![v5 stage])
+    if (![eventCopy stage])
     {
-      v22 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
 
-      v21 = v22;
+      v21 = array;
     }
 
     [v21 addObject:v18];
-    if ([v5 stage] == 2)
+    if ([eventCopy stage] == 2)
     {
       v40 = 0u;
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v23 = v21;
-      v24 = [v23 countByEnumeratingWithState:&v38 objects:v46 count:16];
+      touchesHistory2 = v21;
+      v24 = [touchesHistory2 countByEnumeratingWithState:&v38 objects:v46 count:16];
       if (v24)
       {
         v25 = v24;
@@ -1188,16 +1188,16 @@ uint64_t __49__TITypingSession_layoutDidChange_keyboardState___block_invoke(uint
           {
             if (*v39 != v26)
             {
-              objc_enumerationMutation(v23);
+              objc_enumerationMutation(touchesHistory2);
             }
 
             v28 = *(*(&v38 + 1) + 8 * j);
-            v29 = [(TITypingSession *)self currentWord];
-            v30 = [v28 touch];
-            [v29 addTouchEvent:v30 withLayoutId:{objc_msgSend(v28, "layoutId")}];
+            currentWord = [(TITypingSession *)self currentWord];
+            touch = [v28 touch];
+            [currentWord addTouchEvent:touch withLayoutId:{objc_msgSend(v28, "layoutId")}];
           }
 
-          v25 = [v23 countByEnumeratingWithState:&v38 objects:v46 count:16];
+          v25 = [touchesHistory2 countByEnumeratingWithState:&v38 objects:v46 count:16];
         }
 
         while (v25);
@@ -1214,9 +1214,9 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v23 = [(TITypingSession *)self touchesHistory];
-      v31 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "pathIndex")}];
-      [v23 setObject:v21 forKey:v31];
+      touchesHistory2 = [(TITypingSession *)self touchesHistory];
+      v31 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(eventCopy, "pathIndex")}];
+      [touchesHistory2 setObject:v21 forKey:v31];
     }
 
     goto LABEL_35;
@@ -1227,42 +1227,42 @@ LABEL_36:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDrawInputWithSyllableCount:(unint64_t)a3 keyboardState:(id)a4
+- (void)addDrawInputWithSyllableCount:(unint64_t)count keyboardState:(id)state
 {
-  v8 = a4;
-  if (([v8 secureTextEntry] & 1) != 0 || -[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
+  stateCopy = state;
+  if (([stateCopy secureTextEntry] & 1) != 0 || -[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
   {
     [(TITypingSession *)self setDidReceiveSecureFieldEvent:1];
   }
 
   else
   {
-    v6 = [[TIPathAction alloc] initWithSyllableCount:a3 keyboardState:v8];
+    v6 = [[TIPathAction alloc] initWithSyllableCount:count keyboardState:stateCopy];
     [(TITypingSession *)self calibratedCurrentTimestamp];
     [(TIUserAction *)v6 setOccurenceTime:?];
-    v7 = [(TITypingSession *)self userActionHistory];
-    [v7 addObject:v6];
+    userActionHistory = [(TITypingSession *)self userActionHistory];
+    [userActionHistory addObject:v6];
   }
 }
 
-- (void)addKeyInput:(id)a3 keyboardState:(id)a4
+- (void)addKeyInput:(id)input keyboardState:(id)state
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  inputCopy = input;
+  stateCopy = state;
   if (IXACanLogMessageAtLevel())
   {
     v8 = IXASessionEventsLogFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s KI input: %@", "-[TITypingSession addKeyInput:keyboardState:]", v6];
+      inputCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%s KI input: %@", "-[TITypingSession addKeyInput:keyboardState:]", inputCopy];
       *buf = 138412290;
-      v18 = v16;
+      v18 = inputCopy;
       _os_log_debug_impl(&dword_22CA55000, v8, OS_LOG_TYPE_DEBUG, "%@", buf, 0xCu);
     }
   }
 
-  if (([v7 secureTextEntry] & 1) != 0 || -[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
+  if (([stateCopy secureTextEntry] & 1) != 0 || -[TITypingSession didReceiveSecureFieldEvent](self, "didReceiveSecureFieldEvent"))
   {
     [(TITypingSession *)self setDidReceiveSecureFieldEvent:1];
   }
@@ -1271,70 +1271,70 @@ LABEL_36:
   {
     if ([(TITypingSession *)self includeInputToLastWord])
     {
-      v9 = [(TITypingSession *)self lastWord];
-      [v9 addKeyInput:v6];
+      lastWord = [(TITypingSession *)self lastWord];
+      [lastWord addKeyInput:inputCopy];
 
       [(TITypingSession *)self setLastWord:0];
     }
 
     else if ([(TITypingSession *)self includeInputToLastDeletion])
     {
-      v10 = [(TITypingSession *)self lastDeletion];
-      [v10 addKeyInput:v6];
+      lastDeletion = [(TITypingSession *)self lastDeletion];
+      [lastDeletion addKeyInput:inputCopy];
 
       [(TITypingSession *)self setLastDeletion:0];
     }
 
     else
     {
-      v11 = [(TITypingSession *)self currentWord];
-      [v11 addKeyInput:v6];
+      currentWord = [(TITypingSession *)self currentWord];
+      [currentWord addKeyInput:inputCopy];
 
-      v12 = [(TITypingSession *)self currentWord];
-      [v12 setKeyboardState:v7];
+      currentWord2 = [(TITypingSession *)self currentWord];
+      [currentWord2 setKeyboardState:stateCopy];
 
-      [(TITypingSession *)self updateCachedStateAfterLastInputWithKeyboardState:v7];
+      [(TITypingSession *)self updateCachedStateAfterLastInputWithKeyboardState:stateCopy];
     }
 
     [(TITypingSession *)self setIncludeInputToLastWord:0];
     [(TITypingSession *)self setIncludeInputToLastDeletion:0];
-    [(TITypingSession *)self setLastInput:v6];
-    if ([v6 isBackspace])
+    [(TITypingSession *)self setLastInput:inputCopy];
+    if ([inputCopy isBackspace])
     {
-      v13 = self;
-      v14 = v7;
+      selfCopy2 = self;
+      v14 = stateCopy;
     }
 
     else
     {
-      v13 = self;
+      selfCopy2 = self;
       v14 = 0;
     }
 
-    [(TITypingSession *)v13 setSavedDeleteInputKeyboardState:v14];
+    [(TITypingSession *)selfCopy2 setSavedDeleteInputKeyboardState:v14];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)testForRapidDeleteContextChange:(id)a3
+- (BOOL)testForRapidDeleteContextChange:(id)change
 {
-  v5 = a3;
-  v6 = [(TITypingSession *)self savedDeleteInputKeyboardState];
+  changeCopy = change;
+  savedDeleteInputKeyboardState = [(TITypingSession *)self savedDeleteInputKeyboardState];
 
-  if (v6)
+  if (savedDeleteInputKeyboardState)
   {
-    v7 = [v5 documentState];
-    v8 = [(TITypingSession *)self savedDeleteInputKeyboardState];
-    v9 = [v8 documentState];
+    documentState = [changeCopy documentState];
+    savedDeleteInputKeyboardState2 = [(TITypingSession *)self savedDeleteInputKeyboardState];
+    documentState2 = [savedDeleteInputKeyboardState2 documentState];
 
-    v10 = [v7 contextAfterInput];
-    if (!v10)
+    contextAfterInput = [documentState contextAfterInput];
+    if (!contextAfterInput)
     {
-      v14 = [v9 contextAfterInput];
-      if (v14)
+      contextAfterInput2 = [documentState2 contextAfterInput];
+      if (contextAfterInput2)
       {
-        v15 = v14;
+        contextBeforeInput2 = contextAfterInput2;
         v13 = 0;
 LABEL_17:
 
@@ -1342,18 +1342,18 @@ LABEL_17:
       }
     }
 
-    v11 = [v7 contextAfterInput];
-    if (!v11 || ([v9 contextAfterInput], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    contextAfterInput3 = [documentState contextAfterInput];
+    if (!contextAfterInput3 || ([documentState2 contextAfterInput], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v16 = [v7 contextAfterInput];
-      if (v16)
+      contextAfterInput4 = [documentState contextAfterInput];
+      if (contextAfterInput4)
       {
-        v17 = v16;
-        v18 = [v9 contextAfterInput];
-        v19 = [v7 contextAfterInput];
-        v12 = [v18 isEqualToString:v19] ^ 1;
+        v17 = contextAfterInput4;
+        contextAfterInput5 = [documentState2 contextAfterInput];
+        contextAfterInput6 = [documentState contextAfterInput];
+        v12 = [contextAfterInput5 isEqualToString:contextAfterInput6] ^ 1;
 
-        if (!v11)
+        if (!contextAfterInput3)
         {
           goto LABEL_12;
         }
@@ -1362,30 +1362,30 @@ LABEL_17:
       else
       {
         v12 = 0;
-        if (!v11)
+        if (!contextAfterInput3)
         {
 LABEL_12:
 
           if ((v12 & 1) == 0)
           {
-            v20 = [v7 contextBeforeInput];
-            if (!v20 || (v21 = v20, [v7 contextBeforeInput], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", &stru_283FDFAF8), v22, v21, v23))
+            contextBeforeInput = [documentState contextBeforeInput];
+            if (!contextBeforeInput || (v21 = contextBeforeInput, [documentState contextBeforeInput], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isEqualToString:", &stru_283FDFAF8), v22, v21, v23))
             {
-              v15 = [v9 contextBeforeInput];
-              v13 = [v15 length] > 1;
+              contextBeforeInput2 = [documentState2 contextBeforeInput];
+              v13 = [contextBeforeInput2 length] > 1;
               goto LABEL_17;
             }
 
-            v25 = [v9 contextBeforeInput];
-            v26 = [v7 contextBeforeInput];
-            v27 = [v25 hasPrefix:v26];
+            contextBeforeInput3 = [documentState2 contextBeforeInput];
+            contextBeforeInput4 = [documentState contextBeforeInput];
+            v27 = [contextBeforeInput3 hasPrefix:contextBeforeInput4];
 
             if (v27)
             {
-              v15 = [v9 contextBeforeInput];
-              v28 = [v15 length];
-              v29 = [v7 contextBeforeInput];
-              v13 = (v28 - [v29 length]) > 1;
+              contextBeforeInput2 = [documentState2 contextBeforeInput];
+              v28 = [contextBeforeInput2 length];
+              contextBeforeInput5 = [documentState contextBeforeInput];
+              v13 = (v28 - [contextBeforeInput5 length]) > 1;
 
               goto LABEL_17;
             }
@@ -1413,31 +1413,31 @@ LABEL_19:
   return v13;
 }
 
-- (void)updateCachedStateAfterLastInputWithKeyboardState:(id)a3
+- (void)updateCachedStateAfterLastInputWithKeyboardState:(id)state
 {
-  v7 = a3;
-  [(TITypingSession *)self updateCachedStateBeforeFirstInputWithKeyboardState:v7];
-  v4 = v7;
-  if (v7)
+  stateCopy = state;
+  [(TITypingSession *)self updateCachedStateBeforeFirstInputWithKeyboardState:stateCopy];
+  v4 = stateCopy;
+  if (stateCopy)
   {
     cachedKeyboardStates = self->_cachedKeyboardStates;
-    v6 = [v7 copy];
+    v6 = [stateCopy copy];
     [(NSMutableArray *)cachedKeyboardStates addObject:v6];
 
-    v4 = v7;
+    v4 = stateCopy;
   }
 }
 
-- (void)updateCachedStateBeforeFirstInputWithKeyboardState:(id)a3
+- (void)updateCachedStateBeforeFirstInputWithKeyboardState:(id)state
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stateCopy = state;
+  v5 = stateCopy;
+  if (stateCopy)
   {
-    v8 = v4;
-    v4 = [(NSMutableArray *)self->_cachedKeyboardStates count];
+    v8 = stateCopy;
+    stateCopy = [(NSMutableArray *)self->_cachedKeyboardStates count];
     v5 = v8;
-    if (!v4)
+    if (!stateCopy)
     {
       cachedKeyboardStates = self->_cachedKeyboardStates;
       v7 = [v8 copy];
@@ -1447,7 +1447,7 @@ LABEL_19:
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](stateCopy, v5);
 }
 
 - (void)resetCurrentWord
@@ -1476,11 +1476,11 @@ LABEL_19:
   return currentWord;
 }
 
-- (void)endSessionWithTimestamp:(id)a3
+- (void)endSessionWithTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   [(TITypingSession *)self handleUncommittedWord];
-  [(TITypingSession *)self setEndTime:v4];
+  [(TITypingSession *)self setEndTime:timestampCopy];
 }
 
 - (NSUUID)sessionId
@@ -1488,9 +1488,9 @@ LABEL_19:
   sessionId = self->_sessionId;
   if (!sessionId)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v5 = self->_sessionId;
-    self->_sessionId = v4;
+    self->_sessionId = uUID;
 
     sessionId = self->_sessionId;
   }
@@ -1502,33 +1502,33 @@ LABEL_19:
 
 - (NSString)description
 {
-  v2 = [(TITypingSession *)self userActionHistory];
-  v3 = [v2 componentsJoinedByString:@" "];;
+  userActionHistory = [(TITypingSession *)self userActionHistory];
+  v3 = [userActionHistory componentsJoinedByString:@" "];;
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   userActionHistory = self->_userActionHistory;
-  v5 = a3;
-  [v5 encodeObject:userActionHistory forKey:@"userActionHistory"];
-  [v5 encodeObject:self->_layoutName forKey:@"layoutName"];
-  [v5 encodeObject:self->_startContext forKey:@"startContext"];
-  [v5 encodeObject:self->_layouts forKey:@"layouts"];
-  [v5 encodeObject:self->_locale forKey:@"locale"];
-  [v5 encodeObject:self->_startTime forKey:@"startTime"];
-  [v5 encodeObject:self->_endTime forKey:@"endTime"];
-  [v5 encodeObject:self->_sessionId forKey:@"sessionId"];
-  [v5 encodeObject:self->_applicationID forKey:@"applicationID"];
-  [v5 encodeBool:self->_didReceiveSecureFieldEvent forKey:@"didReceiveSecureFieldEvent"];
-  [v5 encodeBool:self->_candidatesAccepted != 0 forKey:@"candidatesAccepted"];
-  [v5 encodeBool:self->_candidatesAcceptedWithText != 0 forKey:@"candidatesAcceptedWithText"];
+  coderCopy = coder;
+  [coderCopy encodeObject:userActionHistory forKey:@"userActionHistory"];
+  [coderCopy encodeObject:self->_layoutName forKey:@"layoutName"];
+  [coderCopy encodeObject:self->_startContext forKey:@"startContext"];
+  [coderCopy encodeObject:self->_layouts forKey:@"layouts"];
+  [coderCopy encodeObject:self->_locale forKey:@"locale"];
+  [coderCopy encodeObject:self->_startTime forKey:@"startTime"];
+  [coderCopy encodeObject:self->_endTime forKey:@"endTime"];
+  [coderCopy encodeObject:self->_sessionId forKey:@"sessionId"];
+  [coderCopy encodeObject:self->_applicationID forKey:@"applicationID"];
+  [coderCopy encodeBool:self->_didReceiveSecureFieldEvent forKey:@"didReceiveSecureFieldEvent"];
+  [coderCopy encodeBool:self->_candidatesAccepted != 0 forKey:@"candidatesAccepted"];
+  [coderCopy encodeBool:self->_candidatesAcceptedWithText != 0 forKey:@"candidatesAcceptedWithText"];
 }
 
-- (TITypingSession)initWithCoder:(id)a3
+- (TITypingSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v36.receiver = self;
   v36.super_class = TITypingSession;
   v5 = [(TITypingSession *)&v36 init];
@@ -1540,82 +1540,82 @@ LABEL_19:
     v9 = objc_opt_class();
     v10 = objc_opt_class();
     v11 = [v6 setWithObjects:{v7, v8, v9, v10, objc_opt_class(), 0}];
-    v12 = [v4 decodeObjectOfClasses:v11 forKey:@"userActionHistory"];
+    v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"userActionHistory"];
     userActionHistory = v5->_userActionHistory;
     v5->_userActionHistory = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"layoutName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"layoutName"];
     layoutName = v5->_layoutName;
     v5->_layoutName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startContext"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startContext"];
     startContext = v5->_startContext;
     v5->_startContext = v16;
 
     v18 = MEMORY[0x277CBEB98];
     v19 = objc_opt_class();
     v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"layouts"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"layouts"];
     layouts = v5->_layouts;
     v5->_layouts = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
     locale = v5->_locale;
     v5->_locale = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
     startTime = v5->_startTime;
     v5->_startTime = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endTime"];
     endTime = v5->_endTime;
     v5->_endTime = v27;
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionId"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionId"];
     sessionId = v5->_sessionId;
     v5->_sessionId = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationID"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationID"];
     applicationID = v5->_applicationID;
     v5->_applicationID = v31;
 
-    v5->_didReceiveSecureFieldEvent = [v4 decodeBoolForKey:@"didReceiveSecureFieldEvent"];
-    v33 = [MEMORY[0x277CBEB38] dictionary];
+    v5->_didReceiveSecureFieldEvent = [coderCopy decodeBoolForKey:@"didReceiveSecureFieldEvent"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     touchesHistory = v5->_touchesHistory;
-    v5->_touchesHistory = v33;
+    v5->_touchesHistory = dictionary;
 
-    v5->_candidatesAccepted = [v4 decodeIntForKey:@"candidatesAccepted"];
-    v5->_candidatesAcceptedWithText = [v4 decodeIntForKey:@"candidatesAcceptedWithText"];
+    v5->_candidatesAccepted = [coderCopy decodeIntForKey:@"candidatesAccepted"];
+    v5->_candidatesAcceptedWithText = [coderCopy decodeIntForKey:@"candidatesAcceptedWithText"];
   }
 
   return v5;
 }
 
-- (TITypingSession)initWithLocale:(id)a3 keyboardLayout:(id)a4
+- (TITypingSession)initWithLocale:(id)locale keyboardLayout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  layoutCopy = layout;
   v27.receiver = self;
   v27.super_class = TITypingSession;
   v9 = [(TITypingSession *)&v27 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     userActionHistory = v9->_userActionHistory;
-    v9->_userActionHistory = v10;
+    v9->_userActionHistory = array;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     layouts = v9->_layouts;
-    v9->_layouts = v12;
+    v9->_layouts = array2;
 
-    objc_storeStrong(&v9->_locale, a3);
-    v14 = [MEMORY[0x277CBEAA8] date];
+    objc_storeStrong(&v9->_locale, locale);
+    date = [MEMORY[0x277CBEAA8] date];
     startTime = v9->_startTime;
-    v9->_startTime = v14;
+    v9->_startTime = date;
 
-    v16 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     sessionId = v9->_sessionId;
-    v9->_sessionId = v16;
+    v9->_sessionId = uUID;
 
     timeCalibrationTouch = v9->_timeCalibrationTouch;
     v9->_timeCalibrationTouch = 0;
@@ -1624,13 +1624,13 @@ LABEL_19:
     savedDeleteInputKeyboardState = v9->_savedDeleteInputKeyboardState;
     v9->_savedDeleteInputKeyboardState = 0;
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     touchesHistory = v9->_touchesHistory;
-    v9->_touchesHistory = v20;
+    v9->_touchesHistory = dictionary;
 
-    if (v8)
+    if (layoutCopy)
     {
-      [(NSMutableArray *)v9->_layouts addObject:v8];
+      [(NSMutableArray *)v9->_layouts addObject:layoutCopy];
       v9->_currentLayoutID = 0;
     }
 
@@ -1638,13 +1638,13 @@ LABEL_19:
     objc_storeStrong(&v9->_candidateAcceptedTrigger, *MEMORY[0x277D6F5A8]);
     v9->_candidatesAccepted = 0;
     v9->_candidatesAcceptedWithText = 0;
-    v22 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     cachedKeyboardStates = v9->_cachedKeyboardStates;
-    v9->_cachedKeyboardStates = v22;
+    v9->_cachedKeyboardStates = array3;
 
-    v24 = [MEMORY[0x277CBEB18] array];
+    array4 = [MEMORY[0x277CBEB18] array];
     cachedCandidatesOffered = v9->_cachedCandidatesOffered;
-    v9->_cachedCandidatesOffered = v24;
+    v9->_cachedCandidatesOffered = array4;
   }
 
   return v9;
@@ -1652,8 +1652,8 @@ LABEL_19:
 
 - (TITypingSession)init
 {
-  v3 = [MEMORY[0x277CBEAF8] currentLocale];
-  v4 = [(TITypingSession *)self initWithLocale:v3 keyboardLayout:0];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v4 = [(TITypingSession *)self initWithLocale:currentLocale keyboardLayout:0];
 
   return v4;
 }

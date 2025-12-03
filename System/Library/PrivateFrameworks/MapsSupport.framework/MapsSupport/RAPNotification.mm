@@ -1,6 +1,6 @@
 @interface RAPNotification
-+ (BOOL)deleteNotificationWithID:(id)a3 error:(id *)a4;
-+ (BOOL)shouldDeleteNotificationWithID:(id)a3;
++ (BOOL)deleteNotificationWithID:(id)d error:(id *)error;
++ (BOOL)shouldDeleteNotificationWithID:(id)d;
 + (id)generateNotificationID;
 + (id)notificationCachePath;
 @end
@@ -10,9 +10,9 @@
 + (id)generateNotificationID
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 + (id)notificationCachePath
@@ -26,27 +26,27 @@
     v5 = +[NSFileManager defaultManager];
     v6 = [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:0];
 
-    v7 = 0;
+    path = 0;
     if (v6)
     {
-      v7 = [v4 path];
+      path = [v4 path];
     }
   }
 
   else
   {
-    v7 = 0;
+    path = 0;
   }
 
-  return v7;
+  return path;
 }
 
-+ (BOOL)shouldDeleteNotificationWithID:(id)a3
++ (BOOL)shouldDeleteNotificationWithID:(id)d
 {
-  v4 = a3;
-  if ([a1 isValidNotificationID:v4])
+  dCopy = d;
+  if ([self isValidNotificationID:dCopy])
   {
-    v5 = [RAPNotification filenameForNotificationID:v4];
+    v5 = [RAPNotification filenameForNotificationID:dCopy];
     v6 = +[RAPNotification notificationCachePath];
     v7 = [v6 stringByAppendingPathComponent:v5];
 
@@ -91,47 +91,47 @@
   return v13;
 }
 
-+ (BOOL)deleteNotificationWithID:(id)a3 error:(id *)a4
++ (BOOL)deleteNotificationWithID:(id)d error:(id *)error
 {
-  v6 = a3;
-  if ([a1 isValidNotificationID:v6])
+  dCopy = d;
+  if ([self isValidNotificationID:dCopy])
   {
-    v7 = [a1 filenameForNotificationID:v6];
+    errorDomain2 = [self filenameForNotificationID:dCopy];
     v8 = +[RAPNotification notificationCachePath];
-    v9 = [v8 stringByAppendingPathComponent:v7];
+    v9 = [v8 stringByAppendingPathComponent:errorDomain2];
 
     if (v9)
     {
-      v10 = +[NSFileManager defaultManager];
-      v11 = [v10 removeItemAtPath:v9 error:a4];
+      errorDomain = +[NSFileManager defaultManager];
+      v11 = [errorDomain removeItemAtPath:v9 error:error];
     }
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         v11 = 0;
         goto LABEL_9;
       }
 
-      v10 = [a1 errorDomain];
-      [NSError errorWithDomain:v10 code:-1 userInfo:0];
-      *a4 = v11 = 0;
+      errorDomain = [self errorDomain];
+      [NSError errorWithDomain:errorDomain code:-1 userInfo:0];
+      *error = v11 = 0;
     }
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  if (!a4)
+  if (!error)
   {
     v11 = 0;
     goto LABEL_11;
   }
 
-  v7 = [a1 errorDomain];
-  [NSError errorWithDomain:v7 code:-2 userInfo:0];
-  *a4 = v11 = 0;
+  errorDomain2 = [self errorDomain];
+  [NSError errorWithDomain:errorDomain2 code:-2 userInfo:0];
+  *error = v11 = 0;
 LABEL_10:
 
 LABEL_11:

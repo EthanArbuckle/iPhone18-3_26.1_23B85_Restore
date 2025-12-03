@@ -1,7 +1,7 @@
 @interface DOCItemCollectionGridCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsFolder;
-- (BOOL)_accessibilitySubviewIsVisible:(id)a3;
+- (BOOL)_accessibilitySubviewIsVisible:(id)visible;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_axAttrTitle;
 - (id)accessibilityDropPointDescriptors;
@@ -11,36 +11,36 @@
 
 @implementation DOCItemCollectionGridCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionGridCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionGridCell" hasInstanceMethod:@"accessibilitySecondSubtitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityCellManager" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionListCell" isKindOfClass:@"DocumentManagerExecutables.DOCItemCollectionCell"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionGridCell" isKindOfClass:@"DocumentManagerExecutables.DOCItemCollectionCell"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCellContent" hasInstanceMethod:@"accessibilityIsFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCellContent" hasInstanceMethod:@"accessibilityItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityThumbnailView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"FPItem" hasInstanceMethod:@"isCloudItem" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UICollectionView" hasInstanceVariable:@"_dragAndDropController" withType:"_UICollectionViewDragAndDropController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionGridCell" hasInstanceMethod:@"accessibilitySubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionGridCell" hasInstanceMethod:@"accessibilitySecondSubtitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityCellManager" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionListCell" isKindOfClass:@"DocumentManagerExecutables.DOCItemCollectionCell"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionGridCell" isKindOfClass:@"DocumentManagerExecutables.DOCItemCollectionCell"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCellContent" hasInstanceMethod:@"accessibilityIsFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCellContent" hasInstanceMethod:@"accessibilityItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCItemCollectionCell" hasInstanceMethod:@"accessibilityThumbnailView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"FPItem" hasInstanceMethod:@"isCloudItem" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UICollectionView" hasInstanceVariable:@"_dragAndDropController" withType:"_UICollectionViewDragAndDropController"];
 }
 
-- (BOOL)_accessibilitySubviewIsVisible:(id)a3
+- (BOOL)_accessibilitySubviewIsVisible:(id)visible
 {
-  v4 = a3;
+  visibleCopy = visible;
   if (AXDoesRequestingClientDeserveAutomation() && (objc_opt_class(), __UIAccessibilityCastAsClass(), v5 = objc_claimAutoreleasedReturnValue(), [v5 window], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
-    v7 = [v4 _accessibilityViewIsVisibleIgnoringAXOverrides:0 stoppingBeforeContainer:self];
+    _accessibilityViewIsVisible = [visibleCopy _accessibilityViewIsVisibleIgnoringAXOverrides:0 stoppingBeforeContainer:self];
   }
 
   else
   {
-    v7 = [v4 _accessibilityViewIsVisible];
+    _accessibilityViewIsVisible = [visibleCopy _accessibilityViewIsVisible];
   }
 
-  v8 = v7;
+  v8 = _accessibilityViewIsVisible;
 
   return v8;
 }
@@ -54,15 +54,15 @@
     v4 = [(DOCItemCollectionGridCellAccessibility *)self safeValueForKey:@"accessibilityTitleLabel"];
     v5 = __UIAccessibilityCastAsClass();
 
-    v6 = [v5 attributedText];
+    attributedText = [v5 attributedText];
   }
 
   else
   {
-    v6 = 0;
+    attributedText = 0;
   }
 
-  return v6;
+  return attributedText;
 }
 
 - (id)accessibilityLabel
@@ -82,26 +82,26 @@
   }
 
   v30 = v6;
-  v7 = [(DOCItemCollectionGridCellAccessibility *)self _axAttrTitle];
+  _axAttrTitle = [(DOCItemCollectionGridCellAccessibility *)self _axAttrTitle];
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
   v35 = __Block_byref_object_copy__0;
   v36 = __Block_byref_object_dispose__0;
   v37 = 0;
-  v8 = [v7 length];
+  v8 = [_axAttrTitle length];
   v9 = *MEMORY[0x29EDC7628];
   v31[0] = MEMORY[0x29EDCA5F8];
   v31[1] = 3221225472;
   v31[2] = __60__DOCItemCollectionGridCellAccessibility_accessibilityLabel__block_invoke;
   v31[3] = &unk_29F2BBA08;
   v31[4] = &v32;
-  [v7 enumerateAttribute:v9 inRange:0 options:v8 usingBlock:{0, v31}];
-  v10 = [v7 string];
+  [_axAttrTitle enumerateAttribute:v9 inRange:0 options:v8 usingBlock:{0, v31}];
+  string = [_axAttrTitle string];
   v24 = v33[5];
   v25 = @"__AXStringForVariablesSentinel";
   v11 = __UIAXStringForVariables();
-  v27 = v7;
+  v27 = _axAttrTitle;
   v28 = v4;
 
   if (!v30)
@@ -112,9 +112,9 @@
 
   if (AXDoesRequestingClientDeserveAutomation())
   {
-    v12 = [v30 filename];
-    v13 = [v12 pathExtension];
-    v24 = v13;
+    filename = [v30 filename];
+    pathExtension = [filename pathExtension];
+    v24 = pathExtension;
     v25 = @"__AXStringForVariablesSentinel";
     v14 = __UIAXStringForVariables();
 
@@ -130,8 +130,8 @@
       goto LABEL_13;
     }
 
-    v12 = [v30 filename];
-    v13 = [v12 pathExtension];
+    filename = [v30 filename];
+    pathExtension = [filename pathExtension];
     v15 = UIAXFileTypeDescriptionForFileExtension();
   }
 
@@ -141,12 +141,12 @@ LABEL_13:
   if (v17)
   {
     v26 = [(DOCItemCollectionGridCellAccessibility *)self safeValueForKey:@"accessibilitySubtitleLabel"];
-    v18 = [v26 accessibilityLabel];
+    accessibilityLabel = [v26 accessibilityLabel];
   }
 
   else
   {
-    v18 = 0;
+    accessibilityLabel = 0;
   }
 
   v19 = [(DOCItemCollectionGridCellAccessibility *)self safeValueForKey:@"accessibilitySecondSubtitleLabel"];
@@ -154,12 +154,12 @@ LABEL_13:
   if (v20)
   {
     v2 = [(DOCItemCollectionGridCellAccessibility *)self safeValueForKey:@"accessibilitySecondSubtitleLabel"];
-    v21 = [v2 accessibilityLabel];
+    accessibilityLabel2 = [v2 accessibilityLabel];
   }
 
   else
   {
-    v21 = 0;
+    accessibilityLabel2 = 0;
   }
 
   v22 = __UIAXStringForVariables();
@@ -195,9 +195,9 @@ void __60__DOCItemCollectionGridCellAccessibility_accessibilityLabel__block_invo
 - (id)accessibilityUserInputLabels
 {
   v2 = MEMORY[0x29EDB8D80];
-  v3 = [(DOCItemCollectionGridCellAccessibility *)self _axAttrTitle];
-  v4 = [v3 string];
-  v5 = [v2 axArrayByIgnoringNilElementsWithCount:{1, v4}];
+  _axAttrTitle = [(DOCItemCollectionGridCellAccessibility *)self _axAttrTitle];
+  string = [_axAttrTitle string];
+  v5 = [v2 axArrayByIgnoringNilElementsWithCount:{1, string}];
 
   return v5;
 }
@@ -209,11 +209,11 @@ void __60__DOCItemCollectionGridCellAccessibility_accessibilityLabel__block_invo
   v3 = [(DOCItemCollectionGridCellAccessibility *)self safeValueForKey:@"accessibilityThumbnailView"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 window];
-  v6 = v5;
+  window = [v4 window];
+  v6 = window;
   if (v4)
   {
-    v7 = v5 == 0;
+    v7 = window == 0;
   }
 
   else
@@ -276,7 +276,7 @@ void __60__DOCItemCollectionGridCellAccessibility_accessibilityLabel__block_invo
       [v5 convertPoint:v3 toView:?];
       v9 = [v7 initWithName:v8 point:v3 inView:?];
       v15[0] = v9;
-      v10 = [MEMORY[0x29EDB8D80] arrayWithObjects:v15 count:1];
+      accessibilityDropPointDescriptors = [MEMORY[0x29EDB8D80] arrayWithObjects:v15 count:1];
 
       goto LABEL_9;
     }
@@ -284,11 +284,11 @@ void __60__DOCItemCollectionGridCellAccessibility_accessibilityLabel__block_invo
 
   v13.receiver = self;
   v13.super_class = DOCItemCollectionGridCellAccessibility;
-  v10 = [(DOCItemCollectionGridCellAccessibility *)&v13 accessibilityDropPointDescriptors];
+  accessibilityDropPointDescriptors = [(DOCItemCollectionGridCellAccessibility *)&v13 accessibilityDropPointDescriptors];
 LABEL_9:
   v11 = *MEMORY[0x29EDCA608];
 
-  return v10;
+  return accessibilityDropPointDescriptors;
 }
 
 - (BOOL)_accessibilityIsFolder

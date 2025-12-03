@@ -1,46 +1,46 @@
 @interface UISiriTaskAction
 - (AFSiriTask)payload;
-- (UISiriTaskAction)initWithPayload:(id)a3;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UISiriTaskAction)initWithPayload:(id)payload;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UISiriTaskAction
 
-- (UISiriTaskAction)initWithPayload:(id)a3
+- (UISiriTaskAction)initWithPayload:(id)payload
 {
-  if (a3)
+  if (payload)
   {
     v4 = MEMORY[0x1E698E700];
-    v5 = a3;
+    payloadCopy = payload;
     v6 = objc_alloc_init(v4);
-    [v6 setObject:v5 forSetting:1];
+    [v6 setObject:payloadCopy forSetting:1];
 
     v9.receiver = self;
     v9.super_class = UISiriTaskAction;
     self = [(UISiriTaskAction *)&v9 initWithInfo:v6 timeout:0 forResponseOnQueue:0 withHandler:0.0];
 
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (AFSiriTask)payload
 {
-  v2 = [(UISiriTaskAction *)self info];
-  v3 = [v2 objectForSetting:1];
+  info = [(UISiriTaskAction *)self info];
+  v3 = [info objectForSetting:1];
 
   return v3;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"payload";
   }

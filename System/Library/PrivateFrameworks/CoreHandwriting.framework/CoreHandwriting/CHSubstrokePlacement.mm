@@ -1,37 +1,37 @@
 @interface CHSubstrokePlacement
 - (CGAffineTransform)orientationTransform;
 - (CGPoint)coalescedCenter;
-- (CGRect)boundsRotatedAroundPoint:(CGPoint)a3 byAngle:(double)a4;
+- (CGRect)boundsRotatedAroundPoint:(CGPoint)point byAngle:(double)angle;
 - (CGRect)orientedBounds;
 - (CGRect)rotatedBounds;
 - (CGVector)strokeDeviation;
 - (CGVector)writingOrientation;
-- (CHSubstrokePlacement)initWithCoder:(id)a3;
-- (CHSubstrokePlacement)initWithSubstroke:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (CHSubstrokePlacement)initWithCoder:(id)coder;
+- (CHSubstrokePlacement)initWithSubstroke:(id)substroke;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSubstrokePlacement
 
-- (CHSubstrokePlacement)initWithSubstroke:(id)a3
+- (CHSubstrokePlacement)initWithSubstroke:(id)substroke
 {
-  v5 = a3;
+  substrokeCopy = substroke;
   v9.receiver = self;
   v9.super_class = CHSubstrokePlacement;
   v6 = [(CHSubstrokePlacement *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_substroke, a3);
+    objc_storeStrong(&v6->_substroke, substroke);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v7 = objc_msgSend_allocWithZone_(CHSubstrokePlacement, a2, a3, v3, v4, v5);
+  v7 = objc_msgSend_allocWithZone_(CHSubstrokePlacement, a2, zone, v3, v4, v5);
   v13 = objc_msgSend_substroke(self, v8, v9, v10, v11, v12);
   v18 = objc_msgSend_initWithSubstroke_(v7, v14, v13, v15, v16, v17);
 
@@ -79,13 +79,13 @@
   return result;
 }
 
-- (CGRect)boundsRotatedAroundPoint:(CGPoint)a3 byAngle:(double)a4
+- (CGRect)boundsRotatedAroundPoint:(CGPoint)point byAngle:(double)angle
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v11 = objc_msgSend_substroke(self, a2, v4, v5, v6, v7);
   v17 = objc_msgSend_convexHull(v11, v12, v13, v14, v15, v16);
-  objc_msgSend_boundingBoxOfPoints_rotatedAroundPoint_byAngle_(CHStrokeUtilities, v18, v17, v19, v20, v21, x, y, a4);
+  objc_msgSend_boundingBoxOfPoints_rotatedAroundPoint_byAngle_(CHStrokeUtilities, v18, v17, v19, v20, v21, x, y, angle);
   v23 = v22;
   v25 = v24;
   v27 = v26;
@@ -155,33 +155,33 @@
   operator new();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v31 = a3;
-  objc_msgSend_encodeObject_forKey_(v31, v4, self->_substroke, @"substroke", v5, v6);
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v4, self->_substroke, @"substroke", v5, v6);
   v10 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v7, &self->_writingOrientation, "{CGPoint=dd}", v8, v9);
-  objc_msgSend_encodeObject_forKey_(v31, v11, v10, @"writingOrientation", v12, v13);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v11, v10, @"writingOrientation", v12, v13);
   v17 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v14, &self->_strokeDeviation, "{CGPoint=dd}", v15, v16);
-  objc_msgSend_encodeObject_forKey_(v31, v18, v17, @"strokeDeviation", v19, v20);
-  objc_msgSend_encodeInteger_forKey_(v31, v21, self->_originalWritingDirectionIndex, @"originalWritingDirectionIndex", v22, v23);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v18, v17, @"strokeDeviation", v19, v20);
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v21, self->_originalWritingDirectionIndex, @"originalWritingDirectionIndex", v22, v23);
   v27 = objc_msgSend_valueWithBytes_objCType_(MEMORY[0x1E696B098], v24, &self->_coalescedCenter, "{CGPoint=dd}", v25, v26);
-  objc_msgSend_encodeObject_forKey_(v31, v28, v27, @"coalescedCenter", v29, v30);
+  objc_msgSend_encodeObject_forKey_(coderCopy, v28, v27, @"coalescedCenter", v29, v30);
 }
 
-- (CHSubstrokePlacement)initWithCoder:(id)a3
+- (CHSubstrokePlacement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v6, v5, @"substroke", v7, v8);
+  v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v6, v5, @"substroke", v7, v8);
   v10 = objc_opt_class();
-  v14 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"writingOrientation", v12, v13);
+  v14 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"writingOrientation", v12, v13);
   objc_msgSend_getValue_size_(v14, v15, v66, 16, v16, v17);
   v18 = objc_opt_class();
-  v22 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v18, @"strokeDeviation", v20, v21);
+  v22 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v18, @"strokeDeviation", v20, v21);
   objc_msgSend_getValue_size_(v22, v23, v65, 16, v24, v25);
-  v30 = objc_msgSend_decodeIntegerForKey_(v4, v26, @"originalWritingDirectionIndex", v27, v28, v29);
+  v30 = objc_msgSend_decodeIntegerForKey_(coderCopy, v26, @"originalWritingDirectionIndex", v27, v28, v29);
   v31 = objc_opt_class();
-  v35 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v32, v31, @"coalescedCenter", v33, v34);
+  v35 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v32, v31, @"coalescedCenter", v33, v34);
   objc_msgSend_getValue_size_(v35, v36, v64, 16, v37, v38);
   v43 = objc_msgSend_initWithSubstroke_(self, v39, v9, v40, v41, v42);
   objc_msgSend_setWritingOrientation_(v43, v44, v45, v46, v47, v48, v66[0], v66[1]);

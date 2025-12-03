@@ -1,33 +1,33 @@
 @interface PKPassUpcomingPassInformationEntryContentEvent
-- (BOOL)isEqualToContent:(id)a3;
-- (BOOL)populateFromDictionary:(id)a3 bundle:(id)a4;
-- (PKPassUpcomingPassInformationEntryContentEvent)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqualToContent:(id)content;
+- (BOOL)populateFromDictionary:(id)dictionary bundle:(id)bundle;
+- (PKPassUpcomingPassInformationEntryContentEvent)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassUpcomingPassInformationEntryContentEvent
 
-- (BOOL)populateFromDictionary:(id)a3 bundle:(id)a4
+- (BOOL)populateFromDictionary:(id)dictionary bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v93.receiver = self;
   v93.super_class = PKPassUpcomingPassInformationEntryContentEvent;
-  if ([(PKPassUpcomingPassInformationEntryContent *)&v93 populateFromDictionary:v6 bundle:v7])
+  if ([(PKPassUpcomingPassInformationEntryContent *)&v93 populateFromDictionary:dictionaryCopy bundle:bundleCopy])
   {
-    v8 = [v6 PKDictionaryForKey:@"URLs"];
+    v8 = [dictionaryCopy PKDictionaryForKey:@"URLs"];
     v9 = v8;
     if (!v8)
     {
 LABEL_53:
-      v63 = [v6 PKDictionaryForKey:@"images"];
+      v63 = [dictionaryCopy PKDictionaryForKey:@"images"];
       v62 = v63;
       if (v63)
       {
         v64 = [v63 PKDictionaryForKey:@"venueMap"];
         if (v64)
         {
-          v65 = [PKPassUpcomingPassInformationImageManifest createFromDictionary:v64 bundle:v7 imageName:@"venueMap" reuseAllowed:1];
+          v65 = [PKPassUpcomingPassInformationImageManifest createFromDictionary:v64 bundle:bundleCopy imageName:@"venueMap" reuseAllowed:1];
           venueMapImageManifest = self->_venueMapImageManifest;
           self->_venueMapImageManifest = v65;
 
@@ -311,14 +311,14 @@ BOOL __80__PKPassUpcomingPassInformationEntryContentEvent_populateFromDictionary
   return v6;
 }
 
-- (BOOL)isEqualToContent:(id)a3
+- (BOOL)isEqualToContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   v39.receiver = self;
   v39.super_class = PKPassUpcomingPassInformationEntryContentEvent;
-  if ([(PKPassUpcomingPassInformationEntryContent *)&v39 isEqualToContent:v4])
+  if ([(PKPassUpcomingPassInformationEntryContent *)&v39 isEqualToContent:contentCopy])
   {
-    v5 = v4;
+    v5 = contentCopy;
     sellURL = self->_sellURL;
     v7 = v5[6];
     if (sellURL)
@@ -570,71 +570,71 @@ LABEL_81:
   return v9;
 }
 
-- (PKPassUpcomingPassInformationEntryContentEvent)initWithCoder:(id)a3
+- (PKPassUpcomingPassInformationEntryContentEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v37.receiver = self;
   v37.super_class = PKPassUpcomingPassInformationEntryContentEvent;
-  v5 = [(PKPassUpcomingPassInformationEntryContent *)&v37 initWithCoder:v4];
+  v5 = [(PKPassUpcomingPassInformationEntryContent *)&v37 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sellURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sellURL"];
     sellURL = v5->_sellURL;
     v5->_sellURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferURL"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferURL"];
     transferURL = v5->_transferURL;
     v5->_transferURL = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bagPolicyURL"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bagPolicyURL"];
     bagPolicyURL = v5->_bagPolicyURL;
     v5->_bagPolicyURL = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderFoodURL"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderFoodURL"];
     orderFoodURL = v5->_orderFoodURL;
     v5->_orderFoodURL = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transitInformationURL"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transitInformationURL"];
     transitInformationURL = v5->_transitInformationURL;
     v5->_transitInformationURL = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parkingInformationURL"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parkingInformationURL"];
     parkingInformationURL = v5->_parkingInformationURL;
     v5->_parkingInformationURL = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"directionsInformationURL"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"directionsInformationURL"];
     directionsInformationURL = v5->_directionsInformationURL;
     v5->_directionsInformationURL = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchandiseURL"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchandiseURL"];
     merchandiseURL = v5->_merchandiseURL;
     v5->_merchandiseURL = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityURL"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessibilityURL"];
     accessibilityURL = v5->_accessibilityURL;
     v5->_accessibilityURL = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"purchaseParkingURL"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"purchaseParkingURL"];
     purchaseParkingURL = v5->_purchaseParkingURL;
     v5->_purchaseParkingURL = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"partnerAddOnURL"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"partnerAddOnURL"];
     partnerAddOnURL = v5->_partnerAddOnURL;
     v5->_partnerAddOnURL = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"venueEmailURL"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"venueEmailURL"];
     venueEmailURL = v5->_venueEmailURL;
     v5->_venueEmailURL = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"venuePhoneNumberURL"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"venuePhoneNumberURL"];
     venuePhoneNumberURL = v5->_venuePhoneNumberURL;
     v5->_venuePhoneNumberURL = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"venueWebsiteURL"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"venueWebsiteURL"];
     venueWebsiteURL = v5->_venueWebsiteURL;
     v5->_venueWebsiteURL = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"venueMapManifest"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"venueMapManifest"];
     venueMapImageManifest = v5->_venueMapImageManifest;
     v5->_venueMapImageManifest = v34;
   }
@@ -642,27 +642,27 @@ LABEL_81:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassUpcomingPassInformationEntryContentEvent;
-  v4 = a3;
-  [(PKPassUpcomingPassInformationEntryContent *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sellURL forKey:{@"sellURL", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_transferURL forKey:@"transferURL"];
-  [v4 encodeObject:self->_bagPolicyURL forKey:@"bagPolicyURL"];
-  [v4 encodeObject:self->_orderFoodURL forKey:@"orderFoodURL"];
-  [v4 encodeObject:self->_transitInformationURL forKey:@"transitInformationURL"];
-  [v4 encodeObject:self->_parkingInformationURL forKey:@"parkingInformationURL"];
-  [v4 encodeObject:self->_directionsInformationURL forKey:@"directionsInformationURL"];
-  [v4 encodeObject:self->_merchandiseURL forKey:@"merchandiseURL"];
-  [v4 encodeObject:self->_accessibilityURL forKey:@"accessibilityURL"];
-  [v4 encodeObject:self->_purchaseParkingURL forKey:@"purchaseParkingURL"];
-  [v4 encodeObject:self->_partnerAddOnURL forKey:@"partnerAddOnURL"];
-  [v4 encodeObject:self->_venueEmailURL forKey:@"venueEmailURL"];
-  [v4 encodeObject:self->_venuePhoneNumberURL forKey:@"venuePhoneNumberURL"];
-  [v4 encodeObject:self->_venueWebsiteURL forKey:@"venueWebsiteURL"];
-  [v4 encodeObject:self->_venueMapImageManifest forKey:@"venueMapManifest"];
+  coderCopy = coder;
+  [(PKPassUpcomingPassInformationEntryContent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sellURL forKey:{@"sellURL", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_transferURL forKey:@"transferURL"];
+  [coderCopy encodeObject:self->_bagPolicyURL forKey:@"bagPolicyURL"];
+  [coderCopy encodeObject:self->_orderFoodURL forKey:@"orderFoodURL"];
+  [coderCopy encodeObject:self->_transitInformationURL forKey:@"transitInformationURL"];
+  [coderCopy encodeObject:self->_parkingInformationURL forKey:@"parkingInformationURL"];
+  [coderCopy encodeObject:self->_directionsInformationURL forKey:@"directionsInformationURL"];
+  [coderCopy encodeObject:self->_merchandiseURL forKey:@"merchandiseURL"];
+  [coderCopy encodeObject:self->_accessibilityURL forKey:@"accessibilityURL"];
+  [coderCopy encodeObject:self->_purchaseParkingURL forKey:@"purchaseParkingURL"];
+  [coderCopy encodeObject:self->_partnerAddOnURL forKey:@"partnerAddOnURL"];
+  [coderCopy encodeObject:self->_venueEmailURL forKey:@"venueEmailURL"];
+  [coderCopy encodeObject:self->_venuePhoneNumberURL forKey:@"venuePhoneNumberURL"];
+  [coderCopy encodeObject:self->_venueWebsiteURL forKey:@"venueWebsiteURL"];
+  [coderCopy encodeObject:self->_venueMapImageManifest forKey:@"venueMapManifest"];
 }
 
 @end

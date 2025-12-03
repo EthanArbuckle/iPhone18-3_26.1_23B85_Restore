@@ -1,74 +1,74 @@
 @interface HDWorkoutBuilderSampleQueryServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
 + (id)requiredEntitlements;
-- (HDWorkoutBuilderSampleQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDWorkoutBuilderSampleQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (_BYTE)_queue_scheduleHistoricalQuery;
-- (id)_workoutBuilderSampleQueryClientWithErrorHandler:(id)a1;
+- (id)_workoutBuilderSampleQueryClientWithErrorHandler:(id)handler;
 - (void)_queue_performHistoricalQuery;
 - (void)_queue_start;
-- (void)didCreateTaskServer:(id)a3;
-- (void)workoutBuilderServer:(id)a3 addedQuantities:(id)a4;
-- (void)workoutBuilderServer:(id)a3 addedSamples:(id)a4;
+- (void)didCreateTaskServer:(id)server;
+- (void)workoutBuilderServer:(id)server addedQuantities:(id)quantities;
+- (void)workoutBuilderServer:(id)server addedSamples:(id)samples;
 @end
 
 @implementation HDWorkoutBuilderSampleQueryServer
 
-- (HDWorkoutBuilderSampleQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDWorkoutBuilderSampleQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
-  v11 = a5;
+  configurationCopy = configuration;
+  clientCopy = client;
   v21.receiver = self;
   v21.super_class = HDWorkoutBuilderSampleQueryServer;
-  v12 = [(HDQueryServer *)&v21 initWithUUID:a3 configuration:v10 client:v11 delegate:a6];
+  v12 = [(HDQueryServer *)&v21 initWithUUID:d configuration:configurationCopy client:clientCopy delegate:delegate];
   if (v12)
   {
-    v12->_hasFinishedHistoricalFetch = [v10 needsHistoricalData] ^ 1;
-    v13 = [v10 workoutBuilderIdentifier];
+    v12->_hasFinishedHistoricalFetch = [configurationCopy needsHistoricalData] ^ 1;
+    workoutBuilderIdentifier = [configurationCopy workoutBuilderIdentifier];
     workoutBuilderIdentifier = v12->_workoutBuilderIdentifier;
-    v12->_workoutBuilderIdentifier = v13;
+    v12->_workoutBuilderIdentifier = workoutBuilderIdentifier;
 
-    v12->_deliverQuantities = [v10 deliverQuantities];
-    v15 = [v11 profile];
-    v16 = [v15 daemon];
-    v17 = [v16 taskServerRegistry];
+    v12->_deliverQuantities = [configurationCopy deliverQuantities];
+    profile = [clientCopy profile];
+    daemon = [profile daemon];
+    taskServerRegistry = [daemon taskServerRegistry];
     v18 = v12->_workoutBuilderIdentifier;
-    v19 = [(HDQueryServer *)v12 queryQueue];
-    [v17 addObserver:v12 forTaskServerUUID:v18 queue:v19];
+    queryQueue = [(HDQueryServer *)v12 queryQueue];
+    [taskServerRegistry addObserver:v12 forTaskServerUUID:v18 queue:queryQueue];
   }
 
   return v12;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  v6 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v11 = MEMORY[0x277CCA9B8];
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
-    [v11 hk_assignError:a5 code:3 format:{@"Invalid configuration class %@.", v13}];
+    [v11 hk_assignError:error code:3 format:{@"Invalid configuration class %@.", v13}];
 
 LABEL_10:
     v10 = 0;
     goto LABEL_11;
   }
 
-  v7 = [v6 workoutBuilderIdentifier];
+  workoutBuilderIdentifier = [configurationCopy workoutBuilderIdentifier];
 
-  if (!v7)
+  if (!workoutBuilderIdentifier)
   {
     v14 = MEMORY[0x277CCA9B8];
     v15 = @"Missing workout builder identifier.";
 LABEL_9:
-    [v14 hk_assignError:a5 code:3 description:v15];
+    [v14 hk_assignError:error code:3 description:v15];
     goto LABEL_10;
   }
 
-  if ([v6 deliverQuantities])
+  if ([configurationCopy deliverQuantities])
   {
-    v8 = [v6 objectType];
+    objectType = [configurationCopy objectType];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -86,17 +86,17 @@ LABEL_11:
   return v10;
 }
 
-- (id)_workoutBuilderSampleQueryClientWithErrorHandler:(id)a1
+- (id)_workoutBuilderSampleQueryClientWithErrorHandler:(id)handler
 {
-  v2 = a1;
-  if (a1)
+  handlerCopy = handler;
+  if (handler)
   {
     v3 = a2;
-    v4 = [v2 clientProxy];
-    v2 = [v4 remoteObjectProxyWithErrorHandler:v3];
+    clientProxy = [handlerCopy clientProxy];
+    handlerCopy = [clientProxy remoteObjectProxyWithErrorHandler:v3];
   }
 
-  return v2;
+  return handlerCopy;
 }
 
 + (id)requiredEntitlements
@@ -125,21 +125,21 @@ LABEL_11:
 - (void)_queue_performHistoricalQuery
 {
   v40 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 224));
+    WeakRetained = objc_loadWeakRetained((self + 224));
 
     if (WeakRetained)
     {
-      if ((*(a1 + 208) & 1) == 0)
+      if ((*(self + 208) & 1) == 0)
       {
         v35[0] = MEMORY[0x277D85DD0];
         v35[1] = 3221225472;
         v35[2] = __66__HDWorkoutBuilderSampleQueryServer__queue_performHistoricalQuery__block_invoke;
         v35[3] = &unk_2786138D0;
-        v35[4] = a1;
-        v3 = [(HDWorkoutBuilderSampleQueryServer *)a1 _workoutBuilderSampleQueryClientWithErrorHandler:v35];
-        if (*(a1 + 211) == 1)
+        v35[4] = self;
+        v3 = [(HDWorkoutBuilderSampleQueryServer *)self _workoutBuilderSampleQueryClientWithErrorHandler:v35];
+        if (*(self + 211) == 1)
         {
           *buf = 0;
           *&buf[8] = buf;
@@ -147,8 +147,8 @@ LABEL_11:
           v37 = __Block_byref_object_copy__31;
           v38 = __Block_byref_object_dispose__31;
           v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v4 = objc_loadWeakRetained((a1 + 224));
-          v5 = [a1 sampleType];
+          v4 = objc_loadWeakRetained((self + 224));
+          sampleType = [self sampleType];
           v30[0] = MEMORY[0x277D85DD0];
           v30[1] = 3221225472;
           v30[2] = __66__HDWorkoutBuilderSampleQueryServer__queue_performHistoricalQuery__block_invoke_309;
@@ -157,25 +157,25 @@ LABEL_11:
           v34 = 0;
           v6 = v3;
           v31 = v6;
-          v32 = a1;
-          v7 = [v4 enumerateQuantitiesOfType:v5 error:&v34 handler:v30];
+          selfCopy = self;
+          v7 = [v4 enumerateQuantitiesOfType:sampleType error:&v34 handler:v30];
           v8 = v34;
 
-          if ([*(*&buf[8] + 40) count] || (*(a1 + 209) & 1) == 0)
+          if ([*(*&buf[8] + 40) count] || (*(self + 209) & 1) == 0)
           {
             v9 = *(*&buf[8] + 40);
-            v10 = *(a1 + 208);
-            v11 = [a1 queryUUID];
-            [v6 client_deliverQuantities:v9 hasFinishedHistoricalFetch:v10 queryUUID:v11];
+            v10 = *(self + 208);
+            queryUUID = [self queryUUID];
+            [v6 client_deliverQuantities:v9 hasFinishedHistoricalFetch:v10 queryUUID:queryUUID];
 
-            *(a1 + 209) = 1;
+            *(self + 209) = 1;
           }
 
           _Block_object_dispose(buf, 8);
           if (v7)
           {
 LABEL_13:
-            *(a1 + 208) = 1;
+            *(self + 208) = 1;
 LABEL_18:
 
             goto LABEL_19;
@@ -190,10 +190,10 @@ LABEL_18:
           v37 = __Block_byref_object_copy__31;
           v38 = __Block_byref_object_dispose__31;
           v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v13 = objc_loadWeakRetained((a1 + 224));
+          v13 = objc_loadWeakRetained((self + 224));
           v14 = MEMORY[0x277CBEB98];
-          v15 = [a1 sampleType];
-          v16 = [v14 setWithObject:v15];
+          sampleType2 = [self sampleType];
+          v16 = [v14 setWithObject:sampleType2];
           v25[0] = MEMORY[0x277D85DD0];
           v25[1] = 3221225472;
           v25[2] = __66__HDWorkoutBuilderSampleQueryServer__queue_performHistoricalQuery__block_invoke_2;
@@ -202,18 +202,18 @@ LABEL_18:
           v29 = 0;
           v17 = v3;
           v26 = v17;
-          v27 = a1;
+          selfCopy2 = self;
           v18 = [v13 enumerateSamplesOfTypes:v16 error:&v29 handler:v25];
           v19 = v29;
 
-          if ([*(*&buf[8] + 40) count] || (*(a1 + 209) & 1) == 0)
+          if ([*(*&buf[8] + 40) count] || (*(self + 209) & 1) == 0)
           {
             v20 = *(*&buf[8] + 40);
-            v21 = *(a1 + 208);
-            v22 = [a1 queryUUID];
-            [v17 client_deliverSamples:v20 hasFinishedHistoricalFetch:v21 queryUUID:v22];
+            v21 = *(self + 208);
+            queryUUID2 = [self queryUUID];
+            [v17 client_deliverSamples:v20 hasFinishedHistoricalFetch:v21 queryUUID:queryUUID2];
 
-            *(a1 + 209) = 1;
+            *(self + 209) = 1;
           }
 
           _Block_object_dispose(buf, 8);
@@ -229,7 +229,7 @@ LABEL_18:
         if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          *&buf[4] = a1;
+          *&buf[4] = self;
           *&buf[12] = 2114;
           *&buf[14] = v8;
           _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "%{public}@: Failed to complete historical fetch: %{public}@", buf, 0x16u);
@@ -246,7 +246,7 @@ LABEL_18:
       if (os_log_type_enabled(*MEMORY[0x277CCC308], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        *&buf[4] = a1;
+        *&buf[4] = self;
         _os_log_impl(&dword_228986000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Unable to perform historical query: no workout builder server has been found yet.", buf, 0xCu);
       }
     }
@@ -336,11 +336,11 @@ void __66__HDWorkoutBuilderSampleQueryServer__queue_performHistoricalQuery__bloc
   return result;
 }
 
-- (void)didCreateTaskServer:(id)a3
+- (void)didCreateTaskServer:(id)server
 {
-  obj = a3;
-  v4 = [(HDQueryServer *)self queryQueue];
-  dispatch_assert_queue_V2(v4);
+  obj = server;
+  queryQueue = [(HDQueryServer *)self queryQueue];
+  dispatch_assert_queue_V2(queryQueue);
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -352,24 +352,24 @@ void __66__HDWorkoutBuilderSampleQueryServer__queue_performHistoricalQuery__bloc
   }
 }
 
-- (void)workoutBuilderServer:(id)a3 addedSamples:(id)a4
+- (void)workoutBuilderServer:(id)server addedSamples:(id)samples
 {
-  v5 = a4;
-  v6 = v5;
+  samplesCopy = samples;
+  v6 = samplesCopy;
   if (self->_deliverQuantities)
   {
-    v7 = v5;
+    v7 = samplesCopy;
   }
 
   else
   {
-    v8 = [(HDQueryServer *)self sampleType];
+    sampleType = [(HDQueryServer *)self sampleType];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __71__HDWorkoutBuilderSampleQueryServer_workoutBuilderServer_addedSamples___block_invoke;
     v14[3] = &unk_278617BF0;
-    v15 = v8;
-    v9 = v8;
+    v15 = sampleType;
+    v9 = sampleType;
     v7 = [v6 hk_filter:v14];
 
     v13[0] = MEMORY[0x277D85DD0];
@@ -381,8 +381,8 @@ void __66__HDWorkoutBuilderSampleQueryServer__queue_performHistoricalQuery__bloc
     if ([v7 count] || !self->_hasNotifiedFinishedHistoricalFetch)
     {
       hasFinishedHistoricalFetch = self->_hasFinishedHistoricalFetch;
-      v12 = [(HDQueryServer *)self queryUUID];
-      [v10 client_deliverSamples:v7 hasFinishedHistoricalFetch:hasFinishedHistoricalFetch queryUUID:v12];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [v10 client_deliverSamples:v7 hasFinishedHistoricalFetch:hasFinishedHistoricalFetch queryUUID:queryUUID];
     }
 
     if (self->_hasFinishedHistoricalFetch)
@@ -419,19 +419,19 @@ void __71__HDWorkoutBuilderSampleQueryServer_workoutBuilderServer_addedSamples__
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)workoutBuilderServer:(id)a3 addedQuantities:(id)a4
+- (void)workoutBuilderServer:(id)server addedQuantities:(id)quantities
 {
   if (self->_deliverQuantities)
   {
-    v5 = a4;
-    v6 = [(HDQueryServer *)self sampleType];
+    quantitiesCopy = quantities;
+    sampleType = [(HDQueryServer *)self sampleType];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __74__HDWorkoutBuilderSampleQueryServer_workoutBuilderServer_addedQuantities___block_invoke;
     v13[3] = &unk_278617C18;
-    v14 = v6;
-    v7 = v6;
-    v8 = [v5 hk_map:v13];
+    v14 = sampleType;
+    v7 = sampleType;
+    v8 = [quantitiesCopy hk_map:v13];
 
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
@@ -442,8 +442,8 @@ void __71__HDWorkoutBuilderSampleQueryServer_workoutBuilderServer_addedSamples__
     if ([v8 count] || !self->_hasNotifiedFinishedHistoricalFetch)
     {
       hasFinishedHistoricalFetch = self->_hasFinishedHistoricalFetch;
-      v11 = [(HDQueryServer *)self queryUUID];
-      [v9 client_deliverQuantities:v8 hasFinishedHistoricalFetch:hasFinishedHistoricalFetch queryUUID:v11];
+      queryUUID = [(HDQueryServer *)self queryUUID];
+      [v9 client_deliverQuantities:v8 hasFinishedHistoricalFetch:hasFinishedHistoricalFetch queryUUID:queryUUID];
     }
 
     if (self->_hasFinishedHistoricalFetch)

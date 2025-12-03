@@ -7,8 +7,8 @@
 - (void)createMiniMapView;
 - (void)createThumbnailView;
 - (void)layoutSubviews;
-- (void)setPdfView:(id)a3;
-- (void)setScrollViewVisibleRectInPDFView:(CGRect)a3;
+- (void)setPdfView:(id)view;
+- (void)setScrollViewVisibleRectInPDFView:(CGRect)view;
 @end
 
 @implementation _SSSPDFThumbnailView
@@ -29,10 +29,10 @@
 
 - (void)_updateThumbnailBackgroundView
 {
-  v10 = [(_SSSPDFThumbnailView *)self _thumbnailIconsView];
+  _thumbnailIconsView = [(_SSSPDFThumbnailView *)self _thumbnailIconsView];
   v3 = _SSScreenshotsRedesign2025Enabled();
-  v4 = v10;
-  if (v3 && v10)
+  v4 = _thumbnailIconsView;
+  if (v3 && _thumbnailIconsView)
   {
     if (!self->_PDFThumbnailBackgroundView)
     {
@@ -42,14 +42,14 @@
 
       [(UIView *)self->_PDFThumbnailBackgroundView _sss_setGlassBackground];
       [(UIView *)self->_PDFThumbnailBackgroundView _sss_setConcentricCornerMaskingConfiguration];
-      v7 = [(UIView *)self->_PDFThumbnailBackgroundView layer];
-      [v7 setCornerCurve:kCACornerCurveContinuous];
+      layer = [(UIView *)self->_PDFThumbnailBackgroundView layer];
+      [layer setCornerCurve:kCACornerCurveContinuous];
 
-      v8 = [(UIView *)self->_PDFThumbnailBackgroundView layer];
-      [v8 setCornerRadius:8.0];
+      layer2 = [(UIView *)self->_PDFThumbnailBackgroundView layer];
+      [layer2 setCornerRadius:8.0];
 
       [(_SSSPDFThumbnailView *)self insertSubview:self->_PDFThumbnailBackgroundView belowSubview:self->_thumbnailView];
-      v4 = v10;
+      v4 = _thumbnailIconsView;
     }
 
     [v4 contentRect];
@@ -61,12 +61,12 @@
   _objc_release_x1();
 }
 
-- (void)setPdfView:(id)a3
+- (void)setPdfView:(id)view
 {
-  v5 = a3;
-  if (self->_pdfView != v5 || ![(_SSSPDFThumbnailView *)self isShowingThumbnailOptionView])
+  viewCopy = view;
+  if (self->_pdfView != viewCopy || ![(_SSSPDFThumbnailView *)self isShowingThumbnailOptionView])
   {
-    objc_storeStrong(&self->_pdfView, a3);
+    objc_storeStrong(&self->_pdfView, view);
     [(_SSSPDFPageMiniMapView *)self->_miniMapView removeFromSuperview];
     [(PDFThumbnailView *)self->_thumbnailView removeFromSuperview];
     if (self->_pdfView && [(_SSSPDFThumbnailView *)self shouldShowThumbnailOptionView])
@@ -86,14 +86,14 @@
   }
 }
 
-- (void)setScrollViewVisibleRectInPDFView:(CGRect)a3
+- (void)setScrollViewVisibleRectInPDFView:(CGRect)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
   p_scrollViewVisibleRectInPDFView = &self->_scrollViewVisibleRectInPDFView;
-  if (!CGRectEqualToRect(self->_scrollViewVisibleRectInPDFView, a3))
+  if (!CGRectEqualToRect(self->_scrollViewVisibleRectInPDFView, view))
   {
     p_scrollViewVisibleRectInPDFView->origin.x = x;
     p_scrollViewVisibleRectInPDFView->origin.y = y;
@@ -107,16 +107,16 @@
 
 - (BOOL)shouldShowThumbnailOptionView
 {
-  v2 = [(PDFView *)self->_pdfView document];
-  v3 = v2 != 0;
+  document = [(PDFView *)self->_pdfView document];
+  v3 = document != 0;
 
   return v3;
 }
 
 - (BOOL)shouldUseMiniMapView
 {
-  v2 = [(PDFView *)self->_pdfView document];
-  v3 = [v2 pageCount] == 1;
+  document = [(PDFView *)self->_pdfView document];
+  v3 = [document pageCount] == 1;
 
   return v3;
 }
@@ -134,14 +134,14 @@
   v6 = +[UIColor clearColor];
   [(PDFThumbnailView *)v5 setBackgroundColor:v6];
 
-  v8 = [(_SSSPDFThumbnailView *)self _thumbnailIconsView];
-  if (v8)
+  _thumbnailIconsView = [(_SSSPDFThumbnailView *)self _thumbnailIconsView];
+  if (_thumbnailIconsView)
   {
-    [v8 setIconScale:1.0];
-    [v8 setIconConfigurationHandler:&stru_1000BADB8];
-    [v8 setPrefersIconOverlaySelection:1];
+    [_thumbnailIconsView setIconScale:1.0];
+    [_thumbnailIconsView setIconConfigurationHandler:&stru_1000BADB8];
+    [_thumbnailIconsView setPrefersIconOverlaySelection:1];
     v7 = +[NSNotificationCenter defaultCenter];
-    [v7 addObserver:self selector:"_thumbnailViewDidChangeContentRectNotification:" name:@"PDFThumbnailIconsViewContentRectDidChangeNotification" object:v8];
+    [v7 addObserver:self selector:"_thumbnailViewDidChangeContentRectNotification:" name:@"PDFThumbnailIconsViewContentRectDidChangeNotification" object:_thumbnailIconsView];
   }
 
   [(_SSSPDFThumbnailView *)self addSubview:self->_thumbnailView];
@@ -165,15 +165,15 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(PDFThumbnailView *)self->_thumbnailView thumbnailIconsView];
+    thumbnailIconsView = [(PDFThumbnailView *)self->_thumbnailView thumbnailIconsView];
   }
 
   else
   {
-    v3 = 0;
+    thumbnailIconsView = 0;
   }
 
-  return v3;
+  return thumbnailIconsView;
 }
 
 - (CGRect)scrollViewVisibleRectInPDFView

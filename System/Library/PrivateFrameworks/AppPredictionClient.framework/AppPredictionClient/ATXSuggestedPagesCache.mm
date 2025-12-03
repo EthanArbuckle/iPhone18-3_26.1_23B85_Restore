@@ -1,9 +1,9 @@
 @interface ATXSuggestedPagesCache
 - (ATXSuggestedPagesCache)init;
-- (ATXSuggestedPagesCache)initWithPath:(id)a3;
-- (id)_cacheForPageType:(int64_t)a3;
-- (id)cachedSuggestedPagesForPageType:(int64_t)a3;
-- (void)cacheSuggestedPages:(id)a3 forPageType:(int64_t)a4;
+- (ATXSuggestedPagesCache)initWithPath:(id)path;
+- (id)_cacheForPageType:(int64_t)type;
+- (id)cachedSuggestedPagesForPageType:(int64_t)type;
+- (void)cacheSuggestedPages:(id)pages forPageType:(int64_t)type;
 - (void)evictCachedSuggestedPages;
 - (void)printCachedSuggestedPagesStats;
 @end
@@ -12,21 +12,21 @@
 
 - (ATXSuggestedPagesCache)init
 {
-  v3 = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
-  v4 = [(ATXSuggestedPagesCache *)self initWithPath:v3];
+  appPredictionCacheDirectory = [MEMORY[0x1E698B010] appPredictionCacheDirectory];
+  v4 = [(ATXSuggestedPagesCache *)self initWithPath:appPredictionCacheDirectory];
 
   return v4;
 }
 
-- (ATXSuggestedPagesCache)initWithPath:(id)a3
+- (ATXSuggestedPagesCache)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = ATXSuggestedPagesCache;
   v5 = [(ATXSuggestedPagesCache *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     basePath = v5->_basePath;
     v5->_basePath = v6;
   }
@@ -34,10 +34,10 @@
   return v5;
 }
 
-- (id)cachedSuggestedPagesForPageType:(int64_t)a3
+- (id)cachedSuggestedPagesForPageType:(int64_t)type
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a3 >= 4)
+  if (type >= 4)
   {
     v4 = [(ATXSuggestedPagesCache *)self _cacheForPageType:?];
     v5 = objc_autoreleasePoolPush();
@@ -67,8 +67,8 @@
           }
 
           v14 = *(*(&v18 + 1) + 8 * i);
-          v15 = [v14 leafIcons];
-          v16 = [v15 _pas_filteredArrayWithTest:&__block_literal_global_45];
+          leafIcons = [v14 leafIcons];
+          v16 = [leafIcons _pas_filteredArrayWithTest:&__block_literal_global_45];
           [v14 setLeafIcons:v16];
         }
 
@@ -114,22 +114,22 @@ BOOL __58__ATXSuggestedPagesCache_cachedSuggestedPagesForPageType___block_invoke
   }
 }
 
-- (void)cacheSuggestedPages:(id)a3 forPageType:(int64_t)a4
+- (void)cacheSuggestedPages:(id)pages forPageType:(int64_t)type
 {
-  v8 = a3;
-  if ([v8 count])
+  pagesCopy = pages;
+  if ([pagesCopy count])
   {
-    v6 = [(ATXSuggestedPagesCache *)self _cacheForPageType:a4];
-    v7 = [v8 copy];
+    v6 = [(ATXSuggestedPagesCache *)self _cacheForPageType:type];
+    v7 = [pagesCopy copy];
     [v6 storeSecureCodedObject:v7 error:0];
   }
 }
 
-- (id)_cacheForPageType:(int64_t)a3
+- (id)_cacheForPageType:(int64_t)type
 {
   basePath = self->_basePath;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = NSStringFromATXSuggestedPageType(a3);
+  v5 = NSStringFromATXSuggestedPageType(type);
   v6 = [v4 stringWithFormat:@"SuggestedPage-%@", v5];
   v7 = [(NSString *)basePath stringByAppendingPathComponent:v6];
 
@@ -156,8 +156,8 @@ BOOL __58__ATXSuggestedPagesCache_cachedSuggestedPagesForPageType___block_invoke
     if ([v10 count])
     {
       v11 = MEMORY[0x1E698B010];
-      v12 = [v5 cacheFilePath];
-      v13 = [v11 modificationDateOfFileAtPath:v12];
+      cacheFilePath = [v5 cacheFilePath];
+      v13 = [v11 modificationDateOfFileAtPath:cacheFilePath];
 
       NSLog(&cfstr_LdCachedPagesL.isa, v4, [v10 count], v13);
     }

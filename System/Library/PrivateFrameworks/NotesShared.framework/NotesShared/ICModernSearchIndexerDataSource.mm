@@ -1,32 +1,32 @@
 @interface ICModernSearchIndexerDataSource
-- (BOOL)isFolderWithServerShareChanged:(id)a3;
-- (BOOL)isPaperKitOrSynapseAttachment:(id)a3;
-- (ICModernSearchIndexerDataSource)initWithPersistentContainer:(id)a3;
+- (BOOL)isFolderWithServerShareChanged:(id)changed;
+- (BOOL)isPaperKitOrSynapseAttachment:(id)attachment;
+- (ICModernSearchIndexerDataSource)initWithPersistentContainer:(id)container;
 - (ICPersistentContainer)persistentContainer;
-- (id)addNotesFromSubtree:(id)a3;
-- (id)additionalItemsForObject:(id)a3;
-- (id)additionalUniqueIdentifiersToDeleteForObject:(id)a3;
-- (id)allIndexableObjectIDsInReversedReindexingOrderWithContext:(id)a3;
+- (id)addNotesFromSubtree:(id)subtree;
+- (id)additionalItemsForObject:(id)object;
+- (id)additionalUniqueIdentifiersToDeleteForObject:(id)object;
+- (id)allIndexableObjectIDsInReversedReindexingOrderWithContext:(id)context;
 - (id)newManagedObjectContext;
 - (id)persistentStoreCoordinator;
-- (id)searchableItemForSynapseContentItem:(id)a3 note:(id)a4 attachment:(id)a5;
-- (id)searchableItemResultForObject:(id)a3;
-- (id)synapseItemsForObject:(id)a3;
-- (void)contextWillSave:(id)a3;
+- (id)searchableItemForSynapseContentItem:(id)item note:(id)note attachment:(id)attachment;
+- (id)searchableItemResultForObject:(id)object;
+- (id)synapseItemsForObject:(id)object;
+- (void)contextWillSave:(id)save;
 @end
 
 @implementation ICModernSearchIndexerDataSource
 
-- (ICModernSearchIndexerDataSource)initWithPersistentContainer:(id)a3
+- (ICModernSearchIndexerDataSource)initWithPersistentContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v8.receiver = self;
   v8.super_class = ICModernSearchIndexerDataSource;
   v5 = [(ICBaseSearchIndexerDataSource *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_persistentContainer, v4);
+    objc_storeWeak(&v5->_persistentContainer, containerCopy);
   }
 
   return v6;
@@ -38,37 +38,37 @@
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = WeakRetained;
+    persistentContainer = WeakRetained;
   }
 
   else
   {
     v5 = +[ICNoteContext sharedContext];
-    v4 = [v5 persistentContainer];
+    persistentContainer = [v5 persistentContainer];
   }
 
-  return v4;
+  return persistentContainer;
 }
 
 - (id)persistentStoreCoordinator
 {
-  v2 = [(ICModernSearchIndexerDataSource *)self persistentContainer];
-  v3 = [v2 persistentStoreCoordinator];
+  persistentContainer = [(ICModernSearchIndexerDataSource *)self persistentContainer];
+  persistentStoreCoordinator = [persistentContainer persistentStoreCoordinator];
 
-  return v3;
+  return persistentStoreCoordinator;
 }
 
 - (id)newManagedObjectContext
 {
-  v2 = [(ICModernSearchIndexerDataSource *)self persistentContainer];
-  v3 = [ICNoteContext workerManagedObjectContextForContainer:v2];
+  persistentContainer = [(ICModernSearchIndexerDataSource *)self persistentContainer];
+  v3 = [ICNoteContext workerManagedObjectContextForContainer:persistentContainer];
 
   return v3;
 }
 
-- (id)allIndexableObjectIDsInReversedReindexingOrderWithContext:(id)a3
+- (id)allIndexableObjectIDsInReversedReindexingOrderWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -89,7 +89,7 @@
   v9[2] = __93__ICModernSearchIndexerDataSource_allIndexableObjectIDsInReversedReindexingOrderWithContext___block_invoke;
   v9[3] = &unk_2781961E0;
   v9[4] = self;
-  v6 = v4;
+  v6 = contextCopy;
   v10 = v6;
   v11 = &v12;
   [v6 performBlockAndWait:v9];
@@ -202,17 +202,17 @@ void __93__ICModernSearchIndexerDataSource_allIndexableObjectIDsInReversedReinde
   }
 }
 
-- (void)contextWillSave:(id)a3
+- (void)contextWillSave:(id)save
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  saveCopy = save;
   v26.receiver = self;
   v26.super_class = ICModernSearchIndexerDataSource;
-  [(ICBaseSearchIndexerDataSource *)&v26 contextWillSave:v4];
-  v5 = [v4 object];
-  v6 = [v5 persistentStoreCoordinator];
-  v7 = [(ICModernSearchIndexerDataSource *)self persistentStoreCoordinator];
-  v8 = [v6 isEqual:v7];
+  [(ICBaseSearchIndexerDataSource *)&v26 contextWillSave:saveCopy];
+  object = [saveCopy object];
+  persistentStoreCoordinator = [object persistentStoreCoordinator];
+  persistentStoreCoordinator2 = [(ICModernSearchIndexerDataSource *)self persistentStoreCoordinator];
+  v8 = [persistentStoreCoordinator isEqual:persistentStoreCoordinator2];
 
   if (v8)
   {
@@ -220,12 +220,12 @@ void __93__ICModernSearchIndexerDataSource_allIndexableObjectIDsInReversedReinde
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [v5 updatedObjects];
-    v10 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    updatedObjects = [object updatedObjects];
+    v10 = [updatedObjects countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
-      v21 = self;
+      selfCopy = self;
       v12 = *v23;
       while (2)
       {
@@ -233,15 +233,15 @@ void __93__ICModernSearchIndexerDataSource_allIndexableObjectIDsInReversedReinde
         {
           if (*v23 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(updatedObjects);
           }
 
           v14 = *(*(&v22 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v15 = [v14 changedValues];
-            v16 = [v15 objectForKeyedSubscript:@"didChooseToMigrate"];
+            changedValues = [v14 changedValues];
+            v16 = [changedValues objectForKeyedSubscript:@"didChooseToMigrate"];
 
             if (v16)
             {
@@ -251,7 +251,7 @@ void __93__ICModernSearchIndexerDataSource_allIndexableObjectIDsInReversedReinde
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v11 = [updatedObjects countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v11)
         {
           continue;
@@ -262,7 +262,7 @@ void __93__ICModernSearchIndexerDataSource_allIndexableObjectIDsInReversedReinde
 
       v17 = 1;
 LABEL_13:
-      self = v21;
+      self = selfCopy;
     }
 
     else
@@ -280,84 +280,84 @@ LABEL_13:
       }
 
       [(ICBaseSearchIndexerDataSource *)self setNeedsReindexing:1];
-      v20 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v20 postNotificationName:*MEMORY[0x277D36150] object:self];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter postNotificationName:*MEMORY[0x277D36150] object:self];
     }
   }
 }
 
-- (id)searchableItemForSynapseContentItem:(id)a3 note:(id)a4 attachment:(id)a5
+- (id)searchableItemForSynapseContentItem:(id)item note:(id)note attachment:(id)attachment
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (([v8 isDeletedOrInTrash] & 1) != 0 || !objc_msgSend(v8, "isSystemPaper"))
+  itemCopy = item;
+  noteCopy = note;
+  attachmentCopy = attachment;
+  if (([noteCopy isDeletedOrInTrash] & 1) != 0 || !objc_msgSend(noteCopy, "isSystemPaper"))
   {
     v16 = 0;
   }
 
   else
   {
-    v10 = [v9 metadata];
-    if (v10)
+    metadata = [attachmentCopy metadata];
+    if (metadata)
     {
-      v11 = [v9 metadata];
-      v12 = [v11 objectForKeyedSubscript:@"is_synthetic_synapse_item"];
-      v13 = [v12 BOOLValue];
+      metadata2 = [attachmentCopy metadata];
+      v12 = [metadata2 objectForKeyedSubscript:@"is_synthetic_synapse_item"];
+      bOOLValue = [v12 BOOLValue];
 
-      if (v13)
+      if (bOOLValue)
       {
         v14 = MEMORY[0x277CCACA8];
-        v15 = [v9 identifier];
-        v10 = [v14 stringWithFormat:@"sy_%@", v15];
+        identifier = [attachmentCopy identifier];
+        metadata = [v14 stringWithFormat:@"sy_%@", identifier];
       }
 
       else
       {
-        v10 = 0;
+        metadata = 0;
       }
     }
 
     v17 = MEMORY[0x277D6B7D0];
-    v18 = [v8 identifier];
-    v19 = [v9 searchIndexingIdentifier];
-    v20 = [v9 searchDomainIdentifier];
-    v16 = [v17 searchableItemLinkingContentItem:v7 toContainerIdentifier:v18 uniqueIdentifier:v10 relatedIdentifier:v19 domainIdentifier:v20];
+    identifier2 = [noteCopy identifier];
+    searchIndexingIdentifier = [attachmentCopy searchIndexingIdentifier];
+    searchDomainIdentifier = [attachmentCopy searchDomainIdentifier];
+    v16 = [v17 searchableItemLinkingContentItem:itemCopy toContainerIdentifier:identifier2 uniqueIdentifier:metadata relatedIdentifier:searchIndexingIdentifier domainIdentifier:searchDomainIdentifier];
   }
 
   return v16;
 }
 
-- (id)searchableItemResultForObject:(id)a3
+- (id)searchableItemResultForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = ICModernSearchIndexerDataSource;
-  v5 = [(ICBaseSearchIndexerDataSource *)&v15 searchableItemResultForObject:v4];
-  v6 = [v5 searchableItem];
+  v5 = [(ICBaseSearchIndexerDataSource *)&v15 searchableItemResultForObject:objectCopy];
+  searchableItem = [v5 searchableItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 managedObjectContext];
-    v8 = [v4 objectID];
-    v9 = [v7 objectWithID:v8];
+    managedObjectContext = [objectCopy managedObjectContext];
+    objectID = [objectCopy objectID];
+    v9 = [managedObjectContext objectWithID:objectID];
 
-    v10 = [v9 lastOpenedDate];
-    v11 = [v6 attributeSet];
-    [v11 setLastUsedDate:v10];
+    lastOpenedDate = [v9 lastOpenedDate];
+    attributeSet = [searchableItem attributeSet];
+    [attributeSet setLastUsedDate:lastOpenedDate];
   }
 
-  v12 = [(ICModernSearchIndexerDataSource *)self additionalItemsForObject:v4];
+  v12 = [(ICModernSearchIndexerDataSource *)self additionalItemsForObject:objectCopy];
   v13 = objc_alloc_init(MEMORY[0x277D36250]);
-  [v13 setSearchableItem:v6];
+  [v13 setSearchableItem:searchableItem];
   [v13 setAdditionalSearchableItems:v12];
 
   return v13;
 }
 
-- (BOOL)isPaperKitOrSynapseAttachment:(id)a3
+- (BOOL)isPaperKitOrSynapseAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   v4 = ICDynamicCast();
 
@@ -370,8 +370,8 @@ LABEL_13:
 
     else
     {
-      v6 = [v4 synapseData];
-      v5 = v6 != 0;
+      synapseData = [v4 synapseData];
+      v5 = synapseData != 0;
     }
   }
 
@@ -383,25 +383,25 @@ LABEL_13:
   return v5;
 }
 
-- (id)synapseItemsForObject:(id)a3
+- (id)synapseItemsForObject:(id)object
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 managedObjectContext];
-    v5 = [v3 objectID];
-    v6 = [v4 objectWithID:v5];
+    managedObjectContext = [objectCopy managedObjectContext];
+    objectID = [objectCopy objectID];
+    v6 = [managedObjectContext objectWithID:objectID];
 
-    v7 = [v6 synapseData];
+    synapseData = [v6 synapseData];
 
-    if (v7)
+    if (synapseData)
     {
       v8 = objc_alloc(MEMORY[0x277D6B790]);
-      v9 = [v6 synapseData];
+      synapseData2 = [v6 synapseData];
       v28 = 0;
-      v10 = [v8 initWithData:v9 error:&v28];
+      v10 = [v8 initWithData:synapseData2 error:&v28];
       v11 = v28;
 
       if (v11)
@@ -429,20 +429,20 @@ LABEL_13:
       if (v14)
       {
         v15 = objc_alloc(MEMORY[0x277D6B790]);
-        v16 = [v6 title];
+        title = [v6 title];
         v17 = *MEMORY[0x277D6B800];
         v18 = __ICLocalizedFrameworkString_impl(@"Web", @"Web", 0, 1);
         v19 = [v6 URL];
-        v20 = [v15 initWithDisplayTitle:v16 sourceIdentifier:v17 sourceName:v18 itemURL:v19 identifier:0];
+        v20 = [v15 initWithDisplayTitle:title sourceIdentifier:v17 sourceName:v18 itemURL:v19 identifier:0];
 
-        v21 = [v6 metadata];
-        v22 = v21;
-        if (!v21)
+        metadata = [v6 metadata];
+        v22 = metadata;
+        if (!metadata)
         {
-          v21 = MEMORY[0x277CBEC10];
+          metadata = MEMORY[0x277CBEC10];
         }
 
-        v23 = [v21 mutableCopy];
+        v23 = [metadata mutableCopy];
 
         [v23 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"is_synthetic_synapse_item"];
         v24 = [v23 copy];
@@ -455,8 +455,8 @@ LABEL_13:
       else
       {
         v26 = MEMORY[0x277D36198];
-        v27 = [v6 ic_loggingIdentifier];
-        [v26 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICModernSearchIndexerDataSource synapseItemsForObject:]" simulateCrash:1 showAlert:0 format:{@"attachment %@ was of type ICAttachmentTypeWeb, but didn't have a URL or synapse data. Not providing any SYContentItems for this. ", v27}];
+        ic_loggingIdentifier = [v6 ic_loggingIdentifier];
+        [v26 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICModernSearchIndexerDataSource synapseItemsForObject:]" simulateCrash:1 showAlert:0 format:{@"attachment %@ was of type ICAttachmentTypeWeb, but didn't have a URL or synapse data. Not providing any SYContentItems for this. ", ic_loggingIdentifier}];
 
         v13 = MEMORY[0x277CBEBF8];
       }
@@ -481,10 +481,10 @@ LABEL_13:
   return v13;
 }
 
-- (id)additionalUniqueIdentifiersToDeleteForObject:(id)a3
+- (id)additionalUniqueIdentifiersToDeleteForObject:(id)object
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(ICModernSearchIndexerDataSource *)self synapseItemsForObject:a3];
+  v3 = [(ICModernSearchIndexerDataSource *)self synapseItemsForObject:object];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -507,9 +507,9 @@ LABEL_13:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) itemIdentifier];
-          v11 = [v10 UUIDString];
-          [v4 addObject:v11];
+          itemIdentifier = [*(*(&v14 + 1) + 8 * i) itemIdentifier];
+          uUIDString = [itemIdentifier UUIDString];
+          [v4 addObject:uUIDString];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -529,22 +529,22 @@ LABEL_13:
   return v12;
 }
 
-- (id)additionalItemsForObject:(id)a3
+- (id)additionalItemsForObject:(id)object
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICModernSearchIndexerDataSource *)self synapseItemsForObject:v4];
+  objectCopy = object;
+  v5 = [(ICModernSearchIndexerDataSource *)self synapseItemsForObject:objectCopy];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v4 managedObjectContext];
-      v41 = v4;
-      v7 = [v4 objectID];
-      v8 = [v6 objectWithID:v7];
+      managedObjectContext = [objectCopy managedObjectContext];
+      v41 = objectCopy;
+      objectID = [objectCopy objectID];
+      v8 = [managedObjectContext objectWithID:objectID];
 
-      v9 = [v8 note];
+      note = [v8 note];
       v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v50 = 0u;
       v51 = 0u;
@@ -566,7 +566,7 @@ LABEL_13:
               objc_enumerationMutation(v11);
             }
 
-            v16 = [(ICModernSearchIndexerDataSource *)self searchableItemForSynapseContentItem:*(*(&v50 + 1) + 8 * i) note:v9 attachment:v8, v40];
+            v16 = [(ICModernSearchIndexerDataSource *)self searchableItemForSynapseContentItem:*(*(&v50 + 1) + 8 * i) note:note attachment:v8, v40];
             [v10 ic_addNonNilObject:v16];
           }
 
@@ -580,7 +580,7 @@ LABEL_13:
 LABEL_30:
 
       v5 = v40;
-      v4 = v41;
+      objectCopy = v41;
       goto LABEL_31;
     }
   }
@@ -597,20 +597,20 @@ LABEL_30:
   if (([v8 isHiddenFromIndexing] & 1) == 0)
   {
     v40 = v5;
-    v41 = v4;
-    v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
+    v41 = objectCopy;
+    note = objc_alloc_init(MEMORY[0x277CBEB18]);
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v18 = [v8 inlineAttachments];
-    v19 = [v18 countByEnumeratingWithState:&v46 objects:v54 count:16];
+    inlineAttachments = [v8 inlineAttachments];
+    v19 = [inlineAttachments countByEnumeratingWithState:&v46 objects:v54 count:16];
     if (v19)
     {
       v20 = v19;
       v21 = *v47;
       v42 = *MEMORY[0x277CE1E90];
-      v43 = v18;
+      v43 = inlineAttachments;
       v44 = *v47;
       v45 = v8;
       do
@@ -619,48 +619,48 @@ LABEL_30:
         {
           if (*v47 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(inlineAttachments);
           }
 
           v23 = *(*(&v46 + 1) + 8 * j);
           if ([v23 attachmentType] == 3)
           {
-            v24 = [v23 tokenContentIdentifier];
-            if (v24)
+            tokenContentIdentifier = [v23 tokenContentIdentifier];
+            if (tokenContentIdentifier)
             {
-              v25 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:v24];
-              v26 = [v25 scheme];
-              if (v26)
+              v25 = [objc_alloc(MEMORY[0x277CCACE0]) initWithString:tokenContentIdentifier];
+              scheme = [v25 scheme];
+              if (scheme)
               {
-                v27 = v26;
-                v28 = [v25 scheme];
-                v29 = ICIsNotesURLScheme(v28);
+                v27 = scheme;
+                scheme2 = [v25 scheme];
+                v29 = ICIsNotesURLScheme(scheme2);
 
                 v21 = v44;
                 if ((v29 & 1) == 0)
                 {
                   v30 = objc_alloc(MEMORY[0x277CC34B8]);
-                  v31 = [v42 identifier];
-                  v32 = [v30 initWithItemContentType:v31];
+                  identifier = [v42 identifier];
+                  v32 = [v30 initWithItemContentType:identifier];
 
                   [v32 setIc_dataSourceIdentifier:@"Modern"];
                   [v32 setIc_searchResultType:2];
-                  v33 = [v45 account];
-                  v34 = [v33 identifier];
-                  [v32 setDomainIdentifier:v34];
+                  account = [v45 account];
+                  identifier2 = [account identifier];
+                  [v32 setDomainIdentifier:identifier2];
 
-                  [v32 ic_setURLString:v24];
+                  [v32 ic_setURLString:tokenContentIdentifier];
                   v35 = objc_alloc_init(MEMORY[0x277CC34B0]);
                   [v35 setAttributeSet:v32];
-                  v36 = [v23 objectID];
-                  v37 = [v36 URIRepresentation];
-                  v38 = [v37 absoluteString];
+                  objectID2 = [v23 objectID];
+                  uRIRepresentation = [objectID2 URIRepresentation];
+                  absoluteString = [uRIRepresentation absoluteString];
 
                   v21 = v44;
-                  [v35 setUniqueIdentifier:v38];
-                  [v9 addObject:v35];
+                  [v35 setUniqueIdentifier:absoluteString];
+                  [note addObject:v35];
 
-                  v18 = v43;
+                  inlineAttachments = v43;
                 }
               }
 
@@ -669,13 +669,13 @@ LABEL_30:
           }
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v46 objects:v54 count:16];
+        v20 = [inlineAttachments countByEnumeratingWithState:&v46 objects:v54 count:16];
       }
 
       while (v20);
     }
 
-    v17 = [v9 copy];
+    v17 = [note copy];
     goto LABEL_30;
   }
 
@@ -687,15 +687,15 @@ LABEL_32:
   return v17;
 }
 
-- (BOOL)isFolderWithServerShareChanged:(id)a3
+- (BOOL)isFolderWithServerShareChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 changedValues];
-    v5 = [v4 allKeys];
-    v6 = [v5 containsObject:@"serverShareData"];
+    changedValues = [changedCopy changedValues];
+    allKeys = [changedValues allKeys];
+    v6 = [allKeys containsObject:@"serverShareData"];
   }
 
   else
@@ -706,23 +706,23 @@ LABEL_32:
   return v6;
 }
 
-- (id)addNotesFromSubtree:(id)a3
+- (id)addNotesFromSubtree:(id)subtree
 {
-  v3 = a3;
+  subtreeCopy = subtree;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__12;
   v17 = __Block_byref_object_dispose__12;
-  v18 = [MEMORY[0x277CBEB18] array];
-  v4 = [v3 managedObjectContext];
+  array = [MEMORY[0x277CBEB18] array];
+  managedObjectContext = [subtreeCopy managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__ICModernSearchIndexerDataSource_addNotesFromSubtree___block_invoke;
   v9[3] = &unk_2781961E0;
-  v5 = v3;
+  v5 = subtreeCopy;
   v10 = v5;
-  v6 = v4;
+  v6 = managedObjectContext;
   v11 = v6;
   v12 = &v13;
   [v6 performBlockAndWait:v9];

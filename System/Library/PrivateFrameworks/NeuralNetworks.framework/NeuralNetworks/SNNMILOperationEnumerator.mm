@@ -1,14 +1,14 @@
 @interface SNNMILOperationEnumerator
 - (SNNMILFunction)function;
-- (SNNMILOperationEnumerator)initWithFunction:(id)a3;
+- (SNNMILOperationEnumerator)initWithFunction:(id)function;
 - (id)nextObject;
 @end
 
 @implementation SNNMILOperationEnumerator
 
-- (SNNMILOperationEnumerator)initWithFunction:(id)a3
+- (SNNMILOperationEnumerator)initWithFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   v8.receiver = self;
   v8.super_class = SNNMILOperationEnumerator;
   v5 = [(SNNMILOperationEnumerator *)&v8 init];
@@ -16,7 +16,7 @@
   if (v5)
   {
     v5->_currentIndex = 0;
-    objc_storeWeak(&v5->_function, v4);
+    objc_storeWeak(&v5->_function, functionCopy);
   }
 
   return v6;
@@ -26,9 +26,9 @@
 {
   currentIndex = self->_currentIndex;
   WeakRetained = objc_loadWeakRetained(&self->_function);
-  v5 = [WeakRetained operationCount];
+  operationCount = [WeakRetained operationCount];
 
-  if (v5 <= currentIndex)
+  if (operationCount <= currentIndex)
   {
     v7 = 0;
   }

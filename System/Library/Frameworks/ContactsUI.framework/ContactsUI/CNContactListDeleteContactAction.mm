@@ -1,7 +1,7 @@
 @interface CNContactListDeleteContactAction
 + (id)log;
 - (BOOL)executeDeleteAction;
-- (CNContactListDeleteContactAction)initWithContact:(id)a3 contactStore:(id)a4 containerIdentifier:(id)a5 recentsManager:(id)a6;
+- (CNContactListDeleteContactAction)initWithContact:(id)contact contactStore:(id)store containerIdentifier:(id)identifier recentsManager:(id)manager;
 - (void)undoDeleteAction;
 @end
 
@@ -12,15 +12,15 @@
   v14 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695CF88]);
   [v3 setIgnoresGuardianRestrictions:1];
-  v4 = [(CNContactListDeleteContactAction *)self contact];
-  v5 = [v4 mutableCopy];
+  contact = [(CNContactListDeleteContactAction *)self contact];
+  v5 = [contact mutableCopy];
 
-  v6 = [(CNContactListDeleteContactAction *)self containerIdentifier];
-  [v3 addContact:v5 toContainerWithIdentifier:v6];
+  containerIdentifier = [(CNContactListDeleteContactAction *)self containerIdentifier];
+  [v3 addContact:v5 toContainerWithIdentifier:containerIdentifier];
 
-  v7 = [(CNContactListDeleteContactAction *)self contactStore];
+  contactStore = [(CNContactListDeleteContactAction *)self contactStore];
   v11 = 0;
-  v8 = [v7 executeSaveRequest:v3 error:&v11];
+  v8 = [contactStore executeSaveRequest:v3 error:&v11];
   v9 = v11;
 
   if ((v8 & 1) == 0)
@@ -40,25 +40,25 @@
   v18 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695CF88]);
   [v3 setIgnoresGuardianRestrictions:1];
-  v4 = [(CNContactListDeleteContactAction *)self contact];
-  v5 = [v4 mutableCopy];
+  contact = [(CNContactListDeleteContactAction *)self contact];
+  v5 = [contact mutableCopy];
 
   [v3 deleteContact:v5];
-  v6 = [(CNContactListDeleteContactAction *)self contactStore];
+  contactStore = [(CNContactListDeleteContactAction *)self contactStore];
   v15 = 0;
-  v7 = [v6 executeSaveRequest:v3 error:&v15];
+  v7 = [contactStore executeSaveRequest:v3 error:&v15];
   v8 = v15;
 
   if (v7)
   {
-    v9 = [(CNContactListDeleteContactAction *)self recentsManager];
-    v10 = [v9 recentContactsMatchingAllPropertiesOfContact:v5];
+    recentsManager = [(CNContactListDeleteContactAction *)self recentsManager];
+    v10 = [recentsManager recentContactsMatchingAllPropertiesOfContact:v5];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __55__CNContactListDeleteContactAction_executeDeleteAction__block_invoke;
     v13[3] = &unk_1E74E42C0;
-    v14 = v9;
-    v11 = v9;
+    v14 = recentsManager;
+    v11 = recentsManager;
     [v10 addSuccessBlock:v13];
   }
 
@@ -76,22 +76,22 @@
   return v7;
 }
 
-- (CNContactListDeleteContactAction)initWithContact:(id)a3 contactStore:(id)a4 containerIdentifier:(id)a5 recentsManager:(id)a6
+- (CNContactListDeleteContactAction)initWithContact:(id)contact contactStore:(id)store containerIdentifier:(id)identifier recentsManager:(id)manager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contactCopy = contact;
+  storeCopy = store;
+  identifierCopy = identifier;
+  managerCopy = manager;
   v19.receiver = self;
   v19.super_class = CNContactListDeleteContactAction;
   v15 = [(CNContactListDeleteContactAction *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_contact, a3);
-    objc_storeStrong(&v16->_contactStore, a4);
-    objc_storeStrong(&v16->_containerIdentifier, a5);
-    objc_storeStrong(&v16->_recentsManager, a6);
+    objc_storeStrong(&v15->_contact, contact);
+    objc_storeStrong(&v16->_contactStore, store);
+    objc_storeStrong(&v16->_containerIdentifier, identifier);
+    objc_storeStrong(&v16->_recentsManager, manager);
     v17 = v16;
   }
 

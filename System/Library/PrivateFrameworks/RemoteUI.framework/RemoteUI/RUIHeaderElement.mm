@@ -1,40 +1,40 @@
 @interface RUIHeaderElement
 - (int64_t)labelAlignment;
-- (void)configureView:(id)a3;
+- (void)configureView:(id)view;
 @end
 
 @implementation RUIHeaderElement
 
 - (int64_t)labelAlignment
 {
-  v3 = [(RUIElement *)self attributes];
-  v4 = [v3 objectForKeyedSubscript:@"align"];
+  attributes = [(RUIElement *)self attributes];
+  v4 = [attributes objectForKeyedSubscript:@"align"];
   if (v4)
   {
-    v5 = [(RUIElement *)self attributes];
-    v6 = [v5 objectForKeyedSubscript:@"align"];
-    v7 = [RUIParser textAlignmentForString:v6];
+    attributes2 = [(RUIElement *)self attributes];
+    v6 = [attributes2 objectForKeyedSubscript:@"align"];
+    headerLabelAlignment = [RUIParser textAlignmentForString:v6];
   }
 
   else
   {
-    v5 = [(RUIElement *)self style];
-    v7 = [v5 headerLabelAlignment];
+    attributes2 = [(RUIElement *)self style];
+    headerLabelAlignment = [attributes2 headerLabelAlignment];
   }
 
-  return v7;
+  return headerLabelAlignment;
 }
 
-- (void)configureView:(id)a3
+- (void)configureView:(id)view
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(RUIElement *)self body];
-    v6 = [(RUIElement *)self sourceURL];
-    v7 = [(RUIElement *)self attributes];
-    [v4 setText:v5 baseURL:v6 attributes:v7];
+    body = [(RUIElement *)self body];
+    sourceURL = [(RUIElement *)self sourceURL];
+    attributes = [(RUIElement *)self attributes];
+    [viewCopy setText:body baseURL:sourceURL attributes:attributes];
   }
 
   else
@@ -44,44 +44,44 @@
       goto LABEL_6;
     }
 
-    v5 = [(RUIElement *)self body];
-    v6 = [(RUIElement *)self attributes];
-    [v4 setText:v5 attributes:v6];
+    body = [(RUIElement *)self body];
+    sourceURL = [(RUIElement *)self attributes];
+    [viewCopy setText:body attributes:sourceURL];
   }
 
 LABEL_6:
   if (objc_opt_respondsToSelector())
   {
     v8 = MEMORY[0x277D75348];
-    v9 = [(RUIElement *)self attributes];
-    v10 = [v9 objectForKeyedSubscript:@"color"];
+    attributes2 = [(RUIElement *)self attributes];
+    v10 = [attributes2 objectForKeyedSubscript:@"color"];
     v11 = [v8 _remoteUI_colorWithString:v10 defaultColor:0];
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      headerLabelTextColor = v11;
     }
 
     else
     {
-      v14 = [(RUIElement *)self style];
-      v13 = [v14 headerLabelTextColor];
+      style = [(RUIElement *)self style];
+      headerLabelTextColor = [style headerLabelTextColor];
     }
 
-    v15 = [v4 headerLabel];
-    [v15 setTextColor:v13];
+    headerLabel = [viewCopy headerLabel];
+    [headerLabel setTextColor:headerLabelTextColor];
 
-    v16 = [v4 headerLabel];
-    [v16 setTextAlignment:{-[RUIHeaderElement labelAlignment](self, "labelAlignment")}];
+    headerLabel2 = [viewCopy headerLabel];
+    [headerLabel2 setTextAlignment:{-[RUIHeaderElement labelAlignment](self, "labelAlignment")}];
 
-    v17 = [(RUIElement *)self attributes];
-    v18 = [v17 objectForKeyedSubscript:@"legacyLabel"];
-    v19 = [v18 BOOLValue];
+    attributes3 = [(RUIElement *)self attributes];
+    v18 = [attributes3 objectForKeyedSubscript:@"legacyLabel"];
+    bOOLValue = [v18 BOOLValue];
 
-    if (v19)
+    if (bOOLValue)
     {
-      v20 = [MEMORY[0x277D74248] defaultParagraphStyle];
-      v21 = [v20 mutableCopy];
+      defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+      v21 = [defaultParagraphStyle mutableCopy];
 
       [v21 setLineBreakMode:0];
       if (+[RUIPlatform isAppleTV])
@@ -100,14 +100,14 @@ LABEL_6:
       v31[0] = v22;
       v31[1] = v21;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:2];
-      v25 = [v4 headerLabel];
+      headerLabel3 = [viewCopy headerLabel];
       v26 = objc_alloc(MEMORY[0x277CCA898]);
-      v27 = [(RUIElement *)self body];
-      v28 = [v26 initWithString:v27 attributes:v24];
-      [v25 setAttributedText:v28];
+      body2 = [(RUIElement *)self body];
+      v28 = [v26 initWithString:body2 attributes:v24];
+      [headerLabel3 setAttributedText:v28];
 
-      v29 = [v4 headerLabel];
-      [v29 setTextAlignment:1];
+      headerLabel4 = [viewCopy headerLabel];
+      [headerLabel4 setTextAlignment:1];
     }
   }
 }

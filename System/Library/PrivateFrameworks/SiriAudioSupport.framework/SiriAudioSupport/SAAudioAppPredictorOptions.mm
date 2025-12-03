@@ -1,7 +1,7 @@
 @interface SAAudioAppPredictorOptions
 - (BOOL)trimDisambiguationForRelevance;
 - (SAAudioAppPredictorOptions)init;
-- (void)setTrimDisambiguationForRelevance:(BOOL)a3;
+- (void)setTrimDisambiguationForRelevance:(BOOL)relevance;
 @end
 
 @implementation SAAudioAppPredictorOptions
@@ -13,11 +13,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setTrimDisambiguationForRelevance:(BOOL)a3
+- (void)setTrimDisambiguationForRelevance:(BOOL)relevance
 {
   v5 = OBJC_IVAR___SAAudioAppPredictorOptions_trimDisambiguationForRelevance;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = relevance;
 }
 
 - (SAAudioAppPredictorOptions)init

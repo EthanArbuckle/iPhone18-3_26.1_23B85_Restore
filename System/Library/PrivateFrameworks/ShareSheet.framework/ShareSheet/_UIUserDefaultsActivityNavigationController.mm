@@ -3,15 +3,15 @@
 - (BOOL)_viewControllerUnderlapsStatusBar;
 - (CGSize)preferredContentSize;
 - (double)_statusBarHeightAdjustmentForCurrentOrientation;
-- (void)setPreferredContentSize:(CGSize)a3;
+- (void)setPreferredContentSize:(CGSize)size;
 @end
 
 @implementation _UIUserDefaultsActivityNavigationController
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(_UIUserDefaultsActivityNavigationController *)self topViewController];
-  [v2 preferredContentSize];
+  topViewController = [(_UIUserDefaultsActivityNavigationController *)self topViewController];
+  [topViewController preferredContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -22,24 +22,24 @@
   return result;
 }
 
-- (void)setPreferredContentSize:(CGSize)a3
+- (void)setPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(_UIUserDefaultsActivityNavigationController *)self topViewController];
-  [v5 setPreferredContentSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  topViewController = [(_UIUserDefaultsActivityNavigationController *)self topViewController];
+  [topViewController setPreferredContentSize:{width, height}];
 }
 
 - (BOOL)_shouldUseContentOverlayInsetsAsStatusBarUnderlapHeight
 {
-  v3 = [(_UIUserDefaultsActivityNavigationController *)self viewIfLoaded];
-  v4 = [v3 window];
-  v5 = [v4 rootViewController];
+  viewIfLoaded = [(_UIUserDefaultsActivityNavigationController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
+  rootViewController = [window rootViewController];
 
   v7 = 0;
-  if (v5)
+  if (rootViewController)
   {
-    if ([v5 _providesCustomBasePresentationInsets])
+    if ([rootViewController _providesCustomBasePresentationInsets])
     {
       [(_UIUserDefaultsActivityNavigationController *)self _contentOverlayInsets];
       if (v6 > 0.0)

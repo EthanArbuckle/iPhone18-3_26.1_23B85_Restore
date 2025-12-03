@@ -10,9 +10,9 @@
 
 + (uint64_t)avt_rootObjectForSceneAtURL:()AVTExtensionMRR options:error:
 {
-  v8 = [a3 pathExtension];
-  v9 = [v8 isEqualToString:@"scn"];
-  v10 = [v8 isEqualToString:@"scnz"];
+  pathExtension = [a3 pathExtension];
+  v9 = [pathExtension isEqualToString:@"scn"];
+  v10 = [pathExtension isEqualToString:@"scnz"];
   v11 = v10;
   if ((v9 & 1) != 0 || v10)
   {
@@ -45,7 +45,7 @@
 {
   v26 = *MEMORY[0x1E69E9840];
   v9 = objc_autoreleasePoolPush();
-  v10 = [a1 avt_rootObjectForSceneAtURL:a3 options:a4 error:a5];
+  v10 = [self avt_rootObjectForSceneAtURL:a3 options:a4 error:a5];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -57,14 +57,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = objc_alloc_init(a1);
-      v12 = [v11 rootNode];
-      v13 = [v10 childNodes];
+      v11 = objc_alloc_init(self);
+      rootNode = [v11 rootNode];
+      childNodes = [v10 childNodes];
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v14 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v14 = [childNodes countByEnumeratingWithState:&v21 objects:v25 count:16];
       if (v14)
       {
         v15 = v14;
@@ -75,15 +75,15 @@
           {
             if (*v22 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(childNodes);
             }
 
             v18 = *(*(&v21 + 1) + 8 * i);
             [v18 removeFromParentNode];
-            [v12 addChildNode:v18];
+            [rootNode addChildNode:v18];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v21 objects:v25 count:16];
+          v15 = [childNodes countByEnumeratingWithState:&v21 objects:v25 count:16];
         }
 
         while (v15);
@@ -104,12 +104,12 @@
 + (id)avt_rootNodeForSceneAtURL:()AVTExtensionMRR options:error:
 {
   v9 = objc_autoreleasePoolPush();
-  v10 = [a1 avt_rootObjectForSceneAtURL:a3 options:a4 error:a5];
+  v10 = [self avt_rootObjectForSceneAtURL:a3 options:a4 error:a5];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v10 rootNode];
-    v12 = v11;
+    rootNode = [v10 rootNode];
+    v12 = rootNode;
   }
 
   else
@@ -117,30 +117,30 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      rootNode = v10;
     }
 
     else
     {
-      v11 = 0;
+      rootNode = 0;
     }
   }
 
   objc_autoreleasePoolPop(v9);
 
-  return v11;
+  return rootNode;
 }
 
 + (id)avt_nodeNamed:()AVTExtensionMRR forSceneAtURL:options:error:
 {
   v11 = objc_autoreleasePoolPush();
-  v12 = [a1 avt_rootObjectForSceneAtURL:a4 options:a5 error:a6];
+  rootNode = [self avt_rootObjectForSceneAtURL:a4 options:a5 error:a6];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v12 rootNode];
+    rootNode = [rootNode rootNode];
 LABEL_4:
-    v13 = [v12 childNodeWithName:a3 recursively:1];
+    v13 = [rootNode childNodeWithName:a3 recursively:1];
     v14 = v13;
     [v13 removeFromParentNode];
     goto LABEL_6;
@@ -162,15 +162,15 @@ LABEL_6:
 - (uint64_t)avt_writeByArchivingRootNodeInsteadOfScene:()AVTExtensionMRR toURL:options:error:
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v12 = [a4 pathExtension];
-  v13 = [v12 isEqualToString:@"scn"];
-  v14 = [v12 isEqualToString:@"scnz"];
+  pathExtension = [a4 pathExtension];
+  v13 = [pathExtension isEqualToString:@"scn"];
+  v14 = [pathExtension isEqualToString:@"scnz"];
   v15 = v14;
   if ((v13 & 1) != 0 || v14)
   {
     if (a3)
     {
-      v19 = [MEMORY[0x1E697A888] archivedDataWithRootObject:objc_msgSend(a1 options:{"rootNode"), a5}];
+      v19 = [MEMORY[0x1E697A888] archivedDataWithRootObject:objc_msgSend(self options:{"rootNode"), a5}];
       if (v15)
       {
         v19 = [v19 scn_compressedDataUsingCompressionAlgorithm:517];
@@ -185,19 +185,19 @@ LABEL_6:
     {
       v22 = *MEMORY[0x1E69E9840];
 
-      return [a1 writeToURL:a4 options:a5 delegate:0 progressHandler:0];
+      return [self writeToURL:a4 options:a5 delegate:0 progressHandler:0];
     }
   }
 
   else
   {
-    v16 = [v12 isEqualToString:@"vfx-world"];
-    v17 = [v12 isEqualToString:@"vfxz-world"];
+    v16 = [pathExtension isEqualToString:@"vfx-world"];
+    v17 = [pathExtension isEqualToString:@"vfxz-world"];
     if ((v16 & 1) != 0 || v17)
     {
-      v23 = [MEMORY[0x1E69DF388] worldWithSceneKitScene:a1 options:MEMORY[0x1E695E0F8]];
-      v24 = [v23 rootNode];
-      AVTFixMaterialsContainingSceneKitShaderModifiersInVFXNodeHierarchy(v24, v25);
+      v23 = [MEMORY[0x1E69DF388] worldWithSceneKitScene:self options:MEMORY[0x1E695E0F8]];
+      rootNode = [v23 rootNode];
+      AVTFixMaterialsContainingSceneKitShaderModifiersInVFXNodeHierarchy(rootNode, v25);
       [objc_msgSend(v23 "rootNode")];
       v26 = *MEMORY[0x1E69DF3D0];
       v27 = *MEMORY[0x1E697A9A8];
@@ -223,7 +223,7 @@ LABEL_6:
       v32[3] = &unk_1E7F47E50;
       v32[4] = v29;
       v32[5] = v30;
-      v32[6] = a1;
+      v32[6] = self;
       v32[7] = a2;
       [a5 enumerateKeysAndObjectsUsingBlock:v32];
       v18 = [v23 avt_writeByArchivingRootNodeInsteadOfScene:a3 toURL:a4 options:v30 error:a6];
@@ -231,7 +231,7 @@ LABEL_6:
 
     else
     {
-      [a1 doesNotRecognizeSelector:a2];
+      [self doesNotRecognizeSelector:a2];
       v18 = 0;
     }
 

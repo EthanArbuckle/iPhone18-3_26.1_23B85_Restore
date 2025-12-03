@@ -1,6 +1,6 @@
 @interface MRUNowPlayingHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axMakeNowPlayingHeaderViewElement;
 - (id)accessibilityElements;
@@ -9,19 +9,19 @@
 
 @implementation MRUNowPlayingHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"labelView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"transportButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"routingButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"layout" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MRUNowPlayingLabelView" hasInstanceMethod:@"routeLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUNowPlayingLabelView" hasInstanceMethod:@"titleMarqueeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUNowPlayingLabelView" hasInstanceMethod:@"subtitleMarqueeView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUMarqueeLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUNowPlayingLabelView" hasInstanceMethod:@"placeholder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"hapticView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"labelView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"transportButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"routingButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"layout" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingLabelView" hasInstanceMethod:@"routeLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingLabelView" hasInstanceMethod:@"titleMarqueeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingLabelView" hasInstanceMethod:@"subtitleMarqueeView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUMarqueeLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingLabelView" hasInstanceMethod:@"placeholder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingHeaderView" hasInstanceMethod:@"hapticView" withFullSignature:{"@", 0}];
 }
 
 - (id)_axMakeNowPlayingHeaderViewElement
@@ -89,8 +89,8 @@ double __74__MRUNowPlayingHeaderViewAccessibility__axMakeNowPlayingHeaderViewEle
   v4 = [(MRUNowPlayingHeaderViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
   if (!v4)
   {
-    v5 = [(MRUNowPlayingHeaderViewAccessibility *)self _axMakeNowPlayingHeaderViewElement];
-    v13[0] = v5;
+    _axMakeNowPlayingHeaderViewElement = [(MRUNowPlayingHeaderViewAccessibility *)self _axMakeNowPlayingHeaderViewElement];
+    v13[0] = _axMakeNowPlayingHeaderViewElement;
     v4 = [MEMORY[0x29EDB8D80] arrayWithObjects:v13 count:1];
 
     [(MRUNowPlayingHeaderViewAccessibility *)self _accessibilitySetRetainedValue:v4 forKey:*v3];
@@ -116,33 +116,33 @@ double __74__MRUNowPlayingHeaderViewAccessibility__axMakeNowPlayingHeaderViewEle
   return v6;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = MRUNowPlayingHeaderViewAccessibility;
-  v5 = [(MRUNowPlayingHeaderViewAccessibility *)&v8 _accessibilityHitTest:a4 withEvent:a3.x, a3.y];
-  if (!v5)
+  firstObject = [(MRUNowPlayingHeaderViewAccessibility *)&v8 _accessibilityHitTest:event withEvent:test.x, test.y];
+  if (!firstObject)
   {
     v6 = [(MRUNowPlayingHeaderViewAccessibility *)self _accessibilityValueForKey:*MEMORY[0x29EDC7620]];
-    v5 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(MRUNowPlayingHeaderViewAccessibility *)self safeValueForKey:@"labelView"];
   v3 = [v2 safeValueForKey:@"routeLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [v2 safeValueForKey:@"placeholder"];
-  v6 = [v2 accessibilityLabel];
-  v7 = [v6 length];
+  accessibilityLabel2 = [v2 accessibilityLabel];
+  v7 = [accessibilityLabel2 length];
 
   if (v7)
   {
-    v10 = [v2 accessibilityLabel];
+    accessibilityLabel3 = [v2 accessibilityLabel];
     v8 = __UIAXStringForVariables();
   }
 
@@ -156,28 +156,28 @@ double __74__MRUNowPlayingHeaderViewAccessibility__axMakeNowPlayingHeaderViewEle
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v10.receiver = self;
   v10.super_class = MRUNowPlayingHeaderViewAccessibility;
-  v4 = [(MRUNowPlayingHeaderViewAccessibility *)&v10 _accessibilitySupplementaryFooterViews];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilitySupplementaryFooterViews = [(MRUNowPlayingHeaderViewAccessibility *)&v10 _accessibilitySupplementaryFooterViews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySupplementaryFooterViews];
 
   v5 = [(MRUNowPlayingHeaderViewAccessibility *)self safeValueForKey:@"hapticView"];
   if (v5)
   {
-    v6 = [MEMORY[0x29EDBB2A0] sharedManager];
-    v7 = [v6 musicHapticsEnabled];
+    mEMORY[0x29EDBB2A0] = [MEMORY[0x29EDBB2A0] sharedManager];
+    musicHapticsEnabled = [mEMORY[0x29EDBB2A0] musicHapticsEnabled];
 
-    if (v7)
+    if (musicHapticsEnabled)
     {
-      [v3 axSafelyAddObject:v5];
+      [array axSafelyAddObject:v5];
     }
   }
 
   v8 = [(MRUNowPlayingHeaderViewAccessibility *)self safeValueForKey:@"transportButton"];
-  [v3 axSafelyAddObject:v8];
+  [array axSafelyAddObject:v8];
 
-  return v3;
+  return array;
 }
 
 @end

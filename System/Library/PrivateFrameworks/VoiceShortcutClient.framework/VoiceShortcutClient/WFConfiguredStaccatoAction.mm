@@ -1,16 +1,16 @@
 @interface WFConfiguredStaccatoAction
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSystemStaccatoAction;
 - (BOOL)usesPreviewIconSymbolOverride;
 - (NSString)sectionIdentifier;
 - (WFColor)tintColor;
-- (WFConfiguredStaccatoAction)initWithCoder:(id)a3;
-- (WFConfiguredStaccatoAction)initWithIdentifier:(id)a3 associatedBundleIdentifier:(id)a4 name:(id)a5 previewIcon:(id)a6 shortcutsMetadata:(id)a7 colorScheme:(id)a8;
-- (WFConfiguredStaccatoAction)initWithIdentifier:(id)a3 sectionIdentifier:(id)a4 associatedBundleIdentifier:(id)a5 name:(id)a6 systemImageName:(id)a7 shortcutsMetadata:(id)a8;
+- (WFConfiguredStaccatoAction)initWithCoder:(id)coder;
+- (WFConfiguredStaccatoAction)initWithIdentifier:(id)identifier associatedBundleIdentifier:(id)bundleIdentifier name:(id)name previewIcon:(id)icon shortcutsMetadata:(id)metadata colorScheme:(id)scheme;
+- (WFConfiguredStaccatoAction)initWithIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier associatedBundleIdentifier:(id)bundleIdentifier name:(id)name systemImageName:(id)imageName shortcutsMetadata:(id)metadata;
 - (WFIcon)previewIcon;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFConfiguredStaccatoAction
@@ -29,80 +29,80 @@
     return @"Controls";
   }
 
-  v4 = [(WFConfiguredStaccatoAction *)self identifier];
-  v5 = [v4 isEqualToString:@"com.apple.ShortcutsActions.SetSilentModeAction"];
+  identifier = [(WFConfiguredStaccatoAction *)self identifier];
+  v5 = [identifier isEqualToString:@"com.apple.ShortcutsActions.SetSilentModeAction"];
 
   if (v5)
   {
     return @"SilentMode";
   }
 
-  v6 = [(WFConfiguredStaccatoAction *)self identifier];
-  v7 = [v6 isEqualToString:@"com.apple.springboard.Focus"];
+  identifier2 = [(WFConfiguredStaccatoAction *)self identifier];
+  v7 = [identifier2 isEqualToString:@"com.apple.springboard.Focus"];
 
   if (v7)
   {
     return @"Focus";
   }
 
-  v8 = [(WFConfiguredStaccatoAction *)self identifier];
-  v9 = [v8 isEqualToString:@"com.apple.springboard.OpenCamera"];
+  identifier3 = [(WFConfiguredStaccatoAction *)self identifier];
+  v9 = [identifier3 isEqualToString:@"com.apple.springboard.OpenCamera"];
 
   if (v9)
   {
     return @"Camera";
   }
 
-  v10 = [(WFConfiguredStaccatoAction *)self identifier];
-  v11 = [v10 isEqualToString:@"com.apple.VoiceMemos.ToggleRecording"];
+  identifier4 = [(WFConfiguredStaccatoAction *)self identifier];
+  v11 = [identifier4 isEqualToString:@"com.apple.VoiceMemos.ToggleRecording"];
 
   if (v11)
   {
     return @"VoiceMemos";
   }
 
-  v12 = [(WFConfiguredStaccatoAction *)self identifier];
-  v13 = [v12 isEqualToString:@"com.apple.springboard.ToggleFlashlight"];
+  identifier5 = [(WFConfiguredStaccatoAction *)self identifier];
+  v13 = [identifier5 isEqualToString:@"com.apple.springboard.ToggleFlashlight"];
 
   if (v13)
   {
     return @"Flashlight";
   }
 
-  v14 = [(WFConfiguredStaccatoAction *)self identifier];
-  v15 = [v14 isEqualToString:@"com.apple.AccessibilityUIServer.ToggleAccessibilityFeatureIntent"];
+  identifier6 = [(WFConfiguredStaccatoAction *)self identifier];
+  v15 = [identifier6 isEqualToString:@"com.apple.AccessibilityUIServer.ToggleAccessibilityFeatureIntent"];
 
   if (v15)
   {
     return @"Accessibility";
   }
 
-  v16 = [(WFConfiguredStaccatoAction *)self identifier];
-  v17 = [v16 isEqualToString:@"com.apple.musicrecognition.RecognizeMusicIntent"];
+  identifier7 = [(WFConfiguredStaccatoAction *)self identifier];
+  v17 = [identifier7 isEqualToString:@"com.apple.musicrecognition.RecognizeMusicIntent"];
 
   if (v17)
   {
     return @"MusicRecognition";
   }
 
-  v18 = [(WFConfiguredStaccatoAction *)self identifier];
-  v19 = [v18 isEqualToString:@"com.apple.Translate.ToggleSpeechTranslationIntent"];
+  identifier8 = [(WFConfiguredStaccatoAction *)self identifier];
+  v19 = [identifier8 isEqualToString:@"com.apple.Translate.ToggleSpeechTranslationIntent"];
 
   if (v19)
   {
     return @"Translate";
   }
 
-  v20 = [(WFConfiguredStaccatoAction *)self identifier];
-  v21 = [v20 isEqualToString:@"com.apple.Magnifier.MagnifierIntent"];
+  identifier9 = [(WFConfiguredStaccatoAction *)self identifier];
+  v21 = [identifier9 isEqualToString:@"com.apple.Magnifier.MagnifierIntent"];
 
   if (v21)
   {
     return @"Magnifier";
   }
 
-  v22 = [(WFConfiguredStaccatoAction *)self identifier];
-  v23 = [v22 isEqualToString:@"com.apple.siri.VisualIntelligenceCameraLaunch"];
+  identifier10 = [(WFConfiguredStaccatoAction *)self identifier];
+  v23 = [identifier10 isEqualToString:@"com.apple.siri.VisualIntelligenceCameraLaunch"];
 
   if (v23)
   {
@@ -117,35 +117,35 @@
 
 - (BOOL)isSystemStaccatoAction
 {
-  v2 = [(WFConfiguredStaccatoAction *)self sectionIdentifier];
-  v3 = v2 != @"Shortcuts";
+  sectionIdentifier = [(WFConfiguredStaccatoAction *)self sectionIdentifier];
+  v3 = sectionIdentifier != @"Shortcuts";
 
   return v3;
 }
 
 - (WFColor)tintColor
 {
-  v2 = [(WFConfiguredStaccatoAction *)self sectionIdentifier];
-  v3 = WFStaccatoTintColorForSectionIdentifier(v2);
+  sectionIdentifier = [(WFConfiguredStaccatoAction *)self sectionIdentifier];
+  v3 = WFStaccatoTintColorForSectionIdentifier(sectionIdentifier);
 
   return v3;
 }
 
-- (WFConfiguredStaccatoAction)initWithIdentifier:(id)a3 sectionIdentifier:(id)a4 associatedBundleIdentifier:(id)a5 name:(id)a6 systemImageName:(id)a7 shortcutsMetadata:(id)a8
+- (WFConfiguredStaccatoAction)initWithIdentifier:(id)identifier sectionIdentifier:(id)sectionIdentifier associatedBundleIdentifier:(id)bundleIdentifier name:(id)name systemImageName:(id)imageName shortcutsMetadata:(id)metadata
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
-  if (a7)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  nameCopy = name;
+  metadataCopy = metadata;
+  if (imageName)
   {
-    v17 = a7;
+    imageNameCopy = imageName;
     v18 = [WFSymbolIcon alloc];
     v19 = [WFColor colorWithSystemColor:21];
-    a7 = [(WFSymbolIcon *)v18 initWithSymbolName:v17 symbolColor:v19];
+    imageName = [(WFSymbolIcon *)v18 initWithSymbolName:imageNameCopy symbolColor:v19];
   }
 
-  v20 = [(WFConfiguredStaccatoAction *)self initWithIdentifier:v13 associatedBundleIdentifier:v14 name:v15 previewIcon:a7 shortcutsMetadata:v16];
+  v20 = [(WFConfiguredStaccatoAction *)self initWithIdentifier:identifierCopy associatedBundleIdentifier:bundleIdentifierCopy name:nameCopy previewIcon:imageName shortcutsMetadata:metadataCopy];
 
   return v20;
 }
@@ -160,8 +160,8 @@
   v23[2] = @"Accessibility";
   v24[2] = @"accessibility.fill";
   v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
-  v4 = [(WFConfiguredStaccatoAction *)self sectionIdentifier];
-  v5 = [v3 objectForKeyedSubscript:v4];
+  sectionIdentifier = [(WFConfiguredStaccatoAction *)self sectionIdentifier];
+  v5 = [v3 objectForKeyedSubscript:sectionIdentifier];
 
   if (v5)
   {
@@ -176,8 +176,8 @@
   {
     if ([(WFConfiguredStaccatoAction *)self usesPreviewIconSymbolOverride])
     {
-      v9 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-      v10 = [WFColor tintColorForBundleIdentifier:v9];
+      associatedBundleIdentifier = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+      v10 = [WFColor tintColorForBundleIdentifier:associatedBundleIdentifier];
       v11 = v10;
       if (v10)
       {
@@ -192,8 +192,8 @@
       v16 = v12;
 
       v19 = [WFSymbolIcon alloc];
-      v20 = [(WFIcon *)v7 symbolName];
-      v8 = [(WFSymbolIcon *)v19 initWithSymbolName:v20 symbolColor:v16];
+      symbolName = [(WFIcon *)v7 symbolName];
+      v8 = [(WFSymbolIcon *)v19 initWithSymbolName:symbolName symbolColor:v16];
 
       goto LABEL_14;
     }
@@ -205,9 +205,9 @@
     v7 = 0;
   }
 
-  v13 = [(WFConfiguredStaccatoAction *)self identifier];
-  v14 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-  v15 = [WFSymbolIcon symbolIconForActionIdentifier:v13 bundleIdentifier:v14];
+  identifier = [(WFConfiguredStaccatoAction *)self identifier];
+  associatedBundleIdentifier2 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+  v15 = [WFSymbolIcon symbolIconForActionIdentifier:identifier bundleIdentifier:associatedBundleIdentifier2];
 
   if (v15)
   {
@@ -218,8 +218,8 @@
   else
   {
     v17 = [WFAppIcon alloc];
-    v18 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-    v8 = [(WFAppIcon *)v17 initWithBundleIdentifier:v18];
+    associatedBundleIdentifier3 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+    v8 = [(WFAppIcon *)v17 initWithBundleIdentifier:associatedBundleIdentifier3];
 
     v16 = 0;
   }
@@ -234,24 +234,24 @@ LABEL_15:
 
 - (BOOL)usesPreviewIconSymbolOverride
 {
-  v3 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.mobilenotes"];
+  associatedBundleIdentifier = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+  v4 = [associatedBundleIdentifier isEqualToString:@"com.apple.mobilenotes"];
 
   if (v4)
   {
     return 1;
   }
 
-  v5 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-  v6 = [v5 isEqualToString:@"com.apple.mobilephone"];
+  associatedBundleIdentifier2 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+  v6 = [associatedBundleIdentifier2 isEqualToString:@"com.apple.mobilephone"];
 
   if (v6)
   {
     return 1;
   }
 
-  v8 = [(WFConfiguredStaccatoAction *)self identifier];
-  v9 = [v8 isEqualToString:@"is.workflow.actions.runworkflow"];
+  identifier = [(WFConfiguredStaccatoAction *)self identifier];
+  v9 = [identifier isEqualToString:@"is.workflow.actions.runworkflow"];
 
   return v9;
 }
@@ -259,49 +259,49 @@ LABEL_15:
 - (unint64_t)hash
 {
   v3 = objc_opt_new();
-  v4 = [(WFConfiguredStaccatoAction *)self identifier];
-  v5 = [v3 combine:v4];
+  identifier = [(WFConfiguredStaccatoAction *)self identifier];
+  v5 = [v3 combine:identifier];
 
-  v6 = [(WFConfiguredStaccatoAction *)self name];
-  v7 = [v3 combine:v6];
+  name = [(WFConfiguredStaccatoAction *)self name];
+  v7 = [v3 combine:name];
 
-  v8 = [(WFConfiguredStaccatoAction *)self previewIcon];
-  v9 = [v3 combine:v8];
+  previewIcon = [(WFConfiguredStaccatoAction *)self previewIcon];
+  v9 = [v3 combine:previewIcon];
 
-  v10 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-  v11 = [v3 combine:v10];
+  associatedBundleIdentifier = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+  v11 = [v3 combine:associatedBundleIdentifier];
 
-  v12 = [(WFConfiguredStaccatoAction *)self shortcutsMetadata];
-  v13 = [v3 combine:v12];
+  shortcutsMetadata = [(WFConfiguredStaccatoAction *)self shortcutsMetadata];
+  v13 = [v3 combine:shortcutsMetadata];
 
-  v14 = [(WFConfiguredStaccatoAction *)self colorScheme];
-  v15 = [v3 combine:v14];
+  colorScheme = [(WFConfiguredStaccatoAction *)self colorScheme];
+  v15 = [v3 combine:colorScheme];
 
   v16 = [v3 finalize];
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v6 = v5;
-        v7 = [(WFConfiguredStaccatoAction *)self identifier];
-        v8 = [(WFConfiguredStaccatoAction *)v6 identifier];
-        v9 = v7;
-        v10 = v8;
+        identifier = [(WFConfiguredStaccatoAction *)self identifier];
+        identifier2 = [(WFConfiguredStaccatoAction *)v6 identifier];
+        v9 = identifier;
+        v10 = identifier2;
         v11 = v10;
         if (v9 == v10)
         {
@@ -328,10 +328,10 @@ LABEL_45:
           }
         }
 
-        v16 = [(WFConfiguredStaccatoAction *)self name];
-        v17 = [(WFConfiguredStaccatoAction *)v6 name];
-        v14 = v16;
-        v18 = v17;
+        name = [(WFConfiguredStaccatoAction *)self name];
+        name2 = [(WFConfiguredStaccatoAction *)v6 name];
+        v14 = name;
+        v18 = name2;
         v13 = v18;
         if (v14 == v18)
         {
@@ -358,10 +358,10 @@ LABEL_44:
           }
         }
 
-        v22 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-        v23 = [(WFConfiguredStaccatoAction *)v6 associatedBundleIdentifier];
-        v20 = v22;
-        v24 = v23;
+        associatedBundleIdentifier = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+        associatedBundleIdentifier2 = [(WFConfiguredStaccatoAction *)v6 associatedBundleIdentifier];
+        v20 = associatedBundleIdentifier;
+        v24 = associatedBundleIdentifier2;
         v41 = v24;
         if (v20 != v24)
         {
@@ -381,10 +381,10 @@ LABEL_44:
 
 LABEL_24:
               v40 = v20;
-              v27 = [(WFConfiguredStaccatoAction *)self previewIcon];
-              v28 = [(WFConfiguredStaccatoAction *)v6 previewIcon];
-              v29 = v27;
-              v30 = v28;
+              previewIcon = [(WFConfiguredStaccatoAction *)self previewIcon];
+              previewIcon2 = [(WFConfiguredStaccatoAction *)v6 previewIcon];
+              v29 = previewIcon;
+              v30 = previewIcon2;
               v38 = v30;
               v39 = v29;
               if (v29 == v30)
@@ -424,9 +424,9 @@ LABEL_40:
               }
 
               v33 = [(WFConfiguredStaccatoAction *)self shortcutsMetadata:v38];
-              v34 = [(WFConfiguredStaccatoAction *)v6 shortcutsMetadata];
+              shortcutsMetadata = [(WFConfiguredStaccatoAction *)v6 shortcutsMetadata];
               v29 = v33;
-              v35 = v34;
+              v35 = shortcutsMetadata;
               v36 = v35;
               if (v29 == v35)
               {
@@ -487,74 +487,74 @@ LABEL_46:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(WFConfiguredStaccatoAction *)self identifier];
-  v6 = [(WFConfiguredStaccatoAction *)self name];
-  v7 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-  v8 = [v3 stringWithFormat:@"<%@ (%p): id: %@ name: %@, bundle: %@>", v4, self, v5, v6, v7];
+  identifier = [(WFConfiguredStaccatoAction *)self identifier];
+  name = [(WFConfiguredStaccatoAction *)self name];
+  associatedBundleIdentifier = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+  v8 = [v3 stringWithFormat:@"<%@ (%p): id: %@ name: %@, bundle: %@>", v4, self, identifier, name, associatedBundleIdentifier];
 
   return v8;
 }
 
-- (WFConfiguredStaccatoAction)initWithCoder:(id)a3
+- (WFConfiguredStaccatoAction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"associatedBundleIdentifier"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"previewIcon"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shortcutsMetadata"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorScheme"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"associatedBundleIdentifier"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"previewIcon"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortcutsMetadata"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorScheme"];
 
-  v11 = 0;
+  selfCopy = 0;
   if (v5 && v7 && v6)
   {
     self = [(WFConfiguredStaccatoAction *)self initWithIdentifier:v5 associatedBundleIdentifier:v6 name:v7 previewIcon:v8 shortcutsMetadata:v9 colorScheme:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFConfiguredStaccatoAction *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(WFConfiguredStaccatoAction *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(WFConfiguredStaccatoAction *)self name];
-  [v4 encodeObject:v6 forKey:@"name"];
+  name = [(WFConfiguredStaccatoAction *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  [v4 encodeObject:self->_previewIcon forKey:@"previewIcon"];
-  v7 = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
-  [v4 encodeObject:v7 forKey:@"associatedBundleIdentifier"];
+  [coderCopy encodeObject:self->_previewIcon forKey:@"previewIcon"];
+  associatedBundleIdentifier = [(WFConfiguredStaccatoAction *)self associatedBundleIdentifier];
+  [coderCopy encodeObject:associatedBundleIdentifier forKey:@"associatedBundleIdentifier"];
 
-  v8 = [(WFConfiguredStaccatoAction *)self shortcutsMetadata];
-  [v4 encodeObject:v8 forKey:@"shortcutsMetadata"];
+  shortcutsMetadata = [(WFConfiguredStaccatoAction *)self shortcutsMetadata];
+  [coderCopy encodeObject:shortcutsMetadata forKey:@"shortcutsMetadata"];
 
-  v9 = [(WFConfiguredStaccatoAction *)self colorScheme];
-  [v4 encodeObject:v9 forKey:@"colorScheme"];
+  colorScheme = [(WFConfiguredStaccatoAction *)self colorScheme];
+  [coderCopy encodeObject:colorScheme forKey:@"colorScheme"];
 }
 
-- (WFConfiguredStaccatoAction)initWithIdentifier:(id)a3 associatedBundleIdentifier:(id)a4 name:(id)a5 previewIcon:(id)a6 shortcutsMetadata:(id)a7 colorScheme:(id)a8
+- (WFConfiguredStaccatoAction)initWithIdentifier:(id)identifier associatedBundleIdentifier:(id)bundleIdentifier name:(id)name previewIcon:(id)icon shortcutsMetadata:(id)metadata colorScheme:(id)scheme
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  if (v15)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  nameCopy = name;
+  iconCopy = icon;
+  metadataCopy = metadata;
+  schemeCopy = scheme;
+  if (identifierCopy)
   {
-    if (v17)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v35 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemAction.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemAction.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-    if (v16)
+    if (bundleIdentifierCopy)
     {
       goto LABEL_4;
     }
@@ -562,23 +562,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemAction.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemAction.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
 
-  if (!v17)
+  if (!nameCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v16)
+  if (bundleIdentifierCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v36 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v36 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemAction.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"associatedBundleIdentifier"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"WFConfiguredSystemAction.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"associatedBundleIdentifier"}];
 
 LABEL_4:
   v37.receiver = self;
@@ -586,24 +586,24 @@ LABEL_4:
   v21 = [(WFConfiguredStaccatoAction *)&v37 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    v24 = [v17 copy];
+    v24 = [nameCopy copy];
     name = v21->_name;
     v21->_name = v24;
 
-    v26 = [v16 copy];
+    v26 = [bundleIdentifierCopy copy];
     associatedBundleIdentifier = v21->_associatedBundleIdentifier;
     v21->_associatedBundleIdentifier = v26;
 
-    v28 = [v19 copy];
+    v28 = [metadataCopy copy];
     shortcutsMetadata = v21->_shortcutsMetadata;
     v21->_shortcutsMetadata = v28;
 
-    objc_storeStrong(&v21->_previewIcon, a6);
-    v30 = [v20 copy];
+    objc_storeStrong(&v21->_previewIcon, icon);
+    v30 = [schemeCopy copy];
     colorScheme = v21->_colorScheme;
     v21->_colorScheme = v30;
 

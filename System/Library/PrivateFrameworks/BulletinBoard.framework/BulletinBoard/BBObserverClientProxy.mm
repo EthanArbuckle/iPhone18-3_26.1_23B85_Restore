@@ -1,42 +1,42 @@
 @interface BBObserverClientProxy
 + (id)xpcInterface;
-- (BBObserverClientProxy)initWithServer:(id)a3 connection:(id)a4 calloutQueue:(id)a5;
-- (BBObserverClientProxy)initWithServer:(id)a3 connection:(id)a4 queue:(id)a5 calloutQueue:(id)a6;
+- (BBObserverClientProxy)initWithServer:(id)server connection:(id)connection calloutQueue:(id)queue;
+- (BBObserverClientProxy)initWithServer:(id)server connection:(id)connection queue:(id)queue calloutQueue:(id)calloutQueue;
 - (BBServer)server;
 - (NSString)clientBundleIdentifier;
-- (id)currentTransactionForBulletinID:(id)a3;
+- (id)currentTransactionForBulletinID:(id)d;
 - (id)description;
 - (id)transactionBulletinIDs;
-- (unint64_t)incrementedTransactionIDForBulletinID:(id)a3;
-- (void)clearBulletinIDs:(id)a3 inSection:(id)a4;
-- (void)clearBulletinsFromDate:(id)a3 toDate:(id)a4 inSections:(id)a5;
-- (void)clearSection:(id)a3;
+- (unint64_t)incrementedTransactionIDForBulletinID:(id)d;
+- (void)clearBulletinIDs:(id)ds inSection:(id)section;
+- (void)clearBulletinsFromDate:(id)date toDate:(id)toDate inSections:(id)sections;
+- (void)clearSection:(id)section;
 - (void)dealloc;
-- (void)finishedWithBulletinID:(id)a3 transactionID:(unint64_t)a4;
-- (void)getBulletinsForPublisherMatchIDs:(id)a3 sectionID:(id)a4 withHandler:(id)a5;
-- (void)getBulletinsWithHandler:(id)a3;
-- (void)getObserverDebugInfo:(id)a3;
-- (void)getPublisherMatchIDsOfBulletinsPublishedAfterDate:(id)a3 withHandler:(id)a4;
-- (void)getSectionInfoForActiveSectionsWithHandler:(id)a3;
-- (void)getSectionInfoForSectionIDs:(id)a3 withHandler:(id)a4;
-- (void)getSectionInfoWithHandler:(id)a3;
-- (void)getSectionParametersForSectionID:(id)a3 withHandler:(id)a4;
-- (void)getUniversalSectionIDForSectionID:(id)a3 withHandler:(id)a4;
-- (void)handleResponse:(id)a3 withCompletion:(id)a4;
-- (void)noteBulletinsLoadedForSectionID:(id)a3;
-- (void)noteServerReceivedResponseForBulletin:(id)a3;
-- (void)removeBulletins:(id)a3 inSection:(id)a4 fromFeeds:(unint64_t)a5;
-- (void)removeSection:(id)a3;
-- (void)removeTransaction:(id)a3;
+- (void)finishedWithBulletinID:(id)d transactionID:(unint64_t)iD;
+- (void)getBulletinsForPublisherMatchIDs:(id)ds sectionID:(id)d withHandler:(id)handler;
+- (void)getBulletinsWithHandler:(id)handler;
+- (void)getObserverDebugInfo:(id)info;
+- (void)getPublisherMatchIDsOfBulletinsPublishedAfterDate:(id)date withHandler:(id)handler;
+- (void)getSectionInfoForActiveSectionsWithHandler:(id)handler;
+- (void)getSectionInfoForSectionIDs:(id)ds withHandler:(id)handler;
+- (void)getSectionInfoWithHandler:(id)handler;
+- (void)getSectionParametersForSectionID:(id)d withHandler:(id)handler;
+- (void)getUniversalSectionIDForSectionID:(id)d withHandler:(id)handler;
+- (void)handleResponse:(id)response withCompletion:(id)completion;
+- (void)noteBulletinsLoadedForSectionID:(id)d;
+- (void)noteServerReceivedResponseForBulletin:(id)bulletin;
+- (void)removeBulletins:(id)bulletins inSection:(id)section fromFeeds:(unint64_t)feeds;
+- (void)removeSection:(id)section;
+- (void)removeTransaction:(id)transaction;
 - (void)requestNoticesBulletinsForAllSections;
-- (void)requestNoticesBulletinsForSectionID:(id)a3;
-- (void)setObserverFeed:(unint64_t)a3 asLightsAndSirensGateway:(id)a4 priority:(unint64_t)a5;
-- (void)setObserverFeed:(unint64_t)a3 attachToLightsAndSirensGateway:(id)a4;
-- (void)setObserverOptions:(unint64_t)a3;
-- (void)updateBulletin:(id)a3 withHandler:(id)a4;
-- (void)updateGlobalSettings:(id)a3;
-- (void)updateSectionInfo:(id)a3;
-- (void)updateSectionParameters:(id)a3 forSectionID:(id)a4;
+- (void)requestNoticesBulletinsForSectionID:(id)d;
+- (void)setObserverFeed:(unint64_t)feed asLightsAndSirensGateway:(id)gateway priority:(unint64_t)priority;
+- (void)setObserverFeed:(unint64_t)feed attachToLightsAndSirensGateway:(id)gateway;
+- (void)setObserverOptions:(unint64_t)options;
+- (void)updateBulletin:(id)bulletin withHandler:(id)handler;
+- (void)updateGlobalSettings:(id)settings;
+- (void)updateSectionInfo:(id)info;
+- (void)updateSectionParameters:(id)parameters forSectionID:(id)d;
 @end
 
 @implementation BBObserverClientProxy
@@ -67,34 +67,34 @@ uint64_t __37__BBObserverClientProxy_xpcInterface__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BBObserverClientProxy)initWithServer:(id)a3 connection:(id)a4 calloutQueue:(id)a5
+- (BBObserverClientProxy)initWithServer:(id)server connection:(id)connection calloutQueue:(id)queue
 {
   v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  queueCopy = queue;
+  connectionCopy = connection;
+  serverCopy = server;
   v13 = dispatch_queue_create("com.apple.bulletinboard.BBObserverClientProxy", v9);
 
-  v14 = [(BBObserverClientProxy *)self initWithServer:v12 connection:v11 queue:v13 calloutQueue:v10];
+  v14 = [(BBObserverClientProxy *)self initWithServer:serverCopy connection:connectionCopy queue:v13 calloutQueue:queueCopy];
   return v14;
 }
 
-- (BBObserverClientProxy)initWithServer:(id)a3 connection:(id)a4 queue:(id)a5 calloutQueue:(id)a6
+- (BBObserverClientProxy)initWithServer:(id)server connection:(id)connection queue:(id)queue calloutQueue:(id)calloutQueue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serverCopy = server;
+  connectionCopy = connection;
+  queueCopy = queue;
+  calloutQueueCopy = calloutQueue;
   v19.receiver = self;
   v19.super_class = BBObserverClientProxy;
   v14 = [(BBObserverClientProxy *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_queue, a5);
-    objc_storeStrong(&v15->_calloutQueue, a6);
-    [(BBObserverClientProxy *)v15 setConnection:v11];
-    [(BBObserverClientProxy *)v15 setServer:v10];
+    objc_storeStrong(&v14->_queue, queue);
+    objc_storeStrong(&v15->_calloutQueue, calloutQueue);
+    [(BBObserverClientProxy *)v15 setConnection:connectionCopy];
+    [(BBObserverClientProxy *)v15 setServer:serverCopy];
     v16 = objc_alloc_init(MEMORY[0x277CBEB38]);
     bulletinIDsToTransaction = v15->_bulletinIDsToTransaction;
     v15->_bulletinIDsToTransaction = v16;
@@ -106,7 +106,7 @@ uint64_t __37__BBObserverClientProxy_xpcInterface__block_invoke()
 - (void)dealloc
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(BBObserverClientProxy *)self server];
+  server = [(BBObserverClientProxy *)self server];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -127,7 +127,7 @@ uint64_t __37__BBObserverClientProxy_xpcInterface__block_invoke()
           objc_enumerationMutation(v4);
         }
 
-        [v3 clearBulletinIDIfPossible:*(*(&v11 + 1) + 8 * v8++) rescheduleExpirationTimer:1];
+        [server clearBulletinIDIfPossible:*(*(&v11 + 1) + 8 * v8++) rescheduleExpirationTimer:1];
       }
 
       while (v6 != v8);
@@ -163,28 +163,28 @@ uint64_t __37__BBObserverClientProxy_xpcInterface__block_invoke()
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NSXPCConnection *)self->_connection processIdentifier];
-  v6 = [(BBObserverClientProxy *)self clientBundleIdentifier];
-  v7 = [v3 stringWithFormat:@"<%@: %p [%i:%@] observerOptions: %ld>", v4, self, v5, v6, -[BBObserverClientProxy observerOptions](self, "observerOptions")];
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
+  clientBundleIdentifier = [(BBObserverClientProxy *)self clientBundleIdentifier];
+  v7 = [v3 stringWithFormat:@"<%@: %p [%i:%@] observerOptions: %ld>", v4, self, processIdentifier, clientBundleIdentifier, -[BBObserverClientProxy observerOptions](self, "observerOptions")];
 
   return v7;
 }
 
-- (void)removeTransaction:(id)a3
+- (void)removeTransaction:(id)transaction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = self->_bulletinIDsToTransaction;
   objc_sync_enter(v5);
-  v6 = [v4 bulletinID];
-  v7 = [(BBObserverClientProxy *)self currentTransactionForBulletinID:v6];
+  bulletinID = [transactionCopy bulletinID];
+  v7 = [(BBObserverClientProxy *)self currentTransactionForBulletinID:bulletinID];
 
-  v8 = [v7 transactionID];
-  if (v8 == [v4 transactionID])
+  transactionID = [v7 transactionID];
+  if (transactionID == [transactionCopy transactionID])
   {
     bulletinIDsToTransaction = self->_bulletinIDsToTransaction;
-    v10 = [v4 bulletinID];
-    [(NSMutableDictionary *)bulletinIDsToTransaction removeObjectForKey:v10];
+    bulletinID2 = [transactionCopy bulletinID];
+    [(NSMutableDictionary *)bulletinIDsToTransaction removeObjectForKey:bulletinID2];
   }
 
   else if (v7)
@@ -193,7 +193,7 @@ uint64_t __37__BBObserverClientProxy_xpcInterface__block_invoke()
     if (os_log_type_enabled(BBLogBulletinLife, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138543618;
-      v14 = v4;
+      v14 = transactionCopy;
       v15 = 2114;
       v16 = v7;
       _os_log_impl(&dword_241EFF000, v11, OS_LOG_TYPE_DEFAULT, "asked to remove a transaction (%{public}@) but our transaction (%{public}@) doesn't match IDs", &v13, 0x16u);
@@ -208,29 +208,29 @@ uint64_t __37__BBObserverClientProxy_xpcInterface__block_invoke()
 {
   v3 = self->_bulletinIDsToTransaction;
   objc_sync_enter(v3);
-  v4 = [(NSMutableDictionary *)self->_bulletinIDsToTransaction allKeys];
+  allKeys = [(NSMutableDictionary *)self->_bulletinIDsToTransaction allKeys];
   objc_sync_exit(v3);
 
-  return v4;
+  return allKeys;
 }
 
-- (id)currentTransactionForBulletinID:(id)a3
+- (id)currentTransactionForBulletinID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_bulletinIDsToTransaction;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_bulletinIDsToTransaction objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_bulletinIDsToTransaction objectForKey:dCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (unint64_t)incrementedTransactionIDForBulletinID:(id)a3
+- (unint64_t)incrementedTransactionIDForBulletinID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = self->_bulletinIDsToTransaction;
   objc_sync_enter(v5);
-  v6 = [(BBObserverClientProxy *)self currentTransactionForBulletinID:v4];
+  v6 = [(BBObserverClientProxy *)self currentTransactionForBulletinID:dCopy];
   v7 = v6;
   if (v6)
   {
@@ -239,30 +239,30 @@ uint64_t __37__BBObserverClientProxy_xpcInterface__block_invoke()
 
   else
   {
-    v7 = [[BBBulletinTransaction alloc] initWithBulletinID:v4];
-    [(NSMutableDictionary *)self->_bulletinIDsToTransaction setObject:v7 forKey:v4];
+    v7 = [[BBBulletinTransaction alloc] initWithBulletinID:dCopy];
+    [(NSMutableDictionary *)self->_bulletinIDsToTransaction setObject:v7 forKey:dCopy];
   }
 
-  v8 = [(BBBulletinTransaction *)v7 transactionID];
+  transactionID = [(BBBulletinTransaction *)v7 transactionID];
 
   objc_sync_exit(v5);
-  return v8;
+  return transactionID;
 }
 
-- (void)updateBulletin:(id)a3 withHandler:(id)a4
+- (void)updateBulletin:(id)bulletin withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  bulletinCopy = bulletin;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__BBObserverClientProxy_updateBulletin_withHandler___block_invoke;
   block[3] = &unk_278D2A9A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = bulletinCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = bulletinCopy;
   dispatch_async(queue, block);
 }
 
@@ -298,17 +298,17 @@ void __52__BBObserverClientProxy_updateBulletin_withHandler___block_invoke_2(uin
   }
 }
 
-- (void)updateSectionInfo:(id)a3
+- (void)updateSectionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__BBObserverClientProxy_updateSectionInfo___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(queue, v7);
 }
 
@@ -318,20 +318,20 @@ void __43__BBObserverClientProxy_updateSectionInfo___block_invoke(uint64_t a1)
   [v2 updateSectionInfo:*(a1 + 40)];
 }
 
-- (void)updateSectionParameters:(id)a3 forSectionID:(id)a4
+- (void)updateSectionParameters:(id)parameters forSectionID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__BBObserverClientProxy_updateSectionParameters_forSectionID___block_invoke;
   block[3] = &unk_278D2AB58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = parametersCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = parametersCopy;
   dispatch_async(queue, block);
 }
 
@@ -341,25 +341,25 @@ void __62__BBObserverClientProxy_updateSectionParameters_forSectionID___block_in
   [v2 updateSectionParameters:a1[5] forSectionID:a1[6]];
 }
 
-- (void)removeSection:(id)a3
+- (void)removeSection:(id)section
 {
   connection = self->_connection;
-  v4 = a3;
-  v5 = [(NSXPCConnection *)connection remoteObjectProxy];
-  [v5 removeSection:v4];
+  sectionCopy = section;
+  remoteObjectProxy = [(NSXPCConnection *)connection remoteObjectProxy];
+  [remoteObjectProxy removeSection:sectionCopy];
 }
 
-- (void)updateGlobalSettings:(id)a3
+- (void)updateGlobalSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__BBObserverClientProxy_updateGlobalSettings___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = settingsCopy;
+  v6 = settingsCopy;
   dispatch_async(queue, v7);
 }
 
@@ -369,17 +369,17 @@ void __46__BBObserverClientProxy_updateGlobalSettings___block_invoke(uint64_t a1
   [v2 updateGlobalSettings:*(a1 + 40)];
 }
 
-- (void)noteServerReceivedResponseForBulletin:(id)a3
+- (void)noteServerReceivedResponseForBulletin:(id)bulletin
 {
-  v4 = a3;
+  bulletinCopy = bulletin;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__BBObserverClientProxy_noteServerReceivedResponseForBulletin___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = bulletinCopy;
+  v6 = bulletinCopy;
   dispatch_async(queue, v7);
 }
 
@@ -389,17 +389,17 @@ void __63__BBObserverClientProxy_noteServerReceivedResponseForBulletin___block_i
   [v2 noteServerReceivedResponseForBulletin:*(a1 + 40)];
 }
 
-- (void)noteBulletinsLoadedForSectionID:(id)a3
+- (void)noteBulletinsLoadedForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__BBObserverClientProxy_noteBulletinsLoadedForSectionID___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -409,17 +409,17 @@ void __57__BBObserverClientProxy_noteBulletinsLoadedForSectionID___block_invoke(
   [v2 noteBulletinsLoadedForSectionID:*(a1 + 40)];
 }
 
-- (void)getObserverDebugInfo:(id)a3
+- (void)getObserverDebugInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__BBObserverClientProxy_getObserverDebugInfo___block_invoke;
   v7[3] = &unk_278D2AC38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(queue, v7);
 }
 
@@ -429,18 +429,18 @@ void __46__BBObserverClientProxy_getObserverDebugInfo___block_invoke(uint64_t a1
   [v2 getObserverDebugInfo:*(a1 + 40)];
 }
 
-- (void)setObserverFeed:(unint64_t)a3 attachToLightsAndSirensGateway:(id)a4
+- (void)setObserverFeed:(unint64_t)feed attachToLightsAndSirensGateway:(id)gateway
 {
-  v6 = a4;
+  gatewayCopy = gateway;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__BBObserverClientProxy_setObserverFeed_attachToLightsAndSirensGateway___block_invoke;
   block[3] = &unk_278D2A9F0;
-  v10 = v6;
-  v11 = a3;
+  v10 = gatewayCopy;
+  feedCopy = feed;
   block[4] = self;
-  v8 = v6;
+  v8 = gatewayCopy;
   dispatch_async(queue, block);
 }
 
@@ -450,19 +450,19 @@ void __72__BBObserverClientProxy_setObserverFeed_attachToLightsAndSirensGateway_
   [v2 observer:*(a1 + 32) setObserverFeed:*(a1 + 48) attachToLightsAndSirensGateway:*(a1 + 40)];
 }
 
-- (void)setObserverFeed:(unint64_t)a3 asLightsAndSirensGateway:(id)a4 priority:(unint64_t)a5
+- (void)setObserverFeed:(unint64_t)feed asLightsAndSirensGateway:(id)gateway priority:(unint64_t)priority
 {
-  v8 = a4;
+  gatewayCopy = gateway;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__BBObserverClientProxy_setObserverFeed_asLightsAndSirensGateway_priority___block_invoke;
   v11[3] = &unk_278D2C238;
   v11[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v14 = a5;
-  v10 = v8;
+  v12 = gatewayCopy;
+  feedCopy = feed;
+  priorityCopy = priority;
+  v10 = gatewayCopy;
   dispatch_async(queue, v11);
 }
 
@@ -472,20 +472,20 @@ void __75__BBObserverClientProxy_setObserverFeed_asLightsAndSirensGateway_priori
   [v2 observer:*(a1 + 32) setObserverFeed:*(a1 + 48) asLightsAndSirensGateway:*(a1 + 40) priority:*(a1 + 56)];
 }
 
-- (void)handleResponse:(id)a3 withCompletion:(id)a4
+- (void)handleResponse:(id)response withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__BBObserverClientProxy_handleResponse_withCompletion___block_invoke;
   block[3] = &unk_278D2A9A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = responseCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = responseCopy;
   dispatch_async(queue, block);
 }
 
@@ -514,18 +514,18 @@ void __55__BBObserverClientProxy_handleResponse_withCompletion___block_invoke(ui
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishedWithBulletinID:(id)a3 transactionID:(unint64_t)a4
+- (void)finishedWithBulletinID:(id)d transactionID:(unint64_t)iD
 {
-  v6 = a3;
+  dCopy = d;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__BBObserverClientProxy_finishedWithBulletinID_transactionID___block_invoke;
   block[3] = &unk_278D2A9F0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = dCopy;
+  iDCopy = iD;
+  v8 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -535,17 +535,17 @@ void __62__BBObserverClientProxy_finishedWithBulletinID_transactionID___block_in
   [v2 observer:*(a1 + 32) finishedWithBulletinID:*(a1 + 40) transactionID:*(a1 + 48)];
 }
 
-- (void)clearSection:(id)a3
+- (void)clearSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__BBObserverClientProxy_clearSection___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sectionCopy;
+  v6 = sectionCopy;
   dispatch_async(queue, v7);
 }
 
@@ -555,23 +555,23 @@ void __38__BBObserverClientProxy_clearSection___block_invoke(uint64_t a1)
   [v2 observer:*(a1 + 32) clearSection:*(a1 + 40)];
 }
 
-- (void)clearBulletinsFromDate:(id)a3 toDate:(id)a4 inSections:(id)a5
+- (void)clearBulletinsFromDate:(id)date toDate:(id)toDate inSections:(id)sections
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  toDateCopy = toDate;
+  sectionsCopy = sections;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __66__BBObserverClientProxy_clearBulletinsFromDate_toDate_inSections___block_invoke;
   v15[3] = &unk_278D2AE40;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dateCopy;
+  v17 = toDateCopy;
+  v18 = sectionsCopy;
+  v12 = sectionsCopy;
+  v13 = toDateCopy;
+  v14 = dateCopy;
   dispatch_async(queue, v15);
 }
 
@@ -581,20 +581,20 @@ void __66__BBObserverClientProxy_clearBulletinsFromDate_toDate_inSections___bloc
   [v2 observer:*(a1 + 32) clearBulletinsFromDate:*(a1 + 40) toDate:*(a1 + 48) inSections:*(a1 + 56)];
 }
 
-- (void)clearBulletinIDs:(id)a3 inSection:(id)a4
+- (void)clearBulletinIDs:(id)ds inSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  sectionCopy = section;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__BBObserverClientProxy_clearBulletinIDs_inSection___block_invoke;
   block[3] = &unk_278D2AB58;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = sectionCopy;
+  v9 = sectionCopy;
+  v10 = dsCopy;
   dispatch_async(queue, block);
 }
 
@@ -604,21 +604,21 @@ void __52__BBObserverClientProxy_clearBulletinIDs_inSection___block_invoke(uint6
   [v2 observer:*(a1 + 32) clearBulletinIDs:*(a1 + 40) inSection:*(a1 + 48)];
 }
 
-- (void)removeBulletins:(id)a3 inSection:(id)a4 fromFeeds:(unint64_t)a5
+- (void)removeBulletins:(id)bulletins inSection:(id)section fromFeeds:(unint64_t)feeds
 {
-  v8 = a3;
-  v9 = a4;
+  bulletinsCopy = bulletins;
+  sectionCopy = section;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__BBObserverClientProxy_removeBulletins_inSection_fromFeeds___block_invoke;
   v13[3] = &unk_278D2AD00;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = bulletinsCopy;
+  v15 = sectionCopy;
+  feedsCopy = feeds;
+  v11 = sectionCopy;
+  v12 = bulletinsCopy;
   dispatch_async(queue, v13);
 }
 
@@ -628,17 +628,17 @@ void __61__BBObserverClientProxy_removeBulletins_inSection_fromFeeds___block_inv
   [v2 observer:*(a1 + 32) removeBulletins:*(a1 + 40) inSection:*(a1 + 48) fromFeeds:*(a1 + 56)];
 }
 
-- (void)requestNoticesBulletinsForSectionID:(id)a3
+- (void)requestNoticesBulletinsForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__BBObserverClientProxy_requestNoticesBulletinsForSectionID___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -665,17 +665,17 @@ void __62__BBObserverClientProxy_requestNoticesBulletinsForAllSections__block_in
   [v2 requestNoticesBulletinsForAllSections:*(a1 + 32)];
 }
 
-- (void)getSectionInfoWithHandler:(id)a3
+- (void)getSectionInfoWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__BBObserverClientProxy_getSectionInfoWithHandler___block_invoke;
   v7[3] = &unk_278D2AC38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -685,17 +685,17 @@ void __51__BBObserverClientProxy_getSectionInfoWithHandler___block_invoke(uint64
   [v2 observer:*(a1 + 32) getSectionInfoWithHandler:*(a1 + 40)];
 }
 
-- (void)getSectionInfoForActiveSectionsWithHandler:(id)a3
+- (void)getSectionInfoForActiveSectionsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__BBObserverClientProxy_getSectionInfoForActiveSectionsWithHandler___block_invoke;
   v7[3] = &unk_278D2AC38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -705,20 +705,20 @@ void __68__BBObserverClientProxy_getSectionInfoForActiveSectionsWithHandler___bl
   [v2 observer:*(a1 + 32) getSectionInfoForActiveSectionsWithHandler:*(a1 + 40)];
 }
 
-- (void)getSectionInfoForSectionIDs:(id)a3 withHandler:(id)a4
+- (void)getSectionInfoForSectionIDs:(id)ds withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__BBObserverClientProxy_getSectionInfoForSectionIDs_withHandler___block_invoke;
   block[3] = &unk_278D2A9A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   dispatch_async(queue, block);
 }
 
@@ -728,20 +728,20 @@ void __65__BBObserverClientProxy_getSectionInfoForSectionIDs_withHandler___block
   [v2 observer:*(a1 + 32) getSectionInfoForSectionIDs:*(a1 + 40) withHandler:*(a1 + 48)];
 }
 
-- (void)getSectionParametersForSectionID:(id)a3 withHandler:(id)a4
+- (void)getSectionParametersForSectionID:(id)d withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__BBObserverClientProxy_getSectionParametersForSectionID_withHandler___block_invoke;
   block[3] = &unk_278D2A9A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -751,20 +751,20 @@ void __70__BBObserverClientProxy_getSectionParametersForSectionID_withHandler___
   [v2 getSectionParametersForSectionID:*(a1 + 40) withHandler:*(a1 + 48)];
 }
 
-- (void)getUniversalSectionIDForSectionID:(id)a3 withHandler:(id)a4
+- (void)getUniversalSectionIDForSectionID:(id)d withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__BBObserverClientProxy_getUniversalSectionIDForSectionID_withHandler___block_invoke;
   block[3] = &unk_278D2A9A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dCopy;
   dispatch_async(queue, block);
 }
 
@@ -774,17 +774,17 @@ void __71__BBObserverClientProxy_getUniversalSectionIDForSectionID_withHandler__
   [v2 getUniversalSectionIDForSectionID:*(a1 + 40) withHandler:*(a1 + 48)];
 }
 
-- (void)getBulletinsWithHandler:(id)a3
+- (void)getBulletinsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__BBObserverClientProxy_getBulletinsWithHandler___block_invoke;
   v7[3] = &unk_278D2AC38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -794,20 +794,20 @@ void __49__BBObserverClientProxy_getBulletinsWithHandler___block_invoke(uint64_t
   [v2 getBulletinsWithHandler:*(a1 + 40)];
 }
 
-- (void)getPublisherMatchIDsOfBulletinsPublishedAfterDate:(id)a3 withHandler:(id)a4
+- (void)getPublisherMatchIDsOfBulletinsPublishedAfterDate:(id)date withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__BBObserverClientProxy_getPublisherMatchIDsOfBulletinsPublishedAfterDate_withHandler___block_invoke;
   block[3] = &unk_278D2A9A0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dateCopy;
   dispatch_async(queue, block);
 }
 
@@ -817,23 +817,23 @@ void __87__BBObserverClientProxy_getPublisherMatchIDsOfBulletinsPublishedAfterDa
   [v2 getPublisherMatchIDsOfBulletinsPublishedAfterDate:*(a1 + 40) withHandler:*(a1 + 48)];
 }
 
-- (void)getBulletinsForPublisherMatchIDs:(id)a3 sectionID:(id)a4 withHandler:(id)a5
+- (void)getBulletinsForPublisherMatchIDs:(id)ds sectionID:(id)d withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dsCopy = ds;
+  dCopy = d;
+  handlerCopy = handler;
   queue = self->_queue;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__BBObserverClientProxy_getBulletinsForPublisherMatchIDs_sectionID_withHandler___block_invoke;
   v15[3] = &unk_278D2A950;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = dsCopy;
+  v17 = dCopy;
+  v18 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = dCopy;
+  v14 = dsCopy;
   dispatch_async(queue, v15);
 }
 
@@ -843,17 +843,17 @@ void __80__BBObserverClientProxy_getBulletinsForPublisherMatchIDs_sectionID_with
   [v2 getBulletinsForPublisherMatchIDs:*(a1 + 40) sectionID:*(a1 + 48) withHandler:*(a1 + 56)];
 }
 
-- (void)setObserverOptions:(unint64_t)a3
+- (void)setObserverOptions:(unint64_t)options
 {
   v11 = *MEMORY[0x277D85DE8];
-  self->_observerOptions = a3;
+  self->_observerOptions = options;
   v5 = BBLogConnection;
   if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412546;
-    v8 = self;
+    selfCopy = self;
     v9 = 2048;
-    v10 = a3;
+    optionsCopy = options;
     _os_log_impl(&dword_241EFF000, v5, OS_LOG_TYPE_DEFAULT, "%@ setObserverOptions: options: %ld", &v7, 0x16u);
   }
 

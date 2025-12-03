@@ -1,16 +1,16 @@
 @interface STSummaryCellViewController
-- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithCoder:(id)a3;
-- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4;
-- (void)updateWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4;
+- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithCoder:(id)coder;
+- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithUserAltDSID:(id)d deviceIdentifier:(id)identifier;
+- (void)updateWithUserAltDSID:(id)d deviceIdentifier:(id)identifier;
 - (void)viewDidLoad;
 @end
 
 @implementation STSummaryCellViewController
 
-- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4
+- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithUserAltDSID:(id)d deviceIdentifier:(id)identifier
 {
-  if (a3)
+  if (d)
   {
     sub_264CC45DC();
   }
@@ -23,7 +23,7 @@
   return [(STSummaryCellViewController *)&v6 initWithNibName:0 bundle:0];
 }
 
-- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithCoder:(id)a3
+- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithCoder:(id)coder
 {
   result = sub_264CC49FC();
   __break(1u);
@@ -32,22 +32,22 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_264C8C140();
 }
 
-- (void)updateWithUserAltDSID:(id)a3 deviceIdentifier:(id)a4
+- (void)updateWithUserAltDSID:(id)d deviceIdentifier:(id)identifier
 {
-  if (a3)
+  if (d)
   {
     sub_264CC45DC();
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_264CC373C();
 }
 
-- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC20ScreenTimeSettingsUI27STSummaryCellViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

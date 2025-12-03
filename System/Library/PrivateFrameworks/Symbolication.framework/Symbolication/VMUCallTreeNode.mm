@@ -1,52 +1,52 @@
 @interface VMUCallTreeNode
-+ (id)makeFakeRootForNode:(id)a3;
-+ (id)rootForSamples:(id)a3 symbolicator:(_CSTypeRef)a4 sampler:(id)a5 options:(unint64_t)a6;
++ (id)makeFakeRootForNode:(id)node;
++ (id)rootForSamples:(id)samples symbolicator:(_CSTypeRef)symbolicator sampler:(id)sampler options:(unint64_t)options;
 - (BOOL)callTreeHasBranches;
-- (VMUCallTreeNode)initWithName:(id)a3 address:(unint64_t)a4 count:(unsigned int)a5 numBytes:(unint64_t)a6;
+- (VMUCallTreeNode)initWithName:(id)name address:(unint64_t)address count:(unsigned int)count numBytes:(unint64_t)bytes;
 - (id)allChildren;
 - (id)browserName;
-- (id)chargeLibrariesInSet:(id)a3 toCaller:(id)a4 parentLibrary:(id)a5;
-- (id)chargeLibrariesToCallers:(id)a3 keepBoundaries:(BOOL)a4;
-- (id)childAtIndex:(unsigned int)a3;
+- (id)chargeLibrariesInSet:(id)set toCaller:(id)caller parentLibrary:(id)library;
+- (id)chargeLibrariesToCallers:(id)callers keepBoundaries:(BOOL)boundaries;
+- (id)childAtIndex:(unsigned int)index;
 - (id)description;
-- (id)filterOutSymbols:(id)a3;
-- (id)filterOutSymbols:(id)a3 required:(id)a4;
-- (id)findOrAddChildWithName:(id)a3 address:(unint64_t)a4 nodeSearchType:(int)a5 isLeafNode:(BOOL)a6;
+- (id)filterOutSymbols:(id)symbols;
+- (id)filterOutSymbols:(id)symbols required:(id)required;
+- (id)findOrAddChildWithName:(id)name address:(unint64_t)address nodeSearchType:(int)type isLeafNode:(BOOL)node;
 - (id)invertedNode;
 - (id)largestTopOfStackPath;
-- (id)nameWithStringsForSymbol:(id)a3 library:(id)a4 loadAddress:(id)a5 offset:(id)a6 address:(id)a7 suffix:(id)a8;
+- (id)nameWithStringsForSymbol:(id)symbol library:(id)library loadAddress:(id)address offset:(id)offset address:(id)a7 suffix:(id)suffix;
 - (id)nameWithoutOffset;
-- (id)pruneMallocSize:(unint64_t)a3;
+- (id)pruneMallocSize:(unint64_t)size;
 - (id)pseudoNodeTopOfStackChild;
 - (id)sortedChildrenWithPseudoNode;
-- (id)sortedChildrenWithPseudoNode:(id)a3 withCompare:(SEL)a4;
-- (id)stringFromCallTreeIndentIfNoBranches:(BOOL)a3 showPseudoNodes:(BOOL)a4;
-- (id)stringFromCallTreeWithOptions:(unint64_t)a3;
-- (int64_t)compare:(id)a3;
-- (int64_t)comparePuttingMainThreadFirst:(id)a3;
-- (int64_t)comparePuttingRetainCycleNodesAtTop:(id)a3;
-- (int64_t)compareSizeAndCount:(id)a3;
+- (id)sortedChildrenWithPseudoNode:(id)node withCompare:(SEL)compare;
+- (id)stringFromCallTreeIndentIfNoBranches:(BOOL)branches showPseudoNodes:(BOOL)nodes;
+- (id)stringFromCallTreeWithOptions:(unint64_t)options;
+- (int64_t)compare:(id)compare;
+- (int64_t)comparePuttingMainThreadFirst:(id)first;
+- (int64_t)comparePuttingRetainCycleNodesAtTop:(id)top;
+- (int64_t)compareSizeAndCount:(id)count;
 - (unsigned)sumOfChildCounts;
-- (void)_printCallTreeToFile:(__sFILE *)a3 cumulativeOutput:(id)a4 indentString:(id)a5 branchPointCount:(unsigned int)a6 topFunctions:(id)a7 options:(unint64_t)a8;
-- (void)addChild:(id)a3;
-- (void)countFunctionOccurrencesInTree:(id)a3;
+- (void)_printCallTreeToFile:(__sFILE *)file cumulativeOutput:(id)output indentString:(id)string branchPointCount:(unsigned int)count topFunctions:(id)functions options:(unint64_t)options;
+- (void)addChild:(id)child;
+- (void)countFunctionOccurrencesInTree:(id)tree;
 - (void)dealloc;
-- (void)getBrowserName:(id)a3;
-- (void)parseNameIntoSymbol:(id *)a3 library:(id *)a4 loadAddress:(unint64_t *)a5 offset:(unint64_t *)a6 address:(unint64_t *)a7 suffix:(id *)a8;
-- (void)printCallTreeToFile:(__sFILE *)a3 cumulativeOutput:(id)a4 options:(unint64_t)a5;
-- (void)setChildren:(id)a3;
+- (void)getBrowserName:(id)name;
+- (void)parseNameIntoSymbol:(id *)symbol library:(id *)library loadAddress:(unint64_t *)address offset:(unint64_t *)offset address:(unint64_t *)a7 suffix:(id *)suffix;
+- (void)printCallTreeToFile:(__sFILE *)file cumulativeOutput:(id)output options:(unint64_t)options;
+- (void)setChildren:(id)children;
 @end
 
 @implementation VMUCallTreeNode
 
-+ (id)rootForSamples:(id)a3 symbolicator:(_CSTypeRef)a4 sampler:(id)a5 options:(unint64_t)a6
++ (id)rootForSamples:(id)samples symbolicator:(_CSTypeRef)symbolicator sampler:(id)sampler options:(unint64_t)options
 {
-  opaque_2 = a4._opaque_2;
-  opaque_1 = a4._opaque_1;
+  opaque_2 = symbolicator._opaque_2;
+  opaque_1 = symbolicator._opaque_1;
   v62 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [[VMUCallTreeRoot alloc] initWithSymbolicator:opaque_1 sampler:opaque_2 options:v11, a6];
+  samplesCopy = samples;
+  samplerCopy = sampler;
+  options = [[VMUCallTreeRoot alloc] initWithSymbolicator:opaque_1 sampler:opaque_2 options:samplerCopy, options];
   Task = CSSymbolicatorGetTask();
   if (Task)
   {
@@ -54,8 +54,8 @@
     if (CSTaskIsTranslated())
     {
       v15 = [[VMUVMRegionIdentifier alloc] initWithTask:v14 options:1281];
-      v16 = [(VMUVMRegionIdentifier *)v15 regions];
-      [(VMUCallTreeRoot *)v12 setVMRegions:v16];
+      regions = [(VMUVMRegionIdentifier *)v15 regions];
+      [(VMUCallTreeRoot *)options setVMRegions:regions];
       v54 = 0;
       v55 = &v54;
       v56 = 0x3010000000;
@@ -83,8 +83,8 @@
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v38 = v16;
-        v24 = v16;
+        v38 = regions;
+        v24 = regions;
         v25 = [v24 countByEnumeratingWithState:&v44 objects:v61 count:16];
         if (v25)
         {
@@ -102,7 +102,7 @@
               v29 = BaseAddress - [v28 range];
               if (v29 < v30)
               {
-                [(VMUCallTreeRoot *)v12 setCambriaRuntimeVMObjectID:v28[14]];
+                [(VMUCallTreeRoot *)options setCambriaRuntimeVMObjectID:v28[14]];
                 goto LABEL_14;
               }
             }
@@ -119,7 +119,7 @@
 
 LABEL_14:
 
-        v16 = v38;
+        regions = v38;
         v15 = v39;
       }
 
@@ -131,7 +131,7 @@ LABEL_14:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v31 = v10;
+  v31 = samplesCopy;
   v32 = [v31 countByEnumeratingWithState:&v40 objects:v60 count:16];
   if (v32)
   {
@@ -145,7 +145,7 @@ LABEL_14:
           objc_enumerationMutation(v31);
         }
 
-        v35 = [(VMUCallTreeRoot *)v12 addBacktrace:*(*(&v40 + 1) + 8 * j), v38];
+        v35 = [(VMUCallTreeRoot *)options addBacktrace:*(*(&v40 + 1) + 8 * j), v38];
       }
 
       v32 = [v31 countByEnumeratingWithState:&v40 objects:v60 count:16];
@@ -156,7 +156,7 @@ LABEL_14:
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v12;
+  return options;
 }
 
 void __63__VMUCallTreeNode_rootForSamples_symbolicator_sampler_options___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3)
@@ -170,30 +170,30 @@ void __63__VMUCallTreeNode_rootForSamples_symbolicator_sampler_options___block_i
   }
 }
 
-- (VMUCallTreeNode)initWithName:(id)a3 address:(unint64_t)a4 count:(unsigned int)a5 numBytes:(unint64_t)a6
+- (VMUCallTreeNode)initWithName:(id)name address:(unint64_t)address count:(unsigned int)count numBytes:(unint64_t)bytes
 {
-  v11 = a3;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = VMUCallTreeNode;
   v12 = [(VMUCallTreeNode *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_name, a3);
-    v13->_count = a5;
-    v13->_address = a4;
-    v13->_numBytes = a6;
+    objc_storeStrong(&v12->_name, name);
+    v13->_count = count;
+    v13->_address = address;
+    v13->_numBytes = bytes;
   }
 
   return v13;
 }
 
-- (id)childAtIndex:(unsigned int)a3
+- (id)childAtIndex:(unsigned int)index
 {
   p_children = &self->_children;
   if (self->_numChildren != 1)
   {
-    p_children = (*p_children + 8 * a3);
+    p_children = (*p_children + 8 * index);
   }
 
   return *p_children;
@@ -201,14 +201,14 @@ void __63__VMUCallTreeNode_rootForSamples_symbolicator_sampler_options___block_i
 
 - (id)allChildren
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(VMUCallTreeNode *)self numChildren])
   {
     v4 = 0;
     do
     {
       v5 = [(VMUCallTreeNode *)self childAtIndex:v4];
-      [v3 addObject:v5];
+      [array addObject:v5];
 
       v4 = (v4 + 1);
     }
@@ -216,13 +216,13 @@ void __63__VMUCallTreeNode_rootForSamples_symbolicator_sampler_options___block_i
     while (v4 < [(VMUCallTreeNode *)self numChildren]);
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setChildren:(id)a3
+- (void)setChildren:(id)children
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  childrenCopy = children;
   numChildren = self->_numChildren;
   p_children = &self->_children;
   if (numChildren >= 2)
@@ -255,7 +255,7 @@ void __63__VMUCallTreeNode_rootForSamples_symbolicator_sampler_options___block_i
   }
 
 LABEL_9:
-  v10 = [v4 count];
+  v10 = [childrenCopy count];
   self->_numChildren = v10;
   if (v10 >= 2)
   {
@@ -268,7 +268,7 @@ LABEL_9:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v12 = v4;
+  v12 = childrenCopy;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
@@ -304,13 +304,13 @@ LABEL_9:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v5 = a3;
-  if (v5)
+  childCopy = child;
+  if (childCopy)
   {
     numChildren = self->_numChildren;
-    v16 = v5;
+    v16 = childCopy;
     if (numChildren == 1)
     {
       children = self->_children;
@@ -321,7 +321,7 @@ LABEL_9:
       v12 = v10 + 1;
       v8 = children;
 
-      objc_storeStrong(v12, a3);
+      objc_storeStrong(v12, child);
     }
 
     else if (numChildren)
@@ -337,13 +337,13 @@ LABEL_9:
 
     else
     {
-      v7 = v5;
+      v7 = childCopy;
       v8 = self->_children;
       self->_children = v7;
     }
 
     ++self->_numChildren;
-    v5 = v16;
+    childCopy = v16;
     v16[1] = self;
   }
 }
@@ -382,27 +382,27 @@ LABEL_9:
   v7.receiver = self;
   v7.super_class = VMUCallTreeNode;
   v3 = [(VMUCallTreeNode *)&v7 description];
-  v4 = [(VMUCallTreeNode *)self browserName];
-  v5 = [v3 stringByAppendingFormat:@"  %@", v4];
+  browserName = [(VMUCallTreeNode *)self browserName];
+  v5 = [v3 stringByAppendingFormat:@"  %@", browserName];
 
   return v5;
 }
 
-+ (id)makeFakeRootForNode:(id)a3
++ (id)makeFakeRootForNode:(id)node
 {
-  v3 = a3;
-  v4 = +[VMUCallTreeNode nodeWithName:address:count:numBytes:](VMUCallTreeNode, "nodeWithName:address:count:numBytes:", 0, 0, [v3 count], objc_msgSend(v3, "numBytes"));
-  v5 = [MEMORY[0x1E695DEC8] arrayWithObject:v3];
+  nodeCopy = node;
+  v4 = +[VMUCallTreeNode nodeWithName:address:count:numBytes:](VMUCallTreeNode, "nodeWithName:address:count:numBytes:", 0, 0, [nodeCopy count], objc_msgSend(nodeCopy, "numBytes"));
+  v5 = [MEMORY[0x1E695DEC8] arrayWithObject:nodeCopy];
 
   [v4 setChildren:v5];
 
   return v4;
 }
 
-- (void)getBrowserName:(id)a3
+- (void)getBrowserName:(id)name
 {
-  v13 = a3;
-  [v13 setString:&stru_1F461F9C8];
+  nameCopy = name;
+  [nameCopy setString:&stru_1F461F9C8];
   numBytes = self->_numBytes;
   if (numBytes)
   {
@@ -411,7 +411,7 @@ LABEL_9:
     {
       if (numBytes < 0x400)
       {
-        [v13 appendFormat:@"%u (%qu bytes) %@", self->_count, self->_numBytes, self->_name];
+        [nameCopy appendFormat:@"%u (%qu bytes) %@", self->_count, self->_numBytes, self->_name];
       }
 
       else
@@ -423,18 +423,18 @@ LABEL_9:
           name = self->_name;
           if (v7 >= 100.0)
           {
-            [v13 appendFormat:@"%u (%.0fK) %@", count, v7, self->_name];
+            [nameCopy appendFormat:@"%u (%.0fK) %@", count, v7, self->_name];
           }
 
           else
           {
-            [v13 appendFormat:@"%u (%.1fK) %@", count, v7, self->_name];
+            [nameCopy appendFormat:@"%u (%.1fK) %@", count, v7, self->_name];
           }
         }
 
         else
         {
-          [v13 appendFormat:@"%u (%.2fK) %@", self->_count, v7, self->_name];
+          [nameCopy appendFormat:@"%u (%.2fK) %@", self->_count, v7, self->_name];
         }
       }
     }
@@ -448,25 +448,25 @@ LABEL_9:
         v9 = self->_name;
         if (v6 >= 100.0)
         {
-          [v13 appendFormat:@"%u (%.0fM) %@", v8, v6, self->_name];
+          [nameCopy appendFormat:@"%u (%.0fM) %@", v8, v6, self->_name];
         }
 
         else
         {
-          [v13 appendFormat:@"%u (%.1fM) %@", v8, v6, self->_name];
+          [nameCopy appendFormat:@"%u (%.1fM) %@", v8, v6, self->_name];
         }
       }
 
       else
       {
-        [v13 appendFormat:@"%u (%.2fM) %@", self->_count, v6, self->_name];
+        [nameCopy appendFormat:@"%u (%.2fM) %@", self->_count, v6, self->_name];
       }
     }
   }
 
   else
   {
-    [v13 appendFormat:@"%d %@", self->_count, self->_name, v12];
+    [nameCopy appendFormat:@"%d %@", self->_count, self->_name, v12];
   }
 }
 
@@ -495,28 +495,28 @@ LABEL_9:
   return v5;
 }
 
-- (id)nameWithStringsForSymbol:(id)a3 library:(id)a4 loadAddress:(id)a5 offset:(id)a6 address:(id)a7 suffix:(id)a8
+- (id)nameWithStringsForSymbol:(id)symbol library:(id)library loadAddress:(id)address offset:(id)offset address:(id)a7 suffix:(id)suffix
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  libraryCopy = library;
+  addressCopy = address;
+  offsetCopy = offset;
   v16 = a7;
-  v17 = a8;
-  v18 = [MEMORY[0x1E696AD60] stringWithString:a3];
+  suffixCopy = suffix;
+  v18 = [MEMORY[0x1E696AD60] stringWithString:symbol];
   v19 = v18;
-  if (v13)
+  if (libraryCopy)
   {
-    [v18 appendFormat:@"%@%@%@", @"  (in ", v13, @")"];
+    [v18 appendFormat:@"%@%@%@", @"  (in ", libraryCopy, @")"];
   }
 
-  if (v14)
+  if (addressCopy)
   {
-    [v19 appendFormat:@"%@%@", @"  load address ", v14];
+    [v19 appendFormat:@"%@%@", @"  load address ", addressCopy];
   }
 
-  if (v15)
+  if (offsetCopy)
   {
-    [v19 appendFormat:@"%@%@", @" + ", v15];
+    [v19 appendFormat:@"%@%@", @" + ", offsetCopy];
   }
 
   if (v16)
@@ -524,34 +524,34 @@ LABEL_9:
     [v19 appendFormat:@"%@%@%@", @"  [", v16, @"]"];
   }
 
-  if (v17)
+  if (suffixCopy)
   {
-    [v19 appendString:v17];
+    [v19 appendString:suffixCopy];
   }
 
   return v19;
 }
 
-- (void)parseNameIntoSymbol:(id *)a3 library:(id *)a4 loadAddress:(unint64_t *)a5 offset:(unint64_t *)a6 address:(unint64_t *)a7 suffix:(id *)a8
+- (void)parseNameIntoSymbol:(id *)symbol library:(id *)library loadAddress:(unint64_t *)address offset:(unint64_t *)offset address:(unint64_t *)a7 suffix:(id *)suffix
 {
-  if (a3)
+  if (symbol)
   {
-    *a3 = 0;
+    *symbol = 0;
   }
 
-  if (a4)
+  if (library)
   {
-    *a4 = 0;
+    *library = 0;
   }
 
-  if (a5)
+  if (address)
   {
-    *a5 = 0;
+    *address = 0;
   }
 
-  if (a6)
+  if (offset)
   {
-    *a6 = 0;
+    *offset = 0;
   }
 
   if (a7)
@@ -559,25 +559,25 @@ LABEL_9:
     *a7 = 0;
   }
 
-  if (a8)
+  if (suffix)
   {
-    *a8 = 0;
+    *suffix = 0;
   }
 
   v16 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:self->_name];
   [v16 setCharactersToBeSkipped:0];
-  objc_msgSend(v16, "scanUpToString:intoString:", @"  (in "), a3;
+  objc_msgSend(v16, "scanUpToString:intoString:", @"  (in "), symbol;
   objc_msgSend(v16, "scanString:intoString:", @"  (in "), 0;
-  [v16 scanUpToString:@"" intoString:?], a4);
+  [v16 scanUpToString:@"" intoString:?], library);
   [v16 scanString:@"" intoString:?], 0);
   if ([v16 scanString:@"  load address " intoString:0])
   {
-    [v16 scanHexLongLong:a5];
+    [v16 scanHexLongLong:address];
   }
 
-  if ([v16 scanString:@" + " intoString:0] && (objc_msgSend(v16, "scanHexLongLong:", a6) & 1) == 0)
+  if ([v16 scanString:@" + " intoString:0] && (objc_msgSend(v16, "scanHexLongLong:", offset) & 1) == 0)
   {
-    [v16 scanLongLong:a6];
+    [v16 scanLongLong:offset];
   }
 
   if ([v16 scanString:@"  [" intoString:0])
@@ -587,20 +587,20 @@ LABEL_9:
   }
 
   v14 = v16;
-  if (a8)
+  if (suffix)
   {
-    v15 = [v16 string];
-    *a8 = [v15 substringFromIndex:{objc_msgSend(v16, "scanLocation")}];
+    string = [v16 string];
+    *suffix = [string substringFromIndex:{objc_msgSend(v16, "scanLocation")}];
 
     v14 = v16;
   }
 }
 
-- (id)findOrAddChildWithName:(id)a3 address:(unint64_t)a4 nodeSearchType:(int)a5 isLeafNode:(BOOL)a6
+- (id)findOrAddChildWithName:(id)name address:(unint64_t)address nodeSearchType:(int)type isLeafNode:(BOOL)node
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = v10;
+  nodeCopy = node;
+  nameCopy = name;
+  v11 = nameCopy;
   numChildren = self->_numChildren;
   p_children = &self->_children;
   if (numChildren >= 2)
@@ -608,7 +608,7 @@ LABEL_9:
     p_children = *p_children;
   }
 
-  if (a5 == 2)
+  if (type == 2)
   {
     if (numChildren)
     {
@@ -626,9 +626,9 @@ LABEL_9:
     }
   }
 
-  else if (a5 == 1 && numChildren)
+  else if (type == 1 && numChildren)
   {
-    while (*(*p_children + 2) != v10)
+    while (*(*p_children + 2) != nameCopy)
     {
       ++p_children;
       if (!--numChildren)
@@ -645,25 +645,25 @@ LABEL_18:
 
 LABEL_13:
   v15 = off_1E8277178;
-  if (!v6)
+  if (!nodeCopy)
   {
     v15 = off_1E8277180;
   }
 
   v16 = *v15;
-  v17 = [objc_opt_class() nodeWithName:v11 address:a4 count:0 numBytes:0];
+  v17 = [objc_opt_class() nodeWithName:v11 address:address count:0 numBytes:0];
   [(VMUCallTreeNode *)self addChild:v17];
 LABEL_19:
 
   return v17;
 }
 
-- (int64_t)compareSizeAndCount:(id)a3
+- (int64_t)compareSizeAndCount:(id)count
 {
-  v3 = *(a3 + 4) - self->_numBytes;
+  v3 = *(count + 4) - self->_numBytes;
   if (!v3)
   {
-    v3 = *(a3 + 10) - self->_count;
+    v3 = *(count + 10) - self->_count;
   }
 
   v4 = v3 < 0;
@@ -679,10 +679,10 @@ LABEL_19:
   }
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(VMUCallTreeNode *)self compareSizeAndCount:v4];
+  compareCopy = compare;
+  v5 = [(VMUCallTreeNode *)self compareSizeAndCount:compareCopy];
   if (v5 == NSOrderedSame)
   {
     if (self->_address && [(NSString *)self->_name containsString:@"  (in ")]
@@ -698,7 +698,7 @@ LABEL_19:
       v18 = 0;
       v19 = 0;
       v17 = 0;
-      [v4 parseNameIntoSymbol:&v19 library:&v18 loadAddress:0 offset:0 address:0 suffix:&v17];
+      [compareCopy parseNameIntoSymbol:&v19 library:&v18 loadAddress:0 offset:0 address:0 suffix:&v17];
       v10 = v19;
       v11 = v18;
       v12 = v17;
@@ -709,19 +709,19 @@ LABEL_19:
 
       else
       {
-        if (-[VMUCallTreeNode numChildren](self, "numChildren") && ![v4 numChildren])
+        if (-[VMUCallTreeNode numChildren](self, "numChildren") && ![compareCopy numChildren])
         {
           goto LABEL_19;
         }
 
-        if (!-[VMUCallTreeNode numChildren](self, "numChildren") && [v4 numChildren])
+        if (!-[VMUCallTreeNode numChildren](self, "numChildren") && [compareCopy numChildren])
         {
           v5 = NSOrderedDescending;
           goto LABEL_23;
         }
 
         address = self->_address;
-        v15 = v4[3];
+        v15 = compareCopy[3];
         if (address >= v15)
         {
           v5 = (address > v15);
@@ -740,7 +740,7 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v5 = [(NSString *)self->_name compare:v4[2]];
+    v5 = [(NSString *)self->_name compare:compareCopy[2]];
   }
 
 LABEL_24:
@@ -748,27 +748,27 @@ LABEL_24:
   return v5;
 }
 
-- (int64_t)comparePuttingRetainCycleNodesAtTop:(id)a3
+- (int64_t)comparePuttingRetainCycleNodesAtTop:(id)top
 {
-  v4 = a3;
-  v5 = [(VMUCallTreeNode *)self parent];
-  v6 = [v5 parent];
-  if (v6)
+  topCopy = top;
+  parent = [(VMUCallTreeNode *)self parent];
+  v5Parent = [parent parent];
+  if (v5Parent)
   {
   }
 
   else
   {
-    v7 = [v4 parent];
-    v8 = [v7 parent];
+    parent2 = [topCopy parent];
+    v7Parent = [parent2 parent];
 
-    if (!v8)
+    if (!v7Parent)
     {
       goto LABEL_12;
     }
   }
 
-  v9 = v4[4];
+  v9 = topCopy[4];
   if (!self->_numBytes)
   {
     if (!v9)
@@ -782,7 +782,7 @@ LABEL_24:
   if (v9)
   {
     v10 = [(NSString *)self->_name containsString:kVMURootRetainCycle[0]];
-    v11 = [v4[2] containsString:kVMURootRetainCycle[0]];
+    v11 = [topCopy[2] containsString:kVMURootRetainCycle[0]];
     if (!v10 || v11)
     {
       if (!v10 && (v11 & 1) != 0)
@@ -791,7 +791,7 @@ LABEL_24:
       }
 
 LABEL_12:
-      v12 = [(VMUCallTreeNode *)self compare:v4];
+      v12 = [(VMUCallTreeNode *)self compare:topCopy];
       goto LABEL_13;
     }
 
@@ -807,50 +807,50 @@ LABEL_13:
   return v12;
 }
 
-- (int64_t)comparePuttingMainThreadFirst:(id)a3
+- (int64_t)comparePuttingMainThreadFirst:(id)first
 {
-  v4 = a3;
-  v5 = [(VMUCallTreeNode *)self name];
-  v6 = [v4 name];
-  if ([v5 hasPrefix:kVMUThreadNamePrefix] && ((objc_msgSend(v5, "rangeOfString:", kVMUMainThreadName[0]), v7) || (objc_msgSend(v5, "rangeOfString:", kVMUMainThreadDispatchQueueName), v8)))
+  firstCopy = first;
+  name = [(VMUCallTreeNode *)self name];
+  name2 = [firstCopy name];
+  if ([name hasPrefix:kVMUThreadNamePrefix] && ((objc_msgSend(name, "rangeOfString:", kVMUMainThreadName[0]), v7) || (objc_msgSend(name, "rangeOfString:", kVMUMainThreadDispatchQueueName), v8)))
   {
     v9 = -1;
   }
 
-  else if ([v6 hasPrefix:kVMUThreadNamePrefix] && ((objc_msgSend(v6, "rangeOfString:", kVMUMainThreadName[0]), v10) || (objc_msgSend(v6, "rangeOfString:", kVMUMainThreadDispatchQueueName), v11)))
+  else if ([name2 hasPrefix:kVMUThreadNamePrefix] && ((objc_msgSend(name2, "rangeOfString:", kVMUMainThreadName[0]), v10) || (objc_msgSend(name2, "rangeOfString:", kVMUMainThreadDispatchQueueName), v11)))
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = [(VMUCallTreeNode *)self compareSizeAndCount:v4];
+    v9 = [(VMUCallTreeNode *)self compareSizeAndCount:firstCopy];
     if (!v9)
     {
       v12 = [kVMUThreadNamePrefix length];
       if ([(NSString *)self->_name length]<= v12)
       {
-        v14 = 0;
+        longLongValue = 0;
       }
 
       else
       {
         v13 = [(NSString *)self->_name substringFromIndex:v12];
-        v14 = [v13 longLongValue];
+        longLongValue = [v13 longLongValue];
       }
 
-      if ([v4[2] length] <= v12)
+      if ([firstCopy[2] length] <= v12)
       {
-        v16 = 0;
+        longLongValue2 = 0;
       }
 
       else
       {
-        v15 = [v4[2] substringFromIndex:v12];
-        v16 = [v15 longLongValue];
+        v15 = [firstCopy[2] substringFromIndex:v12];
+        longLongValue2 = [v15 longLongValue];
       }
 
-      if (v14 < v16)
+      if (longLongValue < longLongValue2)
       {
         v9 = -1;
       }
@@ -867,10 +867,10 @@ LABEL_13:
 
 - (id)pseudoNodeTopOfStackChild
 {
-  v3 = [(VMUCallTreeNode *)self numChildren];
-  if (v3)
+  numChildren = [(VMUCallTreeNode *)self numChildren];
+  if (numChildren)
   {
-    v4 = v3;
+    v4 = numChildren;
     v5 = 0;
     v6 = 0;
     v7 = 0;
@@ -902,24 +902,24 @@ LABEL_13:
   else
   {
     v12 = self->_numBytes - v6;
-    v13 = [(VMUCallTreeNode *)self pseudoName];
-    v11 = [(VMUCallTreeNode *)VMUCallTreePseudoNode nodeWithName:v13 address:self->_address count:v10 numBytes:v12];
+    pseudoName = [(VMUCallTreeNode *)self pseudoName];
+    v11 = [(VMUCallTreeNode *)VMUCallTreePseudoNode nodeWithName:pseudoName address:self->_address count:v10 numBytes:v12];
   }
 
   return v11;
 }
 
-- (id)sortedChildrenWithPseudoNode:(id)a3 withCompare:(SEL)a4
+- (id)sortedChildrenWithPseudoNode:(id)node withCompare:(SEL)compare
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nodeCopy = node;
   numChildren = self->_numChildren;
-  if (!v6)
+  if (!nodeCopy)
   {
     if (numChildren == 1)
     {
       v16[0] = self->_children;
-      v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
+      array = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     }
 
     else
@@ -927,26 +927,26 @@ LABEL_13:
       if (numChildren)
       {
         v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:self->_children count:?];
-        v11 = [v13 sortedArrayUsingSelector:a4];
+        v11 = [v13 sortedArrayUsingSelector:compare];
 
         goto LABEL_14;
       }
 
-      v12 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
     }
 
 LABEL_12:
-    v11 = v12;
+    v11 = array;
     goto LABEL_14;
   }
 
   if (!numChildren)
   {
-    v12 = [MEMORY[0x1E695DEC8] arrayWithObject:v6];
+    array = [MEMORY[0x1E695DEC8] arrayWithObject:nodeCopy];
     goto LABEL_12;
   }
 
-  v8 = [MEMORY[0x1E695DF70] arrayWithObject:v6];
+  v8 = [MEMORY[0x1E695DF70] arrayWithObject:nodeCopy];
   if (self->_numChildren)
   {
     v9 = 0;
@@ -961,7 +961,7 @@ LABEL_12:
     while (v9 < self->_numChildren);
   }
 
-  v11 = [v8 sortedArrayUsingSelector:a4];
+  v11 = [v8 sortedArrayUsingSelector:compare];
 
 LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
@@ -976,7 +976,7 @@ LABEL_14:
   {
     if (!numChildren)
     {
-      v4 = [MEMORY[0x1E695DEC8] array];
+      array = [MEMORY[0x1E695DEC8] array];
       goto LABEL_10;
     }
 
@@ -989,18 +989,18 @@ LABEL_14:
   if (!v5 || v5[10] != self->_count)
   {
 LABEL_8:
-    v7 = [(VMUCallTreeNode *)self pseudoNodeTopOfStackChild];
-    v4 = [(VMUCallTreeNode *)self sortedChildrenWithPseudoNode:v7 withCompare:sel_compare_];
+    pseudoNodeTopOfStackChild = [(VMUCallTreeNode *)self pseudoNodeTopOfStackChild];
+    array = [(VMUCallTreeNode *)self sortedChildrenWithPseudoNode:pseudoNodeTopOfStackChild withCompare:sel_compare_];
 
     goto LABEL_9;
   }
 
-  v4 = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
+  array = [MEMORY[0x1E695DEC8] arrayWithObject:v5];
 LABEL_9:
 
 LABEL_10:
 
-  return v4;
+  return array;
 }
 
 - (id)largestTopOfStackPath
@@ -1011,9 +1011,9 @@ LABEL_10:
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v19 = self;
-  v4 = [(VMUCallTreeNode *)self sortedChildrenWithPseudoNode];
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  selfCopy = self;
+  sortedChildrenWithPseudoNode = [(VMUCallTreeNode *)self sortedChildrenWithPseudoNode];
+  v5 = [sortedChildrenWithPseudoNode countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1025,36 +1025,36 @@ LABEL_10:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sortedChildrenWithPseudoNode);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 largestTopOfStackPath];
-        if ([v11 count])
+        largestTopOfStackPath = [v10 largestTopOfStackPath];
+        if ([largestTopOfStackPath count])
         {
-          v12 = [v11 lastObject];
+          lastObject = [largestTopOfStackPath lastObject];
         }
 
         else
         {
-          v12 = v10;
+          lastObject = v10;
         }
 
-        v13 = v12;
-        v14 = [v12 count];
+        v13 = lastObject;
+        v14 = [lastObject count];
         if (v14 > v7)
         {
           v15 = v14;
-          v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v11, "count") + 1}];
+          v16 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(largestTopOfStackPath, "count") + 1}];
 
-          [v16 addObject:v19];
-          [v16 addObjectsFromArray:v11];
+          [v16 addObject:selfCopy];
+          [v16 addObjectsFromArray:largestTopOfStackPath];
           v7 = v15;
           v3 = v16;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v6 = [sortedChildrenWithPseudoNode countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v6);
@@ -1065,33 +1065,33 @@ LABEL_10:
   return v3;
 }
 
-- (void)_printCallTreeToFile:(__sFILE *)a3 cumulativeOutput:(id)a4 indentString:(id)a5 branchPointCount:(unsigned int)a6 topFunctions:(id)a7 options:(unint64_t)a8
+- (void)_printCallTreeToFile:(__sFILE *)file cumulativeOutput:(id)output indentString:(id)string branchPointCount:(unsigned int)count topFunctions:(id)functions options:(unint64_t)options
 {
-  v54 = a4;
-  v13 = a5;
-  v14 = a7;
+  outputCopy = output;
+  stringCopy = string;
+  functionsCopy = functions;
   v15 = objc_autoreleasePoolPush();
-  table = v14;
-  if (v14 || (a8 & 1) != 0)
+  table = functionsCopy;
+  if (functionsCopy || (options & 1) != 0)
   {
-    v17 = [(VMUCallTreeNode *)self pseudoNodeTopOfStackChild];
-    v16 = v17;
-    if (v17)
+    pseudoNodeTopOfStackChild = [(VMUCallTreeNode *)self pseudoNodeTopOfStackChild];
+    v16 = pseudoNodeTopOfStackChild;
+    if (pseudoNodeTopOfStackChild)
     {
-      if (v14)
+      if (functionsCopy)
       {
-        if ([v17 symbolNameIsUnknown])
+        if ([pseudoNodeTopOfStackChild symbolNameIsUnknown])
         {
-          v18 = v16[2];
+          nameWithoutOffset = v16[2];
         }
 
         else
         {
-          v18 = [v16 nameWithoutOffset];
+          nameWithoutOffset = [v16 nameWithoutOffset];
         }
 
-        v19 = v18;
-        v20 = NSMapGet(table, v18);
+        v19 = nameWithoutOffset;
+        v20 = NSMapGet(table, nameWithoutOffset);
         if (!v20)
         {
           v20 = malloc_type_malloc(0x10uLL, 0x1000040451B5BE8uLL);
@@ -1118,9 +1118,9 @@ LABEL_10:
   }
 
   v22 = sel_compare_;
-  if ((a8 & 0x80) == 0)
+  if ((options & 0x80) == 0)
   {
-    if ((a8 & 0x40) != 0)
+    if ((options & 0x40) != 0)
     {
       v22 = sel_comparePuttingRetainCycleNodesAtTop_;
     }
@@ -1132,7 +1132,7 @@ LABEL_10:
   }
 
   v43 = v15;
-  if ((a8 & 1) == 0)
+  if ((options & 1) == 0)
   {
 
     v16 = 0;
@@ -1145,26 +1145,26 @@ LABEL_10:
   v45 = v23 - 1;
   if (v23 <= 1)
   {
-    v25 = a6;
+    countCopy = count;
   }
 
   else
   {
-    v25 = a6 + 1;
+    countCopy = count + 1;
   }
 
-  v47 = v25;
-  v26 = [(VMUCallTreeNode *)self parent];
-  if (!v26 && [(VMUCallTreeNode *)self numBytes])
+  v47 = countCopy;
+  parent = [(VMUCallTreeNode *)self parent];
+  if (!parent && [(VMUCallTreeNode *)self numBytes])
   {
     if ([(VMUCallTreeNode *)self numChildren]< 2)
     {
       goto LABEL_27;
     }
 
-    if (v54)
+    if (outputCopy)
     {
-      v41 = v54;
+      v41 = outputCopy;
     }
 
     else
@@ -1172,25 +1172,25 @@ LABEL_10:
       v41 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:256];
     }
 
-    v26 = v41;
-    if (v13)
+    parent = v41;
+    if (stringCopy)
     {
-      [v41 appendString:v13];
+      [v41 appendString:stringCopy];
     }
 
     [(VMUCallTreeNode *)self getBrowserName:v24];
-    [v26 appendFormat:@"%@%@\n", v24, kVMURootNodeNameForMallocCallTrees[0]];
-    [v13 appendString:@"  "];
-    if (!v54)
+    [parent appendFormat:@"%@%@\n", v24, kVMURootNodeNameForMallocCallTrees[0]];
+    [stringCopy appendString:@"  "];
+    if (!outputCopy)
     {
-      fputs([v26 UTF8String], a3);
+      fputs([parent UTF8String], file);
     }
   }
 
 LABEL_27:
   v42 = v16;
   v27 = "   ";
-  if ((a8 & 8) == 0)
+  if ((options & 8) == 0)
   {
     v27 = "  ";
   }
@@ -1200,9 +1200,9 @@ LABEL_27:
   {
     v28 = 0;
     v51 = 0;
-    v44 = (a6 + 1) & 3;
+    v44 = (count + 1) & 3;
     v29 = 2;
-    if ((a8 & 8) != 0)
+    if ((options & 8) != 0)
     {
       v29 = 3;
     }
@@ -1212,9 +1212,9 @@ LABEL_27:
     {
       v30 = [v48 objectAtIndex:v28];
       v31 = objc_autoreleasePoolPush();
-      if (v54)
+      if (outputCopy)
       {
-        v32 = v54;
+        v32 = outputCopy;
       }
 
       else
@@ -1223,38 +1223,38 @@ LABEL_27:
       }
 
       v33 = v32;
-      v34 = [(VMUCallTreeNode *)self parent];
-      if (v34 || [(VMUCallTreeNode *)self numChildren]< 2)
+      parent2 = [(VMUCallTreeNode *)self parent];
+      if (parent2 || [(VMUCallTreeNode *)self numChildren]< 2)
       {
       }
 
       else if ([v30 numChildren] != 0 || v51)
       {
-        if ((a8 & 2) != 0)
+        if ((options & 2) != 0)
         {
           [v33 appendString:@"\n"];
         }
 
-        else if ((a8 & 4) != 0)
+        else if ((options & 4) != 0)
         {
-          [v33 appendFormat:@"%@----\n", v13];
+          [v33 appendFormat:@"%@----\n", stringCopy];
         }
       }
 
       v51 = [v30 numChildren] != 0;
-      if (v13)
+      if (stringCopy)
       {
-        [v33 appendString:v13];
+        [v33 appendString:stringCopy];
       }
 
-      v35 = self;
-      v36 = [(VMUCallTreeNode *)self parent];
-      v37 = v36;
-      if (v28 == 10 && v36 && v53 >= 0xC && [v30 numChildren] <= 1)
+      selfCopy = self;
+      parent3 = [(VMUCallTreeNode *)self parent];
+      v37 = parent3;
+      if (v28 == 10 && parent3 && v53 >= 0xC && [v30 numChildren] <= 1)
       {
-        v38 = [v30 isMallocBlockContentNode];
+        isMallocBlockContentNode = [v30 isMallocBlockContentNode];
 
-        if (v38)
+        if (isMallocBlockContentNode)
         {
           [v33 appendFormat:@"%lu ADDITIONAL CHILDREN\n", v53 - 10];
 
@@ -1262,7 +1262,7 @@ LABEL_27:
           break;
         }
 
-        if ((a8 & 0x40) == 0)
+        if ((options & 0x40) == 0)
         {
           goto LABEL_54;
         }
@@ -1271,7 +1271,7 @@ LABEL_27:
       else
       {
 
-        if ((a8 & 0x40) == 0)
+        if ((options & 0x40) == 0)
         {
           goto LABEL_54;
         }
@@ -1279,8 +1279,8 @@ LABEL_27:
 
       if (![v30 count])
       {
-        v40 = [v30 name];
-        [v24 setString:v40];
+        name = [v30 name];
+        [v24 setString:name];
 
         goto LABEL_55;
       }
@@ -1288,12 +1288,12 @@ LABEL_27:
 LABEL_54:
       [v30 getBrowserName:v24];
 LABEL_55:
-      self = v35;
+      self = selfCopy;
       [v33 appendFormat:@"%@\n", v24];
-      if (v13)
+      if (stringCopy)
       {
         v39 = v49;
-        if ((a8 & 8) == 0)
+        if ((options & 8) == 0)
         {
           v39 = v49;
           if (v28 < v45)
@@ -1302,19 +1302,19 @@ LABEL_55:
           }
         }
 
-        [v13 appendFormat:@"%s", v39];
+        [stringCopy appendFormat:@"%s", v39];
       }
 
-      if (!v54)
+      if (!outputCopy)
       {
-        fputs([v33 UTF8String], a3);
+        fputs([v33 UTF8String], file);
       }
 
       objc_autoreleasePoolPop(v31);
-      [v30 _printCallTreeToFile:a3 cumulativeOutput:v54 indentString:v13 branchPointCount:v47 topFunctions:table options:a8];
-      if (v13)
+      [v30 _printCallTreeToFile:file cumulativeOutput:outputCopy indentString:stringCopy branchPointCount:v47 topFunctions:table options:options];
+      if (stringCopy)
       {
-        [v13 deleteCharactersInRange:{objc_msgSend(v13, "length") - v46}];
+        [stringCopy deleteCharactersInRange:{objc_msgSend(stringCopy, "length") - v46}];
       }
 
       ++v28;
@@ -1330,19 +1330,19 @@ LABEL_74:
   objc_autoreleasePoolPop(v15);
 }
 
-- (void)countFunctionOccurrencesInTree:(id)a3
+- (void)countFunctionOccurrencesInTree:(id)tree
 {
-  v8 = a3;
-  [v8 addObject:self->_name];
-  v4 = [(VMUCallTreeNode *)self numChildren];
-  if (v4)
+  treeCopy = tree;
+  [treeCopy addObject:self->_name];
+  numChildren = [(VMUCallTreeNode *)self numChildren];
+  if (numChildren)
   {
-    v5 = v4;
+    v5 = numChildren;
     v6 = 0;
     do
     {
       v7 = [(VMUCallTreeNode *)self childAtIndex:v6];
-      [v7 countFunctionOccurrencesInTree:v8];
+      [v7 countFunctionOccurrencesInTree:treeCopy];
 
       v6 = (v6 + 1);
     }
@@ -1353,17 +1353,17 @@ LABEL_74:
 
 - (BOOL)callTreeHasBranches
 {
-  v2 = self;
-  if (!v2)
+  selfCopy = self;
+  if (!selfCopy)
   {
     return 0;
   }
 
-  p_isa = &v2->super.isa;
+  p_isa = &selfCopy->super.isa;
   do
   {
-    v4 = [p_isa numChildren];
-    if (v4 != 1)
+    numChildren = [p_isa numChildren];
+    if (numChildren != 1)
     {
       break;
     }
@@ -1374,19 +1374,19 @@ LABEL_74:
   }
 
   while (v5);
-  v6 = v4 > 1;
+  v6 = numChildren > 1;
 
   return v6;
 }
 
-- (id)stringFromCallTreeWithOptions:(unint64_t)a3
+- (id)stringFromCallTreeWithOptions:(unint64_t)options
 {
   v5 = objc_opt_new();
-  if ((a3 & 0x10) != 0 || [(VMUCallTreeNode *)self callTreeHasBranches])
+  if ((options & 0x10) != 0 || [(VMUCallTreeNode *)self callTreeHasBranches])
   {
     v6 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:128];
     v7 = v6;
-    if ((a3 & 0x20) == 0)
+    if ((options & 0x20) == 0)
     {
       [v6 setString:kVMUCallTreeInitialIndentation];
     }
@@ -1397,29 +1397,29 @@ LABEL_74:
     v7 = 0;
   }
 
-  [(VMUCallTreeNode *)self _printCallTreeToFile:0 cumulativeOutput:v5 indentString:v7 branchPointCount:0 topFunctions:0 options:a3];
+  [(VMUCallTreeNode *)self _printCallTreeToFile:0 cumulativeOutput:v5 indentString:v7 branchPointCount:0 topFunctions:0 options:options];
 
   return v5;
 }
 
-- (id)stringFromCallTreeIndentIfNoBranches:(BOOL)a3 showPseudoNodes:(BOOL)a4
+- (id)stringFromCallTreeIndentIfNoBranches:(BOOL)branches showPseudoNodes:(BOOL)nodes
 {
   v4 = 16;
-  if (!a3)
+  if (!branches)
   {
     v4 = 0;
   }
 
-  return [(VMUCallTreeNode *)self stringFromCallTreeWithOptions:v4 | a4];
+  return [(VMUCallTreeNode *)self stringFromCallTreeWithOptions:v4 | nodes];
 }
 
-- (void)printCallTreeToFile:(__sFILE *)a3 cumulativeOutput:(id)a4 options:(unint64_t)a5
+- (void)printCallTreeToFile:(__sFILE *)file cumulativeOutput:(id)output options:(unint64_t)options
 {
   v8 = MEMORY[0x1E696AD60];
-  v9 = a4;
+  outputCopy = output;
   v10 = [[v8 alloc] initWithCapacity:128];
   [v10 setString:kVMUCallTreeInitialIndentation];
-  [(VMUCallTreeNode *)self _printCallTreeToFile:a3 cumulativeOutput:v9 indentString:v10 branchPointCount:0 topFunctions:0 options:a5];
+  [(VMUCallTreeNode *)self _printCallTreeToFile:file cumulativeOutput:outputCopy indentString:v10 branchPointCount:0 topFunctions:0 options:options];
 }
 
 - (id)invertedNode
@@ -1429,16 +1429,16 @@ LABEL_74:
   v3->_name = &stru_1F461F9C8;
 
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(VMUCallTreeNode *)self numChildren];
-  if (v7)
+  array = [MEMORY[0x1E695DF70] array];
+  numChildren = [(VMUCallTreeNode *)self numChildren];
+  if (numChildren)
   {
-    v8 = v7;
+    v8 = numChildren;
     v9 = 0;
     do
     {
       v10 = [(VMUCallTreeNode *)self childAtIndex:v9];
-      invertRecursiveWithNewInvertedRoot(v10, v3, v6);
+      invertRecursiveWithNewInvertedRoot(v10, v3, array);
 
       v9 = (v9 + 1);
     }
@@ -1451,13 +1451,13 @@ LABEL_74:
   return v3;
 }
 
-- (id)filterOutSymbols:(id)a3 required:(id)a4
+- (id)filterOutSymbols:(id)symbols required:(id)required
 {
-  v6 = a3;
-  v7 = a4;
-  if (-[NSString length](self->_name, "length") && ([v6 containsObject:self->_name] & 1) != 0)
+  symbolsCopy = symbols;
+  requiredCopy = required;
+  if (-[NSString length](self->_name, "length") && ([symbolsCopy containsObject:self->_name] & 1) != 0)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -1465,23 +1465,23 @@ LABEL_74:
     v25 = 0;
     [(VMUCallTreeNode *)self parseNameIntoSymbol:&v25 library:0 loadAddress:0 offset:0 address:0 suffix:0];
     v9 = v25;
-    if ([v9 length] && (objc_msgSend(v6, "containsObject:", v9) & 1) != 0)
+    if ([v9 length] && (objc_msgSend(symbolsCopy, "containsObject:", v9) & 1) != 0)
     {
-      v8 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      if (v7 && [v7 containsObject:v9])
+      if (requiredCopy && [requiredCopy containsObject:v9])
       {
 
-        v7 = 0;
+        requiredCopy = 0;
       }
 
-      v10 = [(VMUCallTreeNode *)self numChildren];
-      if (v10)
+      numChildren = [(VMUCallTreeNode *)self numChildren];
+      if (numChildren)
       {
-        v11 = v10;
+        v11 = numChildren;
         v24 = v9;
         v12 = 0;
         v13 = 0;
@@ -1494,7 +1494,7 @@ LABEL_74:
         }
 
         while (v11 != v12);
-        if (v13 == self->_count || (-[VMUCallTreeNode pseudoName](self, "pseudoName"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [v6 containsObject:v15], v15, v16))
+        if (v13 == self->_count || (-[VMUCallTreeNode pseudoName](self, "pseudoName"), v15 = objc_claimAutoreleasedReturnValue(), v16 = [symbolsCopy containsObject:v15], v15, v16))
         {
           v17 = 0;
         }
@@ -1510,7 +1510,7 @@ LABEL_74:
         do
         {
           v21 = [(VMUCallTreeNode *)self childAtIndex:v18];
-          v22 = [v21 filterOutSymbols:v6 required:v7];
+          v22 = [v21 filterOutSymbols:symbolsCopy required:requiredCopy];
           if (v22)
           {
             if (!v19)
@@ -1529,13 +1529,13 @@ LABEL_74:
         while (v11 != v18);
         if (![(NSString *)self->_name length]|| v17)
         {
-          v8 = [objc_opt_class() nodeWithName:self->_name address:self->_address count:v17 numBytes:v20];
-          [(VMUCallTreeNode *)v8 setChildren:v19];
+          selfCopy = [objc_opt_class() nodeWithName:self->_name address:self->_address count:v17 numBytes:v20];
+          [(VMUCallTreeNode *)selfCopy setChildren:v19];
         }
 
         else
         {
-          v8 = 0;
+          selfCopy = 0;
         }
 
         v9 = v24;
@@ -1543,30 +1543,30 @@ LABEL_74:
 
       else
       {
-        v8 = self;
+        selfCopy = self;
       }
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)filterOutSymbols:(id)a3
+- (id)filterOutSymbols:(id)symbols
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArray:v5];
+  symbolsCopy = symbols;
+  v6 = [[v4 alloc] initWithArray:symbolsCopy];
 
   v7 = [(VMUCallTreeNode *)self filterOutSymbols:v6 required:0];
 
   return v7;
 }
 
-- (id)chargeLibrariesInSet:(id)a3 toCaller:(id)a4 parentLibrary:(id)a5
+- (id)chargeLibrariesInSet:(id)set toCaller:(id)caller parentLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  setCopy = set;
+  callerCopy = caller;
+  libraryCopy = library;
   v11 = objc_autoreleasePoolPush();
   v22 = 0;
   [(VMUCallTreeNode *)self parseNameIntoSymbol:0 library:&v22 loadAddress:0 offset:0 address:0 suffix:0];
@@ -1576,23 +1576,23 @@ LABEL_74:
     goto LABEL_9;
   }
 
-  if (v8)
+  if (setCopy)
   {
-    if ([v8 containsObject:v12])
+    if ([setCopy containsObject:v12])
     {
       goto LABEL_4;
     }
 
 LABEL_9:
-    v14 = v10;
-    if (v9)
+    v14 = libraryCopy;
+    if (callerCopy)
     {
 LABEL_7:
-      v15 = [v9 findOrAddChildWithName:self->_name address:self->_address nodeSearchType:1 isLeafNode:0];
+      v15 = [callerCopy findOrAddChildWithName:self->_name address:self->_address nodeSearchType:1 isLeafNode:0];
       *(v15 + 40) += self->_count;
       *(v15 + 32) += self->_numBytes;
 
-      v9 = v15;
+      callerCopy = v15;
       goto LABEL_12;
     }
 
@@ -1605,9 +1605,9 @@ LABEL_7:
   }
 
 LABEL_4:
-  if (v10)
+  if (libraryCopy)
   {
-    v13 = [v12 isEqualToString:v10];
+    v13 = [v12 isEqualToString:libraryCopy];
     v14 = v12;
 
     if (v13)
@@ -1615,27 +1615,27 @@ LABEL_4:
       goto LABEL_12;
     }
 
-    if (v9)
+    if (callerCopy)
     {
       goto LABEL_7;
     }
 
 LABEL_10:
-    v9 = [objc_opt_class() nodeWithName:self->_name address:self->_address count:self->_count numBytes:self->_numBytes];
+    callerCopy = [objc_opt_class() nodeWithName:self->_name address:self->_address count:self->_count numBytes:self->_numBytes];
     goto LABEL_12;
   }
 
   v14 = 0;
 LABEL_12:
-  v16 = [(VMUCallTreeNode *)self numChildren];
-  if (v16)
+  numChildren = [(VMUCallTreeNode *)self numChildren];
+  if (numChildren)
   {
-    v17 = v16;
+    v17 = numChildren;
     v18 = 0;
     do
     {
       v19 = [(VMUCallTreeNode *)self childAtIndex:v18];
-      v20 = [v19 chargeLibrariesInSet:v8 toCaller:v9 parentLibrary:v14];
+      v20 = [v19 chargeLibrariesInSet:setCopy toCaller:callerCopy parentLibrary:v14];
 
       v18 = (v18 + 1);
     }
@@ -1645,17 +1645,17 @@ LABEL_12:
 
   objc_autoreleasePoolPop(v11);
 
-  return v9;
+  return callerCopy;
 }
 
-- (id)chargeLibrariesToCallers:(id)a3 keepBoundaries:(BOOL)a4
+- (id)chargeLibrariesToCallers:(id)callers keepBoundaries:(BOOL)boundaries
 {
-  v4 = a4;
+  boundariesCopy = boundaries;
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithArray:v7];
+  callersCopy = callers;
+  v8 = [[v6 alloc] initWithArray:callersCopy];
 
-  if (v4)
+  if (boundariesCopy)
   {
     v9 = @"KEEP-BOUNDARIES PLACEHOLDER";
   }
@@ -1670,24 +1670,24 @@ LABEL_12:
   return v10;
 }
 
-- (id)pruneMallocSize:(unint64_t)a3
+- (id)pruneMallocSize:(unint64_t)size
 {
-  if (self->_numBytes >= a3)
+  if (self->_numBytes >= size)
   {
-    v6 = [(VMUCallTreeNode *)self numChildren];
-    if (v6)
+    numChildren = [(VMUCallTreeNode *)self numChildren];
+    if (numChildren)
     {
-      v7 = v6;
-      v3 = [objc_opt_class() nodeWithName:self->_name address:self->_address count:self->_count numBytes:self->_numBytes];
+      v7 = numChildren;
+      selfCopy = [objc_opt_class() nodeWithName:self->_name address:self->_address count:self->_count numBytes:self->_numBytes];
       v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v9 = 0;
       do
       {
         v10 = [(VMUCallTreeNode *)self childAtIndex:v9];
         v11 = v10;
-        if (v10[4] >= a3)
+        if (v10[4] >= size)
         {
-          v12 = [v10 pruneMallocSize:a3];
+          v12 = [v10 pruneMallocSize:size];
           [v8 addObject:v12];
         }
 
@@ -1695,21 +1695,21 @@ LABEL_12:
       }
 
       while (v7 != v9);
-      [(VMUCallTreeNode *)v3 setChildren:v8];
+      [(VMUCallTreeNode *)selfCopy setChildren:v8];
     }
 
     else
     {
-      v3 = self;
+      selfCopy = self;
     }
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

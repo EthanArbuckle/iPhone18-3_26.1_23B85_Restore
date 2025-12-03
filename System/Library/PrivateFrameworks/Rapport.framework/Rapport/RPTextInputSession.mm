@@ -1,14 +1,14 @@
 @interface RPTextInputSession
 - (RPTextInputSession)init;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_handleTextInputChange:(id)a3 started:(BOOL)a4;
-- (void)_handleTextInputStarted:(id)a3;
-- (void)_handleTextInputStopped:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_handleTextInputChange:(id)change started:(BOOL)started;
+- (void)_handleTextInputStarted:(id)started;
+- (void)_handleTextInputStopped:(id)stopped;
 - (void)_invalidate;
-- (void)activateWithCompletion:(id)a3;
-- (void)handleTextActionPayload:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)handleTextActionPayload:(id)payload;
 - (void)invalidate;
-- (void)performDocumentRequest:(id)a3 completion:(id)a4;
+- (void)performDocumentRequest:(id)request completion:(id)completion;
 @end
 
 @implementation RPTextInputSession
@@ -28,12 +28,12 @@
   return v3;
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(RPMessageable *)self->_messenger dispatchQueue];
-  dispatchQueue = v5;
-  if (!v5)
+  completionCopy = completion;
+  dispatchQueue = [(RPMessageable *)self->_messenger dispatchQueue];
+  dispatchQueue = dispatchQueue;
+  if (!dispatchQueue)
   {
     dispatchQueue = self->_dispatchQueue;
   }
@@ -46,15 +46,15 @@
   v9[2] = __45__RPTextInputSession_activateWithCompletion___block_invoke;
   v9[3] = &unk_1E7C92E20;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(v7, v9);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_messenger;
   if (!v5)
   {
@@ -62,20 +62,20 @@
     if (gLogCategory_RPTextInputSession <= 90 && (gLogCategory_RPTextInputSession != -1 || _LogCategory_Initialize()))
     {
       [RPTextInputSession _activateWithCompletion:];
-      if (!v4)
+      if (!completionCopy)
       {
         goto LABEL_11;
       }
     }
 
-    else if (!v4)
+    else if (!completionCopy)
     {
 LABEL_11:
 
       goto LABEL_12;
     }
 
-    v4[2](v4, v10);
+    completionCopy[2](completionCopy, v10);
     goto LABEL_11;
   }
 
@@ -114,7 +114,7 @@ LABEL_11:
   v12[2] = __46__RPTextInputSession__activateWithCompletion___block_invoke_4;
   v12[3] = &unk_1E7C94750;
   v12[4] = self;
-  v13 = v4;
+  v13 = completionCopy;
   [(RPMessageable *)v5 sendRequestID:@"_tiStart" request:MEMORY[0x1E695E0F8] destinationID:@"rapport:rdid:DirectPeer" options:0 responseHandler:v12];
 
 LABEL_12:
@@ -216,9 +216,9 @@ void __33__RPTextInputSession__invalidate__block_invoke(uint64_t a1, void *a2, v
   }
 }
 
-- (void)_handleTextInputStarted:(id)a3
+- (void)_handleTextInputStarted:(id)started
 {
-  v5 = a3;
+  startedCopy = started;
   CFDataGetTypeID();
   v4 = CFDictionaryGetTypedValue();
   if (gLogCategory_RPTextInputSession <= 50 && (gLogCategory_RPTextInputSession != -1 || _LogCategory_Initialize()))
@@ -226,12 +226,12 @@ void __33__RPTextInputSession__invalidate__block_invoke(uint64_t a1, void *a2, v
     [RPTextInputSession _handleTextInputStarted:v4];
   }
 
-  [(RPTextInputSession *)self _handleTextInputChange:v5 started:1];
+  [(RPTextInputSession *)self _handleTextInputChange:startedCopy started:1];
 }
 
-- (void)_handleTextInputStopped:(id)a3
+- (void)_handleTextInputStopped:(id)stopped
 {
-  v8 = a3;
+  stoppedCopy = stopped;
   if (gLogCategory_RPTextInputSession <= 50 && (gLogCategory_RPTextInputSession != -1 || _LogCategory_Initialize()))
   {
     [RPTextInputSession _handleTextInputStopped:];
@@ -254,17 +254,17 @@ void __33__RPTextInputSession__invalidate__block_invoke(uint64_t a1, void *a2, v
   }
 }
 
-- (void)handleTextActionPayload:(id)a3
+- (void)handleTextActionPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__RPTextInputSession_handleTextActionPayload___block_invoke;
   v7[3] = &unk_1E7C92D80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = payloadCopy;
+  selfCopy = self;
+  v6 = payloadCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -314,19 +314,19 @@ void __46__RPTextInputSession_handleTextActionPayload___block_invoke_2(uint64_t 
   }
 }
 
-- (void)performDocumentRequest:(id)a3 completion:(id)a4
+- (void)performDocumentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v5 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   if (gLogCategory_RPTextInputSession <= 90 && (gLogCategory_RPTextInputSession != -1 || _LogCategory_Initialize()))
   {
     [RPTextInputSession performDocumentRequest:completion:];
   }
 }
 
-- (void)_handleTextInputChange:(id)a3 started:(BOOL)a4
+- (void)_handleTextInputChange:(id)change started:(BOOL)started
 {
-  v18 = a3;
+  changeCopy = change;
   CFDataGetTypeID();
   v6 = CFDictionaryGetTypedValue();
   if (v6)
@@ -343,7 +343,7 @@ void __46__RPTextInputSession_handleTextActionPayload___block_invoke_2(uint64_t 
       goto LABEL_17;
     }
 
-    if (!a4)
+    if (!started)
     {
       if (gLogCategory_RPTextInputSession > 50)
       {
@@ -381,10 +381,10 @@ LABEL_17:
 
     if (gLogCategory_RPTextInputSession <= 50 && (gLogCategory_RPTextInputSession != -1 || _LogCategory_Initialize()))
     {
-      v9 = [v8 documentState];
-      v10 = [v9 documentState];
-      v11 = [v10 contextBeforeInput];
-      v17 = [v11 length];
+      documentState = [v8 documentState];
+      v9DocumentState = [documentState documentState];
+      contextBeforeInput = [v9DocumentState contextBeforeInput];
+      v17 = [contextBeforeInput length];
       LogPrintF();
     }
 

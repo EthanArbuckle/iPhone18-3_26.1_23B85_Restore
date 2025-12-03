@@ -1,42 +1,42 @@
 @interface THSearchController
 - (BOOL)indexLoaded;
-- (THSearchController)initWithDocumentRoot:(id)a3;
-- (id)anchorForSelectedSearchResult:(id)a3;
-- (id)displayNumberStringFromEncodedPageNumberResult:(id)a3;
+- (THSearchController)initWithDocumentRoot:(id)root;
+- (id)anchorForSelectedSearchResult:(id)result;
+- (id)displayNumberStringFromEncodedPageNumberResult:(id)result;
 - (id)p_allSearchResults;
-- (id)p_recentSearchAtIndex:(int64_t)a3;
-- (id)recentSearchQueryAtIndex:(int64_t)a3;
-- (id)summaryForGlossaryTerm:(id)a3;
+- (id)p_recentSearchAtIndex:(int64_t)index;
+- (id)recentSearchQueryAtIndex:(int64_t)index;
+- (id)summaryForGlossaryTerm:(id)term;
 - (int64_t)recentSearchCount;
-- (int64_t)recentSearchCountAtIndex:(int64_t)a3;
-- (unint64_t)absolutePageIndexForPageNumberString:(id)a3;
-- (unint64_t)absolutePageIndexFromEncodedPageNumberResult:(id)a3;
+- (int64_t)recentSearchCountAtIndex:(int64_t)index;
+- (unint64_t)absolutePageIndexForPageNumberString:(id)string;
+- (unint64_t)absolutePageIndexFromEncodedPageNumberResult:(id)result;
 - (unint64_t)searchResultCount;
-- (void)annotationSearchIndexBuildOperationFailed:(id)a3;
+- (void)annotationSearchIndexBuildOperationFailed:(id)failed;
 - (void)cancelLoadIndex;
 - (void)clearSearchResults;
 - (void)dealloc;
 - (void)invalidatePaginationResults;
 - (void)loadIndex;
-- (void)p_indexloadFinished:(id)a3;
-- (void)p_kickOffQuery:(id)a3 giveSuggestions:(BOOL)a4 completionBlock:(id)a5;
-- (void)p_populatePageNumbersOfModelSearchResults:(id)a3;
-- (void)p_processSearchResultsWithCompletionBlock:(id)a3;
-- (void)p_processSuggestionsWithCompletionBlock:(id)a3;
+- (void)p_indexloadFinished:(id)finished;
+- (void)p_kickOffQuery:(id)query giveSuggestions:(BOOL)suggestions completionBlock:(id)block;
+- (void)p_populatePageNumbersOfModelSearchResults:(id)results;
+- (void)p_processSearchResultsWithCompletionBlock:(id)block;
+- (void)p_processSuggestionsWithCompletionBlock:(id)block;
 - (void)p_setupDisplayPageNumberMap;
-- (void)resolveTitleForSearchResult:(id)a3;
-- (void)searchForString:(id)a3 completionBlock:(id)a4;
-- (void)searchIndexLoadOperationFailed:(id)a3;
-- (void)setAnnotationSearchRefText:(id)a3;
-- (void)setSearchRefText:(id)a3;
-- (void)suggestionsForSearchString:(id)a3 completionBlock:(id)a4;
+- (void)resolveTitleForSearchResult:(id)result;
+- (void)searchForString:(id)string completionBlock:(id)block;
+- (void)searchIndexLoadOperationFailed:(id)failed;
+- (void)setAnnotationSearchRefText:(id)text;
+- (void)setSearchRefText:(id)text;
+- (void)suggestionsForSearchString:(id)string completionBlock:(id)block;
 - (void)unloadIndex;
 - (void)updatePaginationResults;
 @end
 
 @implementation THSearchController
 
-- (THSearchController)initWithDocumentRoot:(id)a3
+- (THSearchController)initWithDocumentRoot:(id)root
 {
   v7.receiver = self;
   v7.super_class = THSearchController;
@@ -44,7 +44,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mDocumentRoot = a3;
+    v4->mDocumentRoot = root;
     v4->mRecentSearches = objc_alloc_init(NSMutableArray);
   }
 
@@ -105,23 +105,23 @@
   [(THSearchController *)&v3 dealloc];
 }
 
-- (void)suggestionsForSearchString:(id)a3 completionBlock:(id)a4
+- (void)suggestionsForSearchString:(id)string completionBlock:(id)block
 {
   objc_sync_enter(self);
-  [(THSearchController *)self p_kickOffQuery:a3 giveSuggestions:1 completionBlock:a4];
+  [(THSearchController *)self p_kickOffQuery:string giveSuggestions:1 completionBlock:block];
 
   objc_sync_exit(self);
 }
 
-- (void)searchForString:(id)a3 completionBlock:(id)a4
+- (void)searchForString:(id)string completionBlock:(id)block
 {
   objc_sync_enter(self);
-  [(THSearchController *)self p_kickOffQuery:a3 giveSuggestions:0 completionBlock:a4];
+  [(THSearchController *)self p_kickOffQuery:string giveSuggestions:0 completionBlock:block];
 
   objc_sync_exit(self);
 }
 
-- (void)p_kickOffQuery:(id)a3 giveSuggestions:(BOOL)a4 completionBlock:(id)a5
+- (void)p_kickOffQuery:(id)query giveSuggestions:(BOOL)suggestions completionBlock:(id)block
 {
   objc_sync_enter(self);
   v9[0] = _NSConcreteStackBlock;
@@ -129,32 +129,32 @@
   v9[2] = sub_CE6E4;
   v9[3] = &unk_45D188;
   v9[4] = self;
-  v9[5] = a3;
-  v9[6] = a5;
-  v10 = a4;
+  v9[5] = query;
+  v9[6] = block;
+  suggestionsCopy = suggestions;
   _os_activity_initiate(&dword_0, "Search for string", OS_ACTIVITY_FLAG_DEFAULT, v9);
   objc_sync_exit(self);
 }
 
-- (void)setSearchRefText:(id)a3
+- (void)setSearchRefText:(id)text
 {
   objc_sync_enter(self);
-  self->mReferenceTextMap = a3;
+  self->mReferenceTextMap = text;
 
   objc_sync_exit(self);
 }
 
-- (void)setAnnotationSearchRefText:(id)a3
+- (void)setAnnotationSearchRefText:(id)text
 {
   objc_sync_enter(self);
 
   self->mAnnotationReferenceTextMap = 0;
-  self->mAnnotationReferenceTextMap = a3;
+  self->mAnnotationReferenceTextMap = text;
 
   objc_sync_exit(self);
 }
 
-- (void)p_processSuggestionsWithCompletionBlock:(id)a3
+- (void)p_processSuggestionsWithCompletionBlock:(id)block
 {
   objc_sync_enter(self);
   if (self->mCurrentQuery && self->mOccurrenceMap && (![(THSearchController *)self searchNotes]|| self->mAnnotationOccurrenceMap) && self->mReferenceTextMap)
@@ -246,7 +246,7 @@
     v27 = [(NSMutableArray *)v20 arrayByAddingObjectsFromArray:v25];
     self->mSuggestionResults = [v26 copy];
     self->mSuggestionOccurenceCounts = [v27 copy];
-    (*(a3 + 2))(a3);
+    (*(block + 2))(block);
 
     self->mOccurrenceMap = 0;
     self->mAnnotationOccurrenceMap = 0;
@@ -257,7 +257,7 @@
   objc_sync_exit(self);
 }
 
-- (void)p_processSearchResultsWithCompletionBlock:(id)a3
+- (void)p_processSearchResultsWithCompletionBlock:(id)block
 {
   objc_sync_enter(self);
   if (self->mCurrentQuery && self->mOccurrenceMap && (![(THSearchController *)self searchNotes]|| self->mAnnotationOccurrenceMap) && self->mReferenceTextMap && (![(THSearchController *)self searchNotes]|| self->mAnnotationReferenceTextMap))
@@ -266,7 +266,7 @@
     -[THSearchController p_populatePageNumbersOfModelSearchResults:](self, "p_populatePageNumbersOfModelSearchResults:", [v5 objectsPassingTest:&stru_45D248]);
     v6 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
     v7 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v5 count]);
-    v45 = a3;
+    blockCopy = block;
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
@@ -526,7 +526,7 @@
       while (v42);
     }
 
-    v45[2]();
+    blockCopy[2]();
 
     self->mOccurrenceMap = 0;
     self->mAnnotationOccurrenceMap = 0;
@@ -537,16 +537,16 @@
   objc_sync_exit(self);
 }
 
-- (id)displayNumberStringFromEncodedPageNumberResult:(id)a3
+- (id)displayNumberStringFromEncodedPageNumberResult:(id)result
 {
-  v3 = [objc_msgSend(a3 substringFromIndex:{objc_msgSend(kTHSearchControllerPageNumberToken, "length")), "componentsSeparatedByString:", @", "}];
+  v3 = [objc_msgSend(result substringFromIndex:{objc_msgSend(kTHSearchControllerPageNumberToken, "length")), "componentsSeparatedByString:", @", "}];
 
   return [v3 objectAtIndex:0];
 }
 
-- (unint64_t)absolutePageIndexFromEncodedPageNumberResult:(id)a3
+- (unint64_t)absolutePageIndexFromEncodedPageNumberResult:(id)result
 {
-  v3 = [objc_msgSend(a3 substringFromIndex:{objc_msgSend(kTHSearchControllerPageNumberToken, "length")), "componentsSeparatedByString:", @", "}];
+  v3 = [objc_msgSend(result substringFromIndex:{objc_msgSend(kTHSearchControllerPageNumberToken, "length")), "componentsSeparatedByString:", @", "}];
   if ([v3 count] < 2)
   {
     v4 = 0;
@@ -569,11 +569,11 @@
   }
 }
 
-- (unint64_t)absolutePageIndexForPageNumberString:(id)a3
+- (unint64_t)absolutePageIndexForPageNumberString:(id)string
 {
-  v4 = [(THSearchController *)self displayPageNumberMap];
+  displayPageNumberMap = [(THSearchController *)self displayPageNumberMap];
 
-  return [(THDisplayPageNumberMap *)v4 absolutePageIndexForDisplayPageNumber:a3];
+  return [(THDisplayPageNumberMap *)displayPageNumberMap absolutePageIndexForDisplayPageNumber:string];
 }
 
 - (void)clearSearchResults
@@ -614,52 +614,52 @@
   return [(NSArray *)[(THSearchController *)self notesSearchResults] count]+ v4;
 }
 
-- (id)anchorForSelectedSearchResult:(id)a3
+- (id)anchorForSelectedSearchResult:(id)result
 {
-  if (!a3)
+  if (!result)
   {
     return 0;
   }
 
-  v5 = [a3 annotation];
+  annotation = [result annotation];
   mDocumentRoot = self->mDocumentRoot;
-  if (v5)
+  if (annotation)
   {
-    v7 = v5;
-    v8 = -[THDocumentNavigationModel contentNodeForGUID:](-[THDocumentRoot navigationModel](mDocumentRoot, "navigationModel"), "contentNodeForGUID:", [v5 annotationContentNodeID]);
-    v10 = [a3 contextRangeForResult];
+    v7 = annotation;
+    v8 = -[THDocumentNavigationModel contentNodeForGUID:](-[THDocumentRoot navigationModel](mDocumentRoot, "navigationModel"), "contentNodeForGUID:", [annotation annotationContentNodeID]);
+    contextRangeForResult = [result contextRangeForResult];
 
-    return [THAnnotationAnchor annotationAnchorWithContentNode:v8 annotation:v7 noteRange:v10, v9];
+    return [THAnnotationAnchor annotationAnchorWithContentNode:v8 annotation:v7 noteRange:contextRangeForResult, v9];
   }
 
   else
   {
-    v11 = [a3 occurrenceIndex];
-    v12 = [a3 term];
-    v13 = [a3 cfi];
+    occurrenceIndex = [result occurrenceIndex];
+    term = [result term];
+    v13 = [result cfi];
 
-    return [(THDocumentRoot *)mDocumentRoot anchorForNthInstance:v11 ofSearchString:v12 afterCFIString:v13 coarsenIfNeeded:1];
+    return [(THDocumentRoot *)mDocumentRoot anchorForNthInstance:occurrenceIndex ofSearchString:term afterCFIString:v13 coarsenIfNeeded:1];
   }
 }
 
-- (void)resolveTitleForSearchResult:(id)a3
+- (void)resolveTitleForSearchResult:(id)result
 {
-  if (![a3 title])
+  if (![result title])
   {
-    v5 = [objc_msgSend(-[THDocumentRoot modelStorageAnchorForCfi:shallow:error:](self->mDocumentRoot modelStorageAnchorForCfi:objc_msgSend(a3 shallow:"cfi") error:{1, 0), "contentNode"), "title"}];
+    v5 = [objc_msgSend(-[THDocumentRoot modelStorageAnchorForCfi:shallow:error:](self->mDocumentRoot modelStorageAnchorForCfi:objc_msgSend(result shallow:"cfi") error:{1, 0), "contentNode"), "title"}];
 
-    [a3 setTitle:v5];
+    [result setTitle:v5];
   }
 }
 
 - (BOOL)indexLoaded
 {
-  v2 = [(THDocumentRoot *)self->mDocumentRoot searchIndex];
+  searchIndex = [(THDocumentRoot *)self->mDocumentRoot searchIndex];
 
-  return [(THSearchIndex *)v2 loaded];
+  return [(THSearchIndex *)searchIndex loaded];
 }
 
-- (void)p_indexloadFinished:(id)a3
+- (void)p_indexloadFinished:(id)finished
 {
   objc_sync_enter(self);
   v4 = self->mCountOfLoadingIndices - 1;
@@ -775,7 +775,7 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (void)searchIndexLoadOperationFailed:(id)a3
+- (void)searchIndexLoadOperationFailed:(id)failed
 {
   objc_sync_enter(self);
   self->mIndexLoadFailed = 1;
@@ -783,7 +783,7 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (void)annotationSearchIndexBuildOperationFailed:(id)a3
+- (void)annotationSearchIndexBuildOperationFailed:(id)failed
 {
   objc_sync_enter(self);
   self->mIndexLoadFailed = 1;
@@ -791,9 +791,9 @@ LABEL_13:
   objc_sync_exit(self);
 }
 
-- (id)summaryForGlossaryTerm:(id)a3
+- (id)summaryForGlossaryTerm:(id)term
 {
-  result = [(THModelGlossary *)[(THDocumentRoot *)self->mDocumentRoot glossary] entryForTerm:a3];
+  result = [(THModelGlossary *)[(THDocumentRoot *)self->mDocumentRoot glossary] entryForTerm:term];
   if (result)
   {
 
@@ -805,37 +805,37 @@ LABEL_13:
 
 - (int64_t)recentSearchCount
 {
-  v2 = [(THSearchController *)self recentSearches];
+  recentSearches = [(THSearchController *)self recentSearches];
 
-  return [(NSArray *)v2 count];
+  return [(NSArray *)recentSearches count];
 }
 
-- (id)p_recentSearchAtIndex:(int64_t)a3
+- (id)p_recentSearchAtIndex:(int64_t)index
 {
-  v4 = [(THSearchController *)self recentSearches];
-  if ([(NSArray *)v4 count]<= a3)
+  recentSearches = [(THSearchController *)self recentSearches];
+  if ([(NSArray *)recentSearches count]<= index)
   {
     return 0;
   }
 
   objc_opt_class();
-  [(NSArray *)v4 objectAtIndex:a3];
+  [(NSArray *)recentSearches objectAtIndex:index];
 
   return TSUDynamicCast();
 }
 
-- (id)recentSearchQueryAtIndex:(int64_t)a3
+- (id)recentSearchQueryAtIndex:(int64_t)index
 {
-  v3 = [(THSearchController *)self p_recentSearchAtIndex:a3];
+  v3 = [(THSearchController *)self p_recentSearchAtIndex:index];
   objc_opt_class();
   [v3 objectForKey:@"query"];
 
   return TSUDynamicCast();
 }
 
-- (int64_t)recentSearchCountAtIndex:(int64_t)a3
+- (int64_t)recentSearchCountAtIndex:(int64_t)index
 {
-  v3 = [(THSearchController *)self p_recentSearchAtIndex:a3];
+  v3 = [(THSearchController *)self p_recentSearchAtIndex:index];
   objc_opt_class();
   [v3 objectForKey:@"result count"];
   v4 = TSUDynamicCast();
@@ -864,28 +864,28 @@ LABEL_13:
   return v3;
 }
 
-- (void)p_populatePageNumbersOfModelSearchResults:(id)a3
+- (void)p_populatePageNumbersOfModelSearchResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v5 = [results countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v24;
     v8 = @"-";
     v9 = &stru_471858;
-    v22 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v6; ++i)
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v11 = [THBundle() localizedStringForKey:v8 value:v9 table:0];
@@ -904,19 +904,19 @@ LABEL_13:
               v17 = v7;
               v18 = v9;
               v19 = v8;
-              v20 = v3;
+              v20 = resultsCopy;
               v21 = v15;
               if ([v15 length])
               {
                 v11 = v21;
               }
 
-              v3 = v20;
+              resultsCopy = v20;
               v8 = v19;
               v9 = v18;
               v7 = v17;
               v6 = v16;
-              self = v22;
+              self = selfCopy;
               [v12 setPageNumber:v14];
             }
           }
@@ -925,7 +925,7 @@ LABEL_13:
         [v12 setDisplayPageNumber:v11];
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v6 = [resultsCopy countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v6);

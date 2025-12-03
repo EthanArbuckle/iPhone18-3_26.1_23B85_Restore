@@ -1,14 +1,14 @@
 @interface SiriTTSAudibleContext
 - (id)didStartSpeaking;
-- (void)encodeWithCoder:(id)a3;
-- (void)setDidStartSpeaking:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setDidStartSpeaking:(id)speaking;
 @end
 
 @implementation SiriTTSAudibleContext
 
-- (void)setDidStartSpeaking:(id)a3
+- (void)setDidStartSpeaking:(id)speaking
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(speaking);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -21,15 +21,15 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1B1AD5788(v4, v5);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1B1AD5EE4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1B1AD5EE4(coderCopy);
 }
 
 - (id)didStartSpeaking

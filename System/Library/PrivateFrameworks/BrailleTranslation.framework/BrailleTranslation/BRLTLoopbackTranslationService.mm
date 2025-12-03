@@ -1,19 +1,19 @@
 @interface BRLTLoopbackTranslationService
-- (BRLTLoopbackTranslationService)initWithServiceIdentifier:(id)a3 connection:(id)a4 loopbackService:(id)a5;
+- (BRLTLoopbackTranslationService)initWithServiceIdentifier:(id)identifier connection:(id)connection loopbackService:(id)service;
 @end
 
 @implementation BRLTLoopbackTranslationService
 
-- (BRLTLoopbackTranslationService)initWithServiceIdentifier:(id)a3 connection:(id)a4 loopbackService:(id)a5
+- (BRLTLoopbackTranslationService)initWithServiceIdentifier:(id)identifier connection:(id)connection loopbackService:(id)service
 {
-  v9 = a5;
+  serviceCopy = service;
   v13.receiver = self;
   v13.super_class = BRLTLoopbackTranslationService;
-  v10 = [(BRLTTranslationService *)&v13 initWithServiceIdentifier:a3 connection:a4];
+  v10 = [(BRLTTranslationService *)&v13 initWithServiceIdentifier:identifier connection:connection];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_loopbackService, a5);
+    objc_storeStrong(&v10->_loopbackService, service);
   }
 
   return v11;

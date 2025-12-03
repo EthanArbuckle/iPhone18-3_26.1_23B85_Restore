@@ -1,41 +1,41 @@
 @interface PRSRankingItemRelativeFeatureContext
-+ (id)_predicateForRelativeFeature:(unint64_t)a3 currentTime:(double)a4;
-+ (id)_relativeContextsForFeatures:(id)a3 currentTime:(double)a4;
-+ (id)_resultComparatorForRelativeFeature:(unint64_t)a3;
-+ (id)relativeContextsForBundle:(id)a3 currentTime:(double)a4;
-+ (void)_associatedPRSL2FeatureFromRelativeFeature:(unint64_t)a3 absRankFeatureOut:(unsigned __int16 *)a4 relRankFeatureOut:(unsigned __int16 *)a5;
-- (PRSRankingItemRelativeFeatureContext)initWithFeature:(unint64_t)a3 currentTime:(double)a4;
++ (id)_predicateForRelativeFeature:(unint64_t)feature currentTime:(double)time;
++ (id)_relativeContextsForFeatures:(id)features currentTime:(double)time;
++ (id)_resultComparatorForRelativeFeature:(unint64_t)feature;
++ (id)relativeContextsForBundle:(id)bundle currentTime:(double)time;
++ (void)_associatedPRSL2FeatureFromRelativeFeature:(unint64_t)feature absRankFeatureOut:(unsigned __int16 *)out relRankFeatureOut:(unsigned __int16 *)featureOut;
+- (PRSRankingItemRelativeFeatureContext)initWithFeature:(unint64_t)feature currentTime:(double)time;
 @end
 
 @implementation PRSRankingItemRelativeFeatureContext
 
-+ (id)relativeContextsForBundle:(id)a3 currentTime:(double)a4
++ (id)relativeContextsForBundle:(id)bundle currentTime:(double)time
 {
-  v5 = a3;
-  v6 = [PRSRankingItemRelativeFeatureContext _relativeContextsForFeatures:&unk_1F55B7508 currentTime:a4];
-  if ([v5 isEqualToString:@"com.apple.MobileAddressBook"])
+  bundleCopy = bundle;
+  v6 = [PRSRankingItemRelativeFeatureContext _relativeContextsForFeatures:&unk_1F55B7508 currentTime:time];
+  if ([bundleCopy isEqualToString:@"com.apple.MobileAddressBook"])
   {
     v7 = &unk_1F55B7520;
 LABEL_9:
-    v8 = [PRSRankingItemRelativeFeatureContext _relativeContextsForFeatures:v7 currentTime:a4];
+    v8 = [PRSRankingItemRelativeFeatureContext _relativeContextsForFeatures:v7 currentTime:time];
     v9 = [v6 arrayByAddingObjectsFromArray:v8];
 
     goto LABEL_10;
   }
 
-  if ([v5 isEqualToString:@"com.apple.reminders"])
+  if ([bundleCopy isEqualToString:@"com.apple.reminders"])
   {
     v7 = &unk_1F55B7538;
     goto LABEL_9;
   }
 
-  if ([v5 isEqualToString:@"com.apple.mobilecal"])
+  if ([bundleCopy isEqualToString:@"com.apple.mobilecal"])
   {
     v7 = &unk_1F55B7550;
     goto LABEL_9;
   }
 
-  if ([v5 isEqualToString:@"com.apple.application"])
+  if ([bundleCopy isEqualToString:@"com.apple.application"])
   {
     v7 = &unk_1F55B7568;
     goto LABEL_9;
@@ -47,16 +47,16 @@ LABEL_10:
   return v9;
 }
 
-+ (id)_relativeContextsForFeatures:(id)a3 currentTime:(double)a4
++ (id)_relativeContextsForFeatures:(id)features currentTime:(double)time
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  featuresCopy = features;
   v6 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = featuresCopy;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -71,7 +71,7 @@ LABEL_10:
           objc_enumerationMutation(v7);
         }
 
-        v12 = -[PRSRankingItemRelativeFeatureContext initWithFeature:currentTime:]([PRSRankingItemRelativeFeatureContext alloc], "initWithFeature:currentTime:", [*(*(&v15 + 1) + 8 * i) unsignedIntegerValue], a4);
+        v12 = -[PRSRankingItemRelativeFeatureContext initWithFeature:currentTime:]([PRSRankingItemRelativeFeatureContext alloc], "initWithFeature:currentTime:", [*(*(&v15 + 1) + 8 * i) unsignedIntegerValue], time);
         [v6 addObject:v12];
       }
 
@@ -86,9 +86,9 @@ LABEL_10:
   return v6;
 }
 
-+ (id)_resultComparatorForRelativeFeature:(unint64_t)a3
++ (id)_resultComparatorForRelativeFeature:(unint64_t)feature
 {
-  switch(a3)
+  switch(feature)
   {
     case 0uLL:
     case 0xEuLL:
@@ -680,9 +680,9 @@ uint64_t __76__PRSRankingItemRelativeFeatureContext__resultComparatorForRelative
   }
 }
 
-+ (id)_predicateForRelativeFeature:(unint64_t)a3 currentTime:(double)a4
++ (id)_predicateForRelativeFeature:(unint64_t)feature currentTime:(double)time
 {
-  switch(a3)
+  switch(feature)
   {
     case 0uLL:
     case 0xEuLL:
@@ -700,7 +700,7 @@ uint64_t __76__PRSRankingItemRelativeFeatureContext__resultComparatorForRelative
       v16 = 3221225472;
       v17 = __81__PRSRankingItemRelativeFeatureContext__predicateForRelativeFeature_currentTime___block_invoke;
       v18 = &__block_descriptor_40_e41_B24__0__PRSRankingItem_8__NSDictionary_16l;
-      v19 = a4;
+      timeCopy = time;
       v5 = &v15;
       goto LABEL_13;
     case 3uLL:
@@ -709,14 +709,14 @@ uint64_t __76__PRSRankingItemRelativeFeatureContext__resultComparatorForRelative
       v11 = 3221225472;
       v12 = __81__PRSRankingItemRelativeFeatureContext__predicateForRelativeFeature_currentTime___block_invoke_2;
       v13 = &__block_descriptor_40_e41_B24__0__PRSRankingItem_8__NSDictionary_16l;
-      v14 = a4;
+      timeCopy2 = time;
       v5 = &v10;
       goto LABEL_13;
     case 4uLL:
       v6 = MEMORY[0x1E696AE18];
       v7 = 29;
 LABEL_11:
-      v8 = [v6 _predicateForItemsWithAttribute:{v7, a4}];
+      v8 = [v6 _predicateForItemsWithAttribute:{v7, time}];
       goto LABEL_14;
     case 5uLL:
     case 0x10uLL:
@@ -737,7 +737,7 @@ LABEL_11:
       v5 = &__block_literal_global_112;
       goto LABEL_13;
     case 0xDuLL:
-      v8 = [MEMORY[0x1E696AE18] predicateWithValue:{1, a4}];
+      v8 = [MEMORY[0x1E696AE18] predicateWithValue:{1, time}];
       goto LABEL_14;
     case 0x11uLL:
       v4 = MEMORY[0x1E696AE18];
@@ -747,7 +747,7 @@ LABEL_11:
       v4 = MEMORY[0x1E696AE18];
       v5 = &__block_literal_global_114;
 LABEL_13:
-      v8 = [v4 predicateWithBlock:{v5, a4, v10, v11, v12, v13, *&v14, v15, v16, v17, v18, *&v19}];
+      v8 = [v4 predicateWithBlock:{v5, time, v10, v11, v12, v13, *&timeCopy2, v15, v16, v17, v18, *&timeCopy}];
 LABEL_14:
 
       return v8;
@@ -816,19 +816,19 @@ uint64_t __81__PRSRankingItemRelativeFeatureContext__predicateForRelativeFeature
   return v3;
 }
 
-+ (void)_associatedPRSL2FeatureFromRelativeFeature:(unint64_t)a3 absRankFeatureOut:(unsigned __int16 *)a4 relRankFeatureOut:(unsigned __int16 *)a5
++ (void)_associatedPRSL2FeatureFromRelativeFeature:(unint64_t)feature absRankFeatureOut:(unsigned __int16 *)out relRankFeatureOut:(unsigned __int16 *)featureOut
 {
-  if (a3 >= 0x13)
+  if (feature >= 0x13)
   {
     +[PRSRankingItemRelativeFeatureContext _associatedPRSL2FeatureFromRelativeFeature:absRankFeatureOut:relRankFeatureOut:];
   }
 
-  v5 = word_1DA0D57CE[a3];
-  *a5 = word_1DA0D57A8[a3];
-  *a4 = v5;
+  v5 = word_1DA0D57CE[feature];
+  *featureOut = word_1DA0D57A8[feature];
+  *out = v5;
 }
 
-- (PRSRankingItemRelativeFeatureContext)initWithFeature:(unint64_t)a3 currentTime:(double)a4
+- (PRSRankingItemRelativeFeatureContext)initWithFeature:(unint64_t)feature currentTime:(double)time
 {
   v12.receiver = self;
   v12.super_class = PRSRankingItemRelativeFeatureContext;
@@ -837,13 +837,13 @@ uint64_t __81__PRSRankingItemRelativeFeatureContext__predicateForRelativeFeature
   {
     v11 = 3235;
     v10 = 3235;
-    [PRSRankingItemRelativeFeatureContext _associatedPRSL2FeatureFromRelativeFeature:a3 absRankFeatureOut:&v11 relRankFeatureOut:&v10];
+    [PRSRankingItemRelativeFeatureContext _associatedPRSL2FeatureFromRelativeFeature:feature absRankFeatureOut:&v11 relRankFeatureOut:&v10];
     [(PRSRankingItemRelativeFeatureContext *)v6 setAbsRankFeature:v11];
     [(PRSRankingItemRelativeFeatureContext *)v6 setRelRankFeature:v10];
-    v7 = [PRSRankingItemRelativeFeatureContext _predicateForRelativeFeature:a3 currentTime:a4];
+    v7 = [PRSRankingItemRelativeFeatureContext _predicateForRelativeFeature:feature currentTime:time];
     [(PRSRankingItemRelativeFeatureContext *)v6 setPredicate:v7];
 
-    v8 = [PRSRankingItemRelativeFeatureContext _resultComparatorForRelativeFeature:a3];
+    v8 = [PRSRankingItemRelativeFeatureContext _resultComparatorForRelativeFeature:feature];
     [(PRSRankingItemRelativeFeatureContext *)v6 setComparator:v8];
   }
 

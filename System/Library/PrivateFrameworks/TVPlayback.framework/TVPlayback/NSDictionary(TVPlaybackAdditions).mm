@@ -16,7 +16,7 @@
 
 - (id)_lookupValueForKey:()TVPlaybackAdditions expectedClass:
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_isKindOfClass() & 1) == 0)
   {
 
@@ -29,7 +29,7 @@
 - (id)tvp_numberForKey:()TVPlaybackAdditions
 {
   v4 = a3;
-  v5 = [a1 _lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -37,7 +37,7 @@
 - (id)tvp_stringForKey:()TVPlaybackAdditions
 {
   v4 = a3;
-  v5 = [a1 _lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -45,14 +45,14 @@
 - (id)tvp_URLForKey:()TVPlaybackAdditions
 {
   v4 = a3;
-  v5 = [a1 _lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
 
 - (uint64_t)tvp_BOOLForKey:()TVPlaybackAdditions defaultValue:
 {
-  v5 = [a1 tvp_numberForKey:?];
+  v5 = [self tvp_numberForKey:?];
   v6 = v5;
   if (v5)
   {
@@ -65,14 +65,14 @@
 - (id)tvp_dateForKey:()TVPlaybackAdditions
 {
   v4 = a3;
-  v5 = [a1 _lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
 
 - (id)tvp_dateFromMillisecondsSince1970ForKey:()TVPlaybackAdditions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = [MEMORY[0x277CBEAA8] tvp_dateWithMillisecondsSince1970:v1];
 
   return v2;
@@ -81,7 +81,7 @@
 - (id)tvp_dictionaryForKey:()TVPlaybackAdditions
 {
   v4 = a3;
-  v5 = [a1 _lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -89,7 +89,7 @@
 - (id)tvp_arrayForKey:()TVPlaybackAdditions
 {
   v4 = a3;
-  v5 = [a1 _lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
@@ -97,28 +97,28 @@
 - (id)tvp_dataForKey:()TVPlaybackAdditions
 {
   v4 = a3;
-  v5 = [a1 _lookupValueForKey:v4 expectedClass:objc_opt_class()];
+  v5 = [self _lookupValueForKey:v4 expectedClass:objc_opt_class()];
 
   return v5;
 }
 
 - (uint64_t)tvp_appleTimingAppHeaderValue
 {
-  v1 = [a1 objectForKey:@"apple-timing-app"];
+  v1 = [self objectForKey:@"apple-timing-app"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v2 = [v1 componentsSeparatedByString:@" "];
-    v3 = [v2 firstObject];
-    v4 = [v3 integerValue];
+    firstObject = [v2 firstObject];
+    integerValue = [firstObject integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 @end

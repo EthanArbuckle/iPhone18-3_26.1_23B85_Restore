@@ -1,20 +1,20 @@
 @interface WebEditorUndoTarget
-- (void)redoEditing:(id)a3;
-- (void)undoEditing:(id)a3;
+- (void)redoEditing:(id)editing;
+- (void)undoEditing:(id)editing;
 @end
 
 @implementation WebEditorUndoTarget
 
-- (void)undoEditing:(id)a3
+- (void)undoEditing:(id)editing
 {
-  v3 = *(*[a3 step] + 16);
+  v3 = *(*[editing step] + 16);
 
   v3();
 }
 
-- (void)redoEditing:(id)a3
+- (void)redoEditing:(id)editing
 {
-  v3 = *(*[a3 step] + 24);
+  v3 = *(*[editing step] + 24);
 
   v3();
 }

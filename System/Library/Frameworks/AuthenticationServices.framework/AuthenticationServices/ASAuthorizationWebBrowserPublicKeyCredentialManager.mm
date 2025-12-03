@@ -1,7 +1,7 @@
 @interface ASAuthorizationWebBrowserPublicKeyCredentialManager
 - (ASAuthorizationWebBrowserPublicKeyCredentialManager)init;
 - (ASAuthorizationWebBrowserPublicKeyCredentialManagerAuthorizationState)authorizationStateForPlatformCredentials;
-- (void)corePlatformCredentialsForRelyingParty:(NSString *)a3 completionHandler:(id)a4;
+- (void)corePlatformCredentialsForRelyingParty:(NSString *)party completionHandler:(id)handler;
 - (void)platformCredentialsForRelyingParty:(NSString *)relyingParty completionHandler:(void *)completionHandler;
 - (void)requestAuthorizationForPublicKeyCredentials:(void *)completionHandler;
 @end
@@ -117,15 +117,15 @@ uint64_t __99__ASAuthorizationWebBrowserPublicKeyCredentialManager_requestAuthor
   return result;
 }
 
-- (void)corePlatformCredentialsForRelyingParty:(NSString *)a3 completionHandler:(id)a4
+- (void)corePlatformCredentialsForRelyingParty:(NSString *)party completionHandler:(id)handler
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB775460, &qword_1B1D86860);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = party;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1B1D7BF4C();
@@ -140,8 +140,8 @@ uint64_t __99__ASAuthorizationWebBrowserPublicKeyCredentialManager_requestAuthor
   v15[3] = 0;
   v15[4] = &unk_1B1D885D0;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  partyCopy = party;
+  selfCopy = self;
   sub_1B1D22574(0, 0, v10, &unk_1B1D86880, v15);
 }
 

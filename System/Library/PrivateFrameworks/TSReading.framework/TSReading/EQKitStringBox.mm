@@ -1,33 +1,33 @@
 @interface EQKitStringBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)erasableBounds;
-- (EQKitStringBox)initWithAttributedString:(id)a3 cgColor:(CGColor *)a4;
+- (EQKitStringBox)initWithAttributedString:(id)string cgColor:(CGColor *)color;
 - (__CTLine)line;
 - (double)depth;
 - (double)height;
-- (double)positionOfCharacterAtIndex:(unint64_t)a3;
+- (double)positionOfCharacterAtIndex:(unint64_t)index;
 - (double)width;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 - (void)p_cacheDimensions;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitStringBox
 
-- (EQKitStringBox)initWithAttributedString:(id)a3 cgColor:(CGColor *)a4
+- (EQKitStringBox)initWithAttributedString:(id)string cgColor:(CGColor *)color
 {
   v9.receiver = self;
   v9.super_class = EQKitStringBox;
   v6 = [(EQKitStringBox *)&v9 init];
   if (v6)
   {
-    v6->mAttributedString = [a3 copy];
-    if (a4)
+    v6->mAttributedString = [string copy];
+    if (color)
     {
-      v7 = CFRetain(a4);
+      v7 = CFRetain(color);
     }
 
     else
@@ -55,35 +55,35 @@
   [(EQKitStringBox *)&v4 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(EQKitStringBox *)self attributedString];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  attributedString = [(EQKitStringBox *)self attributedString];
   mCGColor = self->mCGColor;
 
-  return [v4 initWithAttributedString:v5 cgColor:mCGColor];
+  return [v4 initWithAttributedString:attributedString cgColor:mCGColor];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = self;
-  v4 = self == a3;
-  LOBYTE(self) = self == a3;
-  if (a3)
+  selfCopy = self;
+  v4 = self == equal;
+  LOBYTE(self) = self == equal;
+  if (equal)
   {
     if (!v4)
     {
-      LODWORD(self) = [a3 isMemberOfClass:objc_opt_class()];
+      LODWORD(self) = [equal isMemberOfClass:objc_opt_class()];
       if (self)
       {
-        v6 = [(EQKitStringBox *)v3 attributedString];
-        self = [a3 attributedString];
-        if (v6 == self || (v7 = self, LOBYTE(self) = 0, v6) && v7 && (LODWORD(self) = [(EQKitStringBox *)v6 isEqualToAttributedString:?], self))
+        attributedString = [(EQKitStringBox *)selfCopy attributedString];
+        self = [equal attributedString];
+        if (attributedString == self || (v7 = self, LOBYTE(self) = 0, attributedString) && v7 && (LODWORD(self) = [(EQKitStringBox *)attributedString isEqualToAttributedString:?], self))
         {
-          v8 = [(EQKitStringBox *)v3 color];
-          v9 = [a3 color];
+          color = [(EQKitStringBox *)selfCopy color];
+          color2 = [equal color];
 
-          LOBYTE(self) = CGColorEqualToColor(v8, v9);
+          LOBYTE(self) = CGColorEqualToColor(color, color2);
         }
       }
     }
@@ -161,23 +161,23 @@
   return result;
 }
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v13.receiver = self;
   v13.super_class = EQKitStringBox;
   [EQKitBox renderIntoContext:sel_renderIntoContext_offset_ offset:?];
-  if (a3)
+  if (context)
   {
-    v8 = [(EQKitStringBox *)self line];
-    if (v8)
+    line = [(EQKitStringBox *)self line];
+    if (line)
     {
-      v9 = v8;
+      v9 = line;
       if (self->mCGColor)
       {
-        CGContextSaveGState(a3);
-        CGContextSetFillColorWithColor(a3, self->mCGColor);
+        CGContextSaveGState(context);
+        CGContextSetFillColorWithColor(context, self->mCGColor);
       }
 
       memset(&v12, 0, sizeof(v12));
@@ -187,38 +187,38 @@
       *&v11.tx = *(MEMORY[0x277CBF2C0] + 32);
       CGAffineTransformScale(&v12, &v11, 1.0, -1.0);
       v11 = v12;
-      CGContextSetTextMatrix(a3, &v11);
-      CGContextSetTextPosition(a3, x, y);
-      CTLineDraw(v9, a3);
+      CGContextSetTextMatrix(context, &v11);
+      CGContextSetTextPosition(context, x, y);
+      CTLineDraw(v9, context);
       if (self->mCGColor)
       {
-        CGContextRestoreGState(a3);
+        CGContextRestoreGState(context);
       }
     }
   }
 }
 
-- (double)positionOfCharacterAtIndex:(unint64_t)a3
+- (double)positionOfCharacterAtIndex:(unint64_t)index
 {
-  v5 = [(EQKitStringBox *)self line];
-  if (!v5)
+  line = [(EQKitStringBox *)self line];
+  if (!line)
   {
     return 0.0;
   }
 
-  v6 = v5;
-  if ([(NSAttributedString *)[(EQKitStringBox *)self attributedString] length]< a3)
+  v6 = line;
+  if ([(NSAttributedString *)[(EQKitStringBox *)self attributedString] length]< index)
   {
     return 0.0;
   }
 
-  return CTLineGetOffsetForStringIndex(v6, a3, 0);
+  return CTLineGetOffsetForStringIndex(v6, index, 0);
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   GlyphRuns = [(EQKitStringBox *)self line];
   if (GlyphRuns)
   {
@@ -235,7 +235,7 @@
     v8 = 0;
   }
 
-  v9 = *(a3 + 6);
+  v9 = *(spec + 6);
   if (v9 != 2)
   {
     if (!v9 && GlyphRuns >= 1)
@@ -261,10 +261,10 @@
             v15 = x + v27.x;
             v16 = y + v27.y;
             v17 = buffer;
-            v18 = a3;
+            specCopy2 = spec;
             v19 = Value;
 LABEL_17:
-            EQKit::OpticalKern::Spec::appendEntry(v18, *&v15, v19, v17);
+            EQKit::OpticalKern::Spec::appendEntry(specCopy2, *&v15, v19, v17);
             return v13;
           }
 
@@ -310,7 +310,7 @@ LABEL_17:
     v15 = x + v27.x;
     v16 = y + v27.y;
     v17 = buffer;
-    v18 = a3;
+    specCopy2 = spec;
     v19 = v25;
     goto LABEL_17;
   }
@@ -339,10 +339,10 @@ LABEL_17:
   v4 = *(MEMORY[0x277CBF3A0] + 16);
   self->mErasableBounds.origin = *MEMORY[0x277CBF3A0];
   self->mErasableBounds.size = v4;
-  v5 = [(EQKitStringBox *)self line];
-  if (v5)
+  line = [(EQKitStringBox *)self line];
+  if (line)
   {
-    v6 = v5;
+    v6 = line;
     FakeContext = EQKitUtilGetFakeContext();
     ImageBounds = CTLineGetImageBounds(v6, FakeContext);
     x = ImageBounds.origin.x;

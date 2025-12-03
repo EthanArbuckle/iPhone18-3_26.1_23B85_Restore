@@ -12,7 +12,7 @@
 {
   v11 = 0;
   v12 = 0;
-  if (([a1 getResourceValue:&v11 forKey:*MEMORY[0x277CBE8A8] error:&v12] & 1) == 0)
+  if (([self getResourceValue:&v11 forKey:*MEMORY[0x277CBE8A8] error:&v12] & 1) == 0)
   {
     if (a3)
     {
@@ -24,7 +24,7 @@
     return 0;
   }
 
-  if (([v11 BOOLValue] & 1) == 0 || (v5 = objc_msgSend(a1, "pathExtension")) == 0 || (v6 = v5, !objc_msgSend(v5, "compare:options:", @"moti", 1)) && !objc_msgSend(v6, "compare:options:", @"moef", 1) && !objc_msgSend(v6, "compare:options:", @"motr", 1) && !objc_msgSend(v6, "compare:options:", @"motn", 1) || (v7 = -[OZTemplateFlagXMLParser initWithContentsOfURL:]([OZTemplateFlagXMLParser alloc], "initWithContentsOfURL:", a1)) == 0)
+  if (([v11 BOOLValue] & 1) == 0 || (v5 = objc_msgSend(self, "pathExtension")) == 0 || (v6 = v5, !objc_msgSend(v5, "compare:options:", @"moti", 1)) && !objc_msgSend(v6, "compare:options:", @"moef", 1) && !objc_msgSend(v6, "compare:options:", @"motr", 1) && !objc_msgSend(v6, "compare:options:", @"motn", 1) || (v7 = -[OZTemplateFlagXMLParser initWithContentsOfURL:]([OZTemplateFlagXMLParser alloc], "initWithContentsOfURL:", self)) == 0)
   {
     if (a3)
     {
@@ -65,7 +65,7 @@
   PCURL::PCURL(&v16, cf);
   if (PCURL::isSequence(&v16))
   {
-    v1 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     SequenceStart = PCURL::getSequenceStart(&v16);
     SequenceEnd = PCURL::getSequenceEnd(&v16);
     v4 = SequenceEnd - SequenceStart;
@@ -87,7 +87,7 @@
           v10 = [MEMORY[0x277CBEBC0] fileURLWithPath:v9];
           if (v10)
           {
-            [v1 addObject:v10];
+            [orderedSet addObject:v10];
           }
 
           PCString::~PCString(&v14);
@@ -100,7 +100,7 @@
       while (v6 != v5);
     }
 
-    v11 = [v1 copy];
+    v11 = [orderedSet copy];
   }
 
   else
@@ -115,20 +115,20 @@
 + (uint64_t)motionDocURLFromMotionBundleURL:()OZAdditions
 {
   v3 = [[PCMotionBundle alloc] initWithURL:a3];
-  v4 = [(PCMotionBundle *)v3 projectFileURL];
+  projectFileURL = [(PCMotionBundle *)v3 projectFileURL];
 
-  return v4;
+  return projectFileURL;
 }
 
 - (uint64_t)oz_relativePathFromURL:()OZAdditions
 {
-  v4 = [a1 pathComponents];
-  if (!v4)
+  pathComponents = [self pathComponents];
+  if (!pathComponents)
   {
     return 0;
   }
 
-  v5 = v4;
+  v5 = pathComponents;
   v6 = [MEMORY[0x277CBEB18] arrayWithArray:{objc_msgSend(a3, "pathComponents")}];
   if (!v6)
   {

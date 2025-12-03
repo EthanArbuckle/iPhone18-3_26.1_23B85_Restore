@@ -2,8 +2,8 @@
 + (id)customAttributes;
 - (id)_scaleHuePi;
 - (id)_scaleHueZeroOne;
-- (id)findPeakHue:(id)a3 chromaMin:(float)a4 hueRange:(float)a5;
-- (id)findPeakHue_Renderless:(id)a3 chromaMin:(id)a4 hueRange:(id)a5;
+- (id)findPeakHue:(id)hue chromaMin:(float)min hueRange:(float)range;
+- (id)findPeakHue_Renderless:(id)renderless chromaMin:(id)min hueRange:(id)range;
 - (id)outputImage;
 @end
 
@@ -88,17 +88,17 @@
   return qword_8CB70;
 }
 
-- (id)findPeakHue:(id)a3 chromaMin:(float)a4 hueRange:(float)a5
+- (id)findPeakHue:(id)hue chromaMin:(float)min hueRange:(float)range
 {
-  v9 = [(CISmartGradient *)self _scaleHueZeroOne];
-  [a3 extent];
-  v151[0] = a3;
+  _scaleHueZeroOne = [(CISmartGradient *)self _scaleHueZeroOne];
+  [hue extent];
+  v151[0] = hue;
   v151[1] = &off_79B50;
-  v14 = [v9 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v151, 2), v10, v11, v12, v13}];
+  v14 = [_scaleHueZeroOne applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v151, 2), v10, v11, v12, v13}];
   v149 = kCIContextWorkingFormat;
   v150 = [NSNumber numberWithInt:kCIFormatRGBAh];
   v15 = [CIContext contextWithOptions:[NSDictionary dictionaryWithObjects:&v150 forKeys:&v149 count:1]];
-  [a3 extent];
+  [hue extent];
   v153 = CGRectIntegral(v152);
   x = v153.origin.x;
   y = v153.origin.y;
@@ -108,10 +108,10 @@
   v21 = v153.size.height;
   v22 = 4 * v153.size.width;
   v23 = [NSMutableData dataWithLength:v22 * v153.size.height];
-  v24 = [(NSMutableData *)v23 bytes];
-  v25 = [(NSMutableData *)v23 mutableBytes];
+  bytes = [(NSMutableData *)v23 bytes];
+  mutableBytes = [(NSMutableData *)v23 mutableBytes];
   v26 = kCIFormatRGBA8;
-  [(CIContext *)v15 render:v14 toBitmap:v25 rowBytes:v22 bounds:kCIFormatRGBA8 format:0 colorSpace:x, y, width, height];
+  [(CIContext *)v15 render:v14 toBitmap:mutableBytes rowBytes:v22 bounds:kCIFormatRGBA8 format:0 colorSpace:x, y, width, height];
   v148 = 0u;
   v147 = 0u;
   v146 = 0u;
@@ -128,14 +128,14 @@
   v135 = 0u;
   v134 = 0u;
   v133 = 0u;
-  v27 = vcvtad_u64_f64(a4 * 255.0);
+  v27 = vcvtad_u64_f64(min * 255.0);
   if (v21 < 1)
   {
     goto LABEL_11;
   }
 
   v28 = 0;
-  v29 = (v24 + 2);
+  v29 = (bytes + 2);
   v30 = 1;
   do
   {
@@ -216,13 +216,13 @@ LABEL_11:
   {
     v42 = 0;
     v43 = 0;
-    v44 = a5 * 3.14159265 / 180.0;
+    v44 = range * 3.14159265 / 180.0;
     v45 = ((v39 / 31.0) + (v39 / 31.0)) * 3.14159265 + -3.14159265;
     v46 = v45;
     v47 = (v44 * 0.5);
     v48 = v47 + -3.14159265;
     v49 = 3.14159265 - v47;
-    v50 = (v24 + 2);
+    v50 = (bytes + 2);
     v51 = vdup_n_s32(0x3B808081u);
     do
     {
@@ -312,11 +312,11 @@ LABEL_11:
     v75 = [CIColor colorWithRed:v74 green:v73 blue:v71 alpha:v72 colorSpace:1.0];
     CGColorSpaceRelease(v74);
     v76 = [CIImage imageWithColor:v75];
-    v77 = [(CISmartGradient *)self _scaleHuePi];
+    _scaleHuePi = [(CISmartGradient *)self _scaleHuePi];
     [(CIImage *)v76 extent];
     v131[0] = v76;
     v131[1] = &off_79B50;
-    v82 = [objc_msgSend(v77 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v131, 2), v78, v79, v80, v81), "imageByApplyingFilter:withInputParameters:", @"CIIPTtoSRGB", &off_7C438}];
+    v82 = [objc_msgSend(_scaleHuePi applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v131, 2), v78, v79, v80, v81), "imageByApplyingFilter:withInputParameters:", @"CIIPTtoSRGB", &off_7C438}];
     [(NSNumber *)self->inputWidth floatValue];
     v84 = v83;
     [(NSNumber *)self->inputHeight floatValue];
@@ -329,10 +329,10 @@ LABEL_11:
     v88 = v87 / v63;
     v89 = vcvtas_u32_f32((v87 / v63) * v63);
     v90 = [[NSMutableData alloc] initWithLength:4 * v89];
-    v91 = [v90 mutableBytes];
+    mutableBytes2 = [v90 mutableBytes];
     v92 = 0;
     v93 = 0;
-    v94 = v91 + 1;
+    v94 = mutableBytes2 + 1;
     v95 = vdupq_n_s64(0x406FE00000000000uLL);
     do
     {
@@ -397,27 +397,27 @@ LABEL_11:
     v110 = v93 - 1;
     v111 = (v93 - 1);
     v112 = CGColorSpaceCreateWithName(kCGColorSpaceLinearSRGB);
-    v113 = [CIImage imageWithBitmapData:v90 bytesPerRow:4 size:v26 format:v112 colorSpace:1.0, v111];
+    v111 = [CIImage imageWithBitmapData:v90 bytesPerRow:4 size:v26 format:v112 colorSpace:1.0, v111];
     CGColorSpaceRelease(v112);
-    if (v113)
+    if (v111)
     {
-      [(CIImage *)v113 extent];
-      v114 = [[(CIImage *)v113 imageBySettingAlphaOneInExtent:?] imageByClampingToExtent];
+      [(CIImage *)v111 extent];
+      imageByClampingToExtent = [[(CIImage *)v111 imageBySettingAlphaOneInExtent:?] imageByClampingToExtent];
       [(NSNumber *)self->inputHeight floatValue];
       v129 = @"inputScale";
       *&v116 = v110 / v115;
       v130 = [NSNumber numberWithFloat:v116];
-      v117 = [(CIImage *)v114 imageByApplyingFilter:@"CISoftCubicUpsample" withInputParameters:[NSDictionary dictionaryWithObjects:&v130 forKeys:&v129 count:1]];
+      v117 = [(CIImage *)imageByClampingToExtent imageByApplyingFilter:@"CISoftCubicUpsample" withInputParameters:[NSDictionary dictionaryWithObjects:&v130 forKeys:&v129 count:1]];
       [(NSNumber *)self->inputWidth floatValue];
       v119 = v118;
       [(NSNumber *)self->inputHeight floatValue];
       v121 = v120;
-      v122 = [(CIImage *)v117 imageByCroppingToRect:0.0, 0.0, v119, v120];
-      v123 = [(CISmartGradient *)self _scaleHuePi];
-      [(CIImage *)v122 extent];
-      v128[0] = v122;
+      v120 = [(CIImage *)v117 imageByCroppingToRect:0.0, 0.0, v119, v120];
+      _scaleHuePi2 = [(CISmartGradient *)self _scaleHuePi];
+      [(CIImage *)v120 extent];
+      v128[0] = v120;
       v128[1] = &off_79B50;
-      return [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(v123 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v128, 2), v124, v125, v126, v127), "imageByApplyingFilter:withInputParameters:", @"CIIPTtoSRGB", &off_7C460), "imageByClampingToExtent"), "imageByApplyingGaussianBlurWithSigma:", 500.0), "imageByCroppingToRect:", 0.0, 0.0, v119, v121), "imageByApplyingFilter:withInputParameters:", @"CIDither", &off_7C488}];
+      return [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(_scaleHuePi2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v128, 2), v124, v125, v126, v127), "imageByApplyingFilter:withInputParameters:", @"CIIPTtoSRGB", &off_7C460), "imageByClampingToExtent"), "imageByApplyingGaussianBlurWithSigma:", 500.0), "imageByCroppingToRect:", 0.0, 0.0, v119, v121), "imageByApplyingFilter:withInputParameters:", @"CIDither", &off_7C488}];
     }
 
     else
@@ -427,15 +427,15 @@ LABEL_11:
   }
 }
 
-- (id)findPeakHue_Renderless:(id)a3 chromaMin:(id)a4 hueRange:(id)a5
+- (id)findPeakHue_Renderless:(id)renderless chromaMin:(id)min hueRange:(id)range
 {
-  [a3 extent];
-  if (a3 && (v13 = v9, v14 = v10, v15 = v11, v16 = v12, !CGRectIsInfinite(*&v9)))
+  [renderless extent];
+  if (renderless && (v13 = v9, v14 = v10, v15 = v11, v16 = v12, !CGRectIsInfinite(*&v9)))
   {
     memset(&v55, 0, sizeof(v55));
-    [a3 extent];
+    [renderless extent];
     v19 = v18;
-    [a3 extent];
+    [renderless extent];
     CGAffineTransformMakeScale(&v55, v19, v20);
     v70 = v55;
     v71.origin.x = v13;
@@ -445,7 +445,7 @@ LABEL_11:
     v72 = CGRectApplyAffineTransform(v71, &v70);
     v69 = kCIInputExtentKey;
     *&v70.a = [CIVector vectorWithCGRect:v72.origin.x, v72.origin.y, v72.size.width, v72.size.height];
-    v17 = [a3 imageByApplyingFilter:@"CIAreaAverage" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v70, &v69, 1)}];
+    v17 = [renderless imageByApplyingFilter:@"CIAreaAverage" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v70, &v69, 1)}];
   }
 
   else
@@ -453,11 +453,11 @@ LABEL_11:
     v17 = 0;
   }
 
-  v21 = [(CISmartGradient *)self _scaleHueZeroOne];
-  [a3 extent];
-  v68[0] = a3;
+  _scaleHueZeroOne = [(CISmartGradient *)self _scaleHueZeroOne];
+  [renderless extent];
+  v68[0] = renderless;
   v68[1] = &off_79B50;
-  v67[0] = [v21 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v68, 2), v22, v23, v24, v25}];
+  v67[0] = [_scaleHueZeroOne applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v68, 2), v22, v23, v24, v25}];
   v67[1] = v17;
   v26 = [NSArray arrayWithObjects:v67 count:2];
   [-[NSArray objectAtIndexedSubscript:](v26 objectAtIndexedSubscript:{0), "extent"}];
@@ -468,9 +468,9 @@ LABEL_11:
   v64[0] = @"imageExtents";
   v64[1] = @"chromaMin";
   v65[0] = v27;
-  v65[1] = a4;
+  v65[1] = min;
   v64[2] = @"hueRange";
-  v65[2] = a5;
+  v65[2] = range;
   v28 = [CIHueChromaHistProcessor applyWithExtent:v26 inputs:[NSDictionary dictionaryWithObjects:v65 forKeys:v64 count:3] arguments:0 error:0.0, 0.0, 256.0, 1.0];
   if ([(NSNumber *)self->inputReturnSmartColor BOOLValue])
   {
@@ -480,11 +480,11 @@ LABEL_11:
     [v28 extent];
     v62 = [CIVector vectorWithCGRect:?];
     v30 = [+[CIAveColorProcessor applyWithExtent:inputs:arguments:error:](CIAveColorProcessor applyWithExtent:v29 inputs:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary arguments:"dictionaryWithObjects:forKeys:count:" error:{&v62, &v61, 1), 0, 0.0, 0.0, 1.0, 1.0), "imageByClampingToExtent"}];
-    v31 = [(CISmartGradient *)self _scaleHuePi];
+    _scaleHuePi = [(CISmartGradient *)self _scaleHuePi];
     [v30 extent];
     v60[0] = v30;
     v60[1] = &off_79B50;
-    v36 = [objc_msgSend(v31 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v60, 2), v32, v33, v34, v35), "imageByApplyingFilter:withInputParameters:", @"CIIPTtoSRGB", &off_7C4B0}];
+    v36 = [objc_msgSend(_scaleHuePi applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v60, 2), v32, v33, v34, v35), "imageByApplyingFilter:withInputParameters:", @"CIIPTtoSRGB", &off_7C4B0}];
     [(NSNumber *)self->inputWidth floatValue];
     v38 = v37;
     [(NSNumber *)self->inputHeight floatValue];
@@ -493,13 +493,13 @@ LABEL_11:
 
   else
   {
-    v41 = [(NSNumber *)self->inputHeight intValue];
+    intValue = [(NSNumber *)self->inputHeight intValue];
     v59 = v28;
     v42 = [NSArray arrayWithObjects:&v59 count:1];
     v57 = @"imageExtent";
     [v28 extent];
     v58 = [CIVector vectorWithCGRect:?];
-    result = [CIColorGradientProcessor applyWithExtent:v42 inputs:[NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1] arguments:0 error:0.0, 0.0, 1.0, v41];
+    result = [CIColorGradientProcessor applyWithExtent:v42 inputs:[NSDictionary dictionaryWithObjects:&v58 forKeys:&v57 count:1] arguments:0 error:0.0, 0.0, 1.0, intValue];
     if (result)
     {
       v43 = result;
@@ -510,11 +510,11 @@ LABEL_11:
       [(NSNumber *)self->inputHeight floatValue];
       v48 = v47;
       v49 = [v44 imageByCroppingToRect:{0.0, 0.0, v46, v47}];
-      v50 = [(CISmartGradient *)self _scaleHuePi];
+      _scaleHuePi2 = [(CISmartGradient *)self _scaleHuePi];
       [v49 extent];
       v56[0] = v49;
       v56[1] = &off_79B50;
-      return [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(v50 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v56, 2), v51, v52, v53, v54), "imageByApplyingFilter:withInputParameters:", @"CIIPTtoSRGB", &off_7C4D8), "imageByClampingToExtent"), "imageByApplyingGaussianBlurWithSigma:", 500.0), "imageByCroppingToRect:", 0.0, 0.0, v46, v48), "imageByApplyingFilter:withInputParameters:", @"CIDither", &off_7C500}];
+      return [objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(objc_msgSend(_scaleHuePi2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v56, 2), v51, v52, v53, v54), "imageByApplyingFilter:withInputParameters:", @"CIIPTtoSRGB", &off_7C4D8), "imageByClampingToExtent"), "imageByApplyingGaussianBlurWithSigma:", 500.0), "imageByCroppingToRect:", 0.0, 0.0, v46, v48), "imageByApplyingFilter:withInputParameters:", @"CIDither", &off_7C500}];
     }
   }
 

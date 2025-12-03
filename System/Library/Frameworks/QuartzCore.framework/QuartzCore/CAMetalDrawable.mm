@@ -1,25 +1,25 @@
 @interface CAMetalDrawable
 - (BOOL)hasPresentedHandlers;
-- (CAMetalDrawable)initWithDrawablePrivate:(_CAMetalDrawablePrivate *)a3 layer:(id)a4 waitStart:(double)a5;
+- (CAMetalDrawable)initWithDrawablePrivate:(_CAMetalDrawablePrivate *)private layer:(id)layer waitStart:(double)start;
 - (CATimingFramePacingLatency)preferredLatency;
 - (CGRect)dirtyRect;
 - (MTLTexture)texture;
 - (id).cxx_construct;
-- (id)newTextureWithResourceIndex:(unint64_t)a3;
-- (void)addPresentScheduledHandler:(id)a3;
-- (void)addPresentedHandler:(id)a3;
+- (id)newTextureWithResourceIndex:(unint64_t)index;
+- (void)addPresentScheduledHandler:(id)handler;
+- (void)addPresentedHandler:(id)handler;
 - (void)dealloc;
-- (void)didPresentAtTime:(double)a3;
+- (void)didPresentAtTime:(double)time;
 - (void)didScheduledPresent;
 - (void)estimateTargets;
 - (void)present;
-- (void)presentAfterMinimumDuration:(double)a3;
-- (void)presentAtTime:(double)a3;
-- (void)presentWithOptions:(id)a3;
+- (void)presentAfterMinimumDuration:(double)duration;
+- (void)presentAtTime:(double)time;
+- (void)presentWithOptions:(id)options;
 - (void)release;
-- (void)releasePrivateReferences:(void *)a3;
-- (void)signalOnCommandQueue:(id)a3;
-- (void)waitOnCommandQueue:(id)a3;
+- (void)releasePrivateReferences:(void *)references;
+- (void)signalOnCommandQueue:(id)queue;
+- (void)waitOnCommandQueue:(id)queue;
 @end
 
 @implementation CAMetalDrawable
@@ -209,7 +209,7 @@ LABEL_53:
 
         timePresentCalled = self->_timePresentCalled;
         v29 = var9;
-        v30 = self;
+        selfCopy2 = self;
       }
 
       else
@@ -218,11 +218,11 @@ LABEL_69:
         timePresentCalled = self->_timePresentCalled;
         v27 = 0.014;
         v29 = var9;
-        v30 = self;
+        selfCopy2 = self;
         v26 = 2;
       }
 
-      layer_private_present(v29, v30, v27, timePresentCalled, v26);
+      layer_private_present(v29, selfCopy2, v27, timePresentCalled, v26);
       if (self->_priv && self->_timePresentCalled > self->_targetTimestamp + -0.001 && *(var9 + 4) && CAMetalLayerShouldDispatchLink(*(var9 + 3)))
       {
         [CADisplayLink dispatchDeferredDisplayLink:*(var9 + 4)];
@@ -351,8 +351,8 @@ LABEL_5:
     layer_private_release(var9, v6);
   }
 
-  v7 = [(CAMetalDrawable *)self didFinish];
-  if (MEMORY[0x1EEE88950] && !v7)
+  didFinish = [(CAMetalDrawable *)self didFinish];
+  if (MEMORY[0x1EEE88950] && !didFinish)
   {
     [(CAMetalDrawable *)self layer];
     [(CAMetalDrawable *)self drawableID];
@@ -383,17 +383,17 @@ LABEL_5:
 - (void)estimateTargets
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [objc_loadWeak(&self->_layer) currentDisplay];
-  if (v3)
+  currentDisplay = [objc_loadWeak(&self->_layer) currentDisplay];
+  if (currentDisplay)
   {
-    v4 = [v3 timingsControl];
-    if (v4)
+    timingsControl = [currentDisplay timingsControl];
+    if (timingsControl)
     {
-      v5 = v4;
+      v5 = timingsControl;
       v12[0] = 0;
       v12[1] = 0;
       v13 = 0;
-      CA::Display::DisplayTimingsControl::timing_reference(v12, v4, 0);
+      CA::Display::DisplayTimingsControl::timing_reference(v12, timingsControl, 0);
       if (*(v5 + 241))
       {
         LODWORD(v6) = 2;
@@ -448,7 +448,7 @@ LABEL_5:
   return self->_cachedTexture;
 }
 
-- (id)newTextureWithResourceIndex:(unint64_t)a3
+- (id)newTextureWithResourceIndex:(unint64_t)index
 {
   v12 = *MEMORY[0x1E69E9840];
   priv = self->_priv;
@@ -457,7 +457,7 @@ LABEL_5:
     var9 = priv->var9;
     os_unfair_lock_lock(var9 + 2);
     v7 = self->_priv;
-    drawable_texture = allocate_drawable_texture(v7->var12, v7->var10, v7->var1, v7->var2, v7->var4, a3, v7->var18, *(v7 + 129) & 1, @"CAMetalLayer Replay Drawable", v7->var7, *(v7->var9 + 28));
+    drawable_texture = allocate_drawable_texture(v7->var12, v7->var10, v7->var1, v7->var2, v7->var4, index, v7->var18, *(v7 + 129) & 1, @"CAMetalLayer Replay Drawable", v7->var7, *(v7->var9 + 28));
     os_unfair_lock_unlock(var9 + 2);
   }
 
@@ -481,9 +481,9 @@ LABEL_5:
   return drawable_texture;
 }
 
-- (void)presentWithOptions:(id)a3
+- (void)presentWithOptions:(id)options
 {
-  if (!a3)
+  if (!options)
   {
 LABEL_5:
 
@@ -491,7 +491,7 @@ LABEL_5:
     return;
   }
 
-  v5 = [objc_msgSend(a3 objectForKey:{@"presentationMode", "intValue"}];
+  v5 = [objc_msgSend(options objectForKey:{@"presentationMode", "intValue"}];
   if (v5 == 2)
   {
     priv = self->_priv;
@@ -500,7 +500,7 @@ LABEL_5:
       [MEMORY[0x1E695DF30] raise:@"CAMetalDrawableInvalidOperation" format:@"-presentAfterMinimumDuration should not be called when using CAMetalDisplayLink."];
     }
 
-    [objc_msgSend(a3 objectForKey:{@"presentTimeInterval", "doubleValue"}];
+    [objc_msgSend(options objectForKey:{@"presentTimeInterval", "doubleValue"}];
 
     [(CAMetalDrawable *)self presentAfterMinimumDuration:?];
   }
@@ -523,13 +523,13 @@ LABEL_5:
       [MEMORY[0x1E695DF30] raise:@"CAMetalDrawableInvalidOperation" format:@"-presentAtTime should not be called when using CAMetalDisplayLink."];
     }
 
-    [objc_msgSend(a3 objectForKey:{@"presentTimeInterval", "doubleValue"}];
+    [objc_msgSend(options objectForKey:{@"presentTimeInterval", "doubleValue"}];
 
     [(CAMetalDrawable *)self presentAtTime:?];
   }
 }
 
-- (void)presentAtTime:(double)a3
+- (void)presentAtTime:(double)time
 {
   v34 = *MEMORY[0x1E69E9840];
   priv = self->_priv;
@@ -544,14 +544,14 @@ LABEL_5:
     }
 
     [(CAMetalDrawable *)self targetPresentationTimestamp];
-    v8 = v7 < a3;
-    v9 = a3;
+    v8 = v7 < time;
+    timeCopy = time;
     if (!v8)
     {
       [(CAMetalDrawable *)self targetPresentationTimestamp];
     }
 
-    [(CAMetalDrawable *)self setTargetPresentationTimestamp:v9];
+    [(CAMetalDrawable *)self setTargetPresentationTimestamp:timeCopy];
     v10 = *(var9 + 74);
     if (v10)
     {
@@ -639,7 +639,7 @@ LABEL_19:
           LODWORD(v28) = 67240960;
           HIDWORD(v28) = ID;
           *v29 = 2050;
-          *&v29[2] = a3;
+          *&v29[2] = time;
           v30 = 1026;
           v31 = v11;
           v32 = 2050;
@@ -659,7 +659,7 @@ LABEL_19:
           LODWORD(v28) = 67240960;
           HIDWORD(v28) = v27;
           *v29 = 2050;
-          *&v29[2] = a3;
+          *&v29[2] = time;
           v30 = 1026;
           v31 = v11;
           v32 = 2050;
@@ -669,7 +669,7 @@ LABEL_19:
 
         _os_signpost_emit_with_name_impl(&dword_183AA6000, v19, OS_SIGNPOST_EVENT, v24, "ClientDrawable", v26, &v28, 0x22u);
 LABEL_45:
-        layer_private_present(var9, self, a3, self->_timePresentCalled, v11 | 0x20);
+        layer_private_present(var9, self, time, self->_timePresentCalled, v11 | 0x20);
         return;
       }
     }
@@ -717,28 +717,28 @@ void __26__CAMetalDrawable_texture__block_invoke()
   }
 }
 
-- (void)releasePrivateReferences:(void *)a3
+- (void)releasePrivateReferences:(void *)references
 {
   self->_priv = 0;
-  if (!a3)
+  if (!references)
   {
     __assert_rtn("[CAMetalDrawable releasePrivateReferences:]", "CAMetalLayer.mm", 2762, "priv");
   }
 
-  os_unfair_lock_lock(a3 + 52);
+  os_unfair_lock_lock(references + 52);
   if (![(CAMetalDrawable *)self status]&& [(NSMutableArray *)self->_presentedHandlers count])
   {
     [(CAMetalDrawable *)self setStatus:3];
     [(CAMetalDrawable *)self didPresentAtTime:0.0];
   }
 
-  os_unfair_lock_unlock(a3 + 52);
-  atomic_fetch_add(a3 + 35, 0xFFFFFFFF);
+  os_unfair_lock_unlock(references + 52);
+  atomic_fetch_add(references + 35, 0xFFFFFFFF);
 
-  layer_private_release(a3, v5);
+  layer_private_release(references, v5);
 }
 
-- (CAMetalDrawable)initWithDrawablePrivate:(_CAMetalDrawablePrivate *)a3 layer:(id)a4 waitStart:(double)a5
+- (CAMetalDrawable)initWithDrawablePrivate:(_CAMetalDrawablePrivate *)private layer:(id)layer waitStart:(double)start
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -747,18 +747,18 @@ void __26__CAMetalDrawable_texture__block_invoke()
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_layer, a4);
+    objc_storeWeak(&v7->_layer, layer);
 
-    v8->_priv = a3;
+    v8->_priv = private;
     v8->_cachedTexture = 0;
-    var9 = a3->var9;
+    var9 = private->var9;
     atomic_fetch_add(var9, 1u);
-    v8->_cachedTexture = a3->var11;
+    v8->_cachedTexture = private->var11;
     atomic_fetch_add(var9 + 35, 1u);
     v10 = *(MEMORY[0x1E695F040] + 16);
     v8->_dirtyRect.origin = *MEMORY[0x1E695F040];
     v8->_dirtyRect.size = v10;
-    v8->_drawableID = atomic_fetch_add(a3->var9 + 39, 1u);
+    v8->_drawableID = atomic_fetch_add(private->var9 + 39, 1u);
     if (present_on_finish_enabled(*(*(var9 + 2) + 48)))
     {
       v8->_sharedEvent = objc_alloc_init(MEMORY[0x1E696CE00]);
@@ -769,8 +769,8 @@ void __26__CAMetalDrawable_texture__block_invoke()
     v8->_updateSeed = 0;
     v8->_didComposite = 0;
     v8->_presentScheduledHandlers = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v8->_surfaceID = IOSurfaceGetID(a3->var10);
-    v8->_timeAcquired = a3->var8;
+    v8->_surfaceID = IOSurfaceGetID(private->var10);
+    v8->_timeAcquired = private->var8;
     if (MEMORY[0x1EEE88958])
     {
       [(CAMetalDrawable *)v8 layer];
@@ -784,7 +784,7 @@ void __26__CAMetalDrawable_texture__block_invoke()
   return v8;
 }
 
-- (void)addPresentScheduledHandler:(id)a3
+- (void)addPresentScheduledHandler:(id)handler
 {
   v10[5] = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_handlersLock);
@@ -795,7 +795,7 @@ void __26__CAMetalDrawable_texture__block_invoke()
     if (*(var9 + 9))
     {
       os_unfair_lock_lock(var9 + 46);
-      [(NSMutableArray *)self->_presentScheduledHandlers addObject:_Block_copy(a3)];
+      [(NSMutableArray *)self->_presentScheduledHandlers addObject:_Block_copy(handler)];
       if (([*(var9 + 24) containsObject:self] & 1) == 0)
       {
         [*(var9 + 24) addObject:self];
@@ -815,7 +815,7 @@ void __26__CAMetalDrawable_texture__block_invoke()
 
     else
     {
-      (*(a3 + 2))(a3, self);
+      (*(handler + 2))(handler, self);
     }
 
     os_unfair_lock_unlock(var9 + 2);
@@ -823,7 +823,7 @@ void __26__CAMetalDrawable_texture__block_invoke()
 
   else
   {
-    (*(a3 + 2))(a3, self);
+    (*(handler + 2))(handler, self);
   }
 
   os_unfair_lock_unlock(&self->_handlersLock);
@@ -845,22 +845,22 @@ void __46__CAMetalDrawable_addPresentScheduledHandler___block_invoke(uint64_t a1
 
 - (BOOL)hasPresentedHandlers
 {
-  v2 = self;
+  selfCopy = self;
   var9 = self->_priv->var9;
   os_unfair_lock_lock(var9 + 52);
-  LOBYTE(v2) = [(NSMutableArray *)v2->_presentedHandlers count]!= 0;
+  LOBYTE(selfCopy) = [(NSMutableArray *)selfCopy->_presentedHandlers count]!= 0;
   os_unfair_lock_unlock(var9 + 52);
-  return v2;
+  return selfCopy;
 }
 
-- (void)addPresentedHandler:(id)a3
+- (void)addPresentedHandler:(id)handler
 {
   v11 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_handlersLock);
   v5 = atomic_load(&self->_callbacksErased);
   if (v5)
   {
-    (*(a3 + 2))(a3, self);
+    (*(handler + 2))(handler, self);
   }
 
   else
@@ -868,7 +868,7 @@ void __46__CAMetalDrawable_addPresentScheduledHandler___block_invoke(uint64_t a1
     priv = self->_priv;
     if (priv && (var9 = priv->var9) != 0)
     {
-      v8 = _Block_copy(a3);
+      v8 = _Block_copy(handler);
       os_unfair_lock_lock(var9 + 52);
       [(NSMutableArray *)self->_presentedHandlers addObject:v8];
       os_unfair_lock_unlock(var9 + 52);
@@ -893,7 +893,7 @@ void __46__CAMetalDrawable_addPresentScheduledHandler___block_invoke(uint64_t a1
   os_unfair_lock_unlock(&self->_handlersLock);
 }
 
-- (void)presentAfterMinimumDuration:(double)a3
+- (void)presentAfterMinimumDuration:(double)duration
 {
   v31 = *MEMORY[0x1E69E9840];
   priv = self->_priv;
@@ -919,11 +919,11 @@ void __46__CAMetalDrawable_addPresentScheduledHandler___block_invoke(uint64_t a1
       if ((v7 & 0x2000) != 0 || !*(var9 + 4))
       {
 LABEL_15:
-        if (a3 > 0.0 || (v8 & 1) != 0)
+        if (duration > 0.0 || (v8 & 1) != 0)
         {
           if (v8)
           {
-            a3 = fmax(a3, 0.004);
+            duration = fmax(duration, 0.004);
           }
 
           v9 = 2;
@@ -932,7 +932,7 @@ LABEL_15:
         else
         {
           v9 = *(var9 + 74) & 1;
-          a3 = 0.0;
+          duration = 0.0;
         }
 
         IOSurfaceGetID(priv->var10);
@@ -956,7 +956,7 @@ LABEL_15:
         v12 = CATimeWithHostTime(v11);
         self->_timePresentCalled = v12;
         v13 = v12 - priv->var8;
-        [(CAMetalDrawable *)self setMinimumPresentationDuration:a3];
+        [(CAMetalDrawable *)self setMinimumPresentationDuration:duration];
         v25 = 0;
         *v26 = 0;
         mach_get_times();
@@ -1010,7 +1010,7 @@ LABEL_15:
           LODWORD(v25) = 67240960;
           HIDWORD(v25) = ID;
           *v26 = 2050;
-          *&v26[2] = a3;
+          *&v26[2] = duration;
           v27 = 1026;
           v28 = v9;
           v29 = 2050;
@@ -1030,7 +1030,7 @@ LABEL_15:
           LODWORD(v25) = 67240960;
           HIDWORD(v25) = v24;
           *v26 = 2050;
-          *&v26[2] = a3;
+          *&v26[2] = duration;
           v27 = 1026;
           v28 = v9;
           v29 = 2050;
@@ -1040,7 +1040,7 @@ LABEL_15:
 
         _os_signpost_emit_with_name_impl(&dword_183AA6000, v16, OS_SIGNPOST_EVENT, v21, "ClientDrawable", v23, &v25, 0x22u);
 LABEL_47:
-        layer_private_present(var9, self, a3, self->_timePresentCalled, v9 | 0x20);
+        layer_private_present(var9, self, duration, self->_timePresentCalled, v9 | 0x20);
         return;
       }
     }
@@ -1063,7 +1063,7 @@ LABEL_6:
   }
 }
 
-- (void)didPresentAtTime:(double)a3
+- (void)didPresentAtTime:(double)time
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -1099,20 +1099,20 @@ LABEL_6:
   [(NSMutableArray *)self->_presentedHandlers removeAllObjects];
 }
 
-- (void)signalOnCommandQueue:(id)a3
+- (void)signalOnCommandQueue:(id)queue
 {
   v13 = *MEMORY[0x1E69E9840];
   priv = self->_priv;
   var13 = priv->var13;
   if (!var13)
   {
-    var13 = [objc_msgSend(a3 "device")];
+    var13 = [objc_msgSend(queue "device")];
     priv = self->_priv;
     priv->var13 = var13;
   }
 
   ++priv->var14;
-  [a3 signalEvent:var13 value:?];
+  [queue signalEvent:var13 value:?];
   memset(v12, 0, sizeof(v12));
   v7 = self->_priv;
   var14 = v7->var14;
@@ -1124,7 +1124,7 @@ LABEL_6:
   CA::SurfaceUtil::CASurfaceAppendSharedEvent(var10, v10);
 }
 
-- (void)waitOnCommandQueue:(id)a3
+- (void)waitOnCommandQueue:(id)queue
 {
   priv = self->_priv;
   if (priv->var13)
@@ -1134,7 +1134,7 @@ LABEL_6:
     var13 = v6->var13;
     var14 = v6->var14;
 
-    [a3 waitForEvent:var13 value:var14];
+    [queue waitForEvent:var13 value:var14];
   }
 }
 

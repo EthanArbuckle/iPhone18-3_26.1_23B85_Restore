@@ -1,42 +1,42 @@
 @interface VCMediaNegotiationBlobVideoSettings
-+ (unsigned)hdrModesBitmapWithSupportedModes:(id)a3;
-+ (unsigned)storePixelFormatsInBitMap:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setVideoRuleCollections:(id)a3 featureStrings:(id)a4 isScreen:(BOOL)a5 isCellular16x9Capable:(BOOL)a6;
-- (VCMediaNegotiationBlobVideoSettings)initWithSSRC:(unsigned int)a3 allowRTCPFB:(BOOL)a4 videoRuleCollections:(id)a5 featureStrings:(id)a6 isCellular16x9Capable:(BOOL)a7 tilesPerFrame:(unsigned int)a8 ltrpEnabled:(BOOL)a9 pixelFormats:(id)a10 hdrModesSupported:(id)a11 customVideoWidth:(unsigned int)a12 customVideoHeight:(unsigned int)a13 enableInterleavedEncoding:(BOOL)a14;
-- (VCMediaNegotiationBlobVideoSettings)initWithScreenSSRC:(unsigned int)a3 allowRTCPFB:(BOOL)a4 videoRuleCollections:(id)a5 featureStrings:(id)a6 isCellular16x9Capable:(BOOL)a7 customVideoWidth:(unsigned int)a8 customVideoHeight:(unsigned int)a9 tilesPerFrame:(unsigned int)a10 ltrpEnabled:(BOOL)a11 pixelFormats:(id)a12 hdrModesSupported:(id)a13 fecEnabled:(BOOL)a14 rtxEnabled:(BOOL)a15 blackFrameOnClearScreenEnabled:(BOOL)a16 foveationSupported:(BOOL)a17;
-- (id)copyWithZone:(_NSZone *)a3;
++ (unsigned)hdrModesBitmapWithSupportedModes:(id)modes;
++ (unsigned)storePixelFormatsInBitMap:(id)map;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setVideoRuleCollections:(id)collections featureStrings:(id)strings isScreen:(BOOL)screen isCellular16x9Capable:(BOOL)capable;
+- (VCMediaNegotiationBlobVideoSettings)initWithSSRC:(unsigned int)c allowRTCPFB:(BOOL)b videoRuleCollections:(id)collections featureStrings:(id)strings isCellular16x9Capable:(BOOL)capable tilesPerFrame:(unsigned int)frame ltrpEnabled:(BOOL)enabled pixelFormats:(id)self0 hdrModesSupported:(id)self1 customVideoWidth:(unsigned int)self2 customVideoHeight:(unsigned int)self3 enableInterleavedEncoding:(BOOL)self4;
+- (VCMediaNegotiationBlobVideoSettings)initWithScreenSSRC:(unsigned int)c allowRTCPFB:(BOOL)b videoRuleCollections:(id)collections featureStrings:(id)strings isCellular16x9Capable:(BOOL)capable customVideoWidth:(unsigned int)width customVideoHeight:(unsigned int)height tilesPerFrame:(unsigned int)self0 ltrpEnabled:(BOOL)self1 pixelFormats:(id)self2 hdrModesSupported:(id)self3 fecEnabled:(BOOL)self4 rtxEnabled:(BOOL)self5 blackFrameOnClearScreenEnabled:(BOOL)self6 foveationSupported:(BOOL)self7;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)getPayloadSettingsForPayload:(int)a3;
+- (id)getPayloadSettingsForPayload:(int)payload;
 - (id)newCameraConfiguration;
 - (id)newFeatureStrings;
-- (id)newScreenConfigurationWithCameraConfiguration:(id)a3;
-- (id)newVideoRuleCollectionsForScreen:(BOOL)a3 isCellular16x9Capable:(BOOL)a4 isLocalConfig:(BOOL)a5;
-- (id)parameterSetStringFromPayloadSettings:(id)a3;
+- (id)newScreenConfigurationWithCameraConfiguration:(id)configuration;
+- (id)newVideoRuleCollectionsForScreen:(BOOL)screen isCellular16x9Capable:(BOOL)capable isLocalConfig:(BOOL)config;
+- (id)parameterSetStringFromPayloadSettings:(id)settings;
 - (unint64_t)hash;
 - (unsigned)customVideoHeight;
 - (unsigned)customVideoWidth;
 - (unsigned)tilesPerFrame;
-- (void)addVideoPayloadCollections:(id)a3;
-- (void)checkAndInsertRuleWithWidth:(unsigned int)a3 height:(unsigned int)a4 framerate:(int)a5 payload:(int)a6 priority:(double)a7 negotiationBitfield:(unsigned int *)a8 negotiationBit:(unsigned int)a9 rules:(id)a10 isCellular16x9Capable:(BOOL)a11;
-- (void)copyTo:(id)a3;
+- (void)addVideoPayloadCollections:(id)collections;
+- (void)checkAndInsertRuleWithWidth:(unsigned int)width height:(unsigned int)height framerate:(int)framerate payload:(int)payload priority:(double)priority negotiationBitfield:(unsigned int *)bitfield negotiationBit:(unsigned int)bit rules:(id)self0 isCellular16x9Capable:(BOOL)self1;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)prepareFormatString:(id)a3 format:(id)a4 formatIndex:(unsigned int)a5 preferredFormat:(unsigned int)a6;
-- (void)printScreenWithLogFile:(void *)a3;
-- (void)printVideoWithLogFile:(void *)a3;
-- (void)setHasBlackFrameOnClearScreenEnabled:(BOOL)a3;
-- (void)setHasCustomVideoWidth:(BOOL)a3;
-- (void)setHasEnableInterleavedEncoding:(BOOL)a3;
-- (void)setHasFecEnabled:(BOOL)a3;
-- (void)setHasFoveationSupported:(BOOL)a3;
-- (void)setHasHdrModesSupported:(BOOL)a3;
-- (void)setHasLtrpEnabled:(BOOL)a3;
-- (void)setHasPixelFormats:(BOOL)a3;
-- (void)setHasRtxEnabled:(BOOL)a3;
-- (void)setHasTilesPerFrame:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)prepareFormatString:(id)string format:(id)format formatIndex:(unsigned int)index preferredFormat:(unsigned int)preferredFormat;
+- (void)printScreenWithLogFile:(void *)file;
+- (void)printVideoWithLogFile:(void *)file;
+- (void)setHasBlackFrameOnClearScreenEnabled:(BOOL)enabled;
+- (void)setHasCustomVideoWidth:(BOOL)width;
+- (void)setHasEnableInterleavedEncoding:(BOOL)encoding;
+- (void)setHasFecEnabled:(BOOL)enabled;
+- (void)setHasFoveationSupported:(BOOL)supported;
+- (void)setHasHdrModesSupported:(BOOL)supported;
+- (void)setHasLtrpEnabled:(BOOL)enabled;
+- (void)setHasPixelFormats:(BOOL)formats;
+- (void)setHasRtxEnabled:(BOOL)enabled;
+- (void)setHasTilesPerFrame:(BOOL)frame;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobVideoSettings
@@ -50,7 +50,7 @@
   [(VCMediaNegotiationBlobVideoSettings *)&v3 dealloc];
 }
 
-- (void)addVideoPayloadCollections:(id)a3
+- (void)addVideoPayloadCollections:(id)collections
 {
   videoPayloadCollections = self->_videoPayloadCollections;
   if (!videoPayloadCollections)
@@ -59,7 +59,7 @@
     self->_videoPayloadCollections = videoPayloadCollections;
   }
 
-  [(NSMutableArray *)videoPayloadCollections addObject:a3];
+  [(NSMutableArray *)videoPayloadCollections addObject:collections];
 }
 
 - (unsigned)customVideoWidth
@@ -75,9 +75,9 @@
   }
 }
 
-- (void)setHasCustomVideoWidth:(BOOL)a3
+- (void)setHasCustomVideoWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 2;
   }
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)setHasTilesPerFrame:(BOOL)a3
+- (void)setHasTilesPerFrame:(BOOL)frame
 {
-  if (a3)
+  if (frame)
   {
     v3 = 16;
   }
@@ -131,9 +131,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasLtrpEnabled:(BOOL)a3
+- (void)setHasLtrpEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 512;
   }
@@ -146,9 +146,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasPixelFormats:(BOOL)a3
+- (void)setHasPixelFormats:(BOOL)formats
 {
-  if (a3)
+  if (formats)
   {
     v3 = 8;
   }
@@ -161,9 +161,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasHdrModesSupported:(BOOL)a3
+- (void)setHasHdrModesSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 4;
   }
@@ -176,9 +176,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasFecEnabled:(BOOL)a3
+- (void)setHasFecEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 128;
   }
@@ -191,9 +191,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasRtxEnabled:(BOOL)a3
+- (void)setHasRtxEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 1024;
   }
@@ -206,9 +206,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasBlackFrameOnClearScreenEnabled:(BOOL)a3
+- (void)setHasBlackFrameOnClearScreenEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 32;
   }
@@ -221,9 +221,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasFoveationSupported:(BOOL)a3
+- (void)setHasFoveationSupported:(BOOL)supported
 {
-  if (a3)
+  if (supported)
   {
     v3 = 256;
   }
@@ -236,9 +236,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasEnableInterleavedEncoding:(BOOL)a3
+- (void)setHasEnableInterleavedEncoding:(BOOL)encoding
 {
-  if (a3)
+  if (encoding)
   {
     v3 = 64;
   }
@@ -262,9 +262,9 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSSRC), @"rtpSSRC"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_allowRTCPFB), @"allowRTCPFB"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_rtpSSRC), @"rtpSSRC"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_allowRTCPFB), @"allowRTCPFB"}];
   if ([(NSMutableArray *)self->_videoPayloadCollections count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{-[NSMutableArray count](self->_videoPayloadCollections, "count")}];
@@ -296,13 +296,13 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"videoPayloadCollections"];
+    [dictionary setObject:v4 forKey:@"videoPayloadCollections"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_customVideoWidth), @"customVideoWidth"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_customVideoWidth), @"customVideoWidth"}];
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -321,7 +321,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_customVideoHeight), @"customVideoHeight"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_customVideoHeight), @"customVideoHeight"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -335,7 +335,7 @@ LABEL_13:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_tilesPerFrame), @"tilesPerFrame"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_tilesPerFrame), @"tilesPerFrame"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -349,7 +349,7 @@ LABEL_14:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_ltrpEnabled), @"ltrpEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_ltrpEnabled), @"ltrpEnabled"}];
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -363,7 +363,7 @@ LABEL_15:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_pixelFormats), @"pixelFormats"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_pixelFormats), @"pixelFormats"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -377,7 +377,7 @@ LABEL_16:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_hdrModesSupported), @"hdrModesSupported"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_hdrModesSupported), @"hdrModesSupported"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -391,7 +391,7 @@ LABEL_17:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_fecEnabled), @"fecEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_fecEnabled), @"fecEnabled"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -405,7 +405,7 @@ LABEL_18:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_rtxEnabled), @"rtxEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_rtxEnabled), @"rtxEnabled"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -416,17 +416,17 @@ LABEL_19:
     }
 
 LABEL_32:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_foveationSupported), @"foveationSupported"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_foveationSupported), @"foveationSupported"}];
     if ((*&self->_has & 0x40) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_21;
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_blackFrameOnClearScreenEnabled), @"blackFrameOnClearScreenEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_blackFrameOnClearScreenEnabled), @"blackFrameOnClearScreenEnabled"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -437,13 +437,13 @@ LABEL_20:
   if ((has & 0x40) != 0)
   {
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_enableInterleavedEncoding), @"enableInterleavedEncoding"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithBool:", self->_enableInterleavedEncoding), @"enableInterleavedEncoding"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
   PBDataWriterWriteUint32Field();
@@ -620,20 +620,20 @@ LABEL_19:
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 6) = self->_rtpSSRC;
-  *(a3 + 40) = self->_allowRTCPFB;
+  *(to + 6) = self->_rtpSSRC;
+  *(to + 40) = self->_allowRTCPFB;
   if ([(VCMediaNegotiationBlobVideoSettings *)self videoPayloadCollectionsCount])
   {
-    [a3 clearVideoPayloadCollections];
-    v5 = [(VCMediaNegotiationBlobVideoSettings *)self videoPayloadCollectionsCount];
-    if (v5)
+    [to clearVideoPayloadCollections];
+    videoPayloadCollectionsCount = [(VCMediaNegotiationBlobVideoSettings *)self videoPayloadCollectionsCount];
+    if (videoPayloadCollectionsCount)
     {
-      v6 = v5;
+      v6 = videoPayloadCollectionsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addVideoPayloadCollections:{-[VCMediaNegotiationBlobVideoSettings videoPayloadCollectionsAtIndex:](self, "videoPayloadCollectionsAtIndex:", i)}];
+        [to addVideoPayloadCollections:{-[VCMediaNegotiationBlobVideoSettings videoPayloadCollectionsAtIndex:](self, "videoPayloadCollectionsAtIndex:", i)}];
       }
     }
   }
@@ -641,8 +641,8 @@ LABEL_19:
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 3) = self->_customVideoWidth;
-    *(a3 + 24) |= 2u;
+    *(to + 3) = self->_customVideoWidth;
+    *(to + 24) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -661,8 +661,8 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(a3 + 2) = self->_customVideoHeight;
-  *(a3 + 24) |= 1u;
+  *(to + 2) = self->_customVideoHeight;
+  *(to + 24) |= 1u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -676,8 +676,8 @@ LABEL_8:
   }
 
 LABEL_20:
-  *(a3 + 7) = self->_tilesPerFrame;
-  *(a3 + 24) |= 0x10u;
+  *(to + 7) = self->_tilesPerFrame;
+  *(to + 24) |= 0x10u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -691,8 +691,8 @@ LABEL_9:
   }
 
 LABEL_21:
-  *(a3 + 45) = self->_ltrpEnabled;
-  *(a3 + 24) |= 0x200u;
+  *(to + 45) = self->_ltrpEnabled;
+  *(to + 24) |= 0x200u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -706,8 +706,8 @@ LABEL_10:
   }
 
 LABEL_22:
-  *(a3 + 5) = self->_pixelFormats;
-  *(a3 + 24) |= 8u;
+  *(to + 5) = self->_pixelFormats;
+  *(to + 24) |= 8u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -721,8 +721,8 @@ LABEL_11:
   }
 
 LABEL_23:
-  *(a3 + 4) = self->_hdrModesSupported;
-  *(a3 + 24) |= 4u;
+  *(to + 4) = self->_hdrModesSupported;
+  *(to + 24) |= 4u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -736,8 +736,8 @@ LABEL_12:
   }
 
 LABEL_24:
-  *(a3 + 43) = self->_fecEnabled;
-  *(a3 + 24) |= 0x80u;
+  *(to + 43) = self->_fecEnabled;
+  *(to + 24) |= 0x80u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -751,8 +751,8 @@ LABEL_13:
   }
 
 LABEL_25:
-  *(a3 + 46) = self->_rtxEnabled;
-  *(a3 + 24) |= 0x400u;
+  *(to + 46) = self->_rtxEnabled;
+  *(to + 24) |= 0x400u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -766,8 +766,8 @@ LABEL_14:
   }
 
 LABEL_26:
-  *(a3 + 41) = self->_blackFrameOnClearScreenEnabled;
-  *(a3 + 24) |= 0x20u;
+  *(to + 41) = self->_blackFrameOnClearScreenEnabled;
+  *(to + 24) |= 0x20u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -781,22 +781,22 @@ LABEL_15:
   }
 
 LABEL_27:
-  *(a3 + 44) = self->_foveationSupported;
-  *(a3 + 24) |= 0x100u;
+  *(to + 44) = self->_foveationSupported;
+  *(to + 24) |= 0x100u;
   if ((*&self->_has & 0x40) == 0)
   {
     return;
   }
 
 LABEL_16:
-  *(a3 + 42) = self->_enableInterleavedEncoding;
-  *(a3 + 24) |= 0x40u;
+  *(to + 42) = self->_enableInterleavedEncoding;
+  *(to + 24) |= 0x40u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_rtpSSRC;
   *(v5 + 40) = self->_allowRTCPFB;
   v17 = 0u;
@@ -818,7 +818,7 @@ LABEL_16:
           objc_enumerationMutation(videoPayloadCollections);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) copyWithZone:a3];
+        v11 = [*(*(&v15 + 1) + 8 * i) copyWithZone:zone];
         [v5 addVideoPayloadCollections:v11];
       }
 
@@ -983,37 +983,37 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_rtpSSRC != *(a3 + 6))
+    if (self->_rtpSSRC != *(equal + 6))
     {
       goto LABEL_80;
     }
 
     if (self->_allowRTCPFB)
     {
-      if ((*(a3 + 40) & 1) == 0)
+      if ((*(equal + 40) & 1) == 0)
       {
         goto LABEL_80;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
       goto LABEL_80;
     }
 
     videoPayloadCollections = self->_videoPayloadCollections;
-    if (!(videoPayloadCollections | *(a3 + 4)) || (v5 = [(NSMutableArray *)videoPayloadCollections isEqual:?]) != 0)
+    if (!(videoPayloadCollections | *(equal + 4)) || (v5 = [(NSMutableArray *)videoPayloadCollections isEqual:?]) != 0)
     {
       has = self->_has;
-      v8 = *(a3 + 24);
+      v8 = *(equal + 24);
       if ((has & 2) != 0)
       {
-        if ((v8 & 2) == 0 || self->_customVideoWidth != *(a3 + 3))
+        if ((v8 & 2) == 0 || self->_customVideoWidth != *(equal + 3))
         {
           goto LABEL_80;
         }
@@ -1026,7 +1026,7 @@ LABEL_19:
 
       if (has)
       {
-        if ((v8 & 1) == 0 || self->_customVideoHeight != *(a3 + 2))
+        if ((v8 & 1) == 0 || self->_customVideoHeight != *(equal + 2))
         {
           goto LABEL_80;
         }
@@ -1039,7 +1039,7 @@ LABEL_19:
 
       if ((has & 0x10) != 0)
       {
-        if ((v8 & 0x10) == 0 || self->_tilesPerFrame != *(a3 + 7))
+        if ((v8 & 0x10) == 0 || self->_tilesPerFrame != *(equal + 7))
         {
           goto LABEL_80;
         }
@@ -1052,33 +1052,33 @@ LABEL_19:
 
       if ((*&self->_has & 0x200) != 0)
       {
-        if ((*(a3 + 24) & 0x200) == 0)
+        if ((*(equal + 24) & 0x200) == 0)
         {
           goto LABEL_80;
         }
 
         if (self->_ltrpEnabled)
         {
-          if ((*(a3 + 45) & 1) == 0)
+          if ((*(equal + 45) & 1) == 0)
           {
             goto LABEL_80;
           }
         }
 
-        else if (*(a3 + 45))
+        else if (*(equal + 45))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 24) & 0x200) != 0)
+      else if ((*(equal + 24) & 0x200) != 0)
       {
         goto LABEL_80;
       }
 
       if ((has & 8) != 0)
       {
-        if ((v8 & 8) == 0 || self->_pixelFormats != *(a3 + 5))
+        if ((v8 & 8) == 0 || self->_pixelFormats != *(equal + 5))
         {
           goto LABEL_80;
         }
@@ -1091,7 +1091,7 @@ LABEL_19:
 
       if ((has & 4) != 0)
       {
-        if ((v8 & 4) == 0 || self->_hdrModesSupported != *(a3 + 4))
+        if ((v8 & 4) == 0 || self->_hdrModesSupported != *(equal + 4))
         {
           goto LABEL_80;
         }
@@ -1111,13 +1111,13 @@ LABEL_19:
 
         if (self->_fecEnabled)
         {
-          if ((*(a3 + 43) & 1) == 0)
+          if ((*(equal + 43) & 1) == 0)
           {
             goto LABEL_80;
           }
         }
 
-        else if (*(a3 + 43))
+        else if (*(equal + 43))
         {
           goto LABEL_80;
         }
@@ -1130,26 +1130,26 @@ LABEL_19:
 
       if ((*&self->_has & 0x400) != 0)
       {
-        if ((*(a3 + 24) & 0x400) == 0)
+        if ((*(equal + 24) & 0x400) == 0)
         {
           goto LABEL_80;
         }
 
         if (self->_rtxEnabled)
         {
-          if ((*(a3 + 46) & 1) == 0)
+          if ((*(equal + 46) & 1) == 0)
           {
             goto LABEL_80;
           }
         }
 
-        else if (*(a3 + 46))
+        else if (*(equal + 46))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 24) & 0x400) != 0)
+      else if ((*(equal + 24) & 0x400) != 0)
       {
         goto LABEL_80;
       }
@@ -1163,13 +1163,13 @@ LABEL_19:
 
         if (self->_blackFrameOnClearScreenEnabled)
         {
-          if ((*(a3 + 41) & 1) == 0)
+          if ((*(equal + 41) & 1) == 0)
           {
             goto LABEL_80;
           }
         }
 
-        else if (*(a3 + 41))
+        else if (*(equal + 41))
         {
           goto LABEL_80;
         }
@@ -1182,26 +1182,26 @@ LABEL_19:
 
       if ((*&self->_has & 0x100) != 0)
       {
-        if ((*(a3 + 24) & 0x100) == 0)
+        if ((*(equal + 24) & 0x100) == 0)
         {
           goto LABEL_80;
         }
 
         if (self->_foveationSupported)
         {
-          if ((*(a3 + 44) & 1) == 0)
+          if ((*(equal + 44) & 1) == 0)
           {
             goto LABEL_80;
           }
         }
 
-        else if (*(a3 + 44))
+        else if (*(equal + 44))
         {
           goto LABEL_80;
         }
       }
 
-      else if ((*(a3 + 24) & 0x100) != 0)
+      else if ((*(equal + 24) & 0x100) != 0)
       {
         goto LABEL_80;
       }
@@ -1216,13 +1216,13 @@ LABEL_19:
       {
         if (self->_enableInterleavedEncoding)
         {
-          if (*(a3 + 42))
+          if (*(equal + 42))
           {
             goto LABEL_82;
           }
         }
 
-        else if (!*(a3 + 42))
+        else if (!*(equal + 42))
         {
 LABEL_82:
           LOBYTE(v5) = 1;
@@ -1394,16 +1394,16 @@ LABEL_12:
   return (2654435761 * allowRTCPFB) ^ (2654435761 * rtpSSRC) ^ v5 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v16 = *MEMORY[0x1E69E9840];
-  self->_rtpSSRC = *(a3 + 6);
-  self->_allowRTCPFB = *(a3 + 40);
+  self->_rtpSSRC = *(from + 6);
+  self->_allowRTCPFB = *(from + 40);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = *(a3 + 4);
+  v5 = *(from + 4);
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (v6)
   {
@@ -1427,12 +1427,12 @@ LABEL_12:
     while (v7);
   }
 
-  v10 = *(a3 + 24);
+  v10 = *(from + 24);
   if ((v10 & 2) != 0)
   {
-    self->_customVideoWidth = *(a3 + 3);
+    self->_customVideoWidth = *(from + 3);
     *&self->_has |= 2u;
-    v10 = *(a3 + 24);
+    v10 = *(from + 24);
     if ((v10 & 1) == 0)
     {
 LABEL_10:
@@ -1450,9 +1450,9 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  self->_customVideoHeight = *(a3 + 2);
+  self->_customVideoHeight = *(from + 2);
   *&self->_has |= 1u;
-  v10 = *(a3 + 24);
+  v10 = *(from + 24);
   if ((v10 & 0x10) == 0)
   {
 LABEL_11:
@@ -1465,9 +1465,9 @@ LABEL_11:
   }
 
 LABEL_23:
-  self->_tilesPerFrame = *(a3 + 7);
+  self->_tilesPerFrame = *(from + 7);
   *&self->_has |= 0x10u;
-  v10 = *(a3 + 24);
+  v10 = *(from + 24);
   if ((v10 & 0x200) == 0)
   {
 LABEL_12:
@@ -1480,9 +1480,9 @@ LABEL_12:
   }
 
 LABEL_24:
-  self->_ltrpEnabled = *(a3 + 45);
+  self->_ltrpEnabled = *(from + 45);
   *&self->_has |= 0x200u;
-  v10 = *(a3 + 24);
+  v10 = *(from + 24);
   if ((v10 & 8) == 0)
   {
 LABEL_13:
@@ -1495,9 +1495,9 @@ LABEL_13:
   }
 
 LABEL_25:
-  self->_pixelFormats = *(a3 + 5);
+  self->_pixelFormats = *(from + 5);
   *&self->_has |= 8u;
-  v10 = *(a3 + 24);
+  v10 = *(from + 24);
   if ((v10 & 4) == 0)
   {
 LABEL_14:
@@ -1510,9 +1510,9 @@ LABEL_14:
   }
 
 LABEL_26:
-  self->_hdrModesSupported = *(a3 + 4);
+  self->_hdrModesSupported = *(from + 4);
   *&self->_has |= 4u;
-  v10 = *(a3 + 24);
+  v10 = *(from + 24);
   if ((v10 & 0x80) == 0)
   {
 LABEL_15:
@@ -1525,9 +1525,9 @@ LABEL_15:
   }
 
 LABEL_27:
-  self->_fecEnabled = *(a3 + 43);
+  self->_fecEnabled = *(from + 43);
   *&self->_has |= 0x80u;
-  v10 = *(a3 + 24);
+  v10 = *(from + 24);
   if ((v10 & 0x400) == 0)
   {
 LABEL_16:
@@ -1540,9 +1540,9 @@ LABEL_16:
   }
 
 LABEL_28:
-  self->_rtxEnabled = *(a3 + 46);
+  self->_rtxEnabled = *(from + 46);
   *&self->_has |= 0x400u;
-  v10 = *(a3 + 24);
+  v10 = *(from + 24);
   if ((v10 & 0x20) == 0)
   {
 LABEL_17:
@@ -1555,9 +1555,9 @@ LABEL_17:
   }
 
 LABEL_29:
-  self->_blackFrameOnClearScreenEnabled = *(a3 + 41);
+  self->_blackFrameOnClearScreenEnabled = *(from + 41);
   *&self->_has |= 0x20u;
-  v10 = *(a3 + 24);
+  v10 = *(from + 24);
   if ((v10 & 0x100) == 0)
   {
 LABEL_18:
@@ -1570,43 +1570,43 @@ LABEL_18:
   }
 
 LABEL_30:
-  self->_foveationSupported = *(a3 + 44);
+  self->_foveationSupported = *(from + 44);
   *&self->_has |= 0x100u;
-  if ((*(a3 + 24) & 0x40) == 0)
+  if ((*(from + 24) & 0x40) == 0)
   {
     return;
   }
 
 LABEL_19:
-  self->_enableInterleavedEncoding = *(a3 + 42);
+  self->_enableInterleavedEncoding = *(from + 42);
   *&self->_has |= 0x40u;
 }
 
-- (VCMediaNegotiationBlobVideoSettings)initWithSSRC:(unsigned int)a3 allowRTCPFB:(BOOL)a4 videoRuleCollections:(id)a5 featureStrings:(id)a6 isCellular16x9Capable:(BOOL)a7 tilesPerFrame:(unsigned int)a8 ltrpEnabled:(BOOL)a9 pixelFormats:(id)a10 hdrModesSupported:(id)a11 customVideoWidth:(unsigned int)a12 customVideoHeight:(unsigned int)a13 enableInterleavedEncoding:(BOOL)a14
+- (VCMediaNegotiationBlobVideoSettings)initWithSSRC:(unsigned int)c allowRTCPFB:(BOOL)b videoRuleCollections:(id)collections featureStrings:(id)strings isCellular16x9Capable:(BOOL)capable tilesPerFrame:(unsigned int)frame ltrpEnabled:(BOOL)enabled pixelFormats:(id)self0 hdrModesSupported:(id)self1 customVideoWidth:(unsigned int)self2 customVideoHeight:(unsigned int)self3 enableInterleavedEncoding:(BOOL)self4
 {
-  v15 = a7;
+  capableCopy = capable;
   v36 = *MEMORY[0x1E69E9840];
   v20 = [(VCMediaNegotiationBlobVideoSettings *)self init];
   v21 = v20;
   if (v20)
   {
-    v20->_rtpSSRC = a3;
-    v20->_allowRTCPFB = a4;
-    if (a8 >= 2)
+    v20->_rtpSSRC = c;
+    v20->_allowRTCPFB = b;
+    if (frame >= 2)
     {
       *&v20->_has |= 0x10u;
-      v20->_tilesPerFrame = a8;
+      v20->_tilesPerFrame = frame;
     }
 
-    if (a9)
+    if (enabled)
     {
       *&v20->_has |= 0x200u;
-      v20->_ltrpEnabled = a9;
+      v20->_ltrpEnabled = enabled;
     }
 
-    if ([(VCMediaNegotiationBlobVideoSettings *)v20 setVideoRuleCollections:a5 featureStrings:a6 isScreen:0 isCellular16x9Capable:v15])
+    if ([(VCMediaNegotiationBlobVideoSettings *)v20 setVideoRuleCollections:collections featureStrings:strings isScreen:0 isCellular16x9Capable:capableCopy])
     {
-      if (a10)
+      if (formats)
       {
         v22 = [VCMediaNegotiationBlobVideoSettings storePixelFormatsInBitMap:?];
         v21->_pixelFormats = v22;
@@ -1632,9 +1632,9 @@ LABEL_19:
         }
       }
 
-      if (a11)
+      if (supported)
       {
-        v26 = [VCMediaNegotiationBlobVideoSettings hdrModesBitmapWithSupportedModes:a11];
+        v26 = [VCMediaNegotiationBlobVideoSettings hdrModesBitmapWithSupportedModes:supported];
         v21->_hdrModesSupported = v26;
         if (v26)
         {
@@ -1658,22 +1658,22 @@ LABEL_19:
         }
       }
 
-      if (a12)
+      if (width)
       {
         *&v21->_has |= 2u;
-        v21->_customVideoWidth = a12;
+        v21->_customVideoWidth = width;
       }
 
-      if (a13)
+      if (height)
       {
         *&v21->_has |= 1u;
-        v21->_customVideoHeight = a13;
+        v21->_customVideoHeight = height;
       }
 
-      if (a14)
+      if (encoding)
       {
         *&v21->_has |= 0x40u;
-        v21->_enableInterleavedEncoding = a14;
+        v21->_enableInterleavedEncoding = encoding;
       }
     }
 
@@ -1695,9 +1695,9 @@ LABEL_19:
   return v21;
 }
 
-- (VCMediaNegotiationBlobVideoSettings)initWithScreenSSRC:(unsigned int)a3 allowRTCPFB:(BOOL)a4 videoRuleCollections:(id)a5 featureStrings:(id)a6 isCellular16x9Capable:(BOOL)a7 customVideoWidth:(unsigned int)a8 customVideoHeight:(unsigned int)a9 tilesPerFrame:(unsigned int)a10 ltrpEnabled:(BOOL)a11 pixelFormats:(id)a12 hdrModesSupported:(id)a13 fecEnabled:(BOOL)a14 rtxEnabled:(BOOL)a15 blackFrameOnClearScreenEnabled:(BOOL)a16 foveationSupported:(BOOL)a17
+- (VCMediaNegotiationBlobVideoSettings)initWithScreenSSRC:(unsigned int)c allowRTCPFB:(BOOL)b videoRuleCollections:(id)collections featureStrings:(id)strings isCellular16x9Capable:(BOOL)capable customVideoWidth:(unsigned int)width customVideoHeight:(unsigned int)height tilesPerFrame:(unsigned int)self0 ltrpEnabled:(BOOL)self1 pixelFormats:(id)self2 hdrModesSupported:(id)self3 fecEnabled:(BOOL)self4 rtxEnabled:(BOOL)self5 blackFrameOnClearScreenEnabled:(BOOL)self6 foveationSupported:(BOOL)self7
 {
-  v18 = a7;
+  capableCopy = capable;
   v39 = *MEMORY[0x1E69E9840];
   v23 = [(VCMediaNegotiationBlobVideoSettings *)self init];
   v24 = v23;
@@ -1706,41 +1706,41 @@ LABEL_19:
     return v24;
   }
 
-  v23->_rtpSSRC = a3;
-  v23->_allowRTCPFB = a4;
-  [(VCMediaNegotiationBlobVideoSettings *)v23 setBlackFrameOnClearScreenEnabled:a16];
-  if (a8)
+  v23->_rtpSSRC = c;
+  v23->_allowRTCPFB = b;
+  [(VCMediaNegotiationBlobVideoSettings *)v23 setBlackFrameOnClearScreenEnabled:screenEnabled];
+  if (width)
   {
     *&v24->_has |= 2u;
-    v24->_customVideoWidth = a8;
+    v24->_customVideoWidth = width;
   }
 
-  if (a9)
+  if (height)
   {
     *&v24->_has |= 1u;
-    v24->_customVideoHeight = a9;
+    v24->_customVideoHeight = height;
   }
 
-  if (a10 >= 2)
+  if (frame >= 2)
   {
     *&v24->_has |= 0x10u;
-    v24->_tilesPerFrame = a10;
+    v24->_tilesPerFrame = frame;
   }
 
-  if (a11)
+  if (enabled)
   {
     *&v24->_has |= 0x200u;
-    v24->_ltrpEnabled = a11;
+    v24->_ltrpEnabled = enabled;
   }
 
-  if (a14)
+  if (fecEnabled)
   {
     *&v24->_has |= 0x80u;
-    v24->_fecEnabled = a14;
-    if (!a15)
+    v24->_fecEnabled = fecEnabled;
+    if (!rtxEnabled)
     {
 LABEL_12:
-      if (!a17)
+      if (!foveationSupported)
       {
         goto LABEL_14;
       }
@@ -1749,24 +1749,24 @@ LABEL_12:
     }
   }
 
-  else if (!a15)
+  else if (!rtxEnabled)
   {
     goto LABEL_12;
   }
 
   *&v24->_has |= 0x400u;
-  v24->_rtxEnabled = a15;
-  if (a17)
+  v24->_rtxEnabled = rtxEnabled;
+  if (foveationSupported)
   {
 LABEL_13:
     *&v24->_has |= 0x100u;
-    v24->_foveationSupported = a17;
+    v24->_foveationSupported = foveationSupported;
   }
 
 LABEL_14:
-  if ([(VCMediaNegotiationBlobVideoSettings *)v24 setVideoRuleCollections:a5 featureStrings:a6 isScreen:1 isCellular16x9Capable:v18])
+  if ([(VCMediaNegotiationBlobVideoSettings *)v24 setVideoRuleCollections:collections featureStrings:strings isScreen:1 isCellular16x9Capable:capableCopy])
   {
-    if (a12)
+    if (formats)
     {
       v25 = [VCMediaNegotiationBlobVideoSettings storePixelFormatsInBitMap:?];
       v24->_pixelFormats = v25;
@@ -1792,9 +1792,9 @@ LABEL_14:
       }
     }
 
-    if (a13)
+    if (supported)
     {
-      v29 = [VCMediaNegotiationBlobVideoSettings hdrModesBitmapWithSupportedModes:a13];
+      v29 = [VCMediaNegotiationBlobVideoSettings hdrModesBitmapWithSupportedModes:supported];
       v24->_hdrModesSupported = v29;
       if (v29)
       {
@@ -1836,14 +1836,14 @@ LABEL_14:
   return v24;
 }
 
-+ (unsigned)storePixelFormatsInBitMap:(id)a3
++ (unsigned)storePixelFormatsInBitMap:(id)map
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  v4 = [map countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (!v4)
   {
     return 0;
@@ -1858,13 +1858,13 @@ LABEL_14:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(map);
       }
 
-      v9 = [*(*(&v12 + 1) + 8 * i) intValue];
-      if (v9 > 875836533)
+      intValue = [*(*(&v12 + 1) + 8 * i) intValue];
+      if (intValue > 875836533)
       {
-        switch(v9)
+        switch(intValue)
         {
           case 875836534:
             v6 |= 0x10u;
@@ -1880,7 +1880,7 @@ LABEL_14:
 
       else
       {
-        switch(v9)
+        switch(intValue)
         {
           case 875704422:
             v6 |= 1u;
@@ -1895,21 +1895,21 @@ LABEL_14:
       }
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    v5 = [map countByEnumeratingWithState:&v12 objects:v11 count:16];
   }
 
   while (v5);
   return v6;
 }
 
-+ (unsigned)hdrModesBitmapWithSupportedModes:(id)a3
++ (unsigned)hdrModesBitmapWithSupportedModes:(id)modes
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+  v4 = [modes countByEnumeratingWithState:&v12 objects:v11 count:16];
   if (!v4)
   {
     return 0;
@@ -1924,26 +1924,26 @@ LABEL_14:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(modes);
       }
 
-      v9 = [*(*(&v12 + 1) + 8 * i) intValue];
-      if (v9 > 1)
+      intValue = [*(*(&v12 + 1) + 8 * i) intValue];
+      if (intValue > 1)
       {
-        if (v9 == 2)
+        if (intValue == 2)
         {
           v6 |= 4u;
         }
 
-        else if (v9 == 3)
+        else if (intValue == 3)
         {
           v6 |= 8u;
         }
       }
 
-      else if (v9)
+      else if (intValue)
       {
-        if (v9 == 1)
+        if (intValue == 1)
         {
           v6 |= 2u;
         }
@@ -1955,16 +1955,16 @@ LABEL_14:
       }
     }
 
-    v5 = [a3 countByEnumeratingWithState:&v12 objects:v11 count:16];
+    v5 = [modes countByEnumeratingWithState:&v12 objects:v11 count:16];
   }
 
   while (v5);
   return v6;
 }
 
-- (id)getPayloadSettingsForPayload:(int)a3
+- (id)getPayloadSettingsForPayload:(int)payload
 {
-  v3 = *&a3;
+  v3 = *&payload;
   v18 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
@@ -2009,17 +2009,17 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)setVideoRuleCollections:(id)a3 featureStrings:(id)a4 isScreen:(BOOL)a5 isCellular16x9Capable:(BOOL)a6
+- (BOOL)setVideoRuleCollections:(id)collections featureStrings:(id)strings isScreen:(BOOL)screen isCellular16x9Capable:(BOOL)capable
 {
-  v163 = a6;
-  v6 = a5;
+  capableCopy = capable;
+  screenCopy = screen;
   v177 = *MEMORY[0x1E69E9840];
   v173 = 0u;
   v174 = 0u;
   v175 = 0u;
   v176 = 0u;
-  v10 = [a3 supportedPayloads];
-  v11 = [v10 countByEnumeratingWithState:&v173 objects:v172 count:16];
+  supportedPayloads = [collections supportedPayloads];
+  v11 = [supportedPayloads countByEnumeratingWithState:&v173 objects:v172 count:16];
   if (!v11)
   {
     LOBYTE(v150) = 1;
@@ -2028,7 +2028,7 @@ LABEL_14:
 
   v12 = v11;
   v13 = *v174;
-  v155 = self;
+  selfCopy = self;
   v157 = *v174;
 LABEL_3:
   v156 = v12;
@@ -2036,13 +2036,13 @@ LABEL_3:
 LABEL_4:
   if (*v174 != v13)
   {
-    objc_enumerationMutation(v10);
+    objc_enumerationMutation(supportedPayloads);
   }
 
   v158 = v14;
   v15 = *(*(&v173 + 1) + 8 * v14);
   v16 = -[VCMediaNegotiationBlobVideoSettings getPayloadSettingsForPayload:](self, "getPayloadSettingsForPayload:", [v15 unsignedIntValue]);
-  [v16 setFeatureString:{objc_msgSend(a4, "objectForKey:", v15)}];
+  [v16 setFeatureString:{objc_msgSend(strings, "objectForKey:", v15)}];
   v17 = VCVideoParamaterSets_DefaultSupportedSets([v15 unsignedIntValue]);
   v18 = v17;
   if (v17)
@@ -2088,7 +2088,7 @@ LABEL_10:
 LABEL_11:
   if ([v16 parameterSet])
   {
-    v154 = a4;
+    stringsCopy = strings;
     v19 = 1;
     v160 = v16;
     v161 = v15;
@@ -2112,7 +2112,7 @@ LABEL_11:
       do
       {
         v23 = v22;
-        v24 = [a3 getVideoRulesForTransport:v20 payload:objc_msgSend(v15 encodingType:{"unsignedIntValue", v154), v22}];
+        v24 = [collections getVideoRulesForTransport:v20 payload:objc_msgSend(v15 encodingType:{"unsignedIntValue", stringsCopy), v22}];
         if (!v24)
         {
           goto LABEL_280;
@@ -2157,10 +2157,10 @@ LABEL_11:
             }
 
             v32 = *(*(&v168 + 1) + 8 * v31);
-            v33 = [v32 iWidth];
-            if (v6)
+            iWidth = [v32 iWidth];
+            if (screenCopy)
             {
-              if (v33 == 1024 && [v32 iHeight] == 768 && (objc_msgSend(v32, "fRate"), v34 == 30.0))
+              if (iWidth == 1024 && [v32 iHeight] == 768 && (objc_msgSend(v32, "fRate"), v34 == 30.0))
               {
 LABEL_64:
                 [v32 fPref];
@@ -2400,7 +2400,7 @@ LABEL_203:
               goto LABEL_204;
             }
 
-            if (v33 == 320 && [v32 iHeight] == 240)
+            if (iWidth == 320 && [v32 iHeight] == 240)
             {
               [v32 fRate];
               if (v47 == 15.0)
@@ -2728,10 +2728,10 @@ LABEL_234:
 
             if ([v32 iWidth] != 1088 || objc_msgSend(v32, "iHeight") != 1088 || (objc_msgSend(v32, "fRate"), v130 != 15.0) && (objc_msgSend(v32, "fRate"), v131 != 30.0) && (objc_msgSend(v32, "fRate"), v132 != 60.0))
             {
-              v133 = [v32 iWidth];
+              iWidth2 = [v32 iWidth];
               if (v166 == 1)
               {
-                if (v133 == 1280 && [v32 iHeight] == 720)
+                if (iWidth2 == 1280 && [v32 iHeight] == 720)
                 {
                   [v32 fRate];
                   if (v134 == 15.0)
@@ -2764,12 +2764,12 @@ LABEL_234:
                   }
                 }
 
-                v133 = [v32 iWidth];
+                iWidth2 = [v32 iWidth];
               }
 
-              if (v163)
+              if (capableCopy)
               {
-                if (v133 != 1280 || [v32 iHeight] != 720 || (objc_msgSend(v32, "fRate"), v140 != 15.0))
+                if (iWidth2 != 1280 || [v32 iHeight] != 720 || (objc_msgSend(v32, "fRate"), v140 != 15.0))
                 {
                   if ([v32 iWidth] != 1280 || objc_msgSend(v32, "iHeight") != 720 || (objc_msgSend(v32, "fRate"), v145 != 30.0))
                   {
@@ -2824,7 +2824,7 @@ LABEL_154:
 
               else
               {
-                if (v133 != 1280)
+                if (iWidth2 != 1280)
                 {
                   goto LABEL_271;
                 }
@@ -2882,11 +2882,11 @@ LABEL_280:
       {
         v13 = v157;
         v14 = v158 + 1;
-        self = v155;
-        a4 = v154;
+        self = selfCopy;
+        strings = stringsCopy;
         if (v158 + 1 == v156)
         {
-          v150 = [v10 countByEnumeratingWithState:&v173 objects:v172 count:16];
+          v150 = [supportedPayloads countByEnumeratingWithState:&v173 objects:v172 count:16];
           v13 = v157;
           v12 = v150;
           LOBYTE(v150) = 1;
@@ -2920,25 +2920,25 @@ LABEL_294:
   return v150;
 }
 
-- (void)checkAndInsertRuleWithWidth:(unsigned int)a3 height:(unsigned int)a4 framerate:(int)a5 payload:(int)a6 priority:(double)a7 negotiationBitfield:(unsigned int *)a8 negotiationBit:(unsigned int)a9 rules:(id)a10 isCellular16x9Capable:(BOOL)a11
+- (void)checkAndInsertRuleWithWidth:(unsigned int)width height:(unsigned int)height framerate:(int)framerate payload:(int)payload priority:(double)priority negotiationBitfield:(unsigned int *)bitfield negotiationBit:(unsigned int)bit rules:(id)self0 isCellular16x9Capable:(BOOL)self1
 {
   v58 = *MEMORY[0x1E69E9840];
-  if ((*a8 & a9) != 0)
+  if ((*bitfield & bit) != 0)
   {
-    v14 = *&a6;
-    v16 = *&a4;
-    v17 = *&a3;
+    v14 = *&payload;
+    v16 = *&height;
+    v17 = *&width;
     v18 = [VCVideoRule alloc];
-    v35 = __PAIR64__(a5, v16);
-    *&v19 = a5;
-    *&v20 = a7;
+    v35 = __PAIR64__(framerate, v16);
+    *&v19 = framerate;
+    *&v20 = priority;
     v36 = v14;
     v21 = [(VCVideoRule *)v18 initWithFrameWidth:v17 frameHeight:v16 frameRate:v14 payload:v19 priority:v20];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v22 = [a10 countByEnumeratingWithState:&v54 objects:v53 count:16];
+    v22 = [rules countByEnumeratingWithState:&v54 objects:v53 count:16];
     if (v22)
     {
       v23 = v22;
@@ -2949,23 +2949,23 @@ LABEL_294:
         {
           if (*v55 != v24)
           {
-            objc_enumerationMutation(a10);
+            objc_enumerationMutation(rules);
           }
 
           v26 = *(*(&v54 + 1) + 8 * i);
-          v27 = [v26 iWidth];
-          if (v27 == [(VCVideoRule *)v21 iWidth])
+          iWidth = [v26 iWidth];
+          if (iWidth == [(VCVideoRule *)v21 iWidth])
           {
-            v28 = [v26 iHeight];
-            if (v28 == [(VCVideoRule *)v21 iHeight])
+            iHeight = [v26 iHeight];
+            if (iHeight == [(VCVideoRule *)v21 iHeight])
             {
               [v26 fRate];
               v30 = v29;
               [(VCVideoRule *)v21 fRate];
               if (v30 == v31)
               {
-                v32 = [v26 iPayload];
-                if (v32 == [(VCVideoRule *)v21 iPayload])
+                iPayload = [v26 iPayload];
+                if (iPayload == [(VCVideoRule *)v21 iPayload])
                 {
                   if (VRTraceGetErrorLogLevelForModule() >= 5)
                   {
@@ -2988,7 +2988,7 @@ LABEL_294:
                       v49 = 1024;
                       v50 = v36;
                       v51 = 1024;
-                      v52 = a9;
+                      bitCopy = bit;
                       _os_log_impl(&dword_1DB56E000, v34, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Found duplicated rule for %dx%d (%d) payload=%d 0x%x", buf, 0x3Au);
                     }
                   }
@@ -3000,7 +3000,7 @@ LABEL_294:
           }
         }
 
-        v23 = [a10 countByEnumeratingWithState:&v54 objects:v53 count:16];
+        v23 = [rules countByEnumeratingWithState:&v54 objects:v53 count:16];
         if (v23)
         {
           continue;
@@ -3010,17 +3010,17 @@ LABEL_294:
       }
     }
 
-    [a10 addObject:v21];
+    [rules addObject:v21];
 LABEL_17:
 
-    *a8 &= ~a9;
+    *bitfield &= ~bit;
   }
 }
 
-- (id)newVideoRuleCollectionsForScreen:(BOOL)a3 isCellular16x9Capable:(BOOL)a4 isLocalConfig:(BOOL)a5
+- (id)newVideoRuleCollectionsForScreen:(BOOL)screen isCellular16x9Capable:(BOOL)capable isLocalConfig:(BOOL)config
 {
-  v5 = a4;
-  v156 = a3;
+  capableCopy = capable;
+  screenCopy = screen;
   v181 = *MEMORY[0x1E69E9840];
   v155 = objc_alloc_init(VCVideoRuleCollections);
   if (v155)
@@ -3046,15 +3046,15 @@ LABEL_17:
 
           v150 = v7;
           v8 = *(*(&v177 + 1) + 8 * v7);
-          v9 = [v8 payload];
-          [(VCVideoRuleCollections *)v155 addSupportedPayload:v9];
+          payload = [v8 payload];
+          [(VCVideoRuleCollections *)v155 addSupportedPayload:payload];
           v174 = 0u;
           v175 = 0u;
           v172 = 0u;
           v173 = 0u;
           v154 = v8;
-          v152 = [v8 videoRuleCollections];
-          v10 = [v152 countByEnumeratingWithState:&v172 objects:v171 count:16];
+          videoRuleCollections = [v8 videoRuleCollections];
+          v10 = [videoRuleCollections countByEnumeratingWithState:&v172 objects:v171 count:16];
           if (!v10)
           {
             goto LABEL_219;
@@ -3068,12 +3068,12 @@ LABEL_17:
             {
               if (*v173 != v153)
               {
-                objc_enumerationMutation(v152);
+                objc_enumerationMutation(videoRuleCollections);
               }
 
               v13 = *(*(&v172 + 1) + 8 * i);
-              v158 = [v13 formats];
-              v157 = [v13 formatsExt1];
+              formats = [v13 formats];
+              formatsExt1 = [v13 formatsExt1];
               v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
               if (!v14)
               {
@@ -3092,11 +3092,11 @@ LABEL_17:
                 v16 = 0.5;
               }
 
-              if (v156)
+              if (screenCopy)
               {
-                LOBYTE(v87) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:30 payload:v9 priority:&v158 negotiationBitfield:1 negotiationBit:v16 rules:v15 isCellular16x9Capable:v87];
-                v158 &= ~1u;
+                LOBYTE(v87) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:30 payload:payload priority:&formats negotiationBitfield:1 negotiationBit:v16 rules:v15 isCellular16x9Capable:v87];
+                formats &= ~1u;
                 if (([v13 preferredFormat] & 2) != 0)
                 {
                   v17 = 1.0;
@@ -3107,9 +3107,9 @@ LABEL_17:
                   v17 = 0.5;
                 }
 
-                LOBYTE(v88) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:60 payload:v9 priority:&v158 negotiationBitfield:2 negotiationBit:v17 rules:v15 isCellular16x9Capable:v88];
-                v158 &= ~2u;
+                LOBYTE(v88) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:60 payload:payload priority:&formats negotiationBitfield:2 negotiationBit:v17 rules:v15 isCellular16x9Capable:v88];
+                formats &= ~2u;
                 if (([v13 preferredFormat] & 4) != 0)
                 {
                   v18 = 1.0;
@@ -3120,9 +3120,9 @@ LABEL_17:
                   v18 = 0.5;
                 }
 
-                LOBYTE(v89) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1136 height:640 framerate:30 payload:v9 priority:&v158 negotiationBitfield:4 negotiationBit:v18 rules:v15 isCellular16x9Capable:v89];
-                v158 &= ~4u;
+                LOBYTE(v89) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1136 height:640 framerate:30 payload:payload priority:&formats negotiationBitfield:4 negotiationBit:v18 rules:v15 isCellular16x9Capable:v89];
+                formats &= ~4u;
                 if (([v13 preferredFormat] & 8) != 0)
                 {
                   v19 = 1.0;
@@ -3133,9 +3133,9 @@ LABEL_17:
                   v19 = 0.5;
                 }
 
-                LOBYTE(v90) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1136 height:640 framerate:60 payload:v9 priority:&v158 negotiationBitfield:8 negotiationBit:v19 rules:v15 isCellular16x9Capable:v90];
-                v158 &= ~8u;
+                LOBYTE(v90) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1136 height:640 framerate:60 payload:payload priority:&formats negotiationBitfield:8 negotiationBit:v19 rules:v15 isCellular16x9Capable:v90];
+                formats &= ~8u;
                 if (([v13 preferredFormat] & 0x4000) != 0)
                 {
                   v20 = 1.0;
@@ -3146,9 +3146,9 @@ LABEL_17:
                   v20 = 0.5;
                 }
 
-                LOBYTE(v91) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x4000 negotiationBit:v20 rules:v15 isCellular16x9Capable:v91];
-                v158 &= ~0x4000u;
+                LOBYTE(v91) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:30 payload:payload priority:&formats negotiationBitfield:0x4000 negotiationBit:v20 rules:v15 isCellular16x9Capable:v91];
+                formats &= ~0x4000u;
                 if (([v13 preferredFormat] & 0x8000) != 0)
                 {
                   v21 = 1.0;
@@ -3159,9 +3159,9 @@ LABEL_17:
                   v21 = 0.5;
                 }
 
-                LOBYTE(v92) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x8000 negotiationBit:v21 rules:v15 isCellular16x9Capable:v92];
-                v158 &= ~0x8000u;
+                LOBYTE(v92) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:60 payload:payload priority:&formats negotiationBitfield:0x8000 negotiationBit:v21 rules:v15 isCellular16x9Capable:v92];
+                formats &= ~0x8000u;
                 if (([v13 preferredFormat] & 0x10) != 0)
                 {
                   v22 = 1.0;
@@ -3172,9 +3172,9 @@ LABEL_17:
                   v22 = 0.5;
                 }
 
-                LOBYTE(v93) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1334 height:750 framerate:30 payload:v9 priority:&v158 negotiationBitfield:16 negotiationBit:v22 rules:v15 isCellular16x9Capable:v93];
-                v158 &= ~0x10u;
+                LOBYTE(v93) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1334 height:750 framerate:30 payload:payload priority:&formats negotiationBitfield:16 negotiationBit:v22 rules:v15 isCellular16x9Capable:v93];
+                formats &= ~0x10u;
                 if (([v13 preferredFormat] & 0x20) != 0)
                 {
                   v23 = 1.0;
@@ -3185,9 +3185,9 @@ LABEL_17:
                   v23 = 0.5;
                 }
 
-                LOBYTE(v94) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1334 height:750 framerate:60 payload:v9 priority:&v158 negotiationBitfield:32 negotiationBit:v23 rules:v15 isCellular16x9Capable:v94];
-                v158 &= ~0x20u;
+                LOBYTE(v94) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1334 height:750 framerate:60 payload:payload priority:&formats negotiationBitfield:32 negotiationBit:v23 rules:v15 isCellular16x9Capable:v94];
+                formats &= ~0x20u;
                 if (([v13 preferredFormat] & 0x40) != 0)
                 {
                   v24 = 1.0;
@@ -3198,9 +3198,9 @@ LABEL_17:
                   v24 = 0.5;
                 }
 
-                LOBYTE(v95) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1664 height:1248 framerate:30 payload:v9 priority:&v158 negotiationBitfield:64 negotiationBit:v24 rules:v15 isCellular16x9Capable:v95];
-                v158 &= ~0x40u;
+                LOBYTE(v95) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1664 height:1248 framerate:30 payload:payload priority:&formats negotiationBitfield:64 negotiationBit:v24 rules:v15 isCellular16x9Capable:v95];
+                formats &= ~0x40u;
                 if (([v13 preferredFormat] & 0x80) != 0)
                 {
                   v25 = 1.0;
@@ -3211,9 +3211,9 @@ LABEL_17:
                   v25 = 0.5;
                 }
 
-                LOBYTE(v96) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1664 height:1248 framerate:60 payload:v9 priority:&v158 negotiationBitfield:128 negotiationBit:v25 rules:v15 isCellular16x9Capable:v96];
-                v158 &= ~0x80u;
+                LOBYTE(v96) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1664 height:1248 framerate:60 payload:payload priority:&formats negotiationBitfield:128 negotiationBit:v25 rules:v15 isCellular16x9Capable:v96];
+                formats &= ~0x80u;
                 if (([v13 preferredFormat] & 0x100) != 0)
                 {
                   v26 = 1.0;
@@ -3224,9 +3224,9 @@ LABEL_17:
                   v26 = 0.5;
                 }
 
-                LOBYTE(v97) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1080 framerate:30 payload:v9 priority:&v158 negotiationBitfield:256 negotiationBit:v26 rules:v15 isCellular16x9Capable:v97];
-                v158 &= ~0x100u;
+                LOBYTE(v97) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1080 framerate:30 payload:payload priority:&formats negotiationBitfield:256 negotiationBit:v26 rules:v15 isCellular16x9Capable:v97];
+                formats &= ~0x100u;
                 if (([v13 preferredFormat] & 0x200) != 0)
                 {
                   v27 = 1.0;
@@ -3237,9 +3237,9 @@ LABEL_17:
                   v27 = 0.5;
                 }
 
-                LOBYTE(v98) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1080 framerate:60 payload:v9 priority:&v158 negotiationBitfield:512 negotiationBit:v27 rules:v15 isCellular16x9Capable:v98];
-                v158 &= ~0x200u;
+                LOBYTE(v98) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1080 framerate:60 payload:payload priority:&formats negotiationBitfield:512 negotiationBit:v27 rules:v15 isCellular16x9Capable:v98];
+                formats &= ~0x200u;
                 if (([v13 preferredFormat] & 0x400) != 0)
                 {
                   v28 = 1.0;
@@ -3250,9 +3250,9 @@ LABEL_17:
                   v28 = 0.5;
                 }
 
-                LOBYTE(v99) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2208 height:1242 framerate:30 payload:v9 priority:&v158 negotiationBitfield:1024 negotiationBit:v28 rules:v15 isCellular16x9Capable:v99];
-                v158 &= ~0x400u;
+                LOBYTE(v99) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2208 height:1242 framerate:30 payload:payload priority:&formats negotiationBitfield:1024 negotiationBit:v28 rules:v15 isCellular16x9Capable:v99];
+                formats &= ~0x400u;
                 if (([v13 preferredFormat] & 0x800) != 0)
                 {
                   v29 = 1.0;
@@ -3263,9 +3263,9 @@ LABEL_17:
                   v29 = 0.5;
                 }
 
-                LOBYTE(v100) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2208 height:1242 framerate:60 payload:v9 priority:&v158 negotiationBitfield:2048 negotiationBit:v29 rules:v15 isCellular16x9Capable:v100];
-                v158 &= ~0x800u;
+                LOBYTE(v100) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2208 height:1242 framerate:60 payload:payload priority:&formats negotiationBitfield:2048 negotiationBit:v29 rules:v15 isCellular16x9Capable:v100];
+                formats &= ~0x800u;
                 if (([v13 preferredFormat] & 0x1000) != 0)
                 {
                   v30 = 1.0;
@@ -3276,9 +3276,9 @@ LABEL_17:
                   v30 = 0.5;
                 }
 
-                LOBYTE(v101) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2048 height:1536 framerate:30 payload:v9 priority:&v158 negotiationBitfield:4096 negotiationBit:v30 rules:v15 isCellular16x9Capable:v101];
-                v158 &= ~0x1000u;
+                LOBYTE(v101) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2048 height:1536 framerate:30 payload:payload priority:&formats negotiationBitfield:4096 negotiationBit:v30 rules:v15 isCellular16x9Capable:v101];
+                formats &= ~0x1000u;
                 if (([v13 preferredFormat] & 0x2000) != 0)
                 {
                   v31 = 1.0;
@@ -3289,9 +3289,9 @@ LABEL_17:
                   v31 = 0.5;
                 }
 
-                LOBYTE(v102) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2048 height:1536 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x2000 negotiationBit:v31 rules:v15 isCellular16x9Capable:v102];
-                v158 &= ~0x2000u;
+                LOBYTE(v102) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2048 height:1536 framerate:60 payload:payload priority:&formats negotiationBitfield:0x2000 negotiationBit:v31 rules:v15 isCellular16x9Capable:v102];
+                formats &= ~0x2000u;
                 if (([v13 preferredFormat] & 0x10000) != 0)
                 {
                   v32 = 1.0;
@@ -3302,9 +3302,9 @@ LABEL_17:
                   v32 = 0.5;
                 }
 
-                LOBYTE(v103) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:896 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x10000 negotiationBit:v32 rules:v15 isCellular16x9Capable:v103];
-                v158 &= ~0x10000u;
+                LOBYTE(v103) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:896 framerate:30 payload:payload priority:&formats negotiationBitfield:0x10000 negotiationBit:v32 rules:v15 isCellular16x9Capable:v103];
+                formats &= ~0x10000u;
                 if (([v13 preferredFormat] & 0x20000) != 0)
                 {
                   v33 = 1.0;
@@ -3315,9 +3315,9 @@ LABEL_17:
                   v33 = 0.5;
                 }
 
-                LOBYTE(v104) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:896 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x20000 negotiationBit:v33 rules:v15 isCellular16x9Capable:v104];
-                v158 &= ~0x20000u;
+                LOBYTE(v104) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:896 framerate:60 payload:payload priority:&formats negotiationBitfield:0x20000 negotiationBit:v33 rules:v15 isCellular16x9Capable:v104];
+                formats &= ~0x20000u;
                 if (([v13 preferredFormat] & 0x40000) != 0)
                 {
                   v34 = 1.0;
@@ -3328,9 +3328,9 @@ LABEL_17:
                   v34 = 0.5;
                 }
 
-                LOBYTE(v105) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2732 height:2048 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x40000 negotiationBit:v34 rules:v15 isCellular16x9Capable:v105];
-                v158 &= ~0x40000u;
+                LOBYTE(v105) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2732 height:2048 framerate:60 payload:payload priority:&formats negotiationBitfield:0x40000 negotiationBit:v34 rules:v15 isCellular16x9Capable:v105];
+                formats &= ~0x40000u;
                 if (([v13 preferredFormat] & 0x80000) != 0)
                 {
                   v35 = 1.0;
@@ -3341,9 +3341,9 @@ LABEL_17:
                   v35 = 0.5;
                 }
 
-                LOBYTE(v106) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2388 height:1668 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x80000 negotiationBit:v35 rules:v15 isCellular16x9Capable:v106];
-                v158 &= ~0x80000u;
+                LOBYTE(v106) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2388 height:1668 framerate:60 payload:payload priority:&formats negotiationBitfield:0x80000 negotiationBit:v35 rules:v15 isCellular16x9Capable:v106];
+                formats &= ~0x80000u;
                 if (([v13 preferredFormat] & 0x100000) != 0)
                 {
                   v36 = 1.0;
@@ -3354,9 +3354,9 @@ LABEL_17:
                   v36 = 0.5;
                 }
 
-                LOBYTE(v107) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2224 height:1668 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x100000 negotiationBit:v36 rules:v15 isCellular16x9Capable:v107];
-                v158 &= ~0x100000u;
+                LOBYTE(v107) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:2224 height:1668 framerate:60 payload:payload priority:&formats negotiationBitfield:0x100000 negotiationBit:v36 rules:v15 isCellular16x9Capable:v107];
+                formats &= ~0x100000u;
                 if (([v13 preferredFormat] & 0x200000) != 0)
                 {
                   v37 = 1.0;
@@ -3367,9 +3367,9 @@ LABEL_17:
                   v37 = 0.5;
                 }
 
-                LOBYTE(v108) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:3072 height:1728 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x200000 negotiationBit:v37 rules:v15 isCellular16x9Capable:v108];
-                v158 &= ~0x200000u;
+                LOBYTE(v108) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:3072 height:1728 framerate:60 payload:payload priority:&formats negotiationBitfield:0x200000 negotiationBit:v37 rules:v15 isCellular16x9Capable:v108];
+                formats &= ~0x200000u;
                 if (([v13 preferredFormat] & 0x400000) != 0)
                 {
                   v38 = 1.0;
@@ -3380,9 +3380,9 @@ LABEL_17:
                   v38 = 0.5;
                 }
 
-                LOBYTE(v109) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:3840 height:2160 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x400000 negotiationBit:v38 rules:v15 isCellular16x9Capable:v109];
-                v158 &= ~0x400000u;
+                LOBYTE(v109) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:3840 height:2160 framerate:60 payload:payload priority:&formats negotiationBitfield:0x400000 negotiationBit:v38 rules:v15 isCellular16x9Capable:v109];
+                formats &= ~0x400000u;
                 if (([v13 preferredFormat] & 0x800000) != 0)
                 {
                   v39 = 1.0;
@@ -3393,17 +3393,17 @@ LABEL_17:
                   v39 = 0.5;
                 }
 
-                LOBYTE(v110) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:3584 height:1792 framerate:90 payload:v9 priority:&v158 negotiationBitfield:0x800000 negotiationBit:v39 rules:v15 isCellular16x9Capable:v110];
-                v40 = v158 & 0xFF7FFFFF;
+                LOBYTE(v110) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:3584 height:1792 framerate:90 payload:payload priority:&formats negotiationBitfield:0x800000 negotiationBit:v39 rules:v15 isCellular16x9Capable:v110];
+                v40 = formats & 0xFF7FFFFF;
 LABEL_206:
-                v158 = v40;
+                formats = v40;
                 goto LABEL_207;
               }
 
-              LOBYTE(v87) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:320 height:240 framerate:15 payload:v9 priority:&v158 negotiationBitfield:1 negotiationBit:v16 rules:v15 isCellular16x9Capable:v87];
-              v158 &= ~1u;
+              LOBYTE(v87) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:320 height:240 framerate:15 payload:payload priority:&formats negotiationBitfield:1 negotiationBit:v16 rules:v15 isCellular16x9Capable:v87];
+              formats &= ~1u;
               if (([v13 preferredFormat] & 2) != 0)
               {
                 v41 = 1.0;
@@ -3414,9 +3414,9 @@ LABEL_206:
                 v41 = 0.5;
               }
 
-              LOBYTE(v111) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:320 height:240 framerate:30 payload:v9 priority:&v158 negotiationBitfield:2 negotiationBit:v41 rules:v15 isCellular16x9Capable:v111];
-              v158 &= ~2u;
+              LOBYTE(v111) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:320 height:240 framerate:30 payload:payload priority:&formats negotiationBitfield:2 negotiationBit:v41 rules:v15 isCellular16x9Capable:v111];
+              formats &= ~2u;
               if (([v13 preferredFormat] & 4) != 0)
               {
                 v42 = 1.0;
@@ -3427,9 +3427,9 @@ LABEL_206:
                 v42 = 0.5;
               }
 
-              LOBYTE(v112) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:368 framerate:15 payload:v9 priority:&v158 negotiationBitfield:4 negotiationBit:v42 rules:v15 isCellular16x9Capable:v112];
-              v158 &= ~4u;
+              LOBYTE(v112) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:368 framerate:15 payload:payload priority:&formats negotiationBitfield:4 negotiationBit:v42 rules:v15 isCellular16x9Capable:v112];
+              formats &= ~4u;
               if (([v13 preferredFormat] & 8) != 0)
               {
                 v43 = 1.0;
@@ -3440,9 +3440,9 @@ LABEL_206:
                 v43 = 0.5;
               }
 
-              LOBYTE(v113) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:368 framerate:30 payload:v9 priority:&v158 negotiationBitfield:8 negotiationBit:v43 rules:v15 isCellular16x9Capable:v113];
-              v158 &= ~8u;
+              LOBYTE(v113) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:368 framerate:30 payload:payload priority:&formats negotiationBitfield:8 negotiationBit:v43 rules:v15 isCellular16x9Capable:v113];
+              formats &= ~8u;
               if (([v13 preferredFormat] & 0x10) != 0)
               {
                 v44 = 1.0;
@@ -3453,9 +3453,9 @@ LABEL_206:
                 v44 = 0.5;
               }
 
-              LOBYTE(v114) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:640 height:480 framerate:15 payload:v9 priority:&v158 negotiationBitfield:16 negotiationBit:v44 rules:v15 isCellular16x9Capable:v114];
-              v158 &= ~0x10u;
+              LOBYTE(v114) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:640 height:480 framerate:15 payload:payload priority:&formats negotiationBitfield:16 negotiationBit:v44 rules:v15 isCellular16x9Capable:v114];
+              formats &= ~0x10u;
               if (([v13 preferredFormat] & 0x20) != 0)
               {
                 v45 = 1.0;
@@ -3466,9 +3466,9 @@ LABEL_206:
                 v45 = 0.5;
               }
 
-              LOBYTE(v115) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:640 height:480 framerate:30 payload:v9 priority:&v158 negotiationBitfield:32 negotiationBit:v45 rules:v15 isCellular16x9Capable:v115];
-              v158 &= ~0x20u;
+              LOBYTE(v115) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:640 height:480 framerate:30 payload:payload priority:&formats negotiationBitfield:32 negotiationBit:v45 rules:v15 isCellular16x9Capable:v115];
+              formats &= ~0x20u;
               if (([v13 preferredFormat] & 0x40) != 0)
               {
                 v46 = 1.0;
@@ -3479,9 +3479,9 @@ LABEL_206:
                 v46 = 0.5;
               }
 
-              LOBYTE(v116) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:848 height:480 framerate:15 payload:v9 priority:&v158 negotiationBitfield:64 negotiationBit:v46 rules:v15 isCellular16x9Capable:v116];
-              v158 &= ~0x40u;
+              LOBYTE(v116) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:848 height:480 framerate:15 payload:payload priority:&formats negotiationBitfield:64 negotiationBit:v46 rules:v15 isCellular16x9Capable:v116];
+              formats &= ~0x40u;
               if (([v13 preferredFormat] & 0x80) != 0)
               {
                 v47 = 1.0;
@@ -3492,9 +3492,9 @@ LABEL_206:
                 v47 = 0.5;
               }
 
-              LOBYTE(v117) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:848 height:480 framerate:30 payload:v9 priority:&v158 negotiationBitfield:128 negotiationBit:v47 rules:v15 isCellular16x9Capable:v117];
-              v158 &= ~0x80u;
+              LOBYTE(v117) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:848 height:480 framerate:30 payload:payload priority:&formats negotiationBitfield:128 negotiationBit:v47 rules:v15 isCellular16x9Capable:v117];
+              formats &= ~0x80u;
               if (([v13 preferredFormat] & 0x100) != 0)
               {
                 v48 = 1.0;
@@ -3505,9 +3505,9 @@ LABEL_206:
                 v48 = 0.5;
               }
 
-              LOBYTE(v118) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:15 payload:v9 priority:&v158 negotiationBitfield:256 negotiationBit:v48 rules:v15 isCellular16x9Capable:v118];
-              v158 &= ~0x100u;
+              LOBYTE(v118) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:15 payload:payload priority:&formats negotiationBitfield:256 negotiationBit:v48 rules:v15 isCellular16x9Capable:v118];
+              formats &= ~0x100u;
               if (([v13 preferredFormat] & 0x200) != 0)
               {
                 v49 = 1.0;
@@ -3518,9 +3518,9 @@ LABEL_206:
                 v49 = 0.5;
               }
 
-              LOBYTE(v119) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:30 payload:v9 priority:&v158 negotiationBitfield:512 negotiationBit:v49 rules:v15 isCellular16x9Capable:v119];
-              v158 &= ~0x200u;
+              LOBYTE(v119) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:30 payload:payload priority:&formats negotiationBitfield:512 negotiationBit:v49 rules:v15 isCellular16x9Capable:v119];
+              formats &= ~0x200u;
               if (([v13 preferredFormat] & 0x1000) != 0)
               {
                 v50 = 1.0;
@@ -3531,9 +3531,9 @@ LABEL_206:
                 v50 = 0.5;
               }
 
-              LOBYTE(v120) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:60 payload:v9 priority:&v158 negotiationBitfield:4096 negotiationBit:v50 rules:v15 isCellular16x9Capable:v120];
-              v158 &= ~0x1000u;
+              LOBYTE(v120) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:768 framerate:60 payload:payload priority:&formats negotiationBitfield:4096 negotiationBit:v50 rules:v15 isCellular16x9Capable:v120];
+              formats &= ~0x1000u;
               if (([v13 preferredFormat] & 0x80000) != 0)
               {
                 v51 = 1.0;
@@ -3544,9 +3544,9 @@ LABEL_206:
                 v51 = 0.5;
               }
 
-              LOBYTE(v121) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:192 height:112 framerate:15 payload:v9 priority:&v158 negotiationBitfield:0x80000 negotiationBit:v51 rules:v15 isCellular16x9Capable:v121];
-              v158 &= ~0x80000u;
+              LOBYTE(v121) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:192 height:112 framerate:15 payload:payload priority:&formats negotiationBitfield:0x80000 negotiationBit:v51 rules:v15 isCellular16x9Capable:v121];
+              formats &= ~0x80000u;
               if (([v13 preferredFormat] & 0x100000) != 0)
               {
                 v52 = 1.0;
@@ -3557,9 +3557,9 @@ LABEL_206:
                 v52 = 0.5;
               }
 
-              LOBYTE(v122) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:192 height:192 framerate:15 payload:v9 priority:&v158 negotiationBitfield:0x100000 negotiationBit:v52 rules:v15 isCellular16x9Capable:v122];
-              v158 &= ~0x100000u;
+              LOBYTE(v122) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:192 height:192 framerate:15 payload:payload priority:&formats negotiationBitfield:0x100000 negotiationBit:v52 rules:v15 isCellular16x9Capable:v122];
+              formats &= ~0x100000u;
               if (([v13 preferredFormat] & 0x200000) != 0)
               {
                 v53 = 1.0;
@@ -3570,9 +3570,9 @@ LABEL_206:
                 v53 = 0.5;
               }
 
-              LOBYTE(v123) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:240 height:240 framerate:15 payload:v9 priority:&v158 negotiationBitfield:0x200000 negotiationBit:v53 rules:v15 isCellular16x9Capable:v123];
-              v158 &= ~0x200000u;
+              LOBYTE(v123) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:240 height:240 framerate:15 payload:payload priority:&formats negotiationBitfield:0x200000 negotiationBit:v53 rules:v15 isCellular16x9Capable:v123];
+              formats &= ~0x200000u;
               if (([v13 preferredFormat] & 0x400000) != 0)
               {
                 v54 = 1.0;
@@ -3583,9 +3583,9 @@ LABEL_206:
                 v54 = 0.5;
               }
 
-              LOBYTE(v124) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:320 height:320 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x400000 negotiationBit:v54 rules:v15 isCellular16x9Capable:v124];
-              v158 &= ~0x400000u;
+              LOBYTE(v124) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:320 height:320 framerate:30 payload:payload priority:&formats negotiationBitfield:0x400000 negotiationBit:v54 rules:v15 isCellular16x9Capable:v124];
+              formats &= ~0x400000u;
               if (([v13 preferredFormat] & 0x800000) != 0)
               {
                 v55 = 1.0;
@@ -3596,9 +3596,9 @@ LABEL_206:
                 v55 = 0.5;
               }
 
-              LOBYTE(v125) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:480 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x800000 negotiationBit:v55 rules:v15 isCellular16x9Capable:v125];
-              v158 &= ~0x800000u;
+              LOBYTE(v125) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:480 framerate:30 payload:payload priority:&formats negotiationBitfield:0x800000 negotiationBit:v55 rules:v15 isCellular16x9Capable:v125];
+              formats &= ~0x800000u;
               if (([v13 preferredFormat] & 0x1000000) != 0)
               {
                 v56 = 1.0;
@@ -3609,9 +3609,9 @@ LABEL_206:
                 v56 = 0.5;
               }
 
-              LOBYTE(v126) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:640 height:640 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x1000000 negotiationBit:v56 rules:v15 isCellular16x9Capable:v126];
-              v158 &= ~0x1000000u;
+              LOBYTE(v126) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:640 height:640 framerate:30 payload:payload priority:&formats negotiationBitfield:0x1000000 negotiationBit:v56 rules:v15 isCellular16x9Capable:v126];
+              formats &= ~0x1000000u;
               if (([v13 preferredFormat] & 0x2000000) != 0)
               {
                 v57 = 1.0;
@@ -3622,9 +3622,9 @@ LABEL_206:
                 v57 = 0.5;
               }
 
-              LOBYTE(v127) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:720 height:720 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x2000000 negotiationBit:v57 rules:v15 isCellular16x9Capable:v127];
-              v158 &= ~0x2000000u;
+              LOBYTE(v127) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:720 height:720 framerate:30 payload:payload priority:&formats negotiationBitfield:0x2000000 negotiationBit:v57 rules:v15 isCellular16x9Capable:v127];
+              formats &= ~0x2000000u;
               if (([v13 preferredFormat] & 0x4000000) != 0)
               {
                 v58 = 1.0;
@@ -3635,9 +3635,9 @@ LABEL_206:
                 v58 = 0.5;
               }
 
-              LOBYTE(v128) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:576 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x4000000 negotiationBit:v58 rules:v15 isCellular16x9Capable:v128];
-              v158 &= ~0x4000000u;
+              LOBYTE(v128) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:576 framerate:30 payload:payload priority:&formats negotiationBitfield:0x4000000 negotiationBit:v58 rules:v15 isCellular16x9Capable:v128];
+              formats &= ~0x4000000u;
               if (([v13 preferredFormat] & 0x8000000) != 0)
               {
                 v59 = 1.0;
@@ -3648,9 +3648,9 @@ LABEL_206:
                 v59 = 0.5;
               }
 
-              LOBYTE(v129) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1080 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x8000000 negotiationBit:v59 rules:v15 isCellular16x9Capable:v129];
-              v158 &= ~0x8000000u;
+              LOBYTE(v129) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1080 framerate:30 payload:payload priority:&formats negotiationBitfield:0x8000000 negotiationBit:v59 rules:v15 isCellular16x9Capable:v129];
+              formats &= ~0x8000000u;
               if (([v13 preferredFormat] & 0x10000000) != 0)
               {
                 v60 = 1.0;
@@ -3661,9 +3661,9 @@ LABEL_206:
                 v60 = 0.5;
               }
 
-              LOBYTE(v130) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1440 height:1080 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x10000000 negotiationBit:v60 rules:v15 isCellular16x9Capable:v130];
-              v158 &= ~0x10000000u;
+              LOBYTE(v130) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1440 height:1080 framerate:30 payload:payload priority:&formats negotiationBitfield:0x10000000 negotiationBit:v60 rules:v15 isCellular16x9Capable:v130];
+              formats &= ~0x10000000u;
               if (([v13 preferredFormat] & 0x20000000) != 0)
               {
                 v61 = 1.0;
@@ -3674,9 +3674,9 @@ LABEL_206:
                 v61 = 0.5;
               }
 
-              LOBYTE(v131) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:896 height:672 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x20000000 negotiationBit:v61 rules:v15 isCellular16x9Capable:v131];
-              v158 &= ~0x20000000u;
+              LOBYTE(v131) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:896 height:672 framerate:30 payload:payload priority:&formats negotiationBitfield:0x20000000 negotiationBit:v61 rules:v15 isCellular16x9Capable:v131];
+              formats &= ~0x20000000u;
               if (([v13 preferredFormat] & 0x40000000) != 0)
               {
                 v62 = 1.0;
@@ -3687,9 +3687,9 @@ LABEL_206:
                 v62 = 0.5;
               }
 
-              LOBYTE(v132) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1080 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x40000000 negotiationBit:v62 rules:v15 isCellular16x9Capable:v132];
-              v158 &= ~0x40000000u;
+              LOBYTE(v132) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1080 framerate:60 payload:payload priority:&formats negotiationBitfield:0x40000000 negotiationBit:v62 rules:v15 isCellular16x9Capable:v132];
+              formats &= ~0x40000000u;
               if ([v13 preferredFormatExt1])
               {
                 v63 = 1.0;
@@ -3700,9 +3700,9 @@ LABEL_206:
                 v63 = 0.5;
               }
 
-              LOBYTE(v133) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:896 height:672 framerate:60 payload:v9 priority:&v157 negotiationBitfield:1 negotiationBit:v63 rules:v15 isCellular16x9Capable:v133];
-              v157 &= ~1u;
+              LOBYTE(v133) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:896 height:672 framerate:60 payload:payload priority:&formatsExt1 negotiationBitfield:1 negotiationBit:v63 rules:v15 isCellular16x9Capable:v133];
+              formatsExt1 &= ~1u;
               if (([v13 preferredFormatExt1] & 2) != 0)
               {
                 v64 = 1.0;
@@ -3713,9 +3713,9 @@ LABEL_206:
                 v64 = 0.5;
               }
 
-              LOBYTE(v134) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1664 height:1248 framerate:30 payload:v9 priority:&v157 negotiationBitfield:2 negotiationBit:v64 rules:v15 isCellular16x9Capable:v134];
-              v157 &= ~2u;
+              LOBYTE(v134) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1664 height:1248 framerate:30 payload:payload priority:&formatsExt1 negotiationBitfield:2 negotiationBit:v64 rules:v15 isCellular16x9Capable:v134];
+              formatsExt1 &= ~2u;
               if (([v13 preferredFormatExt1] & 4) != 0)
               {
                 v65 = 1.0;
@@ -3726,9 +3726,9 @@ LABEL_206:
                 v65 = 0.5;
               }
 
-              LOBYTE(v135) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1664 height:1248 framerate:60 payload:v9 priority:&v157 negotiationBitfield:4 negotiationBit:v65 rules:v15 isCellular16x9Capable:v135];
-              v157 &= ~4u;
+              LOBYTE(v135) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1664 height:1248 framerate:60 payload:payload priority:&formatsExt1 negotiationBitfield:4 negotiationBit:v65 rules:v15 isCellular16x9Capable:v135];
+              formatsExt1 &= ~4u;
               if (([v13 preferredFormatExt1] & 8) != 0)
               {
                 v66 = 1.0;
@@ -3739,9 +3739,9 @@ LABEL_206:
                 v66 = 0.5;
               }
 
-              LOBYTE(v136) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:576 framerate:15 payload:v9 priority:&v157 negotiationBitfield:8 negotiationBit:v66 rules:v15 isCellular16x9Capable:v136];
-              v157 &= ~8u;
+              LOBYTE(v136) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1024 height:576 framerate:15 payload:payload priority:&formatsExt1 negotiationBitfield:8 negotiationBit:v66 rules:v15 isCellular16x9Capable:v136];
+              formatsExt1 &= ~8u;
               if (([v13 preferredFormatExt1] & 0x10) != 0)
               {
                 v67 = 1.0;
@@ -3752,9 +3752,9 @@ LABEL_206:
                 v67 = 0.5;
               }
 
-              LOBYTE(v137) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:896 height:672 framerate:15 payload:v9 priority:&v157 negotiationBitfield:16 negotiationBit:v67 rules:v15 isCellular16x9Capable:v137];
-              v157 &= ~0x10u;
+              LOBYTE(v137) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:896 height:672 framerate:15 payload:payload priority:&formatsExt1 negotiationBitfield:16 negotiationBit:v67 rules:v15 isCellular16x9Capable:v137];
+              formatsExt1 &= ~0x10u;
               if (([v13 preferredFormatExt1] & 0x20) != 0)
               {
                 v68 = 1.0;
@@ -3765,9 +3765,9 @@ LABEL_206:
                 v68 = 0.5;
               }
 
-              LOBYTE(v138) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1440 framerate:60 payload:v9 priority:&v157 negotiationBitfield:32 negotiationBit:v68 rules:v15 isCellular16x9Capable:v138];
-              v157 &= ~0x20u;
+              LOBYTE(v138) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1920 height:1440 framerate:60 payload:payload priority:&formatsExt1 negotiationBitfield:32 negotiationBit:v68 rules:v15 isCellular16x9Capable:v138];
+              formatsExt1 &= ~0x20u;
               if (([v13 preferredFormatExt1] & 0x40) != 0)
               {
                 v69 = 1.0;
@@ -3778,9 +3778,9 @@ LABEL_206:
                 v69 = 0.5;
               }
 
-              LOBYTE(v139) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:4320 height:4320 framerate:90 payload:v9 priority:&v157 negotiationBitfield:64 negotiationBit:v69 rules:v15 isCellular16x9Capable:v139];
-              v157 &= ~0x40u;
+              LOBYTE(v139) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:4320 height:4320 framerate:90 payload:payload priority:&formatsExt1 negotiationBitfield:64 negotiationBit:v69 rules:v15 isCellular16x9Capable:v139];
+              formatsExt1 &= ~0x40u;
               if (([v13 preferredFormatExt1] & 0x80) != 0)
               {
                 v70 = 1.0;
@@ -3791,10 +3791,10 @@ LABEL_206:
                 v70 = 0.5;
               }
 
-              LOBYTE(v140) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:3240 height:3240 framerate:30 payload:v9 priority:&v157 negotiationBitfield:128 negotiationBit:v70 rules:v15 isCellular16x9Capable:v140];
-              v157 &= ~0x80u;
-              if (a5 || [v13 operation] == 2)
+              LOBYTE(v140) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:3240 height:3240 framerate:30 payload:payload priority:&formatsExt1 negotiationBitfield:128 negotiationBit:v70 rules:v15 isCellular16x9Capable:v140];
+              formatsExt1 &= ~0x80u;
+              if (config || [v13 operation] == 2)
               {
                 if (([v13 preferredFormat] & 0x400) != 0)
                 {
@@ -3806,9 +3806,9 @@ LABEL_206:
                   v71 = 0.5;
                 }
 
-                LOBYTE(v141) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:15 payload:v9 priority:&v158 negotiationBitfield:1024 negotiationBit:v71 rules:v15 isCellular16x9Capable:v141];
-                v158 &= ~0x400u;
+                LOBYTE(v141) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:15 payload:payload priority:&formats negotiationBitfield:1024 negotiationBit:v71 rules:v15 isCellular16x9Capable:v141];
+                formats &= ~0x400u;
                 if (([v13 preferredFormat] & 0x800) != 0)
                 {
                   v72 = 1.0;
@@ -3819,9 +3819,9 @@ LABEL_206:
                   v72 = 0.5;
                 }
 
-                LOBYTE(v142) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:30 payload:v9 priority:&v158 negotiationBitfield:2048 negotiationBit:v72 rules:v15 isCellular16x9Capable:v142];
-                v158 &= ~0x800u;
+                LOBYTE(v142) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:30 payload:payload priority:&formats negotiationBitfield:2048 negotiationBit:v72 rules:v15 isCellular16x9Capable:v142];
+                formats &= ~0x800u;
                 if (([v13 preferredFormat] & 0x2000) != 0)
                 {
                   v73 = 1.0;
@@ -3832,9 +3832,9 @@ LABEL_206:
                   v73 = 0.5;
                 }
 
-                LOBYTE(v143) = v5;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x2000 negotiationBit:v73 rules:v15 isCellular16x9Capable:v143];
-                v158 &= ~0x2000u;
+                LOBYTE(v143) = capableCopy;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:60 payload:payload priority:&formats negotiationBitfield:0x2000 negotiationBit:v73 rules:v15 isCellular16x9Capable:v143];
+                formats &= ~0x2000u;
               }
 
               if (([v13 preferredFormat] & 0x4000) != 0)
@@ -3847,9 +3847,9 @@ LABEL_206:
                 v74 = 0.5;
               }
 
-              LOBYTE(v141) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:272 framerate:15 payload:v9 priority:&v158 negotiationBitfield:0x4000 negotiationBit:v74 rules:v15 isCellular16x9Capable:v141];
-              v158 &= ~0x4000u;
+              LOBYTE(v141) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:272 framerate:15 payload:payload priority:&formats negotiationBitfield:0x4000 negotiationBit:v74 rules:v15 isCellular16x9Capable:v141];
+              formats &= ~0x4000u;
               if (([v13 preferredFormat] & 0x8000) != 0)
               {
                 v75 = 1.0;
@@ -3860,11 +3860,11 @@ LABEL_206:
                 v75 = 0.5;
               }
 
-              LOBYTE(v144) = v5;
-              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:272 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x8000 negotiationBit:v75 rules:v15 isCellular16x9Capable:v144];
-              v40 = v158 & 0xFFFF7FFF;
-              v158 &= ~0x8000u;
-              if (v5)
+              LOBYTE(v144) = capableCopy;
+              [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:480 height:272 framerate:30 payload:payload priority:&formats negotiationBitfield:0x8000 negotiationBit:v75 rules:v15 isCellular16x9Capable:v144];
+              v40 = formats & 0xFFFF7FFF;
+              formats &= ~0x8000u;
+              if (capableCopy)
               {
                 if (([v13 preferredFormat] & 0x10000) != 0)
                 {
@@ -3877,8 +3877,8 @@ LABEL_206:
                 }
 
                 LOBYTE(v87) = 1;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:15 payload:v9 priority:&v158 negotiationBitfield:0x10000 negotiationBit:v76 rules:v15 isCellular16x9Capable:v87];
-                v158 &= ~0x10000u;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:15 payload:payload priority:&formats negotiationBitfield:0x10000 negotiationBit:v76 rules:v15 isCellular16x9Capable:v87];
+                formats &= ~0x10000u;
                 if (([v13 preferredFormat] & 0x20000) != 0)
                 {
                   v77 = 1.0;
@@ -3890,8 +3890,8 @@ LABEL_206:
                 }
 
                 LOBYTE(v145) = 1;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:30 payload:v9 priority:&v158 negotiationBitfield:0x20000 negotiationBit:v77 rules:v15 isCellular16x9Capable:v145];
-                v158 &= ~0x20000u;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:30 payload:payload priority:&formats negotiationBitfield:0x20000 negotiationBit:v77 rules:v15 isCellular16x9Capable:v145];
+                formats &= ~0x20000u;
                 if (([v13 preferredFormat] & 0x40000) != 0)
                 {
                   v78 = 1.0;
@@ -3903,13 +3903,13 @@ LABEL_206:
                 }
 
                 LOBYTE(v146) = 1;
-                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:60 payload:v9 priority:&v158 negotiationBitfield:0x40000 negotiationBit:v78 rules:v15 isCellular16x9Capable:v146];
-                v40 = v158 & 0xFFFBFFFF;
+                [(VCMediaNegotiationBlobVideoSettings *)self checkAndInsertRuleWithWidth:1280 height:720 framerate:60 payload:payload priority:&formats negotiationBitfield:0x40000 negotiationBit:v78 rules:v15 isCellular16x9Capable:v146];
+                v40 = formats & 0xFFFBFFFF;
                 goto LABEL_206;
               }
 
 LABEL_207:
-              if (v40 | v157)
+              if (v40 | formatsExt1)
               {
                 if (VRTraceGetErrorLogLevelForModule() >= 5)
                 {
@@ -3924,21 +3924,21 @@ LABEL_207:
                     v163 = 1024;
                     v164 = 681;
                     v165 = 1024;
-                    v166 = v158;
+                    v166 = formats;
                     v167 = 1024;
-                    v168 = v157;
+                    v168 = formatsExt1;
                     v169 = 1024;
-                    v170 = v156;
+                    v170 = screenCopy;
                     _os_log_impl(&dword_1DB56E000, v80, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Detected an unknown formats (bitfield=0x%08x, bitfieldExt1=0x%08x - screen=%d). Ignoring ...", buf, 0x2Eu);
                   }
                 }
               }
 
               [v15 sortUsingSelector:sel_compare_];
-              v81 = [v13 transport];
-              v82 = [v154 payload];
-              v83 = [v13 operation];
-              if (v81 == 1)
+              transport = [v13 transport];
+              payload2 = [v154 payload];
+              operation = [v13 operation];
+              if (transport == 1)
               {
                 v84 = 1;
               }
@@ -3948,7 +3948,7 @@ LABEL_207:
                 v84 = 2;
               }
 
-              if (v83 == 1)
+              if (operation == 1)
               {
                 v85 = 1;
               }
@@ -3958,10 +3958,10 @@ LABEL_207:
                 v85 = 2;
               }
 
-              [(VCVideoRuleCollections *)v155 addVideoRules:v15 transportType:v84 payload:v82 encodingType:v85];
+              [(VCVideoRuleCollections *)v155 addVideoRules:v15 transportType:v84 payload:payload2 encodingType:v85];
             }
 
-            v11 = [v152 countByEnumeratingWithState:&v172 objects:v171 count:16];
+            v11 = [videoRuleCollections countByEnumeratingWithState:&v172 objects:v171 count:16];
             if (v11)
             {
               continue;
@@ -4016,24 +4016,24 @@ LABEL_9:
 
   v6 = v5;
   [(VCMediaNegotiatorVideoConfiguration *)v4 setVideoRuleCollections:v5];
-  v7 = [(VCMediaNegotiationBlobVideoSettings *)self newFeatureStrings];
-  if (!v7)
+  newFeatureStrings = [(VCMediaNegotiationBlobVideoSettings *)self newFeatureStrings];
+  if (!newFeatureStrings)
   {
     [(VCMediaNegotiationBlobVideoSettings(VideoRules) *)v6 newCameraConfiguration];
     goto LABEL_9;
   }
 
-  v8 = v7;
-  [(VCMediaNegotiatorVideoConfiguration *)v4 setVideoFeatureStrings:v7];
+  v8 = newFeatureStrings;
+  [(VCMediaNegotiatorVideoConfiguration *)v4 setVideoFeatureStrings:newFeatureStrings];
 
   return v4;
 }
 
-- (id)newScreenConfigurationWithCameraConfiguration:(id)a3
+- (id)newScreenConfigurationWithCameraConfiguration:(id)configuration
 {
-  if (a3)
+  if (configuration)
   {
-    v4 = [a3 copy];
+    v4 = [configuration copy];
   }
 
   else
@@ -4081,9 +4081,9 @@ LABEL_9:
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 payload];
-        v11 = [v9 featureString];
-        [v3 setObject:v11 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v10)}];
+        payload = [v9 payload];
+        featureString = [v9 featureString];
+        [v3 setObject:featureString forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", payload)}];
       }
 
       v6 = [(NSMutableArray *)videoPayloadCollections countByEnumeratingWithState:&v14 objects:v13 count:16];
@@ -4095,15 +4095,15 @@ LABEL_9:
   return v3;
 }
 
-- (id)parameterSetStringFromPayloadSettings:(id)a3
+- (id)parameterSetStringFromPayloadSettings:(id)settings
 {
   v4 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:{@", "}];
   v5 = [MEMORY[0x1E696AD60] stringWithString:&stru_1F570E008];
-  v6 = [a3 parameterSet];
+  parameterSet = [settings parameterSet];
   v7 = 1;
   do
   {
-    if ((v7 & v6) != 0)
+    if ((v7 & parameterSet) != 0)
     {
       if (v7 < 9 && ((0x117u >> v7) & 1) != 0)
       {
@@ -4127,9 +4127,9 @@ LABEL_9:
   return [v5 stringByTrimmingCharactersInSet:v4];
 }
 
-- (void)prepareFormatString:(id)a3 format:(id)a4 formatIndex:(unsigned int)a5 preferredFormat:(unsigned int)a6
+- (void)prepareFormatString:(id)string format:(id)format formatIndex:(unsigned int)index preferredFormat:(unsigned int)preferredFormat
 {
-  v9 = [a4 componentsSeparatedByString:@"_"];
+  v9 = [format componentsSeparatedByString:@"_"];
   if ([v9 count] == 4)
   {
     v10 = [objc_msgSend(v9 objectAtIndexedSubscript:{3), "isEqualToString:", @"dec"}];
@@ -4150,17 +4150,17 @@ LABEL_9:
       v14 = "*";
     }
 
-    [a3 appendFormat:@" %@@%@fps%s", v12, v13, v14];
-    if ((a6 & a5) != 0)
+    [string appendFormat:@" %@@%@fps%s", v12, v13, v14];
+    if ((preferredFormat & index) != 0)
     {
-      [a3 appendString:@" (preferred)"];
+      [string appendString:@" (preferred)"];
     }
 
-    [a3 appendString:{@", "}];
+    [string appendString:{@", "}];
   }
 }
 
-- (void)printVideoWithLogFile:(void *)a3
+- (void)printVideoWithLogFile:(void *)file
 {
   v92 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -4187,7 +4187,7 @@ LABEL_9:
     }
   }
 
-  VRLogfilePrintWithTimestamp(a3, "Media Blob - Video Settings: SSRC=%x allowRTCPFB=%u\n", v5, v6, v7, v8, v9, v10, self->_rtpSSRC);
+  VRLogfilePrintWithTimestamp(file, "Media Blob - Video Settings: SSRC=%x allowRTCPFB=%u\n", v5, v6, v7, v8, v9, v10, self->_rtpSSRC);
   v90 = 0u;
   v91 = 0u;
   v88 = 0u;
@@ -4215,7 +4215,7 @@ LABEL_9:
           v19 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v20 = [v17 payload];
+            payload = [v17 payload];
             v21 = [objc_msgSend(v17 "featureString")];
             *buf = 136316162;
             v80 = v18;
@@ -4224,16 +4224,16 @@ LABEL_9:
             v83 = 1024;
             v84 = 792;
             v85 = 1024;
-            *v86 = v20;
+            *v86 = payload;
             *&v86[4] = 2080;
             *&v86[6] = v21;
             _os_log_impl(&dword_1DB56E000, v19, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob -     Payload=%u Format string=%s", buf, 0x2Cu);
           }
         }
 
-        v22 = [v17 payload];
+        payload2 = [v17 payload];
         [objc_msgSend(v17 "featureString")];
-        VRLogfilePrintWithTimestamp(a3, "Media Blob -     Payload=%u Format string=%s\n", v23, v24, v25, v26, v27, v28, v22);
+        VRLogfilePrintWithTimestamp(file, "Media Blob -     Payload=%u Format string=%s\n", v23, v24, v25, v26, v27, v28, payload2);
         v29 = [(VCMediaNegotiationBlobVideoSettings *)self parameterSetStringFromPayloadSettings:v17];
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
@@ -4241,8 +4241,8 @@ LABEL_9:
           v31 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v32 = [v17 payload];
-            v33 = [v29 UTF8String];
+            payload3 = [v17 payload];
+            uTF8String = [v29 UTF8String];
             *buf = 136316162;
             v80 = v30;
             v81 = 2080;
@@ -4250,22 +4250,22 @@ LABEL_9:
             v83 = 1024;
             v84 = 796;
             v85 = 1024;
-            *v86 = v32;
+            *v86 = payload3;
             *&v86[4] = 2080;
-            *&v86[6] = v33;
+            *&v86[6] = uTF8String;
             _os_log_impl(&dword_1DB56E000, v31, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob -     Payload=%u Parameter set: %s", buf, 0x2Cu);
           }
         }
 
-        v34 = [v17 payload];
+        payload4 = [v17 payload];
         [v29 UTF8String];
-        VRLogfilePrintWithTimestamp(a3, "Media Blob -     Payload=%u Parameter set: %s\n", v35, v36, v37, v38, v39, v40, v34);
+        VRLogfilePrintWithTimestamp(file, "Media Blob -     Payload=%u Parameter set: %s\n", v35, v36, v37, v38, v39, v40, payload4);
         v77 = 0u;
         v78 = 0u;
         v75 = 0u;
         v76 = 0u;
-        v70 = [v17 videoRuleCollections];
-        v73 = [v70 countByEnumeratingWithState:&v75 objects:v74 count:16];
+        videoRuleCollections = [v17 videoRuleCollections];
+        v73 = [videoRuleCollections countByEnumeratingWithState:&v75 objects:v74 count:16];
         if (v73)
         {
           v71 = *v76;
@@ -4275,13 +4275,13 @@ LABEL_9:
             {
               if (*v76 != v71)
               {
-                objc_enumerationMutation(v70);
+                objc_enumerationMutation(videoRuleCollections);
               }
 
               v42 = *(*(&v75 + 1) + 8 * i);
               v43 = MEMORY[0x1E696AD60];
               v44 = v17;
-              v45 = [v17 payload];
+              payload5 = [v17 payload];
               if ([v42 operation] == 1)
               {
                 v46 = "encode";
@@ -4292,22 +4292,22 @@ LABEL_9:
                 v46 = "decode";
               }
 
-              v47 = [v42 transport];
+              transport = [v42 transport];
               v48 = "Cellular";
-              if (v47 == 1)
+              if (transport == 1)
               {
                 v48 = "WiFi";
               }
 
-              v49 = [v43 stringWithFormat:@"Payload=%u %s %s", v45, v46, v48];
+              v49 = [v43 stringWithFormat:@"Payload=%u %s %s", payload5, v46, v48];
               if ([v42 hasPreferredFormat])
               {
-                v50 = [v42 preferredFormat];
+                preferredFormat = [v42 preferredFormat];
               }
 
               else
               {
-                v50 = 0;
+                preferredFormat = 0;
               }
 
               v51 = 1;
@@ -4605,7 +4605,7 @@ LABEL_108:
                 }
 
 LABEL_109:
-                [(VCMediaNegotiationBlobVideoSettings *)self prepareFormatString:v49 format:v52 formatIndex:v51 preferredFormat:v50];
+                [(VCMediaNegotiationBlobVideoSettings *)self prepareFormatString:v49 format:v52 formatIndex:v51 preferredFormat:preferredFormat];
 LABEL_110:
                 v53 = (v51 & 0x3FFFFFFF) == 0;
                 v51 = (2 * v51);
@@ -4614,12 +4614,12 @@ LABEL_110:
               while (!v53);
               if ([v42 hasPreferredFormatExt1])
               {
-                v54 = [v42 preferredFormatExt1];
+                preferredFormatExt1 = [v42 preferredFormatExt1];
               }
 
               else
               {
-                v54 = 0;
+                preferredFormatExt1 = 0;
               }
 
               v55 = 1;
@@ -4700,7 +4700,7 @@ LABEL_137:
                     }
                   }
 
-                  [(VCMediaNegotiationBlobVideoSettings *)self prepareFormatString:v49 format:v56 formatIndex:v55 preferredFormat:v54];
+                  [(VCMediaNegotiationBlobVideoSettings *)self prepareFormatString:v49 format:v56 formatIndex:v55 preferredFormat:preferredFormatExt1];
                 }
 
                 v53 = (v55 & 0x7F) == 0;
@@ -4732,11 +4732,11 @@ LABEL_137:
                 }
               }
 
-              VRLogfilePrintWithTimestamp(a3, "Media Blob -     %s\n", v58, v59, v60, v61, v62, v63, v57);
+              VRLogfilePrintWithTimestamp(file, "Media Blob -     %s\n", v58, v59, v60, v61, v62, v63, v57);
               v17 = v44;
             }
 
-            v73 = [v70 countByEnumeratingWithState:&v75 objects:v74 count:16];
+            v73 = [videoRuleCollections countByEnumeratingWithState:&v75 objects:v74 count:16];
           }
 
           while (v73);
@@ -4753,7 +4753,7 @@ LABEL_137:
   }
 }
 
-- (void)printScreenWithLogFile:(void *)a3
+- (void)printScreenWithLogFile:(void *)file
 {
   v89 = *MEMORY[0x1E69E9840];
   ErrorLogLevelForModule = VRTraceGetErrorLogLevelForModule();
@@ -4780,7 +4780,7 @@ LABEL_137:
     }
   }
 
-  VRLogfilePrintWithTimestamp(a3, "Media Blob - Screen Settings: SSRC=%x allowRTCPFB=%u\n", v4, v5, v6, v7, v8, v9, self->_rtpSSRC);
+  VRLogfilePrintWithTimestamp(file, "Media Blob - Screen Settings: SSRC=%x allowRTCPFB=%u\n", v4, v5, v6, v7, v8, v9, self->_rtpSSRC);
   v87 = 0u;
   v88 = 0u;
   v85 = 0u;
@@ -4822,7 +4822,7 @@ LABEL_137:
 
         v65 = v15;
         v20 = [objc_msgSend(v16 "featureString")];
-        VRLogfilePrintWithTimestamp(a3, "Media Blob -     Format string=%s\n", v21, v22, v23, v24, v25, v26, v20);
+        VRLogfilePrintWithTimestamp(file, "Media Blob -     Format string=%s\n", v21, v22, v23, v24, v25, v26, v20);
         v27 = [(VCMediaNegotiationBlobVideoSettings *)self parameterSetStringFromPayloadSettings:v16];
         if (VRTraceGetErrorLogLevelForModule() >= 7)
         {
@@ -4830,8 +4830,8 @@ LABEL_137:
           v29 = *MEMORY[0x1E6986650];
           if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [v16 payload];
-            v31 = [v27 UTF8String];
+            payload = [v16 payload];
+            uTF8String = [v27 UTF8String];
             *buf = 136316162;
             v77 = v28;
             v78 = 2080;
@@ -4839,22 +4839,22 @@ LABEL_137:
             v80 = 1024;
             v81 = 838;
             v82 = 1024;
-            *v83 = v30;
+            *v83 = payload;
             *&v83[4] = 2080;
-            *&v83[6] = v31;
+            *&v83[6] = uTF8String;
             _os_log_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Media Blob -     Payload=%u parameter set: %s", buf, 0x2Cu);
           }
         }
 
-        v32 = [v16 payload];
+        payload2 = [v16 payload];
         [v27 UTF8String];
-        VRLogfilePrintWithTimestamp(a3, "Media Blob -     Payload=%u parameter set: %s\n", v33, v34, v35, v36, v37, v38, v32);
+        VRLogfilePrintWithTimestamp(file, "Media Blob -     Payload=%u parameter set: %s\n", v33, v34, v35, v36, v37, v38, payload2);
         v74 = 0u;
         v75 = 0u;
         v72 = 0u;
         v73 = 0u;
-        v66 = [v16 videoRuleCollections];
-        v70 = [v66 countByEnumeratingWithState:&v72 objects:v71 count:16];
+        videoRuleCollections = [v16 videoRuleCollections];
+        v70 = [videoRuleCollections countByEnumeratingWithState:&v72 objects:v71 count:16];
         if (v70)
         {
           v67 = *v73;
@@ -4865,12 +4865,12 @@ LABEL_137:
             {
               if (*v73 != v67)
               {
-                objc_enumerationMutation(v66);
+                objc_enumerationMutation(videoRuleCollections);
               }
 
               v40 = *(*(&v72 + 1) + 8 * i);
               v41 = MEMORY[0x1E696AD60];
-              v42 = [v16 payload];
+              payload3 = [v16 payload];
               if ([v40 operation] == 1)
               {
                 v43 = "encode";
@@ -4881,22 +4881,22 @@ LABEL_137:
                 v43 = "decode";
               }
 
-              v44 = [v40 transport];
+              transport = [v40 transport];
               v45 = "Cellular";
-              if (v44 == 1)
+              if (transport == 1)
               {
                 v45 = "WiFi";
               }
 
-              v46 = [v41 stringWithFormat:@"Payload=%u %s %s", v42, v43, v45];
+              v46 = [v41 stringWithFormat:@"Payload=%u %s %s", payload3, v43, v45];
               if ([v40 hasPreferredFormat])
               {
-                v47 = [v40 preferredFormat];
+                preferredFormat = [v40 preferredFormat];
               }
 
               else
               {
-                v47 = 0;
+                preferredFormat = 0;
               }
 
               v48 = 1;
@@ -5064,7 +5064,7 @@ LABEL_89:
                 if ([v50 count] == 3)
                 {
                   [v46 appendFormat:@" %@@%@fps", objc_msgSend(v50, "objectAtIndex:", 1), objc_msgSend(v50, "objectAtIndex:", 2)];
-                  if (v47 == v48)
+                  if (preferredFormat == v48)
                   {
                     [v46 appendString:@" (preferred)"];
                   }
@@ -5097,11 +5097,11 @@ LABEL_93:
                 }
               }
 
-              VRLogfilePrintWithTimestamp(a3, "Media Blob -     %s\n", v53, v54, v55, v56, v57, v58, v52);
+              VRLogfilePrintWithTimestamp(file, "Media Blob -     %s\n", v53, v54, v55, v56, v57, v58, v52);
               v16 = v68;
             }
 
-            v70 = [v66 countByEnumeratingWithState:&v72 objects:v71 count:16];
+            v70 = [videoRuleCollections countByEnumeratingWithState:&v72 objects:v71 count:16];
           }
 
           while (v70);

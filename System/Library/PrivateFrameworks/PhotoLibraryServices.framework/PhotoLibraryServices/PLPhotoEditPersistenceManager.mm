@@ -1,25 +1,25 @@
 @interface PLPhotoEditPersistenceManager
-+ (BOOL)validateAdjustmentData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5 error:(id *)a6;
-+ (unsigned)renderTypeForAdjustmentData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5;
-- (id)dataFromCompositionController:(id)a3 outFormatIdentifier:(id *)a4 outFormatVersion:(id *)a5 exportProperties:(id)a6;
-- (id)debugDescriptionForAdjustmentData:(id)a3;
-- (id)debugDescriptionForPhotoEditData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5;
-- (id)loadCompositionFrom:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5 sidecarData:(id)a6 error:(id *)a7;
-- (id)loadPhotoEditData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5 importProperties:(id)a6 error:(id *)a7;
-- (void)loadMasterDimensionsFromPhotoEditData:(id)a3 outMasterWidth:(int64_t *)a4 outMasterHeight:(int64_t *)a5;
++ (BOOL)validateAdjustmentData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version error:(id *)error;
++ (unsigned)renderTypeForAdjustmentData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version;
+- (id)dataFromCompositionController:(id)controller outFormatIdentifier:(id *)identifier outFormatVersion:(id *)version exportProperties:(id)properties;
+- (id)debugDescriptionForAdjustmentData:(id)data;
+- (id)debugDescriptionForPhotoEditData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version;
+- (id)loadCompositionFrom:(id)from formatIdentifier:(id)identifier formatVersion:(id)version sidecarData:(id)data error:(id *)error;
+- (id)loadPhotoEditData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version importProperties:(id)properties error:(id *)error;
+- (void)loadMasterDimensionsFromPhotoEditData:(id)data outMasterWidth:(int64_t *)width outMasterHeight:(int64_t *)height;
 @end
 
 @implementation PLPhotoEditPersistenceManager
 
-- (id)dataFromCompositionController:(id)a3 outFormatIdentifier:(id *)a4 outFormatVersion:(id *)a5 exportProperties:(id)a6
+- (id)dataFromCompositionController:(id)controller outFormatIdentifier:(id *)identifier outFormatVersion:(id *)version exportProperties:(id)properties
 {
   v36[4] = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v8 = a6;
-  v28 = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
-  v9 = [MEMORY[0x1E696AAE8] mainBundle];
-  v10 = [v9 infoDictionary];
-  v11 = [v10 objectForKey:@"CFBundleVersion"];
+  controllerCopy = controller;
+  propertiesCopy = properties;
+  currentBuildVersionString = [MEMORY[0x1E69BF1B8] currentBuildVersionString];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v11 = [infoDictionary objectForKey:@"CFBundleVersion"];
   v12 = v11;
   v13 = &stru_1F0F06D80;
   if (v11)
@@ -32,13 +32,13 @@
   v35[0] = @"platform";
   v35[1] = @"buildNumber";
   v36[0] = @"iOS";
-  v36[1] = v28;
+  v36[1] = currentBuildVersionString;
   v35[2] = @"appVersion";
   v35[3] = @"schemaRevision";
   v36[2] = v14;
   v36[3] = &unk_1F0FBD7E0;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v36 forKeys:v35 count:4];
-  v16 = [PLCompositionHelper validatedCompositionCopyFor:v27];
+  v16 = [PLCompositionHelper validatedCompositionCopyFor:controllerCopy];
   v31 = 0;
   v32 = &v31;
   v33 = 0x2050000000;
@@ -58,38 +58,38 @@
   v18 = v17;
   _Block_object_dispose(&v31, 8);
   v19 = objc_alloc_init(v17);
-  [v19 setWidth:{objc_msgSend(v8, "imageWidth")}];
-  [v19 setHeight:{objc_msgSend(v8, "imageHeight")}];
-  [v19 setOrientation:{objc_msgSend(v8, "baseEXIFOrientation")}];
+  [v19 setWidth:{objc_msgSend(propertiesCopy, "imageWidth")}];
+  [v19 setHeight:{objc_msgSend(propertiesCopy, "imageHeight")}];
+  [v19 setOrientation:{objc_msgSend(propertiesCopy, "baseEXIFOrientation")}];
   v29 = 0;
   v20 = [getPICompositionSerializerClass() serializeComposition:v16 versionInfo:v15 serializerMetadata:v19 error:&v29];
   v21 = v29;
-  v22 = [v20 data];
-  if (a4)
+  data = [v20 data];
+  if (identifier)
   {
-    v23 = [v20 formatIdentifier];
-    *a4 = [v23 copy];
+    formatIdentifier = [v20 formatIdentifier];
+    *identifier = [formatIdentifier copy];
   }
 
-  if (a5)
+  if (version)
   {
-    v24 = [v20 formatVersion];
-    *a5 = [v24 copy];
+    formatVersion = [v20 formatVersion];
+    *version = [formatVersion copy];
   }
 
-  return v22;
+  return data;
 }
 
-- (id)debugDescriptionForPhotoEditData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5
+- (id)debugDescriptionForPhotoEditData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([getPICompositionSerializerClass() canInterpretDataWithFormatIdentifier:v8 formatVersion:v9])
+  dataCopy = data;
+  identifierCopy = identifier;
+  versionCopy = version;
+  if ([getPICompositionSerializerClass() canInterpretDataWithFormatIdentifier:identifierCopy formatVersion:versionCopy])
   {
     v22 = 0;
-    v10 = [getPICompositionSerializerClass() deserializeCompositionFromData:v7 formatIdentifier:v8 formatVersion:v9 error:&v22];
+    v10 = [getPICompositionSerializerClass() deserializeCompositionFromData:dataCopy formatIdentifier:identifierCopy formatVersion:versionCopy error:&v22];
     v11 = v10;
     v12 = v22;
     if (v10)
@@ -105,7 +105,7 @@
     {
       v16 = v22;
       v21 = 0;
-      v17 = [getPICompositionSerializerClass() deserializeDictionaryFromData:v7 error:&v21];
+      v17 = [getPICompositionSerializerClass() deserializeDictionaryFromData:dataCopy error:&v21];
       v23[0] = @"error_specific";
       v18 = v21;
       v19 = [v16 debugDescription];
@@ -126,13 +126,13 @@
   return v15;
 }
 
-- (id)debugDescriptionForAdjustmentData:(id)a3
+- (id)debugDescriptionForAdjustmentData:(id)data
 {
-  v3 = a3;
-  if (v3)
+  dataCopy = data;
+  if (dataCopy)
   {
     v9 = 0;
-    v4 = [MEMORY[0x1E69C0EB0] decompressData:v3 error:&v9];
+    v4 = [MEMORY[0x1E69C0EB0] decompressData:dataCopy error:&v9];
     v5 = v9;
     if (v4)
     {
@@ -154,13 +154,13 @@
   return v6;
 }
 
-- (void)loadMasterDimensionsFromPhotoEditData:(id)a3 outMasterWidth:(int64_t *)a4 outMasterHeight:(int64_t *)a5
+- (void)loadMasterDimensionsFromPhotoEditData:(id)data outMasterWidth:(int64_t *)width outMasterHeight:(int64_t *)height
 {
-  *a4 = 0;
-  *a5 = 0;
-  v7 = a3;
+  *width = 0;
+  *height = 0;
+  dataCopy = data;
   v14 = 0;
-  v8 = [getPICompositionSerializerClass() deserializeDictionaryFromData:v7 error:&v14];
+  v8 = [getPICompositionSerializerClass() deserializeDictionaryFromData:dataCopy error:&v14];
 
   if (v8)
   {
@@ -173,21 +173,21 @@
       v13 = v12;
       if (v11 && v12)
       {
-        *a4 = [v11 integerValue];
-        *a5 = [v13 integerValue];
+        *width = [v11 integerValue];
+        *height = [v13 integerValue];
       }
     }
   }
 }
 
-- (id)loadPhotoEditData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5 importProperties:(id)a6 error:(id *)a7
+- (id)loadPhotoEditData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version importProperties:(id)properties error:(id *)error
 {
-  v12 = a6;
-  v13 = [(PLPhotoEditPersistenceManager *)self loadCompositionFrom:a3 formatIdentifier:a4 formatVersion:a5 sidecarData:0 error:a7];
+  propertiesCopy = properties;
+  v13 = [(PLPhotoEditPersistenceManager *)self loadCompositionFrom:data formatIdentifier:identifier formatVersion:version sidecarData:0 error:error];
   if (v13)
   {
     v14 = [getPIPhotoEditHelperClass_71962() newCompositionControllerWithComposition:v13];
-    [v14 setImageOrientation:{objc_msgSend(v12, "baseEXIFOrientation")}];
+    [v14 setImageOrientation:{objc_msgSend(propertiesCopy, "baseEXIFOrientation")}];
   }
 
   else
@@ -198,30 +198,30 @@
   return v14;
 }
 
-- (id)loadCompositionFrom:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5 sidecarData:(id)a6 error:(id *)a7
+- (id)loadCompositionFrom:(id)from formatIdentifier:(id)identifier formatVersion:(id)version sidecarData:(id)data error:(id *)error
 {
   v84[1] = *MEMORY[0x1E69E9840];
-  v62 = a3;
-  v13 = a4;
-  v14 = a5;
-  v60 = a6;
-  v61 = a7;
-  if (!a7)
+  fromCopy = from;
+  identifierCopy = identifier;
+  versionCopy = version;
+  dataCopy = data;
+  errorCopy = error;
+  if (!error)
   {
-    v54 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v54 handleFailureInMethod:a2 object:self file:@"PLPhotoEditPersistenceManager.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"error"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLPhotoEditPersistenceManager.m" lineNumber:74 description:{@"Invalid parameter not satisfying: %@", @"error"}];
   }
 
-  v63 = v14;
-  v64 = v13;
-  if (([getPIPhotoEditHelperClass_71962() canInterpretDataWithFormatIdentifier:v13 formatVersion:v14] & 1) == 0)
+  v63 = versionCopy;
+  v64 = identifierCopy;
+  if (([getPIPhotoEditHelperClass_71962() canInterpretDataWithFormatIdentifier:identifierCopy formatVersion:versionCopy] & 1) == 0)
   {
     v19 = MEMORY[0x1E696ABC0];
     v83 = *MEMORY[0x1E696A588];
-    v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot interpret adjustment data: %@ %@", v13, v14];
-    v84[0] = v20;
+    versionCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cannot interpret adjustment data: %@ %@", identifierCopy, versionCopy];
+    v84[0] = versionCopy;
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v84 forKeys:&v83 count:1];
-    *a7 = [v19 errorWithDomain:@"PLPhotoEditPersistenceManagerDomain" code:0 userInfo:v21];
+    *error = [v19 errorWithDomain:@"PLPhotoEditPersistenceManagerDomain" code:0 userInfo:v21];
 
     v22 = 0;
     goto LABEL_36;
@@ -249,26 +249,26 @@
   _Block_object_dispose(&v73, 8);
   if (!v15)
   {
-    v55 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v56 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getPIPhotoEditFormatIdentifierVideoSloMo(void)"];
-    [v55 handleFailureInFunction:v56 file:@"PLPhotoEditPersistenceManager.m" lineNumber:43 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v56 file:@"PLPhotoEditPersistenceManager.m" lineNumber:43 description:{@"%s", dlerror()}];
 
     goto LABEL_41;
   }
 
   v18 = *v15;
-  if ([v13 isEqualToString:v18])
+  if ([identifierCopy isEqualToString:v18])
   {
 
 LABEL_14:
     v27 = objc_opt_new();
-    v59 = [MEMORY[0x1E69C0EB8] deserialize:v62 originator:*MEMORY[0x1E69C0E38] format:v13 formatVersion:v14 error:v61];
+    v59 = [MEMORY[0x1E69C0EB8] deserialize:fromCopy originator:*MEMORY[0x1E69C0E38] format:identifierCopy formatVersion:versionCopy error:errorCopy];
     v71 = 0u;
     v72 = 0u;
     v69 = 0u;
     v70 = 0u;
-    v28 = [v59 adjustmentStack];
-    obj = [v28 adjustments];
+    adjustmentStack = [v59 adjustmentStack];
+    obj = [adjustmentStack adjustments];
 
     v29 = [obj countByEnumeratingWithState:&v69 objects:v82 count:16];
     if (!v29)
@@ -293,15 +293,15 @@ LABEL_14:
         }
 
         v34 = *(*(&v69 + 1) + 8 * v33);
-        v35 = [v34 identifier];
-        v36 = [v35 isEqualToString:v31];
+        identifier = [v34 identifier];
+        v36 = [identifier isEqualToString:v31];
 
         if (v36)
         {
           v37 = objc_opt_new();
           [v37 setObject:@"SlowMotion" forKeyedSubscript:@"identifier"];
-          v38 = [v34 settings];
-          [v37 setObject:v38 forKeyedSubscript:@"settings"];
+          settings = [v34 settings];
+          [v37 setObject:settings forKeyedSubscript:@"settings"];
 
           [v37 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"enabled"];
           [v27 addObject:v37];
@@ -309,17 +309,17 @@ LABEL_14:
 
         else
         {
-          v39 = [v34 identifier];
-          v40 = [v39 isEqualToString:v32];
+          identifier2 = [v34 identifier];
+          v40 = [identifier2 isEqualToString:v32];
 
           if (v40)
           {
             v37 = objc_opt_new();
-            v41 = [v34 identifier];
-            [v37 setObject:v41 forKeyedSubscript:@"identifier"];
+            identifier3 = [v34 identifier];
+            [v37 setObject:identifier3 forKeyedSubscript:@"identifier"];
 
-            v42 = [v34 settings];
-            [v37 setObject:v42 forKeyedSubscript:@"settings"];
+            settings2 = [v34 settings];
+            [v37 setObject:settings2 forKeyedSubscript:@"settings"];
 
             [v37 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"enabled"];
             [v27 addObject:v37];
@@ -327,41 +327,41 @@ LABEL_14:
 
           else
           {
-            v43 = [v34 identifier];
-            v44 = [v43 isEqualToString:v67];
+            identifier4 = [v34 identifier];
+            v44 = [identifier4 isEqualToString:v67];
 
             if (!v44)
             {
               goto LABEL_29;
             }
 
-            v45 = [v34 settings];
-            v37 = [v45 objectForKeyedSubscript:v66];
+            settings3 = [v34 settings];
+            v37 = [settings3 objectForKeyedSubscript:v66];
             if (v37)
             {
             }
 
             else
             {
-              v46 = [v34 settings];
-              v37 = [v46 objectForKeyedSubscript:v65];
+              settings4 = [v34 settings];
+              v37 = [settings4 objectForKeyedSubscript:v65];
 
               if (!v37)
               {
                 v37 = PLBackendGetLog();
                 if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
                 {
-                  v49 = [v34 identifier];
-                  v50 = [v34 version];
-                  v51 = [v34 settings];
+                  identifier5 = [v34 identifier];
+                  version = [v34 version];
+                  settings5 = [v34 settings];
                   *buf = 138413058;
                   *&buf[4] = v64;
                   *&buf[12] = 2112;
-                  *&buf[14] = v49;
+                  *&buf[14] = identifier5;
                   *&buf[22] = 2112;
-                  v78 = v50;
+                  v78 = version;
                   LOWORD(v79[0]) = 2112;
-                  *(v79 + 2) = v51;
+                  *(v79 + 2) = settings5;
                   _os_log_impl(&dword_19BF1F000, v37, OS_LOG_TYPE_ERROR, "PosterFrame adjustment has unexpected format, will not migrate: %@, %@, %@, %@", buf, 0x2Au);
                 }
 
@@ -394,7 +394,7 @@ LABEL_29:
       {
 LABEL_34:
 
-        v22 = [getPICompositionSerializerClass() deserializeCompositionFromAdjustments:v27 metadata:MEMORY[0x1E695E0F8] formatIdentifier:v64 formatVersion:v63 error:v61];
+        v22 = [getPICompositionSerializerClass() deserializeCompositionFromAdjustments:v27 metadata:MEMORY[0x1E695E0F8] formatIdentifier:v64 formatVersion:v63 error:errorCopy];
 
         goto LABEL_36;
       }
@@ -423,36 +423,36 @@ LABEL_34:
   _Block_object_dispose(&v73, 8);
   if (!v23)
   {
-    v57 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v58 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getPIPhotoEditFormatIdentifierVideo(void)"];
-    [v57 handleFailureInFunction:v58 file:@"PLPhotoEditPersistenceManager.m" lineNumber:45 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v58 file:@"PLPhotoEditPersistenceManager.m" lineNumber:45 description:{@"%s", dlerror()}];
 
 LABEL_41:
     __break(1u);
   }
 
-  v26 = [v13 isEqualToString:*v23];
+  v26 = [identifierCopy isEqualToString:*v23];
 
   if (v26)
   {
     goto LABEL_14;
   }
 
-  v22 = [getPICompositionSerializerClass() deserializeCompositionFromData:v62 formatIdentifier:v13 formatVersion:v14 sidecarData:v60 error:a7];
+  v22 = [getPICompositionSerializerClass() deserializeCompositionFromData:fromCopy formatIdentifier:identifierCopy formatVersion:versionCopy sidecarData:dataCopy error:error];
 LABEL_36:
 
   return v22;
 }
 
-+ (unsigned)renderTypeForAdjustmentData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5
++ (unsigned)renderTypeForAdjustmentData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version
 {
   v74 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  versionCopy = version;
   v10 = objc_alloc_init(PLPhotoEditPersistenceManager);
   v72 = 0;
-  v11 = [(PLPhotoEditPersistenceManager *)v10 loadCompositionFrom:v7 formatIdentifier:v8 formatVersion:v9 sidecarData:0 error:&v72];
+  v11 = [(PLPhotoEditPersistenceManager *)v10 loadCompositionFrom:dataCopy formatIdentifier:identifierCopy formatVersion:versionCopy sidecarData:0 error:&v72];
   v12 = v72;
   if (v11)
   {
@@ -461,11 +461,11 @@ LABEL_36:
     if (v13)
     {
       v15 = [v13 objectForKeyedSubscript:@"enabled"];
-      v16 = [v15 BOOLValue];
+      bOOLValue = [v15 BOOLValue];
 
       v17 = [v14 objectForKeyedSubscript:@"flavor"];
       v18 = v17;
-      if (v16)
+      if (bOOLValue)
       {
         v19 = [v17 isEqualToString:@"AutoLoop"];
         if ([v18 isEqualToString:@"LongExposure"])
@@ -500,9 +500,9 @@ LABEL_36:
     if (v21)
     {
       v22 = [v21 objectForKeyedSubscript:@"enabled"];
-      v23 = [v22 BOOLValue];
+      bOOLValue2 = [v22 BOOLValue];
 
-      if (v23)
+      if (bOOLValue2)
       {
         v20 |= 2u;
       }
@@ -513,9 +513,9 @@ LABEL_36:
     if (v24)
     {
       v25 = [v24 objectForKeyedSubscript:@"enabled"];
-      v26 = [v25 BOOLValue];
+      bOOLValue3 = [v25 BOOLValue];
 
-      if (v26)
+      if (bOOLValue3)
       {
         v20 |= 2u;
       }
@@ -524,10 +524,10 @@ LABEL_36:
     v27 = [v11 objectForKeyedSubscript:@"smartTone"];
     v28 = [v11 objectForKeyedSubscript:@"smartColor"];
     v29 = [v11 objectForKeyedSubscript:@"whiteBalance"];
-    v66 = v8;
-    v67 = v7;
+    v66 = identifierCopy;
+    v67 = dataCopy;
     v64 = v10;
-    v65 = v9;
+    v65 = versionCopy;
     v62 = v14;
     v63 = v12;
     v56 = v29;
@@ -537,7 +537,7 @@ LABEL_36:
       v30 = v28;
       v31 = v29;
       v32 = [v27 objectForKeyedSubscript:@"enabled"];
-      v58 = [v32 BOOLValue];
+      bOOLValue4 = [v32 BOOLValue];
 
       v33 = [v28 objectForKeyedSubscript:@"enabled"];
       LOBYTE(v32) = [v33 BOOLValue];
@@ -546,7 +546,7 @@ LABEL_36:
       LOBYTE(v33) = [v34 BOOLValue];
 
       v35 = [v27 objectForKeyedSubscript:@"auto"];
-      v36 = [v35 BOOLValue];
+      bOOLValue5 = [v35 BOOLValue];
 
       v37 = [v30 objectForKeyedSubscript:@"auto"];
       LOBYTE(v30) = [v37 BOOLValue];
@@ -554,8 +554,8 @@ LABEL_36:
       v38 = [v31 objectForKeyedSubscript:@"auto"];
       LOBYTE(v37) = [v38 BOOLValue];
 
-      v55 = (v58 ^ 1 | v36) & (v32 ^ 1 | v30) & (v33 ^ 1 | v37) ^ 1;
-      if ((v58 ^ 1 | v36) & (v32 ^ 1 | v30) & (v33 ^ 1 | v37))
+      v55 = (bOOLValue4 ^ 1 | bOOLValue5) & (v32 ^ 1 | v30) & (v33 ^ 1 | v37) ^ 1;
+      if ((bOOLValue4 ^ 1 | bOOLValue5) & (v32 ^ 1 | v30) & (v33 ^ 1 | v37))
       {
         v20 |= 0x100u;
       }
@@ -571,9 +571,9 @@ LABEL_36:
     if (v39)
     {
       v41 = [v39 objectForKeyedSubscript:@"enabled"];
-      v42 = [v41 BOOLValue];
+      bOOLValue6 = [v41 BOOLValue];
 
-      if (v42)
+      if (bOOLValue6)
       {
         v20 |= 0x200u;
       }
@@ -585,12 +585,12 @@ LABEL_36:
     if (v43 | v44)
     {
       v45 = [v43 objectForKeyedSubscript:@"enabled"];
-      v46 = [v45 BOOLValue];
+      bOOLValue7 = [v45 BOOLValue];
 
       v47 = [v44 objectForKeyedSubscript:@"enabled"];
       LODWORD(v45) = [v47 BOOLValue];
 
-      if ((v46 | v45))
+      if ((bOOLValue7 | v45))
       {
         v20 |= 0x400u;
       }
@@ -600,10 +600,10 @@ LABEL_36:
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v48 = [v11 contents];
-    v49 = [v48 allKeys];
+    contents = [v11 contents];
+    allKeys = [contents allKeys];
 
-    v50 = [v49 countByEnumeratingWithState:&v68 objects:v73 count:16];
+    v50 = [allKeys countByEnumeratingWithState:&v68 objects:v73 count:16];
     if (v50)
     {
       v51 = v50;
@@ -614,7 +614,7 @@ LABEL_36:
         {
           if (*v69 != v52)
           {
-            objc_enumerationMutation(v49);
+            objc_enumerationMutation(allKeys);
           }
 
           if (![&unk_1F0FBFE50 containsObject:*(*(&v68 + 1) + 8 * i)])
@@ -624,7 +624,7 @@ LABEL_36:
           }
         }
 
-        v51 = [v49 countByEnumeratingWithState:&v68 objects:v73 count:16];
+        v51 = [allKeys countByEnumeratingWithState:&v68 objects:v73 count:16];
         if (v51)
         {
           continue;
@@ -641,10 +641,10 @@ LABEL_36:
 
 LABEL_42:
 
-    v8 = v66;
-    v7 = v67;
+    identifierCopy = v66;
+    dataCopy = v67;
     v10 = v64;
-    v9 = v65;
+    versionCopy = v65;
     v12 = v63;
   }
 
@@ -656,13 +656,13 @@ LABEL_42:
   return v20;
 }
 
-+ (BOOL)validateAdjustmentData:(id)a3 formatIdentifier:(id)a4 formatVersion:(id)a5 error:(id *)a6
++ (BOOL)validateAdjustmentData:(id)data formatIdentifier:(id)identifier formatVersion:(id)version error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  versionCopy = version;
   v12 = objc_alloc_init(PLPhotoEditPersistenceManager);
-  v13 = [(PLPhotoEditPersistenceManager *)v12 loadCompositionFrom:v9 formatIdentifier:v10 formatVersion:v11 sidecarData:0 error:a6];
+  v13 = [(PLPhotoEditPersistenceManager *)v12 loadCompositionFrom:dataCopy formatIdentifier:identifierCopy formatVersion:versionCopy sidecarData:0 error:error];
   if (v13)
   {
     v21 = 0;
@@ -686,8 +686,8 @@ LABEL_42:
     v16 = objc_alloc_init(v14);
     [v16 setAssetIdentifier:@"validate"];
     [v13 setObject:v16 forKeyedSubscript:@"source"];
-    v17 = [v13 schema];
-    v18 = [v17 validateComposition:v13 error:a6];
+    schema = [v13 schema];
+    v18 = [schema validateComposition:v13 error:error];
   }
 
   else

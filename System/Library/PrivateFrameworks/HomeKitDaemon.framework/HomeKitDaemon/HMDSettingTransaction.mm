@@ -1,43 +1,43 @@
 @interface HMDSettingTransaction
-- (HMDSettingTransaction)initWithTransactionLabel:(id)a3;
-- (id)initForInitialCreationWithTransactionLabel:(id)a3;
-- (void)addModel:(id)a3;
-- (void)addModelToBeUpdated:(id)a3;
-- (void)addSettingModel:(id)a3;
-- (void)removeModelWithIdentifier:(id)a3;
+- (HMDSettingTransaction)initWithTransactionLabel:(id)label;
+- (id)initForInitialCreationWithTransactionLabel:(id)label;
+- (void)addModel:(id)model;
+- (void)addModelToBeUpdated:(id)updated;
+- (void)addSettingModel:(id)model;
+- (void)removeModelWithIdentifier:(id)identifier;
 @end
 
 @implementation HMDSettingTransaction
 
-- (void)addModelToBeUpdated:(id)a3
+- (void)addModelToBeUpdated:(id)updated
 {
-  v4 = a3;
-  v5 = [(HMDSettingTransaction *)self updateModels];
-  [v5 addObject:v4];
+  updatedCopy = updated;
+  updateModels = [(HMDSettingTransaction *)self updateModels];
+  [updateModels addObject:updatedCopy];
 }
 
-- (void)removeModelWithIdentifier:(id)a3
+- (void)removeModelWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HMDSettingTransaction *)self removeUUIDs];
-  [v5 addObject:v4];
+  identifierCopy = identifier;
+  removeUUIDs = [(HMDSettingTransaction *)self removeUUIDs];
+  [removeUUIDs addObject:identifierCopy];
 }
 
-- (void)addModel:(id)a3
+- (void)addModel:(id)model
 {
-  v4 = a3;
-  v5 = [(HMDSettingTransaction *)self updateModels];
-  [v5 addObject:v4];
+  modelCopy = model;
+  updateModels = [(HMDSettingTransaction *)self updateModels];
+  [updateModels addObject:modelCopy];
 }
 
-- (void)addSettingModel:(id)a3
+- (void)addSettingModel:(id)model
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modelCopy = model;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = modelCopy;
   }
 
   else
@@ -49,8 +49,8 @@
 
   if (v6)
   {
-    v7 = [(HMDSettingTransaction *)self updateModels];
-    [v7 addObject:v6];
+    updateModels = [(HMDSettingTransaction *)self updateModels];
+    [updateModels addObject:v6];
   }
 
   else
@@ -63,7 +63,7 @@
       v12 = 138543618;
       v13 = v10;
       v14 = 2112;
-      v15 = v4;
+      v15 = modelCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_ERROR, "%{public}@Model not of required type %@", &v12, 0x16u);
     }
 
@@ -73,16 +73,16 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initForInitialCreationWithTransactionLabel:(id)a3
+- (id)initForInitialCreationWithTransactionLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   v13.receiver = self;
   v13.super_class = HMDSettingTransaction;
   v6 = [(HMDSettingTransaction *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transactionLabel, a3);
+    objc_storeStrong(&v6->_transactionLabel, label);
     v7->_initialCreation = 1;
     v8 = [MEMORY[0x277CBEB58] set];
     updateModels = v7->_updateModels;
@@ -96,16 +96,16 @@
   return v7;
 }
 
-- (HMDSettingTransaction)initWithTransactionLabel:(id)a3
+- (HMDSettingTransaction)initWithTransactionLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   v13.receiver = self;
   v13.super_class = HMDSettingTransaction;
   v6 = [(HMDSettingTransaction *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transactionLabel, a3);
+    objc_storeStrong(&v6->_transactionLabel, label);
     v7->_initialCreation = 0;
     v8 = [MEMORY[0x277CBEB58] set];
     updateModels = v7->_updateModels;

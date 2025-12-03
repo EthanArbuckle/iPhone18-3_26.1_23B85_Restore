@@ -1,20 +1,20 @@
 @interface StepByStepUIViewController_DevicePicker
-- (StepByStepUIViewController_DevicePicker)initWithNibName:(id)a3 bundle:(id)a4;
+- (StepByStepUIViewController_DevicePicker)initWithNibName:(id)name bundle:(id)bundle;
 - (id)pickerContent;
 - (void)loadView;
 - (void)setupPickerTable;
-- (void)touchInCellAtIndexPath:(id)a3;
+- (void)touchInCellAtIndexPath:(id)path;
 - (void)updateSelections;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation StepByStepUIViewController_DevicePicker
 
-- (StepByStepUIViewController_DevicePicker)initWithNibName:(id)a3 bundle:(id)a4
+- (StepByStepUIViewController_DevicePicker)initWithNibName:(id)name bundle:(id)bundle
 {
   v5.receiver = self;
   v5.super_class = StepByStepUIViewController_DevicePicker;
-  result = [(AssistantSubUIViewController *)&v5 initWithNibName:a3 bundle:a4];
+  result = [(AssistantSubUIViewController *)&v5 initWithNibName:name bundle:bundle];
   if (result)
   {
     result->showFullList = 1;
@@ -69,10 +69,10 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = objc_msgSend_inParamDict(self, a2, a3);
+  appearCopy = appear;
+  v5 = objc_msgSend_inParamDict(self, a2, appear);
   v7 = objc_msgSend_objectForKey_(v5, v6, @"kSBSKey_Mode");
   if (objc_msgSend_integerValue(v7, v8, v9) == 2)
   {
@@ -102,12 +102,12 @@
   objc_msgSend_updateSelections(self, v22, v23);
   v26.receiver = self;
   v26.super_class = StepByStepUIViewController_DevicePicker;
-  [(StepByStepUIViewController *)&v26 viewWillAppear:v3];
+  [(StepByStepUIViewController *)&v26 viewWillAppear:appearCopy];
 }
 
-- (void)touchInCellAtIndexPath:(id)a3
+- (void)touchInCellAtIndexPath:(id)path
 {
-  v5 = objc_msgSend_section(a3, a2, a3);
+  v5 = objc_msgSend_section(path, a2, path);
   v8 = objc_msgSend_tableManager(self, v6, v7);
   if (v5 == objc_msgSend_indexOfSectionWithIdentifier_(v8, v9, qword_27E383200))
   {
@@ -115,7 +115,7 @@
     {
       v50 = 0;
       v14 = objc_msgSend_tableManager(self, v12, v13);
-      if (objc_msgSend_tagOfCellAtIndexPath_tag_(v14, v15, a3, &v50))
+      if (objc_msgSend_tagOfCellAtIndexPath_tag_(v14, v15, path, &v50))
       {
         if (v50 != 1400203111)
         {
@@ -129,14 +129,14 @@
 
           else
           {
-            v32 = objc_msgSend_row(a3, v16, v17);
+            v32 = objc_msgSend_row(path, v16, v17);
             if (objc_msgSend_sortedDevices(self, v33, v34))
             {
               v37 = objc_msgSend_sortedDevices(self, v35, v36);
               if (v32 < objc_msgSend_count(v37, v38, v39))
               {
                 v42 = objc_msgSend_sortedDevices(self, v40, v41);
-                v45 = objc_msgSend_row(a3, v43, v44);
+                v45 = objc_msgSend_row(path, v43, v44);
                 v47 = objc_msgSend_objectAtIndex_(v42, v46, v45);
                 self->_selectedDevice = v47;
                 if (v47)

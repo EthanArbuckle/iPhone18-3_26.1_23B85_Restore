@@ -1,18 +1,18 @@
 @interface SBPBAppLayoutList
 + (uint64_t)applayoutsType;
-- (BOOL)isEqual:(id)a3;
-- (id)applayoutsAtIndex:(id *)a1;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)applayoutsAtIndex:(id *)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)applayouts;
 - (uint64_t)applayoutsCount;
 - (uint64_t)clearApplayouts;
-- (void)addApplayouts:(uint64_t)a1;
-- (void)copyTo:(uint64_t)a1;
-- (void)mergeFrom:(uint64_t)a1;
-- (void)setApplayouts:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)addApplayouts:(uint64_t)applayouts;
+- (void)copyTo:(uint64_t)to;
+- (void)mergeFrom:(uint64_t)from;
+- (void)setApplayouts:(uint64_t)applayouts;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SBPBAppLayoutList
@@ -30,8 +30,8 @@
   v8.receiver = self;
   v8.super_class = SBPBAppLayoutList;
   v4 = [(SBPBAppLayoutList *)&v8 description];
-  v5 = [(SBPBAppLayoutList *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SBPBAppLayoutList *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -39,7 +39,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_applayouts count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_applayouts, "count")}];
@@ -62,8 +62,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -72,16 +72,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"applayouts"];
+    [dictionary setObject:v4 forKey:@"applayouts"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -114,10 +114,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -138,7 +138,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [(SBPBAppLayoutList *)v5 addApplayouts:v11];
 
         ++v10;
@@ -154,13 +154,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     applayouts = self->_applayouts;
-    if (applayouts | v4[1])
+    if (applayouts | equalCopy[1])
     {
       v6 = [(NSMutableArray *)applayouts isEqual:?];
     }
@@ -189,20 +189,20 @@
   return result;
 }
 
-- (void)addApplayouts:(uint64_t)a1
+- (void)addApplayouts:(uint64_t)applayouts
 {
   v3 = a2;
-  if (a1)
+  if (applayouts)
   {
-    v4 = *(a1 + 8);
+    v4 = *(applayouts + 8);
     v7 = v3;
     if (!v4)
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v6 = *(a1 + 8);
-      *(a1 + 8) = v5;
+      v6 = *(applayouts + 8);
+      *(applayouts + 8) = v5;
 
-      v4 = *(a1 + 8);
+      v4 = *(applayouts + 8);
     }
 
     [v4 addObject:v7];
@@ -220,44 +220,44 @@
   return result;
 }
 
-- (id)applayoutsAtIndex:(id *)a1
+- (id)applayoutsAtIndex:(id *)index
 {
-  if (a1)
+  if (index)
   {
-    a1 = [a1[1] objectAtIndex:a2];
+    index = [index[1] objectAtIndex:a2];
     v2 = vars8;
   }
 
-  return a1;
+  return index;
 }
 
-- (void)copyTo:(uint64_t)a1
+- (void)copyTo:(uint64_t)to
 {
   v7 = a2;
-  if (a1 && [*(a1 + 8) count])
+  if (to && [*(to + 8) count])
   {
     if (v7)
     {
       [v7[1] removeAllObjects];
     }
 
-    v3 = [*(a1 + 8) count];
+    v3 = [*(to + 8) count];
     if (v3)
     {
       v4 = v3;
       for (i = 0; i != v4; ++i)
       {
-        v6 = [*(a1 + 8) objectAtIndex:i];
+        v6 = [*(to + 8) objectAtIndex:i];
         [(SBPBAppLayoutList *)v7 addApplayouts:v6];
       }
     }
   }
 }
 
-- (void)mergeFrom:(uint64_t)a1
+- (void)mergeFrom:(uint64_t)from
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (from)
   {
     v10 = 0u;
     v11 = 0u;
@@ -279,7 +279,7 @@
             objc_enumerationMutation(v3);
           }
 
-          [(SBPBAppLayoutList *)a1 addApplayouts:?];
+          [(SBPBAppLayoutList *)from addApplayouts:?];
         }
 
         while (v5 != v7);
@@ -301,11 +301,11 @@
   return result;
 }
 
-- (void)setApplayouts:(uint64_t)a1
+- (void)setApplayouts:(uint64_t)applayouts
 {
-  if (a1)
+  if (applayouts)
   {
-    objc_storeStrong((a1 + 8), a2);
+    objc_storeStrong((applayouts + 8), a2);
   }
 }
 

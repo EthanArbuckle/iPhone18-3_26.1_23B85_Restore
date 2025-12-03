@@ -39,8 +39,8 @@
 - (void)submitEvent
 {
   v4 = +[SFPairedUnlockWatchEvent eventName];
-  v3 = [(SFPairedUnlockWatchEvent *)self eventPayload];
-  SFMetricsLog(v4, v3);
+  eventPayload = [(SFPairedUnlockWatchEvent *)self eventPayload];
+  SFMetricsLog(v4, eventPayload);
 }
 
 @end

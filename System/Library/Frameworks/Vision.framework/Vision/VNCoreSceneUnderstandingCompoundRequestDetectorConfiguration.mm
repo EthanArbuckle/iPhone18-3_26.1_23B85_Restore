@@ -1,31 +1,31 @@
 @interface VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration
-- (VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration)initWithMainStageComputeDevice:(id)a3;
-- (id)_addFeatureConfigurationOfClass:(void *)a3 forOriginalRequest:(void *)a4 storedInOptionsKey:;
-- (id)addCityNatureConfigurationForOriginalRequest:(id)a3;
-- (id)addEntityNetClassificationConfigurationForOriginalRequest:(id)a3;
-- (id)addImageAestheticsConfigurationForOriginalRequest:(id)a3;
-- (id)addImageClassificationConfigurationForOriginalRequest:(id)a3;
-- (id)addImageFingerprintsConfigurationForOriginalRequest:(id)a3;
-- (id)addImageSaliencyAConfigurationForOriginalRequest:(id)a3;
-- (id)addImageSaliencyOConfigurationForOriginalRequest:(id)a3;
-- (id)addJunkConfigurationForOriginalRequest:(id)a3;
-- (id)addRecognizeObjectsConfigurationForOriginalRequest:(id)a3;
-- (id)addSceneprintConfigurationForOriginalRequest:(id)a3;
-- (id)addSignificantEventConfigurationForOriginalRequest:(id)a3;
-- (id)addVN5kJNH3eYuyaLxNpZr5Z7ziConfigurationForOriginalRequest:(id)a3;
-- (void)cacheResultsInRequestPerformingContext:(id)a3;
+- (VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration)initWithMainStageComputeDevice:(id)device;
+- (id)_addFeatureConfigurationOfClass:(void *)class forOriginalRequest:(void *)request storedInOptionsKey:;
+- (id)addCityNatureConfigurationForOriginalRequest:(id)request;
+- (id)addEntityNetClassificationConfigurationForOriginalRequest:(id)request;
+- (id)addImageAestheticsConfigurationForOriginalRequest:(id)request;
+- (id)addImageClassificationConfigurationForOriginalRequest:(id)request;
+- (id)addImageFingerprintsConfigurationForOriginalRequest:(id)request;
+- (id)addImageSaliencyAConfigurationForOriginalRequest:(id)request;
+- (id)addImageSaliencyOConfigurationForOriginalRequest:(id)request;
+- (id)addJunkConfigurationForOriginalRequest:(id)request;
+- (id)addRecognizeObjectsConfigurationForOriginalRequest:(id)request;
+- (id)addSceneprintConfigurationForOriginalRequest:(id)request;
+- (id)addSignificantEventConfigurationForOriginalRequest:(id)request;
+- (id)addVN5kJNH3eYuyaLxNpZr5Z7ziConfigurationForOriginalRequest:(id)request;
+- (void)cacheResultsInRequestPerformingContext:(id)context;
 @end
 
 @implementation VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration
 
-- (void)cacheResultsInRequestPerformingContext:(id)a3
+- (void)cacheResultsInRequestPerformingContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __103__VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration_cacheResultsInRequestPerformingContext___block_invoke;
   aBlock[3] = &unk_1E77B5DD8;
-  v5 = v4;
+  v5 = contextCopy;
   v20 = v5;
   v6 = _Block_copy(aBlock);
   v7 = [(NSMutableDictionary *)self->_detectorConfigurationOptions objectForKeyedSubscript:@"VNCoreSceneUnderstandingDetectorProcessingOption_SceneprintConfigurations"];
@@ -101,144 +101,144 @@ void __103__VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration_cacheRe
   }
 }
 
-- (id)addCityNatureConfigurationForOriginalRequest:(id)a3
+- (id)addCityNatureConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_CityNatureGatingConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_CityNatureGatingConfigurations"];
 
   return v6;
 }
 
-- (id)_addFeatureConfigurationOfClass:(void *)a3 forOriginalRequest:(void *)a4 storedInOptionsKey:
+- (id)_addFeatureConfigurationOfClass:(void *)class forOriginalRequest:(void *)request storedInOptionsKey:
 {
-  v7 = a3;
-  v8 = a4;
-  if (a1)
+  classCopy = class;
+  requestCopy = request;
+  if (self)
   {
-    v9 = [a1[3] objectForKey:v8];
+    v9 = [self[3] objectForKey:requestCopy];
     if (!v9)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      [a1[3] setObject:v9 forKey:v8];
+      [self[3] setObject:v9 forKey:requestCopy];
     }
 
-    a1 = [[a2 alloc] initWithObservationsRecipient:v7];
-    [v9 addObject:a1];
+    self = [[a2 alloc] initWithObservationsRecipient:classCopy];
+    [v9 addObject:self];
   }
 
-  return a1;
+  return self;
 }
 
-- (id)addSignificantEventConfigurationForOriginalRequest:(id)a3
+- (id)addSignificantEventConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_SignificantEventConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_SignificantEventConfigurations"];
 
   return v6;
 }
 
-- (id)addVN5kJNH3eYuyaLxNpZr5Z7ziConfigurationForOriginalRequest:(id)a3
+- (id)addVN5kJNH3eYuyaLxNpZr5Z7ziConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_5kJNH3eYuyaLxNpZr5Z7ziConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_5kJNH3eYuyaLxNpZr5Z7ziConfigurations"];
 
   return v6;
 }
 
-- (id)addJunkConfigurationForOriginalRequest:(id)a3
+- (id)addJunkConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_JunkConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_JunkConfigurations"];
 
   return v6;
 }
 
-- (id)addImageFingerprintsConfigurationForOriginalRequest:(id)a3
+- (id)addImageFingerprintsConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageFingerprintsConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageFingerprintsConfigurations"];
 
   return v6;
 }
 
-- (id)addRecognizeObjectsConfigurationForOriginalRequest:(id)a3
+- (id)addRecognizeObjectsConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_RecognizeObjectsConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_RecognizeObjectsConfigurations"];
 
   return v6;
 }
 
-- (id)addImageSaliencyOConfigurationForOriginalRequest:(id)a3
+- (id)addImageSaliencyOConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyOConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyOConfigurations"];
 
   return v6;
 }
 
-- (id)addImageSaliencyAConfigurationForOriginalRequest:(id)a3
+- (id)addImageSaliencyAConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyAConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageSaliencyAConfigurations"];
 
   return v6;
 }
 
-- (id)addImageAestheticsConfigurationForOriginalRequest:(id)a3
+- (id)addImageAestheticsConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageAestheticsConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageAestheticsConfigurations"];
 
   return v6;
 }
 
-- (id)addEntityNetClassificationConfigurationForOriginalRequest:(id)a3
+- (id)addEntityNetClassificationConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_EntityNetClassificationConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_EntityNetClassificationConfigurations"];
 
   return v6;
 }
 
-- (id)addImageClassificationConfigurationForOriginalRequest:(id)a3
+- (id)addImageClassificationConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageClassificationConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_ImageClassificationConfigurations"];
 
   return v6;
 }
 
-- (id)addSceneprintConfigurationForOriginalRequest:(id)a3
+- (id)addSceneprintConfigurationForOriginalRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:v4 storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_SceneprintConfigurations"];
+  v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&self->super.isa _addFeatureConfigurationOfClass:v5 forOriginalRequest:requestCopy storedInOptionsKey:@"VNCoreSceneUnderstandingDetectorProcessingOption_SceneprintConfigurations"];
 
   return v6;
 }
 
-- (VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration)initWithMainStageComputeDevice:(id)a3
+- (VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration)initWithMainStageComputeDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v13.receiver = self;
   v13.super_class = VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration;
   v6 = [(VNCoreSceneUnderstandingCompoundRequestDetectorConfiguration *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mainStageComputeDevice, a3);
+    objc_storeStrong(&v6->_mainStageComputeDevice, device);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     originalRequests = v7->_originalRequests;
     v7->_originalRequests = v8;

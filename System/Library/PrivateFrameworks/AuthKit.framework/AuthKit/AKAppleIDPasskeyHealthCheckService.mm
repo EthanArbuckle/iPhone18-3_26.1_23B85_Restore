@@ -20,8 +20,8 @@
 
 - (AKAppleIDPasskeyHealthCheckService)init
 {
-  v3 = [objc_opt_self() sharedInstance];
-  *(&self->super.isa + OBJC_IVAR___AKAppleIDPasskeyHealthCheckService_accountManager) = v3;
+  sharedInstance = [objc_opt_self() sharedInstance];
+  *(&self->super.isa + OBJC_IVAR___AKAppleIDPasskeyHealthCheckService_accountManager) = sharedInstance;
   v5.receiver = self;
   v5.super_class = type metadata accessor for AppleIDPasskeyHealthCheckService();
   return [(AKAppleIDPasskeyHealthCheckService *)&v5 init];
@@ -29,7 +29,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_100249D4C();
 }
 

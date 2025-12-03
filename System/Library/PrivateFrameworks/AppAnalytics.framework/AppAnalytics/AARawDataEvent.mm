@@ -1,15 +1,15 @@
 @interface AARawDataEvent
 + (NSString)dataName;
 - (AARawDataEvent)init;
-- (AARawDataEvent)initWithName:(id)a3 dictionary:(id)a4;
-- (AARawDataEvent)initWithName:(id)a3 dictionary:(id)a4 requiresDiagnosticsConsent:(BOOL)a5;
-- (AARawDataEvent)initWithName:(id)a3 dictionary:(id)a4 requiresDiagnosticsConsent:(BOOL)a5 requiresTrackingConsent:(BOOL)a6;
+- (AARawDataEvent)initWithName:(id)name dictionary:(id)dictionary;
+- (AARawDataEvent)initWithName:(id)name dictionary:(id)dictionary requiresDiagnosticsConsent:(BOOL)consent;
+- (AARawDataEvent)initWithName:(id)name dictionary:(id)dictionary requiresDiagnosticsConsent:(BOOL)consent requiresTrackingConsent:(BOOL)trackingConsent;
 - (id)toDict;
 @end
 
 @implementation AARawDataEvent
 
-- (AARawDataEvent)initWithName:(id)a3 dictionary:(id)a4
+- (AARawDataEvent)initWithName:(id)name dictionary:(id)dictionary
 {
   ObjectType = swift_getObjectType();
   v6 = sub_1B6AB92E0();
@@ -26,7 +26,7 @@
   return [(AARawDataEvent *)&v12 init];
 }
 
-- (AARawDataEvent)initWithName:(id)a3 dictionary:(id)a4 requiresDiagnosticsConsent:(BOOL)a5
+- (AARawDataEvent)initWithName:(id)name dictionary:(id)dictionary requiresDiagnosticsConsent:(BOOL)consent
 {
   ObjectType = swift_getObjectType();
   v8 = sub_1B6AB92E0();
@@ -36,14 +36,14 @@
   *v12 = v8;
   v12[1] = v10;
   *(&self->super.isa + OBJC_IVAR___AARawDataEvent_dictionary) = v11;
-  *(&self->super.isa + OBJC_IVAR___AARawDataEvent_requiresDiagnosticsConsent) = a5;
+  *(&self->super.isa + OBJC_IVAR___AARawDataEvent_requiresDiagnosticsConsent) = consent;
   *(&self->super.isa + OBJC_IVAR___AARawDataEvent_requiresTrackingConsent) = 1;
   v14.receiver = self;
   v14.super_class = ObjectType;
   return [(AARawDataEvent *)&v14 init];
 }
 
-- (AARawDataEvent)initWithName:(id)a3 dictionary:(id)a4 requiresDiagnosticsConsent:(BOOL)a5 requiresTrackingConsent:(BOOL)a6
+- (AARawDataEvent)initWithName:(id)name dictionary:(id)dictionary requiresDiagnosticsConsent:(BOOL)consent requiresTrackingConsent:(BOOL)trackingConsent
 {
   ObjectType = swift_getObjectType();
   v10 = sub_1B6AB92E0();
@@ -53,8 +53,8 @@
   *v14 = v10;
   v14[1] = v12;
   *(&self->super.isa + OBJC_IVAR___AARawDataEvent_dictionary) = v13;
-  *(&self->super.isa + OBJC_IVAR___AARawDataEvent_requiresDiagnosticsConsent) = a5;
-  *(&self->super.isa + OBJC_IVAR___AARawDataEvent_requiresTrackingConsent) = a6;
+  *(&self->super.isa + OBJC_IVAR___AARawDataEvent_requiresDiagnosticsConsent) = consent;
+  *(&self->super.isa + OBJC_IVAR___AARawDataEvent_requiresTrackingConsent) = trackingConsent;
   v16.receiver = self;
   v16.super_class = ObjectType;
   return [(AARawDataEvent *)&v16 init];

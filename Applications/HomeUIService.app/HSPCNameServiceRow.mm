@@ -1,29 +1,29 @@
 @interface HSPCNameServiceRow
 - (HMService)service;
-- (HSPCNameServiceRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HSPCNameServiceRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (UIColor)defaultTextColor;
 - (void)updateConstraints;
-- (void)updateUIWithService:(id)a3 suggestedName:(id)a4;
+- (void)updateUIWithService:(id)service suggestedName:(id)name;
 @end
 
 @implementation HSPCNameServiceRow
 
-- (HSPCNameServiceRow)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HSPCNameServiceRow)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = HSPCNameServiceRow;
-  v4 = [(HSPCRow *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HSPCRow *)&v11 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [(HSPCRow *)v4 textField];
-    v7 = [v6 textColor];
-    objc_storeWeak(&v5->_defaultTextColor, v7);
+    textField = [(HSPCRow *)v4 textField];
+    textColor = [textField textColor];
+    objc_storeWeak(&v5->_defaultTextColor, textColor);
 
     v8 = [[HUIconView alloc] initWithFrame:1 contentMode:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
     [v8 setIconSize:2];
-    v9 = [(HSPCNameServiceRow *)v5 contentView];
-    [v9 addSubview:v8];
+    contentView = [(HSPCNameServiceRow *)v5 contentView];
+    [contentView addSubview:v8];
 
     [(HSPCRow *)v5 setLeftView:v8];
   }
@@ -35,63 +35,63 @@
 {
   if (![(HSPCRow *)self constraintsSet])
   {
-    v3 = [(HSPCRow *)self leftView];
-    [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+    leftView = [(HSPCRow *)self leftView];
+    [leftView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v43 = [(HSPCRow *)self leftView];
-    v39 = [v43 leadingAnchor];
-    v41 = [(HSPCNameServiceRow *)self contentView];
-    v37 = [v41 leadingAnchor];
+    leftView2 = [(HSPCRow *)self leftView];
+    leadingAnchor = [leftView2 leadingAnchor];
+    contentView = [(HSPCNameServiceRow *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
     +[HSPCRow horizontalLeadingMargin];
-    v35 = [v39 constraintEqualToAnchor:v37 constant:?];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v47[0] = v35;
-    v33 = [(HSPCRow *)self leftView];
-    v29 = [v33 centerYAnchor];
-    v30 = [(HSPCNameServiceRow *)self contentView];
-    v4 = [v30 centerYAnchor];
-    v5 = [v29 constraintEqualToAnchor:v4];
+    leftView3 = [(HSPCRow *)self leftView];
+    centerYAnchor = [leftView3 centerYAnchor];
+    contentView2 = [(HSPCNameServiceRow *)self contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v5 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v47[1] = v5;
-    v6 = [(HSPCRow *)self leftView];
-    v7 = [v6 heightAnchor];
+    leftView4 = [(HSPCRow *)self leftView];
+    heightAnchor = [leftView4 heightAnchor];
     +[HSPCRow leftImageSize];
-    v9 = [v7 constraintEqualToConstant:v8];
+    v9 = [heightAnchor constraintEqualToConstant:v8];
     v47[2] = v9;
-    v10 = [(HSPCRow *)self leftView];
-    v11 = [v10 widthAnchor];
+    leftView5 = [(HSPCRow *)self leftView];
+    widthAnchor = [leftView5 widthAnchor];
     +[HSPCRow leftImageSize];
-    v12 = [v11 constraintEqualToConstant:?];
+    v12 = [widthAnchor constraintEqualToConstant:?];
     v47[3] = v12;
     v13 = [NSArray arrayWithObjects:v47 count:4];
     [NSLayoutConstraint activateConstraints:v13];
 
-    v14 = [(HSPCRow *)self textField];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    textField = [(HSPCRow *)self textField];
+    [textField setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v44 = [(HSPCRow *)self textField];
-    v40 = [v44 leadingAnchor];
-    v42 = [(HSPCRow *)self leftView];
-    v38 = [v42 trailingAnchor];
+    textField2 = [(HSPCRow *)self textField];
+    leadingAnchor3 = [textField2 leadingAnchor];
+    leftView6 = [(HSPCRow *)self leftView];
+    trailingAnchor = [leftView6 trailingAnchor];
     +[HSPCRow horizontalSpacing];
-    v36 = [v40 constraintEqualToAnchor:v38 constant:?];
+    v36 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
     v46[0] = v36;
-    v34 = [(HSPCRow *)self textField];
-    v31 = [v34 topAnchor];
-    v32 = [(HSPCNameServiceRow *)self contentView];
-    v28 = [v32 topAnchor];
-    v27 = [v31 constraintEqualToAnchor:v28];
+    textField3 = [(HSPCRow *)self textField];
+    topAnchor = [textField3 topAnchor];
+    contentView3 = [(HSPCNameServiceRow *)self contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v46[1] = v27;
-    v26 = [(HSPCRow *)self textField];
-    v25 = [v26 trailingAnchor];
-    v15 = [(HSPCNameServiceRow *)self contentView];
-    v16 = [v15 trailingAnchor];
+    textField4 = [(HSPCRow *)self textField];
+    trailingAnchor2 = [textField4 trailingAnchor];
+    contentView4 = [(HSPCNameServiceRow *)self contentView];
+    trailingAnchor3 = [contentView4 trailingAnchor];
     +[HSPCRow horizontalTrailingMargin];
-    v18 = [v25 constraintEqualToAnchor:v16 constant:-v17];
+    v18 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-v17];
     v46[2] = v18;
-    v19 = [(HSPCRow *)self textField];
-    v20 = [v19 bottomAnchor];
-    v21 = [(HSPCNameServiceRow *)self contentView];
-    v22 = [v21 bottomAnchor];
-    v23 = [v20 constraintEqualToAnchor:v22];
+    textField5 = [(HSPCRow *)self textField];
+    bottomAnchor = [textField5 bottomAnchor];
+    contentView5 = [(HSPCNameServiceRow *)self contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v23 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v46[3] = v23;
     v24 = [NSArray arrayWithObjects:v46 count:4];
     [NSLayoutConstraint activateConstraints:v24];
@@ -104,36 +104,36 @@
   [(HSPCNameServiceRow *)&v45 updateConstraints];
 }
 
-- (void)updateUIWithService:(id)a3 suggestedName:(id)a4
+- (void)updateUIWithService:(id)service suggestedName:(id)name
 {
-  v26 = a3;
-  v6 = a4;
-  [(HSPCNameServiceRow *)self setService:v26];
-  v7 = [v26 accessory];
-  v8 = [v7 hf_isTelevision];
+  serviceCopy = service;
+  nameCopy = name;
+  [(HSPCNameServiceRow *)self setService:serviceCopy];
+  accessory = [serviceCopy accessory];
+  hf_isTelevision = [accessory hf_isTelevision];
 
-  v9 = [v26 hf_effectiveServiceType];
-  if (v8)
+  hf_effectiveServiceType = [serviceCopy hf_effectiveServiceType];
+  if (hf_isTelevision)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = [HFServiceIconFactory defaultIconDescriptorForServiceType:v9 serviceSubtype:0];
+    v10 = [HFServiceIconFactory defaultIconDescriptorForServiceType:hf_effectiveServiceType serviceSubtype:0];
   }
 
-  v11 = [(HSPCRow *)self textField];
-  [v11 setText:v6];
+  textField = [(HSPCRow *)self textField];
+  [textField setText:nameCopy];
 
-  v12 = [(HSPCRow *)self textField];
-  [v12 setPlaceholder:v6];
+  textField2 = [(HSPCRow *)self textField];
+  [textField2 setPlaceholder:nameCopy];
 
   objc_opt_class();
-  v13 = [(HSPCRow *)self leftView];
+  leftView = [(HSPCRow *)self leftView];
   if (objc_opt_isKindOfClass())
   {
-    v14 = v13;
+    v14 = leftView;
   }
 
   else
@@ -148,34 +148,34 @@
     [v15 updateWithIconDescriptor:v10 displayStyle:1 animated:0];
   }
 
-  v16 = [v26 serviceType];
-  v17 = [v16 isEqualToString:HMServiceTypeInputSource];
+  serviceType = [serviceCopy serviceType];
+  v17 = [serviceType isEqualToString:HMServiceTypeInputSource];
 
-  v18 = [v26 hf_characteristicOfType:HMCharacteristicTypeConfiguredName];
-  v19 = [v18 hf_isWritable];
-  v20 = [(HSPCRow *)self textField];
-  v21 = v20;
-  if (!v17 || (v19 & 1) != 0)
+  v18 = [serviceCopy hf_characteristicOfType:HMCharacteristicTypeConfiguredName];
+  hf_isWritable = [v18 hf_isWritable];
+  textField3 = [(HSPCRow *)self textField];
+  v21 = textField3;
+  if (!v17 || (hf_isWritable & 1) != 0)
   {
-    [v20 setEnabled:1];
+    [textField3 setEnabled:1];
 
-    v22 = [(HSPCNameServiceRow *)self defaultTextColor];
+    defaultTextColor = [(HSPCNameServiceRow *)self defaultTextColor];
     v23 = 3;
   }
 
   else
   {
-    [v20 setEnabled:0];
+    [textField3 setEnabled:0];
 
-    v22 = +[UIColor lightGrayColor];
+    defaultTextColor = +[UIColor lightGrayColor];
     v23 = 0;
   }
 
-  v24 = [(HSPCRow *)self textField];
-  [v24 setTextColor:v22];
+  textField4 = [(HSPCRow *)self textField];
+  [textField4 setTextColor:defaultTextColor];
 
-  v25 = [(HSPCRow *)self textField];
-  [v25 setClearButtonMode:v23];
+  textField5 = [(HSPCRow *)self textField];
+  [textField5 setClearButtonMode:v23];
 
   [(HSPCNameServiceRow *)self setNeedsUpdateConstraints];
 }

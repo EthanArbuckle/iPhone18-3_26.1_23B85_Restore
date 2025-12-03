@@ -1,30 +1,30 @@
 @interface WFWidgetCell
 - (BOOL)isMultiline;
-- (BOOL)touchIsInView:(id)a3 event:(id)a4;
-- (BOOL)touchesContainNonIndirectTouch:(id)a3;
+- (BOOL)touchIsInView:(id)view event:(id)event;
+- (BOOL)touchesContainNonIndirectTouch:(id)touch;
 - (CGSize)iconViewSize;
 - (WFWidgetCell)init;
 - (WFWidgetCellDelegate)delegate;
 - (WFWidgetChicletStyle)widgetChicletStyle;
 - (id)description;
 - (id)emptyCellGradient;
-- (id)imageForAction:(id)a3 dataSource:(id)a4 family:(int64_t)a5;
-- (void)configureSheenViewIfNeededWithCornerRadius:(double)a3;
-- (void)configureWithAction:(id)a3 dataSource:(id)a4 cornerRadius:(double)a5 widgetType:(int64_t)a6 family:(int64_t)a7 homeScreenTintColor:(id)a8 isClearStyleEnabled:(BOOL)a9;
+- (id)imageForAction:(id)action dataSource:(id)source family:(int64_t)family;
+- (void)configureSheenViewIfNeededWithCornerRadius:(double)radius;
+- (void)configureWithAction:(id)action dataSource:(id)source cornerRadius:(double)radius widgetType:(int64_t)type family:(int64_t)family homeScreenTintColor:(id)color isClearStyleEnabled:(BOOL)enabled;
 - (void)dealloc;
-- (void)handleTap:(id)a3;
+- (void)handleTap:(id)tap;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)resetProgressState;
 - (void)resetToEmptyState;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHomeScreenTintColor:(id)a3;
-- (void)setProgress:(id)a3;
-- (void)setRunningState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHomeScreenTintColor:(id)color;
+- (void)setProgress:(id)progress;
+- (void)setRunningState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateGradient;
 - (void)updateTextTintIfNeeded;
 @end
@@ -47,18 +47,18 @@
   return WeakRetained;
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = [(WFWidgetCell *)self delegate];
-  [v4 widgetCellWasTapped:self];
+  delegate = [(WFWidgetCell *)self delegate];
+  [delegate widgetCellWasTapped:self];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (WFProgressPercentageCompletedContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (WFProgressPercentageCompletedContext == context)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -68,11 +68,11 @@
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 
-  else if (WFProgressUserInfoContext == a6)
+  else if (WFProgressUserInfoContext == context)
   {
-    v13 = [(WFWidgetCell *)self progress];
-    v14 = [v13 userInfo];
-    v15 = [v14 objectForKey:*MEMORY[0x1E69E1338]];
+    progress = [(WFWidgetCell *)self progress];
+    userInfo = [progress userInfo];
+    v15 = [userInfo objectForKey:*MEMORY[0x1E69E1338]];
 
     -[WFWidgetCell setRunningState:](self, "setRunningState:", [v15 integerValue]);
   }
@@ -96,14 +96,14 @@ void __63__WFWidgetCell_observeValueForKeyPath_ofObject_change_context___block_i
   [v7 setFractionCompleted:?];
 }
 
-- (void)setProgress:(id)a3
+- (void)setProgress:(id)progress
 {
-  v5 = a3;
-  if (v5)
+  progressCopy = progress;
+  if (progressCopy)
   {
-    v8 = v5;
-    [v5 fractionCompleted];
-    v5 = v8;
+    v8 = progressCopy;
+    [progressCopy fractionCompleted];
+    progressCopy = v8;
     if (v6 != 1.0)
     {
       progress = self->_progress;
@@ -113,10 +113,10 @@ void __63__WFWidgetCell_observeValueForKeyPath_ofObject_change_context___block_i
         [(NSProgress *)self->_progress removeObserver:self forKeyPath:@"userInfo.runningState"];
       }
 
-      objc_storeStrong(&self->_progress, a3);
+      objc_storeStrong(&self->_progress, progress);
       [v8 addObserver:self forKeyPath:@"fractionCompleted" options:0 context:WFProgressPercentageCompletedContext];
       [v8 addObserver:self forKeyPath:@"userInfo.runningState" options:0 context:WFProgressUserInfoContext];
-      v5 = v8;
+      progressCopy = v8;
     }
   }
 }
@@ -132,29 +132,29 @@ void __63__WFWidgetCell_observeValueForKeyPath_ofObject_change_context___block_i
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(WFWidgetCell *)self window];
-  v12 = [v11 screen];
-  [v12 scale];
+  window = [(WFWidgetCell *)self window];
+  screen = [window screen];
+  [screen scale];
   if (v13 <= 0.0)
   {
-    v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v14 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
   }
 
   else
   {
-    v14 = [(WFWidgetCell *)self window];
-    v15 = [v14 screen];
-    [v15 scale];
+    mainScreen = [(WFWidgetCell *)self window];
+    screen2 = [mainScreen screen];
+    [screen2 scale];
   }
 
-  v16 = [(WFWidgetCell *)self emptyStateBackgroundView];
-  [v16 setFrame:{v4, v6, v8, v10}];
+  emptyStateBackgroundView = [(WFWidgetCell *)self emptyStateBackgroundView];
+  [emptyStateBackgroundView setFrame:{v4, v6, v8, v10}];
 
-  v17 = [(WFWidgetCell *)self sheenLayer];
-  [v17 setFrame:{v4, v6, v8, v10}];
+  sheenLayer = [(WFWidgetCell *)self sheenLayer];
+  [sheenLayer setFrame:{v4, v6, v8, v10}];
 
-  v18 = [(WFWidgetCell *)self isRTL];
+  isRTL = [(WFWidgetCell *)self isRTL];
   if (v8 == v10)
   {
     [MEMORY[0x1E69E0940] largeGlyphSize];
@@ -247,33 +247,33 @@ void __63__WFWidgetCell_observeValueForKeyPath_ofObject_change_context___block_i
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  v36 = [(WFWidgetCell *)self iconView];
-  [v36 setFrame:{v29, v31, v33, v35}];
+  iconView = [(WFWidgetCell *)self iconView];
+  [iconView setFrame:{v29, v31, v33, v35}];
 
   UIRectIntegralWithScale();
   v38 = v37;
   v40 = v39;
   v42 = v41;
   v44 = v43;
-  v45 = [(WFWidgetCell *)self progressView];
-  [v45 setFrame:{v38, v40, v42, v44}];
+  progressView = [(WFWidgetCell *)self progressView];
+  [progressView setFrame:{v38, v40, v42, v44}];
 
   v46 = *v25;
-  v47 = [(WFWidgetCell *)self nameView];
-  [v47 setMaximumContentSizeCategory:v46];
+  nameView = [(WFWidgetCell *)self nameView];
+  [nameView setMaximumContentSizeCategory:v46];
 
   v48 = [MEMORY[0x1E69DB878] systemFontOfSize:v111 weight:*MEMORY[0x1E69DB970]];
   v49 = [objc_alloc(MEMORY[0x1E69DCA40]) initForTextStyle:*v26];
   v50 = [v49 scaledFontForFont:v48 maximumPointSize:v109];
 
-  v51 = [(WFWidgetCell *)self nameView];
-  [v51 setFont:v50];
+  nameView2 = [(WFWidgetCell *)self nameView];
+  [nameView2 setFont:v50];
 
-  v52 = [(WFWidgetCell *)self isMultiline];
-  v53 = [(WFWidgetCell *)self nameView];
-  v54 = [v53 textContainer];
-  v55 = v54;
-  if (v110 == v112 || !v52)
+  isMultiline = [(WFWidgetCell *)self isMultiline];
+  nameView3 = [(WFWidgetCell *)self nameView];
+  textContainer = [nameView3 textContainer];
+  v55 = textContainer;
+  if (v110 == v112 || !isMultiline)
   {
     if (v110 == v112)
     {
@@ -285,25 +285,25 @@ void __63__WFWidgetCell_observeValueForKeyPath_ofObject_change_context___block_i
       v84 = 1;
     }
 
-    [v54 setMaximumNumberOfLines:{v84, *&v109}];
+    [textContainer setMaximumNumberOfLines:{v84, *&v109}];
 
-    v85 = [(WFWidgetCell *)self nameView];
-    v86 = [v85 textContainer];
-    [v86 setLineFragmentPadding:0.0];
+    nameView4 = [(WFWidgetCell *)self nameView];
+    textContainer2 = [nameView4 textContainer];
+    [textContainer2 setLineFragmentPadding:0.0];
 
     v87 = *MEMORY[0x1E69DDCE0];
     v88 = *(MEMORY[0x1E69DDCE0] + 8);
     v89 = *(MEMORY[0x1E69DDCE0] + 16);
     v90 = *(MEMORY[0x1E69DDCE0] + 24);
-    v91 = [(WFWidgetCell *)self nameView];
-    [v91 setTextContainerInset:{v87, v88, v89, v90}];
+    nameView5 = [(WFWidgetCell *)self nameView];
+    [nameView5 setTextContainerInset:{v87, v88, v89, v90}];
 
-    v92 = [(WFWidgetCell *)self nameView];
-    v93 = [v92 textContainer];
-    [v93 setExclusionPaths:MEMORY[0x1E695E0F0]];
+    nameView6 = [(WFWidgetCell *)self nameView];
+    textContainer3 = [nameView6 textContainer];
+    [textContainer3 setExclusionPaths:MEMORY[0x1E695E0F0]];
 
-    v94 = [(WFWidgetCell *)self nameView];
-    [v94 sizeThatFits:{v110 + v113 * -2.0, v112}];
+    nameView7 = [(WFWidgetCell *)self nameView];
+    [nameView7 sizeThatFits:{v110 + v113 * -2.0, v112}];
 
     [v50 lineHeight];
     [v50 lineHeight];
@@ -323,78 +323,78 @@ void __63__WFWidgetCell_observeValueForKeyPath_ofObject_change_context___block_i
     v99 = v98;
     v101 = v100;
     v103 = v102;
-    v83 = [(WFWidgetCell *)self nameView];
-    [v83 setFrame:{v97, v99, v101, v103}];
+    nameView8 = [(WFWidgetCell *)self nameView];
+    [nameView8 setFrame:{v97, v99, v101, v103}];
   }
 
   else
   {
-    [v54 setMaximumNumberOfLines:2];
+    [textContainer setMaximumNumberOfLines:2];
 
-    v56 = [(WFWidgetCell *)self nameView];
-    v57 = [v56 textContainer];
-    [v57 setLineFragmentPadding:5.0];
+    nameView9 = [(WFWidgetCell *)self nameView];
+    textContainer4 = [nameView9 textContainer];
+    [textContainer4 setLineFragmentPadding:5.0];
 
-    v58 = [(WFWidgetCell *)self nameView];
-    v59 = [v58 textContainer];
-    [v59 lineFragmentPadding];
+    nameView10 = [(WFWidgetCell *)self nameView];
+    textContainer5 = [nameView10 textContainer];
+    [textContainer5 lineFragmentPadding];
     v61 = v113 - v60;
 
-    v62 = [(WFWidgetCell *)self nameView];
-    [v62 setTextContainerInset:{v27, v61, v27, v61}];
+    nameView11 = [(WFWidgetCell *)self nameView];
+    [nameView11 setTextContainerInset:{v27, v61, v27, v61}];
 
     UIRectIntegralWithScale();
     v64 = v63;
     v66 = v65;
     v68 = v67;
     v70 = v69;
-    v71 = [(WFWidgetCell *)self nameView];
-    [v71 setFrame:{v64, v66, v68, v70}];
+    nameView12 = [(WFWidgetCell *)self nameView];
+    [nameView12 setFrame:{v64, v66, v68, v70}];
 
     v72 = MEMORY[0x1E69DC728];
-    if (v18)
+    if (isRTL)
     {
-      v73 = [(WFWidgetCell *)self nameView];
-      [v73 bounds];
+      nameView13 = [(WFWidgetCell *)self nameView];
+      [nameView13 bounds];
       v75 = v74 - v113 * 2.0;
-      v76 = [(WFWidgetCell *)self iconView];
-      [v76 bounds];
+      iconView2 = [(WFWidgetCell *)self iconView];
+      [iconView2 bounds];
       v78 = v75 - v77;
-      v79 = [(WFWidgetCell *)self iconView];
-      [v79 bounds];
+      iconView3 = [(WFWidgetCell *)self iconView];
+      [iconView3 bounds];
       v81 = v80 + v113 * 2.0;
-      v82 = [(WFWidgetCell *)self iconView];
-      [v82 bounds];
-      v83 = [v72 bezierPathWithRect:{v78, 0.0, v81}];
+      iconView4 = [(WFWidgetCell *)self iconView];
+      [iconView4 bounds];
+      nameView8 = [v72 bezierPathWithRect:{v78, 0.0, v81}];
     }
 
     else
     {
-      v73 = [(WFWidgetCell *)self iconView];
-      [v73 bounds];
+      nameView13 = [(WFWidgetCell *)self iconView];
+      [nameView13 bounds];
       v105 = v113 + v104;
-      v76 = [(WFWidgetCell *)self iconView];
-      [v76 bounds];
-      v83 = [v72 bezierPathWithRect:{0.0, 0.0, v105}];
+      iconView2 = [(WFWidgetCell *)self iconView];
+      [iconView2 bounds];
+      nameView8 = [v72 bezierPathWithRect:{0.0, 0.0, v105}];
     }
 
-    v115[0] = v83;
+    v115[0] = nameView8;
     v106 = [MEMORY[0x1E695DEC8] arrayWithObjects:v115 count:1];
-    v107 = [(WFWidgetCell *)self nameView];
-    v108 = [v107 textContainer];
-    [v108 setExclusionPaths:v106];
+    nameView14 = [(WFWidgetCell *)self nameView];
+    textContainer6 = [nameView14 textContainer];
+    [textContainer6 setExclusionPaths:v106];
   }
 }
 
-- (void)setRunningState:(int64_t)a3
+- (void)setRunningState:(int64_t)state
 {
-  self->_runningState = a3;
+  self->_runningState = state;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __32__WFWidgetCell_setRunningState___block_invoke;
   v3[3] = &unk_1E8308580;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = state;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -520,18 +520,18 @@ uint64_t __32__WFWidgetCell_setRunningState___block_invoke_4(uint64_t a1)
   return [v3 resetProgressState];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __27__WFWidgetCell_setEnabled___block_invoke;
     v5[3] = &unk_1E83084B8;
     v5[4] = self;
-    v6 = a3;
+    enabledCopy = enabled;
     [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v5 options:0 animations:0.200000003 completion:0.0];
-    self->_enabled = a3;
+    self->_enabled = enabled;
   }
 }
 
@@ -549,14 +549,14 @@ uint64_t __27__WFWidgetCell_setEnabled___block_invoke(uint64_t a1)
 - (void)resetProgressState
 {
   self->_runningState = 0;
-  v3 = [(WFWidgetCell *)self progressView];
-  [v3 setHidden:1];
+  progressView = [(WFWidgetCell *)self progressView];
+  [progressView setHidden:1];
 
-  v4 = [(WFWidgetCell *)self progressView];
-  [v4 transitionToState:0];
+  progressView2 = [(WFWidgetCell *)self progressView];
+  [progressView2 transitionToState:0];
 
-  v5 = [(WFWidgetCell *)self progressView];
-  [v5 reset];
+  progressView3 = [(WFWidgetCell *)self progressView];
+  [progressView3 reset];
 
   [(NSProgress *)self->_progress removeObserver:self forKeyPath:@"fractionCompleted"];
   [(NSProgress *)self->_progress removeObserver:self forKeyPath:@"userInfo.runningState"];
@@ -569,10 +569,10 @@ uint64_t __27__WFWidgetCell_setEnabled___block_invoke(uint64_t a1)
   action = self->_action;
   self->_action = 0;
 
-  v4 = [(WFWidgetCell *)self widgetType];
-  v5 = [(WFWidgetCell *)self emptyStateBackgroundView];
-  v6 = v5;
-  if (v4 == 1)
+  widgetType = [(WFWidgetCell *)self widgetType];
+  emptyStateBackgroundView = [(WFWidgetCell *)self emptyStateBackgroundView];
+  v6 = emptyStateBackgroundView;
+  if (widgetType == 1)
   {
 
     if (!v6)
@@ -584,74 +584,74 @@ uint64_t __27__WFWidgetCell_setEnabled___block_invoke(uint64_t a1)
       v11 = [v7 initWithEffect:v10];
       [(WFWidgetCell *)self setEmptyStateBackgroundView:v11];
 
-      v12 = [(WFWidgetCell *)self emptyStateBackgroundView];
-      v13 = [v12 contentView];
-      v14 = [(WFWidgetCell *)self nameView];
-      [v13 addSubview:v14];
+      emptyStateBackgroundView2 = [(WFWidgetCell *)self emptyStateBackgroundView];
+      contentView = [emptyStateBackgroundView2 contentView];
+      nameView = [(WFWidgetCell *)self nameView];
+      [contentView addSubview:nameView];
 
-      v15 = [(WFWidgetCell *)self emptyStateBackgroundView];
-      v16 = [v15 contentView];
-      v17 = [(WFWidgetCell *)self iconView];
-      [v16 addSubview:v17];
+      emptyStateBackgroundView3 = [(WFWidgetCell *)self emptyStateBackgroundView];
+      contentView2 = [emptyStateBackgroundView3 contentView];
+      iconView = [(WFWidgetCell *)self iconView];
+      [contentView2 addSubview:iconView];
 
       [(WFWidgetCell *)self bounds];
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v24;
-      v26 = [(WFWidgetCell *)self emptyStateBackgroundView];
-      [v26 setFrame:{v19, v21, v23, v25}];
+      emptyStateBackgroundView4 = [(WFWidgetCell *)self emptyStateBackgroundView];
+      [emptyStateBackgroundView4 setFrame:{v19, v21, v23, v25}];
 
-      v27 = [(WFWidgetCell *)self emptyStateBackgroundView];
-      [v27 setAutoresizingMask:18];
+      emptyStateBackgroundView5 = [(WFWidgetCell *)self emptyStateBackgroundView];
+      [emptyStateBackgroundView5 setAutoresizingMask:18];
 
-      v28 = [(WFWidgetCell *)self emptyStateBackgroundView];
-      [(WFWidgetCell *)self addSubview:v28];
+      emptyStateBackgroundView6 = [(WFWidgetCell *)self emptyStateBackgroundView];
+      [(WFWidgetCell *)self addSubview:emptyStateBackgroundView6];
     }
 
     v29 = WFLocalizedString(@"No Shortcut");
-    v30 = [(WFWidgetCell *)self nameView];
-    [v30 setText:v29];
+    nameView2 = [(WFWidgetCell *)self nameView];
+    [nameView2 setText:v29];
 
     v31 = [MEMORY[0x1E69DCAB8] _systemImageNamed:@"app.2.stack.3d"];
     v32 = [v31 imageWithRenderingMode:2];
-    v33 = [(WFWidgetCell *)self iconView];
-    [v33 setImage:v32];
+    iconView2 = [(WFWidgetCell *)self iconView];
+    [iconView2 setImage:v32];
 
-    v34 = [MEMORY[0x1E69DC888] whiteColor];
-    v35 = [(WFWidgetCell *)self nameView];
-    [v35 setTextColor:v34];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    nameView3 = [(WFWidgetCell *)self nameView];
+    [nameView3 setTextColor:whiteColor];
 
-    v36 = [MEMORY[0x1E69DC888] whiteColor];
-    v37 = [(WFWidgetCell *)self iconView];
-    [v37 setTintColor:v36];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    iconView3 = [(WFWidgetCell *)self iconView];
+    [iconView3 setTintColor:whiteColor2];
 
-    v38 = [MEMORY[0x1E69DC888] whiteColor];
-    v39 = [(WFWidgetCell *)self progressView];
-    [v39 setTintColor:v38];
+    whiteColor3 = [MEMORY[0x1E69DC888] whiteColor];
+    progressView = [(WFWidgetCell *)self progressView];
+    [progressView setTintColor:whiteColor3];
   }
 
   else
   {
-    [v5 removeFromSuperview];
+    [emptyStateBackgroundView removeFromSuperview];
 
-    v40 = [(WFWidgetCell *)self nameView];
-    [v40 setText:0];
+    nameView4 = [(WFWidgetCell *)self nameView];
+    [nameView4 setText:0];
 
-    v38 = [(WFWidgetCell *)self iconView];
-    [v38 setImage:0];
+    whiteColor3 = [(WFWidgetCell *)self iconView];
+    [whiteColor3 setImage:0];
   }
 
-  [(WFWidgetCell *)self setEnabled:v4 == 1];
+  [(WFWidgetCell *)self setEnabled:widgetType == 1];
 
   [(WFWidgetCell *)self updateGradient];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = WFWidgetCell;
-  [(WFWidgetCell *)&v6 touchesCancelled:a3 withEvent:a4];
+  [(WFWidgetCell *)&v6 touchesCancelled:cancelled withEvent:event];
   if ([(WFWidgetCell *)self enabled])
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -663,11 +663,11 @@ uint64_t __27__WFWidgetCell_setEnabled___block_invoke(uint64_t a1)
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v6.receiver = self;
   v6.super_class = WFWidgetCell;
-  [(WFWidgetCell *)&v6 touchesEnded:a3 withEvent:a4];
+  [(WFWidgetCell *)&v6 touchesEnded:ended withEvent:event];
   if ([(WFWidgetCell *)self enabled])
   {
     block[0] = MEMORY[0x1E69E9820];
@@ -679,21 +679,21 @@ uint64_t __27__WFWidgetCell_setEnabled___block_invoke(uint64_t a1)
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   v18.receiver = self;
   v18.super_class = WFWidgetCell;
-  [(WFWidgetCell *)&v18 touchesMoved:v6 withEvent:v7];
-  if ([(WFWidgetCell *)self enabled]&& [(WFWidgetCell *)self touchesContainNonIndirectTouch:v6])
+  [(WFWidgetCell *)&v18 touchesMoved:movedCopy withEvent:eventCopy];
+  if ([(WFWidgetCell *)self enabled]&& [(WFWidgetCell *)self touchesContainNonIndirectTouch:movedCopy])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v6;
+    v8 = movedCopy;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v9)
     {
@@ -707,7 +707,7 @@ uint64_t __27__WFWidgetCell_setEnabled___block_invoke(uint64_t a1)
             objc_enumerationMutation(v8);
           }
 
-          if ([(WFWidgetCell *)self touchIsInView:*(*(&v14 + 1) + 8 * i) event:v7])
+          if ([(WFWidgetCell *)self touchIsInView:*(*(&v14 + 1) + 8 * i) event:eventCopy])
           {
             LOBYTE(v9) = 1;
             goto LABEL_13;
@@ -736,13 +736,13 @@ LABEL_13:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v8.receiver = self;
   v8.super_class = WFWidgetCell;
-  [(WFWidgetCell *)&v8 touchesBegan:v6 withEvent:a4];
-  if ([(WFWidgetCell *)self enabled]&& [(WFWidgetCell *)self touchesContainNonIndirectTouch:v6])
+  [(WFWidgetCell *)&v8 touchesBegan:beganCopy withEvent:event];
+  if ([(WFWidgetCell *)self enabled]&& [(WFWidgetCell *)self touchesContainNonIndirectTouch:beganCopy])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -753,15 +753,15 @@ LABEL_13:
   }
 }
 
-- (BOOL)touchesContainNonIndirectTouch:(id)a3
+- (BOOL)touchesContainNonIndirectTouch:(id)touch
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  touchCopy = touch;
+  v4 = [touchCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -771,7 +771,7 @@ LABEL_13:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(touchCopy);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) type] != 1)
@@ -781,7 +781,7 @@ LABEL_13:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [touchCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -796,10 +796,10 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)touchIsInView:(id)a3 event:(id)a4
+- (BOOL)touchIsInView:(id)view event:(id)event
 {
-  v6 = a4;
-  [a3 locationInView:self];
+  eventCopy = event;
+  [view locationInView:self];
   v8 = v7;
   v10 = v9;
   [(WFWidgetCell *)self bounds];
@@ -812,15 +812,15 @@ LABEL_11:
 
   else
   {
-    v11 = [(WFWidgetCell *)self pointInside:v6 withEvent:v8, v10];
+    v11 = [(WFWidgetCell *)self pointInside:eventCopy withEvent:v8, v10];
   }
 
   return v11;
 }
 
-- (void)setHomeScreenTintColor:(id)a3
+- (void)setHomeScreenTintColor:(id)color
 {
-  objc_storeStrong(&self->_homeScreenTintColor, a3);
+  objc_storeStrong(&self->_homeScreenTintColor, color);
   [(WFWidgetCell *)self updateGradient];
 
   [(WFWidgetCell *)self updateTextTintIfNeeded];
@@ -840,12 +840,12 @@ LABEL_11:
     aBlock[2] = __38__WFWidgetCell_updateTextTintIfNeeded__block_invoke;
     aBlock[3] = &__block_descriptor_40_e17_d16__0__UIColor_8l;
     *&aBlock[4] = v17 * (v17 * 0.7152) + v18 * 0.2126 * v18 + v16 * 0.0722 * v16;
-    v4 = _Block_copy(aBlock);
-    v5 = [MEMORY[0x1E69DC888] systemGray2Color];
-    v6 = (v4)[2](v4, v5);
+    widgetChicletStyle = _Block_copy(aBlock);
+    systemGray2Color = [MEMORY[0x1E69DC888] systemGray2Color];
+    v6 = (widgetChicletStyle)[2](widgetChicletStyle, systemGray2Color);
 
-    v7 = [MEMORY[0x1E69DC888] whiteColor];
-    v8 = (v4)[2](v4, v7);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v8 = (widgetChicletStyle)[2](widgetChicletStyle, whiteColor);
 
     if (v6 > v8)
     {
@@ -856,24 +856,24 @@ LABEL_11:
     {
       [MEMORY[0x1E69DC888] whiteColor];
     }
-    v10 = ;
+    platformColor = ;
   }
 
   else
   {
-    v4 = [(WFWidgetCell *)self widgetChicletStyle];
-    v9 = [v4 foregroundColor];
-    v10 = [v9 platformColor];
+    widgetChicletStyle = [(WFWidgetCell *)self widgetChicletStyle];
+    foregroundColor = [widgetChicletStyle foregroundColor];
+    platformColor = [foregroundColor platformColor];
   }
 
-  v11 = [(WFWidgetCell *)self nameView];
-  [v11 setTextColor:v10];
+  nameView = [(WFWidgetCell *)self nameView];
+  [nameView setTextColor:platformColor];
 
-  v12 = [(WFWidgetCell *)self iconView];
-  [v12 setTintColor:v10];
+  iconView = [(WFWidgetCell *)self iconView];
+  [iconView setTintColor:platformColor];
 
-  v13 = [(WFWidgetCell *)self progressView];
-  [v13 setTintColor:v10];
+  progressView = [(WFWidgetCell *)self progressView];
+  [progressView setTintColor:platformColor];
 }
 
 double __38__WFWidgetCell_updateTextTintIfNeeded__block_invoke(uint64_t a1, void *a2)
@@ -910,38 +910,38 @@ double __38__WFWidgetCell_updateTextTintIfNeeded__block_invoke(uint64_t a1, void
   return result;
 }
 
-- (void)configureSheenViewIfNeededWithCornerRadius:(double)a3
+- (void)configureSheenViewIfNeededWithCornerRadius:(double)radius
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v5 = [(WFWidgetCell *)self sheenLayer];
-  v6 = [(WFWidgetCell *)self widgetChicletStyle];
-  v7 = [v6 needsSheenView];
+  sheenLayer = [(WFWidgetCell *)self sheenLayer];
+  widgetChicletStyle = [(WFWidgetCell *)self widgetChicletStyle];
+  needsSheenView = [widgetChicletStyle needsSheenView];
 
-  if (v7)
+  if (needsSheenView)
   {
-    [v5 setCornerRadius:a3];
-    v8 = [MEMORY[0x1E69E09E0] whiteColor];
-    v9 = [v8 colorWithAlphaComponent:0.2];
+    [sheenLayer setCornerRadius:radius];
+    whiteColor = [MEMORY[0x1E69E09E0] whiteColor];
+    v9 = [whiteColor colorWithAlphaComponent:0.2];
 
-    v10 = [MEMORY[0x1E69E09E0] whiteColor];
-    v11 = [v10 colorWithAlphaComponent:0.001];
+    whiteColor2 = [MEMORY[0x1E69E09E0] whiteColor];
+    v11 = [whiteColor2 colorWithAlphaComponent:0.001];
 
     v13[0] = [v9 CGColor];
     v13[1] = [v11 CGColor];
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
-    [v5 setColors:v12];
+    [sheenLayer setColors:v12];
 
     if (_UISolariumEnabled())
     {
-      [v5 setType:*MEMORY[0x1E6979DB0]];
-      [v5 setStartPoint:{0.0, 0.0}];
-      [v5 setEndPoint:{1.0, 1.0}];
+      [sheenLayer setType:*MEMORY[0x1E6979DB0]];
+      [sheenLayer setStartPoint:{0.0, 0.0}];
+      [sheenLayer setEndPoint:{1.0, 1.0}];
     }
   }
 
   else
   {
-    [v5 setColors:0];
+    [sheenLayer setColors:0];
   }
 }
 
@@ -952,30 +952,30 @@ double __38__WFWidgetCell_updateTextTintIfNeeded__block_invoke(uint64_t a1, void
     if (self->_isClear)
     {
       v3 = objc_alloc(MEMORY[0x1E69E0B18]);
-      v4 = [MEMORY[0x1E69E09E0] colorWithWhite:1.0 alpha:0.2];
-      v5 = [v3 initWithColor:v4];
+      widgetChicletStyle = [MEMORY[0x1E69E09E0] colorWithWhite:1.0 alpha:0.2];
+      baseGradient = [v3 initWithColor:widgetChicletStyle];
 LABEL_9:
-      v7 = v5;
+      v7 = baseGradient;
 
       goto LABEL_10;
     }
 
     if (!self->_homeScreenTintColor)
     {
-      v4 = [(WFWidgetCell *)self widgetChicletStyle];
-      v5 = [v4 baseGradient];
+      widgetChicletStyle = [(WFWidgetCell *)self widgetChicletStyle];
+      baseGradient = [widgetChicletStyle baseGradient];
       goto LABEL_9;
     }
 
-    v6 = [objc_alloc(MEMORY[0x1E69E0B18]) initWithColor:self->_homeScreenTintColor];
+    emptyCellGradient = [objc_alloc(MEMORY[0x1E69E0B18]) initWithColor:self->_homeScreenTintColor];
   }
 
   else
   {
-    v6 = [(WFWidgetCell *)self emptyCellGradient];
+    emptyCellGradient = [(WFWidgetCell *)self emptyCellGradient];
   }
 
-  v7 = v6;
+  v7 = emptyCellGradient;
 LABEL_10:
   v8.receiver = self;
   v8.super_class = WFWidgetCell;
@@ -1010,10 +1010,10 @@ LABEL_10:
   return v6;
 }
 
-- (id)imageForAction:(id)a3 dataSource:(id)a4 family:(int64_t)a5
+- (id)imageForAction:(id)action dataSource:(id)source family:(int64_t)family
 {
-  v8 = a3;
-  v9 = a4;
+  actionCopy = action;
+  sourceCopy = source;
   if ([(WFWidgetCell *)self widgetType]== 1)
   {
     [MEMORY[0x1E69E0940] largeGlyphSize];
@@ -1031,15 +1031,15 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v17 = [v8 contextualAction];
-      v18 = [v17 icon];
-      v19 = [v18 wfIcon];
+      contextualAction = [actionCopy contextualAction];
+      icon = [contextualAction icon];
+      wfIcon = [icon wfIcon];
 
-      v20 = v19;
-      if (v20)
+      previewIcon = wfIcon;
+      if (previewIcon)
       {
 LABEL_10:
-        v21 = v20;
+        v21 = previewIcon;
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1047,14 +1047,14 @@ LABEL_10:
         {
           v23 = MEMORY[0x1E69DCAD8];
           v13 = v21;
-          v24 = [v23 configurationWithPointSize:5 weight:v11];
+          image = [v23 configurationWithPointSize:5 weight:v11];
           v25 = MEMORY[0x1E69DCAB8];
-          v26 = [v13 symbolName];
+          symbolName = [v13 symbolName];
 
-          v27 = [v25 _systemImageNamed:v26 withConfiguration:v24];
+          v27 = [v25 _systemImageNamed:symbolName withConfiguration:image];
 
-          v28 = [(WFWidgetCell *)self iconView];
-          [v28 setContentMode:4];
+          iconView = [(WFWidgetCell *)self iconView];
+          [iconView setContentMode:4];
 
           goto LABEL_20;
         }
@@ -1065,8 +1065,8 @@ LABEL_10:
 
         if (v34)
         {
-          v24 = [v13 image];
-          v31 = [v24 platformImage];
+          image = [v13 image];
+          platformImage = [image platformImage];
           goto LABEL_19;
         }
 
@@ -1080,7 +1080,7 @@ LABEL_10:
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 LABEL_25:
-        if (a5 == 1)
+        if (family == 1)
         {
           [MEMORY[0x1E69E0940] largeGlyphSize];
         }
@@ -1092,14 +1092,14 @@ LABEL_25:
 
         v37 = v35;
         v38 = v36;
-        v39 = [v8 associatedBundleIdentifier];
-        v27 = [WFApplicationIconProvider applicationIconImageForBundleIdentifier:v39 size:v37, v38];
+        associatedBundleIdentifier = [actionCopy associatedBundleIdentifier];
+        v27 = [WFApplicationIconProvider applicationIconImageForBundleIdentifier:associatedBundleIdentifier size:v37, v38];
 
         goto LABEL_29;
       }
 
-      v20 = [v8 previewIcon];
-      if (v20)
+      previewIcon = [actionCopy previewIcon];
+      if (previewIcon)
       {
         goto LABEL_10;
       }
@@ -1111,14 +1111,14 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v12 = [v8 identifier];
-  v13 = [v9 widgetWorkflowWithIdentifier:v12];
+  identifier = [actionCopy identifier];
+  v13 = [sourceCopy widgetWorkflowWithIdentifier:identifier];
 
-  v14 = [v13 associatedAppBundleIdentifier];
+  associatedAppBundleIdentifier = [v13 associatedAppBundleIdentifier];
 
-  if (v14)
+  if (associatedAppBundleIdentifier)
   {
-    if (a5 == 1)
+    if (family == 1)
     {
       [MEMORY[0x1E69E0940] largeGlyphSize];
     }
@@ -1130,8 +1130,8 @@ LABEL_24:
 
     v32 = v15;
     v33 = v16;
-    v24 = [v8 associatedBundleIdentifier];
-    v31 = [WFApplicationIconProvider applicationIconImageForBundleIdentifier:v24 size:v32, v33];
+    image = [actionCopy associatedBundleIdentifier];
+    platformImage = [WFApplicationIconProvider applicationIconImageForBundleIdentifier:image size:v32, v33];
     goto LABEL_19;
   }
 
@@ -1141,12 +1141,12 @@ LABEL_24:
   }
 
   v29 = objc_alloc(MEMORY[0x1E69DCAB8]);
-  v30 = [v13 iconImage];
+  iconImage = [v13 iconImage];
   [v13 iconImageScale];
-  v24 = [v29 initWithCGImage:v30 scale:0 orientation:?];
-  v31 = [v24 imageWithRenderingMode:2];
+  image = [v29 initWithCGImage:iconImage scale:0 orientation:?];
+  platformImage = [image imageWithRenderingMode:2];
 LABEL_19:
-  v27 = v31;
+  v27 = platformImage;
 LABEL_20:
 
   if (!v27)
@@ -1159,86 +1159,86 @@ LABEL_29:
   return v27;
 }
 
-- (void)configureWithAction:(id)a3 dataSource:(id)a4 cornerRadius:(double)a5 widgetType:(int64_t)a6 family:(int64_t)a7 homeScreenTintColor:(id)a8 isClearStyleEnabled:(BOOL)a9
+- (void)configureWithAction:(id)action dataSource:(id)source cornerRadius:(double)radius widgetType:(int64_t)type family:(int64_t)family homeScreenTintColor:(id)color isClearStyleEnabled:(BOOL)enabled
 {
-  v66 = a3;
-  v17 = a4;
-  v18 = a8;
+  actionCopy = action;
+  sourceCopy = source;
+  colorCopy = color;
   if ([(WFWidgetCell *)self runningState]!= 1)
   {
     goto LABEL_8;
   }
 
-  v19 = [(WFWidgetCell *)self action];
-  if (![v19 isEqual:v66])
+  action = [(WFWidgetCell *)self action];
+  if (![action isEqual:actionCopy])
   {
     goto LABEL_7;
   }
 
-  v65 = v17;
-  v20 = v18;
-  v21 = [(WFWidgetCell *)self currentConfiguration];
-  [v21 cornerRadius];
-  if (v22 != a5)
+  v65 = sourceCopy;
+  v20 = colorCopy;
+  currentConfiguration = [(WFWidgetCell *)self currentConfiguration];
+  [currentConfiguration cornerRadius];
+  if (v22 != radius)
   {
 
-    v18 = v20;
-    v17 = v65;
+    colorCopy = v20;
+    sourceCopy = v65;
 LABEL_7:
 
 LABEL_8:
-    objc_storeStrong(&self->_action, a3);
-    self->_lastKnownWidgetFamily = a7;
-    self->_widgetType = a6;
-    objc_storeStrong(&self->_homeScreenTintColor, a8);
-    self->_isClear = a9;
-    v25 = a6 == 1 && a7 == 1;
-    v26 = [(WFWidgetCell *)self currentConfiguration];
-    [v26 setAppliesCornerRadiusDuringTouchDownOnly:v25];
+    objc_storeStrong(&self->_action, action);
+    self->_lastKnownWidgetFamily = family;
+    self->_widgetType = type;
+    objc_storeStrong(&self->_homeScreenTintColor, color);
+    self->_isClear = enabled;
+    v25 = type == 1 && family == 1;
+    currentConfiguration2 = [(WFWidgetCell *)self currentConfiguration];
+    [currentConfiguration2 setAppliesCornerRadiusDuringTouchDownOnly:v25];
 
-    v27 = [(WFWidgetCell *)self currentConfiguration];
-    [v27 cornerRadius];
+    currentConfiguration3 = [(WFWidgetCell *)self currentConfiguration];
+    [currentConfiguration3 cornerRadius];
     v29 = v28;
 
-    if (v29 != a5)
+    if (v29 != radius)
     {
-      v30 = [(WFWidgetCell *)self currentConfiguration];
-      [v30 setCornerRadius:a5];
+      currentConfiguration4 = [(WFWidgetCell *)self currentConfiguration];
+      [currentConfiguration4 setCornerRadius:radius];
 
-      v31 = [(WFWidgetCell *)self currentConfiguration];
-      [(WFFloatingView *)self applyConfiguration:v31];
+      currentConfiguration5 = [(WFWidgetCell *)self currentConfiguration];
+      [(WFFloatingView *)self applyConfiguration:currentConfiguration5];
     }
 
     [(WFWidgetCell *)self resetProgressState];
-    if (!v66)
+    if (!actionCopy)
     {
       [(WFWidgetCell *)self resetToEmptyState];
       goto LABEL_24;
     }
 
-    v32 = [(WFWidgetCell *)self nameView];
-    [(WFWidgetCell *)self addSubview:v32];
+    nameView = [(WFWidgetCell *)self nameView];
+    [(WFWidgetCell *)self addSubview:nameView];
 
-    v33 = [(WFWidgetCell *)self iconView];
-    [(WFWidgetCell *)self addSubview:v33];
+    iconView = [(WFWidgetCell *)self iconView];
+    [(WFWidgetCell *)self addSubview:iconView];
 
     [(WFWidgetCell *)self setEmptyStateBackgroundView:0];
     [(WFWidgetCell *)self updateGradient];
-    v34 = [v66 name];
-    v35 = [(WFWidgetCell *)self nameView];
-    [v35 setText:v34];
+    name = [actionCopy name];
+    nameView2 = [(WFWidgetCell *)self nameView];
+    [nameView2 setText:name];
 
-    v36 = [(WFWidgetCell *)self imageForAction:v66 dataSource:v17 family:a7];
-    v37 = [(WFWidgetCell *)self iconView];
-    [v37 setImage:v36];
+    v36 = [(WFWidgetCell *)self imageForAction:actionCopy dataSource:sourceCopy family:family];
+    iconView2 = [(WFWidgetCell *)self iconView];
+    [iconView2 setImage:v36];
 
-    v38 = [(WFWidgetCell *)self widgetChicletStyle];
-    v39 = [v38 foregroundColor];
-    v40 = [v39 platformColor];
-    v41 = [(WFWidgetCell *)self iconView];
-    [v41 setTintColor:v40];
+    widgetChicletStyle = [(WFWidgetCell *)self widgetChicletStyle];
+    foregroundColor = [widgetChicletStyle foregroundColor];
+    platformColor = [foregroundColor platformColor];
+    iconView3 = [(WFWidgetCell *)self iconView];
+    [iconView3 setTintColor:platformColor];
 
-    v42 = [v66 previewIcon];
+    previewIcon = [actionCopy previewIcon];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1250,56 +1250,56 @@ LABEL_8:
 
       if (v43)
       {
-        v44 = [(WFWidgetCell *)self widgetChicletStyle];
-        [v44 foregroundOpacity];
+        widgetChicletStyle2 = [(WFWidgetCell *)self widgetChicletStyle];
+        [widgetChicletStyle2 foregroundOpacity];
         v46 = v45 + -0.1;
 LABEL_23:
-        v48 = [(WFWidgetCell *)self iconView];
-        [v48 setAlpha:v46];
+        iconView4 = [(WFWidgetCell *)self iconView];
+        [iconView4 setAlpha:v46];
 
-        v49 = [(WFWidgetCell *)self widgetChicletStyle];
-        v50 = [v49 foregroundCompositingFilter];
-        v51 = [(WFWidgetCell *)self iconView];
-        v52 = [v51 layer];
-        [v52 setCompositingFilter:v50];
+        widgetChicletStyle3 = [(WFWidgetCell *)self widgetChicletStyle];
+        foregroundCompositingFilter = [widgetChicletStyle3 foregroundCompositingFilter];
+        iconView5 = [(WFWidgetCell *)self iconView];
+        layer = [iconView5 layer];
+        [layer setCompositingFilter:foregroundCompositingFilter];
 
         [(WFWidgetCell *)self setEnabled:1];
-        v53 = [(WFWidgetCell *)self widgetChicletStyle];
-        v54 = [v53 foregroundColor];
-        v55 = [v54 platformColor];
-        v56 = [(WFWidgetCell *)self nameView];
-        [v56 setTextColor:v55];
+        widgetChicletStyle4 = [(WFWidgetCell *)self widgetChicletStyle];
+        foregroundColor2 = [widgetChicletStyle4 foregroundColor];
+        platformColor2 = [foregroundColor2 platformColor];
+        nameView3 = [(WFWidgetCell *)self nameView];
+        [nameView3 setTextColor:platformColor2];
 
-        v57 = [(WFWidgetCell *)self widgetChicletStyle];
-        [v57 foregroundOpacity];
+        widgetChicletStyle5 = [(WFWidgetCell *)self widgetChicletStyle];
+        [widgetChicletStyle5 foregroundOpacity];
         v59 = v58;
-        v60 = [(WFWidgetCell *)self nameView];
-        [v60 setAlpha:v59];
+        nameView4 = [(WFWidgetCell *)self nameView];
+        [nameView4 setAlpha:v59];
 
-        v61 = [(WFWidgetCell *)self widgetChicletStyle];
-        v62 = [v61 foregroundCompositingFilter];
-        v63 = [(WFWidgetCell *)self nameView];
-        v64 = [v63 layer];
-        [v64 setCompositingFilter:v62];
+        widgetChicletStyle6 = [(WFWidgetCell *)self widgetChicletStyle];
+        foregroundCompositingFilter2 = [widgetChicletStyle6 foregroundCompositingFilter];
+        nameView5 = [(WFWidgetCell *)self nameView];
+        layer2 = [nameView5 layer];
+        [layer2 setCompositingFilter:foregroundCompositingFilter2];
 
-        [(WFWidgetCell *)self configureSheenViewIfNeededWithCornerRadius:a5];
+        [(WFWidgetCell *)self configureSheenViewIfNeededWithCornerRadius:radius];
         [(WFWidgetCell *)self updateTextTintIfNeeded];
         [(WFWidgetCell *)self setNeedsLayout];
         goto LABEL_24;
       }
     }
 
-    v44 = [(WFWidgetCell *)self widgetChicletStyle];
-    [v44 foregroundOpacity];
+    widgetChicletStyle2 = [(WFWidgetCell *)self widgetChicletStyle];
+    [widgetChicletStyle2 foregroundOpacity];
     v46 = v47;
     goto LABEL_23;
   }
 
-  v23 = [(WFWidgetCell *)self lastKnownWidgetFamily];
+  lastKnownWidgetFamily = [(WFWidgetCell *)self lastKnownWidgetFamily];
 
-  v18 = v20;
-  v17 = v65;
-  if (v23 != a7)
+  colorCopy = v20;
+  sourceCopy = v65;
+  if (lastKnownWidgetFamily != family)
   {
     goto LABEL_8;
   }
@@ -1320,11 +1320,11 @@ LABEL_24:
 
 - (BOOL)isMultiline
 {
-  v2 = [(WFWidgetCell *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
+  traitCollection = [(WFWidgetCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
 
-  LOBYTE(v2) = UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC58]) == NSOrderedDescending;
-  return v2;
+  LOBYTE(traitCollection) = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC58]) == NSOrderedDescending;
+  return traitCollection;
 }
 
 - (void)dealloc
@@ -1350,8 +1350,8 @@ LABEL_24:
   {
     objc_storeStrong(&v4->_currentConfiguration, v3);
     v6 = objc_alloc_init(MEMORY[0x1E6979380]);
-    v7 = [(WFWidgetCell *)v5 layer];
-    [v7 addSublayer:v6];
+    layer = [(WFWidgetCell *)v5 layer];
+    [layer addSublayer:v6];
 
     sheenLayer = v5->_sheenLayer;
     v5->_sheenLayer = v6;
@@ -1364,11 +1364,11 @@ LABEL_24:
     [(UITextView *)v11 setUserInteractionEnabled:0];
     [(UITextView *)v11 setEditable:0];
     [(UITextView *)v11 setSelectable:0];
-    v12 = [(UITextView *)v11 textContainer];
-    [v12 setLineBreakMode:4];
+    textContainer = [(UITextView *)v11 textContainer];
+    [textContainer setLineBreakMode:4];
 
-    v13 = [(UITextView *)v11 layoutManager];
-    [v13 setUsesDefaultHyphenation:1];
+    layoutManager = [(UITextView *)v11 layoutManager];
+    [layoutManager setUsesDefaultHyphenation:1];
 
     [(UITextView *)v11 setBackgroundColor:0];
     [(UITextView *)v11 setClipsToBounds:1];
@@ -1396,8 +1396,8 @@ LABEL_24:
     [v22 setNumberOfTapsRequired:1];
     [(WFWidgetCell *)v5 addGestureRecognizer:v22];
     [(WFFloatingView *)v5 setGradient:0];
-    v23 = [(WFWidgetCell *)v5 layer];
-    [v23 setAllowsGroupBlending:0];
+    layer2 = [(WFWidgetCell *)v5 layer];
+    [layer2 setAllowsGroupBlending:0];
 
     v24 = v5;
   }

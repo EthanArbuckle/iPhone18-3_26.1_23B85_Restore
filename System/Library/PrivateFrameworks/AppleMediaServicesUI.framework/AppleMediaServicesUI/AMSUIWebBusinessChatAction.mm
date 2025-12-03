@@ -1,20 +1,20 @@
 @interface AMSUIWebBusinessChatAction
-- (AMSUIWebBusinessChatAction)initWithJSObject:(id)a3 context:(id)a4;
+- (AMSUIWebBusinessChatAction)initWithJSObject:(id)object context:(id)context;
 - (id)makeBusinessChatDeeplink;
 - (id)runAction;
 @end
 
 @implementation AMSUIWebBusinessChatAction
 
-- (AMSUIWebBusinessChatAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebBusinessChatAction)initWithJSObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v21.receiver = self;
   v21.super_class = AMSUIWebBusinessChatAction;
-  v7 = [(AMSUIWebAction *)&v21 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v21 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"body"];
+    v8 = [objectCopy objectForKeyedSubscript:@"body"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
     body = v7->_body;
     v7->_body = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"businessID"];
+    v11 = [objectCopy objectForKeyedSubscript:@"businessID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
     businessID = v7->_businessID;
     v7->_businessID = v12;
 
-    v14 = [v6 objectForKeyedSubscript:@"businessGroupID"];
+    v14 = [objectCopy objectForKeyedSubscript:@"businessGroupID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
     businessGroupID = v7->_businessGroupID;
     v7->_businessGroupID = v15;
 
-    v17 = [v6 objectForKeyedSubscript:@"intentID"];
+    v17 = [objectCopy objectForKeyedSubscript:@"intentID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,21 +82,21 @@
 {
   v13.receiver = self;
   v13.super_class = AMSUIWebBusinessChatAction;
-  v3 = [(AMSUIWebAction *)&v13 runAction];
-  v4 = [(AMSUIWebBusinessChatAction *)self businessID];
+  runAction = [(AMSUIWebAction *)&v13 runAction];
+  businessID = [(AMSUIWebBusinessChatAction *)self businessID];
 
-  if (!v4)
+  if (!businessID)
   {
     v9 = MEMORY[0x1E698CAD0];
-    v5 = AMSError();
-    v8 = [v9 promiseWithError:v5];
+    makeBusinessChatDeeplink = AMSError();
+    v8 = [v9 promiseWithError:makeBusinessChatDeeplink];
     goto LABEL_6;
   }
 
-  v5 = [(AMSUIWebBusinessChatAction *)self makeBusinessChatDeeplink];
-  if (v5)
+  makeBusinessChatDeeplink = [(AMSUIWebBusinessChatAction *)self makeBusinessChatDeeplink];
+  if (makeBusinessChatDeeplink)
   {
-    v6 = [MEMORY[0x1E698CA98] openStandardURL:v5];
+    v6 = [MEMORY[0x1E698CA98] openStandardURL:makeBusinessChatDeeplink];
     v7 = MEMORY[0x1E698CAD0];
     if (v6)
     {
@@ -123,50 +123,50 @@ LABEL_9:
 - (id)makeBusinessChatDeeplink
 {
   v3 = [MEMORY[0x1E696AF20] componentsWithString:@"https://bcrw.apple.com/sms:open?service=iMessage"];
-  v4 = [MEMORY[0x1E695DF70] array];
-  v5 = [(AMSUIWebBusinessChatAction *)self businessID];
+  array = [MEMORY[0x1E695DF70] array];
+  businessID = [(AMSUIWebBusinessChatAction *)self businessID];
 
-  if (v5)
+  if (businessID)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = [(AMSUIWebBusinessChatAction *)self businessID];
-    v8 = [v6 stringWithFormat:@"urn:biz:%@", v7];
+    businessID2 = [(AMSUIWebBusinessChatAction *)self businessID];
+    v8 = [v6 stringWithFormat:@"urn:biz:%@", businessID2];
 
     v9 = [MEMORY[0x1E696AF60] queryItemWithName:@"recipient" value:v8];
-    [v4 addObject:v9];
+    [array addObject:v9];
   }
 
-  v10 = [(AMSUIWebBusinessChatAction *)self businessGroupID];
+  businessGroupID = [(AMSUIWebBusinessChatAction *)self businessGroupID];
 
-  if (v10)
+  if (businessGroupID)
   {
     v11 = MEMORY[0x1E696AF60];
-    v12 = [(AMSUIWebBusinessChatAction *)self businessGroupID];
-    v13 = [v11 queryItemWithName:@"bizgroup-id" value:v12];
-    [v4 addObject:v13];
+    businessGroupID2 = [(AMSUIWebBusinessChatAction *)self businessGroupID];
+    v13 = [v11 queryItemWithName:@"bizgroup-id" value:businessGroupID2];
+    [array addObject:v13];
   }
 
-  v14 = [(AMSUIWebBusinessChatAction *)self intentID];
+  intentID = [(AMSUIWebBusinessChatAction *)self intentID];
 
-  if (v14)
+  if (intentID)
   {
     v15 = MEMORY[0x1E696AF60];
-    v16 = [(AMSUIWebBusinessChatAction *)self intentID];
-    v17 = [v15 queryItemWithName:@"biz-intent-id" value:v16];
-    [v4 addObject:v17];
+    intentID2 = [(AMSUIWebBusinessChatAction *)self intentID];
+    v17 = [v15 queryItemWithName:@"biz-intent-id" value:intentID2];
+    [array addObject:v17];
   }
 
-  v18 = [(AMSUIWebBusinessChatAction *)self body];
+  body = [(AMSUIWebBusinessChatAction *)self body];
 
-  if (v18)
+  if (body)
   {
     v19 = MEMORY[0x1E696AF60];
-    v20 = [(AMSUIWebBusinessChatAction *)self body];
-    v21 = [v19 queryItemWithName:@"body" value:v20];
-    [v4 addObject:v21];
+    body2 = [(AMSUIWebBusinessChatAction *)self body];
+    v21 = [v19 queryItemWithName:@"body" value:body2];
+    [array addObject:v21];
   }
 
-  [v3 setQueryItems:v4];
+  [v3 setQueryItems:array];
   v22 = [v3 URL];
 
   return v22;

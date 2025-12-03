@@ -1,37 +1,37 @@
 @interface _DPDediscoNetworkingService
-- (_DPDediscoNetworkingService)initWithDomain:(id)a3 configurationURL:(id)a4;
-- (id)downloadConfigSynchronouslyWithError:(id *)a3;
+- (_DPDediscoNetworkingService)initWithDomain:(id)domain configurationURL:(id)l;
+- (id)downloadConfigSynchronouslyWithError:(id *)error;
 @end
 
 @implementation _DPDediscoNetworkingService
 
-- (_DPDediscoNetworkingService)initWithDomain:(id)a3 configurationURL:(id)a4
+- (_DPDediscoNetworkingService)initWithDomain:(id)domain configurationURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  lCopy = l;
   v12.receiver = self;
   v12.super_class = _DPDediscoNetworkingService;
   v8 = [(_DPDediscoNetworkingService *)&v12 init];
   if (v8)
   {
-    v9 = [[_DPSubmissionServiceHTTPClient alloc] initWithDomain:v6 retries:3];
+    v9 = [[_DPSubmissionServiceHTTPClient alloc] initWithDomain:domainCopy retries:3];
     networkingClient = v8->_networkingClient;
     v8->_networkingClient = v9;
 
-    objc_storeStrong(&v8->_configurationURL, a4);
+    objc_storeStrong(&v8->_configurationURL, l);
   }
 
   return v8;
 }
 
-- (id)downloadConfigSynchronouslyWithError:(id *)a3
+- (id)downloadConfigSynchronouslyWithError:(id *)error
 {
   v5 = +[_DPLog service];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(_DPDediscoNetworkingService *)self configurationURL];
+    configurationURL = [(_DPDediscoNetworkingService *)self configurationURL];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v6;
+    *(&buf + 4) = configurationURL;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting to download config file from %@", &buf, 0xCu);
   }
 
@@ -52,8 +52,8 @@
   v38[3] = sub_1000097E8;
   v39 = 0;
   v7 = dispatch_semaphore_create(0);
-  v8 = [(_DPDediscoNetworkingService *)self networkingClient];
-  v9 = [(_DPDediscoNetworkingService *)self configurationURL];
+  networkingClient = [(_DPDediscoNetworkingService *)self networkingClient];
+  configurationURL2 = [(_DPDediscoNetworkingService *)self configurationURL];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_1000097F0;
@@ -63,7 +63,7 @@
   v36 = &v40;
   v10 = v7;
   v33 = v10;
-  [v8 downloadConfigFromURL:v9 completion:v32];
+  [networkingClient downloadConfigFromURL:configurationURL2 completion:v32];
 
   v11 = dispatch_time(0, 300000000000);
   if (dispatch_semaphore_wait(v10, v11))
@@ -74,12 +74,12 @@
       sub_10004E224(v12, v13, v14, v15, v16, v17, v18, v19);
     }
 
-    if (a3)
+    if (error)
     {
       v20 = [_DPDediscoError errorWithCode:200 description:@"Timeout while downloading config on client"];
 LABEL_16:
       v22 = 0;
-      *a3 = v20;
+      *error = v20;
       goto LABEL_18;
     }
 
@@ -96,7 +96,7 @@ LABEL_17:
       sub_10004E298(v38, v23, v24, v25, v26, v27, v28, v29);
     }
 
-    if (a3)
+    if (error)
     {
       v20 = [_DPDediscoError errorWithCode:201 underlyingError:*(v38[0] + 40) description:@"Networking client returned an error"];
       goto LABEL_16;

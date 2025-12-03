@@ -1,28 +1,28 @@
 @interface ACDefaultAccessPlugin
-+ (BOOL)_accessAlertFormerlySupportedByAccountType:(id)a3;
-+ (BOOL)supportsAccountTypeWithIdentifier:(id)a3;
-+ (id)_fullAccessEntitlementForAccountType:(id)a3;
++ (BOOL)_accessAlertFormerlySupportedByAccountType:(id)type;
++ (BOOL)supportsAccountTypeWithIdentifier:(id)identifier;
++ (id)_fullAccessEntitlementForAccountType:(id)type;
 + (id)_supportedAccountTypeIdentifiers;
-- (BOOL)_shouldGrantClient:(id)a3 defaultAccessToAccountType:(id)a4;
-- (BOOL)_shouldGrantClient:(id)a3 unrestrictedAccessToAccountType:(id)a4;
-- (void)_presentAccessAlertforClient:(id)a3 onAccountType:(id)a4 withHandler:(id)a5;
-- (void)authorizeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6;
-- (void)handleAccessRequestToAccountsOfType:(id)a3 forClient:(id)a4 withOptions:(id)a5 store:(id)a6 allowUserInteraction:(BOOL)a7 completion:(id)a8;
-- (void)revokeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6;
-- (void)revokeAllAccessToAccountsOfType:(id)a3 store:(id)a4 withCompletion:(id)a5;
+- (BOOL)_shouldGrantClient:(id)client defaultAccessToAccountType:(id)type;
+- (BOOL)_shouldGrantClient:(id)client unrestrictedAccessToAccountType:(id)type;
+- (void)_presentAccessAlertforClient:(id)client onAccountType:(id)type withHandler:(id)handler;
+- (void)authorizeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion;
+- (void)handleAccessRequestToAccountsOfType:(id)type forClient:(id)client withOptions:(id)options store:(id)store allowUserInteraction:(BOOL)interaction completion:(id)completion;
+- (void)revokeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion;
+- (void)revokeAllAccessToAccountsOfType:(id)type store:(id)store withCompletion:(id)completion;
 @end
 
 @implementation ACDefaultAccessPlugin
 
-+ (BOOL)supportsAccountTypeWithIdentifier:(id)a3
++ (BOOL)supportsAccountTypeWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _supportedAccountTypeIdentifiers];
-  v5 = [v4 containsObject:v3];
+  identifierCopy = identifier;
+  _supportedAccountTypeIdentifiers = [objc_opt_class() _supportedAccountTypeIdentifiers];
+  v5 = [_supportedAccountTypeIdentifiers containsObject:identifierCopy];
 
-  if (v3 && (v5 & 1) == 0)
+  if (identifierCopy && (v5 & 1) == 0)
   {
-    v5 = [v3 rangeOfString:@"com.apple.account.kerberos.sso." options:8] != 0x7FFFFFFFFFFFFFFFLL;
+    v5 = [identifierCopy rangeOfString:@"com.apple.account.kerberos.sso." options:8] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   return v5;
@@ -60,22 +60,22 @@
   return v10;
 }
 
-- (void)handleAccessRequestToAccountsOfType:(id)a3 forClient:(id)a4 withOptions:(id)a5 store:(id)a6 allowUserInteraction:(BOOL)a7 completion:(id)a8
+- (void)handleAccessRequestToAccountsOfType:(id)type forClient:(id)client withOptions:(id)options store:(id)store allowUserInteraction:(BOOL)interaction completion:(id)completion
 {
   v47 = *MEMORY[0x29EDCA608];
-  v13 = a3;
-  v14 = a4;
-  v38 = a5;
-  v15 = a6;
-  v16 = a8;
-  v39 = [v13 identifier];
-  v17 = [v15 authorizationManager];
-  if ([v14 hasEntitlement:*MEMORY[0x29EDB83E0]])
+  typeCopy = type;
+  clientCopy = client;
+  optionsCopy = options;
+  storeCopy = store;
+  completionCopy = completion;
+  identifier = [typeCopy identifier];
+  authorizationManager = [storeCopy authorizationManager];
+  if ([clientCopy hasEntitlement:*MEMORY[0x29EDB83E0]])
   {
-    v16[2](v16, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
-  else if ([(ACDefaultAccessPlugin *)self _shouldGrantClient:v14 unrestrictedAccessToAccountType:v13])
+  else if ([(ACDefaultAccessPlugin *)self _shouldGrantClient:clientCopy unrestrictedAccessToAccountType:typeCopy])
   {
     v18 = _ACDLogSystem();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -83,7 +83,7 @@
       sub_29C7F9EC0();
     }
 
-    v16[2](v16, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
@@ -92,21 +92,21 @@
     v44 = &v43;
     v45 = 0x2020000000;
     v46 = 0;
-    v37 = [MEMORY[0x29EDB8DB0] date];
-    v19 = [(ACDefaultAccessPlugin *)self _shouldGrantClient:v14 defaultAccessToAccountType:v13];
-    v20 = [objc_opt_class() _accessAlertSupportedByAccountType:v13];
-    if (((v19 | v20) & 1) != 0 && ([v17 authorizationForClient:v14 accountType:v13], v21 = objc_claimAutoreleasedReturnValue(), (v22 = v21) != 0))
+    date = [MEMORY[0x29EDB8DB0] date];
+    v19 = [(ACDefaultAccessPlugin *)self _shouldGrantClient:clientCopy defaultAccessToAccountType:typeCopy];
+    v20 = [objc_opt_class() _accessAlertSupportedByAccountType:typeCopy];
+    if (((v19 | v20) & 1) != 0 && ([authorizationManager authorizationForClient:clientCopy accountType:typeCopy], v21 = objc_claimAutoreleasedReturnValue(), (v22 = v21) != 0))
     {
-      v23 = [v21 isGranted];
+      isGranted = [v21 isGranted];
       v24 = _ACDLogSystem();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
       {
-        [MEMORY[0x29EDBA070] numberWithBool:v23];
+        [MEMORY[0x29EDBA070] numberWithBool:isGranted];
         objc_claimAutoreleasedReturnValue();
         sub_29C7F9CF8();
       }
 
-      v16[2](v16, v23, 0);
+      completionCopy[2](completionCopy, isGranted, 0);
     }
 
     else
@@ -129,7 +129,7 @@
         v27 = _ACDLogSystem();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
         {
-          sub_29C7F9DD8(v14, v27);
+          sub_29C7F9DD8(clientCopy, v27);
         }
 
         v28 = dispatch_semaphore_create(0);
@@ -140,7 +140,7 @@
         v42 = &v43;
         v29 = v28;
         v41 = v29;
-        [(ACDefaultAccessPlugin *)self _presentAccessAlertforClient:v14 onAccountType:v13 withHandler:v40];
+        [(ACDefaultAccessPlugin *)self _presentAccessAlertforClient:clientCopy onAccountType:typeCopy withHandler:v40];
         dispatch_semaphore_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
 
         v22 = 0;
@@ -149,12 +149,12 @@
 
       else
       {
-        if ([objc_opt_class() _accessAlertFormerlySupportedByAccountType:v13])
+        if ([objc_opt_class() _accessAlertFormerlySupportedByAccountType:typeCopy])
         {
           v30 = _ACDLogSystem();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
           {
-            [v13 identifier];
+            [typeCopy identifier];
             objc_claimAutoreleasedReturnValue();
             sub_29C7F9D90();
           }
@@ -165,7 +165,7 @@
           v30 = _ACDLogSystem();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
-            [v13 identifier];
+            [typeCopy identifier];
             objc_claimAutoreleasedReturnValue();
             sub_29C7F9D40();
           }
@@ -175,22 +175,22 @@
         v26 = 0;
       }
 
-      v31 = [objc_alloc(MEMORY[0x29EDBDFF0]) initForClient:v14];
+      v31 = [objc_alloc(MEMORY[0x29EDBDFF0]) initForClient:clientCopy];
       [v31 setIsGranted:*(v44 + 24)];
       if (v26)
       {
-        v32 = [v17 setAuthorization:v31 forClient:v14 onAccountType:v13];
+        v32 = [authorizationManager setAuthorization:v31 forClient:clientCopy onAccountType:typeCopy];
 
         v22 = v32;
       }
 
-      v33 = [v13 identifier];
-      v34 = [v14 bundleID];
+      identifier2 = [typeCopy identifier];
+      bundleID = [clientCopy bundleID];
       v35 = *(v44 + 24);
-      [v37 timeIntervalSinceNow];
+      [date timeIntervalSinceNow];
       ACDLogAccessRequest();
 
-      (v16)[2](v16, *(v44 + 24), v22);
+      (completionCopy)[2](completionCopy, *(v44 + 24), v22);
     }
 
     _Block_object_dispose(&v43, 8);
@@ -199,82 +199,82 @@
   v36 = *MEMORY[0x29EDCA608];
 }
 
-- (void)authorizeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6
+- (void)authorizeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion
 {
   v9 = MEMORY[0x29EDBDFF0];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v18 = [[v9 alloc] initForClient:v12];
+  completionCopy = completion;
+  storeCopy = store;
+  clientCopy = client;
+  typeCopy = type;
+  v18 = [[v9 alloc] initForClient:clientCopy];
   [v18 setIsGranted:1];
-  v14 = [v11 authorizationManager];
+  authorizationManager = [storeCopy authorizationManager];
 
-  v15 = [v14 setAuthorization:v18 forClient:v12 onAccountType:v13];
+  v15 = [authorizationManager setAuthorization:v18 forClient:clientCopy onAccountType:typeCopy];
 
-  v16 = [v13 identifier];
+  identifier = [typeCopy identifier];
 
-  v17 = [v12 bundleID];
+  bundleID = [clientCopy bundleID];
 
   [v18 isGranted];
   ACDLogAccessRequest();
 
-  v10[2](v10, v15 == 0, v15);
+  completionCopy[2](completionCopy, v15 == 0, v15);
 }
 
-- (void)revokeAccessToAccountsOfType:(id)a3 forClient:(id)a4 store:(id)a5 completion:(id)a6
+- (void)revokeAccessToAccountsOfType:(id)type forClient:(id)client store:(id)store completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  typeCopy = type;
+  clientCopy = client;
+  completionCopy = completion;
+  storeCopy = store;
   v13 = _ACDLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    sub_29C7F9F30(v10, v9, v13);
+    sub_29C7F9F30(clientCopy, typeCopy, v13);
   }
 
-  v14 = [objc_alloc(MEMORY[0x29EDBDFF0]) initForClient:v10];
+  v14 = [objc_alloc(MEMORY[0x29EDBDFF0]) initForClient:clientCopy];
   [v14 setIsGranted:0];
-  v15 = [v12 authorizationManager];
+  authorizationManager = [storeCopy authorizationManager];
 
-  v16 = [v15 setAuthorization:v14 forClient:v10 onAccountType:v9];
+  v16 = [authorizationManager setAuthorization:v14 forClient:clientCopy onAccountType:typeCopy];
 
-  v17 = [v9 identifier];
-  v18 = [v10 bundleID];
+  identifier = [typeCopy identifier];
+  bundleID = [clientCopy bundleID];
   [v14 isGranted];
   ACDLogAccessRequest();
 
-  v11[2](v11, v16 == 0, v16);
+  completionCopy[2](completionCopy, v16 == 0, v16);
 }
 
-- (void)revokeAllAccessToAccountsOfType:(id)a3 store:(id)a4 withCompletion:(id)a5
+- (void)revokeAllAccessToAccountsOfType:(id)type store:(id)store withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
+  typeCopy = type;
+  completionCopy = completion;
+  storeCopy = store;
   v10 = _ACDLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    sub_29C7F9FDC(v7, v10);
+    sub_29C7F9FDC(typeCopy, v10);
   }
 
-  v11 = [v9 authorizationManager];
+  authorizationManager = [storeCopy authorizationManager];
 
-  v12 = [v11 removeAllClientAuthorizationsForAccountType:v7];
+  v12 = [authorizationManager removeAllClientAuthorizationsForAccountType:typeCopy];
 
-  v8[2](v8, v12 == 0, v12);
+  completionCopy[2](completionCopy, v12 == 0, v12);
 }
 
-- (BOOL)_shouldGrantClient:(id)a3 unrestrictedAccessToAccountType:(id)a4
+- (BOOL)_shouldGrantClient:(id)client unrestrictedAccessToAccountType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() _fullAccessEntitlementForAccountType:v6];
+  clientCopy = client;
+  typeCopy = type;
+  v7 = [objc_opt_class() _fullAccessEntitlementForAccountType:typeCopy];
 
   if (v7)
   {
-    v8 = [v5 hasEntitlement:v7];
+    v8 = [clientCopy hasEntitlement:v7];
   }
 
   else
@@ -285,15 +285,15 @@
   return v8;
 }
 
-- (BOOL)_shouldGrantClient:(id)a3 defaultAccessToAccountType:(id)a4
+- (BOOL)_shouldGrantClient:(id)client defaultAccessToAccountType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_opt_class() _defaultAccessEntitlementForAccountType:v6];
+  clientCopy = client;
+  typeCopy = type;
+  v7 = [objc_opt_class() _defaultAccessEntitlementForAccountType:typeCopy];
 
   if (v7)
   {
-    v8 = [v5 hasEntitlement:v7];
+    v8 = [clientCopy hasEntitlement:v7];
   }
 
   else
@@ -304,11 +304,11 @@
   return v8;
 }
 
-+ (BOOL)_accessAlertFormerlySupportedByAccountType:(id)a3
++ (BOOL)_accessAlertFormerlySupportedByAccountType:(id)type
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v4 isEqual:*MEMORY[0x29EDB82B0]];
+  typeCopy = type;
+  identifier = [typeCopy identifier];
+  v5 = [identifier isEqual:*MEMORY[0x29EDB82B0]];
 
   if (v5)
   {
@@ -317,17 +317,17 @@
 
   else
   {
-    v7 = [v3 identifier];
-    v6 = [v7 isEqual:*MEMORY[0x29EDB8290]];
+    identifier2 = [typeCopy identifier];
+    v6 = [identifier2 isEqual:*MEMORY[0x29EDB8290]];
   }
 
   return v6;
 }
 
-+ (id)_fullAccessEntitlementForAccountType:(id)a3
++ (id)_fullAccessEntitlementForAccountType:(id)type
 {
-  v3 = [a3 identifier];
-  if ([v3 isEqual:*MEMORY[0x29EDB81D8]] & 1) != 0 || (objc_msgSend(v3, "isEqual:", *MEMORY[0x29EDB8218]) & 1) != 0 || (objc_msgSend(v3, "isEqual:", *MEMORY[0x29EDB8270]) & 1) != 0 || (objc_msgSend(v3, "isEqual:", *MEMORY[0x29EDB8230]) & 1) != 0 || (objc_msgSend(v3, "isEqual:", *MEMORY[0x29EDB82D8]) & 1) != 0 || (objc_msgSend(v3, "isEqual:", *MEMORY[0x29EDB81C8]))
+  identifier = [type identifier];
+  if ([identifier isEqual:*MEMORY[0x29EDB81D8]] & 1) != 0 || (objc_msgSend(identifier, "isEqual:", *MEMORY[0x29EDB8218]) & 1) != 0 || (objc_msgSend(identifier, "isEqual:", *MEMORY[0x29EDB8270]) & 1) != 0 || (objc_msgSend(identifier, "isEqual:", *MEMORY[0x29EDB8230]) & 1) != 0 || (objc_msgSend(identifier, "isEqual:", *MEMORY[0x29EDB82D8]) & 1) != 0 || (objc_msgSend(identifier, "isEqual:", *MEMORY[0x29EDB81C8]))
   {
     v4 = MEMORY[0x29EDB83E8];
 LABEL_8:
@@ -335,13 +335,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ([v3 isEqual:*MEMORY[0x29EDB81D0]])
+  if ([identifier isEqual:*MEMORY[0x29EDB81D0]])
   {
     v4 = MEMORY[0x29EDB83F0];
     goto LABEL_8;
   }
 
-  if ([v3 isEqual:*MEMORY[0x29EDB8248]])
+  if ([identifier isEqual:*MEMORY[0x29EDB8248]])
   {
     v4 = MEMORY[0x29EDB83F8];
     goto LABEL_8;
@@ -353,25 +353,25 @@ LABEL_9:
   return v5;
 }
 
-- (void)_presentAccessAlertforClient:(id)a3 onAccountType:(id)a4 withHandler:(id)a5
+- (void)_presentAccessAlertforClient:(id)client onAccountType:(id)type withHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v21 = [a3 localizedAppName];
+  handlerCopy = handler;
+  typeCopy = type;
+  localizedAppName = [client localizedAppName];
   v9 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
   v20 = [v9 localizedStringForKey:@"ACCOUNT_ACCESS_MESSAGE" value:&stru_2A23C7778 table:@"Localizable"];
 
   v10 = MEMORY[0x29EDBA0F8];
-  v11 = [v8 accountTypeDescription];
+  accountTypeDescription = [typeCopy accountTypeDescription];
 
-  v12 = [v10 stringWithFormat:v20, v21, v11];
+  v12 = [v10 stringWithFormat:v20, localizedAppName, accountTypeDescription];
 
   v22[0] = MEMORY[0x29EDCA5F8];
   v22[1] = 3221225472;
   v22[2] = sub_29C7F9C88;
   v22[3] = &unk_29F324FC8;
-  v23 = v7;
-  v13 = v7;
+  v23 = handlerCopy;
+  v13 = handlerCopy;
   v14 = MEMORY[0x29ED442C0](v22);
   v15 = MEMORY[0x29EDBE008];
   v16 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];

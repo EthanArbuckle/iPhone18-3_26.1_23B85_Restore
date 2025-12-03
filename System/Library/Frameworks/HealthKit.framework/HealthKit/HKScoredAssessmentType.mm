@@ -1,19 +1,19 @@
 @interface HKScoredAssessmentType
 + (id)gad7Type;
 + (id)phq9Type;
-- (HKScoredAssessmentType)initWithIdentifier:(id)a3;
+- (HKScoredAssessmentType)initWithIdentifier:(id)identifier;
 @end
 
 @implementation HKScoredAssessmentType
 
-- (HKScoredAssessmentType)initWithIdentifier:(id)a3
+- (HKScoredAssessmentType)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [HKObjectType scoredAssessmentTypeForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [HKObjectType scoredAssessmentTypeForIdentifier:identifierCopy];
 
   if (!v5)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid %@ identifier %@", objc_opt_class(), v4}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid %@ identifier %@", objc_opt_class(), identifierCopy}];
   }
 
   return v5;

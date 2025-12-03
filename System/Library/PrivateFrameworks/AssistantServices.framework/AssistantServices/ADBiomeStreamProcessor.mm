@@ -1,22 +1,22 @@
 @interface ADBiomeStreamProcessor
-+ (id)processorForBMSiriHomeSeed:(id)a3 homeId:(id)a4 account:(id)a5;
-+ (id)processorForBMSiriHomeSeed:(id)a3 homeId:(id)a4 userId:(id)a5;
-+ (id)processorForBMSiriUserAggregationId:(id)a3 userId:(id)a4;
-+ (id)processorForBMSiriUserSeed:(id)a3 userId:(id)a4;
-- (ADBiomeStreamProcessor)initWithStream:(id)a3 fromBM:(id)a4 toBM:(id)a5 time:(id)a6 account:(id)a7 homeId:(id)a8 remoteDeviceTypes:(unint64_t)a9;
-- (ADBiomeStreamProcessor)initWithStream:(id)a3 fromBM:(id)a4 toBM:(id)a5 time:(id)a6 userId:(id)a7 homeId:(id)a8 remoteDeviceTypes:(unint64_t)a9;
-- (id)_merge:(id)a3 with:(id)a4;
-- (id)_mergeRemotes:(id)a3;
-- (id)_processPerDeviceEvents:(id)a3;
++ (id)processorForBMSiriHomeSeed:(id)seed homeId:(id)id account:(id)account;
++ (id)processorForBMSiriHomeSeed:(id)seed homeId:(id)id userId:(id)userId;
++ (id)processorForBMSiriUserAggregationId:(id)id userId:(id)userId;
++ (id)processorForBMSiriUserSeed:(id)seed userId:(id)id;
+- (ADBiomeStreamProcessor)initWithStream:(id)stream fromBM:(id)m toBM:(id)bM time:(id)time account:(id)account homeId:(id)id remoteDeviceTypes:(unint64_t)types;
+- (ADBiomeStreamProcessor)initWithStream:(id)stream fromBM:(id)m toBM:(id)bM time:(id)time userId:(id)id homeId:(id)homeId remoteDeviceTypes:(unint64_t)types;
+- (id)_merge:(id)_merge with:(id)with;
+- (id)_mergeRemotes:(id)remotes;
+- (id)_processPerDeviceEvents:(id)events;
 - (id)fetchIdItemPair;
 - (id)fetchLocalIdItemPair;
 @end
 
 @implementation ADBiomeStreamProcessor
 
-- (id)_processPerDeviceEvents:(id)a3
+- (id)_processPerDeviceEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v26[0] = 0;
   v26[1] = v26;
   v26[2] = 0x2020000000;
@@ -43,7 +43,7 @@
   v17[3] = &unk_100515AB8;
   v17[4] = self;
   v17[5] = v26;
-  v5 = [v4 filterWithIsIncluded:v17];
+  v5 = [eventsCopy filterWithIsIncluded:v17];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1001C9440;
@@ -89,9 +89,9 @@
   return v10;
 }
 
-- (id)_mergeRemotes:(id)a3
+- (id)_mergeRemotes:(id)remotes
 {
-  v4 = a3;
+  remotesCopy = remotes;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -102,7 +102,7 @@
   v11[1] = v11;
   v11[2] = 0x2020000000;
   v12 = 0;
-  v5 = [v4 merge];
+  merge = [remotesCopy merge];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001C9888;
@@ -115,7 +115,7 @@
   v9[5] = v11;
   v9[6] = &v13;
   v9[4] = self;
-  v6 = [v5 sinkWithCompletion:v10 receiveInput:v9];
+  v6 = [merge sinkWithCompletion:v10 receiveInput:v9];
 
   v7 = v14[5];
   _Block_object_dispose(v11, 8);
@@ -124,23 +124,23 @@
   return v7;
 }
 
-- (id)_merge:(id)a3 with:(id)a4
+- (id)_merge:(id)_merge with:(id)with
 {
-  v5 = a3;
-  v6 = a4;
+  _mergeCopy = _merge;
+  withCopy = with;
   v7 = +[ADAnalyticsIdentifiersUtils logger];
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v5)
+  if (_mergeCopy)
   {
     if (v8)
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = withCopy;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Attempting to merge %@", &v12, 0xCu);
     }
 
-    v9 = [v5 selectEarliest:v6];
-    if (v9 != v5)
+    v9 = [_mergeCopy selectEarliest:withCopy];
+    if (v9 != _mergeCopy)
     {
       v10 = +[ADAnalyticsIdentifiersUtils logger];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -157,11 +157,11 @@
     if (v8)
     {
       v12 = 138412290;
-      v13 = v6;
+      v13 = withCopy;
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Starting merge with %@", &v12, 0xCu);
     }
 
-    v9 = v6;
+    v9 = withCopy;
   }
 
   return v9;
@@ -200,7 +200,7 @@
 
 - (id)fetchIdItemPair
 {
-  v3 = [(ADBiomeStreamProcessor *)self fetchLocalIdItemPair];
+  fetchLocalIdItemPair = [(ADBiomeStreamProcessor *)self fetchLocalIdItemPair];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_1001CA560;
@@ -215,8 +215,8 @@
     v8 = [(BMStream *)stream publishersForAccounts:v7 deviceTypes:self->_remoteDeviceTypes includeLocal:0 options:v5 useCase:@"PrivacyFriendlyAnalyticsIdentifiersProvider" pipeline:v4];
 
     v9 = [BMPublishers alloc];
-    v10 = [v8 publishers];
-    v11 = [v9 initWithPublishers:v10];
+    publishers = [v8 publishers];
+    v11 = [v9 initWithPublishers:publishers];
   }
 
   else
@@ -261,16 +261,16 @@
     }
 
     v18 = self->_stream;
-    v10 = [NSNumber numberWithUnsignedLongLong:10];
+    publishers = [NSNumber numberWithUnsignedLongLong:10];
     LOWORD(v36) = 1;
-    v11 = [(BMStream *)v18 publishersForDevices:v8 withUseCase:@"PrivacyFriendlyAnalyticsIdentifiersProvider" startTime:0 endTime:0 maxEvents:v10 lastN:0 reversed:v36 includeLocal:v4 pipeline:?];
+    v11 = [(BMStream *)v18 publishersForDevices:v8 withUseCase:@"PrivacyFriendlyAnalyticsIdentifiersProvider" startTime:0 endTime:0 maxEvents:publishers lastN:0 reversed:v36 includeLocal:v4 pipeline:?];
   }
 
   v19 = v11;
 
   v20 = [(ADBiomeStreamProcessor *)self _mergeRemotes:v19];
   v21 = v20;
-  if (!(v3 | v20))
+  if (!(fetchLocalIdItemPair | v20))
   {
     v22 = +[ADAnalyticsIdentifiersUtils logger];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
@@ -285,20 +285,20 @@
 
   if (v20)
   {
-    if (v3)
+    if (fetchLocalIdItemPair)
     {
-      v23 = [v3 adoptRemoteIfEarly:v20];
-      v24 = +[ADAnalyticsIdentifiersUtils logger];
-      v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG);
-      if (v23 == v3)
+      v23 = [fetchLocalIdItemPair adoptRemoteIfEarly:v20];
+      source = +[ADAnalyticsIdentifiersUtils logger];
+      v25 = os_log_type_enabled(source, OS_LOG_TYPE_DEBUG);
+      if (v23 == fetchLocalIdItemPair)
       {
         if (v25)
         {
           *buf = 138412546;
           v41 = v21;
           v42 = 2112;
-          v43 = v3;
-          _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Discarding remote: %@; keeping local: %@", buf, 0x16u);
+          v43 = fetchLocalIdItemPair;
+          _os_log_debug_impl(&_mh_execute_header, source, OS_LOG_TYPE_DEBUG, "Discarding remote: %@; keeping local: %@", buf, 0x16u);
         }
 
         goto LABEL_33;
@@ -307,10 +307,10 @@
       if (v25)
       {
         *buf = 138412546;
-        v41 = v3;
+        v41 = fetchLocalIdItemPair;
         v42 = 2112;
         v43 = v21;
-        _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "Discarding local: %@; keeping remote: %@", buf, 0x16u);
+        _os_log_debug_impl(&_mh_execute_header, source, OS_LOG_TYPE_DEBUG, "Discarding local: %@; keeping remote: %@", buf, 0x16u);
       }
     }
 
@@ -334,16 +334,16 @@
       _os_log_debug_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEBUG, "Publishing the selected entries", buf, 2u);
     }
 
-    v24 = [(BMStream *)self->_stream source];
+    source = [(BMStream *)self->_stream source];
     toBMMapper = self->_toBMMapper;
-    v30 = [(ADSynchronizedIdItemPair *)v23 current];
-    v31 = toBMMapper[2](toBMMapper, v30);
-    [v24 sendEvent:v31];
+    current = [(ADSynchronizedIdItemPair *)v23 current];
+    v31 = toBMMapper[2](toBMMapper, current);
+    [source sendEvent:v31];
 
     v32 = self->_toBMMapper;
-    v33 = [(ADSynchronizedIdItemPair *)v23 next];
-    v34 = v32[2](v32, v33);
-    [v24 sendEvent:v34];
+    next = [(ADSynchronizedIdItemPair *)v23 next];
+    v34 = v32[2](v32, next);
+    [source sendEvent:v34];
 
 LABEL_33:
     goto LABEL_34;
@@ -353,33 +353,33 @@ LABEL_33:
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v41 = v3;
+    v41 = fetchLocalIdItemPair;
     _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "Only local entry is present: %@", buf, 0xCu);
   }
 
-  v23 = v3;
+  v23 = fetchLocalIdItemPair;
 LABEL_34:
 
   return v23;
 }
 
-- (ADBiomeStreamProcessor)initWithStream:(id)a3 fromBM:(id)a4 toBM:(id)a5 time:(id)a6 account:(id)a7 homeId:(id)a8 remoteDeviceTypes:(unint64_t)a9
+- (ADBiomeStreamProcessor)initWithStream:(id)stream fromBM:(id)m toBM:(id)bM time:(id)time account:(id)account homeId:(id)id remoteDeviceTypes:(unint64_t)types
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v37 = a7;
-  v20 = a8;
+  streamCopy = stream;
+  mCopy = m;
+  bMCopy = bM;
+  timeCopy = time;
+  accountCopy = account;
+  idCopy = id;
   v21 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v42 = v16;
+    v42 = streamCopy;
     v43 = 2112;
-    v44 = v20;
+    v44 = idCopy;
     v45 = 2112;
-    v46 = v37;
+    v46 = accountCopy;
     _os_log_debug_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Initializing BiomeProcessor for stream:%@ homeId:%@ accountId:%@", buf, 0x20u);
   }
 
@@ -389,12 +389,12 @@ LABEL_34:
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_stream, a3);
-    v24 = objc_retainBlock(v17);
+    objc_storeStrong(&v22->_stream, stream);
+    v24 = objc_retainBlock(mCopy);
     fromBMMapper = v23->_fromBMMapper;
     v23->_fromBMMapper = v24;
 
-    v26 = objc_retainBlock(v18);
+    v26 = objc_retainBlock(bMCopy);
     toBMMapper = v23->_toBMMapper;
     v23->_toBMMapper = v26;
 
@@ -402,12 +402,12 @@ LABEL_34:
     calendar = v23->_calendar;
     v23->_calendar = v28;
 
-    v30 = [ADSynchronizedIdItem alignToMidnight:v19];
+    v30 = [ADSynchronizedIdItem alignToMidnight:timeCopy];
     today = v23->_today;
     v23->_today = v30;
 
-    objc_storeStrong(&v23->_accountId, a7);
-    objc_storeStrong(&v23->_homeId, a8);
+    objc_storeStrong(&v23->_accountId, account);
+    objc_storeStrong(&v23->_homeId, id);
     homeId = v23->_homeId;
     if (homeId)
     {
@@ -416,8 +416,8 @@ LABEL_34:
       v38[1] = 3221225472;
       v38[2] = sub_1001CA84C;
       v38[3] = &unk_1005159A8;
-      a7 = &v39;
-      v39 = v20;
+      account = &v39;
+      v39 = idCopy;
     }
 
     else
@@ -429,7 +429,7 @@ LABEL_34:
     homeFilter = v23->_homeFilter;
     v23->_homeFilter = v34;
 
-    v23->_remoteDeviceTypes = a9;
+    v23->_remoteDeviceTypes = types;
     if (homeId)
     {
     }
@@ -438,25 +438,25 @@ LABEL_34:
   return v23;
 }
 
-- (ADBiomeStreamProcessor)initWithStream:(id)a3 fromBM:(id)a4 toBM:(id)a5 time:(id)a6 userId:(id)a7 homeId:(id)a8 remoteDeviceTypes:(unint64_t)a9
+- (ADBiomeStreamProcessor)initWithStream:(id)stream fromBM:(id)m toBM:(id)bM time:(id)time userId:(id)id homeId:(id)homeId remoteDeviceTypes:(unint64_t)types
 {
-  v15 = a7;
-  v16 = a8;
-  v17 = a6;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
-  if (v15)
+  idCopy = id;
+  homeIdCopy = homeId;
+  timeCopy = time;
+  bMCopy = bM;
+  mCopy = m;
+  streamCopy = stream;
+  if (idCopy)
   {
-    v21 = [[BMAccount alloc] initWithAccountIdentifier:v15];
-    v22 = [(ADBiomeStreamProcessor *)self initWithStream:v20 fromBM:v19 toBM:v18 time:v17 account:v21 homeId:v16 remoteDeviceTypes:a9];
+    v21 = [[BMAccount alloc] initWithAccountIdentifier:idCopy];
+    v22 = [(ADBiomeStreamProcessor *)self initWithStream:streamCopy fromBM:mCopy toBM:bMCopy time:timeCopy account:v21 homeId:homeIdCopy remoteDeviceTypes:types];
 
     v23 = v22;
   }
 
   else
   {
-    v24 = [(ADBiomeStreamProcessor *)self initWithStream:v20 fromBM:v19 toBM:v18 time:v17 account:0 homeId:v16 remoteDeviceTypes:a9];
+    v24 = [(ADBiomeStreamProcessor *)self initWithStream:streamCopy fromBM:mCopy toBM:bMCopy time:timeCopy account:0 homeId:homeIdCopy remoteDeviceTypes:types];
 
     v23 = v24;
   }
@@ -464,18 +464,18 @@ LABEL_34:
   return v23;
 }
 
-+ (id)processorForBMSiriHomeSeed:(id)a3 homeId:(id)a4 account:(id)a5
++ (id)processorForBMSiriHomeSeed:(id)seed homeId:(id)id account:(id)account
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  idCopy = id;
+  accountCopy = account;
+  seedCopy = seed;
   v10 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v26 = v7;
+    v26 = idCopy;
     v27 = 2112;
-    v28 = v8;
+    v28 = accountCopy;
     _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Initializing HomeSeed BiomeStreamProcessor for homeId:%@ account:%@", buf, 0x16u);
   }
 
@@ -483,88 +483,88 @@ LABEL_34:
   v21 = 3221225472;
   v22 = sub_1001CAC0C;
   v23 = &unk_100515980;
-  v24 = v7;
-  v11 = v7;
+  v24 = idCopy;
+  v11 = idCopy;
   v12 = objc_retainBlock(&v20);
   v13 = [ADBiomeStreamProcessor alloc];
   v14 = BiomeLibrary();
-  v15 = [v14 Siri];
-  v16 = [v15 AnalyticsIdentifiers];
-  v17 = [v16 HomeSeed];
-  v18 = [(ADBiomeStreamProcessor *)v13 initWithStream:v17 fromBM:&stru_100515958 toBM:v12 time:v9 account:v8 homeId:v11 remoteDeviceTypes:160, v20, v21, v22, v23];
+  siri = [v14 Siri];
+  analyticsIdentifiers = [siri AnalyticsIdentifiers];
+  homeSeed = [analyticsIdentifiers HomeSeed];
+  v18 = [(ADBiomeStreamProcessor *)v13 initWithStream:homeSeed fromBM:&stru_100515958 toBM:v12 time:seedCopy account:accountCopy homeId:v11 remoteDeviceTypes:160, v20, v21, v22, v23];
 
   return v18;
 }
 
-+ (id)processorForBMSiriHomeSeed:(id)a3 homeId:(id)a4 userId:(id)a5
++ (id)processorForBMSiriHomeSeed:(id)seed homeId:(id)id userId:(id)userId
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  seedCopy = seed;
+  idCopy = id;
+  userIdCopy = userId;
   v11 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138412546;
-    v16 = v9;
+    v16 = idCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = userIdCopy;
     _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Initializing HomeSeed BiomeStreamProcessor for homeId:%@ userId:%@", &v15, 0x16u);
   }
 
-  if (v10)
+  if (userIdCopy)
   {
-    v12 = [[BMAccount alloc] initWithAltDSID:v10];
-    v13 = [a1 processorForBMSiriHomeSeed:v8 homeId:v9 account:v12];
+    v12 = [[BMAccount alloc] initWithAltDSID:userIdCopy];
+    v13 = [self processorForBMSiriHomeSeed:seedCopy homeId:idCopy account:v12];
   }
 
   else
   {
-    v13 = [a1 processorForBMSiriHomeSeed:v8 homeId:v9 account:0];
+    v13 = [self processorForBMSiriHomeSeed:seedCopy homeId:idCopy account:0];
   }
 
   return v13;
 }
 
-+ (id)processorForBMSiriUserAggregationId:(id)a3 userId:(id)a4
++ (id)processorForBMSiriUserAggregationId:(id)id userId:(id)userId
 {
-  v5 = a4;
-  v6 = a3;
+  userIdCopy = userId;
+  idCopy = id;
   v7 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = userIdCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Initializing UserAggregationId BiomeStreamProcessor for userId:%@", buf, 0xCu);
   }
 
   v8 = [ADBiomeStreamProcessor alloc];
   v9 = BiomeLibrary();
-  v10 = [v9 Siri];
-  v11 = [v10 AnalyticsIdentifiers];
-  v12 = [v11 UserAggregationId];
-  v13 = [(ADBiomeStreamProcessor *)v8 initWithStream:v12 fromBM:&stru_1005158D8 toBM:&stru_100515918 time:v6 userId:v5 homeId:0 remoteDeviceTypes:94];
+  siri = [v9 Siri];
+  analyticsIdentifiers = [siri AnalyticsIdentifiers];
+  userAggregationId = [analyticsIdentifiers UserAggregationId];
+  v13 = [(ADBiomeStreamProcessor *)v8 initWithStream:userAggregationId fromBM:&stru_1005158D8 toBM:&stru_100515918 time:idCopy userId:userIdCopy homeId:0 remoteDeviceTypes:94];
 
   return v13;
 }
 
-+ (id)processorForBMSiriUserSeed:(id)a3 userId:(id)a4
++ (id)processorForBMSiriUserSeed:(id)seed userId:(id)id
 {
-  v5 = a4;
-  v6 = a3;
+  idCopy = id;
+  seedCopy = seed;
   v7 = +[ADAnalyticsIdentifiersUtils logger];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v16 = v5;
+    v16 = idCopy;
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Initializing UserSeed BiomeStreamProcessor for userId:%@", buf, 0xCu);
   }
 
   v8 = [ADBiomeStreamProcessor alloc];
   v9 = BiomeLibrary();
-  v10 = [v9 Siri];
-  v11 = [v10 AnalyticsIdentifiers];
-  v12 = [v11 UserSeed];
-  v13 = [(ADBiomeStreamProcessor *)v8 initWithStream:v12 fromBM:&stru_100515858 toBM:&stru_100515898 time:v6 userId:v5 homeId:0 remoteDeviceTypes:94];
+  siri = [v9 Siri];
+  analyticsIdentifiers = [siri AnalyticsIdentifiers];
+  userSeed = [analyticsIdentifiers UserSeed];
+  v13 = [(ADBiomeStreamProcessor *)v8 initWithStream:userSeed fromBM:&stru_100515858 toBM:&stru_100515898 time:seedCopy userId:idCopy homeId:0 remoteDeviceTypes:94];
 
   return v13;
 }

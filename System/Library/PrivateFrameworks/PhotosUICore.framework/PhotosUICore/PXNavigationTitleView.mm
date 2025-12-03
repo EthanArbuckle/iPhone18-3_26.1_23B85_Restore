@@ -1,24 +1,24 @@
 @interface PXNavigationTitleView
-- (PXNavigationTitleView)initWithFrame:(CGRect)a3;
+- (PXNavigationTitleView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)margins;
 - (void)_setNeedsUpdate;
-- (void)_setSubtitleVisible:(BOOL)a3;
+- (void)_setSubtitleVisible:(BOOL)visible;
 - (void)_updateConstraintsIfNeeded;
 - (void)_updateFontsIfNeeded;
 - (void)_updateIfNeeded;
 - (void)_updateSizeIfNeeded;
 - (void)_updateTextsIfNeeded;
-- (void)performChanges:(id)a3;
-- (void)setMargins:(UIEdgeInsets)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleFont:(id)a3;
-- (void)setSubtitleTextColor:(id)a3;
-- (void)setSubviewsAlpha:(double)a3;
-- (void)setTextAlignment:(int64_t)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleTextColor:(id)a3;
-- (void)setVerticalSizeClass:(int64_t)a3;
+- (void)performChanges:(id)changes;
+- (void)setMargins:(UIEdgeInsets)margins;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleFont:(id)font;
+- (void)setSubtitleTextColor:(id)color;
+- (void)setSubviewsAlpha:(double)alpha;
+- (void)setTextAlignment:(int64_t)alignment;
+- (void)setTitle:(id)title;
+- (void)setTitleFont:(id)font;
+- (void)setTitleTextColor:(id)color;
+- (void)setVerticalSizeClass:(int64_t)class;
 - (void)updateConstraints;
 @end
 
@@ -37,16 +37,16 @@
   return result;
 }
 
-- (void)setSubviewsAlpha:(double)a3
+- (void)setSubviewsAlpha:(double)alpha
 {
-  if (self->_subviewsAlpha != a3)
+  if (self->_subviewsAlpha != alpha)
   {
-    self->_subviewsAlpha = a3;
-    v5 = [(PXNavigationTitleView *)self _titleLabel];
-    [v5 setAlpha:a3];
+    self->_subviewsAlpha = alpha;
+    _titleLabel = [(PXNavigationTitleView *)self _titleLabel];
+    [_titleLabel setAlpha:alpha];
 
-    v6 = [(PXNavigationTitleView *)self _subtitleLabel];
-    [v6 setAlpha:a3];
+    _subtitleLabel = [(PXNavigationTitleView *)self _subtitleLabel];
+    [_subtitleLabel setAlpha:alpha];
   }
 }
 
@@ -57,15 +57,15 @@
     self->_needsUpdateFlags.size = 0;
     v4 = MEMORY[0x1E695F060];
     v5 = *(MEMORY[0x1E695F060] + 8);
-    v6 = [(PXNavigationTitleView *)self _titleLabel];
+    _titleLabel = [(PXNavigationTitleView *)self _titleLabel];
     v7 = *v4;
-    [v6 sizeThatFits:{*v4, v5}];
+    [_titleLabel sizeThatFits:{*v4, v5}];
     v9 = v8;
 
     if ([(PXNavigationTitleView *)self _isSubtitleVisible])
     {
-      v10 = [(PXNavigationTitleView *)self _subtitleLabel];
-      [v10 sizeThatFits:{v7, v5}];
+      _subtitleLabel = [(PXNavigationTitleView *)self _subtitleLabel];
+      [_subtitleLabel sizeThatFits:{v7, v5}];
       v12 = v11;
 
       if (v9 < v12)
@@ -74,8 +74,8 @@
       }
     }
 
-    v13 = [(PXNavigationTitleView *)self verticalSizeClass];
-    if (v13 == 1)
+    verticalSizeClass = [(PXNavigationTitleView *)self verticalSizeClass];
+    if (verticalSizeClass == 1)
     {
       if ([(PXNavigationTitleView *)self _isSubtitleVisible])
       {
@@ -88,7 +88,7 @@
       }
     }
 
-    else if (v13)
+    else if (verticalSizeClass)
     {
       v14 = v5;
     }
@@ -99,8 +99,8 @@
     }
 
     [(PXNavigationTitleView *)self setBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v9, v14];
-    v15 = [(PXNavigationTitleView *)self superview];
-    [v15 setNeedsLayout];
+    superview = [(PXNavigationTitleView *)self superview];
+    [superview setNeedsLayout];
   }
 }
 
@@ -109,9 +109,9 @@
   if (self->_needsUpdateFlags.constraints)
   {
     self->_needsUpdateFlags.constraints = 0;
-    v4 = [(PXNavigationTitleView *)self _constraints];
-    [MEMORY[0x1E696ACD8] deactivateConstraints:v4];
-    [(PXNavigationTitleView *)self removeConstraints:v4];
+    _constraints = [(PXNavigationTitleView *)self _constraints];
+    [MEMORY[0x1E696ACD8] deactivateConstraints:_constraints];
+    [(PXNavigationTitleView *)self removeConstraints:_constraints];
     [(PXNavigationTitleView *)self _setConstraints:0];
     [(PXNavigationTitleView *)self setNeedsUpdateConstraints];
   }
@@ -132,13 +132,13 @@
     aBlock[3] = &unk_1E7731218;
     aBlock[4] = &v9;
     v3 = _Block_copy(aBlock);
-    v4 = [(PXNavigationTitleView *)self _titleLabel];
-    v5 = [(PXNavigationTitleView *)self titleFont];
-    v3[2](v3, v4, v5);
+    _titleLabel = [(PXNavigationTitleView *)self _titleLabel];
+    titleFont = [(PXNavigationTitleView *)self titleFont];
+    v3[2](v3, _titleLabel, titleFont);
 
-    v6 = [(PXNavigationTitleView *)self _subtitleLabel];
-    v7 = [(PXNavigationTitleView *)self subtitleFont];
-    v3[2](v3, v6, v7);
+    _subtitleLabel = [(PXNavigationTitleView *)self _subtitleLabel];
+    subtitleFont = [(PXNavigationTitleView *)self subtitleFont];
+    v3[2](v3, _subtitleLabel, subtitleFont);
 
     if (*(v10 + 24) == 1)
     {
@@ -176,20 +176,20 @@ void __45__PXNavigationTitleView__updateFontsIfNeeded__block_invoke(uint64_t a1,
   if (self->_needsUpdateFlags.texts)
   {
     self->_needsUpdateFlags.texts = 0;
-    v3 = [(PXNavigationTitleView *)self _isSubtitleVisible];
-    v4 = [(PXNavigationTitleView *)self title];
-    v5 = [(PXNavigationTitleView *)self subtitle];
+    _isSubtitleVisible = [(PXNavigationTitleView *)self _isSubtitleVisible];
+    title = [(PXNavigationTitleView *)self title];
+    subtitle = [(PXNavigationTitleView *)self subtitle];
     if ([(PXNavigationTitleView *)self verticalSizeClass]== 1)
     {
 
-      v5 = 0;
+      subtitle = 0;
     }
 
-    v6 = [(PXNavigationTitleView *)self titleFont];
-    v7 = __45__PXNavigationTitleView__updateTextsIfNeeded__block_invoke(v4, v6);
+    titleFont = [(PXNavigationTitleView *)self titleFont];
+    v7 = __45__PXNavigationTitleView__updateTextsIfNeeded__block_invoke(title, titleFont);
 
-    v8 = [(PXNavigationTitleView *)self subtitleFont];
-    v9 = __45__PXNavigationTitleView__updateTextsIfNeeded__block_invoke(v5, v8);
+    subtitleFont = [(PXNavigationTitleView *)self subtitleFont];
+    v9 = __45__PXNavigationTitleView__updateTextsIfNeeded__block_invoke(subtitle, subtitleFont);
     v14 = 0;
     v15 = &v14;
     v16 = 0x2020000000;
@@ -200,14 +200,14 @@ void __45__PXNavigationTitleView__updateFontsIfNeeded__block_invoke(uint64_t a1,
     aBlock[3] = &unk_1E77311F0;
     aBlock[4] = &v14;
     v10 = _Block_copy(aBlock);
-    v11 = [(PXNavigationTitleView *)self _titleLabel];
-    v10[2](v10, v11, v7);
+    _titleLabel = [(PXNavigationTitleView *)self _titleLabel];
+    v10[2](v10, _titleLabel, v7);
 
-    v12 = [(PXNavigationTitleView *)self _subtitleLabel];
-    v10[2](v10, v12, v9);
+    _subtitleLabel = [(PXNavigationTitleView *)self _subtitleLabel];
+    v10[2](v10, _subtitleLabel, v9);
 
     -[PXNavigationTitleView _setSubtitleVisible:](self, "_setSubtitleVisible:", [v9 length] != 0);
-    if (v3 != [(PXNavigationTitleView *)self _isSubtitleVisible])
+    if (_isSubtitleVisible != [(PXNavigationTitleView *)self _isSubtitleVisible])
     {
       [(PXNavigationTitleView *)self _invalidateConstraints];
     }
@@ -280,8 +280,8 @@ void __45__PXNavigationTitleView__updateTextsIfNeeded__block_invoke_2(uint64_t a
 {
   if (!self->_isPerformingChanges && !self->_isPerformingUpdates)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXNavigationTitleView.m" lineNumber:263 description:@"not inside -performChanges: or _updateIfNeeded"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationTitleView.m" lineNumber:263 description:@"not inside -performChanges: or _updateIfNeeded"];
   }
 }
 
@@ -298,21 +298,21 @@ void __45__PXNavigationTitleView__updateTextsIfNeeded__block_invoke_2(uint64_t a
     self->_isPerformingUpdates = isPerformingUpdates;
     if ([(PXNavigationTitleView *)self _needsUpdate])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PXNavigationTitleView.m" lineNumber:259 description:@"update still needed after update pass"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationTitleView.m" lineNumber:259 description:@"update still needed after update pass"];
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v5 = a3;
-  v8 = v5;
-  if (v5)
+  changesCopy = changes;
+  v8 = changesCopy;
+  if (changesCopy)
   {
     isPerformingChanges = self->_isPerformingChanges;
     self->_isPerformingChanges = 1;
-    (*(v5 + 2))();
+    (*(changesCopy + 2))();
     self->_isPerformingChanges = isPerformingChanges;
     if (isPerformingChanges)
     {
@@ -322,8 +322,8 @@ void __45__PXNavigationTitleView__updateTextsIfNeeded__block_invoke_2(uint64_t a
     goto LABEL_3;
   }
 
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXNavigationTitleView.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"nil != changeBlock"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXNavigationTitleView.m" lineNumber:221 description:{@"Invalid parameter not satisfying: %@", @"nil != changeBlock"}];
 
   if (!self->_isPerformingChanges)
   {
@@ -334,124 +334,124 @@ LABEL_3:
 LABEL_4:
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if (self->_textAlignment != a3)
+  if (self->_textAlignment != alignment)
   {
-    self->_textAlignment = a3;
-    v6 = [(PXNavigationTitleView *)self _titleLabel];
-    [v6 setTextAlignment:a3];
+    self->_textAlignment = alignment;
+    _titleLabel = [(PXNavigationTitleView *)self _titleLabel];
+    [_titleLabel setTextAlignment:alignment];
 
-    v7 = [(PXNavigationTitleView *)self _subtitleLabel];
-    [v7 setTextAlignment:a3];
+    _subtitleLabel = [(PXNavigationTitleView *)self _subtitleLabel];
+    [_subtitleLabel setTextAlignment:alignment];
   }
 }
 
-- (void)setSubtitleFont:(id)a3
+- (void)setSubtitleFont:(id)font
 {
-  v5 = a3;
-  if (self->_subtitleFont != v5)
+  fontCopy = font;
+  if (self->_subtitleFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_subtitleFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_subtitleFont, font);
     [(PXNavigationTitleView *)self _invalidateFonts];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v5 = a3;
-  if (self->_titleFont != v5)
+  fontCopy = font;
+  if (self->_titleFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titleFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_titleFont, font);
     [(PXNavigationTitleView *)self _invalidateFonts];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setSubtitleTextColor:(id)a3
+- (void)setSubtitleTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_subtitleTextColor != v5)
+  colorCopy = color;
+  if (self->_subtitleTextColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_subtitleTextColor, a3);
-    v6 = [(PXNavigationTitleView *)self _subtitleLabel];
-    [v6 setTextColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_subtitleTextColor, color);
+    _subtitleLabel = [(PXNavigationTitleView *)self _subtitleLabel];
+    [_subtitleLabel setTextColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setTitleTextColor:(id)a3
+- (void)setTitleTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_titleTextColor != v5)
+  colorCopy = color;
+  if (self->_titleTextColor != colorCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_titleTextColor, a3);
-    v6 = [(PXNavigationTitleView *)self _titleLabel];
-    [v6 setTextColor:v7];
+    v7 = colorCopy;
+    objc_storeStrong(&self->_titleTextColor, color);
+    _titleLabel = [(PXNavigationTitleView *)self _titleLabel];
+    [_titleLabel setTextColor:v7];
 
-    v5 = v7;
+    colorCopy = v7;
   }
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v5 = a3;
-  if (self->_subtitle != v5)
+  subtitleCopy = subtitle;
+  if (self->_subtitle != subtitleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_subtitle, a3);
+    v6 = subtitleCopy;
+    objc_storeStrong(&self->_subtitle, subtitle);
     [(PXNavigationTitleView *)self _invalidateTexts];
-    v5 = v6;
+    subtitleCopy = v6;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (self->_title != v5)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_title, a3);
+    v6 = titleCopy;
+    objc_storeStrong(&self->_title, title);
     [(PXNavigationTitleView *)self _invalidateTexts];
-    v5 = v6;
+    titleCopy = v6;
   }
 }
 
-- (void)setVerticalSizeClass:(int64_t)a3
+- (void)setVerticalSizeClass:(int64_t)class
 {
-  if (self->_verticalSizeClass != a3)
+  if (self->_verticalSizeClass != class)
   {
-    self->_verticalSizeClass = a3;
+    self->_verticalSizeClass = class;
     [(PXNavigationTitleView *)self _invalidateTexts];
 
     [(PXNavigationTitleView *)self _invalidateSize];
   }
 }
 
-- (void)_setSubtitleVisible:(BOOL)a3
+- (void)_setSubtitleVisible:(BOOL)visible
 {
-  if (self->__subtitleVisible != a3)
+  if (self->__subtitleVisible != visible)
   {
-    self->__subtitleVisible = a3;
+    self->__subtitleVisible = visible;
     [(PXNavigationTitleView *)self _invalidateConstraints];
   }
 }
 
-- (void)setMargins:(UIEdgeInsets)a3
+- (void)setMargins:(UIEdgeInsets)margins
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.left;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_margins.top), vceqq_f64(v4, *&self->_margins.bottom)))) & 1) == 0)
   {
-    self->_margins = a3;
+    self->_margins = margins;
     [(PXNavigationTitleView *)self _invalidateConstraints];
 
     [(PXNavigationTitleView *)self _invalidateSize];
@@ -461,16 +461,16 @@ LABEL_4:
 - (void)updateConstraints
 {
   v49[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PXNavigationTitleView *)self _constraints];
+  _constraints = [(PXNavigationTitleView *)self _constraints];
 
-  if (!v3)
+  if (!_constraints)
   {
     v48[0] = @"titleLabel";
-    v4 = [(PXNavigationTitleView *)self _titleLabel];
+    _titleLabel = [(PXNavigationTitleView *)self _titleLabel];
     v48[1] = @"subtitleLabel";
-    v49[0] = v4;
-    v5 = [(PXNavigationTitleView *)self _subtitleLabel];
-    v49[1] = v5;
+    v49[0] = _titleLabel;
+    _subtitleLabel = [(PXNavigationTitleView *)self _subtitleLabel];
+    v49[1] = _subtitleLabel;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v49 forKeys:v48 count:2];
 
     [(PXNavigationTitleView *)self margins];
@@ -492,61 +492,61 @@ LABEL_4:
     v47[3] = v18;
     v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v47 forKeys:v46 count:4];
 
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if ([(PXNavigationTitleView *)self _isSubtitleVisible])
     {
       v43 = v19;
-      v42 = [(UILabel *)self->__titleLabel centerXAnchor];
-      v41 = [(PXNavigationTitleView *)self centerXAnchor];
-      v40 = [v42 constraintEqualToAnchor:v41];
+      centerXAnchor = [(UILabel *)self->__titleLabel centerXAnchor];
+      centerXAnchor2 = [(PXNavigationTitleView *)self centerXAnchor];
+      v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v45[0] = v40;
-      v39 = [(UILabel *)self->__subtitleLabel centerXAnchor];
-      v38 = [(PXNavigationTitleView *)self centerXAnchor];
-      v37 = [v39 constraintEqualToAnchor:v38];
+      centerXAnchor3 = [(UILabel *)self->__subtitleLabel centerXAnchor];
+      centerXAnchor4 = [(PXNavigationTitleView *)self centerXAnchor];
+      v37 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
       v45[1] = v37;
-      v21 = [(PXNavigationTitleView *)self widthAnchor];
-      v22 = [(UILabel *)self->__titleLabel widthAnchor];
+      widthAnchor = [(PXNavigationTitleView *)self widthAnchor];
+      widthAnchor2 = [(UILabel *)self->__titleLabel widthAnchor];
       v23 = v10 + v14;
-      v24 = [v21 constraintGreaterThanOrEqualToAnchor:v22 constant:v23];
+      v24 = [widthAnchor constraintGreaterThanOrEqualToAnchor:widthAnchor2 constant:v23];
       v45[2] = v24;
-      v25 = [(PXNavigationTitleView *)self widthAnchor];
-      v26 = [(UILabel *)self->__subtitleLabel widthAnchor];
-      v27 = [v25 constraintGreaterThanOrEqualToAnchor:v26 constant:v23];
+      widthAnchor3 = [(PXNavigationTitleView *)self widthAnchor];
+      widthAnchor4 = [(UILabel *)self->__subtitleLabel widthAnchor];
+      v27 = [widthAnchor3 constraintGreaterThanOrEqualToAnchor:widthAnchor4 constant:v23];
       v45[3] = v27;
       v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v45 count:4];
-      [v20 addObjectsFromArray:v28];
+      [array addObjectsFromArray:v28];
 
       v19 = v43;
-      v29 = [(PXNavigationTitleView *)self widthAnchor];
-      v30 = [v29 constraintEqualToConstant:0.0];
+      widthAnchor5 = [(PXNavigationTitleView *)self widthAnchor];
+      _titleLabel2 = [widthAnchor5 constraintEqualToConstant:0.0];
 
       LODWORD(v31) = 1132068864;
-      [v30 setPriority:v31];
-      [v20 addObject:v30];
+      [_titleLabel2 setPriority:v31];
+      [array addObject:_titleLabel2];
       v32 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:|-(>=topMargin@747)-[titleLabel]" options:0 metrics:v43 views:v6];
-      [v20 addObjectsFromArray:v32];
+      [array addObjectsFromArray:v32];
 
       v33 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:[titleLabel]-[subtitleLabel]" options:0x80000 metrics:v43 views:v6];
-      [v20 addObjectsFromArray:v33];
+      [array addObjectsFromArray:v33];
 
       v34 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"V:[subtitleLabel]-(>=bottomMargin@749)-|" options:0 metrics:v43 views:v6];
-      [v20 addObjectsFromArray:v34];
+      [array addObjectsFromArray:v34];
     }
 
     else
     {
       v35 = [MEMORY[0x1E696ACD8] constraintsWithVisualFormat:@"H:|-(==leftMargin)-[titleLabel]-(==rightMargin)-|" options:0 metrics:v19 views:v6];
-      [v20 addObjectsFromArray:v35];
+      [array addObjectsFromArray:v35];
 
       v36 = MEMORY[0x1E696ACD8];
-      v30 = [(PXNavigationTitleView *)self _titleLabel];
-      v34 = [v36 constraintWithItem:v30 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
-      [v20 addObject:v34];
+      _titleLabel2 = [(PXNavigationTitleView *)self _titleLabel];
+      v34 = [v36 constraintWithItem:_titleLabel2 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+      [array addObject:v34];
     }
 
-    [MEMORY[0x1E696ACD8] activateConstraints:v20];
-    [(PXNavigationTitleView *)self addConstraints:v20];
-    [(PXNavigationTitleView *)self _setConstraints:v20];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
+    [(PXNavigationTitleView *)self addConstraints:array];
+    [(PXNavigationTitleView *)self _setConstraints:array];
   }
 
   v44.receiver = self;
@@ -554,11 +554,11 @@ LABEL_4:
   [(PXNavigationTitleView *)&v44 updateConstraints];
 }
 
-- (PXNavigationTitleView)initWithFrame:(CGRect)a3
+- (PXNavigationTitleView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = PXNavigationTitleView;
-  v3 = [(PXNavigationTitleView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXNavigationTitleView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

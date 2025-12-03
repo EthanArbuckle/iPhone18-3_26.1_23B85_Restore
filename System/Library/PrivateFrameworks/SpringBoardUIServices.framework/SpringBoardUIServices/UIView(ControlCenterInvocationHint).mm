@@ -6,11 +6,11 @@
 
 - (double)SBSUI_sourceRectForControlCenterInvocationHint
 {
-  v1 = a1;
-  v2 = [a1 window];
-  v3 = [v1 window];
-  [v3 bounds];
-  [v2 convertRect:v1 toView:?];
+  selfCopy = self;
+  window = [self window];
+  window2 = [selfCopy window];
+  [window2 bounds];
+  [window convertRect:selfCopy toView:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -43,8 +43,8 @@
 
   else
   {
-    v1 = [MEMORY[0x1E69DC938] currentDevice];
-    if (![v1 userInterfaceIdiom] && SBFEffectiveHomeButtonType() == 2)
+    selfCopy = [MEMORY[0x1E69DC938] currentDevice];
+    if (![selfCopy userInterfaceIdiom] && SBFEffectiveHomeButtonType() == 2)
     {
 LABEL_9:
 
@@ -54,14 +54,14 @@ LABEL_9:
     v14 = 1;
   }
 
-  v15 = [MEMORY[0x1E69DC938] currentDevice];
-  v16 = [v15 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   if (v14)
   {
   }
 
-  if ((v16 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v24.origin.x = v5;
     v24.origin.y = v7;
@@ -77,12 +77,12 @@ LABEL_9:
   }
 
 LABEL_16:
-  v17 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   v18 = v5;
   v19 = v7;
   v20 = v9;
   v21 = v11;
-  if (v17 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     MinX = CGRectGetMinX(*&v18);
   }

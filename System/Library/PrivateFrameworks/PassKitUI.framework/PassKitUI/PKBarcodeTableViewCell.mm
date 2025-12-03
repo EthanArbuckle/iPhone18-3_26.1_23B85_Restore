@@ -1,30 +1,30 @@
 @interface PKBarcodeTableViewCell
-- (CGSize)_maxBarcodeHeaderSizeForViewWidth:(double)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKBarcodeTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)_maxBarcodeHeaderSizeForViewWidth:(double)width;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKBarcodeTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (unint64_t)displayedIndex;
 - (void)_computeMaxBarcodeSize;
-- (void)_pageControlChanged:(id)a3;
-- (void)_updateHeaderTextToBarcodeAtIndex:(unint64_t)a3;
+- (void)_pageControlChanged:(id)changed;
+- (void)_updateHeaderTextToBarcodeAtIndex:(unint64_t)index;
 - (void)_updatePageControlWithDisplayIndex;
-- (void)_updateScrollViewToIndex:(unint64_t)a3 animated:(BOOL)a4;
+- (void)_updateScrollViewToIndex:(unint64_t)index animated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setPass:(id)a3;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setPass:(id)pass;
 @end
 
 @implementation PKBarcodeTableViewCell
 
-- (PKBarcodeTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKBarcodeTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v29.receiver = self;
   v29.super_class = PKBarcodeTableViewCell;
-  v5 = [(PKBarcodeTableViewCell *)&v29 initWithStyle:0 reuseIdentifier:a4];
+  v5 = [(PKBarcodeTableViewCell *)&v29 initWithStyle:0 reuseIdentifier:identifier];
   v6 = v5;
   if (v5)
   {
-    v5->_barcodeStyle = a3;
+    v5->_barcodeStyle = style;
     v7 = objc_alloc(MEMORY[0x1E69DCEF8]);
     v8 = *MEMORY[0x1E695F058];
     v9 = *(MEMORY[0x1E695F058] + 8);
@@ -40,8 +40,8 @@
     [(UIScrollView *)v6->_pagingScrollView setScrollsToTop:0];
     [(UIScrollView *)v6->_pagingScrollView setClipsToBounds:0];
     [(UIScrollView *)v6->_pagingScrollView setPagingEnabled:1];
-    v14 = [(PKBarcodeTableViewCell *)v6 contentView];
-    [v14 addSubview:v6->_pagingScrollView];
+    contentView = [(PKBarcodeTableViewCell *)v6 contentView];
+    [contentView addSubview:v6->_pagingScrollView];
 
     v15 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v8, v9, v10, v11}];
     headerLabel = v6->_headerLabel;
@@ -52,13 +52,13 @@
     [(UILabel *)v17 setFont:v18];
 
     v19 = v6->_headerLabel;
-    v20 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v19 setTextColor:v20];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v19 setTextColor:labelColor];
 
     [(UILabel *)v6->_headerLabel setTextAlignment:1];
     [(UILabel *)v6->_headerLabel setNumberOfLines:0];
-    v21 = [(PKBarcodeTableViewCell *)v6 contentView];
-    [v21 addSubview:v6->_headerLabel];
+    contentView2 = [(PKBarcodeTableViewCell *)v6 contentView];
+    [contentView2 addSubview:v6->_headerLabel];
 
     v22 = [objc_alloc(MEMORY[0x1E69DCD10]) initWithFrame:{v8, v9, v10, v11}];
     pageControl = v6->_pageControl;
@@ -66,14 +66,14 @@
 
     [(UIPageControl *)v6->_pageControl addTarget:v6 action:sel__pageControlChanged_ forControlEvents:4096];
     [(UIPageControl *)v6->_pageControl setHidden:1];
-    v24 = [MEMORY[0x1E69DC888] labelColor];
-    [(UIPageControl *)v6->_pageControl setCurrentPageIndicatorTintColor:v24];
+    labelColor2 = [MEMORY[0x1E69DC888] labelColor];
+    [(UIPageControl *)v6->_pageControl setCurrentPageIndicatorTintColor:labelColor2];
     v25 = v6->_pageControl;
-    v26 = [v24 colorWithAlphaComponent:0.3];
+    v26 = [labelColor2 colorWithAlphaComponent:0.3];
     [(UIPageControl *)v25 setPageIndicatorTintColor:v26];
 
-    v27 = [(PKBarcodeTableViewCell *)v6 contentView];
-    [v27 addSubview:v6->_pageControl];
+    contentView3 = [(PKBarcodeTableViewCell *)v6 contentView];
+    [contentView3 addSubview:v6->_pageControl];
 
     [(PKBarcodeTableViewCell *)v6 setSelectionStyle:0];
   }
@@ -102,8 +102,8 @@
   v12 = v11;
   v13 = v4 * [(NSArray *)self->_barcodeStickerViews count];
   height = self->_maximumBarcodeSize.height;
-  v15 = [(UIScrollView *)self->_pagingScrollView isScrollAnimating];
-  if (v15)
+  isScrollAnimating = [(UIScrollView *)self->_pagingScrollView isScrollAnimating];
+  if (isScrollAnimating)
   {
     v16 = v10;
   }
@@ -113,7 +113,7 @@
     v16 = v13;
   }
 
-  if (v15)
+  if (isScrollAnimating)
   {
     v17 = v12;
   }
@@ -169,14 +169,14 @@ void __40__PKBarcodeTableViewCell_layoutSubviews__block_invoke(uint64_t a1, void
   [v4 setFrame:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKBarcodeTableViewCell *)self _maxBarcodeHeaderSizeForViewWidth:a3.width, a3.height];
+  width = fits.width;
+  [(PKBarcodeTableViewCell *)self _maxBarcodeHeaderSizeForViewWidth:fits.width, fits.height];
   v6 = v5;
-  v7 = [(UIPageControl *)self->_pageControl isHidden];
+  isHidden = [(UIPageControl *)self->_pageControl isHidden];
   v8 = 0.0;
-  if ((v7 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     [(UIPageControl *)self->_pageControl sizeThatFits:width, 1.79769313e308];
   }
@@ -188,11 +188,11 @@ void __40__PKBarcodeTableViewCell_layoutSubviews__block_invoke(uint64_t a1, void
   return result;
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_pass, a3);
+  passCopy = pass;
+  objc_storeStrong(&self->_pass, pass);
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -221,27 +221,27 @@ void __40__PKBarcodeTableViewCell_layoutSubviews__block_invoke(uint64_t a1, void
     while (v8);
   }
 
-  v11 = [(PKPass *)self->_pass barcodes];
+  barcodes = [(PKPass *)self->_pass barcodes];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __34__PKBarcodeTableViewCell_setPass___block_invoke;
   v24 = &unk_1E801C080;
-  v25 = v5;
-  v26 = self;
-  v12 = v5;
-  v13 = [v11 pk_arrayByApplyingBlock:&v21];
+  v25 = passCopy;
+  selfCopy = self;
+  v12 = passCopy;
+  v13 = [barcodes pk_arrayByApplyingBlock:&v21];
   barcodeStickerViews = self->_barcodeStickerViews;
   self->_barcodeStickerViews = v13;
 
   headerLabel = self->_headerLabel;
-  v16 = [v11 firstObject];
-  v17 = [v16 header];
-  [(UILabel *)headerLabel setText:v17];
+  firstObject = [barcodes firstObject];
+  header = [firstObject header];
+  [(UILabel *)headerLabel setText:header];
 
-  v18 = [v11 count];
+  v18 = [barcodes count];
   v19 = v18 > 1;
   v20 = v18 < 2;
-  -[UIPageControl setNumberOfPages:](self->_pageControl, "setNumberOfPages:", [v11 count]);
+  -[UIPageControl setNumberOfPages:](self->_pageControl, "setNumberOfPages:", [barcodes count]);
   [(UIPageControl *)self->_pageControl setHidden:v20];
   [(UIScrollView *)self->_pagingScrollView setScrollEnabled:v19];
   [(PKBarcodeTableViewCell *)self _computeMaxBarcodeSize];
@@ -309,19 +309,19 @@ PKBarcodeStickerView *__34__PKBarcodeTableViewCell_setPass___block_invoke(uint64
   self->_maximumBarcodeSize.height = v9;
 }
 
-- (CGSize)_maxBarcodeHeaderSizeForViewWidth:(double)a3
+- (CGSize)_maxBarcodeHeaderSizeForViewWidth:(double)width
 {
   v34[2] = *MEMORY[0x1E69E9840];
   v6 = *MEMORY[0x1E695F060];
   v5 = *(MEMORY[0x1E695F060] + 8);
-  v7 = [(UILabel *)self->_headerLabel font];
-  v8 = [(PKBarcodeTableViewCell *)self _shouldReverseLayoutDirection];
+  font = [(UILabel *)self->_headerLabel font];
+  _shouldReverseLayoutDirection = [(PKBarcodeTableViewCell *)self _shouldReverseLayoutDirection];
   v9 = *MEMORY[0x1E69DB648];
-  v34[0] = v7;
+  v34[0] = font;
   v10 = *MEMORY[0x1E69DB778];
   v33[0] = v9;
   v33[1] = v10;
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:_shouldReverseLayoutDirection];
   v32 = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
   v34[1] = v12;
@@ -347,9 +347,9 @@ PKBarcodeStickerView *__34__PKBarcodeTableViewCell_setPass___block_invoke(uint64
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v27 + 1) + 8 * v18) barcode];
-        v20 = [v19 header];
-        [v20 boundingRectWithSize:1 options:v13 attributes:0 context:{a3, 1.79769313e308}];
+        barcode = [*(*(&v27 + 1) + 8 * v18) barcode];
+        header = [barcode header];
+        [header boundingRectWithSize:1 options:v13 attributes:0 context:{width, 1.79769313e308}];
         v22 = v21;
         v24 = v23;
 
@@ -404,49 +404,49 @@ PKBarcodeStickerView *__34__PKBarcodeTableViewCell_setPass___block_invoke(uint64
   }
 }
 
-- (void)_updateScrollViewToIndex:(unint64_t)a3 animated:(BOOL)a4
+- (void)_updateScrollViewToIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = [(PKBarcodeTableViewCell *)self _shouldReverseLayoutDirection];
-  v8 = [(NSArray *)self->_barcodeStickerViews count]+ ~a3;
-  if (!v7)
+  animatedCopy = animated;
+  _shouldReverseLayoutDirection = [(PKBarcodeTableViewCell *)self _shouldReverseLayoutDirection];
+  indexCopy = [(NSArray *)self->_barcodeStickerViews count]+ ~index;
+  if (!_shouldReverseLayoutDirection)
   {
-    v8 = a3;
+    indexCopy = index;
   }
 
-  v9 = self->_pageWidth * v8;
+  v9 = self->_pageWidth * indexCopy;
   pagingScrollView = self->_pagingScrollView;
 
-  [(UIScrollView *)pagingScrollView setContentOffset:v4 animated:v9, 0.0];
+  [(UIScrollView *)pagingScrollView setContentOffset:animatedCopy animated:v9, 0.0];
 }
 
-- (void)_updateHeaderTextToBarcodeAtIndex:(unint64_t)a3
+- (void)_updateHeaderTextToBarcodeAtIndex:(unint64_t)index
 {
-  v5 = [(PKPass *)self->_pass barcodes];
-  v11 = [v5 objectAtIndex:a3];
+  barcodes = [(PKPass *)self->_pass barcodes];
+  v11 = [barcodes objectAtIndex:index];
 
   headerLabel = self->_headerLabel;
-  v7 = [v11 header];
-  [(UILabel *)headerLabel setText:v7];
+  header = [v11 header];
+  [(UILabel *)headerLabel setText:header];
 
-  v8 = [MEMORY[0x1E6979538] animation];
+  animation = [MEMORY[0x1E6979538] animation];
   v9 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-  [v8 setTimingFunction:v9];
+  [animation setTimingFunction:v9];
 
-  [v8 setType:*MEMORY[0x1E697A030]];
-  [v8 setDuration:0.25];
-  v10 = [(UILabel *)self->_headerLabel layer];
-  [v10 addAnimation:v8 forKey:@"kCATransitionFade"];
+  [animation setType:*MEMORY[0x1E697A030]];
+  [animation setDuration:0.25];
+  layer = [(UILabel *)self->_headerLabel layer];
+  [layer addAnimation:animation forKey:@"kCATransitionFade"];
 }
 
-- (void)_pageControlChanged:(id)a3
+- (void)_pageControlChanged:(id)changed
 {
-  v4 = [(PKBarcodeTableViewCell *)self displayedIndex];
-  v5 = [(UIPageControl *)self->_pageControl currentPage];
-  if (v4 != v5)
+  displayedIndex = [(PKBarcodeTableViewCell *)self displayedIndex];
+  currentPage = [(UIPageControl *)self->_pageControl currentPage];
+  if (displayedIndex != currentPage)
   {
-    v6 = v5;
-    [(PKBarcodeTableViewCell *)self _updateHeaderTextToBarcodeAtIndex:v5];
+    v6 = currentPage;
+    [(PKBarcodeTableViewCell *)self _updateHeaderTextToBarcodeAtIndex:currentPage];
 
     [(PKBarcodeTableViewCell *)self _updateScrollViewToIndex:v6 animated:1];
   }
@@ -454,28 +454,28 @@ PKBarcodeStickerView *__34__PKBarcodeTableViewCell_setPass___block_invoke(uint64
 
 - (void)_updatePageControlWithDisplayIndex
 {
-  v3 = [(PKBarcodeTableViewCell *)self displayedIndex];
-  if (v3 != [(UIPageControl *)self->_pageControl currentPage])
+  displayedIndex = [(PKBarcodeTableViewCell *)self displayedIndex];
+  if (displayedIndex != [(UIPageControl *)self->_pageControl currentPage])
   {
-    [(PKBarcodeTableViewCell *)self _updateHeaderTextToBarcodeAtIndex:v3];
-    [(UIPageControl *)self->_pageControl setCurrentPage:v3];
+    [(PKBarcodeTableViewCell *)self _updateHeaderTextToBarcodeAtIndex:displayedIndex];
+    [(UIPageControl *)self->_pageControl setCurrentPage:displayedIndex];
 
     [(PKBarcodeTableViewCell *)self setNeedsLayout];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  if (([a3 isScrollAnimating] & 1) == 0)
+  if (([scroll isScrollAnimating] & 1) == 0)
   {
 
     [(PKBarcodeTableViewCell *)self _updatePageControlWithDisplayIndex];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(PKBarcodeTableViewCell *)self _updatePageControlWithDisplayIndex];
   }

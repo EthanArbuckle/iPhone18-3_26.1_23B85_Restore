@@ -3,10 +3,10 @@
 - (SSVSubscriptionEntitlementsCoordinator)init;
 - (id)_cachedSubscriptionEntitlements;
 - (id)_connection;
-- (id)_loadSubscriptionEntitlementsIgnoreCaches:(BOOL)a3 error:(id *)a4;
-- (void)_setCachedSubscriptionEntitlements:(id)a3;
+- (id)_loadSubscriptionEntitlementsIgnoreCaches:(BOOL)caches error:(id *)error;
+- (void)_setCachedSubscriptionEntitlements:(id)entitlements;
 - (void)dealloc;
-- (void)getSubscriptionEntitlementsIgnoreCaches:(BOOL)a3 entitlementsBlock:(id)a4;
+- (void)getSubscriptionEntitlementsIgnoreCaches:(BOOL)caches entitlementsBlock:(id)block;
 @end
 
 @implementation SSVSubscriptionEntitlementsCoordinator
@@ -44,7 +44,7 @@
   block[1] = 3221225472;
   block[2] = __59__SSVSubscriptionEntitlementsCoordinator_sharedCoordinator__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sOnce_0 != -1)
   {
     dispatch_once(&sOnce_0, block);
@@ -62,18 +62,18 @@ void __59__SSVSubscriptionEntitlementsCoordinator_sharedCoordinator__block_invok
   sCoordinator_0 = v1;
 }
 
-- (void)getSubscriptionEntitlementsIgnoreCaches:(BOOL)a3 entitlementsBlock:(id)a4
+- (void)getSubscriptionEntitlementsIgnoreCaches:(BOOL)caches entitlementsBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __100__SSVSubscriptionEntitlementsCoordinator_getSubscriptionEntitlementsIgnoreCaches_entitlementsBlock___block_invoke;
   block[3] = &unk_1E84AD758;
-  v11 = a3;
+  cachesCopy = caches;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = blockCopy;
+  v8 = blockCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -161,10 +161,10 @@ LABEL_17:
 
 - (id)_cachedSubscriptionEntitlements
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_cachedEntitlements;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_cachedEntitlements;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -184,7 +184,7 @@ LABEL_17:
   return connection;
 }
 
-- (id)_loadSubscriptionEntitlementsIgnoreCaches:(BOOL)a3 error:(id *)a4
+- (id)_loadSubscriptionEntitlementsIgnoreCaches:(BOOL)caches error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
   if (SSIsInternalBuild() && _os_feature_enabled_impl())
@@ -195,19 +195,19 @@ LABEL_17:
       v7 = +[SSLogConfig sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
+    shouldLog = [v7 shouldLog];
     if ([v7 shouldLogToDisk])
     {
-      v9 = v8 | 2;
+      v9 = shouldLog | 2;
     }
 
     else
     {
-      v9 = v8;
+      v9 = shouldLog;
     }
 
-    v10 = [v7 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
+    oSLogObject = [v7 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_FAULT))
     {
       v11 = v9;
     }
@@ -239,7 +239,7 @@ LABEL_17:
 
   v20 = xpc_dictionary_create(0, 0, 0);
   xpc_dictionary_set_int64(v20, "0", 150);
-  xpc_dictionary_set_BOOL(v20, "1", a3);
+  xpc_dictionary_set_BOOL(v20, "1", caches);
   *&v32 = 0;
   *(&v32 + 1) = &v32;
   v33 = 0x3032000000;
@@ -252,18 +252,18 @@ LABEL_17:
   v29 = __Block_byref_object_copy__84;
   v30 = __Block_byref_object_dispose__84;
   v31 = 0;
-  v21 = [(SSVSubscriptionEntitlementsCoordinator *)self _connection];
+  _connection = [(SSVSubscriptionEntitlementsCoordinator *)self _connection];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __90__SSVSubscriptionEntitlementsCoordinator__loadSubscriptionEntitlementsIgnoreCaches_error___block_invoke;
   v25[3] = &unk_1E84B3A88;
   v25[4] = &v32;
   v25[5] = &v26;
-  [v21 sendSynchronousMessage:v20 withReply:v25];
+  [_connection sendSynchronousMessage:v20 withReply:v25];
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(*(&v32 + 1) + 40);
+    *error = *(*(&v32 + 1) + 40);
   }
 
   v22 = v27[5];
@@ -312,17 +312,17 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)_setCachedSubscriptionEntitlements:(id)a3
+- (void)_setCachedSubscriptionEntitlements:(id)entitlements
 {
-  v6 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_cachedEntitlements != v6)
+  entitlementsCopy = entitlements;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_cachedEntitlements != entitlementsCopy)
   {
-    objc_storeStrong(&v5->_cachedEntitlements, a3);
+    objc_storeStrong(&selfCopy->_cachedEntitlements, entitlements);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 @end

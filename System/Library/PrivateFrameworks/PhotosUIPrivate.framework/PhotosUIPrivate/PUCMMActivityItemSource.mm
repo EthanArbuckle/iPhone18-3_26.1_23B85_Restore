@@ -1,16 +1,16 @@
 @interface PUCMMActivityItemSource
 - (PUActivityItemSourceController)itemSourceController;
-- (PUCMMActivityItemSource)initWithActivityItemSourceController:(id)a3;
+- (PUCMMActivityItemSource)initWithActivityItemSourceController:(id)controller;
 - (PUCMMActivityItemSourceDelegate)delegate;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerOperation:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
-- (id)placeholderItemsForActivityViewController:(id)a3;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerOperation:(id)operation;
+- (id)activityViewControllerPlaceholderItem:(id)item;
+- (id)placeholderItemsForActivityViewController:(id)controller;
 - (id)preparedItems;
-- (void)activityItemSourceOperation:(id)a3 prepareItemForActivityType:(id)a4;
+- (void)activityItemSourceOperation:(id)operation prepareItemForActivityType:(id)type;
 - (void)cancel;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setState:(unint64_t)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setState:(unint64_t)state;
 @end
 
 @implementation PUCMMActivityItemSource
@@ -29,17 +29,17 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PUCMMActivityItemSourceSourceControllerObserverContext == a5)
+  if ((change & 1) != 0 && PUCMMActivityItemSourceSourceControllerObserverContext == context)
   {
     v11[9] = v5;
     v11[10] = v6;
     WeakRetained = objc_loadWeakRetained(&self->_itemSourceController);
-    v9 = [WeakRetained state];
+    state = [WeakRetained state];
 
-    v10 = 2 * (v9 == 2);
-    if (v9 == 1)
+    v10 = 2 * (state == 2);
+    if (state == 1)
     {
       v10 = 1;
     }
@@ -53,10 +53,10 @@
   }
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     v5 = PLShareSheetGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -73,20 +73,20 @@
         v8 = off_1E7B78E78[state];
       }
 
-      if (a3 > 2)
+      if (state > 2)
       {
         v9 = @"unknown";
       }
 
       else
       {
-        v9 = off_1E7B78E78[a3];
+        v9 = off_1E7B78E78[state];
       }
 
       v11 = 138413058;
       v12 = v6;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = v8;
       v17 = 2114;
@@ -95,7 +95,7 @@
       _os_log_impl(&dword_1B36F3000, v5, OS_LOG_TYPE_DEFAULT, "<%@:%p>: PUCMMActivityItemSource changing state from %{public}@ to %{public}@", &v11, 0x2Au);
     }
 
-    self->_state = a3;
+    self->_state = state;
     [(PUCMMActivityItemSource *)self signalChange:1];
   }
 }
@@ -104,47 +104,47 @@
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUCMMActivityItemSource.m" lineNumber:231 description:@"expect main thread"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUCMMActivityItemSource.m" lineNumber:231 description:@"expect main thread"];
   }
 
-  v4 = [(PUCMMActivityItemSource *)self itemSourceController];
+  itemSourceController = [(PUCMMActivityItemSource *)self itemSourceController];
 
-  if (v4)
+  if (itemSourceController)
   {
-    v5 = [(PUCMMActivityItemSource *)self itemSourceController];
-    [v5 cancel];
+    itemSourceController2 = [(PUCMMActivityItemSource *)self itemSourceController];
+    [itemSourceController2 cancel];
   }
 
-  v6 = [(PUCMMActivityItemSource *)self preparationOperation];
+  preparationOperation = [(PUCMMActivityItemSource *)self preparationOperation];
 
-  if (v6)
+  if (preparationOperation)
   {
-    v7 = [(PUCMMActivityItemSource *)self preparationOperation];
-    [v7 pu_cancel];
+    preparationOperation2 = [(PUCMMActivityItemSource *)self preparationOperation];
+    [preparationOperation2 pu_cancel];
 
-    v10 = [(PUCMMActivityItemSource *)self preparationOperation];
-    v8 = [v10 semaphore];
-    dispatch_semaphore_signal(v8);
+    preparationOperation3 = [(PUCMMActivityItemSource *)self preparationOperation];
+    semaphore = [preparationOperation3 semaphore];
+    dispatch_semaphore_signal(semaphore);
   }
 }
 
-- (void)activityItemSourceOperation:(id)a3 prepareItemForActivityType:(id)a4
+- (void)activityItemSourceOperation:(id)operation prepareItemForActivityType:(id)type
 {
   v74 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  [(PUCMMActivityItemSource *)self setActivityType:v7];
+  operationCopy = operation;
+  typeCopy = type;
+  [(PUCMMActivityItemSource *)self setActivityType:typeCopy];
   WeakRetained = objc_loadWeakRetained(&self->_itemSourceController);
   v9 = dispatch_group_create();
   dispatch_group_enter(v9);
-  v10 = [(PUCMMActivityItemSource *)self externalIsolationQueue];
+  externalIsolationQueue = [(PUCMMActivityItemSource *)self externalIsolationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__PUCMMActivityItemSource_activityItemSourceOperation_prepareItemForActivityType___block_invoke;
   block[3] = &unk_1E7B80DD0;
   block[4] = self;
-  dispatch_sync(v10, block);
+  dispatch_sync(externalIsolationQueue, block);
 
   v61 = 0;
   v62 = &v61;
@@ -168,25 +168,25 @@
   v47[1] = v47;
   v47[2] = 0x2020000000;
   v48 = 0;
-  LODWORD(v10) = [PUActivityItemSourceConfiguration isMomentShareLinkSupportedByActivityType:v7];
+  LODWORD(externalIsolationQueue) = [PUActivityItemSourceConfiguration isMomentShareLinkSupportedByActivityType:typeCopy];
   [(PUCMMActivityItemSource *)self performChanges:&__block_literal_global_38457];
   [WeakRetained registerChangeObserver:self context:&PUCMMActivityItemSourceSourceControllerObserverContext];
   v40 = MEMORY[0x1E69E9820];
   v41 = 3221225472;
   v42 = __82__PUCMMActivityItemSource_activityItemSourceOperation_prepareItemForActivityType___block_invoke_2;
   v43 = &unk_1E7B7F350;
-  v44 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = typeCopy;
   v45 = v11;
-  v46 = v10;
+  v46 = externalIsolationQueue;
   px_dispatch_on_main_queue();
-  if (v10)
+  if (externalIsolationQueue)
   {
     v29 = MEMORY[0x1E69E9820];
     v30 = 3221225472;
     v31 = __82__PUCMMActivityItemSource_activityItemSourceOperation_prepareItemForActivityType___block_invoke_3;
     v32 = &unk_1E7B78DC0;
-    v33 = self;
+    selfCopy2 = self;
     v34 = WeakRetained;
     v35 = v11;
     v37 = &v61;
@@ -206,7 +206,7 @@
         *buf = 138412802;
         v69 = v13;
         v70 = 2048;
-        v71 = self;
+        selfCopy4 = self;
         v72 = 2114;
         v73 = v14;
         v15 = v13;
@@ -243,7 +243,7 @@ LABEL_8:
         *buf = 138412802;
         v69 = v16;
         v70 = 2048;
-        v71 = self;
+        selfCopy4 = self;
         v72 = 2114;
         v73 = v17;
         v18 = v16;
@@ -254,7 +254,7 @@ LABEL_8:
     }
   }
 
-  v19 = [(PUCMMActivityItemSource *)self externalIsolationQueue];
+  externalIsolationQueue2 = [(PUCMMActivityItemSource *)self externalIsolationQueue];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __82__PUCMMActivityItemSource_activityItemSourceOperation_prepareItemForActivityType___block_invoke_28;
@@ -264,7 +264,7 @@ LABEL_8:
   v22[6] = &v55;
   v22[7] = v47;
   v22[8] = &v49;
-  dispatch_sync(v19, v22);
+  dispatch_sync(externalIsolationQueue2, v22);
 
   [(PUCMMActivityItemSource *)self performChanges:&__block_literal_global_31];
   dispatch_group_enter(v9);
@@ -462,64 +462,64 @@ void __82__PUCMMActivityItemSource_activityItemSourceOperation_prepareItemForAct
   dispatch_group_leave(*(a1 + 56));
 }
 
-- (id)activityViewControllerOperation:(id)a3
+- (id)activityViewControllerOperation:(id)operation
 {
-  v4 = [a3 activity];
-  v5 = [v4 activityType];
-  v6 = [[PUActivityItemSourceOperation alloc] initWithDelegate:self activityType:v5];
+  activity = [operation activity];
+  activityType = [activity activityType];
+  v6 = [[PUActivityItemSourceOperation alloc] initWithDelegate:self activityType:activityType];
   [(PUCMMActivityItemSource *)self setPreparationOperation:v6];
 
   return v6;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v4 = [(PUCMMActivityItemSource *)self preparedItems:a3];
-  v5 = [v4 firstObject];
+  v4 = [(PUCMMActivityItemSource *)self preparedItems:controller];
+  firstObject = [v4 firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
-  v3 = [(PUCMMActivityItemSource *)self placeholderItemsForActivityViewController:a3];
-  v4 = [v3 firstObject];
+  v3 = [(PUCMMActivityItemSource *)self placeholderItemsForActivityViewController:item];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)preparedItems
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUCMMActivityItemSource *)self individuallyPreparedItems];
-  v4 = [v3 count];
+  individuallyPreparedItems = [(PUCMMActivityItemSource *)self individuallyPreparedItems];
+  v4 = [individuallyPreparedItems count];
 
   if (v4)
   {
-    v5 = [(PUCMMActivityItemSource *)self individuallyPreparedItems];
+    individuallyPreparedItems2 = [(PUCMMActivityItemSource *)self individuallyPreparedItems];
   }
 
   else
   {
-    v6 = [(PUCMMActivityItemSource *)self momentShareLink];
+    momentShareLink = [(PUCMMActivityItemSource *)self momentShareLink];
 
-    if (v6)
+    if (momentShareLink)
     {
-      v7 = [(PUCMMActivityItemSource *)self momentShareLink];
-      v9[0] = v7;
-      v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
+      momentShareLink2 = [(PUCMMActivityItemSource *)self momentShareLink];
+      v9[0] = momentShareLink2;
+      individuallyPreparedItems2 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
     }
 
     else
     {
-      v5 = MEMORY[0x1E695E0F0];
+      individuallyPreparedItems2 = MEMORY[0x1E695E0F0];
     }
   }
 
-  return v5;
+  return individuallyPreparedItems2;
 }
 
-- (id)placeholderItemsForActivityViewController:(id)a3
+- (id)placeholderItemsForActivityViewController:(id)controller
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DFF8] URLWithString:@"https://share.icloud.com/photos/"];
@@ -529,16 +529,16 @@ void __82__PUCMMActivityItemSource_activityItemSourceOperation_prepareItemForAct
   return v4;
 }
 
-- (PUCMMActivityItemSource)initWithActivityItemSourceController:(id)a3
+- (PUCMMActivityItemSource)initWithActivityItemSourceController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = PUCMMActivityItemSource;
   v5 = [(PUCMMActivityItemSource *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_itemSourceController, v4);
+    objc_storeWeak(&v5->_itemSourceController, controllerCopy);
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v8 = dispatch_queue_create("com.apple.PUCMMActivityItemSource.isolationQueue", v7);
     externalIsolationQueue = v6->_externalIsolationQueue;

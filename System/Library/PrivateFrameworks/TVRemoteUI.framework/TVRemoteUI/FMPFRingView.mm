@@ -1,14 +1,14 @@
 @interface FMPFRingView
 + (Class)layerClass;
 - (NSString)description;
-- (_TtC10TVRemoteUI12FMPFRingView)initWithCoder:(id)a3;
-- (_TtC10TVRemoteUI12FMPFRingView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC10TVRemoteUI12FMPFRingView)initWithCoder:(id)coder;
+- (_TtC10TVRemoteUI12FMPFRingView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation FMPFRingView
 
-- (_TtC10TVRemoteUI12FMPFRingView)initWithCoder:(id)a3
+- (_TtC10TVRemoteUI12FMPFRingView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10TVRemoteUI12FMPFRingView_style;
   if (one-time initialization token for default != -1)
@@ -39,7 +39,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FMR1HapticsController.description.getter();
   v5 = v4;
 
@@ -48,13 +48,13 @@
   return v6;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   specialized FMPFRingView.draw(_:)();
 }
 
-- (_TtC10TVRemoteUI12FMPFRingView)initWithFrame:(CGRect)a3
+- (_TtC10TVRemoteUI12FMPFRingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

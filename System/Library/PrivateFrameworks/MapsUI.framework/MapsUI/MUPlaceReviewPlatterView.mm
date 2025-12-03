@@ -1,15 +1,15 @@
 @interface MUPlaceReviewPlatterView
 - (CGSize)intrinsicContentSize;
-- (MUPlaceReviewPlatterView)initWithFrame:(CGRect)a3;
+- (MUPlaceReviewPlatterView)initWithFrame:(CGRect)frame;
 - (NSAttributedString)starString;
 - (NSAttributedString)userLabelString;
-- (id)_attributesWithFont:(id)a3 color:(id)a4;
+- (id)_attributesWithFont:(id)font color:(id)color;
 - (void)_contentSizeDidChange;
 - (void)_platterTapped;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateAppearance;
-- (void)setViewModel:(id)a3;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MUPlaceReviewPlatterView
@@ -28,24 +28,24 @@
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [(MULabelViewProtocol *)self->_reviewTextView setFont:v3];
 
-  v4 = [(MUPlaceReviewPlatterView *)self userLabelString];
-  [(MULabelViewProtocol *)self->_userLabel setAttributedText:v4];
+  userLabelString = [(MUPlaceReviewPlatterView *)self userLabelString];
+  [(MULabelViewProtocol *)self->_userLabel setAttributedText:userLabelString];
 
-  v5 = [(MUPlaceReviewPlatterView *)self starString];
-  [(UILabel *)self->_starLabel setAttributedText:v5];
+  starString = [(MUPlaceReviewPlatterView *)self starString];
+  [(UILabel *)self->_starLabel setAttributedText:starString];
 }
 
-- (id)_attributesWithFont:(id)a3 color:(id)a4
+- (id)_attributesWithFont:(id)font color:(id)color
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E69DB650];
   v12[0] = *MEMORY[0x1E69DB648];
   v12[1] = v5;
-  v13[0] = a3;
-  v13[1] = a4;
+  v13[0] = font;
+  v13[1] = color;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
-  v8 = a3;
+  colorCopy = color;
+  fontCopy = font;
   v9 = [v6 dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -59,8 +59,8 @@
   [(MUPlaceReviewViewModel *)self->_viewModel normalizedScore];
   v5 = v4;
   v6 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v7 = [(MUPlaceReviewPlatterView *)self mk_theme];
-  v8 = [v3 ratingAsAttributedString:v6 baseFont:2 style:v7 theme:v5];
+  mk_theme = [(MUPlaceReviewPlatterView *)self mk_theme];
+  v8 = [v3 ratingAsAttributedString:v6 baseFont:2 style:mk_theme theme:v5];
 
   return v8;
 }
@@ -69,15 +69,15 @@
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc(MEMORY[0x1E696AD40]);
-  v5 = [(MUPlaceReviewViewModel *)self->_viewModel authorText];
-  v6 = [v4 initWithString:v5];
+  authorText = [(MUPlaceReviewViewModel *)self->_viewModel authorText];
+  v6 = [v4 initWithString:authorText];
 
   v7 = *MEMORY[0x1E69DDD28];
   v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
   v9 = +[MUInfoCardStyle textColor];
   v10 = [(MUPlaceReviewPlatterView *)self _attributesWithFont:v8 color:v9];
-  v11 = [(MUPlaceReviewViewModel *)self->_viewModel authorText];
-  [v6 addAttributes:v10 range:{0, objc_msgSend(v11, "length")}];
+  authorText2 = [(MUPlaceReviewViewModel *)self->_viewModel authorText];
+  [v6 addAttributes:v10 range:{0, objc_msgSend(authorText2, "length")}];
 
   if ([v6 length])
   {
@@ -91,8 +91,8 @@
   }
 
   v13 = userLabelString_dateFormatter;
-  v14 = [(MUPlaceReviewViewModel *)self->_viewModel reviewDate];
-  v15 = [v13 _mapkit_roundedPastUnitsStringFromDate:v14];
+  reviewDate = [(MUPlaceReviewViewModel *)self->_viewModel reviewDate];
+  v15 = [v13 _mapkit_roundedPastUnitsStringFromDate:reviewDate];
 
   v16 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v15];
   v17 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:v7];
@@ -139,14 +139,14 @@ void __43__MUPlaceReviewPlatterView_userLabelString__block_invoke()
 
 - (void)_updateAppearance
 {
-  v3 = [(MUPlaceReviewViewModel *)self->_viewModel reviewText];
-  [(MULabelViewProtocol *)self->_reviewTextView setText:v3];
+  reviewText = [(MUPlaceReviewViewModel *)self->_viewModel reviewText];
+  [(MULabelViewProtocol *)self->_reviewTextView setText:reviewText];
 
-  v4 = [(MUPlaceReviewPlatterView *)self userLabelString];
-  [(MULabelViewProtocol *)self->_userLabel setAttributedText:v4];
+  userLabelString = [(MUPlaceReviewPlatterView *)self userLabelString];
+  [(MULabelViewProtocol *)self->_userLabel setAttributedText:userLabelString];
 
-  v5 = [(MUPlaceReviewPlatterView *)self starString];
-  [(UILabel *)self->_starLabel setAttributedText:v5];
+  starString = [(MUPlaceReviewPlatterView *)self starString];
+  [(UILabel *)self->_starLabel setAttributedText:starString];
 
   objc_initWeak(&location, self);
   viewModel = self->_viewModel;
@@ -178,24 +178,24 @@ void __45__MUPlaceReviewPlatterView__updateAppearance__block_invoke(uint64_t a1,
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   if (([(MUPlaceReviewViewModel *)self->_viewModel isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(MUPlaceReviewPlatterView *)self _updateAppearance];
   }
 }
 
 - (void)_platterTapped
 {
-  v3 = [(MUPlaceReviewPlatterView *)self actionHandler];
+  actionHandler = [(MUPlaceReviewPlatterView *)self actionHandler];
 
-  if (v3)
+  if (actionHandler)
   {
-    v4 = [(MUPlaceReviewPlatterView *)self actionHandler];
-    v4[2]();
+    actionHandler2 = [(MUPlaceReviewPlatterView *)self actionHandler];
+    actionHandler2[2]();
   }
 }
 
@@ -203,83 +203,83 @@ void __45__MUPlaceReviewPlatterView__updateAppearance__block_invoke(uint64_t a1,
 {
   v64[20] = *MEMORY[0x1E69E9840];
   v42 = MEMORY[0x1E696ACD8];
-  v63 = [(MULabelViewProtocol *)self->_reviewTextView topAnchor];
-  v62 = [(MUPlaceReviewPlatterView *)self topAnchor];
-  v61 = [v63 constraintEqualToAnchor:v62 constant:14.0];
+  topAnchor = [(MULabelViewProtocol *)self->_reviewTextView topAnchor];
+  topAnchor2 = [(MUPlaceReviewPlatterView *)self topAnchor];
+  v61 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:14.0];
   v64[0] = v61;
-  v60 = [(MULabelViewProtocol *)self->_reviewTextView leadingAnchor];
-  v59 = [(MUPlaceReviewPlatterView *)self leadingAnchor];
-  v58 = [v60 constraintEqualToAnchor:v59 constant:16.0];
+  leadingAnchor = [(MULabelViewProtocol *)self->_reviewTextView leadingAnchor];
+  leadingAnchor2 = [(MUPlaceReviewPlatterView *)self leadingAnchor];
+  v58 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v64[1] = v58;
-  v57 = [(MULabelViewProtocol *)self->_reviewTextView trailingAnchor];
-  v56 = [(MUPlaceReviewPlatterView *)self trailingAnchor];
-  v55 = [v57 constraintEqualToAnchor:v56 constant:-16.0];
+  trailingAnchor = [(MULabelViewProtocol *)self->_reviewTextView trailingAnchor];
+  trailingAnchor2 = [(MUPlaceReviewPlatterView *)self trailingAnchor];
+  v55 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v64[2] = v55;
-  v54 = [(MULabelViewProtocol *)self->_reviewTextView bottomAnchor];
-  v53 = [(UILayoutGuide *)self->_userLabelLayoutGuide topAnchor];
-  v52 = [v54 constraintLessThanOrEqualToAnchor:v53 constant:-12.0];
+  bottomAnchor = [(MULabelViewProtocol *)self->_reviewTextView bottomAnchor];
+  topAnchor3 = [(UILayoutGuide *)self->_userLabelLayoutGuide topAnchor];
+  v52 = [bottomAnchor constraintLessThanOrEqualToAnchor:topAnchor3 constant:-12.0];
   v64[3] = v52;
-  v51 = [(UIImageView *)self->_userAvatarImageView leadingAnchor];
-  v50 = [(MUPlaceReviewPlatterView *)self leadingAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50 constant:16.0];
+  leadingAnchor3 = [(UIImageView *)self->_userAvatarImageView leadingAnchor];
+  leadingAnchor4 = [(MUPlaceReviewPlatterView *)self leadingAnchor];
+  v49 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   v64[4] = v49;
-  v48 = [(UIImageView *)self->_userAvatarImageView topAnchor];
-  v47 = [(MULabelViewProtocol *)self->_reviewTextView bottomAnchor];
-  v46 = [v48 constraintGreaterThanOrEqualToAnchor:v47 constant:16.0];
+  topAnchor4 = [(UIImageView *)self->_userAvatarImageView topAnchor];
+  bottomAnchor2 = [(MULabelViewProtocol *)self->_reviewTextView bottomAnchor];
+  v46 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:16.0];
   v64[5] = v46;
-  v45 = [(UIImageView *)self->_userAvatarImageView centerYAnchor];
-  v44 = [(UILayoutGuide *)self->_userLabelLayoutGuide centerYAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  centerYAnchor = [(UIImageView *)self->_userAvatarImageView centerYAnchor];
+  centerYAnchor2 = [(UILayoutGuide *)self->_userLabelLayoutGuide centerYAnchor];
+  v43 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v64[6] = v43;
-  v41 = [(UIImageView *)self->_userAvatarImageView bottomAnchor];
-  v40 = [(MUPlaceReviewPlatterView *)self bottomAnchor];
-  v39 = [v41 constraintLessThanOrEqualToAnchor:v40 constant:-14.0];
+  bottomAnchor3 = [(UIImageView *)self->_userAvatarImageView bottomAnchor];
+  bottomAnchor4 = [(MUPlaceReviewPlatterView *)self bottomAnchor];
+  v39 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4 constant:-14.0];
   v64[7] = v39;
-  v38 = [(UIImageView *)self->_userAvatarImageView widthAnchor];
-  v37 = [v38 constraintEqualToConstant:36.0];
+  widthAnchor = [(UIImageView *)self->_userAvatarImageView widthAnchor];
+  v37 = [widthAnchor constraintEqualToConstant:36.0];
   v64[8] = v37;
-  v36 = [(UIImageView *)self->_userAvatarImageView heightAnchor];
-  v35 = [v36 constraintEqualToConstant:36.0];
+  heightAnchor = [(UIImageView *)self->_userAvatarImageView heightAnchor];
+  v35 = [heightAnchor constraintEqualToConstant:36.0];
   v64[9] = v35;
-  v34 = [(UIImageView *)self->_userAvatarImageView trailingAnchor];
-  v33 = [(UILayoutGuide *)self->_userLabelLayoutGuide leadingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:-8.0];
+  trailingAnchor3 = [(UIImageView *)self->_userAvatarImageView trailingAnchor];
+  leadingAnchor5 = [(UILayoutGuide *)self->_userLabelLayoutGuide leadingAnchor];
+  v32 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor5 constant:-8.0];
   v64[10] = v32;
-  v31 = [(UILabel *)self->_starLabel leadingAnchor];
-  v30 = [(UILayoutGuide *)self->_userLabelLayoutGuide leadingAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  leadingAnchor6 = [(UILabel *)self->_starLabel leadingAnchor];
+  leadingAnchor7 = [(UILayoutGuide *)self->_userLabelLayoutGuide leadingAnchor];
+  v29 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v64[11] = v29;
-  v28 = [(UILabel *)self->_starLabel trailingAnchor];
-  v27 = [(UILayoutGuide *)self->_userLabelLayoutGuide trailingAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  trailingAnchor4 = [(UILabel *)self->_starLabel trailingAnchor];
+  trailingAnchor5 = [(UILayoutGuide *)self->_userLabelLayoutGuide trailingAnchor];
+  v26 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v64[12] = v26;
-  v25 = [(UILabel *)self->_starLabel topAnchor];
-  v24 = [(UILayoutGuide *)self->_userLabelLayoutGuide topAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  topAnchor5 = [(UILabel *)self->_starLabel topAnchor];
+  topAnchor6 = [(UILayoutGuide *)self->_userLabelLayoutGuide topAnchor];
+  v23 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v64[13] = v23;
-  v22 = [(MULabelViewProtocol *)self->_userLabel leadingAnchor];
-  v21 = [(UILayoutGuide *)self->_userLabelLayoutGuide leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  leadingAnchor8 = [(MULabelViewProtocol *)self->_userLabel leadingAnchor];
+  leadingAnchor9 = [(UILayoutGuide *)self->_userLabelLayoutGuide leadingAnchor];
+  v20 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   v64[14] = v20;
-  v19 = [(MULabelViewProtocol *)self->_userLabel trailingAnchor];
-  v18 = [(UILayoutGuide *)self->_userLabelLayoutGuide trailingAnchor];
-  v17 = [v19 constraintEqualToAnchor:v18];
+  trailingAnchor6 = [(MULabelViewProtocol *)self->_userLabel trailingAnchor];
+  trailingAnchor7 = [(UILayoutGuide *)self->_userLabelLayoutGuide trailingAnchor];
+  v17 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v64[15] = v17;
-  v16 = [(MULabelViewProtocol *)self->_userLabel topAnchor];
-  v15 = [(UILabel *)self->_starLabel bottomAnchor];
-  v14 = [v16 constraintEqualToAnchor:v15];
+  topAnchor7 = [(MULabelViewProtocol *)self->_userLabel topAnchor];
+  bottomAnchor5 = [(UILabel *)self->_starLabel bottomAnchor];
+  v14 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5];
   v64[16] = v14;
-  v3 = [(MULabelViewProtocol *)self->_userLabel bottomAnchor];
-  v4 = [(UILayoutGuide *)self->_userLabelLayoutGuide bottomAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  bottomAnchor6 = [(MULabelViewProtocol *)self->_userLabel bottomAnchor];
+  bottomAnchor7 = [(UILayoutGuide *)self->_userLabelLayoutGuide bottomAnchor];
+  v5 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v64[17] = v5;
-  v6 = [(UILayoutGuide *)self->_userLabelLayoutGuide trailingAnchor];
-  v7 = [(MUPlaceReviewPlatterView *)self trailingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7 constant:-16.0];
+  trailingAnchor8 = [(UILayoutGuide *)self->_userLabelLayoutGuide trailingAnchor];
+  trailingAnchor9 = [(MUPlaceReviewPlatterView *)self trailingAnchor];
+  v8 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:-16.0];
   v64[18] = v8;
-  v9 = [(UILayoutGuide *)self->_userLabelLayoutGuide bottomAnchor];
-  v10 = [(MUPlaceReviewPlatterView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:-14.0];
+  bottomAnchor8 = [(UILayoutGuide *)self->_userLabelLayoutGuide bottomAnchor];
+  bottomAnchor9 = [(MUPlaceReviewPlatterView *)self bottomAnchor];
+  v11 = [bottomAnchor8 constraintEqualToAnchor:bottomAnchor9 constant:-14.0];
   v64[19] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v64 count:20];
   [v42 activateConstraints:v12];
@@ -300,9 +300,9 @@ void __45__MUPlaceReviewPlatterView__updateAppearance__block_invoke(uint64_t a1,
 
   [(MULabelViewProtocol *)self->_reviewTextView setAccessibilityIdentifier:@"PlaceReviewPlatterReviewText"];
   [(MUPlaceReviewPlatterView *)self addSubview:self->_reviewTextView];
-  v6 = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
+  _mapsui_defaultLabel = [MEMORY[0x1E69DCC10] _mapsui_defaultLabel];
   starLabel = self->_starLabel;
-  self->_starLabel = v6;
+  self->_starLabel = _mapsui_defaultLabel;
 
   [(UILabel *)self->_starLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)self->_starLabel set_mapsui_numberOfLines:1];
@@ -343,19 +343,19 @@ void __45__MUPlaceReviewPlatterView__updateAppearance__block_invoke(uint64_t a1,
   [(UIView *)self _mapsui_addSelectGestureRecognizerWithTarget:self action:sel__platterTapped];
 }
 
-- (MUPlaceReviewPlatterView)initWithFrame:(CGRect)a3
+- (MUPlaceReviewPlatterView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MUPlaceReviewPlatterView;
-  v3 = [(MUPlaceReviewPlatterView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceReviewPlatterView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(MUPlaceReviewPlatterView *)v3 setAccessibilityIdentifier:@"PlaceReviewPlatter"];
     [(MUPlaceReviewPlatterView *)v4 _setupSubviews];
     [(MUPlaceReviewPlatterView *)v4 _setupConstraints];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__contentSizeDidChange name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v4;

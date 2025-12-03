@@ -1,42 +1,42 @@
 @interface SiriUISnippetExtensionCardSnippetViewController
-- (SiriUISnippetExtensionCardSnippetViewController)initWithSnippet:(id)a3 extension:(id)a4;
+- (SiriUISnippetExtensionCardSnippetViewController)initWithSnippet:(id)snippet extension:(id)extension;
 - (id)sashItem;
-- (void)setSnippet:(id)a3;
+- (void)setSnippet:(id)snippet;
 @end
 
 @implementation SiriUISnippetExtensionCardSnippetViewController
 
-- (SiriUISnippetExtensionCardSnippetViewController)initWithSnippet:(id)a3 extension:(id)a4
+- (SiriUISnippetExtensionCardSnippetViewController)initWithSnippet:(id)snippet extension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
+  snippetCopy = snippet;
+  extensionCopy = extension;
   v11.receiver = self;
   v11.super_class = SiriUISnippetExtensionCardSnippetViewController;
   v8 = [(SiriUICardSnippetViewController *)&v11 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    [(SiriUISnippetExtensionCardSnippetViewController *)v8 setExtension:v7];
-    [(SiriUISnippetExtensionCardSnippetViewController *)v9 setSnippet:v6];
+    [(SiriUISnippetExtensionCardSnippetViewController *)v8 setExtension:extensionCopy];
+    [(SiriUISnippetExtensionCardSnippetViewController *)v9 setSnippet:snippetCopy];
   }
 
   return v9;
 }
 
-- (void)setSnippet:(id)a3
+- (void)setSnippet:(id)snippet
 {
-  v11 = a3;
-  if (self->_snippet != v11)
+  snippetCopy = snippet;
+  if (self->_snippet != snippetCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(&self->_snippet, a3);
+      objc_storeStrong(&self->_snippet, snippet);
       v5 = objc_alloc(MEMORY[0x277CD3D58]);
       v6 = objc_alloc_init(MEMORY[0x277CD3D30]);
       v7 = [v5 initWithIntent:v6 response:0];
 
-      [v7 _setSnippet:v11];
+      [v7 _setSnippet:snippetCopy];
       v8 = objc_alloc_init(MEMORY[0x277CF9408]);
       v9 = [MEMORY[0x277CBEB98] setWithObject:v7];
       [v8 setInteractions:v9];
@@ -54,11 +54,11 @@
   {
     v9.receiver = self;
     v9.super_class = SiriUISnippetExtensionCardSnippetViewController;
-    v4 = [(SiriUIBaseSnippetViewController *)&v9 sashItem];
-    v5 = v4;
-    if (v4)
+    sashItem = [(SiriUIBaseSnippetViewController *)&v9 sashItem];
+    v5 = sashItem;
+    if (sashItem)
     {
-      v6 = v4;
+      v6 = sashItem;
     }
 
     else

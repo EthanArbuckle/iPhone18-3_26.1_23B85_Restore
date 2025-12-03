@@ -1,32 +1,32 @@
 @interface WBSTabDialogInformation
 - ($74EE3C8A9A83D7DA9DE4D87A9C9037E2)slot;
-- (BOOL)isExemptFromCancellationInContext:(id)a3;
-- (WBSTabDialogInformation)initWithPresentationBlock:(id)a3 dismissalBlock:(id)a4 blocksWebProcessUntilDismissed:(BOOL)a5;
+- (BOOL)isExemptFromCancellationInContext:(id)context;
+- (WBSTabDialogInformation)initWithPresentationBlock:(id)block dismissalBlock:(id)dismissalBlock blocksWebProcessUntilDismissed:(BOOL)dismissed;
 - (id)description;
-- (void)dismissWithResponse:(id)a3;
+- (void)dismissWithResponse:(id)response;
 - (void)presentIfNeeded;
 @end
 
 @implementation WBSTabDialogInformation
 
-- (WBSTabDialogInformation)initWithPresentationBlock:(id)a3 dismissalBlock:(id)a4 blocksWebProcessUntilDismissed:(BOOL)a5
+- (WBSTabDialogInformation)initWithPresentationBlock:(id)block dismissalBlock:(id)dismissalBlock blocksWebProcessUntilDismissed:(BOOL)dismissed
 {
-  v8 = a3;
-  v9 = a4;
+  blockCopy = block;
+  dismissalBlockCopy = dismissalBlock;
   v18.receiver = self;
   v18.super_class = WBSTabDialogInformation;
   v10 = [(WBSTabDialogInformation *)&v18 init];
   if (v10)
   {
-    v11 = MEMORY[0x1BFB13CE0](v9);
+    v11 = MEMORY[0x1BFB13CE0](dismissalBlockCopy);
     dismissalBlock = v10->_dismissalBlock;
     v10->_dismissalBlock = v11;
 
-    v13 = MEMORY[0x1BFB13CE0](v8);
+    v13 = MEMORY[0x1BFB13CE0](blockCopy);
     presentationBlock = v10->_presentationBlock;
     v10->_presentationBlock = v13;
 
-    v10->_blockingWebProcess = a5;
+    v10->_blockingWebProcess = dismissed;
     cancellationExemptions = v10->_cancellationExemptions;
     v10->_cancellationExemptions = MEMORY[0x1E695E0F0];
 
@@ -72,8 +72,8 @@
   v11 = v5;
   v12 = v7;
   v13 = v6;
-  v14 = [v10 stringWithFormat:@"{pid:%d, tab:0x%lx}", v8, tabID];
-  v15 = [v3 stringWithFormat:@"<%@:%p presented = %@, dismissed = %@, blockingWebProcess = %@, slot = %@>", v4, self, v13, v12, v11, v14];;
+  tabID = [v10 stringWithFormat:@"{pid:%d, tab:0x%lx}", v8, tabID];
+  v15 = [v3 stringWithFormat:@"<%@:%p presented = %@, dismissed = %@, blockingWebProcess = %@, slot = %@>", v4, self, v13, v12, v11, tabID];;
 
   return v15;
 }
@@ -92,7 +92,7 @@
   }
 }
 
-- (void)dismissWithResponse:(id)a3
+- (void)dismissWithResponse:(id)response
 {
   if (!self->_dismissed)
   {
@@ -102,10 +102,10 @@
   }
 }
 
-- (BOOL)isExemptFromCancellationInContext:(id)a3
+- (BOOL)isExemptFromCancellationInContext:(id)context
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -124,7 +124,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isExemptFromCancellationInContext:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) isExemptFromCancellationInContext:{contextCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;

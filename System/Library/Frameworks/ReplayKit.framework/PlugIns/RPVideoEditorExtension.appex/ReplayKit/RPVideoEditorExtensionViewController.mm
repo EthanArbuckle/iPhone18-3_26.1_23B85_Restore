@@ -1,10 +1,10 @@
 @interface RPVideoEditorExtensionViewController
-- (void)doAction:(id)a3;
-- (void)inputItemsFromClientWithCompletionHandler:(id)a3;
+- (void)doAction:(id)action;
+- (void)inputItemsFromClientWithCompletionHandler:(id)handler;
 - (void)setupChildViewControllers;
 - (void)setupVideoEditorController;
 - (void)tearDownChildViewControllers;
-- (void)videoEditor:(id)a3 didFinishWithActivityTypes:(id)a4;
+- (void)videoEditor:(id)editor didFinishWithActivityTypes:(id)types;
 - (void)viewDidLoad;
 @end
 
@@ -45,8 +45,8 @@
   movieURL = self->_movieURL;
   appName = self->_appName;
   overrideTintColor = self->_overrideTintColor;
-  v8 = [(RPVideoEditorExtensionViewController *)self view];
-  [v8 bounds];
+  view = [(RPVideoEditorExtensionViewController *)self view];
+  [view bounds];
   v9 = [(RPVideoEditorViewController *)v3 initWithBundleIdentifier:bundleIdentifier URL:movieURL applicationName:appName overrideTintColor:overrideTintColor size:?];
   [(RPVideoEditorExtensionViewController *)self setVideoEditorViewController:v9];
 
@@ -54,9 +54,9 @@
   [(RPVideoEditorViewController *)self->_videoEditorViewController setOverrideShareMessage:self->_overrideShareMessage];
   [(RPVideoEditorViewController *)self->_videoEditorViewController setDelegate:self];
   [(RPVideoEditorExtensionViewController *)self addChildViewController:self->_videoEditorViewController];
-  v10 = [(RPVideoEditorExtensionViewController *)self view];
-  v11 = [(RPVideoEditorViewController *)self->_videoEditorViewController view];
-  [v10 addSubview:v11];
+  view2 = [(RPVideoEditorExtensionViewController *)self view];
+  view3 = [(RPVideoEditorViewController *)self->_videoEditorViewController view];
+  [view2 addSubview:view3];
 
   videoEditorViewController = self->_videoEditorViewController;
 
@@ -66,17 +66,17 @@
 - (void)tearDownChildViewControllers
 {
   [(RPVideoEditorViewController *)self->_videoEditorViewController willMoveToParentViewController:0];
-  v3 = [(RPVideoEditorViewController *)self->_videoEditorViewController view];
-  [v3 removeFromSuperview];
+  view = [(RPVideoEditorViewController *)self->_videoEditorViewController view];
+  [view removeFromSuperview];
 
   [(RPVideoEditorViewController *)self->_videoEditorViewController removeFromParentViewController];
 
   [(RPVideoEditorExtensionViewController *)self setVideoEditorViewController:0];
 }
 
-- (void)inputItemsFromClientWithCompletionHandler:(id)a3
+- (void)inputItemsFromClientWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
@@ -121,8 +121,8 @@
   v30[4] = sub_10000A3FC;
   v31 = 0;
   v6 = dispatch_group_create();
-  v7 = [(RPVideoEditorExtensionViewController *)self extensionContext];
-  v8 = [v7 inputItems];
+  extensionContext = [(RPVideoEditorExtensionViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10000A404;
@@ -137,22 +137,22 @@
   v27 = v34;
   v28 = v32;
   v29 = v30;
-  [v8 enumerateObjectsUsingBlock:v21];
+  [inputItems enumerateObjectsUsingBlock:v21];
 
-  v11 = [(RPVideoEditorExtensionViewController *)self replyQueue];
+  replyQueue = [(RPVideoEditorExtensionViewController *)self replyQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A798;
   block[3] = &unk_100018820;
-  v14 = v4;
+  v14 = handlerCopy;
   v15 = v36;
   v16 = buf;
   v17 = v38;
   v18 = v34;
   v19 = v32;
   v20 = v30;
-  v12 = v4;
-  dispatch_group_notify(v10, v11, block);
+  v12 = handlerCopy;
+  dispatch_group_notify(v10, replyQueue, block);
 
   _Block_object_dispose(v30, 8);
   _Block_object_dispose(v32, 8);
@@ -164,23 +164,23 @@
   _Block_object_dispose(buf, 8);
 }
 
-- (void)videoEditor:(id)a3 didFinishWithActivityTypes:(id)a4
+- (void)videoEditor:(id)editor didFinishWithActivityTypes:(id)types
 {
-  v5 = a4;
+  typesCopy = types;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v8 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "RPVideoEditorExtensionViewController -videoEditorViewDidFinishWithActivityTypes:", v8, 2u);
   }
 
-  v6 = [(RPVideoEditorExtensionViewController *)self extensionContext];
-  v7 = [v6 extensionObjectProxy];
-  [v7 extensionDidFinishWithActivityTypes:v5];
+  extensionContext = [(RPVideoEditorExtensionViewController *)self extensionContext];
+  extensionObjectProxy = [extensionContext extensionObjectProxy];
+  [extensionObjectProxy extensionDidFinishWithActivityTypes:typesCopy];
 }
 
-- (void)doAction:(id)a3
+- (void)doAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   if ([(RPVideoEditorExtensionViewController *)self isInternalTestMode])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
@@ -190,7 +190,7 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s", &v5, 0xCu);
     }
 
-    [(RPVideoEditorViewController *)self->_videoEditorViewController performSelector:NSSelectorFromString(v4)];
+    [(RPVideoEditorViewController *)self->_videoEditorViewController performSelector:NSSelectorFromString(actionCopy)];
   }
 }
 

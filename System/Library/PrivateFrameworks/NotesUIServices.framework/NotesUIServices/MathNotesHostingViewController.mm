@@ -1,12 +1,12 @@
 @interface MathNotesHostingViewController
 - (_TtC15NotesUIServices30MathNotesHostingViewController)init;
-- (_TtC15NotesUIServices30MathNotesHostingViewController)initWithCoder:(id)a3;
-- (_TtC15NotesUIServices30MathNotesHostingViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
+- (_TtC15NotesUIServices30MathNotesHostingViewController)initWithCoder:(id)coder;
+- (_TtC15NotesUIServices30MathNotesHostingViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation MathNotesHostingViewController
@@ -26,7 +26,7 @@
   return [(MathNotesHostingViewController *)&v6 initWithNibName:0 bundle:0];
 }
 
-- (_TtC15NotesUIServices30MathNotesHostingViewController)initWithCoder:(id)a3
+- (_TtC15NotesUIServices30MathNotesHostingViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15NotesUIServices30MathNotesHostingViewController____lazy_storage___appProtectionController) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC15NotesUIServices30MathNotesHostingViewController_sceneHostingController) = 0;
@@ -46,28 +46,28 @@
   v6.super_class = type metadata accessor for MathNotesHostingViewController();
   v2 = v6.receiver;
   [(MathNotesHostingViewController *)&v6 viewDidLoad];
-  v3 = [objc_opt_self() subjectMonitorRegistry];
+  subjectMonitorRegistry = [objc_opt_self() subjectMonitorRegistry];
   v4 = sub_25C79E5D8();
-  v5 = [v3 addMonitor:v4 subjectMask:1 subscriptionOptions:1];
+  v5 = [subjectMonitorRegistry addMonitor:v4 subjectMask:1 subscriptionOptions:1];
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 
   sub_25C7A002C();
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v4 = self;
-  sub_25C79EAC0(a3);
+  selfCopy = self;
+  sub_25C79EAC0(appearing);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_25C79EDE0(a3);
+  selfCopy = self;
+  sub_25C79EDE0(disappear);
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
   v4 = sub_25C7AA45C();
   v5 = *(v4 - 8);
@@ -75,13 +75,13 @@
   MEMORY[0x28223BE20](v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_25C7AA44C();
-  v9 = self;
+  selfCopy = self;
   sub_25C79EF78();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
   v4 = sub_25C7AA45C();
   v5 = *(v4 - 8);
@@ -90,7 +90,7 @@
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_25C7AA44C();
   v9 = qword_27FC15050;
-  v10 = self;
+  selfCopy = self;
   if (v9 != -1)
   {
     swift_once();
@@ -101,7 +101,7 @@
   (*(v5 + 8))(v8, v4);
 }
 
-- (_TtC15NotesUIServices30MathNotesHostingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15NotesUIServices30MathNotesHostingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

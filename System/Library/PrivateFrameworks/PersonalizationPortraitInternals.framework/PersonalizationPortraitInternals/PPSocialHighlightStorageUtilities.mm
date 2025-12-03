@@ -1,8 +1,8 @@
 @interface PPSocialHighlightStorageUtilities
 + (id)excludedChatBundleIds;
-+ (id)filteredAllowedChatBundleIds:(id)a3;
++ (id)filteredAllowedChatBundleIds:(id)ids;
 - (PPSocialHighlightStorageUtilities)init;
-- (id)resolveBundleIdToApplicationIdentifierIfInstalled:(id)a3;
+- (id)resolveBundleIdToApplicationIdentifierIfInstalled:(id)installed;
 @end
 
 @implementation PPSocialHighlightStorageUtilities
@@ -96,19 +96,19 @@ LABEL_19:
   return v9;
 }
 
-- (id)resolveBundleIdToApplicationIdentifierIfInstalled:(id)a3
+- (id)resolveBundleIdToApplicationIdentifierIfInstalled:(id)installed
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  installedCopy = installed;
+  if ([installedCopy count])
   {
     v30 = objc_opt_new();
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v29 = v4;
-    obj = v4;
+    v29 = installedCopy;
+    obj = installedCopy;
     v5 = [obj countByEnumeratingWithState:&v46 objects:v54 count:16];
     if (!v5)
     {
@@ -162,26 +162,26 @@ LABEL_19:
               _os_log_debug_impl(&dword_23224A000, v18, OS_LOG_TYPE_DEBUG, "Considering registered bundleID: %@, got record: %@", buf, 0x16u);
             }
 
-            v19 = [v16 applicationState];
-            if ([v19 isInstalled])
+            applicationState = [v16 applicationState];
+            if ([applicationState isInstalled])
             {
               v20 = [v16 URL];
               v21 = v20 == 0;
 
               if (!v21)
               {
-                v19 = [v16 applicationIdentifier];
-                if (v19)
+                applicationState = [v16 applicationIdentifier];
+                if (applicationState)
                 {
-                  [v30 addObject:v19];
+                  [v30 addObject:applicationState];
                   v22 = self->_bundleIdToAppIdCacheLock;
                   v33[0] = MEMORY[0x277D85DD0];
                   v33[1] = 3221225472;
                   v33[2] = __87__PPSocialHighlightStorageUtilities_resolveBundleIdToApplicationIdentifierIfInstalled___block_invoke_19;
                   v33[3] = &unk_278971C38;
                   v34 = v14;
-                  v19 = v19;
-                  v35 = v19;
+                  applicationState = applicationState;
+                  v35 = applicationState;
                   [(_PASLock *)v22 runWithLockAcquired:v33];
                 }
 
@@ -213,7 +213,7 @@ LABEL_23:
             v36[3] = &unk_278971C10;
             v37 = v14;
             [(_PASLock *)v24 runWithLockAcquired:v36];
-            v19 = v37;
+            applicationState = v37;
           }
 
 LABEL_22:
@@ -221,8 +221,8 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v11 = [MEMORY[0x277CBEB68] null];
-        v12 = v10 == v11;
+        null = [MEMORY[0x277CBEB68] null];
+        v12 = v10 == null;
 
         if (!v12)
         {
@@ -254,7 +254,7 @@ LABEL_24:
 LABEL_26:
 
         v26 = [v30 copy];
-        v4 = v29;
+        installedCopy = v29;
         goto LABEL_28;
       }
     }
@@ -303,25 +303,25 @@ void __87__PPSocialHighlightStorageUtilities_resolveBundleIdToApplicationIdentif
   return v2;
 }
 
-+ (id)filteredAllowedChatBundleIds:(id)a3
++ (id)filteredAllowedChatBundleIds:(id)ids
 {
-  v4 = a3;
-  v5 = [a1 excludedChatBundleIds];
-  if ([v5 count])
+  idsCopy = ids;
+  excludedChatBundleIds = [self excludedChatBundleIds];
+  if ([excludedChatBundleIds count])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __66__PPSocialHighlightStorageUtilities_filteredAllowedChatBundleIds___block_invoke;
     v8[3] = &unk_2789793E0;
-    v9 = v5;
-    v6 = [v4 _pas_filteredArrayWithTest:v8];
+    v9 = excludedChatBundleIds;
+    v6 = [idsCopy _pas_filteredArrayWithTest:v8];
 
-    v4 = v9;
+    idsCopy = v9;
   }
 
   else
   {
-    v6 = [v4 copy];
+    v6 = [idsCopy copy];
   }
 
   return v6;

@@ -4,111 +4,111 @@
 - (SBApplicationRestrictionController)applicationRestrictionController;
 - (SBFAnalyticsClient)analyticsClient;
 - (SBLayoutStateTransitionCoordinator)layoutStateTransitionCoordinator;
-- (id)_bundleIDsForIcons:(id)a3;
-- (id)_initWithAnalyticsClient:(id)a3 applicationController:(id)a4 applicationRestrictionController:(id)a5 iconModel:(id)a6 layoutStateTransitionCoordinator:(id)a7 displayLayoutPublisher:(id)a8 touchDeliveryObservationService:(id)a9;
-- (void)_configureEventSourceWithAnalyticsClient:(id)a3 applicationController:(id)a4 applicationRestrictionController:(id)a5 iconModel:(id)a6 layoutStateTransitionCoordinator:(id)a7 displayLayoutPublisher:(id)a8 touchDeliveryObservationService:(id)a9;
-- (void)_iconVisibilityDidChange:(id)a3;
-- (void)_installedAppsDidChange:(id)a3;
-- (void)_noteTouchForProcess:(int)a3 context:(unsigned int)a4;
-- (void)_notifyTransition:(id)a3 beginning:(BOOL)a4;
-- (void)_userQuitApplication:(id)a3;
-- (void)_userRemovedSuggestion:(id)a3;
-- (void)_webBookmarkUninstalled:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)applicationRestrictionController:(id)a3 didUpdateVisibleTags:(id)a4 hiddenTags:(id)a5;
+- (id)_bundleIDsForIcons:(id)icons;
+- (id)_initWithAnalyticsClient:(id)client applicationController:(id)controller applicationRestrictionController:(id)restrictionController iconModel:(id)model layoutStateTransitionCoordinator:(id)coordinator displayLayoutPublisher:(id)publisher touchDeliveryObservationService:(id)service;
+- (void)_configureEventSourceWithAnalyticsClient:(id)client applicationController:(id)controller applicationRestrictionController:(id)restrictionController iconModel:(id)model layoutStateTransitionCoordinator:(id)coordinator displayLayoutPublisher:(id)publisher touchDeliveryObservationService:(id)service;
+- (void)_iconVisibilityDidChange:(id)change;
+- (void)_installedAppsDidChange:(id)change;
+- (void)_noteTouchForProcess:(int)process context:(unsigned int)context;
+- (void)_notifyTransition:(id)transition beginning:(BOOL)beginning;
+- (void)_userQuitApplication:(id)application;
+- (void)_userRemovedSuggestion:(id)suggestion;
+- (void)_webBookmarkUninstalled:(id)uninstalled;
+- (void)addObserver:(id)observer;
+- (void)applicationRestrictionController:(id)controller didUpdateVisibleTags:(id)tags hiddenTags:(id)hiddenTags;
 - (void)dealloc;
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5;
-- (void)windowSceneDidConnect:(id)a3;
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition;
+- (void)windowSceneDidConnect:(id)connect;
 @end
 
 @implementation SBDisplayAppInteractionEventSource
 
-- (id)_initWithAnalyticsClient:(id)a3 applicationController:(id)a4 applicationRestrictionController:(id)a5 iconModel:(id)a6 layoutStateTransitionCoordinator:(id)a7 displayLayoutPublisher:(id)a8 touchDeliveryObservationService:(id)a9
+- (id)_initWithAnalyticsClient:(id)client applicationController:(id)controller applicationRestrictionController:(id)restrictionController iconModel:(id)model layoutStateTransitionCoordinator:(id)coordinator displayLayoutPublisher:(id)publisher touchDeliveryObservationService:(id)service
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  clientCopy = client;
+  controllerCopy = controller;
+  restrictionControllerCopy = restrictionController;
+  modelCopy = model;
+  coordinatorCopy = coordinator;
+  publisherCopy = publisher;
+  serviceCopy = service;
   v25.receiver = self;
   v25.super_class = SBDisplayAppInteractionEventSource;
   v22 = [(SBDisplayAppInteractionEventSource *)&v25 init];
   v23 = v22;
   if (v22)
   {
-    [(SBDisplayAppInteractionEventSource *)v22 _configureEventSourceWithAnalyticsClient:v15 applicationController:v16 applicationRestrictionController:v17 iconModel:v18 layoutStateTransitionCoordinator:v19 displayLayoutPublisher:v20 touchDeliveryObservationService:v21];
+    [(SBDisplayAppInteractionEventSource *)v22 _configureEventSourceWithAnalyticsClient:clientCopy applicationController:controllerCopy applicationRestrictionController:restrictionControllerCopy iconModel:modelCopy layoutStateTransitionCoordinator:coordinatorCopy displayLayoutPublisher:publisherCopy touchDeliveryObservationService:serviceCopy];
   }
 
   return v23;
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  v17 = a3;
+  connectCopy = connect;
   v5 = objc_opt_class();
-  v6 = [v17 homeScreenController];
-  v7 = [v6 iconManager];
-  v8 = [v7 iconModel];
-  v9 = SBSafeCast(v5, v8);
+  homeScreenController = [connectCopy homeScreenController];
+  iconManager = [homeScreenController iconManager];
+  iconModel = [iconManager iconModel];
+  v9 = SBSafeCast(v5, iconModel);
 
   if (self->_displayLayoutPublisher)
   {
     [(SBDisplayAppInteractionEventSource *)a2 windowSceneDidConnect:?];
   }
 
-  v10 = [MEMORY[0x277D65DD0] sharedInstance];
+  mEMORY[0x277D65DD0] = [MEMORY[0x277D65DD0] sharedInstance];
   v11 = +[SBApplicationController sharedInstance];
   v12 = +[SBApplicationController sharedInstance];
-  v13 = [v12 restrictionController];
-  v14 = [v17 layoutStateTransitionCoordinator];
-  v15 = [v17 displayLayoutPublisher];
-  v16 = [MEMORY[0x277CF0788] sharedInstance];
-  [(SBDisplayAppInteractionEventSource *)self _configureEventSourceWithAnalyticsClient:v10 applicationController:v11 applicationRestrictionController:v13 iconModel:v9 layoutStateTransitionCoordinator:v14 displayLayoutPublisher:v15 touchDeliveryObservationService:v16];
+  restrictionController = [v12 restrictionController];
+  layoutStateTransitionCoordinator = [connectCopy layoutStateTransitionCoordinator];
+  displayLayoutPublisher = [connectCopy displayLayoutPublisher];
+  mEMORY[0x277CF0788] = [MEMORY[0x277CF0788] sharedInstance];
+  [(SBDisplayAppInteractionEventSource *)self _configureEventSourceWithAnalyticsClient:mEMORY[0x277D65DD0] applicationController:v11 applicationRestrictionController:restrictionController iconModel:v9 layoutStateTransitionCoordinator:layoutStateTransitionCoordinator displayLayoutPublisher:displayLayoutPublisher touchDeliveryObservationService:mEMORY[0x277CF0788]];
 }
 
-- (void)_configureEventSourceWithAnalyticsClient:(id)a3 applicationController:(id)a4 applicationRestrictionController:(id)a5 iconModel:(id)a6 layoutStateTransitionCoordinator:(id)a7 displayLayoutPublisher:(id)a8 touchDeliveryObservationService:(id)a9
+- (void)_configureEventSourceWithAnalyticsClient:(id)client applicationController:(id)controller applicationRestrictionController:(id)restrictionController iconModel:(id)model layoutStateTransitionCoordinator:(id)coordinator displayLayoutPublisher:(id)publisher touchDeliveryObservationService:(id)service
 {
-  v15 = a8;
-  v16 = a9;
-  v17 = a7;
-  v18 = a6;
-  v19 = a5;
-  v20 = a4;
-  objc_storeWeak(&self->_analyticsClient, a3);
-  objc_storeWeak(&self->_applicationController, v20);
-  [v19 addObserver:self];
-  objc_storeWeak(&self->_applicationRestrictionController, v19);
+  publisherCopy = publisher;
+  serviceCopy = service;
+  coordinatorCopy = coordinator;
+  modelCopy = model;
+  restrictionControllerCopy = restrictionController;
+  controllerCopy = controller;
+  objc_storeWeak(&self->_analyticsClient, client);
+  objc_storeWeak(&self->_applicationController, controllerCopy);
+  [restrictionControllerCopy addObserver:self];
+  objc_storeWeak(&self->_applicationRestrictionController, restrictionControllerCopy);
 
-  [v17 addObserver:self];
-  objc_storeWeak(&self->_layoutStateTransitionCoordinator, v17);
+  [coordinatorCopy addObserver:self];
+  objc_storeWeak(&self->_layoutStateTransitionCoordinator, coordinatorCopy);
 
-  [v15 addObserver:self];
+  [publisherCopy addObserver:self];
   displayLayoutPublisher = self->_displayLayoutPublisher;
-  self->_displayLayoutPublisher = v15;
-  v22 = v15;
+  self->_displayLayoutPublisher = publisherCopy;
+  v22 = publisherCopy;
 
-  [v16 addObserver:self];
-  objc_storeWeak(&self->_touchDeliveryObservationService, v16);
+  [serviceCopy addObserver:self];
+  objc_storeWeak(&self->_touchDeliveryObservationService, serviceCopy);
 
   appLayoutOnStage = self->_appLayoutOnStage;
   self->_appLayoutOnStage = 0;
 
-  v24 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v24 addObserver:self selector:sel__installedAppsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v20];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__installedAppsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:controllerCopy];
 
-  [v24 addObserver:self selector:sel__userQuitApplication_ name:@"SBAppSwitcherQuitAppNotification" object:0];
-  [v24 addObserver:self selector:sel__iconVisibilityDidChange_ name:*MEMORY[0x277D666F8] object:v18];
+  [defaultCenter addObserver:self selector:sel__userQuitApplication_ name:@"SBAppSwitcherQuitAppNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__iconVisibilityDidChange_ name:*MEMORY[0x277D666F8] object:modelCopy];
 
-  [v24 addObserver:self selector:sel__userRemovedSuggestion_ name:@"SBFloatingDockSuggestionsDeletedNotification" object:0];
-  [v24 addObserver:self selector:sel__webBookmarkUninstalled_ name:*MEMORY[0x277D66750] object:0];
+  [defaultCenter addObserver:self selector:sel__userRemovedSuggestion_ name:@"SBFloatingDockSuggestionsDeletedNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__webBookmarkUninstalled_ name:*MEMORY[0x277D66750] object:0];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   WeakRetained = objc_loadWeakRetained(&self->_touchDeliveryObservationService);
   [WeakRetained removeObserver:self];
@@ -125,33 +125,33 @@
   [(SBDisplayAppInteractionEventSource *)&v7 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)_noteTouchForProcess:(int)a3 context:(unsigned int)a4
+- (void)_noteTouchForProcess:(int)process context:(unsigned int)context
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___block_invoke;
   v4[3] = &unk_2783A8BC8;
   v4[4] = self;
-  v5 = a3;
-  v6 = a4;
+  processCopy = process;
+  contextCopy = context;
   dispatch_async(MEMORY[0x277D85CD0], v4);
 }
 
@@ -204,24 +204,24 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
   }
 }
 
-- (void)publisher:(id)a3 didUpdateLayout:(id)a4 withTransition:(id)a5
+- (void)publisher:(id)publisher didUpdateLayout:(id)layout withTransition:(id)transition
 {
   v62 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v7 = a4;
-  v34 = a5;
+  publisherCopy = publisher;
+  layoutCopy = layout;
+  transitionCopy = transition;
   v43 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v36 = v7;
-  obj = [v7 elements];
+  v36 = layoutCopy;
+  obj = [layoutCopy elements];
   v8 = [obj countByEnumeratingWithState:&v48 objects:v61 count:16];
   if (v8)
   {
     v9 = v8;
-    v10 = 0;
+    bundleIdentifier = 0;
     v42 = *v49;
     v41 = *MEMORY[0x277D67488];
     v11 = *MEMORY[0x277D67490];
@@ -237,30 +237,30 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
         }
 
         v13 = *(*(&v48 + 1) + 8 * i);
-        if (!v10)
+        if (!bundleIdentifier)
         {
           if ([*(*(&v48 + 1) + 8 * i) hasKeyboardFocus])
           {
-            v10 = [v13 bundleIdentifier];
+            bundleIdentifier = [v13 bundleIdentifier];
             v14 = SBLogDockRecents();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v54 = v10;
+              v54 = bundleIdentifier;
               _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_INFO, "elementWithFocusBundleID = %@", buf, 0xCu);
             }
           }
 
           else
           {
-            v10 = 0;
+            bundleIdentifier = 0;
           }
         }
 
-        v15 = v10;
+        v15 = bundleIdentifier;
         v16 = MEMORY[0x277CBEB38];
         v59[0] = v41;
-        v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v13, "level", v34)}];
+        v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v13, "level", transitionCopy)}];
         v60[0] = v17;
         v59[1] = v11;
         v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v13, "isUIApplicationElement")}];
@@ -268,21 +268,21 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v60 forKeys:v59 count:2];
         v20 = [v16 dictionaryWithDictionary:v19];
 
-        v21 = [v13 identifier];
-        if (v21)
+        identifier = [v13 identifier];
+        if (identifier)
         {
-          [v20 setObject:v21 forKeyedSubscript:v40];
+          [v20 setObject:identifier forKeyedSubscript:v40];
         }
 
-        v22 = [v13 bundleIdentifier];
-        if (v22)
+        bundleIdentifier2 = [v13 bundleIdentifier];
+        if (bundleIdentifier2)
         {
-          [v20 setObject:v22 forKeyedSubscript:v39];
+          [v20 setObject:bundleIdentifier2 forKeyedSubscript:v39];
         }
 
         [v43 addObject:v20];
 
-        v10 = v15;
+        bundleIdentifier = v15;
       }
 
       v9 = [obj countByEnumeratingWithState:&v48 objects:v61 count:16];
@@ -293,7 +293,7 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
 
   else
   {
-    v10 = 0;
+    bundleIdentifier = 0;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_analyticsClient);
@@ -302,7 +302,7 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v58 forKeys:&v57 count:1];
   [WeakRetained emitEvent:3 withPayload:v24];
 
-  if (v10 && ![(NSString *)self->_currentFocusedBundleID isEqualToString:v10])
+  if (bundleIdentifier && ![(NSString *)self->_currentFocusedBundleID isEqualToString:bundleIdentifier])
   {
     v25 = SBLogDockRecents();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
@@ -311,12 +311,12 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
       *buf = 138412546;
       v54 = currentFocusedBundleID;
       v55 = 2112;
-      v56 = v10;
+      v56 = bundleIdentifier;
       _os_log_impl(&dword_21ED4E000, v25, OS_LOG_TYPE_INFO, "elementWithFocusBundleID changed. old: %@; new: %@;", buf, 0x16u);
     }
 
-    v27 = v10;
-    [(SBDisplayAppInteractionEventSource *)self setCurrentFocusedBundleID:v10];
+    v27 = bundleIdentifier;
+    [(SBDisplayAppInteractionEventSource *)self setCurrentFocusedBundleID:bundleIdentifier];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -349,15 +349,15 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
       while (v30);
     }
 
-    v10 = v27;
+    bundleIdentifier = v27;
   }
 }
 
-- (void)_installedAppsDidChange:(id)a3
+- (void)_installedAppsDidChange:(id)change
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"SBInstalledApplicationsRemovedBundleIDs"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"SBInstalledApplicationsRemovedBundleIDs"];
 
   v6 = SBLogDockRecents();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -404,11 +404,11 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
   }
 }
 
-- (void)_userQuitApplication:(id)a3
+- (void)_userQuitApplication:(id)application
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"SBAppSwitcherQuitAppBundleIdentifierKey"];
+  userInfo = [application userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"SBAppSwitcherQuitAppBundleIdentifierKey"];
 
   v6 = SBLogDockRecents();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -455,18 +455,18 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
   }
 }
 
-- (void)applicationRestrictionController:(id)a3 didUpdateVisibleTags:(id)a4 hiddenTags:(id)a5
+- (void)applicationRestrictionController:(id)controller didUpdateVisibleTags:(id)tags hiddenTags:(id)hiddenTags
 {
   v35 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if ([v8 count])
+  tagsCopy = tags;
+  hiddenTagsCopy = hiddenTags;
+  if ([hiddenTagsCopy count])
   {
     v9 = SBLogDockRecents();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v34 = v8;
+      v34 = hiddenTagsCopy;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_INFO, "hiddenTags: %@;", buf, 0xCu);
     }
 
@@ -492,7 +492,7 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
           v15 = *(*(&v27 + 1) + 8 * i);
           if (objc_opt_respondsToSelector())
           {
-            [v15 eventSource:self applicationsBecameHidden:v8];
+            [v15 eventSource:self applicationsBecameHidden:hiddenTagsCopy];
           }
         }
 
@@ -503,13 +503,13 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
     }
   }
 
-  if ([v7 count])
+  if ([tagsCopy count])
   {
     v16 = SBLogDockRecents();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v34 = v7;
+      v34 = tagsCopy;
       _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_INFO, "visibleTags: %@;", buf, 0xCu);
     }
 
@@ -535,7 +535,7 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
           v22 = *(*(&v23 + 1) + 8 * j);
           if (objc_opt_respondsToSelector())
           {
-            [v22 eventSource:self applicationsBecameVisible:{v7, v23}];
+            [v22 eventSource:self applicationsBecameVisible:{tagsCopy, v23}];
           }
         }
 
@@ -547,16 +547,16 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
   }
 }
 
-- (void)_userRemovedSuggestion:(id)a3
+- (void)_userRemovedSuggestion:(id)suggestion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"SBFloatingDockSuggestionsDeletedNotificationBundleIdentifierKey"];
+  suggestionCopy = suggestion;
+  userInfo = [suggestionCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"SBFloatingDockSuggestionsDeletedNotificationBundleIdentifierKey"];
 
-  v16 = v4;
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKeyedSubscript:@"SBFloatingDockSuggestionsDeletedNotificationWebAppIdentifierKey"];
+  v16 = suggestionCopy;
+  userInfo2 = [suggestionCopy userInfo];
+  v8 = [userInfo2 objectForKeyedSubscript:@"SBFloatingDockSuggestionsDeletedNotificationWebAppIdentifierKey"];
 
   v9 = SBLogDockRecents();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -611,22 +611,22 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
   }
 }
 
-- (void)_webBookmarkUninstalled:(id)a3
+- (void)_webBookmarkUninstalled:(id)uninstalled
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uninstalledCopy = uninstalled;
   v5 = objc_opt_class();
-  v6 = [v4 object];
-  v7 = SBSafeCast(v5, v6);
+  object = [uninstalledCopy object];
+  v7 = SBSafeCast(v5, object);
 
   if (v7)
   {
     v8 = SBLogDockRecents();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v7 identifier];
+      identifier = [v7 identifier];
       *buf = 138412290;
-      v22 = v9;
+      v22 = identifier;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "uninstalled bookmark for webClip: %@", buf, 0xCu);
     }
 
@@ -668,47 +668,47 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
   }
 }
 
-- (void)_notifyTransition:(id)a3 beginning:(BOOL)a4
+- (void)_notifyTransition:(id)transition beginning:(BOOL)beginning
 {
-  v4 = a4;
+  beginningCopy = beginning;
   v135 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 toLayoutState];
+  transitionCopy = transition;
+  toLayoutState = [transitionCopy toLayoutState];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 isInterrupted] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([transitionCopy isInterrupted] & 1) == 0)
   {
-    v7 = [v6 unlockedEnvironmentMode];
+    unlockedEnvironmentMode = [toLayoutState unlockedEnvironmentMode];
     v8 = objc_opt_class();
-    v9 = [v5 workspaceTransaction];
-    v10 = [v9 transitionRequest];
-    v11 = SBSafeCast(v8, v10);
+    workspaceTransaction = [transitionCopy workspaceTransaction];
+    transitionRequest = [workspaceTransaction transitionRequest];
+    v11 = SBSafeCast(v8, transitionRequest);
 
-    v90 = v4;
+    v90 = beginningCopy;
     if (v11)
     {
-      v12 = [v11 source];
+      source = [v11 source];
     }
 
     else
     {
-      v12 = 0;
+      source = 0;
     }
 
-    v13 = [v5 applicationTransitionContext];
-    v14 = [v13 requestedActivatingWorkspaceEntity];
+    applicationTransitionContext = [transitionCopy applicationTransitionContext];
+    requestedActivatingWorkspaceEntity = [applicationTransitionContext requestedActivatingWorkspaceEntity];
 
     v84 = v11;
-    v85 = v5;
-    v15 = v6;
-    v93 = v14;
-    if (v14)
+    v85 = transitionCopy;
+    v15 = toLayoutState;
+    v93 = requestedActivatingWorkspaceEntity;
+    if (requestedActivatingWorkspaceEntity)
     {
       v113 = 0u;
       v114 = 0u;
       v111 = 0u;
       v112 = 0u;
-      v16 = [v6 elements];
-      v17 = [v16 countByEnumeratingWithState:&v111 objects:v134 count:16];
+      elements = [toLayoutState elements];
+      v17 = [elements countByEnumeratingWithState:&v111 objects:v134 count:16];
       if (v17)
       {
         v18 = v17;
@@ -719,12 +719,12 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
           {
             if (*v112 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(elements);
             }
 
             v21 = *(*(&v111 + 1) + 8 * i);
-            v22 = [v21 workspaceEntity];
-            v23 = [v93 isAnalogousToEntity:v22];
+            workspaceEntity = [v21 workspaceEntity];
+            v23 = [v93 isAnalogousToEntity:workspaceEntity];
 
             if (v23)
             {
@@ -733,7 +733,7 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v111 objects:v134 count:16];
+          v18 = [elements countByEnumeratingWithState:&v111 objects:v134 count:16];
           if (v18)
           {
             continue;
@@ -744,8 +744,8 @@ void __67__SBDisplayAppInteractionEventSource__noteTouchForProcess_context___blo
 
         v24 = 0;
 LABEL_17:
-        v5 = v85;
-        v6 = v15;
+        transitionCopy = v85;
+        toLayoutState = v15;
       }
 
       else
@@ -756,16 +756,16 @@ LABEL_17:
 
     else
     {
-      if (v12 != 27)
+      if (source != 27)
       {
         v24 = 0;
         goto LABEL_35;
       }
 
-      v25 = [v5 fromLayoutState];
-      v16 = [v25 elements];
+      fromLayoutState = [transitionCopy fromLayoutState];
+      elements = [fromLayoutState elements];
 
-      [v6 elements];
+      [toLayoutState elements];
       v107 = 0u;
       v108 = 0u;
       v109 = 0u;
@@ -785,7 +785,7 @@ LABEL_17:
             }
 
             v31 = *(*(&v107 + 1) + 8 * j);
-            if (([v16 containsObject:v31] & 1) == 0)
+            if (([elements containsObject:v31] & 1) == 0)
             {
               v24 = v31;
               goto LABEL_31;
@@ -803,7 +803,7 @@ LABEL_17:
 
         v24 = 0;
 LABEL_31:
-        v5 = v85;
+        transitionCopy = v85;
       }
 
       else
@@ -813,16 +813,16 @@ LABEL_31:
     }
 
 LABEL_35:
-    v32 = [v6 elements];
-    v33 = [v32 bs_map:&__block_literal_global_356];
+    elements2 = [toLayoutState elements];
+    v33 = [elements2 bs_map:&__block_literal_global_356];
 
     if (!v33)
     {
       v33 = [MEMORY[0x277CBEB98] set];
     }
 
-    v34 = [v6 elements];
-    v35 = [v34 bs_map:&__block_literal_global_54_2];
+    elements3 = [toLayoutState elements];
+    v35 = [elements3 bs_map:&__block_literal_global_54_2];
 
     if (!v35)
     {
@@ -830,23 +830,23 @@ LABEL_35:
     }
 
     v83 = v33;
-    v36 = [v33 allObjects];
-    v89 = [v36 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+    allObjects = [v33 allObjects];
+    v89 = [allObjects sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
     v82 = v35;
-    v37 = [v35 allObjects];
-    v88 = [v37 sortedArrayUsingComparator:&__block_literal_global_63_1];
+    allObjects2 = [v35 allObjects];
+    v88 = [allObjects2 sortedArrayUsingComparator:&__block_literal_global_63_1];
 
     WeakRetained = objc_loadWeakRetained(&self->_analyticsClient);
     v38 = objc_loadWeakRetained(&self->_layoutStateTransitionCoordinator);
-    v39 = [v38 windowScene];
-    v40 = [v39 switcherController];
+    windowScene = [v38 windowScene];
+    switcherController = [windowScene switcherController];
 
     v105[0] = MEMORY[0x277D85DD0];
     v105[1] = 3221225472;
     v105[2] = __66__SBDisplayAppInteractionEventSource__notifyTransition_beginning___block_invoke_4;
     v105[3] = &unk_2783BFF38;
-    v41 = v40;
+    v41 = switcherController;
     v106 = v41;
     v87 = MEMORY[0x223D6F7F0](v105);
     v103[0] = MEMORY[0x277D85DD0];
@@ -856,24 +856,24 @@ LABEL_35:
     v81 = v41;
     v104 = v81;
     v86 = MEMORY[0x223D6F7F0](v103);
-    v42 = [v6 appLayout];
+    appLayout = [toLayoutState appLayout];
     appLayoutOnStage = self->_appLayoutOnStage;
-    v91 = v42;
-    if (v42)
+    v91 = appLayout;
+    if (appLayout)
     {
       if (!appLayoutOnStage)
       {
         goto LABEL_44;
       }
 
-      if (![(SBAppLayout *)appLayoutOnStage containsAnyItemFromAppLayout:v42])
+      if (![(SBAppLayout *)appLayoutOnStage containsAnyItemFromAppLayout:appLayout])
       {
         v44 = self->_appLayoutOnStage;
         self->_appLayoutOnStage = 0;
 
         v131[0] = *MEMORY[0x277D675A0];
-        v45 = [v5 fromLayoutState];
-        v46 = (v87)[2](v87, v45);
+        fromLayoutState2 = [transitionCopy fromLayoutState];
+        v46 = (v87)[2](v87, fromLayoutState2);
         v132[0] = v46;
         v131[1] = *MEMORY[0x277D675C8];
         v47 = v86[2]();
@@ -886,7 +886,7 @@ LABEL_35:
       {
 LABEL_44:
         v129[0] = *MEMORY[0x277D675A0];
-        v49 = (v87)[2](v87, v6);
+        v49 = (v87)[2](v87, toLayoutState);
         v130[0] = v49;
         v129[1] = *MEMORY[0x277D675C8];
         v50 = v86[2]();
@@ -896,7 +896,7 @@ LABEL_44:
       }
 
       v52 = v91;
-      v53 = self->_appLayoutOnStage;
+      fromLayoutState3 = self->_appLayoutOnStage;
       self->_appLayoutOnStage = v52;
     }
 
@@ -910,8 +910,8 @@ LABEL_44:
       self->_appLayoutOnStage = 0;
 
       v127[0] = *MEMORY[0x277D675A0];
-      v53 = [v5 fromLayoutState];
-      v54 = (v87)[2](v87, v53);
+      fromLayoutState3 = [transitionCopy fromLayoutState];
+      v54 = (v87)[2](v87, fromLayoutState3);
       v128[0] = v54;
       v127[1] = *MEMORY[0x277D675C8];
       v55 = v86[2]();
@@ -933,22 +933,22 @@ LABEL_49:
     v59 = *MEMORY[0x277D67578];
     v125[0] = v58;
     v125[1] = v59;
-    v80 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "interfaceOrientationForLayoutRole:", 1)}];
+    v80 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(toLayoutState, "interfaceOrientationForLayoutRole:", 1)}];
     v126[1] = v80;
     v125[2] = *MEMORY[0x277D67598];
-    v78 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "interfaceOrientation")}];
+    v78 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(toLayoutState, "interfaceOrientation")}];
     v126[2] = v78;
     v125[3] = *MEMORY[0x277D675B0];
-    v60 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "spaceConfiguration")}];
+    v60 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(toLayoutState, "spaceConfiguration")}];
     v126[3] = v60;
     v125[4] = *MEMORY[0x277D67590];
-    v61 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "floatingConfiguration")}];
+    v61 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(toLayoutState, "floatingConfiguration")}];
     v126[4] = v61;
     v125[5] = *MEMORY[0x277D675C0];
-    v62 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "unlockedEnvironmentMode")}];
+    v62 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(toLayoutState, "unlockedEnvironmentMode")}];
     v126[5] = v62;
     v125[6] = *MEMORY[0x277D675B8];
-    v63 = [MEMORY[0x277CCABB0] numberWithInteger:v12];
+    v63 = [MEMORY[0x277CCABB0] numberWithInteger:source];
     v125[7] = *MEMORY[0x277D67588];
     v126[6] = v63;
     v126[7] = v88;
@@ -959,17 +959,17 @@ LABEL_49:
     v66 = os_log_type_enabled(v65, OS_LOG_TYPE_INFO);
     if (v90)
     {
-      v6 = v15;
+      toLayoutState = v15;
       if (v66)
       {
         *buf = 134218754;
-        v118 = v7;
+        v118 = unlockedEnvironmentMode;
         v119 = 2112;
         v120 = v15;
         v121 = 2112;
         v122 = v24;
         v123 = 2048;
-        v124 = v12;
+        v124 = source;
         _os_log_impl(&dword_21ED4E000, v65, OS_LOG_TYPE_INFO, "beginning transition to mode: %ld; layoutState: %@; activatingElement: %@, triggeredBy: %ld", buf, 0x2Au);
       }
 
@@ -998,7 +998,7 @@ LABEL_49:
           v72 = *(*(&v99 + 1) + 8 * k);
           if (objc_opt_respondsToSelector())
           {
-            [v72 eventSource:self didBeginTransitionToMode:v7 withLayoutState:v15 activatingElement:v24 triggeredBy:v12];
+            [v72 eventSource:self didBeginTransitionToMode:unlockedEnvironmentMode withLayoutState:v15 activatingElement:v24 triggeredBy:source];
           }
         }
 
@@ -1010,17 +1010,17 @@ LABEL_49:
 
     else
     {
-      v6 = v15;
+      toLayoutState = v15;
       if (v66)
       {
         *buf = 134218754;
-        v118 = v7;
+        v118 = unlockedEnvironmentMode;
         v119 = 2112;
         v120 = v15;
         v121 = 2112;
         v122 = v24;
         v123 = 2048;
-        v124 = v12;
+        v124 = source;
         _os_log_impl(&dword_21ED4E000, v65, OS_LOG_TYPE_INFO, "ending transition to mode: %ld; layoutState: %@; activatingElement: %@, triggeredBy: %ld", buf, 0x2Au);
       }
 
@@ -1049,7 +1049,7 @@ LABEL_49:
           v77 = *(*(&v95 + 1) + 8 * m);
           if (objc_opt_respondsToSelector())
           {
-            [v77 eventSource:self didFinishTransitionToMode:v7 withLayoutState:v15 activatingElement:v24 triggeredBy:v12];
+            [v77 eventSource:self didFinishTransitionToMode:unlockedEnvironmentMode withLayoutState:v15 activatingElement:v24 triggeredBy:source];
           }
         }
 
@@ -1059,8 +1059,8 @@ LABEL_49:
       while (v74);
     }
 
-    v5 = v85;
-    v6 = v15;
+    transitionCopy = v85;
+    toLayoutState = v15;
 LABEL_76:
   }
 }
@@ -1159,12 +1159,12 @@ id __66__SBDisplayAppInteractionEventSource__notifyTransition_beginning___block_
   return v3;
 }
 
-- (void)_iconVisibilityDidChange:(id)a3
+- (void)_iconVisibilityDidChange:(id)change
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x277D66870]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D66870]];
 
   v26 = v6;
   v7 = [(SBDisplayAppInteractionEventSource *)self _bundleIDsForIcons:v6];
@@ -1211,8 +1211,8 @@ id __66__SBDisplayAppInteractionEventSource__notifyTransition_beginning___block_
     }
   }
 
-  v15 = [v4 userInfo];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D66878]];
+  userInfo2 = [changeCopy userInfo];
+  v16 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277D66878]];
 
   v17 = [(SBDisplayAppInteractionEventSource *)self _bundleIDsForIcons:v16];
   if ([v17 count])
@@ -1262,16 +1262,16 @@ id __66__SBDisplayAppInteractionEventSource__notifyTransition_beginning___block_
   }
 }
 
-- (id)_bundleIDsForIcons:(id)a3
+- (id)_bundleIDsForIcons:(id)icons
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  iconsCopy = icons;
   v4 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = iconsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -1289,11 +1289,11 @@ id __66__SBDisplayAppInteractionEventSource__notifyTransition_beginning___block_
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 isLeafIcon])
         {
-          v11 = [v10 applicationBundleID];
-          if (v11)
+          applicationBundleID = [v10 applicationBundleID];
+          if (applicationBundleID)
           {
-            v12 = v11;
-            [v4 addObject:v11];
+            v12 = applicationBundleID;
+            [v4 addObject:applicationBundleID];
           }
         }
       }

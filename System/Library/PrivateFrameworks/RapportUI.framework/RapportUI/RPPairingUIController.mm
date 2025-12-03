@@ -3,7 +3,7 @@
 - (void)_cleanup;
 - (void)activate;
 - (void)invalidate;
-- (void)promptWithFlags:(unsigned int)a3 throttleSeconds:(int)a4;
+- (void)promptWithFlags:(unsigned int)flags throttleSeconds:(int)seconds;
 @end
 
 @implementation RPPairingUIController
@@ -71,15 +71,15 @@ uint64_t __35__RPPairingUIController_invalidate__block_invoke(uint64_t a1)
   return [v2 _cleanup];
 }
 
-- (void)promptWithFlags:(unsigned int)a3 throttleSeconds:(int)a4
+- (void)promptWithFlags:(unsigned int)flags throttleSeconds:(int)seconds
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__RPPairingUIController_promptWithFlags_throttleSeconds___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  v6 = a3;
-  v7 = a4;
+  flagsCopy = flags;
+  secondsCopy = seconds;
   dispatch_async(dispatchQueue, block);
 }
 

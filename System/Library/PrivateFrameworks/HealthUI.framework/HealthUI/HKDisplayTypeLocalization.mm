@@ -1,18 +1,18 @@
 @interface HKDisplayTypeLocalization
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDisplayTypeLocalization)init;
-- (HKDisplayTypeLocalization)initWithDisplayNameKey:(id)a3 labelDisplayNameKey:(id)a4 localizationTableNameOverride:(id)a5 localizedKeySuffix:(id)a6 unitNameKeyOverrides:(id)a7;
+- (HKDisplayTypeLocalization)initWithDisplayNameKey:(id)key labelDisplayNameKey:(id)nameKey localizationTableNameOverride:(id)override localizedKeySuffix:(id)suffix unitNameKeyOverrides:(id)overrides;
 - (NSSet)keywords;
 - (NSString)displayNameForFitnessJr;
 - (NSString)shortenedDisplayName;
 - (NSString)summary;
 - (NSString)summaryForFitnessJr;
-- (id)_localizedStringForKeyOrNil:(id)a3;
-- (id)_localizedStringWithKey:(id)a3;
-- (id)_rawLocalizedStringForKey:(id)a3;
-- (id)copyWithLocalizationTableNameOverride:(id)a3;
-- (id)copyWithLocalizedKeySuffix:(id)a3;
-- (id)unitDisplayNameKeyOverrideForUnit:(id)a3 nameContext:(int64_t)a4;
+- (id)_localizedStringForKeyOrNil:(id)nil;
+- (id)_localizedStringWithKey:(id)key;
+- (id)_rawLocalizedStringForKey:(id)key;
+- (id)copyWithLocalizationTableNameOverride:(id)override;
+- (id)copyWithLocalizedKeySuffix:(id)suffix;
+- (id)unitDisplayNameKeyOverrideForUnit:(id)unit nameContext:(int64_t)context;
 - (unint64_t)hash;
 - (void)_expandLocalizationKeys;
 @end
@@ -80,35 +80,35 @@
   return 0;
 }
 
-- (HKDisplayTypeLocalization)initWithDisplayNameKey:(id)a3 labelDisplayNameKey:(id)a4 localizationTableNameOverride:(id)a5 localizedKeySuffix:(id)a6 unitNameKeyOverrides:(id)a7
+- (HKDisplayTypeLocalization)initWithDisplayNameKey:(id)key labelDisplayNameKey:(id)nameKey localizationTableNameOverride:(id)override localizedKeySuffix:(id)suffix unitNameKeyOverrides:(id)overrides
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  keyCopy = key;
+  nameKeyCopy = nameKey;
+  overrideCopy = override;
+  suffixCopy = suffix;
+  overridesCopy = overrides;
   v29.receiver = self;
   v29.super_class = HKDisplayTypeLocalization;
   v17 = [(HKDisplayTypeLocalization *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [keyCopy copy];
     displayNameKey = v17->_displayNameKey;
     v17->_displayNameKey = v18;
 
-    v20 = [v13 copy];
+    v20 = [nameKeyCopy copy];
     labelDisplayNameKey = v17->_labelDisplayNameKey;
     v17->_labelDisplayNameKey = v20;
 
-    v22 = [v14 copy];
+    v22 = [overrideCopy copy];
     localizationTableNameOverride = v17->_localizationTableNameOverride;
     v17->_localizationTableNameOverride = v22;
 
-    v24 = [v15 copy];
+    v24 = [suffixCopy copy];
     localizedKeySuffix = v17->_localizedKeySuffix;
     v17->_localizedKeySuffix = v24;
 
-    v26 = [v16 copy];
+    v26 = [overridesCopy copy];
     unitNameKeyOverrides = v17->_unitNameKeyOverrides;
     v17->_unitNameKeyOverrides = v26;
 
@@ -118,12 +118,12 @@
   return v17;
 }
 
-- (id)unitDisplayNameKeyOverrideForUnit:(id)a3 nameContext:(int64_t)a4
+- (id)unitDisplayNameKeyOverrideForUnit:(id)unit nameContext:(int64_t)context
 {
-  v6 = a3;
-  if (v6)
+  unitCopy = unit;
+  if (unitCopy)
   {
-    v7 = [(NSDictionary *)self->_unitNameKeyOverrides objectForKeyedSubscript:v6];
+    v7 = [(NSDictionary *)self->_unitNameKeyOverrides objectForKeyedSubscript:unitCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,7 +136,7 @@
       if (objc_opt_isKindOfClass())
       {
         v9 = v7;
-        if ((a4 & 0xFFFFFFFFFFFFFFFELL) != 2 || ([MEMORY[0x1E696AD98] numberWithInteger:a4], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v10), v8 = objc_claimAutoreleasedReturnValue(), v10, !v8))
+        if ((context & 0xFFFFFFFFFFFFFFFELL) != 2 || ([MEMORY[0x1E696AD98] numberWithInteger:context], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", v10), v8 = objc_claimAutoreleasedReturnValue(), v10, !v8))
         {
           v8 = [v9 objectForKeyedSubscript:&unk_1F4383CB8];
         }
@@ -157,18 +157,18 @@
   return v8;
 }
 
-- (id)_localizedStringWithKey:(id)a3
+- (id)_localizedStringWithKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
+  keyCopy = key;
+  v5 = keyCopy;
   if (self->_localizedKeySuffix)
   {
-    v6 = [v4 stringByAppendingString:?];
+    v6 = [keyCopy stringByAppendingString:?];
   }
 
   else
   {
-    v6 = v4;
+    v6 = keyCopy;
   }
 
   v7 = v6;
@@ -189,9 +189,9 @@
   return v11;
 }
 
-- (id)_rawLocalizedStringForKey:(id)a3
+- (id)_rawLocalizedStringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   localizationTableNameOverride = self->_localizationTableNameOverride;
   p_localizationTableNameOverride = &self->_localizationTableNameOverride;
   v7 = HKHealthKitFrameworkBundle();
@@ -202,9 +202,9 @@
     v9 = p_localizationTableNameOverride;
   }
 
-  v10 = [v7 localizedStringForKey:v4 value:&stru_1F42FFBE0 table:*v9];
+  v10 = [v7 localizedStringForKey:keyCopy value:&stru_1F42FFBE0 table:*v9];
 
-  if ([v10 isEqualToString:v4])
+  if ([v10 isEqualToString:keyCopy])
   {
 
     v10 = 0;
@@ -237,25 +237,25 @@
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    displayName = v3;
   }
 
   else
   {
-    v5 = [(HKDisplayTypeLocalization *)self displayName];
+    displayName = [(HKDisplayTypeLocalization *)self displayName];
   }
 
-  v6 = v5;
+  v6 = displayName;
 
   return v6;
 }
 
 - (NSString)summary
 {
-  v3 = [MEMORY[0x1E696C608] sharedBehavior];
-  v4 = [v3 isiPad];
+  mEMORY[0x1E696C608] = [MEMORY[0x1E696C608] sharedBehavior];
+  isiPad = [mEMORY[0x1E696C608] isiPad];
 
-  if (!v4 || ([(HKDisplayTypeLocalization *)self _localizedStringForKeyOrNil:self->_summaryIPadNameKey], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!isiPad || ([(HKDisplayTypeLocalization *)self _localizedStringForKeyOrNil:self->_summaryIPadNameKey], (v5 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5 = [(HKDisplayTypeLocalization *)self _localizedStringWithKey:self->_summaryNameKey];
   }
@@ -271,11 +271,11 @@
   return v4;
 }
 
-- (id)_localizedStringForKeyOrNil:(id)a3
+- (id)_localizedStringForKeyOrNil:(id)nil
 {
-  v4 = a3;
-  v5 = [(HKDisplayTypeLocalization *)self _localizedStringWithKey:v4];
-  v6 = [v5 isEqualToString:v4];
+  nilCopy = nil;
+  v5 = [(HKDisplayTypeLocalization *)self _localizedStringWithKey:nilCopy];
+  v6 = [v5 isEqualToString:nilCopy];
 
   if (v6)
   {
@@ -292,18 +292,18 @@
   return v7;
 }
 
-- (id)copyWithLocalizedKeySuffix:(id)a3
+- (id)copyWithLocalizedKeySuffix:(id)suffix
 {
-  v4 = a3;
-  v5 = [[HKDisplayTypeLocalization alloc] initWithDisplayNameKey:self->_displayNameKey labelDisplayNameKey:self->_labelDisplayNameKey localizationTableNameOverride:self->_localizationTableNameOverride localizedKeySuffix:v4 unitNameKeyOverrides:self->_unitNameKeyOverrides];
+  suffixCopy = suffix;
+  v5 = [[HKDisplayTypeLocalization alloc] initWithDisplayNameKey:self->_displayNameKey labelDisplayNameKey:self->_labelDisplayNameKey localizationTableNameOverride:self->_localizationTableNameOverride localizedKeySuffix:suffixCopy unitNameKeyOverrides:self->_unitNameKeyOverrides];
 
   return v5;
 }
 
-- (id)copyWithLocalizationTableNameOverride:(id)a3
+- (id)copyWithLocalizationTableNameOverride:(id)override
 {
-  v4 = a3;
-  v5 = [[HKDisplayTypeLocalization alloc] initWithDisplayNameKey:self->_displayNameKey labelDisplayNameKey:self->_labelDisplayNameKey localizationTableNameOverride:v4 localizedKeySuffix:self->_localizedKeySuffix unitNameKeyOverrides:self->_unitNameKeyOverrides];
+  overrideCopy = override;
+  v5 = [[HKDisplayTypeLocalization alloc] initWithDisplayNameKey:self->_displayNameKey labelDisplayNameKey:self->_labelDisplayNameKey localizationTableNameOverride:overrideCopy localizedKeySuffix:self->_localizedKeySuffix unitNameKeyOverrides:self->_unitNameKeyOverrides];
 
   return v5;
 }
@@ -317,50 +317,50 @@
   return v6 ^ [(NSDictionary *)self->_unitNameKeyOverrides hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_18;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     goto LABEL_19;
   }
 
   displayNameKey = self->_displayNameKey;
-  v6 = v4->_displayNameKey;
+  v6 = equalCopy->_displayNameKey;
   if (displayNameKey != v6 && (!v6 || ![(NSString *)displayNameKey isEqualToString:?]))
   {
     goto LABEL_18;
   }
 
   labelDisplayNameKey = self->_labelDisplayNameKey;
-  v8 = v4->_labelDisplayNameKey;
+  v8 = equalCopy->_labelDisplayNameKey;
   if (labelDisplayNameKey != v8 && (!v8 || ![(NSString *)labelDisplayNameKey isEqualToString:?]))
   {
     goto LABEL_18;
   }
 
   localizationTableNameOverride = self->_localizationTableNameOverride;
-  v10 = v4->_localizationTableNameOverride;
+  v10 = equalCopy->_localizationTableNameOverride;
   if (localizationTableNameOverride != v10 && (!v10 || ![(NSString *)localizationTableNameOverride isEqualToString:?]))
   {
     goto LABEL_18;
   }
 
   localizedKeySuffix = self->_localizedKeySuffix;
-  v12 = v4->_localizedKeySuffix;
+  v12 = equalCopy->_localizedKeySuffix;
   if (localizedKeySuffix != v12 && (!v12 || ![(NSString *)localizedKeySuffix isEqualToString:?]))
   {
     goto LABEL_18;
   }
 
   unitNameKeyOverrides = self->_unitNameKeyOverrides;
-  v14 = v4->_unitNameKeyOverrides;
+  v14 = equalCopy->_unitNameKeyOverrides;
   if (unitNameKeyOverrides == v14)
   {
 LABEL_19:

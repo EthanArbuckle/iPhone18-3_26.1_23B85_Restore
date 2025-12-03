@@ -1,59 +1,59 @@
 @interface STConcretePrivateAgentService
 - (STPrivateAgentServiceDelegate)delegate;
-- (void)applyDefaultUserPoliciesWithCompletionHandler:(id)a3;
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5;
-- (void)authenticateRestrictionsPasscode:(id)a3 replyHandler:(id)a4;
-- (void)clearRestrictionsPasscodeWithCompletionHandler:(id)a3;
-- (void)communicationPoliciesForDSID:(id)a3 withCompletionHandler:(id)a4;
-- (void)communicationPoliciesWithCompletionHandler:(id)a3;
-- (void)contactManagementStateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6;
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 replyHandler:(id)a5;
-- (void)deleteAllWebApplicationHistory:(id)a3 replyHandler:(id)a4;
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7;
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6;
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 replyHandler:(id)a5;
-- (void)deleteWebHistoryForDomain:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6;
-- (void)deleteWebHistoryForDomain:(id)a3 webApplication:(id)a4 replyHandler:(id)a5;
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7;
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6;
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 replyHandler:(id)a5;
-- (void)deleteWebHistoryForURLs:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6;
-- (void)deleteWebHistoryForURLs:(id)a3 webApplication:(id)a4 replyHandler:(id)a5;
-- (void)enableRemoteManagementForDSID:(id)a3 completionHandler:(id)a4;
-- (void)enableScreenTimeForDSID:(id)a3 completionHandler:(id)a4;
-- (void)enableWebContentFilterWithCompletionHandler:(id)a3;
-- (void)exportDatabaseToURL:(id)a3 replyHandler:(id)a4;
-- (void)isCommunicationSafetyEnabledForUserDSID:(id)a3 completionHandler:(id)a4;
-- (void)isContentPrivacyEnabledForDSID:(id)a3 completionHandler:(id)a4;
-- (void)isExplicitContentRestrictedWithCompletionHandler:(id)a3;
-- (void)isLocationSharingModificationAllowedForDSID:(id)a3 completionHandler:(id)a4;
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3;
-- (void)isWebContentRestrictedWithCompletionHandler:(id)a3;
-- (void)lastCommunicationLimitsModifcationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)lastModifcationDateForDSID:(id)a3 completionHandler:(id)a4;
-- (void)loadEncodedSettingsForEncodedUser:(id)a3 withEncodedDefaults:(id)a4 completion:(id)a5;
-- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)a3;
-- (void)needsToSetRestrictionsPasscodeWithReplyHandler:(id)a3;
-- (void)performMigrationFromMCXSettings:(id)a3 completionHandler:(id)a4;
-- (void)permitWebFilterURL:(id)a3 pageTitle:(id)a4 completionHandler:(id)a5;
-- (void)postNotificationForContext:(id)a3;
-- (void)presentRemotePINControllerWithCompletionHandler:(id)a3;
-- (void)primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:(id)a3;
-- (void)restrictionsForUserDSID:(id)a3 completionHandler:(id)a4;
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithReplyHandler:(id)a3;
-- (void)saveEncodedDefaults:(id)a3 forEncodedUser:(id)a4 completion:(id)a5;
-- (void)saveEncodedSettings:(id)a3 forEncodedUser:(id)a4 completion:(id)a5;
-- (void)saveExpressIntroductionSettingsDefaults:(id)a3 completionHandler:(id)a4;
-- (void)screenTimeStateWithCompletionHandler:(id)a3;
-- (void)screenTimeSyncStateWithCompletionHandler:(id)a3;
-- (void)setContactManagementState:(int64_t)a3 forDSID:(id)a4 completionHandler:(id)a5;
-- (void)setRestrictionsPasscode:(id)a3 completionHandler:(id)a4;
-- (void)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 replyHandler:(id)a4;
-- (void)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 replyHandler:(id)a4;
-- (void)shouldAllowOneMoreMinuteForWebDomain:(id)a3 replyHandler:(id)a4;
-- (void)shouldRequestMoreTimeWithCompletionHandler:(id)a3;
-- (void)triggerDowngradeMigrationWithCompletionHandler:(id)a3;
+- (void)applyDefaultUserPoliciesWithCompletionHandler:(id)handler;
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler;
+- (void)authenticateRestrictionsPasscode:(id)passcode replyHandler:(id)handler;
+- (void)clearRestrictionsPasscodeWithCompletionHandler:(id)handler;
+- (void)communicationPoliciesForDSID:(id)d withCompletionHandler:(id)handler;
+- (void)communicationPoliciesWithCompletionHandler:(id)handler;
+- (void)contactManagementStateForDSID:(id)d completionHandler:(id)handler;
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteAllWebApplicationHistory:(id)history replyHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application replyHandler:(id)handler;
+- (void)deleteWebHistoryForDomain:(id)domain webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteWebHistoryForDomain:(id)domain webApplication:(id)application replyHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application replyHandler:(id)handler;
+- (void)deleteWebHistoryForURLs:(id)ls webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)deleteWebHistoryForURLs:(id)ls webApplication:(id)application replyHandler:(id)handler;
+- (void)enableRemoteManagementForDSID:(id)d completionHandler:(id)handler;
+- (void)enableScreenTimeForDSID:(id)d completionHandler:(id)handler;
+- (void)enableWebContentFilterWithCompletionHandler:(id)handler;
+- (void)exportDatabaseToURL:(id)l replyHandler:(id)handler;
+- (void)isCommunicationSafetyEnabledForUserDSID:(id)d completionHandler:(id)handler;
+- (void)isContentPrivacyEnabledForDSID:(id)d completionHandler:(id)handler;
+- (void)isExplicitContentRestrictedWithCompletionHandler:(id)handler;
+- (void)isLocationSharingModificationAllowedForDSID:(id)d completionHandler:(id)handler;
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler;
+- (void)isWebContentRestrictedWithCompletionHandler:(id)handler;
+- (void)lastCommunicationLimitsModifcationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)lastModifcationDateForDSID:(id)d completionHandler:(id)handler;
+- (void)loadEncodedSettingsForEncodedUser:(id)user withEncodedDefaults:(id)defaults completion:(id)completion;
+- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)handler;
+- (void)needsToSetRestrictionsPasscodeWithReplyHandler:(id)handler;
+- (void)performMigrationFromMCXSettings:(id)settings completionHandler:(id)handler;
+- (void)permitWebFilterURL:(id)l pageTitle:(id)title completionHandler:(id)handler;
+- (void)postNotificationForContext:(id)context;
+- (void)presentRemotePINControllerWithCompletionHandler:(id)handler;
+- (void)primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:(id)handler;
+- (void)restrictionsForUserDSID:(id)d completionHandler:(id)handler;
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithReplyHandler:(id)handler;
+- (void)saveEncodedDefaults:(id)defaults forEncodedUser:(id)user completion:(id)completion;
+- (void)saveEncodedSettings:(id)settings forEncodedUser:(id)user completion:(id)completion;
+- (void)saveExpressIntroductionSettingsDefaults:(id)defaults completionHandler:(id)handler;
+- (void)screenTimeStateWithCompletionHandler:(id)handler;
+- (void)screenTimeSyncStateWithCompletionHandler:(id)handler;
+- (void)setContactManagementState:(int64_t)state forDSID:(id)d completionHandler:(id)handler;
+- (void)setRestrictionsPasscode:(id)passcode completionHandler:(id)handler;
+- (void)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier replyHandler:(id)handler;
+- (void)shouldAllowOneMoreMinuteForWebDomain:(id)domain replyHandler:(id)handler;
+- (void)shouldRequestMoreTimeWithCompletionHandler:(id)handler;
+- (void)triggerDowngradeMigrationWithCompletionHandler:(id)handler;
 @end
 
 @implementation STConcretePrivateAgentService
@@ -65,445 +65,445 @@
   return WeakRetained;
 }
 
-- (void)clearRestrictionsPasscodeWithCompletionHandler:(id)a3
+- (void)clearRestrictionsPasscodeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 clearRestrictionsPasscodeWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate clearRestrictionsPasscodeWithCompletionHandler:handlerCopy];
 }
 
-- (void)communicationPoliciesForDSID:(id)a3 withCompletionHandler:(id)a4
+- (void)communicationPoliciesForDSID:(id)d withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 communicationPoliciesForDSID:v7 withCompletionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate communicationPoliciesForDSID:dCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)communicationPoliciesWithCompletionHandler:(id)a3
+- (void)communicationPoliciesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 communicationPoliciesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate communicationPoliciesWithCompletionHandler:handlerCopy];
 }
 
-- (void)contactManagementStateForDSID:(id)a3 completionHandler:(id)a4
+- (void)contactManagementStateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 contactManagementStateForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate contactManagementStateForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 clientBundleURLWrapper:(id)a5 replyHandler:(id)a6
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STConcretePrivateAgentService *)self delegate];
-  [v14 deleteAllWebApplicationHistory:v13 profileIdentifier:v12 clientBundleURLWrapper:v11 replyHandler:v10];
+  handlerCopy = handler;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  historyCopy = history;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteAllWebApplicationHistory:historyCopy profileIdentifier:identifierCopy clientBundleURLWrapper:wrapperCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteAllWebApplicationHistory:(id)a3 replyHandler:(id)a4
+- (void)deleteAllWebApplicationHistory:(id)history replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 deleteAllWebApplicationHistory:v7 replyHandler:v6];
+  handlerCopy = handler;
+  historyCopy = history;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteAllWebApplicationHistory:historyCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(STConcretePrivateAgentService *)self delegate];
-  [v17 deleteWebHistoryDuringInterval:v16 webApplication:v15 profileIdentifier:v14 clientBundleURLWrapper:v13 replyHandler:v12];
+  handlerCopy = handler;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  intervalCopy = interval;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryDuringInterval:intervalCopy webApplication:applicationCopy profileIdentifier:identifierCopy clientBundleURLWrapper:wrapperCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 replyHandler:(id)a5
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 deleteWebHistoryDuringInterval:v10 webApplication:v9 replyHandler:v8];
+  handlerCopy = handler;
+  applicationCopy = application;
+  intervalCopy = interval;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryDuringInterval:intervalCopy webApplication:applicationCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryForDomain:(id)a3 webApplication:(id)a4 replyHandler:(id)a5
+- (void)deleteWebHistoryForDomain:(id)domain webApplication:(id)application replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 deleteWebHistoryForDomain:v10 webApplication:v9 replyHandler:v8];
+  handlerCopy = handler;
+  applicationCopy = application;
+  domainCopy = domain;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryForDomain:domainCopy webApplication:applicationCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 clientBundleURLWrapper:(id)a6 replyHandler:(id)a7
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier clientBundleURLWrapper:(id)wrapper replyHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(STConcretePrivateAgentService *)self delegate];
-  [v17 deleteWebHistoryForURL:v16 webApplication:v15 profileIdentifier:v14 clientBundleURLWrapper:v13 replyHandler:v12];
+  handlerCopy = handler;
+  wrapperCopy = wrapper;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  lCopy = l;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryForURL:lCopy webApplication:applicationCopy profileIdentifier:identifierCopy clientBundleURLWrapper:wrapperCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 replyHandler:(id)a5
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 deleteWebHistoryForURL:v10 webApplication:v9 replyHandler:v8];
+  handlerCopy = handler;
+  applicationCopy = application;
+  lCopy = l;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryForURL:lCopy webApplication:applicationCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryForURLs:(id)a3 webApplication:(id)a4 replyHandler:(id)a5
+- (void)deleteWebHistoryForURLs:(id)ls webApplication:(id)application replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 deleteWebHistoryForURLs:v10 webApplication:v9 replyHandler:v8];
+  handlerCopy = handler;
+  applicationCopy = application;
+  lsCopy = ls;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryForURLs:lsCopy webApplication:applicationCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6
+- (void)deleteWebHistoryForURL:(id)l webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STConcretePrivateAgentService *)self delegate];
-  [v14 deleteWebHistoryForURL:v13 webApplication:v12 profileIdentifier:v11 replyHandler:v10];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  lCopy = l;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryForURL:lCopy webApplication:applicationCopy profileIdentifier:identifierCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryForURLs:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6
+- (void)deleteWebHistoryForURLs:(id)ls webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STConcretePrivateAgentService *)self delegate];
-  [v14 deleteWebHistoryForURLs:v13 webApplication:v12 profileIdentifier:v11 replyHandler:v10];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  lsCopy = ls;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryForURLs:lsCopy webApplication:applicationCopy profileIdentifier:identifierCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryForDomain:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6
+- (void)deleteWebHistoryForDomain:(id)domain webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STConcretePrivateAgentService *)self delegate];
-  [v14 deleteWebHistoryForDomain:v13 webApplication:v12 profileIdentifier:v11 replyHandler:v10];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  domainCopy = domain;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryForDomain:domainCopy webApplication:applicationCopy profileIdentifier:identifierCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 webApplication:(id)a4 profileIdentifier:(id)a5 replyHandler:(id)a6
+- (void)deleteWebHistoryDuringInterval:(id)interval webApplication:(id)application profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(STConcretePrivateAgentService *)self delegate];
-  [v14 deleteWebHistoryDuringInterval:v13 webApplication:v12 profileIdentifier:v11 replyHandler:v10];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  intervalCopy = interval;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteWebHistoryDuringInterval:intervalCopy webApplication:applicationCopy profileIdentifier:identifierCopy replyHandler:handlerCopy];
 }
 
-- (void)deleteAllWebApplicationHistory:(id)a3 profileIdentifier:(id)a4 replyHandler:(id)a5
+- (void)deleteAllWebApplicationHistory:(id)history profileIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 deleteAllWebApplicationHistory:v10 profileIdentifier:v9 replyHandler:v8];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  historyCopy = history;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate deleteAllWebApplicationHistory:historyCopy profileIdentifier:identifierCopy replyHandler:handlerCopy];
 }
 
-- (void)enableScreenTimeForDSID:(id)a3 completionHandler:(id)a4
+- (void)enableScreenTimeForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 enableScreenTimeForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate enableScreenTimeForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)enableRemoteManagementForDSID:(id)a3 completionHandler:(id)a4
+- (void)enableRemoteManagementForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 enableRemoteManagementForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate enableRemoteManagementForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)isExplicitContentRestrictedWithCompletionHandler:(id)a3
+- (void)isExplicitContentRestrictedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 isExplicitContentRestrictedWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate isExplicitContentRestrictedWithCompletionHandler:handlerCopy];
 }
 
-- (void)isWebContentRestrictedWithCompletionHandler:(id)a3
+- (void)isWebContentRestrictedWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 isWebContentRestrictedWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate isWebContentRestrictedWithCompletionHandler:handlerCopy];
 }
 
-- (void)enableWebContentFilterWithCompletionHandler:(id)a3
+- (void)enableWebContentFilterWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 enableWebContentFilterWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate enableWebContentFilterWithCompletionHandler:handlerCopy];
 }
 
-- (void)needsToSetRestrictionsPasscodeWithReplyHandler:(id)a3
+- (void)needsToSetRestrictionsPasscodeWithReplyHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 needsToSetRestrictionsPasscodeWithReplyHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate needsToSetRestrictionsPasscodeWithReplyHandler:handlerCopy];
 }
 
-- (void)setRestrictionsPasscode:(id)a3 completionHandler:(id)a4
+- (void)setRestrictionsPasscode:(id)passcode completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 setRestrictionsPasscode:v7 completionHandler:v6];
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate setRestrictionsPasscode:passcodeCopy completionHandler:handlerCopy];
 }
 
-- (void)performMigrationFromMCXSettings:(id)a3 completionHandler:(id)a4
+- (void)performMigrationFromMCXSettings:(id)settings completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 performMigrationFromMCXSettings:v7 completionHandler:v6];
+  handlerCopy = handler;
+  settingsCopy = settings;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate performMigrationFromMCXSettings:settingsCopy completionHandler:handlerCopy];
 }
 
-- (void)applyDefaultUserPoliciesWithCompletionHandler:(id)a3
+- (void)applyDefaultUserPoliciesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 applyDefaultUserPoliciesWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate applyDefaultUserPoliciesWithCompletionHandler:handlerCopy];
 }
 
-- (void)permitWebFilterURL:(id)a3 pageTitle:(id)a4 completionHandler:(id)a5
+- (void)permitWebFilterURL:(id)l pageTitle:(id)title completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 permitWebFilterURL:v10 pageTitle:v9 completionHandler:v8];
+  handlerCopy = handler;
+  titleCopy = title;
+  lCopy = l;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate permitWebFilterURL:lCopy pageTitle:titleCopy completionHandler:handlerCopy];
 }
 
-- (void)primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:(id)a3
+- (void)primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate primaryiCloudCardDAVAccountIdentifierWithCompletionHandler:handlerCopy];
 }
 
-- (void)screenTimeStateWithCompletionHandler:(id)a3
+- (void)screenTimeStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 screenTimeStateWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate screenTimeStateWithCompletionHandler:handlerCopy];
 }
 
-- (void)screenTimeSyncStateWithCompletionHandler:(id)a3
+- (void)screenTimeSyncStateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 screenTimeSyncStateWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate screenTimeSyncStateWithCompletionHandler:handlerCopy];
 }
 
-- (void)setContactManagementState:(int64_t)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)setContactManagementState:(int64_t)state forDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(STConcretePrivateAgentService *)self delegate];
-  [v10 setContactManagementState:a3 forDSID:v9 completionHandler:v8];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate setContactManagementState:state forDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)isContentPrivacyEnabledForDSID:(id)a3 completionHandler:(id)a4
+- (void)isContentPrivacyEnabledForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 isContentPrivacyEnabledForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate isContentPrivacyEnabledForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)shouldAllowOneMoreMinuteForBundleIdentifier:(id)a3 replyHandler:(id)a4
+- (void)shouldAllowOneMoreMinuteForBundleIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 shouldAllowOneMoreMinuteForBundleIdentifier:v7 replyHandler:v6];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate shouldAllowOneMoreMinuteForBundleIdentifier:identifierCopy replyHandler:handlerCopy];
 }
 
-- (void)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)a3 replyHandler:(id)a4
+- (void)shouldAllowOneMoreMinuteForCategoryIdentifier:(id)identifier replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 shouldAllowOneMoreMinuteForCategoryIdentifier:v7 replyHandler:v6];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate shouldAllowOneMoreMinuteForCategoryIdentifier:identifierCopy replyHandler:handlerCopy];
 }
 
-- (void)shouldAllowOneMoreMinuteForWebDomain:(id)a3 replyHandler:(id)a4
+- (void)shouldAllowOneMoreMinuteForWebDomain:(id)domain replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 shouldAllowOneMoreMinuteForWebDomain:v7 replyHandler:v6];
+  handlerCopy = handler;
+  domainCopy = domain;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate shouldAllowOneMoreMinuteForWebDomain:domainCopy replyHandler:handlerCopy];
 }
 
-- (void)shouldRequestMoreTimeWithCompletionHandler:(id)a3
+- (void)shouldRequestMoreTimeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 shouldRequestMoreTimeWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate shouldRequestMoreTimeWithCompletionHandler:handlerCopy];
 }
 
-- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)a3
+- (void)isRestrictionsPasscodeSetWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 isRestrictionsPasscodeSetWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate isRestrictionsPasscodeSetWithCompletionHandler:handlerCopy];
 }
 
-- (void)lastModifcationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)lastModifcationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 lastModifcationDateForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate lastModifcationDateForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)lastCommunicationLimitsModifcationDateForDSID:(id)a3 completionHandler:(id)a4
+- (void)lastCommunicationLimitsModifcationDateForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 lastCommunicationLimitsModifcationDateForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate lastCommunicationLimitsModifcationDateForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)authenticateRestrictionsPasscode:(id)a3 replyHandler:(id)a4
+- (void)authenticateRestrictionsPasscode:(id)passcode replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 authenticateRestrictionsPasscode:v7 replyHandler:v6];
+  handlerCopy = handler;
+  passcodeCopy = passcode;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate authenticateRestrictionsPasscode:passcodeCopy replyHandler:handlerCopy];
 }
 
-- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithReplyHandler:(id)a3
+- (void)restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithReplyHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithReplyHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate restrictionsPasscodeEntryAttemptCountAndTimeoutDateWithReplyHandler:handlerCopy];
 }
 
-- (void)presentRemotePINControllerWithCompletionHandler:(id)a3
+- (void)presentRemotePINControllerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 presentRemotePINControllerWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate presentRemotePINControllerWithCompletionHandler:handlerCopy];
 }
 
-- (void)applyIntroductionModel:(id)a3 forDSID:(id)a4 completionHandler:(id)a5
+- (void)applyIntroductionModel:(id)model forDSID:(id)d completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 applyIntroductionModel:v10 forDSID:v9 completionHandler:v8];
+  handlerCopy = handler;
+  dCopy = d;
+  modelCopy = model;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate applyIntroductionModel:modelCopy forDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)isLocationSharingModificationAllowedForDSID:(id)a3 completionHandler:(id)a4
+- (void)isLocationSharingModificationAllowedForDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 isLocationSharingModificationAllowedForDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate isLocationSharingModificationAllowedForDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)postNotificationForContext:(id)a3
+- (void)postNotificationForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 postNotificationForContext:v4];
+  contextCopy = context;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate postNotificationForContext:contextCopy];
 }
 
-- (void)triggerDowngradeMigrationWithCompletionHandler:(id)a3
+- (void)triggerDowngradeMigrationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 triggerDowngradeMigrationWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate triggerDowngradeMigrationWithCompletionHandler:handlerCopy];
 }
 
-- (void)restrictionsForUserDSID:(id)a3 completionHandler:(id)a4
+- (void)restrictionsForUserDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 restrictionsForUserDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate restrictionsForUserDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)isCommunicationSafetyEnabledForUserDSID:(id)a3 completionHandler:(id)a4
+- (void)isCommunicationSafetyEnabledForUserDSID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 isCommunicationSafetyEnabledForUserDSID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate isCommunicationSafetyEnabledForUserDSID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)a3
+- (void)managingGuardianAppleIDsForLocalUserWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STConcretePrivateAgentService *)self delegate];
-  [v5 managingGuardianAppleIDsForLocalUserWithCompletionHandler:v4];
+  handlerCopy = handler;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate managingGuardianAppleIDsForLocalUserWithCompletionHandler:handlerCopy];
 }
 
-- (void)saveExpressIntroductionSettingsDefaults:(id)a3 completionHandler:(id)a4
+- (void)saveExpressIntroductionSettingsDefaults:(id)defaults completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 saveExpressIntroductionSettingsDefaults:v7 completionHandler:v6];
+  handlerCopy = handler;
+  defaultsCopy = defaults;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate saveExpressIntroductionSettingsDefaults:defaultsCopy completionHandler:handlerCopy];
 }
 
-- (void)loadEncodedSettingsForEncodedUser:(id)a3 withEncodedDefaults:(id)a4 completion:(id)a5
+- (void)loadEncodedSettingsForEncodedUser:(id)user withEncodedDefaults:(id)defaults completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 loadEncodedSettingsForEncodedUser:v10 withEncodedDefaults:v9 completion:v8];
+  completionCopy = completion;
+  defaultsCopy = defaults;
+  userCopy = user;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate loadEncodedSettingsForEncodedUser:userCopy withEncodedDefaults:defaultsCopy completion:completionCopy];
 }
 
-- (void)saveEncodedSettings:(id)a3 forEncodedUser:(id)a4 completion:(id)a5
+- (void)saveEncodedSettings:(id)settings forEncodedUser:(id)user completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 saveEncodedSettings:v10 forEncodedUser:v9 completion:v8];
+  completionCopy = completion;
+  userCopy = user;
+  settingsCopy = settings;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate saveEncodedSettings:settingsCopy forEncodedUser:userCopy completion:completionCopy];
 }
 
-- (void)saveEncodedDefaults:(id)a3 forEncodedUser:(id)a4 completion:(id)a5
+- (void)saveEncodedDefaults:(id)defaults forEncodedUser:(id)user completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(STConcretePrivateAgentService *)self delegate];
-  [v11 saveEncodedDefaults:v10 forEncodedUser:v9 completion:v8];
+  completionCopy = completion;
+  userCopy = user;
+  defaultsCopy = defaults;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate saveEncodedDefaults:defaultsCopy forEncodedUser:userCopy completion:completionCopy];
 }
 
-- (void)exportDatabaseToURL:(id)a3 replyHandler:(id)a4
+- (void)exportDatabaseToURL:(id)l replyHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcretePrivateAgentService *)self delegate];
-  [v8 exportDatabaseToURL:v7 replyHandler:v6];
+  handlerCopy = handler;
+  lCopy = l;
+  delegate = [(STConcretePrivateAgentService *)self delegate];
+  [delegate exportDatabaseToURL:lCopy replyHandler:handlerCopy];
 }
 
 @end

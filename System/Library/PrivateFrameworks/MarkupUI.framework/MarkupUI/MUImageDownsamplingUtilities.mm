@@ -1,22 +1,22 @@
 @interface MUImageDownsamplingUtilities
-+ (BOOL)_flattenEXIFOrientationOfImage:(id)a3 toDestination:(id)a4;
-+ (CGImageSource)_newImageSourceWithSourceContent:(id)a3;
-+ (CGSize)_sizeFittingArea:(double)a3 withSize:(CGSize)a4;
-+ (double)_maxDimensionOfSize:(CGSize)a3 fittingToArea:(double)a4;
-+ (id)_flattenEXIFOrientation:(BOOL)a3 withDownsampling:(BOOL)a4 sourceContent:(id)a5 withContentType:(id)a6;
-+ (id)_flattenEXIFOrientationForHEICData:(id)a3;
-+ (id)_flattenRotation:(BOOL)a3 withDownsampling:(BOOL)a4 sourceImage:(id)a5;
-+ (id)_preferredFileDisplayNameForSourceContent:(id)a3;
-+ (id)_sourceContentType:(id)a3;
++ (BOOL)_flattenEXIFOrientationOfImage:(id)image toDestination:(id)destination;
++ (CGImageSource)_newImageSourceWithSourceContent:(id)content;
++ (CGSize)_sizeFittingArea:(double)area withSize:(CGSize)size;
++ (double)_maxDimensionOfSize:(CGSize)size fittingToArea:(double)area;
++ (id)_flattenEXIFOrientation:(BOOL)orientation withDownsampling:(BOOL)downsampling sourceContent:(id)content withContentType:(id)type;
++ (id)_flattenEXIFOrientationForHEICData:(id)data;
++ (id)_flattenRotation:(BOOL)rotation withDownsampling:(BOOL)downsampling sourceImage:(id)image;
++ (id)_preferredFileDisplayNameForSourceContent:(id)content;
++ (id)_sourceContentType:(id)type;
 + (id)_uniqueTemporaryDirectory;
-+ (void)_shouldFlattenEXIFOrientation:(BOOL *)a3 andDownsample:(BOOL *)a4 sourceContent:(id)a5;
++ (void)_shouldFlattenEXIFOrientation:(BOOL *)orientation andDownsample:(BOOL *)downsample sourceContent:(id)content;
 @end
 
 @implementation MUImageDownsamplingUtilities
 
-+ (id)_sourceContentType:(id)a3
++ (id)_sourceContentType:(id)type
 {
-  v3 = [a1 _newImageSourceWithSourceContent:a3];
+  v3 = [self _newImageSourceWithSourceContent:type];
   if (v3)
   {
     v4 = v3;
@@ -32,20 +32,20 @@
   return v5;
 }
 
-+ (CGImageSource)_newImageSourceWithSourceContent:(id)a3
++ (CGImageSource)_newImageSourceWithSourceContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   v4 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = CGImageSourceCreateWithData(v3, 0);
+    v6 = CGImageSourceCreateWithData(contentCopy, 0);
   }
 
   else
   {
-    v6 = CGImageSourceCreateWithURL(v3, 0);
+    v6 = CGImageSourceCreateWithURL(contentCopy, 0);
   }
 
   v7 = v6;
@@ -53,18 +53,18 @@
   return v7;
 }
 
-+ (void)_shouldFlattenEXIFOrientation:(BOOL *)a3 andDownsample:(BOOL *)a4 sourceContent:(id)a5
++ (void)_shouldFlattenEXIFOrientation:(BOOL *)orientation andDownsample:(BOOL *)downsample sourceContent:(id)content
 {
-  v8 = a5;
-  if (a3)
+  contentCopy = content;
+  if (orientation)
   {
-    *a3 = 0;
+    *orientation = 0;
   }
 
-  v22 = v8;
-  if (a4)
+  v22 = contentCopy;
+  if (downsample)
   {
-    *a4 = 0;
+    *downsample = 0;
   }
 
   objc_opt_class();
@@ -72,40 +72,40 @@
   {
     v9 = v22;
     v10 = v9;
-    if (a3 && [v9 imageOrientation])
+    if (orientation && [v9 imageOrientation])
     {
-      *a3 = 1;
+      *orientation = 1;
     }
 
-    if (a4)
+    if (downsample)
     {
       [v10 size];
       v12 = v11;
       [v10 size];
       if (v12 * v13 > maxImageArea())
       {
-        *a4 = 1;
+        *downsample = 1;
       }
     }
   }
 
   else
   {
-    v14 = [a1 _newImageSourceWithSourceContent:v22];
+    v14 = [self _newImageSourceWithSourceContent:v22];
     if (v14)
     {
       v15 = v14;
-      if (a3)
+      if (orientation)
       {
         v16 = CGImageSourceCopyPropertiesAtIndex(v14, 0, 0);
         v17 = [(__CFDictionary *)v16 valueForKey:*MEMORY[0x277CD3410]];
         if ([v17 longLongValue] >= 2)
         {
-          *a3 = 1;
+          *orientation = 1;
         }
       }
 
-      if (a4)
+      if (downsample)
       {
         ImageAtIndex = CGImageSourceCreateImageAtIndex(v15, 0, 0);
         if (ImageAtIndex)
@@ -115,7 +115,7 @@
           v21 = (CGImageGetHeight(v19) * Width);
           if (maxImageArea() < v21)
           {
-            *a4 = 1;
+            *downsample = 1;
           }
 
           CGImageRelease(v19);
@@ -127,43 +127,43 @@
   }
 }
 
-+ (id)_flattenEXIFOrientation:(BOOL)a3 withDownsampling:(BOOL)a4 sourceContent:(id)a5 withContentType:(id)a6
++ (id)_flattenEXIFOrientation:(BOOL)orientation withDownsampling:(BOOL)downsampling sourceContent:(id)content withContentType:(id)type
 {
-  v7 = a4;
-  v8 = a3;
+  downsamplingCopy = downsampling;
+  orientationCopy = orientation;
   v40[4] = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a6;
-  v12 = [a1 _uniqueTemporaryDirectory];
-  if (!v12)
+  contentCopy = content;
+  typeCopy = type;
+  _uniqueTemporaryDirectory = [self _uniqueTemporaryDirectory];
+  if (!_uniqueTemporaryDirectory)
   {
     v16 = 0;
     goto LABEL_26;
   }
 
-  v37 = v8;
-  v13 = [a1 _preferredFileDisplayNameForSourceContent:v10];
-  v14 = [v11 preferredFilenameExtension];
+  v37 = orientationCopy;
+  v13 = [self _preferredFileDisplayNameForSourceContent:contentCopy];
+  preferredFilenameExtension = [typeCopy preferredFilenameExtension];
   v38 = v13;
-  v15 = [v12 URLByAppendingPathComponent:v13];
+  v15 = [_uniqueTemporaryDirectory URLByAppendingPathComponent:v13];
   v16 = v15;
-  if (v14)
+  if (preferredFilenameExtension)
   {
-    v17 = [v15 URLByAppendingPathExtension:v14];
+    v17 = [v15 URLByAppendingPathExtension:preferredFilenameExtension];
 
     v16 = v17;
   }
 
-  v18 = [v11 identifier];
-  v19 = v18;
-  if (v18)
+  identifier = [typeCopy identifier];
+  v19 = identifier;
+  if (identifier)
   {
-    v20 = v18;
+    v20 = identifier;
   }
 
   else
   {
-    v20 = [a1 _sourceContentType:v10];
+    v20 = [self _sourceContentType:contentCopy];
   }
 
   v21 = v20;
@@ -172,7 +172,7 @@
   if (v22)
   {
     v23 = v22;
-    if (!v21 || (v24 = [a1 _newImageSourceWithSourceContent:v10]) == 0)
+    if (!v21 || (v24 = [self _newImageSourceWithSourceContent:contentCopy]) == 0)
     {
 LABEL_24:
       CFRelease(v23);
@@ -187,10 +187,10 @@ LABEL_24:
       Width = CGImageGetWidth(ImageAtIndex);
       Height = CGImageGetHeight(v26);
       CGImageRelease(v26);
-      if (v7)
+      if (downsamplingCopy)
       {
 LABEL_13:
-        [a1 _maxDimensionOfSize:Width fittingToArea:{Height, maxImageArea()}];
+        [self _maxDimensionOfSize:Width fittingToArea:{Height, maxImageArea()}];
 LABEL_19:
         v39[0] = *MEMORY[0x277CD2D40];
         v30 = [MEMORY[0x277CCABB0] numberWithDouble:v29];
@@ -231,7 +231,7 @@ LABEL_19:
     {
       Height = 1.0;
       Width = 1.0;
-      if (v7)
+      if (downsamplingCopy)
       {
         goto LABEL_13;
       }
@@ -259,44 +259,44 @@ LABEL_26:
   return v16;
 }
 
-+ (id)_flattenRotation:(BOOL)a3 withDownsampling:(BOOL)a4 sourceImage:(id)a5
++ (id)_flattenRotation:(BOOL)rotation withDownsampling:(BOOL)downsampling sourceImage:(id)image
 {
-  v5 = a4;
-  v7 = a5;
-  [v7 size];
-  if (v5)
+  downsamplingCopy = downsampling;
+  imageCopy = image;
+  [imageCopy size];
+  if (downsamplingCopy)
   {
     v10 = maxImageArea();
-    [v7 size];
-    [a1 _sizeFittingArea:v10 withSize:{v11, v12}];
+    [imageCopy size];
+    [self _sizeFittingArea:v10 withSize:{v11, v12}];
   }
 
   v13 = v8;
   v14 = v9;
-  v15 = [MEMORY[0x277D75568] defaultFormat];
-  [v15 setScale:1.0];
-  v16 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:v15 format:{v13, v14}];
+  defaultFormat = [MEMORY[0x277D75568] defaultFormat];
+  [defaultFormat setScale:1.0];
+  v16 = [objc_alloc(MEMORY[0x277D75560]) initWithSize:defaultFormat format:{v13, v14}];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __78__MUImageDownsamplingUtilities__flattenRotation_withDownsampling_sourceImage___block_invoke;
   v20[3] = &unk_27986E768;
-  v21 = v7;
+  v21 = imageCopy;
   v22 = v13;
   v23 = v14;
-  v17 = v7;
+  v17 = imageCopy;
   v18 = [v16 imageWithActions:v20];
 
   return v18;
 }
 
-+ (id)_flattenEXIFOrientationForHEICData:(id)a3
++ (id)_flattenEXIFOrientationForHEICData:(id)data
 {
   v33[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 _newImageSourceWithSourceContent:v4];
+  dataCopy = data;
+  v5 = [self _newImageSourceWithSourceContent:dataCopy];
   if (!v5)
   {
-    v11 = v4;
+    v11 = dataCopy;
     goto LABEL_21;
   }
 
@@ -353,12 +353,12 @@ LABEL_26:
   [(__CFDictionary *)v20 setObject:v14 forKeyedSubscript:*MEMORY[0x277CD3610]];
   v23 = CGImageSourceCreateImageAtIndex(v6, 0, v20);
   CFRelease(v6);
-  v11 = v4;
+  v11 = dataCopy;
   if (v21 && v23)
   {
     v24 = objc_alloc_init(MEMORY[0x277CBEB28]);
-    v25 = [*MEMORY[0x277CE1D90] identifier];
-    v26 = CGImageDestinationCreateWithData(v24, v25, 1uLL, 0);
+    identifier = [*MEMORY[0x277CE1D90] identifier];
+    v26 = CGImageDestinationCreateWithData(v24, identifier, 1uLL, 0);
 
     if (v26)
     {
@@ -393,17 +393,17 @@ LABEL_21:
   return v11;
 }
 
-+ (BOOL)_flattenEXIFOrientationOfImage:(id)a3 toDestination:(id)a4
++ (BOOL)_flattenEXIFOrientationOfImage:(id)image toDestination:(id)destination
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 _sourceContentType:v6];
-  v9 = CGImageDestinationCreateWithURL(v7, v8, 1uLL, 0);
+  imageCopy = image;
+  destinationCopy = destination;
+  v8 = [self _sourceContentType:imageCopy];
+  v9 = CGImageDestinationCreateWithURL(destinationCopy, v8, 1uLL, 0);
   if (v9)
   {
     v10 = v9;
-    v11 = [a1 _newImageSourceWithSourceContent:v6];
+    v11 = [self _newImageSourceWithSourceContent:imageCopy];
     if (v11)
     {
       v12 = v11;
@@ -447,7 +447,7 @@ LABEL_21:
       v17 = CGImageDestinationFinalize(v10);
       if (!v17)
       {
-        NSLog(&cfstr_DownsampleImag.isa, v8, v7);
+        NSLog(&cfstr_DownsampleImag.isa, v8, destinationCopy);
       }
 
       CFRelease(v12);
@@ -472,23 +472,23 @@ LABEL_21:
 + (id)_uniqueTemporaryDirectory
 {
   v2 = NSTemporaryDirectory();
-  v3 = [MEMORY[0x277CCA8D8] mainBundle];
-  v4 = [v3 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if (v4)
+  if (bundleIdentifier)
   {
-    v5 = [v2 stringByAppendingPathComponent:v4];
+    v5 = [v2 stringByAppendingPathComponent:bundleIdentifier];
 
     v2 = v5;
   }
 
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
-  v8 = [v2 stringByAppendingPathComponent:v7];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [v2 stringByAppendingPathComponent:uUIDString];
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v14 = 0;
-  [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v14];
+  [defaultManager createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v14];
   v10 = v14;
   v11 = v10;
   if (v10)
@@ -505,52 +505,52 @@ LABEL_21:
   return v12;
 }
 
-+ (id)_preferredFileDisplayNameForSourceContent:(id)a3
++ (id)_preferredFileDisplayNameForSourceContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 lastPathComponent];
-    v5 = [v4 stringByDeletingPathExtension];
+    lastPathComponent = [contentCopy lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
-    v6 = [v5 _stringByTrimmingDotDirectories];
+    _stringByTrimmingDotDirectories = [stringByDeletingPathExtension _stringByTrimmingDotDirectories];
   }
 
   else
   {
-    v6 = 0;
+    _stringByTrimmingDotDirectories = 0;
   }
 
-  if (![v6 length])
+  if (![_stringByTrimmingDotDirectories length])
   {
-    v7 = [MEMORY[0x277CCAD78] UUID];
-    v8 = [v7 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v6 = v8;
+    _stringByTrimmingDotDirectories = uUIDString;
   }
 
-  return v6;
+  return _stringByTrimmingDotDirectories;
 }
 
-+ (CGSize)_sizeFittingArea:(double)a3 withSize:(CGSize)a4
++ (CGSize)_sizeFittingArea:(double)area withSize:(CGSize)size
 {
-  if (a4.width * a4.height > a3)
+  if (size.width * size.height > area)
   {
-    a4.height = sqrt(a3 / (a4.width / a4.height));
-    a4.width = a3 / a4.height;
+    size.height = sqrt(area / (size.width / size.height));
+    size.width = area / size.height;
   }
 
-  width = a4.width;
-  height = a4.height;
+  width = size.width;
+  height = size.height;
   result.height = height;
   result.width = width;
   return result;
 }
 
-+ (double)_maxDimensionOfSize:(CGSize)a3 fittingToArea:(double)a4
++ (double)_maxDimensionOfSize:(CGSize)size fittingToArea:(double)area
 {
-  [a1 _sizeFittingArea:a4 withSize:{a3.width, a3.height}];
+  [self _sizeFittingArea:area withSize:{size.width, size.height}];
   if (v4 < v5)
   {
     v4 = v5;

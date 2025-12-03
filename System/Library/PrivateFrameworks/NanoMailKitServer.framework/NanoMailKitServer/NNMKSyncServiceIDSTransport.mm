@@ -1,38 +1,38 @@
 @interface NNMKSyncServiceIDSTransport
-- (NNMKSyncServiceIDSTransport)initWithServiceName:(id)a3 queue:(id)a4 delegate:(id)a5;
+- (NNMKSyncServiceIDSTransport)initWithServiceName:(id)name queue:(id)queue delegate:(id)delegate;
 - (NNMKSyncServiceTransportDelegate)delegate;
-- (double)_timeIntervalFromTimeoutCategory:(unint64_t)a3;
-- (id)sendResourceAtURL:(id)a3 metadata:(id)a4 priority:(unint64_t)a5 timeoutCategory:(unint64_t)a6;
+- (double)_timeIntervalFromTimeoutCategory:(unint64_t)category;
+- (id)sendResourceAtURL:(id)l metadata:(id)metadata priority:(unint64_t)priority timeoutCategory:(unint64_t)category;
 - (unint64_t)_connectivityState;
 - (void)_handleConnectivityChange;
 - (void)dealloc;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)serviceSpaceDidBecomeAvailable:(id)a3;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)serviceSpaceDidBecomeAvailable:(id)available;
 @end
 
 @implementation NNMKSyncServiceIDSTransport
 
-- (NNMKSyncServiceIDSTransport)initWithServiceName:(id)a3 queue:(id)a4 delegate:(id)a5
+- (NNMKSyncServiceIDSTransport)initWithServiceName:(id)name queue:(id)queue delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nameCopy = name;
+  queueCopy = queue;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = NNMKSyncServiceIDSTransport;
   v12 = [(NNMKSyncServiceIDSTransport *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_delegate, v11);
-    objc_storeStrong(&v13->_serviceName, a3);
-    v14 = [objc_alloc(MEMORY[0x277D18778]) initWithService:v9];
+    objc_storeWeak(&v12->_delegate, delegateCopy);
+    objc_storeStrong(&v13->_serviceName, name);
+    v14 = [objc_alloc(MEMORY[0x277D18778]) initWithService:nameCopy];
     idsService = v13->_idsService;
     v13->_idsService = v14;
 
-    [(IDSService *)v13->_idsService addDelegate:v13 queue:v10];
+    [(IDSService *)v13->_idsService addDelegate:v13 queue:queueCopy];
     v13->_connectivityState = [(NNMKSyncServiceIDSTransport *)v13 _connectivityState];
   }
 
@@ -42,25 +42,25 @@
 - (void)dealloc
 {
   [(IDSService *)self->_idsService removeDelegate:self];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = NNMKSyncServiceIDSTransport;
   [(NNMKSyncServiceIDSTransport *)&v4 dealloc];
 }
 
-- (id)sendResourceAtURL:(id)a3 metadata:(id)a4 priority:(unint64_t)a5 timeoutCategory:(unint64_t)a6
+- (id)sendResourceAtURL:(id)l metadata:(id)metadata priority:(unint64_t)priority timeoutCategory:(unint64_t)category
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
+  lCopy = l;
   v11 = 200;
-  if (a5 == 100)
+  if (priority == 100)
   {
     v11 = 100;
   }
 
-  if (a5 == 300)
+  if (priority == 300)
   {
     v12 = 300;
   }
@@ -73,20 +73,20 @@
   idsService = self->_idsService;
   v14 = MEMORY[0x277CBEB98];
   v15 = *MEMORY[0x277D187E8];
-  v16 = a4;
+  metadataCopy = metadata;
   v17 = [v14 setWithObject:v15];
   v18 = *MEMORY[0x277D18650];
   v36[0] = *MEMORY[0x277D18678];
   v36[1] = v18;
   v37[0] = MEMORY[0x277CBEC38];
   v19 = MEMORY[0x277CCABB0];
-  [(NNMKSyncServiceIDSTransport *)self _timeIntervalFromTimeoutCategory:a6];
+  [(NNMKSyncServiceIDSTransport *)self _timeIntervalFromTimeoutCategory:category];
   v20 = [v19 numberWithDouble:?];
   v37[1] = v20;
   v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v37 forKeys:v36 count:2];
   v28 = 0;
   v29 = 0;
-  [(IDSService *)idsService sendResourceAtURL:v10 metadata:v16 toDestinations:v17 priority:v12 options:v21 identifier:&v29 error:&v28];
+  [(IDSService *)idsService sendResourceAtURL:lCopy metadata:metadataCopy toDestinations:v17 priority:v12 options:v21 identifier:&v29 error:&v28];
 
   v22 = v29;
   v23 = v28;
@@ -98,7 +98,7 @@
     *buf = 138543874;
     v31 = v22;
     v32 = 2114;
-    v33 = v10;
+    v33 = lCopy;
     v34 = 2114;
     v35 = serviceName;
     _os_log_impl(&dword_25B19F000, v24, OS_LOG_TYPE_DEFAULT, "#IDS sent resource. (IDS Identifier: %{public}@, URL: %{public}@, Service: %{public}@)", buf, 0x20u);
@@ -109,80 +109,80 @@
   return v22;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  protobufCopy = protobuf;
   v10 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [a7 outgoingResponseIdentifier];
-    v13 = [v9 type];
+    outgoingResponseIdentifier = [context outgoingResponseIdentifier];
+    type = [protobufCopy type];
     serviceName = self->_serviceName;
     v18 = 138543874;
-    v19 = v12;
+    v19 = outgoingResponseIdentifier;
     v20 = 1024;
-    v21 = v13;
+    v21 = type;
     v22 = 2114;
     v23 = serviceName;
     _os_log_impl(&dword_25B19F000, v11, OS_LOG_TYPE_DEFAULT, "#IDS received message. (IDS Identifier: %{public}@, Type: %d, Service: %{public}@)", &v18, 0x1Cu);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [v9 data];
-  [WeakRetained syncServiceTransport:self didReadProtobufData:v16 type:{objc_msgSend(v9, "type")}];
+  data = [protobufCopy data];
+  [WeakRetained syncServiceTransport:self didReadProtobufData:data type:{objc_msgSend(protobufCopy, "type")}];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingResourceAtURL:(id)a5 metadata:(id)a6 fromID:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account incomingResourceAtURL:(id)l metadata:(id)metadata fromID:(id)d context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  metadataCopy = metadata;
   v13 = qword_28144D620;
   if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [a8 outgoingResponseIdentifier];
+    outgoingResponseIdentifier = [context outgoingResponseIdentifier];
     serviceName = self->_serviceName;
     v19 = 138543874;
-    v20 = v15;
+    v20 = outgoingResponseIdentifier;
     v21 = 2112;
-    v22 = v11;
+    v22 = lCopy;
     v23 = 2114;
     v24 = serviceName;
     _os_log_impl(&dword_25B19F000, v14, OS_LOG_TYPE_DEFAULT, "#IDS received resource. (IDS Identifier: %{public}@, URL: %@, Service: %{public}@)", &v19, 0x20u);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained syncServiceTransport:self didRecieveDataAtURL:v11 metadata:v12];
+  [WeakRetained syncServiceTransport:self didRecieveDataAtURL:lCopy metadata:metadataCopy];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  if (!a6)
+  if (!success)
   {
-    v10 = a7;
-    v11 = a5;
+    errorCopy = error;
+    identifierCopy = identifier;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [v10 code];
+    code = [errorCopy code];
 
-    [WeakRetained syncServiceTransport:self didFailSendingProtobufWithIdentifier:v11 errorCode:v12];
+    [WeakRetained syncServiceTransport:self didFailSendingProtobufWithIdentifier:identifierCopy errorCode:code];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
-  v7 = a5;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained syncServiceTransport:self didSendProtobufSuccessfullyWithIdentifier:v7];
+  [WeakRetained syncServiceTransport:self didSendProtobufSuccessfullyWithIdentifier:identifierCopy];
 }
 
-- (void)serviceSpaceDidBecomeAvailable:(id)a3
+- (void)serviceSpaceDidBecomeAvailable:(id)available
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained syncServiceTransportDidReportSpaceBecameAvailable:self];
@@ -190,12 +190,12 @@
 
 - (void)_handleConnectivityChange
 {
-  v3 = [(NNMKSyncServiceIDSTransport *)self _connectivityState];
-  if (v3 != self->_connectivityState)
+  _connectivityState = [(NNMKSyncServiceIDSTransport *)self _connectivityState];
+  if (_connectivityState != self->_connectivityState)
   {
-    self->_connectivityState = v3;
-    v4 = [(NNMKSyncServiceIDSTransport *)self delegate];
-    [v4 syncServiceTransportDidChangeConnectivity:self];
+    self->_connectivityState = _connectivityState;
+    delegate = [(NNMKSyncServiceIDSTransport *)self delegate];
+    [delegate syncServiceTransportDidChangeConnectivity:self];
   }
 }
 
@@ -206,8 +206,8 @@
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v2 = [(IDSService *)self->_idsService devices];
-  v3 = [v2 countByEnumeratingWithState:&v21 objects:v31 count:16];
+  devices = [(IDSService *)self->_idsService devices];
+  v3 = [devices countByEnumeratingWithState:&v21 objects:v31 count:16];
   if (v3)
   {
     v4 = v3;
@@ -218,7 +218,7 @@
       {
         if (*v22 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(devices);
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
@@ -234,24 +234,24 @@
             if (os_log_type_enabled(qword_28144D620, OS_LOG_TYPE_DEFAULT))
             {
               v13 = v12;
-              v14 = [v7 isConnected];
-              v15 = [v7 isNearby];
-              v16 = [v7 isCloudConnected];
+              isConnected = [v7 isConnected];
+              isNearby = [v7 isNearby];
+              isCloudConnected = [v7 isCloudConnected];
               *buf = 134218496;
-              v26 = v14;
+              v26 = isConnected;
               v27 = 2048;
-              v28 = v15;
+              v28 = isNearby;
               v29 = 2048;
-              v30 = v16;
+              v30 = isCloudConnected;
               _os_log_impl(&dword_25B19F000, v13, OS_LOG_TYPE_DEFAULT, "#Connectivity IDS connectivity state. Connected: %lu, Nearby: %lu, Cloud Connected: %lu", buf, 0x20u);
             }
           }
 
-          v17 = [v7 isConnected];
-          v18 = [v7 isNearby];
-          if (v17)
+          isConnected2 = [v7 isConnected];
+          isNearby2 = [v7 isNearby];
+          if (isConnected2)
           {
-            if (v18)
+            if (isNearby2)
             {
               v8 = 2;
             }
@@ -269,14 +269,14 @@
 
           else
           {
-            v8 = v18;
+            v8 = isNearby2;
           }
 
           goto LABEL_22;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v21 objects:v31 count:16];
+      v4 = [devices countByEnumeratingWithState:&v21 objects:v31 count:16];
       if (v4)
       {
         continue;
@@ -293,15 +293,15 @@ LABEL_22:
   return v8;
 }
 
-- (double)_timeIntervalFromTimeoutCategory:(unint64_t)a3
+- (double)_timeIntervalFromTimeoutCategory:(unint64_t)category
 {
   result = 60.0;
-  if (a3 == 1)
+  if (category == 1)
   {
     result = 1800.0;
   }
 
-  if (a3 == 2)
+  if (category == 2)
   {
     return 3600.0;
   }

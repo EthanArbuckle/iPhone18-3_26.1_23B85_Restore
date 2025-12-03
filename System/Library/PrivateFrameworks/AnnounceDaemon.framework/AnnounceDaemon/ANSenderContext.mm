@@ -8,8 +8,8 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:{-[ANSenderContext isValidDevice](self, "isValidDevice")}];
-  v5 = [(ANSenderContext *)self senderCorrelationIdentifier];
-  v6 = [v3 stringWithFormat:@"Valid Device = %@, Sender Corr. ID = %@", v4, v5];
+  senderCorrelationIdentifier = [(ANSenderContext *)self senderCorrelationIdentifier];
+  v6 = [v3 stringWithFormat:@"Valid Device = %@, Sender Corr. ID = %@", v4, senderCorrelationIdentifier];
 
   return v6;
 }

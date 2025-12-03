@@ -1,18 +1,18 @@
 @interface ArtworkComponentImageView
 - (CGRect)frame;
-- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithFrame:(CGRect)a3;
-- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithImage:(id)a3;
-- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithFrame:(CGRect)frame;
+- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithImage:(id)image;
+- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 - (void)didMoveToSuperview;
-- (void)setFrame:(CGRect)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFrame:(CGRect)frame;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ArtworkComponentImageView
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   sub_CEFEC();
 }
 
@@ -28,25 +28,25 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = type metadata accessor for ArtworkComponentImageView();
   v23.receiver = self;
   v23.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(ArtworkComponentImageView *)&v23 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v22.receiver = v9;
+  v22.receiver = selfCopy;
   v22.super_class = v8;
   [(ArtworkComponentImageView *)&v22 setFrame:x, y, width, height];
-  [(ArtworkComponentImageView *)v9 frame];
+  [(ArtworkComponentImageView *)selfCopy frame];
   v25.origin.x = v18;
   v25.origin.y = v19;
   v25.size.width = v20;
@@ -61,14 +61,14 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_CF298(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_CF298(change);
 }
 
-- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithImage:(id)a3
+- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithImage:(id)image
 {
   swift_weakInit();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI25ArtworkComponentImageView_accessoryArtworkCatalog) = 0;
@@ -81,10 +81,10 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI25ArtworkComponentImageView_accessoryStrokeView) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ArtworkComponentImageView();
-  return [(ArtworkComponentImageView *)&v7 initWithImage:a3];
+  return [(ArtworkComponentImageView *)&v7 initWithImage:image];
 }
 
-- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   swift_weakInit();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI25ArtworkComponentImageView_accessoryArtworkCatalog) = 0;
@@ -97,15 +97,15 @@
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI25ArtworkComponentImageView_accessoryStrokeView) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for ArtworkComponentImageView();
-  return [(ArtworkComponentImageView *)&v9 initWithImage:a3 highlightedImage:a4];
+  return [(ArtworkComponentImageView *)&v9 initWithImage:image highlightedImage:highlightedImage];
 }
 
-- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithFrame:(CGRect)a3
+- (_TtC12NowPlayingUI25ArtworkComponentImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   swift_weakInit();
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12NowPlayingUI25ArtworkComponentImageView_accessoryArtworkCatalog) = 0;
   v8 = self + OBJC_IVAR____TtC12NowPlayingUI25ArtworkComponentImageView_accessoryStyle;

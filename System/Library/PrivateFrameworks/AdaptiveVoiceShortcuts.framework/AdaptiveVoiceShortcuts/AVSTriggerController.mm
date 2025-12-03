@@ -1,11 +1,11 @@
 @interface AVSTriggerController
 + (id)sharedInstance;
 - (id)displayAlertHandler;
-- (void)handleAudioBufferInput:(id)a3 time:(unint64_t)a4;
-- (void)keywordSpotterDidDetectKeywordWithEvent:(id)a3;
+- (void)handleAudioBufferInput:(id)input time:(unint64_t)time;
+- (void)keywordSpotterDidDetectKeywordWithEvent:(id)event;
 - (void)pauseListening;
 - (void)resumeListening;
-- (void)setDisplayAlertHandler:(id)a3;
+- (void)setDisplayAlertHandler:(id)handler;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -36,9 +36,9 @@
   return v4;
 }
 
-- (void)setDisplayAlertHandler:(id)a3
+- (void)setDisplayAlertHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -57,7 +57,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_23E82173C(v7);
 }
 
@@ -71,7 +71,7 @@
 
 - (void)startListening
 {
-  v2 = self;
+  selfCopy = self;
   AVSTriggerController.startListening()();
 }
 
@@ -81,7 +81,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x28223BE20](v3 - 8);
   v6 = &v11 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_23E82EB7C();
   v8 = sub_23E82EB9C();
   (*(*(v8 - 8) + 56))(v6, 0, 1, v8);
@@ -100,7 +100,7 @@
   if (*(v2 + 80) == 1)
   {
     v3 = *(v2 + 16);
-    v4 = self;
+    selfCopy = self;
     [v3 stop];
     *(v2 + 80) = 0;
   }
@@ -109,26 +109,26 @@
 - (void)resumeListening
 {
   v2 = *(self + OBJC_IVAR___AVSTriggerController_audioProvider);
-  v3 = self;
+  selfCopy = self;
   sub_23E81B720();
 }
 
-- (void)handleAudioBufferInput:(id)a3 time:(unint64_t)a4
+- (void)handleAudioBufferInput:(id)input time:(unint64_t)time
 {
-  v7 = a3;
-  v8 = self;
-  v12.is_nil = v8;
-  v10 = v8;
-  v12.value.super.super.isa = a3;
-  v12.value.super._impl = a4;
+  inputCopy = input;
+  selfCopy = self;
+  v12.is_nil = selfCopy;
+  v10 = selfCopy;
+  v12.value.super.super.isa = input;
+  v12.value.super._impl = time;
   AVSTriggerController.handleAudioBufferInput(_:time:)(v12, v9);
 }
 
-- (void)keywordSpotterDidDetectKeywordWithEvent:(id)a3
+- (void)keywordSpotterDidDetectKeywordWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  AVSTriggerController.keywordSpotterDidDetectKeyword(event:)(v4);
+  eventCopy = event;
+  selfCopy = self;
+  AVSTriggerController.keywordSpotterDidDetectKeyword(event:)(eventCopy);
 }
 
 @end

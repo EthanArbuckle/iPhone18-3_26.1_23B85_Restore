@@ -1,13 +1,13 @@
 @interface WebPolicyDecisionListener
-- (id)_initWithTarget:(id)a3 action:(SEL)a4;
+- (id)_initWithTarget:(id)target action:(SEL)action;
 - (void)_invalidate;
-- (void)_usePolicy:(unsigned __int8)a3;
+- (void)_usePolicy:(unsigned __int8)policy;
 - (void)dealloc;
 @end
 
 @implementation WebPolicyDecisionListener
 
-- (id)_initWithTarget:(id)a3 action:(SEL)a4
+- (id)_initWithTarget:(id)target action:(SEL)action
 {
   v9.receiver = self;
   v9.super_class = WebPolicyDecisionListener;
@@ -15,7 +15,7 @@
   if (result)
   {
     v7 = result;
-    v8 = [[WebPolicyDecisionListenerPrivate alloc] initWithTarget:a3 action:a4];
+    v8 = [[WebPolicyDecisionListenerPrivate alloc] initWithTarget:target action:action];
     result = v7;
     v7[1] = v8;
   }
@@ -30,7 +30,7 @@
   [(WebPolicyDecisionListener *)&v3 dealloc];
 }
 
-- (void)_usePolicy:(unsigned __int8)a3
+- (void)_usePolicy:(unsigned __int8)policy
 {
   v3 = self->_private;
   m_ptr = v3->target.m_ptr;

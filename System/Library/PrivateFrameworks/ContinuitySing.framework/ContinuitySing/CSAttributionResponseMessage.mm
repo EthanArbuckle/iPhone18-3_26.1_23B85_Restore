@@ -1,7 +1,7 @@
 @interface CSAttributionResponseMessage
 + (id)requiredParameters;
-- (CSAttributionResponseMessage)initWithAttributions:(id)a3;
-- (CSAttributionResponseMessage)initWithMessage:(id)a3;
+- (CSAttributionResponseMessage)initWithAttributions:(id)attributions;
+- (CSAttributionResponseMessage)initWithMessage:(id)message;
 - (id)dictionaryRepresentation;
 @end
 
@@ -9,7 +9,7 @@
 
 + (id)requiredParameters
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CSAttributionResponseMessage;
   v2 = objc_msgSendSuper2(&v5, sel_requiredParameters);
   v3 = [v2 mutableCopy];
@@ -19,15 +19,15 @@
   return v3;
 }
 
-- (CSAttributionResponseMessage)initWithAttributions:(id)a3
+- (CSAttributionResponseMessage)initWithAttributions:(id)attributions
 {
-  v4 = a3;
+  attributionsCopy = attributions;
   v9.receiver = self;
   v9.super_class = CSAttributionResponseMessage;
   v5 = [(CSAttributionResponseMessage *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [attributionsCopy copy];
     queueIdentifierAttributionMap = v5->_queueIdentifierAttributionMap;
     v5->_queueIdentifierAttributionMap = v6;
   }
@@ -35,12 +35,12 @@
   return v5;
 }
 
-- (CSAttributionResponseMessage)initWithMessage:(id)a3
+- (CSAttributionResponseMessage)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = CSAttributionResponseMessage;
-  v5 = [(CSMessage *)&v14 initWithMessage:v4];
+  v5 = [(CSMessage *)&v14 initWithMessage:messageCopy];
   if (v5)
   {
     CFDictionaryGetTypeID();
@@ -84,8 +84,8 @@ void __48__CSAttributionResponseMessage_initWithMessage___block_invoke(uint64_t 
   [(NSDictionary *)queueIdentifierAttributionMap enumerateKeysAndObjectsUsingBlock:v10];
   v9.receiver = self;
   v9.super_class = CSAttributionResponseMessage;
-  v6 = [(CSMessage *)&v9 dictionaryRepresentation];
-  v7 = [v6 mutableCopy];
+  dictionaryRepresentation = [(CSMessage *)&v9 dictionaryRepresentation];
+  v7 = [dictionaryRepresentation mutableCopy];
 
   [v7 setObject:v5 forKeyedSubscript:@"QueueAttributions"];
 

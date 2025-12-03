@@ -1,8 +1,8 @@
 @interface SBCombinationHardwareButton
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (SBCombinationHardwareButton)initWithScreenshotGestureRecognizer:(id)a3 shutdownGestureRecognizer:(id)a4 homeHardwareButton:(id)a5 lockHardwareButton:(id)a6 volumeHardwareButton:(id)a7 proximitySensorManager:(id)a8 backlightController:(id)a9;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (SBCombinationHardwareButton)initWithScreenshotGestureRecognizer:(id)recognizer shutdownGestureRecognizer:(id)gestureRecognizer homeHardwareButton:(id)button lockHardwareButton:(id)hardwareButton volumeHardwareButton:(id)volumeHardwareButton proximitySensorManager:(id)manager backlightController:(id)controller;
 - (id)backlightController;
 - (id)homeHardwareButton;
 - (id)preemptablePressGestureRecognizers;
@@ -12,65 +12,65 @@
 - (id)setProximitySensorManager:(id *)result;
 - (id)setVolumeHardwareButton:(id *)result;
 - (id)volumeHardwareButton;
-- (void)_backlightChanged:(id)a3;
+- (void)_backlightChanged:(id)changed;
 - (void)_configureGestureRecognizers;
 - (void)_configureSOSGestureBehaviors;
-- (void)_setScreenshotDisabled:(BOOL)a3 forReason:(id)a4;
+- (void)_setScreenshotDisabled:(BOOL)disabled forReason:(id)reason;
 - (void)cancelHardwareButtonPress;
 - (void)dealloc;
-- (void)provider:(id)a3 didUpdateButtonGestureParameters:(id)a4;
-- (void)screenshotGesture:(id)a3;
-- (void)shutdownGesture:(id)a3;
-- (void)sosClawDidBecomeActive:(id)a3;
-- (void)sosClawDidBecomeInactive:(id)a3;
-- (void)sosClawDidTriggerSOS:(id)a3 completion:(id)a4;
-- (void)sosGesture:(id)a3;
-- (void)sosLockDidTriggerSOS:(id)a3 completion:(id)a4;
-- (void)sosLockTriggerDidBecomeActive:(id)a3;
-- (void)sosLockTriggerDidBecomeInactive:(id)a3;
+- (void)provider:(id)provider didUpdateButtonGestureParameters:(id)parameters;
+- (void)screenshotGesture:(id)gesture;
+- (void)shutdownGesture:(id)gesture;
+- (void)sosClawDidBecomeActive:(id)active;
+- (void)sosClawDidBecomeInactive:(id)inactive;
+- (void)sosClawDidTriggerSOS:(id)s completion:(id)completion;
+- (void)sosGesture:(id)gesture;
+- (void)sosLockDidTriggerSOS:(id)s completion:(id)completion;
+- (void)sosLockTriggerDidBecomeActive:(id)active;
+- (void)sosLockTriggerDidBecomeInactive:(id)inactive;
 @end
 
 @implementation SBCombinationHardwareButton
 
-- (SBCombinationHardwareButton)initWithScreenshotGestureRecognizer:(id)a3 shutdownGestureRecognizer:(id)a4 homeHardwareButton:(id)a5 lockHardwareButton:(id)a6 volumeHardwareButton:(id)a7 proximitySensorManager:(id)a8 backlightController:(id)a9
+- (SBCombinationHardwareButton)initWithScreenshotGestureRecognizer:(id)recognizer shutdownGestureRecognizer:(id)gestureRecognizer homeHardwareButton:(id)button lockHardwareButton:(id)hardwareButton volumeHardwareButton:(id)volumeHardwareButton proximitySensorManager:(id)manager backlightController:(id)controller
 {
-  v16 = a3;
-  v32 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  buttonCopy = button;
+  hardwareButtonCopy = hardwareButton;
+  volumeHardwareButtonCopy = volumeHardwareButton;
+  managerCopy = manager;
+  controllerCopy = controller;
   v33.receiver = self;
   v33.super_class = SBCombinationHardwareButton;
   v22 = [(SBCombinationHardwareButton *)&v33 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_screenshotGestureRecognizer, a3);
-    objc_storeStrong(&v23->_shutdownGestureRecognizer, a4);
-    objc_storeWeak(&v23->_proximitySensorManager, v20);
-    objc_storeWeak(&v23->_backlightController, v21);
+    objc_storeStrong(&v22->_screenshotGestureRecognizer, recognizer);
+    objc_storeStrong(&v23->_shutdownGestureRecognizer, gestureRecognizer);
+    objc_storeWeak(&v23->_proximitySensorManager, managerCopy);
+    objc_storeWeak(&v23->_backlightController, controllerCopy);
     v24 = objc_alloc_init(SBCombinationHardwareButtonActions);
     buttonActions = v23->_buttonActions;
     v23->_buttonActions = v24;
 
-    v26 = [v18 hardwareButtonGestureParameters];
-    [v26 longPressTimeInterval];
+    hardwareButtonGestureParameters = [hardwareButtonCopy hardwareButtonGestureParameters];
+    [hardwareButtonGestureParameters longPressTimeInterval];
     v28 = v27;
 
-    [v16 setMaximumClickFormationDuration:v28];
-    [v16 setMaximumClickDownDuration:-1.0];
-    [v16 setAllPressesUpRequired:0];
-    objc_storeWeak(&v23->_homeHardwareButton, v17);
-    objc_storeWeak(&v23->_volumeHardwareButton, v19);
-    objc_storeWeak(&v23->_lockHardwareButton, v18);
-    [v18 addHardwareButtonGestureParametersObserver:v23];
+    [recognizerCopy setMaximumClickFormationDuration:v28];
+    [recognizerCopy setMaximumClickDownDuration:-1.0];
+    [recognizerCopy setAllPressesUpRequired:0];
+    objc_storeWeak(&v23->_homeHardwareButton, buttonCopy);
+    objc_storeWeak(&v23->_volumeHardwareButton, volumeHardwareButtonCopy);
+    objc_storeWeak(&v23->_lockHardwareButton, hardwareButtonCopy);
+    [hardwareButtonCopy addHardwareButtonGestureParametersObserver:v23];
     [(SBCombinationHardwareButton *)v23 _configureGestureRecognizers];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v23, _SBSOSTriggerMechanismDidChangeNotification, *MEMORY[0x277D660A0], 0, CFNotificationSuspensionBehaviorDeliverImmediately);
-    v30 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v30 addObserver:v23 selector:sel__backlightChanged_ name:*MEMORY[0x277D67A20] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v23 selector:sel__backlightChanged_ name:*MEMORY[0x277D67A20] object:0];
   }
 
   return v23;
@@ -78,8 +78,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBCombinationHardwareButton;
@@ -118,9 +118,9 @@
   [(SBCombinationHardwareButton *)self _configureSOSGestureBehaviors];
   if (self->_shutdownGestureRecognizer)
   {
-    v11 = [(SBSOSClawGestureObserver *)self->_sosClawGestureObserver isSOSEnabled];
+    isSOSEnabled = [(SBSOSClawGestureObserver *)self->_sosClawGestureObserver isSOSEnabled];
     shutdownGestureRecognizer = self->_shutdownGestureRecognizer;
-    if (v11)
+    if (isSOSEnabled)
     {
 
       [(SBLongPressGestureRecognizer *)shutdownGestureRecognizer setEnabled:0];
@@ -149,9 +149,9 @@
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_screenshotGestureRecognizer == a3)
+  if (self->_screenshotGestureRecognizer == begin)
   {
     WeakRetained = objc_loadWeakRetained(&self->_proximitySensorManager);
     v3 = [WeakRetained isObjectInProximity] ^ 1;
@@ -165,12 +165,12 @@
   return v3;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   v8 = 0;
-  if (self->_screenshotGestureRecognizer == v6)
+  if (self->_screenshotGestureRecognizer == recognizerCopy)
   {
     NSClassFromString(&cfstr_Sbhblongpressg.isa);
     if (objc_opt_isKindOfClass())
@@ -182,22 +182,22 @@
   return v8;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  v8 = gestureRecognizerCopy;
   screenshotGestureRecognizer = self->_screenshotGestureRecognizer;
-  v10 = screenshotGestureRecognizer == v6 || screenshotGestureRecognizer == v7;
-  if (v10 || self->_sosGestureRecognizer == v6 || self->_shutdownGestureRecognizer == v6)
+  v10 = screenshotGestureRecognizer == recognizerCopy || screenshotGestureRecognizer == gestureRecognizerCopy;
+  if (v10 || self->_sosGestureRecognizer == recognizerCopy || self->_shutdownGestureRecognizer == recognizerCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v11 = [(SBClickGestureRecognizer *)v7 allowedTouchTypes];
-    v12 = [v11 count] != 0;
+    allowedTouchTypes = [(SBClickGestureRecognizer *)gestureRecognizerCopy allowedTouchTypes];
+    v12 = [allowedTouchTypes count] != 0;
   }
 
   return v12;
@@ -206,29 +206,29 @@
 - (void)_configureSOSGestureBehaviors
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D495A0] deviceSupportsSOS];
+  deviceSupportsSOS = [MEMORY[0x277D495A0] deviceSupportsSOS];
   v4 = +[SBDefaults localDefaults];
-  v5 = [v4 sosDefaults];
+  sosDefaults = [v4 sosDefaults];
 
-  v6 = [v5 clawCanTriggerSOS];
-  v7 = [v5 lockButtonSOSTriggerCount];
+  clawCanTriggerSOS = [sosDefaults clawCanTriggerSOS];
+  lockButtonSOSTriggerCount = [sosDefaults lockButtonSOSTriggerCount];
   v8 = SBLogButtonsCombo();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15[0] = 67109632;
-    v15[1] = v3;
+    v15[1] = deviceSupportsSOS;
     v16 = 1024;
-    v17 = v6;
+    v17 = clawCanTriggerSOS;
     v18 = 1024;
-    v19 = v7;
+    v19 = lockButtonSOSTriggerCount;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Configuring SOS Gestures for SOS supported device: %{BOOL}u, clawShouldTriggerSOS: %{BOOL}u, lockButtonSOSTriggerCount: %d", v15, 0x14u);
   }
 
   sosClawGestureObserver = self->_sosClawGestureObserver;
-  if (v3)
+  if (deviceSupportsSOS)
   {
-    [(SBSOSClawGestureObserver *)sosClawGestureObserver setSOSEnabled:v6];
-    if (v7 == -1)
+    [(SBSOSClawGestureObserver *)sosClawGestureObserver setSOSEnabled:clawCanTriggerSOS];
+    if (lockButtonSOSTriggerCount == -1)
     {
       v14 = SBLogButtonsCombo();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -243,7 +243,7 @@
     else
     {
       v10 = 1;
-      if (v7 == 3)
+      if (lockButtonSOSTriggerCount == 3)
       {
         v10 = 2;
         v11 = 1;
@@ -254,7 +254,7 @@
         v11 = 0;
       }
 
-      if (v7 == 5)
+      if (lockButtonSOSTriggerCount == 5)
       {
         v12 = 1;
       }
@@ -264,7 +264,7 @@
         v12 = v10;
       }
 
-      if (v7 == 5)
+      if (lockButtonSOSTriggerCount == 5)
       {
         v13 = 1;
       }
@@ -286,10 +286,10 @@
   }
 }
 
-- (void)provider:(id)a3 didUpdateButtonGestureParameters:(id)a4
+- (void)provider:(id)provider didUpdateButtonGestureParameters:(id)parameters
 {
   screenshotGestureRecognizer = self->_screenshotGestureRecognizer;
-  [a4 longPressTimeInterval];
+  [parameters longPressTimeInterval];
 
   [(SBClickGestureRecognizer *)screenshotGestureRecognizer setMaximumClickFormationDuration:?];
 }
@@ -303,50 +303,50 @@
   return v2;
 }
 
-- (void)screenshotGesture:(id)a3
+- (void)screenshotGesture:(id)gesture
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  gestureCopy = gesture;
   v5 = SBLogButtonsCombo();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = [v4 state];
+    v6[1] = [gestureCopy state];
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "Take screenshot: %d", v6, 8u);
   }
 
-  if ([v4 state] == 3)
+  if ([gestureCopy state] == 3)
   {
     [(SBCombinationHardwareButtonActions *)self->_buttonActions performTakeScreenshotAction];
   }
 }
 
-- (void)sosGesture:(id)a3
+- (void)sosGesture:(id)gesture
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 latestPressType];
-  v6 = [v4 latestPressPhase];
-  v7 = [v4 state];
+  gestureCopy = gesture;
+  latestPressType = [gestureCopy latestPressType];
+  latestPressPhase = [gestureCopy latestPressPhase];
+  state = [gestureCopy state];
   v8 = SBLogButtonsCombo();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 67109632;
-    v15 = v5;
+    v15 = latestPressType;
     v16 = 1024;
-    v17 = v6;
+    v17 = latestPressPhase;
     v18 = 1024;
-    v19 = v7;
+    v19 = state;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "SOS button gesture: press type=%d, press phase=%d, recognizer state=%d", &v14, 0x14u);
   }
 
-  [v4 latestPressTimestamp];
+  [gestureCopy latestPressTimestamp];
   v10 = v9;
   if ((BSFloatIsZero() & 1) == 0)
   {
-    if (v5 == 104)
+    if (latestPressType == 104)
     {
-      if (v7 == 3)
+      if (state == 3)
       {
         sosLockGestureObserver = self->_sosLockGestureObserver;
         if (sosLockGestureObserver)
@@ -357,7 +357,7 @@
         goto LABEL_10;
       }
 
-      if (v7 == 1)
+      if (state == 1)
       {
         v11 = self->_sosLockGestureObserver;
         if (v11)
@@ -366,14 +366,14 @@
         }
 
 LABEL_10:
-        if ((v6 - 3) < 2)
+        if ((latestPressPhase - 3) < 2)
         {
-          [(SBCombinationHardwareButton *)self sosGesture:v5];
+          [(SBCombinationHardwareButton *)self sosGesture:latestPressType];
         }
 
-        else if (v6 == 2 || !v6)
+        else if (latestPressPhase == 2 || !latestPressPhase)
         {
-          [(SBCombinationHardwareButton *)self sosGesture:v5];
+          [(SBCombinationHardwareButton *)self sosGesture:latestPressType];
         }
 
         else
@@ -382,7 +382,7 @@ LABEL_10:
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
             v14 = 67109120;
-            v15 = v6;
+            v15 = latestPressPhase;
             _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Unhandled claw gesture button press phase: %d.", &v14, 8u);
           }
         }
@@ -391,9 +391,9 @@ LABEL_10:
       }
     }
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFELL) == 4)
+    if ((state & 0xFFFFFFFFFFFFFFFELL) == 4)
     {
-      [(SBCombinationHardwareButton *)self sosGesture:v7];
+      [(SBCombinationHardwareButton *)self sosGesture:state];
       goto LABEL_16;
     }
 
@@ -403,9 +403,9 @@ LABEL_10:
 LABEL_16:
 }
 
-- (void)shutdownGesture:(id)a3
+- (void)shutdownGesture:(id)gesture
 {
-  if ([a3 state] == 1)
+  if ([gesture state] == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_lockHardwareButton);
     [WeakRetained cancelLongPress];
@@ -433,13 +433,13 @@ LABEL_16:
   }
 }
 
-- (void)_setScreenshotDisabled:(BOOL)a3 forReason:(id)a4
+- (void)_setScreenshotDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
+  disabledCopy = disabled;
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
-  if (!v7)
+  if (!reasonCopy)
   {
     [SBCombinationHardwareButton _setScreenshotDisabled:a2 forReason:self];
   }
@@ -447,20 +447,20 @@ LABEL_16:
   v8 = SBLogButtonsCombo();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NSMutableDictionary *)self->_screenshotDisableAssertions allKeys];
+    allKeys = [(NSMutableDictionary *)self->_screenshotDisableAssertions allKeys];
     *buf = 67109634;
-    *v29 = v4;
+    *v29 = disabledCopy;
     *&v29[4] = 2114;
-    *&v29[6] = v7;
+    *&v29[6] = reasonCopy;
     v30 = 2114;
-    v31 = v9;
+    v31 = allKeys;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Setting SS disabled: %{BOOL}u, reason: %{public}@, current assertions: %{public}@", buf, 0x1Cu);
   }
 
   screenshotDisableAssertions = self->_screenshotDisableAssertions;
-  if (!v4)
+  if (!disabledCopy)
   {
-    v15 = [(NSMutableDictionary *)screenshotDisableAssertions objectForKeyedSubscript:v7];
+    v15 = [(NSMutableDictionary *)screenshotDisableAssertions objectForKeyedSubscript:reasonCopy];
     v16 = SBLogButtonsCombo();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
     if (v15)
@@ -468,7 +468,7 @@ LABEL_16:
       if (v17)
       {
         *buf = 138543362;
-        *v29 = v7;
+        *v29 = reasonCopy;
         _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "Invalidating SS, reason: %{public}@", buf, 0xCu);
       }
 
@@ -480,7 +480,7 @@ LABEL_16:
       if (v17)
       {
         *buf = 138543362;
-        *v29 = v7;
+        *v29 = reasonCopy;
         _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "No SS disable assertion found, reason: %{public}@", buf, 0xCu);
       }
     }
@@ -497,7 +497,7 @@ LABEL_16:
     screenshotDisableAssertions = self->_screenshotDisableAssertions;
   }
 
-  v13 = [(NSMutableDictionary *)screenshotDisableAssertions objectForKeyedSubscript:v7];
+  v13 = [(NSMutableDictionary *)screenshotDisableAssertions objectForKeyedSubscript:reasonCopy];
   v14 = v13 == 0;
 
   if (!v14)
@@ -506,7 +506,7 @@ LABEL_16:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *v29 = v7;
+      *v29 = reasonCopy;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "SS gesture already disabled, reason: %{public}@", buf, 0xCu);
     }
 
@@ -523,14 +523,14 @@ LABEL_11:
   v24 = __64__SBCombinationHardwareButton__setScreenshotDisabled_forReason___block_invoke;
   v25 = &unk_2783A9070;
   objc_copyWeak(&v26, &location);
-  v20 = [v18 initWithIdentifier:@"ScreenshotDisable" forReason:v7 queue:MEMORY[0x277D85CD0] invalidationBlock:&v22];
+  v20 = [v18 initWithIdentifier:@"ScreenshotDisable" forReason:reasonCopy queue:MEMORY[0x277D85CD0] invalidationBlock:&v22];
 
-  [(NSMutableDictionary *)self->_screenshotDisableAssertions setObject:v20 forKeyedSubscript:v7, v22, v23, v24, v25];
+  [(NSMutableDictionary *)self->_screenshotDisableAssertions setObject:v20 forKeyedSubscript:reasonCopy, v22, v23, v24, v25];
   v21 = SBLogButtonsCombo();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    *v29 = v7;
+    *v29 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "Disabling SS gesture recognizer, reason: %{public}@", buf, 0xCu);
   }
 
@@ -595,10 +595,10 @@ void __64__SBCombinationHardwareButton__setScreenshotDisabled_forReason___block_
   }
 }
 
-- (void)_backlightChanged:(id)a3
+- (void)_backlightChanged:(id)changed
 {
-  v4 = a3;
-  v3 = v4;
+  changedCopy = changed;
+  v3 = changedCopy;
   BSDispatchMain();
 }
 
@@ -633,22 +633,22 @@ void __49__SBCombinationHardwareButton__backlightChanged___block_invoke(uint64_t
   [*(a1 + 40) _setScreenshotDisabled:v5 forReason:@"Backlight"];
 }
 
-- (void)sosLockDidTriggerSOS:(id)a3 completion:(id)a4
+- (void)sosLockDidTriggerSOS:(id)s completion:(id)completion
 {
   v18 = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCAD78];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 UUID];
-  v10 = [v8 triggerMechanism];
+  completionCopy = completion;
+  sCopy = s;
+  uUID = [v6 UUID];
+  triggerMechanism = [sCopy triggerMechanism];
 
   v11 = SBLogButtonsCombo();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
-    v15 = v9;
+    v15 = uUID;
     v16 = 1024;
-    v17 = v10;
+    v17 = triggerMechanism;
     _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "SOS Lock Gesture triggered SOS with UUID: %@ and trigger mechanism: %d", &v14, 0x12u);
   }
 
@@ -662,47 +662,47 @@ void __49__SBCombinationHardwareButton__backlightChanged___block_invoke(uint64_t
     WeakRetained = 0;
   }
 
-  v13 = [WeakRetained buttonActions];
-  [v13 performSOSActionsWithUUID:v9 triggerMechanism:v10 completion:v7];
+  buttonActions = [WeakRetained buttonActions];
+  [buttonActions performSOSActionsWithUUID:uUID triggerMechanism:triggerMechanism completion:completionCopy];
 
-  [(SBSOSLockGestureObserver *)self->_sosLockGestureObserver noteDidBeginSOSWithUUID:v9];
+  [(SBSOSLockGestureObserver *)self->_sosLockGestureObserver noteDidBeginSOSWithUUID:uUID];
 }
 
-- (void)sosLockTriggerDidBecomeActive:(id)a3
+- (void)sosLockTriggerDidBecomeActive:(id)active
 {
   if (self)
   {
     self = objc_loadWeakRetained(&self->_lockHardwareButton);
   }
 
-  v4 = self;
-  v3 = [(SBCombinationHardwareButton *)self buttonActions];
-  [v3 performSOSGestureBeganActions];
+  selfCopy = self;
+  buttonActions = [(SBCombinationHardwareButton *)self buttonActions];
+  [buttonActions performSOSGestureBeganActions];
 }
 
-- (void)sosLockTriggerDidBecomeInactive:(id)a3
+- (void)sosLockTriggerDidBecomeInactive:(id)inactive
 {
   if (self)
   {
     self = objc_loadWeakRetained(&self->_lockHardwareButton);
   }
 
-  v4 = self;
-  v3 = [(SBCombinationHardwareButton *)self buttonActions];
-  [v3 performSOSGestureEndedActions];
+  selfCopy = self;
+  buttonActions = [(SBCombinationHardwareButton *)self buttonActions];
+  [buttonActions performSOSGestureEndedActions];
 }
 
-- (void)sosClawDidTriggerSOS:(id)a3 completion:(id)a4
+- (void)sosClawDidTriggerSOS:(id)s completion:(id)completion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   [(SBCombinationHardwareButton *)self _setScreenshotDisabled:1 forReason:@"SOSTriggered"];
-  v6 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v7 = SBLogButtonsCombo();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = uUID;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "SOS Claw Gesture triggered SOS with UUID: %@", &v9, 0xCu);
   }
 
@@ -711,24 +711,24 @@ void __49__SBCombinationHardwareButton__backlightChanged___block_invoke(uint64_t
     self = objc_loadWeakRetained(&self->_lockHardwareButton);
   }
 
-  v8 = [(SBCombinationHardwareButton *)self buttonActions];
-  [v8 performSOSActionsWithUUID:v6 triggerMechanism:3 completion:v5];
+  buttonActions = [(SBCombinationHardwareButton *)self buttonActions];
+  [buttonActions performSOSActionsWithUUID:uUID triggerMechanism:3 completion:completionCopy];
 }
 
-- (void)sosClawDidBecomeActive:(id)a3
+- (void)sosClawDidBecomeActive:(id)active
 {
   if (self)
   {
     self = objc_loadWeakRetained(&self->_lockHardwareButton);
   }
 
-  v4 = self;
+  selfCopy = self;
   [(SBCombinationHardwareButton *)self cancelLongPress];
-  v3 = [(SBCombinationHardwareButton *)v4 buttonActions];
-  [v3 performSOSGestureBeganActions];
+  buttonActions = [(SBCombinationHardwareButton *)selfCopy buttonActions];
+  [buttonActions performSOSGestureBeganActions];
 }
 
-- (void)sosClawDidBecomeInactive:(id)a3
+- (void)sosClawDidBecomeInactive:(id)inactive
 {
   [(SBCombinationHardwareButton *)self _setScreenshotDisabled:0 forReason:@"SOSTriggered"];
   if (self)
@@ -742,8 +742,8 @@ void __49__SBCombinationHardwareButton__backlightChanged___block_invoke(uint64_t
   }
 
   v6 = WeakRetained;
-  v5 = [WeakRetained buttonActions];
-  [v5 performSOSGestureEndedActions];
+  buttonActions = [WeakRetained buttonActions];
+  [buttonActions performSOSGestureEndedActions];
 }
 
 - (id)homeHardwareButton

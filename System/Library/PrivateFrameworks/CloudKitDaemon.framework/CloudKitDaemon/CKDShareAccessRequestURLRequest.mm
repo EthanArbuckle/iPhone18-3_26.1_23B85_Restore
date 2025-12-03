@@ -1,23 +1,23 @@
 @interface CKDShareAccessRequestURLRequest
-- (CKDShareAccessRequestURLRequest)initWithOperation:(id)a3 shareMetadatasToRequestAccess:(id)a4;
+- (CKDShareAccessRequestURLRequest)initWithOperation:(id)operation shareMetadatasToRequestAccess:(id)access;
 - (id)generateRequestOperations;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (id)requestOperationClasses;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDShareAccessRequestURLRequest
 
-- (CKDShareAccessRequestURLRequest)initWithOperation:(id)a3 shareMetadatasToRequestAccess:(id)a4
+- (CKDShareAccessRequestURLRequest)initWithOperation:(id)operation shareMetadatasToRequestAccess:(id)access
 {
-  v7 = a4;
+  accessCopy = access;
   v13.receiver = self;
   v13.super_class = CKDShareAccessRequestURLRequest;
-  v8 = [(CKDURLRequest *)&v13 initWithOperation:a3];
+  v8 = [(CKDURLRequest *)&v13 initWithOperation:operation];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_shareMetadatasToRequestAccess, a4);
+    objc_storeStrong(&v8->_shareMetadatasToRequestAccess, access);
     v10 = objc_opt_new();
     shareMetadataByRequestID = v9->_shareMetadataByRequestID;
     v9->_shareMetadataByRequestID = v10;
@@ -92,11 +92,11 @@
   return v44;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_shareMetadataByRequestID(self, v5, v6);
-  v10 = objc_msgSend_response(v4, v8, v9);
+  v10 = objc_msgSend_response(objectCopy, v8, v9);
   v13 = objc_msgSend_operationUUID(v10, v11, v12);
   v15 = objc_msgSend_objectForKeyedSubscript_(v7, v14, v13);
 
@@ -106,18 +106,18 @@
   {
     v21 = objc_msgSend_shareAccessRequestedBlock(self, v19, v20);
     v24 = objc_msgSend_shareURL(v15, v22, v23);
-    v27 = objc_msgSend_result(v4, v25, v26);
+    v27 = objc_msgSend_result(objectCopy, v25, v26);
     (v21)[2](v21, v24, v27);
   }
 
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v27 = a3;
+  failureCopy = failure;
   v6 = objc_msgSend_shareMetadataByRequestID(self, v4, v5);
-  v9 = objc_msgSend_response(v27, v7, v8);
+  v9 = objc_msgSend_response(failureCopy, v7, v8);
   v12 = objc_msgSend_operationUUID(v9, v10, v11);
   v14 = objc_msgSend_objectForKeyedSubscript_(v6, v13, v12);
 
@@ -127,7 +127,7 @@
   {
     v20 = objc_msgSend_shareAccessRequestedBlock(self, v18, v19);
     v23 = objc_msgSend_shareURL(v14, v21, v22);
-    v26 = objc_msgSend_result(v27, v24, v25);
+    v26 = objc_msgSend_result(failureCopy, v24, v25);
     (v20)[2](v20, v23, v26);
   }
 }

@@ -1,7 +1,7 @@
 @interface TIRemoteDataServer
 + (id)sharedRemoteDataServer;
 + (void)resolveAssistantFrameworkClasses;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TIRemoteDataServer)init;
 - (void)dealloc;
 @end
@@ -15,7 +15,7 @@
   v2[2] = sub_10000A51C;
   v2[3] = &unk_10001CBD8;
   v2[4] = a2;
-  v2[5] = a1;
+  v2[5] = self;
   if (qword_100026618 != -1)
   {
     dispatch_once(&qword_100026618, v2);
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000A614;
   block[3] = &unk_10001C810;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100026630 != -1)
   {
     dispatch_once(&qword_100026630, block);
@@ -72,27 +72,27 @@
   [(TIRemoteDataServer *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   if (TICanLogMessageAtLevel())
   {
     v6 = TIOSLogFacility();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      sub_10000DC88(v5);
+      sub_10000DC88(connectionCopy);
     }
   }
 
   v7 = objc_opt_new();
-  [v5 setExportedObject:v7];
+  [connectionCopy setExportedObject:v7];
   v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TIRemoteDataProtocol];
-  [v5 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  v9 = [(TIRemoteDataServer *)self dispatchQueue];
-  [v5 _setQueue:v9];
+  dispatchQueue = [(TIRemoteDataServer *)self dispatchQueue];
+  [connectionCopy _setQueue:dispatchQueue];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 

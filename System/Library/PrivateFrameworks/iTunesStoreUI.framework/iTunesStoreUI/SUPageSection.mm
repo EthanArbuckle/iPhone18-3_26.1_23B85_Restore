@@ -1,12 +1,12 @@
 @interface SUPageSection
-- (BOOL)isEqual:(id)a3;
-- (BOOL)loadFromDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)loadFromDictionary:(id)dictionary;
 - (SUPageSection)init;
 - (id)segmentedControlItem;
-- (void)_setURL:(id)a3;
-- (void)_setURLBagKey:(id)a3;
+- (void)_setURL:(id)l;
+- (void)_setURLBagKey:(id)key;
 - (void)dealloc;
-- (void)setURLRequestProperties:(id)a3;
+- (void)setURLRequestProperties:(id)properties;
 @end
 
 @implementation SUPageSection
@@ -31,16 +31,16 @@
   [(SUPageSection *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = [(SUPageSection *)self identifier];
-  v7 = [a3 identifier];
+  identifier = [(SUPageSection *)self identifier];
+  identifier2 = [equal identifier];
   if (isKindOfClass)
   {
-    v8 = v6 == v7 || [(NSString *)v6 isEqualToString:v7];
+    v8 = identifier == identifier2 || [(NSString *)identifier isEqualToString:identifier2];
   }
 
   else
@@ -48,52 +48,52 @@
     v8 = 0;
   }
 
-  v9 = [(SUPageSection *)self title];
-  v10 = [a3 title];
+  title = [(SUPageSection *)self title];
+  title2 = [equal title];
   if (!v8)
   {
     return 0;
   }
 
-  v11 = v10;
-  if (v9 != v10 && ![(NSString *)v9 isEqualToString:v10])
+  v11 = title2;
+  if (title != title2 && ![(NSString *)title isEqualToString:title2])
   {
     return 0;
   }
 
-  v12 = [(SUPageSection *)self URLRequestProperties];
-  v13 = [a3 URLRequestProperties];
+  uRLRequestProperties = [(SUPageSection *)self URLRequestProperties];
+  uRLRequestProperties2 = [equal URLRequestProperties];
 
-  return [(SSURLRequestProperties *)v12 isEqual:v13];
+  return [(SSURLRequestProperties *)uRLRequestProperties isEqual:uRLRequestProperties2];
 }
 
-- (BOOL)loadFromDictionary:(id)a3
+- (BOOL)loadFromDictionary:(id)dictionary
 {
-  v4 = [objc_alloc(MEMORY[0x1E69D4990]) initWithDictionary:a3];
-  v5 = [v4 dictionaryByEvaluatingConditions];
+  v4 = [objc_alloc(MEMORY[0x1E69D4990]) initWithDictionary:dictionary];
+  dictionaryByEvaluatingConditions = [v4 dictionaryByEvaluatingConditions];
 
-  v6 = [v5 objectForKey:@"template-name"];
+  v6 = [dictionaryByEvaluatingConditions objectForKey:@"template-name"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUPageSection *)self setStructuredPageType:[SUStructuredPage pageTypeForStorePageString:v6]];
   }
 
-  v7 = [v5 objectForKey:@"title"];
+  v7 = [dictionaryByEvaluatingConditions objectForKey:@"title"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUPageSection *)self setTitle:v7];
   }
 
-  v8 = [v5 objectForKey:@"url-bag-key"];
+  v8 = [dictionaryByEvaluatingConditions objectForKey:@"url-bag-key"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [(SUPageSection *)self _setURLBagKey:v8];
   }
 
-  v9 = [v5 objectForKey:@"url"];
+  v9 = [dictionaryByEvaluatingConditions objectForKey:@"url"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -125,17 +125,17 @@
   return result;
 }
 
-- (void)setURLRequestProperties:(id)a3
+- (void)setURLRequestProperties:(id)properties
 {
   urlRequestProperties = self->_urlRequestProperties;
-  if (urlRequestProperties != a3)
+  if (urlRequestProperties != properties)
   {
 
-    self->_urlRequestProperties = [a3 mutableCopy];
+    self->_urlRequestProperties = [properties mutableCopy];
   }
 }
 
-- (void)_setURL:(id)a3
+- (void)_setURL:(id)l
 {
   urlRequestProperties = self->_urlRequestProperties;
   if (!urlRequestProperties)
@@ -144,10 +144,10 @@
     self->_urlRequestProperties = urlRequestProperties;
   }
 
-  [(SSMutableURLRequestProperties *)urlRequestProperties setURL:a3];
+  [(SSMutableURLRequestProperties *)urlRequestProperties setURL:l];
 }
 
-- (void)_setURLBagKey:(id)a3
+- (void)_setURLBagKey:(id)key
 {
   urlRequestProperties = self->_urlRequestProperties;
   if (!urlRequestProperties)
@@ -156,7 +156,7 @@
     self->_urlRequestProperties = urlRequestProperties;
   }
 
-  [(SSMutableURLRequestProperties *)urlRequestProperties setURLBagKey:a3];
+  [(SSMutableURLRequestProperties *)urlRequestProperties setURLBagKey:key];
 }
 
 @end

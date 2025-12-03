@@ -4,13 +4,13 @@
 - (int64_t)backlightStatus;
 - (void)_assertNotRunningOnAccessQueue;
 - (void)_assertRunningOnAccessQueue;
-- (void)_notifyObservers:(id)a3 ofUpdatedBacklightStatus:(int64_t)a4;
-- (void)_performBlockOnAccessQueue:(id)a3;
-- (void)_setBacklightStatus:(int64_t)a3;
-- (void)_setObservingBacklight:(BOOL)a3;
-- (void)addObserver:(id)a3;
+- (void)_notifyObservers:(id)observers ofUpdatedBacklightStatus:(int64_t)status;
+- (void)_performBlockOnAccessQueue:(id)queue;
+- (void)_setBacklightStatus:(int64_t)status;
+- (void)_setObservingBacklight:(BOOL)backlight;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation TLBacklight
@@ -44,9 +44,9 @@ uint64_t __30__TLBacklight_sharedBacklight__block_invoke()
     v3 = objc_opt_class();
     v4 = MEMORY[0x1E696AEC0];
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:v3];
-    v6 = [v5 bundleIdentifier];
+    bundleIdentifier = [v5 bundleIdentifier];
     v7 = NSStringFromClass(v3);
-    v8 = [v4 stringWithFormat:@"%@.%@-%@", v6, v7, @"AccessQueue"];
+    v8 = [v4 stringWithFormat:@"%@.%@-%@", bundleIdentifier, v7, @"AccessQueue"];
     accessQueueLabel = v2->_accessQueueLabel;
     v2->_accessQueueLabel = v8;
 
@@ -95,7 +95,7 @@ uint64_t __30__TLBacklight_sharedBacklight__block_invoke()
   return v2;
 }
 
-- (void)_setBacklightStatus:(int64_t)a3
+- (void)_setBacklightStatus:(int64_t)status
 {
   v7 = 0;
   v8 = &v7;
@@ -108,13 +108,13 @@ uint64_t __30__TLBacklight_sharedBacklight__block_invoke()
   v6[2] = __35__TLBacklight__setBacklightStatus___block_invoke;
   v6[3] = &unk_1E8579CA8;
   v6[5] = &v7;
-  v6[6] = a3;
+  v6[6] = status;
   v6[4] = self;
   [(TLBacklight *)self _performBlockOnAccessQueue:v6];
   v5 = v8[5];
   if (v5)
   {
-    [(TLBacklight *)self _notifyObservers:v5 ofUpdatedBacklightStatus:a3];
+    [(TLBacklight *)self _notifyObservers:v5 ofUpdatedBacklightStatus:status];
   }
 
   _Block_object_dispose(&v7, 8);
@@ -139,30 +139,30 @@ uint64_t __35__TLBacklight__setBacklightStatus___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_setObservingBacklight:(BOOL)a3
+- (void)_setObservingBacklight:(BOOL)backlight
 {
-  v3 = a3;
+  backlightCopy = backlight;
   [(TLBacklight *)self _assertRunningOnAccessQueue];
-  if (self->_isObservingBacklight != v3)
+  if (self->_isObservingBacklight != backlightCopy)
   {
-    self->_isObservingBacklight = v3;
-    if (!v3)
+    self->_isObservingBacklight = backlightCopy;
+    if (!backlightCopy)
     {
       self->_backlightStatus = -1;
     }
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__TLBacklight_addObserver___block_invoke;
   v6[3] = &unk_1E8578900;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = observerCopy;
+  selfCopy = self;
+  v5 = observerCopy;
   [(TLBacklight *)self _performBlockOnAccessQueue:v6];
 }
 
@@ -189,16 +189,16 @@ uint64_t __27__TLBacklight_addObserver___block_invoke(uint64_t a1)
   return [v6 _setObservingBacklight:1];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__TLBacklight_removeObserver___block_invoke;
   v6[3] = &unk_1E8578900;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = observerCopy;
+  selfCopy = self;
+  v5 = observerCopy;
   [(TLBacklight *)self _performBlockOnAccessQueue:v6];
 }
 
@@ -215,16 +215,16 @@ uint64_t __30__TLBacklight_removeObserver___block_invoke(uint64_t a1)
   return [v2 _setObservingBacklight:v3];
 }
 
-- (void)_notifyObservers:(id)a3 ofUpdatedBacklightStatus:(int64_t)a4
+- (void)_notifyObservers:(id)observers ofUpdatedBacklightStatus:(int64_t)status
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  observersCopy = observers;
   [(TLBacklight *)self _assertNotRunningOnAccessQueue];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v6;
+  v7 = observersCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -243,7 +243,7 @@ uint64_t __30__TLBacklight_removeObserver___block_invoke(uint64_t a1)
         v12 = *(*(&v14 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 backlightStatusDidChange:{a4, v14}];
+          [v12 backlightStatusDidChange:{status, v14}];
         }
 
         ++v11;
@@ -259,12 +259,12 @@ uint64_t __30__TLBacklight_removeObserver___block_invoke(uint64_t a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_performBlockOnAccessQueue:(id)a3
+- (void)_performBlockOnAccessQueue:(id)queue
 {
   accessQueue = self->_accessQueue;
   if (accessQueue)
   {
-    dispatch_sync(accessQueue, a3);
+    dispatch_sync(accessQueue, queue);
   }
 }
 
@@ -293,16 +293,16 @@ uint64_t __30__TLBacklight_removeObserver___block_invoke(uint64_t a1)
         v9 = TLLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 lastPathComponent];
-          v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          lastPathComponent = [v8 lastPathComponent];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           v14 = 136381443;
           v15 = "[TLBacklight _assertRunningOnAccessQueue]";
           v16 = 2113;
-          v17 = v10;
+          v17 = lastPathComponent;
           v18 = 2049;
           v19 = 208;
           v20 = 2113;
-          v21 = v11;
+          v21 = callStackSymbols;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v14, 0x2Au);
         }
       }
@@ -352,16 +352,16 @@ uint64_t __30__TLBacklight_removeObserver___block_invoke(uint64_t a1)
         v9 = TLLogGeneral();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = [v8 lastPathComponent];
-          v11 = [MEMORY[0x1E696AF00] callStackSymbols];
+          lastPathComponent = [v8 lastPathComponent];
+          callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
           v14 = 136381443;
           v15 = "[TLBacklight _assertNotRunningOnAccessQueue]";
           v16 = 2113;
-          v17 = v10;
+          v17 = lastPathComponent;
           v18 = 2049;
           v19 = 216;
           v20 = 2113;
-          v21 = v11;
+          v21 = callStackSymbols;
           _os_log_impl(&dword_1D9356000, v9, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v14, 0x2Au);
         }
       }

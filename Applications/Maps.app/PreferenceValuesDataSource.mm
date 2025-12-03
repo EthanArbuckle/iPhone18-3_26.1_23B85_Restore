@@ -1,26 +1,26 @@
 @interface PreferenceValuesDataSource
-+ (void)registerCellsInCollectionView:(id)a3;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
++ (void)registerCellsInCollectionView:(id)view;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (PreferenceValuesDelegate)delegate;
 - (id)_sections;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (id)rowAtIndexPath:(id)a3;
-- (id)sectionAtIndex:(int64_t)a3;
-- (id)sectionAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfRowsInSection:(int64_t)a3;
-- (void)addSectionWithTitle:(id)a3 content:(id)a4;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (id)rowAtIndexPath:(id)path;
+- (id)sectionAtIndex:(int64_t)index;
+- (id)sectionAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfRowsInSection:(int64_t)section;
+- (void)addSectionWithTitle:(id)title content:(id)content;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)loadContentNowIfNeeded;
-- (void)prepareContentWithBlock:(id)a3;
+- (void)prepareContentWithBlock:(id)block;
 - (void)rebuildSections;
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation PreferenceValuesDataSource
@@ -32,56 +32,56 @@
   return WeakRetained;
 }
 
-- (int64_t)numberOfRowsInSection:(int64_t)a3
+- (int64_t)numberOfRowsInSection:(int64_t)section
 {
-  v3 = [(PreferenceValuesDataSource *)self sectionAtIndex:a3];
-  v4 = [v3 rows];
-  v5 = [v4 count];
+  v3 = [(PreferenceValuesDataSource *)self sectionAtIndex:section];
+  rows = [v3 rows];
+  v5 = [rows count];
 
   return v5;
 }
 
-- (id)rowAtIndexPath:(id)a3
+- (id)rowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PreferenceValuesDataSource *)self sectionAtIndexPath:v4];
-  v6 = [v5 rows];
-  v7 = [v4 row];
+  pathCopy = path;
+  v5 = [(PreferenceValuesDataSource *)self sectionAtIndexPath:pathCopy];
+  rows = [v5 rows];
+  v7 = [pathCopy row];
 
-  if (v7 >= [v6 count])
+  if (v7 >= [rows count])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [v6 objectAtIndexedSubscript:v7];
+    v8 = [rows objectAtIndexedSubscript:v7];
   }
 
   return v8;
 }
 
-- (id)sectionAtIndexPath:(id)a3
+- (id)sectionAtIndexPath:(id)path
 {
-  v4 = [a3 section];
+  section = [path section];
 
-  return [(PreferenceValuesDataSource *)self sectionAtIndex:v4];
+  return [(PreferenceValuesDataSource *)self sectionAtIndex:section];
 }
 
-- (id)sectionAtIndex:(int64_t)a3
+- (id)sectionAtIndex:(int64_t)index
 {
-  v5 = [(PreferenceValuesDataSource *)self _sections];
-  v6 = [v5 count];
+  _sections = [(PreferenceValuesDataSource *)self _sections];
+  v6 = [_sections count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(PreferenceValuesDataSource *)self _sections];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    _sections2 = [(PreferenceValuesDataSource *)self _sections];
+    v8 = [_sections2 objectAtIndexedSubscript:index];
   }
 
   return v8;
@@ -142,8 +142,8 @@
   self->_sections = 0;
 
   [(PreferenceValuesDataSource *)self loadContentNowIfNeeded];
-  v4 = [(PreferenceValuesDataSource *)self delegate];
-  [v4 dataSourceDidRebuildSections:self];
+  delegate = [(PreferenceValuesDataSource *)self delegate];
+  [delegate dataSourceDidRebuildSections:self];
 }
 
 - (id)_sections
@@ -154,14 +154,14 @@
   return sections;
 }
 
-- (void)addSectionWithTitle:(id)a3 content:(id)a4
+- (void)addSectionWithTitle:(id)title content:(id)content
 {
-  v6 = a4;
-  v7 = a3;
+  contentCopy = content;
+  titleCopy = title;
   v12 = objc_alloc_init(MapsDebugTableSection);
-  [(MapsDebugTableSection *)v12 setTitle:v7];
+  [(MapsDebugTableSection *)v12 setTitle:titleCopy];
 
-  v6[2](v6, v12);
+  contentCopy[2](contentCopy, v12);
   [(MapsDebugTableSection *)v12 commit];
   mutableSections = self->_mutableSections;
   if (mutableSections)
@@ -187,16 +187,16 @@
   }
 }
 
-- (void)prepareContentWithBlock:(id)a3
+- (void)prepareContentWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (!self->_sections)
   {
     v5 = objc_alloc_init(NSMutableArray);
     mutableSections = self->_mutableSections;
     self->_mutableSections = v5;
 
-    v4[2](v4, self);
+    blockCopy[2](blockCopy, self);
     v7 = [(NSMutableArray *)self->_mutableSections copy];
     sections = self->_sections;
     self->_sections = v7;
@@ -237,103 +237,103 @@
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(PreferenceValuesDataSource *)self sectionAtIndex:a4];
-  v5 = [v4 footer];
+  v4 = [(PreferenceValuesDataSource *)self sectionAtIndex:section];
+  footer = [v4 footer];
 
-  return v5;
+  return footer;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(PreferenceValuesDataSource *)self sectionAtIndex:a4];
-  v5 = [v4 title];
+  v4 = [(PreferenceValuesDataSource *)self sectionAtIndex:section];
+  title = [v4 title];
 
-  return v5;
+  return title;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PreferenceValuesDataSource *)self rowAtIndexPath:v6];
-  v8 = [v7 selectionAction];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [(PreferenceValuesDataSource *)self rowAtIndexPath:pathCopy];
+  selectionAction = [v7 selectionAction];
 
-  if (v8)
+  if (selectionAction)
   {
-    v9 = [v7 selectionAction];
-    v9[2]();
+    selectionAction2 = [v7 selectionAction];
+    selectionAction2[2]();
   }
 
-  [v10 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v4 = [(PreferenceValuesDataSource *)self rowAtIndexPath:a4];
-  v5 = [v4 selectionAction];
-  v6 = v5 != 0;
+  v4 = [(PreferenceValuesDataSource *)self rowAtIndexPath:path];
+  selectionAction = [v4 selectionAction];
+  v6 = selectionAction != 0;
 
   return v6;
 }
 
-- (void)tableView:(id)a3 didEndDisplayingCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view didEndDisplayingCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v9 = [(PreferenceValuesDataSource *)self rowAtIndexPath:a5];
-  v8 = [v9 currentCell];
+  cellCopy = cell;
+  v9 = [(PreferenceValuesDataSource *)self rowAtIndexPath:path];
+  currentCell = [v9 currentCell];
 
-  if (v8 == v7)
+  if (currentCell == cellCopy)
   {
     [v9 setCurrentCell:0];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(PreferenceValuesDataSource *)self rowAtIndexPath:a4];
-  v8 = [v7 cellForTableView:v6];
-  v9 = [v6 theme];
+  viewCopy = view;
+  v7 = [(PreferenceValuesDataSource *)self rowAtIndexPath:path];
+  v8 = [v7 cellForTableView:viewCopy];
+  theme = [viewCopy theme];
 
-  v10 = [v9 _maps_colorNamed:@"BackgroundGroupedTableView"];
+  v10 = [theme _maps_colorNamed:@"BackgroundGroupedTableView"];
   [v8 setBackgroundColor:v10];
 
   v11 = +[UIColor clearColor];
-  v12 = [v8 contentView];
-  [v12 setBackgroundColor:v11];
+  contentView = [v8 contentView];
+  [contentView setBackgroundColor:v11];
 
   [v8 setOpaque:0];
-  v13 = [v7 selectionAction];
-  [v8 setSelectionStyle:v13 != 0];
+  selectionAction = [v7 selectionAction];
+  [v8 setSelectionStyle:selectionAction != 0];
 
   [v7 setCurrentCell:v8];
 
   return v8;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100CEA73C;
   v20[3] = &unk_101650C88;
-  v21 = v8;
-  v11 = v9;
+  v21 = viewCopy;
+  v11 = kindCopy;
   v22 = v11;
-  v12 = v10;
+  v12 = pathCopy;
   v23 = v12;
-  v13 = v8;
+  v13 = viewCopy;
   v14 = objc_retainBlock(v20);
   v15 = -[PreferenceValuesDataSource sectionAtIndex:](self, "sectionAtIndex:", [v12 section] - -[PreferenceValuesDataSource sectionOffset](self, "sectionOffset"));
   if ([v11 isEqualToString:_UICollectionViewListLayoutElementKindSectionHeader])
   {
-    v16 = [v15 title];
-    v17 = (v14[2])(v14, v16, 0);
+    title = [v15 title];
+    v17 = (v14[2])(v14, title, 0);
 LABEL_5:
     v18 = v17;
 
@@ -342,8 +342,8 @@ LABEL_5:
 
   if ([v11 isEqualToString:_UICollectionViewListLayoutElementKindSectionFooter])
   {
-    v16 = [v15 footer];
-    v17 = (v14[2])(v14, v16, 1);
+    title = [v15 footer];
+    v17 = (v14[2])(v14, title, 1);
     goto LABEL_5;
   }
 
@@ -353,70 +353,70 @@ LABEL_7:
   return v18;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", [v6 item], objc_msgSend(v6, "section") - -[PreferenceValuesDataSource sectionOffset](self, "sectionOffset"));
+  viewCopy = view;
+  pathCopy = path;
+  v7 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", [pathCopy item], objc_msgSend(pathCopy, "section") - -[PreferenceValuesDataSource sectionOffset](self, "sectionOffset"));
   v8 = [(PreferenceValuesDataSource *)self rowAtIndexPath:v7];
-  v9 = [v8 selectionAction];
+  selectionAction = [v8 selectionAction];
 
-  if (v9)
+  if (selectionAction)
   {
-    v10 = [v8 selectionAction];
-    v10[2]();
+    selectionAction2 = [v8 selectionAction];
+    selectionAction2[2]();
   }
 
-  [v11 deselectItemAtIndexPath:v6 animated:1];
+  [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 item];
-  v7 = [v5 section];
+  pathCopy = path;
+  item = [pathCopy item];
+  section = [pathCopy section];
 
-  v8 = [NSIndexPath indexPathForItem:v6 inSection:v7 - [(PreferenceValuesDataSource *)self sectionOffset]];
+  v8 = [NSIndexPath indexPathForItem:item inSection:section - [(PreferenceValuesDataSource *)self sectionOffset]];
   v9 = [(PreferenceValuesDataSource *)self rowAtIndexPath:v8];
-  v10 = [v9 selectionAction];
-  LOBYTE(v5) = v10 != 0;
+  selectionAction = [v9 selectionAction];
+  LOBYTE(pathCopy) = selectionAction != 0;
 
-  return v5;
+  return pathCopy;
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [v7 item];
-  v10 = [v7 section];
+  pathCopy = path;
+  cellCopy = cell;
+  item = [pathCopy item];
+  section = [pathCopy section];
 
-  v13 = [NSIndexPath indexPathForItem:v9 inSection:v10 - [(PreferenceValuesDataSource *)self sectionOffset]];
+  v13 = [NSIndexPath indexPathForItem:item inSection:section - [(PreferenceValuesDataSource *)self sectionOffset]];
   v11 = [(PreferenceValuesDataSource *)self rowAtIndexPath:?];
-  v12 = [v11 currentCollectionViewCell];
+  currentCollectionViewCell = [v11 currentCollectionViewCell];
 
-  if (v12 == v8)
+  if (currentCollectionViewCell == cellCopy)
   {
     [v11 setCurrentCollectionViewCell:0];
   }
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", [v6 item], objc_msgSend(v6, "section") - -[PreferenceValuesDataSource sectionOffset](self, "sectionOffset"));
+  pathCopy = path;
+  viewCopy = view;
+  v8 = +[NSIndexPath indexPathForItem:inSection:](NSIndexPath, "indexPathForItem:inSection:", [pathCopy item], objc_msgSend(pathCopy, "section") - -[PreferenceValuesDataSource sectionOffset](self, "sectionOffset"));
   v9 = [(PreferenceValuesDataSource *)self rowAtIndexPath:v8];
-  v10 = [v9 cellForCollectionView:v7 forIndexPath:v6];
+  v10 = [v9 cellForCollectionView:viewCopy forIndexPath:pathCopy];
 
-  v11 = [v7 theme];
+  theme = [viewCopy theme];
 
-  v12 = [v11 _maps_colorNamed:@"BackgroundGroupedTableView"];
+  v12 = [theme _maps_colorNamed:@"BackgroundGroupedTableView"];
   [v10 setBackgroundColor:v12];
 
   v13 = +[UIColor clearColor];
-  v14 = [v10 contentView];
-  [v14 setBackgroundColor:v13];
+  contentView = [v10 contentView];
+  [contentView setBackgroundColor:v13];
 
   [v10 setOpaque:0];
   [v9 setCurrentCollectionViewCell:v10];
@@ -424,21 +424,21 @@ LABEL_7:
   return v10;
 }
 
-+ (void)registerCellsInCollectionView:(id)a3
++ (void)registerCellsInCollectionView:(id)view
 {
-  v3 = a3;
-  [MapsDebugTableRow registerCellsInCollectionView:v3];
+  viewCopy = view;
+  [MapsDebugTableRow registerCellsInCollectionView:viewCopy];
   v4 = objc_opt_class();
   v5 = _UICollectionViewListLayoutElementKindSectionHeader;
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  [v3 registerClass:v4 forSupplementaryViewOfKind:v5 withReuseIdentifier:v7];
+  [viewCopy registerClass:v4 forSupplementaryViewOfKind:v5 withReuseIdentifier:v7];
 
   v8 = objc_opt_class();
   v9 = _UICollectionViewListLayoutElementKindSectionFooter;
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  [v3 registerClass:v8 forSupplementaryViewOfKind:v9 withReuseIdentifier:v11];
+  [viewCopy registerClass:v8 forSupplementaryViewOfKind:v9 withReuseIdentifier:v11];
 }
 
 @end

@@ -1,13 +1,13 @@
 @interface UIStatusBarTetheringItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (id)contentsImage;
 @end
 
 @implementation UIStatusBarTetheringItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = *([a3 rawData] + 2532);
+  v5 = *([data rawData] + 2532);
   tetheringConnectionCount = self->_tetheringConnectionCount;
   if (v5 != tetheringConnectionCount)
   {
@@ -21,14 +21,14 @@
 {
   v29[2] = *MEMORY[0x1E69E9840];
   v3 = [(UIStatusBarItemView *)self imageWithShadowNamed:@"DataTypeiOSHotspot"];
-  v4 = [v3 image];
+  image = [v3 image];
 
-  [v4 size];
+  [image size];
   v6 = v5;
   v8 = v7;
   v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", self->_tetheringConnectionCount];
-  v10 = [(UIStatusBarItemView *)self foregroundStyle];
-  v11 = [v10 textColorForStyle:3];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v11 = [foregroundStyle textColorForStyle:3];
 
   v12 = [off_1E70ECC18 boldSystemFontOfSize:8.5];
   v13 = *off_1E70EC918;
@@ -55,11 +55,11 @@
   }
 
   [(UIStatusBarItemView *)self beginImageContextWithMinimumWidth:v22];
-  [v4 drawInRect:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v6, v8}];
+  [image drawInRect:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v6, v8}];
   if (self->_tetheringConnectionCount >= 1)
   {
-    v23 = [(UIStatusBarItemView *)self foregroundStyle];
-    [v23 height];
+    foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+    [foregroundStyle2 height];
     [v9 drawInRect:v14 withAttributes:{v6 + v16, v18, v20, v24}];
   }
 

@@ -1,8 +1,8 @@
 @interface AMSFollowUpAction
-- (AMSFollowUpAction)initWithAction:(id)a3 parentIdentifier:(id)a4;
-- (AMSFollowUpAction)initWithItem:(id)a3 action:(id)a4;
-- (AMSFollowUpAction)initWithJSONDictionary:(id)a3 parentIdentifier:(id)a4;
-- (AMSFollowUpAction)initWithLabel:(id)a3 parentIdentifier:(id)a4;
+- (AMSFollowUpAction)initWithAction:(id)action parentIdentifier:(id)identifier;
+- (AMSFollowUpAction)initWithItem:(id)item action:(id)action;
+- (AMSFollowUpAction)initWithJSONDictionary:(id)dictionary parentIdentifier:(id)identifier;
+- (AMSFollowUpAction)initWithLabel:(id)label parentIdentifier:(id)identifier;
 - (BOOL)requiresFollowUpUI;
 - (BOOL)shouldClear;
 - (NSMutableDictionary)userInfo;
@@ -11,23 +11,23 @@
 - (NSString)preferredClient;
 - (NSURLRequest)request;
 - (id)generateAction;
-- (id)performActionsWithBag:(id)a3 account:(id)a4;
-- (id)performActionsWithContract:(id)a3 account:(id)a4;
-- (id)postMetricsWithBag:(id)a3;
-- (id)postMetricsWithBagContract:(id)a3;
-- (void)_setUserInfoProperty:(id)a3 forKey:(id)a4;
-- (void)setRequest:(id)a3;
-- (void)setRequiresFollowUpUI:(BOOL)a3;
-- (void)setShouldClear:(BOOL)a3;
-- (void)setUserInfo:(id)a3;
+- (id)performActionsWithBag:(id)bag account:(id)account;
+- (id)performActionsWithContract:(id)contract account:(id)account;
+- (id)postMetricsWithBag:(id)bag;
+- (id)postMetricsWithBagContract:(id)contract;
+- (void)_setUserInfoProperty:(id)property forKey:(id)key;
+- (void)setRequest:(id)request;
+- (void)setRequiresFollowUpUI:(BOOL)i;
+- (void)setShouldClear:(BOOL)clear;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation AMSFollowUpAction
 
-- (AMSFollowUpAction)initWithLabel:(id)a3 parentIdentifier:(id)a4
+- (AMSFollowUpAction)initWithLabel:(id)label parentIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  labelCopy = label;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = AMSFollowUpAction;
   v9 = [(AMSFollowUpAction *)&v18 init];
@@ -41,12 +41,12 @@
     internalQueue = v9->_internalQueue;
     v9->_internalQueue = v12;
 
-    objc_storeStrong(&v9->_label, a3);
+    objc_storeStrong(&v9->_label, label);
     v14 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v15 = v14;
-    if (v8)
+    if (identifierCopy)
     {
-      [(NSMutableDictionary *)v14 setObject:v8 forKey:@"AMSParentIdentifier"];
+      [(NSMutableDictionary *)v14 setObject:identifierCopy forKey:@"AMSParentIdentifier"];
     }
 
     userInfo = v9->_userInfo;
@@ -56,25 +56,25 @@
   return v9;
 }
 
-- (AMSFollowUpAction)initWithAction:(id)a3 parentIdentifier:(id)a4
+- (AMSFollowUpAction)initWithAction:(id)action parentIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 label];
-  v9 = [(AMSFollowUpAction *)self initWithLabel:v8 parentIdentifier:v7];
+  actionCopy = action;
+  identifierCopy = identifier;
+  label = [actionCopy label];
+  v9 = [(AMSFollowUpAction *)self initWithLabel:label parentIdentifier:identifierCopy];
 
   if (v9)
   {
-    v10 = [v6 url];
+    v10 = [actionCopy url];
     url = v9->_url;
     v9->_url = v10;
 
-    v12 = [v6 userInfo];
+    userInfo = [actionCopy userInfo];
 
-    if (v12)
+    if (userInfo)
     {
-      v13 = [v6 userInfo];
-      v14 = [v13 mutableCopy];
+      userInfo2 = [actionCopy userInfo];
+      v14 = [userInfo2 mutableCopy];
 
       v15 = [(NSMutableDictionary *)v14 objectForKeyedSubscript:@"AMSMetrics"];
       objc_opt_class();
@@ -106,54 +106,54 @@
   return v9;
 }
 
-- (AMSFollowUpAction)initWithItem:(id)a3 action:(id)a4
+- (AMSFollowUpAction)initWithItem:(id)item action:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[AMSFollowUpItem alloc] initWithFollowUpItem:v6];
-  v9 = [(AMSFollowUpItem *)v8 identifier];
-  v10 = [(AMSFollowUpAction *)self initWithAction:v7 parentIdentifier:v9];
+  itemCopy = item;
+  actionCopy = action;
+  v8 = [[AMSFollowUpItem alloc] initWithFollowUpItem:itemCopy];
+  identifier = [(AMSFollowUpItem *)v8 identifier];
+  v10 = [(AMSFollowUpAction *)self initWithAction:actionCopy parentIdentifier:identifier];
 
   if (v10)
   {
-    v11 = [v6 uniqueIdentifier];
+    uniqueIdentifier = [itemCopy uniqueIdentifier];
     backingIdentifier = v10->_backingIdentifier;
-    v10->_backingIdentifier = v11;
+    v10->_backingIdentifier = uniqueIdentifier;
   }
 
   return v10;
 }
 
-- (AMSFollowUpAction)initWithJSONDictionary:(id)a3 parentIdentifier:(id)a4
+- (AMSFollowUpAction)initWithJSONDictionary:(id)dictionary parentIdentifier:(id)identifier
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"title"];
-  v9 = [(AMSFollowUpAction *)self initWithLabel:v8 parentIdentifier:v7];
+  dictionaryCopy = dictionary;
+  identifierCopy = identifier;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"title"];
+  v9 = [(AMSFollowUpAction *)self initWithLabel:v8 parentIdentifier:identifierCopy];
 
   if (v9)
   {
-    v44 = [v6 objectForKeyedSubscript:@"clear"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"clear"];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v44 BOOLValue];
+      bOOLValue = [v44 BOOLValue];
     }
 
     else
     {
-      v10 = 0;
+      bOOLValue = 0;
     }
 
-    v45 = [v6 objectForKeyedSubscript:@"clientActionDeepLink"];
-    v11 = [v6 objectForKeyedSubscript:@"financeLink"];
-    v12 = [v6 objectForKeyedSubscript:@"metrics"];
-    v13 = [v6 objectForKeyedSubscript:@"serverActionUrl"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"clientActionDeepLink"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"financeLink"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"metrics"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"serverActionUrl"];
     v14 = v13;
     v15 = 0x1E695D000uLL;
     if (v13)
     {
-      v41 = v10;
+      v41 = bOOLValue;
       v42 = v12;
       v16 = [v13 objectForKeyedSubscript:@"url"];
       v17 = [v14 objectForKeyedSubscript:@"method"];
@@ -202,7 +202,7 @@
       }
 
       v12 = v42;
-      v10 = v41;
+      bOOLValue = v41;
     }
 
     else
@@ -211,7 +211,7 @@
     }
 
     [(AMSFollowUpAction *)v9 setRequest:v25];
-    [(AMSFollowUpAction *)v9 setShouldClear:v10];
+    [(AMSFollowUpAction *)v9 setShouldClear:bOOLValue];
     if (v12)
     {
       v27 = [[AMSMetricsEvent alloc] initWithUnderlyingDictionary:v12];
@@ -235,15 +235,15 @@
           v32 = +[AMSLogConfig sharedConfig];
         }
 
-        v33 = [v32 OSLogObject];
-        if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
+        oSLogObject = [v32 OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
           v47 = objc_opt_class();
           v43 = v12;
           v34 = v11;
           v35 = v47;
-          _os_log_impl(&dword_192869000, v33, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring clientActionDeepLink due to existance of financeLink", buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring clientActionDeepLink due to existance of financeLink", buf, 0xCu);
 
           v11 = v34;
           v12 = v43;
@@ -272,14 +272,14 @@
   v10 = __Block_byref_object_copy__31;
   v11 = __Block_byref_object_dispose__31;
   v12 = 0;
-  v3 = [(AMSFollowUpAction *)self internalQueue];
+  internalQueue = [(AMSFollowUpAction *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__AMSFollowUpAction_logKey__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -313,14 +313,14 @@ void __27__AMSFollowUpAction_logKey__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__31;
   v11 = __Block_byref_object_dispose__31;
   v12 = 0;
-  v3 = [(AMSFollowUpAction *)self internalQueue];
+  internalQueue = [(AMSFollowUpAction *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __37__AMSFollowUpAction_parentIdentifier__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -343,14 +343,14 @@ uint64_t __37__AMSFollowUpAction_parentIdentifier__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__31;
   v11 = __Block_byref_object_dispose__31;
   v12 = 0;
-  v3 = [(AMSFollowUpAction *)self internalQueue];
+  internalQueue = [(AMSFollowUpAction *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __36__AMSFollowUpAction_preferredClient__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -373,14 +373,14 @@ uint64_t __36__AMSFollowUpAction_preferredClient__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__31;
   v11 = __Block_byref_object_dispose__31;
   v12 = 0;
-  v3 = [(AMSFollowUpAction *)self internalQueue];
+  internalQueue = [(AMSFollowUpAction *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __28__AMSFollowUpAction_request__block_invoke;
   v6[3] = &unk_1E73B82D0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -423,23 +423,23 @@ void __28__AMSFollowUpAction_request__block_invoke(uint64_t a1)
 
 - (BOOL)requiresFollowUpUI
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(AMSFollowUpAction *)self internalQueue];
+  internalQueue = [(AMSFollowUpAction *)self internalQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__AMSFollowUpAction_requiresFollowUpUI__block_invoke;
   v5[3] = &unk_1E73B82D0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(internalQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __39__AMSFollowUpAction_requiresFollowUpUI__block_invoke(uint64_t a1)
@@ -460,23 +460,23 @@ void __39__AMSFollowUpAction_requiresFollowUpUI__block_invoke(uint64_t a1)
 
 - (BOOL)shouldClear
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(AMSFollowUpAction *)self internalQueue];
+  internalQueue = [(AMSFollowUpAction *)self internalQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __32__AMSFollowUpAction_shouldClear__block_invoke;
   v5[3] = &unk_1E73B82D0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(internalQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __32__AMSFollowUpAction_shouldClear__block_invoke(uint64_t a1)
@@ -503,14 +503,14 @@ void __32__AMSFollowUpAction_shouldClear__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__31;
   v11 = __Block_byref_object_dispose__31;
   v12 = 0;
-  v3 = [(AMSFollowUpAction *)self internalQueue];
+  internalQueue = [(AMSFollowUpAction *)self internalQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __29__AMSFollowUpAction_userInfo__block_invoke;
   v6[3] = &unk_1E73B3EA8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(internalQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -518,23 +518,23 @@ void __32__AMSFollowUpAction_shouldClear__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setRequest:(id)a3
+- (void)setRequest:(id)request
 {
-  v13 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (v13)
+  if (requestCopy)
   {
-    v5 = [v13 HTTPMethod];
+    hTTPMethod = [requestCopy HTTPMethod];
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [v13 HTTPBody];
-    v8 = [v6 initWithData:v7 encoding:4];
+    hTTPBody = [requestCopy HTTPBody];
+    v8 = [v6 initWithData:hTTPBody encoding:4];
 
-    v9 = [v13 URL];
-    v10 = [v9 absoluteString];
+    v9 = [requestCopy URL];
+    absoluteString = [v9 absoluteString];
 
-    if (v10)
+    if (absoluteString)
     {
-      [v4 setObject:v10 forKeyedSubscript:@"AMSRequestURL"];
+      [v4 setObject:absoluteString forKeyedSubscript:@"AMSRequestURL"];
     }
 
     if (v8)
@@ -542,9 +542,9 @@ void __32__AMSFollowUpAction_shouldClear__block_invoke(uint64_t a1)
       [v4 setObject:v8 forKeyedSubscript:@"AMSRequestBody"];
     }
 
-    if (v5)
+    if (hTTPMethod)
     {
-      [v4 setObject:v5 forKeyedSubscript:@"AMSRequestMethod"];
+      [v4 setObject:hTTPMethod forKeyedSubscript:@"AMSRequestMethod"];
     }
   }
 
@@ -563,30 +563,30 @@ void __32__AMSFollowUpAction_shouldClear__block_invoke(uint64_t a1)
   [(AMSFollowUpAction *)self _setUserInfoProperty:v12 forKey:@"AMSRequest"];
 }
 
-- (void)setRequiresFollowUpUI:(BOOL)a3
+- (void)setRequiresFollowUpUI:(BOOL)i
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:i];
   [(AMSFollowUpAction *)self _setUserInfoProperty:v4 forKey:@"AMSRequiresFollowUpUI"];
 }
 
-- (void)setShouldClear:(BOOL)a3
+- (void)setShouldClear:(BOOL)clear
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:clear];
   [(AMSFollowUpAction *)self _setUserInfoProperty:v4 forKey:@"AMSShouldClear"];
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AMSFollowUpAction *)self internalQueue];
+  infoCopy = info;
+  internalQueue = [(AMSFollowUpAction *)self internalQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__AMSFollowUpAction_setUserInfo___block_invoke;
   v7[3] = &unk_1E73B3DE0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = infoCopy;
+  v6 = infoCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 - (id)generateAction
@@ -609,23 +609,23 @@ void __32__AMSFollowUpAction_shouldClear__block_invoke(uint64_t a1)
 
   v4 = v3;
   _Block_object_dispose(&v16, 8);
-  v5 = [(AMSFollowUpAction *)self label];
+  label = [(AMSFollowUpAction *)self label];
   v6 = [(AMSFollowUpAction *)self url];
-  v7 = [v3 actionWithLabel:v5 url:v6];
+  v7 = [v3 actionWithLabel:label url:v6];
 
-  v8 = [(AMSFollowUpAction *)self identifier];
-  [v7 setIdentifier:v8];
+  identifier = [(AMSFollowUpAction *)self identifier];
+  [v7 setIdentifier:identifier];
 
-  v9 = [(AMSFollowUpAction *)self userInfo];
-  v10 = [v9 mutableCopy];
+  userInfo = [(AMSFollowUpAction *)self userInfo];
+  v10 = [userInfo mutableCopy];
 
-  v11 = [(AMSFollowUpAction *)self metricsEvent];
+  metricsEvent = [(AMSFollowUpAction *)self metricsEvent];
 
-  if (v11)
+  if (metricsEvent)
   {
-    v12 = [(AMSFollowUpAction *)self metricsEvent];
-    v13 = [v12 underlyingDictionary];
-    [v10 setObject:v13 forKeyedSubscript:@"AMSMetrics"];
+    metricsEvent2 = [(AMSFollowUpAction *)self metricsEvent];
+    underlyingDictionary = [metricsEvent2 underlyingDictionary];
+    [v10 setObject:underlyingDictionary forKeyedSubscript:@"AMSMetrics"];
   }
 
   [v7 setUserInfo:v10];
@@ -633,24 +633,24 @@ void __32__AMSFollowUpAction_shouldClear__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (id)performActionsWithBag:(id)a3 account:(id)a4
+- (id)performActionsWithBag:(id)bag account:(id)account
 {
-  v6 = a3;
-  v7 = a4;
+  bagCopy = bag;
+  accountCopy = account;
   v8 = objc_alloc_init(AMSMutableBinaryPromise);
-  v9 = [(AMSFollowUpAction *)self actionQueue];
+  actionQueue = [(AMSFollowUpAction *)self actionQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __51__AMSFollowUpAction_performActionsWithBag_account___block_invoke;
   v16[3] = &unk_1E73B72B8;
   v16[4] = self;
-  v17 = v6;
-  v18 = v7;
+  v17 = bagCopy;
+  v18 = accountCopy;
   v10 = v8;
   v19 = v10;
-  v11 = v7;
-  v12 = v6;
-  dispatch_async(v9, v16);
+  v11 = accountCopy;
+  v12 = bagCopy;
+  dispatch_async(actionQueue, v16);
 
   v13 = v19;
   v14 = v10;
@@ -787,27 +787,27 @@ LABEL_24:
   }
 }
 
-- (id)postMetricsWithBag:(id)a3
+- (id)postMetricsWithBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v5 = objc_alloc_init(AMSMutablePromise);
-  v6 = [(AMSFollowUpAction *)self metricsEvent];
+  metricsEvent = [(AMSFollowUpAction *)self metricsEvent];
 
-  if (v6)
+  if (metricsEvent)
   {
-    v7 = [(AMSFollowUpAction *)self metricsEvent];
-    v8 = [v7 underlyingDictionary];
-    v9 = [AMSFollowUpMetricsEvent eventFromMetricsDictionary:v8];
+    metricsEvent2 = [(AMSFollowUpAction *)self metricsEvent];
+    underlyingDictionary = [metricsEvent2 underlyingDictionary];
+    v9 = [AMSFollowUpMetricsEvent eventFromMetricsDictionary:underlyingDictionary];
 
-    v10 = [AMSMetrics internalInstanceUsingBag:v4];
+    v10 = [AMSMetrics internalInstanceUsingBag:bagCopy];
     [v10 enqueueEvent:v9];
-    v11 = [v10 flush];
+    flush = [v10 flush];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __40__AMSFollowUpAction_postMetricsWithBag___block_invoke;
     v13[3] = &unk_1E73B3A88;
     v14 = v5;
-    [v11 addFinishBlock:v13];
+    [flush addFinishBlock:v13];
   }
 
   else
@@ -833,22 +833,22 @@ uint64_t __40__AMSFollowUpAction_postMetricsWithBag___block_invoke(uint64_t a1, 
   return [*(a1 + 32) finishWithResult:v4 error:a3];
 }
 
-- (void)_setUserInfoProperty:(id)a3 forKey:(id)a4
+- (void)_setUserInfoProperty:(id)property forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  propertyCopy = property;
+  keyCopy = key;
   objc_initWeak(&location, self);
-  v8 = [(AMSFollowUpAction *)self internalQueue];
+  internalQueue = [(AMSFollowUpAction *)self internalQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __49__AMSFollowUpAction__setUserInfoProperty_forKey___block_invoke;
   v11[3] = &unk_1E73B5E28;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v11);
+  v12 = propertyCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = propertyCopy;
+  dispatch_sync(internalQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -870,39 +870,39 @@ void __49__AMSFollowUpAction__setUserInfoProperty_forKey___block_invoke(uint64_t
   }
 }
 
-- (id)performActionsWithContract:(id)a3 account:(id)a4
+- (id)performActionsWithContract:(id)contract account:(id)account
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[AMSContractBagShim alloc] initWithBagContract:v7];
+  accountCopy = account;
+  contractCopy = contract;
+  v8 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
 
-  v9 = [(AMSFollowUpAction *)self performActionsWithBag:v8 account:v6];
+  v9 = [(AMSFollowUpAction *)self performActionsWithBag:v8 account:accountCopy];
 
   return v9;
 }
 
-- (id)postMetricsWithBagContract:(id)a3
+- (id)postMetricsWithBagContract:(id)contract
 {
-  v4 = a3;
+  contractCopy = contract;
   v5 = objc_alloc_init(AMSPromise);
-  v6 = [(AMSFollowUpAction *)self metricsEvent];
+  metricsEvent = [(AMSFollowUpAction *)self metricsEvent];
 
-  if (v6)
+  if (metricsEvent)
   {
-    v7 = [(AMSFollowUpAction *)self metricsEvent];
-    v8 = [v7 underlyingDictionary];
-    v9 = [AMSFollowUpMetricsEvent eventFromMetricsDictionary:v8];
+    metricsEvent2 = [(AMSFollowUpAction *)self metricsEvent];
+    underlyingDictionary = [metricsEvent2 underlyingDictionary];
+    v9 = [AMSFollowUpMetricsEvent eventFromMetricsDictionary:underlyingDictionary];
 
-    v10 = [[AMSContractBagShim alloc] initWithBagContract:v4];
+    v10 = [[AMSContractBagShim alloc] initWithBagContract:contractCopy];
     v11 = [AMSMetrics internalInstanceUsingBag:v10];
     [v11 enqueueEvent:v9];
-    v12 = [v11 flush];
+    flush = [v11 flush];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __48__AMSFollowUpAction_postMetricsWithBagContract___block_invoke;
     v14[3] = &unk_1E73B3A88;
     v15 = v5;
-    [v12 addFinishBlock:v14];
+    [flush addFinishBlock:v14];
   }
 
   else

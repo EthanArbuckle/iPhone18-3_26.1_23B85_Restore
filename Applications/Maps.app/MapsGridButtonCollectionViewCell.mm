@@ -1,18 +1,18 @@
 @interface MapsGridButtonCollectionViewCell
-- (_TtC4Maps32MapsGridButtonCollectionViewCell)initWithCoder:(id)a3;
-- (void)setViewModel:(id)a3;
+- (_TtC4Maps32MapsGridButtonCollectionViewCell)initWithCoder:(id)coder;
+- (void)setViewModel:(id)model;
 @end
 
 @implementation MapsGridButtonCollectionViewCell
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  v6 = self;
-  sub_100234B64(a3);
+  modelCopy = model;
+  selfCopy = self;
+  sub_100234B64(model);
 }
 
-- (_TtC4Maps32MapsGridButtonCollectionViewCell)initWithCoder:(id)a3
+- (_TtC4Maps32MapsGridButtonCollectionViewCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC4Maps32MapsGridButtonCollectionViewCell_viewModel) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();

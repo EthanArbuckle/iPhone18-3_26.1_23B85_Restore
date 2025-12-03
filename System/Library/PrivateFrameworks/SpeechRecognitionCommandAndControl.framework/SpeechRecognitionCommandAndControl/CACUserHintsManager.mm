@@ -1,9 +1,9 @@
 @interface CACUserHintsManager
 + (id)sharedManager;
-- (BOOL)shouldDisplayUserHintAfterRegisteringIdentifier:(id)a3;
+- (BOOL)shouldDisplayUserHintAfterRegisteringIdentifier:(id)identifier;
 - (CACUserHintsManager)init;
-- (id)suggestedCommandIdentifiersFromActiveCommandIdentifiers:(id)a3 maximumCount:(int64_t)a4;
-- (unint64_t)_countAfterRegisteringUserHintIdentifier:(id)a3;
+- (id)suggestedCommandIdentifiersFromActiveCommandIdentifiers:(id)identifiers maximumCount:(int64_t)count;
+- (unint64_t)_countAfterRegisteringUserHintIdentifier:(id)identifier;
 - (void)clearHistory;
 @end
 
@@ -35,14 +35,14 @@ uint64_t __36__CACUserHintsManager_sharedManager__block_invoke()
   return [(CACUserHintsManager *)&v3 init];
 }
 
-- (BOOL)shouldDisplayUserHintAfterRegisteringIdentifier:(id)a3
+- (BOOL)shouldDisplayUserHintAfterRegisteringIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 && [(CACUserHintsManager *)self _countAfterRegisteringUserHintIdentifier:v4]<= 0xA)
+  identifierCopy = identifier;
+  if (identifierCopy && [(CACUserHintsManager *)self _countAfterRegisteringUserHintIdentifier:identifierCopy]<= 0xA)
   {
     v5 = +[CACPreferences sharedPreferences];
-    v6 = [v5 commandCounts];
-    v7 = [v6 objectForKey:v4];
+    commandCounts = [v5 commandCounts];
+    v7 = [commandCounts objectForKey:identifierCopy];
     v8 = [v7 unsignedLongLongValue] < 0xB;
   }
 
@@ -54,13 +54,13 @@ uint64_t __36__CACUserHintsManager_sharedManager__block_invoke()
   return v8;
 }
 
-- (id)suggestedCommandIdentifiersFromActiveCommandIdentifiers:(id)a3 maximumCount:(int64_t)a4
+- (id)suggestedCommandIdentifiersFromActiveCommandIdentifiers:(id)identifiers maximumCount:(int64_t)count
 {
   v90 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = +[CACPreferences sharedPreferences];
-  v6 = [v5 builtInCommandsTable];
-  v7 = [v6 objectForKey:@"HistoricalCommandFrequencies"];
+  builtInCommandsTable = [v5 builtInCommandsTable];
+  v7 = [builtInCommandsTable objectForKey:@"HistoricalCommandFrequencies"];
 
   v65 = v7;
   if (v7)
@@ -75,22 +75,22 @@ uint64_t __36__CACUserHintsManager_sharedManager__block_invoke()
 
   v9 = v8;
   v10 = +[CACPreferences sharedPreferences];
-  v67 = [v10 userHintsHistory];
+  userHintsHistory = [v10 userHintsHistory];
 
   v11 = +[CACPreferences sharedPreferences];
-  v12 = [v11 commandCounts];
+  commandCounts = [v11 commandCounts];
 
-  v62 = v4;
-  v13 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:v4];
+  v62 = identifiersCopy;
+  v13 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:identifiersCopy];
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v14 = [v9 allKeys];
-  v15 = [v14 copy];
+  allKeys = [v9 allKeys];
+  v15 = [allKeys copy];
 
   v16 = [v15 countByEnumeratingWithState:&v82 objects:v89 count:16];
-  v66 = v12;
+  v66 = commandCounts;
   if (v16)
   {
     v17 = v16;
@@ -106,14 +106,14 @@ uint64_t __36__CACUserHintsManager_sharedManager__block_invoke()
         }
 
         v20 = *(*(&v82 + 1) + 8 * v19);
-        if ([v13 containsObject:v20] && (objc_msgSend(v12, "objectForKey:", v20), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "unsignedLongLongValue"), v21, v22 < 0xB))
+        if ([v13 containsObject:v20] && (objc_msgSend(commandCounts, "objectForKey:", v20), v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "unsignedLongLongValue"), v21, v22 < 0xB))
         {
-          v23 = [v67 objectForKey:v20];
-          v24 = [v23 unsignedLongLongValue];
-          v25 = [v12 objectForKey:v20];
-          v26 = [v25 unsignedLongLongValue] + v24;
+          v23 = [userHintsHistory objectForKey:v20];
+          unsignedLongLongValue = [v23 unsignedLongLongValue];
+          v25 = [commandCounts objectForKey:v20];
+          v26 = [v25 unsignedLongLongValue] + unsignedLongLongValue;
 
-          v12 = v66;
+          commandCounts = v66;
           if (v26)
           {
             v27 = arc4random() % 0x64 + 1;
@@ -191,8 +191,8 @@ uint64_t __36__CACUserHintsManager_sharedManager__block_invoke()
   v74 = 0u;
   v75 = 0u;
   v45 = +[CACPreferences sharedPreferences];
-  v46 = [v45 builtInCommandsTable];
-  v47 = [v46 objectForKey:@"ExcludedSuggestedCommands"];
+  builtInCommandsTable2 = [v45 builtInCommandsTable];
+  v47 = [builtInCommandsTable2 objectForKey:@"ExcludedSuggestedCommands"];
 
   v48 = [v47 countByEnumeratingWithState:&v74 objects:v87 count:16];
   if (v48)
@@ -218,8 +218,8 @@ uint64_t __36__CACUserHintsManager_sharedManager__block_invoke()
   }
 
   v52 = objc_alloc(MEMORY[0x277CBEB18]);
-  v53 = [v9 allKeys];
-  v54 = [v52 initWithArray:v53];
+  allKeys2 = [v9 allKeys];
+  v54 = [v52 initWithArray:allKeys2];
 
   v72[0] = MEMORY[0x277D85DD0];
   v72[1] = 3221225472;
@@ -228,9 +228,9 @@ uint64_t __36__CACUserHintsManager_sharedManager__block_invoke()
   v55 = v9;
   v73 = v55;
   [v54 sortUsingComparator:v72];
-  if ([v54 count] > a4)
+  if ([v54 count] > count)
   {
-    [v54 removeObjectsInRange:{a4, objc_msgSend(v54, "count") - a4}];
+    [v54 removeObjectsInRange:{count, objc_msgSend(v54, "count") - count}];
   }
 
   v70 = 0u;
@@ -298,14 +298,14 @@ uint64_t __92__CACUserHintsManager_suggestedCommandIdentifiersFromActiveCommandI
   }
 }
 
-- (unint64_t)_countAfterRegisteringUserHintIdentifier:(id)a3
+- (unint64_t)_countAfterRegisteringUserHintIdentifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = +[CACPreferences sharedPreferences];
-    v6 = [v5 userHintsHistory];
+    userHintsHistory = [v5 userHintsHistory];
 
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     if (v7 > self->_lastPruneTime + 3481.0)
@@ -315,8 +315,8 @@ uint64_t __92__CACUserHintsManager_suggestedCommandIdentifiersFromActiveCommandI
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v9 = [v6 allKeys];
-      v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      allKeys = [userHintsHistory allKeys];
+      v10 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v10)
       {
         v11 = v10;
@@ -327,7 +327,7 @@ uint64_t __92__CACUserHintsManager_suggestedCommandIdentifiersFromActiveCommandI
           {
             if (*v26 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(allKeys);
             }
 
             v14 = *(*(&v25 + 1) + 8 * i);
@@ -337,7 +337,7 @@ uint64_t __92__CACUserHintsManager_suggestedCommandIdentifiersFromActiveCommandI
             }
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v11 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v11);
@@ -349,7 +349,7 @@ uint64_t __92__CACUserHintsManager_suggestedCommandIdentifiersFromActiveCommandI
         v23[1] = 3221225472;
         v23[2] = __64__CACUserHintsManager__countAfterRegisteringUserHintIdentifier___block_invoke;
         v23[3] = &unk_279CEB718;
-        v15 = v6;
+        v15 = userHintsHistory;
         v24 = v15;
         [v8 sortUsingComparator:v23];
         v16 = [v8 subarrayWithRange:{0, 20}];
@@ -360,14 +360,14 @@ uint64_t __92__CACUserHintsManager_suggestedCommandIdentifiersFromActiveCommandI
       self->_lastPruneTime = v17;
     }
 
-    v18 = [v6 objectForKey:v4];
+    v18 = [userHintsHistory objectForKey:identifierCopy];
     v19 = [v18 unsignedLongLongValue] + 1;
 
     v20 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v19];
-    [v6 setObject:v20 forKey:v4];
+    [userHintsHistory setObject:v20 forKey:identifierCopy];
 
     v21 = +[CACPreferences sharedPreferences];
-    [v21 setUserHintsHistory:v6];
+    [v21 setUserHintsHistory:userHintsHistory];
   }
 
   else
@@ -402,8 +402,8 @@ uint64_t __64__CACUserHintsManager__countAfterRegisteringUserHintIdentifier___bl
 - (void)clearHistory
 {
   v3 = +[CACPreferences sharedPreferences];
-  v2 = [MEMORY[0x277CBEAC0] dictionary];
-  [v3 setUserHintsHistory:v2];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  [v3 setUserHintsHistory:dictionary];
 }
 
 @end

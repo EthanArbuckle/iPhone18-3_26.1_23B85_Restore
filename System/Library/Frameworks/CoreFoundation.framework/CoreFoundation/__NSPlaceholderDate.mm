@@ -1,7 +1,7 @@
 @interface __NSPlaceholderDate
 + (void)initialize;
 - (__NSPlaceholderDate)init;
-- (__NSPlaceholderDate)initWithTimeIntervalSinceReferenceDate:(double)a3;
+- (__NSPlaceholderDate)initWithTimeIntervalSinceReferenceDate:(double)date;
 - (double)timeIntervalSinceReferenceDate;
 @end
 
@@ -26,20 +26,20 @@
   }
 }
 
-- (__NSPlaceholderDate)initWithTimeIntervalSinceReferenceDate:(double)a3
+- (__NSPlaceholderDate)initWithTimeIntervalSinceReferenceDate:(double)date
 {
   if (self != &___immutablePlaceholderDate)
   {
     return 0;
   }
 
-  if (a3 == 6.3113904e10)
+  if (date == 6.3113904e10)
   {
     result = &_NSConstantDateDistantFuture;
     goto LABEL_7;
   }
 
-  if (a3 == -6.31140768e10)
+  if (date == -6.31140768e10)
   {
     result = &_NSConstantDateDistantPast;
     goto LABEL_7;
@@ -47,16 +47,16 @@
 
   if ((_NSDateTaggedPointersDisabled & 1) == 0)
   {
-    v6 = a3;
-    if (a3 == 0.0)
+    dateCopy = date;
+    if (date == 0.0)
     {
 LABEL_19:
-      if (decodeTaggedTimeInterval(*&v6) != a3)
+      if (decodeTaggedTimeInterval(*&dateCopy) != date)
       {
         [__NSPlaceholderDate initWithTimeIntervalSinceReferenceDate:];
       }
 
-      result = ((8 * *&v6) | 0x8000000000000006);
+      result = ((8 * *&dateCopy) | 0x8000000000000006);
       v8 = *MEMORY[0x1E69E5910] ^ result;
       if ((~v8 & 0xC000000000000007) != 0)
       {
@@ -72,19 +72,19 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    if (a3 == -0.0)
+    if (date == -0.0)
     {
-      v6 = NAN;
+      dateCopy = NAN;
       goto LABEL_19;
     }
 
-    if (a3 == 0.0)
+    if (date == 0.0)
     {
       [__NSPlaceholderDate initWithTimeIntervalSinceReferenceDate:];
     }
 
-    *&v6 = *&a3 & 0xFFFFFFFFFFFFFLL | (*&a3 >> 63 << 59) | ((((*&a3 >> 52) + 17) & 0x7F) << 52);
-    if (((((*&a3 >> 52) + 17) << 57) >> 57) + 1007 == ((*&a3 >> 52) & 0x7FFLL) && *&v6 != 0)
+    *&dateCopy = *&date & 0xFFFFFFFFFFFFFLL | (*&date >> 63 << 59) | ((((*&date >> 52) + 17) & 0x7F) << 52);
+    if (((((*&date >> 52) + 17) << 57) >> 57) + 1007 == ((*&date >> 52) & 0x7FFLL) && *&dateCopy != 0)
     {
       goto LABEL_19;
     }
@@ -93,7 +93,7 @@ LABEL_7:
 LABEL_8:
   v5 = objc_opt_self();
   result = __CFAllocateObject(v5, 0);
-  *&result[1].super.super.isa = a3;
+  *&result[1].super.super.isa = date;
   return result;
 }
 

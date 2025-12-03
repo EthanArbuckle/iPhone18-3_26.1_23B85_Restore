@@ -1,6 +1,6 @@
 @interface AVRunLoopConditionRunLoopState
-+ (id)runLoopStateWithRunLoop:(__CFRunLoop *)a3;
-- (AVRunLoopConditionRunLoopState)initWithRunLoop:(__CFRunLoop *)a3;
++ (id)runLoopStateWithRunLoop:(__CFRunLoop *)loop;
+- (AVRunLoopConditionRunLoopState)initWithRunLoop:(__CFRunLoop *)loop;
 - (void)dealloc;
 @end
 
@@ -19,24 +19,24 @@
   [(AVRunLoopConditionRunLoopState *)&v4 dealloc];
 }
 
-+ (id)runLoopStateWithRunLoop:(__CFRunLoop *)a3
++ (id)runLoopStateWithRunLoop:(__CFRunLoop *)loop
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithRunLoop:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithRunLoop:loop];
 
   return v3;
 }
 
-- (AVRunLoopConditionRunLoopState)initWithRunLoop:(__CFRunLoop *)a3
+- (AVRunLoopConditionRunLoopState)initWithRunLoop:(__CFRunLoop *)loop
 {
   v7.receiver = self;
   v7.super_class = AVRunLoopConditionRunLoopState;
   v4 = [(AVRunLoopConditionRunLoopState *)&v7 init];
   v5 = v4;
-  if (a3)
+  if (loop)
   {
     if (v4)
     {
-      v4->_runLoop = CFRetain(a3);
+      v4->_runLoop = CFRetain(loop);
       v5->_signaled = 0;
     }
   }

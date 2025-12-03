@@ -11,14 +11,14 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 lastPathComponent];
-  v9 = [v8 stringByDeletingPathExtension];
+  lastPathComponent = [self lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
   v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, v6];
 
-  v11 = [v9 stringByAppendingString:v10];
+  v11 = [stringByDeletingPathExtension stringByAppendingString:v10];
 
-  v12 = [a1 URLByDeletingLastPathComponent];
-  v13 = [v12 URLByAppendingPathComponent:v11];
+  uRLByDeletingLastPathComponent = [self URLByDeletingLastPathComponent];
+  v13 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v11];
 
   return v13;
 }
@@ -26,15 +26,15 @@
 - (id)rc_URLByAppendingStringToLastComponentBasename:()RCAdditions
 {
   v4 = a3;
-  v5 = [a1 lastPathComponent];
-  v6 = [v5 stringByDeletingPathExtension];
-  v7 = [v6 stringByAppendingString:v4];
+  lastPathComponent = [self lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
+  v7 = [stringByDeletingPathExtension stringByAppendingString:v4];
 
-  v8 = [a1 pathExtension];
-  v9 = [v7 stringByAppendingPathExtension:v8];
+  pathExtension = [self pathExtension];
+  v9 = [v7 stringByAppendingPathExtension:pathExtension];
 
-  v10 = [a1 URLByDeletingLastPathComponent];
-  v11 = [v10 URLByAppendingPathComponent:v9];
+  uRLByDeletingLastPathComponent = [self URLByDeletingLastPathComponent];
+  v11 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v9];
 
   return v11;
 }
@@ -42,34 +42,34 @@
 - (id)rc_URLByReplacingPathExtensionWithExtension:()RCAdditions
 {
   v4 = a3;
-  v5 = [a1 URLByDeletingPathExtension];
-  v6 = [v5 URLByAppendingPathExtension:v4];
+  uRLByDeletingPathExtension = [self URLByDeletingPathExtension];
+  v6 = [uRLByDeletingPathExtension URLByAppendingPathExtension:v4];
 
   return v6;
 }
 
 - (id)rc_URLByStandardizingResolvedPath
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [a1 path];
-  v4 = [v2 fileExistsAtPath:v3 isDirectory:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [self path];
+  v4 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
   if (v4)
   {
-    v5 = [a1 URLByResolvingSymlinksInPath];
-    v6 = [v5 URLByStandardizingPath];
+    uRLByResolvingSymlinksInPath = [self URLByResolvingSymlinksInPath];
+    uRLByStandardizingPath = [uRLByResolvingSymlinksInPath URLByStandardizingPath];
   }
 
   else
   {
-    v5 = [a1 lastPathComponent];
-    v7 = [a1 URLByDeletingLastPathComponent];
-    v8 = [v7 URLByResolvingSymlinksInPath];
-    v9 = [v8 URLByStandardizingPath];
-    v6 = [v9 URLByAppendingPathComponent:v5];
+    uRLByResolvingSymlinksInPath = [self lastPathComponent];
+    uRLByDeletingLastPathComponent = [self URLByDeletingLastPathComponent];
+    uRLByResolvingSymlinksInPath2 = [uRLByDeletingLastPathComponent URLByResolvingSymlinksInPath];
+    uRLByStandardizingPath2 = [uRLByResolvingSymlinksInPath2 URLByStandardizingPath];
+    uRLByStandardizingPath = [uRLByStandardizingPath2 URLByAppendingPathComponent:uRLByResolvingSymlinksInPath];
   }
 
-  return v6;
+  return uRLByStandardizingPath;
 }
 
 @end

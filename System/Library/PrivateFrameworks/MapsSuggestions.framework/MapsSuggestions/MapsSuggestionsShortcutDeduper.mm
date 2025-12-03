@@ -1,16 +1,16 @@
 @interface MapsSuggestionsShortcutDeduper
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4;
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry;
 @end
 
 @implementation MapsSuggestionsShortcutDeduper
 
-- (BOOL)dedupeByEnrichingEntry:(id)a3 withEntry:(id)a4
+- (BOOL)dedupeByEnrichingEntry:(id)entry withEntry:(id)withEntry
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  entryCopy = entry;
+  withEntryCopy = withEntry;
+  v7 = withEntryCopy;
+  if (!entryCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -32,7 +32,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v6)
+  if (!withEntryCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -52,8 +52,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v8 = [v5 uniqueIdentifier];
-  v9 = [v8 length];
+  uniqueIdentifier = [entryCopy uniqueIdentifier];
+  v9 = [uniqueIdentifier length];
 
   if (!v9)
   {
@@ -75,8 +75,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v10 = [v7 uniqueIdentifier];
-  v11 = [v10 length];
+  uniqueIdentifier2 = [v7 uniqueIdentifier];
+  v11 = [uniqueIdentifier2 length];
 
   if (!v11)
   {
@@ -102,21 +102,21 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!MapsSuggestionsEntriesAreBothOfType(18, v5, v7))
+  if (!MapsSuggestionsEntriesAreBothOfType(18, entryCopy, v7))
   {
     goto LABEL_18;
   }
 
-  v12 = [v5 uniqueIdentifier];
-  v13 = [v7 uniqueIdentifier];
-  v14 = [v12 isEqualToString:v13];
+  uniqueIdentifier3 = [entryCopy uniqueIdentifier];
+  uniqueIdentifier4 = [v7 uniqueIdentifier];
+  v14 = [uniqueIdentifier3 isEqualToString:uniqueIdentifier4];
 
   if (!v14)
   {
     goto LABEL_18;
   }
 
-  [v5 replaceByEntry:v7 forceDecoratedOverwrites:0];
+  [entryCopy replaceByEntry:v7 forceDecoratedOverwrites:0];
   v15 = 1;
 LABEL_19:
 

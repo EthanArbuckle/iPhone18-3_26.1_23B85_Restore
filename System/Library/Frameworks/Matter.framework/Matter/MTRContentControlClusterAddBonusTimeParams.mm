@@ -1,8 +1,8 @@
 @interface MTRContentControlClusterAddBonusTimeParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRContentControlClusterAddBonusTimeParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -32,20 +32,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentControlClusterAddBonusTimeParams);
-  v5 = [(MTRContentControlClusterAddBonusTimeParams *)self pinCode];
-  [(MTRContentControlClusterAddBonusTimeParams *)v4 setPinCode:v5];
+  pinCode = [(MTRContentControlClusterAddBonusTimeParams *)self pinCode];
+  [(MTRContentControlClusterAddBonusTimeParams *)v4 setPinCode:pinCode];
 
-  v6 = [(MTRContentControlClusterAddBonusTimeParams *)self bonusTime];
-  [(MTRContentControlClusterAddBonusTimeParams *)v4 setBonusTime:v6];
+  bonusTime = [(MTRContentControlClusterAddBonusTimeParams *)self bonusTime];
+  [(MTRContentControlClusterAddBonusTimeParams *)v4 setBonusTime:bonusTime];
 
-  v7 = [(MTRContentControlClusterAddBonusTimeParams *)self timedInvokeTimeoutMs];
-  [(MTRContentControlClusterAddBonusTimeParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRContentControlClusterAddBonusTimeParams *)self timedInvokeTimeoutMs];
+  [(MTRContentControlClusterAddBonusTimeParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRContentControlClusterAddBonusTimeParams *)self serverSideProcessingTimeout];
-  [(MTRContentControlClusterAddBonusTimeParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRContentControlClusterAddBonusTimeParams *)self serverSideProcessingTimeout];
+  [(MTRContentControlClusterAddBonusTimeParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -60,33 +60,33 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v25[0] = 0;
   v27 = 0;
   v24[0] = 0;
   v24[1] = 0;
   v23 = v24;
-  v5 = [(MTRContentControlClusterAddBonusTimeParams *)self pinCode];
+  pinCode = [(MTRContentControlClusterAddBonusTimeParams *)self pinCode];
 
-  if (v5)
+  if (pinCode)
   {
     v25[0] = 1;
     v26 = 0uLL;
-    v6 = [(MTRContentControlClusterAddBonusTimeParams *)self pinCode];
-    sub_238DB9BD8(v17, [v6 UTF8String], objc_msgSend(v6, "lengthOfBytesUsingEncoding:", 4));
+    pinCode2 = [(MTRContentControlClusterAddBonusTimeParams *)self pinCode];
+    sub_238DB9BD8(v17, [pinCode2 UTF8String], objc_msgSend(pinCode2, "lengthOfBytesUsingEncoding:", 4));
 
     v26 = v17[0];
   }
 
-  v7 = [(MTRContentControlClusterAddBonusTimeParams *)self bonusTime];
+  bonusTime = [(MTRContentControlClusterAddBonusTimeParams *)self bonusTime];
 
-  if (v7)
+  if (bonusTime)
   {
     v27 = 1;
-    v28 = 0;
-    v8 = [(MTRContentControlClusterAddBonusTimeParams *)self bonusTime];
-    v28 = [v8 unsignedIntValue];
+    unsignedIntValue = 0;
+    bonusTime2 = [(MTRContentControlClusterAddBonusTimeParams *)self bonusTime];
+    unsignedIntValue = [bonusTime2 unsignedIntValue];
   }
 
   sub_2393D9C18(0x62FuLL, 0, &v22);
@@ -108,8 +108,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v22);
-      v9 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v22);
+      v9 = sub_2393C7114(reader, 21, 256);
       v12 = v16;
       v11 = v9;
     }
@@ -137,19 +137,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRContentControlClusterAddBonusTimeParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -160,7 +160,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x7FD500000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

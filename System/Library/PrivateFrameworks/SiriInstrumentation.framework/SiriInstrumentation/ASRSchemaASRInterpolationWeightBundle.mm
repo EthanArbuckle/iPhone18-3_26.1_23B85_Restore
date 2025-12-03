@@ -1,43 +1,43 @@
 @interface ASRSchemaASRInterpolationWeightBundle
-- (ASRSchemaASRInterpolationWeightBundle)initWithDictionary:(id)a3;
-- (ASRSchemaASRInterpolationWeightBundle)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASRInterpolationWeightBundle)initWithDictionary:(id)dictionary;
+- (ASRSchemaASRInterpolationWeightBundle)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (float)weightsAtIndex:(unint64_t)a3;
+- (float)weightsAtIndex:(unint64_t)index;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addWeights:(float)a3;
-- (void)setHasEndTimeInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addWeights:(float)weights;
+- (void)setHasEndTimeInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASRInterpolationWeightBundle
 
-- (ASRSchemaASRInterpolationWeightBundle)initWithDictionary:(id)a3
+- (ASRSchemaASRInterpolationWeightBundle)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = ASRSchemaASRInterpolationWeightBundle;
   v5 = [(ASRSchemaASRInterpolationWeightBundle *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"startTimeInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"startTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRInterpolationWeightBundle setStartTimeInNs:](v5, "setStartTimeInNs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"endTimeInNs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"endTimeInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASRInterpolationWeightBundle setEndTimeInNs:](v5, "setEndTimeInNs:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"weights"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"weights"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (ASRSchemaASRInterpolationWeightBundle)initWithJSON:(id)a3
+- (ASRSchemaASRInterpolationWeightBundle)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASRInterpolationWeightBundle *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASRInterpolationWeightBundle *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASRInterpolationWeightBundle *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,12 +125,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRInterpolationWeightBundle endTimeInNs](self, "endTimeInNs")}];
-    [v3 setObject:v5 forKeyedSubscript:@"endTimeInNs"];
+    [dictionary setObject:v5 forKeyedSubscript:@"endTimeInNs"];
 
     has = self->_has;
   }
@@ -138,19 +138,19 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[ASRSchemaASRInterpolationWeightBundle startTimeInNs](self, "startTimeInNs")}];
-    [v3 setObject:v6 forKeyedSubscript:@"startTimeInNs"];
+    [dictionary setObject:v6 forKeyedSubscript:@"startTimeInNs"];
   }
 
   if ([(NSArray *)self->_weights count])
   {
-    v7 = [(ASRSchemaASRInterpolationWeightBundle *)self weights];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"weights"];
+    weights = [(ASRSchemaASRInterpolationWeightBundle *)self weights];
+    v8 = [weights copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"weights"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -179,16 +179,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSArray *)self->_weights hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -197,27 +197,27 @@ LABEL_3:
   if (*&has)
   {
     startTimeInNs = self->_startTimeInNs;
-    if (startTimeInNs != [v4 startTimeInNs])
+    if (startTimeInNs != [equalCopy startTimeInNs])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (endTimeInNs = self->_endTimeInNs, endTimeInNs == [v4 endTimeInNs]))
+    if (!v8 || (endTimeInNs = self->_endTimeInNs, endTimeInNs == [equalCopy endTimeInNs]))
     {
-      v10 = [(ASRSchemaASRInterpolationWeightBundle *)self weights];
-      v11 = [v4 weights];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      weights = [(ASRSchemaASRInterpolationWeightBundle *)self weights];
+      weights2 = [equalCopy weights];
+      v12 = weights2;
+      if ((weights != 0) != (weights2 == 0))
       {
-        v13 = [(ASRSchemaASRInterpolationWeightBundle *)self weights];
-        if (!v13)
+        weights3 = [(ASRSchemaASRInterpolationWeightBundle *)self weights];
+        if (!weights3)
         {
 
 LABEL_17:
@@ -225,10 +225,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(ASRSchemaASRInterpolationWeightBundle *)self weights];
-        v16 = [v4 weights];
-        v17 = [v15 isEqual:v16];
+        v14 = weights3;
+        weights4 = [(ASRSchemaASRInterpolationWeightBundle *)self weights];
+        weights5 = [equalCopy weights];
+        v17 = [weights4 isEqual:weights5];
 
         if (v17)
         {
@@ -249,10 +249,10 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -295,35 +295,35 @@ LABEL_15:
   }
 }
 
-- (float)weightsAtIndex:(unint64_t)a3
+- (float)weightsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_weights objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_weights objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addWeights:(float)a3
+- (void)addWeights:(float)weights
 {
   weights = self->_weights;
   if (!weights)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_weights;
-    self->_weights = v6;
+    self->_weights = array;
 
     weights = self->_weights;
   }
 
-  *&v8 = a3;
+  *&v8 = weights;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)weights addObject:v9];
 }
 
-- (void)setHasEndTimeInNs:(BOOL)a3
+- (void)setHasEndTimeInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }

@@ -1,31 +1,31 @@
 @interface MSPSharedTripFetchedCapabilityStatus
-- (BOOL)isEffectivelyEqualToStatus:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MSPSharedTripFetchedCapabilityStatus)initWithCapabilityType:(unint64_t)a3 serviceName:(id)a4 status:(int64_t)a5;
-- (MSPSharedTripFetchedCapabilityStatus)initWithCoder:(id)a3;
+- (BOOL)isEffectivelyEqualToStatus:(id)status;
+- (BOOL)isEqual:(id)equal;
+- (MSPSharedTripFetchedCapabilityStatus)initWithCapabilityType:(unint64_t)type serviceName:(id)name status:(int64_t)status;
+- (MSPSharedTripFetchedCapabilityStatus)initWithCoder:(id)coder;
 - (id)description;
 - (int64_t)status;
 - (void)_updateTTL;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSPSharedTripFetchedCapabilityStatus
 
-- (MSPSharedTripFetchedCapabilityStatus)initWithCapabilityType:(unint64_t)a3 serviceName:(id)a4 status:(int64_t)a5
+- (MSPSharedTripFetchedCapabilityStatus)initWithCapabilityType:(unint64_t)type serviceName:(id)name status:(int64_t)status
 {
-  v8 = a4;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = MSPSharedTripFetchedCapabilityStatus;
   v9 = [(MSPSharedTripFetchedCapabilityStatus *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    v9->_capabilityType = a3;
-    v11 = [v8 copy];
+    v9->_capabilityType = type;
+    v11 = [nameCopy copy];
     serviceName = v10->_serviceName;
     v10->_serviceName = v11;
 
-    v10->_status = a5;
+    v10->_status = status;
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v10->_fetchedTimestamp = v13;
     [(MSPSharedTripFetchedCapabilityStatus *)v10 _updateTTL];
@@ -70,20 +70,20 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5[3] == self->_status && (v7 = [v5 isExpired], v7 == -[MSPSharedTripFetchedCapabilityStatus isExpired](self, "isExpired")) && (v8 = objc_msgSend(v6, "capabilityType"), v8 == -[MSPSharedTripFetchedCapabilityStatus capabilityType](self, "capabilityType")))
     {
-      v9 = [v6 serviceName];
-      v10 = [(MSPSharedTripFetchedCapabilityStatus *)self serviceName];
-      if (v9 | v10)
+      serviceName = [v6 serviceName];
+      serviceName2 = [(MSPSharedTripFetchedCapabilityStatus *)self serviceName];
+      if (serviceName | serviceName2)
       {
-        v11 = [v9 isEqual:v10];
+        v11 = [serviceName isEqual:serviceName2];
       }
 
       else
@@ -106,16 +106,16 @@
   return v11;
 }
 
-- (BOOL)isEffectivelyEqualToStatus:(id)a3
+- (BOOL)isEffectivelyEqualToStatus:(id)status
 {
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = [v4 status], v5 == -[MSPSharedTripFetchedCapabilityStatus status](self, "status")) && (v6 = objc_msgSend(v4, "isExpired"), v6 == -[MSPSharedTripFetchedCapabilityStatus isExpired](self, "isExpired")) && (v7 = objc_msgSend(v4, "capabilityType"), v7 == -[MSPSharedTripFetchedCapabilityStatus capabilityType](self, "capabilityType")))
+  statusCopy = status;
+  if (statusCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v5 = [statusCopy status], v5 == -[MSPSharedTripFetchedCapabilityStatus status](self, "status")) && (v6 = objc_msgSend(statusCopy, "isExpired"), v6 == -[MSPSharedTripFetchedCapabilityStatus isExpired](self, "isExpired")) && (v7 = objc_msgSend(statusCopy, "capabilityType"), v7 == -[MSPSharedTripFetchedCapabilityStatus capabilityType](self, "capabilityType")))
   {
-    v8 = [v4 serviceName];
-    v9 = [(MSPSharedTripFetchedCapabilityStatus *)self serviceName];
-    if (v8 | v9)
+    serviceName = [statusCopy serviceName];
+    serviceName2 = [(MSPSharedTripFetchedCapabilityStatus *)self serviceName];
+    if (serviceName | serviceName2)
     {
-      v10 = [v8 isEqual:v9];
+      v10 = [serviceName isEqual:serviceName2];
     }
 
     else
@@ -135,22 +135,22 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MSPSharedTripFetchedCapabilityStatus *)self capabilityType];
-  if (v4 > 4)
+  capabilityType = [(MSPSharedTripFetchedCapabilityStatus *)self capabilityType];
+  if (capabilityType > 4)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_279867DA0[v4];
+    v5 = off_279867DA0[capabilityType];
   }
 
-  v6 = [(MSPSharedTripFetchedCapabilityStatus *)self serviceName];
-  v7 = v6;
-  if (v6)
+  serviceName = [(MSPSharedTripFetchedCapabilityStatus *)self serviceName];
+  v7 = serviceName;
+  if (serviceName)
   {
-    v8 = v6;
+    v8 = serviceName;
   }
 
   else
@@ -158,7 +158,7 @@
     v8 = @"n/a";
   }
 
-  v9 = [(MSPSharedTripFetchedCapabilityStatus *)self status];
+  status = [(MSPSharedTripFetchedCapabilityStatus *)self status];
   if ([(MSPSharedTripFetchedCapabilityStatus *)self isExpired])
   {
     v10 = "yes";
@@ -189,34 +189,34 @@
     v12 = "no";
   }
 
-  v13 = [v3 stringWithFormat:@"%@ (%@) <status: %ld, expired: %s, failed: %s, blocked: %s>", v5, v8, v9, v10, v11, v12];
+  v13 = [v3 stringWithFormat:@"%@ (%@) <status: %ld, expired: %s, failed: %s, blocked: %s>", v5, v8, status, v10, v11, v12];
 
   return v13;
 }
 
-- (MSPSharedTripFetchedCapabilityStatus)initWithCoder:(id)a3
+- (MSPSharedTripFetchedCapabilityStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MSPSharedTripFetchedCapabilityStatus;
   v5 = [(MSPSharedTripFetchedCapabilityStatus *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_capabilityType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_capabilityType"];
     v5->_capabilityType = [v6 unsignedIntegerValue];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_serviceName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_serviceName"];
     serviceName = v5->_serviceName;
     v5->_serviceName = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_status"];
     v5->_status = [v9 integerValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_fetchedTimestamp"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_fetchedTimestamp"];
     [v10 doubleValue];
     v5->_fetchedTimestamp = v11;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ttl"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ttl"];
     [v12 doubleValue];
     v5->_ttl = v13;
   }
@@ -224,23 +224,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CCABB0];
   capabilityType = self->_capabilityType;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedInteger:capabilityType];
-  [v6 encodeObject:v7 forKey:@"_capabilityType"];
+  [coderCopy encodeObject:v7 forKey:@"_capabilityType"];
 
-  [v6 encodeObject:self->_serviceName forKey:@"_serviceName"];
+  [coderCopy encodeObject:self->_serviceName forKey:@"_serviceName"];
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:self->_status];
-  [v6 encodeObject:v8 forKey:@"_status"];
+  [coderCopy encodeObject:v8 forKey:@"_status"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_fetchedTimestamp];
-  [v6 encodeObject:v9 forKey:@"_fetchedTimestamp"];
+  [coderCopy encodeObject:v9 forKey:@"_fetchedTimestamp"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_ttl];
-  [v6 encodeObject:v10 forKey:@"_ttl"];
+  [coderCopy encodeObject:v10 forKey:@"_ttl"];
 }
 
 @end

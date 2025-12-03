@@ -16,9 +16,9 @@
   {
     v3 = [MEMORY[0x277CEB3C0] dictionaryWithLegacyPathForClass:objc_opt_class()];
     v4 = [objc_alloc(MEMORY[0x277CEB3C8]) initWithAssetContents:v3];
-    v5 = [v4 abGroupContents];
+    abGroupContents = [v4 abGroupContents];
     parameters = v2->_parameters;
-    v2->_parameters = v5;
+    v2->_parameters = abGroupContents;
   }
 
   return v2;
@@ -52,15 +52,15 @@ void __51__ATXCandidateRelevanceModelGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int)maxCategoricalFeaturesCount
@@ -69,15 +69,15 @@ void __51__ATXCandidateRelevanceModelGlobals_sharedInstance__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 intValue];
+    intValue = [v2 intValue];
   }
 
   else
   {
-    v4 = 100;
+    intValue = 100;
   }
 
-  return v4;
+  return intValue;
 }
 
 @end

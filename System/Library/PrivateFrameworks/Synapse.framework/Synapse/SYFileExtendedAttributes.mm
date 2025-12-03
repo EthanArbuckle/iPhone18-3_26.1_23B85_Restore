@@ -1,31 +1,31 @@
 @interface SYFileExtendedAttributes
-+ (void)fetchPrivateAttributesForFileURL:(id)a3 completion:(id)a4;
-+ (void)setPrivateAttributes:(id)a3 forFileURL:(id)a4 completion:(id)a5;
++ (void)fetchPrivateAttributesForFileURL:(id)l completion:(id)completion;
++ (void)setPrivateAttributes:(id)attributes forFileURL:(id)l completion:(id)completion;
 @end
 
 @implementation SYFileExtendedAttributes
 
-+ (void)fetchPrivateAttributesForFileURL:(id)a3 completion:(id)a4
++ (void)fetchPrivateAttributesForFileURL:(id)l completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  lCopy = l;
+  completionCopy = completion;
+  if (!lCopy)
   {
     v11 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:@"fileURL must not be nil" userInfo:0];
     objc_exception_throw(v11);
   }
 
-  v7 = v6;
+  v7 = completionCopy;
   v8 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [SYFileExtendedAttributes fetchPrivateAttributesForFileURL:v5 completion:v8];
+    [SYFileExtendedAttributes fetchPrivateAttributesForFileURL:lCopy completion:v8];
   }
 
-  v12 = v5;
+  v12 = lCopy;
   v13 = v7;
   v9 = v7;
-  v10 = v5;
+  v10 = lCopy;
   _MDItemFetchPrivateAttributesForURL();
 }
 
@@ -59,13 +59,13 @@ void __72__SYFileExtendedAttributes_fetchPrivateAttributesForFileURL_completion_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)setPrivateAttributes:(id)a3 forFileURL:(id)a4 completion:(id)a5
++ (void)setPrivateAttributes:(id)attributes forFileURL:(id)l completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  attributesCopy = attributes;
+  lCopy = l;
+  completionCopy = completion;
+  if (!attributesCopy)
   {
     v16 = MEMORY[0x277CBEAD8];
     v17 = *MEMORY[0x277CBE658];
@@ -73,7 +73,7 @@ void __72__SYFileExtendedAttributes_fetchPrivateAttributesForFileURL_completion_
     goto LABEL_11;
   }
 
-  if (!v8)
+  if (!lCopy)
   {
     v16 = MEMORY[0x277CBEAD8];
     v17 = *MEMORY[0x277CBE658];
@@ -83,31 +83,31 @@ LABEL_11:
     objc_exception_throw(v19);
   }
 
-  v10 = v9;
+  v10 = completionCopy;
   v11 = os_log_create("com.apple.synapse", "DocumentWorkflows");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    if ([v8 isFileReferenceURL])
+    if ([lCopy isFileReferenceURL])
     {
-      [v8 absoluteString];
+      [lCopy absoluteString];
     }
 
     else
     {
-      [v8 path];
+      [lCopy path];
     }
     v12 = ;
     *buf = 138478083;
-    v23 = v7;
+    v23 = attributesCopy;
     v24 = 2113;
     v25 = v12;
     _os_log_impl(&dword_225901000, v11, OS_LOG_TYPE_DEFAULT, "Setting private attributes: %{private}@, for url path: %{private}@", buf, 0x16u);
   }
 
-  v20 = v8;
+  v20 = lCopy;
   v21 = v10;
   v13 = v10;
-  v14 = v8;
+  v14 = lCopy;
   _MDItemSetPrivateAttributesForURL();
 
   v15 = *MEMORY[0x277D85DE8];

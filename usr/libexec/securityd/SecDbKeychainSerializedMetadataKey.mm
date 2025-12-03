@@ -1,52 +1,52 @@
 @interface SecDbKeychainSerializedMetadataKey
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasKeyclass:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasKeyclass:(BOOL)keyclass;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SecDbKeychainSerializedMetadataKey
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) != 0)
   {
-    self->_keyclass = *(v4 + 10);
+    self->_keyclass = *(fromCopy + 10);
     *&self->_has |= 2u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
   }
 
   if (v5)
   {
-    self->_actualKeyclass = *(v4 + 2);
+    self->_actualKeyclass = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  v6 = v4;
-  if (*(v4 + 4))
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(SecDbKeychainSerializedMetadataKey *)self setBaguuid:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SecDbKeychainSerializedMetadataKey *)self setAkswrappedkey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(SecDbKeychainSerializedMetadataKey *)self setBackupwrappedkey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -79,24 +79,24 @@ LABEL_6:
   return v5 ^ v6 ^ [(NSData *)self->_backupwrappedkey hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(equalCopy + 44);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_keyclass != *(v4 + 10))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_keyclass != *(equalCopy + 10))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
 LABEL_18:
     v9 = 0;
@@ -105,25 +105,25 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_actualKeyclass != *(v4 + 2))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_actualKeyclass != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_18;
   }
 
   baguuid = self->_baguuid;
-  if (baguuid | *(v4 + 4) && ![(NSData *)baguuid isEqual:?])
+  if (baguuid | *(equalCopy + 4) && ![(NSData *)baguuid isEqual:?])
   {
     goto LABEL_18;
   }
 
   akswrappedkey = self->_akswrappedkey;
-  if (akswrappedkey | *(v4 + 2))
+  if (akswrappedkey | *(equalCopy + 2))
   {
     if (![(NSData *)akswrappedkey isEqual:?])
     {
@@ -132,7 +132,7 @@ LABEL_18:
   }
 
   backupwrappedkey = self->_backupwrappedkey;
-  if (backupwrappedkey | *(v4 + 3))
+  if (backupwrappedkey | *(equalCopy + 3))
   {
     v9 = [(NSData *)backupwrappedkey isEqual:?];
   }
@@ -147,9 +147,9 @@ LABEL_19:
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -165,68 +165,68 @@ LABEL_19:
     *(v5 + 44) |= 1u;
   }
 
-  v8 = [(NSData *)self->_baguuid copyWithZone:a3];
+  v8 = [(NSData *)self->_baguuid copyWithZone:zone];
   v9 = v6[4];
   v6[4] = v8;
 
-  v10 = [(NSData *)self->_akswrappedkey copyWithZone:a3];
+  v10 = [(NSData *)self->_akswrappedkey copyWithZone:zone];
   v11 = v6[2];
   v6[2] = v10;
 
-  v12 = [(NSData *)self->_backupwrappedkey copyWithZone:a3];
+  v12 = [(NSData *)self->_backupwrappedkey copyWithZone:zone];
   v13 = v6[3];
   v6[3] = v12;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[10] = self->_keyclass;
-    *(v4 + 44) |= 2u;
+    toCopy[10] = self->_keyclass;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[2] = self->_actualKeyclass;
-    *(v4 + 44) |= 1u;
+    toCopy[2] = self->_actualKeyclass;
+    *(toCopy + 44) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_baguuid)
   {
-    [v4 setBaguuid:?];
-    v4 = v6;
+    [toCopy setBaguuid:?];
+    toCopy = v6;
   }
 
   if (self->_akswrappedkey)
   {
     [v6 setAkswrappedkey:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_backupwrappedkey)
   {
     [v6 setBackupwrappedkey:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     keyclass = self->_keyclass;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -234,36 +234,36 @@ LABEL_19:
   {
     actualKeyclass = self->_actualKeyclass;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_baguuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_akswrappedkey)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_backupwrappedkey)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -274,18 +274,18 @@ LABEL_19:
       while (1)
       {
         v35 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v35 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v35 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v35 & 0x7F) << v6;
@@ -303,9 +303,9 @@ LABEL_19:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -322,18 +322,18 @@ LABEL_15:
           while (1)
           {
             v37 = 0;
-            v28 = [a3 position] + 1;
-            if (v28 >= [a3 position] && (v29 = objc_msgSend(a3, "position") + 1, v29 <= objc_msgSend(a3, "length")))
+            v28 = [from position] + 1;
+            if (v28 >= [from position] && (v29 = objc_msgSend(from, "position") + 1, v29 <= objc_msgSend(from, "length")))
             {
-              v30 = [a3 data];
-              [v30 getBytes:&v37 range:{objc_msgSend(a3, "position"), 1}];
+              data2 = [from data];
+              [data2 getBytes:&v37 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v27 |= (v37 & 0x7F) << v25;
@@ -351,7 +351,7 @@ LABEL_15:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v23 = 0;
           }
@@ -386,18 +386,18 @@ LABEL_45:
           while (1)
           {
             v36 = 0;
-            v20 = [a3 position] + 1;
-            if (v20 >= [a3 position] && (v21 = objc_msgSend(a3, "position") + 1, v21 <= objc_msgSend(a3, "length")))
+            v20 = [from position] + 1;
+            if (v20 >= [from position] && (v21 = objc_msgSend(from, "position") + 1, v21 <= objc_msgSend(from, "length")))
             {
-              v22 = [a3 data];
-              [v22 getBytes:&v36 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v36 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v19 |= (v36 & 0x7F) << v17;
@@ -415,7 +415,7 @@ LABEL_45:
             }
           }
 
-          if ([a3 hasError])
+          if ([from hasError])
           {
             v23 = 0;
           }
@@ -457,13 +457,13 @@ LABEL_54:
       }
 
 LABEL_56:
-      v33 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v33 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v31) = [a3 hasError] ^ 1;
+  LOBYTE(v31) = [from hasError] ^ 1;
   return v31;
 }
 
@@ -511,15 +511,15 @@ LABEL_56:
   v7.receiver = self;
   v7.super_class = SecDbKeychainSerializedMetadataKey;
   v3 = [(SecDbKeychainSerializedMetadataKey *)&v7 description];
-  v4 = [(SecDbKeychainSerializedMetadataKey *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SecDbKeychainSerializedMetadataKey *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasKeyclass:(BOOL)a3
+- (void)setHasKeyclass:(BOOL)keyclass
 {
-  if (a3)
+  if (keyclass)
   {
     v3 = 2;
   }

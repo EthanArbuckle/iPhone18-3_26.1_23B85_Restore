@@ -4,11 +4,11 @@
 - (BOOL)_areAnyCalendarsCurrentlySyncing;
 - (BOOL)_areAnySourcesCurrentlySyncing;
 - (BOOL)allAccountsOffline;
-- (BOOL)calendarFinishedRefreshing:(id)a3;
-- (BOOL)sourceFinishedRefreshing:(id)a3;
-- (EKAccountRefresher)initWithEventStore:(id)a3;
+- (BOOL)calendarFinishedRefreshing:(id)refreshing;
+- (BOOL)sourceFinishedRefreshing:(id)refreshing;
+- (EKAccountRefresher)initWithEventStore:(id)store;
 - (EKAccountRefresherDelegate)delegate;
-- (void)_eventStoreChanged:(id)a3;
+- (void)_eventStoreChanged:(id)changed;
 - (void)_refreshControlMaximumVisibleTimeElapsed;
 - (void)_syncCompleted;
 - (void)_syncDidEnd;
@@ -18,31 +18,31 @@
 
 @implementation EKAccountRefresher
 
-- (EKAccountRefresher)initWithEventStore:(id)a3
+- (EKAccountRefresher)initWithEventStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v10.receiver = self;
   v10.super_class = EKAccountRefresher;
   v6 = [(EKAccountRefresher *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_eventStore, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel__eventStoreChanged_ name:@"EKEventStoreChangedNotification" object:v5];
+    objc_storeStrong(&v6->_eventStore, store);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__eventStoreChanged_ name:@"EKEventStoreChangedNotification" object:storeCopy];
   }
 
   return v7;
 }
 
-- (void)_eventStoreChanged:(id)a3
+- (void)_eventStoreChanged:(id)changed
 {
   v20 = *MEMORY[0x1E69E9840];
   if (self->_refreshing)
   {
-    v4 = [(EKAccountRefresher *)self _areAnySourcesCurrentlySyncing];
-    v5 = [(EKAccountRefresher *)self _areAnyCalendarsCurrentlySyncing];
-    v6 = v4 || v5;
+    _areAnySourcesCurrentlySyncing = [(EKAccountRefresher *)self _areAnySourcesCurrentlySyncing];
+    _areAnyCalendarsCurrentlySyncing = [(EKAccountRefresher *)self _areAnyCalendarsCurrentlySyncing];
+    v6 = _areAnySourcesCurrentlySyncing || _areAnyCalendarsCurrentlySyncing;
     currentlySyncing = self->_currentlySyncing;
     v8 = EKLogHandle;
     v9 = os_log_type_enabled(EKLogHandle, OS_LOG_TYPE_DEFAULT);
@@ -51,11 +51,11 @@
       if (v9)
       {
         v12 = 67109632;
-        v13 = v4 || v5;
+        v13 = _areAnySourcesCurrentlySyncing || _areAnyCalendarsCurrentlySyncing;
         v14 = 1024;
-        v15 = v4;
+        v15 = _areAnySourcesCurrentlySyncing;
         v16 = 1024;
-        v17 = v5;
+        v17 = _areAnyCalendarsCurrentlySyncing;
         _os_log_impl(&dword_1A805E000, v8, OS_LOG_TYPE_DEFAULT, "[EKAccountRefresher _eventStoreChanged], and _currentlySyncing is still %{BOOL}i (sources=%{BOOL}i; calendars=%{BOOL}i)", &v12, 0x14u);
       }
     }
@@ -68,16 +68,16 @@
         v12 = 67109888;
         v13 = v10;
         v14 = 1024;
-        v15 = v4 || v5;
+        v15 = _areAnySourcesCurrentlySyncing || _areAnyCalendarsCurrentlySyncing;
         v16 = 1024;
-        v17 = v4;
+        v17 = _areAnySourcesCurrentlySyncing;
         v18 = 1024;
-        v19 = v5;
+        v19 = _areAnyCalendarsCurrentlySyncing;
         _os_log_impl(&dword_1A805E000, v8, OS_LOG_TYPE_DEFAULT, "[EKAccountRefresher _eventStoreChanged], and _currentlySyncing changed from %{BOOL}i to %{BOOL}i (sources=%{BOOL}i; calendars=%{BOOL}i)", &v12, 0x1Au);
       }
 
       self->_currentlySyncing = v6;
-      if (v4 || v5)
+      if (_areAnySourcesCurrentlySyncing || _areAnyCalendarsCurrentlySyncing)
       {
         [(EKAccountRefresher *)self _syncDidStart];
       }
@@ -322,17 +322,17 @@ LABEL_11:
 
   else
   {
-    v4 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     refreshStartDate = self->_refreshStartDate;
-    self->_refreshStartDate = v4;
+    self->_refreshStartDate = date;
 
     [(EKAccountRefresher *)self _beginMaximumTimeElapsedTimeout];
     [(EKAccountRefresher *)self _beginSyncStartTimeout];
     self->_refreshing = 1;
-    v6 = [MEMORY[0x1E69998A8] sharedConnection];
-    [v6 resetTimersAndWarnings];
+    mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+    [mEMORY[0x1E69998A8] resetTimersAndWarnings];
 
-    v30 = self;
+    selfCopy = self;
     v7 = [(EKEventStore *)self->_eventStore refreshEverythingIfNecessary:1];
     v8 = [v7 mutableCopy];
 
@@ -412,14 +412,14 @@ LABEL_11:
       _os_log_impl(&dword_1A805E000, v24, OS_LOG_TYPE_DEFAULT, "Started a refresh of %lu accounts and %lu subscribed calendars", buf, 0x16u);
     }
 
-    v27 = [v10 allObjects];
-    refreshingSources = v30->_refreshingSources;
-    v30->_refreshingSources = v27;
+    allObjects = [v10 allObjects];
+    refreshingSources = selfCopy->_refreshingSources;
+    selfCopy->_refreshingSources = allObjects;
 
-    objc_storeStrong(&v30->_refreshingCalendars, v9);
-    if (![(NSArray *)v30->_refreshingSources count]&& ![(NSArray *)v30->_refreshingCalendars count])
+    objc_storeStrong(&selfCopy->_refreshingCalendars, v9);
+    if (![(NSArray *)selfCopy->_refreshingSources count]&& ![(NSArray *)selfCopy->_refreshingCalendars count])
     {
-      [(EKAccountRefresher *)v30 _syncCompleted];
+      [(EKAccountRefresher *)selfCopy _syncCompleted];
     }
   }
 
@@ -485,18 +485,18 @@ LABEL_11:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)sourceFinishedRefreshing:(id)a3
+- (BOOL)sourceFinishedRefreshing:(id)refreshing
 {
   if (!self->_refreshStartDate)
   {
     return 0;
   }
 
-  v4 = [a3 lastSyncEndDate];
-  v5 = v4;
-  if (v4)
+  lastSyncEndDate = [refreshing lastSyncEndDate];
+  v5 = lastSyncEndDate;
+  if (lastSyncEndDate)
   {
-    v6 = [v4 laterDate:self->_refreshStartDate];
+    v6 = [lastSyncEndDate laterDate:self->_refreshStartDate];
     v7 = v6 == v5;
   }
 
@@ -508,18 +508,18 @@ LABEL_11:
   return v7;
 }
 
-- (BOOL)calendarFinishedRefreshing:(id)a3
+- (BOOL)calendarFinishedRefreshing:(id)refreshing
 {
   if (!self->_refreshStartDate)
   {
     return 0;
   }
 
-  v4 = [a3 lastSyncEndDate];
-  v5 = v4;
-  if (v4)
+  lastSyncEndDate = [refreshing lastSyncEndDate];
+  v5 = lastSyncEndDate;
+  if (lastSyncEndDate)
   {
-    v6 = [v4 laterDate:self->_refreshStartDate];
+    v6 = [lastSyncEndDate laterDate:self->_refreshStartDate];
     v7 = v6 == v5;
   }
 

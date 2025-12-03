@@ -9,14 +9,14 @@
 + (id)_syReturnToSenderActivityWithOriginalUserActivity:()SYDocumentWorkflows_Internal_NonDirect
 {
   v3 = a3;
-  v4 = [v3 activityType];
-  v5 = [v4 stringByAppendingString:@".returntosender"];
+  activityType = [v3 activityType];
+  v5 = [activityType stringByAppendingString:@".returntosender"];
 
   v6 = [objc_alloc(MEMORY[0x277CC1EF0]) initWithActivityType:v5];
   [v6 set_syOriginalUserActivity:v3];
-  v7 = [v3 _syRelatedUniqueIdentifier];
+  _syRelatedUniqueIdentifier = [v3 _syRelatedUniqueIdentifier];
 
-  [v6 set_syRelatedUniqueIdentifier:v7];
+  [v6 set_syRelatedUniqueIdentifier:_syRelatedUniqueIdentifier];
 
   return v6;
 }
@@ -24,19 +24,19 @@
 - (void)set_syShouldCreateNewMessage:()SYDocumentWorkflows_Internal_NonDirect
 {
   v5 = a3;
-  v3 = a1;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v5 length:1];
-  [v3 _setPayload:v4 object:0 identifier:@"com.apple.synapse.shouldCreateNewMessage"];
+  [selfCopy _setPayload:v4 object:0 identifier:@"com.apple.synapse.shouldCreateNewMessage"];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)set_syOriginalUserActivity:()SYDocumentWorkflows_Internal_NonDirect
 {
   v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = 0;
   v6 = [v4 _createUserActivityDataWithSaving:0 options:0 error:&v9];
   v7 = v9;
@@ -51,10 +51,10 @@
 
   if (v6)
   {
-    [v5 _setPayload:v6 object:0 identifier:@"com.apple.synapse.originalUserActivity"];
+    [selfCopy _setPayload:v6 object:0 identifier:@"com.apple.synapse.originalUserActivity"];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)set_syOriginalUserActivity:()SYDocumentWorkflows_Internal_NonDirect .cold.1(uint64_t a1, NSObject *a2)

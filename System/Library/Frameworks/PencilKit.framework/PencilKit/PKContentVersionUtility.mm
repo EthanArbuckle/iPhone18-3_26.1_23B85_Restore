@@ -22,7 +22,7 @@
 
 - (uint64_t)programLinkedOnOrAfterDawnburstE
 {
-  if (a1)
+  if (self)
   {
     if (qword_1ED6A5120 != -1)
     {
@@ -92,7 +92,7 @@ uint64_t __59__PKContentVersionUtility_programLinkedOnOrAfterDawnburstE__block_i
 
 - (uint64_t)programLinkedOnOrAfterDawnburst
 {
-  if (a1)
+  if (self)
   {
     if (qword_1ED6A5118 != -1)
     {

@@ -8,25 +8,25 @@
 
 + (id)hashtagTokenAllowedCharacters
 {
-  v0 = [MEMORY[0x1E696AD48] alphanumericCharacterSet];
-  v1 = [MEMORY[0x1E696AB08] emojis];
-  [v0 formUnionWithCharacterSet:v1];
+  alphanumericCharacterSet = [MEMORY[0x1E696AD48] alphanumericCharacterSet];
+  emojis = [MEMORY[0x1E696AB08] emojis];
+  [alphanumericCharacterSet formUnionWithCharacterSet:emojis];
 
   v2 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"-_"];
-  [v0 formUnionWithCharacterSet:v2];
+  [alphanumericCharacterSet formUnionWithCharacterSet:v2];
 
-  v3 = [MEMORY[0x1E696AB08] makeFormatCharacters];
-  [v0 formUnionWithCharacterSet:v3];
+  makeFormatCharacters = [MEMORY[0x1E696AB08] makeFormatCharacters];
+  [alphanumericCharacterSet formUnionWithCharacterSet:makeFormatCharacters];
 
-  v4 = [MEMORY[0x1E696AB08] symbolCharacterSet];
-  [v0 formUnionWithCharacterSet:v4];
+  symbolCharacterSet = [MEMORY[0x1E696AB08] symbolCharacterSet];
+  [alphanumericCharacterSet formUnionWithCharacterSet:symbolCharacterSet];
 
-  v5 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-  [v0 formUnionWithCharacterSet:v5];
+  punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+  [alphanumericCharacterSet formUnionWithCharacterSet:punctuationCharacterSet];
 
-  [MEMORY[0x1E696AB08] subtractOtherPunctuationCharactersFrom:v0];
+  [MEMORY[0x1E696AB08] subtractOtherPunctuationCharactersFrom:alphanumericCharacterSet];
 
-  return v0;
+  return alphanumericCharacterSet;
 }
 
 + (id)makeFormatCharacters

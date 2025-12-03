@@ -1,12 +1,12 @@
 @interface PKMutableAccountUserPreferences
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKMutableAccountUserPreferences
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PKAccountUserPreferences allocWithZone:a3];
+  v4 = [PKAccountUserPreferences allocWithZone:zone];
 
   return [(PKAccountUserPreferences *)v4 initWithAccountUserPreferences:self];
 }

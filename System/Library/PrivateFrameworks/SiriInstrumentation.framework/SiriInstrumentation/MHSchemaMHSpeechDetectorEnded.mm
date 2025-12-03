@@ -1,28 +1,28 @@
 @interface MHSchemaMHSpeechDetectorEnded
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHSpeechDetectorEnded)initWithDictionary:(id)a3;
-- (MHSchemaMHSpeechDetectorEnded)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHSpeechDetectorEnded)initWithDictionary:(id)dictionary;
+- (MHSchemaMHSpeechDetectorEnded)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAmountOfSpeechDetectedInMs:(BOOL)a3;
-- (void)setHasStartSpeechDetectionThresholdInMs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAmountOfSpeechDetectedInMs:(BOOL)ms;
+- (void)setHasStartSpeechDetectionThresholdInMs:(BOOL)ms;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHSpeechDetectorEnded
 
-- (MHSchemaMHSpeechDetectorEnded)initWithDictionary:(id)a3
+- (MHSchemaMHSpeechDetectorEnded)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MHSchemaMHSpeechDetectorEnded;
   v5 = [(MHSchemaMHSpeechDetectorEnded *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"previousRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"previousRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,14 +30,14 @@
       [(MHSchemaMHSpeechDetectorEnded *)v5 setPreviousRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"timeSinceLastAcceptedRequestInNs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"timeSinceLastAcceptedRequestInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHSpeechDetectorEnded setTimeSinceLastAcceptedRequestInNs:](v5, "setTimeSinceLastAcceptedRequestInNs:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"amountOfSpeechDetectedInMs"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"amountOfSpeechDetectedInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(MHSchemaMHSpeechDetectorEnded *)v5 setAmountOfSpeechDetectedInMs:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"startSpeechDetectionThresholdInMs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"startSpeechDetectionThresholdInMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,30 +59,30 @@
   return v5;
 }
 
-- (MHSchemaMHSpeechDetectorEnded)initWithJSON:(id)a3
+- (MHSchemaMHSpeechDetectorEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHSpeechDetectorEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHSpeechDetectorEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHSpeechDetectorEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -95,28 +95,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(MHSchemaMHSpeechDetectorEnded *)self amountOfSpeechDetectedInMs];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"amountOfSpeechDetectedInMs"];
+    [dictionary setObject:v5 forKeyedSubscript:@"amountOfSpeechDetectedInMs"];
   }
 
   if (self->_previousRequestId)
   {
-    v6 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
-    v7 = [v6 dictionaryRepresentation];
-    if (v7)
+    previousRequestId = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
+    dictionaryRepresentation = [previousRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v7 forKeyedSubscript:@"previousRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"previousRequestId"];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v8 forKeyedSubscript:@"previousRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"previousRequestId"];
     }
   }
 
@@ -126,7 +126,7 @@
     v10 = MEMORY[0x1E696AD98];
     [(MHSchemaMHSpeechDetectorEnded *)self startSpeechDetectionThresholdInMs];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"startSpeechDetectionThresholdInMs"];
+    [dictionary setObject:v11 forKeyedSubscript:@"startSpeechDetectionThresholdInMs"];
 
     has = self->_has;
   }
@@ -134,12 +134,12 @@
   if (has)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHSpeechDetectorEnded timeSinceLastAcceptedRequestInNs](self, "timeSinceLastAcceptedRequestInNs")}];
-    [v3 setObject:v12 forKeyedSubscript:@"timeSinceLastAcceptedRequestInNs"];
+    [dictionary setObject:v12 forKeyedSubscript:@"timeSinceLastAcceptedRequestInNs"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -238,26 +238,26 @@ LABEL_10:
   return v6 ^ v3 ^ v11 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
-  v5 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
-  v6 = [v4 previousRequestId];
-  v7 = v6;
-  if ((v5 != 0) != (v6 == 0))
+  previousRequestId = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
+  previousRequestId2 = [equalCopy previousRequestId];
+  v7 = previousRequestId2;
+  if ((previousRequestId != 0) != (previousRequestId2 == 0))
   {
-    v8 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
-    if (v8)
+    previousRequestId3 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
+    if (previousRequestId3)
     {
-      v9 = v8;
-      v10 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
-      v11 = [v4 previousRequestId];
-      v12 = [v10 isEqual:v11];
+      v9 = previousRequestId3;
+      previousRequestId4 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
+      previousRequestId5 = [equalCopy previousRequestId];
+      v12 = [previousRequestId4 isEqual:previousRequestId5];
 
       if (!v12)
       {
@@ -270,19 +270,19 @@ LABEL_10:
     }
 
     has = self->_has;
-    v14 = v4[32];
+    v14 = equalCopy[32];
     if ((*&has & 1) == (v14 & 1))
     {
       if (*&has)
       {
         timeSinceLastAcceptedRequestInNs = self->_timeSinceLastAcceptedRequestInNs;
-        if (timeSinceLastAcceptedRequestInNs != [v4 timeSinceLastAcceptedRequestInNs])
+        if (timeSinceLastAcceptedRequestInNs != [equalCopy timeSinceLastAcceptedRequestInNs])
         {
           goto LABEL_19;
         }
 
         has = self->_has;
-        v14 = v4[32];
+        v14 = equalCopy[32];
       }
 
       v16 = (*&has >> 1) & 1;
@@ -291,20 +291,20 @@ LABEL_10:
         if (v16)
         {
           amountOfSpeechDetectedInMs = self->_amountOfSpeechDetectedInMs;
-          [v4 amountOfSpeechDetectedInMs];
+          [equalCopy amountOfSpeechDetectedInMs];
           if (amountOfSpeechDetectedInMs != v18)
           {
             goto LABEL_19;
           }
 
           has = self->_has;
-          v14 = v4[32];
+          v14 = equalCopy[32];
         }
 
         v19 = (*&has >> 2) & 1;
         if (v19 == ((v14 >> 2) & 1))
         {
-          if (!v19 || (startSpeechDetectionThresholdInMs = self->_startSpeechDetectionThresholdInMs, [v4 startSpeechDetectionThresholdInMs], startSpeechDetectionThresholdInMs == v21))
+          if (!v19 || (startSpeechDetectionThresholdInMs = self->_startSpeechDetectionThresholdInMs, [equalCopy startSpeechDetectionThresholdInMs], startSpeechDetectionThresholdInMs == v21))
           {
             v22 = 1;
             goto LABEL_20;
@@ -325,14 +325,14 @@ LABEL_20:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
+  toCopy = to;
+  previousRequestId = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
 
-  if (v4)
+  if (previousRequestId)
   {
-    v5 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
+    previousRequestId2 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -343,24 +343,24 @@ LABEL_20:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteFloatField();
-    v7 = v8;
+    v7 = toCopy;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
     PBDataWriterWriteFloatField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasStartSpeechDetectionThresholdInMs:(BOOL)a3
+- (void)setHasStartSpeechDetectionThresholdInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 4;
   }
@@ -373,9 +373,9 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasAmountOfSpeechDetectedInMs:(BOOL)a3
+- (void)setHasAmountOfSpeechDetectedInMs:(BOOL)ms
 {
-  if (a3)
+  if (ms)
   {
     v3 = 2;
   }
@@ -388,17 +388,17 @@ LABEL_20:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MHSchemaMHSpeechDetectorEnded;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MHSchemaMHSpeechDetectorEnded *)self previousRequestId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(MHSchemaMHSpeechDetectorEnded *)self deletePreviousRequestId];
   }

@@ -8,8 +8,8 @@
 
 - (unint64_t)scrubBehavior
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"scrubBehavior"];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"scrubBehavior"];
 
   v4 = [v3 isEqualToString:@"delayed"];
   return v4;
@@ -22,12 +22,12 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(IKViewElement *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  children = [(IKViewElement *)self children];
+  v3 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    array = 0;
     v6 = *v16;
     do
     {
@@ -35,25 +35,25 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 elementName];
-        v10 = [v9 isEqualToString:@"asset"];
+        elementName = [v8 elementName];
+        v10 = [elementName isEqualToString:@"asset"];
 
         if (v10)
         {
-          if (!v5)
+          if (!array)
           {
-            v5 = [MEMORY[0x277CBEB18] array];
+            array = [MEMORY[0x277CBEB18] array];
           }
 
-          [(NSArray *)v5 addObject:v8];
+          [(NSArray *)array addObject:v8];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [children countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v4);
@@ -61,12 +61,12 @@
 
   else
   {
-    v5 = 0;
+    array = 0;
   }
 
-  if ([(NSArray *)v5 count])
+  if ([(NSArray *)array count])
   {
-    v11 = v5;
+    v11 = array;
   }
 
   else
@@ -87,8 +87,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(IKViewElement *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  children = [(IKViewElement *)self children];
+  v3 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -99,12 +99,12 @@
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
-        v8 = [v7 elementName];
-        v9 = [v8 isEqualToString:@"relatedContent"];
+        elementName = [v7 elementName];
+        v9 = [elementName isEqualToString:@"relatedContent"];
 
         if (v9)
         {
@@ -113,7 +113,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;

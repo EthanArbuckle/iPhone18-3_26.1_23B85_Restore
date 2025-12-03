@@ -1,91 +1,91 @@
 @interface IKSrcSetRule
-- (IKSrcSetRule)initWithURL:(id)a3 descriptor:(id)a4;
-- (void)_parseDescriptor:(id)a3;
-- (void)_parseMediaQueryDescriptor:(id)a3;
-- (void)_parseResolutionDescriptor:(id)a3;
+- (IKSrcSetRule)initWithURL:(id)l descriptor:(id)descriptor;
+- (void)_parseDescriptor:(id)descriptor;
+- (void)_parseMediaQueryDescriptor:(id)descriptor;
+- (void)_parseResolutionDescriptor:(id)descriptor;
 @end
 
 @implementation IKSrcSetRule
 
-- (IKSrcSetRule)initWithURL:(id)a3 descriptor:(id)a4
+- (IKSrcSetRule)initWithURL:(id)l descriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  descriptorCopy = descriptor;
   v11.receiver = self;
   v11.super_class = IKSrcSetRule;
   v8 = [(IKSrcSetRule *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(IKSrcSetRule *)v8 setImageURL:v6];
-    if ([v7 length])
+    [(IKSrcSetRule *)v8 setImageURL:lCopy];
+    if ([descriptorCopy length])
     {
-      [(IKSrcSetRule *)v9 _parseDescriptor:v7];
+      [(IKSrcSetRule *)v9 _parseDescriptor:descriptorCopy];
     }
   }
 
   return v9;
 }
 
-- (void)_parseDescriptor:(id)a3
+- (void)_parseDescriptor:(id)descriptor
 {
-  v4 = a3;
-  [(IKSrcSetRule *)self setDescriptor:v4];
-  if ([v4 hasPrefix:{@"(", "hasSuffix:", @")"}])
+  descriptorCopy = descriptor;
+  [(IKSrcSetRule *)self setDescriptor:descriptorCopy];
+  if ([descriptorCopy hasPrefix:{@"(", "hasSuffix:", @")"}])
   {
-    [(IKSrcSetRule *)self _parseMediaQueryDescriptor:v4];
+    [(IKSrcSetRule *)self _parseMediaQueryDescriptor:descriptorCopy];
   }
 
   else
   {
-    [(IKSrcSetRule *)self _parseResolutionDescriptor:v4];
+    [(IKSrcSetRule *)self _parseResolutionDescriptor:descriptorCopy];
   }
 }
 
-- (void)_parseMediaQueryDescriptor:(id)a3
+- (void)_parseMediaQueryDescriptor:(id)descriptor
 {
-  v12 = a3;
-  v4 = [[IKCSSTokenizer alloc] initWithText:v12];
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [(IKCSSTokenizer *)v4 getNextToken];
-  if ([v6 type] == 2)
+  descriptorCopy = descriptor;
+  v4 = [[IKCSSTokenizer alloc] initWithText:descriptorCopy];
+  array = [MEMORY[0x277CBEB18] array];
+  getNextToken = [(IKCSSTokenizer *)v4 getNextToken];
+  if ([getNextToken type] == 2)
   {
-    v7 = v6;
+    getNextToken2 = getNextToken;
   }
 
   else
   {
     do
     {
-      [(IKCSSTokenizer *)v4 reconsumeToken:v6];
+      [(IKCSSTokenizer *)v4 reconsumeToken:getNextToken];
       v8 = [IKCSSParser consumeComponentValue:v4];
-      [v5 addObject:v8];
+      [array addObject:v8];
 
-      v7 = [(IKCSSTokenizer *)v4 getNextToken];
+      getNextToken2 = [(IKCSSTokenizer *)v4 getNextToken];
 
-      v6 = v7;
+      getNextToken = getNextToken2;
     }
 
-    while ([v7 type] != 2);
+    while ([getNextToken2 type] != 2);
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v9 = [IKCSSMediaQuery mediaQueryFromTokenList:v5];
+    v9 = [IKCSSMediaQuery mediaQueryFromTokenList:array];
     v10 = [IKStyleMediaQuery mediaQueryListWithCSSMediaQuery:v9];
-    v11 = [v10 firstObject];
+    firstObject = [v10 firstObject];
 
-    [(IKSrcSetRule *)self setMediaQuery:v11];
+    [(IKSrcSetRule *)self setMediaQuery:firstObject];
   }
 }
 
-- (void)_parseResolutionDescriptor:(id)a3
+- (void)_parseResolutionDescriptor:(id)descriptor
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  descriptorCopy = descriptor;
   v5 = @"1x";
   v6 = @"2x";
-  if (([v4 isEqualToString:@"2x"] & 1) != 0 || (v6 = @"3x", objc_msgSend(v4, "isEqualToString:", @"3x")))
+  if (([descriptorCopy isEqualToString:@"2x"] & 1) != 0 || (v6 = @"3x", objc_msgSend(descriptorCopy, "isEqualToString:", @"3x")))
   {
     v7 = v6;
 

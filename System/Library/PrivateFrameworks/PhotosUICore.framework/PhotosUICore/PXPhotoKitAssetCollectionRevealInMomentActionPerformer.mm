@@ -1,8 +1,8 @@
 @interface PXPhotoKitAssetCollectionRevealInMomentActionPerformer
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4;
-+ (id)_assetToRevealInAssetCollection:(id)a3;
-+ (id)createBarButtonItemForAssetCollectionReference:(id)a3 withTarget:(id)a4 action:(SEL)a5;
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5;
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)_assetToRevealInAssetCollection:(id)collection;
++ (id)createBarButtonItemForAssetCollectionReference:(id)reference withTarget:(id)target action:(SEL)action;
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs;
 - (void)performUserInteractionTask;
 @end
 
@@ -11,19 +11,19 @@
 - (void)performUserInteractionTask
 {
   v3 = objc_opt_class();
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v5 = [v3 _assetToRevealInAssetCollection:v4];
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  v5 = [v3 _assetToRevealInAssetCollection:assetCollection];
 
   if (v5)
   {
     objc_initWeak(&location, self);
-    v6 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __84__PXPhotoKitAssetCollectionRevealInMomentActionPerformer_performUserInteractionTask__block_invoke;
     v8[3] = &unk_1E7749D00;
     objc_copyWeak(&v9, &location);
-    [v6 px_navigateToMomentsViewRevealingAsset:v5 completionHandler:v8];
+    [mEMORY[0x1E69DC668] px_navigateToMomentsViewRevealingAsset:v5 completionHandler:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -49,48 +49,48 @@ void __84__PXPhotoKitAssetCollectionRevealInMomentActionPerformer_performUserInt
   }
 }
 
-+ (id)_assetToRevealInAssetCollection:(id)a3
++ (id)_assetToRevealInAssetCollection:(id)collection
 {
   v3 = MEMORY[0x1E6978830];
-  v4 = a3;
-  v5 = [v3 fetchOptionsWithPhotoLibrary:0 orObject:v4];
+  collectionCopy = collection;
+  v5 = [v3 fetchOptionsWithPhotoLibrary:0 orObject:collectionCopy];
   [v5 setReverseSortOrder:1];
   [v5 setFetchLimit:1];
   [v5 setIncludeGuestAssets:1];
-  v6 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v4 options:v5];
+  v6 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:collectionCopy options:v5];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  if ([v7 sourceType] == 8)
+  if ([firstObject sourceType] == 8)
   {
-    v8 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v9 = PXAssetToRevealForMomentSharedAsset(v7, 0, v8);
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    v9 = PXAssetToRevealForMomentSharedAsset(firstObject, 0, px_deprecated_appPhotoLibrary);
 
-    v7 = v8;
+    firstObject = px_deprecated_appPhotoLibrary;
   }
 
   else
   {
-    v10 = [v7 photoLibrary];
-    v11 = [v10 wellKnownPhotoLibraryIdentifier];
+    photoLibrary = [firstObject photoLibrary];
+    wellKnownPhotoLibraryIdentifier = [photoLibrary wellKnownPhotoLibraryIdentifier];
 
-    if (v11 != 3)
+    if (wellKnownPhotoLibraryIdentifier != 3)
     {
       goto LABEL_6;
     }
 
-    v9 = PXAssetToRevealForSyndicationLibraryAsset(v7);
+    v9 = PXAssetToRevealForSyndicationLibraryAsset(firstObject);
   }
 
-  v7 = v9;
+  firstObject = v9;
 LABEL_6:
 
-  return v7;
+  return firstObject;
 }
 
-+ (id)localizedTitleForUseCase:(unint64_t)a3 assetCollectionReference:(id)a4 withInputs:(id)a5
++ (id)localizedTitleForUseCase:(unint64_t)case assetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  if (a3 > 2)
+  if (case > 2)
   {
     v6 = 0;
   }
@@ -103,20 +103,20 @@ LABEL_6:
   return v6;
 }
 
-+ (id)createBarButtonItemForAssetCollectionReference:(id)a3 withTarget:(id)a4 action:(SEL)a5
++ (id)createBarButtonItemForAssetCollectionReference:(id)reference withTarget:(id)target action:(SEL)action
 {
   v6 = MEMORY[0x1E69DC708];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithBarButtonSystemItem:4 target:v7 action:a5];
+  targetCopy = target;
+  v8 = [[v6 alloc] initWithBarButtonSystemItem:4 target:targetCopy action:action];
 
   return v8;
 }
 
-+ (BOOL)canPerformOnAssetCollectionReference:(id)a3 withInputs:(id)a4
++ (BOOL)canPerformOnAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v7 = a4;
-  v8 = [a3 assetCollection];
-  if (v8)
+  inputsCopy = inputs;
+  assetCollection = [reference assetCollection];
+  if (assetCollection)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -124,59 +124,59 @@ LABEL_6:
       goto LABEL_3;
     }
 
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v23 = objc_opt_class();
     v22 = NSStringFromClass(v23);
-    v24 = [v8 px_descriptionForAssertionMessage];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1502 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v22, v24}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1502 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v22, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    [v20 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1502 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v22}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionActionManager.m" lineNumber:1502 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v22}];
   }
 
 LABEL_3:
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v7 people];
+    people = [inputsCopy people];
   }
 
   else
   {
-    v9 = 0;
+    people = 0;
   }
 
-  if ([v8 estimatedAssetCount] == 1 && !objc_msgSend(v9, "count"))
+  if ([assetCollection estimatedAssetCount] == 1 && !objc_msgSend(people, "count"))
   {
-    v12 = [v7 assetsFetchResult];
-    v13 = [v12 firstObject];
+    assetsFetchResult = [inputsCopy assetsFetchResult];
+    firstObject = [assetsFetchResult firstObject];
 
-    v14 = v13;
-    if (v13 || ([a1 _assetToRevealInAssetCollection:v8], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+    v14 = firstObject;
+    if (firstObject || ([self _assetToRevealInAssetCollection:assetCollection], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       if (([v14 isHidden] & 1) == 0)
       {
-        v15 = [v14 isTrashed];
-        v10 = v15 ^ 1;
-        if (!v13 || (v15 & 1) != 0)
+        isTrashed = [v14 isTrashed];
+        bOOLValue = isTrashed ^ 1;
+        if (!firstObject || (isTrashed & 1) != 0)
         {
           goto LABEL_14;
         }
 
         if ([v14 sourceType] == 8)
         {
-          v10 = PXCanAttemptToRevealMomentSharedAsset(v14, 0);
+          bOOLValue = PXCanAttemptToRevealMomentSharedAsset(v14, 0);
           goto LABEL_14;
         }
 
-        v16 = [v14 photoLibrary];
-        v17 = [v16 wellKnownPhotoLibraryIdentifier];
+        photoLibrary = [v14 photoLibrary];
+        wellKnownPhotoLibraryIdentifier = [photoLibrary wellKnownPhotoLibraryIdentifier];
 
-        if (v17 != 3)
+        if (wellKnownPhotoLibraryIdentifier != 3)
         {
           goto LABEL_14;
         }
@@ -184,25 +184,25 @@ LABEL_3:
         [v14 fetchPropertySetsIfNeeded];
         if (([v14 isSyndicatedAssetSavedToUserLibrary] & 1) != 0 || objc_msgSend(v14, "isGuestAsset"))
         {
-          v18 = [off_1E7721948 standardUserDefaults];
-          v19 = [v18 includeSharedWithYou];
-          v10 = [v19 BOOLValue];
+          standardUserDefaults = [off_1E7721948 standardUserDefaults];
+          includeSharedWithYou = [standardUserDefaults includeSharedWithYou];
+          bOOLValue = [includeSharedWithYou BOOLValue];
 
           goto LABEL_14;
         }
       }
     }
 
-    v10 = 0;
+    bOOLValue = 0;
 LABEL_14:
 
     goto LABEL_9;
   }
 
-  v10 = 0;
+  bOOLValue = 0;
 LABEL_9:
 
-  return v10;
+  return bOOLValue;
 }
 
 @end

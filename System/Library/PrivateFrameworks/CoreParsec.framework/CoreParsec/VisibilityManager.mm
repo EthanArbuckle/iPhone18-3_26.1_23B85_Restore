@@ -1,10 +1,10 @@
 @interface VisibilityManager
-- (void)bagChangeNotification:(id)a3;
+- (void)bagChangeNotification:(id)notification;
 @end
 
 @implementation VisibilityManager
 
-- (void)bagChangeNotification:(id)a3
+- (void)bagChangeNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

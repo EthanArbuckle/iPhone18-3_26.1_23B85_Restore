@@ -1,8 +1,8 @@
 @interface MTROperationalCredentialsClusterUpdateFabricLabelParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTROperationalCredentialsClusterUpdateFabricLabelParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,17 +29,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterUpdateFabricLabelParams);
-  v5 = [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)self label];
-  [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)v4 setLabel:v5];
+  label = [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)self label];
+  [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)v4 setLabel:label];
 
-  v6 = [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)self timedInvokeTimeoutMs];
-  [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)self timedInvokeTimeoutMs];
+  [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v7 = [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)self serverSideProcessingTimeout];
-  [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)v4 setServerSideProcessingTimeout:v7];
+  serverSideProcessingTimeout = [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)self serverSideProcessingTimeout];
+  [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -54,14 +54,14 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
   v21 = 0uLL;
   v20[0] = 0;
   v20[1] = 0;
   v19 = v20;
-  v4 = [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)self label];
-  sub_238DB9BD8(v13, [v4 UTF8String], objc_msgSend(v4, "lengthOfBytesUsingEncoding:", 4));
+  label = [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)self label];
+  sub_238DB9BD8(v13, [label UTF8String], objc_msgSend(label, "lengthOfBytesUsingEncoding:", 4));
 
   v21 = v13[0];
   sub_2393D9C18(0x62FuLL, 0, &v18);
@@ -83,8 +83,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v18);
-      v5 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v18);
+      v5 = sub_2393C7114(reader, 21, 256);
       v8 = v12;
       v7 = v5;
     }
@@ -112,19 +112,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTROperationalCredentialsClusterUpdateFabricLabelParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -135,7 +135,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x250F00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

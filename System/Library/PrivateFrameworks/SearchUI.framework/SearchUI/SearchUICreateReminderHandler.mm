@@ -1,33 +1,33 @@
 @interface SearchUICreateReminderHandler
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5;
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment;
 @end
 
 @implementation SearchUICreateReminderHandler
 
-- (void)performCommand:(id)a3 triggerEvent:(unint64_t)a4 environment:(id)a5
+- (void)performCommand:(id)command triggerEvent:(unint64_t)event environment:(id)environment
 {
-  v5 = [a3 reminder];
-  if (v5)
+  reminder = [command reminder];
+  if (reminder)
   {
     v6 = objc_opt_new();
     v7 = [MEMORY[0x1E6966AD8] reminderWithEventStore:v6];
-    v8 = [v5 title];
-    [v7 setTitle:v8];
+    title = [reminder title];
+    [v7 setTitle:title];
 
-    v9 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v10 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    v11 = [v5 dueDate];
-    v12 = [v9 componentsInTimeZone:v10 fromDate:v11];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    defaultTimeZone = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    dueDate = [reminder dueDate];
+    v12 = [currentCalendar componentsInTimeZone:defaultTimeZone fromDate:dueDate];
     [v7 setDueDateComponents:v12];
 
-    v13 = [v5 notes];
-    [v7 setNotes:v13];
+    notes = [reminder notes];
+    [v7 setNotes:notes];
 
-    v14 = [v6 defaultCalendarForNewReminders];
-    [v7 setCalendar:v14];
+    defaultCalendarForNewReminders = [v6 defaultCalendarForNewReminders];
+    [v7 setCalendar:defaultCalendarForNewReminders];
 
-    v15 = [MEMORY[0x1E695DFE8] defaultTimeZone];
-    [v7 setTimeZone:v15];
+    defaultTimeZone2 = [MEMORY[0x1E695DFE8] defaultTimeZone];
+    [v7 setTimeZone:defaultTimeZone2];
 
     v23 = 0;
     [v6 saveReminder:v7 commit:1 error:&v23];
@@ -45,8 +45,8 @@
     {
       v18 = objc_alloc(MEMORY[0x1E695DFF8]);
       v19 = MEMORY[0x1E696AEC0];
-      v20 = [v7 calendarItemIdentifier];
-      v21 = [v19 stringWithFormat:@"x-apple-reminderkit://REMCDReminder/%@", v20];
+      calendarItemIdentifier = [v7 calendarItemIdentifier];
+      v21 = [v19 stringWithFormat:@"x-apple-reminderkit://REMCDReminder/%@", calendarItemIdentifier];
       v17 = [v18 initWithString:v21];
 
       v22 = [MEMORY[0x1E69CA320] punchoutWithURL:v17];

@@ -1,25 +1,25 @@
 @interface PREditingVibrantColorItemsDataSource
-- (PREditingVibrantColorItemsDataSource)initWithConfiguration:(id)a3 variationStore:(id)a4;
-- (id)colorItemForIndex:(unint64_t)a3;
-- (id)firstColorItemPassingTest:(id)a3;
-- (unint64_t)indexForItem:(id)a3;
+- (PREditingVibrantColorItemsDataSource)initWithConfiguration:(id)configuration variationStore:(id)store;
+- (id)colorItemForIndex:(unint64_t)index;
+- (id)firstColorItemPassingTest:(id)test;
+- (unint64_t)indexForItem:(id)item;
 - (void)buildItems;
 @end
 
 @implementation PREditingVibrantColorItemsDataSource
 
-- (PREditingVibrantColorItemsDataSource)initWithConfiguration:(id)a3 variationStore:(id)a4
+- (PREditingVibrantColorItemsDataSource)initWithConfiguration:(id)configuration variationStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = PREditingVibrantColorItemsDataSource;
   v9 = [(PREditingVibrantColorItemsDataSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_configuration, a3);
-    objc_storeStrong(&v10->_variationStore, a4);
+    objc_storeStrong(&v9->_configuration, configuration);
+    objc_storeStrong(&v10->_variationStore, store);
     [(PREditingVibrantColorItemsDataSource *)v10 buildItems];
   }
 
@@ -31,28 +31,28 @@
   v46[3] = *MEMORY[0x1E69E9840];
   if (!self->_items)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    v38 = [(PREditorColorPickerConfiguration *)self->_configuration identifier];
-    v4 = [(PREditingVibrantColorItemsDataSource *)self configuration];
-    v5 = [v4 suggestedColor];
+    array = [MEMORY[0x1E695DF70] array];
+    identifier = [(PREditorColorPickerConfiguration *)self->_configuration identifier];
+    configuration = [(PREditingVibrantColorItemsDataSource *)self configuration];
+    suggestedColor = [configuration suggestedColor];
 
-    v6 = [(PREditingVibrantColorItemsDataSource *)self configuration];
-    v7 = [v6 suggestedColor];
+    configuration2 = [(PREditingVibrantColorItemsDataSource *)self configuration];
+    suggestedColor2 = [configuration2 suggestedColor];
 
-    if (v7)
+    if (suggestedColor2)
     {
-      v8 = [PREditingColorItem suggestedColorItemWithColor:v5 context:[(PREditorColorPickerConfiguration *)self->_configuration context]];
-      [v3 addObject:v8];
+      v8 = [PREditingColorItem suggestedColorItemWithColor:suggestedColor context:[(PREditorColorPickerConfiguration *)self->_configuration context]];
+      [array addObject:v8];
     }
 
-    v37 = v5;
+    v37 = suggestedColor;
     v9 = [PRPosterColor alloc];
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
-    v11 = [(PRPosterColor *)v9 initWithColor:v10 preferredStyle:2];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v11 = [(PRPosterColor *)v9 initWithColor:whiteColor preferredStyle:2];
 
     v12 = [PRPosterColor alloc];
-    v13 = [MEMORY[0x1E69DC888] blackColor];
-    v14 = [(PRPosterColor *)v12 initWithColor:v13 preferredStyle:2];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    v14 = [(PRPosterColor *)v12 initWithColor:blackColor preferredStyle:2];
 
     v15 = [PREditorColorPickerVibrantMonotoneColor alloc];
     v16 = +[PRPosterColor vibrantMonochromeColor];
@@ -74,15 +74,15 @@
     v44[1] = v19;
     v34 = v19;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
-    v22 = v3;
-    [v3 addObjectsFromArray:v21];
+    v22 = array;
+    [array addObjectsFromArray:v21];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v23 = [(PREditorColorPickerConfiguration *)self->_configuration suggestedColors];
-    v24 = [v23 countByEnumeratingWithState:&v39 objects:v43 count:16];
+    suggestedColors = [(PREditorColorPickerConfiguration *)self->_configuration suggestedColors];
+    v24 = [suggestedColors countByEnumeratingWithState:&v39 objects:v43 count:16];
     if (v24)
     {
       v25 = v24;
@@ -93,11 +93,11 @@
         {
           if (*v40 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(suggestedColors);
           }
 
           v28 = [[PREditorColorPickerConstantColor alloc] initWithBaseUIColor:*(*(&v39 + 1) + 8 * i)];
-          v29 = [(PREditingColorVariationStore *)self->_variationStore variationForPickerColor:v28 forContextIdentifier:v38];
+          v29 = [(PREditingColorVariationStore *)self->_variationStore variationForPickerColor:v28 forContextIdentifier:identifier];
           [(PREditorColorPickerConstantColor *)v28 initialVariation];
           if (v29)
           {
@@ -108,7 +108,7 @@
           [v22 addObject:v31];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v39 objects:v43 count:16];
+        v25 = [suggestedColors countByEnumeratingWithState:&v39 objects:v43 count:16];
       }
 
       while (v25);
@@ -120,10 +120,10 @@
   }
 }
 
-- (id)firstColorItemPassingTest:(id)a3
+- (id)firstColorItemPassingTest:(id)test
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  testCopy = test;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -143,7 +143,7 @@
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if (v4[2](v4, v9))
+        if (testCopy[2](testCopy, v9))
         {
           v6 = v9;
           goto LABEL_11;
@@ -165,26 +165,26 @@ LABEL_11:
   return v6;
 }
 
-- (unint64_t)indexForItem:(id)a3
+- (unint64_t)indexForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   items = self->_items;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__PREditingVibrantColorItemsDataSource_indexForItem___block_invoke;
   v9[3] = &unk_1E78436F8;
-  v10 = v4;
-  v6 = v4;
+  v10 = itemCopy;
+  v6 = itemCopy;
   v7 = [(NSArray *)items indexOfObjectPassingTest:v9];
 
   return v7;
 }
 
-- (id)colorItemForIndex:(unint64_t)a3
+- (id)colorItemForIndex:(unint64_t)index
 {
-  if ([(NSArray *)self->_items count]>= a3)
+  if ([(NSArray *)self->_items count]>= index)
   {
-    v5 = [(NSArray *)self->_items objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_items objectAtIndexedSubscript:index];
   }
 
   else

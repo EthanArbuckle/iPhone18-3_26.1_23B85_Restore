@@ -1,22 +1,22 @@
 @interface FCRecipesFetchOperation
 - (BOOL)validateOperation;
-- (FCRecipesFetchOperation)initWithContext:(id)a3 accessChecker:(id)a4 tagController:(id)a5 recipeIDs:(id)a6 recipeListIDs:(id)a7;
-- (id)_filterInaccessibleRecipes:(id)a3;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCRecipesFetchOperation)initWithContext:(id)context accessChecker:(id)checker tagController:(id)controller recipeIDs:(id)ds recipeListIDs:(id)iDs;
+- (id)_filterInaccessibleRecipes:(id)recipes;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation FCRecipesFetchOperation
 
-- (FCRecipesFetchOperation)initWithContext:(id)a3 accessChecker:(id)a4 tagController:(id)a5 recipeIDs:(id)a6 recipeListIDs:(id)a7
+- (FCRecipesFetchOperation)initWithContext:(id)context accessChecker:(id)checker tagController:(id)controller recipeIDs:(id)ds recipeListIDs:(id)iDs
 {
   v40 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  checkerCopy = checker;
+  controllerCopy = controller;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v28 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "context"];
     *buf = 136315906;
@@ -29,13 +29,13 @@
     v39 = v28;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v15)
+    if (controllerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v15)
+  else if (controllerCopy)
   {
     goto LABEL_6;
   }
@@ -55,7 +55,7 @@
   }
 
 LABEL_6:
-  if (!v16 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!dsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v30 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "recipeIDs"];
     *buf = 136315906;
@@ -75,20 +75,20 @@ LABEL_6:
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_context, a3);
-    objc_storeStrong(&v19->_accessChecker, a4);
-    objc_storeStrong(&v19->_tagController, a5);
-    v20 = [v16 copy];
+    objc_storeStrong(&v18->_context, context);
+    objc_storeStrong(&v19->_accessChecker, checker);
+    objc_storeStrong(&v19->_tagController, controller);
+    v20 = [dsCopy copy];
     recipeIDs = v19->_recipeIDs;
     v19->_recipeIDs = v20;
 
-    v22 = [v17 copy];
+    v22 = [iDsCopy copy];
     recipeListIDs = v19->_recipeListIDs;
     v19->_recipeListIDs = v22;
 
-    v24 = [v13 news_core_ConfigurationManager];
+    news_core_ConfigurationManager = [contextCopy news_core_ConfigurationManager];
     appConfigurationManager = v19->_appConfigurationManager;
-    v19->_appConfigurationManager = v24;
+    v19->_appConfigurationManager = news_core_ConfigurationManager;
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -139,7 +139,7 @@ LABEL_6:
   v3 = FCOperationLog;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(FCOperation *)self shortOperationDescription];
+    shortOperationDescription = [(FCOperation *)self shortOperationDescription];
     if (self)
     {
       recipeIDs = self->_recipeIDs;
@@ -164,7 +164,7 @@ LABEL_6:
 
     v9 = recipeListIDs;
     *buf = 138543874;
-    v27 = v4;
+    v27 = shortOperationDescription;
     v28 = 2048;
     v29 = v7;
     v30 = 2048;
@@ -192,8 +192,8 @@ LABEL_6:
   }
 
   [(FCRecordChainFetchOperation *)v10 setContext:context];
-  v15 = [(FCRecipesFetchOperation *)self cachePolicy];
-  [(FCRecordChainFetchOperation *)v10 setCachePolicy:v15];
+  cachePolicy = [(FCRecipesFetchOperation *)self cachePolicy];
+  [(FCRecordChainFetchOperation *)v10 setCachePolicy:cachePolicy];
 
   v24[0] = @"Recipe";
   v23[0] = @"sourceChannelTagID";
@@ -587,9 +587,9 @@ LABEL_23:
   return v36;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v10 = a3;
+  errorCopy = error;
   v4 = [FCRecipesFetchOperationResult alloc];
   if (self)
   {
@@ -605,19 +605,19 @@ LABEL_23:
 
   v7 = [(FCRecipesFetchOperationResult *)v4 initWithRecipes:v5 recipeLists:resultRecipeLists];
 
-  v8 = [(FCRecipesFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCRecipesFetchOperation *)self fetchCompletionHandler];
 
-  if (v8)
+  if (fetchCompletionHandler)
   {
-    v9 = [(FCRecipesFetchOperation *)self fetchCompletionHandler];
-    (v9)[2](v9, v7, v10);
+    fetchCompletionHandler2 = [(FCRecipesFetchOperation *)self fetchCompletionHandler];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, v7, errorCopy);
   }
 }
 
-- (id)_filterInaccessibleRecipes:(id)a3
+- (id)_filterInaccessibleRecipes:(id)recipes
 {
-  v4 = a3;
-  v5 = v4;
+  recipesCopy = recipes;
+  v5 = recipesCopy;
   if (self && self->_accessChecker)
   {
     v9[0] = MEMORY[0x1E69E9820];
@@ -625,12 +625,12 @@ LABEL_23:
     v9[2] = __54__FCRecipesFetchOperation__filterInaccessibleRecipes___block_invoke;
     v9[3] = &unk_1E7C44038;
     v9[4] = self;
-    v6 = [v4 fc_arrayOfObjectsPassingTest:v9];
+    v6 = [recipesCopy fc_arrayOfObjectsPassingTest:v9];
   }
 
   else
   {
-    v6 = v4;
+    v6 = recipesCopy;
   }
 
   v7 = v6;

@@ -12,13 +12,13 @@
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__29075;
   v16 = __Block_byref_object_dispose__29076;
-  v17 = a1;
+  selfCopy = self;
   v5 = MEMORY[0x1E69706F8];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __130__MPModelPlaylistEntry_MPCStoreFrontLocalEquivalencyMiddlewareAdditions__MPC_modelObjectWithStoreFrontLocalEquivalentModelObject___block_invoke;
   v9[3] = &unk_1E8238A50;
-  v9[4] = v17;
+  v9[4] = selfCopy;
   v6 = v4;
   v10 = v6;
   v11 = &v12;

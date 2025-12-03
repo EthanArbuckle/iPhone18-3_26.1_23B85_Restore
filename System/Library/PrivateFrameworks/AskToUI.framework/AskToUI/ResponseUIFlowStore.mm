@@ -1,6 +1,6 @@
 @interface ResponseUIFlowStore
 - (_TtC7AskToUI19ResponseUIFlowStore)init;
-- (void)beginApprovalFlowWith:(id)a3 completion:(id)a4;
+- (void)beginApprovalFlowWith:(id)with completion:(id)completion;
 - (void)requestDismiss;
 @end
 
@@ -27,19 +27,19 @@
   return v4;
 }
 
-- (void)beginApprovalFlowWith:(id)a3 completion:(id)a4
+- (void)beginApprovalFlowWith:(id)with completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  ResponseUIFlowStore.beginApprovalFlow(with:completion:)(v8, sub_241191524, v7);
+  withCopy = with;
+  selfCopy = self;
+  ResponseUIFlowStore.beginApprovalFlow(with:completion:)(withCopy, sub_241191524, v7);
 }
 
 - (void)requestDismiss
 {
-  v2 = self;
+  selfCopy = self;
   ResponseUIFlowStore.requestDismiss()();
 }
 

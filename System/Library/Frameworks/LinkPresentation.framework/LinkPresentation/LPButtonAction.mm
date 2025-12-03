@@ -1,20 +1,20 @@
 @interface LPButtonAction
-+ (id)actionWithTitle:(id)a3 image:(id)a4 handler:(id)a5;
++ (id)actionWithTitle:(id)title image:(id)image handler:(id)handler;
 - (LPImage)visibleImage;
 - (NSString)visibleTitle;
 @end
 
 @implementation LPButtonAction
 
-+ (id)actionWithTitle:(id)a3 image:(id)a4 handler:(id)a5
++ (id)actionWithTitle:(id)title image:(id)image handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = objc_alloc_init(a1);
-  [v11 setTitle:v8];
-  [v11 setImage:v9];
-  [v11 setHandler:v10];
+  titleCopy = title;
+  imageCopy = image;
+  handlerCopy = handler;
+  v11 = objc_alloc_init(self);
+  [v11 setTitle:titleCopy];
+  [v11 setImage:imageCopy];
+  [v11 setHandler:handlerCopy];
 
   return v11;
 }

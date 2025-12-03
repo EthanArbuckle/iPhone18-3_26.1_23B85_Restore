@@ -1,69 +1,69 @@
 @interface SACrashDetectionEvent
 + (double)crashDetectionEventTimeout;
-- (SACrashDetectionEvent)initWithCoder:(id)a3;
-- (SACrashDetectionEvent)initWithTimeOfDetection:(id)a3 timeOfResolution:(id)a4 response:(int64_t)a5 location:(id)a6;
-- (SACrashDetectionEvent)initWithTimeOfDetection:(id)a3 timeOfResolution:(id)a4 response:(int64_t)a5 location:(id)a6 isNotified:(BOOL)a7;
+- (SACrashDetectionEvent)initWithCoder:(id)coder;
+- (SACrashDetectionEvent)initWithTimeOfDetection:(id)detection timeOfResolution:(id)resolution response:(int64_t)response location:(id)location;
+- (SACrashDetectionEvent)initWithTimeOfDetection:(id)detection timeOfResolution:(id)resolution response:(int64_t)response location:(id)location isNotified:(BOOL)notified;
 - (double)elapsed;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SACrashDetectionEvent
 
-- (SACrashDetectionEvent)initWithTimeOfDetection:(id)a3 timeOfResolution:(id)a4 response:(int64_t)a5 location:(id)a6
+- (SACrashDetectionEvent)initWithTimeOfDetection:(id)detection timeOfResolution:(id)resolution response:(int64_t)response location:(id)location
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  detectionCopy = detection;
+  resolutionCopy = resolution;
+  locationCopy = location;
   v17.receiver = self;
   v17.super_class = SACrashDetectionEvent;
   v14 = [(SACrashDetectionEvent *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_date, a3);
-    objc_storeStrong(&v15->_timeOfResolution, a4);
-    v15->_response = a5;
-    objc_storeStrong(&v15->_location, a6);
+    objc_storeStrong(&v14->_date, detection);
+    objc_storeStrong(&v15->_timeOfResolution, resolution);
+    v15->_response = response;
+    objc_storeStrong(&v15->_location, location);
     v15->_isNotified = 0;
   }
 
   return v15;
 }
 
-- (SACrashDetectionEvent)initWithTimeOfDetection:(id)a3 timeOfResolution:(id)a4 response:(int64_t)a5 location:(id)a6 isNotified:(BOOL)a7
+- (SACrashDetectionEvent)initWithTimeOfDetection:(id)detection timeOfResolution:(id)resolution response:(int64_t)response location:(id)location isNotified:(BOOL)notified
 {
-  result = [(SACrashDetectionEvent *)self initWithTimeOfDetection:a3 timeOfResolution:a4 response:a5 location:a6];
+  result = [(SACrashDetectionEvent *)self initWithTimeOfDetection:detection timeOfResolution:resolution response:response location:location];
   if (result)
   {
-    result->_isNotified = a7;
+    result->_isNotified = notified;
   }
 
   return result;
 }
 
-- (SACrashDetectionEvent)initWithCoder:(id)a3
+- (SACrashDetectionEvent)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 alloc];
-  [v5 decodeDoubleForKey:@"kSACrashDetectionEventTimeOfDetection"];
+  [coderCopy decodeDoubleForKey:@"kSACrashDetectionEventTimeOfDetection"];
   v7 = [v6 initWithTimeIntervalSinceReferenceDate:?];
   v8 = objc_alloc(MEMORY[0x277CBEAA8]);
-  [v5 decodeDoubleForKey:@"kSACrashDetectionEventTimeOfResolution"];
+  [coderCopy decodeDoubleForKey:@"kSACrashDetectionEventTimeOfResolution"];
   v9 = [v8 initWithTimeIntervalSinceReferenceDate:?];
-  v10 = [v5 decodeIntegerForKey:@"kSACrashDetectionEventResponse"];
-  v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"kSACrashDetectionEventLocation"];
-  v12 = [v5 decodeBoolForKey:@"kSACrashDetectionEventIsNotified"];
+  v10 = [coderCopy decodeIntegerForKey:@"kSACrashDetectionEventResponse"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kSACrashDetectionEventLocation"];
+  v12 = [coderCopy decodeBoolForKey:@"kSACrashDetectionEventIsNotified"];
 
   v13 = [(SACrashDetectionEvent *)self initWithTimeOfDetection:v7 timeOfResolution:v9 response:v10 location:v11 isNotified:v12];
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   date = self->_date;
   response = self->_response;
   location = self->_location;
@@ -73,23 +73,23 @@
   return [v4 initWithTimeOfDetection:date timeOfResolution:timeOfResolution response:response location:location isNotified:isNotified];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   date = self->_date;
-  v5 = a3;
+  coderCopy = coder;
   [(NSDate *)date timeIntervalSinceReferenceDate];
-  [v5 encodeDouble:@"kSACrashDetectionEventTimeOfDetection" forKey:?];
+  [coderCopy encodeDouble:@"kSACrashDetectionEventTimeOfDetection" forKey:?];
   [(NSDate *)self->_timeOfResolution timeIntervalSinceReferenceDate];
-  [v5 encodeDouble:@"kSACrashDetectionEventTimeOfResolution" forKey:?];
-  [v5 encodeInteger:self->_response forKey:@"kSACrashDetectionEventResponse"];
-  [v5 encodeObject:self->_location forKey:@"kSACrashDetectionEventLocation"];
-  [v5 encodeBool:self->_isNotified forKey:@"kSACrashDetectionEventIsNotified"];
+  [coderCopy encodeDouble:@"kSACrashDetectionEventTimeOfResolution" forKey:?];
+  [coderCopy encodeInteger:self->_response forKey:@"kSACrashDetectionEventResponse"];
+  [coderCopy encodeObject:self->_location forKey:@"kSACrashDetectionEventLocation"];
+  [coderCopy encodeBool:self->_isNotified forKey:@"kSACrashDetectionEventIsNotified"];
 }
 
 - (double)elapsed
 {
-  v2 = [(SACrashDetectionEvent *)self date];
-  [v2 timeIntervalSinceNow];
+  date = [(SACrashDetectionEvent *)self date];
+  [date timeIntervalSinceNow];
   v4 = -v3;
 
   return v4;
@@ -98,18 +98,18 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SACrashDetectionEvent *)self date];
-  v5 = [(SACrashDetectionEvent *)self response];
-  v6 = [(SACrashDetectionEvent *)self location];
-  v7 = [v3 stringWithFormat:@"SACrashDetectionEvent - date: %@, response: %ld, location: %@, notified: %d", v4, v5, v6, -[SACrashDetectionEvent isNotified](self, "isNotified")];
+  date = [(SACrashDetectionEvent *)self date];
+  response = [(SACrashDetectionEvent *)self response];
+  location = [(SACrashDetectionEvent *)self location];
+  v7 = [v3 stringWithFormat:@"SACrashDetectionEvent - date: %@, response: %ld, location: %@, notified: %d", date, response, location, -[SACrashDetectionEvent isNotified](self, "isNotified")];
 
   return v7;
 }
 
 + (double)crashDetectionEventTimeout
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 valueForKey:@"SACrashDetectionEventTimeout"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults valueForKey:@"SACrashDetectionEventTimeout"];
 
   if (v3)
   {

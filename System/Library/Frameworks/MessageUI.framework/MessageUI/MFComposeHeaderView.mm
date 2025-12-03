@@ -4,9 +4,9 @@
 + (double)separatorHeight;
 + (id)defaultFont;
 - (CGRect)_contentRect;
-- (CGRect)_exclusionRectForView:(id)a3 alongEdge:(unint64_t)a4;
-- (CGRect)titleLabelBaselineAlignmentRectForLabel:(id)a3;
-- (MFComposeHeaderView)initWithFrame:(CGRect)a3;
+- (CGRect)_exclusionRectForView:(id)view alongEdge:(unint64_t)edge;
+- (CGRect)titleLabelBaselineAlignmentRectForLabel:(id)label;
+- (MFComposeHeaderView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)_recipientViewEdgeInsets;
 - (double)labelTopPadding;
 - (id)_automationID;
@@ -16,13 +16,13 @@
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 - (void)refreshPreferredContentSize;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)setLabel:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)setLabel:(id)label;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation MFComposeHeaderView
@@ -50,7 +50,7 @@ id __34__MFComposeHeaderView_defaultFont__block_invoke()
   v7[1] = 3221225472;
   v7[2] = __38__MFComposeHeaderView_preferredHeight__block_invoke;
   v7[3] = &__block_descriptor_40_e5_d8__0l;
-  v7[4] = a1;
+  v7[4] = self;
   [v3 cachedFloat:v7 forKey:@"MFComposeHeaderViewPreferredHeight"];
   v5 = v4;
 
@@ -87,8 +87,8 @@ double __38__MFComposeHeaderView_preferredHeight__block_invoke(uint64_t a1)
 
 + (double)separatorHeight
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v4 = v3;
 
   return 1.0 / v4;
@@ -101,7 +101,7 @@ double __38__MFComposeHeaderView_preferredHeight__block_invoke(uint64_t a1)
   v7[1] = 3221225472;
   v7[2] = __52__MFComposeHeaderView__labelTopPaddingSpecification__block_invoke;
   v7[3] = &__block_descriptor_40_e5_d8__0l;
-  v7[4] = a1;
+  v7[4] = self;
   [v3 cachedFloat:v7 forKey:@"MFComposeHeaderViewLabelTopPaddingSpec"];
   v5 = v4;
 
@@ -135,17 +135,17 @@ double __52__MFComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
   return result;
 }
 
-- (MFComposeHeaderView)initWithFrame:(CGRect)a3
+- (MFComposeHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v21.receiver = self;
   v21.super_class = MFComposeHeaderView;
-  v5 = [(MFComposeHeaderView *)&v21 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(MFComposeHeaderView *)&v21 initWithFrame:frame.origin.x, frame.origin.y];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC888] mailComposeHeaderBackgroundColor];
-    [(MFComposeHeaderView *)v5 setBackgroundColor:v6];
+    mailComposeHeaderBackgroundColor = [MEMORY[0x1E69DC888] mailComposeHeaderBackgroundColor];
+    [(MFComposeHeaderView *)v5 setBackgroundColor:mailComposeHeaderBackgroundColor];
 
     [(MFComposeHeaderView *)v5 setPreservesSuperviewLayoutMargins:1];
     [(MFComposeHeaderView *)v5 setInsetsLayoutMarginsFromSafeArea:0];
@@ -170,8 +170,8 @@ double __52__MFComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
 
     [(MFHeaderLabelView *)v5->_labelView setAutoresizingMask:0];
     v18 = v5->_labelView;
-    v19 = [objc_opt_class() defaultFont];
-    [(MFHeaderLabelView *)v18 setFont:v19];
+    defaultFont = [objc_opt_class() defaultFont];
+    [(MFHeaderLabelView *)v18 setFont:defaultFont];
 
     [(MFHeaderLabelView *)v5->_labelView sizeToFit];
     [(MFComposeHeaderView *)v5 addSubview:v5->_labelView];
@@ -180,12 +180,12 @@ double __52__MFComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
   return v5;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MFComposeHeaderView *)self frame];
   if (width != v9 || height != v8)
   {
@@ -197,12 +197,12 @@ double __52__MFComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
   [(MFComposeHeaderView *)&v11 setFrame:x, y, width, height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MFComposeHeaderView *)self bounds];
   if (width != v9 || height != v8)
   {
@@ -214,19 +214,19 @@ double __52__MFComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
   [(MFComposeHeaderView *)&v11 setBounds:x, y, width, height];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
-  if (v4)
+  labelCopy = label;
+  if (labelCopy)
   {
-    [(MFHeaderLabelView *)self->_labelView setText:v4];
+    [(MFHeaderLabelView *)self->_labelView setText:labelCopy];
     [(MFHeaderLabelView *)self->_labelView sizeToFit];
   }
 }
 
 - (void)layoutSubviews
 {
-  v3 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   [(MFComposeHeaderView *)self _contentRect];
   v5 = v4;
   v7 = v6;
@@ -257,7 +257,7 @@ double __52__MFComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
   v24 = v23;
   if ([(MFComposeHeaderView *)self _shouldEmbedLabelInTextView])
   {
-    if (!v3)
+    if (!userInterfaceLayoutDirection)
     {
       MinX = 0.0;
       v26 = rect_24;
@@ -277,7 +277,7 @@ double __52__MFComposeHeaderView__labelTopPaddingSpecification__block_invoke(uin
 
   else
   {
-    if (!v3)
+    if (!userInterfaceLayoutDirection)
     {
       v25 = rect_8;
       v52.origin.x = rect_8;
@@ -369,24 +369,24 @@ LABEL_9:
   return result;
 }
 
-- (CGRect)titleLabelBaselineAlignmentRectForLabel:(id)a3
+- (CGRect)titleLabelBaselineAlignmentRectForLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   [(MFHeaderLabelView *)self->_labelView layoutSubviews];
   [(MFHeaderLabelView *)self->_labelView frame];
   rect = v5;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
   [(MFComposeHeaderView *)self _contentRect];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  [v4 frame];
+  [labelCopy frame];
   v43 = v21;
-  [v4 frame];
+  [labelCopy frame];
   v23 = v22;
   v45.origin.x = v14;
   v45.origin.y = v16;
@@ -397,7 +397,7 @@ LABEL_9:
   v26 = v7;
   v27 = v9;
   v28 = v11;
-  if (v12 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v29 = CGRectGetMinX(*&v25) + -6.0 - v24;
   }
@@ -412,11 +412,11 @@ LABEL_9:
   v46.size.width = v9;
   v46.size.height = v11;
   MaxY = CGRectGetMaxY(v46);
-  [v4 frame];
+  [labelCopy frame];
   Height = CGRectGetHeight(v47);
   [(MFHeaderLabelView *)self->_labelView _baselineOffsetFromBottom];
   v33 = v32;
-  [v4 _baselineOffsetFromBottom];
+  [labelCopy _baselineOffsetFromBottom];
   v48.origin.y = MaxY - v33 - (Height - v34);
   v48.origin.x = v29;
   v48.size.width = v24;
@@ -456,22 +456,22 @@ LABEL_9:
   }
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = MFComposeHeaderView;
-  [(MFComposeHeaderView *)&v8 touchesBegan:v6 withEvent:v7];
+  [(MFComposeHeaderView *)&v8 touchesBegan:beganCopy withEvent:eventCopy];
   if ([(MFComposeHeaderView *)self showsHighlightWhenTouched])
   {
     [(MFComposeHeaderView *)self setHighlighted:1 animated:0];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  [(MFComposeHeaderView *)self handleTouchesEnded:a3];
+  [(MFComposeHeaderView *)self handleTouchesEnded:ended];
   if ([(MFComposeHeaderView *)self showsHighlightWhenTouched])
   {
 
@@ -479,13 +479,13 @@ LABEL_9:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   v8.receiver = self;
   v8.super_class = MFComposeHeaderView;
-  [(MFComposeHeaderView *)&v8 touchesCancelled:v6 withEvent:v7];
+  [(MFComposeHeaderView *)&v8 touchesCancelled:cancelledCopy withEvent:eventCopy];
   if ([(MFComposeHeaderView *)self showsHighlightWhenTouched])
   {
     [(MFComposeHeaderView *)self setHighlighted:0 animated:1];
@@ -517,24 +517,24 @@ LABEL_9:
   return highlightBackgroundView;
 }
 
-- (void)setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __47__MFComposeHeaderView_setHighlighted_animated___block_invoke;
   aBlock[3] = &unk_1E806CDA8;
-  v12 = a3;
+  highlightedCopy = highlighted;
   aBlock[4] = self;
   v7 = _Block_copy(aBlock);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2;
   v9[3] = &unk_1E806CDD0;
-  v10 = a3;
+  highlightedCopy2 = highlighted;
   v9[4] = self;
   v8 = _Block_copy(v9);
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v7 animations:v8 completion:0.3];
   }
@@ -585,8 +585,8 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   [v3 ensureCacheIsValid];
 
   labelView = self->_labelView;
-  v5 = [objc_opt_class() defaultFont];
-  [(MFHeaderLabelView *)labelView setFont:v5];
+  defaultFont = [objc_opt_class() defaultFont];
+  [(MFHeaderLabelView *)labelView setFont:defaultFont];
 
   [(MFComposeHeaderView *)self setNeedsLayout];
 }
@@ -594,24 +594,24 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
 - (id)_baseAttributes
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() defaultFont];
+  defaultFont = [objc_opt_class() defaultFont];
   v4 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
-  [v3 _bodyLeading];
+  [defaultFont _bodyLeading];
   [v4 setLineSpacing:v5 * 0.55];
   [(MFComposeHeaderView *)self _recipientViewEdgeInsets];
   [v4 setHeadIndent:v6];
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  v8 = [v7 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v8 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     [v4 setBaseWritingDirection:1];
   }
 
   v12[0] = *MEMORY[0x1E69DB648];
-  v9 = [objc_opt_class() defaultFont];
+  defaultFont2 = [objc_opt_class() defaultFont];
   v12[1] = *MEMORY[0x1E69DB688];
-  v13[0] = v9;
+  v13[0] = defaultFont2;
   v13[1] = v4;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
@@ -620,10 +620,10 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
 
 - (UIEdgeInsets)_recipientViewEdgeInsets
 {
-  v3 = [objc_opt_class() defaultFont];
-  [v3 capHeight];
+  defaultFont = [objc_opt_class() defaultFont];
+  [defaultFont capHeight];
   v5 = v4;
-  [v3 descender];
+  [defaultFont descender];
   v7 = v6;
   [(MFHeaderLabelView *)self->_labelView frame];
   MaxY = CGRectGetMaxY(v25);
@@ -631,7 +631,7 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   v10 = v9;
   if (MFModernUIApplicationPreferredContentSizeIsAccessibility())
   {
-    [v3 capHeight];
+    [defaultFont capHeight];
     v12 = round(v11 * 0.5);
   }
 
@@ -642,7 +642,7 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
 
   if (MFModernUIApplicationPreferredContentSizeIsAccessibility())
   {
-    [v3 capHeight];
+    [defaultFont capHeight];
     v14 = v13 * 0.5;
   }
 
@@ -650,7 +650,7 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   {
     [objc_opt_class() preferredHeight];
     v16 = v15;
-    [v3 _bodyLeading];
+    [defaultFont _bodyLeading];
     v14 = v16 - v12 - v17;
   }
 
@@ -669,20 +669,20 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   return result;
 }
 
-- (CGRect)_exclusionRectForView:(id)a3 alongEdge:(unint64_t)a4
+- (CGRect)_exclusionRectForView:(id)view alongEdge:(unint64_t)edge
 {
-  v6 = a3;
-  [v6 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 superview];
+  superview = [viewCopy superview];
 
-  if (v15 != self)
+  if (superview != self)
   {
-    v16 = [v6 superview];
-    [v16 convertRect:self toView:{v8, v10, v12, v14}];
+    superview2 = [viewCopy superview];
+    [superview2 convertRect:self toView:{v8, v10, v12, v14}];
     v8 = v17;
     v10 = v18;
     v12 = v19;
@@ -692,7 +692,7 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   v21 = MEMORY[0x1E695F058];
   v22 = *(MEMORY[0x1E695F058] + 8);
   v23 = *(MEMORY[0x1E695F058] + 16);
-  if (a4 == 8)
+  if (edge == 8)
   {
     v37.origin.x = v8;
     v37.origin.y = v10;
@@ -712,7 +712,7 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
   else
   {
     v24 = *MEMORY[0x1E695F058];
-    if (a4 == 2)
+    if (edge == 2)
     {
       v36.origin.x = v8;
       v36.origin.y = v10;
@@ -745,19 +745,19 @@ void __47__MFComposeHeaderView_setHighlighted_animated___block_invoke_2(uint64_t
 
 - (id)_automationID
 {
-  v3 = [(MFComposeHeaderView *)self label];
-  v4 = [v3 length];
+  label = [(MFComposeHeaderView *)self label];
+  v4 = [label length];
   if (v4)
   {
-    v5 = [(MFComposeHeaderView *)self label];
+    label2 = [(MFComposeHeaderView *)self label];
   }
 
   else
   {
-    v5 = @"NoLabel";
+    label2 = @"NoLabel";
   }
 
-  v6 = [@"BTN " stringByAppendingString:v5];
+  v6 = [@"BTN " stringByAppendingString:label2];
   if (v4)
   {
   }

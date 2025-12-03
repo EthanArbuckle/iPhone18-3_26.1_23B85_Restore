@@ -1,38 +1,38 @@
 @interface BuddySetupAnalytics
-+ (id)loadFromDiskWithPreferences:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAnalytics:(id)a3;
-- (BuddySetupAnalytics)initWithPreferences:(id)a3;
++ (id)loadFromDiskWithPreferences:(id)preferences;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAnalytics:(id)analytics;
+- (BuddySetupAnalytics)initWithPreferences:(id)preferences;
 - (id)_dictionaryRepresentation;
-- (void)addEventUsingAnalyticsManager:(id)a3;
+- (void)addEventUsingAnalyticsManager:(id)manager;
 - (void)persist;
 @end
 
 @implementation BuddySetupAnalytics
 
-- (BuddySetupAnalytics)initWithPreferences:(id)a3
+- (BuddySetupAnalytics)initWithPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v9.receiver = self;
   v9.super_class = BuddySetupAnalytics;
   v6 = [(BuddySetupAnalytics *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferences, a3);
+    objc_storeStrong(&v6->_preferences, preferences);
   }
 
   return v7;
 }
 
-+ (id)loadFromDiskWithPreferences:(id)a3
++ (id)loadFromDiskWithPreferences:(id)preferences
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"setupAnalytics" includeCache:0];
+  preferencesCopy = preferences;
+  v4 = [preferencesCopy objectForKey:@"setupAnalytics" includeCache:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[BuddySetupAnalytics alloc] initWithPreferences:v3];
+    v5 = [[BuddySetupAnalytics alloc] initWithPreferences:preferencesCopy];
     v6 = [v4 objectForKeyedSubscript:@"hasCompletedInitialSetup"];
     -[BuddySetupAnalytics setHasCompletedInitialSetup:](v5, "setHasCompletedInitialSetup:", [v6 BOOLValue]);
 
@@ -81,22 +81,22 @@
 
 - (void)persist
 {
-  v4 = [(BuddySetupAnalytics *)self preferences];
-  v3 = [(BuddySetupAnalytics *)self _dictionaryRepresentation];
-  [v4 setObject:v3 forKey:@"setupAnalytics" persistImmediately:1];
+  preferences = [(BuddySetupAnalytics *)self preferences];
+  _dictionaryRepresentation = [(BuddySetupAnalytics *)self _dictionaryRepresentation];
+  [preferences setObject:_dictionaryRepresentation forKey:@"setupAnalytics" persistImmediately:1];
 }
 
-- (void)addEventUsingAnalyticsManager:(id)a3
+- (void)addEventUsingAnalyticsManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(BuddySetupAnalytics *)self _dictionaryRepresentation];
-  [v4 addEvent:@"com.apple.setupassistant.ios.setup" withPayload:v5 persist:0];
+  managerCopy = manager;
+  _dictionaryRepresentation = [(BuddySetupAnalytics *)self _dictionaryRepresentation];
+  [managerCopy addEvent:@"com.apple.setupassistant.ios.setup" withPayload:_dictionaryRepresentation persist:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -106,7 +106,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BuddySetupAnalytics *)self isEqualToAnalytics:v4];
+      v5 = [(BuddySetupAnalytics *)self isEqualToAnalytics:equalCopy];
     }
 
     else
@@ -118,21 +118,21 @@
   return v5;
 }
 
-- (BOOL)isEqualToAnalytics:(id)a3
+- (BOOL)isEqualToAnalytics:(id)analytics
 {
-  v4 = a3;
-  v5 = [(BuddySetupAnalytics *)self hasCompletedInitialSetup];
-  v6 = v5 ^ [v4 hasCompletedInitialSetup];
-  v7 = [(BuddySetupAnalytics *)self usedProximitySetup];
-  v8 = v6 | v7 ^ [v4 usedProximitySetup];
-  v9 = [(BuddySetupAnalytics *)self dataTransferMethod];
-  v10 = v9 == [v4 dataTransferMethod];
-  LODWORD(v9) = [(BuddySetupAnalytics *)self inAppleStore];
-  v11 = v9 ^ [v4 inAppleStore];
-  LODWORD(v9) = [(BuddySetupAnalytics *)self softwareUpdatePerformed];
-  v12 = v10 & ~(v8 | v11 | v9 ^ [v4 softwareUpdatePerformed]);
-  v13 = [(BuddySetupAnalytics *)self numberOfPanesPresented];
-  if (v13 == [v4 numberOfPanesPresented])
+  analyticsCopy = analytics;
+  hasCompletedInitialSetup = [(BuddySetupAnalytics *)self hasCompletedInitialSetup];
+  v6 = hasCompletedInitialSetup ^ [analyticsCopy hasCompletedInitialSetup];
+  usedProximitySetup = [(BuddySetupAnalytics *)self usedProximitySetup];
+  v8 = v6 | usedProximitySetup ^ [analyticsCopy usedProximitySetup];
+  dataTransferMethod = [(BuddySetupAnalytics *)self dataTransferMethod];
+  v10 = dataTransferMethod == [analyticsCopy dataTransferMethod];
+  LODWORD(dataTransferMethod) = [(BuddySetupAnalytics *)self inAppleStore];
+  v11 = dataTransferMethod ^ [analyticsCopy inAppleStore];
+  LODWORD(dataTransferMethod) = [(BuddySetupAnalytics *)self softwareUpdatePerformed];
+  v12 = v10 & ~(v8 | v11 | dataTransferMethod ^ [analyticsCopy softwareUpdatePerformed]);
+  numberOfPanesPresented = [(BuddySetupAnalytics *)self numberOfPanesPresented];
+  if (numberOfPanesPresented == [analyticsCopy numberOfPanesPresented])
   {
     v14 = v12;
   }
@@ -144,7 +144,7 @@
 
   [(BuddySetupAnalytics *)self activeDuration];
   v16 = v15;
-  [v4 activeDuration];
+  [analyticsCopy activeDuration];
   if (v16 != v17)
   {
     v14 = 0;
@@ -152,7 +152,7 @@
 
   [(BuddySetupAnalytics *)self backgroundDuration];
   v19 = v18;
-  [v4 backgroundDuration];
+  [analyticsCopy backgroundDuration];
   if (v19 != v20)
   {
     v14 = 0;
@@ -160,7 +160,7 @@
 
   [(BuddySetupAnalytics *)self otherDuration];
   v22 = v21;
-  [v4 otherDuration];
+  [analyticsCopy otherDuration];
   if (v22 == v23)
   {
     v24 = v14;
@@ -171,12 +171,12 @@
     v24 = 0;
   }
 
-  v25 = [(BuddySetupAnalytics *)self isSignedIntoAppleID];
-  v26 = v24 & ~(v25 ^ [v4 isSignedIntoAppleID]);
-  v27 = [(BuddySetupAnalytics *)self followUpItemsCount];
-  v28 = [v4 followUpItemsCount];
+  isSignedIntoAppleID = [(BuddySetupAnalytics *)self isSignedIntoAppleID];
+  v26 = v24 & ~(isSignedIntoAppleID ^ [analyticsCopy isSignedIntoAppleID]);
+  followUpItemsCount = [(BuddySetupAnalytics *)self followUpItemsCount];
+  followUpItemsCount2 = [analyticsCopy followUpItemsCount];
 
-  if (v27 == v28)
+  if (followUpItemsCount == followUpItemsCount2)
   {
     return v26;
   }

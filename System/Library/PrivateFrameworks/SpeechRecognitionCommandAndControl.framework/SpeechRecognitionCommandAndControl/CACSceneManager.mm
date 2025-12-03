@@ -1,8 +1,8 @@
 @interface CACSceneManager
 - (BOOL)anyPresentationPreventsDictation;
-- (BOOL)isAlwaysShowingElementNamesOverlayManager:(id)a3;
-- (BOOL)isAlwaysShowingLabeledElementsOverlayManager:(id)a3;
-- (BOOL)isAlwaysShowingLabeledGridOverlayManager:(id)a3;
+- (BOOL)isAlwaysShowingElementNamesOverlayManager:(id)manager;
+- (BOOL)isAlwaysShowingLabeledElementsOverlayManager:(id)manager;
+- (BOOL)isAlwaysShowingLabeledGridOverlayManager:(id)manager;
 - (BOOL)isCarPlayScene;
 - (BOOL)isDisplayingAnyContentView;
 - (BOOL)isDisplayingAnyInteractiveContentInProcess;
@@ -10,15 +10,15 @@
 - (BOOL)isDisplayingAnyOverlay;
 - (BOOL)isDisplayingAnyPresentation;
 - (BOOL)isDisplayingCorrections;
-- (BOOL)isHandlingDisambiguationForLabeledElementsOverlayManager:(id)a3;
+- (BOOL)isHandlingDisambiguationForLabeledElementsOverlayManager:(id)manager;
 - (BOOL)isMainDisplayScene;
-- (BOOL)isOverlayFadingEnabledForEditingModeOverlayManager:(id)a3;
-- (BOOL)isOverlayFadingEnabledForElementNamesOverlayManager:(id)a3;
-- (BOOL)isOverlayFadingEnabledForLabeledElementsOverlayManager:(id)a3;
-- (BOOL)isOverlayFadingEnabledForLabeledGridOverlayManager:(id)a3;
-- (BOOL)isPressOnFirstLevelEnabledForLabeledGridOverlayManager:(id)a3;
-- (BOOL)shouldAssignNumbersRandomlyInLabeledElementsOverlayManager:(id)a3;
-- (BOOL)showsNumbersInTopLeftForLabeledGridOverlayManager:(id)a3;
+- (BOOL)isOverlayFadingEnabledForEditingModeOverlayManager:(id)manager;
+- (BOOL)isOverlayFadingEnabledForElementNamesOverlayManager:(id)manager;
+- (BOOL)isOverlayFadingEnabledForLabeledElementsOverlayManager:(id)manager;
+- (BOOL)isOverlayFadingEnabledForLabeledGridOverlayManager:(id)manager;
+- (BOOL)isPressOnFirstLevelEnabledForLabeledGridOverlayManager:(id)manager;
+- (BOOL)shouldAssignNumbersRandomlyInLabeledElementsOverlayManager:(id)manager;
+- (BOOL)showsNumbersInTopLeftForLabeledGridOverlayManager:(id)manager;
 - (BOOL)updateGridLayoutFromPreferences;
 - (CACContextCluesPresentationManager)contextCluesPresentationManager;
 - (CACCorrectionPresentationManager)correctionPresentationManager;
@@ -32,41 +32,41 @@
 - (CACLabeledElementsOverlayManager)labeledElementsOverlayManager;
 - (CACLabeledGridOverlayManager)labeledGridOverlayManager;
 - (CACSceneManager)init;
-- (CGRect)imageRectForDictationRecognizerModeOverlayManager:(id)a3;
+- (CGRect)imageRectForDictationRecognizerModeOverlayManager:(id)manager;
 - (CGRect)minimumSystemAperatureRect;
 - (CGRect)systemAperatureRect;
-- (CGRect)topLevelPortraitUpRectForLabeledGridOverlayManager:(id)a3;
-- (double)overlayFadeDelayForEditingModeOverlayManager:(id)a3;
-- (double)overlayFadeDelayForElementNamesOverlayManager:(id)a3;
-- (double)overlayFadeDelayForLabeledElementsOverlayManager:(id)a3;
-- (double)overlayFadeDelayForLabeledGridOverlayManager:(id)a3;
-- (float)overlayFadeOpacityForEditingModeOverlayManager:(id)a3;
-- (float)overlayFadeOpacityForElementNamesOverlayManager:(id)a3;
-- (float)overlayFadeOpacityForLabeledElementsOverlayManager:(id)a3;
-- (float)overlayFadeOpacityForLabeledGridOverlayManager:(id)a3;
-- (id)_containerViewControllerForViewController:(id)a3;
-- (id)labeledGridOverlayManager:(id)a3 elementWithNumber:(unint64_t)a4 rectangle:(CGRect)a5;
-- (id)localeForLabeledElementsOverlayManager:(id)a3;
+- (CGRect)topLevelPortraitUpRectForLabeledGridOverlayManager:(id)manager;
+- (double)overlayFadeDelayForEditingModeOverlayManager:(id)manager;
+- (double)overlayFadeDelayForElementNamesOverlayManager:(id)manager;
+- (double)overlayFadeDelayForLabeledElementsOverlayManager:(id)manager;
+- (double)overlayFadeDelayForLabeledGridOverlayManager:(id)manager;
+- (float)overlayFadeOpacityForEditingModeOverlayManager:(id)manager;
+- (float)overlayFadeOpacityForElementNamesOverlayManager:(id)manager;
+- (float)overlayFadeOpacityForLabeledElementsOverlayManager:(id)manager;
+- (float)overlayFadeOpacityForLabeledGridOverlayManager:(id)manager;
+- (id)_containerViewControllerForViewController:(id)controller;
+- (id)labeledGridOverlayManager:(id)manager elementWithNumber:(unint64_t)number rectangle:(CGRect)rectangle;
+- (id)localeForLabeledElementsOverlayManager:(id)manager;
 - (id)screen;
-- (int)modeForDictationRecognizerModeOverlayManager:(id)a3;
-- (int64_t)maximumLevelForLabeledGridOverlayManager:(id)a3;
-- (unint64_t)_numberOfLabelsForGridManager:(id)a3;
+- (int)modeForDictationRecognizerModeOverlayManager:(id)manager;
+- (int64_t)maximumLevelForLabeledGridOverlayManager:(id)manager;
+- (unint64_t)_numberOfLabelsForGridManager:(id)manager;
 - (unint64_t)numberOfLabelsForGridManager;
-- (unint64_t)updateGridLayoutWithNumberOfRows:(unint64_t)a3 numberOfColumns:(unint64_t)a4 shouldPreferRows:(BOOL)a5 startingNumber:(unint64_t)a6;
+- (unint64_t)updateGridLayoutWithNumberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns shouldPreferRows:(BOOL)preferRows startingNumber:(unint64_t)number;
 - (unsigned)displayID;
-- (unsigned)randomElementNumberingSeedForLabeledElementsOverlayManager:(id)a3;
-- (void)_installViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_uninstallViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)contentViewManager:(id)a3 dismissViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)contentViewManager:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)didAssignNumbersInLabeledElementsOverlayManager:(id)a3;
-- (void)didUpdateElementsForLabeledGridOverlayManager:(id)a3;
-- (void)hideAnyOverlayAnimated:(BOOL)a3 includeInteractiveOverlays:(BOOL)a4;
-- (void)hideAnyPresentationAnimated:(BOOL)a3 includingOutOfProcessPresentations:(BOOL)a4;
+- (unsigned)randomElementNumberingSeedForLabeledElementsOverlayManager:(id)manager;
+- (void)_installViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)_uninstallViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)contentViewManager:(id)manager dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)contentViewManager:(id)manager presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)didAssignNumbersInLabeledElementsOverlayManager:(id)manager;
+- (void)didUpdateElementsForLabeledGridOverlayManager:(id)manager;
+- (void)hideAnyOverlayAnimated:(BOOL)animated includeInteractiveOverlays:(BOOL)overlays;
+- (void)hideAnyPresentationAnimated:(BOOL)animated includingOutOfProcessPresentations:(BOOL)presentations;
 - (void)hideDictationRecognizerModeOverlayNow;
 - (void)numberingDidUpdate;
-- (void)registerPresentationManager:(id)a3;
-- (void)showBannerViewWithText:(id)a3 type:(int64_t)a4;
+- (void)registerPresentationManager:(id)manager;
+- (void)showBannerViewWithText:(id)text type:(int64_t)type;
 @end
 
 @implementation CACSceneManager
@@ -92,81 +92,81 @@
 
 - (unsigned)displayID
 {
-  v2 = [(CACSceneManager *)self scene];
-  v3 = [v2 screen];
-  v4 = [v3 _integerDisplayID];
+  scene = [(CACSceneManager *)self scene];
+  screen = [scene screen];
+  _integerDisplayID = [screen _integerDisplayID];
 
-  return v4;
+  return _integerDisplayID;
 }
 
 - (BOOL)isMainDisplayScene
 {
-  v2 = [(CACSceneManager *)self displayID];
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  LOBYTE(v2) = v2 == [v3 _integerDisplayID];
+  displayID = [(CACSceneManager *)self displayID];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  LOBYTE(displayID) = displayID == [mainScreen _integerDisplayID];
 
-  return v2;
+  return displayID;
 }
 
 - (BOOL)isCarPlayScene
 {
-  v2 = [(CACSceneManager *)self scene];
-  v3 = [v2 session];
-  v4 = [v3 role];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D776C8]];
+  scene = [(CACSceneManager *)self scene];
+  session = [scene session];
+  role = [session role];
+  v5 = [role isEqualToString:*MEMORY[0x277D776C8]];
 
   return v5;
 }
 
 - (id)screen
 {
-  v3 = [(CACSceneManager *)self scene];
+  scene = [(CACSceneManager *)self scene];
 
-  if (v3)
+  if (scene)
   {
-    v4 = [(CACSceneManager *)self scene];
-    v5 = [v4 screen];
+    scene2 = [(CACSceneManager *)self scene];
+    screen = [scene2 screen];
   }
 
   else
   {
-    v5 = [MEMORY[0x277D759A0] mainScreen];
+    screen = [MEMORY[0x277D759A0] mainScreen];
   }
 
-  return v5;
+  return screen;
 }
 
-- (void)registerPresentationManager:(id)a3
+- (void)registerPresentationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v4 = self->_registeredPresentationManagers;
   objc_sync_enter(v4);
-  [(NSMutableArray *)self->_registeredPresentationManagers addObject:v5];
+  [(NSMutableArray *)self->_registeredPresentationManagers addObject:managerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)showBannerViewWithText:(id)a3 type:(int64_t)a4
+- (void)showBannerViewWithText:(id)text type:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(CACSceneManager *)self bannerViewPresenter];
+  textCopy = text;
+  bannerViewPresenter = [(CACSceneManager *)self bannerViewPresenter];
 
-  if (!v7)
+  if (!bannerViewPresenter)
   {
     v8 = [CACBannerViewPresenter alloc];
-    v9 = [(CACContainerViewController *)self->_overlayContainerViewController viewAboveContainedViews];
-    v10 = [(CACBannerViewPresenter *)v8 initWithContainingView:v9];
+    viewAboveContainedViews = [(CACContainerViewController *)self->_overlayContainerViewController viewAboveContainedViews];
+    v10 = [(CACBannerViewPresenter *)v8 initWithContainingView:viewAboveContainedViews];
     [(CACSceneManager *)self setBannerViewPresenter:v10];
   }
 
-  v11 = [(CACSceneManager *)self bannerViewPresenter];
-  [v11 presentBannerViewWithText:v6 type:a4 avoidingSystemAperature:{self->_systemAperatureRect.origin.x, self->_systemAperatureRect.origin.y, self->_systemAperatureRect.size.width, self->_systemAperatureRect.size.height}];
+  bannerViewPresenter2 = [(CACSceneManager *)self bannerViewPresenter];
+  [bannerViewPresenter2 presentBannerViewWithText:textCopy type:type avoidingSystemAperature:{self->_systemAperatureRect.origin.x, self->_systemAperatureRect.origin.y, self->_systemAperatureRect.size.width, self->_systemAperatureRect.size.height}];
 }
 
-- (id)_containerViewControllerForViewController:(id)a3
+- (id)_containerViewControllerForViewController:(id)controller
 {
-  v4 = [a3 isOverlay];
+  isOverlay = [controller isOverlay];
   v5 = 32;
-  if (v4)
+  if (isOverlay)
   {
     v5 = 40;
   }
@@ -176,28 +176,28 @@
   return v6;
 }
 
-- (void)_installViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_installViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CACSceneManager *)self _containerViewControllerForViewController:v9];
-  [v10 installViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  v10 = [(CACSceneManager *)self _containerViewControllerForViewController:controllerCopy];
+  [v10 installViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)_uninstallViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_uninstallViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(CACSceneManager *)self _containerViewControllerForViewController:v9];
-  [v10 uninstallViewController:v9 animated:v5 completion:v8];
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
+  v10 = [(CACSceneManager *)self _containerViewControllerForViewController:controllerCopy];
+  [v10 uninstallViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 }
 
-- (void)hideAnyOverlayAnimated:(BOOL)a3 includeInteractiveOverlays:(BOOL)a4
+- (void)hideAnyOverlayAnimated:(BOOL)animated includeInteractiveOverlays:(BOOL)overlays
 {
-  v4 = a4;
-  v5 = a3;
+  overlaysCopy = overlays;
+  animatedCopy = animated;
   v23 = *MEMORY[0x277D85DE8];
   v7 = self->_registeredPresentationManagers;
   objc_sync_enter(v7);
@@ -208,7 +208,7 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = @"excluding";
-    if (v4)
+    if (overlaysCopy)
     {
       v10 = @"including";
     }
@@ -237,9 +237,9 @@
         }
 
         v15 = *(*(&v16 + 1) + 8 * i);
-        if ([v15 isShowing] && objc_msgSend(v15, "isOverlay") && (v4 || (objc_msgSend(v15, "isPhysicallyInteractiveOverlay") & 1) == 0))
+        if ([v15 isShowing] && objc_msgSend(v15, "isOverlay") && (overlaysCopy || (objc_msgSend(v15, "isPhysicallyInteractiveOverlay") & 1) == 0))
         {
-          if (v5)
+          if (animatedCopy)
           {
             [v15 hide];
           }
@@ -258,10 +258,10 @@
   }
 }
 
-- (void)hideAnyPresentationAnimated:(BOOL)a3 includingOutOfProcessPresentations:(BOOL)a4
+- (void)hideAnyPresentationAnimated:(BOOL)animated includingOutOfProcessPresentations:(BOOL)presentations
 {
-  v4 = a4;
-  v5 = a3;
+  presentationsCopy = presentations;
+  animatedCopy = animated;
   v23 = *MEMORY[0x277D85DE8];
   v7 = self->_registeredPresentationManagers;
   objc_sync_enter(v7);
@@ -272,7 +272,7 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = @"excluding";
-    if (v4)
+    if (presentationsCopy)
     {
       v10 = @"including";
     }
@@ -301,9 +301,9 @@
         }
 
         v15 = *(*(&v16 + 1) + 8 * i);
-        if (([v15 isOverlay] & 1) == 0 && (v4 || (objc_msgSend(v15, "isOutOfProcess") & 1) == 0))
+        if (([v15 isOverlay] & 1) == 0 && (presentationsCopy || (objc_msgSend(v15, "isOutOfProcess") & 1) == 0))
         {
-          if (v5)
+          if (animatedCopy)
           {
             [v15 hide];
           }
@@ -495,8 +495,8 @@ LABEL_12:
         {
           if (([v9 isOverlay] & 1) == 0)
           {
-            v10 = [(CACSceneManager *)self correctionPresentationManager];
-            v11 = v9 == v10;
+            correctionPresentationManager = [(CACSceneManager *)self correctionPresentationManager];
+            v11 = v9 == correctionPresentationManager;
 
             if (v11)
             {
@@ -909,59 +909,59 @@ LABEL_12:
 - (BOOL)updateGridLayoutFromPreferences
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [(CACSceneManager *)self labeledGridOverlayManager];
-  v5 = [v4 currentNumberOfColumns];
+  labeledGridOverlayManager = [(CACSceneManager *)self labeledGridOverlayManager];
+  currentNumberOfColumns = [labeledGridOverlayManager currentNumberOfColumns];
 
-  v6 = [(CACSceneManager *)self labeledGridOverlayManager];
-  v7 = [v6 currentNumberOfRows];
+  labeledGridOverlayManager2 = [(CACSceneManager *)self labeledGridOverlayManager];
+  currentNumberOfRows = [labeledGridOverlayManager2 currentNumberOfRows];
 
   if ([v3 gridOverlayCustomColumnsEnabled])
   {
-    v8 = [v3 gridOverlayCustomColumnsCount];
+    gridOverlayCustomColumnsCount = [v3 gridOverlayCustomColumnsCount];
   }
 
   else
   {
-    v8 = 0;
+    gridOverlayCustomColumnsCount = 0;
   }
 
   if ([v3 gridOverlayCustomRowsEnabled])
   {
-    v9 = [v3 gridOverlayCustomRowsCount];
+    gridOverlayCustomRowsCount = [v3 gridOverlayCustomRowsCount];
   }
 
   else
   {
-    v9 = 0;
+    gridOverlayCustomRowsCount = 0;
   }
 
-  v10 = [(CACSceneManager *)self labeledGridOverlayManager];
-  [v10 setCurrentNumberOfColumns:v8];
+  labeledGridOverlayManager3 = [(CACSceneManager *)self labeledGridOverlayManager];
+  [labeledGridOverlayManager3 setCurrentNumberOfColumns:gridOverlayCustomColumnsCount];
 
-  v11 = [(CACSceneManager *)self labeledGridOverlayManager];
-  [v11 setCurrentNumberOfRows:v9];
+  labeledGridOverlayManager4 = [(CACSceneManager *)self labeledGridOverlayManager];
+  [labeledGridOverlayManager4 setCurrentNumberOfRows:gridOverlayCustomRowsCount];
 
-  v13 = v5 != v8 || v7 != v9;
+  v13 = currentNumberOfColumns != gridOverlayCustomColumnsCount || currentNumberOfRows != gridOverlayCustomRowsCount;
   return v13;
 }
 
-- (unint64_t)_numberOfLabelsForGridManager:(id)a3
+- (unint64_t)_numberOfLabelsForGridManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 currentNumberOfColumns];
-  v6 = [v4 currentNumberOfRows];
-  if (!(v5 | v6))
+  managerCopy = manager;
+  currentNumberOfColumns = [managerCopy currentNumberOfColumns];
+  currentNumberOfRows = [managerCopy currentNumberOfRows];
+  if (!(currentNumberOfColumns | currentNumberOfRows))
   {
-    v5 = [(CACSceneManager *)self defaultNumberOfColumnsForLabeledGridOverlayManager:v4];
+    currentNumberOfColumns = [(CACSceneManager *)self defaultNumberOfColumnsForLabeledGridOverlayManager:managerCopy];
   }
 
-  [(CACSceneManager *)self topLevelPortraitUpRectForLabeledGridOverlayManager:v4];
+  [(CACSceneManager *)self topLevelPortraitUpRectForLabeledGridOverlayManager:managerCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(CACSceneManager *)self screen];
-  [CACLabeledGridOverlayManager gridResolutionForTopLevelWithPortraitUpRect:v5 desiredColumns:v6 desiredRows:v15 screen:v8, v10, v12, v14];
+  screen = [(CACSceneManager *)self screen];
+  [CACLabeledGridOverlayManager gridResolutionForTopLevelWithPortraitUpRect:currentNumberOfColumns desiredColumns:currentNumberOfRows desiredRows:screen screen:v8, v10, v12, v14];
   v17 = v16;
   v19 = v18;
 
@@ -970,39 +970,39 @@ LABEL_12:
 
 - (unint64_t)numberOfLabelsForGridManager
 {
-  v3 = [(CACSceneManager *)self labeledGridOverlayManager];
-  v4 = [(CACSceneManager *)self _numberOfLabelsForGridManager:v3];
+  labeledGridOverlayManager = [(CACSceneManager *)self labeledGridOverlayManager];
+  v4 = [(CACSceneManager *)self _numberOfLabelsForGridManager:labeledGridOverlayManager];
 
   return v4;
 }
 
-- (unint64_t)updateGridLayoutWithNumberOfRows:(unint64_t)a3 numberOfColumns:(unint64_t)a4 shouldPreferRows:(BOOL)a5 startingNumber:(unint64_t)a6
+- (unint64_t)updateGridLayoutWithNumberOfRows:(unint64_t)rows numberOfColumns:(unint64_t)columns shouldPreferRows:(BOOL)preferRows startingNumber:(unint64_t)number
 {
-  v11 = [(CACSceneManager *)self labeledGridOverlayManager];
-  [(CACSceneManager *)self topLevelPortraitUpRectForLabeledGridOverlayManager:v11];
+  labeledGridOverlayManager = [(CACSceneManager *)self labeledGridOverlayManager];
+  [(CACSceneManager *)self topLevelPortraitUpRectForLabeledGridOverlayManager:labeledGridOverlayManager];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(CACSceneManager *)self screen];
-  [CACLabeledGridOverlayManager gridResolutionForTopLevelWithPortraitUpRect:a4 desiredColumns:a3 desiredRows:v20 screen:v13, v15, v17, v19];
+  screen = [(CACSceneManager *)self screen];
+  [CACLabeledGridOverlayManager gridResolutionForTopLevelWithPortraitUpRect:columns desiredColumns:rows desiredRows:screen screen:v13, v15, v17, v19];
   v22 = v21;
   v24 = v23;
 
-  v25 = [(CACSceneManager *)self labeledGridOverlayManager];
-  [v25 setCurrentNumberOfColumns:a4];
+  labeledGridOverlayManager2 = [(CACSceneManager *)self labeledGridOverlayManager];
+  [labeledGridOverlayManager2 setCurrentNumberOfColumns:columns];
 
-  v26 = [(CACSceneManager *)self labeledGridOverlayManager];
-  [v26 setCurrentNumberOfRows:a3];
+  labeledGridOverlayManager3 = [(CACSceneManager *)self labeledGridOverlayManager];
+  [labeledGridOverlayManager3 setCurrentNumberOfRows:rows];
 
-  v27 = [(CACSceneManager *)self labeledGridOverlayManager];
-  [v27 setStartingNumber:a6];
+  labeledGridOverlayManager4 = [(CACSceneManager *)self labeledGridOverlayManager];
+  [labeledGridOverlayManager4 setStartingNumber:number];
 
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __100__CACSceneManager_updateGridLayoutWithNumberOfRows_numberOfColumns_shouldPreferRows_startingNumber___block_invoke;
   v29[3] = &unk_279CEC3B0;
-  v30 = a5;
+  preferRowsCopy = preferRows;
   v29[4] = self;
   *&v29[5] = v22;
   *&v29[6] = v24;
@@ -1055,17 +1055,17 @@ void __100__CACSceneManager_updateGridLayoutWithNumberOfRows_numberOfColumns_sho
   [v0 speakVoiceOverDescriptionForActiveOverlayIfNeeded];
 }
 
-- (void)contentViewManager:(id)a3 presentViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)contentViewManager:(id)manager presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v9 = a6;
+  animatedCopy = animated;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__CACSceneManager_contentViewManager_presentViewController_animated_completion___block_invoke;
   v11[3] = &unk_279CEC3D8;
-  v12 = v9;
-  v10 = v9;
-  [(CACSceneManager *)self _installViewController:a4 animated:v6 completion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [(CACSceneManager *)self _installViewController:controller animated:animatedCopy completion:v11];
 }
 
 uint64_t __80__CACSceneManager_contentViewManager_presentViewController_animated_completion___block_invoke(uint64_t a1)
@@ -1084,20 +1084,20 @@ uint64_t __80__CACSceneManager_contentViewManager_presentViewController_animated
   return result;
 }
 
-- (void)contentViewManager:(id)a3 dismissViewController:(id)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)contentViewManager:(id)manager dismissViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a5;
-  v9 = a4;
-  v10 = a6;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __80__CACSceneManager_contentViewManager_dismissViewController_animated_completion___block_invoke;
   v13[3] = &unk_279CEB3E0;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
-  [(CACSceneManager *)self _uninstallViewController:v12 animated:v7 completion:v13];
+  v14 = controllerCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = controllerCopy;
+  [(CACSceneManager *)self _uninstallViewController:v12 animated:animatedCopy completion:v13];
 }
 
 uint64_t __80__CACSceneManager_contentViewManager_dismissViewController_animated_completion___block_invoke(uint64_t a1)
@@ -1122,52 +1122,52 @@ uint64_t __80__CACSceneManager_contentViewManager_dismissViewController_animated
   return result;
 }
 
-- (void)didAssignNumbersInLabeledElementsOverlayManager:(id)a3
+- (void)didAssignNumbersInLabeledElementsOverlayManager:(id)manager
 {
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 labeledScreenElementsCollection];
-  [v4 setAreElementsNumbered:1];
+  labeledScreenElementsCollection = [v3 labeledScreenElementsCollection];
+  [labeledScreenElementsCollection setAreElementsNumbered:1];
 
   v5 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
   [v5 synchronizeRecognizersWithReason:kSRUISyncReasonOverlayStateChanged];
 }
 
-- (BOOL)isHandlingDisambiguationForLabeledElementsOverlayManager:(id)a3
+- (BOOL)isHandlingDisambiguationForLabeledElementsOverlayManager:(id)manager
 {
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 disambiguationHandler];
-  v5 = v4 != 0;
+  disambiguationHandler = [v3 disambiguationHandler];
+  v5 = disambiguationHandler != 0;
 
   return v5;
 }
 
-- (BOOL)shouldAssignNumbersRandomlyInLabeledElementsOverlayManager:(id)a3
+- (BOOL)shouldAssignNumbersRandomlyInLabeledElementsOverlayManager:(id)manager
 {
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 doesFocusedElementRequireSecureInput];
+  doesFocusedElementRequireSecureInput = [v3 doesFocusedElementRequireSecureInput];
 
-  return v4;
+  return doesFocusedElementRequireSecureInput;
 }
 
-- (id)localeForLabeledElementsOverlayManager:(id)a3
+- (id)localeForLabeledElementsOverlayManager:(id)manager
 {
   v3 = MEMORY[0x277CBEAF8];
   v4 = +[CACPreferences sharedPreferences];
-  v5 = [v4 bestLocaleIdentifier];
-  v6 = [v3 localeWithLocaleIdentifier:v5];
+  bestLocaleIdentifier = [v4 bestLocaleIdentifier];
+  v6 = [v3 localeWithLocaleIdentifier:bestLocaleIdentifier];
 
   return v6;
 }
 
-- (BOOL)isOverlayFadingEnabledForLabeledElementsOverlayManager:(id)a3
+- (BOOL)isOverlayFadingEnabledForLabeledElementsOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 overlayFadingEnabled];
+  overlayFadingEnabled = [v3 overlayFadingEnabled];
 
-  return v4;
+  return overlayFadingEnabled;
 }
 
-- (double)overlayFadeDelayForLabeledElementsOverlayManager:(id)a3
+- (double)overlayFadeDelayForLabeledElementsOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
   [v3 overlayFadeDelay];
@@ -1176,7 +1176,7 @@ uint64_t __80__CACSceneManager_contentViewManager_dismissViewController_animated
   return v5;
 }
 
-- (float)overlayFadeOpacityForLabeledElementsOverlayManager:(id)a3
+- (float)overlayFadeOpacityForLabeledElementsOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
   [v3 overlayFadeOpacity];
@@ -1185,68 +1185,33 @@ uint64_t __80__CACSceneManager_contentViewManager_dismissViewController_animated
   return v5;
 }
 
-- (BOOL)isAlwaysShowingLabeledElementsOverlayManager:(id)a3
+- (BOOL)isAlwaysShowingLabeledElementsOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 alwaysShowOverlayType];
-  v5 = [v4 isEqualToString:@"NumberedElements"];
+  alwaysShowOverlayType = [v3 alwaysShowOverlayType];
+  v5 = [alwaysShowOverlayType isEqualToString:@"NumberedElements"];
 
   return v5;
 }
 
 - (void)numberingDidUpdate
 {
-  v3 = [(CACSceneManager *)self labeledElementsOverlayManager];
-  [v3 numberingDidUpdate];
+  labeledElementsOverlayManager = [(CACSceneManager *)self labeledElementsOverlayManager];
+  [labeledElementsOverlayManager numberingDidUpdate];
 
-  v4 = [(CACSceneManager *)self linesEditingModeOverlayManager];
-  [v4 numberingDidUpdate];
+  linesEditingModeOverlayManager = [(CACSceneManager *)self linesEditingModeOverlayManager];
+  [linesEditingModeOverlayManager numberingDidUpdate];
 }
 
-- (BOOL)isOverlayFadingEnabledForElementNamesOverlayManager:(id)a3
+- (BOOL)isOverlayFadingEnabledForElementNamesOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 overlayFadingEnabled];
+  overlayFadingEnabled = [v3 overlayFadingEnabled];
 
-  return v4;
+  return overlayFadingEnabled;
 }
 
-- (double)overlayFadeDelayForElementNamesOverlayManager:(id)a3
-{
-  v3 = +[CACPreferences sharedPreferences];
-  [v3 overlayFadeDelay];
-  v5 = v4;
-
-  return v5;
-}
-
-- (float)overlayFadeOpacityForElementNamesOverlayManager:(id)a3
-{
-  v3 = +[CACPreferences sharedPreferences];
-  [v3 overlayFadeOpacity];
-  v5 = v4;
-
-  return v5;
-}
-
-- (BOOL)isAlwaysShowingElementNamesOverlayManager:(id)a3
-{
-  v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 alwaysShowOverlayType];
-  v5 = [v4 isEqualToString:@"NamedElements"];
-
-  return v5;
-}
-
-- (BOOL)isOverlayFadingEnabledForEditingModeOverlayManager:(id)a3
-{
-  v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 overlayFadingEnabled];
-
-  return v4;
-}
-
-- (double)overlayFadeDelayForEditingModeOverlayManager:(id)a3
+- (double)overlayFadeDelayForElementNamesOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
   [v3 overlayFadeDelay];
@@ -1255,7 +1220,7 @@ uint64_t __80__CACSceneManager_contentViewManager_dismissViewController_animated
   return v5;
 }
 
-- (float)overlayFadeOpacityForEditingModeOverlayManager:(id)a3
+- (float)overlayFadeOpacityForElementNamesOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
   [v3 overlayFadeOpacity];
@@ -1264,29 +1229,64 @@ uint64_t __80__CACSceneManager_contentViewManager_dismissViewController_animated
   return v5;
 }
 
-- (id)labeledGridOverlayManager:(id)a3 elementWithNumber:(unint64_t)a4 rectangle:(CGRect)a5
+- (BOOL)isAlwaysShowingElementNamesOverlayManager:(id)manager
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  v3 = +[CACPreferences sharedPreferences];
+  alwaysShowOverlayType = [v3 alwaysShowOverlayType];
+  v5 = [alwaysShowOverlayType isEqualToString:@"NamedElements"];
+
+  return v5;
+}
+
+- (BOOL)isOverlayFadingEnabledForEditingModeOverlayManager:(id)manager
+{
+  v3 = +[CACPreferences sharedPreferences];
+  overlayFadingEnabled = [v3 overlayFadingEnabled];
+
+  return overlayFadingEnabled;
+}
+
+- (double)overlayFadeDelayForEditingModeOverlayManager:(id)manager
+{
+  v3 = +[CACPreferences sharedPreferences];
+  [v3 overlayFadeDelay];
+  v5 = v4;
+
+  return v5;
+}
+
+- (float)overlayFadeOpacityForEditingModeOverlayManager:(id)manager
+{
+  v3 = +[CACPreferences sharedPreferences];
+  [v3 overlayFadeOpacity];
+  v5 = v4;
+
+  return v5;
+}
+
+- (id)labeledGridOverlayManager:(id)manager elementWithNumber:(unint64_t)number rectangle:(CGRect)rectangle
+{
+  height = rectangle.size.height;
+  width = rectangle.size.width;
+  y = rectangle.origin.y;
+  x = rectangle.origin.x;
   v16[1] = *MEMORY[0x277D85DE8];
-  v11 = [CACLocaleUtilities displayStringForOverlayNumber:a4];
+  v11 = [CACLocaleUtilities displayStringForOverlayNumber:number];
   v12 = [CACLabeledElement alloc];
   v16[0] = v11;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v14 = [(CACLabeledElement *)v12 initWithElement:0 recognitionStrings:v13 rectangle:x, y, width, height];
+  height = [(CACLabeledElement *)v12 initWithElement:0 recognitionStrings:v13 rectangle:x, y, width, height];
 
-  [(CACLabeledElement *)v14 setNumber:a4];
-  [(CACLabeledElement *)v14 setDisplayID:[(CACSceneManager *)self displayID]];
+  [(CACLabeledElement *)height setNumber:number];
+  [(CACLabeledElement *)height setDisplayID:[(CACSceneManager *)self displayID]];
 
-  return v14;
+  return height;
 }
 
-- (CGRect)topLevelPortraitUpRectForLabeledGridOverlayManager:(id)a3
+- (CGRect)topLevelPortraitUpRectForLabeledGridOverlayManager:(id)manager
 {
-  v3 = [(CACSceneManager *)self screen];
-  [v3 bounds];
+  screen = [(CACSceneManager *)self screen];
+  [screen bounds];
   v8 = CACPortraitUpRectFromViewRect(0, v4, v5, v6, v7);
   v10 = v9;
   v12 = v11;
@@ -1303,23 +1303,23 @@ uint64_t __80__CACSceneManager_contentViewManager_dismissViewController_animated
   return result;
 }
 
-- (int64_t)maximumLevelForLabeledGridOverlayManager:(id)a3
+- (int64_t)maximumLevelForLabeledGridOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 gridOverlayMaxLevel];
+  gridOverlayMaxLevel = [v3 gridOverlayMaxLevel];
 
-  return v4;
+  return gridOverlayMaxLevel;
 }
 
-- (BOOL)isOverlayFadingEnabledForLabeledGridOverlayManager:(id)a3
+- (BOOL)isOverlayFadingEnabledForLabeledGridOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 overlayFadingEnabled];
+  overlayFadingEnabled = [v3 overlayFadingEnabled];
 
-  return v4;
+  return overlayFadingEnabled;
 }
 
-- (double)overlayFadeDelayForLabeledGridOverlayManager:(id)a3
+- (double)overlayFadeDelayForLabeledGridOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
   [v3 overlayFadeDelay];
@@ -1328,7 +1328,7 @@ uint64_t __80__CACSceneManager_contentViewManager_dismissViewController_animated
   return v5;
 }
 
-- (float)overlayFadeOpacityForLabeledGridOverlayManager:(id)a3
+- (float)overlayFadeOpacityForLabeledGridOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
   [v3 overlayFadeOpacity];
@@ -1337,61 +1337,61 @@ uint64_t __80__CACSceneManager_contentViewManager_dismissViewController_animated
   return v5;
 }
 
-- (BOOL)isAlwaysShowingLabeledGridOverlayManager:(id)a3
+- (BOOL)isAlwaysShowingLabeledGridOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 alwaysShowOverlayType];
-  v5 = [v4 isEqualToString:@"NumberedGrid"];
+  alwaysShowOverlayType = [v3 alwaysShowOverlayType];
+  v5 = [alwaysShowOverlayType isEqualToString:@"NumberedGrid"];
 
   return v5;
 }
 
-- (void)didUpdateElementsForLabeledGridOverlayManager:(id)a3
+- (void)didUpdateElementsForLabeledGridOverlayManager:(id)manager
 {
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
   [v3 synchronizeRecognizersWithReason:kSRUISyncReasonOverlayStateChanged];
 }
 
-- (BOOL)showsNumbersInTopLeftForLabeledGridOverlayManager:(id)a3
+- (BOOL)showsNumbersInTopLeftForLabeledGridOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 gridOverlayShowsNumbersInTopLeft];
+  gridOverlayShowsNumbersInTopLeft = [v3 gridOverlayShowsNumbersInTopLeft];
 
-  return v4;
+  return gridOverlayShowsNumbersInTopLeft;
 }
 
-- (BOOL)isPressOnFirstLevelEnabledForLabeledGridOverlayManager:(id)a3
+- (BOOL)isPressOnFirstLevelEnabledForLabeledGridOverlayManager:(id)manager
 {
   v3 = +[CACPreferences sharedPreferences];
-  v4 = [v3 gridOverlayPressOnFirstLevelEnabled];
+  gridOverlayPressOnFirstLevelEnabled = [v3 gridOverlayPressOnFirstLevelEnabled];
 
-  return v4;
+  return gridOverlayPressOnFirstLevelEnabled;
 }
 
-- (unsigned)randomElementNumberingSeedForLabeledElementsOverlayManager:(id)a3
+- (unsigned)randomElementNumberingSeedForLabeledElementsOverlayManager:(id)manager
 {
   v3 = +[CACDisplayManager sharedManager];
-  v4 = [v3 randomElementNumberingSeed];
+  randomElementNumberingSeed = [v3 randomElementNumberingSeed];
 
-  return v4;
+  return randomElementNumberingSeed;
 }
 
-- (int)modeForDictationRecognizerModeOverlayManager:(id)a3
+- (int)modeForDictationRecognizerModeOverlayManager:(id)manager
 {
   v3 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v4 = [v3 dictationRecognizerMode];
+  dictationRecognizerMode = [v3 dictationRecognizerMode];
 
-  return v4;
+  return dictationRecognizerMode;
 }
 
-- (CGRect)imageRectForDictationRecognizerModeOverlayManager:(id)a3
+- (CGRect)imageRectForDictationRecognizerModeOverlayManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = +[CACSpokenCommandManager sharedCACSpokenCommandManager];
-  v5 = [v3 viewController];
+  viewController = [managerCopy viewController];
 
-  v6 = [v5 view];
-  [v4 bestDictationRecognizerModeImageRectForView:v6];
+  view = [viewController view];
+  [v4 bestDictationRecognizerModeImageRectForView:view];
   v8 = v7;
   v10 = v9;
   v12 = v11;

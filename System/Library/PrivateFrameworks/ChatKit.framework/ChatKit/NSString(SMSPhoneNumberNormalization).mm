@@ -6,7 +6,7 @@
 
 - (id)unformattedPhoneNumber
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:v2];
   if (v2)
   {
@@ -14,7 +14,7 @@
     v5 = MEMORY[0x1E69E9830];
     do
     {
-      v6 = [a1 characterAtIndex:v4];
+      v6 = [self characterAtIndex:v4];
       v7 = v6;
       if (v6 > 0x7F)
       {

@@ -1,20 +1,20 @@
 @interface SKDPipelineLogger
 - (SKDEventLogger)analyticsLogger;
 - (SKDEventLogger)powerLogger;
-- (SKDPipelineLogger)initWithDomain:(id)a3;
-- (id)trackingEventBeginWithName:(id)a3 event:(id)a4;
+- (SKDPipelineLogger)initWithDomain:(id)domain;
+- (id)trackingEventBeginWithName:(id)name event:(id)event;
 - (void)flush;
-- (void)logEvent:(id)a3 level:(unint64_t)a4;
-- (void)trackingEventEnd:(id)a3;
+- (void)logEvent:(id)event level:(unint64_t)level;
+- (void)trackingEventEnd:(id)end;
 @end
 
 @implementation SKDPipelineLogger
 
-- (SKDPipelineLogger)initWithDomain:(id)a3
+- (SKDPipelineLogger)initWithDomain:(id)domain
 {
   v6.receiver = self;
   v6.super_class = SKDPipelineLogger;
-  v3 = [(SKDEventLogger *)&v6 initWithDomain:a3];
+  v3 = [(SKDEventLogger *)&v6 initWithDomain:domain];
   if (v3)
   {
     if (initWithDomain__onceLogToken != -1)
@@ -22,8 +22,8 @@
       [SKDPipelineLogger initWithDomain:];
     }
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel__logLevelDidChange name:*MEMORY[0x277CCA858] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__logLevelDidChange name:*MEMORY[0x277CCA858] object:0];
   }
 
   return v3;
@@ -54,51 +54,51 @@ void __36__SKDPipelineLogger_initWithDomain___block_invoke()
 
 - (void)flush
 {
-  v3 = [(SKDPipelineLogger *)self powerLogger];
-  [v3 flush];
+  powerLogger = [(SKDPipelineLogger *)self powerLogger];
+  [powerLogger flush];
 
-  v4 = [(SKDPipelineLogger *)self analyticsLogger];
-  [v4 flush];
+  analyticsLogger = [(SKDPipelineLogger *)self analyticsLogger];
+  [analyticsLogger flush];
 }
 
-- (void)logEvent:(id)a3 level:(unint64_t)a4
+- (void)logEvent:(id)event level:(unint64_t)level
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SKDPipelineLogger *)self powerLogger];
-  [v7 logEvent:v6 level:a4];
+  eventCopy = event;
+  powerLogger = [(SKDPipelineLogger *)self powerLogger];
+  [powerLogger logEvent:eventCopy level:level];
 
-  v8 = [(SKDPipelineLogger *)self analyticsLogger];
-  [v8 logEvent:v6 level:a4];
+  analyticsLogger = [(SKDPipelineLogger *)self analyticsLogger];
+  [analyticsLogger logEvent:eventCopy level:level];
 
-  v9 = [v6 status];
-  v10 = [v6 identifier];
-  v11 = v10;
+  status = [eventCopy status];
+  identifier = [eventCopy identifier];
+  v11 = identifier;
   v12 = @"default";
-  if (v10)
+  if (identifier)
   {
-    v12 = v10;
+    v12 = identifier;
   }
 
   v13 = v12;
 
-  v14 = [v6 typeMessage];
-  v15 = [v6 statusMessage];
-  v16 = [v6 message];
+  typeMessage = [eventCopy typeMessage];
+  statusMessage = [eventCopy statusMessage];
+  message = [eventCopy message];
 
-  if (v9 == 4)
+  if (status == 4)
   {
     v17 = gDefaultLog;
     if (os_log_type_enabled(gDefaultLog, OS_LOG_TYPE_ERROR))
     {
       v26 = 138413058;
-      v27 = v14;
+      v27 = typeMessage;
       v28 = 2112;
-      v29 = v15;
+      v29 = statusMessage;
       v30 = 2112;
       v31 = v13;
       v32 = 2112;
-      v33 = v16;
+      v33 = message;
       v18 = "skg-events: e=%@;s=%@;i=%@;err=%@\n";
 LABEL_6:
       _os_log_error_impl(&dword_231B25000, v17, OS_LOG_TYPE_ERROR, v18, &v26, 0x2Au);
@@ -109,33 +109,33 @@ LABEL_6:
   }
 
   v19 = atomic_load(&gSKDEventLogCurrentLevel);
-  if (v19 < a4 || !v16)
+  if (v19 < level || !message)
   {
     goto LABEL_23;
   }
 
-  if (a4 > 5)
+  if (level > 5)
   {
-    if (a4 - 7 < 2)
+    if (level - 7 < 2)
     {
       v20 = gDefaultLog;
       if (os_log_type_enabled(gDefaultLog, OS_LOG_TYPE_DEBUG))
       {
         v26 = 138413058;
-        v27 = v14;
+        v27 = typeMessage;
         v28 = 2112;
-        v29 = v15;
+        v29 = statusMessage;
         v30 = 2112;
         v31 = v13;
         v32 = 2112;
-        v33 = v16;
+        v33 = message;
         _os_log_debug_impl(&dword_231B25000, v20, OS_LOG_TYPE_DEBUG, "skg-events: e=%@;s=%@;i=%@;m=%@;\n", &v26, 0x2Au);
       }
 
       goto LABEL_23;
     }
 
-    if (a4 != 6)
+    if (level != 6)
     {
       goto LABEL_23;
     }
@@ -147,13 +147,13 @@ LABEL_6:
     }
 
     v26 = 138413058;
-    v27 = v14;
+    v27 = typeMessage;
     v28 = 2112;
-    v29 = v15;
+    v29 = statusMessage;
     v30 = 2112;
     v31 = v13;
     v32 = 2112;
-    v33 = v16;
+    v33 = message;
     v22 = v24;
     v23 = OS_LOG_TYPE_INFO;
 LABEL_22:
@@ -161,7 +161,7 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a4 - 2 < 3)
+  if (level - 2 < 3)
   {
     v17 = gDefaultLog;
     if (!os_log_type_enabled(gDefaultLog, OS_LOG_TYPE_ERROR))
@@ -170,30 +170,30 @@ LABEL_22:
     }
 
     v26 = 138413058;
-    v27 = v14;
+    v27 = typeMessage;
     v28 = 2112;
-    v29 = v15;
+    v29 = statusMessage;
     v30 = 2112;
     v31 = v13;
     v32 = 2112;
-    v33 = v16;
+    v33 = message;
     v18 = "skg-events: e=%@;s=%@;i=%@;m=%@;\n";
     goto LABEL_6;
   }
 
-  if (a4 == 5)
+  if (level == 5)
   {
     v21 = gDefaultLog;
     if (os_log_type_enabled(gDefaultLog, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138413058;
-      v27 = v14;
+      v27 = typeMessage;
       v28 = 2112;
-      v29 = v15;
+      v29 = statusMessage;
       v30 = 2112;
       v31 = v13;
       v32 = 2112;
-      v33 = v16;
+      v33 = message;
       v22 = v21;
       v23 = OS_LOG_TYPE_DEFAULT;
       goto LABEL_22;
@@ -205,36 +205,36 @@ LABEL_23:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (id)trackingEventBeginWithName:(id)a3 event:(id)a4
+- (id)trackingEventBeginWithName:(id)name event:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  eventCopy = event;
   v8 = [SKDPipelineTrackingEvent alloc];
-  v9 = [(SKDEventLogger *)self domain];
-  v10 = [(SKDPipelineTrackingEvent *)v8 initWithName:v6 event:v7 domain:v9];
+  domain = [(SKDEventLogger *)self domain];
+  v10 = [(SKDPipelineTrackingEvent *)v8 initWithName:nameCopy event:eventCopy domain:domain];
 
   [(SKDPipelineTrackingEvent *)v10 begin];
   if (v10)
   {
-    v11 = [(SKDPipelineLogger *)self analyticsLogger];
-    v12 = [v11 trackingEventBeginWithName:v6 event:v7];
+    analyticsLogger = [(SKDPipelineLogger *)self analyticsLogger];
+    v12 = [analyticsLogger trackingEventBeginWithName:nameCopy event:eventCopy];
     [(SKDPipelineTrackingEvent *)v10 setAnalyticsTracker:v12];
   }
 
   return v10;
 }
 
-- (void)trackingEventEnd:(id)a3
+- (void)trackingEventEnd:(id)end
 {
-  v7 = a3;
-  [v7 end];
-  v4 = [v7 analyticsTracker];
+  endCopy = end;
+  [endCopy end];
+  analyticsTracker = [endCopy analyticsTracker];
 
-  if (v4)
+  if (analyticsTracker)
   {
-    v5 = [(SKDPipelineLogger *)self analyticsLogger];
-    v6 = [v7 analyticsTracker];
-    [v5 trackingEventEnd:v6];
+    analyticsLogger = [(SKDPipelineLogger *)self analyticsLogger];
+    analyticsTracker2 = [endCopy analyticsTracker];
+    [analyticsLogger trackingEventEnd:analyticsTracker2];
   }
 }
 

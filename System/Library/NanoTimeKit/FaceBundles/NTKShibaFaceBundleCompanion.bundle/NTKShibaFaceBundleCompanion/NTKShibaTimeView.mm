@@ -1,30 +1,30 @@
 @interface NTKShibaTimeView
-- (NTKShibaTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 andDevice:(id)a5;
+- (NTKShibaTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style andDevice:(id)device;
 - (id)_customDialBackgroundView;
-- (id)_secondTickActiveColorForColorPalette:(id)a3;
-- (id)_secondTickInactiveColorForColorPalette:(id)a3;
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 animateElements:(BOOL)a6;
+- (id)_secondTickActiveColorForColorPalette:(id)palette;
+- (id)_secondTickInactiveColorForColorPalette:(id)palette;
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette animateElements:(BOOL)elements;
 - (void)layoutSubviews;
-- (void)setPalette:(id)a3;
+- (void)setPalette:(id)palette;
 @end
 
 @implementation NTKShibaTimeView
 
-- (NTKShibaTimeView)initWithFrame:(CGRect)a3 style:(unint64_t)a4 andDevice:(id)a5
+- (NTKShibaTimeView)initWithFrame:(CGRect)frame style:(unint64_t)style andDevice:(id)device
 {
   v12.receiver = self;
   v12.super_class = NTKShibaTimeView;
-  v5 = [(NTKShibaTimeView *)&v12 initWithFrame:a4 style:a5 andDevice:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(NTKShibaTimeView *)&v12 initWithFrame:style style:device andDevice:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v7 = [(NTKShibaTimeView *)v5 digitalTimeLabel];
-    [v7 setHidden:1];
+    digitalTimeLabel = [(NTKShibaTimeView *)v5 digitalTimeLabel];
+    [digitalTimeLabel setHidden:1];
 
     v8 = +[UIColor blackColor];
-    v9 = [(NTKShibaTimeView *)v6 analogHandsView];
-    v10 = [v9 secondHandView];
-    [v10 setHandDotColor:v8];
+    analogHandsView = [(NTKShibaTimeView *)v6 analogHandsView];
+    secondHandView = [analogHandsView secondHandView];
+    [secondHandView setHandDotColor:v8];
   }
 
   return v6;
@@ -35,14 +35,14 @@
   v8.receiver = self;
   v8.super_class = NTKShibaTimeView;
   [(NTKShibaTimeView *)&v8 layoutSubviews];
-  v3 = [(NTKShibaTimeView *)self digitalContainerView];
-  [v3 setClipsToBounds:1];
+  digitalContainerView = [(NTKShibaTimeView *)self digitalContainerView];
+  [digitalContainerView setClipsToBounds:1];
 
-  v4 = [(NTKShibaTimeView *)self digitalContainerView];
-  v5 = [v4 layer];
-  v6 = [(NTKShibaTimeView *)self digitalContainerView];
-  [v6 bounds];
-  [v5 setCornerRadius:v7 * 0.5];
+  digitalContainerView2 = [(NTKShibaTimeView *)self digitalContainerView];
+  layer = [digitalContainerView2 layer];
+  digitalContainerView3 = [(NTKShibaTimeView *)self digitalContainerView];
+  [digitalContainerView3 bounds];
+  [layer setCornerRadius:v7 * 0.5];
 }
 
 - (id)_customDialBackgroundView
@@ -52,46 +52,46 @@
   return v2;
 }
 
-- (void)setPalette:(id)a3
+- (void)setPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [v4 activeTickColor];
+  paletteCopy = palette;
+  activeTickColor = [paletteCopy activeTickColor];
   activeColor = self->_activeColor;
-  self->_activeColor = v5;
+  self->_activeColor = activeTickColor;
 
-  v7 = [v4 inactiveTickColor];
+  inactiveTickColor = [paletteCopy inactiveTickColor];
   inactiveColor = self->_inactiveColor;
-  self->_inactiveColor = v7;
+  self->_inactiveColor = inactiveTickColor;
 
-  v9 = [v4 secondHandColor];
+  secondHandColor = [paletteCopy secondHandColor];
 
   secondHandColor = self->_secondHandColor;
-  self->_secondHandColor = v9;
+  self->_secondHandColor = secondHandColor;
 
   [(NTKShibaTimeView *)self _applyColorToAnalogHands];
 
   [(NTKShibaTimeView *)self _refreshDigitalTicks];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromColorPalette:(id)a4 toColorPalette:(id)a5 animateElements:(BOOL)a6
+- (void)applyTransitionFraction:(double)fraction fromColorPalette:(id)palette toColorPalette:(id)colorPalette animateElements:(BOOL)elements
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 activeTickColor];
-  v11 = [v8 activeTickColor];
+  colorPaletteCopy = colorPalette;
+  paletteCopy = palette;
+  activeTickColor = [paletteCopy activeTickColor];
+  activeTickColor2 = [colorPaletteCopy activeTickColor];
   v12 = NTKInterpolateBetweenColors();
   activeColor = self->_activeColor;
   self->_activeColor = v12;
 
-  v14 = [v9 inactiveTickColor];
-  v15 = [v8 inactiveTickColor];
+  inactiveTickColor = [paletteCopy inactiveTickColor];
+  inactiveTickColor2 = [colorPaletteCopy inactiveTickColor];
   v16 = NTKInterpolateBetweenColors();
   inactiveColor = self->_inactiveColor;
   self->_inactiveColor = v16;
 
-  v18 = [v9 secondHandColor];
+  secondHandColor = [paletteCopy secondHandColor];
 
-  v19 = [v8 secondHandColor];
+  secondHandColor2 = [colorPaletteCopy secondHandColor];
 
   v20 = NTKInterpolateBetweenColors();
   secondHandColor = self->_secondHandColor;
@@ -102,15 +102,15 @@
   [(NTKShibaTimeView *)self _refreshDigitalTicks];
 }
 
-- (id)_secondTickActiveColorForColorPalette:(id)a3
+- (id)_secondTickActiveColorForColorPalette:(id)palette
 {
-  v4 = a3;
+  paletteCopy = palette;
   tritiumOnFraction = self->_tritiumOnFraction;
   if (tritiumOnFraction >= 1.0)
   {
     v13.receiver = self;
     v13.super_class = NTKShibaTimeView;
-    v10 = [(NTKShibaTimeView *)&v13 _secondTickInactiveColorForColorPalette:v4];
+    v10 = [(NTKShibaTimeView *)&v13 _secondTickInactiveColorForColorPalette:paletteCopy];
   }
 
   else
@@ -119,7 +119,7 @@
     {
       v12.receiver = self;
       v12.super_class = NTKShibaTimeView;
-      v6 = [(NTKShibaTimeView *)&v12 _secondTickInactiveColorForColorPalette:v4];
+      v6 = [(NTKShibaTimeView *)&v12 _secondTickInactiveColorForColorPalette:paletteCopy];
       activeColor = self->_activeColor;
       v8 = self->_tritiumOnFraction;
       v9 = NTKInterpolateBetweenColors();
@@ -136,15 +136,15 @@ LABEL_7:
   return v9;
 }
 
-- (id)_secondTickInactiveColorForColorPalette:(id)a3
+- (id)_secondTickInactiveColorForColorPalette:(id)palette
 {
-  v4 = a3;
+  paletteCopy = palette;
   tritiumOnFraction = self->_tritiumOnFraction;
   if (tritiumOnFraction >= 1.0)
   {
     v13.receiver = self;
     v13.super_class = NTKShibaTimeView;
-    v10 = [(NTKShibaTimeView *)&v13 _secondTickInactiveColorForColorPalette:v4];
+    v10 = [(NTKShibaTimeView *)&v13 _secondTickInactiveColorForColorPalette:paletteCopy];
   }
 
   else
@@ -153,7 +153,7 @@ LABEL_7:
     {
       v12.receiver = self;
       v12.super_class = NTKShibaTimeView;
-      v6 = [(NTKShibaTimeView *)&v12 _secondTickInactiveColorForColorPalette:v4];
+      v6 = [(NTKShibaTimeView *)&v12 _secondTickInactiveColorForColorPalette:paletteCopy];
       inactiveColor = self->_inactiveColor;
       v8 = self->_tritiumOnFraction;
       v9 = NTKInterpolateBetweenColors();

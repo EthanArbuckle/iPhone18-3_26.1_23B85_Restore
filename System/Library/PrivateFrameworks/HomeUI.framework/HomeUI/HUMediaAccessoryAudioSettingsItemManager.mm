@@ -1,41 +1,41 @@
 @interface HUMediaAccessoryAudioSettingsItemManager
-- (HUMediaAccessoryAudioSettingsItemManager)initWithMediaSystemBuilder:(id)a3 sourceItem:(id)a4 delegate:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUMediaAccessoryAudioSettingsItemManager)initWithMediaSystemBuilder:(id)builder sourceItem:(id)item delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (void)_registerForExternalUpdates;
 - (void)_unregisterForExternalUpdates;
 @end
 
 @implementation HUMediaAccessoryAudioSettingsItemManager
 
-- (HUMediaAccessoryAudioSettingsItemManager)initWithMediaSystemBuilder:(id)a3 sourceItem:(id)a4 delegate:(id)a5
+- (HUMediaAccessoryAudioSettingsItemManager)initWithMediaSystemBuilder:(id)builder sourceItem:(id)item delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (!v10)
+  builderCopy = builder;
+  itemCopy = item;
+  delegateCopy = delegate;
+  if (!builderCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUMediaAccessoryAudioSettingsItemManager.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"builder"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUMediaAccessoryAudioSettingsItemManager.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"builder"}];
   }
 
-  v13 = [v11 copy];
+  v13 = [itemCopy copy];
   v17.receiver = self;
   v17.super_class = HUMediaAccessoryAudioSettingsItemManager;
-  v14 = [(HFItemManager *)&v17 initWithDelegate:v12 sourceItem:v13];
+  v14 = [(HFItemManager *)&v17 initWithDelegate:delegateCopy sourceItem:v13];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_mediaSystemBuilder, a3);
+    objc_storeStrong(&v14->_mediaSystemBuilder, builder);
   }
 
   return v14;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x277D14B38]);
   v15 = MEMORY[0x277D85DD0];
@@ -108,18 +108,18 @@ id __71__HUMediaAccessoryAudioSettingsItemManager__buildItemProvidersForHome___b
   return v13;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUMediaAccessoryAudioSettingsItemManager *)self audioSettingsItem];
-  v6 = [v4 containsObject:v5];
+  itemsCopy = items;
+  audioSettingsItem = [(HUMediaAccessoryAudioSettingsItemManager *)self audioSettingsItem];
+  v6 = [itemsCopy containsObject:audioSettingsItem];
 
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"MediaAccessoryAudioSettings"];
-    v8 = [(HUMediaAccessoryAudioSettingsItemManager *)self audioSettingsItem];
-    v14[0] = v8;
+    audioSettingsItem2 = [(HUMediaAccessoryAudioSettingsItemManager *)self audioSettingsItem];
+    v14[0] = audioSettingsItem2;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
     [v7 setItems:v9];
 

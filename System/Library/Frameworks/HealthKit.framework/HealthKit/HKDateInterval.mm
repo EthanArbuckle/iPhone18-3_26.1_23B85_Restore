@@ -1,10 +1,10 @@
 @interface HKDateInterval
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKDateInterval)init;
-- (HKDateInterval)initWithCoder:(id)a3;
-- (HKDateInterval)initWithStartDate:(id)a3 endDate:(id)a4;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKDateInterval)initWithCoder:(id)coder;
+- (HKDateInterval)initWithStartDate:(id)date endDate:(id)endDate;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDateInterval
@@ -19,11 +19,11 @@
   return 0;
 }
 
-- (HKDateInterval)initWithStartDate:(id)a3 endDate:(id)a4
+- (HKDateInterval)initWithStartDate:(id)date endDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v7 hk_isBeforeOrEqualToDate:v8] & 1) == 0)
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (([dateCopy hk_isBeforeOrEqualToDate:endDateCopy] & 1) == 0)
   {
     [HKDateInterval initWithStartDate:a2 endDate:self];
   }
@@ -33,11 +33,11 @@
   v9 = [(HKDateInterval *)&v15 init];
   if (v9)
   {
-    v10 = [v7 copy];
+    v10 = [dateCopy copy];
     startDate = v9->_startDate;
     v9->_startDate = v10;
 
-    v12 = [v8 copy];
+    v12 = [endDateCopy copy];
     endDate = v9->_endDate;
     v9->_endDate = v12;
   }
@@ -45,18 +45,18 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_1F06AD0F0])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&unk_1F06AD0F0])
   {
     startDate = self->_startDate;
-    v6 = [v4 startDate];
-    if ([(NSDate *)startDate isEqualToDate:v6])
+    startDate = [equalCopy startDate];
+    if ([(NSDate *)startDate isEqualToDate:startDate])
     {
       endDate = self->_endDate;
-      v8 = [v4 endDate];
-      v9 = [(NSDate *)endDate isEqualToDate:v8];
+      endDate = [equalCopy endDate];
+      v9 = [(NSDate *)endDate isEqualToDate:endDate];
     }
 
     else
@@ -73,36 +73,36 @@
   return v9;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   startDate = self->_startDate;
-  v6 = [v4 startDate];
-  v7 = [(NSDate *)startDate compare:v6];
+  startDate = [compareCopy startDate];
+  v7 = [(NSDate *)startDate compare:startDate];
 
   if (!v7)
   {
     endDate = self->_endDate;
-    v9 = [v4 endDate];
-    v7 = [(NSDate *)endDate compare:v9];
+    endDate = [compareCopy endDate];
+    v7 = [(NSDate *)endDate compare:endDate];
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   startDate = self->_startDate;
-  v5 = a3;
-  [v5 encodeObject:startDate forKey:@"start"];
-  [v5 encodeObject:self->_endDate forKey:@"end"];
+  coderCopy = coder;
+  [coderCopy encodeObject:startDate forKey:@"start"];
+  [coderCopy encodeObject:self->_endDate forKey:@"end"];
 }
 
-- (HKDateInterval)initWithCoder:(id)a3
+- (HKDateInterval)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"start"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"end"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"start"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"end"];
 
   if (v5)
   {
@@ -116,16 +116,16 @@
 
   if (v7 || ![v5 hk_isBeforeOrEqualToDate:v6])
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(HKDateInterval *)self initWithStartDate:v5 endDate:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (void)initWithStartDate:(uint64_t)a1 endDate:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

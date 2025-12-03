@@ -25,7 +25,7 @@
 + (void)readAttributeDelayWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion;
 + (void)readAttributeDetachedRoleCountWithAttributeCache:(MTRAttributeCacheContainer *)attributeCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completionHandler:(void *)completionHandler;
 + (void)readAttributeDetachedRoleCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion;
-+ (void)readAttributeExtAddressWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6;
++ (void)readAttributeExtAddressWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion;
 + (void)readAttributeExtendedPanIdWithAttributeCache:(MTRAttributeCacheContainer *)attributeCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completionHandler:(void *)completionHandler;
 + (void)readAttributeExtendedPanIdWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion;
 + (void)readAttributeFeatureMapWithAttributeCache:(MTRAttributeCacheContainer *)attributeCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completionHandler:(void *)completionHandler;
@@ -56,7 +56,7 @@
 + (void)readAttributePartitionIdWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion;
 + (void)readAttributePendingTimestampWithAttributeCache:(MTRAttributeCacheContainer *)attributeCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completionHandler:(void *)completionHandler;
 + (void)readAttributePendingTimestampWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion;
-+ (void)readAttributeRloc16WithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6;
++ (void)readAttributeRloc16WithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion;
 + (void)readAttributeRouteTableListWithAttributeCache:(MTRAttributeCacheContainer *)attributeCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completionHandler:(void *)completionHandler;
 + (void)readAttributeRouteTableWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion;
 + (void)readAttributeRouterRoleCountWithAttributeCache:(MTRAttributeCacheContainer *)attributeCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completionHandler:(void *)completionHandler;
@@ -163,7 +163,7 @@
 - (void)readAttributeDelayWithCompletionHandler:(void *)completionHandler;
 - (void)readAttributeDetachedRoleCountWithCompletion:(void *)completion;
 - (void)readAttributeDetachedRoleCountWithCompletionHandler:(void *)completionHandler;
-- (void)readAttributeExtAddressWithCompletion:(id)a3;
+- (void)readAttributeExtAddressWithCompletion:(id)completion;
 - (void)readAttributeExtendedPanIdWithCompletion:(void *)completion;
 - (void)readAttributeExtendedPanIdWithCompletionHandler:(void *)completionHandler;
 - (void)readAttributeFeatureMapWithCompletion:(void *)completion;
@@ -194,7 +194,7 @@
 - (void)readAttributePartitionIdWithCompletionHandler:(void *)completionHandler;
 - (void)readAttributePendingTimestampWithCompletion:(void *)completion;
 - (void)readAttributePendingTimestampWithCompletionHandler:(void *)completionHandler;
-- (void)readAttributeRloc16WithCompletion:(id)a3;
+- (void)readAttributeRloc16WithCompletion:(id)completion;
 - (void)readAttributeRouteTableListWithCompletionHandler:(void *)completionHandler;
 - (void)readAttributeRouteTableWithCompletion:(void *)completion;
 - (void)readAttributeRouterRoleCountWithCompletion:(void *)completion;
@@ -302,7 +302,7 @@
 - (void)subscribeAttributeDelayWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler;
 - (void)subscribeAttributeDetachedRoleCountWithMinInterval:(NSNumber *)minInterval maxInterval:(NSNumber *)maxInterval params:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablishedHandler reportHandler:(void *)reportHandler;
 - (void)subscribeAttributeDetachedRoleCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler;
-- (void)subscribeAttributeExtAddressWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5;
+- (void)subscribeAttributeExtAddressWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler;
 - (void)subscribeAttributeExtendedPanIdWithMinInterval:(NSNumber *)minInterval maxInterval:(NSNumber *)maxInterval params:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablishedHandler reportHandler:(void *)reportHandler;
 - (void)subscribeAttributeExtendedPanIdWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler;
 - (void)subscribeAttributeFeatureMapWithMinInterval:(NSNumber *)minInterval maxInterval:(NSNumber *)maxInterval params:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablishedHandler reportHandler:(void *)reportHandler;
@@ -333,7 +333,7 @@
 - (void)subscribeAttributePartitionIdWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler;
 - (void)subscribeAttributePendingTimestampWithMinInterval:(NSNumber *)minInterval maxInterval:(NSNumber *)maxInterval params:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablishedHandler reportHandler:(void *)reportHandler;
 - (void)subscribeAttributePendingTimestampWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler;
-- (void)subscribeAttributeRloc16WithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5;
+- (void)subscribeAttributeRloc16WithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler;
 - (void)subscribeAttributeRouteTableListWithMinInterval:(NSNumber *)minInterval maxInterval:(NSNumber *)maxInterval params:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablishedHandler reportHandler:(void *)reportHandler;
 - (void)subscribeAttributeRouteTableWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler;
 - (void)subscribeAttributeRouterRoleCountWithMinInterval:(NSNumber *)minInterval maxInterval:(NSNumber *)maxInterval params:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablishedHandler reportHandler:(void *)reportHandler;
@@ -434,21 +434,21 @@
   v8 = v7;
   v19 = v8;
   v9 = MEMORY[0x23EE78590](&v15);
-  v10 = [(MTRThreadNetworkDiagnosticsClusterResetCountsParams *)v6 timedInvokeTimeoutMs];
-  v11 = [(MTRGenericBaseCluster *)self device];
-  v12 = [(MTRCluster *)self endpointID];
-  v13 = [(MTRThreadNetworkDiagnosticsClusterResetCountsParams *)v6 serverSideProcessingTimeout];
-  v14 = [(MTRCluster *)self callbackQueue];
-  [v11 _invokeKnownCommandWithEndpointID:v12 clusterID:&unk_284C3EDB0 commandID:&unk_284C3E678 commandPayload:v6 timedInvokeTimeout:v10 serverSideProcessingTimeout:v13 responseClass:0 queue:v14 completion:{v9, v15, v16, v17, v18}];
+  timedInvokeTimeoutMs = [(MTRThreadNetworkDiagnosticsClusterResetCountsParams *)v6 timedInvokeTimeoutMs];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  serverSideProcessingTimeout = [(MTRThreadNetworkDiagnosticsClusterResetCountsParams *)v6 serverSideProcessingTimeout];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _invokeKnownCommandWithEndpointID:endpointID clusterID:&unk_284C3EDB0 commandID:&unk_284C3E678 commandPayload:v6 timedInvokeTimeout:timedInvokeTimeoutMs serverSideProcessingTimeout:serverSideProcessingTimeout responseClass:0 queue:callbackQueue completion:{v9, v15, v16, v17, v18}];
 }
 
 - (void)readAttributeChannelWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6A8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6A8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeChannelWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -456,10 +456,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6A8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6A8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeChannelWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -474,10 +474,10 @@
 - (void)readAttributeRoutingRoleWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6C0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6C0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRoutingRoleWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -485,10 +485,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6C0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6C0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRoutingRoleWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -503,10 +503,10 @@
 - (void)readAttributeNetworkNameWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E8E8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E8E8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeNetworkNameWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -514,10 +514,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E8E8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E8E8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeNetworkNameWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -532,10 +532,10 @@
 - (void)readAttributePanIdWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E900 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E900 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributePanIdWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -543,10 +543,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E900 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E900 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributePanIdWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -561,10 +561,10 @@
 - (void)readAttributeExtendedPanIdWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E918 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E918 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeExtendedPanIdWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -572,10 +572,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E918 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E918 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeExtendedPanIdWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -590,10 +590,10 @@
 - (void)readAttributeMeshLocalPrefixWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E930 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E930 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeMeshLocalPrefixWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -601,10 +601,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E930 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E930 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeMeshLocalPrefixWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -619,10 +619,10 @@
 - (void)readAttributeOverrunCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E948 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E948 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeOverrunCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -630,10 +630,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E948 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E948 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeOverrunCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -648,10 +648,10 @@
 - (void)readAttributeNeighborTableWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAC8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAC8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeNeighborTableWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -659,10 +659,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAC8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAC8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeNeighborTableWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -677,10 +677,10 @@
 - (void)readAttributeRouteTableWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAE0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAE0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRouteTableWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -688,10 +688,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAE0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAE0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRouteTableWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -706,10 +706,10 @@
 - (void)readAttributePartitionIdWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAF8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAF8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributePartitionIdWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -717,10 +717,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAF8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EAF8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributePartitionIdWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -735,10 +735,10 @@
 - (void)readAttributeWeightingWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB10 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB10 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeWeightingWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -746,10 +746,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB10 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB10 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeWeightingWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -764,10 +764,10 @@
 - (void)readAttributeDataVersionWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB28 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB28 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeDataVersionWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -775,10 +775,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB28 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB28 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeDataVersionWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -793,10 +793,10 @@
 - (void)readAttributeStableDataVersionWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB40 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB40 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeStableDataVersionWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -804,10 +804,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB40 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB40 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeStableDataVersionWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -822,10 +822,10 @@
 - (void)readAttributeLeaderRouterIdWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB58 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB58 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeLeaderRouterIdWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -833,10 +833,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB58 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB58 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeLeaderRouterIdWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -851,10 +851,10 @@
 - (void)readAttributeDetachedRoleCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB70 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB70 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeDetachedRoleCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -862,10 +862,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB70 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB70 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeDetachedRoleCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -880,10 +880,10 @@
 - (void)readAttributeChildRoleCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E960 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E960 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeChildRoleCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -891,10 +891,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E960 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E960 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeChildRoleCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -909,10 +909,10 @@
 - (void)readAttributeRouterRoleCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E978 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E978 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRouterRoleCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -920,10 +920,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E978 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E978 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRouterRoleCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -938,10 +938,10 @@
 - (void)readAttributeLeaderRoleCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E990 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E990 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeLeaderRoleCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -949,10 +949,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E990 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E990 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeLeaderRoleCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -967,10 +967,10 @@
 - (void)readAttributeAttachAttemptCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9A8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9A8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeAttachAttemptCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -978,10 +978,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9A8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9A8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeAttachAttemptCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -996,10 +996,10 @@
 - (void)readAttributePartitionIdChangeCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9C0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9C0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributePartitionIdChangeCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1007,10 +1007,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9C0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9C0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributePartitionIdChangeCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1025,10 +1025,10 @@
 - (void)readAttributeBetterPartitionAttachAttemptCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9D8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9D8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeBetterPartitionAttachAttemptCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1036,10 +1036,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9D8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E9D8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeBetterPartitionAttachAttemptCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1054,10 +1054,10 @@
 - (void)readAttributeParentChangeCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB88 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB88 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeParentChangeCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1065,10 +1065,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB88 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EB88 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeParentChangeCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1083,10 +1083,10 @@
 - (void)readAttributeTxTotalCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EBA0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EBA0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxTotalCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1094,10 +1094,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EBA0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EBA0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxTotalCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1112,10 +1112,10 @@
 - (void)readAttributeTxUnicastCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EC78 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EC78 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxUnicastCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1123,10 +1123,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EC78 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EC78 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxUnicastCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1141,10 +1141,10 @@
 - (void)readAttributeTxBroadcastCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EBB8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EBB8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxBroadcastCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1152,10 +1152,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EBB8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EBB8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxBroadcastCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1170,10 +1170,10 @@
 - (void)readAttributeTxAckRequestedCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EC90 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EC90 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxAckRequestedCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1181,10 +1181,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EC90 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EC90 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxAckRequestedCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1199,10 +1199,10 @@
 - (void)readAttributeTxAckedCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECA8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECA8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxAckedCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1210,10 +1210,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECA8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECA8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxAckedCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1228,10 +1228,10 @@
 - (void)readAttributeTxNoAckRequestedCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECC0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECC0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxNoAckRequestedCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1239,10 +1239,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECC0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECC0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxNoAckRequestedCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1257,10 +1257,10 @@
 - (void)readAttributeTxDataCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECD8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECD8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxDataCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1268,10 +1268,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECD8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECD8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxDataCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1286,10 +1286,10 @@
 - (void)readAttributeTxDataPollCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECF0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECF0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxDataPollCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1297,10 +1297,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECF0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ECF0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxDataPollCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1315,10 +1315,10 @@
 - (void)readAttributeTxBeaconCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ED08 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ED08 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxBeaconCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1326,10 +1326,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ED08 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ED08 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxBeaconCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1344,10 +1344,10 @@
 - (void)readAttributeTxBeaconRequestCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ED20 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ED20 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxBeaconRequestCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1355,10 +1355,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ED20 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3ED20 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxBeaconRequestCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1373,10 +1373,10 @@
 - (void)readAttributeTxOtherCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDC8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDC8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxOtherCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1384,10 +1384,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDC8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDC8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxOtherCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1402,10 +1402,10 @@
 - (void)readAttributeTxRetryCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDE0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDE0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxRetryCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1413,10 +1413,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDE0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDE0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxRetryCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1431,10 +1431,10 @@
 - (void)readAttributeTxDirectMaxRetryExpiryCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDF8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDF8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxDirectMaxRetryExpiryCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1442,10 +1442,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDF8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EDF8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxDirectMaxRetryExpiryCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1460,10 +1460,10 @@
 - (void)readAttributeTxIndirectMaxRetryExpiryCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE10 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE10 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxIndirectMaxRetryExpiryCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1471,10 +1471,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE10 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE10 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxIndirectMaxRetryExpiryCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1489,10 +1489,10 @@
 - (void)readAttributeTxErrCcaCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE28 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE28 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxErrCcaCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1500,10 +1500,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE28 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE28 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxErrCcaCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1518,10 +1518,10 @@
 - (void)readAttributeTxErrAbortCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE40 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE40 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxErrAbortCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1529,10 +1529,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE40 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE40 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxErrAbortCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1547,10 +1547,10 @@
 - (void)readAttributeTxErrBusyChannelCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE58 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE58 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeTxErrBusyChannelCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1558,10 +1558,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE58 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE58 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeTxErrBusyChannelCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1576,10 +1576,10 @@
 - (void)readAttributeRxTotalCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE70 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE70 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxTotalCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1587,10 +1587,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE70 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE70 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxTotalCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1605,10 +1605,10 @@
 - (void)readAttributeRxUnicastCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE88 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE88 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxUnicastCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1616,10 +1616,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE88 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EE88 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxUnicastCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1634,10 +1634,10 @@
 - (void)readAttributeRxBroadcastCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEA0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEA0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxBroadcastCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1645,10 +1645,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEA0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEA0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxBroadcastCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1663,10 +1663,10 @@
 - (void)readAttributeRxDataCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEB8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEB8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxDataCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1674,10 +1674,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEB8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEB8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxDataCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1692,10 +1692,10 @@
 - (void)readAttributeRxDataPollCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EED0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EED0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxDataPollCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1703,10 +1703,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EED0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EED0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxDataPollCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1721,10 +1721,10 @@
 - (void)readAttributeRxBeaconCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEE8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEE8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxBeaconCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1732,10 +1732,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEE8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EEE8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxBeaconCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1750,10 +1750,10 @@
 - (void)readAttributeRxBeaconRequestCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF00 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF00 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxBeaconRequestCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1761,10 +1761,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF00 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF00 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxBeaconRequestCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1779,10 +1779,10 @@
 - (void)readAttributeRxOtherCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF18 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF18 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxOtherCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1790,10 +1790,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF18 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF18 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxOtherCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1808,10 +1808,10 @@
 - (void)readAttributeRxAddressFilteredCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF30 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF30 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxAddressFilteredCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1819,10 +1819,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF30 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF30 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxAddressFilteredCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1837,10 +1837,10 @@
 - (void)readAttributeRxDestAddrFilteredCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF48 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF48 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxDestAddrFilteredCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1848,10 +1848,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF48 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF48 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxDestAddrFilteredCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1866,10 +1866,10 @@
 - (void)readAttributeRxDuplicatedCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF60 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF60 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxDuplicatedCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1877,10 +1877,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF60 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF60 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxDuplicatedCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1895,10 +1895,10 @@
 - (void)readAttributeRxErrNoFrameCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF78 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF78 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxErrNoFrameCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1906,10 +1906,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF78 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF78 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxErrNoFrameCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1924,10 +1924,10 @@
 - (void)readAttributeRxErrUnknownNeighborCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF90 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF90 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxErrUnknownNeighborCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1935,10 +1935,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF90 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EF90 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxErrUnknownNeighborCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1953,10 +1953,10 @@
 - (void)readAttributeRxErrInvalidSrcAddrCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFA8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFA8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxErrInvalidSrcAddrCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1964,10 +1964,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFA8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFA8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxErrInvalidSrcAddrCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -1982,10 +1982,10 @@
 - (void)readAttributeRxErrSecCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFC0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFC0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxErrSecCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -1993,10 +1993,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFC0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFC0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxErrSecCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2011,10 +2011,10 @@
 - (void)readAttributeRxErrFcsCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFD8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFD8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxErrFcsCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2022,10 +2022,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFD8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFD8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxErrFcsCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2040,10 +2040,10 @@
 - (void)readAttributeRxErrOtherCountWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFF0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFF0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeRxErrOtherCountWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2051,10 +2051,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFF0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3EFF0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeRxErrOtherCountWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2069,10 +2069,10 @@
 - (void)readAttributeActiveTimestampWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F008 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F008 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeActiveTimestampWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2080,10 +2080,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F008 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F008 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeActiveTimestampWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2098,10 +2098,10 @@
 - (void)readAttributePendingTimestampWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F020 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F020 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributePendingTimestampWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2109,10 +2109,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F020 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F020 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributePendingTimestampWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2127,10 +2127,10 @@
 - (void)readAttributeDelayWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F038 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F038 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeDelayWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2138,10 +2138,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F038 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F038 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeDelayWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2156,10 +2156,10 @@
 - (void)readAttributeSecurityPolicyWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F050 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F050 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeSecurityPolicyWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2167,10 +2167,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F050 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F050 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeSecurityPolicyWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2185,10 +2185,10 @@
 - (void)readAttributeChannelPage0MaskWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F068 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F068 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeChannelPage0MaskWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2196,10 +2196,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F068 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F068 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeChannelPage0MaskWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2214,10 +2214,10 @@
 - (void)readAttributeOperationalDatasetComponentsWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F080 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F080 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeOperationalDatasetComponentsWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2225,10 +2225,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F080 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F080 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeOperationalDatasetComponentsWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2243,10 +2243,10 @@
 - (void)readAttributeActiveNetworkFaultsListWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F098 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F098 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeActiveNetworkFaultsListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2254,10 +2254,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F098 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F098 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeActiveNetworkFaultsListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2269,71 +2269,71 @@
   [(MTRClusterStateCacheContainer *)v12 _readKnownCachedAttributeWithEndpointID:[(NSNumber *)v9 unsignedShortValue] clusterID:53 attributeID:62 queue:v10 completion:v11];
 }
 
-- (void)readAttributeExtAddressWithCompletion:(id)a3
+- (void)readAttributeExtAddressWithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F0B0 params:0 queue:v6 completion:v7];
+  completionCopy = completion;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F0B0 params:0 queue:callbackQueue completion:completionCopy];
 }
 
-- (void)subscribeAttributeExtAddressWithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5
+- (void)subscribeAttributeExtAddressWithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F0B0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  paramsCopy = params;
+  establishedCopy = established;
+  handlerCopy = handler;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F0B0 params:paramsCopy queue:callbackQueue reportHandler:handlerCopy subscriptionEstablished:establishedCopy];
 }
 
-+ (void)readAttributeExtAddressWithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)readAttributeExtAddressWithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v12 _readKnownCachedAttributeWithEndpointID:objc_msgSend(v9 clusterID:"unsignedShortValue") attributeID:53 queue:63 completion:{v10, v11}];
+  cacheCopy = cache;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  [cacheCopy _readKnownCachedAttributeWithEndpointID:objc_msgSend(endpointCopy clusterID:"unsignedShortValue") attributeID:53 queue:63 completion:{queueCopy, completionCopy}];
 }
 
-- (void)readAttributeRloc16WithCompletion:(id)a3
+- (void)readAttributeRloc16WithCompletion:(id)completion
 {
-  v7 = a3;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F0C8 params:0 queue:v6 completion:v7];
+  completionCopy = completion;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F0C8 params:0 queue:callbackQueue completion:completionCopy];
 }
 
-- (void)subscribeAttributeRloc16WithParams:(id)a3 subscriptionEstablished:(id)a4 reportHandler:(id)a5
+- (void)subscribeAttributeRloc16WithParams:(id)params subscriptionEstablished:(id)established reportHandler:(id)handler
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F0C8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  paramsCopy = params;
+  establishedCopy = established;
+  handlerCopy = handler;
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3F0C8 params:paramsCopy queue:callbackQueue reportHandler:handlerCopy subscriptionEstablished:establishedCopy];
 }
 
-+ (void)readAttributeRloc16WithClusterStateCache:(id)a3 endpoint:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)readAttributeRloc16WithClusterStateCache:(id)cache endpoint:(id)endpoint queue:(id)queue completion:(id)completion
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v12 _readKnownCachedAttributeWithEndpointID:objc_msgSend(v9 clusterID:"unsignedShortValue") attributeID:53 queue:64 completion:{v10, v11}];
+  cacheCopy = cache;
+  endpointCopy = endpoint;
+  queueCopy = queue;
+  completionCopy = completion;
+  [cacheCopy _readKnownCachedAttributeWithEndpointID:objc_msgSend(endpointCopy clusterID:"unsignedShortValue") attributeID:53 queue:64 completion:{queueCopy, completionCopy}];
 }
 
 - (void)readAttributeGeneratedCommandListWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6D8 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6D8 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeGeneratedCommandListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2341,10 +2341,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6D8 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6D8 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeGeneratedCommandListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2359,10 +2359,10 @@
 - (void)readAttributeAcceptedCommandListWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6F0 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6F0 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeAcceptedCommandListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2370,10 +2370,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6F0 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E6F0 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeAcceptedCommandListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2388,10 +2388,10 @@
 - (void)readAttributeAttributeListWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E708 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E708 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeAttributeListWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2399,10 +2399,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E708 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E708 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeAttributeListWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2417,10 +2417,10 @@
 - (void)readAttributeFeatureMapWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E720 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E720 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeFeatureMapWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2428,10 +2428,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E720 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E720 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeFeatureMapWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2446,10 +2446,10 @@
 - (void)readAttributeClusterRevisionWithCompletion:(void *)completion
 {
   v7 = completion;
-  v4 = [(MTRGenericBaseCluster *)self device];
-  v5 = [(MTRCluster *)self endpointID];
-  v6 = [(MTRCluster *)self callbackQueue];
-  [v4 _readKnownAttributeWithEndpointID:v5 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E738 params:0 queue:v6 completion:v7];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _readKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E738 params:0 queue:callbackQueue completion:v7];
 }
 
 - (void)subscribeAttributeClusterRevisionWithParams:(MTRSubscribeParams *)params subscriptionEstablished:(MTRSubscriptionEstablishedHandler)subscriptionEstablished reportHandler:(void *)reportHandler
@@ -2457,10 +2457,10 @@
   v13 = params;
   v8 = subscriptionEstablished;
   v9 = reportHandler;
-  v10 = [(MTRGenericBaseCluster *)self device];
-  v11 = [(MTRCluster *)self endpointID];
-  v12 = [(MTRCluster *)self callbackQueue];
-  [v10 _subscribeToKnownAttributeWithEndpointID:v11 clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E738 params:v13 queue:v12 reportHandler:v9 subscriptionEstablished:v8];
+  device = [(MTRGenericBaseCluster *)self device];
+  endpointID = [(MTRCluster *)self endpointID];
+  callbackQueue = [(MTRCluster *)self callbackQueue];
+  [device _subscribeToKnownAttributeWithEndpointID:endpointID clusterID:&unk_284C3EDB0 attributeID:&unk_284C3E738 params:v13 queue:callbackQueue reportHandler:v9 subscriptionEstablished:v8];
 }
 
 + (void)readAttributeClusterRevisionWithClusterStateCache:(MTRClusterStateCacheContainer *)clusterStateCacheContainer endpoint:(NSNumber *)endpoint queue:(dispatch_queue_t)queue completion:(void *)completion
@@ -2517,14 +2517,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBC788;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeChannelWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeChannelWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRoutingRoleWithCompletionHandler:(void *)completionHandler
@@ -2572,14 +2572,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBCAEC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRoutingRoleWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRoutingRoleWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeNetworkNameWithCompletionHandler:(void *)completionHandler
@@ -2627,14 +2627,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBCE50;
   v15[3] = &unk_278A73258;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeNetworkNameWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeNetworkNameWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePanIdWithCompletionHandler:(void *)completionHandler
@@ -2682,14 +2682,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBD1B4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePanIdWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePanIdWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeExtendedPanIdWithCompletionHandler:(void *)completionHandler
@@ -2737,14 +2737,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBD518;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeExtendedPanIdWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeExtendedPanIdWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeMeshLocalPrefixWithCompletionHandler:(void *)completionHandler
@@ -2792,14 +2792,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBD87C;
   v15[3] = &unk_278A73410;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeMeshLocalPrefixWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeMeshLocalPrefixWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeOverrunCountWithCompletionHandler:(void *)completionHandler
@@ -2847,14 +2847,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBDBE0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeOverrunCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeOverrunCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeNeighborTableListWithCompletionHandler:(void *)completionHandler
@@ -2902,14 +2902,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBDF44;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeNeighborTableWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeNeighborTableWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRouteTableListWithCompletionHandler:(void *)completionHandler
@@ -2957,14 +2957,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBE2A8;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRouteTableWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRouteTableWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePartitionIdWithCompletionHandler:(void *)completionHandler
@@ -3012,14 +3012,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBE60C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePartitionIdWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePartitionIdWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeWeightingWithCompletionHandler:(void *)completionHandler
@@ -3067,14 +3067,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBE970;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeWeightingWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeWeightingWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDataVersionWithCompletionHandler:(void *)completionHandler
@@ -3122,14 +3122,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBECD4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDataVersionWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDataVersionWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeStableDataVersionWithCompletionHandler:(void *)completionHandler
@@ -3177,14 +3177,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBF038;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeStableDataVersionWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeStableDataVersionWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeLeaderRouterIdWithCompletionHandler:(void *)completionHandler
@@ -3232,14 +3232,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBF39C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeLeaderRouterIdWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeLeaderRouterIdWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDetachedRoleCountWithCompletionHandler:(void *)completionHandler
@@ -3287,14 +3287,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBF700;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDetachedRoleCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDetachedRoleCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeChildRoleCountWithCompletionHandler:(void *)completionHandler
@@ -3342,14 +3342,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBFA64;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeChildRoleCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeChildRoleCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRouterRoleCountWithCompletionHandler:(void *)completionHandler
@@ -3397,14 +3397,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FBFDC8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRouterRoleCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRouterRoleCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeLeaderRoleCountWithCompletionHandler:(void *)completionHandler
@@ -3452,14 +3452,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC012C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeLeaderRoleCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeLeaderRoleCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAttachAttemptCountWithCompletionHandler:(void *)completionHandler
@@ -3507,14 +3507,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC0490;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAttachAttemptCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAttachAttemptCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePartitionIdChangeCountWithCompletionHandler:(void *)completionHandler
@@ -3562,14 +3562,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC07F4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePartitionIdChangeCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePartitionIdChangeCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeBetterPartitionAttachAttemptCountWithCompletionHandler:(void *)completionHandler
@@ -3617,14 +3617,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC0B58;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeBetterPartitionAttachAttemptCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeBetterPartitionAttachAttemptCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeParentChangeCountWithCompletionHandler:(void *)completionHandler
@@ -3672,14 +3672,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC0EBC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeParentChangeCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeParentChangeCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxTotalCountWithCompletionHandler:(void *)completionHandler
@@ -3727,14 +3727,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC1220;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxTotalCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxTotalCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxUnicastCountWithCompletionHandler:(void *)completionHandler
@@ -3782,14 +3782,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC1584;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxUnicastCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxUnicastCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxBroadcastCountWithCompletionHandler:(void *)completionHandler
@@ -3837,14 +3837,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC18E8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxBroadcastCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxBroadcastCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxAckRequestedCountWithCompletionHandler:(void *)completionHandler
@@ -3892,14 +3892,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC1C4C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxAckRequestedCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxAckRequestedCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxAckedCountWithCompletionHandler:(void *)completionHandler
@@ -3947,14 +3947,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC1FB0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxAckedCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxAckedCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxNoAckRequestedCountWithCompletionHandler:(void *)completionHandler
@@ -4002,14 +4002,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC2314;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxNoAckRequestedCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxNoAckRequestedCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxDataCountWithCompletionHandler:(void *)completionHandler
@@ -4057,14 +4057,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC2678;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxDataCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxDataCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxDataPollCountWithCompletionHandler:(void *)completionHandler
@@ -4112,14 +4112,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC29DC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxDataPollCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxDataPollCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxBeaconCountWithCompletionHandler:(void *)completionHandler
@@ -4167,14 +4167,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC2D40;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxBeaconCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxBeaconCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxBeaconRequestCountWithCompletionHandler:(void *)completionHandler
@@ -4222,14 +4222,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC30A4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxBeaconRequestCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxBeaconRequestCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxOtherCountWithCompletionHandler:(void *)completionHandler
@@ -4277,14 +4277,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC3408;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxOtherCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxOtherCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxRetryCountWithCompletionHandler:(void *)completionHandler
@@ -4332,14 +4332,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC376C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxRetryCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxRetryCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxDirectMaxRetryExpiryCountWithCompletionHandler:(void *)completionHandler
@@ -4387,14 +4387,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC3AD0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxDirectMaxRetryExpiryCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxDirectMaxRetryExpiryCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxIndirectMaxRetryExpiryCountWithCompletionHandler:(void *)completionHandler
@@ -4442,14 +4442,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC3E34;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxIndirectMaxRetryExpiryCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxIndirectMaxRetryExpiryCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxErrCcaCountWithCompletionHandler:(void *)completionHandler
@@ -4497,14 +4497,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC4198;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxErrCcaCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxErrCcaCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxErrAbortCountWithCompletionHandler:(void *)completionHandler
@@ -4552,14 +4552,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC44FC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxErrAbortCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxErrAbortCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeTxErrBusyChannelCountWithCompletionHandler:(void *)completionHandler
@@ -4607,14 +4607,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC4860;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeTxErrBusyChannelCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeTxErrBusyChannelCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxTotalCountWithCompletionHandler:(void *)completionHandler
@@ -4662,14 +4662,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC4BC4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxTotalCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxTotalCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxUnicastCountWithCompletionHandler:(void *)completionHandler
@@ -4717,14 +4717,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC4F28;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxUnicastCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxUnicastCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxBroadcastCountWithCompletionHandler:(void *)completionHandler
@@ -4772,14 +4772,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC528C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxBroadcastCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxBroadcastCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxDataCountWithCompletionHandler:(void *)completionHandler
@@ -4827,14 +4827,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC55F0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxDataCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxDataCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxDataPollCountWithCompletionHandler:(void *)completionHandler
@@ -4882,14 +4882,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC5954;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxDataPollCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxDataPollCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxBeaconCountWithCompletionHandler:(void *)completionHandler
@@ -4937,14 +4937,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC5CB8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxBeaconCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxBeaconCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxBeaconRequestCountWithCompletionHandler:(void *)completionHandler
@@ -4992,14 +4992,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC601C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxBeaconRequestCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxBeaconRequestCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxOtherCountWithCompletionHandler:(void *)completionHandler
@@ -5047,14 +5047,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC6380;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxOtherCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxOtherCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxAddressFilteredCountWithCompletionHandler:(void *)completionHandler
@@ -5102,14 +5102,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC66E4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxAddressFilteredCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxAddressFilteredCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxDestAddrFilteredCountWithCompletionHandler:(void *)completionHandler
@@ -5157,14 +5157,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC6A48;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxDestAddrFilteredCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxDestAddrFilteredCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxDuplicatedCountWithCompletionHandler:(void *)completionHandler
@@ -5212,14 +5212,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC6DAC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxDuplicatedCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxDuplicatedCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxErrNoFrameCountWithCompletionHandler:(void *)completionHandler
@@ -5267,14 +5267,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC7110;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxErrNoFrameCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxErrNoFrameCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxErrUnknownNeighborCountWithCompletionHandler:(void *)completionHandler
@@ -5322,14 +5322,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC7474;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxErrUnknownNeighborCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxErrUnknownNeighborCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxErrInvalidSrcAddrCountWithCompletionHandler:(void *)completionHandler
@@ -5377,14 +5377,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC77D8;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxErrInvalidSrcAddrCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxErrInvalidSrcAddrCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxErrSecCountWithCompletionHandler:(void *)completionHandler
@@ -5432,14 +5432,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC7B3C;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxErrSecCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxErrSecCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxErrFcsCountWithCompletionHandler:(void *)completionHandler
@@ -5487,14 +5487,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC7EA0;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxErrFcsCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxErrFcsCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeRxErrOtherCountWithCompletionHandler:(void *)completionHandler
@@ -5542,14 +5542,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC8204;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeRxErrOtherCountWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeRxErrOtherCountWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActiveTimestampWithCompletionHandler:(void *)completionHandler
@@ -5597,14 +5597,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC8568;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActiveTimestampWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActiveTimestampWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributePendingTimestampWithCompletionHandler:(void *)completionHandler
@@ -5652,14 +5652,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC88CC;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributePendingTimestampWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributePendingTimestampWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeDelayWithCompletionHandler:(void *)completionHandler
@@ -5707,14 +5707,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC8C30;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeDelayWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeDelayWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeSecurityPolicyWithCompletionHandler:(void *)completionHandler
@@ -5762,14 +5762,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC8F94;
   v15[3] = &unk_278A73460;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeSecurityPolicyWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeSecurityPolicyWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeChannelPage0MaskWithCompletionHandler:(void *)completionHandler
@@ -5817,14 +5817,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC92F8;
   v15[3] = &unk_278A73410;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeChannelPage0MaskWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeChannelPage0MaskWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeOperationalDatasetComponentsWithCompletionHandler:(void *)completionHandler
@@ -5872,14 +5872,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC965C;
   v15[3] = &unk_278A73488;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeOperationalDatasetComponentsWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeOperationalDatasetComponentsWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeActiveNetworkFaultsListWithCompletionHandler:(void *)completionHandler
@@ -5927,14 +5927,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC99C0;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeActiveNetworkFaultsListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeActiveNetworkFaultsListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeGeneratedCommandListWithCompletionHandler:(void *)completionHandler
@@ -5982,14 +5982,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FC9D24;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeGeneratedCommandListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeGeneratedCommandListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAcceptedCommandListWithCompletionHandler:(void *)completionHandler
@@ -6037,14 +6037,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FCA088;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAcceptedCommandListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAcceptedCommandListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeAttributeListWithCompletionHandler:(void *)completionHandler
@@ -6092,14 +6092,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FCA3EC;
   v15[3] = &unk_278A73190;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeAttributeListWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeAttributeListWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeFeatureMapWithCompletionHandler:(void *)completionHandler
@@ -6147,14 +6147,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FCA750;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeFeatureMapWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeFeatureMapWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 - (void)readAttributeClusterRevisionWithCompletionHandler:(void *)completionHandler
@@ -6202,14 +6202,14 @@
   v10 = endpoint;
   v11 = queue;
   v12 = completionHandler;
-  v13 = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
+  realContainer = [(MTRAttributeCacheContainer *)attributeCacheContainer realContainer];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = sub_238FCAAB4;
   v15[3] = &unk_278A73168;
   v14 = v12;
   v16 = v14;
-  [a1 readAttributeClusterRevisionWithClusterStateCache:v13 endpoint:v10 queue:v11 completion:v15];
+  [self readAttributeClusterRevisionWithClusterStateCache:realContainer endpoint:v10 queue:v11 completion:v15];
 }
 
 @end

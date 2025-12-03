@@ -1,36 +1,36 @@
 @interface PHAssetCrashRecoverySupport
-+ (BOOL)shouldAttemptCrashRecoveryForLibraryWithPathManager:(id)a3;
-- (BOOL)_isCrashRecoveryFilename:(id)a3;
-- (BOOL)_isSafeToRecoverAfterCrashForCrashRecoveryFileURL:(id)a3;
-- (PHAssetCrashRecoverySupport)initWithLibraryServicesManager:(id)a3;
-- (void)_checkAndResolveExistingAssetUUIDWithCreationRequest:(id)a3 recoveredFromFileURL:(id)a4;
-- (void)_commitRequest:(id)a3 reply:(id)a4;
++ (BOOL)shouldAttemptCrashRecoveryForLibraryWithPathManager:(id)manager;
+- (BOOL)_isCrashRecoveryFilename:(id)filename;
+- (BOOL)_isSafeToRecoverAfterCrashForCrashRecoveryFileURL:(id)l;
+- (PHAssetCrashRecoverySupport)initWithLibraryServicesManager:(id)manager;
+- (void)_checkAndResolveExistingAssetUUIDWithCreationRequest:(id)request recoveredFromFileURL:(id)l;
+- (void)_commitRequest:(id)request reply:(id)reply;
 - (void)_recoverFromCrashIfNeeded;
-- (void)_triggerTapToRadarForCrashRecoveryConflictingUUID:(id)a3 existingAssetID:(id)a4 recoveryFileSubpath:(id)a5 resolvedUUID:(id)a6;
+- (void)_triggerTapToRadarForCrashRecoveryConflictingUUID:(id)d existingAssetID:(id)iD recoveryFileSubpath:(id)subpath resolvedUUID:(id)uID;
 - (void)recoverFromCrashIfNeeded;
 @end
 
 @implementation PHAssetCrashRecoverySupport
 
-- (void)_commitRequest:(id)a3 reply:(id)a4
+- (void)_commitRequest:(id)request reply:(id)reply
 {
   v6 = MEMORY[0x1E69BE838];
-  v7 = a4;
-  v8 = a3;
+  replyCopy = reply;
+  requestCopy = request;
   v9 = objc_alloc_init(v6);
-  [v8 executeWithLibraryServicesManager:self->_libraryServicesManager libraryName:"-[PHAssetCrashRecoverySupport _commitRequest:reply:]" executionContext:v9 reply:v7];
+  [requestCopy executeWithLibraryServicesManager:self->_libraryServicesManager libraryName:"-[PHAssetCrashRecoverySupport _commitRequest:reply:]" executionContext:v9 reply:replyCopy];
 }
 
 - (void)recoverFromCrashIfNeeded
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [(PHAssetCrashRecoverySupport *)self libraryServicesManager];
-  v4 = [v3 pathManager];
+  libraryServicesManager = [(PHAssetCrashRecoverySupport *)self libraryServicesManager];
+  pathManager = [libraryServicesManager pathManager];
 
   v5 = objc_opt_class();
-  v6 = [(PHAssetCrashRecoverySupport *)self libraryServicesManager];
-  v7 = [v6 pathManager];
-  v8 = [v5 shouldAttemptCrashRecoveryForLibraryWithPathManager:v7];
+  libraryServicesManager2 = [(PHAssetCrashRecoverySupport *)self libraryServicesManager];
+  pathManager2 = [libraryServicesManager2 pathManager];
+  v8 = [v5 shouldAttemptCrashRecoveryForLibraryWithPathManager:pathManager2];
 
   v9 = PLBackendGetLog();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -39,8 +39,8 @@
     if (v10)
     {
       v11 = MEMORY[0x1E69BF220];
-      v12 = [v4 libraryURL];
-      v13 = [v11 descriptionWithFileURL:v12];
+      libraryURL = [pathManager libraryURL];
+      v13 = [v11 descriptionWithFileURL:libraryURL];
       v17 = 138412290;
       v18 = v13;
       _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_DEFAULT, "[AssetCreationRecovery] Attempting crash recovery with library %@", &v17, 0xCu);
@@ -54,8 +54,8 @@
     if (v10)
     {
       v14 = MEMORY[0x1E69BF220];
-      v15 = [v4 libraryURL];
-      v16 = [v14 descriptionWithFileURL:v15];
+      libraryURL2 = [pathManager libraryURL];
+      v16 = [v14 descriptionWithFileURL:libraryURL2];
       v17 = 138412290;
       v18 = v16;
       _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_DEFAULT, "[AssetCreationRecovery] Skipping crash recovery with library %@", &v17, 0xCu);
@@ -66,15 +66,15 @@
 - (void)_recoverFromCrashIfNeeded
 {
   v94 = *MEMORY[0x1E69E9840];
-  v3 = [(PLLibraryServicesManager *)self->_libraryServicesManager pathManager];
-  v4 = [v3 pathsForExternalWriters];
+  pathManager = [(PLLibraryServicesManager *)self->_libraryServicesManager pathManager];
+  pathsForExternalWriters = [pathManager pathsForExternalWriters];
 
-  v57 = [MEMORY[0x1E69BF238] fileManager];
+  fileManager = [MEMORY[0x1E69BF238] fileManager];
   v82 = 0u;
   v83 = 0u;
   v84 = 0u;
   v85 = 0u;
-  obj = v4;
+  obj = pathsForExternalWriters;
   v58 = [obj countByEnumeratingWithState:&v82 objects:v93 count:16];
   if (v58)
   {
@@ -99,7 +99,7 @@
         v81[2] = __56__PHAssetCrashRecoverySupport__recoverFromCrashIfNeeded__block_invoke;
         v81[3] = &unk_1E75A89D0;
         v81[4] = v7;
-        v9 = [v57 enumeratorAtURL:v8 includingPropertiesForKeys:0 options:0 errorHandler:v81];
+        v9 = [fileManager enumeratorAtURL:v8 includingPropertiesForKeys:0 options:0 errorHandler:v81];
 
         v79 = 0u;
         v80 = 0u;
@@ -123,16 +123,16 @@
 
               v13 = *(*(&v77 + 1) + 8 * i);
               v14 = objc_autoreleasePoolPush();
-              v15 = [v13 lastPathComponent];
-              v16 = [(PHAssetCrashRecoverySupport *)self _isCrashRecoveryFilename:v15];
+              lastPathComponent = [v13 lastPathComponent];
+              v16 = [(PHAssetCrashRecoverySupport *)self _isCrashRecoveryFilename:lastPathComponent];
 
               if (v16)
               {
                 v17 = [(PHAssetCrashRecoverySupport *)self _isSafeToRecoverAfterCrashForCrashRecoveryFileURL:v13];
-                v18 = [*(v5 + 672) trackingPerformChangesRequestInProgressCount];
-                if (!v17 || v18 > 0)
+                trackingPerformChangesRequestInProgressCount = [*(v5 + 672) trackingPerformChangesRequestInProgressCount];
+                if (!v17 || trackingPerformChangesRequestInProgressCount > 0)
                 {
-                  v20 = v18;
+                  v20 = trackingPerformChangesRequestInProgressCount;
                   v21 = PLBackendGetLog();
                   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
                   if (v20 >= 1)
@@ -201,15 +201,15 @@ LABEL_49:
                 v31 = v30;
                 if (v30)
                 {
-                  v32 = [v30 retryCount];
-                  if (v32 < 1)
+                  retryCount = [v30 retryCount];
+                  if (retryCount < 1)
                   {
                     v40 = 1;
                   }
 
                   else
                   {
-                    v33 = v32;
+                    v33 = retryCount;
                     v34 = PLBackendGetLog();
                     v35 = v34;
                     if (v33 >= 7)
@@ -301,10 +301,10 @@ LABEL_34:
                   {
                     [v31 placeholderForCreatedAsset];
                     v51 = v61 = v29;
-                    v52 = [v51 localIdentifier];
+                    localIdentifier = [v51 localIdentifier];
                     v53 = [MEMORY[0x1E69BF220] descriptionWithFileURL:v13];
                     *buf = 138543618;
-                    v87 = v52;
+                    v87 = localIdentifier;
                     v88 = 2112;
                     v89 = v53;
                     _os_log_impl(&dword_19C86F000, v50, OS_LOG_TYPE_DEFAULT, "[AssetCreationRecovery] Attempting asset creation recovery of asset %{public}@ with path %@", buf, 0x16u);
@@ -400,12 +400,12 @@ void __56__PHAssetCrashRecoverySupport__recoverFromCrashIfNeeded__block_invoke_9
   }
 }
 
-- (void)_checkAndResolveExistingAssetUUIDWithCreationRequest:(id)a3 recoveredFromFileURL:(id)a4
+- (void)_checkAndResolveExistingAssetUUIDWithCreationRequest:(id)request recoveredFromFileURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 uuid];
-  if (v8)
+  requestCopy = request;
+  lCopy = l;
+  uuid = [requestCopy uuid];
+  if (uuid)
   {
     v31 = 0;
     v32 = &v31;
@@ -419,30 +419,30 @@ void __56__PHAssetCrashRecoverySupport__recoverFromCrashIfNeeded__block_invoke_9
     v28 = __Block_byref_object_copy__35114;
     v29 = __Block_byref_object_dispose__35115;
     v30 = 0;
-    v9 = [(PLLibraryServicesManager *)self->_libraryServicesManager databaseContext];
-    v10 = [v9 newShortLivedLibraryWithName:"-[PHAssetCrashRecoverySupport _checkAndResolveExistingAssetUUIDWithCreationRequest:recoveredFromFileURL:]"];
+    databaseContext = [(PLLibraryServicesManager *)self->_libraryServicesManager databaseContext];
+    v10 = [databaseContext newShortLivedLibraryWithName:"-[PHAssetCrashRecoverySupport _checkAndResolveExistingAssetUUIDWithCreationRequest:recoveredFromFileURL:]"];
 
-    v11 = [v10 managedObjectContext];
+    managedObjectContext = [v10 managedObjectContext];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __105__PHAssetCrashRecoverySupport__checkAndResolveExistingAssetUUIDWithCreationRequest_recoveredFromFileURL___block_invoke;
     v18[3] = &unk_1E75A89A8;
-    v12 = v8;
+    v12 = uuid;
     v19 = v12;
-    v13 = v11;
+    v13 = managedObjectContext;
     v20 = v13;
     v23 = &v25;
     v24 = &v31;
-    v21 = v7;
-    v14 = v6;
+    v21 = lCopy;
+    v14 = requestCopy;
     v22 = v14;
     [v13 performBlockAndWait:v18];
     if (v26[5] && PFOSVariantHasInternalDiagnostics())
     {
       v15 = v26[5];
       v16 = v32[5];
-      v17 = [v14 uuid];
-      [(PHAssetCrashRecoverySupport *)self _triggerTapToRadarForCrashRecoveryConflictingUUID:v12 existingAssetID:v15 recoveryFileSubpath:v16 resolvedUUID:v17];
+      uuid2 = [v14 uuid];
+      [(PHAssetCrashRecoverySupport *)self _triggerTapToRadarForCrashRecoveryConflictingUUID:v12 existingAssetID:v15 recoveryFileSubpath:v16 resolvedUUID:uuid2];
     }
 
     _Block_object_dispose(&v25, 8);
@@ -513,12 +513,12 @@ void __105__PHAssetCrashRecoverySupport__checkAndResolveExistingAssetUUIDWithCre
   }
 }
 
-- (void)_triggerTapToRadarForCrashRecoveryConflictingUUID:(id)a3 existingAssetID:(id)a4 recoveryFileSubpath:(id)a5 resolvedUUID:(id)a6
+- (void)_triggerTapToRadarForCrashRecoveryConflictingUUID:(id)d existingAssetID:(id)iD recoveryFileSubpath:(id)subpath resolvedUUID:(id)uID
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  uIDCopy = uID;
+  subpathCopy = subpath;
+  iDCopy = iD;
+  dCopy = d;
   v14 = PLBackendGetLog();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -531,11 +531,11 @@ void __105__PHAssetCrashRecoverySupport__checkAndResolveExistingAssetUUIDWithCre
   v16 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US"];
   [v15 setLocale:v16];
 
-  v17 = [MEMORY[0x1E695DF00] date];
-  v18 = [v15 stringFromDate:v17];
+  date = [MEMORY[0x1E695DF00] date];
+  v18 = [v15 stringFromDate:date];
 
-  v19 = [(PLLibraryServicesManager *)self->_libraryServicesManager wellKnownPhotoLibraryIdentifier];
-  if (v19 == 1 || !v19 && (-[PLLibraryServicesManager pathManager](self->_libraryServicesManager, "pathManager"), v20 = v13, v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 isSystemPhotoLibraryPathManager], v21, v13 = v20, v22))
+  wellKnownPhotoLibraryIdentifier = [(PLLibraryServicesManager *)self->_libraryServicesManager wellKnownPhotoLibraryIdentifier];
+  if (wellKnownPhotoLibraryIdentifier == 1 || !wellKnownPhotoLibraryIdentifier && (-[PLLibraryServicesManager pathManager](self->_libraryServicesManager, "pathManager"), v20 = dCopy, v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 isSystemPhotoLibraryPathManager], v21, dCopy = v20, v22))
   {
     v23 = PLStringFromWellKnownPhotoLibraryIdentifier();
   }
@@ -543,44 +543,44 @@ void __105__PHAssetCrashRecoverySupport__checkAndResolveExistingAssetUUIDWithCre
   else
   {
     v24 = PLStringFromWellKnownPhotoLibraryIdentifier();
-    v35 = v12;
-    v25 = v10;
-    v26 = v13;
+    v35 = iDCopy;
+    v25 = uIDCopy;
+    v26 = dCopy;
     v27 = MEMORY[0x1E69BE690];
-    v28 = [(PLLibraryServicesManager *)self->_libraryServicesManager libraryURL];
-    v29 = [v27 photoLibraryIdentifierWithPhotoLibraryURL:v28 createIfMissing:0 error:0];
+    libraryURL = [(PLLibraryServicesManager *)self->_libraryServicesManager libraryURL];
+    v29 = [v27 photoLibraryIdentifierWithPhotoLibraryURL:libraryURL createIfMissing:0 error:0];
 
-    v30 = [v29 uuid];
-    v31 = [v29 containerIdentifier];
+    uuid = [v29 uuid];
+    containerIdentifier = [v29 containerIdentifier];
     [v29 domain];
     v32 = PLPhotoLibraryIdentifierEncodeArchivalStringRepresentationFromIdentifierProperties();
 
     v23 = [v24 stringByAppendingFormat:@" (%@)", v32];
 
-    v13 = v26;
-    v10 = v25;
-    v12 = v35;
+    dCopy = v26;
+    uIDCopy = v25;
+    iDCopy = v35;
   }
 
   v33 = [MEMORY[0x1E696AD60] stringWithFormat:@"Library: %@\n\n", v23];
   [v33 appendFormat:@"Crash recovery date: %@\n", v18];
-  [v33 appendFormat:@"Recovery data file: %@\n\n", v11];
+  [v33 appendFormat:@"Recovery data file: %@\n\n", subpathCopy];
 
-  [v33 appendFormat:@"Recovered asset uuid (resolved): %@\n", v10];
-  v34 = [v12 pl_shortURI];
+  [v33 appendFormat:@"Recovered asset uuid (resolved): %@\n", uIDCopy];
+  pl_shortURI = [iDCopy pl_shortURI];
 
-  [v33 appendFormat:@"Existing asset uuid: %@ (%@)\n\n", v13, v34];
+  [v33 appendFormat:@"Existing asset uuid: %@ (%@)\n\n", dCopy, pl_shortURI];
   [MEMORY[0x1E69BE3F0] fileRadarUserNotificationWithHeader:@"Photo Library Crash Recovery Issue" message:@"Your photo library has experienced an unexpected state radarTitle:please file a Radar against Photos to diagnose the issue" radarDescription:{@"TTR: Detected duplicate asset UUID during crash recovery", v33}];
 }
 
-- (BOOL)_isSafeToRecoverAfterCrashForCrashRecoveryFileURL:(id)a3
+- (BOOL)_isSafeToRecoverAfterCrashForCrashRecoveryFileURL:(id)l
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [a3 URLByDeletingLastPathComponent];
-  v4 = [v3 URLByAppendingPathComponent:*MEMORY[0x1E69BE8F0]];
-  v5 = [v4 path];
+  uRLByDeletingLastPathComponent = [l URLByDeletingLastPathComponent];
+  v4 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:*MEMORY[0x1E69BE8F0]];
+  path = [v4 path];
 
-  v6 = open([v5 fileSystemRepresentation], 36);
+  v6 = open([path fileSystemRepresentation], 36);
   v7 = v6;
   if ((v6 & 0x80000000) == 0)
   {
@@ -597,7 +597,7 @@ LABEL_9:
     v10 = PLBackendGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [MEMORY[0x1E69BF220] descriptionWithPath:v5];
+      v11 = [MEMORY[0x1E69BF220] descriptionWithPath:path];
       v13 = 138412546;
       v14 = v11;
       v15 = 2082;
@@ -614,15 +614,15 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)_isCrashRecoveryFilename:(id)a3
+- (BOOL)_isCrashRecoveryFilename:(id)filename
 {
-  v3 = a3;
-  v4 = [v3 lowercaseString];
-  v5 = [@"XPCDict" lowercaseString];
-  if ([v4 hasPrefix:v5])
+  filenameCopy = filename;
+  lowercaseString = [filenameCopy lowercaseString];
+  lowercaseString2 = [@"XPCDict" lowercaseString];
+  if ([lowercaseString hasPrefix:lowercaseString2])
   {
-    v6 = [v3 pathExtension];
-    v7 = [v6 caseInsensitiveCompare:@"plist"] == 0;
+    pathExtension = [filenameCopy pathExtension];
+    v7 = [pathExtension caseInsensitiveCompare:@"plist"] == 0;
   }
 
   else
@@ -633,25 +633,25 @@ LABEL_10:
   return v7;
 }
 
-- (PHAssetCrashRecoverySupport)initWithLibraryServicesManager:(id)a3
+- (PHAssetCrashRecoverySupport)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = PHAssetCrashRecoverySupport;
   v6 = [(PHAssetCrashRecoverySupport *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_libraryServicesManager, a3);
+    objc_storeStrong(&v6->_libraryServicesManager, manager);
   }
 
   return v7;
 }
 
-+ (BOOL)shouldAttemptCrashRecoveryForLibraryWithPathManager:(id)a3
++ (BOOL)shouldAttemptCrashRecoveryForLibraryWithPathManager:(id)manager
 {
-  v3 = a3;
-  if ([v3 isSystemPhotoLibraryPathManager])
+  managerCopy = manager;
+  if ([managerCopy isSystemPhotoLibraryPathManager])
   {
     v4 = 1;
   }
@@ -659,8 +659,8 @@ LABEL_10:
   else
   {
     v5 = MEMORY[0x1E69BE690];
-    v6 = [v3 libraryURL];
-    v7 = [v5 photoLibraryIdentifierWithPhotoLibraryURL:v6 createIfMissing:0 error:0];
+    libraryURL = [managerCopy libraryURL];
+    v7 = [v5 photoLibraryIdentifierWithPhotoLibraryURL:libraryURL createIfMissing:0 error:0];
 
     if (v7)
     {

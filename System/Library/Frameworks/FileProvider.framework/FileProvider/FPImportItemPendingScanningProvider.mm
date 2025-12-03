@@ -1,47 +1,47 @@
 @interface FPImportItemPendingScanningProvider
-- (FPImportItemPendingScanningProvider)initWithCoder:(id)a3;
+- (FPImportItemPendingScanningProvider)initWithCoder:(id)coder;
 - (id)json;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPImportItemPendingScanningProvider
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemIdentifier = self->_itemIdentifier;
-  v5 = a3;
-  [v5 encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
-  [v5 encodeObject:self->_diagnosticAttributes forKey:@"_diagnosticAttributes"];
-  [v5 encodeInteger:self->_itemPendingScanningProviderEnumerationStatus forKey:@"_itemPendingScanningProviderEnumerationStatus"];
-  [v5 encodeBool:self->_itemPendingScanningProviderHasMultiplePagesEnumeration forKey:@"_itemPendingScanningProviderHasMultiplePagesEnumeration"];
-  [v5 encodeInteger:self->_itemPendingScanningProviderNumberOfChildren forKey:@"_itemPendingScanningProviderNumberOfChildren"];
-  [v5 encodeInteger:self->_itemPendingScanningProviderNumberOfChildrenPendingCreation forKey:@"_itemPendingScanningProviderNumberOfChildrenPendingCreation"];
-  [v5 encodeInteger:self->_itemPendingScanningProviderNumberOfChildrenFailingCreation forKey:@"_itemPendingScanningProviderNumberOfChildrenFailingCreation"];
-  [v5 encodeInteger:self->_itemPendingScanningProviderRemovalOfDatalessBitStatus forKey:@"_itemPendingScanningProviderRemovalOfDatalessBitStatus"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemIdentifier forKey:@"_itemIdentifier"];
+  [coderCopy encodeObject:self->_diagnosticAttributes forKey:@"_diagnosticAttributes"];
+  [coderCopy encodeInteger:self->_itemPendingScanningProviderEnumerationStatus forKey:@"_itemPendingScanningProviderEnumerationStatus"];
+  [coderCopy encodeBool:self->_itemPendingScanningProviderHasMultiplePagesEnumeration forKey:@"_itemPendingScanningProviderHasMultiplePagesEnumeration"];
+  [coderCopy encodeInteger:self->_itemPendingScanningProviderNumberOfChildren forKey:@"_itemPendingScanningProviderNumberOfChildren"];
+  [coderCopy encodeInteger:self->_itemPendingScanningProviderNumberOfChildrenPendingCreation forKey:@"_itemPendingScanningProviderNumberOfChildrenPendingCreation"];
+  [coderCopy encodeInteger:self->_itemPendingScanningProviderNumberOfChildrenFailingCreation forKey:@"_itemPendingScanningProviderNumberOfChildrenFailingCreation"];
+  [coderCopy encodeInteger:self->_itemPendingScanningProviderRemovalOfDatalessBitStatus forKey:@"_itemPendingScanningProviderRemovalOfDatalessBitStatus"];
 }
 
-- (FPImportItemPendingScanningProvider)initWithCoder:(id)a3
+- (FPImportItemPendingScanningProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = FPImportItemPendingScanningProvider;
   v5 = [(FPImportItemPendingScanningProvider *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_itemIdentifier"];
     itemIdentifier = v5->_itemIdentifier;
     v5->_itemIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_diagnosticAttributes"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_diagnosticAttributes"];
     diagnosticAttributes = v5->_diagnosticAttributes;
     v5->_diagnosticAttributes = v8;
 
-    v5->_itemPendingScanningProviderEnumerationStatus = [v4 decodeIntegerForKey:@"_itemPendingScanningProviderEnumerationStatus"];
-    v5->_itemPendingScanningProviderHasMultiplePagesEnumeration = [v4 decodeBoolForKey:@"_itemPendingScanningProviderHasMultiplePagesEnumeration"];
-    v5->_itemPendingScanningProviderNumberOfChildren = [v4 decodeIntegerForKey:@"_itemPendingScanningProviderNumberOfChildren"];
-    v5->_itemPendingScanningProviderNumberOfChildrenPendingCreation = [v4 decodeIntegerForKey:@"_itemPendingScanningProviderNumberOfChildrenPendingCreation"];
-    v5->_itemPendingScanningProviderNumberOfChildrenFailingCreation = [v4 decodeIntegerForKey:@"_itemPendingScanningProviderNumberOfChildrenFailingCreation"];
-    v5->_itemPendingScanningProviderRemovalOfDatalessBitStatus = [v4 decodeIntegerForKey:@"_itemPendingScanningProviderRemovalOfDatalessBitStatus"];
+    v5->_itemPendingScanningProviderEnumerationStatus = [coderCopy decodeIntegerForKey:@"_itemPendingScanningProviderEnumerationStatus"];
+    v5->_itemPendingScanningProviderHasMultiplePagesEnumeration = [coderCopy decodeBoolForKey:@"_itemPendingScanningProviderHasMultiplePagesEnumeration"];
+    v5->_itemPendingScanningProviderNumberOfChildren = [coderCopy decodeIntegerForKey:@"_itemPendingScanningProviderNumberOfChildren"];
+    v5->_itemPendingScanningProviderNumberOfChildrenPendingCreation = [coderCopy decodeIntegerForKey:@"_itemPendingScanningProviderNumberOfChildrenPendingCreation"];
+    v5->_itemPendingScanningProviderNumberOfChildrenFailingCreation = [coderCopy decodeIntegerForKey:@"_itemPendingScanningProviderNumberOfChildrenFailingCreation"];
+    v5->_itemPendingScanningProviderRemovalOfDatalessBitStatus = [coderCopy decodeIntegerForKey:@"_itemPendingScanningProviderRemovalOfDatalessBitStatus"];
   }
 
   return v5;

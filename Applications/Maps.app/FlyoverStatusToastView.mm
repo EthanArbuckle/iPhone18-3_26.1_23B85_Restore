@@ -1,15 +1,15 @@
 @interface FlyoverStatusToastView
 + (CGSize)preferredSize;
-- (FlyoverStatusToastView)initWithTrackingStateReason:(unint64_t)a3;
-- (void)dismissWithCompletionHandler:(id)a3;
+- (FlyoverStatusToastView)initWithTrackingStateReason:(unint64_t)reason;
+- (void)dismissWithCompletionHandler:(id)handler;
 - (void)present;
 @end
 
 @implementation FlyoverStatusToastView
 
-- (void)dismissWithCompletionHandler:(id)a3
+- (void)dismissWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   self->_didDismiss = 1;
   [(NSLayoutConstraint *)self->_backgroundTopConstraint setConstant:5.0];
   [(NSLayoutConstraint *)self->_backgroundLeftConstraint setConstant:5.0];
@@ -27,8 +27,8 @@
   v9[1] = 3221225472;
   v9[2] = sub_100D0B454;
   v9[3] = &unk_10165F438;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   [UIView animateWithDuration:0 delay:v11 options:v9 animations:0.23 completion:v7];
 }
 
@@ -48,7 +48,7 @@
   [UIView animateWithDuration:0 delay:v3 options:0 animations:0.23 completion:0.0];
 }
 
-- (FlyoverStatusToastView)initWithTrackingStateReason:(unint64_t)a3
+- (FlyoverStatusToastView)initWithTrackingStateReason:(unint64_t)reason
 {
   v67.receiver = self;
   v67.super_class = FlyoverStatusToastView;
@@ -56,8 +56,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [(FlyoverStatusToastView *)v4 layer];
-    [v6 setAllowsGroupBlending:0];
+    layer = [(FlyoverStatusToastView *)v4 layer];
+    [layer setAllowsGroupBlending:0];
 
     [(FlyoverStatusToastView *)v5 setAccessibilityIdentifier:@"FlyoverStatusToastView"];
     v7 = [UIVisualEffectView alloc];
@@ -69,27 +69,27 @@
     [(UIVisualEffectView *)v5->_backgroundView setAlpha:0.0];
     [(UIVisualEffectView *)v5->_backgroundView _setContinuousCornerRadius:7.5];
     [(UIVisualEffectView *)v5->_backgroundView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [(UIVisualEffectView *)v5->_backgroundView topAnchor];
-    v12 = [(FlyoverStatusToastView *)v5 topAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:5.0];
+    topAnchor = [(UIVisualEffectView *)v5->_backgroundView topAnchor];
+    topAnchor2 = [(FlyoverStatusToastView *)v5 topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:5.0];
     backgroundTopConstraint = v5->_backgroundTopConstraint;
     v5->_backgroundTopConstraint = v13;
 
-    v15 = [(UIVisualEffectView *)v5->_backgroundView leftAnchor];
-    v16 = [(FlyoverStatusToastView *)v5 leftAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:5.0];
+    leftAnchor = [(UIVisualEffectView *)v5->_backgroundView leftAnchor];
+    leftAnchor2 = [(FlyoverStatusToastView *)v5 leftAnchor];
+    v17 = [leftAnchor constraintEqualToAnchor:leftAnchor2 constant:5.0];
     backgroundLeftConstraint = v5->_backgroundLeftConstraint;
     v5->_backgroundLeftConstraint = v17;
 
-    v19 = [(UIVisualEffectView *)v5->_backgroundView bottomAnchor];
-    v20 = [(FlyoverStatusToastView *)v5 bottomAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20 constant:-5.0];
+    bottomAnchor = [(UIVisualEffectView *)v5->_backgroundView bottomAnchor];
+    bottomAnchor2 = [(FlyoverStatusToastView *)v5 bottomAnchor];
+    v21 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-5.0];
     backgroundBottomConstraint = v5->_backgroundBottomConstraint;
     v5->_backgroundBottomConstraint = v21;
 
-    v23 = [(UIVisualEffectView *)v5->_backgroundView rightAnchor];
-    v24 = [(FlyoverStatusToastView *)v5 rightAnchor];
-    v25 = [v23 constraintEqualToAnchor:v24 constant:-5.0];
+    rightAnchor = [(UIVisualEffectView *)v5->_backgroundView rightAnchor];
+    rightAnchor2 = [(FlyoverStatusToastView *)v5 rightAnchor];
+    v25 = [rightAnchor constraintEqualToAnchor:rightAnchor2 constant:-5.0];
     backgroundRightConstraint = v5->_backgroundRightConstraint;
     v5->_backgroundRightConstraint = v25;
 
@@ -99,9 +99,9 @@
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v31 = [(FlyoverGlyphView *)v27 initWithFrame:CGRectZero.origin.x, y, width, height];
+    height = [(FlyoverGlyphView *)v27 initWithFrame:CGRectZero.origin.x, y, width, height];
     glyphView = v5->_glyphView;
-    v5->_glyphView = v31;
+    v5->_glyphView = height;
 
     [(FlyoverGlyphView *)v5->_glyphView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(FlyoverStatusToastView *)v5 addSubview:v5->_glyphView];
@@ -120,14 +120,14 @@
 
     [(UILabel *)v5->_label setTranslatesAutoresizingMaskIntoConstraints:0];
     v37 = kCAFilterPlusD;
-    v38 = [(UILabel *)v5->_label layer];
-    [v38 setCompositingFilter:v37];
+    layer2 = [(UILabel *)v5->_label layer];
+    [layer2 setCompositingFilter:v37];
 
     [(UILabel *)v5->_label setAccessibilityIdentifier:@"FlyoverStatusToastLabel"];
     [(FlyoverStatusToastView *)v5 addSubview:v5->_label];
-    if (a3 - 2 <= 2)
+    if (reason - 2 <= 2)
     {
-      v39 = off_1016513D8[a3 - 2];
+      v39 = off_1016513D8[reason - 2];
       v40 = +[NSBundle mainBundle];
       v41 = [v40 localizedStringForKey:v39 value:@"localized string not found" table:0];
       [(UILabel *)v5->_label setText:v41];
@@ -137,35 +137,35 @@
     v68[1] = v5->_backgroundLeftConstraint;
     v68[2] = v5->_backgroundBottomConstraint;
     v68[3] = v5->_backgroundRightConstraint;
-    v66 = [(FlyoverGlyphView *)v5->_glyphView widthAnchor];
-    v65 = [v66 constraintEqualToConstant:50.0];
+    widthAnchor = [(FlyoverGlyphView *)v5->_glyphView widthAnchor];
+    v65 = [widthAnchor constraintEqualToConstant:50.0];
     v68[4] = v65;
-    v64 = [(FlyoverGlyphView *)v5->_glyphView heightAnchor];
-    v63 = [v64 constraintEqualToConstant:50.0];
+    heightAnchor = [(FlyoverGlyphView *)v5->_glyphView heightAnchor];
+    v63 = [heightAnchor constraintEqualToConstant:50.0];
     v68[5] = v63;
-    v62 = [(FlyoverGlyphView *)v5->_glyphView leadingAnchor];
-    v61 = [(FlyoverStatusToastView *)v5 leadingAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61 constant:6.0];
+    leadingAnchor = [(FlyoverGlyphView *)v5->_glyphView leadingAnchor];
+    leadingAnchor2 = [(FlyoverStatusToastView *)v5 leadingAnchor];
+    v60 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:6.0];
     v68[6] = v60;
-    v59 = [(FlyoverGlyphView *)v5->_glyphView centerYAnchor];
-    v58 = [(FlyoverStatusToastView *)v5 centerYAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    centerYAnchor = [(FlyoverGlyphView *)v5->_glyphView centerYAnchor];
+    centerYAnchor2 = [(FlyoverStatusToastView *)v5 centerYAnchor];
+    v57 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v68[7] = v57;
-    v56 = [(UILabel *)v5->_label topAnchor];
-    v55 = [(FlyoverStatusToastView *)v5 topAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55 constant:5.0];
+    topAnchor3 = [(UILabel *)v5->_label topAnchor];
+    topAnchor4 = [(FlyoverStatusToastView *)v5 topAnchor];
+    v54 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:5.0];
     v68[8] = v54;
-    v53 = [(UILabel *)v5->_label leftAnchor];
-    v42 = [(FlyoverStatusToastView *)v5 leftAnchor];
-    v43 = [v53 constraintEqualToAnchor:v42 constant:55.0];
+    leftAnchor3 = [(UILabel *)v5->_label leftAnchor];
+    leftAnchor4 = [(FlyoverStatusToastView *)v5 leftAnchor];
+    v43 = [leftAnchor3 constraintEqualToAnchor:leftAnchor4 constant:55.0];
     v68[9] = v43;
-    v44 = [(UILabel *)v5->_label bottomAnchor];
-    v45 = [(FlyoverStatusToastView *)v5 bottomAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45 constant:-5.0];
+    bottomAnchor3 = [(UILabel *)v5->_label bottomAnchor];
+    bottomAnchor4 = [(FlyoverStatusToastView *)v5 bottomAnchor];
+    v46 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-5.0];
     v68[10] = v46;
-    v47 = [(UILabel *)v5->_label rightAnchor];
-    v48 = [(FlyoverStatusToastView *)v5 rightAnchor];
-    v49 = [v47 constraintEqualToAnchor:v48 constant:-15.0];
+    rightAnchor3 = [(UILabel *)v5->_label rightAnchor];
+    rightAnchor4 = [(FlyoverStatusToastView *)v5 rightAnchor];
+    v49 = [rightAnchor3 constraintEqualToAnchor:rightAnchor4 constant:-15.0];
     v68[11] = v49;
     v50 = [NSArray arrayWithObjects:v68 count:12];
     [NSLayoutConstraint activateConstraints:v50];

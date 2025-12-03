@@ -1,6 +1,6 @@
 @interface CRLIngestionTypes
-+ (BOOL)isValidFileType:(id)a3;
-+ (BOOL)isValidPlainTextUTI:(id)a3;
++ (BOOL)isValidFileType:(id)type;
++ (BOOL)isValidPlainTextUTI:(id)i;
 + (NSArray)highEfficiencyImageTypes;
 + (NSArray)highEfficiencyImageUTTypes;
 + (NSArray)nativeTypes;
@@ -53,7 +53,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000EDBD4;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A345B0 != -1)
   {
     dispatch_once(&qword_101A345B0, block);
@@ -78,26 +78,26 @@
 
 + (NSArray)supportedMovieTypes
 {
-  v3 = [UTTypeMovie identifier];
-  v9[0] = v3;
-  v4 = [UTTypeAudio identifier];
-  v9[1] = v4;
+  identifier = [UTTypeMovie identifier];
+  v9[0] = identifier;
+  identifier2 = [UTTypeAudio identifier];
+  v9[1] = identifier2;
   v5 = [NSArray arrayWithObjects:v9 count:2];
-  v6 = [a1 supportedMovieAnimatedImageTypes];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  supportedMovieAnimatedImageTypes = [self supportedMovieAnimatedImageTypes];
+  v7 = [v5 arrayByAddingObjectsFromArray:supportedMovieAnimatedImageTypes];
 
   return v7;
 }
 
 + (NSArray)supportedMovieAnimatedImageTypes
 {
-  v3 = [UTTypeGIF identifier];
-  v9[0] = v3;
-  v4 = [UTTypePNG identifier];
-  v9[1] = v4;
+  identifier = [UTTypeGIF identifier];
+  v9[0] = identifier;
+  identifier2 = [UTTypePNG identifier];
+  v9[1] = identifier2;
   v5 = [NSArray arrayWithObjects:v9 count:2];
-  v6 = [a1 highEfficiencyImageTypes];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  highEfficiencyImageTypes = [self highEfficiencyImageTypes];
+  v7 = [v5 arrayByAddingObjectsFromArray:highEfficiencyImageTypes];
 
   return v7;
 }
@@ -107,8 +107,8 @@
   v7[0] = UTTypeMovie;
   v7[1] = UTTypeAudio;
   v3 = [NSArray arrayWithObjects:v7 count:2];
-  v4 = [a1 supportedMovieAnimatedImageUTTypes];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  supportedMovieAnimatedImageUTTypes = [self supportedMovieAnimatedImageUTTypes];
+  v5 = [v3 arrayByAddingObjectsFromArray:supportedMovieAnimatedImageUTTypes];
 
   return v5;
 }
@@ -118,8 +118,8 @@
   v7[0] = UTTypeGIF;
   v7[1] = UTTypePNG;
   v3 = [NSArray arrayWithObjects:v7 count:2];
-  v4 = [a1 highEfficiencyImageUTTypes];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  highEfficiencyImageUTTypes = [self highEfficiencyImageUTTypes];
+  v5 = [v3 arrayByAddingObjectsFromArray:highEfficiencyImageUTTypes];
 
   return v5;
 }
@@ -136,11 +136,11 @@
 
 + (NSArray)supported3DFileTypes
 {
-  v2 = [UTTypeUSDZ identifier];
-  v3 = [UTTypeRealityFile identifier];
-  v7[1] = v3;
-  v4 = [UTTypeUSD identifier];
-  v7[2] = v4;
+  identifier = [UTTypeUSDZ identifier];
+  identifier2 = [UTTypeRealityFile identifier];
+  v7[1] = identifier2;
+  identifier3 = [UTTypeUSD identifier];
+  v7[2] = identifier3;
   v5 = [NSArray arrayWithObjects:v7 count:3];
 
   return v5;
@@ -162,19 +162,19 @@
 
 + (NSArray)supportedGenericFileTypes
 {
-  v2 = [UTTypeContent identifier];
-  v3 = [UTTypeEmailMessage identifier];
-  v11[1] = v3;
-  v4 = [UTTypeArchive identifier];
-  v11[2] = v4;
-  v5 = [UTTypeZIP identifier];
-  v11[3] = v5;
-  v6 = [UTTypeExecutable identifier];
-  v11[4] = v6;
-  v7 = [UTTypeDatabase identifier];
-  v11[5] = v7;
-  v8 = [UTTypeDiskImage identifier];
-  v11[6] = v8;
+  identifier = [UTTypeContent identifier];
+  identifier2 = [UTTypeEmailMessage identifier];
+  v11[1] = identifier2;
+  identifier3 = [UTTypeArchive identifier];
+  v11[2] = identifier3;
+  identifier4 = [UTTypeZIP identifier];
+  v11[3] = identifier4;
+  identifier5 = [UTTypeExecutable identifier];
+  v11[4] = identifier5;
+  identifier6 = [UTTypeDatabase identifier];
+  v11[5] = identifier6;
+  identifier7 = [UTTypeDiskImage identifier];
+  v11[6] = identifier7;
   v9 = [NSArray arrayWithObjects:v11 count:7];
 
   return v9;
@@ -182,11 +182,11 @@
 
 + (NSArray)supportedRichTextTypes
 {
-  v2 = [UTTypeRTF identifier];
-  v3 = [UTTypeFlatRTFD identifier];
-  v7[1] = v3;
-  v4 = [UTTypeRTFD identifier];
-  v7[2] = v4;
+  identifier = [UTTypeRTF identifier];
+  identifier2 = [UTTypeFlatRTFD identifier];
+  v7[1] = identifier2;
+  identifier3 = [UTTypeRTFD identifier];
+  v7[2] = identifier3;
   v5 = [NSArray arrayWithObjects:v7 count:3];
 
   return v5;
@@ -202,14 +202,14 @@
   return v2;
 }
 
-+ (BOOL)isValidFileType:(id)a3
++ (BOOL)isValidFileType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[CRLIngestionTypes supportedGenericFileUTTypes];
-  if ([v3 crl_conformsToAnyUTType:v4])
+  if ([typeCopy crl_conformsToAnyUTType:v4])
   {
     v5 = +[CRLInfoImporterBoardItemProvider disallowedTypes];
-    if ([v5 containsObject:v3])
+    if ([v5 containsObject:typeCopy])
     {
       LOBYTE(v6) = 0;
     }
@@ -217,22 +217,22 @@
     else
     {
       v7 = +[CRLIngestionTypes supportedRichTextUTTypes];
-      if ([v3 crl_conformsToAnyUTType:v7])
+      if ([typeCopy crl_conformsToAnyUTType:v7])
       {
         LOBYTE(v6) = 0;
       }
 
       else
       {
-        v8 = [v3 identifier];
-        if (+[CRLIngestionTypes isValidPlainTextUTI:](CRLIngestionTypes, "isValidPlainTextUTI:", v8) || ([v3 isEqual:UTTypeHTML] & 1) != 0)
+        identifier = [typeCopy identifier];
+        if (+[CRLIngestionTypes isValidPlainTextUTI:](CRLIngestionTypes, "isValidPlainTextUTI:", identifier) || ([typeCopy isEqual:UTTypeHTML] & 1) != 0)
         {
           LOBYTE(v6) = 0;
         }
 
         else
         {
-          v6 = [v3 isEqual:UTTypeWebArchive] ^ 1;
+          v6 = [typeCopy isEqual:UTTypeWebArchive] ^ 1;
         }
       }
     }
@@ -246,22 +246,22 @@
   return v6;
 }
 
-+ (BOOL)isValidPlainTextUTI:(id)a3
++ (BOOL)isValidPlainTextUTI:(id)i
 {
-  v4 = a3;
-  v5 = [a1 p_unsupportedPlainTextTypes];
-  if ([v5 containsObject:v4])
+  iCopy = i;
+  p_unsupportedPlainTextTypes = [self p_unsupportedPlainTextTypes];
+  if ([p_unsupportedPlainTextTypes containsObject:iCopy])
   {
     LOBYTE(v6) = 0;
   }
 
   else
   {
-    v7 = [a1 p_supportedPlainTextTypes];
-    if ([v4 crl_conformsToAnyUTI:v7])
+    p_supportedPlainTextTypes = [self p_supportedPlainTextTypes];
+    if ([iCopy crl_conformsToAnyUTI:p_supportedPlainTextTypes])
     {
-      v8 = [a1 supportedRichTextTypes];
-      v6 = [v8 containsObject:v4] ^ 1;
+      supportedRichTextTypes = [self supportedRichTextTypes];
+      v6 = [supportedRichTextTypes containsObject:iCopy] ^ 1;
     }
 
     else
@@ -276,10 +276,10 @@
 + (id)p_supportedPlainTextTypes
 {
   v2 = +[NSString readableTypeIdentifiersForItemProvider];
-  v3 = [UTTypePlainText identifier];
-  v10[0] = v3;
-  v4 = [UTTypeText identifier];
-  v10[1] = v4;
+  identifier = [UTTypePlainText identifier];
+  v10[0] = identifier;
+  identifier2 = [UTTypeText identifier];
+  v10[1] = identifier2;
   v5 = [NSArray arrayWithObjects:v10 count:2];
   v6 = [v2 arrayByAddingObjectsFromArray:v5];
 
@@ -291,12 +291,12 @@
 
 + (id)p_unsupportedPlainTextTypes
 {
-  v2 = [UTTypeVCard identifier];
+  identifier = [UTTypeVCard identifier];
   v3 = sub_1000ED728();
-  v4 = [v3 identifier];
-  v8[1] = v4;
-  v5 = [UTTypeSVG identifier];
-  v8[2] = v5;
+  identifier2 = [v3 identifier];
+  v8[1] = identifier2;
+  identifier3 = [UTTypeSVG identifier];
+  v8[2] = identifier3;
   v6 = [NSArray arrayWithObjects:v8 count:3];
 
   return v6;
@@ -304,12 +304,12 @@
 
 + (NSArray)highEfficiencyImageTypes
 {
-  v2 = [UTTypeHEIC identifier];
-  v3 = [UTTypeHEIF identifier];
-  v8[1] = v3;
+  identifier = [UTTypeHEIC identifier];
+  identifier2 = [UTTypeHEIF identifier];
+  v8[1] = identifier2;
   v4 = sub_1000EED64();
-  v5 = [v4 identifier];
-  v8[2] = v5;
+  identifier3 = [v4 identifier];
+  v8[2] = identifier3;
   v6 = [NSArray arrayWithObjects:v8 count:3];
 
   return v6;

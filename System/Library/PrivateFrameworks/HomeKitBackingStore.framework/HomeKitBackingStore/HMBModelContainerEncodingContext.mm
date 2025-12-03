@@ -1,22 +1,22 @@
 @interface HMBModelContainerEncodingContext
-- (HMBModelContainerEncodingContext)initWithModelContainer:(id)a3;
+- (HMBModelContainerEncodingContext)initWithModelContainer:(id)container;
 @end
 
 @implementation HMBModelContainerEncodingContext
 
-- (HMBModelContainerEncodingContext)initWithModelContainer:(id)a3
+- (HMBModelContainerEncodingContext)initWithModelContainer:(id)container
 {
-  v5 = a3;
-  if (v5)
+  containerCopy = container;
+  if (containerCopy)
   {
-    v6 = v5;
+    v6 = containerCopy;
     v13.receiver = self;
     v13.super_class = HMBModelContainerEncodingContext;
     v7 = [(HMBModelContainerEncodingContext *)&v13 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_modelContainer, a3);
+      objc_storeStrong(&v7->_modelContainer, container);
     }
 
     return v8;

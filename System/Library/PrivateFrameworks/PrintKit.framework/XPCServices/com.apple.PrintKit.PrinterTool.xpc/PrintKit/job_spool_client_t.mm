@@ -13,8 +13,8 @@
 - (BOOL)hasPresetName;
 - (BOOL)hasPrintQuality;
 - (BOOL)hasSides;
-- (BOOL)peekFirstEightBytes:(char *)a3;
-- (BOOL)validateJobRequestAgainstPrinter:(id)a3;
+- (BOOL)peekFirstEightBytes:(char *)bytes;
+- (BOOL)validateJobRequestAgainstPrinter:(id)printer;
 - (NSArray)Finishings;
 - (NSArray)PageRanges;
 - (NSData)DocumentPassword;
@@ -31,42 +31,42 @@
 - (int)OrientationRequested;
 - (int)PrintQuality;
 - (int)RasterFeedOrientation;
-- (int64_t)moveStreamingFileTo:(id)a3;
+- (int64_t)moveStreamingFileTo:(id)to;
 - (ipp_collection_t)FinishingsCol;
-- (job_spool_client_t)initWithClientID:(int)a3 printer:(id)a4 printSettings:(id)a5;
-- (void)figureOutputOrPrintColorMode:(OutputOrPrintColorMode *)a3;
+- (job_spool_client_t)initWithClientID:(int)d printer:(id)printer printSettings:(id)settings;
+- (void)figureOutputOrPrintColorMode:(OutputOrPrintColorMode *)mode;
 - (void)invalidate;
-- (void)startStreamingCompletionHandler:(id)a3;
-- (void)submitRequestWithSession:(id)a3 completionHandler:(id)a4;
+- (void)startStreamingCompletionHandler:(id)handler;
+- (void)submitRequestWithSession:(id)session completionHandler:(id)handler;
 @end
 
 @implementation job_spool_client_t
 
-- (job_spool_client_t)initWithClientID:(int)a3 printer:(id)a4 printSettings:(id)a5
+- (job_spool_client_t)initWithClientID:(int)d printer:(id)printer printSettings:(id)settings
 {
-  v9 = a4;
-  v10 = a5;
+  printerCopy = printer;
+  settingsCopy = settings;
   v20.receiver = self;
   v20.super_class = job_spool_client_t;
   v11 = [(job_spool_client_t *)&v20 init];
   v12 = v11;
   if (v11)
   {
-    v11->_clientID = a3;
-    objc_storeStrong(&v11->_printer, a4);
-    objc_storeStrong(&v12->_printSettings, a5);
+    v11->_clientID = d;
+    objc_storeStrong(&v11->_printer, printer);
+    objc_storeStrong(&v12->_printSettings, settings);
     v13 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      LODWORD(v22) = a3;
+      LODWORD(v22) = d;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Job Init: Client ID %d", buf, 8u);
     }
 
     v14 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v9 debugDescription];
+      v15 = [printerCopy debugDescription];
       *buf = 138412290;
       v22 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Job Init: Printer %@", buf, 0xCu);
@@ -75,8 +75,8 @@
     v16 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v10 userCodableDictionary];
-      v18 = [v17 debugDescription];
+      userCodableDictionary = [settingsCopy userCodableDictionary];
+      v18 = [userCodableDictionary debugDescription];
       *buf = 138412290;
       v22 = v18;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Job Init: Settings: %@", buf, 0xCu);
@@ -130,9 +130,9 @@
   }
 }
 
-- (void)startStreamingCompletionHandler:(id)a3
+- (void)startStreamingCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -140,11 +140,11 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "startStreamingCompletionHandler", v7, 2u);
   }
 
-  v6 = [(job_spool_client_t *)self fileHandleForStreaming];
-  v4[2](v4, v6);
+  fileHandleForStreaming = [(job_spool_client_t *)self fileHandleForStreaming];
+  handlerCopy[2](handlerCopy, fileHandleForStreaming);
 }
 
-- (BOOL)peekFirstEightBytes:(char *)a3
+- (BOOL)peekFirstEightBytes:(char *)bytes
 {
   filePathForStreaming = self->_filePathForStreaming;
   if (!filePathForStreaming)
@@ -171,7 +171,7 @@
   }
 
   v7 = v6;
-  v8 = read(v6, a3, 8uLL) == 8;
+  v8 = read(v6, bytes, 8uLL) == 8;
   close(v7);
   return v8;
 }
@@ -181,21 +181,21 @@
   if (!self->_fileHandleForStreaming)
   {
     v3 = +[NSFileManager defaultManager];
-    v4 = [v3 temporaryDirectory];
+    temporaryDirectory = [v3 temporaryDirectory];
 
     v5 = getpid();
     v6 = +[NSProcessInfo processInfo];
-    v7 = [v6 globallyUniqueString];
-    v8 = [NSString stringWithFormat:@"%d-%@.tmp", v5, v7];
+    globallyUniqueString = [v6 globallyUniqueString];
+    v8 = [NSString stringWithFormat:@"%d-%@.tmp", v5, globallyUniqueString];
 
-    v9 = [v4 URLByAppendingPathComponent:v8];
+    v9 = [temporaryDirectory URLByAppendingPathComponent:v8];
     filePathForStreaming = self->_filePathForStreaming;
     self->_filePathForStreaming = v9;
 
     v11 = +[NSFileManager defaultManager];
-    v12 = [(NSURL *)self->_filePathForStreaming path];
+    path = [(NSURL *)self->_filePathForStreaming path];
     v13 = +[NSData data];
-    [v11 createFileAtPath:v12 contents:v13 attributes:0];
+    [v11 createFileAtPath:path contents:v13 attributes:0];
 
     v14 = self->_filePathForStreaming;
     v23 = 0;
@@ -230,9 +230,9 @@
   return v21;
 }
 
-- (int64_t)moveStreamingFileTo:(id)a3
+- (int64_t)moveStreamingFileTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -240,7 +240,7 @@
     *buf = 138543618;
     v25 = fileHandleForStreaming;
     v26 = 2114;
-    v27 = v4;
+    v27 = toCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "moveStreamingFileTo %{public}@ to %{public}@", buf, 0x16u);
   }
 
@@ -274,7 +274,7 @@ LABEL_11:
       v14 = +[NSFileManager defaultManager];
       v15 = self->_filePathForStreaming;
       v22 = 0;
-      [v14 moveItemAtURL:v15 toURL:v4 error:&v22];
+      [v14 moveItemAtURL:v15 toURL:toCopy error:&v22];
       v8 = v22;
 
       v16 = self->_filePathForStreaming;
@@ -286,7 +286,7 @@ LABEL_11:
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v25 = v4;
+          v25 = toCopy;
           v26 = 2114;
           v27 = v8;
           v12 = "Couldn't move temp file to new location %{public}@: %{public}@";
@@ -298,12 +298,12 @@ LABEL_11:
       {
         v21 = 0;
         v20 = 0;
-        v18 = [v4 getResourceValue:&v21 forKey:NSURLFileSizeKey error:&v20];
+        v18 = [toCopy getResourceValue:&v21 forKey:NSURLFileSizeKey error:&v20];
         v10 = v21;
         v8 = v20;
         if (v18)
         {
-          v13 = [v10 integerValue];
+          integerValue = [v10 integerValue];
           goto LABEL_13;
         }
 
@@ -311,7 +311,7 @@ LABEL_11:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543618;
-          v25 = v4;
+          v25 = toCopy;
           v26 = 2114;
           v27 = v8;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Couldn't get file length for new locaton %{public}@: %{public}@", buf, 0x16u);
@@ -319,27 +319,27 @@ LABEL_11:
       }
     }
 
-    v13 = -1;
+    integerValue = -1;
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v13 = -1;
+  integerValue = -1;
 LABEL_14:
 
-  return v13;
+  return integerValue;
 }
 
-- (void)submitRequestWithSession:(id)a3 completionHandler:(id)a4
+- (void)submitRequestWithSession:(id)session completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  handlerCopy = handler;
   v8 = _PKLogCategory(PKLogCategoryDefault[0]);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    *v32 = v6;
+    *v32 = sessionCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "submitRequestWithSession %p", buf, 0xCu);
   }
 
@@ -347,39 +347,39 @@ LABEL_14:
   {
     if ([(job_spool_client_t *)self validateJobRequestAgainstPrinter:?])
     {
-      v9 = [[lite_job_t alloc] initWithRequestParams:self session:v6 printer:self->_printer printSettings:self->_printSettings];
+      v9 = [[lite_job_t alloc] initWithRequestParams:self session:sessionCopy printer:self->_printer printSettings:self->_printSettings];
       v30 = 0;
-      v10 = [(job_spool_client_t *)self finalizeFilePosition:&v30 forJobID:[(lite_job_t *)v9 printd_job_id] session:v6];
+      v10 = [(job_spool_client_t *)self finalizeFilePosition:&v30 forJobID:[(lite_job_t *)v9 printd_job_id] session:sessionCopy];
       if (v10)
       {
         [(lite_job_t *)v9 setPayloadTotal:v30];
-        v11 = [v10 path];
-        [(lite_job_t *)v9 setSpoolDocumentFilename:v11];
+        path = [v10 path];
+        [(lite_job_t *)v9 setSpoolDocumentFilename:path];
 
         v12 = _PKLogCategory(PKLogCategoryProgress[0]);
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [(lite_job_t *)v9 printd_job_id];
+          printd_job_id = [(lite_job_t *)v9 printd_job_id];
           if (v9)
           {
-            v14 = [(lite_job_t *)v9 destination_job_id];
+            destination_job_id = [(lite_job_t *)v9 destination_job_id];
           }
 
           else
           {
-            v14 = -1;
+            destination_job_id = -1;
           }
 
           v21 = v30;
-          v22 = [v10 absoluteURL];
+          absoluteURL = [v10 absoluteURL];
           *buf = 67109890;
-          *v32 = v13;
+          *v32 = printd_job_id;
           *&v32[4] = 1024;
-          *&v32[6] = v14;
+          *&v32[6] = destination_job_id;
           *v33 = 2048;
           *&v33[2] = v21;
           v34 = 2114;
-          v35 = v22;
+          v35 = absoluteURL;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[Job %d][%d] Copied %lld bytes to %{public}@.", buf, 0x22u);
         }
 
@@ -387,72 +387,72 @@ LABEL_14:
         {
           if ([(lite_job_t *)v9 is_canceled])
           {
-            v20 = @"Job was canceled before it began";
+            addJobAndAllowToProceed = @"Job was canceled before it began";
           }
 
           else if ([(lite_job_t *)v9 localJobState]== 4)
           {
-            v20 = [(lite_job_t *)v9 addJobAndAllowToProceed];
-            if (!v20)
+            addJobAndAllowToProceed = [(lite_job_t *)v9 addJobAndAllowToProceed];
+            if (!addJobAndAllowToProceed)
             {
               v23 = _PKLogCategory(PKLogCategoryProgress[0]);
               if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
               {
-                v24 = [(job_spool_client_t *)self clientID];
-                v25 = [(lite_job_t *)v9 printd_job_id];
+                clientID = [(job_spool_client_t *)self clientID];
+                printd_job_id2 = [(lite_job_t *)v9 printd_job_id];
                 *buf = 67109376;
-                *v32 = v24;
+                *v32 = clientID;
                 *&v32[4] = 1024;
-                *&v32[6] = v25;
+                *&v32[6] = printd_job_id2;
                 _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "[Client %d] Job id %d ready and sent for processing", buf, 0xEu);
               }
 
               v26 = [NSNumber numberWithInt:[(lite_job_t *)v9 printd_job_id]];
-              v7[2](v7, v26);
+              handlerCopy[2](handlerCopy, v26);
 
-              v20 = 0;
+              addJobAndAllowToProceed = 0;
               goto LABEL_29;
             }
           }
 
           else
           {
-            v20 = @"Job is not in the held state";
+            addJobAndAllowToProceed = @"Job is not in the held state";
           }
         }
 
         else
         {
-          v20 = @"Job attributes did not match print document.";
+          addJobAndAllowToProceed = @"Job attributes did not match print document.";
         }
       }
 
       else
       {
         printer = self->_printer;
-        v18 = [(lite_printer_t *)printer reasons];
+        reasons = [(lite_printer_t *)printer reasons];
         v19 = [NSString stringWithUTF8String:"[job_spool_client_t submitRequestWithSession:completionHandler:]"];
-        liteNotifyPrinter(printer, v18 | 0x40000, v19);
+        liteNotifyPrinter(printer, reasons | 0x40000, v19);
 
-        v20 = @"No space for spool file";
+        addJobAndAllowToProceed = @"No space for spool file";
       }
 
       v27 = _PKLogCategory(PKLogCategoryProgress[0]);
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [(job_spool_client_t *)self clientID];
-        v29 = [(lite_job_t *)v9 printd_job_id];
+        clientID2 = [(job_spool_client_t *)self clientID];
+        printd_job_id3 = [(lite_job_t *)v9 printd_job_id];
         *buf = 67109634;
-        *v32 = v28;
+        *v32 = clientID2;
         *&v32[4] = 1024;
-        *&v32[6] = v29;
+        *&v32[6] = printd_job_id3;
         *v33 = 2112;
-        *&v33[2] = v20;
+        *&v33[2] = addJobAndAllowToProceed;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "[Client %d] Job id %d failed to prepare and will be aborted: %@", buf, 0x18u);
       }
 
       [(lite_job_t *)v9 finishJob:8];
-      v7[2](v7, 0);
+      handlerCopy[2](handlerCopy, 0);
 LABEL_29:
 
       goto LABEL_30;
@@ -470,15 +470,15 @@ LABEL_29:
     }
   }
 
-  v7[2](v7, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_30:
 }
 
-- (BOOL)validateJobRequestAgainstPrinter:(id)a3
+- (BOOL)validateJobRequestAgainstPrinter:(id)printer
 {
-  v4 = a3;
-  v5 = [(job_spool_client_t *)self DocumentFormat];
-  if (!v5)
+  printerCopy = printer;
+  documentFormat = [(job_spool_client_t *)self DocumentFormat];
+  if (!documentFormat)
   {
     v10 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -494,8 +494,8 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v6 = [v4 attrs_document_format_supported];
-  v7 = [v6 containsObject:v5];
+  attrs_document_format_supported = [printerCopy attrs_document_format_supported];
+  v7 = [attrs_document_format_supported containsObject:documentFormat];
 
   if ((v7 & 1) == 0)
   {
@@ -515,13 +515,13 @@ LABEL_13:
     goto LABEL_18;
   }
 
-  v8 = [(job_spool_client_t *)self Copies];
-  if (v8 >> 4 < 0x271)
+  copies = [(job_spool_client_t *)self Copies];
+  if (copies >> 4 < 0x271)
   {
-    if (v8 != 1)
+    if (copies != 1)
     {
-      v14 = [(job_spool_client_t *)self DocumentFormat];
-      v15 = [v14 caseInsensitiveCompare:@"image/urf"];
+      documentFormat2 = [(job_spool_client_t *)self DocumentFormat];
+      v15 = [documentFormat2 caseInsensitiveCompare:@"image/urf"];
 
       if (!v15)
       {
@@ -565,27 +565,27 @@ LABEL_31:
             goto LABEL_15;
           }
 
-          v19 = [(job_spool_client_t *)self Sides];
-          if ([v19 isEqualToString:@"one-sided"])
+          sides = [(job_spool_client_t *)self Sides];
+          if ([sides isEqualToString:@"one-sided"])
           {
 LABEL_30:
 
             goto LABEL_31;
           }
 
-          if ([v4 printer_type_from_cups])
+          if ([printerCopy printer_type_from_cups])
           {
-            if ([v19 isEqualToString:@"two-sided-long-edge"])
+            if ([sides isEqualToString:@"two-sided-long-edge"])
             {
               goto LABEL_30;
             }
 
-            if ([v19 isEqualToString:@"two-sided-short-edge"])
+            if ([sides isEqualToString:@"two-sided-short-edge"])
             {
               goto LABEL_30;
             }
 
-            v23 = [NSString stringWithFormat:@"Unknown Sides attribute '%@'", v19];
+            v23 = [NSString stringWithFormat:@"Unknown Sides attribute '%@'", sides];
             if (!v23)
             {
               goto LABEL_30;
@@ -621,15 +621,15 @@ LABEL_30:
     }
 
     v27 = off_1000A04A0;
-    v28 = self;
+    selfCopy = self;
     v26 = 0;
     if (pwgInitSize(buf, &v27, &v26))
     {
       if (!v26 || v32 + HIDWORD(v30) < *buf && v33 + v31 < v30)
       {
-        v16 = v28;
+        v16 = selfCopy;
         v27 = off_1000A04A0;
-        v28 = 0;
+        selfCopy = 0;
 
         goto LABEL_24;
       }
@@ -653,9 +653,9 @@ LABEL_39:
       }
     }
 
-    v22 = v28;
+    v22 = selfCopy;
     v27 = off_1000A04A0;
-    v28 = 0;
+    selfCopy = 0;
 
     goto LABEL_14;
   }
@@ -678,18 +678,18 @@ LABEL_15:
 
 - (BOOL)AttributeFidelity
 {
-  v2 = [(PKPrintSettings *)self->_printSettings pageScale];
-  v3 = v2;
-  v4 = v2 && (([v2 isEqualToString:PKPageScaleUpAndDown] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", PKPageScaleOff));
+  pageScale = [(PKPrintSettings *)self->_printSettings pageScale];
+  v3 = pageScale;
+  v4 = pageScale && (([pageScale isEqualToString:PKPageScaleUpAndDown] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", PKPageScaleOff));
 
   return v4;
 }
 
 - (NSString)DocumentFormat
 {
-  v3 = [(PKPrintSettings *)self->_printSettings fileType];
-  v4 = v3;
-  if (!v3 || ![(__CFString *)v3 caseInsensitiveCompare:@"application/octet-stream"])
+  fileType = [(PKPrintSettings *)self->_printSettings fileType];
+  v4 = fileType;
+  if (!fileType || ![(__CFString *)fileType caseInsensitiveCompare:@"application/octet-stream"])
   {
     v27 = 0;
     if (![(job_spool_client_t *)self peekFirstEightBytes:&v27])
@@ -701,7 +701,7 @@ LABEL_15:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 67111168;
-      v12 = [(job_spool_client_t *)self clientID];
+      clientID = [(job_spool_client_t *)self clientID];
       v13 = 1024;
       *v14 = v27;
       *&v14[4] = 1024;
@@ -761,9 +761,9 @@ LABEL_15:
     v8 = _PKLogCategory(PKLogCategoryProgress[0]);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(job_spool_client_t *)self clientID];
+      clientID2 = [(job_spool_client_t *)self clientID];
       v11 = 67109378;
-      v12 = v9;
+      clientID = clientID2;
       v13 = 2112;
       *v14 = v4;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[Client %d] Auto-typed format is %@.", &v11, 0x12u);
@@ -777,21 +777,21 @@ LABEL_15:
 
 - (BOOL)hasDocumentPassword
 {
-  v2 = [(PKPrintSettings *)self->_printSettings documentPassword];
-  v3 = v2 != 0;
+  documentPassword = [(PKPrintSettings *)self->_printSettings documentPassword];
+  v3 = documentPassword != 0;
 
   return v3;
 }
 
 - (NSData)DocumentPassword
 {
-  v2 = [(PKPrintSettings *)self->_printSettings documentPassword];
-  v3 = [v2 precomposedStringWithCanonicalMapping];
+  documentPassword = [(PKPrintSettings *)self->_printSettings documentPassword];
+  precomposedStringWithCanonicalMapping = [documentPassword precomposedStringWithCanonicalMapping];
 
-  if (v3)
+  if (precomposedStringWithCanonicalMapping)
   {
-    v4 = [v3 UTF8String];
-    v5 = [NSData dataWithBytes:v4 length:strlen(v4)];
+    uTF8String = [precomposedStringWithCanonicalMapping UTF8String];
+    v5 = [NSData dataWithBytes:uTF8String length:strlen(uTF8String)];
   }
 
   else
@@ -804,16 +804,16 @@ LABEL_15:
 
 - (BOOL)hasFinishings
 {
-  v3 = [(PKPrintSettings *)self->_printSettings finishingTemplate];
-  if (v3)
+  finishingTemplate = [(PKPrintSettings *)self->_printSettings finishingTemplate];
+  if (finishingTemplate)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PKPrintSettings *)self->_printSettings finishings];
-    v4 = v5 != 0;
+    finishings = [(PKPrintSettings *)self->_printSettings finishings];
+    v4 = finishings != 0;
   }
 
   return v4;
@@ -821,18 +821,18 @@ LABEL_15:
 
 - (NSArray)Finishings
 {
-  v3 = [(PKPrintSettings *)self->_printSettings finishingTemplate];
-  if (v3)
+  finishingTemplate = [(PKPrintSettings *)self->_printSettings finishingTemplate];
+  if (finishingTemplate)
   {
     v4 = 0;
     goto LABEL_29;
   }
 
-  v5 = [(PKPrintSettings *)self->_printSettings finishings];
-  v6 = v5;
-  if (v5)
+  finishings = [(PKPrintSettings *)self->_printSettings finishings];
+  v6 = finishings;
+  if (finishings)
   {
-    v7 = v5;
+    v7 = finishings;
   }
 
   else
@@ -842,10 +842,10 @@ LABEL_15:
 
   v8 = v7;
 
-  v9 = [(lite_printer_t *)self->_printer printerDescription];
-  v10 = [v9 finishings];
+  printerDescription = [(lite_printer_t *)self->_printer printerDescription];
+  finishings2 = [printerDescription finishings];
 
-  if (-[PKPrintSettings copies](self->_printSettings, "copies") >= 2 && [v10 containsObject:&off_1000B91D0] && (objc_msgSend(v8, "containsObject:", &off_1000B91D0) & 1) == 0)
+  if (-[PKPrintSettings copies](self->_printSettings, "copies") >= 2 && [finishings2 containsObject:&off_1000B91D0] && (objc_msgSend(v8, "containsObject:", &off_1000B91D0) & 1) == 0)
   {
     v11 = [v8 arrayByAddingObject:&off_1000B91D0];
 
@@ -875,7 +875,7 @@ LABEL_15:
           }
 
           v18 = *(*(&v23 + 1) + 8 * i);
-          if ([v10 containsObject:{v18, v23}])
+          if ([finishings2 containsObject:{v18, v23}])
           {
             v12[v15] = [v18 intValue];
             LODWORD(v15) = v15 + 1;
@@ -926,19 +926,19 @@ LABEL_29:
 
 - (BOOL)hasFinishingsCol
 {
-  v2 = [(PKPrintSettings *)self->_printSettings finishingTemplate];
-  v3 = v2 != 0;
+  finishingTemplate = [(PKPrintSettings *)self->_printSettings finishingTemplate];
+  v3 = finishingTemplate != 0;
 
   return v3;
 }
 
 - (ipp_collection_t)FinishingsCol
 {
-  v2 = [(PKPrintSettings *)self->_printSettings finishingTemplate];
-  if (v2)
+  finishingTemplate = [(PKPrintSettings *)self->_printSettings finishingTemplate];
+  if (finishingTemplate)
   {
     v3 = objc_opt_new();
-    [v3 _addString:2 valueTag:68 name:@"finishing-template" lang:0 value:v2];
+    [v3 _addString:2 valueTag:68 name:@"finishing-template" lang:0 value:finishingTemplate];
   }
 
   else
@@ -951,19 +951,19 @@ LABEL_29:
 
 - (BOOL)hasFitToPage
 {
-  v2 = [(PKPrintSettings *)self->_printSettings pageScale];
-  v3 = v2 != 0;
+  pageScale = [(PKPrintSettings *)self->_printSettings pageScale];
+  v3 = pageScale != 0;
 
   return v3;
 }
 
 - (BOOL)FitToPage
 {
-  v2 = [(PKPrintSettings *)self->_printSettings pageScale];
-  v3 = v2;
-  if (v2)
+  pageScale = [(PKPrintSettings *)self->_printSettings pageScale];
+  v3 = pageScale;
+  if (pageScale)
   {
-    if ([v2 isEqualToString:PKPageScaleDown])
+    if ([pageScale isEqualToString:PKPageScaleDown])
     {
       v4 = 1;
     }
@@ -984,47 +984,47 @@ LABEL_29:
 
 - (BOOL)hasJobAccountID
 {
-  v2 = [(PKPrintSettings *)self->_printSettings jobAccountID];
-  v3 = v2 != 0;
+  jobAccountID = [(PKPrintSettings *)self->_printSettings jobAccountID];
+  v3 = jobAccountID != 0;
 
   return v3;
 }
 
 - (NSString)JobAccountID
 {
-  v2 = [(PKPrintSettings *)self->_printSettings jobAccountID];
-  v3 = [v2 precomposedStringWithCanonicalMapping];
+  jobAccountID = [(PKPrintSettings *)self->_printSettings jobAccountID];
+  precomposedStringWithCanonicalMapping = [jobAccountID precomposedStringWithCanonicalMapping];
 
-  return v3;
+  return precomposedStringWithCanonicalMapping;
 }
 
 - (NSString)JobName
 {
-  v2 = [(PKPrintSettings *)self->_printSettings jobName];
-  v3 = [v2 precomposedStringWithCanonicalMapping];
+  jobName = [(PKPrintSettings *)self->_printSettings jobName];
+  precomposedStringWithCanonicalMapping = [jobName precomposedStringWithCanonicalMapping];
 
-  return v3;
+  return precomposedStringWithCanonicalMapping;
 }
 
 - (BOOL)hasMediaCol
 {
-  v2 = [(PKPrintSettings *)self->_printSettings paper];
-  v3 = v2 != 0;
+  paper = [(PKPrintSettings *)self->_printSettings paper];
+  v3 = paper != 0;
 
   return v3;
 }
 
 - (PKMediaCol)MediaCol
 {
-  v3 = [(PKPrintSettings *)self->_printSettings paper];
-  if (v3)
+  paper = [(PKPrintSettings *)self->_printSettings paper];
+  if (paper)
   {
-    v4 = [(lite_printer_t *)self->_printer printerDescription];
-    v5 = [v4 mediaColSupportedArray];
+    printerDescription = [(lite_printer_t *)self->_printer printerDescription];
+    mediaColSupportedArray = [printerDescription mediaColSupportedArray];
 
-    if ([v5 containsObject:@"media-bottom-margin"] && objc_msgSend(v5, "containsObject:", @"media-top-margin") && objc_msgSend(v5, "containsObject:", @"media-left-margin"))
+    if ([mediaColSupportedArray containsObject:@"media-bottom-margin"] && objc_msgSend(mediaColSupportedArray, "containsObject:", @"media-top-margin") && objc_msgSend(mediaColSupportedArray, "containsObject:", @"media-left-margin"))
     {
-      v6 = [v5 containsObject:@"media-right-margin"];
+      v6 = [mediaColSupportedArray containsObject:@"media-right-margin"];
     }
 
     else
@@ -1032,52 +1032,52 @@ LABEL_29:
       v6 = 0;
     }
 
-    v7 = [v3 createMediaColAndDoMargins:v6];
+    v7 = [paper createMediaColAndDoMargins:v6];
     if (v7)
     {
-      v8 = [(PKPrintSettings *)self->_printSettings inputSlot];
-      v9 = v8;
-      if (v8 && ([v8 isEqualToString:@"auto"] & 1) == 0)
+      inputSlot = [(PKPrintSettings *)self->_printSettings inputSlot];
+      v9 = inputSlot;
+      if (inputSlot && ([inputSlot isEqualToString:@"auto"] & 1) == 0)
       {
         [v7 setMediaSource:v9];
       }
 
-      v10 = [(PKPrintSettings *)self->_printSettings mediaType];
-      v11 = v10;
-      if (v10 && ([v10 isEqualToString:@"auto"] & 1) == 0)
+      mediaType = [(PKPrintSettings *)self->_printSettings mediaType];
+      v11 = mediaType;
+      if (mediaType && ([mediaType isEqualToString:@"auto"] & 1) == 0)
       {
         [v7 setMediaType:v11];
       }
 
-      v12 = [v7 makeMediaCol];
+      makeMediaCol = [v7 makeMediaCol];
     }
 
     else
     {
-      v12 = 0;
+      makeMediaCol = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    makeMediaCol = 0;
   }
 
-  return v12;
+  return makeMediaCol;
 }
 
 - (BOOL)hasOrientationRequested
 {
-  v2 = [(PKPrintSettings *)self->_printSettings orientation];
-  v3 = v2 != 0;
+  orientation = [(PKPrintSettings *)self->_printSettings orientation];
+  v3 = orientation != 0;
 
   return v3;
 }
 
 - (int)OrientationRequested
 {
-  v2 = [(PKPrintSettings *)self->_printSettings orientation];
-  if (v2)
+  orientation = [(PKPrintSettings *)self->_printSettings orientation];
+  if (orientation)
   {
     v7[0] = PKOrientationPortrait;
     v7[1] = PKOrientationLandscape;
@@ -1086,7 +1086,7 @@ LABEL_29:
     v7[2] = PKOrientationReverseLandscape;
     v8[2] = &off_1000B9218;
     v3 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:3];
-    v4 = [v3 objectForKeyedSubscript:v2];
+    v4 = [v3 objectForKeyedSubscript:orientation];
     v5 = validate_enum<ipp_orient_e,unsigned char>([v4 integerValue]);
   }
 
@@ -1100,24 +1100,24 @@ LABEL_29:
 
 - (BOOL)hasOutputBin
 {
-  v2 = [(PKPrintSettings *)self->_printSettings outputBin];
-  v3 = v2 != 0;
+  outputBin = [(PKPrintSettings *)self->_printSettings outputBin];
+  v3 = outputBin != 0;
 
   return v3;
 }
 
-- (void)figureOutputOrPrintColorMode:(OutputOrPrintColorMode *)a3
+- (void)figureOutputOrPrintColorMode:(OutputOrPrintColorMode *)mode
 {
-  var0 = a3->var0;
-  a3->var0 = 0;
+  var0 = mode->var0;
+  mode->var0 = 0;
 
-  var1 = a3->var1;
-  a3->var1 = 0;
+  var1 = mode->var1;
+  mode->var1 = 0;
 
-  v7 = [(lite_printer_t *)self->_printer printerDescription];
-  v8 = [v7 supportsPrintColorMode];
+  printerDescription = [(lite_printer_t *)self->_printer printerDescription];
+  supportsPrintColorMode = [printerDescription supportsPrintColorMode];
 
-  if (v8)
+  if (supportsPrintColorMode)
   {
     v9 = v20;
     v20[0] = _NSConcreteStackBlock;
@@ -1135,45 +1135,45 @@ LABEL_29:
 
   v9[2] = v10;
   v9[3] = &unk_1000A0470;
-  v9[4] = &a3->var0;
+  v9[4] = &mode->var0;
   v11 = objc_retainBlock(v9);
-  v12 = [(PKPrintSettings *)self->_printSettings outputMode];
-  v13 = [(lite_printer_t *)self->_printer printerDescription];
-  v14 = [v13 outputModes];
+  outputMode = [(PKPrintSettings *)self->_printSettings outputMode];
+  printerDescription2 = [(lite_printer_t *)self->_printer printerDescription];
+  outputModes = [printerDescription2 outputModes];
 
-  if (v14 && v12)
+  if (outputModes && outputMode)
   {
-    v15 = [(job_spool_client_t *)self PrintQuality];
+    printQuality = [(job_spool_client_t *)self PrintQuality];
     v16 = PKOutputModeGray;
-    if (v15 == 5)
+    if (printQuality == 5)
     {
-      if ([v12 isEqualToString:PKOutputModeGray])
+      if ([outputMode isEqualToString:PKOutputModeGray])
       {
         v17 = PKOutputModeProcessGray;
-        if ([v14 containsObject:PKOutputModeProcessGray])
+        if ([outputModes containsObject:PKOutputModeProcessGray])
         {
           goto LABEL_16;
         }
       }
     }
 
-    if ([v12 isEqualToString:{v16, v18, v19}])
+    if ([outputMode isEqualToString:{v16, v18, v19}])
     {
-      if (([v14 containsObject:v16] & 1) == 0)
+      if (([outputModes containsObject:v16] & 1) == 0)
       {
         v17 = PKOutputModeAutoGray;
-        if ([v14 containsObject:PKOutputModeAutoGray])
+        if ([outputModes containsObject:PKOutputModeAutoGray])
         {
           goto LABEL_16;
         }
       }
     }
 
-    if (([v12 isEqualToString:PKOutputModeColor] & 1) == 0)
+    if (([outputMode isEqualToString:PKOutputModeColor] & 1) == 0)
     {
-      if ([v14 containsObject:v12])
+      if ([outputModes containsObject:outputMode])
       {
-        v17 = v12;
+        v17 = outputMode;
       }
 
       else
@@ -1209,62 +1209,62 @@ LABEL_16:
 
 - (BOOL)hasPageRanges
 {
-  v2 = [(PKPrintSettings *)self->_printSettings pageRanges];
-  v3 = v2 != 0;
+  pageRanges = [(PKPrintSettings *)self->_printSettings pageRanges];
+  v3 = pageRanges != 0;
 
   return v3;
 }
 
 - (NSArray)PageRanges
 {
-  v2 = [(PKPrintSettings *)self->_printSettings pageRanges];
-  if ([v2 count] == 2)
+  pageRanges = [(PKPrintSettings *)self->_printSettings pageRanges];
+  if ([pageRanges count] == 2)
   {
-    v3 = [v2 firstObject];
-    v4 = [v2 lastObject];
+    firstObject = [pageRanges firstObject];
+    lastObject = [pageRanges lastObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [v3 intValue];
-        v6 = [v4 intValue];
-        if (v5 >= 1 && v6 >= v5)
+        intValue = [firstObject intValue];
+        intValue2 = [lastObject intValue];
+        if (intValue >= 1 && intValue2 >= intValue)
         {
-          v7 = [NSValue valueWithRange:(v5 - 1), v6 - v5 + 1];
+          v7 = [NSValue valueWithRange:(intValue - 1), intValue2 - intValue + 1];
           v10 = v7;
           v8 = [NSArray arrayWithObjects:&v10 count:1];
 
-          v2 = v8;
+          pageRanges = v8;
         }
       }
     }
   }
 
-  return v2;
+  return pageRanges;
 }
 
 - (BOOL)hasPresetName
 {
-  v2 = [(PKPrintSettings *)self->_printSettings jobPresetName];
-  v3 = v2 != 0;
+  jobPresetName = [(PKPrintSettings *)self->_printSettings jobPresetName];
+  v3 = jobPresetName != 0;
 
   return v3;
 }
 
 - (BOOL)hasPrintQuality
 {
-  v2 = [(PKPrintSettings *)self->_printSettings printQuality];
-  v3 = v2 != 0;
+  printQuality = [(PKPrintSettings *)self->_printSettings printQuality];
+  v3 = printQuality != 0;
 
   return v3;
 }
 
 - (int)PrintQuality
 {
-  v2 = [(PKPrintSettings *)self->_printSettings printQuality];
-  if (v2)
+  printQuality = [(PKPrintSettings *)self->_printSettings printQuality];
+  if (printQuality)
   {
     v7[0] = PKQualityHigh;
     v7[1] = PKQualityDraft;
@@ -1273,7 +1273,7 @@ LABEL_16:
     v7[2] = PKQualityNormal;
     v8[2] = &off_1000B9200;
     v3 = [NSDictionary dictionaryWithObjects:v8 forKeys:v7 count:3];
-    v4 = [v3 objectForKeyedSubscript:v2];
+    v4 = [v3 objectForKeyedSubscript:printQuality];
     v5 = validate_enum<ipp_quality_e,unsigned char>([v4 integerValue]);
   }
 
@@ -1296,8 +1296,8 @@ LABEL_16:
   if (result)
   {
     v4 = result;
-    v5 = [(PKPrintSettings *)self->_printSettings fileType];
-    v6 = [v5 caseInsensitiveCompare:@"application/pdf"];
+    fileType = [(PKPrintSettings *)self->_printSettings fileType];
+    v6 = [fileType caseInsensitiveCompare:@"application/pdf"];
 
     if (v6)
     {
@@ -1315,62 +1315,62 @@ LABEL_16:
 
 - (int)RasterFeedOrientation
 {
-  v3 = [(PKPrintSettings *)self->_printSettings paper];
-  if (v3)
+  paper = [(PKPrintSettings *)self->_printSettings paper];
+  if (paper)
   {
-    v4 = [(lite_printer_t *)self->_printer printerDescription];
-    v5 = [v4 specialFeedOrientation];
+    printerDescription = [(lite_printer_t *)self->_printer printerDescription];
+    specialFeedOrientation = [printerDescription specialFeedOrientation];
 
-    if (!v5)
+    if (!specialFeedOrientation)
     {
       goto LABEL_6;
     }
 
-    v6 = [v3 baseName];
-    if (!v6)
+    baseName = [paper baseName];
+    if (!baseName)
     {
       goto LABEL_6;
     }
 
-    v7 = [v3 baseName];
-    v8 = [v5 objectForKey:v7];
+    baseName2 = [paper baseName];
+    v8 = [specialFeedOrientation objectForKey:baseName2];
 
     if (v8)
     {
-      v9 = [v3 baseName];
-      v10 = [v5 objectForKey:v9];
-      v11 = [v10 intValue];
+      baseName3 = [paper baseName];
+      v10 = [specialFeedOrientation objectForKey:baseName3];
+      intValue = [v10 intValue];
     }
 
     else
     {
 LABEL_6:
-      v11 = 3;
+      intValue = 3;
     }
   }
 
   else
   {
-    v11 = 3;
+    intValue = 3;
   }
 
-  return v11;
+  return intValue;
 }
 
 - (BOOL)hasSides
 {
-  v2 = [(PKPrintSettings *)self->_printSettings duplex];
-  v3 = v2 != 0;
+  duplex = [(PKPrintSettings *)self->_printSettings duplex];
+  v3 = duplex != 0;
 
   return v3;
 }
 
 - (NSString)Sides
 {
-  v3 = [(PKPrintSettings *)self->_printSettings duplex];
-  if (v3 && (-[lite_printer_t printerDescription](self->_printer, "printerDescription"), v4 = objc_claimAutoreleasedReturnValue(), [v4 sides], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", v3), v5, v4, v6))
+  duplex = [(PKPrintSettings *)self->_printSettings duplex];
+  if (duplex && (-[lite_printer_t printerDescription](self->_printer, "printerDescription"), v4 = objc_claimAutoreleasedReturnValue(), [v4 sides], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "containsObject:", duplex), v5, v4, v6))
   {
-    v7 = v3;
+    v7 = duplex;
   }
 
   else
@@ -1383,10 +1383,10 @@ LABEL_6:
 
 - (NSString)Media
 {
-  v2 = [(PKPrintSettings *)self->_printSettings paper];
-  v3 = [v2 baseName];
+  paper = [(PKPrintSettings *)self->_printSettings paper];
+  baseName = [paper baseName];
 
-  return v3;
+  return baseName;
 }
 
 @end

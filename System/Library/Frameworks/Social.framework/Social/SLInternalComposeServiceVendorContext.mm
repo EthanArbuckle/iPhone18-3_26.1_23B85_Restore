@@ -1,7 +1,7 @@
 @interface SLInternalComposeServiceVendorContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)shouldShowNetworkActivityIndicator:(id)a3;
+- (void)shouldShowNetworkActivityIndicator:(id)indicator;
 @end
 
 @implementation SLInternalComposeServiceVendorContext
@@ -44,17 +44,17 @@ uint64_t __72__SLInternalComposeServiceVendorContext__extensionAuxiliaryHostProt
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)shouldShowNetworkActivityIndicator:(id)a3
+- (void)shouldShowNetworkActivityIndicator:(id)indicator
 {
-  v7 = a3;
+  indicatorCopy = indicator;
   _SLLog(v3, 7, @"SLInternalComposeServiceVendorContext shouldShowNetworkActivityIndicator: %@");
-  v5 = [(SLInternalComposeServiceVendorContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_24];
+  _auxiliaryConnection = [(SLInternalComposeServiceVendorContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_24];
 
   if (v6)
   {
     _SLLog(v3, 7, @"SLInternalComposeServiceVendorContext shouldShowNetworkActivityIndicator: calling host %@");
-    [v6 shouldShowNetworkActivityIndicator:{v7, v6}];
+    [v6 shouldShowNetworkActivityIndicator:{indicatorCopy, v6}];
   }
 
   else

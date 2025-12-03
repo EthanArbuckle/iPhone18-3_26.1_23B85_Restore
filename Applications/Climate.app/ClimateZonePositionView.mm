@@ -1,6 +1,6 @@
 @interface ClimateZonePositionView
 - (NSArray)preferredFocusEnvironments;
-- (_TtC7Climate23ClimateZonePositionView)initWithFrame:(CGRect)a3;
+- (_TtC7Climate23ClimateZonePositionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -15,7 +15,7 @@
   sub_1000A49C0();
 }
 
-- (_TtC7Climate23ClimateZonePositionView)initWithFrame:(CGRect)a3
+- (_TtC7Climate23ClimateZonePositionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

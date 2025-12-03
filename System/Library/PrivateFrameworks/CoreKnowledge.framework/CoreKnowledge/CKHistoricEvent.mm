@@ -1,9 +1,9 @@
 @interface CKHistoricEvent
 - (NSDictionary)metadata;
 - (NSString)identifier;
-- (id)copyWithZone:(void *)a3;
-- (id)initFrom:(id)a3 withIdentifier:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)initFrom:(id)from withIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKHistoricEvent
@@ -24,14 +24,14 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C86BDD28(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C86BDD28(coderCopy);
 }
 
-- (id)initFrom:(id)a3 withIdentifier:(id)a4
+- (id)initFrom:(id)from withIdentifier:(id)identifier
 {
   v4 = sub_1C86F8EFC();
   v6 = v5;
@@ -39,9 +39,9 @@
   return CKHistoricEvent.init(from:withIdentifier:)(v4, v6, v7, v8);
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_1C86BF914(v6);
 
   __swift_project_boxed_opaque_existential_0(v6, v6[3]);

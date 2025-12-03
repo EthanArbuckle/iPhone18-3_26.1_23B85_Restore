@@ -1,18 +1,18 @@
 @interface PushManager
 - (_TtC13jetpackassetd11PushManager)init;
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4;
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4;
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures;
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status;
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation PushManager
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  if (a4)
+  if (token)
   {
-    v4 = a4;
+    tokenCopy = token;
     v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     sub_10001FA78(v5, v6);
   }
@@ -35,34 +35,34 @@
   sub_100001D4C(v10);
 }
 
-- (void)connection:(id)a3 didReceiveIncomingMessage:(id)a4
+- (void)connection:(id)connection didReceiveIncomingMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10003E15C(v7);
+  connectionCopy = connection;
+  messageCopy = message;
+  selfCopy = self;
+  sub_10003E15C(messageCopy);
 }
 
-- (void)connection:(id)a3 channelSubscriptionsFailedWithFailures:(id)a4
+- (void)connection:(id)connection channelSubscriptionsFailedWithFailures:(id)failures
 {
-  v4 = a4;
-  if (a4)
+  failuresCopy = failures;
+  if (failures)
   {
     sub_100040154(0, &qword_1000A5668, APSChannelSubscriptionFailure_ptr);
-    v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
+    failuresCopy = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_10003EC74(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_10003EC74(failuresCopy);
 }
 
-- (void)connection:(id)a3 didChangeConnectedStatus:(BOOL)a4
+- (void)connection:(id)connection didChangeConnectedStatus:(BOOL)status
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  sub_10003F154(v4);
+  statusCopy = status;
+  connectionCopy = connection;
+  selfCopy = self;
+  sub_10003F154(statusCopy);
 }
 
 - (_TtC13jetpackassetd11PushManager)init

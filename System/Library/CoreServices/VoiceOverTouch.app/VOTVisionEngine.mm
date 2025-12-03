@@ -1,53 +1,53 @@
 @interface VOTVisionEngine
-+ (BOOL)_shouldAnalyzeElement:(id)a3 deferToMediaAnalysisElementIfNeeded:(BOOL)a4;
-+ (BOOL)elementNeedsAdditionalDescription:(id)a3;
-- (BOOL)_processEmojiFor2DBrailleDisplay:(id)a3;
-- (BOOL)processElementFor2DBrailleDisplay:(id)a3;
-- (BOOL)processStringFor2DBrailleDisplay:(id)a3;
++ (BOOL)_shouldAnalyzeElement:(id)element deferToMediaAnalysisElementIfNeeded:(BOOL)needed;
++ (BOOL)elementNeedsAdditionalDescription:(id)description;
+- (BOOL)_processEmojiFor2DBrailleDisplay:(id)display;
+- (BOOL)processElementFor2DBrailleDisplay:(id)display;
+- (BOOL)processStringFor2DBrailleDisplay:(id)display;
 - (VOTVisionEngine)init;
 - (VOTVisionEngineResultUpdateDelegate)resultUpdateDelegate;
-- (id)_renderStringToImage:(id)a3;
-- (id)_visionAnalysisOptionsForElement:(id)a3 visionOptions:(id)a4;
+- (id)_renderStringToImage:(id)image;
+- (id)_visionAnalysisOptionsForElement:(id)element visionOptions:(id)options;
 - (id)analysisOptionsFor2DBraille;
 - (id)preferredMediaAnalysisLocale;
-- (id)resultsForElement:(id)a3;
-- (int64_t)_interfaceOrientationForElement:(id)a3;
-- (void)analyzeElement:(id)a3 withOptions:(id)a4;
+- (id)resultsForElement:(id)element;
+- (int64_t)_interfaceOrientationForElement:(id)element;
+- (void)analyzeElement:(id)element withOptions:(id)options;
 - (void)dealloc;
-- (void)produceCaptionForElement:(id)a3 completion:(id)a4;
+- (void)produceCaptionForElement:(id)element completion:(id)completion;
 - (void)purgeCache;
 @end
 
 @implementation VOTVisionEngine
 
-+ (BOOL)_shouldAnalyzeElement:(id)a3 deferToMediaAnalysisElementIfNeeded:(BOOL)a4
++ (BOOL)_shouldAnalyzeElement:(id)element deferToMediaAnalysisElementIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
+  neededCopy = needed;
+  elementCopy = element;
   if (AXDeviceIsAudioAccessory())
   {
     goto LABEL_5;
   }
 
-  v7 = [v6 mediaAnalysisOptions];
-  if ([v6 doesHaveTraits:kAXBackButtonTrait | kAXStaticTextTrait | kAXTextEntryTrait | kAXKeyboardKeyTrait | kAXAllowsDirectInteractionTrait | kAXMathEquationTrait | kAXAutoCorrectCandidateTrait | kAXTextAreaTrait | kAXMapTrait | kAXSecureTextFieldTrait | kAXWebInteractiveVideoTrait] & 1) != 0 || (objc_msgSend(v6, "isTouchContainer") & 1) != 0 || (objc_msgSend(v6, "isAccessibleGroup"))
+  mediaAnalysisOptions = [elementCopy mediaAnalysisOptions];
+  if ([elementCopy doesHaveTraits:kAXBackButtonTrait | kAXStaticTextTrait | kAXTextEntryTrait | kAXKeyboardKeyTrait | kAXAllowsDirectInteractionTrait | kAXMathEquationTrait | kAXAutoCorrectCandidateTrait | kAXTextAreaTrait | kAXMapTrait | kAXSecureTextFieldTrait | kAXWebInteractiveVideoTrait] & 1) != 0 || (objc_msgSend(elementCopy, "isTouchContainer") & 1) != 0 || (objc_msgSend(elementCopy, "isAccessibleGroup"))
   {
     goto LABEL_5;
   }
 
-  if ([v6 doesHaveTraits:kAXImageTrait])
+  if ([elementCopy doesHaveTraits:kAXImageTrait])
   {
     goto LABEL_11;
   }
 
-  if (![v6 supportsMediaAnalysis])
+  if (![elementCopy supportsMediaAnalysis])
   {
 LABEL_5:
     v8 = 0;
     goto LABEL_6;
   }
 
-  if (v7 & 0x30000) != 0 || ([a1 elementNeedsAdditionalDescription:v6])
+  if (mediaAnalysisOptions & 0x30000) != 0 || ([self elementNeedsAdditionalDescription:elementCopy])
   {
 LABEL_11:
     v8 = 1;
@@ -55,13 +55,13 @@ LABEL_11:
   }
 
   v8 = 0;
-  if (v7 && v4)
+  if (mediaAnalysisOptions && neededCopy)
   {
-    v10 = [v6 mediaAnalysisElement];
-    v11 = v10;
-    if (v10 && ([v10 isEqual:v6] & 1) == 0)
+    mediaAnalysisElement = [elementCopy mediaAnalysisElement];
+    v11 = mediaAnalysisElement;
+    if (mediaAnalysisElement && ([mediaAnalysisElement isEqual:elementCopy] & 1) == 0)
     {
-      v8 = [a1 _shouldAnalyzeElement:v11 deferToMediaAnalysisElementIfNeeded:0];
+      v8 = [self _shouldAnalyzeElement:v11 deferToMediaAnalysisElementIfNeeded:0];
     }
 
     else
@@ -75,13 +75,13 @@ LABEL_6:
   return v8;
 }
 
-+ (BOOL)elementNeedsAdditionalDescription:(id)a3
++ (BOOL)elementNeedsAdditionalDescription:(id)description
 {
-  v3 = a3;
-  v4 = [v3 label];
+  descriptionCopy = description;
+  label = [descriptionCopy label];
   v5 = +[NSCharacterSet whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
-  v9 = [v6 length] == 1 && (objc_msgSend(v3, "value"), v7 = ;
+  v6 = [label stringByTrimmingCharactersInSet:v5];
+  v9 = [v6 length] == 1 && (objc_msgSend(descriptionCopy, "value"), v7 = ;
   return v9;
 }
 
@@ -97,9 +97,9 @@ LABEL_6:
 
     objc_initWeak(&location, v2);
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 imageCaptionGenderStrategy];
-    v6 = [(VOTVisionEngine *)v2 engine];
-    [v6 setGenderStrategy:v5];
+    imageCaptionGenderStrategy = [v4 imageCaptionGenderStrategy];
+    engine = [(VOTVisionEngine *)v2 engine];
+    [engine setGenderStrategy:imageCaptionGenderStrategy];
 
     v7 = +[AXSettings sharedInstance];
     v17[0] = _NSConcreteStackBlock;
@@ -122,8 +122,8 @@ LABEL_6:
     languageConfigurationObserver = v2->_languageConfigurationObserver;
     v2->_languageConfigurationObserver = v11;
 
-    v13 = [(VOTVisionEngine *)v2 engine];
-    [v13 prewarmEngine];
+    engine2 = [(VOTVisionEngine *)v2 engine];
+    [engine2 prewarmEngine];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -145,19 +145,19 @@ LABEL_6:
   [(VOTVisionEngine *)&v4 dealloc];
 }
 
-- (int64_t)_interfaceOrientationForElement:(id)a3
+- (int64_t)_interfaceOrientationForElement:(id)element
 {
-  v3 = [a3 application];
-  v4 = [v3 applicationInterfaceOrientation];
-  if (v4 - 1 < 4)
+  application = [element application];
+  applicationInterfaceOrientation = [application applicationInterfaceOrientation];
+  if (applicationInterfaceOrientation - 1 < 4)
   {
     goto LABEL_30;
   }
 
   v5 = +[AXSubsystemVoiceOver sharedInstance];
-  v6 = [v5 ignoreLogging];
+  ignoreLogging = [v5 ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v7 = +[AXSubsystemVoiceOver identifier];
     v8 = AXLoggerForFacility();
@@ -177,31 +177,31 @@ LABEL_6:
   }
 
   v12 = +[VOTElement systemAppApplication];
-  v13 = [v12 applicationOrientation];
-  if (v13 > 2)
+  applicationOrientation = [v12 applicationOrientation];
+  if (applicationOrientation > 2)
   {
-    if ((v13 - 5) >= 2)
+    if ((applicationOrientation - 5) >= 2)
     {
       v14 = 4;
-      if (v13 == 4)
+      if (applicationOrientation == 4)
       {
         v15 = 3;
       }
 
       else
       {
-        v15 = v4;
+        v15 = applicationInterfaceOrientation;
       }
 
-      v16 = v13 == 3;
+      v16 = applicationOrientation == 3;
       goto LABEL_19;
     }
 
 LABEL_22:
     v17 = +[AXSubsystemVoiceOver sharedInstance];
-    v18 = [v17 ignoreLogging];
+    ignoreLogging2 = [v17 ignoreLogging];
 
-    if ((v18 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
       v19 = +[AXSubsystemVoiceOver identifier];
       v20 = AXLoggerForFacility();
@@ -220,42 +220,42 @@ LABEL_22:
       }
     }
 
-    v4 = 1;
+    applicationInterfaceOrientation = 1;
     goto LABEL_29;
   }
 
-  if (!v13)
+  if (!applicationOrientation)
   {
     goto LABEL_22;
   }
 
   v14 = 1;
-  if (v13 == 2)
+  if (applicationOrientation == 2)
   {
     v15 = 2;
   }
 
   else
   {
-    v15 = v4;
+    v15 = applicationInterfaceOrientation;
   }
 
-  v16 = v13 == 1;
+  v16 = applicationOrientation == 1;
 LABEL_19:
   if (v16)
   {
-    v4 = v14;
+    applicationInterfaceOrientation = v14;
   }
 
   else
   {
-    v4 = v15;
+    applicationInterfaceOrientation = v15;
   }
 
 LABEL_29:
 
 LABEL_30:
-  v24 = v4 - 1;
+  v24 = applicationInterfaceOrientation - 1;
   if (v24 < 4)
   {
     v25 = v24 + 1;
@@ -272,15 +272,15 @@ LABEL_30:
 - (id)preferredMediaAnalysisLocale
 {
   v2 = +[VOTWorkspace sharedWorkspace];
-  v3 = [v2 selectedLanguage];
+  selectedLanguage = [v2 selectedLanguage];
 
-  if (![v3 length] || (+[AXMLocSupport sharedInstance](AXMLocSupport, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "localeForLanguageCode:", v3), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
+  if (![selectedLanguage length] || (+[AXMLocSupport sharedInstance](AXMLocSupport, "sharedInstance"), v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "localeForLanguageCode:", selectedLanguage), v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
-    v6 = [VOTSharedWorkspace systemSpokenLanguage];
-    if ([v6 length])
+    systemSpokenLanguage = [VOTSharedWorkspace systemSpokenLanguage];
+    if ([systemSpokenLanguage length])
     {
       v7 = +[AXMLocSupport sharedInstance];
-      v5 = [v7 localeForLanguageCode:v6];
+      v5 = [v7 localeForLanguageCode:systemSpokenLanguage];
     }
 
     else
@@ -292,61 +292,61 @@ LABEL_30:
   return v5;
 }
 
-- (id)_visionAnalysisOptionsForElement:(id)a3 visionOptions:(id)a4
+- (id)_visionAnalysisOptionsForElement:(id)element visionOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mediaAnalysisOptions];
+  elementCopy = element;
+  optionsCopy = options;
+  mediaAnalysisOptions = [elementCopy mediaAnalysisOptions];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100104EB8;
   v31[3] = &unk_1001CB268;
-  v9 = v7;
+  v9 = optionsCopy;
   v32 = v9;
-  v10 = v6;
+  v10 = elementCopy;
   v33 = v10;
-  v34 = v8;
+  v34 = mediaAnalysisOptions;
   v11 = objc_retainBlock(v31);
-  v12 = [(VOTVisionEngine *)self preferredMediaAnalysisLocale];
+  preferredMediaAnalysisLocale = [(VOTVisionEngine *)self preferredMediaAnalysisLocale];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_100104F18;
   v28[3] = &unk_1001CB2D0;
   v13 = v10;
   v29 = v13;
-  v14 = v12;
+  v14 = preferredMediaAnalysisLocale;
   v30 = v14;
   v15 = objc_retainBlock(v28);
-  v16 = [(VOTVisionEngine *)self engine];
+  engine = [(VOTVisionEngine *)self engine];
   if ([v9 includeFullImageDescriptionsForValidElements])
   {
-    v17 = 1;
+    includeFullImageDescriptionsForAllElements = 1;
   }
 
   else
   {
-    v17 = [v9 includeFullImageDescriptionsForAllElements];
+    includeFullImageDescriptionsForAllElements = [v9 includeFullImageDescriptionsForAllElements];
   }
 
-  v18 = [v16 configuredOptionsDisableAllDetectors:v11 elementOptions:v8 textRecognitionLevel:&stru_1001CB2A8 textDetectionLocales:v15 preferringFullCaptions:v17];
+  v18 = [engine configuredOptionsDisableAllDetectors:v11 elementOptions:mediaAnalysisOptions textRecognitionLevel:&stru_1001CB2A8 textDetectionLocales:v15 preferringFullCaptions:includeFullImageDescriptionsForAllElements];
 
-  if (v8)
+  if (mediaAnalysisOptions)
   {
     if (AXRuntimeCheck_MediaAnalysisSupport())
     {
       [v18 setDetectMADScenes:{objc_msgSend(v9, "includeSceneDetection")}];
       v19 = v18;
-      v20 = 0;
+      includeSceneDetection = 0;
     }
 
     else
     {
       [v18 setDetectMADScenes:0];
-      v20 = [v9 includeSceneDetection];
+      includeSceneDetection = [v9 includeSceneDetection];
       v19 = v18;
     }
 
-    [v19 setDetectScenes:v20];
+    [v19 setDetectScenes:includeSceneDetection];
   }
 
   else
@@ -364,8 +364,8 @@ LABEL_30:
   if ([v21 isFileURL])
   {
     v22 = +[NSFileManager defaultManager];
-    v23 = [v21 path];
-    v24 = [v22 fileExistsAtPath:v23 isDirectory:&v27];
+    path = [v21 path];
+    v24 = [v22 fileExistsAtPath:path isDirectory:&v27];
 
     if (v24)
     {
@@ -382,9 +382,9 @@ LABEL_30:
   return v18;
 }
 
-- (id)_renderStringToImage:(id)a3
+- (id)_renderStringToImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v16.width = 300.0;
   v16.height = 200.0;
   UIGraphicsBeginImageContextWithOptions(v16, 0, 1.0);
@@ -405,8 +405,8 @@ LABEL_30:
   v14[1] = v7;
   v8 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  [v3 sizeWithAttributes:v8];
-  [v3 drawInRect:v8 withAttributes:{v9 * -0.5 + 150.0, -28.0, 300.0, 256.0}];
+  [imageCopy sizeWithAttributes:v8];
+  [imageCopy drawInRect:v8 withAttributes:{v9 * -0.5 + 150.0, -28.0, 300.0, 256.0}];
 
   v10 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
@@ -420,8 +420,8 @@ LABEL_30:
   v2 = objc_alloc_init(AXMVisionAnalysisOptions);
   [v2 setDetectBrailleEdges:1];
   v3 = _AXSVoiceOverTouchActive2DBrailleDisplays();
-  v4 = [v3 lastObject];
-  v5 = NSSizeFromString(v4);
+  lastObject = [v3 lastObject];
+  v5 = NSSizeFromString(lastObject);
 
   v6 = [[AXMBrailleCanvasDescription alloc] initWithHeight:v5.height width:v5.width numberOfDiscretePinHeights:2];
   v7 = [[AXMBrailleEdgeDetectorOptions alloc] initWithCanvasDescription:v6];
@@ -430,52 +430,52 @@ LABEL_30:
   v8 = +[VOTPlanarBrailleManager manager];
   [v8 imageZoom];
   v10 = v9;
-  v11 = [v2 brailleEdgeOptions];
-  [v11 setZoomLevel:v10];
+  brailleEdgeOptions = [v2 brailleEdgeOptions];
+  [brailleEdgeOptions setZoomLevel:v10];
 
   v12 = +[VOTPlanarBrailleManager manager];
-  v13 = [v12 imageInvert];
-  v14 = [v2 brailleEdgeOptions];
-  [v14 setInvert:v13];
+  imageInvert = [v12 imageInvert];
+  brailleEdgeOptions2 = [v2 brailleEdgeOptions];
+  [brailleEdgeOptions2 setInvert:imageInvert];
 
   v15 = +[VOTPlanarBrailleManager manager];
   [v15 imageOrigin];
   v17 = v16;
   v19 = v18;
-  v20 = [v2 brailleEdgeOptions];
-  [v20 setOrigin:{v17, v19}];
+  brailleEdgeOptions3 = [v2 brailleEdgeOptions];
+  [brailleEdgeOptions3 setOrigin:{v17, v19}];
 
   v21 = +[VOTPlanarBrailleManager manager];
   [v21 imageIntensity];
   v23 = v22;
-  v24 = [v2 brailleEdgeOptions];
-  [v24 setEdgeStrength:v23];
+  brailleEdgeOptions4 = [v2 brailleEdgeOptions];
+  [brailleEdgeOptions4 setEdgeStrength:v23];
 
   return v2;
 }
 
-- (BOOL)processStringFor2DBrailleDisplay:(id)a3
+- (BOOL)processStringFor2DBrailleDisplay:(id)display
 {
-  v4 = a3;
+  displayCopy = display;
   if ([VOTSharedWorkspace hasActive2DBrailleDisplay])
   {
-    v5 = [(VOTVisionEngine *)self _renderStringToImage:v4];
+    v5 = [(VOTVisionEngine *)self _renderStringToImage:displayCopy];
     v6 = v5 != 0;
     if (v5)
     {
-      v7 = [(VOTVisionEngine *)self engine];
-      v8 = [v7 imageNode];
-      [v8 setShouldProcessRemotely:1];
+      engine = [(VOTVisionEngine *)self engine];
+      imageNode = [engine imageNode];
+      [imageNode setShouldProcessRemotely:1];
 
-      v9 = [(VOTVisionEngine *)self engine];
-      v10 = [v9 imageNode];
-      v11 = [(VOTVisionEngine *)self analysisOptionsFor2DBraille];
+      engine2 = [(VOTVisionEngine *)self engine];
+      imageNode2 = [engine2 imageNode];
+      analysisOptionsFor2DBraille = [(VOTVisionEngine *)self analysisOptionsFor2DBraille];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1001054B4;
       v13[3] = &unk_1001CB2F8;
-      v14 = v4;
-      [v10 triggerWithImage:v5 options:v11 cacheKey:v14 resultHandler:v13];
+      v14 = displayCopy;
+      [imageNode2 triggerWithImage:v5 options:analysisOptionsFor2DBraille cacheKey:v14 resultHandler:v13];
     }
   }
 
@@ -487,13 +487,13 @@ LABEL_30:
   return v6;
 }
 
-- (BOOL)_processEmojiFor2DBrailleDisplay:(id)a3
+- (BOOL)_processEmojiFor2DBrailleDisplay:(id)display
 {
-  v4 = a3;
-  if (([v4 mediaAnalysisOptions] & 0x80000) != 0)
+  displayCopy = display;
+  if (([displayCopy mediaAnalysisOptions] & 0x80000) != 0)
   {
-    v6 = [v4 label];
-    v5 = [(VOTVisionEngine *)self processStringFor2DBrailleDisplay:v6];
+    label = [displayCopy label];
+    v5 = [(VOTVisionEngine *)self processStringFor2DBrailleDisplay:label];
   }
 
   else
@@ -504,42 +504,42 @@ LABEL_30:
   return v5;
 }
 
-- (BOOL)processElementFor2DBrailleDisplay:(id)a3
+- (BOOL)processElementFor2DBrailleDisplay:(id)display
 {
-  v4 = a3;
-  if (![(VOTVisionEngine *)self _processEmojiFor2DBrailleDisplay:v4])
+  displayCopy = display;
+  if (![(VOTVisionEngine *)self _processEmojiFor2DBrailleDisplay:displayCopy])
   {
-    v6 = [v4 brailleMap];
-    if (v6)
+    brailleMap = [displayCopy brailleMap];
+    if (brailleMap)
     {
       v5 = +[VOTBrailleManager manager];
-      [v5 setBrailleMap:v6];
+      [v5 setBrailleMap:brailleMap];
     }
 
     else
     {
-      v7 = [v4 braille2DCanvasElement];
-      if (v7)
+      braille2DCanvasElement = [displayCopy braille2DCanvasElement];
+      if (braille2DCanvasElement)
       {
-        v5 = v7;
+        v5 = braille2DCanvasElement;
       }
 
       else
       {
-        if (![v4 hasImage])
+        if (![displayCopy hasImage])
         {
           LOBYTE(v5) = 0;
           goto LABEL_18;
         }
 
-        v5 = v4;
+        v5 = displayCopy;
         if (!v5)
         {
           goto LABEL_18;
         }
       }
 
-      v8 = [v5 application];
+      application = [v5 application];
       v9 = [(VOTVisionEngine *)self _interfaceOrientationForElement:v5];
       [v5 braille2DRenderRegion];
       x = v44.origin.x;
@@ -566,8 +566,8 @@ LABEL_30:
           v17 = v21;
         }
 
-        [v8 convertAccessibilityFrameToScreenCoordinates:{v14, v15, v16, v17}];
-        [v8 convertAccessibilityFrameToScreenCoordinates:?];
+        [application convertAccessibilityFrameToScreenCoordinates:{v14, v15, v16, v17}];
+        [application convertAccessibilityFrameToScreenCoordinates:?];
         v23 = v22;
         v25 = v24;
         v27 = v26;
@@ -587,17 +587,17 @@ LABEL_30:
       v35 = +[VOTElement systemWideElement];
       v36 = [v35 elementForAttribute:1005];
 
-      v37 = [v36 windowContextIDs];
-      v38 = [(VOTVisionEngine *)self analysisOptionsFor2DBraille];
-      [v38 setIgnoredLayerContextIDs:v37];
-      v39 = [(VOTVisionEngine *)self engine];
-      v40 = [v39 captureNode];
+      windowContextIDs = [v36 windowContextIDs];
+      analysisOptionsFor2DBraille = [(VOTVisionEngine *)self analysisOptionsFor2DBraille];
+      [analysisOptionsFor2DBraille setIgnoredLayerContextIDs:windowContextIDs];
+      engine = [(VOTVisionEngine *)self engine];
+      captureNode = [engine captureNode];
       v42[0] = _NSConcreteStackBlock;
       v42[1] = 3221225472;
       v42[2] = sub_100105928;
       v42[3] = &unk_1001CB2F8;
-      v43 = v4;
-      [v40 triggerWithScreenCaptureRegion:v9 interfaceOrientation:v38 options:v43 cacheKey:v42 resultHandler:{v23, v25, v27, v29}];
+      v43 = displayCopy;
+      [captureNode triggerWithScreenCaptureRegion:v9 interfaceOrientation:analysisOptionsFor2DBraille options:v43 cacheKey:v42 resultHandler:{v23, v25, v27, v29}];
     }
 
     LOBYTE(v5) = 1;
@@ -612,22 +612,22 @@ LABEL_19:
   return v5;
 }
 
-- (void)analyzeElement:(id)a3 withOptions:(id)a4
+- (void)analyzeElement:(id)element withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  elementCopy = element;
+  optionsCopy = options;
+  if (elementCopy)
   {
-    v8 = [v6 mediaAnalysisElement];
-    if (!v8)
+    mediaAnalysisElement = [elementCopy mediaAnalysisElement];
+    if (!mediaAnalysisElement)
     {
-      v8 = v6;
+      mediaAnalysisElement = elementCopy;
     }
 
-    v9 = [(VOTVisionEngine *)self _visionAnalysisOptionsForElement:v8 visionOptions:v7];
-    if ([VOTSharedWorkspace buttonIconDetectionEnabled] && (objc_msgSend(v6, "doesHaveTraits:", kAXTextAreaTrait | kAXStaticTextTrait) & 1) == 0 && (objc_msgSend(v6, "frame"), v10 <= 100.0))
+    v9 = [(VOTVisionEngine *)self _visionAnalysisOptionsForElement:mediaAnalysisElement visionOptions:optionsCopy];
+    if ([VOTSharedWorkspace buttonIconDetectionEnabled] && (objc_msgSend(elementCopy, "doesHaveTraits:", kAXTextAreaTrait | kAXStaticTextTrait) & 1) == 0 && (objc_msgSend(elementCopy, "frame"), v10 <= 100.0))
     {
-      [v6 frame];
+      [elementCopy frame];
       v11 = v59 <= 100.0;
     }
 
@@ -637,13 +637,13 @@ LABEL_19:
     }
 
     [v9 setDetectIconClass:v11];
-    if ([VOTSharedWorkspace hasActive2DBrailleDisplay] && (objc_msgSend(v6, "brailleMap"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+    if ([VOTSharedWorkspace hasActive2DBrailleDisplay] && (objc_msgSend(elementCopy, "brailleMap"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
     {
       v13 = 1;
       [v9 setDetectBrailleEdges:1];
-      v52 = [(VOTVisionEngine *)self analysisOptionsFor2DBraille];
-      v53 = [v52 brailleEdgeOptions];
-      [v9 setBrailleEdgeOptions:v53];
+      analysisOptionsFor2DBraille = [(VOTVisionEngine *)self analysisOptionsFor2DBraille];
+      brailleEdgeOptions = [analysisOptionsFor2DBraille brailleEdgeOptions];
+      [v9 setBrailleEdgeOptions:brailleEdgeOptions];
     }
 
     else
@@ -651,9 +651,9 @@ LABEL_19:
       v13 = 0;
     }
 
-    v14 = [v8 url];
-    v63 = [(VOTVisionEngine *)self _interfaceOrientationForElement:v8];
-    [v8 mediaAnalysisFrame];
+    v14 = [mediaAnalysisElement url];
+    v63 = [(VOTVisionEngine *)self _interfaceOrientationForElement:mediaAnalysisElement];
+    [mediaAnalysisElement mediaAnalysisFrame];
     x = v88.origin.x;
     y = v88.origin.y;
     width = v88.size.width;
@@ -664,15 +664,15 @@ LABEL_19:
     v93.size.height = CGRectZero.size.height;
     if (CGRectEqualToRect(v88, v93) || (v89.origin.x = x, v89.origin.y = y, v89.size.width = width, v89.size.height = height, v19 = x, v20 = y, v21 = width, v22 = height, CGRectIsInfinite(v89)))
     {
-      [v8 visibleFrame];
+      [mediaAnalysisElement visibleFrame];
       v19 = v23;
       v20 = v24;
       v21 = v25;
       v22 = v26;
     }
 
-    v70 = [v8 application];
-    [v70 convertAccessibilityFrameToScreenCoordinates:{v19, v20, v21, v22}];
+    application = [mediaAnalysisElement application];
+    [application convertAccessibilityFrameToScreenCoordinates:{v19, v20, v21, v22}];
     v66 = v28;
     v67 = v27;
     v64 = v30;
@@ -697,7 +697,7 @@ LABEL_19:
       v92.size.width = v65;
       v62 = NSStringFromCGRect(v92);
       *buf = 138413058;
-      v81 = self;
+      selfCopy = self;
       v82 = 2112;
       v83 = v60;
       v84 = 2112;
@@ -723,10 +723,10 @@ LABEL_19:
     v75[3] = &unk_1001CB320;
     v78 = v34;
     v75[4] = self;
-    v35 = v6;
+    v35 = elementCopy;
     v76 = v35;
-    v72 = v7;
-    v77 = v7;
+    v72 = optionsCopy;
+    v77 = optionsCopy;
     v79 = v13;
     v36 = objc_retainBlock(v75);
     v74 = 0;
@@ -734,39 +734,39 @@ LABEL_19:
     if ([(VOTVisionEngine *)v14 isFileURL])
     {
       v38 = +[NSFileManager defaultManager];
-      v39 = [(VOTVisionEngine *)v73 path];
-      v37 = [v38 fileExistsAtPath:v39 isDirectory:&v74];
+      path = [(VOTVisionEngine *)v73 path];
+      v37 = [v38 fileExistsAtPath:path isDirectory:&v74];
     }
 
-    v40 = [v8 isPHAssetLocallyAvailable];
-    v41 = [v8 imageAssetLocalIdentifier];
-    v42 = [v8 photoLibraryURL];
-    if (v40 && v41)
+    isPHAssetLocallyAvailable = [mediaAnalysisElement isPHAssetLocallyAvailable];
+    imageAssetLocalIdentifier = [mediaAnalysisElement imageAssetLocalIdentifier];
+    photoLibraryURL = [mediaAnalysisElement photoLibraryURL];
+    if (isPHAssetLocallyAvailable && imageAssetLocalIdentifier)
     {
       v43 = AXMediaLogService();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v81 = v41;
+        selfCopy = imageAssetLocalIdentifier;
         v82 = 2112;
-        v83 = v42;
+        v83 = photoLibraryURL;
         v84 = 2112;
         v85 = v35;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "AnalyzeElement[AssetLocalIdentifier]: %@, photoLibraryURL:%@, element: %@", buf, 0x20u);
       }
 
-      v44 = [(VOTVisionEngine *)self engine];
-      v45 = [v44 imageNode];
-      [v45 setShouldProcessRemotely:1];
+      engine = [(VOTVisionEngine *)self engine];
+      imageNode = [engine imageNode];
+      [imageNode setShouldProcessRemotely:1];
 
       v46 = AXRuntimeCheck_MediaAnalysisSupport();
-      v47 = [(VOTVisionEngine *)self engine];
-      v48 = [v47 imageNode];
-      v49 = v48;
+      engine2 = [(VOTVisionEngine *)self engine];
+      imageNode2 = [engine2 imageNode];
+      captureNode = imageNode2;
       if (!v46)
       {
         v50 = v71;
-        [v48 triggerWithImageAssetLocalIdentifier:v41 photoLibraryURL:v42 options:v71 cacheKey:v35 resultHandler:v36];
+        [imageNode2 triggerWithImageAssetLocalIdentifier:imageAssetLocalIdentifier photoLibraryURL:photoLibraryURL options:v71 cacheKey:v35 resultHandler:v36];
         goto LABEL_30;
       }
     }
@@ -779,72 +779,72 @@ LABEL_19:
         if (os_log_type_enabled(v51, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v81 = v35;
+          selfCopy = v35;
           _os_log_impl(&_mh_execute_header, v51, OS_LOG_TYPE_INFO, "AnalyzeElement[ScreenCap] for element: %@", buf, 0xCu);
         }
 
-        v47 = [(VOTVisionEngine *)self engine];
-        v49 = [v47 captureNode];
+        engine2 = [(VOTVisionEngine *)self engine];
+        captureNode = [engine2 captureNode];
         v50 = v71;
-        [v49 triggerWithScreenCaptureRegion:v63 interfaceOrientation:v71 options:v35 cacheKey:v36 resultHandler:{v67, v66, v65, v64}];
+        [captureNode triggerWithScreenCaptureRegion:v63 interfaceOrientation:v71 options:v35 cacheKey:v36 resultHandler:{v67, v66, v65, v64}];
         goto LABEL_30;
       }
 
-      v54 = [(VOTVisionEngine *)self engine];
-      v55 = [v54 imageNode];
-      [v55 setShouldProcessRemotely:1];
+      engine3 = [(VOTVisionEngine *)self engine];
+      imageNode3 = [engine3 imageNode];
+      [imageNode3 setShouldProcessRemotely:1];
 
       v56 = AXMediaLogService();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v81 = v73;
+        selfCopy = v73;
         v82 = 2112;
-        v83 = v41;
+        v83 = imageAssetLocalIdentifier;
         v84 = 2112;
-        v85 = v42;
+        v85 = photoLibraryURL;
         v86 = 2112;
         v87 = v35;
         _os_log_impl(&_mh_execute_header, v56, OS_LOG_TYPE_INFO, "AnalyzeElement[URL]: %@, localIdentifier: %@, photoLibraryURL: %@, element: %@", buf, 0x2Au);
       }
 
-      if (!v41)
+      if (!imageAssetLocalIdentifier)
       {
-        v47 = [(VOTVisionEngine *)self engine];
-        v49 = [v47 imageNode];
+        engine2 = [(VOTVisionEngine *)self engine];
+        captureNode = [engine2 imageNode];
         v50 = v71;
-        [v49 triggerWithImageURL:v73 options:v71 cacheKey:v35 resultHandler:v36];
+        [captureNode triggerWithImageURL:v73 options:v71 cacheKey:v35 resultHandler:v36];
         goto LABEL_30;
       }
 
       v57 = AXRuntimeCheck_MediaAnalysisSupport();
-      v47 = [(VOTVisionEngine *)self engine];
-      v58 = [v47 imageNode];
-      v49 = v58;
+      engine2 = [(VOTVisionEngine *)self engine];
+      imageNode4 = [engine2 imageNode];
+      captureNode = imageNode4;
       if (!v57)
       {
         v50 = v71;
-        [v58 triggerWithImageURL:v73 assetLocalIdentifier:v41 photoLibraryURL:v42 options:v71 cacheKey:v35 resultHandler:v36];
+        [imageNode4 triggerWithImageURL:v73 assetLocalIdentifier:imageAssetLocalIdentifier photoLibraryURL:photoLibraryURL options:v71 cacheKey:v35 resultHandler:v36];
         goto LABEL_30;
       }
     }
 
     v50 = v71;
-    [v49 triggerWithImageAssetLocalIdentifier:v41 photoLibraryURL:v42 usePHAsset:1 options:v71 cacheKey:v35 resultHandler:v36];
+    [captureNode triggerWithImageAssetLocalIdentifier:imageAssetLocalIdentifier photoLibraryURL:photoLibraryURL usePHAsset:1 options:v71 cacheKey:v35 resultHandler:v36];
 LABEL_30:
 
     self->_wasCachePurged = 0;
-    v7 = v72;
+    optionsCopy = v72;
   }
 }
 
-- (id)resultsForElement:(id)a3
+- (id)resultsForElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = +[NSMutableArray array];
-  v6 = [(VOTVisionEngine *)self engine];
-  v7 = [v6 cache];
-  v8 = [v7 resultForKey:v4];
+  engine = [(VOTVisionEngine *)self engine];
+  cache = [engine cache];
+  v8 = [cache resultForKey:elementCopy];
 
   if (v8)
   {
@@ -856,26 +856,26 @@ LABEL_30:
 
 - (void)purgeCache
 {
-  v3 = [(VOTVisionEngine *)self engine];
-  v4 = [v3 cache];
-  [v4 purgeCache];
+  engine = [(VOTVisionEngine *)self engine];
+  cache = [engine cache];
+  [cache purgeCache];
 
   self->_wasCachePurged = 1;
 }
 
-- (void)produceCaptionForElement:(id)a3 completion:(id)a4
+- (void)produceCaptionForElement:(id)element completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  elementCopy = element;
+  completionCopy = completion;
+  if (elementCopy)
   {
     v8 = objc_alloc_init(AXMVisionAnalysisOptions);
     [v8 setDetectCaptions:1];
     [v8 setClientID:1];
-    v9 = [v6 application];
-    v10 = [(VOTVisionEngine *)self _interfaceOrientationForElement:v6];
-    [v6 visibleFrame];
-    [v9 convertAccessibilityFrameToScreenCoordinates:?];
+    application = [elementCopy application];
+    v10 = [(VOTVisionEngine *)self _interfaceOrientationForElement:elementCopy];
+    [elementCopy visibleFrame];
+    [application convertAccessibilityFrameToScreenCoordinates:?];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -883,27 +883,27 @@ LABEL_30:
     v19 = +[VOTElement systemWideElement];
     v20 = [v19 elementForAttribute:1005];
 
-    v21 = [v20 windowContextIDs];
-    [v8 setIgnoredLayerContextIDs:v21];
+    windowContextIDs = [v20 windowContextIDs];
+    [v8 setIgnoredLayerContextIDs:windowContextIDs];
     +[NSDate timeIntervalSinceReferenceDate];
     v23 = v22;
     v24 = AXMediaLogService();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v34 = v6;
+      v34 = elementCopy;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "ProduceCaption[ScreenCap] for element: %@", buf, 0xCu);
     }
 
-    v25 = [(VOTVisionEngine *)self engine];
-    v26 = [v25 captureNode];
+    engine = [(VOTVisionEngine *)self engine];
+    captureNode = [engine captureNode];
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_1001067EC;
     v28[3] = &unk_1001CB370;
     v30 = v23;
-    v29 = v7;
-    [v26 triggerWithScreenCaptureRegion:v10 interfaceOrientation:v8 options:0 cacheKey:v28 resultHandler:{v12, v14, v16, v18}];
+    v29 = completionCopy;
+    [captureNode triggerWithScreenCaptureRegion:v10 interfaceOrientation:v8 options:0 cacheKey:v28 resultHandler:{v12, v14, v16, v18}];
   }
 
   else
@@ -913,7 +913,7 @@ LABEL_30:
     block[1] = 3221225472;
     block[2] = sub_100106760;
     block[3] = &unk_1001CB348;
-    v32 = v7;
+    v32 = completionCopy;
     dispatch_async(v27, block);
 
     v8 = v32;

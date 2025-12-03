@@ -1,8 +1,8 @@
 @interface DeviceActivityMonitorContext
 - (_TtC14DeviceActivity28DeviceActivityMonitorContext)init;
-- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)a3;
-- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)a3 contextUUID:(id)a4;
-- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)items;
+- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)items contextUUID:(id)d;
+- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 @end
 
 @implementation DeviceActivityMonitorContext
@@ -15,9 +15,9 @@
   return [(DeviceActivityMonitorContext *)&v3 init];
 }
 
-- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)a3
+- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)items
 {
-  if (a3)
+  if (items)
   {
     v3 = sub_238031F94();
   }
@@ -30,18 +30,18 @@
   return sub_238019718(v3);
 }
 
-- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)a3 contextUUID:(id)a4
+- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)items contextUUID:(id)d
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DEE56C8, "&%");
   v7 = *(*(v6 - 8) + 64);
   MEMORY[0x28223BE20](v6 - 8);
   v9 = &v13 - v8;
-  if (a3)
+  if (items)
   {
-    a3 = sub_238031F94();
+    items = sub_238031F94();
   }
 
-  if (a4)
+  if (d)
   {
     sub_238031A94();
     v10 = sub_238031AB4();
@@ -54,21 +54,21 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  return sub_2380197FC(a3, v9);
+  return sub_2380197FC(items, v9);
 }
 
-- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (_TtC14DeviceActivity28DeviceActivityMonitorContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v8 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27DEE56C8, "&%");
   v9 = *(*(v8 - 8) + 64);
   MEMORY[0x28223BE20](v8 - 8);
   v11 = &v16 - v10;
-  if (a3)
+  if (items)
   {
-    a3 = sub_238031F94();
+    items = sub_238031F94();
   }
 
-  if (a5)
+  if (d)
   {
     sub_238031A94();
     v12 = sub_238031AB4();
@@ -81,8 +81,8 @@
     (*(*(v13 - 8) + 56))(v11, 1, 1, v13);
   }
 
-  v14 = a4;
-  return sub_238019ACC(a3, a4, v11);
+  endpointCopy = endpoint;
+  return sub_238019ACC(items, endpoint, v11);
 }
 
 @end

@@ -1,29 +1,29 @@
 @interface MPSGraphViewerNodeSPI
-- (MPSGraphViewerNodeSPI)initWithJSONDictionary:(id)a3;
-- (MPSGraphViewerNodeSPI)initWithType:(id)a3 inputs:(id)a4 outputs:(id)a5 properties:(id)a6 regions:(id)a7;
+- (MPSGraphViewerNodeSPI)initWithJSONDictionary:(id)dictionary;
+- (MPSGraphViewerNodeSPI)initWithType:(id)type inputs:(id)inputs outputs:(id)outputs properties:(id)properties regions:(id)regions;
 - (id)jsonDictionary;
 @end
 
 @implementation MPSGraphViewerNodeSPI
 
-- (MPSGraphViewerNodeSPI)initWithType:(id)a3 inputs:(id)a4 outputs:(id)a5 properties:(id)a6 regions:(id)a7
+- (MPSGraphViewerNodeSPI)initWithType:(id)type inputs:(id)inputs outputs:(id)outputs properties:(id)properties regions:(id)regions
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v21 = a7;
+  typeCopy = type;
+  inputsCopy = inputs;
+  outputsCopy = outputs;
+  propertiesCopy = properties;
+  regionsCopy = regions;
   v22.receiver = self;
   v22.super_class = MPSGraphViewerNodeSPI;
   v17 = [(MPSGraphViewerNodeSPI *)&v22 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_type, a3);
-    objc_storeStrong(&v18->_inputs, a4);
-    objc_storeStrong(&v18->_outputs, a5);
-    objc_storeStrong(&v18->_properties, a6);
-    objc_storeStrong(&v18->_regions, a7);
+    objc_storeStrong(&v17->_type, type);
+    objc_storeStrong(&v18->_inputs, inputs);
+    objc_storeStrong(&v18->_outputs, outputs);
+    objc_storeStrong(&v18->_properties, properties);
+    objc_storeStrong(&v18->_regions, regions);
     location = v18->_location;
     v18->_location = &stru_1F5B58250;
   }
@@ -31,22 +31,22 @@
   return v18;
 }
 
-- (MPSGraphViewerNodeSPI)initWithJSONDictionary:(id)a3
+- (MPSGraphViewerNodeSPI)initWithJSONDictionary:(id)dictionary
 {
   v74 = *MEMORY[0x1E69E9840];
-  v47 = a3;
+  dictionaryCopy = dictionary;
   v69.receiver = self;
   v69.super_class = MPSGraphViewerNodeSPI;
   v4 = [(MPSGraphViewerNodeSPI *)&v69 init];
   v46 = v4;
   if (v4)
   {
-    v5 = [v47 objectForKey:@"type"];
+    v5 = [dictionaryCopy objectForKey:@"type"];
     type = v4->_type;
     v4->_type = v5;
 
     v52 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v47 objectForKey:@"inputs"];
+    [dictionaryCopy objectForKey:@"inputs"];
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
@@ -79,7 +79,7 @@
     v46->_inputs = v11;
 
     v51 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v47 objectForKey:@"outputs"];
+    [dictionaryCopy objectForKey:@"outputs"];
     v63 = 0u;
     v64 = 0u;
     v61 = 0u;
@@ -112,7 +112,7 @@
     v46->_outputs = v17;
 
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v47 objectForKey:@"properties"];
+    [dictionaryCopy objectForKey:@"properties"];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
@@ -202,7 +202,7 @@ LABEL_32:
     v46->_properties = v35;
 
     v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v47 objectForKey:@"regions"];
+    [dictionaryCopy objectForKey:@"regions"];
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
@@ -246,8 +246,8 @@ LABEL_32:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v4 = [(MPSGraphViewerNodeSPI *)self inputs];
-  v5 = [v4 countByEnumeratingWithState:&v42 objects:v51 count:16];
+  inputs = [(MPSGraphViewerNodeSPI *)self inputs];
+  v5 = [inputs countByEnumeratingWithState:&v42 objects:v51 count:16];
   if (v5)
   {
     v6 = *v43;
@@ -257,14 +257,14 @@ LABEL_32:
       {
         if (*v43 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inputs);
         }
 
-        v8 = [*(*(&v42 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v8];
+        jsonDictionary = [*(*(&v42 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v42 objects:v51 count:16];
+      v5 = [inputs countByEnumeratingWithState:&v42 objects:v51 count:16];
     }
 
     while (v5);
@@ -275,8 +275,8 @@ LABEL_32:
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v10 = [(MPSGraphViewerNodeSPI *)self outputs];
-  v11 = [v10 countByEnumeratingWithState:&v38 objects:v50 count:16];
+  outputs = [(MPSGraphViewerNodeSPI *)self outputs];
+  v11 = [outputs countByEnumeratingWithState:&v38 objects:v50 count:16];
   if (v11)
   {
     v12 = *v39;
@@ -286,14 +286,14 @@ LABEL_32:
       {
         if (*v39 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(outputs);
         }
 
-        v14 = [*(*(&v38 + 1) + 8 * j) jsonDictionary];
-        [v9 addObject:v14];
+        jsonDictionary2 = [*(*(&v38 + 1) + 8 * j) jsonDictionary];
+        [v9 addObject:jsonDictionary2];
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v38 objects:v50 count:16];
+      v11 = [outputs countByEnumeratingWithState:&v38 objects:v50 count:16];
     }
 
     while (v11);
@@ -304,8 +304,8 @@ LABEL_32:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v16 = [(MPSGraphViewerNodeSPI *)self properties];
-  v17 = [v16 countByEnumeratingWithState:&v34 objects:v49 count:16];
+  properties = [(MPSGraphViewerNodeSPI *)self properties];
+  v17 = [properties countByEnumeratingWithState:&v34 objects:v49 count:16];
   if (v17)
   {
     v18 = *v35;
@@ -315,14 +315,14 @@ LABEL_32:
       {
         if (*v35 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(properties);
         }
 
-        v20 = [*(*(&v34 + 1) + 8 * k) jsonDictionary];
-        [v15 addObject:v20];
+        jsonDictionary3 = [*(*(&v34 + 1) + 8 * k) jsonDictionary];
+        [v15 addObject:jsonDictionary3];
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v34 objects:v49 count:16];
+      v17 = [properties countByEnumeratingWithState:&v34 objects:v49 count:16];
     }
 
     while (v17);
@@ -333,8 +333,8 @@ LABEL_32:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v22 = [(MPSGraphViewerNodeSPI *)self regions];
-  v23 = [v22 countByEnumeratingWithState:&v30 objects:v48 count:16];
+  regions = [(MPSGraphViewerNodeSPI *)self regions];
+  v23 = [regions countByEnumeratingWithState:&v30 objects:v48 count:16];
   if (v23)
   {
     v24 = *v31;
@@ -344,22 +344,22 @@ LABEL_32:
       {
         if (*v31 != v24)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(regions);
         }
 
-        v26 = [*(*(&v30 + 1) + 8 * m) jsonDictionary];
-        [v21 addObject:v26];
+        jsonDictionary4 = [*(*(&v30 + 1) + 8 * m) jsonDictionary];
+        [v21 addObject:jsonDictionary4];
       }
 
-      v23 = [v22 countByEnumeratingWithState:&v30 objects:v48 count:16];
+      v23 = [regions countByEnumeratingWithState:&v30 objects:v48 count:16];
     }
 
     while (v23);
   }
 
   v46[0] = @"type";
-  v27 = [(MPSGraphViewerNodeSPI *)self type];
-  v47[0] = v27;
+  type = [(MPSGraphViewerNodeSPI *)self type];
+  v47[0] = type;
   v47[1] = v3;
   v46[1] = @"inputs";
   v46[2] = @"outputs";

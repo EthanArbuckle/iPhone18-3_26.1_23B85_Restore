@@ -1,5 +1,5 @@
 @interface NENetworkAgentSessionFileHandle
-- (NENetworkAgentSessionFileHandle)initWithNetworkAgentSession:(id)a3 name:(id)a4;
+- (NENetworkAgentSessionFileHandle)initWithNetworkAgentSession:(id)session name:(id)name;
 - (id)description;
 @end
 
@@ -8,33 +8,33 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(NEFileHandle *)self handle];
-  v5 = [v4 fileDescriptor];
-  v6 = [(NENetworkAgentSessionFileHandle *)self name];
-  v7 = [v3 stringWithFormat:@"Network Agent Session socket (%d) %@", v5, v6];
+  handle = [(NEFileHandle *)self handle];
+  fileDescriptor = [handle fileDescriptor];
+  name = [(NENetworkAgentSessionFileHandle *)self name];
+  v7 = [v3 stringWithFormat:@"Network Agent Session socket (%d) %@", fileDescriptor, name];
 
   return v7;
 }
 
-- (NENetworkAgentSessionFileHandle)initWithNetworkAgentSession:(id)a3 name:(id)a4
+- (NENetworkAgentSessionFileHandle)initWithNetworkAgentSession:(id)session name:(id)name
 {
-  v7 = a4;
-  v8 = [a3 dupSessionFileDescriptor];
-  if ((v8 & 0x80000000) != 0)
+  nameCopy = name;
+  dupSessionFileDescriptor = [session dupSessionFileDescriptor];
+  if ((dupSessionFileDescriptor & 0x80000000) != 0)
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v9 = v8;
+    v9 = dupSessionFileDescriptor;
     v14.receiver = self;
     v14.super_class = NENetworkAgentSessionFileHandle;
-    v10 = [(NEFileHandle *)&v14 initWithFileDescriptor:v8 launchOwnerWhenReadable:1];
+    v10 = [(NEFileHandle *)&v14 initWithFileDescriptor:dupSessionFileDescriptor launchOwnerWhenReadable:1];
     v11 = v10;
     if (v10)
     {
-      objc_storeStrong(&v10->_name, a4);
+      objc_storeStrong(&v10->_name, name);
     }
 
     else
@@ -43,10 +43,10 @@
     }
 
     self = v11;
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

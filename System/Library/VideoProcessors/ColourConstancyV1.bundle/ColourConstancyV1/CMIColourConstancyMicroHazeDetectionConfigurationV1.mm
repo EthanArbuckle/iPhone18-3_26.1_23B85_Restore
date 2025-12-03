@@ -1,10 +1,10 @@
 @interface CMIColourConstancyMicroHazeDetectionConfigurationV1
-- (CMIColourConstancyMicroHazeDetectionConfigurationV1)initWithFusionMapWidth:(int)a3 fusionMapHeight:(int)a4;
+- (CMIColourConstancyMicroHazeDetectionConfigurationV1)initWithFusionMapWidth:(int)width fusionMapHeight:(int)height;
 @end
 
 @implementation CMIColourConstancyMicroHazeDetectionConfigurationV1
 
-- (CMIColourConstancyMicroHazeDetectionConfigurationV1)initWithFusionMapWidth:(int)a3 fusionMapHeight:(int)a4
+- (CMIColourConstancyMicroHazeDetectionConfigurationV1)initWithFusionMapWidth:(int)width fusionMapHeight:(int)height
 {
   v10.receiver = self;
   v10.super_class = CMIColourConstancyMicroHazeDetectionConfigurationV1;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    *(v6 + 2) = a3;
-    *(v6 + 3) = a4;
+    *(v6 + 2) = width;
+    *(v6 + 3) = height;
     *(v6 + 2) = 0xC00000010;
     *(v6 + 3) = 0x4000000000000020;
     *(v6 + 4) = 0x3000000040;

@@ -3,30 +3,30 @@
 - (BOOL)_hasTelemetryEntitlement;
 - (void)dealloc;
 - (void)flushEvalData;
-- (void)flushUploadHistoryWithCompletion:(id)a3;
-- (void)reportDailySettings:(id)a3 completion:(id)a4;
-- (void)reportLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 completion:(id)a5;
+- (void)flushUploadHistoryWithCompletion:(id)completion;
+- (void)reportDailySettings:(id)settings completion:(id)completion;
+- (void)reportLogMsg:(id)msg uploadBatchId:(unint64_t)id completion:(id)completion;
 - (void)runAggregationTasks;
 - (void)showEvalData;
 - (void)showInflight;
-- (void)showUploadCounts:(id)a3;
+- (void)showUploadCounts:(id)counts;
 - (void)streamEvalData;
 @end
 
 @implementation GEOAPDaemonManagerBridge
 
-- (void)showUploadCounts:(id)a3
+- (void)showUploadCounts:(id)counts
 {
-  v3 = a3;
+  countsCopy = counts;
   v4 = +[GEOAPServiceManager sharedManager];
-  [v4 showUploadCounts:v3];
+  [v4 showUploadCounts:countsCopy];
 }
 
-- (void)flushUploadHistoryWithCompletion:(id)a3
+- (void)flushUploadHistoryWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[GEOAPServiceManager sharedManager];
-  [v4 flushUploadHistoryWithCompletion:v3];
+  [v4 flushUploadHistoryWithCompletion:completionCopy];
 }
 
 - (void)showInflight
@@ -36,13 +36,13 @@
     v3 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___GEOAPXPCMapsDebugPanelExporting];
     [(NSXPCConnection *)self->_conn setRemoteObjectInterface:v3];
 
-    v4 = [(NSXPCConnection *)self->_conn remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_conn remoteObjectProxy];
     v5 = +[GEOAPServiceManager sharedManager];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10000CE14;
     v9[3] = &unk_10003C9D8;
-    v10 = v4;
+    v10 = remoteObjectProxy;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10000CE58;
@@ -97,13 +97,13 @@
     v3 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___GEOAPXPCClientExporting];
     [(NSXPCConnection *)self->_conn setRemoteObjectInterface:v3];
 
-    v4 = [(NSXPCConnection *)self->_conn remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_conn remoteObjectProxy];
     objc_initWeak(&location, self);
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10000D1EC;
     v14[3] = &unk_10003D440;
-    v5 = v4;
+    v5 = remoteObjectProxy;
     v15 = v5;
     objc_copyWeak(&v16, &location);
     [(NSXPCConnection *)self->_conn setInterruptionHandler:v14];
@@ -154,14 +154,14 @@
     v3 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___GEOAPXPCClientExporting];
     [(NSXPCConnection *)self->_conn setRemoteObjectInterface:v3];
 
-    v4 = [(NSXPCConnection *)self->_conn remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_conn remoteObjectProxy];
     v5 = dispatch_get_global_queue(17, 0);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000D41C;
     block[3] = &unk_10003D5B8;
-    v8 = v4;
-    v6 = v4;
+    v8 = remoteObjectProxy;
+    v6 = remoteObjectProxy;
     dispatch_async(v5, block);
   }
 
@@ -208,21 +208,21 @@
   v2 = [(NSXPCConnection *)self->_conn valueForEntitlement:GEOAPEvalEntitlement];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)reportLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 completion:(id)a5
+- (void)reportLogMsg:(id)msg uploadBatchId:(unint64_t)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  msgCopy = msg;
+  completionCopy = completion;
   v10 = sub_100000F70();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -238,7 +238,7 @@
     block[1] = 3221225472;
     block[2] = sub_10000DAC0;
     block[3] = &unk_10003C988;
-    v14 = v9;
+    v14 = completionCopy;
     dispatch_async(v12, block);
 
     v11 = v14;
@@ -247,7 +247,7 @@
   else
   {
     v11 = +[GEOAPServiceManager sharedManager];
-    [v11 reportLogMsg:v8 uploadBatchId:a4 completion:v9];
+    [v11 reportLogMsg:msgCopy uploadBatchId:id completion:completionCopy];
   }
 }
 
@@ -256,21 +256,21 @@
   v2 = [(NSXPCConnection *)self->_conn valueForEntitlement:GEOAPTelemetryEntitlement];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)reportDailySettings:(id)a3 completion:(id)a4
+- (void)reportDailySettings:(id)settings completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  settingsCopy = settings;
   v7 = sub_100000F70();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -280,7 +280,7 @@
   }
 
   v8 = +[GEOAPServiceManager sharedManager];
-  [v8 reportDailySettings:v6 completion:v5];
+  [v8 reportDailySettings:settingsCopy completion:completionCopy];
 }
 
 - (void)dealloc
@@ -289,7 +289,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "goodbye connection %p", buf, 0xCu);
   }
 

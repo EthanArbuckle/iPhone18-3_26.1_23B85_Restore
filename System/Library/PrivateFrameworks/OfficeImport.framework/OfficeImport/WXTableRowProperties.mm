@@ -1,108 +1,108 @@
 @interface WXTableRowProperties
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5;
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state;
 @end
 
 @implementation WXTableRowProperties
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 state:(id)a5
++ (void)readFrom:(_xmlNode *)from to:(id)to state:(id)state
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v8 WXMainNamespace];
-  v10 = OCXFindChild(a3, v9, "ins");
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [stateCopy WXMainNamespace];
+  v10 = OCXFindChild(from, wXMainNamespace, "ins");
 
   if (v10)
   {
-    v11 = [v7 characterProperties];
-    [v11 setEdited:1];
+    characterProperties = [toCopy characterProperties];
+    [characterProperties setEdited:1];
 
-    v12 = [v7 characterProperties];
+    characterProperties2 = [toCopy characterProperties];
     v13 = wmxmlGetDateProperty(v10);
-    [v12 setEditDate:v13];
+    [characterProperties2 setEditDate:v13];
 
-    v14 = [v7 characterProperties];
-    v15 = [v8 document];
+    characterProperties3 = [toCopy characterProperties];
+    document = [stateCopy document];
     v16 = wmxmlGetAuthorProperty(v10);
-    [v14 setIndexToAuthorIDOfEdit:{objc_msgSend(v15, "revisionAuthorAddLookup:", v16)}];
+    [characterProperties3 setIndexToAuthorIDOfEdit:{objc_msgSend(document, "revisionAuthorAddLookup:", v16)}];
   }
 
-  v17 = [v8 WXMainNamespace];
-  v18 = OCXFindChild(a3, v17, "del");
+  wXMainNamespace2 = [stateCopy WXMainNamespace];
+  v18 = OCXFindChild(from, wXMainNamespace2, "del");
 
   if (v18)
   {
-    v19 = [v7 characterProperties];
-    [v19 setDeleted:1];
+    characterProperties4 = [toCopy characterProperties];
+    [characterProperties4 setDeleted:1];
 
-    v20 = [v7 characterProperties];
+    characterProperties5 = [toCopy characterProperties];
     v21 = wmxmlGetDateProperty(v18);
-    [v20 setDeletionDate:v21];
+    [characterProperties5 setDeletionDate:v21];
 
-    v22 = [v7 characterProperties];
-    v23 = [v8 document];
+    characterProperties6 = [toCopy characterProperties];
+    document2 = [stateCopy document];
     v24 = wmxmlGetAuthorProperty(v18);
-    [v22 setIndexToAuthorIDOfDeletion:{objc_msgSend(v23, "revisionAuthorAddLookup:", v24)}];
+    [characterProperties6 setIndexToAuthorIDOfDeletion:{objc_msgSend(document2, "revisionAuthorAddLookup:", v24)}];
   }
 
   v45 = 0;
   v25 = +[WXCommon heightTypeEnumMap];
-  v26 = readEnumProperty<WDHeightType>(a3, "trHeight", "hRule", v25, &v45, v8);
+  v26 = readEnumProperty<WDHeightType>(from, "trHeight", "hRule", v25, &v45, stateCopy);
 
   if (v26)
   {
-    [v7 setHeightType:v45];
+    [toCopy setHeightType:v45];
   }
 
   v44 = 1;
   v43 = 0;
   v42 = 0;
-  v27 = [v8 WXMainNamespace];
-  v28 = OCXFindChild(a3, v27, "wBefore");
+  wXMainNamespace3 = [stateCopy WXMainNamespace];
+  v28 = OCXFindChild(from, wXMainNamespace3, "wBefore");
 
-  v29 = [v8 WXMainNamespace];
-  LODWORD(v28) = WXOptionalTableWidthAttribute(v28, v29, "w", &v43, &v44);
+  wXMainNamespace4 = [stateCopy WXMainNamespace];
+  LODWORD(v28) = WXOptionalTableWidthAttribute(v28, wXMainNamespace4, "w", &v43, &v44);
 
   if (v28)
   {
-    [v7 setWidthBefore:v43];
-    [v7 setWidthBeforeType:v44];
+    [toCopy setWidthBefore:v43];
+    [toCopy setWidthBeforeType:v44];
   }
 
-  v30 = [v8 WXMainNamespace];
-  v31 = OCXFindChild(a3, v30, "wAfter");
+  wXMainNamespace5 = [stateCopy WXMainNamespace];
+  v31 = OCXFindChild(from, wXMainNamespace5, "wAfter");
 
-  v32 = [v8 WXMainNamespace];
-  LODWORD(v31) = WXOptionalTableWidthAttribute(v31, v32, "w", &v43, &v44);
+  wXMainNamespace6 = [stateCopy WXMainNamespace];
+  LODWORD(v31) = WXOptionalTableWidthAttribute(v31, wXMainNamespace6, "w", &v43, &v44);
 
   if (v31)
   {
-    [v7 setWidthAfter:v43];
-    [v7 setWidthAfterType:v44];
+    [toCopy setWidthAfter:v43];
+    [toCopy setWidthAfterType:v44];
   }
 
-  v33 = [v8 WXMainNamespace];
-  v34 = OCXFindChild(a3, v33, "trHeight");
+  wXMainNamespace7 = [stateCopy WXMainNamespace];
+  v34 = OCXFindChild(from, wXMainNamespace7, "trHeight");
 
-  v35 = [v8 WXMainNamespace];
-  LODWORD(v34) = CXOptionalLongAttribute(v34, v35, "val", &v42, 14);
+  wXMainNamespace8 = [stateCopy WXMainNamespace];
+  LODWORD(v34) = CXOptionalLongAttribute(v34, wXMainNamespace8, "val", &v42, 14);
 
   if (v34)
   {
-    [v7 setHeight:v42];
+    [toCopy setHeight:v42];
   }
 
   v41 = 0;
-  v36 = [v8 WXMainNamespace];
-  v37 = OCXFindChild(a3, v36, "tblHeader");
+  wXMainNamespace9 = [stateCopy WXMainNamespace];
+  v37 = OCXFindChild(from, wXMainNamespace9, "tblHeader");
 
-  v38 = [v8 WXMainNamespace];
-  v39 = CXOptionalBoolAttribute(v37, v38, "val", &v41);
+  wXMainNamespace10 = [stateCopy WXMainNamespace];
+  v39 = CXOptionalBoolAttribute(v37, wXMainNamespace10, "val", &v41);
 
   if (v39)
   {
     v40 = v41;
 LABEL_17:
-    [v7 setHeader:v40];
+    [toCopy setHeader:v40];
     goto LABEL_18;
   }
 
@@ -113,7 +113,7 @@ LABEL_17:
   }
 
 LABEL_18:
-  [v8 setCurrentRowCNFStyle:{+[WXTableCellProperties bitfieldForCnfStyleFrom:state:](WXTableCellProperties, "bitfieldForCnfStyleFrom:state:", a3, v8)}];
+  [stateCopy setCurrentRowCNFStyle:{+[WXTableCellProperties bitfieldForCnfStyleFrom:state:](WXTableCellProperties, "bitfieldForCnfStyleFrom:state:", from, stateCopy)}];
 }
 
 @end

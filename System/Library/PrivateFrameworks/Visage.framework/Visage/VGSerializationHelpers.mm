@@ -1,31 +1,31 @@
 @interface VGSerializationHelpers
-+ (__CVBuffer)createPixelBufferFromData:(id)a3;
-+ (id)cgRectToDict:(const CGRect *)a3;
-+ (id)createDataFromPixelBuffer:(__CVBuffer *)a3;
++ (__CVBuffer)createPixelBufferFromData:(id)data;
++ (id)cgRectToDict:(const CGRect *)dict;
++ (id)createDataFromPixelBuffer:(__CVBuffer *)buffer;
 @end
 
 @implementation VGSerializationHelpers
 
-+ (id)createDataFromPixelBuffer:(__CVBuffer *)a3
++ (id)createDataFromPixelBuffer:(__CVBuffer *)buffer
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(buffer);
   v8 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:BytesPerRow * Height + 32];
-  v9 = [v8 mutableBytes];
-  *v9 = 1;
-  *(v9 + 4) = Width;
-  *(v9 + 12) = Height;
-  *(v9 + 20) = BytesPerRow;
-  *(v9 + 28) = PixelFormatType;
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
+  mutableBytes = [v8 mutableBytes];
+  *mutableBytes = 1;
+  *(mutableBytes + 4) = Width;
+  *(mutableBytes + 12) = Height;
+  *(mutableBytes + 20) = BytesPerRow;
+  *(mutableBytes + 28) = PixelFormatType;
+  CVPixelBufferLockBaseAddress(buffer, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(buffer);
   if (Height)
   {
     v11 = BaseAddress;
     v12 = 0;
-    v13 = v9 + 32;
+    v13 = mutableBytes + 32;
     do
     {
       memcpy((v13 + v12), &v11[v12], BytesPerRow);
@@ -36,19 +36,19 @@
     while (Height);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(buffer, 1uLL);
 
   return v8;
 }
 
-+ (__CVBuffer)createPixelBufferFromData:(id)a3
++ (__CVBuffer)createPixelBufferFromData:(id)data
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v3 = [a3 bytes];
-  v4 = *(v3 + 4);
-  v5 = *(v3 + 12);
-  v6 = *(v3 + 20);
-  v7 = *(v3 + 28);
+  bytes = [data bytes];
+  v4 = *(bytes + 4);
+  v5 = *(bytes + 12);
+  v6 = *(bytes + 20);
+  v7 = *(bytes + 28);
   pixelBuffer = 0;
   v17 = *MEMORY[0x277CC4DE8];
   v18[0] = MEMORY[0x277CBEC10];
@@ -66,7 +66,7 @@
     if (v5)
     {
       v12 = BaseAddress;
-      v13 = (v3 + 32);
+      v13 = (bytes + 32);
       do
       {
         memcpy(v12, v13, v6);
@@ -86,20 +86,20 @@
   return v9;
 }
 
-+ (id)cgRectToDict:(const CGRect *)a3
++ (id)cgRectToDict:(const CGRect *)dict
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v15[0] = @"origin";
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3->origin.x];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:dict->origin.x];
   v14[0] = v4;
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3->origin.y];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:dict->origin.y];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:2];
   v15[1] = @"size";
   v16[0] = v6;
-  v7 = [MEMORY[0x277CCABB0] numberWithDouble:a3->size.width];
+  v7 = [MEMORY[0x277CCABB0] numberWithDouble:dict->size.width];
   v13[0] = v7;
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3->size.height];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:dict->size.height];
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   v16[1] = v9;

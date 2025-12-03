@@ -11,26 +11,26 @@
   if ([(CMKShutterButtonAccessibility *)self isAccessibilityElement])
   {
     v3 = [(CMKShutterButtonAccessibility *)self safeValueForKey:@"buttonMode"];
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
 
     v5 = @"camera.video.stop.record.button.text";
     v6 = @"camera.video.record.button.text";
-    if (v4 == 7)
+    if (integerValue == 7)
     {
       v6 = @"camera.timelapse.stop";
     }
 
-    if (v4 == 3)
+    if (integerValue == 3)
     {
       v6 = @"camera.timelapse.start";
     }
 
-    if (v4 - 5 >= 2)
+    if (integerValue - 5 >= 2)
     {
       v5 = v6;
     }
 
-    if (v4 > 7 || ((1 << v4) & 0xEE) == 0)
+    if (integerValue > 7 || ((1 << integerValue) & 0xEE) == 0)
     {
       v8 = @"camera.photo.button.text";
     }
@@ -59,23 +59,23 @@
   }
 
   accessibilityIdentifier_CheckingAXElement = 1;
-  v3 = [(CMKShutterButtonAccessibility *)self isAccessibilityElement];
+  isAccessibilityElement = [(CMKShutterButtonAccessibility *)self isAccessibilityElement];
   accessibilityIdentifier_CheckingAXElement = 0;
-  if (!v3)
+  if (!isAccessibilityElement)
   {
     return 0;
   }
 
   v4 = [(CMKShutterButtonAccessibility *)self safeValueForKey:@"buttonMode"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
   v6 = @"PhotoCapture";
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 2)
+  if ((integerValue & 0xFFFFFFFFFFFFFFFBLL) == 2)
   {
     v6 = @"SlomoCapture";
   }
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((integerValue & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return @"VideoCapture";
   }
@@ -90,9 +90,9 @@
 {
   v4.receiver = self;
   v4.super_class = CMKShutterButtonAccessibility;
-  v2 = [(CMKShutterButtonAccessibility *)&v4 accessibilityActivate];
+  accessibilityActivate = [(CMKShutterButtonAccessibility *)&v4 accessibilityActivate];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
-  return v2;
+  return accessibilityActivate;
 }
 
 @end

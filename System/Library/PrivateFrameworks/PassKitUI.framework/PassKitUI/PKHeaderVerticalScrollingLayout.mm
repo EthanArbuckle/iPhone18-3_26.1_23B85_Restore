@@ -1,17 +1,17 @@
 @interface PKHeaderVerticalScrollingLayout
-- (BOOL)_indexPathIsHeaderIndexPath:(id)a3;
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
+- (BOOL)_indexPathIsHeaderIndexPath:(id)path;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
 - (PKHeaderVerticalScrollingLayout)init;
-- (id)_customAttributesForStickyHeader:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4;
+- (id)_customAttributesForStickyHeader:(id)header;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment;
 - (void)_updateAdjustedHeaderHeight;
 - (void)invalidateLayout;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
-- (void)setUseStickyHeader:(BOOL)a3;
+- (void)setUseStickyHeader:(BOOL)header;
 @end
 
 @implementation PKHeaderVerticalScrollingLayout
@@ -68,12 +68,12 @@ id __39__PKHeaderVerticalScrollingLayout_init__block_invoke(uint64_t a1, uint64_
   [(PKHeaderVerticalScrollingLayout *)&v2 invalidateLayout];
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
   self->_adjustedHeaderHeightDirty = 1;
   v3.receiver = self;
   v3.super_class = PKHeaderVerticalScrollingLayout;
-  [(PKHeaderVerticalScrollingLayout *)&v3 invalidateLayoutWithContext:a3];
+  [(PKHeaderVerticalScrollingLayout *)&v3 invalidateLayoutWithContext:context];
 }
 
 - (void)_updateAdjustedHeaderHeight
@@ -83,11 +83,11 @@ id __39__PKHeaderVerticalScrollingLayout_init__block_invoke(uint64_t a1, uint64_
     self->_adjustedHeaderHeightDirty = 0;
     if (self->_useStickyHeader)
     {
-      v6 = [(PKHeaderVerticalScrollingLayout *)self collectionView];
-      v3 = [v6 delegate];
-      [v3 collectionView:v6 layout:self sizeForItemAtIndexPath:self->_headerIndexPath];
+      collectionView = [(PKHeaderVerticalScrollingLayout *)self collectionView];
+      delegate = [collectionView delegate];
+      [delegate collectionView:collectionView layout:self sizeForItemAtIndexPath:self->_headerIndexPath];
       self->_adjustedHeaderHeight = v4;
-      [v6 adjustedContentInset];
+      [collectionView adjustedContentInset];
       self->_adjustedHeaderHeight = self->_adjustedHeaderHeight - v5;
     }
 
@@ -106,19 +106,19 @@ id __39__PKHeaderVerticalScrollingLayout_init__block_invoke(uint64_t a1, uint64_
   [(PKHeaderVerticalScrollingLayout *)&v3 prepareLayout];
 }
 
-- (id)layoutSectionAtIndex:(int64_t)a3 layoutEnvironment:(id)a4
+- (id)layoutSectionAtIndex:(int64_t)index layoutEnvironment:(id)environment
 {
-  v6 = a4;
+  environmentCopy = environment;
   [(PKHeaderVerticalScrollingLayout *)self _updateAdjustedHeaderHeight];
-  v7 = [(PKHeaderVerticalScrollingLayout *)self collectionView];
-  v8 = [v7 delegate];
-  v9 = [v7 dataSource];
-  v10 = [v9 collectionView:v7 numberOfItemsInSection:a3];
+  collectionView = [(PKHeaderVerticalScrollingLayout *)self collectionView];
+  delegate = [collectionView delegate];
+  dataSource = [collectionView dataSource];
+  v10 = [dataSource collectionView:collectionView numberOfItemsInSection:index];
 
   v11 = objc_opt_respondsToSelector();
   v12 = objc_opt_respondsToSelector();
   v13 = objc_opt_respondsToSelector();
-  v39 = v8;
+  v39 = delegate;
   v14 = objc_opt_respondsToSelector();
   if (v10 < 1)
   {
@@ -126,17 +126,17 @@ id __39__PKHeaderVerticalScrollingLayout_init__block_invoke(uint64_t a1, uint64_
     goto LABEL_36;
   }
 
-  if ((v11 & 1) == 0 || (v15 = v14, ![v39 collectionView:v7 layout:self isListSectionAtIndex:a3]))
+  if ((v11 & 1) == 0 || (v15 = v14, ![v39 collectionView:collectionView layout:self isListSectionAtIndex:index]))
   {
-    [v7 frame];
-    [v7 safeAreaInsets];
+    [collectionView frame];
+    [collectionView safeAreaInsets];
     v19 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v20 = 0;
     v21 = 0.0;
     do
     {
-      v22 = [MEMORY[0x1E696AC88] indexPathForRow:v20 inSection:a3];
-      [v39 collectionView:v7 layout:self sizeForItemAtIndexPath:v22];
+      v22 = [MEMORY[0x1E696AC88] indexPathForRow:v20 inSection:index];
+      [v39 collectionView:collectionView layout:self sizeForItemAtIndexPath:v22];
       adjustedHeaderHeight = v23;
       if (self->_useStickyHeader && [(PKHeaderVerticalScrollingLayout *)self _indexPathIsHeaderIndexPath:v22])
       {
@@ -164,9 +164,9 @@ id __39__PKHeaderVerticalScrollingLayout_init__block_invoke(uint64_t a1, uint64_
     v41 = v16;
     v30 = [v29 customGroupWithLayoutSize:v28 itemProvider:v40];
     v31 = [MEMORY[0x1E6995580] sectionWithGroup:v30];
-    v32 = [(NSIndexPath *)self->_headerIndexPath section];
+    section = [(NSIndexPath *)self->_headerIndexPath section];
     v33 = 20.0;
-    if (v32 == a3)
+    if (section == index)
     {
       titleInset = self->_titleInset;
       v33 = 0.0;
@@ -184,7 +184,7 @@ id __39__PKHeaderVerticalScrollingLayout_init__block_invoke(uint64_t a1, uint64_
   v16 = [objc_alloc(MEMORY[0x1E69DC7E0]) initWithAppearance:2];
   if (v12)
   {
-    v17 = [v39 collectionView:v7 layout:self hasHeaderForSectionAtIndex:a3];
+    v17 = [v39 collectionView:collectionView layout:self hasHeaderForSectionAtIndex:index];
     if ((v13 & 1) == 0)
     {
       goto LABEL_6;
@@ -207,7 +207,7 @@ LABEL_6:
     }
   }
 
-  v18 = [v39 collectionView:v7 layout:self hasFooterForSectionAtIndex:a3];
+  v18 = [v39 collectionView:collectionView layout:self hasFooterForSectionAtIndex:index];
   if (v17)
   {
 LABEL_20:
@@ -265,7 +265,7 @@ LABEL_21:
     [v16 setSeparatorConfiguration:v36];
   }
 
-  v31 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v16 layoutEnvironment:v6];
+  v31 = [MEMORY[0x1E6995580] sectionWithListConfiguration:v16 layoutEnvironment:environmentCopy];
   if (PKIsVision())
   {
     horizontalInset = 0.0;
@@ -343,10 +343,10 @@ id __74__PKHeaderVerticalScrollingLayout_layoutSectionAtIndex_layoutEnvironment_
   return v18;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  y = a3.origin.y;
-  v5 = [(PKHeaderVerticalScrollingLayout *)self collectionView:a3.origin.x];
+  y = change.origin.y;
+  v5 = [(PKHeaderVerticalScrollingLayout *)self collectionView:change.origin.x];
   v6 = v5;
   headerItemNeedsBoundsChangeAdjustment = self->_headerItemNeedsBoundsChangeAdjustment;
   if (self->_useStickyHeader)
@@ -366,12 +366,12 @@ id __74__PKHeaderVerticalScrollingLayout_layoutSectionAtIndex_layoutEnvironment_
   return v10;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = PKHeaderVerticalScrollingLayout;
-  v4 = [(PKHeaderVerticalScrollingLayout *)&v7 invalidationContextForBoundsChange:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PKHeaderVerticalScrollingLayout *)&v7 invalidationContextForBoundsChange:change.origin.x, change.origin.y, change.size.width, change.size.height];
   v8[0] = self->_headerIndexPath;
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
   [v4 invalidateItemsAtIndexPaths:v5];
@@ -379,20 +379,20 @@ id __74__PKHeaderVerticalScrollingLayout_layoutSectionAtIndex_layoutEnvironment_
   return v4;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = PKHeaderVerticalScrollingLayout;
-  v4 = [(PKHeaderVerticalScrollingLayout *)&v11 layoutAttributesForItemAtIndexPath:a3];
+  v4 = [(PKHeaderVerticalScrollingLayout *)&v11 layoutAttributesForItemAtIndexPath:path];
   v5 = v4;
   if (self->_useStickyHeader)
   {
-    v6 = [v4 indexPath];
-    if ([(PKHeaderVerticalScrollingLayout *)self _indexPathIsHeaderIndexPath:v6])
+    indexPath = [v4 indexPath];
+    if ([(PKHeaderVerticalScrollingLayout *)self _indexPathIsHeaderIndexPath:indexPath])
     {
-      v7 = [v5 representedElementCategory];
+      representedElementCategory = [v5 representedElementCategory];
 
-      if (!v7)
+      if (!representedElementCategory)
       {
         v8 = [(PKHeaderVerticalScrollingLayout *)self _customAttributesForStickyHeader:v5];
         goto LABEL_7;
@@ -411,11 +411,11 @@ LABEL_7:
   return v9;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v14.receiver = self;
   v14.super_class = PKHeaderVerticalScrollingLayout;
-  v4 = [(PKHeaderVerticalScrollingLayout *)&v14 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(PKHeaderVerticalScrollingLayout *)&v14 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   if (self->_useStickyHeader && (v13[0] = MEMORY[0x1E69E9820], v13[1] = 3221225472, v13[2] = __69__PKHeaderVerticalScrollingLayout_layoutAttributesForElementsInRect___block_invoke, v13[3] = &unk_1E801FD50, v13[4] = self, v6 = [v4 indexOfObjectPassingTest:v13], v6 != 0x7FFFFFFFFFFFFFFFLL))
   {
@@ -454,25 +454,25 @@ BOOL __69__PKHeaderVerticalScrollingLayout_layoutAttributesForElementsInRect___b
   return v6;
 }
 
-- (void)setUseStickyHeader:(BOOL)a3
+- (void)setUseStickyHeader:(BOOL)header
 {
-  if (self->_useStickyHeader == !a3)
+  if (self->_useStickyHeader == !header)
   {
-    self->_useStickyHeader = a3;
+    self->_useStickyHeader = header;
     [(PKHeaderVerticalScrollingLayout *)self invalidateLayout];
   }
 }
 
-- (id)_customAttributesForStickyHeader:(id)a3
+- (id)_customAttributesForStickyHeader:(id)header
 {
-  v4 = a3;
-  v5 = [(PKHeaderVerticalScrollingLayout *)self collectionView];
-  [v5 bounds];
+  headerCopy = header;
+  collectionView = [(PKHeaderVerticalScrollingLayout *)self collectionView];
+  [collectionView bounds];
   v7 = v6;
-  [v5 adjustedContentInset];
+  [collectionView adjustedContentInset];
   v9 = v8;
   v11 = v10;
-  [v4 frame];
+  [headerCopy frame];
   if (v7 + v9 >= 0.0)
   {
     v12 = -v9;
@@ -483,19 +483,19 @@ BOOL __69__PKHeaderVerticalScrollingLayout_layoutAttributesForElementsInRect___b
     v12 = v7;
   }
 
-  [v4 setFrame:{-v11, v12}];
+  [headerCopy setFrame:{-v11, v12}];
 
-  return v4;
+  return headerCopy;
 }
 
-- (BOOL)_indexPathIsHeaderIndexPath:(id)a3
+- (BOOL)_indexPathIsHeaderIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  if (v5 == [(NSIndexPath *)self->_headerIndexPath section])
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == [(NSIndexPath *)self->_headerIndexPath section])
   {
-    v6 = [v4 item];
-    v7 = v6 == [(NSIndexPath *)self->_headerIndexPath item];
+    item = [pathCopy item];
+    v7 = item == [(NSIndexPath *)self->_headerIndexPath item];
   }
 
   else

@@ -4,16 +4,16 @@
 - (void)loadPane;
 - (void)loadView;
 - (void)saveChanges;
-- (void)setPane:(id)a3;
-- (void)statusBarWillAnimateByHeight:(double)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setPane:(id)pane;
+- (void)statusBarWillAnimateByHeight:(double)height;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewDidUnload;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 @end
 
 @implementation PSDetailController
@@ -53,8 +53,8 @@
     editPaneClass = objc_opt_class();
   }
 
-  v4 = [(PSDetailController *)self view];
-  [v4 bounds];
+  view = [(PSDetailController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -80,15 +80,15 @@
   return result;
 }
 
-- (void)willRotateToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willRotateToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v7.receiver = self;
   v7.super_class = PSDetailController;
   [PSDetailController willRotateToInterfaceOrientation:sel_willRotateToInterfaceOrientation_duration_ duration:?];
-  [(PSEditingPane *)self->_pane willRotateToInterfaceOrientation:a3 duration:a4];
+  [(PSEditingPane *)self->_pane willRotateToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)willAnimateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   v12.receiver = self;
   v12.super_class = PSDetailController;
@@ -106,24 +106,24 @@
 
   else
   {
-    [(PSEditingPane *)v11 willAnimateRotationToInterfaceOrientation:a3 duration:a4];
+    [(PSEditingPane *)v11 willAnimateRotationToInterfaceOrientation:orientation duration:duration];
   }
 }
 
-- (void)setPane:(id)a3
+- (void)setPane:(id)pane
 {
-  v5 = a3;
+  paneCopy = pane;
   pane = self->_pane;
-  v12 = v5;
-  if (pane != v5)
+  v12 = paneCopy;
+  if (pane != paneCopy)
   {
     if (pane)
     {
-      v7 = [(PSEditingPane *)pane childViewControllerForHostingViewController];
-      v8 = v7;
-      if (v7)
+      childViewControllerForHostingViewController = [(PSEditingPane *)pane childViewControllerForHostingViewController];
+      v8 = childViewControllerForHostingViewController;
+      if (childViewControllerForHostingViewController)
       {
-        [v7 willMoveToParentViewController:0];
+        [childViewControllerForHostingViewController willMoveToParentViewController:0];
         [v8 removeFromParentViewController];
       }
 
@@ -131,24 +131,24 @@
       [(PSEditingPane *)self->_pane removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_pane, a3);
+    objc_storeStrong(&self->_pane, pane);
     pane = self->_pane;
     if (pane)
     {
-      v9 = [(PSEditingPane *)pane childViewControllerForHostingViewController];
-      if (v9)
+      childViewControllerForHostingViewController2 = [(PSEditingPane *)pane childViewControllerForHostingViewController];
+      if (childViewControllerForHostingViewController2)
       {
-        [(PSViewController *)self addChildViewController:v9];
-        v10 = [(PSDetailController *)self view];
-        [v10 addSubview:self->_pane];
+        [(PSViewController *)self addChildViewController:childViewControllerForHostingViewController2];
+        view = [(PSDetailController *)self view];
+        [view addSubview:self->_pane];
 
-        [v9 didMoveToParentViewController:self];
+        [childViewControllerForHostingViewController2 didMoveToParentViewController:self];
       }
 
       else
       {
-        v11 = [(PSDetailController *)self view];
-        [v11 addSubview:self->_pane];
+        view2 = [(PSDetailController *)self view];
+        [view2 addSubview:self->_pane];
       }
 
       [(PSEditingPane *)self->_pane setViewController:self];
@@ -178,8 +178,8 @@
     if ([(PSEditingPane *)pane shouldInsetContent])
     {
       v4 = self->_pane;
-      v5 = [(PSDetailController *)self view];
-      [v5 bounds];
+      view = [(PSDetailController *)self view];
+      [view bounds];
       [(PSEditingPane *)v4 layoutInsetContent:?];
     }
   }
@@ -203,8 +203,8 @@
     specifier = self->super._specifier;
     if (specifier->getter)
     {
-      v7 = [(PSSpecifier *)specifier performGetter];
-      [v8 setPreferenceValue:v7];
+      performGetter = [(PSSpecifier *)specifier performGetter];
+      [v8 setPreferenceValue:performGetter];
     }
 
     [(PSDetailController *)self setPane:v8];
@@ -216,55 +216,55 @@
   v4.receiver = self;
   v4.super_class = PSDetailController;
   [(PSViewController *)&v4 viewDidLoad];
-  v3 = [(PSSpecifier *)self->super._specifier name];
-  [(PSDetailController *)self setTitle:v3];
+  name = [(PSSpecifier *)self->super._specifier name];
+  [(PSDetailController *)self setTitle:name];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PSDetailController;
-  [(PSViewController *)&v4 viewWillAppear:a3];
+  [(PSViewController *)&v4 viewWillAppear:appear];
   [(PSDetailController *)self loadPane];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PSDetailController;
-  [(PSViewController *)&v4 viewDidAppear:a3];
+  [(PSViewController *)&v4 viewDidAppear:appear];
   [(PSEditingPane *)self->_pane viewDidBecomeVisible];
 }
 
 - (void)saveChanges
 {
-  v3 = [(PSDetailController *)self pane];
-  v6 = [v3 preferenceSpecifier];
+  pane = [(PSDetailController *)self pane];
+  preferenceSpecifier = [pane preferenceSpecifier];
 
-  v4 = [(PSDetailController *)self pane];
-  v5 = [v4 preferenceValue];
+  pane2 = [(PSDetailController *)self pane];
+  preferenceValue = [pane2 preferenceValue];
 
-  if (v5)
+  if (preferenceValue)
   {
-    [v6 performSetterWithValue:v5];
+    [preferenceSpecifier performSetterWithValue:preferenceValue];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = PSDetailController;
-  [(PSViewController *)&v6 viewWillDisappear:a3];
-  v4 = [(PSDetailController *)self pane];
-  v5 = [v4 handlesDoneButton];
+  [(PSViewController *)&v6 viewWillDisappear:disappear];
+  pane = [(PSDetailController *)self pane];
+  handlesDoneButton = [pane handlesDoneButton];
 
-  if ((v5 & 1) == 0)
+  if ((handlesDoneButton & 1) == 0)
   {
     [(PSDetailController *)self saveChanges];
   }
 }
 
-- (void)statusBarWillAnimateByHeight:(double)a3
+- (void)statusBarWillAnimateByHeight:(double)height
 {
   [(PSEditingPane *)self->_pane frame];
   v9[1] = 3221225472;
@@ -275,7 +275,7 @@
   v9[5] = v5;
   v9[6] = v6;
   v9[7] = v7;
-  *&v9[8] = v8 + a3;
+  *&v9[8] = v8 + height;
   [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v9 options:0 animations:0.35 completion:0.0];
 }
 

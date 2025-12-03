@@ -1,41 +1,41 @@
 @interface _LSDAppProtectionService
 + (id)XPCInterface;
-+ (void)getHiddenApplicationsWithCompletion:(id)a3;
-+ (void)getLockedApplicationsWithCompletion:(id)a3;
-+ (void)setHiddenApplications:(id)a3 completion:(id)a4;
-+ (void)setLockedApplications:(id)a3 completion:(id)a4;
++ (void)getHiddenApplicationsWithCompletion:(id)completion;
++ (void)getLockedApplicationsWithCompletion:(id)completion;
++ (void)setHiddenApplications:(id)applications completion:(id)completion;
++ (void)setLockedApplications:(id)applications completion:(id)completion;
 @end
 
 @implementation _LSDAppProtectionService
 
-+ (void)setHiddenApplications:(id)a3 completion:(id)a4
++ (void)setHiddenApplications:(id)applications completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(_LSDService *)a1 XPCProxyWithErrorHandler:?];
-  [v7 setHiddenApplications:v8 completion:v6];
+  applicationsCopy = applications;
+  completionCopy = completion;
+  v7 = [(_LSDService *)self XPCProxyWithErrorHandler:?];
+  [v7 setHiddenApplications:applicationsCopy completion:completionCopy];
 }
 
-+ (void)getHiddenApplicationsWithCompletion:(id)a3
++ (void)getHiddenApplicationsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(_LSDService *)a1 XPCProxyWithErrorHandler:?];
-  [v4 getHiddenApplicationsWithCompletion:v5];
+  completionCopy = completion;
+  v4 = [(_LSDService *)self XPCProxyWithErrorHandler:?];
+  [v4 getHiddenApplicationsWithCompletion:completionCopy];
 }
 
-+ (void)setLockedApplications:(id)a3 completion:(id)a4
++ (void)setLockedApplications:(id)applications completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(_LSDService *)a1 XPCProxyWithErrorHandler:?];
-  [v7 setLockedApplications:v8 completion:v6];
+  applicationsCopy = applications;
+  completionCopy = completion;
+  v7 = [(_LSDService *)self XPCProxyWithErrorHandler:?];
+  [v7 setLockedApplications:applicationsCopy completion:completionCopy];
 }
 
-+ (void)getLockedApplicationsWithCompletion:(id)a3
++ (void)getLockedApplicationsWithCompletion:(id)completion
 {
-  v5 = a3;
-  v4 = [(_LSDService *)a1 XPCProxyWithErrorHandler:?];
-  [v4 getLockedApplicationsWithCompletion:v5];
+  completionCopy = completion;
+  v4 = [(_LSDService *)self XPCProxyWithErrorHandler:?];
+  [v4 getLockedApplicationsWithCompletion:completionCopy];
 }
 
 + (id)XPCInterface
@@ -45,7 +45,7 @@
   v4[2] = __40___LSDAppProtectionService_XPCInterface__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (+[_LSDAppProtectionService XPCInterface]::once != -1)
   {
     dispatch_once(&+[_LSDAppProtectionService XPCInterface]::once, v4);

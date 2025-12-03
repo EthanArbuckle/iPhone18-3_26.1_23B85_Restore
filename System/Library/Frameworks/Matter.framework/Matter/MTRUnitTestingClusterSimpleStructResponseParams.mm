@@ -1,9 +1,9 @@
 @interface MTRUnitTestingClusterSimpleStructResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRUnitTestingClusterSimpleStructResponseParams)init;
-- (MTRUnitTestingClusterSimpleStructResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRUnitTestingClusterSimpleStructResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRUnitTestingClusterSimpleStructResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterSimpleStructResponseParams);
-  v5 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-  [(MTRUnitTestingClusterSimpleStructResponseParams *)v4 setArg1:v5];
+  arg1 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+  [(MTRUnitTestingClusterSimpleStructResponseParams *)v4 setArg1:arg1];
 
-  v6 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterSimpleStructResponseParams *)v4 setTimedInvokeTimeoutMs:v6];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterSimpleStructResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterSimpleStructResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -100,7 +100,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRUnitTestingClusterSimpleStructResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRUnitTestingClusterSimpleStructResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRUnitTestingClusterSimpleStructResponseParams;
@@ -108,7 +108,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRUnitTestingClusterSimpleStructResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRUnitTestingClusterSimpleStructResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -124,62 +124,62 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
   v5 = objc_opt_new();
   [(MTRUnitTestingClusterSimpleStructResponseParams *)self setArg1:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
-  v7 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-  [v7 setA:v6];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
+  arg1 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+  [arg1 setA:v6];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 1)];
-  v9 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-  [v9 setB:v8];
+  v8 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 1)];
+  arg12 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+  [arg12 setB:v8];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 2)];
-  v11 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-  [v11 setC:v10];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 2)];
+  arg13 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+  [arg13 setC:v10];
 
-  v12 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 1) length:*(a3 + 2)];
-  v13 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-  [v13 setD:v12];
+  v12 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 1) length:*(struct + 2)];
+  arg14 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+  [arg14 setD:v12];
 
-  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(a3 + 3) length:*(a3 + 4) encoding:4];
-  v15 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-  [v15 setE:v14];
+  v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(struct + 3) length:*(struct + 4) encoding:4];
+  arg15 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+  [arg15 setE:v14];
 
-  v16 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-  v17 = [v16 e];
+  arg16 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+  v17 = [arg16 e];
 
   if (v17)
   {
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 40)];
-    v19 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-    [v19 setF:v18];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 40)];
+    arg17 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+    [arg17 setF:v18];
 
-    LODWORD(v20) = *(a3 + 11);
+    LODWORD(v20) = *(struct + 11);
     v21 = [MEMORY[0x277CCABB0] numberWithFloat:v20];
-    v22 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-    [v22 setG:v21];
+    arg18 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+    [arg18 setG:v21];
 
-    v23 = [MEMORY[0x277CCABB0] numberWithDouble:*(a3 + 6)];
-    v24 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-    [v24 setH:v23];
+    v23 = [MEMORY[0x277CCABB0] numberWithDouble:*(struct + 6)];
+    arg19 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+    [arg19 setH:v23];
 
-    v26 = *(a3 + 56);
-    v25 = a3 + 56;
+    v26 = *(struct + 56);
+    v25 = struct + 56;
     if (v26 == 1)
     {
-      v27 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(v25)];
-      v28 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-      [v28 setI:v27];
+      arg111 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36D8(v25)];
+      arg110 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+      [arg110 setI:arg111];
     }
 
     else
     {
-      v27 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
-      [v27 setI:0];
+      arg111 = [(MTRUnitTestingClusterSimpleStructResponseParams *)self arg1];
+      [arg111 setI:0];
     }
 
     v30 = 0;

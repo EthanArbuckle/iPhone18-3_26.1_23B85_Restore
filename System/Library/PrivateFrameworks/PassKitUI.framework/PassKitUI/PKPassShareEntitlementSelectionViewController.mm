@@ -1,40 +1,40 @@
 @interface PKPassShareEntitlementSelectionViewController
-- (id)_initWithAccessType:(int64_t)a3 mode:(unint64_t)a4 entitlementComposer:(id)a5 isShowingMyEntitlements:(BOOL)a6;
-- (void)_reloadSections:(BOOL)a3;
-- (void)didTapPassEntitlementTimeSectionController:(id)a3;
+- (id)_initWithAccessType:(int64_t)type mode:(unint64_t)mode entitlementComposer:(id)composer isShowingMyEntitlements:(BOOL)entitlements;
+- (void)_reloadSections:(BOOL)sections;
+- (void)didTapPassEntitlementTimeSectionController:(id)controller;
 - (void)loadView;
-- (void)setShowDoneButton:(BOOL)a3;
-- (void)showAdvancedScheduleSelectionFlowForEntitlementEntry:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)setShowDoneButton:(BOOL)button;
+- (void)showAdvancedScheduleSelectionFlowForEntitlementEntry:(id)entry;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPassShareEntitlementSelectionViewController
 
-- (id)_initWithAccessType:(int64_t)a3 mode:(unint64_t)a4 entitlementComposer:(id)a5 isShowingMyEntitlements:(BOOL)a6
+- (id)_initWithAccessType:(int64_t)type mode:(unint64_t)mode entitlementComposer:(id)composer isShowingMyEntitlements:(BOOL)entitlements
 {
-  v11 = a5;
+  composerCopy = composer;
   v26.receiver = self;
   v26.super_class = PKPassShareEntitlementSelectionViewController;
   v12 = [(PKPaymentSetupOptionsViewController *)&v26 initWithContext:0];
   v13 = v12;
   if (v12)
   {
-    v12->_accessType = a3;
-    v12->_mode = a4;
-    objc_storeStrong(&v12->_entitlementComposer, a5);
-    v13->_isShowingMyEntitlements = a6;
-    v14 = [[PKPassEntitlementSelectionSectionController alloc] initWithMode:a4 entitlementComposer:v13->_entitlementComposer delegate:v13];
+    v12->_accessType = type;
+    v12->_mode = mode;
+    objc_storeStrong(&v12->_entitlementComposer, composer);
+    v13->_isShowingMyEntitlements = entitlements;
+    v14 = [[PKPassEntitlementSelectionSectionController alloc] initWithMode:mode entitlementComposer:v13->_entitlementComposer delegate:v13];
     entitlementSectionController = v13->_entitlementSectionController;
     v13->_entitlementSectionController = v14;
 
-    v16 = [[PKPassEntitlementTimeSectionController alloc] initWithMode:a4 entitlementComposer:v13->_entitlementComposer delegate:v13];
+    v16 = [[PKPassEntitlementTimeSectionController alloc] initWithMode:mode entitlementComposer:v13->_entitlementComposer delegate:v13];
     timeSectionController = v13->_timeSectionController;
     v13->_timeSectionController = v16;
 
-    v18 = [(PKPassEntitlementsComposer *)v13->_entitlementComposer globalView];
-    v19 = [(PKPassEntitlementsComposer *)v13->_entitlementComposer activePredefinedSelectionEntry];
+    globalView = [(PKPassEntitlementsComposer *)v13->_entitlementComposer globalView];
+    activePredefinedSelectionEntry = [(PKPassEntitlementsComposer *)v13->_entitlementComposer activePredefinedSelectionEntry];
 
-    if (v19)
+    if (activePredefinedSelectionEntry)
     {
       v20 = [[PKPassSharePredefinedEntitlementSectionController alloc] initWithMode:v13->_mode entitlementComposer:v13->_entitlementComposer delegate:v13];
       v21 = &OBJC_IVAR___PKPassShareEntitlementSelectionViewController__predefinedSectionController;
@@ -42,12 +42,12 @@
 
     else
     {
-      if (![v18 isManagingTimeConfiguration] || !-[PKPassEntitlementsComposer preferDetailedCapabilityDisplay](v13->_entitlementComposer, "preferDetailedCapabilityDisplay"))
+      if (![globalView isManagingTimeConfiguration] || !-[PKPassEntitlementsComposer preferDetailedCapabilityDisplay](v13->_entitlementComposer, "preferDetailedCapabilityDisplay"))
       {
         goto LABEL_8;
       }
 
-      v20 = [[PKPassEntitlementCapabilitySectionController alloc] initWithMode:v13->_mode entitlementComposer:v13->_entitlementComposer composerView:v18 isDisabled:0 delegate:v13];
+      v20 = [[PKPassEntitlementCapabilitySectionController alloc] initWithMode:v13->_mode entitlementComposer:v13->_entitlementComposer composerView:globalView isDisabled:0 delegate:v13];
       v21 = &OBJC_IVAR___PKPassShareEntitlementSelectionViewController__capabilitySectionController;
     }
 
@@ -109,11 +109,11 @@ LABEL_8:
   [(PKPassShareEntitlementSelectionViewController *)self setTitle:v6];
 
   [(PKPaymentSetupOptionsViewController *)self setHeaderMode:v5];
-  v7 = [(PKPaymentSetupOptionsViewController *)self dockView];
-  v8 = [v7 footerView];
-  [v7 setPrimaryButton:0];
-  [v7 setButtonsEnabled:1];
-  [v8 setSetUpLaterButton:0];
+  dockView = [(PKPaymentSetupOptionsViewController *)self dockView];
+  footerView = [dockView footerView];
+  [dockView setPrimaryButton:0];
+  [dockView setButtonsEnabled:1];
+  [footerView setSetUpLaterButton:0];
   if (self->_mode == 2)
   {
     [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
@@ -127,69 +127,69 @@ LABEL_8:
   [(PKPaymentSetupOptionsViewController *)self setBackgroundColor:v9];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPassShareEntitlementSelectionViewController;
-  [(PKPaymentSetupOptionsViewController *)&v4 viewWillAppear:a3];
+  [(PKPaymentSetupOptionsViewController *)&v4 viewWillAppear:appear];
   [(PKPassShareEntitlementSelectionViewController *)self _reloadSections:0];
 }
 
-- (void)setShowDoneButton:(BOOL)a3
+- (void)setShowDoneButton:(BOOL)button
 {
-  if (self->_showDoneButton != a3)
+  if (self->_showDoneButton != button)
   {
-    self->_showDoneButton = a3;
-    v5 = [(PKPassShareEntitlementSelectionViewController *)self navigationItem];
+    self->_showDoneButton = button;
+    navigationItem = [(PKPassShareEntitlementSelectionViewController *)self navigationItem];
     if (self->_showDoneButton)
     {
       v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:0 target:self action:sel__dismissButtonPressed];
-      [v5 setLeftBarButtonItem:v4];
+      [navigationItem setLeftBarButtonItem:v4];
     }
 
     else
     {
-      [v5 setLeftBarButtonItem:0];
+      [navigationItem setLeftBarButtonItem:0];
     }
   }
 }
 
-- (void)_reloadSections:(BOOL)a3
+- (void)_reloadSections:(BOOL)sections
 {
-  [(PKPassEntitlementTimeSectionController *)self->_timeSectionController reloadItemsAnimated:a3];
+  [(PKPassEntitlementTimeSectionController *)self->_timeSectionController reloadItemsAnimated:sections];
 
   [(PKDynamicCollectionViewController *)self reloadDataWithoutRebuildingDataStores];
 }
 
-- (void)showAdvancedScheduleSelectionFlowForEntitlementEntry:(id)a3
+- (void)showAdvancedScheduleSelectionFlowForEntitlementEntry:(id)entry
 {
-  v4 = a3;
-  v6 = [[PKPassShareTimeLimitViewController alloc] initWithMode:self->_mode entitlementComposer:self->_entitlementComposer entitlementEntry:v4 delegate:self];
+  entryCopy = entry;
+  v6 = [[PKPassShareTimeLimitViewController alloc] initWithMode:self->_mode entitlementComposer:self->_entitlementComposer entitlementEntry:entryCopy delegate:self];
 
-  v5 = [(PKPassShareEntitlementSelectionViewController *)self navigationController];
-  if ([v5 pk_settings_useStateDrivenNavigation])
+  navigationController = [(PKPassShareEntitlementSelectionViewController *)self navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v5 pk_settings_pushViewController:v6];
+    [navigationController pk_settings_pushViewController:v6];
   }
 
   else
   {
-    [v5 pushViewController:v6 animated:1];
+    [navigationController pushViewController:v6 animated:1];
   }
 }
 
-- (void)didTapPassEntitlementTimeSectionController:(id)a3
+- (void)didTapPassEntitlementTimeSectionController:(id)controller
 {
   v5 = [[PKPassShareTimeLimitViewController alloc] initWithMode:self->_mode entitlementComposer:self->_entitlementComposer entitlementEntry:0 delegate:self];
-  v4 = [(PKPassShareEntitlementSelectionViewController *)self navigationController];
-  if ([v4 pk_settings_useStateDrivenNavigation])
+  navigationController = [(PKPassShareEntitlementSelectionViewController *)self navigationController];
+  if ([navigationController pk_settings_useStateDrivenNavigation])
   {
-    [v4 pk_settings_pushViewController:v5];
+    [navigationController pk_settings_pushViewController:v5];
   }
 
   else
   {
-    [v4 pushViewController:v5 animated:1];
+    [navigationController pushViewController:v5 animated:1];
   }
 }
 

@@ -1,19 +1,19 @@
 @interface RAPLayoutCache
-+ (id)_layoutURLForType:(int64_t)a3;
-+ (id)configForLayoutType:(int64_t)a3;
-+ (void)setConfig:(id)a3 forLayoutType:(int64_t)a4;
++ (id)_layoutURLForType:(int64_t)type;
++ (id)configForLayoutType:(int64_t)type;
++ (void)setConfig:(id)config forLayoutType:(int64_t)type;
 @end
 
 @implementation RAPLayoutCache
 
-+ (id)configForLayoutType:(int64_t)a3
++ (id)configForLayoutType:(int64_t)type
 {
-  v4 = [a1 _layoutURLForType:?];
+  v4 = [self _layoutURLForType:?];
   v5 = [RAPFileManager dataAtFileURL:v4];
   v6 = v5;
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    v7 = *(&off_101657C38 + a3);
+    v7 = *(&off_101657C38 + type);
     if (v5)
     {
       goto LABEL_3;
@@ -114,17 +114,17 @@ LABEL_24:
   return v20;
 }
 
-+ (void)setConfig:(id)a3 forLayoutType:(int64_t)a4
++ (void)setConfig:(id)config forLayoutType:(int64_t)type
 {
-  v6 = a3;
-  if (a4 > 5)
+  configCopy = config;
+  if (type > 5)
   {
     v7 = &stru_1016631F0;
   }
 
   else
   {
-    v7 = *(&off_101657C38 + a4);
+    v7 = *(&off_101657C38 + type);
   }
 
   v8 = sub_1007987DC();
@@ -133,24 +133,24 @@ LABEL_24:
     v19 = 138412546;
     v20 = v7;
     v21 = 1024;
-    v22 = [v6 ttl];
+    v22 = [configCopy ttl];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Saving a config of type %@ with TTL %u", &v19, 0x12u);
   }
 
-  if (v6)
+  if (configCopy)
   {
     v9 = sub_1007987DC();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [a1 _layoutURLForType:a4];
+      v10 = [self _layoutURLForType:type];
       v19 = 138412290;
       v20 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Will attempt to save config at path %@", &v19, 0xCu);
     }
 
-    v11 = [v6 data];
+    data = [configCopy data];
     v12 = +[RAPFileManager baseLayoutFilePath];
-    v13 = [RAPFileManager saveData:v11 toDirectory:v12 filename:v7];
+    v13 = [RAPFileManager saveData:data toDirectory:v12 filename:v7];
 
     v14 = sub_1007987DC();
     v15 = v14;
@@ -190,18 +190,18 @@ LABEL_14:
 LABEL_16:
 }
 
-+ (id)_layoutURLForType:(int64_t)a3
++ (id)_layoutURLForType:(int64_t)type
 {
   v4 = +[RAPFileManager baseLayoutFilePath];
   v5 = v4;
-  if (a3 > 5)
+  if (type > 5)
   {
     v6 = &stru_1016631F0;
   }
 
   else
   {
-    v6 = *(&off_101657C38 + a3);
+    v6 = *(&off_101657C38 + type);
   }
 
   v7 = [v4 URLByAppendingPathComponent:v6];

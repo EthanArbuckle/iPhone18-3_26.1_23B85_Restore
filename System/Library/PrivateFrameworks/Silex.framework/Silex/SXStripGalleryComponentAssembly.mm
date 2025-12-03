@@ -1,26 +1,26 @@
 @interface SXStripGalleryComponentAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SXStripGalleryComponentAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 callback];
+  registryCopy = registry;
+  callback = [registryCopy callback];
   v5 = TFCallbackScopeAny();
-  [v4 whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_58];
+  [callback whenResolvingProtocol:&unk_1F53E41E0 scope:v5 callbackBlock:&__block_literal_global_58];
 
-  v6 = [v3 callback];
+  callback2 = [registryCopy callback];
   v7 = TFCallbackScopeAny();
-  [v6 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_11];
+  [callback2 whenResolvingProtocol:&unk_1F5415A30 scope:v7 callbackBlock:&__block_literal_global_55_11];
 
-  v8 = [v3 publicContainer];
-  v9 = [v8 registerClass:objc_opt_class() factory:&__block_literal_global_59_9];
+  publicContainer = [registryCopy publicContainer];
+  v9 = [publicContainer registerClass:objc_opt_class() factory:&__block_literal_global_59_9];
 
-  v11 = [v3 publicContainer];
+  publicContainer2 = [registryCopy publicContainer];
 
-  v10 = [v11 registerClass:objc_opt_class() factory:&__block_literal_global_126_1];
+  v10 = [publicContainer2 registerClass:objc_opt_class() factory:&__block_literal_global_126_1];
 }
 
 void __50__SXStripGalleryComponentAssembly_loadInRegistry___block_invoke(uint64_t a1, void *a2, void *a3)

@@ -1,27 +1,27 @@
 @interface MSMessageExtensionBalloonLoadingView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MSMessageExtensionBalloonLoadingView)initWithAppIcon:(id)a3 fromMe:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MSMessageExtensionBalloonLoadingView)initWithAppIcon:(id)icon fromMe:(BOOL)me;
 - (UIEdgeInsets)insets;
 - (void)layoutSubviews;
-- (void)setAppIcon:(id)a3;
+- (void)setAppIcon:(id)icon;
 @end
 
 @implementation MSMessageExtensionBalloonLoadingView
 
-- (MSMessageExtensionBalloonLoadingView)initWithAppIcon:(id)a3 fromMe:(BOOL)a4
+- (MSMessageExtensionBalloonLoadingView)initWithAppIcon:(id)icon fromMe:(BOOL)me
 {
-  v4 = a4;
-  v6 = a3;
+  meCopy = me;
+  iconCopy = icon;
   v32.receiver = self;
   v32.super_class = MSMessageExtensionBalloonLoadingView;
   v7 = [(_MSBlurCapableView *)&v32 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v8 = v7;
   if (v7)
   {
-    [(MSMessageExtensionBalloonLoadingView *)v7 setAppIcon:v6];
+    [(MSMessageExtensionBalloonLoadingView *)v7 setAppIcon:iconCopy];
     v9 = [UIImageView alloc];
-    v10 = [(MSMessageExtensionBalloonLoadingView *)v8 appIcon];
-    v11 = [v9 initWithImage:v10];
+    appIcon = [(MSMessageExtensionBalloonLoadingView *)v8 appIcon];
+    v11 = [v9 initWithImage:appIcon];
 
     [v11 setContentMode:1];
     v12 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
@@ -33,12 +33,12 @@
     [v13 setText:v15];
 
     v16 = +[CKUIBehavior sharedBehaviors];
-    v17 = [v16 transcriptLoadingViewTextFont];
-    [v13 setFont:v17];
+    transcriptLoadingViewTextFont = [v16 transcriptLoadingViewTextFont];
+    [v13 setFont:transcriptLoadingViewTextFont];
 
-    [(MSMessageExtensionBalloonLoadingView *)v8 setFromMe:v4];
-    v18 = [v11 image];
-    [v18 size];
+    [(MSMessageExtensionBalloonLoadingView *)v8 setFromMe:meCopy];
+    image = [v11 image];
+    [image size];
     v20 = v19;
     v22 = v21;
 
@@ -54,16 +54,16 @@
     [(MSMessageExtensionBalloonLoadingView *)v8 setIconView:v11];
     [(MSMessageExtensionBalloonLoadingView *)v8 addSubview:v12];
     [(MSMessageExtensionBalloonLoadingView *)v8 setSpinnerView:v12];
-    v26 = [(MSMessageExtensionBalloonLoadingView *)v8 spinnerView];
-    [v26 sizeToFit];
+    spinnerView = [(MSMessageExtensionBalloonLoadingView *)v8 spinnerView];
+    [spinnerView sizeToFit];
 
     [(MSMessageExtensionBalloonLoadingView *)v8 addSubview:v13];
     [(MSMessageExtensionBalloonLoadingView *)v8 setTitleLabel:v13];
     v27 = +[CKUIBehavior sharedBehaviors];
-    v28 = [v27 theme];
-    v29 = [v28 balloonColorsForColorType:0xFFFFFFFFLL];
-    v30 = [v29 lastObject];
-    [(MSMessageExtensionBalloonLoadingView *)v8 setBackgroundColor:v30];
+    theme = [v27 theme];
+    v29 = [theme balloonColorsForColorType:0xFFFFFFFFLL];
+    lastObject = [v29 lastObject];
+    [(MSMessageExtensionBalloonLoadingView *)v8 setBackgroundColor:lastObject];
   }
 
   return v8;
@@ -74,23 +74,23 @@
   v50.receiver = self;
   v50.super_class = MSMessageExtensionBalloonLoadingView;
   [(MSMessageExtensionBalloonLoadingView *)&v50 layoutSubviews];
-  v3 = [(MSMessageExtensionBalloonLoadingView *)self titleLabel];
-  [v3 sizeToFit];
+  titleLabel = [(MSMessageExtensionBalloonLoadingView *)self titleLabel];
+  [titleLabel sizeToFit];
 
-  v4 = [(MSMessageExtensionBalloonLoadingView *)self titleLabel];
-  [v4 frame];
+  titleLabel2 = [(MSMessageExtensionBalloonLoadingView *)self titleLabel];
+  [titleLabel2 frame];
   v47 = v6;
   v49 = v5;
 
   [(MSMessageExtensionBalloonLoadingView *)self insets];
-  v7 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
-  v8 = [v7 image];
-  [v8 size];
+  iconView = [(MSMessageExtensionBalloonLoadingView *)self iconView];
+  image = [iconView image];
+  [image size];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
-  [v13 frame];
+  iconView2 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
+  [iconView2 frame];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -116,16 +116,16 @@
     width = v19;
   }
 
-  v28 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
-  [v28 setFrame:{v15, v17, width, height}];
+  iconView3 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
+  [iconView3 setFrame:{v15, v17, width, height}];
 
-  v29 = [(MSMessageExtensionBalloonLoadingView *)self spinnerView];
-  [v29 frame];
+  spinnerView = [(MSMessageExtensionBalloonLoadingView *)self spinnerView];
+  [spinnerView frame];
   v31 = v30;
   v33 = v32;
 
-  v34 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
-  [v34 frame];
+  iconView4 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
+  [iconView4 frame];
   MaxX = CGRectGetMaxX(v52);
   if (v24)
   {
@@ -140,8 +140,8 @@
 
   v38 = MaxX + v37;
 
-  v39 = [(MSMessageExtensionBalloonLoadingView *)self spinnerView];
-  [v39 setFrame:{v38, MidY - v33 * 0.5, v31, v33}];
+  spinnerView2 = [(MSMessageExtensionBalloonLoadingView *)self spinnerView];
+  [spinnerView2 setFrame:{v38, MidY - v33 * 0.5, v31, v33}];
 
   v53.origin.x = v38;
   v53.origin.y = MidY - v33 * 0.5;
@@ -154,37 +154,37 @@
   *&v43 = v43;
   v44 = MidY - v48 * 0.5;
   v45 = fmaxf(*&v43, v44);
-  v46 = [(MSMessageExtensionBalloonLoadingView *)self titleLabel];
-  [v46 setFrame:{v42, v45, v49, v48}];
+  titleLabel3 = [(MSMessageExtensionBalloonLoadingView *)self titleLabel];
+  [titleLabel3 setFrame:{v42, v45, v49, v48}];
 }
 
-- (void)setAppIcon:(id)a3
+- (void)setAppIcon:(id)icon
 {
-  v7 = a3;
-  if (self->_appIcon != v7)
+  iconCopy = icon;
+  if (self->_appIcon != iconCopy)
   {
-    objc_storeStrong(&self->_appIcon, a3);
-    v5 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
+    objc_storeStrong(&self->_appIcon, icon);
+    iconView = [(MSMessageExtensionBalloonLoadingView *)self iconView];
 
-    if (v5)
+    if (iconView)
     {
-      v6 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
-      [v6 setImage:v7];
+      iconView2 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
+      [iconView2 setImage:iconCopy];
     }
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(MSMessageExtensionBalloonLoadingView *)self titleLabel];
-  [v6 sizeThatFits:{width, height}];
+  height = fits.height;
+  width = fits.width;
+  titleLabel = [(MSMessageExtensionBalloonLoadingView *)self titleLabel];
+  [titleLabel sizeThatFits:{width, height}];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
-  [v11 frame];
+  iconView = [(MSMessageExtensionBalloonLoadingView *)self iconView];
+  [iconView frame];
   v13 = v12;
   v15 = v14;
 
@@ -197,8 +197,8 @@
   }
 
   v20 = v13 + v17 + v18;
-  v21 = [(MSMessageExtensionBalloonLoadingView *)self spinnerView];
-  [v21 frame];
+  spinnerView = [(MSMessageExtensionBalloonLoadingView *)self spinnerView];
+  [spinnerView frame];
   v23 = v20 + v22;
   [(MSMessageExtensionBalloonLoadingView *)self spinnerHorizontalPadding];
   v25 = v8 + v24 + v23;
@@ -207,8 +207,8 @@
 
   [(MSMessageExtensionBalloonLoadingView *)self insets];
   v29 = v28;
-  v31 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
-  [v31 frame];
+  iconView2 = [(MSMessageExtensionBalloonLoadingView *)self iconView];
+  [iconView2 frame];
   v33 = v32;
   v30 = v10;
   v34 = v29 + fmaxf(v30, v33);

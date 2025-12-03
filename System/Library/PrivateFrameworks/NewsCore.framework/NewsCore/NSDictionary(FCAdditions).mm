@@ -104,7 +104,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__NSDictionary_FCAdditions__fc_dictionaryByTransformingKeysWithKeyAndValueBlock___block_invoke;
@@ -113,7 +113,7 @@
   v6 = v5;
   v14 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v13];
+  [self enumerateKeysAndObjectsUsingBlock:v13];
   v8 = v14;
   v9 = v6;
 
@@ -139,7 +139,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __70__NSDictionary_FCAdditions__fc_dictionaryByTransformingKeysWithBlock___block_invoke;
@@ -148,7 +148,7 @@
   v6 = v5;
   v14 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v13];
+  [self enumerateKeysAndObjectsUsingBlock:v13];
   v8 = v14;
   v9 = v6;
 
@@ -174,7 +174,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__NSDictionary_FCAdditions__fc_sortedEntriesWithKeyBlock___block_invoke;
@@ -183,7 +183,7 @@
   v6 = v5;
   v14 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v13];
+  [self enumerateKeysAndObjectsUsingBlock:v13];
   v8 = v14;
   v9 = v6;
 
@@ -209,7 +209,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __83__NSDictionary_FCAdditions__fc_dictionaryByTransformingValuesWithKeyAndValueBlock___block_invoke;
@@ -218,7 +218,7 @@
   v6 = v5;
   v14 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v13];
+  [self enumerateKeysAndObjectsUsingBlock:v13];
   v8 = v14;
   v9 = v6;
 
@@ -244,7 +244,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__NSDictionary_FCAdditions__fc_dictionaryByTransformingValuesWithBlock___block_invoke;
@@ -253,7 +253,7 @@
   v6 = v5;
   v14 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v13];
+  [self enumerateKeysAndObjectsUsingBlock:v13];
   v8 = v14;
   v9 = v6;
 
@@ -264,7 +264,7 @@
 - (id)fc_dictionaryByRemovingObjectForKey:()FCAdditions
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObjectForKey:v4];
 
   return v5;
@@ -480,7 +480,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 objectForKeyedSubscript:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self objectForKeyedSubscript:{*(*(&v14 + 1) + 8 * i), v14}];
         if (v11)
         {
           [v5 addObject:v11];
@@ -523,7 +523,7 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [a1 objectForKeyedSubscript:{v11, v15}];
+        v12 = [self objectForKeyedSubscript:{v11, v15}];
         if (v12)
         {
           [v5 setObject:v12 forKeyedSubscript:v11];
@@ -566,7 +566,7 @@
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [a1 objectForKeyedSubscript:{v11, v16}];
+        v12 = [self objectForKeyedSubscript:{v11, v16}];
         v13 = [v12 copy];
 
         if (v13)
@@ -588,8 +588,8 @@
 
 - (id)fc_deepCopy
 {
-  v2 = [a1 allKeys];
-  v3 = [a1 fc_subdictionaryWithCopiesForKeys:v2];
+  allKeys = [self allKeys];
+  v3 = [self fc_subdictionaryWithCopiesForKeys:allKeys];
 
   return v3;
 }
@@ -597,13 +597,13 @@
 - (id)fc_dictionaryBySwappingValuesAndKeys
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(self, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -614,15 +614,15 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v3 objectForKeyedSubscript:{v8, v12}];
+        v9 = [selfCopy objectForKeyedSubscript:{v8, v12}];
         [v2 setObject:v8 forKeyedSubscript:v9];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -638,12 +638,12 @@
   v5 = MEMORY[0x1E695DF90];
   v6 = a4;
   v7 = a3;
-  v8 = [v5 dictionary];
-  [v8 addEntriesFromDictionary:v6];
+  dictionary = [v5 dictionary];
+  [dictionary addEntriesFromDictionary:v6];
 
-  [v8 addEntriesFromDictionary:v7];
+  [dictionary addEntriesFromDictionary:v7];
 
-  return v8;
+  return dictionary;
 }
 
 - (id)fr_descriptionWithKeyComparator:()FCAdditions
@@ -651,15 +651,15 @@
   v4 = MEMORY[0x1E696AD60];
   v5 = a3;
   v6 = [v4 stringWithString:@"{\n"];
-  v7 = [a1 allKeys];
-  v8 = [v7 sortedArrayUsingComparator:v5];
+  allKeys = [self allKeys];
+  v8 = [allKeys sortedArrayUsingComparator:v5];
 
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __61__NSDictionary_FCAdditions__fr_descriptionWithKeyComparator___block_invoke;
   v15 = &unk_1E7C38AA8;
   v16 = v6;
-  v17 = a1;
+  selfCopy = self;
   v9 = v6;
   [v8 enumerateObjectsUsingBlock:&v12];
 
@@ -672,7 +672,7 @@
 - (id)fc_jsonStringWithOmittedUnsupportedDataTypes
 {
   objc_opt_class();
-  v2 = fc_JSONEncodableObjectWithObjectHandlers(a1, 0, 0, 0, 0);
+  v2 = fc_JSONEncodableObjectWithObjectHandlers(self, 0, 0, 0, 0);
   if (v2)
   {
     if (objc_opt_isKindOfClass())
@@ -692,9 +692,9 @@
   }
 
   v4 = v3;
-  v5 = [v4 fc_jsonString];
+  fc_jsonString = [v4 fc_jsonString];
 
-  return v5;
+  return fc_jsonString;
 }
 
 - (void)fc_jsonEncodableDictionaryWithObjectHandler:()FCAdditions arrayObjectHandler:dictionaryKeyHandler:dictionaryValueHandler:
@@ -704,7 +704,7 @@
   v12 = a4;
   v13 = a3;
   objc_opt_class();
-  v14 = fc_JSONEncodableObjectWithObjectHandlers(a1, v13, v12, v11, v10);
+  v14 = fc_JSONEncodableObjectWithObjectHandlers(self, v13, v12, v11, v10);
 
   if (v14)
   {
@@ -731,16 +731,16 @@
 
 - (id)fc_jsonStringWithObjectHandler:()FCAdditions arrayObjectHandler:dictionaryKeyHandler:dictionaryValueHandler:
 {
-  v1 = [a1 fc_jsonEncodableDictionaryWithObjectHandler:? arrayObjectHandler:? dictionaryKeyHandler:? dictionaryValueHandler:?];
-  v2 = [v1 fc_jsonString];
+  v1 = [self fc_jsonEncodableDictionaryWithObjectHandler:? arrayObjectHandler:? dictionaryKeyHandler:? dictionaryValueHandler:?];
+  fc_jsonString = [v1 fc_jsonString];
 
-  return v2;
+  return fc_jsonString;
 }
 
 - (id)fc_jsonString
 {
   v4 = 0;
-  v1 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a1 options:0 error:&v4];
+  v1 = [MEMORY[0x1E696ACB0] dataWithJSONObject:self options:0 error:&v4];
   if (v1)
   {
     v2 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v1 encoding:4];
@@ -763,7 +763,7 @@
   v13[1] = 3221225472;
   v13[2] = __80__NSDictionary_FCAdditions__fc_dictionaryByMergingDictionary_withValueCombiner___block_invoke;
   v13[3] = &unk_1E7C44768;
-  v13[4] = a1;
+  v13[4] = self;
   v14 = v6;
   v15 = v7;
   v9 = v7;
@@ -777,7 +777,7 @@
 {
   if (a3)
   {
-    v4 = [a1 objectForKeyedSubscript:?];
+    v4 = [self objectForKeyedSubscript:?];
   }
 
   else
@@ -791,7 +791,7 @@
 - (id)fc_arrayByTransformingWithKeyAndValueBlock:()FCAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__NSDictionary_FCAdditions__fc_arrayByTransformingWithKeyAndValueBlock___block_invoke;
@@ -800,7 +800,7 @@
   v6 = v5;
   v12 = v6;
   v7 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v11];
+  [self enumerateKeysAndObjectsUsingBlock:v11];
   v8 = v12;
   v9 = v6;
 

@@ -44,70 +44,70 @@
   {
     v19.receiver = self;
     v19.super_class = FBApplicationProcess;
-    v3 = [(FBProcess *)&v19 _createBootstrapContext];
+    _createBootstrapContext = [(FBProcess *)&v19 _createBootstrapContext];
   }
 
   else
   {
     v18.receiver = self;
     v18.super_class = FBApplicationProcess;
-    v3 = [(FBProcess *)&v18 _createBootstrapContext];
-    v4 = [(FBProcess *)self executionContext];
+    _createBootstrapContext = [(FBProcess *)&v18 _createBootstrapContext];
+    executionContext = [(FBProcess *)self executionContext];
     if (!self->super._rbsHandle)
     {
-      v5 = [MEMORY[0x1E695DF90] dictionary];
-      v6 = [MEMORY[0x1E698E6D0] environmentAliases];
-      v7 = [v6 environmentRepresentation];
-      [v5 addEntriesFromDictionary:v7];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      environmentAliases = [MEMORY[0x1E698E6D0] environmentAliases];
+      environmentRepresentation = [environmentAliases environmentRepresentation];
+      [dictionary addEntriesFromDictionary:environmentRepresentation];
 
-      v8 = [v4 environment];
-      [v5 addEntriesFromDictionary:v8];
+      environment = [executionContext environment];
+      [dictionary addEntriesFromDictionary:environment];
 
       v9 = +[FBApplicationProcess _internalDebugEnvironmentVariables];
-      [v5 addEntriesFromDictionary:v9];
+      [dictionary addEntriesFromDictionary:v9];
 
-      v10 = [v4 arguments];
-      v11 = [v4 standardOutputURL];
-      v12 = [v11 path];
+      arguments = [executionContext arguments];
+      standardOutputURL = [executionContext standardOutputURL];
+      path = [standardOutputURL path];
 
-      v14 = [v4 standardErrorURL];
-      v13 = [v14 path];
+      standardErrorURL = [executionContext standardErrorURL];
+      path2 = [standardErrorURL path];
 
-      LODWORD(v14) = [v4 waitForDebugger];
-      v15 = [v4 disableASLR];
-      [v3 setArguments:v10];
-      if ([v5 count])
+      LODWORD(standardErrorURL) = [executionContext waitForDebugger];
+      disableASLR = [executionContext disableASLR];
+      [_createBootstrapContext setArguments:arguments];
+      if ([dictionary count])
       {
-        [v3 _setAdditionalEnvironment:v5];
+        [_createBootstrapContext _setAdditionalEnvironment:dictionary];
       }
 
-      [v3 setStandardOutputPath:v12];
-      [v3 setStandardErrorPath:v13];
-      if (v15)
+      [_createBootstrapContext setStandardOutputPath:path];
+      [_createBootstrapContext setStandardErrorPath:path2];
+      if (disableASLR)
       {
-        v14 = v14 | 2;
-      }
-
-      else
-      {
-        v14 = v14;
-      }
-
-      if ([v4 enableMTE])
-      {
-        v16 = v14 | 0x80;
+        standardErrorURL = standardErrorURL | 2;
       }
 
       else
       {
-        v16 = v14;
+        standardErrorURL = standardErrorURL;
       }
 
-      [v3 setExecutionOptions:v16];
+      if ([executionContext enableMTE])
+      {
+        v16 = standardErrorURL | 0x80;
+      }
+
+      else
+      {
+        v16 = standardErrorURL;
+      }
+
+      [_createBootstrapContext setExecutionOptions:v16];
     }
   }
 
-  return v3;
+  return _createBootstrapContext;
 }
 
 + (id)_internalDebugEnvironmentVariables
@@ -222,10 +222,10 @@ LABEL_33:
 
 - (void)_bootstrapDidComplete
 {
-  v3 = [(FBProcess *)self rbsHandle];
-  if (v3)
+  rbsHandle = [(FBProcess *)self rbsHandle];
+  if (rbsHandle)
   {
-    v4 = [[FBProcessCPUStatistics alloc] initWithProcessHandle:v3];
+    v4 = [[FBProcessCPUStatistics alloc] initWithProcessHandle:rbsHandle];
     cpuStatistics = self->_cpuStatistics;
     self->_cpuStatistics = v4;
   }

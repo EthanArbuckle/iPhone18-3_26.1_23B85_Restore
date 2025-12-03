@@ -1,5 +1,5 @@
 @interface BrandedAppTodayBrickCollectionViewCell
-- (_TtC22SubscribePageExtension38BrandedAppTodayBrickCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension38BrandedAppTodayBrickCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1003C1E14();
 }
 
@@ -38,12 +38,12 @@
   sub_1003C192C();
 }
 
-- (_TtC22SubscribePageExtension38BrandedAppTodayBrickCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension38BrandedAppTodayBrickCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = self + OBJC_IVAR____TtC22SubscribePageExtension38BrandedAppTodayBrickCollectionViewCell_layoutMetrics;
   *v9 = 0u;

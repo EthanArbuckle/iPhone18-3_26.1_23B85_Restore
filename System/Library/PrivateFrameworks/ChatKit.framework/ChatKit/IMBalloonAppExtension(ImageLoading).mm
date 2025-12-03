@@ -13,48 +13,48 @@
 
 - (id)_validProxy
 {
-  v1 = [a1 proxy];
-  v2 = [v1 containingBundle];
-  v3 = [v2 appState];
-  v4 = [v3 isValid];
+  proxy = [self proxy];
+  containingBundle = [proxy containingBundle];
+  appState = [containingBundle appState];
+  isValid = [appState isValid];
 
-  if ((v4 & 1) == 0)
+  if ((isValid & 1) == 0)
   {
     v5 = MEMORY[0x1E6963678];
-    v6 = [v1 bundleIdentifier];
-    v7 = [v5 pluginKitProxyForIdentifier:v6];
+    bundleIdentifier = [proxy bundleIdentifier];
+    v7 = [v5 pluginKitProxyForIdentifier:bundleIdentifier];
 
-    v1 = v7;
+    proxy = v7;
   }
 
-  return v1;
+  return proxy;
 }
 
 - (id)__ck_iconServicesBundleIdentifier
 {
-  v2 = [a1 _validProxy];
-  v3 = v2;
-  if (v2)
+  _validProxy = [self _validProxy];
+  v3 = _validProxy;
+  if (_validProxy)
   {
-    v4 = [v2 bundleIdentifier];
+    bundleIdentifier = [_validProxy bundleIdentifier];
   }
 
   else
   {
-    v5 = [a1 appBundle];
-    v4 = [v5 bundleIdentifier];
+    appBundle = [self appBundle];
+    bundleIdentifier = [appBundle bundleIdentifier];
   }
 
-  return v4;
+  return bundleIdentifier;
 }
 
 - (id)__ck_generateAssetCatalogImageForInterfaceStyle:()ImageLoading
 {
-  v5 = [a1 _validProxy];
-  v6 = v5;
-  if (v5)
+  _validProxy = [self _validProxy];
+  v6 = _validProxy;
+  if (_validProxy)
   {
-    v7 = [v5 iconForInterfaceStyle:a3];
+    v7 = [_validProxy iconForInterfaceStyle:a3];
     if (!v7)
     {
       goto LABEL_4;
@@ -67,21 +67,21 @@
   [v12 appIconSize];
   v14 = v13;
 
-  v15 = [a1 browserImageName];
-  v16 = [v15 stringByAppendingFormat:@"_%d", v14];
+  browserImageName = [self browserImageName];
+  v16 = [browserImageName stringByAppendingFormat:@"_%d", v14];
   v17 = MEMORY[0x1E69DCAB8];
-  v18 = [a1 appBundle];
-  v19 = [v17 imageNamed:v16 inBundle:v18];
+  appBundle = [self appBundle];
+  v19 = [v17 imageNamed:v16 inBundle:appBundle];
 
   v7 = [v19 iconForInterfaceStyle:a3];
 
   if (v7)
   {
 LABEL_3:
-    v8 = [a1 __ck_cacheKeyForInterfaceStyle:a3];
+    v8 = [self __ck_cacheKeyForInterfaceStyle:a3];
     v9 = +[CKBalloonPluginManager sharedInstance];
-    v10 = [v9 iconCache];
-    [v10 setObject:v7 forKey:v8];
+    iconCache = [v9 iconCache];
+    [iconCache setObject:v7 forKey:v8];
   }
 
 LABEL_4:
@@ -101,8 +101,8 @@ LABEL_4:
     }
   }
 
-  v1 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v1 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v3 = v2;
 
   v8 = v3;
@@ -125,22 +125,22 @@ LABEL_4:
 
 - (id)__ck_typingImage
 {
-  v2 = [a1 _validProxy];
-  if (v2)
+  _validProxy = [self _validProxy];
+  if (_validProxy)
   {
-    v3 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:v2 format:15];
+    v3 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:_validProxy format:15];
   }
 
   else
   {
-    v4 = [a1 browserImageName];
-    v5 = [v4 stringByAppendingFormat:@"_%d", 32];
+    browserImageName = [self browserImageName];
+    v5 = [browserImageName stringByAppendingFormat:@"_%d", 32];
 
     if (v5)
     {
       v6 = MEMORY[0x1E69DCAB8];
-      v7 = [a1 appBundle];
-      v3 = [v6 imageNamed:v5 inBundle:v7];
+      appBundle = [self appBundle];
+      v3 = [v6 imageNamed:v5 inBundle:appBundle];
     }
 
     else
@@ -154,22 +154,22 @@ LABEL_4:
 
 - (id)__ck_statusImage
 {
-  v2 = [a1 _validProxy];
-  if (v2)
+  _validProxy = [self _validProxy];
+  if (_validProxy)
   {
-    v3 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:v2 format:15];
+    v3 = [MEMORY[0x1E69DCAB8] _iconForResourceProxy:_validProxy format:15];
   }
 
   else
   {
-    v4 = [a1 browserImageName];
-    v5 = [v4 stringByAppendingFormat:@"_%d", 32];
+    browserImageName = [self browserImageName];
+    v5 = [browserImageName stringByAppendingFormat:@"_%d", 32];
 
     if (v5)
     {
       v6 = MEMORY[0x1E69DCAB8];
-      v7 = [a1 appBundle];
-      v3 = [v6 badgeIconForImageNamed:v5 inBundle:v7];
+      appBundle = [self appBundle];
+      v3 = [v6 badgeIconForImageNamed:v5 inBundle:appBundle];
     }
 
     else
@@ -184,8 +184,8 @@ LABEL_4:
 - (void)__ck_generateStatusImage:()ImageLoading
 {
   v4 = a3;
-  v5 = [a1 _validProxy];
-  if (v5)
+  _validProxy = [self _validProxy];
+  if (_validProxy)
   {
     v17 = 0.0;
     [MEMORY[0x1E69DCAB8] _iconVariantForUIApplicationIconFormat:15 scale:&v17];
@@ -193,38 +193,38 @@ LABEL_4:
     v7 = v6;
     v9 = v8;
     v10 = objc_alloc(MEMORY[0x1E69A8A30]);
-    v11 = [v10 initWithSize:v7 scale:{v9, v17}];
-    [v11 setDrawBorder:1];
+    __ck_statusImage = [v10 initWithSize:v7 scale:{v9, v17}];
+    [__ck_statusImage setDrawBorder:1];
     v12 = objc_alloc(MEMORY[0x1E69A8A00]);
-    v13 = [v5 bundleIdentifier];
-    v14 = [v12 initWithBundleIdentifier:v13];
+    bundleIdentifier = [_validProxy bundleIdentifier];
+    v14 = [v12 initWithBundleIdentifier:bundleIdentifier];
 
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __64__IMBalloonAppExtension_ImageLoading____ck_generateStatusImage___block_invoke;
     v15[3] = &unk_1E72F1390;
     v16 = v4;
-    [v14 getCGImageForImageDescriptor:v11 completion:v15];
+    [v14 getCGImageForImageDescriptor:__ck_statusImage completion:v15];
   }
 
   else
   {
-    v11 = [a1 __ck_statusImage];
-    (*(v4 + 2))(v4, v11);
+    __ck_statusImage = [self __ck_statusImage];
+    (*(v4 + 2))(v4, __ck_statusImage);
   }
 }
 
 - (id)__ck_breadcrumbImage
 {
-  v2 = [a1 _validProxy];
-  if (v2)
+  _validProxy = [self _validProxy];
+  if (_validProxy)
   {
-    [MEMORY[0x1E69DCAB8] _iconForResourceProxy:v2 format:16];
+    [MEMORY[0x1E69DCAB8] _iconForResourceProxy:_validProxy format:16];
   }
 
   else
   {
-    [a1 __ck_statusImage];
+    [self __ck_statusImage];
   }
   v3 = ;
 

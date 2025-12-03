@@ -2,9 +2,9 @@
 + (BOOL)isExerciseMinuteAvailable;
 - (CMExerciseMinute)init;
 - (void)dealloc;
-- (void)queryExerciseMinutesFromRecord:(id)a3 handler:(id)a4;
-- (void)startUpdatesFromRecord:(id)a3 handler:(id)a4;
-- (void)startUpdatesWithHandler:(id)a3;
+- (void)queryExerciseMinutesFromRecord:(id)record handler:(id)handler;
+- (void)startUpdatesFromRecord:(id)record handler:(id)handler;
+- (void)startUpdatesWithHandler:(id)handler;
 - (void)stopUpdates;
 @end
 
@@ -50,11 +50,11 @@
   return objc_msgSend_featureAvailability_(CMMotionUtils, v3, "kCLConnectionMessageNatalimetryAvailable");
 }
 
-- (void)startUpdatesFromRecord:(id)a3 handler:(id)a4
+- (void)startUpdatesFromRecord:(id)record handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v8 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, record);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v8, v9, a2, self, @"CMExerciseMinute.mm", 277, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -63,8 +63,8 @@
   v10[2] = sub_19B67330C;
   v10[3] = &unk_1E7532C08;
   v10[4] = self;
-  v10[5] = a3;
-  v10[6] = a4;
+  v10[5] = record;
+  v10[6] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v10);
 }
 
@@ -78,9 +78,9 @@
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v2);
 }
 
-- (void)startUpdatesWithHandler:(id)a3
+- (void)startUpdatesWithHandler:(id)handler
 {
-  if (!a3)
+  if (!handler)
   {
     v6 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v6, v7, a2, self, @"CMExerciseMinute.mm", 293, @"Invalid parameter not satisfying: %@", @"handler");
@@ -91,15 +91,15 @@
   v8[2] = sub_19B6734BC;
   v8[3] = &unk_1E7532B68;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = handler;
   objc_msgSend_tccServiceMotionAccessWithBlock_(CMMotionUtils, a2, v8);
 }
 
-- (void)queryExerciseMinutesFromRecord:(id)a3 handler:(id)a4
+- (void)queryExerciseMinutesFromRecord:(id)record handler:(id)handler
 {
-  if (!a4)
+  if (!handler)
   {
-    v10 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v10 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, record);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CMExerciseMinute.mm", 301, @"Invalid parameter not satisfying: %@", @"handler");
   }
 
@@ -110,9 +110,9 @@
 
   if (qword_1ED71D288 == 3)
   {
-    v7 = objc_msgSend__internal(self, a2, a3);
+    v7 = objc_msgSend__internal(self, a2, record);
 
-    objc_msgSend__queryExerciseMinutesFromRecord_handler_(v7, v8, a3, a4);
+    objc_msgSend__queryExerciseMinutesFromRecord_handler_(v7, v8, record, handler);
   }
 }
 

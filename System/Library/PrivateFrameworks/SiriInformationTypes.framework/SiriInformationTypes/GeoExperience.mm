@@ -1,14 +1,14 @@
 @interface GeoExperience
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GeoExperience
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  GeoExperience.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  GeoExperience.encode(with:)(coderCopy);
 }
 
 @end

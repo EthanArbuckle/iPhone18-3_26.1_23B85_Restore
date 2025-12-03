@@ -3,8 +3,8 @@
 - (BOOL)enabled;
 - (BOOL)enabledInAccount;
 - (LockdownModeManager)init;
-- (void)migrateIfNeededWithCompletion:(id)a3;
-- (void)notifyRestrictionChanged:(id)a3;
+- (void)migrateIfNeededWithCompletion:(id)completion;
+- (void)notifyRestrictionChanged:(id)changed;
 - (void)rebootIfNeeded;
 @end
 
@@ -46,38 +46,38 @@ uint64_t __29__LockdownModeManager_shared__block_invoke()
 
 - (BOOL)enabled
 {
-  v2 = [(LockdownModeManager *)self underlyingObject];
-  v3 = [v2 enabled];
+  underlyingObject = [(LockdownModeManager *)self underlyingObject];
+  enabled = [underlyingObject enabled];
 
-  return v3;
+  return enabled;
 }
 
 - (BOOL)enabledInAccount
 {
-  v2 = [(LockdownModeManager *)self underlyingObject];
-  v3 = [v2 enabledInAccount];
+  underlyingObject = [(LockdownModeManager *)self underlyingObject];
+  enabledInAccount = [underlyingObject enabledInAccount];
 
-  return v3;
+  return enabledInAccount;
 }
 
-- (void)notifyRestrictionChanged:(id)a3
+- (void)notifyRestrictionChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(LockdownModeManager *)self underlyingObject];
-  [v5 notifyRestrictionChanged:v4];
+  changedCopy = changed;
+  underlyingObject = [(LockdownModeManager *)self underlyingObject];
+  [underlyingObject notifyRestrictionChanged:changedCopy];
 }
 
-- (void)migrateIfNeededWithCompletion:(id)a3
+- (void)migrateIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(LockdownModeManager *)self underlyingObject];
-  [v5 migrateIfNeededWithCompletion:v4];
+  completionCopy = completion;
+  underlyingObject = [(LockdownModeManager *)self underlyingObject];
+  [underlyingObject migrateIfNeededWithCompletion:completionCopy];
 }
 
 - (void)rebootIfNeeded
 {
-  v2 = [(LockdownModeManager *)self underlyingObject];
-  [v2 rebootIfNeeded];
+  underlyingObject = [(LockdownModeManager *)self underlyingObject];
+  [underlyingObject rebootIfNeeded];
 }
 
 @end

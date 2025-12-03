@@ -1,14 +1,14 @@
 @interface RTDefaultsManagerNotificationDefaultsChanged
-- (RTDefaultsManagerNotificationDefaultsChanged)initWithUpdatedKeys:(id)a3;
+- (RTDefaultsManagerNotificationDefaultsChanged)initWithUpdatedKeys:(id)keys;
 @end
 
 @implementation RTDefaultsManagerNotificationDefaultsChanged
 
-- (RTDefaultsManagerNotificationDefaultsChanged)initWithUpdatedKeys:(id)a3
+- (RTDefaultsManagerNotificationDefaultsChanged)initWithUpdatedKeys:(id)keys
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 count])
+  keysCopy = keys;
+  if (![keysCopy count])
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -21,28 +21,28 @@
     }
   }
 
-  if ([v4 count])
+  if ([keysCopy count])
   {
     v11.receiver = self;
     v11.super_class = RTDefaultsManagerNotificationDefaultsChanged;
     v6 = [(RTNotification *)&v11 init];
     if (v6)
     {
-      v7 = [v4 copy];
+      v7 = [keysCopy copy];
       updatedKeys = v6->_updatedKeys;
       v6->_updatedKeys = v7;
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

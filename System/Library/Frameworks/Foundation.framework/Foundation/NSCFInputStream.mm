@@ -1,26 +1,26 @@
 @interface NSCFInputStream
-- (BOOL)getBuffer:(char *)a3 length:(unint64_t *)a4;
-- (BOOL)isEqual:(id)a3;
-- (NSCFInputStream)initWithFileAtPath:(id)a3;
-- (NSCFInputStream)initWithURL:(id)a3;
+- (BOOL)getBuffer:(char *)buffer length:(unint64_t *)length;
+- (BOOL)isEqual:(id)equal;
+- (NSCFInputStream)initWithFileAtPath:(id)path;
+- (NSCFInputStream)initWithURL:(id)l;
 - (id)delegate;
-- (id)propertyForKey:(id)a3;
+- (id)propertyForKey:(id)key;
 - (id)streamError;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
-- (void)setDelegate:(id)a3;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation NSCFInputStream
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -28,9 +28,9 @@
   return _CFNonObjCEqual() != 0;
 }
 
-- (NSCFInputStream)initWithFileAtPath:(id)a3
+- (NSCFInputStream)initWithFileAtPath:(id)path
 {
-  result = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:a3];
+  result = [objc_alloc(MEMORY[0x1E695DFF8]) initFileURLWithPath:path];
   if (result)
   {
     v5 = result;
@@ -42,12 +42,12 @@
   return result;
 }
 
-- (NSCFInputStream)initWithURL:(id)a3
+- (NSCFInputStream)initWithURL:(id)l
 {
   result = 0;
-  if (a3)
+  if (l)
   {
-    return CFReadStreamCreateWithFile(0, a3);
+    return CFReadStreamCreateWithFile(0, l);
   }
 
   return result;
@@ -55,17 +55,17 @@
 
 - (id)delegate
 {
-  v2 = [_CFReadStreamGetClient() retainedDelegate];
+  retainedDelegate = [_CFReadStreamGetClient() retainedDelegate];
 
-  return v2;
+  return retainedDelegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (delegate)
   {
-    v4 = [[NSCFStreamWeakDelegateWrapper alloc] initWithDelegate:a3];
+    v4 = [[NSCFStreamWeakDelegateWrapper alloc] initWithDelegate:delegate];
     v5.version = 0;
     v5.info = v4;
     v5.retain = MEMORY[0x1E695D7C8];
@@ -81,30 +81,30 @@
   }
 }
 
-- (id)propertyForKey:(id)a3
+- (id)propertyForKey:(id)key
 {
-  v3 = CFReadStreamCopyProperty(self, a3);
+  v3 = CFReadStreamCopyProperty(self, key);
 
   return v3;
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  if (a3)
+  if (loop)
   {
-    v6 = [a3 getCFRunLoop];
+    getCFRunLoop = [loop getCFRunLoop];
 
-    CFReadStreamScheduleWithRunLoop(self, v6, a4);
+    CFReadStreamScheduleWithRunLoop(self, getCFRunLoop, mode);
   }
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  if (a3)
+  if (loop)
   {
-    v6 = [a3 getCFRunLoop];
+    getCFRunLoop = [loop getCFRunLoop];
 
-    CFReadStreamUnscheduleFromRunLoop(self, v6, a4);
+    CFReadStreamUnscheduleFromRunLoop(self, getCFRunLoop, mode);
   }
 }
 
@@ -115,13 +115,13 @@
   return v2;
 }
 
-- (BOOL)getBuffer:(char *)a3 length:(unint64_t *)a4
+- (BOOL)getBuffer:(char *)buffer length:(unint64_t *)length
 {
-  Buffer = CFReadStreamGetBuffer(self, 0, a4);
-  v7 = *a4;
-  if (*a4)
+  Buffer = CFReadStreamGetBuffer(self, 0, length);
+  v7 = *length;
+  if (*length)
   {
-    *a3 = Buffer;
+    *buffer = Buffer;
   }
 
   return v7 != 0;

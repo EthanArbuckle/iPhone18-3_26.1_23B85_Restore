@@ -1,6 +1,6 @@
 @interface _MPStaticArtworkVisualIdenticalityIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)stringRepresentation;
 @end
 
@@ -8,18 +8,18 @@
 
 - (id)stringRepresentation
 {
-  v3 = [(_MPStaticArtworkVisualIdenticalityIdentifier *)self imageArtworkIdentifier];
-  v4 = [v3 copy];
+  imageArtworkIdentifier = [(_MPStaticArtworkVisualIdenticalityIdentifier *)self imageArtworkIdentifier];
+  v4 = [imageArtworkIdentifier copy];
 
-  v5 = [(_MPStaticArtworkVisualIdenticalityIdentifier *)self videoArtworkIdentifier];
-  v6 = [v5 copy];
+  videoArtworkIdentifier = [(_MPStaticArtworkVisualIdenticalityIdentifier *)self videoArtworkIdentifier];
+  v6 = [videoArtworkIdentifier copy];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"i=%@/v=%@", v4, v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_MPStaticArtworkVisualIdenticalityIdentifier);
   [(_MPStaticArtworkVisualIdenticalityIdentifier *)v4 setImageArtworkIdentifier:self->_imageArtworkIdentifier];
@@ -27,10 +27,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -40,7 +40,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       imageArtworkIdentifier = v5->_imageArtworkIdentifier;
       v7 = self->_imageArtworkIdentifier;
       v8 = v7;

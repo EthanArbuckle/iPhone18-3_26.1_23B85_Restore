@@ -1,37 +1,37 @@
 @interface HFStaticReadPolicy
-+ (id)policyWithDecision:(unint64_t)a3;
++ (id)policyWithDecision:(unint64_t)decision;
 - (HFStaticReadPolicy)init;
-- (HFStaticReadPolicy)initWithDecision:(unint64_t)a3;
+- (HFStaticReadPolicy)initWithDecision:(unint64_t)decision;
 - (NSString)description;
-- (unint64_t)evaluateWithCharacteristic:(id)a3 traits:(id *)a4;
+- (unint64_t)evaluateWithCharacteristic:(id)characteristic traits:(id *)traits;
 @end
 
 @implementation HFStaticReadPolicy
 
-+ (id)policyWithDecision:(unint64_t)a3
++ (id)policyWithDecision:(unint64_t)decision
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithDecision:a3];
+  v3 = [objc_alloc(objc_opt_class()) initWithDecision:decision];
 
   return v3;
 }
 
 - (HFStaticReadPolicy)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithDecision_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFCharacteristicReadPolicy.m" lineNumber:345 description:{@"%s is unavailable; use %@ instead", "-[HFStaticReadPolicy init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFCharacteristicReadPolicy.m" lineNumber:345 description:{@"%s is unavailable; use %@ instead", "-[HFStaticReadPolicy init]", v5}];
 
   return 0;
 }
 
-- (HFStaticReadPolicy)initWithDecision:(unint64_t)a3
+- (HFStaticReadPolicy)initWithDecision:(unint64_t)decision
 {
   v5.receiver = self;
   v5.super_class = HFStaticReadPolicy;
   result = [(HFStaticReadPolicy *)&v5 init];
   if (result)
   {
-    result->_decision = a3;
+    result->_decision = decision;
   }
 
   return result;
@@ -40,37 +40,37 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x277D2C8F8] builderWithObject:self];
-  v4 = [(HFStaticReadPolicy *)self decision];
-  v5 = v4;
-  if (v4 >= 3)
+  decision = [(HFStaticReadPolicy *)self decision];
+  v5 = decision;
+  if (decision >= 3)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"NSString *HFStringFromReadPolicyDecision(HFCharacteristicReadPolicyDecision)"];
-    [v7 handleFailureInFunction:v8 file:@"HFCharacteristicReadPolicy.m" lineNumber:53 description:{@"Unknown decision value: %d", v5}];
+    [currentHandler handleFailureInFunction:v8 file:@"HFCharacteristicReadPolicy.m" lineNumber:53 description:{@"Unknown decision value: %d", v5}];
 
     v6 = 0;
   }
 
   else
   {
-    v6 = off_277DFB058[v4];
+    v6 = off_277DFB058[decision];
   }
 
   v9 = v6;
   [v3 appendString:v9 withName:@"decision"];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (unint64_t)evaluateWithCharacteristic:(id)a3 traits:(id *)a4
+- (unint64_t)evaluateWithCharacteristic:(id)characteristic traits:(id *)traits
 {
-  v6 = a3;
-  if (a4)
+  characteristicCopy = characteristic;
+  if (traits)
   {
-    v7 = [(HFStaticReadPolicy *)self decision];
-    switch(v7)
+    decision = [(HFStaticReadPolicy *)self decision];
+    switch(decision)
     {
       case 2uLL:
         v8 = MEMORY[0x277CBEB98];
@@ -79,7 +79,7 @@
       case 1uLL:
         v10 = [MEMORY[0x277CBEB98] set];
 LABEL_9:
-        *a4 = v10;
+        *traits = v10;
         break;
       case 0uLL:
         v8 = MEMORY[0x277CBEB98];
@@ -90,9 +90,9 @@ LABEL_8:
     }
   }
 
-  v11 = [(HFStaticReadPolicy *)self decision];
+  decision2 = [(HFStaticReadPolicy *)self decision];
 
-  return v11;
+  return decision2;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface PXDayAssetsSectionBodyLayoutSpec
 - ($7A74DE1ADD4D9428579EDAA94466197A)bodyCornerRadius;
-- (PXDayAssetsSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4;
+- (PXDayAssetsSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options;
 @end
 
 @implementation PXDayAssetsSectionBodyLayoutSpec
@@ -12,11 +12,11 @@
   return result;
 }
 
-- (PXDayAssetsSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4
+- (PXDayAssetsSectionBodyLayoutSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options
 {
   v9.receiver = self;
   v9.super_class = PXDayAssetsSectionBodyLayoutSpec;
-  v4 = [(PXDayAssetsSectionBodyLayoutSpec *)&v9 initWithExtendedTraitCollection:a3 options:a4];
+  v4 = [(PXDayAssetsSectionBodyLayoutSpec *)&v9 initWithExtendedTraitCollection:collection options:options];
   if (v4)
   {
     v5 = +[PXCuratedLibrarySettings sharedInstance];

@@ -1,19 +1,19 @@
 @interface HMDAccessoryAllowedHost
 + (id)allowedHostForFullWANAccess;
-+ (id)allowedHostsFromFirewallRuleConfiguration:(id)a3;
-+ (id)allowedHostsFromJSONFirewallWANRules:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMDAccessoryAllowedHost)initWithCoder:(id)a3;
-- (HMDAccessoryAllowedHost)initWithJSONFirewallWANRule:(id)a3;
-- (HMDAccessoryAllowedHost)initWithWANRule:(id)a3;
++ (id)allowedHostsFromFirewallRuleConfiguration:(id)configuration;
++ (id)allowedHostsFromJSONFirewallWANRules:(id)rules;
+- (BOOL)isEqual:(id)equal;
+- (HMDAccessoryAllowedHost)initWithCoder:(id)coder;
+- (HMDAccessoryAllowedHost)initWithJSONFirewallWANRule:(id)rule;
+- (HMDAccessoryAllowedHost)initWithWANRule:(id)rule;
 - (HMDNetworkRouterFirewallRuleWAN)wanRule;
 - (NSSet)addresses;
 - (NSString)name;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
 - (unint64_t)purpose;
-- (void)_encodeForSPIEntitledXPCTransportWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_encodeForSPIEntitledXPCTransportWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDAccessoryAllowedHost
@@ -22,11 +22,11 @@
 {
   v15[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDAccessoryAllowedHost *)self name];
-  v5 = [v3 initWithName:@"Name" value:v4];
+  name = [(HMDAccessoryAllowedHost *)self name];
+  v5 = [v3 initWithName:@"Name" value:name];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDAccessoryAllowedHost *)self addresses];
-  v8 = [v6 initWithName:@"Addresses" value:v7];
+  addresses = [(HMDAccessoryAllowedHost *)self addresses];
+  v8 = [v6 initWithName:@"Addresses" value:addresses];
   v15[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[HMDAccessoryAllowedHost purpose](self, "purpose")}];
@@ -39,10 +39,10 @@
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -52,7 +52,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -71,9 +71,9 @@
 
       else
       {
-        v8 = [(HMDAccessoryAllowedHost *)self jsonWANRule];
-        v9 = [(HMDAccessoryAllowedHost *)v7 jsonWANRule];
-        v10 = [v8 isEqualToString:v9];
+        jsonWANRule = [(HMDAccessoryAllowedHost *)self jsonWANRule];
+        jsonWANRule2 = [(HMDAccessoryAllowedHost *)v7 jsonWANRule];
+        v10 = [jsonWANRule isEqualToString:jsonWANRule2];
       }
     }
 
@@ -88,29 +88,29 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDAccessoryAllowedHost *)self jsonWANRule];
-  v3 = [v2 hash];
+  jsonWANRule = [(HMDAccessoryAllowedHost *)self jsonWANRule];
+  v3 = [jsonWANRule hash];
 
   return v3;
 }
 
-- (void)_encodeForSPIEntitledXPCTransportWithCoder:(id)a3
+- (void)_encodeForSPIEntitledXPCTransportWithCoder:(id)coder
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAccessoryAllowedHost *)self wanRule];
-  v6 = [v5 name];
-  [v4 encodeObject:v6 forKey:*MEMORY[0x277CCE7D0]];
+  coderCopy = coder;
+  wanRule = [(HMDAccessoryAllowedHost *)self wanRule];
+  name = [wanRule name];
+  [coderCopy encodeObject:name forKey:*MEMORY[0x277CCE7D0]];
 
   v7 = MEMORY[0x277CCABB0];
-  v8 = [v5 purpose];
-  if (!v8)
+  purpose = [wanRule purpose];
+  if (!purpose)
   {
     v11 = 0;
     goto LABEL_46;
   }
 
-  v9 = v8;
+  v9 = purpose;
   v10 = 0;
   v11 = 0;
   v12 = 1;
@@ -118,7 +118,7 @@
   {
     while (1)
     {
-      if ((v12 & v8) == 0)
+      if ((v12 & purpose) == 0)
       {
         goto LABEL_37;
       }
@@ -184,7 +184,7 @@ LABEL_39:
       v11 |= 1uLL;
       v12 *= 2;
       v10 = 1;
-      if (v12 - 1 >= v8)
+      if (v12 - 1 >= purpose)
       {
         goto LABEL_42;
       }
@@ -245,7 +245,7 @@ LABEL_37:
     v12 *= 2;
   }
 
-  while (v12 - 1 < v8);
+  while (v12 - 1 < purpose);
   if ((v10 & 1) == 0)
   {
     goto LABEL_46;
@@ -267,83 +267,83 @@ LABEL_42:
   objc_autoreleasePoolPop(v13);
 LABEL_46:
   v16 = [v7 numberWithUnsignedInteger:v11];
-  [v4 encodeObject:v16 forKey:*MEMORY[0x277CCE7D8]];
+  [coderCopy encodeObject:v16 forKey:*MEMORY[0x277CCE7D8]];
 
   v17 = MEMORY[0x277CBEB98];
-  v18 = addressesFromWANRule(v5);
+  v18 = addressesFromWANRule(wanRule);
   v19 = [v17 setWithArray:v18];
-  [v4 encodeObject:v19 forKey:*MEMORY[0x277CCE7C8]];
+  [coderCopy encodeObject:v19 forKey:*MEMORY[0x277CCE7C8]];
 
-  v20 = [(HMDAccessoryAllowedHost *)self jsonWANRule];
-  v21 = [v20 isEqualToString:{@"{f:0, n:Any Internet Destination, r:{i:*, it:[{p:1, t:0}]}, t:5, u:1}"}];
+  jsonWANRule = [(HMDAccessoryAllowedHost *)self jsonWANRule];
+  v21 = [jsonWANRule isEqualToString:{@"{f:0, n:Any Internet Destination, r:{i:*, it:[{p:1, t:0}]}, t:5, u:1}"}];
 
-  [v4 encodeBool:v21 forKey:*MEMORY[0x277CCE7E0]];
+  [coderCopy encodeBool:v21 forKey:*MEMORY[0x277CCE7E0]];
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(HMDAccessoryAllowedHost *)self wanRule];
-  if (v4)
+  coderCopy = coder;
+  wanRule = [(HMDAccessoryAllowedHost *)self wanRule];
+  if (wanRule)
   {
-    if ([v6 hmd_isForXPCTransport])
+    if ([coderCopy hmd_isForXPCTransport])
     {
-      if ([v6 hmd_isForXPCTransportEntitledForSPIAccess])
+      if ([coderCopy hmd_isForXPCTransportEntitledForSPIAccess])
       {
-        [(HMDAccessoryAllowedHost *)self _encodeForSPIEntitledXPCTransportWithCoder:v6];
+        [(HMDAccessoryAllowedHost *)self _encodeForSPIEntitledXPCTransportWithCoder:coderCopy];
       }
     }
 
-    else if (([v6 hmd_isForLocalStore] & 1) != 0 || objc_msgSend(v6, "hmd_isForRemoteTransport") && (objc_msgSend(v6, "hmd_isForRemoteTransportOnSameAccount") & 1) == 0 && (objc_msgSend(v6, "hmd_isForRemoteUserAdministrator") & 1) != 0 || objc_msgSend(v6, "hmd_isForRemoteTransportOnSameAccount") && (objc_msgSend(v6, "hmd_isForRemoteGatewayCoder") & 1) == 0)
+    else if (([coderCopy hmd_isForLocalStore] & 1) != 0 || objc_msgSend(coderCopy, "hmd_isForRemoteTransport") && (objc_msgSend(coderCopy, "hmd_isForRemoteTransportOnSameAccount") & 1) == 0 && (objc_msgSend(coderCopy, "hmd_isForRemoteUserAdministrator") & 1) != 0 || objc_msgSend(coderCopy, "hmd_isForRemoteTransportOnSameAccount") && (objc_msgSend(coderCopy, "hmd_isForRemoteGatewayCoder") & 1) == 0)
     {
-      v5 = [(HMDAccessoryAllowedHost *)self jsonWANRule];
-      [v6 encodeObject:v5 forKey:@"HMDAAH.jsonWANRule"];
+      jsonWANRule = [(HMDAccessoryAllowedHost *)self jsonWANRule];
+      [coderCopy encodeObject:jsonWANRule forKey:@"HMDAAH.jsonWANRule"];
     }
   }
 }
 
-- (HMDAccessoryAllowedHost)initWithCoder:(id)a3
+- (HMDAccessoryAllowedHost)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDAAH.jsonWANRule"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDAAH.jsonWANRule"];
 
   if (v5)
   {
     self = [(HMDAccessoryAllowedHost *)self initWithJSONFirewallWANRule:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (unint64_t)purpose
 {
-  v2 = [(HMDAccessoryAllowedHost *)self wanRule];
-  v3 = [v2 purpose];
+  wanRule = [(HMDAccessoryAllowedHost *)self wanRule];
+  purpose = [wanRule purpose];
 
-  return v3;
+  return purpose;
 }
 
 - (NSSet)addresses
 {
-  v2 = [(HMDAccessoryAllowedHost *)self wanRule];
-  v3 = addressesFromWANRule(v2);
+  wanRule = [(HMDAccessoryAllowedHost *)self wanRule];
+  v3 = addressesFromWANRule(wanRule);
 
   return v3;
 }
 
 - (NSString)name
 {
-  v2 = [(HMDAccessoryAllowedHost *)self wanRule];
-  v3 = [v2 name];
+  wanRule = [(HMDAccessoryAllowedHost *)self wanRule];
+  name = [wanRule name];
 
-  return v3;
+  return name;
 }
 
 - (HMDNetworkRouterFirewallRuleWAN)wanRule
@@ -351,22 +351,22 @@ LABEL_46:
   WeakRetained = objc_loadWeakRetained(&self->_cachedWANRule);
   if (!WeakRetained)
   {
-    v4 = [(HMDAccessoryAllowedHost *)self jsonWANRule];
-    WeakRetained = wanRuleFromJSONRule(v4);
+    jsonWANRule = [(HMDAccessoryAllowedHost *)self jsonWANRule];
+    WeakRetained = wanRuleFromJSONRule(jsonWANRule);
     objc_storeWeak(&self->_cachedWANRule, WeakRetained);
   }
 
   return WeakRetained;
 }
 
-- (HMDAccessoryAllowedHost)initWithWANRule:(id)a3
+- (HMDAccessoryAllowedHost)initWithWANRule:(id)rule
 {
-  v4 = a3;
+  ruleCopy = rule;
   v11.receiver = self;
   v11.super_class = HMDAccessoryAllowedHost;
   v5 = [(HMDAccessoryAllowedHost *)&v11 init];
   v6 = v5;
-  if (v5 && (objc_storeWeak(&v5->_cachedWANRule, v4), [v4 jsonString], v7 = objc_claimAutoreleasedReturnValue(), jsonWANRule = v6->_jsonWANRule, v6->_jsonWANRule = v7, jsonWANRule, !v6->_jsonWANRule))
+  if (v5 && (objc_storeWeak(&v5->_cachedWANRule, ruleCopy), [ruleCopy jsonString], v7 = objc_claimAutoreleasedReturnValue(), jsonWANRule = v6->_jsonWANRule, v6->_jsonWANRule = v7, jsonWANRule, !v6->_jsonWANRule))
   {
     v9 = 0;
   }
@@ -379,37 +379,37 @@ LABEL_46:
   return v9;
 }
 
-- (HMDAccessoryAllowedHost)initWithJSONFirewallWANRule:(id)a3
+- (HMDAccessoryAllowedHost)initWithJSONFirewallWANRule:(id)rule
 {
-  v4 = wanRuleFromJSONRule(a3);
+  v4 = wanRuleFromJSONRule(rule);
   if (v4)
   {
     self = [(HMDAccessoryAllowedHost *)self initWithWANRule:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-+ (id)allowedHostsFromFirewallRuleConfiguration:(id)a3
++ (id)allowedHostsFromFirewallRuleConfiguration:(id)configuration
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  configurationCopy = configuration;
+  v4 = configurationCopy;
+  if (configurationCopy)
   {
-    v5 = [v3 wanRules];
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count") + 1}];
+    wanRules = [configurationCopy wanRules];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(wanRules, "count") + 1}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v5;
+    v7 = wanRules;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -455,9 +455,9 @@ LABEL_46:
   return v16;
 }
 
-+ (id)allowedHostsFromJSONFirewallWANRules:(id)a3
++ (id)allowedHostsFromJSONFirewallWANRules:(id)rules
 {
-  v3 = [a3 na_map:&__block_literal_global_95105];
+  v3 = [rules na_map:&__block_literal_global_95105];
   v4 = v3;
   if (v3)
   {

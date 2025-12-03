@@ -1,43 +1,43 @@
 @interface FCFeedTransformationPersonalizedDiversifiedLimit
-+ (id)transformationWithFunctionProvider:(id)a3 limit:(unint64_t)a4;
-- (id)transformFeedItems:(id)a3;
-- (id)transformFeedItems:(id)a3 withRespectToLimit:(unint64_t)a4;
++ (id)transformationWithFunctionProvider:(id)provider limit:(unint64_t)limit;
+- (id)transformFeedItems:(id)items;
+- (id)transformFeedItems:(id)items withRespectToLimit:(unint64_t)limit;
 @end
 
 @implementation FCFeedTransformationPersonalizedDiversifiedLimit
 
-+ (id)transformationWithFunctionProvider:(id)a3 limit:(unint64_t)a4
++ (id)transformationWithFunctionProvider:(id)provider limit:(unint64_t)limit
 {
-  v5 = a3;
+  providerCopy = provider;
   v6 = objc_opt_new();
-  [v6 setLimit:a4];
-  [v6 setFunctionProvider:v5];
+  [v6 setLimit:limit];
+  [v6 setFunctionProvider:providerCopy];
 
   return v6;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
-  v5 = [(FCFeedTransformationPersonalizedDiversifiedLimit *)self transformFeedItems:v4 withRespectToLimit:[(FCFeedTransformationPersonalizedDiversifiedLimit *)self limit]];
+  itemsCopy = items;
+  v5 = [(FCFeedTransformationPersonalizedDiversifiedLimit *)self transformFeedItems:itemsCopy withRespectToLimit:[(FCFeedTransformationPersonalizedDiversifiedLimit *)self limit]];
 
   return v5;
 }
 
-- (id)transformFeedItems:(id)a3 withRespectToLimit:(unint64_t)a4
+- (id)transformFeedItems:(id)items withRespectToLimit:(unint64_t)limit
 {
-  v6 = a3;
-  v7 = [(FCFeedTransformationPersonalizedDiversifiedLimit *)self functionProvider];
+  itemsCopy = items;
+  functionProvider = [(FCFeedTransformationPersonalizedDiversifiedLimit *)self functionProvider];
 
-  if (v7)
+  if (functionProvider)
   {
-    v8 = [(FCFeedTransformationPersonalizedDiversifiedLimit *)self functionProvider];
-    v9 = [v8 diversifyItems:v6 limit:a4];
+    functionProvider2 = [(FCFeedTransformationPersonalizedDiversifiedLimit *)self functionProvider];
+    v9 = [functionProvider2 diversifyItems:itemsCopy limit:limit];
   }
 
   else
   {
-    v9 = v6;
+    v9 = itemsCopy;
   }
 
   return v9;

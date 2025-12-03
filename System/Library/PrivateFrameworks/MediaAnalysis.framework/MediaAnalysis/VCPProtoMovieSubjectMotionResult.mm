@@ -1,13 +1,13 @@
 @interface VCPProtoMovieSubjectMotionResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieSubjectMotionResult
@@ -18,47 +18,47 @@
   v8.receiver = self;
   v8.super_class = VCPProtoMovieSubjectMotionResult;
   v4 = [(VCPProtoMovieSubjectMotionResult *)&v8 description];
-  v5 = [(VCPProtoMovieSubjectMotionResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieSubjectMotionResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_hasAction];
-  [v3 setObject:v6 forKey:@"hasAction"];
+  [dictionary setObject:v6 forKey:@"hasAction"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   timeRange = self->_timeRange;
-  v5 = a3;
-  [v5 setTimeRange:timeRange];
-  v5[16] = self->_hasAction;
+  toCopy = to;
+  [toCopy setTimeRange:timeRange];
+  toCopy[16] = self->_hasAction;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -66,19 +66,19 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(v4 + 1))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_hasAction == v4[16];
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(equalCopy + 1))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_hasAction == equalCopy[16];
 
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (timeRange)
   {
     if (!v6)
@@ -86,7 +86,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoTimeRange *)timeRange mergeFrom:?];
   }
 
@@ -97,21 +97,21 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoMovieSubjectMotionResult *)self setTimeRange:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_hasAction = *(v4 + 16);
+  self->_hasAction = *(fromCopy + 16);
 }
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v10, 0, sizeof(v10));
-  CMTimeRangeMakeFromDictionary(&v10, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"flags"];
+  CMTimeRangeMakeFromDictionary(&v10, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"flags"];
   v5 = v4;
   if (v10.start.flags)
   {
@@ -144,11 +144,11 @@ LABEL_7:
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [(VCPProtoMovieSubjectMotionResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoMovieSubjectMotionResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else

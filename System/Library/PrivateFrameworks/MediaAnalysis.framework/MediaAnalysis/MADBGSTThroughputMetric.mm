@@ -1,36 +1,36 @@
 @interface MADBGSTThroughputMetric
-+ (id)metricForTask:(unint64_t)a3 subCategory:(id)a4 keys:(id)a5 BGSystemTask:(id)a6;
-- (BOOL)reportThroughputWithItemCount:(unint64_t)a3;
-- (BOOL)updateWithSessionLog:(id)a3;
-- (MADBGSTThroughputMetric)initWithTask:(unint64_t)a3 subCategory:(id)a4 keys:(id)a5 BGSystemTask:(id)a6;
++ (id)metricForTask:(unint64_t)task subCategory:(id)category keys:(id)keys BGSystemTask:(id)systemTask;
+- (BOOL)reportThroughputWithItemCount:(unint64_t)count;
+- (BOOL)updateWithSessionLog:(id)log;
+- (MADBGSTThroughputMetric)initWithTask:(unint64_t)task subCategory:(id)category keys:(id)keys BGSystemTask:(id)systemTask;
 - (void)dealloc;
 - (void)flush;
 @end
 
 @implementation MADBGSTThroughputMetric
 
-- (MADBGSTThroughputMetric)initWithTask:(unint64_t)a3 subCategory:(id)a4 keys:(id)a5 BGSystemTask:(id)a6
+- (MADBGSTThroughputMetric)initWithTask:(unint64_t)task subCategory:(id)category keys:(id)keys BGSystemTask:(id)systemTask
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  categoryCopy = category;
+  keysCopy = keys;
+  systemTaskCopy = systemTask;
   v25.receiver = self;
   v25.super_class = MADBGSTThroughputMetric;
   v14 = [(MADBGSTThroughputMetric *)&v25 init];
   v15 = v14;
   if (v14)
   {
-    v14->_taskID = a3;
-    objc_storeStrong(&v14->_subcategory, a4);
+    v14->_taskID = task;
+    objc_storeStrong(&v14->_subcategory, category);
     v16 = VCPTaskIDDescription();
     sessionLogKey = v15->_sessionLogKey;
     v15->_sessionLogKey = v16;
 
-    objc_storeStrong(&v15->_systemTask, a6);
-    v18 = MADTaskIdentifierForBackgroundTask(a3);
-    v19 = [NSString stringWithFormat:@"%@.%@", v18, v11];
+    objc_storeStrong(&v15->_systemTask, systemTask);
+    v18 = MADTaskIdentifierForBackgroundTask(task);
+    categoryCopy = [NSString stringWithFormat:@"%@.%@", v18, categoryCopy];
 
-    v20 = throughputMetricForTask(v19);
+    v20 = throughputMetricForTask(categoryCopy);
     metric = v15->_metric;
     v15->_metric = v20;
 
@@ -38,26 +38,26 @@
     startTime = v15->_startTime;
     v15->_startTime = v22;
 
-    objc_storeStrong(&v15->_keys, a5);
+    objc_storeStrong(&v15->_keys, keys);
   }
 
   return v15;
 }
 
-+ (id)metricForTask:(unint64_t)a3 subCategory:(id)a4 keys:(id)a5 BGSystemTask:(id)a6
++ (id)metricForTask:(unint64_t)task subCategory:(id)category keys:(id)keys BGSystemTask:(id)systemTask
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[a1 alloc] initWithTask:a3 subCategory:v12 keys:v11 BGSystemTask:v10];
+  systemTaskCopy = systemTask;
+  keysCopy = keys;
+  categoryCopy = category;
+  v13 = [[self alloc] initWithTask:task subCategory:categoryCopy keys:keysCopy BGSystemTask:systemTaskCopy];
 
   return v13;
 }
 
-- (BOOL)updateWithSessionLog:(id)a3
+- (BOOL)updateWithSessionLog:(id)log
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:self->_sessionLogKey];
+  logCopy = log;
+  v5 = [logCopy objectForKeyedSubscript:self->_sessionLogKey];
 
   if (v5)
   {
@@ -82,7 +82,7 @@
           }
 
           v12 = *(*(&v20 + 1) + 8 * i);
-          v13 = [v4 objectForKeyedSubscript:{self->_sessionLogKey, v20}];
+          v13 = [logCopy objectForKeyedSubscript:{self->_sessionLogKey, v20}];
           v14 = [v13 objectForKeyedSubscript:v12];
           v9 += [v14 unsignedIntegerValue];
         }
@@ -124,9 +124,9 @@
   return v18;
 }
 
-- (BOOL)reportThroughputWithItemCount:(unint64_t)a3
+- (BOOL)reportThroughputWithItemCount:(unint64_t)count
 {
-  if (!a3)
+  if (!count)
   {
     if (MediaAnalysisLogLevel() >= 7)
     {
@@ -183,15 +183,15 @@ LABEL_5:
     v11 = VCPLogToOSLogType[6];
     if (os_log_type_enabled(&_os_log_default, v11))
     {
-      v12 = a3 - LODWORD(self->_count);
+      v12 = count - LODWORD(self->_count);
       *buf = 67109120;
       LODWORD(v20) = v12;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v11, "[MADBGSTThroughputMetric] Adding count %d", buf, 8u);
     }
   }
 
-  [(BGSystemTaskThroughputMetrics *)self->_metric addItemCount:a3 - self->_count];
-  self->_count = a3;
+  [(BGSystemTaskThroughputMetrics *)self->_metric addItemCount:count - self->_count];
+  self->_count = count;
   LOBYTE(v13) = 1;
   return v13;
 }

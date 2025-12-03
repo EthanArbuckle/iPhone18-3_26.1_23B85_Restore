@@ -1,15 +1,15 @@
 @interface GCIPCRemoteConnection
 - ($115C4C562B26FF47E01F9F4EA65B5887)peerAuditToken;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToConnection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToConnection:(id)connection;
 - (GCIPCRemoteConnection)init;
-- (GCIPCRemoteConnection)initWithConnection:(id)a3;
+- (GCIPCRemoteConnection)initWithConnection:(id)connection;
 - (NSString)peerBundleIdentifier;
-- (id)addInterruptionHandler:(id)a3;
-- (id)addInvalidationHandler:(id)a3;
+- (id)addInterruptionHandler:(id)handler;
+- (id)addInvalidationHandler:(id)handler;
 - (id)debugDescription;
 - (id)description;
-- (id)peerValueForEntitlement:(id)a3;
+- (id)peerValueForEntitlement:(id)entitlement;
 - (id)redactedDescription;
 - (int)peerAuditSessionIdentifier;
 - (int)peerProcessIdentifier;
@@ -20,16 +20,16 @@
 
 @implementation GCIPCRemoteConnection
 
-- (GCIPCRemoteConnection)initWithConnection:(id)a3
+- (GCIPCRemoteConnection)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v22.receiver = self;
   v22.super_class = GCIPCRemoteConnection;
   v6 = [(GCIPCRemoteConnection *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     v8 = objc_opt_new();
     interruptionHandlers = v7->_interruptionHandlers;
     v7->_interruptionHandlers = v8;
@@ -175,36 +175,36 @@ void __44__GCIPCRemoteConnection_initWithConnection___block_invoke_1(uint64_t a1
   return 0;
 }
 
-- (id)addInterruptionHandler:(id)a3
+- (id)addInterruptionHandler:(id)handler
 {
-  v4 = [a3 copy];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = atomic_load(&v5->_invalid);
+  v4 = [handler copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = atomic_load(&selfCopy->_invalid);
   if (v6)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v7 = 0;
   }
 
   else
   {
-    v8 = [(GCIPCRemoteConnection *)v5 interruptionHandlers];
-    v9 = [v8 mutableCopy];
+    interruptionHandlers = [(GCIPCRemoteConnection *)selfCopy interruptionHandlers];
+    v9 = [interruptionHandlers mutableCopy];
 
     v10 = _Block_copy(v4);
     [v9 addObject:v10];
 
-    [(GCIPCRemoteConnection *)v5 setInterruptionHandlers:v9];
-    objc_sync_exit(v5);
+    [(GCIPCRemoteConnection *)selfCopy setInterruptionHandlers:v9];
+    objc_sync_exit(selfCopy);
 
     v11 = [GCDisposable alloc];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __48__GCIPCRemoteConnection_addInterruptionHandler___block_invoke;
     v13[3] = &unk_1E84144C8;
-    v13[4] = v5;
+    v13[4] = selfCopy;
     v14 = v4;
     v7 = [(GCDisposable *)v11 initWithCleanupHandler:v13];
   }
@@ -226,36 +226,36 @@ void __48__GCIPCRemoteConnection_addInterruptionHandler___block_invoke(uint64_t 
   objc_sync_exit(obj);
 }
 
-- (id)addInvalidationHandler:(id)a3
+- (id)addInvalidationHandler:(id)handler
 {
-  v4 = [a3 copy];
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = atomic_load(&v5->_invalid);
+  v4 = [handler copy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = atomic_load(&selfCopy->_invalid);
   if (v6)
   {
-    objc_sync_exit(v5);
+    objc_sync_exit(selfCopy);
 
     v7 = 0;
   }
 
   else
   {
-    v8 = [(GCIPCRemoteConnection *)v5 invalidationHandlers];
-    v9 = [v8 mutableCopy];
+    invalidationHandlers = [(GCIPCRemoteConnection *)selfCopy invalidationHandlers];
+    v9 = [invalidationHandlers mutableCopy];
 
     v10 = _Block_copy(v4);
     [v9 addObject:v10];
 
-    [(GCIPCRemoteConnection *)v5 setInvalidationHandlers:v9];
-    objc_sync_exit(v5);
+    [(GCIPCRemoteConnection *)selfCopy setInvalidationHandlers:v9];
+    objc_sync_exit(selfCopy);
 
     v11 = [GCDisposable alloc];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __48__GCIPCRemoteConnection_addInvalidationHandler___block_invoke;
     v13[3] = &unk_1E84144C8;
-    v13[4] = v5;
+    v13[4] = selfCopy;
     v14 = v4;
     v7 = [(GCDisposable *)v11 initWithCleanupHandler:v13];
   }
@@ -279,12 +279,12 @@ void __48__GCIPCRemoteConnection_addInvalidationHandler___block_invoke(uint64_t 
 
 - ($115C4C562B26FF47E01F9F4EA65B5887)peerAuditToken
 {
-  v4 = [(GCIPCRemoteConnection *)self connection];
-  if (v4)
+  connection = [(GCIPCRemoteConnection *)self connection];
+  if (connection)
   {
-    v6 = v4;
-    [v4 auditToken];
-    v4 = v6;
+    v6 = connection;
+    [connection auditToken];
+    connection = v6;
   }
 
   else
@@ -298,76 +298,76 @@ void __48__GCIPCRemoteConnection_addInvalidationHandler___block_invoke(uint64_t 
 
 - (int)peerAuditSessionIdentifier
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 auditSessionIdentifier];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  auditSessionIdentifier = [connection auditSessionIdentifier];
 
-  return v3;
+  return auditSessionIdentifier;
 }
 
 - (int)peerProcessIdentifier
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 processIdentifier];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  processIdentifier = [connection processIdentifier];
 
-  return v3;
+  return processIdentifier;
 }
 
 - (unsigned)peerEffectiveUserIdentifier
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 effectiveUserIdentifier];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  effectiveUserIdentifier = [connection effectiveUserIdentifier];
 
-  return v3;
+  return effectiveUserIdentifier;
 }
 
 - (unsigned)peerEffectiveGroupIdentifier
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 effectiveGroupIdentifier];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  effectiveGroupIdentifier = [connection effectiveGroupIdentifier];
 
-  return v3;
+  return effectiveGroupIdentifier;
 }
 
 - (NSString)peerBundleIdentifier
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 gc_peerBundleIdentifier];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  gc_peerBundleIdentifier = [connection gc_peerBundleIdentifier];
 
-  return v3;
+  return gc_peerBundleIdentifier;
 }
 
-- (id)peerValueForEntitlement:(id)a3
+- (id)peerValueForEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  v6 = [v5 valueForEntitlement:v4];
+  entitlementCopy = entitlement;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  v6 = [connection valueForEntitlement:entitlementCopy];
 
   return v6;
 }
 
-- (BOOL)isEqualToConnection:(id)a3
+- (BOOL)isEqualToConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(GCIPCRemoteConnection *)self connection];
-  v6 = [v4 connection];
+  connectionCopy = connection;
+  connection = [(GCIPCRemoteConnection *)self connection];
+  connection2 = [connectionCopy connection];
 
-  LOBYTE(v4) = [v5 isEqual:v6];
-  return v4;
+  LOBYTE(connectionCopy) = [connection isEqual:connection2];
+  return connectionCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCIPCRemoteConnection *)self isEqualToConnection:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(GCIPCRemoteConnection *)self isEqualToConnection:equalCopy];
 
   return v5;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(GCIPCRemoteConnection *)self connection];
-  v3 = [v2 hash];
+  connection = [(GCIPCRemoteConnection *)self connection];
+  v3 = [connection hash];
 
   return v3;
 }

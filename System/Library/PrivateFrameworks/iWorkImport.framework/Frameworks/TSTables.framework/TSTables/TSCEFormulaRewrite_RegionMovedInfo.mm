@@ -1,28 +1,28 @@
 @interface TSCEFormulaRewrite_RegionMovedInfo
-- (BOOL)isForDstTable:(const TSKUIDStruct *)a3;
-- (BOOL)isForSrcTable:(const TSKUIDStruct *)a3;
-- (TSCEFormulaRewrite_RegionMovedInfo)initWithSrcTableUID:(const TSKUIDStruct *)a3 srcTract:(const void *)a4 dstTableUID:(const TSKUIDStruct *)a5 destTract:(const void *)a6;
+- (BOOL)isForDstTable:(const TSKUIDStruct *)table;
+- (BOOL)isForSrcTable:(const TSKUIDStruct *)table;
+- (TSCEFormulaRewrite_RegionMovedInfo)initWithSrcTableUID:(const TSKUIDStruct *)d srcTract:(const void *)tract dstTableUID:(const TSKUIDStruct *)iD destTract:(const void *)destTract;
 - (TSKUIDStruct)dstCondStyleOwnerUID;
 - (TSKUIDStruct)dstTableUID;
-- (TSKUIDStruct)dstUidForSrcUid:(const TSKUIDStruct *)a3;
+- (TSKUIDStruct)dstUidForSrcUid:(const TSKUIDStruct *)uid;
 - (TSKUIDStruct)finalDstTableUID;
 - (TSKUIDStruct)originalSrcCondStyleOwnerUID;
 - (TSKUIDStruct)originalSrcTableUID;
 - (TSKUIDStruct)srcCondStyleOwnerUID;
 - (TSKUIDStruct)srcTableUID;
-- (TSKUIDStruct)srcUidForDstUid:(const TSKUIDStruct *)a3;
+- (TSKUIDStruct)srcUidForDstUid:(const TSKUIDStruct *)uid;
 - (id).cxx_construct;
 - (id)description;
-- (id)initFromMessage:(const void *)a3;
-- (void)loadIndexesForSrcTable:(id)a3 srcUidResolver:(id)a4 dstTable:(id)a5 dstUidResolver:(id)a6;
+- (id)initFromMessage:(const void *)message;
+- (void)loadIndexesForSrcTable:(id)table srcUidResolver:(id)resolver dstTable:(id)dstTable dstUidResolver:(id)uidResolver;
 - (void)loadIndexesFromRegions;
-- (void)saveToMessage:(void *)a3;
+- (void)saveToMessage:(void *)message;
 - (void)unloadIndexes;
 @end
 
 @implementation TSCEFormulaRewrite_RegionMovedInfo
 
-- (TSCEFormulaRewrite_RegionMovedInfo)initWithSrcTableUID:(const TSKUIDStruct *)a3 srcTract:(const void *)a4 dstTableUID:(const TSKUIDStruct *)a5 destTract:(const void *)a6
+- (TSCEFormulaRewrite_RegionMovedInfo)initWithSrcTableUID:(const TSKUIDStruct *)d srcTract:(const void *)tract dstTableUID:(const TSKUIDStruct *)iD destTract:(const void *)destTract
 {
   v20.receiver = self;
   v20.super_class = TSCEFormulaRewrite_RegionMovedInfo;
@@ -30,12 +30,12 @@
   if (v10)
   {
     v11 = [TSCEFormulaRewrite_RegionInfo alloc];
-    v13 = objc_msgSend_initWithTableUID_columnUids_rowUids_(v11, v12, a3, a4, a4 + 24);
+    v13 = objc_msgSend_initWithTableUID_columnUids_rowUids_(v11, v12, d, tract, tract + 24);
     srcRegion = v10->_srcRegion;
     v10->_srcRegion = v13;
 
     v15 = [TSCEFormulaRewrite_RegionInfo alloc];
-    v17 = objc_msgSend_initWithTableUID_columnUids_rowUids_(v15, v16, a5, a6, a6 + 24);
+    v17 = objc_msgSend_initWithTableUID_columnUids_rowUids_(v15, v16, iD, destTract, destTract + 24);
     dstRegion = v10->_dstRegion;
     v10->_dstRegion = v17;
   }
@@ -129,31 +129,31 @@
   return result;
 }
 
-- (BOOL)isForSrcTable:(const TSKUIDStruct *)a3
+- (BOOL)isForSrcTable:(const TSKUIDStruct *)table
 {
-  if (a3->_lower == objc_msgSend_srcTableUID(self, a2, a3, v3, v4) && a3->_upper == v7)
+  if (table->_lower == objc_msgSend_srcTableUID(self, a2, table, v3, v4) && table->_upper == v7)
   {
     return 1;
   }
 
-  if (a3->_lower == objc_msgSend_srcCondStyleOwnerUID(self, v7, v8, v9, v10))
+  if (table->_lower == objc_msgSend_srcCondStyleOwnerUID(self, v7, v8, v9, v10))
   {
-    return a3->_upper == v12;
+    return table->_upper == v12;
   }
 
   return 0;
 }
 
-- (BOOL)isForDstTable:(const TSKUIDStruct *)a3
+- (BOOL)isForDstTable:(const TSKUIDStruct *)table
 {
-  if (a3->_lower == objc_msgSend_dstTableUID(self, a2, a3, v3, v4) && a3->_upper == v7)
+  if (table->_lower == objc_msgSend_dstTableUID(self, a2, table, v3, v4) && table->_upper == v7)
   {
     return 1;
   }
 
-  if (a3->_lower == objc_msgSend_dstCondStyleOwnerUID(self, v7, v8, v9, v10))
+  if (table->_lower == objc_msgSend_dstCondStyleOwnerUID(self, v7, v8, v9, v10))
   {
-    return a3->_upper == v12;
+    return table->_upper == v12;
   }
 
   return 0;
@@ -261,14 +261,14 @@ LABEL_10:
   }
 }
 
-- (void)loadIndexesForSrcTable:(id)a3 srcUidResolver:(id)a4 dstTable:(id)a5 dstUidResolver:(id)a6
+- (void)loadIndexesForSrcTable:(id)table srcUidResolver:(id)resolver dstTable:(id)dstTable dstUidResolver:(id)uidResolver
 {
-  v21 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  objc_msgSend_loadIndexesForTable_uidResolver_(self->_srcRegion, v13, v21, v10, v14);
-  objc_msgSend_loadIndexesForTable_uidResolver_(self->_dstRegion, v15, v11, v12, v16);
+  tableCopy = table;
+  resolverCopy = resolver;
+  dstTableCopy = dstTable;
+  uidResolverCopy = uidResolver;
+  objc_msgSend_loadIndexesForTable_uidResolver_(self->_srcRegion, v13, tableCopy, resolverCopy, v14);
+  objc_msgSend_loadIndexesForTable_uidResolver_(self->_dstRegion, v15, dstTableCopy, uidResolverCopy, v16);
   objc_msgSend_loadIndexesFromRegions(self, v17, v18, v19, v20);
 }
 
@@ -281,12 +281,12 @@ LABEL_10:
   sub_2210BE918(&self->_dstUidForSrcUid.__table_.__bucket_list_.__ptr_);
 }
 
-- (TSKUIDStruct)dstUidForSrcUid:(const TSKUIDStruct *)a3
+- (TSKUIDStruct)dstUidForSrcUid:(const TSKUIDStruct *)uid
 {
-  v5 = sub_2210875C4(&self->_dstUidForSrcUid.__table_.__bucket_list_.__ptr_, a3);
+  v5 = sub_2210875C4(&self->_dstUidForSrcUid.__table_.__bucket_list_.__ptr_, uid);
   if (v5)
   {
-    v6 = sub_221230440(&self->_dstUidForSrcUid.__table_.__bucket_list_.__ptr_, a3);
+    v6 = sub_221230440(&self->_dstUidForSrcUid.__table_.__bucket_list_.__ptr_, uid);
     v5 = v6[4];
     v7 = v6[5];
   }
@@ -301,12 +301,12 @@ LABEL_10:
   return result;
 }
 
-- (TSKUIDStruct)srcUidForDstUid:(const TSKUIDStruct *)a3
+- (TSKUIDStruct)srcUidForDstUid:(const TSKUIDStruct *)uid
 {
-  v5 = sub_2210875C4(&self->_srcUidForDstUid.__table_.__bucket_list_.__ptr_, a3);
+  v5 = sub_2210875C4(&self->_srcUidForDstUid.__table_.__bucket_list_.__ptr_, uid);
   if (v5)
   {
-    v6 = sub_221230440(&self->_srcUidForDstUid.__table_.__bucket_list_.__ptr_, a3);
+    v6 = sub_221230440(&self->_srcUidForDstUid.__table_.__bucket_list_.__ptr_, uid);
     v5 = v6[4];
     v7 = v6[5];
   }
@@ -321,7 +321,7 @@ LABEL_10:
   return result;
 }
 
-- (id)initFromMessage:(const void *)a3
+- (id)initFromMessage:(const void *)message
 {
   v29.receiver = self;
   v29.super_class = TSCEFormulaRewrite_RegionMovedInfo;
@@ -329,9 +329,9 @@ LABEL_10:
   if (v4)
   {
     v5 = [TSCEFormulaRewrite_RegionInfo alloc];
-    if (*(a3 + 3))
+    if (*(message + 3))
     {
-      v9 = objc_msgSend_initFromMessage_(v5, v6, *(a3 + 3), v7, v8);
+      v9 = objc_msgSend_initFromMessage_(v5, v6, *(message + 3), v7, v8);
     }
 
     else
@@ -343,9 +343,9 @@ LABEL_10:
     v4->_srcRegion = v9;
 
     v11 = [TSCEFormulaRewrite_RegionInfo alloc];
-    if (*(a3 + 4))
+    if (*(message + 4))
     {
-      v15 = objc_msgSend_initFromMessage_(v11, v12, *(a3 + 4), v13, v14);
+      v15 = objc_msgSend_initFromMessage_(v11, v12, *(message + 4), v13, v14);
     }
 
     else
@@ -356,12 +356,12 @@ LABEL_10:
     dstRegion = v4->_dstRegion;
     v4->_dstRegion = v15;
 
-    v21 = *(a3 + 4);
+    v21 = *(message + 4);
     if ((v21 & 8) != 0)
     {
-      v4->_finalDstTableUID._lower = TSKUIDStruct::loadFromMessage(*(a3 + 6), v17);
+      v4->_finalDstTableUID._lower = TSKUIDStruct::loadFromMessage(*(message + 6), v17);
       v4->_finalDstTableUID._upper = v17;
-      v21 = *(a3 + 4);
+      v21 = *(message + 4);
       if ((v21 & 4) == 0)
       {
 LABEL_16:
@@ -383,9 +383,9 @@ LABEL_16:
     }
 
     v22 = [TSCEFormulaRewrite_RegionInfo alloc];
-    if (*(a3 + 5))
+    if (*(message + 5))
     {
-      v26 = objc_msgSend_initFromMessage_(v22, v23, *(a3 + 5), v24, v25);
+      v26 = objc_msgSend_initFromMessage_(v22, v23, *(message + 5), v24, v25);
     }
 
     else
@@ -396,61 +396,61 @@ LABEL_16:
     originalSrcRegion = v4->_originalSrcRegion;
     v4->_originalSrcRegion = v26;
 
-    v21 = *(a3 + 4);
+    v21 = *(message + 4);
     goto LABEL_16;
   }
 
   return v4;
 }
 
-- (void)saveToMessage:(void *)a3
+- (void)saveToMessage:(void *)message
 {
   srcRegion = self->_srcRegion;
-  *(a3 + 4) |= 1u;
-  v8 = *(a3 + 3);
+  *(message + 4) |= 1u;
+  v8 = *(message + 3);
   if (!v8)
   {
-    v9 = *(a3 + 1);
+    v9 = *(message + 1);
     if (v9)
     {
       v9 = *(v9 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v8 = google::protobuf::Arena::CreateMaybeMessage<TSCE::RegionInfoArchive>(v9);
-    *(a3 + 3) = v8;
+    *(message + 3) = v8;
   }
 
   objc_msgSend_saveToMessage_(srcRegion, a2, v8, v3, v4);
   dstRegion = self->_dstRegion;
-  *(a3 + 4) |= 2u;
-  v14 = *(a3 + 4);
+  *(message + 4) |= 2u;
+  v14 = *(message + 4);
   if (!v14)
   {
-    v15 = *(a3 + 1);
+    v15 = *(message + 1);
     if (v15)
     {
       v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v14 = google::protobuf::Arena::CreateMaybeMessage<TSCE::RegionInfoArchive>(v15);
-    *(a3 + 4) = v14;
+    *(message + 4) = v14;
   }
 
   objc_msgSend_saveToMessage_(dstRegion, v10, v14, v11, v12);
   if (self->_finalDstTableUID._lower || self->_finalDstTableUID._upper)
   {
-    *(a3 + 4) |= 8u;
-    v19 = *(a3 + 6);
+    *(message + 4) |= 8u;
+    v19 = *(message + 6);
     if (!v19)
     {
-      v20 = *(a3 + 1);
+      v20 = *(message + 1);
       if (v20)
       {
         v20 = *(v20 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v19 = MEMORY[0x223DA0360](v20);
-      *(a3 + 6) = v19;
+      *(message + 6) = v19;
     }
 
     TSKUIDStruct::saveToMessage(&self->_finalDstTableUID, v19);
@@ -459,18 +459,18 @@ LABEL_16:
   originalSrcRegion = self->_originalSrcRegion;
   if (originalSrcRegion)
   {
-    *(a3 + 4) |= 4u;
-    v22 = *(a3 + 5);
+    *(message + 4) |= 4u;
+    v22 = *(message + 5);
     if (!v22)
     {
-      v23 = *(a3 + 1);
+      v23 = *(message + 1);
       if (v23)
       {
         v23 = *(v23 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v22 = google::protobuf::Arena::CreateMaybeMessage<TSCE::RegionInfoArchive>(v23);
-      *(a3 + 5) = v22;
+      *(message + 5) = v22;
     }
 
     objc_msgSend_saveToMessage_(originalSrcRegion, v16, v22, v17, v18);
@@ -478,14 +478,14 @@ LABEL_16:
 
   if (self->_spanningRows)
   {
-    *(a3 + 4) |= 0x10u;
-    *(a3 + 56) = 1;
+    *(message + 4) |= 0x10u;
+    *(message + 56) = 1;
   }
 
   if (self->_spanningColumns)
   {
-    *(a3 + 4) |= 0x20u;
-    *(a3 + 57) = 1;
+    *(message + 4) |= 0x20u;
+    *(message + 57) = 1;
   }
 }
 

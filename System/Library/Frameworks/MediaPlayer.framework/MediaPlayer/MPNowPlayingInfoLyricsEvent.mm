@@ -1,5 +1,5 @@
 @interface MPNowPlayingInfoLyricsEvent
-- (MPNowPlayingInfoLyricsEvent)initWithMediaRemoteLyricsEvent:(void *)a3;
+- (MPNowPlayingInfoLyricsEvent)initWithMediaRemoteLyricsEvent:(void *)event;
 - (MPNowPlayingInfoLyricsItemToken)token;
 - (void)dealloc;
 @end
@@ -26,14 +26,14 @@
   [(MPNowPlayingInfoLyricsEvent *)&v4 dealloc];
 }
 
-- (MPNowPlayingInfoLyricsEvent)initWithMediaRemoteLyricsEvent:(void *)a3
+- (MPNowPlayingInfoLyricsEvent)initWithMediaRemoteLyricsEvent:(void *)event
 {
   v6.receiver = self;
   v6.super_class = MPNowPlayingInfoLyricsEvent;
   v4 = [(MPNowPlayingInfoLyricsEvent *)&v6 init];
   if (v4)
   {
-    v4->_mediaRemoteLyricsEvent = CFRetain(a3);
+    v4->_mediaRemoteLyricsEvent = CFRetain(event);
   }
 
   return v4;

@@ -1,25 +1,25 @@
 @interface HDClinicalAuthenticationInfo
-- (HDClinicalAuthenticationInfo)initWithCoder:(id)a3;
-- (HDClinicalAuthenticationInfo)initWithCredential:(id)a3 tokenKeyFingerprint:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (HDClinicalAuthenticationInfo)initWithCoder:(id)coder;
+- (HDClinicalAuthenticationInfo)initWithCredential:(id)credential tokenKeyFingerprint:(id)fingerprint;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDClinicalAuthenticationInfo
 
-- (HDClinicalAuthenticationInfo)initWithCredential:(id)a3 tokenKeyFingerprint:(id)a4
+- (HDClinicalAuthenticationInfo)initWithCredential:(id)credential tokenKeyFingerprint:(id)fingerprint
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  fingerprintCopy = fingerprint;
   v14.receiver = self;
   v14.super_class = HDClinicalAuthenticationInfo;
   v8 = [(HDClinicalAuthenticationInfo *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [credentialCopy copy];
     credential = v8->_credential;
     v8->_credential = v9;
 
-    v11 = [v7 copy];
+    v11 = [fingerprintCopy copy];
     tokenKeyFingerprint = v8->_tokenKeyFingerprint;
     v8->_tokenKeyFingerprint = v11;
   }
@@ -27,13 +27,13 @@
   return v8;
 }
 
-- (HDClinicalAuthenticationInfo)initWithCoder:(id)a3
+- (HDClinicalAuthenticationInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credential"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credential"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tokenKeyFingerprint"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tokenKeyFingerprint"];
     if (v6)
     {
       v14.receiver = self;
@@ -51,31 +51,31 @@
       }
 
       self = v7;
-      v12 = self;
+      selfCopy = self;
     }
 
     else
     {
-      [v4 hrs_failWithCocoaValueNotFoundError];
-      v12 = 0;
+      [coderCopy hrs_failWithCocoaValueNotFoundError];
+      selfCopy = 0;
     }
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v12 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   credential = self->_credential;
-  v5 = a3;
-  [v5 encodeObject:credential forKey:@"credential"];
-  [v5 encodeObject:self->_tokenKeyFingerprint forKey:@"tokenKeyFingerprint"];
+  coderCopy = coder;
+  [coderCopy encodeObject:credential forKey:@"credential"];
+  [coderCopy encodeObject:self->_tokenKeyFingerprint forKey:@"tokenKeyFingerprint"];
 }
 
 @end

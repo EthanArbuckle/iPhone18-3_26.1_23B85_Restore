@@ -1,21 +1,21 @@
 @interface SXDataStringSortDescriptor
-- (id)stringFromObject:(id)a3;
-- (int64_t)compareObject:(id)a3 toObject:(id)a4;
+- (id)stringFromObject:(id)object;
+- (int64_t)compareObject:(id)object toObject:(id)toObject;
 @end
 
 @implementation SXDataStringSortDescriptor
 
-- (int64_t)compareObject:(id)a3 toObject:(id)a4
+- (int64_t)compareObject:(id)object toObject:(id)toObject
 {
-  v6 = a4;
-  v7 = a3;
+  toObjectCopy = toObject;
+  objectCopy = object;
   v8 = [(SXDataStringSortDescriptor *)self key];
-  v9 = [v7 valueForKey:v8];
+  v9 = [objectCopy valueForKey:v8];
 
   v10 = [(SXDataStringSortDescriptor *)self stringFromObject:v9];
 
   v11 = [(SXDataStringSortDescriptor *)self key];
-  v12 = [v6 valueForKey:v11];
+  v12 = [toObjectCopy valueForKey:v11];
 
   v13 = [(SXDataStringSortDescriptor *)self stringFromObject:v12];
 
@@ -52,13 +52,13 @@
   return v16;
 }
 
-- (id)stringFromObject:(id)a3
+- (id)stringFromObject:(id)object
 {
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = objectCopy;
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -67,7 +67,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 valueForKey:@"text"];
+    v4 = [objectCopy valueForKey:@"text"];
     goto LABEL_5;
   }
 

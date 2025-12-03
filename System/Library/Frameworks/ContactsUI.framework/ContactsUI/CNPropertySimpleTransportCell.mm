@@ -1,9 +1,9 @@
 @interface CNPropertySimpleTransportCell
 + (id)standardStarView;
-+ (void)_updateStarImageForView:(id)a3;
++ (void)_updateStarImageForView:(id)view;
 - (BOOL)shouldPerformDefaultAction;
 - (BOOL)shouldShowStar;
-- (CNPropertySimpleTransportCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNPropertySimpleTransportCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CNTransportButton)standardTransportIcon;
 - (CNTransportButton)transportIcon1;
 - (CNTransportButton)transportIcon2;
@@ -11,61 +11,61 @@
 - (UIView)standardBadgeView;
 - (id)rightMostView;
 - (id)variableConstraints;
-- (void)_contentSizeCategoryDidChange:(id)a3;
+- (void)_contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prepareForReuse;
-- (void)setActionsColor:(id)a3;
-- (void)setCardGroupItem:(id)a3;
-- (void)setShouldShowBadge:(BOOL)a3;
-- (void)transportButtonClicked:(id)a3;
+- (void)setActionsColor:(id)color;
+- (void)setCardGroupItem:(id)item;
+- (void)setShouldShowBadge:(BOOL)badge;
+- (void)transportButtonClicked:(id)clicked;
 - (void)updateLabelNeedingHuggingContent;
 - (void)updateStarIcon;
 - (void)updateTransportButtons;
-- (void)updateWithPropertyItem:(id)a3;
+- (void)updateWithPropertyItem:(id)item;
 @end
 
 @implementation CNPropertySimpleTransportCell
 
-- (void)setActionsColor:(id)a3
+- (void)setActionsColor:(id)color
 {
-  v5 = a3;
-  if (self->_actionsColor != v5)
+  colorCopy = color;
+  if (self->_actionsColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_actionsColor, a3);
-    v6 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-    [v6 setGlyphColor:v8];
+    v8 = colorCopy;
+    objc_storeStrong(&self->_actionsColor, color);
+    transportIcon1 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+    [transportIcon1 setGlyphColor:v8];
 
-    v7 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-    [v7 setGlyphColor:v8];
+    transportIcon2 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+    [transportIcon2 setGlyphColor:v8];
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](colorCopy);
 }
 
-- (void)transportButtonClicked:(id)a3
+- (void)transportButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v7 = [(CNPropertyCell *)self delegate];
-  v5 = [(CNPropertyCell *)self propertyItem];
-  v6 = [v4 transportType];
+  clickedCopy = clicked;
+  delegate = [(CNPropertyCell *)self delegate];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  transportType = [clickedCopy transportType];
 
-  [v7 propertyCell:self performActionForItem:v5 withTransportType:v6];
+  [delegate propertyCell:self performActionForItem:propertyItem withTransportType:transportType];
 }
 
 - (BOOL)shouldPerformDefaultAction
 {
   v5.receiver = self;
   v5.super_class = CNPropertySimpleTransportCell;
-  v3 = [(CNContactCell *)&v5 shouldPerformDefaultAction];
-  if (v3)
+  shouldPerformDefaultAction = [(CNContactCell *)&v5 shouldPerformDefaultAction];
+  if (shouldPerformDefaultAction)
   {
-    LOBYTE(v3) = [(CNPropertySimpleTransportCell *)self allowsActions];
+    LOBYTE(shouldPerformDefaultAction) = [(CNPropertySimpleTransportCell *)self allowsActions];
   }
 
-  return v3;
+  return shouldPerformDefaultAction;
 }
 
 - (id)variableConstraints
@@ -73,113 +73,113 @@
   v3 = MEMORY[0x1E695DF70];
   v67.receiver = self;
   v67.super_class = CNPropertySimpleTransportCell;
-  v4 = [(CNLabeledCell *)&v67 variableConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  variableConstraints = [(CNLabeledCell *)&v67 variableConstraints];
+  v5 = [v3 arrayWithArray:variableConstraints];
 
-  v6 = [(UIImageView *)self->_starView superview];
+  superview = [(UIImageView *)self->_starView superview];
 
-  if (v6)
+  if (superview)
   {
     v7 = MEMORY[0x1E696ACD8];
     starView = self->_starView;
-    v9 = [(CNPropertySimpleCell *)self labelLabel];
-    v10 = [v7 constraintWithItem:starView attribute:5 relatedBy:0 toItem:v9 attribute:6 multiplier:1.0 constant:3.0];
+    labelLabel = [(CNPropertySimpleCell *)self labelLabel];
+    v10 = [v7 constraintWithItem:starView attribute:5 relatedBy:0 toItem:labelLabel attribute:6 multiplier:1.0 constant:3.0];
     [v5 addObject:v10];
 
     v11 = MEMORY[0x1E696ACD8];
     v12 = self->_starView;
-    v13 = [(CNPropertySimpleCell *)self labelLabel];
-    v14 = [v11 constraintWithItem:v12 attribute:11 relatedBy:0 toItem:v13 attribute:11 multiplier:1.0 constant:0.0];
+    labelLabel2 = [(CNPropertySimpleCell *)self labelLabel];
+    v14 = [v11 constraintWithItem:v12 attribute:11 relatedBy:0 toItem:labelLabel2 attribute:11 multiplier:1.0 constant:0.0];
     [v5 addObject:v14];
 
     v15 = MEMORY[0x1E696ACD8];
-    v16 = [(CNPropertySimpleCell *)self labelLabel];
-    v17 = [(CNPropertySimpleCell *)self valueLabel];
+    labelLabel3 = [(CNPropertySimpleCell *)self labelLabel];
+    valueLabel = [(CNPropertySimpleCell *)self valueLabel];
     [(UIImageView *)self->_starView bounds];
-    v19 = [v15 constraintWithItem:v16 attribute:6 relatedBy:-1 toItem:v17 attribute:6 multiplier:1.0 constant:-(v18 + 3.0)];
+    v19 = [v15 constraintWithItem:labelLabel3 attribute:6 relatedBy:-1 toItem:valueLabel attribute:6 multiplier:1.0 constant:-(v18 + 3.0)];
     [v5 addObject:v19];
   }
 
-  v20 = [(CNPropertySimpleTransportCell *)self badgeView];
-  v21 = [v20 superview];
+  badgeView = [(CNPropertySimpleTransportCell *)self badgeView];
+  superview2 = [badgeView superview];
 
-  if (v21)
+  if (superview2)
   {
-    v22 = [(UIImageView *)self->_starView superview];
-    if (v22)
+    superview3 = [(UIImageView *)self->_starView superview];
+    if (superview3)
     {
-      v23 = self->_starView;
+      labelLabel4 = self->_starView;
     }
 
     else
     {
-      v23 = [(CNPropertySimpleCell *)self labelLabel];
+      labelLabel4 = [(CNPropertySimpleCell *)self labelLabel];
     }
 
-    v24 = v23;
+    v24 = labelLabel4;
 
     v25 = MEMORY[0x1E696ACD8];
-    v26 = [(CNPropertySimpleTransportCell *)self badgeView];
-    v27 = [v25 constraintWithItem:v26 attribute:5 relatedBy:0 toItem:v24 attribute:6 multiplier:1.0 constant:3.0];
+    badgeView2 = [(CNPropertySimpleTransportCell *)self badgeView];
+    v27 = [v25 constraintWithItem:badgeView2 attribute:5 relatedBy:0 toItem:v24 attribute:6 multiplier:1.0 constant:3.0];
     [v5 addObject:v27];
 
     v28 = MEMORY[0x1E696ACD8];
-    v29 = [(CNPropertySimpleTransportCell *)self badgeView];
-    v30 = [(CNPropertySimpleCell *)self labelLabel];
-    v31 = [v28 constraintWithItem:v29 attribute:11 relatedBy:0 toItem:v30 attribute:11 multiplier:1.0 constant:0.0];
+    badgeView3 = [(CNPropertySimpleTransportCell *)self badgeView];
+    labelLabel5 = [(CNPropertySimpleCell *)self labelLabel];
+    v31 = [v28 constraintWithItem:badgeView3 attribute:11 relatedBy:0 toItem:labelLabel5 attribute:11 multiplier:1.0 constant:0.0];
     [v5 addObject:v31];
   }
 
-  v32 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-  v33 = [v32 superview];
+  transportIcon1 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+  superview4 = [transportIcon1 superview];
 
-  if (v33)
+  if (superview4)
   {
     v34 = MEMORY[0x1E696ACD8];
-    v35 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-    v36 = [(CNPropertySimpleTransportCell *)self contentView];
-    v37 = [v34 constraintWithItem:v35 attribute:10 relatedBy:0 toItem:v36 attribute:10 multiplier:1.0 constant:0.0];
+    transportIcon12 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+    contentView = [(CNPropertySimpleTransportCell *)self contentView];
+    v37 = [v34 constraintWithItem:transportIcon12 attribute:10 relatedBy:0 toItem:contentView attribute:10 multiplier:1.0 constant:0.0];
     [v5 addObject:v37];
 
-    v38 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-    v39 = [v38 trailingAnchor];
-    v40 = [(CNPropertySimpleTransportCell *)self contentView];
-    v41 = [v40 trailingAnchor];
-    v42 = [v39 constraintEqualToAnchor:v41 constant:-16.0];
+    transportIcon13 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+    trailingAnchor = [transportIcon13 trailingAnchor];
+    contentView2 = [(CNPropertySimpleTransportCell *)self contentView];
+    trailingAnchor2 = [contentView2 trailingAnchor];
+    v42 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     [v5 addObject:v42];
 
-    v43 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-    v44 = [v43 superview];
+    transportIcon2 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+    superview5 = [transportIcon2 superview];
 
     v45 = MEMORY[0x1E696ACD8];
-    if (v44)
+    if (superview5)
     {
-      v46 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-      v47 = [(CNPropertySimpleTransportCell *)self contentView];
-      v48 = [v45 constraintWithItem:v46 attribute:10 relatedBy:0 toItem:v47 attribute:10 multiplier:1.0 constant:0.0];
+      transportIcon22 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+      contentView3 = [(CNPropertySimpleTransportCell *)self contentView];
+      v48 = [v45 constraintWithItem:transportIcon22 attribute:10 relatedBy:0 toItem:contentView3 attribute:10 multiplier:1.0 constant:0.0];
       [v5 addObject:v48];
 
       v49 = MEMORY[0x1E696ACD8];
-      v50 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-      v51 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-      v52 = [v49 constraintWithItem:v50 attribute:6 relatedBy:0 toItem:v51 attribute:5 multiplier:1.0 constant:-16.0];
+      transportIcon23 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+      transportIcon14 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+      v52 = [v49 constraintWithItem:transportIcon23 attribute:6 relatedBy:0 toItem:transportIcon14 attribute:5 multiplier:1.0 constant:-16.0];
       [v5 addObject:v52];
 
-      v53 = [(CNPropertySimpleTransportCell *)self transportIcon3];
-      v54 = [v53 superview];
+      transportIcon3 = [(CNPropertySimpleTransportCell *)self transportIcon3];
+      superview6 = [transportIcon3 superview];
 
       v45 = MEMORY[0x1E696ACD8];
-      if (v54)
+      if (superview6)
       {
-        v55 = [(CNPropertySimpleTransportCell *)self transportIcon3];
-        v56 = [(CNPropertySimpleTransportCell *)self contentView];
-        v57 = [v45 constraintWithItem:v55 attribute:10 relatedBy:0 toItem:v56 attribute:10 multiplier:1.0 constant:0.0];
+        transportIcon32 = [(CNPropertySimpleTransportCell *)self transportIcon3];
+        contentView4 = [(CNPropertySimpleTransportCell *)self contentView];
+        v57 = [v45 constraintWithItem:transportIcon32 attribute:10 relatedBy:0 toItem:contentView4 attribute:10 multiplier:1.0 constant:0.0];
         [v5 addObject:v57];
 
         v58 = MEMORY[0x1E696ACD8];
-        v59 = [(CNPropertySimpleCell *)self valueView];
-        v60 = [(CNPropertySimpleTransportCell *)self transportIcon3];
-        v61 = [v58 constraintWithItem:v59 attribute:6 relatedBy:0 toItem:v60 attribute:5 multiplier:1.0 constant:-16.0];
+        valueView = [(CNPropertySimpleCell *)self valueView];
+        transportIcon33 = [(CNPropertySimpleTransportCell *)self transportIcon3];
+        v61 = [v58 constraintWithItem:valueView attribute:6 relatedBy:0 toItem:transportIcon33 attribute:5 multiplier:1.0 constant:-16.0];
         [v5 addObject:v61];
 
         v45 = MEMORY[0x1E696ACD8];
@@ -190,18 +190,18 @@
       {
         [(CNPropertySimpleCell *)self valueView];
       }
-      v62 = ;
-      v63 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+      valueView2 = ;
+      transportIcon24 = [(CNPropertySimpleTransportCell *)self transportIcon2];
     }
 
     else
     {
-      v62 = [(CNPropertySimpleCell *)self valueView];
-      v63 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+      valueView2 = [(CNPropertySimpleCell *)self valueView];
+      transportIcon24 = [(CNPropertySimpleTransportCell *)self transportIcon1];
     }
 
-    v64 = v63;
-    v65 = [v45 constraintWithItem:v62 attribute:6 relatedBy:0 toItem:v63 attribute:5 multiplier:1.0 constant:-16.0];
+    v64 = transportIcon24;
+    v65 = [v45 constraintWithItem:valueView2 attribute:6 relatedBy:0 toItem:transportIcon24 attribute:5 multiplier:1.0 constant:-16.0];
     [v5 addObject:v65];
   }
 
@@ -210,22 +210,22 @@
 
 - (id)rightMostView
 {
-  v3 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-  v4 = [v3 superview];
+  transportIcon1 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+  superview = [transportIcon1 superview];
 
-  if (v4)
+  if (superview)
   {
-    v5 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+    transportIcon12 = [(CNPropertySimpleTransportCell *)self transportIcon1];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = CNPropertySimpleTransportCell;
-    v5 = [(CNLabeledCell *)&v7 rightMostView];
+    transportIcon12 = [(CNLabeledCell *)&v7 rightMostView];
   }
 
-  return v5;
+  return transportIcon12;
 }
 
 - (void)updateStarIcon
@@ -234,8 +234,8 @@
   {
     if (self->_starView || ([objc_opt_class() standardStarView], v5 = objc_claimAutoreleasedReturnValue(), starView = self->_starView, self->_starView = v5, starView, self->_starView))
     {
-      v7 = [(CNPropertySimpleTransportCell *)self contentView];
-      [v7 addSubview:self->_starView];
+      contentView = [(CNPropertySimpleTransportCell *)self contentView];
+      [contentView addSubview:self->_starView];
     }
   }
 
@@ -246,9 +246,9 @@
       return;
     }
 
-    v4 = [(UIImageView *)self->_starView superview];
+    superview = [(UIImageView *)self->_starView superview];
 
-    if (!v4)
+    if (!superview)
     {
       return;
     }
@@ -274,14 +274,14 @@
     v7[4] = self;
     v7[5] = &v8;
     v3 = _Block_copy(v7);
-    v4 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-    v3[2](v3, v4);
+    transportIcon1 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+    v3[2](v3, transportIcon1);
 
-    v5 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-    v3[2](v3, v5);
+    transportIcon2 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+    v3[2](v3, transportIcon2);
 
-    v6 = [(CNPropertySimpleTransportCell *)self transportIcon3];
-    v3[2](v3, v6);
+    transportIcon3 = [(CNPropertySimpleTransportCell *)self transportIcon3];
+    v3[2](v3, transportIcon3);
 
     if (*(v9 + 24) == 1)
     {
@@ -322,12 +322,12 @@ LABEL_7:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isEqualToString:@"allowsIMessage"] & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"allowsPhone") & 1) != 0 || (objc_msgSend(v10, "isEqualToString:", @"allowsEmail") & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"allowsTTY"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"allowsIMessage"] & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"allowsPhone") & 1) != 0 || (objc_msgSend(pathCopy, "isEqualToString:", @"allowsEmail") & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"allowsTTY"))
   {
     [(CNPropertySimpleTransportCell *)self updateTransportButtons];
   }
@@ -336,27 +336,27 @@ LABEL_7:
   {
     v13.receiver = self;
     v13.super_class = CNPropertySimpleTransportCell;
-    [(CNPropertySimpleTransportCell *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CNPropertySimpleTransportCell *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)updateWithPropertyItem:(id)a3
+- (void)updateWithPropertyItem:(id)item
 {
   v4.receiver = self;
   v4.super_class = CNPropertySimpleTransportCell;
-  [(CNPropertyCell *)&v4 updateWithPropertyItem:a3];
+  [(CNPropertyCell *)&v4 updateWithPropertyItem:item];
   [(CNPropertySimpleTransportCell *)self updateTransportButtons];
   [(CNPropertySimpleTransportCell *)self updateStarIcon];
 }
 
-- (void)setCardGroupItem:(id)a3
+- (void)setCardGroupItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CNPropertyCell *)self propertyItem];
-  v6 = v5;
-  if (v5)
+  itemCopy = item;
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  v6 = propertyItem;
+  if (propertyItem)
   {
-    [v5 removeObserver:self forKeyPath:@"allowsIMessage"];
+    [propertyItem removeObserver:self forKeyPath:@"allowsIMessage"];
     [v6 removeObserver:self forKeyPath:@"allowsPhone"];
     [v6 removeObserver:self forKeyPath:@"allowsEmail"];
     [v6 removeObserver:self forKeyPath:@"allowsTTY"];
@@ -364,39 +364,39 @@ LABEL_7:
 
   v7.receiver = self;
   v7.super_class = CNPropertySimpleTransportCell;
-  [(CNPropertyCell *)&v7 setCardGroupItem:v4];
-  [v4 addObserver:self forKeyPath:@"allowsIMessage" options:0 context:0];
-  [v4 addObserver:self forKeyPath:@"allowsPhone" options:0 context:0];
-  [v4 addObserver:self forKeyPath:@"allowsEmail" options:0 context:0];
-  [v4 addObserver:self forKeyPath:@"allowsTTY" options:0 context:0];
+  [(CNPropertyCell *)&v7 setCardGroupItem:itemCopy];
+  [itemCopy addObserver:self forKeyPath:@"allowsIMessage" options:0 context:0];
+  [itemCopy addObserver:self forKeyPath:@"allowsPhone" options:0 context:0];
+  [itemCopy addObserver:self forKeyPath:@"allowsEmail" options:0 context:0];
+  [itemCopy addObserver:self forKeyPath:@"allowsTTY" options:0 context:0];
 
   [(CNPropertySimpleTransportCell *)self updateLabelNeedingHuggingContent];
 }
 
 - (void)updateLabelNeedingHuggingContent
 {
-  v3 = [(CNPropertySimpleTransportCell *)self shouldShowBadge]|| [(CNPropertySimpleTransportCell *)self shouldShowStar];
+  shouldShowStar = [(CNPropertySimpleTransportCell *)self shouldShowBadge]|| [(CNPropertySimpleTransportCell *)self shouldShowStar];
 
-  [(CNLabeledCell *)self setLabelViewNeedsHuggingContent:v3];
+  [(CNLabeledCell *)self setLabelViewNeedsHuggingContent:shouldShowStar];
 }
 
-- (void)setShouldShowBadge:(BOOL)a3
+- (void)setShouldShowBadge:(BOOL)badge
 {
-  if (self->_shouldShowBadge == a3)
+  if (self->_shouldShowBadge == badge)
   {
     return;
   }
 
-  v4 = a3;
-  self->_shouldShowBadge = a3;
-  v6 = [(CNPropertySimpleTransportCell *)self badgeView];
-  v7 = [v6 superview];
+  badgeCopy = badge;
+  self->_shouldShowBadge = badge;
+  badgeView = [(CNPropertySimpleTransportCell *)self badgeView];
+  superview = [badgeView superview];
 
-  v8 = [(CNPropertySimpleTransportCell *)self badgeView];
-  v9 = v8;
-  if (v7 && !v4)
+  badgeView2 = [(CNPropertySimpleTransportCell *)self badgeView];
+  v9 = badgeView2;
+  if (superview && !badgeCopy)
   {
-    [v8 removeFromSuperview];
+    [badgeView2 removeFromSuperview];
 
     [(CNPropertySimpleTransportCell *)self setBadgeView:0];
 LABEL_10:
@@ -404,23 +404,23 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v10 = [v8 superview];
+  superview2 = [badgeView2 superview];
 
-  if (!v10 && v4)
+  if (!superview2 && badgeCopy)
   {
-    v11 = [(CNPropertySimpleTransportCell *)self badgeView];
+    badgeView3 = [(CNPropertySimpleTransportCell *)self badgeView];
 
-    if (!v11)
+    if (!badgeView3)
     {
-      v12 = [(CNPropertySimpleTransportCell *)self standardBadgeView];
-      [(CNPropertySimpleTransportCell *)self setBadgeView:v12];
+      standardBadgeView = [(CNPropertySimpleTransportCell *)self standardBadgeView];
+      [(CNPropertySimpleTransportCell *)self setBadgeView:standardBadgeView];
 
-      v13 = [(CNPropertySimpleTransportCell *)self badgeView];
-      [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+      badgeView4 = [(CNPropertySimpleTransportCell *)self badgeView];
+      [badgeView4 setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
-    v14 = [(CNPropertySimpleTransportCell *)self badgeView];
-    [(CNPropertySimpleTransportCell *)self addSubview:v14];
+    badgeView5 = [(CNPropertySimpleTransportCell *)self badgeView];
+    [(CNPropertySimpleTransportCell *)self addSubview:badgeView5];
 
     goto LABEL_10;
   }
@@ -432,10 +432,10 @@ LABEL_11:
 
 - (BOOL)shouldShowStar
 {
-  v2 = [(CNPropertyCell *)self propertyItem];
-  v3 = [v2 isFavorite];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  isFavorite = [propertyItem isFavorite];
 
-  return v3;
+  return isFavorite;
 }
 
 - (UIView)standardBadgeView
@@ -452,9 +452,9 @@ LABEL_11:
   transportIcon3 = self->_transportIcon3;
   if (!transportIcon3)
   {
-    v4 = [(CNPropertySimpleTransportCell *)self standardTransportIcon];
+    standardTransportIcon = [(CNPropertySimpleTransportCell *)self standardTransportIcon];
     v5 = self->_transportIcon3;
-    self->_transportIcon3 = v4;
+    self->_transportIcon3 = standardTransportIcon;
 
     transportIcon3 = self->_transportIcon3;
   }
@@ -467,9 +467,9 @@ LABEL_11:
   transportIcon2 = self->_transportIcon2;
   if (!transportIcon2)
   {
-    v4 = [(CNPropertySimpleTransportCell *)self standardTransportIcon];
+    standardTransportIcon = [(CNPropertySimpleTransportCell *)self standardTransportIcon];
     v5 = self->_transportIcon2;
-    self->_transportIcon2 = v4;
+    self->_transportIcon2 = standardTransportIcon;
 
     transportIcon2 = self->_transportIcon2;
   }
@@ -482,9 +482,9 @@ LABEL_11:
   transportIcon1 = self->_transportIcon1;
   if (!transportIcon1)
   {
-    v4 = [(CNPropertySimpleTransportCell *)self standardTransportIcon];
+    standardTransportIcon = [(CNPropertySimpleTransportCell *)self standardTransportIcon];
     v5 = self->_transportIcon1;
-    self->_transportIcon1 = v4;
+    self->_transportIcon1 = standardTransportIcon;
 
     transportIcon1 = self->_transportIcon1;
   }
@@ -509,27 +509,27 @@ LABEL_11:
   [(CNPropertySimpleTransportCell *)&v11 layoutSubviews];
   if ([(CNPropertySimpleTransportCell *)self needsUpdateTouchAreas])
   {
-    v3 = [(CNPropertySimpleTransportCell *)self contentView];
-    [v3 bounds];
+    contentView = [(CNPropertySimpleTransportCell *)self contentView];
+    [contentView bounds];
     v5 = v4;
     v7 = v6;
 
-    v8 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-    [v8 _updateTouchInsetsToFillContainerWithSize:{v5, v7}];
+    transportIcon1 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+    [transportIcon1 _updateTouchInsetsToFillContainerWithSize:{v5, v7}];
 
-    v9 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-    [v9 _updateTouchInsetsToFillContainerWithSize:{v5, v7}];
+    transportIcon2 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+    [transportIcon2 _updateTouchInsetsToFillContainerWithSize:{v5, v7}];
 
-    v10 = [(CNPropertySimpleTransportCell *)self transportIcon3];
-    [v10 _updateTouchInsetsToFillContainerWithSize:{v5, v7}];
+    transportIcon3 = [(CNPropertySimpleTransportCell *)self transportIcon3];
+    [transportIcon3 _updateTouchInsetsToFillContainerWithSize:{v5, v7}];
 
     [(CNPropertySimpleTransportCell *)self setNeedsUpdateTouchAreas:0];
   }
 }
 
-- (void)_contentSizeCategoryDidChange:(id)a3
+- (void)_contentSizeCategoryDidChange:(id)change
 {
-  v7 = a3;
+  changeCopy = change;
   if (self->_starView)
   {
     [objc_opt_class() _updateStarImageForView:self->_starView];
@@ -537,14 +537,14 @@ LABEL_11:
 
   if (self->_shouldShowBadge)
   {
-    v4 = [(CNPropertySimpleTransportCell *)self badgeView];
-    [v4 removeFromSuperview];
+    badgeView = [(CNPropertySimpleTransportCell *)self badgeView];
+    [badgeView removeFromSuperview];
 
-    v5 = [(CNPropertySimpleTransportCell *)self standardBadgeView];
-    [(CNPropertySimpleTransportCell *)self setBadgeView:v5];
+    standardBadgeView = [(CNPropertySimpleTransportCell *)self standardBadgeView];
+    [(CNPropertySimpleTransportCell *)self setBadgeView:standardBadgeView];
 
-    v6 = [(CNPropertySimpleTransportCell *)self badgeView];
-    [(CNPropertySimpleTransportCell *)self addSubview:v6];
+    badgeView2 = [(CNPropertySimpleTransportCell *)self badgeView];
+    [(CNPropertySimpleTransportCell *)self addSubview:badgeView2];
   }
 
   [(CNPropertySimpleTransportCell *)self updateLabelNeedingHuggingContent];
@@ -560,22 +560,22 @@ LABEL_11:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CNPropertySimpleTransportCell;
   [(CNContactCell *)&v4 dealloc];
 }
 
-- (CNPropertySimpleTransportCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNPropertySimpleTransportCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = CNPropertySimpleTransportCell;
-  v4 = [(CNPropertyCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNPropertyCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v4->_shouldShowTransportButtons = 0;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:v4 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:v4 selector:sel__contentSizeCategoryDidChange_ name:*MEMORY[0x1E69DDC48] object:0];
 
   return v4;
 }
@@ -583,7 +583,7 @@ LABEL_11:
 + (id)standardStarView
 {
   v3 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:0];
-  [a1 _updateStarImageForView:v3];
+  [self _updateStarImageForView:v3];
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v4) = 1148846080;
   [v3 setContentHuggingPriority:0 forAxis:v4];
@@ -597,14 +597,14 @@ LABEL_11:
   return v3;
 }
 
-+ (void)_updateStarImageForView:(id)a3
++ (void)_updateStarImageForView:(id)view
 {
   v3 = MEMORY[0x1E69DCAB8];
-  v4 = a3;
+  viewCopy = view;
   v5 = +[CNUIColorRepository contactCardStarImageColor];
   v6 = [v3 cnui_symbolImageNamed:@"star.fill" scale:1 withColor:v5 useFixedSize:0];
 
-  [v4 setImage:v6];
+  [viewCopy setImage:v6];
 }
 
 @end

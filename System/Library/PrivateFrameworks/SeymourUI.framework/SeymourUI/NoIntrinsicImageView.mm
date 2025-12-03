@@ -1,9 +1,9 @@
 @interface NoIntrinsicImageView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI20NoIntrinsicImageView)initWithCoder:(id)a3;
-- (_TtC9SeymourUI20NoIntrinsicImageView)initWithFrame:(CGRect)a3;
-- (_TtC9SeymourUI20NoIntrinsicImageView)initWithImage:(id)a3;
-- (_TtC9SeymourUI20NoIntrinsicImageView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC9SeymourUI20NoIntrinsicImageView)initWithCoder:(id)coder;
+- (_TtC9SeymourUI20NoIntrinsicImageView)initWithFrame:(CGRect)frame;
+- (_TtC9SeymourUI20NoIntrinsicImageView)initWithImage:(id)image;
+- (_TtC9SeymourUI20NoIntrinsicImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 @end
 
 @implementation NoIntrinsicImageView
@@ -17,37 +17,37 @@
   return result;
 }
 
-- (_TtC9SeymourUI20NoIntrinsicImageView)initWithImage:(id)a3
+- (_TtC9SeymourUI20NoIntrinsicImageView)initWithImage:(id)image
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for NoIntrinsicImageView();
-  return [(NoIntrinsicImageView *)&v5 initWithImage:a3];
+  return [(NoIntrinsicImageView *)&v5 initWithImage:image];
 }
 
-- (_TtC9SeymourUI20NoIntrinsicImageView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC9SeymourUI20NoIntrinsicImageView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for NoIntrinsicImageView();
-  return [(NoIntrinsicImageView *)&v7 initWithImage:a3 highlightedImage:a4];
+  return [(NoIntrinsicImageView *)&v7 initWithImage:image highlightedImage:highlightedImage];
 }
 
-- (_TtC9SeymourUI20NoIntrinsicImageView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI20NoIntrinsicImageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for NoIntrinsicImageView();
   return [(NoIntrinsicImageView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9SeymourUI20NoIntrinsicImageView)initWithCoder:(id)a3
+- (_TtC9SeymourUI20NoIntrinsicImageView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for NoIntrinsicImageView();
-  v4 = a3;
-  v5 = [(NoIntrinsicImageView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(NoIntrinsicImageView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

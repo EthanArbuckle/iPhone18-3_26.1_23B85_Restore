@@ -1,7 +1,7 @@
 @interface LiveActivityEditorConfiguration
 - (NSString)liveActivityName;
 - (_TtC9DashBoard31LiveActivityEditorConfiguration)init;
-- (_TtC9DashBoard31LiveActivityEditorConfiguration)initWithLiveActivityName:(id)a3 clearLiveActivityAction:(id)a4 turnOffInCarPlayAction:(id)a5;
+- (_TtC9DashBoard31LiveActivityEditorConfiguration)initWithLiveActivityName:(id)name clearLiveActivityAction:(id)action turnOffInCarPlayAction:(id)playAction;
 @end
 
 @implementation LiveActivityEditorConfiguration
@@ -14,10 +14,10 @@
   return v2;
 }
 
-- (_TtC9DashBoard31LiveActivityEditorConfiguration)initWithLiveActivityName:(id)a3 clearLiveActivityAction:(id)a4 turnOffInCarPlayAction:(id)a5
+- (_TtC9DashBoard31LiveActivityEditorConfiguration)initWithLiveActivityName:(id)name clearLiveActivityAction:(id)action turnOffInCarPlayAction:(id)playAction
 {
-  v7 = _Block_copy(a4);
-  v8 = _Block_copy(a5);
+  v7 = _Block_copy(action);
+  v8 = _Block_copy(playAction);
   v9 = sub_248383960();
   v11 = v10;
   v12 = swift_allocObject();

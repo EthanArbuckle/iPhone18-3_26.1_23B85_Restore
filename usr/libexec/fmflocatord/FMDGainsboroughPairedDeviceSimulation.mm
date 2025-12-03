@@ -1,10 +1,10 @@
 @interface FMDGainsboroughPairedDeviceSimulation
 - (BOOL)isPairedDeviceSimulationActive;
-- (id)connectionStatusString:(id)a3;
-- (id)lastActiveDate:(id)a3;
+- (id)connectionStatusString:(id)string;
+- (id)lastActiveDate:(id)date;
 - (id)pairedDeviceInfo;
-- (id)udid:(id)a3;
-- (id)wristStatusString:(id)a3;
+- (id)udid:(id)udid;
+- (id)wristStatusString:(id)string;
 @end
 
 @implementation FMDGainsboroughPairedDeviceSimulation
@@ -12,9 +12,9 @@
 - (BOOL)isPairedDeviceSimulationActive
 {
   v2 = +[FMSystemInfo sharedInstance];
-  v3 = [v2 isInternalBuild];
+  isInternalBuild = [v2 isInternalBuild];
 
-  if (!v3)
+  if (!isInternalBuild)
   {
     return 0;
   }
@@ -22,17 +22,17 @@
   return [FMPreferencesUtil BOOLForKey:@"GainsboroughSimulationPhone" inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
 }
 
-- (id)udid:(id)a3
+- (id)udid:(id)udid
 {
-  v3 = [@"GainsboroughWatchUDID" stringByAppendingString:a3];
+  v3 = [@"GainsboroughWatchUDID" stringByAppendingString:udid];
   v4 = [FMPreferencesUtil stringForKey:v3 inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
 
   return v4;
 }
 
-- (id)connectionStatusString:(id)a3
+- (id)connectionStatusString:(id)string
 {
-  v3 = [@"GainsboroughConnectionStatus" stringByAppendingString:a3];
+  v3 = [@"GainsboroughConnectionStatus" stringByAppendingString:string];
   v4 = @"unknown";
   v5 = [FMPreferencesUtil integerForKey:v3 inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
   if (v5 <= 3)
@@ -45,9 +45,9 @@
   return v4;
 }
 
-- (id)wristStatusString:(id)a3
+- (id)wristStatusString:(id)string
 {
-  v3 = [@"GainsboroughWristStatus" stringByAppendingString:a3];
+  v3 = [@"GainsboroughWristStatus" stringByAppendingString:string];
   v4 = @"Unknown";
   v5 = [FMPreferencesUtil integerForKey:v3 inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
   if (v5)
@@ -73,9 +73,9 @@ LABEL_6:
   return v4;
 }
 
-- (id)lastActiveDate:(id)a3
+- (id)lastActiveDate:(id)date
 {
-  v3 = [@"GainsboroughLastActiveTime" stringByAppendingString:a3];
+  v3 = [@"GainsboroughLastActiveTime" stringByAppendingString:date];
   v4 = [FMPreferencesUtil integerForKey:v3 inDomain:@"com.apple.icloud.fmflocatord.notbackedup"];
   if ((v4 - 1) > 3)
   {

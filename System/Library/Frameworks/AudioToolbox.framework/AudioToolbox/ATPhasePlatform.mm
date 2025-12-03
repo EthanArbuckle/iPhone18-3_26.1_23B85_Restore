@@ -1,22 +1,22 @@
 @interface ATPhasePlatform
 - (ATPhasePlatform)init;
-- (BOOL)enableIO:(BOOL)a3 direction:(unsigned __int8)a4;
-- (BOOL)registerIOBlock:(id)a3;
-- (BOOL)registerOverloadNotification:(id)a3;
-- (BOOL)registerRouteChangeNotification:(id)a3;
+- (BOOL)enableIO:(BOOL)o direction:(unsigned __int8)direction;
+- (BOOL)registerIOBlock:(id)block;
+- (BOOL)registerOverloadNotification:(id)notification;
+- (BOOL)registerRouteChangeNotification:(id)notification;
 - (BOOL)start;
 - (BOOL)stop;
 - (OS_os_workgroup)workgroup;
 - (double)sampleRate;
-- (float)volumeScalarMappedToHWCurve:(float)a3;
+- (float)volumeScalarMappedToHWCurve:(float)curve;
 - (id)lazyInitRoomCongruenceInterface;
 - (id)lazyInitSessionInterface;
 - (unsigned)bufferFrameSize;
-- (unsigned)deviceLatencyInFramesForDirection:(unsigned __int8)a3;
+- (unsigned)deviceLatencyInFramesForDirection:(unsigned __int8)direction;
 - (void)dealloc;
 - (void)lazyInitServerManager;
-- (void)refreshInputMuteOnAllSessions:(float)a3;
-- (void)registerTapInterface:(id)a3;
+- (void)refreshInputMuteOnAllSessions:(float)sessions;
+- (void)registerTapInterface:(id)interface;
 @end
 
 @implementation ATPhasePlatform
@@ -24,11 +24,11 @@
 - (OS_os_workgroup)workgroup
 {
   v11[8] = *MEMORY[0x1E69E9840];
-  v2 = [(ATPhasePlatform *)self lazyInitServerManager];
-  v3 = *v2;
-  if (*v2)
+  lazyInitServerManager = [(ATPhasePlatform *)self lazyInitServerManager];
+  v3 = *lazyInitServerManager;
+  if (*lazyInitServerManager)
   {
-    v4 = v2;
+    v4 = lazyInitServerManager;
     v5 = *(*v3[3] + 32);
     os_unfair_recursive_lock_lock_with_options();
     v6 = ((*v3)[51])(v3, v4 + 3);
@@ -48,7 +48,7 @@
   return v8;
 }
 
-- (float)volumeScalarMappedToHWCurve:(float)a3
+- (float)volumeScalarMappedToHWCurve:(float)curve
 {
   v23 = *MEMORY[0x1E69E9840];
   ptr = self->_serverManager.__ptr_;
@@ -61,12 +61,12 @@
       os_unfair_recursive_lock_lock_with_options();
       v7 = ((*v5)[51])(v5, ptr + 24);
       v8.n128_u32[0] = 1.0;
-      if (a3 <= 1.0)
+      if (curve <= 1.0)
       {
-        v8.n128_f32[0] = a3;
+        v8.n128_f32[0] = curve;
       }
 
-      if (a3 < 0.0)
+      if (curve < 0.0)
       {
         v8.n128_f32[0] = 0.0;
       }
@@ -83,40 +83,40 @@
         v17 = 2048;
         v18 = ptr;
         v19 = 2048;
-        v20 = a3;
+        curveCopy = curve;
         v21 = 2048;
         v22 = v9;
         _os_log_impl(&dword_1B9A08000, v10, OS_LOG_TYPE_DEBUG, "%25s:%-5d servermgr@%p: volume %.3f, HW mapped volume %.3f", &v13, 0x30u);
       }
 
-      a3 = v9;
+      curve = v9;
     }
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return a3;
+  return curve;
 }
 
-- (void)refreshInputMuteOnAllSessions:(float)a3
+- (void)refreshInputMuteOnAllSessions:(float)sessions
 {
-  v5 = [(ATPhasePlatform *)self lazyInitSessionInterface];
+  lazyInitSessionInterface = [(ATPhasePlatform *)self lazyInitSessionInterface];
 
-  if (v5)
+  if (lazyInitSessionInterface)
   {
-    v7 = [(ATPhasePlatform *)self lazyInitSessionInterface];
-    *&v6 = a3;
-    [v7 refreshInputMuteOnAllSessions:v6];
+    lazyInitSessionInterface2 = [(ATPhasePlatform *)self lazyInitSessionInterface];
+    *&v6 = sessions;
+    [lazyInitSessionInterface2 refreshInputMuteOnAllSessions:v6];
   }
 }
 
-- (void)registerTapInterface:(id)a3
+- (void)registerTapInterface:(id)interface
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  interfaceCopy = interface;
   tapInterface = self->_tapInterface;
-  if (tapInterface != v5)
+  if (tapInterface != interfaceCopy)
   {
-    if (v5 && tapInterface)
+    if (interfaceCopy && tapInterface)
     {
       v7 = gPhaseManagerLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -126,14 +126,14 @@
         v11 = 1024;
         v12 = 781;
         v13 = 2048;
-        v14 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d platform@%p: error: cannot override tapsInterface", &v9, 0x1Cu);
       }
     }
 
     else
     {
-      objc_storeStrong(&self->_tapInterface, a3);
+      objc_storeStrong(&self->_tapInterface, interface);
     }
   }
 
@@ -151,7 +151,7 @@
     v8 = 1024;
     v9 = 764;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B9A08000, v3, OS_LOG_TYPE_DEFAULT, "%25s:%-5d platform@%p: stopping IO", &v6, 0x1Cu);
   }
 
@@ -163,9 +163,9 @@
 - (BOOL)start
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = [(ATPhasePlatform *)self lazyInitServerManager];
-  v4 = v3;
-  sessionInterface_high = HIDWORD(v3->_sessionInterface);
+  lazyInitServerManager = [(ATPhasePlatform *)self lazyInitServerManager];
+  v4 = lazyInitServerManager;
+  sessionInterface_high = HIDWORD(lazyInitServerManager->_sessionInterface);
   if ((sessionInterface_high & 3) == 0)
   {
     v8 = -66681;
@@ -177,7 +177,7 @@
       v31 = 1024;
       v32 = 427;
       v33 = 2048;
-      v34 = v4;
+      selfCopy2 = v4;
       v35 = 1024;
       v36 = -66681;
       _os_log_impl(&dword_1B9A08000, v9, OS_LOG_TYPE_ERROR, "%25s:%-5d servermgr@%p: both input and output are disabled, err = %d", buf, 0x22u);
@@ -186,7 +186,7 @@
     goto LABEL_14;
   }
 
-  if (!v3[16]._tapInterface)
+  if (!lazyInitServerManager[16]._tapInterface)
   {
     v8 = -66681;
     v9 = gPhaseManagerLog();
@@ -197,7 +197,7 @@
       v31 = 1024;
       v32 = 434;
       v33 = 2048;
-      v34 = v4;
+      selfCopy2 = v4;
       v35 = 1024;
       v36 = -66681;
       _os_log_impl(&dword_1B9A08000, v9, OS_LOG_TYPE_ERROR, "%25s:%-5d servermgr@%p: IOBlock is nil, err = %d", buf, 0x22u);
@@ -206,7 +206,7 @@
     goto LABEL_14;
   }
 
-  if (!v3->super.isa)
+  if (!lazyInitServerManager->super.isa)
   {
     v8 = -66681;
     v9 = gPhaseManagerLog();
@@ -217,7 +217,7 @@
       v31 = 1024;
       v32 = 440;
       v33 = 2048;
-      v34 = v4;
+      selfCopy2 = v4;
       v35 = 1024;
       v36 = -66681;
       _os_log_impl(&dword_1B9A08000, v9, OS_LOG_TYPE_ERROR, "%25s:%-5d servermgr@%p: error initializing, err = %d", buf, 0x22u);
@@ -228,9 +228,9 @@ LABEL_14:
     goto LABEL_26;
   }
 
-  if ((HIDWORD(v3->_sessionInterface) & 3) == 3)
+  if ((HIDWORD(lazyInitServerManager->_sessionInterface) & 3) == 3)
   {
-    Phase::ServerManager::maxBufferSizeFrames(v3);
+    Phase::ServerManager::maxBufferSizeFrames(lazyInitServerManager);
     std::__optional_destruct_base<CA::AudioBuffersBase,false>::reset[abi:ne200100](&v4[18]);
     isa_high = HIDWORD(v4[11].super.isa);
     v7 = ExtendedAudioBufferList_Create();
@@ -314,7 +314,7 @@ LABEL_26:
       v31 = 1024;
       v32 = 755;
       v33 = 2048;
-      v34 = self;
+      selfCopy2 = self;
       v35 = 1024;
       v36 = v8;
       v15 = "%25s:%-5d platform@%p: failed to start IO, err = %d";
@@ -333,7 +333,7 @@ LABEL_31:
     v31 = 1024;
     v32 = 751;
     v33 = 2048;
-    v34 = self;
+    selfCopy2 = self;
     v15 = "%25s:%-5d platform@%p: successfully started IO";
     v16 = v14;
     v17 = OS_LOG_TYPE_DEFAULT;
@@ -345,33 +345,33 @@ LABEL_31:
   return v8 == 0;
 }
 
-- (BOOL)registerRouteChangeNotification:(id)a3
+- (BOOL)registerRouteChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(ATPhasePlatform *)self lazyInitServerManager];
-  v6 = v4;
-  v7 = v5[84];
+  notificationCopy = notification;
+  lazyInitServerManager = [(ATPhasePlatform *)self lazyInitServerManager];
+  v6 = notificationCopy;
+  v7 = lazyInitServerManager[84];
   if (v7)
   {
     _Block_release(v7);
-    v8 = v5[84];
-    v5[84] = 0;
+    v8 = lazyInitServerManager[84];
+    lazyInitServerManager[84] = 0;
   }
 
   if (v6)
   {
     v9 = _Block_copy(v6);
-    v10 = v5[84];
-    v5[84] = v9;
+    v10 = lazyInitServerManager[84];
+    lazyInitServerManager[84] = v9;
   }
 
   return 1;
 }
 
-- (BOOL)registerOverloadNotification:(id)a3
+- (BOOL)registerOverloadNotification:(id)notification
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (notification)
   {
     v5 = gPhaseManagerLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -381,23 +381,23 @@ LABEL_31:
       v10 = 1024;
       v11 = 735;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B9A08000, v5, OS_LOG_TYPE_ERROR, "%25s:%-5d platform@%p: registering overload notification not supported yet!", &v8, 0x1Cu);
     }
   }
 
-  result = a3 == 0;
+  result = notification == 0;
   v7 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (BOOL)registerIOBlock:(id)a3
+- (BOOL)registerIOBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(ATPhasePlatform *)self lazyInitServerManager];
-  v6 = v4;
-  if ((*(v5 + 43) & 1) != 0 || *(v5 + 363) == 1)
+  blockCopy = block;
+  lazyInitServerManager = [(ATPhasePlatform *)self lazyInitServerManager];
+  v6 = blockCopy;
+  if ((*(lazyInitServerManager + 43) & 1) != 0 || *(lazyInitServerManager + 363) == 1)
   {
     v7 = gPhaseManagerLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -408,13 +408,13 @@ LABEL_31:
       v18 = 1024;
       v19 = 146;
       v20 = 2048;
-      v21 = v5;
+      v21 = lazyInitServerManager;
       v22 = 2048;
       v23 = v8;
       _os_log_impl(&dword_1B9A08000, v7, OS_LOG_TYPE_ERROR, "%25s:%-5d servermgr@%p: cannot set the block@%p when IO is running!", &v16, 0x26u);
     }
 
-    if (!v5[83])
+    if (!lazyInitServerManager[83])
     {
       _os_assert_log();
       _os_crash();
@@ -426,19 +426,19 @@ LABEL_31:
 
   else
   {
-    v10 = v5[83];
+    v10 = lazyInitServerManager[83];
     if (v10)
     {
       _Block_release(v10);
-      v11 = v5[83];
-      v5[83] = 0;
+      v11 = lazyInitServerManager[83];
+      lazyInitServerManager[83] = 0;
     }
 
     if (v6)
     {
       v12 = _Block_copy(v6);
-      v13 = v5[83];
-      v5[83] = v12;
+      v13 = lazyInitServerManager[83];
+      lazyInitServerManager[83] = v12;
     }
 
     v9 = 1;
@@ -448,28 +448,28 @@ LABEL_31:
   return v9;
 }
 
-- (unsigned)deviceLatencyInFramesForDirection:(unsigned __int8)a3
+- (unsigned)deviceLatencyInFramesForDirection:(unsigned __int8)direction
 {
-  v3 = a3;
-  v4 = [(ATPhasePlatform *)self lazyInitServerManager];
+  directionCopy = direction;
+  lazyInitServerManager = [(ATPhasePlatform *)self lazyInitServerManager];
 
-  return Phase::ServerManager::deviceLatencyInFrames(v4, v3);
+  return Phase::ServerManager::deviceLatencyInFrames(lazyInitServerManager, directionCopy);
 }
 
-- (BOOL)enableIO:(BOOL)a3 direction:(unsigned __int8)a4
+- (BOOL)enableIO:(BOOL)o direction:(unsigned __int8)direction
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [(ATPhasePlatform *)self lazyInitServerManager];
+  directionCopy = direction;
+  oCopy = o;
+  lazyInitServerManager = [(ATPhasePlatform *)self lazyInitServerManager];
 
-  return Phase::ServerManager::enableIO(v6, v5, v4);
+  return Phase::ServerManager::enableIO(lazyInitServerManager, oCopy, directionCopy);
 }
 
 - (unsigned)bufferFrameSize
 {
-  v2 = [(ATPhasePlatform *)self lazyInitServerManager];
+  lazyInitServerManager = [(ATPhasePlatform *)self lazyInitServerManager];
 
-  return Phase::ServerManager::maxBufferSizeFrames(v2);
+  return Phase::ServerManager::maxBufferSizeFrames(lazyInitServerManager);
 }
 
 - (double)sampleRate

@@ -1,11 +1,11 @@
 @interface CPApplicationLauncherSwift
 - (CPApplicationLauncherSwift)init;
 - (NSString)placementSceneIdentifier;
-- (void)authorizePiPForActivitySession:(id)a3 completion:(id)a4;
-- (void)launchAppForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5;
-- (void)revokeBackgroundAuthorizationForBundleID:(id)a3;
-- (void)revokeBackgroundAuthorizationForSession:(id)a3;
-- (void)setPlacementSceneIdentifier:(id)a3;
+- (void)authorizePiPForActivitySession:(id)session completion:(id)completion;
+- (void)launchAppForActivitySession:(id)session options:(int64_t)options completion:(id)completion;
+- (void)revokeBackgroundAuthorizationForBundleID:(id)d;
+- (void)revokeBackgroundAuthorizationForSession:(id)session;
+- (void)setPlacementSceneIdentifier:(id)identifier;
 @end
 
 @implementation CPApplicationLauncherSwift
@@ -30,9 +30,9 @@
   return v5;
 }
 
-- (void)setPlacementSceneIdentifier:(id)a3
+- (void)setPlacementSceneIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -44,13 +44,13 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   ApplicationLauncher.placementSceneIdentifier.setter(v4, v6);
 }
 
-- (void)launchAppForActivitySession:(id)a3 options:(int64_t)a4 completion:(id)a5
+- (void)launchAppForActivitySession:(id)session options:(int64_t)options completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   if (v8)
   {
     v9 = swift_allocObject();
@@ -64,13 +64,13 @@
   }
 
   swift_unknownObjectRetain();
-  v10 = self;
-  ApplicationLauncher.launchApplication(for:options:completion:)(a3, a4, v8, v9);
+  selfCopy = self;
+  ApplicationLauncher.launchApplication(for:options:completion:)(session, options, v8, v9);
   _sxRi_zRi0_zlyytIseghHr_SgWOe(v8);
   swift_unknownObjectRelease();
 }
 
-- (void)revokeBackgroundAuthorizationForBundleID:(id)a3
+- (void)revokeBackgroundAuthorizationForBundleID:(id)d
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v5 = *(*(v4 - 8) + 64);
@@ -86,35 +86,35 @@
   v12[4] = self;
   v12[5] = v8;
   v12[6] = v10;
-  v13 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v7, &closure #1 in ApplicationLauncher.revokeBackgroundAuthorization(for:)partial apply, v12);
 }
 
-- (void)revokeBackgroundAuthorizationForSession:(id)a3
+- (void)revokeBackgroundAuthorizationForSession:(id)session
 {
   swift_unknownObjectRetain();
-  v10 = self;
-  v5 = [a3 activity];
-  v6 = [v5 bundleIdentifier];
+  selfCopy = self;
+  activity = [session activity];
+  bundleIdentifier = [activity bundleIdentifier];
 
-  if (v6)
+  if (bundleIdentifier)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
 
-    (*((*MEMORY[0x1E69E7D40] & *v10) + 0xD0))(v7, v9);
+    (*((*MEMORY[0x1E69E7D40] & *selfCopy) + 0xD0))(v7, v9);
   }
 
   swift_unknownObjectRelease();
 }
 
-- (void)authorizePiPForActivitySession:(id)a3 completion:(id)a4
+- (void)authorizePiPForActivitySession:(id)session completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd, &_sScPSgMR);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(completion);
   v12 = swift_allocObject();
   *(v12 + 16) = v11;
   v13 = *(self + OBJC_IVAR___CPApplicationLauncherSwift_pegasusLaunchBehavior);
@@ -126,11 +126,11 @@
     v15[2] = 0;
     v15[3] = 0;
     v15[4] = v13;
-    v15[5] = a3;
+    v15[5] = session;
     v15[6] = partial apply for thunk for @escaping @callee_unowned @convention(block) (@unowned ObjCBool, @unowned NSError?) -> ();
     v15[7] = v12;
     swift_unknownObjectRetain_n();
-    v16 = self;
+    selfCopy = self;
     _Block_copy(v11);
 
     _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2g5(0, 0, v10, &closure #1 in ApplicationLauncher.authorizePiP(for:completion:)partial apply, v15);
@@ -142,13 +142,13 @@
   else
   {
     swift_unknownObjectRetain();
-    v19 = self;
+    selfCopy2 = self;
     _Block_copy(v11);
     (*(v11 + 2))(v11, 0, 0);
 
     _Block_release(v11);
     swift_unknownObjectRelease();
-    v17 = v19;
+    v17 = selfCopy2;
   }
 }
 

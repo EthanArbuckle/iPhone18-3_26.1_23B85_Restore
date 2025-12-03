@@ -1,27 +1,27 @@
 @interface _HKCompoundDimension
-+ (id)dimensionWithBaseDimensions:(id)a3;
-- (id)_initWithBaseDimensions:(id)a3;
++ (id)dimensionWithBaseDimensions:(id)dimensions;
+- (id)_initWithBaseDimensions:(id)dimensions;
 @end
 
 @implementation _HKCompoundDimension
 
-+ (id)dimensionWithBaseDimensions:(id)a3
++ (id)dimensionWithBaseDimensions:(id)dimensions
 {
-  v4 = a3;
-  v5 = [[a1 alloc] _initWithBaseDimensions:v4];
+  dimensionsCopy = dimensions;
+  v5 = [[self alloc] _initWithBaseDimensions:dimensionsCopy];
 
   return v5;
 }
 
-- (id)_initWithBaseDimensions:(id)a3
+- (id)_initWithBaseDimensions:(id)dimensions
 {
-  v4 = a3;
+  dimensionsCopy = dimensions;
   v9.receiver = self;
   v9.super_class = _HKCompoundDimension;
   v5 = [(_HKDimension *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dimensionsCopy copy];
     baseDimensions = v5->_baseDimensions;
     v5->_baseDimensions = v6;
   }

@@ -1,6 +1,6 @@
 @interface ASFAsn1ReceiptIAPToken
-+ (id)readFromBuffer:(uint64_t)a1;
-- (id)_initWithType:(void *)a3 typeVersion:(void *)a4 contentToken:;
++ (id)readFromBuffer:(uint64_t)buffer;
+- (id)_initWithType:(void *)type typeVersion:(void *)version contentToken:;
 - (id)description;
 - (uint64_t)integerValue;
 - (void)stringValue;
@@ -8,27 +8,27 @@
 
 @implementation ASFAsn1ReceiptIAPToken
 
-- (id)_initWithType:(void *)a3 typeVersion:(void *)a4 contentToken:
+- (id)_initWithType:(void *)type typeVersion:(void *)version contentToken:
 {
-  v8 = a4;
-  if (a1)
+  versionCopy = version;
+  if (self)
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = ASFAsn1ReceiptIAPToken;
     v9 = objc_msgSendSuper2(&v11, sel_init);
-    a1 = v9;
+    self = v9;
     if (v9)
     {
       v9[1] = a2;
-      v9[2] = a3;
-      objc_storeStrong(v9 + 3, a4);
+      v9[2] = type;
+      objc_storeStrong(v9 + 3, version);
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)readFromBuffer:(uint64_t)a1
++ (id)readFromBuffer:(uint64_t)buffer
 {
   v2 = a2;
   objc_opt_self();
@@ -112,46 +112,46 @@ LABEL_13:
 
 - (void)stringValue
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[3];
+    selfCopy = self;
+    v3 = self[3];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      a1 = [(ASFAsn1OSToken *)v2[3] stringValue];
+      self = [(ASFAsn1OSToken *)selfCopy[3] stringValue];
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (uint64_t)integerValue
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = *(a1 + 24);
+    v2 = *(self + 24);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = *(v1 + 24);
+      v4 = *(selfCopy + 24);
       if (v4)
       {
         v5 = objc_getProperty(v4, v3, 32, 1);
         if (v5 && !*(v5 + 8) && v5[2] == 2)
         {
-          v1 = v5[4];
+          selfCopy = v5[4];
 LABEL_11:
 
-          return v1;
+          return selfCopy;
         }
       }
 
@@ -160,14 +160,14 @@ LABEL_11:
         v5 = 0;
       }
 
-      v1 = 0xFFFFLL;
+      selfCopy = 0xFFFFLL;
       goto LABEL_11;
     }
 
     return 0xFFFFLL;
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

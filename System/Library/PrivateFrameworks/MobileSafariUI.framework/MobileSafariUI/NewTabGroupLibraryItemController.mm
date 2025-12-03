@@ -1,10 +1,10 @@
 @interface NewTabGroupLibraryItemController
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)accessibilityIdentifier;
-- (NewTabGroupLibraryItemController)initWithConfiguration:(id)a3;
+- (NewTabGroupLibraryItemController)initWithConfiguration:(id)configuration;
 - (int64_t)hash;
 - (void)didSelectItem;
-- (void)updateListContentConfiguration:(id)a3;
+- (void)updateListContentConfiguration:(id)configuration;
 @end
 
 @implementation NewTabGroupLibraryItemController
@@ -16,31 +16,31 @@
   return v2;
 }
 
-- (void)updateListContentConfiguration:(id)a3
+- (void)updateListContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  _sSo32NewTabGroupLibraryItemControllerC14MobileSafariUIE30updateListContentConfigurationyySo06UIListlM0CF_0(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  _sSo32NewTabGroupLibraryItemControllerC14MobileSafariUIE30updateListContentConfigurationyySo06UIListlM0CF_0(configurationCopy);
 }
 
 - (void)didSelectItem
 {
-  v4 = self;
-  v2 = [(LibraryItemController *)v4 configuration];
-  v3 = [(LibraryConfiguration *)v2 tabGroupProvider];
+  selfCopy = self;
+  configuration = [(LibraryItemController *)selfCopy configuration];
+  tabGroupProvider = [(LibraryConfiguration *)configuration tabGroupProvider];
 
-  if (v3)
+  if (tabGroupProvider)
   {
-    [(TabGroupProvider *)v3 createNewTabGroup];
+    [(TabGroupProvider *)tabGroupProvider createNewTabGroup];
     swift_unknownObjectRelease();
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_215A70B70();
     swift_unknownObjectRelease();
@@ -49,7 +49,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = _sSo32NewTabGroupLibraryItemControllerC14MobileSafariUIE7isEqualySbypSgF_0(v8);
@@ -60,8 +60,8 @@
 
 - (int64_t)hash
 {
-  v2 = self;
-  v3 = [(NewTabGroupLibraryItemController *)v2 accessibilityIdentifier];
+  selfCopy = self;
+  accessibilityIdentifier = [(NewTabGroupLibraryItemController *)selfCopy accessibilityIdentifier];
   v4 = sub_215A70540();
   v6 = v5;
 
@@ -70,11 +70,11 @@
   return v7;
 }
 
-- (NewTabGroupLibraryItemController)initWithConfiguration:(id)a3
+- (NewTabGroupLibraryItemController)initWithConfiguration:(id)configuration
 {
   v4.receiver = self;
   v4.super_class = NewTabGroupLibraryItemController;
-  return [(LibraryItemController *)&v4 initWithConfiguration:a3];
+  return [(LibraryItemController *)&v4 initWithConfiguration:configuration];
 }
 
 @end

@@ -1,33 +1,33 @@
 @interface SiriAnalyticsPrivateLearningStorageProvider
 - (SiriAnalyticsPrivateLearningStorageProvider)init;
-- (void)storeOrderedAnyEvent:(id)a3;
+- (void)storeOrderedAnyEvent:(id)event;
 @end
 
 @implementation SiriAnalyticsPrivateLearningStorageProvider
 
-- (void)storeOrderedAnyEvent:(id)a3
+- (void)storeOrderedAnyEvent:(id)event
 {
-  v15 = a3;
-  v4 = [v15 event];
-  v5 = -[SiriAnalyticsPrivateLearningStorageProvider isAnyEventTypeAllowed:](self, "isAnyEventTypeAllowed:", [v4 anyEventType]);
+  eventCopy = event;
+  event = [eventCopy event];
+  v5 = -[SiriAnalyticsPrivateLearningStorageProvider isAnyEventTypeAllowed:](self, "isAnyEventTypeAllowed:", [event anyEventType]);
 
-  v6 = v15;
+  v6 = eventCopy;
   if (v5)
   {
-    v7 = [v15 wrapAsAnyEvent];
-    if (v7)
+    wrapAsAnyEvent = [eventCopy wrapAsAnyEvent];
+    if (wrapAsAnyEvent)
     {
       source = self->_source;
       v9 = objc_alloc(MEMORY[0x1E698F308]);
-      v10 = [MEMORY[0x1E696AFB0] UUID];
-      v11 = [v10 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
       Current = CFAbsoluteTimeGetCurrent();
-      v13 = [v7 data];
-      v14 = [v9 initWithUniqueId:v11 absoluteTimestamp:v13 eventData:Current];
+      data = [wrapAsAnyEvent data];
+      v14 = [v9 initWithUniqueId:uUIDString absoluteTimestamp:data eventData:Current];
       [(BMSource *)source sendEvent:v14];
     }
 
-    v6 = v15;
+    v6 = eventCopy;
   }
 }
 
@@ -42,9 +42,9 @@
     stream = v2->_stream;
     v2->_stream = v3;
 
-    v5 = [(BMSiriPrivateLearningSELFEventStream *)v2->_stream source];
+    source = [(BMSiriPrivateLearningSELFEventStream *)v2->_stream source];
     source = v2->_source;
-    v2->_source = v5;
+    v2->_source = source;
   }
 
   return v2;

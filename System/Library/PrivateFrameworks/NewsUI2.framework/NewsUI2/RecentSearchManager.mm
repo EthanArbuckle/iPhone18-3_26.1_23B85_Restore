@@ -1,6 +1,6 @@
 @interface RecentSearchManager
 - (_TtC7NewsUI219RecentSearchManager)init;
-- (void)readingHistoryDidClear:(id)a3;
+- (void)readingHistoryDidClear:(id)clear;
 @end
 
 @implementation RecentSearchManager
@@ -12,7 +12,7 @@
   return result;
 }
 
-- (void)readingHistoryDidClear:(id)a3
+- (void)readingHistoryDidClear:(id)clear
 {
   sub_218760638();
   MEMORY[0x28223BE20](v4 - 8);
@@ -23,7 +23,7 @@
   v8[2] = 0;
   v8[3] = 0;
   v8[4] = self;
-  v9 = self;
+  selfCopy = self;
   sub_218AB4038(0, 0, v6, &unk_219C186B0, v8);
 }
 

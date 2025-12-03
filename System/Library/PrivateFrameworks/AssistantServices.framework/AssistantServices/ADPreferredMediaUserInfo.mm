@@ -1,12 +1,12 @@
 @interface ADPreferredMediaUserInfo
 - (ADPreferredMediaUserInfo)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation ADPreferredMediaUserInfo
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(ADPreferredMediaUserInfo);
   v5 = [(NSString *)self->_preferredMediaUserSharedUserID copy];

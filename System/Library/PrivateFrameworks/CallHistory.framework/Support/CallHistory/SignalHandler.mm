@@ -13,10 +13,10 @@
   {
     if (signal(15, 1) == -1)
     {
-      v3 = [v2 logHandle];
-      if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+      logHandle = [v2 logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
-        sub_100033F8C(v3);
+        sub_100033F8C(logHandle);
       }
     }
 

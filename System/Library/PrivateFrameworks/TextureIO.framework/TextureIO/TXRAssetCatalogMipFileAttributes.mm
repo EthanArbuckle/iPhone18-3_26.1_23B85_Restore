@@ -1,6 +1,6 @@
 @interface TXRAssetCatalogMipFileAttributes
 - (TXRAssetCatalogMipFileAttributes)init;
-- (void)setFace:(unint64_t)a3;
+- (void)setFace:(unint64_t)face;
 @end
 
 @implementation TXRAssetCatalogMipFileAttributes
@@ -19,9 +19,9 @@
   return v3;
 }
 
-- (void)setFace:(unint64_t)a3
+- (void)setFace:(unint64_t)face
 {
-  if (a3 <= 5)
+  if (face <= 5)
   {
     face = self->_face;
   }

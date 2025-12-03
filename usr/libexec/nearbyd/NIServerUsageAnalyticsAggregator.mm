@@ -7,11 +7,11 @@
 - (id)_loadUsageRecords;
 - (id)_usageRecordsFilePath;
 - (id)printableState;
-- (int)_dayNumberFromDate:(id)a3;
-- (void)_aggregationTaskHandler:(id)a3;
-- (void)_saveUsageRecords:(id)a3;
+- (int)_dayNumberFromDate:(id)date;
+- (void)_aggregationTaskHandler:(id)handler;
+- (void)_saveUsageRecords:(id)records;
 - (void)notifyDeviceUnlockedSinceBoot;
-- (void)recordUWBUsage:(int)a3 date:(id)a4;
+- (void)recordUWBUsage:(int)usage date:(id)date;
 @end
 
 @implementation NIServerUsageAnalyticsAggregator
@@ -68,18 +68,18 @@
   dispatch_async(queue, block);
 }
 
-- (void)recordUWBUsage:(int)a3 date:(id)a4
+- (void)recordUWBUsage:(int)usage date:(id)date
 {
-  v6 = a4;
+  dateCopy = date;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100298D2C;
   block[3] = &unk_1009A1A18;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = dateCopy;
+  usageCopy = usage;
+  v8 = dateCopy;
   dispatch_async(queue, block);
 }
 
@@ -109,21 +109,21 @@
 {
   v3 = objc_opt_new();
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(NIServerUsageAnalyticsAggregator *)self _loadUsageRecords];
-  v5 = [v4 allValues];
-  v6 = [v5 sortedArrayUsingComparator:&stru_1009A22D8];
+  _loadUsageRecords = [(NIServerUsageAnalyticsAggregator *)self _loadUsageRecords];
+  allValues = [_loadUsageRecords allValues];
+  v6 = [allValues sortedArrayUsingComparator:&stru_1009A22D8];
 
-  v7 = [(NIServerUsageAnalyticsAggregator *)self _shouldRecordUsage];
+  _shouldRecordUsage = [(NIServerUsageAnalyticsAggregator *)self _shouldRecordUsage];
   firstUnlock = self->_firstUnlock;
   v9 = +[NSDate now];
   v10 = [(NIServerUsageAnalyticsAggregator *)self _dayNumberFromDate:v9];
   [(NIServerUsageAnalyticsAggregator *)self _backgroundTaskInterval];
-  v12 = [NSString stringWithFormat:@"First unlock: %d. Day number: %d. Task interval: %0.1f. Should record: %d", firstUnlock, v10, v11, v7];
+  v12 = [NSString stringWithFormat:@"First unlock: %d. Day number: %d. Task interval: %0.1f. Should record: %d", firstUnlock, v10, v11, _shouldRecordUsage];
   [v3 addObject:v12];
 
   v13 = [v6 count];
   v14 = &stru_1009B1428;
-  if (!v7 && [v6 count])
+  if (!_shouldRecordUsage && [v6 count])
   {
     v14 = @" (deleting on next task)";
   }
@@ -142,11 +142,11 @@
   return v16;
 }
 
-- (void)_aggregationTaskHandler:(id)a3
+- (void)_aggregationTaskHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  [v4 setExpirationHandler:&stru_1009A2320];
+  [handlerCopy setExpirationHandler:&stru_1009A2320];
   v5 = +[NSDate now];
   v6 = [(NIServerUsageAnalyticsAggregator *)self _dayNumberFromDate:v5];
 
@@ -165,15 +165,15 @@
 
   if (![(NIServerUsageAnalyticsAggregator *)self _shouldRecordUsage])
   {
-    v11 = [(NIServerUsageAnalyticsAggregator *)self _loadUsageRecords];
-    v12 = [v11 count];
+    _loadUsageRecords = [(NIServerUsageAnalyticsAggregator *)self _loadUsageRecords];
+    v12 = [_loadUsageRecords count];
     v13 = qword_1009F2B70;
     if (v12)
     {
       v14 = qword_1009F2B70;
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = [v11 count];
+        v15 = [_loadUsageRecords count];
         *buf = 67109120;
         *v68 = v15;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#ca-aggr,Not recording usage - deleting %d old records", buf, 8u);
@@ -188,7 +188,7 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "#ca-aggr,Not recording usage - nothing to do", buf, 2u);
     }
 
-    [v4 setTaskCompleted];
+    [handlerCopy setTaskCompleted];
     goto LABEL_20;
   }
 
@@ -211,7 +211,7 @@
     v18 = +[NSUserDefaults standardUserDefaults];
     [v18 setInteger:v6 forKey:@"UsageAnalyticsAggregatorDayNumberOfLastCAPush"];
 
-    v11 = [(NIServerUsageAnalyticsAggregator *)self _loadUsageRecords];
+    _loadUsageRecords = [(NIServerUsageAnalyticsAggregator *)self _loadUsageRecords];
     v19 = [[_UWBUsageRecord alloc] initWithDayNumber:(v6 - 1)];
     v20 = [[_UWBUsageRecord alloc] initWithDayNumber:(v6 - 7)];
     v40 = [[_UWBUsageRecord alloc] initWithDayNumber:(v6 - 30), v20, v19];
@@ -230,7 +230,7 @@
     v25 = v21;
     v65 = v25;
     v41 = v25;
-    [v11 enumerateKeysAndObjectsUsingBlock:v61];
+    [_loadUsageRecords enumerateKeysAndObjectsUsingBlock:v61];
     [v25 sortUsingComparator:&stru_1009A2368];
     v26 = qword_1009F2B70;
     if (os_log_type_enabled(qword_1009F2B70, OS_LOG_TYPE_DEFAULT))
@@ -299,7 +299,7 @@
     v44[2] = sub_10029A16C;
     v44[3] = &unk_1009A23C8;
     v45 = v6;
-    v36 = [v11 keysOfEntriesPassingTest:v44];
+    v36 = [_loadUsageRecords keysOfEntriesPassingTest:v44];
     if ([v36 count])
     {
       v37 = qword_1009F2B70;
@@ -313,7 +313,7 @@
       v42[1] = 3221225472;
       v42[2] = sub_10029A1E0;
       v42[3] = &unk_1009A23F0;
-      v38 = v11;
+      v38 = _loadUsageRecords;
       v43 = v38;
       [v36 enumerateObjectsUsingBlock:v42];
       [(NIServerUsageAnalyticsAggregator *)self _saveUsageRecords:v38];
@@ -326,7 +326,7 @@
       _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "#ca-aggr,Aggregation task handler complete", buf, 2u);
     }
 
-    [v4 setTaskCompleted];
+    [handlerCopy setTaskCompleted];
 
 LABEL_20:
     goto LABEL_21;
@@ -340,7 +340,7 @@ LABEL_20:
   }
 
 LABEL_16:
-  [v4 setTaskCompleted];
+  [handlerCopy setTaskCompleted];
 LABEL_21:
 }
 
@@ -357,8 +357,8 @@ LABEL_21:
 
   if (self->_firstUnlock)
   {
-    v5 = [(NIServerUsageAnalyticsAggregator *)self _usageRecordsFilePath];
-    v6 = [NSData dataWithContentsOfFile:v5];
+    _usageRecordsFilePath = [(NIServerUsageAnalyticsAggregator *)self _usageRecordsFilePath];
+    v6 = [NSData dataWithContentsOfFile:_usageRecordsFilePath];
 
     if (v6)
     {
@@ -426,9 +426,9 @@ LABEL_21:
   return v3;
 }
 
-- (void)_saveUsageRecords:(id)a3
+- (void)_saveUsageRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   dispatch_assert_queue_V2(self->_queue);
   v5 = qword_1009F2B70;
   if (os_log_type_enabled(qword_1009F2B70, OS_LOG_TYPE_DEFAULT))
@@ -445,7 +445,7 @@ LABEL_21:
     v14[3] = &unk_1009A2440;
     v6 = objc_opt_new();
     v15 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v14];
+    [recordsCopy enumerateKeysAndObjectsUsingBlock:v14];
     v13 = 0;
     v7 = [NSJSONSerialization dataWithJSONObject:v6 options:1 error:&v13];
     v8 = v13;
@@ -460,9 +460,9 @@ LABEL_21:
 
     else
     {
-      v10 = [(NIServerUsageAnalyticsAggregator *)self _usageRecordsFilePath];
+      _usageRecordsFilePath = [(NIServerUsageAnalyticsAggregator *)self _usageRecordsFilePath];
       v12 = 0;
-      [v7 writeToFile:v10 options:0x40000000 error:&v12];
+      [v7 writeToFile:_usageRecordsFilePath options:0x40000000 error:&v12];
       v9 = v12;
 
       v11 = qword_1009F2B70;
@@ -545,14 +545,14 @@ LABEL_14:
   return result;
 }
 
-- (int)_dayNumberFromDate:(id)a3
+- (int)_dayNumberFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[NSUserDefaults standardUserDefaults];
   [v4 doubleForKey:@"UsageAnalyticsAggregatorDebugNumberOfSecondsInDay"];
   v6 = v5;
 
-  [v3 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   if (v6 == 0.0)
   {
     v8 = v7 / 86400.0;
@@ -579,9 +579,9 @@ LABEL_14:
   }
 
   v5 = +[OSASystemConfiguration sharedInstance];
-  v4 = [v5 optInApple];
+  optInApple = [v5 optInApple];
 
-  return v4;
+  return optInApple;
 }
 
 @end

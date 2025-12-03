@@ -1,14 +1,14 @@
 @interface HKStateOfMindSeries
-+ (id)standardStateOfMindSeriesWithStateOfMindDisplayType:(id)a3 unitController:(id)a4;
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4;
-- (CGPoint)renderPositionForLabelLocation:(id)a3 rect:(CGRect)a4 zoomScale:(double)a5 contentOffset:(CGPoint)a6 constantOffset:(double)a7 isHorizontal:(BOOL)a8 optionalOffset:(CGPoint)a9;
++ (id)standardStateOfMindSeriesWithStateOfMindDisplayType:(id)type unitController:(id)controller;
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate;
+- (CGPoint)renderPositionForLabelLocation:(id)location rect:(CGRect)rect zoomScale:(double)scale contentOffset:(CGPoint)offset constantOffset:(double)constantOffset isHorizontal:(BOOL)horizontal optionalOffset:(CGPoint)optionalOffset;
 - (HKStateOfMindSeries)init;
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5;
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9;
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect;
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate;
 @end
 
 @implementation HKStateOfMindSeries
@@ -25,48 +25,48 @@
   return v3;
 }
 
-- (id)coordinatesForBlock:(id)a3 blockPath:(HKGraphSeriesDataBlockPath *)a4 xAxis:(id)a5 yAxis:(id)a6
+- (id)coordinatesForBlock:(id)block blockPath:(HKGraphSeriesDataBlockPath *)path xAxis:(id)axis yAxis:(id)yAxis
 {
-  index = a4->index;
-  zoom = a4->zoom;
-  resolution = a4->resolution;
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  sub_1C3C93EC0(v12, index, zoom, resolution, v13, v14);
+  index = path->index;
+  zoom = path->zoom;
+  resolution = path->resolution;
+  blockCopy = block;
+  axisCopy = axis;
+  yAxisCopy = yAxis;
+  selfCopy = self;
+  sub_1C3C93EC0(blockCopy, index, zoom, resolution, axisCopy, yAxisCopy);
   v17 = v16;
 
   return v17;
 }
 
-- (void)drawSeriesWithBlockCoordinates:(id)a3 axisRect:(CGRect)a4 zoomLevelConfiguration:(id)a5 pointTransform:(CGAffineTransform *)a6 renderContext:(CGContext *)a7 secondaryRenderContext:(id)a8 seriesRenderingDelegate:(id)a9
+- (void)drawSeriesWithBlockCoordinates:(id)coordinates axisRect:(CGRect)rect zoomLevelConfiguration:(id)configuration pointTransform:(CGAffineTransform *)transform renderContext:(CGContext *)context secondaryRenderContext:(id)renderContext seriesRenderingDelegate:(id)delegate
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v18 = *&a6->c;
-  v24[0] = *&a6->a;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v18 = *&transform->c;
+  v24[0] = *&transform->a;
   v24[1] = v18;
-  v24[2] = *&a6->tx;
-  v19 = a3;
-  v20 = a5;
-  v21 = a7;
-  v22 = a8;
+  v24[2] = *&transform->tx;
+  coordinatesCopy = coordinates;
+  configurationCopy = configuration;
+  contextCopy = context;
+  renderContextCopy = renderContext;
   swift_unknownObjectRetain();
-  v23 = self;
-  sub_1C3C95764(v19, v20, v24, v21, a9, x, y, width, height);
+  selfCopy = self;
+  sub_1C3C95764(coordinatesCopy, configurationCopy, v24, contextCopy, delegate, x, y, width, height);
 
   swift_unknownObjectRelease();
 }
 
-- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)a3 blockCoordinate:(id)a4
+- (BOOL)blockCoordinateIsVisibleInsideOfChartRect:(CGRect)rect blockCoordinate:(id)coordinate
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   type metadata accessor for StateOfMindCoordinate();
   v8 = swift_dynamicCastClass();
   if (v8)
@@ -102,12 +102,12 @@
   return v8;
 }
 
-- (double)distanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)distanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   sub_1C3C95AAC(x, y);
   v10 = v9;
   swift_unknownObjectRelease();
@@ -115,9 +115,9 @@
   return v10;
 }
 
-- (double)xAxisDistanceFromPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)xAxisDistanceFromPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  x = a3.x;
+  x = point.x;
   type metadata accessor for StateOfMindCoordinate();
   v6 = swift_dynamicCastClass();
   if (v6)
@@ -131,18 +131,18 @@
   }
 }
 
-- (double)yAxisDifferenceToPoint:(CGPoint)a3 blockCoordinate:(id)a4 chartRect:(CGRect)a5
+- (double)yAxisDifferenceToPoint:(CGPoint)point blockCoordinate:(id)coordinate chartRect:(CGRect)rect
 {
-  y = a3.y;
+  y = point.y;
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1C3C95C08(y);
   swift_unknownObjectRelease();
 
   return v8;
 }
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
   sub_1C3C27CB4(0, &qword_1EC086E80);
 
@@ -151,25 +151,25 @@
   return v4;
 }
 
-- (CGPoint)renderPositionForLabelLocation:(id)a3 rect:(CGRect)a4 zoomScale:(double)a5 contentOffset:(CGPoint)a6 constantOffset:(double)a7 isHorizontal:(BOOL)a8 optionalOffset:(CGPoint)a9
+- (CGPoint)renderPositionForLabelLocation:(id)location rect:(CGRect)rect zoomScale:(double)scale contentOffset:(CGPoint)offset constantOffset:(double)constantOffset isHorizontal:(BOOL)horizontal optionalOffset:(CGPoint)optionalOffset
 {
-  v9 = a8;
-  y = a6.y;
-  x = a6.x;
-  height = a4.size.height;
-  width = a4.size.width;
-  v14 = a4.origin.y;
-  v15 = a4.origin.x;
+  horizontalCopy = horizontal;
+  y = offset.y;
+  x = offset.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  v14 = rect.origin.y;
+  v15 = rect.origin.x;
   swift_unknownObjectRetain();
-  v17 = self;
+  selfCopy = self;
   sub_1C3D20774();
   swift_unknownObjectRelease();
-  v18 = [(HKGraphSeries *)v17 yAxis];
-  if (v18)
+  yAxis = [(HKGraphSeries *)selfCopy yAxis];
+  if (yAxis)
   {
-    v21 = v18;
+    v21 = yAxis;
     __swift_project_boxed_opaque_existential_0(v28, v28[3]);
-    [(HKAxis *)v21 renderPositionForLabelLocation:sub_1C3D20A44() rect:v9 zoomScale:v15 contentOffset:v14 constantOffset:width isHorizontal:height optionalOffset:a5, x, y, a7, v29, v30];
+    [(HKAxis *)v21 renderPositionForLabelLocation:sub_1C3D20A44() rect:horizontalCopy zoomScale:v15 contentOffset:v14 constantOffset:width isHorizontal:height optionalOffset:scale, x, y, constantOffset, v29, v30];
     v23 = v22;
     v25 = v24;
 
@@ -189,11 +189,11 @@
   return result;
 }
 
-+ (id)standardStateOfMindSeriesWithStateOfMindDisplayType:(id)a3 unitController:(id)a4
++ (id)standardStateOfMindSeriesWithStateOfMindDisplayType:(id)type unitController:(id)controller
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _s8HealthUI17StateOfMindSeriesC08standardcdeF005statedE11DisplayType14unitControllerACSo09HKDisplayJ0C_So016HKUnitPreferenceL0CtFZ_0(v5, v6);
+  typeCopy = type;
+  controllerCopy = controller;
+  v7 = _s8HealthUI17StateOfMindSeriesC08standardcdeF005statedE11DisplayType14unitControllerACSo09HKDisplayJ0C_So016HKUnitPreferenceL0CtFZ_0(typeCopy, controllerCopy);
 
   return v7;
 }

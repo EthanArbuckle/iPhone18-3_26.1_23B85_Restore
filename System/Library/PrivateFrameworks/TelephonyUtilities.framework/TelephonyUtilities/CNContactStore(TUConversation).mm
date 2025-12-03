@@ -31,8 +31,8 @@
 
         v9 = *(*(&v59 + 1) + 8 * i);
         v10 = MEMORY[0x1E695CD58];
-        v11 = [v9 handle];
-        v12 = [v10 tu_contactHandlesForHandle:v11];
+        handle = [v9 handle];
+        v12 = [v10 tu_contactHandlesForHandle:handle];
 
         v57 = 0u;
         v58 = 0u;
@@ -81,8 +81,8 @@
     while (v45);
   }
 
-  v21 = [v7 allKeys];
-  v22 = [a1 tu_contactsByContactHandleForContactHandles:v21 keyDescriptors:v37 error:a5];
+  allKeys = [v7 allKeys];
+  v22 = [self tu_contactsByContactHandleForContactHandles:allKeys keyDescriptors:v37 error:a5];
 
   if (v22)
   {
@@ -91,8 +91,8 @@
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v39 = [v22 allKeys];
-    v44 = [v39 countByEnumeratingWithState:&v51 objects:v64 count:16];
+    allKeys2 = [v22 allKeys];
+    v44 = [allKeys2 countByEnumeratingWithState:&v51 objects:v64 count:16];
     if (v44)
     {
       v42 = *v52;
@@ -103,7 +103,7 @@
         {
           if (*v52 != v42)
           {
-            objc_enumerationMutation(v39);
+            objc_enumerationMutation(allKeys2);
           }
 
           v46 = v24;
@@ -146,7 +146,7 @@
         }
 
         while (v46 + 1 != v44);
-        v44 = [v39 countByEnumeratingWithState:&v51 objects:v64 count:16];
+        v44 = [allKeys2 countByEnumeratingWithState:&v51 objects:v64 count:16];
       }
 
       while (v44);
@@ -190,9 +190,9 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v22 + 1) + 8 * i) remoteMembers];
-        v17 = [v16 allObjects];
-        [v10 addObjectsFromArray:v17];
+        remoteMembers = [*(*(&v22 + 1) + 8 * i) remoteMembers];
+        allObjects = [remoteMembers allObjects];
+        [v10 addObjectsFromArray:allObjects];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -201,8 +201,8 @@
     while (v13);
   }
 
-  v18 = [v10 allObjects];
-  v19 = [a1 tu_contactsByConversationMemberForConversationMembers:v18 keyDescriptors:v9 error:a5];
+  allObjects2 = [v10 allObjects];
+  v19 = [self tu_contactsByConversationMemberForConversationMembers:allObjects2 keyDescriptors:v9 error:a5];
 
   v20 = *MEMORY[0x1E69E9840];
 

@@ -7,10 +7,10 @@
 - (id)_pas_revivedString
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 UUIDString];
+  uUIDString = [self UUIDString];
   objc_autoreleasePoolPop(v2);
 
-  return v3;
+  return uUIDString;
 }
 
 @end

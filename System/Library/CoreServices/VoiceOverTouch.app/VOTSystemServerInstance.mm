@@ -1,27 +1,27 @@
 @interface VOTSystemServerInstance
 + (id)serverInstance;
 - (id)_initServer;
-- (id)currentCursorFrame:(id)a3;
-- (id)currentRotorName:(id)a3;
-- (id)isBluetoothBrailleDisplayConnected:(id)a3;
-- (id)isBrailleInputUIShowing:(id)a3;
-- (id)isBrailleScreenInputInScreenAwayMode:(id)a3;
-- (id)isHandwritingInputUIShowing:(id)a3;
-- (id)isScreenCurtainEnabled:(id)a3;
-- (id)lastScreenChange:(id)a3;
-- (id)lastSoundsPlayed:(id)a3;
-- (id)lastSpokenContents:(id)a3;
-- (id)lastSpokenPhrases:(id)a3;
-- (id)tutorialRecognizedGesture:(id)a3;
-- (id)voiceOverCommandTriggered:(id)a3;
-- (id)voiceOverCurrentFocusedElement:(id)a3;
-- (id)voiceOverEventCommandTriggered:(id)a3;
-- (id)voiceOverGestureTriggered:(id)a3;
-- (void)_modifyRotorItems:(id)a3 shouldEnable:(BOOL)a4;
-- (void)_updateRotorsForElementWithErrorMessage:(id *)a3;
+- (id)currentCursorFrame:(id)frame;
+- (id)currentRotorName:(id)name;
+- (id)isBluetoothBrailleDisplayConnected:(id)connected;
+- (id)isBrailleInputUIShowing:(id)showing;
+- (id)isBrailleScreenInputInScreenAwayMode:(id)mode;
+- (id)isHandwritingInputUIShowing:(id)showing;
+- (id)isScreenCurtainEnabled:(id)enabled;
+- (id)lastScreenChange:(id)change;
+- (id)lastSoundsPlayed:(id)played;
+- (id)lastSpokenContents:(id)contents;
+- (id)lastSpokenPhrases:(id)phrases;
+- (id)tutorialRecognizedGesture:(id)gesture;
+- (id)voiceOverCommandTriggered:(id)triggered;
+- (id)voiceOverCurrentFocusedElement:(id)element;
+- (id)voiceOverEventCommandTriggered:(id)triggered;
+- (id)voiceOverGestureTriggered:(id)triggered;
+- (void)_modifyRotorItems:(id)items shouldEnable:(BOOL)enable;
+- (void)_updateRotorsForElementWithErrorMessage:(id *)message;
 - (void)dealloc;
-- (void)handleAutomationTestingCommand:(id)a3 completion:(id)a4;
-- (void)voiceOverTutorialEventCommandTriggered:(id)a3;
+- (void)handleAutomationTestingCommand:(id)command completion:(id)completion;
+- (void)voiceOverTutorialEventCommandTriggered:(id)triggered;
 @end
 
 @implementation VOTSystemServerInstance
@@ -90,19 +90,19 @@
   [(VOTSystemServerInstance *)&v3 dealloc];
 }
 
-- (id)lastScreenChange:(id)a3
+- (id)lastScreenChange:(id)change
 {
   v3 = [AXIPCMessage alloc];
   v8 = @"result";
-  v4 = [VOTSharedWorkspace lastScreenChangeTime];
-  v9 = v4;
+  lastScreenChangeTime = [VOTSharedWorkspace lastScreenChangeTime];
+  v9 = lastScreenChangeTime;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v6 = [v3 initWithKey:7004 payload:v5];
 
   return v6;
 }
 
-- (id)lastSoundsPlayed:(id)a3
+- (id)lastSoundsPlayed:(id)played
 {
   v3 = [AXIPCMessage alloc];
   v8 = @"result";
@@ -114,7 +114,7 @@
   return v6;
 }
 
-- (id)lastSpokenPhrases:(id)a3
+- (id)lastSpokenPhrases:(id)phrases
 {
   v21 = +[NSMutableArray array];
   v26 = 0u;
@@ -142,8 +142,8 @@
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v8 = [v6 outputActions];
-        v9 = [v8 countByEnumeratingWithState:&v22 objects:v32 count:16];
+        outputActions = [v6 outputActions];
+        v9 = [outputActions countByEnumeratingWithState:&v22 objects:v32 count:16];
         if (v9)
         {
           v10 = v9;
@@ -154,23 +154,23 @@
             {
               if (*v23 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(outputActions);
               }
 
               v13 = *(*(&v22 + 1) + 8 * j);
-              v14 = [v13 string];
-              if ([v14 length] && !objc_msgSend(v13, "component"))
+              string = [v13 string];
+              if ([string length] && !objc_msgSend(v13, "component"))
               {
                 if ([v7 length])
                 {
                   [v7 appendString:@" "];
                 }
 
-                [v7 appendString:v14];
+                [v7 appendString:string];
               }
             }
 
-            v10 = [v8 countByEnumeratingWithState:&v22 objects:v32 count:16];
+            v10 = [outputActions countByEnumeratingWithState:&v22 objects:v32 count:16];
           }
 
           while (v10);
@@ -194,7 +194,7 @@
   return v17;
 }
 
-- (id)lastSpokenContents:(id)a3
+- (id)lastSpokenContents:(id)contents
 {
   v3 = +[NSMutableArray array];
   v14 = 0u;
@@ -216,8 +216,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-        [v3 addObject:v9];
+        dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+        [v3 addObject:dictionaryRepresentation];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v14 objects:v20 count:16];
@@ -235,13 +235,13 @@
   return v12;
 }
 
-- (id)currentRotorName:(id)a3
+- (id)currentRotorName:(id)name
 {
-  v4 = [VOTSharedWorkspace currentElement];
-  v5 = [VOTSharedWorkspace elementManager];
-  v6 = [v5 elementRotor];
-  v7 = [v6 currentRotorElement];
-  v8 = [v4 isEqual:v7];
+  currentElement = [VOTSharedWorkspace currentElement];
+  elementManager = [VOTSharedWorkspace elementManager];
+  elementRotor = [elementManager elementRotor];
+  currentRotorElement = [elementRotor currentRotorElement];
+  v8 = [currentElement isEqual:currentRotorElement];
 
   if ((v8 & 1) == 0)
   {
@@ -250,21 +250,21 @@
 
   v9 = [AXIPCMessage alloc];
   v14 = @"result";
-  v10 = [VOTSharedWorkspace currentElementRotorString];
-  v15 = v10;
+  currentElementRotorString = [VOTSharedWorkspace currentElementRotorString];
+  v15 = currentElementRotorString;
   v11 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v12 = [v9 initWithKey:7001 payload:v11];
 
   return v12;
 }
 
-- (id)voiceOverCurrentFocusedElement:(id)a3
+- (id)voiceOverCurrentFocusedElement:(id)element
 {
-  v3 = [VOTSharedWorkspace currentElement];
-  v4 = [v3 uiElement];
-  v5 = [v4 axElement];
+  currentElement = [VOTSharedWorkspace currentElement];
+  uiElement = [currentElement uiElement];
+  axElement = [uiElement axElement];
 
-  if (v5)
+  if (axElement)
   {
     Data = _AXUIElementCreateData();
     v7 = [AXIPCMessage alloc];
@@ -282,19 +282,19 @@
   return v9;
 }
 
-- (id)voiceOverGestureTriggered:(id)a3
+- (id)voiceOverGestureTriggered:(id)triggered
 {
-  v3 = [a3 payload];
-  v4 = [v3 objectForKey:@"gesture"];
+  payload = [triggered payload];
+  v4 = [payload objectForKey:@"gesture"];
 
   v5 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v4 error:0];
   if (v5)
   {
     v6 = +[VOTWorkspace sharedWorkspace];
-    v7 = [v6 userCommandManager];
+    userCommandManager = [v6 userCommandManager];
 
     v8 = +[VOSCommandResolver resolverForCurrentHost];
-    v9 = [v7 eventForTouchGesture:v5 resolver:v8];
+    v9 = [userCommandManager eventForTouchGesture:v5 resolver:v8];
 
     [VOTSharedWorkspace dispatchCommand:v9];
   }
@@ -309,96 +309,96 @@
   return v13;
 }
 
-- (void)voiceOverTutorialEventCommandTriggered:(id)a3
+- (void)voiceOverTutorialEventCommandTriggered:(id)triggered
 {
-  v24 = a3;
-  if ([v24 isEqualToString:@"VO.Tutorial.Activate"])
+  triggeredCopy = triggered;
+  if ([triggeredCopy isEqualToString:@"VO.Tutorial.Activate"])
   {
     v3 = +[VOTWorkspace sharedWorkspace];
-    v4 = [v3 elementManager];
-    v5 = v4;
+    elementManager = [v3 elementManager];
+    elementManager3 = elementManager;
     v6 = 1;
 LABEL_5:
-    [v4 setTutorialListeningForGestureNotifications:v6];
+    [elementManager setTutorialListeningForGestureNotifications:v6];
     goto LABEL_6;
   }
 
-  if ([v24 isEqualToString:@"VO.Tutorial.Deactivate"])
+  if ([triggeredCopy isEqualToString:@"VO.Tutorial.Deactivate"])
   {
     v3 = +[VOTWorkspace sharedWorkspace];
-    v4 = [v3 elementManager];
-    v5 = v4;
+    elementManager = [v3 elementManager];
+    elementManager3 = elementManager;
     v6 = 0;
     goto LABEL_5;
   }
 
-  v7 = [v24 isEqualToString:@"VO.Tutorial.Reset"];
+  v7 = [triggeredCopy isEqualToString:@"VO.Tutorial.Reset"];
   v8 = +[VOTWorkspace sharedWorkspace];
-  v9 = [v8 elementManager];
-  v10 = v9;
+  elementManager2 = [v8 elementManager];
+  v10 = elementManager2;
   if (v7)
   {
-    [v9 setTutorialActiveRestrictionType:0];
+    [elementManager2 setTutorialActiveRestrictionType:0];
 
     v3 = +[VOTWorkspace sharedWorkspace];
-    v5 = [v3 elementManager];
-    [v5 setTutorialRestrictedCommands:0];
+    elementManager3 = [v3 elementManager];
+    [elementManager3 setTutorialRestrictedCommands:0];
     goto LABEL_6;
   }
 
-  v11 = [v9 tutorialRestrictedCommands];
+  tutorialRestrictedCommands = [elementManager2 tutorialRestrictedCommands];
 
-  if (!v11)
+  if (!tutorialRestrictedCommands)
   {
     v12 = +[VOTWorkspace sharedWorkspace];
-    v13 = [v12 elementManager];
+    elementManager4 = [v12 elementManager];
     v14 = objc_alloc_init(NSMutableArray);
-    [v13 setTutorialRestrictedCommands:v14];
+    [elementManager4 setTutorialRestrictedCommands:v14];
   }
 
-  if ([v24 containsString:@"VO.Tutorial.Deny"])
+  if ([triggeredCopy containsString:@"VO.Tutorial.Deny"])
   {
-    v3 = [v24 substringFromIndex:{objc_msgSend(@"VO.Tutorial.Deny", "length")}];
+    v3 = [triggeredCopy substringFromIndex:{objc_msgSend(@"VO.Tutorial.Deny", "length")}];
     v15 = +[VOTWorkspace sharedWorkspace];
-    v16 = [v15 elementManager];
-    v17 = [v16 tutorialRestrictedCommands];
-    [v17 addObject:v3];
+    elementManager5 = [v15 elementManager];
+    tutorialRestrictedCommands2 = [elementManager5 tutorialRestrictedCommands];
+    [tutorialRestrictedCommands2 addObject:v3];
 
-    v5 = +[VOTWorkspace sharedWorkspace];
-    v18 = [v5 elementManager];
-    v19 = v18;
+    elementManager3 = +[VOTWorkspace sharedWorkspace];
+    v5ElementManager = [elementManager3 elementManager];
+    v19 = v5ElementManager;
     v20 = 1;
 LABEL_17:
-    [v18 setTutorialActiveRestrictionType:v20];
+    [v5ElementManager setTutorialActiveRestrictionType:v20];
 
     goto LABEL_6;
   }
 
-  if ([v24 containsString:@"VO.Tutorial.Allow"])
+  if ([triggeredCopy containsString:@"VO.Tutorial.Allow"])
   {
-    v3 = [v24 substringFromIndex:{objc_msgSend(@"VO.Tutorial.Allow", "length")}];
+    v3 = [triggeredCopy substringFromIndex:{objc_msgSend(@"VO.Tutorial.Allow", "length")}];
     v21 = +[VOTWorkspace sharedWorkspace];
-    v22 = [v21 elementManager];
-    v23 = [v22 tutorialRestrictedCommands];
-    [v23 addObject:v3];
+    elementManager6 = [v21 elementManager];
+    tutorialRestrictedCommands3 = [elementManager6 tutorialRestrictedCommands];
+    [tutorialRestrictedCommands3 addObject:v3];
 
-    v5 = +[VOTWorkspace sharedWorkspace];
-    v18 = [v5 elementManager];
-    v19 = v18;
+    elementManager3 = +[VOTWorkspace sharedWorkspace];
+    v5ElementManager = [elementManager3 elementManager];
+    v19 = v5ElementManager;
     v20 = 2;
     goto LABEL_17;
   }
 
   v3 = +[VOTWorkspace sharedWorkspace];
-  v5 = [v3 elementManager];
-  [v5 setTutorialPage:v24];
+  elementManager3 = [v3 elementManager];
+  [elementManager3 setTutorialPage:triggeredCopy];
 LABEL_6:
 }
 
-- (id)voiceOverEventCommandTriggered:(id)a3
+- (id)voiceOverEventCommandTriggered:(id)triggered
 {
-  v4 = [a3 payload];
-  v5 = [v4 objectForKey:@"eventCommand"];
+  payload = [triggered payload];
+  v5 = [payload objectForKey:@"eventCommand"];
 
   if ([v5 containsString:@"VO.Tutorial"])
   {
@@ -426,19 +426,19 @@ LABEL_6:
   return v6;
 }
 
-- (id)voiceOverCommandTriggered:(id)a3
+- (id)voiceOverCommandTriggered:(id)triggered
 {
-  v3 = a3;
-  v4 = [v3 payload];
-  v5 = [v4 objectForKey:@"command"];
-  v6 = [v5 intValue];
+  triggeredCopy = triggered;
+  payload = [triggeredCopy payload];
+  v5 = [payload objectForKey:@"command"];
+  intValue = [v5 intValue];
 
   v7 = [objc_allocWithZone(AXIndexMap) init];
   LOBYTE(v50) = 1;
   _AXLogWithFacility();
   x = CGPointZero.x;
   y = CGPointZero.y;
-  switch(v6)
+  switch(intValue)
   {
     case 1:
     case 48:
@@ -506,9 +506,9 @@ LABEL_6:
       goto LABEL_71;
     case 22:
       v36 = [VOTKeyboardManager keyboardManager:v50];
-      v37 = [v36 isQuickNavOn];
+      isQuickNavOn = [v36 isQuickNavOn];
 
-      if (!v37)
+      if (!isQuickNavOn)
       {
         goto LABEL_67;
       }
@@ -516,9 +516,9 @@ LABEL_6:
       goto LABEL_57;
     case 23:
       v38 = [VOTKeyboardManager keyboardManager:v50];
-      v39 = [v38 isQuickNavOn];
+      isQuickNavOn2 = [v38 isQuickNavOn];
 
-      if (v39)
+      if (isQuickNavOn2)
       {
         goto LABEL_67;
       }
@@ -527,8 +527,8 @@ LABEL_57:
       v10 = &kVOTEventCommandToggleQuickNav;
       goto LABEL_71;
     case 24:
-      v28 = [v3 payload];
-      v22 = [v28 objectForKey:@"argument"];
+      payload2 = [triggeredCopy payload];
+      v22 = [payload2 objectForKey:@"argument"];
 
       if ([v22 count] != 2)
       {
@@ -544,8 +544,8 @@ LABEL_57:
       v27 = &kVOTEventCommandTouchDown;
       goto LABEL_64;
     case 25:
-      v21 = [v3 payload];
-      v22 = [v21 objectForKey:@"argument"];
+      payload3 = [triggeredCopy payload];
+      v22 = [payload3 objectForKey:@"argument"];
 
       if ([v22 count] != 2)
       {
@@ -561,8 +561,8 @@ LABEL_57:
       v27 = &kVOTEventCommandTouchMove;
       goto LABEL_64;
     case 26:
-      v40 = [v3 payload];
-      v22 = [v40 objectForKey:@"argument"];
+      payload4 = [triggeredCopy payload];
+      v22 = [payload4 objectForKey:@"argument"];
 
       if ([v22 count] == 1)
       {
@@ -600,8 +600,8 @@ LABEL_59:
       v10 = &kVOTEventCommandCopySpeechToClipboard;
       goto LABEL_71;
     case 30:
-      v35 = [v3 payload];
-      v16 = [v35 objectForKey:@"argument"];
+      payload5 = [triggeredCopy payload];
+      v16 = [payload5 objectForKey:@"argument"];
 
       if ([v16 length])
       {
@@ -616,14 +616,14 @@ LABEL_59:
 
       goto LABEL_75;
     case 31:
-      v32 = [v3 payload];
-      v33 = [v32 objectForKey:@"argument"];
-      v34 = [v33 BOOLValue];
+      payload6 = [triggeredCopy payload];
+      v33 = [payload6 objectForKey:@"argument"];
+      bOOLValue = [v33 BOOLValue];
 
-      [VOTSharedWorkspace setInPerformanceTestMode:v34];
+      [VOTSharedWorkspace setInPerformanceTestMode:bOOLValue];
       goto LABEL_35;
     case 32:
-      [VOTSharedWorkspace setInPerformanceTestMode:{1, v50, @"Got command %d", v6}];
+      [VOTSharedWorkspace setInPerformanceTestMode:{1, v50, @"Got command %d", intValue}];
       v19 = kVOTEventCommandAnnouncement;
       [v7 setObject:@"A reasonably long piece of text to announce!" forIndex:116];
       if (!v19)
@@ -633,14 +633,14 @@ LABEL_59:
 
       goto LABEL_72;
     case 33:
-      v15 = [v3 payload];
-      v16 = [v15 objectForKey:@"argument"];
+      payload7 = [triggeredCopy payload];
+      v16 = [payload7 objectForKey:@"argument"];
 
-      v17 = [VOTSharedWorkspace systemVisualizationState];
-      v18 = [v16 integerValue];
-      [VOTSharedWorkspace setSystemVisualizationState:v18];
+      systemVisualizationState = [VOTSharedWorkspace systemVisualizationState];
+      integerValue = [v16 integerValue];
+      [VOTSharedWorkspace setSystemVisualizationState:integerValue];
       v19 = 0;
-      if (v18 == 3 && v17 != 3)
+      if (integerValue == 3 && systemVisualizationState != 3)
       {
         v19 = kVOTEventCommandAnnouncement;
         v20 = sub_1000511CC(off_1001FDDD0, @"apple.care.starting.diagnostics", 0);
@@ -656,13 +656,13 @@ LABEL_75:
 
       goto LABEL_72;
     case 34:
-      v12 = [v3 payload];
-      v13 = [v12 objectForKey:@"argument"];
+      payload8 = [triggeredCopy payload];
+      v13 = [payload8 objectForKey:@"argument"];
 
       if (v13)
       {
-        v14 = [v13 BOOLValue];
-        [VOTSharedWorkspace setSystemVolumeControlsAvailablity:v14];
+        bOOLValue2 = [v13 BOOLValue];
+        [VOTSharedWorkspace setSystemVolumeControlsAvailablity:bOOLValue2];
       }
 
       goto LABEL_67;
@@ -756,30 +756,30 @@ LABEL_77:
   }
 }
 
-- (void)_updateRotorsForElementWithErrorMessage:(id *)a3
+- (void)_updateRotorsForElementWithErrorMessage:(id *)message
 {
   v4 = dispatch_time(0, 2000000000);
   v5 = dispatch_semaphore_create(0);
   v6 = +[VOTWorkspace sharedWorkspace];
-  v7 = [v6 elementManager];
+  elementManager = [v6 elementManager];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100110534;
   v10[3] = &unk_1001C76E8;
   v11 = v5;
   v8 = v5;
-  [v7 updateRotorForCurrentElement:1 completion:v10];
+  [elementManager updateRotorForCurrentElement:1 completion:v10];
 
   v9 = dispatch_semaphore_wait(v8, v4);
-  if (a3 && v9)
+  if (message && v9)
   {
-    *a3 = @"ElementManager timeout occurred";
+    *message = @"ElementManager timeout occurred";
   }
 }
 
-- (void)handleAutomationTestingCommand:(id)a3 completion:(id)a4
+- (void)handleAutomationTestingCommand:(id)command completion:(id)completion
 {
-  v6 = a3;
+  commandCopy = command;
   v49[0] = 0;
   v49[1] = v49;
   v49[2] = 0x2020000000;
@@ -789,30 +789,30 @@ LABEL_77:
   v46[2] = sub_1001108CC;
   v46[3] = &unk_1001CB620;
   v48 = v49;
-  v7 = a4;
-  v47 = v7;
+  completionCopy = completion;
+  v47 = completionCopy;
   v8 = objc_retainBlock(v46);
   v43[0] = _NSConcreteStackBlock;
   v43[1] = 3221225472;
   v43[2] = sub_10011096C;
   v43[3] = &unk_1001CB648;
   v45 = v49;
-  v9 = v7;
+  v9 = completionCopy;
   v44 = v9;
   v10 = objc_retainBlock(v43);
-  v11 = [v6 payload];
-  v12 = [v11 objectForKeyedSubscript:@"timeout"];
+  payload = [commandCopy payload];
+  v12 = [payload objectForKeyedSubscript:@"timeout"];
   [v12 doubleValue];
   v14 = v13;
 
-  v15 = [v6 payload];
-  v16 = [v15 objectForKeyedSubscript:@"command"];
-  v17 = [v16 integerValue];
+  payload2 = [commandCopy payload];
+  v16 = [payload2 objectForKeyedSubscript:@"command"];
+  integerValue = [v16 integerValue];
   v30 = v9;
   v18 = v8;
 
-  v19 = [v6 payload];
-  v20 = [v19 objectForKeyedSubscript:@"userInfo"];
+  payload3 = [commandCopy payload];
+  v20 = [payload3 objectForKeyedSubscript:@"userInfo"];
 
   v21 = dispatch_time(0, (v14 * 1000000000.0));
   v22 = dispatch_semaphore_create(0);
@@ -827,11 +827,11 @@ LABEL_77:
   block[1] = 3221225472;
   block[2] = sub_100110A70;
   block[3] = &unk_1001CB670;
-  v36 = v17;
+  v36 = integerValue;
   v24 = v20;
   v35 = &v37;
   v32 = v24;
-  v33 = self;
+  selfCopy = self;
   v25 = v22;
   v34 = v25;
   dispatch_async(v23, block);
@@ -874,14 +874,14 @@ LABEL_77:
   _Block_object_dispose(v49, 8);
 }
 
-- (id)isBrailleInputUIShowing:(id)a3
+- (id)isBrailleInputUIShowing:(id)showing
 {
   v3 = +[VOTWorkspace sharedWorkspace];
-  v4 = [v3 brailleInputActive];
+  brailleInputActive = [v3 brailleInputActive];
 
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [NSNumber numberWithBool:v4];
+  v6 = [NSNumber numberWithBool:brailleInputActive];
   v11 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [v5 initWithKey:7006 payload:v7];
@@ -889,14 +889,14 @@ LABEL_77:
   return v8;
 }
 
-- (id)isHandwritingInputUIShowing:(id)a3
+- (id)isHandwritingInputUIShowing:(id)showing
 {
   v3 = +[VOTWorkspace sharedWorkspace];
-  v4 = [v3 handwritingInputActive];
+  handwritingInputActive = [v3 handwritingInputActive];
 
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [NSNumber numberWithBool:v4];
+  v6 = [NSNumber numberWithBool:handwritingInputActive];
   v11 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [v5 initWithKey:7009 payload:v7];
@@ -904,14 +904,14 @@ LABEL_77:
   return v8;
 }
 
-- (id)isScreenCurtainEnabled:(id)a3
+- (id)isScreenCurtainEnabled:(id)enabled
 {
   v3 = +[VOTWorkspace sharedWorkspace];
-  v4 = [v3 screenCurtainEnabled];
+  screenCurtainEnabled = [v3 screenCurtainEnabled];
 
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [NSNumber numberWithBool:v4];
+  v6 = [NSNumber numberWithBool:screenCurtainEnabled];
   v11 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [v5 initWithKey:7012 payload:v7];
@@ -919,14 +919,14 @@ LABEL_77:
   return v8;
 }
 
-- (id)isBluetoothBrailleDisplayConnected:(id)a3
+- (id)isBluetoothBrailleDisplayConnected:(id)connected
 {
   v3 = +[VOTBrailleManager manager];
-  v4 = [v3 bluetoothBrailleDisplayConnected];
+  bluetoothBrailleDisplayConnected = [v3 bluetoothBrailleDisplayConnected];
 
   v5 = [AXIPCMessage alloc];
   v10 = @"result";
-  v6 = [NSNumber numberWithBool:v4];
+  v6 = [NSNumber numberWithBool:bluetoothBrailleDisplayConnected];
   v11 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v8 = [v5 initWithKey:7011 payload:v7];
@@ -934,13 +934,13 @@ LABEL_77:
   return v8;
 }
 
-- (id)tutorialRecognizedGesture:(id)a3
+- (id)tutorialRecognizedGesture:(id)gesture
 {
   v3 = +[VOTWorkspace sharedWorkspace];
-  v4 = [v3 elementManager];
-  v5 = [v4 tutorialRecognizedGesture];
+  elementManager = [v3 elementManager];
+  tutorialRecognizedGesture = [elementManager tutorialRecognizedGesture];
 
-  v10 = v5;
+  v10 = tutorialRecognizedGesture;
   v11 = @"result";
   v6 = [NSArray arrayWithObjects:&v10 count:1];
   v12 = v6;
@@ -951,7 +951,7 @@ LABEL_77:
   return v8;
 }
 
-- (id)isBrailleScreenInputInScreenAwayMode:(id)a3
+- (id)isBrailleScreenInputInScreenAwayMode:(id)mode
 {
   v3 = +[VOTWorkspace sharedWorkspace];
   v4 = [v3 brailleInputTypingMode] == 0;
@@ -966,7 +966,7 @@ LABEL_77:
   return v8;
 }
 
-- (id)currentCursorFrame:(id)a3
+- (id)currentCursorFrame:(id)frame
 {
   v3 = +[VOTDisplayManager displayManager];
   [v3 currentCursorFrame];
@@ -989,20 +989,20 @@ LABEL_77:
   return v15;
 }
 
-- (void)_modifyRotorItems:(id)a3 shouldEnable:(BOOL)a4
+- (void)_modifyRotorItems:(id)items shouldEnable:(BOOL)enable
 {
-  v4 = a4;
-  v5 = a3;
+  enableCopy = enable;
+  itemsCopy = items;
   v6 = +[NSMutableArray array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v7 = +[AXSettings sharedInstance];
-  v8 = [v7 voiceOverRotorItems];
+  voiceOverRotorItems = [v7 voiceOverRotorItems];
 
-  obj = v8;
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  obj = voiceOverRotorItems;
+  v9 = [voiceOverRotorItems countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1019,9 +1019,9 @@ LABEL_77:
         v13 = *(*(&v19 + 1) + 8 * i);
         v14 = [v13 mutableCopy];
         v15 = [v13 objectForKeyedSubscript:@"RotorItem"];
-        if (([v5 containsObject:v15] & 1) != 0 || objc_msgSend(v5, "containsObject:", @"all"))
+        if (([itemsCopy containsObject:v15] & 1) != 0 || objc_msgSend(itemsCopy, "containsObject:", @"all"))
         {
-          v16 = [NSNumber numberWithBool:v4];
+          v16 = [NSNumber numberWithBool:enableCopy];
           [v14 setObject:v16 forKeyedSubscript:@"Enabled"];
         }
 

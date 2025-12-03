@@ -1,20 +1,20 @@
 @interface SMMessagingUtilities
-+ (BOOL)handlesInConversation1:(id)a3 canonicallyEqualsHandlesInConversation2:(id)a4;
-+ (id)_canonicalHandleMapFromHandles:(id)a3;
-+ (id)_canonicalizeHandles:(id)a3;
-+ (id)conversationFromHandlesInConversation1:(id)a3 canonicallyIntersectedWithHandlesInConversation2:(id)a4;
-+ (id)conversationFromHandlesInConversation1:(id)a3 canonicallyMappedToHandlesInConversation2:(id)a4;
-+ (void)queryChatWithGroupID:(id)a3 queue:(id)a4 handler:(id)a5;
++ (BOOL)handlesInConversation1:(id)conversation1 canonicallyEqualsHandlesInConversation2:(id)conversation2;
++ (id)_canonicalHandleMapFromHandles:(id)handles;
++ (id)_canonicalizeHandles:(id)handles;
++ (id)conversationFromHandlesInConversation1:(id)conversation1 canonicallyIntersectedWithHandlesInConversation2:(id)conversation2;
++ (id)conversationFromHandlesInConversation1:(id)conversation1 canonicallyMappedToHandlesInConversation2:(id)conversation2;
++ (void)queryChatWithGroupID:(id)d queue:(id)queue handler:(id)handler;
 @end
 
 @implementation SMMessagingUtilities
 
-+ (void)queryChatWithGroupID:(id)a3 queue:(id)a4 handler:(id)a5
++ (void)queryChatWithGroupID:(id)d queue:(id)queue handler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  queueCopy = queue;
+  handlerCopy = handler;
   if (IMCoreLibraryCore() && getIMSPIQueryChatWithGroupIDSymbolLoc())
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -32,9 +32,9 @@
     v16[1] = 3221225472;
     v16[2] = __59__SMMessagingUtilities_queryChatWithGroupID_queue_handler___block_invoke;
     v16[3] = &unk_2788CC768;
-    v17 = v9;
-    v11 = v7;
-    v12 = v8;
+    v17 = handlerCopy;
+    v11 = dCopy;
+    v12 = queueCopy;
     v13 = v16;
     IMSPIQueryChatWithGroupIDSymbolLoc = getIMSPIQueryChatWithGroupIDSymbolLoc();
     if (!IMSPIQueryChatWithGroupIDSymbolLoc)
@@ -59,7 +59,7 @@
       }
     }
 
-    (*(v9 + 2))(v9, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -110,16 +110,16 @@ LABEL_9:
   (*(*(a1 + 32) + 16))(*(a1 + 32), v3, v5, v6);
 }
 
-+ (id)_canonicalizeHandles:(id)a3
++ (id)_canonicalizeHandles:(id)handles
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  handlesCopy = handles;
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(handlesCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = v4;
+  v6 = handlesCopy;
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v7)
   {
@@ -138,7 +138,7 @@ LABEL_9:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [a1 canonicalIDSIDsForAddress:{v13, v19}];
+        v14 = [self canonicalIDSIDsForAddress:{v13, v19}];
         [v5 addObject:v14];
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
@@ -171,16 +171,16 @@ LABEL_9:
   return v17;
 }
 
-+ (id)_canonicalHandleMapFromHandles:(id)a3
++ (id)_canonicalHandleMapFromHandles:(id)handles
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  handlesCopy = handles;
+  v5 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(handlesCopy, "count")}];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = handlesCopy;
   v6 = [obj countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v6)
   {
@@ -196,7 +196,7 @@ LABEL_9:
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [a1 canonicalIDSIDsForAddress:v10];
+        v11 = [self canonicalIDSIDsForAddress:v10];
         v12 = [v5 objectForKey:v11];
         v13 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v10, 0}];
         [v5 setObject:v13 forKey:v11];
@@ -240,19 +240,19 @@ LABEL_9:
   return v18;
 }
 
-+ (BOOL)handlesInConversation1:(id)a3 canonicallyEqualsHandlesInConversation2:(id)a4
++ (BOOL)handlesInConversation1:(id)conversation1 canonicallyEqualsHandlesInConversation2:(id)conversation2
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  conversation1Copy = conversation1;
+  conversation2Copy = conversation2;
   v8 = objc_alloc(MEMORY[0x277CBEB98]);
-  v9 = [v6 receiverPrimaryHandles];
-  v10 = [a1 _canonicalizeHandles:v9];
+  receiverPrimaryHandles = [conversation1Copy receiverPrimaryHandles];
+  v10 = [self _canonicalizeHandles:receiverPrimaryHandles];
   v11 = [v8 initWithArray:v10];
 
   v12 = objc_alloc(MEMORY[0x277CBEB98]);
-  v13 = [v7 receiverPrimaryHandles];
-  v14 = [a1 _canonicalizeHandles:v13];
+  receiverPrimaryHandles2 = [conversation2Copy receiverPrimaryHandles];
+  v14 = [self _canonicalizeHandles:receiverPrimaryHandles2];
   v15 = [v12 initWithArray:v14];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
@@ -262,16 +262,16 @@ LABEL_9:
     {
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      v21 = [v6 receiverPrimaryHandles];
-      v22 = [v7 receiverPrimaryHandles];
+      receiverPrimaryHandles3 = [conversation1Copy receiverPrimaryHandles];
+      receiverPrimaryHandles4 = [conversation2Copy receiverPrimaryHandles];
       v23 = 138413570;
       v24 = v20;
       v25 = 2080;
       v26 = "+[SMMessagingUtilities handlesInConversation1:canonicallyEqualsHandlesInConversation2:]";
       v27 = 2112;
-      v28 = v21;
+      v28 = receiverPrimaryHandles3;
       v29 = 2112;
-      v30 = v22;
+      v30 = receiverPrimaryHandles4;
       v31 = 2112;
       v32 = v11;
       v33 = 2112;
@@ -285,18 +285,18 @@ LABEL_9:
   return v17;
 }
 
-+ (id)conversationFromHandlesInConversation1:(id)a3 canonicallyMappedToHandlesInConversation2:(id)a4
++ (id)conversationFromHandlesInConversation1:(id)conversation1 canonicallyMappedToHandlesInConversation2:(id)conversation2
 {
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v45 = v6;
-  v8 = [v6 receiverPrimaryHandles];
-  v9 = [a1 _canonicalHandleMapFromHandles:v8];
+  conversation1Copy = conversation1;
+  conversation2Copy = conversation2;
+  v45 = conversation1Copy;
+  receiverPrimaryHandles = [conversation1Copy receiverPrimaryHandles];
+  v9 = [self _canonicalHandleMapFromHandles:receiverPrimaryHandles];
 
-  v44 = v7;
-  v10 = [v7 receiverPrimaryHandles];
-  v11 = [a1 _canonicalHandleMapFromHandles:v10];
+  v44 = conversation2Copy;
+  receiverPrimaryHandles2 = [conversation2Copy receiverPrimaryHandles];
+  v11 = [self _canonicalHandleMapFromHandles:receiverPrimaryHandles2];
 
   v46 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
   v47 = v9;
@@ -304,8 +304,8 @@ LABEL_9:
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v12 = [v9 allKeys];
-  v13 = [v12 countByEnumeratingWithState:&v48 objects:v66 count:16];
+  allKeys = [v9 allKeys];
+  v13 = [allKeys countByEnumeratingWithState:&v48 objects:v66 count:16];
   if (v13)
   {
     v14 = v13;
@@ -317,7 +317,7 @@ LABEL_9:
       {
         if (*v49 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v18 = *(*(&v48 + 1) + 8 * i);
@@ -369,7 +369,7 @@ LABEL_9:
         }
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v48 objects:v66 count:16];
+      v14 = [allKeys countByEnumeratingWithState:&v48 objects:v66 count:16];
     }
 
     while (v14);
@@ -377,9 +377,9 @@ LABEL_9:
 
   v30 = objc_alloc(MEMORY[0x277D4AA98]);
   v31 = [v46 copy];
-  v32 = [v45 identifier];
-  v33 = [v45 displayName];
-  v34 = [v30 initWithReceiverHandles:v31 identifier:v32 displayName:v33];
+  identifier = [v45 identifier];
+  displayName = [v45 displayName];
+  v34 = [v30 initWithReceiverHandles:v31 identifier:identifier displayName:displayName];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -388,25 +388,25 @@ LABEL_9:
     {
       v37 = objc_opt_class();
       v38 = NSStringFromClass(v37);
-      v39 = [v45 receiverPrimaryHandles];
-      v40 = [v47 allKeys];
-      v41 = [v44 receiverPrimaryHandles];
-      v42 = [v11 allKeys];
-      v43 = [v34 receiverPrimaryHandles];
+      receiverPrimaryHandles3 = [v45 receiverPrimaryHandles];
+      allKeys2 = [v47 allKeys];
+      receiverPrimaryHandles4 = [v44 receiverPrimaryHandles];
+      allKeys3 = [v11 allKeys];
+      receiverPrimaryHandles5 = [v34 receiverPrimaryHandles];
       *buf = 138413826;
       v53 = v38;
       v54 = 2080;
       v55 = "+[SMMessagingUtilities conversationFromHandlesInConversation1:canonicallyMappedToHandlesInConversation2:]";
       v56 = 2112;
-      v57 = v39;
+      v57 = receiverPrimaryHandles3;
       v58 = 2112;
-      v59 = v40;
+      v59 = allKeys2;
       v60 = 2112;
-      v61 = v41;
+      v61 = receiverPrimaryHandles4;
       v62 = 2112;
-      v63 = v42;
+      v63 = allKeys3;
       v64 = 2112;
-      v65 = v43;
+      v65 = receiverPrimaryHandles5;
       _os_log_debug_impl(&dword_2304B3000, v35, OS_LOG_TYPE_DEBUG, "%@, %s, original handles in conversation, %@, canonical handles in conversation, %@, handles in reference conversation, %@, canonical handles in reference conversation, %@, final handles in conversation, %@", buf, 0x48u);
     }
   }
@@ -414,27 +414,27 @@ LABEL_9:
   return v34;
 }
 
-+ (id)conversationFromHandlesInConversation1:(id)a3 canonicallyIntersectedWithHandlesInConversation2:(id)a4
++ (id)conversationFromHandlesInConversation1:(id)conversation1 canonicallyIntersectedWithHandlesInConversation2:(id)conversation2
 {
   v55 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v41 = v6;
-  v8 = [v6 receiverPrimaryHandles];
-  v9 = [a1 _canonicalHandleMapFromHandles:v8];
+  conversation1Copy = conversation1;
+  conversation2Copy = conversation2;
+  v41 = conversation1Copy;
+  receiverPrimaryHandles = [conversation1Copy receiverPrimaryHandles];
+  v9 = [self _canonicalHandleMapFromHandles:receiverPrimaryHandles];
 
-  v39 = v7;
-  v10 = [v7 receiverPrimaryHandles];
-  v11 = [a1 _canonicalHandleMapFromHandles:v10];
+  v39 = conversation2Copy;
+  receiverPrimaryHandles2 = [conversation2Copy receiverPrimaryHandles];
+  v11 = [self _canonicalHandleMapFromHandles:receiverPrimaryHandles2];
 
   v12 = MEMORY[0x277CBEB58];
-  v13 = [v9 allKeys];
-  v14 = [v12 setWithArray:v13];
+  allKeys = [v9 allKeys];
+  v14 = [v12 setWithArray:allKeys];
 
   v15 = MEMORY[0x277CBEB98];
   v38 = v11;
-  v16 = [v11 allKeys];
-  v17 = [v15 setWithArray:v16];
+  allKeys2 = [v11 allKeys];
+  v17 = [v15 setWithArray:allKeys2];
 
   v37 = v17;
   [v14 intersectSet:v17];
@@ -499,9 +499,9 @@ LABEL_9:
   }
 
   v32 = objc_alloc(MEMORY[0x277D4AA98]);
-  v33 = [v41 identifier];
-  v34 = [v41 displayName];
-  v35 = [v32 initWithReceiverHandles:v18 identifier:v33 displayName:v34];
+  identifier = [v41 identifier];
+  displayName = [v41 displayName];
+  v35 = [v32 initWithReceiverHandles:v18 identifier:identifier displayName:displayName];
 
   return v35;
 }

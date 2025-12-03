@@ -11,7 +11,7 @@
 {
   v10 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  v1 = [MEMORY[0x1E696ACB0] dataWithJSONObject:a1 options:0 error:&v7];
+  v1 = [MEMORY[0x1E696ACB0] dataWithJSONObject:self options:0 error:&v7];
   v2 = v7;
   if (v2)
   {
@@ -51,17 +51,17 @@
   v5[2] = __57__NSArray_PKEnhancedMerchantAdditions__deepCopyWithZone___block_invoke;
   v5[3] = &__block_descriptor_40_e8__16__0_8l;
   v5[4] = a3;
-  v3 = [a1 pk_arrayBySafelyApplyingBlock:v5];
+  v3 = [self pk_arrayBySafelyApplyingBlock:v5];
 
   return v3;
 }
 
 - (id)nonZeroUnsignedLongLongSetValue
 {
-  v1 = [a1 nonZeroUnsignedLongLongArrayValue];
-  if (v1)
+  nonZeroUnsignedLongLongArrayValue = [self nonZeroUnsignedLongLongArrayValue];
+  if (nonZeroUnsignedLongLongArrayValue)
   {
-    v2 = [MEMORY[0x1E695DFD8] setWithArray:v1];
+    v2 = [MEMORY[0x1E695DFD8] setWithArray:nonZeroUnsignedLongLongArrayValue];
   }
 
   else
@@ -74,10 +74,10 @@
 
 - (id)stringSetValue
 {
-  v1 = [a1 stringArrayValue];
-  if (v1)
+  stringArrayValue = [self stringArrayValue];
+  if (stringArrayValue)
   {
-    v2 = [MEMORY[0x1E695DFD8] setWithArray:v1];
+    v2 = [MEMORY[0x1E695DFD8] setWithArray:stringArrayValue];
   }
 
   else

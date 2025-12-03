@@ -1,22 +1,22 @@
 @interface BKEnrollPearlOperation
-- (BKEnrollPearlOperation)initWithDevice:(id)a3;
-- (BOOL)completeWithError:(id *)a3;
-- (BOOL)resumeWithError:(id *)a3;
-- (BOOL)startWithError:(id *)a3;
-- (BOOL)suspendWithError:(id *)a3;
-- (id)enrollResultInfoWithServerIdentity:(id)a3 details:(id)a4;
-- (id)optionsDictionaryWithError:(id *)a3;
-- (void)enrollFeedback:(id)a3 client:(unint64_t)a4;
-- (void)enrollUpdate:(id)a3 client:(unint64_t)a4;
+- (BKEnrollPearlOperation)initWithDevice:(id)device;
+- (BOOL)completeWithError:(id *)error;
+- (BOOL)resumeWithError:(id *)error;
+- (BOOL)startWithError:(id *)error;
+- (BOOL)suspendWithError:(id *)error;
+- (id)enrollResultInfoWithServerIdentity:(id)identity details:(id)details;
+- (id)optionsDictionaryWithError:(id *)error;
+- (void)enrollFeedback:(id)feedback client:(unint64_t)client;
+- (void)enrollUpdate:(id)update client:(unint64_t)client;
 @end
 
 @implementation BKEnrollPearlOperation
 
-- (BKEnrollPearlOperation)initWithDevice:(id)a3
+- (BKEnrollPearlOperation)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = BKEnrollPearlOperation;
-  result = [(BKEnrollOperation *)&v4 initWithDevice:a3];
+  result = [(BKEnrollOperation *)&v4 initWithDevice:device];
   if (result)
   {
     result->_enrollmentType = 1;
@@ -25,13 +25,13 @@
   return result;
 }
 
-- (id)enrollResultInfoWithServerIdentity:(id)a3 details:(id)a4
+- (id)enrollResultInfoWithServerIdentity:(id)identity details:(id)details
 {
-  v6 = a4;
-  v7 = a3;
+  detailsCopy = details;
+  identityCopy = identity;
   v8 = [BKEnrollPearlResultInfo alloc];
-  v9 = [(BKOperation *)self device];
-  v10 = [(BKEnrollPearlResultInfo *)v8 initWithServerIdentity:v7 details:v6 device:v9];
+  device = [(BKOperation *)self device];
+  v10 = [(BKEnrollPearlResultInfo *)v8 initWithServerIdentity:identityCopy details:detailsCopy device:device];
 
   return v10;
 }
@@ -58,14 +58,14 @@ void __47__BKEnrollPearlOperation_statusMessage_client___block_invoke_361(uint64
   [v2 enrollOperation:*(a1 + 32) failedWithReason:*(a1 + 40)];
 }
 
-- (void)enrollUpdate:(id)a3 client:(unint64_t)a4
+- (void)enrollUpdate:(id)update client:(unint64_t)client
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  updateCopy = update;
   kdebug_trace();
-  if (v5)
+  if (updateCopy)
   {
-    v6 = [v5 length];
+    v6 = [updateCopy length];
     if (v6 <= 0x31)
     {
       [BKEnrollPearlOperation enrollUpdate:client:];
@@ -74,24 +74,24 @@ void __47__BKEnrollPearlOperation_statusMessage_client___block_invoke_361(uint64
     else
     {
       v7 = v6;
-      v8 = [v5 bytes];
-      if (v8)
+      bytes = [updateCopy bytes];
+      if (bytes)
       {
-        v9 = v8;
-        if (v7 < *(v8 + 48) * *(v8 + 46) + 50)
+        v9 = bytes;
+        if (v7 < *(bytes + 48) * *(bytes + 46) + 50)
         {
           [BKEnrollPearlOperation enrollUpdate:client:];
         }
 
         else
         {
-          v10 = [(BKOperation *)self delegate];
+          delegate = [(BKOperation *)self delegate];
           v11 = objc_opt_respondsToSelector();
 
           if (v11)
           {
             v12 = [[BKFaceDetectStateInfo alloc] initFromFaceInfo:v9 + 4];
-            v13 = [(BKOperation *)self dispatchQueue];
+            dispatchQueue = [(BKOperation *)self dispatchQueue];
             block[0] = MEMORY[0x1E69E9820];
             block[1] = 3221225472;
             block[2] = __46__BKEnrollPearlOperation_enrollUpdate_client___block_invoke;
@@ -99,10 +99,10 @@ void __47__BKEnrollPearlOperation_statusMessage_client___block_invoke_361(uint64
             block[4] = self;
             v39 = v12;
             v14 = v12;
-            dispatch_async(v13, block);
+            dispatch_async(dispatchQueue, block);
           }
 
-          v15 = [(BKOperation *)self delegate];
+          delegate2 = [(BKOperation *)self delegate];
           v16 = objc_opt_respondsToSelector();
 
           if (v16)
@@ -121,28 +121,28 @@ void __47__BKEnrollPearlOperation_statusMessage_client___block_invoke_361(uint64
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
               v19 = v18;
-              v20 = [(BKOperation *)self delegate];
-              v21 = [(BKOperation *)self delegate];
+              delegate3 = [(BKOperation *)self delegate];
+              delegate4 = [(BKOperation *)self delegate];
               *buf = 134218498;
               v41 = v17;
               v42 = 2048;
-              v43 = v20;
+              v43 = delegate3;
               v44 = 2112;
-              v45 = v21;
+              v45 = delegate4;
               _os_log_impl(&dword_1C82AD000, v19, OS_LOG_TYPE_DEFAULT, "BKEnrollPearlOperation::enrollUpdate:client: percentCompleted:%ld => delegate:%p(%@)\n", buf, 0x20u);
             }
 
-            v22 = [(BKOperation *)self dispatchQueue];
+            dispatchQueue2 = [(BKOperation *)self dispatchQueue];
             v37[0] = MEMORY[0x1E69E9820];
             v37[1] = 3221225472;
             v37[2] = __46__BKEnrollPearlOperation_enrollUpdate_client___block_invoke_368;
             v37[3] = &unk_1E8303D98;
             v37[4] = self;
             v37[5] = v17;
-            dispatch_async(v22, v37);
+            dispatch_async(dispatchQueue2, v37);
           }
 
-          v23 = [(BKOperation *)self delegate];
+          delegate5 = [(BKOperation *)self delegate];
           v24 = objc_opt_respondsToSelector();
 
           if (v24)
@@ -161,22 +161,22 @@ void __47__BKEnrollPearlOperation_statusMessage_client___block_invoke_361(uint64
             if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
             {
               v27 = v26;
-              v28 = [v25 percentageCompleted];
-              v29 = [v25 enrolledPoses];
-              v30 = [(BKOperation *)self delegate];
-              v31 = [(BKOperation *)self delegate];
+              percentageCompleted = [v25 percentageCompleted];
+              enrolledPoses = [v25 enrolledPoses];
+              delegate6 = [(BKOperation *)self delegate];
+              delegate7 = [(BKOperation *)self delegate];
               *buf = 134218754;
-              v41 = v28;
+              v41 = percentageCompleted;
               v42 = 2112;
-              v43 = v29;
+              v43 = enrolledPoses;
               v44 = 2048;
-              v45 = v30;
+              v45 = delegate6;
               v46 = 2112;
-              v47 = v31;
+              v47 = delegate7;
               _os_log_impl(&dword_1C82AD000, v27, OS_LOG_TYPE_DEFAULT, "BKEnrollPearlOperation::enrollUpdate: progressedWithInfo:(percentageCompleted:%ld, enrolledPoses:%@) => delegate:%p(%@)\n", buf, 0x2Au);
             }
 
-            v32 = [(BKOperation *)self dispatchQueue];
+            dispatchQueue3 = [(BKOperation *)self dispatchQueue];
             v35[0] = MEMORY[0x1E69E9820];
             v35[1] = 3221225472;
             v35[2] = __46__BKEnrollPearlOperation_enrollUpdate_client___block_invoke_369;
@@ -184,7 +184,7 @@ void __47__BKEnrollPearlOperation_statusMessage_client___block_invoke_361(uint64
             v35[4] = self;
             v36 = v25;
             v33 = v25;
-            dispatch_async(v32, v35);
+            dispatch_async(dispatchQueue3, v35);
           }
         }
       }
@@ -224,30 +224,30 @@ void __46__BKEnrollPearlOperation_enrollUpdate_client___block_invoke_369(uint64_
   [v2 enrollOperation:*(a1 + 32) progressedWithInfo:*(a1 + 40)];
 }
 
-- (void)enrollFeedback:(id)a3 client:(unint64_t)a4
+- (void)enrollFeedback:(id)feedback client:(unint64_t)client
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  feedbackCopy = feedback;
+  v6 = feedbackCopy;
+  if (feedbackCopy)
   {
-    if ([v5 length] <= 0x29)
+    if ([feedbackCopy length] <= 0x29)
     {
       [BKEnrollPearlOperation enrollFeedback:client:];
     }
 
     else
     {
-      v7 = [v6 bytes];
-      if (v7)
+      bytes = [v6 bytes];
+      if (bytes)
       {
-        v8 = v7;
-        v9 = [(BKOperation *)self delegate];
+        v8 = bytes;
+        delegate = [(BKOperation *)self delegate];
         v10 = objc_opt_respondsToSelector();
 
         if (v10)
         {
           v11 = [[BKFaceDetectStateInfo alloc] initFromFaceInfo:v8];
-          v12 = [(BKOperation *)self dispatchQueue];
+          dispatchQueue = [(BKOperation *)self dispatchQueue];
           v14[0] = MEMORY[0x1E69E9820];
           v14[1] = 3221225472;
           v14[2] = __48__BKEnrollPearlOperation_enrollFeedback_client___block_invoke;
@@ -255,7 +255,7 @@ void __46__BKEnrollPearlOperation_enrollUpdate_client___block_invoke_369(uint64_
           v14[4] = self;
           v15 = v11;
           v13 = v11;
-          dispatch_async(v12, v14);
+          dispatch_async(dispatchQueue, v14);
         }
       }
 
@@ -278,7 +278,7 @@ void __48__BKEnrollPearlOperation_enrollFeedback_client___block_invoke(uint64_t 
   [v2 operation:*(a1 + 32) faceDetectStateChanged:*(a1 + 40)];
 }
 
-- (id)optionsDictionaryWithError:(id *)a3
+- (id)optionsDictionaryWithError:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -330,8 +330,8 @@ void __48__BKEnrollPearlOperation_enrollFeedback_client___block_invoke(uint64_t 
       augmentedIdentity = self->_augmentedIdentity;
       if (augmentedIdentity)
       {
-        v10 = [(BKIdentity *)augmentedIdentity serverIdentity];
-        [v7 setObject:v10 forKey:@"BKOptionEnrollAugmentedIdentity"];
+        serverIdentity = [(BKIdentity *)augmentedIdentity serverIdentity];
+        [v7 setObject:serverIdentity forKey:@"BKOptionEnrollAugmentedIdentity"];
       }
 
       if (self->_enrollmentType != 3)
@@ -379,7 +379,7 @@ LABEL_10:
 
     _os_log_impl(&dword_1C82AD000, v13, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", buf, 0x30u);
 LABEL_17:
-    setError(1, a3);
+    setError(1, error);
     v12 = 0;
     goto LABEL_18;
   }
@@ -394,7 +394,7 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)startWithError:(id *)a3
+- (BOOL)startWithError:(id *)error
 {
   *&v20[5] = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -420,7 +420,7 @@ LABEL_18:
 
   v18.receiver = self;
   v18.super_class = BKEnrollPearlOperation;
-  v9 = [(BKOperation *)&v18 startWithError:a3];
+  v9 = [(BKOperation *)&v18 startWithError:error];
   v10 = v9;
   if (__osLogTrace)
   {
@@ -436,9 +436,9 @@ LABEL_18:
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v12 = *a3;
+        v12 = *error;
       }
 
       else
@@ -459,9 +459,9 @@ LABEL_20:
 
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
-    if (a3)
+    if (error)
     {
-      v13 = *a3;
+      v13 = *error;
     }
 
     else
@@ -483,7 +483,7 @@ LABEL_20:
   return v10;
 }
 
-- (BOOL)completeWithError:(id *)a3
+- (BOOL)completeWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -507,9 +507,9 @@ LABEL_20:
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKEnrollPearlOperation:complete (_cid:%lu)\n", &v20, 0xCu);
   }
 
-  v9 = [(BiometricKitXPCClient *)self->super.super._xpcClient completeEnrollment];
-  v10 = v9;
-  if (v9)
+  completeEnrollment = [(BiometricKitXPCClient *)self->super.super._xpcClient completeEnrollment];
+  v10 = completeEnrollment;
+  if (completeEnrollment)
   {
     if (__osLog)
     {
@@ -536,7 +536,7 @@ LABEL_20:
       _os_log_impl(&dword_1C82AD000, v17, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", &v20, 0x30u);
     }
 
-    setErrorWithOSStatus(v10, a3);
+    setErrorWithOSStatus(v10, error);
     if (__osLogTrace)
     {
       v18 = __osLogTrace;
@@ -549,9 +549,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      if (a3)
+      if (error)
       {
-        v19 = *a3;
+        v19 = *error;
       }
 
       else
@@ -583,9 +583,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v12 = *a3;
+        v12 = *error;
       }
 
       else
@@ -609,7 +609,7 @@ LABEL_15:
   return v10 == 0;
 }
 
-- (BOOL)suspendWithError:(id *)a3
+- (BOOL)suspendWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -662,7 +662,7 @@ LABEL_15:
       _os_log_impl(&dword_1C82AD000, v17, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", &v20, 0x30u);
     }
 
-    setErrorWithOSStatus(v10, a3);
+    setErrorWithOSStatus(v10, error);
     if (__osLogTrace)
     {
       v18 = __osLogTrace;
@@ -675,9 +675,9 @@ LABEL_15:
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      if (a3)
+      if (error)
       {
-        v19 = *a3;
+        v19 = *error;
       }
 
       else
@@ -709,9 +709,9 @@ LABEL_15:
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v12 = *a3;
+        v12 = *error;
       }
 
       else
@@ -735,7 +735,7 @@ LABEL_15:
   return v10 == 0;
 }
 
-- (BOOL)resumeWithError:(id *)a3
+- (BOOL)resumeWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -788,7 +788,7 @@ LABEL_15:
       _os_log_impl(&dword_1C82AD000, v17, OS_LOG_TYPE_ERROR, "AssertMacros: %s (value = 0x%lx), %s file: %s, line: %d\n\n", &v20, 0x30u);
     }
 
-    setErrorWithOSStatus(v10, a3);
+    setErrorWithOSStatus(v10, error);
     if (__osLogTrace)
     {
       v18 = __osLogTrace;
@@ -801,9 +801,9 @@ LABEL_15:
 
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      if (a3)
+      if (error)
       {
-        v19 = *a3;
+        v19 = *error;
       }
 
       else
@@ -835,9 +835,9 @@ LABEL_15:
 
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v12 = *a3;
+        v12 = *error;
       }
 
       else

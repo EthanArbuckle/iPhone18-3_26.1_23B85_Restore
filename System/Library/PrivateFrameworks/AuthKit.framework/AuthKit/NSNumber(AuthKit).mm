@@ -7,14 +7,14 @@
 
 - (id)ak_BOOLeanAsInteger
 {
-  if ([a1 ak_isBoolean])
+  if ([self ak_isBoolean])
   {
-    v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a1, "integerValue")}];
+    v3 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(self, "integerValue")}];
   }
 
   else
   {
-    v3 = MEMORY[0x1E69E5928](a1);
+    v3 = MEMORY[0x1E69E5928](self);
   }
 
   return v3;
@@ -22,17 +22,17 @@
 
 - (uint64_t)ak_bucketWithSize:()AuthKit
 {
-  if ([a1 integerValue] <= 0)
+  if ([self integerValue] <= 0)
   {
     return 0;
   }
 
   if (a3 > 1)
   {
-    return (([a1 integerValue] - 1) / a3 + 1) * a3;
+    return (([self integerValue] - 1) / a3 + 1) * a3;
   }
 
-  return [a1 integerValue];
+  return [self integerValue];
 }
 
 @end

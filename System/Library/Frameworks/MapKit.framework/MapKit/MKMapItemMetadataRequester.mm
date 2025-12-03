@@ -1,47 +1,47 @@
 @interface MKMapItemMetadataRequester
 + (id)sharedInstance;
 - (MKMapItemMetadataRequester)init;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)cancelRequestsForMapItem:(id)a3;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)cancelRequestsForMapItem:(id)item;
 - (void)dealloc;
-- (void)handleTask:(id)a3 withData:(id)a4 error:(id)a5;
-- (void)sendRequest:(id)a3;
+- (void)handleTask:(id)task withData:(id)data error:(id)error;
+- (void)sendRequest:(id)request;
 @end
 
 @implementation MKMapItemMetadataRequester
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   dataForTasks = self->_dataForTasks;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(NSMapTable *)dataForTasks objectForKey:v9];
-  [(MKMapItemMetadataRequester *)self handleTask:v9 withData:v10 error:v8];
+  errorCopy = error;
+  taskCopy = task;
+  v10 = [(NSMapTable *)dataForTasks objectForKey:taskCopy];
+  [(MKMapItemMetadataRequester *)self handleTask:taskCopy withData:v10 error:errorCopy];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
-  v8 = a5;
-  v7 = [(NSMapTable *)self->_dataForTasks objectForKey:a4];
-  if (v8)
+  dataCopy = data;
+  v7 = [(NSMapTable *)self->_dataForTasks objectForKey:task];
+  if (dataCopy)
   {
-    [v7 appendData:v8];
+    [v7 appendData:dataCopy];
   }
 }
 
-- (void)handleTask:(id)a3 withData:(id)a4 error:(id)a5
+- (void)handleTask:(id)task withData:(id)data error:(id)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 originalRequest];
-  v12 = [v11 URL];
+  taskCopy = task;
+  dataCopy = data;
+  errorCopy = error;
+  originalRequest = [taskCopy originalRequest];
+  v12 = [originalRequest URL];
 
   v13 = [(NSMapTable *)self->_requestsForURLs objectForKey:v12];
   v14 = v13;
-  if (v10)
+  if (errorCopy)
   {
     v29 = 0uLL;
     v30 = 0uLL;
@@ -61,7 +61,7 @@
             objc_enumerationMutation(v14);
           }
 
-          [*(*(&v27 + 1) + 8 * i) handleError:v10];
+          [*(*(&v27 + 1) + 8 * i) handleError:errorCopy];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -91,7 +91,7 @@
             objc_enumerationMutation(v14);
           }
 
-          [*(*(&v23 + 1) + 8 * j) handleData:v9];
+          [*(*(&v23 + 1) + 8 * j) handleData:dataCopy];
         }
 
         v20 = [v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -101,22 +101,22 @@
     }
   }
 
-  [(NSMapTable *)self->_dataForTasks removeObjectForKey:v8];
+  [(NSMapTable *)self->_dataForTasks removeObjectForKey:taskCopy];
   [(NSMapTable *)self->_requestsForURLs removeObjectForKey:v12];
   [(NSMapTable *)self->_tasksForURLs removeObjectForKey:v12];
 }
 
-- (void)cancelRequestsForMapItem:(id)a3
+- (void)cancelRequestsForMapItem:(id)item
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:0];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [(NSMapTable *)self->_requestsForURLs objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  objectEnumerator = [(NSMapTable *)self->_requestsForURLs objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -127,7 +127,7 @@
       {
         if (*v28 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
@@ -135,16 +135,16 @@
         {
           v12 = [v11 objectAtIndex:0];
           v13 = [v12 url];
-          v14 = [v12 mapItem];
+          mapItem = [v12 mapItem];
 
-          if (v14 == v4 && v13 != 0)
+          if (mapItem == itemCopy && v13 != 0)
           {
             [v5 addObject:v13];
           }
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v8);
@@ -188,23 +188,23 @@
   }
 }
 
-- (void)sendRequest:(id)a3
+- (void)sendRequest:(id)request
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 url];
+  requestCopy = request;
+  v5 = [requestCopy url];
   v6 = [(NSMapTable *)self->_requestsForURLs objectForKey:v5];
   v7 = v6;
   requestsForURLs = self->_requestsForURLs;
   if (v6)
   {
-    v9 = [v6 arrayByAddingObject:v4];
+    v9 = [v6 arrayByAddingObject:requestCopy];
     [(NSMapTable *)requestsForURLs setObject:v9 forKey:v5];
   }
 
   else
   {
-    v16[0] = v4;
+    v16[0] = requestCopy;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     [(NSMapTable *)requestsForURLs setObject:v10 forKey:v5];
 
@@ -213,8 +213,8 @@
     block[1] = 3221225472;
     block[2] = __42__MKMapItemMetadataRequester_sendRequest___block_invoke;
     block[3] = &unk_1E76CCC28;
-    v13 = v4;
-    v14 = self;
+    v13 = requestCopy;
+    selfCopy = self;
     v15 = v5;
     dispatch_async(v11, block);
   }
@@ -300,23 +300,23 @@ void __42__MKMapItemMetadataRequester_sendRequest___block_invoke_2(void *a1)
   if (v2)
   {
     v3 = MEMORY[0x1E696AF78];
-    v4 = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
-    v5 = [MEMORY[0x1E696ADC8] mainQueue];
-    v6 = [v3 sessionWithConfiguration:v4 delegate:v2 delegateQueue:v5];
+    defaultSessionConfiguration = [MEMORY[0x1E696AF80] defaultSessionConfiguration];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
+    v6 = [v3 sessionWithConfiguration:defaultSessionConfiguration delegate:v2 delegateQueue:mainQueue];
     session = v2->_session;
     v2->_session = v6;
 
-    v8 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     tasksForURLs = v2->_tasksForURLs;
-    v2->_tasksForURLs = v8;
+    v2->_tasksForURLs = strongToStrongObjectsMapTable;
 
-    v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable2 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     requestsForURLs = v2->_requestsForURLs;
-    v2->_requestsForURLs = v10;
+    v2->_requestsForURLs = strongToStrongObjectsMapTable2;
 
-    v12 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     dataForTasks = v2->_dataForTasks;
-    v2->_dataForTasks = v12;
+    v2->_dataForTasks = weakToStrongObjectsMapTable;
 
     v14 = v2;
   }

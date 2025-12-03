@@ -1,9 +1,9 @@
 @interface HMDServiceBulletinNotificationRegistration
-- (BOOL)isEqual:(id)a3;
-- (HMDServiceBulletinNotificationRegistration)initWithAccessoryUUID:(id)a3 serviceInstanceID:(id)a4 conditions:(id)a5;
-- (HMDServiceBulletinNotificationRegistration)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HMDServiceBulletinNotificationRegistration)initWithAccessoryUUID:(id)d serviceInstanceID:(id)iD conditions:(id)conditions;
+- (HMDServiceBulletinNotificationRegistration)initWithCoder:(id)coder;
 - (id)attributeDescriptions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDServiceBulletinNotificationRegistration
@@ -13,40 +13,40 @@
   v15[2] = *MEMORY[0x277D85DE8];
   v14.receiver = self;
   v14.super_class = HMDServiceBulletinNotificationRegistration;
-  v3 = [(HMDBulletinNotificationRegistration *)&v14 attributeDescriptions];
+  attributeDescriptions = [(HMDBulletinNotificationRegistration *)&v14 attributeDescriptions];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v5 = [(HMDServiceBulletinNotificationRegistration *)self accessoryUUID];
-  v6 = [v4 initWithName:@"accessoryUUID" value:v5];
+  accessoryUUID = [(HMDServiceBulletinNotificationRegistration *)self accessoryUUID];
+  v6 = [v4 initWithName:@"accessoryUUID" value:accessoryUUID];
   v15[0] = v6;
   v7 = objc_alloc(MEMORY[0x277D0F778]);
-  v8 = [(HMDServiceBulletinNotificationRegistration *)self serviceInstanceID];
-  v9 = [v7 initWithName:@"serviceInstanceID" value:v8];
+  serviceInstanceID = [(HMDServiceBulletinNotificationRegistration *)self serviceInstanceID];
+  v9 = [v7 initWithName:@"serviceInstanceID" value:serviceInstanceID];
   v15[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
-  v11 = [v3 arrayByAddingObjectsFromArray:v10];
+  v11 = [attributeDescriptions arrayByAddingObjectsFromArray:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (HMDServiceBulletinNotificationRegistration)initWithCoder:(id)a3
+- (HMDServiceBulletinNotificationRegistration)initWithCoder:(id)coder
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [[HMDBulletinNotificationRegistration alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[HMDBulletinNotificationRegistration alloc] initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDSBNR.ck.au"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDSBNR.ck.au"];
     if (v6)
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMDSBNR.ck.sii"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMDSBNR.ck.sii"];
       if (v7)
       {
-        v8 = [(HMDBulletinNotificationRegistration *)v5 conditions];
-        self = [(HMDServiceBulletinNotificationRegistration *)self initWithAccessoryUUID:v6 serviceInstanceID:v7 conditions:v8];
+        conditions = [(HMDBulletinNotificationRegistration *)v5 conditions];
+        self = [(HMDServiceBulletinNotificationRegistration *)self initWithAccessoryUUID:v6 serviceInstanceID:v7 conditions:conditions];
 
-        v9 = self;
+        selfCopy = self;
       }
 
       else
@@ -65,7 +65,7 @@
         }
 
         objc_autoreleasePoolPop(v13);
-        v9 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -85,39 +85,39 @@
       }
 
       objc_autoreleasePoolPop(v10);
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v9;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HMDServiceBulletinNotificationRegistration;
-  v4 = a3;
-  [(HMDBulletinNotificationRegistration *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(HMDBulletinNotificationRegistration *)&v7 encodeWithCoder:coderCopy];
   v5 = [(HMDServiceBulletinNotificationRegistration *)self accessoryUUID:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"HMDSBNR.ck.au"];
+  [coderCopy encodeObject:v5 forKey:@"HMDSBNR.ck.au"];
 
-  v6 = [(HMDServiceBulletinNotificationRegistration *)self serviceInstanceID];
-  [v4 encodeObject:v6 forKey:@"HMDSBNR.ck.sii"];
+  serviceInstanceID = [(HMDServiceBulletinNotificationRegistration *)self serviceInstanceID];
+  [coderCopy encodeObject:serviceInstanceID forKey:@"HMDSBNR.ck.sii"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -128,13 +128,13 @@
   v6 = v5;
   if (v6 && (v13.receiver = self, v13.super_class = HMDServiceBulletinNotificationRegistration, [(HMDBulletinNotificationRegistration *)&v13 isEqual:v6]))
   {
-    v7 = [(HMDServiceBulletinNotificationRegistration *)self accessoryUUID];
-    v8 = [v6 accessoryUUID];
-    if ([v7 isEqual:v8])
+    accessoryUUID = [(HMDServiceBulletinNotificationRegistration *)self accessoryUUID];
+    accessoryUUID2 = [v6 accessoryUUID];
+    if ([accessoryUUID isEqual:accessoryUUID2])
     {
-      v9 = [(HMDServiceBulletinNotificationRegistration *)self serviceInstanceID];
-      v10 = [v6 serviceInstanceID];
-      v11 = [v9 isEqual:v10];
+      serviceInstanceID = [(HMDServiceBulletinNotificationRegistration *)self serviceInstanceID];
+      serviceInstanceID2 = [v6 serviceInstanceID];
+      v11 = [serviceInstanceID isEqual:serviceInstanceID2];
     }
 
     else
@@ -151,35 +151,35 @@
   return v11;
 }
 
-- (HMDServiceBulletinNotificationRegistration)initWithAccessoryUUID:(id)a3 serviceInstanceID:(id)a4 conditions:(id)a5
+- (HMDServiceBulletinNotificationRegistration)initWithAccessoryUUID:(id)d serviceInstanceID:(id)iD conditions:(id)conditions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  dCopy = d;
+  iDCopy = iD;
+  conditionsCopy = conditions;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v9)
+  if (!iDCopy)
   {
 LABEL_7:
     v18 = _HMFPreconditionFailure();
     return +[(HMDServiceBulletinNotificationRegistration *)v18];
   }
 
-  v11 = v10;
+  v11 = conditionsCopy;
   v20.receiver = self;
   v20.super_class = HMDServiceBulletinNotificationRegistration;
-  v12 = [(HMDBulletinNotificationRegistration *)&v20 initWithConditions:v10];
+  v12 = [(HMDBulletinNotificationRegistration *)&v20 initWithConditions:conditionsCopy];
   if (v12)
   {
-    v13 = [v8 copy];
+    v13 = [dCopy copy];
     accessoryUUID = v12->_accessoryUUID;
     v12->_accessoryUUID = v13;
 
-    v15 = [v9 copy];
+    v15 = [iDCopy copy];
     serviceInstanceID = v12->_serviceInstanceID;
     v12->_serviceInstanceID = v15;
   }

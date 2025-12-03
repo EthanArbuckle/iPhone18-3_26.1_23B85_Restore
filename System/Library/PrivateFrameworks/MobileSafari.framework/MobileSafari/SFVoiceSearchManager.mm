@@ -20,8 +20,8 @@
   if (v2)
   {
     v2->_availability = [(SFVoiceSearchManager *)v2 _voiceSearchAvailability];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__updateDictationAvailability name:*MEMORY[0x1E69DDF60] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__updateDictationAvailability name:*MEMORY[0x1E69DDF60] object:0];
 
     v5 = v3;
   }
@@ -50,15 +50,15 @@ void __37__SFVoiceSearchManager_sharedManager__block_invoke()
 
 - (int64_t)_voiceSearchAvailability
 {
-  v2 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v3 = [getAFPreferencesClass() sharedPreferences];
-  if ([v3 dictationIsEnabled] & 1) == 0 && (objc_msgSend(v3, "suppressDictationOptIn"))
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  if ([sharedPreferences dictationIsEnabled] & 1) == 0 && (objc_msgSend(sharedPreferences, "suppressDictationOptIn"))
   {
     goto LABEL_14;
   }
 
-  v4 = [v2 enabledDictationLanguages];
-  if (![v4 count])
+  enabledDictationLanguages = [mEMORY[0x1E69DCBF0] enabledDictationLanguages];
+  if (![enabledDictationLanguages count])
   {
 
 LABEL_14:
@@ -97,8 +97,8 @@ LABEL_14:
   v8 = NSClassFromString(&cfstr_Uidictationcon.isa);
   if (v8)
   {
-    v9 = [(objc_class *)v8 sharedInstance];
-    if ([v9 dictationDisabledDueToTelephonyActivity])
+    sharedInstance = [(objc_class *)v8 sharedInstance];
+    if ([sharedInstance dictationDisabledDueToTelephonyActivity])
     {
       v10 = 2;
     }
@@ -121,51 +121,51 @@ LABEL_15:
 
 - (BOOL)liveCompletionList
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 BOOLForKey:@"LiveCompletionList"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults BOOLForKey:@"LiveCompletionList"];
 
   return v3;
 }
 
 - (void)_updateDictationAvailability
 {
-  v3 = [(SFVoiceSearchManager *)self _voiceSearchAvailability];
-  if (self->_availability != v3)
+  _voiceSearchAvailability = [(SFVoiceSearchManager *)self _voiceSearchAvailability];
+  if (self->_availability != _voiceSearchAvailability)
   {
-    self->_availability = v3;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"SFVoiceSearchAvailabilityDidChangeNotification" object:self];
+    self->_availability = _voiceSearchAvailability;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"SFVoiceSearchAvailabilityDidChangeNotification" object:self];
   }
 }
 
 - (id)_kfed
 {
-  v2 = [MEMORY[0x1E695E000] safari_browserDefaults];
-  v3 = [v2 stringForKey:@"VoiceSearchKfed"];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+  v3 = [safari_browserDefaults stringForKey:@"VoiceSearchKfed"];
 
   return v3;
 }
 
 - (NSArray)queryItems
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [MEMORY[0x1E696AF60] queryItemWithName:@"qtype" value:@"voice_search"];
-  [v3 addObject:v4];
+  [array addObject:v4];
 
-  v5 = [(SFVoiceSearchManager *)self _kfed];
-  if ([v5 length])
+  _kfed = [(SFVoiceSearchManager *)self _kfed];
+  if ([_kfed length])
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"kfed-service" value:v5];
-    [v3 addObject:v6];
+    v6 = [objc_alloc(MEMORY[0x1E696AF60]) initWithName:@"kfed-service" value:_kfed];
+    [array addObject:v6];
   }
 
-  return v3;
+  return array;
 }
 
 - (BOOL)presentDictationDiscoveryAlertIfNeeded
 {
-  v2 = [getAFPreferencesClass() sharedPreferences];
-  if ([v2 dictationIsEnabled] & 1) != 0 || (objc_msgSend(v2, "suppressDictationOptIn"))
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  if ([sharedPreferences dictationIsEnabled] & 1) != 0 || (objc_msgSend(sharedPreferences, "suppressDictationOptIn"))
   {
     v3 = 0;
   }
@@ -177,11 +177,11 @@ LABEL_15:
       [SFVoiceSearchManager presentDictationDiscoveryAlertIfNeeded];
     }
 
-    v4 = [dictationControllerClass_cachedClass sharedInstance];
+    sharedInstance = [dictationControllerClass_cachedClass sharedInstance];
     v3 = objc_opt_respondsToSelector();
     if (v3)
     {
-      [v4 presentAlertOfType:1 withCompletion:0];
+      [sharedInstance presentAlertOfType:1 withCompletion:0];
     }
   }
 

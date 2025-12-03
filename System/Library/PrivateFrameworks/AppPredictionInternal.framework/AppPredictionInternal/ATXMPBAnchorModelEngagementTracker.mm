@@ -1,30 +1,30 @@
 @interface ATXMPBAnchorModelEngagementTracker
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEngagementType:(id)a3;
+- (int)StringAsEngagementType:(id)type;
 - (int)engagementType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasClassConditionalProbability:(BOOL)a3;
-- (void)setHasEngagementType:(BOOL)a3;
-- (void)setHasGlobalPopularity:(BOOL)a3;
-- (void)setHasNumPredictionsforAnchor:(BOOL)a3;
-- (void)setHasNumUniqueOccurrencesAfterAnchor:(BOOL)a3;
-- (void)setHasPosteriorProbability:(BOOL)a3;
-- (void)setHasScore:(BOOL)a3;
-- (void)setHasSecondsAfterAnchor:(BOOL)a3;
-- (void)setHasStandardDeviationOfOffsetFromAnchor:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasClassConditionalProbability:(BOOL)probability;
+- (void)setHasEngagementType:(BOOL)type;
+- (void)setHasGlobalPopularity:(BOOL)popularity;
+- (void)setHasNumPredictionsforAnchor:(BOOL)anchor;
+- (void)setHasNumUniqueOccurrencesAfterAnchor:(BOOL)anchor;
+- (void)setHasPosteriorProbability:(BOOL)probability;
+- (void)setHasScore:(BOOL)score;
+- (void)setHasSecondsAfterAnchor:(BOOL)anchor;
+- (void)setHasStandardDeviationOfOffsetFromAnchor:(BOOL)anchor;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXMPBAnchorModelEngagementTracker
 
-- (void)setHasScore:(BOOL)a3
+- (void)setHasScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 16;
   }
@@ -37,9 +37,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasSecondsAfterAnchor:(BOOL)a3
+- (void)setHasSecondsAfterAnchor:(BOOL)anchor
 {
-  if (a3)
+  if (anchor)
   {
     v3 = 512;
   }
@@ -52,9 +52,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasNumPredictionsforAnchor:(BOOL)a3
+- (void)setHasNumPredictionsforAnchor:(BOOL)anchor
 {
-  if (a3)
+  if (anchor)
   {
     v3 = 128;
   }
@@ -80,9 +80,9 @@
   }
 }
 
-- (void)setHasEngagementType:(BOOL)a3
+- (void)setHasEngagementType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 64;
   }
@@ -95,20 +95,20 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (int)StringAsEngagementType:(id)a3
+- (int)StringAsEngagementType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Engaged"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Engaged"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Rejected"])
+  else if ([typeCopy isEqualToString:@"Rejected"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Abandoned"])
+  else if ([typeCopy isEqualToString:@"Abandoned"])
   {
     v4 = 2;
   }
@@ -121,9 +121,9 @@
   return v4;
 }
 
-- (void)setHasPosteriorProbability:(BOOL)a3
+- (void)setHasPosteriorProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 8;
   }
@@ -136,9 +136,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasClassConditionalProbability:(BOOL)a3
+- (void)setHasClassConditionalProbability:(BOOL)probability
 {
-  if (a3)
+  if (probability)
   {
     v3 = 2;
   }
@@ -151,9 +151,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasStandardDeviationOfOffsetFromAnchor:(BOOL)a3
+- (void)setHasStandardDeviationOfOffsetFromAnchor:(BOOL)anchor
 {
-  if (a3)
+  if (anchor)
   {
     v3 = 32;
   }
@@ -166,9 +166,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasNumUniqueOccurrencesAfterAnchor:(BOOL)a3
+- (void)setHasNumUniqueOccurrencesAfterAnchor:(BOOL)anchor
 {
-  if (a3)
+  if (anchor)
   {
     v3 = 256;
   }
@@ -181,9 +181,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasGlobalPopularity:(BOOL)a3
+- (void)setHasGlobalPopularity:(BOOL)popularity
 {
-  if (a3)
+  if (popularity)
   {
     v3 = 4;
   }
@@ -202,20 +202,20 @@
   v8.receiver = self;
   v8.super_class = ATXMPBAnchorModelEngagementTracker;
   v4 = [(ATXMPBAnchorModelEngagementTracker *)&v8 description];
-  v5 = [(ATXMPBAnchorModelEngagementTracker *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXMPBAnchorModelEngagementTracker *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   anchorType = self->_anchorType;
   if (anchorType)
   {
-    [v3 setObject:anchorType forKey:@"anchorType"];
+    [dictionary setObject:anchorType forKey:@"anchorType"];
   }
 
   if ((*&self->_has & 0x10) != 0)
@@ -382,27 +382,27 @@ LABEL_30:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v17 = v4;
+  toCopy = to;
+  v17 = toCopy;
   if (self->_anchorType)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     score = self->_score;
     PBDataWriterWriteDoubleField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_candidateType)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   has = self->_has;
@@ -410,7 +410,7 @@ LABEL_30:
   {
     secondsAfterAnchor = self->_secondsAfterAnchor;
     PBDataWriterWriteUint32Field();
-    v4 = v17;
+    toCopy = v17;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -431,32 +431,32 @@ LABEL_9:
 
   numPredictionsforAnchor = self->_numPredictionsforAnchor;
   PBDataWriterWriteUint32Field();
-  v4 = v17;
+  toCopy = v17;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_10:
     engagementType = self->_engagementType;
     PBDataWriterWriteInt32Field();
-    v4 = v17;
+    toCopy = v17;
   }
 
 LABEL_11:
   if (self->_consumerSubType)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_abGroup)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   if (self->_executableObject)
   {
     PBDataWriterWriteStringField();
-    v4 = v17;
+    toCopy = v17;
   }
 
   v8 = self->_has;
@@ -464,7 +464,7 @@ LABEL_11:
   {
     posteriorProbability = self->_posteriorProbability;
     PBDataWriterWriteDoubleField();
-    v4 = v17;
+    toCopy = v17;
     v8 = self->_has;
     if ((v8 & 2) == 0)
     {
@@ -485,7 +485,7 @@ LABEL_19:
 
   classConditionalProbability = self->_classConditionalProbability;
   PBDataWriterWriteDoubleField();
-  v4 = v17;
+  toCopy = v17;
   v8 = self->_has;
   if ((v8 & 0x20) == 0)
   {
@@ -501,7 +501,7 @@ LABEL_20:
 LABEL_32:
   standardDeviationOfOffsetFromAnchor = self->_standardDeviationOfOffsetFromAnchor;
   PBDataWriterWriteDoubleField();
-  v4 = v17;
+  toCopy = v17;
   v8 = self->_has;
   if ((v8 & 0x100) == 0)
   {
@@ -517,7 +517,7 @@ LABEL_21:
 LABEL_33:
   numUniqueOccurrencesAfterAnchor = self->_numUniqueOccurrencesAfterAnchor;
   PBDataWriterWriteUint32Field();
-  v4 = v17;
+  toCopy = v17;
   v8 = self->_has;
   if ((v8 & 1) == 0)
   {
@@ -533,45 +533,45 @@ LABEL_22:
 LABEL_34:
   anchorPopularity = self->_anchorPopularity;
   PBDataWriterWriteDoubleField();
-  v4 = v17;
+  toCopy = v17;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_23:
     globalPopularity = self->_globalPopularity;
     PBDataWriterWriteDoubleField();
-    v4 = v17;
+    toCopy = v17;
   }
 
 LABEL_24:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_anchorType)
   {
-    [v4 setAnchorType:?];
-    v4 = v7;
+    [toCopy setAnchorType:?];
+    toCopy = v7;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 5) = *&self->_score;
-    *(v4 + 58) |= 0x10u;
+    *(toCopy + 5) = *&self->_score;
+    *(toCopy + 58) |= 0x10u;
   }
 
   if (self->_candidateType)
   {
     [v7 setCandidateType:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 0x200) != 0)
   {
-    *(v4 + 28) = self->_secondsAfterAnchor;
-    *(v4 + 58) |= 0x200u;
+    *(toCopy + 28) = self->_secondsAfterAnchor;
+    *(toCopy + 58) |= 0x200u;
     has = self->_has;
     if ((has & 0x80) == 0)
     {
@@ -590,39 +590,39 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 26) = self->_numPredictionsforAnchor;
-  *(v4 + 58) |= 0x80u;
+  *(toCopy + 26) = self->_numPredictionsforAnchor;
+  *(toCopy + 58) |= 0x80u;
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_10:
-    *(v4 + 22) = self->_engagementType;
-    *(v4 + 58) |= 0x40u;
+    *(toCopy + 22) = self->_engagementType;
+    *(toCopy + 58) |= 0x40u;
   }
 
 LABEL_11:
   if (self->_consumerSubType)
   {
     [v7 setConsumerSubType:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_abGroup)
   {
     [v7 setAbGroup:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_executableObject)
   {
     [v7 setExecutableObject:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 8) != 0)
   {
-    *(v4 + 4) = *&self->_posteriorProbability;
-    *(v4 + 58) |= 8u;
+    *(toCopy + 4) = *&self->_posteriorProbability;
+    *(toCopy + 58) |= 8u;
     v6 = self->_has;
     if ((v6 & 2) == 0)
     {
@@ -641,8 +641,8 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  *(v4 + 2) = *&self->_classConditionalProbability;
-  *(v4 + 58) |= 2u;
+  *(toCopy + 2) = *&self->_classConditionalProbability;
+  *(toCopy + 58) |= 2u;
   v6 = self->_has;
   if ((v6 & 0x20) == 0)
   {
@@ -656,8 +656,8 @@ LABEL_20:
   }
 
 LABEL_32:
-  *(v4 + 6) = *&self->_standardDeviationOfOffsetFromAnchor;
-  *(v4 + 58) |= 0x20u;
+  *(toCopy + 6) = *&self->_standardDeviationOfOffsetFromAnchor;
+  *(toCopy + 58) |= 0x20u;
   v6 = self->_has;
   if ((v6 & 0x100) == 0)
   {
@@ -671,8 +671,8 @@ LABEL_21:
   }
 
 LABEL_33:
-  *(v4 + 27) = self->_numUniqueOccurrencesAfterAnchor;
-  *(v4 + 58) |= 0x100u;
+  *(toCopy + 27) = self->_numUniqueOccurrencesAfterAnchor;
+  *(toCopy + 58) |= 0x100u;
   v6 = self->_has;
   if ((v6 & 1) == 0)
   {
@@ -686,22 +686,22 @@ LABEL_22:
   }
 
 LABEL_34:
-  *(v4 + 1) = *&self->_anchorPopularity;
-  *(v4 + 58) |= 1u;
+  *(toCopy + 1) = *&self->_anchorPopularity;
+  *(toCopy + 58) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_23:
-    *(v4 + 3) = *&self->_globalPopularity;
-    *(v4 + 58) |= 4u;
+    *(toCopy + 3) = *&self->_globalPopularity;
+    *(toCopy + 58) |= 4u;
   }
 
 LABEL_24:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_anchorType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_anchorType copyWithZone:zone];
   v7 = *(v5 + 64);
   *(v5 + 64) = v6;
 
@@ -711,7 +711,7 @@ LABEL_24:
     *(v5 + 116) |= 0x10u;
   }
 
-  v8 = [(NSString *)self->_candidateType copyWithZone:a3];
+  v8 = [(NSString *)self->_candidateType copyWithZone:zone];
   v9 = *(v5 + 72);
   *(v5 + 72) = v8;
 
@@ -748,15 +748,15 @@ LABEL_6:
   }
 
 LABEL_7:
-  v11 = [(NSString *)self->_consumerSubType copyWithZone:a3];
+  v11 = [(NSString *)self->_consumerSubType copyWithZone:zone];
   v12 = *(v5 + 80);
   *(v5 + 80) = v11;
 
-  v13 = [(NSString *)self->_abGroup copyWithZone:a3];
+  v13 = [(NSString *)self->_abGroup copyWithZone:zone];
   v14 = *(v5 + 56);
   *(v5 + 56) = v13;
 
-  v15 = [(NSString *)self->_executableObject copyWithZone:a3];
+  v15 = [(NSString *)self->_executableObject copyWithZone:zone];
   v16 = *(v5 + 96);
   *(v5 + 96) = v15;
 
@@ -840,16 +840,16 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_63;
   }
 
   anchorType = self->_anchorType;
-  if (anchorType | *(v4 + 8))
+  if (anchorType | *(equalCopy + 8))
   {
     if (![(NSString *)anchorType isEqual:?])
     {
@@ -858,10 +858,10 @@ LABEL_13:
   }
 
   has = self->_has;
-  v7 = *(v4 + 58);
+  v7 = *(equalCopy + 58);
   if ((has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_score != *(v4 + 5))
+    if ((v7 & 0x10) == 0 || self->_score != *(equalCopy + 5))
     {
       goto LABEL_63;
     }
@@ -873,7 +873,7 @@ LABEL_13:
   }
 
   candidateType = self->_candidateType;
-  if (candidateType | *(v4 + 9))
+  if (candidateType | *(equalCopy + 9))
   {
     if (![(NSString *)candidateType isEqual:?])
     {
@@ -885,23 +885,23 @@ LABEL_63:
     has = self->_has;
   }
 
-  v9 = *(v4 + 58);
+  v9 = *(equalCopy + 58);
   if ((has & 0x200) != 0)
   {
-    if ((*(v4 + 58) & 0x200) == 0 || self->_secondsAfterAnchor != *(v4 + 28))
+    if ((*(equalCopy + 58) & 0x200) == 0 || self->_secondsAfterAnchor != *(equalCopy + 28))
     {
       goto LABEL_63;
     }
   }
 
-  else if ((*(v4 + 58) & 0x200) != 0)
+  else if ((*(equalCopy + 58) & 0x200) != 0)
   {
     goto LABEL_63;
   }
 
   if ((has & 0x80) != 0)
   {
-    if ((v9 & 0x80) == 0 || self->_numPredictionsforAnchor != *(v4 + 26))
+    if ((v9 & 0x80) == 0 || self->_numPredictionsforAnchor != *(equalCopy + 26))
     {
       goto LABEL_63;
     }
@@ -914,7 +914,7 @@ LABEL_63:
 
   if ((has & 0x40) != 0)
   {
-    if ((v9 & 0x40) == 0 || self->_engagementType != *(v4 + 22))
+    if ((v9 & 0x40) == 0 || self->_engagementType != *(equalCopy + 22))
     {
       goto LABEL_63;
     }
@@ -926,13 +926,13 @@ LABEL_63:
   }
 
   consumerSubType = self->_consumerSubType;
-  if (consumerSubType | *(v4 + 10) && ![(NSString *)consumerSubType isEqual:?])
+  if (consumerSubType | *(equalCopy + 10) && ![(NSString *)consumerSubType isEqual:?])
   {
     goto LABEL_63;
   }
 
   abGroup = self->_abGroup;
-  if (abGroup | *(v4 + 7))
+  if (abGroup | *(equalCopy + 7))
   {
     if (![(NSString *)abGroup isEqual:?])
     {
@@ -941,7 +941,7 @@ LABEL_63:
   }
 
   executableObject = self->_executableObject;
-  if (executableObject | *(v4 + 12))
+  if (executableObject | *(equalCopy + 12))
   {
     if (![(NSString *)executableObject isEqual:?])
     {
@@ -950,10 +950,10 @@ LABEL_63:
   }
 
   v13 = self->_has;
-  v14 = *(v4 + 58);
+  v14 = *(equalCopy + 58);
   if ((v13 & 8) != 0)
   {
-    if ((v14 & 8) == 0 || self->_posteriorProbability != *(v4 + 4))
+    if ((v14 & 8) == 0 || self->_posteriorProbability != *(equalCopy + 4))
     {
       goto LABEL_63;
     }
@@ -966,7 +966,7 @@ LABEL_63:
 
   if ((v13 & 2) != 0)
   {
-    if ((v14 & 2) == 0 || self->_classConditionalProbability != *(v4 + 2))
+    if ((v14 & 2) == 0 || self->_classConditionalProbability != *(equalCopy + 2))
     {
       goto LABEL_63;
     }
@@ -979,7 +979,7 @@ LABEL_63:
 
   if ((v13 & 0x20) != 0)
   {
-    if ((v14 & 0x20) == 0 || self->_standardDeviationOfOffsetFromAnchor != *(v4 + 6))
+    if ((v14 & 0x20) == 0 || self->_standardDeviationOfOffsetFromAnchor != *(equalCopy + 6))
     {
       goto LABEL_63;
     }
@@ -992,20 +992,20 @@ LABEL_63:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 58) & 0x100) == 0 || self->_numUniqueOccurrencesAfterAnchor != *(v4 + 27))
+    if ((*(equalCopy + 58) & 0x100) == 0 || self->_numUniqueOccurrencesAfterAnchor != *(equalCopy + 27))
     {
       goto LABEL_63;
     }
   }
 
-  else if ((*(v4 + 58) & 0x100) != 0)
+  else if ((*(equalCopy + 58) & 0x100) != 0)
   {
     goto LABEL_63;
   }
 
   if (v13)
   {
-    if ((v14 & 1) == 0 || self->_anchorPopularity != *(v4 + 1))
+    if ((v14 & 1) == 0 || self->_anchorPopularity != *(equalCopy + 1))
     {
       goto LABEL_63;
     }
@@ -1018,7 +1018,7 @@ LABEL_63:
 
   if ((v13 & 4) != 0)
   {
-    if ((v14 & 4) == 0 || self->_globalPopularity != *(v4 + 3))
+    if ((v14 & 4) == 0 || self->_globalPopularity != *(equalCopy + 3))
     {
       goto LABEL_63;
     }
@@ -1299,34 +1299,34 @@ LABEL_48:
   return v5 ^ v42 ^ v9 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v20 ^ v24 ^ v28 ^ v32 ^ v36 ^ v37;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (*(v4 + 8))
+  fromCopy = from;
+  v7 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(ATXMPBAnchorModelEngagementTracker *)self setAnchorType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if ((*(v4 + 58) & 0x10) != 0)
+  if ((*(fromCopy + 58) & 0x10) != 0)
   {
-    self->_score = *(v4 + 5);
+    self->_score = *(fromCopy + 5);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(ATXMPBAnchorModelEngagementTracker *)self setCandidateType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 58);
+  v5 = *(fromCopy + 58);
   if ((v5 & 0x200) != 0)
   {
-    self->_secondsAfterAnchor = *(v4 + 28);
+    self->_secondsAfterAnchor = *(fromCopy + 28);
     *&self->_has |= 0x200u;
-    v5 = *(v4 + 58);
+    v5 = *(fromCopy + 58);
     if ((v5 & 0x80) == 0)
     {
 LABEL_9:
@@ -1344,40 +1344,40 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  self->_numPredictionsforAnchor = *(v4 + 26);
+  self->_numPredictionsforAnchor = *(fromCopy + 26);
   *&self->_has |= 0x80u;
-  if ((*(v4 + 58) & 0x40) != 0)
+  if ((*(fromCopy + 58) & 0x40) != 0)
   {
 LABEL_10:
-    self->_engagementType = *(v4 + 22);
+    self->_engagementType = *(fromCopy + 22);
     *&self->_has |= 0x40u;
   }
 
 LABEL_11:
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(ATXMPBAnchorModelEngagementTracker *)self setConsumerSubType:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(ATXMPBAnchorModelEngagementTracker *)self setAbGroup:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(ATXMPBAnchorModelEngagementTracker *)self setExecutableObject:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 58);
+  v6 = *(fromCopy + 58);
   if ((v6 & 8) != 0)
   {
-    self->_posteriorProbability = *(v4 + 4);
+    self->_posteriorProbability = *(fromCopy + 4);
     *&self->_has |= 8u;
-    v6 = *(v4 + 58);
+    v6 = *(fromCopy + 58);
     if ((v6 & 2) == 0)
     {
 LABEL_19:
@@ -1395,9 +1395,9 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  self->_classConditionalProbability = *(v4 + 2);
+  self->_classConditionalProbability = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v6 = *(v4 + 58);
+  v6 = *(fromCopy + 58);
   if ((v6 & 0x20) == 0)
   {
 LABEL_20:
@@ -1410,9 +1410,9 @@ LABEL_20:
   }
 
 LABEL_32:
-  self->_standardDeviationOfOffsetFromAnchor = *(v4 + 6);
+  self->_standardDeviationOfOffsetFromAnchor = *(fromCopy + 6);
   *&self->_has |= 0x20u;
-  v6 = *(v4 + 58);
+  v6 = *(fromCopy + 58);
   if ((v6 & 0x100) == 0)
   {
 LABEL_21:
@@ -1425,9 +1425,9 @@ LABEL_21:
   }
 
 LABEL_33:
-  self->_numUniqueOccurrencesAfterAnchor = *(v4 + 27);
+  self->_numUniqueOccurrencesAfterAnchor = *(fromCopy + 27);
   *&self->_has |= 0x100u;
-  v6 = *(v4 + 58);
+  v6 = *(fromCopy + 58);
   if ((v6 & 1) == 0)
   {
 LABEL_22:
@@ -1440,12 +1440,12 @@ LABEL_22:
   }
 
 LABEL_34:
-  self->_anchorPopularity = *(v4 + 1);
+  self->_anchorPopularity = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 58) & 4) != 0)
+  if ((*(fromCopy + 58) & 4) != 0)
   {
 LABEL_23:
-    self->_globalPopularity = *(v4 + 3);
+    self->_globalPopularity = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 

@@ -1,14 +1,14 @@
 @interface HomeManager
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HomeManager
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = self;
-  sub_268BBEF10(v4);
+  homesCopy = homes;
+  selfCopy = self;
+  sub_268BBEF10(homesCopy);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface DOCSidebarItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityRoleDescription;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)accessibilityCustomActions;
@@ -10,18 +10,18 @@
 
 @implementation DOCSidebarItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UICollectionViewListCellAccessibility" hasInstanceMethod:@"_accessibilityTrailingViews" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCEjectButton"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCEjectButton" isKindOfClass:@"UIButton"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" isKindOfClass:@"UICollectionViewListCell"];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilityShowFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilitySubtitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilityIsEjectable" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilityTitleTextField" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UICollectionViewListCellAccessibility" hasInstanceMethod:@"_accessibilityTrailingViews" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCEjectButton"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCEjectButton" isKindOfClass:@"UIButton"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" isKindOfClass:@"UICollectionViewListCell"];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilityShowFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilityTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilitySubtitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilityIsEjectable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"DocumentManagerExecutables.DOCSidebarItemCell" hasInstanceMethod:@"accessibilityTitleTextField" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilityRoleDescription
@@ -41,11 +41,11 @@
 
 - (id)accessibilityCustomActions
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v15.receiver = self;
   v15.super_class = DOCSidebarItemCellAccessibility;
-  v4 = [(DOCSidebarItemCellAccessibility *)&v15 accessibilityCustomActions];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  accessibilityCustomActions = [(DOCSidebarItemCellAccessibility *)&v15 accessibilityCustomActions];
+  [array axSafelyAddObjectsFromArray:accessibilityCustomActions];
 
   if ([(DOCSidebarItemCellAccessibility *)self safeBoolForKey:@"accessibilityIsEjectable"])
   {
@@ -58,13 +58,13 @@
     v12 = &unk_29F2BBA30;
     objc_copyWeak(&v13, &location);
     v7 = [v5 initWithName:v6 actionHandler:&v9];
-    [v3 addObject:{v7, v9, v10, v11, v12}];
+    [array addObject:{v7, v9, v10, v11, v12}];
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __61__DOCSidebarItemCellAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1, void *a2)
@@ -130,10 +130,10 @@ LABEL_12:
 {
   v9.receiver = self;
   v9.super_class = DOCSidebarItemCellAccessibility;
-  v2 = [(DOCSidebarItemCellAccessibility *)&v9 accessibilityValue];
-  if (v2)
+  accessibilityValue = [(DOCSidebarItemCellAccessibility *)&v9 accessibilityValue];
+  if (accessibilityValue)
   {
-    v3 = [MEMORY[0x29EDBA0E0] localizedScannerWithString:v2];
+    v3 = [MEMORY[0x29EDBA0E0] localizedScannerWithString:accessibilityValue];
     v8 = 0;
     [v3 scanInt:&v8];
     if (v8 >= 1)
@@ -142,11 +142,11 @@ LABEL_12:
       v5 = accessibilityLocalizedString(@"badge.unread.count");
       v6 = [v4 localizedStringWithFormat:v5, v8];
 
-      v2 = v6;
+      accessibilityValue = v6;
     }
   }
 
-  return v2;
+  return accessibilityValue;
 }
 
 - (id)accessibilityLabel
@@ -173,10 +173,10 @@ LABEL_12:
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   v3 = *MEMORY[0x29EDC7F70];
-  v4 = [v2 isSelected];
+  isSelected = [v2 isSelected];
 
   v5 = *MEMORY[0x29EDC7FC0];
-  if (!v4)
+  if (!isSelected)
   {
     v5 = 0;
   }
@@ -188,8 +188,8 @@ LABEL_12:
 {
   v5.receiver = self;
   v5.super_class = DOCSidebarItemCellAccessibility;
-  v2 = [(DOCSidebarItemCellAccessibility *)&v5 _accessibilitySupplementaryFooterViews];
-  v3 = [v2 mutableCopy];
+  _accessibilitySupplementaryFooterViews = [(DOCSidebarItemCellAccessibility *)&v5 _accessibilitySupplementaryFooterViews];
+  v3 = [_accessibilitySupplementaryFooterViews mutableCopy];
 
   [v3 ax_removeObjectsFromArrayUsingBlock:&__block_literal_global_1];
 

@@ -1,7 +1,7 @@
 @interface BSUIWeeklyProgressView
-+ (id)renderModelWithIdentifier:(id)a3 metrics:(id)a4;
++ (id)renderModelWithIdentifier:(id)identifier metrics:(id)metrics;
 - (BOOL)_updateEnvironment;
-- (BSUIWeeklyProgressView)initWithFrame:(CGRect)a3;
+- (BSUIWeeklyProgressView)initWithFrame:(CGRect)frame;
 - (NSString)description;
 - (_BSUIWeeklyProgressLayoutInfo)todayLayoutInfo;
 - (_BSUIWeeklyProgressLayoutInfo)todaySeparatorLayoutInfo;
@@ -9,34 +9,34 @@
 - (void)_animateProgressTodayIfNeeded;
 - (void)_calculateComponents;
 - (void)_calculateLayout;
-- (void)_configureWithModel:(id)a3;
+- (void)_configureWithModel:(id)model;
 - (void)_setupBackground;
 - (void)_setupViews;
-- (void)_setupWeeklyProgressWithUpdateMode:(unint64_t)a3;
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)_setupWeeklyProgressWithUpdateMode:(unint64_t)mode;
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
-- (void)dynamicProgressChanged:(id)a3;
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5;
-- (void)setVisibleProgressToday:(double)a3;
+- (void)dynamicProgressChanged:(id)changed;
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event;
+- (void)setVisibleProgressToday:(double)today;
 - (void)viewDidEndDisplay;
 - (void)viewWillDisplay;
 @end
 
 @implementation BSUIWeeklyProgressView
 
-- (BSUIWeeklyProgressView)initWithFrame:(CGRect)a3
+- (BSUIWeeklyProgressView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = BSUIWeeklyProgressView;
-  v3 = [(BSUIWeeklyProgressView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BSUIWeeklyProgressView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[BSUITemplate manager];
-    v5 = [v4 dynamicRegistry];
+    dynamicRegistry = [v4 dynamicRegistry];
 
     v6 = +[BCReadingTimeToday kind];
-    v7 = [v5 progressProviderForKind:v6];
+    v7 = [dynamicRegistry progressProviderForKind:v6];
     v8 = [v7 dynamicProgressForKind:v6 instance:0 parameters:0];
     [v8 registerProgressObserver:v3];
     objc_storeStrong(&v3->_dynamicProgress, v8);
@@ -55,14 +55,14 @@
   [(BSUIWeeklyProgressView *)&v3 dealloc];
 }
 
-+ (id)renderModelWithIdentifier:(id)a3 metrics:(id)a4
++ (id)renderModelWithIdentifier:(id)identifier metrics:(id)metrics
 {
-  v5 = a4;
-  v6 = a3;
+  metricsCopy = metrics;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(_BSUIWeeklyProgressRenderModel);
-  [(_BSUIWeeklyProgressRenderModel *)v7 setMetrics:v5];
+  [(_BSUIWeeklyProgressRenderModel *)v7 setMetrics:metricsCopy];
 
-  v8 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"BSUIReuseIdentifierWeeklyProgressView" identifier:v6 submodel:v7];
+  v8 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"BSUIReuseIdentifierWeeklyProgressView" identifier:identifierCopy submodel:v7];
 
   return v8;
 }
@@ -72,20 +72,20 @@
   v9.receiver = self;
   v9.super_class = BSUIWeeklyProgressView;
   [(BSUIWeeklyProgressView *)&v9 viewWillDisplay];
-  v3 = [(BSUIWeeklyProgressView *)self layer];
-  [v3 setMasksToBounds:0];
+  layer = [(BSUIWeeklyProgressView *)self layer];
+  [layer setMasksToBounds:0];
 
-  v4 = [(BSUIWeeklyProgressView *)self backgroundLayer];
-  [v4 setMasksToBounds:0];
+  backgroundLayer = [(BSUIWeeklyProgressView *)self backgroundLayer];
+  [backgroundLayer setMasksToBounds:0];
 
-  v5 = [(_BSUIWeeklyProgressRenderModel *)self->_renderModel metrics];
-  v6 = [v5 triggerName];
+  metrics = [(_BSUIWeeklyProgressRenderModel *)self->_renderModel metrics];
+  triggerName = [metrics triggerName];
 
-  if ([v6 length])
+  if ([triggerName length])
   {
-    v7 = [(BSUIWeeklyProgressView *)self feedControllerHost];
-    v8 = [v7 triggerStateManager];
-    [v8 addObserver:self forTrigger:v6];
+    feedControllerHost = [(BSUIWeeklyProgressView *)self feedControllerHost];
+    triggerStateManager = [feedControllerHost triggerStateManager];
+    [triggerStateManager addObserver:self forTrigger:triggerName];
   }
 }
 
@@ -94,54 +94,54 @@
   v7.receiver = self;
   v7.super_class = BSUIWeeklyProgressView;
   [(BSUIWeeklyProgressView *)&v7 viewDidEndDisplay];
-  v3 = [(_BSUIWeeklyProgressRenderModel *)self->_renderModel metrics];
-  v4 = [v3 triggerName];
+  metrics = [(_BSUIWeeklyProgressRenderModel *)self->_renderModel metrics];
+  triggerName = [metrics triggerName];
 
-  if ([v4 length])
+  if ([triggerName length])
   {
-    v5 = [(BSUIWeeklyProgressView *)self feedControllerHost];
-    v6 = [v5 triggerStateManager];
-    [v6 removeObserver:self forTrigger:v4];
+    feedControllerHost = [(BSUIWeeklyProgressView *)self feedControllerHost];
+    triggerStateManager = [feedControllerHost triggerStateManager];
+    [triggerStateManager removeObserver:self forTrigger:triggerName];
   }
 }
 
-- (void)_traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)_traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = [a4 userInterfaceStyle];
-  v6 = [(BSUIWeeklyProgressView *)self traitCollection];
-  v7 = [v6 userInterfaceStyle];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  traitCollection = [(BSUIWeeklyProgressView *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection userInterfaceStyle];
 
-  if (v5 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
 
     [(BSUIWeeklyProgressView *)self _setupWeeklyProgressWithUpdateMode:0];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = BSUIWeeklyProgressView;
-  v4 = a3;
-  [(BSUIWeeklyProgressView *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(BSUIWeeklyProgressView *)&v7 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
-  [(BSUIWeeklyProgressView *)self _configureWithModel:v6];
+  submodel = [renderModel submodel];
+  [(BSUIWeeklyProgressView *)self _configureWithModel:submodel];
 }
 
-- (void)_configureWithModel:(id)a3
+- (void)_configureWithModel:(id)model
 {
-  v4 = a3;
-  v5 = v4;
+  modelCopy = model;
+  v5 = modelCopy;
   if (!self->_renderModel)
   {
     goto LABEL_5;
   }
 
   progressToday = self->_progressToday;
-  v7 = [(_BSUIWeeklyProgressRenderModel *)v4 metrics];
-  [v7 progressToday];
+  metrics = [(_BSUIWeeklyProgressRenderModel *)modelCopy metrics];
+  [metrics progressToday];
   if (progressToday == v8)
   {
 
@@ -164,20 +164,20 @@ LABEL_6:
   self->_renderModel = v5;
   v13 = v5;
 
-  v14 = [(_BSUIWeeklyProgressRenderModel *)v13 metrics];
+  metrics2 = [(_BSUIWeeklyProgressRenderModel *)v13 metrics];
   metrics = self->_metrics;
-  self->_metrics = v14;
+  self->_metrics = metrics2;
 
-  v16 = [(BSUIWeeklyProgressMetrics *)self->_metrics days];
+  days = [(BSUIWeeklyProgressMetrics *)self->_metrics days];
   days = self->_days;
-  self->_days = v16;
+  self->_days = days;
 
   self->_runningStreakFromPreviousWeek = [(BSUIWeeklyProgressMetrics *)self->_metrics isRunningStreak];
   [(BSUIWeeklyProgressMetrics *)self->_metrics progressToday];
   self->_progressToday = v18;
-  v19 = [(BSUIWeeklyProgressMetrics *)self->_metrics lastVisibleProgressToday];
+  lastVisibleProgressToday = [(BSUIWeeklyProgressMetrics *)self->_metrics lastVisibleProgressToday];
   lastVisibleProgressToday = self->_lastVisibleProgressToday;
-  self->_lastVisibleProgressToday = v19;
+  self->_lastVisibleProgressToday = lastVisibleProgressToday;
 
   if ([(BSUIWeeklyProgressView *)self _updateEnvironment])
   {
@@ -190,27 +190,27 @@ LABEL_6:
   }
 
   [(BSUIWeeklyProgressView *)self _setupWeeklyProgressWithUpdateMode:v21];
-  v22 = [(_BSUIWeeklyProgressRenderModel *)self->_renderModel metrics];
+  metrics3 = [(_BSUIWeeklyProgressRenderModel *)self->_renderModel metrics];
 
-  v26 = [v22 triggerName];
+  triggerName = [metrics3 triggerName];
 
-  if ([v26 length])
+  if ([triggerName length])
   {
-    v23 = [(BSUIWeeklyProgressView *)self superview];
+    superview = [(BSUIWeeklyProgressView *)self superview];
 
-    if (v23)
+    if (superview)
     {
-      v24 = [(BSUIWeeklyProgressView *)self feedControllerHost];
-      v25 = [v24 triggerStateManager];
-      [v25 addObserver:self forTrigger:v26];
+      feedControllerHost = [(BSUIWeeklyProgressView *)self feedControllerHost];
+      triggerStateManager = [feedControllerHost triggerStateManager];
+      [triggerStateManager addObserver:self forTrigger:triggerName];
     }
   }
 }
 
 - (void)_calculateComponents
 {
-  v3 = [(BSUIWeeklyProgressView *)self days];
-  v4 = [v3 count];
+  days = [(BSUIWeeklyProgressView *)self days];
+  v4 = [days count];
 
   if (v4 < 1)
   {
@@ -220,10 +220,10 @@ LABEL_6:
   else
   {
     v5 = [NSMutableArray arrayWithCapacity:(2 * v4) | 1];
-    v6 = [(BSUIWeeklyProgressView *)self runningStreakFromPreviousWeek];
+    runningStreakFromPreviousWeek = [(BSUIWeeklyProgressView *)self runningStreakFromPreviousWeek];
     v7 = objc_opt_new();
     v8 = v7;
-    if (v6)
+    if (runningStreakFromPreviousWeek)
     {
       v9 = 6;
     }
@@ -233,7 +233,7 @@ LABEL_6:
       v9 = 3;
     }
 
-    if (v6)
+    if (runningStreakFromPreviousWeek)
     {
       v10 = 1.0;
     }
@@ -278,8 +278,8 @@ LABEL_6:
 
           v20 = *(*(&v54 + 1) + 8 * i);
           v21 = objc_opt_new();
-          v22 = [v20 text];
-          [v21 setDayLabel:v22];
+          text = [v20 text];
+          [v21 setDayLabel:text];
 
           [v21 setLayoutType:{objc_msgSend(v20, "type")}];
           if ([v21 layoutType] == &dword_0 + 1)
@@ -301,8 +301,8 @@ LABEL_6:
           v31 = v30;
           [v21 percentComplete];
           v33 = v32;
-          v34 = [v21 dayLabel];
-          v15 = [(BSUIProgressSingleDayController *)v23 initWithProgressView:self frame:v34 progress:v25 label:v27, v29, v31, v33];
+          dayLabel = [v21 dayLabel];
+          v15 = [(BSUIProgressSingleDayController *)v23 initWithProgressView:self frame:dayLabel progress:v25 label:v27, v29, v31, v33];
 
           [v21 setDay:v15];
           [v5 addObject:v21];
@@ -347,13 +347,13 @@ LABEL_25:
           ++v14;
           v13 = v21;
 
-          v38 = [(BSUIWeeklyProgressView *)self days];
-          v39 = [v38 count];
+          days2 = [(BSUIWeeklyProgressView *)self days];
+          v39 = [days2 count];
 
-          v40 = [(BSUIWeeklyProgressView *)self shouldShowTrailingSpacerLine];
+          shouldShowTrailingSpacerLine = [(BSUIWeeklyProgressView *)self shouldShowTrailingSpacerLine];
           v8 = objc_opt_new();
           v41 = v14 == v39;
-          if (v14 == v39 && v40)
+          if (v14 == v39 && shouldShowTrailingSpacerLine)
           {
             [v13 percentComplete];
             v41 = v42 < 1.0;
@@ -388,15 +388,15 @@ LABEL_25:
     }
   }
 
-  v46 = [(BSUIWeeklyProgressView *)self metrics];
-  v47 = [v46 rightToLeft];
-  v48 = [v47 BOOLValue];
+  metrics = [(BSUIWeeklyProgressView *)self metrics];
+  rightToLeft = [metrics rightToLeft];
+  bOOLValue = [rightToLeft BOOLValue];
 
-  if (v48)
+  if (bOOLValue)
   {
-    v49 = [v5 reverseObjectEnumerator];
-    v50 = [v49 allObjects];
-    [(BSUIWeeklyProgressView *)self setLayoutInfosToDisplay:v50];
+    reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    [(BSUIWeeklyProgressView *)self setLayoutInfosToDisplay:allObjects];
   }
 
   else
@@ -407,8 +407,8 @@ LABEL_25:
 
 - (void)_calculateLayout
 {
-  v3 = [(BSUIWeeklyProgressView *)self days];
-  v4 = [v3 count];
+  days = [(BSUIWeeklyProgressView *)self days];
+  v4 = [days count];
 
   [(BSUIWeeklyProgressView *)self bounds];
   Width = CGRectGetWidth(v36);
@@ -416,14 +416,14 @@ LABEL_25:
   Height = CGRectGetHeight(v37);
   [(BSUIWeeklyProgressView *)self bounds];
   MidY = CGRectGetMidY(v38);
-  v7 = [(BSUIWeeklyProgressView *)self metrics];
-  v8 = [v7 spacerWidth];
-  [v8 floatValue];
+  metrics = [(BSUIWeeklyProgressView *)self metrics];
+  spacerWidth = [metrics spacerWidth];
+  [spacerWidth floatValue];
   v10 = v9;
 
-  v11 = [(BSUIWeeklyProgressView *)self metrics];
-  v12 = [v11 spacerHeight];
-  [v12 floatValue];
+  metrics2 = [(BSUIWeeklyProgressView *)self metrics];
+  spacerHeight = [metrics2 spacerHeight];
+  [spacerHeight floatValue];
   v14 = v13;
 
   v15 = floor((Width - (v4 + 1) * v10) / v4);
@@ -451,8 +451,8 @@ LABEL_25:
 
   v31 = 0uLL;
   v32 = 0uLL;
-  v18 = [(BSUIWeeklyProgressView *)self layoutInfosToDisplay];
-  v19 = [v18 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  layoutInfosToDisplay = [(BSUIWeeklyProgressView *)self layoutInfosToDisplay];
+  v19 = [layoutInfosToDisplay countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v19)
   {
     v20 = v19;
@@ -467,7 +467,7 @@ LABEL_25:
       {
         if (*v32 != v22)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(layoutInfosToDisplay);
         }
 
         v26 = *(*(&v31 + 1) + 8 * v24);
@@ -504,7 +504,7 @@ LABEL_25:
       }
 
       while (v20 != v24);
-      v20 = [v18 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v20 = [layoutInfosToDisplay countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v20);
@@ -517,8 +517,8 @@ LABEL_25:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(BSUIWeeklyProgressView *)self layoutInfosToDisplay];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  layoutInfosToDisplay = [(BSUIWeeklyProgressView *)self layoutInfosToDisplay];
+  v3 = [layoutInfosToDisplay countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -529,7 +529,7 @@ LABEL_25:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(layoutInfosToDisplay);
         }
 
         v7 = *(*(&v10 + 1) + 8 * i);
@@ -539,14 +539,14 @@ LABEL_25:
           [v8 configureWithType:{objc_msgSend(v7, "layoutType")}];
         }
 
-        v9 = [v7 separator];
-        if (v9)
+        separator = [v7 separator];
+        if (separator)
         {
-          [v9 configureWithType:{objc_msgSend(v7, "layoutType")}];
+          [separator configureWithType:{objc_msgSend(v7, "layoutType")}];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [layoutInfosToDisplay countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -555,9 +555,9 @@ LABEL_25:
 
 - (void)_setupBackground
 {
-  v3 = [(BSUIWeeklyProgressView *)self backgroundLayer];
+  backgroundLayer = [(BSUIWeeklyProgressView *)self backgroundLayer];
 
-  if (!v3)
+  if (!backgroundLayer)
   {
     v4 = +[CALayer layer];
     backgroundLayer = self->_backgroundLayer;
@@ -571,8 +571,8 @@ LABEL_25:
   v13 = v12;
   [(CALayer *)self->_backgroundLayer setBounds:?];
   [(CALayer *)self->_backgroundLayer setFrame:v7, v9, v11, v13];
-  v14 = [(BSUIWeeklyProgressView *)self backgroundColor];
-  -[CALayer setBackgroundColor:](self->_backgroundLayer, "setBackgroundColor:", [v14 CGColor]);
+  backgroundColor = [(BSUIWeeklyProgressView *)self backgroundColor];
+  -[CALayer setBackgroundColor:](self->_backgroundLayer, "setBackgroundColor:", [backgroundColor CGColor]);
 
   if (self->_debugBounds)
   {
@@ -583,50 +583,50 @@ LABEL_25:
   }
 
   [(CALayer *)self->_backgroundLayer setMasksToBounds:1];
-  v16 = [(BSUIWeeklyProgressView *)self layer];
-  [v16 addSublayer:self->_backgroundLayer];
+  layer = [(BSUIWeeklyProgressView *)self layer];
+  [layer addSublayer:self->_backgroundLayer];
 }
 
 - (BOOL)_updateEnvironment
 {
-  v3 = [(BSUIWeeklyProgressView *)self metrics];
-  v4 = [v3 axValue];
-  v5 = [v4 integerValue];
+  metrics = [(BSUIWeeklyProgressView *)self metrics];
+  axValue = [metrics axValue];
+  integerValue = [axValue integerValue];
 
-  v6 = [(BSUIWeeklyProgressView *)self lastAXValue];
-  v7 = v6 != v5;
-  if (v6 != v5)
+  lastAXValue = [(BSUIWeeklyProgressView *)self lastAXValue];
+  v7 = lastAXValue != integerValue;
+  if (lastAXValue != integerValue)
   {
-    [(BSUIWeeklyProgressView *)self setLastAXValue:v5];
+    [(BSUIWeeklyProgressView *)self setLastAXValue:integerValue];
   }
 
-  v8 = [(BSUIWeeklyProgressView *)self metrics];
-  v9 = [v8 currentDayShortString];
+  metrics2 = [(BSUIWeeklyProgressView *)self metrics];
+  currentDayShortString = [metrics2 currentDayShortString];
 
-  v10 = [(BSUIWeeklyProgressView *)self dateOfLastDay];
-  if (!v10 || (v11 = v10, -[BSUIWeeklyProgressView dateOfLastDay](self, "dateOfLastDay"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v9 isEqualToString:v12], v12, v11, (v13 & 1) == 0))
+  dateOfLastDay = [(BSUIWeeklyProgressView *)self dateOfLastDay];
+  if (!dateOfLastDay || (v11 = dateOfLastDay, -[BSUIWeeklyProgressView dateOfLastDay](self, "dateOfLastDay"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [currentDayShortString isEqualToString:v12], v12, v11, (v13 & 1) == 0))
   {
-    v14 = [(BSUIWeeklyProgressView *)self dateOfLastDay];
+    dateOfLastDay2 = [(BSUIWeeklyProgressView *)self dateOfLastDay];
 
-    if (v14 && v9)
+    if (dateOfLastDay2 && currentDayShortString)
     {
-      v15 = [(BSUIWeeklyProgressView *)self metrics];
-      [v15 progressToday];
+      metrics3 = [(BSUIWeeklyProgressView *)self metrics];
+      [metrics3 progressToday];
       v17 = v16;
 
       [(BSUIWeeklyProgressView *)self setVisibleProgressToday:v17];
     }
 
-    [(BSUIWeeklyProgressView *)self setDateOfLastDay:v9];
+    [(BSUIWeeklyProgressView *)self setDateOfLastDay:currentDayShortString];
     v7 = 1;
   }
 
   return v7;
 }
 
-- (void)_setupWeeklyProgressWithUpdateMode:(unint64_t)a3
+- (void)_setupWeeklyProgressWithUpdateMode:(unint64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     if ([(BSUIWeeklyProgressView *)self _isVisible])
     {
@@ -635,7 +635,7 @@ LABEL_25:
     }
   }
 
-  else if (!a3)
+  else if (!mode)
   {
     [(CALayer *)self->_backgroundLayer removeFromSuperlayer];
     backgroundLayer = self->_backgroundLayer;
@@ -655,7 +655,7 @@ LABEL_25:
 - (double)visibleProgressToday
 {
   objc_opt_class();
-  v3 = [(BSUIDynamicValue *)self->_lastVisibleProgressToday value];
+  value = [(BSUIDynamicValue *)self->_lastVisibleProgressToday value];
   v4 = BUDynamicCast();
   v5 = v4;
   v6 = &off_39B458;
@@ -672,10 +672,10 @@ LABEL_25:
   return v9;
 }
 
-- (void)setVisibleProgressToday:(double)a3
+- (void)setVisibleProgressToday:(double)today
 {
   lastVisibleProgressToday = self->_lastVisibleProgressToday;
-  v4 = [NSNumber numberWithDouble:a3];
+  v4 = [NSNumber numberWithDouble:today];
   [(BSUIDynamicValue *)lastVisibleProgressToday updateWithValueIfChanged:v4];
 }
 
@@ -702,32 +702,32 @@ LABEL_25:
     goto LABEL_4;
   }
 
-  v9 = [(BSUIWeeklyProgressView *)self todaySeparatorLayoutInfo];
-  v10 = [v9 separator];
-  [v10 updateProgress:1 animate:v6];
+  todaySeparatorLayoutInfo = [(BSUIWeeklyProgressView *)self todaySeparatorLayoutInfo];
+  separator = [todaySeparatorLayoutInfo separator];
+  [separator updateProgress:1 animate:v6];
 
   [(BSUIWeeklyProgressView *)self setVisibleProgressToday:v6];
   [v12 updateProgress:1 animate:v6];
 LABEL_4:
 }
 
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event
 {
-  v7 = a3;
-  self->_lastTriggerState = a4;
-  v8 = [(BSUIWeeklyProgressView *)self metrics];
-  v9 = [v8 targetTriggerState];
-  if (a4 && v9 == a4)
+  triggerCopy = trigger;
+  self->_lastTriggerState = state;
+  metrics = [(BSUIWeeklyProgressView *)self metrics];
+  targetTriggerState = [metrics targetTriggerState];
+  if (state && targetTriggerState == state)
   {
-    v10 = [(BSUIWeeklyProgressView *)self metrics];
-    v11 = [v10 triggerName];
-    v12 = [v11 isEqualToString:v7];
+    metrics2 = [(BSUIWeeklyProgressView *)self metrics];
+    triggerName = [metrics2 triggerName];
+    v12 = [triggerName isEqualToString:triggerCopy];
 
     if (v12)
     {
-      v13 = [(BSUIWeeklyProgressView *)self metrics];
-      v14 = [v13 triggerDelay];
-      [v14 doubleValue];
+      metrics3 = [(BSUIWeeklyProgressView *)self metrics];
+      triggerDelay = [metrics3 triggerDelay];
+      [triggerDelay doubleValue];
       v16 = v15;
 
       if (v16 <= 0.0)
@@ -753,19 +753,19 @@ LABEL_4:
   }
 }
 
-- (void)dynamicProgressChanged:(id)a3
+- (void)dynamicProgressChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(BSUIWeeklyProgressView *)self metrics];
-  v6 = [v5 dailyReadingGoal];
+  changedCopy = changed;
+  metrics = [(BSUIWeeklyProgressView *)self metrics];
+  dailyReadingGoal = [metrics dailyReadingGoal];
 
-  if (v6)
+  if (dailyReadingGoal)
   {
-    v7 = [v4 progress];
-    [v7 floatValue];
+    progress = [changedCopy progress];
+    [progress floatValue];
     v9 = v8;
-    v10 = [(BSUIWeeklyProgressView *)self metrics];
-    -[BSUIWeeklyProgressView setProgressToday:](self, "setProgressToday:", (v9 / [v10 dailyReadingGoal]));
+    metrics2 = [(BSUIWeeklyProgressView *)self metrics];
+    -[BSUIWeeklyProgressView setProgressToday:](self, "setProgressToday:", (v9 / [metrics2 dailyReadingGoal]));
 
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -781,8 +781,8 @@ LABEL_4:
   v3 = objc_opt_class();
   [(BSUIWeeklyProgressView *)self frame];
   v4 = NSStringFromCGRect(v9);
-  v5 = [(BSUIWeeklyProgressView *)self layoutInfosToDisplay];
-  v6 = [NSMutableString stringWithFormat:@"%@: %p frame=%@, layoutType: %@", v3, self, v4, v5];
+  layoutInfosToDisplay = [(BSUIWeeklyProgressView *)self layoutInfosToDisplay];
+  v6 = [NSMutableString stringWithFormat:@"%@: %p frame=%@, layoutType: %@", v3, self, v4, layoutInfosToDisplay];
 
   return v6;
 }

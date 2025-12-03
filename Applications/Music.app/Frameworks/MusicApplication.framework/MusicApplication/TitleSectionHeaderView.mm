@@ -1,26 +1,26 @@
 @interface TitleSectionHeaderView
 - (UIColor)backgroundColor;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
 - (void)music_inheritedLayoutInsetsDidChange;
-- (void)setBackgroundColor:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setTitle:(id)title;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation TitleSectionHeaderView
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_18B220(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6 = sub_18B220(attributesCopy);
 
   return v6;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v5 = sub_AB92A0();
   v7 = v6;
@@ -28,10 +28,10 @@
   swift_beginAccess();
   *v8 = v5;
   v8[1] = v7;
-  v9 = a3;
-  v10 = self;
+  titleCopy = title;
+  selfCopy = self;
 
-  v11 = *(v10 + OBJC_IVAR____TtC16MusicApplication22TitleSectionHeaderView_textComponents + 8);
+  v11 = *(selfCopy + OBJC_IVAR____TtC16MusicApplication22TitleSectionHeaderView_textComponents + 8);
 
   v12 = String.trim()();
 
@@ -39,22 +39,22 @@
   v11[7] = v12;
 
   sub_2EB704();
-  [(TitleSectionHeaderView *)v10 setNeedsLayout];
+  [(TitleSectionHeaderView *)selfCopy setNeedsLayout];
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   TitleSectionHeaderView.layoutSubviews()();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   TitleSectionHeaderView.traitCollectionDidChange(_:)(v9);
 }
 
@@ -67,31 +67,31 @@
   [v2 setNeedsLayout];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  TitleSectionHeaderView.apply(_:)(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  TitleSectionHeaderView.apply(_:)(attributesCopy);
 }
 
 - (UIColor)backgroundColor
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for TitleSectionHeaderView();
-  v2 = [(TitleSectionHeaderView *)&v4 backgroundColor];
+  backgroundColor = [(TitleSectionHeaderView *)&v4 backgroundColor];
 
-  return v2;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for TitleSectionHeaderView();
-  v4 = a3;
+  colorCopy = color;
   v5 = v7.receiver;
-  [(TitleSectionHeaderView *)&v7 setBackgroundColor:v4];
+  [(TitleSectionHeaderView *)&v7 setBackgroundColor:colorCopy];
   v6 = *&v5[OBJC_IVAR____TtC16MusicApplication22TitleSectionHeaderView_externalBackgroundColor];
-  *&v5[OBJC_IVAR____TtC16MusicApplication22TitleSectionHeaderView_externalBackgroundColor] = a3;
+  *&v5[OBJC_IVAR____TtC16MusicApplication22TitleSectionHeaderView_externalBackgroundColor] = color;
 }
 
 @end

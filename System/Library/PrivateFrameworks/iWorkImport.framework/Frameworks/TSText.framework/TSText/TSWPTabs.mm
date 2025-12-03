@@ -1,19 +1,19 @@
 @interface TSWPTabs
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4;
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver;
 + (id)tabs;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSWPTabs)init;
-- (TSWPTabs)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSWPTabs)initWithTabs:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSWPTabs)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSWPTabs)initWithTabs:(id)tabs;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)tabAfterPosition:(double)a3;
-- (id)tabAtPosition:(double)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (unint64_t)indexForTabWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5;
-- (void)insertTab:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setPosition:(double)a3 forTab:(id)a4;
+- (id)tabAfterPosition:(double)position;
+- (id)tabAtPosition:(double)position;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (unint64_t)indexForTabWithPosition:(double)position alignment:(int)alignment leader:(id)leader;
+- (void)insertTab:(id)tab;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setPosition:(double)position forTab:(id)tab;
 @end
 
 @implementation TSWPTabs
@@ -40,16 +40,16 @@
   return v2;
 }
 
-- (TSWPTabs)initWithTabs:(id)a3
+- (TSWPTabs)initWithTabs:(id)tabs
 {
-  v4 = a3;
+  tabsCopy = tabs;
   v11.receiver = self;
   v11.super_class = TSWPTabs;
   v5 = [(TSWPTabs *)&v11 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CBEB18]);
-    v8 = objc_msgSend_initWithArray_copyItems_(v6, v7, v4[1], 1);
+    v8 = objc_msgSend_initWithArray_copyItems_(v6, v7, tabsCopy[1], 1);
     tabs = v5->_tabs;
     v5->_tabs = v8;
   }
@@ -57,24 +57,24 @@
   return v5;
 }
 
-+ (id)instanceWithArchive:(const Message *)a3 unarchiver:(id)a4
++ (id)instanceWithArchive:(const Message *)archive unarchiver:(id)unarchiver
 {
-  v5 = a4;
+  unarchiverCopy = unarchiver;
   v6 = [TSWPTabs alloc];
-  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, a3, v5);
+  v8 = objc_msgSend_initWithArchive_unarchiver_(v6, v7, archive, unarchiverCopy);
 
   return v8;
 }
 
-- (TSWPTabs)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSWPTabs)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v23.receiver = self;
   v23.super_class = TSWPTabs;
   v7 = [(TSWPTabs *)&v23 init];
   if (v7)
   {
-    v8 = *(a3 + 6);
+    v8 = *(archive + 6);
     v9 = objc_alloc(MEMORY[0x277CBEB18]);
     v11 = objc_msgSend_initWithCapacity_(v9, v10, v8);
     tabs = v7->_tabs;
@@ -86,7 +86,7 @@
       do
       {
         v14 = [TSWPTab alloc];
-        v16 = objc_msgSend_initWithArchive_unarchiver_(v14, v15, *(*(a3 + 4) + 8 * v13 + 8), v6);
+        v16 = objc_msgSend_initWithArchive_unarchiver_(v14, v15, *(*(archive + 4) + 8 * v13 + 8), unarchiverCopy);
         v19 = v16;
         if (v16)
         {
@@ -107,10 +107,10 @@
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -131,36 +131,36 @@
         }
 
         v13 = *(*(&v21 + 1) + 8 * v12);
-        v14 = *(a3 + 4);
+        v14 = *(archive + 4);
         if (!v14)
         {
           goto LABEL_11;
         }
 
-        v15 = *(a3 + 6);
+        v15 = *(archive + 6);
         v16 = *v14;
         if (v15 < *v14)
         {
-          *(a3 + 6) = v15 + 1;
-          objc_msgSend_saveToArchive_archiver_(v13, v9, *&v14[2 * v15 + 2], v6, v21);
+          *(archive + 6) = v15 + 1;
+          objc_msgSend_saveToArchive_archiver_(v13, v9, *&v14[2 * v15 + 2], archiverCopy, v21);
           goto LABEL_13;
         }
 
-        if (v16 == *(a3 + 7))
+        if (v16 == *(archive + 7))
         {
 LABEL_11:
-          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((a3 + 16));
-          v14 = *(a3 + 4);
+          google::protobuf::internal::RepeatedPtrFieldBase::Reserve((archive + 16));
+          v14 = *(archive + 4);
           v16 = *v14;
         }
 
         *v14 = v16 + 1;
-        v17 = google::protobuf::Arena::CreateMaybeMessage<TSWP::TabArchive>(*(a3 + 2));
-        v18 = *(a3 + 6);
-        v19 = *(a3 + 4) + 8 * v18;
-        *(a3 + 6) = v18 + 1;
+        v17 = google::protobuf::Arena::CreateMaybeMessage<TSWP::TabArchive>(*(archive + 2));
+        v18 = *(archive + 6);
+        v19 = *(archive + 4) + 8 * v18;
+        *(archive + 6) = v18 + 1;
         *(v19 + 8) = v17;
-        objc_msgSend_saveToArchive_archiver_(v13, v20, v17, v6, v21);
+        objc_msgSend_saveToArchive_archiver_(v13, v20, v17, archiverCopy, v21);
 LABEL_13:
         ++v12;
       }
@@ -173,15 +173,15 @@ LABEL_13:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
 
   return MEMORY[0x2821F9670](v7, sel_initWithTabs_, self);
 }
 
-- (id)tabAtPosition:(double)a3
+- (id)tabAtPosition:(double)position
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -204,7 +204,7 @@ LABEL_13:
 
         v11 = *(*(&v15 + 1) + 8 * i);
         objc_msgSend_position(v11, v6, v7, v15);
-        if (v12 == a3 || vabdd_f64(a3, v12) < fabs(v12 * 0.000000999999997))
+        if (v12 == position || vabdd_f64(position, v12) < fabs(v12 * 0.000000999999997))
         {
           v13 = v11;
           goto LABEL_13;
@@ -232,7 +232,7 @@ LABEL_13:
   return v13;
 }
 
-- (id)tabAfterPosition:(double)a3
+- (id)tabAfterPosition:(double)position
 {
   v20 = *MEMORY[0x277D85DE8];
   v15 = 0u;
@@ -255,8 +255,8 @@ LABEL_13:
 
         v11 = *(*(&v15 + 1) + 8 * i);
         objc_msgSend_position(v11, v6, v7, v15);
-        v13 = v12 <= a3 || v12 == a3;
-        if (!v13 && vabdd_f64(a3, v12) >= 0.00999999978)
+        v13 = v12 <= position || v12 == position;
+        if (!v13 && vabdd_f64(position, v12) >= 0.00999999978)
         {
           v8 = v11;
           goto LABEL_15;
@@ -278,14 +278,14 @@ LABEL_15:
   return v8;
 }
 
-- (void)insertTab:(id)a3
+- (void)insertTab:(id)tab
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  tabCopy = tab;
+  v7 = tabCopy;
+  if (tabCopy)
   {
-    objc_msgSend_position(v4, v5, v6);
+    objc_msgSend_position(tabCopy, v5, v6);
     v9 = v8;
     v23 = 0u;
     v24 = 0u;
@@ -337,38 +337,38 @@ LABEL_12:
   }
 }
 
-- (void)setPosition:(double)a3 forTab:(id)a4
+- (void)setPosition:(double)position forTab:(id)tab
 {
-  v17 = a4;
-  objc_msgSend_position(v17, v6, v7);
-  if (v10 != a3)
+  tabCopy = tab;
+  objc_msgSend_position(tabCopy, v6, v7);
+  if (v10 != position)
   {
-    v11 = objc_msgSend_tabAtPosition_(self, v8, v9, a3);
+    v11 = objc_msgSend_tabAtPosition_(self, v8, v9, position);
 
     if (v11)
     {
-      objc_msgSend_setPosition_(v17, v12, v13, a3);
+      objc_msgSend_setPosition_(tabCopy, v12, v13, position);
     }
 
     else
     {
-      objc_msgSend_removeObjectIdenticalTo_(self->_tabs, v12, v17);
-      objc_msgSend_setPosition_(v17, v14, v15, a3);
-      objc_msgSend_insertTab_(self, v16, v17);
+      objc_msgSend_removeObjectIdenticalTo_(self->_tabs, v12, tabCopy);
+      objc_msgSend_setPosition_(tabCopy, v14, v15, position);
+      objc_msgSend_insertTab_(self, v16, tabCopy);
     }
   }
 }
 
-- (unint64_t)indexForTabWithPosition:(double)a3 alignment:(int)a4 leader:(id)a5
+- (unint64_t)indexForTabWithPosition:(double)position alignment:(int)alignment leader:(id)leader
 {
-  v8 = a5;
+  leaderCopy = leader;
   v12 = objc_msgSend_count(self->_tabs, v9, v10);
   if (v12)
   {
     v13 = 0;
-    if (v8)
+    if (leaderCopy)
     {
-      v14 = v8;
+      v14 = leaderCopy;
     }
 
     else
@@ -379,13 +379,13 @@ LABEL_12:
     while (1)
     {
       v15 = objc_msgSend_objectAtIndexedSubscript_(self->_tabs, v11, v13);
-      if (objc_msgSend_alignment(v15, v16, v17) == a4)
+      if (objc_msgSend_alignment(v15, v16, v17) == alignment)
       {
         objc_msgSend_position(v15, v18, v19);
-        if (v22 == a3 || vabdd_f64(a3, v22) < fabs(v22 * 0.000000999999997))
+        if (v22 == position || vabdd_f64(position, v22) < fabs(v22 * 0.000000999999997))
         {
           v23 = objc_msgSend_leader(v15, v20, v21);
-          v24 = v8;
+          v24 = leaderCopy;
           v25 = v23;
           v27 = v25;
           if (v25)
@@ -425,9 +425,9 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (v6)
@@ -467,9 +467,9 @@ LABEL_13:
   return v7;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   v6 = TSUCheckedDynamicCast();
   if (objc_msgSend_isEqual_(self, v7, v6))

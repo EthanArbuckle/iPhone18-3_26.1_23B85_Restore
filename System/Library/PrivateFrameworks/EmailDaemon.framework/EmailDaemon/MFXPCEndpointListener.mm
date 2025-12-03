@@ -1,12 +1,12 @@
 @interface MFXPCEndpointListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (MFXPCEndpointListener)initWithEndpointInfo:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (MFXPCEndpointListener)initWithEndpointInfo:(id)info;
 - (NSArray)clients;
 - (NSString)description;
 - (id)endpointInfo;
-- (void)addClientInfo:(id)a3;
+- (void)addClientInfo:(id)info;
 - (void)dealloc;
-- (void)removeClientInfo:(id)a3;
+- (void)removeClientInfo:(id)info;
 @end
 
 @implementation MFXPCEndpointListener
@@ -18,16 +18,16 @@
   return WeakRetained;
 }
 
-- (MFXPCEndpointListener)initWithEndpointInfo:(id)a3
+- (MFXPCEndpointListener)initWithEndpointInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = MFXPCEndpointListener;
   v5 = [(MFXPCEndpointListener *)&v15 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_endpoint, v4);
+    objc_storeWeak(&v5->_endpoint, infoCopy);
     v7 = objc_alloc_init(NSLock);
     lock = v6->_lock;
     v6->_lock = v7;
@@ -59,10 +59,10 @@
 - (NSString)description
 {
   v3 = objc_opt_class();
-  v4 = [(MFXPCEndpointListener *)self endpointInfo];
-  v5 = [v4 exportedInterface];
-  v6 = [v5 protocol];
-  v7 = NSStringFromProtocol(v6);
+  endpointInfo = [(MFXPCEndpointListener *)self endpointInfo];
+  exportedInterface = [endpointInfo exportedInterface];
+  protocol = [exportedInterface protocol];
+  v7 = NSStringFromProtocol(protocol);
   v8 = [NSString stringWithFormat:@"<%@: %p> %@ - %ld clients", v3, self, v7, [(NSMutableArray *)self->_clientInfos count]];
 
   return v8;
@@ -77,44 +77,44 @@
   return v3;
 }
 
-- (void)addClientInfo:(id)a3
+- (void)addClientInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(NSLock *)self->_lock lock];
-  [(NSMutableArray *)self->_clientInfos addObject:v4];
+  [(NSMutableArray *)self->_clientInfos addObject:infoCopy];
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)removeClientInfo:(id)a3
+- (void)removeClientInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   [(NSLock *)self->_lock lock];
-  [(NSMutableArray *)self->_clientInfos removeObject:v4];
+  [(NSMutableArray *)self->_clientInfos removeObject:infoCopy];
   [(NSLock *)self->_lock unlock];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(MFXPCEndpointListener *)self endpointInfo];
-  v7 = [[MFXPCClient alloc] initWithConnection:v5];
-  v8 = [v6 shouldAcceptClient];
-  v9 = (v8)[2](v8, v7);
+  connectionCopy = connection;
+  endpointInfo = [(MFXPCEndpointListener *)self endpointInfo];
+  v7 = [[MFXPCClient alloc] initWithConnection:connectionCopy];
+  shouldAcceptClient = [endpointInfo shouldAcceptClient];
+  v9 = (shouldAcceptClient)[2](shouldAcceptClient, v7);
 
   if (v9)
   {
     v10 = objc_alloc_init(_MFXPCClientInfo);
     [(_MFXPCClientInfo *)v10 setClient:v7];
-    [(_MFXPCClientInfo *)v10 setConnection:v5];
-    v11 = [v6 remoteObjectInterface];
-    [v5 setRemoteObjectInterface:v11];
+    [(_MFXPCClientInfo *)v10 setConnection:connectionCopy];
+    remoteObjectInterface = [endpointInfo remoteObjectInterface];
+    [connectionCopy setRemoteObjectInterface:remoteObjectInterface];
 
-    v12 = [v6 exportedInterface];
-    [v5 setExportedInterface:v12];
+    exportedInterface = [endpointInfo exportedInterface];
+    [connectionCopy setExportedInterface:exportedInterface];
 
-    v13 = [v6 exportedObjectForClient];
-    v14 = (v13)[2](v13, v7);
-    [v5 setExportedObject:v14];
+    exportedObjectForClient = [endpointInfo exportedObjectForClient];
+    v14 = (exportedObjectForClient)[2](exportedObjectForClient, v7);
+    [connectionCopy setExportedObject:v14];
 
     objc_initWeak(&location, v10);
     v18[0] = _NSConcreteStackBlock;
@@ -123,16 +123,16 @@
     v18[3] = &unk_10015A3D0;
     objc_copyWeak(&v19, &location);
     v18[4] = self;
-    [v5 setInvalidationHandler:v18];
+    [connectionCopy setInvalidationHandler:v18];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000AF4B8;
     v16[3] = &unk_10015A3D0;
     objc_copyWeak(&v17, &location);
     v16[4] = self;
-    [v5 setInterruptionHandler:v16];
+    [connectionCopy setInterruptionHandler:v16];
     [(MFXPCEndpointListener *)self addClientInfo:v10];
-    [v5 resume];
+    [connectionCopy resume];
     objc_destroyWeak(&v17);
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);

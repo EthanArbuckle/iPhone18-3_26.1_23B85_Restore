@@ -1,18 +1,18 @@
 @interface BWVideoOrientationTimeMachine
-- (BWVideoOrientationTimeMachine)initWithCapacity:(unint64_t)a3 formatDescription:(opaqueCMFormatDescription *)a4 metadataLocalID:(unsigned int)a5;
-- (CMSampleBufferRef)_newSbufWithCachedItem:(CMTime *)a3 trimAtStartPTS:(CMTime *)a4 referencePTS:;
-- (id)_cachedItemsFromPTSSeconds:(double)a3 toPTSSeconds:(double)a4;
-- (id)copyVideoOrientationSbufFromPTS:(id *)a3 toPTS:(id *)a4 referencePTS:(id *)a5;
+- (BWVideoOrientationTimeMachine)initWithCapacity:(unint64_t)capacity formatDescription:(opaqueCMFormatDescription *)description metadataLocalID:(unsigned int)d;
+- (CMSampleBufferRef)_newSbufWithCachedItem:(CMTime *)item trimAtStartPTS:(CMTime *)s referencePTS:;
+- (id)_cachedItemsFromPTSSeconds:(double)seconds toPTSSeconds:(double)sSeconds;
+- (id)copyVideoOrientationSbufFromPTS:(id *)s toPTS:(id *)tS referencePTS:(id *)pTS;
 - (id)debugDescription;
-- (void)addItemToCacheWithPTS:(id *)a3 exifOrientation:(signed __int16)a4;
+- (void)addItemToCacheWithPTS:(id *)s exifOrientation:(signed __int16)orientation;
 - (void)dealloc;
 @end
 
 @implementation BWVideoOrientationTimeMachine
 
-- (BWVideoOrientationTimeMachine)initWithCapacity:(unint64_t)a3 formatDescription:(opaqueCMFormatDescription *)a4 metadataLocalID:(unsigned int)a5
+- (BWVideoOrientationTimeMachine)initWithCapacity:(unint64_t)capacity formatDescription:(opaqueCMFormatDescription *)description metadataLocalID:(unsigned int)d
 {
-  if (!a3)
+  if (!capacity)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Capacity must be non-zero" userInfo:0]);
   }
@@ -23,11 +23,11 @@
   v9 = v8;
   if (v8)
   {
-    v8->_capacity = a3;
+    v8->_capacity = capacity;
     v8->_cache = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v8->_capacity];
-    if (a4)
+    if (description)
     {
-      v10 = CFRetain(a4);
+      v10 = CFRetain(description);
     }
 
     else
@@ -36,7 +36,7 @@
     }
 
     v9->_formatDescription = v10;
-    v9->_metadataLocalID = a5;
+    v9->_metadataLocalID = d;
     v9->_propertyMutex = FigSimpleMutexCreate();
   }
 
@@ -69,15 +69,15 @@
   return v6;
 }
 
-- (void)addItemToCacheWithPTS:(id *)a3 exifOrientation:(signed __int16)a4
+- (void)addItemToCacheWithPTS:(id *)s exifOrientation:(signed __int16)orientation
 {
-  v4 = a4;
-  v11 = *a3;
+  orientationCopy = orientation;
+  v11 = *s;
   Seconds = CMTimeGetSeconds(&v11);
-  v7 = [[BWVideoOrientationTimeMachineItem alloc] initWithPTSSeconds:v4 exifOrientation:Seconds];
+  v7 = [[BWVideoOrientationTimeMachineItem alloc] initWithPTSSeconds:orientationCopy exifOrientation:Seconds];
   FigSimpleMutexLock();
-  v8 = [(NSMutableArray *)self->_cache lastObject];
-  if (!v8 || (v9 = v8, [v8 ptsSeconds], v10 < Seconds) && objc_msgSend(v9, "exifOrientation") != v4)
+  lastObject = [(NSMutableArray *)self->_cache lastObject];
+  if (!lastObject || (v9 = lastObject, [lastObject ptsSeconds], v10 < Seconds) && objc_msgSend(v9, "exifOrientation") != orientationCopy)
   {
     if ([(NSMutableArray *)self->_cache count]>= self->_capacity)
     {
@@ -90,7 +90,7 @@
   FigSimpleMutexUnlock();
 }
 
-- (id)_cachedItemsFromPTSSeconds:(double)a3 toPTSSeconds:(double)a4
+- (id)_cachedItemsFromPTSSeconds:(double)seconds toPTSSeconds:(double)sSeconds
 {
   FigSimpleMutexLock();
   if ([(NSMutableArray *)self->_cache count])
@@ -100,17 +100,17 @@
     while (1)
     {
       [-[NSMutableArray objectAtIndexedSubscript:](self->_cache objectAtIndexedSubscript:{v7), "ptsSeconds"}];
-      if (v9 >= a4 && v8 == 0x7FFFFFFFFFFFFFFFLL)
+      if (v9 >= sSeconds && v8 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
       }
 
-      if (v9 > a3 && v8 != 0x7FFFFFFFFFFFFFFFLL)
+      if (v9 > seconds && v8 != 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_17;
       }
 
-      if (v9 < a4)
+      if (v9 < sSeconds)
       {
         v8 = v7;
       }
@@ -128,7 +128,7 @@ LABEL_17:
         {
           [-[NSMutableArray objectAtIndexedSubscript:](self->_cache objectAtIndexedSubscript:{v8), "ptsSeconds"}];
           v13 = v8;
-          if (v14 < a4)
+          if (v14 < sSeconds)
           {
             v15 = v8;
             do
@@ -142,7 +142,7 @@ LABEL_17:
               [-[NSMutableArray objectAtIndexedSubscript:](self->_cache objectAtIndexedSubscript:{v15), "ptsSeconds"}];
             }
 
-            while (v16 < a4);
+            while (v16 < sSeconds);
           }
         }
 
@@ -158,35 +158,35 @@ LABEL_23:
   return v12;
 }
 
-- (id)copyVideoOrientationSbufFromPTS:(id *)a3 toPTS:(id *)a4 referencePTS:(id *)a5
+- (id)copyVideoOrientationSbufFromPTS:(id *)s toPTS:(id *)tS referencePTS:(id *)pTS
 {
-  if ((a3->var2 & 1) == 0)
+  if ((s->var2 & 1) == 0)
   {
     return 0;
   }
 
-  if ((a4->var2 & 1) == 0)
+  if ((tS->var2 & 1) == 0)
   {
     return 0;
   }
 
-  time1 = *a3;
-  time2 = *a4;
+  time1 = *s;
+  time2 = *tS;
   if ((CMTimeCompare(&time1, &time2) & 0x80000000) == 0)
   {
     return 0;
   }
 
-  if ((a5->var2 & 1) == 0)
+  if ((pTS->var2 & 1) == 0)
   {
     return 0;
   }
 
   OUTLINED_FUNCTION_0_72();
-  OUTLINED_FUNCTION_1_82(a3->var3, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, *(&v36 + 1), v37, *(&v37 + 1), v38, *(&v38 + 1), v39, *(&v39 + 1), a3->var0, *&a3->var1, v40);
+  OUTLINED_FUNCTION_1_82(s->var3, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, *(&v36 + 1), v37, *(&v37 + 1), v38, *(&v38 + 1), v39, *(&v39 + 1), s->var0, *&s->var1, v40);
   Seconds = CMTimeGetSeconds(&time1);
   OUTLINED_FUNCTION_0_72();
-  OUTLINED_FUNCTION_1_82(a4->var3, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, *(&v36 + 1), v37, *(&v37 + 1), v38, *(&v38 + 1), v39, *(&v39 + 1), a4->var0, *&a4->var1, v40);
+  OUTLINED_FUNCTION_1_82(tS->var3, v20, v21, v22, v23, v24, v25, v26, v27, v28, v29, v30, v31, v32, v33, v34, v35, v36, *(&v36 + 1), v37, *(&v37 + 1), v38, *(&v38 + 1), v39, *(&v39 + 1), tS->var0, *&tS->var1, v40);
   v10 = [(BWVideoOrientationTimeMachine *)self _cachedItemsFromPTSSeconds:Seconds toPTSSeconds:CMTimeGetSeconds(&time1)];
   v36 = 0u;
   v37 = 0u;
@@ -216,7 +216,7 @@ LABEL_7:
       v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v10, "count")}];
     }
 
-    time1 = *a3;
+    time1 = *s;
     OUTLINED_FUNCTION_0_72();
     v17 = [(BWVideoOrientationTimeMachine *)self _newSbufWithCachedItem:v16 trimAtStartPTS:&time1 referencePTS:&time2];
     if (!v17)
@@ -240,14 +240,14 @@ LABEL_7:
   }
 }
 
-- (CMSampleBufferRef)_newSbufWithCachedItem:(CMTime *)a3 trimAtStartPTS:(CMTime *)a4 referencePTS:
+- (CMSampleBufferRef)_newSbufWithCachedItem:(CMTime *)item trimAtStartPTS:(CMTime *)s referencePTS:
 {
   if (result)
   {
     v6 = result;
-    time = *a3;
+    time = *item;
     Seconds = CMTimeGetSeconds(&time);
-    time = *a4;
+    time = *s;
     v8 = CMTimeGetSeconds(&time);
     [a2 ptsSeconds];
     v10 = v9 - v8;
@@ -257,11 +257,11 @@ LABEL_7:
     }
 
     memset(&time, 0, sizeof(time));
-    CMTimeMakeWithSeconds(&time, v10, a4->timescale);
-    v11 = [a2 exifOrientation];
+    CMTimeMakeWithSeconds(&time, v10, s->timescale);
+    exifOrientation = [a2 exifOrientation];
     v12 = *(v6 + 3);
     v13 = time;
-    return FigCaptureMetadataUtilitiesCreateVideoOrientationSampleBuffer(&v13, 0, v11, v12);
+    return FigCaptureMetadataUtilitiesCreateVideoOrientationSampleBuffer(&v13, 0, exifOrientation, v12);
   }
 
   return result;

@@ -9,8 +9,8 @@
 
 - (id)_imageCacheSettingsDatabaseURL
 {
-  v2 = [(WBSTouchIconCache *)self cacheDirectoryURL];
-  if (v2)
+  cacheDirectoryURL = [(WBSTouchIconCache *)self cacheDirectoryURL];
+  if (cacheDirectoryURL)
   {
     v3 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -19,7 +19,7 @@
       _os_log_impl(&dword_1C6968000, v3, OS_LOG_TYPE_DEFAULT, "Using on-disk database for Icon Fetching.", v8, 2u);
     }
 
-    v4 = [v2 URLByAppendingPathComponent:@"TouchIconCacheSettings.db" isDirectory:0];
+    inMemoryDatabaseURL = [cacheDirectoryURL URLByAppendingPathComponent:@"TouchIconCacheSettings.db" isDirectory:0];
   }
 
   else
@@ -31,10 +31,10 @@
       _os_log_impl(&dword_1C6968000, v5, OS_LOG_TYPE_DEFAULT, "Using in-memory database for Icon Fetching.", buf, 2u);
     }
 
-    v4 = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
+    inMemoryDatabaseURL = [MEMORY[0x1E69C89E8] inMemoryDatabaseURL];
   }
 
-  v6 = v4;
+  v6 = inMemoryDatabaseURL;
 
   return v6;
 }
@@ -44,14 +44,14 @@
   v42 = *MEMORY[0x1E69E9840];
   [(WBSTouchIconCache *)self _ensureCacheDirectory];
   [(WBSTouchIconCache *)self _openCacheSettingsDatabaseIfNeeded];
-  v3 = [(WBSSiteMetadataImageCacheSettingsSQLiteStore *)self->_cacheSettingsStore allEntries];
-  v4 = v3;
-  if (self->_cacheSettingsStore && ![v3 count])
+  allEntries = [(WBSSiteMetadataImageCacheSettingsSQLiteStore *)self->_cacheSettingsStore allEntries];
+  v4 = allEntries;
+  if (self->_cacheSettingsStore && ![allEntries count])
   {
     [(WBSSiteMetadataImageCache *)self->_imageCache removeAllImages];
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v37 = 0u;
   v38 = 0u;
   v35 = 0u;
@@ -71,8 +71,8 @@
         }
 
         v10 = *(*(&v35 + 1) + 8 * i);
-        v11 = [v10 host];
-        [v5 setObject:v10 forKeyedSubscript:v11];
+        host = [v10 host];
+        [dictionary setObject:v10 forKeyedSubscript:host];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v35 objects:v41 count:16];
@@ -82,7 +82,7 @@
   }
 
   os_unfair_lock_lock(&self->_touchIconsDataForHostsAccessLock);
-  objc_storeStrong(&self->_touchIconsDataForHosts, v5);
+  objc_storeStrong(&self->_touchIconsDataForHosts, dictionary);
   os_unfair_lock_unlock(&self->_touchIconsDataForHostsAccessLock);
   v33 = 0u;
   v34 = 0u;
@@ -136,9 +136,9 @@
         os_unfair_lock_lock(&self->_touchIconsDataForHostsAccessLock);
         v22 = [(NSMutableDictionary *)self->_touchIconsDataForHosts objectForKeyedSubscript:v21, v27];
         os_unfair_lock_unlock(&self->_touchIconsDataForHostsAccessLock);
-        v23 = [v22 isIconInCache];
+        isIconInCache = [v22 isIconInCache];
         imageCache = self->_imageCache;
-        if (v23)
+        if (isIconInCache)
         {
           v25 = [(WBSSiteMetadataImageCache *)imageCache imageForKeyString:v21 getImageState:0];
         }
@@ -165,7 +165,7 @@
 - (void)_ensureCacheDirectory
 {
   *buf = 138543362;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_1C6968000, log, OS_LOG_TYPE_ERROR, "Error %{public}@ trying to create image cache folder.", buf, 0xCu);
 }
 
@@ -174,7 +174,7 @@
   if (!self->_cacheSettingsStore)
   {
     v3 = [WBSTouchIconCacheSettingsSQLiteStore alloc];
-    v6 = [(WBSTouchIconCache *)self _imageCacheSettingsDatabaseURL];
+    _imageCacheSettingsDatabaseURL = [(WBSTouchIconCache *)self _imageCacheSettingsDatabaseURL];
     v4 = [WBSSiteMetadataImageCacheSettingsSQLiteStore initWithDatabaseURL:v3 protectionType:"initWithDatabaseURL:protectionType:"];
     cacheSettingsStore = self->_cacheSettingsStore;
     self->_cacheSettingsStore = v4;

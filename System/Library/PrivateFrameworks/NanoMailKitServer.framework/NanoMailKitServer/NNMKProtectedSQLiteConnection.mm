@@ -1,5 +1,5 @@
 @interface NNMKProtectedSQLiteConnection
-- (NNMKProtectedSQLiteConnection)initWithUnprotectedDatabaseFileName:(id)a3 protectedDatabaseFileName:(id)a4 inDirectory:(id)a5 protectedDatabaseName:(id)a6 errorCode:(int *)a7;
+- (NNMKProtectedSQLiteConnection)initWithUnprotectedDatabaseFileName:(id)name protectedDatabaseFileName:(id)fileName inDirectory:(id)directory protectedDatabaseName:(id)databaseName errorCode:(int *)code;
 - (id)_vfsModuleName;
 - (int)attachProtectedDatabase;
 - (void)detachProtectedDatabase;
@@ -7,22 +7,22 @@
 
 @implementation NNMKProtectedSQLiteConnection
 
-- (NNMKProtectedSQLiteConnection)initWithUnprotectedDatabaseFileName:(id)a3 protectedDatabaseFileName:(id)a4 inDirectory:(id)a5 protectedDatabaseName:(id)a6 errorCode:(int *)a7
+- (NNMKProtectedSQLiteConnection)initWithUnprotectedDatabaseFileName:(id)name protectedDatabaseFileName:(id)fileName inDirectory:(id)directory protectedDatabaseName:(id)databaseName errorCode:(int *)code
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v13 stringByAppendingPathComponent:a3];
+  fileNameCopy = fileName;
+  directoryCopy = directory;
+  databaseNameCopy = databaseName;
+  v15 = [directoryCopy stringByAppendingPathComponent:name];
   v20.receiver = self;
   v20.super_class = NNMKProtectedSQLiteConnection;
-  v16 = [(NNMKSQLiteConnection *)&v20 initWithPath:v15 errorCode:a7];
+  v16 = [(NNMKSQLiteConnection *)&v20 initWithPath:v15 errorCode:code];
   if (v16)
   {
-    v17 = [v13 stringByAppendingPathComponent:v12];
+    v17 = [directoryCopy stringByAppendingPathComponent:fileNameCopy];
     protectedDatabasePath = v16->_protectedDatabasePath;
     v16->_protectedDatabasePath = v17;
 
-    objc_storeStrong(&v16->_protectedDatabaseName, a6);
+    objc_storeStrong(&v16->_protectedDatabaseName, databaseName);
     v16->_protectedDatabaseAttached = 0;
   }
 
@@ -36,8 +36,8 @@
   {
     v4 = MEMORY[0x277CCACA8];
     protectedDatabasePath = self->_protectedDatabasePath;
-    v6 = [(NNMKProtectedSQLiteConnection *)self _vfsModuleName];
-    v7 = [v4 stringWithFormat:@"ATTACH DATABASE file:%@?vfs=%@ AS %@", protectedDatabasePath, v6, self->_protectedDatabaseName];
+    _vfsModuleName = [(NNMKProtectedSQLiteConnection *)self _vfsModuleName];
+    v7 = [v4 stringWithFormat:@"ATTACH DATABASE file:%@?vfs=%@ AS %@", protectedDatabasePath, _vfsModuleName, self->_protectedDatabaseName];
 
     v8 = [(NNMKSQLiteConnection *)self executeSQL:v7];
     if (v8)
@@ -70,13 +70,13 @@
     {
       v14 = self->_protectedDatabasePath;
       v15 = v10;
-      v16 = [(NNMKSQLiteConnection *)self lastErrorMessage];
+      lastErrorMessage = [(NNMKSQLiteConnection *)self lastErrorMessage];
       *buf = 138543874;
       v18 = v14;
       v19 = 1024;
       v20 = v2;
       v21 = 2114;
-      v22 = v16;
+      v22 = lastErrorMessage;
       _os_log_error_impl(&dword_25B19F000, v15, OS_LOG_TYPE_ERROR, "Error attaching protected database. Path: %{public}@, Error Code: %d, Error Message: %{public}@", buf, 0x1Cu);
     }
 
@@ -94,26 +94,26 @@ LABEL_9:
 - (void)detachProtectedDatabase
 {
   v11 = *MEMORY[0x277D85DE8];
-  v5 = a1;
-  v6 = [a2 lastErrorMessage];
+  selfCopy = self;
+  lastErrorMessage = [a2 lastErrorMessage];
   v8[0] = 67109378;
   v8[1] = a3;
   v9 = 2114;
-  v10 = v6;
-  _os_log_error_impl(&dword_25B19F000, v5, OS_LOG_TYPE_ERROR, "Error detaching protected database (Error Code: %d, Error Message: %{public}@).", v8, 0x12u);
+  v10 = lastErrorMessage;
+  _os_log_error_impl(&dword_25B19F000, selfCopy, OS_LOG_TYPE_ERROR, "Error detaching protected database (Error Code: %d, Error Message: %{public}@).", v8, 0x12u);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
 - (id)_vfsModuleName
 {
-  v3 = [@"VFS-nanomaild-Protected" UTF8String];
+  uTF8String = [@"VFS-nanomaild-Protected" UTF8String];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __47__NNMKProtectedSQLiteConnection__vfsModuleName__block_invoke;
   v5[3] = &unk_279935D28;
   v5[4] = self;
-  v5[5] = v3;
+  v5[5] = uTF8String;
   if (_vfsModuleName_vfsCreationOnceToken != -1)
   {
     dispatch_once(&_vfsModuleName_vfsCreationOnceToken, v5);

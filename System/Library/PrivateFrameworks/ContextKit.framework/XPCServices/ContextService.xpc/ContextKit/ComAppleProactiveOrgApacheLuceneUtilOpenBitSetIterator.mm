@@ -1,19 +1,19 @@
 @interface ComAppleProactiveOrgApacheLuceneUtilOpenBitSetIterator
-- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSetIterator)initWithLongArray:(id)a3 withInt:(int)a4;
-- (int)advanceWithInt:(int)a3;
+- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSetIterator)initWithLongArray:(id)array withInt:(int)int;
+- (int)advanceWithInt:(int)int;
 - (int)nextDoc;
 - (void)dealloc;
 @end
 
 @implementation ComAppleProactiveOrgApacheLuceneUtilOpenBitSetIterator
 
-- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSetIterator)initWithLongArray:(id)a3 withInt:(int)a4
+- (ComAppleProactiveOrgApacheLuceneUtilOpenBitSetIterator)initWithLongArray:(id)array withInt:(int)int
 {
   OrgApacheLuceneSearchDocIdSetIterator_init(self, a2);
   self->i_ = -1;
   self->curDocId_ = -1;
-  JreStrongAssign(&self->arr_, a3);
-  self->words_ = a4;
+  JreStrongAssign(&self->arr_, array);
+  self->words_ = int;
   return self;
 }
 
@@ -79,11 +79,11 @@ LABEL_13:
   return result;
 }
 
-- (int)advanceWithInt:(int)a3
+- (int)advanceWithInt:(int)int
 {
   self->indexArray_ = 0;
-  self->i_ = a3 >> 6;
-  if (a3 >> 6 >= self->words_)
+  self->i_ = int >> 6;
+  if (int >> 6 >= self->words_)
   {
     self->word_ = 0;
 LABEL_15:
@@ -91,7 +91,7 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v4 = a3 & 0x3F;
+  v4 = int & 0x3F;
   self->wordShift_ = v4;
   arr = self->arr_;
   if (!arr)

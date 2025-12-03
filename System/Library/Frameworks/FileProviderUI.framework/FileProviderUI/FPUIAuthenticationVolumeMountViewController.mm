@@ -1,8 +1,8 @@
 @interface FPUIAuthenticationVolumeMountViewController
-- (FPUIAuthenticationVolumeMountViewController)initWithVolumes:(id)a3 mountedVolumeIdentifiers:(id)a4;
+- (FPUIAuthenticationVolumeMountViewController)initWithVolumes:(id)volumes mountedVolumeIdentifiers:(id)identifiers;
 - (id)defaultRightBarButtonItem;
 - (id)tableCellCheckmarkImageDisabled;
-- (void)_done:(id)a3;
+- (void)_done:(id)_done;
 - (void)selectedVolumesIndexesDidChange;
 - (void)setupTableViewSections;
 - (void)viewDidLoad;
@@ -10,20 +10,20 @@
 
 @implementation FPUIAuthenticationVolumeMountViewController
 
-- (FPUIAuthenticationVolumeMountViewController)initWithVolumes:(id)a3 mountedVolumeIdentifiers:(id)a4
+- (FPUIAuthenticationVolumeMountViewController)initWithVolumes:(id)volumes mountedVolumeIdentifiers:(id)identifiers
 {
-  v6 = a3;
-  v7 = a4;
+  volumesCopy = volumes;
+  identifiersCopy = identifiers;
   v16.receiver = self;
   v16.super_class = FPUIAuthenticationVolumeMountViewController;
   v8 = [(FPUIAuthenticationTableViewController *)&v16 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [volumesCopy copy];
     allVolumeRepresentations = v8->_allVolumeRepresentations;
     v8->_allVolumeRepresentations = v9;
 
-    v11 = [v7 copy];
+    v11 = [identifiersCopy copy];
     mountedVolumeIdentifiers = v8->_mountedVolumeIdentifiers;
     v8->_mountedVolumeIdentifiers = v11;
 
@@ -52,22 +52,22 @@
   [(FPUIAuthenticationTableViewController *)self setCanTransitionToNextStep:[(FPUIAuthenticationVolumeMountViewController *)self _canMoveToNextStep]];
 }
 
-- (void)_done:(id)a3
+- (void)_done:(id)_done
 {
   [(FPUIAuthenticationTableViewController *)self setNavBarActivityIndicatorHidden:0];
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   selectedVolumesIndexes = self->_selectedVolumesIndexes;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __53__FPUIAuthenticationVolumeMountViewController__done___block_invoke;
   v11 = &unk_278A513C0;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = array;
+  v6 = array;
   [(NSMutableIndexSet *)selectedVolumesIndexes enumerateIndexesUsingBlock:&v8];
-  [(FPUIAuthenticationTableViewController *)self setTransitioning:1, v8, v9, v10, v11, v12];
-  v7 = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
-  [v7 connectionFlowDelegate:self didPickVolumeMountIdentifiers:v6];
+  [(FPUIAuthenticationTableViewController *)self setTransitioning:1, v8, v9, v10, v11, selfCopy];
+  authenticationDelegate = [(FPUIAuthenticationTableViewController *)self authenticationDelegate];
+  [authenticationDelegate connectionFlowDelegate:self didPickVolumeMountIdentifiers:v6];
 }
 
 void __53__FPUIAuthenticationVolumeMountViewController__done___block_invoke(uint64_t a1, uint64_t a2)
@@ -227,9 +227,9 @@ void __69__FPUIAuthenticationVolumeMountViewController_setupTableViewSections__b
 
 - (void)selectedVolumesIndexesDidChange
 {
-  v3 = [(FPUIAuthenticationVolumeMountViewController *)self _canMoveToNextStep];
+  _canMoveToNextStep = [(FPUIAuthenticationVolumeMountViewController *)self _canMoveToNextStep];
 
-  [(FPUIAuthenticationTableViewController *)self setCanTransitionToNextStep:v3];
+  [(FPUIAuthenticationTableViewController *)self setCanTransitionToNextStep:_canMoveToNextStep];
 }
 
 @end

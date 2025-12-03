@@ -1,6 +1,6 @@
 @interface PKCloudStoreError
-+ (BOOL)_isCloudKitErrorDomain:(id)a3;
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
++ (BOOL)_isCloudKitErrorDomain:(id)domain;
++ (id)errorWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
 - (BOOL)isAccountUnavailable;
 - (BOOL)isAuthenticationOrQuotaError;
 - (BOOL)isChangeTokenExpired;
@@ -14,83 +14,83 @@
 - (BOOL)isParticipantMayNeedVerificationError;
 - (BOOL)isUnrecoverableDecryptionError;
 - (BOOL)isZoneNotFoundError;
-- (PKCloudStoreError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5;
-- (PKCloudStoreError)initWithError:(id)a3;
+- (PKCloudStoreError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info;
+- (PKCloudStoreError)initWithError:(id)error;
 - (id)_allPartialErrors;
-- (id)_objectsOfClassTypeFromPartialErrors:(Class)a3;
+- (id)_objectsOfClassTypeFromPartialErrors:(Class)errors;
 - (id)_partialErrorsDictionary;
 - (id)allZoneIDs;
-- (id)errorForPartialErrorWithObject:(id)a3;
+- (id)errorForPartialErrorWithObject:(id)object;
 - (int64_t)_code;
 @end
 
 @implementation PKCloudStoreError
 
-+ (id)errorWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
++ (id)errorWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[PKCloudStoreError alloc] initWithDomain:v8 code:a4 userInfo:v7];
+  infoCopy = info;
+  domainCopy = domain;
+  v9 = [[PKCloudStoreError alloc] initWithDomain:domainCopy code:code userInfo:infoCopy];
 
   return v9;
 }
 
-- (PKCloudStoreError)initWithDomain:(id)a3 code:(int64_t)a4 userInfo:(id)a5
+- (PKCloudStoreError)initWithDomain:(id)domain code:(int64_t)code userInfo:(id)info
 {
-  v8 = a3;
-  v9 = a5;
-  if ([objc_opt_class() _isCloudKitErrorDomain:v8])
+  domainCopy = domain;
+  infoCopy = info;
+  if ([objc_opt_class() _isCloudKitErrorDomain:domainCopy])
   {
-    v10 = [v9 objectForKey:*MEMORY[0x1E696AA08]];
+    v10 = [infoCopy objectForKey:*MEMORY[0x1E696AA08]];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 domain];
-      v13 = [v12 isEqualToString:*MEMORY[0x1E695B778]];
+      domain = [v10 domain];
+      v13 = [domain isEqualToString:*MEMORY[0x1E695B778]];
 
       if (v13)
       {
-        v14 = [v11 domain];
+        domain2 = [v11 domain];
 
-        a4 = [v11 code];
-        v15 = [v11 userInfo];
+        code = [v11 code];
+        userInfo = [v11 userInfo];
 
-        v8 = v14;
-        v9 = v15;
+        domainCopy = domain2;
+        infoCopy = userInfo;
       }
     }
 
     v18.receiver = self;
     v18.super_class = PKCloudStoreError;
-    self = [(PKCloudStoreError *)&v18 initWithDomain:v8 code:a4 userInfo:v9];
+    self = [(PKCloudStoreError *)&v18 initWithDomain:domainCopy code:code userInfo:infoCopy];
 
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (PKCloudStoreError)initWithError:(id)a3
+- (PKCloudStoreError)initWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v4 code];
-  v7 = [v4 userInfo];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  code = [errorCopy code];
+  userInfo = [errorCopy userInfo];
 
-  v8 = [(PKCloudStoreError *)self initWithDomain:v5 code:v6 userInfo:v7];
+  v8 = [(PKCloudStoreError *)self initWithDomain:domain code:code userInfo:userInfo];
   return v8;
 }
 
-- (id)errorForPartialErrorWithObject:(id)a3
+- (id)errorForPartialErrorWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [(PKCloudStoreError *)self _partialErrorsDictionary];
-  v6 = [v5 objectForKey:v4];
+  objectCopy = object;
+  _partialErrorsDictionary = [(PKCloudStoreError *)self _partialErrorsDictionary];
+  v6 = [_partialErrorsDictionary objectForKey:objectCopy];
 
   if (v6)
   {
@@ -108,15 +108,15 @@
 - (BOOL)isChangeTokenExpired
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PKCloudStoreError *)self _code];
+  _code = [(PKCloudStoreError *)self _code];
   if ([(PKCloudStoreError *)self isPartialError])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(PKCloudStoreError *)self _allPartialErrors];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+    v5 = [_allPartialErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -128,13 +128,13 @@
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_allPartialErrors);
           }
 
           v9 = [[PKCloudStoreError alloc] initWithError:*(*(&v12 + 1) + 8 * v8)];
-          v10 = [(PKCloudStoreError *)v9 isChangeTokenExpired];
+          isChangeTokenExpired = [(PKCloudStoreError *)v9 isChangeTokenExpired];
 
-          if (v10)
+          if (isChangeTokenExpired)
           {
 
             return 1;
@@ -144,7 +144,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [_allPartialErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -157,24 +157,24 @@
     return 0;
   }
 
-  return v3 == 21;
+  return _code == 21;
 }
 
 - (BOOL)isZoneNotFoundError
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PKCloudStoreError *)self _code];
+  _code = [(PKCloudStoreError *)self _code];
   if (![(PKCloudStoreError *)self isPartialError])
   {
-    return ((v3 - 26) & 0xFFFFFFFFFFFFFFFDLL) == 0;
+    return ((_code - 26) & 0xFFFFFFFFFFFFFFFDLL) == 0;
   }
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(PKCloudStoreError *)self _allPartialErrors];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+  v5 = [_allPartialErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -186,13 +186,13 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allPartialErrors);
         }
 
         v9 = [[PKCloudStoreError alloc] initWithError:*(*(&v12 + 1) + 8 * v8)];
-        v10 = [(PKCloudStoreError *)v9 isZoneNotFoundError];
+        isZoneNotFoundError = [(PKCloudStoreError *)v9 isZoneNotFoundError];
 
-        if (v10)
+        if (isZoneNotFoundError)
         {
 
           return 1;
@@ -202,7 +202,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_allPartialErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -232,8 +232,8 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(PKCloudStoreError *)self _allPartialErrors];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+  v5 = [_allPartialErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -244,20 +244,20 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allPartialErrors);
         }
 
         v9 = [[PKCloudStoreError alloc] initWithError:*(*(&v12 + 1) + 8 * i)];
-        v10 = [(PKCloudStoreError *)v9 isUnknownItemError];
+        isUnknownItemError = [(PKCloudStoreError *)v9 isUnknownItemError];
 
-        if (!v10)
+        if (!isUnknownItemError)
         {
           v3 = 0;
           goto LABEL_15;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_allPartialErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -276,15 +276,15 @@ LABEL_15:
 - (BOOL)isUnrecoverableDecryptionError
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PKCloudStoreError *)self _code];
+  _code = [(PKCloudStoreError *)self _code];
   if ([(PKCloudStoreError *)self isPartialError])
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v4 = [(PKCloudStoreError *)self _allPartialErrors];
-    v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+    v5 = [_allPartialErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v5)
     {
       v6 = v5;
@@ -296,13 +296,13 @@ LABEL_15:
         {
           if (*v13 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_allPartialErrors);
           }
 
           v9 = [[PKCloudStoreError alloc] initWithError:*(*(&v12 + 1) + 8 * v8)];
-          v10 = [(PKCloudStoreError *)v9 isUnrecoverableDecryptionError];
+          isUnrecoverableDecryptionError = [(PKCloudStoreError *)v9 isUnrecoverableDecryptionError];
 
-          if (v10)
+          if (isUnrecoverableDecryptionError)
           {
 
             return 1;
@@ -312,7 +312,7 @@ LABEL_15:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v6 = [_allPartialErrors countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v6)
         {
           continue;
@@ -325,7 +325,7 @@ LABEL_15:
     return 0;
   }
 
-  return v3 == 112;
+  return _code == 112;
 }
 
 - (BOOL)isManateeNotAvailableError
@@ -337,8 +337,8 @@ LABEL_15:
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v3 = [(PKCloudStoreError *)self _allPartialErrors];
-    v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+    v4 = [_allPartialErrors countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v4)
     {
       v5 = v4;
@@ -350,13 +350,13 @@ LABEL_15:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_allPartialErrors);
           }
 
           v8 = [[PKCloudStoreError alloc] initWithError:*(*(&v11 + 1) + 8 * v7)];
-          v9 = [(PKCloudStoreError *)v8 isManateeNotAvailableError];
+          isManateeNotAvailableError = [(PKCloudStoreError *)v8 isManateeNotAvailableError];
 
-          if (v9)
+          if (isManateeNotAvailableError)
           {
 
             return 1;
@@ -366,7 +366,7 @@ LABEL_15:
         }
 
         while (v5 != v7);
-        v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [_allPartialErrors countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v5)
         {
           continue;
@@ -383,24 +383,24 @@ LABEL_15:
 - (BOOL)isNetworkUnavailable
 {
   v3 = objc_opt_class();
-  v4 = [(PKCloudStoreError *)self domain];
-  v5 = [v3 _isCloudKitErrorDomain:v4];
+  domain = [(PKCloudStoreError *)self domain];
+  v5 = [v3 _isCloudKitErrorDomain:domain];
 
   if (v5)
   {
     if ([(PKCloudStoreError *)self isPartialError])
     {
-      v6 = [(PKCloudStoreError *)self _allPartialErrors];
-      v7 = [v6 pk_firstObjectPassingTest:&__block_literal_global_44];
+      _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+      v7 = [_allPartialErrors pk_firstObjectPassingTest:&__block_literal_global_44];
       LOBYTE(v5) = v7 != 0;
     }
 
     else
     {
-      v8 = [(PKCloudStoreError *)self _code];
-      if (v8 <= 0x17)
+      _code = [(PKCloudStoreError *)self _code];
+      if (_code <= 0x17)
       {
-        LOBYTE(v5) = 0x8000D8u >> v8;
+        LOBYTE(v5) = 0x8000D8u >> _code;
       }
 
       else
@@ -425,8 +425,8 @@ uint64_t __41__PKCloudStoreError_isNetworkUnavailable__block_invoke(uint64_t a1,
 - (BOOL)isAccountUnavailable
 {
   v3 = objc_opt_class();
-  v4 = [(PKCloudStoreError *)self domain];
-  LODWORD(v3) = [v3 _isCloudKitErrorDomain:v4];
+  domain = [(PKCloudStoreError *)self domain];
+  LODWORD(v3) = [v3 _isCloudKitErrorDomain:domain];
 
   if (!v3)
   {
@@ -438,8 +438,8 @@ uint64_t __41__PKCloudStoreError_isNetworkUnavailable__block_invoke(uint64_t a1,
     return [(PKCloudStoreError *)self _code]== 36;
   }
 
-  v5 = [(PKCloudStoreError *)self _allPartialErrors];
-  v6 = [v5 pk_firstObjectPassingTest:&__block_literal_global_15_0];
+  _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+  v6 = [_allPartialErrors pk_firstObjectPassingTest:&__block_literal_global_15_0];
   v7 = v6 != 0;
 
   return v7;
@@ -463,8 +463,8 @@ uint64_t __41__PKCloudStoreError_isAccountUnavailable__block_invoke(uint64_t a1,
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(PKCloudStoreError *)self _allPartialErrors];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+    v4 = [_allPartialErrors countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = *v11;
@@ -474,20 +474,20 @@ uint64_t __41__PKCloudStoreError_isAccountUnavailable__block_invoke(uint64_t a1,
         {
           if (*v11 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_allPartialErrors);
           }
 
           v7 = [[PKCloudStoreError alloc] initWithError:*(*(&v10 + 1) + 8 * i)];
-          v8 = [(PKCloudStoreError *)v7 isKeychainSyncingInProgress];
+          isKeychainSyncingInProgress = [(PKCloudStoreError *)v7 isKeychainSyncingInProgress];
 
-          if (v8)
+          if (isKeychainSyncingInProgress)
           {
             LOBYTE(v4) = 1;
             goto LABEL_13;
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [_allPartialErrors countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v4)
         {
           continue;
@@ -517,8 +517,8 @@ LABEL_13:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v3 = [(PKCloudStoreError *)self _allPartialErrors];
-    v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+    v4 = [_allPartialErrors countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
       v5 = *v14;
@@ -528,20 +528,20 @@ LABEL_13:
         {
           if (*v14 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_allPartialErrors);
           }
 
           v7 = [[PKCloudStoreError alloc] initWithError:*(*(&v13 + 1) + 8 * i)];
-          v8 = [(PKCloudStoreError *)v7 isPCSError];
+          isPCSError = [(PKCloudStoreError *)v7 isPCSError];
 
-          if (v8)
+          if (isPCSError)
           {
             LOBYTE(v4) = 1;
             goto LABEL_16;
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v4 = [_allPartialErrors countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v4)
         {
           continue;
@@ -556,15 +556,15 @@ LABEL_16:
 
   else
   {
-    v9 = [(PKCloudStoreError *)self domain];
-    v10 = [v9 isEqualToString:*MEMORY[0x1E695B778]];
+    domain = [(PKCloudStoreError *)self domain];
+    v10 = [domain isEqualToString:*MEMORY[0x1E695B778]];
 
     if (v10)
     {
-      v11 = [(PKCloudStoreError *)self code];
-      if ((v11 - 5000) <= 0xA)
+      code = [(PKCloudStoreError *)self code];
+      if ((code - 5000) <= 0xA)
       {
-        LOBYTE(v4) = 0x4BFu >> (v11 + 120);
+        LOBYTE(v4) = 0x4BFu >> (code + 120);
       }
 
       else
@@ -589,11 +589,11 @@ LABEL_16:
     return 0;
   }
 
-  v3 = [(PKCloudStoreError *)self userInfo];
-  v4 = [v3 objectForKey:*MEMORY[0x1E696AA08]];
+  userInfo = [(PKCloudStoreError *)self userInfo];
+  v4 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
 
-  v5 = [v4 domain];
-  if ([v5 isEqualToString:@"PKPassKitErrorDomain"])
+  domain = [v4 domain];
+  if ([domain isEqualToString:@"PKPassKitErrorDomain"])
   {
     v6 = [v4 code] == -4007;
   }
@@ -615,8 +615,8 @@ LABEL_16:
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v3 = [(PKCloudStoreError *)self _allPartialErrors];
-    v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+    v4 = [_allPartialErrors countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v4)
     {
       v5 = *v11;
@@ -626,20 +626,20 @@ LABEL_16:
         {
           if (*v11 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(_allPartialErrors);
           }
 
           v7 = [[PKCloudStoreError alloc] initWithError:*(*(&v10 + 1) + 8 * i)];
-          v8 = [(PKCloudStoreError *)v7 isParticipantMayNeedVerificationError];
+          isParticipantMayNeedVerificationError = [(PKCloudStoreError *)v7 isParticipantMayNeedVerificationError];
 
-          if (v8)
+          if (isParticipantMayNeedVerificationError)
           {
             LOBYTE(v4) = 1;
             goto LABEL_13;
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v4 = [_allPartialErrors countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v4)
         {
           continue;
@@ -662,10 +662,10 @@ LABEL_13:
 
 - (BOOL)isConflictDetected
 {
-  v3 = [(PKCloudStoreError *)self _code];
-  v4 = [(PKCloudStoreError *)self domain];
+  _code = [(PKCloudStoreError *)self _code];
+  domain = [(PKCloudStoreError *)self domain];
   v5 = *MEMORY[0x1E695B778];
-  v6 = v4;
+  v6 = domain;
   v7 = v5;
   v8 = v7;
   if (v6 == v7)
@@ -682,19 +682,19 @@ LABEL_13:
     }
   }
 
-  if (v9 && v3 == 2004)
+  if (v9 && _code == 2004)
   {
     return 1;
   }
 
-  return v3 == 14 || v3 == 11;
+  return _code == 14 || _code == 11;
 }
 
 - (BOOL)isAuthenticationOrQuotaError
 {
   v3 = objc_opt_class();
-  v4 = [(PKCloudStoreError *)self domain];
-  LODWORD(v3) = [v3 _isCloudKitErrorDomain:v4];
+  domain = [(PKCloudStoreError *)self domain];
+  LODWORD(v3) = [v3 _isCloudKitErrorDomain:domain];
 
   if (!v3)
   {
@@ -706,8 +706,8 @@ LABEL_13:
     return ([(PKCloudStoreError *)self _code]& 0xFFFFFFFFFFFFFFEFLL) == 9;
   }
 
-  v5 = [(PKCloudStoreError *)self _allPartialErrors];
-  v6 = [v5 pk_firstObjectPassingTest:&__block_literal_global_17];
+  _allPartialErrors = [(PKCloudStoreError *)self _allPartialErrors];
+  v6 = [_allPartialErrors pk_firstObjectPassingTest:&__block_literal_global_17];
   v7 = v6 != 0;
 
   return v7;
@@ -729,8 +729,8 @@ uint64_t __49__PKCloudStoreError_isAuthenticationOrQuotaError__block_invoke(uint
   [v3 unionSet:v4];
 
   v5 = [(PKCloudStoreError *)self _objectsOfClassTypeFromPartialErrors:objc_opt_class()];
-  v6 = [v5 allObjects];
-  v7 = [v6 valueForKey:@"zoneID"];
+  allObjects = [v5 allObjects];
+  v7 = [allObjects valueForKey:@"zoneID"];
   [v3 addObjectsFromArray:v7];
 
   v8 = [v3 copy];
@@ -738,18 +738,18 @@ uint64_t __49__PKCloudStoreError_isAuthenticationOrQuotaError__block_invoke(uint
   return v8;
 }
 
-- (id)_objectsOfClassTypeFromPartialErrors:(Class)a3
+- (id)_objectsOfClassTypeFromPartialErrors:(Class)errors
 {
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [(PKCloudStoreError *)self _partialErrorsDictionary];
+  _partialErrorsDictionary = [(PKCloudStoreError *)self _partialErrorsDictionary];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __58__PKCloudStoreError__objectsOfClassTypeFromPartialErrors___block_invoke;
   v13 = &unk_1E79CC9F8;
   v14 = v5;
-  v15 = a3;
+  errorsCopy = errors;
   v7 = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:&v10];
+  [_partialErrorsDictionary enumerateKeysAndObjectsUsingBlock:&v10];
   v8 = [v7 copy];
 
   return v8;
@@ -766,11 +766,11 @@ void __58__PKCloudStoreError__objectsOfClassTypeFromPartialErrors___block_invoke
 
 - (int64_t)_code
 {
-  v3 = [(PKCloudStoreError *)self code];
-  v4 = [(PKCloudStoreError *)self domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E695B778]];
+  code = [(PKCloudStoreError *)self code];
+  domain = [(PKCloudStoreError *)self domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E695B778]];
 
-  result = v3;
+  result = code;
   if (v5)
   {
 
@@ -782,31 +782,31 @@ void __58__PKCloudStoreError__objectsOfClassTypeFromPartialErrors___block_invoke
 
 - (id)_partialErrorsDictionary
 {
-  v2 = [(PKCloudStoreError *)self userInfo];
-  v3 = [v2 objectForKey:*MEMORY[0x1E695B798]];
+  userInfo = [(PKCloudStoreError *)self userInfo];
+  v3 = [userInfo objectForKey:*MEMORY[0x1E695B798]];
 
   return v3;
 }
 
 - (id)_allPartialErrors
 {
-  v2 = [(PKCloudStoreError *)self _partialErrorsDictionary];
-  v3 = [v2 allValues];
+  _partialErrorsDictionary = [(PKCloudStoreError *)self _partialErrorsDictionary];
+  allValues = [_partialErrorsDictionary allValues];
 
-  return v3;
+  return allValues;
 }
 
-+ (BOOL)_isCloudKitErrorDomain:(id)a3
++ (BOOL)_isCloudKitErrorDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E695B740]])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:*MEMORY[0x1E695B740]])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:*MEMORY[0x1E695B778]];
+    v4 = [domainCopy isEqualToString:*MEMORY[0x1E695B778]];
   }
 
   return v4;

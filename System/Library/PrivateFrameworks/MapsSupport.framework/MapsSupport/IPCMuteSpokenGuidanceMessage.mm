@@ -1,20 +1,20 @@
 @interface IPCMuteSpokenGuidanceMessage
-- (IPCMuteSpokenGuidanceMessage)initWithDictionary:(id)a3;
+- (IPCMuteSpokenGuidanceMessage)initWithDictionary:(id)dictionary;
 - (id)description;
 - (id)dictionaryValue;
 @end
 
 @implementation IPCMuteSpokenGuidanceMessage
 
-- (IPCMuteSpokenGuidanceMessage)initWithDictionary:(id)a3
+- (IPCMuteSpokenGuidanceMessage)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = IPCMuteSpokenGuidanceMessage;
-  v5 = [(IPCMessageObject *)&v8 initWithDictionary:v4];
+  v5 = [(IPCMessageObject *)&v8 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"kIPCMuteSpokenGuidanceMessageMuteNavigationKey"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"kIPCMuteSpokenGuidanceMessageMuteNavigationKey"];
     -[IPCMuteSpokenGuidanceMessage setMuteNavigation:](v5, "setMuteNavigation:", [v6 BOOLValue]);
   }
 
@@ -25,8 +25,8 @@
 {
   v8.receiver = self;
   v8.super_class = IPCMuteSpokenGuidanceMessage;
-  v3 = [(IPCMessageObject *)&v8 dictionaryValue];
-  v4 = [v3 mutableCopy];
+  dictionaryValue = [(IPCMessageObject *)&v8 dictionaryValue];
+  v4 = [dictionaryValue mutableCopy];
 
   v5 = [NSNumber numberWithBool:[(IPCMuteSpokenGuidanceMessage *)self muteNavigation]];
   [v4 setObject:v5 forKeyedSubscript:@"kIPCMuteSpokenGuidanceMessageMuteNavigationKey"];
@@ -41,8 +41,8 @@
   v7.receiver = self;
   v7.super_class = IPCMuteSpokenGuidanceMessage;
   v3 = [(IPCMuteSpokenGuidanceMessage *)&v7 description];
-  v4 = [(IPCMuteSpokenGuidanceMessage *)self dictionaryValue];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryValue = [(IPCMuteSpokenGuidanceMessage *)self dictionaryValue];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryValue];
 
   return v5;
 }

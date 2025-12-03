@@ -1,16 +1,16 @@
 @interface RPAngelCameraPipViewController
 - (RPAngelCameraPipViewController)init;
-- (id)cameraWithPosition:(int64_t)a3;
-- (void)cameraDidBecomeAvailableForUniqueID:(id)a3;
-- (void)cameraDidBecomeInterruptedForForUniqueID:(id)a3 reason:(int64_t)a4;
-- (void)didChangeLocalScreenAttributes:(id)a3;
-- (void)didChangeLocalVideoAttributes:(id)a3;
+- (id)cameraWithPosition:(int64_t)position;
+- (void)cameraDidBecomeAvailableForUniqueID:(id)d;
+- (void)cameraDidBecomeInterruptedForForUniqueID:(id)d reason:(int64_t)reason;
+- (void)didChangeLocalScreenAttributes:(id)attributes;
+- (void)didChangeLocalVideoAttributes:(id)attributes;
 - (void)didPausePreview;
 - (void)didStartPreview;
 - (void)didStopPreview;
 - (void)layoutPreviewLayer;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)setupPreview;
 - (void)startPipSession;
 - (void)stopPipSession;
@@ -45,7 +45,7 @@
   return v2;
 }
 
-- (id)cameraWithPosition:(int64_t)a3
+- (id)cameraWithPosition:(int64_t)position
 {
   v4 = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
   if (v4)
@@ -57,7 +57,7 @@
       v22 = 1024;
       v23 = 43;
       v24 = 1024;
-      v25 = [v4 count];
+      positionCopy = [v4 count];
       v5 = " [INFO] %{public}s:%d looking for camera in %d capture devices";
       v6 = 24;
 LABEL_8:
@@ -96,23 +96,23 @@ LABEL_8:
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        if ([v12 position] == a3)
+        if ([v12 position] == position)
         {
           if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
           {
-            v14 = [v12 uniqueID];
+            uniqueID = [v12 uniqueID];
             *buf = 136446978;
             v21 = "[RPAngelCameraPipViewController cameraWithPosition:]";
             v22 = 1024;
             v23 = 51;
             v24 = 1024;
-            v25 = a3;
+            positionCopy = position;
             v26 = 2112;
-            v27 = v14;
+            v27 = uniqueID;
             _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d camera found with position %d UID %@", buf, 0x22u);
           }
 
-          v13 = [v12 uniqueID];
+          uniqueID2 = [v12 uniqueID];
 
           goto LABEL_25;
         }
@@ -133,10 +133,10 @@ LABEL_8:
     sub_100043648();
   }
 
-  v13 = 0;
+  uniqueID2 = 0;
 LABEL_25:
 
-  return v13;
+  return uniqueID2;
 }
 
 - (void)setupPreview
@@ -164,15 +164,15 @@ LABEL_25:
   [(AVConferencePreview *)v7 setLocalCameraWithUID:v8];
 
   [(AVConferencePreview *)self->_preview setLocalVideoLayer:self->_previewLayer front:1];
-  v9 = [(RPAngelCameraPipViewController *)self view];
-  v10 = [v9 layer];
-  [v10 setMasksToBounds:1];
+  view = [(RPAngelCameraPipViewController *)self view];
+  layer = [view layer];
+  [layer setMasksToBounds:1];
 
-  v11 = [(RPAngelCameraPipViewController *)self view];
-  v12 = [v11 layer];
-  [v12 addSublayer:self->_previewLayer];
+  view2 = [(RPAngelCameraPipViewController *)self view];
+  layer2 = [view2 layer];
+  [layer2 addSublayer:self->_previewLayer];
 
-  v13 = [(AVConferencePreview *)self->_preview localVideoAttributes];
+  localVideoAttributes = [(AVConferencePreview *)self->_preview localVideoAttributes];
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136446722;
@@ -180,11 +180,11 @@ LABEL_25:
     v17 = 1024;
     v18 = 70;
     v19 = 2112;
-    v20 = v13;
+    v20 = localVideoAttributes;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d localVideoAttributes %@", &v15, 0x1Cu);
   }
 
-  v14 = [(AVConferencePreview *)self->_preview localScreenAttributesForVideoAttributes:v13];
+  v14 = [(AVConferencePreview *)self->_preview localScreenAttributesForVideoAttributes:localVideoAttributes];
 
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -352,8 +352,8 @@ LABEL_12:
   [(RPAngelCameraPipViewController *)self setView:v3];
 
   v4 = +[UIColor clearColor];
-  v5 = [(RPAngelCameraPipViewController *)self view];
-  [v5 setBackgroundColor:v4];
+  view = [(RPAngelCameraPipViewController *)self view];
+  [view setBackgroundColor:v4];
 
   [(RPAngelCameraPipViewController *)self updateViewGeometry];
 }
@@ -374,13 +374,13 @@ LABEL_12:
 
 - (void)layoutPreviewLayer
 {
-  v3 = [(RPAngelCameraPipViewController *)self view];
-  [v3 frame];
+  view = [(RPAngelCameraPipViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(AVConferencePreview *)self->_preview localVideoAttributes];
-  if ([v8 camera] == 3)
+  localVideoAttributes = [(AVConferencePreview *)self->_preview localVideoAttributes];
+  if ([localVideoAttributes camera] == 3)
   {
     if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
@@ -391,14 +391,14 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d camera invalid", &v40, 0x12u);
     }
 
-    [v8 setRatio:{1080.0, 1920.0}];
+    [localVideoAttributes setRatio:{1080.0, 1920.0}];
   }
 
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    [v8 ratio];
+    [localVideoAttributes ratio];
     v10 = v9;
-    [v8 ratio];
+    [localVideoAttributes ratio];
     v40 = 136446978;
     v41 = "[RPAngelCameraPipViewController layoutPreviewLayer]";
     v42 = 1024;
@@ -410,11 +410,11 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d localVideoAttributes: %lf x %lf", &v40, 0x26u);
   }
 
-  [v8 ratio];
+  [localVideoAttributes ratio];
   v13 = v5 / v12;
-  [v8 ratio];
+  [localVideoAttributes ratio];
   v15 = v7 / v14;
-  [v8 ratio];
+  [localVideoAttributes ratio];
   if (v13 <= v15)
   {
     v20 = v17 * v15;
@@ -433,17 +433,17 @@ LABEL_12:
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(RPAngelCameraPipViewController *)self view];
-      [v22 frame];
+      view2 = [(RPAngelCameraPipViewController *)self view];
+      [view2 frame];
       v24 = v23;
-      v25 = [(RPAngelCameraPipViewController *)self view];
-      [v25 frame];
+      view3 = [(RPAngelCameraPipViewController *)self view];
+      [view3 frame];
       v27 = v26;
-      v28 = [(RPAngelCameraPipViewController *)self view];
-      [v28 frame];
+      view4 = [(RPAngelCameraPipViewController *)self view];
+      [view4 frame];
       v30 = v29;
-      v31 = [(RPAngelCameraPipViewController *)self view];
-      [v31 frame];
+      view5 = [(RPAngelCameraPipViewController *)self view];
+      [view5 frame];
       v40 = 136447490;
       v41 = "[RPAngelCameraPipViewController layoutPreviewLayer]";
       v42 = 1024;
@@ -513,12 +513,12 @@ LABEL_12:
   [(PGPictureInPictureProxy *)pegasusProxy preferredContentSizeDidChangeForViewController];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([v9 isEqualToString:@"pictureInPicturePossible"] && -[PGPictureInPictureProxy isPictureInPicturePossible](self->_pegasusProxy, "isPictureInPicturePossible"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"pictureInPicturePossible"] && -[PGPictureInPictureProxy isPictureInPicturePossible](self->_pegasusProxy, "isPictureInPicturePossible"))
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
@@ -526,7 +526,7 @@ LABEL_12:
     block[3] = &unk_10005D098;
     block[4] = self;
     dispatch_async(&_dispatch_main_q, block);
-    [v10 removeObserver:self forKeyPath:@"pictureInPicturePossible"];
+    [objectCopy removeObserver:self forKeyPath:@"pictureInPicturePossible"];
   }
 }
 
@@ -566,9 +566,9 @@ LABEL_12:
   }
 }
 
-- (void)cameraDidBecomeAvailableForUniqueID:(id)a3
+- (void)cameraDidBecomeAvailableForUniqueID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136446466;
@@ -579,9 +579,9 @@ LABEL_12:
   }
 }
 
-- (void)cameraDidBecomeInterruptedForForUniqueID:(id)a3 reason:(int64_t)a4
+- (void)cameraDidBecomeInterruptedForForUniqueID:(id)d reason:(int64_t)reason
 {
-  v4 = a3;
+  dCopy = d;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136446466;
@@ -592,9 +592,9 @@ LABEL_12:
   }
 }
 
-- (void)didChangeLocalVideoAttributes:(id)a3
+- (void)didChangeLocalVideoAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136446722;
@@ -602,14 +602,14 @@ LABEL_12:
     v6 = 1024;
     v7 = 232;
     v8 = 2112;
-    v9 = v3;
+    v9 = attributesCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@", &v4, 0x1Cu);
   }
 }
 
-- (void)didChangeLocalScreenAttributes:(id)a3
+- (void)didChangeLocalScreenAttributes:(id)attributes
 {
-  v3 = a3;
+  attributesCopy = attributes;
   if (__RPLogLevel <= 1u && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 136446722;
@@ -617,7 +617,7 @@ LABEL_12:
     v6 = 1024;
     v7 = 236;
     v8 = 2112;
-    v9 = v3;
+    v9 = attributesCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, " [INFO] %{public}s:%d %@", &v4, 0x1Cu);
   }
 }

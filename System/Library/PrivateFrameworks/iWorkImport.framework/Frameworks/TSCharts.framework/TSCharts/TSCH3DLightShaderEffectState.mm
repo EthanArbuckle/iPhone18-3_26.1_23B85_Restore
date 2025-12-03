@@ -1,10 +1,10 @@
 @interface TSCH3DLightShaderEffectState
 + (id)effectState;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DLightShaderEffectState)init;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setPackageState:(const void *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setPackageState:(const void *)state;
 @end
 
 @implementation TSCH3DLightShaderEffectState
@@ -31,10 +31,10 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   v20 = v15;
   if (v15)
@@ -84,9 +84,9 @@
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (v6 && objc_msgSend_isEqual_(self->_lights, v5, v7, v8, v9, *(v6 + 1)))
@@ -113,10 +113,10 @@ LABEL_23:
   return v13;
 }
 
-- (void)setPackageState:(const void *)a3
+- (void)setPackageState:(const void *)state
 {
   p_var2 = &self->_packageState.transforms.__elems_[0].value[1].var2;
-  v4 = (a3 + 32);
+  v4 = (state + 32);
   v5 = 2;
   do
   {

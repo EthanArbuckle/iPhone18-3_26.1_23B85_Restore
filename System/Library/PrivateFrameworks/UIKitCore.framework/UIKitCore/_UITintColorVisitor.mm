@@ -1,12 +1,12 @@
 @interface _UITintColorVisitor
-- (BOOL)_prepareToVisitView:(id)a3 changedSubview:(id)a4 previousWindow:(id)a5 previousSuperview:(id)a6;
-- (BOOL)_visitView:(id)a3;
-- (_UITintColorVisitor)initWithNotificationReasons:(unint64_t)a3;
+- (BOOL)_prepareToVisitView:(id)view changedSubview:(id)subview previousWindow:(id)window previousSuperview:(id)superview;
+- (BOOL)_visitView:(id)view;
+- (_UITintColorVisitor)initWithNotificationReasons:(unint64_t)reasons;
 @end
 
 @implementation _UITintColorVisitor
 
-- (_UITintColorVisitor)initWithNotificationReasons:(unint64_t)a3
+- (_UITintColorVisitor)initWithNotificationReasons:(unint64_t)reasons
 {
   v7.receiver = self;
   v7.super_class = _UITintColorVisitor;
@@ -14,14 +14,14 @@
   v5 = v4;
   if (v4)
   {
-    v4->_reasons = a3;
+    v4->_reasons = reasons;
     [(_UIViewVisitor *)v4 setVisitMaskViews:0];
   }
 
   return v5;
 }
 
-- (BOOL)_visitView:(id)a3
+- (BOOL)_visitView:(id)view
 {
   v23 = 0;
   v24[0] = &v23;
@@ -35,23 +35,23 @@
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v5 = [(_UIViewVisitor *)self tracksHierarchy];
-  v6 = [a3 superview];
+  tracksHierarchy = [(_UIViewVisitor *)self tracksHierarchy];
+  superview = [view superview];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __34___UITintColorVisitor__visitView___block_invoke;
   v14[3] = &unk_1E712BCE8;
   v14[4] = self;
-  v14[5] = a3;
-  v14[6] = v6;
+  v14[5] = view;
+  v14[6] = superview;
   v14[7] = &v23;
-  v15 = v5;
+  v15 = tracksHierarchy;
   v14[8] = &v20;
   v14[9] = &v16;
-  if (v5)
+  if (tracksHierarchy)
   {
     originalVisitedView = self->_originalVisitedView;
-    if (originalVisitedView && originalVisitedView == a3)
+    if (originalVisitedView && originalVisitedView == view)
     {
       v8 = v24;
 LABEL_8:
@@ -60,8 +60,8 @@ LABEL_8:
     }
 
     changedSubview = self->_changedSubview;
-    v11 = changedSubview != a3 || changedSubview == 0;
-    if (!v11 || v6 != originalVisitedView)
+    v11 = changedSubview != view || changedSubview == 0;
+    if (!v11 || superview != originalVisitedView)
     {
       __34___UITintColorVisitor__visitView___block_invoke(v14);
     }
@@ -71,7 +71,7 @@ LABEL_8:
   {
     __34___UITintColorVisitor__visitView___block_invoke(v14);
     v9 = self->_originalVisitedView;
-    if (v9 && v9 == a3)
+    if (v9 && v9 == view)
     {
       v8 = v21;
       *(v24[0] + 24) = 1;
@@ -82,12 +82,12 @@ LABEL_8:
 LABEL_16:
   if (*(v21[0] + 24) == 1)
   {
-    [a3 _tintColorDidChange];
+    [view _tintColorDidChange];
   }
 
   if (*(v17 + 24) == 1)
   {
-    [a3 accessibilityApplyInvertFilter];
+    [view accessibilityApplyInvertFilter];
   }
 
   v12 = *(v24[0] + 24);
@@ -97,29 +97,29 @@ LABEL_16:
   return v12;
 }
 
-- (BOOL)_prepareToVisitView:(id)a3 changedSubview:(id)a4 previousWindow:(id)a5 previousSuperview:(id)a6
+- (BOOL)_prepareToVisitView:(id)view changedSubview:(id)subview previousWindow:(id)window previousSuperview:(id)superview
 {
   if ([(_UIViewVisitor *)self tracksHierarchy])
   {
-    if ([a4 superview] != a3)
+    if ([subview superview] != view)
     {
       return 0;
     }
 
-    if ([a4 _interactionTintColor])
+    if ([subview _interactionTintColor])
     {
-      if (a4)
+      if (subview)
       {
-        if ((*(a4 + 100) & 0x30) != 0 || *(a4 + 108))
+        if ((*(subview + 100) & 0x30) != 0 || *(subview + 108))
         {
           return 0;
         }
 
-        v13 = [a3 window];
+        window = [view window];
 LABEL_12:
         v14 = 0;
-        v15 = (*(a4 + 101) >> 5) & 1;
-        if (a3)
+        v15 = (*(subview + 101) >> 5) & 1;
+        if (view)
         {
           goto LABEL_13;
         }
@@ -127,13 +127,13 @@ LABEL_12:
         goto LABEL_18;
       }
 
-      v13 = [a3 window];
+      window = [view window];
     }
 
     else
     {
-      v13 = [a3 window];
-      if (a4)
+      window = [view window];
+      if (subview)
       {
         goto LABEL_12;
       }
@@ -141,16 +141,16 @@ LABEL_12:
 
     v15 = 0;
     v14 = 1;
-    if (a3)
+    if (view)
     {
 LABEL_13:
-      v16 = *(a3 + 12);
+      v16 = *(view + 12);
       if (v15 != ((v16 >> 45) & 1))
       {
         v17 = 0;
         if ((v14 & 1) == 0)
         {
-          v18 = *(a4 + 12);
+          v18 = *(subview + 12);
           v19 = (v18 >> 46) & 1;
           v20 = 3;
 LABEL_40:
@@ -158,7 +158,7 @@ LABEL_40:
           {
 LABEL_50:
             self->_reasons = v20;
-            self->_originalVisitedView = a3;
+            self->_originalVisitedView = view;
             v12 = &OBJC_IVAR____UITintColorVisitor__changedSubview;
             goto LABEL_5;
           }
@@ -169,17 +169,17 @@ LABEL_50:
           }
 
 LABEL_42:
-          if ((v16 & 0x3000000000) != 0 || *(a3 + 108))
+          if ((v16 & 0x3000000000) != 0 || *(view + 108))
           {
 LABEL_44:
-            v25 = [a6 tintAdjustmentMode];
-            v26 = [a3 tintAdjustmentMode];
-            if (v25 == v26)
+            tintAdjustmentMode = [superview tintAdjustmentMode];
+            tintAdjustmentMode2 = [view tintAdjustmentMode];
+            if (tintAdjustmentMode == tintAdjustmentMode2)
             {
               v20 = 1;
             }
 
-            if (!v17 || v25 != v26)
+            if (!v17 || tintAdjustmentMode != tintAdjustmentMode2)
             {
               goto LABEL_50;
             }
@@ -188,7 +188,7 @@ LABEL_44:
           }
 
 LABEL_58:
-          if (!v13 || v13 == a5)
+          if (!window || window == window)
           {
             if (!v17)
             {
@@ -198,8 +198,8 @@ LABEL_49:
             }
 
 LABEL_48:
-            v27 = +[UIView _defaultInteractionTintColorForIdiom:](UIView, "_defaultInteractionTintColorForIdiom:", [a6 _userInterfaceIdiom]);
-            if (v27 == +[UIView _defaultInteractionTintColorForIdiom:](UIView, "_defaultInteractionTintColorForIdiom:", [a3 _userInterfaceIdiom]))
+            v27 = +[UIView _defaultInteractionTintColorForIdiom:](UIView, "_defaultInteractionTintColorForIdiom:", [superview _userInterfaceIdiom]);
+            if (v27 == +[UIView _defaultInteractionTintColorForIdiom:](UIView, "_defaultInteractionTintColorForIdiom:", [view _userInterfaceIdiom]))
             {
               return 0;
             }
@@ -208,12 +208,12 @@ LABEL_48:
           }
 
 LABEL_60:
-          if (a5)
+          if (window)
           {
-            v28 = (*(a5 + 12) >> 36) & 3;
+            v28 = (*(window + 12) >> 36) & 3;
             if (!v28)
             {
-              v28 = 2 * (*(a5 + 108) != 0);
+              v28 = 2 * (*(window + 108) != 0);
             }
           }
 
@@ -222,10 +222,10 @@ LABEL_60:
             v28 = 0;
           }
 
-          v29 = (*(v13 + 96) >> 36) & 3;
+          v29 = (*(window + 96) >> 36) & 3;
           if (!v29)
           {
-            v29 = 2 * (*(v13 + 216) != 0);
+            v29 = 2 * (*(window + 216) != 0);
           }
 
           v30 = v28 == v29;
@@ -263,11 +263,11 @@ LABEL_55:
       }
 
 LABEL_24:
-      if ((v14 & 1) == 0 && a3 && (*(a4 + 12) & 0x200000000000) != 0 && (*(a3 + 101) & 0x20) != 0 || [a3 _definesTintColor])
+      if ((v14 & 1) == 0 && view && (*(subview + 12) & 0x200000000000) != 0 && (*(view + 101) & 0x20) != 0 || [view _definesTintColor])
       {
-        v21 = [a6 _normalInheritedTintColor];
-        v22 = [a3 _normalInheritedTintColor];
-        if (v21 == v22 && ([v21 isEqual:v22] & 1) != 0)
+        _normalInheritedTintColor = [superview _normalInheritedTintColor];
+        _normalInheritedTintColor2 = [view _normalInheritedTintColor];
+        if (_normalInheritedTintColor == _normalInheritedTintColor2 && ([_normalInheritedTintColor isEqual:_normalInheritedTintColor2] & 1) != 0)
         {
           v17 = 1;
           goto LABEL_51;
@@ -278,24 +278,24 @@ LABEL_24:
       {
         v17 = 1;
         v20 = 2;
-        if (!v13 || v13 == a5)
+        if (!window || window == window)
         {
 LABEL_37:
           if (v14)
           {
 LABEL_52:
-            if (!a3)
+            if (!view)
             {
               goto LABEL_58;
             }
 
-            v16 = *(a3 + 12);
+            v16 = *(view + 12);
             goto LABEL_55;
           }
 
 LABEL_38:
-          v18 = *(a4 + 12);
-          if (!a3)
+          v18 = *(subview + 12);
+          if (!view)
           {
             if ((v18 & 0x400000000000) != 0)
             {
@@ -306,13 +306,13 @@ LABEL_38:
           }
 
           v19 = (v18 >> 46) & 1;
-          v16 = *(a3 + 12);
+          v16 = *(view + 12);
           goto LABEL_40;
         }
 
-        v23 = [a5 _normalInheritedTintColor];
-        v24 = [v13 _normalInheritedTintColor];
-        if (v23 == v24 && ![v23 isEqual:v24])
+        _normalInheritedTintColor3 = [window _normalInheritedTintColor];
+        _normalInheritedTintColor4 = [window _normalInheritedTintColor];
+        if (_normalInheritedTintColor3 == _normalInheritedTintColor4 && ![_normalInheritedTintColor3 isEqual:_normalInheritedTintColor4])
         {
 LABEL_51:
           v20 = 2;
@@ -333,14 +333,14 @@ LABEL_51:
 LABEL_18:
     if (v15)
     {
-      if ((v14 & 1) == 0 && (*(a4 + 101) & 0x40) != 0)
+      if ((v14 & 1) == 0 && (*(subview + 101) & 0x40) != 0)
       {
         v20 = 3;
         goto LABEL_50;
       }
 
       v20 = 1;
-      if (!v13 || v13 == a5)
+      if (!window || window == window)
       {
         goto LABEL_50;
       }
@@ -354,9 +354,9 @@ LABEL_18:
   }
 
   v12 = &OBJC_IVAR____UITintColorVisitor__originalVisitedView;
-  a4 = a3;
+  subview = view;
 LABEL_5:
-  *(&self->super.super.isa + *v12) = a4;
+  *(&self->super.super.isa + *v12) = subview;
   return 1;
 }
 

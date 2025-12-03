@@ -1,6 +1,6 @@
 @interface FeatureProvider
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation FeatureProvider
@@ -14,7 +14,7 @@
   return v3;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v3 = sub_222B02388();
   v5 = v4;

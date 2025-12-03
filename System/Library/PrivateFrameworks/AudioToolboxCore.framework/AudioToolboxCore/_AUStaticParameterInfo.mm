@@ -1,7 +1,7 @@
 @interface _AUStaticParameterInfo
-- (_AUStaticParameterInfo)initWithCoder:(id)a3;
+- (_AUStaticParameterInfo)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _AUStaticParameterInfo
@@ -13,9 +13,9 @@
   [(_AUStaticParameterInfo *)&v2 dealloc];
 }
 
-- (_AUStaticParameterInfo)initWithCoder:(id)a3
+- (_AUStaticParameterInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   {
     v15 = objc_alloc(MEMORY[0x1E695DFD8]);
     v16 = objc_opt_self();
@@ -28,36 +28,36 @@
   v5 = [(_AUStaticParameterInfo *)&v18 init];
   if (v5)
   {
-    [v4 decodeFloatForKey:@"min"];
+    [coderCopy decodeFloatForKey:@"min"];
     v5->_minValue = v6;
-    [v4 decodeFloatForKey:@"max"];
+    [coderCopy decodeFloatForKey:@"max"];
     v5->_maxValue = v7;
-    v5->_unit = [v4 decodeInt32ForKey:@"unit"];
+    v5->_unit = [coderCopy decodeInt32ForKey:@"unit"];
     v8 = objc_opt_self();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"unitName"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"unitName"];
     unitName = v5->_unitName;
     v5->_unitName = v9;
 
-    v5->_flags = [v4 decodeInt32ForKey:@"flags"];
-    v11 = [v4 decodeObjectOfClasses:-[_AUStaticParameterInfo initWithCoder:]::valueStringClasses forKey:@"values"];
+    v5->_flags = [coderCopy decodeInt32ForKey:@"flags"];
+    v11 = [coderCopy decodeObjectOfClasses:-[_AUStaticParameterInfo initWithCoder:]::valueStringClasses forKey:@"values"];
     valueStrings = v5->_valueStrings;
     v5->_valueStrings = v11;
 
-    v5->_clumpID = [v4 decodeInt32ForKey:@"clump"];
-    [v4 decodeFloatForKey:@"default"];
+    v5->_clumpID = [coderCopy decodeInt32ForKey:@"clump"];
+    [coderCopy decodeFloatForKey:@"default"];
     v5->_defaultValue = v13;
-    v5->_originalOrder = [v4 decodeInt32ForKey:@"originalOrder"];
+    v5->_originalOrder = [coderCopy decodeInt32ForKey:@"originalOrder"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   *&v5 = self->_minValue;
-  v8 = v4;
-  [v4 encodeFloat:@"min" forKey:v5];
+  v8 = coderCopy;
+  [coderCopy encodeFloat:@"min" forKey:v5];
   *&v6 = self->_maxValue;
   [v8 encodeFloat:@"max" forKey:v6];
   [v8 encodeInt32:self->_unit forKey:@"unit"];

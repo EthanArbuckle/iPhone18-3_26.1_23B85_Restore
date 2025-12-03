@@ -1,5 +1,5 @@
 @interface BRCSignpostTracker
-- (BRCSignpostTracker)initWithLabel:(unsigned int)a3;
+- (BRCSignpostTracker)initWithLabel:(unsigned int)label;
 - (void)_startSignpostEvent;
 - (void)dealloc;
 - (void)dropSignpostEvent;
@@ -8,12 +8,12 @@
 
 @implementation BRCSignpostTracker
 
-- (BRCSignpostTracker)initWithLabel:(unsigned int)a3
+- (BRCSignpostTracker)initWithLabel:(unsigned int)label
 {
   v5 = [BRCUserDefaults defaultsForMangledID:0];
-  v6 = [v5 signpostEnabled];
+  signpostEnabled = [v5 signpostEnabled];
 
-  if (v6)
+  if (signpostEnabled)
   {
     v12.receiver = self;
     v12.super_class = BRCSignpostTracker;
@@ -25,20 +25,20 @@
       *(v7 + 2) = v8;
 
       *(v7 + 1) = os_signpost_id_generate(*(v7 + 2));
-      *(v7 + 6) = a3;
+      *(v7 + 6) = label;
       [v7 _startSignpostEvent];
     }
 
     self = v7;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (void)_startSignpostEvent
@@ -173,7 +173,7 @@ LABEL_18:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_223E7A000, a2, OS_LOG_TYPE_FAULT, "[CRIT] Assertion failed: _ended%@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

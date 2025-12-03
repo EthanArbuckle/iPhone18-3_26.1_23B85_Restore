@@ -1,18 +1,18 @@
 @interface HomesStore.CoreData.XPCStoreServer
-- (BOOL)willPerformRecoveryForError:(id)a3 fromContext:(id)a4;
+- (BOOL)willPerformRecoveryForError:(id)error fromContext:(id)context;
 @end
 
 @implementation HomesStore.CoreData.XPCStoreServer
 
-- (BOOL)willPerformRecoveryForError:(id)a3 fromContext:(id)a4
+- (BOOL)willPerformRecoveryForError:(id)error fromContext:(id)context
 {
-  v4 = a4;
-  v6 = a4;
+  contextCopy = context;
+  contextCopy2 = context;
 
-  v7 = a3;
-  LOBYTE(v4) = sub_2530D1F10(a3, v4);
+  errorCopy = error;
+  LOBYTE(contextCopy) = sub_2530D1F10(error, contextCopy);
 
-  return v4 & 1;
+  return contextCopy & 1;
 }
 
 @end

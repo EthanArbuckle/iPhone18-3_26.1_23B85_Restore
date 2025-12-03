@@ -1,23 +1,23 @@
 @interface GKContactsIntegrationCohortState
 + (id)secureCodedPropertyKeys;
-- (id)initCohortNoneCount:(unint64_t)a3 cohortNotSetCount:(unint64_t)a4 cohortOptedInCount:(unint64_t)a5 cohortOptedOutCount:(unint64_t)a6 cohortUnknownCount:(unint64_t)a7 percentSyncedAtleastOnce:(double)a8;
+- (id)initCohortNoneCount:(unint64_t)count cohortNotSetCount:(unint64_t)setCount cohortOptedInCount:(unint64_t)inCount cohortOptedOutCount:(unint64_t)outCount cohortUnknownCount:(unint64_t)unknownCount percentSyncedAtleastOnce:(double)once;
 @end
 
 @implementation GKContactsIntegrationCohortState
 
-- (id)initCohortNoneCount:(unint64_t)a3 cohortNotSetCount:(unint64_t)a4 cohortOptedInCount:(unint64_t)a5 cohortOptedOutCount:(unint64_t)a6 cohortUnknownCount:(unint64_t)a7 percentSyncedAtleastOnce:(double)a8
+- (id)initCohortNoneCount:(unint64_t)count cohortNotSetCount:(unint64_t)setCount cohortOptedInCount:(unint64_t)inCount cohortOptedOutCount:(unint64_t)outCount cohortUnknownCount:(unint64_t)unknownCount percentSyncedAtleastOnce:(double)once
 {
   v15.receiver = self;
   v15.super_class = GKContactsIntegrationCohortState;
   result = [(GKContactsIntegrationCohortState *)&v15 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
-    *(result + 3) = a5;
-    *(result + 4) = a6;
-    *(result + 5) = a7;
-    *(result + 6) = a8;
+    *(result + 1) = count;
+    *(result + 2) = setCount;
+    *(result + 3) = inCount;
+    *(result + 4) = outCount;
+    *(result + 5) = unknownCount;
+    *(result + 6) = once;
   }
 
   return result;

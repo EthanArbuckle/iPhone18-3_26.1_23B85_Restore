@@ -1,5 +1,5 @@
 @interface SUScriptMediaLibraryNativeObject
-- (void)_libraryChangedNotification:(id)a3;
+- (void)_libraryChangedNotification:(id)notification;
 - (void)destroyNativeObject;
 - (void)setupNativeObject;
 @end
@@ -23,11 +23,11 @@
   [(SUScriptNativeObject *)&v3 setupNativeObject];
 }
 
-- (void)_libraryChangedNotification:(id)a3
+- (void)_libraryChangedNotification:(id)notification
 {
-  v3 = [(SUScriptNativeObject *)self scriptObject];
+  scriptObject = [(SUScriptNativeObject *)self scriptObject];
 
-  [(SUScriptObject *)v3 dispatchEvent:0 forName:@"contentschange"];
+  [(SUScriptObject *)scriptObject dispatchEvent:0 forName:@"contentschange"];
 }
 
 @end

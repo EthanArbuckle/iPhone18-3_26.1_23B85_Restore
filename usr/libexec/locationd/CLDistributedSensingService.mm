@@ -1,30 +1,30 @@
 @interface CLDistributedSensingService
 + (BOOL)isSupported;
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLDistributedSensingService)init;
 - (id).cxx_construct;
 - (void)beginService;
 - (void)dealloc;
-- (void)dsmotion:(id)a3 didFailToStartProviderWithError:(id)a4;
-- (void)dsmotion:(id)a3 didRequestMotionDataWithOptions:(id)a4;
-- (void)dsmotion:(id)a3 didSubscribeToMotionDataWithOptions:(id)a4;
-- (void)dsmotionDidExpireMotionDataSubscription:(id)a3;
-- (void)dsmotionDidStartProvider:(id)a3;
-- (void)dsmotionDidUnsubscribeToMotionData:(id)a3;
+- (void)dsmotion:(id)dsmotion didFailToStartProviderWithError:(id)error;
+- (void)dsmotion:(id)dsmotion didRequestMotionDataWithOptions:(id)options;
+- (void)dsmotion:(id)dsmotion didSubscribeToMotionDataWithOptions:(id)options;
+- (void)dsmotionDidExpireMotionDataSubscription:(id)subscription;
+- (void)dsmotionDidStartProvider:(id)provider;
+- (void)dsmotionDidUnsubscribeToMotionData:(id)data;
 - (void)endService;
 - (void)providerBeginService;
 - (void)providerDealloc;
 - (void)providerEndService;
-- (void)providerFitnessTrackingNotification:(BOOL)a3;
+- (void)providerFitnessTrackingNotification:(BOOL)notification;
 - (void)providerInit;
-- (void)providerOnVehicleStateNotification:(VehicleStateData *)a3;
-- (void)providerQueryMotionDataType:(unsigned int)a3;
-- (void)providerSubscribeToMotionDataType:(unsigned int)a3;
-- (void)providerUnsubscribeToMotionDataType:(unsigned int)a3;
+- (void)providerOnVehicleStateNotification:(VehicleStateData *)notification;
+- (void)providerQueryMotionDataType:(unsigned int)type;
+- (void)providerSubscribeToMotionDataType:(unsigned int)type;
+- (void)providerUnsubscribeToMotionDataType:(unsigned int)type;
 - (void)sendVehicleState;
-- (void)toggleProactiveVehicleDetection:(BOOL)a3;
-- (void)toggleVehicleStateProvider:(BOOL)a3;
+- (void)toggleProactiveVehicleDetection:(BOOL)detection;
+- (void)toggleVehicleStateProvider:(BOOL)provider;
 @end
 
 @implementation CLDistributedSensingService
@@ -41,12 +41,12 @@
   }
 }
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -120,11 +120,11 @@
   return self;
 }
 
-- (void)toggleProactiveVehicleDetection:(BOOL)a3
+- (void)toggleProactiveVehicleDetection:(BOOL)detection
 {
   if (self->_proactiveVehicleDetectionTimer)
   {
-    if (a3)
+    if (detection)
     {
       Current = CFAbsoluteTimeGetCurrent();
       v18 = Current;
@@ -257,12 +257,12 @@
   [v4 sendMotionData:v3];
 }
 
-- (void)toggleVehicleStateProvider:(BOOL)a3
+- (void)toggleVehicleStateProvider:(BOOL)provider
 {
   v4 = *&self->_isConnectedToStationaryWifi;
   if (v4)
   {
-    if (a3)
+    if (provider)
     {
       v5 = objc_opt_new();
       [v5 setDeviceType:1];
@@ -280,7 +280,7 @@
   }
 }
 
-- (void)dsmotionDidStartProvider:(id)a3
+- (void)dsmotionDidStartProvider:(id)provider
 {
   if (qword_1025D4470 != -1)
   {
@@ -300,7 +300,7 @@
   }
 }
 
-- (void)dsmotion:(id)a3 didFailToStartProviderWithError:(id)a4
+- (void)dsmotion:(id)dsmotion didFailToStartProviderWithError:(id)error
 {
   if (qword_1025D4470 != -1)
   {
@@ -311,17 +311,17 @@
   if (os_log_type_enabled(qword_1025D4478, OS_LOG_TYPE_ERROR))
   {
     v6 = 138412290;
-    v7 = a4;
+    errorCopy = error;
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_ERROR, "Provider, failed to start with error, %@", &v6, 0xCu);
   }
 
   if (sub_10000A100(121, 0))
   {
-    sub_1018AE040(a4);
+    sub_1018AE040(error);
   }
 }
 
-- (void)dsmotionDidExpireMotionDataSubscription:(id)a3
+- (void)dsmotionDidExpireMotionDataSubscription:(id)subscription
 {
   if (qword_1025D4470 != -1)
   {
@@ -343,7 +343,7 @@
   [objc_msgSend(-[CLDistributedSensingService vendor](self "vendor")];
 }
 
-- (void)dsmotionDidUnsubscribeToMotionData:(id)a3
+- (void)dsmotionDidUnsubscribeToMotionData:(id)data
 {
   if (qword_1025D4470 != -1)
   {
@@ -365,7 +365,7 @@
   [objc_msgSend(-[CLDistributedSensingService vendor](self "vendor")];
 }
 
-- (void)dsmotion:(id)a3 didSubscribeToMotionDataWithOptions:(id)a4
+- (void)dsmotion:(id)dsmotion didSubscribeToMotionDataWithOptions:(id)options
 {
   if (qword_1025D4470 != -1)
   {
@@ -376,21 +376,21 @@
   if (os_log_type_enabled(qword_1025D4478, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67174913;
-    v7[1] = [a4 deviceType];
+    v7[1] = [options deviceType];
     v8 = 1025;
-    v9 = [a4 dataSubType];
+    dataSubType = [options dataSubType];
     _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "Provider, subscribed with options, %{private}u, %{private}u", v7, 0xEu);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018AE2FC(a4);
+    sub_1018AE2FC(options);
   }
 
   [objc_msgSend(-[CLDistributedSensingService vendor](self "vendor")];
 }
 
-- (void)dsmotion:(id)a3 didRequestMotionDataWithOptions:(id)a4
+- (void)dsmotion:(id)dsmotion didRequestMotionDataWithOptions:(id)options
 {
   if (qword_1025D4470 != -1)
   {
@@ -401,15 +401,15 @@
   if (os_log_type_enabled(qword_1025D4478, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67174913;
-    v7[1] = [a4 deviceType];
+    v7[1] = [options deviceType];
     v8 = 1025;
-    v9 = [a4 dataSubType];
+    dataSubType = [options dataSubType];
     _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_DEFAULT, "Provider, queried with options, %{private}u, %{private}u", v7, 0xEu);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018AE40C(a4);
+    sub_1018AE40C(options);
   }
 
   [objc_msgSend(-[CLDistributedSensingService vendor](self "vendor")];
@@ -476,9 +476,9 @@
   }
 }
 
-- (void)providerSubscribeToMotionDataType:(unsigned int)a3
+- (void)providerSubscribeToMotionDataType:(unsigned int)type
 {
-  if (a3)
+  if (type)
   {
     [(CLDistributedSensingService *)self toggleProactiveVehicleDetection:1];
 
@@ -487,7 +487,7 @@
 
   else
   {
-    v3 = *&a3;
+    v3 = *&type;
     if (qword_1025D4470 != -1)
     {
       sub_1018ADB7C();
@@ -508,9 +508,9 @@
   }
 }
 
-- (void)providerUnsubscribeToMotionDataType:(unsigned int)a3
+- (void)providerUnsubscribeToMotionDataType:(unsigned int)type
 {
-  if (a3)
+  if (type)
   {
 
     [(CLDistributedSensingService *)self toggleProactiveVehicleDetection:0];
@@ -518,7 +518,7 @@
 
   else
   {
-    v3 = *&a3;
+    v3 = *&type;
     if (qword_1025D4470 != -1)
     {
       sub_1018ADB7C();
@@ -539,9 +539,9 @@
   }
 }
 
-- (void)providerQueryMotionDataType:(unsigned int)a3
+- (void)providerQueryMotionDataType:(unsigned int)type
 {
-  if (a3)
+  if (type)
   {
 
     [(CLDistributedSensingService *)self sendVehicleState];
@@ -549,7 +549,7 @@
 
   else
   {
-    v3 = *&a3;
+    v3 = *&type;
     if (qword_1025D4470 != -1)
     {
       sub_1018ADB7C();
@@ -570,13 +570,13 @@
   }
 }
 
-- (void)providerOnVehicleStateNotification:(VehicleStateData *)a3
+- (void)providerOnVehicleStateNotification:(VehicleStateData *)notification
 {
   if (*&self->_isConnectedToStationaryWifi)
   {
-    var0 = a3->var0;
-    var1 = a3->var1;
-    v7 = (var1 & 0x12) != 0 ? 2 : (a3->var1 & 9) != 0;
+    var0 = notification->var0;
+    var1 = notification->var1;
+    v7 = (var1 & 0x12) != 0 ? 2 : (notification->var1 & 9) != 0;
     p_mostRecentVehicleState = &self->_mostRecentVehicleState;
     if (*(&self->_mostRecentVehicleState.version + 1) == -1 || *(&self->_mostRecentVehicleState.timestamp + 1) != var0 || HIWORD(self->_mostRecentVehicleState.timestamp) != var1)
     {
@@ -586,8 +586,8 @@
       }
 
       Current = CFAbsoluteTimeGetCurrent();
-      v10 = a3->var0;
-      v11 = a3->var1;
+      v10 = notification->var0;
+      v11 = notification->var1;
       p_mostRecentVehicleState->version = 1;
       *(&p_mostRecentVehicleState->version + 1) = Current;
       *(&p_mostRecentVehicleState->timestamp + 1) = v10;
@@ -621,9 +621,9 @@
   }
 }
 
-- (void)providerFitnessTrackingNotification:(BOOL)a3
+- (void)providerFitnessTrackingNotification:(BOOL)notification
 {
-  if (a3)
+  if (notification)
   {
     [(CLDistributedSensingService *)self toggleVehicleStateProvider:1];
     if (![*&self->_isConnectedToStationaryWifi isSubscriptionActive])
@@ -631,18 +631,18 @@
       return;
     }
 
-    v4 = self;
+    selfCopy2 = self;
     v5 = 1;
   }
 
   else
   {
     [(CLDistributedSensingService *)self toggleVehicleStateProvider:0];
-    v4 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
-  [(CLDistributedSensingService *)v4 toggleProactiveVehicleDetection:v5];
+  [(CLDistributedSensingService *)selfCopy2 toggleProactiveVehicleDetection:v5];
 }
 
 @end

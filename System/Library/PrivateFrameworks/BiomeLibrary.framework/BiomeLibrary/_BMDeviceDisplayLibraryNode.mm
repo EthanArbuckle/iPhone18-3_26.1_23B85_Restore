@@ -17,7 +17,7 @@
 + (id)storeConfigurationForInterfaceOrientation;
 + (id)storeConfigurationForNightShift;
 + (id)storeConfigurationForTrueTone;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -25,13 +25,13 @@
 
 + (id)configurationForAlwaysOn
 {
-  v3 = [a1 storeConfigurationForAlwaysOn];
-  v4 = [a1 syncPolicyForAlwaysOn];
+  storeConfigurationForAlwaysOn = [self storeConfigurationForAlwaysOn];
+  syncPolicyForAlwaysOn = [self syncPolicyForAlwaysOn];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"C7523BDE-CAB5-41F5-9935-B40C41122E6F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.AlwaysOn" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.AlwaysOn" eventClass:objc_opt_class() storeConfig:storeConfigurationForAlwaysOn syncPolicy:syncPolicyForAlwaysOn legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -47,7 +47,7 @@
 + (id)AlwaysOn
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAlwaysOn];
+  configurationForAlwaysOn = [self configurationForAlwaysOn];
   v3 = +[BMDisplayAlwaysOn columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -59,7 +59,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Display.AlwaysOn" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.AlwaysOn" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.AlwaysOn" schema:v9 configuration:configurationForAlwaysOn];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -69,7 +69,7 @@
 + (id)Appearance
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAppearance];
+  configurationForAppearance = [self configurationForAppearance];
   v3 = +[BMDisplayAppearance columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -81,7 +81,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Display.Appearance" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.Appearance" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.Appearance" schema:v9 configuration:configurationForAppearance];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -90,13 +90,13 @@
 
 + (id)configurationForAppearance
 {
-  v3 = [a1 storeConfigurationForAppearance];
-  v4 = [a1 syncPolicyForAppearance];
+  storeConfigurationForAppearance = [self storeConfigurationForAppearance];
+  syncPolicyForAppearance = [self syncPolicyForAppearance];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"95D1339B-20C4-4713-BADE-0A2651DB871E"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.Appearance" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.Appearance" eventClass:objc_opt_class() storeConfig:storeConfigurationForAppearance syncPolicy:syncPolicyForAppearance legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -111,13 +111,13 @@
 
 + (id)configurationForBacklight
 {
-  v3 = [a1 storeConfigurationForBacklight];
-  v4 = [a1 syncPolicyForBacklight];
+  storeConfigurationForBacklight = [self storeConfigurationForBacklight];
+  syncPolicyForBacklight = [self syncPolicyForBacklight];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"EED8D2CA-FB7C-41EF-B8D6-E1A33AFB2ABF"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.Backlight" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:&unk_1EF3EA290 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.Backlight" eventClass:objc_opt_class() storeConfig:storeConfigurationForBacklight syncPolicy:syncPolicyForBacklight legacyNames:&unk_1EF3EA290 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -133,7 +133,7 @@
 + (id)Backlight
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForBacklight];
+  configurationForBacklight = [self configurationForBacklight];
   v3 = +[BMDeviceBacklight columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -145,7 +145,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Display.Backlight" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.Backlight" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.Backlight" schema:v9 configuration:configurationForBacklight];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -163,7 +163,7 @@
 + (id)NightShift
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForNightShift];
+  configurationForNightShift = [self configurationForNightShift];
   v3 = +[BMDeviceNightShift columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -175,7 +175,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Display.NightShift" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.NightShift" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.NightShift" schema:v9 configuration:configurationForNightShift];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -184,13 +184,13 @@
 
 + (id)configurationForNightShift
 {
-  v3 = [a1 storeConfigurationForNightShift];
-  v4 = [a1 syncPolicyForNightShift];
+  storeConfigurationForNightShift = [self storeConfigurationForNightShift];
+  syncPolicyForNightShift = [self syncPolicyForNightShift];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"026C65AE-35A8-4F92-8ED5-F8D782603FCA"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.NightShift" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.NightShift" eventClass:objc_opt_class() storeConfig:storeConfigurationForNightShift syncPolicy:syncPolicyForNightShift legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -205,13 +205,13 @@
 
 + (id)configurationForTrueTone
 {
-  v3 = [a1 storeConfigurationForTrueTone];
-  v4 = [a1 syncPolicyForTrueTone];
+  storeConfigurationForTrueTone = [self storeConfigurationForTrueTone];
+  syncPolicyForTrueTone = [self syncPolicyForTrueTone];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4DF4A2E0-BF8D-45B7-927A-9B19651D32AB"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.TrueTone" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.TrueTone" eventClass:objc_opt_class() storeConfig:storeConfigurationForTrueTone syncPolicy:syncPolicyForTrueTone legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -227,7 +227,7 @@
 + (id)TrueTone
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForTrueTone];
+  configurationForTrueTone = [self configurationForTrueTone];
   v3 = +[BMDeviceTrueTone columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -239,7 +239,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Display.TrueTone" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.TrueTone" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.TrueTone" schema:v9 configuration:configurationForTrueTone];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -249,7 +249,7 @@
 + (id)InterfaceOrientation
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForInterfaceOrientation];
+  configurationForInterfaceOrientation = [self configurationForInterfaceOrientation];
   v3 = +[BMDeviceInterfaceOrientation columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -261,7 +261,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Device.Display.InterfaceOrientation" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.InterfaceOrientation" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Device.Display.InterfaceOrientation" schema:v9 configuration:configurationForInterfaceOrientation];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -270,55 +270,55 @@
 
 + (id)configurationForInterfaceOrientation
 {
-  v3 = [a1 storeConfigurationForInterfaceOrientation];
-  v4 = [a1 syncPolicyForInterfaceOrientation];
+  storeConfigurationForInterfaceOrientation = [self storeConfigurationForInterfaceOrientation];
+  syncPolicyForInterfaceOrientation = [self syncPolicyForInterfaceOrientation];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4613B122-5DD5-4923-A89B-3DA007BAF9EE"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.InterfaceOrientation" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Device.Display.InterfaceOrientation" eventClass:objc_opt_class() storeConfig:storeConfigurationForInterfaceOrientation syncPolicy:syncPolicyForInterfaceOrientation legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AlwaysOn"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AlwaysOn"])
   {
-    v5 = [a1 AlwaysOn];
+    alwaysOn = [self AlwaysOn];
 LABEL_13:
-    v6 = v5;
+    v6 = alwaysOn;
     goto LABEL_14;
   }
 
-  if ([v4 isEqualToString:@"Appearance"])
+  if ([nameCopy isEqualToString:@"Appearance"])
   {
-    v5 = [a1 Appearance];
+    alwaysOn = [self Appearance];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"Backlight"])
+  if ([nameCopy isEqualToString:@"Backlight"])
   {
-    v5 = [a1 Backlight];
+    alwaysOn = [self Backlight];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"InterfaceOrientation"])
+  if ([nameCopy isEqualToString:@"InterfaceOrientation"])
   {
-    v5 = [a1 InterfaceOrientation];
+    alwaysOn = [self InterfaceOrientation];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"NightShift"])
+  if ([nameCopy isEqualToString:@"NightShift"])
   {
-    v5 = [a1 NightShift];
+    alwaysOn = [self NightShift];
     goto LABEL_13;
   }
 
-  if ([v4 isEqualToString:@"TrueTone"])
+  if ([nameCopy isEqualToString:@"TrueTone"])
   {
-    v5 = [a1 TrueTone];
+    alwaysOn = [self TrueTone];
     goto LABEL_13;
   }
 

@@ -1,44 +1,44 @@
 @interface NFPeerPaymentTransferRequest
-- (NFPeerPaymentTransferRequest)initWithCoder:(id)a3;
-- (NFPeerPaymentTransferRequest)initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NFPeerPaymentTransferRequest)initWithCoder:(id)coder;
+- (NFPeerPaymentTransferRequest)initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NFPeerPaymentTransferRequest
 
-- (NFPeerPaymentTransferRequest)initWithDictionary:(id)a3
+- (NFPeerPaymentTransferRequest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = NFPeerPaymentTransferRequest;
   v5 = [(NFPeerPaymentTransferRequest *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"transferAmount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"transferAmount"];
     transactionAmount = v5->_transactionAmount;
     v5->_transactionAmount = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"transferAppleTransactionHash"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"transferAppleTransactionHash"];
     appleTransactionHash = v5->_appleTransactionHash;
     v5->_appleTransactionHash = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"transferPublicTransactionHash"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"transferPublicTransactionHash"];
     publicTransactionHash = v5->_publicTransactionHash;
     v5->_publicTransactionHash = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"transferDate"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"transferDate"];
     transactionDate = v5->_transactionDate;
     v5->_transactionDate = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"transferCurrency"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"transferCurrency"];
     transactionCurrency = v5->_transactionCurrency;
     v5->_transactionCurrency = v14;
 
-    v16 = [v4 objectForKeyedSubscript:@"transferCountry"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"transferCountry"];
     transactionCountry = v5->_transactionCountry;
     v5->_transactionCountry = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"transferNonce"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"transferNonce"];
     nonce = v5->_nonce;
     v5->_nonce = v18;
   }
@@ -46,39 +46,39 @@
   return v5;
 }
 
-- (NFPeerPaymentTransferRequest)initWithCoder:(id)a3
+- (NFPeerPaymentTransferRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = NFPeerPaymentTransferRequest;
   v5 = [(NFPeerPaymentTransferRequest *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferAmount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferAmount"];
     transactionAmount = v5->_transactionAmount;
     v5->_transactionAmount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferAppleTransactionHash"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferAppleTransactionHash"];
     appleTransactionHash = v5->_appleTransactionHash;
     v5->_appleTransactionHash = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferPublicTransactionHash"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferPublicTransactionHash"];
     publicTransactionHash = v5->_publicTransactionHash;
     v5->_publicTransactionHash = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferDate"];
     transactionDate = v5->_transactionDate;
     v5->_transactionDate = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferCurrency"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferCurrency"];
     transactionCurrency = v5->_transactionCurrency;
     v5->_transactionCurrency = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferCountry"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferCountry"];
     transactionCountry = v5->_transactionCountry;
     v5->_transactionCountry = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transferNonce"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transferNonce"];
     nonce = v5->_nonce;
     v5->_nonce = v18;
   }
@@ -86,17 +86,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   transactionAmount = self->_transactionAmount;
-  v5 = a3;
-  [v5 encodeObject:transactionAmount forKey:@"transferAmount"];
-  [v5 encodeObject:self->_appleTransactionHash forKey:@"transferAppleTransactionHash"];
-  [v5 encodeObject:self->_publicTransactionHash forKey:@"transferPublicTransactionHash"];
-  [v5 encodeObject:self->_transactionDate forKey:@"transferDate"];
-  [v5 encodeObject:self->_transactionCurrency forKey:@"transferCurrency"];
-  [v5 encodeObject:self->_transactionCountry forKey:@"transferCountry"];
-  [v5 encodeObject:self->_nonce forKey:@"transferNonce"];
+  coderCopy = coder;
+  [coderCopy encodeObject:transactionAmount forKey:@"transferAmount"];
+  [coderCopy encodeObject:self->_appleTransactionHash forKey:@"transferAppleTransactionHash"];
+  [coderCopy encodeObject:self->_publicTransactionHash forKey:@"transferPublicTransactionHash"];
+  [coderCopy encodeObject:self->_transactionDate forKey:@"transferDate"];
+  [coderCopy encodeObject:self->_transactionCurrency forKey:@"transferCurrency"];
+  [coderCopy encodeObject:self->_transactionCountry forKey:@"transferCountry"];
+  [coderCopy encodeObject:self->_nonce forKey:@"transferNonce"];
 }
 
 @end

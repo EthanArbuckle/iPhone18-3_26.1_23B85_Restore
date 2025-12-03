@@ -6,8 +6,8 @@
 
 - (BOOL)svx_isResponseViewIdPresent
 {
-  v1 = [a1 responseViewId];
-  v2 = v1 != 0;
+  responseViewId = [self responseViewId];
+  v2 = responseViewId != 0;
 
   return v2;
 }

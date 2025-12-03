@@ -1,8 +1,8 @@
 @interface _UISuperlayerSecurityAnalysisSceneComponent
 - (UIScene)_scene;
 - (_UISuperlayerSecurityAnalysisSceneComponent)init;
-- (void)contextBinderDidEnrollBindable:(id)a3;
-- (void)contextBinderDidExpellBindable:(id)a3;
+- (void)contextBinderDidEnrollBindable:(id)bindable;
+- (void)contextBinderDidExpellBindable:(id)bindable;
 - (void)dealloc;
 @end
 
@@ -17,28 +17,28 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  v3 = [(_UISuperlayerSecurityAnalysisSceneComponent *)v2 _scene];
-  if (v3)
+  selfCopy = self;
+  _scene = [(_UISuperlayerSecurityAnalysisSceneComponent *)selfCopy _scene];
+  if (_scene)
   {
-    v4 = v3;
+    v4 = _scene;
     objc_opt_self();
     v5 = swift_dynamicCastObjCClass();
     if (v5)
     {
-      v6 = [v5 _contextBinder];
+      _contextBinder = [v5 _contextBinder];
 
-      [(UIScene *)v6 removeObserver:v2];
-      v4 = v6;
+      [(UIScene *)_contextBinder removeObserver:selfCopy];
+      v4 = _contextBinder;
     }
   }
 
-  v7.receiver = v2;
+  v7.receiver = selfCopy;
   v7.super_class = _UISuperlayerSecurityAnalysisSceneComponent;
   [(_UISuperlayerSecurityAnalysisSceneComponent *)&v7 dealloc];
 }
 
-- (void)contextBinderDidExpellBindable:(id)a3
+- (void)contextBinderDidExpellBindable:(id)bindable
 {
   objc_opt_self();
   v3 = swift_dynamicCastObjCClass();
@@ -49,7 +49,7 @@
   }
 }
 
-- (void)contextBinderDidEnrollBindable:(id)a3
+- (void)contextBinderDidEnrollBindable:(id)bindable
 {
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
@@ -57,7 +57,7 @@
   {
     v5 = v4;
     swift_unknownObjectRetain();
-    v6 = self;
+    selfCopy = self;
     [v5 _setWantsSuperlayerSecurityAnalysis_];
     swift_unknownObjectRelease();
   }

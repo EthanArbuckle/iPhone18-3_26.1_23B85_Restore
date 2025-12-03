@@ -1,5 +1,5 @@
 @interface SFAnalyticsSQLiteStore
-+ (SFAnalyticsSQLiteStore)storeWithPath:(id)a3 schema:(id)a4;
++ (SFAnalyticsSQLiteStore)storeWithPath:(id)path schema:(id)schema;
 - (BOOL)tryToOpenDatabase;
 - (NSArray)allEvents;
 - (NSArray)hardFailures;
@@ -9,22 +9,22 @@
 - (NSDate)uploadDate;
 - (NSString)databaseBasename;
 - (NSString)metricsAccountID;
-- (id)dataPropertyForKey:(id)a3;
+- (id)dataPropertyForKey:(id)key;
 - (id)summaryCounts;
-- (int64_t)hardFailureCountForEventType:(id)a3;
-- (int64_t)softFailureCountForEventType:(id)a3;
-- (int64_t)successCountForEventType:(id)a3;
-- (void)addSample:(id)a3 forName:(id)a4;
+- (int64_t)hardFailureCountForEventType:(id)type;
+- (int64_t)softFailureCountForEventType:(id)type;
+- (int64_t)successCountForEventType:(id)type;
+- (void)addSample:(id)sample forName:(id)name;
 - (void)clearAllData;
 - (void)dealloc;
-- (void)incrementHardFailureCountForEventType:(id)a3;
-- (void)incrementSoftFailureCountForEventType:(id)a3;
-- (void)incrementSuccessCountForEventType:(id)a3;
-- (void)removeAllSamplesForName:(id)a3;
-- (void)setDataProperty:(id)a3 forKey:(id)a4;
-- (void)setMetricsAccountID:(id)a3;
-- (void)setUploadDate:(id)a3;
-- (void)streamEventsWithLimit:(id)a3 fromTable:(id)a4 eventHandler:(id)a5;
+- (void)incrementHardFailureCountForEventType:(id)type;
+- (void)incrementSoftFailureCountForEventType:(id)type;
+- (void)incrementSuccessCountForEventType:(id)type;
+- (void)removeAllSamplesForName:(id)name;
+- (void)setDataProperty:(id)property forKey:(id)key;
+- (void)setMetricsAccountID:(id)d;
+- (void)setUploadDate:(id)date;
+- (void)streamEventsWithLimit:(id)limit fromTable:(id)table eventHandler:(id)handler;
 @end
 
 @implementation SFAnalyticsSQLiteStore
@@ -74,12 +74,12 @@ LABEL_10:
   return v3;
 }
 
-- (void)streamEventsWithLimit:(id)a3 fromTable:(id)a4 eventHandler:(id)a5
+- (void)streamEventsWithLimit:(id)limit fromTable:(id)table eventHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  limitCopy = limit;
+  tableCopy = table;
+  handlerCopy = handler;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
     v15[0] = @"data";
@@ -88,8 +88,8 @@ LABEL_10:
     v13[1] = 3221225472;
     v13[2] = __71__SFAnalyticsSQLiteStore_streamEventsWithLimit_fromTable_eventHandler___block_invoke;
     v13[3] = &unk_1E70D70E8;
-    v14 = v10;
-    [(SFSQLite *)self select:v11 from:v9 where:0 bindings:0 orderBy:&unk_1EFAAC640 limit:v8 forEachRow:v13];
+    v14 = handlerCopy;
+    [(SFSQLite *)self select:v11 from:tableCopy where:0 bindings:0 orderBy:&unk_1EFAAC640 limit:limitCopy forEachRow:v13];
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -125,9 +125,9 @@ void __71__SFAnalyticsSQLiteStore_streamEventsWithLimit_fromTable_eventHandler__
   }
 }
 
-- (id)dataPropertyForKey:(id)a3
+- (id)dataPropertyForKey:(id)key
 {
-  v3 = [(SFSQLite *)self propertyForKey:a3];
+  v3 = [(SFSQLite *)self propertyForKey:key];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v3 options:0];
@@ -141,21 +141,21 @@ void __71__SFAnalyticsSQLiteStore_streamEventsWithLimit_fromTable_eventHandler__
   return v4;
 }
 
-- (void)setDataProperty:(id)a3 forKey:(id)a4
+- (void)setDataProperty:(id)property forKey:(id)key
 {
-  v6 = a4;
-  v7 = [a3 base64EncodedStringWithOptions:0];
-  [(SFSQLite *)self setProperty:v7 forKey:v6];
+  keyCopy = key;
+  v7 = [property base64EncodedStringWithOptions:0];
+  [(SFSQLite *)self setProperty:v7 forKey:keyCopy];
 }
 
-- (void)setMetricsAccountID:(id)a3
+- (void)setMetricsAccountID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
-    if (v4)
+    if (dCopy)
     {
-      [(SFSQLite *)self setProperty:v4 forKey:@"account_id"];
+      [(SFSQLite *)self setProperty:dCopy forKey:@"account_id"];
     }
 
     else
@@ -180,12 +180,12 @@ void __71__SFAnalyticsSQLiteStore_streamEventsWithLimit_fromTable_eventHandler__
   return v3;
 }
 
-- (void)setUploadDate:(id)a3
+- (void)setUploadDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
-    [(SFSQLite *)self setDateProperty:v4 forKey:@"upload_date"];
+    [(SFSQLite *)self setDateProperty:dateCopy forKey:@"upload_date"];
   }
 }
 
@@ -204,33 +204,33 @@ void __71__SFAnalyticsSQLiteStore_streamEventsWithLimit_fromTable_eventHandler__
   return v3;
 }
 
-- (void)removeAllSamplesForName:(id)a3
+- (void)removeAllSamplesForName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"name == '%@'", v5];
-    [(SFSQLite *)self deleteFrom:@"samples" where:v4 bindings:0];
+    nameCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"name == '%@'", nameCopy];
+    [(SFSQLite *)self deleteFrom:@"samples" where:nameCopy bindings:0];
   }
 }
 
-- (void)addSample:(id)a3 forName:(id)a4
+- (void)addSample:(id)sample forName:(id)name
 {
   v14[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  sampleCopy = sample;
+  nameCopy = name;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
     v13[0] = @"timestamp";
     v8 = MEMORY[0x1E696AD98];
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v9 timeIntervalSince1970];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
     v10 = [v8 numberWithDouble:?];
     v14[0] = v10;
-    v14[1] = v7;
+    v14[1] = nameCopy;
     v13[1] = @"name";
     v13[2] = @"value";
-    v14[2] = v6;
+    v14[2] = sampleCopy;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
     [(SFSQLite *)self insertOrReplaceInto:@"samples" values:v11];
   }
@@ -382,7 +382,7 @@ id __35__SFAnalyticsSQLiteStore_allEvents__block_invoke(uint64_t a1, void *a2)
   v25 = *MEMORY[0x1E69E9840];
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     [(SFSQLite *)self selectAllFrom:@"success_count" where:0 bindings:0];
     v18 = 0u;
     v19 = 0u;
@@ -416,7 +416,7 @@ id __35__SFAnalyticsSQLiteStore_allEvents__block_invoke(uint64_t a1, void *a2)
             v11 = [v7 objectForKeyedSubscript:@"soft_failure_count"];
             v23[2] = v11;
             v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:3];
-            [v16 setObject:v12 forKeyedSubscript:v8];
+            [dictionary setObject:v12 forKeyedSubscript:v8];
           }
 
           else
@@ -439,24 +439,24 @@ id __35__SFAnalyticsSQLiteStore_allEvents__block_invoke(uint64_t a1, void *a2)
 
   else
   {
-    v16 = objc_opt_new();
+    dictionary = objc_opt_new();
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return dictionary;
 }
 
-- (void)incrementSoftFailureCountForEventType:(id)a3
+- (void)incrementSoftFailureCountForEventType:(id)type
 {
   v14[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
-    v5 = [(SFAnalyticsSQLiteStore *)self successCountForEventType:v4];
-    v6 = [(SFAnalyticsSQLiteStore *)self hardFailureCountForEventType:v4];
-    v7 = [(SFAnalyticsSQLiteStore *)self softFailureCountForEventType:v4];
-    v14[0] = v4;
+    v5 = [(SFAnalyticsSQLiteStore *)self successCountForEventType:typeCopy];
+    v6 = [(SFAnalyticsSQLiteStore *)self hardFailureCountForEventType:typeCopy];
+    v7 = [(SFAnalyticsSQLiteStore *)self softFailureCountForEventType:typeCopy];
+    v14[0] = typeCopy;
     v13[0] = @"event_type";
     v13[1] = @"success_count";
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
@@ -474,16 +474,16 @@ id __35__SFAnalyticsSQLiteStore_allEvents__block_invoke(uint64_t a1, void *a2)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)incrementHardFailureCountForEventType:(id)a3
+- (void)incrementHardFailureCountForEventType:(id)type
 {
   v14[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
-    v5 = [(SFAnalyticsSQLiteStore *)self successCountForEventType:v4];
-    v6 = [(SFAnalyticsSQLiteStore *)self hardFailureCountForEventType:v4];
-    v7 = [(SFAnalyticsSQLiteStore *)self softFailureCountForEventType:v4];
-    v14[0] = v4;
+    v5 = [(SFAnalyticsSQLiteStore *)self successCountForEventType:typeCopy];
+    v6 = [(SFAnalyticsSQLiteStore *)self hardFailureCountForEventType:typeCopy];
+    v7 = [(SFAnalyticsSQLiteStore *)self softFailureCountForEventType:typeCopy];
+    v14[0] = typeCopy;
     v13[0] = @"event_type";
     v13[1] = @"success_count";
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
@@ -501,66 +501,66 @@ id __35__SFAnalyticsSQLiteStore_allEvents__block_invoke(uint64_t a1, void *a2)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)softFailureCountForEventType:(id)a3
+- (int64_t)softFailureCountForEventType:(id)type
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
     v14[0] = @"soft_failure_count";
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    v13 = v4;
+    v13 = typeCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
     v7 = [(SFSQLite *)self select:v5 from:@"success_count" where:@"event_type = ?" bindings:v6];
-    v8 = [v7 firstObject];
-    v9 = [v8 valueForKey:@"soft_failure_count"];
-    v10 = [v9 integerValue];
+    firstObject = [v7 firstObject];
+    v9 = [firstObject valueForKey:@"soft_failure_count"];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return integerValue;
 }
 
-- (int64_t)hardFailureCountForEventType:(id)a3
+- (int64_t)hardFailureCountForEventType:(id)type
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
     v14[0] = @"hard_failure_count";
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    v13 = v4;
+    v13 = typeCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
     v7 = [(SFSQLite *)self select:v5 from:@"success_count" where:@"event_type = ?" bindings:v6];
-    v8 = [v7 firstObject];
-    v9 = [v8 valueForKey:@"hard_failure_count"];
-    v10 = [v9 integerValue];
+    firstObject = [v7 firstObject];
+    v9 = [firstObject valueForKey:@"hard_failure_count"];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return integerValue;
 }
 
-- (void)incrementSuccessCountForEventType:(id)a3
+- (void)incrementSuccessCountForEventType:(id)type
 {
   v14[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
-    v5 = [(SFAnalyticsSQLiteStore *)self successCountForEventType:v4];
-    v6 = [(SFAnalyticsSQLiteStore *)self hardFailureCountForEventType:v4];
-    v7 = [(SFAnalyticsSQLiteStore *)self softFailureCountForEventType:v4];
-    v14[0] = v4;
+    v5 = [(SFAnalyticsSQLiteStore *)self successCountForEventType:typeCopy];
+    v6 = [(SFAnalyticsSQLiteStore *)self hardFailureCountForEventType:typeCopy];
+    v7 = [(SFAnalyticsSQLiteStore *)self softFailureCountForEventType:typeCopy];
+    v14[0] = typeCopy;
     v13[0] = @"event_type";
     v13[1] = @"success_count";
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5 + 1];
@@ -578,39 +578,39 @@ id __35__SFAnalyticsSQLiteStore_allEvents__block_invoke(uint64_t a1, void *a2)
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)successCountForEventType:(id)a3
+- (int64_t)successCountForEventType:(id)type
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   if ([(SFAnalyticsSQLiteStore *)self tryToOpenDatabase])
   {
     v14[0] = @"success_count";
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-    v13 = v4;
+    v13 = typeCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v13 count:1];
     v7 = [(SFSQLite *)self select:v5 from:@"success_count" where:@"event_type = ?" bindings:v6];
-    v8 = [v7 firstObject];
-    v9 = [v8 valueForKey:@"success_count"];
-    v10 = [v9 integerValue];
+    firstObject = [v7 firstObject];
+    v9 = [firstObject valueForKey:@"success_count"];
+    integerValue = [v9 integerValue];
   }
 
   else
   {
-    v10 = 0;
+    integerValue = 0;
   }
 
   v11 = *MEMORY[0x1E69E9840];
-  return v10;
+  return integerValue;
 }
 
 - (NSString)databaseBasename
 {
-  v2 = [(SFSQLite *)self path];
-  v3 = [v2 lastPathComponent];
-  v4 = [v3 pathExtension];
-  v5 = [v4 stringByDeletingPathExtension];
+  path = [(SFSQLite *)self path];
+  lastPathComponent = [path lastPathComponent];
+  pathExtension = [lastPathComponent pathExtension];
+  stringByDeletingPathExtension = [pathExtension stringByDeletingPathExtension];
 
-  return v5;
+  return stringByDeletingPathExtension;
 }
 
 - (void)dealloc
@@ -621,20 +621,20 @@ id __35__SFAnalyticsSQLiteStore_allEvents__block_invoke(uint64_t a1, void *a2)
   [(SFSQLite *)&v3 dealloc];
 }
 
-+ (SFAnalyticsSQLiteStore)storeWithPath:(id)a3 schema:(id)a4
++ (SFAnalyticsSQLiteStore)storeWithPath:(id)path schema:(id)schema
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length])
+  pathCopy = path;
+  schemaCopy = schema;
+  if (![pathCopy length])
   {
-    v8 = secLogObjForScope("SecCritical");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    stringByStandardizingPath = secLogObjForScope("SecCritical");
+    if (os_log_type_enabled(stringByStandardizingPath, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v14 = "Cannot init db with empty path";
 LABEL_14:
-      _os_log_impl(&dword_1887D2000, v8, OS_LOG_TYPE_DEFAULT, v14, buf, 2u);
+      _os_log_impl(&dword_1887D2000, stringByStandardizingPath, OS_LOG_TYPE_DEFAULT, v14, buf, 2u);
     }
 
 LABEL_15:
@@ -642,10 +642,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (![v7 length])
+  if (![schemaCopy length])
   {
-    v8 = secLogObjForScope("SecCritical");
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    stringByStandardizingPath = secLogObjForScope("SecCritical");
+    if (os_log_type_enabled(stringByStandardizingPath, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v14 = "Cannot init db without schema";
@@ -655,8 +655,8 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v8 = [v6 stringByStandardizingPath];
-  v9 = [[a1 alloc] initWithPath:v8 schema:v7];
+  stringByStandardizingPath = [pathCopy stringByStandardizingPath];
+  v9 = [[self alloc] initWithPath:stringByStandardizingPath schema:schemaCopy];
   v17 = 0;
   v10 = [v9 openWithError:&v17];
   v11 = v17;

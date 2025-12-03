@@ -1,31 +1,31 @@
 @interface OBViewUtilities
-+ (BOOL)_isNavigationItemEligibleForCustomization:(id)a3 usingHeaderView:(id)a4;
-+ (BOOL)_navigationBarTitleShouldShowForHeaderView:(id)a3 inScrollView:(id)a4;
-+ (BOOL)shouldUpdateAlphaForNavigationItem:(id)a3 andHeaderView:(id)a4 inScrollView:(id)a5;
++ (BOOL)_isNavigationItemEligibleForCustomization:(id)customization usingHeaderView:(id)view;
++ (BOOL)_navigationBarTitleShouldShowForHeaderView:(id)view inScrollView:(id)scrollView;
++ (BOOL)shouldUpdateAlphaForNavigationItem:(id)item andHeaderView:(id)view inScrollView:(id)scrollView;
 + (BOOL)shouldUseAccessibilityLayout;
-+ (id)pointImageOfColor:(id)a3;
-+ (int64_t)activeInterfaceOrientationForView:(id)a3;
-+ (void)_setBackButtonTitleOnNavigationItem:(id)a3 usingHeaderView:(id)a4 isHeaderViewVisible:(BOOL)a5;
-+ (void)updateAlphaForNavigationItem:(id)a3 andHeaderView:(id)a4 usingNavigationTitleAlpha:(double)a5 animated:(BOOL)a6;
-+ (void)updateNavigationBarWithNavigationItem:(id)a3 forHeaderView:(id)a4 inScrollView:(id)a5 animated:(BOOL)a6;
++ (id)pointImageOfColor:(id)color;
++ (int64_t)activeInterfaceOrientationForView:(id)view;
++ (void)_setBackButtonTitleOnNavigationItem:(id)item usingHeaderView:(id)view isHeaderViewVisible:(BOOL)visible;
++ (void)updateAlphaForNavigationItem:(id)item andHeaderView:(id)view usingNavigationTitleAlpha:(double)alpha animated:(BOOL)animated;
++ (void)updateNavigationBarWithNavigationItem:(id)item forHeaderView:(id)view inScrollView:(id)scrollView animated:(BOOL)animated;
 @end
 
 @implementation OBViewUtilities
 
-+ (void)updateNavigationBarWithNavigationItem:(id)a3 forHeaderView:(id)a4 inScrollView:(id)a5 animated:(BOOL)a6
++ (void)updateNavigationBarWithNavigationItem:(id)item forHeaderView:(id)view inScrollView:(id)scrollView animated:(BOOL)animated
 {
-  v6 = a6;
-  v26 = a3;
-  v10 = a4;
-  v11 = a5;
-  if ([a1 _isNavigationItemEligibleForCustomization:v26 usingHeaderView:v10] && objc_msgSend(a1, "shouldUpdateAlphaForNavigationItem:andHeaderView:inScrollView:", v26, v10, v11))
+  animatedCopy = animated;
+  itemCopy = item;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
+  if ([self _isNavigationItemEligibleForCustomization:itemCopy usingHeaderView:viewCopy] && objc_msgSend(self, "shouldUpdateAlphaForNavigationItem:andHeaderView:inScrollView:", itemCopy, viewCopy, scrollViewCopy))
   {
-    v12 = [OBViewUtilities _navigationBarTitleShouldShowForHeaderView:v10 inScrollView:v11];
+    v12 = [OBViewUtilities _navigationBarTitleShouldShowForHeaderView:viewCopy inScrollView:scrollViewCopy];
     if (v12)
     {
-      v13 = [v26 titleView];
+      titleView = [itemCopy titleView];
 
-      if (!v13)
+      if (!titleView)
       {
         v14 = objc_alloc(MEMORY[0x1E69DCC10]);
         v15 = [v14 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -35,53 +35,53 @@
         [v15 setFont:v18];
 
         [v15 setAdjustsFontForContentSizeCategory:0];
-        v19 = [v10 headerLabel];
-        v20 = [v19 text];
-        [v15 setText:v20];
+        headerLabel = [viewCopy headerLabel];
+        text = [headerLabel text];
+        [v15 setText:text];
 
-        [v26 setTitle:0];
-        [v26 setTitleView:v15];
-        v21 = [v26 titleView];
-        [v21 setAlpha:0.0];
+        [itemCopy setTitle:0];
+        [itemCopy setTitleView:v15];
+        titleView2 = [itemCopy titleView];
+        [titleView2 setAlpha:0.0];
       }
     }
 
-    v22 = [v11 panGestureRecognizer];
-    [v22 velocityInView:v11];
+    panGestureRecognizer = [scrollViewCopy panGestureRecognizer];
+    [panGestureRecognizer velocityInView:scrollViewCopy];
     v24 = v23;
 
-    v25 = v24 > -300.0 && v6;
-    [a1 updateAlphaForNavigationItem:v26 andHeaderView:v10 usingNavigationTitleAlpha:v25 animated:v12];
+    v25 = v24 > -300.0 && animatedCopy;
+    [self updateAlphaForNavigationItem:itemCopy andHeaderView:viewCopy usingNavigationTitleAlpha:v25 animated:v12];
   }
 }
 
-+ (void)updateAlphaForNavigationItem:(id)a3 andHeaderView:(id)a4 usingNavigationTitleAlpha:(double)a5 animated:(BOOL)a6
++ (void)updateAlphaForNavigationItem:(id)item andHeaderView:(id)view usingNavigationTitleAlpha:(double)alpha animated:(BOOL)animated
 {
-  v10 = a3;
-  v11 = a4;
+  itemCopy = item;
+  viewCopy = view;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __97__OBViewUtilities_updateAlphaForNavigationItem_andHeaderView_usingNavigationTitleAlpha_animated___block_invoke;
   v26[3] = &unk_1E7C15818;
-  v12 = v10;
+  v12 = itemCopy;
   v27 = v12;
-  v29 = a5;
-  v13 = v11;
+  alphaCopy = alpha;
+  v13 = viewCopy;
   v28 = v13;
-  v30 = a1;
+  selfCopy = self;
   v14 = MEMORY[0x1B8C83960](v26);
   v18 = MEMORY[0x1E69E9820];
   v19 = 3221225472;
   v20 = __97__OBViewUtilities_updateAlphaForNavigationItem_andHeaderView_usingNavigationTitleAlpha_animated___block_invoke_2;
   v21 = &unk_1E7C15840;
   v15 = v12;
-  v25 = a6;
+  animatedCopy = animated;
   v22 = v15;
-  v24 = a1;
+  selfCopy2 = self;
   v16 = v13;
   v23 = v16;
   v17 = MEMORY[0x1B8C83960](&v18);
-  if (a6)
+  if (animated)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:4 delay:v14 options:v17 animations:0.25 completion:{0.0, v18, v19, v20, v21, v22}];
   }
@@ -153,14 +153,14 @@ LABEL_7:
   }
 }
 
-+ (BOOL)shouldUpdateAlphaForNavigationItem:(id)a3 andHeaderView:(id)a4 inScrollView:(id)a5
++ (BOOL)shouldUpdateAlphaForNavigationItem:(id)item andHeaderView:(id)view inScrollView:(id)scrollView
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 headerLabel];
-  [v10 frame];
-  [v9 convertRect:v8 fromView:?];
+  itemCopy = item;
+  viewCopy = view;
+  scrollViewCopy = scrollView;
+  headerLabel = [viewCopy headerLabel];
+  [headerLabel frame];
+  [scrollViewCopy convertRect:viewCopy fromView:?];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -171,9 +171,9 @@ LABEL_7:
   v43.size.width = v16;
   v43.size.height = v18;
   MinY = CGRectGetMinY(v43);
-  v20 = [v8 headerLabel];
-  v21 = [v20 font];
-  [v21 ascender];
+  headerLabel2 = [viewCopy headerLabel];
+  font = [headerLabel2 font];
+  [font ascender];
   v23 = MinY - v22;
 
   v44.origin.x = v12;
@@ -181,26 +181,26 @@ LABEL_7:
   v44.size.width = v16;
   v44.size.height = v18;
   MaxY = CGRectGetMaxY(v44);
-  v25 = [v8 headerLabel];
-  v26 = [v25 font];
-  [v26 descender];
+  headerLabel3 = [viewCopy headerLabel];
+  font2 = [headerLabel3 font];
+  [font2 descender];
   v28 = v27;
 
-  [v9 safeAreaInsets];
+  [scrollViewCopy safeAreaInsets];
   v30 = v29;
-  [v9 contentOffset];
+  [scrollViewCopy contentOffset];
   v32 = v31;
 
   v33 = v30 + v32;
-  v34 = [v7 titleView];
+  titleView = [itemCopy titleView];
 
-  if (!v34)
+  if (!titleView)
   {
     if (v33 <= v23)
     {
 LABEL_9:
-      v39 = [v8 headerLabel];
-      [v39 alpha];
+      headerLabel4 = [viewCopy headerLabel];
+      [headerLabel4 alpha];
       v38 = v41 < 1.0;
       goto LABEL_10;
     }
@@ -210,8 +210,8 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v35 = [v7 titleView];
-  [v35 alpha];
+  titleView2 = [itemCopy titleView];
+  [titleView2 alpha];
   v37 = v36;
 
   if (v33 <= v23)
@@ -227,8 +227,8 @@ LABEL_7:
   v38 = 1;
   if (v33 >= MaxY + v28 && v37 >= 1.0)
   {
-    v39 = [v8 headerLabel];
-    [v39 alpha];
+    headerLabel4 = [viewCopy headerLabel];
+    [headerLabel4 alpha];
     v38 = v40 > 0.0;
 LABEL_10:
   }
@@ -238,13 +238,13 @@ LABEL_11:
   return v38;
 }
 
-+ (BOOL)_navigationBarTitleShouldShowForHeaderView:(id)a3 inScrollView:(id)a4
++ (BOOL)_navigationBarTitleShouldShowForHeaderView:(id)view inScrollView:(id)scrollView
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 headerLabel];
-  [v7 frame];
-  [v5 convertRect:v6 fromView:?];
+  scrollViewCopy = scrollView;
+  viewCopy = view;
+  headerLabel = [viewCopy headerLabel];
+  [headerLabel frame];
+  [scrollViewCopy convertRect:viewCopy fromView:?];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -255,27 +255,27 @@ LABEL_11:
   v26.size.width = v13;
   v26.size.height = v15;
   MaxY = CGRectGetMaxY(v26);
-  v17 = [v6 headerLabel];
+  headerLabel2 = [viewCopy headerLabel];
 
-  v18 = [v17 font];
-  [v18 descender];
+  font = [headerLabel2 font];
+  [font descender];
   v20 = MaxY + v19;
 
-  [v5 safeAreaInsets];
+  [scrollViewCopy safeAreaInsets];
   v22 = v21;
-  [v5 contentOffset];
+  [scrollViewCopy contentOffset];
   v24 = v23;
 
   return v22 + v24 > 0.0 && v22 + v24 >= v20;
 }
 
-+ (id)pointImageOfColor:(id)a3
++ (id)pointImageOfColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v7.width = 1.0;
   v7.height = 1.0;
   UIGraphicsBeginImageContext(v7);
-  [v3 set];
+  [colorCopy set];
 
   v8.origin.x = 0.0;
   v8.origin.y = 0.0;
@@ -290,126 +290,126 @@ LABEL_11:
 
 + (BOOL)shouldUseAccessibilityLayout
 {
-  v2 = [MEMORY[0x1E69DC668] sharedApplication];
-  v3 = [v2 preferredContentSizeCategory];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x1E69DC668] preferredContentSizeCategory];
 
-  LOBYTE(v2) = UIContentSizeCategoryCompareToCategory(v3, *MEMORY[0x1E69DDC50]) > NSOrderedSame;
-  return v2;
+  LOBYTE(mEMORY[0x1E69DC668]) = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, *MEMORY[0x1E69DDC50]) > NSOrderedSame;
+  return mEMORY[0x1E69DC668];
 }
 
-+ (int64_t)activeInterfaceOrientationForView:(id)a3
++ (int64_t)activeInterfaceOrientationForView:(id)view
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  if ([v4 isFrontBoard])
+  viewCopy = view;
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  if ([mEMORY[0x1E69DC668] isFrontBoard])
   {
 
 LABEL_4:
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    v9 = [v8 activeInterfaceOrientation];
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    activeInterfaceOrientation = [mEMORY[0x1E69DC668]2 activeInterfaceOrientation];
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v5 bundleIdentifier];
-  v7 = [v6 isEqualToString:@"com.apple.springboard"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v7 = [bundleIdentifier isEqualToString:@"com.apple.springboard"];
 
   if (v7)
   {
     goto LABEL_4;
   }
 
-  v12 = [v3 window];
+  window = [viewCopy window];
 
-  if (!v12)
+  if (!window)
   {
-    v8 = [MEMORY[0x1E69DC668] sharedApplication];
-    v13 = [v8 windows];
+    mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+    windows = [mEMORY[0x1E69DC668]2 windows];
     v14 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_3];
-    v15 = [v13 filteredArrayUsingPredicate:v14];
-    v16 = [v15 firstObject];
-    v10 = [v16 interfaceOrientation];
+    v15 = [windows filteredArrayUsingPredicate:v14];
+    firstObject = [v15 firstObject];
+    interfaceOrientation = [firstObject interfaceOrientation];
 
     goto LABEL_6;
   }
 
-  v8 = [v3 window];
-  v9 = [v8 interfaceOrientation];
+  mEMORY[0x1E69DC668]2 = [viewCopy window];
+  activeInterfaceOrientation = [mEMORY[0x1E69DC668]2 interfaceOrientation];
 LABEL_5:
-  v10 = v9;
+  interfaceOrientation = activeInterfaceOrientation;
 LABEL_6:
 
-  return v10;
+  return interfaceOrientation;
 }
 
-+ (void)_setBackButtonTitleOnNavigationItem:(id)a3 usingHeaderView:(id)a4 isHeaderViewVisible:(BOOL)a5
++ (void)_setBackButtonTitleOnNavigationItem:(id)item usingHeaderView:(id)view isHeaderViewVisible:(BOOL)visible
 {
-  v15 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (a5)
+  itemCopy = item;
+  viewCopy = view;
+  v8 = viewCopy;
+  if (visible)
   {
-    v9 = 0;
+    title = 0;
   }
 
   else
   {
-    v9 = [v7 title];
+    title = [viewCopy title];
   }
 
-  v10 = [v15 backButtonTitle];
-  if (!v10)
+  backButtonTitle = [itemCopy backButtonTitle];
+  if (!backButtonTitle)
   {
     goto LABEL_6;
   }
 
-  v11 = v10;
-  v12 = [v15 backButtonTitle];
-  v13 = [v8 title];
-  v14 = [v12 isEqualToString:v13];
+  v11 = backButtonTitle;
+  backButtonTitle2 = [itemCopy backButtonTitle];
+  title2 = [v8 title];
+  v14 = [backButtonTitle2 isEqualToString:title2];
 
   if (v14)
   {
 LABEL_6:
-    [v15 setBackButtonTitle:v9];
+    [itemCopy setBackButtonTitle:title];
   }
 
   if (+[OBFeatureFlags isNaturalUIEnabled])
   {
-    [v15 setBackButtonDisplayMode:2];
+    [itemCopy setBackButtonDisplayMode:2];
   }
 }
 
-+ (BOOL)_isNavigationItemEligibleForCustomization:(id)a3 usingHeaderView:(id)a4
++ (BOOL)_isNavigationItemEligibleForCustomization:(id)customization usingHeaderView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 title];
+  customizationCopy = customization;
+  viewCopy = view;
+  title = [customizationCopy title];
 
-  if (!v7)
+  if (!title)
   {
-    v10 = [v6 headerLabel];
-    v11 = [v10 text];
-    if (v11)
+    headerLabel = [viewCopy headerLabel];
+    text = [headerLabel text];
+    if (text)
     {
-      v12 = v11;
-      v13 = [v6 headerLabel];
-      v14 = [v13 text];
-      v15 = [v14 isEqualToString:&stru_1F2CE9518];
+      v12 = text;
+      headerLabel2 = [viewCopy headerLabel];
+      text2 = [headerLabel2 text];
+      v15 = [text2 isEqualToString:&stru_1F2CE9518];
 
       if ((v15 & 1) == 0)
       {
-        v16 = [v5 titleView];
-        if (!v16 || (v17 = v16, [v5 titleView], v18 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v19 = objc_opt_isKindOfClass(), v18, v17, (v19 & 1) != 0))
+        titleView = [customizationCopy titleView];
+        if (!titleView || (v17 = titleView, [customizationCopy titleView], v18 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v19 = objc_opt_isKindOfClass(), v18, v17, (v19 & 1) != 0))
         {
-          v20 = [v5 titleView];
-          if (!v20)
+          titleView2 = [customizationCopy titleView];
+          if (!titleView2)
           {
             goto LABEL_11;
           }
 
-          v21 = v20;
-          v22 = [v5 titleView];
+          v21 = titleView2;
+          titleView3 = [customizationCopy titleView];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -418,12 +418,12 @@ LABEL_6:
             goto LABEL_11;
           }
 
-          v24 = [v5 titleView];
-          v25 = [v24 text];
-          v26 = [v6 headerLabel];
-          v27 = [v26 text];
+          titleView4 = [customizationCopy titleView];
+          text3 = [titleView4 text];
+          headerLabel3 = [viewCopy headerLabel];
+          text4 = [headerLabel3 text];
 
-          if (v25 == v27)
+          if (text3 == text4)
           {
 LABEL_11:
             v8 = 1;

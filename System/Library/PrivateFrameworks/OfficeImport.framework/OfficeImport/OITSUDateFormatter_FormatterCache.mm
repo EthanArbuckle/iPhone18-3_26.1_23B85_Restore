@@ -1,7 +1,7 @@
 @interface OITSUDateFormatter_FormatterCache
-+ (id)dateFormatterStringFromDate:(id)a3 withFormat:(id)a4 locale:(id)a5;
++ (id)dateFormatterStringFromDate:(id)date withFormat:(id)format locale:(id)locale;
 - (OITSUDateFormatter_FormatterCache)init;
-- (id)dateFormatterStringFromDate:(id)a3 withFormat:(id)a4 locale:(id)a5;
+- (id)dateFormatterStringFromDate:(id)date withFormat:(id)format locale:(id)locale;
 @end
 
 @implementation OITSUDateFormatter_FormatterCache
@@ -25,57 +25,57 @@
   return v2;
 }
 
-- (id)dateFormatterStringFromDate:(id)a3 withFormat:(id)a4 locale:(id)a5
+- (id)dateFormatterStringFromDate:(id)date withFormat:(id)format locale:(id)locale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  formatCopy = format;
+  localeCopy = locale;
   StringWithDate = 0;
-  if (v8 && v9)
+  if (dateCopy && formatCopy)
   {
     [(NSLock *)self->_dateFormatterCacheLock lock];
-    UsingHarmonizedSymbols = [(NSMutableDictionary *)self->_dateFormatterCache objectForKey:v9];
+    UsingHarmonizedSymbols = [(NSMutableDictionary *)self->_dateFormatterCache objectForKey:formatCopy];
     if (!UsingHarmonizedSymbols)
     {
-      v13 = [v10 gregorianCalendarLocale];
-      UsingHarmonizedSymbols = TSUDateFormatterCFDateFormatterCreateUsingHarmonizedSymbols(0, v13, kCFDateFormatterNoStyle, kCFDateFormatterNoStyle);
+      gregorianCalendarLocale = [localeCopy gregorianCalendarLocale];
+      UsingHarmonizedSymbols = TSUDateFormatterCFDateFormatterCreateUsingHarmonizedSymbols(0, gregorianCalendarLocale, kCFDateFormatterNoStyle, kCFDateFormatterNoStyle);
 
       v14 = *MEMORY[0x277CBEDF8];
       v15 = TSUGetGMTTimeZone();
       CFDateFormatterSetProperty(UsingHarmonizedSymbols, v14, v15);
 
-      CFDateFormatterSetFormat(UsingHarmonizedSymbols, v9);
-      [(NSMutableDictionary *)self->_dateFormatterCache setObject:UsingHarmonizedSymbols forKey:v9];
+      CFDateFormatterSetFormat(UsingHarmonizedSymbols, formatCopy);
+      [(NSMutableDictionary *)self->_dateFormatterCache setObject:UsingHarmonizedSymbols forKey:formatCopy];
     }
 
-    StringWithDate = CFDateFormatterCreateStringWithDate(0, UsingHarmonizedSymbols, v8);
+    StringWithDate = CFDateFormatterCreateStringWithDate(0, UsingHarmonizedSymbols, dateCopy);
     [(NSLock *)self->_dateFormatterCacheLock unlock];
   }
 
   return StringWithDate;
 }
 
-+ (id)dateFormatterStringFromDate:(id)a3 withFormat:(id)a4 locale:(id)a5
++ (id)dateFormatterStringFromDate:(id)date withFormat:(id)format locale:(id)locale
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 localeSpecificStorageForKey:@"TSUDateFormatter_FormatterCache"];
+  dateCopy = date;
+  formatCopy = format;
+  localeCopy = locale;
+  v11 = [localeCopy localeSpecificStorageForKey:@"TSUDateFormatter_FormatterCache"];
   if (!v11)
   {
-    v12 = a1;
-    objc_sync_enter(v12);
-    v11 = [v10 localeSpecificStorageForKey:@"TSUDateFormatter_FormatterCache"];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v11 = [localeCopy localeSpecificStorageForKey:@"TSUDateFormatter_FormatterCache"];
     if (!v11)
     {
       v11 = objc_opt_new();
-      [v10 setLocaleSpecificStorage:v11 forKey:@"TSUDateFormatter_FormatterCache"];
+      [localeCopy setLocaleSpecificStorage:v11 forKey:@"TSUDateFormatter_FormatterCache"];
     }
 
-    objc_sync_exit(v12);
+    objc_sync_exit(selfCopy);
   }
 
-  v13 = [v11 dateFormatterStringFromDate:v8 withFormat:v9 locale:v10];
+  v13 = [v11 dateFormatterStringFromDate:dateCopy withFormat:formatCopy locale:localeCopy];
 
   return v13;
 }

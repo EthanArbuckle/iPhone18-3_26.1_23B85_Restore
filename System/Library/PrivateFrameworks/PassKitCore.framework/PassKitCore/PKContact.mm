@@ -1,96 +1,96 @@
 @interface PKContact
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContact:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContact:(id)contact;
 - (NSString)contactHandle;
-- (PKContact)initWithCNContact:(id)a3;
-- (PKContact)initWithCoder:(id)a3;
-- (PKContact)initWithDictionary:(id)a3 error:(id *)a4;
+- (PKContact)initWithCNContact:(id)contact;
+- (PKContact)initWithCoder:(id)coder;
+- (PKContact)initWithDictionary:(id)dictionary error:(id *)error;
 - (id)cnMutableContact;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)sanitizePostalAddressCountry;
-- (void)sanitizePostalAddressCountryWithLocale:(id)a3;
+- (void)sanitizePostalAddressCountryWithLocale:(id)locale;
 @end
 
 @implementation PKContact
 
-- (PKContact)initWithCNContact:(id)a3
+- (PKContact)initWithCNContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v23.receiver = self;
   v23.super_class = PKContact;
   v5 = [(PKContact *)&v23 init];
   if (v5)
   {
-    v6 = [v4 nameComponents];
+    nameComponents = [contactCopy nameComponents];
     name = v5->_name;
-    v5->_name = v6;
+    v5->_name = nameComponents;
 
-    if ([v4 isKeyAvailable:*MEMORY[0x1E695C360]])
+    if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C360]])
     {
-      v8 = [v4 postalAddresses];
-      v9 = [v8 firstObject];
-      v10 = [v9 value];
+      postalAddresses = [contactCopy postalAddresses];
+      firstObject = [postalAddresses firstObject];
+      value = [firstObject value];
       postalAddress = v5->_postalAddress;
-      v5->_postalAddress = v10;
+      v5->_postalAddress = value;
 
-      v12 = [(CNPostalAddress *)v5->_postalAddress subLocality];
+      subLocality = [(CNPostalAddress *)v5->_postalAddress subLocality];
       supplementarySubLocality = v5->_supplementarySubLocality;
-      v5->_supplementarySubLocality = v12;
+      v5->_supplementarySubLocality = subLocality;
     }
 
-    if ([v4 isKeyAvailable:*MEMORY[0x1E695C208]])
+    if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C208]])
     {
-      v14 = [v4 emailAddresses];
-      v15 = [v14 firstObject];
-      v16 = [v15 value];
+      emailAddresses = [contactCopy emailAddresses];
+      firstObject2 = [emailAddresses firstObject];
+      value2 = [firstObject2 value];
       emailAddress = v5->_emailAddress;
-      v5->_emailAddress = v16;
+      v5->_emailAddress = value2;
     }
 
-    if ([v4 isKeyAvailable:*MEMORY[0x1E695C330]])
+    if ([contactCopy isKeyAvailable:*MEMORY[0x1E695C330]])
     {
-      v18 = [v4 phoneNumbers];
-      v19 = [v18 firstObject];
-      v20 = [v19 value];
+      phoneNumbers = [contactCopy phoneNumbers];
+      firstObject3 = [phoneNumbers firstObject];
+      value3 = [firstObject3 value];
       phoneNumber = v5->_phoneNumber;
-      v5->_phoneNumber = v20;
+      v5->_phoneNumber = value3;
     }
   }
 
   return v5;
 }
 
-- (PKContact)initWithCoder:(id)a3
+- (PKContact)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = PKContact;
   v5 = [(PKContact *)&v20 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"emailAddress"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"emailAddress"];
     emailAddress = v5->_emailAddress;
     v5->_emailAddress = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"postalAddress"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"postalAddress"];
     postalAddress = v5->_postalAddress;
     v5->_postalAddress = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supplementarySublocality"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supplementarySublocality"];
     supplementarySubLocality = v5->_supplementarySubLocality;
     v5->_supplementarySubLocality = v17;
   }
@@ -98,39 +98,39 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   name = self->_name;
-  v5 = a3;
-  [v5 encodeObject:name forKey:@"name"];
-  [v5 encodeObject:self->_emailAddress forKey:@"emailAddress"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_postalAddress forKey:@"postalAddress"];
-  [v5 encodeObject:self->_supplementarySubLocality forKey:@"supplementarySublocality"];
+  coderCopy = coder;
+  [coderCopy encodeObject:name forKey:@"name"];
+  [coderCopy encodeObject:self->_emailAddress forKey:@"emailAddress"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_postalAddress forKey:@"postalAddress"];
+  [coderCopy encodeObject:self->_supplementarySubLocality forKey:@"supplementarySublocality"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKContact *)self isEqualToContact:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKContact *)self isEqualToContact:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToContact:(id)a3
+- (BOOL)isEqualToContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   name = self->_name;
-  v6 = v4[1];
+  v6 = contactCopy[1];
   if (name)
   {
     v7 = v6 == 0;
@@ -159,7 +159,7 @@
   }
 
   postalAddress = self->_postalAddress;
-  v10 = v4[2];
+  v10 = contactCopy[2];
   if (postalAddress && v10)
   {
     if (([(CNPostalAddress *)postalAddress isEqual:?]& 1) == 0)
@@ -173,7 +173,7 @@
     goto LABEL_26;
   }
 
-  v11 = v4[4];
+  v11 = contactCopy[4];
   v12 = self->_emailAddress;
   v13 = v11;
   v14 = v13;
@@ -198,7 +198,7 @@
   }
 
   phoneNumber = self->_phoneNumber;
-  v17 = v4[3];
+  v17 = contactCopy[3];
   if (phoneNumber && v17)
   {
     if (([(CNPhoneNumber *)phoneNumber isEqual:?]& 1) != 0)
@@ -218,7 +218,7 @@ LABEL_26:
 
 LABEL_28:
   supplementarySubLocality = self->_supplementarySubLocality;
-  v21 = v4[5];
+  v21 = contactCopy[5];
   if (supplementarySubLocality && v21)
   {
     v18 = [(NSString *)supplementarySubLocality isEqual:?];
@@ -236,29 +236,29 @@ LABEL_27:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_name];
-  [v3 safelyAddObject:self->_emailAddress];
-  [v3 safelyAddObject:self->_phoneNumber];
-  [v3 safelyAddObject:self->_postalAddress];
-  [v3 safelyAddObject:self->_supplementarySubLocality];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_name];
+  [array safelyAddObject:self->_emailAddress];
+  [array safelyAddObject:self->_phoneNumber];
+  [array safelyAddObject:self->_postalAddress];
+  [array safelyAddObject:self->_supplementarySubLocality];
+  v4 = PKCombinedHash(17, array);
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKContact allocWithZone:](PKContact init];
-  v6 = [(NSPersonNameComponents *)self->_name copyWithZone:a3];
+  v6 = [(NSPersonNameComponents *)self->_name copyWithZone:zone];
   name = v5->_name;
   v5->_name = v6;
 
-  v8 = [(NSString *)self->_emailAddress copyWithZone:a3];
+  v8 = [(NSString *)self->_emailAddress copyWithZone:zone];
   emailAddress = v5->_emailAddress;
   v5->_emailAddress = v8;
 
-  v10 = [(NSString *)self->_supplementarySubLocality copyWithZone:a3];
+  v10 = [(NSString *)self->_supplementarySubLocality copyWithZone:zone];
   supplementarySubLocality = v5->_supplementarySubLocality;
   v5->_supplementarySubLocality = v10;
 
@@ -266,7 +266,7 @@ LABEL_27:
   phoneNumber = self->_phoneNumber;
   if (v12)
   {
-    v14 = [(CNPhoneNumber *)phoneNumber copyWithZone:a3];
+    v14 = [(CNPhoneNumber *)phoneNumber copyWithZone:zone];
   }
 
   else
@@ -281,7 +281,7 @@ LABEL_27:
   postalAddress = self->_postalAddress;
   if (v16)
   {
-    v18 = [(CNPostalAddress *)postalAddress copyWithZone:a3];
+    v18 = [(CNPostalAddress *)postalAddress copyWithZone:zone];
   }
 
   else
@@ -327,23 +327,23 @@ LABEL_27:
   name = self->_name;
   if (name)
   {
-    v12 = [(NSPersonNameComponents *)name givenName];
-    [v3 setGivenName:v12];
+    givenName = [(NSPersonNameComponents *)name givenName];
+    [v3 setGivenName:givenName];
 
-    v13 = [(NSPersonNameComponents *)self->_name familyName];
-    [v3 setFamilyName:v13];
+    familyName = [(NSPersonNameComponents *)self->_name familyName];
+    [v3 setFamilyName:familyName];
 
-    v14 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
+    phoneticRepresentation = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
 
-    if (v14)
+    if (phoneticRepresentation)
     {
-      v15 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
-      v16 = [v15 givenName];
-      [v3 setPhoneticGivenName:v16];
+      phoneticRepresentation2 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
+      givenName2 = [phoneticRepresentation2 givenName];
+      [v3 setPhoneticGivenName:givenName2];
 
-      v17 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
-      v18 = [v17 familyName];
-      [v3 setPhoneticFamilyName:v18];
+      phoneticRepresentation3 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
+      familyName2 = [phoneticRepresentation3 familyName];
+      [v3 setPhoneticFamilyName:familyName2];
     }
   }
 
@@ -355,40 +355,40 @@ LABEL_27:
   emailAddress = self->_emailAddress;
   if (emailAddress)
   {
-    v3 = emailAddress;
+    stringValue = emailAddress;
   }
 
   else
   {
-    v3 = [(CNPhoneNumber *)self->_phoneNumber stringValue];
+    stringValue = [(CNPhoneNumber *)self->_phoneNumber stringValue];
   }
 
-  return v3;
+  return stringValue;
 }
 
 - (void)sanitizePostalAddressCountry
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  [(PKContact *)self sanitizePostalAddressCountryWithLocale:v3];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  [(PKContact *)self sanitizePostalAddressCountryWithLocale:currentLocale];
 }
 
-- (void)sanitizePostalAddressCountryWithLocale:(id)a3
+- (void)sanitizePostalAddressCountryWithLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   postalAddress = self->_postalAddress;
   if (postalAddress)
   {
-    v6 = [(CNPostalAddress *)postalAddress ISOCountryCode];
-    v7 = [v6 uppercaseString];
+    iSOCountryCode = [(CNPostalAddress *)postalAddress ISOCountryCode];
+    uppercaseString = [iSOCountryCode uppercaseString];
 
-    v8 = [v7 pk_stringIfNotEmpty];
+    pk_stringIfNotEmpty = [uppercaseString pk_stringIfNotEmpty];
 
-    if (v8 && ([MEMORY[0x1E695CF68] supportedCountries], v9 = objc_claimAutoreleasedReturnValue(), v28[0] = MEMORY[0x1E69E9820], v28[1] = 3221225472, v28[2] = __52__PKContact_sanitizePostalAddressCountryWithLocale___block_invoke, v28[3] = &unk_1E79E1448, v10 = v7, v29 = v10, objc_msgSend(v9, "pk_firstObjectPassingTest:", v28), v11 = objc_claimAutoreleasedReturnValue(), v29, v9, v11))
+    if (pk_stringIfNotEmpty && ([MEMORY[0x1E695CF68] supportedCountries], v9 = objc_claimAutoreleasedReturnValue(), v28[0] = MEMORY[0x1E69E9820], v28[1] = 3221225472, v28[2] = __52__PKContact_sanitizePostalAddressCountryWithLocale___block_invoke, v28[3] = &unk_1E79E1448, v10 = uppercaseString, v29 = v10, objc_msgSend(v9, "pk_firstObjectPassingTest:", v28), v11 = objc_claimAutoreleasedReturnValue(), v29, v9, v11))
     {
-      v12 = [(CNPostalAddress *)self->_postalAddress country];
-      v13 = [v12 pk_stringIfNotEmpty];
+      country = [(CNPostalAddress *)self->_postalAddress country];
+      pk_stringIfNotEmpty2 = [country pk_stringIfNotEmpty];
 
-      if (v13)
+      if (pk_stringIfNotEmpty2)
       {
 LABEL_11:
 
@@ -397,24 +397,24 @@ LABEL_11:
 
       v14 = [(CNPostalAddress *)self->_postalAddress mutableCopy];
       v15 = MEMORY[0x1E695CF68];
-      v16 = [v10 lowercaseString];
-      v17 = [v15 localizedCountryNameForISOCountryCode:v16];
+      lowercaseString = [v10 lowercaseString];
+      v17 = [v15 localizedCountryNameForISOCountryCode:lowercaseString];
       [v14 setCountry:v17];
 
       v18 = [v14 copy];
-      v19 = self->_postalAddress;
+      uppercaseString2 = self->_postalAddress;
       self->_postalAddress = v18;
     }
 
     else
     {
       v14 = [(CNPostalAddress *)self->_postalAddress mutableCopy];
-      v20 = [v4 regionCode];
-      v19 = [v20 uppercaseString];
+      regionCode = [localeCopy regionCode];
+      uppercaseString2 = [regionCode uppercaseString];
 
-      if (v19)
+      if (uppercaseString2)
       {
-        v21 = v19;
+        v21 = uppercaseString2;
       }
 
       else
@@ -424,9 +424,9 @@ LABEL_11:
 
       [v14 setISOCountryCode:v21];
       v22 = MEMORY[0x1E695CF68];
-      v23 = [v14 ISOCountryCode];
-      v24 = [v23 lowercaseString];
-      v25 = [v22 localizedCountryNameForISOCountryCode:v24];
+      iSOCountryCode2 = [v14 ISOCountryCode];
+      lowercaseString2 = [iSOCountryCode2 lowercaseString];
+      v25 = [v22 localizedCountryNameForISOCountryCode:lowercaseString2];
       [v14 setCountry:v25];
 
       v26 = [v14 copy];
@@ -451,9 +451,9 @@ uint64_t __52__PKContact_sanitizePostalAddressCountryWithLocale___block_invoke(u
   return v5;
 }
 
-- (PKContact)initWithDictionary:(id)a3 error:(id *)a4
+- (PKContact)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v58 = 0;
   v59 = &v58;
   v60 = 0x2020000000;
@@ -474,42 +474,42 @@ uint64_t __52__PKContact_sanitizePostalAddressCountryWithLocale___block_invoke(u
     v56[2] = __38__PKContact_initWithDictionary_error___block_invoke;
     v56[3] = &unk_1E79E14E0;
     v56[4] = &v58;
-    [v6 enumerateKeysAndObjectsUsingBlock:v56];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v56];
     if (v59[3])
     {
-      v8 = [v6 objectForKeyedSubscript:@"familyName"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"familyName"];
       if (v8)
       {
       }
 
       else
       {
-        v9 = [v6 objectForKeyedSubscript:@"givenName"];
+        v9 = [dictionaryCopy objectForKeyedSubscript:@"givenName"];
 
         if (!v9)
         {
 LABEL_15:
-          v19 = [v6 objectForKeyedSubscript:@"emailAddress"];
+          v19 = [dictionaryCopy objectForKeyedSubscript:@"emailAddress"];
           emailAddress = v7->_emailAddress;
           v7->_emailAddress = v19;
 
-          v21 = [v6 objectForKeyedSubscript:@"phoneNumber"];
+          v21 = [dictionaryCopy objectForKeyedSubscript:@"phoneNumber"];
 
           if (v21)
           {
             v22 = objc_alloc(MEMORY[0x1E695CF50]);
-            v23 = [v6 objectForKeyedSubscript:@"phoneNumber"];
+            v23 = [dictionaryCopy objectForKeyedSubscript:@"phoneNumber"];
             v24 = [v22 initWithStringValue:v23];
             phoneNumber = v7->_phoneNumber;
             v7->_phoneNumber = v24;
           }
 
-          v26 = [v6 objectForKeyedSubscript:@"addressLines"];
+          v26 = [dictionaryCopy objectForKeyedSubscript:@"addressLines"];
           v27 = [v26 count];
 
           if (v27)
           {
-            v28 = [v6 objectForKeyedSubscript:@"addressLines"];
+            v28 = [dictionaryCopy objectForKeyedSubscript:@"addressLines"];
             v29 = objc_alloc_init(MEMORY[0x1E695CF30]);
             v30 = objc_alloc_init(MEMORY[0x1E696AD60]);
             v51 = MEMORY[0x1E69E9820];
@@ -520,59 +520,59 @@ LABEL_15:
             v55 = v31;
             [v28 enumerateObjectsUsingBlock:&v51];
             [(CNPostalAddress *)v29 setStreet:v31, v51, v52, v53, v54];
-            v32 = [v6 objectForKeyedSubscript:@"locality"];
+            v32 = [dictionaryCopy objectForKeyedSubscript:@"locality"];
 
             if (v32)
             {
-              v33 = [v6 objectForKeyedSubscript:@"locality"];
+              v33 = [dictionaryCopy objectForKeyedSubscript:@"locality"];
               [(CNPostalAddress *)v29 setCity:v33];
             }
 
-            v34 = [v6 objectForKeyedSubscript:@"postalCode"];
+            v34 = [dictionaryCopy objectForKeyedSubscript:@"postalCode"];
 
             if (v34)
             {
-              v35 = [v6 objectForKeyedSubscript:@"postalCode"];
+              v35 = [dictionaryCopy objectForKeyedSubscript:@"postalCode"];
               [(CNPostalAddress *)v29 setPostalCode:v35];
             }
 
-            v36 = [v6 objectForKeyedSubscript:@"administrativeArea"];
+            v36 = [dictionaryCopy objectForKeyedSubscript:@"administrativeArea"];
 
             if (v36)
             {
-              v37 = [v6 objectForKeyedSubscript:@"administrativeArea"];
+              v37 = [dictionaryCopy objectForKeyedSubscript:@"administrativeArea"];
               [(CNPostalAddress *)v29 setState:v37];
             }
 
-            v38 = [v6 objectForKeyedSubscript:@"subAdministrativeArea"];
+            v38 = [dictionaryCopy objectForKeyedSubscript:@"subAdministrativeArea"];
 
             if (v38)
             {
-              v39 = [v6 objectForKeyedSubscript:@"subAdministrativeArea"];
+              v39 = [dictionaryCopy objectForKeyedSubscript:@"subAdministrativeArea"];
               [(CNPostalAddress *)v29 setSubAdministrativeArea:v39];
             }
 
-            v40 = [v6 objectForKeyedSubscript:@"country"];
+            v40 = [dictionaryCopy objectForKeyedSubscript:@"country"];
 
             if (v40)
             {
-              v41 = [v6 objectForKeyedSubscript:@"country"];
+              v41 = [dictionaryCopy objectForKeyedSubscript:@"country"];
               [(CNPostalAddress *)v29 setCountry:v41];
             }
 
-            v42 = [v6 objectForKeyedSubscript:@"countryCode"];
+            v42 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
 
             if (v42)
             {
-              v43 = [v6 objectForKeyedSubscript:@"countryCode"];
+              v43 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
               [(CNPostalAddress *)v29 setISOCountryCode:v43];
             }
 
-            v44 = [v6 objectForKeyedSubscript:@"subLocality"];
+            v44 = [dictionaryCopy objectForKeyedSubscript:@"subLocality"];
 
             if (v44)
             {
-              v45 = [v6 objectForKeyedSubscript:@"subLocality"];
+              v45 = [dictionaryCopy objectForKeyedSubscript:@"subLocality"];
               [(CNPostalAddress *)v29 setSubLocality:v45];
             }
 
@@ -586,20 +586,20 @@ LABEL_15:
       }
 
       v10 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-      v11 = [v6 objectForKeyedSubscript:@"familyName"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"familyName"];
       [(NSPersonNameComponents *)v10 setFamilyName:v11];
 
-      v12 = [v6 objectForKeyedSubscript:@"givenName"];
+      v12 = [dictionaryCopy objectForKeyedSubscript:@"givenName"];
       [(NSPersonNameComponents *)v10 setGivenName:v12];
 
-      v13 = [v6 objectForKeyedSubscript:@"phoneticGivenName"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"phoneticGivenName"];
       if (v13)
       {
       }
 
       else
       {
-        v14 = [v6 objectForKeyedSubscript:@"phoneticFamilyName"];
+        v14 = [dictionaryCopy objectForKeyedSubscript:@"phoneticFamilyName"];
 
         if (!v14)
         {
@@ -612,10 +612,10 @@ LABEL_14:
       }
 
       v15 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-      v16 = [v6 objectForKeyedSubscript:@"phoneticFamilyName"];
+      v16 = [dictionaryCopy objectForKeyedSubscript:@"phoneticFamilyName"];
       [v15 setFamilyName:v16];
 
-      v17 = [v6 objectForKeyedSubscript:@"phoneticGivenName"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"phoneticGivenName"];
       [v15 setGivenName:v17];
 
       [(NSPersonNameComponents *)v7->_name setPhoneticRepresentation:v15];
@@ -628,9 +628,9 @@ LABEL_14:
     *(v59 + 24) = 0;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:1 userInfo:0];
   }
 
 LABEL_33:
@@ -710,8 +710,8 @@ void __38__PKContact_initWithDictionary_error___block_invoke_3(uint64_t a1, void
   phoneNumber = self->_phoneNumber;
   if (phoneNumber)
   {
-    v5 = [(CNPhoneNumber *)phoneNumber stringValue];
-    [v3 setObject:v5 forKeyedSubscript:@"phoneNumber"];
+    stringValue = [(CNPhoneNumber *)phoneNumber stringValue];
+    [v3 setObject:stringValue forKeyedSubscript:@"phoneNumber"];
   }
 
   emailAddress = self->_emailAddress;
@@ -720,98 +720,98 @@ void __38__PKContact_initWithDictionary_error___block_invoke_3(uint64_t a1, void
     [v3 setObject:emailAddress forKeyedSubscript:@"emailAddress"];
   }
 
-  v7 = [(NSPersonNameComponents *)self->_name givenName];
+  givenName = [(NSPersonNameComponents *)self->_name givenName];
 
-  if (v7)
+  if (givenName)
   {
-    v8 = [(NSPersonNameComponents *)self->_name givenName];
-    [v3 setObject:v8 forKeyedSubscript:@"givenName"];
+    givenName2 = [(NSPersonNameComponents *)self->_name givenName];
+    [v3 setObject:givenName2 forKeyedSubscript:@"givenName"];
   }
 
-  v9 = [(NSPersonNameComponents *)self->_name familyName];
+  familyName = [(NSPersonNameComponents *)self->_name familyName];
 
-  if (v9)
+  if (familyName)
   {
-    v10 = [(NSPersonNameComponents *)self->_name familyName];
-    [v3 setObject:v10 forKeyedSubscript:@"familyName"];
+    familyName2 = [(NSPersonNameComponents *)self->_name familyName];
+    [v3 setObject:familyName2 forKeyedSubscript:@"familyName"];
   }
 
-  v11 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
-  v12 = [v11 givenName];
+  phoneticRepresentation = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
+  givenName3 = [phoneticRepresentation givenName];
 
-  if (v12)
+  if (givenName3)
   {
-    v13 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
-    v14 = [v13 givenName];
-    [v3 setObject:v14 forKeyedSubscript:@"phoneticGivenName"];
+    phoneticRepresentation2 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
+    givenName4 = [phoneticRepresentation2 givenName];
+    [v3 setObject:givenName4 forKeyedSubscript:@"phoneticGivenName"];
   }
 
-  v15 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
-  v16 = [v15 familyName];
+  phoneticRepresentation3 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
+  familyName3 = [phoneticRepresentation3 familyName];
 
-  if (v16)
+  if (familyName3)
   {
-    v17 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
-    v18 = [v17 familyName];
-    [v3 setObject:v18 forKeyedSubscript:@"phoneticFamilyName"];
+    phoneticRepresentation4 = [(NSPersonNameComponents *)self->_name phoneticRepresentation];
+    familyName4 = [phoneticRepresentation4 familyName];
+    [v3 setObject:familyName4 forKeyedSubscript:@"phoneticFamilyName"];
   }
 
   v19 = self->_postalAddress;
-  v20 = [(CNPostalAddress *)v19 street];
+  street = [(CNPostalAddress *)v19 street];
 
-  if (v20)
+  if (street)
   {
-    v21 = [(CNPostalAddress *)v19 street];
-    v22 = [v21 componentsSeparatedByString:@"\n"];
+    street2 = [(CNPostalAddress *)v19 street];
+    v22 = [street2 componentsSeparatedByString:@"\n"];
     [v3 setObject:v22 forKeyedSubscript:@"addressLines"];
   }
 
-  v23 = [(CNPostalAddress *)v19 city];
+  city = [(CNPostalAddress *)v19 city];
 
-  if (v23)
+  if (city)
   {
-    v24 = [(CNPostalAddress *)v19 city];
-    [v3 setObject:v24 forKeyedSubscript:@"locality"];
+    city2 = [(CNPostalAddress *)v19 city];
+    [v3 setObject:city2 forKeyedSubscript:@"locality"];
   }
 
-  v25 = [(CNPostalAddress *)v19 postalCode];
+  postalCode = [(CNPostalAddress *)v19 postalCode];
 
-  if (v25)
+  if (postalCode)
   {
-    v26 = [(CNPostalAddress *)v19 postalCode];
-    [v3 setObject:v26 forKeyedSubscript:@"postalCode"];
+    postalCode2 = [(CNPostalAddress *)v19 postalCode];
+    [v3 setObject:postalCode2 forKeyedSubscript:@"postalCode"];
   }
 
-  v27 = [(CNPostalAddress *)v19 subLocality];
+  subLocality = [(CNPostalAddress *)v19 subLocality];
 
-  if (v27)
+  if (subLocality)
   {
-    v28 = [(CNPostalAddress *)v19 subLocality];
-    [v3 setObject:v28 forKeyedSubscript:@"subLocality"];
+    subLocality2 = [(CNPostalAddress *)v19 subLocality];
+    [v3 setObject:subLocality2 forKeyedSubscript:@"subLocality"];
   }
 
-  v29 = [(CNPostalAddress *)v19 state];
+  state = [(CNPostalAddress *)v19 state];
 
-  if (v29)
+  if (state)
   {
-    v30 = [(CNPostalAddress *)v19 state];
-    [v3 setObject:v30 forKeyedSubscript:@"administrativeArea"];
+    state2 = [(CNPostalAddress *)v19 state];
+    [v3 setObject:state2 forKeyedSubscript:@"administrativeArea"];
   }
 
-  v31 = [(CNPostalAddress *)v19 country];
+  country = [(CNPostalAddress *)v19 country];
 
-  if (v31)
+  if (country)
   {
-    v32 = [(CNPostalAddress *)v19 country];
-    [v3 setObject:v32 forKeyedSubscript:@"country"];
+    country2 = [(CNPostalAddress *)v19 country];
+    [v3 setObject:country2 forKeyedSubscript:@"country"];
   }
 
-  v33 = [(CNPostalAddress *)v19 ISOCountryCode];
+  iSOCountryCode = [(CNPostalAddress *)v19 ISOCountryCode];
 
-  if (v33)
+  if (iSOCountryCode)
   {
-    v34 = [(CNPostalAddress *)v19 ISOCountryCode];
-    [v3 setObject:v34 forKeyedSubscript:@"countryCode"];
+    iSOCountryCode2 = [(CNPostalAddress *)v19 ISOCountryCode];
+    [v3 setObject:iSOCountryCode2 forKeyedSubscript:@"countryCode"];
   }
 
   v35 = [v3 copy];

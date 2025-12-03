@@ -1,15 +1,15 @@
 @interface CNVCardURLParser
-+ (id)valueWithParser:(id)a3;
++ (id)valueWithParser:(id)parser;
 @end
 
 @implementation CNVCardURLParser
 
-+ (id)valueWithParser:(id)a3
++ (id)valueWithParser:(id)parser
 {
-  v3 = [a3 parseStringValue];
-  v4 = [v3 _cn_stringByAddingPercentEscapesIfNecessary];
+  parseStringValue = [parser parseStringValue];
+  _cn_stringByAddingPercentEscapesIfNecessary = [parseStringValue _cn_stringByAddingPercentEscapesIfNecessary];
 
-  return v4;
+  return _cn_stringByAddingPercentEscapesIfNecessary;
 }
 
 @end

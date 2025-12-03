@@ -4,7 +4,7 @@
 - (id)identifierPromise;
 - (void)resetIdentifiers;
 - (void)resetIfNeeded;
-- (void)setIdentifierPromise:(id)a3;
+- (void)setIdentifierPromise:(id)promise;
 - (void)updateIdentifiers;
 @end
 
@@ -36,30 +36,30 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIdentifierPromise:(id)a3
+- (void)setIdentifierPromise:(id)promise
 {
   v5 = OBJC_IVAR____TtC18PodcastsFoundation26AnalyticsIdentifierManager_identifierPromise;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = promise;
+  promiseCopy = promise;
 }
 
 - (void)updateIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8DAAEA4();
 }
 
 - (void)resetIdentifiers
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8F8779C();
 }
 
 - (void)resetIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D8DB2F50();
 }
 

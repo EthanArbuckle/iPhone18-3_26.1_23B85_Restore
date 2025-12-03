@@ -1,7 +1,7 @@
 @interface PRSFocusPosterSnapshotRequest
 - (PRSFocusPosterSnapshotRequest)init;
-- (PRSFocusPosterSnapshotRequest)initWithFocusModeUUID:(id)a3 configurationType:(int64_t)a4 variant:(int64_t)a5 options:(unint64_t)a6 imageScaleRelativeToScreen:(double)a7 orientation:(int64_t)a8 maxCount:(unint64_t)a9;
-- (PRSFocusPosterSnapshotRequest)initWithPosterRequest:(id)a3;
+- (PRSFocusPosterSnapshotRequest)initWithFocusModeUUID:(id)d configurationType:(int64_t)type variant:(int64_t)variant options:(unint64_t)options imageScaleRelativeToScreen:(double)screen orientation:(int64_t)orientation maxCount:(unint64_t)count;
+- (PRSFocusPosterSnapshotRequest)initWithPosterRequest:(id)request;
 @end
 
 @implementation PRSFocusPosterSnapshotRequest
@@ -19,7 +19,7 @@
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"PRSPosterSnapshotRequest.m";
     v17 = 1024;
@@ -35,10 +35,10 @@
   return result;
 }
 
-- (PRSFocusPosterSnapshotRequest)initWithFocusModeUUID:(id)a3 configurationType:(int64_t)a4 variant:(int64_t)a5 options:(unint64_t)a6 imageScaleRelativeToScreen:(double)a7 orientation:(int64_t)a8 maxCount:(unint64_t)a9
+- (PRSFocusPosterSnapshotRequest)initWithFocusModeUUID:(id)d configurationType:(int64_t)type variant:(int64_t)variant options:(unint64_t)options imageScaleRelativeToScreen:(double)screen orientation:(int64_t)orientation maxCount:(unint64_t)count
 {
-  v17 = a3;
-  if (v17)
+  dCopy = d;
+  if (dCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -47,17 +47,17 @@
     }
   }
 
-  if ((a4 - 2) <= 0xFFFFFFFFFFFFFFFCLL)
+  if ((type - 2) <= 0xFFFFFFFFFFFFFFFCLL)
   {
     [PRSFocusPosterSnapshotRequest initWithFocusModeUUID:a2 configurationType:? variant:? options:? imageScaleRelativeToScreen:? orientation:? maxCount:?];
   }
 
-  if ((a5 - 2) <= 0xFFFFFFFFFFFFFFFCLL)
+  if ((variant - 2) <= 0xFFFFFFFFFFFFFFFCLL)
   {
     [PRSFocusPosterSnapshotRequest initWithFocusModeUUID:a2 configurationType:? variant:? options:? imageScaleRelativeToScreen:? orientation:? maxCount:?];
   }
 
-  if (!a9)
+  if (!count)
   {
     [PRSFocusPosterSnapshotRequest initWithFocusModeUUID:a2 configurationType:? variant:? options:? imageScaleRelativeToScreen:? orientation:? maxCount:?];
   }
@@ -67,57 +67,57 @@
   v18 = [(PRSFocusPosterSnapshotRequest *)&v23 init];
   if (v18)
   {
-    v19 = [v17 copy];
+    v19 = [dCopy copy];
     focusModeUUID = v18->_focusModeUUID;
     v18->_focusModeUUID = v19;
 
-    v18->_configurationType = a4;
-    v18->_variant = a5;
-    v21 = 0.333333343;
-    if (a7 > 0.0)
+    v18->_configurationType = type;
+    v18->_variant = variant;
+    screenCopy = 0.333333343;
+    if (screen > 0.0)
     {
-      v21 = a7;
+      screenCopy = screen;
     }
 
-    v18->_imageScaleRelativeToScreen = v21;
-    v18->_orientation = a8;
-    v18->_options = a6;
-    v18->_maxCount = a9;
+    v18->_imageScaleRelativeToScreen = screenCopy;
+    v18->_orientation = orientation;
+    v18->_options = options;
+    v18->_maxCount = count;
   }
 
   return v18;
 }
 
-- (PRSFocusPosterSnapshotRequest)initWithPosterRequest:(id)a3
+- (PRSFocusPosterSnapshotRequest)initWithPosterRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 requestOptions];
-  v6 = [v5 objectForKey:@"PRSPosterSnapshotRequestOptionFocusUUID"];
-  v7 = [v6 UUIDString];
+  requestCopy = request;
+  requestOptions = [requestCopy requestOptions];
+  v6 = [requestOptions objectForKey:@"PRSPosterSnapshotRequestOptionFocusUUID"];
+  uUIDString = [v6 UUIDString];
 
-  v8 = [v4 requestOptions];
-  v9 = [v8 objectForKey:@"PRSPosterSnapshotRequestOptionLegacyConfigurationType"];
-  v10 = [v9 unsignedIntegerValue];
+  requestOptions2 = [requestCopy requestOptions];
+  v9 = [requestOptions2 objectForKey:@"PRSPosterSnapshotRequestOptionLegacyConfigurationType"];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
 
-  v11 = [v4 requestOptions];
-  v12 = [v11 objectForKey:@"PRSPosterSnapshotRequestOptionLegacyVariant"];
-  v13 = [v12 unsignedIntegerValue];
+  requestOptions3 = [requestCopy requestOptions];
+  v12 = [requestOptions3 objectForKey:@"PRSPosterSnapshotRequestOptionLegacyVariant"];
+  unsignedIntegerValue2 = [v12 unsignedIntegerValue];
 
-  v14 = [v4 requestOptions];
-  v15 = [v14 objectForKey:@"PRSPosterSnapshotRequestOptionOptionsEnum"];
-  v16 = [v15 unsignedIntegerValue];
+  requestOptions4 = [requestCopy requestOptions];
+  v15 = [requestOptions4 objectForKey:@"PRSPosterSnapshotRequestOptionOptionsEnum"];
+  unsignedIntegerValue3 = [v15 unsignedIntegerValue];
 
-  v17 = [v4 requestOptions];
-  v18 = [v17 objectForKey:@"PRSPosterSnapshotRequestOptionLegacyImageScaleRelativeToScreen"];
+  requestOptions5 = [requestCopy requestOptions];
+  v18 = [requestOptions5 objectForKey:@"PRSPosterSnapshotRequestOptionLegacyImageScaleRelativeToScreen"];
   [v18 doubleValue];
   v20 = v19;
 
-  v21 = [v4 requestOptions];
-  v22 = [v21 objectForKey:@"PRSPosterSnapshotRequestOptionLegacyMaxCount"];
-  v23 = [v22 unsignedIntegerValue];
+  requestOptions6 = [requestCopy requestOptions];
+  v22 = [requestOptions6 objectForKey:@"PRSPosterSnapshotRequestOptionLegacyMaxCount"];
+  unsignedIntegerValue4 = [v22 unsignedIntegerValue];
 
-  v24 = [v4 orientation];
-  v25 = [(PRSFocusPosterSnapshotRequest *)self initWithFocusModeUUID:v7 configurationType:v10 variant:v13 options:v16 imageScaleRelativeToScreen:v24 orientation:v23 maxCount:v20];
+  orientation = [requestCopy orientation];
+  v25 = [(PRSFocusPosterSnapshotRequest *)self initWithFocusModeUUID:uUIDString configurationType:unsignedIntegerValue variant:unsignedIntegerValue2 options:unsignedIntegerValue3 imageScaleRelativeToScreen:orientation orientation:unsignedIntegerValue4 maxCount:v20];
 
   return v25;
 }

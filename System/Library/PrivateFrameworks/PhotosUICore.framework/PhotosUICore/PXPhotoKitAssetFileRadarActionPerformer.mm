@@ -1,68 +1,68 @@
 @interface PXPhotoKitAssetFileRadarActionPerformer
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotoKitAssetFileRadarActionPerformer
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = a3;
+  targetCopy = target;
   v8 = [v6 systemImageNamed:@"ant"];
-  v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v8 style:0 target:v7 action:a4];
+  v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithImage:v8 style:0 target:targetCopy action:action];
 
   return v9;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v5 = a3;
+  snapshotCopy = snapshot;
   v6 = +[PXRootSettings sharedInstance];
-  v7 = [v6 canShowInternalUI];
+  canShowInternalUI = [v6 canShowInternalUI];
 
-  if (v7)
+  if (canShowInternalUI)
   {
-    v8 = [v5 isAnyItemSelected];
+    isAnyItemSelected = [snapshotCopy isAnyItemSelected];
   }
 
   else
   {
-    v8 = 0;
+    isAnyItemSelected = 0;
   }
 
-  return v8;
+  return isAnyItemSelected;
 }
 
 - (void)performUserInteractionTask
 {
-  v4 = [(PXPhotoKitAssetActionPerformer *)self radarConfigurationProvider];
-  if (!v4)
+  radarConfigurationProvider = [(PXPhotoKitAssetActionPerformer *)self radarConfigurationProvider];
+  if (!radarConfigurationProvider)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetFileRadarActionPerformer.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"radarConfigurationProvider"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetFileRadarActionPerformer.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"radarConfigurationProvider"}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__PXPhotoKitAssetFileRadarActionPerformer_performUserInteractionTask__block_invoke;
   aBlock[3] = &unk_1E772EA40;
-  v5 = v4;
-  v17 = self;
+  v5 = radarConfigurationProvider;
+  selfCopy = self;
   v18 = a2;
   v16 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [v5 includeAssetImages];
-  v8 = [v5 includeAssetThumbnails];
-  if ((v7 & 1) != 0 || v8)
+  includeAssetImages = [v5 includeAssetImages];
+  includeAssetThumbnails = [v5 includeAssetThumbnails];
+  if ((includeAssetImages & 1) != 0 || includeAssetThumbnails)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__PXPhotoKitAssetFileRadarActionPerformer_performUserInteractionTask__block_invoke_5;
     v12[3] = &unk_1E772EA68;
     v12[4] = self;
-    v14 = v8;
+    v14 = includeAssetThumbnails;
     v13 = v6;
     v9 = [PXFeedbackTapToRadarUtilities alertControllerWithInternalReleaseAgreementAndCompletion:v12];
     if (![(PXActionPerformer *)self presentViewController:v9])

@@ -1,5 +1,5 @@
 @interface UpsellShowGridView
-- (_TtC23ShelfKitCollectionViews18UpsellShowGridView)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews18UpsellShowGridView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -25,7 +25,7 @@
   }
 }
 
-- (_TtC23ShelfKitCollectionViews18UpsellShowGridView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews18UpsellShowGridView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

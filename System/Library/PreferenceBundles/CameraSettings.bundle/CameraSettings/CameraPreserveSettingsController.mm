@@ -1,5 +1,5 @@
 @interface CameraPreserveSettingsController
-- (id)_groupSpecifierWithID:(id)a3 footer:(id)a4;
+- (id)_groupSpecifierWithID:(id)d footer:(id)footer;
 - (id)specifiers;
 - (void)emitNavigationEvent;
 - (void)viewDidLoad;
@@ -27,9 +27,9 @@
   v10 = [(CameraPreserveSettingsController *)self _groupSpecifierWithID:@"modeGroup" footer:v8];
   v78 = v9;
   v11 = [NSMutableArray arrayWithObjects:v10, v9, 0];
-  v77 = [v5 isLivePhotoSupported];
-  v12 = [v5 featureDevelopmentPreserveLastOpenedControlSupported];
-  if ([v5 wantsFullscreenViewfinder] && v12)
+  isLivePhotoSupported = [v5 isLivePhotoSupported];
+  featureDevelopmentPreserveLastOpenedControlSupported = [v5 featureDevelopmentPreserveLastOpenedControlSupported];
+  if ([v5 wantsFullscreenViewfinder] && featureDevelopmentPreserveLastOpenedControlSupported)
   {
     v13 = sub_A8E4(@"CAM_PRESERVE_LAST_OPENED_DRAWER_CONTROL_FOOTER");
     v14 = [(CameraPreserveSettingsController *)self _groupSpecifierWithID:@"preserveLastOpenedDrawerControlGroup" footer:v13];
@@ -173,9 +173,9 @@ LABEL_30:
 
   v53 = [v5 isPhotoResolutionSupported:3 forPhotoEncoding:1];
   v54 = CFPreferencesGetAppBooleanValue(@"CAMUserPreferenceEnableLinearDNGControl", @"com.apple.camera", 0);
-  v55 = [v5 isLinearDNGSupported];
+  isLinearDNGSupported = [v5 isLinearDNGSupported];
   v56 = CFPreferencesGetAppBooleanValue(CAMUserPreferenceEnablePhotoFormatControl, @"com.apple.camera", 0);
-  if (v55)
+  if (isLinearDNGSupported)
   {
     if (!v54)
     {
@@ -247,7 +247,7 @@ LABEL_53:
     [v11 addObject:v68];
   }
 
-  if (v77)
+  if (isLivePhotoSupported)
   {
     v70 = [v6 localizedStringForKey:@"CAM_PRESERVE_LIVE_PHOTO_SWITCH" value:&stru_2DB58 table:@"CameraSettings"];
     v71 = [v6 localizedStringForKey:@"CAM_PRESERVE_LIVE_PHOTO_FOOTER" value:&stru_2DB58 table:@"CameraSettings"];
@@ -268,11 +268,11 @@ LABEL_59:
   return v4;
 }
 
-- (id)_groupSpecifierWithID:(id)a3 footer:(id)a4
+- (id)_groupSpecifierWithID:(id)d footer:(id)footer
 {
-  v5 = a4;
-  v6 = [PSSpecifier groupSpecifierWithID:a3];
-  [v6 setObject:v5 forKeyedSubscript:PSFooterTextGroupKey];
+  footerCopy = footer;
+  v6 = [PSSpecifier groupSpecifierWithID:d];
+  [v6 setObject:footerCopy forKeyedSubscript:PSFooterTextGroupKey];
 
   return v6;
 }
@@ -292,14 +292,14 @@ LABEL_59:
   v4 = [_NSLocalizedStringResource alloc];
   v5 = +[NSLocale currentLocale];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [v6 bundleURL];
-  v8 = [v4 initWithKey:@"CAM_PRESERVE_SETTINGS_TITLE" table:@"CameraSettings" locale:v5 bundleURL:v7];
+  bundleURL = [v6 bundleURL];
+  v8 = [v4 initWithKey:@"CAM_PRESERVE_SETTINGS_TITLE" table:@"CameraSettings" locale:v5 bundleURL:bundleURL];
 
   v9 = [_NSLocalizedStringResource alloc];
   v10 = +[NSLocale currentLocale];
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  v12 = [v11 bundleURL];
-  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:v12];
+  bundleURL2 = [v11 bundleURL];
+  v13 = [v9 initWithKey:@"CAMERA_SETTINGS_TITLE" table:@"CameraSettings" locale:v10 bundleURL:bundleURL2];
 
   v15 = v13;
   v14 = [NSArray arrayWithObjects:&v15 count:1];

@@ -2,8 +2,8 @@
 - (PKPencilTouchDetection)init;
 - (PKPencilTouchDetectionDelegate)delegate;
 - (void)dealloc;
-- (void)didUpdateWithUserInfo:(id)a3;
-- (void)pencilType:(int64_t)a3 hasRecentlyBeenUsedWithCompletionHandler:(id)a4;
+- (void)didUpdateWithUserInfo:(id)info;
+- (void)pencilType:(int64_t)type hasRecentlyBeenUsedWithCompletionHandler:(id)handler;
 @end
 
 @implementation PKPencilTouchDetection
@@ -31,42 +31,42 @@
   [(PKPencilTouchDetection *)&v4 dealloc];
 }
 
-- (void)didUpdateWithUserInfo:(id)a3
+- (void)didUpdateWithUserInfo:(id)info
 {
-  v14 = a3;
-  v4 = [v14 objectForKey:@"com.apple.pencilkit.pktouchdetectionupdate.firstUse"];
+  infoCopy = info;
+  v4 = [infoCopy objectForKey:@"com.apple.pencilkit.pktouchdetectionupdate.firstUse"];
   if (v4)
   {
-    v5 = [(PKPencilTouchDetection *)self delegate];
+    delegate = [(PKPencilTouchDetection *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [v4 integerValue];
-      v8 = [(PKPencilTouchDetection *)self delegate];
-      [v8 didDetectFirstUseForType:v7];
+      integerValue = [v4 integerValue];
+      delegate2 = [(PKPencilTouchDetection *)self delegate];
+      [delegate2 didDetectFirstUseForType:integerValue];
     }
   }
 
-  v9 = [v14 objectForKey:@"com.apple.pencilkit.pktouchdetectionupdate.reactivation"];
+  v9 = [infoCopy objectForKey:@"com.apple.pencilkit.pktouchdetectionupdate.reactivation"];
   if (v9)
   {
-    v10 = [(PKPencilTouchDetection *)self delegate];
+    delegate3 = [(PKPencilTouchDetection *)self delegate];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
-      v12 = [v9 integerValue];
-      v13 = [(PKPencilTouchDetection *)self delegate];
-      [v13 didDetectReactivationForType:v12];
+      integerValue2 = [v9 integerValue];
+      delegate4 = [(PKPencilTouchDetection *)self delegate];
+      [delegate4 didDetectReactivationForType:integerValue2];
     }
   }
 }
 
-- (void)pencilType:(int64_t)a3 hasRecentlyBeenUsedWithCompletionHandler:(id)a4
+- (void)pencilType:(int64_t)type hasRecentlyBeenUsedWithCompletionHandler:(id)handler
 {
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.pencilkit.pktouchdetection" options:0];
     v7 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F4811328];
@@ -76,7 +76,7 @@
     v14[1] = 3221225472;
     v14[2] = __78__PKPencilTouchDetection_pencilType_hasRecentlyBeenUsedWithCompletionHandler___block_invoke;
     v14[3] = &unk_1E82D8808;
-    v8 = v5;
+    v8 = handlerCopy;
     v16 = v8;
     v9 = v6;
     v15 = v9;
@@ -89,7 +89,7 @@
       v11[3] = &unk_1E82D7840;
       v13 = v8;
       v12 = v9;
-      [v10 pencilType:a3 hasRecentlyBeenUsedWithCompletionHandler:v11];
+      [v10 pencilType:type hasRecentlyBeenUsedWithCompletionHandler:v11];
     }
 
     else

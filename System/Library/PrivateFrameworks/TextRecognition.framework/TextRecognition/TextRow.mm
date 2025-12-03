@@ -3,8 +3,8 @@
 - (NSString)string;
 - (TextRow)init;
 - (double)score;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addToken:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addToken:(id)token;
 @end
 
 @implementation TextRow
@@ -16,9 +16,9 @@
   v2 = [(TextRow *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     mutableTokens = v2->_mutableTokens;
-    v2->_mutableTokens = v3;
+    v2->_mutableTokens = array;
 
     v2->_cachedScore = 0.0;
   }
@@ -26,19 +26,19 @@
   return v2;
 }
 
-- (void)addToken:(id)a3
+- (void)addToken:(id)token
 {
   mutableTokens = self->_mutableTokens;
   if (mutableTokens)
   {
-    [(NSMutableArray *)mutableTokens addObject:a3];
+    [(NSMutableArray *)mutableTokens addObject:token];
   }
 }
 
 - (NSString)string
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -61,12 +61,12 @@
           objc_enumerationMutation(v4);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v9) string];
-        [v3 appendString:v11];
+        string2 = [*(*(&v13 + 1) + 8 * v9) string];
+        [string appendString:string2];
 
         if (v10 < [(TextRow *)self tokenCount]- 1)
         {
-          [v3 appendString:@" "];
+          [string appendString:@" "];
         }
 
         ++v10;
@@ -81,7 +81,7 @@
     while (v6);
   }
 
-  return v3;
+  return string;
 }
 
 - (double)score
@@ -134,7 +134,7 @@
 - (NSArray)features
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -154,8 +154,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) features];
-        [v3 addObjectsFromArray:v9];
+        features = [*(*(&v12 + 1) + 8 * i) features];
+        [array addObjectsFromArray:features];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -164,12 +164,12 @@
     while (v6);
   }
 
-  v10 = [MEMORY[0x1E695DEC8] arrayWithArray:v3];
+  v10 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TextRow);
   v5 = [(NSMutableArray *)self->_mutableTokens mutableCopy];

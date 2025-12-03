@@ -1,12 +1,12 @@
 @interface PUImportOneUpCellBadgeView
 - (CGSize)intrinsicContentSize;
-- (PUImportOneUpCellBadgeView)initWithFrame:(CGRect)a3;
+- (PUImportOneUpCellBadgeView)initWithFrame:(CGRect)frame;
 - (void)_createSpinnerIfNecessary;
 - (void)layoutSubviews;
-- (void)performBadgeUpdates:(id)a3;
+- (void)performBadgeUpdates:(id)updates;
 - (void)prepareForReuse;
-- (void)setBadgeType:(int64_t)a3;
-- (void)setSelectable:(BOOL)a3;
+- (void)setBadgeType:(int64_t)type;
+- (void)setSelectable:(BOOL)selectable;
 - (void)updateBadgeUIIfNeeded;
 @end
 
@@ -20,8 +20,8 @@
     spinner = self->_spinner;
     self->_spinner = v3;
 
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UIActivityIndicatorView *)self->_spinner setColor:v5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UIActivityIndicatorView *)self->_spinner setColor:whiteColor];
 
     v6 = self->_spinner;
     badgeContainerView = self->_badgeContainerView;
@@ -30,12 +30,12 @@
   }
 }
 
-- (void)performBadgeUpdates:(id)a3
+- (void)performBadgeUpdates:(id)updates
 {
-  if (a3)
+  if (updates)
   {
     self->_inUpdateBlock = 1;
-    (*(a3 + 2))(a3, a2);
+    (*(updates + 2))(updates, a2);
     self->_inUpdateBlock = 0;
 
     [(PUImportOneUpCellBadgeView *)self updateBadgeUIIfNeeded];
@@ -47,9 +47,9 @@
   if ([(PUImportOneUpCellBadgeView *)self needsBadgeUpdate])
   {
     [(PUImportOneUpCellBadgeView *)self setNeedsBadgeUpdate:0];
-    v3 = [(PUImportOneUpCellBadgeView *)self badgeType];
-    v4 = [(PUImportOneUpCellBadgeView *)self badgeView];
-    [v4 removeFromSuperview];
+    badgeType = [(PUImportOneUpCellBadgeView *)self badgeType];
+    badgeView = [(PUImportOneUpCellBadgeView *)self badgeView];
+    [badgeView removeFromSuperview];
 
     [(PUImportOneUpCellBadgeView *)self setBadgeView:0];
     [(PUImportOneUpCellBadgeView *)self badgeType];
@@ -57,13 +57,13 @@
     v6 = PXImportBadgeViewForTypeAndSelectable();
     if (v6)
     {
-      v5 = [(PUImportOneUpCellBadgeView *)self badgeContainerView];
-      [v5 addSubview:v6];
+      badgeContainerView = [(PUImportOneUpCellBadgeView *)self badgeContainerView];
+      [badgeContainerView addSubview:v6];
 
       [(PUImportOneUpCellBadgeView *)self setBadgeView:v6];
     }
 
-    if (v3 == 2)
+    if (badgeType == 2)
     {
       [(PUImportOneUpCellBadgeView *)self _createSpinnerIfNecessary];
       [(UIActivityIndicatorView *)self->_spinner startAnimating];
@@ -78,26 +78,26 @@
   }
 }
 
-- (void)setSelectable:(BOOL)a3
+- (void)setSelectable:(BOOL)selectable
 {
   if (!self->_inUpdateBlock)
   {
     _PFAssertContinueHandler();
   }
 
-  self->_selectable = a3;
+  self->_selectable = selectable;
 
   [(PUImportOneUpCellBadgeView *)self setNeedsBadgeUpdate];
 }
 
-- (void)setBadgeType:(int64_t)a3
+- (void)setBadgeType:(int64_t)type
 {
   if (!self->_inUpdateBlock)
   {
     _PFAssertContinueHandler();
   }
 
-  self->_badgeType = a3;
+  self->_badgeType = type;
 
   [(PUImportOneUpCellBadgeView *)self setNeedsBadgeUpdate];
 }
@@ -140,29 +140,29 @@ uint64_t __45__PUImportOneUpCellBadgeView_prepareForReuse__block_invoke(uint64_t
   v25.size.width = width;
   v25.size.height = height;
   MidY = CGRectGetMidY(v25);
-  v9 = [(PUImportOneUpCellBadgeView *)self badgeView];
+  badgeView = [(PUImportOneUpCellBadgeView *)self badgeView];
 
-  if (v9)
+  if (badgeView)
   {
-    v10 = [(PUImportOneUpCellBadgeView *)self badgeContainerView];
-    [v10 bounds];
+    badgeContainerView = [(PUImportOneUpCellBadgeView *)self badgeContainerView];
+    [badgeContainerView bounds];
     v12 = v11;
     v14 = v13;
 
-    v15 = [(PUImportOneUpCellBadgeView *)self badgeView];
-    [v15 bounds];
+    badgeView2 = [(PUImportOneUpCellBadgeView *)self badgeView];
+    [badgeView2 bounds];
     v17 = v16;
     v19 = v18;
 
-    v20 = [(PUImportOneUpCellBadgeView *)self badgeContainerView];
-    [v20 setFrame:{v12, v14, v17, v19}];
+    badgeContainerView2 = [(PUImportOneUpCellBadgeView *)self badgeContainerView];
+    [badgeContainerView2 setFrame:{v12, v14, v17, v19}];
   }
 
-  v21 = [(PUImportOneUpCellBadgeView *)self badgeContainerView];
-  [v21 setCenter:{MidX, MidY}];
+  badgeContainerView3 = [(PUImportOneUpCellBadgeView *)self badgeContainerView];
+  [badgeContainerView3 setCenter:{MidX, MidY}];
 
-  v22 = [(PUImportOneUpCellBadgeView *)self spinner];
-  [v22 setCenter:{MidX, MidY}];
+  spinner = [(PUImportOneUpCellBadgeView *)self spinner];
+  [spinner setCenter:{MidX, MidY}];
 }
 
 - (CGSize)intrinsicContentSize
@@ -174,11 +174,11 @@ uint64_t __45__PUImportOneUpCellBadgeView_prepareForReuse__block_invoke(uint64_t
   return result;
 }
 
-- (PUImportOneUpCellBadgeView)initWithFrame:(CGRect)a3
+- (PUImportOneUpCellBadgeView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PUImportOneUpCellBadgeView;
-  v3 = [(PUImportOneUpCellBadgeView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUImportOneUpCellBadgeView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (initWithFrame__onceToken_30674 != -1)

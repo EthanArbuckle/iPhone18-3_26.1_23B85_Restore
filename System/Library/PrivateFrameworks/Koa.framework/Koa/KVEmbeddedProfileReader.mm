@@ -1,6 +1,6 @@
 @interface KVEmbeddedProfileReader
-- (BOOL)enumerateDatasetsWithError:(id *)a3 usingBlock:(id)a4;
-- (KVEmbeddedProfileReader)initWithData:(id)a3 profile:(const Profile *)a4 profileInfo:(id)a5;
+- (BOOL)enumerateDatasetsWithError:(id *)error usingBlock:(id)block;
+- (KVEmbeddedProfileReader)initWithData:(id)data profile:(const Profile *)profile profileInfo:(id)info;
 - (NSString)description;
 @end
 
@@ -13,9 +13,9 @@
   return v5;
 }
 
-- (BOOL)enumerateDatasetsWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)enumerateDatasetsWithError:(id *)error usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   profile = self->_profile;
   v8 = &profile[-*profile->var0];
   if (*v8->var0 >= 7u && (v9 = *v8[6].var0) != 0 && (v10 = *profile[v9].var0, v11 = *profile[v9 + v10].var0, v11))
@@ -26,8 +26,8 @@
     {
       v14 = *v13->var0;
       v15 = [KVEmbeddedDatasetReader alloc];
-      v18 = objc_msgSend_initWithData_dataset_error_(v15, v16, self->_data, &v13[v14], a3, v17);
-      if (!v18 || (v6[2](v6, v18) & 1) == 0)
+      v18 = objc_msgSend_initWithData_dataset_error_(v15, v16, self->_data, &v13[v14], error, v17);
+      if (!v18 || (blockCopy[2](blockCopy, v18) & 1) == 0)
       {
         break;
       }
@@ -52,19 +52,19 @@ LABEL_8:
   return v19;
 }
 
-- (KVEmbeddedProfileReader)initWithData:(id)a3 profile:(const Profile *)a4 profileInfo:(id)a5
+- (KVEmbeddedProfileReader)initWithData:(id)data profile:(const Profile *)profile profileInfo:(id)info
 {
-  v9 = a3;
-  v10 = a5;
+  dataCopy = data;
+  infoCopy = info;
   v14.receiver = self;
   v14.super_class = KVEmbeddedProfileReader;
   v11 = [(KVEmbeddedProfileReader *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_data, a3);
-    v12->_profile = a4;
-    objc_storeStrong(&v12->_profileInfo, a5);
+    objc_storeStrong(&v11->_data, data);
+    v12->_profile = profile;
+    objc_storeStrong(&v12->_profileInfo, info);
   }
 
   return v12;

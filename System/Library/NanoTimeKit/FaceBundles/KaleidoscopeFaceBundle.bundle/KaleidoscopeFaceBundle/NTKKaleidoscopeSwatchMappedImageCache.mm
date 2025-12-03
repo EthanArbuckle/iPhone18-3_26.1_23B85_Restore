@@ -1,11 +1,11 @@
 @interface NTKKaleidoscopeSwatchMappedImageCache
-+ (id)keyForAsset:(id)a3 style:(id)a4 resourceDirectory:(id)a5;
++ (id)keyForAsset:(id)asset style:(id)style resourceDirectory:(id)directory;
 + (id)sharedCache;
 - (id)_init;
 - (void)_cleanCache;
 - (void)_pruneUnusedKeys;
-- (void)_removeImagesForKeysMatching:(id)a3;
-- (void)faceCollectionDidLoad:(id)a3;
+- (void)_removeImagesForKeysMatching:(id)matching;
+- (void)faceCollectionDidLoad:(id)load;
 @end
 
 @implementation NTKKaleidoscopeSwatchMappedImageCache
@@ -36,67 +36,67 @@
   return v3;
 }
 
-- (void)_removeImagesForKeysMatching:(id)a3
+- (void)_removeImagesForKeysMatching:(id)matching
 {
-  v4 = a3;
-  v5 = [(NTKKaleidoscopeSwatchMappedImageCache *)self allKeys];
-  v6 = [v5 copy];
+  matchingCopy = matching;
+  allKeys = [(NTKKaleidoscopeSwatchMappedImageCache *)self allKeys];
+  v6 = [allKeys copy];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_9F90;
   v13[3] = &unk_24B60;
-  v14 = v4;
-  v7 = v4;
+  v14 = matchingCopy;
+  v7 = matchingCopy;
   v8 = [v6 indexesOfObjectsPassingTest:v13];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_9FA0;
   v10[3] = &unk_24B88;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v9 = v6;
   [v8 enumerateIndexesUsingBlock:v10];
 }
 
-+ (id)keyForAsset:(id)a3 style:(id)a4 resourceDirectory:(id)a5
++ (id)keyForAsset:(id)asset style:(id)style resourceDirectory:(id)directory
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v9)
+  assetCopy = asset;
+  styleCopy = style;
+  directoryCopy = directory;
+  if (directoryCopy)
   {
-    v10 = [NTKPhotosReader readerForResourceDirectory:v9];
-    v11 = [v10 firstObject];
-    v12 = [v11 imageURL];
-    v13 = [v12 URLByDeletingPathExtension];
-    v14 = [v13 lastPathComponent];
+    v10 = [NTKPhotosReader readerForResourceDirectory:directoryCopy];
+    firstObject = [v10 firstObject];
+    imageURL = [firstObject imageURL];
+    uRLByDeletingPathExtension = [imageURL URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
   }
 
   else
   {
-    v14 = 0;
+    lastPathComponent = 0;
   }
 
   v15 = NTKBuildVersion();
-  v16 = [NSString stringWithFormat:@"%@-%@-%@", v15, v8, v7];
+  assetCopy = [NSString stringWithFormat:@"%@-%@-%@", v15, styleCopy, assetCopy];
 
-  if ([v7 asset] == stru_3D8.segname && v14)
+  if ([assetCopy asset] == stru_3D8.segname && lastPathComponent)
   {
-    v17 = [v16 stringByAppendingFormat:@"-%@", v14];
+    v17 = [assetCopy stringByAppendingFormat:@"-%@", lastPathComponent];
 
-    v16 = v17;
+    assetCopy = v17;
   }
 
-  return v16;
+  return assetCopy;
 }
 
 - (void)_cleanCache
 {
   v3 = +[NTKCompanionFaceCollectionsManager sharedInstance];
-  v4 = [v3 sharedLibraryFaceCollectionsForAllDevices];
+  sharedLibraryFaceCollectionsForAllDevices = [v3 sharedLibraryFaceCollectionsForAllDevices];
   libraryCollections = self->_libraryCollections;
-  self->_libraryCollections = v4;
+  self->_libraryCollections = sharedLibraryFaceCollectionsForAllDevices;
 
   v6 = objc_opt_new();
   loadedCollections = self->_loadedCollections;
@@ -161,7 +161,7 @@ LABEL_14:
     v21 = v12;
     v13 = v10;
     v22 = v13;
-    v23 = self;
+    selfCopy = self;
     [(NSArray *)libraryCollections enumerateObjectsUsingBlock:v20];
     v14 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -186,7 +186,7 @@ LABEL_14:
 
   v5 = v4;
   v6 = *v25;
-  v7 = 1;
+  bOOLValue = 1;
   do
   {
     for (i = 0; i != v5; i = i + 1)
@@ -196,14 +196,14 @@ LABEL_14:
         objc_enumerationMutation(v3);
       }
 
-      if (v7)
+      if (bOOLValue)
       {
-        v7 = [*(*(&v24 + 1) + 8 * i) BOOLValue];
+        bOOLValue = [*(*(&v24 + 1) + 8 * i) BOOLValue];
       }
 
       else
       {
-        v7 = 0;
+        bOOLValue = 0;
       }
     }
 
@@ -212,15 +212,15 @@ LABEL_14:
 
   while (v5);
 
-  if (v7)
+  if (bOOLValue)
   {
     goto LABEL_14;
   }
 }
 
-- (void)faceCollectionDidLoad:(id)a3
+- (void)faceCollectionDidLoad:(id)load
 {
-  v4 = [(NSArray *)self->_libraryCollections indexOfObject:a3];
+  v4 = [(NSArray *)self->_libraryCollections indexOfObject:load];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     [(NSMutableArray *)self->_loadedCollections setObject:&__kCFBooleanTrue atIndexedSubscript:v4];

@@ -1,19 +1,19 @@
 @interface PreferencesAssistantSetBrightnessLevel
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PreferencesAssistantSetBrightnessLevel
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(PreferencesAssistantSetBrightnessLevel *)self value];
   v6 = v5;
   +[PSBrightnessSettingsDetail currentValue];
   v8 = v7;
-  v9 = [(PreferencesAssistantSetBrightnessLevel *)self increment];
-  v10 = [(PreferencesAssistantSetBrightnessLevel *)self dryRun];
-  if (v9)
+  increment = [(PreferencesAssistantSetBrightnessLevel *)self increment];
+  dryRun = [(PreferencesAssistantSetBrightnessLevel *)self dryRun];
+  if (increment)
   {
     [PSBrightnessSettingsDetail incrementedBrightnessValue:v6];
     v6 = v11;
@@ -38,12 +38,12 @@
 
   else
   {
-    v13 = v10;
+    v13 = dryRun;
   }
 
   if ((v13 & 1) == 0)
   {
-    if (v9)
+    if (increment)
     {
       [PSBrightnessSettingsDetail incrementBrightnessValue:v6];
     }
@@ -62,14 +62,14 @@
     v15 = @"Set";
     v16 = @"Dry Run";
     *v24 = 138413314;
-    if (!v10)
+    if (!dryRun)
     {
       v16 = @"Set";
     }
 
     *&v24[4] = v16;
     *&v24[12] = 2112;
-    if (v9)
+    if (increment)
     {
       v15 = @"Increment";
     }
@@ -99,8 +99,8 @@
     [v18 setSetting:v19];
   }
 
-  v23 = [v18 dictionary];
-  v4[2](v4, v23);
+  dictionary = [v18 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

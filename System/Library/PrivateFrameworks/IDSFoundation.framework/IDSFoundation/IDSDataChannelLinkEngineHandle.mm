@@ -1,12 +1,12 @@
 @interface IDSDataChannelLinkEngineHandle
 - (BOOL)allowOngoingTasks;
 - (IDSDataChannelLinkEngineHandle)init;
-- (IDSDataChannelLinkEngineHandle)initWithTimeFn:(id)a3 enableQualityMetrics:(BOOL)a4;
-- (void)addLinkWithUniqueID:(id)a3;
-- (void)qualityDeltaSince:(IDSLinksQualityReportSyncTokenObject *)a3 completionHandler:(id)a4;
-- (void)removeLinkWithUniqueID:(id)a3;
-- (void)setAllowOngoingTasks:(BOOL)a3;
-- (void)setTestableLink:(id)a3 forLinkWithUniqueID:(id)a4;
+- (IDSDataChannelLinkEngineHandle)initWithTimeFn:(id)fn enableQualityMetrics:(BOOL)metrics;
+- (void)addLinkWithUniqueID:(id)d;
+- (void)qualityDeltaSince:(IDSLinksQualityReportSyncTokenObject *)since completionHandler:(id)handler;
+- (void)removeLinkWithUniqueID:(id)d;
+- (void)setAllowOngoingTasks:(BOOL)tasks;
+- (void)setTestableLink:(id)link forLinkWithUniqueID:(id)d;
 @end
 
 @implementation IDSDataChannelLinkEngineHandle
@@ -17,7 +17,7 @@
   if (v2)
   {
     v3 = *(v2 + 16);
-    v4 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v3 + 32));
     v5 = *(v3 + 36);
@@ -34,16 +34,16 @@
   return self;
 }
 
-- (void)setAllowOngoingTasks:(BOOL)a3
+- (void)setAllowOngoingTasks:(BOOL)tasks
 {
   v3 = *(&self->super.isa + OBJC_IVAR___IDSDataChannelLinkEngineHandle_linkEngine);
   if (v3)
   {
     v5 = *(v3 + 16);
-    v6 = self;
+    selfCopy = self;
 
     os_unfair_lock_lock((v5 + 32));
-    *(v5 + 36) = a3;
+    *(v5 + 36) = tasks;
     os_unfair_lock_unlock((v5 + 32));
     LinkEngine.scheduleUpdate()();
   }
@@ -54,9 +54,9 @@
   }
 }
 
-- (IDSDataChannelLinkEngineHandle)initWithTimeFn:(id)a3 enableQualityMetrics:(BOOL)a4
+- (IDSDataChannelLinkEngineHandle)initWithTimeFn:(id)fn enableQualityMetrics:(BOOL)metrics
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(fn);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   v8 = OBJC_IVAR___IDSDataChannelLinkEngineHandle_linkEngine;
@@ -64,7 +64,7 @@
   type metadata accessor for IDSDataChannelLinkEngine();
   swift_allocObject();
 
-  *(&self->super.isa + v8) = IDSDataChannelLinkEngine.init(timeFn:enableQualityMetrics:)(sub_1A7D53CC8, v7, a4);
+  *(&self->super.isa + v8) = IDSDataChannelLinkEngine.init(timeFn:enableQualityMetrics:)(sub_1A7D53CC8, v7, metrics);
 
   v11.receiver = self;
   v11.super_class = IDSDataChannelLinkEngineHandle;
@@ -73,14 +73,14 @@
   return v9;
 }
 
-- (void)addLinkWithUniqueID:(id)a3
+- (void)addLinkWithUniqueID:(id)d
 {
   v4 = sub_1A7E22290();
   if (*(&self->super.isa + OBJC_IVAR___IDSDataChannelLinkEngineHandle_linkEngine))
   {
     v6 = v4;
     v7 = v5;
-    v8 = self;
+    selfCopy = self;
 
     LinkEngine.add(linkWithUniqueName:)(v6, v7);
   }
@@ -91,14 +91,14 @@
   }
 }
 
-- (void)removeLinkWithUniqueID:(id)a3
+- (void)removeLinkWithUniqueID:(id)d
 {
   v4 = sub_1A7E22290();
   if (*(&self->super.isa + OBJC_IVAR___IDSDataChannelLinkEngineHandle_linkEngine))
   {
     v6 = v4;
     v7 = v5;
-    v8 = self;
+    selfCopy = self;
 
     v9._countAndFlagsBits = v6;
     v9._object = v7;
@@ -111,15 +111,15 @@
   }
 }
 
-- (void)setTestableLink:(id)a3 forLinkWithUniqueID:(id)a4
+- (void)setTestableLink:(id)link forLinkWithUniqueID:(id)d
 {
   v6 = sub_1A7E22290();
   if (*(&self->super.isa + OBJC_IVAR___IDSDataChannelLinkEngineHandle_linkEngine))
   {
     v8 = v6;
     v9 = v7;
-    v10 = a3;
-    v11 = self;
+    linkCopy = link;
+    selfCopy = self;
 
     sub_1A7DA3B8C(v12, v8, v9);
   }
@@ -130,14 +130,14 @@
   }
 }
 
-- (void)qualityDeltaSince:(IDSLinksQualityReportSyncTokenObject *)a3 completionHandler:(id)a4
+- (void)qualityDeltaSince:(IDSLinksQualityReportSyncTokenObject *)since completionHandler:(id)handler
 {
   v7 = sub_1A7CC7FFC(&unk_1EB2B61C0);
   MEMORY[0x1EEE9AC00](v7 - 8, v8);
   v10 = &v18 - v9;
-  v11 = _Block_copy(a4);
+  v11 = _Block_copy(handler);
   v12 = swift_allocObject();
-  v12[2] = a3;
+  v12[2] = since;
   v12[3] = v11;
   v12[4] = self;
   v13 = sub_1A7E226D0();
@@ -152,8 +152,8 @@
   v15[3] = 0;
   v15[4] = &unk_1A7E48E60;
   v15[5] = v14;
-  v16 = a3;
-  v17 = self;
+  sinceCopy = since;
+  selfCopy = self;
   sub_1A7DE5274(0, 0, v10, &unk_1A7E45700, v15);
 }
 

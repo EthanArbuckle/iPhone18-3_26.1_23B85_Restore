@@ -8,15 +8,15 @@
 - (id)accessibilityValue
 {
   v2 = [(CAMVideoStabilizationStatusIndicatorAccessibility *)self safeValueForKey:@"videoStabilizationMode"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (!v3)
+  if (!integerValue)
   {
     v4 = @"Action_Mode_Off";
     goto LABEL_5;
   }
 
-  if (v3 == 1)
+  if (integerValue == 1)
   {
     v4 = @"Action_Mode_On";
 LABEL_5:

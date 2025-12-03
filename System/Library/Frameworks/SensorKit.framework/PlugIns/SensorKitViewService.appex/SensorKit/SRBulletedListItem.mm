@@ -1,14 +1,14 @@
 @interface SRBulletedListItem
-- (SRBulletedListItem)initWithTitle:(id)a3 description:(id)a4 image:(id)a5 textStyle:(id)a6;
+- (SRBulletedListItem)initWithTitle:(id)title description:(id)description image:(id)image textStyle:(id)style;
 - (void)_updateImageViewLayout;
 - (void)dealloc;
 @end
 
 @implementation SRBulletedListItem
 
-- (SRBulletedListItem)initWithTitle:(id)a3 description:(id)a4 image:(id)a5 textStyle:(id)a6
+- (SRBulletedListItem)initWithTitle:(id)title description:(id)description image:(id)image textStyle:(id)style
 {
-  if (!(a3 | a4))
+  if (!(title | description))
   {
     return 0;
   }
@@ -18,79 +18,79 @@
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v6 = [(SRBulletedListItem *)&v28 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v6)
+  height = [(SRBulletedListItem *)&v28 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
-    v14 = [UIFont preferredFontForTextStyle:a6];
+    v14 = [UIFont preferredFontForTextStyle:style];
     [(UIFont *)v14 pointSize];
     v15 = [UIFont boldSystemFontOfSize:?];
-    v16 = [[UIImageView alloc] initWithImage:a5];
-    [(SRBulletedListItem *)v6 setImageView:v16];
+    v16 = [[UIImageView alloc] initWithImage:image];
+    [(SRBulletedListItem *)height setImageView:v16];
 
-    [(UIImageView *)[(SRBulletedListItem *)v6 imageView] setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIImageView *)[(SRBulletedListItem *)v6 imageView] setContentMode:1];
+    [(UIImageView *)[(SRBulletedListItem *)height imageView] setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIImageView *)[(SRBulletedListItem *)height imageView] setContentMode:1];
     v17 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    v6->_imageContainer = v17;
+    height->_imageContainer = v17;
     [(UIView *)v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIView *)v6->_imageContainer addSubview:v6->_imageView];
-    if ([a3 length])
+    [(UIView *)height->_imageContainer addSubview:height->_imageView];
+    if ([title length])
     {
       v18 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-      [(SRBulletedListItem *)v6 setTitleLabel:v18];
+      [(SRBulletedListItem *)height setTitleLabel:v18];
 
-      [(UILabel *)[(SRBulletedListItem *)v6 titleLabel] setNumberOfLines:0];
-      [(UILabel *)[(SRBulletedListItem *)v6 titleLabel] setTranslatesAutoresizingMaskIntoConstraints:0];
-      [(UILabel *)[(SRBulletedListItem *)v6 titleLabel] setFont:v15];
-      [(UILabel *)[(SRBulletedListItem *)v6 titleLabel] setText:a3];
-      v19 = [(SRBulletedListItem *)v6 titleLabel];
+      [(UILabel *)[(SRBulletedListItem *)height titleLabel] setNumberOfLines:0];
+      [(UILabel *)[(SRBulletedListItem *)height titleLabel] setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(UILabel *)[(SRBulletedListItem *)height titleLabel] setFont:v15];
+      [(UILabel *)[(SRBulletedListItem *)height titleLabel] setText:title];
+      titleLabel = [(SRBulletedListItem *)height titleLabel];
       LODWORD(v20) = 1148846080;
-      [(UILabel *)v19 setContentHuggingPriority:1 forAxis:v20];
+      [(UILabel *)titleLabel setContentHuggingPriority:1 forAxis:v20];
     }
 
-    if ([a4 length])
+    if ([description length])
     {
       v21 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-      [(SRBulletedListItem *)v6 setDescriptionLabel:v21];
+      [(SRBulletedListItem *)height setDescriptionLabel:v21];
 
-      [(UILabel *)[(SRBulletedListItem *)v6 descriptionLabel] setNumberOfLines:0];
-      [(UILabel *)[(SRBulletedListItem *)v6 descriptionLabel] setTranslatesAutoresizingMaskIntoConstraints:0];
-      [(UILabel *)[(SRBulletedListItem *)v6 descriptionLabel] setFont:v14];
-      [(UILabel *)[(SRBulletedListItem *)v6 descriptionLabel] setText:a4];
-      [(UILabel *)[(SRBulletedListItem *)v6 descriptionLabel] setTextColor:[UIColor colorWithRed:0.56 green:0.56 blue:0.58 alpha:1.0]];
-      v22 = [(SRBulletedListItem *)v6 descriptionLabel];
+      [(UILabel *)[(SRBulletedListItem *)height descriptionLabel] setNumberOfLines:0];
+      [(UILabel *)[(SRBulletedListItem *)height descriptionLabel] setTranslatesAutoresizingMaskIntoConstraints:0];
+      [(UILabel *)[(SRBulletedListItem *)height descriptionLabel] setFont:v14];
+      [(UILabel *)[(SRBulletedListItem *)height descriptionLabel] setText:description];
+      [(UILabel *)[(SRBulletedListItem *)height descriptionLabel] setTextColor:[UIColor colorWithRed:0.56 green:0.56 blue:0.58 alpha:1.0]];
+      descriptionLabel = [(SRBulletedListItem *)height descriptionLabel];
       LODWORD(v23) = 1148846080;
-      [(UILabel *)v22 setContentHuggingPriority:1 forAxis:v23];
+      [(UILabel *)descriptionLabel setContentHuggingPriority:1 forAxis:v23];
     }
 
     else
     {
-      [(UILabel *)[(SRBulletedListItem *)v6 titleLabel] setFont:v14];
+      [(UILabel *)[(SRBulletedListItem *)height titleLabel] setFont:v14];
     }
 
     v24 = [[UIStackView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    [(SRBulletedListItem *)v6 setStackView:v24];
+    [(SRBulletedListItem *)height setStackView:v24];
 
-    [(UIStackView *)[(SRBulletedListItem *)v6 stackView] setAxis:1];
-    [(UIStackView *)[(SRBulletedListItem *)v6 stackView] setAlignment:1];
-    [(UIStackView *)[(SRBulletedListItem *)v6 stackView] setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(UIStackView *)[(SRBulletedListItem *)v6 stackView] addArrangedSubview:[(SRBulletedListItem *)v6 titleLabel]];
-    [(UIStackView *)[(SRBulletedListItem *)v6 stackView] addArrangedSubview:[(SRBulletedListItem *)v6 descriptionLabel]];
-    [(SRBulletedListItem *)v6 addSubview:v6->_imageContainer];
-    [(SRBulletedListItem *)v6 addSubview:[(SRBulletedListItem *)v6 stackView]];
-    [[(UIImageView *)[(SRBulletedListItem *)v6 imageView] image] size];
+    [(UIStackView *)[(SRBulletedListItem *)height stackView] setAxis:1];
+    [(UIStackView *)[(SRBulletedListItem *)height stackView] setAlignment:1];
+    [(UIStackView *)[(SRBulletedListItem *)height stackView] setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(UIStackView *)[(SRBulletedListItem *)height stackView] addArrangedSubview:[(SRBulletedListItem *)height titleLabel]];
+    [(UIStackView *)[(SRBulletedListItem *)height stackView] addArrangedSubview:[(SRBulletedListItem *)height descriptionLabel]];
+    [(SRBulletedListItem *)height addSubview:height->_imageContainer];
+    [(SRBulletedListItem *)height addSubview:[(SRBulletedListItem *)height stackView]];
+    [[(UIImageView *)[(SRBulletedListItem *)height imageView] image] size];
     v26 = v25;
-    v29[0] = [-[UIImageView widthAnchor](-[SRBulletedListItem imageView](v6 "imageView")];
-    v29[1] = [-[UIImageView heightAnchor](-[SRBulletedListItem imageView](v6 "imageView")];
-    v29[2] = [-[UIImageView centerXAnchor](-[SRBulletedListItem imageView](v6 "imageView")];
-    v29[3] = [-[UIImageView centerYAnchor](-[SRBulletedListItem imageView](v6 "imageView")];
-    v29[4] = [-[UIStackView trailingAnchor](-[SRBulletedListItem stackView](v6 "stackView")];
-    v29[5] = [-[UIStackView topAnchor](-[SRBulletedListItem stackView](v6 "stackView")];
-    v29[6] = [-[SRBulletedListItem bottomAnchor](v6 "bottomAnchor")];
+    v29[0] = [-[UIImageView widthAnchor](-[SRBulletedListItem imageView](height "imageView")];
+    v29[1] = [-[UIImageView heightAnchor](-[SRBulletedListItem imageView](height "imageView")];
+    v29[2] = [-[UIImageView centerXAnchor](-[SRBulletedListItem imageView](height "imageView")];
+    v29[3] = [-[UIImageView centerYAnchor](-[SRBulletedListItem imageView](height "imageView")];
+    v29[4] = [-[UIStackView trailingAnchor](-[SRBulletedListItem stackView](height "stackView")];
+    v29[5] = [-[UIStackView topAnchor](-[SRBulletedListItem stackView](height "stackView")];
+    v29[6] = [-[SRBulletedListItem bottomAnchor](height "bottomAnchor")];
     [NSLayoutConstraint activateConstraints:[NSArray arrayWithObjects:v29 count:7]];
-    [(SRBulletedListItem *)v6 _updateImageViewLayout];
+    [(SRBulletedListItem *)height _updateImageViewLayout];
   }
 
-  return v6;
+  return height;
 }
 
 - (void)dealloc

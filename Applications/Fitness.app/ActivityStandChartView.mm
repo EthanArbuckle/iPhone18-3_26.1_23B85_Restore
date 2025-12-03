@@ -1,29 +1,29 @@
 @interface ActivityStandChartView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)standChartPoints;
 - (void)layoutSubviews;
-- (void)reloadDataWithAnimated:(BOOL)a3;
+- (void)reloadDataWithAnimated:(BOOL)animated;
 @end
 
 @implementation ActivityStandChartView
 
-- (void)reloadDataWithAnimated:(BOOL)a3
+- (void)reloadDataWithAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = self;
-  sub_100664E68(v3);
+  animatedCopy = animated;
+  selfCopy = self;
+  sub_100664E68(animatedCopy);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006656F8();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC10FitnessApp22ActivityStandChartView_chartHeight);
   sub_100386F04();
   v6 = v4 + v5;
@@ -36,9 +36,9 @@
 - (CGSize)intrinsicContentSize
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 mainScreen];
-  [v5 bounds];
+  selfCopy = self;
+  mainScreen = [v3 mainScreen];
+  [mainScreen bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -48,7 +48,7 @@
   v21.origin.y = v9;
   v21.size.width = v11;
   v21.size.height = v13;
-  [(ActivityStandChartView *)v4 sizeThatFits:CGRectGetWidth(v21), 1.79769313e308];
+  [(ActivityStandChartView *)selfCopy sizeThatFits:CGRectGetWidth(v21), 1.79769313e308];
   v15 = v14;
   v17 = v16;
 
@@ -61,7 +61,7 @@
 
 - (NSArray)standChartPoints
 {
-  v2 = self;
+  selfCopy = self;
   sub_100665C28();
 
   type metadata accessor for CGPoint(0);

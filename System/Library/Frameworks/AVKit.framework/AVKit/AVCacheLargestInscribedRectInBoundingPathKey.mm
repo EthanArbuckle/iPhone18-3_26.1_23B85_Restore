@@ -1,6 +1,6 @@
 @interface AVCacheLargestInscribedRectInBoundingPathKey
-- (AVCacheLargestInscribedRectInBoundingPathKey)initWithCenter:(CGPoint)a3 aspectRatio:(double)a4;
-- (BOOL)isEqual:(id)a3;
+- (AVCacheLargestInscribedRectInBoundingPathKey)initWithCenter:(CGPoint)center aspectRatio:(double)ratio;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)center;
 @end
 
@@ -15,16 +15,16 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v16 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     [(AVCacheLargestInscribedRectInBoundingPathKey *)self center];
@@ -52,10 +52,10 @@
   return v16;
 }
 
-- (AVCacheLargestInscribedRectInBoundingPathKey)initWithCenter:(CGPoint)a3 aspectRatio:(double)a4
+- (AVCacheLargestInscribedRectInBoundingPathKey)initWithCenter:(CGPoint)center aspectRatio:(double)ratio
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   v10.receiver = self;
   v10.super_class = AVCacheLargestInscribedRectInBoundingPathKey;
   v7 = [(AVCacheLargestInscribedRectInBoundingPathKey *)&v10 init];
@@ -63,7 +63,7 @@
   if (v7)
   {
     [(AVCacheLargestInscribedRectInBoundingPathKey *)v7 setCenter:x, y];
-    [(AVCacheLargestInscribedRectInBoundingPathKey *)v8 setAspectRatio:a4];
+    [(AVCacheLargestInscribedRectInBoundingPathKey *)v8 setAspectRatio:ratio];
   }
 
   return v8;

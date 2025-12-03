@@ -1,6 +1,6 @@
 @interface _CUIThemeFacetCacheKey
-- (BOOL)isEqual:(id)a3;
-- (_CUIThemeFacetCacheKey)initWithKeyList:(const _renditionkeytoken *)a3 themeIndex:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (_CUIThemeFacetCacheKey)initWithKeyList:(const _renditionkeytoken *)list themeIndex:(int64_t)index;
 - (unint64_t)hash64;
 @end
 
@@ -48,7 +48,7 @@
   return value_low + (self->themeIndex << 56);
 }
 
-- (_CUIThemeFacetCacheKey)initWithKeyList:(const _renditionkeytoken *)a3 themeIndex:(int64_t)a4
+- (_CUIThemeFacetCacheKey)initWithKeyList:(const _renditionkeytoken *)list themeIndex:(int64_t)index
 {
   v11.receiver = self;
   v11.super_class = _CUIThemeFacetCacheKey;
@@ -56,10 +56,10 @@
   v7 = v6;
   if (v6)
   {
-    v6->themeIndex = a4;
+    v6->themeIndex = index;
     v8 = CUISystemThemeRenditionKeyFormat();
-    CUIRenditionKeyStandardize(v7->keyList, &a3->identifier, v8);
-    v9 = CUIRenditionKeyValueForAttribute(&a3->identifier, 12);
+    CUIRenditionKeyStandardize(v7->keyList, &list->identifier, v8);
+    v9 = CUIRenditionKeyValueForAttribute(&list->identifier, 12);
     CUIRenditionKeySetValueForAttribute(&v7->keyList[0].identifier, 12, v9, 0x16u);
     v7->hashPrecalc = [(_CUIThemeFacetCacheKey *)v7 hash64];
   }
@@ -67,16 +67,16 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
-  if (self->themeIndex == *(a3 + 12))
+  if (self->themeIndex == *(equal + 12))
   {
-    v3 = (a3 + 10);
+    v3 = (equal + 10);
     p_value = &self->keyList[0].value;
     v5 = -1;
     while (*p_value == *v3 && *(p_value - 1) == *(v3 - 1))

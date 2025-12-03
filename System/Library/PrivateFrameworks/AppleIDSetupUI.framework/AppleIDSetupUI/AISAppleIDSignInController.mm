@@ -1,9 +1,9 @@
 @interface AISAppleIDSignInController
 - (AISAppleIDSignInController)init;
-- (AISAppleIDSignInController)initWithConfiguration:(id)a3;
+- (AISAppleIDSignInController)initWithConfiguration:(id)configuration;
 - (AISAppleIDSignInControllerDelegate)delegate;
 - (UIViewController)hostingViewController;
-- (void)setHostingViewController:(id)a3;
+- (void)setHostingViewController:(id)controller;
 @end
 
 @implementation AISAppleIDSignInController
@@ -18,27 +18,27 @@
 
 - (UIViewController)hostingViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2409EC9B0();
 
   return v3;
 }
 
-- (void)setHostingViewController:(id)a3
+- (void)setHostingViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___AISAppleIDSignInController____lazy_storage___hostingViewController);
-  *(self + OBJC_IVAR___AISAppleIDSignInController____lazy_storage___hostingViewController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___AISAppleIDSignInController____lazy_storage___hostingViewController) = controller;
+  controllerCopy = controller;
 }
 
-- (AISAppleIDSignInController)initWithConfiguration:(id)a3
+- (AISAppleIDSignInController)initWithConfiguration:(id)configuration
 {
   swift_unknownObjectWeakInit();
   *(self + OBJC_IVAR___AISAppleIDSignInController____lazy_storage___hostingViewController) = 0;
-  *(self + OBJC_IVAR___AISAppleIDSignInController_configuration) = a3;
+  *(self + OBJC_IVAR___AISAppleIDSignInController_configuration) = configuration;
   v7.receiver = self;
   v7.super_class = type metadata accessor for AISAppleIDSignInController();
-  v5 = a3;
+  configurationCopy = configuration;
   return [(AISAppleIDSignInController *)&v7 init];
 }
 

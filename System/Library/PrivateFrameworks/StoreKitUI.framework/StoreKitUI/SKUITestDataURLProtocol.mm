@@ -1,15 +1,15 @@
 @interface SKUITestDataURLProtocol
-+ (BOOL)canInitWithRequest:(id)a3;
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4;
-+ (id)canonicalRequestForRequest:(id)a3;
++ (BOOL)canInitWithRequest:(id)request;
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request;
++ (id)canonicalRequestForRequest:(id)request;
 - (void)startLoading;
 @end
 
 @implementation SKUITestDataURLProtocol
 
-+ (BOOL)canInitWithRequest:(id)a3
++ (BOOL)canInitWithRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,18 +23,18 @@
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = [v3 URL];
-  v14 = [v13 scheme];
+  v13 = [requestCopy URL];
+  scheme = [v13 scheme];
 
-  LOBYTE(v13) = [v14 isEqualToString:@"x-apple-storekitui-test-data"];
+  LOBYTE(v13) = [scheme isEqualToString:@"x-apple-storekitui-test-data"];
   objc_autoreleasePoolPop(v12);
 
   return v13;
 }
 
-+ (id)canonicalRequestForRequest:(id)a3
++ (id)canonicalRequestForRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -47,10 +47,10 @@
     }
   }
 
-  return v3;
+  return requestCopy;
 }
 
-+ (BOOL)requestIsCacheEquivalent:(id)a3 toRequest:(id)a4
++ (BOOL)requestIsCacheEquivalent:(id)equivalent toRequest:(id)request
 {
   if (os_variant_has_internal_content())
   {
@@ -82,44 +82,44 @@
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = [(NSURLProtocol *)self request];
-  v13 = [v12 URL];
+  request = [(NSURLProtocol *)self request];
+  v13 = [request URL];
 
-  v14 = [v13 resourceSpecifier];
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 resourcePath];
-  v17 = [v16 stringByAppendingPathComponent:v14];
+  resourceSpecifier = [v13 resourceSpecifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  resourcePath = [mainBundle resourcePath];
+  v17 = [resourcePath stringByAppendingPathComponent:resourceSpecifier];
 
   v18 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v17];
   if (v18)
   {
-    v19 = v18;
+    client = v18;
   }
 
   else
   {
     v20 = SKUIBundle();
-    v21 = [v20 resourcePath];
-    v22 = [v21 stringByAppendingPathComponent:v14];
+    resourcePath2 = [v20 resourcePath];
+    v22 = [resourcePath2 stringByAppendingPathComponent:resourceSpecifier];
 
     v23 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v22];
     if (!v23)
     {
-      v19 = [(NSURLProtocol *)self client];
+      client = [(NSURLProtocol *)self client];
       v52 = [MEMORY[0x277CCA9B8] errorWithDomain:@"SKUIErrorDomain" code:0 userInfo:0];
-      [v19 URLProtocol:self didFailWithError:v52];
+      [client URLProtocol:self didFailWithError:v52];
       v17 = v22;
       goto LABEL_25;
     }
 
-    v19 = v23;
+    client = v23;
     v17 = v22;
   }
 
-  v24 = [v14 pathExtension];
-  if (v24)
+  pathExtension = [resourceSpecifier pathExtension];
+  if (pathExtension)
   {
-    v25 = v24;
+    v25 = pathExtension;
     v26 = SKUIMobileCoreServicesFramework();
     v27 = *SKUIWeakLinkedSymbolForString("kUTTagClassFilenameExtension", v26);
     if (os_variant_has_internal_content())
@@ -181,11 +181,11 @@
 
   v52 = @"text/xml+itml";
 LABEL_24:
-  v53 = [(NSURLProtocol *)self client];
-  v54 = [objc_alloc(MEMORY[0x277CBABA8]) initWithURL:v13 MIMEType:v52 expectedContentLength:objc_msgSend(v19 textEncodingName:{"length"), 0}];
-  [v53 URLProtocol:self didReceiveResponse:v54 cacheStoragePolicy:2];
-  [v53 URLProtocol:self didLoadData:v19];
-  [v53 URLProtocolDidFinishLoading:self];
+  client2 = [(NSURLProtocol *)self client];
+  v54 = [objc_alloc(MEMORY[0x277CBABA8]) initWithURL:v13 MIMEType:v52 expectedContentLength:objc_msgSend(client textEncodingName:{"length"), 0}];
+  [client2 URLProtocol:self didReceiveResponse:v54 cacheStoragePolicy:2];
+  [client2 URLProtocol:self didLoadData:client];
+  [client2 URLProtocolDidFinishLoading:self];
 
 LABEL_25:
   objc_autoreleasePoolPop(v11);

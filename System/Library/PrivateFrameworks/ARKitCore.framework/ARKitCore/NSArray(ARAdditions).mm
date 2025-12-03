@@ -9,11 +9,11 @@
 
 - (id)ar_firstObjectPassingTest:()ARAdditions
 {
-  v4 = [a1 indexOfObjectWithOptions:0 passingTest:a3];
+  v4 = [self indexOfObjectWithOptions:0 passingTest:a3];
   v5 = 0;
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [a1 objectAtIndex:?];
+    v5 = [self objectAtIndex:?];
   }
 
   return v5;
@@ -23,13 +23,13 @@
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -40,29 +40,29 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = v4[2](v4, *(*(&v14 + 1) + 8 * i));
         if (v11)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
 
         else
         {
-          v12 = [MEMORY[0x1E695DFB0] null];
-          [v5 addObject:v12];
+          null = [MEMORY[0x1E695DFB0] null];
+          [array addObject:null];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 
-  return v5;
+  return array;
 }
 
 - (id)ar_filter:()ARAdditions
@@ -74,8 +74,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -86,7 +86,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v11 = *(*(&v13 + 1) + 8 * i);
@@ -96,7 +96,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [selfCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);

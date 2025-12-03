@@ -1,12 +1,12 @@
 @interface NSXPCConnection
-- (BOOL)BOOLValueForEntitlement:(id)a3;
+- (BOOL)BOOLValueForEntitlement:(id)entitlement;
 @end
 
 @implementation NSXPCConnection
 
-- (BOOL)BOOLValueForEntitlement:(id)a3
+- (BOOL)BOOLValueForEntitlement:(id)entitlement
 {
-  v3 = [(NSXPCConnection *)self valueForEntitlement:a3];
+  v3 = [(NSXPCConnection *)self valueForEntitlement:entitlement];
   v4 = NSNumberToBool(v3);
 
   return v4;

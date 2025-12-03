@@ -1,27 +1,27 @@
 @interface BatteryGasgaugeController
-- (BOOL)isGasgaugeLocked:(id *)a3;
-- (BOOL)lockGasgauge:(id *)a3;
-- (BOOL)openSmcAndConfirmKeyAvailable:(unsigned int *)a3 outError:(id *)a4;
-- (id)runWithInputs:(id)a3 results:(id *)a4;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (BOOL)isGasgaugeLocked:(id *)locked;
+- (BOOL)lockGasgauge:(id *)gasgauge;
+- (BOOL)openSmcAndConfirmKeyAvailable:(unsigned int *)available outError:(id *)error;
+- (id)runWithInputs:(id)inputs results:(id *)results;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation BatteryGasgaugeController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
-  v6 = a3;
-  v7 = a4;
+  inputsCopy = inputs;
+  responderCopy = responder;
   v8 = handleForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 136315650;
     v16 = "[BatteryGasgaugeController setupWithInputs:responder:]";
     v17 = 2112;
-    v18 = v6;
+    v18 = inputsCopy;
     v19 = 2112;
-    v20 = v7;
+    v20 = responderCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: %@, %@", &v15, 0x20u);
   }
 
@@ -38,41 +38,41 @@
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "SMC controller: %@", &v15, 0xCu);
   }
 
-  [(BatteryGasgaugeController *)self setInputs:v6];
-  v13 = [(BatteryGasgaugeController *)self inputs];
+  [(BatteryGasgaugeController *)self setInputs:inputsCopy];
+  inputs = [(BatteryGasgaugeController *)self inputs];
 
-  if (!v13)
+  if (!inputs)
   {
-    v14 = [(BatteryGasgaugeController *)self result];
-    [v14 setStatusCode:&off_100004400];
+    result = [(BatteryGasgaugeController *)self result];
+    [result setStatusCode:&off_100004400];
 
     [(BatteryGasgaugeController *)self setFinished:1];
   }
 }
 
-- (id)runWithInputs:(id)a3 results:(id *)a4
+- (id)runWithInputs:(id)inputs results:(id *)results
 {
-  v6 = a3;
-  v7 = [(BatteryGasgaugeController *)self inputs];
+  inputsCopy = inputs;
+  inputs = [(BatteryGasgaugeController *)self inputs];
 
-  if (!v7)
+  if (!inputs)
   {
-    [(BatteryGasgaugeController *)self setInputs:v6];
+    [(BatteryGasgaugeController *)self setInputs:inputsCopy];
   }
 
-  v8 = [v6 ggLock];
-  v9 = [v6 ggReset];
+  ggLock = [inputsCopy ggLock];
+  ggReset = [inputsCopy ggReset];
   v10 = handleForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    v38 = v8;
+    v38 = ggLock;
     v39 = 1024;
-    v40 = v9;
+    v40 = ggReset;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "doGgLock: %d, doGgReset: %d", buf, 0xEu);
   }
 
-  if (v8)
+  if (ggLock)
   {
     v34 = 0;
     v11 = [(BatteryGasgaugeController *)self isGasgaugeLocked:&v34];
@@ -87,7 +87,7 @@
       }
 
 LABEL_10:
-      v31 = [v12 code];
+      code = [v12 code];
       v15 = 0;
       v16 = 0;
       goto LABEL_14;
@@ -103,7 +103,7 @@ LABEL_10:
       }
 
       v12 = 0;
-      v31 = 0;
+      code = 0;
       v15 = 1;
       v16 = 1;
     }
@@ -125,7 +125,7 @@ LABEL_10:
       }
 
       v16 = 0;
-      v31 = 0;
+      code = 0;
       v15 = 1;
     }
   }
@@ -142,7 +142,7 @@ LABEL_10:
     v12 = 0;
     v15 = 0;
     v16 = 0;
-    v31 = 0;
+    code = 0;
   }
 
 LABEL_14:
@@ -154,7 +154,7 @@ LABEL_14:
     v19 = +[NSNull null];
   }
 
-  v20 = a4;
+  resultsCopy = results;
   v36[0] = v19;
   v35[1] = @"errorCode";
   v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 code]);
@@ -181,10 +181,10 @@ LABEL_14:
   {
   }
 
-  if (v20)
+  if (resultsCopy)
   {
     v26 = v25;
-    *v20 = v25;
+    *resultsCopy = v25;
   }
 
   v27 = [NSNumber numberWithInteger:v32];
@@ -202,21 +202,21 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v4 = [(BatteryGasgaugeController *)self inputs];
+  inputs = [(BatteryGasgaugeController *)self inputs];
   v9 = 0;
-  v5 = [(BatteryGasgaugeController *)self runWithInputs:v4 results:&v9];
+  v5 = [(BatteryGasgaugeController *)self runWithInputs:inputs results:&v9];
   v6 = v9;
 
-  v7 = [(BatteryGasgaugeController *)self result];
-  [v7 setStatusCode:v5];
+  result = [(BatteryGasgaugeController *)self result];
+  [result setStatusCode:v5];
 
-  v8 = [(BatteryGasgaugeController *)self result];
-  [v8 setData:v6];
+  result2 = [(BatteryGasgaugeController *)self result];
+  [result2 setData:v6];
 
   [(BatteryGasgaugeController *)self setFinished:1];
 }
 
-- (BOOL)isGasgaugeLocked:(id *)a3
+- (BOOL)isGasgaugeLocked:(id *)locked
 {
   v22 = 0;
   v21 = 0;
@@ -224,9 +224,9 @@ LABEL_14:
   v6 = v21;
   if (v5)
   {
-    v7 = [(BatteryGasgaugeController *)self smcCtrl];
+    smcCtrl = [(BatteryGasgaugeController *)self smcCtrl];
     v20 = 0;
-    v8 = [v7 readSMCKey:v22 keyName:@"BMFL" rval:&v20];
+    v8 = [smcCtrl readSMCKey:v22 keyName:@"BMFL" rval:&v20];
     v9 = v20;
 
     v10 = handleForCategory(0);
@@ -252,9 +252,9 @@ LABEL_14:
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v9 intValue];
+        intValue = [v9 intValue];
         *buf = 67109120;
-        v24 = v16;
+        v24 = intValue;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "rval: 0x%X", buf, 8u);
       }
 
@@ -299,20 +299,20 @@ LABEL_14:
 
   if (v22)
   {
-    v17 = [(BatteryGasgaugeController *)self smcCtrl];
-    [v17 closeAppleSMC:v22];
+    smcCtrl2 = [(BatteryGasgaugeController *)self smcCtrl];
+    [smcCtrl2 closeAppleSMC:v22];
   }
 
-  if (a3)
+  if (locked)
   {
     v18 = v6;
-    *a3 = v6;
+    *locked = v6;
   }
 
   return v15;
 }
 
-- (BOOL)lockGasgauge:(id *)a3
+- (BOOL)lockGasgauge:(id *)gasgauge
 {
   v28 = 0;
   v27 = -23236;
@@ -321,8 +321,8 @@ LABEL_14:
   v6 = v26;
   if (v5)
   {
-    v7 = [(BatteryGasgaugeController *)self smcCtrl];
-    v8 = [v7 writeSMCKey:v28 keyName:@"BMFL" data:&v27 size:2];
+    smcCtrl = [(BatteryGasgaugeController *)self smcCtrl];
+    v8 = [smcCtrl writeSMCKey:v28 keyName:@"BMFL" data:&v27 size:2];
 
     if (v8)
     {
@@ -343,9 +343,9 @@ LABEL_14:
       goto LABEL_22;
     }
 
-    v15 = [(BatteryGasgaugeController *)self smcCtrl];
+    smcCtrl2 = [(BatteryGasgaugeController *)self smcCtrl];
     v25 = 0;
-    v16 = [v15 readSMCKey:v28 keyName:@"BMFL" rval:&v25];
+    v16 = [smcCtrl2 readSMCKey:v28 keyName:@"BMFL" rval:&v25];
     v14 = v25;
 
     if (v16)
@@ -413,26 +413,26 @@ LABEL_23:
 
   if (v28)
   {
-    v21 = [(BatteryGasgaugeController *)self smcCtrl];
-    [v21 closeAppleSMC:v28];
+    smcCtrl3 = [(BatteryGasgaugeController *)self smcCtrl];
+    [smcCtrl3 closeAppleSMC:v28];
   }
 
-  if (a3)
+  if (gasgauge)
   {
     v22 = v6;
-    *a3 = v6;
+    *gasgauge = v6;
   }
 
   return v13;
 }
 
-- (BOOL)openSmcAndConfirmKeyAvailable:(unsigned int *)a3 outError:(id *)a4
+- (BOOL)openSmcAndConfirmKeyAvailable:(unsigned int *)available outError:(id *)error
 {
-  if (a3)
+  if (available)
   {
-    *a3 = 0;
-    v7 = [(BatteryGasgaugeController *)self smcCtrl];
-    v8 = [v7 openAppleSMC:a3 withRetry:2];
+    *available = 0;
+    smcCtrl = [(BatteryGasgaugeController *)self smcCtrl];
+    v8 = [smcCtrl openAppleSMC:available withRetry:2];
 
     if (v8)
     {
@@ -443,22 +443,22 @@ LABEL_23:
       }
 
       v22 = NSLocalizedDescriptionKey;
-      v10 = [NSString stringWithFormat:@"Failed to open SMC service, error: %d", v8];
-      v23 = v10;
+      nSLocalizedDescriptionKey = [NSString stringWithFormat:@"Failed to open SMC service, error: %d", v8];
+      v23 = nSLocalizedDescriptionKey;
       v11 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       v12 = -3;
     }
 
     else
     {
-      v14 = [(BatteryGasgaugeController *)self smcCtrl];
-      v15 = [v14 isSMCKeyAvailable:*a3 keyName:@"BMFL"];
+      smcCtrl2 = [(BatteryGasgaugeController *)self smcCtrl];
+      v15 = [smcCtrl2 isSMCKeyAvailable:*available keyName:@"BMFL"];
 
       if (v15)
       {
         v13 = 0;
         v16 = 1;
-        if (!a4)
+        if (!error)
         {
           goto LABEL_16;
         }
@@ -472,8 +472,8 @@ LABEL_23:
         sub_100002818();
       }
 
-      v10 = [NSString stringWithFormat:@"SMC key %@ is not available", @"BMFL", NSLocalizedDescriptionKey];
-      v21 = v10;
+      nSLocalizedDescriptionKey = [NSString stringWithFormat:@"SMC key %@ is not available", @"BMFL", NSLocalizedDescriptionKey];
+      v21 = nSLocalizedDescriptionKey;
       v11 = [NSDictionary dictionaryWithObjects:&v21 forKeys:&v20 count:1];
       v12 = -4;
     }
@@ -485,16 +485,16 @@ LABEL_23:
   {
     v24 = NSLocalizedDescriptionKey;
     v25 = @"No input buffer provided for SMC port";
-    v10 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
-    v13 = [NSError errorWithDomain:@"com.apple.corerepair" code:-8 userInfo:v10];
+    nSLocalizedDescriptionKey = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
+    v13 = [NSError errorWithDomain:@"com.apple.corerepair" code:-8 userInfo:nSLocalizedDescriptionKey];
   }
 
   v16 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_15:
     v18 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
 LABEL_16:

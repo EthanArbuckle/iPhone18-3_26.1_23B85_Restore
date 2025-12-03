@@ -1,7 +1,7 @@
 @interface ActivateUsingComputerController
 - (ActivateUsingComputerController)init;
-- (void)activationConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4;
-- (void)performExtendedInitializationWithCompletion:(id)a3;
+- (void)activationConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated;
+- (void)performExtendedInitializationWithCompletion:(id)completion;
 @end
 
 @implementation ActivateUsingComputerController
@@ -26,14 +26,14 @@
   return v4;
 }
 
-- (void)performExtendedInitializationWithCompletion:(id)a3
+- (void)performExtendedInitializationWithCompletion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v3 = +[BuddyActivationConfiguration currentConfiguration];
-  [v3 addDelegate:v12];
+  [v3 addDelegate:selfCopy];
 
   v4 = dispatch_get_global_queue(0, 0);
   v5 = _NSConcreteStackBlock;
@@ -48,13 +48,13 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)activationConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4
+- (void)activationConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated
 {
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
-  v13 = a4;
-  if (a3)
+  changedCopy = changed;
+  activatedCopy = activated;
+  if (changed)
   {
     v4 = &_dispatch_main_q;
     v5 = _NSConcreteStackBlock;
@@ -62,9 +62,9 @@
     v7 = 0;
     v8 = sub_1001A6D3C;
     v9 = &unk_10032C7B8;
-    v11 = v14;
-    v10 = v16;
-    v12 = v13;
+    v11 = changedCopy;
+    v10 = selfCopy;
+    v12 = activatedCopy;
     dispatch_async(v4, &v5);
 
     objc_storeStrong(&v10, 0);

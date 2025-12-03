@@ -1,30 +1,30 @@
 @interface REMReminderSortDescriptor
-- (BOOL)isEqual:(id)a3;
-- (REMReminderSortDescriptor)initWithCoder:(id)a3;
-- (REMReminderSortDescriptor)initWithType:(int64_t)a3 ascending:(BOOL)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMReminderSortDescriptor)initWithCoder:(id)coder;
+- (REMReminderSortDescriptor)initWithType:(int64_t)type ascending:(BOOL)ascending;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMReminderSortDescriptor
 
-- (REMReminderSortDescriptor)initWithType:(int64_t)a3 ascending:(BOOL)a4
+- (REMReminderSortDescriptor)initWithType:(int64_t)type ascending:(BOOL)ascending
 {
   v7.receiver = self;
   v7.super_class = REMReminderSortDescriptor;
   result = [(REMReminderSortDescriptor *)&v7 init];
   if (result)
   {
-    result->_type = a3;
-    result->_ascending = a4;
+    result->_type = type;
+    result->_ascending = ascending;
   }
 
   return result;
 }
 
-- (REMReminderSortDescriptor)initWithCoder:(id)a3
+- (REMReminderSortDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
   if (v5 >= 5)
   {
     v6 = os_log_create("com.apple.reminderkit", "default");
@@ -36,35 +36,35 @@
     v5 = 1;
   }
 
-  v7 = -[REMReminderSortDescriptor initWithType:ascending:](self, "initWithType:ascending:", v5, [v4 decodeBoolForKey:@"ascending"]);
+  v7 = -[REMReminderSortDescriptor initWithType:ascending:](self, "initWithType:ascending:", v5, [coderCopy decodeBoolForKey:@"ascending"]);
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[REMReminderSortDescriptor type](self forKey:{"type"), @"type"}];
-  [v4 encodeBool:-[REMReminderSortDescriptor ascending](self forKey:{"ascending"), @"ascending"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[REMReminderSortDescriptor type](self forKey:{"type"), @"type"}];
+  [coderCopy encodeBool:-[REMReminderSortDescriptor ascending](self forKey:{"ascending"), @"ascending"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v9) = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && (v7 = [(REMReminderSortDescriptor *)self type], v7 == [(REMReminderSortDescriptor *)v6 type]))
     {
-      v8 = [(REMReminderSortDescriptor *)self ascending];
-      v9 = v8 ^ [(REMReminderSortDescriptor *)v6 ascending]^ 1;
+      ascending = [(REMReminderSortDescriptor *)self ascending];
+      v9 = ascending ^ [(REMReminderSortDescriptor *)v6 ascending]^ 1;
     }
 
     else

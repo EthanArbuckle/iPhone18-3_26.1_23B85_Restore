@@ -1,5 +1,5 @@
 @interface ServiceDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (ServiceDelegate)init;
 @end
 
@@ -21,16 +21,16 @@
   return v2;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___AppPredictionIntentsHelperServiceProtocol];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = objc_opt_new();
-  [v5 setExportedObject:v7];
-  [v5 _setQueue:self->_queue];
-  [v5 resume];
+  [connectionCopy setExportedObject:v7];
+  [connectionCopy _setQueue:self->_queue];
+  [connectionCopy resume];
 
   return 1;
 }

@@ -1,21 +1,21 @@
 @interface PKProvisioningBackgroundCoordinator
-+ (void)provisionPaymentCredential:(id)a3 forPairedWatch:(BOOL)a4 completion:(id)a5;
-- (PKProvisioningBackgroundCoordinator)initWithSetupContext:(id)a3 credential:(id)a4 previouslyAcceptedTerms:(BOOL)a5;
++ (void)provisionPaymentCredential:(id)credential forPairedWatch:(BOOL)watch completion:(id)completion;
+- (PKProvisioningBackgroundCoordinator)initWithSetupContext:(id)context credential:(id)credential previouslyAcceptedTerms:(BOOL)terms;
 @end
 
 @implementation PKProvisioningBackgroundCoordinator
 
-- (PKProvisioningBackgroundCoordinator)initWithSetupContext:(id)a3 credential:(id)a4 previouslyAcceptedTerms:(BOOL)a5
+- (PKProvisioningBackgroundCoordinator)initWithSetupContext:(id)context credential:(id)credential previouslyAcceptedTerms:(BOOL)terms
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  termsCopy = terms;
+  contextCopy = context;
+  credentialCopy = credential;
   v14.receiver = self;
   v14.super_class = PKProvisioningBackgroundCoordinator;
   v10 = [(PKProvisioningBackgroundCoordinator *)&v14 init];
   if (v10)
   {
-    v11 = [[_PKProvisioningBackgroundCoordinator alloc] initWithPkContext:v8 credential:v9 previouslyAcceptedTerms:v5];
+    v11 = [[_PKProvisioningBackgroundCoordinator alloc] initWithPkContext:contextCopy credential:credentialCopy previouslyAcceptedTerms:termsCopy];
     coordinator = v10->_coordinator;
     v10->_coordinator = v11;
   }
@@ -23,14 +23,14 @@
   return v10;
 }
 
-+ (void)provisionPaymentCredential:(id)a3 forPairedWatch:(BOOL)a4 completion:(id)a5
++ (void)provisionPaymentCredential:(id)credential forPairedWatch:(BOOL)watch completion:(id)completion
 {
-  v5 = a4;
+  watchCopy = watch;
   v30 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 state];
-  v10 = [v9 sid];
+  completionCopy = completion;
+  credentialCopy = credential;
+  state = [credentialCopy state];
+  v10 = [state sid];
 
   v11 = PKLogFacilityTypeGetObject(0x28uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -38,11 +38,11 @@
     *buf = 138412546;
     v27 = v10;
     v28 = 1024;
-    v29 = v5;
+    v29 = watchCopy;
     _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "[%@] Provisioning payment credential; on watch device: %d", buf, 0x12u);
   }
 
-  if (v5)
+  if (watchCopy)
   {
     v12 = +[PKPaymentProvisioningController watchWebServiceForIssuerProvisioning];
     v13 = 4;
@@ -59,16 +59,16 @@
   v16 = +[PKPaymentWebService sharedService];
   v17 = [(PKProvisioningContext *)v15 initWithEnvironment:v13 provisioningController:v14 groupsController:0 managingDeviceWebService:v16 destinationDeviceWebService:v12];
 
-  v18 = [[PKProvisioningBackgroundCoordinator alloc] initWithSetupContext:v17 credential:v8 previouslyAcceptedTerms:1];
+  v18 = [[PKProvisioningBackgroundCoordinator alloc] initWithSetupContext:v17 credential:credentialCopy previouslyAcceptedTerms:1];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __92__PKProvisioningBackgroundCoordinator_provisionPaymentCredential_forPairedWatch_completion___block_invoke;
   v22[3] = &unk_1E79E2328;
   v24 = v18;
-  v25 = v7;
+  v25 = completionCopy;
   v23 = v10;
   v19 = v18;
-  v20 = v7;
+  v20 = completionCopy;
   v21 = v10;
   [(PKProvisioningBackgroundCoordinator *)v19 startWithCompletion:v22];
 }

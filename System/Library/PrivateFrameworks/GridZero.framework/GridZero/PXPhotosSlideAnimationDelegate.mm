@@ -1,21 +1,21 @@
 @interface PXPhotosSlideAnimationDelegate
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7;
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7;
-- (void)animation:(id)a3 prepareWithRootLayout:(id)a4 viewportShift:(CGPoint)a5;
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)range;
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)range;
+- (void)animation:(id)animation prepareWithRootLayout:(id)layout viewportShift:(CGPoint)shift;
 @end
 
 @implementation PXPhotosSlideAnimationDelegate
 
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)a7
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteDisappearingFromRootIndexRange:(_PXGSpriteIndexRange)range
 {
   v13.receiver = self;
   v13.super_class = PXPhotosSlideAnimationDelegate;
-  [(PXGDefaultAnimationDelegate *)&v13 animation:a3 adjustGeometries:a4 styles:a5 infos:a6 forSpriteDisappearingFromRootIndexRange:?];
-  v10 = HIDWORD(*&a7);
-  if (HIDWORD(*&a7))
+  [(PXGDefaultAnimationDelegate *)&v13 animation:animation adjustGeometries:geometries styles:styles infos:infos forSpriteDisappearingFromRootIndexRange:?];
+  v10 = HIDWORD(*&range);
+  if (HIDWORD(*&range))
   {
     y = self->_viewportShift.y;
-    p_var1 = &a4->var0.var1;
+    p_var1 = &geometries->var0.var1;
     do
     {
       *p_var1 = *p_var1 - y;
@@ -27,16 +27,16 @@
   }
 }
 
-- (void)animation:(id)a3 adjustGeometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)a7
+- (void)animation:(id)animation adjustGeometries:(id *)geometries styles:(id *)styles infos:(id *)infos forSpriteAppearingIntoRootIndexRange:(_PXGSpriteIndexRange)range
 {
   v13.receiver = self;
   v13.super_class = PXPhotosSlideAnimationDelegate;
-  [(PXGDefaultAnimationDelegate *)&v13 animation:a3 adjustGeometries:a4 styles:a5 infos:a6 forSpriteAppearingIntoRootIndexRange:?];
-  v10 = HIDWORD(*&a7);
-  if (HIDWORD(*&a7))
+  [(PXGDefaultAnimationDelegate *)&v13 animation:animation adjustGeometries:geometries styles:styles infos:infos forSpriteAppearingIntoRootIndexRange:?];
+  v10 = HIDWORD(*&range);
+  if (HIDWORD(*&range))
   {
     y = self->_viewportShift.y;
-    p_var1 = &a4->var0.var1;
+    p_var1 = &geometries->var0.var1;
     do
     {
       *p_var1 = y + *p_var1;
@@ -48,13 +48,13 @@
   }
 }
 
-- (void)animation:(id)a3 prepareWithRootLayout:(id)a4 viewportShift:(CGPoint)a5
+- (void)animation:(id)animation prepareWithRootLayout:(id)layout viewportShift:(CGPoint)shift
 {
-  y = a5.y;
-  x = a5.x;
+  y = shift.y;
+  x = shift.x;
   v8.receiver = self;
   v8.super_class = PXPhotosSlideAnimationDelegate;
-  [(PXGDefaultAnimationDelegate *)&v8 animation:a3 prepareWithRootLayout:a4 viewportShift:?];
+  [(PXGDefaultAnimationDelegate *)&v8 animation:animation prepareWithRootLayout:layout viewportShift:?];
   self->_viewportShift.x = x;
   self->_viewportShift.y = y;
 }

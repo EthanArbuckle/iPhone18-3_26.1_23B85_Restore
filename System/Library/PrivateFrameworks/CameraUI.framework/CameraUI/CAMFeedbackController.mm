@@ -7,16 +7,16 @@
 - (_UIButtonFeedbackGenerator)_shutterButtonMomentaryFeedbackGenerator;
 - (_UIDiscreteFeedback)_fullTap270Feedback;
 - (_UIDiscreteFeedback)_fullTap300Feedback;
-- (id)_debugStringForPairedFeedback:(unint64_t)a3;
-- (id)_feedbackGeneratorForDiscreteFeedback:(unint64_t)a3;
-- (id)_feedbackGeneratorForPairedFeedback:(unint64_t)a3;
-- (id)_newFeedbackGeneratorForDiscreteFeedback:(unint64_t)a3;
-- (unint64_t)_configurationForFeedback:(unint64_t)a3;
-- (void)performDiscreteFeedback:(unint64_t)a3;
-- (void)performPressButtonFeedback:(unint64_t)a3;
-- (void)performReleaseButtonFeedback:(unint64_t)a3;
-- (void)prepareButtonFeedback:(unint64_t)a3;
-- (void)prepareDiscreteFeedback:(unint64_t)a3;
+- (id)_debugStringForPairedFeedback:(unint64_t)feedback;
+- (id)_feedbackGeneratorForDiscreteFeedback:(unint64_t)feedback;
+- (id)_feedbackGeneratorForPairedFeedback:(unint64_t)feedback;
+- (id)_newFeedbackGeneratorForDiscreteFeedback:(unint64_t)feedback;
+- (unint64_t)_configurationForFeedback:(unint64_t)feedback;
+- (void)performDiscreteFeedback:(unint64_t)feedback;
+- (void)performPressButtonFeedback:(unint64_t)feedback;
+- (void)performReleaseButtonFeedback:(unint64_t)feedback;
+- (void)prepareButtonFeedback:(unint64_t)feedback;
+- (void)prepareDiscreteFeedback:(unint64_t)feedback;
 @end
 
 @implementation CAMFeedbackController
@@ -50,35 +50,35 @@
   return v2;
 }
 
-- (void)prepareDiscreteFeedback:(unint64_t)a3
+- (void)prepareDiscreteFeedback:(unint64_t)feedback
 {
-  v3 = [(CAMFeedbackController *)self _feedbackGeneratorForDiscreteFeedback:a3];
+  v3 = [(CAMFeedbackController *)self _feedbackGeneratorForDiscreteFeedback:feedback];
   [v3 prepare];
 }
 
-- (void)performDiscreteFeedback:(unint64_t)a3
+- (void)performDiscreteFeedback:(unint64_t)feedback
 {
-  v3 = [(CAMFeedbackController *)self _feedbackGeneratorForDiscreteFeedback:a3];
+  v3 = [(CAMFeedbackController *)self _feedbackGeneratorForDiscreteFeedback:feedback];
   [v3 selectionChanged];
 }
 
-- (void)prepareButtonFeedback:(unint64_t)a3
+- (void)prepareButtonFeedback:(unint64_t)feedback
 {
-  v3 = [(CAMFeedbackController *)self _feedbackGeneratorForPairedFeedback:a3];
+  v3 = [(CAMFeedbackController *)self _feedbackGeneratorForPairedFeedback:feedback];
   [v3 prepare];
 }
 
-- (void)performPressButtonFeedback:(unint64_t)a3
+- (void)performPressButtonFeedback:(unint64_t)feedback
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = [(CAMFeedbackController *)self _feedbackGeneratorForPairedFeedback:?];
-  v6 = [(CAMFeedbackController *)self _activePairedFeedbackGenerators];
-  if ([v6 containsObject:v5])
+  _activePairedFeedbackGenerators = [(CAMFeedbackController *)self _activePairedFeedbackGenerators];
+  if ([_activePairedFeedbackGenerators containsObject:v5])
   {
     v7 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CAMFeedbackController *)self _debugStringForPairedFeedback:a3];
+      v8 = [(CAMFeedbackController *)self _debugStringForPairedFeedback:feedback];
       v9 = 138543362;
       v10 = v8;
       _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "Mismatched paired pressed feedback calls for %{public}@", &v9, 0xCu);
@@ -88,19 +88,19 @@
   else
   {
     [v5 userInteractionStarted];
-    [v6 addObject:v5];
+    [_activePairedFeedbackGenerators addObject:v5];
   }
 }
 
-- (void)performReleaseButtonFeedback:(unint64_t)a3
+- (void)performReleaseButtonFeedback:(unint64_t)feedback
 {
   v11 = *MEMORY[0x1E69E9840];
   v5 = [(CAMFeedbackController *)self _feedbackGeneratorForPairedFeedback:?];
-  v6 = [(CAMFeedbackController *)self _activePairedFeedbackGenerators];
-  if ([v6 containsObject:v5])
+  _activePairedFeedbackGenerators = [(CAMFeedbackController *)self _activePairedFeedbackGenerators];
+  if ([_activePairedFeedbackGenerators containsObject:v5])
   {
     [v5 userInteractionEnded];
-    [v6 removeObject:v5];
+    [_activePairedFeedbackGenerators removeObject:v5];
   }
 
   else
@@ -108,7 +108,7 @@
     v7 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(CAMFeedbackController *)self _debugStringForPairedFeedback:a3];
+      v8 = [(CAMFeedbackController *)self _debugStringForPairedFeedback:feedback];
       v9 = 138543362;
       v10 = v8;
       _os_log_impl(&dword_1A3640000, v7, OS_LOG_TYPE_DEFAULT, "Mismatched paired released feedback calls for %{public}@", &v9, 0xCu);
@@ -116,18 +116,18 @@
   }
 }
 
-- (id)_feedbackGeneratorForDiscreteFeedback:(unint64_t)a3
+- (id)_feedbackGeneratorForDiscreteFeedback:(unint64_t)feedback
 {
-  v4 = [(CAMFeedbackController *)self _configurationForFeedback:a3];
+  v4 = [(CAMFeedbackController *)self _configurationForFeedback:feedback];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v4];
-  v6 = [(CAMFeedbackController *)self _discreteFeedbackGenerators];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  _discreteFeedbackGenerators = [(CAMFeedbackController *)self _discreteFeedbackGenerators];
+  v7 = [_discreteFeedbackGenerators objectForKeyedSubscript:v5];
 
   if (!v7)
   {
     v7 = [(CAMFeedbackController *)self _newFeedbackGeneratorForDiscreteFeedback:v4];
-    v8 = [(CAMFeedbackController *)self _discreteFeedbackGenerators];
-    [v8 setObject:v7 forKeyedSubscript:v5];
+    _discreteFeedbackGenerators2 = [(CAMFeedbackController *)self _discreteFeedbackGenerators];
+    [_discreteFeedbackGenerators2 setObject:v7 forKeyedSubscript:v5];
   }
 
   v9 = v7;
@@ -135,28 +135,28 @@
   return v9;
 }
 
-- (unint64_t)_configurationForFeedback:(unint64_t)a3
+- (unint64_t)_configurationForFeedback:(unint64_t)feedback
 {
-  if (a3 - 1 > 4)
+  if (feedback - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_1A3A64B10[a3 - 1];
+    return qword_1A3A64B10[feedback - 1];
   }
 }
 
-- (id)_newFeedbackGeneratorForDiscreteFeedback:(unint64_t)a3
+- (id)_newFeedbackGeneratorForDiscreteFeedback:(unint64_t)feedback
 {
   v4 = 0;
-  if (a3 > 1)
+  if (feedback > 1)
   {
-    if (a3 == 2)
+    if (feedback == 2)
     {
-      v10 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
-      v6 = [v10 tweakedConfigurationForCaller:self usage:@"burstCount"];
+      defaultConfiguration = [MEMORY[0x1E69DD6E8] defaultConfiguration];
+      v6 = [defaultConfiguration tweakedConfigurationForCaller:self usage:@"burstCount"];
 
       [v6 setMinimumInterval:0.005];
       v7 = MEMORY[0x1E69DD470];
@@ -164,10 +164,10 @@
       goto LABEL_10;
     }
 
-    if (a3 == 3)
+    if (feedback == 3)
     {
-      v9 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
-      v6 = [v9 tweakedConfigurationForCaller:self usage:@"externalFocusLock"];
+      defaultConfiguration2 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
+      v6 = [defaultConfiguration2 tweakedConfigurationForCaller:self usage:@"externalFocusLock"];
 
       v7 = MEMORY[0x1E69DD470];
       v8 = &unk_1F16C8F20;
@@ -175,12 +175,12 @@
     }
   }
 
-  else if (a3)
+  else if (feedback)
   {
-    if (a3 == 1)
+    if (feedback == 1)
     {
-      v5 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
-      v6 = [v5 tweakedConfigurationForCaller:self usage:@"modeSelection"];
+      defaultConfiguration3 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
+      v6 = [defaultConfiguration3 tweakedConfigurationForCaller:self usage:@"modeSelection"];
 
       [v6 setMinimumInterval:0.01];
       v7 = MEMORY[0x1E69DD470];
@@ -202,41 +202,41 @@ LABEL_10:
   return v4;
 }
 
-- (id)_feedbackGeneratorForPairedFeedback:(unint64_t)a3
+- (id)_feedbackGeneratorForPairedFeedback:(unint64_t)feedback
 {
-  if (a3 == 2)
+  if (feedback == 2)
   {
-    v3 = [(CAMFeedbackController *)self _shutterButtonLatchingOffFeedbackGenerator];
+    _shutterButtonLatchingOffFeedbackGenerator = [(CAMFeedbackController *)self _shutterButtonLatchingOffFeedbackGenerator];
   }
 
-  else if (a3 == 1)
+  else if (feedback == 1)
   {
-    v3 = [(CAMFeedbackController *)self _shutterButtonLatchingOnFeedbackGenerator];
+    _shutterButtonLatchingOffFeedbackGenerator = [(CAMFeedbackController *)self _shutterButtonLatchingOnFeedbackGenerator];
   }
 
-  else if (a3)
+  else if (feedback)
   {
-    v3 = 0;
+    _shutterButtonLatchingOffFeedbackGenerator = 0;
   }
 
   else
   {
-    v3 = [(CAMFeedbackController *)self _shutterButtonMomentaryFeedbackGenerator];
+    _shutterButtonLatchingOffFeedbackGenerator = [(CAMFeedbackController *)self _shutterButtonMomentaryFeedbackGenerator];
   }
 
-  return v3;
+  return _shutterButtonLatchingOffFeedbackGenerator;
 }
 
-- (id)_debugStringForPairedFeedback:(unint64_t)a3
+- (id)_debugStringForPairedFeedback:(unint64_t)feedback
 {
-  if (a3 > 2)
+  if (feedback > 2)
   {
     return &stru_1F1660A30;
   }
 
   else
   {
-    return off_1E76F7A18[a3];
+    return off_1E76F7A18[feedback];
   }
 }
 
@@ -275,14 +275,14 @@ LABEL_10:
   shutterButtonMomentaryFeedbackGenerator = self->__shutterButtonMomentaryFeedbackGenerator;
   if (!shutterButtonMomentaryFeedbackGenerator)
   {
-    v4 = [MEMORY[0x1E69DD3A8] defaultConfiguration];
-    v5 = [v4 tweakedConfigurationForCaller:self usage:@"shutterButtonMomentary"];
+    defaultConfiguration = [MEMORY[0x1E69DD3A8] defaultConfiguration];
+    v5 = [defaultConfiguration tweakedConfigurationForCaller:self usage:@"shutterButtonMomentary"];
 
-    v6 = [(CAMFeedbackController *)self _fullTap300Feedback];
-    [v5 setInteractionStartedFeedback:v6];
+    _fullTap300Feedback = [(CAMFeedbackController *)self _fullTap300Feedback];
+    [v5 setInteractionStartedFeedback:_fullTap300Feedback];
 
-    v7 = [(CAMFeedbackController *)self _fullTap300Feedback];
-    [v5 setInteractionEndedFeedback:v7];
+    _fullTap300Feedback2 = [(CAMFeedbackController *)self _fullTap300Feedback];
+    [v5 setInteractionEndedFeedback:_fullTap300Feedback2];
 
     v8 = [objc_alloc(MEMORY[0x1E69DD3A0]) initWithConfiguration:v5];
     v9 = self->__shutterButtonMomentaryFeedbackGenerator;
@@ -300,14 +300,14 @@ LABEL_10:
   shutterButtonLatchingOnFeedbackGenerator = self->__shutterButtonLatchingOnFeedbackGenerator;
   if (!shutterButtonLatchingOnFeedbackGenerator)
   {
-    v4 = [MEMORY[0x1E69DD3A8] defaultConfiguration];
-    v5 = [v4 tweakedConfigurationForCaller:self usage:@"shutterButtonLatchingOn"];
+    defaultConfiguration = [MEMORY[0x1E69DD3A8] defaultConfiguration];
+    v5 = [defaultConfiguration tweakedConfigurationForCaller:self usage:@"shutterButtonLatchingOn"];
 
-    v6 = [(CAMFeedbackController *)self _fullTap300Feedback];
-    [v5 setInteractionStartedFeedback:v6];
+    _fullTap300Feedback = [(CAMFeedbackController *)self _fullTap300Feedback];
+    [v5 setInteractionStartedFeedback:_fullTap300Feedback];
 
-    v7 = [(CAMFeedbackController *)self _fullTap270Feedback];
-    [v5 setInteractionEndedFeedback:v7];
+    _fullTap270Feedback = [(CAMFeedbackController *)self _fullTap270Feedback];
+    [v5 setInteractionEndedFeedback:_fullTap270Feedback];
 
     v8 = [objc_alloc(MEMORY[0x1E69DD3A0]) initWithConfiguration:v5];
     v9 = self->__shutterButtonLatchingOnFeedbackGenerator;
@@ -325,14 +325,14 @@ LABEL_10:
   shutterButtonLatchingOffFeedbackGenerator = self->__shutterButtonLatchingOffFeedbackGenerator;
   if (!shutterButtonLatchingOffFeedbackGenerator)
   {
-    v4 = [MEMORY[0x1E69DD3A8] defaultConfiguration];
-    v5 = [v4 tweakedConfigurationForCaller:self usage:@"shutterButtonLatchingOff"];
+    defaultConfiguration = [MEMORY[0x1E69DD3A8] defaultConfiguration];
+    v5 = [defaultConfiguration tweakedConfigurationForCaller:self usage:@"shutterButtonLatchingOff"];
 
-    v6 = [(CAMFeedbackController *)self _fullTap270Feedback];
-    [v5 setInteractionStartedFeedback:v6];
+    _fullTap270Feedback = [(CAMFeedbackController *)self _fullTap270Feedback];
+    [v5 setInteractionStartedFeedback:_fullTap270Feedback];
 
-    v7 = [(CAMFeedbackController *)self _fullTap300Feedback];
-    [v5 setInteractionEndedFeedback:v7];
+    _fullTap300Feedback = [(CAMFeedbackController *)self _fullTap300Feedback];
+    [v5 setInteractionEndedFeedback:_fullTap300Feedback];
 
     v8 = [objc_alloc(MEMORY[0x1E69DD3A0]) initWithConfiguration:v5];
     v9 = self->__shutterButtonLatchingOffFeedbackGenerator;

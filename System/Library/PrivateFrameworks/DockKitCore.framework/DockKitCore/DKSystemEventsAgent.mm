@@ -1,13 +1,13 @@
 @interface DKSystemEventsAgent
 - (DKSystemEventsAgent)init;
-- (void)cameraShutterModeChanged:(unsigned __int8)a3;
+- (void)cameraShutterModeChanged:(unsigned __int8)changed;
 - (void)dealloc;
-- (void)deregisterForSystemEvents:(id)a3;
-- (void)handleSystemEvent:(id)a3 callback:(id)a4;
-- (void)registerForSystemEvents:(id)a3;
-- (void)registerForSystemEvents:(id)a3 forConnectedEvents:(id)a4;
-- (void)startCaptureIfNeeded:(unsigned __int8)a3 orientation:(unsigned __int8)a4 finished:(id)a5;
-- (void)stopCaptureIfNeeded:(unsigned __int8)a3;
+- (void)deregisterForSystemEvents:(id)events;
+- (void)handleSystemEvent:(id)event callback:(id)callback;
+- (void)registerForSystemEvents:(id)events;
+- (void)registerForSystemEvents:(id)events forConnectedEvents:(id)connectedEvents;
+- (void)startCaptureIfNeeded:(unsigned __int8)needed orientation:(unsigned __int8)orientation finished:(id)finished;
+- (void)stopCaptureIfNeeded:(unsigned __int8)needed;
 @end
 
 @implementation DKSystemEventsAgent
@@ -32,79 +32,79 @@
   return v2;
 }
 
-- (void)registerForSystemEvents:(id)a3 forConnectedEvents:(id)a4
+- (void)registerForSystemEvents:(id)events forConnectedEvents:(id)connectedEvents
 {
-  v6 = a3;
-  v7 = a4;
+  eventsCopy = events;
+  connectedEventsCopy = connectedEvents;
   agent = self->_agent;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __66__DKSystemEventsAgent_registerForSystemEvents_forConnectedEvents___block_invoke;
   v13[3] = &unk_27852A1E8;
   v13[4] = self;
-  v14 = v6;
+  v14 = eventsCopy;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__DKSystemEventsAgent_registerForSystemEvents_forConnectedEvents___block_invoke_2;
   v11[3] = &unk_27852A210;
-  v12 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = connectedEventsCopy;
+  v9 = connectedEventsCopy;
+  v10 = eventsCopy;
   [(SystemEventsAgent *)agent registerWithCallback:v13 connectedCallback:v11 completionHandler:&__block_literal_global_0];
 }
 
-- (void)registerForSystemEvents:(id)a3
+- (void)registerForSystemEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   agent = self->_agent;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__DKSystemEventsAgent_registerForSystemEvents___block_invoke;
   v7[3] = &unk_27852A1E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventsCopy;
+  v6 = eventsCopy;
   [(SystemEventsAgent *)agent registerWithCallback:v7 completionHandler:&__block_literal_global_26];
 }
 
-- (void)handleSystemEvent:(id)a3 callback:(id)a4
+- (void)handleSystemEvent:(id)event callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 header];
-  if (v8 == +[_TtC11DockKitCore20AccessorySystemEvent kHeaderCameraShutter])
+  eventCopy = event;
+  callbackCopy = callback;
+  header = [eventCopy header];
+  if (header == +[_TtC11DockKitCore20AccessorySystemEvent kHeaderCameraShutter])
   {
     v9 = 0;
-    v10 = [v6 payload];
+    payload = [eventCopy payload];
   }
 
   else
   {
-    v11 = [v6 header];
-    if (v11 == +[_TtC11DockKitCore20AccessorySystemEvent kHeaderCameraFlip])
+    header2 = [eventCopy header];
+    if (header2 == +[_TtC11DockKitCore20AccessorySystemEvent kHeaderCameraFlip])
     {
-      v10 = [v6 payload];
+      payload = [eventCopy payload];
       v9 = 1;
     }
 
     else
     {
-      v12 = [v6 header];
-      if (v12 == +[_TtC11DockKitCore20AccessorySystemEvent kHeaderCameraZoom])
+      header3 = [eventCopy header];
+      if (header3 == +[_TtC11DockKitCore20AccessorySystemEvent kHeaderCameraZoom])
       {
-        v10 = [v6 payload] / 100.0;
+        payload = [eventCopy payload] / 100.0;
         v9 = 2;
       }
 
       else
       {
         v9 = 3;
-        v10 = 0.0;
+        payload = 0.0;
       }
     }
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithDouble:v10];
+  v13 = [MEMORY[0x277CCABB0] numberWithDouble:payload];
   v14 = [[DKSystemEvent alloc] initWithType:v9 value:v13];
   workQueue = self->_workQueue;
   v18[0] = MEMORY[0x277D85DD0];
@@ -112,42 +112,42 @@
   v18[2] = __50__DKSystemEventsAgent_handleSystemEvent_callback___block_invoke;
   v18[3] = &unk_27852A238;
   v19 = v14;
-  v20 = v7;
+  v20 = callbackCopy;
   v16 = v14;
-  v17 = v7;
+  v17 = callbackCopy;
   dispatch_async(workQueue, v18);
 }
 
-- (void)startCaptureIfNeeded:(unsigned __int8)a3 orientation:(unsigned __int8)a4 finished:(id)a5
+- (void)startCaptureIfNeeded:(unsigned __int8)needed orientation:(unsigned __int8)orientation finished:(id)finished
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (!v6)
+  orientationCopy = orientation;
+  neededCopy = needed;
+  finishedCopy = finished;
+  v9 = finishedCopy;
+  if (!neededCopy)
   {
     agent = self->_agent;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __65__DKSystemEventsAgent_startCaptureIfNeeded_orientation_finished___block_invoke;
     v11[3] = &unk_27852A210;
-    v12 = v8;
-    [(SystemEventsAgent *)agent startPanoramaCaptureWithOrientation:v5 finishedCallback:v11 completionHandler:&__block_literal_global_31];
+    v12 = finishedCopy;
+    [(SystemEventsAgent *)agent startPanoramaCaptureWithOrientation:orientationCopy finishedCallback:v11 completionHandler:&__block_literal_global_31];
   }
 }
 
-- (void)stopCaptureIfNeeded:(unsigned __int8)a3
+- (void)stopCaptureIfNeeded:(unsigned __int8)needed
 {
-  if (!a3)
+  if (!needed)
   {
     [(SystemEventsAgent *)self->_agent stopPanoramaCaptureWithCompletionHandler:&__block_literal_global_33];
   }
 }
 
-- (void)cameraShutterModeChanged:(unsigned __int8)a3
+- (void)cameraShutterModeChanged:(unsigned __int8)changed
 {
   agent = self->_agent;
-  if (a3)
+  if (changed)
   {
     [(SystemEventsAgent *)agent deinitializePanoramaWithCompletionHandler:&__block_literal_global_37];
   }
@@ -158,17 +158,17 @@
   }
 }
 
-- (void)deregisterForSystemEvents:(id)a3
+- (void)deregisterForSystemEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   agent = self->_agent;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__DKSystemEventsAgent_deregisterForSystemEvents___block_invoke;
   v7[3] = &unk_27852A288;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventsCopy;
+  v6 = eventsCopy;
   [(SystemEventsAgent *)agent deregisterWithCompletionHandler:v7];
 }
 

@@ -2,65 +2,65 @@
 - (CNAvatarPickerServiceHostProtocol)exportedObject;
 - (id)remoteProxy;
 - (void)avatarPickerExtensionDidCancel;
-- (void)avatarPickerExtensionDidCreateAvatarWithRecordData:(id)a3 identifier:(id)a4;
-- (void)avatarPickerExtensionDidDeleteAvatarWithIdentifier:(id)a3;
-- (void)avatarPickerExtensionDidFinishWithImageData:(id)a3 memojiMetadata:(id)a4;
-- (void)avatarPickerExtensionDidRequestMemojiEditorPresentationForRecordIdentifier:(id)a3;
-- (void)avatarPickerExtensionDidSelectItemWithImageData:(id)a3 memojiMetadata:(id)a4;
+- (void)avatarPickerExtensionDidCreateAvatarWithRecordData:(id)data identifier:(id)identifier;
+- (void)avatarPickerExtensionDidDeleteAvatarWithIdentifier:(id)identifier;
+- (void)avatarPickerExtensionDidFinishWithImageData:(id)data memojiMetadata:(id)metadata;
+- (void)avatarPickerExtensionDidRequestMemojiEditorPresentationForRecordIdentifier:(id)identifier;
+- (void)avatarPickerExtensionDidSelectItemWithImageData:(id)data memojiMetadata:(id)metadata;
 @end
 
 @implementation CNAvatarPickerServiceHostContext
 
 - (id)remoteProxy
 {
-  v2 = [(CNAvatarPickerServiceHostContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxy];
+  _auxiliaryConnection = [(CNAvatarPickerServiceHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)avatarPickerExtensionDidSelectItemWithImageData:(id)a3 memojiMetadata:(id)a4
+- (void)avatarPickerExtensionDidSelectItemWithImageData:(id)data memojiMetadata:(id)metadata
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNAvatarPickerServiceHostContext *)self exportedObject];
-  [v8 avatarPickerExtensionDidSelectItemWithImageData:v7 memojiMetadata:v6];
+  metadataCopy = metadata;
+  dataCopy = data;
+  exportedObject = [(CNAvatarPickerServiceHostContext *)self exportedObject];
+  [exportedObject avatarPickerExtensionDidSelectItemWithImageData:dataCopy memojiMetadata:metadataCopy];
 }
 
-- (void)avatarPickerExtensionDidFinishWithImageData:(id)a3 memojiMetadata:(id)a4
+- (void)avatarPickerExtensionDidFinishWithImageData:(id)data memojiMetadata:(id)metadata
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNAvatarPickerServiceHostContext *)self exportedObject];
-  [v8 avatarPickerExtensionDidFinishWithImageData:v7 memojiMetadata:v6];
+  metadataCopy = metadata;
+  dataCopy = data;
+  exportedObject = [(CNAvatarPickerServiceHostContext *)self exportedObject];
+  [exportedObject avatarPickerExtensionDidFinishWithImageData:dataCopy memojiMetadata:metadataCopy];
 }
 
 - (void)avatarPickerExtensionDidCancel
 {
-  v2 = [(CNAvatarPickerServiceHostContext *)self exportedObject];
-  [v2 avatarPickerExtensionDidCancel];
+  exportedObject = [(CNAvatarPickerServiceHostContext *)self exportedObject];
+  [exportedObject avatarPickerExtensionDidCancel];
 }
 
-- (void)avatarPickerExtensionDidRequestMemojiEditorPresentationForRecordIdentifier:(id)a3
+- (void)avatarPickerExtensionDidRequestMemojiEditorPresentationForRecordIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNAvatarPickerServiceHostContext *)self exportedObject];
-  [v5 avatarPickerExtensionDidRequestMemojiEditorPresentationForRecordIdentifier:v4];
+  identifierCopy = identifier;
+  exportedObject = [(CNAvatarPickerServiceHostContext *)self exportedObject];
+  [exportedObject avatarPickerExtensionDidRequestMemojiEditorPresentationForRecordIdentifier:identifierCopy];
 }
 
-- (void)avatarPickerExtensionDidCreateAvatarWithRecordData:(id)a3 identifier:(id)a4
+- (void)avatarPickerExtensionDidCreateAvatarWithRecordData:(id)data identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CNAvatarPickerServiceHostContext *)self exportedObject];
-  [v8 avatarPickerExtensionDidCreateAvatarWithRecordData:v7 identifier:v6];
+  identifierCopy = identifier;
+  dataCopy = data;
+  exportedObject = [(CNAvatarPickerServiceHostContext *)self exportedObject];
+  [exportedObject avatarPickerExtensionDidCreateAvatarWithRecordData:dataCopy identifier:identifierCopy];
 }
 
-- (void)avatarPickerExtensionDidDeleteAvatarWithIdentifier:(id)a3
+- (void)avatarPickerExtensionDidDeleteAvatarWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNAvatarPickerServiceHostContext *)self exportedObject];
-  [v5 avatarPickerExtensionDidDeleteAvatarWithIdentifier:v4];
+  identifierCopy = identifier;
+  exportedObject = [(CNAvatarPickerServiceHostContext *)self exportedObject];
+  [exportedObject avatarPickerExtensionDidDeleteAvatarWithIdentifier:identifierCopy];
 }
 
 - (CNAvatarPickerServiceHostProtocol)exportedObject

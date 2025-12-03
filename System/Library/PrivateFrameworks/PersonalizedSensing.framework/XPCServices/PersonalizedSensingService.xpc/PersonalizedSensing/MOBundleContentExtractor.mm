@@ -1,38 +1,38 @@
 @interface MOBundleContentExtractor
-- (MOBundleContentExtractor)initWithConfigurationManager:(id)a3 promptManager:(id)a4;
-- (id)_extractContentFromBundle:(id)a3;
-- (id)_extractContentFromOutingBundle:(id)a3;
-- (id)_extractDictionaryFromBundle:(id)a3;
-- (id)_extractPersonNamesFromPersons:(id)a3;
-- (id)_extractPersonsFromBundle:(id)a3;
-- (id)_filterOutVisitRelatedBundlesFrom:(id)a3;
-- (id)_sortedBundleBasedOnGoodnessScore:(id)a3;
-- (unint64_t)_extractActivityTypeFromBundle:(id)a3;
-- (unint64_t)_extractBundleTypeFromBundle:(id)a3;
-- (unint64_t)_extractPeopleClassificationFromPersons:(id)a3;
-- (unint64_t)_extractPhotoTraitFromBundle:(id)a3;
-- (unint64_t)_extractPlaceTypeFromBundle:(id)a3;
-- (unint64_t)_extractTimeFromBundle:(id)a3;
-- (unint64_t)_findFirstMatchingCuratedPhotoTraitSetForBundle:(id)a3;
-- (unint64_t)_findMatchingMetaDataWithPeopleClassification:(unint64_t)a3;
-- (void)_addContentRatingForSongTitleAndArtistSuggestions:(id)a3;
-- (void)_extractDominantMusicFromBundle:(id)a3 forBundleContent:(id)a4;
-- (void)_extractPlaceOrCityNameFromBundle:(id)a3 forBundleContent:(id)a4;
-- (void)_extractTimeReferenceFromBundle:(id)a3 forBundleContent:(id)a4;
-- (void)_filterExtractedBundles:(id)a3 contextPredicate:(id)a4 withHandler:(id)a5;
-- (void)_filterExtractedBundles:(id)a3 withHandler:(id)a4;
-- (void)_sortedBundleContextFromUpdatedGoodnessScore:(id)a3;
-- (void)_updateContextGoodnessScoreFromBundle:(id)a3 forBundleContent:(id)a4;
-- (void)extractContentsFromBundlesWithBundlePredicate:(id)a3 contextPredicate:(id)a4 handler:(id)a5;
-- (void)extractContentsFromBundlesWithHandler:(id)a3;
+- (MOBundleContentExtractor)initWithConfigurationManager:(id)manager promptManager:(id)promptManager;
+- (id)_extractContentFromBundle:(id)bundle;
+- (id)_extractContentFromOutingBundle:(id)bundle;
+- (id)_extractDictionaryFromBundle:(id)bundle;
+- (id)_extractPersonNamesFromPersons:(id)persons;
+- (id)_extractPersonsFromBundle:(id)bundle;
+- (id)_filterOutVisitRelatedBundlesFrom:(id)from;
+- (id)_sortedBundleBasedOnGoodnessScore:(id)score;
+- (unint64_t)_extractActivityTypeFromBundle:(id)bundle;
+- (unint64_t)_extractBundleTypeFromBundle:(id)bundle;
+- (unint64_t)_extractPeopleClassificationFromPersons:(id)persons;
+- (unint64_t)_extractPhotoTraitFromBundle:(id)bundle;
+- (unint64_t)_extractPlaceTypeFromBundle:(id)bundle;
+- (unint64_t)_extractTimeFromBundle:(id)bundle;
+- (unint64_t)_findFirstMatchingCuratedPhotoTraitSetForBundle:(id)bundle;
+- (unint64_t)_findMatchingMetaDataWithPeopleClassification:(unint64_t)classification;
+- (void)_addContentRatingForSongTitleAndArtistSuggestions:(id)suggestions;
+- (void)_extractDominantMusicFromBundle:(id)bundle forBundleContent:(id)content;
+- (void)_extractPlaceOrCityNameFromBundle:(id)bundle forBundleContent:(id)content;
+- (void)_extractTimeReferenceFromBundle:(id)bundle forBundleContent:(id)content;
+- (void)_filterExtractedBundles:(id)bundles contextPredicate:(id)predicate withHandler:(id)handler;
+- (void)_filterExtractedBundles:(id)bundles withHandler:(id)handler;
+- (void)_sortedBundleContextFromUpdatedGoodnessScore:(id)score;
+- (void)_updateContextGoodnessScoreFromBundle:(id)bundle forBundleContent:(id)content;
+- (void)extractContentsFromBundlesWithBundlePredicate:(id)predicate contextPredicate:(id)contextPredicate handler:(id)handler;
+- (void)extractContentsFromBundlesWithHandler:(id)handler;
 @end
 
 @implementation MOBundleContentExtractor
 
-- (MOBundleContentExtractor)initWithConfigurationManager:(id)a3 promptManager:(id)a4
+- (MOBundleContentExtractor)initWithConfigurationManager:(id)manager promptManager:(id)promptManager
 {
-  v128 = a3;
-  v127 = a4;
+  managerCopy = manager;
+  promptManagerCopy = promptManager;
   v129.receiver = self;
   v129.super_class = MOBundleContentExtractor;
   v7 = [(MOBundleContentExtractor *)&v129 init];
@@ -438,12 +438,12 @@
     v134 = &off_1000C8368;
     v135 = &off_1000C9A78;
     [NSDictionary dictionaryWithObjects:&v135 forKeys:&v134 count:1];
-    v17 = obj = a4;
+    v17 = obj = promptManager;
     v332[98] = v17;
     v132 = &off_1000C8380;
     v133 = &off_1000C9A90;
     [NSDictionary dictionaryWithObjects:&v133 forKeys:&v132 count:1];
-    v18 = v53 = a3;
+    v18 = v53 = manager;
     v332[99] = v18;
     v130 = &off_1000C8398;
     v131 = &off_1000C9AA8;
@@ -480,17 +480,17 @@
   return v7;
 }
 
-- (void)extractContentsFromBundlesWithHandler:(id)a3
+- (void)extractContentsFromBundlesWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __66__MOBundleContentExtractor_extractContentsFromBundlesWithHandler___block_invoke;
   v7[3] = &unk_1000B4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(queue, v7);
 }
 
@@ -541,22 +541,22 @@ void __66__MOBundleContentExtractor_extractContentsFromBundlesWithHandler___bloc
   [(MOPerformanceMeasurement *)v7 endSession];
 }
 
-- (void)extractContentsFromBundlesWithBundlePredicate:(id)a3 contextPredicate:(id)a4 handler:(id)a5
+- (void)extractContentsFromBundlesWithBundlePredicate:(id)predicate contextPredicate:(id)contextPredicate handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  contextPredicateCopy = contextPredicate;
+  handlerCopy = handler;
   promptManager = self->_promptManager;
-  v11 = [a3 fetchRequestPredicate];
+  fetchRequestPredicate = [predicate fetchRequestPredicate];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = __99__MOBundleContentExtractor_extractContentsFromBundlesWithBundlePredicate_contextPredicate_handler___block_invoke;
   v14[3] = &unk_1000B4A98;
-  v15 = v8;
-  v16 = v9;
+  v15 = contextPredicateCopy;
+  v16 = handlerCopy;
   v14[4] = self;
-  v12 = v8;
-  v13 = v9;
-  [(MOPromptManager *)promptManager fetchEventBundlesWithPredicate:v11 handler:v14];
+  v12 = contextPredicateCopy;
+  v13 = handlerCopy;
+  [(MOPromptManager *)promptManager fetchEventBundlesWithPredicate:fetchRequestPredicate handler:v14];
 }
 
 void __99__MOBundleContentExtractor_extractContentsFromBundlesWithBundlePredicate_contextPredicate_handler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -678,11 +678,11 @@ void __139__MOBundleContentExtractor__extractContentsFromBundleStartDate_endDate
   [WeakRetained _extractContentsFromBundleStartDate:*(a1 + 32) endDate:*(a1 + 40) daysPerFetch:*(a1 + 72) significantLocationEnabled:*(a1 + 80) partialResults:*(a1 + 48) withHandler:*(a1 + 56)];
 }
 
-- (void)_filterExtractedBundles:(id)a3 withHandler:(id)a4
+- (void)_filterExtractedBundles:(id)bundles withHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  bundlesCopy = bundles;
+  handlerCopy = handler;
+  v7 = [bundlesCopy count];
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
   if (v7)
@@ -690,14 +690,14 @@ void __139__MOBundleContentExtractor__extractContentsFromBundleStartDate_endDate
     if (v9)
     {
       *buf = 134217984;
-      v84 = [v5 count];
+      v84 = [bundlesCopy count];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "total count of fetched bundles %lu", buf, 0xCu);
     }
 
-    v52 = v6;
+    v52 = handlerCopy;
 
-    v53 = v5;
-    v10 = [(MOBundleContentExtractor *)self _sortedBundleBasedOnGoodnessScore:v5];
+    v53 = bundlesCopy;
+    v10 = [(MOBundleContentExtractor *)self _sortedBundleBasedOnGoodnessScore:bundlesCopy];
     v11 = objc_opt_new();
     v60 = objc_opt_new();
     v78 = 0u;
@@ -727,22 +727,22 @@ void __139__MOBundleContentExtractor__extractContentsFromBundleStartDate_endDate
             {
               [v14 bundleIdentifier];
               v26 = v59 = i;
-              v27 = [v14 interfaceType];
-              v28 = [v14 bundleSubType];
+              interfaceType = [v14 interfaceType];
+              bundleSubType = [v14 bundleSubType];
               v29 = v25;
-              v30 = [v14 summarizationGranularity];
-              v31 = [v14 isSensitive];
+              summarizationGranularity = [v14 summarizationGranularity];
+              isSensitive = [v14 isSensitive];
               *buf = 138413314;
               v84 = v26;
               v85 = 2048;
-              v86 = v27;
+              v86 = interfaceType;
               v87 = 2048;
-              v88 = v28;
+              v88 = bundleSubType;
               v89 = 2048;
-              v90 = v30;
+              v90 = summarizationGranularity;
               v25 = v29;
               v91 = 2048;
-              v92 = v31;
+              v92 = isSensitive;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "#bundlecuration, filtered bundle. reason: coarse granularity summary.bundleID %@, interfaceType %lu, subType %lu, summarizationGranularity %lu, isSensitive %lu", buf, 0x34u);
 
               i = v59;
@@ -950,13 +950,13 @@ LABEL_43:
     block[1] = 3221225472;
     block[2] = __64__MOBundleContentExtractor__filterExtractedBundles_withHandler___block_invoke;
     block[3] = &unk_1000B4B38;
-    v6 = v52;
+    handlerCopy = v52;
     v64 = v43;
     v65 = v52;
     v51 = v43;
     dispatch_async(queue, block);
 
-    v5 = v53;
+    bundlesCopy = v53;
   }
 
   else
@@ -967,37 +967,37 @@ LABEL_43:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "no bundle context is extracted due to 0 bundle fetched", buf, 2u);
     }
 
-    (*(v6 + 2))(v6, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
-- (void)_filterExtractedBundles:(id)a3 contextPredicate:(id)a4 withHandler:(id)a5
+- (void)_filterExtractedBundles:(id)bundles contextPredicate:(id)predicate withHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  bundlesCopy = bundles;
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  if ([bundlesCopy count])
   {
-    v43 = v9;
-    v10 = [v8 fetchRequestPredicate];
-    v11 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v10 error:0];
+    v43 = handlerCopy;
+    fetchRequestPredicate = [predicateCopy fetchRequestPredicate];
+    v11 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:fetchRequestPredicate error:0];
     [v11 allowEvaluation];
     v12 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [v11 predicateFormat];
+      predicateFormat = [v11 predicateFormat];
       *buf = 138412290;
-      v62 = v13;
+      v62 = predicateFormat;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "deserializedContextPredicateData, %@", buf, 0xCu);
     }
 
     objc_opt_class();
-    v44 = v8;
+    v44 = predicateCopy;
     v41 = v11;
-    v42 = v10;
+    v42 = fetchRequestPredicate;
     if (objc_opt_isKindOfClass())
     {
-      v14 = [v11 subpredicates];
+      subpredicates = [v11 subpredicates];
     }
 
     else
@@ -1009,7 +1009,7 @@ LABEL_43:
         v16 = [NSArray arrayWithObjects:&v60 count:1];
         v17 = [NSCompoundPredicate andPredicateWithSubpredicates:v16];
 
-        v14 = [v17 subpredicates];
+        subpredicates = [v17 subpredicates];
       }
 
       else
@@ -1020,21 +1020,21 @@ LABEL_43:
           [MOBundleContentExtractor _filterExtractedBundles:contextPredicate:withHandler:];
         }
 
-        v14 = 0;
+        subpredicates = 0;
       }
     }
 
-    v19 = [MOContextPredicateBuilder extractFirstValueForKeyPath:@"contextType" fromPredicates:v14];
+    v19 = [MOContextPredicateBuilder extractFirstValueForKeyPath:@"contextType" fromPredicates:subpredicates];
     v20 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
-      v21 = [v7 count];
+      v21 = [bundlesCopy count];
       *buf = 134217984;
       v62 = v21;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "total count of fetched bundles %lu", buf, 0xCu);
     }
 
-    v40 = v14;
+    v40 = subpredicates;
 
     v22 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
@@ -1049,7 +1049,7 @@ LABEL_43:
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v24 = v7;
+    v24 = bundlesCopy;
     v25 = [v24 countByEnumeratingWithState:&v54 objects:v59 count:16];
     if (v25)
     {
@@ -1078,7 +1078,7 @@ LABEL_43:
       while (v26);
     }
 
-    v45 = v7;
+    v45 = bundlesCopy;
 
     v52 = 0u;
     v53 = 0u;
@@ -1120,14 +1120,14 @@ LABEL_43:
     block[1] = 3221225472;
     block[2] = __81__MOBundleContentExtractor__filterExtractedBundles_contextPredicate_withHandler___block_invoke;
     block[3] = &unk_1000B4B38;
-    v9 = v43;
+    handlerCopy = v43;
     v48 = v31;
     v49 = v43;
     v39 = v31;
     dispatch_async(queue, block);
 
-    v8 = v44;
-    v7 = v45;
+    predicateCopy = v44;
+    bundlesCopy = v45;
   }
 
   else
@@ -1139,7 +1139,7 @@ LABEL_43:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "no bundle context is extracted due to 0 bundle fetched", buf, 2u);
     }
 
-    (*(v9 + 2))(v9, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -1182,15 +1182,15 @@ LABEL_11:
 LABEL_12:
 }
 
-- (id)_filterOutVisitRelatedBundlesFrom:(id)a3
+- (id)_filterOutVisitRelatedBundlesFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = fromCopy;
   v5 = [obj countByEnumeratingWithState:&v27 objects:v34 count:16];
   if (v5)
   {
@@ -1211,8 +1211,8 @@ LABEL_12:
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v11 = [v9 events];
-        v12 = [v11 countByEnumeratingWithState:&v23 objects:v33 count:16];
+        events = [v9 events];
+        v12 = [events countByEnumeratingWithState:&v23 objects:v33 count:16];
         if (v12)
         {
           v13 = v12;
@@ -1223,7 +1223,7 @@ LABEL_12:
             {
               if (*v24 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(events);
               }
 
               if ([*(*(&v23 + 1) + 8 * j) category] == 1)
@@ -1232,7 +1232,7 @@ LABEL_12:
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v23 objects:v33 count:16];
+            v13 = [events countByEnumeratingWithState:&v23 objects:v33 count:16];
           }
 
           while (v13);
@@ -1269,122 +1269,122 @@ LABEL_12:
   return v18;
 }
 
-- (id)_extractContentFromBundle:(id)a3
+- (id)_extractContentFromBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v5 = [MOBundleContent alloc];
   v6 = +[NSUUID UUID];
   v7 = [(MOBundleContent *)v5 initWithBundleContentIdentifier:v6];
 
-  v8 = [(MOBundleContentExtractor *)self _extractDictionaryFromBundle:v4];
+  v8 = [(MOBundleContentExtractor *)self _extractDictionaryFromBundle:bundleCopy];
   [(MOBundleContent *)v7 setLlmInputDictionary:v8];
 
-  v9 = [v4 bundleIdentifier];
-  [(MOBundleContent *)v7 setAssociatedBundleID:v9];
+  bundleIdentifier = [bundleCopy bundleIdentifier];
+  [(MOBundleContent *)v7 setAssociatedBundleID:bundleIdentifier];
 
-  v10 = [v4 suggestionID];
-  [(MOBundleContent *)v7 setAssociatedSuggestionID:v10];
+  suggestionID = [bundleCopy suggestionID];
+  [(MOBundleContent *)v7 setAssociatedSuggestionID:suggestionID];
 
-  v11 = [v4 rankingDictionary];
-  v12 = [v11 objectForKeyedSubscript:@"bundleGoodnessScore"];
+  rankingDictionary = [bundleCopy rankingDictionary];
+  v12 = [rankingDictionary objectForKeyedSubscript:@"bundleGoodnessScore"];
   [v12 floatValue];
   [(MOBundleContent *)v7 setBundleGoodnessScore:v13];
 
-  [(MOBundleContent *)v7 setPatternType:[(MOBundleContentExtractor *)self _extractPatternTypeFromBundle:v4]];
-  [(MOBundleContent *)v7 setActivityType:[(MOBundleContentExtractor *)self _extractActivityTypeFromBundle:v4]];
-  [(MOBundleContent *)v7 setPlaceType:[(MOBundleContentExtractor *)self _extractPlaceTypeFromBundle:v4]];
-  [(MOBundleContent *)v7 setTime:[(MOBundleContentExtractor *)self _extractTimeFromBundle:v4]];
-  v14 = [v4 startDate];
-  [(MOBundleContent *)v7 setStartDate:v14];
+  [(MOBundleContent *)v7 setPatternType:[(MOBundleContentExtractor *)self _extractPatternTypeFromBundle:bundleCopy]];
+  [(MOBundleContent *)v7 setActivityType:[(MOBundleContentExtractor *)self _extractActivityTypeFromBundle:bundleCopy]];
+  [(MOBundleContent *)v7 setPlaceType:[(MOBundleContentExtractor *)self _extractPlaceTypeFromBundle:bundleCopy]];
+  [(MOBundleContent *)v7 setTime:[(MOBundleContentExtractor *)self _extractTimeFromBundle:bundleCopy]];
+  startDate = [bundleCopy startDate];
+  [(MOBundleContent *)v7 setStartDate:startDate];
 
-  v15 = [v4 endDate];
-  [(MOBundleContent *)v7 setEndDate:v15];
+  endDate = [bundleCopy endDate];
+  [(MOBundleContent *)v7 setEndDate:endDate];
 
-  [(MOBundleContent *)v7 setBundleType:[(MOBundleContentExtractor *)self _extractBundleTypeFromBundle:v4]];
-  v16 = [(MOBundleContentExtractor *)self _extractPersonsFromBundle:v4];
+  [(MOBundleContent *)v7 setBundleType:[(MOBundleContentExtractor *)self _extractBundleTypeFromBundle:bundleCopy]];
+  v16 = [(MOBundleContentExtractor *)self _extractPersonsFromBundle:bundleCopy];
   [(MOBundleContent *)v7 setPeopleClassification:[(MOBundleContentExtractor *)self _extractPeopleClassificationFromPersons:v16]];
   v17 = [(MOBundleContentExtractor *)self _extractPersonNamesFromPersons:v16];
   [(MOBundleContent *)v7 setPersonNames:v17];
 
-  v18 = [(MOBundleContent *)v7 personNames];
-  v19 = [v18 count] != 0;
+  personNames = [(MOBundleContent *)v7 personNames];
+  v19 = [personNames count] != 0;
 
   [(MOBundleContent *)v7 setHasPersonName:v19];
-  [(MOBundleContentExtractor *)self _extractPlaceOrCityNameFromBundle:v4 forBundleContent:v7];
-  [(MOBundleContentExtractor *)self _extractTimeReferenceFromBundle:v4 forBundleContent:v7];
-  [(MOBundleContent *)v7 setPhotoTrait:[(MOBundleContentExtractor *)self _extractPhotoTraitFromBundle:v4]];
-  [(MOBundleContentExtractor *)self _updateContextGoodnessScoreFromBundle:v4 forBundleContent:v7];
-  if ([v4 interfaceType] != 4 && objc_msgSend(v4, "interfaceType") != 15)
+  [(MOBundleContentExtractor *)self _extractPlaceOrCityNameFromBundle:bundleCopy forBundleContent:v7];
+  [(MOBundleContentExtractor *)self _extractTimeReferenceFromBundle:bundleCopy forBundleContent:v7];
+  [(MOBundleContent *)v7 setPhotoTrait:[(MOBundleContentExtractor *)self _extractPhotoTraitFromBundle:bundleCopy]];
+  [(MOBundleContentExtractor *)self _updateContextGoodnessScoreFromBundle:bundleCopy forBundleContent:v7];
+  if ([bundleCopy interfaceType] != 4 && objc_msgSend(bundleCopy, "interfaceType") != 15)
   {
-    v20 = [v4 labels];
-    v21 = [v20 firstObject];
-    [(MOBundleContent *)v7 setSuggestionLabel:v21];
+    labels = [bundleCopy labels];
+    firstObject = [labels firstObject];
+    [(MOBundleContent *)v7 setSuggestionLabel:firstObject];
   }
 
-  [(MOBundleContentExtractor *)self _extractDominantMusicFromBundle:v4 forBundleContent:v7];
+  [(MOBundleContentExtractor *)self _extractDominantMusicFromBundle:bundleCopy forBundleContent:v7];
 
   return v7;
 }
 
-- (void)_updateContextGoodnessScoreFromBundle:(id)a3 forBundleContent:(id)a4
+- (void)_updateContextGoodnessScoreFromBundle:(id)bundle forBundleContent:(id)content
 {
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  contentCopy = content;
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [MOBundleContentExtractor _updateContextGoodnessScoreFromBundle:v6 forBundleContent:v7];
+    [MOBundleContentExtractor _updateContextGoodnessScoreFromBundle:bundleCopy forBundleContent:contentCopy];
   }
 
-  v9 = [v6 rankingDictionary];
-  v10 = [v9 objectForKeyedSubscript:@"bundleGoodnessScore"];
+  rankingDictionary = [bundleCopy rankingDictionary];
+  v10 = [rankingDictionary objectForKeyedSubscript:@"bundleGoodnessScore"];
   [v10 floatValue];
-  [v7 setContextGoodnessScore:v11];
+  [contentCopy setContextGoodnessScore:v11];
 
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [MOBundleContentExtractor _updateContextGoodnessScoreFromBundle:v7 forBundleContent:?];
+    [MOBundleContentExtractor _updateContextGoodnessScoreFromBundle:contentCopy forBundleContent:?];
   }
 
-  if ([v7 photoTrait])
+  if ([contentCopy photoTrait])
   {
-    [v7 contextGoodnessScore];
-    [v7 setContextGoodnessScore:v13 + 0.150000006];
+    [contentCopy contextGoodnessScore];
+    [contentCopy setContextGoodnessScore:v13 + 0.150000006];
   }
 
-  if ([v7 placeType])
+  if ([contentCopy placeType])
   {
     insignificantPlaceTypes = self->_insignificantPlaceTypes;
-    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 placeType]);
+    v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [contentCopy placeType]);
     LOBYTE(insignificantPlaceTypes) = [(NSArray *)insignificantPlaceTypes containsObject:v15];
 
     if ((insignificantPlaceTypes & 1) == 0)
     {
-      [v7 contextGoodnessScore];
-      [v7 setContextGoodnessScore:v16 + 0.0500000007];
+      [contentCopy contextGoodnessScore];
+      [contentCopy setContextGoodnessScore:v16 + 0.0500000007];
     }
   }
 
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    [MOBundleContentExtractor _updateContextGoodnessScoreFromBundle:v7 forBundleContent:?];
+    [MOBundleContentExtractor _updateContextGoodnessScoreFromBundle:contentCopy forBundleContent:?];
   }
 }
 
-- (unint64_t)_extractActivityTypeFromBundle:(id)a3
+- (unint64_t)_extractActivityTypeFromBundle:(id)bundle
 {
-  v3 = [a3 action];
-  v4 = v3;
-  if (!v3 || [v3 actionType] != 4)
+  action = [bundle action];
+  v4 = action;
+  if (!action || [action actionType] != 4)
   {
     v8 = 0;
     goto LABEL_8;
   }
 
-  v5 = [v4 actionName];
-  if ([v5 isEqualToString:@"walk"] & 1) != 0 || (_HKWorkoutActivityNameForActivityType(), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqualToString:", v6), v6, (v7))
+  actionName = [v4 actionName];
+  if ([actionName isEqualToString:@"walk"] & 1) != 0 || (_HKWorkoutActivityNameForActivityType(), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(actionName, "isEqualToString:", v6), v6, (v7))
   {
     v8 = 1;
   }
@@ -1392,23 +1392,23 @@ LABEL_12:
   else
   {
     v10 = _HKWorkoutActivityNameForActivityType();
-    if ([v5 isEqualToString:v10])
+    if ([actionName isEqualToString:v10])
     {
     }
 
     else
     {
       v11 = _HKWorkoutActivityNameForActivityType();
-      v12 = [v5 isEqualToString:v11];
+      v12 = [actionName isEqualToString:v11];
 
       if ((v12 & 1) == 0)
       {
-        if ([v5 isEqualToString:@"cycle"] & 1) != 0 || (_HKWorkoutActivityNameForActivityType(), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v5, "isEqualToString:", v13), v13, (v14))
+        if ([actionName isEqualToString:@"cycle"] & 1) != 0 || (_HKWorkoutActivityNameForActivityType(), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(actionName, "isEqualToString:", v13), v13, (v14))
         {
           v8 = 3;
         }
 
-        else if ([v5 isEqualToString:@"run"] & 1) != 0 || (_HKWorkoutActivityNameForActivityType(), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v5, "isEqualToString:", v15), v15, (v16))
+        else if ([actionName isEqualToString:@"run"] & 1) != 0 || (_HKWorkoutActivityNameForActivityType(), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(actionName, "isEqualToString:", v15), v15, (v16))
         {
           v8 = 4;
         }
@@ -1416,7 +1416,7 @@ LABEL_12:
         else
         {
           v17 = _HKWorkoutActivityNameForActivityType();
-          v18 = [v5 isEqualToString:v17];
+          v18 = [actionName isEqualToString:v17];
 
           if (v18)
           {
@@ -1426,7 +1426,7 @@ LABEL_12:
           else
           {
             v19 = _HKWorkoutActivityNameForActivityType();
-            v20 = [v5 isEqualToString:v19];
+            v20 = [actionName isEqualToString:v19];
 
             if (v20)
             {
@@ -1436,7 +1436,7 @@ LABEL_12:
             else
             {
               v21 = _HKWorkoutActivityNameForActivityType();
-              v22 = [v5 isEqualToString:v21];
+              v22 = [actionName isEqualToString:v21];
 
               if (v22)
               {
@@ -1446,7 +1446,7 @@ LABEL_12:
               else
               {
                 v23 = _HKWorkoutActivityNameForActivityType();
-                v24 = [v5 isEqualToString:v23];
+                v24 = [actionName isEqualToString:v23];
 
                 if (v24)
                 {
@@ -1456,7 +1456,7 @@ LABEL_12:
                 else
                 {
                   v25 = _HKWorkoutActivityNameForActivityType();
-                  v26 = [v5 isEqualToString:v25];
+                  v26 = [actionName isEqualToString:v25];
 
                   if (v26)
                   {
@@ -1486,10 +1486,10 @@ LABEL_8:
   return v8;
 }
 
-- (unint64_t)_extractTimeFromBundle:(id)a3
+- (unint64_t)_extractTimeFromBundle:(id)bundle
 {
-  v3 = [a3 metaData];
-  v4 = [v3 objectForKey:@"timeOfDay"];
+  metaData = [bundle metaData];
+  v4 = [metaData objectForKey:@"timeOfDay"];
 
   if (v4)
   {
@@ -1527,13 +1527,13 @@ LABEL_8:
   return v5;
 }
 
-- (unint64_t)_extractPlaceTypeFromBundle:(id)a3
+- (unint64_t)_extractPlaceTypeFromBundle:(id)bundle
 {
-  v3 = [a3 place];
-  v4 = v3;
-  if (v3)
+  place = [bundle place];
+  v4 = place;
+  if (place)
   {
-    if ([v3 placeUserType] == 1)
+    if ([place placeUserType] == 1)
     {
       v5 = 16;
     }
@@ -1545,8 +1545,8 @@ LABEL_8:
 
     else
     {
-      v6 = [v4 poiCategory];
-      v7 = [v6 isEqualToString:GEOPOICategoryRestaurant];
+      poiCategory = [v4 poiCategory];
+      v7 = [poiCategory isEqualToString:GEOPOICategoryRestaurant];
 
       if (v7)
       {
@@ -1555,8 +1555,8 @@ LABEL_8:
 
       else
       {
-        v8 = [v4 poiCategory];
-        v9 = [v8 isEqualToString:GEOPOICategoryStore];
+        poiCategory2 = [v4 poiCategory];
+        v9 = [poiCategory2 isEqualToString:GEOPOICategoryStore];
 
         if (v9)
         {
@@ -1565,8 +1565,8 @@ LABEL_8:
 
         else
         {
-          v10 = [v4 poiCategory];
-          v11 = [v10 isEqualToString:GEOPOICategoryHotel];
+          poiCategory3 = [v4 poiCategory];
+          v11 = [poiCategory3 isEqualToString:GEOPOICategoryHotel];
 
           if (v11)
           {
@@ -1575,8 +1575,8 @@ LABEL_8:
 
           else
           {
-            v12 = [v4 poiCategory];
-            v13 = [v12 isEqualToString:GEOPOICategoryAirport];
+            poiCategory4 = [v4 poiCategory];
+            v13 = [poiCategory4 isEqualToString:GEOPOICategoryAirport];
 
             if (v13)
             {
@@ -1585,8 +1585,8 @@ LABEL_8:
 
             else
             {
-              v14 = [v4 poiCategory];
-              v15 = [v14 isEqualToString:GEOPOICategoryPark];
+              poiCategory5 = [v4 poiCategory];
+              v15 = [poiCategory5 isEqualToString:GEOPOICategoryPark];
 
               if (v15)
               {
@@ -1595,8 +1595,8 @@ LABEL_8:
 
               else
               {
-                v16 = [v4 poiCategory];
-                v17 = [v16 isEqualToString:GEOPOICategoryCafe];
+                poiCategory6 = [v4 poiCategory];
+                v17 = [poiCategory6 isEqualToString:GEOPOICategoryCafe];
 
                 if (v17)
                 {
@@ -1605,8 +1605,8 @@ LABEL_8:
 
                 else
                 {
-                  v18 = [v4 poiCategory];
-                  v19 = [v18 isEqualToString:GEOPOICategoryFoodMarket];
+                  poiCategory7 = [v4 poiCategory];
+                  v19 = [poiCategory7 isEqualToString:GEOPOICategoryFoodMarket];
 
                   if (v19)
                   {
@@ -1615,8 +1615,8 @@ LABEL_8:
 
                   else
                   {
-                    v20 = [v4 poiCategory];
-                    v21 = [v20 isEqualToString:GEOPOICategoryFitnessCenter];
+                    poiCategory8 = [v4 poiCategory];
+                    v21 = [poiCategory8 isEqualToString:GEOPOICategoryFitnessCenter];
 
                     if (v21)
                     {
@@ -1625,8 +1625,8 @@ LABEL_8:
 
                     else
                     {
-                      v22 = [v4 poiCategory];
-                      v23 = [v22 isEqualToString:GEOPOICategoryUniversity];
+                      poiCategory9 = [v4 poiCategory];
+                      v23 = [poiCategory9 isEqualToString:GEOPOICategoryUniversity];
 
                       if (v23)
                       {
@@ -1635,8 +1635,8 @@ LABEL_8:
 
                       else
                       {
-                        v24 = [v4 poiCategory];
-                        v25 = [v24 isEqualToString:GEOPOICategorySchool];
+                        poiCategory10 = [v4 poiCategory];
+                        v25 = [poiCategory10 isEqualToString:GEOPOICategorySchool];
 
                         if (v25)
                         {
@@ -1645,8 +1645,8 @@ LABEL_8:
 
                         else
                         {
-                          v26 = [v4 poiCategory];
-                          v27 = [v26 isEqualToString:GEOPOICategoryAmusementPark];
+                          poiCategory11 = [v4 poiCategory];
+                          v27 = [poiCategory11 isEqualToString:GEOPOICategoryAmusementPark];
 
                           if (v27)
                           {
@@ -1655,8 +1655,8 @@ LABEL_8:
 
                           else
                           {
-                            v28 = [v4 poiCategory];
-                            v29 = [v28 isEqualToString:GEOPOICategoryMovieTheater];
+                            poiCategory12 = [v4 poiCategory];
+                            v29 = [poiCategory12 isEqualToString:GEOPOICategoryMovieTheater];
 
                             if (v29)
                             {
@@ -1665,8 +1665,8 @@ LABEL_8:
 
                             else
                             {
-                              v30 = [v4 poiCategory];
-                              v31 = [v30 isEqualToString:GEOPOICategoryTheater];
+                              poiCategory13 = [v4 poiCategory];
+                              v31 = [poiCategory13 isEqualToString:GEOPOICategoryTheater];
 
                               if (v31)
                               {
@@ -1675,8 +1675,8 @@ LABEL_8:
 
                               else
                               {
-                                v32 = [v4 poiCategory];
-                                v33 = [v32 isEqualToString:GEOPOICategoryMuseum];
+                                poiCategory14 = [v4 poiCategory];
+                                v33 = [poiCategory14 isEqualToString:GEOPOICategoryMuseum];
 
                                 if (v33)
                                 {
@@ -1685,8 +1685,8 @@ LABEL_8:
 
                                 else
                                 {
-                                  v34 = [v4 poiCategory];
-                                  v35 = [v34 isEqualToString:GEOPOICategoryBeach];
+                                  poiCategory15 = [v4 poiCategory];
+                                  v35 = [poiCategory15 isEqualToString:GEOPOICategoryBeach];
 
                                   if (v35)
                                   {
@@ -1695,8 +1695,8 @@ LABEL_8:
 
                                   else
                                   {
-                                    v36 = [v4 poiCategory];
-                                    v37 = [v36 isEqualToString:GEOPOICategoryAquarium];
+                                    poiCategory16 = [v4 poiCategory];
+                                    v37 = [poiCategory16 isEqualToString:GEOPOICategoryAquarium];
 
                                     if (v37)
                                     {
@@ -1705,8 +1705,8 @@ LABEL_8:
 
                                     else
                                     {
-                                      v38 = [v4 poiCategory];
-                                      v39 = [v38 isEqualToString:GEOPOICategoryBakery];
+                                      poiCategory17 = [v4 poiCategory];
+                                      v39 = [poiCategory17 isEqualToString:GEOPOICategoryBakery];
 
                                       if (v39)
                                       {
@@ -1715,8 +1715,8 @@ LABEL_8:
 
                                       else
                                       {
-                                        v40 = [v4 poiCategory];
-                                        v41 = [v40 isEqualToString:GEOPOICategoryBrewery];
+                                        poiCategory18 = [v4 poiCategory];
+                                        v41 = [poiCategory18 isEqualToString:GEOPOICategoryBrewery];
 
                                         if (v41)
                                         {
@@ -1725,8 +1725,8 @@ LABEL_8:
 
                                         else
                                         {
-                                          v42 = [v4 poiCategory];
-                                          v43 = [v42 isEqualToString:GEOPOICategoryCampground];
+                                          poiCategory19 = [v4 poiCategory];
+                                          v43 = [poiCategory19 isEqualToString:GEOPOICategoryCampground];
 
                                           if (v43)
                                           {
@@ -1735,8 +1735,8 @@ LABEL_8:
 
                                           else
                                           {
-                                            v44 = [v4 poiCategory];
-                                            v45 = [v44 isEqualToString:GEOPOICategoryFireStation];
+                                            poiCategory20 = [v4 poiCategory];
+                                            v45 = [poiCategory20 isEqualToString:GEOPOICategoryFireStation];
 
                                             if (v45)
                                             {
@@ -1745,8 +1745,8 @@ LABEL_8:
 
                                             else
                                             {
-                                              v46 = [v4 poiCategory];
-                                              v47 = [v46 isEqualToString:GEOPOICategoryLibrary];
+                                              poiCategory21 = [v4 poiCategory];
+                                              v47 = [poiCategory21 isEqualToString:GEOPOICategoryLibrary];
 
                                               if (v47)
                                               {
@@ -1755,8 +1755,8 @@ LABEL_8:
 
                                               else
                                               {
-                                                v48 = [v4 poiCategory];
-                                                v49 = [v48 isEqualToString:GEOPOICategoryMarina];
+                                                poiCategory22 = [v4 poiCategory];
+                                                v49 = [poiCategory22 isEqualToString:GEOPOICategoryMarina];
 
                                                 if (v49)
                                                 {
@@ -1765,8 +1765,8 @@ LABEL_8:
 
                                                 else
                                                 {
-                                                  v50 = [v4 poiCategory];
-                                                  v51 = [v50 isEqualToString:GEOPOICategoryNationalPark];
+                                                  poiCategory23 = [v4 poiCategory];
+                                                  v51 = [poiCategory23 isEqualToString:GEOPOICategoryNationalPark];
 
                                                   if (v51)
                                                   {
@@ -1775,8 +1775,8 @@ LABEL_8:
 
                                                   else
                                                   {
-                                                    v52 = [v4 poiCategory];
-                                                    v53 = [v52 isEqualToString:GEOPOICategoryNightlife];
+                                                    poiCategory24 = [v4 poiCategory];
+                                                    v53 = [poiCategory24 isEqualToString:GEOPOICategoryNightlife];
 
                                                     if (v53)
                                                     {
@@ -1785,8 +1785,8 @@ LABEL_8:
 
                                                     else
                                                     {
-                                                      v54 = [v4 poiCategory];
-                                                      v55 = [v54 isEqualToString:GEOPOICategoryPlayground];
+                                                      poiCategory25 = [v4 poiCategory];
+                                                      v55 = [poiCategory25 isEqualToString:GEOPOICategoryPlayground];
 
                                                       if (v55)
                                                       {
@@ -1795,8 +1795,8 @@ LABEL_8:
 
                                                       else
                                                       {
-                                                        v56 = [v4 poiCategory];
-                                                        v57 = [v56 isEqualToString:GEOPOICategoryStadium];
+                                                        poiCategory26 = [v4 poiCategory];
+                                                        v57 = [poiCategory26 isEqualToString:GEOPOICategoryStadium];
 
                                                         if (v57)
                                                         {
@@ -1805,8 +1805,8 @@ LABEL_8:
 
                                                         else
                                                         {
-                                                          v58 = [v4 poiCategory];
-                                                          v59 = [v58 isEqualToString:GEOPOICategoryWinery];
+                                                          poiCategory27 = [v4 poiCategory];
+                                                          v59 = [poiCategory27 isEqualToString:GEOPOICategoryWinery];
 
                                                           if (v59)
                                                           {
@@ -1815,8 +1815,8 @@ LABEL_8:
 
                                                           else
                                                           {
-                                                            v60 = [v4 poiCategory];
-                                                            v61 = [v60 isEqualToString:GEOPOICategoryZoo];
+                                                            poiCategory28 = [v4 poiCategory];
+                                                            v61 = [poiCategory28 isEqualToString:GEOPOICategoryZoo];
 
                                                             if (v61)
                                                             {
@@ -1825,8 +1825,8 @@ LABEL_8:
 
                                                             else
                                                             {
-                                                              v62 = [v4 poiCategory];
-                                                              v63 = [v62 isEqualToString:GEOPOICategoryGolf];
+                                                              poiCategory29 = [v4 poiCategory];
+                                                              v63 = [poiCategory29 isEqualToString:GEOPOICategoryGolf];
 
                                                               if (v63)
                                                               {
@@ -1835,8 +1835,8 @@ LABEL_8:
 
                                                               else
                                                               {
-                                                                v64 = [v4 poiCategory];
-                                                                v65 = [v64 isEqualToString:GEOPOICategoryMiniGolf];
+                                                                poiCategory30 = [v4 poiCategory];
+                                                                v65 = [poiCategory30 isEqualToString:GEOPOICategoryMiniGolf];
 
                                                                 if (v65)
                                                                 {
@@ -1845,8 +1845,8 @@ LABEL_8:
 
                                                                 else
                                                                 {
-                                                                  v66 = [v4 poiCategory];
-                                                                  v67 = [v66 isEqualToString:GEOPOICategoryBowling];
+                                                                  poiCategory31 = [v4 poiCategory];
+                                                                  v67 = [poiCategory31 isEqualToString:GEOPOICategoryBowling];
 
                                                                   if (v67)
                                                                   {
@@ -1855,8 +1855,8 @@ LABEL_8:
 
                                                                   else
                                                                   {
-                                                                    v68 = [v4 poiCategory];
-                                                                    v69 = [v68 isEqualToString:GEOPOICategoryPlanetarium];
+                                                                    poiCategory32 = [v4 poiCategory];
+                                                                    v69 = [poiCategory32 isEqualToString:GEOPOICategoryPlanetarium];
 
                                                                     if (v69)
                                                                     {
@@ -1865,8 +1865,8 @@ LABEL_8:
 
                                                                     else
                                                                     {
-                                                                      v70 = [v4 poiCategory];
-                                                                      v71 = [v70 isEqualToString:GEOPOICategoryBaseball];
+                                                                      poiCategory33 = [v4 poiCategory];
+                                                                      v71 = [poiCategory33 isEqualToString:GEOPOICategoryBaseball];
 
                                                                       if (v71)
                                                                       {
@@ -1875,8 +1875,8 @@ LABEL_8:
 
                                                                       else
                                                                       {
-                                                                        v72 = [v4 poiCategory];
-                                                                        v73 = [v72 isEqualToString:GEOPOICategoryBasketball];
+                                                                        poiCategory34 = [v4 poiCategory];
+                                                                        v73 = [poiCategory34 isEqualToString:GEOPOICategoryBasketball];
 
                                                                         if (v73)
                                                                         {
@@ -1885,8 +1885,8 @@ LABEL_8:
 
                                                                         else
                                                                         {
-                                                                          v74 = [v4 poiCategory];
-                                                                          v75 = [v74 isEqualToString:GEOPOICategoryNationalMonument];
+                                                                          poiCategory35 = [v4 poiCategory];
+                                                                          v75 = [poiCategory35 isEqualToString:GEOPOICategoryNationalMonument];
 
                                                                           if (v75)
                                                                           {
@@ -1942,13 +1942,13 @@ LABEL_8:
   return v5;
 }
 
-- (unint64_t)_extractBundleTypeFromBundle:(id)a3
+- (unint64_t)_extractBundleTypeFromBundle:(id)bundle
 {
-  v3 = [a3 bundleSubType];
+  bundleSubType = [bundle bundleSubType];
   result = 1;
-  if (v3 <= 104)
+  if (bundleSubType <= 104)
   {
-    switch(v3)
+    switch(bundleSubType)
     {
       case 'e':
         return result;
@@ -1959,9 +1959,9 @@ LABEL_8:
     }
   }
 
-  else if (v3 > 900)
+  else if (bundleSubType > 900)
   {
-    if (v3 == 901 || v3 == 905)
+    if (bundleSubType == 901 || bundleSubType == 905)
     {
       return result;
     }
@@ -1969,19 +1969,19 @@ LABEL_8:
 
   else
   {
-    if (v3 == 105)
+    if (bundleSubType == 105)
     {
       return 2;
     }
 
-    if (v3 == 106)
+    if (bundleSubType == 106)
     {
       return result;
     }
   }
 
-  v5 = v3 - 501;
-  v6 = v3 == 301;
+  v5 = bundleSubType - 501;
+  v6 = bundleSubType == 301;
   v7 = 6;
   if (!v6)
   {
@@ -1999,13 +1999,13 @@ LABEL_8:
   }
 }
 
-- (unint64_t)_extractPeopleClassificationFromPersons:(id)a3
+- (unint64_t)_extractPeopleClassificationFromPersons:(id)persons
 {
-  v4 = a3;
-  if ([v4 count])
+  personsCopy = persons;
+  if ([personsCopy count])
   {
-    v5 = [v4 firstObject];
-    v6 = [MOMetaDataCurationUtility getTheBestPersonRelationtshipTagFor:v5];
+    firstObject = [personsCopy firstObject];
+    v6 = [MOMetaDataCurationUtility getTheBestPersonRelationtshipTagFor:firstObject];
     if (v6 < 2)
     {
       v7 = 0;
@@ -2025,32 +2025,32 @@ LABEL_8:
   return v7;
 }
 
-- (unint64_t)_findMatchingMetaDataWithPeopleClassification:(unint64_t)a3
+- (unint64_t)_findMatchingMetaDataWithPeopleClassification:(unint64_t)classification
 {
   v3 = 3;
-  v4 = vdupq_n_s64(a3);
-  if (a3 - 15 >= 3)
+  v4 = vdupq_n_s64(classification);
+  if (classification - 15 >= 3)
   {
     v3 = 0;
   }
 
   v5 = vandq_s8(v4, xmmword_1000A7510);
-  if (vmaxv_u16(vmovn_s32(vuzp1q_s32(vceqq_s64(v5, xmmword_1000A7520), vceqq_s64(v5, xmmword_1000A7530)))) & 1 | (a3 == 20))
+  if (vmaxv_u16(vmovn_s32(vuzp1q_s32(vceqq_s64(v5, xmmword_1000A7520), vceqq_s64(v5, xmmword_1000A7530)))) & 1 | (classification == 20))
   {
     v3 = 1;
   }
 
-  if (a3 == 21)
+  if (classification == 21)
   {
     v3 = 2;
   }
 
-  if (a3 == 22)
+  if (classification == 22)
   {
     v3 = 4;
   }
 
-  if (a3 - 27 >= 3)
+  if (classification - 27 >= 3)
   {
     return v3;
   }
@@ -2061,17 +2061,17 @@ LABEL_8:
   }
 }
 
-- (id)_extractPersonsFromBundle:(id)a3
+- (id)_extractPersonsFromBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = objc_opt_new();
-  v5 = [v3 persons];
-  v6 = [v5 count];
+  persons = [bundleCopy persons];
+  v6 = [persons count];
 
   if (v6)
   {
-    v7 = [v3 persons];
-    v8 = [v7 sortedArrayUsingSelector:"comparePersons:"];
+    persons2 = [bundleCopy persons];
+    v8 = [persons2 sortedArrayUsingSelector:"comparePersons:"];
 
     v24 = 0u;
     v25 = 0u;
@@ -2124,7 +2124,7 @@ LABEL_8:
   v17 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    [(MOBundleContentExtractor *)v4 _extractPersonsFromBundle:v3];
+    [(MOBundleContentExtractor *)v4 _extractPersonsFromBundle:bundleCopy];
   }
 
   if (v12 < 2)
@@ -2147,17 +2147,17 @@ LABEL_8:
   return v19;
 }
 
-- (id)_extractPersonNamesFromPersons:(id)a3
+- (id)_extractPersonNamesFromPersons:(id)persons
 {
-  v3 = a3;
+  personsCopy = persons;
   v4 = objc_opt_new();
-  if ([v3 count])
+  if ([personsCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v5 = v3;
+    v5 = personsCopy;
     v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (!v6)
     {
@@ -2176,29 +2176,29 @@ LABEL_8:
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 givenName];
-        v12 = [v11 length];
+        givenName = [v10 givenName];
+        v12 = [givenName length];
 
         if (v12)
         {
-          v13 = [v10 givenName];
+          givenName2 = [v10 givenName];
         }
 
         else
         {
-          v14 = [v10 name];
-          v15 = [v14 length];
+          name = [v10 name];
+          v15 = [name length];
 
           if (!v15)
           {
             continue;
           }
 
-          v13 = [v10 name];
+          givenName2 = [v10 name];
         }
 
-        v16 = v13;
-        [v4 addObject:v13];
+        v16 = givenName2;
+        [v4 addObject:givenName2];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -2214,75 +2214,75 @@ LABEL_14:
   return v4;
 }
 
-- (void)_extractPlaceOrCityNameFromBundle:(id)a3 forBundleContent:(id)a4
+- (void)_extractPlaceOrCityNameFromBundle:(id)bundle forBundleContent:(id)content
 {
-  v32 = a3;
-  v5 = a4;
+  bundleCopy = bundle;
+  contentCopy = content;
   v6 = [NSSet setWithArray:&off_1000C9AC0];
-  [v5 setHasPlaceName:0];
-  [v5 setHasCityName:0];
-  if ([v32 interfaceType] == 2 || objc_msgSend(v32, "interfaceType") == 12 || objc_msgSend(v32, "interfaceType") == 15 || objc_msgSend(v32, "interfaceType") == 1)
+  [contentCopy setHasPlaceName:0];
+  [contentCopy setHasCityName:0];
+  if ([bundleCopy interfaceType] == 2 || objc_msgSend(bundleCopy, "interfaceType") == 12 || objc_msgSend(bundleCopy, "interfaceType") == 15 || objc_msgSend(bundleCopy, "interfaceType") == 1)
   {
-    v7 = [v32 place];
-    v8 = [v7 placeName];
-    if (v8)
+    place = [bundleCopy place];
+    placeName = [place placeName];
+    if (placeName)
     {
-      v9 = v8;
-      v10 = [v32 place];
-      v11 = [v10 poiCategory];
-      if ([v6 containsObject:v11])
+      v9 = placeName;
+      place2 = [bundleCopy place];
+      poiCategory = [place2 poiCategory];
+      if ([v6 containsObject:poiCategory])
       {
-        v12 = [v32 place];
-        if ([v12 placeType] != 4)
+        place3 = [bundleCopy place];
+        if ([place3 placeType] != 4)
         {
-          v20 = [v32 place];
-          v21 = [v20 placeType];
+          place4 = [bundleCopy place];
+          placeType = [place4 placeType];
 
-          if (v21 != 5)
+          if (placeType != 5)
           {
-            v22 = [v32 place];
-            v23 = [v22 placeName];
-            [v5 setPlaceName:v23];
+            place5 = [bundleCopy place];
+            placeName2 = [place5 placeName];
+            [contentCopy setPlaceName:placeName2];
 
-            [v5 setHasPlaceName:1];
+            [contentCopy setHasPlaceName:1];
 LABEL_18:
-            v24 = [v32 place];
-            v25 = [v24 location];
+            place6 = [bundleCopy place];
+            location = [place6 location];
 
-            if (v25)
+            if (location)
             {
-              [v5 setHasLocation:1];
-              v26 = [v32 place];
-              v27 = [v26 location];
-              [v5 setLocation:v27];
+              [contentCopy setHasLocation:1];
+              place7 = [bundleCopy place];
+              location2 = [place7 location];
+              [contentCopy setLocation:location2];
             }
 
             goto LABEL_20;
           }
 
 LABEL_11:
-          v13 = [v32 place];
-          v14 = [v13 enclosingArea];
+          place8 = [bundleCopy place];
+          enclosingArea = [place8 enclosingArea];
 
-          if (v14)
+          if (enclosingArea)
           {
-            v15 = [v32 place];
-            if ([v15 placeType] == 101)
+            place9 = [bundleCopy place];
+            if ([place9 placeType] == 101)
             {
             }
 
             else
             {
-              v16 = [v32 place];
-              v17 = [v16 placeType];
+              place10 = [bundleCopy place];
+              placeType2 = [place10 placeType];
 
-              if (v17 != 102)
+              if (placeType2 != 102)
               {
-                v18 = [v32 place];
-                v19 = [v18 enclosingArea];
-                [v5 setCityName:v19];
+                place11 = [bundleCopy place];
+                enclosingArea2 = [place11 enclosingArea];
+                [contentCopy setCityName:enclosingArea2];
 
-                [v5 setHasCityName:1];
+                [contentCopy setHasCityName:1];
               }
             }
           }
@@ -2295,60 +2295,60 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if ([v32 interfaceType] == 13)
+  if ([bundleCopy interfaceType] == 13)
   {
-    v28 = [v32 place];
-    v29 = [v28 placeName];
+    place12 = [bundleCopy place];
+    placeName3 = [place12 placeName];
 
-    if (v29)
+    if (placeName3)
     {
-      v30 = [v32 place];
-      v31 = [v30 placeName];
-      [v5 setPlaceName:v31];
+      place13 = [bundleCopy place];
+      placeName4 = [place13 placeName];
+      [contentCopy setPlaceName:placeName4];
 
-      [v5 setHasPlaceName:1];
+      [contentCopy setHasPlaceName:1];
     }
   }
 
 LABEL_20:
 }
 
-- (void)_extractTimeReferenceFromBundle:(id)a3 forBundleContent:(id)a4
+- (void)_extractTimeReferenceFromBundle:(id)bundle forBundleContent:(id)content
 {
-  v9 = a4;
-  v5 = a3;
+  contentCopy = content;
+  bundleCopy = bundle;
   v6 = [NSSet setWithArray:&off_1000C9AD8];
-  [v9 setHasTimeReference:0];
-  v7 = [v5 metaData];
+  [contentCopy setHasTimeReference:0];
+  metaData = [bundleCopy metaData];
 
-  v8 = [v7 objectForKey:@"time"];
+  v8 = [metaData objectForKey:@"time"];
 
   if (v8 && [v6 containsObject:v8])
   {
-    [v9 setTimeReference:v8];
-    [v9 setHasTimeReference:1];
+    [contentCopy setTimeReference:v8];
+    [contentCopy setHasTimeReference:1];
   }
 }
 
-- (unint64_t)_extractPhotoTraitFromBundle:(id)a3
+- (unint64_t)_extractPhotoTraitFromBundle:(id)bundle
 {
-  v4 = a3;
-  if ([v4 interfaceType] == 13 || (objc_msgSend(v4, "photoTraits"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, !v6))
+  bundleCopy = bundle;
+  if ([bundleCopy interfaceType] == 13 || (objc_msgSend(bundleCopy, "photoTraits"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, !v6))
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(MOBundleContentExtractor *)self _findFirstMatchingCuratedPhotoTraitSetForBundle:v4];
+    v7 = [(MOBundleContentExtractor *)self _findFirstMatchingCuratedPhotoTraitSetForBundle:bundleCopy];
   }
 
   return v7;
 }
 
-- (unint64_t)_findFirstMatchingCuratedPhotoTraitSetForBundle:(id)a3
+- (unint64_t)_findFirstMatchingCuratedPhotoTraitSetForBundle:(id)bundle
 {
-  v32 = a3;
+  bundleCopy = bundle;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -2370,16 +2370,16 @@ LABEL_3:
 
       v5 = *(*(&v53 + 1) + 8 * v4);
       v35 = objc_autoreleasePoolPush();
-      v34 = [v5 allKeys];
-      v36 = [v34 firstObject];
+      allKeys = [v5 allKeys];
+      firstObject = [allKeys firstObject];
       v39 = [v5 objectForKey:?];
       v6 = objc_opt_new();
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v7 = [v32 photoTraits];
-      v8 = [v7 countByEnumeratingWithState:&v49 objects:v61 count:16];
+      photoTraits = [bundleCopy photoTraits];
+      v8 = [photoTraits countByEnumeratingWithState:&v49 objects:v61 count:16];
       if (v8)
       {
         v9 = v8;
@@ -2390,13 +2390,13 @@ LABEL_3:
           {
             if (*v50 != v10)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(photoTraits);
             }
 
             v12 = *(*(&v49 + 1) + 8 * i);
-            v13 = [v12 holidayIdentifier];
+            holidayIdentifier = [v12 holidayIdentifier];
 
-            if (v13)
+            if (holidayIdentifier)
             {
               [v12 holidayIdentifier];
             }
@@ -2409,7 +2409,7 @@ LABEL_3:
             [v6 addObject:v14];
           }
 
-          v9 = [v7 countByEnumeratingWithState:&v49 objects:v61 count:16];
+          v9 = [photoTraits countByEnumeratingWithState:&v49 objects:v61 count:16];
         }
 
         while (v9);
@@ -2492,16 +2492,16 @@ LABEL_3:
       v24 = [v39 count];
       if (v24 == v15)
       {
-        v25 = [v36 intValue];
+        intValue = [firstObject intValue];
         v26 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412290;
-          v58 = v36;
+          v58 = firstObject;
           _os_log_debug_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEBUG, "Setting trait meta data for %@", buf, 0xCu);
         }
 
-        v28 = v25;
+        v28 = intValue;
       }
 
       objc_autoreleasePoolPop(v35);
@@ -2531,18 +2531,18 @@ LABEL_3:
   return v28;
 }
 
-- (id)_extractDictionaryFromBundle:(id)a3
+- (id)_extractDictionaryFromBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 interfaceType];
-  if (v5 > 0xD || ((1 << v5) & 0x3016) == 0)
+  bundleCopy = bundle;
+  interfaceType = [bundleCopy interfaceType];
+  if (interfaceType > 0xD || ((1 << interfaceType) & 0x3016) == 0)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [(MOBundleContentExtractor *)self _extractContentFromOutingBundle:v4];
+    v7 = [(MOBundleContentExtractor *)self _extractContentFromOutingBundle:bundleCopy];
   }
 
   v8 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
@@ -2554,118 +2554,118 @@ LABEL_3:
   return v7;
 }
 
-- (id)_extractContentFromOutingBundle:(id)a3
+- (id)_extractContentFromOutingBundle:(id)bundle
 {
-  v3 = a3;
+  bundleCopy = bundle;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 metaData];
-  v6 = [v5 objectForKey:@"date_string"];
+  metaData = [bundleCopy metaData];
+  v6 = [metaData objectForKey:@"date_string"];
 
   if (v6)
   {
     [v4 setObject:v6 forKey:@"date_string"];
   }
 
-  v7 = [v3 metaData];
-  v8 = [v7 objectForKey:@"date_reference_weekday_string"];
+  metaData2 = [bundleCopy metaData];
+  v8 = [metaData2 objectForKey:@"date_reference_weekday_string"];
 
   if (v8)
   {
     [v4 setObject:v8 forKey:@"date_reference_weekday_string"];
   }
 
-  v9 = [v3 metaData];
-  v10 = [v9 objectForKey:@"timeOfDay"];
+  metaData3 = [bundleCopy metaData];
+  v10 = [metaData3 objectForKey:@"timeOfDay"];
 
   if (v10)
   {
     [v4 setObject:v10 forKey:@"timeOfDay"];
   }
 
-  v11 = [v3 metaData];
-  v12 = [v11 objectForKey:@"action"];
+  metaData4 = [bundleCopy metaData];
+  v12 = [metaData4 objectForKey:@"action"];
 
   if (v12)
   {
     [v4 setObject:v12 forKey:@"action"];
   }
 
-  v13 = [v3 place];
-  v14 = [v13 placeName];
+  place = [bundleCopy place];
+  placeName = [place placeName];
 
-  if (v14)
+  if (placeName)
   {
-    [v4 setObject:v14 forKey:@"place name"];
+    [v4 setObject:placeName forKey:@"place name"];
   }
 
-  v15 = [v3 place];
-  v16 = [v15 poiCategory];
+  place2 = [bundleCopy place];
+  poiCategory = [place2 poiCategory];
 
-  if (v16)
+  if (poiCategory)
   {
-    [v4 setObject:v16 forKey:@"place category"];
+    [v4 setObject:poiCategory forKey:@"place category"];
   }
 
-  v17 = [v3 place];
-  if ([v17 placeType] != 101)
+  place3 = [bundleCopy place];
+  if ([place3 placeType] != 101)
   {
-    [v3 place];
-    v30 = v16;
-    v18 = v14;
+    [bundleCopy place];
+    v30 = poiCategory;
+    v18 = placeName;
     v19 = v4;
     v20 = v12;
     v21 = v10;
     v22 = v8;
     v24 = v23 = v6;
-    v25 = [v24 placeType];
+    placeType = [v24 placeType];
 
     v6 = v23;
     v8 = v22;
     v10 = v21;
     v12 = v20;
     v4 = v19;
-    v14 = v18;
-    v16 = v30;
+    placeName = v18;
+    poiCategory = v30;
 
-    if (v25 == 102)
+    if (placeType == 102)
     {
       goto LABEL_18;
     }
 
-    v26 = [v3 place];
-    v17 = [v26 enclosingArea];
+    place4 = [bundleCopy place];
+    place3 = [place4 enclosingArea];
 
-    if (v17)
+    if (place3)
     {
-      [v4 setObject:v17 forKey:@"location"];
+      [v4 setObject:place3 forKey:@"location"];
     }
   }
 
 LABEL_18:
-  v27 = [v3 labels];
-  v28 = [v27 firstObject];
+  labels = [bundleCopy labels];
+  firstObject = [labels firstObject];
 
-  if (v28)
+  if (firstObject)
   {
-    [v4 setObject:v28 forKey:@"label"];
+    [v4 setObject:firstObject forKey:@"label"];
   }
 
   return v4;
 }
 
-- (id)_sortedBundleBasedOnGoodnessScore:(id)a3
+- (id)_sortedBundleBasedOnGoodnessScore:(id)score
 {
-  v3 = a3;
-  if ([v3 count])
+  scoreCopy = score;
+  if ([scoreCopy count])
   {
-    if ([v3 count] == 1)
+    if ([scoreCopy count] == 1)
     {
-      v4 = v3;
+      v4 = scoreCopy;
     }
 
     else
     {
-      v4 = [v3 sortedArrayUsingComparator:&__block_literal_global];
+      v4 = [scoreCopy sortedArrayUsingComparator:&__block_literal_global];
     }
 
     v5 = v4;
@@ -2704,12 +2704,12 @@ int64_t __62__MOBundleContentExtractor__sortedBundleBasedOnGoodnessScore___block
   }
 }
 
-- (void)_sortedBundleContextFromUpdatedGoodnessScore:(id)a3
+- (void)_sortedBundleContextFromUpdatedGoodnessScore:(id)score
 {
-  v4 = a3;
-  if ([v4 count] >= 2)
+  scoreCopy = score;
+  if ([scoreCopy count] >= 2)
   {
-    v3 = [v4 sortedArrayUsingComparator:&__block_literal_global_1664];
+    v3 = [scoreCopy sortedArrayUsingComparator:&__block_literal_global_1664];
   }
 }
 
@@ -2733,20 +2733,20 @@ int64_t __73__MOBundleContentExtractor__sortedBundleContextFromUpdatedGoodnessSc
   }
 }
 
-- (void)_extractDominantMusicFromBundle:(id)a3 forBundleContent:(id)a4
+- (void)_extractDominantMusicFromBundle:(id)bundle forBundleContent:(id)content
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MOBundleContentExtractor *)self metaDataAllowListForSongTitleArtistInclusionActivityType];
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 activityType]);
-  if ([v8 containsObject:v9])
+  bundleCopy = bundle;
+  contentCopy = content;
+  metaDataAllowListForSongTitleArtistInclusionActivityType = [(MOBundleContentExtractor *)self metaDataAllowListForSongTitleArtistInclusionActivityType];
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [contentCopy activityType]);
+  if ([metaDataAllowListForSongTitleArtistInclusionActivityType containsObject:v9])
   {
     goto LABEL_6;
   }
 
-  v10 = [(MOBundleContentExtractor *)self metaDataAllowListForSongTitleArtistInclusionPlaceType];
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 placeType]);
-  if ([v10 containsObject:v11])
+  metaDataAllowListForSongTitleArtistInclusionPlaceType = [(MOBundleContentExtractor *)self metaDataAllowListForSongTitleArtistInclusionPlaceType];
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [contentCopy placeType]);
+  if ([metaDataAllowListForSongTitleArtistInclusionPlaceType containsObject:v11])
   {
 LABEL_5:
 
@@ -2754,17 +2754,17 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v12 = [(MOBundleContentExtractor *)self metaDataAllowListForSongTitleArtistInclusionBundleType];
-  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 bundleType]);
-  if ([v12 containsObject:v13])
+  metaDataAllowListForSongTitleArtistInclusionBundleType = [(MOBundleContentExtractor *)self metaDataAllowListForSongTitleArtistInclusionBundleType];
+  v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [contentCopy bundleType]);
+  if ([metaDataAllowListForSongTitleArtistInclusionBundleType containsObject:v13])
   {
 
     goto LABEL_5;
   }
 
-  v28 = [(MOBundleContentExtractor *)self metaDataAllowListForSongTitleArtistInclusionPhotoTrait];
-  v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v7 photoTrait]);
-  v30 = [v28 containsObject:v29];
+  metaDataAllowListForSongTitleArtistInclusionPhotoTrait = [(MOBundleContentExtractor *)self metaDataAllowListForSongTitleArtistInclusionPhotoTrait];
+  v29 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [contentCopy photoTrait]);
+  v30 = [metaDataAllowListForSongTitleArtistInclusionPhotoTrait containsObject:v29];
 
   if ((v30 & 1) == 0)
   {
@@ -2777,8 +2777,8 @@ LABEL_6:
 LABEL_7:
   v14 = [NSPredicate predicateWithFormat:@"type == %lu", 3];
   v15 = [[NSSortDescriptor alloc] initWithKey:@"priorityScore" ascending:1];
-  v16 = [v6 resources];
-  v17 = [v16 filteredArrayUsingPredicate:v14];
+  resources = [bundleCopy resources];
+  v17 = [resources filteredArrayUsingPredicate:v14];
 
   v37 = v15;
   v18 = [NSArray arrayWithObjects:&v37 count:1];
@@ -2786,14 +2786,14 @@ LABEL_7:
 
   if ([v19 count])
   {
-    v20 = [v19 firstObject];
-    v21 = [v20 data];
-    v22 = [MODictionaryEncoder decodeToDictionary:v21];
+    firstObject = [v19 firstObject];
+    data = [firstObject data];
+    v22 = [MODictionaryEncoder decodeToDictionary:data];
 
     v23 = [v22 objectForKeyedSubscript:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
-    LODWORD(v20) = [v23 isEqualToString:@"com.apple.Music"];
+    LODWORD(firstObject) = [v23 isEqualToString:@"com.apple.Music"];
 
-    if (v20)
+    if (firstObject)
     {
       v24 = [v22 objectForKeyedSubscript:@"MOMediaPlayMetaDataKeyPlayerTitle"];
       v25 = [v22 objectForKeyedSubscript:@"MOMediaPlayMetaDataKeyPlayerArtist"];
@@ -2816,9 +2816,9 @@ LABEL_7:
   }
 
 LABEL_14:
-  [v7 setMusicSuggestionSongTitle:v24];
-  [v7 setMusicSuggestionArtistName:v25];
-  [v7 setMusicSuggestionTrackID:v26];
+  [contentCopy setMusicSuggestionSongTitle:v24];
+  [contentCopy setMusicSuggestionArtistName:v25];
+  [contentCopy setMusicSuggestionTrackID:v26];
   v27 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
@@ -2832,16 +2832,16 @@ LABEL_14:
   }
 }
 
-- (void)_addContentRatingForSongTitleAndArtistSuggestions:(id)a3
+- (void)_addContentRatingForSongTitleAndArtistSuggestions:(id)suggestions
 {
-  v3 = a3;
+  suggestionsCopy = suggestions;
   v32 = objc_opt_new();
   v4 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  obj = v3;
+  obj = suggestionsCopy;
   v5 = [obj countByEnumeratingWithState:&v36 objects:v48 count:16];
   if (v5)
   {
@@ -2861,21 +2861,21 @@ LABEL_14:
         v10 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
         {
-          v18 = [v9 musicSuggestionSongTitle];
-          v19 = [v9 musicSuggestionArtistName];
-          v20 = [v9 musicSuggestionTrackID];
+          musicSuggestionSongTitle = [v9 musicSuggestionSongTitle];
+          musicSuggestionArtistName = [v9 musicSuggestionArtistName];
+          musicSuggestionTrackID = [v9 musicSuggestionTrackID];
           *buf = 138412802;
-          v43 = v18;
+          v43 = musicSuggestionSongTitle;
           v44 = 2112;
-          v45 = v19;
+          v45 = musicSuggestionArtistName;
           v46 = 2112;
-          v47 = v20;
+          v47 = musicSuggestionTrackID;
           _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Music suggestion bundle content for content rating look up, song title: %@, artist name: %@, trackID: %@", buf, 0x20u);
         }
 
-        v11 = [v9 musicSuggestionTrackID];
+        musicSuggestionTrackID2 = [v9 musicSuggestionTrackID];
 
-        if (v11)
+        if (musicSuggestionTrackID2)
         {
           v12 = _mo_log_facility_get_os_log(&MOLogFacilityPersonalizedSensing);
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -2883,25 +2883,25 @@ LABEL_14:
             [(MOBundleContentExtractor *)v40 _addContentRatingForSongTitleAndArtistSuggestions:v9, &v41, v12];
           }
 
-          v13 = [v9 musicSuggestionTrackID];
-          [v32 addObject:v13];
+          musicSuggestionTrackID3 = [v9 musicSuggestionTrackID];
+          [v32 addObject:musicSuggestionTrackID3];
 
-          v14 = [v9 musicSuggestionTrackID];
-          v15 = [v4 valueForKey:v14];
+          musicSuggestionTrackID4 = [v9 musicSuggestionTrackID];
+          v15 = [v4 valueForKey:musicSuggestionTrackID4];
 
           if (v15)
           {
-            v16 = [v9 musicSuggestionTrackID];
-            v17 = [v4 objectForKeyedSubscript:v16];
-            [v17 addObject:v9];
+            musicSuggestionTrackID5 = [v9 musicSuggestionTrackID];
+            musicSuggestionTrackID6 = [v4 objectForKeyedSubscript:musicSuggestionTrackID5];
+            [musicSuggestionTrackID6 addObject:v9];
           }
 
           else
           {
-            v16 = objc_opt_new();
-            [v16 addObject:v9];
-            v17 = [v9 musicSuggestionTrackID];
-            [v4 setObject:v16 forKey:v17];
+            musicSuggestionTrackID5 = objc_opt_new();
+            [musicSuggestionTrackID5 addObject:v9];
+            musicSuggestionTrackID6 = [v9 musicSuggestionTrackID];
+            [v4 setObject:musicSuggestionTrackID5 forKey:musicSuggestionTrackID6];
           }
         }
 
@@ -2928,9 +2928,9 @@ LABEL_14:
   {
     v23 = [AMSBag bagForProfile:@"MomentsUIService" profileVersion:@"1"];
     v24 = [[AMSMediaTask alloc] initWithType:203 clientIdentifier:@"com.apple.PersonalizedSensingService" clientVersion:@"1" bag:v23];
-    v25 = [v32 allObjects];
-    [v24 setItemIdentifiers:v25];
-    v26 = [v24 perform];
+    allObjects = [v32 allObjects];
+    [v24 setItemIdentifiers:allObjects];
+    perform = [v24 perform];
     v27 = dispatch_semaphore_create(0);
     v33[0] = _NSConcreteStackBlock;
     v33[1] = 3221225472;
@@ -2939,7 +2939,7 @@ LABEL_14:
     v34 = v4;
     v28 = v27;
     v35 = v28;
-    [v26 addFinishBlock:v33];
+    [perform addFinishBlock:v33];
     v29 = dispatch_time(0, 120000000000);
     if (dispatch_semaphore_wait(v28, v29))
     {

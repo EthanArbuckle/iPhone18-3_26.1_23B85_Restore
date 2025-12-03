@@ -1,12 +1,12 @@
 @interface TTRIReminderCellHashtagViewController
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)textViewShouldBeginEditing:(id)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
 - (_TtC15RemindersUICore37TTRIReminderCellHashtagViewController)init;
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation TTRIReminderCellHashtagViewController
@@ -18,66 +18,66 @@
   return result;
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_21D63A0FC(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  LOBYTE(self) = sub_21D63A0FC(editingCopy);
 
   return self & 1;
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_21D63A270(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_21D63A270(editingCopy);
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  sub_21D63A498(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_21D63A498(editingCopy);
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_21D63A68C(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_21D63A68C(changeCopy);
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = self;
+  selectionCopy = selection;
+  selfCopy = self;
   sub_21D63A97C();
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9 = sub_21DBFA16C();
   v11 = v10;
-  v12 = a3;
-  v13 = self;
-  LOBYTE(length) = sub_21D63ABE4(v12, location, length, v9, v11);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(length) = sub_21D63ABE4(viewCopy, location, length, v9, v11);
 
   return length & 1;
 }
 
-- (id)textView:(id)a3 editMenuForTextInRange:(_NSRange)a4 suggestedActions:(id)a5
+- (id)textView:(id)view editMenuForTextInRange:(_NSRange)range suggestedActions:(id)actions
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_21D0D8CF0(0, &qword_27CE5DE90);
   v8 = sub_21DBFA5EC();
   type metadata accessor for TTRIReminderTitleTextView();
   if (swift_dynamicCastClass())
   {
-    v9 = a3;
+    viewCopy = view;
     v10 = sub_21D6C40EC(location, length, v8);
   }
 

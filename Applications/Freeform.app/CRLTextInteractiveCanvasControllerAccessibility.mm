@@ -1,32 +1,32 @@
 @interface CRLTextInteractiveCanvasControllerAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)crlaxCurrentSelectionContainsVisibleTrackedChanges;
-- (BOOL)crlaxHandleDoubleTapAtPoint:(CGPoint)a3;
-- (BOOL)crlaxOpenHyperlinkIfPossible:(id)a3 withRep:(id)a4;
+- (BOOL)crlaxHandleDoubleTapAtPoint:(CGPoint)point;
+- (BOOL)crlaxOpenHyperlinkIfPossible:(id)possible withRep:(id)rep;
 - (UIAccessibilityCustomRotor)_crlaxHeadingsRotor;
 - (UIAccessibilityCustomRotor)crlaxHyperlinksRotor;
 - (UIAccessibilityCustomRotor)crlaxMisspelledWordsRotor;
 - (id)crlaxCustomRotors;
-- (id)crlaxFocusTextRangeFromSearchReference:(id)a3;
-- (id)crlaxRepForSearchReference:(id)a3;
-- (id)crlaxRotorSearchControllerForRotor:(id)a3;
-- (id)crlaxSearchReferenceForSelectionPath:(id)a3;
-- (id)crlaxTextRepsForStorage:(id)a3;
-- (id)crlaxTextSearchReferenceFromRange:(_NSRange)a3;
-- (void)crlaxAnnounceSearchReference:(id)a3 forRotor:(id)a4;
-- (void)crlaxRegisterLinkedTextElement:(id)a3;
-- (void)crlaxUnregisterLinkedTextElement:(id)a3;
+- (id)crlaxFocusTextRangeFromSearchReference:(id)reference;
+- (id)crlaxRepForSearchReference:(id)reference;
+- (id)crlaxRotorSearchControllerForRotor:(id)rotor;
+- (id)crlaxSearchReferenceForSelectionPath:(id)path;
+- (id)crlaxTextRepsForStorage:(id)storage;
+- (id)crlaxTextSearchReferenceFromRange:(_NSRange)range;
+- (void)crlaxAnnounceSearchReference:(id)reference forRotor:(id)rotor;
+- (void)crlaxRegisterLinkedTextElement:(id)element;
+- (void)crlaxUnregisterLinkedTextElement:(id)element;
 - (void)dealloc;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation CRLTextInteractiveCanvasControllerAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -34,14 +34,14 @@
 - (BOOL)crlaxCurrentSelectionContainsVisibleTrackedChanges
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxCanvasEditor];
-  v5 = __CRLAccessibilityCastAsSafeCategory(v3, v4, 0, 0);
+  crlaxCanvasEditor = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxCanvasEditor];
+  v5 = __CRLAccessibilityCastAsSafeCategory(v3, crlaxCanvasEditor, 0, 0);
 
-  LOBYTE(v4) = [v5 crlaxCurrentSelectionContainsVisibleTrackedChanges];
-  return v4;
+  LOBYTE(crlaxCanvasEditor) = [v5 crlaxCurrentSelectionContainsVisibleTrackedChanges];
+  return crlaxCanvasEditor;
 }
 
-- (id)crlaxTextRepsForStorage:(id)a3
+- (id)crlaxTextRepsForStorage:(id)storage
 {
   v12 = 0;
   v13 = &v12;
@@ -55,8 +55,8 @@
   v9[3] = &unk_10183DE60;
   v11 = &v12;
   v9[4] = self;
-  v3 = a3;
-  v10 = v3;
+  storageCopy = storage;
+  v10 = storageCopy;
   if (__CRLAccessibilityPerformSafeBlock(v9) || (v10, v4 = v13[5], _Block_object_dispose(&v12, 8), v17, LOBYTE(v12) = 0, v5 = v4, __CRLAccessibilityCastAsProtocol(&OBJC_PROTOCOL___NSFastEnumeration, v5, 1, &v12), v6 = objc_claimAutoreleasedReturnValue(), v12 == 1))
   {
     abort();
@@ -67,50 +67,50 @@
   return v7;
 }
 
-- (void)crlaxRegisterLinkedTextElement:(id)a3
+- (void)crlaxRegisterLinkedTextElement:(id)element
 {
-  v4 = a3;
-  v7 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxRegisteredLinkedTextContainerElements];
-  if (!v7)
+  elementCopy = element;
+  _crlaxRegisteredLinkedTextContainerElements = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxRegisteredLinkedTextContainerElements];
+  if (!_crlaxRegisteredLinkedTextContainerElements)
   {
-    v7 = objc_opt_new();
+    _crlaxRegisteredLinkedTextContainerElements = objc_opt_new();
     [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetRegisteredLinkedTextContainerElements:?];
   }
 
-  v5 = [[CRLAccessibilityBoxedWeakReference alloc] initWithObject:v4];
-  v6 = [NSString stringWithFormat:@"%p", v4];
+  v5 = [[CRLAccessibilityBoxedWeakReference alloc] initWithObject:elementCopy];
+  elementCopy = [NSString stringWithFormat:@"%p", elementCopy];
 
-  [v7 setObject:v5 forKeyedSubscript:v6];
+  [_crlaxRegisteredLinkedTextContainerElements setObject:v5 forKeyedSubscript:elementCopy];
 }
 
-- (void)crlaxUnregisterLinkedTextElement:(id)a3
+- (void)crlaxUnregisterLinkedTextElement:(id)element
 {
-  v4 = a3;
-  v6 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxRegisteredLinkedTextContainerElements];
-  v5 = [NSString stringWithFormat:@"%p", v4];
+  elementCopy = element;
+  _crlaxRegisteredLinkedTextContainerElements = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxRegisteredLinkedTextContainerElements];
+  elementCopy = [NSString stringWithFormat:@"%p", elementCopy];
 
-  [v6 setObject:0 forKeyedSubscript:v5];
+  [_crlaxRegisteredLinkedTextContainerElements setObject:0 forKeyedSubscript:elementCopy];
 }
 
-- (BOOL)crlaxOpenHyperlinkIfPossible:(id)a3 withRep:(id)a4
+- (BOOL)crlaxOpenHyperlinkIfPossible:(id)possible withRep:(id)rep
 {
-  v5 = [a3 url];
-  v6 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
-  v7 = [v6 openURL:v5];
+  v5 = [possible url];
+  crlaxTarget = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
+  v7 = [crlaxTarget openURL:v5];
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxRegisteredLinkedTextContainerElements];
+  _crlaxRegisteredLinkedTextContainerElements = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxRegisteredLinkedTextContainerElements];
   [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetRegisteredLinkedTextContainerElements:0];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 allValues];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [_crlaxRegisteredLinkedTextContainerElements allValues];
+  v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -122,20 +122,20 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allValues);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) reference];
-        if ([v9 conformsToProtocol:&OBJC_PROTOCOL___CRLWPRepAccessibilityContainedElement])
+        reference = [*(*(&v11 + 1) + 8 * v8) reference];
+        if ([reference conformsToProtocol:&OBJC_PROTOCOL___CRLWPRepAccessibilityContainedElement])
         {
-          [v9 crlaxSetParentInteractiveCanvasController:0];
+          [reference crlaxSetParentInteractiveCanvasController:0];
         }
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -146,11 +146,11 @@
   [(CRLTextInteractiveCanvasControllerAccessibility *)&v10 dealloc];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v3.receiver = self;
   v3.super_class = CRLTextInteractiveCanvasControllerAccessibility;
-  [(CRLTextInteractiveCanvasControllerAccessibility *)&v3 scrollViewDidScroll:a3];
+  [(CRLTextInteractiveCanvasControllerAccessibility *)&v3 scrollViewDidScroll:scroll];
 }
 
 - (id)crlaxCustomRotors
@@ -168,16 +168,16 @@
     v5 = +[NSMutableArray array];
   }
 
-  v6 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxMisspelledWordsRotor];
-  [v5 insertObject:v6 atIndex:0];
+  crlaxMisspelledWordsRotor = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxMisspelledWordsRotor];
+  [v5 insertObject:crlaxMisspelledWordsRotor atIndex:0];
 
-  v7 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxHyperlinksRotor];
-  [v5 insertObject:v7 atIndex:0];
+  crlaxHyperlinksRotor = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxHyperlinksRotor];
+  [v5 insertObject:crlaxHyperlinksRotor atIndex:0];
 
   if ([(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxSupportsHeadingsRotor])
   {
-    v8 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxHeadingsRotor];
-    [v5 insertObject:v8 atIndex:0];
+    _crlaxHeadingsRotor = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxHeadingsRotor];
+    [v5 insertObject:_crlaxHeadingsRotor atIndex:0];
   }
 
   v9 = [v5 copy];
@@ -187,8 +187,8 @@
 
 - (UIAccessibilityCustomRotor)_crlaxHeadingsRotor
 {
-  v3 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHeadingsRotor];
-  if (!v3)
+  _crlaxStoredHeadingsRotor = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHeadingsRotor];
+  if (!_crlaxStoredHeadingsRotor)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"Document headings" value:0 table:0];
@@ -202,27 +202,27 @@
     v6 = v5;
     v13 = v6;
     v7 = objc_retainBlock(v12);
-    v3 = [[UIAccessibilityCustomRotor alloc] initWithName:v6 itemSearchBlock:v7];
-    [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetStoredHeadingsRotor:v3];
+    _crlaxStoredHeadingsRotor = [[UIAccessibilityCustomRotor alloc] initWithName:v6 itemSearchBlock:v7];
+    [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetStoredHeadingsRotor:_crlaxStoredHeadingsRotor];
     v8 = [CRLHeadingRotorSearchController alloc];
-    v9 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
-    v10 = [(CRLRotorSearchController *)v8 initWithInteractiveCanvasController:v9];
+    crlaxTarget = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
+    v10 = [(CRLRotorSearchController *)v8 initWithInteractiveCanvasController:crlaxTarget];
     [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetStoredHeadingsRotorSearchController:v10];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return _crlaxStoredHeadingsRotor;
 }
 
 - (UIAccessibilityCustomRotor)crlaxMisspelledWordsRotor
 {
-  v3 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredMisspelledWordsRotor];
-  if (!v3)
+  _crlaxStoredMisspelledWordsRotor = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredMisspelledWordsRotor];
+  if (!_crlaxStoredMisspelledWordsRotor)
   {
-    v3 = [[UIAccessibilityCustomRotor alloc] initWithSystemType:13 itemSearchBlock:&stru_101857938];
-    objc_initWeak(&location, v3);
+    _crlaxStoredMisspelledWordsRotor = [[UIAccessibilityCustomRotor alloc] initWithSystemType:13 itemSearchBlock:&stru_101857938];
+    objc_initWeak(&location, _crlaxStoredMisspelledWordsRotor);
     objc_initWeak(&from, self);
     v9 = _NSConcreteStackBlock;
     v10 = 3221225472;
@@ -231,11 +231,11 @@
     objc_copyWeak(&v13, &from);
     objc_copyWeak(&v14, &location);
     v4 = objc_retainBlock(&v9);
-    [v3 setItemSearchBlock:{v4, v9, v10, v11, v12}];
-    [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetStoredMisspelledWordsRotor:v3];
+    [_crlaxStoredMisspelledWordsRotor setItemSearchBlock:{v4, v9, v10, v11, v12}];
+    [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetStoredMisspelledWordsRotor:_crlaxStoredMisspelledWordsRotor];
     v5 = [CRLMisspelledWordRotorSearchController alloc];
-    v6 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
-    v7 = [(CRLRotorSearchController *)v5 initWithInteractiveCanvasController:v6];
+    crlaxTarget = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
+    v7 = [(CRLRotorSearchController *)v5 initWithInteractiveCanvasController:crlaxTarget];
     [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetStoredMisspelledWordsRotorSearchController:v7];
 
     objc_destroyWeak(&v14);
@@ -244,13 +244,13 @@
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return _crlaxStoredMisspelledWordsRotor;
 }
 
 - (UIAccessibilityCustomRotor)crlaxHyperlinksRotor
 {
-  v3 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHyperlinksRotor];
-  if (!v3)
+  _crlaxStoredHyperlinksRotor = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHyperlinksRotor];
+  if (!_crlaxStoredHyperlinksRotor)
   {
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:@"Links" value:0 table:0];
@@ -264,34 +264,34 @@
     v6 = v5;
     v13 = v6;
     v7 = objc_retainBlock(v12);
-    v3 = [[UIAccessibilityCustomRotor alloc] initWithName:v6 itemSearchBlock:v7];
-    [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetStoredHyperlinksRotor:v3];
+    _crlaxStoredHyperlinksRotor = [[UIAccessibilityCustomRotor alloc] initWithName:v6 itemSearchBlock:v7];
+    [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetStoredHyperlinksRotor:_crlaxStoredHyperlinksRotor];
     v8 = [CRLHyperlinkRotorSearchController alloc];
-    v9 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
-    v10 = [(CRLRotorSearchController *)v8 initWithInteractiveCanvasController:v9];
+    crlaxTarget = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
+    v10 = [(CRLRotorSearchController *)v8 initWithInteractiveCanvasController:crlaxTarget];
     [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxSetStoredHyperlinksRotorSearchController:v10];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
   }
 
-  return v3;
+  return _crlaxStoredHyperlinksRotor;
 }
 
-- (id)crlaxSearchReferenceForSelectionPath:(id)a3
+- (id)crlaxSearchReferenceForSelectionPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 orderedSelections];
-  v6 = [v5 lastObject];
+  pathCopy = path;
+  orderedSelections = [pathCopy orderedSelections];
+  lastObject = [orderedSelections lastObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v7 = objc_opt_class();
-    v8 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
-    v9 = [v8 infosForSelectionPath:v4];
-    v10 = [v9 crl_onlyObject];
-    v11 = sub_100014370(v7, v10);
+    crlaxTarget = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
+    v9 = [crlaxTarget infosForSelectionPath:pathCopy];
+    crl_onlyObject = [v9 crl_onlyObject];
+    v11 = sub_100014370(v7, crl_onlyObject);
 
     v12 = 0;
   }
@@ -300,73 +300,73 @@
   {
     v14.receiver = self;
     v14.super_class = CRLTextInteractiveCanvasControllerAccessibility;
-    v12 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v14 crlaxSearchReferenceForSelectionPath:v4];
+    v12 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v14 crlaxSearchReferenceForSelectionPath:pathCopy];
   }
 
   return v12;
 }
 
-- (id)crlaxRotorSearchControllerForRotor:(id)a3
+- (id)crlaxRotorSearchControllerForRotor:(id)rotor
 {
-  v4 = a3;
-  v5 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHeadingsRotor];
+  rotorCopy = rotor;
+  _crlaxStoredHeadingsRotor = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHeadingsRotor];
 
-  if (v5 == v4)
+  if (_crlaxStoredHeadingsRotor == rotorCopy)
   {
-    v9 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHeadingsRotorSearchController];
+    _crlaxStoredHeadingsRotorSearchController = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHeadingsRotorSearchController];
   }
 
   else
   {
-    v6 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredMisspelledWordsRotor];
+    _crlaxStoredMisspelledWordsRotor = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredMisspelledWordsRotor];
 
-    if (v6 == v4)
+    if (_crlaxStoredMisspelledWordsRotor == rotorCopy)
     {
-      v9 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredMisspelledWordsRotorSearchController];
+      _crlaxStoredHeadingsRotorSearchController = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredMisspelledWordsRotorSearchController];
     }
 
     else
     {
-      v7 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxHyperlinksRotor];
-      v8 = [v4 isEqual:v7];
+      crlaxHyperlinksRotor = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxHyperlinksRotor];
+      v8 = [rotorCopy isEqual:crlaxHyperlinksRotor];
 
       if (v8)
       {
-        v9 = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHyperlinksRotorSearchController];
+        _crlaxStoredHeadingsRotorSearchController = [(CRLTextInteractiveCanvasControllerAccessibility *)self _crlaxStoredHyperlinksRotorSearchController];
       }
 
       else
       {
         v12.receiver = self;
         v12.super_class = CRLTextInteractiveCanvasControllerAccessibility;
-        v9 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v12 crlaxRotorSearchControllerForRotor:v4];
+        _crlaxStoredHeadingsRotorSearchController = [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v12 crlaxRotorSearchControllerForRotor:rotorCopy];
       }
     }
   }
 
-  v10 = v9;
+  v10 = _crlaxStoredHeadingsRotorSearchController;
 
   return v10;
 }
 
-- (id)crlaxFocusTextRangeFromSearchReference:(id)a3
+- (id)crlaxFocusTextRangeFromSearchReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = referenceCopy;
     v6 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxFocusElementFromSearchReference:v5];
     v7 = objc_opt_class();
     v8 = __CRLAccessibilityCastAsSafeCategory(v7, v6, 0, 0);
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 crlaxTextEditor];
-      [v10 crlaxSetShouldSuppressSpeechForNextSelectionChangedNotification:1];
+      crlaxTextEditor = [v8 crlaxTextEditor];
+      [crlaxTextEditor crlaxSetShouldSuppressSpeechForNextSelectionChangedNotification:1];
 
-      v11 = [v5 range];
-      v13 = [v9 crlaxRepRangeWithStorageRange:{v11, v12}];
+      range = [v5 range];
+      v13 = [v9 crlaxRepRangeWithStorageRange:{range, v12}];
       v15 = [[_TtC8Freeform12CRLTextRange alloc] initWithRange:v13, v14];
     }
 
@@ -384,38 +384,38 @@
   {
     v18.receiver = self;
     v18.super_class = CRLTextInteractiveCanvasControllerAccessibility;
-    v16 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v18 crlaxFocusTextRangeFromSearchReference:v4];
+    v16 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v18 crlaxFocusTextRangeFromSearchReference:referenceCopy];
   }
 
   return v16;
 }
 
-- (void)crlaxAnnounceSearchReference:(id)a3 forRotor:(id)a4
+- (void)crlaxAnnounceSearchReference:(id)reference forRotor:(id)rotor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxTrackedChangesRotor];
-  if ([v7 isEqual:v8])
+  referenceCopy = reference;
+  rotorCopy = rotor;
+  crlaxTrackedChangesRotor = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxTrackedChangesRotor];
+  if ([rotorCopy isEqual:crlaxTrackedChangesRotor])
   {
     goto LABEL_4;
   }
 
-  v9 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxCommentsRotor];
-  if ([v7 isEqual:v9])
+  crlaxCommentsRotor = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxCommentsRotor];
+  if ([rotorCopy isEqual:crlaxCommentsRotor])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v25 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxHighlightsRotor];
-  v26 = [v7 isEqual:v25];
+  crlaxHighlightsRotor = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxHighlightsRotor];
+  v26 = [rotorCopy isEqual:crlaxHighlightsRotor];
 
   if ((v26 & 1) == 0)
   {
     v27.receiver = self;
     v27.super_class = CRLTextInteractiveCanvasControllerAccessibility;
-    [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v27 crlaxAnnounceSearchReference:v6 forRotor:v7];
+    [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v27 crlaxAnnounceSearchReference:referenceCopy forRotor:rotorCopy];
     goto LABEL_14;
   }
 
@@ -423,7 +423,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v6;
+    v10 = referenceCopy;
     v11 = objc_opt_class();
     v12 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxRepForSearchReference:v10];
     v13 = __CRLAccessibilityCastAsSafeCategory(v11, v12, 0, 0);
@@ -439,8 +439,8 @@ LABEL_5:
       }
 
       UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, v21);
-      v24 = [v13 crlaxTextEditor];
-      [v24 crlaxSetShouldSuppressSpeechForNextSelectionChangedNotification:1];
+      crlaxTextEditor = [v13 crlaxTextEditor];
+      [crlaxTextEditor crlaxSetShouldSuppressSpeechForNextSelectionChangedNotification:1];
     }
   }
 
@@ -448,53 +448,53 @@ LABEL_5:
   {
     v28.receiver = self;
     v28.super_class = CRLTextInteractiveCanvasControllerAccessibility;
-    [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v28 crlaxAnnounceSearchReference:v6 forRotor:v7];
+    [(CRLCanvasInteractiveCanvasControllerAccessibility *)&v28 crlaxAnnounceSearchReference:referenceCopy forRotor:rotorCopy];
   }
 
 LABEL_14:
 }
 
-- (id)crlaxTextSearchReferenceFromRange:(_NSRange)a3
+- (id)crlaxTextSearchReferenceFromRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = objc_opt_class();
-  v7 = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxFocusedRep];
-  v8 = __CRLAccessibilityCastAsSafeCategory(v6, v7, 0, 0);
+  crlaxFocusedRep = [(CRLCanvasInteractiveCanvasControllerAccessibility *)self crlaxFocusedRep];
+  v8 = __CRLAccessibilityCastAsSafeCategory(v6, crlaxFocusedRep, 0, 0);
 
-  v9 = [v8 crlaxStorage];
-  v10 = [v9 crlaxTarget];
+  crlaxStorage = [v8 crlaxStorage];
+  crlaxTarget = [crlaxStorage crlaxTarget];
 
-  v11 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
-  v12 = [v11 selectionModelTranslator];
-  v13 = [v12 selectionPathForRange:location onStorage:{length, v10}];
+  crlaxTarget2 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
+  selectionModelTranslator = [crlaxTarget2 selectionModelTranslator];
+  v13 = [selectionModelTranslator selectionPathForRange:location onStorage:{length, crlaxTarget}];
 
   v14 = [v13 mostSpecificSelectionOfClass:objc_opt_class()];
-  v15 = [CRLWPSearchReference searchReferenceWithStorage:v10 selection:v14 selectionPath:v13];
+  v15 = [CRLWPSearchReference searchReferenceWithStorage:crlaxTarget selection:v14 selectionPath:v13];
 
   return v15;
 }
 
-- (id)crlaxRepForSearchReference:(id)a3
+- (id)crlaxRepForSearchReference:(id)reference
 {
-  v4 = a3;
+  referenceCopy = reference;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_100349308;
   v18 = sub_100349318;
   v19 = 0;
-  v5 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
-  v6 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
-  v7 = [v4 selectionPath];
+  crlaxTarget = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
+  crlaxTarget2 = [(CRLTextInteractiveCanvasControllerAccessibility *)self crlaxTarget];
+  selectionPath = [referenceCopy selectionPath];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100349320;
   v11[3] = &unk_101857988;
   v13 = &v14;
-  v8 = v5;
+  v8 = crlaxTarget;
   v12 = v8;
-  [v6 withLayoutForSelectionPath:v7 performBlock:v11];
+  [crlaxTarget2 withLayoutForSelectionPath:selectionPath performBlock:v11];
 
   v9 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -502,9 +502,9 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)crlaxHandleDoubleTapAtPoint:(CGPoint)a3
+- (BOOL)crlaxHandleDoubleTapAtPoint:(CGPoint)point
 {
-  [(CRLTextInteractiveCanvasControllerAccessibility *)self convertBoundsToUnscaledPoint:a3.x, a3.y];
+  [(CRLTextInteractiveCanvasControllerAccessibility *)self convertBoundsToUnscaledPoint:point.x, point.y];
 
   return [(CRLTextInteractiveCanvasControllerAccessibility *)self handleDoubleTapAtPoint:1 inputType:?];
 }

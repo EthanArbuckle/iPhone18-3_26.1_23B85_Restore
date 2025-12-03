@@ -9,11 +9,11 @@
 {
   v52 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v33 = self;
-  v4 = [(TYParsedLatexData *)self string];
+  selfCopy = self;
+  string = [(TYParsedLatexData *)self string];
   v49 = 0;
   v34 = v3;
-  v5 = [v3 getBoundingBoxWithLatex:v4 error:&v49];
+  v5 = [v3 getBoundingBoxWithLatex:string error:&v49];
   v32 = v49;
 
   v37 = objc_opt_new();
@@ -48,8 +48,8 @@
         v42 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v13 = [v11 allKeys];
-        v14 = [v13 countByEnumeratingWithState:&v41 objects:v50 count:16];
+        allKeys = [v11 allKeys];
+        v14 = [allKeys countByEnumeratingWithState:&v41 objects:v50 count:16];
         if (v14)
         {
           v15 = v14;
@@ -60,7 +60,7 @@
             {
               if (*v42 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(allKeys);
               }
 
               v18 = *(*(&v41 + 1) + 8 * i);
@@ -116,7 +116,7 @@
               [v12 setObject:v19 forKey:v30];
             }
 
-            v15 = [v13 countByEnumeratingWithState:&v41 objects:v50 count:16];
+            v15 = [allKeys countByEnumeratingWithState:&v41 objects:v50 count:16];
           }
 
           while (v15);
@@ -140,10 +140,10 @@
     v9 = 3.40282347e38;
   }
 
-  [(TYParsedLatexData *)v33 setLatexFormulaBoundingBoxes:v37];
-  [(TYParsedLatexData *)v33 setConvertedString:v6];
-  [(TYParsedLatexData *)v33 setBoundingSize:v7, v8 - v9];
-  [(TYParsedLatexData *)v33 setOffsetY:v9];
+  [(TYParsedLatexData *)selfCopy setLatexFormulaBoundingBoxes:v37];
+  [(TYParsedLatexData *)selfCopy setConvertedString:v6];
+  [(TYParsedLatexData *)selfCopy setBoundingSize:v7, v8 - v9];
+  [(TYParsedLatexData *)selfCopy setOffsetY:v9];
 
   v31 = *MEMORY[0x277D85DE8];
 }

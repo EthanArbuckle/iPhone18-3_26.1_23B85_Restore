@@ -1,8 +1,8 @@
 @interface PXStoryViewLayoutSpecManager
 - (PXStoryViewLayoutSpec)viewLayoutSpec;
 - (id)createSpec;
-- (void)setCustomGeneralChromeTitleConfiguration:(id)a3;
-- (void)setStoryConfigurationOptions:(unint64_t)a3;
+- (void)setCustomGeneralChromeTitleConfiguration:(id)configuration;
+- (void)setStoryConfigurationOptions:(unint64_t)options;
 @end
 
 @implementation PXStoryViewLayoutSpecManager
@@ -10,23 +10,23 @@
 - (id)createSpec
 {
   v3 = [PXStoryConcreteViewLayoutSpec alloc];
-  v4 = [(PXFeatureSpecManager *)self extendedTraitCollection];
-  v5 = [(PXFeatureSpecManager *)self options];
-  v6 = [(PXStoryViewLayoutSpecManager *)self storyConfigurationOptions];
-  v7 = [(PXStoryViewLayoutSpecManager *)self customGeneralChromeTitleConfiguration];
-  v8 = [(PXStoryConcreteViewLayoutSpec *)v3 initWithExtendedTraitCollection:v4 options:v5 storyConfigurationOptions:v6 customGeneralChromeTitleConfiguration:v7];
+  extendedTraitCollection = [(PXFeatureSpecManager *)self extendedTraitCollection];
+  options = [(PXFeatureSpecManager *)self options];
+  storyConfigurationOptions = [(PXStoryViewLayoutSpecManager *)self storyConfigurationOptions];
+  customGeneralChromeTitleConfiguration = [(PXStoryViewLayoutSpecManager *)self customGeneralChromeTitleConfiguration];
+  v8 = [(PXStoryConcreteViewLayoutSpec *)v3 initWithExtendedTraitCollection:extendedTraitCollection options:options storyConfigurationOptions:storyConfigurationOptions customGeneralChromeTitleConfiguration:customGeneralChromeTitleConfiguration];
 
   return v8;
 }
 
-- (void)setCustomGeneralChromeTitleConfiguration:(id)a3
+- (void)setCustomGeneralChromeTitleConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_customGeneralChromeTitleConfiguration != v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (self->_customGeneralChromeTitleConfiguration != configurationCopy)
   {
-    v9 = v4;
-    v6 = [(PXStoryViewChromeTitleConfiguration *)v4 isEqual:?];
+    v9 = configurationCopy;
+    v6 = [(PXStoryViewChromeTitleConfiguration *)configurationCopy isEqual:?];
     v5 = v9;
     if (!v6)
     {
@@ -40,25 +40,25 @@
   }
 }
 
-- (void)setStoryConfigurationOptions:(unint64_t)a3
+- (void)setStoryConfigurationOptions:(unint64_t)options
 {
-  if (self->_storyConfigurationOptions != a3)
+  if (self->_storyConfigurationOptions != options)
   {
-    self->_storyConfigurationOptions = a3;
+    self->_storyConfigurationOptions = options;
     [(PXFeatureSpecManager *)self invalidateSpec];
   }
 }
 
 - (PXStoryViewLayoutSpec)viewLayoutSpec
 {
-  v4 = [(PXFeatureSpecManager *)self spec];
-  if (!v4)
+  spec = [(PXFeatureSpecManager *)self spec];
+  if (!spec)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXStoryViewLayoutSpecManager.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"viewLayoutSpec != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewLayoutSpecManager.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"viewLayoutSpec != nil"}];
   }
 
-  return v4;
+  return spec;
 }
 
 @end

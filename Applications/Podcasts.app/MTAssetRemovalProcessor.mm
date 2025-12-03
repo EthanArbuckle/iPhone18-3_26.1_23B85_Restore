@@ -1,18 +1,18 @@
 @interface MTAssetRemovalProcessor
-- (id)episodePredicateForPodcast:(id)a3;
-- (void)_removeDownloadAssetsForEpisodeUuids:(id)a3 reason:(id)a4;
+- (id)episodePredicateForPodcast:(id)podcast;
+- (void)_removeDownloadAssetsForEpisodeUuids:(id)uuids reason:(id)reason;
 - (void)disable;
 - (void)enable;
-- (void)episodeUuidObserver:(id)a3 resultsChangedForPodcast:(id)a4 withDeletedIds:(id)a5 andInsertIds:(id)a6;
+- (void)episodeUuidObserver:(id)observer resultsChangedForPodcast:(id)podcast withDeletedIds:(id)ids andInsertIds:(id)insertIds;
 @end
 
 @implementation MTAssetRemovalProcessor
 
-- (id)episodePredicateForPodcast:(id)a3
+- (id)episodePredicateForPodcast:(id)podcast
 {
-  v3 = a3;
+  podcastCopy = podcast;
   v4 = +[MTDB sharedInstance];
-  v5 = [v4 mainOrPrivateContext];
+  mainOrPrivateContext = [v4 mainOrPrivateContext];
 
   v24 = 0;
   v25 = &v24;
@@ -30,9 +30,9 @@
   v10[1] = 3221225472;
   v10[2] = sub_100154534;
   v10[3] = &unk_1004D91D0;
-  v6 = v5;
+  v6 = mainOrPrivateContext;
   v11 = v6;
-  v7 = v3;
+  v7 = podcastCopy;
   v12 = v7;
   v13 = &v20;
   v14 = &v24;
@@ -55,30 +55,30 @@
   return v8;
 }
 
-- (void)episodeUuidObserver:(id)a3 resultsChangedForPodcast:(id)a4 withDeletedIds:(id)a5 andInsertIds:(id)a6
+- (void)episodeUuidObserver:(id)observer resultsChangedForPodcast:(id)podcast withDeletedIds:(id)ids andInsertIds:(id)insertIds
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  observerCopy = observer;
+  podcastCopy = podcast;
+  insertIdsCopy = insertIds;
   if ([(MTAssetRemovalProcessor *)self isDisabled])
   {
     v12 = _MTLogCategoryDownload();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138543618;
-      v16 = v10;
+      v16 = podcastCopy;
       v17 = 2048;
-      v18 = [v11 count];
+      v18 = [insertIdsCopy count];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Asset Removal is temporary disabled skipping removal for: %{public}@, episode uuids: %lu", buf, 0x16u);
     }
   }
 
-  else if ([v11 count])
+  else if ([insertIdsCopy count])
   {
-    v13 = [v9 predicate];
-    v14 = [NSString stringWithFormat:@"they matched podcast %@'s predicate: %@", v10, v13];
+    predicate = [observerCopy predicate];
+    v14 = [NSString stringWithFormat:@"they matched podcast %@'s predicate: %@", podcastCopy, predicate];
 
-    [(MTAssetRemovalProcessor *)self _removeDownloadAssetsForEpisodeUuids:v11 reason:v14];
+    [(MTAssetRemovalProcessor *)self _removeDownloadAssetsForEpisodeUuids:insertIdsCopy reason:v14];
   }
 }
 
@@ -133,22 +133,22 @@ LABEL_8:
   }
 }
 
-- (void)_removeDownloadAssetsForEpisodeUuids:(id)a3 reason:(id)a4
+- (void)_removeDownloadAssetsForEpisodeUuids:(id)uuids reason:(id)reason
 {
-  v5 = a3;
-  v6 = a4;
+  uuidsCopy = uuids;
+  reasonCopy = reason;
   v7 = _MTLogCategoryDownload();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543618;
-    v10 = v5;
+    v10 = uuidsCopy;
     v11 = 2114;
-    v12 = v6;
+    v12 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Attempting removal of assets for episode uuids: %{public}@, because %{public}@", &v9, 0x16u);
   }
 
   v8 = +[MTLibrary sharedInstance];
-  [v8 removeDownloadAssetsForEpisodeUuids:v5 shouldKeep:&stru_1004DDD90];
+  [v8 removeDownloadAssetsForEpisodeUuids:uuidsCopy shouldKeep:&stru_1004DDD90];
 }
 
 @end

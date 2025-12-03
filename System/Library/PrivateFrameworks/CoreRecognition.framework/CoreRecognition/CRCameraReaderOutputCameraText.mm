@@ -2,58 +2,58 @@
 - (CGRect)boundingBox;
 - (NSAttributedString)overlayString;
 - (float)rotation;
-- (void)setBoundingBox:(CGRect)a3;
-- (void)setOverlayString:(id)a3;
-- (void)setRotation:(float)a3;
+- (void)setBoundingBox:(CGRect)box;
+- (void)setOverlayString:(id)string;
+- (void)setRotation:(float)rotation;
 @end
 
 @implementation CRCameraReaderOutputCameraText
 
-- (void)setOverlayString:(id)a3
+- (void)setOverlayString:(id)string
 {
-  v4 = a3;
-  v5 = [(CRCameraReaderOutput *)self objectInternal];
-  [v5 setOverlayString:v4];
+  stringCopy = string;
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  [objectInternal setOverlayString:stringCopy];
 }
 
 - (NSAttributedString)overlayString
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  v3 = [v2 overlayString];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  overlayString = [objectInternal overlayString];
 
-  return v3;
+  return overlayString;
 }
 
-- (void)setRotation:(float)a3
+- (void)setRotation:(float)rotation
 {
-  v5 = [(CRCameraReaderOutput *)self objectInternal];
-  *&v4 = a3;
-  [v5 setRotation:v4];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  *&v4 = rotation;
+  [objectInternal setRotation:v4];
 }
 
 - (float)rotation
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  [v2 rotation];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  [objectInternal rotation];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setBoundingBox:(CGRect)a3
+- (void)setBoundingBox:(CGRect)box
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(CRCameraReaderOutput *)self objectInternal];
-  [v7 setBoundingBox:{x, y, width, height}];
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  [objectInternal setBoundingBox:{x, y, width, height}];
 }
 
 - (CGRect)boundingBox
 {
-  v2 = [(CRCameraReaderOutput *)self objectInternal];
-  [v2 boundingBox];
+  objectInternal = [(CRCameraReaderOutput *)self objectInternal];
+  [objectInternal boundingBox];
   v4 = v3;
   v6 = v5;
   v8 = v7;

@@ -1,9 +1,9 @@
 @interface DNDSModeAssertionInvalidationPredicate
 + (id)predicateForAnyAssertion;
-+ (id)predicateForAssertionClientIdentifiers:(id)a3;
-+ (id)predicateForAssertionUUIDs:(id)a3;
-+ (id)predicateForAssertionsTakenBeforeDate:(id)a3;
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4;
++ (id)predicateForAssertionClientIdentifiers:(id)identifiers;
++ (id)predicateForAssertionUUIDs:(id)ds;
++ (id)predicateForAssertionsTakenBeforeDate:(id)date;
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables;
 - (id)_init;
 @end
 
@@ -16,26 +16,26 @@
   return v2;
 }
 
-+ (id)predicateForAssertionsTakenBeforeDate:(id)a3
++ (id)predicateForAssertionsTakenBeforeDate:(id)date
 {
-  v3 = a3;
-  v4 = [[DNDSModeAssertionDateInvalidationPredicate alloc] initWithDate:v3];
+  dateCopy = date;
+  v4 = [[DNDSModeAssertionDateInvalidationPredicate alloc] initWithDate:dateCopy];
 
   return v4;
 }
 
-+ (id)predicateForAssertionClientIdentifiers:(id)a3
++ (id)predicateForAssertionClientIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = [[DNDSModeAssertionClientIdentifierInvalidationPredicate alloc] initWithClientIdentifiers:v3];
+  identifiersCopy = identifiers;
+  v4 = [[DNDSModeAssertionClientIdentifierInvalidationPredicate alloc] initWithClientIdentifiers:identifiersCopy];
 
   return v4;
 }
 
-+ (id)predicateForAssertionUUIDs:(id)a3
++ (id)predicateForAssertionUUIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [[DNDSModeAssertionUUIDInvalidationPredicate alloc] initWithUUIDs:v3];
+  dsCopy = ds;
+  v4 = [[DNDSModeAssertionUUIDInvalidationPredicate alloc] initWithUUIDs:dsCopy];
 
   return v4;
 }
@@ -47,9 +47,9 @@
   return [(DNDSModeAssertionInvalidationPredicate *)&v3 init];
 }
 
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

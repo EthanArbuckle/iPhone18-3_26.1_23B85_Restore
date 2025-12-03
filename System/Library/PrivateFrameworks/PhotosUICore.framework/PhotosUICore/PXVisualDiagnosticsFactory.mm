@@ -1,20 +1,20 @@
 @interface PXVisualDiagnosticsFactory
-+ (id)debugQuickLookObjectWithRootProvider:(id)a3;
-+ (void)_dismissProgressIndicator:(id)a3 completionHandler:(id)a4;
-+ (void)_presentProgressIndicatorFromViewController:(id)a3 completionHandler:(id)a4;
-+ (void)requestVisualDiagnosticsPDFDocumentURLWithConfiguration:(id)a3 resultHandler:(id)a4;
-+ (void)requestVisualDiagnosticsPDFDocumentWithConfiguration:(id)a3 resultHandler:(id)a4;
-+ (void)showVisualDiagnosticsWithConfiguration:(id)a3 fromViewController:(id)a4 completionHandler:(id)a5;
++ (id)debugQuickLookObjectWithRootProvider:(id)provider;
++ (void)_dismissProgressIndicator:(id)indicator completionHandler:(id)handler;
++ (void)_presentProgressIndicatorFromViewController:(id)controller completionHandler:(id)handler;
++ (void)requestVisualDiagnosticsPDFDocumentURLWithConfiguration:(id)configuration resultHandler:(id)handler;
++ (void)requestVisualDiagnosticsPDFDocumentWithConfiguration:(id)configuration resultHandler:(id)handler;
++ (void)showVisualDiagnosticsWithConfiguration:(id)configuration fromViewController:(id)controller completionHandler:(id)handler;
 @end
 
 @implementation PXVisualDiagnosticsFactory
 
-+ (id)debugQuickLookObjectWithRootProvider:(id)a3
++ (id)debugQuickLookObjectWithRootProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   Mutable = CFDataCreateMutable(*MEMORY[0x1E695E480], 0);
   consumer = CGDataConsumerCreateWithCFData(Mutable);
-  v32 = [[off_1E7721970 alloc] initWithRootProvider:v3];
+  v32 = [[off_1E7721970 alloc] initWithRootProvider:providerCopy];
   v5 = [[off_1E7721978 alloc] initWithConfiguration:v32 dataConsumer:consumer];
   v6 = dispatch_semaphore_create(0);
   v33[0] = MEMORY[0x1E69E9820];
@@ -23,7 +23,7 @@
   v33[3] = &unk_1E774C5C0;
   v7 = v6;
   v34 = v7;
-  [v3 addVisualDiagnosticsToContext:v5 completionHandler:v33];
+  [providerCopy addVisualDiagnosticsToContext:v5 completionHandler:v33];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   CGPDFContextClose([v5 CGContext]);
   v8 = CGDataProviderCreateWithCFData(Mutable);
@@ -135,28 +135,28 @@ void __67__PXVisualDiagnosticsFactory_debugQuickLookObjectWithRootProvider___blo
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)requestVisualDiagnosticsPDFDocumentURLWithConfiguration:(id)a3 resultHandler:(id)a4
++ (void)requestVisualDiagnosticsPDFDocumentURLWithConfiguration:(id)configuration resultHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 rootProvider];
-  if (v7)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  rootProvider = [configurationCopy rootProvider];
+  if (rootProvider)
   {
-    v8 = [[off_1E7721978 alloc] initWithConfiguration:v5];
+    v8 = [[off_1E7721978 alloc] initWithConfiguration:configurationCopy];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __100__PXVisualDiagnosticsFactory_requestVisualDiagnosticsPDFDocumentURLWithConfiguration_resultHandler___block_invoke;
     v10[3] = &unk_1E774BD88;
     v11 = v8;
-    v12 = v6;
+    v12 = handlerCopy;
     v9 = v8;
-    [v7 addVisualDiagnosticsToContext:v9 completionHandler:v10];
+    [rootProvider addVisualDiagnosticsToContext:v9 completionHandler:v10];
   }
 
   else
   {
     v9 = [MEMORY[0x1E696ABC0] px_genericErrorWithDebugDescription:@"root provider not specified"];
-    (*(v6 + 2))(v6, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 }
 
@@ -198,16 +198,16 @@ LABEL_5:
 LABEL_6:
 }
 
-+ (void)requestVisualDiagnosticsPDFDocumentWithConfiguration:(id)a3 resultHandler:(id)a4
++ (void)requestVisualDiagnosticsPDFDocumentWithConfiguration:(id)configuration resultHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __97__PXVisualDiagnosticsFactory_requestVisualDiagnosticsPDFDocumentWithConfiguration_resultHandler___block_invoke;
   v8[3] = &unk_1E77473C0;
-  v9 = v6;
-  v7 = v6;
-  [a1 requestVisualDiagnosticsPDFDocumentURLWithConfiguration:a3 resultHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [self requestVisualDiagnosticsPDFDocumentURLWithConfiguration:configuration resultHandler:v8];
 }
 
 void __97__PXVisualDiagnosticsFactory_requestVisualDiagnosticsPDFDocumentWithConfiguration_resultHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -250,18 +250,18 @@ void __97__PXVisualDiagnosticsFactory_requestVisualDiagnosticsPDFDocumentWithCon
   (*(*(a1 + 32) + 16))();
 }
 
-+ (void)_dismissProgressIndicator:(id)a3 completionHandler:(id)a4
++ (void)_dismissProgressIndicator:(id)indicator completionHandler:(id)handler
 {
-  v6 = a3;
-  v5 = a4;
-  [v6 stopShowing:v5];
+  indicatorCopy = indicator;
+  handlerCopy = handler;
+  [indicatorCopy stopShowing:handlerCopy];
 }
 
-+ (void)_presentProgressIndicatorFromViewController:(id)a3 completionHandler:(id)a4
++ (void)_presentProgressIndicatorFromViewController:(id)controller completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = [PXProgressIndicatorAlertController beginShowingModalProgressWithConfiguration:&__block_literal_global_88723];
-  v4[2](v4, v5);
+  handlerCopy[2](handlerCopy, v5);
 }
 
 void __92__PXVisualDiagnosticsFactory__presentProgressIndicatorFromViewController_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -272,46 +272,46 @@ void __92__PXVisualDiagnosticsFactory__presentProgressIndicatorFromViewControlle
   [v2 setLabel:@"Generating visual diagnostics…"];
 }
 
-+ (void)showVisualDiagnosticsWithConfiguration:(id)a3 fromViewController:(id)a4 completionHandler:(id)a5
++ (void)showVisualDiagnosticsWithConfiguration:(id)configuration fromViewController:(id)controller completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!a5)
+  configurationCopy = configuration;
+  controllerCopy = controller;
+  handlerCopy = handler;
+  if (!handler)
   {
-    v11 = v25;
+    handlerCopy = v25;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __106__PXVisualDiagnosticsFactory_showVisualDiagnosticsWithConfiguration_fromViewController_completionHandler___block_invoke;
     v25[3] = &unk_1E774C5C0;
     v5 = &v26;
-    v26 = v9;
+    v26 = configurationCopy;
   }
 
-  v12 = _Block_copy(v11);
-  v13 = v10;
-  v14 = v13;
+  v12 = _Block_copy(handlerCopy);
+  v13 = controllerCopy;
+  rootViewController = v13;
   if (!v13)
   {
-    v15 = [MEMORY[0x1E69DC668] sharedApplication];
-    v16 = [v15 px_firstKeyWindow];
-    v14 = [v16 rootViewController];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    px_firstKeyWindow = [mEMORY[0x1E69DC668] px_firstKeyWindow];
+    rootViewController = [px_firstKeyWindow rootViewController];
   }
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __106__PXVisualDiagnosticsFactory_showVisualDiagnosticsWithConfiguration_fromViewController_completionHandler___block_invoke_1;
   v20[3] = &unk_1E7736BF0;
-  v24 = a1;
-  v17 = v9;
+  selfCopy = self;
+  v17 = configurationCopy;
   v21 = v17;
   v18 = v12;
-  v22 = v14;
+  v22 = rootViewController;
   v23 = v18;
-  v19 = v14;
-  [a1 _presentProgressIndicatorFromViewController:v19 completionHandler:v20];
+  v19 = rootViewController;
+  [self _presentProgressIndicatorFromViewController:v19 completionHandler:v20];
 
-  if (!a5)
+  if (!handler)
   {
   }
 }

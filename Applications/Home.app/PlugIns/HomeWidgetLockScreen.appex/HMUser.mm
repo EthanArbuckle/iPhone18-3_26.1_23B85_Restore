@@ -6,7 +6,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   HMUser.description.getter();
 
   v3 = sub_100067BA8();

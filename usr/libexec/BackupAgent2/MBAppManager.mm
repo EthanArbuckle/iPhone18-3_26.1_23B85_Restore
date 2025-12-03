@@ -1,38 +1,38 @@
 @interface MBAppManager
-+ (MBAppManager)appManagerWithSettingsContext:(id)a3;
-+ (id)_allPersistedDisabledDomainNamesForPersona:(id)a3;
-+ (id)_volumesToBackUpForPersona:(id)a3;
++ (MBAppManager)appManagerWithSettingsContext:(id)context;
++ (id)_allPersistedDisabledDomainNamesForPersona:(id)persona;
++ (id)_volumesToBackUpForPersona:(id)persona;
 + (id)appManager;
-+ (void)_persistDisabledDomainNames:(id)a3 forPersona:(id)a4;
-- (BOOL)_isContainerizedAppDomain:(id)a3;
-- (BOOL)isDomainNameEnabled:(id)a3 forPersona:(id)a4;
-- (BOOL)loadAppsWithPersona:(id)a3 safeHarbors:(BOOL)a4 error:(id *)a5;
-- (MBAppManager)initWithMobileInstallation:(id)a3;
-- (id)_allDisabledDomainNamesForPersona:(id)a3;
-- (id)_copyAppsWithPlists:(id)a3 volumeMountPoints:(id)a4 safeHarbor:(BOOL)a5 error:(id *)a6;
-- (id)_copySafeHarborsWithVolumeMountPoints:(id)a3 error:(id *)a4;
-- (id)_copySystemContainersWithPlists:(id)a3 volumeMountPoints:(id)a4 error:(id *)a5;
-- (id)_copySystemContainersWithVolumeMountPoints:(id)a3 error:(id *)a4;
-- (id)_copySystemPluginsForPersona:(id)a3 volumeMountPoints:(id)a4 error:(id *)a5;
-- (id)_copySystemPluginsWithPlists:(id)a3 volumeMountPoints:(id)a4 error:(id *)a5;
-- (id)_copyUserAppsForPersona:(id)a3 volumeMountPoints:(id)a4 error:(id *)a5;
-- (id)_placeholderFilesForBundleID:(id)a3;
-- (id)_subdomainNamesForAppDomainNames:(id)a3;
++ (void)_persistDisabledDomainNames:(id)names forPersona:(id)persona;
+- (BOOL)_isContainerizedAppDomain:(id)domain;
+- (BOOL)isDomainNameEnabled:(id)enabled forPersona:(id)persona;
+- (BOOL)loadAppsWithPersona:(id)persona safeHarbors:(BOOL)harbors error:(id *)error;
+- (MBAppManager)initWithMobileInstallation:(id)installation;
+- (id)_allDisabledDomainNamesForPersona:(id)persona;
+- (id)_copyAppsWithPlists:(id)plists volumeMountPoints:(id)points safeHarbor:(BOOL)harbor error:(id *)error;
+- (id)_copySafeHarborsWithVolumeMountPoints:(id)points error:(id *)error;
+- (id)_copySystemContainersWithPlists:(id)plists volumeMountPoints:(id)points error:(id *)error;
+- (id)_copySystemContainersWithVolumeMountPoints:(id)points error:(id *)error;
+- (id)_copySystemPluginsForPersona:(id)persona volumeMountPoints:(id)points error:(id *)error;
+- (id)_copySystemPluginsWithPlists:(id)plists volumeMountPoints:(id)points error:(id *)error;
+- (id)_copyUserAppsForPersona:(id)persona volumeMountPoints:(id)points error:(id *)error;
+- (id)_placeholderFilesForBundleID:(id)d;
+- (id)_subdomainNamesForAppDomainNames:(id)names;
 - (id)allContainers;
-- (id)allDisabledDomainNamesForPersona:(id)a3;
-- (id)allRestrictedDomainNamesForPersona:(id)a3;
+- (id)allDisabledDomainNamesForPersona:(id)persona;
+- (id)allRestrictedDomainNamesForPersona:(id)persona;
 - (id)allSystemContainers;
-- (id)containerWithIdentifier:(id)a3 containerType:(int)a4;
-- (id)createSafeHarborForContainer:(id)a3 withPersona:(id)a4 usingIntermediateRestoreDir:(BOOL)a5 error:(id *)a6;
-- (id)dependentDomainNamesForAppDomainName:(id)a3;
-- (id)fetchAppWithIdentifier:(id)a3 persona:(id)a4 error:(id *)a5;
-- (void)_addContainer:(id)a3;
-- (void)_reconcileBooksAndHealthInDisabledDomainsList:(id)a3;
-- (void)_removeContainer:(id)a3;
-- (void)_setEnabled:(BOOL)a3 forDomainNames:(id)a4 persona:(id)a5;
-- (void)_syncDisabledDomainsWithAllInstalledAppDomains:(id)a3 persona:(id)a4;
-- (void)removeOldSafeHarborsWithExpiration:(double)a3;
-- (void)removeStaleStateForUninstalledAppsForPersona:(id)a3;
+- (id)containerWithIdentifier:(id)identifier containerType:(int)type;
+- (id)createSafeHarborForContainer:(id)container withPersona:(id)persona usingIntermediateRestoreDir:(BOOL)dir error:(id *)error;
+- (id)dependentDomainNamesForAppDomainName:(id)name;
+- (id)fetchAppWithIdentifier:(id)identifier persona:(id)persona error:(id *)error;
+- (void)_addContainer:(id)container;
+- (void)_reconcileBooksAndHealthInDisabledDomainsList:(id)list;
+- (void)_removeContainer:(id)container;
+- (void)_setEnabled:(BOOL)enabled forDomainNames:(id)names persona:(id)persona;
+- (void)_syncDisabledDomainsWithAllInstalledAppDomains:(id)domains persona:(id)persona;
+- (void)removeOldSafeHarborsWithExpiration:(double)expiration;
+- (void)removeStaleStateForUninstalledAppsForPersona:(id)persona;
 @end
 
 @implementation MBAppManager
@@ -44,44 +44,44 @@
   return v2;
 }
 
-+ (MBAppManager)appManagerWithSettingsContext:(id)a3
++ (MBAppManager)appManagerWithSettingsContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [MBAppManager alloc];
-  v5 = [v3 mobileInstallation];
+  mobileInstallation = [contextCopy mobileInstallation];
 
-  v6 = [(MBAppManager *)v4 initWithMobileInstallation:v5];
+  v6 = [(MBAppManager *)v4 initWithMobileInstallation:mobileInstallation];
 
   return v6;
 }
 
-- (MBAppManager)initWithMobileInstallation:(id)a3
+- (MBAppManager)initWithMobileInstallation:(id)installation
 {
-  v5 = a3;
+  installationCopy = installation;
   v9.receiver = self;
   v9.super_class = MBAppManager;
   v6 = [(MBAppManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mobileInstallation, a3);
+    objc_storeStrong(&v6->_mobileInstallation, installation);
   }
 
   return v7;
 }
 
-- (id)_subdomainNamesForAppDomainNames:(id)a3
+- (id)_subdomainNamesForAppDomainNames:(id)names
 {
-  v4 = a3;
+  namesCopy = names;
   v5 = +[NSMutableSet set];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v46 = self;
+  selfCopy = self;
   obj = [(MBAppManager *)self allApps];
   v6 = [obj countByEnumeratingWithState:&v70 objects:v77 count:16];
-  v55 = v4;
+  v55 = namesCopy;
   if (v6)
   {
     v7 = v6;
@@ -100,9 +100,9 @@
 
         v10 = *(*(&v70 + 1) + 8 * v9);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 domain];
-        v13 = [v12 name];
-        v14 = [v4 containsObject:v13];
+        domain = [v10 domain];
+        name = [domain name];
+        v14 = [namesCopy containsObject:name];
 
         if (v14)
         {
@@ -112,8 +112,8 @@
           v69 = 0u;
           v66 = 0u;
           v67 = 0u;
-          v15 = [v10 containers];
-          v16 = [v15 countByEnumeratingWithState:&v66 objects:v76 count:16];
+          containers = [v10 containers];
+          v16 = [containers countByEnumeratingWithState:&v66 objects:v76 count:16];
           if (v16)
           {
             v17 = v16;
@@ -124,29 +124,29 @@
               {
                 if (*v67 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(containers);
                 }
 
                 v20 = *(*(&v66 + 1) + 8 * i);
-                v21 = [v20 identifier];
-                v22 = [v10 identifier];
-                v23 = [v21 isEqualToString:v22];
+                identifier = [v20 identifier];
+                identifier2 = [v10 identifier];
+                v23 = [identifier isEqualToString:identifier2];
 
                 if ((v23 & 1) == 0)
                 {
-                  v24 = [v20 domain];
-                  v25 = [v24 name];
-                  [v5 addObject:v25];
+                  domain2 = [v20 domain];
+                  name2 = [domain2 name];
+                  [v5 addObject:name2];
                 }
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v66 objects:v76 count:16];
+              v17 = [containers countByEnumeratingWithState:&v66 objects:v76 count:16];
             }
 
             while (v17);
           }
 
-          v4 = v55;
+          namesCopy = v55;
           v9 = context;
           v8 = v47;
           v7 = v49;
@@ -168,7 +168,7 @@
   v65 = 0u;
   v62 = 0u;
   v63 = 0u;
-  obja = [(MBAppManager *)v46 allApps];
+  obja = [(MBAppManager *)selfCopy allApps];
   v26 = [obja countByEnumeratingWithState:&v62 objects:v75 count:16];
   if (v26)
   {
@@ -188,9 +188,9 @@
 
         v30 = *(*(&v62 + 1) + 8 * v29);
         contexta = objc_autoreleasePoolPush();
-        v31 = [v30 domain];
-        v32 = [v31 name];
-        v33 = [v4 containsObject:v32];
+        domain3 = [v30 domain];
+        name3 = [domain3 name];
+        v33 = [namesCopy containsObject:name3];
 
         if ((v33 & 1) == 0)
         {
@@ -199,8 +199,8 @@
           v61 = 0u;
           v58 = 0u;
           v59 = 0u;
-          v34 = [v30 containers];
-          v35 = [v34 countByEnumeratingWithState:&v58 objects:v74 count:16];
+          containers2 = [v30 containers];
+          v35 = [containers2 countByEnumeratingWithState:&v58 objects:v74 count:16];
           if (v35)
           {
             v36 = v35;
@@ -211,30 +211,30 @@
               {
                 if (*v59 != v37)
                 {
-                  objc_enumerationMutation(v34);
+                  objc_enumerationMutation(containers2);
                 }
 
                 v39 = *(*(&v58 + 1) + 8 * j);
-                v40 = [v39 identifier];
-                v41 = [v30 identifier];
-                v42 = [v40 isEqualToString:v41];
+                identifier3 = [v39 identifier];
+                identifier4 = [v30 identifier];
+                v42 = [identifier3 isEqualToString:identifier4];
 
                 if ((v42 & 1) == 0)
                 {
-                  v43 = [v39 domain];
-                  v44 = [v43 name];
-                  [v5 removeObject:v44];
+                  domain4 = [v39 domain];
+                  name4 = [domain4 name];
+                  [v5 removeObject:name4];
                 }
               }
 
-              v36 = [v34 countByEnumeratingWithState:&v58 objects:v74 count:16];
+              v36 = [containers2 countByEnumeratingWithState:&v58 objects:v74 count:16];
             }
 
             while (v36);
           }
 
           v29 = v54;
-          v4 = v55;
+          namesCopy = v55;
           v28 = v48;
           v27 = v50;
         }
@@ -253,13 +253,13 @@
   return v5;
 }
 
-+ (id)_allPersistedDisabledDomainNamesForPersona:(id)a3
++ (id)_allPersistedDisabledDomainNamesForPersona:(id)persona
 {
-  v3 = a3;
+  personaCopy = persona;
   v4 = sub_100061CEC();
   dispatch_assert_queue_V2(v4);
 
-  v5 = [v3 copyPreferencesValueForKey:@"DisabledDomains" class:objc_opt_class()];
+  v5 = [personaCopy copyPreferencesValueForKey:@"DisabledDomains" class:objc_opt_class()];
   if (v5)
   {
     v6 = [NSMutableSet setWithArray:v5];
@@ -275,31 +275,31 @@
   return v7;
 }
 
-+ (void)_persistDisabledDomainNames:(id)a3 forPersona:(id)a4
++ (void)_persistDisabledDomainNames:(id)names forPersona:(id)persona
 {
-  v9 = a3;
-  v5 = a4;
+  namesCopy = names;
+  personaCopy = persona;
   v6 = sub_100061CEC();
   dispatch_assert_queue_V2(v6);
 
-  if (!v9)
+  if (!namesCopy)
   {
     sub_10009F084();
   }
 
-  v7 = [v9 allObjects];
-  v8 = [v7 sortedArrayUsingSelector:"compare:"];
+  allObjects = [namesCopy allObjects];
+  v8 = [allObjects sortedArrayUsingSelector:"compare:"];
 
-  [v5 setPreferencesValue:v8 forKey:@"DisabledDomains"];
+  [personaCopy setPreferencesValue:v8 forKey:@"DisabledDomains"];
 }
 
-- (id)_allDisabledDomainNamesForPersona:(id)a3
+- (id)_allDisabledDomainNamesForPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   v5 = sub_100061CEC();
   dispatch_assert_queue_V2(v5);
 
-  v6 = [objc_opt_class() _allPersistedDisabledDomainNamesForPersona:v4];
+  v6 = [objc_opt_class() _allPersistedDisabledDomainNamesForPersona:personaCopy];
 
   v7 = [(MBAppManager *)self _subdomainNamesForAppDomainNames:v6];
   [v6 unionSet:v7];
@@ -307,9 +307,9 @@
   return v6;
 }
 
-- (id)allDisabledDomainNamesForPersona:(id)a3
+- (id)allDisabledDomainNamesForPersona:(id)persona
 {
-  v4 = a3;
+  personaCopy = persona;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -321,10 +321,10 @@
   block[1] = 3221225472;
   block[2] = sub_100061FC8;
   block[3] = &unk_1000FE140;
-  v10 = v4;
+  v10 = personaCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = personaCopy;
   dispatch_sync(v5, block);
 
   v7 = v13[5];
@@ -333,94 +333,94 @@
   return v7;
 }
 
-- (void)_syncDisabledDomainsWithAllInstalledAppDomains:(id)a3 persona:(id)a4
+- (void)_syncDisabledDomainsWithAllInstalledAppDomains:(id)domains persona:(id)persona
 {
-  v6 = a3;
-  v7 = a4;
+  domainsCopy = domains;
+  personaCopy = persona;
   v8 = sub_100061CEC();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000620EC;
   block[3] = &unk_1000FE168;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = personaCopy;
+  v13 = domainsCopy;
+  v9 = domainsCopy;
+  v10 = personaCopy;
   dispatch_sync(v8, block);
 }
 
-- (void)_reconcileBooksAndHealthInDisabledDomainsList:(id)a3
+- (void)_reconcileBooksAndHealthInDisabledDomainsList:(id)list
 {
-  v3 = a3;
-  if (([v3 containsObject:@"AppDomain-com.apple.iBooks"] & 1) == 0)
+  listCopy = list;
+  if (([listCopy containsObject:@"AppDomain-com.apple.iBooks"] & 1) == 0)
   {
-    [v3 removeObject:@"BooksDomain"];
+    [listCopy removeObject:@"BooksDomain"];
   }
 
-  if (([v3 containsObject:@"AppDomain-com.apple.Health"] & 1) == 0)
+  if (([listCopy containsObject:@"AppDomain-com.apple.Health"] & 1) == 0)
   {
-    [v3 removeObject:@"HealthDomain"];
+    [listCopy removeObject:@"HealthDomain"];
   }
 
-  if (([v3 containsObject:@"HealthDomain"] & 1) == 0)
+  if (([listCopy containsObject:@"HealthDomain"] & 1) == 0)
   {
-    [v3 removeObject:@"AppDomain-com.apple.Health"];
+    [listCopy removeObject:@"AppDomain-com.apple.Health"];
   }
 }
 
-- (BOOL)_isContainerizedAppDomain:(id)a3
+- (BOOL)_isContainerizedAppDomain:(id)domain
 {
-  v3 = a3;
-  if (([MBDomain isAppName:v3]& 1) != 0 || ([MBDomain isAppPluginName:v3]& 1) != 0)
+  domainCopy = domain;
+  if (([MBDomain isAppName:domainCopy]& 1) != 0 || ([MBDomain isAppPluginName:domainCopy]& 1) != 0)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [MBDomain isAppGroupName:v3];
+    v4 = [MBDomain isAppGroupName:domainCopy];
   }
 
   return v4;
 }
 
-- (BOOL)isDomainNameEnabled:(id)a3 forPersona:(id)a4
+- (BOOL)isDomainNameEnabled:(id)enabled forPersona:(id)persona
 {
-  v6 = a3;
-  v7 = [(MBAppManager *)self allDisabledDomainNamesForPersona:a4];
-  LOBYTE(self) = [v7 containsObject:v6];
+  enabledCopy = enabled;
+  v7 = [(MBAppManager *)self allDisabledDomainNamesForPersona:persona];
+  LOBYTE(self) = [v7 containsObject:enabledCopy];
 
   return self ^ 1;
 }
 
-- (void)_setEnabled:(BOOL)a3 forDomainNames:(id)a4 persona:(id)a5
+- (void)_setEnabled:(BOOL)enabled forDomainNames:(id)names persona:(id)persona
 {
-  v8 = a4;
-  v9 = a5;
+  namesCopy = names;
+  personaCopy = persona;
   v10 = sub_100061CEC();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000625A8;
   v13[3] = &unk_1000FE190;
   v13[4] = self;
-  v14 = v9;
-  v16 = a3;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = personaCopy;
+  enabledCopy = enabled;
+  v15 = namesCopy;
+  v11 = namesCopy;
+  v12 = personaCopy;
   dispatch_sync(v10, v13);
 }
 
-- (id)allRestrictedDomainNamesForPersona:(id)a3
+- (id)allRestrictedDomainNamesForPersona:(id)persona
 {
-  v3 = a3;
-  if (!v3)
+  personaCopy = persona;
+  if (!personaCopy)
   {
-    v3 = [MBPersona personalPersonaWithError:0];
+    personaCopy = [MBPersona personalPersonaWithError:0];
   }
 
-  v4 = [v3 copyPreferencesValueForKey:@"RestrictedDomains" class:objc_opt_class()];
+  v4 = [personaCopy copyPreferencesValueForKey:@"RestrictedDomains" class:objc_opt_class()];
   if ([v4 count])
   {
     v5 = [NSMutableSet setWithArray:v4];
@@ -437,9 +437,9 @@
   v19 = 0u;
   v20 = 0u;
   v7 = +[MCProfileConnection sharedConnection];
-  v8 = [v7 doNotBackupAppIDs];
+  doNotBackupAppIDs = [v7 doNotBackupAppIDs];
 
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v9 = [doNotBackupAppIDs countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = v9;
@@ -450,7 +450,7 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(doNotBackupAppIDs);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
@@ -461,7 +461,7 @@
         [v6 addObject:v15];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [doNotBackupAppIDs countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -473,52 +473,52 @@
   return v6;
 }
 
-+ (id)_volumesToBackUpForPersona:(id)a3
++ (id)_volumesToBackUpForPersona:(id)persona
 {
-  v3 = [a3 volumesToBackUp];
-  v4 = [v3 allObjects];
-  v5 = [v4 sortedArrayUsingComparator:&stru_1000FE1D0];
+  volumesToBackUp = [persona volumesToBackUp];
+  allObjects = [volumesToBackUp allObjects];
+  v5 = [allObjects sortedArrayUsingComparator:&stru_1000FE1D0];
 
   return v5;
 }
 
-- (BOOL)loadAppsWithPersona:(id)a3 safeHarbors:(BOOL)a4 error:(id *)a5
+- (BOOL)loadAppsWithPersona:(id)persona safeHarbors:(BOOL)harbors error:(id *)error
 {
-  v5 = a4;
-  v79 = a3;
-  v6 = [v79 user];
-  if ([v6 isPrimaryUser])
+  harborsCopy = harbors;
+  personaCopy = persona;
+  user = [personaCopy user];
+  if ([user isPrimaryUser])
   {
-    v73 = [v79 isPersonalPersona];
+    isPersonalPersona = [personaCopy isPersonalPersona];
   }
 
   else
   {
-    v73 = 0;
+    isPersonalPersona = 0;
   }
 
   v7 = +[UMUserManager sharedManager];
-  v8 = [v7 currentPersona];
-  v71 = [v8 userPersonaUniqueString];
+  currentPersona = [v7 currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
 
   v9 = MBGetDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v117 = v79;
+    v117 = personaCopy;
     v118 = 2112;
-    v119 = v71;
+    v119 = userPersonaUniqueString;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Enumerating apps for persona %@ with current persona %@", buf, 0x16u);
-    v63 = v79;
-    v64 = v71;
+    v63 = personaCopy;
+    containerDir4 = userPersonaUniqueString;
     _MBLog();
   }
 
   v68 = objc_autoreleasePoolPush();
-  v76 = [objc_opt_class() _volumesToBackUpForPersona:v79];
+  v76 = [objc_opt_class() _volumesToBackUpForPersona:personaCopy];
   v75 = [[NSMutableArray alloc] initWithCapacity:0];
   v112 = 0;
-  v70 = [(MBAppManager *)self _copyUserAppsForPersona:v79 volumeMountPoints:v76 error:&v112];
+  v70 = [(MBAppManager *)self _copyUserAppsForPersona:personaCopy volumeMountPoints:v76 error:&v112];
   v77 = v112;
   v10 = v70;
   if (!v70)
@@ -528,7 +528,7 @@
   }
 
   [v75 addObjectsFromArray:?];
-  if ((v73 & v5) == 1)
+  if ((isPersonalPersona & harborsCopy) == 1)
   {
     v111 = v77;
     v11 = [(MBAppManager *)self _copySafeHarborsWithVolumeMountPoints:v76 error:&v111];
@@ -590,8 +590,8 @@ LABEL_70:
         v104 = 0u;
         v105 = 0u;
         v106 = 0u;
-        v24 = [v23 containers];
-        v25 = [v24 countByEnumeratingWithState:&v103 objects:v122 count:16];
+        containers = [v23 containers];
+        v25 = [containers countByEnumeratingWithState:&v103 objects:v122 count:16];
         if (v25)
         {
           v26 = *v104;
@@ -601,28 +601,28 @@ LABEL_70:
             {
               if (*v104 != v26)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(containers);
               }
 
               v28 = *(*(&v103 + 1) + 8 * j);
               v29 = objc_autoreleasePoolPush();
-              v30 = [v28 containerType];
-              v31 = [v28 identifier];
-              v32 = [v28 containerDir];
-              v33 = sub_10003884C(v30);
+              containerType = [v28 containerType];
+              identifier = [v28 identifier];
+              containerDir = [v28 containerDir];
+              v33 = sub_10003884C(containerType);
               v34 = MBGetDefaultLog();
               if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
               {
                 *buf = 138412802;
-                v117 = v31;
+                v117 = identifier;
                 v118 = 2112;
                 v119 = v33;
                 v120 = 2112;
-                v121 = v32;
+                v121 = containerDir;
                 _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_INFO, "App: Found container %@ (%@) at %@", buf, 0x20u);
-                v64 = v33;
-                v65 = v32;
-                v63 = v31;
+                containerDir4 = v33;
+                v65 = containerDir;
+                v63 = identifier;
                 _MBLog();
               }
 
@@ -630,7 +630,7 @@ LABEL_70:
               objc_autoreleasePoolPop(v29);
             }
 
-            v25 = [v24 countByEnumeratingWithState:&v103 objects:v122 count:16];
+            v25 = [containers countByEnumeratingWithState:&v103 objects:v122 count:16];
           }
 
           while (v25);
@@ -643,7 +643,7 @@ LABEL_70:
     while (context);
   }
 
-  if (v73)
+  if (isPersonalPersona)
   {
     v102 = v77;
     v67 = [(MBAppManager *)self _copySystemContainersWithVolumeMountPoints:v76 error:&v102];
@@ -652,7 +652,7 @@ LABEL_70:
     if (v67)
     {
       v101 = v12;
-      v66 = [(MBAppManager *)self _copySystemPluginsForPersona:v79 volumeMountPoints:v76 error:&v101];
+      v66 = [(MBAppManager *)self _copySystemPluginsForPersona:personaCopy volumeMountPoints:v76 error:&v101];
       v78 = v101;
 
       v35 = v66;
@@ -682,33 +682,33 @@ LABEL_70:
               v87 = v37;
               v38 = *(*(&v97 + 1) + 8 * v37);
               contexta = objc_autoreleasePoolPush();
-              v39 = [v38 identifier];
+              identifier2 = [v38 identifier];
               v40 = MBGetDefaultLog();
               if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
               {
                 v41 = v40;
                 if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
                 {
-                  v42 = [v38 containerDir];
+                  containerDir2 = [v38 containerDir];
                   *buf = 138412546;
-                  v117 = v39;
+                  v117 = identifier2;
                   v118 = 2112;
-                  v119 = v42;
+                  v119 = containerDir2;
                   _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_INFO, "System Plugin: Found container %@ %@", buf, 0x16u);
                 }
 
                 [v38 containerDir];
-                v64 = v63 = v39;
+                containerDir4 = v63 = identifier2;
                 _MBLog();
               }
 
-              [(NSMutableDictionary *)self->_appPluginContainersByID setObject:v38 forKeyedSubscript:v39];
+              [(NSMutableDictionary *)self->_appPluginContainersByID setObject:v38 forKeyedSubscript:identifier2];
               v95 = 0u;
               v96 = 0u;
               v93 = 0u;
               v94 = 0u;
-              v43 = [v38 allAppGroupContainers];
-              v44 = [v43 countByEnumeratingWithState:&v93 objects:v114 count:16];
+              allAppGroupContainers = [v38 allAppGroupContainers];
+              v44 = [allAppGroupContainers countByEnumeratingWithState:&v93 objects:v114 count:16];
               if (v44)
               {
                 v45 = *v94;
@@ -718,12 +718,12 @@ LABEL_70:
                   {
                     if (*v94 != v45)
                     {
-                      objc_enumerationMutation(v43);
+                      objc_enumerationMutation(allAppGroupContainers);
                     }
 
                     v47 = *(*(&v93 + 1) + 8 * k);
-                    v48 = [v47 identifier];
-                    v49 = [(NSMutableDictionary *)self->_appGroupContainersByID objectForKeyedSubscript:v48];
+                    identifier3 = [v47 identifier];
+                    v49 = [(NSMutableDictionary *)self->_appGroupContainersByID objectForKeyedSubscript:identifier3];
                     v50 = v49 == 0;
 
                     if (v50)
@@ -734,27 +734,27 @@ LABEL_70:
                         v52 = v51;
                         if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
                         {
-                          v53 = [v47 containerDir];
+                          containerDir3 = [v47 containerDir];
                           *buf = 138412802;
-                          v117 = v48;
+                          v117 = identifier3;
                           v118 = 2112;
-                          v119 = v53;
+                          v119 = containerDir3;
                           v120 = 2112;
-                          v121 = v39;
+                          v121 = identifier2;
                           _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_INFO, "System Plugin: Found app group container %@ at %@ for %@", buf, 0x20u);
                         }
 
-                        v64 = [v47 containerDir];
-                        v65 = v39;
-                        v63 = v48;
+                        containerDir4 = [v47 containerDir];
+                        v65 = identifier2;
+                        v63 = identifier3;
                         _MBLog();
                       }
 
-                      [(NSMutableDictionary *)self->_appGroupContainersByID setObject:v47 forKeyedSubscript:v48];
+                      [(NSMutableDictionary *)self->_appGroupContainersByID setObject:v47 forKeyedSubscript:identifier3];
                     }
                   }
 
-                  v44 = [v43 countByEnumeratingWithState:&v93 objects:v114 count:16];
+                  v44 = [allAppGroupContainers countByEnumeratingWithState:&v93 objects:v114 count:16];
                 }
 
                 while (v44);
@@ -800,8 +800,8 @@ LABEL_70:
                 v59 = self->_systemDataContainersByID;
               }
 
-              v60 = [v58 identifier];
-              [(NSMutableDictionary *)v59 setObject:v58 forKeyedSubscript:v60];
+              identifier4 = [v58 identifier];
+              [(NSMutableDictionary *)v59 setObject:v58 forKeyedSubscript:identifier4];
             }
 
             v55 = [v54 countByEnumeratingWithState:&v89 objects:v113 count:16];
@@ -830,19 +830,19 @@ LABEL_71:
 LABEL_72:
 
   objc_autoreleasePoolPop(v68);
-  if (a5)
+  if (error)
   {
     v61 = v77;
-    *a5 = v77;
+    *error = v77;
   }
 
   return v69;
 }
 
-- (id)_copyUserAppsForPersona:(id)a3 volumeMountPoints:(id)a4 error:(id *)a5
+- (id)_copyUserAppsForPersona:(id)persona volumeMountPoints:(id)points error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  personaCopy = persona;
+  pointsCopy = points;
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -854,15 +854,15 @@ LABEL_72:
   v11 = objc_autoreleasePoolPush();
   mobileInstallation = self->_mobileInstallation;
   v20 = 0;
-  v13 = [(MBMobileInstallation *)mobileInstallation userAppsForPersona:v8 error:&v20];
+  v13 = [(MBMobileInstallation *)mobileInstallation userAppsForPersona:personaCopy error:&v20];
   v14 = v20;
-  v15 = [v13 allValues];
+  allValues = [v13 allValues];
 
-  if (v15)
+  if (allValues)
   {
 
     v19 = 0;
-    v16 = [(MBAppManager *)self _copyAppsWithPlists:v15 volumeMountPoints:v9 safeHarbor:0 error:&v19];
+    v16 = [(MBAppManager *)self _copyAppsWithPlists:allValues volumeMountPoints:pointsCopy safeHarbor:0 error:&v19];
     v14 = v19;
   }
 
@@ -872,19 +872,19 @@ LABEL_72:
   }
 
   objc_autoreleasePoolPop(v11);
-  if (a5)
+  if (error)
   {
     v17 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   return v16;
 }
 
-- (id)_copySystemPluginsForPersona:(id)a3 volumeMountPoints:(id)a4 error:(id *)a5
+- (id)_copySystemPluginsForPersona:(id)persona volumeMountPoints:(id)points error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  personaCopy = persona;
+  pointsCopy = points;
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -896,15 +896,15 @@ LABEL_72:
   v11 = objc_autoreleasePoolPush();
   mobileInstallation = self->_mobileInstallation;
   v20 = 0;
-  v13 = [(MBMobileInstallation *)mobileInstallation systemPluginsForPersona:v8 error:&v20];
+  v13 = [(MBMobileInstallation *)mobileInstallation systemPluginsForPersona:personaCopy error:&v20];
   v14 = v20;
-  v15 = [v13 allValues];
+  allValues = [v13 allValues];
 
-  if (v15)
+  if (allValues)
   {
 
     v19 = 0;
-    v16 = [(MBAppManager *)self _copySystemPluginsWithPlists:v15 volumeMountPoints:v9 error:&v19];
+    v16 = [(MBAppManager *)self _copySystemPluginsWithPlists:allValues volumeMountPoints:pointsCopy error:&v19];
     v14 = v19;
   }
 
@@ -914,18 +914,18 @@ LABEL_72:
   }
 
   objc_autoreleasePoolPop(v11);
-  if (a5)
+  if (error)
   {
     v17 = v14;
-    *a5 = v14;
+    *error = v14;
   }
 
   return v16;
 }
 
-- (id)_copySafeHarborsWithVolumeMountPoints:(id)a3 error:(id *)a4
+- (id)_copySafeHarborsWithVolumeMountPoints:(id)points error:(id *)error
 {
-  v6 = a3;
+  pointsCopy = points;
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -939,13 +939,13 @@ LABEL_72:
   v17 = 0;
   v10 = [(MBMobileInstallation *)mobileInstallation safeHarborsWithError:&v17];
   v11 = v17;
-  v12 = [v10 allValues];
+  allValues = [v10 allValues];
 
-  if (v12)
+  if (allValues)
   {
 
     v16 = 0;
-    v13 = [(MBAppManager *)self _copyAppsWithPlists:v12 volumeMountPoints:v6 safeHarbor:1 error:&v16];
+    v13 = [(MBAppManager *)self _copyAppsWithPlists:allValues volumeMountPoints:pointsCopy safeHarbor:1 error:&v16];
     v11 = v16;
   }
 
@@ -955,25 +955,25 @@ LABEL_72:
   }
 
   objc_autoreleasePoolPop(v8);
-  if (a4)
+  if (error)
   {
     v14 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v13;
 }
 
-- (id)_copyAppsWithPlists:(id)a3 volumeMountPoints:(id)a4 safeHarbor:(BOOL)a5 error:(id *)a6
+- (id)_copyAppsWithPlists:(id)plists volumeMountPoints:(id)points safeHarbor:(BOOL)harbor error:(id *)error
 {
-  v7 = a3;
-  v32 = a4;
-  v29 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v7, "count")}];
+  plistsCopy = plists;
+  pointsCopy = points;
+  v29 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(plistsCopy, "count")}];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v7;
+  obj = plistsCopy;
   v8 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v8)
   {
@@ -991,7 +991,7 @@ LABEL_72:
 
         v12 = *(*(&v33 + 1) + 8 * v11);
         v13 = objc_autoreleasePoolPush();
-        v14 = sub_100063F94(v12, v32);
+        v14 = sub_100063F94(v12, pointsCopy);
         if (v14)
         {
           v15 = [(MBContainer *)[MBApp alloc] initWithPropertyList:v12 volumeMountPoint:v14];
@@ -1001,53 +1001,53 @@ LABEL_72:
           }
 
           v16 = v15;
-          v17 = [(MBApp *)v15 bundleID];
-          v18 = [v16 bundleDir];
-          v19 = v18;
-          if (a5)
+          bundleID = [(MBApp *)v15 bundleID];
+          bundleDir = [v16 bundleDir];
+          v19 = bundleDir;
+          if (harbor)
           {
 LABEL_11:
-            v20 = [v16 containerDir];
+            containerDir = [v16 containerDir];
             v21 = MBGetDefaultLog();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
-              v22 = [v16 isPlaceholder];
+              isPlaceholder = [v16 isPlaceholder];
               *buf = 138413058;
-              v38 = v17;
+              v38 = bundleID;
               v39 = 1024;
-              *v40 = v22;
+              *v40 = isPlaceholder;
               *&v40[4] = 2112;
               *&v40[6] = v19;
               v41 = 2112;
-              v42 = v20;
+              v42 = containerDir;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEBUG, "Found installed app, bundleID:%@, isPlaceholder:%d, bundleDir:%@, containerDir:%@", buf, 0x26u);
               v27 = v19;
-              v28 = v20;
-              v25 = v17;
-              v26 = [v16 isPlaceholder];
+              v28 = containerDir;
+              v25 = bundleID;
+              isPlaceholder2 = [v16 isPlaceholder];
               _MBLog();
             }
 
             [v29 addObject:v16];
           }
 
-          else if (v17)
+          else if (bundleID)
           {
-            if (v18)
+            if (bundleDir)
             {
               goto LABEL_11;
             }
 
-            v20 = MBGetDefaultLog();
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+            containerDir = MBGetDefaultLog();
+            if (os_log_type_enabled(containerDir, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412546;
-              v38 = v17;
+              v38 = bundleID;
               v39 = 2112;
               *v40 = v12;
-              _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Found nil bundleDir for %@: %@", buf, 0x16u);
-              v25 = v17;
-              v26 = v12;
+              _os_log_impl(&_mh_execute_header, containerDir, OS_LOG_TYPE_ERROR, "Found nil bundleDir for %@: %@", buf, 0x16u);
+              v25 = bundleID;
+              isPlaceholder2 = v12;
 LABEL_23:
               _MBLog();
             }
@@ -1055,12 +1055,12 @@ LABEL_23:
 
           else
           {
-            v20 = MBGetDefaultLog();
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+            containerDir = MBGetDefaultLog();
+            if (os_log_type_enabled(containerDir, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v38 = v12;
-              _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "Found nil bundleID: %@", buf, 0xCu);
+              _os_log_impl(&_mh_execute_header, containerDir, OS_LOG_TYPE_ERROR, "Found nil bundleID: %@", buf, 0xCu);
               v25 = v12;
               goto LABEL_23;
             }
@@ -1070,17 +1070,17 @@ LABEL_23:
         }
 
         v16 = [v12 objectForKeyedSubscript:kCFBundleIdentifierKey];
-        v17 = [v12 objectForKeyedSubscript:@"Container"];
+        bundleID = [v12 objectForKeyedSubscript:@"Container"];
         v19 = MBGetDefaultLog();
         if (os_log_type_enabled(v19, OS_LOG_TYPE_FAULT))
         {
           *buf = 138412546;
           v38 = v16;
           v39 = 2112;
-          *v40 = v17;
+          *v40 = bundleID;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_FAULT, "Skipping app %@, because it's container path %@ is on the wrong volume", buf, 0x16u);
           v25 = v16;
-          v26 = v17;
+          isPlaceholder2 = bundleID;
           _MBLog();
         }
 
@@ -1101,16 +1101,16 @@ LABEL_17:
   return v29;
 }
 
-- (id)_copySystemPluginsWithPlists:(id)a3 volumeMountPoints:(id)a4 error:(id *)a5
+- (id)_copySystemPluginsWithPlists:(id)plists volumeMountPoints:(id)points error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  plistsCopy = plists;
+  pointsCopy = points;
+  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(plistsCopy, "count")}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v9 = v6;
+  v9 = plistsCopy;
   v10 = [v9 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v10)
   {
@@ -1129,7 +1129,7 @@ LABEL_17:
         }
 
         v15 = *(*(&v31 + 1) + 8 * v14);
-        v16 = sub_100063F94(v15, v7);
+        v16 = sub_100063F94(v15, pointsCopy);
         if (v16)
         {
           v17 = v16;
@@ -1147,7 +1147,7 @@ LABEL_17:
           {
             [v19 identifier];
             v21 = v12;
-            v22 = v7;
+            v22 = pointsCopy;
             v23 = v8;
             v24 = v9;
             v26 = v25 = v13;
@@ -1155,13 +1155,13 @@ LABEL_17:
             v36 = v26;
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Installed system plugin: %@", buf, 0xCu);
 
-            v29 = [v19 identifier];
+            identifier = [v19 identifier];
             _MBLog();
 
             v13 = v25;
             v9 = v24;
             v8 = v23;
-            v7 = v22;
+            pointsCopy = v22;
             v12 = v21;
             v11 = v30;
           }
@@ -1202,9 +1202,9 @@ LABEL_17:
   return v27;
 }
 
-- (id)_copySystemContainersWithVolumeMountPoints:(id)a3 error:(id *)a4
+- (id)_copySystemContainersWithVolumeMountPoints:(id)points error:(id *)error
 {
-  v6 = a3;
+  pointsCopy = points;
   v7 = MBGetDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1216,12 +1216,12 @@ LABEL_17:
   v8 = objc_alloc_init(NSMutableArray);
   v9 = objc_autoreleasePoolPush();
   v10 = [(MBMobileInstallation *)self->_mobileInstallation systemContainersWithError:0];
-  v11 = [v10 allValues];
+  allValues = [v10 allValues];
 
-  if (v11)
+  if (allValues)
   {
     v22 = 0;
-    v12 = [(MBAppManager *)self _copySystemContainersWithPlists:v11 volumeMountPoints:v6 error:&v22];
+    v12 = [(MBAppManager *)self _copySystemContainersWithPlists:allValues volumeMountPoints:pointsCopy error:&v22];
     v13 = v22;
     if (!v12)
     {
@@ -1234,7 +1234,7 @@ LABEL_17:
         _MBLog();
       }
 
-      v16 = v8;
+      allValues2 = v8;
       goto LABEL_16;
     }
 
@@ -1249,12 +1249,12 @@ LABEL_17:
   }
 
   v15 = [(MBMobileInstallation *)self->_mobileInstallation systemSharedContainersWithError:0];
-  v16 = [v15 allValues];
+  allValues2 = [v15 allValues];
 
-  if (v16)
+  if (allValues2)
   {
     v21 = v14;
-    v17 = [(MBAppManager *)self _copySystemContainersWithPlists:v16 volumeMountPoints:v6 error:&v21];
+    v17 = [(MBAppManager *)self _copySystemContainersWithPlists:allValues2 volumeMountPoints:pointsCopy error:&v21];
     v13 = v21;
 
     if (v17)
@@ -1283,25 +1283,25 @@ LABEL_16:
 LABEL_18:
 
   objc_autoreleasePoolPop(v9);
-  if (a4 && v14)
+  if (error && v14)
   {
     v19 = v14;
-    *a4 = v14;
+    *error = v14;
   }
 
   return v8;
 }
 
-- (id)_copySystemContainersWithPlists:(id)a3 volumeMountPoints:(id)a4 error:(id *)a5
+- (id)_copySystemContainersWithPlists:(id)plists volumeMountPoints:(id)points error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  plistsCopy = plists;
+  pointsCopy = points;
+  v8 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(plistsCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v9 = v6;
+  v9 = plistsCopy;
   v10 = [v9 countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v10)
   {
@@ -1317,7 +1317,7 @@ LABEL_18:
         }
 
         v14 = *(*(&v25 + 1) + 8 * i);
-        v15 = sub_100063F94(v14, v7);
+        v15 = sub_100063F94(v14, pointsCopy);
         if (v15)
         {
           v16 = v15;
@@ -1334,9 +1334,9 @@ LABEL_18:
               _MBLog();
             }
 
-            if (a5)
+            if (error)
             {
-              *a5 = [MBError errorWithCode:1 format:@"Failed to parse system container plist"];
+              *error = [MBError errorWithCode:1 format:@"Failed to parse system container plist"];
             }
 
             v21 = 0;
@@ -1345,12 +1345,12 @@ LABEL_18:
 
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
-            v20 = [(MBContainer *)v17 identifier];
+            identifier = [(MBContainer *)v17 identifier];
             *buf = 138412290;
-            v30 = v20;
+            v30 = identifier;
             _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "System container: %@", buf, 0xCu);
 
-            v23 = [(MBContainer *)v17 identifier];
+            identifier2 = [(MBContainer *)v17 identifier];
             _MBLog();
           }
 
@@ -1389,56 +1389,56 @@ LABEL_21:
 
 - (id)allContainers
 {
-  v3 = [(NSMutableDictionary *)self->_appContainersByID allValues];
-  v4 = [v3 mutableCopy];
+  allValues = [(NSMutableDictionary *)self->_appContainersByID allValues];
+  v4 = [allValues mutableCopy];
 
-  v5 = [(NSMutableDictionary *)self->_appGroupContainersByID allValues];
-  [v4 addObjectsFromArray:v5];
+  allValues2 = [(NSMutableDictionary *)self->_appGroupContainersByID allValues];
+  [v4 addObjectsFromArray:allValues2];
 
-  v6 = [(NSMutableDictionary *)self->_appPluginContainersByID allValues];
-  [v4 addObjectsFromArray:v6];
+  allValues3 = [(NSMutableDictionary *)self->_appPluginContainersByID allValues];
+  [v4 addObjectsFromArray:allValues3];
 
-  v7 = [(NSMutableDictionary *)self->_systemDataContainersByID allValues];
-  [v4 addObjectsFromArray:v7];
+  allValues4 = [(NSMutableDictionary *)self->_systemDataContainersByID allValues];
+  [v4 addObjectsFromArray:allValues4];
 
-  v8 = [(NSMutableDictionary *)self->_systemSharedContainersByID allValues];
-  [v4 addObjectsFromArray:v8];
+  allValues5 = [(NSMutableDictionary *)self->_systemSharedContainersByID allValues];
+  [v4 addObjectsFromArray:allValues5];
 
   return v4;
 }
 
 - (id)allSystemContainers
 {
-  v3 = [(NSMutableDictionary *)self->_systemDataContainersByID allValues];
-  v4 = [v3 mutableCopy];
+  allValues = [(NSMutableDictionary *)self->_systemDataContainersByID allValues];
+  v4 = [allValues mutableCopy];
 
-  v5 = [(NSMutableDictionary *)self->_systemSharedContainersByID allValues];
-  [v4 addObjectsFromArray:v5];
+  allValues2 = [(NSMutableDictionary *)self->_systemSharedContainersByID allValues];
+  [v4 addObjectsFromArray:allValues2];
 
   return v4;
 }
 
-- (id)containerWithIdentifier:(id)a3 containerType:(int)a4
+- (id)containerWithIdentifier:(id)identifier containerType:(int)type
 {
-  v6 = a3;
-  if ((a4 - 1) > 4)
+  identifierCopy = identifier;
+  if ((type - 1) > 4)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [*(&self->super.isa + qword_1000B7378[a4 - 1]) objectForKeyedSubscript:v6];
+    v7 = [*(&self->super.isa + qword_1000B7378[type - 1]) objectForKeyedSubscript:identifierCopy];
   }
 
   return v7;
 }
 
-- (id)dependentDomainNamesForAppDomainName:(id)a3
+- (id)dependentDomainNamesForAppDomainName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
-  v6 = [MBDomain containerIDWithName:v4];
+  v6 = [MBDomain containerIDWithName:nameCopy];
   v7 = [(MBAppManager *)self appWithIdentifier:v6];
   v8 = v7;
   if (v7)
@@ -1448,8 +1448,8 @@ LABEL_21:
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = [v7 containers];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    containers = [v7 containers];
+    v10 = [containers countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1460,21 +1460,21 @@ LABEL_21:
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(containers);
           }
 
-          v14 = [*(*(&v20 + 1) + 8 * i) domain];
-          v15 = [v14 name];
-          v16 = [v15 isEqualToString:v4];
+          domain = [*(*(&v20 + 1) + 8 * i) domain];
+          name = [domain name];
+          v16 = [name isEqualToString:nameCopy];
 
           if ((v16 & 1) == 0)
           {
-            v17 = [v14 name];
-            [v5 addObject:v17];
+            name2 = [domain name];
+            [v5 addObject:name2];
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [containers countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v11);
@@ -1486,21 +1486,21 @@ LABEL_21:
   return v5;
 }
 
-- (id)fetchAppWithIdentifier:(id)a3 persona:(id)a4 error:(id *)a5
+- (id)fetchAppWithIdentifier:(id)identifier persona:(id)persona error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  personaCopy = persona;
   mobileInstallation = self->_mobileInstallation;
   v43 = 0;
-  v38 = v8;
-  v11 = [(MBMobileInstallation *)mobileInstallation userAppWithBundleID:v8 placeholder:1 persona:v9 error:&v43];
+  v38 = identifierCopy;
+  v11 = [(MBMobileInstallation *)mobileInstallation userAppWithBundleID:identifierCopy placeholder:1 persona:personaCopy error:&v43];
   v12 = v43;
   if (v11)
   {
     v13 = [v11 objectForKeyedSubscript:@"Container"];
     if (v13)
     {
-      v14 = [objc_opt_class() _volumesToBackUpForPersona:v9];
+      v14 = [objc_opt_class() _volumesToBackUpForPersona:personaCopy];
       v15 = sub_100063F94(v11, v14);
       if (v15)
       {
@@ -1509,8 +1509,8 @@ LABEL_21:
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
-        v17 = [(MBApp *)v16 containers];
-        v18 = [v17 countByEnumeratingWithState:&v39 objects:v52 count:16];
+        containers = [(MBApp *)v16 containers];
+        v18 = [containers countByEnumeratingWithState:&v39 objects:v52 count:16];
         if (v18)
         {
           v19 = v18;
@@ -1519,7 +1519,7 @@ LABEL_21:
           v34 = v14;
           v35 = v13;
           v36 = v12;
-          v37 = v9;
+          v37 = personaCopy;
           v20 = *v40;
           do
           {
@@ -1527,24 +1527,24 @@ LABEL_21:
             {
               if (*v40 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(containers);
               }
 
               v22 = *(*(&v39 + 1) + 8 * i);
               v23 = objc_autoreleasePoolPush();
-              v24 = [v22 containerType];
-              v25 = [v22 identifier];
-              v26 = [v22 containerDir];
-              v27 = sub_10003884C(v24);
+              containerType = [v22 containerType];
+              identifier = [v22 identifier];
+              containerDir = [v22 containerDir];
+              v27 = sub_10003884C(containerType);
               v28 = MBGetDefaultLog();
               if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
               {
                 *buf = 138413058;
-                v45 = v25;
+                v45 = identifier;
                 v46 = 2112;
                 v47 = v27;
                 v48 = 2112;
-                v49 = v26;
+                v49 = containerDir;
                 v50 = 2112;
                 v51 = v38;
                 _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Loaded container %@ (%@) at %@ for parent app %@", buf, 0x2Au);
@@ -1554,11 +1554,11 @@ LABEL_21:
               objc_autoreleasePoolPop(v23);
             }
 
-            v19 = [v17 countByEnumeratingWithState:&v39 objects:v52 count:16];
+            v19 = [containers countByEnumeratingWithState:&v39 objects:v52 count:16];
           }
 
           while (v19);
-          v9 = v37;
+          personaCopy = v37;
           v13 = v35;
           v12 = v36;
           v16 = v33;
@@ -1569,11 +1569,11 @@ LABEL_21:
 
       else
       {
-        v17 = [v14 componentsJoinedByString:{@", "}];
-        if (a5)
+        containers = [v14 componentsJoinedByString:{@", "}];
+        if (error)
         {
-          [MBError errorWithCode:3 format:@"%@ does not exist on expected volume(s) [%@]", v38, v17];
-          *a5 = v16 = 0;
+          [MBError errorWithCode:3 format:@"%@ does not exist on expected volume(s) [%@]", v38, containers];
+          *error = v16 = 0;
         }
 
         else
@@ -1583,10 +1583,10 @@ LABEL_21:
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MBError errorWithCode:245 format:@"App not installed: %@", v38];
-      *a5 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -1601,18 +1601,18 @@ LABEL_21:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v45 = v8;
+      v45 = identifierCopy;
       v46 = 2112;
       v47 = v12;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Failed to load app with identifier %@: %@", buf, 0x16u);
       _MBLog();
     }
 
-    if (a5)
+    if (error)
     {
       v30 = v12;
       v16 = 0;
-      *a5 = v12;
+      *error = v12;
     }
 
     else
@@ -1624,16 +1624,16 @@ LABEL_21:
   return v16;
 }
 
-- (void)removeOldSafeHarborsWithExpiration:(double)a3
+- (void)removeOldSafeHarborsWithExpiration:(double)expiration
 {
-  v4 = [NSDate dateWithTimeIntervalSinceNow:-a3];
+  v4 = [NSDate dateWithTimeIntervalSinceNow:-expiration];
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v35 = v4;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing safe harbors created before %@", buf, 0xCu);
-    v26 = v4;
+    identifier2 = v4;
     _MBLog();
   }
 
@@ -1641,8 +1641,8 @@ LABEL_21:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [(MBAppManager *)self allContainers];
-  v7 = [v6 countByEnumeratingWithState:&v30 objects:v38 count:16];
+  allContainers = [(MBAppManager *)self allContainers];
+  v7 = [allContainers countByEnumeratingWithState:&v30 objects:v38 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1655,38 +1655,38 @@ LABEL_21:
       {
         if (*v31 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allContainers);
         }
 
         v11 = *(*(&v30 + 1) + 8 * v10);
         if ([v11 isSafeHarbor])
         {
-          v12 = [v11 datePlacedInSafeHarbor];
-          if (!v12)
+          datePlacedInSafeHarbor = [v11 datePlacedInSafeHarbor];
+          if (!datePlacedInSafeHarbor)
           {
             sub_10009F130(v11, a2, self);
           }
 
-          if ([v12 compare:v4] == -1)
+          if ([datePlacedInSafeHarbor compare:v4] == -1)
           {
             v20 = MBGetDefaultLog();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
-              v21 = [v11 identifier];
+              identifier = [v11 identifier];
               *buf = 138412546;
-              v35 = v21;
+              v35 = identifier;
               v36 = 2112;
-              v37 = v12;
+              v37 = datePlacedInSafeHarbor;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Removing safe harbor %@ created at %@", buf, 0x16u);
 
-              v26 = [v11 identifier];
-              v27 = v12;
+              identifier2 = [v11 identifier];
+              v27 = datePlacedInSafeHarbor;
               _MBLog();
             }
 
             mobileInstallation = self->_mobileInstallation;
-            v23 = [v11 identifier];
-            LODWORD(mobileInstallation) = -[MBMobileInstallation removeSafeHarborWithIdentifier:type:error:](mobileInstallation, "removeSafeHarborWithIdentifier:type:error:", v23, [v11 containerType], 0);
+            identifier3 = [v11 identifier];
+            LODWORD(mobileInstallation) = -[MBMobileInstallation removeSafeHarborWithIdentifier:type:error:](mobileInstallation, "removeSafeHarborWithIdentifier:type:error:", identifier3, [v11 containerType], 0);
 
             if (mobileInstallation)
             {
@@ -1698,12 +1698,12 @@ LABEL_21:
               v24 = MBGetDefaultLog();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
               {
-                v25 = [v11 identifier];
+                identifier4 = [v11 identifier];
                 *buf = 138412290;
-                v35 = v25;
+                v35 = identifier4;
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Error removing safe harbor: %@", buf, 0xCu);
 
-                v26 = [v11 identifier];
+                identifier2 = [v11 identifier];
                 _MBLog();
               }
             }
@@ -1711,28 +1711,28 @@ LABEL_21:
 
           else
           {
-            v13 = [v11 datePlacedInSafeHarbor];
+            datePlacedInSafeHarbor2 = [v11 datePlacedInSafeHarbor];
             v14 = MBGetDefaultLog();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
             {
               [v11 identifier];
               v15 = v9;
-              v16 = v6;
+              v16 = allContainers;
               v17 = v4;
               v19 = v18 = self;
               *buf = 138412546;
               v35 = v19;
               v36 = 2112;
-              v37 = v13;
+              v37 = datePlacedInSafeHarbor2;
               _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Not removing safe harbor %@ created at %@", buf, 0x16u);
 
-              v26 = [v11 identifier];
-              v27 = v13;
+              identifier2 = [v11 identifier];
+              v27 = datePlacedInSafeHarbor2;
               _MBLog();
 
               self = v18;
               v4 = v17;
-              v6 = v16;
+              allContainers = v16;
               v9 = v15;
               v8 = v29;
             }
@@ -1743,21 +1743,21 @@ LABEL_21:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v30 objects:v38 count:16];
+      v8 = [allContainers countByEnumeratingWithState:&v30 objects:v38 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)_placeholderFilesForBundleID:(id)a3
+- (id)_placeholderFilesForBundleID:(id)d
 {
-  if (a3)
+  if (d)
   {
-    v3 = a3;
-    v4 = [v3 stringByAppendingPathExtension:@"zip"];
+    dCopy = d;
+    v4 = [dCopy stringByAppendingPathExtension:@"zip"];
     v8[0] = v4;
-    v5 = [v3 stringByAppendingPathExtension:@"ipa"];
+    v5 = [dCopy stringByAppendingPathExtension:@"ipa"];
 
     v8[1] = v5;
     v6 = [NSArray arrayWithObjects:v8 count:2];
@@ -1771,12 +1771,12 @@ LABEL_21:
   return v6;
 }
 
-- (void)removeStaleStateForUninstalledAppsForPersona:(id)a3
+- (void)removeStaleStateForUninstalledAppsForPersona:(id)persona
 {
-  v3 = a3;
+  personaCopy = persona;
   v4 = objc_autoreleasePoolPush();
   v5 = +[NSFileManager defaultManager];
-  [v3 appPlaceholderArchiveDirectory];
+  [personaCopy appPlaceholderArchiveDirectory];
   v72 = 0;
   v53 = v52 = v5;
   v6 = [v5 contentsOfDirectoryAtPath:? error:?];
@@ -1812,8 +1812,8 @@ LABEL_21:
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v47 = v3;
-  v10 = [(MBAppManager *)self allRestrictedDomainNamesForPersona:v3];
+  v47 = personaCopy;
+  v10 = [(MBAppManager *)self allRestrictedDomainNamesForPersona:personaCopy];
   v11 = [v10 countByEnumeratingWithState:&v68 objects:v76 count:16];
   if (v11)
   {
@@ -1847,43 +1847,43 @@ LABEL_21:
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  v18 = [(MBAppManager *)self allApps];
-  v19 = [v18 countByEnumeratingWithState:&v64 objects:v75 count:16];
+  allApps = [(MBAppManager *)self allApps];
+  v19 = [allApps countByEnumeratingWithState:&v64 objects:v75 count:16];
   v48 = v17;
   if (v19)
   {
     v20 = v19;
     v21 = *v65;
-    v50 = v18;
+    v50 = allApps;
     do
     {
       for (j = 0; j != v20; j = j + 1)
       {
         if (*v65 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(allApps);
         }
 
         v23 = *(*(&v64 + 1) + 8 * j);
-        v24 = [v23 domain];
-        v25 = [v24 name];
+        domain = [v23 domain];
+        name = [domain name];
 
-        if (v25)
+        if (name)
         {
-          [v17 addObject:v25];
+          [v17 addObject:name];
         }
 
         if (([v23 isSystemApp] & 1) == 0)
         {
-          v26 = [v23 bundleID];
-          if (([v51 containsObject:v26] & 1) == 0)
+          bundleID = [v23 bundleID];
+          if (([v51 containsObject:bundleID] & 1) == 0)
           {
             v62 = 0u;
             v63 = 0u;
             v60 = 0u;
             v61 = 0u;
-            v27 = [v23 bundleID];
-            v28 = [(MBAppManager *)self _placeholderFilesForBundleID:v27];
+            bundleID2 = [v23 bundleID];
+            v28 = [(MBAppManager *)self _placeholderFilesForBundleID:bundleID2];
 
             v29 = [v28 countByEnumeratingWithState:&v60 objects:v74 count:16];
             if (v29)
@@ -1909,12 +1909,12 @@ LABEL_21:
             }
 
             v17 = v48;
-            v18 = v50;
+            allApps = v50;
           }
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v64 objects:v75 count:16];
+      v20 = [allApps countByEnumeratingWithState:&v64 objects:v75 count:16];
     }
 
     while (v20);
@@ -1987,14 +1987,14 @@ LABEL_21:
   objc_autoreleasePoolPop(context);
 }
 
-- (void)_addContainer:(id)a3
+- (void)_addContainer:(id)container
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 containerType];
-  if (v6 > 2)
+  containerCopy = container;
+  identifier = [containerCopy identifier];
+  containerType = [containerCopy containerType];
+  if (containerType > 2)
   {
-    switch(v6)
+    switch(containerType)
     {
       case 3:
         appGroupContainersByID = self->_appGroupContainersByID;
@@ -2009,25 +2009,25 @@ LABEL_21:
         goto LABEL_19;
     }
 
-    v9 = v4;
-    v10 = v4;
+    v9 = containerCopy;
+    v10 = containerCopy;
     goto LABEL_18;
   }
 
-  if (v6)
+  if (containerType)
   {
-    if (v6 == 1)
+    if (containerType == 1)
     {
       appGroupContainersByID = self->_appContainersByID;
       goto LABEL_15;
     }
 
-    if (v6 == 2)
+    if (containerType == 2)
     {
       appGroupContainersByID = self->_appPluginContainersByID;
 LABEL_15:
-      v9 = v4;
-      v10 = v5;
+      v9 = containerCopy;
+      v10 = identifier;
 LABEL_18:
       [(NSMutableDictionary *)appGroupContainersByID setObject:v9 forKeyedSubscript:v10];
     }
@@ -2039,7 +2039,7 @@ LABEL_18:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = containerCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "Invalid container type to add for %@", buf, 0xCu);
       _MBLog();
     }
@@ -2048,14 +2048,14 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)_removeContainer:(id)a3
+- (void)_removeContainer:(id)container
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 containerType];
-  if (v6 > 2)
+  containerCopy = container;
+  identifier = [containerCopy identifier];
+  containerType = [containerCopy containerType];
+  if (containerType > 2)
   {
-    switch(v6)
+    switch(containerType)
     {
       case 3:
         appGroupContainersByID = self->_appGroupContainersByID;
@@ -2069,19 +2069,19 @@ LABEL_19:
     }
   }
 
-  else if (v6)
+  else if (containerType)
   {
-    if (v6 == 1)
+    if (containerType == 1)
     {
       appGroupContainersByID = self->_appContainersByID;
       goto LABEL_16;
     }
 
-    if (v6 == 2)
+    if (containerType == 2)
     {
       appGroupContainersByID = self->_appPluginContainersByID;
 LABEL_16:
-      [(NSMutableDictionary *)appGroupContainersByID setObject:0 forKeyedSubscript:v5];
+      [(NSMutableDictionary *)appGroupContainersByID setObject:0 forKeyedSubscript:identifier];
     }
   }
 
@@ -2091,17 +2091,17 @@ LABEL_16:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412290;
-      v10 = v4;
+      v10 = containerCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_FAULT, "Invalid container type to remove for %@", buf, 0xCu);
       _MBLog();
     }
   }
 }
 
-- (id)createSafeHarborForContainer:(id)a3 withPersona:(id)a4 usingIntermediateRestoreDir:(BOOL)a5 error:(id *)a6
+- (id)createSafeHarborForContainer:(id)container withPersona:(id)persona usingIntermediateRestoreDir:(BOOL)dir error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  containerCopy = container;
+  personaCopy = persona;
   if (qword_10011E440 != -1)
   {
     sub_10009F1BC();
@@ -2136,13 +2136,13 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = sub_100066784;
   block[3] = &unk_1000FE218;
-  v13 = v9;
+  v13 = personaCopy;
   v41 = v13;
-  v42 = self;
-  v50 = a5;
+  selfCopy = self;
+  dirCopy = dir;
   v46 = &v67;
   v47 = &v61;
-  v14 = v8;
+  v14 = containerCopy;
   v43 = v14;
   v48 = &v57;
   v15 = v10;
@@ -2155,11 +2155,11 @@ LABEL_16:
   {
     v17 = kMBSafeHarborDataDirName;
     v18 = [v62[5] stringByAppendingPathComponent:kMBSafeHarborDataDirName];
-    v19 = a6;
+    errorCopy = error;
     v20 = [v62[5] stringByAppendingPathComponent:kMBSafeHarborInfoDirName];
     v38 = [v20 stringByAppendingPathComponent:kMBSafeHarborInfoPlistFilename];
-    v21 = [v13 volumeMountPoint];
-    v22 = [v14 copyWithVolumeMountPoint:v21];
+    volumeMountPoint = [v13 volumeMountPoint];
+    v22 = [v14 copyWithVolumeMountPoint:volumeMountPoint];
 
     v23 = [v68[5] stringByAppendingPathComponent:v17];
     [v22 setContainerDir:v23];
@@ -2176,7 +2176,7 @@ LABEL_16:
       _MBLog();
     }
 
-    if ([v15 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:v16 error:v19])
+    if ([v15 createDirectoryAtPath:v18 withIntermediateDirectories:1 attributes:v16 error:errorCopy])
     {
       v26 = MBGetDefaultLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -2187,7 +2187,7 @@ LABEL_16:
         _MBLog();
       }
 
-      if ([v15 createDirectoryAtPath:v20 withIntermediateDirectories:1 attributes:v16 error:v19])
+      if ([v15 createDirectoryAtPath:v20 withIntermediateDirectories:1 attributes:v16 error:errorCopy])
       {
         v27 = MBGetDefaultLog();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -2198,35 +2198,35 @@ LABEL_16:
           _MBLog();
         }
 
-        v28 = [v22 propertyListForSafeHarborInfo];
-        v29 = [v28 writeToFile:v38 atomically:1];
+        propertyListForSafeHarborInfo = [v22 propertyListForSafeHarborInfo];
+        v29 = [propertyListForSafeHarborInfo writeToFile:v38 atomically:1];
 
         if (v29)
         {
           v30 = v38;
-          v31 = [v38 fileSystemRepresentation];
+          fileSystemRepresentation = [v38 fileSystemRepresentation];
           v32 = MBMobileUID();
           v33 = MBMobileUID();
-          if (!lchown(v31, v32, v33))
+          if (!lchown(fileSystemRepresentation, v32, v33))
           {
             [(MBAppManager *)self _addContainer:v14];
             v35 = v22;
             goto LABEL_23;
           }
 
-          if (v19)
+          if (errorCopy)
           {
             v34 = [MBError posixErrorWithCode:100 path:v38 format:@"Error changing ownership of Safe Harbor Info.plist"];
 LABEL_21:
             v35 = 0;
-            *v19 = v34;
+            *errorCopy = v34;
 LABEL_23:
 
             goto LABEL_24;
           }
         }
 
-        else if (v19)
+        else if (errorCopy)
         {
           v34 = [MBError errorWithCode:100 path:v38 format:@"Error writing Safe Harbor Info.plist"];
           goto LABEL_21;
@@ -2239,9 +2239,9 @@ LABEL_23:
   }
 
   v35 = 0;
-  if (a6)
+  if (error)
   {
-    *a6 = v52[5];
+    *error = v52[5];
   }
 
 LABEL_24:

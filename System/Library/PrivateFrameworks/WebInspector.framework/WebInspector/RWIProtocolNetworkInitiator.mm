@@ -1,19 +1,19 @@
 @interface RWIProtocolNetworkInitiator
 - (NSString)url;
 - (RWIProtocolConsoleStackTrace)stackTrace;
-- (RWIProtocolNetworkInitiator)initWithType:(int64_t)a3;
+- (RWIProtocolNetworkInitiator)initWithType:(int64_t)type;
 - (double)lineNumber;
 - (int)nodeId;
 - (int64_t)type;
-- (void)setLineNumber:(double)a3;
-- (void)setStackTrace:(id)a3;
-- (void)setType:(int64_t)a3;
-- (void)setUrl:(id)a3;
+- (void)setLineNumber:(double)number;
+- (void)setStackTrace:(id)trace;
+- (void)setType:(int64_t)type;
+- (void)setUrl:(id)url;
 @end
 
 @implementation RWIProtocolNetworkInitiator
 
-- (RWIProtocolNetworkInitiator)initWithType:(int64_t)a3
+- (RWIProtocolNetworkInitiator)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = RWIProtocolNetworkInitiator;
@@ -21,14 +21,14 @@
   v5 = v4;
   if (v4)
   {
-    [(RWIProtocolNetworkInitiator *)v4 setType:a3];
+    [(RWIProtocolNetworkInitiator *)v4 setType:type];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -96,11 +96,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setStackTrace:(id)a3
+- (void)setStackTrace:(id)trace
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkInitiator;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"stackTrace"];
+  [(RWIProtocolJSONObject *)&v3 setObject:trace forKey:@"stackTrace"];
 }
 
 - (RWIProtocolConsoleStackTrace)stackTrace
@@ -158,11 +158,11 @@ LABEL_8:
   return v7;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkInitiator;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"url"];
+  [(RWIProtocolJSONObject *)&v3 setString:url forKey:@"url"];
 }
 
 - (NSString)url
@@ -174,11 +174,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setLineNumber:(double)a3
+- (void)setLineNumber:(double)number
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkInitiator;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"lineNumber" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"lineNumber" forKey:number];
 }
 
 - (double)lineNumber

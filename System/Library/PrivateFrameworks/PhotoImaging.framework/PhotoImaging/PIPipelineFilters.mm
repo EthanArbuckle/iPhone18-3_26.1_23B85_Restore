@@ -18,8 +18,8 @@
 + (id)rawSourceFilterIncludingOrientation;
 + (id)sourceFilter;
 + (id)sourceFilterNoOrientation;
-+ (id)stopAtTagIncludeGeometryFilter:(id)a3;
-+ (id)stopAtTagIncludeOrientationFilter:(id)a3;
++ (id)stopAtTagIncludeGeometryFilter:(id)filter;
++ (id)stopAtTagIncludeOrientationFilter:(id)filter;
 + (id)stripAllTimeAdjustmentsFilter;
 @end
 
@@ -163,16 +163,16 @@ id __43__PIPipelineFilters_applyOrientationFilter__block_invoke(uint64_t a1, voi
   return v10;
 }
 
-+ (id)stopAtTagIncludeOrientationFilter:(id)a3
++ (id)stopAtTagIncludeOrientationFilter:(id)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   v4 = objc_alloc(MEMORY[0x1E69B3C30]);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__PIPipelineFilters_stopAtTagIncludeOrientationFilter___block_invoke;
   v8[3] = &unk_1E82ACA50;
-  v9 = v3;
-  v5 = v3;
+  v9 = filterCopy;
+  v5 = filterCopy;
   v6 = [v4 initWithBlock:v8];
 
   return v6;
@@ -192,16 +192,16 @@ id __55__PIPipelineFilters_stopAtTagIncludeOrientationFilter___block_invoke(uint
   return v9;
 }
 
-+ (id)stopAtTagIncludeGeometryFilter:(id)a3
++ (id)stopAtTagIncludeGeometryFilter:(id)filter
 {
-  v3 = a3;
+  filterCopy = filter;
   v4 = objc_alloc(MEMORY[0x1E69B3C30]);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__PIPipelineFilters_stopAtTagIncludeGeometryFilter___block_invoke;
   v8[3] = &unk_1E82ACA50;
-  v9 = v3;
-  v5 = v3;
+  v9 = filterCopy;
+  v5 = filterCopy;
   v6 = [v4 initWithBlock:v8];
 
   return v6;

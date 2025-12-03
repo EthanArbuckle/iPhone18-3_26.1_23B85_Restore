@@ -1,27 +1,27 @@
 @interface CSLPRFReturnToAppSettingsModel
-+ (id)returnToAppSettingsToDictionary:(id)a3;
++ (id)returnToAppSettingsToDictionary:(id)dictionary;
 - (CSLPRFReturnToAppSettingsModel)init;
-- (id)settingsForBundleID:(id)a3;
-- (void)_withLock:(id)a3;
+- (id)settingsForBundleID:(id)d;
+- (void)_withLock:(id)lock;
 - (void)reloadAppSettings;
 - (void)saveAppSettings;
-- (void)setSettings:(id)a3 forBundleID:(id)a4;
+- (void)setSettings:(id)settings forBundleID:(id)d;
 @end
 
 @implementation CSLPRFReturnToAppSettingsModel
 
-- (void)setSettings:(id)a3 forBundleID:(id)a4
+- (void)setSettings:(id)settings forBundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  settingsCopy = settings;
+  dCopy = d;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __58__CSLPRFReturnToAppSettingsModel_setSettings_forBundleID___block_invoke;
   v16[3] = &unk_2787453E0;
   v16[4] = self;
-  v8 = v7;
+  v8 = dCopy;
   v17 = v8;
-  v9 = v6;
+  v9 = settingsCopy;
   v18 = v9;
   [(CSLPRFReturnToAppSettingsModel *)self _withLock:v16];
   observers = self->_observers;
@@ -45,9 +45,9 @@ void __58__CSLPRFReturnToAppSettingsModel_setSettings_forBundleID___block_invoke
   }
 }
 
-- (id)settingsForBundleID:(id)a3
+- (id)settingsForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -60,7 +60,7 @@ void __58__CSLPRFReturnToAppSettingsModel_setSettings_forBundleID___block_invoke
   v8[3] = &unk_2787453B8;
   v10 = &v11;
   v8[4] = self;
-  v5 = v4;
+  v5 = dCopy;
   v9 = v5;
   [(CSLPRFReturnToAppSettingsModel *)self _withLock:v8];
   v6 = v12[5];
@@ -96,7 +96,7 @@ uint64_t __54__CSLPRFReturnToAppSettingsModel_settingsForBundleID___block_invoke
   v5[5] = &v6;
   [(CSLPRFReturnToAppSettingsModel *)self _withLock:v5];
   [(NPSDomainAccessor *)self->_npsDomainAccessor setObject:v7[5] forKey:@"ReturnToAppSettings"];
-  v3 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
   v4 = [MEMORY[0x277CBEB98] setWithObject:@"ReturnToAppSettings"];
   [(NPSManager *)self->_npsManager synchronizeNanoDomain:@"com.apple.Carousel" keys:v4];
 
@@ -116,7 +116,7 @@ uint64_t __49__CSLPRFReturnToAppSettingsModel_saveAppSettings__block_invoke(uint
 
 - (void)reloadAppSettings
 {
-  v3 = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
+  synchronize = [(NPSDomainAccessor *)self->_npsDomainAccessor synchronize];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __51__CSLPRFReturnToAppSettingsModel_reloadAppSettings__block_invoke;
@@ -150,11 +150,11 @@ void __51__CSLPRFReturnToAppSettingsModel_reloadAppSettings__block_invoke_2(uint
   [*(*(a1 + 32) + 16) setObject:v7 forKeyedSubscript:v6];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -189,18 +189,18 @@ void __51__CSLPRFReturnToAppSettingsModel_reloadAppSettings__block_invoke_2(uint
   return v3;
 }
 
-+ (id)returnToAppSettingsToDictionary:(id)a3
++ (id)returnToAppSettingsToDictionary:(id)dictionary
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+  dictionaryCopy = dictionary;
+  v5 = [v3 dictionaryWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__CSLPRFReturnToAppSettingsModel_returnToAppSettingsToDictionary___block_invoke;
   v9[3] = &unk_278745390;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   v7 = [v6 copy];
 

@@ -1,16 +1,16 @@
 @interface RecentsCollectionViewGridCell
 - (BOOL)isSelected;
-- (_TtC15ConversationKit29RecentsCollectionViewGridCell)initWithCoder:(id)a3;
+- (_TtC15ConversationKit29RecentsCollectionViewGridCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation RecentsCollectionViewGridCell
 
 - (BOOL)isSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = RecentsCollectionViewGridCell.isSelected.getter();
 
   return v3 & 1;
@@ -18,26 +18,26 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   RecentsCollectionViewGridCell.layoutSubviews()();
 }
 
-- (_TtC15ConversationKit29RecentsCollectionViewGridCell)initWithCoder:(id)a3
+- (_TtC15ConversationKit29RecentsCollectionViewGridCell)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   RecentsCollectionViewGridCell.init(coder:)();
   return result;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  RecentsCollectionViewGridCell.isSelected.setter(a3);
+  selfCopy = self;
+  RecentsCollectionViewGridCell.isSelected.setter(selected);
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   RecentsCollectionViewGridCell.prepareForReuse()();
 }
 

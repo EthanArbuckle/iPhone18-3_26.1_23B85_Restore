@@ -1,19 +1,19 @@
 @interface _DASBudgetManager
 + (id)sharedInstance;
-- (BOOL)isWidgetRefreshBudget:(id)a3;
+- (BOOL)isWidgetRefreshBudget:(id)budget;
 - (_DASBudgetManager)init;
-- (double)balanceForBudgetWithName:(id)a3;
-- (double)capacityForBudgetWithName:(id)a3;
+- (double)balanceForBudgetWithName:(id)name;
+- (double)capacityForBudgetWithName:(id)name;
 - (id)allBudgets;
-- (void)decrementBy:(double)a3 forBudgetWithName:(id)a4;
+- (void)decrementBy:(double)by forBudgetWithName:(id)name;
 - (void)reinstantiateConfiguredBudgets;
-- (void)reportActivityNoLongerRunning:(id)a3;
-- (void)reportActivityNoLongerRunningWithParameters:(id)a3;
-- (void)reportActivityRunning:(id)a3;
-- (void)reportActivityRunningWithParameters:(id)a3;
-- (void)reportUpdateForActivity:(id)a3 withDataConsumed:(id)a4;
-- (void)setBalance:(double)a3 forBudgetWithName:(id)a4;
-- (void)setCapacity:(double)a3 forBudgetWithName:(id)a4;
+- (void)reportActivityNoLongerRunning:(id)running;
+- (void)reportActivityNoLongerRunningWithParameters:(id)parameters;
+- (void)reportActivityRunning:(id)running;
+- (void)reportActivityRunningWithParameters:(id)parameters;
+- (void)reportUpdateForActivity:(id)activity withDataConsumed:(id)consumed;
+- (void)setBalance:(double)balance forBudgetWithName:(id)name;
+- (void)setCapacity:(double)capacity forBudgetWithName:(id)name;
 @end
 
 @implementation _DASBudgetManager
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_100092D04;
   block[3] = &unk_1001B54A0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10020B5E0 != -1)
   {
     dispatch_once(&qword_10020B5E0, block);
@@ -57,44 +57,44 @@
 - (id)allBudgets
 {
   v3 = +[NSMutableArray array];
-  v4 = [(_DASSystemBudgetManager *)self->_systemBudgetManager allBudgets];
-  [v3 addObjectsFromArray:v4];
+  allBudgets = [(_DASSystemBudgetManager *)self->_systemBudgetManager allBudgets];
+  [v3 addObjectsFromArray:allBudgets];
 
-  v5 = [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager allBudgets];
-  [v3 addObjectsFromArray:v5];
+  allBudgets2 = [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager allBudgets];
+  [v3 addObjectsFromArray:allBudgets2];
 
   return v3;
 }
 
-- (double)balanceForBudgetWithName:(id)a3
+- (double)balanceForBudgetWithName:(id)name
 {
   widgetRefreshBudgetManager = self->_widgetRefreshBudgetManager;
-  v5 = a3;
-  v6 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:v5];
+  nameCopy = name;
+  v6 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:nameCopy];
   v7 = 8;
   if (v6)
   {
     v7 = 16;
   }
 
-  [*(&self->super.isa + v7) balanceForBudgetWithName:v5];
+  [*(&self->super.isa + v7) balanceForBudgetWithName:nameCopy];
   v9 = v8;
 
   return v9;
 }
 
-- (double)capacityForBudgetWithName:(id)a3
+- (double)capacityForBudgetWithName:(id)name
 {
   widgetRefreshBudgetManager = self->_widgetRefreshBudgetManager;
-  v5 = a3;
-  v6 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:v5];
+  nameCopy = name;
+  v6 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:nameCopy];
   v7 = 8;
   if (v6)
   {
     v7 = 16;
   }
 
-  [*(&self->super.isa + v7) capacityForBudgetWithName:v5];
+  [*(&self->super.isa + v7) capacityForBudgetWithName:nameCopy];
   v9 = v8;
 
   return v9;
@@ -117,129 +117,129 @@
   }
 }
 
-- (void)setBalance:(double)a3 forBudgetWithName:(id)a4
+- (void)setBalance:(double)balance forBudgetWithName:(id)name
 {
   widgetRefreshBudgetManager = self->_widgetRefreshBudgetManager;
-  v9 = a4;
-  v7 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:v9];
+  nameCopy = name;
+  v7 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:nameCopy];
   v8 = 8;
   if (v7)
   {
     v8 = 16;
   }
 
-  [*(&self->super.isa + v8) setBalance:v9 forBudgetWithName:a3];
+  [*(&self->super.isa + v8) setBalance:nameCopy forBudgetWithName:balance];
 }
 
-- (void)decrementBy:(double)a3 forBudgetWithName:(id)a4
+- (void)decrementBy:(double)by forBudgetWithName:(id)name
 {
   widgetRefreshBudgetManager = self->_widgetRefreshBudgetManager;
-  v9 = a4;
-  v7 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:v9];
+  nameCopy = name;
+  v7 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:nameCopy];
   v8 = 8;
   if (v7)
   {
     v8 = 16;
   }
 
-  [*(&self->super.isa + v8) decrementBy:v9 forBudgetWithName:a3];
+  [*(&self->super.isa + v8) decrementBy:nameCopy forBudgetWithName:by];
 }
 
-- (void)setCapacity:(double)a3 forBudgetWithName:(id)a4
+- (void)setCapacity:(double)capacity forBudgetWithName:(id)name
 {
   widgetRefreshBudgetManager = self->_widgetRefreshBudgetManager;
-  v9 = a4;
-  v7 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:v9];
+  nameCopy = name;
+  v7 = [(_DASWidgetRefreshBudgetManager *)widgetRefreshBudgetManager managesBudgetWithName:nameCopy];
   v8 = 8;
   if (v7)
   {
     v8 = 16;
   }
 
-  [*(&self->super.isa + v8) setCapacity:v9 forBudgetWithName:a3];
+  [*(&self->super.isa + v8) setCapacity:nameCopy forBudgetWithName:capacity];
 }
 
-- (BOOL)isWidgetRefreshBudget:(id)a3
+- (BOOL)isWidgetRefreshBudget:(id)budget
 {
-  v3 = a3;
+  budgetCopy = budget;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)reportActivityRunning:(id)a3
+- (void)reportActivityRunning:(id)running
 {
-  v5 = a3;
-  v4 = [v5 widgetBudgetID];
+  runningCopy = running;
+  widgetBudgetID = [runningCopy widgetBudgetID];
 
-  if (v4)
+  if (widgetBudgetID)
   {
-    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportActivityRunning:v5];
+    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportActivityRunning:runningCopy];
   }
 
-  [(_DASSystemBudgetManager *)self->_systemBudgetManager reportActivityRunning:v5];
+  [(_DASSystemBudgetManager *)self->_systemBudgetManager reportActivityRunning:runningCopy];
 }
 
-- (void)reportActivityNoLongerRunning:(id)a3
+- (void)reportActivityNoLongerRunning:(id)running
 {
-  v5 = a3;
-  v4 = [v5 widgetBudgetID];
+  runningCopy = running;
+  widgetBudgetID = [runningCopy widgetBudgetID];
 
-  if (v4)
+  if (widgetBudgetID)
   {
-    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportActivityNoLongerRunning:v5];
+    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportActivityNoLongerRunning:runningCopy];
   }
 
-  [(_DASSystemBudgetManager *)self->_systemBudgetManager reportActivityNoLongerRunning:v5];
+  [(_DASSystemBudgetManager *)self->_systemBudgetManager reportActivityNoLongerRunning:runningCopy];
 }
 
-- (void)reportActivityRunningWithParameters:(id)a3
+- (void)reportActivityRunningWithParameters:(id)parameters
 {
-  v6 = a3;
+  parametersCopy = parameters;
   widgetRefreshBudgetManager = self->_widgetRefreshBudgetManager;
   if (objc_opt_respondsToSelector())
   {
-    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportActivityRunningWithParameters:v6];
+    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportActivityRunningWithParameters:parametersCopy];
   }
 
   systemBudgetManager = self->_systemBudgetManager;
   if (objc_opt_respondsToSelector())
   {
-    [(_DASSystemBudgetManager *)self->_systemBudgetManager reportActivityRunningWithParameters:v6];
+    [(_DASSystemBudgetManager *)self->_systemBudgetManager reportActivityRunningWithParameters:parametersCopy];
   }
 }
 
-- (void)reportActivityNoLongerRunningWithParameters:(id)a3
+- (void)reportActivityNoLongerRunningWithParameters:(id)parameters
 {
-  v6 = a3;
+  parametersCopy = parameters;
   widgetRefreshBudgetManager = self->_widgetRefreshBudgetManager;
   if (objc_opt_respondsToSelector())
   {
-    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportActivityNoLongerRunningWithParameters:v6];
+    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportActivityNoLongerRunningWithParameters:parametersCopy];
   }
 
   systemBudgetManager = self->_systemBudgetManager;
   if (objc_opt_respondsToSelector())
   {
-    [(_DASSystemBudgetManager *)self->_systemBudgetManager reportActivityNoLongerRunningWithParameters:v6];
+    [(_DASSystemBudgetManager *)self->_systemBudgetManager reportActivityNoLongerRunningWithParameters:parametersCopy];
   }
 }
 
-- (void)reportUpdateForActivity:(id)a3 withDataConsumed:(id)a4
+- (void)reportUpdateForActivity:(id)activity withDataConsumed:(id)consumed
 {
-  v9 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  consumedCopy = consumed;
   widgetRefreshBudgetManager = self->_widgetRefreshBudgetManager;
   if (objc_opt_respondsToSelector())
   {
-    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportUpdateForActivity:v9 withDataConsumed:v6];
+    [(_DASWidgetRefreshBudgetManager *)self->_widgetRefreshBudgetManager reportUpdateForActivity:activityCopy withDataConsumed:consumedCopy];
   }
 
   systemBudgetManager = self->_systemBudgetManager;
   if (objc_opt_respondsToSelector())
   {
-    [(_DASSystemBudgetManager *)self->_systemBudgetManager reportUpdateForActivity:v9 withDataConsumed:v6];
+    [(_DASSystemBudgetManager *)self->_systemBudgetManager reportUpdateForActivity:activityCopy withDataConsumed:consumedCopy];
   }
 }
 

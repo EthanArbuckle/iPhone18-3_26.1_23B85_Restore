@@ -1,13 +1,13 @@
 @interface WFAppIntentShortcutsMetadata
-- (id)attributionBundleIdentifierWithDefaultValue:(id)a3;
+- (id)attributionBundleIdentifierWithDefaultValue:(id)value;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation WFAppIntentShortcutsMetadata
 
-- (id)attributionBundleIdentifierWithDefaultValue:(id)a3
+- (id)attributionBundleIdentifierWithDefaultValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     v3 = sub_1CA94C3A8();
   }
@@ -35,7 +35,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
+  selfCopy = self;
   AppIntentShortcutsMetadata.dictionaryRepresentation()();
 
   type metadata accessor for Key(0);

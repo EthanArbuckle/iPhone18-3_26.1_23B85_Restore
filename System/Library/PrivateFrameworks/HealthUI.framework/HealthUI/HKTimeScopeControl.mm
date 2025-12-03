@@ -1,55 +1,55 @@
 @interface HKTimeScopeControl
-+ (HKTimeScopeControl)controlWithFrame:(CGRect)a3 timeScopes:(id)a4;
-- (HKTimeScopeControl)initWithFrame:(CGRect)a3 timeScopes:(id)a4;
-- (int64_t)_indexForTimeScope:(int64_t)a3;
-- (int64_t)_timeScopeForIndex:(int64_t)a3;
++ (HKTimeScopeControl)controlWithFrame:(CGRect)frame timeScopes:(id)scopes;
+- (HKTimeScopeControl)initWithFrame:(CGRect)frame timeScopes:(id)scopes;
+- (int64_t)_indexForTimeScope:(int64_t)scope;
+- (int64_t)_timeScopeForIndex:(int64_t)index;
 @end
 
 @implementation HKTimeScopeControl
 
-+ (HKTimeScopeControl)controlWithFrame:(CGRect)a3 timeScopes:(id)a4
++ (HKTimeScopeControl)controlWithFrame:(CGRect)frame timeScopes:(id)scopes
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [[_HKTimeScopeControlBar alloc] initWithFrame:v8 timeScopes:x, y, width, height];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  scopesCopy = scopes;
+  height = [[_HKTimeScopeControlBar alloc] initWithFrame:scopesCopy timeScopes:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (HKTimeScopeControl)initWithFrame:(CGRect)a3 timeScopes:(id)a4
+- (HKTimeScopeControl)initWithFrame:(CGRect)frame timeScopes:(id)scopes
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  scopesCopy = scopes;
   v14.receiver = self;
   v14.super_class = HKTimeScopeControl;
-  v11 = [(HKTimeScopeControl *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(HKTimeScopeControl *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_timeScopes, a4);
+    objc_storeStrong(&height->_timeScopes, scopes);
   }
 
   return v12;
 }
 
-- (int64_t)_timeScopeForIndex:(int64_t)a3
+- (int64_t)_timeScopeForIndex:(int64_t)index
 {
-  v3 = [(NSArray *)self->_timeScopes objectAtIndexedSubscript:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSArray *)self->_timeScopes objectAtIndexedSubscript:index];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (int64_t)_indexForTimeScope:(int64_t)a3
+- (int64_t)_indexForTimeScope:(int64_t)scope
 {
   timeScopes = self->_timeScopes;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:scope];
   v5 = [(NSArray *)timeScopes indexOfObject:v4];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)

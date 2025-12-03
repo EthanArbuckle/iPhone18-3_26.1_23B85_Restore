@@ -4,63 +4,63 @@
 - (BOOL)includeInactiveLayers;
 - (NSString)assetIdentifier;
 - (NSURL)assetURL;
-- (PPPosterOverrideConfiguration)initWithWFWallpaperConfiguration:(id)a3;
+- (PPPosterOverrideConfiguration)initWithWFWallpaperConfiguration:(id)configuration;
 @end
 
 @implementation PPPosterOverrideConfiguration
 
 - (BOOL)includeInactiveLayers
 {
-  v2 = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
-  v3 = [v2 location] != 1;
+  wallpaperConfiguration = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
+  v3 = [wallpaperConfiguration location] != 1;
 
   return v3;
 }
 
 - (BOOL)includeBackfillLayers
 {
-  v2 = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
-  v3 = [v2 usePreview];
-  v4 = [v3 BOOLValue];
+  wallpaperConfiguration = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
+  usePreview = [wallpaperConfiguration usePreview];
+  bOOLValue = [usePreview BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)applySmartCrop
 {
-  v2 = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
-  v3 = [v2 smartCrop];
-  v4 = [v3 BOOLValue];
+  wallpaperConfiguration = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
+  smartCrop = [wallpaperConfiguration smartCrop];
+  bOOLValue = [smartCrop BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (NSString)assetIdentifier
 {
-  v2 = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
-  v3 = [v2 assetIdentifier];
+  wallpaperConfiguration = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
+  assetIdentifier = [wallpaperConfiguration assetIdentifier];
 
-  return v3;
+  return assetIdentifier;
 }
 
 - (NSURL)assetURL
 {
-  v2 = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
-  v3 = [v2 assetURL];
+  wallpaperConfiguration = [(PPPosterOverrideConfiguration *)self wallpaperConfiguration];
+  assetURL = [wallpaperConfiguration assetURL];
 
-  return v3;
+  return assetURL;
 }
 
-- (PPPosterOverrideConfiguration)initWithWFWallpaperConfiguration:(id)a3
+- (PPPosterOverrideConfiguration)initWithWFWallpaperConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = PPPosterOverrideConfiguration;
   v6 = [(PPPosterOverrideConfiguration *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_wallpaperConfiguration, a3);
+    objc_storeStrong(&v6->_wallpaperConfiguration, configuration);
   }
 
   return v7;

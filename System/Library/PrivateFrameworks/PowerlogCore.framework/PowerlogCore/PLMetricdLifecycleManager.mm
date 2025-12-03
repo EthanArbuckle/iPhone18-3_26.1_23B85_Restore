@@ -92,10 +92,10 @@ uint64_t __42__PLMetricdLifecycleManager_sharedManager__block_invoke()
 
 - (void)stopMetricd
 {
-  v2 = [(PLMetricdLifecycleManager *)self isActive];
+  isActive = [(PLMetricdLifecycleManager *)self isActive];
   v3 = PLLogMetricdLifecycleManager();
   v4 = os_log_type_enabled(v3, OS_LOG_TYPE_INFO);
-  if (v2)
+  if (isActive)
   {
     if (v4)
     {

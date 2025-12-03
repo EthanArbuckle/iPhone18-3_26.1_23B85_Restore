@@ -1,7 +1,7 @@
 @interface StoreTabBarController
-- (_TtC22SubscribePageExtension21StoreTabBarController)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension21StoreTabBarController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC22SubscribePageExtension21StoreTabBarController)initWithTabs:(id)a3;
+- (_TtC22SubscribePageExtension21StoreTabBarController)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension21StoreTabBarController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC22SubscribePageExtension21StoreTabBarController)initWithTabs:(id)tabs;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)handleAccountKeyCommand;
 - (void)handleAppsTabSwitchKeyCommand;
@@ -17,9 +17,9 @@
 
 @implementation StoreTabBarController
 
-- (_TtC22SubscribePageExtension21StoreTabBarController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC22SubscribePageExtension21StoreTabBarController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100753094();
     v7 = v6;
@@ -31,11 +31,11 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1006F6A3C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1006F6A3C(v5, v7, bundle);
 }
 
-- (_TtC22SubscribePageExtension21StoreTabBarController)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension21StoreTabBarController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension21StoreTabBarController_objectGraph) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension21StoreTabBarController_tabChangeDelegate) = 0;
@@ -47,83 +47,83 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
-  v5 = [(StoreTabBarController *)v4 selectedViewController];
-  if (v5)
+  selfCopy = self;
+  selectedViewController = [(StoreTabBarController *)selfCopy selectedViewController];
+  if (selectedViewController)
   {
-    v6 = v5;
-    v7 = [v5 supportedInterfaceOrientations];
+    v6 = selectedViewController;
+    supportedInterfaceOrientations = [selectedViewController supportedInterfaceOrientations];
 
-    return v7;
+    return supportedInterfaceOrientations;
   }
 
   else
   {
-    v10.receiver = v4;
+    v10.receiver = selfCopy;
     v10.super_class = ObjectType;
-    v9 = [(StoreTabBarController *)&v10 supportedInterfaceOrientations];
+    supportedInterfaceOrientations2 = [(StoreTabBarController *)&v10 supportedInterfaceOrientations];
 
-    return v9;
+    return supportedInterfaceOrientations2;
   }
 }
 
 - (void)handleTodayTabSwitchKeyCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F6CE8(&enum case for NavigationTab.today(_:));
 }
 
 - (void)handleGamesTabSwitchKeyCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F6CE8(&enum case for NavigationTab.games(_:));
 }
 
 - (void)handleAppsTabSwitchKeyCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F6CE8(&enum case for NavigationTab.apps(_:));
 }
 
 - (void)handleArcadeTabSwitchKeyCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F6CE8(&enum case for NavigationTab.arcade(_:));
 }
 
 - (void)handleSearchKeyCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F7270();
 }
 
 - (void)handleAccountKeyCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F7C70();
 }
 
 - (void)handleSignInCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F847C(&type metadata accessor for SignInAction, &SignInAction.init());
 }
 
 - (void)handleSignOutCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F847C(&type metadata accessor for SignOutAction, &SignOutAction.init());
 }
 
 - (void)handlePrivacyCommand
 {
-  v2 = self;
+  selfCopy = self;
   isa = sub_100753294().super.isa;
   v4 = [objc_opt_self() presenterForPrivacyUnifiedAboutWithIdentifiers:isa];
 
   if (v4)
   {
-    [v4 setPresentingViewController:v2];
+    [v4 setPresentingViewController:selfCopy];
   }
 
   [v4 present];
@@ -131,11 +131,11 @@
 
 - (void)handleDebugCommand
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F8754();
 }
 
-- (_TtC22SubscribePageExtension21StoreTabBarController)initWithTabs:(id)a3
+- (_TtC22SubscribePageExtension21StoreTabBarController)initWithTabs:(id)tabs
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

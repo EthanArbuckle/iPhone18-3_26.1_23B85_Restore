@@ -1,6 +1,6 @@
 @interface CKDPCSSQLCacheTableGroup
-+ (id)groupIdentifierForContainerID:(id)a3 accountOverrideInfo:(id)a4;
-+ (id)groupNameForContainerID:(id)a3 accountOverrideInfo:(id)a4;
++ (id)groupIdentifierForContainerID:(id)d accountOverrideInfo:(id)info;
++ (id)groupNameForContainerID:(id)d accountOverrideInfo:(id)info;
 - (void)createTables;
 @end
 
@@ -15,11 +15,11 @@
   objc_msgSend_addTable_(self, v4, v3);
 }
 
-+ (id)groupIdentifierForContainerID:(id)a3 accountOverrideInfo:(id)a4
++ (id)groupIdentifierForContainerID:(id)d accountOverrideInfo:(id)info
 {
-  v5 = a4;
-  v8 = objc_msgSend_containerIdentifier(a3, v6, v7);
-  v13 = objc_msgSend_accountID(v5, v9, v10);
+  infoCopy = info;
+  v8 = objc_msgSend_containerIdentifier(d, v6, v7);
+  v13 = objc_msgSend_accountID(infoCopy, v9, v10);
   if (v13)
   {
     v14 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v11, @"%@.%@", v8, v13);
@@ -29,10 +29,10 @@
     }
   }
 
-  v15 = objc_msgSend_altDSID(v5, v11, v12);
+  v15 = objc_msgSend_altDSID(infoCopy, v11, v12);
   if (!v15 || (v18 = v15, objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v16, @"%@.%@", v8, v15), v19 = objc_claimAutoreleasedReturnValue(), v18, !v19))
   {
-    v21 = objc_msgSend_email(v5, v16, v17);
+    v21 = objc_msgSend_email(infoCopy, v16, v17);
     if (v21)
     {
       v19 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v20, @"%@.%@", v8, v21);
@@ -43,7 +43,7 @@
       v19 = 0;
     }
 
-    if (v5 && !v19)
+    if (infoCopy && !v19)
     {
       v19 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v22, @"%@.Anonymous", v8);
     }
@@ -59,9 +59,9 @@ LABEL_13:
   return v19;
 }
 
-+ (id)groupNameForContainerID:(id)a3 accountOverrideInfo:(id)a4
++ (id)groupNameForContainerID:(id)d accountOverrideInfo:(id)info
 {
-  v4 = objc_msgSend_groupIdentifierForContainerID_accountOverrideInfo_(a1, a2, a3, a4);
+  v4 = objc_msgSend_groupIdentifierForContainerID_accountOverrideInfo_(self, a2, d, info);
   v6 = objc_msgSend_groupNameWithDomain_domainIdentifier_groupName_(MEMORY[0x277CBC660], v5, 2, v4, @"PCSCache");
 
   return v6;

@@ -1,8 +1,8 @@
 @interface PLDeferredRebuildFace
-+ (id)deferredFacesWithAssetCloudGUID:(id)a3 inManagedObjectContext:(id)a4;
-- (id)payloadForChangedKeys:(id)a3;
++ (id)deferredFacesWithAssetCloudGUID:(id)d inManagedObjectContext:(id)context;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (id)payloadIDForTombstone:(id)a3;
+- (id)payloadIDForTombstone:(id)tombstone;
 - (id)payloadIDsByPayloadClassIDToDeleteOnInsert;
 @end
 
@@ -11,8 +11,8 @@
 - (id)payloadIDsByPayloadClassIDToDeleteOnInsert
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v2 = [(PLDeferredRebuildFace *)self faceUUID];
-  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v2];
+  faceUUID = [(PLDeferredRebuildFace *)self faceUUID];
+  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:faceUUID];
 
   if (v3)
   {
@@ -31,21 +31,21 @@
   return v6;
 }
 
-- (id)payloadIDForTombstone:(id)a3
+- (id)payloadIDForTombstone:(id)tombstone
 {
-  v3 = [a3 objectForKeyedSubscript:@"uuid"];
+  v3 = [tombstone objectForKeyedSubscript:@"uuid"];
   v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
 
   return v4;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
-  v5 = [(PLDeferredRebuildFace *)self uuid];
-  if (v5)
+  keysCopy = keys;
+  uuid = [(PLDeferredRebuildFace *)self uuid];
+  if (uuid)
   {
-    v6 = [(PLManagedObjectJournalEntryPayload *)[PLDeferredRebuildFaceJournalEntryPayload alloc] initWithManagedObject:self changedKeys:v4];
+    v6 = [(PLManagedObjectJournalEntryPayload *)[PLDeferredRebuildFaceJournalEntryPayload alloc] initWithManagedObject:self changedKeys:keysCopy];
   }
 
   else
@@ -58,20 +58,20 @@
 
 - (id)payloadID
 {
-  v2 = [(PLDeferredRebuildFace *)self uuid];
-  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v2];
+  uuid = [(PLDeferredRebuildFace *)self uuid];
+  v3 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v3;
 }
 
-+ (id)deferredFacesWithAssetCloudGUID:(id)a3 inManagedObjectContext:(id)a4
++ (id)deferredFacesWithAssetCloudGUID:(id)d inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dCopy = d;
+  contextCopy = context;
+  if (dCopy)
   {
-    v9 = v5;
-    v10 = v6;
+    v9 = dCopy;
+    v10 = contextCopy;
     v7 = pl_result_with_autoreleasepool();
   }
 

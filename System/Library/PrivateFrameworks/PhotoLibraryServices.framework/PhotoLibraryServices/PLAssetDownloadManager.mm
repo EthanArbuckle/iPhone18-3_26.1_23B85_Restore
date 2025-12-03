@@ -2,8 +2,8 @@
 + (id)defaultManager;
 - (PLAssetDownloadManager)init;
 - (PLAssetDownloadManagerDelegate)delegate;
-- (int)requestRequiredResourcesForManagedAssetObjectUUID:(id)a3 library:(id)a4 completionHandler:(id)a5;
-- (void)cancelRequest:(int)a3;
+- (int)requestRequiredResourcesForManagedAssetObjectUUID:(id)d library:(id)library completionHandler:(id)handler;
+- (void)cancelRequest:(int)request;
 @end
 
 @implementation PLAssetDownloadManager
@@ -15,14 +15,14 @@
   return WeakRetained;
 }
 
-- (void)cancelRequest:(int)a3
+- (void)cancelRequest:(int)request
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __40__PLAssetDownloadManager_cancelRequest___block_invoke;
   v3[3] = &unk_1E756CD90;
   v3[4] = self;
-  v4 = a3;
+  requestCopy = request;
   [(PLAssetDownloadManager *)self _onQueueAsync:v3];
 }
 
@@ -67,11 +67,11 @@ void __40__PLAssetDownloadManager_cancelRequest___block_invoke(uint64_t a1)
   }
 }
 
-- (int)requestRequiredResourcesForManagedAssetObjectUUID:(id)a3 library:(id)a4 completionHandler:(id)a5
+- (int)requestRequiredResourcesForManagedAssetObjectUUID:(id)d library:(id)library completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  libraryCopy = library;
+  handlerCopy = handler;
   v11 = atomic_fetch_add(&self->_currentRequestId, 1u) + 1;
   v12 = [MEMORY[0x1E696AD98] numberWithInt:v11];
   v38[0] = 0;
@@ -90,9 +90,9 @@ void __40__PLAssetDownloadManager_cancelRequest___block_invoke(uint64_t a1)
   v27[1] = 3221225472;
   v27[2] = __102__PLAssetDownloadManager_requestRequiredResourcesForManagedAssetObjectUUID_library_completionHandler___block_invoke;
   v27[3] = &unk_1E7578898;
-  v13 = v8;
+  v13 = dCopy;
   v28 = v13;
-  v14 = v9;
+  v14 = libraryCopy;
   v29 = v14;
   v30 = v38;
   v31 = &v32;
@@ -109,7 +109,7 @@ void __40__PLAssetDownloadManager_cancelRequest___block_invoke(uint64_t a1)
     v19 = v13;
     v23 = v38;
     v20 = v14;
-    v21 = v10;
+    v21 = handlerCopy;
     [(PLAssetDownloadManager *)self _onQueueAsync:v17];
 
     v15 = v18;
@@ -121,7 +121,7 @@ void __40__PLAssetDownloadManager_cancelRequest___block_invoke(uint64_t a1)
     v24[1] = 3221225472;
     v24[2] = __102__PLAssetDownloadManager_requestRequiredResourcesForManagedAssetObjectUUID_library_completionHandler___block_invoke_3;
     v24[3] = &unk_1E7565688;
-    v25 = v10;
+    v25 = handlerCopy;
     v26 = v11;
     [(PLAssetDownloadManager *)self _onQueueAsync:v24];
     v15 = v25;
@@ -400,13 +400,13 @@ BOOL __102__PLAssetDownloadManager_requestRequiredResourcesForManagedAssetObject
   v2 = [(PLAssetDownloadManager *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     requestsById = v2->_requestsById;
-    v2->_requestsById = v3;
+    v2->_requestsById = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     progressById = v2->_progressById;
-    v2->_progressById = v5;
+    v2->_progressById = dictionary2;
 
     v7 = dispatch_queue_create("com.apple.mobileslideshow.plassetdownloadrequest", 0);
     queue = v2->_queue;

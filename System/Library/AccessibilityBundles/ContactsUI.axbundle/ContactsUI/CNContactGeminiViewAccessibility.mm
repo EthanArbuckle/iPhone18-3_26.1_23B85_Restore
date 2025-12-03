@@ -8,7 +8,7 @@
 {
   v7.receiver = self;
   v7.super_class = CNContactGeminiViewAccessibility;
-  v3 = [(CNContactGeminiViewAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(CNContactGeminiViewAccessibility *)&v7 accessibilityTraits];
   v4 = [(CNContactGeminiViewAccessibility *)self safeBoolForKey:@"shouldDisplayChevron"];
   v5 = *MEMORY[0x29EDC7F70];
   if (!v4)
@@ -16,7 +16,7 @@
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 @end

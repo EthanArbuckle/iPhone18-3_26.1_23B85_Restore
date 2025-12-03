@@ -1,29 +1,29 @@
 @interface RAPStorage
-- (BOOL)_removeItemWithIdentifier:(id)a3 triggeringGarbageCollection:(BOOL)a4 error:(id *)a5;
+- (BOOL)_removeItemWithIdentifier:(id)identifier triggeringGarbageCollection:(BOOL)collection error:(id *)error;
 - (BOOL)containsItems;
 - (RAPStorage)init;
-- (RAPStorage)initWithStorageDirectoryURL:(id)a3 pathExtension:(id)a4;
-- (id)_allItemIdentifiersByCreationDateSortedAscending:(BOOL)a3 dates:(id *)a4;
-- (id)_itemURLForIdentifier:(id)a3;
-- (id)creationDateForItemWithIdentifier:(id)a3 error:(id *)a4;
-- (id)dataForItemWithIdentifier:(id)a3 error:(id *)a4;
-- (id)initByUsingOrCreatingStorageDirectoryAtURL:(id)a3 error:(id *)a4;
-- (void)_iterateAllItemIdentifiersIncludingURLPropertiesForKeys:(id)a3 usingBlock:(id)a4;
-- (void)_iterateAllItemIdentifiersUsingBlock:(id)a3;
+- (RAPStorage)initWithStorageDirectoryURL:(id)l pathExtension:(id)extension;
+- (id)_allItemIdentifiersByCreationDateSortedAscending:(BOOL)ascending dates:(id *)dates;
+- (id)_itemURLForIdentifier:(id)identifier;
+- (id)creationDateForItemWithIdentifier:(id)identifier error:(id *)error;
+- (id)dataForItemWithIdentifier:(id)identifier error:(id *)error;
+- (id)initByUsingOrCreatingStorageDirectoryAtURL:(id)l error:(id *)error;
+- (void)_iterateAllItemIdentifiersIncludingURLPropertiesForKeys:(id)keys usingBlock:(id)block;
+- (void)_iterateAllItemIdentifiersUsingBlock:(id)block;
 - (void)garbageCollectIfNeeded;
 - (void)removeAllItems;
-- (void)removeItemsPassingTest:(id)a3;
-- (void)saveItemWithData:(id)a3 forIdentifier:(id)a4 completion:(id)a5;
-- (void)setItemTimeToLive:(double)a3;
+- (void)removeItemsPassingTest:(id)test;
+- (void)saveItemWithData:(id)data forIdentifier:(id)identifier completion:(id)completion;
+- (void)setItemTimeToLive:(double)live;
 @end
 
 @implementation RAPStorage
 
-- (void)setItemTimeToLive:(double)a3
+- (void)setItemTimeToLive:(double)live
 {
-  if (self->_itemTimeToLive != a3)
+  if (self->_itemTimeToLive != live)
   {
-    self->_itemTimeToLive = a3;
+    self->_itemTimeToLive = live;
     [(RAPStorage *)self garbageCollectIfNeeded];
   }
 }
@@ -74,14 +74,14 @@
   }
 }
 
-- (id)creationDateForItemWithIdentifier:(id)a3 error:(id *)a4
+- (id)creationDateForItemWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(RAPStorage *)self garbageCollectIfNeeded];
-  v7 = [(RAPStorage *)self _itemURLForIdentifier:v6];
+  v7 = [(RAPStorage *)self _itemURLForIdentifier:identifierCopy];
 
   v13 = 0;
-  v8 = [v7 getResourceValue:&v13 forKey:NSURLCreationDateKey error:a4];
+  v8 = [v7 getResourceValue:&v13 forKey:NSURLCreationDateKey error:error];
   v9 = v13;
   v10 = v9;
   v11 = 0;
@@ -95,7 +95,7 @@
 
 - (BOOL)containsItems
 {
-  v2 = self;
+  selfCopy = self;
   [(RAPStorage *)self garbageCollectIfNeeded];
   v5 = 0;
   v6 = &v5;
@@ -106,15 +106,15 @@
   v4[2] = sub_10073558C;
   v4[3] = &unk_101627CE0;
   v4[4] = &v5;
-  [(RAPStorage *)v2 _iterateAllItemIdentifiersUsingBlock:v4];
-  LOBYTE(v2) = *(v6 + 24);
+  [(RAPStorage *)selfCopy _iterateAllItemIdentifiersUsingBlock:v4];
+  LOBYTE(selfCopy) = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
-  return v2;
+  return selfCopy;
 }
 
-- (id)_allItemIdentifiersByCreationDateSortedAscending:(BOOL)a3 dates:(id *)a4
+- (id)_allItemIdentifiersByCreationDateSortedAscending:(BOOL)ascending dates:(id *)dates
 {
-  v5 = a3;
+  ascendingCopy = ascending;
   v7 = objc_alloc_init(NSMutableArray);
   v8 = objc_alloc_init(NSMutableDictionary);
   v25 = NSURLCreationDateKey;
@@ -135,19 +135,19 @@
   v19[3] = &unk_101627C90;
   v12 = v11;
   v20 = v12;
-  v13 = [NSSortDescriptor sortDescriptorWithKey:0 ascending:v5 comparator:v19];
+  v13 = [NSSortDescriptor sortDescriptorWithKey:0 ascending:ascendingCopy comparator:v19];
   v24 = v13;
   v14 = [NSArray arrayWithObjects:&v24 count:1];
   [v10 sortUsingDescriptors:v14];
 
-  if (a4)
+  if (dates)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100735920;
     v17[3] = &unk_101627CB8;
     v18 = v12;
-    *a4 = sub_100021DB0(v10, v17);
+    *dates = sub_100021DB0(v10, v17);
   }
 
   v15 = v10;
@@ -162,31 +162,31 @@
   [(RAPStorage *)self removeItemsPassingTest:&stru_101627C40];
 }
 
-- (void)removeItemsPassingTest:(id)a3
+- (void)removeItemsPassingTest:(id)test
 {
-  v4 = a3;
+  testCopy = test;
   [(RAPStorage *)self garbageCollectIfNeeded];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100735A20;
   v6[3] = &unk_101627C00;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = testCopy;
+  v5 = testCopy;
   [(RAPStorage *)self _iterateAllItemIdentifiersUsingBlock:v6];
 }
 
-- (void)_iterateAllItemIdentifiersIncludingURLPropertiesForKeys:(id)a3 usingBlock:(id)a4
+- (void)_iterateAllItemIdentifiersIncludingURLPropertiesForKeys:(id)keys usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  keysCopy = keys;
+  blockCopy = block;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v8 = +[NSFileManager defaultManager];
-  v20 = v6;
-  v9 = [v8 contentsOfDirectoryAtURL:self->_directoryURL includingPropertiesForKeys:v6 options:0 error:0];
+  v20 = keysCopy;
+  v9 = [v8 contentsOfDirectoryAtURL:self->_directoryURL includingPropertiesForKeys:keysCopy options:0 error:0];
 
   v10 = [v9 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (!v10)
@@ -208,28 +208,28 @@
       v14 = *(*(&v22 + 1) + 8 * i);
       if (self->_pathExtension)
       {
-        v15 = [*(*(&v22 + 1) + 8 * i) pathExtension];
-        v16 = [v15 isEqual:self->_pathExtension];
+        pathExtension = [*(*(&v22 + 1) + 8 * i) pathExtension];
+        v16 = [pathExtension isEqual:self->_pathExtension];
 
         if (!v16)
         {
           continue;
         }
 
-        v17 = [v14 lastPathComponent];
-        v18 = [v17 stringByDeletingPathExtension];
+        lastPathComponent = [v14 lastPathComponent];
+        stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
       }
 
       else
       {
-        v18 = [*(*(&v22 + 1) + 8 * i) lastPathComponent];
+        stringByDeletingPathExtension = [*(*(&v22 + 1) + 8 * i) lastPathComponent];
       }
 
-      v19 = [NSUUID _maps_UUIDWithUUIDString:v18];
+      v19 = [NSUUID _maps_UUIDWithUUIDString:stringByDeletingPathExtension];
       if (v19)
       {
         v21 = 0;
-        v7[2](v7, v19, v14, &v21);
+        blockCopy[2](blockCopy, v19, v14, &v21);
         if (v21)
         {
 
@@ -250,69 +250,69 @@
 LABEL_17:
 }
 
-- (void)_iterateAllItemIdentifiersUsingBlock:(id)a3
+- (void)_iterateAllItemIdentifiersUsingBlock:(id)block
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100735D2C;
   v5[3] = &unk_101627BD8;
-  v6 = a3;
-  v4 = v6;
+  blockCopy = block;
+  v4 = blockCopy;
   [(RAPStorage *)self _iterateAllItemIdentifiersIncludingURLPropertiesForKeys:&__NSArray0__struct usingBlock:v5];
 }
 
-- (BOOL)_removeItemWithIdentifier:(id)a3 triggeringGarbageCollection:(BOOL)a4 error:(id *)a5
+- (BOOL)_removeItemWithIdentifier:(id)identifier triggeringGarbageCollection:(BOOL)collection error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  if (v6)
+  collectionCopy = collection;
+  identifierCopy = identifier;
+  if (collectionCopy)
   {
     [(RAPStorage *)self garbageCollectIfNeeded];
   }
 
-  v9 = [(RAPStorage *)self _itemURLForIdentifier:v8];
+  v9 = [(RAPStorage *)self _itemURLForIdentifier:identifierCopy];
   v10 = +[NSFileManager defaultManager];
-  v11 = [v10 removeItemAtURL:v9 error:a5];
+  v11 = [v10 removeItemAtURL:v9 error:error];
 
   return v11;
 }
 
-- (id)dataForItemWithIdentifier:(id)a3 error:(id *)a4
+- (id)dataForItemWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(RAPStorage *)self garbageCollectIfNeeded];
-  v7 = [(RAPStorage *)self _itemURLForIdentifier:v6];
+  v7 = [(RAPStorage *)self _itemURLForIdentifier:identifierCopy];
 
-  v8 = [NSData dataWithContentsOfURL:v7 options:1 error:a4];
+  v8 = [NSData dataWithContentsOfURL:v7 options:1 error:error];
 
   return v8;
 }
 
-- (void)saveItemWithData:(id)a3 forIdentifier:(id)a4 completion:(id)a5
+- (void)saveItemWithData:(id)data forIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = dispatch_get_global_queue(-32768, 0);
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100735F68;
   v15[3] = &unk_101660380;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
+  v16 = identifierCopy;
+  v17 = dataCopy;
+  v18 = completionCopy;
+  v12 = dataCopy;
+  v13 = completionCopy;
+  v14 = identifierCopy;
   dispatch_async(v11, v15);
 }
 
-- (id)_itemURLForIdentifier:(id)a3
+- (id)_itemURLForIdentifier:(id)identifier
 {
   directoryURL = self->_directoryURL;
-  v5 = [a3 UUIDString];
-  v6 = [(NSURL *)directoryURL URLByAppendingPathComponent:v5];
+  uUIDString = [identifier UUIDString];
+  v6 = [(NSURL *)directoryURL URLByAppendingPathComponent:uUIDString];
 
   if (self->_pathExtension)
   {
@@ -324,10 +324,10 @@ LABEL_17:
   return v6;
 }
 
-- (RAPStorage)initWithStorageDirectoryURL:(id)a3 pathExtension:(id)a4
+- (RAPStorage)initWithStorageDirectoryURL:(id)l pathExtension:(id)extension
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  extensionCopy = extension;
   v15.receiver = self;
   v15.super_class = RAPStorage;
   v8 = [(RAPStorage *)&v15 init];
@@ -335,11 +335,11 @@ LABEL_17:
   if (v8)
   {
     v8->_itemTimeToLive = 1.79769313e308;
-    v10 = [v6 copy];
+    v10 = [lCopy copy];
     directoryURL = v9->_directoryURL;
     v9->_directoryURL = v10;
 
-    v12 = [v7 copy];
+    v12 = [extensionCopy copy];
     pathExtension = v9->_pathExtension;
     v9->_pathExtension = v12;
   }
@@ -347,11 +347,11 @@ LABEL_17:
   return v9;
 }
 
-- (id)initByUsingOrCreatingStorageDirectoryAtURL:(id)a3 error:(id *)a4
+- (id)initByUsingOrCreatingStorageDirectoryAtURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(RAPStorage *)self initWithStorageDirectoryURL:v6];
-  if (!v7 || (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:a4], v8, v10 = 0, v9))
+  lCopy = l;
+  v7 = [(RAPStorage *)self initWithStorageDirectoryURL:lCopy];
+  if (!v7 || (+[NSFileManager defaultManager](NSFileManager, "defaultManager"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 createDirectoryAtURL:lCopy withIntermediateDirectories:1 attributes:0 error:error], v8, v10 = 0, v9))
   {
     v10 = v7;
   }

@@ -1,45 +1,45 @@
 @interface _PXAssetLoopUIView
 - (void)didMoveToWindow;
-- (void)setAlpha:(double)a3;
-- (void)setHidden:(BOOL)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation _PXAssetLoopUIView
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(_PXAssetLoopUIView *)self isHidden];
+  hiddenCopy = hidden;
+  isHidden = [(_PXAssetLoopUIView *)self isHidden];
   v8.receiver = self;
   v8.super_class = _PXAssetLoopUIView;
-  [(_PXAssetLoopUIView *)&v8 setHidden:v3];
-  if (v5 != v3)
+  [(_PXAssetLoopUIView *)&v8 setHidden:hiddenCopy];
+  if (isHidden != hiddenCopy)
   {
-    v6 = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
+    visibilityChangeHandler = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
 
-    if (v6)
+    if (visibilityChangeHandler)
     {
-      v7 = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
-      v7[2]();
+      visibilityChangeHandler2 = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
+      visibilityChangeHandler2[2]();
     }
   }
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   [(_PXAssetLoopUIView *)self alpha];
   v6 = v5;
   v9.receiver = self;
   v9.super_class = _PXAssetLoopUIView;
-  [(_PXAssetLoopUIView *)&v9 setAlpha:a3];
-  if (v6 != a3 && (a3 == 0.0 || v6 == 0.0))
+  [(_PXAssetLoopUIView *)&v9 setAlpha:alpha];
+  if (v6 != alpha && (alpha == 0.0 || v6 == 0.0))
   {
-    v7 = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
+    visibilityChangeHandler = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
 
-    if (v7)
+    if (visibilityChangeHandler)
     {
-      v8 = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
-      v8[2]();
+      visibilityChangeHandler2 = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
+      visibilityChangeHandler2[2]();
     }
   }
 }
@@ -49,12 +49,12 @@
   v5.receiver = self;
   v5.super_class = _PXAssetLoopUIView;
   [(_PXAssetLoopUIView *)&v5 didMoveToWindow];
-  v3 = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
+  visibilityChangeHandler = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
 
-  if (v3)
+  if (visibilityChangeHandler)
   {
-    v4 = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
-    v4[2]();
+    visibilityChangeHandler2 = [(_PXAssetLoopUIView *)self visibilityChangeHandler];
+    visibilityChangeHandler2[2]();
   }
 }
 

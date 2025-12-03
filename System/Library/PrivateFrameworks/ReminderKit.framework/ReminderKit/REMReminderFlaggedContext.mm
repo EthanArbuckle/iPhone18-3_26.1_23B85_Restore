@@ -1,20 +1,20 @@
 @interface REMReminderFlaggedContext
-- (REMReminderFlaggedContext)initWithReminder:(id)a3;
+- (REMReminderFlaggedContext)initWithReminder:(id)reminder;
 - (int64_t)flagged;
 @end
 
 @implementation REMReminderFlaggedContext
 
-- (REMReminderFlaggedContext)initWithReminder:(id)a3
+- (REMReminderFlaggedContext)initWithReminder:(id)reminder
 {
-  v5 = a3;
+  reminderCopy = reminder;
   v9.receiver = self;
   v9.super_class = REMReminderFlaggedContext;
   v6 = [(REMReminderFlaggedContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reminder, a3);
+    objc_storeStrong(&v6->_reminder, reminder);
   }
 
   return v7;
@@ -22,18 +22,18 @@
 
 - (int64_t)flagged
 {
-  v3 = [(REMReminderFlaggedContext *)self reminder];
-  v4 = [v3 flagged];
+  reminder = [(REMReminderFlaggedContext *)self reminder];
+  flagged = [reminder flagged];
 
-  if (!v4)
+  if (!flagged)
   {
     return 0;
   }
 
-  v5 = [(REMReminderFlaggedContext *)self reminder];
-  v6 = [v5 flagged];
+  reminder2 = [(REMReminderFlaggedContext *)self reminder];
+  flagged2 = [reminder2 flagged];
 
-  return v6;
+  return flagged2;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface CRLQAImportFileDocumentPickerDelegate
 - (_TtC8Freeform37CRLQAImportFileDocumentPickerDelegate)init;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)documentPickerWasCancelled:(id)a3;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)documentPickerWasCancelled:(id)cancelled;
 @end
 
 @implementation CRLQAImportFileDocumentPickerDelegate
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   v5 = sub_1005B981C(&qword_1019FA6B0);
   __chkstk_darwin(v5);
@@ -17,14 +17,14 @@
   {
     v10 = *(v8 - 8);
     (*(v10 + 16))(v7, v9 + ((*(v10 + 80) + 32) & ~*(v10 + 80)), v8);
-    v11 = self;
+    selfCopy = self;
 
     (*(v10 + 56))(v7, 0, 1, v8);
   }
 
   else
   {
-    v12 = self;
+    selfCopy2 = self;
 
     (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
   }
@@ -35,7 +35,7 @@
   sub_10000CAAC(v7, &qword_1019FA6B0);
 }
 
-- (void)documentPickerWasCancelled:(id)a3
+- (void)documentPickerWasCancelled:(id)cancelled
 {
   v4 = sub_1005B981C(&qword_1019FA6B0);
   __chkstk_darwin(v4);
@@ -43,7 +43,7 @@
   v7 = type metadata accessor for URL();
   (*(*(v7 - 8) + 56))(v6, 1, 1, v7);
   swift_storeEnumTagMultiPayload();
-  v8 = self;
+  selfCopy = self;
   sub_1006C4B10(v6);
 
   sub_10000CAAC(v6, &qword_1019FA6B0);

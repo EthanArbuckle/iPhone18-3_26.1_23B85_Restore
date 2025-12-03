@@ -1,10 +1,10 @@
 @interface PowerUIBatteryData
-+ (id)batteryLevelByTimeSlot:(unint64_t)a3 dayType:(unint64_t)a4;
++ (id)batteryLevelByTimeSlot:(unint64_t)slot dayType:(unint64_t)type;
 + (id)log;
 + (id)sharedInstance;
 - (PowerUIBatteryData)init;
-- (id)medianBatteryLevelByTimeSlot:(unint64_t)a3 dayType:(unint64_t)a4;
-- (id)midnightDateFrom:(id)a3;
+- (id)medianBatteryLevelByTimeSlot:(unint64_t)slot dayType:(unint64_t)type;
+- (id)midnightDateFrom:(id)from;
 @end
 
 @implementation PowerUIBatteryData
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __36__PowerUIBatteryData_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_5 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_5, block);
@@ -40,17 +40,17 @@ uint64_t __36__PowerUIBatteryData_sharedInstance__block_invoke(uint64_t a1)
   v2 = [(PowerUIBatteryData *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     dateToWeekdayMedian = v2->_dateToWeekdayMedian;
-    v2->_dateToWeekdayMedian = v3;
+    v2->_dateToWeekdayMedian = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     dateToWeekendMedian = v2->_dateToWeekendMedian;
-    v2->_dateToWeekendMedian = v5;
+    v2->_dateToWeekendMedian = dictionary2;
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     yesterdayReference = v2->_yesterdayReference;
-    v2->_yesterdayReference = v7;
+    v2->_yesterdayReference = dictionary3;
   }
 
   return v2;
@@ -71,21 +71,21 @@ uint64_t __36__PowerUIBatteryData_sharedInstance__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)medianBatteryLevelByTimeSlot:(unint64_t)a3 dayType:(unint64_t)a4
+- (id)medianBatteryLevelByTimeSlot:(unint64_t)slot dayType:(unint64_t)type
 {
-  v7 = [MEMORY[0x277CBEAA8] date];
-  v8 = [MEMORY[0x277CBEA80] currentCalendar];
-  v9 = v8;
-  if (a4 == 2)
+  date = [MEMORY[0x277CBEAA8] date];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v9 = currentCalendar;
+  if (type == 2)
   {
     v11 = 16;
-    v10 = [v8 dateBySettingUnit:16 value:2 ofDate:v7 options:4];
+    v10 = [currentCalendar dateBySettingUnit:16 value:2 ofDate:date options:4];
     goto LABEL_5;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v10 = [(PowerUIBatteryData *)self midnightDateFrom:v7];
+    v10 = [(PowerUIBatteryData *)self midnightDateFrom:date];
     v11 = 8;
 LABEL_5:
     v12 = *(&self->super.isa + v11);
@@ -99,13 +99,13 @@ LABEL_7:
 
   if (v13)
   {
-    v14 = [v12 objectForKeyedSubscript:v10];
+    array = [v12 objectForKeyedSubscript:v10];
   }
 
   else
   {
-    v15 = [PowerUIBatteryData batteryLevelByTimeSlot:a3 dayType:a4];
-    v14 = [MEMORY[0x277CBEB18] array];
+    v15 = [PowerUIBatteryData batteryLevelByTimeSlot:slot dayType:type];
+    array = [MEMORY[0x277CBEB18] array];
     if ([v15 count])
     {
       v16 = 0;
@@ -115,7 +115,7 @@ LABEL_7:
         v18 = MEMORY[0x277CCABB0];
         [v17 percentile:0.5];
         v19 = [v18 numberWithDouble:?];
-        [v14 setObject:v19 atIndexedSubscript:v16];
+        [array setObject:v19 atIndexedSubscript:v16];
 
         ++v16;
       }
@@ -123,68 +123,68 @@ LABEL_7:
       while ([v15 count] > v16);
     }
 
-    if ([v14 count])
+    if ([array count])
     {
       v20 = 0;
       while (1)
       {
-        v21 = [v14 objectAtIndexedSubscript:v20];
-        v22 = [v21 integerValue];
+        v21 = [array objectAtIndexedSubscript:v20];
+        integerValue = [v21 integerValue];
 
-        if (v22)
+        if (integerValue)
         {
           break;
         }
 
-        if ([v14 count] <= ++v20)
+        if ([array count] <= ++v20)
         {
           goto LABEL_18;
         }
       }
 
-      v23 = [v14 copy];
+      v23 = [array copy];
       [v12 setObject:v23 forKeyedSubscript:v10];
     }
 
 LABEL_18:
   }
 
-  return v14;
+  return array;
 }
 
-- (id)midnightDateFrom:(id)a3
+- (id)midnightDateFrom:(id)from
 {
   v3 = MEMORY[0x277CBEA80];
-  v4 = a3;
-  v5 = [v3 currentCalendar];
-  v6 = [v5 components:540 fromDate:v4];
+  fromCopy = from;
+  currentCalendar = [v3 currentCalendar];
+  v6 = [currentCalendar components:540 fromDate:fromCopy];
 
-  v7 = [v5 dateFromComponents:v6];
+  v7 = [currentCalendar dateFromComponents:v6];
 
   return v7;
 }
 
-+ (id)batteryLevelByTimeSlot:(unint64_t)a3 dayType:(unint64_t)a4
++ (id)batteryLevelByTimeSlot:(unint64_t)slot dayType:(unint64_t)type
 {
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
   v40 = __Block_byref_object_copy__4;
   v41 = __Block_byref_object_dispose__4;
-  v42 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  if (a3 <= 0x5A0)
+  array = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (slot <= 0x5A0)
   {
     v8 = 0;
     do
     {
-      v9 = [MEMORY[0x277CBEB18] array];
-      [v38[5] addObject:v9];
+      array2 = [MEMORY[0x277CBEB18] array];
+      [v38[5] addObject:array2];
 
       ++v8;
     }
 
-    while (0x5A0 / a3 > v8);
+    while (0x5A0 / slot > v8);
   }
 
   v35[0] = 0;
@@ -198,37 +198,37 @@ LABEL_18:
   v33[2] = 0x3032000000;
   v33[3] = __Block_byref_object_copy__4;
   v33[4] = __Block_byref_object_dispose__4;
-  v34 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x2020000000;
   v32[3] = -1;
-  v10 = [MEMORY[0x277CBEA80] currentCalendar];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
   v11 = BiomeLibrary();
-  v12 = [v11 Device];
-  v13 = [v12 Power];
-  v14 = [v13 BatteryLevel];
-  v15 = [v14 publisher];
+  device = [v11 Device];
+  power = [device Power];
+  batteryLevel = [power BatteryLevel];
+  publisher = [batteryLevel publisher];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __53__PowerUIBatteryData_batteryLevelByTimeSlot_dayType___block_invoke;
   v31[3] = &__block_descriptor_40_e23_v16__0__BPSCompletion_8l;
-  v31[4] = a1;
+  v31[4] = self;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __53__PowerUIBatteryData_batteryLevelByTimeSlot_dayType___block_invoke_10;
   v21[3] = &unk_2782D48B0;
-  v27 = a1;
-  v16 = v10;
+  selfCopy = self;
+  v16 = currentCalendar;
   v22 = v16;
   v23 = v35;
   v24 = v33;
   v25 = v32;
-  v28 = a4;
-  v29 = a3;
+  typeCopy = type;
+  slotCopy = slot;
   v26 = &v37;
-  v30 = 0x5A0 / a3;
-  v17 = [v15 sinkWithCompletion:v31 receiveInput:v21];
+  v30 = 0x5A0 / slot;
+  v17 = [publisher sinkWithCompletion:v31 receiveInput:v21];
 
   v18 = v38[5];
   _Block_object_dispose(v32, 8);

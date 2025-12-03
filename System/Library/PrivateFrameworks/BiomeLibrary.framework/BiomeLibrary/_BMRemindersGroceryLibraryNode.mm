@@ -2,25 +2,25 @@
 + (id)MiscategorizedGroceryItem;
 + (id)configurationForMiscategorizedGroceryItem;
 + (id)storeConfigurationForMiscategorizedGroceryItem;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMRemindersGroceryLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"MiscategorizedGroceryItem"])
+  if ([name isEqualToString:@"MiscategorizedGroceryItem"])
   {
-    v4 = [a1 MiscategorizedGroceryItem];
+    miscategorizedGroceryItem = [self MiscategorizedGroceryItem];
   }
 
   else
   {
-    v4 = 0;
+    miscategorizedGroceryItem = 0;
   }
 
-  return v4;
+  return miscategorizedGroceryItem;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForMiscategorizedGroceryItem
 {
-  v3 = [a1 storeConfigurationForMiscategorizedGroceryItem];
-  v4 = [a1 syncPolicyForMiscategorizedGroceryItem];
+  storeConfigurationForMiscategorizedGroceryItem = [self storeConfigurationForMiscategorizedGroceryItem];
+  syncPolicyForMiscategorizedGroceryItem = [self syncPolicyForMiscategorizedGroceryItem];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"B63BAB3C-13DD-4A3B-A346-BB6BE344E69D"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Reminders.Grocery.MiscategorizedGroceryItem" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.reminders" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Reminders.Grocery.MiscategorizedGroceryItem" eventClass:objc_opt_class() storeConfig:storeConfigurationForMiscategorizedGroceryItem syncPolicy:syncPolicyForMiscategorizedGroceryItem legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.reminders" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)MiscategorizedGroceryItem
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForMiscategorizedGroceryItem];
+  configurationForMiscategorizedGroceryItem = [self configurationForMiscategorizedGroceryItem];
   v3 = +[BMRemindersMiscategorizedGroceryItem columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Reminders.Grocery.MiscategorizedGroceryItem" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Reminders.Grocery.MiscategorizedGroceryItem" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Reminders.Grocery.MiscategorizedGroceryItem" schema:v9 configuration:configurationForMiscategorizedGroceryItem];
 
   v11 = *MEMORY[0x1E69E9840];
 

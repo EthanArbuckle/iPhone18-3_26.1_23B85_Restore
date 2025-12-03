@@ -1,21 +1,21 @@
 @interface DAReachability
-+ (BOOL)hostLikelyUnreachable:(id)a3;
++ (BOOL)hostLikelyUnreachable:(id)unreachable;
 + (id)sharedReachability;
-+ (void)recordError:(id)a3 forHost:(id)a4;
++ (void)recordError:(id)error forHost:(id)host;
 - (DAReachability)init;
-- (void)_hostReachabilityChanged:(id)a3;
-- (void)_networkReachabilityChanged:(id)a3;
-- (void)_notifyDelegatesHostReachable:(id)a3;
+- (void)_hostReachabilityChanged:(id)changed;
+- (void)_networkReachabilityChanged:(id)changed;
+- (void)_notifyDelegatesHostReachable:(id)reachable;
 - (void)_notifyDelegatesNetworkReachable;
 - (void)_startMonitoringNetworkReachability;
-- (void)_startMonitoringReachabilityForHost:(id)a3;
+- (void)_startMonitoringReachabilityForHost:(id)host;
 - (void)_startOrStopObservingHostReachabilityAfterUpdatingDelegates;
 - (void)_startOrStopObservingNetworkReachabilityAfterUpdatingDelegates;
 - (void)_stopMonitoringNetworkReachability;
-- (void)_stopMonitoringReachabilityForHost:(id)a3;
-- (void)addDelegate:(id)a3;
-- (void)muckWithDelegates:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)_stopMonitoringReachabilityForHost:(id)host;
+- (void)addDelegate:(id)delegate;
+- (void)muckWithDelegates:(id)delegates;
+- (void)removeDelegate:(id)delegate;
 @end
 
 @implementation DAReachability
@@ -67,17 +67,17 @@ uint64_t __36__DAReachability_sharedReachability__block_invoke()
   return v2;
 }
 
-- (void)muckWithDelegates:(id)a3
+- (void)muckWithDelegates:(id)delegates
 {
-  v4 = a3;
+  delegatesCopy = delegates;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __36__DAReachability_muckWithDelegates___block_invoke;
   v7[3] = &unk_278F1D438;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = delegatesCopy;
+  v6 = delegatesCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -94,10 +94,10 @@ uint64_t __36__DAReachability_muckWithDelegates___block_invoke(uint64_t a1)
 {
   dispatch_assert_queue_V2(self->_queue);
   v3 = [(NSHashTable *)self->_networkReachableDelegates count];
-  v4 = [(DAReachability *)self _monitoringNetworkReachability];
-  if (!v3 || v4)
+  _monitoringNetworkReachability = [(DAReachability *)self _monitoringNetworkReachability];
+  if (!v3 || _monitoringNetworkReachability)
   {
-    if (v3 == 0 && v4)
+    if (v3 == 0 && _monitoringNetworkReachability)
     {
 
       [(DAReachability *)self _stopMonitoringNetworkReachability];
@@ -150,16 +150,16 @@ LABEL_7:
   return MEMORY[0x2821F96F8](v6, v7);
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __30__DAReachability_addDelegate___block_invoke;
   v6[3] = &unk_278F1CD98;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = delegateCopy;
+  selfCopy = self;
+  v5 = delegateCopy;
   [(DAReachability *)self muckWithDelegates:v6];
 }
 
@@ -188,16 +188,16 @@ void __30__DAReachability_addDelegate___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__DAReachability_removeDelegate___block_invoke;
   v6[3] = &unk_278F1CD98;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = delegateCopy;
+  v5 = delegateCopy;
   [(DAReachability *)self muckWithDelegates:v6];
 }
 
@@ -215,17 +215,17 @@ void __33__DAReachability_removeDelegate___block_invoke(uint64_t a1)
 
 - (void)_notifyDelegatesNetworkReachable
 {
-  v3 = [(DAReachability *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(DAReachability *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(NSHashTable *)self->_networkReachableDelegates allObjects];
+  allObjects = [(NSHashTable *)self->_networkReachableDelegates allObjects];
   v5 = dataaccess_get_global_queue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __50__DAReachability__notifyDelegatesNetworkReachable__block_invoke;
   block[3] = &unk_278F1CDC0;
-  v8 = v4;
-  v6 = v4;
+  v8 = allObjects;
+  v6 = allObjects;
   dispatch_async(v5, block);
 }
 
@@ -265,24 +265,24 @@ void __50__DAReachability__notifyDelegatesNetworkReachable__block_invoke(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyDelegatesHostReachable:(id)a3
+- (void)_notifyDelegatesHostReachable:(id)reachable
 {
-  v4 = a3;
-  v5 = [(DAReachability *)self queue];
-  dispatch_assert_queue_V2(v5);
+  reachableCopy = reachable;
+  queue = [(DAReachability *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(NSMutableDictionary *)self->_hostReachableDelegates objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_hostReachableDelegates objectForKeyedSubscript:reachableCopy];
 
-  v7 = [v6 allObjects];
+  allObjects = [v6 allObjects];
 
-  if ([v7 count])
+  if ([allObjects count])
   {
     v8 = dataaccess_get_global_queue();
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__DAReachability__notifyDelegatesHostReachable___block_invoke;
     block[3] = &unk_278F1CDC0;
-    v10 = v7;
+    v10 = allObjects;
     dispatch_async(v8, block);
   }
 }
@@ -334,8 +334,8 @@ void __48__DAReachability__notifyDelegatesHostReachable___block_invoke(uint64_t 
     _os_log_impl(&dword_248524000, v3, v4, "Started monitoring network reachability", v6, 2u);
   }
 
-  v5 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v5 addNetworkReachableObserver:self selector:sel__networkReachabilityChanged_];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] addNetworkReachableObserver:self selector:sel__networkReachabilityChanged_];
 }
 
 - (void)_stopMonitoringNetworkReachability
@@ -349,117 +349,117 @@ void __48__DAReachability__notifyDelegatesHostReachable___block_invoke(uint64_t 
     _os_log_impl(&dword_248524000, v3, v4, "Stopped monitoring network reachability", v6, 2u);
   }
 
-  v5 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v5 removeNetworkReachableObserver:self];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] removeNetworkReachableObserver:self];
 }
 
-- (void)_startMonitoringReachabilityForHost:(id)a3
+- (void)_startMonitoringReachabilityForHost:(id)host
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hostCopy = host;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = hostCopy;
     _os_log_impl(&dword_248524000, v5, v6, "Started monitoring network reachability for host %@", &v9, 0xCu);
   }
 
-  [(NSMutableSet *)self->_hostsMonitoredForReachability addObject:v4];
-  v7 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v7 addObserver:self selector:sel__hostReachabilityChanged_ forHostname:v4];
+  [(NSMutableSet *)self->_hostsMonitoredForReachability addObject:hostCopy];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] addObserver:self selector:sel__hostReachabilityChanged_ forHostname:hostCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_stopMonitoringReachabilityForHost:(id)a3
+- (void)_stopMonitoringReachabilityForHost:(id)host
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  hostCopy = host;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 7);
   if (os_log_type_enabled(v5, v6))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = hostCopy;
     _os_log_impl(&dword_248524000, v5, v6, "Stopped monitoring network reachability for host %@", &v9, 0xCu);
   }
 
-  [(NSMutableSet *)self->_hostsMonitoredForReachability removeObject:v4];
-  v7 = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
-  [v7 removeObserver:self forHostname:v4];
+  [(NSMutableSet *)self->_hostsMonitoredForReachability removeObject:hostCopy];
+  mEMORY[0x277CEC5B8] = [MEMORY[0x277CEC5B8] sharedNetworkObserver];
+  [mEMORY[0x277CEC5B8] removeObserver:self forHostname:hostCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_networkReachabilityChanged:(id)a3
+- (void)_networkReachabilityChanged:(id)changed
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 5);
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 138543362;
-    v16 = v4;
+    v16 = changedCopy;
     _os_log_impl(&dword_248524000, v5, v6, "Network reachability changed notification %{public}@", buf, 0xCu);
   }
 
-  v7 = [v4 name];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CEC508]];
+  name = [changedCopy name];
+  v8 = [name isEqualToString:*MEMORY[0x277CEC508]];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CEC510]];
-    v11 = [v10 BOOLValue];
+    userInfo = [changedCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CEC510]];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
       [DAReachability recordError:0 forHost:0];
-      v12 = [(DAReachability *)self queue];
+      queue = [(DAReachability *)self queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __46__DAReachability__networkReachabilityChanged___block_invoke;
       block[3] = &unk_278F1CDC0;
       block[4] = self;
-      dispatch_sync(v12, block);
+      dispatch_sync(queue, block);
     }
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_hostReachabilityChanged:(id)a3
+- (void)_hostReachabilityChanged:(id)changed
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = DALoggingwithCategory();
   v6 = *(MEMORY[0x277D03988] + 5);
   if (os_log_type_enabled(v5, v6))
   {
     *buf = 138543362;
-    v20 = v4;
+    v20 = changedCopy;
     _os_log_impl(&dword_248524000, v5, v6, "Host reachability changed notification %{public}@", buf, 0xCu);
   }
 
-  v7 = [v4 name];
-  v8 = [v7 isEqualToString:*MEMORY[0x277CEC500]];
+  name = [changedCopy name];
+  v8 = [name isEqualToString:*MEMORY[0x277CEC500]];
 
   if (v8)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277CEC510]];
-    v11 = [v10 BOOLValue];
+    userInfo = [changedCopy userInfo];
+    v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CEC510]];
+    bOOLValue = [v10 BOOLValue];
 
-    if (v11)
+    if (bOOLValue)
     {
-      v12 = [v4 userInfo];
-      v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CEC4F8]];
+      userInfo2 = [changedCopy userInfo];
+      v13 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x277CEC4F8]];
 
       [DAReachability recordError:0 forHost:v13];
-      v14 = [(DAReachability *)self queue];
+      queue = [(DAReachability *)self queue];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __43__DAReachability__hostReachabilityChanged___block_invoke;
@@ -467,24 +467,24 @@ void __48__DAReachability__notifyDelegatesHostReachable___block_invoke(uint64_t 
       v17[4] = self;
       v18 = v13;
       v15 = v13;
-      dispatch_sync(v14, v17);
+      dispatch_sync(queue, v17);
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)hostLikelyUnreachable:(id)a3
++ (BOOL)hostLikelyUnreachable:(id)unreachable
 {
-  v3 = a3;
+  unreachableCopy = unreachable;
   os_unfair_lock_lock(&_errorTimestampLock);
   v4 = _hostToLastErrorTimestamp;
-  v5 = [MEMORY[0x277CBEB68] null];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  null = [MEMORY[0x277CBEB68] null];
+  v6 = [v4 objectForKeyedSubscript:null];
 
-  if (v3)
+  if (unreachableCopy)
   {
-    v7 = [_hostToLastErrorTimestamp objectForKeyedSubscript:v3];
+    v7 = [_hostToLastErrorTimestamp objectForKeyedSubscript:unreachableCopy];
   }
 
   else
@@ -502,37 +502,37 @@ void __48__DAReachability__notifyDelegatesHostReachable___block_invoke(uint64_t 
   return v10;
 }
 
-+ (void)recordError:(id)a3 forHost:(id)a4
++ (void)recordError:(id)error forHost:(id)host
 {
-  v15 = a3;
-  v5 = a4;
-  if (v15)
+  errorCopy = error;
+  hostCopy = host;
+  if (errorCopy)
   {
-    v6 = [v15 domain];
-    v7 = [v6 isEqualToString:*MEMORY[0x277CCA738]];
+    domain = [errorCopy domain];
+    v7 = [domain isEqualToString:*MEMORY[0x277CCA738]];
 
     if (!v7)
     {
       goto LABEL_14;
     }
 
-    if ([v15 code] == -1003)
+    if ([errorCopy code] == -1003)
     {
-      v8 = v5;
+      null = hostCopy;
     }
 
     else
     {
-      if ([v15 code] != -1009)
+      if ([errorCopy code] != -1009)
       {
         goto LABEL_14;
       }
 
-      v8 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
-    v11 = v8;
-    if (v8)
+    v11 = null;
+    if (null)
     {
       os_unfair_lock_lock(&_errorTimestampLock);
       if (!_hostToLastErrorTimestamp)
@@ -553,12 +553,12 @@ void __48__DAReachability__notifyDelegatesHostReachable___block_invoke(uint64_t 
   {
     os_unfair_lock_lock(&_errorTimestampLock);
     v9 = _hostToLastErrorTimestamp;
-    v10 = [MEMORY[0x277CBEB68] null];
-    [v9 removeObjectForKey:v10];
+    null2 = [MEMORY[0x277CBEB68] null];
+    [v9 removeObjectForKey:null2];
 
-    if (v5)
+    if (hostCopy)
     {
-      [_hostToLastErrorTimestamp removeObjectForKey:v5];
+      [_hostToLastErrorTimestamp removeObjectForKey:hostCopy];
     }
 
     os_unfair_lock_unlock(&_errorTimestampLock);

@@ -1,78 +1,78 @@
 @interface PKPeerPaymentActionController
-+ (BOOL)canPerformPeerPaymentAction:(unint64_t)a3 account:(id)a4;
-+ (BOOL)canPerformPeerPaymentAction:(unint64_t)a3 account:(id)a4 unableReason:(unint64_t *)a5 displayableError:(id *)a6;
-+ (id)alertControllerForPeerPaymentActionUnableReason:(unint64_t)a3 displayableError:(id)a4 addCardActionHandler:(id)a5;
-+ (id)displayableErrorForPeerPaymentAction:(unint64_t)a3 andReason:(unint64_t)a4;
-+ (id)startProvisionToAddDebitWithNetworkAllowlist:(id)a3;
-- (PKPeerPaymentActionController)initWithPaymentPass:(id)a3 webService:(id)a4 context:(int64_t)a5 passLibraryDataProvider:(id)a6 delegate:(id)a7;
++ (BOOL)canPerformPeerPaymentAction:(unint64_t)action account:(id)account;
++ (BOOL)canPerformPeerPaymentAction:(unint64_t)action account:(id)account unableReason:(unint64_t *)reason displayableError:(id *)error;
++ (id)alertControllerForPeerPaymentActionUnableReason:(unint64_t)reason displayableError:(id)error addCardActionHandler:(id)handler;
++ (id)displayableErrorForPeerPaymentAction:(unint64_t)action andReason:(unint64_t)reason;
++ (id)startProvisionToAddDebitWithNetworkAllowlist:(id)allowlist;
+- (PKPeerPaymentActionController)initWithPaymentPass:(id)pass webService:(id)service context:(int64_t)context passLibraryDataProvider:(id)provider delegate:(id)delegate;
 - (PKPeerPaymentActionControllerDelegate)delegate;
-- (id)presentationSceneBundleIdentifierForPeerPaymentController:(id)a3;
-- (id)presentationSceneIdentifierForPeerPaymentController:(id)a3;
+- (id)presentationSceneBundleIdentifierForPeerPaymentController:(id)controller;
+- (id)presentationSceneIdentifierForPeerPaymentController:(id)controller;
 - (unint64_t)_peerPaymentControllerModeForAction;
-- (void)_handleError:(id)a3;
-- (void)_handlePeerPaymentAccountDidChangeNotification:(id)a3;
-- (void)_peerPaymentActionHasCompletedWithState:(unint64_t)a3;
-- (void)_presentIdentityVerificationWithError:(id)a3;
-- (void)_presentTermsAndConditionsWithError:(id)a3;
-- (void)_updateAccountWithCompletion:(id)a3;
-- (void)bankAccountInformationViewControllerChangedBankAccountInformation:(id)a3;
-- (void)performActionWithCurrencyAmount:(id)a3;
+- (void)_handleError:(id)error;
+- (void)_handlePeerPaymentAccountDidChangeNotification:(id)notification;
+- (void)_peerPaymentActionHasCompletedWithState:(unint64_t)state;
+- (void)_presentIdentityVerificationWithError:(id)error;
+- (void)_presentTermsAndConditionsWithError:(id)error;
+- (void)_updateAccountWithCompletion:(id)completion;
+- (void)bankAccountInformationViewControllerChangedBankAccountInformation:(id)information;
+- (void)performActionWithCurrencyAmount:(id)amount;
 - (void)presentAddBankAccountViewController;
 - (void)presentAddDebitCardViewController;
 @end
 
 @implementation PKPeerPaymentActionController
 
-+ (BOOL)canPerformPeerPaymentAction:(unint64_t)a3 account:(id)a4
++ (BOOL)canPerformPeerPaymentAction:(unint64_t)action account:(id)account
 {
   v5 = 0;
   v6 = 0;
-  return [PKPeerPaymentActionController canPerformPeerPaymentAction:a3 account:a4 unableReason:&v6 displayableError:&v5];
+  return [PKPeerPaymentActionController canPerformPeerPaymentAction:action account:account unableReason:&v6 displayableError:&v5];
 }
 
-+ (BOOL)canPerformPeerPaymentAction:(unint64_t)a3 account:(id)a4 unableReason:(unint64_t *)a5 displayableError:(id *)a6
++ (BOOL)canPerformPeerPaymentAction:(unint64_t)action account:(id)account unableReason:(unint64_t *)reason displayableError:(id *)error
 {
-  v10 = a4;
-  v11 = v10;
-  switch(a3)
+  accountCopy = account;
+  v11 = accountCopy;
+  switch(action)
   {
     case 3uLL:
-      if ([v10 supportsRecurringPayments])
+      if ([accountCopy supportsRecurringPayments])
       {
-        v37 = a1;
-        v12 = [v11 recurringPaymentsFeatureDescriptor];
-        v18 = [v12 supportedFundingSourceCountryCodes];
-        v19 = v18;
-        if (v18)
+        selfCopy2 = self;
+        recurringPaymentsFeatureDescriptor = [v11 recurringPaymentsFeatureDescriptor];
+        supportedFundingSourceCountryCodes = [recurringPaymentsFeatureDescriptor supportedFundingSourceCountryCodes];
+        v19 = supportedFundingSourceCountryCodes;
+        if (supportedFundingSourceCountryCodes)
         {
-          v20 = v18;
+          v20 = supportedFundingSourceCountryCodes;
         }
 
         else
         {
           v21 = MEMORY[0x1E695DFD8];
-          v22 = [v11 countryCode];
-          v20 = [v21 setWithObject:v22];
+          countryCode = [v11 countryCode];
+          v20 = [v21 setWithObject:countryCode];
         }
 
         v23 = objc_alloc_init(MEMORY[0x1E69B8FE8]);
-        v24 = [v12 merchantIdentifier];
-        [v23 setMerchantIdentifier:v24];
+        merchantIdentifier = [recurringPaymentsFeatureDescriptor merchantIdentifier];
+        [v23 setMerchantIdentifier:merchantIdentifier];
 
-        v25 = [v12 supportedNetworks];
-        [v23 setSupportedNetworks:v25];
+        supportedNetworks = [recurringPaymentsFeatureDescriptor supportedNetworks];
+        [v23 setSupportedNetworks:supportedNetworks];
 
-        [v23 setMerchantCapabilities:{objc_msgSend(v12, "merchantCapabilities")}];
+        [v23 setMerchantCapabilities:{objc_msgSend(recurringPaymentsFeatureDescriptor, "merchantCapabilities")}];
         [v23 setSupportedCountries:v20];
         [v23 setPeerPaymentType:2];
-        v26 = [MEMORY[0x1E69B8A58] sharedInstance];
-        v27 = [v26 _defaultPaymentPassForPaymentRequest:v23];
+        mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+        v27 = [mEMORY[0x1E69B8A58] _defaultPaymentPassForPaymentRequest:v23];
         v17 = v27 != 0;
         v16 = 4 * (v27 == 0);
 
 LABEL_29:
-        a1 = v37;
-        if (!a5)
+        self = selfCopy2;
+        if (!reason)
         {
           goto LABEL_31;
         }
@@ -82,11 +82,11 @@ LABEL_29:
 
       goto LABEL_14;
     case 2uLL:
-      if (([v10 supportsTransferToBank] & 1) != 0 || objc_msgSend(v11, "supportsInstantWithdrawal"))
+      if (([accountCopy supportsTransferToBank] & 1) != 0 || objc_msgSend(v11, "supportsInstantWithdrawal"))
       {
         v16 = 0;
         v17 = 1;
-        if (!a5)
+        if (!reason)
         {
           goto LABEL_31;
         }
@@ -97,55 +97,55 @@ LABEL_29:
 LABEL_14:
       v17 = 0;
       v16 = 2;
-      if (!a5)
+      if (!reason)
       {
         goto LABEL_31;
       }
 
 LABEL_30:
-      *a5 = v16;
+      *reason = v16;
       goto LABEL_31;
     case 1uLL:
-      if ([v10 supportsLoadFromCard])
+      if ([accountCopy supportsLoadFromCard])
       {
-        v37 = a1;
-        v12 = [v11 loadFromCardFeatureDescriptor];
-        v13 = [v12 supportedFundingSourceCountryCodes];
-        v14 = v13;
-        if (v13)
+        selfCopy2 = self;
+        recurringPaymentsFeatureDescriptor = [v11 loadFromCardFeatureDescriptor];
+        supportedFundingSourceCountryCodes2 = [recurringPaymentsFeatureDescriptor supportedFundingSourceCountryCodes];
+        v14 = supportedFundingSourceCountryCodes2;
+        if (supportedFundingSourceCountryCodes2)
         {
-          v15 = v13;
+          v15 = supportedFundingSourceCountryCodes2;
         }
 
         else
         {
           v28 = MEMORY[0x1E695DFD8];
-          v29 = [v11 countryCode];
-          v15 = [v28 setWithObject:v29];
+          countryCode2 = [v11 countryCode];
+          v15 = [v28 setWithObject:countryCode2];
         }
 
         v30 = objc_alloc_init(MEMORY[0x1E69B8FE8]);
-        v31 = [v12 merchantIdentifier];
-        [v30 setMerchantIdentifier:v31];
+        merchantIdentifier2 = [recurringPaymentsFeatureDescriptor merchantIdentifier];
+        [v30 setMerchantIdentifier:merchantIdentifier2];
 
-        v32 = [v12 supportedNetworks];
-        [v30 setSupportedNetworks:v32];
+        supportedNetworks2 = [recurringPaymentsFeatureDescriptor supportedNetworks];
+        [v30 setSupportedNetworks:supportedNetworks2];
 
-        [v30 setMerchantCapabilities:{objc_msgSend(v12, "merchantCapabilities")}];
+        [v30 setMerchantCapabilities:{objc_msgSend(recurringPaymentsFeatureDescriptor, "merchantCapabilities")}];
         v36 = v15;
         [v30 setSupportedCountries:v15];
         [v30 setPeerPaymentType:4];
-        v33 = [MEMORY[0x1E69B8A58] sharedInstance];
-        v34 = [v33 _defaultPaymentPassForPaymentRequest:v30];
+        mEMORY[0x1E69B8A58]2 = [MEMORY[0x1E69B8A58] sharedInstance];
+        v34 = [mEMORY[0x1E69B8A58]2 _defaultPaymentPassForPaymentRequest:v30];
         v17 = v34 != 0;
         if (v34)
         {
           v16 = 0;
         }
 
-        else if (([v12 merchantCapabilities] & 8) != 0)
+        else if (([recurringPaymentsFeatureDescriptor merchantCapabilities] & 8) != 0)
         {
-          if (([v12 merchantCapabilities] & 4) != 0)
+          if (([recurringPaymentsFeatureDescriptor merchantCapabilities] & 4) != 0)
           {
             v16 = 3;
           }
@@ -169,27 +169,27 @@ LABEL_30:
 
   v16 = 0;
   v17 = 0;
-  if (a5)
+  if (reason)
   {
     goto LABEL_30;
   }
 
 LABEL_31:
-  if (a6)
+  if (error)
   {
-    *a6 = [a1 displayableErrorForPeerPaymentAction:a3 andReason:v16];
+    *error = [self displayableErrorForPeerPaymentAction:action andReason:v16];
   }
 
   return v17;
 }
 
-+ (id)displayableErrorForPeerPaymentAction:(unint64_t)a3 andReason:(unint64_t)a4
++ (id)displayableErrorForPeerPaymentAction:(unint64_t)action andReason:(unint64_t)reason
 {
   v6 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAct_4.isa);
-  switch(a4)
+  switch(reason)
   {
     case 4uLL:
-      if (a3 == 3)
+      if (action == 3)
       {
         v8 = PKLocalizedPeerPaymentRecurringString(&cfstr_SetupNoDebitCa.isa);
 
@@ -197,7 +197,7 @@ LABEL_31:
         goto LABEL_14;
       }
 
-      if (a3 != 1)
+      if (action != 1)
       {
         goto LABEL_11;
       }
@@ -207,7 +207,7 @@ LABEL_31:
       v9 = @"PEER_PAYMENT_ACTION_UNAVAILABLE_REASON_ADD_MONEY_NO_DEBIT_PAYMENT_CARDS_AVAILABLE_DESCRIPTION";
       break;
     case 3uLL:
-      if (a3 != 1)
+      if (action != 1)
       {
         goto LABEL_11;
       }
@@ -237,24 +237,24 @@ LABEL_15:
   return v12;
 }
 
-+ (id)alertControllerForPeerPaymentActionUnableReason:(unint64_t)a3 displayableError:(id)a4 addCardActionHandler:(id)a5
++ (id)alertControllerForPeerPaymentActionUnableReason:(unint64_t)reason displayableError:(id)error addCardActionHandler:(id)handler
 {
-  v7 = a5;
-  if (a4)
+  handlerCopy = handler;
+  if (error)
   {
     v8 = MEMORY[0x1E69DC650];
-    v9 = a4;
+    errorCopy = error;
     v10 = PKTitleForDisplayableError();
-    v11 = MEMORY[0x1BFB42D10](v9);
+    v11 = MEMORY[0x1BFB42D10](errorCopy);
 
-    a4 = [v8 alertControllerWithTitle:v10 message:v11 preferredStyle:1];
+    error = [v8 alertControllerWithTitle:v10 message:v11 preferredStyle:1];
 
     v12 = MEMORY[0x1E69DC648];
     v13 = PKLocalizedString(&cfstr_CancelButtonTi.isa);
     v14 = [v12 actionWithTitle:v13 style:1 handler:0];
 
-    [a4 addAction:v14];
-    if (a3 - 3 <= 1 && v7)
+    [error addAction:v14];
+    if (reason - 3 <= 1 && handlerCopy)
     {
       v15 = MEMORY[0x1E69DC648];
       v16 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentAct_11.isa);
@@ -262,25 +262,25 @@ LABEL_15:
       v19[1] = 3221225472;
       v19[2] = __119__PKPeerPaymentActionController_alertControllerForPeerPaymentActionUnableReason_displayableError_addCardActionHandler___block_invoke;
       v19[3] = &unk_1E8011248;
-      v20 = v7;
+      v20 = handlerCopy;
       v17 = [v15 actionWithTitle:v16 style:0 handler:v19];
 
-      [a4 addAction:v17];
-      [a4 setPreferredAction:v17];
+      [error addAction:v17];
+      [error setPreferredAction:v17];
     }
   }
 
-  return a4;
+  return error;
 }
 
-+ (id)startProvisionToAddDebitWithNetworkAllowlist:(id)a3
++ (id)startProvisionToAddDebitWithNetworkAllowlist:(id)allowlist
 {
-  v3 = a3;
+  allowlistCopy = allowlist;
   v4 = objc_alloc(MEMORY[0x1E69B8D48]);
-  v5 = [MEMORY[0x1E69B8EF8] sharedService];
-  v6 = [v4 initWithWebService:v5];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v6 = [v4 initWithWebService:mEMORY[0x1E69B8EF8]];
 
-  [v6 setAllowedPaymentNetworks:v3];
+  [v6 setAllowedPaymentNetworks:allowlistCopy];
   [v6 setAllowedCardTypes:&unk_1F3CC8708];
   v7 = objc_alloc_init(MEMORY[0x1E695DFD8]);
   [v6 setAllowedFeatureIdentifiers:v7];
@@ -306,53 +306,53 @@ void __78__PKPeerPaymentActionController_startProvisionToAddDebitWithNetworkAllo
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (PKPeerPaymentActionController)initWithPaymentPass:(id)a3 webService:(id)a4 context:(int64_t)a5 passLibraryDataProvider:(id)a6 delegate:(id)a7
+- (PKPeerPaymentActionController)initWithPaymentPass:(id)pass webService:(id)service context:(int64_t)context passLibraryDataProvider:(id)provider delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  passCopy = pass;
+  serviceCopy = service;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v28.receiver = self;
   v28.super_class = PKPeerPaymentActionController;
   v17 = [(PKPeerPaymentActionController *)&v28 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_pass, a3);
-    objc_storeStrong(&v18->_peerPaymentWebService, a4);
-    v18->_context = a5;
-    objc_storeWeak(&v18->_delegate, v16);
+    objc_storeStrong(&v17->_pass, pass);
+    objc_storeStrong(&v18->_peerPaymentWebService, service);
+    v18->_context = context;
+    objc_storeWeak(&v18->_delegate, delegateCopy);
     v18->_controllerAction = 0;
-    v19 = [(PKPeerPaymentWebService *)v18->_peerPaymentWebService targetDevice];
-    v20 = [v19 account];
+    targetDevice = [(PKPeerPaymentWebService *)v18->_peerPaymentWebService targetDevice];
+    account = [targetDevice account];
     account = v18->_account;
-    v18->_account = v20;
+    v18->_account = account;
 
     v22 = objc_alloc_init(MEMORY[0x1E69B86A8]);
     bankInformation = v18->_bankInformation;
     v18->_bankInformation = v22;
 
-    objc_storeStrong(&v18->_passLibraryDataProvider, a6);
-    v24 = [MEMORY[0x1E696AD88] defaultCenter];
+    objc_storeStrong(&v18->_passLibraryDataProvider, provider);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v25 = *MEMORY[0x1E69BC378];
-    v26 = [(PKPeerPaymentWebService *)v18->_peerPaymentWebService targetDevice];
-    [v24 addObserver:v18 selector:sel__handlePeerPaymentAccountDidChangeNotification_ name:v25 object:v26];
+    targetDevice2 = [(PKPeerPaymentWebService *)v18->_peerPaymentWebService targetDevice];
+    [defaultCenter addObserver:v18 selector:sel__handlePeerPaymentAccountDidChangeNotification_ name:v25 object:targetDevice2];
   }
 
   return v18;
 }
 
-- (void)performActionWithCurrencyAmount:(id)a3
+- (void)performActionWithCurrencyAmount:(id)amount
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  amountCopy = amount;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__PKPeerPaymentActionController_performActionWithCurrencyAmount___block_invoke;
   aBlock[3] = &unk_1E8022828;
   objc_copyWeak(&v22, &location);
-  v5 = v4;
+  v5 = amountCopy;
   v21 = v5;
   v6 = _Block_copy(aBlock);
   if (self->_performingAction)
@@ -383,16 +383,16 @@ void __78__PKPeerPaymentActionController_startProvisionToAddDebitWithNetworkAllo
     case 3uLL:
       [(PKBankAccountInformation *)self->_bankInformation updateToLatestKeychainData];
       v12 = self->_peerPaymentController;
-      v13 = [(PKBankAccountInformation *)self->_bankInformation routingNumber];
-      v14 = [(PKBankAccountInformation *)self->_bankInformation accountNumber];
-      v15 = [(PKBankAccountInformation *)self->_bankInformation bankName];
+      routingNumber = [(PKBankAccountInformation *)self->_bankInformation routingNumber];
+      accountNumber = [(PKBankAccountInformation *)self->_bankInformation accountNumber];
+      bankName = [(PKBankAccountInformation *)self->_bankInformation bankName];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __65__PKPeerPaymentActionController_performActionWithCurrencyAmount___block_invoke_120;
       v18[3] = &unk_1E8019DB0;
       v18[4] = self;
       v19 = v6;
-      [(PKPeerPaymentController *)v12 identifyRecipientWithRoutingNumber:v13 accountNumber:v14 accountName:v15 completion:v18];
+      [(PKPeerPaymentController *)v12 identifyRecipientWithRoutingNumber:routingNumber accountNumber:accountNumber accountName:bankName completion:v18];
 
       v7 = v19;
       goto LABEL_12;
@@ -664,26 +664,26 @@ uint64_t __65__PKPeerPaymentActionController_performActionWithCurrencyAmount___b
   }
 }
 
-- (void)_peerPaymentActionHasCompletedWithState:(unint64_t)a3
+- (void)_peerPaymentActionHasCompletedWithState:(unint64_t)state
 {
   self->_performingAction = 0;
-  if (a3 == 2)
+  if (state == 2)
   {
     [(PKPeerPaymentController *)self->_peerPaymentController reset];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained peerPaymentActionController:self hasChangedState:a3];
+  [WeakRetained peerPaymentActionController:self hasChangedState:state];
 }
 
-- (void)bankAccountInformationViewControllerChangedBankAccountInformation:(id)a3
+- (void)bankAccountInformationViewControllerChangedBankAccountInformation:(id)information
 {
   [(PKBankAccountInformation *)self->_bankInformation updateToLatestKeychainData];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained peerPaymentActionController:self hasChangedState:5];
 }
 
-- (id)presentationSceneIdentifierForPeerPaymentController:(id)a3
+- (id)presentationSceneIdentifierForPeerPaymentController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
@@ -699,7 +699,7 @@ uint64_t __65__PKPeerPaymentActionController_performActionWithCurrencyAmount___b
   return v5;
 }
 
-- (id)presentationSceneBundleIdentifierForPeerPaymentController:(id)a3
+- (id)presentationSceneBundleIdentifierForPeerPaymentController:(id)controller
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
@@ -715,16 +715,16 @@ uint64_t __65__PKPeerPaymentActionController_performActionWithCurrencyAmount___b
   return v5;
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__PKPeerPaymentActionController__handleError___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = errorCopy;
+  selfCopy = self;
+  v5 = errorCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -923,23 +923,23 @@ LABEL_38:
   }
 }
 
-- (void)_presentIdentityVerificationWithError:(id)a3
+- (void)_presentIdentityVerificationWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E69BB840]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v6 = [domain isEqualToString:*MEMORY[0x1E69BB840]];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [errorCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
-    v4 = v8;
+    errorCopy = v8;
   }
 
   v9 = PKDeviceSupportsPeerPaymentIdentityVerification();
-  v10 = [v4 userInfo];
-  v11 = [v10 objectForKey:*MEMORY[0x1E69BBAC8]];
+  userInfo2 = [errorCopy userInfo];
+  v11 = [userInfo2 objectForKey:*MEMORY[0x1E69BBAC8]];
 
   if ((v9 & 1) == 0)
   {
@@ -1004,20 +1004,20 @@ LABEL_12:
   v22 = objc_loadWeakRetained(&self->_delegate);
   [v22 peerPaymentActionController:self requestPresentViewController:v21];
 
-  v4 = v20;
+  errorCopy = v20;
 LABEL_13:
 }
 
-- (void)_presentTermsAndConditionsWithError:(id)a3
+- (void)_presentTermsAndConditionsWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__PKPeerPaymentActionController__presentTermsAndConditionsWithError___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = errorCopy;
+  selfCopy = self;
+  v5 = errorCopy;
   [(PKPeerPaymentActionController *)self _updateAccountWithCompletion:v6];
 }
 
@@ -1169,7 +1169,7 @@ void __69__PKPeerPaymentActionController__presentTermsAndConditionsWithError___b
   }
 }
 
-- (void)_handlePeerPaymentAccountDidChangeNotification:(id)a3
+- (void)_handlePeerPaymentAccountDidChangeNotification:(id)notification
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1202,18 +1202,18 @@ void __80__PKPeerPaymentActionController__handlePeerPaymentAccountDidChangeNotif
   }
 }
 
-- (void)_updateAccountWithCompletion:(id)a3
+- (void)_updateAccountWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PKPeerPaymentWebService *)self->_peerPaymentWebService peerPaymentService];
+  completionCopy = completion;
+  peerPaymentService = [(PKPeerPaymentWebService *)self->_peerPaymentWebService peerPaymentService];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __62__PKPeerPaymentActionController__updateAccountWithCompletion___block_invoke;
   v7[3] = &unk_1E8014738;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 updateAccountWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [peerPaymentService updateAccountWithCompletion:v7];
 }
 
 void __62__PKPeerPaymentActionController__updateAccountWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1247,8 +1247,8 @@ uint64_t __62__PKPeerPaymentActionController__updateAccountWithCompletion___bloc
 
 - (void)presentAddBankAccountViewController
 {
-  v6 = [(PKPeerPaymentAccount *)self->_account countryCode];
-  v3 = [[PKAddBankAccountInformationViewController alloc] initWithDelegate:self bankInformation:self->_bankInformation accountCountryCode:v6];
+  countryCode = [(PKPeerPaymentAccount *)self->_account countryCode];
+  v3 = [[PKAddBankAccountInformationViewController alloc] initWithDelegate:self bankInformation:self->_bankInformation accountCountryCode:countryCode];
   v4 = [[PKNavigationController alloc] initWithRootViewController:v3];
   [(PKNavigationController *)v4 setModalInPresentation:1];
   [(PKNavigationController *)v4 setSupportedInterfaceOrientations:2];
@@ -1264,8 +1264,8 @@ uint64_t __62__PKPeerPaymentActionController__updateAccountWithCompletion___bloc
 - (void)presentAddDebitCardViewController
 {
   v3 = objc_alloc(MEMORY[0x1E69B8D48]);
-  v4 = [MEMORY[0x1E69B8EF8] sharedService];
-  v20 = [v3 initWithWebService:v4];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+  v20 = [v3 initWithWebService:mEMORY[0x1E69B8EF8]];
 
   v5 = objc_alloc_init(PKNavigationController);
   v6 = [objc_alloc(MEMORY[0x1E69B8F38]) initWithPeerPaymentAccount:self->_account];
@@ -1273,24 +1273,24 @@ uint64_t __62__PKPeerPaymentActionController__updateAccountWithCompletion___bloc
   v8 = [[PKPeerPaymentSetupFlowController alloc] initWithPeerPaymentCredential:v6 provisioningController:v20 passLibraryDataProvider:self->_passLibraryDataProvider configuration:v7 context:self->_context campaignAttributionReferrerIdentifier:0];
   v9 = [[PKPaymentAddDebitCardViewController alloc] initWithPeerPaymentSetupFlowController:v8];
   [(PKExplanationViewController *)v9 setExplanationViewControllerDelegate:self];
-  v10 = [(PKPeerPaymentAccount *)self->_account instantWithdrawalPromotionFeatureDescriptor];
-  v11 = [v10 feePercentage];
-  if (v11)
+  instantWithdrawalPromotionFeatureDescriptor = [(PKPeerPaymentAccount *)self->_account instantWithdrawalPromotionFeatureDescriptor];
+  feePercentage = [instantWithdrawalPromotionFeatureDescriptor feePercentage];
+  if (feePercentage)
   {
-    v19 = v10;
+    v19 = instantWithdrawalPromotionFeatureDescriptor;
     v12 = v8;
     v13 = v7;
     v14 = v6;
     v15 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v15 setNumberStyle:3];
     [v15 setMaximumFractionDigits:1];
-    v16 = [v15 stringFromNumber:v11];
+    v16 = [v15 stringFromNumber:feePercentage];
     v17 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentTra_28.isa, &stru_1F3BD5BF0.isa, v16);
 
     v6 = v14;
     v7 = v13;
     v8 = v12;
-    v10 = v19;
+    instantWithdrawalPromotionFeatureDescriptor = v19;
   }
 
   else

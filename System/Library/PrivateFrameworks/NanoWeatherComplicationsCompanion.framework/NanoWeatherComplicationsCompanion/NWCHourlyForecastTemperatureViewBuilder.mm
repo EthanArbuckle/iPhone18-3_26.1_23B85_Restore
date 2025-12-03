@@ -1,20 +1,20 @@
 @interface NWCHourlyForecastTemperatureViewBuilder
-- (NWCHourlyForecastTemperatureViewBuilder)initWithDevice:(id)a3;
+- (NWCHourlyForecastTemperatureViewBuilder)initWithDevice:(id)device;
 - (id)createHourlyForecastView;
 @end
 
 @implementation NWCHourlyForecastTemperatureViewBuilder
 
-- (NWCHourlyForecastTemperatureViewBuilder)initWithDevice:(id)a3
+- (NWCHourlyForecastTemperatureViewBuilder)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = NWCHourlyForecastTemperatureViewBuilder;
   v6 = [(NWCHourlyForecastTemperatureViewBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
@@ -23,8 +23,8 @@
 - (id)createHourlyForecastView
 {
   v3 = [NWCHourlyForecastTemperatureView alloc];
-  v4 = [(NWCHourlyForecastTemperatureViewBuilder *)self device];
-  v5 = [(NWCHourlyForecastView *)v3 initWithDevice:v4];
+  device = [(NWCHourlyForecastTemperatureViewBuilder *)self device];
+  v5 = [(NWCHourlyForecastView *)v3 initWithDevice:device];
 
   return v5;
 }

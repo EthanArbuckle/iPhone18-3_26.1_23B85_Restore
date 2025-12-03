@@ -1,56 +1,56 @@
 @interface ECWebContentObserver
-- (ECWebContentObserver)initWithParser:(id)a3;
+- (ECWebContentObserver)initWithParser:(id)parser;
 - (EDWebContentParser)parser;
-- (void)baseURL:(id)a3 didRequestRemoteContentURLs:(id)a4;
-- (void)logWebBundleMessage:(id)a3;
-- (void)receiveDataDetectionResults:(id)a3;
-- (void)requestDataDetectionResultsWithBaseURL:(id)a3;
+- (void)baseURL:(id)l didRequestRemoteContentURLs:(id)ls;
+- (void)logWebBundleMessage:(id)message;
+- (void)receiveDataDetectionResults:(id)results;
+- (void)requestDataDetectionResultsWithBaseURL:(id)l;
 @end
 
 @implementation ECWebContentObserver
 
-- (ECWebContentObserver)initWithParser:(id)a3
+- (ECWebContentObserver)initWithParser:(id)parser
 {
-  v4 = a3;
+  parserCopy = parser;
   v8.receiver = self;
   v8.super_class = ECWebContentObserver;
   v5 = [(ECWebContentObserver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parser, v4);
+    objc_storeWeak(&v5->_parser, parserCopy);
   }
 
   return v6;
 }
 
-- (void)baseURL:(id)a3 didRequestRemoteContentURLs:(id)a4
+- (void)baseURL:(id)l didRequestRemoteContentURLs:(id)ls
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(ECWebContentObserver *)self parser];
-  [v7 baseURL:v8 didRequestRemoteContentURLs:v6];
+  lCopy = l;
+  lsCopy = ls;
+  parser = [(ECWebContentObserver *)self parser];
+  [parser baseURL:lCopy didRequestRemoteContentURLs:lsCopy];
 }
 
-- (void)requestDataDetectionResultsWithBaseURL:(id)a3
+- (void)requestDataDetectionResultsWithBaseURL:(id)l
 {
-  v5 = a3;
-  v4 = [(ECWebContentObserver *)self parser];
-  [v4 requestDataDetectionResultsWithBaseURL:v5];
+  lCopy = l;
+  parser = [(ECWebContentObserver *)self parser];
+  [parser requestDataDetectionResultsWithBaseURL:lCopy];
 }
 
-- (void)receiveDataDetectionResults:(id)a3
+- (void)receiveDataDetectionResults:(id)results
 {
-  v5 = a3;
-  v4 = [(ECWebContentObserver *)self parser];
-  [v4 receiveDataDetectionResults:v5];
+  resultsCopy = results;
+  parser = [(ECWebContentObserver *)self parser];
+  [parser receiveDataDetectionResults:resultsCopy];
 }
 
-- (void)logWebBundleMessage:(id)a3
+- (void)logWebBundleMessage:(id)message
 {
-  v5 = a3;
-  v4 = [(ECWebContentObserver *)self parser];
-  [v4 logWebBundleMessage:v5];
+  messageCopy = message;
+  parser = [(ECWebContentObserver *)self parser];
+  [parser logWebBundleMessage:messageCopy];
 }
 
 - (EDWebContentParser)parser

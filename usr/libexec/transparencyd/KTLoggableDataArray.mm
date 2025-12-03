@@ -1,46 +1,46 @@
 @interface KTLoggableDataArray
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isInputsEqual:(id)a3;
-- (KTLoggableDataArray)initWithCoder:(id)a3;
-- (KTLoggableDataArray)initWithLoggableDatas:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isInputsEqual:(id)equal;
+- (KTLoggableDataArray)initWithCoder:(id)coder;
+- (KTLoggableDataArray)initWithLoggableDatas:(id)datas;
 - (id)description;
 - (id)updatableLoggableData;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KTLoggableDataArray
 
-- (KTLoggableDataArray)initWithLoggableDatas:(id)a3
+- (KTLoggableDataArray)initWithLoggableDatas:(id)datas
 {
-  v4 = a3;
+  datasCopy = datas;
   v8.receiver = self;
   v8.super_class = KTLoggableDataArray;
   v5 = [(KTLoggableDataArray *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(KTLoggableDataArray *)v5 setLoggableDatas:v4];
+    [(KTLoggableDataArray *)v5 setLoggableDatas:datasCopy];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(KTLoggableDataArray *)self loggableDatas];
-  [v4 encodeObject:v5 forKey:@"loggableDatas"];
+  coderCopy = coder;
+  loggableDatas = [(KTLoggableDataArray *)self loggableDatas];
+  [coderCopy encodeObject:loggableDatas forKey:@"loggableDatas"];
 }
 
-- (KTLoggableDataArray)initWithCoder:(id)a3
+- (KTLoggableDataArray)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22[0] = objc_opt_class();
   v22[1] = objc_opt_class();
   v5 = [NSArray arrayWithObjects:v22 count:2];
   v6 = [NSSet setWithArray:v5];
 
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"loggableDatas"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"loggableDatas"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -99,10 +99,10 @@ LABEL_12:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -112,9 +112,9 @@ LABEL_12:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(KTLoggableDataArray *)v4 loggableDatas];
-      v6 = [(KTLoggableDataArray *)self loggableDatas];
-      v7 = [v5 isEqualToArray:v6];
+      loggableDatas = [(KTLoggableDataArray *)equalCopy loggableDatas];
+      loggableDatas2 = [(KTLoggableDataArray *)self loggableDatas];
+      v7 = [loggableDatas isEqualToArray:loggableDatas2];
     }
 
     else
@@ -126,10 +126,10 @@ LABEL_12:
   return v7;
 }
 
-- (BOOL)isInputsEqual:(id)a3
+- (BOOL)isInputsEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_10;
   }
@@ -140,10 +140,10 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  v5 = [(KTLoggableDataArray *)self loggableDatas];
-  v6 = [v5 count];
-  v7 = [(KTLoggableDataArray *)v4 loggableDatas];
-  v8 = [v7 count];
+  loggableDatas = [(KTLoggableDataArray *)self loggableDatas];
+  v6 = [loggableDatas count];
+  loggableDatas2 = [(KTLoggableDataArray *)equalCopy loggableDatas];
+  v8 = [loggableDatas2 count];
 
   if (v6 != v8)
   {
@@ -152,8 +152,8 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v9 = [(KTLoggableDataArray *)self loggableDatas];
-  v10 = [v9 count];
+  loggableDatas3 = [(KTLoggableDataArray *)self loggableDatas];
+  v10 = [loggableDatas3 count];
 
   if (!v10)
   {
@@ -165,11 +165,11 @@ LABEL_10:
   v11 = 0;
   do
   {
-    v12 = [(KTLoggableDataArray *)self loggableDatas];
-    v13 = [v12 objectAtIndexedSubscript:v11];
+    loggableDatas4 = [(KTLoggableDataArray *)self loggableDatas];
+    v13 = [loggableDatas4 objectAtIndexedSubscript:v11];
 
-    v14 = [(KTLoggableDataArray *)v4 loggableDatas];
-    v15 = [v14 objectAtIndexedSubscript:v11];
+    loggableDatas5 = [(KTLoggableDataArray *)equalCopy loggableDatas];
+    v15 = [loggableDatas5 objectAtIndexedSubscript:v11];
 
     v16 = [v13 isInputsEqual:v15];
     if ((v16 & 1) == 0)
@@ -178,8 +178,8 @@ LABEL_10:
     }
 
     ++v11;
-    v17 = [(KTLoggableDataArray *)self loggableDatas];
-    v18 = [v17 count];
+    loggableDatas6 = [(KTLoggableDataArray *)self loggableDatas];
+    v18 = [loggableDatas6 count];
   }
 
   while (v11 < v18);
@@ -190,8 +190,8 @@ LABEL_11:
 
 - (id)description
 {
-  v2 = [(KTLoggableDataArray *)self loggableDatas];
-  v3 = [v2 description];
+  loggableDatas = [(KTLoggableDataArray *)self loggableDatas];
+  v3 = [loggableDatas description];
 
   return v3;
 }
@@ -203,8 +203,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(KTLoggableDataArray *)self loggableDatas];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  loggableDatas = [(KTLoggableDataArray *)self loggableDatas];
+  v5 = [loggableDatas countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -215,14 +215,14 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(loggableDatas);
         }
 
         v9 = [*(*(&v11 + 1) + 8 * i) copy];
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [loggableDatas countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

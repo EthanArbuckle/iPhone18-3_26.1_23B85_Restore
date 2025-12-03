@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10063DCD0();
 }
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_10063E5F4();
 }
 

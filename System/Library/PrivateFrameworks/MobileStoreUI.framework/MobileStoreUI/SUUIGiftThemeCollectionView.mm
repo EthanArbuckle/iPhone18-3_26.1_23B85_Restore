@@ -1,5 +1,5 @@
 @interface SUUIGiftThemeCollectionView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_visibleBounds;
 - (UIEdgeInsets)visibleBoundsInsets;
 @end
@@ -24,22 +24,22 @@
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(SUUIGiftThemeCollectionView *)self superview];
-  [(SUUIGiftThemeCollectionView *)self convertPoint:v7 toView:x, y];
+  y = inside.y;
+  x = inside.x;
+  superview = [(SUUIGiftThemeCollectionView *)self superview];
+  [(SUUIGiftThemeCollectionView *)self convertPoint:superview toView:x, y];
   v9 = v8;
   v11 = v10;
 
-  v12 = [(SUUIGiftThemeCollectionView *)self superview];
-  [v12 bounds];
+  superview2 = [(SUUIGiftThemeCollectionView *)self superview];
+  [superview2 bounds];
   v14.x = v9;
   v14.y = v11;
-  LOBYTE(v7) = CGRectContainsPoint(v15, v14);
+  LOBYTE(superview) = CGRectContainsPoint(v15, v14);
 
-  return v7;
+  return superview;
 }
 
 - (UIEdgeInsets)visibleBoundsInsets

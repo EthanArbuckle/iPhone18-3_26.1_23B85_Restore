@@ -1,22 +1,22 @@
 @interface CAUITransportButton
-- (CAUITransportButton)initWithCoder:(id)a3;
-- (CAUITransportButton)initWithFrame:(CGRect)a3;
-- (CGPath)newPathRefForStyle:(int)a3;
+- (CAUITransportButton)initWithCoder:(id)coder;
+- (CAUITransportButton)initWithFrame:(CGRect)frame;
+- (CGPath)newPathRefForStyle:(int)style;
 - (void)flash;
-- (void)setDrawingStyle:(int)a3;
-- (void)setFillColor:(CGColor *)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setDrawingStyle:(int)style;
+- (void)setFillColor:(CGColor *)color;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation CAUITransportButton
 
-- (CAUITransportButton)initWithCoder:(id)a3
+- (CAUITransportButton)initWithCoder:(id)coder
 {
   v22.receiver = self;
   v22.super_class = CAUITransportButton;
-  v3 = [(CAUITransportButton *)&v22 initWithCoder:a3];
+  v3 = [(CAUITransportButton *)&v22 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -67,13 +67,13 @@
   return v4;
 }
 
-- (CAUITransportButton)initWithFrame:(CGRect)a3
+- (CAUITransportButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = frame.size.height;
+  width = frame.size.width;
   v23.receiver = self;
   v23.super_class = CAUITransportButton;
-  v5 = [(CAUITransportButton *)&v23 initWithFrame:a3.origin.x, a3.origin.y];
+  v5 = [(CAUITransportButton *)&v23 initWithFrame:frame.origin.x, frame.origin.y];
   v6 = v5;
   if (v5)
   {
@@ -131,54 +131,54 @@
   return v6;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if (![a4 type])
+  if (![event type])
   {
     [-[CAUITransportButton layer](self "layer")];
   }
 
   v7.receiver = self;
   v7.super_class = CAUITransportButton;
-  [(CAUITransportButton *)&v7 touchesBegan:a3 withEvent:a4];
+  [(CAUITransportButton *)&v7 touchesBegan:began withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  if (![a4 type])
+  if (![event type])
   {
     [-[CAUITransportButton layer](self "layer")];
   }
 
   v7.receiver = self;
   v7.super_class = CAUITransportButton;
-  [(CAUITransportButton *)&v7 touchesEnded:a3 withEvent:a4];
+  [(CAUITransportButton *)&v7 touchesEnded:ended withEvent:event];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  if (![a4 type])
+  if (![event type])
   {
     [-[CAUITransportButton layer](self "layer")];
   }
 
   v7.receiver = self;
   v7.super_class = CAUITransportButton;
-  [(CAUITransportButton *)&v7 touchesEnded:a3 withEvent:a4];
+  [(CAUITransportButton *)&v7 touchesEnded:cancelled withEvent:event];
 }
 
-- (void)setDrawingStyle:(int)a3
+- (void)setDrawingStyle:(int)style
 {
-  if (self->drawingStyle != a3)
+  if (self->drawingStyle != style)
   {
     v21 = v3;
     v22 = v4;
-    self->drawingStyle = a3;
+    self->drawingStyle = style;
     v7 = [(CAUITransportButton *)self newPathRefForStyle:?];
     [-[CAUITransportButton layer](self "layer")];
     CGPathRelease(v7);
     -[CAUITransportButton setBackgroundColor:](self, "setBackgroundColor:", [MEMORY[0x277D75348] clearColor]);
-    if (a3 == 4)
+    if (style == 4)
     {
       [-[CAUITransportButton layer](self "layer")];
       v8 = MEMORY[0x277D75D18];
@@ -186,14 +186,14 @@
       v12 = 3221225472;
       v13 = __39__CAUITransportButton_setDrawingStyle___block_invoke_2;
       v14 = &unk_278A255E0;
-      v15 = self;
+      selfCopy = self;
       v9 = 1.0;
       v10 = &v11;
     }
 
     else
     {
-      if (a3 != 5)
+      if (style != 5)
       {
 LABEL_7:
         [(CAUITransportButton *)self setNeedsDisplay];
@@ -205,12 +205,12 @@ LABEL_7:
       v17 = 3221225472;
       v18 = __39__CAUITransportButton_setDrawingStyle___block_invoke;
       v19 = &unk_278A255E0;
-      v20 = self;
+      selfCopy2 = self;
       v9 = 1.0;
       v10 = &v16;
     }
 
-    [v8 animateWithDuration:196608 delay:v10 options:0 animations:v9 completion:{0.0, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20}];
+    [v8 animateWithDuration:196608 delay:v10 options:0 animations:v9 completion:{0.0, v11, v12, v13, v14, selfCopy, v16, v17, v18, v19, selfCopy2}];
     goto LABEL_7;
   }
 }
@@ -234,14 +234,14 @@ uint64_t __39__CAUITransportButton_setDrawingStyle___block_invoke_2(uint64_t a1)
   return [v2 setLineWidth:0.0];
 }
 
-- (void)setFillColor:(CGColor *)a3
+- (void)setFillColor:(CGColor *)color
 {
-  CGColorRetain(a3);
+  CGColorRetain(color);
   CGColorRelease(self->fillColor);
-  self->fillColor = a3;
-  v5 = [(CAUITransportButton *)self layer];
+  self->fillColor = color;
+  layer = [(CAUITransportButton *)self layer];
 
-  [v5 setFillColor:a3];
+  [layer setFillColor:color];
 }
 
 - (void)flash
@@ -275,7 +275,7 @@ _DWORD *__28__CAUITransportButton_flash__block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGPath)newPathRefForStyle:(int)a3
+- (CGPath)newPathRefForStyle:(int)style
 {
   Mutable = 0;
   p_imageRect = &self->imageRect;
@@ -291,9 +291,9 @@ _DWORD *__28__CAUITransportButton_flash__block_invoke(uint64_t a1)
     v7 = self->imageRect.size.width;
   }
 
-  if (a3 <= 3)
+  if (style <= 3)
   {
-    switch(a3)
+    switch(style)
     {
       case 1:
         Mutable = CGPathCreateMutable();
@@ -365,7 +365,7 @@ LABEL_14:
     return Mutable;
   }
 
-  if ((a3 - 4) >= 2)
+  if ((style - 4) >= 2)
   {
     return Mutable;
   }

@@ -1,15 +1,15 @@
 @interface TIKeyboardBehaviors_ShapeBased
-- (id)keyBehaviorsForState:(id)a3;
+- (id)keyBehaviorsForState:(id)state;
 @end
 
 @implementation TIKeyboardBehaviors_ShapeBased
 
-- (id)keyBehaviorsForState:(id)a3
+- (id)keyBehaviorsForState:(id)state
 {
-  v3 = a3;
-  if ([v3 hasCandidates])
+  stateCopy = state;
+  if ([stateCopy hasCandidates])
   {
-    if (([v3 hasCandidateSelected] & 1) != 0 || objc_msgSend(v3, "hasInput"))
+    if (([stateCopy hasCandidateSelected] & 1) != 0 || objc_msgSend(stateCopy, "hasInput"))
     {
       v4 = 4;
       v5 = 2;
@@ -24,7 +24,7 @@
 
   else
   {
-    if (![v3 hasInput])
+    if (![stateCopy hasInput])
     {
       v6 = 0;
       goto LABEL_10;

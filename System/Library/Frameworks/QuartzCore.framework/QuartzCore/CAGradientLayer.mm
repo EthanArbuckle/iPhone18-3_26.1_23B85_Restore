@@ -1,8 +1,8 @@
 @interface CAGradientLayer
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3;
-+ (id)defaultValueForKey:(id)a3;
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4;
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3;
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers;
++ (id)defaultValueForKey:(id)key;
+- (BOOL)CA_validateValue:(id)value forKey:(id)key;
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property;
 - (BOOL)premultiplied;
 - (CAGradientLayerType)type;
 - (CGColorSpace)colorSpace;
@@ -13,20 +13,20 @@
 - (NSArray)locations;
 - (double)noiseScale;
 - (id)colorMap;
-- (id)implicitAnimationForKeyPath:(id)a3;
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3;
+- (id)implicitAnimationForKeyPath:(id)path;
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags;
 - (void)_colorSpaceDidChange;
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5;
-- (void)_renderBackgroundInContext:(CGContext *)a3;
-- (void)didChangeValueForKey:(id)a3;
-- (void)setColorMap:(id)a3;
-- (void)setColorSpace:(CGColorSpace *)a3;
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags;
+- (void)_renderBackgroundInContext:(CGContext *)context;
+- (void)didChangeValueForKey:(id)key;
+- (void)setColorMap:(id)map;
+- (void)setColorSpace:(CGColorSpace *)space;
 - (void)setColors:(NSArray *)colors;
 - (void)setEndPoint:(CGPoint)endPoint;
-- (void)setInterpolations:(id)a3;
+- (void)setInterpolations:(id)interpolations;
 - (void)setLocations:(NSArray *)locations;
-- (void)setNoiseScale:(double)a3;
-- (void)setPremultiplied:(BOOL)a3;
+- (void)setNoiseScale:(double)scale;
+- (void)setPremultiplied:(BOOL)premultiplied;
 - (void)setStartPoint:(CGPoint)startPoint;
 - (void)setType:(CAGradientLayerType)type;
 @end
@@ -123,37 +123,37 @@
   return *v3;
 }
 
-+ (BOOL)CA_automaticallyNotifiesObservers:(Class)a3
++ (BOOL)CA_automaticallyNotifiesObservers:(Class)observers
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == observers)
   {
     return 0;
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___CAGradientLayer;
-  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, a3);
+  return objc_msgSendSuper2(&v6, sel_CA_automaticallyNotifiesObservers_, observers);
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3
+- (void)setColorSpace:(CGColorSpace *)space
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = space;
   CA::Layer::setter(self->super._attr.layer, 0x76, 2, v3);
 }
 
-- (void)setPremultiplied:(BOOL)a3
+- (void)setPremultiplied:(BOOL)premultiplied
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  CA::Layer::setter(self->super._attr.layer, 0x242, 6, &v3);
+  premultipliedCopy = premultiplied;
+  CA::Layer::setter(self->super._attr.layer, 0x242, 6, &premultipliedCopy);
 }
 
-- (void)setInterpolations:(id)a3
+- (void)setInterpolations:(id)interpolations
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = interpolations;
   CA::Layer::setter(self->super._attr.layer, 0x1BE, 3, v3);
 }
 
@@ -192,27 +192,27 @@
   CA::Layer::setter(self->super._attr.layer, 0x79, 3, v3);
 }
 
-- (BOOL)CA_validateValue:(id)a3 forKey:(id)a4
+- (BOOL)CA_validateValue:(id)value forKey:(id)key
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!value)
   {
     goto LABEL_20;
   }
 
-  if (![a4 isEqualToString:@"colors"])
+  if (![key isEqualToString:@"colors"])
   {
-    if ([a4 isEqualToString:@"locations"] || objc_msgSend(a4, "isEqualToString:", @"interpolations"))
+    if ([key isEqualToString:@"locations"] || objc_msgSend(key, "isEqualToString:", @"interpolations"))
     {
       objc_opt_class();
 
-      return CAObject_validateArrayOfClass(a3);
+      return CAObject_validateArrayOfClass(value);
     }
 
 LABEL_20:
     v13.receiver = self;
     v13.super_class = CAGradientLayer;
-    return [(CALayer *)&v13 CA_validateValue:a3 forKey:a4];
+    return [(CALayer *)&v13 CA_validateValue:value forKey:key];
   }
 
   objc_opt_class();
@@ -225,7 +225,7 @@ LABEL_20:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v15 objects:v14 count:16];
+  v7 = [value countByEnumeratingWithState:&v15 objects:v14 count:16];
   if (v7)
   {
     v8 = v7;
@@ -236,7 +236,7 @@ LABEL_6:
     {
       if (*v16 != v9)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(value);
       }
 
       v11 = CFGetTypeID(*(*(&v15 + 1) + 8 * v10));
@@ -247,7 +247,7 @@ LABEL_6:
 
       if (v8 == ++v10)
       {
-        v8 = [a3 countByEnumeratingWithState:&v15 objects:v14 count:16];
+        v8 = [value countByEnumeratingWithState:&v15 objects:v14 count:16];
         result = 1;
         if (v8)
         {
@@ -262,11 +262,11 @@ LABEL_6:
   return 1;
 }
 
-- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)a3
+- (unsigned)_renderLayerPropertyAnimationFlags:(unsigned int)flags
 {
   v3 = 0;
   v6 = *MEMORY[0x1E69E9840];
-  while (defines_property::atoms[v3] != a3)
+  while (defines_property::atoms[v3] != flags)
   {
     if (++v3 == 9)
     {
@@ -279,11 +279,11 @@ LABEL_6:
   return 32;
 }
 
-- (BOOL)_renderLayerDefinesProperty:(unsigned int)a3
+- (BOOL)_renderLayerDefinesProperty:(unsigned int)property
 {
   v3 = 0;
   v6 = *MEMORY[0x1E69E9840];
-  while (defines_property::atoms[v3] != a3)
+  while (defines_property::atoms[v3] != property)
   {
     if (++v3 == 9)
     {
@@ -301,45 +301,45 @@ LABEL_6:
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = CAGradientLayer;
-  v3 = [(CALayer *)&v5 _colorSpaceDidChange];
+  _colorSpaceDidChange = [(CALayer *)&v5 _colorSpaceDidChange];
   v4 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 576);
   if (!v4)
   {
-    v4 = CA::Transaction::create(v3);
+    v4 = CA::Transaction::create(_colorSpaceDidChange);
   }
 
   CA::Layer::set_commit_needed(self->super._attr.layer, v4, 0x10000);
 }
 
-- (void)_copyRenderLayer:(void *)a3 layerFlags:(unsigned int)a4 commitFlags:(unsigned int *)a5
+- (void)_copyRenderLayer:(void *)layer layerFlags:(unsigned int)flags commitFlags:(unsigned int *)commitFlags
 {
   v33 = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = CAGradientLayer;
-  v8 = [(CALayer *)&v32 _copyRenderLayer:a3 layerFlags:*&a4 commitFlags:?];
-  if (v8 && (*(a5 + 2) & 1) != 0)
+  v8 = [(CALayer *)&v32 _copyRenderLayer:layer layerFlags:*&flags commitFlags:?];
+  if (v8 && (*(commitFlags + 2) & 1) != 0)
   {
-    v10 = [(CAGradientLayer *)self colorSpace];
-    if (!v10)
+    colorSpace = [(CAGradientLayer *)self colorSpace];
+    if (!colorSpace)
     {
-      v10 = CA::Context::current_colorspace(a3, v9);
+      colorSpace = CA::Context::current_colorspace(layer, v9);
     }
 
-    v11 = [(CAGradientLayer *)self colorMap];
-    if (v11)
+    colorMap = [(CAGradientLayer *)self colorMap];
+    if (colorMap)
     {
-      v12 = 0;
-      v13 = 0;
-      v14 = 0;
+      colors = 0;
+      locations = 0;
+      interpolations = 0;
       v15 = 0;
     }
 
     else
     {
-      v12 = [(CAGradientLayer *)self colors];
-      v16 = [(NSArray *)v12 count];
-      v13 = [(CAGradientLayer *)self locations];
-      v14 = [(CAGradientLayer *)self interpolations];
+      colors = [(CAGradientLayer *)self colors];
+      v16 = [(NSArray *)colors count];
+      locations = [(CAGradientLayer *)self locations];
+      interpolations = [(CAGradientLayer *)self interpolations];
       v15 = v16;
     }
 
@@ -352,14 +352,14 @@ LABEL_6:
     v18 = v17;
     if (v17)
     {
-      if (v14)
+      if (interpolations)
       {
-        v19 = (2 * (v13 != 0)) | 4;
+        v19 = (2 * (locations != 0)) | 4;
       }
 
       else
       {
-        v19 = 2 * (v13 != 0);
+        v19 = 2 * (locations != 0);
       }
 
       v17[2] = 1;
@@ -375,24 +375,24 @@ LABEL_6:
       *(v18 + 8) = 0u;
     }
 
-    if (v11)
+    if (colorMap)
     {
-      v20 = [v11 CA_copyRenderValue];
+      cA_copyRenderValue = [colorMap CA_copyRenderValue];
       v21 = *(v18 + 14);
-      if (v21 != v20)
+      if (v21 != cA_copyRenderValue)
       {
         if (v21 && atomic_fetch_add(v21 + 2, 0xFFFFFFFF) == 1)
         {
           (*(*v21 + 16))(v21);
         }
 
-        if (v20)
+        if (cA_copyRenderValue)
         {
-          v22 = v20;
-          if (!atomic_fetch_add(v20 + 2, 1u))
+          v22 = cA_copyRenderValue;
+          if (!atomic_fetch_add(cA_copyRenderValue + 2, 1u))
           {
             v22 = 0;
-            atomic_fetch_add(v20 + 2, 0xFFFFFFFF);
+            atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF);
           }
         }
 
@@ -402,7 +402,7 @@ LABEL_6:
         }
 
         *(v18 + 14) = v22;
-        v23 = (*(*v20 + 80))(v20);
+        v23 = (*(*cA_copyRenderValue + 80))(cA_copyRenderValue);
         if (v23 && (*(v23 + 13) & 0x10) != 0)
         {
           v18[3] |= 0x1000u;
@@ -422,27 +422,27 @@ LABEL_6:
         *(v18 + 15) = 0;
       }
 
-      if (v20 && atomic_fetch_add(v20 + 2, 0xFFFFFFFF) == 1)
+      if (cA_copyRenderValue && atomic_fetch_add(cA_copyRenderValue + 2, 0xFFFFFFFF) == 1)
       {
-        (*(*v20 + 16))(v20);
+        (*(*cA_copyRenderValue + 16))(cA_copyRenderValue);
       }
     }
 
     else
     {
-      if (v12)
+      if (colors)
       {
-        CA::Render::Gradient::set_colors((v18 + 4), v12, v10);
+        CA::Render::Gradient::set_colors((v18 + 4), colors, colorSpace);
       }
 
-      if (v13)
+      if (locations)
       {
-        CA::Render::InterpolatedFunction::set_locations((v18 + 4), v13);
+        CA::Render::InterpolatedFunction::set_locations((v18 + 4), locations);
       }
 
-      if (v14)
+      if (interpolations)
       {
-        CA::Render::InterpolatedFunction::set_interpolations((v18 + 4), v14);
+        CA::Render::InterpolatedFunction::set_interpolations((v18 + 4), interpolations);
       }
     }
 
@@ -453,7 +453,7 @@ LABEL_6:
     [(CAGradientLayer *)self endPoint];
     *(v18 + 11) = v27;
     *(v18 + 12) = v28;
-    X::CFRef<CGColorSpace *>::operator=(v18 + 16, v10);
+    X::CFRef<CGColorSpace *>::operator=(v18 + 16, colorSpace);
     if ([(CAGradientLayer *)self premultiplied])
     {
       v29 = 4096;
@@ -478,7 +478,7 @@ LABEL_6:
   return v8;
 }
 
-- (void)_renderBackgroundInContext:(CGContext *)a3
+- (void)_renderBackgroundInContext:(CGContext *)context
 {
   v44[1] = *MEMORY[0x1E69E9840];
   v42.receiver = self;
@@ -497,15 +497,15 @@ LABEL_6:
     os_unfair_lock_lock(&CA::Transaction::transaction_lock);
   }
 
-  v8 = [(CAGradientLayer *)self colors];
-  v9 = [(NSArray *)v8 count];
+  colors = [(CAGradientLayer *)self colors];
+  v9 = [(NSArray *)colors count];
   if (v9 >= 2)
   {
-    v10 = [(CAGradientLayer *)self locations];
-    v11 = v10;
-    if (v10)
+    locations = [(CAGradientLayer *)self locations];
+    v11 = locations;
+    if (locations)
     {
-      v12 = [(NSArray *)v10 count];
+      v12 = [(NSArray *)locations count];
       if (v12 != v9)
       {
         goto LABEL_29;
@@ -536,7 +536,7 @@ LABEL_6:
 
     else
     {
-      v17 = CGGradientCreateWithColors(0, v8, v14);
+      v17 = CGGradientCreateWithColors(0, colors, v14);
     }
 
     v18 = v17;
@@ -547,7 +547,7 @@ LABEL_6:
       v22 = v21;
       v24 = v23;
       v26 = v25;
-      CGContextSaveGState(a3);
+      CGContextSaveGState(context);
       if ([(CALayer *)self _usesCornerRadii])
       {
         v40 = 0u;
@@ -559,8 +559,8 @@ LABEL_6:
           [(CALayer *)self cornerRadii:v38];
         }
 
-        CA_CGContextAddUnevenRoundRect(a3, &v38, v20, v22, v24, v26);
-        CGContextClip(a3);
+        CA_CGContextAddUnevenRoundRect(context, &v38, v20, v22, v24, v26);
+        CGContextClip(context);
       }
 
       else
@@ -572,13 +572,13 @@ LABEL_6:
           v50.origin.y = v22;
           v50.size.width = v24;
           v50.size.height = v26;
-          CGContextClipToRect(a3, v50);
+          CGContextClipToRect(context, v50);
         }
 
         else
         {
-          CA_CGContextAddRoundRect(a3, [(CALayer *)self _continuousCorners], v20, v22, v24, v26, v27);
-          CGContextClip(a3);
+          CA_CGContextAddRoundRect(context, [(CALayer *)self _continuousCorners], v20, v22, v24, v26, v27);
+          CGContextClip(context);
         }
       }
 
@@ -591,26 +591,26 @@ LABEL_6:
       if ([(NSString *)[(CAGradientLayer *)self type] isEqualToString:@"axial"])
       {
         CA::Transaction::unlock(v6);
-        CGContextTranslateCTM(a3, v20, v22);
-        CGContextScaleCTM(a3, v24, v26);
+        CGContextTranslateCTM(context, v20, v22);
+        CGContextScaleCTM(context, v24, v26);
         v45.x = v29;
         v45.y = v31;
         v48.x = v33;
         v48.y = v35;
-        CGContextDrawLinearGradient(a3, v18, v45, v48, 3u);
+        CGContextDrawLinearGradient(context, v18, v45, v48, 3u);
       }
 
       else if ([(NSString *)[(CAGradientLayer *)self type] isEqualToString:@"radial"])
       {
         CA::Transaction::unlock(v6);
-        CGContextTranslateCTM(a3, v20, v22);
-        CGContextScaleCTM(a3, v24, v26);
-        CGContextTranslateCTM(a3, v29, v31);
-        CGContextScaleCTM(a3, vabdd_f64(v33, v29), vabdd_f64(v35, v31));
+        CGContextTranslateCTM(context, v20, v22);
+        CGContextScaleCTM(context, v24, v26);
+        CGContextTranslateCTM(context, v29, v31);
+        CGContextScaleCTM(context, vabdd_f64(v33, v29), vabdd_f64(v35, v31));
         v46 = **&MEMORY[0x1E695EFF8];
         v49.x = *MEMORY[0x1E695EFF8];
         v49.y = v46.y;
-        CGContextDrawRadialGradient(a3, v18, *MEMORY[0x1E695EFF8], 0.0, v49, 1.0, 3u);
+        CGContextDrawRadialGradient(context, v18, *MEMORY[0x1E695EFF8], 0.0, v49, 1.0, 3u);
       }
 
       else
@@ -618,18 +618,18 @@ LABEL_6:
         if (![(NSString *)[(CAGradientLayer *)self type] isEqualToString:@"conic"])
         {
 LABEL_28:
-          CGContextRestoreGState(a3);
+          CGContextRestoreGState(context);
           CGGradientRelease(v18);
           goto LABEL_29;
         }
 
         CA::Transaction::unlock(v6);
         v36 = atan2(v35 - v31, v33 - v29);
-        CGContextTranslateCTM(a3, v20, v22);
-        CGContextScaleCTM(a3, v24, v26);
+        CGContextTranslateCTM(context, v20, v22);
+        CGContextScaleCTM(context, v24, v26);
         v47.x = v29;
         v47.y = v31;
-        CGContextDrawConicGradient(a3, v18, v47, v36);
+        CGContextDrawConicGradient(context, v18, v47, v36);
       }
 
       v37 = *(v6 + 29);
@@ -647,7 +647,7 @@ LABEL_29:
   CA::Transaction::unlock(v6);
 }
 
-- (id)implicitAnimationForKeyPath:(id)a3
+- (id)implicitAnimationForKeyPath:(id)path
 {
   v11 = *MEMORY[0x1E69E9840];
   v10.receiver = self;
@@ -655,10 +655,10 @@ LABEL_29:
   result = [(CALayer *)&v10 implicitAnimationForKeyPath:?];
   if (!result)
   {
-    v6 = [a3 rangeOfString:@"."];
+    v6 = [path rangeOfString:@"."];
     if (v7)
     {
-      v8 = CAInternAtom([a3 substringToIndex:v6], 0);
+      v8 = CAInternAtom([path substringToIndex:v6], 0);
       v9 = 0;
       result = 0;
       if (v8 <= 489)
@@ -668,24 +668,24 @@ LABEL_29:
           return result;
         }
 
-        return CALayerCreateImplicitAnimation(self, a3, v9);
+        return CALayerCreateImplicitAnimation(self, path, v9);
       }
 
       if (v8 == 578 || v8 == 490)
       {
-        return CALayerCreateImplicitAnimation(self, a3, v9);
+        return CALayerCreateImplicitAnimation(self, path, v9);
       }
     }
 
     else
     {
-      v9 = CAInternAtom(a3, 0);
+      v9 = CAInternAtom(path, 0);
       result = 0;
       if (v9 <= 489)
       {
         if (v9 == 121 || v9 == 237 || v9 == 446)
         {
-          return CALayerCreateImplicitAnimation(self, a3, v9);
+          return CALayerCreateImplicitAnimation(self, path, v9);
         }
       }
 
@@ -693,13 +693,13 @@ LABEL_29:
       {
         if (v9 == 578 || v9 == 683)
         {
-          return CALayerCreateImplicitAnimation(self, a3, v9);
+          return CALayerCreateImplicitAnimation(self, path, v9);
         }
       }
 
       else if (v9 == 490 || v9 == 532)
       {
-        return CALayerCreateImplicitAnimation(self, a3, v9);
+        return CALayerCreateImplicitAnimation(self, path, v9);
       }
     }
   }
@@ -707,10 +707,10 @@ LABEL_29:
   return result;
 }
 
-- (void)didChangeValueForKey:(id)a3
+- (void)didChangeValueForKey:(id)key
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   v6 = 0;
   while (v5 != [CAGradientLayer didChangeValueForKey:]::atoms[v6])
   {
@@ -725,13 +725,13 @@ LABEL_29:
 LABEL_6:
   v8.receiver = self;
   v8.super_class = CAGradientLayer;
-  [(CAGradientLayer *)&v8 didChangeValueForKey:a3];
+  [(CAGradientLayer *)&v8 didChangeValueForKey:key];
 }
 
-+ (id)defaultValueForKey:(id)a3
++ (id)defaultValueForKey:(id)key
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = CAInternAtom(a3, 0);
+  v5 = CAInternAtom(key, 0);
   if (v5 <= 577)
   {
     if (v5 == 237)
@@ -748,9 +748,9 @@ LABEL_6:
     }
 
 LABEL_15:
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___CAGradientLayer;
-    return objc_msgSendSuper2(&v10, sel_defaultValueForKey_, a3);
+    return objc_msgSendSuper2(&v10, sel_defaultValueForKey_, key);
   }
 
   if (v5 == 578)
@@ -776,17 +776,17 @@ LABEL_12:
   return [v6 valueWithPoint:{v7, v8}];
 }
 
-- (void)setNoiseScale:(double)a3
+- (void)setNoiseScale:(double)scale
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  v3[0] = a3;
+  v3[0] = scale;
   CA::Layer::setter(self->super._attr.layer, 0x214, 0x12, v3);
 }
 
-- (void)setColorMap:(id)a3
+- (void)setColorMap:(id)map
 {
   v3[1] = *MEMORY[0x1E69E9840];
-  *&v3[0] = a3;
+  *&v3[0] = map;
   CA::Layer::setter(self->super._attr.layer, 0x70, 2, v3);
 }
 

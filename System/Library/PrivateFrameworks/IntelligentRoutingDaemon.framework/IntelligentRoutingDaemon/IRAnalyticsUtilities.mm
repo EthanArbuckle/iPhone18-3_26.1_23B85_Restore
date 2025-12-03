@@ -1,18 +1,18 @@
 @interface IRAnalyticsUtilities
-+ (id)candidateModelTypeForCandidate:(id)a3;
-+ (id)candidateTypeForCandidate:(id)a3;
-+ (int64_t)getRedactedBundleID:(id)a3;
++ (id)candidateModelTypeForCandidate:(id)candidate;
++ (id)candidateTypeForCandidate:(id)candidate;
++ (int64_t)getRedactedBundleID:(id)d;
 @end
 
 @implementation IRAnalyticsUtilities
 
-+ (int64_t)getRedactedBundleID:(id)a3
++ (int64_t)getRedactedBundleID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy)
   {
-    if ([v3 isEqual:@"com.apple.Music"])
+    if ([dCopy isEqual:@"com.apple.Music"])
     {
       v5 = 1;
     }
@@ -56,26 +56,26 @@
   return v5;
 }
 
-+ (id)candidateTypeForCandidate:(id)a3
++ (id)candidateTypeForCandidate:(id)candidate
 {
-  v3 = a3;
-  v4 = [v3 nodes];
-  v5 = [v4 count];
+  candidateCopy = candidate;
+  nodes = [candidateCopy nodes];
+  v5 = [nodes count];
 
   if (v5 <= 1)
   {
-    v7 = [v3 nodes];
-    v8 = [v7 allObjects];
-    v9 = [v8 firstObject];
-    v10 = [v9 avOutputDevice];
+    nodes2 = [candidateCopy nodes];
+    allObjects = [nodes2 allObjects];
+    firstObject = [allObjects firstObject];
+    avOutputDevice = [firstObject avOutputDevice];
 
-    if (v10)
+    if (avOutputDevice)
     {
-      v11 = [v3 nodes];
-      v12 = [v11 allObjects];
-      v13 = [v12 firstObject];
-      v14 = [v13 avOutputDevice];
-      v6 = IRAVOutputDeviceTypeToString([v14 deviceType]);
+      nodes3 = [candidateCopy nodes];
+      allObjects2 = [nodes3 allObjects];
+      firstObject2 = [allObjects2 firstObject];
+      avOutputDevice2 = [firstObject2 avOutputDevice];
+      v6 = IRAVOutputDeviceTypeToString([avOutputDevice2 deviceType]);
     }
 
     else
@@ -92,26 +92,26 @@
   return v6;
 }
 
-+ (id)candidateModelTypeForCandidate:(id)a3
++ (id)candidateModelTypeForCandidate:(id)candidate
 {
-  v3 = a3;
-  v4 = [v3 nodes];
-  v5 = [v4 count];
+  candidateCopy = candidate;
+  nodes = [candidateCopy nodes];
+  v5 = [nodes count];
 
   if (v5 <= 1)
   {
-    v7 = [v3 nodes];
-    v8 = [v7 allObjects];
-    v9 = [v8 firstObject];
-    v10 = [v9 avOutputDevice];
+    nodes2 = [candidateCopy nodes];
+    allObjects = [nodes2 allObjects];
+    firstObject = [allObjects firstObject];
+    avOutputDevice = [firstObject avOutputDevice];
 
-    if (v10)
+    if (avOutputDevice)
     {
-      v11 = [v3 nodes];
-      v12 = [v11 allObjects];
-      v13 = [v12 firstObject];
-      v14 = [v13 avOutputDevice];
-      v6 = IRAVOutputDeviceSubTypeToString([v14 deviceSubType]);
+      nodes3 = [candidateCopy nodes];
+      allObjects2 = [nodes3 allObjects];
+      firstObject2 = [allObjects2 firstObject];
+      avOutputDevice2 = [firstObject2 avOutputDevice];
+      v6 = IRAVOutputDeviceSubTypeToString([avOutputDevice2 deviceSubType]);
     }
 
     else

@@ -1,35 +1,35 @@
 @interface STSConnectionHandover
-+ (id)_connectionHandoverWithNdefMessage:(id)a3;
-+ (id)_createNdefWithType:(int64_t)a3 alternativeCarriers:(id)a4 errorRecord:(id)a5;
-+ (id)connectionHandoverWithData:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_connectionHandoverWithNdefMessage:(id)message;
++ (id)_createNdefWithType:(int64_t)type alternativeCarriers:(id)carriers errorRecord:(id)record;
++ (id)connectionHandoverWithData:(id)data;
+- (BOOL)isEqual:(id)equal;
 - (STSConnectionHandover)init;
-- (STSConnectionHandover)initWithCoder:(id)a3;
-- (void)addAlternativeCarrier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (STSConnectionHandover)initWithCoder:(id)coder;
+- (void)addAlternativeCarrier:(id)carrier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSConnectionHandover
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   majorVersion = self->_majorVersion;
-  v8 = a3;
-  objc_msgSend_encodeInteger_forKey_(v8, v5, majorVersion, @"majorVersion");
-  objc_msgSend_encodeInteger_forKey_(v8, v6, self->_minorVersion, @"minorVersion");
-  objc_msgSend_encodeObject_forKey_(v8, v7, self->_alternativeCarriers, @"alternativeCarriers");
+  coderCopy = coder;
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v5, majorVersion, @"majorVersion");
+  objc_msgSend_encodeInteger_forKey_(coderCopy, v6, self->_minorVersion, @"minorVersion");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->_alternativeCarriers, @"alternativeCarriers");
 }
 
-- (STSConnectionHandover)initWithCoder:(id)a3
+- (STSConnectionHandover)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = STSConnectionHandover;
   v6 = [(STSConnectionHandover *)&v20 init];
   if (v6)
   {
-    v6->_majorVersion = objc_msgSend_decodeIntForKey_(v4, v5, @"majorVersion");
-    v6->_minorVersion = objc_msgSend_decodeIntForKey_(v4, v7, @"minorVersion");
+    v6->_majorVersion = objc_msgSend_decodeIntForKey_(coderCopy, v5, @"majorVersion");
+    v6->_minorVersion = objc_msgSend_decodeIntForKey_(coderCopy, v7, @"minorVersion");
     v8 = MEMORY[0x277CBEB98];
     v9 = objc_opt_class();
     v10 = objc_opt_class();
@@ -37,7 +37,7 @@
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v15 = objc_msgSend_setWithObjects_(v8, v14, v9, v10, v11, v12, v13, 0);
-    v17 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v16, v15, @"alternativeCarriers");
+    v17 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v16, v15, @"alternativeCarriers");
     alternativeCarriers = v6->_alternativeCarriers;
     v6->_alternativeCarriers = v17;
   }
@@ -60,16 +60,16 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     isEqualToArray = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     majorVersion = self->_majorVersion;
@@ -94,22 +94,22 @@
   return isEqualToArray;
 }
 
-- (void)addAlternativeCarrier:(id)a3
+- (void)addAlternativeCarrier:(id)carrier
 {
-  if (a3)
+  if (carrier)
   {
-    objc_msgSend_addObject_(self->_alternativeCarriers, a2, a3);
+    objc_msgSend_addObject_(self->_alternativeCarriers, a2, carrier);
   }
 }
 
-+ (id)connectionHandoverWithData:(id)a3
++ (id)connectionHandoverWithData:(id)data
 {
-  v4 = objc_msgSend_ndefRecordsWithData_(STSNDEFRecord, a2, a3);
+  v4 = objc_msgSend_ndefRecordsWithData_(STSNDEFRecord, a2, data);
   v8 = v4;
   if (v4)
   {
     sub_2645011D4(OS_LOG_TYPE_INFO, 0, "+[STSConnectionHandover connectionHandoverWithData:]", 154, @"NDEF:%@", v5, v6, v7, v4);
-    v10 = objc_msgSend__connectionHandoverWithNdefMessage_(a1, v9, v8);
+    v10 = objc_msgSend__connectionHandoverWithNdefMessage_(self, v9, v8);
   }
 
   else
@@ -121,10 +121,10 @@
   return v10;
 }
 
-+ (id)_connectionHandoverWithNdefMessage:(id)a3
++ (id)_connectionHandoverWithNdefMessage:(id)message
 {
   v191 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  messageCopy = message;
   v169 = objc_msgSend_array(MEMORY[0x277CBEB18], v4, v5);
   v161 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v6, v7);
   v10 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v8, v9);
@@ -132,7 +132,7 @@
   v184 = 0u;
   v185 = 0u;
   v186 = 0u;
-  v11 = v3;
+  v11 = messageCopy;
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v183, v190, 16);
   if (v13)
   {
@@ -419,12 +419,12 @@ LABEL_71:
   return v159;
 }
 
-+ (id)_createNdefWithType:(int64_t)a3 alternativeCarriers:(id)a4 errorRecord:(id)a5
++ (id)_createNdefWithType:(int64_t)type alternativeCarriers:(id)carriers errorRecord:(id)record
 {
   v70 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v62 = a5;
-  if (a3)
+  carriersCopy = carriers;
+  recordCopy = record;
+  if (type)
   {
     objc_msgSend_dataWithBytes_length_(MEMORY[0x277CBEA90], v8, "Hs", 2);
   }
@@ -439,7 +439,7 @@ LABEL_71:
   objc_msgSend_appendBytes_length_(v11, v12, &v68, 1);
   v15 = objc_msgSend_array(MEMORY[0x277CBEB18], v13, v14);
   v18 = objc_msgSend_array(MEMORY[0x277CBEB18], v16, v17);
-  if (!a3)
+  if (!type)
   {
     arc4random_buf(__buf, 2uLL);
     v19 = [STSNDEFRecord alloc];
@@ -454,7 +454,7 @@ LABEL_71:
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v27 = v7;
+  v27 = carriersCopy;
   v29 = objc_msgSend_countByEnumeratingWithState_objects_count_(v27, v28, &v63, v69, 16);
   if (v29)
   {
@@ -486,9 +486,9 @@ LABEL_71:
     while (v32);
   }
 
-  if (a3 == 1 && v62)
+  if (type == 1 && recordCopy)
   {
-    objc_msgSend_addObject_(v15, v48, v62);
+    objc_msgSend_addObject_(v15, v48, recordCopy);
   }
 
   v49 = objc_msgSend_dataWithSTSNDEFRecords_(MEMORY[0x277CBEA90], v48, v15);

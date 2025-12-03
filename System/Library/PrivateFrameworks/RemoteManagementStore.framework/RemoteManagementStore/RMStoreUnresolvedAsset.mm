@@ -1,101 +1,101 @@
 @interface RMStoreUnresolvedAsset
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToUnresolvedAsset:(id)a3;
-- (RMStoreUnresolvedAsset)initWithAsset:(id)a3 queryParameters:(id)a4;
-- (RMStoreUnresolvedAsset)initWithAsset:(id)a3 queryParameters:(id)a4 downloadURL:(id)a5;
-- (RMStoreUnresolvedAsset)initWithAssetIdentifier:(id)a3 resolveAs:(int64_t)a4 queryParameters:(id)a5 downloadURL:(id)a6 extensionToken:(id)a7 useCache:(BOOL)a8;
-- (RMStoreUnresolvedAsset)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToUnresolvedAsset:(id)asset;
+- (RMStoreUnresolvedAsset)initWithAsset:(id)asset queryParameters:(id)parameters;
+- (RMStoreUnresolvedAsset)initWithAsset:(id)asset queryParameters:(id)parameters downloadURL:(id)l;
+- (RMStoreUnresolvedAsset)initWithAssetIdentifier:(id)identifier resolveAs:(int64_t)as queryParameters:(id)parameters downloadURL:(id)l extensionToken:(id)token useCache:(BOOL)cache;
+- (RMStoreUnresolvedAsset)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMStoreUnresolvedAsset
 
-- (RMStoreUnresolvedAsset)initWithAsset:(id)a3 queryParameters:(id)a4
+- (RMStoreUnresolvedAsset)initWithAsset:(id)asset queryParameters:(id)parameters
 {
-  v6 = a4;
-  v7 = [a3 declarationIdentifier];
-  v8 = [(RMStoreUnresolvedAsset *)self initWithAssetIdentifier:v7 resolveAs:0 queryParameters:v6 downloadURL:0 extensionToken:0 useCache:1];
+  parametersCopy = parameters;
+  declarationIdentifier = [asset declarationIdentifier];
+  v8 = [(RMStoreUnresolvedAsset *)self initWithAssetIdentifier:declarationIdentifier resolveAs:0 queryParameters:parametersCopy downloadURL:0 extensionToken:0 useCache:1];
 
   return v8;
 }
 
-- (RMStoreUnresolvedAsset)initWithAsset:(id)a3 queryParameters:(id)a4 downloadURL:(id)a5
+- (RMStoreUnresolvedAsset)initWithAsset:(id)asset queryParameters:(id)parameters downloadURL:(id)l
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 declarationIdentifier];
-  v11 = [(RMStoreUnresolvedAsset *)self initWithAssetIdentifier:v10 resolveAs:1 queryParameters:v9 downloadURL:v8 extensionToken:0 useCache:1];
+  lCopy = l;
+  parametersCopy = parameters;
+  declarationIdentifier = [asset declarationIdentifier];
+  v11 = [(RMStoreUnresolvedAsset *)self initWithAssetIdentifier:declarationIdentifier resolveAs:1 queryParameters:parametersCopy downloadURL:lCopy extensionToken:0 useCache:1];
 
   return v11;
 }
 
-- (RMStoreUnresolvedAsset)initWithAssetIdentifier:(id)a3 resolveAs:(int64_t)a4 queryParameters:(id)a5 downloadURL:(id)a6 extensionToken:(id)a7 useCache:(BOOL)a8
+- (RMStoreUnresolvedAsset)initWithAssetIdentifier:(id)identifier resolveAs:(int64_t)as queryParameters:(id)parameters downloadURL:(id)l extensionToken:(id)token useCache:(BOOL)cache
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  lCopy = l;
+  tokenCopy = token;
   v22.receiver = self;
   v22.super_class = RMStoreUnresolvedAsset;
   v18 = [(RMStoreUnresolvedAsset *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_assetIdentifier, a3);
-    v19->_resolveAs = a4;
-    objc_storeStrong(&v19->_queryParameters, a5);
-    objc_storeStrong(&v19->_downloadURL, a6);
-    objc_storeStrong(&v19->_extensionToken, a7);
-    v19->_useCache = a8;
+    objc_storeStrong(&v18->_assetIdentifier, identifier);
+    v19->_resolveAs = as;
+    objc_storeStrong(&v19->_queryParameters, parameters);
+    objc_storeStrong(&v19->_downloadURL, l);
+    objc_storeStrong(&v19->_extensionToken, token);
+    v19->_useCache = cache;
   }
 
   return v19;
 }
 
-- (RMStoreUnresolvedAsset)initWithCoder:(id)a3
+- (RMStoreUnresolvedAsset)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"asset-identifier"];
-  v6 = [v4 decodeIntegerForKey:@"resolve-as"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asset-identifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"resolve-as"];
   v7 = MEMORY[0x277CBEB98];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"query-parameters"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"query-parameters"];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"download-url"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extension-token"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"use-cache"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"download-url"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extension-token"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"use-cache"];
 
-  v14 = [v13 BOOLValue];
-  v15 = [(RMStoreUnresolvedAsset *)self initWithAssetIdentifier:v5 resolveAs:v6 queryParameters:v10 downloadURL:v11 extensionToken:v12 useCache:v14];
+  bOOLValue = [v13 BOOLValue];
+  v15 = [(RMStoreUnresolvedAsset *)self initWithAssetIdentifier:v5 resolveAs:v6 queryParameters:v10 downloadURL:v11 extensionToken:v12 useCache:bOOLValue];
 
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RMStoreUnresolvedAsset *)self assetIdentifier];
-  [v4 encodeObject:v5 forKey:@"asset-identifier"];
+  coderCopy = coder;
+  assetIdentifier = [(RMStoreUnresolvedAsset *)self assetIdentifier];
+  [coderCopy encodeObject:assetIdentifier forKey:@"asset-identifier"];
 
-  [v4 encodeInteger:-[RMStoreUnresolvedAsset resolveAs](self forKey:{"resolveAs"), @"resolve-as"}];
-  v6 = [(RMStoreUnresolvedAsset *)self queryParameters];
-  [v4 encodeObject:v6 forKey:@"query-parameters"];
+  [coderCopy encodeInteger:-[RMStoreUnresolvedAsset resolveAs](self forKey:{"resolveAs"), @"resolve-as"}];
+  queryParameters = [(RMStoreUnresolvedAsset *)self queryParameters];
+  [coderCopy encodeObject:queryParameters forKey:@"query-parameters"];
 
-  v7 = [(RMStoreUnresolvedAsset *)self downloadURL];
-  [v4 encodeObject:v7 forKey:@"download-url"];
+  downloadURL = [(RMStoreUnresolvedAsset *)self downloadURL];
+  [coderCopy encodeObject:downloadURL forKey:@"download-url"];
 
-  v8 = [(RMStoreUnresolvedAsset *)self extensionToken];
-  [v4 encodeObject:v8 forKey:@"extension-token"];
+  extensionToken = [(RMStoreUnresolvedAsset *)self extensionToken];
+  [coderCopy encodeObject:extensionToken forKey:@"extension-token"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[RMStoreUnresolvedAsset useCache](self, "useCache")}];
-  [v4 encodeObject:v9 forKey:@"use-cache"];
+  [coderCopy encodeObject:v9 forKey:@"use-cache"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -103,26 +103,26 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMStoreUnresolvedAsset *)self isEqualToUnresolvedAsset:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(RMStoreUnresolvedAsset *)self isEqualToUnresolvedAsset:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToUnresolvedAsset:(id)a3
+- (BOOL)isEqualToUnresolvedAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(RMStoreUnresolvedAsset *)self assetIdentifier];
-  v6 = [v4 assetIdentifier];
-  if ([v5 isEqualToString:v6])
+  assetCopy = asset;
+  assetIdentifier = [(RMStoreUnresolvedAsset *)self assetIdentifier];
+  assetIdentifier2 = [assetCopy assetIdentifier];
+  if ([assetIdentifier isEqualToString:assetIdentifier2])
   {
-    v7 = [(RMStoreUnresolvedAsset *)self resolveAs];
-    if (v7 == [v4 resolveAs])
+    resolveAs = [(RMStoreUnresolvedAsset *)self resolveAs];
+    if (resolveAs == [assetCopy resolveAs])
     {
-      v8 = [(RMStoreUnresolvedAsset *)self queryParameters];
-      v9 = [v4 queryParameters];
-      v10 = v8;
-      v11 = v9;
+      queryParameters = [(RMStoreUnresolvedAsset *)self queryParameters];
+      queryParameters2 = [assetCopy queryParameters];
+      v10 = queryParameters;
+      v11 = queryParameters2;
       v12 = v11;
       if (v10 == v11)
       {
@@ -149,10 +149,10 @@ LABEL_27:
         }
       }
 
-      v17 = [(RMStoreUnresolvedAsset *)self downloadURL];
-      v18 = [v4 downloadURL];
-      v15 = v17;
-      v19 = v18;
+      downloadURL = [(RMStoreUnresolvedAsset *)self downloadURL];
+      downloadURL2 = [assetCopy downloadURL];
+      v15 = downloadURL;
+      v19 = downloadURL2;
       v14 = v19;
       if (v15 == v19)
       {
@@ -179,10 +179,10 @@ LABEL_26:
         }
       }
 
-      v23 = [(RMStoreUnresolvedAsset *)self extensionToken];
-      v24 = [v4 extensionToken];
-      v21 = v23;
-      v25 = v24;
+      extensionToken = [(RMStoreUnresolvedAsset *)self extensionToken];
+      extensionToken2 = [assetCopy extensionToken];
+      v21 = extensionToken;
+      v25 = extensionToken2;
       v26 = v21;
       v27 = v25;
       if (v21 == v25)
@@ -221,8 +221,8 @@ LABEL_25:
         }
       }
 
-      v30 = [(RMStoreUnresolvedAsset *)self useCache];
-      v13 = v30 ^ [v4 useCache] ^ 1;
+      useCache = [(RMStoreUnresolvedAsset *)self useCache];
+      v13 = useCache ^ [assetCopy useCache] ^ 1;
       goto LABEL_23;
     }
   }

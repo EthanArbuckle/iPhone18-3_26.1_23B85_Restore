@@ -1,39 +1,39 @@
 @interface _UIStatusBarLockViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
-- (void)animateUnlockWithCompletionBlock:(id)a3;
+- (void)animateUnlockWithCompletionBlock:(id)block;
 @end
 
 @implementation _UIStatusBarLockViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v4 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   [location[0] validateClass:@"_UIStatusBarLockView" hasInstanceMethod:@"animateUnlockWithCompletionBlock:" withFullSignature:{"v", "@?", 0}];
   objc_storeStrong(v4, obj);
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3.receiver = self;
   v3.super_class = _UIStatusBarLockViewAccessibility;
   return [(_UIStatusBarLockViewAccessibility *)&v3 accessibilityTraits]| *MEMORY[0x29EDC7580] | *MEMORY[0x29EDC74F8];
 }
 
-- (void)animateUnlockWithCompletionBlock:(id)a3
+- (void)animateUnlockWithCompletionBlock:(id)block
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
+  objc_storeStrong(location, block);
+  v3 = selfCopy;
   v5 = MEMORY[0x29EDCA5F8];
   v6 = -1073741824;
   v7 = 0;

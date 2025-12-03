@@ -1,16 +1,16 @@
 @interface SiriUIComponentConstraintFactory
 + (id)sharedConstraintFactory;
 - (SiriUIComponentConstraintFactory)init;
-- (id)_bestDistanceFromComponentType:(unint64_t)a3 toComponentType:(unint64_t)a4 layoutStyle:(int64_t)a5;
-- (id)_createMapForLayoutStyle:(int64_t)a3;
-- (id)bottomConstraintForView:(id)a3 fromLayoutGuide:(id)a4 templateComponent:(id)a5 layoutStyle:(int64_t)a6;
-- (id)bottomConstraintForView:(id)a3 inSuperview:(id)a4 templateComponent:(id)a5 layoutStyle:(int64_t)a6;
-- (id)topConstraintForView:(id)a3 fromLayoutGuide:(id)a4 templateComponent:(id)a5 layoutStyle:(int64_t)a6;
-- (id)topConstraintForView:(id)a3 inSuperview:(id)a4 templateComponent:(id)a5 layoutStyle:(int64_t)a6;
-- (id)verticalConstraintFromUpperView:(id)a3 lowerView:(id)a4 upperTemplateComponent:(id)a5 lowerTemplateComponent:(id)a6 layoutStyle:(int64_t)a7;
-- (int64_t)_layoutAttributeForView:(id)a3 componentType:(unint64_t)a4 isLower:(BOOL)a5;
-- (unint64_t)_componentTypeForView:(id)a3 component:(id)a4;
-- (void)_addConstants:(id)a3 forLowerComponentStyle:(unint64_t)a4 toMap:(id)a5;
+- (id)_bestDistanceFromComponentType:(unint64_t)type toComponentType:(unint64_t)componentType layoutStyle:(int64_t)style;
+- (id)_createMapForLayoutStyle:(int64_t)style;
+- (id)bottomConstraintForView:(id)view fromLayoutGuide:(id)guide templateComponent:(id)component layoutStyle:(int64_t)style;
+- (id)bottomConstraintForView:(id)view inSuperview:(id)superview templateComponent:(id)component layoutStyle:(int64_t)style;
+- (id)topConstraintForView:(id)view fromLayoutGuide:(id)guide templateComponent:(id)component layoutStyle:(int64_t)style;
+- (id)topConstraintForView:(id)view inSuperview:(id)superview templateComponent:(id)component layoutStyle:(int64_t)style;
+- (id)verticalConstraintFromUpperView:(id)view lowerView:(id)lowerView upperTemplateComponent:(id)component lowerTemplateComponent:(id)templateComponent layoutStyle:(int64_t)style;
+- (int64_t)_layoutAttributeForView:(id)view componentType:(unint64_t)type isLower:(BOOL)lower;
+- (unint64_t)_componentTypeForView:(id)view component:(id)component;
+- (void)_addConstants:(id)constants forLowerComponentStyle:(unint64_t)style toMap:(id)map;
 - (void)_setupMaps;
 @end
 
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __59__SiriUIComponentConstraintFactory_sharedConstraintFactory__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedConstraintFactory_onceToken != -1)
   {
     dispatch_once(&sharedConstraintFactory_onceToken, block);
@@ -54,9 +54,9 @@ uint64_t __59__SiriUIComponentConstraintFactory_sharedConstraintFactory__block_i
 - (void)_setupMaps
 {
   v52[6] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   layoutStyleToComponentLayoutMaps = self->_layoutStyleToComponentLayoutMaps;
-  self->_layoutStyleToComponentLayoutMaps = v3;
+  self->_layoutStyleToComponentLayoutMaps = dictionary;
 
   v5 = [(SiriUIComponentConstraintFactory *)self _createMapForLayoutStyle:0];
   v22 = [(SiriUIComponentConstraintFactory *)self _createMapForLayoutStyle:1];
@@ -198,18 +198,18 @@ uint64_t __59__SiriUIComponentConstraintFactory_sharedConstraintFactory__block_i
   [(SiriUIComponentConstraintFactory *)self _addConstants:v15 forLowerComponentStyle:9 toMap:v5];
 }
 
-- (id)verticalConstraintFromUpperView:(id)a3 lowerView:(id)a4 upperTemplateComponent:(id)a5 lowerTemplateComponent:(id)a6 layoutStyle:(int64_t)a7
+- (id)verticalConstraintFromUpperView:(id)view lowerView:(id)lowerView upperTemplateComponent:(id)component lowerTemplateComponent:(id)templateComponent layoutStyle:(int64_t)style
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:v12 component:a5];
-  v16 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:v13 component:v14];
+  viewCopy = view;
+  lowerViewCopy = lowerView;
+  templateComponentCopy = templateComponent;
+  v15 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:viewCopy component:component];
+  v16 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:lowerViewCopy component:templateComponentCopy];
 
-  v17 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:v12 componentType:v15 isLower:0];
-  v18 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:v13 componentType:v16 isLower:1];
-  v19 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:v15 toComponentType:v16 layoutStyle:a7];
+  v17 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:viewCopy componentType:v15 isLower:0];
+  v18 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:lowerViewCopy componentType:v16 isLower:1];
+  v19 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:v15 toComponentType:v16 layoutStyle:style];
   if (v19)
   {
     goto LABEL_5;
@@ -225,41 +225,41 @@ uint64_t __59__SiriUIComponentConstraintFactory_sharedConstraintFactory__block_i
     v30 = 2048;
     v31 = v16;
     v32 = 2048;
-    v33 = a7;
+    styleCopy = style;
     _os_log_error_impl(&dword_26948D000, v20, OS_LOG_TYPE_ERROR, "%s No template distance found for component type %zd to %zd (layoutStyle %zd)", &v26, 0x2Au);
   }
 
-  v19 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:1 toComponentType:v16 layoutStyle:a7];
+  v19 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:1 toComponentType:v16 layoutStyle:style];
   if (v19)
   {
 LABEL_5:
     v21 = v19;
     v22 = MEMORY[0x277CCAAD0];
     [v19 floatValue];
-    v24 = [v22 constraintWithItem:v13 attribute:v18 relatedBy:0 toItem:v12 attribute:v17 multiplier:1.0 constant:v23];
+    v24 = [v22 constraintWithItem:lowerViewCopy attribute:v18 relatedBy:0 toItem:viewCopy attribute:v17 multiplier:1.0 constant:v23];
   }
 
   else
   {
-    v24 = [MEMORY[0x277CCAAD0] constraintWithItem:v13 attribute:3 relatedBy:0 toItem:v12 attribute:4 multiplier:1.0 constant:0.0];
+    v24 = [MEMORY[0x277CCAAD0] constraintWithItem:lowerViewCopy attribute:3 relatedBy:0 toItem:viewCopy attribute:4 multiplier:1.0 constant:0.0];
   }
 
   return v24;
 }
 
-- (id)topConstraintForView:(id)a3 inSuperview:(id)a4 templateComponent:(id)a5 layoutStyle:(int64_t)a6
+- (id)topConstraintForView:(id)view inSuperview:(id)superview templateComponent:(id)component layoutStyle:(int64_t)style
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:v10 component:a5];
-  v13 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:v10 componentType:6 isLower:1];
-  v14 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:6 toComponentType:v12 layoutStyle:a6];
+  viewCopy = view;
+  superviewCopy = superview;
+  v12 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:viewCopy component:component];
+  v13 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:viewCopy componentType:6 isLower:1];
+  v14 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:6 toComponentType:v12 layoutStyle:style];
   v15 = v14;
   if (v14)
   {
     v16 = MEMORY[0x277CCAAD0];
     [v14 floatValue];
-    v18 = [v16 constraintWithItem:v10 attribute:v13 relatedBy:0 toItem:v11 attribute:3 multiplier:1.0 constant:v17];
+    v18 = [v16 constraintWithItem:viewCopy attribute:v13 relatedBy:0 toItem:superviewCopy attribute:3 multiplier:1.0 constant:v17];
   }
 
   else
@@ -270,19 +270,19 @@ LABEL_5:
   return v18;
 }
 
-- (id)bottomConstraintForView:(id)a3 inSuperview:(id)a4 templateComponent:(id)a5 layoutStyle:(int64_t)a6
+- (id)bottomConstraintForView:(id)view inSuperview:(id)superview templateComponent:(id)component layoutStyle:(int64_t)style
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:v10 component:a5];
-  v13 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:v10 componentType:v12 isLower:0];
-  v14 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:7 toComponentType:v12 layoutStyle:a6];
+  viewCopy = view;
+  superviewCopy = superview;
+  v12 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:viewCopy component:component];
+  v13 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:viewCopy componentType:v12 isLower:0];
+  v14 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:7 toComponentType:v12 layoutStyle:style];
   v15 = v14;
   if (v14)
   {
     v16 = MEMORY[0x277CCAAD0];
     [v14 floatValue];
-    v18 = [v16 constraintWithItem:v11 attribute:4 relatedBy:1 toItem:v10 attribute:v13 multiplier:1.0 constant:v17];
+    v18 = [v16 constraintWithItem:superviewCopy attribute:4 relatedBy:1 toItem:viewCopy attribute:v13 multiplier:1.0 constant:v17];
   }
 
   else
@@ -293,19 +293,19 @@ LABEL_5:
   return v18;
 }
 
-- (id)topConstraintForView:(id)a3 fromLayoutGuide:(id)a4 templateComponent:(id)a5 layoutStyle:(int64_t)a6
+- (id)topConstraintForView:(id)view fromLayoutGuide:(id)guide templateComponent:(id)component layoutStyle:(int64_t)style
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:v10 component:a5];
-  v13 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:v10 componentType:6 isLower:1];
-  v14 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:6 toComponentType:v12 layoutStyle:a6];
+  viewCopy = view;
+  guideCopy = guide;
+  v12 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:viewCopy component:component];
+  v13 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:viewCopy componentType:6 isLower:1];
+  v14 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:6 toComponentType:v12 layoutStyle:style];
   v15 = v14;
   if (v14)
   {
     v16 = MEMORY[0x277CCAAD0];
     [v14 floatValue];
-    v18 = [v16 constraintWithItem:v10 attribute:v13 relatedBy:0 toItem:v11 attribute:3 multiplier:1.0 constant:v17];
+    v18 = [v16 constraintWithItem:viewCopy attribute:v13 relatedBy:0 toItem:guideCopy attribute:3 multiplier:1.0 constant:v17];
   }
 
   else
@@ -316,19 +316,19 @@ LABEL_5:
   return v18;
 }
 
-- (id)bottomConstraintForView:(id)a3 fromLayoutGuide:(id)a4 templateComponent:(id)a5 layoutStyle:(int64_t)a6
+- (id)bottomConstraintForView:(id)view fromLayoutGuide:(id)guide templateComponent:(id)component layoutStyle:(int64_t)style
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:v10 component:a5];
-  v13 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:v10 componentType:v12 isLower:0];
-  v14 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:7 toComponentType:v12 layoutStyle:a6];
+  viewCopy = view;
+  guideCopy = guide;
+  v12 = [(SiriUIComponentConstraintFactory *)self _componentTypeForView:viewCopy component:component];
+  v13 = [(SiriUIComponentConstraintFactory *)self _layoutAttributeForView:viewCopy componentType:v12 isLower:0];
+  v14 = [(SiriUIComponentConstraintFactory *)self _bestDistanceFromComponentType:7 toComponentType:v12 layoutStyle:style];
   v15 = v14;
   if (v14)
   {
     v16 = MEMORY[0x277CCAAD0];
     [v14 floatValue];
-    v18 = [v16 constraintWithItem:v11 attribute:4 relatedBy:1 toItem:v10 attribute:v13 multiplier:1.0 constant:v17];
+    v18 = [v16 constraintWithItem:guideCopy attribute:4 relatedBy:1 toItem:viewCopy attribute:v13 multiplier:1.0 constant:v17];
   }
 
   else
@@ -339,24 +339,24 @@ LABEL_5:
   return v18;
 }
 
-- (id)_bestDistanceFromComponentType:(unint64_t)a3 toComponentType:(unint64_t)a4 layoutStyle:(int64_t)a5
+- (id)_bestDistanceFromComponentType:(unint64_t)type toComponentType:(unint64_t)componentType layoutStyle:(int64_t)style
 {
   v31 = *MEMORY[0x277D85DE8];
   layoutStyleToComponentLayoutMaps = self->_layoutStyleToComponentLayoutMaps;
-  v10 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v10 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   v11 = [(NSMutableDictionary *)layoutStyleToComponentLayoutMaps objectForKeyedSubscript:v10];
-  v22 = a4;
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  componentTypeCopy = componentType;
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:componentType];
   v13 = [v11 objectForKey:v12];
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
   v15 = [v13 objectForKey:v14];
 
   if (!v15)
   {
     v16 = [(NSMutableDictionary *)self->_layoutStyleToComponentLayoutMaps objectForKeyedSubscript:&unk_287A0D2B0];
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v22];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:componentTypeCopy];
     v18 = [v16 objectForKey:v17];
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
     v15 = [v18 objectForKey:v19];
 
     if (!v15)
@@ -367,11 +367,11 @@ LABEL_5:
         *buf = 136315906;
         v24 = "[SiriUIComponentConstraintFactory _bestDistanceFromComponentType:toComponentType:layoutStyle:]";
         v25 = 2048;
-        v26 = a3;
+        typeCopy = type;
         v27 = 2048;
-        v28 = v22;
+        v28 = componentTypeCopy;
         v29 = 2048;
-        v30 = a5;
+        styleCopy = style;
         _os_log_impl(&dword_26948D000, v20, OS_LOG_TYPE_DEFAULT, "%s Template component distance is not specified between types %zd and %zd for layoutStyle: %zd", buf, 0x2Au);
       }
 
@@ -382,20 +382,20 @@ LABEL_5:
   return v15;
 }
 
-- (unint64_t)_componentTypeForView:(id)a3 component:(id)a4
+- (unint64_t)_componentTypeForView:(id)view component:(id)component
 {
-  v5 = a3;
-  v6 = a4;
+  viewCopy = view;
+  componentCopy = component;
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
     if (objc_opt_respondsToSelector())
     {
-      v7 = 9;
+      style = 9;
     }
 
     else
     {
-      v7 = [v6 style];
+      style = [componentCopy style];
     }
   }
 
@@ -404,57 +404,57 @@ LABEL_5:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = 8;
+      style = 8;
     }
 
     else
     {
-      v7 = -1;
+      style = -1;
     }
   }
 
-  return v7;
+  return style;
 }
 
-- (int64_t)_layoutAttributeForView:(id)a3 componentType:(unint64_t)a4 isLower:(BOOL)a5
+- (int64_t)_layoutAttributeForView:(id)view componentType:(unint64_t)type isLower:(BOOL)lower
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [v7 viewForFirstBaselineLayout];
+  lowerCopy = lower;
+  viewCopy = view;
+  viewForFirstBaselineLayout = [viewCopy viewForFirstBaselineLayout];
 
-  v9 = [v7 viewForLastBaselineLayout];
+  viewForLastBaselineLayout = [viewCopy viewForLastBaselineLayout];
 
   v10 = 12;
-  if (!v8)
+  if (!viewForFirstBaselineLayout)
   {
     v10 = 3;
   }
 
-  if (!v5)
+  if (!lowerCopy)
   {
     v10 = 3;
   }
 
   v11 = 11;
-  if (!v9)
+  if (!viewForLastBaselineLayout)
   {
     v11 = 4;
   }
 
   v12 = 12;
-  if (!v8)
+  if (!viewForFirstBaselineLayout)
   {
     v12 = 3;
   }
 
-  if (v5)
+  if (lowerCopy)
   {
     v11 = v12;
   }
 
-  if (v9)
+  if (viewForLastBaselineLayout)
   {
-    v13 = v5;
+    v13 = lowerCopy;
   }
 
   else
@@ -469,12 +469,12 @@ LABEL_5:
     v15 = 4;
   }
 
-  if (a4 == 7)
+  if (type == 7)
   {
     v11 = v15;
   }
 
-  if (a4 == 6)
+  if (type == 6)
   {
     return v10;
   }
@@ -485,7 +485,7 @@ LABEL_5:
   }
 }
 
-- (id)_createMapForLayoutStyle:(int64_t)a3
+- (id)_createMapForLayoutStyle:(int64_t)style
 {
   layoutStyleToComponentLayoutMaps = self->_layoutStyleToComponentLayoutMaps;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -495,24 +495,24 @@ LABEL_5:
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v9 = self->_layoutStyleToComponentLayoutMaps;
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:style];
     [(NSMutableDictionary *)v9 setObject:v8 forKeyedSubscript:v10];
   }
 
   v11 = self->_layoutStyleToComponentLayoutMaps;
-  v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v12 = [MEMORY[0x277CCABB0] numberWithInteger:style];
   v13 = [(NSMutableDictionary *)v11 objectForKeyedSubscript:v12];
 
   return v13;
 }
 
-- (void)_addConstants:(id)a3 forLowerComponentStyle:(unint64_t)a4 toMap:(id)a5
+- (void)_addConstants:(id)constants forLowerComponentStyle:(unint64_t)style toMap:(id)map
 {
   v7 = MEMORY[0x277CCABB0];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 numberWithUnsignedInteger:a4];
-  [v8 setObject:v9 forKey:v10];
+  mapCopy = map;
+  constantsCopy = constants;
+  v10 = [v7 numberWithUnsignedInteger:style];
+  [mapCopy setObject:constantsCopy forKey:v10];
 }
 
 @end

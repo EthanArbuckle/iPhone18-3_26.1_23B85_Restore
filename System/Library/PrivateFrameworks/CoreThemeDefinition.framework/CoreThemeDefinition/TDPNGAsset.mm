@@ -1,21 +1,21 @@
 @interface TDPNGAsset
 - (BOOL)hasProduction;
-- (CGSize)sourceImageSizeWithDocument:(id)a3;
-- (id)sourceImageWithDocument:(id)a3;
+- (CGSize)sourceImageSizeWithDocument:(id)document;
+- (id)sourceImageWithDocument:(id)document;
 - (int)exifOrientation;
 - (unsigned)fileScaleFactor;
-- (void)setFileScaleFactor:(unsigned int)a3;
+- (void)setFileScaleFactor:(unsigned int)factor;
 @end
 
 @implementation TDPNGAsset
 
-- (CGSize)sourceImageSizeWithDocument:(id)a3
+- (CGSize)sourceImageSizeWithDocument:(id)document
 {
   v37[3] = *MEMORY[0x277D85DE8];
   Width = *MEMORY[0x277CBF3A8];
   Height = *(MEMORY[0x277CBF3A8] + 8);
   valuePtr = 0;
-  v6 = [(TDAsset *)self fileURLWithDocument:a3];
+  v6 = [(TDAsset *)self fileURLWithDocument:document];
   if ([-[__CFURL pathExtension](v6 "pathExtension")])
   {
     if ([-[__CFURL pathExtension](v6 "pathExtension")])
@@ -72,22 +72,22 @@ LABEL_26:
     CGSVGDocumentGetCanvasSize();
     v18 = v17;
     v20 = v19;
-    v21 = [(TDAsset *)self scaleFactor];
-    v22 = v21;
-    v23 = [(TDPNGAsset *)self fileScaleFactor];
-    if (!v21)
+    scaleFactor = [(TDAsset *)self scaleFactor];
+    v22 = scaleFactor;
+    fileScaleFactor = [(TDPNGAsset *)self fileScaleFactor];
+    if (!scaleFactor)
     {
       v22 = 1.0;
-      v23 = 1;
+      fileScaleFactor = 1;
     }
 
-    if (!v23)
+    if (!fileScaleFactor)
     {
-      v23 = [TDAsset scaleFactorFromImageFilename:[(__CFURL *)v6 path]];
+      fileScaleFactor = [TDAsset scaleFactorFromImageFilename:[(__CFURL *)v6 path]];
     }
 
-    Width = round(v22 * (v18 / v23));
-    Height = round(v22 * (v20 / v23));
+    Width = round(v22 * (v18 / fileScaleFactor));
+    Height = round(v22 * (v20 / fileScaleFactor));
     CGSVGDocumentRelease();
   }
 
@@ -100,11 +100,11 @@ LABEL_26:
     }
 
     v9 = v8;
-    v10 = [(TDAsset *)self scaleFactor];
-    v11 = [(TDPNGAsset *)self fileScaleFactor];
-    if (v10)
+    scaleFactor2 = [(TDAsset *)self scaleFactor];
+    fileScaleFactor2 = [(TDPNGAsset *)self fileScaleFactor];
+    if (scaleFactor2)
     {
-      v12 = v10;
+      v12 = scaleFactor2;
     }
 
     else
@@ -112,9 +112,9 @@ LABEL_26:
       v12 = 1.0;
     }
 
-    if (v10)
+    if (scaleFactor2)
     {
-      v13 = v11;
+      v13 = fileScaleFactor2;
     }
 
     else
@@ -151,10 +151,10 @@ LABEL_27:
   return result;
 }
 
-- (id)sourceImageWithDocument:(id)a3
+- (id)sourceImageWithDocument:(id)document
 {
   v31[4] = *MEMORY[0x277D85DE8];
-  v4 = [(TDAsset *)self fileURLWithDocument:a3];
+  v4 = [(TDAsset *)self fileURLWithDocument:document];
   v5 = CGImageSourceCreateWithURL(v4, 0);
   if ([-[TDPNGAsset scaledWidth](self "scaledWidth")] || objc_msgSend(-[TDPNGAsset scaledHeight](self, "scaledHeight"), "intValue"))
   {
@@ -172,15 +172,15 @@ LABEL_27:
     v10 = [-[TDPNGAsset scaledWidth](self "scaledWidth")];
     if (v10 <= [-[TDPNGAsset scaledHeight](self "scaledHeight")])
     {
-      v11 = [(TDPNGAsset *)self scaledHeight];
+      scaledHeight = [(TDPNGAsset *)self scaledHeight];
     }
 
     else
     {
-      v11 = [(TDPNGAsset *)self scaledWidth];
+      scaledHeight = [(TDPNGAsset *)self scaledWidth];
     }
 
-    v31[3] = [v9 numberWithInteger:{objc_msgSend(v11, "intValue")}];
+    v31[3] = [v9 numberWithInteger:{objc_msgSend(scaledHeight, "intValue")}];
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:4];
     if (!v5)
     {
@@ -261,10 +261,10 @@ LABEL_20:
   return v2;
 }
 
-- (void)setFileScaleFactor:(unsigned int)a3
+- (void)setFileScaleFactor:(unsigned int)factor
 {
   [(TDPNGAsset *)self willChangeValueForKey:@"fileScaleFactor"];
-  self->_exifOrientation = a3;
+  self->_exifOrientation = factor;
 
   [(TDPNGAsset *)self didChangeValueForKey:@"fileScaleFactor"];
 }
@@ -279,13 +279,13 @@ LABEL_20:
 
 - (BOOL)hasProduction
 {
-  v3 = [(TDPNGAsset *)self renditions];
-  if (v3)
+  renditions = [(TDPNGAsset *)self renditions];
+  if (renditions)
   {
-    LOBYTE(v3) = [-[TDPNGAsset renditions](self "renditions")] != 0;
+    LOBYTE(renditions) = [-[TDPNGAsset renditions](self "renditions")] != 0;
   }
 
-  return v3;
+  return renditions;
 }
 
 @end

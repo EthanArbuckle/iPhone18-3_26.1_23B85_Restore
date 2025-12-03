@@ -1,25 +1,25 @@
 @interface CTXPCAddQRCodePlanRequest
 + (id)allowedClassesForArguments;
-- (CTXPCAddQRCodePlanRequest)initWithRequest:(id)a3 appName:(id)a4 appType:(unint64_t)a5;
+- (CTXPCAddQRCodePlanRequest)initWithRequest:(id)request appName:(id)name appType:(unint64_t)type;
 - (id)appName;
 - (id)request;
 - (unint64_t)appType;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCAddQRCodePlanRequest
 
-- (CTXPCAddQRCodePlanRequest)initWithRequest:(id)a3 appName:(id)a4 appType:(unint64_t)a5
+- (CTXPCAddQRCodePlanRequest)initWithRequest:(id)request appName:(id)name appType:(unint64_t)type
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  nameCopy = name;
   v16[0] = @"request";
   v16[1] = @"appName";
-  v17[0] = v8;
-  v17[1] = v9;
+  v17[0] = requestCopy;
+  v17[1] = nameCopy;
   v16[2] = @"appType";
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   v17[2] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
   v15.receiver = self;
@@ -30,20 +30,20 @@
   return v12;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCAddQRCodePlanRequest *)self request];
-  v9 = [(CTXPCAddQRCodePlanRequest *)self appName];
-  v10 = [(CTXPCAddQRCodePlanRequest *)self appType];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  request = [(CTXPCAddQRCodePlanRequest *)self request];
+  appName = [(CTXPCAddQRCodePlanRequest *)self appName];
+  appType = [(CTXPCAddQRCodePlanRequest *)self appType];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__CTXPCAddQRCodePlanRequest_performRequestWithHandler_completionHandler___block_invoke;
   v12[3] = &unk_1E6A45E60;
-  v11 = v7;
+  v11 = completionHandlerCopy;
   v13 = v11;
-  [v6 addQRCodePlanWith:v8 appName:v9 appType:v10 completionHandler:v12];
+  [handlerCopy addQRCodePlanWith:request appName:appName appType:appType completionHandler:v12];
 }
 
 void __73__CTXPCAddQRCodePlanRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -56,7 +56,7 @@ void __73__CTXPCAddQRCodePlanRequest_performRequestWithHandler_completionHandler
 + (id)allowedClassesForArguments
 {
   v8[3] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___CTXPCAddQRCodePlanRequest;
   v2 = objc_msgSendSuper2(&v7, sel_allowedClassesForArguments);
   v8[0] = objc_opt_class();
@@ -72,8 +72,8 @@ void __73__CTXPCAddQRCodePlanRequest_performRequestWithHandler_completionHandler
 
 - (id)request
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"request"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"request"];
   v4 = CTThrowingCastIfClass<CTCellularPlanProvisioningRequest>(v3);
 
   return v4;
@@ -81,8 +81,8 @@ void __73__CTXPCAddQRCodePlanRequest_performRequestWithHandler_completionHandler
 
 - (id)appName
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"appName"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"appName"];
   v4 = CTThrowingCastIfClass<NSString>(v3);
 
   return v4;
@@ -90,12 +90,12 @@ void __73__CTXPCAddQRCodePlanRequest_performRequestWithHandler_completionHandler
 
 - (unint64_t)appType
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"appType"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"appType"];
   v4 = CTThrowingCastIfClass<NSNumber>(v3);
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 @end

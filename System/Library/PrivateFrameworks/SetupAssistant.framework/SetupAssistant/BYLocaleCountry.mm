@@ -1,20 +1,20 @@
 @interface BYLocaleCountry
-+ (id)comparatorForLocale:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)comparatorForLocale:(id)locale;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 @end
 
 @implementation BYLocaleCountry
 
-+ (id)comparatorForLocale:(id)a3
++ (id)comparatorForLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__BYLocaleCountry_comparatorForLocale___block_invoke;
   v8[3] = &unk_1E7D02FF0;
-  v9 = v3;
-  v4 = v3;
+  v9 = localeCopy;
+  v4 = localeCopy;
   v5 = MEMORY[0x1B8CC28E0](v8);
   v6 = MEMORY[0x1B8CC28E0]();
 
@@ -37,22 +37,22 @@ uint64_t __39__BYLocaleCountry_comparatorForLocale___block_invoke(uint64_t a1, v
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(BYLocaleCountry *)self code];
-  v5 = [(BYLocaleCountry *)self name];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  code = [(BYLocaleCountry *)self code];
+  name = [(BYLocaleCountry *)self name];
+  v6 = [v3 stringWithFormat:@"%@: %@", code, name];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(BYLocaleCountry *)self code];
-    v6 = [v4 code];
-    v7 = [v5 isEqual:v6];
+    code = [(BYLocaleCountry *)self code];
+    code2 = [equalCopy code];
+    v7 = [code isEqual:code2];
   }
 
   else

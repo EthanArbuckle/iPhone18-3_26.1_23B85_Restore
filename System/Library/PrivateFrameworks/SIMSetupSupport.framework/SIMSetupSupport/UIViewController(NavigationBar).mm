@@ -10,17 +10,17 @@
   {
     v6 = objc_opt_new();
     [v6 configureWithDefaultBackground];
-    v2 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v6 setBackgroundColor:v2];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v6 setBackgroundColor:systemBackgroundColor];
 
-    v3 = [MEMORY[0x277D75348] clearColor];
-    [v6 setShadowColor:v3];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v6 setShadowColor:clearColor];
 
-    v4 = [a1 navigationItem];
-    [v4 setStandardAppearance:v6];
+    navigationItem = [self navigationItem];
+    [navigationItem setStandardAppearance:v6];
 
-    v5 = [a1 navigationItem];
-    [v5 setScrollEdgeAppearance:v6];
+    navigationItem2 = [self navigationItem];
+    [navigationItem2 setScrollEdgeAppearance:v6];
   }
 }
 

@@ -1,14 +1,14 @@
 @interface HWPMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unsigned)version;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HWPMessage
@@ -26,9 +26,9 @@
   }
 }
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -47,20 +47,20 @@
   v8.receiver = self;
   v8.super_class = HWPMessage;
   v4 = [(HWPMessage *)&v8 description];
-  v5 = [(HWPMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HWPMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_version];
-    [v3 setObject:v5 forKey:@"version"];
+    [dictionary setObject:v5 forKey:@"version"];
 
     has = self->_has;
   }
@@ -68,98 +68,98 @@
   if (has)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_creationDate];
-    [v3 setObject:v6 forKey:@"creationDate"];
+    [dictionary setObject:v6 forKey:@"creationDate"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    [v3 setObject:identifier forKey:@"identifier"];
+    [dictionary setObject:identifier forKey:@"identifier"];
   }
 
   drawing = self->_drawing;
   if (drawing)
   {
-    [v3 setObject:drawing forKey:@"drawing"];
+    [dictionary setObject:drawing forKey:@"drawing"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v10 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"Unknown Fields"];
+    dictionaryRepresentation = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"Unknown Fields"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteSfixed64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_identifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_drawing)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[10] = self->_version;
-    *(v4 + 44) |= 2u;
+    toCopy[10] = self->_version;
+    *(toCopy + 44) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v4 + 2) = self->_creationDate;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 2) = self->_creationDate;
+    *(toCopy + 44) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_identifier)
   {
-    [v4 setIdentifier:?];
-    v4 = v6;
+    [toCopy setIdentifier:?];
+    toCopy = v6;
   }
 
   if (self->_drawing)
   {
     [v6 setDrawing:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -175,11 +175,11 @@
     *(v5 + 44) |= 1u;
   }
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
-  v10 = [(NSData *)self->_drawing copyWithZone:a3];
+  v10 = [(NSData *)self->_drawing copyWithZone:zone];
   v11 = *(v6 + 24);
   *(v6 + 24) = v10;
 
@@ -187,23 +187,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_version != *(v4 + 10))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_version != *(equalCopy + 10))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
 LABEL_16:
     v7 = 0;
@@ -212,25 +212,25 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_creationDate != *(v4 + 2))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_creationDate != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_16;
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4) && ![(NSString *)identifier isEqual:?])
+  if (identifier | *(equalCopy + 4) && ![(NSString *)identifier isEqual:?])
   {
     goto LABEL_16;
   }
 
   drawing = self->_drawing;
-  if (drawing | *(v4 + 3))
+  if (drawing | *(equalCopy + 3))
   {
     v7 = [(NSData *)drawing isEqual:?];
   }
@@ -273,34 +273,34 @@ LABEL_6:
   return v5 ^ [(NSData *)self->_drawing hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 44);
+  fromCopy = from;
+  v5 = *(fromCopy + 44);
   if ((v5 & 2) != 0)
   {
-    self->_version = *(v4 + 10);
+    self->_version = *(fromCopy + 10);
     *&self->_has |= 2u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
   }
 
   if (v5)
   {
-    self->_creationDate = *(v4 + 2);
+    self->_creationDate = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  v6 = v4;
-  if (*(v4 + 4))
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(HWPMessage *)self setIdentifier:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HWPMessage *)self setDrawing:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

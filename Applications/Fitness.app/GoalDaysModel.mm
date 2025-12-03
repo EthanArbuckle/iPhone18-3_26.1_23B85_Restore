@@ -1,8 +1,8 @@
 @interface GoalDaysModel
 - (NSArray)goalDays;
 - (_TtC10FitnessApp13GoalDaysModel)init;
-- (_TtC10FitnessApp13GoalDaysModel)initWithGoalSchedule:(id)a3;
-- (void)setGoalDays:(id)a3;
+- (_TtC10FitnessApp13GoalDaysModel)initWithGoalSchedule:(id)schedule;
+- (void)setGoalDays:(id)days;
 @end
 
 @implementation GoalDaysModel
@@ -11,7 +11,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   type metadata accessor for GoalDay();
@@ -20,27 +20,27 @@
   return v4.super.isa;
 }
 
-- (void)setGoalDays:(id)a3
+- (void)setGoalDays:(id)days
 {
   type metadata accessor for GoalDay();
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
-- (_TtC10FitnessApp13GoalDaysModel)initWithGoalSchedule:(id)a3
+- (_TtC10FitnessApp13GoalDaysModel)initWithGoalSchedule:(id)schedule
 {
-  v4 = a3;
+  scheduleCopy = schedule;
   v5 = sub_1004F980C();
   swift_beginAccess();
   v10 = v5;
   sub_100140278(&qword_1008E26D8);
   Published.init(initialValue:)();
   swift_endAccess();
-  v6 = [v4 goalType];
-  *(&self->super.isa + OBJC_IVAR____TtC10FitnessApp13GoalDaysModel_goalType) = v6;
+  goalType = [scheduleCopy goalType];
+  *(&self->super.isa + OBJC_IVAR____TtC10FitnessApp13GoalDaysModel_goalType) = goalType;
   v9.receiver = self;
   v9.super_class = type metadata accessor for GoalDaysModel();
   v7 = [(GoalDaysModel *)&v9 init];

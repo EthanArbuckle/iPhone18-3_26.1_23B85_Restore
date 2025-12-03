@@ -1,21 +1,21 @@
 @interface TUIBox
-+ (id)blendModeFromString:(id)a3;
-+ (id)layerContentsGravityFromString:(id)a3;
-+ (id)videoGravityFromString:(id)a3;
-+ (int64_t)imageRenderingModeFromString:(id)a3;
-+ (int64_t)textAlignmentFromString:(id)a3;
-+ (unint64_t)anchorPositionFromString:(id)a3;
-+ (unint64_t)axisFromString:(id)a3;
-+ (unint64_t)compressedFromString:(id)a3;
-+ (unint64_t)halignFromString:(id)a3;
-+ (unint64_t)interfaceLayoutDirectionFromString:(id)a3;
-+ (unint64_t)layoutModeFromString:(id)a3;
-+ (unint64_t)liveTransformFromString:(id)a3;
-+ (unint64_t)renderModelFromString:(id)a3;
-+ (unint64_t)roleFromString:(id)a3;
-+ (unint64_t)triggerStateFromString:(id)a3;
-+ (unint64_t)userInterfaceStyleFromString:(id)a3;
-+ (unint64_t)valignFromString:(id)a3;
++ (id)blendModeFromString:(id)string;
++ (id)layerContentsGravityFromString:(id)string;
++ (id)videoGravityFromString:(id)string;
++ (int64_t)imageRenderingModeFromString:(id)string;
++ (int64_t)textAlignmentFromString:(id)string;
++ (unint64_t)anchorPositionFromString:(id)string;
++ (unint64_t)axisFromString:(id)string;
++ (unint64_t)compressedFromString:(id)string;
++ (unint64_t)halignFromString:(id)string;
++ (unint64_t)interfaceLayoutDirectionFromString:(id)string;
++ (unint64_t)layoutModeFromString:(id)string;
++ (unint64_t)liveTransformFromString:(id)string;
++ (unint64_t)renderModelFromString:(id)string;
++ (unint64_t)roleFromString:(id)string;
++ (unint64_t)triggerStateFromString:(id)string;
++ (unint64_t)userInterfaceStyleFromString:(id)string;
++ (unint64_t)valignFromString:(id)string;
 + (void)initialize;
 - ($E297CC25127479E857BE23A4F8632EA4)height;
 - ($E297CC25127479E857BE23A4F8632EA4)relativeWidth;
@@ -39,47 +39,47 @@
 - (UIEdgeInsets)renderOutsets;
 - (id).cxx_construct;
 - (int64_t)zIndex;
-- (void)setAXElement:(BOOL)a3;
-- (void)setAxAdjustable:(BOOL)a3;
-- (void)setAxButton:(BOOL)a3;
-- (void)setAxDisabled:(BOOL)a3;
-- (void)setAxHeading:(BOOL)a3;
-- (void)setAxHint:(id)a3;
-- (void)setAxImage:(BOOL)a3;
-- (void)setAxLabel:(id)a3;
-- (void)setAxStaticText:(BOOL)a3;
-- (void)setAxTouchContainer:(BOOL)a3;
-- (void)setAxValue:(id)a3;
-- (void)setGrouped:(BOOL)a3;
-- (void)setHeight:(id *)a3;
-- (void)setInheritHeight:(BOOL)a3;
-- (void)setInheritWidth:(BOOL)a3;
-- (void)setRelativeWidth:(id *)a3;
-- (void)setRenderOutsets:(UIEdgeInsets)a3;
-- (void)setRenderTransform:(CGAffineTransform *)a3;
-- (void)setTransform:(CGAffineTransform *)a3;
-- (void)setWidth:(id *)a3;
-- (void)setZIndex:(int64_t)a3;
+- (void)setAXElement:(BOOL)element;
+- (void)setAxAdjustable:(BOOL)adjustable;
+- (void)setAxButton:(BOOL)button;
+- (void)setAxDisabled:(BOOL)disabled;
+- (void)setAxHeading:(BOOL)heading;
+- (void)setAxHint:(id)hint;
+- (void)setAxImage:(BOOL)image;
+- (void)setAxLabel:(id)label;
+- (void)setAxStaticText:(BOOL)text;
+- (void)setAxTouchContainer:(BOOL)container;
+- (void)setAxValue:(id)value;
+- (void)setGrouped:(BOOL)grouped;
+- (void)setHeight:(id *)height;
+- (void)setInheritHeight:(BOOL)height;
+- (void)setInheritWidth:(BOOL)width;
+- (void)setRelativeWidth:(id *)width;
+- (void)setRenderOutsets:(UIEdgeInsets)outsets;
+- (void)setRenderTransform:(CGAffineTransform *)transform;
+- (void)setTransform:(CGAffineTransform *)transform;
+- (void)setWidth:(id *)width;
+- (void)setZIndex:(int64_t)index;
 @end
 
 @implementation TUIBox
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (qword_2E6A30[0] != -1)
     {
       sub_19C250();
     }
 
-    v2 = [qword_2E6A28 bytes];
-    v3 = v2[1];
+    bytes = [qword_2E6A28 bytes];
+    v3 = bytes[1];
     if (v3)
     {
-      v4 = v2;
+      v4 = bytes;
       v5 = 0;
-      v6 = (v2 + 2);
+      v6 = (bytes + 2);
       while (strcmp("box", &v4[*&v6[v5]]))
       {
         v5 += 4;
@@ -226,7 +226,7 @@ LABEL_46:
   return *v4;
 }
 
-- (void)setWidth:(id *)a3
+- (void)setWidth:(id *)width
 {
   v4 = v3;
   if ((v3 & 0x7000000000000) == 0x2000000000000)
@@ -250,7 +250,7 @@ LABEL_46:
     }
   }
 
-  *DataForKey = a3;
+  *DataForKey = width;
   DataForKey[1] = v4;
 }
 
@@ -266,7 +266,7 @@ LABEL_46:
   return *v4;
 }
 
-- (void)setRelativeWidth:(id *)a3
+- (void)setRelativeWidth:(id *)width
 {
   v4 = v3;
   if ((v3 & 0x7000000000000) == 0x2000000000000)
@@ -290,7 +290,7 @@ LABEL_46:
     }
   }
 
-  *DataForKey = a3;
+  *DataForKey = width;
   DataForKey[1] = v4;
 }
 
@@ -306,7 +306,7 @@ LABEL_46:
   return *v4;
 }
 
-- (void)setHeight:(id *)a3
+- (void)setHeight:(id *)height
 {
   v4 = v3;
   if ((v3 & 0x7000000000000) == 0x2000000000000)
@@ -330,7 +330,7 @@ LABEL_46:
     }
   }
 
-  *DataForKey = a3;
+  *DataForKey = height;
   DataForKey[1] = v4;
 }
 
@@ -350,11 +350,11 @@ LABEL_46:
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v4 = vcvt_f32_f64(*&a3->tx);
-  v7 = vcvt_f32_f64(*&a3->a);
-  v8 = *&a3->c;
+  v4 = vcvt_f32_f64(*&transform->tx);
+  v7 = vcvt_f32_f64(*&transform->a);
+  v8 = *&transform->c;
   v9 = vcvt_hight_f32_f64(v7, v8);
   v10 = v4;
   if (TUIAffineTransform32IsIdentity(v9.f32))
@@ -399,11 +399,11 @@ LABEL_46:
   return result;
 }
 
-- (void)setRenderTransform:(CGAffineTransform *)a3
+- (void)setRenderTransform:(CGAffineTransform *)transform
 {
-  v4 = vcvt_f32_f64(*&a3->tx);
-  v7 = vcvt_f32_f64(*&a3->a);
-  v8 = *&a3->c;
+  v4 = vcvt_f32_f64(*&transform->tx);
+  v7 = vcvt_f32_f64(*&transform->a);
+  v8 = *&transform->c;
   v9 = vcvt_hight_f32_f64(v7, v8);
   v10 = v4;
   if (TUIAffineTransform32IsIdentity(v9.f32))
@@ -446,19 +446,19 @@ LABEL_46:
   }
 }
 
-- (void)setZIndex:(int64_t)a3
+- (void)setZIndex:(int64_t)index
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = 0x7FFFFFFF;
+    indexCopy = 0x7FFFFFFF;
   }
 
   else
   {
-    v4 = a3;
+    indexCopy = index;
   }
 
-  if (v4 == 0x7FFFFFFF)
+  if (indexCopy == 0x7FFFFFFF)
   {
     v5 = TUI::Util::PartialStruct::Storage::dataForKey(&self->_storage, 0x17u);
     if (!v5)
@@ -479,7 +479,7 @@ LABEL_46:
     }
   }
 
-  *DataForKey = v4;
+  *DataForKey = indexCopy;
 }
 
 - (UIEdgeInsets)renderOutsets
@@ -502,12 +502,12 @@ LABEL_46:
   return result;
 }
 
-- (void)setRenderOutsets:(UIEdgeInsets)a3
+- (void)setRenderOutsets:(UIEdgeInsets)outsets
 {
-  top = a3.top;
-  left = a3.left;
-  bottom = a3.bottom;
-  right = a3.right;
+  top = outsets.top;
+  left = outsets.left;
+  bottom = outsets.bottom;
+  right = outsets.right;
   if (TUIInsets32Equal(top, left, bottom, right, 0.0, 0.0, 0.0, 0.0))
   {
     v8 = TUI::Util::PartialStruct::Storage::dataForKey(&self->_storage, 0x1Du);
@@ -577,9 +577,9 @@ LABEL_46:
   return ObjectForKey;
 }
 
-- (void)setAxLabel:(id)a3
+- (void)setAxLabel:(id)label
 {
-  v4 = [a3 copy];
+  v4 = [label copy];
   TUI::Util::PartialStruct::Storage::setObjectForKey(&self->_storage, 0xEu, v4);
 }
 
@@ -590,9 +590,9 @@ LABEL_46:
   return ObjectForKey;
 }
 
-- (void)setAxValue:(id)a3
+- (void)setAxValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   TUI::Util::PartialStruct::Storage::setObjectForKey(&self->_storage, 0x1Eu, v4);
 }
 
@@ -603,9 +603,9 @@ LABEL_46:
   return ObjectForKey;
 }
 
-- (void)setAxHint:(id)a3
+- (void)setAxHint:(id)hint
 {
-  v4 = [a3 copy];
+  v4 = [hint copy];
   TUI::Util::PartialStruct::Storage::setObjectForKey(&self->_storage, 0x20u, v4);
 }
 
@@ -623,9 +623,9 @@ LABEL_46:
   return ObjectForKey;
 }
 
-- (void)setInheritWidth:(BOOL)a3
+- (void)setInheritWidth:(BOOL)width
 {
-  if (a3)
+  if (width)
   {
     v3 = 0x80000;
   }
@@ -638,9 +638,9 @@ LABEL_46:
   *&self->_flags = *&self->_flags & 0xFFF7FFFF | v3;
 }
 
-- (void)setInheritHeight:(BOOL)a3
+- (void)setInheritHeight:(BOOL)height
 {
-  if (a3)
+  if (height)
   {
     v3 = 0x100000;
   }
@@ -678,9 +678,9 @@ LABEL_46:
   return v3;
 }
 
-- (void)setAxDisabled:(BOOL)a3
+- (void)setAxDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 512;
   }
@@ -693,9 +693,9 @@ LABEL_46:
   *(&self->_flags + 2) = *(&self->_flags + 2) & 0xFDFF | v3;
 }
 
-- (void)setAXElement:(BOOL)a3
+- (void)setAXElement:(BOOL)element
 {
-  if (a3)
+  if (element)
   {
     v3 = 1024;
   }
@@ -708,9 +708,9 @@ LABEL_46:
   *(&self->_flags + 2) = *(&self->_flags + 2) & 0xFBFF | v3;
 }
 
-- (void)setAxTouchContainer:(BOOL)a3
+- (void)setAxTouchContainer:(BOOL)container
 {
-  if (a3)
+  if (container)
   {
     v3 = 2048;
   }
@@ -723,9 +723,9 @@ LABEL_46:
   *(&self->_flags + 2) = *(&self->_flags + 2) & 0xF7FF | v3;
 }
 
-- (void)setAxButton:(BOOL)a3
+- (void)setAxButton:(BOOL)button
 {
-  if (a3)
+  if (button)
   {
     v3 = 4096;
   }
@@ -738,9 +738,9 @@ LABEL_46:
   *(&self->_flags + 2) = *(&self->_flags + 2) & 0xEFFF | v3;
 }
 
-- (void)setAxImage:(BOOL)a3
+- (void)setAxImage:(BOOL)image
 {
-  if (a3)
+  if (image)
   {
     v3 = 0x2000;
   }
@@ -753,9 +753,9 @@ LABEL_46:
   *(&self->_flags + 2) = *(&self->_flags + 2) & 0xDFFF | v3;
 }
 
-- (void)setAxHeading:(BOOL)a3
+- (void)setAxHeading:(BOOL)heading
 {
-  if (a3)
+  if (heading)
   {
     v3 = 0x4000;
   }
@@ -768,9 +768,9 @@ LABEL_46:
   *(&self->_flags + 2) = *(&self->_flags + 2) & 0xBFFF | v3;
 }
 
-- (void)setAxAdjustable:(BOOL)a3
+- (void)setAxAdjustable:(BOOL)adjustable
 {
-  if (a3)
+  if (adjustable)
   {
     v3 = 0x8000;
   }
@@ -783,9 +783,9 @@ LABEL_46:
   *(&self->_flags + 2) = v3 & 0x8000 | *(&self->_flags + 2) & 0x7FFF;
 }
 
-- (void)setAxStaticText:(BOOL)a3
+- (void)setAxStaticText:(BOOL)text
 {
-  if (a3)
+  if (text)
   {
     v3 = 2;
   }
@@ -798,9 +798,9 @@ LABEL_46:
   *(&self->_flags + 6) = *(&self->_flags + 6) & 0xFD | v3;
 }
 
-- (void)setGrouped:(BOOL)a3
+- (void)setGrouped:(BOOL)grouped
 {
-  if (a3)
+  if (grouped)
   {
     v3 = 8;
   }
@@ -813,13 +813,13 @@ LABEL_46:
   *(&self->_flags + 6) = *(&self->_flags + 6) & 0xF7 | v3;
 }
 
-+ (int64_t)textAlignmentFromString:(id)a3
++ (int64_t)textAlignmentFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6920 == -1)
   {
-    if (v3)
+    if (stringCopy)
     {
       goto LABEL_3;
     }
@@ -841,20 +841,20 @@ LABEL_3:
   if (!v5)
   {
 LABEL_7:
-    v7 = &dword_4;
+    integerValue = &dword_4;
     goto LABEL_8;
   }
 
-  v7 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 LABEL_8:
 
-  return v7;
+  return integerValue;
 }
 
-+ (unint64_t)halignFromString:(id)a3
++ (unint64_t)halignFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6930 != -1)
   {
     sub_19C278();
@@ -864,27 +864,27 @@ LABEL_8:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6928 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)valignFromString:(id)a3
++ (unint64_t)valignFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6940 != -1)
   {
     sub_19C28C();
@@ -894,27 +894,27 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6938 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)anchorPositionFromString:(id)a3
++ (unint64_t)anchorPositionFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6950 != -1)
   {
     sub_19C2A0();
@@ -924,27 +924,27 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6948 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)compressedFromString:(id)a3
++ (unint64_t)compressedFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6960 != -1)
   {
     sub_19C2B4();
@@ -954,27 +954,27 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6958 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)renderModelFromString:(id)a3
++ (unint64_t)renderModelFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6970 != -1)
   {
     sub_19C2C8();
@@ -984,27 +984,27 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6968 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)triggerStateFromString:(id)a3
++ (unint64_t)triggerStateFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6980 != -1)
   {
     sub_19C2DC();
@@ -1014,30 +1014,30 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6978 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (id)blendModeFromString:(id)a3
++ (id)blendModeFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6990 == -1)
   {
-    if (v3)
+    if (stringCopy)
     {
 LABEL_3:
       v5 = [qword_2E6988 objectForKeyedSubscript:v4];
@@ -1060,10 +1060,10 @@ LABEL_6:
   return v5;
 }
 
-+ (unint64_t)interfaceLayoutDirectionFromString:(id)a3
++ (unint64_t)interfaceLayoutDirectionFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E69A0 != -1)
   {
     sub_19C304();
@@ -1073,27 +1073,27 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6998 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)layoutModeFromString:(id)a3
++ (unint64_t)layoutModeFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E69B0 != -1)
   {
     sub_19C318();
@@ -1103,27 +1103,27 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E69A8 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)roleFromString:(id)a3
++ (unint64_t)roleFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E69C0 != -1)
   {
     sub_19C32C();
@@ -1133,27 +1133,27 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E69B8 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)liveTransformFromString:(id)a3
++ (unint64_t)liveTransformFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E69D0 != -1)
   {
     sub_19C340();
@@ -1163,33 +1163,33 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E69C8 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (id)layerContentsGravityFromString:(id)a3
++ (id)layerContentsGravityFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (qword_2E69E0 != -1)
   {
     sub_19C354();
   }
 
   v4 = kCAGravityResize;
-  if (v3 && ([qword_2E69D8 objectForKeyedSubscript:v3], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (stringCopy && ([qword_2E69D8 objectForKeyedSubscript:stringCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
 
@@ -1204,10 +1204,10 @@ LABEL_6:
   return v4;
 }
 
-+ (int64_t)imageRenderingModeFromString:(id)a3
++ (int64_t)imageRenderingModeFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E69F0 != -1)
   {
     sub_19C368();
@@ -1217,33 +1217,33 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    integerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E69E8 objectForKeyedSubscript:v4];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
 LABEL_6:
-  return v6;
+  return integerValue;
 }
 
-+ (id)videoGravityFromString:(id)a3
++ (id)videoGravityFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (qword_2E6A00 != -1)
   {
     sub_19C37C();
   }
 
   v4 = AVLayerVideoGravityResizeAspect;
-  if (v3 && ([qword_2E69F8 objectForKeyedSubscript:v3], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (stringCopy && ([qword_2E69F8 objectForKeyedSubscript:stringCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
 
@@ -1258,10 +1258,10 @@ LABEL_6:
   return v4;
 }
 
-+ (unint64_t)axisFromString:(id)a3
++ (unint64_t)axisFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6A10 != -1)
   {
     sub_19C390();
@@ -1271,27 +1271,27 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6A08 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (unint64_t)userInterfaceStyleFromString:(id)a3
++ (unint64_t)userInterfaceStyleFromString:(id)string
 {
-  v3 = a3;
-  v4 = v3;
+  stringCopy = string;
+  v4 = stringCopy;
   if (qword_2E6A20 != -1)
   {
     sub_19C3A4();
@@ -1301,31 +1301,31 @@ LABEL_6:
     }
 
 LABEL_5:
-    v6 = 0;
+    unsignedIntegerValue = 0;
     goto LABEL_6;
   }
 
-  if (!v3)
+  if (!stringCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
   v5 = [qword_2E6A18 objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
 LABEL_6:
-  return v6;
+  return unsignedIntegerValue;
 }
 
 - (NSString)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(TUIBox *)self width];
-  v7 = TUILengthDescription(v5, v6);
-  v8 = [(TUIBox *)self height];
-  v10 = TUILengthDescription(v8, v9);
+  width = [(TUIBox *)self width];
+  v7 = TUILengthDescription(width, v6);
+  height = [(TUIBox *)self height];
+  v10 = TUILengthDescription(height, v9);
   v11 = [NSMutableString stringWithFormat:@"<%@ %p w=%@ h=%@ anchor-position=%lu", v4, self, v7, v10, [(TUIBox *)self anchorPosition]];
 
   [(TUIBox *)self appendBoxDescription:v11];

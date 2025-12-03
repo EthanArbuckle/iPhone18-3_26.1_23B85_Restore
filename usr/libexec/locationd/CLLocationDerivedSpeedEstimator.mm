@@ -3,28 +3,28 @@
 + (BOOL)isSupportedForAnalytics;
 + (BOOL)isSupportedForDerivedSpeedEstimate;
 - ($1AB5FA073B851C12C2339EC22442E995)currentEstimate;
-- (BOOL)_feedLocation:(id)a3;
-- (BOOL)feedLocation:(const CLDaemonLocation *)a3;
+- (BOOL)_feedLocation:(id)location;
+- (BOOL)feedLocation:(const CLDaemonLocation *)location;
 - (CLLocationDerivedSpeedEstimator)init;
 - (id).cxx_construct;
-- (id)initInUniverse:(id)a3;
+- (id)initInUniverse:(id)universe;
 - (void)_onScanTimer;
 - (void)clearStatusBarColorAndText;
 - (void)dealloc;
-- (void)handleMotionStateNotification:(NotificationData *)a3;
+- (void)handleMotionStateNotification:(NotificationData *)notification;
 - (void)handleVehicularStateChanged;
 - (void)invalidate;
 - (void)logLatencyMetricsInternal;
-- (void)onMotionStateNotification:(int)a3 data:(NotificationData *)a4;
-- (void)onWifiServiceNotification:(int)a3 data:(NotificationData *)a4;
-- (void)setStatusBarWithLabel:(id)a3;
+- (void)onMotionStateNotification:(int)notification data:(NotificationData *)data;
+- (void)onWifiServiceNotification:(int)notification data:(NotificationData *)data;
+- (void)setStatusBarWithLabel:(id)label;
 - (void)startWsbClient;
 - (void)stopWsbClient;
-- (void)submitFalseDetectionMetricsWithType:(unint64_t)a3;
+- (void)submitFalseDetectionMetricsWithType:(unint64_t)type;
 - (void)submitLatencyMetrics;
 - (void)unregisterForNotifications;
 - (void)updateStatusBarLabel;
-- (void)updateWsbClient:(BOOL)a3;
+- (void)updateWsbClient:(BOOL)client;
 @end
 
 @implementation CLLocationDerivedSpeedEstimator
@@ -83,9 +83,9 @@
   return 0;
 }
 
-- (id)initInUniverse:(id)a3
+- (id)initInUniverse:(id)universe
 {
-  if (!a3)
+  if (!universe)
   {
     sub_1018E1C0C();
   }
@@ -99,11 +99,11 @@
     if (v5)
     {
       v5->_valid = 1;
-      v5->_universe = a3;
-      v7 = [a3 silo];
+      v5->_universe = universe;
+      silo = [universe silo];
       *&v6->_showActivityVehicular = 0;
       v6->_vehicleStateProxy = 0;
-      v6->_silo = v7;
+      v6->_silo = silo;
       sub_10001A3E8();
       if (sub_100328630())
       {
@@ -173,14 +173,14 @@
       v6->_lastElapsedTime = 0.0;
       v6->_lastDistanceMoved = 0.0;
       [(CLLocationDerivedSpeedEstimator *)v6 registerForNotifications];
-      v16 = [(CLSilo *)v6->_silo newTimer];
-      v6->_scanTimer = v16;
+      newTimer = [(CLSilo *)v6->_silo newTimer];
+      v6->_scanTimer = newTimer;
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1005EFD30;
       v18[3] = &unk_102447418;
       v18[4] = v6;
-      [(CLTimer *)v16 setHandler:v18];
+      [(CLTimer *)newTimer setHandler:v18];
     }
   }
 
@@ -234,9 +234,9 @@
   }
 }
 
-- (void)updateWsbClient:(BOOL)a3
+- (void)updateWsbClient:(BOOL)client
 {
-  if (a3)
+  if (client)
   {
     [(CLLocationDerivedSpeedEstimator *)self stopWsbClient];
   }
@@ -307,22 +307,22 @@
   [(CLLocationDerivedSpeedEstimator *)&v3 dealloc];
 }
 
-- (BOOL)feedLocation:(const CLDaemonLocation *)a3
+- (BOOL)feedLocation:(const CLDaemonLocation *)location
 {
   v5 = [CLLocation alloc];
-  rawCoordinate = a3->rawCoordinate;
-  v12[6] = *&a3->lifespan;
+  rawCoordinate = location->rawCoordinate;
+  v12[6] = *&location->lifespan;
   v12[7] = rawCoordinate;
-  v13[0] = *&a3->rawCourse;
-  *(v13 + 12) = *&a3->integrity;
-  v7 = *&a3->speed;
-  v12[2] = *&a3->altitude;
+  v13[0] = *&location->rawCourse;
+  *(v13 + 12) = *&location->integrity;
+  v7 = *&location->speed;
+  v12[2] = *&location->altitude;
   v12[3] = v7;
-  v8 = *&a3->timestamp;
-  v12[4] = *&a3->course;
+  v8 = *&location->timestamp;
+  v12[4] = *&location->course;
   v12[5] = v8;
-  v9 = *&a3->coordinate.longitude;
-  v12[0] = *&a3->suitability;
+  v9 = *&location->coordinate.longitude;
+  v12[0] = *&location->suitability;
   v12[1] = v9;
   v10 = [v5 initWithClientLocation:v12];
   LOBYTE(self) = [(CLLocationDerivedSpeedEstimator *)self _feedLocation:v10];
@@ -410,7 +410,7 @@
   }
 }
 
-- (BOOL)_feedLocation:(id)a3
+- (BOOL)_feedLocation:(id)location
 {
   if (qword_1025D4250 != -1)
   {
@@ -421,28 +421,28 @@
   if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315138;
-    *v56 = [objc_msgSend(a3 "description")];
+    *v56 = [objc_msgSend(location "description")];
     _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEBUG, "VEHICULAR: leeched location, %s", buf, 0xCu);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018E207C(a3);
+    sub_1018E207C(location);
   }
 
-  if ([a3 type] == 1)
+  if ([location type] == 1)
   {
     self->_hintsAvailable |= 2uLL;
   }
 
-  if ([a3 type] == 4)
+  if ([location type] == 4)
   {
     self->_hintsAvailable |= 8uLL;
   }
 
-  if ([a3 type] == 4)
+  if ([location type] == 4)
   {
-    if (-[CLLocationDerivedSpeedEstimator prevLoc](self, "prevLoc") && [objc_msgSend(objc_msgSend(a3 "timestamp")])
+    if (-[CLLocationDerivedSpeedEstimator prevLoc](self, "prevLoc") && [objc_msgSend(objc_msgSend(location "timestamp")])
     {
       if (qword_1025D4250 != -1)
       {
@@ -468,7 +468,7 @@ LABEL_62:
       return v7;
     }
 
-    [a3 horizontalAccuracy];
+    [location horizontalAccuracy];
     if (v10 > 150.0)
     {
       if (qword_1025D4250 != -1)
@@ -479,7 +479,7 @@ LABEL_62:
       v11 = qword_1025D4258;
       if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEFAULT))
       {
-        [a3 horizontalAccuracy];
+        [location horizontalAccuracy];
         *buf = 134217984;
         *v56 = v12;
         _os_log_impl(dword_100000000, v11, OS_LOG_TYPE_DEFAULT, "VEHICULAR: disqualified leeched location, horizontal accuracy, %f", buf, 0xCu);
@@ -487,13 +487,13 @@ LABEL_62:
 
       if (sub_10000A100(121, 2))
       {
-        sub_1018E2C94(a3);
+        sub_1018E2C94(location);
       }
 
       goto LABEL_61;
     }
 
-    [objc_msgSend(a3 "timestamp")];
+    [objc_msgSend(location "timestamp")];
     *&v13 = v13;
     v14 = fabsf(*&v13);
     if (v14 > 180.0)
@@ -528,15 +528,15 @@ LABEL_62:
     v17 = qword_1025D4258;
     if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [a3 type];
+      type = [location type];
       *buf = 67109120;
-      *v56 = v18;
+      *v56 = type;
       _os_log_impl(dword_100000000, v17, OS_LOG_TYPE_DEFAULT, "VEHICULAR: qualified leeched location, type, %d", buf, 8u);
     }
 
     if (sub_10000A100(121, 2))
     {
-      sub_1018E2360(a3);
+      sub_1018E2360(location);
     }
 
     if (![(CLLocationDerivedSpeedEstimator *)self prevLoc])
@@ -561,7 +561,7 @@ LABEL_62:
       goto LABEL_60;
     }
 
-    [objc_msgSend(a3 "timestamp")];
+    [objc_msgSend(location "timestamp")];
     if (v19 > 240.0)
     {
       if (qword_1025D4250 != -1)
@@ -583,7 +583,7 @@ LABEL_62:
       }
 
 LABEL_60:
-      [(CLLocationDerivedSpeedEstimator *)self setPrevLoc:a3];
+      [(CLLocationDerivedSpeedEstimator *)self setPrevLoc:location];
 LABEL_61:
       [(CLLocationDerivedSpeedEstimator *)self _invalidateSpeedEstimate];
       goto LABEL_62;
@@ -597,10 +597,10 @@ LABEL_61:
     v22 = qword_1025D4258;
     if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [[(CLLocationDerivedSpeedEstimator *)self prevLoc] type];
+      type2 = [[(CLLocationDerivedSpeedEstimator *)self prevLoc] type];
       v24 = [-[CLLocation description](-[CLLocationDerivedSpeedEstimator prevLoc](self "prevLoc")];
       *buf = 67109378;
-      *v56 = v23;
+      *v56 = type2;
       *&v56[4] = 2080;
       *&v56[6] = v24;
       _os_log_impl(dword_100000000, v22, OS_LOG_TYPE_DEBUG, "VEHICULAR: previous location, type, %d, %s", buf, 0x12u);
@@ -611,13 +611,13 @@ LABEL_61:
       sub_1018E2460(self);
     }
 
-    [[(CLLocationDerivedSpeedEstimator *)self prevLoc] distanceFromLocation:a3];
+    [[(CLLocationDerivedSpeedEstimator *)self prevLoc] distanceFromLocation:location];
     v26 = v25;
-    -[NSDate timeIntervalSinceDate:](-[CLLocation timestamp](-[CLLocationDerivedSpeedEstimator prevLoc](self, "prevLoc"), "timestamp"), "timeIntervalSinceDate:", [a3 timestamp]);
+    -[NSDate timeIntervalSinceDate:](-[CLLocation timestamp](-[CLLocationDerivedSpeedEstimator prevLoc](self, "prevLoc"), "timestamp"), "timeIntervalSinceDate:", [location timestamp]);
     v28 = v27;
     [[(CLLocationDerivedSpeedEstimator *)self prevLoc] horizontalAccuracy];
     v30 = v29 * v29;
-    [a3 horizontalAccuracy];
+    [location horizontalAccuracy];
     v32 = sqrt(v30 + v31 * v31);
     if (v26 <= v32)
     {
@@ -681,21 +681,21 @@ LABEL_61:
     v36 = qword_1025D4258;
     if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEFAULT))
     {
-      v37 = [a3 type];
+      type3 = [location type];
       *buf = 67109120;
-      *v56 = v37;
+      *v56 = type3;
       _os_log_impl(dword_100000000, v36, OS_LOG_TYPE_DEFAULT, "VEHICULAR: accept qualified leeched location, type, %d", buf, 8u);
     }
 
     if (sub_10000A100(121, 2))
     {
-      sub_1018E2798(a3);
+      sub_1018E2798(location);
     }
 
     if (v28 == 0.0)
     {
       [(CLLocationDerivedSpeedEstimator *)self _invalidateSpeedEstimate];
-      [(CLLocationDerivedSpeedEstimator *)self setPrevLoc:a3];
+      [(CLLocationDerivedSpeedEstimator *)self setPrevLoc:location];
       goto LABEL_62;
     }
 
@@ -711,7 +711,7 @@ LABEL_61:
       v40 = qword_1025D4258;
       if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEFAULT))
       {
-        v41 = [a3 type];
+        type4 = [location type];
         *buf = 134219264;
         *v56 = v38;
         *&v56[8] = 2048;
@@ -723,7 +723,7 @@ LABEL_61:
         v57 = 2048;
         v58 = v34;
         v59 = 1024;
-        v60 = v41;
+        v60 = type4;
         _os_log_impl(dword_100000000, v40, OS_LOG_TYPE_DEFAULT, "VEHICULAR: outlier, conservativeSpeed, %f, effectiveSpeed, %f, speedUncertainty, %f, distanceMoved, %f, elapsedTime, %f, type, %d", buf, 0x3Au);
       }
 
@@ -735,7 +735,7 @@ LABEL_61:
           sub_1018E1C6C();
         }
 
-        [a3 type];
+        [location type];
         v42 = _os_log_send_and_compose_impl();
         sub_100152C7C("Generic", 1, 0, 2, "[CLLocationDerivedSpeedEstimator _feedLocation:]", "%s\n", v42);
         if (v42 != buf)
@@ -747,7 +747,7 @@ LABEL_61:
       goto LABEL_61;
     }
 
-    [objc_msgSend(a3 "timestamp")];
+    [objc_msgSend(location "timestamp")];
     [(CLLocationDerivedSpeedEstimator *)self setCurrentEstimate:v26 / v34, v44, v39];
     if (v38 <= 6.7)
     {
@@ -760,7 +760,7 @@ LABEL_61:
       v51 = qword_1025D4258;
       if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEFAULT))
       {
-        v52 = [a3 type];
+        type5 = [location type];
         *buf = 134219264;
         *v56 = v38;
         *&v56[8] = 2048;
@@ -772,7 +772,7 @@ LABEL_61:
         v57 = 2048;
         v58 = v34;
         v59 = 1024;
-        v60 = v52;
+        v60 = type5;
         _os_log_impl(dword_100000000, v51, OS_LOG_TYPE_DEFAULT, "VEHICULAR: conservativeSpeed, %f, effectiveSpeed, %f, speedUncertainty, %f, distanceMoved, %f, elapsedTime, %f, type, %d", buf, 0x3Au);
       }
 
@@ -841,7 +841,7 @@ LABEL_61:
       v49 = qword_1025D4258;
       if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEFAULT))
       {
-        v50 = [a3 type];
+        type6 = [location type];
         *buf = 134219264;
         *v56 = v38;
         *&v56[8] = 2048;
@@ -853,14 +853,14 @@ LABEL_61:
         v57 = 2048;
         v58 = v34;
         v59 = 1024;
-        v60 = v50;
+        v60 = type6;
         _os_log_impl(dword_100000000, v49, OS_LOG_TYPE_DEFAULT, "VEHICULAR: conservativeSpeed, %f, effectiveSpeed, %f, speedUncertainty, %f, distanceMoved, %f, elapsedTime, %f, type, %d", buf, 0x3Au);
       }
 
       if (!sub_10000A100(121, 2))
       {
 LABEL_125:
-        [(CLLocationDerivedSpeedEstimator *)self setPrevLoc:a3];
+        [(CLLocationDerivedSpeedEstimator *)self setPrevLoc:location];
         LOBYTE(v7) = 1;
         return v7;
       }
@@ -869,7 +869,7 @@ LABEL_125:
       if (qword_1025D4250 == -1)
       {
 LABEL_128:
-        [a3 type];
+        [location type];
         v53 = _os_log_send_and_compose_impl();
         sub_100152C7C("Generic", 1, 0, 2, "[CLLocationDerivedSpeedEstimator _feedLocation:]", "%s\n", v53);
         if (v53 != buf)
@@ -893,16 +893,16 @@ LABEL_128:
   v8 = qword_1025D4258;
   if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_INFO))
   {
-    v9 = [a3 type];
+    type7 = [location type];
     *buf = 67109120;
-    *v56 = v9;
+    *v56 = type7;
     _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_INFO, "VEHICULAR: disqualified leeched location, type, %d", buf, 8u);
   }
 
   v7 = sub_10000A100(121, 2);
   if (v7)
   {
-    sub_1018E2184(a3);
+    sub_1018E2184(location);
     goto LABEL_62;
   }
 
@@ -923,20 +923,20 @@ LABEL_128:
   }
 }
 
-- (void)handleMotionStateNotification:(NotificationData *)a3
+- (void)handleMotionStateNotification:(NotificationData *)notification
 {
-  v7 = *(a3 + 7);
-  v66 = *(a3 + 6);
+  v7 = *(notification + 7);
+  v66 = *(notification + 6);
   v67 = v7;
-  v68 = *(a3 + 16);
-  v8 = *(a3 + 3);
-  *&v64.isStanding = *(a3 + 2);
+  v68 = *(notification + 16);
+  v8 = *(notification + 3);
+  *&v64.isStanding = *(notification + 2);
   *&v64.isVehicleConnected = v8;
-  v9 = *(a3 + 5);
-  *&v64.vehicleType = *(a3 + 4);
+  v9 = *(notification + 5);
+  *&v64.vehicleType = *(notification + 4);
   v65 = v9;
-  v10 = *(a3 + 1);
-  *&v64.type = *a3;
+  v10 = *(notification + 1);
+  *&v64.type = *notification;
   *&v64.mountedConfidence = v10;
   if (qword_1025D4250 != -1)
   {
@@ -1283,9 +1283,9 @@ LABEL_84:
   }
 }
 
-- (void)onWifiServiceNotification:(int)a3 data:(NotificationData *)a4
+- (void)onWifiServiceNotification:(int)notification data:(NotificationData *)data
 {
-  if (a3 == 6)
+  if (notification == 6)
   {
     if (qword_1025D4250 != -1)
     {
@@ -1295,7 +1295,7 @@ LABEL_84:
     v8 = qword_1025D4258;
     if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = *(a4 + 96) == 1 && *(a4 + 12) > 0;
+      v9 = *(data + 96) == 1 && *(data + 12) > 0;
       v12 = 67109120;
       v13 = v9;
       _os_log_impl(dword_100000000, v8, OS_LOG_TYPE_DEFAULT, "VEHICULAR: wifi associated state, %d", &v12, 8u);
@@ -1303,17 +1303,17 @@ LABEL_84:
 
     if (sub_10000A100(121, 2))
     {
-      sub_1018E32D4(a4);
+      sub_1018E32D4(data);
     }
 
-    v11 = *(a4 + 96) == 1 && *(a4 + 12) > 0;
+    v11 = *(data + 96) == 1 && *(data + 12) > 0;
     [(CLLocationDerivedSpeedEstimator *)self updateWsbClient:v11];
   }
 
   else
   {
-    v4 = *&a3;
-    if (a3 == 12)
+    v4 = *&notification;
+    if (notification == 12)
     {
       if (qword_1025D4250 != -1)
       {
@@ -1357,17 +1357,17 @@ LABEL_84:
   }
 }
 
-- (void)onMotionStateNotification:(int)a3 data:(NotificationData *)a4
+- (void)onMotionStateNotification:(int)notification data:(NotificationData *)data
 {
-  if (a3 == 4)
+  if (notification == 4)
   {
 
-    [(CLLocationDerivedSpeedEstimator *)self handleMotionStateNotification:a4];
+    [(CLLocationDerivedSpeedEstimator *)self handleMotionStateNotification:data];
   }
 
   else
   {
-    v7 = *&a3;
+    v7 = *&notification;
     if (qword_1025D4250 != -1)
     {
       sub_1018E1EA8();
@@ -1403,7 +1403,7 @@ LABEL_84:
       if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_INFO))
       {
         v4 = 136315138;
-        v5 = [@"Apple Internal: In-Vehicle" UTF8String];
+        uTF8String = [@"Apple Internal: In-Vehicle" UTF8String];
         _os_log_impl(dword_100000000, v3, OS_LOG_TYPE_INFO, "update status bar label, %s", &v4, 0xCu);
       }
 
@@ -1429,7 +1429,7 @@ LABEL_84:
   }
 }
 
-- (void)setStatusBarWithLabel:(id)a3
+- (void)setStatusBarWithLabel:(id)label
 {
   if (!self->_visualIndicatorActive)
   {
@@ -1452,7 +1452,7 @@ LABEL_84:
     if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_INFO))
     {
       *buf = 136315394;
-      v12 = [a3 UTF8String];
+      uTF8String = [label UTF8String];
       v13 = 2048;
       v14 = v5;
       _os_log_impl(dword_100000000, v6, OS_LOG_TYPE_INFO, "set status bar label, %s, style, %llu", buf, 0x16u);
@@ -1466,7 +1466,7 @@ LABEL_84:
     self->_visualIndicatorActive = 1;
     v7 = [SBSStatusBarStyleOverridesAssertion assertionWithStatusBarStyleOverrides:v5 forPID:getpid() exclusive:1 showsWhenForeground:1];
     self->_statusBarAssertion = v7;
-    [(SBSStatusBarStyleOverridesAssertion *)v7 setStatusString:a3];
+    [(SBSStatusBarStyleOverridesAssertion *)v7 setStatusString:label];
     statusBarAssertion = self->_statusBarAssertion;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
@@ -1570,7 +1570,7 @@ LABEL_84:
   }
 }
 
-- (void)submitFalseDetectionMetricsWithType:(unint64_t)a3
+- (void)submitFalseDetectionMetricsWithType:(unint64_t)type
 {
   if (qword_1025D4250 != -1)
   {
@@ -1581,19 +1581,19 @@ LABEL_84:
   if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    typeCopy = type;
     _os_log_impl(dword_100000000, v4, OS_LOG_TYPE_DEFAULT, "VEHICULAR: false positive detected, hint, %lu", &v6, 0xCu);
   }
 
   if (sub_10000A100(121, 2))
   {
-    sub_1018E3D14(a3);
+    sub_1018E3D14(type);
   }
 
   AnalyticsSendEvent();
-  if (a3 <= 3)
+  if (type <= 3)
   {
-    if (a3 == 1 || a3 == 2)
+    if (type == 1 || type == 2)
     {
       goto LABEL_22;
     }
@@ -1601,7 +1601,7 @@ LABEL_84:
 
   else
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       if (qword_1025D4250 != -1)
       {
@@ -1612,7 +1612,7 @@ LABEL_84:
       if (os_log_type_enabled(qword_1025D4258, OS_LOG_TYPE_DEFAULT))
       {
         v6 = 67109120;
-        LODWORD(v7) = 6488064;
+        LODWORD(typeCopy) = 6488064;
         _os_log_impl(dword_100000000, v5, OS_LOG_TYPE_DEFAULT, "VEHICULAR: submit baseband false detection metric, id, %u", &v6, 8u);
       }
 
@@ -1625,7 +1625,7 @@ LABEL_84:
       goto LABEL_22;
     }
 
-    if (a3 == 8 || a3 == 16)
+    if (type == 8 || type == 16)
     {
 LABEL_22:
       AnalyticsSendEvent();

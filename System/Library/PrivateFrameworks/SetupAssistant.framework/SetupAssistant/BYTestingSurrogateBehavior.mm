@@ -1,5 +1,5 @@
 @interface BYTestingSurrogateBehavior
-+ (id)updateWithDictionary:(id)a3;
++ (id)updateWithDictionary:(id)dictionary;
 - (BOOL)resultsAsBasicBoolean;
 - (id)alternateUpdate;
 - (id)preferredUpdate;
@@ -10,16 +10,16 @@
 
 - (BOOL)resultsAsBasicBoolean
 {
-  v2 = [(BYTestingSurrogateBehavior *)self results];
-  v3 = [v2 objectForKeyedSubscript:@"BOOLean"];
-  v4 = [v3 BOOLValue];
+  results = [(BYTestingSurrogateBehavior *)self results];
+  v3 = [results objectForKeyedSubscript:@"BOOLean"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)updateWithDictionary:(id)a3
++ (id)updateWithDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2050000000;
@@ -39,135 +39,135 @@
   v5 = v4;
   _Block_object_dispose(&v31, 8);
   v6 = objc_alloc_init(v4);
-  v7 = [v3 objectForKeyedSubscript:@"productVersion"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"productVersion"];
   [v6 setProductVersion:v7];
 
-  v8 = [v3 objectForKeyedSubscript:@"productVersionExtra"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"productVersionExtra"];
   [v6 setProductVersionExtra:v8];
 
-  v9 = [v3 objectForKeyedSubscript:@"productBuildVersion"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"productBuildVersion"];
   [v6 setProductBuildVersion:v9];
 
-  v10 = [v3 objectForKeyedSubscript:@"productSystemName"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"productSystemName"];
   [v6 setProductSystemName:v10];
 
-  v11 = [v3 objectForKeyedSubscript:@"updateType"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"updateType"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = [v11 intValue];
+    intValue = [v11 intValue];
   }
 
   else
   {
-    v12 = 0;
+    intValue = 0;
   }
 
-  [v6 setUpdateType:v12];
-  v13 = [v3 objectForKeyedSubscript:@"publisher"];
+  [v6 setUpdateType:intValue];
+  v13 = [dictionaryCopy objectForKeyedSubscript:@"publisher"];
   [v6 setPublisher:v13];
 
-  v14 = [v3 objectForKeyedSubscript:@"humanReadableUpdateName"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"humanReadableUpdateName"];
   [v6 setHumanReadableUpdateName:v14];
 
-  v15 = [v3 objectForKeyedSubscript:@"downloadSize"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"downloadSize"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v15 intValue];
+    intValue2 = [v15 intValue];
   }
 
   else
   {
-    v16 = 0;
+    intValue2 = 0;
   }
 
-  [v6 setDownloadSize:v16];
-  v17 = [v3 objectForKeyedSubscript:@"downloadable"];
+  [v6 setDownloadSize:intValue2];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"downloadable"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v17 BOOLValue];
+    bOOLValue = [v17 BOOLValue];
   }
 
   else
   {
-    v18 = 0;
+    bOOLValue = 0;
   }
 
-  [v6 setDownloadable:v18];
-  v19 = [v3 objectForKeyedSubscript:@"downloadableOverCellular"];
+  [v6 setDownloadable:bOOLValue];
+  v19 = [dictionaryCopy objectForKeyedSubscript:@"downloadableOverCellular"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v19 BOOLValue];
+    bOOLValue2 = [v19 BOOLValue];
   }
 
   else
   {
-    v20 = 0;
+    bOOLValue2 = 0;
   }
 
-  [v6 setDownloadableOverCellular:v20];
-  v21 = [v3 objectForKeyedSubscript:@"mandatoryUpdateEligible"];
+  [v6 setDownloadableOverCellular:bOOLValue2];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"mandatoryUpdateEligible"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = [v21 BOOLValue];
+    bOOLValue3 = [v21 BOOLValue];
   }
 
   else
   {
-    v22 = 0;
+    bOOLValue3 = 0;
   }
 
-  [v6 setMandatoryUpdateEligible:v22];
-  v23 = [v3 objectForKeyedSubscript:@"mandatoryUpdateVersionMin"];
+  [v6 setMandatoryUpdateEligible:bOOLValue3];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"mandatoryUpdateVersionMin"];
   [v6 setMandatoryUpdateVersionMin:v23];
 
-  v24 = [v3 objectForKeyedSubscript:@"mandatoryUpdateVersionMax"];
+  v24 = [dictionaryCopy objectForKeyedSubscript:@"mandatoryUpdateVersionMax"];
   [v6 setMandatoryUpdateVersionMax:v24];
 
-  v25 = [v3 objectForKeyedSubscript:@"mandatoryUpdateOptional"];
+  v25 = [dictionaryCopy objectForKeyedSubscript:@"mandatoryUpdateOptional"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v25 BOOLValue];
+    bOOLValue4 = [v25 BOOLValue];
   }
 
   else
   {
-    v26 = 0;
+    bOOLValue4 = 0;
   }
 
-  [v6 setMandatoryUpdateOptional:v26];
-  v27 = [v3 objectForKeyedSubscript:@"mandatoryUpdateRestrictedToOutOfTheBox"];
+  [v6 setMandatoryUpdateOptional:bOOLValue4];
+  v27 = [dictionaryCopy objectForKeyedSubscript:@"mandatoryUpdateRestrictedToOutOfTheBox"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v28 = [v27 BOOLValue];
+    bOOLValue5 = [v27 BOOLValue];
   }
 
   else
   {
-    v28 = 0;
+    bOOLValue5 = 0;
   }
 
-  [v6 setMandatoryUpdateRestrictedToOutOfTheBox:v28];
+  [v6 setMandatoryUpdateRestrictedToOutOfTheBox:bOOLValue5];
 
   return v6;
 }
 
 - (id)preferredUpdate
 {
-  v2 = [(BYTestingSurrogateBehavior *)self results];
-  v3 = [v2 objectForKeyedSubscript:@"preferredUpdate"];
+  results = [(BYTestingSurrogateBehavior *)self results];
+  v3 = [results objectForKeyedSubscript:@"preferredUpdate"];
 
   if (v3)
   {
@@ -184,8 +184,8 @@
 
 - (id)alternateUpdate
 {
-  v2 = [(BYTestingSurrogateBehavior *)self results];
-  v3 = [v2 objectForKeyedSubscript:@"alternateUpdate"];
+  results = [(BYTestingSurrogateBehavior *)self results];
+  v3 = [results objectForKeyedSubscript:@"alternateUpdate"];
 
   if (v3)
   {
@@ -221,9 +221,9 @@
   v4 = v3;
   _Block_object_dispose(&v11, 8);
   v5 = [v3 alloc];
-  v6 = [(BYTestingSurrogateBehavior *)self preferredUpdate];
-  v7 = [(BYTestingSurrogateBehavior *)self alternateUpdate];
-  v8 = [v5 initWithPreferredDescriptor:v6 alternateDescriptor:v7];
+  preferredUpdate = [(BYTestingSurrogateBehavior *)self preferredUpdate];
+  alternateUpdate = [(BYTestingSurrogateBehavior *)self alternateUpdate];
+  v8 = [v5 initWithPreferredDescriptor:preferredUpdate alternateDescriptor:alternateUpdate];
 
   return v8;
 }

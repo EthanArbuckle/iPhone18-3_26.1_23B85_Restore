@@ -1,10 +1,10 @@
 @interface WBSSavedAccountContext
 + (WBSSavedAccountContext)defaultContext;
-- (BOOL)isEqual:(id)a3;
-- (WBSSavedAccountContext)initWithCoder:(id)a3;
-- (WBSSavedAccountContext)initWithName:(id)a3;
-- (WBSSavedAccountContext)initWithSafariProfileIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSSavedAccountContext)initWithCoder:(id)coder;
+- (WBSSavedAccountContext)initWithName:(id)name;
+- (WBSSavedAccountContext)initWithSafariProfileIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -29,23 +29,23 @@ void __40__WBSSavedAccountContext_defaultContext__block_invoke()
   defaultContext_defaultContext = v0;
 }
 
-- (WBSSavedAccountContext)initWithName:(id)a3
+- (WBSSavedAccountContext)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = WBSSavedAccountContext;
   v5 = [(WBSSavedAccountContext *)&v11 init];
   if (v5)
   {
-    v6 = [objc_opt_class() _nameForDefaultSafariProfile];
-    if ([v4 isEqualToString:v6])
+    _nameForDefaultSafariProfile = [objc_opt_class() _nameForDefaultSafariProfile];
+    if ([nameCopy isEqualToString:_nameForDefaultSafariProfile])
     {
       v7 = &stru_1F3064D08;
     }
 
     else
     {
-      v7 = [v4 copy];
+      v7 = [nameCopy copy];
     }
 
     nameForPersistence = v5->_nameForPersistence;
@@ -57,15 +57,15 @@ void __40__WBSSavedAccountContext_defaultContext__block_invoke()
   return v5;
 }
 
-- (WBSSavedAccountContext)initWithCoder:(id)a3
+- (WBSSavedAccountContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WBSSavedAccountContext;
   v5 = [(WBSSavedAccountContext *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     nameForPersistence = v5->_nameForPersistence;
     v5->_nameForPersistence = v6;
 
@@ -75,20 +75,20 @@ void __40__WBSSavedAccountContext_defaultContext__block_invoke()
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [WBSSavedAccountContext allocWithZone:a3];
+  v4 = [WBSSavedAccountContext allocWithZone:zone];
   nameForPersistence = self->_nameForPersistence;
 
   return [(WBSSavedAccountContext *)v4 initWithName:nameForPersistence];
 }
 
-- (WBSSavedAccountContext)initWithSafariProfileIdentifier:(id)a3
+- (WBSSavedAccountContext)initWithSafariProfileIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length] && (objc_msgSend(v4, "isEqualToString:", @"DefaultProfile") & 1) == 0)
+  identifierCopy = identifier;
+  if ([identifierCopy length] && (objc_msgSend(identifierCopy, "isEqualToString:", @"DefaultProfile") & 1) == 0)
   {
-    v6 = [@"SafariProfile-" stringByAppendingString:v4];
+    v6 = [@"SafariProfile-" stringByAppendingString:identifierCopy];
     v5 = [(WBSSavedAccountContext *)self initWithName:v6];
   }
 
@@ -100,10 +100,10 @@ void __40__WBSSavedAccountContext_defaultContext__block_invoke()
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -113,7 +113,7 @@ void __40__WBSSavedAccountContext_defaultContext__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = WBSIsEqual(self->_nameForPersistence, v4->_nameForPersistence);
+      v5 = WBSIsEqual(self->_nameForPersistence, equalCopy->_nameForPersistence);
     }
 
     else

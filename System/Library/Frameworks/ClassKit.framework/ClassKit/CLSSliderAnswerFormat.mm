@@ -1,197 +1,197 @@
 @interface CLSSliderAnswerFormat
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (BOOL)canCopyToDatabase:(id)a3;
-- (CLSSliderAnswerFormat)initWithDatabaseRow:(id)a3;
-- (id)initWithCKRecord:(id)a3;
-- (int64_t)syncBackend:(id)a3;
-- (void)bindTo:(id)a3;
-- (void)populate:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (BOOL)canCopyToDatabase:(id)database;
+- (CLSSliderAnswerFormat)initWithDatabaseRow:(id)row;
+- (id)initWithCKRecord:(id)record;
+- (int64_t)syncBackend:(id)backend;
+- (void)bindTo:(id)to;
+- (void)populate:(id)populate;
 @end
 
 @implementation CLSSliderAnswerFormat
 
-- (CLSSliderAnswerFormat)initWithDatabaseRow:(id)a3
+- (CLSSliderAnswerFormat)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSSliderAnswerFormat *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSSliderAnswerFormat *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"answerFormatType");
+    v8 = sub_10016D778(rowCopy, @"answerFormatType");
     [v6 setAnswerFormatType:{objc_msgSend(v8, "intValue")}];
 
-    v9 = sub_10016D778(v4, @"minimum");
+    v9 = sub_10016D778(rowCopy, @"minimum");
     [v6 setMinimum:{objc_msgSend(v9, "integerValue")}];
 
-    v10 = sub_10016D778(v4, @"maximum");
+    v10 = sub_10016D778(rowCopy, @"maximum");
     [v6 setMaximum:{objc_msgSend(v10, "integerValue")}];
 
-    v11 = sub_10016D778(v4, @"leadingValueLabel");
+    v11 = sub_10016D778(rowCopy, @"leadingValueLabel");
     [v6 setLeadingValueLabel:v11];
 
-    v12 = sub_10016D778(v4, @"midValueLabel");
+    v12 = sub_10016D778(rowCopy, @"midValueLabel");
     [v6 setMidValueLabel:v12];
 
-    v13 = sub_10016D778(v4, @"trailingValueLabel");
+    v13 = sub_10016D778(rowCopy, @"trailingValueLabel");
     [v6 setTrailingValueLabel:v13];
 
-    v14 = sub_10016D778(v4, @"type");
+    v14 = sub_10016D778(rowCopy, @"type");
     [v6 setType:{objc_msgSend(v14, "intValue")}];
   }
 
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v14.receiver = self;
   v14.super_class = CLSSliderAnswerFormat;
-  v4 = a3;
-  [(CLSSliderAnswerFormat *)&v14 bindTo:v4];
+  toCopy = to;
+  [(CLSSliderAnswerFormat *)&v14 bindTo:toCopy];
   v15 = @"appIdentifier";
   v5 = [NSArray arrayWithObjects:&v15 count:1, v14.receiver, v14.super_class];
-  sub_1000983A8(v4, v5);
+  sub_1000983A8(toCopy, v5);
 
-  v6 = [(CLSSliderAnswerFormat *)self parentObjectID];
-  sub_1000982FC(v4, v6, @"parentObjectID");
+  parentObjectID = [(CLSSliderAnswerFormat *)self parentObjectID];
+  sub_1000982FC(toCopy, parentObjectID, @"parentObjectID");
 
   v7 = [NSNumber numberWithInteger:[(CLSSliderAnswerFormat *)self answerFormatType]];
-  sub_1000982FC(v4, v7, @"answerFormatType");
+  sub_1000982FC(toCopy, v7, @"answerFormatType");
 
   v8 = [NSNumber numberWithInteger:[(CLSSliderAnswerFormat *)self minimum]];
-  sub_1000982FC(v4, v8, @"minimum");
+  sub_1000982FC(toCopy, v8, @"minimum");
 
   v9 = [NSNumber numberWithInteger:[(CLSSliderAnswerFormat *)self maximum]];
-  sub_1000982FC(v4, v9, @"maximum");
+  sub_1000982FC(toCopy, v9, @"maximum");
 
-  v10 = [(CLSSliderAnswerFormat *)self leadingValueLabel];
-  sub_1000982FC(v4, v10, @"leadingValueLabel");
+  leadingValueLabel = [(CLSSliderAnswerFormat *)self leadingValueLabel];
+  sub_1000982FC(toCopy, leadingValueLabel, @"leadingValueLabel");
 
-  v11 = [(CLSSliderAnswerFormat *)self trailingValueLabel];
-  sub_1000982FC(v4, v11, @"trailingValueLabel");
+  trailingValueLabel = [(CLSSliderAnswerFormat *)self trailingValueLabel];
+  sub_1000982FC(toCopy, trailingValueLabel, @"trailingValueLabel");
 
-  v12 = [(CLSSliderAnswerFormat *)self midValueLabel];
-  sub_1000982FC(v4, v12, @"midValueLabel");
+  midValueLabel = [(CLSSliderAnswerFormat *)self midValueLabel];
+  sub_1000982FC(toCopy, midValueLabel, @"midValueLabel");
 
   v13 = [NSNumber numberWithInteger:[(CLSSliderAnswerFormat *)self type]];
-  sub_1000982FC(v4, v13, @"type");
+  sub_1000982FC(toCopy, v13, @"type");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSSliderAnswerFormat (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    type              integer,\n    answerFormatType  integer,\n    minimum           integer,\n    maximum           integer,\n    leadingValueLabel     text,\n    trailingValueLabel    text,\n    midValueLabel         text,\nforeign key (parentObjectID) references CLSQuestionStep(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSSliderAnswerFormat_objectID on CLSSliderAnswerFormat (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSSliderAnswerFormat_parentObjectID on CLSSliderAnswerFormat (parentObjectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSSliderAnswerFormat (\n    objectID          text not null,\n    parentObjectID    text not null,\n    dateCreated       real not null,\n    dateLastModified  real not null,\n    type              integer,\n    answerFormatType  integer,\n    minimum           integer,\n    maximum           integer,\n    leadingValueLabel     text,\n    trailingValueLabel    text,\n    midValueLabel         text,\nforeign key (parentObjectID) references CLSQuestionStep(objectID) on delete cascade on update cascade\n)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSSliderAnswerFormat_objectID on CLSSliderAnswerFormat (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index if not exists CLSSliderAnswerFormat_parentObjectID on CLSSliderAnswerFormat (parentObjectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_8;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_8:
 
   return v9;
 }
 
-- (BOOL)canCopyToDatabase:(id)a3
+- (BOOL)canCopyToDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = objc_opt_class();
-  v6 = [(CLSSliderAnswerFormat *)self parentObjectID];
-  v7 = [v4 select:v5 identity:v6];
+  parentObjectID = [(CLSSliderAnswerFormat *)self parentObjectID];
+  v7 = [databaseCopy select:v5 identity:parentObjectID];
 
-  LOBYTE(v6) = [v7 canCopyToDatabase:v4];
-  return v6;
+  LOBYTE(parentObjectID) = [v7 canCopyToDatabase:databaseCopy];
+  return parentObjectID;
 }
 
-- (id)initWithCKRecord:(id)a3
+- (id)initWithCKRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"type"];
+  recordCopy = record;
+  v5 = [recordCopy objectForKeyedSubscript:@"type"];
   if (v5 && CLSSliderAnswerFormatTypeFromString() == 1)
   {
     v6 = [(CLSSliderAnswerFormat *)self init];
-    v7 = [v4 objectForKeyedSubscript:@"minimum"];
+    v7 = [recordCopy objectForKeyedSubscript:@"minimum"];
     -[CLSSliderAnswerFormat setMinimum:](v6, "setMinimum:", [v7 integerValue]);
 
-    v8 = [v4 objectForKeyedSubscript:@"maximum"];
+    v8 = [recordCopy objectForKeyedSubscript:@"maximum"];
     -[CLSSliderAnswerFormat setMaximum:](v6, "setMaximum:", [v8 integerValue]);
 
-    v9 = [v4 objectForKeyedSubscript:@"leadingValueLabel"];
+    v9 = [recordCopy objectForKeyedSubscript:@"leadingValueLabel"];
     [(CLSSliderAnswerFormat *)v6 setLeadingValueLabel:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"trailingValueLabel"];
+    v10 = [recordCopy objectForKeyedSubscript:@"trailingValueLabel"];
     [(CLSSliderAnswerFormat *)v6 setTrailingValueLabel:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"midValueLabel"];
+    v11 = [recordCopy objectForKeyedSubscript:@"midValueLabel"];
     [(CLSSliderAnswerFormat *)v6 setMidValueLabel:v11];
 
     if (v6)
     {
-      [(CLSSliderAnswerFormat *)v6 _initCommonPropsWithRecord:v4];
+      [(CLSSliderAnswerFormat *)v6 _initCommonPropsWithRecord:recordCopy];
     }
 
     self = v6;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)populate:(id)a3
+- (void)populate:(id)populate
 {
   v11.receiver = self;
   v11.super_class = CLSSliderAnswerFormat;
-  v4 = a3;
-  [(CLSSliderAnswerFormat *)&v11 populate:v4];
+  populateCopy = populate;
+  [(CLSSliderAnswerFormat *)&v11 populate:populateCopy];
   [(CLSSliderAnswerFormat *)self type:v11.receiver];
   v5 = NSStringFromCLSSliderAnswerFormatType();
-  [v4 setObject:v5 forKeyedSubscript:@"type"];
+  [populateCopy setObject:v5 forKeyedSubscript:@"type"];
 
   v6 = [NSNumber numberWithInteger:[(CLSSliderAnswerFormat *)self maximum]];
-  [v4 setObject:v6 forKeyedSubscript:@"maximum"];
+  [populateCopy setObject:v6 forKeyedSubscript:@"maximum"];
 
   v7 = [NSNumber numberWithInteger:[(CLSSliderAnswerFormat *)self minimum]];
-  [v4 setObject:v7 forKeyedSubscript:@"minimum"];
+  [populateCopy setObject:v7 forKeyedSubscript:@"minimum"];
 
-  v8 = [(CLSSliderAnswerFormat *)self leadingValueLabel];
-  [v4 setObject:v8 forKeyedSubscript:@"leadingValueLabel"];
+  leadingValueLabel = [(CLSSliderAnswerFormat *)self leadingValueLabel];
+  [populateCopy setObject:leadingValueLabel forKeyedSubscript:@"leadingValueLabel"];
 
-  v9 = [(CLSSliderAnswerFormat *)self trailingValueLabel];
-  [v4 setObject:v9 forKeyedSubscript:@"trailingValueLabel"];
+  trailingValueLabel = [(CLSSliderAnswerFormat *)self trailingValueLabel];
+  [populateCopy setObject:trailingValueLabel forKeyedSubscript:@"trailingValueLabel"];
 
-  v10 = [(CLSSliderAnswerFormat *)self midValueLabel];
-  [v4 setObject:v10 forKeyedSubscript:@"midValueLabel"];
+  midValueLabel = [(CLSSliderAnswerFormat *)self midValueLabel];
+  [populateCopy setObject:midValueLabel forKeyedSubscript:@"midValueLabel"];
 
-  [(CLSSliderAnswerFormat *)self updateParentReferencesForRecord:v4];
+  [(CLSSliderAnswerFormat *)self updateParentReferencesForRecord:populateCopy];
 }
 
-- (int64_t)syncBackend:(id)a3
+- (int64_t)syncBackend:(id)backend
 {
-  v4 = a3;
-  v5 = [(CLSSliderAnswerFormat *)self parentObjectID];
-  if (v5)
+  backendCopy = backend;
+  parentObjectID = [(CLSSliderAnswerFormat *)self parentObjectID];
+  if (parentObjectID)
   {
-    v6 = [v4 select:objc_opt_class() identity:v5];
+    v6 = [backendCopy select:objc_opt_class() identity:parentObjectID];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 syncBackend:v4];
+      v8 = [v6 syncBackend:backendCopy];
     }
 
     else

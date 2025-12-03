@@ -8,14 +8,14 @@
 - (uint64_t)_context
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (atomic_exchange((a1 + 400), 1u))
+  if (atomic_exchange((self + 400), 1u))
   {
-    v2 = a1 + 16;
+    v2 = self + 16;
   }
 
   else
   {
-    if (![*(a1 + 8) length])
+    if (![*(self + 8) length])
     {
       v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"truncated data"];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -28,7 +28,7 @@
         v11 = 2114;
         v12 = v8;
         v13 = 2048;
-        v14 = a1;
+        selfCopy = self;
         v15 = 2114;
         v16 = @"_BKSHIDEventAuthenticationKey.m";
         v17 = 1024;
@@ -44,8 +44,8 @@
       JUMPOUT(0x18634E1F4);
     }
 
-    v2 = a1 + 16;
-    CCHmacInit((a1 + 16), 2u, [*(a1 + 8) bytes], objc_msgSend(*(a1 + 8), "length"));
+    v2 = self + 16;
+    CCHmacInit((self + 16), 2u, [*(self + 8) bytes], objc_msgSend(*(self + 8), "length"));
   }
 
   v3 = *MEMORY[0x1E69E9840];

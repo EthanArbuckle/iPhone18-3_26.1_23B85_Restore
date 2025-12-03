@@ -1,26 +1,26 @@
 @interface EGStillImageDeferredProcessingNode
-- (EGStillImageDeferredProcessingNode)initWithName:(id)a3 stillImageSettings:(id)a4 resourceCoordinator:(id)a5 numSbufOutputs:(int)a6 portType:(id)a7 delegate:(id)a8;
+- (EGStillImageDeferredProcessingNode)initWithName:(id)name stillImageSettings:(id)settings resourceCoordinator:(id)coordinator numSbufOutputs:(int)outputs portType:(id)type delegate:(id)delegate;
 - (void)dealloc;
-- (void)processorController:(id)a3 didDetermineReferenceFrame:(opaqueCMSampleBuffer *)a4 processorInput:(id)a5 err:(int)a6;
-- (void)processorController:(id)a3 didFinishProcessingInference:(id)a4 inferenceAttachmentKey:(id)a5 processorInput:(id)a6 err:(int)a7;
-- (void)processorController:(id)a3 didFinishProcessingInferenceBuffer:(__CVBuffer *)a4 metadata:(id)a5 inferenceAttachedMediaKey:(id)a6 processorInput:(id)a7 err:(int)a8;
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5;
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7;
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4;
+- (void)processorController:(id)controller didDetermineReferenceFrame:(opaqueCMSampleBuffer *)frame processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingInference:(id)inference inferenceAttachmentKey:(id)key processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingInferenceBuffer:(__CVBuffer *)buffer metadata:(id)metadata inferenceAttachedMediaKey:(id)key processorInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err;
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err;
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group;
 @end
 
 @implementation EGStillImageDeferredProcessingNode
 
-- (EGStillImageDeferredProcessingNode)initWithName:(id)a3 stillImageSettings:(id)a4 resourceCoordinator:(id)a5 numSbufOutputs:(int)a6 portType:(id)a7 delegate:(id)a8
+- (EGStillImageDeferredProcessingNode)initWithName:(id)name stillImageSettings:(id)settings resourceCoordinator:(id)coordinator numSbufOutputs:(int)outputs portType:(id)type delegate:(id)delegate
 {
   v22.receiver = self;
   v22.super_class = EGStillImageDeferredProcessingNode;
-  v12 = [(EGStillImageProcessorControllerDelegateNode *)&v22 initWithName:a3 delegate:a8];
+  v12 = [(EGStillImageProcessorControllerDelegateNode *)&v22 initWithName:name delegate:delegate];
   if (v12)
   {
-    v12->_stillImageSettings = a4;
-    v12->_resourceCoordinator = a5;
-    v12->_portType = a7;
+    v12->_stillImageSettings = settings;
+    v12->_resourceCoordinator = coordinator;
+    v12->_portType = type;
     v13 = [[EGInputGroup alloc] initWithName:@"mainInputGroup"];
     v14 = +[EGStillImageProcessorControllerDelegateNode newProcessorControllerInput];
     v12->_processorInput = v14;
@@ -35,22 +35,22 @@
     v17 = [(EGOutput *)[EGStillImageOutput alloc] initWithName:@"inferencesDelivered"];
     v12->_inferencesDeliveredOutput = v17;
     [(EGNode *)v12 installOutput:v17];
-    v18 = [MEMORY[0x1E695DF70] array];
-    if (a6 >= 1)
+    array = [MEMORY[0x1E695DF70] array];
+    if (outputs >= 1)
     {
       v19 = 0;
       do
       {
         v20 = [EGStillImageProcessorControllerDelegateNode newSbufOutputWithIndex:v19];
-        [v18 addObject:v20];
+        [array addObject:v20];
         [(EGNode *)v12 installOutput:v20];
         v19 = (v19 + 1);
       }
 
-      while (a6 != v19);
+      while (outputs != v19);
     }
 
-    v12->_sbufOutputs = [v18 copy];
+    v12->_sbufOutputs = [array copy];
   }
 
   return v12;
@@ -63,9 +63,9 @@
   [(EGQueueManagementNode *)&v3 dealloc];
 }
 
-- (void)queueManagedReceiveData:(id)a3 fromInputGroup:(id)a4
+- (void)queueManagedReceiveData:(id)data fromInputGroup:(id)group
 {
-  v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", a3, a4)), "sampleBuffer"}];
+  v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](self->_sbufInput, "name", data, group)), "sampleBuffer"}];
   if (v6)
   {
     v7 = v6;
@@ -77,7 +77,7 @@
       if (v6)
       {
         v9 = v6;
-        v6 = [objc_msgSend(a3 objectForKeyedSubscript:{-[EGInput name](-[EGStillImageDeferredProcessingNode processorInput](self, "processorInput"), "name")), "processorController"}];
+        v6 = [objc_msgSend(data objectForKeyedSubscript:{-[EGInput name](-[EGStillImageDeferredProcessingNode processorInput](self, "processorInput"), "name")), "processorController"}];
         if (v6)
         {
           v10 = v6;
@@ -112,9 +112,9 @@
 LABEL_8:
 }
 
-- (void)processorController:(id)a3 didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)a4 type:(unint64_t)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingSampleBuffer:(opaqueCMSampleBuffer *)buffer type:(unint64_t)type processorInput:(id)input err:(int)err
 {
-  if (a7 || !a4 || (sbufOutputCount = self->_sbufOutputCount, [(NSArray *)self->_sbufOutputs count:a3]<= sbufOutputCount))
+  if (err || !buffer || (sbufOutputCount = self->_sbufOutputCount, [(NSArray *)self->_sbufOutputs count:controller]<= sbufOutputCount))
   {
     [EGStillImageDeferredProcessingNode processorController:? didFinishProcessingSampleBuffer:? type:? processorInput:? err:?];
   }
@@ -122,28 +122,28 @@ LABEL_8:
   else
   {
     v10 = [(NSArray *)self->_sbufOutputs objectAtIndexedSubscript:self->_sbufOutputCount++];
-    v11 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a4];
+    v11 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:buffer];
     [v10 emitPayload:v11];
   }
 }
 
-- (void)processorController:(id)a3 didDetermineReferenceFrame:(opaqueCMSampleBuffer *)a4 processorInput:(id)a5 err:(int)a6
+- (void)processorController:(id)controller didDetermineReferenceFrame:(opaqueCMSampleBuffer *)frame processorInput:(id)input err:(int)err
 {
-  if (a6 || !a4)
+  if (err || !frame)
   {
     [EGStillImageDeferredProcessingNode processorController:? didDetermineReferenceFrame:? processorInput:? err:?];
   }
 
   else
   {
-    v7 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a4];
+    v7 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:frame];
     [(EGStillImageOutput *)self->_referenceFrameOutput emitPayload:v7];
   }
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInferenceBuffer:(__CVBuffer *)a4 metadata:(id)a5 inferenceAttachedMediaKey:(id)a6 processorInput:(id)a7 err:(int)a8
+- (void)processorController:(id)controller didFinishProcessingInferenceBuffer:(__CVBuffer *)buffer metadata:(id)metadata inferenceAttachedMediaKey:(id)key processorInput:(id)input err:(int)err
 {
-  if (a8 || !a4)
+  if (err || !buffer)
   {
     [EGStillImageDeferredProcessingNode processorController:? didFinishProcessingInferenceBuffer:? metadata:? inferenceAttachedMediaKey:? processorInput:? err:?];
   }
@@ -152,13 +152,13 @@ LABEL_8:
   {
     resourceCoordinator = self->_resourceCoordinator;
 
-    [(BWPhotonicEngineNodeResourceCoordinator *)resourceCoordinator asyncSetInferenceBuffer:a4 metadata:a5 inferenceAttachedMediaKey:a6];
+    [(BWPhotonicEngineNodeResourceCoordinator *)resourceCoordinator asyncSetInferenceBuffer:buffer metadata:metadata inferenceAttachedMediaKey:key];
   }
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInference:(id)a4 inferenceAttachmentKey:(id)a5 processorInput:(id)a6 err:(int)a7
+- (void)processorController:(id)controller didFinishProcessingInference:(id)inference inferenceAttachmentKey:(id)key processorInput:(id)input err:(int)err
 {
-  if (a7 || !a4)
+  if (err || !inference)
   {
     [EGStillImageDeferredProcessingNode processorController:? didFinishProcessingInference:? inferenceAttachmentKey:? processorInput:? err:?];
   }
@@ -167,13 +167,13 @@ LABEL_8:
   {
     resourceCoordinator = self->_resourceCoordinator;
 
-    [(BWPhotonicEngineNodeResourceCoordinator *)resourceCoordinator asyncSetInference:a4 inferenceAttachmentKey:a5];
+    [(BWPhotonicEngineNodeResourceCoordinator *)resourceCoordinator asyncSetInference:inference inferenceAttachmentKey:key];
   }
 }
 
-- (void)processorController:(id)a3 didFinishProcessingInput:(id)a4 err:(int)a5
+- (void)processorController:(id)controller didFinishProcessingInput:(id)input err:(int)err
 {
-  if (a5)
+  if (err)
   {
     [EGStillImageDeferredProcessingNode processorController:? didFinishProcessingInput:? err:?];
   }
@@ -181,9 +181,9 @@ LABEL_8:
   else
   {
     inferencesDeliveredOutput = self->_inferencesDeliveredOutput;
-    v6 = [[EGStillImageGraphPayload alloc] initWithEmptyPayload];
+    initWithEmptyPayload = [[EGStillImageGraphPayload alloc] initWithEmptyPayload];
 
-    [(EGStillImageOutput *)inferencesDeliveredOutput emitPayload:v6];
+    [(EGStillImageOutput *)inferencesDeliveredOutput emitPayload:initWithEmptyPayload];
   }
 }
 

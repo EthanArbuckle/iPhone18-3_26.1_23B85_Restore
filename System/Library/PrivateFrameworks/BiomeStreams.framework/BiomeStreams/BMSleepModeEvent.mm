@@ -1,9 +1,9 @@
 @interface BMSleepModeEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSleepModeEvent)initWithProto:(id)a3;
-- (BMSleepModeEvent)initWithProtoData:(id)a3;
-- (BMSleepModeEvent)initWithSleepModeState:(unint64_t)a3 sleepModeChangeReason:(unint64_t)a4 expectedEndDate:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSleepModeEvent)initWithProto:(id)proto;
+- (BMSleepModeEvent)initWithProtoData:(id)data;
+- (BMSleepModeEvent)initWithSleepModeState:(unint64_t)state sleepModeChangeReason:(unint64_t)reason expectedEndDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -11,18 +11,18 @@
 
 @implementation BMSleepModeEvent
 
-- (BMSleepModeEvent)initWithSleepModeState:(unint64_t)a3 sleepModeChangeReason:(unint64_t)a4 expectedEndDate:(id)a5
+- (BMSleepModeEvent)initWithSleepModeState:(unint64_t)state sleepModeChangeReason:(unint64_t)reason expectedEndDate:(id)date
 {
-  v9 = a5;
+  dateCopy = date;
   v13.receiver = self;
   v13.super_class = BMSleepModeEvent;
   v10 = [(BMEventBase *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_sleepModeState = a3;
-    v10->_sleepModeChangeReason = a4;
-    objc_storeStrong(&v10->_expectedEndDate, a5);
+    v10->_sleepModeState = state;
+    v10->_sleepModeChangeReason = reason;
+    objc_storeStrong(&v10->_expectedEndDate, date);
   }
 
   return v11;
@@ -38,44 +38,44 @@
   return v6;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 3)
+  if (version == 3)
   {
-    v4 = BMSleepModeEvent_v3;
+    selfCopy = BMSleepModeEvent_v3;
   }
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  v5 = a3;
-  v6 = [[v4 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[selfCopy alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSleepModeEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSleepModeEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSleepModeEvent)initWithProto:(id)a3
+- (BMSleepModeEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 sleepModeState];
-      v7 = v6;
-      if (v6 >= 3)
+      v5 = protoCopy;
+      sleepModeState = [v5 sleepModeState];
+      v7 = sleepModeState;
+      if (sleepModeState >= 3)
       {
         v10 = __biome_log_for_category();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -88,7 +88,7 @@
 
       else
       {
-        v8 = v6;
+        v8 = sleepModeState;
       }
 
       v11 = BMSleepModeChangeReasonFromReason([v5 sleepModeChangeReason]);
@@ -105,7 +105,7 @@
         self = [(BMSleepModeEvent *)self initWithSleepModeState:v8 sleepModeChangeReason:v11 expectedEndDate:0];
       }
 
-      v9 = self;
+      selfCopy = self;
     }
 
     else
@@ -116,35 +116,35 @@
         [BMSleepModeEvent initWithProto:];
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (BMSleepModeEvent)initWithProtoData:(id)a3
+- (BMSleepModeEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSleepModeEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSleepModeEvent alloc] initWithData:dataCopy];
 
     self = [(BMSleepModeEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -219,13 +219,13 @@ LABEL_19:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     sleepModeState = self->_sleepModeState;
     if (sleepModeState == [v5 sleepModeState] && (sleepModeChangeReason = self->_sleepModeChangeReason, sleepModeChangeReason == objc_msgSend(v5, "sleepModeChangeReason")))
     {
@@ -245,8 +245,8 @@ LABEL_14:
         v9 = self->_expectedEndDate;
       }
 
-      v10 = [v5 expectedEndDate];
-      v11 = [(NSDate *)v9 isEqualToDate:v10];
+      expectedEndDate = [v5 expectedEndDate];
+      v11 = [(NSDate *)v9 isEqualToDate:expectedEndDate];
 
       if (!expectedEndDate)
       {

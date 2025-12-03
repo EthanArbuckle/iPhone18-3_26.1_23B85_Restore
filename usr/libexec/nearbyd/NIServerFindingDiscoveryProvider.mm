@@ -1,48 +1,48 @@
 @interface NIServerFindingDiscoveryProvider
-- (NIServerFindingDiscoveryProvider)initWithIdentifier:(const void *)a3 isFinder:(BOOL)a4 enableBluetooth:(BOOL)a5 launchOnDemand:(BOOL)a6 scanRate:(int)a7 discoveryTimeout:(double)a8 consumer:(id)a9 queue:(id)a10;
+- (NIServerFindingDiscoveryProvider)initWithIdentifier:(const void *)identifier isFinder:(BOOL)finder enableBluetooth:(BOOL)bluetooth launchOnDemand:(BOOL)demand scanRate:(int)rate discoveryTimeout:(double)timeout consumer:(id)consumer queue:(id)self0;
 - (NSDictionary)advertisingPeers;
 - (NSDictionary)discoveredPeers;
 - (NSSet)peersEligibleForDiscovery;
 - (array<unsigned)advertisingAddress;
 - (id).cxx_construct;
 - (id)_cbAdvertisingAddress;
-- (id)_configureNearbyActionNoWakeScannerAndRequestScan:(BOOL)a3;
-- (id)_configureSpatialInteractionScannerAndRequestScan:(BOOL)a3;
-- (id)_getAdvertisementFromCBDevice:(id)a3 advertisementType:(int)a4;
-- (id)_getDiscoveryTokenFromCBDevice:(id)a3 advertisementType:(int)a4;
+- (id)_configureNearbyActionNoWakeScannerAndRequestScan:(BOOL)scan;
+- (id)_configureSpatialInteractionScannerAndRequestScan:(BOOL)scan;
+- (id)_getAdvertisementFromCBDevice:(id)device advertisementType:(int)type;
+- (id)_getDiscoveryTokenFromCBDevice:(id)device advertisementType:(int)type;
 - (id)_nearbyActionNoWakeOOBKeysFromEligibleDiscoveryPeers;
 - (id)printableState;
-- (id)processAdvertisement:(id)a3 receivedOOBFromPeer:(id)a4;
-- (id)processLostEventReceivedOOBFromPeer:(id)a3;
-- (id)startAdvertisingToPeer:(id)a3 advertisement:(id)a4 timeout:(double)a5;
-- (id)stopAdvertisingToPeer:(id)a3;
+- (id)processAdvertisement:(id)advertisement receivedOOBFromPeer:(id)peer;
+- (id)processLostEventReceivedOOBFromPeer:(id)peer;
+- (id)startAdvertisingToPeer:(id)peer advertisement:(id)advertisement timeout:(double)timeout;
+- (id)stopAdvertisingToPeer:(id)peer;
 - (void)_cbAdvertisingAddressChangedHandler;
 - (void)_cbBluetoothStateChangedHandler;
-- (void)_cbDeviceFoundHandler:(id)a3;
-- (void)_cbErrorHandler:(id)a3;
+- (void)_cbDeviceFoundHandler:(id)handler;
+- (void)_cbErrorHandler:(id)handler;
 - (void)_cbInterruptionHandler;
-- (void)_configureAdvertisementTimeout:(double)a3 forToken:(id)a4;
-- (void)_configureDiscoveryTimeout:(double)a3 forToken:(id)a4;
+- (void)_configureAdvertisementTimeout:(double)timeout forToken:(id)token;
+- (void)_configureDiscoveryTimeout:(double)timeout forToken:(id)token;
 - (void)_nearbyActionNoWakeDisableScanDupesIfNecessary;
-- (void)_processReceivedAdvertisement:(id)a3 fromPeer:(id)a4 overBluetooth:(BOOL)a5 cbDevice:(id)a6;
+- (void)_processReceivedAdvertisement:(id)advertisement fromPeer:(id)peer overBluetooth:(BOOL)bluetooth cbDevice:(id)device;
 - (void)_resetAdvertisingStateForAllPeers;
 - (void)_resetDiscoveryStateForAllPeers;
-- (void)_resetDiscoveryStateForPeer:(id)a3;
-- (void)_updateLaunchOnDemandScannerAndRequestScan:(BOOL)a3;
+- (void)_resetDiscoveryStateForPeer:(id)peer;
+- (void)_updateLaunchOnDemandScannerAndRequestScan:(BOOL)scan;
 - (void)activate;
 - (void)invalidate;
 @end
 
 @implementation NIServerFindingDiscoveryProvider
 
-- (NIServerFindingDiscoveryProvider)initWithIdentifier:(const void *)a3 isFinder:(BOOL)a4 enableBluetooth:(BOOL)a5 launchOnDemand:(BOOL)a6 scanRate:(int)a7 discoveryTimeout:(double)a8 consumer:(id)a9 queue:(id)a10
+- (NIServerFindingDiscoveryProvider)initWithIdentifier:(const void *)identifier isFinder:(BOOL)finder enableBluetooth:(BOOL)bluetooth launchOnDemand:(BOOL)demand scanRate:(int)rate discoveryTimeout:(double)timeout consumer:(id)consumer queue:(id)self0
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v17 = a9;
-  v18 = a10;
-  if (!v17)
+  demandCopy = demand;
+  bluetoothCopy = bluetooth;
+  finderCopy = finder;
+  consumerCopy = consumer;
+  queueCopy = queue;
+  if (!consumerCopy)
   {
     __assert_rtn("[NIServerFindingDiscoveryProvider initWithIdentifier:isFinder:enableBluetooth:launchOnDemand:scanRate:discoveryTimeout:consumer:queue:]", "NIServerFindingDiscovery.mm", 800, "consumer");
   }
@@ -50,18 +50,18 @@
   v19 = qword_1009F9820;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = sub_100009210(v14);
-    if (a7 > 34)
+    v20 = sub_100009210(finderCopy);
+    if (rate > 34)
     {
-      if (a7 > 49)
+      if (rate > 49)
       {
-        if (a7 == 50)
+        if (rate == 50)
         {
           v21 = "High";
           goto LABEL_23;
         }
 
-        if (a7 == 60)
+        if (rate == 60)
         {
           v21 = "Max";
           goto LABEL_23;
@@ -70,13 +70,13 @@
 
       else
       {
-        if (a7 == 35)
+        if (rate == 35)
         {
           v21 = "MediumLow";
           goto LABEL_23;
         }
 
-        if (a7 == 40)
+        if (rate == 40)
         {
           v21 = "Medium";
           goto LABEL_23;
@@ -84,15 +84,15 @@
       }
     }
 
-    else if (a7 > 19)
+    else if (rate > 19)
     {
-      if (a7 == 20)
+      if (rate == 20)
       {
         v21 = "Background";
         goto LABEL_23;
       }
 
-      if (a7 == 30)
+      if (rate == 30)
       {
         v21 = "Low";
         goto LABEL_23;
@@ -101,26 +101,26 @@
 
     else
     {
-      if (!a7)
+      if (!rate)
       {
         v21 = "Default";
         goto LABEL_23;
       }
 
-      if (a7 == 10)
+      if (rate == 10)
       {
         v21 = "Periodic";
 LABEL_23:
         *buf = 136316162;
         v45 = v20;
         v46 = 1024;
-        v47 = v13;
+        v47 = bluetoothCopy;
         v48 = 1024;
-        v49 = v12;
+        v49 = demandCopy;
         v50 = 2080;
         v51 = v21;
         v52 = 2048;
-        v53 = a8;
+        timeoutCopy = timeout;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "#find-disc,[%s] init. Enable BT: %d. Launch on demand: %d. Scan rate: %s. Discovery timeout: %0.1f s", buf, 0x2Cu);
         goto LABEL_24;
       }
@@ -138,13 +138,13 @@ LABEL_24:
   v23 = v22;
   if (v22)
   {
-    std::string::operator=((v22 + 8), a3);
-    v23->_isFinder = v14;
-    objc_storeWeak(&v23->_consumer, v17);
-    objc_storeStrong(&v23->_consumerQueue, a10);
-    v23->_enableBluetooth = v13;
-    v23->_launchOnDemand = v12;
-    v23->_scanRate = a7;
+    std::string::operator=((v22 + 8), identifier);
+    v23->_isFinder = finderCopy;
+    objc_storeWeak(&v23->_consumer, consumerCopy);
+    objc_storeStrong(&v23->_consumerQueue, queue);
+    v23->_enableBluetooth = bluetoothCopy;
+    v23->_launchOnDemand = demandCopy;
+    v23->_scanRate = rate;
     controller = v23->_controller;
     v23->_controller = 0;
 
@@ -182,7 +182,7 @@ LABEL_24:
     discoveryTimeoutTimers = v23->_discoveryTimeoutTimers;
     v23->_discoveryTimeoutTimers = v36;
 
-    v23->_discoveryTimeoutSeconds = fmax(a8, 30.0);
+    v23->_discoveryTimeoutSeconds = fmax(timeout, 30.0);
     v38 = objc_opt_new();
     advertisingPeers = v23->_advertisingPeers;
     v23->_advertisingPeers = v38;
@@ -348,35 +348,35 @@ LABEL_24:
   [(NIServerFindingDiscoveryProvider *)self _updateLaunchOnDemandScannerAndRequestScan:0];
 }
 
-- (id)startAdvertisingToPeer:(id)a3 advertisement:(id)a4 timeout:(double)a5
+- (id)startAdvertisingToPeer:(id)peer advertisement:(id)advertisement timeout:(double)timeout
 {
-  v8 = a3;
-  v9 = a4;
+  peerCopy = peer;
+  advertisementCopy = advertisement;
   v10 = qword_1009F9820;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = sub_100009210(self->_isFinder);
-    v12 = [v8 descriptionInternal];
+    descriptionInternal = [peerCopy descriptionInternal];
     *buf = 136315907;
     v27 = v11;
     v28 = 2113;
-    v29 = v12;
+    v29 = descriptionInternal;
     v30 = 2048;
-    v31 = a5;
+    timeoutCopy = timeout;
     v32 = 2113;
-    v33 = v9;
+    v33 = advertisementCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#find-disc,[%s] startAdvertisingToPeer: %{private}@. Timeout: %0.1f s. Advertisement: %{private}@", buf, 0x2Au);
   }
 
   dispatch_assert_queue_V2(self->_consumerQueue);
-  if (!v8)
+  if (!peerCopy)
   {
     v21 = "token";
     v22 = 1063;
     goto LABEL_21;
   }
 
-  if (!v9)
+  if (!advertisementCopy)
   {
     v21 = "advertisement";
     v22 = 1064;
@@ -387,7 +387,7 @@ LABEL_21:
   if (self->_enableBluetooth)
   {
     v13 = +[_FindingAdvertiser sharedInstance];
-    v14 = [v13 startAdvertisingAsFinder:self->_isFinder toPeer:v8 withAdvertisement:v9];
+    v14 = [v13 startAdvertisingAsFinder:self->_isFinder toPeer:peerCopy withAdvertisement:advertisementCopy];
 
     if (v14)
     {
@@ -411,13 +411,13 @@ LABEL_21:
     }
   }
 
-  if (a5 > 0.0)
+  if (timeout > 0.0)
   {
-    [(NIServerFindingDiscoveryProvider *)self _configureAdvertisementTimeout:v8 forToken:a5];
+    [(NIServerFindingDiscoveryProvider *)self _configureAdvertisementTimeout:peerCopy forToken:timeout];
   }
 
-  v17 = [(NSMutableDictionary *)self->_advertisingPeers objectForKey:v8];
-  v18 = [v9 isEqual:v17];
+  v17 = [(NSMutableDictionary *)self->_advertisingPeers objectForKey:peerCopy];
+  v18 = [advertisementCopy isEqual:v17];
 
   if ((v18 & 1) == 0)
   {
@@ -427,21 +427,21 @@ LABEL_21:
     block[2] = sub_100377BD0;
     block[3] = &unk_10099BB28;
     block[4] = self;
-    v24 = v9;
-    v25 = v8;
+    v24 = advertisementCopy;
+    v25 = peerCopy;
     dispatch_async(consumerQueue, block);
   }
 
-  [(NSMutableDictionary *)self->_advertisingPeers setObject:v9 forKey:v8];
+  [(NSMutableDictionary *)self->_advertisingPeers setObject:advertisementCopy forKey:peerCopy];
   v14 = 0;
 LABEL_16:
 
   return v14;
 }
 
-- (id)stopAdvertisingToPeer:(id)a3
+- (id)stopAdvertisingToPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -449,18 +449,18 @@ LABEL_16:
     v15 = 136315395;
     v16 = v6;
     v17 = 2113;
-    v18 = v4;
+    v18 = peerCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-disc,[%s] stopAdvertisingToPeer: %{private}@", &v15, 0x16u);
   }
 
   dispatch_assert_queue_V2(self->_consumerQueue);
-  if (!v4)
+  if (!peerCopy)
   {
     __assert_rtn("[NIServerFindingDiscoveryProvider stopAdvertisingToPeer:]", "NIServerFindingDiscovery.mm", 1101, "token");
   }
 
   v7 = +[_FindingAdvertiser sharedInstance];
-  v8 = [v7 stopAdvertisingAsFinder:self->_isFinder toPeer:v4];
+  v8 = [v7 stopAdvertisingAsFinder:self->_isFinder toPeer:peerCopy];
 
   if (v8)
   {
@@ -475,18 +475,18 @@ LABEL_16:
 
   else
   {
-    v11 = [(NSMutableDictionary *)self->_advertisingTimeoutTimers objectForKey:v4];
+    v11 = [(NSMutableDictionary *)self->_advertisingTimeoutTimers objectForKey:peerCopy];
     v12 = v11 == 0;
 
     if (!v12)
     {
-      v13 = [(NSMutableDictionary *)self->_advertisingTimeoutTimers objectForKey:v4];
+      v13 = [(NSMutableDictionary *)self->_advertisingTimeoutTimers objectForKey:peerCopy];
       dispatch_source_cancel(v13);
 
-      [(NSMutableDictionary *)self->_advertisingTimeoutTimers removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_advertisingTimeoutTimers removeObjectForKey:peerCopy];
     }
 
-    [(NSMutableDictionary *)self->_advertisingPeers removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_advertisingPeers removeObjectForKey:peerCopy];
   }
 
   return v8;
@@ -519,16 +519,16 @@ LABEL_16:
 - (array<unsigned)advertisingAddress
 {
   dispatch_assert_queue_V2(self->_consumerQueue);
-  v3 = [(NIServerFindingDiscoveryProvider *)self _cbAdvertisingAddress];
-  v4 = [NIServerFindingAdvertisement convertCBAddressToRoseAddress:v3];
+  _cbAdvertisingAddress = [(NIServerFindingDiscoveryProvider *)self _cbAdvertisingAddress];
+  v4 = [NIServerFindingAdvertisement convertCBAddressToRoseAddress:_cbAdvertisingAddress];
 
   return v4;
 }
 
-- (id)processAdvertisement:(id)a3 receivedOOBFromPeer:(id)a4
+- (id)processAdvertisement:(id)advertisement receivedOOBFromPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
+  advertisementCopy = advertisement;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_consumerQueue);
   if (qword_1009F7510 != -1)
   {
@@ -546,9 +546,9 @@ LABEL_16:
       v15 = 136315651;
       v16 = v11;
       v17 = 2113;
-      v18 = v7;
+      v18 = peerCopy;
       v19 = 2113;
-      v20 = v6;
+      v20 = advertisementCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#find-disc,[%s] IGNORING processAdvertisementReceivedOOB (disabled in defaults). Peer: %{private}@. Adv: %{private}@", &v15, 0x20u);
     }
   }
@@ -558,25 +558,25 @@ LABEL_16:
     if (v10)
     {
       v12 = sub_100009210(self->_isFinder);
-      v13 = [v7 descriptionInternal];
+      descriptionInternal = [peerCopy descriptionInternal];
       v15 = 136315651;
       v16 = v12;
       v17 = 2113;
-      v18 = v13;
+      v18 = descriptionInternal;
       v19 = 2113;
-      v20 = v6;
+      v20 = advertisementCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "#find-disc,[%s] processAdvertisementReceivedOOB. Peer: %{private}@. Adv: %{private}@", &v15, 0x20u);
     }
 
-    [(NIServerFindingDiscoveryProvider *)self _processReceivedAdvertisement:v6 fromPeer:v7 overBluetooth:0 cbDevice:0];
+    [(NIServerFindingDiscoveryProvider *)self _processReceivedAdvertisement:advertisementCopy fromPeer:peerCopy overBluetooth:0 cbDevice:0];
   }
 
   return 0;
 }
 
-- (id)processLostEventReceivedOOBFromPeer:(id)a3
+- (id)processLostEventReceivedOOBFromPeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_consumerQueue);
   if (qword_1009F7510 != -1)
   {
@@ -594,7 +594,7 @@ LABEL_16:
       *buf = 136315395;
       v16 = v8;
       v17 = 2113;
-      v18 = v4;
+      v18 = peerCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#find-disc,[%s] IGNORING processLostEventReceivedOOB (disabled in defaults). Peer: %{private}@", buf, 0x16u);
     }
   }
@@ -607,13 +607,13 @@ LABEL_16:
       *buf = 136315395;
       v16 = v9;
       v17 = 2113;
-      v18 = v4;
+      v18 = peerCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#find-disc,[%s] processLostEventReceivedOOB. Peer: %{private}@", buf, 0x16u);
     }
 
-    v10 = [(NSMutableDictionary *)self->_discoveredPeers objectForKey:v4];
+    v10 = [(NSMutableDictionary *)self->_discoveredPeers objectForKey:peerCopy];
 
-    [(NIServerFindingDiscoveryProvider *)self _resetDiscoveryStateForPeer:v4];
+    [(NIServerFindingDiscoveryProvider *)self _resetDiscoveryStateForPeer:peerCopy];
     if (v10)
     {
       consumerQueue = self->_consumerQueue;
@@ -622,7 +622,7 @@ LABEL_16:
       v13[2] = sub_100378354;
       v13[3] = &unk_10098A2E8;
       v13[4] = self;
-      v14 = v4;
+      v14 = peerCopy;
       dispatch_async(consumerQueue, v13);
     }
   }
@@ -717,26 +717,26 @@ LABEL_21:
   if (controller && activatedController)
   {
     v10 = v76[5];
-    v11 = [(CBController *)controller bluetoothState];
-    if (v11 > 0xA)
+    bluetoothState = [(CBController *)controller bluetoothState];
+    if (bluetoothState > 0xA)
     {
       v12 = "?";
     }
 
     else
     {
-      v12 = off_1009A8568[v11];
+      v12 = off_1009A8568[bluetoothState];
     }
 
-    v14 = [NSString stringWithFormat:@"    BT state: %s", v12];
-    [v10 addObject:v14];
+    activatedController = [NSString stringWithFormat:@"    BT state: %s", v12];
+    [v10 addObject:activatedController];
   }
 
   else
   {
     v13 = v76[5];
-    v14 = [NSString stringWithFormat:@"    BT state unknown. Controller: %d. Activated: %d", controller != 0, activatedController];
-    [v13 addObject:v14];
+    activatedController = [NSString stringWithFormat:@"    BT state unknown. Controller: %d. Activated: %d", controller != 0, activatedController];
+    [v13 addObject:activatedController];
   }
 
   addressObserver = self->_addressObserver;
@@ -744,9 +744,9 @@ LABEL_21:
   if (addressObserver && activatedAddressObserver)
   {
     v17 = v76[5];
-    v18 = [(CBAdvertiser *)addressObserver advertisingAddressDataNonConnectable];
+    advertisingAddressDataNonConnectable = [(CBAdvertiser *)addressObserver advertisingAddressDataNonConnectable];
     v19 = CUPrintNSDataAddress();
-    v20 = [(CBAdvertiser *)self->_addressObserver advertisingAddressDataConnectable];
+    advertisingAddressDataConnectable = [(CBAdvertiser *)self->_addressObserver advertisingAddressDataConnectable];
     v21 = CUPrintNSDataAddress();
     v22 = [NSString stringWithFormat:@"    Addresses: NCA %@, CA %@.", v19, v21];
     [v17 addObject:v22];
@@ -755,8 +755,8 @@ LABEL_21:
   else
   {
     v23 = v76[5];
-    v18 = [NSString stringWithFormat:@"    Address unknown. Observer: %d. Activated: %d", addressObserver != 0, activatedAddressObserver];
-    [v23 addObject:v18];
+    advertisingAddressDataNonConnectable = [NSString stringWithFormat:@"    Address unknown. Observer: %d. Activated: %d", addressObserver != 0, activatedAddressObserver];
+    [v23 addObject:advertisingAddressDataNonConnectable];
   }
 
   nearbyActionNoWakeScanner = self->_nearbyActionNoWakeScanner;
@@ -765,18 +765,18 @@ LABEL_21:
     v25 = v76[5];
     if (self->_activatedScanner)
     {
-      v26 = [(CBDiscovery *)nearbyActionNoWakeScanner bleScanRate];
-      if (v26 > 34)
+      bleScanRate = [(CBDiscovery *)nearbyActionNoWakeScanner bleScanRate];
+      if (bleScanRate > 34)
       {
-        if (v26 > 49)
+        if (bleScanRate > 49)
         {
-          if (v26 == 50)
+          if (bleScanRate == 50)
           {
             v27 = "High";
             goto LABEL_62;
           }
 
-          if (v26 == 60)
+          if (bleScanRate == 60)
           {
             v27 = "Max";
             goto LABEL_62;
@@ -785,13 +785,13 @@ LABEL_21:
 
         else
         {
-          if (v26 == 35)
+          if (bleScanRate == 35)
           {
             v27 = "MediumLow";
             goto LABEL_62;
           }
 
-          if (v26 == 40)
+          if (bleScanRate == 40)
           {
             v27 = "Medium";
             goto LABEL_62;
@@ -799,15 +799,15 @@ LABEL_21:
         }
       }
 
-      else if (v26 > 19)
+      else if (bleScanRate > 19)
       {
-        if (v26 == 20)
+        if (bleScanRate == 20)
         {
           v27 = "Background";
           goto LABEL_62;
         }
 
-        if (v26 == 30)
+        if (bleScanRate == 30)
         {
           v27 = "Low";
           goto LABEL_62;
@@ -816,18 +816,18 @@ LABEL_21:
 
       else
       {
-        if (!v26)
+        if (!bleScanRate)
         {
           v27 = "Default";
           goto LABEL_62;
         }
 
-        if (v26 == 10)
+        if (bleScanRate == 10)
         {
           v27 = "Periodic";
 LABEL_62:
-          v30 = [(CBDiscovery *)self->_nearbyActionNoWakeScanner oobKeys];
-          v32 = [v30 count];
+          oobKeys = [(CBDiscovery *)self->_nearbyActionNoWakeScanner oobKeys];
+          v32 = [oobKeys count];
           if (self->_disableScanDupeConfigTimer)
           {
             v33 = "Y";
@@ -859,8 +859,8 @@ LABEL_62:
       v31 = "N";
     }
 
-    v30 = [NSString stringWithFormat:@"    T26 scanner still activating. Disabling scan dupes pending: %s", v31];
-    [v25 addObject:v30];
+    oobKeys = [NSString stringWithFormat:@"    T26 scanner still activating. Disabling scan dupes pending: %s", v31];
+    [v25 addObject:oobKeys];
   }
 
   else
@@ -876,8 +876,8 @@ LABEL_62:
       v29 = "N";
     }
 
-    v30 = [NSString stringWithFormat:@"    T26 scanner nil. Disabling scan dupes pending: %s", v29];
-    [v28 addObject:v30];
+    oobKeys = [NSString stringWithFormat:@"    T26 scanner nil. Disabling scan dupes pending: %s", v29];
+    [v28 addObject:oobKeys];
   }
 
 LABEL_66:
@@ -903,18 +903,18 @@ LABEL_75:
   [v35 addObject:v37];
 
   v38 = v76[5];
-  v39 = [(CBSpatialInteractionSession *)self->_spatialInteractionScanner scanRate];
-  if (v39 > 34)
+  scanRate = [(CBSpatialInteractionSession *)self->_spatialInteractionScanner scanRate];
+  if (scanRate > 34)
   {
-    if (v39 > 49)
+    if (scanRate > 49)
     {
-      if (v39 == 50)
+      if (scanRate == 50)
       {
         v40 = "High";
         goto LABEL_91;
       }
 
-      if (v39 == 60)
+      if (scanRate == 60)
       {
         v40 = "Max";
         goto LABEL_91;
@@ -923,13 +923,13 @@ LABEL_75:
 
     else
     {
-      if (v39 == 35)
+      if (scanRate == 35)
       {
         v40 = "MediumLow";
         goto LABEL_91;
       }
 
-      if (v39 == 40)
+      if (scanRate == 40)
       {
         v40 = "Medium";
         goto LABEL_91;
@@ -941,15 +941,15 @@ LABEL_90:
     goto LABEL_91;
   }
 
-  if (v39 > 19)
+  if (scanRate > 19)
   {
-    if (v39 == 20)
+    if (scanRate == 20)
     {
       v40 = "Background";
       goto LABEL_91;
     }
 
-    if (v39 == 30)
+    if (scanRate == 30)
     {
       v40 = "Low";
       goto LABEL_91;
@@ -958,13 +958,13 @@ LABEL_90:
     goto LABEL_90;
   }
 
-  if (!v39)
+  if (!scanRate)
   {
     v40 = "Default";
     goto LABEL_91;
   }
 
-  if (v39 != 10)
+  if (scanRate != 10)
   {
     goto LABEL_90;
   }
@@ -980,8 +980,8 @@ LABEL_92:
   [v43 addObject:v44];
 
   v45 = v76[5];
-  v46 = [(NSMutableSet *)self->_eligibleDiscoveryPeers allObjects];
-  v47 = sub_100346A18(v46, 10, 2);
+  allObjects = [(NSMutableSet *)self->_eligibleDiscoveryPeers allObjects];
+  v47 = sub_100346A18(allObjects, 10, 2);
   [v45 addObjectsFromArray:v47];
 
   v48 = v76[5];
@@ -1011,8 +1011,8 @@ LABEL_92:
   [v54 addObject:v55];
 
   v56 = v76[5];
-  v57 = [(NSMutableDictionary *)self->_discoveryTimeoutTimers allKeys];
-  v58 = sub_100346A18(v57, 10, 2);
+  allKeys = [(NSMutableDictionary *)self->_discoveryTimeoutTimers allKeys];
+  v58 = sub_100346A18(allKeys, 10, 2);
   [v56 addObjectsFromArray:v58];
 
   v59 = v76[5];
@@ -1031,14 +1031,14 @@ LABEL_92:
   [v62 addObject:v63];
 
   v64 = v76[5];
-  v65 = [(NSMutableDictionary *)self->_advertisingTimeoutTimers allKeys];
-  v66 = sub_100346A18(v65, 10, 2);
+  allKeys2 = [(NSMutableDictionary *)self->_advertisingTimeoutTimers allKeys];
+  v66 = sub_100346A18(allKeys2, 10, 2);
   [v64 addObjectsFromArray:v66];
 
   v67 = v76[5];
   v68 = +[_FindingAdvertiser sharedInstance];
-  v69 = [v68 printableState];
-  [v67 addObjectsFromArray:v69];
+  printableState = [v68 printableState];
+  [v67 addObjectsFromArray:printableState];
 
   v70 = v76[5];
   _Block_object_dispose(&v75, 8);
@@ -1046,21 +1046,21 @@ LABEL_92:
   return v70;
 }
 
-- (void)_resetDiscoveryStateForPeer:(id)a3
+- (void)_resetDiscoveryStateForPeer:(id)peer
 {
-  v6 = a3;
+  peerCopy = peer;
   dispatch_assert_queue_V2(self->_consumerQueue);
-  [(NSMutableDictionary *)self->_discoveredPeers removeObjectForKey:v6];
-  [(NSMutableDictionary *)self->_didDiscoverPeerTimestamps removeObjectForKey:v6];
-  v4 = [(NSMutableDictionary *)self->_discoveryTimeoutTimers objectForKey:v6];
+  [(NSMutableDictionary *)self->_discoveredPeers removeObjectForKey:peerCopy];
+  [(NSMutableDictionary *)self->_didDiscoverPeerTimestamps removeObjectForKey:peerCopy];
+  v4 = [(NSMutableDictionary *)self->_discoveryTimeoutTimers objectForKey:peerCopy];
 
   if (v4)
   {
-    v5 = [(NSMutableDictionary *)self->_discoveryTimeoutTimers objectForKey:v6];
+    v5 = [(NSMutableDictionary *)self->_discoveryTimeoutTimers objectForKey:peerCopy];
     dispatch_source_cancel(v5);
   }
 
-  [(NSMutableDictionary *)self->_discoveryTimeoutTimers removeObjectForKey:v6];
+  [(NSMutableDictionary *)self->_discoveryTimeoutTimers removeObjectForKey:peerCopy];
   if (![(NSMutableDictionary *)self->_discoveredPeers count]&& sub_1000086B0(!self->_isFinder) == 26)
   {
     [(NIServerFindingDiscoveryProvider *)self _nearbyActionNoWakeDisableScanDupesIfNecessary];
@@ -1088,21 +1088,21 @@ LABEL_92:
   [(NSMutableDictionary *)advertisingTimeoutTimers removeAllObjects];
 }
 
-- (void)_processReceivedAdvertisement:(id)a3 fromPeer:(id)a4 overBluetooth:(BOOL)a5 cbDevice:(id)a6
+- (void)_processReceivedAdvertisement:(id)advertisement fromPeer:(id)peer overBluetooth:(BOOL)bluetooth cbDevice:(id)device
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v43 = a6;
+  bluetoothCopy = bluetooth;
+  advertisementCopy = advertisement;
+  peerCopy = peer;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_consumerQueue);
-  v12 = [(NSMutableDictionary *)self->_discoveredPeers objectForKey:v11];
+  v12 = [(NSMutableDictionary *)self->_discoveredPeers objectForKey:peerCopy];
   v41 = v12;
-  v13 = [(NSMutableDictionary *)self->_didDiscoverPeerTimestamps objectForKey:v11];
+  v13 = [(NSMutableDictionary *)self->_didDiscoverPeerTimestamps objectForKey:peerCopy];
   v14 = +[NSDate now];
   v42 = v14;
   if (v12)
   {
-    v15 = [v10 isEqual:v12] ^ 1;
+    v15 = [advertisementCopy isEqual:v12] ^ 1;
     if (v13)
     {
       goto LABEL_3;
@@ -1140,22 +1140,22 @@ LABEL_3:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       v22 = sub_100009210(self->_isFinder);
-      v23 = [v11 descriptionInternal];
-      v24 = v23;
+      descriptionInternal = [peerCopy descriptionInternal];
+      v24 = descriptionInternal;
       v25 = "OOB";
       *buf = 136315907;
       v49 = v22;
       v50 = 2080;
-      if (v7)
+      if (bluetoothCopy)
       {
         v25 = "BT";
       }
 
       v51 = v25;
       v52 = 2113;
-      v53 = v23;
+      v53 = descriptionInternal;
       v54 = 2113;
-      *v55 = v43;
+      *v55 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "#find-disc,[%s] Found device (%s) for token %{private}@, but ignoring. Device: %{private}@", buf, 0x2Au);
     }
 
@@ -1168,35 +1168,35 @@ LABEL_14:
   v26 = qword_1009F9820;
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v40 = v10;
+    v40 = advertisementCopy;
     v27 = sub_100009210(self->_isFinder);
-    v28 = [v11 descriptionInternal];
-    v29 = v28;
+    descriptionInternal2 = [peerCopy descriptionInternal];
+    v29 = descriptionInternal2;
     v30 = "OOB";
     *buf = 136316419;
     v49 = v27;
     v50 = 2080;
-    if (v7)
+    if (bluetoothCopy)
     {
       v30 = "BT";
     }
 
     v51 = v30;
     v52 = 2113;
-    v53 = v28;
+    v53 = descriptionInternal2;
     v54 = 1024;
     *v55 = v15;
     *&v55[4] = 1024;
     *&v55[6] = v17;
     v56 = 2113;
-    v57 = v43;
+    v57 = deviceCopy;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "#find-disc,[%s] Found device (%s) for token %{private}@. IsNew: %d. BeenTooLong: %d. Device: %{private}@", buf, 0x36u);
 
-    v10 = v40;
+    advertisementCopy = v40;
   }
 
   v20 = v41;
-  if (v7 && sub_1000086B0([v10 isFinder]) == 19)
+  if (bluetoothCopy && sub_1000086B0([advertisementCopy isFinder]) == 19)
   {
     v19 = +[NSDate now];
     [v19 timeIntervalSinceDate:self->_spatialInteractionScannerActivationTimestamp];
@@ -1216,17 +1216,17 @@ LABEL_14:
     }
   }
 
-  if ([(NSMutableSet *)self->_eligibleDiscoveryPeers containsObject:v11])
+  if ([(NSMutableSet *)self->_eligibleDiscoveryPeers containsObject:peerCopy])
   {
-    [(NSMutableDictionary *)self->_discoveredPeers setObject:v10 forKey:v11];
-    [(NSMutableDictionary *)self->_didDiscoverPeerTimestamps setObject:v42 forKey:v11];
-    [(NIServerFindingDiscoveryProvider *)self _configureDiscoveryTimeout:v11 forToken:self->_discoveryTimeoutSeconds];
+    [(NSMutableDictionary *)self->_discoveredPeers setObject:advertisementCopy forKey:peerCopy];
+    [(NSMutableDictionary *)self->_didDiscoverPeerTimestamps setObject:v42 forKey:peerCopy];
+    [(NIServerFindingDiscoveryProvider *)self _configureDiscoveryTimeout:peerCopy forToken:self->_discoveryTimeoutSeconds];
     WeakRetained = objc_loadWeakRetained(&self->_consumer);
     v34 = WeakRetained;
     v21 = v13;
-    if (v7)
+    if (bluetoothCopy)
     {
-      [WeakRetained didDiscoverPeer:v11 advertisement:v10 overBluetooth:1];
+      [WeakRetained didDiscoverPeer:peerCopy advertisement:advertisementCopy overBluetooth:1];
     }
 
     else
@@ -1237,8 +1237,8 @@ LABEL_14:
       block[2] = sub_100379914;
       block[3] = &unk_10099BB28;
       v45 = WeakRetained;
-      v46 = v11;
-      v47 = v10;
+      v46 = peerCopy;
+      v47 = advertisementCopy;
       dispatch_async(consumerQueue, block);
     }
 
@@ -1278,11 +1278,11 @@ LABEL_14:
 LABEL_39:
 }
 
-- (void)_cbDeviceFoundHandler:(id)a3
+- (void)_cbDeviceFoundHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_consumerQueue);
-  if (!v4)
+  if (!handlerCopy)
   {
     __assert_rtn("[NIServerFindingDiscoveryProvider _cbDeviceFoundHandler:]", "NIServerFindingDiscovery.mm", 1411, "device");
   }
@@ -1290,13 +1290,13 @@ LABEL_39:
   if ((self->_nearbyActionNoWakeScanner || self->_spatialInteractionScanner) && self->_activatedScanner)
   {
     v5 = sub_1000086B0(!self->_isFinder);
-    v6 = [(NIServerFindingDiscoveryProvider *)self _getDiscoveryTokenFromCBDevice:v4 advertisementType:v5];
+    v6 = [(NIServerFindingDiscoveryProvider *)self _getDiscoveryTokenFromCBDevice:handlerCopy advertisementType:v5];
     if (v6)
     {
-      v7 = [(NIServerFindingDiscoveryProvider *)self _getAdvertisementFromCBDevice:v4 advertisementType:v5];
+      v7 = [(NIServerFindingDiscoveryProvider *)self _getAdvertisementFromCBDevice:handlerCopy advertisementType:v5];
       if (v7)
       {
-        [(NIServerFindingDiscoveryProvider *)self _processReceivedAdvertisement:v7 fromPeer:v6 overBluetooth:1 cbDevice:v4];
+        [(NIServerFindingDiscoveryProvider *)self _processReceivedAdvertisement:v7 fromPeer:v6 overBluetooth:1 cbDevice:handlerCopy];
       }
 
       else
@@ -1305,7 +1305,7 @@ LABEL_39:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           v10 = sub_100009210(self->_isFinder);
-          sub_1004C55BC(v10, v4, &v11, v9);
+          sub_1004C55BC(v10, handlerCopy, &v11, v9);
         }
       }
     }
@@ -1319,7 +1319,7 @@ LABEL_39:
         v11 = 136315395;
         v12 = v8;
         v13 = 2113;
-        v14 = v4;
+        v14 = handlerCopy;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "#find-disc,[%s] Found device (BT) but cannot resolve discovery token. Device: %{private}@", &v11, 0x16u);
       }
     }
@@ -1336,8 +1336,8 @@ LABEL_39:
   dispatch_assert_queue_V2(self->_consumerQueue);
   if (self->_addressObserver && self->_activatedAddressObserver)
   {
-    v3 = [(NIServerFindingDiscoveryProvider *)self _cbAdvertisingAddress];
-    v4 = [NIServerFindingAdvertisement convertCBAddressToRoseAddress:v3];
+    _cbAdvertisingAddress = [(NIServerFindingDiscoveryProvider *)self _cbAdvertisingAddress];
+    v4 = [NIServerFindingAdvertisement convertCBAddressToRoseAddress:_cbAdvertisingAddress];
     v5 = qword_1009F9820;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -1350,7 +1350,7 @@ LABEL_39:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#find-disc,[%s] BT address changed: %{private}@", buf, 0x16u);
     }
 
-    v8 = [(NSMutableDictionary *)self->_advertisingPeers allKeys];
+    allKeys = [(NSMutableDictionary *)self->_advertisingPeers allKeys];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100379E84;
@@ -1358,7 +1358,7 @@ LABEL_39:
     v17[4] = self;
     v18 = v4;
     v19 = WORD2(v4);
-    [v8 enumerateObjectsUsingBlock:v17];
+    [allKeys enumerateObjectsUsingBlock:v17];
     if (self->_enableBluetooth)
     {
       advertisingPeers = self->_advertisingPeers;
@@ -1413,7 +1413,7 @@ LABEL_39:
   v5 = sub_1000086B0(self->_isFinder);
   if (v5 == 19)
   {
-    v6 = [(CBAdvertiser *)self->_addressObserver advertisingAddressDataNonConnectable];
+    advertisingAddressDataNonConnectable = [(CBAdvertiser *)self->_addressObserver advertisingAddressDataNonConnectable];
   }
 
   else
@@ -1426,11 +1426,11 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v6 = [(CBAdvertiser *)self->_addressObserver advertisingAddressDataConnectable];
+    advertisingAddressDataNonConnectable = [(CBAdvertiser *)self->_addressObserver advertisingAddressDataConnectable];
   }
 
-  v8 = v6;
-  if (!v6 || [v6 length] <= 5)
+  v8 = advertisingAddressDataNonConnectable;
+  if (!advertisingAddressDataNonConnectable || [advertisingAddressDataNonConnectable length] <= 5)
   {
     goto LABEL_12;
   }
@@ -1451,19 +1451,19 @@ LABEL_14:
   controller = self->_controller;
   if (controller && self->_activatedController)
   {
-    v4 = [(CBController *)controller bluetoothState];
+    bluetoothState = [(CBController *)controller bluetoothState];
     v5 = qword_1009F9820;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = sub_100009210(self->_isFinder);
-      if (v4 > 0xA)
+      if (bluetoothState > 0xA)
       {
         v7 = "?";
       }
 
       else
       {
-        v7 = off_1009A8568[v4];
+        v7 = off_1009A8568[bluetoothState];
       }
 
       v11 = 136315394;
@@ -1475,15 +1475,15 @@ LABEL_14:
 
     WeakRetained = objc_loadWeakRetained(&self->_consumer);
     v9 = WeakRetained;
-    if (v4 > 3)
+    if (bluetoothState > 3)
     {
-      if (v4 == 5)
+      if (bluetoothState == 5)
       {
         [WeakRetained bluetoothDiscoveryBecameAvailable];
         goto LABEL_20;
       }
 
-      if (v4 != 4)
+      if (bluetoothState != 4)
       {
         goto LABEL_20;
       }
@@ -1491,18 +1491,18 @@ LABEL_14:
 
     else
     {
-      if ((v4 - 2) < 2)
+      if ((bluetoothState - 2) < 2)
       {
         v10 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
         {
-          sub_1004C567C(v4, v10);
+          sub_1004C567C(bluetoothState, v10);
         }
 
         goto LABEL_20;
       }
 
-      if (v4 != 1)
+      if (bluetoothState != 1)
       {
 LABEL_20:
 
@@ -1544,14 +1544,14 @@ LABEL_20:
   }
 }
 
-- (void)_cbErrorHandler:(id)a3
+- (void)_cbErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     v6 = sub_100009210(self->_isFinder);
-    sub_1004C5770(v6, v4, v7, v5);
+    sub_1004C5770(v6, handlerCopy, v7, v5);
   }
 }
 
@@ -1601,20 +1601,20 @@ LABEL_20:
   objc_destroyWeak(&location);
 }
 
-- (id)_configureNearbyActionNoWakeScannerAndRequestScan:(BOOL)a3
+- (id)_configureNearbyActionNoWakeScannerAndRequestScan:(BOOL)scan
 {
-  v3 = a3;
+  scanCopy = scan;
   dispatch_assert_queue_V2(self->_consumerQueue);
   v5 = [(NSMutableSet *)self->_eligibleDiscoveryPeers count];
   nearbyActionNoWakeScanner = self->_nearbyActionNoWakeScanner;
-  if (v5 && v3)
+  if (v5 && scanCopy)
   {
     if (nearbyActionNoWakeScanner)
     {
       if (self->_activatedScanner)
       {
-        v7 = [(NIServerFindingDiscoveryProvider *)self _nearbyActionNoWakeOOBKeysFromEligibleDiscoveryPeers];
-        [(CBDiscovery *)self->_nearbyActionNoWakeScanner setOobKeys:v7];
+        _nearbyActionNoWakeOOBKeysFromEligibleDiscoveryPeers = [(NIServerFindingDiscoveryProvider *)self _nearbyActionNoWakeOOBKeysFromEligibleDiscoveryPeers];
+        [(CBDiscovery *)self->_nearbyActionNoWakeScanner setOobKeys:_nearbyActionNoWakeOOBKeysFromEligibleDiscoveryPeers];
 
         if (([(CBDiscovery *)self->_nearbyActionNoWakeScanner discoveryFlags]& 0x200100000) == 0)
         {
@@ -1667,8 +1667,8 @@ LABEL_20:
       [(CBDiscovery *)self->_nearbyActionNoWakeScanner setBleRSSIThresholdHint:4294967176];
       [(CBDiscovery *)self->_nearbyActionNoWakeScanner setDiscoveryFlags:[(CBDiscovery *)self->_nearbyActionNoWakeScanner discoveryFlags]| 0x80202100000];
       [(CBDiscovery *)self->_nearbyActionNoWakeScanner addDiscoveryType:16];
-      v15 = [(NIServerFindingDiscoveryProvider *)self _nearbyActionNoWakeOOBKeysFromEligibleDiscoveryPeers];
-      [(CBDiscovery *)self->_nearbyActionNoWakeScanner setOobKeys:v15];
+      _nearbyActionNoWakeOOBKeysFromEligibleDiscoveryPeers2 = [(NIServerFindingDiscoveryProvider *)self _nearbyActionNoWakeOOBKeysFromEligibleDiscoveryPeers];
+      [(CBDiscovery *)self->_nearbyActionNoWakeScanner setOobKeys:_nearbyActionNoWakeOOBKeysFromEligibleDiscoveryPeers2];
 
       self->_activatedScanner = 0;
       v16 = qword_1009F9820;
@@ -1711,7 +1711,7 @@ LABEL_20:
       LODWORD(buf) = 67109376;
       HIDWORD(buf) = v11;
       v27 = 1024;
-      v28 = v3;
+      v28 = scanCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "#find-disc,NearbyActionNoWake: not configuring scanner. Eligible discovery peers: %d. Request scan: %d.", &buf, 0xEu);
     }
   }
@@ -1719,9 +1719,9 @@ LABEL_20:
   return 0;
 }
 
-- (id)_configureSpatialInteractionScannerAndRequestScan:(BOOL)a3
+- (id)_configureSpatialInteractionScannerAndRequestScan:(BOOL)scan
 {
-  v3 = a3;
+  scanCopy = scan;
   dispatch_assert_queue_V2(self->_consumerQueue);
   spatialInteractionScanner = self->_spatialInteractionScanner;
   if (spatialInteractionScanner)
@@ -1736,7 +1736,7 @@ LABEL_20:
     self->_activatedScanner = 0;
   }
 
-  if ([(NSMutableSet *)self->_eligibleDiscoveryPeers count]&& v3)
+  if ([(NSMutableSet *)self->_eligibleDiscoveryPeers count]&& scanCopy)
   {
     v8 = objc_opt_new();
     v9 = self->_spatialInteractionScanner;
@@ -1788,7 +1788,7 @@ LABEL_20:
       LODWORD(location) = 67109376;
       HIDWORD(location) = v15;
       v23 = 1024;
-      v24 = v3;
+      v24 = scanCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#find-disc,SpatialInteraction: not configuring scanner. Eligible discovery peers: %d. Request scan: %d.", &location, 0xEu);
     }
   }
@@ -1796,9 +1796,9 @@ LABEL_20:
   return 0;
 }
 
-- (void)_updateLaunchOnDemandScannerAndRequestScan:(BOOL)a3
+- (void)_updateLaunchOnDemandScannerAndRequestScan:(BOOL)scan
 {
-  v3 = a3;
+  scanCopy = scan;
   dispatch_assert_queue_V2(self->_consumerQueue);
   if (self->_launchOnDemand && sub_1000086B0(!self->_isFinder) == 26)
   {
@@ -1808,7 +1808,7 @@ LABEL_20:
     v17 = sub_1003735D8;
     v18 = sub_1003735E8;
     v19 = xpc_array_create(0, 0);
-    if (v3)
+    if (scanCopy)
     {
       eligibleDiscoveryPeers = self->_eligibleDiscoveryPeers;
       v13[0] = _NSConcreteStackBlock;
@@ -1821,7 +1821,7 @@ LABEL_20:
 
     v6 = xpc_array_create(0, 0);
     v7 = xpc_array_create(0, 0);
-    if ([(NSMutableSet *)self->_eligibleDiscoveryPeers count]&& v3)
+    if ([(NSMutableSet *)self->_eligibleDiscoveryPeers count]&& scanCopy)
     {
       xpc_array_set_string(v6, 0xFFFFFFFFFFFFFFFFLL, "ScreenOff");
       xpc_array_set_string(v7, 0xFFFFFFFFFFFFFFFFLL, "PrecisionFinding");
@@ -1861,26 +1861,26 @@ LABEL_20:
   }
 }
 
-- (void)_configureAdvertisementTimeout:(double)a3 forToken:(id)a4
+- (void)_configureAdvertisementTimeout:(double)timeout forToken:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_consumerQueue);
-  if (a3 <= 0.0)
+  if (timeout <= 0.0)
   {
     __assert_rtn("[NIServerFindingDiscoveryProvider _configureAdvertisementTimeout:forToken:]", "NIServerFindingDiscovery.mm", 1876, "timeoutSeconds > 0.0");
   }
 
-  v7 = [(NSMutableDictionary *)self->_advertisingTimeoutTimers objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_advertisingTimeoutTimers objectForKey:tokenCopy];
   v8 = v7;
   if (v7)
   {
     dispatch_source_cancel(v7);
-    [(NSMutableDictionary *)self->_advertisingTimeoutTimers removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_advertisingTimeoutTimers removeObjectForKey:tokenCopy];
   }
 
   v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_consumerQueue);
 
-  v10 = dispatch_time(0, (a3 * 1000000000.0));
+  v10 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
   objc_initWeak(&location, self);
   handler[0] = _NSConcreteStackBlock;
@@ -1888,7 +1888,7 @@ LABEL_20:
   handler[2] = sub_10037BDE8;
   handler[3] = &unk_10098B940;
   objc_copyWeak(&v14, &location);
-  v11 = v6;
+  v11 = tokenCopy;
   v13 = v11;
   dispatch_source_set_event_handler(v9, handler);
   dispatch_resume(v9);
@@ -1898,21 +1898,21 @@ LABEL_20:
   objc_destroyWeak(&location);
 }
 
-- (void)_configureDiscoveryTimeout:(double)a3 forToken:(id)a4
+- (void)_configureDiscoveryTimeout:(double)timeout forToken:(id)token
 {
-  v6 = a4;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_consumerQueue);
-  v7 = [(NSMutableDictionary *)self->_discoveryTimeoutTimers objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_discoveryTimeoutTimers objectForKey:tokenCopy];
   v8 = v7;
   if (v7)
   {
     dispatch_source_cancel(v7);
-    [(NSMutableDictionary *)self->_discoveryTimeoutTimers removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_discoveryTimeoutTimers removeObjectForKey:tokenCopy];
   }
 
   v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_consumerQueue);
 
-  v10 = dispatch_time(0, (a3 * 1000000000.0));
+  v10 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_source_set_timer(v9, v10, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
   objc_initWeak(&location, self);
   handler[0] = _NSConcreteStackBlock;
@@ -1920,7 +1920,7 @@ LABEL_20:
   handler[2] = sub_10037C070;
   handler[3] = &unk_10098B940;
   objc_copyWeak(&v14, &location);
-  v11 = v6;
+  v11 = tokenCopy;
   v13 = v11;
   dispatch_source_set_event_handler(v9, handler);
   dispatch_resume(v9);
@@ -1930,18 +1930,18 @@ LABEL_20:
   objc_destroyWeak(&location);
 }
 
-- (id)_getDiscoveryTokenFromCBDevice:(id)a3 advertisementType:(int)a4
+- (id)_getDiscoveryTokenFromCBDevice:(id)device advertisementType:(int)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (!deviceCopy)
   {
     __assert_rtn("[NIServerFindingDiscoveryProvider _getDiscoveryTokenFromCBDevice:advertisementType:]", "NIServerFindingDiscovery.mm", 1958, "device");
   }
 
-  v8 = [v6 btAddressData];
+  btAddressData = [deviceCopy btAddressData];
 
-  if (!v8)
+  if (!btAddressData)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1951,20 +1951,20 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  if (a4 != 26)
+  if (type != 26)
   {
-    if (a4 != 19)
+    if (type != 19)
     {
       goto LABEL_10;
     }
 
-    v9 = [v7 spatialInteractionTokenData];
+    spatialInteractionTokenData = [v7 spatialInteractionTokenData];
 
-    if (v9)
+    if (spatialInteractionTokenData)
     {
       v10 = [NIDiscoveryToken alloc];
-      v11 = [v7 spatialInteractionTokenData];
-      self = [(NIDiscoveryToken *)v10 initWithBytes:v11];
+      spatialInteractionTokenData2 = [v7 spatialInteractionTokenData];
+      self = [(NIDiscoveryToken *)v10 initWithBytes:spatialInteractionTokenData2];
 
       goto LABEL_10;
     }
@@ -1977,9 +1977,9 @@ LABEL_20:
     goto LABEL_9;
   }
 
-  v13 = [v7 nearbyActionNoWakeAuthTagData];
+  nearbyActionNoWakeAuthTagData = [v7 nearbyActionNoWakeAuthTagData];
 
-  if (!v13)
+  if (!nearbyActionNoWakeAuthTagData)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -2013,41 +2013,41 @@ LABEL_10:
   return self;
 }
 
-- (id)_getAdvertisementFromCBDevice:(id)a3 advertisementType:(int)a4
+- (id)_getAdvertisementFromCBDevice:(id)device advertisementType:(int)type
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  deviceCopy = device;
+  v7 = deviceCopy;
+  if (!deviceCopy)
   {
     __assert_rtn("[NIServerFindingDiscoveryProvider _getAdvertisementFromCBDevice:advertisementType:]", "NIServerFindingDiscovery.mm", 2000, "device");
   }
 
-  v8 = [v6 btAddressData];
-  v9 = [NIServerFindingAdvertisement convertCBAddressToRoseAddress:v8];
+  btAddressData = [deviceCopy btAddressData];
+  v9 = [NIServerFindingAdvertisement convertCBAddressToRoseAddress:btAddressData];
   v24 = v9;
   v25 = WORD2(v9);
 
-  if (a4 == 19)
+  if (type == 19)
   {
-    v14 = [v7 spatialInteractionUWBConfigData];
-    v15 = [v14 length];
+    spatialInteractionUWBConfigData = [v7 spatialInteractionUWBConfigData];
+    v15 = [spatialInteractionUWBConfigData length];
 
     if (v15 > 4)
     {
       v16 = [NIServerSpatialInteractionPayload alloc];
-      v17 = [v7 spatialInteractionUWBConfigData];
-      v12 = [(NIServerSpatialInteractionPayload *)v16 initWithUWBConfigData:v17];
+      spatialInteractionUWBConfigData2 = [v7 spatialInteractionUWBConfigData];
+      nearbyActionNoWakeConfigData = [(NIServerSpatialInteractionPayload *)v16 initWithUWBConfigData:spatialInteractionUWBConfigData2];
 
-      if ([(NIServerSpatialInteractionPayload *)v12 findingEnabled])
+      if ([(NIServerSpatialInteractionPayload *)nearbyActionNoWakeConfigData findingEnabled])
       {
-        v20[0] = [(NIServerSpatialInteractionPayload *)v12 findingConfig];
-        v20[1] = [(NIServerSpatialInteractionPayload *)v12 findingConfig2];
+        v20[0] = [(NIServerSpatialInteractionPayload *)nearbyActionNoWakeConfigData findingConfig];
+        v20[1] = [(NIServerSpatialInteractionPayload *)nearbyActionNoWakeConfigData findingConfig2];
         v22 = 0;
         v23 = 0;
         __p = 0;
         sub_1000069DC(&__p, v20, &__p, 2);
         v18 = [NSData dataWithBytes:__p length:v22 - __p];
-        v13 = [NIServerFindingAdvertisement advertisementForFinder:!self->_isFinder address:&v24 statusFlags:[(NIServerSpatialInteractionPayload *)v12 findingStatus] payload:v18 extraOOBData:0 uniqueIdentifier:0];
+        v13 = [NIServerFindingAdvertisement advertisementForFinder:!self->_isFinder address:&v24 statusFlags:[(NIServerSpatialInteractionPayload *)nearbyActionNoWakeConfigData findingStatus] payload:v18 extraOOBData:0 uniqueIdentifier:0];
 
         if (__p)
         {
@@ -2070,12 +2070,12 @@ LABEL_10:
     }
   }
 
-  else if (a4 == 26)
+  else if (type == 26)
   {
     isFinder = self->_isFinder;
-    v11 = [v7 nearbyActionNWPrecisionFindingStatus];
-    v12 = [v7 nearbyActionNoWakeConfigData];
-    v13 = [NIServerFindingAdvertisement advertisementForFinder:!isFinder address:&v24 statusFlags:v11 payload:v12 extraOOBData:0 uniqueIdentifier:0];
+    nearbyActionNWPrecisionFindingStatus = [v7 nearbyActionNWPrecisionFindingStatus];
+    nearbyActionNoWakeConfigData = [v7 nearbyActionNoWakeConfigData];
+    v13 = [NIServerFindingAdvertisement advertisementForFinder:!isFinder address:&v24 statusFlags:nearbyActionNWPrecisionFindingStatus payload:nearbyActionNoWakeConfigData extraOOBData:0 uniqueIdentifier:0];
 LABEL_5:
 
     goto LABEL_16;

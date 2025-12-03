@@ -1,5 +1,5 @@
 @interface Copy
-- (BOOL)canPerformWithActivityItems:(id)a3;
+- (BOOL)canPerformWithActivityItems:(id)items;
 - (NSString)activityTitle;
 - (_TtC16MarkdownDocument4Copy)init;
 - (void)performActivity;
@@ -9,7 +9,7 @@
 
 - (NSString)activityTitle
 {
-  v2 = self;
+  selfCopy = self;
   sub_24FEC90AC();
   v4 = v3;
 
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (BOOL)canPerformWithActivityItems:(id)a3
+- (BOOL)canPerformWithActivityItems:(id)items
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_24FECC65C();
 
   return v4 & 1;
@@ -37,9 +37,9 @@
 - (void)performActivity
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC16MarkdownDocument4Copy_fullContent);
-  v3 = self;
+  selfCopy = self;
   sub_24FECC7C0(v2);
-  [(UIActivity *)v3 activityDidFinish:1];
+  [(UIActivity *)selfCopy activityDidFinish:1];
 }
 
 - (_TtC16MarkdownDocument4Copy)init

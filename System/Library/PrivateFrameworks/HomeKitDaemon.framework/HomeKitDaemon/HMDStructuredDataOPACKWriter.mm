@@ -1,10 +1,10 @@
 @interface HMDStructuredDataOPACKWriter
-- (void)emitRootValue:(id)a3;
+- (void)emitRootValue:(id)value;
 @end
 
 @implementation HMDStructuredDataOPACKWriter
 
-- (void)emitRootValue:(id)a3
+- (void)emitRootValue:(id)value
 {
   output = self->_output;
   v5 = OPACKEncodeObject();

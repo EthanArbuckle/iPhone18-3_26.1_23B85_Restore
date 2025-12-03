@@ -10,33 +10,33 @@
 - (BOOL)wakeUpResults;
 - (BOOL)watchSleepFeaturesEnabled;
 - (HKSPMutableSleepSettings)init;
-- (HKSPMutableSleepSettings)initWithCoder:(id)a3;
+- (HKSPMutableSleepSettings)initWithCoder:(id)coder;
 - (NSDate)lastModifiedDate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromObject:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromObject:(id)object;
 - (id)mutableCopy;
 - (unint64_t)sleepModeOptions;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)freeze;
-- (void)setLastModifiedDate:(id)a3;
-- (void)setSleepModeOptions:(unint64_t)a3;
+- (void)setLastModifiedDate:(id)date;
+- (void)setSleepModeOptions:(unint64_t)options;
 @end
 
 @implementation HKSPMutableSleepSettings
 
-- (void)setLastModifiedDate:(id)a3
+- (void)setLastModifiedDate:(id)date
 {
-  v14 = a3;
-  v4 = [objc_opt_class() allProperties];
-  v5 = HKSPPropertiesByIdentifier(v4);
+  dateCopy = date;
+  allProperties = [objc_opt_class() allProperties];
+  v5 = HKSPPropertiesByIdentifier(allProperties);
   v6 = [v5 objectForKeyedSubscript:@"HKSPSettingsLastModifiedDate"];
 
   v7 = [(HKSPObject *)self->_originalObject hksp_valueForProperty:v6];
   if (!NAEqualObjects() || [(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPSettingsLastModifiedDate"])
   {
-    v8 = [v6 isRelationshipProperty];
+    isRelationshipProperty = [v6 isRelationshipProperty];
     v9 = off_279C73598;
-    if (!v8)
+    if (!isRelationshipProperty)
     {
       v9 = off_279C734F8;
     }
@@ -44,15 +44,15 @@
     v10 = *v9;
     v11 = objc_opt_class();
     changeSet = self->_changeSet;
-    v13 = [[v11 alloc] initWithProperty:v6 changedValue:v14 originalValue:v7];
+    v13 = [[v11 alloc] initWithProperty:v6 changedValue:dateCopy originalValue:v7];
     [(HKSPChangeSet *)changeSet addChange:v13];
   }
 }
 
 - (NSDate)lastModifiedDate
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPSettingsLastModifiedDate"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPSettingsLastModifiedDate"])
@@ -71,8 +71,8 @@
 
 - (BOOL)watchSleepFeaturesEnabled
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPWatchSleepFeaturesEnabled"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPWatchSleepFeaturesEnabled"])
@@ -85,15 +85,15 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)scheduledSleepMode
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPScheduledSleepMode"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPScheduledSleepMode"])
@@ -106,26 +106,26 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)setSleepModeOptions:(unint64_t)a3
+- (void)setSleepModeOptions:(unint64_t)options
 {
-  v5 = [objc_opt_class() allProperties];
-  v6 = HKSPPropertiesByIdentifier(v5);
+  allProperties = [objc_opt_class() allProperties];
+  v6 = HKSPPropertiesByIdentifier(allProperties);
   v14 = [v6 objectForKeyedSubscript:@"HKSPSleepModeOptions"];
 
   v7 = [(HKSPObject *)self->_originalObject hksp_valueForProperty:v14];
-  v8 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  if (v8 != a3 || [(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPSleepModeOptions"])
+  if (unsignedIntegerValue != options || [(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPSleepModeOptions"])
   {
     changeSet = self->_changeSet;
     v10 = [HKSPChange alloc];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
     v13 = [(HKSPChange *)v10 initWithProperty:v14 changedValue:v11 originalValue:v12];
     [(HKSPChangeSet *)changeSet addChange:v13];
   }
@@ -133,8 +133,8 @@
 
 - (unint64_t)sleepModeOptions
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPSleepModeOptions"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPSleepModeOptions"])
@@ -147,15 +147,15 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 - (BOOL)sleepTracking
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPSleepTracking"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPSleepTracking"])
@@ -168,15 +168,15 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)wakeUpResults
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPWakeUpResults"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPWakeUpResults"])
@@ -189,15 +189,15 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)timeInBedTracking
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPTimeInBedTracking"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPTimeInBedTracking"])
@@ -210,15 +210,15 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)bedtimeReminders
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPBedtimeReminders"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPBedtimeReminders"])
@@ -231,15 +231,15 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)chargingReminders
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPChargingReminders"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPChargingReminders"])
@@ -252,15 +252,15 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)shareAcrossDevices
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPShareAcrossDevices"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPShareAcrossDevices"])
@@ -273,15 +273,15 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)springBoardGreetingDisabled
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPSpringBoardGreetingDisabled"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPSpringBoardGreetingDisabled"])
@@ -294,15 +294,15 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (BOOL)springBoardSuggestedPageCreated
 {
-  v3 = [objc_opt_class() allProperties];
-  v4 = HKSPPropertiesByIdentifier(v3);
+  allProperties = [objc_opt_class() allProperties];
+  v4 = HKSPPropertiesByIdentifier(allProperties);
   v5 = [v4 objectForKeyedSubscript:@"HKSPSpringBoardSuggestedPageCreated"];
 
   if ([(HKSPChangeSet *)self->_changeSet hasChangeForPropertyIdentifier:@"HKSPSpringBoardSuggestedPageCreated"])
@@ -315,9 +315,9 @@
     [(HKSPObject *)self->_originalObject hksp_valueForProperty:v5];
   }
   v6 = ;
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
 - (HKSPMutableSleepSettings)init
@@ -341,14 +341,14 @@
   return v2;
 }
 
-- (id)initFromObject:(id)a3
+- (id)initFromObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HKSPSleepSettings.m" lineNumber:244 description:@"object must be a subclass"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HKSPSleepSettings.m" lineNumber:244 description:@"object must be a subclass"];
   }
 
   v14.receiver = self;
@@ -356,7 +356,7 @@
   v6 = [(HKSPSleepSettings *)&v14 init];
   if (v6)
   {
-    v7 = [v5 copyWithZone:0];
+    v7 = [objectCopy copyWithZone:0];
     originalObject = v6->_originalObject;
     v6->_originalObject = v7;
 
@@ -370,19 +370,19 @@
   return v6;
 }
 
-- (HKSPMutableSleepSettings)initWithCoder:(id)a3
+- (HKSPMutableSleepSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = HKSPMutableSleepSettings;
   v5 = [(HKSPSleepSettings *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKSPOriginalObject"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKSPOriginalObject"];
     originalObject = v5->_originalObject;
     v5->_originalObject = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HKSPChangeSet"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HKSPChangeSet"];
     changeSet = v5->_changeSet;
     v5->_changeSet = v8;
 
@@ -392,15 +392,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originalObject = self->_originalObject;
-  v5 = a3;
-  [v5 encodeObject:originalObject forKey:@"HKSPOriginalObject"];
-  [v5 encodeObject:self->_changeSet forKey:@"HKSPChangeSet"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originalObject forKey:@"HKSPOriginalObject"];
+  [coderCopy encodeObject:self->_changeSet forKey:@"HKSPChangeSet"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HKSPSleepSettings alloc];
 
@@ -410,15 +410,15 @@
 - (id)mutableCopy
 {
   v3 = objc_alloc_init(objc_opt_class());
-  v4 = [(HKSPMutableSleepSettings *)self originalObject];
-  v5 = [v4 copyWithZone:0];
+  originalObject = [(HKSPMutableSleepSettings *)self originalObject];
+  v5 = [originalObject copyWithZone:0];
   v6 = v3[7];
   v3[7] = v5;
 
-  v7 = [(HKSPMutableSleepSettings *)self changeSet];
-  v8 = [v7 deepCopy];
+  changeSet = [(HKSPMutableSleepSettings *)self changeSet];
+  deepCopy = [changeSet deepCopy];
   v9 = v3[8];
-  v3[8] = v8;
+  v3[8] = deepCopy;
 
   return v3;
 }

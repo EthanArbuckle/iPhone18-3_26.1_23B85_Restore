@@ -1,21 +1,21 @@
 @interface TUIFeedRendererImageResourceObserver
-- (TUIFeedRendererImageResourceObserver)initWithRenderModel:(id)a3 timeout:(double)a4;
-- (void)_leaveGroupIfImageResourceLoaded:(id)a3;
-- (void)waitForImageResources:(id)a3;
+- (TUIFeedRendererImageResourceObserver)initWithRenderModel:(id)model timeout:(double)timeout;
+- (void)_leaveGroupIfImageResourceLoaded:(id)loaded;
+- (void)waitForImageResources:(id)resources;
 @end
 
 @implementation TUIFeedRendererImageResourceObserver
 
-- (TUIFeedRendererImageResourceObserver)initWithRenderModel:(id)a3 timeout:(double)a4
+- (TUIFeedRendererImageResourceObserver)initWithRenderModel:(id)model timeout:(double)timeout
 {
-  v7 = a3;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = TUIFeedRendererImageResourceObserver;
   v8 = [(TUIFeedRendererImageResourceObserver *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_renderModel, a3);
+    objc_storeStrong(&v8->_renderModel, model);
     v10 = dispatch_group_create();
     group = v9->_group;
     v9->_group = v10;
@@ -28,24 +28,24 @@
     completionQueue = v9->_completionQueue;
     v9->_completionQueue = v14;
 
-    v9->_timeout = a4;
+    v9->_timeout = timeout;
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 
   return v9;
 }
 
-- (void)waitForImageResources:(id)a3
+- (void)waitForImageResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v5 = *&CGAffineTransformIdentity.c;
   v28 = *&CGAffineTransformIdentity.a;
   v29 = v5;
   v30 = *&CGAffineTransformIdentity.tx;
   v6 = +[TUIResourceCollector createImageResourceCollector];
   [(TUIRenderModelLayer *)self->_renderModel appendResourcesToCollector:v6 transform:&v28];
-  v7 = [v6 imageResources];
-  v8 = [v7 copy];
+  imageResources = [v6 imageResources];
+  v8 = [imageResources copy];
   imageResources = self->_imageResources;
   self->_imageResources = v8;
 
@@ -71,8 +71,8 @@
         [v14 addInterest];
         [v14 addNonVolatileInterest];
         v15 = [v14 imageContentWithOptions:1];
-        v16 = [v15 image];
-        v17 = v16 == 0;
+        image = [v15 image];
+        v17 = image == 0;
 
         if (v17)
         {
@@ -103,7 +103,7 @@
   *&v29 = 0x3032000000;
   *(&v29 + 1) = sub_8FAB8;
   *&v30 = sub_8FAE4;
-  *(&v30 + 1) = objc_retainBlock(v4);
+  *(&v30 + 1) = objc_retainBlock(resourcesCopy);
   v18 = dispatch_time(0, (self->_timeout * 1000000000.0));
   completionQueue = self->_completionQueue;
   block[0] = _NSConcreteStackBlock;
@@ -123,18 +123,18 @@
   _Block_object_dispose(&v28, 8);
 }
 
-- (void)_leaveGroupIfImageResourceLoaded:(id)a3
+- (void)_leaveGroupIfImageResourceLoaded:(id)loaded
 {
-  v4 = a3;
-  v5 = [v4 imageContentWithOptions:1];
-  v6 = [v5 image];
+  loadedCopy = loaded;
+  v5 = [loadedCopy imageContentWithOptions:1];
+  image = [v5 image];
 
-  if (v6)
+  if (image)
   {
     os_unfair_lock_lock(&self->_lock);
-    if ([(NSHashTable *)self->_enteredImageResources containsObject:v4])
+    if ([(NSHashTable *)self->_enteredImageResources containsObject:loadedCopy])
     {
-      [(NSHashTable *)self->_enteredImageResources removeObject:v4];
+      [(NSHashTable *)self->_enteredImageResources removeObject:loadedCopy];
       dispatch_group_leave(self->_group);
     }
 
@@ -146,7 +146,7 @@
     v7 = TUIDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_19A23C(v4, v7);
+      sub_19A23C(loadedCopy, v7);
     }
   }
 }

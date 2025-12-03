@@ -1,25 +1,25 @@
 @interface AmberDylibNSURLSession
-- (AmberDylibNSURLSession)initWithAmberSession:(void *)a3;
+- (AmberDylibNSURLSession)initWithAmberSession:(void *)session;
 @end
 
 @implementation AmberDylibNSURLSession
 
-- (AmberDylibNSURLSession)initWithAmberSession:(void *)a3
+- (AmberDylibNSURLSession)initWithAmberSession:(void *)session
 {
   v10.receiver = self;
   v10.super_class = AmberDylibNSURLSession;
   v4 = [(AmberDylibNSURLSession *)&v10 init];
   if (v4)
   {
-    v5 = [MEMORY[0x29EDBA138] ephemeralSessionConfiguration];
-    [v5 setHTTPMaximumConnectionsPerHost:16];
-    [v5 setTimeoutIntervalForRequest:120.0];
-    [v5 setTimeoutIntervalForResource:1200.0];
-    v6 = [MEMORY[0x29EDBA130] sessionWithConfiguration:v5];
+    ephemeralSessionConfiguration = [MEMORY[0x29EDBA138] ephemeralSessionConfiguration];
+    [ephemeralSessionConfiguration setHTTPMaximumConnectionsPerHost:16];
+    [ephemeralSessionConfiguration setTimeoutIntervalForRequest:120.0];
+    [ephemeralSessionConfiguration setTimeoutIntervalForResource:1200.0];
+    v6 = [MEMORY[0x29EDBA130] sessionWithConfiguration:ephemeralSessionConfiguration];
     session = v4->_session;
     v4->_session = v6;
 
-    v4->_amberSession = a3;
+    v4->_amberSession = session;
     v8 = v4;
   }
 

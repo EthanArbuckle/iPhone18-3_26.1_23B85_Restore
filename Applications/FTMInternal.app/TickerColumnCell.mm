@@ -1,17 +1,17 @@
 @interface TickerColumnCell
-- (_TtC11FTMInternal16TickerColumnCell)initWithCoder:(id)a3;
-- (_TtC11FTMInternal16TickerColumnCell)initWithFrame:(CGRect)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (_TtC11FTMInternal16TickerColumnCell)initWithCoder:(id)coder;
+- (_TtC11FTMInternal16TickerColumnCell)initWithFrame:(CGRect)frame;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 @end
 
 @implementation TickerColumnCell
 
-- (_TtC11FTMInternal16TickerColumnCell)initWithFrame:(CGRect)a3
+- (_TtC11FTMInternal16TickerColumnCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC11FTMInternal16TickerColumnCell_tableView;
   *(&self->super.super.super.super.super.isa + v8) = [objc_allocWithZone(UITableView) init];
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11FTMInternal16TickerColumnCell_characters) = _swiftEmptyArrayStorage;
@@ -19,13 +19,13 @@
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC11FTMInternal16TickerColumnCell_isScrolling) = 0;
   v11.receiver = self;
   v11.super_class = type metadata accessor for TickerColumnCell();
-  v9 = [(TickerColumnCell *)&v11 initWithFrame:x, y, width, height];
+  height = [(TickerColumnCell *)&v11 initWithFrame:x, y, width, height];
   sub_1001B63B8();
 
-  return v9;
+  return height;
 }
 
-- (_TtC11FTMInternal16TickerColumnCell)initWithCoder:(id)a3
+- (_TtC11FTMInternal16TickerColumnCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11FTMInternal16TickerColumnCell_tableView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(UITableView) init];
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
@@ -45,9 +45,9 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
-  v13 = sub_1001B6854(v11);
+  viewCopy = view;
+  selfCopy = self;
+  v13 = sub_1001B6854(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 

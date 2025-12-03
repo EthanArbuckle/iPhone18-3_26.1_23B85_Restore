@@ -7,9 +7,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(MTTVSectionHeaderViewAccessibility *)self safeValueForKey:@"textLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

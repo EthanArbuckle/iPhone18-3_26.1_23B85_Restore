@@ -1,26 +1,26 @@
 @interface TLSystemTone
 - (TLSystemSound)actualSound;
 - (TLSystemSound)previewSound;
-- (TLSystemTone)initWithSoundFileURL:(id)a3 actualSoundID:(unsigned int)a4 previewSoundID:(unsigned int)a5 requiresLongFormPlayback:(BOOL)a6;
+- (TLSystemTone)initWithSoundFileURL:(id)l actualSoundID:(unsigned int)d previewSoundID:(unsigned int)iD requiresLongFormPlayback:(BOOL)playback;
 @end
 
 @implementation TLSystemTone
 
-- (TLSystemTone)initWithSoundFileURL:(id)a3 actualSoundID:(unsigned int)a4 previewSoundID:(unsigned int)a5 requiresLongFormPlayback:(BOOL)a6
+- (TLSystemTone)initWithSoundFileURL:(id)l actualSoundID:(unsigned int)d previewSoundID:(unsigned int)iD requiresLongFormPlayback:(BOOL)playback
 {
-  v10 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = TLSystemTone;
   v11 = [(TLSystemTone *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [lCopy copy];
     soundFileURL = v11->_soundFileURL;
     v11->_soundFileURL = v12;
 
-    v11->_actualSoundID = a4;
-    v11->_previewSoundID = a5;
-    v11->_requiresLongFormPlayback = a6;
+    v11->_actualSoundID = d;
+    v11->_previewSoundID = iD;
+    v11->_requiresLongFormPlayback = playback;
   }
 
   return v11;

@@ -1,22 +1,22 @@
 @interface TransparencyAuditorReportServer
-+ (void)makeReports:(id)a3 additionalData:(id)a4 auditorURI:(id)a5 logClient:(id)a6 completionBlock:(id)a7;
++ (void)makeReports:(id)reports additionalData:(id)data auditorURI:(id)i logClient:(id)client completionBlock:(id)block;
 @end
 
 @implementation TransparencyAuditorReportServer
 
-+ (void)makeReports:(id)a3 additionalData:(id)a4 auditorURI:(id)a5 logClient:(id)a6 completionBlock:(id)a7
++ (void)makeReports:(id)reports additionalData:(id)data auditorURI:(id)i logClient:(id)client completionBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v49 = a5;
-  v51 = a6;
-  v50 = a7;
+  reportsCopy = reports;
+  dataCopy = data;
+  iCopy = i;
+  clientCopy = client;
+  blockCopy = block;
   v57 = +[NSMutableDictionary dictionary];
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v11;
+  obj = reportsCopy;
   v13 = [obj countByEnumeratingWithState:&v69 objects:v78 count:16];
   if (v13)
   {
@@ -35,9 +35,9 @@
 
         v17 = [NSMutableDictionary dictionaryWithDictionary:*(*(&v69 + 1) + 8 * v16)];
         v18 = v17;
-        if (v12)
+        if (dataCopy)
         {
-          [v17 setObject:v12 forKeyedSubscript:@"userInput"];
+          [v17 setObject:dataCopy forKeyedSubscript:@"userInput"];
         }
 
         v19 = [v18 objectForKeyedSubscript:v15];
@@ -110,13 +110,13 @@
     while (v13);
   }
 
-  v32 = [v57 allKeys];
-  v33 = [v32 count] == 0;
+  allKeys = [v57 allKeys];
+  v33 = [allKeys count] == 0;
 
   if (v33)
   {
     v47 = [TransparencyError errorWithDomain:kTransparencyErrorInterface code:-178 description:@"no auditor reports with valid applications"];
-    v50[2](v50, v47);
+    blockCopy[2](blockCopy, v47);
   }
 
   else
@@ -152,7 +152,7 @@
           if (![NSJSONSerialization isValidJSONObject:v38])
           {
             v48 = [TransparencyError errorWithDomain:kTransparencyErrorInterface code:-300 description:@"auditor report is not a valid JSON object"];
-            v50[2](v50, v48);
+            blockCopy[2](blockCopy, v48);
 
             goto LABEL_39;
           }
@@ -176,12 +176,12 @@
             v39 = v43;
             v38 = v55;
             v62 = group;
-            [v51 postReport:v40 uuid:v39 application:v37 completionHandler:v61];
+            [clientCopy postReport:v40 uuid:v39 application:v37 completionHandler:v61];
           }
 
           else
           {
-            v50[2](v50, v41);
+            blockCopy[2](blockCopy, v41);
           }
 
           if (!v40)
@@ -206,7 +206,7 @@
     block[1] = 3221225472;
     block[2] = sub_1001F1994;
     block[3] = &unk_10031BE08;
-    v59 = v50;
+    v59 = blockCopy;
     v60 = buf;
     dispatch_group_notify(group, v46, block);
 

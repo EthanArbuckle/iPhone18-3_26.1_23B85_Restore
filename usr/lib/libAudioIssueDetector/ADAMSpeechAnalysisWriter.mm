@@ -1,20 +1,20 @@
 @interface ADAMSpeechAnalysisWriter
-+ (id)censoredResultFromInputResult:(id)a3;
++ (id)censoredResultFromInputResult:(id)result;
 - (BOOL)isMonitoring;
 - (BOOL)verifyStateInit;
 - (id).cxx_construct;
-- (int)write:(id)a3 withMetadata:(const Metadata *)a4;
-- (unint64_t)_fetchTimestampforTask:(id)a3;
+- (int)write:(id)write withMetadata:(const Metadata *)metadata;
+- (unint64_t)_fetchTimestampforTask:(id)task;
 - (void)_initSpeechAnalyzer;
-- (void)_recordTimestamp:(unint64_t)a3 forTask:(id)a4;
+- (void)_recordTimestamp:(unint64_t)timestamp forTask:(id)task;
 - (void)createAndLogOSTransaction;
 - (void)destroyAndLogOSTransaction;
 - (void)logResultCountAndFirstTimeStamp;
-- (void)speechRecognitionDidDetectSpeech:(id)a3;
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4;
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4;
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4;
-- (void)speechRecognitionTaskWasCancelled:(id)a3;
+- (void)speechRecognitionDidDetectSpeech:(id)speech;
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition;
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully;
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription;
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled;
 @end
 
 @implementation ADAMSpeechAnalysisWriter
@@ -49,7 +49,7 @@
       v15 = 2080;
       v16 = "ADAMSpeechAnalysisWriter]";
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 1024;
       LODWORD(v20) = resultCounterPerMinute;
       _os_log_impl(&dword_296C34000, v3, OS_LOG_TYPE_DEFAULT, "[%s:%-5d %.*s:%p] # speech results sent previous minute : %d", &v9, 0x32u);
@@ -79,7 +79,7 @@
       v15 = 2080;
       v16 = "ADAMSpeechAnalysisWriter]";
       v17 = 2048;
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2048;
       v20 = val;
       v21 = 2048;
@@ -98,18 +98,18 @@
 
 - (BOOL)verifyStateInit
 {
-  v3 = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isValidSRSensorWriterPresent];
-  if (v3)
+  isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isValidSRSensorWriterPresent];
+  if (isValidSRSensorWriterPresent)
   {
-    LOBYTE(v3) = self->_SpeechRecognizer == 0;
+    LOBYTE(isValidSRSensorWriterPresent) = self->_SpeechRecognizer == 0;
   }
 
-  return v3;
+  return isValidSRSensorWriterPresent;
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishSuccessfully:(BOOL)a4
+- (void)speechRecognitionTask:(id)task didFinishSuccessfully:(BOOL)successfully
 {
-  v6 = a3;
+  taskCopy = task;
   dispatch_semaphore_signal(self->_throttlingSemaphore);
   queue = self->_queue;
   block[0] = MEMORY[0x29EDCA5F8];
@@ -117,9 +117,9 @@
   block[2] = __72__ADAMSpeechAnalysisWriter_speechRecognitionTask_didFinishSuccessfully___block_invoke;
   block[3] = &unk_29EE52668;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = taskCopy;
+  successfullyCopy = successfully;
+  v8 = taskCopy;
   dispatch_async(queue, block);
 }
 
@@ -192,10 +192,10 @@ LABEL_10:
   v10 = *MEMORY[0x29EDCA608];
 }
 
-- (void)speechRecognitionTaskWasCancelled:(id)a3
+- (void)speechRecognitionTaskWasCancelled:(id)cancelled
 {
   v14 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  cancelledCopy = cancelled;
   if (ADAM::ADAMLogScope(void)::once != -1)
   {
     dispatch_once(&ADAM::ADAMLogScope(void)::once, &__block_literal_global_107);
@@ -223,21 +223,21 @@ LABEL_10:
     v10 = 1024;
     v11 = 374;
     v12 = 2112;
-    v13 = v4;
+    v13 = cancelledCopy;
     _os_log_impl(&dword_296C34000, v5, OS_LOG_TYPE_DEFAULT, "%25s:%-5d recognition task %@ cancelled", &v8, 0x1Cu);
   }
 
 LABEL_10:
-  [(ADAMSpeechAnalysisWriter *)self speechRecognitionTask:v4 didFinishSuccessfully:0];
+  [(ADAMSpeechAnalysisWriter *)self speechRecognitionTask:cancelledCopy didFinishSuccessfully:0];
 
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)speechRecognitionTask:(id)a3 didFinishRecognition:(id)a4
+- (void)speechRecognitionTask:(id)task didFinishRecognition:(id)recognition
 {
   v47 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  recognitionCopy = recognition;
   if (ADAM::isXCTest(void)::once != -1)
   {
     dispatch_once(&ADAM::isXCTest(void)::once, &__block_literal_global_61);
@@ -245,10 +245,10 @@ LABEL_10:
 
   if ((ADAM::isXCTest(void)::isXCTest & 1) == 0)
   {
-    if (v7 && ([v7 speechRecognitionMetadata], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+    if (recognitionCopy && ([recognitionCopy speechRecognitionMetadata], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
     {
-      v9 = [ADAMSpeechAnalysisWriter censoredResultFromInputResult:v7];
-      v10 = [(ADAMSpeechAnalysisWriter *)self _fetchTimestampforTask:v6];
+      v9 = [ADAMSpeechAnalysisWriter censoredResultFromInputResult:recognitionCopy];
+      v10 = [(ADAMSpeechAnalysisWriter *)self _fetchTimestampforTask:taskCopy];
       self->_lastTimestamp = v10;
       if (!self->_firstContinuousTimestampPerMinute.__engaged_)
       {
@@ -285,7 +285,7 @@ LABEL_10:
           *buf = 136316930;
           v34 = "ADAMSpeechAnalysisWriter]";
           v35 = 2048;
-          v36 = self;
+          selfCopy2 = self;
           v37 = 2112;
           v38 = v16;
           v39 = 2048;
@@ -306,8 +306,8 @@ LABEL_10:
         v17 = ADAM::get_log(void)::adam_os_log;
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v21 = [v7 bestTranscription];
-          v22 = [v21 formattedString];
+          bestTranscription = [recognitionCopy bestTranscription];
+          formattedString = [bestTranscription formattedString];
           v23 = self->_lastTimestamp;
           v24 = SRAbsoluteTimeFromContinuousTime(v23);
           *buf = 136317443;
@@ -319,11 +319,11 @@ LABEL_10:
           v33 = 2080;
           v34 = "ADAMSpeechAnalysisWriter]";
           v35 = 2048;
-          v36 = self;
+          selfCopy2 = self;
           v37 = 2112;
-          v38 = v6;
+          v38 = taskCopy;
           v39 = 2117;
-          v40 = v22;
+          v40 = formattedString;
           v41 = 2112;
           v42 = *&v14;
           v43 = 2048;
@@ -373,11 +373,11 @@ LABEL_25:
   v25 = *MEMORY[0x29EDCA608];
 }
 
-- (void)speechRecognitionTask:(id)a3 didHypothesizeTranscription:(id)a4
+- (void)speechRecognitionTask:(id)task didHypothesizeTranscription:(id)transcription
 {
   v22 = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = a4;
+  taskCopy = task;
+  transcriptionCopy = transcription;
   if (ADAM::ADAMLogScope(void)::once != -1)
   {
     dispatch_once(&ADAM::ADAMLogScope(void)::once, &__block_literal_global_107);
@@ -401,17 +401,17 @@ LABEL_25:
   v9 = v7;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 formattedString];
+    formattedString = [transcriptionCopy formattedString];
     v12 = 136316162;
     v13 = "ADAMSpeechAnalysisWriter.mm";
     v14 = 1024;
     v15 = 290;
     v16 = 2112;
-    v17 = v5;
+    v17 = taskCopy;
     v18 = 2112;
-    v19 = v10;
+    v19 = formattedString;
     v20 = 2048;
-    v21 = [v5 state];
+    state = [taskCopy state];
     _os_log_impl(&dword_296C34000, v9, OS_LOG_TYPE_DEFAULT, "%25s:%-5d didHypothesizeTranscription for task %@, Transcription: %@ Task state: %ld", &v12, 0x30u);
   }
 
@@ -419,10 +419,10 @@ LABEL_10:
   v11 = *MEMORY[0x29EDCA608];
 }
 
-- (void)speechRecognitionDidDetectSpeech:(id)a3
+- (void)speechRecognitionDidDetectSpeech:(id)speech
 {
   v13 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  speechCopy = speech;
   if (ADAM::ADAMLogScope(void)::once != -1)
   {
     dispatch_once(&ADAM::ADAMLogScope(void)::once, &__block_literal_global_107);
@@ -450,7 +450,7 @@ LABEL_10:
     v9 = 1024;
     v10 = 281;
     v11 = 2112;
-    v12 = v3;
+    v12 = speechCopy;
     _os_log_impl(&dword_296C34000, v4, OS_LOG_TYPE_DEFAULT, "%25s:%-5d deteced speech for task %@", &v7, 0x1Cu);
   }
 
@@ -458,9 +458,9 @@ LABEL_10:
   v6 = *MEMORY[0x29EDCA608];
 }
 
-- (int)write:(id)a3 withMetadata:(const Metadata *)a4
+- (int)write:(id)write withMetadata:(const Metadata *)metadata
 {
-  v6 = a3;
+  writeCopy = write;
   if ([(ADAMSpeechAnalysisWriter *)self isMonitoring])
   {
     if (!self->_transaction)
@@ -468,11 +468,11 @@ LABEL_10:
       [(ADAMSpeechAnalysisWriter *)self createAndLogOSTransaction];
     }
 
-    mHostTime = a4->var0.mHostTime;
+    mHostTime = metadata->var0.mHostTime;
     v16 = 0;
     v15 = 0;
     mach_get_times();
-    v8 = a4->var2 != 0;
+    v8 = metadata->var2 != 0;
     queue = self->_queue;
     v11[0] = MEMORY[0x29EDCA5F8];
     v11[1] = 3221225472;
@@ -480,7 +480,7 @@ LABEL_10:
     v11[3] = &unk_29EE52640;
     v11[4] = self;
     v14 = v8;
-    v12 = v6;
+    v12 = writeCopy;
     v13 = mHostTime;
     dispatch_async(queue, v11);
   }
@@ -599,13 +599,13 @@ LABEL_22:
   v18 = *MEMORY[0x29EDCA608];
 }
 
-- (unint64_t)_fetchTimestampforTask:(id)a3
+- (unint64_t)_fetchTimestampforTask:(id)task
 {
   v30 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_timestampLock);
   taskTimestamps = self->_taskTimestamps;
-  v6 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v4];
+  v6 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:taskCopy];
   v7 = [(NSMutableDictionary *)taskTimestamps objectForKey:v6];
 
   if (!v7)
@@ -621,7 +621,7 @@ LABEL_22:
       if (!v12)
       {
 LABEL_20:
-        v8 = self->_lastTimestamp + 5;
+        unsignedLongLongValue = self->_lastTimestamp + 5;
         goto LABEL_21;
       }
     }
@@ -635,7 +635,7 @@ LABEL_20:
     v17 = v12;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v4];
+      v18 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:taskCopy];
       lastTimestamp = self->_lastTimestamp;
       v22 = 136315906;
       v23 = "ADAMSpeechAnalysisWriter.mm";
@@ -651,9 +651,9 @@ LABEL_20:
     goto LABEL_20;
   }
 
-  v8 = [v7 unsignedLongLongValue];
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
   v9 = self->_taskTimestamps;
-  v10 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v4];
+  v10 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:taskCopy];
   [(NSMutableDictionary *)v9 removeObjectForKey:v10];
 
   if (ADAM::ADAMLogScope(void)::once != -1)
@@ -679,7 +679,7 @@ LABEL_20:
   v14 = v11;
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v4];
+    v15 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:taskCopy];
     v22 = 136315906;
     v23 = "ADAMSpeechAnalysisWriter.mm";
     v24 = 1024;
@@ -687,7 +687,7 @@ LABEL_20:
     v26 = 2112;
     v27 = v15;
     v28 = 2048;
-    v29 = v8;
+    v29 = unsignedLongLongValue;
     _os_log_impl(&dword_296C34000, v14, OS_LOG_TYPE_DEFAULT, "%25s:%-5d removed timestamp for task %@, timestamp: %llu", &v22, 0x26u);
   }
 
@@ -695,16 +695,16 @@ LABEL_21:
   os_unfair_lock_unlock(&self->_timestampLock);
 
   v20 = *MEMORY[0x29EDCA608];
-  return v8;
+  return unsignedLongLongValue;
 }
 
-- (void)_recordTimestamp:(unint64_t)a3 forTask:(id)a4
+- (void)_recordTimestamp:(unint64_t)timestamp forTask:(id)task
 {
   v29 = *MEMORY[0x29EDCA608];
-  v6 = a4;
+  taskCopy = task;
   os_unfair_lock_lock(&self->_timestampLock);
   taskTimestamps = self->_taskTimestamps;
-  v8 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v6];
+  v8 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:taskCopy];
   v9 = [(NSMutableDictionary *)taskTimestamps objectForKey:v8];
 
   if (v9)
@@ -732,13 +732,13 @@ LABEL_21:
     v16 = v10;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      v17 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v6];
+      v17 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:taskCopy];
       v21 = 136315650;
       v22 = "ADAMSpeechAnalysisWriter.mm";
       v23 = 1024;
       v24 = 184;
       v25 = 2112;
-      v26 = v17;
+      timestampCopy = v17;
       _os_log_impl(&dword_296C34000, v16, OS_LOG_TYPE_ERROR, "%25s:%-5d timestamp already exists for task %@?", &v21, 0x1Cu);
     }
   }
@@ -746,8 +746,8 @@ LABEL_21:
   else
   {
     v11 = self->_taskTimestamps;
-    v12 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:a3];
-    v13 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v6];
+    v12 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:timestamp];
+    v13 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:taskCopy];
     [(NSMutableDictionary *)v11 setObject:v12 forKey:v13];
 
     if (ADAM::ADAMLogScope(void)::once != -1)
@@ -773,13 +773,13 @@ LABEL_21:
     v16 = v14;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v19 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:v6];
+      v19 = [MEMORY[0x29EDBA070] numberWithUnsignedLongLong:taskCopy];
       v21 = 136315906;
       v22 = "ADAMSpeechAnalysisWriter.mm";
       v23 = 1024;
       v24 = 179;
       v25 = 2048;
-      v26 = a3;
+      timestampCopy = timestamp;
       v27 = 2112;
       v28 = v19;
       _os_log_impl(&dword_296C34000, v16, OS_LOG_TYPE_INFO, "%25s:%-5d Recorded timestamp (%llu) for task %@", &v21, 0x26u);
@@ -797,25 +797,25 @@ LABEL_19:
   ADAM::Parameters::instance(self);
   if (ADAM::Parameters::GetParamValue<BOOL>(5u))
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(isValidSRSensorWriterPresent) = 1;
   }
 
   else
   {
-    v3 = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isValidSRSensorWriterPresent];
-    if (v3)
+    isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isValidSRSensorWriterPresent];
+    if (isValidSRSensorWriterPresent)
     {
-      v3 = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isMonitoring];
-      if (v3)
+      isValidSRSensorWriterPresent = [(ADAMSRSensorWriter *)self->_speechMetricsSRWriter isMonitoring];
+      if (isValidSRSensorWriterPresent)
       {
         speechMetricsSRWriter = self->_speechMetricsSRWriter;
 
-        LOBYTE(v3) = [(ADAMSRSensorWriter *)speechMetricsSRWriter isBundleIdentifierEligible];
+        LOBYTE(isValidSRSensorWriterPresent) = [(ADAMSRSensorWriter *)speechMetricsSRWriter isBundleIdentifierEligible];
       }
     }
   }
 
-  return v3;
+  return isValidSRSensorWriterPresent;
 }
 
 - (void)_initSpeechAnalyzer
@@ -917,25 +917,25 @@ LABEL_10:
   v7 = *MEMORY[0x29EDCA608];
 }
 
-+ (id)censoredResultFromInputResult:(id)a3
++ (id)censoredResultFromInputResult:(id)result
 {
   v35 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  v29 = [MEMORY[0x29EDB8DE8] array];
-  v4 = [v3 bestTranscription];
-  v5 = [v4 segments];
+  resultCopy = result;
+  array = [MEMORY[0x29EDB8DE8] array];
+  bestTranscription = [resultCopy bestTranscription];
+  segments = [bestTranscription segments];
 
-  if (v5)
+  if (segments)
   {
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v6 = [v3 bestTranscription];
-    v7 = [v6 segments];
-    v8 = v3;
+    bestTranscription2 = [resultCopy bestTranscription];
+    segments2 = [bestTranscription2 segments];
+    v8 = resultCopy;
 
-    v9 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+    v9 = [segments2 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v9)
     {
       v10 = *v31;
@@ -946,7 +946,7 @@ LABEL_10:
         {
           if (*v31 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(segments2);
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
@@ -960,24 +960,24 @@ LABEL_10:
             [v13 confidence];
             LODWORD(v20) = v19;
             v21 = [v14 _initWithSubstring:&stru_2A1DEEE38 range:0 timestamp:0 duration:v11 confidence:v11 alternativeSubstrings:&stru_2A1DEEE38 alternativeConfidences:v16 phoneSequence:v18 ipaPhoneSequence:v20 voiceAnalytics:{&stru_2A1DEEE38, 0}];
-            [v29 addObject:v21];
+            [array addObject:v21];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v9 = [segments2 countByEnumeratingWithState:&v30 objects:v34 count:16];
       }
 
       while (v9);
     }
 
-    v3 = v8;
+    resultCopy = v8;
   }
 
-  v22 = [objc_alloc(MEMORY[0x29EDBBE40]) _initWithSegments:v29 formattedString:&stru_2A1DEEE38 speakingRate:0.0 averagePauseDuration:0.0];
+  v22 = [objc_alloc(MEMORY[0x29EDBBE40]) _initWithSegments:array formattedString:&stru_2A1DEEE38 speakingRate:0.0 averagePauseDuration:0.0];
   v23 = objc_alloc(MEMORY[0x29EDBBE30]);
-  v24 = [v3 isFinal];
-  v25 = [v3 speechRecognitionMetadata];
-  v26 = [v23 _initWithBestTranscription:v22 rawTranscription:0 final:v24 speechRecognitionMetadata:v25];
+  isFinal = [resultCopy isFinal];
+  speechRecognitionMetadata = [resultCopy speechRecognitionMetadata];
+  v26 = [v23 _initWithBestTranscription:v22 rawTranscription:0 final:isFinal speechRecognitionMetadata:speechRecognitionMetadata];
 
   v27 = *MEMORY[0x29EDCA608];
 

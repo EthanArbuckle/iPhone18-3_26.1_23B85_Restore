@@ -32,9 +32,9 @@
       [(MRBaseComponentHandler *)v3 setFollowUpInfoMessage:@"FACEID_FOLLOWUP_INFO_IPAD"];
       [(MRBaseComponentHandler *)v3 setPopUpNotificationMessage:@"FACEID_POPUP_INFO_IPAD"];
       v7 = objc_opt_new();
-      v8 = [v7 isSupportedIPad];
+      isSupportedIPad = [v7 isSupportedIPad];
 
-      if ((v8 & 1) == 0)
+      if ((isSupportedIPad & 1) == 0)
       {
         [(MRBaseComponentHandler *)v3 setUnlockCheckActivityRequired:0];
         [(MRBaseComponentHandler *)v3 setDisplayNotification:0];
@@ -65,7 +65,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000E004;
   block[3] = &unk_100018610;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10001EB90 != -1)
   {
     dispatch_once(&qword_10001EB90, block);
@@ -79,7 +79,7 @@
 + (void)handleSUCase
 {
   v3 = objc_opt_new();
-  [a1 handleComponentSUCase:@"hasDisplayedFollowupForSHCFaceID" lastAUthCheckBuildVersion:@"LastFaceIDAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.FaceIDRepair" queryString:@"FaceID" suCasekey:@"SUcaseForFaceID" startBuildVersion:@"19F1" componentAuth:v3];
+  [self handleComponentSUCase:@"hasDisplayedFollowupForSHCFaceID" lastAUthCheckBuildVersion:@"LastFaceIDAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.FaceIDRepair" queryString:@"FaceID" suCasekey:@"SUcaseForFaceID" startBuildVersion:@"19F1" componentAuth:v3];
 }
 
 @end

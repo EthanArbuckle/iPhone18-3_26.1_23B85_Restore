@@ -12,13 +12,13 @@
 + (NSBundle)mainBundle;
 + (NSString)pathForResource:(NSString *)name ofType:(NSString *)ext inDirectory:(NSString *)bundlePath;
 + (NSURL)URLForResource:(NSString *)name withExtension:(NSString *)ext subdirectory:(NSString *)subpath inBundleWithURL:(NSURL *)bundleURL;
-+ (id)_bundleWithIdentifier:(id)a3 andLibraryName:(id)a4;
-+ (id)_localizedStringsForKeys:(id)a3 forAllLocalizationsOfTable:(id)a4 inBundleWithURL:(id)a5;
++ (id)_bundleWithIdentifier:(id)identifier andLibraryName:(id)name;
++ (id)_localizedStringsForKeys:(id)keys forAllLocalizationsOfTable:(id)table inBundleWithURL:(id)l;
 + (id)debugDescription;
-+ (id)findBundleResourceURLsCallingMethod:(SEL)a3 baseURL:(id)a4 passingTest:(id)a5;
-+ (id)findBundleResources:(id)a3 callingMethod:(SEL)a4 directory:(id)a5 languages:(id)a6 name:(id)a7 types:(id)a8 limit:(unint64_t)a9;
++ (id)findBundleResourceURLsCallingMethod:(SEL)method baseURL:(id)l passingTest:(id)test;
++ (id)findBundleResources:(id)resources callingMethod:(SEL)method directory:(id)directory languages:(id)languages name:(id)name types:(id)types limit:(unint64_t)limit;
 + (id)loadedBundles;
-- (BOOL)_searchForLocalizedString:(id)a3 foundKey:(id *)a4 foundTable:(id *)a5;
+- (BOOL)_searchForLocalizedString:(id)string foundKey:(id *)key foundTable:(id *)table;
 - (BOOL)isLoaded;
 - (BOOL)loadAndReturnError:(NSError *)error;
 - (BOOL)preflightAndReturnError:(NSError *)error;
@@ -63,24 +63,24 @@
 - (NSURL)sharedSupportURL;
 - (__CFBundle)_cfBundle;
 - (double)preservationPriorityForTag:(NSString *)tag;
-- (id)_localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localizations:(id)a6;
-- (id)_localizedStringNoCacheNoMarkdownParsingForKey:(id)a3 value:(id)a4 table:(id)a5 localizations:(id)a6 actualTableURL:(id *)a7 formatSpecifierConfiguration:(id *)a8;
-- (id)_localizedStringsForKeys:(id)a3 forAllLocalizationsOfTable:(id)a4;
-- (id)_objectForUnlocalizedInfoDictionaryKey:(id)a3;
+- (id)_localizedStringForKey:(id)key value:(id)value table:(id)table localizations:(id)localizations;
+- (id)_localizedStringNoCacheNoMarkdownParsingForKey:(id)key value:(id)value table:(id)table localizations:(id)localizations actualTableURL:(id *)l formatSpecifierConfiguration:(id *)configuration;
+- (id)_localizedStringsForKeys:(id)keys forAllLocalizationsOfTable:(id)table;
+- (id)_objectForUnlocalizedInfoDictionaryKey:(id)key;
 - (id)_wrappedBundleURL;
 - (id)_wrapperContainerURL;
 - (id)bundleLanguages;
 - (id)description;
-- (id)findBundleResourceURLsCallingMethod:(SEL)a3 passingTest:(id)a4;
-- (id)localizedAttributedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localizations:(id)a6;
-- (id)localizedStringsForTable:(id)a3 localization:(id)a4;
+- (id)findBundleResourceURLsCallingMethod:(SEL)method passingTest:(id)test;
+- (id)localizedAttributedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table localizations:(id)localizations;
+- (id)localizedStringsForTable:(id)table localization:(id)localization;
 - (id)objectForInfoDictionaryKey:(NSString *)key;
 - (unint64_t)versionNumber;
 - (void)dealloc;
 - (void)invalidateResourceCache;
-- (void)setPreservationPriority:(double)a3 forTag:(id)a4;
+- (void)setPreservationPriority:(double)priority forTag:(id)tag;
 - (void)setPreservationPriority:(double)priority forTags:(NSSet *)tags;
 @end
 
@@ -88,20 +88,20 @@
 
 - (NSArray)localizations
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = CFBundleCopyBundleLocalizations(v2);
+    _cfBundle = CFBundleCopyBundleLocalizations(_cfBundle);
   }
 
-  return v2;
+  return _cfBundle;
 }
 
 - (NSArray)preferredLocalizations
 {
-  v2 = [(NSBundle *)self localizations];
+  localizations = [(NSBundle *)self localizations];
 
-  return [NSBundle preferredLocalizationsFromArray:v2];
+  return [NSBundle preferredLocalizationsFromArray:localizations];
 }
 
 - (__CFBundle)_cfBundle
@@ -142,7 +142,7 @@
     v5 = MainBundle;
     if (MainBundle && (v6 = CFBundleCopyBundleURL(MainBundle), v7 = CFURLCopyFileSystemPath(v6, kCFURLPOSIXPathStyle), CFRelease(v6), v7))
     {
-      v3 = [[a1 alloc] initWithPath:v7];
+      v3 = [[self alloc] initWithPath:v7];
       CFRelease(v7);
     }
 
@@ -183,10 +183,10 @@
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(NSBundle *)self infoDictionary];
+  infoDictionary = [(NSBundle *)self infoDictionary];
   v3 = *MEMORY[0x1E695E4F0];
 
-  return [(NSDictionary *)v2 objectForKey:v3];
+  return [(NSDictionary *)infoDictionary objectForKey:v3];
 }
 
 - (NSDictionary)infoDictionary
@@ -207,16 +207,16 @@
   v14 = *MEMORY[0x1E69E9840];
   if (_CFExecutableLinkedOnOrAfter() || (v8 = [self->_initialPath copy]) == 0)
   {
-    v3 = [(NSBundle *)self _cfBundle];
-    if (v3)
+    _cfBundle = [(NSBundle *)self _cfBundle];
+    if (_cfBundle)
     {
-      v4 = CFBundleCopyBundleURL(v3);
+      v4 = CFBundleCopyBundleURL(_cfBundle);
       if (v4)
       {
         v5 = v4;
-        v6 = [(__CFURL *)v4 path];
+        path = [(__CFURL *)v4 path];
         CFRelease(v5);
-        return v6;
+        return path;
       }
     }
 
@@ -225,7 +225,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = 134218242;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v8;
       _os_log_error_impl(&dword_18075C000, v9, OS_LOG_TYPE_ERROR, "This bundle %p does not have a valid path. Using backstop: %@", &v10, 0x16u);
@@ -237,22 +237,22 @@
 
 - (NSString)executablePath
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (!v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (!_cfBundle)
   {
     return 0;
   }
 
-  v3 = CFBundleCopyExecutableURL(v2);
+  v3 = CFBundleCopyExecutableURL(_cfBundle);
   if (!v3)
   {
     return 0;
   }
 
   v4 = v3;
-  v5 = [(__CFURL *)v3 path];
+  path = [(__CFURL *)v3 path];
   CFRelease(v4);
-  return v5;
+  return path;
 }
 
 - (void)dealloc
@@ -275,11 +275,11 @@
       *buf = 138413058;
       v19 = _NSMethodExceptionProem(self, a2);
       v20 = 2048;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
-      v23 = [(NSBundle *)self bundleIdentifier];
+      bundleIdentifier = [(NSBundle *)self bundleIdentifier];
       v24 = 2112;
-      v25 = [(NSBundle *)self bundleURL];
+      bundleURL = [(NSBundle *)self bundleURL];
       _os_log_error_impl(&dword_18075C000, v7, OS_LOG_TYPE_ERROR, "%@: attempt to deallocate static bundle - break on _NSBundleDeallocatingStaticBundle to debug. This bundle %p would have been overreleased, but will instead be preserved.\n\tBundle Identifier: %@\n\tBundle URL: %@", buf, 0x2Au);
     }
 
@@ -303,11 +303,11 @@ LABEL_18:
         *buf = 138413058;
         v19 = _NSMethodExceptionProem(self, a2);
         v20 = 2048;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2112;
-        v23 = [(NSBundle *)self bundleIdentifier];
+        bundleIdentifier = [(NSBundle *)self bundleIdentifier];
         v24 = 2112;
-        v25 = [(NSBundle *)self bundleURL];
+        bundleURL = [(NSBundle *)self bundleURL];
         _os_log_error_impl(&dword_18075C000, v11, OS_LOG_TYPE_ERROR, "%@: attempting to deallocate an immortal bundle - break on _NSBundleDeallocatingImmortalBundle to debug. This bundle %p has been overreleased.\n\tBundle Identifier: %@\n\tBundle URL: %@", buf, 0x2Au);
       }
 
@@ -370,44 +370,44 @@ LABEL_18:
 
 - (NSURL)builtInPlugInsURL
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = CFBundleCopyBuiltInPlugInsURL(v2);
+    _cfBundle = CFBundleCopyBuiltInPlugInsURL(_cfBundle);
   }
 
-  return v2;
+  return _cfBundle;
 }
 
 - (NSString)resourcePath
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (!v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (!_cfBundle)
   {
     return 0;
   }
 
-  v3 = CFBundleCopyResourcesDirectoryURL(v2);
+  v3 = CFBundleCopyResourcesDirectoryURL(_cfBundle);
   if (!v3)
   {
     return 0;
   }
 
   v4 = v3;
-  v5 = [(__CFURL *)v3 path];
+  path = [(__CFURL *)v3 path];
   CFRelease(v4);
-  return v5;
+  return path;
 }
 
 - (NSURL)executableURL
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = CFBundleCopyExecutableURL(v2);
+    _cfBundle = CFBundleCopyExecutableURL(_cfBundle);
   }
 
-  return v2;
+  return _cfBundle;
 }
 
 + (NSArray)allBundles
@@ -419,22 +419,22 @@ LABEL_18:
 
 - (NSString)privateFrameworksPath
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (!v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (!_cfBundle)
   {
     return 0;
   }
 
-  v3 = CFBundleCopyPrivateFrameworksURL(v2);
+  v3 = CFBundleCopyPrivateFrameworksURL(_cfBundle);
   if (!v3)
   {
     return 0;
   }
 
   v4 = v3;
-  v5 = [(__CFURL *)v3 path];
+  path = [(__CFURL *)v3 path];
   CFRelease(v4);
-  return v5;
+  return path;
 }
 
 - (BOOL)isLoaded
@@ -442,30 +442,30 @@ LABEL_18:
   v2 = atomic_load(&self->_flags);
   if ((v2 & 0x4000000) != 0)
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(_cfBundleIfPresent) = 1;
   }
 
   else
   {
-    v3 = [(NSBundle *)self _cfBundleIfPresent];
-    if (v3)
+    _cfBundleIfPresent = [(NSBundle *)self _cfBundleIfPresent];
+    if (_cfBundleIfPresent)
     {
-      LOBYTE(v3) = CFBundleIsExecutableLoaded(v3) != 0;
+      LOBYTE(_cfBundleIfPresent) = CFBundleIsExecutableLoaded(_cfBundleIfPresent) != 0;
     }
   }
 
-  return v3;
+  return _cfBundleIfPresent;
 }
 
 - (NSURL)resourceURL
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = CFBundleCopyResourcesDirectoryURL(v2);
+    _cfBundle = CFBundleCopyResourcesDirectoryURL(_cfBundle);
   }
 
-  return v2;
+  return _cfBundle;
 }
 
 - (Class)principalClass
@@ -505,32 +505,32 @@ LABEL_18:
     return 0;
   }
 
-  v4 = [(objc_class *)v3 bundleProxyForCurrentProcess];
+  bundleProxyForCurrentProcess = [(objc_class *)v3 bundleProxyForCurrentProcess];
 
-  return [v4 appStoreReceiptURL];
+  return [bundleProxyForCurrentProcess appStoreReceiptURL];
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(NSBundle *)self bundlePath];
-  v5 = [(NSBundle *)self isLoaded];
+  bundlePath = [(NSBundle *)self bundlePath];
+  isLoaded = [(NSBundle *)self isLoaded];
   v6 = @"not yet ";
-  if (v5)
+  if (isLoaded)
   {
     v6 = &stru_1EEEFDF90;
   }
 
-  return [NSString stringWithFormat:@"%@ <%@> (%@loaded)", v3, v4, v6];
+  return [NSString stringWithFormat:@"%@ <%@> (%@loaded)", v3, bundlePath, v6];
 }
 
-+ (id)findBundleResources:(id)a3 callingMethod:(SEL)a4 directory:(id)a5 languages:(id)a6 name:(id)a7 types:(id)a8 limit:(unint64_t)a9
++ (id)findBundleResources:(id)resources callingMethod:(SEL)method directory:(id)directory languages:(id)languages name:(id)name types:(id)types limit:(unint64_t)limit
 {
-  if (a3 && (v11 = [a3 _cfBundle]) != 0)
+  if (resources && (v11 = [resources _cfBundle]) != 0)
   {
-    if (a5)
+    if (directory)
     {
-      v12 = CFURLCreateWithFileSystemPath(0, a5, kCFURLPOSIXPathStyle, 1u);
+      v12 = CFURLCreateWithFileSystemPath(0, directory, kCFURLPOSIXPathStyle, 1u);
     }
 
     else
@@ -538,15 +538,15 @@ LABEL_18:
       v12 = CFBundleCopyBundleURL(v11);
     }
 
-    v13 = v12;
+    array = v12;
     if (!v12)
     {
-      return v13;
+      return array;
     }
 
-    if ([a8 count])
+    if ([types count])
     {
-      [a8 objectAtIndex:0];
+      [types objectAtIndex:0];
     }
 
     LOBYTE(v18) = 0;
@@ -554,49 +554,49 @@ LABEL_18:
 
   else
   {
-    v13 = CFURLCreateWithFileSystemPath(0, a5, kCFURLPOSIXPathStyle, 1u);
-    if (!v13)
+    array = CFURLCreateWithFileSystemPath(0, directory, kCFURLPOSIXPathStyle, 1u);
+    if (!array)
     {
-      return v13;
+      return array;
     }
 
-    if ([a8 count])
+    if ([types count])
     {
-      [a8 objectAtIndex:0];
+      [types objectAtIndex:0];
     }
 
     LOBYTE(v18) = 0;
   }
 
   Resources = _CFBundleCopyFindResources();
-  CFRelease(v13);
+  CFRelease(array);
   if (!Resources)
   {
     return 0;
   }
 
   v15 = [Resources count];
-  v13 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v15)
   {
     for (i = 0; i != v15; ++i)
     {
-      -[__CFURL addObject:](v13, "addObject:", [objc_msgSend(CFArrayGetValueAtIndex(Resources i)]);
+      -[__CFURL addObject:](array, "addObject:", [objc_msgSend(CFArrayGetValueAtIndex(Resources i)]);
     }
   }
 
   CFRelease(Resources);
-  return v13;
+  return array;
 }
 
-- (id)findBundleResourceURLsCallingMethod:(SEL)a3 passingTest:(id)a4
+- (id)findBundleResourceURLsCallingMethod:(SEL)method passingTest:(id)test
 {
   v19 = *MEMORY[0x1E69E9840];
   [(NSBundle *)self _cfBundle];
-  v13 = a4;
+  testCopy = test;
   LOBYTE(v12) = 0;
   Resources = _CFBundleCopyFindResources();
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(Resources, "count", v12, v13)}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(Resources, "count", v12, testCopy)}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -629,12 +629,12 @@ LABEL_18:
   return v6;
 }
 
-+ (id)findBundleResourceURLsCallingMethod:(SEL)a3 baseURL:(id)a4 passingTest:(id)a5
++ (id)findBundleResourceURLsCallingMethod:(SEL)method baseURL:(id)l passingTest:(id)test
 {
   v19 = *MEMORY[0x1E69E9840];
   LOBYTE(v12) = 0;
   Resources = _CFBundleCopyFindResources();
-  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(Resources, "count", v12, a5)}];
+  v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(Resources, "count", v12, test)}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -699,9 +699,9 @@ LABEL_18:
     CFRelease(v10);
     if (v11)
     {
-      v12 = [(__CFURL *)v11 path];
+      path = [(__CFURL *)v11 path];
       CFRelease(v11);
-      return v12;
+      return path;
     }
   }
 
@@ -728,31 +728,31 @@ LABEL_18:
   }
 
   v5 = CFURLCreateWithFileSystemPath(0, bundlePath, kCFURLPOSIXPathStyle, 1u);
-  v6 = v5;
+  array = v5;
   if (!v5)
   {
-    return v6;
+    return array;
   }
 
   v7 = CFBundleCopyResourceURLsOfTypeInDirectory(v5, ext, 0);
-  CFRelease(v6);
+  CFRelease(array);
   if (!v7)
   {
     return 0;
   }
 
   v8 = [(__CFArray *)v7 count];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v8)
   {
     for (i = 0; i != v8; ++i)
     {
-      -[NSArray addObject:](v6, "addObject:", [CFArrayGetValueAtIndex(v7 i)]);
+      -[NSArray addObject:](array, "addObject:", [CFArrayGetValueAtIndex(v7 i)]);
     }
   }
 
   CFRelease(v7);
-  return v6;
+  return array;
 }
 
 + (NSArray)URLsForResourcesWithExtension:(NSString *)ext subdirectory:(NSString *)subpath inBundleWithURL:(NSURL *)bundleURL
@@ -776,13 +776,13 @@ LABEL_18:
     return 0;
   }
 
-  v11 = [(NSBundle *)self _cfBundle];
-  if (v11)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v11 = CFBundleCopyResourceURLForLocalization(v11, name, ext, subpath, localizationName);
+    _cfBundle = CFBundleCopyResourceURLForLocalization(_cfBundle, name, ext, subpath, localizationName);
   }
 
-  return v11;
+  return _cfBundle;
 }
 
 - (NSString)pathForResource:(NSString *)name ofType:(NSString *)ext inDirectory:(NSString *)subpath
@@ -799,35 +799,35 @@ LABEL_18:
     return 0;
   }
 
-  v9 = [(NSBundle *)self _cfBundle];
-  if (v9)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v9 = CFBundleCopyResourceURL(v9, name, ext, subpath);
+    _cfBundle = CFBundleCopyResourceURL(_cfBundle, name, ext, subpath);
   }
 
-  return v9;
+  return _cfBundle;
 }
 
 - (NSString)pathForResource:(NSString *)name ofType:(NSString *)ext
 {
-  v4 = [(NSURL *)[(NSBundle *)self URLForResource:name withExtension:ext] path];
+  path = [(NSURL *)[(NSBundle *)self URLForResource:name withExtension:ext] path];
   if (pathForResource_ofType__onceToken != -1)
   {
     dispatch_once(&pathForResource_ofType__onceToken, &__block_literal_global_4);
   }
 
-  return v4;
+  return path;
 }
 
 - (NSArray)pathsForResourcesOfType:(NSString *)ext inDirectory:(NSString *)subpath forLocalization:(NSString *)localizationName
 {
-  v8 = [(NSBundle *)self _cfBundle];
-  if (!v8)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (!_cfBundle)
   {
     return 0;
   }
 
-  v9 = CFBundleCopyResourceURLsOfTypeForLocalization(v8, ext, subpath, localizationName);
+  v9 = CFBundleCopyResourceURLsOfTypeForLocalization(_cfBundle, ext, subpath, localizationName);
   if (!v9)
   {
     return 0;
@@ -835,39 +835,39 @@ LABEL_18:
 
   v10 = v9;
   v11 = [(__CFArray *)v9 count];
-  v12 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v11)
   {
     for (i = 0; i != v11; ++i)
     {
-      -[NSArray addObject:](v12, "addObject:", [CFArrayGetValueAtIndex(v10 i)]);
+      -[NSArray addObject:](array, "addObject:", [CFArrayGetValueAtIndex(v10 i)]);
     }
   }
 
   CFRelease(v10);
-  return v12;
+  return array;
 }
 
 - (NSArray)URLsForResourcesWithExtension:(NSString *)ext subdirectory:(NSString *)subpath localization:(NSString *)localizationName
 {
-  v8 = [(NSBundle *)self _cfBundle];
-  if (v8)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v8 = CFBundleCopyResourceURLsOfTypeForLocalization(v8, ext, subpath, localizationName);
+    _cfBundle = CFBundleCopyResourceURLsOfTypeForLocalization(_cfBundle, ext, subpath, localizationName);
   }
 
-  return v8;
+  return _cfBundle;
 }
 
 - (NSArray)pathsForResourcesOfType:(NSString *)ext inDirectory:(NSString *)subpath
 {
-  v6 = [(NSBundle *)self _cfBundle];
-  if (!v6)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (!_cfBundle)
   {
     return 0;
   }
 
-  v7 = CFBundleCopyResourceURLsOfType(v6, ext, subpath);
+  v7 = CFBundleCopyResourceURLsOfType(_cfBundle, ext, subpath);
   if (!v7)
   {
     return 0;
@@ -875,104 +875,104 @@ LABEL_18:
 
   v8 = v7;
   v9 = [(__CFArray *)v7 count];
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (v9)
   {
     for (i = 0; i != v9; ++i)
     {
-      -[NSArray addObject:](v10, "addObject:", [CFArrayGetValueAtIndex(v8 i)]);
+      -[NSArray addObject:](array, "addObject:", [CFArrayGetValueAtIndex(v8 i)]);
     }
   }
 
   CFRelease(v8);
-  return v10;
+  return array;
 }
 
 - (NSArray)URLsForResourcesWithExtension:(NSString *)ext subdirectory:(NSString *)subpath
 {
-  v6 = [(NSBundle *)self _cfBundle];
-  if (v6)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v6 = CFBundleCopyResourceURLsOfType(v6, ext, subpath);
+    _cfBundle = CFBundleCopyResourceURLsOfType(_cfBundle, ext, subpath);
   }
 
-  return v6;
+  return _cfBundle;
 }
 
 - (NSString)localizedStringForKey:(NSString *)key value:(NSString *)value table:(NSString *)tableName
 {
-  v8 = [(NSBundle *)self _cfBundle];
-  if (v8)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v8 = CFBundleCopyLocalizedString(v8, key, value, tableName);
+    _cfBundle = CFBundleCopyLocalizedString(_cfBundle, key, value, tableName);
   }
 
-  return v8;
+  return _cfBundle;
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization
 {
-  v6 = [(NSBundle *)self _cfBundle];
-  if (v6)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v6 = CFBundleCopyLocalizedStringForLocalization();
+    _cfBundle = CFBundleCopyLocalizedStringForLocalization();
   }
 
-  return v6;
+  return _cfBundle;
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localizations:(id)a6
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table localizations:(id)localizations
 {
-  v6 = [(NSBundle *)self _cfBundle];
-  if (v6)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v6 = CFBundleCopyLocalizedStringForLocalizations();
+    _cfBundle = CFBundleCopyLocalizedStringForLocalizations();
   }
 
-  return v6;
+  return _cfBundle;
 }
 
-- (id)_localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localizations:(id)a6
+- (id)_localizedStringForKey:(id)key value:(id)value table:(id)table localizations:(id)localizations
 {
-  v6 = [(NSBundle *)self _cfBundle];
-  if (v6)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v6 = _CFBundleCopyLocalizedStringForLocalizations();
+    _cfBundle = _CFBundleCopyLocalizedStringForLocalizations();
   }
 
-  return v6;
+  return _cfBundle;
 }
 
-- (id)localizedStringsForTable:(id)a3 localization:(id)a4
+- (id)localizedStringsForTable:(id)table localization:(id)localization
 {
-  v4 = [(NSBundle *)self _cfBundle];
-  if (v4)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v4 = CFBundleCopyLocalizedStringTableForLocalization();
+    _cfBundle = CFBundleCopyLocalizedStringTableForLocalization();
   }
 
-  return v4;
+  return _cfBundle;
 }
 
-- (id)_localizedStringsForKeys:(id)a3 forAllLocalizationsOfTable:(id)a4
+- (id)_localizedStringsForKeys:(id)keys forAllLocalizationsOfTable:(id)table
 {
-  v4 = [(NSBundle *)self _cfBundle];
-  if (v4)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v4 = _CFBundleCopyFilteredLocalizedStringsForAllLocalizations();
+    _cfBundle = _CFBundleCopyFilteredLocalizedStringsForAllLocalizations();
   }
 
-  return v4;
+  return _cfBundle;
 }
 
-+ (id)_localizedStringsForKeys:(id)a3 forAllLocalizationsOfTable:(id)a4 inBundleWithURL:(id)a5
++ (id)_localizedStringsForKeys:(id)keys forAllLocalizationsOfTable:(id)table inBundleWithURL:(id)l
 {
   v5 = _CFBundleCopyFilteredLocalizedStringsForAllLocalizationsForURL();
 
   return v5;
 }
 
-- (BOOL)_searchForLocalizedString:(id)a3 foundKey:(id *)a4 foundTable:(id *)a5
+- (BOOL)_searchForLocalizedString:(id)string foundKey:(id *)key foundTable:(id *)table
 {
   if (![(NSBundle *)self _cfBundle])
   {
@@ -982,14 +982,14 @@ LABEL_18:
   v7 = _CFBundleSearchForLocalizedString();
   v8 = v7;
   v9 = v7 != 0;
-  if (a4 && v7)
+  if (key && v7)
   {
-    *a4 = 0;
+    *key = 0;
   }
 
-  if (a5 && v8)
+  if (table && v8)
   {
-    *a5 = 0;
+    *table = 0;
   }
 
   return v9;
@@ -1009,18 +1009,18 @@ LABEL_18:
   v6 = atomic_load(byte_1ED43F1A1);
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
   }
 
   else
   {
-    v7 = 0;
+    array = 0;
   }
 
   v9 = objc_autoreleasePoolPush();
   atomic_load(&self->_flags);
-  v10 = [(NSBundle *)self _cfBundle];
-  if (!v10)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (!_cfBundle)
   {
     v24 = _NSOSLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -1040,9 +1040,9 @@ LABEL_34:
         v25 = _NSOSLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          v33 = [(NSBundle *)self bundleURL];
+          bundleURL = [(NSBundle *)self bundleURL];
           *buf = 138412290;
-          *&buf[4] = v33;
+          *&buf[4] = bundleURL;
           _os_log_error_impl(&dword_18075C000, v25, OS_LOG_TYPE_ERROR, "NSBundle %@ loading failed because bundle loading is disabled", buf, 0xCu);
           if (!error)
           {
@@ -1055,7 +1055,7 @@ LABEL_34:
           goto LABEL_55;
         }
 
-        CFGetAllocator(v10);
+        CFGetAllocator(_cfBundle);
         *error = _CFBundleCreateError();
         goto LABEL_55;
       }
@@ -1134,12 +1134,12 @@ LABEL_34:
               os_unfair_lock_unlock(&v19->_lock);
             }
 
-            if (v7)
+            if (array)
             {
               v21 = [[_NSBundleDidLoadNotificationPayloadArray alloc] initWithHeader:v14];
               v44 = @"NSLoadedClasses";
               v45 = v21;
-              [v7 addObject:{+[NSNotification notificationWithName:object:userInfo:](NSNotification, "notificationWithName:object:userInfo:", @"NSBundleDidLoadNotification", v19, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v45, &v44, 1))}];
+              [array addObject:{+[NSNotification notificationWithName:object:userInfo:](NSNotification, "notificationWithName:object:userInfo:", @"NSBundleDidLoadNotification", v19, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v45, &v44, 1))}];
             }
           }
         }
@@ -1159,10 +1159,10 @@ LABEL_34:
       v26 = _NSOSLog();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
-        v36 = [(NSBundle *)self bundleURL];
+        bundleURL2 = [(NSBundle *)self bundleURL];
         v37 = *error;
         *buf = 138412546;
-        *&buf[4] = v36;
+        *&buf[4] = bundleURL2;
         *&buf[12] = 2112;
         *&buf[14] = v37;
         _os_log_error_impl(&dword_18075C000, v26, OS_LOG_TYPE_ERROR, "NSBundle %@ loading failed because of an error %@", buf, 0x16u);
@@ -1206,7 +1206,7 @@ LABEL_45:
   v28 = _NSBundleGetPrincipalClassFromInfoDict(self);
   os_unfair_lock_unlock(&self->_lock);
   _NSBundleInitializePrincipalClass(v28);
-  if (![v7 count])
+  if (![array count])
   {
     return 1;
   }
@@ -1216,7 +1216,7 @@ LABEL_45:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v30 = [v7 countByEnumeratingWithState:&v40 objects:v39 count:16];
+  v30 = [array countByEnumeratingWithState:&v40 objects:v39 count:16];
   if (!v30)
   {
     return 1;
@@ -1229,13 +1229,13 @@ LABEL_45:
     {
       if (*v41 != v31)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(array);
       }
 
       [(NSNotificationCenter *)v29 postNotification:*(*(&v40 + 1) + 8 * i)];
     }
 
-    v30 = [v7 countByEnumeratingWithState:&v40 objects:v39 count:16];
+    v30 = [array countByEnumeratingWithState:&v40 objects:v39 count:16];
     result = 1;
   }
 
@@ -1245,14 +1245,14 @@ LABEL_45:
 
 - (BOOL)unload
 {
-  v3 = [(NSBundle *)self _cfBundleIfPresent];
-  if (v3)
+  _cfBundleIfPresent = [(NSBundle *)self _cfBundleIfPresent];
+  if (_cfBundleIfPresent)
   {
-    v4 = v3;
-    CFBundleUnloadExecutable(v3);
+    v4 = _cfBundleIfPresent;
+    CFBundleUnloadExecutable(_cfBundleIfPresent);
     if (CFBundleIsExecutableLoaded(v4))
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(_cfBundleIfPresent) = 0;
     }
 
     else
@@ -1263,16 +1263,16 @@ LABEL_45:
         atomic_fetch_and(&self->_flags, 0xFFFFFFFFF9FFFFFFLL);
       }
 
-      LOBYTE(v3) = 1;
+      LOBYTE(_cfBundleIfPresent) = 1;
     }
   }
 
-  return v3;
+  return _cfBundleIfPresent;
 }
 
 + (NSBundle)bundleWithPath:(NSString *)path
 {
-  v3 = [objc_allocWithZone(a1) initWithPath:path];
+  v3 = [objc_allocWithZone(self) initWithPath:path];
 
   return v3;
 }
@@ -1294,14 +1294,14 @@ LABEL_8:
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:v9 userInfo:0]);
   }
 
-  v6 = [(NSURL *)url path];
+  path = [(NSURL *)url path];
 
-  return [(NSBundle *)self initWithPath:v6];
+  return [(NSBundle *)self initWithPath:path];
 }
 
 + (NSBundle)bundleWithURL:(NSURL *)url
 {
-  v3 = [objc_allocWithZone(a1) initWithURL:url];
+  v3 = [objc_allocWithZone(self) initWithURL:url];
 
   return v3;
 }
@@ -1326,10 +1326,10 @@ LABEL_8:
   }
 
   v6 = v5;
-  v7 = [(__CFURL *)v5 path];
-  if (v7)
+  path = [(__CFURL *)v5 path];
+  if (path)
   {
-    v8 = [a1 bundleWithPath:v7];
+    v8 = [self bundleWithPath:path];
   }
 
   else
@@ -1341,15 +1341,15 @@ LABEL_8:
   return v8;
 }
 
-+ (id)_bundleWithIdentifier:(id)a3 andLibraryName:(id)a4
++ (id)_bundleWithIdentifier:(id)identifier andLibraryName:(id)name
 {
-  if (!a3)
+  if (!identifier)
   {
     return 0;
   }
 
   v6 = +[NSBundle mainBundle];
-  if (![(NSString *)[(NSBundle *)v6 bundleIdentifier] isEqualToString:a3])
+  if (![(NSString *)[(NSBundle *)v6 bundleIdentifier] isEqualToString:identifier])
   {
     BundleWithIdentifierAndLibraryName = _CFBundleGetBundleWithIdentifierAndLibraryName();
     if (BundleWithIdentifierAndLibraryName)
@@ -1358,7 +1358,7 @@ LABEL_8:
       if (v8)
       {
         v9 = v8;
-        v10 = [a1 bundleWithURL:v8];
+        v10 = [self bundleWithURL:v8];
         CFRelease(v9);
         return v10;
       }
@@ -1465,58 +1465,58 @@ LABEL_23:
 
 - (id)_wrappedBundleURL
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = _CFBundleCopyWrappedBundleURL();
+    _cfBundle = _CFBundleCopyWrappedBundleURL();
   }
 
-  return v2;
+  return _cfBundle;
 }
 
 - (id)_wrapperContainerURL
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = _CFBundleCopyWrapperContainerURL();
+    _cfBundle = _CFBundleCopyWrapperContainerURL();
   }
 
-  return v2;
+  return _cfBundle;
 }
 
 - (NSString)pathForAuxiliaryExecutable:(NSString *)executableName
 {
-  v4 = [(NSBundle *)self _cfBundle];
+  _cfBundle = [(NSBundle *)self _cfBundle];
   if (!executableName)
   {
     return 0;
   }
 
-  if (!v4)
+  if (!_cfBundle)
   {
     return 0;
   }
 
-  v5 = CFBundleCopyAuxiliaryExecutableURL(v4, executableName);
+  v5 = CFBundleCopyAuxiliaryExecutableURL(_cfBundle, executableName);
   if (!v5)
   {
     return 0;
   }
 
   v6 = v5;
-  v7 = [(__CFURL *)v5 path];
+  path = [(__CFURL *)v5 path];
   CFRelease(v6);
-  return v7;
+  return path;
 }
 
 - (NSURL)URLForAuxiliaryExecutable:(NSString *)executableName
 {
-  v4 = [(NSBundle *)self _cfBundle];
+  _cfBundle = [(NSBundle *)self _cfBundle];
   v5 = 0;
-  if (executableName && v4)
+  if (executableName && _cfBundle)
   {
-    v5 = CFBundleCopyAuxiliaryExecutableURL(v4, executableName);
+    v5 = CFBundleCopyAuxiliaryExecutableURL(_cfBundle, executableName);
   }
 
   return v5;
@@ -1524,95 +1524,95 @@ LABEL_23:
 
 - (NSURL)privateFrameworksURL
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = CFBundleCopyPrivateFrameworksURL(v2);
+    _cfBundle = CFBundleCopyPrivateFrameworksURL(_cfBundle);
   }
 
-  return v2;
+  return _cfBundle;
 }
 
 - (NSString)sharedFrameworksPath
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (!v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (!_cfBundle)
   {
     return 0;
   }
 
-  v3 = CFBundleCopySharedFrameworksURL(v2);
+  v3 = CFBundleCopySharedFrameworksURL(_cfBundle);
   if (!v3)
   {
     return 0;
   }
 
   v4 = v3;
-  v5 = [(__CFURL *)v3 path];
+  path = [(__CFURL *)v3 path];
   CFRelease(v4);
-  return v5;
+  return path;
 }
 
 - (NSURL)sharedFrameworksURL
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = CFBundleCopySharedFrameworksURL(v2);
+    _cfBundle = CFBundleCopySharedFrameworksURL(_cfBundle);
   }
 
-  return v2;
+  return _cfBundle;
 }
 
 - (NSString)sharedSupportPath
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (!v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (!_cfBundle)
   {
     return 0;
   }
 
-  v3 = CFBundleCopySharedSupportURL(v2);
+  v3 = CFBundleCopySharedSupportURL(_cfBundle);
   if (!v3)
   {
     return 0;
   }
 
   v4 = v3;
-  v5 = [(__CFURL *)v3 path];
+  path = [(__CFURL *)v3 path];
   CFRelease(v4);
-  return v5;
+  return path;
 }
 
 - (NSURL)sharedSupportURL
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = CFBundleCopySharedSupportURL(v2);
+    _cfBundle = CFBundleCopySharedSupportURL(_cfBundle);
   }
 
-  return v2;
+  return _cfBundle;
 }
 
 - (NSString)builtInPlugInsPath
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (!v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (!_cfBundle)
   {
     return 0;
   }
 
-  v3 = CFBundleCopyBuiltInPlugInsURL(v2);
+  v3 = CFBundleCopyBuiltInPlugInsURL(_cfBundle);
   if (!v3)
   {
     return 0;
   }
 
   v4 = v3;
-  v5 = [(__CFURL *)v3 path];
+  path = [(__CFURL *)v3 path];
   CFRelease(v4);
-  return v5;
+  return path;
 }
 
 - (unint64_t)versionNumber
@@ -1629,13 +1629,13 @@ LABEL_23:
 - (id)bundleLanguages
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [(NSBundle *)self localizations];
-  v3 = [MEMORY[0x1E695DF70] array];
+  localizations = [(NSBundle *)self localizations];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v4 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  v4 = [(NSArray *)localizations countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1647,20 +1647,20 @@ LABEL_23:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(localizations);
         }
 
-        [v3 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v7++), "stringByAppendingString:", @".lproj"}];
+        [array addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v7++), "stringByAppendingString:", @".lproj"}];
       }
 
       while (v5 != v7);
-      v5 = [(NSArray *)v2 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v5 = [(NSArray *)localizations countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v5);
   }
 
-  return v3;
+  return array;
 }
 
 - (void)invalidateResourceCache
@@ -1694,21 +1694,21 @@ LABEL_23:
     Class = object_getClass(aClass);
     if (class_respondsToSelector(Class, sel_bundleForClass))
     {
-      v5 = [(objc_class *)aClass bundleForClass];
+      bundleForClass = [(objc_class *)aClass bundleForClass];
       if (objc_opt_isKindOfClass())
       {
-        if (v5)
+        if (bundleForClass)
         {
-          return v5;
+          return bundleForClass;
         }
       }
     }
 
     v6 = +[__NSBundleTables bundleTables];
-    v5 = [(__NSBundleTables *)v6 bundleForClass:?];
-    if (v5)
+    bundleForClass = [(__NSBundleTables *)v6 bundleForClass:?];
+    if (bundleForClass)
     {
-      return v5;
+      return bundleForClass;
     }
 
     ImageName = class_getImageName(aClass);
@@ -1727,13 +1727,13 @@ LABEL_23:
           v15 = [[NSBundle alloc] initWithPath:v14];
           if (v15)
           {
-            v5 = v15;
+            bundleForClass = v15;
             atomic_fetch_or(&v15->_flags, 0x4000000uLL);
             atomic_fetch_or(&v15->_flags, 0x30000uLL);
             atomic_fetch_or(&v15->_flags, 8uLL);
             v16 = +[__NSBundleTables bundleTables];
-            [(__NSBundleTables *)v16 addBundle:v5 forPath:0 withType:196608 forClass:aClass isImmortal:1];
-            return v5;
+            [(__NSBundleTables *)v16 addBundle:bundleForClass forPath:0 withType:196608 forClass:aClass isImmortal:1];
+            return bundleForClass;
           }
         }
       }
@@ -1748,19 +1748,19 @@ LABEL_23:
   result = [(NSDictionary *)[(NSBundle *)self localizedInfoDictionary] objectForKey:key];
   if (!result)
   {
-    v6 = [(NSBundle *)self infoDictionary];
+    infoDictionary = [(NSBundle *)self infoDictionary];
 
-    return [(NSDictionary *)v6 objectForKey:key];
+    return [(NSDictionary *)infoDictionary objectForKey:key];
   }
 
   return result;
 }
 
-- (id)_objectForUnlocalizedInfoDictionaryKey:(id)a3
+- (id)_objectForUnlocalizedInfoDictionaryKey:(id)key
 {
-  v4 = [(NSBundle *)self infoDictionary];
+  infoDictionary = [(NSBundle *)self infoDictionary];
 
-  return [(NSDictionary *)v4 objectForKey:a3];
+  return [(NSDictionary *)infoDictionary objectForKey:key];
 }
 
 + (id)loadedBundles
@@ -1839,9 +1839,9 @@ uint64_t __25__NSBundle_allFrameworks__block_invoke()
 
 + (id)debugDescription
 {
-  v2 = [a1 loadedBundles];
+  loadedBundles = [self loadedBundles];
 
-  return [v2 description];
+  return [loadedBundles description];
 }
 
 - (NSString)developmentLocalization
@@ -1890,9 +1890,9 @@ uint64_t __25__NSBundle_allFrameworks__block_invoke()
 - (BOOL)preflightAndReturnError:(NSError *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = [(NSBundle *)self _cfBundle];
+  _cfBundle = [(NSBundle *)self _cfBundle];
   v13[0] = 0;
-  if (!v4)
+  if (!_cfBundle)
   {
     if (error)
     {
@@ -1907,7 +1907,7 @@ uint64_t __25__NSBundle_allFrameworks__block_invoke()
   {
     if (error)
     {
-      CFGetAllocator(v4);
+      CFGetAllocator(_cfBundle);
       v5 = _CFBundleCreateError();
 LABEL_7:
       v6 = v5;
@@ -1936,7 +1936,7 @@ LABEL_18:
     v8 = 0;
   }
 
-  v9 = CFBundlePreflightExecutable(v4, v8);
+  v9 = CFBundlePreflightExecutable(_cfBundle, v8);
   v10 = v9 == 0;
   result = v9 != 0;
   if (!v10 || error == 0)
@@ -1959,66 +1959,66 @@ LABEL_18:
 
 - (NSArray)executableArchitectures
 {
-  v2 = [(NSBundle *)self _cfBundle];
-  if (v2)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
-    v2 = CFBundleCopyExecutableArchitectures(v2);
+    _cfBundle = CFBundleCopyExecutableArchitectures(_cfBundle);
   }
 
-  return v2;
+  return _cfBundle;
 }
 
-- (id)localizedAttributedStringForKey:(id)a3 value:(id)a4 table:(id)a5 localization:(id)a6
+- (id)localizedAttributedStringForKey:(id)key value:(id)value table:(id)table localization:(id)localization
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!key)
   {
-    if (a4)
+    if (value)
     {
-      v14 = _NSStringCreateByParsingMarkdownAndOptionallyInflecting(a4, [(NSBundle *)self _cfBundle], 0, 0, 1, 0);
+      v14 = _NSStringCreateByParsingMarkdownAndOptionallyInflecting(value, [(NSBundle *)self _cfBundle], 0, 0, 1, 0);
       if (v14)
       {
         return v14;
       }
 
       v15 = [NSAttributedString alloc];
-      v16 = a4;
+      valueCopy = value;
     }
 
     else
     {
       v15 = [NSAttributedString alloc];
-      v16 = &stru_1EEEFDF90;
+      valueCopy = &stru_1EEEFDF90;
     }
 
-    v21 = [(NSAttributedString *)v15 initWithString:v16];
+    v21 = [(NSAttributedString *)v15 initWithString:valueCopy];
     goto LABEL_24;
   }
 
-  v11 = @"Localizable";
-  if (a5 && ![a5 isEqualToString:&stru_1EEEFDF90])
+  tableCopy = @"Localizable";
+  if (table && ![table isEqualToString:&stru_1EEEFDF90])
   {
-    v11 = a5;
+    tableCopy = table;
   }
 
   os_unfair_lock_lock(&self->_lock);
-  if (a6 || (v17 = self->_attributedStringTable) == 0 || (v18 = -[NSMutableDictionary objectForKey:](v17, "objectForKey:", v11)) == 0 || (v19 = [objc_msgSend(v18 objectForKey:{a3), "copy"}]) == 0)
+  if (localization || (v17 = self->_attributedStringTable) == 0 || (v18 = -[NSMutableDictionary objectForKey:](v17, "objectForKey:", tableCopy)) == 0 || (v19 = [objc_msgSend(v18 objectForKey:{key), "copy"}]) == 0)
   {
     os_unfair_lock_unlock(&self->_lock);
     v36 = 0;
     if ([(NSBundle *)self _cfBundle])
     {
       v12 = _CFBundleCopyLocalizedStringForLocalizationAndTableURL();
-      if (a6)
+      if (localization)
       {
 LABEL_8:
-        v13 = 0;
+        currentLocale = 0;
 LABEL_18:
-        v22 = [v12 __baseAttributedString];
-        if (v22)
+        __baseAttributedString = [v12 __baseAttributedString];
+        if (__baseAttributedString)
         {
-          v23 = [v22 mutableCopy];
-          [(NSMutableAttributedString *)v23 _inflectWithLocale:v13 replacements:MEMORY[0x1E695E0F0] concepts:MEMORY[0x1E695E0F0] preflight:1];
+          v23 = [__baseAttributedString mutableCopy];
+          [(NSMutableAttributedString *)v23 _inflectWithLocale:currentLocale replacements:MEMORY[0x1E695E0F0] concepts:MEMORY[0x1E695E0F0] preflight:1];
         }
 
         else
@@ -2026,56 +2026,56 @@ LABEL_18:
           if (v12)
           {
             FormatSpecifierConfiguration = _CFStringGetFormatSpecifierConfiguration();
-            v25 = [(NSBundle *)self _cfBundle];
+            _cfBundle = [(NSBundle *)self _cfBundle];
             v26 = v37;
-            v27 = v12;
+            keyCopy = v12;
             v28 = FormatSpecifierConfiguration;
           }
 
           else
           {
-            if (a4 && [a4 length])
+            if (value && [value length])
             {
-              v25 = [(NSBundle *)self _cfBundle];
-              v27 = a4;
+              _cfBundle = [(NSBundle *)self _cfBundle];
+              keyCopy = value;
             }
 
             else
             {
-              v25 = [(NSBundle *)self _cfBundle];
-              v27 = a3;
+              _cfBundle = [(NSBundle *)self _cfBundle];
+              keyCopy = key;
             }
 
             v26 = 0;
             v28 = 0;
           }
 
-          v23 = _NSStringCreateByParsingMarkdownAndOptionallyInflecting(v27, v25, v26, v28, 1, v13);
+          v23 = _NSStringCreateByParsingMarkdownAndOptionallyInflecting(keyCopy, _cfBundle, v26, v28, 1, currentLocale);
         }
 
         v14 = v23;
 
         if (!v14)
         {
-          v30 = a3;
-          if (a4)
+          keyCopy3 = key;
+          if (value)
           {
-            if ([a4 length])
+            if ([value length])
             {
-              v30 = a4;
+              keyCopy3 = value;
             }
 
             else
             {
-              v30 = a3;
+              keyCopy3 = key;
             }
           }
 
-          v14 = [[NSAttributedString alloc] initWithString:v30];
+          v14 = [[NSAttributedString alloc] initWithString:keyCopy3];
         }
 
-        v31 = [a5 hasSuffix:@".nocache"];
-        if (!a6 && (v31 & 1) == 0)
+        v31 = [table hasSuffix:@".nocache"];
+        if (!localization && (v31 & 1) == 0)
         {
           os_unfair_lock_lock(&self->_lock);
           attributedStringTable = self->_attributedStringTable;
@@ -2085,18 +2085,18 @@ LABEL_18:
             self->_attributedStringTable = attributedStringTable;
           }
 
-          v33 = [(NSMutableDictionary *)attributedStringTable objectForKey:v11];
+          v33 = [(NSMutableDictionary *)attributedStringTable objectForKey:tableCopy];
           v34 = [(NSMutableAttributedString *)v14 copy];
           if (v33)
           {
-            [v33 setObject:v34 forKey:a3];
+            [v33 setObject:v34 forKey:key];
           }
 
           else
           {
             v35 = objc_alloc_init(MEMORY[0x1E695DF90]);
-            [v35 setObject:v34 forKey:a3];
-            [(NSMutableDictionary *)self->_attributedStringTable setObject:v35 forKey:v11];
+            [v35 setObject:v34 forKey:key];
+            [(NSMutableDictionary *)self->_attributedStringTable setObject:v35 forKey:tableCopy];
           }
 
           os_unfair_lock_unlock(&self->_lock);
@@ -2109,13 +2109,13 @@ LABEL_18:
     else
     {
       v12 = 0;
-      if (a6)
+      if (localization)
       {
         goto LABEL_8;
       }
     }
 
-    v13 = [MEMORY[0x1E695DF58] currentLocale];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
     goto LABEL_18;
   }
 
@@ -2127,14 +2127,14 @@ LABEL_24:
   return v21;
 }
 
-- (id)_localizedStringNoCacheNoMarkdownParsingForKey:(id)a3 value:(id)a4 table:(id)a5 localizations:(id)a6 actualTableURL:(id *)a7 formatSpecifierConfiguration:(id *)a8
+- (id)_localizedStringNoCacheNoMarkdownParsingForKey:(id)key value:(id)value table:(id)table localizations:(id)localizations actualTableURL:(id *)l formatSpecifierConfiguration:(id *)configuration
 {
-  v10 = [(NSBundle *)self _cfBundle];
-  if (v10)
+  _cfBundle = [(NSBundle *)self _cfBundle];
+  if (_cfBundle)
   {
     v11 = _CFBundleCopyLocalizedStringForLocalizationTableURLAndMarkdownOption();
-    v10 = 0;
-    if (!a7)
+    _cfBundle = 0;
+    if (!l)
     {
       goto LABEL_7;
     }
@@ -2143,7 +2143,7 @@ LABEL_24:
   else
   {
     v11 = 0;
-    if (!a7)
+    if (!l)
     {
       goto LABEL_7;
     }
@@ -2151,7 +2151,7 @@ LABEL_24:
 
   if (v11)
   {
-    v12 = v10;
+    v12 = _cfBundle;
   }
 
   else
@@ -2159,10 +2159,10 @@ LABEL_24:
     v12 = 0;
   }
 
-  *a7 = v12;
+  *l = v12;
 LABEL_7:
-  v13 = v10;
-  if (a8)
+  v13 = _cfBundle;
+  if (configuration)
   {
     if (v11)
     {
@@ -2174,7 +2174,7 @@ LABEL_7:
       FormatSpecifierConfiguration = 0;
     }
 
-    *a8 = FormatSpecifierConfiguration;
+    *configuration = FormatSpecifierConfiguration;
   }
 
   return v11;
@@ -2240,11 +2240,11 @@ LABEL_7:
   }
 }
 
-- (void)setPreservationPriority:(double)a3 forTag:(id)a4
+- (void)setPreservationPriority:(double)priority forTag:(id)tag
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:a4];
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:tag];
 
-  [(NSBundle *)self setPreservationPriority:v6 forTags:a3];
+  [(NSBundle *)self setPreservationPriority:v6 forTags:priority];
 }
 
 - (double)preservationPriorityForTag:(NSString *)tag

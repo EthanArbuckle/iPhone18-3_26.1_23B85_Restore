@@ -1,24 +1,24 @@
 @interface SKUIToastViewController
-+ (id)_fontWithSize:(double)a3 textStyleAttribute:(__CFString *)a4;
++ (id)_fontWithSize:(double)size textStyleAttribute:(__CFString *)attribute;
 + (id)_primaryLabelFont;
 + (id)_secondaryLabelFont;
-- (SKUIToastViewController)initWithDialogTemplate:(id)a3;
-- (SKUIToastViewController)initWithTitle:(id)a3 description:(id)a4 image:(id)a5;
-- (void)_dismissWithDelay:(double)a3;
+- (SKUIToastViewController)initWithDialogTemplate:(id)template;
+- (SKUIToastViewController)initWithTitle:(id)title description:(id)description image:(id)image;
+- (void)_dismissWithDelay:(double)delay;
 - (void)present;
-- (void)presentFromViewController:(id)a3 completion:(id)a4;
+- (void)presentFromViewController:(id)controller completion:(id)completion;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SKUIToastViewController
 
-- (SKUIToastViewController)initWithTitle:(id)a3 description:(id)a4 image:(id)a5
+- (SKUIToastViewController)initWithTitle:(id)title description:(id)description image:(id)image
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  titleCopy = title;
+  descriptionCopy = description;
+  imageCopy = image;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIToastViewController initWithTitle:description:image:];
@@ -46,7 +46,7 @@
     imageView = v12->_imageView;
     v12->_imageView = v22;
 
-    v24 = [v11 imageWithRenderingMode:2];
+    v24 = [imageCopy imageWithRenderingMode:2];
     [(UIImageView *)v12->_imageView setImage:v24];
 
     v25 = [MEMORY[0x277D75210] effectWithStyle:9];
@@ -57,8 +57,8 @@
     v12->_toastView = v26;
     v28 = v26;
 
-    objc_storeStrong(&v12->_titleText, a3);
-    objc_storeStrong(&v12->_descriptionText, a4);
+    objc_storeStrong(&v12->_titleText, title);
+    objc_storeStrong(&v12->_descriptionText, description);
 
     [(SKUIToastViewController *)v12 setModalPresentationStyle:6];
   }
@@ -66,26 +66,26 @@
   return v12;
 }
 
-- (SKUIToastViewController)initWithDialogTemplate:(id)a3
+- (SKUIToastViewController)initWithDialogTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [v4 title];
-  v6 = [v5 text];
-  v7 = [v6 attributedStringWithDefaultFont:0 foregroundColor:0];
-  v8 = [v7 string];
+  templateCopy = template;
+  title = [templateCopy title];
+  text = [title text];
+  v7 = [text attributedStringWithDefaultFont:0 foregroundColor:0];
+  string = [v7 string];
 
-  v9 = [v4 message];
-  v10 = [v9 text];
-  v11 = [v10 attributedStringWithDefaultFont:0 foregroundColor:0];
-  v12 = [v11 string];
+  message = [templateCopy message];
+  text2 = [message text];
+  v11 = [text2 attributedStringWithDefaultFont:0 foregroundColor:0];
+  string2 = [v11 string];
 
-  v13 = [v4 image];
+  image = [templateCopy image];
 
-  v14 = [v13 resourceName];
+  resourceName = [image resourceName];
 
-  if (v14)
+  if (resourceName)
   {
-    v15 = SKUIImageWithResourceName(v14);
+    v15 = SKUIImageWithResourceName(resourceName);
   }
 
   else
@@ -93,7 +93,7 @@
     v15 = 0;
   }
 
-  v16 = [(SKUIToastViewController *)self initWithTitle:v8 description:v12 image:v15];
+  v16 = [(SKUIToastViewController *)self initWithTitle:string description:string2 image:v15];
 
   return v16;
 }
@@ -103,19 +103,19 @@
   v43.receiver = self;
   v43.super_class = SKUIToastViewController;
   [(SKUIToastViewController *)&v43 viewDidLoad];
-  v3 = [(SKUIToastViewController *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(SKUIToastViewController *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  v5 = [(SKUIToastViewController *)self presentationController];
-  [v5 _setContainerIgnoresDirectTouchEvents:1];
+  presentationController = [(SKUIToastViewController *)self presentationController];
+  [presentationController _setContainerIgnoresDirectTouchEvents:1];
 
-  v6 = [(SKUIToastViewController *)self view];
-  [v6 setUserInteractionEnabled:1];
+  view = [(SKUIToastViewController *)self view];
+  [view setUserInteractionEnabled:1];
 
-  v7 = [(SKUIToastViewController *)self imageView];
-  [v7 setAlpha:0.64];
+  imageView = [(SKUIToastViewController *)self imageView];
+  [imageView setAlpha:0.64];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x277D75348] labelColor];
   }
@@ -125,10 +125,10 @@
     [MEMORY[0x277D75348] blackColor];
   }
   v8 = ;
-  v9 = [(SKUIToastViewController *)self imageView];
-  [v9 setTintColor:v8];
+  imageView2 = [(SKUIToastViewController *)self imageView];
+  [imageView2 setTintColor:v8];
 
-  if (v4 == 2)
+  if (userInterfaceStyle == 2)
   {
     [MEMORY[0x277D75348] labelColor];
   }
@@ -140,82 +140,82 @@
   v10 = ;
   v11 = [v10 colorWithAlphaComponent:0.64];
 
-  v12 = [(SKUIToastViewController *)self titleText];
-  v13 = [(SKUIToastViewController *)self primaryLabel];
-  [v13 setText:v12];
+  titleText = [(SKUIToastViewController *)self titleText];
+  primaryLabel = [(SKUIToastViewController *)self primaryLabel];
+  [primaryLabel setText:titleText];
 
-  v14 = [(SKUIToastViewController *)self primaryLabel];
-  [v14 setTextAlignment:1];
+  primaryLabel2 = [(SKUIToastViewController *)self primaryLabel];
+  [primaryLabel2 setTextAlignment:1];
 
-  v15 = [(SKUIToastViewController *)self primaryLabel];
-  [v15 setNumberOfLines:2];
+  primaryLabel3 = [(SKUIToastViewController *)self primaryLabel];
+  [primaryLabel3 setNumberOfLines:2];
 
-  v16 = [(SKUIToastViewController *)self primaryLabel];
-  [v16 setTextColor:v11];
+  primaryLabel4 = [(SKUIToastViewController *)self primaryLabel];
+  [primaryLabel4 setTextColor:v11];
 
-  v17 = [(SKUIToastViewController *)self primaryLabel];
-  [v17 setLineBreakMode:4];
+  primaryLabel5 = [(SKUIToastViewController *)self primaryLabel];
+  [primaryLabel5 setLineBreakMode:4];
 
-  v18 = [(SKUIToastViewController *)self descriptionText];
+  descriptionText = [(SKUIToastViewController *)self descriptionText];
 
-  if (v18)
+  if (descriptionText)
   {
     v19 = objc_alloc(MEMORY[0x277CCAB48]);
-    v20 = [(SKUIToastViewController *)self descriptionText];
-    v21 = [v19 initWithString:v20];
+    descriptionText2 = [(SKUIToastViewController *)self descriptionText];
+    v21 = [v19 initWithString:descriptionText2];
 
     v22 = objc_alloc_init(MEMORY[0x277D74240]);
     [v22 setLineSpacing:2.0];
     [v21 addAttribute:*MEMORY[0x277D74118] value:v22 range:{0, objc_msgSend(v21, "length")}];
-    v23 = [(SKUIToastViewController *)self secondaryLabel];
-    [v23 setAttributedText:v21];
+    secondaryLabel = [(SKUIToastViewController *)self secondaryLabel];
+    [secondaryLabel setAttributedText:v21];
   }
 
-  v24 = [(SKUIToastViewController *)self secondaryLabel];
-  [v24 setTextAlignment:1];
+  secondaryLabel2 = [(SKUIToastViewController *)self secondaryLabel];
+  [secondaryLabel2 setTextAlignment:1];
 
-  v25 = [(SKUIToastViewController *)self secondaryLabel];
-  [v25 setNumberOfLines:4];
+  secondaryLabel3 = [(SKUIToastViewController *)self secondaryLabel];
+  [secondaryLabel3 setNumberOfLines:4];
 
-  v26 = [(SKUIToastViewController *)self secondaryLabel];
-  [v26 setTextColor:v11];
+  secondaryLabel4 = [(SKUIToastViewController *)self secondaryLabel];
+  [secondaryLabel4 setTextColor:v11];
 
-  v27 = [(SKUIToastViewController *)self secondaryLabel];
-  [v27 setLineBreakMode:4];
+  secondaryLabel5 = [(SKUIToastViewController *)self secondaryLabel];
+  [secondaryLabel5 setLineBreakMode:4];
 
-  v28 = [(SKUIToastViewController *)self toastView];
-  v29 = [v28 contentView];
-  v30 = [(SKUIToastViewController *)self imageView];
-  [v29 addSubview:v30];
+  toastView = [(SKUIToastViewController *)self toastView];
+  contentView = [toastView contentView];
+  imageView3 = [(SKUIToastViewController *)self imageView];
+  [contentView addSubview:imageView3];
 
-  v31 = [(SKUIToastViewController *)self toastView];
-  v32 = [v31 contentView];
-  v33 = [(SKUIToastViewController *)self primaryLabel];
-  [v32 addSubview:v33];
+  toastView2 = [(SKUIToastViewController *)self toastView];
+  contentView2 = [toastView2 contentView];
+  primaryLabel6 = [(SKUIToastViewController *)self primaryLabel];
+  [contentView2 addSubview:primaryLabel6];
 
-  v34 = [(SKUIToastViewController *)self toastView];
-  v35 = [v34 contentView];
-  v36 = [(SKUIToastViewController *)self secondaryLabel];
-  [v35 addSubview:v36];
+  toastView3 = [(SKUIToastViewController *)self toastView];
+  contentView3 = [toastView3 contentView];
+  secondaryLabel6 = [(SKUIToastViewController *)self secondaryLabel];
+  [contentView3 addSubview:secondaryLabel6];
 
   CGAffineTransformMakeScale(&v42, 0.88, 0.88);
-  v37 = [(SKUIToastViewController *)self toastView];
+  toastView4 = [(SKUIToastViewController *)self toastView];
   v41 = v42;
-  [v37 setTransform:&v41];
+  [toastView4 setTransform:&v41];
 
-  v38 = [(SKUIToastViewController *)self toastView];
-  [v38 setAlpha:0.0];
+  toastView5 = [(SKUIToastViewController *)self toastView];
+  [toastView5 setAlpha:0.0];
 
-  v39 = [(SKUIToastViewController *)self view];
-  v40 = [(SKUIToastViewController *)self toastView];
-  [v39 addSubview:v40];
+  view2 = [(SKUIToastViewController *)self view];
+  toastView6 = [(SKUIToastViewController *)self toastView];
+  [view2 addSubview:toastView6];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = SKUIToastViewController;
-  [(SKUIToastViewController *)&v6 viewWillAppear:a3];
+  [(SKUIToastViewController *)&v6 viewWillAppear:appear];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__SKUIToastViewController_viewWillAppear___block_invoke;
@@ -245,15 +245,15 @@ void __42__SKUIToastViewController_viewWillAppear___block_invoke(uint64_t a1)
   v75.receiver = self;
   v75.super_class = SKUIToastViewController;
   [(SKUIToastViewController *)&v75 viewDidLayoutSubviews];
-  v3 = [(SKUIToastViewController *)self view];
-  [v3 bounds];
+  view = [(SKUIToastViewController *)self view];
+  [view bounds];
 
-  v4 = [(SKUIToastViewController *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(SKUIToastViewController *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
-  v7 = [(SKUIToastViewController *)self toastView];
-  [v7 setFrame:{0.0, 0.0, 250.0, 450.0}];
+  toastView = [(SKUIToastViewController *)self toastView];
+  [toastView setFrame:{0.0, 0.0, 250.0, 450.0}];
 
   v69 = 0;
   v70 = &v69;
@@ -261,23 +261,23 @@ void __42__SKUIToastViewController_viewWillAppear___block_invoke(uint64_t a1)
   v72 = &unk_215F8ACD7;
   v73 = 0u;
   v74 = 0u;
-  v8 = [(SKUIToastViewController *)self toastView];
-  [v8 bounds];
+  toastView2 = [(SKUIToastViewController *)self toastView];
+  [toastView2 bounds];
   *&v73 = v9 + 25.0;
   *(&v73 + 1) = v10 + 32.0;
   *&v74 = v11 + -50.0;
   *(&v74 + 1) = v12 + -57.0;
 
-  v13 = [(SKUIToastViewController *)self toastView];
-  [v13 bounds];
+  toastView3 = [(SKUIToastViewController *)self toastView];
+  [toastView3 bounds];
   UIRectCenteredXInRectScale();
   v15 = v14;
   v17 = v16;
   v19 = v18;
   v21 = v20;
 
-  v22 = [(SKUIToastViewController *)self imageView];
-  [v22 setFrame:{v15, v17, v19, v21}];
+  imageView = [(SKUIToastViewController *)self imageView];
+  [imageView setFrame:{v15, v17, v19, v21}];
 
   v23 = v70;
   v70[5] = v21 + v70[5];
@@ -298,29 +298,29 @@ void __42__SKUIToastViewController_viewWillAppear___block_invoke(uint64_t a1)
   aBlock[5] = v64;
   aBlock[6] = &v65;
   v24 = _Block_copy(aBlock);
-  v25 = [objc_opt_class() _primaryLabelFont];
-  v26 = [(SKUIToastViewController *)self primaryLabel];
-  [v26 setFont:v25];
+  _primaryLabelFont = [objc_opt_class() _primaryLabelFont];
+  primaryLabel = [(SKUIToastViewController *)self primaryLabel];
+  [primaryLabel setFont:_primaryLabelFont];
 
-  v27 = [(SKUIToastViewController *)self primaryLabel];
-  v24[2](v24, v27, 0, 18.0);
+  primaryLabel2 = [(SKUIToastViewController *)self primaryLabel];
+  v24[2](v24, primaryLabel2, 0, 18.0);
 
-  v28 = [objc_opt_class() _secondaryLabelFont];
-  v29 = [(SKUIToastViewController *)self secondaryLabel];
-  [v29 setFont:v28];
+  _secondaryLabelFont = [objc_opt_class() _secondaryLabelFont];
+  secondaryLabel = [(SKUIToastViewController *)self secondaryLabel];
+  [secondaryLabel setFont:_secondaryLabelFont];
 
-  v30 = [(SKUIToastViewController *)self secondaryLabel];
-  v24[2](v24, v30, 0, 25.0);
+  secondaryLabel2 = [(SKUIToastViewController *)self secondaryLabel];
+  v24[2](v24, secondaryLabel2, 0, 25.0);
 
-  v31 = [(SKUIToastViewController *)self toastView];
-  [v31 bounds];
+  toastView4 = [(SKUIToastViewController *)self toastView];
+  [toastView4 bounds];
   v33 = v32;
   v35 = v34;
   v37 = v36;
 
   v38 = v66[3];
-  v39 = [(SKUIToastViewController *)self toastView];
-  v40 = v39;
+  toastView5 = [(SKUIToastViewController *)self toastView];
+  v40 = toastView5;
   v41 = fmin(v38 + 25.0, 450.0);
   if (v41 < 250.0)
   {
@@ -328,27 +328,27 @@ void __42__SKUIToastViewController_viewWillAppear___block_invoke(uint64_t a1)
   }
 
   v42 = v41;
-  [v39 setBounds:{v33, v35, v37, ceilf(v42)}];
+  [toastView5 setBounds:{v33, v35, v37, ceilf(v42)}];
 
-  v43 = [(SKUIToastViewController *)self toastView];
-  [v43 frame];
+  toastView6 = [(SKUIToastViewController *)self toastView];
+  [toastView6 frame];
   UIRectCenteredXInRectScale();
   v45 = v44;
   v47 = v46;
   v49 = v48;
   v51 = v50;
-  v52 = [(SKUIToastViewController *)self toastView];
-  [v52 setFrame:{v45, v47, v49, v51}];
+  toastView7 = [(SKUIToastViewController *)self toastView];
+  [toastView7 setFrame:{v45, v47, v49, v51}];
 
-  v53 = [(SKUIToastViewController *)self toastView];
-  [v53 frame];
+  toastView8 = [(SKUIToastViewController *)self toastView];
+  [toastView8 frame];
   UIRectCenteredYInRectScale();
   v55 = v54;
   v57 = v56;
   v59 = v58;
   v61 = v60;
-  v62 = [(SKUIToastViewController *)self toastView];
-  [v62 setFrame:{v55, v57, v59, v61}];
+  toastView9 = [(SKUIToastViewController *)self toastView];
+  [toastView9 setFrame:{v55, v57, v59, v61}];
 
   _Block_object_dispose(v64, 8);
   _Block_object_dispose(&v65, 8);
@@ -427,11 +427,11 @@ void __48__SKUIToastViewController_viewDidLayoutSubviews__block_invoke(void *a1,
   [(SKUIToastPresentationWindow *)v3 presentViewController:self animated:1 completion:0];
 }
 
-- (void)presentFromViewController:(id)a3 completion:(id)a4
+- (void)presentFromViewController:(id)controller completion:(id)completion
 {
-  v6 = a3;
-  [(SKUIToastViewController *)self setCompletion:a4];
-  [v6 presentViewController:self animated:1 completion:0];
+  controllerCopy = controller;
+  [(SKUIToastViewController *)self setCompletion:completion];
+  [controllerCopy presentViewController:self animated:1 completion:0];
 }
 
 + (id)_primaryLabelFont
@@ -439,7 +439,7 @@ void __48__SKUIToastViewController_viewDidLayoutSubviews__block_invoke(void *a1,
   v2 = _primaryLabelFont__primaryLabelFont;
   if (!_primaryLabelFont__primaryLabelFont)
   {
-    v3 = [a1 _fontWithSize:*MEMORY[0x277CC4880] textStyleAttribute:22.0];
+    v3 = [self _fontWithSize:*MEMORY[0x277CC4880] textStyleAttribute:22.0];
     v4 = _primaryLabelFont__primaryLabelFont;
     _primaryLabelFont__primaryLabelFont = v3;
 
@@ -454,7 +454,7 @@ void __48__SKUIToastViewController_viewDidLayoutSubviews__block_invoke(void *a1,
   v2 = _secondaryLabelFont__secondaryLabelFont;
   if (!_secondaryLabelFont__secondaryLabelFont)
   {
-    v3 = [a1 _fontWithSize:*MEMORY[0x277CC4878] textStyleAttribute:16.0];
+    v3 = [self _fontWithSize:*MEMORY[0x277CC4878] textStyleAttribute:16.0];
     v4 = _secondaryLabelFont__secondaryLabelFont;
     _secondaryLabelFont__secondaryLabelFont = v3;
 
@@ -464,21 +464,21 @@ void __48__SKUIToastViewController_viewDidLayoutSubviews__block_invoke(void *a1,
   return v2;
 }
 
-+ (id)_fontWithSize:(double)a3 textStyleAttribute:(__CFString *)a4
++ (id)_fontWithSize:(double)size textStyleAttribute:(__CFString *)attribute
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D74300] systemFontOfSize:a3];
-  v6 = [v5 fontDescriptor];
+  v5 = [MEMORY[0x277D74300] systemFontOfSize:size];
+  fontDescriptor = [v5 fontDescriptor];
   v11 = *MEMORY[0x277D74378];
-  v12[0] = a4;
+  v12[0] = attribute;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-  v8 = [v6 fontDescriptorByAddingAttributes:v7];
+  v8 = [fontDescriptor fontDescriptorByAddingAttributes:v7];
   v9 = [MEMORY[0x277D74300] fontWithDescriptor:v8 size:0.0];
 
   return v9;
 }
 
-- (void)_dismissWithDelay:(double)a3
+- (void)_dismissWithDelay:(double)delay
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
@@ -490,7 +490,7 @@ void __48__SKUIToastViewController_viewDidLayoutSubviews__block_invoke(void *a1,
   v3[2] = __45__SKUIToastViewController__dismissWithDelay___block_invoke_2;
   v3[3] = &unk_2781F84A0;
   v3[4] = self;
-  [MEMORY[0x277D75D18] animateWithDuration:2 delay:v4 options:v3 animations:0.2 completion:a3];
+  [MEMORY[0x277D75D18] animateWithDuration:2 delay:v4 options:v3 animations:0.2 completion:delay];
 }
 
 void __45__SKUIToastViewController__dismissWithDelay___block_invoke(uint64_t a1)

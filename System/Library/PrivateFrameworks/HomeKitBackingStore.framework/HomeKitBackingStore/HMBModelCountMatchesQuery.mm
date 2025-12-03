@@ -1,28 +1,28 @@
 @interface HMBModelCountMatchesQuery
-+ (id)queryWithSQLPredicate:(id)a3 indexedProperties:(id)a4 arguments:(id)a5;
-- (id)countMatchesOn:(id)a3 arguments:(id)a4 error:(id *)a5;
-- (id)sqlSelectStatementForModelType:(id)a3;
++ (id)queryWithSQLPredicate:(id)predicate indexedProperties:(id)properties arguments:(id)arguments;
+- (id)countMatchesOn:(id)on arguments:(id)arguments error:(id *)error;
+- (id)sqlSelectStatementForModelType:(id)type;
 @end
 
 @implementation HMBModelCountMatchesQuery
 
-- (id)sqlSelectStatementForModelType:(id)a3
+- (id)sqlSelectStatementForModelType:(id)type
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(HMBModelQuery *)self sqlPredicate];
-  v7 = [v4 stringWithFormat:@"SELECT count('X') FROM queryable_%@, record_v2 WHERE _store_id = :_store_id AND _record_id == id AND model_data IS NOT NULL AND %@ LIMIT 1", v5, v6];
+  typeCopy = type;
+  sqlPredicate = [(HMBModelQuery *)self sqlPredicate];
+  v7 = [v4 stringWithFormat:@"SELECT count('X') FROM queryable_%@, record_v2 WHERE _store_id = :_store_id AND _record_id == id AND model_data IS NOT NULL AND %@ LIMIT 1", typeCopy, sqlPredicate];
 
   return v7;
 }
 
-- (id)countMatchesOn:(id)a3 arguments:(id)a4 error:(id *)a5
+- (id)countMatchesOn:(id)on arguments:(id)arguments error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMBModelQuery *)self preparedQueries];
-  v11 = [v8 sql];
-  v12 = [v10 objectForKey:v11];
+  onCopy = on;
+  argumentsCopy = arguments;
+  preparedQueries = [(HMBModelQuery *)self preparedQueries];
+  v11 = [onCopy sql];
+  v12 = [preparedQueries objectForKey:v11];
 
   if (!v12)
   {
@@ -30,13 +30,13 @@
     goto LABEL_10;
   }
 
-  v13 = __encodeArguments(self, v12, v9);
+  v13 = __encodeArguments(self, v12, argumentsCopy);
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v14 = [v12 arguments];
-  v15 = [v14 hmf_numberForKey:@"_store_id"];
+  arguments = [v12 arguments];
+  v15 = [arguments hmf_numberForKey:@"_store_id"];
 
   if (!v15)
   {
@@ -46,7 +46,7 @@ LABEL_10:
     return result;
   }
 
-  v16 = [v8 sql];
+  v16 = [onCopy sql];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __60__HMBModelCountMatchesQuery_countMatchesOn_arguments_error___block_invoke;
@@ -57,10 +57,10 @@ LABEL_10:
   v26 = v18;
   v19 = v15;
   v27 = v19;
-  v20 = v8;
+  v20 = onCopy;
   v28 = v20;
   v29 = &v30;
-  v21 = [v16 sqlBlockWithActivity:0 error:a5 block:v24];
+  v21 = [v16 sqlBlockWithActivity:0 error:error block:v24];
 
   if (v21)
   {
@@ -103,26 +103,26 @@ id __60__HMBModelCountMatchesQuery_countMatchesOn_arguments_error___block_invoke
   return v11;
 }
 
-+ (id)queryWithSQLPredicate:(id)a3 indexedProperties:(id)a4 arguments:(id)a5
++ (id)queryWithSQLPredicate:(id)predicate indexedProperties:(id)properties arguments:(id)arguments
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v7)
+  predicateCopy = predicate;
+  propertiesCopy = properties;
+  argumentsCopy = arguments;
+  if (!predicateCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v8)
+  if (!propertiesCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = argumentsCopy;
+  if (!argumentsCopy)
   {
 LABEL_9:
     v15 = _HMFPreconditionFailure();
@@ -130,11 +130,11 @@ LABEL_9:
     return result;
   }
 
-  v11 = [v8 componentsJoinedByString:@"_"];
-  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v8, "count") + 1}];
+  v11 = [propertiesCopy componentsJoinedByString:@"_"];
+  v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(propertiesCopy, "count") + 1}];
   [v12 addObject:@"_store_id"];
-  [v12 addObjectsFromArray:v8];
-  v13 = [(HMBModelIndexedQuery *)[HMBModelCountMatchesQuery alloc] initWithSQLPredicate:v7 initialSequence:0 maximumRowsPerSelect:1 indexNameSuffix:v11 indexedColumns:v12 arguments:v10];
+  [v12 addObjectsFromArray:propertiesCopy];
+  v13 = [(HMBModelIndexedQuery *)[HMBModelCountMatchesQuery alloc] initWithSQLPredicate:predicateCopy initialSequence:0 maximumRowsPerSelect:1 indexNameSuffix:v11 indexedColumns:v12 arguments:v10];
 
   return v13;
 }

@@ -1,22 +1,22 @@
 @interface FCRecipeItemFactory
-- (FCRecipeItemFactory)initWithRecipeRecordSource:(id)a3;
+- (FCRecipeItemFactory)initWithRecipeRecordSource:(id)source;
 - (NSArray)requiredRecipeKeys;
-- (id)recipeItemFromCKRecord:(id)a3 surfacedBy:(id)a4 error:(id *)a5;
-- (id)recipeItemFromPBRecord:(id)a3 surfacedBy:(id)a4 error:(id *)a5;
+- (id)recipeItemFromCKRecord:(id)record surfacedBy:(id)by error:(id *)error;
+- (id)recipeItemFromPBRecord:(id)record surfacedBy:(id)by error:(id *)error;
 @end
 
 @implementation FCRecipeItemFactory
 
-- (FCRecipeItemFactory)initWithRecipeRecordSource:(id)a3
+- (FCRecipeItemFactory)initWithRecipeRecordSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = FCRecipeItemFactory;
   v6 = [(FCRecipeItemFactory *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recipeRecordSource, a3);
+    objc_storeStrong(&v6->_recipeRecordSource, source);
   }
 
   return v7;
@@ -24,58 +24,58 @@
 
 - (NSArray)requiredRecipeKeys
 {
-  v2 = [(FCRecipeItemFactory *)self recipeRecordSource];
-  v3 = [FCRecipeItem keysForRecipeRecordWithRecordSource:v2];
+  recipeRecordSource = [(FCRecipeItemFactory *)self recipeRecordSource];
+  v3 = [FCRecipeItem keysForRecipeRecordWithRecordSource:recipeRecordSource];
 
   return v3;
 }
 
-- (id)recipeItemFromPBRecord:(id)a3 surfacedBy:(id)a4 error:(id *)a5
+- (id)recipeItemFromPBRecord:(id)record surfacedBy:(id)by error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
+  byCopy = by;
+  recordCopy = record;
   v10 = +[FCCKProtocolTranslator sharedInstance];
-  v11 = [(FCCKProtocolTranslator *)v10 recordFromPRecord:v9];
+  v11 = [(FCCKProtocolTranslator *)v10 recordFromPRecord:recordCopy];
 
-  v12 = [(FCRecipeItemFactory *)self recipeItemFromCKRecord:v11 surfacedBy:v8 error:a5];
+  v12 = [(FCRecipeItemFactory *)self recipeItemFromCKRecord:v11 surfacedBy:byCopy error:error];
 
   return v12;
 }
 
-- (id)recipeItemFromCKRecord:(id)a3 surfacedBy:(id)a4 error:(id *)a5
+- (id)recipeItemFromCKRecord:(id)record surfacedBy:(id)by error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 recordType];
-  v11 = [v10 isEqualToString:@"Recipe"];
+  recordCopy = record;
+  byCopy = by;
+  recordType = [recordCopy recordType];
+  v11 = [recordType isEqualToString:@"Recipe"];
 
   if (v11)
   {
-    v12 = [(FCRecipeItemFactory *)self recipeRecordSource];
-    v13 = [v12 convertRecord:v8];
+    recipeRecordSource = [(FCRecipeItemFactory *)self recipeRecordSource];
+    recordType2 = [recipeRecordSource convertRecord:recordCopy];
 
-    a5 = [[FCRecipeItem alloc] initWithRecipeRecord:v13 surfacedBy:v9 error:a5];
+    error = [[FCRecipeItem alloc] initWithRecipeRecord:recordType2 surfacedBy:byCopy error:error];
   }
 
   else
   {
-    if (!a5)
+    if (!error)
     {
       goto LABEL_6;
     }
 
     v14 = MEMORY[0x1E696ABC0];
     v15 = MEMORY[0x1E696AEC0];
-    v13 = [v8 recordType];
-    v16 = [v15 stringWithFormat:@"Can't created a recipe item from record type %@", v13];
-    *a5 = [v14 fc_errorWithCode:16 description:v16];
+    recordType2 = [recordCopy recordType];
+    v16 = [v15 stringWithFormat:@"Can't created a recipe item from record type %@", recordType2];
+    *error = [v14 fc_errorWithCode:16 description:v16];
 
-    a5 = 0;
+    error = 0;
   }
 
 LABEL_6:
 
-  return a5;
+  return error;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface ASDSubscriptionEntitlements
 + (id)sharedInstance;
 - (ASDSubscriptionEntitlements)init;
-- (id)_initWithServiceBroker:(id)a3;
+- (id)_initWithServiceBroker:(id)broker;
 - (void)dealloc;
-- (void)getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler:(id)a3;
-- (void)getCachedSubscriptionEntitlementsForSegment:(unint64_t)a3 withResultHandler:(id)a4;
-- (void)getSubscriptionEntitlementsForActiveAccountWithResultAndExpiryHandler:(id)a3;
-- (void)getSubscriptionEntitlementsForSegment:(unint64_t)a3 ignoreCaches:(BOOL)a4 isBackground:(BOOL)a5 requestingBundleId:(id)a6 withCacheInfoResultHandler:(id)a7;
-- (void)getSubscriptionEntitlementsForSegment:(unint64_t)a3 ignoreCaches:(BOOL)a4 requestingBundleId:(id)a5 withCacheInfoResultHandler:(id)a6;
-- (void)getSubscriptionEntitlementsIgnoreCaches:(BOOL)a3 forActiveAccountWithResultHandler:(id)a4;
-- (void)getSubscriptionEntitlementsIgnoreCaches:(void *)a3 forActiveAccountWithResultAndExpiryHandler:;
-- (void)setSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4;
-- (void)setSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4 segment:(unint64_t)a5;
+- (void)getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler:(id)handler;
+- (void)getCachedSubscriptionEntitlementsForSegment:(unint64_t)segment withResultHandler:(id)handler;
+- (void)getSubscriptionEntitlementsForActiveAccountWithResultAndExpiryHandler:(id)handler;
+- (void)getSubscriptionEntitlementsForSegment:(unint64_t)segment ignoreCaches:(BOOL)caches isBackground:(BOOL)background requestingBundleId:(id)id withCacheInfoResultHandler:(id)handler;
+- (void)getSubscriptionEntitlementsForSegment:(unint64_t)segment ignoreCaches:(BOOL)caches requestingBundleId:(id)id withCacheInfoResultHandler:(id)handler;
+- (void)getSubscriptionEntitlementsIgnoreCaches:(BOOL)caches forActiveAccountWithResultHandler:(id)handler;
+- (void)getSubscriptionEntitlementsIgnoreCaches:(void *)caches forActiveAccountWithResultAndExpiryHandler:;
+- (void)setSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d;
+- (void)setSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d segment:(unint64_t)segment;
 @end
 
 @implementation ASDSubscriptionEntitlements
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __45__ASDSubscriptionEntitlements_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D4A8 != -1)
   {
     dispatch_once(&qword_1ED90D4A8, block);
@@ -232,34 +232,34 @@ void __35__ASDSubscriptionEntitlements_init__block_invoke_10(uint64_t a1)
   [(ASDSubscriptionEntitlements *)&v3 dealloc];
 }
 
-- (id)_initWithServiceBroker:(id)a3
+- (id)_initWithServiceBroker:(id)broker
 {
-  v5 = a3;
+  brokerCopy = broker;
   v9.receiver = self;
   v9.super_class = ASDSubscriptionEntitlements;
   v6 = [(ASDSubscriptionEntitlements *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceBroker, a3);
+    objc_storeStrong(&v6->_serviceBroker, broker);
   }
 
   return v7;
 }
 
-- (void)setSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4
+- (void)setSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  dCopy = d;
   serviceBroker = self->_serviceBroker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __86__ASDSubscriptionEntitlements_setSubscriptionEntitlementsWithDictionary_forAccountID___block_invoke;
   v11[3] = &unk_1E7CDC198;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dictionaryCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = dictionaryCopy;
   [(ASDServiceBroker *)serviceBroker getIAPHistoryServiceWithCompletionHandler:v11];
 }
 
@@ -306,14 +306,14 @@ void __86__ASDSubscriptionEntitlements_setSubscriptionEntitlementsWithDictionary
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSubscriptionEntitlementsWithDictionary:(id)a3 forAccountID:(id)a4 segment:(unint64_t)a5
+- (void)setSubscriptionEntitlementsWithDictionary:(id)dictionary forAccountID:(id)d segment:(unint64_t)segment
 {
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  dCopy = d;
   if (__IsDaemon == 1)
   {
-    v10 = [NSClassFromString(&cfstr_Subscriptionen.isa) sharedInstance];
-    [v10 setCachedSubscriptionEntitlements:v8 forAccountID:v9 segment:a5];
+    nSClassFromString(&cfstr_Subscriptionen.isa) = [NSClassFromString(&cfstr_Subscriptionen.isa) sharedInstance];
+    [nSClassFromString(&cfstr_Subscriptionen.isa) setCachedSubscriptionEntitlements:dictionaryCopy forAccountID:dCopy segment:segment];
   }
 
   else
@@ -323,9 +323,9 @@ void __86__ASDSubscriptionEntitlements_setSubscriptionEntitlementsWithDictionary
     v12[1] = 3221225472;
     v12[2] = __94__ASDSubscriptionEntitlements_setSubscriptionEntitlementsWithDictionary_forAccountID_segment___block_invoke;
     v12[3] = &unk_1E7CDC1C0;
-    v13 = v8;
-    v14 = v9;
-    v15 = a5;
+    v13 = dictionaryCopy;
+    v14 = dCopy;
+    segmentCopy = segment;
     [(ASDServiceBroker *)serviceBroker getIAPHistoryServiceWithCompletionHandler:v12];
   }
 }
@@ -373,15 +373,15 @@ void __94__ASDSubscriptionEntitlements_setSubscriptionEntitlementsWithDictionary
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getSubscriptionEntitlementsForActiveAccountWithResultAndExpiryHandler:(id)a3
+- (void)getSubscriptionEntitlementsForActiveAccountWithResultAndExpiryHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __101__ASDSubscriptionEntitlements_getSubscriptionEntitlementsForActiveAccountWithResultAndExpiryHandler___block_invoke;
   v6[3] = &unk_1E7CDC1E8;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ASDSubscriptionEntitlements *)self getSubscriptionEntitlementsIgnoreCaches:v6 forActiveAccountWithResultAndExpiryHandler:?];
 }
 
@@ -404,33 +404,33 @@ void __101__ASDSubscriptionEntitlements_getSubscriptionEntitlementsForActiveAcco
   dispatch_async(v9, v13);
 }
 
-- (void)getSubscriptionEntitlementsIgnoreCaches:(void *)a3 forActiveAccountWithResultAndExpiryHandler:
+- (void)getSubscriptionEntitlementsIgnoreCaches:(void *)caches forActiveAccountWithResultAndExpiryHandler:
 {
-  v5 = a3;
-  v6 = v5;
-  if (a1)
+  cachesCopy = caches;
+  v6 = cachesCopy;
+  if (self)
   {
-    v7 = *(a1 + 8);
+    v7 = *(self + 8);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __114__ASDSubscriptionEntitlements_getSubscriptionEntitlementsIgnoreCaches_forActiveAccountWithResultAndExpiryHandler___block_invoke;
     v8[3] = &unk_1E7CDC238;
-    v9 = v5;
+    v9 = cachesCopy;
     v10 = a2;
     [v7 getIAPHistoryServiceWithCompletionHandler:v8];
   }
 }
 
-- (void)getSubscriptionEntitlementsIgnoreCaches:(BOOL)a3 forActiveAccountWithResultHandler:(id)a4
+- (void)getSubscriptionEntitlementsIgnoreCaches:(BOOL)caches forActiveAccountWithResultHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __105__ASDSubscriptionEntitlements_getSubscriptionEntitlementsIgnoreCaches_forActiveAccountWithResultHandler___block_invoke;
   v8[3] = &unk_1E7CDC1E8;
-  v9 = v6;
-  v7 = v6;
-  [(ASDSubscriptionEntitlements *)self getSubscriptionEntitlementsIgnoreCaches:a3 forActiveAccountWithResultAndExpiryHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(ASDSubscriptionEntitlements *)self getSubscriptionEntitlementsIgnoreCaches:caches forActiveAccountWithResultAndExpiryHandler:v8];
 }
 
 void __105__ASDSubscriptionEntitlements_getSubscriptionEntitlementsIgnoreCaches_forActiveAccountWithResultHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -522,21 +522,21 @@ void __114__ASDSubscriptionEntitlements_getSubscriptionEntitlementsIgnoreCaches_
   dispatch_async(v10, v14);
 }
 
-- (void)getSubscriptionEntitlementsForSegment:(unint64_t)a3 ignoreCaches:(BOOL)a4 requestingBundleId:(id)a5 withCacheInfoResultHandler:(id)a6
+- (void)getSubscriptionEntitlementsForSegment:(unint64_t)segment ignoreCaches:(BOOL)caches requestingBundleId:(id)id withCacheInfoResultHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
+  idCopy = id;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __128__ASDSubscriptionEntitlements_getSubscriptionEntitlementsForSegment_ignoreCaches_requestingBundleId_withCacheInfoResultHandler___block_invoke;
   v15[3] = &unk_1E7CDC288;
-  v17 = v11;
-  v18 = a3;
-  v19 = a4;
-  v16 = v10;
-  v13 = v10;
-  v14 = v11;
+  v17 = handlerCopy;
+  segmentCopy = segment;
+  cachesCopy = caches;
+  v16 = idCopy;
+  v13 = idCopy;
+  v14 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getIAPHistoryServiceWithCompletionHandler:v15];
 }
 
@@ -614,22 +614,22 @@ void __128__ASDSubscriptionEntitlements_getSubscriptionEntitlementsForSegment_ig
   dispatch_async(v11, v15);
 }
 
-- (void)getSubscriptionEntitlementsForSegment:(unint64_t)a3 ignoreCaches:(BOOL)a4 isBackground:(BOOL)a5 requestingBundleId:(id)a6 withCacheInfoResultHandler:(id)a7
+- (void)getSubscriptionEntitlementsForSegment:(unint64_t)segment ignoreCaches:(BOOL)caches isBackground:(BOOL)background requestingBundleId:(id)id withCacheInfoResultHandler:(id)handler
 {
-  v12 = a6;
-  v13 = a7;
+  idCopy = id;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __141__ASDSubscriptionEntitlements_getSubscriptionEntitlementsForSegment_ignoreCaches_isBackground_requestingBundleId_withCacheInfoResultHandler___block_invoke;
   v17[3] = &unk_1E7CDC2B0;
-  v19 = v13;
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v18 = v12;
-  v15 = v12;
-  v16 = v13;
+  v19 = handlerCopy;
+  segmentCopy = segment;
+  cachesCopy = caches;
+  backgroundCopy = background;
+  v18 = idCopy;
+  v15 = idCopy;
+  v16 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getIAPHistoryServiceWithCompletionHandler:v17];
 }
 
@@ -708,17 +708,17 @@ void __141__ASDSubscriptionEntitlements_getSubscriptionEntitlementsForSegment_ig
   dispatch_async(v11, v15);
 }
 
-- (void)getCachedSubscriptionEntitlementsForSegment:(unint64_t)a3 withResultHandler:(id)a4
+- (void)getCachedSubscriptionEntitlementsForSegment:(unint64_t)segment withResultHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __93__ASDSubscriptionEntitlements_getCachedSubscriptionEntitlementsForSegment_withResultHandler___block_invoke;
   v9[3] = &unk_1E7CDC2D8;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = handlerCopy;
+  segmentCopy = segment;
+  v8 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getIAPHistoryServiceWithCompletionHandler:v9];
 }
 
@@ -793,16 +793,16 @@ void __93__ASDSubscriptionEntitlements_getCachedSubscriptionEntitlementsForSegme
   dispatch_async(v9, v13);
 }
 
-- (void)getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler:(id)a3
+- (void)getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   serviceBroker = self->_serviceBroker;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __87__ASDSubscriptionEntitlements_getAppStoreConsumedIntroOfferFamilyIdsWithResultHandler___block_invoke;
   v7[3] = &unk_1E7CDC300;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   [(ASDServiceBroker *)serviceBroker getIAPHistoryServiceWithCompletionHandler:v7];
 }
 

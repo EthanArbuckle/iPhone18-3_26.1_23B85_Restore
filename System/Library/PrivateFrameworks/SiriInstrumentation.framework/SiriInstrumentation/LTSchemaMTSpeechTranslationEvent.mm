@@ -1,25 +1,25 @@
 @interface LTSchemaMTSpeechTranslationEvent
-- (BOOL)isEqual:(id)a3;
-- (LTSchemaMTSpeechTranslationEvent)initWithDictionary:(id)a3;
-- (LTSchemaMTSpeechTranslationEvent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LTSchemaMTSpeechTranslationEvent)initWithDictionary:(id)dictionary;
+- (LTSchemaMTSpeechTranslationEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LTSchemaMTSpeechTranslationEvent
 
-- (LTSchemaMTSpeechTranslationEvent)initWithDictionary:(id)a3
+- (LTSchemaMTSpeechTranslationEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = LTSchemaMTSpeechTranslationEvent;
   v5 = [(LTSchemaMTSpeechTranslationEvent *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"requestID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"requestID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(LTSchemaMTSpeechTranslationEvent *)v5 setRequestID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"selectedLocale"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"selectedLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(LTSchemaMTSpeechTranslationEvent *)v5 setSelectedLocale:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"responseTimeMs"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"responseTimeMs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -48,30 +48,30 @@
   return v5;
 }
 
-- (LTSchemaMTSpeechTranslationEvent)initWithJSON:(id)a3
+- (LTSchemaMTSpeechTranslationEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LTSchemaMTSpeechTranslationEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LTSchemaMTSpeechTranslationEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LTSchemaMTSpeechTranslationEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -84,30 +84,30 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_requestID)
   {
-    v4 = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"requestID"];
+    requestID = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
+    v5 = [requestID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"requestID"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[LTSchemaMTSpeechTranslationEvent responseTimeMs](self, "responseTimeMs")}];
-    [v3 setObject:v6 forKeyedSubscript:@"responseTimeMs"];
+    [dictionary setObject:v6 forKeyedSubscript:@"responseTimeMs"];
   }
 
   if (self->_selectedLocale)
   {
-    v7 = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"selectedLocale"];
+    selectedLocale = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
+    v8 = [selectedLocale copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"selectedLocale"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -127,28 +127,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
-  v6 = [v4 requestID];
-  if ((v5 != 0) == (v6 == 0))
+  requestID = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
+  requestID2 = [equalCopy requestID];
+  if ((requestID != 0) == (requestID2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
-  if (v7)
+  requestID3 = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
+  if (requestID3)
   {
-    v8 = v7;
-    v9 = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
-    v10 = [v4 requestID];
-    v11 = [v9 isEqual:v10];
+    v8 = requestID3;
+    requestID4 = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
+    requestID5 = [equalCopy requestID];
+    v11 = [requestID4 isEqual:requestID5];
 
     if (!v11)
     {
@@ -160,22 +160,22 @@
   {
   }
 
-  v5 = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
-  v6 = [v4 selectedLocale];
-  if ((v5 != 0) == (v6 == 0))
+  requestID = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
+  requestID2 = [equalCopy selectedLocale];
+  if ((requestID != 0) == (requestID2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
-  if (v12)
+  selectedLocale = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
+  if (selectedLocale)
   {
-    v13 = v12;
-    v14 = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
-    v15 = [v4 selectedLocale];
-    v16 = [v14 isEqual:v15];
+    v13 = selectedLocale;
+    selectedLocale2 = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
+    selectedLocale3 = [equalCopy selectedLocale];
+    v16 = [selectedLocale2 isEqual:selectedLocale3];
 
     if (!v16)
     {
@@ -187,9 +187,9 @@ LABEL_11:
   {
   }
 
-  if ((*&self->_has & 1) == (v4[28] & 1))
+  if ((*&self->_has & 1) == (equalCopy[28] & 1))
   {
-    if ((*&self->_has & 1) == 0 || (responseTimeMs = self->_responseTimeMs, responseTimeMs == [v4 responseTimeMs]))
+    if ((*&self->_has & 1) == 0 || (responseTimeMs = self->_responseTimeMs, responseTimeMs == [equalCopy responseTimeMs]))
     {
       v17 = 1;
       goto LABEL_13;
@@ -203,28 +203,28 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
+  toCopy = to;
+  requestID = [(LTSchemaMTSpeechTranslationEvent *)self requestID];
 
-  if (v4)
+  if (requestID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
+  selectedLocale = [(LTSchemaMTSpeechTranslationEvent *)self selectedLocale];
 
-  if (v5)
+  if (selectedLocale)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = v7;
+  v6 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

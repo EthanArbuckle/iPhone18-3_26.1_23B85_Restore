@@ -1,37 +1,37 @@
 @interface CBRTPLCRecoveryCurveParams
-- (BOOL)loadParametersFromParser:(id)a3;
-- (CBRTPLCRecoveryCurveParams)initWithParser:(id)a3;
+- (BOOL)loadParametersFromParser:(id)parser;
+- (CBRTPLCRecoveryCurveParams)initWithParser:(id)parser;
 - (void)dealloc;
 @end
 
 @implementation CBRTPLCRecoveryCurveParams
 
-- (BOOL)loadParametersFromParser:(id)a3
+- (BOOL)loadParametersFromParser:(id)parser
 {
   v110 = *MEMORY[0x1E69E9840];
-  v101 = self;
+  selfCopy = self;
   v100 = a2;
-  v99 = a3;
-  if (a3)
+  parserCopy = parser;
+  if (parser)
   {
     v95 = 0.0;
-    if ([v99 loadFixedFloat:@"LminProduct" toDestination:&v95])
+    if ([parserCopy loadFixedFloat:@"LminProduct" toDestination:&v95])
     {
       v91 = 0.0;
-      if ([v99 loadFixedFloat:@"edr-max-nits" toDestination:&v91])
+      if ([parserCopy loadFixedFloat:@"edr-max-nits" toDestination:&v91])
       {
-        v101->_apceTableSizeEDT = [v99 loadFloatArray:@"rtplc-hdr-recovery-curve-apce" toDestination:&v101->_apceTableEDT];
-        if (v101->_apceTableEDT)
+        selfCopy->_apceTableSizeEDT = [parserCopy loadFloatArray:@"rtplc-hdr-recovery-curve-apce" toDestination:&selfCopy->_apceTableEDT];
+        if (selfCopy->_apceTableEDT)
         {
-          if (v101->_apceTableSizeEDT)
+          if (selfCopy->_apceTableSizeEDT)
           {
-            for (i = 0; i < v101->_apceTableSizeEDT; ++i)
+            for (i = 0; i < selfCopy->_apceTableSizeEDT; ++i)
             {
-              if (v101->_apceTableEDT[i] < 0.0 || v101->_apceTableEDT[i] > 1.0)
+              if (selfCopy->_apceTableEDT[i] < 0.0 || selfCopy->_apceTableEDT[i] > 1.0)
               {
-                if (v101->_log)
+                if (selfCopy->_log)
                 {
-                  v37 = v101->_log;
+                  v37 = selfCopy->_log;
                 }
 
                 else
@@ -53,7 +53,7 @@
                 v79 = OS_LOG_TYPE_ERROR;
                 if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
                 {
-                  __os_log_helper_16_0_2_8_0_8_0(v109, i, COERCE__INT64(v101->_apceTableEDT[i]));
+                  __os_log_helper_16_0_2_8_0_8_0(v109, i, COERCE__INT64(selfCopy->_apceTableEDT[i]));
                   _os_log_error_impl(&dword_1DE8E5000, v80, v79, "The HDR recovery curve APCE table element #%lu with value %f is out of the valid [0, 1] range", v109, 0x16u);
                 }
 
@@ -62,13 +62,13 @@
               }
             }
 
-            for (j = 0; j < v101->_apceTableSizeEDT - 1; ++j)
+            for (j = 0; j < selfCopy->_apceTableSizeEDT - 1; ++j)
             {
-              if (v101->_apceTableEDT[j] > v101->_apceTableEDT[j + 1])
+              if (selfCopy->_apceTableEDT[j] > selfCopy->_apceTableEDT[j + 1])
               {
-                if (v101->_log)
+                if (selfCopy->_log)
                 {
-                  v35 = v101->_log;
+                  v35 = selfCopy->_log;
                 }
 
                 else
@@ -101,18 +101,18 @@
               }
             }
 
-            v101->_nitsTableSizeEDT = [v99 loadFloatArray:@"rtplc-hdr-recovery-curve-nits" toDestination:&v101->_nitsTableEDT];
-            if (v101->_nitsTableEDT)
+            selfCopy->_nitsTableSizeEDT = [parserCopy loadFloatArray:@"rtplc-hdr-recovery-curve-nits" toDestination:&selfCopy->_nitsTableEDT];
+            if (selfCopy->_nitsTableEDT)
             {
-              if (v101->_nitsTableSizeEDT)
+              if (selfCopy->_nitsTableSizeEDT)
               {
-                for (k = 0; k < v101->_nitsTableSizeEDT; ++k)
+                for (k = 0; k < selfCopy->_nitsTableSizeEDT; ++k)
                 {
-                  if (v101->_nitsTableEDT[k] < v95 || v101->_nitsTableEDT[k] > v91)
+                  if (selfCopy->_nitsTableEDT[k] < v95 || selfCopy->_nitsTableEDT[k] > v91)
                   {
-                    if (v101->_log)
+                    if (selfCopy->_log)
                     {
-                      v23 = v101->_log;
+                      v23 = selfCopy->_log;
                     }
 
                     else
@@ -134,7 +134,7 @@
                     v66 = OS_LOG_TYPE_ERROR;
                     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
                     {
-                      __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v108, k, COERCE__INT64(v101->_nitsTableEDT[k]), COERCE__INT64(v95), COERCE__INT64(v91));
+                      __os_log_helper_16_0_4_8_0_8_0_8_0_8_0(v108, k, COERCE__INT64(selfCopy->_nitsTableEDT[k]), COERCE__INT64(v95), COERCE__INT64(v91));
                       _os_log_error_impl(&dword_1DE8E5000, v67, v66, "The HDR recovery curve nits table element #%lu with value %f is out of the valid [%f, %f] range", v108, 0x2Au);
                     }
 
@@ -143,13 +143,13 @@
                   }
                 }
 
-                for (m = 0; m < v101->_nitsTableSizeEDT - 1; ++m)
+                for (m = 0; m < selfCopy->_nitsTableSizeEDT - 1; ++m)
                 {
-                  if (v101->_nitsTableEDT[m] < v101->_nitsTableEDT[m + 1])
+                  if (selfCopy->_nitsTableEDT[m] < selfCopy->_nitsTableEDT[m + 1])
                   {
-                    if (v101->_log)
+                    if (selfCopy->_log)
                     {
-                      v21 = v101->_log;
+                      v21 = selfCopy->_log;
                     }
 
                     else
@@ -182,39 +182,39 @@
                   }
                 }
 
-                if (v101->_apceTableSizeEDT == v101->_nitsTableSizeEDT)
+                if (selfCopy->_apceTableSizeEDT == selfCopy->_nitsTableSizeEDT)
                 {
                   v61 = objc_alloc_init(MEMORY[0x1E696AD60]);
-                  for (n = 0; n < v101->_apceTableSizeEDT; ++n)
+                  for (n = 0; n < selfCopy->_apceTableSizeEDT; ++n)
                   {
-                    v3 = v101->_apceTableEDT[n];
+                    v3 = selfCopy->_apceTableEDT[n];
                     v4 = "";
-                    if (n != v101->_apceTableSizeEDT - 1)
+                    if (n != selfCopy->_apceTableSizeEDT - 1)
                     {
                       v4 = ",";
                     }
 
-                    [v61 appendFormat:@" %f%s", v101->_apceTableEDT[n], v4];
+                    [v61 appendFormat:@" %f%s", selfCopy->_apceTableEDT[n], v4];
                   }
 
                   [v61 appendString:@" "];
                   v59 = objc_alloc_init(MEMORY[0x1E696AD60]);
-                  for (ii = 0; ii < v101->_nitsTableSizeEDT; ++ii)
+                  for (ii = 0; ii < selfCopy->_nitsTableSizeEDT; ++ii)
                   {
-                    v5 = v101->_nitsTableEDT[ii];
+                    v5 = selfCopy->_nitsTableEDT[ii];
                     v6 = "";
-                    if (ii != v101->_nitsTableSizeEDT - 1)
+                    if (ii != selfCopy->_nitsTableSizeEDT - 1)
                     {
                       v6 = ",";
                     }
 
-                    [v59 appendFormat:@" %f%s", v101->_nitsTableEDT[ii], v6];
+                    [v59 appendFormat:@" %f%s", selfCopy->_nitsTableEDT[ii], v6];
                   }
 
                   [v59 appendString:@" "];
-                  if (v101->_log)
+                  if (selfCopy->_log)
                   {
-                    v15 = v101->_log;
+                    v15 = selfCopy->_log;
                   }
 
                   else
@@ -234,13 +234,13 @@
 
                   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
                   {
-                    __os_log_helper_16_0_1_8_0(v106, v101->_apceTableSizeEDT);
+                    __os_log_helper_16_0_1_8_0(v106, selfCopy->_apceTableSizeEDT);
                     _os_log_impl(&dword_1DE8E5000, v15, OS_LOG_TYPE_DEFAULT, "APCETableSize=%lu", v106, 0xCu);
                   }
 
-                  if (v101->_log)
+                  if (selfCopy->_log)
                   {
-                    v13 = v101->_log;
+                    v13 = selfCopy->_log;
                   }
 
                   else
@@ -264,9 +264,9 @@
                     _os_log_impl(&dword_1DE8E5000, v13, OS_LOG_TYPE_DEFAULT, "APCETable={%s}", v105, 0xCu);
                   }
 
-                  if (v101->_log)
+                  if (selfCopy->_log)
                   {
-                    v11 = v101->_log;
+                    v11 = selfCopy->_log;
                   }
 
                   else
@@ -286,13 +286,13 @@
 
                   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
                   {
-                    __os_log_helper_16_0_1_8_0(v104, v101->_nitsTableSizeEDT);
+                    __os_log_helper_16_0_1_8_0(v104, selfCopy->_nitsTableSizeEDT);
                     _os_log_impl(&dword_1DE8E5000, v11, OS_LOG_TYPE_DEFAULT, "NitsTableSize=%lu", v104, 0xCu);
                   }
 
-                  if (v101->_log)
+                  if (selfCopy->_log)
                   {
-                    v9 = v101->_log;
+                    v9 = selfCopy->_log;
                   }
 
                   else
@@ -323,9 +323,9 @@
 
                 else
                 {
-                  if (v101->_log)
+                  if (selfCopy->_log)
                   {
-                    v17 = v101->_log;
+                    v17 = selfCopy->_log;
                   }
 
                   else
@@ -345,7 +345,7 @@
 
                   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
                   {
-                    __os_log_helper_16_0_2_8_0_8_0(v107, v101->_apceTableSizeEDT, v101->_nitsTableSizeEDT);
+                    __os_log_helper_16_0_2_8_0_8_0(v107, selfCopy->_apceTableSizeEDT, selfCopy->_nitsTableSizeEDT);
                     _os_log_error_impl(&dword_1DE8E5000, v17, OS_LOG_TYPE_ERROR, "The HDR recovery curve nits table and APCE table do not have matching size (apce.size=%lu, nits.size=%lu)", v107, 0x16u);
                   }
 
@@ -355,9 +355,9 @@
 
               else
               {
-                if (v101->_log)
+                if (selfCopy->_log)
                 {
-                  v27 = v101->_log;
+                  v27 = selfCopy->_log;
                 }
 
                 else
@@ -391,9 +391,9 @@
 
             else
             {
-              if (v101->_log)
+              if (selfCopy->_log)
               {
-                v31 = v101->_log;
+                v31 = selfCopy->_log;
               }
 
               else
@@ -427,9 +427,9 @@
 
           else
           {
-            if (v101->_log)
+            if (selfCopy->_log)
             {
-              v41 = v101->_log;
+              v41 = selfCopy->_log;
             }
 
             else
@@ -463,9 +463,9 @@
 
         else
         {
-          if (v101->_log)
+          if (selfCopy->_log)
           {
-            v45 = v101->_log;
+            v45 = selfCopy->_log;
           }
 
           else
@@ -499,9 +499,9 @@
 
       else
       {
-        if (v101->_log)
+        if (selfCopy->_log)
         {
-          v49 = v101->_log;
+          v49 = selfCopy->_log;
         }
 
         else
@@ -535,9 +535,9 @@
 
     else
     {
-      if (v101->_log)
+      if (selfCopy->_log)
       {
-        v53 = v101->_log;
+        v53 = selfCopy->_log;
       }
 
       else
@@ -571,9 +571,9 @@
 
   else
   {
-    if (v101->_log)
+    if (selfCopy->_log)
     {
-      v57 = v101->_log;
+      v57 = selfCopy->_log;
     }
 
     else
@@ -609,63 +609,63 @@ LABEL_178:
   return v102 & 1;
 }
 
-- (CBRTPLCRecoveryCurveParams)initWithParser:(id)a3
+- (CBRTPLCRecoveryCurveParams)initWithParser:(id)parser
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  parserCopy = parser;
   v10.receiver = self;
   v10.super_class = CBRTPLCRecoveryCurveParams;
-  v13 = [(CBRTPLCRecoveryCurveParams *)&v10 init];
-  if (v13 && v11)
+  selfCopy = [(CBRTPLCRecoveryCurveParams *)&v10 init];
+  if (selfCopy && parserCopy)
   {
     v3 = os_log_create("com.apple.CoreBrightness.BacklightNode", "RTPLCRecoveryCurve");
-    v13->_log = v3;
+    selfCopy->_log = v3;
     v9 = 0;
-    if ([(CBRTPLCRecoveryCurveParams *)v13 loadParametersFromParser:v11])
+    if ([(CBRTPLCRecoveryCurveParams *)selfCopy loadParametersFromParser:parserCopy])
     {
       v4 = [CBFloatArray alloc];
-      v5 = [(CBFloatArray *)v4 initWithValues:v13->_apceTableEDT andCount:v13->_apceTableSizeEDT];
-      v13->_apce = v5;
+      v5 = [(CBFloatArray *)v4 initWithValues:selfCopy->_apceTableEDT andCount:selfCopy->_apceTableSizeEDT];
+      selfCopy->_apce = v5;
       v6 = [CBFloatArray alloc];
-      v7 = [(CBFloatArray *)v6 initWithValues:v13->_nitsTableEDT andCount:v13->_nitsTableSizeEDT];
-      v13->_nits = v7;
+      v7 = [(CBFloatArray *)v6 initWithValues:selfCopy->_nitsTableEDT andCount:selfCopy->_nitsTableSizeEDT];
+      selfCopy->_nits = v7;
       v9 = 1;
     }
 
-    if (v13->_apceTableEDT)
+    if (selfCopy->_apceTableEDT)
     {
-      free(v13->_apceTableEDT);
+      free(selfCopy->_apceTableEDT);
     }
 
-    if (v13->_nitsTableEDT)
+    if (selfCopy->_nitsTableEDT)
     {
-      free(v13->_nitsTableEDT);
+      free(selfCopy->_nitsTableEDT);
     }
 
     if ((v9 & 1) == 0)
     {
-      MEMORY[0x1E69E5920](v13);
+      MEMORY[0x1E69E5920](selfCopy);
       return 0;
     }
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   MEMORY[0x1E69E5920](self->_nits);
-  v2 = MEMORY[0x1E69E5920](v5->_apce).n128_u64[0];
-  if (v5->_log)
+  v2 = MEMORY[0x1E69E5920](selfCopy->_apce).n128_u64[0];
+  if (selfCopy->_log)
   {
-    v2 = MEMORY[0x1E69E5920](v5->_log).n128_u64[0];
-    v5->_log = 0;
+    v2 = MEMORY[0x1E69E5920](selfCopy->_log).n128_u64[0];
+    selfCopy->_log = 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = CBRTPLCRecoveryCurveParams;
   [(CBRTPLCRecoveryCurveParams *)&v3 dealloc];
 }

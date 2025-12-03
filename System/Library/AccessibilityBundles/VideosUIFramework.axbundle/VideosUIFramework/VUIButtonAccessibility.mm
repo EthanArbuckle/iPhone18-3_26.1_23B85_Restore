@@ -1,5 +1,5 @@
 @interface VUIButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axContainedInMediaShowcasingMetadataView;
 - (BOOL)_axIsFavoriteBarButton;
 - (BOOL)_axIsMoreInfoButton;
@@ -16,16 +16,16 @@
 
 @implementation VUIButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIButton" hasProperty:@"textContentView" withType:"@"];
-  [v3 validateClass:@"VUILabel" isKindOfClass:@"UILabel"];
-  [v3 validateClass:@"VUIMediaTagsView"];
-  [v3 validateClass:@"VUIButton" hasInstanceMethod:@"_buttonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIButton" hasProperty:@"buttonType" withType:"Q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIButton" hasProperty:@"textContentView" withType:"@"];
+  [validationsCopy validateClass:@"VUILabel" isKindOfClass:@"UILabel"];
+  [validationsCopy validateClass:@"VUIMediaTagsView"];
+  [validationsCopy validateClass:@"VUIButton" hasInstanceMethod:@"_buttonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"UIImage" hasInstanceVariable:@"_imageAsset" withType:"UIImageAsset"];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIButton" hasProperty:@"buttonType" withType:"Q"];
 }
 
 - (BOOL)_axContainedInMediaShowcasingMetadataView
@@ -91,8 +91,8 @@ uint64_t __68__VUIButtonAccessibility__accessibilityLoadAccessibilityInformation
   v3 = *MEMORY[0x29EDC7F70] | [(VUIButtonAccessibility *)&v8 accessibilityTraits];
   if ([(VUIButtonAccessibility *)self _axIsFavoriteBarButton])
   {
-    v4 = [(VUIButtonAccessibility *)self _axAssetName];
-    v5 = [v4 containsString:@"fill"];
+    _axAssetName = [(VUIButtonAccessibility *)self _axAssetName];
+    v5 = [_axAssetName containsString:@"fill"];
 
     v6 = *MEMORY[0x29EDC7FC0];
     if ((v5 & 1) == 0)
@@ -114,7 +114,7 @@ uint64_t __68__VUIButtonAccessibility__accessibilityLoadAccessibilityInformation
   {
     v5 = (*(v3 + 16))(v3);
 LABEL_5:
-    v6 = v5;
+    _atvaccessibilityITMLAccessibilityContent = v5;
     goto LABEL_6;
   }
 
@@ -127,71 +127,71 @@ LABEL_5:
   if ([(VUIButtonAccessibility *)self _axIsSmartPlayButton])
   {
     v8 = [(VUIButtonAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_360];
-    v9 = [v8 accessibilityLabel];
+    accessibilityLabel = [v8 accessibilityLabel];
     v10 = accessibilityLocalizedString(@"play.button");
-    v6 = __UIAXStringForVariables();
+    _atvaccessibilityITMLAccessibilityContent = __UIAXStringForVariables();
   }
 
   else
   {
-    v6 = [(VUIButtonAccessibility *)self _atvaccessibilityITMLAccessibilityContent];
-    if (![v6 length])
+    _atvaccessibilityITMLAccessibilityContent = [(VUIButtonAccessibility *)self _atvaccessibilityITMLAccessibilityContent];
+    if (![_atvaccessibilityITMLAccessibilityContent length])
     {
       v24 = 0;
       objc_opt_class();
       v11 = [(VUIButtonAccessibility *)self safeValueForKey:@"textContentView"];
       v12 = __UIAccessibilityCastAsClass();
 
-      v13 = [v12 text];
+      text = [v12 text];
 
-      if ([v13 length])
+      if ([text length])
       {
-        v14 = [(VUIButtonAccessibility *)self accessibilityIdentifier];
-        v15 = [v14 isEqualToString:@"BrandLinkButton"];
+        accessibilityIdentifier = [(VUIButtonAccessibility *)self accessibilityIdentifier];
+        v15 = [accessibilityIdentifier isEqualToString:@"BrandLinkButton"];
 
         if (v15)
         {
           v16 = [(VUIButtonAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_372];
-          v17 = [v16 accessibilityLabel];
+          accessibilityLabel2 = [v16 accessibilityLabel];
           v18 = accessibilityLocalizedString(@"brand.link.button");
-          [v17 length];
-          v6 = AXCFormattedString();
+          [accessibilityLabel2 length];
+          _atvaccessibilityITMLAccessibilityContent = AXCFormattedString();
         }
 
         else
         {
           v22 = *MEMORY[0x29EDC7378];
-          v6 = AXAttributedStringForBetterPronuciation();
+          _atvaccessibilityITMLAccessibilityContent = AXAttributedStringForBetterPronuciation();
         }
 
-        v20 = v13;
+        accessibilityLabel3 = text;
       }
 
       else
       {
         v19 = [(VUIButtonAccessibility *)self _accessibilityFindSubviewDescendant:&__block_literal_global_383];
-        v20 = [v19 accessibilityLabel];
+        accessibilityLabel3 = [v19 accessibilityLabel];
 
-        if ([v20 length])
+        if ([accessibilityLabel3 length])
         {
-          v21 = v20;
+          accessibilityLabel4 = accessibilityLabel3;
         }
 
         else
         {
           v23.receiver = self;
           v23.super_class = VUIButtonAccessibility;
-          v21 = [(VUIButtonAccessibility *)&v23 accessibilityLabel];
+          accessibilityLabel4 = [(VUIButtonAccessibility *)&v23 accessibilityLabel];
         }
 
-        v6 = v21;
+        _atvaccessibilityITMLAccessibilityContent = accessibilityLabel4;
       }
     }
   }
 
 LABEL_6:
 
-  return v6;
+  return _atvaccessibilityITMLAccessibilityContent;
 }
 
 uint64_t __44__VUIButtonAccessibility_accessibilityLabel__block_invoke(uint64_t a1, void *a2)
@@ -310,8 +310,8 @@ uint64_t __38__VUIButtonAccessibility__axAssetName__block_invoke(uint64_t a1, vo
     return 0;
   }
 
-  v3 = [(VUIButtonAccessibility *)self _axAssetName];
-  v4 = [v3 containsString:@"star"];
+  _axAssetName = [(VUIButtonAccessibility *)self _axAssetName];
+  v4 = [_axAssetName containsString:@"star"];
 
   return v4;
 }
@@ -324,8 +324,8 @@ uint64_t __38__VUIButtonAccessibility__axAssetName__block_invoke(uint64_t a1, vo
     return 0;
   }
 
-  v3 = [(VUIButtonAccessibility *)self _axAssetName];
-  v4 = [v3 containsString:@"sportscourt"];
+  _axAssetName = [(VUIButtonAccessibility *)self _axAssetName];
+  v4 = [_axAssetName containsString:@"sportscourt"];
 
   return v4;
 }
@@ -337,19 +337,19 @@ uint64_t __38__VUIButtonAccessibility__axAssetName__block_invoke(uint64_t a1, vo
     return 0;
   }
 
-  v3 = [(VUIButtonAccessibility *)self _axAssetName];
-  v4 = [v3 containsString:@"text.page"];
+  _axAssetName = [(VUIButtonAccessibility *)self _axAssetName];
+  v4 = [_axAssetName containsString:@"text.page"];
 
   return v4;
 }
 
 - (BOOL)_axIsSmartPlayButton
 {
-  v3 = [(VUIButtonAccessibility *)self accessibilityIdentifier];
-  if ([v3 containsString:@"canonical.play"])
+  accessibilityIdentifier = [(VUIButtonAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier containsString:@"canonical.play"])
   {
-    v4 = [(VUIButtonAccessibility *)self accessibilityIdentifier];
-    v5 = [v4 containsString:@"smartButton"];
+    accessibilityIdentifier2 = [(VUIButtonAccessibility *)self accessibilityIdentifier];
+    v5 = [accessibilityIdentifier2 containsString:@"smartButton"];
   }
 
   else

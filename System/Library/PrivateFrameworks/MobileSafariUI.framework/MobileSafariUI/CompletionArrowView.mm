@@ -1,39 +1,39 @@
 @interface CompletionArrowView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (UITableViewCell)parentCell;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)setUsesDownBackwardCompletionArrow:(BOOL)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)setUsesDownBackwardCompletionArrow:(BOOL)arrow;
 @end
 
 @implementation CompletionArrowView
 
-- (void)setUsesDownBackwardCompletionArrow:(BOOL)a3
+- (void)setUsesDownBackwardCompletionArrow:(BOOL)arrow
 {
-  v3 = a3;
-  if (!self->_buttonConfiguration || self->_usesDownBackwardCompletionArrow != a3)
+  arrowCopy = arrow;
+  if (!self->_buttonConfiguration || self->_usesDownBackwardCompletionArrow != arrow)
   {
-    self->_usesDownBackwardCompletionArrow = a3;
+    self->_usesDownBackwardCompletionArrow = arrow;
     if (!self->_buttonConfiguration)
     {
-      v5 = [MEMORY[0x277D75230] plainButtonConfiguration];
+      plainButtonConfiguration = [MEMORY[0x277D75230] plainButtonConfiguration];
       buttonConfiguration = self->_buttonConfiguration;
-      self->_buttonConfiguration = v5;
+      self->_buttonConfiguration = plainButtonConfiguration;
 
-      v7 = [MEMORY[0x277D75348] clearColor];
-      v8 = [(UIButtonConfiguration *)self->_buttonConfiguration background];
-      [v8 setBackgroundColor:v7];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      background = [(UIButtonConfiguration *)self->_buttonConfiguration background];
+      [background setBackgroundColor:clearColor];
 
       [(UIButtonConfiguration *)self->_buttonConfiguration setContentInsets:*MEMORY[0x277D75060], *(MEMORY[0x277D75060] + 8), *(MEMORY[0x277D75060] + 16), *(MEMORY[0x277D75060] + 24)];
       v9 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:2];
       v10 = MEMORY[0x277D755D0];
-      v11 = [MEMORY[0x277D75348] secondaryLabelColor];
-      v12 = [v10 configurationWithHierarchicalColor:v11];
+      secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+      v12 = [v10 configurationWithHierarchicalColor:secondaryLabelColor];
       v13 = [v12 configurationByApplyingConfiguration:v9];
 
       [(UIButtonConfiguration *)self->_buttonConfiguration setPreferredSymbolConfigurationForImage:v13];
     }
 
-    if (v3)
+    if (arrowCopy)
     {
       v14 = @"arrow.down.backward.circle";
     }
@@ -52,10 +52,10 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(CompletionArrowView *)self bounds];
   v8 = v7;
   v10 = v9;
@@ -82,12 +82,12 @@
     v17 = v23;
     v25 = v24;
     height = v26;
-    v27 = [(CompletionArrowView *)self _sf_usesLeftToRightLayout];
+    _sf_usesLeftToRightLayout = [(CompletionArrowView *)self _sf_usesLeftToRightLayout];
     v28 = v16;
     v29 = v17;
     v30 = width;
     v31 = height;
-    if (v27)
+    if (_sf_usesLeftToRightLayout)
     {
       MaxX = CGRectGetMaxX(*&v28);
       v43.origin.x = v22;
@@ -150,20 +150,20 @@
   return v36;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = CompletionArrowView;
-  v8 = [(CompletionArrowView *)&v11 hitTest:v7 withEvent:x, y];
-  if (v8 || ![(CompletionArrowView *)self pointInside:v7 withEvent:x, y])
+  v8 = [(CompletionArrowView *)&v11 hitTest:eventCopy withEvent:x, y];
+  if (v8 || ![(CompletionArrowView *)self pointInside:eventCopy withEvent:x, y])
   {
     self = v8;
   }
 
-  v9 = self;
+  selfCopy = self;
 
   return self;
 }

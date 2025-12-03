@@ -15,19 +15,19 @@
   if (!v12 || !v13 || !v14 || !v15 || !v16)
   {
     v30 = +[SSLogConfig sharedConfig];
-    v31 = [v30 shouldLog];
+    shouldLog = [v30 shouldLog];
     if ([v30 shouldLogToDisk])
     {
-      v32 = v31 | 2;
+      v32 = shouldLog | 2;
     }
 
     else
     {
-      v32 = v31;
+      v32 = shouldLog;
     }
 
-    v33 = [v30 OSLogObject];
-    if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v30 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v34 = v32;
     }
@@ -47,11 +47,11 @@
       {
 LABEL_19:
 
-        v29 = 0;
+        selfCopy = 0;
         goto LABEL_20;
       }
 
-      v33 = [NSString stringWithCString:v35 encoding:4, v39, v37];
+      oSLogObject = [NSString stringWithCString:v35 encoding:4, v39, v37];
       free(v35);
       SSFileLog();
     }
@@ -86,10 +86,10 @@ LABEL_19:
   }
 
   self = v18;
-  v29 = self;
+  selfCopy = self;
 LABEL_20:
 
-  return v29;
+  return selfCopy;
 }
 
 @end

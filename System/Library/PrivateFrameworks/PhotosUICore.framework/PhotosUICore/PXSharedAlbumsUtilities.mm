@@ -1,79 +1,79 @@
 @interface PXSharedAlbumsUtilities
-+ (BOOL)canContributeAssetsToSharedAlbum:(id)a3;
-+ (BOOL)canSetMultipleContributorsEnabledForSharedAlbum:(id)a3;
-+ (BOOL)hasReachedLimitOfAcceptedSharedAlbumsInPhotoLibrary:(id)a3;
-+ (BOOL)multipleContributorsEnabledForSharedAlbum:(id)a3;
-+ (BOOL)notificationsEnabledForSharedAlbum:(id)a3;
-+ (BOOL)ownerIsVettedForSharedAlbum:(id)a3;
-+ (BOOL)sharedAlbumIsAppleFamily:(id)a3;
-+ (BOOL)sharedAlbumIsOwned:(id)a3;
-+ (BOOL)sharedAlbumIsPending:(id)a3;
-+ (BOOL)sharedAlbumsEnabledForPhotoLibrary:(id)a3;
-+ (id)fetchSharedAlbumWithScopeIdentifier:(id)a3 inPhotoLibrary:(id)a4 allowPending:(BOOL)a5;
-+ (id)fetchSharedAlbumWithTitle:(id)a3 inPhotoLibrary:(id)a4 allowPending:(BOOL)a5;
-+ (id)fetchSharedAlbumsInPhotoLibrary:(id)a3 allowPending:(BOOL)a4;
-+ (id)localizedSharedByDescriptionForSharedAlbum:(id)a3;
-+ (id)ownerForSharedAlbum:(id)a3;
-+ (id)publicURLForSharedAlbum:(id)a3;
-+ (id)scopeIdentifierForSharedAlbum:(id)a3;
-+ (void)acceptInvitationToSharedAlbum:(id)a3 completionHandler:(id)a4;
-+ (void)addComment:(id)a3 toAsset:(id)a4 completionHandler:(id)a5;
-+ (void)declineInvitationToSharedAlbum:(id)a3 completionHandler:(id)a4;
-+ (void)inviteParticipants:(id)a3 toSharedAlbum:(id)a4 completionHandler:(id)a5;
-+ (void)markInvitationToSharedAlbumAsSpam:(id)a3 completionHandler:(id)a4;
-+ (void)markSharedAlbumAsViewed:(id)a3;
-+ (void)removeComments:(id)a3 fromAsset:(id)a4 completionHandler:(id)a5;
-+ (void)removeParticipants:(id)a3 fromSharedAlbum:(id)a4 completionHandler:(id)a5;
-+ (void)resendInvitationToParticipant:(id)a3 inSharedAlbum:(id)a4 completionHandler:(id)a5;
-+ (void)setLikedTo:(BOOL)a3 forAssets:(id)a4 completionHandler:(id)a5;
-+ (void)setMultipleContributorsEnabled:(BOOL)a3 forSharedAlbum:(id)a4 completionHandler:(id)a5;
-+ (void)setNotificationsEnabled:(BOOL)a3 forSharedAlbum:(id)a4 completionHandler:(id)a5;
-+ (void)setPublicURLEnabled:(BOOL)a3 forSharedAlbum:(id)a4 completionHandler:(id)a5;
-+ (void)setTitle:(id)a3 forSharedAlbum:(id)a4 completionHandler:(id)a5;
++ (BOOL)canContributeAssetsToSharedAlbum:(id)album;
++ (BOOL)canSetMultipleContributorsEnabledForSharedAlbum:(id)album;
++ (BOOL)hasReachedLimitOfAcceptedSharedAlbumsInPhotoLibrary:(id)library;
++ (BOOL)multipleContributorsEnabledForSharedAlbum:(id)album;
++ (BOOL)notificationsEnabledForSharedAlbum:(id)album;
++ (BOOL)ownerIsVettedForSharedAlbum:(id)album;
++ (BOOL)sharedAlbumIsAppleFamily:(id)family;
++ (BOOL)sharedAlbumIsOwned:(id)owned;
++ (BOOL)sharedAlbumIsPending:(id)pending;
++ (BOOL)sharedAlbumsEnabledForPhotoLibrary:(id)library;
++ (id)fetchSharedAlbumWithScopeIdentifier:(id)identifier inPhotoLibrary:(id)library allowPending:(BOOL)pending;
++ (id)fetchSharedAlbumWithTitle:(id)title inPhotoLibrary:(id)library allowPending:(BOOL)pending;
++ (id)fetchSharedAlbumsInPhotoLibrary:(id)library allowPending:(BOOL)pending;
++ (id)localizedSharedByDescriptionForSharedAlbum:(id)album;
++ (id)ownerForSharedAlbum:(id)album;
++ (id)publicURLForSharedAlbum:(id)album;
++ (id)scopeIdentifierForSharedAlbum:(id)album;
++ (void)acceptInvitationToSharedAlbum:(id)album completionHandler:(id)handler;
++ (void)addComment:(id)comment toAsset:(id)asset completionHandler:(id)handler;
++ (void)declineInvitationToSharedAlbum:(id)album completionHandler:(id)handler;
++ (void)inviteParticipants:(id)participants toSharedAlbum:(id)album completionHandler:(id)handler;
++ (void)markInvitationToSharedAlbumAsSpam:(id)spam completionHandler:(id)handler;
++ (void)markSharedAlbumAsViewed:(id)viewed;
++ (void)removeComments:(id)comments fromAsset:(id)asset completionHandler:(id)handler;
++ (void)removeParticipants:(id)participants fromSharedAlbum:(id)album completionHandler:(id)handler;
++ (void)resendInvitationToParticipant:(id)participant inSharedAlbum:(id)album completionHandler:(id)handler;
++ (void)setLikedTo:(BOOL)to forAssets:(id)assets completionHandler:(id)handler;
++ (void)setMultipleContributorsEnabled:(BOOL)enabled forSharedAlbum:(id)album completionHandler:(id)handler;
++ (void)setNotificationsEnabled:(BOOL)enabled forSharedAlbum:(id)album completionHandler:(id)handler;
++ (void)setPublicURLEnabled:(BOOL)enabled forSharedAlbum:(id)album completionHandler:(id)handler;
++ (void)setTitle:(id)title forSharedAlbum:(id)album completionHandler:(id)handler;
 - (PXSharedAlbumsUtilities)init;
 @end
 
 @implementation PXSharedAlbumsUtilities
 
-+ (BOOL)sharedAlbumsEnabledForPhotoLibrary:(id)a3
++ (BOOL)sharedAlbumsEnabledForPhotoLibrary:(id)library
 {
-  v3 = a3;
-  v4 = _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE06sharedB7Enabled3forSbSo14PHPhotoLibraryC_tFZ_0(v3);
+  libraryCopy = library;
+  v4 = _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE06sharedB7Enabled3forSbSo14PHPhotoLibraryC_tFZ_0(libraryCopy);
 
   return v4 & 1;
 }
 
-+ (id)fetchSharedAlbumWithScopeIdentifier:(id)a3 inPhotoLibrary:(id)a4 allowPending:(BOOL)a5
++ (id)fetchSharedAlbumWithScopeIdentifier:(id)identifier inPhotoLibrary:(id)library allowPending:(BOOL)pending
 {
   v7 = sub_1A524C674();
   v9 = v8;
-  v10 = a4;
-  v11 = sub_1A4076458(v10, v7, v9, 0, 0, a5);
-  v12 = [v11 firstObject];
+  libraryCopy = library;
+  v11 = sub_1A4076458(libraryCopy, v7, v9, 0, 0, pending);
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-+ (id)fetchSharedAlbumWithTitle:(id)a3 inPhotoLibrary:(id)a4 allowPending:(BOOL)a5
++ (id)fetchSharedAlbumWithTitle:(id)title inPhotoLibrary:(id)library allowPending:(BOOL)pending
 {
   v7 = sub_1A524C674();
   v9 = v8;
-  v10 = a4;
-  v11 = sub_1A4076458(v10, 0, 0, v7, v9, a5);
-  v12 = [v11 firstObject];
+  libraryCopy = library;
+  v11 = sub_1A4076458(libraryCopy, 0, 0, v7, v9, pending);
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-+ (id)fetchSharedAlbumsInPhotoLibrary:(id)a3 allowPending:(BOOL)a4
++ (id)fetchSharedAlbumsInPhotoLibrary:(id)library allowPending:(BOOL)pending
 {
-  v5 = a3;
-  v6 = sub_1A4076458(v5, 0, 0, 0, 0, a4);
+  libraryCopy = library;
+  v6 = sub_1A4076458(libraryCopy, 0, 0, 0, 0, pending);
 
   return v6;
 }
 
-+ (BOOL)sharedAlbumIsOwned:(id)a3
++ (BOOL)sharedAlbumIsOwned:(id)owned
 {
   objc_opt_self();
   v3 = swift_dynamicCastObjCClass();
@@ -96,7 +96,7 @@
   return v4;
 }
 
-+ (BOOL)sharedAlbumIsAppleFamily:(id)a3
++ (BOOL)sharedAlbumIsAppleFamily:(id)family
 {
   objc_opt_self();
   v3 = swift_dynamicCastObjCClass();
@@ -108,34 +108,34 @@
   return v3;
 }
 
-+ (BOOL)sharedAlbumIsPending:(id)a3
++ (BOOL)sharedAlbumIsPending:(id)pending
 {
-  v3 = a3;
-  v4 = _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE20sharedAlbumIsPendingySbSo17PHAssetCollectionCFZ_0(v3);
+  pendingCopy = pending;
+  v4 = _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE20sharedAlbumIsPendingySbSo17PHAssetCollectionCFZ_0(pendingCopy);
 
   return v4 & 1;
 }
 
-+ (id)ownerForSharedAlbum:(id)a3
++ (id)ownerForSharedAlbum:(id)album
 {
-  v3 = a3;
-  v4 = _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE5owner14forSharedAlbumSo0aI11ParticipantCSgSo17PHAssetCollectionC_tFZ_0(v3);
+  albumCopy = album;
+  v4 = _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE5owner14forSharedAlbumSo0aI11ParticipantCSgSo17PHAssetCollectionC_tFZ_0(albumCopy);
 
   return v4;
 }
 
-+ (BOOL)ownerIsVettedForSharedAlbum:(id)a3
++ (BOOL)ownerIsVettedForSharedAlbum:(id)album
 {
-  v3 = a3;
-  v4 = _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE13ownerIsVetted14forSharedAlbumSbSo17PHAssetCollectionC_tFZ_0(v3);
+  albumCopy = album;
+  v4 = _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE13ownerIsVetted14forSharedAlbumSbSo17PHAssetCollectionC_tFZ_0(albumCopy);
 
   return v4 & 1;
 }
 
-+ (id)scopeIdentifierForSharedAlbum:(id)a3
++ (id)scopeIdentifierForSharedAlbum:(id)album
 {
-  v3 = a3;
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE15scopeIdentifier14forSharedAlbumSSSgSo17PHAssetCollectionC_tFZ_0(v3);
+  albumCopy = album;
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE15scopeIdentifier14forSharedAlbumSSSgSo17PHAssetCollectionC_tFZ_0(albumCopy);
   v5 = v4;
 
   if (v5)
@@ -151,37 +151,37 @@
   return v6;
 }
 
-+ (BOOL)canContributeAssetsToSharedAlbum:(id)a3
++ (BOOL)canContributeAssetsToSharedAlbum:(id)album
 {
   v4 = objc_opt_self();
-  v5 = a3;
+  albumCopy = album;
   if ([v4 sharedAlbumIsOwned_])
   {
-    v6 = 1;
+    multipleContributorsEnabledForSharedAlbum_ = 1;
   }
 
   else
   {
-    v6 = [v4 multipleContributorsEnabledForSharedAlbum_];
+    multipleContributorsEnabledForSharedAlbum_ = [v4 multipleContributorsEnabledForSharedAlbum_];
   }
 
-  return v6;
+  return multipleContributorsEnabledForSharedAlbum_;
 }
 
-+ (id)localizedSharedByDescriptionForSharedAlbum:(id)a3
++ (id)localizedSharedByDescriptionForSharedAlbum:(id)album
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  static PXSharedAlbumsUtilities.localizedSharedByDescription(forSharedAlbum:)(v4);
+  albumCopy = album;
+  static PXSharedAlbumsUtilities.localizedSharedByDescription(forSharedAlbum:)(albumCopy);
 
   v5 = sub_1A524C634();
 
   return v5;
 }
 
-+ (void)setTitle:(id)a3 forSharedAlbum:(id)a4 completionHandler:(id)a5
++ (void)setTitle:(id)title forSharedAlbum:(id)album completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_1A524C674();
   v9 = v8;
   if (v6)
@@ -196,33 +196,33 @@
     v10 = 0;
   }
 
-  v11 = a4;
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE8setTitle_14forSharedAlbum17completionHandlerySS_So17PHAssetCollectionCySb_s5Error_pSgtcSgtFZ_0(v7, v9, v11, v6, v10);
+  albumCopy = album;
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE8setTitle_14forSharedAlbum17completionHandlerySS_So17PHAssetCollectionCySb_s5Error_pSgtcSgtFZ_0(v7, v9, albumCopy, v6, v10);
   sub_1A3C33378(v6);
 }
 
-+ (BOOL)hasReachedLimitOfAcceptedSharedAlbumsInPhotoLibrary:(id)a3
++ (BOOL)hasReachedLimitOfAcceptedSharedAlbumsInPhotoLibrary:(id)library
 {
-  v3 = a3;
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE031hasReachedLimitOfAcceptedSharedB02inSbSo14PHPhotoLibraryC_tFZ_0(v3);
+  libraryCopy = library;
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE031hasReachedLimitOfAcceptedSharedB02inSbSo14PHPhotoLibraryC_tFZ_0(libraryCopy);
   v5 = v4;
 
   return v5 & 1;
 }
 
-+ (void)acceptInvitationToSharedAlbum:(id)a3 completionHandler:(id)a4
++ (void)acceptInvitationToSharedAlbum:(id)album completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   _Block_copy(v5);
-  v6 = a3;
-  sub_1A4088E00(v6, v5);
+  albumCopy = album;
+  sub_1A4088E00(albumCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-+ (void)declineInvitationToSharedAlbum:(id)a3 completionHandler:(id)a4
++ (void)declineInvitationToSharedAlbum:(id)album completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -235,14 +235,14 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  sub_1A4089140(v7, v5, v6, &unk_1F16F43E8, &unk_1A5316968, "An invalid asset collection was passed in to resendInvitationToParticipant:");
+  albumCopy = album;
+  sub_1A4089140(albumCopy, v5, v6, &unk_1F16F43E8, &unk_1A5316968, "An invalid asset collection was passed in to resendInvitationToParticipant:");
   sub_1A3C33378(v5);
 }
 
-+ (void)markInvitationToSharedAlbumAsSpam:(id)a3 completionHandler:(id)a4
++ (void)markInvitationToSharedAlbumAsSpam:(id)spam completionHandler:(id)handler
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(handler);
   if (v5)
   {
     v6 = swift_allocObject();
@@ -255,14 +255,14 @@
     v6 = 0;
   }
 
-  v7 = a3;
-  sub_1A4089140(v7, v5, v6, &unk_1F16F4370, &unk_1A5316948, "An invalid asset collection was passed in to markInvitationToSharedAlbumAsSpam:");
+  spamCopy = spam;
+  sub_1A4089140(spamCopy, v5, v6, &unk_1F16F4370, &unk_1A5316948, "An invalid asset collection was passed in to markInvitationToSharedAlbumAsSpam:");
   sub_1A3C33378(v5);
 }
 
-+ (void)inviteParticipants:(id)a3 toSharedAlbum:(id)a4 completionHandler:(id)a5
++ (void)inviteParticipants:(id)participants toSharedAlbum:(id)album completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   sub_1A3C52C70(0, &qword_1EB12C1B0);
   v7 = sub_1A524CA34();
   if (v6)
@@ -277,14 +277,14 @@
     v8 = 0;
   }
 
-  v9 = a4;
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE18inviteParticipants_13toSharedAlbum17completionHandlerySaySo0aJ11ParticipantCG_So17PHAssetCollectionCySb_s5Error_pSgtcSgtFZ_0(v7, v9, v6, v8);
+  albumCopy = album;
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE18inviteParticipants_13toSharedAlbum17completionHandlerySaySo0aJ11ParticipantCG_So17PHAssetCollectionCySb_s5Error_pSgtcSgtFZ_0(v7, albumCopy, v6, v8);
   sub_1A3C33378(v6);
 }
 
-+ (void)resendInvitationToParticipant:(id)a3 inSharedAlbum:(id)a4 completionHandler:(id)a5
++ (void)resendInvitationToParticipant:(id)participant inSharedAlbum:(id)album completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -297,15 +297,15 @@
     v8 = 0;
   }
 
-  v9 = a3;
-  v10 = a4;
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE16resendInvitation2to13inSharedAlbum17completionHandlerySo0aK11ParticipantC_So17PHAssetCollectionCySb_s5Error_pSgtcSgtFZ_0(v9, v10, v7, v8);
+  participantCopy = participant;
+  albumCopy = album;
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE16resendInvitation2to13inSharedAlbum17completionHandlerySo0aK11ParticipantC_So17PHAssetCollectionCySb_s5Error_pSgtcSgtFZ_0(participantCopy, albumCopy, v7, v8);
   sub_1A3C33378(v7);
 }
 
-+ (void)removeParticipants:(id)a3 fromSharedAlbum:(id)a4 completionHandler:(id)a5
++ (void)removeParticipants:(id)participants fromSharedAlbum:(id)album completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   sub_1A3C52C70(0, &qword_1EB12C1B0);
   v7 = sub_1A524CA34();
   if (v6)
@@ -320,12 +320,12 @@
     v8 = 0;
   }
 
-  v9 = a4;
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE18removeParticipants_15fromSharedAlbum17completionHandlerySaySo0aJ11ParticipantCG_So17PHAssetCollectionCySb_s5Error_pSgtcSgtFZ_0(v7, v9, v6, v8);
+  albumCopy = album;
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE18removeParticipants_15fromSharedAlbum17completionHandlerySaySo0aJ11ParticipantCG_So17PHAssetCollectionCySb_s5Error_pSgtcSgtFZ_0(v7, albumCopy, v6, v8);
   sub_1A3C33378(v6);
 }
 
-+ (BOOL)multipleContributorsEnabledForSharedAlbum:(id)a3
++ (BOOL)multipleContributorsEnabledForSharedAlbum:(id)album
 {
   objc_opt_self();
   v3 = swift_dynamicCastObjCClass();
@@ -348,15 +348,15 @@
   return v4;
 }
 
-+ (BOOL)canSetMultipleContributorsEnabledForSharedAlbum:(id)a3
++ (BOOL)canSetMultipleContributorsEnabledForSharedAlbum:(id)album
 {
   v4 = objc_opt_self();
-  v5 = a3;
+  albumCopy = album;
   if ([v4 sharedAlbumIsOwned_])
   {
-    v6 = [v4 sharedAlbumIsAppleFamily_];
+    sharedAlbumIsAppleFamily_ = [v4 sharedAlbumIsAppleFamily_];
 
-    return v6 ^ 1;
+    return sharedAlbumIsAppleFamily_ ^ 1;
   }
 
   else
@@ -366,9 +366,9 @@
   }
 }
 
-+ (void)setMultipleContributorsEnabled:(BOOL)a3 forSharedAlbum:(id)a4 completionHandler:(id)a5
++ (void)setMultipleContributorsEnabled:(BOOL)enabled forSharedAlbum:(id)album completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -381,12 +381,12 @@
     v8 = 0;
   }
 
-  v9 = a4;
-  sub_1A4089D24(a3, v9, v7, v8, &unk_1F16F3F88, &unk_1A5316870, "An invalid asset collection was passed in to setMultipleContributorsEnabled:");
+  albumCopy = album;
+  sub_1A4089D24(enabled, albumCopy, v7, v8, &unk_1F16F3F88, &unk_1A5316870, "An invalid asset collection was passed in to setMultipleContributorsEnabled:");
   sub_1A3C33378(v7);
 }
 
-+ (BOOL)notificationsEnabledForSharedAlbum:(id)a3
++ (BOOL)notificationsEnabledForSharedAlbum:(id)album
 {
   objc_opt_self();
   v3 = swift_dynamicCastObjCClass();
@@ -409,9 +409,9 @@
   return v4;
 }
 
-+ (void)setNotificationsEnabled:(BOOL)a3 forSharedAlbum:(id)a4 completionHandler:(id)a5
++ (void)setNotificationsEnabled:(BOOL)enabled forSharedAlbum:(id)album completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -424,19 +424,19 @@
     v8 = 0;
   }
 
-  v9 = a4;
-  sub_1A4089D24(a3, v9, v7, v8, &unk_1F16F3E98, &unk_1A5316840, "An invalid asset collection was passed in to setNotificationsEnabled:");
+  albumCopy = album;
+  sub_1A4089D24(enabled, albumCopy, v7, v8, &unk_1F16F3E98, &unk_1A5316840, "An invalid asset collection was passed in to setNotificationsEnabled:");
   sub_1A3C33378(v7);
 }
 
-+ (id)publicURLForSharedAlbum:(id)a3
++ (id)publicURLForSharedAlbum:(id)album
 {
   sub_1A408BC44(0, &unk_1EB12B250, MEMORY[0x1E6968FB0], MEMORY[0x1E69E6720]);
   MEMORY[0x1EEE9AC00](v4 - 8);
   v6 = &v14 - v5;
   swift_getObjCClassMetadata();
-  v7 = a3;
-  static PXSharedAlbumsUtilities.publicURL(forSharedAlbum:)(v7, v6);
+  albumCopy = album;
+  static PXSharedAlbumsUtilities.publicURL(forSharedAlbum:)(albumCopy, v6);
 
   v8 = sub_1A5240E64();
   v9 = *(v8 - 8);
@@ -452,9 +452,9 @@
   return v11;
 }
 
-+ (void)setPublicURLEnabled:(BOOL)a3 forSharedAlbum:(id)a4 completionHandler:(id)a5
++ (void)setPublicURLEnabled:(BOOL)enabled forSharedAlbum:(id)album completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -467,15 +467,15 @@
     v8 = 0;
   }
 
-  v9 = a4;
-  sub_1A4089D24(a3, v9, v7, v8, &unk_1F16F3DA8, &unk_1A5316810, "An invalid asset collection was passed in to setPublicURLEnabled:");
+  albumCopy = album;
+  sub_1A4089D24(enabled, albumCopy, v7, v8, &unk_1F16F3DA8, &unk_1A5316810, "An invalid asset collection was passed in to setPublicURLEnabled:");
   sub_1A3C33378(v7);
 }
 
-+ (void)setLikedTo:(BOOL)a3 forAssets:(id)a4 completionHandler:(id)a5
++ (void)setLikedTo:(BOOL)to forAssets:(id)assets completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = _Block_copy(a5);
+  toCopy = to;
+  v7 = _Block_copy(handler);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -489,15 +489,15 @@
   }
 
   swift_unknownObjectRetain();
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE8setLiked2to9forAssets17completionHandlerySb_So17PXFastEnumeration_pySb_s5Error_pSgtcSgtFZ_0(v6, a4, v7, v8);
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE8setLiked2to9forAssets17completionHandlerySb_So17PXFastEnumeration_pySb_s5Error_pSgtcSgtFZ_0(toCopy, assets, v7, v8);
   sub_1A3C33378(v7);
 
   swift_unknownObjectRelease();
 }
 
-+ (void)addComment:(id)a3 toAsset:(id)a4 completionHandler:(id)a5
++ (void)addComment:(id)comment toAsset:(id)asset completionHandler:(id)handler
 {
-  v6 = _Block_copy(a5);
+  v6 = _Block_copy(handler);
   v7 = sub_1A524C674();
   v9 = v8;
   if (v6)
@@ -512,14 +512,14 @@
     v10 = 0;
   }
 
-  v11 = a4;
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE10addComment_7toAsset17completionHandlerySS_So7PHAssetCySSSg_s5Error_pSgtcSgtFZ_0(v7, v9, v11, v6, v10);
+  assetCopy = asset;
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE10addComment_7toAsset17completionHandlerySS_So7PHAssetCySSSg_s5Error_pSgtcSgtFZ_0(v7, v9, assetCopy, v6, v10);
   sub_1A3C33378(v6);
 }
 
-+ (void)removeComments:(id)a3 fromAsset:(id)a4 completionHandler:(id)a5
++ (void)removeComments:(id)comments fromAsset:(id)asset completionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -533,16 +533,16 @@
   }
 
   swift_unknownObjectRetain();
-  v9 = a4;
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE14removeComments_9fromAsset17completionHandlerySo17PXFastEnumeration_p_So7PHAssetCySb_s5Error_pSgtcSgtFZ_0(a3, v9, v7, v8);
+  assetCopy = asset;
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE14removeComments_9fromAsset17completionHandlerySo17PXFastEnumeration_p_So7PHAssetCySb_s5Error_pSgtcSgtFZ_0(comments, assetCopy, v7, v8);
   sub_1A3C33378(v7);
   swift_unknownObjectRelease();
 }
 
-+ (void)markSharedAlbumAsViewed:(id)a3
++ (void)markSharedAlbumAsViewed:(id)viewed
 {
-  v3 = a3;
-  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE23markSharedAlbumAsViewedyySo17PHAssetCollectionCFZ_0(v3);
+  viewedCopy = viewed;
+  _sSo23PXSharedAlbumsUtilitiesC12PhotosUICoreE23markSharedAlbumAsViewedyySo17PHAssetCollectionCFZ_0(viewedCopy);
 }
 
 - (PXSharedAlbumsUtilities)init

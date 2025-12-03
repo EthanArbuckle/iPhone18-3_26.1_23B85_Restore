@@ -1,19 +1,19 @@
 @interface GKLeaderboardScore
-+ (id)convertToGKScore:(id)a3;
++ (id)convertToGKScore:(id)score;
 @end
 
 @implementation GKLeaderboardScore
 
-+ (id)convertToGKScore:(id)a3
++ (id)convertToGKScore:(id)score
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  scoreCopy = score;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = v3;
+  obj = scoreCopy;
   v5 = [obj countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
@@ -30,22 +30,22 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 player];
+        player = [v10 player];
 
-        if (v11)
+        if (player)
         {
           v12 = [GKScore alloc];
-          v13 = [v10 leaderboardID];
-          v14 = [v10 player];
-          v15 = [(GKScore *)v12 initWithLeaderboardIdentifier:v13 player:v14];
+          leaderboardID = [v10 leaderboardID];
+          player2 = [v10 player];
+          v15 = [(GKScore *)v12 initWithLeaderboardIdentifier:leaderboardID player:player2];
         }
 
         else
         {
           v15 = objc_alloc_init(GKScore);
 
-          v13 = [v10 leaderboardID];
-          [(GKScore *)v15 setLeaderboardIdentifier:v13];
+          leaderboardID = [v10 leaderboardID];
+          [(GKScore *)v15 setLeaderboardIdentifier:leaderboardID];
         }
 
         v7 = v15;

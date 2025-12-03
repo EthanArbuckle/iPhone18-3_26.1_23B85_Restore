@@ -1,21 +1,21 @@
 @interface AEMessagesShelfLayout
 - (AEMessagesShelfLayoutDelegate)delegate;
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6;
-- (CGRect)_cancelButtonFrameForGridFrame:(CGRect)a3;
-- (CGRect)_frameForGridItemAtIndexPath:(PXSimpleIndexPath *)a3;
-- (CGRect)_generationButtonFrameForGridFrame:(CGRect)a3;
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier;
+- (CGRect)_cancelButtonFrameForGridFrame:(CGRect)frame;
+- (CGRect)_frameForGridItemAtIndexPath:(PXSimpleIndexPath *)path;
+- (CGRect)_generationButtonFrameForGridFrame:(CGRect)frame;
 - (CGRect)_gradientShadowFrameForItemFrame:(CGRect)result;
-- (CGRect)_irisToggleFrameForGridFrame:(CGRect)a3;
-- (CGRect)_loopBadgeFrameForItemFrame:(CGRect)a3;
-- (CGRect)_spatialBadgeFrameForItemFrame:(CGRect)a3;
-- (CGRect)_videoBadgeFrameForItemFrame:(CGRect)a3;
-- (CGRect)_videoDurationFrameForItemFrame:(CGRect)a3;
+- (CGRect)_irisToggleFrameForGridFrame:(CGRect)frame;
+- (CGRect)_loopBadgeFrameForItemFrame:(CGRect)frame;
+- (CGRect)_spatialBadgeFrameForItemFrame:(CGRect)frame;
+- (CGRect)_videoBadgeFrameForItemFrame:(CGRect)frame;
+- (CGRect)_videoDurationFrameForItemFrame:(CGRect)frame;
 - (CGRect)contentBounds;
-- (double)_zPositionForShelfTileKind:(unint64_t)a3 atIndexPath:(PXSimpleIndexPath *)a4;
+- (double)_zPositionForShelfTileKind:(unint64_t)kind atIndexPath:(PXSimpleIndexPath *)path;
 - (void)dealloc;
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5;
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block;
 - (void)prepareLayout;
-- (void)setReferenceSize:(CGSize)a3;
+- (void)setReferenceSize:(CGSize)size;
 @end
 
 @implementation AEMessagesShelfLayout
@@ -27,12 +27,12 @@
   return WeakRetained;
 }
 
-- (CGRect)_videoDurationFrameForItemFrame:(CGRect)a3
+- (CGRect)_videoDurationFrameForItemFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(AEMessagesShelfLayout *)self _videoBadgeFrameForItemFrame:?];
   v9 = v7 + v8;
   v10 = width + -8.0 + x - v9;
@@ -45,10 +45,10 @@
   return result;
 }
 
-- (CGRect)_videoBadgeFrameForItemFrame:(CGRect)a3
+- (CGRect)_videoBadgeFrameForItemFrame:(CGRect)frame
 {
-  v3 = a3.origin.x + 10.0;
-  v4 = a3.origin.y + a3.size.height + -12.0 + -12.0;
+  v3 = frame.origin.x + 10.0;
+  v4 = frame.origin.y + frame.size.height + -12.0 + -12.0;
   v5 = 20.0;
   v6 = 12.0;
   result.size.height = v6;
@@ -58,10 +58,10 @@
   return result;
 }
 
-- (CGRect)_spatialBadgeFrameForItemFrame:(CGRect)a3
+- (CGRect)_spatialBadgeFrameForItemFrame:(CGRect)frame
 {
-  v3 = a3.origin.x + 8.0;
-  v4 = a3.origin.y + 8.0;
+  v3 = frame.origin.x + 8.0;
+  v4 = frame.origin.y + 8.0;
   v5 = 20.0;
   v6 = 20.0;
   result.size.height = v6;
@@ -71,10 +71,10 @@
   return result;
 }
 
-- (CGRect)_loopBadgeFrameForItemFrame:(CGRect)a3
+- (CGRect)_loopBadgeFrameForItemFrame:(CGRect)frame
 {
-  v3 = a3.origin.x + 12.0;
-  v4 = a3.origin.y + a3.size.height + -15.0 + -12.0;
+  v3 = frame.origin.x + 12.0;
+  v4 = frame.origin.y + frame.size.height + -15.0 + -12.0;
   v5 = 19.0;
   v6 = 15.0;
   result.size.height = v6;
@@ -93,10 +93,10 @@
   return result;
 }
 
-- (CGRect)_generationButtonFrameForGridFrame:(CGRect)a3
+- (CGRect)_generationButtonFrameForGridFrame:(CGRect)frame
 {
-  v3 = a3.origin.x + 4.0;
-  v4 = a3.origin.y + a3.size.height + -26.0 + -4.0;
+  v3 = frame.origin.x + 4.0;
+  v4 = frame.origin.y + frame.size.height + -26.0 + -4.0;
   v5 = 26.0;
   v6 = 26.0;
   result.size.height = v6;
@@ -106,11 +106,11 @@
   return result;
 }
 
-- (CGRect)_irisToggleFrameForGridFrame:(CGRect)a3
+- (CGRect)_irisToggleFrameForGridFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [AEMessagesShelfRoundButton intrinsicContentSizeForStyle:1, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [AEMessagesShelfRoundButton intrinsicContentSizeForStyle:1, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   v8 = v7;
   v9 = x + 3.0;
@@ -122,12 +122,12 @@
   return result;
 }
 
-- (CGRect)_cancelButtonFrameForGridFrame:(CGRect)a3
+- (CGRect)_cancelButtonFrameForGridFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [AEMessagesShelfRoundButton intrinsicContentSizeForStyle:0, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [AEMessagesShelfRoundButton intrinsicContentSizeForStyle:0, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v7 = v6;
   v9 = v8;
   v10 = x + width - v6 + -4.0;
@@ -139,13 +139,13 @@
   return result;
 }
 
-- (CGRect)_frameForGridItemAtIndexPath:(PXSimpleIndexPath *)a3
+- (CGRect)_frameForGridItemAtIndexPath:(PXSimpleIndexPath *)path
 {
   v15 = *MEMORY[0x277D85DE8];
   itemFramesForCurrentDataSource = self->_itemFramesForCurrentDataSource;
   if (itemFramesForCurrentDataSource)
   {
-    p_x = &itemFramesForCurrentDataSource[a3->item].origin.x;
+    p_x = &itemFramesForCurrentDataSource[path->item].origin.x;
   }
 
   else
@@ -183,12 +183,12 @@
   return result;
 }
 
-- (double)_zPositionForShelfTileKind:(unint64_t)a3 atIndexPath:(PXSimpleIndexPath *)a4
+- (double)_zPositionForShelfTileKind:(unint64_t)kind atIndexPath:(PXSimpleIndexPath *)path
 {
   result = 11000000.0;
-  if (a3 <= 1313817679)
+  if (kind <= 1313817679)
   {
-    if (a3 != 1215219281 && a3 != 1277777777 && a3 != 1295210292)
+    if (kind != 1215219281 && kind != 1277777777 && kind != 1295210292)
     {
       return result;
     }
@@ -196,12 +196,12 @@
     return 11000010.0;
   }
 
-  if (a3 - 1500001336 < 3 || a3 == 1313817680)
+  if (kind - 1500001336 < 3 || kind == 1313817680)
   {
     return 11000010.0;
   }
 
-  if (a3 == 1500001007)
+  if (kind == 1500001007)
   {
     return 11000000.5;
   }
@@ -222,11 +222,11 @@
     self->_itemFramesForCurrentDataSource = 0;
   }
 
-  v4 = [(PXAssetsTilingLayout *)self dataSource];
-  v5 = [(AEMessagesShelfLayout *)self delegate];
-  v6 = [v4 numberOfItemsInSection:0];
+  dataSource = [(PXAssetsTilingLayout *)self dataSource];
+  delegate = [(AEMessagesShelfLayout *)self delegate];
+  v6 = [dataSource numberOfItemsInSection:0];
   self->_itemFramesForCurrentDataSource = malloc_type_malloc(32 * v6, 0x1000040E0EAB150uLL);
-  v7 = [v4 identifier];
+  identifier = [dataSource identifier];
   [(PXTilingLayout *)self referenceSize];
   UIRoundToViewScale();
   v9 = v8;
@@ -243,11 +243,11 @@
     v12 = 0;
     do
     {
-      v16[0] = v7;
+      v16[0] = identifier;
       v16[1] = 0;
       v16[2] = v12;
       v16[3] = 0x7FFFFFFFFFFFFFFFLL;
-      [v5 layout:self aspectRatioForItemAtIndexPath:v16];
+      [delegate layout:self aspectRatioForItemAtIndexPath:v16];
       UIRoundToViewScale();
       currentContentWidth = self->_currentContentWidth;
       self->_currentContentWidth = v14 + currentContentWidth + 6.0;
@@ -264,16 +264,16 @@
   }
 }
 
-- (BOOL)getGeometry:(PXTileGeometry *)a3 group:(unint64_t *)a4 userData:(id *)a5 forTileWithIdentifier:(PXTileIdentifier *)a6
+- (BOOL)getGeometry:(PXTileGeometry *)geometry group:(unint64_t *)group userData:(id *)data forTileWithIdentifier:(PXTileIdentifier *)identifier
 {
-  v11 = [(AEMessagesShelfLayout *)self delegate];
-  v12 = [v11 layoutShouldShowVideoDuration:self];
-  v13 = a6->var1[1];
-  v14 = a6->var1[2];
-  v15 = a6->var1[3];
-  *(&v105 + 1) = a6->var1[4];
-  v16 = a6->var1[0];
-  if (*&a6->var0 == __PAIR128__(*MEMORY[0x277D3CC58], 5))
+  delegate = [(AEMessagesShelfLayout *)self delegate];
+  v12 = [delegate layoutShouldShowVideoDuration:self];
+  v13 = identifier->var1[1];
+  v14 = identifier->var1[2];
+  v15 = identifier->var1[3];
+  *(&v105 + 1) = identifier->var1[4];
+  v16 = identifier->var1[0];
+  if (*&identifier->var0 == __PAIR128__(*MEMORY[0x277D3CC58], 5))
   {
     goto LABEL_10;
   }
@@ -295,12 +295,12 @@
     {
       if (*(&v105 + 1) == 4)
       {
-        *&v106 = a6->var1[1];
+        *&v106 = identifier->var1[1];
         *(&v106 + 1) = v14;
         *&v107 = v15;
         *(&v107 + 1) = 0x7FFFFFFFFFFFFFFFLL;
         v90 = v15;
-        if ([v11 layout:self itemAtIndexPathIsSpatial:&v106])
+        if ([delegate layout:self itemAtIndexPathIsSpatial:&v106])
         {
           *&v106 = v13;
           *(&v106 + 1) = v14;
@@ -316,9 +316,9 @@
           *&v107 = v90;
           *(&v107 + 1) = 4;
           v76 = 795209433;
-          v75 = self;
+          selfCopy3 = self;
 LABEL_55:
-          [(AEMessagesShelfLayout *)v75 _zPositionForShelfTileKind:v76 atIndexPath:&v106];
+          [(AEMessagesShelfLayout *)selfCopy3 _zPositionForShelfTileKind:v76 atIndexPath:&v106];
           v52 = v99;
           v43 = 0;
           v29 = 0;
@@ -326,7 +326,7 @@ LABEL_55:
         }
 
 LABEL_53:
-        v22 = v11;
+        v22 = delegate;
         goto LABEL_18;
       }
 
@@ -336,12 +336,12 @@ LABEL_53:
       }
     }
 
-    *&v106 = a6->var1[1];
+    *&v106 = identifier->var1[1];
     *(&v106 + 1) = v14;
     *&v107 = v15;
     *(&v107 + 1) = 0x7FFFFFFFFFFFFFFFLL;
     v66 = v15;
-    if ([v11 layout:self itemAtIndexPathIsVideo:&v106])
+    if ([delegate layout:self itemAtIndexPathIsVideo:&v106])
     {
       *&v106 = v13;
       *(&v106 + 1) = v14;
@@ -359,7 +359,7 @@ LABEL_53:
         *(&v106 + 1) = v14;
         *&v107 = v66;
         *(&v107 + 1) = 3;
-        v75 = self;
+        selfCopy3 = self;
         v76 = 795209432;
       }
 
@@ -373,7 +373,7 @@ LABEL_53:
         *&v106 = v13;
         *(&v106 + 1) = v14;
         v107 = v66;
-        v75 = self;
+        selfCopy3 = self;
         v76 = 1500001336;
       }
 
@@ -393,33 +393,33 @@ LABEL_9:
     }
 
 LABEL_44:
-    v77 = a3;
-    v22 = v11;
+    geometryCopy = geometry;
+    v22 = delegate;
     v112.receiver = self;
     v112.super_class = AEMessagesShelfLayout;
-    v78 = *&a6->var1[5];
-    v108 = *&a6->var1[3];
+    v78 = *&identifier->var1[5];
+    v108 = *&identifier->var1[3];
     v109 = v78;
-    v110 = *&a6->var1[7];
-    v111 = a6->var1[9];
-    v79 = *&a6->var1[1];
-    v106 = *&a6->var0;
+    v110 = *&identifier->var1[7];
+    v111 = identifier->var1[9];
+    v79 = *&identifier->var1[1];
+    v106 = *&identifier->var0;
     v107 = v79;
-    v30 = [(PXAssetsTilingLayout *)&v112 getGeometry:v77 group:a4 userData:a5 forTileWithIdentifier:&v106];
+    v30 = [(PXAssetsTilingLayout *)&v112 getGeometry:geometryCopy group:group userData:data forTileWithIdentifier:&v106];
     v29 = 0;
     goto LABEL_35;
   }
 
 LABEL_10:
-  v103 = a4;
-  v104 = a6->var1[1];
-  v102 = a5;
-  v18 = v11;
-  *&v105 = a6->var1[3];
-  v19 = [(PXAssetsTilingLayout *)self dataSource];
-  v20 = [v19 numberOfItemsInSection:0];
+  groupCopy = group;
+  v104 = identifier->var1[1];
+  dataCopy = data;
+  v18 = delegate;
+  *&v105 = identifier->var1[3];
+  dataSource = [(PXAssetsTilingLayout *)self dataSource];
+  v20 = [dataSource numberOfItemsInSection:0];
 
-  v100 = a3;
+  geometryCopy2 = geometry;
   if (v105 < v20 && v16 == 1295210292)
   {
     v21 = v13;
@@ -480,7 +480,7 @@ LABEL_21:
     *(&v106 + 1) = v14;
     *&v107 = v24;
     *(&v107 + 1) = v26;
-    [(AEMessagesShelfLayout *)self _frameForGridItemAtIndexPath:&v106, v100];
+    [(AEMessagesShelfLayout *)self _frameForGridItemAtIndexPath:&v106, geometryCopy2];
     v35 = v31;
     v36 = v32;
     v37 = v33;
@@ -494,20 +494,20 @@ LABEL_21:
       v38 = v42;
       v29 = 0;
       v43 = 0;
-      a5 = v102;
-      a4 = v103;
+      data = dataCopy;
+      group = groupCopy;
       v44 = v105;
-      v11 = v22;
+      delegate = v22;
     }
 
     else
     {
-      a5 = v102;
-      a4 = v103;
-      v11 = v22;
+      data = dataCopy;
+      group = groupCopy;
+      delegate = v22;
       if (v16 != 1295210292)
       {
-        a3 = v101;
+        geometry = v101;
         if (v16 == 1277777777)
         {
           [(AEMessagesShelfLayout *)self _generationButtonFrameForGridFrame:v31, v32, v33, v34];
@@ -533,7 +533,7 @@ LABEL_21:
             *&v106 = v104;
             *(&v106 + 1) = v14;
             v107 = v105;
-            [v11 layout:self itemAtIndexPathDuration:&v106];
+            [delegate layout:self itemAtIndexPathDuration:&v106];
             v89 = [v88 numberWithDouble:?];
             v49 = *(&v105 + 1);
             v44 = v105;
@@ -560,7 +560,7 @@ LABEL_21:
 LABEL_26:
         v49 = *(&v105 + 1);
 LABEL_27:
-        v50 = a6->var1[0];
+        v50 = identifier->var1[0];
         *&v106 = v13;
         *(&v106 + 1) = v14;
         *&v107 = v44;
@@ -568,45 +568,45 @@ LABEL_27:
         [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:v50 atIndexPath:&v106];
         v52 = v51;
 LABEL_28:
-        if (a3)
+        if (geometry)
         {
-          v53 = [(PXTilingLayout *)self coordinateSpaceIdentifier];
+          coordinateSpaceIdentifier = [(PXTilingLayout *)self coordinateSpaceIdentifier];
           PXRectGetCenter();
-          a3->var0.origin.x = v35;
-          a3->var0.origin.y = v36;
-          a3->var0.size.width = v37;
-          a3->var0.size.height = v38;
-          a3->var1.x = v54;
-          a3->var1.y = v55;
-          a3->var2.width = v37;
-          a3->var2.height = v38;
+          geometry->var0.origin.x = v35;
+          geometry->var0.origin.y = v36;
+          geometry->var0.size.width = v37;
+          geometry->var0.size.height = v38;
+          geometry->var1.x = v54;
+          geometry->var1.y = v55;
+          geometry->var2.width = v37;
+          geometry->var2.height = v38;
           v56 = MEMORY[0x277CBF2C0];
           v57 = *(MEMORY[0x277CBF2C0] + 16);
-          *&a3->var3.a = *MEMORY[0x277CBF2C0];
-          *&a3->var3.c = v57;
-          *&a3->var3.tx = *(v56 + 32);
-          a3->var4 = 1.0;
-          a3->var5 = v52;
-          *&a3->var6 = 0;
+          *&geometry->var3.a = *MEMORY[0x277CBF2C0];
+          *&geometry->var3.c = v57;
+          *&geometry->var3.tx = *(v56 + 32);
+          geometry->var4 = 1.0;
+          geometry->var5 = v52;
+          *&geometry->var6 = 0;
           v58 = MEMORY[0x277D3CFC0];
-          a3->var7.width = v37;
-          a3->var7.height = v38;
+          geometry->var7.width = v37;
+          geometry->var7.height = v38;
           v59 = *v58;
-          a3->var8.size = *(v58 + 16);
-          a3->var8.origin = v59;
-          a3->var9 = v53;
+          geometry->var8.size = *(v58 + 16);
+          geometry->var8.origin = v59;
+          geometry->var9 = coordinateSpaceIdentifier;
         }
 
-        if (a4)
+        if (group)
         {
-          *a4 = v43;
+          *group = v43;
         }
 
-        v22 = v11;
-        if (a5)
+        v22 = delegate;
+        if (data)
         {
           v60 = v29;
-          *a5 = v29;
+          *data = v29;
         }
 
         v30 = 1;
@@ -623,7 +623,7 @@ LABEL_28:
       v44 = v105;
     }
 
-    a3 = v101;
+    geometry = v101;
     goto LABEL_26;
   }
 
@@ -632,41 +632,41 @@ LABEL_35:
   return v30;
 }
 
-- (void)enumerateTilesInRect:(CGRect)a3 withOptions:(id)a4 usingBlock:(id)a5
+- (void)enumerateTilesInRect:(CGRect)rect withOptions:(id)options usingBlock:(id)block
 {
-  v163 = a4;
-  v7 = a5;
-  v8 = [(PXAssetsTilingLayout *)self dataSource];
-  v9 = [v8 identifier];
+  optionsCopy = options;
+  blockCopy = block;
+  dataSource = [(PXAssetsTilingLayout *)self dataSource];
+  identifier = [dataSource identifier];
 
-  v10 = [(PXTilingLayout *)self coordinateSpaceIdentifier];
-  v11 = [(AEMessagesShelfLayout *)self delegate];
-  v160 = [v11 layoutShouldShowVideoDuration:self];
-  v170 = v11;
-  v162 = [v11 layoutShouldShowCancelButtons:self];
+  coordinateSpaceIdentifier = [(PXTilingLayout *)self coordinateSpaceIdentifier];
+  delegate = [(AEMessagesShelfLayout *)self delegate];
+  v160 = [delegate layoutShouldShowVideoDuration:self];
+  v170 = delegate;
+  v162 = [delegate layoutShouldShowCancelButtons:self];
   v200[0] = 0;
-  v12 = [(PXAssetsTilingLayout *)self dataSource];
-  v13 = [v12 numberOfSections];
+  dataSource2 = [(PXAssetsTilingLayout *)self dataSource];
+  numberOfSections = [dataSource2 numberOfSections];
 
-  if (v13 >= 1)
+  if (numberOfSections >= 1)
   {
     v14 = 0;
     v161 = *MEMORY[0x277D3CC58];
     v159 = xmmword_241200030;
-    v166 = v7;
-    v167 = v10;
+    v166 = blockCopy;
+    v167 = coordinateSpaceIdentifier;
     do
     {
-      v15 = [(PXAssetsTilingLayout *)self dataSource];
-      v16 = [v15 numberOfItemsInSection:v14];
+      dataSource3 = [(PXAssetsTilingLayout *)self dataSource];
+      v16 = [dataSource3 numberOfItemsInSection:v14];
 
-      v17 = v10;
+      v17 = coordinateSpaceIdentifier;
       if (v16 >= 1 && (v200[0] & 1) == 0)
       {
         v18 = 1;
         do
         {
-          *&v191 = v9;
+          *&v191 = identifier;
           *(&v191 + 1) = v14;
           *&v192 = v18 - 1;
           *(&v192 + 1) = 0x7FFFFFFFFFFFFFFFLL;
@@ -675,7 +675,7 @@ LABEL_35:
           y = v201.origin.y;
           width = v201.size.width;
           height = v201.size.height;
-          if (CGRectIntersectsRect(v201, a3))
+          if (CGRectIntersectsRect(v201, rect))
           {
             memset(v199, 0, sizeof(v199));
             v197 = 0u;
@@ -708,17 +708,17 @@ LABEL_35:
             *(&v199[1] + 8) = *MEMORY[0x277D3CFC0];
             *(&v199[2] + 8) = v171;
             *(&v199[3] + 1) = v17;
-            *&v176 = v9;
+            *&v176 = identifier;
             *(&v176 + 1) = v14;
             *&v177 = v18 - 1;
             *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
             v26 = v17;
             [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:v161 atIndexPath:&v176];
             *(&v198 + 1) = v27;
-            v28 = v7[2];
+            v28 = blockCopy[2];
             *&v186 = 5;
             *(&v186 + 1) = v161;
-            v187 = v9;
+            v187 = identifier;
             v188 = v14;
             v189 = v18 - 1;
             v190[0] = 0x7FFFFFFFFFFFFFFFLL;
@@ -735,8 +735,8 @@ LABEL_35:
             v177 = v192;
             v178 = v193;
             v179 = v194;
-            v28(v7, &v186, &v176, 0, 0, v200);
-            *&v176 = v9;
+            v28(blockCopy, &v186, &v176, 0, 0, v200);
+            *&v176 = identifier;
             *(&v176 + 1) = v14;
             *&v177 = v18 - 1;
             *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
@@ -753,14 +753,14 @@ LABEL_35:
               PXRectGetCenter();
               v38 = v37;
               v40 = v39;
-              *&v176 = v9;
+              *&v176 = identifier;
               *(&v176 + 1) = v14;
               *&v177 = v18 - 1;
               *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
               [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:1500001336 atIndexPath:&v176];
-              v41 = v7[2];
+              v41 = blockCopy[2];
               v186 = xmmword_241200010;
-              v187 = v9;
+              v187 = identifier;
               v188 = v14;
               v189 = v18 - 1;
               memset(v190, 0, sizeof(v190));
@@ -785,7 +785,7 @@ LABEL_35:
               *&v185[24] = v171;
               *&v185[8] = v172;
               *&v185[40] = v17;
-              v41(v7, &v186, &v176, 0, 0, v200);
+              v41(blockCopy, &v186, &v176, 0, 0, v200);
               if (v160)
               {
                 [(AEMessagesShelfLayout *)self _videoDurationFrameForItemFrame:v169, v168, width, height];
@@ -794,7 +794,7 @@ LABEL_35:
                 v48 = v47;
                 v50 = v49;
                 v51 = MEMORY[0x277CCABB0];
-                *&v176 = v9;
+                *&v176 = identifier;
                 *(&v176 + 1) = v14;
                 *&v177 = v18 - 1;
                 *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
@@ -803,14 +803,14 @@ LABEL_35:
                 PXRectGetCenter();
                 v54 = v53;
                 v56 = v55;
-                *&v176 = v9;
+                *&v176 = identifier;
                 *(&v176 + 1) = v14;
                 *&v177 = v18 - 1;
                 *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
                 [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:1215219281 atIndexPath:&v176];
-                v57 = v7[2];
+                v57 = blockCopy[2];
                 v186 = v159;
-                v187 = v9;
+                v187 = identifier;
                 v188 = v14;
                 v189 = v18 - 1;
                 v190[0] = 0x7FFFFFFFFFFFFFFFLL;
@@ -836,7 +836,7 @@ LABEL_35:
                 *&v185[24] = v171;
                 *&v185[8] = v172;
                 *&v185[40] = v167;
-                v57(v7, &v186, &v176, 0, v52, v200);
+                v57(blockCopy, &v186, &v176, 0, v52, v200);
 
                 v26 = v167;
               }
@@ -847,7 +847,7 @@ LABEL_35:
               dispatch_once(&enumerateTilesInRect_withOptions_usingBlock__onceToken, &__block_literal_global_619);
             }
 
-            if (enumerateTilesInRect_withOptions_usingBlock__canShowLoopBadges == 1 && (*&v176 = v9, *(&v176 + 1) = v14, *&v177 = v18 - 1, *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL, [v170 layout:self itemAtIndexPathIsLoop:&v176]))
+            if (enumerateTilesInRect_withOptions_usingBlock__canShowLoopBadges == 1 && (*&v176 = identifier, *(&v176 + 1) = v14, *&v177 = v18 - 1, *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL, [v170 layout:self itemAtIndexPathIsLoop:&v176]))
             {
               [(AEMessagesShelfLayout *)self _loopBadgeFrameForItemFrame:x, y, width, height];
               v60 = v59;
@@ -857,14 +857,14 @@ LABEL_35:
               PXRectGetCenter();
               v68 = v67;
               v70 = v69;
-              *&v176 = v9;
+              *&v176 = identifier;
               *(&v176 + 1) = v14;
               *&v177 = v18 - 1;
               *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
               [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:1500001337 atIndexPath:&v176];
-              v71 = v7[2];
+              v71 = blockCopy[2];
               v186 = xmmword_241200010;
-              v187 = v9;
+              v187 = identifier;
               v188 = v14;
               v72 = 1;
               v189 = v18 - 1;
@@ -891,7 +891,7 @@ LABEL_35:
               *&v185[24] = v171;
               *&v185[8] = v172;
               *&v185[40] = v26;
-              v71(v7, &v186, &v176, 0, 0, v200);
+              v71(blockCopy, &v186, &v176, 0, 0, v200);
             }
 
             else
@@ -899,7 +899,7 @@ LABEL_35:
               v72 = 0;
             }
 
-            *&v176 = v9;
+            *&v176 = identifier;
             *(&v176 + 1) = v14;
             *&v177 = v18 - 1;
             *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
@@ -914,14 +914,14 @@ LABEL_35:
               PXRectGetCenter();
               v84 = v83;
               v86 = v85;
-              *&v176 = v9;
+              *&v176 = identifier;
               *(&v176 + 1) = v14;
               *&v177 = v18 - 1;
               *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
               [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:1500001338 atIndexPath:&v176];
               v87 = v166[2];
               v186 = xmmword_241200010;
-              v187 = v9;
+              v187 = identifier;
               v188 = v14;
               v189 = v18 - 1;
               v190[0] = 7;
@@ -950,12 +950,12 @@ LABEL_35:
               v87(v166, &v186, &v176, 0, 0, v200);
             }
 
-            *&v176 = v9;
+            *&v176 = identifier;
             *(&v176 + 1) = v14;
             *&v177 = v18 - 1;
             *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
             v89 = v166;
-            [(PXAssetsTilingLayout *)self enumerateAccessoryTilesForContentTileWithIndexPath:&v176 geometry:&v191 withOptions:v163 usingBlock:v166];
+            [(PXAssetsTilingLayout *)self enumerateAccessoryTilesForContentTileWithIndexPath:&v176 geometry:&v191 withOptions:optionsCopy usingBlock:v166];
             if ((v164 | v72) == 1)
             {
               [(AEMessagesShelfLayout *)self _gradientShadowFrameForItemFrame:x, y, width, height];
@@ -966,14 +966,14 @@ LABEL_35:
               PXRectGetCenter();
               v99 = v98;
               v101 = v100;
-              *&v176 = v9;
+              *&v176 = identifier;
               *(&v176 + 1) = v14;
               *&v177 = v18 - 1;
               *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
               [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:795209432 atIndexPath:&v176];
               v102 = v166[2];
               v186 = xmmword_241200010;
-              v187 = v9;
+              v187 = identifier;
               v188 = v14;
               v189 = v18 - 1;
               v190[0] = 3;
@@ -1007,14 +1007,14 @@ LABEL_35:
               PXRectGetCenter();
               v105 = v104;
               v107 = v106;
-              *&v176 = v9;
+              *&v176 = identifier;
               *(&v176 + 1) = v14;
               *&v177 = v18 - 1;
               *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
               [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:795209433 atIndexPath:&v176];
               v108 = v166[2];
               v186 = xmmword_241200010;
-              v187 = v9;
+              v187 = identifier;
               v188 = v14;
               v189 = v18 - 1;
               v190[0] = 4;
@@ -1051,14 +1051,14 @@ LABEL_35:
               PXRectGetCenter();
               v119 = v118;
               v121 = v120;
-              *&v176 = v9;
+              *&v176 = identifier;
               *(&v176 + 1) = v14;
               *&v177 = v18 - 1;
               *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
               [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:1313817680 atIndexPath:&v176];
               v122 = v166[2];
               v186 = xmmword_241200040;
-              v187 = v9;
+              v187 = identifier;
               v188 = v14;
               v189 = v18 - 1;
               v190[0] = 0x7FFFFFFFFFFFFFFFLL;
@@ -1088,7 +1088,7 @@ LABEL_35:
               v122(v166, &v186, &v176, 0, 0, v200);
             }
 
-            *&v176 = v9;
+            *&v176 = identifier;
             *(&v176 + 1) = v14;
             *&v177 = v18 - 1;
             *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
@@ -1104,14 +1104,14 @@ LABEL_35:
               PXRectGetCenter();
               v135 = v134;
               v137 = v136;
-              *&v176 = v9;
+              *&v176 = identifier;
               *(&v176 + 1) = v14;
               *&v177 = v18 - 1;
               *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
               [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:1295210292 atIndexPath:&v176];
               v138 = v89[2];
               v186 = xmmword_241200050;
-              v187 = v9;
+              v187 = identifier;
               v188 = v14;
               v189 = v18 - 1;
               v190[0] = v125;
@@ -1140,7 +1140,7 @@ LABEL_35:
               v138(v89, &v186, &v176, 2295210291, 0, v200);
             }
 
-            *&v176 = v9;
+            *&v176 = identifier;
             *(&v176 + 1) = v14;
             *&v177 = v18 - 1;
             *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
@@ -1156,14 +1156,14 @@ LABEL_35:
               PXRectGetCenter();
               v151 = v150;
               v153 = v152;
-              *&v176 = v9;
+              *&v176 = identifier;
               *(&v176 + 1) = v14;
               *&v177 = v18 - 1;
               *(&v177 + 1) = 0x7FFFFFFFFFFFFFFFLL;
               [(AEMessagesShelfLayout *)self _zPositionForShelfTileKind:1277777777 atIndexPath:&v176];
               v154 = v89[2];
               v186 = xmmword_241200060;
-              v187 = v9;
+              v187 = identifier;
               v188 = v14;
               v189 = v18 - 1;
               v190[0] = v141;
@@ -1191,7 +1191,7 @@ LABEL_35:
             }
 
             v17 = v167;
-            v7 = v89;
+            blockCopy = v89;
           }
 
           if (v18 >= v16)
@@ -1205,14 +1205,14 @@ LABEL_35:
         while ((v200[0] & 1) == 0);
       }
 
-      v10 = v17;
+      coordinateSpaceIdentifier = v17;
       ++v14;
-      v156 = [(PXAssetsTilingLayout *)self dataSource];
-      v157 = [v156 numberOfSections];
+      dataSource4 = [(PXAssetsTilingLayout *)self dataSource];
+      numberOfSections2 = [dataSource4 numberOfSections];
       v158 = v200[0];
     }
 
-    while (v14 < v157 && (v158 & 1) == 0);
+    while (v14 < numberOfSections2 && (v158 & 1) == 0);
   }
 }
 
@@ -1291,10 +1291,10 @@ void __69__AEMessagesShelfLayout_enumerateTilesInRect_withOptions_usingBlock___b
   return result;
 }
 
-- (void)setReferenceSize:(CGSize)a3
+- (void)setReferenceSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(PXTilingLayout *)self referenceSize];
   if (v7 != width || v6 != height)
   {

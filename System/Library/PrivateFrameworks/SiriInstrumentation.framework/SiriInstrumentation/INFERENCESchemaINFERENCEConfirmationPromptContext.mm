@@ -1,25 +1,25 @@
 @interface INFERENCESchemaINFERENCEConfirmationPromptContext
-- (BOOL)isEqual:(id)a3;
-- (INFERENCESchemaINFERENCEConfirmationPromptContext)initWithDictionary:(id)a3;
-- (INFERENCESchemaINFERENCEConfirmationPromptContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (INFERENCESchemaINFERENCEConfirmationPromptContext)initWithDictionary:(id)dictionary;
+- (INFERENCESchemaINFERENCEConfirmationPromptContext)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation INFERENCESchemaINFERENCEConfirmationPromptContext
 
-- (INFERENCESchemaINFERENCEConfirmationPromptContext)initWithDictionary:(id)a3
+- (INFERENCESchemaINFERENCEConfirmationPromptContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = INFERENCESchemaINFERENCEConfirmationPromptContext;
   v5 = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"anonymizedEntityPresented"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"anonymizedEntityPresented"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(INFERENCESchemaINFERENCEConfirmationPromptContext *)v5 setAnonymizedEntityPresented:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"resolution"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"resolution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -40,30 +40,30 @@
   return v5;
 }
 
-- (INFERENCESchemaINFERENCEConfirmationPromptContext)initWithJSON:(id)a3
+- (INFERENCESchemaINFERENCEConfirmationPromptContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -76,12 +76,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anonymizedEntityPresented)
   {
-    v4 = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"anonymizedEntityPresented"];
+    anonymizedEntityPresented = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
+    v5 = [anonymizedEntityPresented copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"anonymizedEntityPresented"];
   }
 
   if (*&self->_has)
@@ -97,12 +97,12 @@
       v7 = off_1E78D8938[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"resolution"];
+    [dictionary setObject:v7 forKeyedSubscript:@"resolution"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,18 +121,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
-  v6 = [v4 anonymizedEntityPresented];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  anonymizedEntityPresented = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
+  anonymizedEntityPresented2 = [equalCopy anonymizedEntityPresented];
+  v7 = anonymizedEntityPresented2;
+  if ((anonymizedEntityPresented != 0) == (anonymizedEntityPresented2 == 0))
   {
 
 LABEL_12:
@@ -140,13 +140,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
-  if (v8)
+  anonymizedEntityPresented3 = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
+  if (anonymizedEntityPresented3)
   {
-    v9 = v8;
-    v10 = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
-    v11 = [v4 anonymizedEntityPresented];
-    v12 = [v10 isEqual:v11];
+    v9 = anonymizedEntityPresented3;
+    anonymizedEntityPresented4 = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
+    anonymizedEntityPresented5 = [equalCopy anonymizedEntityPresented];
+    v12 = [anonymizedEntityPresented4 isEqual:anonymizedEntityPresented5];
 
     if (!v12)
     {
@@ -158,7 +158,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -166,7 +166,7 @@ LABEL_12:
   if (*&self->_has)
   {
     resolution = self->_resolution;
-    if (resolution != [v4 resolution])
+    if (resolution != [equalCopy resolution])
     {
       goto LABEL_12;
     }
@@ -178,12 +178,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
+  toCopy = to;
+  anonymizedEntityPresented = [(INFERENCESchemaINFERENCEConfirmationPromptContext *)self anonymizedEntityPresented];
 
-  if (v4)
+  if (anonymizedEntityPresented)
   {
     PBDataWriterWriteStringField();
   }

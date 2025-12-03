@@ -1,10 +1,10 @@
 @interface ButtonBarButtonVisualProvider.BackButtonMaskView
-- (_TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E5918BackButtonMaskView)initWithCoder:(id)a3;
+- (_TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E5918BackButtonMaskView)initWithCoder:(id)coder;
 @end
 
 @implementation ButtonBarButtonVisualProvider.BackButtonMaskView
 
-- (_TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E5918BackButtonMaskView)initWithCoder:(id)a3
+- (_TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E5918BackButtonMaskView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtCC5UIKit29ButtonBarButtonVisualProviderP33_A98CD29F4F6ECA17AFECE41BBB264E5918BackButtonMaskView_maskExtensionView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UIView) init];

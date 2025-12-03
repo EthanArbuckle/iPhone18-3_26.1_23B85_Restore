@@ -1,24 +1,24 @@
 @interface HomePodSetupSiriWelcomeViewController
-- (_TtC14HDSViewService37HomePodSetupSiriWelcomeViewController)initWithContentView:(id)a3;
+- (_TtC14HDSViewService37HomePodSetupSiriWelcomeViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation HomePodSetupSiriWelcomeViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10006AE54();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10006BB88(a3);
+  selfCopy = self;
+  sub_10006BB88(disappear);
 }
 
-- (_TtC14HDSViewService37HomePodSetupSiriWelcomeViewController)initWithContentView:(id)a3
+- (_TtC14HDSViewService37HomePodSetupSiriWelcomeViewController)initWithContentView:(id)view
 {
   *&self->presenter[OBJC_IVAR____TtC14HDSViewService37HomePodSetupSiriWelcomeViewController_presenter] = 0;
   swift_unknownObjectWeakInit();
@@ -27,7 +27,7 @@
   (*(*(v6 - 8) + 56))(&self->PRXCardContentViewController_opaque[v5], 1, 1, v6);
   v8.receiver = self;
   v8.super_class = type metadata accessor for HomePodSetupSiriWelcomeViewController();
-  return [(HomePodSetupSiriWelcomeViewController *)&v8 initWithContentView:a3];
+  return [(HomePodSetupSiriWelcomeViewController *)&v8 initWithContentView:view];
 }
 
 @end

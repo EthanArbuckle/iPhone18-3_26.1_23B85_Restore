@@ -1,78 +1,78 @@
 @interface ICViewOnlyPopoverViewController
-+ (id)viewOnlyPopoverViewController:(id)a3 sourceView:(id)a4;
++ (id)viewOnlyPopoverViewController:(id)controller sourceView:(id)view;
 - (CGSize)preferredContentSize;
 - (ICViewOnlyPopoverDelegate)popoverDelegate;
-- (ICViewOnlyPopoverViewController)initWithDelegate:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (ICViewOnlyPopoverViewController)initWithDelegate:(id)delegate;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ICViewOnlyPopoverViewController
 
-- (ICViewOnlyPopoverViewController)initWithDelegate:(id)a3
+- (ICViewOnlyPopoverViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v23.receiver = self;
   v23.super_class = ICViewOnlyPopoverViewController;
   v5 = [(ICViewOnlyPopoverViewController *)&v23 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    [(ICViewOnlyPopoverViewController *)v5 setPopoverDelegate:v4];
+    [(ICViewOnlyPopoverViewController *)v5 setPopoverDelegate:delegateCopy];
     v7 = objc_alloc_init(MEMORY[0x277D756B8]);
     [(ICViewOnlyPopoverViewController *)v6 setLabel:v7];
 
-    v8 = [(ICViewOnlyPopoverViewController *)v6 label];
-    [v8 setTextAlignment:1];
+    label = [(ICViewOnlyPopoverViewController *)v6 label];
+    [label setTextAlignment:1];
 
-    v9 = [MEMORY[0x277CCA8D8] mainBundle];
-    v10 = [v9 localizedStringForKey:@"This document has been modified using a newer OS version. Upgrade to the latest OS to modify it on this device." value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v10 = [mainBundle localizedStringForKey:@"This document has been modified using a newer OS version. Upgrade to the latest OS to modify it on this device." value:&stru_282757698 table:0];
 
-    v11 = [(ICViewOnlyPopoverViewController *)v6 label];
-    [v11 setText:v10];
+    label2 = [(ICViewOnlyPopoverViewController *)v6 label];
+    [label2 setText:v10];
 
     [(ICViewOnlyPopoverViewController *)v6 setAccessibilityLabel:v10];
-    v12 = [(ICViewOnlyPopoverViewController *)v6 label];
-    [v12 setNumberOfLines:0];
+    label3 = [(ICViewOnlyPopoverViewController *)v6 label];
+    [label3 setNumberOfLines:0];
 
-    v13 = [(ICViewOnlyPopoverViewController *)v6 label];
-    [v13 setAdjustsFontForContentSizeCategory:1];
+    label4 = [(ICViewOnlyPopoverViewController *)v6 label];
+    [label4 setAdjustsFontForContentSizeCategory:1];
 
     v14 = *MEMORY[0x277D76800];
-    v15 = [(ICViewOnlyPopoverViewController *)v6 label];
-    [v15 setMaximumContentSizeCategory:v14];
+    label5 = [(ICViewOnlyPopoverViewController *)v6 label];
+    [label5 setMaximumContentSizeCategory:v14];
 
     v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-    v17 = [v16 ic_fontWithSingleLineA];
-    v18 = [(ICViewOnlyPopoverViewController *)v6 label];
-    [v18 setFont:v17];
+    ic_fontWithSingleLineA = [v16 ic_fontWithSingleLineA];
+    label6 = [(ICViewOnlyPopoverViewController *)v6 label];
+    [label6 setFont:ic_fontWithSingleLineA];
 
-    v19 = [MEMORY[0x277D75348] darkGrayColor];
-    v20 = [(ICViewOnlyPopoverViewController *)v6 label];
-    [v20 setTextColor:v19];
+    darkGrayColor = [MEMORY[0x277D75348] darkGrayColor];
+    label7 = [(ICViewOnlyPopoverViewController *)v6 label];
+    [label7 setTextColor:darkGrayColor];
 
-    v21 = [(ICViewOnlyPopoverViewController *)v6 label];
-    [v21 setAdjustsFontSizeToFitWidth:1];
+    label8 = [(ICViewOnlyPopoverViewController *)v6 label];
+    [label8 setAdjustsFontSizeToFitWidth:1];
   }
 
   return v6;
 }
 
-+ (id)viewOnlyPopoverViewController:(id)a3 sourceView:(id)a4
++ (id)viewOnlyPopoverViewController:(id)controller sourceView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ICViewOnlyPopoverViewController alloc] initWithDelegate:v6];
+  viewCopy = view;
+  controllerCopy = controller;
+  v7 = [[ICViewOnlyPopoverViewController alloc] initWithDelegate:controllerCopy];
 
   [(ICViewOnlyPopoverViewController *)v7 setModalPresentationStyle:7];
-  v8 = [(ICViewOnlyPopoverViewController *)v7 popoverPresentationController];
-  [v8 setDelegate:v7];
-  [v8 setPermittedArrowDirections:2];
-  [v8 setSourceView:v5];
-  v9 = [MEMORY[0x277D75348] whiteColor];
-  [v8 setBackgroundColor:v9];
+  popoverPresentationController = [(ICViewOnlyPopoverViewController *)v7 popoverPresentationController];
+  [popoverPresentationController setDelegate:v7];
+  [popoverPresentationController setPermittedArrowDirections:2];
+  [popoverPresentationController setSourceView:viewCopy];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [popoverPresentationController setBackgroundColor:whiteColor];
 
-  [v5 bounds];
+  [viewCopy bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -83,15 +83,15 @@
   v20.size.width = v15;
   v20.size.height = v17;
   v21 = CGRectInset(v20, 0.0, -4.0);
-  [v8 setSourceRect:{v21.origin.x, v21.origin.y, v21.size.width, v21.size.height}];
+  [popoverPresentationController setSourceRect:{v21.origin.x, v21.origin.y, v21.size.width, v21.size.height}];
 
   return v7;
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(ICViewOnlyPopoverViewController *)self label];
-  [v2 sizeThatFits:{400.0, 1.79769313e308}];
+  label = [(ICViewOnlyPopoverViewController *)self label];
+  [label sizeThatFits:{400.0, 1.79769313e308}];
   v4 = v3;
   v6 = v5;
 
@@ -102,23 +102,23 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ICViewOnlyPopoverViewController;
-  [(ICViewOnlyPopoverViewController *)&v6 viewWillAppear:a3];
-  v4 = [(ICViewOnlyPopoverViewController *)self label];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(ICViewOnlyPopoverViewController *)self view];
-  [v5 addSubview:v4];
+  [(ICViewOnlyPopoverViewController *)&v6 viewWillAppear:appear];
+  label = [(ICViewOnlyPopoverViewController *)self label];
+  [label setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(ICViewOnlyPopoverViewController *)self view];
+  [view addSubview:label];
 
-  [v4 ic_addAnchorsToFillSuperviewWithLeadingPadding:1 trailingPadding:1 verticalPadding:12.0 usesSafeAreaLayoutGuideHorizontally:12.0 usesSafeAreaLayoutGuideVertically:10.0];
+  [label ic_addAnchorsToFillSuperviewWithLeadingPadding:1 trailingPadding:1 verticalPadding:12.0 usesSafeAreaLayoutGuideHorizontally:12.0 usesSafeAreaLayoutGuideVertically:10.0];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = [(ICViewOnlyPopoverViewController *)self popoverDelegate];
-  [v3 popoverDidDismiss];
+  popoverDelegate = [(ICViewOnlyPopoverViewController *)self popoverDelegate];
+  [popoverDelegate popoverDidDismiss];
 }
 
 - (ICViewOnlyPopoverDelegate)popoverDelegate

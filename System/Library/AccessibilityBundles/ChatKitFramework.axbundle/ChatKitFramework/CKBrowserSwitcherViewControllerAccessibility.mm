@@ -1,30 +1,30 @@
 @interface CKBrowserSwitcherViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
-- (id)accessibilityScrollStatusForScrollView:(id)a3;
+- (id)accessibilityScrollStatusForScrollView:(id)view;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)a3 withReason:(int64_t)a4;
-- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4;
+- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason;
+- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason;
 - (void)loadView;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setCurrentViewController:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setCurrentViewController:(id)controller;
 @end
 
 @implementation CKBrowserSwitcherViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKBrowserSwitcherViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CKBrowserSwitcherViewController" hasInstanceVariable:@"_currentViewController" withType:"UIViewController<CKBrowserViewControllerProtocol>"];
-  [v3 validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"setCurrentViewController:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"browserTransitionCoordinatorWillCollapseOrDismiss:withReason:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:withReason:" withFullSignature:{"v", "@", "q", 0}];
-  [v3 validateClass:@"CKBrowserSwitcherViewController" hasInstanceVariable:@"_currentVisiblePlugin" withType:"IMBalloonPlugin"];
-  [v3 validateClass:@"IMBalloonPlugin" hasInstanceMethod:@"browserDisplayName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"grabberView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKAppGrabberView" hasInstanceVariable:@"_closeButton" withType:"UIButton"];
-  [v3 validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"appGrabberViewCloseButtonTapped:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKBrowserSwitcherViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CKBrowserSwitcherViewController" hasInstanceVariable:@"_currentViewController" withType:"UIViewController<CKBrowserViewControllerProtocol>"];
+  [validationsCopy validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"setCurrentViewController:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"browserTransitionCoordinatorWillCollapseOrDismiss:withReason:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:withReason:" withFullSignature:{"v", "@", "q", 0}];
+  [validationsCopy validateClass:@"CKBrowserSwitcherViewController" hasInstanceVariable:@"_currentVisiblePlugin" withType:"IMBalloonPlugin"];
+  [validationsCopy validateClass:@"IMBalloonPlugin" hasInstanceMethod:@"browserDisplayName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"grabberView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKAppGrabberView" hasInstanceVariable:@"_closeButton" withType:"UIButton"];
+  [validationsCopy validateClass:@"CKBrowserSwitcherViewController" hasInstanceMethod:@"appGrabberViewCloseButtonTapped:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -48,28 +48,28 @@
   [(CKBrowserSwitcherViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setCurrentViewController:(id)a3
+- (void)setCurrentViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CKBrowserSwitcherViewControllerAccessibility *)self safeValueForKey:@"_currentViewController"];
   v8.receiver = self;
   v8.super_class = CKBrowserSwitcherViewControllerAccessibility;
-  [(CKBrowserSwitcherViewControllerAccessibility *)&v8 setCurrentViewController:v4];
-  if (v5 != v4 && [(CKBrowserSwitcherViewControllerAccessibility *)self _axIsScrollingByDragGesture])
+  [(CKBrowserSwitcherViewControllerAccessibility *)&v8 setCurrentViewController:controllerCopy];
+  if (v5 != controllerCopy && [(CKBrowserSwitcherViewControllerAccessibility *)self _axIsScrollingByDragGesture])
   {
     v6 = *MEMORY[0x29EDC7ED8];
-    v7 = [v4 safeValueForKey:@"view"];
+    v7 = [controllerCopy safeValueForKey:@"view"];
     UIAccessibilityPostNotification(v6, v7);
 
     [(CKBrowserSwitcherViewControllerAccessibility *)self _axSetIsScrollingByDragGesture:0];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v4.receiver = self;
   v4.super_class = CKBrowserSwitcherViewControllerAccessibility;
-  [(CKBrowserSwitcherViewControllerAccessibility *)&v4 scrollViewWillBeginDragging:a3];
+  [(CKBrowserSwitcherViewControllerAccessibility *)&v4 scrollViewWillBeginDragging:dragging];
   [(CKBrowserSwitcherViewControllerAccessibility *)self _axSetIsScrollingByDragGesture:1];
 }
 
@@ -98,29 +98,29 @@
   return [(CKBrowserSwitcherViewControllerAccessibility *)&v7 accessibilityPerformEscape];
 }
 
-- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:(id)fullscreen withReason:(int64_t)reason
 {
   v6.receiver = self;
   v6.super_class = CKBrowserSwitcherViewControllerAccessibility;
-  [(CKBrowserSwitcherViewControllerAccessibility *)&v6 browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:a3 withReason:a4];
+  [(CKBrowserSwitcherViewControllerAccessibility *)&v6 browserTransitionCoordinatorWillTransitionOrPresentToFullscreen:fullscreen withReason:reason];
   v5 = [(CKBrowserSwitcherViewControllerAccessibility *)self safeUIViewForKey:@"grabberView"];
   [v5 _accessibilitySetBoolValue:1 forKey:@"_axBrowserIsExpanded"];
 }
 
-- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)a3 withReason:(int64_t)a4
+- (void)browserTransitionCoordinatorWillCollapseOrDismiss:(id)dismiss withReason:(int64_t)reason
 {
   v6.receiver = self;
   v6.super_class = CKBrowserSwitcherViewControllerAccessibility;
-  [(CKBrowserSwitcherViewControllerAccessibility *)&v6 browserTransitionCoordinatorWillCollapseOrDismiss:a3 withReason:a4];
+  [(CKBrowserSwitcherViewControllerAccessibility *)&v6 browserTransitionCoordinatorWillCollapseOrDismiss:dismiss withReason:reason];
   v5 = [(CKBrowserSwitcherViewControllerAccessibility *)self safeUIViewForKey:@"grabberView"];
   [v5 _accessibilitySetBoolValue:0 forKey:@"_axBrowserIsExpanded"];
 }
 
-- (id)accessibilityScrollStatusForScrollView:(id)a3
+- (id)accessibilityScrollStatusForScrollView:(id)view
 {
-  v4 = a3;
-  [v4 _accessibilityPageIndex];
-  [v4 _accessibilityPageCount];
+  viewCopy = view;
+  [viewCopy _accessibilityPageIndex];
+  [viewCopy _accessibilityPageCount];
   v5 = MEMORY[0x29EDBA0F8];
   v6 = accessibilityLocalizedString(@"browser.page.format");
   v7 = AXFormatInteger();

@@ -1,48 +1,48 @@
 @interface HMIVideoAssetWriterDelegateAdapter
-- (void)assetWriter:(id)a3 didFailWithError:(id)a4;
-- (void)assetWriter:(id)a3 didOutputInitializationSegment:(id)a4;
-- (void)assetWriter:(id)a3 didOutputSeparableSegment:(id)a4 segmentReport:(id)a5;
+- (void)assetWriter:(id)writer didFailWithError:(id)error;
+- (void)assetWriter:(id)writer didOutputInitializationSegment:(id)segment;
+- (void)assetWriter:(id)writer didOutputSeparableSegment:(id)segment segmentReport:(id)report;
 @end
 
 @implementation HMIVideoAssetWriterDelegateAdapter
 
-- (void)assetWriter:(id)a3 didOutputInitializationSegment:(id)a4
+- (void)assetWriter:(id)writer didOutputInitializationSegment:(id)segment
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidOutputInitializationSegment];
+  writerCopy = writer;
+  segmentCopy = segment;
+  assetWriterDidOutputInitializationSegment = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidOutputInitializationSegment];
 
-  if (v7)
+  if (assetWriterDidOutputInitializationSegment)
   {
-    v8 = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidOutputInitializationSegment];
-    (v8)[2](v8, v9, v6);
+    assetWriterDidOutputInitializationSegment2 = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidOutputInitializationSegment];
+    (assetWriterDidOutputInitializationSegment2)[2](assetWriterDidOutputInitializationSegment2, writerCopy, segmentCopy);
   }
 }
 
-- (void)assetWriter:(id)a3 didOutputSeparableSegment:(id)a4 segmentReport:(id)a5
+- (void)assetWriter:(id)writer didOutputSeparableSegment:(id)segment segmentReport:(id)report
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidOutputSeparableSegment];
+  writerCopy = writer;
+  segmentCopy = segment;
+  reportCopy = report;
+  assetWriterDidOutputSeparableSegment = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidOutputSeparableSegment];
 
-  if (v10)
+  if (assetWriterDidOutputSeparableSegment)
   {
-    v11 = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidOutputSeparableSegment];
-    (v11)[2](v11, v12, v8, v9);
+    assetWriterDidOutputSeparableSegment2 = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidOutputSeparableSegment];
+    (assetWriterDidOutputSeparableSegment2)[2](assetWriterDidOutputSeparableSegment2, writerCopy, segmentCopy, reportCopy);
   }
 }
 
-- (void)assetWriter:(id)a3 didFailWithError:(id)a4
+- (void)assetWriter:(id)writer didFailWithError:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidFailWithError];
+  writerCopy = writer;
+  errorCopy = error;
+  assetWriterDidFailWithError = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidFailWithError];
 
-  if (v7)
+  if (assetWriterDidFailWithError)
   {
-    v8 = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidFailWithError];
-    (v8)[2](v8, v9, v6);
+    assetWriterDidFailWithError2 = [(HMIVideoAssetWriterDelegateAdapter *)self assetWriterDidFailWithError];
+    (assetWriterDidFailWithError2)[2](assetWriterDidFailWithError2, writerCopy, errorCopy);
   }
 }
 

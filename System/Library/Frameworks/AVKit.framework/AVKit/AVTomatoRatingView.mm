@@ -1,43 +1,43 @@
 @interface AVTomatoRatingView
 - (AVTomatoRatingView)init;
-- (void)setTextColor:(id)a3;
-- (void)setTomatoFreshness:(unint64_t)a3;
-- (void)setTomatoRating:(float)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTextColor:(id)color;
+- (void)setTomatoFreshness:(unint64_t)freshness;
+- (void)setTomatoRating:(float)rating;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation AVTomatoRatingView
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = AVTomatoRatingView;
-  [(AVTomatoRatingView *)&v4 traitCollectionDidChange:a3];
+  [(AVTomatoRatingView *)&v4 traitCollectionDidChange:change];
   [(UILabel *)self->_tomatoRatingLabel setTextColor:self->_textColor];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v5 = a3;
-  if (self->_textColor != v5)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_textColor, a3);
+    v6 = colorCopy;
+    objc_storeStrong(&self->_textColor, color);
     [(UILabel *)self->_tomatoRatingLabel setTextColor:v6];
-    v5 = v6;
+    colorCopy = v6;
   }
 }
 
-- (void)setTomatoRating:(float)a3
+- (void)setTomatoRating:(float)rating
 {
-  if (self->_tomatoRating != a3)
+  if (self->_tomatoRating != rating)
   {
-    if (a3 > 1.0)
+    if (rating > 1.0)
     {
-      a3 = a3 / 100.0;
+      rating = rating / 100.0;
     }
 
-    self->_tomatoRating = a3;
+    self->_tomatoRating = rating;
     v7 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     [v7 setNumberStyle:3];
     *&v4 = self->_tomatoRating;
@@ -48,12 +48,12 @@
   }
 }
 
-- (void)setTomatoFreshness:(unint64_t)a3
+- (void)setTomatoFreshness:(unint64_t)freshness
 {
-  if (self->_tomatoFreshness != a3)
+  if (self->_tomatoFreshness != freshness)
   {
-    self->_tomatoFreshness = a3;
-    if (a3 > 2)
+    self->_tomatoFreshness = freshness;
+    if (freshness > 2)
     {
       v8 = 0;
       v9 = 0;
@@ -61,8 +61,8 @@
 
     else
     {
-      v5 = off_1E720A1C0[a3];
-      v9 = AVLocalizedString(off_1E720A1A8[a3]);
+      v5 = off_1E720A1C0[freshness];
+      v9 = AVLocalizedString(off_1E720A1A8[freshness]);
       v6 = MEMORY[0x1E69DCAB8];
       v7 = AVBundle();
       v8 = [v6 imageNamed:v5 inBundle:v7 compatibleWithTraitCollection:0];
@@ -83,9 +83,9 @@
   {
     v2->_tomatoFreshness = 3;
     v2->_tomatoRating = NAN;
-    v4 = [MEMORY[0x1E69DC888] systemPinkColor];
+    systemPinkColor = [MEMORY[0x1E69DC888] systemPinkColor];
     textColor = v3->_textColor;
-    v3->_textColor = v4;
+    v3->_textColor = systemPinkColor;
 
     v6 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     tomatoRatingIcon = v3->_tomatoRatingIcon;
@@ -108,41 +108,41 @@
     [(UILabel *)v3->_tomatoRatingLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->_tomatoRatingLabel setAccessibilityIdentifier:@"AVTomatoRatingLabel"];
     [(AVTomatoRatingView *)v3 addSubview:v3->_tomatoRatingLabel];
-    v12 = [MEMORY[0x1E695DF70] array];
-    v13 = [(UIImageView *)v3->_tomatoRatingIcon bottomAnchor];
-    v14 = [(UILabel *)v3->_tomatoRatingLabel lastBaselineAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14 constant:1.0];
-    [v12 addObject:v15];
+    array = [MEMORY[0x1E695DF70] array];
+    bottomAnchor = [(UIImageView *)v3->_tomatoRatingIcon bottomAnchor];
+    lastBaselineAnchor = [(UILabel *)v3->_tomatoRatingLabel lastBaselineAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor constant:1.0];
+    [array addObject:v15];
 
-    v16 = [(UIImageView *)v3->_tomatoRatingIcon leftAnchor];
-    v17 = [(AVTomatoRatingView *)v3 leftAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
-    [v12 addObject:v18];
+    leftAnchor = [(UIImageView *)v3->_tomatoRatingIcon leftAnchor];
+    leftAnchor2 = [(AVTomatoRatingView *)v3 leftAnchor];
+    v18 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
+    [array addObject:v18];
 
-    v19 = [(UILabel *)v3->_tomatoRatingLabel topAnchor];
-    v20 = [(AVTomatoRatingView *)v3 topAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
-    [v12 addObject:v21];
+    topAnchor = [(UILabel *)v3->_tomatoRatingLabel topAnchor];
+    topAnchor2 = [(AVTomatoRatingView *)v3 topAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v21];
 
-    v22 = [(UILabel *)v3->_tomatoRatingLabel rightAnchor];
-    v23 = [(AVTomatoRatingView *)v3 rightAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23];
-    [v12 addObject:v24];
+    rightAnchor = [(UILabel *)v3->_tomatoRatingLabel rightAnchor];
+    rightAnchor2 = [(AVTomatoRatingView *)v3 rightAnchor];
+    v24 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
+    [array addObject:v24];
 
-    v25 = [(UILabel *)v3->_tomatoRatingLabel bottomAnchor];
-    v26 = [(AVTomatoRatingView *)v3 bottomAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26];
-    [v12 addObject:v27];
+    bottomAnchor2 = [(UILabel *)v3->_tomatoRatingLabel bottomAnchor];
+    bottomAnchor3 = [(AVTomatoRatingView *)v3 bottomAnchor];
+    v27 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
+    [array addObject:v27];
 
-    v28 = [(UIImageView *)v3->_tomatoRatingIcon heightAnchor];
-    v29 = [(UILabel *)v3->_tomatoRatingLabel heightAnchor];
-    v30 = [v28 constraintEqualToAnchor:v29 multiplier:0.65];
-    [v12 addObject:v30];
+    heightAnchor = [(UIImageView *)v3->_tomatoRatingIcon heightAnchor];
+    heightAnchor2 = [(UILabel *)v3->_tomatoRatingLabel heightAnchor];
+    v30 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.65];
+    [array addObject:v30];
 
-    v31 = [(UIImageView *)v3->_tomatoRatingIcon widthAnchor];
-    v32 = [(UIImageView *)v3->_tomatoRatingIcon heightAnchor];
-    v33 = [v31 constraintEqualToAnchor:v32];
-    [v12 addObject:v33];
+    widthAnchor = [(UIImageView *)v3->_tomatoRatingIcon widthAnchor];
+    heightAnchor3 = [(UIImageView *)v3->_tomatoRatingIcon heightAnchor];
+    v33 = [widthAnchor constraintEqualToAnchor:heightAnchor3];
+    [array addObject:v33];
 
     LODWORD(v34) = 1132068864;
     [(UIImageView *)v3->_tomatoRatingIcon setContentCompressionResistancePriority:1 forAxis:v34];
@@ -153,14 +153,14 @@
     LODWORD(v37) = 1148846080;
     [(UILabel *)v3->_tomatoRatingLabel setContentHuggingPriority:1 forAxis:v37];
     [(UIImageView *)v3->_tomatoRatingIcon setContentMode:1];
-    v38 = [(UILabel *)v3->_tomatoRatingLabel leftAnchor];
-    v39 = [(UIImageView *)v3->_tomatoRatingIcon rightAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39 constant:5.0];
+    leftAnchor3 = [(UILabel *)v3->_tomatoRatingLabel leftAnchor];
+    rightAnchor3 = [(UIImageView *)v3->_tomatoRatingIcon rightAnchor];
+    v40 = [leftAnchor3 constraintEqualToAnchor:rightAnchor3 constant:5.0];
 
     LODWORD(v41) = *"";
     [v40 setPriority:v41];
-    [v12 addObject:v40];
-    [MEMORY[0x1E696ACD8] activateConstraints:v12];
+    [array addObject:v40];
+    [MEMORY[0x1E696ACD8] activateConstraints:array];
   }
 
   return v3;

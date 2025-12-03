@@ -1,18 +1,18 @@
 @interface PAELumaKey
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (PAELumaKey)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (PAELumaKey)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAELumaKey
 
-- (PAELumaKey)initWithAPIManager:(id)a3
+- (PAELumaKey)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAELumaKey;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (id)properties
@@ -43,7 +43,7 @@
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v10 = v9;
@@ -52,10 +52,10 @@
     v39 = 0.0;
     v40 = 0;
     v38 = 0.0;
-    [v9 getIntValue:&v40 fromParm:1 atFxTime:a5->var0.var1];
-    [v10 getIntValue:&v40 + 4 fromParm:2 atFxTime:a5->var0.var1];
-    [v10 getFloatValue:&v38 fromParm:3 atFxTime:a5->var0.var1];
-    [v10 getFloatValue:&v39 fromParm:4 atFxTime:a5->var0.var1];
+    [v9 getIntValue:&v40 fromParm:1 atFxTime:info->var0.var1];
+    [v10 getIntValue:&v40 + 4 fromParm:2 atFxTime:info->var0.var1];
+    [v10 getFloatValue:&v38 fromParm:3 atFxTime:info->var0.var1];
+    [v10 getFloatValue:&v39 fromParm:4 atFxTime:info->var0.var1];
     if (HIDWORD(v40) >= 6)
     {
       PCPrint("File %s, line %d should not have been reached:\n\t", v11, v12, v13, v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/FiltersiOS/Filters/PAELumaKey.mm");
@@ -65,8 +65,8 @@
     v18 = flt_260343FD4[HIDWORD(v40)];
     v19 = flt_260343FEC[HIDWORD(v40)];
     v20 = flt_260344004[HIDWORD(v40)];
-    v21 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
-    if (v21 && [a4 imageType] == 3)
+    v21 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
+    if (v21 && [input imageType] == 3)
     {
       v22 = HGObject::operator new(0x1A0uLL);
       HgcLumaKey::HgcLumaKey(v22);
@@ -128,9 +128,9 @@
       *&v30 = v32;
       *&v33 = v33;
       (*(*v22 + 96))(v22, 2, *&v30, *&v33, 0.0, 0.0);
-      if (a4)
+      if (input)
       {
-        [a4 heliumRef];
+        [input heliumRef];
         v34 = v36;
       }
 
@@ -146,7 +146,7 @@
         (*(*v36 + 24))(v36);
       }
 
-      [a3 setHeliumRef:&v37];
+      [output setHeliumRef:&v37];
       if (v37)
       {
         (*(*v37 + 24))(v37);
@@ -157,15 +157,15 @@
   return v10 != 0;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 0;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

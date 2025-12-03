@@ -1,8 +1,8 @@
 @interface ATXInfoSuggestionCriterionRegistry
 - (ATXInfoSuggestionCriterionRegistry)init;
-- (BOOL)isSourceIdentifierRegistered:(id)a3;
-- (id)availableCriterionIdentifiersForSourceIdentifier:(id)a3;
-- (int64_t)confidenceLevelForCriterion:(id)a3 sourceIdentifier:(id)a4;
+- (BOOL)isSourceIdentifierRegistered:(id)registered;
+- (id)availableCriterionIdentifiersForSourceIdentifier:(id)identifier;
+- (int64_t)confidenceLevelForCriterion:(id)criterion sourceIdentifier:(id)identifier;
 @end
 
 @implementation ATXInfoSuggestionCriterionRegistry
@@ -22,31 +22,31 @@
   return v2;
 }
 
-- (BOOL)isSourceIdentifierRegistered:(id)a3
+- (BOOL)isSourceIdentifierRegistered:(id)registered
 {
-  v3 = [(NSDictionary *)self->_registry objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_registry objectForKeyedSubscript:registered];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (int64_t)confidenceLevelForCriterion:(id)a3 sourceIdentifier:(id)a4
+- (int64_t)confidenceLevelForCriterion:(id)criterion sourceIdentifier:(id)identifier
 {
   registry = self->_registry;
-  v6 = a3;
-  v7 = [(NSDictionary *)registry objectForKeyedSubscript:a4];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  criterionCopy = criterion;
+  v7 = [(NSDictionary *)registry objectForKeyedSubscript:identifier];
+  v8 = [v7 objectForKeyedSubscript:criterionCopy];
 
-  v9 = [v8 unsignedIntegerValue];
-  return v9;
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (id)availableCriterionIdentifiersForSourceIdentifier:(id)a3
+- (id)availableCriterionIdentifiersForSourceIdentifier:(id)identifier
 {
-  v3 = [(NSDictionary *)self->_registry objectForKeyedSubscript:a3];
-  v4 = [v3 allKeys];
+  v3 = [(NSDictionary *)self->_registry objectForKeyedSubscript:identifier];
+  allKeys = [v3 allKeys];
 
-  return v4;
+  return allKeys;
 }
 
 @end

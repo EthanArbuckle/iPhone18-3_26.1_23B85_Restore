@@ -11,7 +11,7 @@
 {
   v6 = [MEMORY[0x277CCD6C0] categoryIdentifierFromAlarmEventIdentifier:a4];
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:43200.0];
-  v8 = [a1 initWithAction:a3 categoryIdentifier:v6 expirationDate:v7];
+  v8 = [self initWithAction:a3 categoryIdentifier:v6 expirationDate:v7];
 
   return v8;
 }
@@ -20,7 +20,7 @@
 {
   v6 = [MEMORY[0x277CCD6C0] categoryIdentifierFromJournalIdentifier:a4];
   v7 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:43200.0];
-  v8 = [a1 initWithAction:a3 categoryIdentifier:v6 expirationDate:v7];
+  v8 = [self initWithAction:a3 categoryIdentifier:v6 expirationDate:v7];
 
   return v8;
 }
@@ -35,13 +35,13 @@
 
 + (id)notificationIdentifiersFromCategoryIdentifiers:()BloodPressureJournal
 {
-  v4 = [a3 allObjects];
+  allObjects = [a3 allObjects];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __98__HKNotificationInstruction_BloodPressureJournal__notificationIdentifiersFromCategoryIdentifiers___block_invoke;
   v7[3] = &__block_descriptor_40_e18__16__0__NSString_8l;
-  v7[4] = a1;
-  v5 = [v4 hk_map:v7];
+  v7[4] = self;
+  v5 = [allObjects hk_map:v7];
 
   return v5;
 }

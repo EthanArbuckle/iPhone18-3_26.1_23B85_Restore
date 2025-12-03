@@ -1,27 +1,27 @@
 @interface CKTranscriptGroupTypingIndicatorCell
-- (CGRect)avatarFrameForContact:(id)a3;
+- (CGRect)avatarFrameForContact:(id)contact;
 - (CGRect)contactImageViewFrame;
 - (CGRect)lastRemovedContactImageFrame;
-- (CKTranscriptGroupTypingIndicatorCell)initWithFrame:(CGRect)a3;
-- (id)getContactsFromHandles:(id)a3;
-- (void)applyAccessibilityStringsFor:(id)a3;
+- (CKTranscriptGroupTypingIndicatorCell)initWithFrame:(CGRect)frame;
+- (id)getContactsFromHandles:(id)handles;
+- (void)applyAccessibilityStringsFor:(id)for;
 - (void)applyTransforms;
-- (void)layoutLayer:(id)a3 at:(CGRect)a4 within:(CGRect)a5 withAvatarIndex:(int64_t)a6;
+- (void)layoutLayer:(id)layer at:(CGRect)at within:(CGRect)within withAvatarIndex:(int64_t)index;
 - (void)layoutSubviews;
 - (void)performAvatarAnimation;
-- (void)prepareForAvatarAnimationWithNewHandles:(id)a3;
+- (void)prepareForAvatarAnimationWithNewHandles:(id)handles;
 - (void)prepareForReuse;
 - (void)setGroupAvatarViewFromCurrentViewController;
-- (void)setTypingHandles:(id)a3 pluginIconLayer:(id)a4 shouldAnimateRemovals:(BOOL)a5;
+- (void)setTypingHandles:(id)handles pluginIconLayer:(id)layer shouldAnimateRemovals:(BOOL)removals;
 @end
 
 @implementation CKTranscriptGroupTypingIndicatorCell
 
-- (CKTranscriptGroupTypingIndicatorCell)initWithFrame:(CGRect)a3
+- (CKTranscriptGroupTypingIndicatorCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CKTranscriptGroupTypingIndicatorCell;
-  v3 = [(CKTranscriptTypingIndicatorCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptTypingIndicatorCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -30,13 +30,13 @@
     avatarView = v3->_avatarView;
     v3->_avatarView = v5;
 
-    v7 = [(CKTranscriptGroupTypingIndicatorCell *)v3 avatarView];
+    avatarView = [(CKTranscriptGroupTypingIndicatorCell *)v3 avatarView];
     v8 = +[CKUIBehavior sharedBehaviors];
-    v9 = [v8 transcriptGroupTypingIndicatorBackgroundColor];
-    [v7 setBackgroundColor:v9];
+    transcriptGroupTypingIndicatorBackgroundColor = [v8 transcriptGroupTypingIndicatorBackgroundColor];
+    [avatarView setBackgroundColor:transcriptGroupTypingIndicatorBackgroundColor];
 
-    v10 = [(CKEditableCollectionViewCell *)v3 contentView];
-    [v10 addSubview:v3->_avatarView];
+    contentView = [(CKEditableCollectionViewCell *)v3 contentView];
+    [contentView addSubview:v3->_avatarView];
   }
 
   [(UIView *)v3->_avatarView setAccessibilityIdentifier:@"groupTypingIndicator"];
@@ -45,10 +45,10 @@
 
 - (CGRect)contactImageViewFrame
 {
-  v2 = [(CKTranscriptMessageCell *)self isReplyContextPreview];
+  isReplyContextPreview = [(CKTranscriptMessageCell *)self isReplyContextPreview];
   v3 = +[CKUIBehavior sharedBehaviors];
   v4 = v3;
-  if (v2)
+  if (isReplyContextPreview)
   {
     [v3 transcriptReplyPreviewContextContactImageDiameter];
   }
@@ -73,39 +73,39 @@
 
 - (void)setGroupAvatarViewFromCurrentViewController
 {
-  v3 = [(CNGroupAvatarViewController *)self->_groupAvatarViewController view];
+  view = [(CNGroupAvatarViewController *)self->_groupAvatarViewController view];
   avatarView = self->_avatarView;
-  if (avatarView != v3)
+  if (avatarView != view)
   {
-    obj = v3;
+    obj = view;
     [(UIView *)avatarView removeFromSuperview];
     objc_storeStrong(&self->_avatarView, obj);
     v5 = self->_avatarView;
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [v6 transcriptGroupTypingIndicatorBackgroundColor];
-    [(UIView *)v5 setBackgroundColor:v7];
+    transcriptGroupTypingIndicatorBackgroundColor = [v6 transcriptGroupTypingIndicatorBackgroundColor];
+    [(UIView *)v5 setBackgroundColor:transcriptGroupTypingIndicatorBackgroundColor];
 
-    v8 = [(CKEditableCollectionViewCell *)self contentView];
-    [v8 addSubview:self->_avatarView];
+    contentView = [(CKEditableCollectionViewCell *)self contentView];
+    [contentView addSubview:self->_avatarView];
 
     [(CKTranscriptGroupTypingIndicatorCell *)self setNeedsLayout];
-    v3 = obj;
+    view = obj;
   }
 }
 
-- (void)prepareForAvatarAnimationWithNewHandles:(id)a3
+- (void)prepareForAvatarAnimationWithNewHandles:(id)handles
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlesCopy = handles;
   v5 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v6 = [(CKTranscriptGroupTypingIndicatorCell *)self typingHandles];
-  v7 = [v5 initWithArray:v6];
+  typingHandles = [(CKTranscriptGroupTypingIndicatorCell *)self typingHandles];
+  v7 = [v5 initWithArray:typingHandles];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v8 = v4;
+  v8 = handlesCopy;
   v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v9)
   {
@@ -135,27 +135,27 @@
   {
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v7 anyObject];
-      v29 = v13;
+      anyObject = [v7 anyObject];
+      v29 = anyObject;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
       v15 = [(CKTranscriptGroupTypingIndicatorCell *)self getContactsFromHandles:v14];
-      v16 = [v15 firstObject];
-      v17 = [v16 identifier];
+      firstObject = [v15 firstObject];
+      identifier = [firstObject identifier];
 
-      v18 = [(CNGroupAvatarViewController *)self->_groupAvatarViewController avatarLayerForIdentifier:v17];
+      v18 = [(CNGroupAvatarViewController *)self->_groupAvatarViewController avatarLayerForIdentifier:identifier];
       [v18 frame];
       [(CKTranscriptGroupTypingIndicatorCell *)self setLastRemovedContactImageFrame:?];
     }
 
     else
     {
-      v19 = [(CKTranscriptGroupTypingIndicatorCell *)self typingHandles];
-      v20 = [v7 anyObject];
-      v21 = [v19 indexOfObject:v20];
+      typingHandles2 = [(CKTranscriptGroupTypingIndicatorCell *)self typingHandles];
+      anyObject2 = [v7 anyObject];
+      v21 = [typingHandles2 indexOfObject:anyObject2];
 
-      v22 = [(CNGroupAvatarViewController *)self->_groupAvatarViewController avatarLayers];
-      v23 = [(CNGroupAvatarViewController *)self->_groupAvatarViewController avatarLayers];
-      v24 = [v22 objectAtIndex:{objc_msgSend(v23, "count") + ~v21}];
+      avatarLayers = [(CNGroupAvatarViewController *)self->_groupAvatarViewController avatarLayers];
+      avatarLayers2 = [(CNGroupAvatarViewController *)self->_groupAvatarViewController avatarLayers];
+      v24 = [avatarLayers objectAtIndex:{objc_msgSend(avatarLayers2, "count") + ~v21}];
       [v24 frame];
       [(CKTranscriptGroupTypingIndicatorCell *)self setLastRemovedContactImageFrame:?];
     }
@@ -171,29 +171,29 @@
 
 - (void)performAvatarAnimation
 {
-  v3 = [(CKTranscriptGroupTypingIndicatorCell *)self pendingTypingHandles];
+  pendingTypingHandles = [(CKTranscriptGroupTypingIndicatorCell *)self pendingTypingHandles];
 
-  if (v3)
+  if (pendingTypingHandles)
   {
-    v4 = [(CKTranscriptGroupTypingIndicatorCell *)self pendingTypingHandles];
-    [(CKTranscriptGroupTypingIndicatorCell *)self setTypingHandles:v4 pluginIconLayer:0 shouldAnimateRemovals:0];
+    pendingTypingHandles2 = [(CKTranscriptGroupTypingIndicatorCell *)self pendingTypingHandles];
+    [(CKTranscriptGroupTypingIndicatorCell *)self setTypingHandles:pendingTypingHandles2 pluginIconLayer:0 shouldAnimateRemovals:0];
 
     [(CKTranscriptGroupTypingIndicatorCell *)self setPendingTypingHandles:0];
   }
 }
 
-- (void)setTypingHandles:(id)a3 pluginIconLayer:(id)a4 shouldAnimateRemovals:(BOOL)a5
+- (void)setTypingHandles:(id)handles pluginIconLayer:(id)layer shouldAnimateRemovals:(BOOL)removals
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
+  removalsCopy = removals;
+  layerCopy = layer;
+  handlesCopy = handles;
   [(CKTranscriptGroupTypingIndicatorCell *)self setPendingTypingHandles:0];
-  v10 = [(CKTranscriptGroupTypingIndicatorCell *)self currentTypingCount];
-  v11 = [v9 reverseObjectEnumerator];
+  currentTypingCount = [(CKTranscriptGroupTypingIndicatorCell *)self currentTypingCount];
+  reverseObjectEnumerator = [handlesCopy reverseObjectEnumerator];
 
-  v12 = [v11 allObjects];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  v13 = [v12 count];
+  v13 = [allObjects count];
   if (v13 >= 7)
   {
     v14 = 7;
@@ -204,17 +204,17 @@
     v14 = v13;
   }
 
-  v15 = [v12 subarrayWithRange:{0, v14}];
+  v15 = [allObjects subarrayWithRange:{0, v14}];
 
   -[CKTranscriptGroupTypingIndicatorCell setCurrentTypingCount:](self, "setCurrentTypingCount:", [v15 count]);
-  v16 = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
+  indicatorLayer = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
   if ([v15 count] < 2)
   {
-    if (v8)
+    if (layerCopy)
     {
       v85.receiver = self;
       v85.super_class = CKTranscriptGroupTypingIndicatorCell;
-      [(CKTranscriptTypingIndicatorCell *)&v85 setIndicatorLayer:v8];
+      [(CKTranscriptTypingIndicatorCell *)&v85 setIndicatorLayer:layerCopy];
       goto LABEL_10;
     }
 
@@ -233,11 +233,11 @@
   }
 
 LABEL_10:
-  v68 = v8;
-  v18 = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
+  v68 = layerCopy;
+  indicatorLayer2 = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
 
-  v67 = v16;
-  if (v18 != v16)
+  v67 = indicatorLayer;
+  if (indicatorLayer2 != indicatorLayer)
   {
     [(CKTranscriptTypingIndicatorCell *)self startPulseAnimation];
   }
@@ -316,7 +316,7 @@ LABEL_10:
     v37 = self->_groupAvatarViewController;
     if (v36)
     {
-      [(CNGroupAvatarViewController *)v37 groupIdentityDidUpdate:v20 shouldAnimateRemovals:v5];
+      [(CNGroupAvatarViewController *)v37 groupIdentityDidUpdate:v20 shouldAnimateRemovals:removalsCopy];
     }
 
     else
@@ -324,7 +324,7 @@ LABEL_10:
       [(CNGroupAvatarViewController *)v37 groupIdentityDidUpdate:v20];
     }
 
-    if (v10 == 1 && [(CKTranscriptGroupTypingIndicatorCell *)self currentTypingCount]> 1 || [(CKTranscriptGroupTypingIndicatorCell *)self currentTypingCount:v59]== 1 && v10 >= 2)
+    if (currentTypingCount == 1 && [(CKTranscriptGroupTypingIndicatorCell *)self currentTypingCount]> 1 || [(CKTranscriptGroupTypingIndicatorCell *)self currentTypingCount:v59]== 1 && currentTypingCount >= 2)
     {
       v38 = [MEMORY[0x1E69794A8] animationWithKeyPath:{@"transform", v59, v60, v61, v62, v63, v64, v65, v66}];
       [v38 setDuration:0.5];
@@ -349,11 +349,11 @@ LABEL_10:
       else
       {
         groupAvatarViewController = [(CKTranscriptGroupTypingIndicatorCell *)self contactImageView];
-        v41 = [groupAvatarViewController layer];
-        v30 = v41;
-        if (v41)
+        layer = [groupAvatarViewController layer];
+        v30 = layer;
+        if (layer)
         {
-          [v41 transform];
+          [layer transform];
         }
 
         else
@@ -397,9 +397,9 @@ LABEL_10:
       v44 = [v43 valueWithBytes:&v71 objCType:"{CATransform3D=dddddddddddddddd}"];
       [v38 setToValue:v44];
 
-      v45 = [(CKTranscriptGroupTypingIndicatorCell *)self contactImageView];
-      v46 = [v45 layer];
-      [v46 addAnimation:v38 forKey:@"transform"];
+      contactImageView = [(CKTranscriptGroupTypingIndicatorCell *)self contactImageView];
+      layer2 = [contactImageView layer];
+      [layer2 addAnimation:v38 forKey:@"transform"];
 
       v47 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform"];
       [v47 setDuration:0.5];
@@ -451,8 +451,8 @@ LABEL_10:
       v57 = [v50 valueWithBytes:v69 objCType:"{CATransform3D=dddddddddddddddd}"];
       [v47 setToValue:v57];
 
-      v58 = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
-      [v58 addAnimation:v47 forKey:@"transform"];
+      indicatorLayer3 = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
+      [indicatorLayer3 addAnimation:v47 forKey:@"transform"];
     }
   }
 
@@ -460,21 +460,21 @@ LABEL_10:
   [(CKTranscriptGroupTypingIndicatorCell *)self applyAccessibilityStringsFor:v15];
 }
 
-- (void)applyAccessibilityStringsFor:(id)a3
+- (void)applyAccessibilityStringsFor:(id)for
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [v4 stringWithFormat:@"groupTypingIndicator-%lu-typers", objc_msgSend(v5, "count")];
+  forCopy = for;
+  v6 = [v4 stringWithFormat:@"groupTypingIndicator-%lu-typers", objc_msgSend(forCopy, "count")];
   [(UIView *)self->_avatarView setAccessibilityIdentifier:v6];
 
-  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(forCopy, "count")}];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __69__CKTranscriptGroupTypingIndicatorCell_applyAccessibilityStringsFor___block_invoke;
   v24 = &unk_1E72F4DF0;
   v8 = v7;
   v25 = v8;
-  [v5 enumerateObjectsUsingBlock:&v21];
+  [forCopy enumerateObjectsUsingBlock:&v21];
 
   v9 = [MEMORY[0x1E696AD08] localizedStringByJoiningStrings:v8];
   v10 = [v8 count];
@@ -494,10 +494,10 @@ LABEL_10:
   v15 = [v12 localizedStringForKey:v14 value:&stru_1F04268F8 table:@"ChatKit"];
   v16 = [v11 stringWithFormat:v15, v9, v21, v22, v23, v24];
 
-  v17 = [MEMORY[0x1E69DC668] sharedApplication];
-  v18 = [v17 userInterfaceLayoutDirection];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-  if (v18 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v19 = @"\u200F";
   }
@@ -534,10 +534,10 @@ void __69__CKTranscriptGroupTypingIndicatorCell_applyAccessibilityStringsFor___b
   v8 = v7;
 
   v9 = v8 - v5;
-  v10 = [(CKTranscriptGroupTypingIndicatorCell *)self currentTypingCount];
+  currentTypingCount = [(CKTranscriptGroupTypingIndicatorCell *)self currentTypingCount];
   v11 = v5 / v8;
   memset(&v36.m21, 0, 96);
-  if (v10 > 1)
+  if (currentTypingCount > 1)
   {
     v11 = 1.0;
   }
@@ -575,14 +575,14 @@ void __69__CKTranscriptGroupTypingIndicatorCell_applyAccessibilityStringsFor___b
   if ([(CKTranscriptGroupTypingIndicatorCell *)self currentTypingCount]== 1)
   {
     v32 = v36;
-    v12 = [(CKTranscriptGroupTypingIndicatorCell *)self contactImageView];
-    v13 = [v12 layer];
+    contactImageView = [(CKTranscriptGroupTypingIndicatorCell *)self contactImageView];
+    layer = [contactImageView layer];
     v33 = v32;
-    [v13 setTransform:&v33];
+    [layer setTransform:&v33];
 
     v31 = v35;
-    v14 = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
-    v15 = v14;
+    indicatorLayer = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
+    v15 = indicatorLayer;
     *&v33.m31 = *&v31.m31;
     *&v33.m33 = *&v31.m33;
     *&v33.m41 = *&v31.m41;
@@ -595,8 +595,8 @@ void __69__CKTranscriptGroupTypingIndicatorCell_applyAccessibilityStringsFor___b
 
   else
   {
-    v18 = [(CKTranscriptGroupTypingIndicatorCell *)self contactImageView];
-    v19 = [v18 layer];
+    contactImageView2 = [(CKTranscriptGroupTypingIndicatorCell *)self contactImageView];
+    layer2 = [contactImageView2 layer];
     *&v33.m31 = v29;
     *&v33.m33 = v28;
     *&v33.m41 = v27;
@@ -605,11 +605,11 @@ void __69__CKTranscriptGroupTypingIndicatorCell_applyAccessibilityStringsFor___b
     *&v33.m13 = v24;
     *&v33.m21 = v23;
     *&v33.m23 = v22;
-    [v19 setTransform:&v33];
+    [layer2 setTransform:&v33];
 
     v30 = v34;
-    v14 = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
-    v15 = v14;
+    indicatorLayer = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
+    v15 = indicatorLayer;
     *&v33.m31 = *&v30.m31;
     *&v33.m33 = *&v30.m33;
     *&v33.m41 = *&v30.m41;
@@ -622,19 +622,19 @@ void __69__CKTranscriptGroupTypingIndicatorCell_applyAccessibilityStringsFor___b
 
   *&v33.m21 = v16;
   *&v33.m23 = v17;
-  [v14 setTransform:{&v33, v22, v23, v24, v25, v26, v27, v28, v29}];
+  [indicatorLayer setTransform:{&v33, v22, v23, v24, v25, v26, v27, v28, v29}];
 
-  v20 = [(CKTranscriptGroupTypingIndicatorCell *)self avatarView];
-  v21 = [v20 layer];
-  [v21 setCornerRadius:v8 * 0.5];
+  avatarView = [(CKTranscriptGroupTypingIndicatorCell *)self avatarView];
+  layer3 = [avatarView layer];
+  [layer3 setCornerRadius:v8 * 0.5];
 }
 
-- (id)getContactsFromHandles:(id)a3
+- (id)getContactsFromHandles:(id)handles
 {
-  v5 = a3;
-  if (self->_typingHandles != v5)
+  handlesCopy = handles;
+  if (self->_typingHandles != handlesCopy)
   {
-    objc_storeStrong(&self->_typingHandles, a3);
+    objc_storeStrong(&self->_typingHandles, handles);
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -644,7 +644,7 @@ void __69__CKTranscriptGroupTypingIndicatorCell_applyAccessibilityStringsFor___b
   v9[3] = &unk_1E72F4DF0;
   v7 = v6;
   v10 = v7;
-  [(NSArray *)v5 enumerateObjectsUsingBlock:v9];
+  [(NSArray *)handlesCopy enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -676,15 +676,15 @@ void __63__CKTranscriptGroupTypingIndicatorCell_getContactsFromHandles___block_i
 LABEL_5:
 }
 
-- (CGRect)avatarFrameForContact:(id)a3
+- (CGRect)avatarFrameForContact:(id)contact
 {
-  v4 = [(CKTranscriptGroupTypingIndicatorCell *)self groupAvatarViewController];
+  groupAvatarViewController = [(CKTranscriptGroupTypingIndicatorCell *)self groupAvatarViewController];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKTranscriptGroupTypingIndicatorCell *)self groupAvatarViewController];
-    [v6 avatarFrameForIndex:0];
+    groupAvatarViewController2 = [(CKTranscriptGroupTypingIndicatorCell *)self groupAvatarViewController];
+    [groupAvatarViewController2 avatarFrameForIndex:0];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -710,14 +710,14 @@ LABEL_5:
   return result;
 }
 
-- (void)layoutLayer:(id)a3 at:(CGRect)a4 within:(CGRect)a5 withAvatarIndex:(int64_t)a6
+- (void)layoutLayer:(id)layer at:(CGRect)at within:(CGRect)within withAvatarIndex:(int64_t)index
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  [v9 frame];
+  width = at.size.width;
+  height = at.size.height;
+  y = at.origin.y;
+  x = at.origin.x;
+  layerCopy = layer;
+  [layerCopy frame];
   if (CGRectIsEmpty(v51))
   {
     v52.origin.x = x;
@@ -729,7 +729,7 @@ LABEL_5:
     v53.origin.y = y;
     v53.size.width = width;
     v53.size.height = height;
-    [v9 setPosition:{MidX, CGRectGetMidY(v53)}];
+    [layerCopy setPosition:{MidX, CGRectGetMidY(v53)}];
     v11 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds"];
     [v11 setDuration:0.5];
     [v11 setMass:2.0];
@@ -753,7 +753,7 @@ LABEL_5:
     v19 = [MEMORY[0x1E696B098] valueWithBytes:v48 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     [v11 setToValue:v19];
 
-    [v9 addAnimation:v11 forKey:@"bounds"];
+    [layerCopy addAnimation:v11 forKey:@"bounds"];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
     v20 = MEMORY[0x1E6979518];
@@ -761,12 +761,12 @@ LABEL_5:
     v45[1] = 3221225472;
     v45[2] = __78__CKTranscriptGroupTypingIndicatorCell_layoutLayer_at_within_withAvatarIndex___block_invoke;
     v45[3] = &unk_1E72ED810;
-    v21 = v9;
+    v21 = layerCopy;
     v46 = v21;
-    v47 = a6;
+    indexCopy = index;
     [v20 setCompletionBlock:v45];
     [v21 setFrame:{x, y, width, height}];
-    [v21 setZPosition:-a6];
+    [v21 setZPosition:-index];
     [MEMORY[0x1E6979518] commit];
     v22 = v46;
   }
@@ -780,8 +780,8 @@ LABEL_5:
     [v11 setDamping:40.0];
     [v11 setInitialVelocity:0.0];
     v23 = MEMORY[0x1E696B098];
-    v24 = [v9 presentationLayer];
-    [v24 position];
+    presentationLayer = [layerCopy presentationLayer];
+    [presentationLayer position];
     v44[0] = v25;
     v44[1] = v26;
     v27 = [v23 valueWithBytes:v44 objCType:"{CGPoint=dd}"];
@@ -802,7 +802,7 @@ LABEL_5:
     v30 = [v28 valueWithBytes:v43 objCType:"{CGPoint=dd}"];
     [v11 setToValue:v30];
 
-    [v9 addAnimation:v11 forKey:@"position"];
+    [layerCopy addAnimation:v11 forKey:@"position"];
     v22 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"bounds"];
     [v22 setDuration:0.5];
     [v22 setMass:2.0];
@@ -810,8 +810,8 @@ LABEL_5:
     [v22 setDamping:40.0];
     [v22 setInitialVelocity:0.0];
     v31 = MEMORY[0x1E696B098];
-    v32 = [v9 presentationLayer];
-    [v32 bounds];
+    presentationLayer2 = [layerCopy presentationLayer];
+    [presentationLayer2 bounds];
     v42[0] = v33;
     v42[1] = v34;
     v42[2] = v35;
@@ -826,11 +826,11 @@ LABEL_5:
     v38 = [MEMORY[0x1E696B098] valueWithBytes:v41 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     [v22 setToValue:v38];
 
-    [v9 addAnimation:v22 forKey:@"bounds"];
+    [layerCopy addAnimation:v22 forKey:@"bounds"];
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    [v9 setFrame:{x, y, width, height}];
-    [v9 setZPosition:a6];
+    [layerCopy setFrame:{x, y, width, height}];
+    [layerCopy setZPosition:index];
     [MEMORY[0x1E6979518] commit];
   }
 }
@@ -854,7 +854,7 @@ LABEL_5:
   v17 = v4;
   v18 = *(MEMORY[0x1E695EFD0] + 32);
   [(UIView *)avatarView setTransform:&v16];
-  v5 = [(UIView *)self->_avatarView layer];
+  layer = [(UIView *)self->_avatarView layer];
   v14 = *(MEMORY[0x1E69792E8] + 80);
   v20 = *(MEMORY[0x1E69792E8] + 64);
   v15 = v20;
@@ -871,9 +871,9 @@ LABEL_5:
   v18 = *(MEMORY[0x1E69792E8] + 32);
   v9 = v18;
   v19 = v8;
-  [v5 setTransform:&v16];
+  [layer setTransform:&v16];
 
-  v6 = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
+  indicatorLayer = [(CKTranscriptTypingIndicatorCell *)self indicatorLayer];
   v20 = v15;
   v21 = v14;
   v22 = v13;
@@ -882,10 +882,10 @@ LABEL_5:
   v17 = v10;
   v18 = v9;
   v19 = v8;
-  [v6 setTransform:&v16];
+  [indicatorLayer setTransform:&v16];
 
-  v7 = [(UIView *)self->_avatarView layer];
-  [v7 setCornerRadius:0.0];
+  layer2 = [(UIView *)self->_avatarView layer];
+  [layer2 setCornerRadius:0.0];
 
   [(CKTranscriptGroupTypingIndicatorCell *)self setPendingTypingHandles:MEMORY[0x1E695E0F0]];
   [(CKTranscriptGroupTypingIndicatorCell *)self setCurrentTypingCount:0];

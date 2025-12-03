@@ -1,9 +1,9 @@
 @interface ICAttachmentViewController
 - (ICAttachment)attachment;
-- (ICAttachmentViewController)initWithCoder:(id)a3;
-- (ICAttachmentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (ICAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 layoutManager:(id)a5;
-- (ICAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 textLayoutManager:(id)a5;
+- (ICAttachmentViewController)initWithCoder:(id)coder;
+- (ICAttachmentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (ICAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering layoutManager:(id)manager;
+- (ICAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering textLayoutManager:(id)manager;
 - (ICTextAttachment)textAttachment;
 - (NSLayoutManager)layoutManager;
 - (NSTextLayoutManager)textLayoutManager;
@@ -12,57 +12,57 @@
 
 @implementation ICAttachmentViewController
 
-- (ICAttachmentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICAttachmentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICAttachmentViewController initWithNibName:bundle:]" simulateCrash:1 showAlert:0 format:@"ICAttachmentViewController should never be initialized from nib."];
 
   return 0;
 }
 
-- (ICAttachmentViewController)initWithCoder:(id)a3
+- (ICAttachmentViewController)initWithCoder:(id)coder
 {
   [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICAttachmentViewController initWithCoder:]" simulateCrash:1 showAlert:0 format:@"ICAttachmentViewController should never be archived."];
 
   return 0;
 }
 
-- (ICAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 layoutManager:(id)a5
+- (ICAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering layoutManager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
+  attachmentCopy = attachment;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = ICAttachmentViewController;
   v10 = [(ICAttachmentViewController *)&v14 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_textAttachment, v8);
-    v12 = [v8 attachment];
-    objc_storeWeak(&v11->_attachment, v12);
+    objc_storeWeak(&v10->_textAttachment, attachmentCopy);
+    attachment = [attachmentCopy attachment];
+    objc_storeWeak(&v11->_attachment, attachment);
 
-    v11->_forManualRendering = a4;
-    objc_storeWeak(&v11->_layoutManager, v9);
+    v11->_forManualRendering = rendering;
+    objc_storeWeak(&v11->_layoutManager, managerCopy);
   }
 
   return v11;
 }
 
-- (ICAttachmentViewController)initWithTextAttachment:(id)a3 forManualRendering:(BOOL)a4 textLayoutManager:(id)a5
+- (ICAttachmentViewController)initWithTextAttachment:(id)attachment forManualRendering:(BOOL)rendering textLayoutManager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
+  attachmentCopy = attachment;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = ICAttachmentViewController;
   v10 = [(ICAttachmentViewController *)&v14 initWithNibName:0 bundle:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_textAttachment, v8);
-    v12 = [v8 attachment];
-    objc_storeWeak(&v11->_attachment, v12);
+    objc_storeWeak(&v10->_textAttachment, attachmentCopy);
+    attachment = [attachmentCopy attachment];
+    objc_storeWeak(&v11->_attachment, attachment);
 
-    v11->_forManualRendering = a4;
-    objc_storeWeak(&v11->_textLayoutManager, v9);
+    v11->_forManualRendering = rendering;
+    objc_storeWeak(&v11->_textLayoutManager, managerCopy);
   }
 
   return v11;
@@ -70,32 +70,32 @@
 
 - (void)loadView
 {
-  v3 = [(ICAttachmentViewController *)self textLayoutManager];
-  v4 = [v3 textContainer];
-  v5 = v4;
-  if (v4)
+  textLayoutManager = [(ICAttachmentViewController *)self textLayoutManager];
+  textContainer = [textLayoutManager textContainer];
+  v5 = textContainer;
+  if (textContainer)
   {
-    v12 = v4;
+    lastObject = textContainer;
   }
 
   else
   {
-    v6 = [(ICAttachmentViewController *)self layoutManager];
-    v7 = [v6 textContainers];
-    v12 = [v7 lastObject];
+    layoutManager = [(ICAttachmentViewController *)self layoutManager];
+    textContainers = [layoutManager textContainers];
+    lastObject = [textContainers lastObject];
   }
 
-  v8 = [(ICAttachmentViewController *)self forManualRendering];
-  v9 = [(ICAttachmentViewController *)self textAttachment];
-  v10 = v9;
-  if (v8)
+  forManualRendering = [(ICAttachmentViewController *)self forManualRendering];
+  textAttachment = [(ICAttachmentViewController *)self textAttachment];
+  v10 = textAttachment;
+  if (forManualRendering)
   {
-    [v9 newlyCreatedViewForManualRenderingInTextContainer:v12];
+    [textAttachment newlyCreatedViewForManualRenderingInTextContainer:lastObject];
   }
 
   else
   {
-    [v9 newlyCreatedViewForTextContainer:v12];
+    [textAttachment newlyCreatedViewForTextContainer:lastObject];
   }
   v11 = ;
   [(ICAttachmentViewController *)self setView:v11];
@@ -112,11 +112,11 @@
     }
 
     objc_opt_class();
-    v4 = [(ICAttachmentViewController *)self view];
+    view = [(ICAttachmentViewController *)self view];
     WeakRetained = ICDynamicCast();
 
-    v5 = [WeakRetained textAttachment];
-    objc_storeWeak(&self->_textAttachment, v5);
+    textAttachment = [WeakRetained textAttachment];
+    objc_storeWeak(&self->_textAttachment, textAttachment);
   }
 
 LABEL_5:

@@ -4,22 +4,22 @@
 - (NSDictionary)mruCountDict;
 - (NSSet)hiddenBundleIDs;
 - (TVRUILaunchableAppsController)init;
-- (id)_adjustedAppInfosForAppInfos:(id)a3;
+- (id)_adjustedAppInfosForAppInfos:(id)infos;
 - (id)_loadHiddenBundleIDs;
 - (id)_loadMRUCountDict;
-- (id)_updatedMRUCountDictForCountDict:(id)a3 forBundleID:(id)a4;
-- (unint64_t)_baseMRUCountAdjustmentForAppInfo:(id)a3;
-- (unint64_t)_mruCountForBundleID:(id)a3;
+- (id)_updatedMRUCountDictForCountDict:(id)dict forBundleID:(id)d;
+- (unint64_t)_baseMRUCountAdjustmentForAppInfo:(id)info;
+- (unint64_t)_mruCountForBundleID:(id)d;
 - (void)_fetchAppInfos;
 - (void)_notifyOrderedAppInfosChanged;
-- (void)_persistHiddenBundleIDs:(id)a3;
-- (void)_persistMRUCountDict:(id)a3;
-- (void)_updateMRUCountForLaunchedAppWithBundleID:(id)a3;
-- (void)hideAppWithBundleID:(id)a3;
-- (void)launchAppWithBundleID:(id)a3;
-- (void)setAppInfos:(id)a3;
-- (void)setDevice:(id)a3;
-- (void)setHiddenBundleIDs:(id)a3;
+- (void)_persistHiddenBundleIDs:(id)ds;
+- (void)_persistMRUCountDict:(id)dict;
+- (void)_updateMRUCountForLaunchedAppWithBundleID:(id)d;
+- (void)hideAppWithBundleID:(id)d;
+- (void)launchAppWithBundleID:(id)d;
+- (void)setAppInfos:(id)infos;
+- (void)setDevice:(id)device;
+- (void)setHiddenBundleIDs:(id)ds;
 - (void)unhideApps;
 @end
 
@@ -40,55 +40,55 @@
   return v3;
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v6 = a3;
-  objc_storeStrong(&self->_activeDevice, a3);
-  if (v6)
+  deviceCopy = device;
+  objc_storeStrong(&self->_activeDevice, device);
+  if (deviceCopy)
   {
     [(TVRUILaunchableAppsController *)self _fetchAppInfos];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"TVRUILaunchableAppsControllerAppInfosWillChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TVRUILaunchableAppsControllerAppInfosWillChangeNotification" object:self];
 
     [(TVRUILaunchableAppsController *)self setAppInfos:MEMORY[0x277CBEBF8]];
   }
 }
 
-- (void)setAppInfos:(id)a3
+- (void)setAppInfos:(id)infos
 {
-  if (a3)
+  if (infos)
   {
-    v5 = a3;
+    infosCopy = infos;
   }
 
   else
   {
-    v5 = MEMORY[0x277CBEBF8];
+    infosCopy = MEMORY[0x277CBEBF8];
   }
 
-  objc_storeStrong(&self->_appInfos, v5);
-  v6 = a3;
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
+  objc_storeStrong(&self->_appInfos, infosCopy);
+  infosCopy2 = infos;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
 
-  [v7 postNotificationName:@"TVRUILaunchableAppsControllerAppInfosDidChangeNotification" object:self];
+  [defaultCenter postNotificationName:@"TVRUILaunchableAppsControllerAppInfosDidChangeNotification" object:self];
 }
 
-- (void)launchAppWithBundleID:(id)a3
+- (void)launchAppWithBundleID:(id)d
 {
-  v4 = a3;
-  [(TVRUILaunchableAppsController *)self _updateMRUCountForLaunchedAppWithBundleID:v4];
-  v5 = [(TVRUILaunchableAppsController *)self activeDevice];
+  dCopy = d;
+  [(TVRUILaunchableAppsController *)self _updateMRUCountForLaunchedAppWithBundleID:dCopy];
+  activeDevice = [(TVRUILaunchableAppsController *)self activeDevice];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__TVRUILaunchableAppsController_launchAppWithBundleID___block_invoke;
   v7[3] = &unk_279D88208;
-  v8 = v4;
-  v6 = v4;
-  [v5 launchAppWithBundleID:v6 completion:v7];
+  v8 = dCopy;
+  v6 = dCopy;
+  [activeDevice launchAppWithBundleID:v6 completion:v7];
 }
 
 void __55__TVRUILaunchableAppsController_launchAppWithBundleID___block_invoke(uint64_t a1, void *a2)
@@ -112,22 +112,22 @@ void __55__TVRUILaunchableAppsController_launchAppWithBundleID___block_invoke(ui
 
 - (NSArray)orderedAppInfos
 {
-  v3 = [(TVRUILaunchableAppsController *)self appInfos];
-  v4 = [(TVRUILaunchableAppsController *)self _adjustedAppInfosForAppInfos:v3];
+  appInfos = [(TVRUILaunchableAppsController *)self appInfos];
+  v4 = [(TVRUILaunchableAppsController *)self _adjustedAppInfosForAppInfos:appInfos];
 
   return v4;
 }
 
-- (void)hideAppWithBundleID:(id)a3
+- (void)hideAppWithBundleID:(id)d
 {
-  v8 = a3;
-  v4 = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
-  v5 = [v4 containsObject:v8];
+  dCopy = d;
+  hiddenBundleIDs = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
+  v5 = [hiddenBundleIDs containsObject:dCopy];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
-    v7 = [v6 setByAddingObject:v8];
+    hiddenBundleIDs2 = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
+    v7 = [hiddenBundleIDs2 setByAddingObject:dCopy];
 
     [(TVRUILaunchableAppsController *)self setHiddenBundleIDs:v7];
     [(TVRUILaunchableAppsController *)self _notifyOrderedAppInfosChanged];
@@ -136,8 +136,8 @@ void __55__TVRUILaunchableAppsController_launchAppWithBundleID___block_invoke(ui
 
 - (void)unhideApps
 {
-  v3 = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
-  v4 = [v3 count];
+  hiddenBundleIDs = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
+  v4 = [hiddenBundleIDs count];
 
   if (v4)
   {
@@ -150,29 +150,29 @@ void __55__TVRUILaunchableAppsController_launchAppWithBundleID___block_invoke(ui
 
 - (BOOL)hasHiddenApps
 {
-  v2 = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
-  v3 = [v2 count] != 0;
+  hiddenBundleIDs = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
+  v3 = [hiddenBundleIDs count] != 0;
 
   return v3;
 }
 
 - (void)_fetchAppInfos
 {
-  v3 = [(TVRUILaunchableAppsController *)self activeDevice];
+  activeDevice = [(TVRUILaunchableAppsController *)self activeDevice];
 
-  if (v3)
+  if (activeDevice)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"TVRUILaunchableAppsControllerAppInfosWillChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"TVRUILaunchableAppsControllerAppInfosWillChangeNotification" object:self];
 
     objc_initWeak(&location, self);
-    v5 = [(TVRUILaunchableAppsController *)self activeDevice];
+    activeDevice2 = [(TVRUILaunchableAppsController *)self activeDevice];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __47__TVRUILaunchableAppsController__fetchAppInfos__block_invoke;
     v6[3] = &unk_279D88258;
     objc_copyWeak(&v7, &location);
-    [v5 fetchLaunchableAppsWithCompletion:v6];
+    [activeDevice2 fetchLaunchableAppsWithCompletion:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -236,15 +236,15 @@ void __47__TVRUILaunchableAppsController__fetchAppInfos__block_invoke(uint64_t a
   }
 }
 
-- (void)_updateMRUCountForLaunchedAppWithBundleID:(id)a3
+- (void)_updateMRUCountForLaunchedAppWithBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(TVRUILaunchableAppsController *)self mruCountDict];
-  v6 = [(TVRUILaunchableAppsController *)self _updatedMRUCountDictForCountDict:v5 forBundleID:v4];
+  dCopy = d;
+  mruCountDict = [(TVRUILaunchableAppsController *)self mruCountDict];
+  v6 = [(TVRUILaunchableAppsController *)self _updatedMRUCountDictForCountDict:mruCountDict forBundleID:dCopy];
 
   [(TVRUILaunchableAppsController *)self setMruCountDict:v6];
-  v7 = [(TVRUILaunchableAppsController *)self mruCountDict];
-  [(TVRUILaunchableAppsController *)self _persistMRUCountDict:v7];
+  mruCountDict2 = [(TVRUILaunchableAppsController *)self mruCountDict];
+  [(TVRUILaunchableAppsController *)self _persistMRUCountDict:mruCountDict2];
 }
 
 - (NSDictionary)mruCountDict
@@ -252,9 +252,9 @@ void __47__TVRUILaunchableAppsController__fetchAppInfos__block_invoke(uint64_t a
   mruCountDict = self->_mruCountDict;
   if (!mruCountDict)
   {
-    v4 = [(TVRUILaunchableAppsController *)self _loadMRUCountDict];
+    _loadMRUCountDict = [(TVRUILaunchableAppsController *)self _loadMRUCountDict];
     v5 = self->_mruCountDict;
-    self->_mruCountDict = v4;
+    self->_mruCountDict = _loadMRUCountDict;
 
     mruCountDict = self->_mruCountDict;
   }
@@ -262,11 +262,11 @@ void __47__TVRUILaunchableAppsController__fetchAppInfos__block_invoke(uint64_t a
   return mruCountDict;
 }
 
-- (id)_updatedMRUCountDictForCountDict:(id)a3 forBundleID:(id)a4
+- (id)_updatedMRUCountDictForCountDict:(id)dict forBundleID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:v6];
+  dictCopy = dict;
+  dCopy = d;
+  v7 = [dictCopy objectForKeyedSubscript:dCopy];
   v8 = v7;
   if (v7)
   {
@@ -278,27 +278,27 @@ void __47__TVRUILaunchableAppsController__fetchAppInfos__block_invoke(uint64_t a
     v9 = &unk_287E84D40;
   }
 
-  v10 = [v5 mutableCopy];
-  [v10 setObject:v9 forKeyedSubscript:v6];
+  v10 = [dictCopy mutableCopy];
+  [v10 setObject:v9 forKeyedSubscript:dCopy];
 
   return v10;
 }
 
-- (id)_adjustedAppInfosForAppInfos:(id)a3
+- (id)_adjustedAppInfosForAppInfos:(id)infos
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infosCopy = infos;
   v5 = [MEMORY[0x277CBEB98] setWithArray:&unk_287E84AC8];
-  v6 = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
+  hiddenBundleIDs = [(TVRUILaunchableAppsController *)self hiddenBundleIDs];
   v23 = v5;
-  v7 = [v6 setByAddingObjectsFromSet:v5];
+  v7 = [hiddenBundleIDs setByAddingObjectsFromSet:v5];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = infosCopy;
   v9 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
@@ -314,15 +314,15 @@ void __47__TVRUILaunchableAppsController__fetchAppInfos__block_invoke(uint64_t a
         }
 
         v13 = *(*(&v25 + 1) + 8 * i);
-        v14 = [v13 bundleID];
-        v15 = [v7 containsObject:v14];
+        bundleID = [v13 bundleID];
+        v15 = [v7 containsObject:bundleID];
 
         if ((v15 & 1) == 0)
         {
           v16 = [(TVRUILaunchableAppsController *)self _baseMRUCountAdjustmentForAppInfo:v13];
-          v17 = [v13 bundleID];
+          bundleID2 = [v13 bundleID];
           v18 = v8;
-          v19 = [(TVRUILaunchableAppsController *)self _mruCountForBundleID:v17];
+          v19 = [(TVRUILaunchableAppsController *)self _mruCountForBundleID:bundleID2];
 
           v20 = v19 + v16;
           v8 = v18;
@@ -356,18 +356,18 @@ uint64_t __62__TVRUILaunchableAppsController__adjustedAppInfosForAppInfos___bloc
   return v10;
 }
 
-- (void)_persistMRUCountDict:(id)a3
+- (void)_persistMRUCountDict:(id)dict
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  [v5 setObject:v4 forKey:@"MRUCountDict"];
+  dictCopy = dict;
+  standardUserDefaults = [v3 standardUserDefaults];
+  [standardUserDefaults setObject:dictCopy forKey:@"MRUCountDict"];
 }
 
 - (id)_loadMRUCountDict
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"MRUCountDict"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"MRUCountDict"];
   v4 = v3;
   if (v3)
   {
@@ -384,11 +384,11 @@ uint64_t __62__TVRUILaunchableAppsController__adjustedAppInfosForAppInfos___bloc
   return v5;
 }
 
-- (unint64_t)_mruCountForBundleID:(id)a3
+- (unint64_t)_mruCountForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = [(TVRUILaunchableAppsController *)self mruCountDict];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  mruCountDict = [(TVRUILaunchableAppsController *)self mruCountDict];
+  v6 = [mruCountDict objectForKeyedSubscript:dCopy];
 
   v7 = &unk_287E84D58;
   if (v6)
@@ -398,21 +398,21 @@ uint64_t __62__TVRUILaunchableAppsController__adjustedAppInfosForAppInfos___bloc
 
   v8 = v7;
 
-  v9 = [v8 unsignedIntegerValue];
-  return v9;
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)_baseMRUCountAdjustmentForAppInfo:(id)a3
+- (unint64_t)_baseMRUCountAdjustmentForAppInfo:(id)info
 {
-  v3 = a3;
-  if ([v3 isTVApp])
+  infoCopy = info;
+  if ([infoCopy isTVApp])
   {
     v4 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v4 = [v3 appGenre] == 17;
+    v4 = [infoCopy appGenre] == 17;
   }
 
   return v4;
@@ -423,9 +423,9 @@ uint64_t __62__TVRUILaunchableAppsController__adjustedAppInfosForAppInfos___bloc
   hiddenBundleIDs = self->_hiddenBundleIDs;
   if (!hiddenBundleIDs)
   {
-    v4 = [(TVRUILaunchableAppsController *)self _loadHiddenBundleIDs];
+    _loadHiddenBundleIDs = [(TVRUILaunchableAppsController *)self _loadHiddenBundleIDs];
     v5 = self->_hiddenBundleIDs;
-    self->_hiddenBundleIDs = v4;
+    self->_hiddenBundleIDs = _loadHiddenBundleIDs;
 
     hiddenBundleIDs = self->_hiddenBundleIDs;
   }
@@ -433,13 +433,13 @@ uint64_t __62__TVRUILaunchableAppsController__adjustedAppInfosForAppInfos___bloc
   return hiddenBundleIDs;
 }
 
-- (void)setHiddenBundleIDs:(id)a3
+- (void)setHiddenBundleIDs:(id)ds
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  dsCopy = ds;
+  v7 = dsCopy;
+  if (dsCopy)
   {
-    v5 = v4;
+    v5 = dsCopy;
   }
 
   else
@@ -453,26 +453,26 @@ uint64_t __62__TVRUILaunchableAppsController__adjustedAppInfosForAppInfos___bloc
   [(TVRUILaunchableAppsController *)self _persistHiddenBundleIDs:self->_hiddenBundleIDs];
 }
 
-- (void)_persistHiddenBundleIDs:(id)a3
+- (void)_persistHiddenBundleIDs:(id)ds
 {
-  v3 = [a3 allObjects];
-  v4 = v3;
+  allObjects = [ds allObjects];
+  v4 = allObjects;
   v5 = MEMORY[0x277CBEBF8];
-  if (v3)
+  if (allObjects)
   {
-    v5 = v3;
+    v5 = allObjects;
   }
 
   v6 = v5;
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 setObject:v6 forKey:@"HiddenBundleIDs"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setObject:v6 forKey:@"HiddenBundleIDs"];
 }
 
 - (id)_loadHiddenBundleIDs
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"HiddenBundleIDs"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"HiddenBundleIDs"];
   v4 = v3;
   v5 = MEMORY[0x277CBEBF8];
   if (v3)
@@ -489,11 +489,11 @@ uint64_t __62__TVRUILaunchableAppsController__adjustedAppInfosForAppInfos___bloc
 
 - (void)_notifyOrderedAppInfosChanged
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 postNotificationName:@"TVRUILaunchableAppsControllerAppInfosWillChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TVRUILaunchableAppsControllerAppInfosWillChangeNotification" object:self];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"TVRUILaunchableAppsControllerAppInfosDidChangeNotification" object:self];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 postNotificationName:@"TVRUILaunchableAppsControllerAppInfosDidChangeNotification" object:self];
 }
 
 void __55__TVRUILaunchableAppsController_launchAppWithBundleID___block_invoke_cold_1(uint64_t a1, void *a2, NSObject *a3)

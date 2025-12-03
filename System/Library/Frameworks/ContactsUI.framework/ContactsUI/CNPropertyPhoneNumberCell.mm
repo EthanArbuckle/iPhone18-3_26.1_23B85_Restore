@@ -1,13 +1,13 @@
 @interface CNPropertyPhoneNumberCell
 - (BOOL)shouldPerformDefaultAction;
 - (BOOL)shouldShowEmergencyBadge;
-- (CNPropertyPhoneNumberCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNPropertyPhoneNumberCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)addStaticIdentityBadgeView;
 - (void)buildEmergencyImageView;
-- (void)copy:(id)a3;
-- (void)setEmergencyPhoneNumber:(BOOL)a3;
-- (void)setProperty:(id)a3;
-- (void)setStaticIdentityVerified:(BOOL)a3;
+- (void)copy:(id)copy;
+- (void)setEmergencyPhoneNumber:(BOOL)number;
+- (void)setProperty:(id)property;
+- (void)setStaticIdentityVerified:(BOOL)verified;
 - (void)updateEmergencyBadge;
 - (void)updateStaticIdentityBadge;
 - (void)updateTransportButtons;
@@ -15,59 +15,59 @@
 
 @implementation CNPropertyPhoneNumberCell
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v4 = [(CNPropertyCell *)self propertyItem];
-  v7 = [v4 displayValue];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  displayValue = [propertyItem displayValue];
 
   if (![(CNPropertyPhoneNumberCell *)self effectiveUserInterfaceLayoutDirection])
   {
-    v5 = [v7 _cn_stringBySanitizingPhoneNumber];
+    _cn_stringBySanitizingPhoneNumber = [displayValue _cn_stringBySanitizingPhoneNumber];
 
-    v7 = v5;
+    displayValue = _cn_stringBySanitizingPhoneNumber;
   }
 
-  v6 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v6 setString:v7];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setString:displayValue];
 }
 
 - (void)updateTransportButtons
 {
   if (![(CNPropertySimpleTransportCell *)self allowsActions]|| [(CNPropertyCell *)self isSuggested]|| ![(CNPropertySimpleTransportCell *)self shouldShowTransportButtons])
   {
-    v13 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-    [v13 setTransportType:0];
+    transportIcon1 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+    [transportIcon1 setTransportType:0];
 
-    v14 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-    [v14 setTransportType:0];
+    transportIcon2 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+    [transportIcon2 setTransportType:0];
 
-    v11 = [(CNPropertySimpleTransportCell *)self transportIcon3];
-    v12 = v11;
+    transportIcon3 = [(CNPropertySimpleTransportCell *)self transportIcon3];
+    v12 = transportIcon3;
 LABEL_9:
     v15 = 0;
 LABEL_10:
-    [v11 setTransportType:v15];
+    [transportIcon3 setTransportType:v15];
 
     goto LABEL_11;
   }
 
-  v3 = [(CNPropertySimpleTransportCell *)self transportIcon3];
-  [v3 setTransportType:0];
+  transportIcon32 = [(CNPropertySimpleTransportCell *)self transportIcon3];
+  [transportIcon32 setTransportType:0];
 
-  v4 = [(CNPropertyCell *)self propertyItem];
-  v5 = [v4 allowsPhone];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  allowsPhone = [propertyItem allowsPhone];
 
-  if (!v5)
+  if (!allowsPhone)
   {
-    v16 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-    [v16 setTransportType:0];
+    transportIcon22 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+    [transportIcon22 setTransportType:0];
 
-    v17 = [(CNPropertyCell *)self propertyItem];
-    v18 = [v17 allowsIMessage];
+    propertyItem2 = [(CNPropertyCell *)self propertyItem];
+    allowsIMessage = [propertyItem2 allowsIMessage];
 
-    v11 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-    v12 = v11;
-    if (v18)
+    transportIcon3 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+    v12 = transportIcon3;
+    if (allowsIMessage)
     {
       v15 = 2;
       goto LABEL_10;
@@ -76,35 +76,35 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  v6 = [(CNPropertySimpleTransportCell *)self transportIcon1];
-  [v6 setTransportType:1];
+  transportIcon12 = [(CNPropertySimpleTransportCell *)self transportIcon1];
+  [transportIcon12 setTransportType:1];
 
-  v7 = [(CNPropertyCell *)self propertyItem];
-  v8 = [v7 allowsTTY];
+  propertyItem3 = [(CNPropertyCell *)self propertyItem];
+  allowsTTY = [propertyItem3 allowsTTY];
 
-  v9 = [(CNPropertyCell *)self propertyItem];
-  v10 = [v9 allowsIMessage];
+  propertyItem4 = [(CNPropertyCell *)self propertyItem];
+  allowsIMessage2 = [propertyItem4 allowsIMessage];
 
-  v11 = [(CNPropertySimpleTransportCell *)self transportIcon2];
-  v12 = v11;
-  if (!v10)
+  transportIcon3 = [(CNPropertySimpleTransportCell *)self transportIcon2];
+  v12 = transportIcon3;
+  if (!allowsIMessage2)
   {
-    if (v8)
+    if (allowsTTY)
     {
       goto LABEL_15;
     }
 
 LABEL_16:
-    v11 = v12;
+    transportIcon3 = v12;
     goto LABEL_9;
   }
 
-  [v11 setTransportType:2];
+  [transportIcon3 setTransportType:2];
 
-  if (v8)
+  if (allowsTTY)
   {
-    v11 = [(CNPropertySimpleTransportCell *)self transportIcon3];
-    v12 = v11;
+    transportIcon3 = [(CNPropertySimpleTransportCell *)self transportIcon3];
+    v12 = transportIcon3;
 LABEL_15:
     v15 = 7;
     goto LABEL_10;
@@ -126,63 +126,63 @@ LABEL_11:
   v5 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v31];
   [(CNPropertyPhoneNumberCell *)self setEmergencyImageView:v5];
 
-  v6 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  emergencyImageView = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
+  [emergencyImageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
+  emergencyImageView2 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
   LODWORD(v8) = 1148846080;
-  [v7 setContentCompressionResistancePriority:0 forAxis:v8];
+  [emergencyImageView2 setContentCompressionResistancePriority:0 forAxis:v8];
 
-  v9 = [(CNPropertyPhoneNumberCell *)self contentView];
-  v10 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
-  [v9 addSubview:v10];
+  contentView = [(CNPropertyPhoneNumberCell *)self contentView];
+  emergencyImageView3 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
+  [contentView addSubview:emergencyImageView3];
 
   v11 = MEMORY[0x1E695DF70];
   v32.receiver = self;
   v32.super_class = CNPropertyPhoneNumberCell;
-  v12 = [(CNLabeledCell *)&v32 constantConstraints];
-  v24 = [v11 arrayWithArray:v12];
+  constantConstraints = [(CNLabeledCell *)&v32 constantConstraints];
+  v24 = [v11 arrayWithArray:constantConstraints];
 
-  v30 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
-  v28 = [v30 centerYAnchor];
-  v29 = [(CNPropertyPhoneNumberCell *)self contentView];
-  v27 = [v29 centerYAnchor];
-  v26 = [v28 constraintEqualToAnchor:v27];
+  emergencyImageView4 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
+  centerYAnchor = [emergencyImageView4 centerYAnchor];
+  contentView2 = [(CNPropertyPhoneNumberCell *)self contentView];
+  centerYAnchor2 = [contentView2 centerYAnchor];
+  v26 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v33[0] = v26;
-  v25 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
-  v22 = [v25 trailingAnchor];
-  v23 = [(CNPropertyPhoneNumberCell *)self contentView];
-  v13 = [v23 trailingAnchor];
-  v14 = [v22 constraintEqualToAnchor:v13 constant:-16.0];
+  emergencyImageView5 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
+  trailingAnchor = [emergencyImageView5 trailingAnchor];
+  contentView3 = [(CNPropertyPhoneNumberCell *)self contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v33[1] = v14;
-  v15 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
-  v16 = [v15 leadingAnchor];
-  v17 = [(CNPropertySimpleCell *)self valueView];
-  v18 = [v17 trailingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:16.0];
+  emergencyImageView6 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
+  leadingAnchor = [emergencyImageView6 leadingAnchor];
+  valueView = [(CNPropertySimpleCell *)self valueView];
+  trailingAnchor3 = [valueView trailingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:trailingAnchor3 constant:16.0];
   v33[2] = v19;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
   [v24 addObjectsFromArray:v20];
 
-  v21 = [(CNPropertyPhoneNumberCell *)self contentView];
-  [v21 addConstraints:v24];
+  contentView4 = [(CNPropertyPhoneNumberCell *)self contentView];
+  [contentView4 addConstraints:v24];
 }
 
 - (void)updateEmergencyBadge
 {
   if ([(CNPropertyPhoneNumberCell *)self shouldShowEmergencyBadge])
   {
-    v3 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
+    emergencyImageView = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
 
-    if (!v3)
+    if (!emergencyImageView)
     {
       [(CNPropertyPhoneNumberCell *)self buildEmergencyImageView];
     }
   }
 
-  v4 = [(CNPropertyPhoneNumberCell *)self shouldShowEmergencyBadge];
-  v5 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
-  [v5 setHidden:!v4];
+  shouldShowEmergencyBadge = [(CNPropertyPhoneNumberCell *)self shouldShowEmergencyBadge];
+  emergencyImageView2 = [(CNPropertyPhoneNumberCell *)self emergencyImageView];
+  [emergencyImageView2 setHidden:!shouldShowEmergencyBadge];
 }
 
 - (BOOL)shouldPerformDefaultAction
@@ -194,16 +194,16 @@ LABEL_11:
     return [(CNPropertyCell *)self isSuggested];
   }
 
-  v3 = [(CNPropertyCell *)self propertyItem];
-  if ([v3 allowsPhone])
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  if ([propertyItem allowsPhone])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CNPropertyCell *)self propertyItem];
-    v4 = ([v5 allowsIMessage] & 1) != 0 || -[CNPropertyCell isSuggested](self, "isSuggested");
+    propertyItem2 = [(CNPropertyCell *)self propertyItem];
+    v4 = ([propertyItem2 allowsIMessage] & 1) != 0 || -[CNPropertyCell isSuggested](self, "isSuggested");
   }
 
   return v4;
@@ -219,11 +219,11 @@ LABEL_11:
   return [(CNPropertyPhoneNumberCell *)self isEmergencyPhoneNumber];
 }
 
-- (void)setEmergencyPhoneNumber:(BOOL)a3
+- (void)setEmergencyPhoneNumber:(BOOL)number
 {
-  if (self->_emergencyPhoneNumber != a3)
+  if (self->_emergencyPhoneNumber != number)
   {
-    self->_emergencyPhoneNumber = a3;
+    self->_emergencyPhoneNumber = number;
     [(CNPropertyPhoneNumberCell *)self updateEmergencyBadge];
   }
 }
@@ -233,30 +233,30 @@ LABEL_11:
   v19[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(CNStaticIdentityBadgeView);
   [(CNStaticIdentityBadgeView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(CNPropertyPhoneNumberCell *)self contentView];
-  [v4 addSubview:v3];
+  contentView = [(CNPropertyPhoneNumberCell *)self contentView];
+  [contentView addSubview:v3];
 
   v5 = MEMORY[0x1E695DF70];
   v18.receiver = self;
   v18.super_class = CNPropertyPhoneNumberCell;
-  v6 = [(CNLabeledCell *)&v18 constantConstraints];
-  v7 = [v5 arrayWithArray:v6];
+  constantConstraints = [(CNLabeledCell *)&v18 constantConstraints];
+  v7 = [v5 arrayWithArray:constantConstraints];
 
-  v16 = [(CNStaticIdentityBadgeView *)v3 centerYAnchor];
-  v17 = [(CNPropertySimpleCell *)self labelLabel];
-  v8 = [v17 centerYAnchor];
-  v9 = [v16 constraintEqualToAnchor:v8];
+  centerYAnchor = [(CNStaticIdentityBadgeView *)v3 centerYAnchor];
+  labelLabel = [(CNPropertySimpleCell *)self labelLabel];
+  centerYAnchor2 = [labelLabel centerYAnchor];
+  v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v19[0] = v9;
-  v10 = [(CNStaticIdentityBadgeView *)v3 trailingAnchor];
-  v11 = [(CNPropertySimpleCell *)self valueLabel];
-  v12 = [v11 trailingAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  trailingAnchor = [(CNStaticIdentityBadgeView *)v3 trailingAnchor];
+  valueLabel = [(CNPropertySimpleCell *)self valueLabel];
+  trailingAnchor2 = [valueLabel trailingAnchor];
+  v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v19[1] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
   [v7 addObjectsFromArray:v14];
 
-  v15 = [(CNPropertyPhoneNumberCell *)self contentView];
-  [v15 addConstraints:v7];
+  contentView2 = [(CNPropertyPhoneNumberCell *)self contentView];
+  [contentView2 addConstraints:v7];
 
   [(CNPropertyPhoneNumberCell *)self setStaticIdentityBadgeView:v3];
 }
@@ -265,50 +265,50 @@ LABEL_11:
 {
   if ([(CNPropertyPhoneNumberCell *)self isStaticIdentityVerified])
   {
-    v3 = [(CNPropertyPhoneNumberCell *)self staticIdentityBadgeView];
+    staticIdentityBadgeView = [(CNPropertyPhoneNumberCell *)self staticIdentityBadgeView];
 
-    if (!v3)
+    if (!staticIdentityBadgeView)
     {
       [(CNPropertyPhoneNumberCell *)self addStaticIdentityBadgeView];
     }
   }
 
-  v4 = [(CNPropertyPhoneNumberCell *)self isStaticIdentityVerified];
-  v5 = [(CNPropertyPhoneNumberCell *)self staticIdentityBadgeView];
-  [v5 setHidden:!v4];
+  isStaticIdentityVerified = [(CNPropertyPhoneNumberCell *)self isStaticIdentityVerified];
+  staticIdentityBadgeView2 = [(CNPropertyPhoneNumberCell *)self staticIdentityBadgeView];
+  [staticIdentityBadgeView2 setHidden:!isStaticIdentityVerified];
 }
 
-- (void)setStaticIdentityVerified:(BOOL)a3
+- (void)setStaticIdentityVerified:(BOOL)verified
 {
-  if (self->_staticIdentityVerified != a3)
+  if (self->_staticIdentityVerified != verified)
   {
-    self->_staticIdentityVerified = a3;
+    self->_staticIdentityVerified = verified;
     [(CNPropertyPhoneNumberCell *)self updateStaticIdentityBadge];
   }
 }
 
-- (void)setProperty:(id)a3
+- (void)setProperty:(id)property
 {
   v10.receiver = self;
   v10.super_class = CNPropertyPhoneNumberCell;
-  v4 = a3;
-  [(CNPropertyCell *)&v10 setProperty:v4];
-  v5 = [v4 label];
-  v6 = [(CNPropertySimpleCell *)self labelView];
-  [v6 setAb_text:v5];
+  propertyCopy = property;
+  [(CNPropertyCell *)&v10 setProperty:propertyCopy];
+  label = [propertyCopy label];
+  labelView = [(CNPropertySimpleCell *)self labelView];
+  [labelView setAb_text:label];
 
-  v7 = [v4 value];
+  value = [propertyCopy value];
 
-  v8 = [v7 formattedStringValue];
-  v9 = [(CNPropertySimpleCell *)self valueView];
-  [v9 setAb_text:v8];
+  formattedStringValue = [value formattedStringValue];
+  valueView = [(CNPropertySimpleCell *)self valueView];
+  [valueView setAb_text:formattedStringValue];
 }
 
-- (CNPropertyPhoneNumberCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNPropertyPhoneNumberCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = CNPropertyPhoneNumberCell;
-  return [(CNPropertySimpleTransportCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  return [(CNPropertySimpleTransportCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
 }
 
 @end

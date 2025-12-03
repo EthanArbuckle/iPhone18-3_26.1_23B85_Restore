@@ -5,12 +5,12 @@
 - (NSArray)orderedAccounts;
 - (NSArray)receivingAddresses;
 - (NSSet)autofetchAccounts;
-- (id)_activeNonLocalAccountsWithMailAccounts:(id)a3;
+- (id)_activeNonLocalAccountsWithMailAccounts:(id)accounts;
 - (id)_displayedAccountsIdentifiers;
-- (id)_executeChange:(id)a3;
+- (id)_executeChange:(id)change;
 - (id)_focusedAccountsIdentifiers;
-- (id)legacyMailAccountForObjectID:(id)a3;
-- (id)reloadWithMailAccounts:(id)a3 currentFocus:(id)a4;
+- (id)legacyMailAccountForObjectID:(id)d;
+- (id)reloadWithMailAccounts:(id)accounts currentFocus:(id)focus;
 - (void)_registerNotifications;
 @end
 
@@ -32,52 +32,52 @@
 
 - (BOOL)hasActiveAccounts
 {
-  v2 = [(MFMailAccountsProvider *)self displayedAccounts];
-  v3 = [v2 count] != 0;
+  displayedAccounts = [(MFMailAccountsProvider *)self displayedAccounts];
+  v3 = [displayedAccounts count] != 0;
 
   return v3;
 }
 
 - (NSArray)receivingAddresses
 {
-  v2 = [(MFMailAccountsProvider *)self mailAccounts];
-  v3 = [v2 ef_map:&stru_100158BF8];
-  v4 = [v3 ef_flatten];
-  v5 = [v4 ef_filter:EFIsNotNull];
+  mailAccounts = [(MFMailAccountsProvider *)self mailAccounts];
+  v3 = [mailAccounts ef_map:&stru_100158BF8];
+  ef_flatten = [v3 ef_flatten];
+  v5 = [ef_flatten ef_filter:EFIsNotNull];
 
   return v5;
 }
 
-- (id)reloadWithMailAccounts:(id)a3 currentFocus:(id)a4
+- (id)reloadWithMailAccounts:(id)accounts currentFocus:(id)focus
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10006D874;
   v9[3] = &unk_1001573C0;
-  v10 = self;
-  v11 = a3;
-  v12 = a4;
-  v5 = v12;
-  v6 = v11;
-  v7 = [(MFMailAccountsProvider *)v10 _executeChange:v9];
+  selfCopy = self;
+  accountsCopy = accounts;
+  focusCopy = focus;
+  v5 = focusCopy;
+  v6 = accountsCopy;
+  v7 = [(MFMailAccountsProvider *)selfCopy _executeChange:v9];
 
   return v7;
 }
 
-- (id)legacyMailAccountForObjectID:(id)a3
+- (id)legacyMailAccountForObjectID:(id)d
 {
-  v4 = a3;
-  v5 = [v4 representedObjectID];
+  dCopy = d;
+  representedObjectID = [dCopy representedObjectID];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(MFMailAccountsProvider *)self mailAccounts];
+    mailAccounts = [(MFMailAccountsProvider *)self mailAccounts];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10006DC0C;
     v9[3] = &unk_100157A08;
-    v10 = v5;
-    v7 = [v6 ef_firstObjectPassingTest:v9];
+    v10 = representedObjectID;
+    v7 = [mailAccounts ef_firstObjectPassingTest:v9];
   }
 
   else
@@ -94,34 +94,34 @@
   [v3 addObserver:self selector:"_accountsOrderDidChange:" name:@"MailApplicationAccountsOrderDidChange" object:0];
 }
 
-- (id)_executeChange:(id)a3
+- (id)_executeChange:(id)change
 {
-  v5 = a3;
-  if (!v5)
+  changeCopy = change;
+  if (!changeCopy)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"MFMailAccountsProvider.m" lineNumber:120 description:{@"Invalid parameter not satisfying: %@", @"changeBlock"}];
   }
 
   v6 = [[MFMailAccountsProviderState alloc] initFromProvider:self];
-  v5[2](v5);
+  changeCopy[2](changeCopy);
   v7 = [[MFMailAccountsProviderState alloc] initFromProvider:self];
   v8 = MFLogGeneral();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 numberOfActiveAccounts];
-    v10 = [v7 numberOfActiveAccounts];
-    v11 = [v7 numberOfInactiveAccounts];
-    v12 = [v6 numberOfActiveAccounts];
-    v13 = [v6 numberOfActiveAccounts];
+    numberOfActiveAccounts = [v7 numberOfActiveAccounts];
+    numberOfActiveAccounts2 = [v7 numberOfActiveAccounts];
+    numberOfInactiveAccounts = [v7 numberOfInactiveAccounts];
+    numberOfActiveAccounts3 = [v6 numberOfActiveAccounts];
+    numberOfActiveAccounts4 = [v6 numberOfActiveAccounts];
     *buf = 134218752;
-    v18 = v9;
+    v18 = numberOfActiveAccounts;
     v19 = 2048;
-    v20 = &v10[v11];
+    v20 = &numberOfActiveAccounts2[numberOfInactiveAccounts];
     v21 = 2048;
-    v22 = v12;
+    v22 = numberOfActiveAccounts3;
     v23 = 2048;
-    v24 = &v13[[v6 numberOfInactiveAccounts]];
+    v24 = &numberOfActiveAccounts4[[v6 numberOfInactiveAccounts]];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "After reloading accounts: %lu/%lu active mail accounts (previously %lu/%lu)", buf, 0x2Au);
   }
 
@@ -130,15 +130,15 @@
   return v14;
 }
 
-- (id)_activeNonLocalAccountsWithMailAccounts:(id)a3
+- (id)_activeNonLocalAccountsWithMailAccounts:(id)accounts
 {
-  v13 = a3;
+  accountsCopy = accounts;
   v4 = +[NSMutableSet set];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v13;
+  v5 = accountsCopy;
   v6 = 0;
   v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
@@ -184,8 +184,8 @@
 
 - (id)_displayedAccountsIdentifiers
 {
-  v2 = [(MFMailAccountsProvider *)self displayedAccounts];
-  v3 = [v2 ef_compactMap:&stru_100158C38];
+  displayedAccounts = [(MFMailAccountsProvider *)self displayedAccounts];
+  v3 = [displayedAccounts ef_compactMap:&stru_100158C38];
   v4 = v3;
   if (v3)
   {
@@ -204,16 +204,16 @@
 
 - (id)_focusedAccountsIdentifiers
 {
-  v2 = [(MFMailAccountsProvider *)self focusedAccounts];
-  v3 = [v2 ef_compactMap:&stru_100158C58];
+  focusedAccounts = [(MFMailAccountsProvider *)self focusedAccounts];
+  v3 = [focusedAccounts ef_compactMap:&stru_100158C58];
 
   return v3;
 }
 
 - (BOOL)isDisplayingMultipleAccounts
 {
-  v2 = [(MFMailAccountsProvider *)self displayedAccounts];
-  v3 = [v2 count] > 1;
+  displayedAccounts = [(MFMailAccountsProvider *)self displayedAccounts];
+  v3 = [displayedAccounts count] > 1;
 
   return v3;
 }
@@ -230,9 +230,9 @@
   if (!orderedAccounts)
   {
     v5 = [NSMutableArray alloc];
-    v6 = [(MFMailAccountsProvider *)self displayedAccounts];
-    v7 = [v6 allObjects];
-    v8 = [v5 initWithArray:v7];
+    displayedAccounts = [(MFMailAccountsProvider *)self displayedAccounts];
+    allObjects = [displayedAccounts allObjects];
+    v8 = [v5 initWithArray:allObjects];
 
     v9 = +[NSUserDefaults standardUserDefaults];
     v10 = [v9 arrayForKey:@"MailAccountsOrder"];
@@ -256,8 +256,8 @@
 
 - (NSSet)autofetchAccounts
 {
-  v2 = [(MFMailAccountsProvider *)self displayedAccounts];
-  v3 = [v2 ef_filter:&stru_100158C78];
+  displayedAccounts = [(MFMailAccountsProvider *)self displayedAccounts];
+  v3 = [displayedAccounts ef_filter:&stru_100158C78];
 
   return v3;
 }

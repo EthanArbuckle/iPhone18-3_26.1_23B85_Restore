@@ -1,41 +1,41 @@
 @interface MPSNDArrayLogSoftMax
-- (MPSNDArrayLogSoftMax)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayLogSoftMax)initWithDevice:(id)a3;
-- (MPSNDArrayLogSoftMax)initWithDevice:(id)a3 axis:(unint64_t)a4;
+- (MPSNDArrayLogSoftMax)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayLogSoftMax)initWithDevice:(id)device;
+- (MPSNDArrayLogSoftMax)initWithDevice:(id)device axis:(unint64_t)axis;
 - (double)dimensionsToBeRetained;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)reshapeFitToTileToCommandBuffer:(id)a3 currentSource:(id)a4 kernelDimension:(unint64_t)a5 dimensionsToBeRetained:;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)reshapeFitToTileToCommandBuffer:(id)buffer currentSource:(id)source kernelDimension:(unint64_t)dimension dimensionsToBeRetained:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayLogSoftMax
 
-- (MPSNDArrayLogSoftMax)initWithDevice:(id)a3
+- (MPSNDArrayLogSoftMax)initWithDevice:(id)device
 {
   v4.receiver = self;
   v4.super_class = MPSNDArrayLogSoftMax;
-  result = [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:a3];
+  result = [(MPSNDArrayUnaryKernel *)&v4 initWithDevice:device];
   result->_axis = 0;
   result->super.super._encode = EncodeArraySoftMax;
   return result;
 }
 
-- (MPSNDArrayLogSoftMax)initWithDevice:(id)a3 axis:(unint64_t)a4
+- (MPSNDArrayLogSoftMax)initWithDevice:(id)device axis:(unint64_t)axis
 {
-  result = [(MPSNDArrayLogSoftMax *)self initWithDevice:a3];
-  result->_axis = a4;
+  result = [(MPSNDArrayLogSoftMax *)self initWithDevice:device];
+  result->_axis = axis;
   return result;
 }
 
-- (MPSNDArrayLogSoftMax)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayLogSoftMax)initWithCoder:(id)coder device:(id)device
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayLogSoftMax;
-  result = [(MPSNDArrayUnaryKernel *)&v8 initWithCoder:a3 device:a4];
+  result = [(MPSNDArrayUnaryKernel *)&v8 initWithCoder:coder device:device];
   if (result)
   {
     v6 = result;
-    v7 = [a3 decodeInt64ForKey:@"MPSNDArraySoftMax.axis"];
+    v7 = [coder decodeInt64ForKey:@"MPSNDArraySoftMax.axis"];
     result = v6;
     v6->_axis = v7;
     v6->super.super._encode = EncodeArraySoftMax;
@@ -45,19 +45,19 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = MPSNDArrayLogSoftMax;
   [(MPSNDArrayMultiaryBase *)&v5 encodeWithCoder:?];
-  [a3 encodeInt64:self->_axis forKey:@"MPSNDArraySoftMax.axis"];
+  [coder encodeInt64:self->_axis forKey:@"MPSNDArraySoftMax.axis"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v6.receiver = self;
   v6.super_class = MPSNDArrayLogSoftMax;
-  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v6 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 83) = self->_axis;
@@ -70,19 +70,19 @@
 
 - (double)dimensionsToBeRetained
 {
-  v1 = (&v3 | *(a1 + 664) & 0xFLL);
+  v1 = (&v3 | *(self + 664) & 0xFLL);
   *&v3 = 0;
   *v1 = 1;
   return *&v3;
 }
 
-- (id)reshapeFitToTileToCommandBuffer:(id)a3 currentSource:(id)a4 kernelDimension:(unint64_t)a5 dimensionsToBeRetained:
+- (id)reshapeFitToTileToCommandBuffer:(id)buffer currentSource:(id)source kernelDimension:(unint64_t)dimension dimensionsToBeRetained:
 {
   v71 = v5;
   v87 = *MEMORY[0x277D85DE8];
   axis = self->_axis;
-  v10 = [a4 descriptor];
-  v11 = (a4 + *MEMORY[0x277CD7410]);
+  descriptor = [source descriptor];
+  v11 = (source + *MEMORY[0x277CD7410]);
   v12 = v11[2];
   v13 = v11[3];
   v14 = HIDWORD(v13);
@@ -388,8 +388,8 @@
     *(&v72 + axis) = 1;
   }
 
-  [v10 reshapeWithDimensionCount:a5 dimensionSizes:&v72];
-  result = [a4 arrayViewWithCommandBuffer:a3 descriptor:v10 aliasing:1];
+  [descriptor reshapeWithDimensionCount:dimension dimensionSizes:&v72];
+  result = [source arrayViewWithCommandBuffer:buffer descriptor:descriptor aliasing:1];
   v70 = *MEMORY[0x277D85DE8];
   return result;
 }

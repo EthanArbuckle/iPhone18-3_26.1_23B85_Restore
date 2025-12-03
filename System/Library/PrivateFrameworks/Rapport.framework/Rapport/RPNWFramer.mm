@@ -1,22 +1,22 @@
 @interface RPNWFramer
-+ (BOOL)writeDataOnFramer:(id)a3 data:(id)a4;
-+ (const)controlCodeToString:(int)a3;
-+ (void)setupDaemonFramer:(id)a3 token:(id)a4 receiveHandler:(id)a5 closeHandler:(id)a6;
-+ (void)startConnection:(id)a3 token:(id)a4;
++ (BOOL)writeDataOnFramer:(id)framer data:(id)data;
++ (const)controlCodeToString:(int)string;
++ (void)setupDaemonFramer:(id)framer token:(id)token receiveHandler:(id)handler closeHandler:(id)closeHandler;
++ (void)startConnection:(id)connection token:(id)token;
 @end
 
 @implementation RPNWFramer
 
-+ (const)controlCodeToString:(int)a3
++ (const)controlCodeToString:(int)string
 {
-  if (a3 > 3)
+  if (string > 3)
   {
     return "INVALID";
   }
 
   else
   {
-    return off_1E7C93138[a3];
+    return off_1E7C93138[string];
   }
 }
 
@@ -47,14 +47,14 @@ void __52__RPNWFramer_writeControlOnFramer_type_error_token___block_invoke(uint6
   v3 = v4;
 }
 
-+ (BOOL)writeDataOnFramer:(id)a3 data:(id)a4
++ (BOOL)writeDataOnFramer:(id)framer data:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  framerCopy = framer;
+  dataCopy = data;
+  v7 = dataCopy;
+  if (framerCopy)
   {
-    v8 = v6 == 0;
+    v8 = dataCopy == 0;
   }
 
   else
@@ -75,7 +75,7 @@ void __52__RPNWFramer_writeControlOnFramer_type_error_token___block_invoke(uint6
     v11[2] = __37__RPNWFramer_writeDataOnFramer_data___block_invoke;
     v11[3] = &unk_1E7C92D80;
     v12 = v7;
-    v13 = v5;
+    v13 = framerCopy;
     nw_framer_async(v13, v11);
   }
 
@@ -101,24 +101,24 @@ void __37__RPNWFramer_writeDataOnFramer_data___block_invoke(uint64_t a1)
   }
 }
 
-+ (void)startConnection:(id)a3 token:(id)a4
++ (void)startConnection:(id)connection token:(id)token
 {
-  v6 = a3;
-  v5 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   if (gLogCategory_RPNWFramer <= 30 && (gLogCategory_RPNWFramer != -1 || _LogCategory_Initialize()))
   {
     +[RPNWFramer startConnection:token:];
   }
 
-  [RPNWFramer writeControlOnFramer:v6 type:1 error:0 token:v5];
+  [RPNWFramer writeControlOnFramer:connectionCopy type:1 error:0 token:tokenCopy];
 }
 
-+ (void)setupDaemonFramer:(id)a3 token:(id)a4 receiveHandler:(id)a5 closeHandler:(id)a6
++ (void)setupDaemonFramer:(id)framer token:(id)token receiveHandler:(id)handler closeHandler:(id)closeHandler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  framerCopy = framer;
+  tokenCopy = token;
+  handlerCopy = handler;
+  closeHandlerCopy = closeHandler;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x2020000000;
@@ -138,13 +138,13 @@ void __37__RPNWFramer_writeDataOnFramer_data___block_invoke(uint64_t a1)
   v22 = v28;
   v23 = v25;
   v24 = v27;
-  v13 = v11;
+  v13 = handlerCopy;
   v20 = v13;
-  v14 = v10;
+  v14 = tokenCopy;
   v18 = v14;
-  v15 = v12;
+  v15 = closeHandlerCopy;
   v21 = v15;
-  v16 = v9;
+  v16 = framerCopy;
   v19 = v16;
   nw_framer_set_input_handler(v16, input_handler);
   nw_framer_set_output_handler(v16, &__block_literal_global_1);

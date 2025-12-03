@@ -1,39 +1,39 @@
 @interface DocumentViewController
-- (BOOL)deeplinkURLWasHandled:(id)a3;
-- (BOOL)handleDeeplink:(id)a3;
+- (BOOL)deeplinkURLWasHandled:(id)handled;
+- (BOOL)handleDeeplink:(id)deeplink;
 - (NSArray)preferredFocusEnvironments;
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration;
 - (UIViewController)childViewControllerForStatusBarHidden;
-- (_TtC8VideosUI22DocumentViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)customAnimatorForNavigationControllerOperation:(int64_t)a3 fromViewController:(id)a4;
-- (id)customAnimatorForNavigationControllerOperation:(int64_t)a3 toViewController:(id)a4;
-- (id)vui_findPresentationSource:(id)a3;
+- (_TtC8VideosUI22DocumentViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)customAnimatorForNavigationControllerOperation:(int64_t)operation fromViewController:(id)controller;
+- (id)customAnimatorForNavigationControllerOperation:(int64_t)operation toViewController:(id)controller;
+- (id)vui_findPresentationSource:(id)source;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4;
-- (void)messageViewController:(id)a3 enqueueEventWithFields:(id)a4 inTopic:(id)a5;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
+- (void)messageViewController:(id)controller didFailWithError:(id)error;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size;
+- (void)messageViewController:(id)controller enqueueEventWithFields:(id)fields inTopic:(id)topic;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
 - (void)reportPageEvent;
-- (void)scrollToTopWithAnimated:(BOOL)a3 needsFocusUpdate:(BOOL)a4;
-- (void)setActivityItemsConfiguration:(id)a3;
-- (void)vui_didMoveToParentViewController:(id)a3;
-- (void)vui_viewDidAppear:(BOOL)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (void)scrollToTopWithAnimated:(BOOL)animated needsFocusUpdate:(BOOL)update;
+- (void)setActivityItemsConfiguration:(id)configuration;
+- (void)vui_didMoveToParentViewController:(id)controller;
+- (void)vui_viewDidAppear:(BOOL)appear;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLayoutSubviews;
 - (void)vui_viewDidLoad;
-- (void)vui_viewWillAppear:(BOOL)a3;
-- (void)vui_viewWillDisappear:(BOOL)a3;
+- (void)vui_viewWillAppear:(BOOL)appear;
+- (void)vui_viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation DocumentViewController
 
-- (id)vui_findPresentationSource:(id)a3
+- (id)vui_findPresentationSource:(id)source
 {
   sub_1E4205F14();
   v5 = v4;
-  v6 = self;
+  selfCopy = self;
   v7._countAndFlagsBits = OUTLINED_FUNCTION_12_1();
   v7._object = v5;
   DocumentViewController.vuifindPresentationSource(source:)(v8, v7);
@@ -44,14 +44,14 @@
 
 - (UIActivityItemsConfigurationReading)activityItemsConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   DocumentViewController.activityItemsConfiguration.getter();
   v4 = v3;
 
   return v4;
 }
 
-- (void)setActivityItemsConfiguration:(id)a3
+- (void)setActivityItemsConfiguration:(id)configuration
 {
   OUTLINED_FUNCTION_44_11();
   swift_unknownObjectRetain();
@@ -62,45 +62,45 @@
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   DocumentViewController.vuiViewDidLoad()();
 }
 
-- (void)vui_viewWillAppear:(BOOL)a3
+- (void)vui_viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   DocumentViewController.vuiViewWillAppear(_:)(v4);
 }
 
-- (void)vui_viewDidAppear:(BOOL)a3
+- (void)vui_viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   DocumentViewController.vuiViewDidAppear(_:)(v4);
 }
 
-- (void)vui_viewWillDisappear:(BOOL)a3
+- (void)vui_viewWillDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   DocumentViewController.vuiViewWillDisappear(_:)(v4);
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   DocumentViewController.vuiViewDidDisappear(_:)(v4);
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   DocumentViewController.vuiViewDidLayoutSubviews()();
 }
 
-- (void)vui_didMoveToParentViewController:(id)a3
+- (void)vui_didMoveToParentViewController:(id)controller
 {
   OUTLINED_FUNCTION_44_11();
   v5 = v3;
@@ -111,7 +111,7 @@
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DocumentViewController.preferredStatusBarStyle.getter();
 
   return v3;
@@ -119,7 +119,7 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   DocumentViewController.preferredFocusEnvironments.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECF31D30);
@@ -127,12 +127,12 @@
   sub_1E42062A4();
   OUTLINED_FUNCTION_50();
 
-  return v2;
+  return selfCopy;
 }
 
 - (UIViewController)childViewControllerForStatusBarHidden
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DocumentViewController.childForStatusBarHidden.getter();
 
   return v3;
@@ -140,13 +140,13 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
+  selfCopy = self;
   v3 = DocumentViewController.supportedInterfaceOrientations.getter();
 
   return v3;
 }
 
-- (id)customAnimatorForNavigationControllerOperation:(int64_t)a3 toViewController:(id)a4
+- (id)customAnimatorForNavigationControllerOperation:(int64_t)operation toViewController:(id)controller
 {
   OUTLINED_FUNCTION_44_11();
   v6 = v5;
@@ -157,7 +157,7 @@
   return v8;
 }
 
-- (id)customAnimatorForNavigationControllerOperation:(int64_t)a3 fromViewController:(id)a4
+- (id)customAnimatorForNavigationControllerOperation:(int64_t)operation fromViewController:(id)controller
 {
   OUTLINED_FUNCTION_44_11();
   v6 = v5;
@@ -168,7 +168,7 @@
   return v8;
 }
 
-- (BOOL)handleDeeplink:(id)a3
+- (BOOL)handleDeeplink:(id)deeplink
 {
   v4 = sub_1E41FE414();
   OUTLINED_FUNCTION_0_10();
@@ -181,68 +181,68 @@
   return 0;
 }
 
-- (void)scrollToTopWithAnimated:(BOOL)a3 needsFocusUpdate:(BOOL)a4
+- (void)scrollToTopWithAnimated:(BOOL)animated needsFocusUpdate:(BOOL)update
 {
-  v6 = self;
-  DocumentViewController.scrollToTop(animated:needsFocusUpdate:)(a3, a4);
+  selfCopy = self;
+  DocumentViewController.scrollToTop(animated:needsFocusUpdate:)(animated, update);
 }
 
-- (_TtC8VideosUI22DocumentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8VideosUI22DocumentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1E4205F14();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   DocumentViewController.init(nibName:bundle:)();
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  DocumentViewController.navigationController(_:didShow:animated:)(v7, &v9->super.super, 0);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  selfCopy = self;
+  DocumentViewController.navigationController(_:didShow:animated:)(controllerCopy, &selfCopy->super.super, 0);
 }
 
 - (void)reportPageEvent
 {
-  v2 = self;
+  selfCopy = self;
   DocumentViewController.reportPageEvent()();
 }
 
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size
 {
-  v5 = a3;
-  v6 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   DocumentViewController.messageViewController(_:didUpdate:)();
 }
 
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4
+- (void)messageViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
   DocumentViewController.messageViewController(_:didFailWithError:)();
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
   OUTLINED_FUNCTION_13_8();
   DocumentViewController.messageViewController(_:didSelectActionWith:)();
 }
 
-- (void)messageViewController:(id)a3 enqueueEventWithFields:(id)a4 inTopic:(id)a5
+- (void)messageViewController:(id)controller enqueueEventWithFields:(id)fields inTopic:(id)topic
 {
   v8 = sub_1E4205C64();
-  if (a5)
+  if (topic)
   {
     v9 = sub_1E4205F14();
-    a5 = v10;
+    topic = v10;
   }
 
   else
@@ -250,12 +250,12 @@
     v9 = 0;
   }
 
-  v11 = a3;
-  v12 = self;
-  DocumentViewController.messageViewController(_:enqueueEventWithFields:inTopic:)(v12, v8, v9, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  DocumentViewController.messageViewController(_:enqueueEventWithFields:inTopic:)(selfCopy, v8, v9, topic);
 }
 
-- (BOOL)deeplinkURLWasHandled:(id)a3
+- (BOOL)deeplinkURLWasHandled:(id)handled
 {
   OUTLINED_FUNCTION_44_11();
   sub_1E41FE414();

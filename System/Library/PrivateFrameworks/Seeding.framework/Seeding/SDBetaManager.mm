@@ -1,77 +1,77 @@
 @interface SDBetaManager
 + (BOOL)_isEnrolledInBetaProgram;
-+ (BOOL)canFileFeedbackOnThisDevice:(id *)a3;
-+ (BOOL)isBuildPrefix:(id)a3 greaterThanOrEqualToBuild:(id)a4;
++ (BOOL)canFileFeedbackOnThisDevice:(id *)device;
++ (BOOL)isBuildPrefix:(id)prefix greaterThanOrEqualToBuild:(id)build;
 + (id)_currentBetaProgram;
 + (id)sharedManager;
 + (void)_currentBetaProgram;
-+ (void)canFileFeedbackOnThisDeviceWithCompletion:(id)a3;
++ (void)canFileFeedbackOnThisDeviceWithCompletion:(id)completion;
 - (BOOL)_canCurrentDeviceEnrollInBetaUpdates;
 - (BOOL)_hasMigratedProfiles;
 - (BOOL)_isEnrolledInBetaProgram;
 - (BOOL)_isEnrollmentAllowedByDeviceManagement_legacy;
 - (BOOL)_isUsingSeedingAppleID;
-- (BOOL)_unenrollFromBetaProgramWithUserIdentifier:(id)a3;
+- (BOOL)_unenrollFromBetaProgramWithUserIdentifier:(id)identifier;
 - (BOOL)canCurrentDeviceEnrollInBetaUpdates;
-- (BOOL)isCacheValidForPlatforms:(unint64_t)a3 withMDMConfigurationDate:(id)a4;
+- (BOOL)isCacheValidForPlatforms:(unint64_t)platforms withMDMConfigurationDate:(id)date;
 - (BOOL)isCurrentDeviceUsingSeedingAppleID;
 - (BOOL)isMigratingFromProfiles;
 - (id)_assetServerURLString;
 - (id)_brainServerURLString;
 - (id)_deviceAppleIDUsername;
 - (id)_seedingAppleIDUsername;
-- (id)availableBetaProgramsForPlatforms:(unint64_t)a3;
+- (id)availableBetaProgramsForPlatforms:(unint64_t)platforms;
 - (id)deviceAppleIDUsernameForCurrentDevice;
 - (id)enrolledBetaProgramForCurrentDevice;
 - (id)enrollmentMetadataForCurrentDevice;
-- (id)membershipURLForPlatforms:(unint64_t)a3;
-- (id)migrateURLForAssetAudience:(id)a3;
-- (id)parseProgramsResponse:(id)a3 platforms:(unint64_t)a4 shouldCache:(BOOL)a5 skipsBuildMatching:(BOOL)a6;
+- (id)membershipURLForPlatforms:(unint64_t)platforms;
+- (id)migrateURLForAssetAudience:(id)audience;
+- (id)parseProgramsResponse:(id)response platforms:(unint64_t)platforms shouldCache:(BOOL)cache skipsBuildMatching:(BOOL)matching;
 - (id)seedingAppleIDUsernameForCurrentDevice;
-- (id)serverURLWithPath:(id)a3 arguments:(id)a4;
-- (id)verifyURLForAssetAudience:(id)a3 programID:(int64_t)a4;
-- (id)verifyURLForCatalog:(id)a3;
-- (void)_changeFBAVisibilityWithUserIdentifier:(id)a3 isVisible:(BOOL)a4;
-- (void)_deleteSeedingAppleAccountWithCompletion:(id)a3;
-- (void)_enrollUsingSeedingConfiguration:(id)a3 userIdentifier:(id)a4;
-- (void)_finallyQueryProgramsForSystemAccountsWithPlatforms:(unint64_t)a3 credentials:(id)a4 betaEnrollmentTokens:(id)a5 shouldSavePrograms:(BOOL)a6 disableBuildPrefixMatching:(BOOL)a7 language:(id)a8 completion:(id)a9;
+- (id)serverURLWithPath:(id)path arguments:(id)arguments;
+- (id)verifyURLForAssetAudience:(id)audience programID:(int64_t)d;
+- (id)verifyURLForCatalog:(id)catalog;
+- (void)_changeFBAVisibilityWithUserIdentifier:(id)identifier isVisible:(BOOL)visible;
+- (void)_deleteSeedingAppleAccountWithCompletion:(id)completion;
+- (void)_enrollUsingSeedingConfiguration:(id)configuration userIdentifier:(id)identifier;
+- (void)_finallyQueryProgramsForSystemAccountsWithPlatforms:(unint64_t)platforms credentials:(id)credentials betaEnrollmentTokens:(id)tokens shouldSavePrograms:(BOOL)programs disableBuildPrefixMatching:(BOOL)matching language:(id)language completion:(id)completion;
 - (void)_markMigrationComplete;
 - (void)_migrateFromProfilesIfNeeded;
-- (void)_queryProgramsForSystemAccountsWithPlatforms:(unint64_t)a3 disableBuildPrefixMatching:(BOOL)a4 language:(id)a5 completion:(id)a6;
+- (void)_queryProgramsForSystemAccountsWithPlatforms:(unint64_t)platforms disableBuildPrefixMatching:(BOOL)matching language:(id)language completion:(id)completion;
 - (void)_resetAssetAudience;
-- (void)_saveAppleAccountIdentifier:(id)a3;
-- (void)_saveAppleAccountIdentifierWithAlternateDSID:(id)a3 completion:(id)a4;
-- (void)_saveBetaProgram:(id)a3;
-- (void)_setAssetAudienceString:(id)a3;
-- (void)_setAssetServerURLString:(id)a3;
-- (void)_setBrainServerURLString:(id)a3;
-- (void)_setMemberEnrolled:(BOOL)a3;
-- (void)cachePrograms:(id)a3 forPlatforms:(unint64_t)a4;
-- (void)canFileFeedbackOnDevice:(id)a3 completion:(id)a4;
-- (void)deleteSeedingAppleAccountForCurrentDeviceWithCompletion:(id)a3;
-- (void)enrollCurrentDeviceWithEnrollmentMetadata:(id)a3 completion:(id)a4;
-- (void)enrollDevice:(id)a3 inBetaProgram:(id)a4 completion:(id)a5;
-- (void)enrollDevice:(id)a3 withEnrollmentMetadata:(id)a4 completion:(id)a5;
-- (void)enrollInProgramWithToken:(id)a3 userIdentifier:(id)a4 language:(id)a5 shouldSaveToken:(BOOL)a6 completion:(id)a7;
-- (void)enrolledBetaProgramForDevice:(id)a3 completion:(id)a4;
-- (void)enrollmentMetadataForCurrentDeviceWithCompletion:(id)a3;
-- (void)enrollmentMetadataForDevice:(id)a3 completion:(id)a4;
-- (void)ensureThisRunsAfterMigration:(id)a3;
-- (void)getAppleIDAuthenticationAccountForAlternateDSID:(id)a3 attempt:(int64_t)a4 completion:(id)a5;
-- (void)getMigrationProgramForAssetAudience:(id)a3 completion:(id)a4;
+- (void)_saveAppleAccountIdentifier:(id)identifier;
+- (void)_saveAppleAccountIdentifierWithAlternateDSID:(id)d completion:(id)completion;
+- (void)_saveBetaProgram:(id)program;
+- (void)_setAssetAudienceString:(id)string;
+- (void)_setAssetServerURLString:(id)string;
+- (void)_setBrainServerURLString:(id)string;
+- (void)_setMemberEnrolled:(BOOL)enrolled;
+- (void)cachePrograms:(id)programs forPlatforms:(unint64_t)platforms;
+- (void)canFileFeedbackOnDevice:(id)device completion:(id)completion;
+- (void)deleteSeedingAppleAccountForCurrentDeviceWithCompletion:(id)completion;
+- (void)enrollCurrentDeviceWithEnrollmentMetadata:(id)metadata completion:(id)completion;
+- (void)enrollDevice:(id)device inBetaProgram:(id)program completion:(id)completion;
+- (void)enrollDevice:(id)device withEnrollmentMetadata:(id)metadata completion:(id)completion;
+- (void)enrollInProgramWithToken:(id)token userIdentifier:(id)identifier language:(id)language shouldSaveToken:(BOOL)saveToken completion:(id)completion;
+- (void)enrolledBetaProgramForDevice:(id)device completion:(id)completion;
+- (void)enrollmentMetadataForCurrentDeviceWithCompletion:(id)completion;
+- (void)enrollmentMetadataForDevice:(id)device completion:(id)completion;
+- (void)ensureThisRunsAfterMigration:(id)migration;
+- (void)getAppleIDAuthenticationAccountForAlternateDSID:(id)d attempt:(int64_t)attempt completion:(id)completion;
+- (void)getMigrationProgramForAssetAudience:(id)audience completion:(id)completion;
 - (void)invalidateCache;
-- (void)invalidateCacheWithCompletion:(id)a3;
-- (void)isDeviceEnrolledInBetaProgram:(id)a3 completion:(id)a4;
-- (void)saveAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:(id)a3 completion:(id)a4;
-- (void)seedingAppleIDUsernameForCurrentDeviceWithCompletion:(id)a3;
-- (void)setIsMigratingFromProfiles:(BOOL)a3;
-- (void)setProfilesEnabledFromHeaderInResponse:(id)a3;
-- (void)unenrollDevice:(id)a3 completion:(id)a4;
-- (void)validateBetaEnrollmentTokens:(id)a3 errorHandler:(id)a4;
-- (void)verifyAssetAudience:(id)a3 programID:(int64_t)a4 accountID:(id)a5 skipEnrollmentCheck:(BOOL)a6 withCompletion:(id)a7;
-- (void)verifyAssetAudience:(id)a3 programID:(int64_t)a4 accountID:(id)a5 withCompletion:(id)a6;
-- (void)verifyAssetAudience:(id)a3 programID:(int64_t)a4 withCompletion:(id)a5;
-- (void)verifyCatalog:(id)a3 withCompletion:(id)a4;
+- (void)invalidateCacheWithCompletion:(id)completion;
+- (void)isDeviceEnrolledInBetaProgram:(id)program completion:(id)completion;
+- (void)saveAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:(id)device completion:(id)completion;
+- (void)seedingAppleIDUsernameForCurrentDeviceWithCompletion:(id)completion;
+- (void)setIsMigratingFromProfiles:(BOOL)profiles;
+- (void)setProfilesEnabledFromHeaderInResponse:(id)response;
+- (void)unenrollDevice:(id)device completion:(id)completion;
+- (void)validateBetaEnrollmentTokens:(id)tokens errorHandler:(id)handler;
+- (void)verifyAssetAudience:(id)audience programID:(int64_t)d accountID:(id)iD skipEnrollmentCheck:(BOOL)check withCompletion:(id)completion;
+- (void)verifyAssetAudience:(id)audience programID:(int64_t)d accountID:(id)iD withCompletion:(id)completion;
+- (void)verifyAssetAudience:(id)audience programID:(int64_t)d withCompletion:(id)completion;
+- (void)verifyCatalog:(id)catalog withCompletion:(id)completion;
 @end
 
 @implementation SDBetaManager
@@ -99,13 +99,13 @@ uint64_t __30__SDBetaManager_sharedManager__block_invoke()
   return [v2 setIsMigratingFromProfiles:0];
 }
 
-- (id)verifyURLForCatalog:(id)a3
+- (id)verifyURLForCatalog:(id)catalog
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"catalog_url";
-  v11[0] = a3;
+  v11[0] = catalog;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  catalogCopy = catalog;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v7 = [(SDBetaManager *)self serverURLWithPath:@"/catalog/verify" arguments:v6];
@@ -115,17 +115,17 @@ uint64_t __30__SDBetaManager_sharedManager__block_invoke()
   return v7;
 }
 
-- (id)verifyURLForAssetAudience:(id)a3 programID:(int64_t)a4
+- (id)verifyURLForAssetAudience:(id)audience programID:(int64_t)d
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14[0] = @"asset_audience";
   v14[1] = @"id";
-  v15[0] = a3;
+  v15[0] = audience;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a3;
-  v8 = [v6 numberWithInteger:a4];
-  v9 = [v8 stringValue];
-  v15[1] = v9;
+  audienceCopy = audience;
+  v8 = [v6 numberWithInteger:d];
+  stringValue = [v8 stringValue];
+  v15[1] = stringValue;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
   v11 = [(SDBetaManager *)self serverURLWithPath:@"/catalog/verify" arguments:v10];
@@ -135,13 +135,13 @@ uint64_t __30__SDBetaManager_sharedManager__block_invoke()
   return v11;
 }
 
-- (id)migrateURLForAssetAudience:(id)a3
+- (id)migrateURLForAssetAudience:(id)audience
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"asset_audience";
-  v11[0] = a3;
+  v11[0] = audience;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  audienceCopy = audience;
   v6 = [v4 dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
   v7 = [(SDBetaManager *)self serverURLWithPath:@"/catalog/migrate" arguments:v6];
@@ -151,11 +151,11 @@ uint64_t __30__SDBetaManager_sharedManager__block_invoke()
   return v7;
 }
 
-- (id)membershipURLForPlatforms:(unint64_t)a3
+- (id)membershipURLForPlatforms:(unint64_t)platforms
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"platforms";
-  v4 = SDStringArrayFromPlatforms(a3);
+  v4 = SDStringArrayFromPlatforms(platforms);
   v5 = [v4 componentsJoinedByString:{@", "}];
   v11[0] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
@@ -166,24 +166,24 @@ uint64_t __30__SDBetaManager_sharedManager__block_invoke()
   return v7;
 }
 
-- (id)serverURLWithPath:(id)a3 arguments:(id)a4
+- (id)serverURLWithPath:(id)path arguments:(id)arguments
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  argumentsCopy = arguments;
   v7 = +[SDHTTPClient sharedInstance];
-  v8 = [v7 baseURL];
+  baseURL = [v7 baseURL];
 
-  v9 = [MEMORY[0x277CCACE0] componentsWithURL:v8 resolvingAgainstBaseURL:1];
-  v10 = [v9 path];
-  v11 = [@"/api/v4" stringByAppendingPathComponent:v10];
+  v9 = [MEMORY[0x277CCACE0] componentsWithURL:baseURL resolvingAgainstBaseURL:1];
+  path = [v9 path];
+  v11 = [@"/api/v4" stringByAppendingPathComponent:path];
 
   if (v11)
   {
-    v12 = [v11 stringByAppendingPathComponent:v5];
+    v12 = [v11 stringByAppendingPathComponent:pathCopy];
     [v9 setPath:v12];
 
-    if (!v6)
+    if (!argumentsCopy)
     {
       goto LABEL_13;
     }
@@ -191,22 +191,22 @@ uint64_t __30__SDBetaManager_sharedManager__block_invoke()
 
   else
   {
-    [v9 setPath:v5];
-    if (!v6)
+    [v9 setPath:pathCopy];
+    if (!argumentsCopy)
     {
       goto LABEL_13;
     }
   }
 
   v29 = v9;
-  v30 = v5;
-  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count", v11)}];
+  v30 = pathCopy;
+  v13 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(argumentsCopy, "count", v11)}];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v14 = [v6 allKeys];
-  v15 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  allKeys = [argumentsCopy allKeys];
+  v15 = [allKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v15)
   {
     v16 = v15;
@@ -217,18 +217,18 @@ uint64_t __30__SDBetaManager_sharedManager__block_invoke()
       {
         if (*v32 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allKeys);
         }
 
         v19 = *(*(&v31 + 1) + 8 * i);
         v20 = MEMORY[0x277CCAD18];
-        v21 = [v6 objectForKeyedSubscript:v19];
+        v21 = [argumentsCopy objectForKeyedSubscript:v19];
         v22 = [v20 queryItemWithName:v19 value:v21];
 
         [v13 addObject:v22];
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v16 = [allKeys countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v16);
@@ -238,7 +238,7 @@ uint64_t __30__SDBetaManager_sharedManager__block_invoke()
   v9 = v29;
   [v29 setQueryItems:v23];
 
-  v5 = v30;
+  pathCopy = v30;
   v11 = v28;
 LABEL_13:
   v24 = [v9 URL];
@@ -263,10 +263,10 @@ LABEL_13:
   [(SDBetaManager *)self setLastCached:0];
 }
 
-- (void)invalidateCacheWithCompletion:(id)a3
+- (void)invalidateCacheWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -281,31 +281,31 @@ LABEL_13:
   v9[1] = 3221225472;
   v9[2] = __47__SDBetaManager_invalidateCacheWithCompletion___block_invoke;
   v9[3] = &unk_2787CBD78;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [v6 invalidateCacheWithCompletion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isCacheValidForPlatforms:(unint64_t)a3 withMDMConfigurationDate:(id)a4
+- (BOOL)isCacheValidForPlatforms:(unint64_t)platforms withMDMConfigurationDate:(id)date
 {
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(SDBetaManager *)self lastCached];
-  v8 = v7;
+  dateCopy = date;
+  lastCached = [(SDBetaManager *)self lastCached];
+  v8 = lastCached;
   v9 = 0;
-  if (v6 && v7)
+  if (dateCopy && lastCached)
   {
-    v10 = [(SDBetaManager *)self lastCached];
-    v9 = [v10 compare:v6] == -1;
+    lastCached2 = [(SDBetaManager *)self lastCached];
+    v9 = [lastCached2 compare:dateCopy] == -1;
   }
 
-  v11 = [(SDBetaManager *)self cachedPrograms];
-  if (v11)
+  cachedPrograms = [(SDBetaManager *)self cachedPrograms];
+  if (cachedPrograms)
   {
-    v12 = [(SDBetaManager *)self cachedPrograms];
-    v13 = [v12 count] != 0;
+    cachedPrograms2 = [(SDBetaManager *)self cachedPrograms];
+    v13 = [cachedPrograms2 count] != 0;
   }
 
   else
@@ -313,13 +313,13 @@ LABEL_13:
     v13 = 0;
   }
 
-  v14 = [(SDBetaManager *)self cachedPlatform];
-  v15 = [(SDBetaManager *)self lastCached];
-  if (v15)
+  cachedPlatform = [(SDBetaManager *)self cachedPlatform];
+  lastCached3 = [(SDBetaManager *)self lastCached];
+  if (lastCached3)
   {
     v16 = [MEMORY[0x277CBEAA8] now];
-    v17 = [(SDBetaManager *)self lastCached];
-    [v16 timeIntervalSinceDate:v17];
+    lastCached4 = [(SDBetaManager *)self lastCached];
+    [v16 timeIntervalSinceDate:lastCached4];
     v19 = v18 < 300.0;
   }
 
@@ -334,11 +334,11 @@ LABEL_13:
   {
     if (v21)
     {
-      v22 = [(SDBetaManager *)self lastCached];
+      lastCached5 = [(SDBetaManager *)self lastCached];
       v30 = 138543618;
-      v31 = v22;
+      v31 = lastCached5;
       v32 = 2114;
-      v33 = v6;
+      v33 = dateCopy;
       _os_log_impl(&dword_22E41E000, v20, OS_LOG_TYPE_DEFAULT, "MDM configuration invalidated local cache created on [%{public}@]. MDM applied date [%{public}@]", &v30, 0x16u);
     }
 
@@ -360,7 +360,7 @@ LABEL_13:
         v25 = @"false";
       }
 
-      if (v14 == a3)
+      if (cachedPlatform == platforms)
       {
         v26 = @"true";
       }
@@ -384,7 +384,7 @@ LABEL_13:
       _os_log_impl(&dword_22E41E000, v20, OS_LOG_TYPE_DEFAULT, "IsCacheValid: hasPrograms [%{public}@], hasMatchingPlatform [%{public}@], isWithinTimeout: [%{public}@]", &v30, 0x20u);
     }
 
-    v27 = v14 == a3 && v13;
+    v27 = cachedPlatform == platforms && v13;
     v23 = v27 && v19;
   }
 
@@ -404,10 +404,10 @@ LABEL_13:
   }
 
   v3 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  v4 = [v3 canCurrentDeviceEnrollInBetaProgram];
+  canCurrentDeviceEnrollInBetaProgram = [v3 canCurrentDeviceEnrollInBetaProgram];
 
   v5 = *MEMORY[0x277D85DE8];
-  return v4;
+  return canCurrentDeviceEnrollInBetaProgram;
 }
 
 - (BOOL)_canCurrentDeviceEnrollInBetaUpdates
@@ -419,8 +419,8 @@ LABEL_13:
   v5 = [(SDBetaManager *)self availableBetaProgramsForPlatforms:+[SDDevice currentDevicePlatform]];
   v6 = [v5 count];
 
-  v7 = [(SDBetaManager *)self _isEnrolledInBetaProgram];
-  v8 = [(SDBetaManager *)self _isEnrollmentAllowedByDeviceManagement_legacy];
+  _isEnrolledInBetaProgram = [(SDBetaManager *)self _isEnrolledInBetaProgram];
+  _isEnrollmentAllowedByDeviceManagement_legacy = [(SDBetaManager *)self _isEnrollmentAllowedByDeviceManagement_legacy];
   v9 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -435,7 +435,7 @@ LABEL_13:
       v11 = @"NO";
     }
 
-    if (v7)
+    if (_isEnrolledInBetaProgram)
     {
       v12 = @"YES";
     }
@@ -461,7 +461,7 @@ LABEL_13:
     v19 = v12;
     v20 = 2114;
     v21 = v13;
-    if (v8)
+    if (_isEnrollmentAllowedByDeviceManagement_legacy)
     {
       v10 = @"YES";
     }
@@ -471,7 +471,7 @@ LABEL_13:
     _os_log_impl(&dword_22E41E000, v9, OS_LOG_TYPE_INFO, "Can Enroll? Override: %{public}@ || Enrolled: %{public}@ || HasPrograms: %{public}@ && isMDMAllowed: %{public}@", &v16, 0x2Au);
   }
 
-  result = (v4 & 1) != 0 || v7 || v6 != 0 && v8;
+  result = (v4 & 1) != 0 || _isEnrolledInBetaProgram || v6 != 0 && _isEnrollmentAllowedByDeviceManagement_legacy;
   v15 = *MEMORY[0x277D85DE8];
   return result;
 }
@@ -508,11 +508,11 @@ void __99__SDBetaManager_queryProgramsForSystemAccountsWithPlatforms_disableBuil
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queryProgramsForSystemAccountsWithPlatforms:(unint64_t)a3 disableBuildPrefixMatching:(BOOL)a4 language:(id)a5 completion:(id)a6
+- (void)_queryProgramsForSystemAccountsWithPlatforms:(unint64_t)platforms disableBuildPrefixMatching:(BOOL)matching language:(id)language completion:(id)completion
 {
   v78 = *MEMORY[0x277D85DE8];
-  v45 = a5;
-  v47 = a6;
+  languageCopy = language;
+  completionCopy = completion;
   v7 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -535,8 +535,8 @@ void __99__SDBetaManager_queryProgramsForSystemAccountsWithPlatforms_disableBuil
     v8 = 0;
   }
 
-  v10 = [v8 configurationDate];
-  v11 = [(SDBetaManager *)self isCacheValidForPlatforms:a3 withMDMConfigurationDate:v10];
+  configurationDate = [v8 configurationDate];
+  v11 = [(SDBetaManager *)self isCacheValidForPlatforms:platforms withMDMConfigurationDate:configurationDate];
 
   v12 = +[SDSeedingLogging betaHandle];
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -545,7 +545,7 @@ void __99__SDBetaManager_queryProgramsForSystemAccountsWithPlatforms_disableBuil
     if (v13)
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = a3;
+      *(&buf + 4) = platforms;
       _os_log_impl(&dword_22E41E000, v12, OS_LOG_TYPE_DEFAULT, "Fetching new program list from server for platform [%ld] (resetting cache).", &buf, 0xCu);
     }
 
@@ -583,18 +583,18 @@ void __99__SDBetaManager_queryProgramsForSystemAccountsWithPlatforms_disableBuil
         _os_log_impl(&dword_22E41E000, v15, OS_LOG_TYPE_INFO, "MDM configuration AlwaysOff. Returning empty set", v71, 2u);
       }
 
-      (*(v47 + 2))(v47, MEMORY[0x277CBEBF8], 0);
+      (*(completionCopy + 2))(completionCopy, MEMORY[0x277CBEBF8], 0);
       v16 = 0;
       goto LABEL_58;
     }
 
-    v18 = [v49 restrictUserPrograms];
-    v19 = [v49 tokens];
-    v16 = v19;
-    if (v19)
+    restrictUserPrograms = [v49 restrictUserPrograms];
+    tokens = [v49 tokens];
+    v16 = tokens;
+    if (tokens)
     {
-      v40 = [v19 count] != 0;
-      if ((v18 & 1) == 0)
+      v40 = [tokens count] != 0;
+      if ((restrictUserPrograms & 1) == 0)
       {
         goto LABEL_29;
       }
@@ -603,7 +603,7 @@ void __99__SDBetaManager_queryProgramsForSystemAccountsWithPlatforms_disableBuil
     else
     {
       v40 = 0;
-      if (!v18)
+      if (!restrictUserPrograms)
       {
         v16 = 0;
 LABEL_29:
@@ -613,9 +613,9 @@ LABEL_29:
           [SDBetaManager _queryProgramsForSystemAccountsWithPlatforms:disableBuildPrefixMatching:language:completion:];
         }
 
-        v24 = [MEMORY[0x277CB8F48] defaultStore];
-        v42 = [v24 aida_accountForPrimaryiCloudAccount];
-        v51 = v24;
+        defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+        aida_accountForPrimaryiCloudAccount = [defaultStore aida_accountForPrimaryiCloudAccount];
+        v51 = defaultStore;
         v25 = SeedingDefaults();
         v39 = [v25 stringForKey:@"AppleAccountIdentifier"];
 
@@ -630,7 +630,7 @@ LABEL_29:
         }
 
         v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-        if (v42)
+        if (aida_accountForPrimaryiCloudAccount)
         {
           v27 = +[SDSeedingLogging betaHandle];
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -639,7 +639,7 @@ LABEL_29:
             _os_log_impl(&dword_22E41E000, v27, OS_LOG_TYPE_DEFAULT, "Will use iCloud account", v71, 2u);
           }
 
-          [v26 addObject:v42];
+          [v26 addObject:aida_accountForPrimaryiCloudAccount];
         }
 
         if (v41)
@@ -671,7 +671,7 @@ LABEL_29:
             [SDBetaManager _queryProgramsForSystemAccountsWithPlatforms:disableBuildPrefixMatching:language:completion:];
           }
 
-          (*(v47 + 2))(v47, 0, 1);
+          (*(completionCopy + 2))(completionCopy, 0, 1);
           v36 = v51;
           goto LABEL_57;
         }
@@ -726,13 +726,13 @@ LABEL_53:
         v57 = &buf;
         v59 = v22;
         v60 = v40;
-        v56 = v47;
+        v56 = completionCopy;
         block[4] = self;
-        v58 = a3;
+        platformsCopy = platforms;
         v16 = v16;
         v54 = v16;
-        v61 = a4;
-        v55 = v45;
+        matchingCopy = matching;
+        v55 = languageCopy;
         dispatch_group_notify(v21, MEMORY[0x277D85CD0], block);
 
         v36 = v56;
@@ -762,12 +762,12 @@ LABEL_58:
   if (v13)
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = a3;
+    *(&buf + 4) = platforms;
     _os_log_impl(&dword_22E41E000, v12, OS_LOG_TYPE_DEFAULT, "Query for platforms [%ld] was cached, reusing answer.", &buf, 0xCu);
   }
 
-  v14 = [(SDBetaManager *)self cachedPrograms];
-  (*(v47 + 2))(v47, v14, 0);
+  cachedPrograms = [(SDBetaManager *)self cachedPrograms];
+  (*(completionCopy + 2))(completionCopy, cachedPrograms, 0);
 
 LABEL_59:
   v38 = *MEMORY[0x277D85DE8];
@@ -903,19 +903,19 @@ LABEL_6:
   return (*(*(a1 + 56) + 16))();
 }
 
-- (void)validateBetaEnrollmentTokens:(id)a3 errorHandler:(id)a4
+- (void)validateBetaEnrollmentTokens:(id)tokens errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  tokensCopy = tokens;
+  handlerCopy = handler;
+  if (tokensCopy && [tokensCopy count])
   {
     v8 = +[SDDevice devicePlatform];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __59__SDBetaManager_validateBetaEnrollmentTokens_errorHandler___block_invoke;
     v18[3] = &unk_2787CBE98;
-    v20 = v7;
-    v19 = v6;
+    v20 = handlerCopy;
+    v19 = tokensCopy;
     [(SDBetaManager *)self _finallyQueryProgramsForSystemAccountsWithPlatforms:v8 credentials:0 betaEnrollmentTokens:v19 shouldSavePrograms:0 disableBuildPrefixMatching:0 language:0 completion:v18];
 
     v9 = v20;
@@ -930,7 +930,7 @@ LABEL_6:
     }
 
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.beta-manager" code:15 userInfo:0];
-    (*(v7 + 2))(v7, v9);
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
@@ -1072,13 +1072,13 @@ LABEL_34:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finallyQueryProgramsForSystemAccountsWithPlatforms:(unint64_t)a3 credentials:(id)a4 betaEnrollmentTokens:(id)a5 shouldSavePrograms:(BOOL)a6 disableBuildPrefixMatching:(BOOL)a7 language:(id)a8 completion:(id)a9
+- (void)_finallyQueryProgramsForSystemAccountsWithPlatforms:(unint64_t)platforms credentials:(id)credentials betaEnrollmentTokens:(id)tokens shouldSavePrograms:(BOOL)programs disableBuildPrefixMatching:(BOOL)matching language:(id)language completion:(id)completion
 {
   v68 = *MEMORY[0x277D85DE8];
-  v51 = a4;
-  v54 = a5;
-  v52 = a8;
-  v45 = a9;
+  credentialsCopy = credentials;
+  tokensCopy = tokens;
+  languageCopy = language;
+  completionCopy = completion;
   v11 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1087,7 +1087,7 @@ LABEL_34:
     _os_log_impl(&dword_22E41E000, v11, OS_LOG_TYPE_DEFAULT, "[%{public}s", buf, 0xCu);
   }
 
-  v12 = [v54 count] == 0;
+  v12 = [tokensCopy count] == 0;
   v13 = +[SDSeedingLogging betaHandle];
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
   if (v12)
@@ -1103,7 +1103,7 @@ LABEL_34:
   {
     if (v14)
     {
-      v15 = [v54 count];
+      v15 = [tokensCopy count];
       *buf = 134217984;
       v67 = v15;
       _os_log_impl(&dword_22E41E000, v13, OS_LOG_TYPE_DEFAULT, "Querying programs with [%ld] Beta Enrollment Tokens", buf, 0xCu);
@@ -1113,7 +1113,7 @@ LABEL_34:
     v64 = 0u;
     v61 = 0u;
     v62 = 0u;
-    v13 = v54;
+    v13 = tokensCopy;
     v16 = [v13 countByEnumeratingWithState:&v61 objects:v65 count:16];
     if (v16)
     {
@@ -1144,34 +1144,34 @@ LABEL_34:
     }
   }
 
-  v55 = [MEMORY[0x277CF0218] currentDevice];
-  v49 = [v55 uniqueDeviceIdentifier];
-  v48 = [v55 serverFriendlyDescription];
+  currentDevice = [MEMORY[0x277CF0218] currentDevice];
+  uniqueDeviceIdentifier = [currentDevice uniqueDeviceIdentifier];
+  serverFriendlyDescription = [currentDevice serverFriendlyDescription];
   v21 = MEMORY[0x277CCAB70];
-  v22 = [(SDBetaManager *)self membershipURLForPlatforms:a3];
+  v22 = [(SDBetaManager *)self membershipURLForPlatforms:platforms];
   v23 = [v21 requestWithURL:v22];
 
   v24 = [objc_alloc(MEMORY[0x277CF0188]) initWithIdentifier:@"com.apple.gs.beta.auth"];
   v25 = MEMORY[0x277CBEB38];
-  v26 = [v23 allHTTPHeaderFields];
-  v27 = [v25 dictionaryWithDictionary:v26];
+  allHTTPHeaderFields = [v23 allHTTPHeaderFields];
+  v27 = [v25 dictionaryWithDictionary:allHTTPHeaderFields];
 
   [v27 setValue:@"application/json" forKey:@"Content-Type"];
   [v27 setValue:@"application/json" forKey:@"Accept"];
-  [v27 setValue:v49 forKey:@"X-Mme-Device-Id"];
+  [v27 setValue:uniqueDeviceIdentifier forKey:@"X-Mme-Device-Id"];
   [v27 setValue:@"AAAABQAAABAxmM8oXLJsHORxxxxxxxxxAAAAAw==" forKey:@"X-Apple-I-MD"];
-  [v27 setValue:v48 forKey:@"X-MMe-Client-Info"];
-  if (v52)
+  [v27 setValue:serverFriendlyDescription forKey:@"X-MMe-Client-Info"];
+  if (languageCopy)
   {
-    [v27 setValue:v52 forKey:@"Accept-Language"];
+    [v27 setValue:languageCopy forKey:@"Accept-Language"];
   }
 
   [v23 setAllHTTPHeaderFields:v27];
   v28 = +[SDHTTPClient sharedInstance];
-  v47 = [v28 urlSession];
+  urlSession = [v28 urlSession];
 
-  v29 = [v47 configuration];
-  [v29 set_appleIDContext:v24];
+  configuration = [urlSession configuration];
+  [configuration set_appleIDContext:v24];
   v30 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
@@ -1183,27 +1183,27 @@ LABEL_34:
   v31 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
   {
-    v32 = [v29 HTTPAdditionalHeaders];
+    hTTPAdditionalHeaders = [configuration HTTPAdditionalHeaders];
     *buf = 138543362;
-    v67 = v32;
+    v67 = hTTPAdditionalHeaders;
     _os_log_impl(&dword_22E41E000, v31, OS_LOG_TYPE_INFO, "Additional Headers: %{public}@", buf, 0xCu);
   }
 
-  [v29 set_appleIDContext:v24];
+  [configuration set_appleIDContext:v24];
   v33 = MEMORY[0x277CCAD30];
   v34 = +[SDHTTPClient sharedInstance];
-  v35 = [v33 sessionWithConfiguration:v29 delegate:v34 delegateQueue:0];
+  v35 = [v33 sessionWithConfiguration:configuration delegate:v34 delegateQueue:0];
 
   v36 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:2];
-  if (v54)
+  if (tokensCopy)
   {
-    v37 = [v54 allObjects];
-    [v36 setObject:v37 forKeyedSubscript:@"beta_enrollment_tokens"];
+    allObjects = [tokensCopy allObjects];
+    [v36 setObject:allObjects forKeyedSubscript:@"beta_enrollment_tokens"];
   }
 
-  if (v51)
+  if (credentialsCopy)
   {
-    [v36 setObject:v51 forKeyedSubscript:@"tokens"];
+    [v36 setObject:credentialsCopy forKeyedSubscript:@"tokens"];
   }
 
   v38 = +[SDSeedingLogging betaHandle];
@@ -1226,13 +1226,13 @@ LABEL_34:
   v56[1] = 3221225472;
   v56[2] = __168__SDBetaManager__finallyQueryProgramsForSystemAccountsWithPlatforms_credentials_betaEnrollmentTokens_shouldSavePrograms_disableBuildPrefixMatching_language_completion___block_invoke;
   v56[3] = &unk_2787CBEC0;
-  v41 = v45;
+  v41 = completionCopy;
   v56[4] = self;
   v57 = v41;
-  v59 = a7;
+  matchingCopy = matching;
   objc_copyWeak(v58, buf);
-  v58[1] = a3;
-  v60 = a6;
+  v58[1] = platforms;
+  programsCopy = programs;
   v42 = [v35 dataTaskWithRequest:v23 completionHandler:v56];
   [v42 resume];
 
@@ -1476,39 +1476,39 @@ LABEL_55:
   v49 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cachePrograms:(id)a3 forPlatforms:(unint64_t)a4
+- (void)cachePrograms:(id)programs forPlatforms:(unint64_t)platforms
 {
   v12 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  programsCopy = programs;
   v7 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = a4;
+    platformsCopy = platforms;
     _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_DEFAULT, "Saving programs to cache for platforms [%ld].", &v10, 0xCu);
   }
 
   v8 = [MEMORY[0x277CBEAA8] now];
   [(SDBetaManager *)self setLastCached:v8];
 
-  [(SDBetaManager *)self setCachedPlatform:a4];
-  [(SDBetaManager *)self setCachedPrograms:v6];
+  [(SDBetaManager *)self setCachedPlatform:platforms];
+  [(SDBetaManager *)self setCachedPrograms:programsCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)parseProgramsResponse:(id)a3 platforms:(unint64_t)a4 shouldCache:(BOOL)a5 skipsBuildMatching:(BOOL)a6
+- (id)parseProgramsResponse:(id)response platforms:(unint64_t)platforms shouldCache:(BOOL)cache skipsBuildMatching:(BOOL)matching
 {
-  v6 = a6;
-  v7 = a5;
+  matchingCopy = matching;
+  cacheCopy = cache;
   v40 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v29 = +[SDDevice osBuild];
-    v30 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v9, "count")}];
-    if (v6)
+    v30 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(responseCopy, "count")}];
+    if (matchingCopy)
     {
       v10 = +[SDSeedingLogging betaHandle];
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -1518,16 +1518,16 @@ LABEL_55:
       }
     }
 
-    v26 = v7;
-    v25 = a4;
+    v26 = cacheCopy;
+    platformsCopy = platforms;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v27 = v9;
-    v11 = v9;
+    v27 = responseCopy;
+    v11 = responseCopy;
     v12 = [v11 countByEnumeratingWithState:&v31 objects:v39 count:16];
-    v13 = self;
+    selfCopy2 = self;
     if (v12)
     {
       v14 = v12;
@@ -1544,7 +1544,7 @@ LABEL_55:
           v17 = [SDBetaProgram betaProgramWithJSON:*(*(&v31 + 1) + 8 * i)];
           if (v17)
           {
-            if (v6 || (v18 = objc_opt_class(), [v17 buildPrefix], v19 = objc_claimAutoreleasedReturnValue(), LODWORD(v18) = objc_msgSend(v18, "isBuildPrefix:greaterThanOrEqualToBuild:", v19, v29), v19, v18))
+            if (matchingCopy || (v18 = objc_opt_class(), [v17 buildPrefix], v19 = objc_claimAutoreleasedReturnValue(), LODWORD(v18) = objc_msgSend(v18, "isBuildPrefix:greaterThanOrEqualToBuild:", v19, v29), v19, v18))
             {
               [v30 addObject:v17];
             }
@@ -1555,14 +1555,14 @@ LABEL_55:
               if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
               {
                 v21 = [v17 description];
-                v22 = [v17 buildPrefix];
+                buildPrefix = [v17 buildPrefix];
                 *buf = 138543618;
                 v36 = v21;
                 v37 = 2114;
-                v38 = v22;
+                v38 = buildPrefix;
                 _os_log_impl(&dword_22E41E000, v20, OS_LOG_TYPE_DEFAULT, "Skipping beta program %{public}@ because build prefix %{public}@ doesn't match device build.", buf, 0x16u);
 
-                v13 = self;
+                selfCopy2 = self;
               }
             }
           }
@@ -1576,10 +1576,10 @@ LABEL_55:
 
     if (v26)
     {
-      [(SDBetaManager *)v13 cachePrograms:v30 forPlatforms:v25];
+      [(SDBetaManager *)selfCopy2 cachePrograms:v30 forPlatforms:platformsCopy];
     }
 
-    v9 = v27;
+    responseCopy = v27;
   }
 
   else
@@ -1592,15 +1592,15 @@ LABEL_55:
   return v30;
 }
 
-+ (BOOL)isBuildPrefix:(id)a3 greaterThanOrEqualToBuild:(id)a4
++ (BOOL)isBuildPrefix:(id)prefix greaterThanOrEqualToBuild:(id)build
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  prefixCopy = prefix;
+  buildCopy = build;
+  v7 = buildCopy;
   v8 = 1;
-  if (v5 && v6)
+  if (prefixCopy && buildCopy)
   {
-    v9 = [v5 length];
+    v9 = [prefixCopy length];
     if (v9 > [v7 length])
     {
       v10 = +[SDSeedingLogging betaHandle];
@@ -1615,15 +1615,15 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    if (([v7 hasPrefix:v5] & 1) == 0)
+    if (([v7 hasPrefix:prefixCopy] & 1) == 0)
     {
       v34 = 0;
       v11 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"(\\d+)([A-Za-z])?" options:1 error:&v34];
       v10 = v34;
       if (v10)
       {
-        v12 = +[SDSeedingLogging betaHandle];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        firstObject = +[SDSeedingLogging betaHandle];
+        if (os_log_type_enabled(firstObject, OS_LOG_TYPE_ERROR))
         {
           [SDBetaManager isBuildPrefix:v10 greaterThanOrEqualToBuild:?];
         }
@@ -1634,40 +1634,40 @@ LABEL_26:
       else
       {
         v13 = [v11 matchesInString:v7 options:0 range:{0, objc_msgSend(v7, "length")}];
-        v12 = [v13 firstObject];
+        firstObject = [v13 firstObject];
 
-        v14 = [v11 matchesInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
-        v15 = [v14 firstObject];
+        v14 = [v11 matchesInString:prefixCopy options:0 range:{0, objc_msgSend(prefixCopy, "length")}];
+        firstObject2 = [v14 firstObject];
 
-        if (v12 && v15 && -[NSObject numberOfRanges](v12, "numberOfRanges") == 3 && [v15 numberOfRanges] == 3)
+        if (firstObject && firstObject2 && -[NSObject numberOfRanges](firstObject, "numberOfRanges") == 3 && [firstObject2 numberOfRanges] == 3)
         {
           v8 = 1;
-          v16 = [v12 rangeAtIndex:1];
+          v16 = [firstObject rangeAtIndex:1];
           v18 = [v7 substringWithRange:{v16, v17}];
-          v19 = [v18 integerValue];
+          integerValue = [v18 integerValue];
 
-          v20 = [v15 rangeAtIndex:1];
-          v22 = [v5 substringWithRange:{v20, v21}];
-          v23 = [v22 integerValue];
+          v20 = [firstObject2 rangeAtIndex:1];
+          v22 = [prefixCopy substringWithRange:{v20, v21}];
+          integerValue2 = [v22 integerValue];
 
-          if (v23 <= v19)
+          if (integerValue2 <= integerValue)
           {
-            if ([v15 rangeAtIndex:2] == 0x7FFFFFFFFFFFFFFFLL || -[NSObject rangeAtIndex:](v12, "rangeAtIndex:", 2) == 0x7FFFFFFFFFFFFFFFLL)
+            if ([firstObject2 rangeAtIndex:2] == 0x7FFFFFFFFFFFFFFFLL || -[NSObject rangeAtIndex:](firstObject, "rangeAtIndex:", 2) == 0x7FFFFFFFFFFFFFFFLL)
             {
-              v8 = v23 == v19;
+              v8 = integerValue2 == integerValue;
             }
 
-            else if (v23 == v19)
+            else if (integerValue2 == integerValue)
             {
-              v26 = [v12 rangeAtIndex:2];
+              v26 = [firstObject rangeAtIndex:2];
               v28 = [v7 substringWithRange:{v26, v27}];
-              v29 = [v28 uppercaseString];
+              uppercaseString = [v28 uppercaseString];
 
-              v30 = [v15 rangeAtIndex:2];
+              v30 = [firstObject2 rangeAtIndex:2];
               v32 = [v7 substringWithRange:{v30, v31}];
-              v33 = [v32 uppercaseString];
+              uppercaseString2 = [v32 uppercaseString];
 
-              v8 = [v33 compare:v29] != 1;
+              v8 = [uppercaseString2 compare:uppercaseString] != 1;
             }
 
             else
@@ -1700,7 +1700,7 @@ LABEL_27:
   return v8;
 }
 
-- (id)availableBetaProgramsForPlatforms:(unint64_t)a3
+- (id)availableBetaProgramsForPlatforms:(unint64_t)platforms
 {
   v22 = *MEMORY[0x277D85DE8];
   v5 = +[SDSeedingLogging betaHandle];
@@ -1716,8 +1716,8 @@ LABEL_27:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(SDBetaManager *)self cachedPrograms];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  cachedPrograms = [(SDBetaManager *)self cachedPrograms];
+  v8 = [cachedPrograms countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1728,17 +1728,17 @@ LABEL_27:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(cachedPrograms);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if (([v12 platform] & a3) != 0)
+        if (([v12 platform] & platforms) != 0)
         {
           [v6 addObject:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [cachedPrograms countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -1749,12 +1749,12 @@ LABEL_27:
   return v6;
 }
 
-- (void)enrollDevice:(id)a3 inBetaProgram:(id)a4 completion:(id)a5
+- (void)enrollDevice:(id)device inBetaProgram:(id)program completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  deviceCopy = device;
+  programCopy = program;
+  completionCopy = completion;
   v10 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -1763,7 +1763,7 @@ LABEL_27:
     _os_log_impl(&dword_22E41E000, v10, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  if ([v7 isErrorDevice])
+  if ([deviceCopy isErrorDevice])
   {
     v11 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1772,7 +1772,7 @@ LABEL_27:
     }
 
     v19 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.beta-manager" code:14 userInfo:0];
-    v9[2](v9, v19);
+    completionCopy[2](completionCopy, v19);
   }
 
   else
@@ -1782,8 +1782,8 @@ LABEL_27:
     v22[1] = 3221225472;
     v22[2] = __55__SDBetaManager_enrollDevice_inBetaProgram_completion___block_invoke;
     v22[3] = &unk_2787CBD78;
-    v23 = v9;
-    [v20 enrollDevice:v7 inProgram:v8 completion:v22];
+    v23 = completionCopy;
+    [v20 enrollDevice:deviceCopy inProgram:programCopy completion:v22];
 
     v19 = v23;
   }
@@ -1791,12 +1791,12 @@ LABEL_27:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrollDevice:(id)a3 withEnrollmentMetadata:(id)a4 completion:(id)a5
+- (void)enrollDevice:(id)device withEnrollmentMetadata:(id)metadata completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
+  metadataCopy = metadata;
   v11 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1804,10 +1804,10 @@ LABEL_27:
     _os_log_impl(&dword_22E41E000, v11, OS_LOG_TYPE_DEFAULT, "Enrolling device with metadata", buf, 2u);
   }
 
-  v12 = [v10 objectForKeyedSubscript:@"AssetAudience"];
-  v13 = [v10 objectForKeyedSubscript:@"ProgramID"];
+  v12 = [metadataCopy objectForKeyedSubscript:@"AssetAudience"];
+  v13 = [metadataCopy objectForKeyedSubscript:@"ProgramID"];
 
-  if ([v8 isErrorDevice])
+  if ([deviceCopy isErrorDevice])
   {
     v14 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1826,14 +1826,14 @@ LABEL_27:
     v23 = 4;
 LABEL_13:
     v27 = [v22 errorWithDomain:@"com.apple.seeding.beta-manager" code:v23 userInfo:0];
-    v9[2](v9, v27);
+    completionCopy[2](completionCopy, v27);
 
     goto LABEL_18;
   }
 
   if (v13)
   {
-    v24 = [v13 integerValue];
+    integerValue = [v13 integerValue];
     v25 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
@@ -1847,9 +1847,9 @@ LABEL_13:
     v30[2] = __64__SDBetaManager_enrollDevice_withEnrollmentMetadata_completion___block_invoke_412;
     v30[3] = &unk_2787CBAD0;
     v30[4] = self;
-    v31 = v8;
-    v32 = v9;
-    [(SDBetaManager *)self verifyAssetAudience:v12 programID:v24 accountID:0 skipEnrollmentCheck:1 withCompletion:v30];
+    v31 = deviceCopy;
+    v32 = completionCopy;
+    [(SDBetaManager *)self verifyAssetAudience:v12 programID:integerValue accountID:0 skipEnrollmentCheck:1 withCompletion:v30];
 
     v26 = v31;
   }
@@ -1867,9 +1867,9 @@ LABEL_13:
     v33[1] = 3221225472;
     v33[2] = __64__SDBetaManager_enrollDevice_withEnrollmentMetadata_completion___block_invoke;
     v33[3] = &unk_2787CBEE8;
-    v35 = v9;
+    v35 = completionCopy;
     v33[4] = self;
-    v34 = v8;
+    v34 = deviceCopy;
     [(SDBetaManager *)self getMigrationProgramForAssetAudience:v12 completion:v33];
 
     v26 = v35;
@@ -1933,11 +1933,11 @@ void __64__SDBetaManager_enrollDevice_withEnrollmentMetadata_completion___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enrollCurrentDeviceWithEnrollmentMetadata:(id)a3 completion:(id)a4
+- (void)enrollCurrentDeviceWithEnrollmentMetadata:(id)metadata completion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  completionCopy = completion;
   v8 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1950,11 +1950,11 @@ void __64__SDBetaManager_enrollDevice_withEnrollmentMetadata_completion___block_
   v12[1] = 3221225472;
   v12[2] = __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___block_invoke;
   v12[3] = &unk_2787CBF10;
-  v13 = v6;
-  v14 = v7;
+  v13 = metadataCopy;
+  v14 = completionCopy;
   v12[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = metadataCopy;
+  v10 = completionCopy;
   [SDDevice getCurrentDevice:v12];
 
   v11 = *MEMORY[0x277D85DE8];
@@ -1981,11 +1981,11 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
   }
 }
 
-- (void)enrollmentMetadataForDevice:(id)a3 completion:(id)a4
+- (void)enrollmentMetadataForDevice:(id)device completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v7 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -1994,7 +1994,7 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
     _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s", &v24, 0xCu);
   }
 
-  if ([v5 isErrorDevice])
+  if ([deviceCopy isErrorDevice])
   {
     v8 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2003,20 +2003,20 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
     }
   }
 
-  v16 = [v5 currentConfiguration];
+  currentConfiguration = [deviceCopy currentConfiguration];
   v17 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  v18 = [v16 assetAudience];
-  [v17 setObject:v18 forKeyedSubscript:@"AssetAudience"];
+  assetAudience = [currentConfiguration assetAudience];
+  [v17 setObject:assetAudience forKeyedSubscript:@"AssetAudience"];
 
-  v19 = [v16 seedProgramID];
-  v20 = [v19 stringValue];
-  [v17 setObject:v20 forKeyedSubscript:@"ProgramID"];
+  seedProgramID = [currentConfiguration seedProgramID];
+  stringValue = [seedProgramID stringValue];
+  [v17 setObject:stringValue forKeyedSubscript:@"ProgramID"];
 
-  v21 = +[SDSeedProgramManager stringForSeedProgram:](SDSeedProgramManager, "stringForSeedProgram:", [v16 seedProgram]);
+  v21 = +[SDSeedProgramManager stringForSeedProgram:](SDSeedProgramManager, "stringForSeedProgram:", [currentConfiguration seedProgram]);
   [v17 setObject:v21 forKeyedSubscript:@"SeedProgram"];
 
   v22 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v17];
-  v6[2](v6, v22);
+  completionCopy[2](completionCopy, v22);
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -2033,20 +2033,20 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
   }
 
   v3 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  v4 = [v3 getCurrentDeviceSynchronously];
+  getCurrentDeviceSynchronously = [v3 getCurrentDeviceSynchronously];
 
-  v5 = [v4 currentConfiguration];
-  v6 = [v5 enrollmentMetadata];
+  currentConfiguration = [getCurrentDeviceSynchronously currentConfiguration];
+  enrollmentMetadata = [currentConfiguration enrollmentMetadata];
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return enrollmentMetadata;
 }
 
-- (void)enrollmentMetadataForCurrentDeviceWithCompletion:(id)a3
+- (void)enrollmentMetadataForCurrentDeviceWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2060,48 +2060,48 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
   v8[2] = __66__SDBetaManager_enrollmentMetadataForCurrentDeviceWithCompletion___block_invoke;
   v8[3] = &unk_2787CBF38;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = completionCopy;
+  v6 = completionCopy;
   [SDDevice getCurrentDevice:v8];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_enrollUsingSeedingConfiguration:(id)a3 userIdentifier:(id)a4
+- (void)_enrollUsingSeedingConfiguration:(id)configuration userIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v8 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 138543362;
-    v17 = v6;
+    v17 = configurationCopy;
     _os_log_impl(&dword_22E41E000, v8, OS_LOG_TYPE_DEFAULT, "Enrolling [%{public}@]", &v16, 0xCu);
   }
 
-  v9 = [v6 assetAudience];
-  [(SDBetaManager *)self _setAssetAudienceString:v9];
+  assetAudience = [configurationCopy assetAudience];
+  [(SDBetaManager *)self _setAssetAudienceString:assetAudience];
 
-  v10 = [v6 catalog];
-  if (v10)
+  catalog = [configurationCopy catalog];
+  if (catalog)
   {
-    v11 = v10;
-    v12 = [v6 catalog];
-    v13 = [v12 isEqualToString:&stru_28424D460];
+    v11 = catalog;
+    catalog2 = [configurationCopy catalog];
+    v13 = [catalog2 isEqualToString:&stru_28424D460];
 
     if ((v13 & 1) == 0)
     {
-      v14 = [v6 catalog];
-      [(SDBetaManager *)self _setAssetServerURLString:v14];
+      catalog3 = [configurationCopy catalog];
+      [(SDBetaManager *)self _setAssetServerURLString:catalog3];
     }
   }
 
-  +[SDSeedProgramManager _setSeedProgramPref:](SDSeedProgramManager, "_setSeedProgramPref:", [v6 seedProgram]);
+  +[SDSeedProgramManager _setSeedProgramPref:](SDSeedProgramManager, "_setSeedProgramPref:", [configurationCopy seedProgram]);
   [(SDBetaManager *)self _setMemberEnrolled:1];
-  if ([v6 seedProgram] != 4)
+  if ([configurationCopy seedProgram] != 4)
   {
-    [(SDBetaManager *)self _changeFBAVisibilityWithUserIdentifier:v7 isVisible:1];
+    [(SDBetaManager *)self _changeFBAVisibilityWithUserIdentifier:identifierCopy isVisible:1];
   }
 
   [(SDBetaManager *)self _synchronizeCFPreferences];
@@ -2109,11 +2109,11 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_saveBetaProgram:(id)a3
+- (void)_saveBetaProgram:(id)program
 {
-  v3 = a3;
+  programCopy = program;
   v8 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v3 requiringSecureCoding:1 error:&v8];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:programCopy requiringSecureCoding:1 error:&v8];
   v5 = v8;
   v6 = +[SDSeedingLogging betaHandle];
   v7 = v6;
@@ -2121,7 +2121,7 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(SDBetaManager *)v3 _saveBetaProgram:v5];
+      [(SDBetaManager *)programCopy _saveBetaProgram:v5];
     }
   }
 
@@ -2169,21 +2169,21 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
   return v6;
 }
 
-- (void)enrolledBetaProgramForDevice:(id)a3 completion:(id)a4
+- (void)enrolledBetaProgramForDevice:(id)device completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v7 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 identifier];
+    identifier = [deviceCopy identifier];
     *buf = 138477827;
-    v22 = v8;
+    v22 = identifier;
     _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_DEFAULT, "Getting current program for device %{private}@", buf, 0xCu);
   }
 
-  if ([v5 isErrorDevice])
+  if ([deviceCopy isErrorDevice])
   {
     v9 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -2191,7 +2191,7 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
       [(SDBetaManager *)v9 enrolledBetaProgramForDevice:v10 completion:v11, v12, v13, v14, v15, v16];
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -2201,8 +2201,8 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
     v19[1] = 3221225472;
     v19[2] = __57__SDBetaManager_enrolledBetaProgramForDevice_completion___block_invoke;
     v19[3] = &unk_2787CBF60;
-    v20 = v6;
-    [v17 enrolledBetaProgramForDevice:v5 completion:v19];
+    v20 = completionCopy;
+    [v17 enrolledBetaProgramForDevice:deviceCopy completion:v19];
   }
 
   v18 = *MEMORY[0x277D85DE8];
@@ -2220,41 +2220,41 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
   }
 
   v3 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  v4 = [v3 getCurrentDeviceEnrolledBetaProgramSynchronously];
+  getCurrentDeviceEnrolledBetaProgramSynchronously = [v3 getCurrentDeviceEnrolledBetaProgramSynchronously];
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return getCurrentDeviceEnrolledBetaProgramSynchronously;
 }
 
-- (void)verifyCatalog:(id)a3 withCompletion:(id)a4
+- (void)verifyCatalog:(id)catalog withCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  catalogCopy = catalog;
+  completionCopy = completion;
   v8 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v6;
+    v20 = catalogCopy;
     _os_log_impl(&dword_22E41E000, v8, OS_LOG_TYPE_DEFAULT, "Verifying %@", buf, 0xCu);
   }
 
   v9 = MEMORY[0x277CCAB70];
-  v10 = [(SDBetaManager *)self verifyURLForCatalog:v6];
+  v10 = [(SDBetaManager *)self verifyURLForCatalog:catalogCopy];
   v11 = [v9 requestWithURL:v10 cachePolicy:1 timeoutInterval:15.0];
 
   v12 = +[SDHTTPClient sharedInstance];
-  v13 = [v12 urlSession];
+  urlSession = [v12 urlSession];
 
   [v11 setHTTPMethod:@"GET"];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __46__SDBetaManager_verifyCatalog_withCompletion___block_invoke;
   v17[3] = &unk_2787CBF88;
-  v18 = v7;
-  v14 = v7;
-  v15 = [v13 dataTaskWithRequest:v11 completionHandler:v17];
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = [urlSession dataTaskWithRequest:v11 completionHandler:v17];
   [v15 resume];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -2320,11 +2320,11 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)verifyAssetAudience:(id)a3 programID:(int64_t)a4 withCompletion:(id)a5
+- (void)verifyAssetAudience:(id)audience programID:(int64_t)d withCompletion:(id)completion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  audienceCopy = audience;
   v10 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -2333,16 +2333,16 @@ LABEL_7:
     _os_log_impl(&dword_22E41E000, v10, OS_LOG_TYPE_INFO, "%{public}s", &v12, 0xCu);
   }
 
-  [(SDBetaManager *)self verifyAssetAudience:v9 programID:a4 accountID:0 skipEnrollmentCheck:0 withCompletion:v8];
+  [(SDBetaManager *)self verifyAssetAudience:audienceCopy programID:d accountID:0 skipEnrollmentCheck:0 withCompletion:completionCopy];
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyAssetAudience:(id)a3 programID:(int64_t)a4 accountID:(id)a5 withCompletion:(id)a6
+- (void)verifyAssetAudience:(id)audience programID:(int64_t)d accountID:(id)iD withCompletion:(id)completion
 {
   v17 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  completionCopy = completion;
+  iDCopy = iD;
+  audienceCopy = audience;
   v13 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -2351,45 +2351,45 @@ LABEL_7:
     _os_log_impl(&dword_22E41E000, v13, OS_LOG_TYPE_INFO, "%{public}s", &v15, 0xCu);
   }
 
-  [(SDBetaManager *)self verifyAssetAudience:v12 programID:a4 accountID:v11 skipEnrollmentCheck:0 withCompletion:v10];
+  [(SDBetaManager *)self verifyAssetAudience:audienceCopy programID:d accountID:iDCopy skipEnrollmentCheck:0 withCompletion:completionCopy];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)verifyAssetAudience:(id)a3 programID:(int64_t)a4 accountID:(id)a5 skipEnrollmentCheck:(BOOL)a6 withCompletion:(id)a7
+- (void)verifyAssetAudience:(id)audience programID:(int64_t)d accountID:(id)iD skipEnrollmentCheck:(BOOL)check withCompletion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  if (a6 || [(SDBetaManager *)self _isEnrolledInBetaProgram])
+  audienceCopy = audience;
+  iDCopy = iD;
+  completionCopy = completion;
+  if (check || [(SDBetaManager *)self _isEnrolledInBetaProgram])
   {
     v15 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v12;
+      v33 = audienceCopy;
       _os_log_impl(&dword_22E41E000, v15, OS_LOG_TYPE_DEFAULT, "Verifying asset audience %@", buf, 0xCu);
     }
 
     v16 = MEMORY[0x277CCAB70];
-    v17 = [(SDBetaManager *)self verifyURLForAssetAudience:v12 programID:a4];
+    v17 = [(SDBetaManager *)self verifyURLForAssetAudience:audienceCopy programID:d];
     v18 = [v16 requestWithURL:v17 cachePolicy:1 timeoutInterval:15.0];
 
     v19 = +[SDHTTPClient sharedInstance];
-    v20 = [v19 urlSession];
+    urlSession = [v19 urlSession];
 
     [v18 setHTTPMethod:@"GET"];
-    if (v13)
+    if (iDCopy)
     {
-      v21 = [v13 stringValue];
-      [v18 setValue:v21 forHTTPHeaderField:@"Seeding-Account-Id"];
+      stringValue = [iDCopy stringValue];
+      [v18 setValue:stringValue forHTTPHeaderField:@"Seeding-Account-Id"];
     }
 
     v22 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v33 = v13;
+      v33 = iDCopy;
       _os_log_impl(&dword_22E41E000, v22, OS_LOG_TYPE_INFO, "[VERIFY] Seeding-Account-Id: %@", buf, 0xCu);
     }
 
@@ -2397,9 +2397,9 @@ LABEL_7:
     v27 = 3221225472;
     v28 = __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentCheck_withCompletion___block_invoke;
     v29 = &unk_2787CB8A8;
-    v30 = self;
-    v31 = v14;
-    v23 = [v20 dataTaskWithRequest:v18 completionHandler:&v26];
+    selfCopy = self;
+    v31 = completionCopy;
+    v23 = [urlSession dataTaskWithRequest:v18 completionHandler:&v26];
     [v23 resume];
   }
 
@@ -2412,7 +2412,7 @@ LABEL_7:
       _os_log_impl(&dword_22E41E000, v24, OS_LOG_TYPE_DEFAULT, "Device is not enrolled in a beta program, will not verify.", buf, 2u);
     }
 
-    (*(v14 + 2))(v14, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v25 = *MEMORY[0x277D85DE8];
@@ -2529,11 +2529,11 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unenrollDevice:(id)a3 completion:(id)a4
+- (void)unenrollDevice:(id)device completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v7 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -2542,7 +2542,7 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
     _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 
-  if ([v5 isErrorDevice])
+  if ([deviceCopy isErrorDevice])
   {
     v8 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2550,7 +2550,7 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
       [(SDBetaManager *)v8 unenrollDevice:v9 completion:v10, v11, v12, v13, v14, v15];
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -2560,17 +2560,17 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
     v18[1] = 3221225472;
     v18[2] = __43__SDBetaManager_unenrollDevice_completion___block_invoke;
     v18[3] = &unk_2787CBFB0;
-    v19 = v6;
-    [v16 unenrollDevice:v5 completion:v18];
+    v19 = completionCopy;
+    [v16 unenrollDevice:deviceCopy completion:v18];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_unenrollFromBetaProgramWithUserIdentifier:(id)a3
+- (BOOL)_unenrollFromBetaProgramWithUserIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -2597,7 +2597,7 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
     v11 = +[SDSUPreferences sharedInstance];
     [v11 clearCatalogURL];
 
-    [(SDBetaManager *)self _changeFBAVisibilityWithUserIdentifier:v4 isVisible:0];
+    [(SDBetaManager *)self _changeFBAVisibilityWithUserIdentifier:identifierCopy isVisible:0];
     [(SDBetaManager *)self _deleteBetaProgram];
     CFPreferencesAppSynchronize(@"com.apple.seeding");
     v12 = *MEMORY[0x277CBF040];
@@ -2623,11 +2623,11 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
   return 1;
 }
 
-- (void)isDeviceEnrolledInBetaProgram:(id)a3 completion:(id)a4
+- (void)isDeviceEnrolledInBetaProgram:(id)program completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  programCopy = program;
+  completionCopy = completion;
   v7 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2636,7 +2636,7 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
     _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
-  if ([v5 isErrorDevice])
+  if ([programCopy isErrorDevice])
   {
     v8 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2644,7 +2644,7 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
       [(SDBetaManager *)v8 isDeviceEnrolledInBetaProgram:v9 completion:v10, v11, v12, v13, v14, v15];
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -2654,8 +2654,8 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
     v18[1] = 3221225472;
     v18[2] = __58__SDBetaManager_isDeviceEnrolledInBetaProgram_completion___block_invoke;
     v18[3] = &unk_2787CBFB0;
-    v19 = v6;
-    [v16 isDeviceEnrolledInBetaProgram:v5 completion:v18];
+    v19 = completionCopy;
+    [v16 isDeviceEnrolledInBetaProgram:programCopy completion:v18];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -2670,8 +2670,8 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
 
 + (BOOL)_isEnrolledInBetaProgram
 {
-  v2 = [a1 _currentBetaProgram];
-  if (v2)
+  _currentBetaProgram = [self _currentBetaProgram];
+  if (_currentBetaProgram)
   {
     v3 = 1;
   }
@@ -2689,9 +2689,9 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
   return v3;
 }
 
-- (void)_setMemberEnrolled:(BOOL)a3
+- (void)_setMemberEnrolled:(BOOL)enrolled
 {
-  if (a3)
+  if (enrolled)
   {
     v3 = *MEMORY[0x277CBED28];
   }
@@ -2722,25 +2722,25 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
     }
   }
 
-  v5 = [v2 absoluteString];
+  absoluteString = [v2 absoluteString];
 
   v6 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return absoluteString;
 }
 
-- (void)_setAssetServerURLString:(id)a3
+- (void)_setAssetServerURLString:(id)string
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
-  if (v4 || ![(__CFString *)v3 length])
+  stringCopy = string;
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
+  if (v4 || ![(__CFString *)stringCopy length])
   {
     v5 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = stringCopy;
       _os_log_impl(&dword_22E41E000, v5, OS_LOG_TYPE_INFO, "Setting asset server to %@", &v8, 0xCu);
     }
 
@@ -2755,7 +2755,7 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
       v8 = 138412546;
       v9 = @"com.apple.MobileAsset.SoftwareUpdate";
       v10 = 2112;
-      v11 = v3;
+      v11 = stringCopy;
       _os_log_impl(&dword_22E41E000, v6, OS_LOG_TYPE_INFO, "Failed to set asset URL for type:%@ (bad URL string %@)", &v8, 0x16u);
     }
   }
@@ -2781,19 +2781,19 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
     }
   }
 
-  v5 = [v2 absoluteString];
+  absoluteString = [v2 absoluteString];
 
   v6 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return absoluteString;
 }
 
-- (void)_setBrainServerURLString:(id)a3
+- (void)_setBrainServerURLString:(id)string
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
-  if (v4 || ![v3 length])
+  stringCopy = string;
+  v4 = [MEMORY[0x277CBEBC0] URLWithString:stringCopy];
+  if (v4 || ![stringCopy length])
   {
     ASSetAssetServerURLForAssetType();
   }
@@ -2806,7 +2806,7 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
       v7 = 138412546;
       v8 = @"com.apple.MobileAsset.MobileSoftwareUpdate.UpdateBrain";
       v9 = 2112;
-      v10 = v3;
+      v10 = stringCopy;
       _os_log_impl(&dword_22E41E000, v5, OS_LOG_TYPE_INFO, "Failed to set brain URL for type:%@ (bad URL string %@)", &v7, 0x16u);
     }
   }
@@ -2814,19 +2814,19 @@ void __92__SDBetaManager_verifyAssetAudience_programID_accountID_skipEnrollmentC
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAssetAudienceString:(id)a3
+- (void)_setAssetAudienceString:(id)string
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   v4 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543362;
-    v13 = v3;
+    v13 = stringCopy;
     _os_log_impl(&dword_22E41E000, v4, OS_LOG_TYPE_DEFAULT, "will set mobile asset audience [%{public}@]", &v12, 0xCu);
   }
 
-  if ([v3 length])
+  if ([stringCopy length])
   {
     v5 = MASetPallasAudience();
     v6 = +[SDSeedingLogging betaHandle];
@@ -2882,15 +2882,15 @@ LABEL_8:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_changeFBAVisibilityWithUserIdentifier:(id)a3 isVisible:(BOOL)a4
+- (void)_changeFBAVisibilityWithUserIdentifier:(id)identifier isVisible:(BOOL)visible
 {
-  v4 = a4;
+  visibleCopy = visible;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifierCopy = identifier;
   if ([(SDBetaManager *)self canToggleFBAVisibility])
   {
-    v7 = [v6 longValue];
-    if (!v7)
+    longValue = [identifierCopy longValue];
+    if (!longValue)
     {
       goto LABEL_6;
     }
@@ -2899,7 +2899,7 @@ LABEL_8:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v18 = 134217984;
-      v19 = v7;
+      v19 = longValue;
       _os_log_impl(&dword_22E41E000, v8, OS_LOG_TYPE_INFO, "Fetching user for uid: [%lu]", &v18, 0xCu);
     }
 
@@ -2919,7 +2919,7 @@ LABEL_6:
 
     v11 = +[SDSeedingLogging betaHandle];
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_INFO);
-    if (v4)
+    if (visibleCopy)
     {
       if (v12)
       {
@@ -2939,7 +2939,7 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    if (v4)
+    if (visibleCopy)
     {
       v14 = *MEMORY[0x277CBED28];
     }
@@ -2969,11 +2969,11 @@ LABEL_21:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)canFileFeedbackOnDevice:(id)a3 completion:(id)a4
+- (void)canFileFeedbackOnDevice:(id)device completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  completionCopy = completion;
   v7 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -2982,7 +2982,7 @@ LABEL_21:
     _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
-  if ([v5 isErrorDevice])
+  if ([deviceCopy isErrorDevice])
   {
     v8 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -2990,7 +2990,7 @@ LABEL_21:
       [(SDBetaManager *)v8 canFileFeedbackOnDevice:v9 completion:v10, v11, v12, v13, v14, v15];
     }
 
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -3000,8 +3000,8 @@ LABEL_21:
     v18[1] = 3221225472;
     v18[2] = __52__SDBetaManager_canFileFeedbackOnDevice_completion___block_invoke;
     v18[3] = &unk_2787CBFB0;
-    v19 = v6;
-    [v16 canFileFeedbackOnDevice:v5 completion:v18];
+    v19 = completionCopy;
+    [v16 canFileFeedbackOnDevice:deviceCopy completion:v18];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -3023,7 +3023,7 @@ uint64_t __52__SDBetaManager_canFileFeedbackOnDevice_completion___block_invoke(u
   return (*(v3 + 16))(v3, a2);
 }
 
-+ (BOOL)canFileFeedbackOnThisDevice:(id *)a3
++ (BOOL)canFileFeedbackOnThisDevice:(id *)device
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = +[SDSeedingLogging betaHandle];
@@ -3052,10 +3052,10 @@ uint64_t __52__SDBetaManager_canFileFeedbackOnDevice_completion___block_invoke(u
   v7 = dispatch_time(0, 15000000000);
   if (dispatch_semaphore_wait(v6, v7))
   {
-    if (a3)
+    if (device)
     {
       [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.beta-manager" code:6 userInfo:0];
-      *a3 = v8 = 0;
+      *device = v8 = 0;
     }
 
     else
@@ -3086,10 +3086,10 @@ uint64_t __52__SDBetaManager_canFileFeedbackOnDevice_completion___block_invoke(u
     v12 = dispatch_time(0, 15000000000);
     if (dispatch_semaphore_wait(v6, v12))
     {
-      if (a3)
+      if (device)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.beta-manager" code:6 userInfo:{0, v15, v16, v17, v18}];
-        *a3 = v8 = 0;
+        *device = v8 = 0;
       }
 
       else
@@ -3118,9 +3118,9 @@ void __45__SDBetaManager_canFileFeedbackOnThisDevice___block_invoke(uint64_t a1,
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (void)canFileFeedbackOnThisDeviceWithCompletion:(id)a3
++ (void)canFileFeedbackOnThisDeviceWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = dispatch_get_global_queue(0, 0);
   v16[0] = 0;
   v16[1] = v16;
@@ -3133,7 +3133,7 @@ void __45__SDBetaManager_canFileFeedbackOnThisDevice___block_invoke(uint64_t a1,
   v5 = v4;
   v13 = v5;
   v15 = v16;
-  v6 = v3;
+  v6 = completionCopy;
   v14 = v6;
   [SDDevice getCurrentDevice:v12];
   v7 = dispatch_time(0, 15000000000);
@@ -3188,13 +3188,13 @@ void __59__SDBetaManager_canFileFeedbackOnThisDeviceWithCompletion___block_invok
   }
 }
 
-- (void)enrollInProgramWithToken:(id)a3 userIdentifier:(id)a4 language:(id)a5 shouldSaveToken:(BOOL)a6 completion:(id)a7
+- (void)enrollInProgramWithToken:(id)token userIdentifier:(id)identifier language:(id)language shouldSaveToken:(BOOL)saveToken completion:(id)completion
 {
-  v8 = a6;
+  saveTokenCopy = saveToken;
   v26 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a7;
-  v13 = a5;
+  tokenCopy = token;
+  completionCopy = completion;
+  languageCopy = language;
   v14 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -3203,23 +3203,23 @@ void __59__SDBetaManager_canFileFeedbackOnThisDeviceWithCompletion___block_invok
     _os_log_impl(&dword_22E41E000, v14, OS_LOG_TYPE_INFO, "%{public}s", buf, 0xCu);
   }
 
-  if (v8)
+  if (saveTokenCopy)
   {
-    v15 = [MEMORY[0x277CBEB98] setWithObject:v11];
+    v15 = [MEMORY[0x277CBEB98] setWithObject:tokenCopy];
     [SDPersistence saveBetaEnrollmentTokens:v15];
   }
 
   v16 = +[SDDevice devicePlatform];
-  v17 = [MEMORY[0x277CBEB98] setWithObject:v11];
+  v17 = [MEMORY[0x277CBEB98] setWithObject:tokenCopy];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __93__SDBetaManager_enrollInProgramWithToken_userIdentifier_language_shouldSaveToken_completion___block_invoke;
   v21[3] = &unk_2787CB728;
-  v22 = v11;
-  v23 = v12;
-  v18 = v12;
-  v19 = v11;
-  [(SDBetaManager *)self _finallyQueryProgramsForSystemAccountsWithPlatforms:v16 credentials:0 betaEnrollmentTokens:v17 shouldSavePrograms:1 disableBuildPrefixMatching:0 language:v13 completion:v21];
+  v22 = tokenCopy;
+  v23 = completionCopy;
+  v18 = completionCopy;
+  v19 = tokenCopy;
+  [(SDBetaManager *)self _finallyQueryProgramsForSystemAccountsWithPlatforms:v16 credentials:0 betaEnrollmentTokens:v17 shouldSavePrograms:1 disableBuildPrefixMatching:0 language:languageCopy completion:v21];
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -3273,7 +3273,7 @@ void __93__SDBetaManager_enrollInProgramWithToken_userIdentifier_language_should
 - (void)_migrateFromProfilesIfNeeded
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 description];
+  v1 = [self description];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);
@@ -3333,15 +3333,15 @@ void __45__SDBetaManager__migrateFromProfilesIfNeeded__block_invoke(uint64_t a1,
   [v2 setBool:1 forKey:@"HasRunMigration"];
 }
 
-- (void)getMigrationProgramForAssetAudience:(id)a3 completion:(id)a4
+- (void)getMigrationProgramForAssetAudience:(id)audience completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CCAB70];
-  v8 = [(SDBetaManager *)self migrateURLForAssetAudience:a3];
+  v8 = [(SDBetaManager *)self migrateURLForAssetAudience:audience];
   v9 = [v7 requestWithURL:v8 cachePolicy:1 timeoutInterval:15.0];
 
   v10 = +[SDHTTPClient sharedInstance];
-  v11 = [v10 urlSession];
+  urlSession = [v10 urlSession];
 
   [v9 setHTTPMethod:@"GET"];
   v12 = +[SDSeedingLogging betaHandle];
@@ -3354,12 +3354,12 @@ void __45__SDBetaManager__migrateFromProfilesIfNeeded__block_invoke(uint64_t a1,
   v16[1] = 3221225472;
   v16[2] = __64__SDBetaManager_getMigrationProgramForAssetAudience_completion___block_invoke;
   v16[3] = &unk_2787CC0F0;
-  v18 = self;
-  v19 = v6;
+  selfCopy = self;
+  v19 = completionCopy;
   v17 = v9;
-  v13 = v6;
+  v13 = completionCopy;
   v14 = v9;
-  v15 = [v11 dataTaskWithRequest:v14 completionHandler:v16];
+  v15 = [urlSession dataTaskWithRequest:v14 completionHandler:v16];
   [v15 resume];
 }
 
@@ -3488,23 +3488,23 @@ LABEL_17:
 
 - (BOOL)isMigratingFromProfiles
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isMigratingFromProfiles = v2->_isMigratingFromProfiles;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isMigratingFromProfiles = selfCopy->_isMigratingFromProfiles;
+  objc_sync_exit(selfCopy);
 
   return isMigratingFromProfiles;
 }
 
-- (void)setIsMigratingFromProfiles:(BOOL)a3
+- (void)setIsMigratingFromProfiles:(BOOL)profiles
 {
-  v3 = a3;
+  profilesCopy = profiles;
   v25 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  isMigratingFromProfiles = v4->_isMigratingFromProfiles;
-  v4->_isMigratingFromProfiles = v3;
-  if (v3)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isMigratingFromProfiles = selfCopy->_isMigratingFromProfiles;
+  selfCopy->_isMigratingFromProfiles = profilesCopy;
+  if (profilesCopy)
   {
     v6 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -3527,8 +3527,8 @@ LABEL_18:
       _os_log_impl(&dword_22E41E000, v7, OS_LOG_TYPE_DEFAULT, "Profile migration finished", buf, 2u);
     }
 
-    v8 = [(SDBetaManager *)v4 postMigrationTasks];
-    v9 = [v8 count] == 0;
+    postMigrationTasks = [(SDBetaManager *)selfCopy postMigrationTasks];
+    v9 = [postMigrationTasks count] == 0;
 
     if (!v9)
     {
@@ -3544,8 +3544,8 @@ LABEL_18:
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v11 = [(SDBetaManager *)v4 postMigrationTasks];
-      v12 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      postMigrationTasks2 = [(SDBetaManager *)selfCopy postMigrationTasks];
+      v12 = [postMigrationTasks2 countByEnumeratingWithState:&v19 objects:v24 count:16];
       if (v12)
       {
         v13 = *v20;
@@ -3555,7 +3555,7 @@ LABEL_18:
           {
             if (*v20 != v13)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(postMigrationTasks2);
             }
 
             v15 = *(*(&v19 + 1) + 8 * i);
@@ -3567,57 +3567,57 @@ LABEL_18:
             dispatch_async(v6, block);
           }
 
-          v12 = [v11 countByEnumeratingWithState:&v19 objects:v24 count:16];
+          v12 = [postMigrationTasks2 countByEnumeratingWithState:&v19 objects:v24 count:16];
         }
 
         while (v12);
       }
 
-      v16 = [(SDBetaManager *)v4 postMigrationTasks];
-      [v16 removeAllObjects];
+      postMigrationTasks3 = [(SDBetaManager *)selfCopy postMigrationTasks];
+      [postMigrationTasks3 removeAllObjects];
 
       goto LABEL_18;
     }
   }
 
 LABEL_19:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ensureThisRunsAfterMigration:(id)a3
+- (void)ensureThisRunsAfterMigration:(id)migration
 {
-  v8 = a3;
+  migrationCopy = migration;
   if ([(SDBetaManager *)self isMigratingFromProfiles])
   {
-    v4 = [(SDBetaManager *)self postMigrationTasks];
+    postMigrationTasks = [(SDBetaManager *)self postMigrationTasks];
 
-    if (!v4)
+    if (!postMigrationTasks)
     {
       v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
       [(SDBetaManager *)self setPostMigrationTasks:v5];
     }
 
-    v6 = [(SDBetaManager *)self postMigrationTasks];
-    v7 = MEMORY[0x2318E68F0](v8);
-    [v6 addObject:v7];
+    postMigrationTasks2 = [(SDBetaManager *)self postMigrationTasks];
+    v7 = MEMORY[0x2318E68F0](migrationCopy);
+    [postMigrationTasks2 addObject:v7];
   }
 
   else
   {
-    v8[2]();
+    migrationCopy[2]();
   }
 }
 
-- (void)setProfilesEnabledFromHeaderInResponse:(id)a3
+- (void)setProfilesEnabledFromHeaderInResponse:(id)response
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  responseCopy = response;
   v4 = _os_feature_enabled_impl();
-  if (v3 && v4)
+  if (responseCopy && v4)
   {
-    v5 = [v3 valueForHTTPHeaderField:@"Disable-Profile"];
+    v5 = [responseCopy valueForHTTPHeaderField:@"Disable-Profile"];
     v6 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -3703,17 +3703,17 @@ LABEL_19:
   }
 
   v3 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  v4 = [v3 seedingAppleIDUsernameForCurrentDevice];
+  seedingAppleIDUsernameForCurrentDevice = [v3 seedingAppleIDUsernameForCurrentDevice];
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return seedingAppleIDUsernameForCurrentDevice;
 }
 
-- (void)seedingAppleIDUsernameForCurrentDeviceWithCompletion:(id)a3
+- (void)seedingAppleIDUsernameForCurrentDeviceWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
@@ -3727,8 +3727,8 @@ LABEL_19:
   v8[1] = 3221225472;
   v8[2] = __70__SDBetaManager_seedingAppleIDUsernameForCurrentDeviceWithCompletion___block_invoke;
   v8[3] = &unk_2787CBCD8;
-  v9 = v3;
-  v6 = v3;
+  v9 = completionCopy;
+  v6 = completionCopy;
   [v5 seedingAppleIDUsernameForCurrentDevice:v8];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -3738,16 +3738,16 @@ LABEL_19:
 {
   v2 = SeedingDefaults();
   v3 = [v2 stringForKey:@"AppleAccountIdentifier"];
-  v4 = [MEMORY[0x277CB8F48] defaultStore];
-  v5 = v4;
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  v5 = defaultStore;
   if (v3)
   {
-    v6 = [v4 accountWithIdentifier:v3];
-    if (v6)
+    aida_accountForPrimaryiCloudAccount = [defaultStore accountWithIdentifier:v3];
+    if (aida_accountForPrimaryiCloudAccount)
     {
 LABEL_6:
-      v7 = v6;
-      v8 = [v6 username];
+      v7 = aida_accountForPrimaryiCloudAccount;
+      username = [aida_accountForPrimaryiCloudAccount username];
 
       goto LABEL_8;
     }
@@ -3758,16 +3758,16 @@ LABEL_6:
     [v2 removeObjectForKey:@"AppleAccountIdentifier"];
   }
 
-  v6 = [v5 aida_accountForPrimaryiCloudAccount];
-  if (v6)
+  aida_accountForPrimaryiCloudAccount = [v5 aida_accountForPrimaryiCloudAccount];
+  if (aida_accountForPrimaryiCloudAccount)
   {
     goto LABEL_6;
   }
 
-  v8 = 0;
+  username = 0;
 LABEL_8:
 
-  return v8;
+  return username;
 }
 
 - (id)deviceAppleIDUsernameForCurrentDevice
@@ -3782,20 +3782,20 @@ LABEL_8:
   }
 
   v3 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  v4 = [v3 deviceAppleIDUsernameForCurrentDevice];
+  deviceAppleIDUsernameForCurrentDevice = [v3 deviceAppleIDUsernameForCurrentDevice];
 
   v5 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return deviceAppleIDUsernameForCurrentDevice;
 }
 
 - (id)_deviceAppleIDUsername
 {
-  v2 = [MEMORY[0x277CB8F48] defaultStore];
-  v3 = [v2 aida_accountForPrimaryiCloudAccount];
-  v4 = [v3 username];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aida_accountForPrimaryiCloudAccount = [defaultStore aida_accountForPrimaryiCloudAccount];
+  username = [aida_accountForPrimaryiCloudAccount username];
 
-  return v4;
+  return username;
 }
 
 - (BOOL)isCurrentDeviceUsingSeedingAppleID
@@ -3810,10 +3810,10 @@ LABEL_8:
   }
 
   v3 = +[SDBetaEnrollmentServiceProxy sharedInstance];
-  v4 = [v3 isCurrentDeviceUsingSeedingAppleID];
+  isCurrentDeviceUsingSeedingAppleID = [v3 isCurrentDeviceUsingSeedingAppleID];
 
   v5 = *MEMORY[0x277D85DE8];
-  return v4;
+  return isCurrentDeviceUsingSeedingAppleID;
 }
 
 - (BOOL)_isUsingSeedingAppleID
@@ -3825,11 +3825,11 @@ LABEL_8:
   return v4;
 }
 
-- (void)saveAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:(id)a3 completion:(id)a4
+- (void)saveAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:(id)device completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  deviceCopy = device;
   v8 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -3844,9 +3844,9 @@ LABEL_8:
   v12[2] = __88__SDBetaManager_saveAppleAccountIdentifierWithAlternateDSIDForCurrentDevice_completion___block_invoke;
   v12[3] = &unk_2787CB7C8;
   v12[4] = self;
-  v13 = v6;
-  v10 = v6;
-  [v9 setAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:v7 completion:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [v9 setAppleAccountIdentifierWithAlternateDSIDForCurrentDevice:deviceCopy completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -3859,29 +3859,29 @@ void __88__SDBetaManager_saveAppleAccountIdentifierWithAlternateDSIDForCurrentDe
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_saveAppleAccountIdentifierWithAlternateDSID:(id)a3 completion:(id)a4
+- (void)_saveAppleAccountIdentifierWithAlternateDSID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = SeedingDefaults();
   v9 = [v8 stringForKey:@"AppleAccountIdentifier"];
 
-  v10 = [MEMORY[0x277CB8F48] defaultStore];
-  v11 = [v10 aida_accountForPrimaryiCloudAccount];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aida_accountForPrimaryiCloudAccount = [defaultStore aida_accountForPrimaryiCloudAccount];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __73__SDBetaManager__saveAppleAccountIdentifierWithAlternateDSID_completion___block_invoke;
   v16[3] = &unk_2787CC168;
-  v20 = self;
-  v21 = v7;
-  v17 = v6;
+  selfCopy = self;
+  v21 = completionCopy;
+  v17 = dCopy;
   v18 = v9;
-  v19 = v11;
-  v12 = v11;
+  v19 = aida_accountForPrimaryiCloudAccount;
+  v12 = aida_accountForPrimaryiCloudAccount;
   v13 = v9;
-  v14 = v7;
-  v15 = v6;
+  v14 = completionCopy;
+  v15 = dCopy;
   [(SDBetaManager *)self getAppleIDAuthenticationAccountForAlternateDSID:v15 attempt:0 completion:v16];
 }
 
@@ -3991,15 +3991,15 @@ void __73__SDBetaManager__saveAppleAccountIdentifierWithAlternateDSID_completion
   (*(a1[6] + 16))();
 }
 
-- (void)getAppleIDAuthenticationAccountForAlternateDSID:(id)a3 attempt:(int64_t)a4 completion:(id)a5
+- (void)getAppleIDAuthenticationAccountForAlternateDSID:(id)d attempt:(int64_t)attempt completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (a4 < 8)
+  dCopy = d;
+  completionCopy = completion;
+  v10 = completionCopy;
+  if (attempt < 8)
   {
-    v11 = [MEMORY[0x277CB8F48] defaultStore];
-    v12 = [v11 aida_accountForAltDSID:v8];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    v12 = [defaultStore aida_accountForAltDSID:dCopy];
     if (v12)
     {
       (v10)[2](v10, v12);
@@ -4013,8 +4013,8 @@ void __73__SDBetaManager__saveAppleAccountIdentifierWithAlternateDSID_completion
       v14[2] = __84__SDBetaManager_getAppleIDAuthenticationAccountForAlternateDSID_attempt_completion___block_invoke;
       v14[3] = &unk_2787CC190;
       v14[4] = self;
-      v15 = v8;
-      v17 = a4;
+      v15 = dCopy;
+      attemptCopy = attempt;
       v16 = v10;
       dispatch_after(v13, MEMORY[0x277D85CD0], v14);
     }
@@ -4022,27 +4022,27 @@ void __73__SDBetaManager__saveAppleAccountIdentifierWithAlternateDSID_completion
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)_saveAppleAccountIdentifier:(id)a3
+- (void)_saveAppleAccountIdentifier:(id)identifier
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[SDSeedingLogging betaHandle];
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3)
+  if (identifierCopy)
   {
     if (v5)
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = identifierCopy;
       _os_log_impl(&dword_22E41E000, v4, OS_LOG_TYPE_DEFAULT, "Saving new Seeding account %@", &v7, 0xCu);
     }
 
     v4 = SeedingDefaults();
-    [v4 setObject:v3 forKey:@"AppleAccountIdentifier"];
+    [v4 setObject:identifierCopy forKey:@"AppleAccountIdentifier"];
   }
 
   else if (v5)
@@ -4054,10 +4054,10 @@ void __73__SDBetaManager__saveAppleAccountIdentifierWithAlternateDSID_completion
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteSeedingAppleAccountForCurrentDeviceWithCompletion:(id)a3
+- (void)deleteSeedingAppleAccountForCurrentDeviceWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -4072,8 +4072,8 @@ void __73__SDBetaManager__saveAppleAccountIdentifierWithAlternateDSID_completion
   v9[2] = __73__SDBetaManager_deleteSeedingAppleAccountForCurrentDeviceWithCompletion___block_invoke;
   v9[3] = &unk_2787CB7C8;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = completionCopy;
+  v7 = completionCopy;
   [v6 deleteSeedingAppleAccountWithCompletion:v9];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -4087,24 +4087,24 @@ void __73__SDBetaManager_deleteSeedingAppleAccountForCurrentDeviceWithCompletion
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_deleteSeedingAppleAccountWithCompletion:(id)a3
+- (void)_deleteSeedingAppleAccountWithCompletion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = SeedingDefaults();
   v6 = [v5 stringForKey:@"AppleAccountIdentifier"];
 
   if (v6)
   {
-    v7 = [MEMORY[0x277CB8F48] defaultStore];
-    v8 = [v7 accountWithIdentifier:v6];
+    defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+    v8 = [defaultStore accountWithIdentifier:v6];
     v9 = v8;
     if (v8)
     {
-      v10 = [v8 username];
-      v11 = [v7 aida_accountForPrimaryiCloudAccount];
-      v12 = [v11 username];
-      v13 = [v10 isEqualToString:v12];
+      username = [v8 username];
+      aida_accountForPrimaryiCloudAccount = [defaultStore aida_accountForPrimaryiCloudAccount];
+      username2 = [aida_accountForPrimaryiCloudAccount username];
+      v13 = [username isEqualToString:username2];
 
       if (v13)
       {
@@ -4119,7 +4119,7 @@ void __73__SDBetaManager_deleteSeedingAppleAccountForCurrentDeviceWithCompletion
 
         [(SDBetaManager *)self invalidateCache];
         v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.beta-manager" code:12 userInfo:0];
-        v4[2](v4, v16);
+        completionCopy[2](completionCopy, v16);
       }
 
       else
@@ -4137,8 +4137,8 @@ void __73__SDBetaManager_deleteSeedingAppleAccountForCurrentDeviceWithCompletion
         v22[1] = 3221225472;
         v22[2] = __58__SDBetaManager__deleteSeedingAppleAccountWithCompletion___block_invoke;
         v22[3] = &unk_2787CBFB0;
-        v23 = v4;
-        [v7 removeAccount:v9 withCompletionHandler:v22];
+        v23 = completionCopy;
+        [defaultStore removeAccount:v9 withCompletionHandler:v22];
       }
     }
 
@@ -4154,7 +4154,7 @@ void __73__SDBetaManager_deleteSeedingAppleAccountForCurrentDeviceWithCompletion
       [v19 removeObjectForKey:@"AppleAccountIdentifier"];
 
       [(SDBetaManager *)self invalidateCache];
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -4166,8 +4166,8 @@ void __73__SDBetaManager_deleteSeedingAppleAccountForCurrentDeviceWithCompletion
       [SDBetaManager _deleteSeedingAppleAccountWithCompletion:];
     }
 
-    v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.beta-manager" code:10 userInfo:0];
-    v4[2](v4, v7);
+    defaultStore = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.seeding.beta-manager" code:10 userInfo:0];
+    completionCopy[2](completionCopy, defaultStore);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -4381,7 +4381,7 @@ void __70__SDBetaManager_enrollCurrentDeviceWithEnrollmentMetadata_completion___
 + (void)_currentBetaProgram
 {
   v8 = *MEMORY[0x277D85DE8];
-  v1 = [a1 description];
+  v1 = [self description];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0xCu);

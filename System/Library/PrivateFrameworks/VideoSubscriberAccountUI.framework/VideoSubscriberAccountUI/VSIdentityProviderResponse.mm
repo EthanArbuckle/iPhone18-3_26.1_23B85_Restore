@@ -24,13 +24,13 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(VSIdentityProviderResponse *)self accountMetadata];
-  v6 = [v4 stringWithFormat:@"%@ = %@", @"accountMetadata", v5];
+  accountMetadata = [(VSIdentityProviderResponse *)self accountMetadata];
+  v6 = [v4 stringWithFormat:@"%@ = %@", @"accountMetadata", accountMetadata];
   [v3 addObject:v6];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(VSIdentityProviderResponse *)self account];
-  v9 = [v7 stringWithFormat:@"%@ = %@", @"account", v8];
+  account = [(VSIdentityProviderResponse *)self account];
+  v9 = [v7 stringWithFormat:@"%@ = %@", @"account", account];
   [v3 addObject:v9];
 
   v10 = MEMORY[0x277CCACA8];
@@ -39,8 +39,8 @@
   [v3 addObject:v12];
 
   v13 = MEMORY[0x277CCACA8];
-  v14 = [(VSIdentityProviderResponse *)self logoLoadOperation];
-  v15 = [v13 stringWithFormat:@"%@ = %@", @"logoLoadOperation", v14];
+  logoLoadOperation = [(VSIdentityProviderResponse *)self logoLoadOperation];
+  v15 = [v13 stringWithFormat:@"%@ = %@", @"logoLoadOperation", logoLoadOperation];
   [v3 addObject:v15];
 
   v16 = MEMORY[0x277CCACA8];

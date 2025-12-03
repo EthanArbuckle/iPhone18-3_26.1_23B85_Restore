@@ -1,17 +1,17 @@
 @interface OKActionSwipe
-+ (id)swipeActionWithLocation:(CGPoint)a3 direction:(unint64_t)a4 touchCount:(unint64_t)a5 context:(id)a6;
-+ (void)setupJavascriptContext:(id)a3;
++ (id)swipeActionWithLocation:(CGPoint)location direction:(unint64_t)direction touchCount:(unint64_t)count context:(id)context;
++ (void)setupJavascriptContext:(id)context;
 - (OKActionSwipe)init;
-- (OKActionSwipe)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (OKActionSwipe)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKActionSwipe
 
-+ (id)swipeActionWithLocation:(CGPoint)a3 direction:(unint64_t)a4 touchCount:(unint64_t)a5 context:(id)a6
++ (id)swipeActionWithLocation:(CGPoint)location direction:(unint64_t)direction touchCount:(unint64_t)count context:(id)context
 {
-  v7 = [[OKActionSwipe alloc] initWithLocation:a5 touchCount:a6 context:a3.x, a3.y];
-  v7->_direction = a4;
+  v7 = [[OKActionSwipe alloc] initWithLocation:count touchCount:context context:location.x, location.y];
+  v7->_direction = direction;
 
   return v7;
 }
@@ -31,32 +31,32 @@
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = OKActionSwipe;
   [(OKAction *)&v5 encodeWithCoder:?];
-  [a3 encodeInt32:LODWORD(self->_direction) forKey:@"direction"];
+  [coder encodeInt32:LODWORD(self->_direction) forKey:@"direction"];
 }
 
-- (OKActionSwipe)initWithCoder:(id)a3
+- (OKActionSwipe)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = OKActionSwipe;
   v4 = [(OKAction *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_direction = [a3 decodeInt32ForKey:@"direction"];
+    v4->_direction = [coder decodeInt32ForKey:@"direction"];
   }
 
   return v4;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v4 = objc_opt_class();
 
-  [a3 setObject:v4 forKeyedSubscript:@"OKActionSwipe"];
+  [context setObject:v4 forKeyedSubscript:@"OKActionSwipe"];
 }
 
 @end

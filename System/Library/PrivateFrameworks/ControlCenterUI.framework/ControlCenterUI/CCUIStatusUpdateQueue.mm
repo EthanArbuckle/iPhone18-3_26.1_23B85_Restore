@@ -1,7 +1,7 @@
 @interface CCUIStatusUpdateQueue
 - (CCUIStatusUpdateQueue)init;
 - (id)dequeueNextStatusUpdate;
-- (void)enqueueStatusUpdate:(id)a3 forIdentifier:(id)a4;
+- (void)enqueueStatusUpdate:(id)update forIdentifier:(id)identifier;
 - (void)removeAllStatusUpdates;
 @end
 
@@ -34,21 +34,21 @@
   [(NSMutableDictionary *)latestUpdateByIdentifier removeAllObjects];
 }
 
-- (void)enqueueStatusUpdate:(id)a3 forIdentifier:(id)a4
+- (void)enqueueStatusUpdate:(id)update forIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = v6;
-  v8 = [(NSMutableDictionary *)self->_latestUpdateByIdentifier bs_takeObjectForKey:v7];
-  if (!v8 || ((-[NSMutableArray removeObject:](self->_queuedIdentifiers, "removeObject:", v7), [v8 type] != 1) || objc_msgSend(v9, "type") != 2) && (objc_msgSend(v8, "type") != 2 || objc_msgSend(v9, "type") != 1))
+  updateCopy = update;
+  identifierCopy = identifier;
+  v9 = updateCopy;
+  v8 = [(NSMutableDictionary *)self->_latestUpdateByIdentifier bs_takeObjectForKey:identifierCopy];
+  if (!v8 || ((-[NSMutableArray removeObject:](self->_queuedIdentifiers, "removeObject:", identifierCopy), [v8 type] != 1) || objc_msgSend(v9, "type") != 2) && (objc_msgSend(v8, "type") != 2 || objc_msgSend(v9, "type") != 1))
   {
     if (!v9)
     {
       goto LABEL_9;
     }
 
-    [(NSMutableArray *)self->_queuedIdentifiers addObject:v7];
-    [(NSMutableDictionary *)self->_latestUpdateByIdentifier setObject:v9 forKey:v7];
+    [(NSMutableArray *)self->_queuedIdentifiers addObject:identifierCopy];
+    [(NSMutableDictionary *)self->_latestUpdateByIdentifier setObject:v9 forKey:identifierCopy];
   }
 
 LABEL_9:
@@ -56,11 +56,11 @@ LABEL_9:
 
 - (id)dequeueNextStatusUpdate
 {
-  v3 = [(NSMutableArray *)self->_queuedIdentifiers firstObject];
-  if (v3)
+  firstObject = [(NSMutableArray *)self->_queuedIdentifiers firstObject];
+  if (firstObject)
   {
     [(NSMutableArray *)self->_queuedIdentifiers removeObjectAtIndex:0];
-    v4 = [(NSMutableDictionary *)self->_latestUpdateByIdentifier bs_takeObjectForKey:v3];
+    v4 = [(NSMutableDictionary *)self->_latestUpdateByIdentifier bs_takeObjectForKey:firstObject];
   }
 
   else

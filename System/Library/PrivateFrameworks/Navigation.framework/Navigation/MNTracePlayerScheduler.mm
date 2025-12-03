@@ -3,13 +3,13 @@
 - (MNTracePlayerSchedulerDelegate)delegate;
 - (void)_timerFired;
 - (void)_update;
-- (void)addTimelineStream:(id)a3;
+- (void)addTimelineStream:(id)stream;
 - (void)dealloc;
 - (void)pause;
 - (void)removeAllTimelineStreams;
-- (void)removeTimelineStream:(id)a3;
+- (void)removeTimelineStream:(id)stream;
 - (void)resume;
-- (void)setPosition:(double)a3;
+- (void)setPosition:(double)position;
 @end
 
 @implementation MNTracePlayerScheduler
@@ -159,42 +159,42 @@ void __32__MNTracePlayerScheduler_resume__block_invoke(uint64_t a1)
   self->_nextTimelineStream = 0;
 }
 
-- (void)removeTimelineStream:(id)a3
+- (void)removeTimelineStream:(id)stream
 {
   timelineStreams = self->_timelineStreams;
-  v5 = a3;
-  [(NSMutableArray *)timelineStreams removeObject:v5];
+  streamCopy = stream;
+  [(NSMutableArray *)timelineStreams removeObject:streamCopy];
   nextTimelineStream = self->_nextTimelineStream;
 
-  if (nextTimelineStream == v5)
+  if (nextTimelineStream == streamCopy)
   {
     self->_nextTimelineStream = 0;
   }
 }
 
-- (void)addTimelineStream:(id)a3
+- (void)addTimelineStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   timelineStreams = self->_timelineStreams;
-  v8 = v4;
+  v8 = streamCopy;
   if (!timelineStreams)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_timelineStreams;
-    self->_timelineStreams = v6;
+    self->_timelineStreams = array;
 
-    v4 = v8;
+    streamCopy = v8;
     timelineStreams = self->_timelineStreams;
   }
 
-  [(NSMutableArray *)timelineStreams addObject:v4];
+  [(NSMutableArray *)timelineStreams addObject:streamCopy];
   [v8 jumpToPosition:self->_position];
 }
 
-- (void)setPosition:(double)a3
+- (void)setPosition:(double)position
 {
   v15 = *MEMORY[0x1E69E9840];
-  self->_position = a3;
+  self->_position = position;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -215,7 +215,7 @@ void __32__MNTracePlayerScheduler_resume__block_invoke(uint64_t a1)
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v10 + 1) + 8 * v8++) jumpToPosition:{a3, v10}];
+        [*(*(&v10 + 1) + 8 * v8++) jumpToPosition:{position, v10}];
       }
 
       while (v6 != v8);

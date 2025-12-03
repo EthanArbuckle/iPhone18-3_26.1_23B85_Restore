@@ -1,14 +1,14 @@
 @interface ODRApplication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation ODRApplication
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = sub_100399CD8([ODRApplication allocWithZone:?], self->_bundleID);
   dispatchQueue = self->_dispatchQueue;
@@ -19,7 +19,7 @@
   block[4] = self;
   v7 = v5;
   v12 = v7;
-  v13 = a3;
+  zoneCopy = zone;
   dispatch_sync(dispatchQueue, block);
   v8 = v12;
   v9 = v7;
@@ -27,7 +27,7 @@
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = sub_100399CD8([ODRMutableApplication allocWithZone:?], self->_bundleID);
   dispatchQueue = self->_dispatchQueue;
@@ -38,7 +38,7 @@
   block[4] = self;
   v7 = v5;
   v12 = v7;
-  v13 = a3;
+  zoneCopy = zone;
   dispatch_sync(dispatchQueue, block);
   v8 = v12;
   v9 = v7;
@@ -87,10 +87,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(self) = 1;
   }
@@ -100,7 +100,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self)
       {

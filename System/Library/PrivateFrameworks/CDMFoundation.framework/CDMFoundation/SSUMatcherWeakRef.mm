@@ -1,6 +1,6 @@
 @interface SSUMatcherWeakRef
 - (SNLPSSUMatcher)matcher;
-- (SSUMatcherWeakRef)initWithMatcher:(id)a3;
+- (SSUMatcherWeakRef)initWithMatcher:(id)matcher;
 @end
 
 @implementation SSUMatcherWeakRef
@@ -12,13 +12,13 @@
   return WeakRetained;
 }
 
-- (SSUMatcherWeakRef)initWithMatcher:(id)a3
+- (SSUMatcherWeakRef)initWithMatcher:(id)matcher
 {
   v6.receiver = self;
   v6.super_class = SSUMatcherWeakRef;
-  v3 = a3;
+  matcherCopy = matcher;
   v4 = [(SSUMatcherWeakRef *)&v6 init];
-  objc_storeWeak(&v4->_matcher, v3);
+  objc_storeWeak(&v4->_matcher, matcherCopy);
 
   return v4;
 }

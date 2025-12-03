@@ -3,11 +3,11 @@
 + (UIEdgeInsets)contentViewInsets;
 - (BOOL)isRightArrowPinnedToBottom;
 - (BOOL)isRightArrowPinnedToTop;
-- (BOOL)wouldPinForOffset:(double)a3;
+- (BOOL)wouldPinForOffset:(double)offset;
 - (CGRect)_contentViewFrame;
 - (UIEdgeInsets)safeAreaInsetsForContentView;
 - (UIView)viewToMaskWhenContentExtendsOverArrow;
-- (_UIPopoverStandardChromeView)initWithFrame:(CGRect)a3;
+- (_UIPopoverStandardChromeView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation _UIPopoverStandardChromeView
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (_UIPopoverStandardChromeView)initWithFrame:(CGRect)a3
+- (_UIPopoverStandardChromeView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _UIPopoverStandardChromeView;
-  result = [(UIPopoverBackgroundView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(UIPopoverBackgroundView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_arrowDirection = -1;
@@ -46,56 +46,56 @@
   return result;
 }
 
-- (BOOL)wouldPinForOffset:(double)a3
+- (BOOL)wouldPinForOffset:(double)offset
 {
-  if (a3 >= 0.0)
+  if (offset >= 0.0)
   {
     [(_UIPopoverStandardChromeView *)self maxNonPinnedOffset];
-    return v6 < a3;
+    return v6 < offset;
   }
 
   else
   {
     [(_UIPopoverStandardChromeView *)self minNonPinnedOffset];
-    return v4 > a3;
+    return v4 > offset;
   }
 }
 
 - (BOOL)isRightArrowPinnedToTop
 {
-  v3 = [(_UIPopoverStandardChromeView *)self isPinned];
-  if (v3)
+  isPinned = [(_UIPopoverStandardChromeView *)self isPinned];
+  if (isPinned)
   {
-    LOBYTE(v3) = self->_arrowOffset < 0.0;
+    LOBYTE(isPinned) = self->_arrowOffset < 0.0;
   }
 
-  return v3;
+  return isPinned;
 }
 
 - (BOOL)isRightArrowPinnedToBottom
 {
-  v3 = [(_UIPopoverStandardChromeView *)self isPinned];
-  if (v3)
+  isPinned = [(_UIPopoverStandardChromeView *)self isPinned];
+  if (isPinned)
   {
-    LOBYTE(v3) = self->_arrowOffset > 0.0;
+    LOBYTE(isPinned) = self->_arrowOffset > 0.0;
   }
 
-  return v3;
+  return isPinned;
 }
 
 - (UIEdgeInsets)safeAreaInsetsForContentView
 {
-  v3 = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
+  viewToMaskWhenContentExtendsOverArrow = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
 
-  if (v3)
+  if (viewToMaskWhenContentExtendsOverArrow)
   {
     [objc_opt_class() arrowHeight];
     v5 = v4;
-    v6 = [(_UIPopoverStandardChromeView *)self _shouldUseEqualContentInsetsOnAllSides];
+    _shouldUseEqualContentInsetsOnAllSides = [(_UIPopoverStandardChromeView *)self _shouldUseEqualContentInsetsOnAllSides];
     v7 = v5;
     v8 = v5;
     v9 = v5;
-    if (!v6)
+    if (!_shouldUseEqualContentInsetsOnAllSides)
     {
       v10 = [(_UIPopoverStandardChromeView *)self arrowDirection:v5];
       v9 = 0.0;
@@ -187,9 +187,9 @@
 
 - (CGRect)_contentViewFrame
 {
-  v3 = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
+  viewToMaskWhenContentExtendsOverArrow = [(_UIPopoverStandardChromeView *)self viewToMaskWhenContentExtendsOverArrow];
 
-  if (v3)
+  if (viewToMaskWhenContentExtendsOverArrow)
   {
     v24.receiver = self;
     v24.super_class = _UIPopoverStandardChromeView;

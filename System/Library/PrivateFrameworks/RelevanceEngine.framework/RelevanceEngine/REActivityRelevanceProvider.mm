@@ -1,20 +1,20 @@
 @interface REActivityRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (REActivityRelevanceProvider)initWithActiveEnergyState:(BOOL)a3 exerciseTimeState:(BOOL)a4 standHourState:(BOOL)a5;
-- (REActivityRelevanceProvider)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REActivityRelevanceProvider)initWithActiveEnergyState:(BOOL)state exerciseTimeState:(BOOL)timeState standHourState:(BOOL)hourState;
+- (REActivityRelevanceProvider)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 @end
 
 @implementation REActivityRelevanceProvider
 
-- (REActivityRelevanceProvider)initWithDictionary:(id)a3
+- (REActivityRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"energy"];
-  v6 = [v4 objectForKeyedSubscript:@"exercise"];
-  v7 = [v4 objectForKeyedSubscript:@"stand"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"energy"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"exercise"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"stand"];
 
   v8 = -[REActivityRelevanceProvider initWithActiveEnergyState:exerciseTimeState:standHourState:](self, "initWithActiveEnergyState:exerciseTimeState:standHourState:", [v5 BOOLValue], objc_msgSend(v6, "BOOLValue"), objc_msgSend(v7, "BOOLValue"));
   return v8;
@@ -22,39 +22,39 @@
 
 - (id)dictionaryEncoding
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_closedActiveEngergy];
-  [v3 setObject:v4 forKeyedSubscript:@"energy"];
+  [dictionary setObject:v4 forKeyedSubscript:@"energy"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_closedExerciseTime];
-  [v3 setObject:v5 forKeyedSubscript:@"exercise"];
+  [dictionary setObject:v5 forKeyedSubscript:@"exercise"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_closedStandHour];
-  [v3 setObject:v6 forKeyedSubscript:@"stand"];
+  [dictionary setObject:v6 forKeyedSubscript:@"stand"];
 
-  v7 = [v3 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
 
-- (REActivityRelevanceProvider)initWithActiveEnergyState:(BOOL)a3 exerciseTimeState:(BOOL)a4 standHourState:(BOOL)a5
+- (REActivityRelevanceProvider)initWithActiveEnergyState:(BOOL)state exerciseTimeState:(BOOL)timeState standHourState:(BOOL)hourState
 {
   v9.receiver = self;
   v9.super_class = REActivityRelevanceProvider;
   result = [(RERelevanceProvider *)&v9 init];
   if (result)
   {
-    result->_closedStandHour = a5;
-    result->_closedExerciseTime = a4;
-    result->_closedActiveEngergy = a3;
+    result->_closedStandHour = hourState;
+    result->_closedExerciseTime = timeState;
+    result->_closedActiveEngergy = state;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   closedActiveEngergy = self->_closedActiveEngergy;
   closedExerciseTime = self->_closedExerciseTime;
   closedStandHour = self->_closedStandHour;
@@ -62,10 +62,10 @@
   return [v4 initWithActiveEnergyState:closedActiveEngergy exerciseTimeState:closedExerciseTime standHourState:closedStandHour];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
@@ -74,9 +74,9 @@
   {
     v8.receiver = self;
     v8.super_class = REActivityRelevanceProvider;
-    if ([(RERelevanceProvider *)&v8 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(RERelevanceProvider *)&v8 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_closedStandHour == v5[34] && self->_closedExerciseTime == v5[33] && self->_closedActiveEngergy == v5[32];
     }
 

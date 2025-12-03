@@ -1,7 +1,7 @@
 @interface AVLabel
 - (AVContentIntersectingDelegate)contentIntersectingDelegate;
 - (CGRect)contentIntersection;
-- (void)setContentIntersection:(CGRect)a3;
+- (void)setContentIntersection:(CGRect)intersection;
 - (void)updateForContentIntersection;
 @end
 
@@ -35,24 +35,24 @@
   if (self->_isOverVideo != v8)
   {
     self->_isOverVideo = v8;
-    v9 = [(AVLabel *)self contentIntersectingDelegate];
-    if (v9)
+    contentIntersectingDelegate = [(AVLabel *)self contentIntersectingDelegate];
+    if (contentIntersectingDelegate)
     {
-      v10 = v9;
-      [v9 viewIsOverVideoDidChange:self];
-      v9 = v10;
+      v10 = contentIntersectingDelegate;
+      [contentIntersectingDelegate viewIsOverVideoDidChange:self];
+      contentIntersectingDelegate = v10;
     }
   }
 }
 
-- (void)setContentIntersection:(CGRect)a3
+- (void)setContentIntersection:(CGRect)intersection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = intersection.size.height;
+  width = intersection.size.width;
+  y = intersection.origin.y;
+  x = intersection.origin.x;
   p_contentIntersection = &self->_contentIntersection;
-  if (!CGRectEqualToRect(a3, self->_contentIntersection))
+  if (!CGRectEqualToRect(intersection, self->_contentIntersection))
   {
     p_contentIntersection->origin.x = x;
     p_contentIntersection->origin.y = y;

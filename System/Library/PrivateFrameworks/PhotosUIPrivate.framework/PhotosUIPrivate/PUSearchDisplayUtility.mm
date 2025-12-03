@@ -1,19 +1,19 @@
 @interface PUSearchDisplayUtility
 + (BOOL)hasLimitedScreenSize;
-+ (BOOL)indexPathIsLastRowInSection:(id)a3 tableView:(id)a4;
-+ (id)applyCornerMaskToCell:(id)a3 roundedCornerType:(int64_t)a4;
-+ (id)genericCellFromCell:(id)a3 roundedCornerType:(int64_t)a4;
++ (BOOL)indexPathIsLastRowInSection:(id)section tableView:(id)view;
++ (id)applyCornerMaskToCell:(id)cell roundedCornerType:(int64_t)type;
++ (id)genericCellFromCell:(id)cell roundedCornerType:(int64_t)type;
 + (id)genericSuggestionsCellFont;
 + (id)genericSuggestionsTitleCellFont;
-+ (unint64_t)cornerMaskForCell:(id)a3 roundedCornerType:(int64_t)a4;
++ (unint64_t)cornerMaskForCell:(id)cell roundedCornerType:(int64_t)type;
 @end
 
 @implementation PUSearchDisplayUtility
 
 + (BOOL)hasLimitedScreenSize
 {
-  v2 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v2 bounds];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
@@ -31,13 +31,13 @@
   return 0;
 }
 
-+ (BOOL)indexPathIsLastRowInSection:(id)a3 tableView:(id)a4
++ (BOOL)indexPathIsLastRowInSection:(id)section tableView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 numberOfRowsInSection:{objc_msgSend(v6, "section")}];
+  viewCopy = view;
+  sectionCopy = section;
+  v7 = [viewCopy numberOfRowsInSection:{objc_msgSend(sectionCopy, "section")}];
 
-  v8 = [v6 row];
+  v8 = [sectionCopy row];
   return v8 == v7 - 1;
 }
 
@@ -61,19 +61,19 @@
   return v4;
 }
 
-+ (id)genericCellFromCell:(id)a3 roundedCornerType:(int64_t)a4
++ (id)genericCellFromCell:(id)cell roundedCornerType:(int64_t)type
 {
-  v4 = [PUSearchDisplayUtility applyCornerMaskToCell:a3 roundedCornerType:a4];
+  v4 = [PUSearchDisplayUtility applyCornerMaskToCell:cell roundedCornerType:type];
   [v4 setSeparatorInset:{0.0, 20.0, 0.0, 0.0}];
   [v4 setSeparatorStyle:1];
 
   return v4;
 }
 
-+ (id)applyCornerMaskToCell:(id)a3 roundedCornerType:(int64_t)a4
++ (id)applyCornerMaskToCell:(id)cell roundedCornerType:(int64_t)type
 {
-  v5 = a3;
-  v6 = [PUSearchDisplayUtility cornerMaskForCell:v5 roundedCornerType:a4];
+  cellCopy = cell;
+  v6 = [PUSearchDisplayUtility cornerMaskForCell:cellCopy roundedCornerType:type];
   if (v6)
   {
     v7 = 5.0;
@@ -84,28 +84,28 @@
     v7 = 0.0;
   }
 
-  v8 = [v5 layer];
-  [v8 setCornerRadius:v7];
+  layer = [cellCopy layer];
+  [layer setCornerRadius:v7];
 
-  v9 = [v5 layer];
-  [v9 setMaskedCorners:v6];
+  layer2 = [cellCopy layer];
+  [layer2 setMaskedCorners:v6];
 
-  v10 = [v5 layer];
-  [v10 setMasksToBounds:1];
+  layer3 = [cellCopy layer];
+  [layer3 setMasksToBounds:1];
 
-  return v5;
+  return cellCopy;
 }
 
-+ (unint64_t)cornerMaskForCell:(id)a3 roundedCornerType:(int64_t)a4
++ (unint64_t)cornerMaskForCell:(id)cell roundedCornerType:(int64_t)type
 {
-  if ((a4 - 1) > 2)
+  if ((type - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_1B3D0D6F0[a4 - 1];
+    return qword_1B3D0D6F0[type - 1];
   }
 }
 

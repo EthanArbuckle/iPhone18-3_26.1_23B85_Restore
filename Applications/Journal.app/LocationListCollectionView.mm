@@ -1,9 +1,9 @@
 @interface LocationListCollectionView
 - (CGSize)contentSize;
 - (CGSize)intrinsicContentSize;
-- (_TtC7Journal26LocationListCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)setContentSize:(CGSize)a3;
+- (_TtC7Journal26LocationListCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation LocationListCollectionView
@@ -26,30 +26,30 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   sub_100357444(width, height);
 }
 
-- (_TtC7Journal26LocationListCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC7Journal26LocationListCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_10035F334();
 
   (*(v7 + 8))(v9, v6);

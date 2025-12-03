@@ -1,31 +1,31 @@
 @interface PFCloudKitStoreComparisonCacheStoreCache
 - (PFCloudKitStoreComparisonCacheStoreCache)init;
-- (uint64_t)createRecordIDForRecordName:(uint64_t)a1 inZoneWithName:(uint64_t)a2 ownerName:(uint64_t)a3 inStore:(void *)a4;
-- (uint64_t)createRecordZoneIDForZoneName:(uint64_t)a1 ownerName:(uint64_t)a2 inStore:(void *)a3;
-- (uint64_t)populateForStore:(void *)a3 inContext:(void *)a4 error:;
+- (uint64_t)createRecordIDForRecordName:(uint64_t)name inZoneWithName:(uint64_t)withName ownerName:(uint64_t)ownerName inStore:(void *)store;
+- (uint64_t)createRecordZoneIDForZoneName:(uint64_t)name ownerName:(uint64_t)ownerName inStore:(void *)store;
+- (uint64_t)populateForStore:(void *)store inContext:(void *)context error:;
 - (void)dealloc;
 @end
 
 @implementation PFCloudKitStoreComparisonCacheStoreCache
 
-- (uint64_t)populateForStore:(void *)a3 inContext:(void *)a4 error:
+- (uint64_t)populateForStore:(void *)store inContext:(void *)context error:
 {
   v144 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v81 = 0;
     goto LABEL_106;
   }
 
-  v5 = a1;
+  selfCopy4 = self;
   v133 = 0;
-  if (*(a1 + 120) == 1)
+  if (*(self + 120) == 1)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = [NSCKMetadataEntry entryForKey:a2 fromStore:a3 inManagedObjectContext:&v133 error:?];
+    v7 = [NSCKMetadataEntry entryForKey:a2 fromStore:store inManagedObjectContext:&v133 error:?];
     if (v7)
     {
-      *(v5 + 128) = [v7 stringValue];
+      *(selfCopy4 + 128) = [v7 stringValue];
     }
 
     else
@@ -37,7 +37,7 @@
       }
     }
 
-    v8 = [a3 executeFetchRequest:+[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest error:{"fetchRequestWithEntityName:", +[NSCKDatabaseMetadata entityPath](NSCKDatabaseMetadata, "entityPath")), &v133}];
+    v8 = [store executeFetchRequest:+[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest error:{"fetchRequestWithEntityName:", +[NSCKDatabaseMetadata entityPath](NSCKDatabaseMetadata, "entityPath")), &v133}];
     if (v8)
     {
       v9 = v8;
@@ -60,17 +60,17 @@
         }
       }
 
-      v12 = [v9 lastObject];
-      if (v12)
+      lastObject = [v9 lastObject];
+      if (lastObject)
       {
-        *(v5 + 136) = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:{objc_msgSend(v12, "databaseScope")}];
+        *(selfCopy4 + 136) = [objc_alloc(MEMORY[0x1E696AD98]) initWithUnsignedInteger:{objc_msgSend(lastObject, "databaseScope")}];
       }
 
       objc_autoreleasePoolPop(v6);
       v6 = objc_autoreleasePoolPush();
       v13 = +[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest, "fetchRequestWithEntityName:", +[NSCKRecordMetadata entityPath]);
       [(NSFetchRequest *)v13 setFetchBatchSize:50];
-      v14 = [a3 executeFetchRequest:v13 error:&v133];
+      v14 = [store executeFetchRequest:v13 error:&v133];
       if (v14)
       {
         v100 = v6;
@@ -96,29 +96,29 @@
               v16 = *(*(&v129 + 1) + 8 * i);
               context = objc_autoreleasePoolPush();
               v17 = [objc_msgSend(v16 "objectID")];
-              v18 = [v17 identifier];
-              v19 = [v17 _persistentStoreCoordinator];
-              v20 = [v16 ckRecordName];
+              identifier = [v17 identifier];
+              _persistentStoreCoordinator = [v17 _persistentStoreCoordinator];
+              ckRecordName = [v16 ckRecordName];
               v21 = [objc_msgSend(v16 "recordZone")];
               v22 = [objc_msgSend(v16 "recordZone")];
               [objc_msgSend(v16 "objectID")];
-              v23 = [PFCloudKitStoreComparisonCacheStoreCache createRecordIDForRecordName:a1 inZoneWithName:v20 ownerName:v21 inStore:v22];
+              v23 = [PFCloudKitStoreComparisonCacheStoreCache createRecordIDForRecordName:self inZoneWithName:ckRecordName ownerName:v21 inStore:v22];
               v24 = [objc_msgSend(v17 "model")];
-              v25 = [v19 managedObjectIDForURIRepresentation:{objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"x-coredata://%@/%@/p%@", v18, objc_msgSend(objc_msgSend(v24, "entityDescription"), "name"), objc_msgSend(v16, "entityPK")))}];
-              [*(a1 + 64) setObject:v16 forKey:v25];
-              [*(a1 + 88) setObject:v23 forKey:v25];
-              [*(a1 + 56) setObject:v16 forKey:v23];
-              v26 = [*(a1 + 112) objectForKey:{objc_msgSend(v23, "zoneID")}];
+              v25 = [_persistentStoreCoordinator managedObjectIDForURIRepresentation:{objc_msgSend(MEMORY[0x1E695DFF8], "URLWithString:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"x-coredata://%@/%@/p%@", identifier, objc_msgSend(objc_msgSend(v24, "entityDescription"), "name"), objc_msgSend(v16, "entityPK")))}];
+              [*(self + 64) setObject:v16 forKey:v25];
+              [*(self + 88) setObject:v23 forKey:v25];
+              [*(self + 56) setObject:v16 forKey:v23];
+              v26 = [*(self + 112) objectForKey:{objc_msgSend(v23, "zoneID")}];
               if (!v26)
               {
                 v26 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-                [*(a1 + 112) setObject:v26 forKey:{objc_msgSend(v23, "zoneID")}];
+                [*(self + 112) setObject:v26 forKey:{objc_msgSend(v23, "zoneID")}];
               }
 
               [v26 addObject:v23];
 
-              [*(a1 + 72) addObject:v23];
-              [*(a1 + 80) setObject:v25 forKey:v23];
+              [*(self + 72) addObject:v23];
+              [*(self + 80) setObject:v25 forKey:v23];
 
               objc_autoreleasePoolPop(context);
             }
@@ -131,7 +131,7 @@
 
         objc_autoreleasePoolPop(v100);
         v6 = objc_autoreleasePoolPush();
-        v27 = [a3 executeFetchRequest:+[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest error:{"fetchRequestWithEntityName:", +[NSCKRecordZoneMetadata entityPath](NSCKRecordZoneMetadata, "entityPath")), &v133}];
+        v27 = [store executeFetchRequest:+[NSFetchRequest fetchRequestWithEntityName:](NSFetchRequest error:{"fetchRequestWithEntityName:", +[NSCKRecordZoneMetadata entityPath](NSCKRecordZoneMetadata, "entityPath")), &v133}];
         if (v27)
         {
           v28 = v27;
@@ -155,11 +155,11 @@
 
                 v33 = *(*(&v125 + 1) + 8 * j);
                 v34 = [objc_msgSend(v33 "objectID")];
-                v35 = -[PFCloudKitStoreComparisonCacheStoreCache createRecordZoneIDForZoneName:ownerName:inStore:](a1, [v33 ckRecordZoneName], objc_msgSend(v33, "ckOwnerName"));
-                [*(a1 + 96) addObject:v35];
+                v35 = -[PFCloudKitStoreComparisonCacheStoreCache createRecordZoneIDForZoneName:ownerName:inStore:](self, [v33 ckRecordZoneName], objc_msgSend(v33, "ckOwnerName"));
+                [*(self + 96) addObject:v35];
                 if ([v33 encodedShareAsset])
                 {
-                  [*(a1 + 104) addObject:v35];
+                  [*(self + 104) addObject:v35];
                 }
               }
 
@@ -170,7 +170,7 @@
           }
 
           objc_autoreleasePoolPop(v6);
-          v5 = a1;
+          selfCopy4 = self;
           a2 = v89;
           goto LABEL_34;
         }
@@ -188,20 +188,20 @@ LABEL_34:
   v36 = [objc_msgSend(a2 "persistentStoreCoordinator")];
   if ([objc_msgSend(a2 "configurationName")])
   {
-    v37 = [v36 entitiesForConfiguration:{objc_msgSend(a2, "configurationName")}];
+    entities = [v36 entitiesForConfiguration:{objc_msgSend(a2, "configurationName")}];
   }
 
   else
   {
-    v37 = [v36 entities];
+    entities = [v36 entities];
   }
 
   v123 = 0u;
   v124 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v92 = v37;
-  v94 = [v37 countByEnumeratingWithState:&v121 objects:v141 count:16];
+  v92 = entities;
+  v94 = [entities countByEnumeratingWithState:&v121 objects:v141 count:16];
   if (v94)
   {
     v101 = v36;
@@ -231,7 +231,7 @@ LABEL_34:
           }
         }
 
-        v44 = [a3 executeFetchRequest:v42 error:&v133];
+        v44 = [store executeFetchRequest:v42 error:&v133];
         if (!v44)
         {
           v59 = v133;
@@ -264,16 +264,16 @@ LABEL_34:
 
               v50 = *(*(&v117 + 1) + 8 * k);
               v51 = objc_autoreleasePoolPush();
-              v52 = [v50 objectID];
-              v53 = v52;
+              objectID = [v50 objectID];
+              v53 = objectID;
               if (v43)
               {
                 v54 = [v50 valueForKey:@"ckRecordID"];
                 if (!v54)
                 {
-                  v55 = [v53 URIRepresentation];
-                  v5 = a1;
-                  v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", objc_msgSend(objc_msgSend(v55, "URLByDeletingLastPathComponent"), "lastPathComponent"), objc_msgSend(v55, "lastPathComponent")];
+                  uRIRepresentation = [v53 URIRepresentation];
+                  selfCopy4 = self;
+                  v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", objc_msgSend(objc_msgSend(uRIRepresentation, "URLByDeletingLastPathComponent"), "lastPathComponent"), objc_msgSend(uRIRepresentation, "lastPathComponent")];
                 }
 
                 if ([objc_msgSend(objc_msgSend(v50 "entity")] && objc_msgSend(v50, "valueForKey:", @"ckRecordSystemFields"))
@@ -298,13 +298,13 @@ LABEL_34:
 
               else
               {
-                v58 = [v52 URIRepresentation];
-                v5 = a1;
-                v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", objc_msgSend(objc_msgSend(v58, "URLByDeletingLastPathComponent"), "lastPathComponent"), objc_msgSend(v58, "lastPathComponent")];
+                uRIRepresentation2 = [objectID URIRepresentation];
+                selfCopy4 = self;
+                v54 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@", objc_msgSend(objc_msgSend(uRIRepresentation2, "URLByDeletingLastPathComponent"), "lastPathComponent"), objc_msgSend(uRIRepresentation2, "lastPathComponent")];
               }
 
-              [*(v5 + 16) setObject:v53 forKey:v54];
-              [*(v5 + 8) addObject:v54];
+              [*(selfCopy4 + 16) setObject:v53 forKey:v54];
+              [*(selfCopy4 + 8) addObject:v54];
               objc_autoreleasePoolPop(v51);
             }
 
@@ -339,9 +339,9 @@ LABEL_69:
     v97 = 1;
   }
 
-  if (*(v5 + 120) == 1)
+  if (*(selfCopy4 + 120) == 1)
   {
-    v60 = [NSCKMirroredRelationship fetchMirroredRelationshipsMatchingPredicate:a2 fromStore:a3 inManagedObjectContext:&v133 error:?];
+    v60 = [NSCKMirroredRelationship fetchMirroredRelationshipsMatchingPredicate:a2 fromStore:store inManagedObjectContext:&v133 error:?];
     if (v60)
     {
       v61 = v60;
@@ -371,19 +371,19 @@ LABEL_69:
             {
               v66 = v65;
               v67 = +[PFCloudKitSerializer mtmKeyForObjectWithRecordName:relatedToObjectWithRecordName:byRelationship:withInverse:](PFCloudKitSerializer, [v63 recordName], objc_msgSend(v63, "relatedRecordName"), v66, objc_msgSend(v66, "inverseRelationship"));
-              [*(a1 + 24) setObject:v63 forKey:v67];
+              [*(self + 24) setObject:v63 forKey:v67];
               v109 = v67;
-              [*(a1 + 32) addObject:v67];
-              v68 = [v63 recordName];
+              [*(self + 32) addObject:v67];
+              recordName = [v63 recordName];
               v69 = [objc_msgSend(v63 "recordZone")];
               v70 = [objc_msgSend(v63 "recordZone")];
               [objc_msgSend(v63 "objectID")];
-              v71 = [PFCloudKitStoreComparisonCacheStoreCache createRecordIDForRecordName:a1 inZoneWithName:v68 ownerName:v69 inStore:v70];
-              v72 = [*(a1 + 48) objectForKey:v71];
+              v71 = [PFCloudKitStoreComparisonCacheStoreCache createRecordIDForRecordName:self inZoneWithName:recordName ownerName:v69 inStore:v70];
+              v72 = [*(self + 48) objectForKey:v71];
               if (!v72)
               {
                 v72 = objc_alloc_init(MEMORY[0x1E695DF90]);
-                [*(a1 + 48) setObject:v72 forKey:v71];
+                [*(self + 48) setObject:v72 forKey:v71];
               }
 
               contexta = v64;
@@ -394,18 +394,18 @@ LABEL_69:
                 [v72 setObject:v73 forKey:{objc_msgSend(v66, "name")}];
               }
 
-              v74 = [v63 relatedRecordName];
+              relatedRecordName = [v63 relatedRecordName];
               v75 = [objc_msgSend(v63 "recordZone")];
               v76 = [objc_msgSend(v63 "recordZone")];
               [objc_msgSend(v63 "objectID")];
-              v77 = [PFCloudKitStoreComparisonCacheStoreCache createRecordIDForRecordName:a1 inZoneWithName:v74 ownerName:v75 inStore:v76];
+              v77 = [PFCloudKitStoreComparisonCacheStoreCache createRecordIDForRecordName:self inZoneWithName:relatedRecordName ownerName:v75 inStore:v76];
               [v73 addObject:v77];
 
-              v78 = [*(a1 + 48) objectForKey:v77];
+              v78 = [*(self + 48) objectForKey:v77];
               if (!v78)
               {
                 v78 = objc_alloc_init(MEMORY[0x1E695DF90]);
-                [*(a1 + 48) setObject:v78 forKey:v77];
+                [*(self + 48) setObject:v78 forKey:v77];
               }
 
               v79 = [v78 objectForKey:{objc_msgSend(objc_msgSend(v66, "inverseRelationship"), "name")}];
@@ -417,11 +417,11 @@ LABEL_69:
                 [v78 setObject:v79 forKey:{objc_msgSend(objc_msgSend(v66, "inverseRelationship"), "name")}];
               }
 
-              v80 = [*(a1 + 40) objectForKey:{objc_msgSend(v71, "zoneID")}];
+              v80 = [*(self + 40) objectForKey:{objc_msgSend(v71, "zoneID")}];
               if (!v80)
               {
                 v80 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-                [*(a1 + 40) setObject:v80 forKey:{objc_msgSend(v71, "zoneID")}];
+                [*(self + 40) setObject:v80 forKey:{objc_msgSend(v71, "zoneID")}];
               }
 
               [v80 addObject:v109];
@@ -447,10 +447,10 @@ LABEL_97:
     v84 = v133;
     if (v84)
     {
-      if (a4)
+      if (context)
       {
         v81 = 0;
-        *a4 = v84;
+        *context = v84;
         goto LABEL_105;
       }
     }
@@ -554,23 +554,23 @@ LABEL_106:
   [(PFCloudKitStoreComparisonCacheStoreCache *)&v3 dealloc];
 }
 
-- (uint64_t)createRecordZoneIDForZoneName:(uint64_t)a1 ownerName:(uint64_t)a2 inStore:(void *)a3
+- (uint64_t)createRecordZoneIDForZoneName:(uint64_t)name ownerName:(uint64_t)ownerName inStore:(void *)store
 {
-  v3 = a3;
-  if ([a3 isEqualToString:getCloudKitCKCurrentUserDefaultName()] && *(a1 + 128))
+  storeCopy = store;
+  if ([store isEqualToString:getCloudKitCKCurrentUserDefaultName()] && *(name + 128))
   {
-    v3 = *(a1 + 128);
+    storeCopy = *(name + 128);
   }
 
   v6 = objc_alloc(getCloudKitCKRecordZoneIDClass[0]());
 
-  return [v6 initWithZoneName:a2 ownerName:v3];
+  return [v6 initWithZoneName:ownerName ownerName:storeCopy];
 }
 
-- (uint64_t)createRecordIDForRecordName:(uint64_t)a1 inZoneWithName:(uint64_t)a2 ownerName:(uint64_t)a3 inStore:(void *)a4
+- (uint64_t)createRecordIDForRecordName:(uint64_t)name inZoneWithName:(uint64_t)withName ownerName:(uint64_t)ownerName inStore:(void *)store
 {
-  v5 = [PFCloudKitStoreComparisonCacheStoreCache createRecordZoneIDForZoneName:a1 ownerName:a3 inStore:a4];
-  v6 = [objc_alloc(getCloudKitCKRecordIDClass[0]()) initWithRecordName:a2 zoneID:v5];
+  v5 = [PFCloudKitStoreComparisonCacheStoreCache createRecordZoneIDForZoneName:name ownerName:ownerName inStore:store];
+  v6 = [objc_alloc(getCloudKitCKRecordIDClass[0]()) initWithRecordName:withName zoneID:v5];
 
   return v6;
 }

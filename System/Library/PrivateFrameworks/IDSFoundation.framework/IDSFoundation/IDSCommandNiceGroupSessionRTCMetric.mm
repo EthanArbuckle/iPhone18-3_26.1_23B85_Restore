@@ -1,5 +1,5 @@
 @interface IDSCommandNiceGroupSessionRTCMetric
-- (IDSCommandNiceGroupSessionRTCMetric)initWithCommand:(int64_t)a3 success:(BOOL)a4 errorDomain:(id)a5 errorCode:(int64_t)a6 retryCount:(int64_t)a7;
+- (IDSCommandNiceGroupSessionRTCMetric)initWithCommand:(int64_t)command success:(BOOL)success errorDomain:(id)domain errorCode:(int64_t)code retryCount:(int64_t)count;
 - (NSDictionary)dictionaryRepresentation;
 @end
 
@@ -20,10 +20,10 @@
     CFDictionarySetValue(v3, @"success", v5);
   }
 
-  v6 = [(IDSCommandNiceGroupSessionRTCMetric *)self errorDomain];
-  if (v6)
+  errorDomain = [(IDSCommandNiceGroupSessionRTCMetric *)self errorDomain];
+  if (errorDomain)
   {
-    CFDictionarySetValue(v3, @"errorDomain", v6);
+    CFDictionarySetValue(v3, @"errorDomain", errorDomain);
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithInteger:{-[IDSCommandNiceGroupSessionRTCMetric errorCode](self, "errorCode")}];
@@ -41,20 +41,20 @@
   return v3;
 }
 
-- (IDSCommandNiceGroupSessionRTCMetric)initWithCommand:(int64_t)a3 success:(BOOL)a4 errorDomain:(id)a5 errorCode:(int64_t)a6 retryCount:(int64_t)a7
+- (IDSCommandNiceGroupSessionRTCMetric)initWithCommand:(int64_t)command success:(BOOL)success errorDomain:(id)domain errorCode:(int64_t)code retryCount:(int64_t)count
 {
-  v13 = a5;
+  domainCopy = domain;
   v17.receiver = self;
   v17.super_class = IDSCommandNiceGroupSessionRTCMetric;
   v14 = [(IDSCommandNiceGroupSessionRTCMetric *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_command = a3;
-    v14->_success = a4;
-    objc_storeStrong(&v14->_errorDomain, a5);
-    v15->_errorCode = a6;
-    v15->_retryCount = a7;
+    v14->_command = command;
+    v14->_success = success;
+    objc_storeStrong(&v14->_errorDomain, domain);
+    v15->_errorCode = code;
+    v15->_retryCount = count;
   }
 
   return v15;

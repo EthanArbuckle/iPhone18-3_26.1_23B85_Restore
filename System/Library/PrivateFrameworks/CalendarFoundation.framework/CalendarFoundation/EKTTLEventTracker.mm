@@ -1,21 +1,21 @@
 @interface EKTTLEventTracker
-+ (id)_valueForAlertType:(unint64_t)a3;
-+ (id)_valueForETAType:(unint64_t)a3;
-+ (id)_valueForTransportType:(unint64_t)a3;
-+ (id)_valueForTravelState:(unint64_t)a3;
++ (id)_valueForAlertType:(unint64_t)type;
++ (id)_valueForETAType:(unint64_t)type;
++ (id)_valueForTransportType:(unint64_t)type;
++ (id)_valueForTravelState:(unint64_t)state;
 @end
 
 @implementation EKTTLEventTracker
 
-+ (id)_valueForAlertType:(unint64_t)a3
++ (id)_valueForAlertType:(unint64_t)type
 {
   v3 = @"Approaching Departure";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"Leave Now";
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return @"Late";
   }
@@ -26,28 +26,28 @@
   }
 }
 
-+ (id)_valueForTransportType:(unint64_t)a3
++ (id)_valueForTransportType:(unint64_t)type
 {
-  if (a3 - 1 > 2)
+  if (type - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E7EC6398 + a3 - 1);
+    return *(&off_1E7EC6398 + type - 1);
   }
 }
 
-+ (id)_valueForETAType:(unint64_t)a3
++ (id)_valueForETAType:(unint64_t)type
 {
   v3 = @"Short";
-  if (a3 == 1)
+  if (type == 1)
   {
     v3 = @"Medium";
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     return @"Long";
   }
@@ -58,16 +58,16 @@
   }
 }
 
-+ (id)_valueForTravelState:(unint64_t)a3
++ (id)_valueForTravelState:(unint64_t)state
 {
-  if (a3 - 1 > 2)
+  if (state - 1 > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return *(&off_1E7EC63B0 + a3 - 1);
+    return *(&off_1E7EC63B0 + state - 1);
   }
 }
 

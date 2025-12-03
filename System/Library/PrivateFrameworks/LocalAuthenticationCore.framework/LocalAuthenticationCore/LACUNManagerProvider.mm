@@ -1,7 +1,7 @@
 @interface LACUNManagerProvider
 + (id)sharedInstance;
 - (LACUNManagerProvider)init;
-- (id)sharedInstanceWithBundleIdentifier:(id)a3 categories:(id)a4 replyQueue:(id)a5;
+- (id)sharedInstanceWithBundleIdentifier:(id)identifier categories:(id)categories replyQueue:(id)queue;
 @end
 
 @implementation LACUNManagerProvider
@@ -41,17 +41,17 @@ uint64_t __38__LACUNManagerProvider_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)sharedInstanceWithBundleIdentifier:(id)a3 categories:(id)a4 replyQueue:(id)a5
+- (id)sharedInstanceWithBundleIdentifier:(id)identifier categories:(id)categories replyQueue:(id)queue
 {
   v36 = *MEMORY[0x1E69E9840];
-  v27 = a3;
-  v7 = a4;
-  v26 = a5;
+  identifierCopy = identifier;
+  categoriesCopy = categories;
+  queueCopy = queue;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = [v7 sortedArrayUsingSelector:sel_identifier];
+  v8 = [categoriesCopy sortedArrayUsingSelector:sel_identifier];
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v9)
   {
@@ -70,8 +70,8 @@ uint64_t __38__LACUNManagerProvider_sharedInstance__block_invoke()
         }
 
         v15 = MEMORY[0x1E696AEC0];
-        v16 = [*(*(&v31 + 1) + 8 * v13) identifier];
-        v12 = [v15 stringWithFormat:@"%@-%@", v14, v16];
+        identifier = [*(*(&v31 + 1) + 8 * v13) identifier];
+        v12 = [v15 stringWithFormat:@"%@-%@", v14, identifier];
 
         ++v13;
         v14 = v12;
@@ -89,9 +89,9 @@ uint64_t __38__LACUNManagerProvider_sharedInstance__block_invoke()
     v12 = &stru_1F2652748;
   }
 
-  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", v27, v12];
-  v18 = [(LACUNManagerProvider *)self sharedInstances];
-  v19 = [v18 objectForKeyedSubscript:v17];
+  v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@-%@", identifierCopy, v12];
+  sharedInstances = [(LACUNManagerProvider *)self sharedInstances];
+  v19 = [sharedInstances objectForKeyedSubscript:v17];
 
   if (!v19)
   {
@@ -100,13 +100,13 @@ uint64_t __38__LACUNManagerProvider_sharedInstance__block_invoke()
     v28[1] = 3221225472;
     v28[2] = __81__LACUNManagerProvider_sharedInstanceWithBundleIdentifier_categories_replyQueue___block_invoke;
     v28[3] = &unk_1E7A97CF8;
-    v29 = v27;
-    v30 = v7;
+    v29 = identifierCopy;
+    v30 = categoriesCopy;
     v21 = __81__LACUNManagerProvider_sharedInstanceWithBundleIdentifier_categories_replyQueue___block_invoke(v28);
-    v19 = [(LACUNManagerQueueDecorator *)v20 initWithManager:v21 replyQueue:v26];
+    v19 = [(LACUNManagerQueueDecorator *)v20 initWithManager:v21 replyQueue:queueCopy];
 
-    v22 = [(LACUNManagerProvider *)self sharedInstances];
-    [v22 setObject:v19 forKeyedSubscript:v17];
+    sharedInstances2 = [(LACUNManagerProvider *)self sharedInstances];
+    [sharedInstances2 setObject:v19 forKeyedSubscript:v17];
   }
 
   v23 = *MEMORY[0x1E69E9840];

@@ -3,7 +3,7 @@
 - (IMDCKAbstractSyncControllerDelegate)delegate;
 - (IMDCKSyncState)syncState;
 - (id)latestSyncToken;
-- (id)syncStateDebuggingInfo:(id)a3;
+- (id)syncStateDebuggingInfo:(id)info;
 - (void)deleteSyncToken;
 - (void)resetRecordCounts;
 - (void)setBroadcastedSyncStateStateToFinished;
@@ -13,17 +13,17 @@
 - (void)setBroadcastedSyncStateToStartingInitialSync;
 - (void)setBroadcastedSyncStateToStartingPeriodicSync;
 - (void)setBroadcastedSyncStateToUploading;
-- (void)setIsSyncing:(BOOL)a3;
-- (void)setLatestSyncToken:(id)a3;
-- (void)syncBatchCompleted:(unint64_t)a3;
+- (void)setIsSyncing:(BOOL)syncing;
+- (void)setLatestSyncToken:(id)token;
+- (void)syncBatchCompleted:(unint64_t)completed;
 @end
 
 @implementation IMDCKAbstractSyncController
 
-- (void)setIsSyncing:(BOOL)a3
+- (void)setIsSyncing:(BOOL)syncing
 {
-  self->_isSyncing = a3;
-  if (a3)
+  self->_isSyncing = syncing;
+  if (syncing)
   {
     [(IMDCKAbstractSyncController *)self setBroadcastedSyncStateStateToStarting];
   }
@@ -36,32 +36,32 @@
 
 - (IMDCKSyncState)syncState
 {
-  v2 = [(IMDCKAbstractSyncController *)self ckUtilities];
-  v3 = [v2 syncState];
+  ckUtilities = [(IMDCKAbstractSyncController *)self ckUtilities];
+  syncState = [ckUtilities syncState];
 
-  return v3;
+  return syncState;
 }
 
-- (void)setLatestSyncToken:(id)a3
+- (void)setLatestSyncToken:(id)token
 {
-  v4 = a3;
-  v6 = [(IMDCKAbstractSyncController *)self _syncTokenStore];
-  v5 = [(IMDCKAbstractSyncController *)self _syncTokenKey];
-  [v6 persistToken:v4 forKey:v5];
+  tokenCopy = token;
+  _syncTokenStore = [(IMDCKAbstractSyncController *)self _syncTokenStore];
+  _syncTokenKey = [(IMDCKAbstractSyncController *)self _syncTokenKey];
+  [_syncTokenStore persistToken:tokenCopy forKey:_syncTokenKey];
 }
 
 - (void)deleteSyncToken
 {
-  v4 = [(IMDCKAbstractSyncController *)self _syncTokenStore];
-  v3 = [(IMDCKAbstractSyncController *)self _syncTokenKey];
-  [v4 persistToken:0 forKey:v3];
+  _syncTokenStore = [(IMDCKAbstractSyncController *)self _syncTokenStore];
+  _syncTokenKey = [(IMDCKAbstractSyncController *)self _syncTokenKey];
+  [_syncTokenStore persistToken:0 forKey:_syncTokenKey];
 }
 
 - (id)latestSyncToken
 {
-  v3 = [(IMDCKAbstractSyncController *)self _syncTokenStore];
-  v4 = [(IMDCKAbstractSyncController *)self _syncTokenKey];
-  v5 = [v3 tokenForKey:v4];
+  _syncTokenStore = [(IMDCKAbstractSyncController *)self _syncTokenStore];
+  _syncTokenKey = [(IMDCKAbstractSyncController *)self _syncTokenKey];
+  v5 = [_syncTokenStore tokenForKey:_syncTokenKey];
 
   return v5;
 }
@@ -76,67 +76,67 @@
 
 - (void)setBroadcastedSyncStateStateToFinished
 {
-  v3 = [(IMDCKAbstractSyncController *)self syncState];
-  [v3 setSyncControllerSyncState:0 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
+  syncState = [(IMDCKAbstractSyncController *)self syncState];
+  [syncState setSyncControllerSyncState:0 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
 }
 
 - (void)setBroadcastedSyncStateStateToStarting
 {
-  v3 = [(IMDCKAbstractSyncController *)self syncState];
-  [v3 setSyncControllerSyncState:1 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
+  syncState = [(IMDCKAbstractSyncController *)self syncState];
+  [syncState setSyncControllerSyncState:1 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
 }
 
 - (void)setBroadcastedSyncStateToDownloading
 {
-  v3 = [(IMDCKAbstractSyncController *)self syncState];
-  [v3 setSyncControllerSyncState:2 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
+  syncState = [(IMDCKAbstractSyncController *)self syncState];
+  [syncState setSyncControllerSyncState:2 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
 }
 
 - (void)setBroadcastedSyncStateToUploading
 {
-  v3 = [(IMDCKAbstractSyncController *)self syncState];
-  [v3 setSyncControllerSyncState:4 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
+  syncState = [(IMDCKAbstractSyncController *)self syncState];
+  [syncState setSyncControllerSyncState:4 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
 }
 
 - (void)setBroadcastedSyncStateToDeleting
 {
-  v3 = [(IMDCKAbstractSyncController *)self syncState];
-  [v3 setSyncControllerSyncState:3 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
+  syncState = [(IMDCKAbstractSyncController *)self syncState];
+  [syncState setSyncControllerSyncState:3 withRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
 }
 
 - (void)setBroadcastedSyncStateToStartingPeriodicSync
 {
-  v3 = [(IMDCKAbstractSyncController *)self syncState];
-  [v3 setStartingPeriodicSyncWithRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
+  syncState = [(IMDCKAbstractSyncController *)self syncState];
+  [syncState setStartingPeriodicSyncWithRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
 }
 
 - (void)setBroadcastedSyncStateToStartingInitialSync
 {
-  v3 = [(IMDCKAbstractSyncController *)self syncState];
-  [v3 setStartingInitialSyncWithRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
+  syncState = [(IMDCKAbstractSyncController *)self syncState];
+  [syncState setStartingInitialSyncWithRecordType:{-[IMDCKAbstractSyncController syncControllerRecordType](self, "syncControllerRecordType")}];
 }
 
-- (id)syncStateDebuggingInfo:(id)a3
+- (id)syncStateDebuggingInfo:(id)info
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [(IMDCKAbstractSyncController *)self syncState];
-  v6 = [v5 description];
-  [v4 setObject:v6 forKey:@"syncState"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  syncState = [(IMDCKAbstractSyncController *)self syncState];
+  v6 = [syncState description];
+  [dictionary setObject:v6 forKey:@"syncState"];
 
-  [(IMDCKAbstractSyncController *)self addSyncDebuggingInfoToDictionary:v4];
+  [(IMDCKAbstractSyncController *)self addSyncDebuggingInfoToDictionary:dictionary];
 
-  return v4;
+  return dictionary;
 }
 
-- (void)syncBatchCompleted:(unint64_t)a3
+- (void)syncBatchCompleted:(unint64_t)completed
 {
-  v5 = [(IMDCKAbstractSyncController *)self delegate];
+  delegate = [(IMDCKAbstractSyncController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(IMDCKAbstractSyncController *)self delegate];
-    [v7 syncController:self syncBatchCompleted:a3];
+    delegate2 = [(IMDCKAbstractSyncController *)self delegate];
+    [delegate2 syncController:self syncBatchCompleted:completed];
   }
 }
 

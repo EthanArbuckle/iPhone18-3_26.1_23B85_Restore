@@ -1,26 +1,26 @@
 @interface _GDSServerConnection
 + (id)createSessionConfiguration;
 + (id)dateFormatter;
-+ (id)dateFromString:(id)a3;
-+ (id)dateStringFromDate:(id)a3;
-+ (id)fetchConfigWithError:(id *)a3;
++ (id)dateFromString:(id)string;
++ (id)dateStringFromDate:(id)date;
++ (id)fetchConfigWithError:(id *)error;
 + (id)fetchEstimatedCountryCode;
 + (id)osBuildVersion;
 + (id)queryItemsMetaParams;
 + (id)sharedInstance;
 - (_GDSServerConnection)init;
-- (id)dataFromLocation:(id)a3;
-- (id)fetchBalancingAuthorityFromLocation:(id)a3;
+- (id)dataFromLocation:(id)location;
+- (id)fetchBalancingAuthorityFromLocation:(id)location;
 - (id)fetchBalancingAuthorityPolygons;
-- (id)fetchCarbonIntensityHistoryForBA:(id)a3 from:(id)a4 to:(id)a5;
-- (id)fetchMarginalEmissionForecastFor:(id)a3;
+- (id)fetchCarbonIntensityHistoryForBA:(id)a from:(id)from to:(id)to;
+- (id)fetchMarginalEmissionForecastFor:(id)for;
 - (id)getFakeSecret;
 - (id)getFakeSecretVersion;
 - (id)getFakeServerURL;
-- (id)getRequestForEndpoint:(id)a3 withData:(id)a4 keySequence:(id)a5;
-- (id)postRequestForEndpoint:(id)a3 withData:(id)a4;
+- (id)getRequestForEndpoint:(id)endpoint withData:(id)data keySequence:(id)sequence;
+- (id)postRequestForEndpoint:(id)endpoint withData:(id)data;
 - (void)checkServerConfiguration;
-- (void)handleNewConfig:(id)a3;
+- (void)handleNewConfig:(id)config;
 - (void)loadConfigState;
 @end
 
@@ -56,9 +56,9 @@
         [_GDSServerConnection init];
       }
 
-      v11 = [MEMORY[0x277CBEAA8] distantPast];
+      distantPast = [MEMORY[0x277CBEAA8] distantPast];
       v12 = *(v2 + 4);
-      *(v2 + 4) = v11;
+      *(v2 + 4) = distantPast;
     }
 
     [v2 checkServerConfiguration];
@@ -92,49 +92,49 @@
   return v3;
 }
 
-+ (id)dateFromString:(id)a3
++ (id)dateFromString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = +[_GDSServerConnection dateFormatter];
-  v5 = [v4 dateFromString:v3];
+  v5 = [v4 dateFromString:stringCopy];
 
   return v5;
 }
 
-+ (id)dateStringFromDate:(id)a3
++ (id)dateStringFromDate:(id)date
 {
-  v3 = a3;
+  dateCopy = date;
   v4 = +[_GDSServerConnection dateFormatter];
-  v5 = [v4 stringFromDate:v3];
+  v5 = [v4 stringFromDate:dateCopy];
 
   return v5;
 }
 
 + (id)fetchEstimatedCountryCode
 {
-  v2 = [MEMORY[0x277D443A8] currentEstimates];
-  if ([v2 count])
+  currentEstimates = [MEMORY[0x277D443A8] currentEstimates];
+  if ([currentEstimates count])
   {
-    v3 = v2;
+    lastKnownEstimates = currentEstimates;
 LABEL_5:
-    v4 = [v2 objectAtIndexedSubscript:0];
-    v5 = [v4 countryCode];
+    v4 = [currentEstimates objectAtIndexedSubscript:0];
+    countryCode = [v4 countryCode];
 
     goto LABEL_6;
   }
 
-  v3 = [MEMORY[0x277D443A8] lastKnownEstimates];
+  lastKnownEstimates = [MEMORY[0x277D443A8] lastKnownEstimates];
 
-  if ([v3 count])
+  if ([lastKnownEstimates count])
   {
-    v2 = v3;
+    currentEstimates = lastKnownEstimates;
     goto LABEL_5;
   }
 
-  v5 = 0;
+  countryCode = 0;
 LABEL_6:
 
-  return v5;
+  return countryCode;
 }
 
 + (id)queryItemsMetaParams
@@ -150,20 +150,20 @@ LABEL_6:
 
   v4 = +[_GDSServerConnection platform];
   v5 = +[_GDSServerConnection osBuildVersion];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7 = [MEMORY[0x277CCAD18] queryItemWithName:@"country" value:v3];
-  [v6 addObject:v7];
+  [array addObject:v7];
 
   v8 = [MEMORY[0x277CCAD18] queryItemWithName:@"platform" value:v4];
-  [v6 addObject:v8];
+  [array addObject:v8];
 
   v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"build" value:v5];
-  [v6 addObject:v9];
+  [array addObject:v9];
 
-  return v6;
+  return array;
 }
 
-+ (id)fetchConfigWithError:(id *)a3
++ (id)fetchConfigWithError:(id *)error
 {
   v54 = *MEMORY[0x277D85DE8];
   v4 = os_log_create("com.apple.gds", "serverConnection");
@@ -217,11 +217,11 @@ LABEL_6:
   v15 = v4;
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v14 allHTTPHeaderFields];
+    allHTTPHeaderFields = [v14 allHTTPHeaderFields];
     *buf = 138412546;
     v51 = v14;
     v52 = 2112;
-    v53 = v16;
+    v53 = allHTTPHeaderFields;
     _os_log_impl(&dword_2507E1000, v15, OS_LOG_TYPE_DEFAULT, "Request: %@, Header: %@", buf, 0x16u);
   }
 
@@ -237,21 +237,21 @@ LABEL_6:
   v20 = v18;
   v31 = v20;
   v33 = &v44;
-  v34 = a3;
+  errorCopy = error;
   v21 = [v17 dataTaskWithRequest:v14 completionHandler:v29];
   [v21 resume];
   [v17 finishTasksAndInvalidate];
   v22 = dispatch_time(0, 10000000000);
   dispatch_semaphore_wait(v20, v22);
-  if (a3)
+  if (error)
   {
     v23 = v39[5];
     if (v23)
     {
-      *a3 = v23;
+      *error = v23;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = *a3;
+        v24 = *error;
         *buf = 138412290;
         v51 = v24;
         _os_log_impl(&dword_2507E1000, v19, OS_LOG_TYPE_DEFAULT, "Reporting error %@", buf, 0xCu);
@@ -321,10 +321,10 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleNewConfig:(id)a3
+- (void)handleNewConfig:(id)config
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"version"];
+  configCopy = config;
+  v5 = [configCopy objectForKeyedSubscript:@"version"];
   v6 = v5;
   if (v5)
   {
@@ -345,7 +345,7 @@ LABEL_14:
     [(NSUserDefaults *)defaults setObject:v12 forKey:@"configVersion"];
   }
 
-  v13 = [v4 objectForKeyedSubscript:@"serverUrl"];
+  v13 = [configCopy objectForKeyedSubscript:@"serverUrl"];
   if (v13)
   {
     objc_storeStrong(&self->_serverURL, v13);
@@ -361,7 +361,7 @@ LABEL_14:
     }
   }
 
-  v15 = [v4 objectForKeyedSubscript:@"configuration"];
+  v15 = [configCopy objectForKeyedSubscript:@"configuration"];
   v16 = [v15 objectForKeyedSubscript:@"cecEnabled"];
   v17 = v16;
   if (v16)
@@ -378,9 +378,9 @@ LABEL_14:
     [(NSUserDefaults *)self->_defaults setObject:v18 forKey:@"AccountingSupported"];
   }
 
-  v19 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   configFetchDate = self->_configFetchDate;
-  self->_configFetchDate = v19;
+  self->_configFetchDate = date;
 
   [(NSUserDefaults *)self->_defaults setObject:self->_configFetchDate forKey:@"configDate"];
 }
@@ -393,36 +393,36 @@ LABEL_14:
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)postRequestForEndpoint:(id)a3 withData:(id)a4
+- (id)postRequestForEndpoint:(id)endpoint withData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
+  dataCopy = data;
+  endpointCopy = endpoint;
   [(_GDSServerConnection *)self checkServerConfiguration];
-  v8 = [(_GDSServerConnection *)self getFakeServerURL];
-  serverURL = v8;
-  if (!v8)
+  getFakeServerURL = [(_GDSServerConnection *)self getFakeServerURL];
+  serverURL = getFakeServerURL;
+  if (!getFakeServerURL)
   {
     serverURL = self->_serverURL;
   }
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", serverURL, v7];
+  endpointCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", serverURL, endpointCopy];
 
-  v11 = [MEMORY[0x277CCACE0] componentsWithString:v10];
+  v11 = [MEMORY[0x277CCACE0] componentsWithString:endpointCopy];
   v12 = MEMORY[0x277CCAB70];
   v13 = [v11 URL];
   v14 = [v12 requestWithURL:v13];
 
   [v14 setHTTPMethod:@"POST"];
-  [v14 setHTTPBody:v6];
+  [v14 setHTTPBody:dataCopy];
 
   [v14 addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   [v14 addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-  v15 = [(_GDSServerConnection *)self getFakeSecret];
-  v16 = [(_GDSServerConnection *)self getFakeSecretVersion];
-  v17 = v16;
-  if (v15)
+  getFakeSecret = [(_GDSServerConnection *)self getFakeSecret];
+  getFakeSecretVersion = [(_GDSServerConnection *)self getFakeSecretVersion];
+  v17 = getFakeSecretVersion;
+  if (getFakeSecret)
   {
-    v18 = v15;
+    v18 = getFakeSecret;
   }
 
   else
@@ -430,9 +430,9 @@ LABEL_14:
     v18 = @"f971ea5835cead5eaf7e2750224fd8f4";
   }
 
-  if (v16)
+  if (getFakeSecretVersion)
   {
-    v19 = v16;
+    v19 = getFakeSecretVersion;
   }
 
   else
@@ -446,15 +446,15 @@ LABEL_14:
   return v21;
 }
 
-- (id)getRequestForEndpoint:(id)a3 withData:(id)a4 keySequence:(id)a5
+- (id)getRequestForEndpoint:(id)endpoint withData:(id)data keySequence:(id)sequence
 {
   v50 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v8 = a4;
-  v9 = a5;
+  endpointCopy = endpoint;
+  dataCopy = data;
+  sequenceCopy = sequence;
   [(_GDSServerConnection *)self checkServerConfiguration];
-  v40 = self;
-  v41 = [(_GDSServerConnection *)self getFakeServerURL];
+  selfCopy = self;
+  getFakeServerURL = [(_GDSServerConnection *)self getFakeServerURL];
   v10 = +[_GDSServerConnection queryItemsMetaParams];
   v11 = [v10 mutableCopy];
 
@@ -462,7 +462,7 @@ LABEL_14:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v12 = v9;
+  v12 = sequenceCopy;
   v13 = [v12 countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v13)
   {
@@ -478,12 +478,12 @@ LABEL_14:
         }
 
         v17 = *(*(&v43 + 1) + 8 * i);
-        v18 = [v8 objectForKeyedSubscript:v17];
+        v18 = [dataCopy objectForKeyedSubscript:v17];
 
         if (v18)
         {
           v19 = MEMORY[0x277CCAD18];
-          v20 = [v8 objectForKeyedSubscript:v17];
+          v20 = [dataCopy objectForKeyedSubscript:v17];
           v21 = [v19 queryItemWithName:v17 value:v20];
           [v11 addObject:v21];
         }
@@ -495,16 +495,16 @@ LABEL_14:
     while (v14);
   }
 
-  serverURL = v41;
-  if (!v41)
+  serverURL = getFakeServerURL;
+  if (!getFakeServerURL)
   {
-    serverURL = v40->_serverURL;
+    serverURL = selfCopy->_serverURL;
   }
 
-  v23 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", serverURL, v42];
-  v24 = [MEMORY[0x277CCACE0] componentsWithString:v23];
+  endpointCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", serverURL, endpointCopy];
+  v24 = [MEMORY[0x277CCACE0] componentsWithString:endpointCopy];
   [v24 setQueryItems:v11];
-  log = v40->_log;
+  log = selfCopy->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
     v26 = log;
@@ -521,12 +521,12 @@ LABEL_14:
   [v30 setHTTPMethod:@"GET"];
   [v30 addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   [v30 addValue:@"application/json" forHTTPHeaderField:@"Accept"];
-  v31 = [(_GDSServerConnection *)v40 getFakeSecret];
-  v32 = [(_GDSServerConnection *)v40 getFakeSecretVersion];
-  v33 = v32;
-  if (v31)
+  getFakeSecret = [(_GDSServerConnection *)selfCopy getFakeSecret];
+  getFakeSecretVersion = [(_GDSServerConnection *)selfCopy getFakeSecretVersion];
+  v33 = getFakeSecretVersion;
+  if (getFakeSecret)
   {
-    v34 = v31;
+    v34 = getFakeSecret;
   }
 
   else
@@ -534,9 +534,9 @@ LABEL_14:
     v34 = @"f971ea5835cead5eaf7e2750224fd8f4";
   }
 
-  if (v32)
+  if (getFakeSecretVersion)
   {
-    v35 = v32;
+    v35 = getFakeSecretVersion;
   }
 
   else
@@ -555,8 +555,8 @@ LABEL_14:
 - (id)getFakeSecret
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(_GDSServerConnection *)self fakeDataDefaults];
-  v4 = [v3 stringForKey:@"fakeSecret"];
+  fakeDataDefaults = [(_GDSServerConnection *)self fakeDataDefaults];
+  v4 = [fakeDataDefaults stringForKey:@"fakeSecret"];
 
   log = self->_log;
   v6 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
@@ -567,7 +567,7 @@ LABEL_14:
       v7 = v4;
       v8 = log;
       v12 = 136315138;
-      v13 = [v4 UTF8String];
+      uTF8String = [v4 UTF8String];
       _os_log_impl(&dword_2507E1000, v8, OS_LOG_TYPE_DEFAULT, "Found fakeSecret: %s", &v12, 0xCu);
     }
 
@@ -588,8 +588,8 @@ LABEL_14:
 - (id)getFakeSecretVersion
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(_GDSServerConnection *)self fakeDataDefaults];
-  v4 = [v3 stringForKey:@"fakeSecretVersion"];
+  fakeDataDefaults = [(_GDSServerConnection *)self fakeDataDefaults];
+  v4 = [fakeDataDefaults stringForKey:@"fakeSecretVersion"];
 
   log = self->_log;
   v6 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
@@ -600,7 +600,7 @@ LABEL_14:
       v7 = v4;
       v8 = log;
       v12 = 136315138;
-      v13 = [v4 UTF8String];
+      uTF8String = [v4 UTF8String];
       _os_log_impl(&dword_2507E1000, v8, OS_LOG_TYPE_DEFAULT, "Found fakeSecretVersion: %s", &v12, 0xCu);
     }
 
@@ -621,8 +621,8 @@ LABEL_14:
 - (id)getFakeServerURL
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(_GDSServerConnection *)self fakeDataDefaults];
-  v4 = [v3 stringForKey:@"fakeServerURL"];
+  fakeDataDefaults = [(_GDSServerConnection *)self fakeDataDefaults];
+  v4 = [fakeDataDefaults stringForKey:@"fakeServerURL"];
 
   log = self->_log;
   v6 = os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT);
@@ -633,7 +633,7 @@ LABEL_14:
       v7 = v4;
       v8 = log;
       v12 = 136315138;
-      v13 = [v4 UTF8String];
+      uTF8String = [v4 UTF8String];
       _os_log_impl(&dword_2507E1000, v8, OS_LOG_TYPE_DEFAULT, "Found fakeServerURL: %s", &v12, 0xCu);
     }
 
@@ -651,29 +651,29 @@ LABEL_14:
   return v4;
 }
 
-- (id)dataFromLocation:(id)a3
+- (id)dataFromLocation:(id)location
 {
   v21[2] = *MEMORY[0x277D85DE8];
   v20[0] = @"longitude";
   v3 = MEMORY[0x277CCABB0];
-  v4 = a3;
-  [v4 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v6 = [v3 numberWithDouble:v5];
   v20[1] = @"latitude";
   v21[0] = v6;
   v7 = MEMORY[0x277CCABB0];
-  [v4 coordinate];
+  [locationCopy coordinate];
   v9 = v8;
 
   v10 = [v7 numberWithDouble:v9];
   v21[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
-  v12 = [MEMORY[0x277CBEB18] array];
-  [v12 addObject:v11];
+  array = [MEMORY[0x277CBEB18] array];
+  [array addObject:v11];
   v13 = MEMORY[0x277CCAAA0];
   v18 = @"locations";
-  v19 = v12;
+  v19 = array;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
   v15 = [v13 dataWithJSONObject:v14 options:0 error:0];
 
@@ -684,17 +684,17 @@ LABEL_14:
 
 + (id)createSessionConfiguration
 {
-  v2 = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
-  [v2 setRequestCachePolicy:5];
-  v3 = [MEMORY[0x277CCAD30] sessionWithConfiguration:v2 delegate:0 delegateQueue:0];
+  defaultSessionConfiguration = [MEMORY[0x277CCAD38] defaultSessionConfiguration];
+  [defaultSessionConfiguration setRequestCachePolicy:5];
+  v3 = [MEMORY[0x277CCAD30] sessionWithConfiguration:defaultSessionConfiguration delegate:0 delegateQueue:0];
 
   return v3;
 }
 
-- (id)fetchBalancingAuthorityFromLocation:(id)a3
+- (id)fetchBalancingAuthorityFromLocation:(id)location
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -702,13 +702,13 @@ LABEL_14:
   v30 = __Block_byref_object_dispose_;
   v31 = 0;
   v5 = dispatch_semaphore_create(0);
-  v6 = [(_GDSServerConnection *)self dataFromLocation:v4];
+  v6 = [(_GDSServerConnection *)self dataFromLocation:locationCopy];
   v7 = [(_GDSServerConnection *)self postRequestForEndpoint:@"getBalancingAuthorities" withData:v6];
   v8 = self->_log;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v7 allHTTPHeaderFields];
-    [(_GDSServerConnection *)v7 fetchBalancingAuthorityFromLocation:v9, buf, v8];
+    allHTTPHeaderFields = [v7 allHTTPHeaderFields];
+    [(_GDSServerConnection *)v7 fetchBalancingAuthorityFromLocation:allHTTPHeaderFields, buf, v8];
   }
 
   v10 = +[_GDSServerConnection createSessionConfiguration];
@@ -716,10 +716,10 @@ LABEL_14:
   v19 = 3221225472;
   v20 = __60___GDSServerConnection_fetchBalancingAuthorityFromLocation___block_invoke;
   v21 = &unk_27969E1B0;
-  v22 = self;
+  selfCopy = self;
   v11 = v5;
   v23 = v11;
-  v12 = v4;
+  v12 = locationCopy;
   v24 = v12;
   v25 = &v26;
   v13 = [v10 dataTaskWithRequest:v7 completionHandler:&v18];
@@ -762,17 +762,17 @@ LABEL_14:
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy_;
   v23 = __Block_byref_object_dispose_;
-  v24 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = os_transaction_create();
   v5 = [(_GDSServerConnection *)self getRequestForEndpoint:@"getBaBoundaries" withData:0 keySequence:0];
   v6 = self->_log;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 allHTTPHeaderFields];
+    allHTTPHeaderFields = [v5 allHTTPHeaderFields];
     *buf = 138412546;
     v26 = v5;
     v27 = 2112;
-    v28 = v7;
+    v28 = allHTTPHeaderFields;
     _os_log_impl(&dword_2507E1000, v6, OS_LOG_TYPE_DEFAULT, "Request: %@, Header: %@", buf, 0x16u);
   }
 
@@ -800,11 +800,11 @@ LABEL_14:
   return v13;
 }
 
-- (id)fetchMarginalEmissionForecastFor:(id)a3
+- (id)fetchMarginalEmissionForecastFor:(id)for
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  forCopy = for;
+  v5 = forCopy;
   if (!self->_isCECSupported)
   {
     log = self->_log;
@@ -817,9 +817,9 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  v6 = [v4 identifier];
+  identifier = [forCopy identifier];
 
-  if (!v6)
+  if (!identifier)
   {
     v17 = self->_log;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -844,7 +844,7 @@ LABEL_10:
   v32[2] = 0x3032000000;
   v32[3] = __Block_byref_object_copy_;
   v32[4] = __Block_byref_object_dispose_;
-  v33 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x3032000000;
@@ -855,11 +855,11 @@ LABEL_10:
   v9 = self->_log;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v8 allHTTPHeaderFields];
+    allHTTPHeaderFields = [v8 allHTTPHeaderFields];
     *buf = 138412546;
     v41 = v8;
     v42 = 2112;
-    v43 = v10;
+    v43 = allHTTPHeaderFields;
     _os_log_impl(&dword_2507E1000, v9, OS_LOG_TYPE_DEFAULT, "Request: %@, Header: %@", buf, 0x16u);
   }
 
@@ -868,7 +868,7 @@ LABEL_10:
   v21 = 3221225472;
   v22 = __57___GDSServerConnection_fetchMarginalEmissionForecastFor___block_invoke;
   v23 = &unk_27969E200;
-  v24 = self;
+  selfCopy = self;
   v12 = v7;
   v25 = v12;
   v26 = v5;
@@ -893,13 +893,13 @@ LABEL_11:
   return v15;
 }
 
-- (id)fetchCarbonIntensityHistoryForBA:(id)a3 from:(id)a4 to:(id)a5
+- (id)fetchCarbonIntensityHistoryForBA:(id)a from:(id)from to:(id)to
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
+  aCopy = a;
+  fromCopy = from;
+  toCopy = to;
+  v11 = toCopy;
   if (!self->_isCASupported)
   {
     log = self->_log;
@@ -912,15 +912,15 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v8 || !v9 || !v10)
+  if (!aCopy || !fromCopy || !toCopy)
   {
     v25 = self->_log;
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
       *v44 = 138412802;
-      *&v44[4] = v8;
+      *&v44[4] = aCopy;
       *&v44[12] = 2112;
-      *&v44[14] = v9;
+      *&v44[14] = fromCopy;
       *&v44[22] = 2112;
       v45 = v11;
       _os_log_error_impl(&dword_2507E1000, v25, OS_LOG_TYPE_ERROR, "Parameters not specified BA:%@ startDate:%@ endDate:%@", v44, 0x20u);
@@ -943,11 +943,11 @@ LABEL_12:
   v36[2] = 0x3032000000;
   v36[3] = __Block_byref_object_copy_;
   v36[4] = __Block_byref_object_dispose_;
-  v37 = [MEMORY[0x277CBEB38] dictionary];
-  v43[0] = v8;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v43[0] = aCopy;
   v42[0] = @"balancingAuthorityId";
   v42[1] = @"startTime";
-  v13 = [_GDSServerConnection dateStringFromDate:v9];
+  v13 = [_GDSServerConnection dateStringFromDate:fromCopy];
   v43[1] = v13;
   v42[2] = @"endTime";
   v14 = [_GDSServerConnection dateStringFromDate:v11];
@@ -958,11 +958,11 @@ LABEL_12:
   v17 = self->_log;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v16 allHTTPHeaderFields];
+    allHTTPHeaderFields = [v16 allHTTPHeaderFields];
     *buf = 138412546;
     v39 = v16;
     v40 = 2112;
-    v41 = v18;
+    v41 = allHTTPHeaderFields;
     _os_log_impl(&dword_2507E1000, v17, OS_LOG_TYPE_DEFAULT, "Request: %@, Header: %@", buf, 0x16u);
   }
 
@@ -971,7 +971,7 @@ LABEL_12:
   v29 = 3221225472;
   v30 = __65___GDSServerConnection_fetchCarbonIntensityHistoryForBA_from_to___block_invoke;
   v31 = &unk_27969E228;
-  v32 = self;
+  selfCopy = self;
   v20 = v12;
   v33 = v20;
   v34 = v36;

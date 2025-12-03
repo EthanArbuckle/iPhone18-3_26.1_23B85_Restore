@@ -2,16 +2,16 @@
 - (APPCLifecycleMetricsHelper)init;
 - (void)contentLoadFailure;
 - (void)discarded;
-- (void)manuallyDiscardWithReason:(int64_t)a3;
+- (void)manuallyDiscardWithReason:(int64_t)reason;
 - (void)missedOpportunity;
-- (void)trackImpressionWithStartDate:(id)a3 endDate:(id)a4;
+- (void)trackImpressionWithStartDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation APPCLifecycleMetricsHelper
 
 - (void)missedOpportunity
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B5D5E4();
 }
 
@@ -23,19 +23,19 @@
   }
 }
 
-- (void)manuallyDiscardWithReason:(int64_t)a3
+- (void)manuallyDiscardWithReason:(int64_t)reason
 {
-  v4 = self;
-  sub_1C1B5D810(a3);
+  selfCopy = self;
+  sub_1C1B5D810(reason);
 }
 
 - (void)contentLoadFailure
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C1B5D960();
 }
 
-- (void)trackImpressionWithStartDate:(id)a3 endDate:(id)a4
+- (void)trackImpressionWithStartDate:(id)date endDate:(id)endDate
 {
   v4 = sub_1C1B94588();
   v5 = *(v4 - 8);

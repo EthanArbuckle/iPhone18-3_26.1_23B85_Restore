@@ -1,17 +1,17 @@
 @interface MFMessageLoadingContext
 + (id)log;
-+ (unint64_t)_nextOffsetForOffset:(unint64_t)a3 totalLength:(unint64_t)a4 requestedAmount:(unint64_t)a5;
-- (MFMessageLoadingContext)initWithMessage:(id)a3 attachmentManager:(id)a4;
-- (id)_reallyLoad:(int64_t)a3 shouldDownload:(BOOL)a4;
-- (id)addLoadObserver:(id)a3;
-- (id)onScheduler:(id)a3 addLoadObserver:(id)a4;
++ (unint64_t)_nextOffsetForOffset:(unint64_t)offset totalLength:(unint64_t)length requestedAmount:(unint64_t)amount;
+- (MFMessageLoadingContext)initWithMessage:(id)message attachmentManager:(id)manager;
+- (id)_reallyLoad:(int64_t)load shouldDownload:(BOOL)download;
+- (id)addLoadObserver:(id)observer;
+- (id)onScheduler:(id)scheduler addLoadObserver:(id)observer;
 - (void)_setupMeetingData;
 - (void)_setupObservableStreams;
-- (void)assignAttachmentManagerToContent:(id)a3;
+- (void)assignAttachmentManagerToContent:(id)content;
 - (void)dealloc;
-- (void)load:(int64_t)a3;
-- (void)load:(int64_t)a3 scheduler:(id)a4 shouldDownload:(BOOL)a5;
-- (void)processMeetingInvitations:(id)a3;
+- (void)load:(int64_t)load;
+- (void)load:(int64_t)load scheduler:(id)scheduler shouldDownload:(BOOL)download;
+- (void)processMeetingInvitations:(id)invitations;
 @end
 
 @implementation MFMessageLoadingContext
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = __30__MFMessageLoadingContext_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_23 != -1)
   {
     dispatch_once(&log_onceToken_23, block);
@@ -49,25 +49,25 @@ void __30__MFMessageLoadingContext_log__block_invoke(uint64_t a1)
   [(MFMessageLoadingContext *)&v3 dealloc];
 }
 
-- (MFMessageLoadingContext)initWithMessage:(id)a3 attachmentManager:(id)a4
+- (MFMessageLoadingContext)initWithMessage:(id)message attachmentManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  messageCopy = message;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = MFMessageLoadingContext;
   v9 = [(MFMessageLoadingContext *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_message, a3);
-    objc_storeStrong(&v10->_attachmentManager, a4);
-    v11 = [v7 messageStore];
-    v12 = [v11 mailbox];
+    objc_storeStrong(&v9->_message, message);
+    objc_storeStrong(&v10->_attachmentManager, manager);
+    messageStore = [messageCopy messageStore];
+    mailbox = [messageStore mailbox];
 
-    v13 = [v12 mailboxType];
-    v10->_outgoingMessage = [v12 isOutgoingMailboxUid];
-    v10->_draftMessage = v13 == 5;
-    v10->_editableMessage = (v13 - 5) < 2;
+    mailboxType = [mailbox mailboxType];
+    v10->_outgoingMessage = [mailbox isOutgoingMailboxUid];
+    v10->_draftMessage = mailboxType == 5;
+    v10->_editableMessage = (mailboxType - 5) < 2;
     [(MFMessageLoadingContext *)v10 _setupMeetingData];
     [(MFMessageLoadingContext *)v10 _setupObservableStreams];
   }
@@ -79,7 +79,7 @@ void __30__MFMessageLoadingContext_log__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B0389000, a2, OS_LOG_TYPE_ERROR, "unable to get an event with external id %@ after it was successfully reconstituted.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -88,14 +88,14 @@ void __30__MFMessageLoadingContext_log__block_invoke(uint64_t a1)
 {
   if (self->_inputObservable)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MFMessageLoadingContext.m" lineNumber:222 description:@"_inputObservable must not already be configured"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFMessageLoadingContext.m" lineNumber:222 description:@"_inputObservable must not already be configured"];
   }
 
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x1E699B830] observableObserver];
+  observableObserver = [MEMORY[0x1E699B830] observableObserver];
   inputObservable = self->_inputObservable;
-  self->_inputObservable = v3;
+  self->_inputObservable = observableObserver;
 
   v5 = [(EFObserver *)self->_inputObservable replay:1];
   v14 = MEMORY[0x1E69E9820];
@@ -112,8 +112,8 @@ void __30__MFMessageLoadingContext_log__block_invoke(uint64_t a1)
   self->_cancelable = v8;
 
   v10 = self->_cancelable;
-  v11 = [v5 connect];
-  [(EFManualCancelationToken *)v10 addCancelable:v11];
+  connect = [v5 connect];
+  [(EFManualCancelationToken *)v10 addCancelable:connect];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
@@ -132,15 +132,15 @@ uint64_t __50__MFMessageLoadingContext__setupObservableStreams__block_invoke(uin
   return 1;
 }
 
-- (id)onScheduler:(id)a3 addLoadObserver:(id)a4
+- (id)onScheduler:(id)scheduler addLoadObserver:(id)observer
 {
-  v6 = a3;
-  v7 = a4;
+  schedulerCopy = scheduler;
+  observerCopy = observer;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke;
   aBlock[3] = &unk_1E7AA68F0;
-  v8 = v7;
+  v8 = observerCopy;
   v21 = v8;
   v9 = _Block_copy(aBlock);
   v17[0] = MEMORY[0x1E69E9820];
@@ -153,7 +153,7 @@ uint64_t __50__MFMessageLoadingContext__setupObservableStreams__block_invoke(uin
   v19 = v11;
   v12 = _Block_copy(v17);
   v13 = [MEMORY[0x1E699B838] observerWithResultBlock:v12 completionBlock:0 failureBlock:v10];
-  v14 = [(EFObservable *)self->_contentObservable observeOn:v6];
+  v14 = [(EFObservable *)self->_contentObservable observeOn:schedulerCopy];
   v15 = [v14 subscribe:v13];
 
   [(EFManualCancelationToken *)self->_cancelable addCancelable:v15];
@@ -179,57 +179,57 @@ void __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke_2(
   }
 }
 
-- (id)addLoadObserver:(id)a3
+- (id)addLoadObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E699B978] immediateScheduler];
-  v6 = [(MFMessageLoadingContext *)self onScheduler:v5 addLoadObserver:v4];
+  observerCopy = observer;
+  immediateScheduler = [MEMORY[0x1E699B978] immediateScheduler];
+  v6 = [(MFMessageLoadingContext *)self onScheduler:immediateScheduler addLoadObserver:observerCopy];
 
   return v6;
 }
 
-- (void)load:(int64_t)a3
+- (void)load:(int64_t)load
 {
   v5 = [MEMORY[0x1E699B978] globalAsyncSchedulerWithQualityOfService:25];
-  [(MFMessageLoadingContext *)self load:a3 scheduler:?];
+  [(MFMessageLoadingContext *)self load:load scheduler:?];
 }
 
-- (void)load:(int64_t)a3 scheduler:(id)a4 shouldDownload:(BOOL)a5
+- (void)load:(int64_t)load scheduler:(id)scheduler shouldDownload:(BOOL)download
 {
-  v8 = a4;
+  schedulerCopy = scheduler;
   [(MFMessageLoadingContext *)self setHasLoadedSomeContent:1];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__MFMessageLoadingContext_load_scheduler_shouldDownload___block_invoke;
   v9[3] = &unk_1E7AA7040;
   v9[4] = self;
-  v9[5] = a3;
-  v10 = a5;
-  [v8 performVoucherPreservingBlock:v9];
+  v9[5] = load;
+  downloadCopy = download;
+  [schedulerCopy performVoucherPreservingBlock:v9];
 }
 
-+ (unint64_t)_nextOffsetForOffset:(unint64_t)a3 totalLength:(unint64_t)a4 requestedAmount:(unint64_t)a5
++ (unint64_t)_nextOffsetForOffset:(unint64_t)offset totalLength:(unint64_t)length requestedAmount:(unint64_t)amount
 {
-  if (!(a5 | a3))
+  if (!(amount | offset))
   {
     return 1;
   }
 
-  if (a5)
+  if (amount)
   {
-    v5 = a5 + a3;
-    v6 = a5 + a3 >= a4;
+    v5 = amount + offset;
+    v6 = amount + offset >= length;
   }
 
   else
   {
     v5 = 0x7FFFFFFFFFFFFFFFLL;
-    v6 = a3 >= 0x7FFFFFFFFFFFFFFFLL;
+    v6 = offset >= 0x7FFFFFFFFFFFFFFFLL;
   }
 
   if (v6)
   {
-    return a4;
+    return length;
   }
 
   else
@@ -238,9 +238,9 @@ void __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke_2(
   }
 }
 
-- (id)_reallyLoad:(int64_t)a3 shouldDownload:(BOOL)a4
+- (id)_reallyLoad:(int64_t)load shouldDownload:(BOOL)download
 {
-  v112 = a4;
+  downloadCopy = download;
   v125 = *MEMORY[0x1E69E9840];
   if (([(EFManualCancelationToken *)self->_cancelable isCanceled]& 1) != 0)
   {
@@ -250,8 +250,8 @@ void __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke_2(
 
   v111 = objc_alloc_init(MFMessageLoadingContextEvent);
   [(MFMessageLoadingContextEvent *)v111 setContext:self];
-  v7 = [(MFMessageLoadingContext *)self message];
-  v8 = [(MFMessageLoadingContext *)self messageBody];
+  message = [(MFMessageLoadingContext *)self message];
+  messageBody = [(MFMessageLoadingContext *)self messageBody];
   v9 = +[MFActivityMonitor pushNewMonitor];
   cancelable = self->_cancelable;
   v118[0] = MEMORY[0x1E69E9820];
@@ -262,18 +262,18 @@ void __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke_2(
   v119 = v106;
   [(EFManualCancelationToken *)cancelable addCancelationBlock:v118];
   v11 = +[MFActivityMonitor currentMonitor];
-  v110 = self;
+  selfCopy = self;
   [v11 recordTransportType:1];
 
-  if (v8 && v112)
+  if (messageBody && downloadCopy)
   {
-    v12 = v8;
-    v13 = self;
+    v12 = messageBody;
+    selfCopy4 = self;
   }
 
   else
   {
-    if (v112)
+    if (downloadCopy)
     {
       v14 = +[MFMessageLoadingContext log];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -282,7 +282,7 @@ void __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke_2(
         _os_log_impl(&dword_1B0389000, v14, OS_LOG_TYPE_DEFAULT, "Download supported, getting body", buf, 2u);
       }
 
-      v15 = [v7 messageBody];
+      messageBody2 = [message messageBody];
     }
 
     else
@@ -294,34 +294,34 @@ void __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke_2(
         _os_log_impl(&dword_1B0389000, v16, OS_LOG_TYPE_DEFAULT, "Download not supported, getting body if available", buf, 2u);
       }
 
-      v15 = [v7 messageBodyIfAvailable];
+      messageBody2 = [message messageBodyIfAvailable];
     }
 
-    v107 = v15;
+    v107 = messageBody2;
 
     v12 = v107;
-    v13 = self;
+    selfCopy4 = self;
     if (v107)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v96 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v96 handleFailureInMethod:a2 object:self file:@"MFMessageLoadingContext.m" lineNumber:355 description:@"body must be a MIME body"];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"MFMessageLoadingContext.m" lineNumber:355 description:@"body must be a MIME body"];
 
         v12 = v107;
-        v13 = self;
+        selfCopy4 = self;
       }
     }
 
-    [(MFMessageLoadingContext *)v13 _setMessageBody:v12];
+    [(MFMessageLoadingContext *)selfCopy4 _setMessageBody:v12];
     if (!v12)
     {
       v62 = +[MFMessageLoadingContext log];
       if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
       {
-        v63 = [v7 messageID];
-        [(MFMessageLoadingContext *)v63 _reallyLoad:buf shouldDownload:v62];
+        messageID = [message messageID];
+        [(MFMessageLoadingContext *)messageID _reallyLoad:buf shouldDownload:v62];
       }
 
       -[MFMessageLoadingContextEvent setTransportType:](v111, "setTransportType:", [v106 transportType]);
@@ -337,8 +337,8 @@ void __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke_2(
 
   v117 = 0;
   v108 = v12;
-  v17 = [objc_opt_class() _nextOffsetForOffset:-[MFMessageLoadingContext contentOffset](v13 totalLength:"contentOffset") requestedAmount:{objc_msgSend(v12, "totalTextSize"), 0}];
-  v18 = [v12 topLevelPart];
+  v17 = [objc_opt_class() _nextOffsetForOffset:-[MFMessageLoadingContext contentOffset](selfCopy4 totalLength:"contentOffset") requestedAmount:{objc_msgSend(v12, "totalTextSize"), 0}];
+  topLevelPart = [v12 topLevelPart];
   v19 = 0;
   v20 = 0;
   v21 = 0;
@@ -349,20 +349,20 @@ void __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke_2(
   {
     if (!v23)
     {
-      v24 = [v19 contentToOffset:v17 resultOffset:&v117 downloadIfNecessary:v112 asHTML:1 isComplete:&v116];
+      v24 = [v19 contentToOffset:v17 resultOffset:&v117 downloadIfNecessary:downloadCopy asHTML:1 isComplete:&v116];
 
       v25 = v19;
       v21 = v24;
       v20 = v25;
     }
 
-    if (a3 < 1)
+    if (load < 1)
     {
-      v26 = [v7 defaultAlternativeInPart:v18];
+      v26 = [message defaultAlternativeInPart:topLevelPart];
       goto LABEL_26;
     }
 
-    v26 = [v7 bestAlternativeInPart:v18];
+    v26 = [message bestAlternativeInPart:topLevelPart];
 
     if (v20 && v26 == v20 && _contentLoadedEmptyDocument(v21, v117))
     {
@@ -373,7 +373,7 @@ void __55__MFMessageLoadingContext_onScheduler_addLoadObserver___block_invoke_2(
       v21 = 0;
       v20 = 0;
       v26 = 0;
-      a3 = -1;
+      load = -1;
       v19 = v27;
 LABEL_26:
     }
@@ -383,25 +383,25 @@ LABEL_26:
   }
 
   while (!v26 || v26 != v20);
-  [(MFMessageLoadingContext *)v110 setLoadedPart:v26];
-  [(MFMessageLoadingContext *)v110 setContentOffset:v117];
-  v28 = [v26 rfc822DecodedMessageBody];
-  v29 = v28;
+  [(MFMessageLoadingContext *)selfCopy setLoadedPart:v26];
+  [(MFMessageLoadingContext *)selfCopy setContentOffset:v117];
+  rfc822DecodedMessageBody = [v26 rfc822DecodedMessageBody];
+  v29 = rfc822DecodedMessageBody;
   v30 = v108;
-  if (v28)
+  if (rfc822DecodedMessageBody)
   {
-    v30 = v28;
+    v30 = rfc822DecodedMessageBody;
   }
 
   v109 = v30;
 
-  v31 = [v109 attachments];
+  attachments = [v109 attachments];
   v115[0] = MEMORY[0x1E69E9820];
   v115[1] = 3221225472;
   v115[2] = __54__MFMessageLoadingContext__reallyLoad_shouldDownload___block_invoke_138;
   v115[3] = &unk_1E7AA7068;
-  v115[4] = v110;
-  v105 = [v31 ef_map:v115];
+  v115[4] = selfCopy;
+  v105 = [attachments ef_map:v115];
 
   if ([v105 count])
   {
@@ -411,8 +411,8 @@ LABEL_26:
       v32 = _os_activity_create(&dword_1B0389000, "Load attachment", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
       memset(buf, 170, 16);
       os_activity_scope_enter(v32, buf);
-      v33 = [(MFMessageLoadingContext *)v110 attachmentManager];
-      [v33 insertMessageAttachmentMetadataToPersistence:v105 forMessage:v7];
+      attachmentManager = [(MFMessageLoadingContext *)selfCopy attachmentManager];
+      [attachmentManager insertMessageAttachmentMetadataToPersistence:v105 forMessage:message];
 
       v34 = EDAttachmentsLog();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
@@ -429,41 +429,41 @@ LABEL_26:
   LOBYTE(v123) = 0;
   v114 = 0;
   [v109 numberOfAttachmentsSigned:&v123 encrypted:&v114];
-  v35 = [(MFMailMessage *)v110->_message messageFlags];
-  if (v123 == 1 && (v35 & 0x800000) == 0 || (v114 & 1) != 0 && (v35 & 8) == 0)
+  messageFlags = [(MFMailMessage *)selfCopy->_message messageFlags];
+  if (v123 == 1 && (messageFlags & 0x800000) == 0 || (v114 & 1) != 0 && (messageFlags & 8) == 0)
   {
-    LOBYTE(v123) = v123 | ((v35 & 0x800000) != 0);
-    v114 |= (v35 & 8) != 0;
-    v36 = [v7 numberOfAttachments];
-    [v7 setNumberOfAttachments:v36 isSigned:v123 isEncrypted:v114];
+    LOBYTE(v123) = v123 | ((messageFlags & 0x800000) != 0);
+    v114 |= (messageFlags & 8) != 0;
+    numberOfAttachments = [message numberOfAttachments];
+    [message setNumberOfAttachments:numberOfAttachments isSigned:v123 isEncrypted:v114];
   }
 
   if (_contentLoadedEmptyDocument(v21, v117))
   {
     [(MFMessageLoadingContextEvent *)v111 setContent:MEMORY[0x1E695E0F0]];
-    [(MFMessageLoadingContext *)v110 setHasLoadedSomeContent:1];
+    [(MFMessageLoadingContext *)selfCopy setHasLoadedSomeContent:1];
     goto LABEL_43;
   }
 
   v21 = v21;
-  v38 = [v21 firstObject];
+  firstObject = [v21 firstObject];
   if ([v21 count] == 1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v39 = [v38 error];
-    v40 = v39;
+    error = [firstObject error];
+    v40 = error;
     v41 = 1;
   }
 
   else
   {
-    v39 = 0;
+    error = 0;
     v41 = 0;
   }
 
-  v104 = v39;
+  v104 = error;
   if (v41)
   {
-    [(MFMessageLoadingContext *)v110 setHasLoadedSomeContent:0];
+    [(MFMessageLoadingContext *)selfCopy setHasLoadedSomeContent:0];
     -[MFMessageLoadingContextEvent setTransportType:](v111, "setTransportType:", [v106 transportType]);
     [(MFMessageLoadingContextEvent *)v111 setError:v104];
     +[MFActivityMonitor destroyMonitor];
@@ -481,17 +481,17 @@ LABEL_26:
     goto LABEL_76;
   }
 
-  v66 = [v59 topLevelPart];
-  v67 = [v66 SMIMEError];
+  topLevelPart2 = [v59 topLevelPart];
+  sMIMEError = [topLevelPart2 SMIMEError];
 
-  v68 = [v67 domain];
-  if (![@"MFMessageErrorDomain" isEqualToString:v68])
+  domain = [sMIMEError domain];
+  if (![@"MFMessageErrorDomain" isEqualToString:domain])
   {
 
     goto LABEL_74;
   }
 
-  v69 = [v67 code] == 1035;
+  v69 = [sMIMEError code] == 1035;
 
   if (!v69)
   {
@@ -501,16 +501,16 @@ LABEL_74:
     goto LABEL_75;
   }
 
-  v70 = v67;
+  v70 = sMIMEError;
   v61 = 1;
-  v60 = v67;
+  v60 = sMIMEError;
 LABEL_75:
 
 LABEL_76:
   v71 = v60;
   if (v61)
   {
-    [(MFMessageLoadingContext *)v110 setHasLoadedSomeContent:0];
+    [(MFMessageLoadingContext *)selfCopy setHasLoadedSomeContent:0];
     -[MFMessageLoadingContextEvent setTransportType:](v111, "setTransportType:", [v106 transportType]);
     [(MFMessageLoadingContextEvent *)v111 setError:v71];
     +[MFActivityMonitor destroyMonitor];
@@ -519,10 +519,10 @@ LABEL_76:
     goto LABEL_60;
   }
 
-  v73 = [v19 isHTML];
-  if (a3 < 1)
+  isHTML = [v19 isHTML];
+  if (load < 1)
   {
-    v74 = v73;
+    v74 = isHTML;
   }
 
   else
@@ -531,7 +531,7 @@ LABEL_76:
   }
 
   v103 = v71;
-  if (v74 != 1 || [(MFMessageLoadingContext *)v110 contentOffset]>> 14 > 2 || (v116 & 1) != 0)
+  if (v74 != 1 || [(MFMessageLoadingContext *)selfCopy contentOffset]>> 14 > 2 || (v116 & 1) != 0)
   {
     goto LABEL_113;
   }
@@ -544,10 +544,10 @@ LABEL_76:
   {
 LABEL_103:
     v89 = v75;
-    v90 = +[MFMessageLoadingContext _nextOffsetForOffset:totalLength:requestedAmount:](MFMessageLoadingContext, "_nextOffsetForOffset:totalLength:requestedAmount:", -[MFMessageLoadingContext contentOffset](v110, "contentOffset"), [v108 totalTextSize], 0x4000);
-    v21 = [v19 contentToOffset:v90 resultOffset:&v117 downloadIfNecessary:v112 asHTML:1 isComplete:&v116];
+    v90 = +[MFMessageLoadingContext _nextOffsetForOffset:totalLength:requestedAmount:](MFMessageLoadingContext, "_nextOffsetForOffset:totalLength:requestedAmount:", -[MFMessageLoadingContext contentOffset](selfCopy, "contentOffset"), [v108 totalTextSize], 0x4000);
+    v21 = [v19 contentToOffset:v90 resultOffset:&v117 downloadIfNecessary:downloadCopy asHTML:1 isComplete:&v116];
 
-    [(MFMessageLoadingContext *)v110 setContentOffset:v117];
+    [(MFMessageLoadingContext *)selfCopy setContentOffset:v117];
     if (v17 != v90)
     {
       v17 = v90;
@@ -591,22 +591,22 @@ LABEL_100:
     break;
   }
 
-  v99 = [v77 htmlData];
-  v78 = v99;
-  v79 = [v99 bytes];
-  v80 = [v99 length];
-  if (!v79)
+  htmlData = [v77 htmlData];
+  v78 = htmlData;
+  bytes = [htmlData bytes];
+  v80 = [htmlData length];
+  if (!bytes)
   {
     v83 = 0;
     goto LABEL_107;
   }
 
   v81 = v80;
-  v82 = memchr(v79, 60, v80);
-  if (!v82 || (v83 = v82, v84 = &v79[v81], (v84 - v82) < 6))
+  v82 = memchr(bytes, 60, v80);
+  if (!v82 || (v83 = v82, v84 = &bytes[v81], (v84 - v82) < 6))
   {
 LABEL_97:
-    v87 = [v99 length];
+    v87 = [htmlData length];
 
     v88 = v87 + v100;
     goto LABEL_100;
@@ -635,7 +635,7 @@ LABEL_97:
 
 LABEL_107:
 
-  v91 = v83 - v79 + v100;
+  v91 = v83 - bytes + v100;
   if (v91 < 0x401)
   {
     v21 = v101;
@@ -643,8 +643,8 @@ LABEL_107:
 
   else
   {
-    v92 = [(MFMessageLoadingContext *)v110 contentOffset];
-    v93 = [v108 totalTextSize];
+    contentOffset = [(MFMessageLoadingContext *)selfCopy contentOffset];
+    totalTextSize = [v108 totalTextSize];
     if (v91 <= 0x1F58)
     {
       v94 = 8024;
@@ -655,9 +655,9 @@ LABEL_107:
       v94 = v91;
     }
 
-    v21 = [v19 contentToOffset:+[MFMessageLoadingContext _nextOffsetForOffset:totalLength:requestedAmount:](MFMessageLoadingContext resultOffset:"_nextOffsetForOffset:totalLength:requestedAmount:" downloadIfNecessary:v92 asHTML:v93 isComplete:{v94), &v117, v112, 1, &v116}];
+    v21 = [v19 contentToOffset:+[MFMessageLoadingContext _nextOffsetForOffset:totalLength:requestedAmount:](MFMessageLoadingContext resultOffset:"_nextOffsetForOffset:totalLength:requestedAmount:" downloadIfNecessary:contentOffset asHTML:totalTextSize isComplete:{v94), &v117, downloadCopy, 1, &v116}];
 
-    [(MFMessageLoadingContext *)v110 setContentOffset:v117];
+    [(MFMessageLoadingContext *)selfCopy setContentOffset:v117];
   }
 
 LABEL_113:
@@ -672,7 +672,7 @@ LABEL_113:
     v95 = 0;
   }
 
-  [(MFMessageLoadingContext *)v110 setHasLoadedSomeContent:v95];
+  [(MFMessageLoadingContext *)selfCopy setHasLoadedSomeContent:v95];
 
 LABEL_43:
   if (v116)
@@ -682,11 +682,11 @@ LABEL_43:
 
   else
   {
-    v43 = [v20 totalTextSize];
-    v44 = [(MFMessageLoadingContext *)v110 contentOffset];
-    if (v43 >= v44)
+    totalTextSize2 = [v20 totalTextSize];
+    contentOffset2 = [(MFMessageLoadingContext *)selfCopy contentOffset];
+    if (totalTextSize2 >= contentOffset2)
     {
-      v45 = v43 - v44;
+      v45 = totalTextSize2 - contentOffset2;
     }
 
     else
@@ -698,13 +698,13 @@ LABEL_43:
     v46 = +[MFMessageLoadingContext log];
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
-      v47 = [(MFMessageLoadingContext *)v110 message];
-      v48 = [v47 ef_publicDescription];
-      v49 = [(MFMessageLoadingContextEvent *)v111 remainingBytes];
+      message2 = [(MFMessageLoadingContext *)selfCopy message];
+      ef_publicDescription = [message2 ef_publicDescription];
+      remainingBytes = [(MFMessageLoadingContextEvent *)v111 remainingBytes];
       *buf = 138543618;
-      *&buf[4] = v48;
+      *&buf[4] = ef_publicDescription;
       *&buf[12] = 2048;
-      *&buf[14] = v49;
+      *&buf[14] = remainingBytes;
       _os_log_impl(&dword_1B0389000, v46, OS_LOG_TYPE_DEFAULT, "Body download not complete for message %{public}@. Remaining bytes: %ld", buf, 0x16u);
     }
 
@@ -712,30 +712,30 @@ LABEL_43:
   }
 
   [(MFMessageLoadingContextEvent *)v111 setHasLoadedCompleteBody:v37 & 1];
-  v50 = [v7 bestAlternativeInPart:v18];
+  v50 = [message bestAlternativeInPart:topLevelPart];
   [(MFMessageLoadingContextEvent *)v111 setHasLoadedBestAlternativePart:v20 == v50];
 
   [(MFMessageLoadingContextEvent *)v111 setLoadedPart:v20];
   [(MFMessageLoadingContextEvent *)v111 setLoadedBody:v109];
   -[MFMessageLoadingContextEvent setTransportType:](v111, "setTransportType:", [v106 transportType]);
-  [(MFMessageLoadingContext *)v110 setHasLoadedCompleteMessage:v116];
-  [(MFMessageLoadingContext *)v110 setHasLoadedBestAlternativePart:[(MFMessageLoadingContextEvent *)v111 hasLoadedBestAlternativePart]];
+  [(MFMessageLoadingContext *)selfCopy setHasLoadedCompleteMessage:v116];
+  [(MFMessageLoadingContext *)selfCopy setHasLoadedBestAlternativePart:[(MFMessageLoadingContextEvent *)v111 hasLoadedBestAlternativePart]];
   v51 = +[MFMessageLoadingContext log];
   if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
   {
-    v113 = [(MFMessageLoadingContext *)v110 message];
-    v52 = [v113 ef_publicDescription];
+    message3 = [(MFMessageLoadingContext *)selfCopy message];
+    ef_publicDescription2 = [message3 ef_publicDescription];
     v53 = v116;
-    v54 = [(MFMessageLoadingContextEvent *)v111 hasLoadedBestAlternativePart];
-    v55 = [(MFMessageLoadingContextEvent *)v111 transportType];
+    hasLoadedBestAlternativePart = [(MFMessageLoadingContextEvent *)v111 hasLoadedBestAlternativePart];
+    transportType = [(MFMessageLoadingContextEvent *)v111 transportType];
     *buf = 138544130;
-    *&buf[4] = v52;
+    *&buf[4] = ef_publicDescription2;
     *&buf[12] = 1024;
     *&buf[14] = v53;
     *&buf[18] = 1024;
-    *&buf[20] = v54;
+    *&buf[20] = hasLoadedBestAlternativePart;
     v121 = 2048;
-    v122 = v55;
+    v122 = transportType;
     _os_log_impl(&dword_1B0389000, v51, OS_LOG_TYPE_DEFAULT, "MFMessageLoadingContextEvent for message:%{public}@ hasLoadedCompleteMessage %{BOOL}d, hasLoadedBestAlternativePart %{BOOL}d, transportType %ld", buf, 0x22u);
   }
 
@@ -775,15 +775,15 @@ id __54__MFMessageLoadingContext__reallyLoad_shouldDownload___block_invoke_138(u
   return v8;
 }
 
-- (void)assignAttachmentManagerToContent:(id)a3
+- (void)assignAttachmentManagerToContent:(id)content
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  contentCopy = content;
+  v5 = [contentCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -794,15 +794,15 @@ id __54__MFMessageLoadingContext__reallyLoad_shouldDownload___block_invoke_138(u
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contentCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = v8;
-          [v9 setAttachmentManager:self->_attachmentManager];
+          attachmentManager = v8;
+          [attachmentManager setAttachmentManager:self->_attachmentManager];
         }
 
         else
@@ -813,8 +813,8 @@ id __54__MFMessageLoadingContext__reallyLoad_shouldDownload___block_invoke_138(u
             goto LABEL_11;
           }
 
-          v9 = [(MFMessageLoadingContext *)self attachmentManager];
-          v10 = [v9 attachmentForTextAttachment:v8 error:0];
+          attachmentManager = [(MFMessageLoadingContext *)self attachmentManager];
+          v10 = [attachmentManager attachmentForTextAttachment:v8 error:0];
         }
 
 LABEL_11:
@@ -822,7 +822,7 @@ LABEL_11:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [contentCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
@@ -831,15 +831,15 @@ LABEL_11:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)processMeetingInvitations:(id)a3
+- (void)processMeetingInvitations:(id)invitations
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  invitationsCopy = invitations;
+  v5 = [invitationsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -850,15 +850,15 @@ LABEL_11:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(invitationsCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [(MFMessageLoadingContext *)self attachmentManager];
-          v10 = [v9 attachmentForTextAttachment:v8 error:0];
+          attachmentManager = [(MFMessageLoadingContext *)self attachmentManager];
+          v10 = [attachmentManager attachmentForTextAttachment:v8 error:0];
 
           if ([v10 isCalendarFile])
           {
@@ -884,7 +884,7 @@ LABEL_11:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [invitationsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

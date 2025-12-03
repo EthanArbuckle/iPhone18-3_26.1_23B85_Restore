@@ -1,5 +1,5 @@
 @interface _PASSQLTelemetryApi
-- (_PASSQLTelemetryApi)initWithTelemetryContext:(id)a3;
+- (_PASSQLTelemetryApi)initWithTelemetryContext:(id)context;
 - (void)sendTelemetry;
 @end
 
@@ -13,16 +13,16 @@
   [(_PASSQLTelemetryContext *)telemetryContext resetLog];
 }
 
-- (_PASSQLTelemetryApi)initWithTelemetryContext:(id)a3
+- (_PASSQLTelemetryApi)initWithTelemetryContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = _PASSQLTelemetryApi;
   v6 = [(_PASSQLTelemetryApi *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_telemetryContext, a3);
+    objc_storeStrong(&v6->_telemetryContext, context);
   }
 
   return v7;

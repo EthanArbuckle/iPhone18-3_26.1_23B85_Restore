@@ -1,12 +1,12 @@
 @interface CKLStreamRawMessageObserver
-- (void)eventMatched:(id)a3;
+- (void)eventMatched:(id)matched;
 @end
 
 @implementation CKLStreamRawMessageObserver
 
-- (void)eventMatched:(id)a3
+- (void)eventMatched:(id)matched
 {
-  v11 = objc_msgSend_composedMessage(a3, a2, a3);
+  v11 = objc_msgSend_composedMessage(matched, a2, matched);
   if (objc_msgSend_hasPrefix_(v11, v3, @"SIM: "))
   {
     v5 = objc_msgSend_substringFromIndex_(v11, v4, 5);

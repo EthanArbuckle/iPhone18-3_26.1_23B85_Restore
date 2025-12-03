@@ -1,14 +1,14 @@
 @interface HMDRemoteLoginAnisetteDataHandler
 + (id)logCategory;
 - (HMDAppleMediaAccessory)accessory;
-- (HMDRemoteLoginAnisetteDataHandler)initWithUUID:(id)a3 accessory:(id)a4;
+- (HMDRemoteLoginAnisetteDataHandler)initWithUUID:(id)d accessory:(id)accessory;
 - (id)logIdentifier;
-- (void)_handleEraseAnisetteDataRequestMessage:(id)a3;
-- (void)_handleFetchAnisetteDataRequestMessage:(id)a3;
-- (void)_handleLegacyAnisetteDataRequestMessage:(id)a3;
-- (void)_handleProvisionAnisetteDataRequestMessage:(id)a3;
-- (void)_handleSyncAnisetteDataRequestMessage:(id)a3;
-- (void)configureWithWorkQueue:(id)a3 messageDispatcher:(id)a4;
+- (void)_handleEraseAnisetteDataRequestMessage:(id)message;
+- (void)_handleFetchAnisetteDataRequestMessage:(id)message;
+- (void)_handleLegacyAnisetteDataRequestMessage:(id)message;
+- (void)_handleProvisionAnisetteDataRequestMessage:(id)message;
+- (void)_handleSyncAnisetteDataRequestMessage:(id)message;
+- (void)configureWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher;
 - (void)registerForMessages;
 @end
 
@@ -23,19 +23,19 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDRemoteLoginAnisetteDataHandler *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDRemoteLoginAnisetteDataHandler *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_handleLegacyAnisetteDataRequestMessage:(id)a3
+- (void)_handleLegacyAnisetteDataRequestMessage:(id)message
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CD1B08] objWithMessage:v4];
+  messageCopy = message;
+  v5 = [MEMORY[0x277CD1B08] objWithMessage:messageCopy];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -48,17 +48,17 @@
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDRemoteLoginAnisetteDataHandler *)v7 provisioningController];
-  v11 = [v5 dsid];
+  provisioningController = [(HMDRemoteLoginAnisetteDataHandler *)selfCopy provisioningController];
+  dsid = [v5 dsid];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__HMDRemoteLoginAnisetteDataHandler__handleLegacyAnisetteDataRequestMessage___block_invoke;
   v15[3] = &unk_27867CBF0;
   v16 = v5;
-  v17 = v4;
-  v12 = v4;
+  v17 = messageCopy;
+  v12 = messageCopy;
   v13 = v5;
-  [v10 legacyAnisetteDataForDSID:v11 withCompletion:v15];
+  [provisioningController legacyAnisetteDataForDSID:dsid withCompletion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -77,13 +77,13 @@ void __77__HMDRemoteLoginAnisetteDataHandler__handleLegacyAnisetteDataRequestMes
   (v7)[2](v7, 0, v8);
 }
 
-- (void)_handleFetchAnisetteDataRequestMessage:(id)a3
+- (void)_handleFetchAnisetteDataRequestMessage:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CD1A40] objWithMessage:v4];
+  messageCopy = message;
+  v5 = [MEMORY[0x277CD1A40] objWithMessage:messageCopy];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -96,16 +96,16 @@ void __77__HMDRemoteLoginAnisetteDataHandler__handleLegacyAnisetteDataRequestMes
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDRemoteLoginAnisetteDataHandler *)v7 provisioningController];
+  provisioningController = [(HMDRemoteLoginAnisetteDataHandler *)selfCopy provisioningController];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __76__HMDRemoteLoginAnisetteDataHandler__handleFetchAnisetteDataRequestMessage___block_invoke;
   v14[3] = &unk_27867CBF0;
   v15 = v5;
-  v16 = v4;
-  v11 = v4;
+  v16 = messageCopy;
+  v11 = messageCopy;
   v12 = v5;
-  [v10 anisetteDataWithCompletion:v14];
+  [provisioningController anisetteDataWithCompletion:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -124,13 +124,13 @@ void __76__HMDRemoteLoginAnisetteDataHandler__handleFetchAnisetteDataRequestMess
   (v7)[2](v7, 0, v8);
 }
 
-- (void)_handleEraseAnisetteDataRequestMessage:(id)a3
+- (void)_handleEraseAnisetteDataRequestMessage:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CD19D8] objWithMessage:v4];
+  messageCopy = message;
+  v5 = [MEMORY[0x277CD19D8] objWithMessage:messageCopy];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -143,16 +143,16 @@ void __76__HMDRemoteLoginAnisetteDataHandler__handleFetchAnisetteDataRequestMess
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDRemoteLoginAnisetteDataHandler *)v7 provisioningController];
+  provisioningController = [(HMDRemoteLoginAnisetteDataHandler *)selfCopy provisioningController];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __76__HMDRemoteLoginAnisetteDataHandler__handleEraseAnisetteDataRequestMessage___block_invoke;
   v14[3] = &unk_27867CBC8;
   v15 = v5;
-  v16 = v4;
-  v11 = v4;
+  v16 = messageCopy;
+  v11 = messageCopy;
   v12 = v5;
-  [v10 eraseWithCompletion:v14];
+  [provisioningController eraseWithCompletion:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -169,13 +169,13 @@ void __76__HMDRemoteLoginAnisetteDataHandler__handleEraseAnisetteDataRequestMess
   (v6)[2](v6, 0, v7);
 }
 
-- (void)_handleSyncAnisetteDataRequestMessage:(id)a3
+- (void)_handleSyncAnisetteDataRequestMessage:(id)message
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CD1E90] objWithMessage:v4];
+  messageCopy = message;
+  v5 = [MEMORY[0x277CD1E90] objWithMessage:messageCopy];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -188,17 +188,17 @@ void __76__HMDRemoteLoginAnisetteDataHandler__handleEraseAnisetteDataRequestMess
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDRemoteLoginAnisetteDataHandler *)v7 provisioningController];
-  v11 = [v5 simData];
+  provisioningController = [(HMDRemoteLoginAnisetteDataHandler *)selfCopy provisioningController];
+  simData = [v5 simData];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __75__HMDRemoteLoginAnisetteDataHandler__handleSyncAnisetteDataRequestMessage___block_invoke;
   v15[3] = &unk_27867CBC8;
   v16 = v5;
-  v17 = v4;
-  v12 = v4;
+  v17 = messageCopy;
+  v12 = messageCopy;
   v13 = v5;
-  [v10 syncWithSIMData:v11 completion:v15];
+  [provisioningController syncWithSIMData:simData completion:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -215,13 +215,13 @@ void __75__HMDRemoteLoginAnisetteDataHandler__handleSyncAnisetteDataRequestMessa
   (v6)[2](v6, 0, v7);
 }
 
-- (void)_handleProvisionAnisetteDataRequestMessage:(id)a3
+- (void)_handleProvisionAnisetteDataRequestMessage:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CD1D30] objWithMessage:v4];
+  messageCopy = message;
+  v5 = [MEMORY[0x277CD1D30] objWithMessage:messageCopy];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -234,16 +234,16 @@ void __75__HMDRemoteLoginAnisetteDataHandler__handleSyncAnisetteDataRequestMessa
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDRemoteLoginAnisetteDataHandler *)v7 provisioningController];
+  provisioningController = [(HMDRemoteLoginAnisetteDataHandler *)selfCopy provisioningController];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __80__HMDRemoteLoginAnisetteDataHandler__handleProvisionAnisetteDataRequestMessage___block_invoke;
   v14[3] = &unk_27867CBC8;
   v15 = v5;
-  v16 = v4;
-  v11 = v4;
+  v16 = messageCopy;
+  v11 = messageCopy;
   v12 = v5;
-  [v10 provisionWithCompletion:v14];
+  [provisioningController provisionWithCompletion:v14];
 
   v13 = *MEMORY[0x277D85DE8];
 }
@@ -263,68 +263,68 @@ void __80__HMDRemoteLoginAnisetteDataHandler__handleProvisionAnisetteDataRequest
 - (void)registerForMessages
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDRemoteLoginAnisetteDataHandler *)self accessory];
-  v4 = [v3 home];
-  v5 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:4 remoteAccessRequired:0];
+  accessory = [(HMDRemoteLoginAnisetteDataHandler *)self accessory];
+  home = [accessory home];
+  v5 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:4 remoteAccessRequired:0];
 
   v6 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
-  v7 = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
-  v8 = [MEMORY[0x277CD1D30] messageName];
+  msgDispatcher = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
+  messageName = [MEMORY[0x277CD1D30] messageName];
   v27[0] = v5;
   v27[1] = v6;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:2];
-  [v7 registerForMessage:v8 receiver:self policies:v9 selector:sel__handleProvisionAnisetteDataRequestMessage_];
+  [msgDispatcher registerForMessage:messageName receiver:self policies:v9 selector:sel__handleProvisionAnisetteDataRequestMessage_];
 
-  v10 = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
-  v11 = [MEMORY[0x277CD1E90] messageName];
+  msgDispatcher2 = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
+  messageName2 = [MEMORY[0x277CD1E90] messageName];
   v26[0] = v5;
   v26[1] = v6;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
-  [v10 registerForMessage:v11 receiver:self policies:v12 selector:sel__handleSyncAnisetteDataRequestMessage_];
+  [msgDispatcher2 registerForMessage:messageName2 receiver:self policies:v12 selector:sel__handleSyncAnisetteDataRequestMessage_];
 
-  v13 = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
-  v14 = [MEMORY[0x277CD19D8] messageName];
+  msgDispatcher3 = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
+  messageName3 = [MEMORY[0x277CD19D8] messageName];
   v25[0] = v5;
   v25[1] = v6;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
-  [v13 registerForMessage:v14 receiver:self policies:v15 selector:sel__handleEraseAnisetteDataRequestMessage_];
+  [msgDispatcher3 registerForMessage:messageName3 receiver:self policies:v15 selector:sel__handleEraseAnisetteDataRequestMessage_];
 
-  v16 = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
-  v17 = [MEMORY[0x277CD1A40] messageName];
+  msgDispatcher4 = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
+  messageName4 = [MEMORY[0x277CD1A40] messageName];
   v24[0] = v5;
   v24[1] = v6;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-  [v16 registerForMessage:v17 receiver:self policies:v18 selector:sel__handleFetchAnisetteDataRequestMessage_];
+  [msgDispatcher4 registerForMessage:messageName4 receiver:self policies:v18 selector:sel__handleFetchAnisetteDataRequestMessage_];
 
-  v19 = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
-  v20 = [MEMORY[0x277CD1B08] messageName];
+  msgDispatcher5 = [(HMDRemoteLoginAnisetteDataHandler *)self msgDispatcher];
+  messageName5 = [MEMORY[0x277CD1B08] messageName];
   v23[0] = v5;
   v23[1] = v6;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
-  [v19 registerForMessage:v20 receiver:self policies:v21 selector:sel__handleLegacyAnisetteDataRequestMessage_];
+  [msgDispatcher5 registerForMessage:messageName5 receiver:self policies:v21 selector:sel__handleLegacyAnisetteDataRequestMessage_];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)configureWithWorkQueue:(id)a3 messageDispatcher:(id)a4
+- (void)configureWithWorkQueue:(id)queue messageDispatcher:(id)dispatcher
 {
-  v6 = a4;
-  [(HMDRemoteLoginAnisetteDataHandler *)self setWorkQueue:a3];
-  [(HMDRemoteLoginAnisetteDataHandler *)self setMsgDispatcher:v6];
+  dispatcherCopy = dispatcher;
+  [(HMDRemoteLoginAnisetteDataHandler *)self setWorkQueue:queue];
+  [(HMDRemoteLoginAnisetteDataHandler *)self setMsgDispatcher:dispatcherCopy];
 }
 
-- (HMDRemoteLoginAnisetteDataHandler)initWithUUID:(id)a3 accessory:(id)a4
+- (HMDRemoteLoginAnisetteDataHandler)initWithUUID:(id)d accessory:(id)accessory
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  accessoryCopy = accessory;
   v14.receiver = self;
   v14.super_class = HMDRemoteLoginAnisetteDataHandler;
   v9 = [(HMDRemoteLoginAnisetteDataHandler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_uuid, a3);
-    objc_storeWeak(&v10->_accessory, v8);
+    objc_storeStrong(&v9->_uuid, d);
+    objc_storeWeak(&v10->_accessory, accessoryCopy);
     v11 = objc_alloc_init(MEMORY[0x277CF0168]);
     provisioningController = v10->_provisioningController;
     v10->_provisioningController = v11;

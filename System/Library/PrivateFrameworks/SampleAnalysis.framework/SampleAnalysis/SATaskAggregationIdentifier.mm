@@ -1,42 +1,42 @@
 @interface SATaskAggregationIdentifier
-- (BOOL)isEqual:(id)a3;
-- (id)initWithBinary:(void *)a3 sharedCache:(void *)a4 rcid:(char)a5 isTarget:;
+- (BOOL)isEqual:(id)equal;
+- (id)initWithBinary:(void *)binary sharedCache:(void *)cache rcid:(char)rcid isTarget:;
 @end
 
 @implementation SATaskAggregationIdentifier
 
-- (id)initWithBinary:(void *)a3 sharedCache:(void *)a4 rcid:(char)a5 isTarget:
+- (id)initWithBinary:(void *)binary sharedCache:(void *)cache rcid:(char)rcid isTarget:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = SATaskAggregationIdentifier;
   v9 = objc_msgSendSuper2(&v12, sel_init);
   v10 = v9;
   if (v9)
   {
     objc_storeStrong(v9 + 2, a2);
-    objc_storeStrong(v10 + 3, a3);
-    v10[4] = a4;
-    *(v10 + 8) = a5;
+    objc_storeStrong(v10 + 3, binary);
+    v10[4] = cache;
+    *(v10 + 8) = rcid;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = a3;
-    v7 = v5;
-    if (v5)
+    equalCopy = equal;
+    v7 = equalCopy;
+    if (equalCopy)
     {
-      v9 = objc_getProperty(v5, v6, 16, 1);
+      v9 = objc_getProperty(equalCopy, v6, 16, 1);
       if (v9 != self->_binary)
       {
         v10 = 0;

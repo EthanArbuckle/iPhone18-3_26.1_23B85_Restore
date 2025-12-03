@@ -1,23 +1,23 @@
 @interface MSUiBootHeaderV2
-- (MSUiBootHeaderV2)initWithIOServiceWriter:(id)a3;
-- (id)_hashData:(id)a3 withMethod:(id)a4;
-- (id)_hashDataWithNativeHashMethod:(id)a3;
+- (MSUiBootHeaderV2)initWithIOServiceWriter:(id)writer;
+- (id)_hashData:(id)data withMethod:(id)method;
+- (id)_hashDataWithNativeHashMethod:(id)method;
 - (id)computeHash;
 - (id)packStructure;
 - (void)dealloc;
 - (void)invalidate;
 - (void)makeValid;
 - (void)setAsFirstGeneration;
-- (void)setHeaderHash:(char *)a3;
+- (void)setHeaderHash:(char *)hash;
 @end
 
 @implementation MSUiBootHeaderV2
 
-- (MSUiBootHeaderV2)initWithIOServiceWriter:(id)a3
+- (MSUiBootHeaderV2)initWithIOServiceWriter:(id)writer
 {
   v5.receiver = self;
   v5.super_class = MSUiBootHeaderV2;
-  v3 = [(MSUiBootHeader *)&v5 initWithIOServiceWriter:a3];
+  v3 = [(MSUiBootHeader *)&v5 initWithIOServiceWriter:writer];
   if (v3)
   {
     v3->_headerHash = calloc(0x20uLL, 1uLL);
@@ -28,11 +28,11 @@
   return v3;
 }
 
-- (void)setHeaderHash:(char *)a3
+- (void)setHeaderHash:(char *)hash
 {
   headerHash = self->_headerHash;
-  v4 = *(a3 + 1);
-  *headerHash = *a3;
+  v4 = *(hash + 1);
+  *headerHash = *hash;
   *(headerHash + 1) = v4;
 }
 
@@ -82,33 +82,33 @@
   return [(MSUiBootHeaderV2 *)self _hashDataWithNativeHashMethod:v3];
 }
 
-- (id)_hashDataWithNativeHashMethod:(id)a3
+- (id)_hashDataWithNativeHashMethod:(id)method
 {
   v5 = MGCopyAnswer();
 
-  return [(MSUiBootHeaderV2 *)self _hashData:a3 withMethod:v5];
+  return [(MSUiBootHeaderV2 *)self _hashData:method withMethod:v5];
 }
 
-- (id)_hashData:(id)a3 withMethod:(id)a4
+- (id)_hashData:(id)data withMethod:(id)method
 {
-  v6 = [a3 length];
-  if ([a4 isEqualToString:@"sha1"])
+  v6 = [data length];
+  if ([method isEqualToString:@"sha1"])
   {
     v7 = 20;
     v8 = calloc(0x14uLL, 1uLL);
-    CC_SHA1([a3 bytes], v6, v8);
+    CC_SHA1([data bytes], v6, v8);
   }
 
-  else if ([a4 isEqualToString:@"sha2-384"])
+  else if ([method isEqualToString:@"sha2-384"])
   {
     v7 = 48;
     v8 = calloc(0x30uLL, 1uLL);
-    CC_SHA384([a3 bytes], v6, v8);
+    CC_SHA384([data bytes], v6, v8);
   }
 
   else
   {
-    iBU_LOG_real(@"Unknown hash digest type: %@", "[MSUiBootHeaderV2 _hashData:withMethod:]", v9, v10, v11, v12, v13, v14, a4);
+    iBU_LOG_real(@"Unknown hash digest type: %@", "[MSUiBootHeaderV2 _hashData:withMethod:]", v9, v10, v11, v12, v13, v14, method);
     v8 = 0;
     v7 = 0;
   }

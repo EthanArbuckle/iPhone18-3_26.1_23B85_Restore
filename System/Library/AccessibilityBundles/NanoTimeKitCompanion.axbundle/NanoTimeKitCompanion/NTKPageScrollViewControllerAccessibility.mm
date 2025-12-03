@@ -1,31 +1,31 @@
 @interface NTKPageScrollViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityIsPageViewVisible:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityIsPageViewVisible:(id)visible;
 - (BOOL)_accessibilityShouldSwipeBetweenPages;
-- (NTKPageScrollViewControllerAccessibility)initWithScrollOrientation:(int64_t)a3;
-- (id)_accessibilityCustomActionsForPageView:(id)a3;
-- (id)_accessibilityHintForPageView:(id)a3;
-- (id)_accessibilityLabelForPageView:(id)a3;
+- (NTKPageScrollViewControllerAccessibility)initWithScrollOrientation:(int64_t)orientation;
+- (id)_accessibilityCustomActionsForPageView:(id)view;
+- (id)_accessibilityHintForPageView:(id)view;
+- (id)_accessibilityLabelForPageView:(id)view;
 - (id)_accessibilityTouchContainerLabel;
-- (id)_accessibilityValueForPageView:(id)a3;
+- (id)_accessibilityValueForPageView:(id)view;
 - (id)_axDataSource;
 - (id)_axScrollView;
-- (unint64_t)_axPageIndexForPageView:(id)a3;
+- (unint64_t)_axPageIndexForPageView:(id)view;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateScrollView;
 @end
 
 @implementation NTKPageScrollViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"initWithScrollOrientation:" withFullSignature:{"@", "q", 0}];
-  [v3 validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKPageScrollViewController" hasInstanceVariable:@"_scrollView" withType:"NTKPageScrollView"];
-  [v3 validateClass:@"NTKPageScrollView"];
-  [v3 validateClass:@"NTKPageScrollView" hasInstanceMethod:@"enumeratePagesWithBlock:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"NTKPageScrollView" hasInstanceMethod:@"enumerateVisiblePagesWithBlock:" withFullSignature:{"v", "@?", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"initWithScrollOrientation:" withFullSignature:{"@", "q", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollViewController" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollViewController" hasInstanceVariable:@"_scrollView" withType:"NTKPageScrollView"];
+  [validationsCopy validateClass:@"NTKPageScrollView"];
+  [validationsCopy validateClass:@"NTKPageScrollView" hasInstanceMethod:@"enumeratePagesWithBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"NTKPageScrollView" hasInstanceMethod:@"enumerateVisiblePagesWithBlock:" withFullSignature:{"v", "@?", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -38,10 +38,10 @@
 
 - (id)_accessibilityTouchContainerLabel
 {
-  v3 = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
+  _axDataSource = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _accessibilityTouchContainerLabelForPageScrollViewController:self];
+    v4 = [_axDataSource _accessibilityTouchContainerLabelForPageScrollViewController:self];
   }
 
   else
@@ -54,10 +54,10 @@
 
 - (BOOL)_accessibilityShouldSwipeBetweenPages
 {
-  v3 = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
+  _axDataSource = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _accessibilityShouldSwipeBetweenPagesForPageScrollViewController:self];
+    v4 = [_axDataSource _accessibilityShouldSwipeBetweenPagesForPageScrollViewController:self];
   }
 
   else
@@ -68,13 +68,13 @@
   return v4;
 }
 
-- (BOOL)_accessibilityIsPageViewVisible:(id)a3
+- (BOOL)_accessibilityIsPageViewVisible:(id)visible
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v5 = a3;
+  visibleCopy = visible;
   AXPerformSafeBlock();
   v3 = *(v7 + 24);
 
@@ -107,13 +107,13 @@ uint64_t __76__NTKPageScrollViewControllerAccessibility__accessibilityIsPageView
   return result;
 }
 
-- (unint64_t)_axPageIndexForPageView:(id)a3
+- (unint64_t)_axPageIndexForPageView:(id)view
 {
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0x7FFFFFFFFFFFFFFFLL;
-  v5 = a3;
+  viewCopy = view;
   AXPerformSafeBlock();
   v3 = v7[3];
 
@@ -146,9 +146,9 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
   return result;
 }
 
-- (id)_accessibilityValueForPageView:(id)a3
+- (id)_accessibilityValueForPageView:(id)view
 {
-  v4 = [(NTKPageScrollViewControllerAccessibility *)self _axPageIndexForPageView:a3];
+  v4 = [(NTKPageScrollViewControllerAccessibility *)self _axPageIndexForPageView:view];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -157,10 +157,10 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
   else
   {
     v6 = v4;
-    v7 = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
+    _axDataSource = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v7 _accessibilityValueForPageAtIndex:v6 forPageScrollViewController:self];
+      v5 = [_axDataSource _accessibilityValueForPageAtIndex:v6 forPageScrollViewController:self];
     }
 
     else
@@ -172,9 +172,9 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
   return v5;
 }
 
-- (id)_accessibilityLabelForPageView:(id)a3
+- (id)_accessibilityLabelForPageView:(id)view
 {
-  v4 = [(NTKPageScrollViewControllerAccessibility *)self _axPageIndexForPageView:a3];
+  v4 = [(NTKPageScrollViewControllerAccessibility *)self _axPageIndexForPageView:view];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -183,10 +183,10 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
   else
   {
     v6 = v4;
-    v7 = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
+    _axDataSource = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v7 _accessibilityLabelForPageAtIndex:v6 forPageScrollViewController:self];
+      v5 = [_axDataSource _accessibilityLabelForPageAtIndex:v6 forPageScrollViewController:self];
     }
 
     else
@@ -198,9 +198,9 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
   return v5;
 }
 
-- (id)_accessibilityHintForPageView:(id)a3
+- (id)_accessibilityHintForPageView:(id)view
 {
-  v4 = [(NTKPageScrollViewControllerAccessibility *)self _axPageIndexForPageView:a3];
+  v4 = [(NTKPageScrollViewControllerAccessibility *)self _axPageIndexForPageView:view];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -209,10 +209,10 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
   else
   {
     v6 = v4;
-    v7 = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
+    _axDataSource = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v7 _accessibilityHintForPageAtIndex:v6 forPageScrollViewController:self];
+      v5 = [_axDataSource _accessibilityHintForPageAtIndex:v6 forPageScrollViewController:self];
     }
 
     else
@@ -224,9 +224,9 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
   return v5;
 }
 
-- (id)_accessibilityCustomActionsForPageView:(id)a3
+- (id)_accessibilityCustomActionsForPageView:(id)view
 {
-  v4 = [(NTKPageScrollViewControllerAccessibility *)self _axPageIndexForPageView:a3];
+  v4 = [(NTKPageScrollViewControllerAccessibility *)self _axPageIndexForPageView:view];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -235,10 +235,10 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
   else
   {
     v6 = v4;
-    v7 = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
+    _axDataSource = [(NTKPageScrollViewControllerAccessibility *)self _axDataSource];
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v7 _accessibilityCustomActionsForPageAtIndex:v6 forPageScrollViewController:self];
+      v5 = [_axDataSource _accessibilityCustomActionsForPageAtIndex:v6 forPageScrollViewController:self];
     }
 
     else
@@ -250,11 +250,11 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
   return v5;
 }
 
-- (NTKPageScrollViewControllerAccessibility)initWithScrollOrientation:(int64_t)a3
+- (NTKPageScrollViewControllerAccessibility)initWithScrollOrientation:(int64_t)orientation
 {
   v6.receiver = self;
   v6.super_class = NTKPageScrollViewControllerAccessibility;
-  v3 = [(NTKPageScrollViewControllerAccessibility *)&v6 initWithScrollOrientation:a3];
+  v3 = [(NTKPageScrollViewControllerAccessibility *)&v6 initWithScrollOrientation:orientation];
   v4 = v3;
   if (v3)
   {
@@ -284,7 +284,7 @@ uint64_t __68__NTKPageScrollViewControllerAccessibility__axPageIndexForPageView_
 - (void)_axAnnotateScrollView
 {
   objc_opt_class();
-  v3 = [(NTKPageScrollViewControllerAccessibility *)self _axScrollView];
+  _axScrollView = [(NTKPageScrollViewControllerAccessibility *)self _axScrollView];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
   [v4 setAccessibilityPageScrollViewController:self];

@@ -1,14 +1,14 @@
 @interface POXSDateDefinition
-- (id)stringFromValue:(id)a3;
-- (id)valueFromString:(id)a3;
+- (id)stringFromValue:(id)value;
+- (id)valueFromString:(id)string;
 @end
 
 @implementation POXSDateDefinition
 
-- (id)valueFromString:(id)a3
+- (id)valueFromString:(id)string
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   if (valueFromString__onceToken_0 != -1)
   {
     [POXSDateDefinition valueFromString:];
@@ -33,12 +33,12 @@
         }
 
         v8 = *(*(&v14 + 1) + 8 * i);
-        v9 = [v8 dateFromString:{v3, v14}];
+        v9 = [v8 dateFromString:{stringCopy, v14}];
         if (v9)
         {
           v10 = v9;
-          v11 = [v8 calendar];
-          v5 = [v11 components:3178750 fromDate:v10];
+          calendar = [v8 calendar];
+          v5 = [calendar components:3178750 fromDate:v10];
 
           goto LABEL_13;
         }
@@ -70,17 +70,17 @@ uint64_t __38__POXSDateDefinition_valueFromString___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (id)stringFromValue:(id)a3
+- (id)stringFromValue:(id)value
 {
   v3 = stringFromValue__onceToken;
-  v4 = a3;
+  valueCopy = value;
   if (v3 != -1)
   {
     [POXSDateDefinition stringFromValue:];
   }
 
-  v5 = [stringFromValue__dateFormatter calendar];
-  v6 = [v5 dateFromComponents:v4];
+  calendar = [stringFromValue__dateFormatter calendar];
+  v6 = [calendar dateFromComponents:valueCopy];
 
   v7 = [stringFromValue__dateFormatter stringFromDate:v6];
 

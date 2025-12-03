@@ -1,6 +1,6 @@
 @interface ElectrocardiogramUpdateViewController
 - (NSString)title;
-- (_TtC5Heart37ElectrocardiogramUpdateViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC5Heart37ElectrocardiogramUpdateViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didCompleteOnboarding;
 - (void)didDismissOnboarding;
 - (void)viewDidLoad;
@@ -10,7 +10,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D91C954();
 }
 
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (_TtC5Heart37ElectrocardiogramUpdateViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Heart37ElectrocardiogramUpdateViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_29D939D68();
     v7 = v6;
@@ -41,8 +41,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29D91DDC4(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29D91DDC4(v5, v7, bundle);
 }
 
 - (void)didDismissOnboarding
@@ -56,11 +56,11 @@
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC5Heart37ElectrocardiogramUpdateViewController_onboardingManager);
   *(&self->super.super.super.isa + OBJC_IVAR____TtC5Heart37ElectrocardiogramUpdateViewController_onboardingManager) = 0;
-  v7 = self;
+  selfCopy = self;
 
-  v3 = [(ElectrocardiogramUpdateViewController *)v7 tabBarController];
-  v4 = v7;
-  if (v3)
+  tabBarController = [(ElectrocardiogramUpdateViewController *)selfCopy tabBarController];
+  v4 = selfCopy;
+  if (tabBarController)
   {
     v5 = sub_29D91D560();
     if (v5)
@@ -68,10 +68,10 @@
       v6 = v5;
       sub_29D74E500(v5, 0);
 
-      v3 = v6;
+      tabBarController = v6;
     }
 
-    v4 = v7;
+    v4 = selfCopy;
   }
 }
 

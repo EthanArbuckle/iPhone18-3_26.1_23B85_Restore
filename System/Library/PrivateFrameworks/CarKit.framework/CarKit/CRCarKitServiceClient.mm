@@ -1,11 +1,11 @@
 @interface CRCarKitServiceClient
 + (id)serviceQueue;
 - (CRCarKitServiceClient)init;
-- (void)_serviceQueuePerformBlock:(id)a3 errorHandler:(id)a4;
+- (void)_serviceQueuePerformBlock:(id)block errorHandler:(id)handler;
 - (void)_setupConnection;
 - (void)dealloc;
-- (void)performServiceBlock:(id)a3 errorHandler:(id)a4;
-- (void)performSynchronousServiceBlock:(id)a3 errorHandler:(id)a4;
+- (void)performServiceBlock:(id)block errorHandler:(id)handler;
+- (void)performSynchronousServiceBlock:(id)block errorHandler:(id)handler;
 @end
 
 @implementation CRCarKitServiceClient
@@ -82,45 +82,45 @@ void __37__CRCarKitServiceClient_serviceQueue__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(CRCarKitServiceClient *)self connection];
-  [v3 invalidate];
+  connection = [(CRCarKitServiceClient *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = CRCarKitServiceClient;
   [(CRCarKitServiceClient *)&v4 dealloc];
 }
 
-- (void)performSynchronousServiceBlock:(id)a3 errorHandler:(id)a4
+- (void)performSynchronousServiceBlock:(id)block errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() serviceQueue];
+  blockCopy = block;
+  handlerCopy = handler;
+  serviceQueue = [objc_opt_class() serviceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__CRCarKitServiceClient_performSynchronousServiceBlock_errorHandler___block_invoke;
   block[3] = &unk_1E82FBFB8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = blockCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = blockCopy;
+  dispatch_sync(serviceQueue, block);
 }
 
-- (void)_serviceQueuePerformBlock:(id)a3 errorHandler:(id)a4
+- (void)_serviceQueuePerformBlock:(id)block errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRCarKitServiceClient *)self connection];
+  blockCopy = block;
+  handlerCopy = handler;
+  connection = [(CRCarKitServiceClient *)self connection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__CRCarKitServiceClient__serviceQueuePerformBlock_errorHandler___block_invoke;
   v13[3] = &unk_1E82FBF48;
-  v14 = v7;
-  v9 = v7;
-  v10 = [v8 synchronousRemoteObjectProxyWithErrorHandler:v13];
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [connection synchronousRemoteObjectProxyWithErrorHandler:v13];
 
-  if (v6)
+  if (blockCopy)
   {
     v11 = CarGeneralLogging();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -129,7 +129,7 @@ void __37__CRCarKitServiceClient_serviceQueue__block_invoke()
       _os_log_impl(&dword_1C81FC000, v11, OS_LOG_TYPE_DEFAULT, "Connecting to CarKit service.", v12, 2u);
     }
 
-    v6[2](v6, v10);
+    blockCopy[2](blockCopy, v10);
   }
 }
 
@@ -149,21 +149,21 @@ void __64__CRCarKitServiceClient__serviceQueuePerformBlock_errorHandler___block_
   }
 }
 
-- (void)performServiceBlock:(id)a3 errorHandler:(id)a4
+- (void)performServiceBlock:(id)block errorHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() serviceQueue];
+  blockCopy = block;
+  handlerCopy = handler;
+  serviceQueue = [objc_opt_class() serviceQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __58__CRCarKitServiceClient_performServiceBlock_errorHandler___block_invoke;
   block[3] = &unk_1E82FBFB8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = blockCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = blockCopy;
+  dispatch_async(serviceQueue, block);
 }
 
 void __64__CRCarKitServiceClient__serviceQueuePerformBlock_errorHandler___block_invoke_cold_1(uint64_t a1, NSObject *a2)

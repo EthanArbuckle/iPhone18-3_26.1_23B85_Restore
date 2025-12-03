@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneStoreRAMFile
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (OrgApacheLuceneStoreRAMFile)init;
-- (OrgApacheLuceneStoreRAMFile)initWithOrgApacheLuceneStoreRAMDirectory:(id)a3;
-- (id)addBufferWithInt:(int)a3;
+- (OrgApacheLuceneStoreRAMFile)initWithOrgApacheLuceneStoreRAMDirectory:(id)directory;
+- (id)addBufferWithInt:(int)int;
 - (int)numBuffers;
 - (int64_t)getLength;
 - (int64_t)ramBytesUsed;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)setLengthWithLong:(int64_t)a3;
+- (void)setLengthWithLong:(int64_t)long;
 @end
 
 @implementation OrgApacheLuceneStoreRAMFile
@@ -21,11 +21,11 @@
   return self;
 }
 
-- (OrgApacheLuceneStoreRAMFile)initWithOrgApacheLuceneStoreRAMDirectory:(id)a3
+- (OrgApacheLuceneStoreRAMFile)initWithOrgApacheLuceneStoreRAMDirectory:(id)directory
 {
   v5 = new_JavaUtilArrayList_init();
   JreStrongAssignAndConsume(&self->buffers_, v5);
-  JreStrongAssign(&self->directory_, a3);
+  JreStrongAssign(&self->directory_, directory);
   return self;
 }
 
@@ -37,15 +37,15 @@
   return length;
 }
 
-- (void)setLengthWithLong:(int64_t)a3
+- (void)setLengthWithLong:(int64_t)long
 {
   objc_sync_enter(self);
-  self->length_ = a3;
+  self->length_ = long;
 
   objc_sync_exit(self);
 }
 
-- (id)addBufferWithInt:(int)a3
+- (id)addBufferWithInt:(int)int
 {
   v5 = [(OrgApacheLuceneStoreRAMFile *)self newBufferWithInt:?];
   objc_sync_enter(self);
@@ -56,7 +56,7 @@
   }
 
   [(JavaUtilArrayList *)buffers addWithId:v5];
-  self->sizeInBytes_ += a3;
+  self->sizeInBytes_ += int;
   objc_sync_exit(self);
   directory = self->directory_;
   if (directory)
@@ -67,7 +67,7 @@
       JreThrowNullPointerException();
     }
 
-    [(JavaUtilConcurrentAtomicAtomicLong *)sizeInBytes getAndAddWithLong:a3];
+    [(JavaUtilConcurrentAtomicAtomicLong *)sizeInBytes getAndAddWithLong:int];
   }
 
   return v5;
@@ -143,20 +143,20 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  if (!a3)
+  if (!equal)
   {
     return 0;
   }
 
-  v5 = [(OrgApacheLuceneStoreRAMFile *)self getClass];
-  if (v5 != [a3 getClass])
+  getClass = [(OrgApacheLuceneStoreRAMFile *)self getClass];
+  if (getClass != [equal getClass])
   {
     return 0;
   }
@@ -167,7 +167,7 @@
     JreThrowClassCastException();
   }
 
-  if (self->length_ != *(a3 + 2))
+  if (self->length_ != *(equal + 2))
   {
     return 0;
   }
@@ -179,7 +179,7 @@
   }
 
   v7 = [(JavaUtilArrayList *)buffers size];
-  if (v7 != [*(a3 + 1) size])
+  if (v7 != [*(equal + 1) size])
   {
     return 0;
   }
@@ -192,7 +192,7 @@
   v8 = 0;
   do
   {
-    v9 = JavaUtilArrays_equalsWithByteArray_withByteArray_(-[JavaUtilArrayList getWithInt:](self->buffers_, "getWithInt:", v8), [*(a3 + 1) getWithInt:v8]);
+    v9 = JavaUtilArrays_equalsWithByteArray_withByteArray_(-[JavaUtilArrayList getWithInt:](self->buffers_, "getWithInt:", v8), [*(equal + 1) getWithInt:v8]);
     if ((v9 & 1) == 0)
     {
       break;

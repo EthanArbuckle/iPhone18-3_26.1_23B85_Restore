@@ -1,15 +1,15 @@
 @interface NSObtainingEndpointState
-- (void)addError:(int64_t)a3 description:(const char *)a4 forListenerNamed:(id)a5 fromServiceNamed:(id)a6;
+- (void)addError:(int64_t)error description:(const char *)description forListenerNamed:(id)named fromServiceNamed:(id)serviceNamed;
 @end
 
 @implementation NSObtainingEndpointState
 
-- (void)addError:(int64_t)a3 description:(const char *)a4 forListenerNamed:(id)a5 fromServiceNamed:(id)a6
+- (void)addError:(int64_t)error description:(const char *)description forListenerNamed:(id)named fromServiceNamed:(id)serviceNamed
 {
-  v10 = a6;
-  v11 = a5;
-  v16 = [NSString stringWithUTF8String:a4];
-  v12 = sub_100001340(a3, v16, v10, v11);
+  serviceNamedCopy = serviceNamed;
+  namedCopy = named;
+  v16 = [NSString stringWithUTF8String:description];
+  v12 = sub_100001340(error, v16, serviceNamedCopy, namedCopy);
 
   errors = self->errors;
   if (!errors)

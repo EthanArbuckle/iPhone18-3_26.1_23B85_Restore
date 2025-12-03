@@ -1,9 +1,9 @@
 @interface UIPointerAccessory
 + (UIPointerAccessory)accessoryWithShape:(UIPointerShape *)shape position:(UIPointerAccessoryPosition)position;
 + (UIPointerAccessory)arrowAccessoryWithPosition:(UIPointerAccessoryPosition)position;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIPointerAccessoryPosition)position;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -31,11 +31,11 @@
     dispatch_once(&_MergedGlobals_981, &__block_literal_global_22);
   }
 
-  v5 = [UIPointerAccessory accessoryWithShape:qword_1ED49C728 position:offset, angle];
-  [v5 setOrientationMatchesAngle:1];
-  v5[8] = 1;
+  angle = [UIPointerAccessory accessoryWithShape:qword_1ED49C728 position:offset, angle];
+  [angle setOrientationMatchesAngle:1];
+  angle[8] = 1;
 
-  return v5;
+  return angle;
 }
 
 void __49__UIPointerAccessory_arrowAccessoryWithPosition___block_invoke()
@@ -45,11 +45,11 @@ void __49__UIPointerAccessory_arrowAccessoryWithPosition___block_invoke()
   qword_1ED49C728 = v0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(UIPointerAccessory *)self shape];
-  [v4 setShape:v5];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  shape = [(UIPointerAccessory *)self shape];
+  [v4 setShape:shape];
 
   [(UIPointerAccessory *)self position];
   [v4 setPosition:?];
@@ -57,10 +57,10 @@ void __49__UIPointerAccessory_arrowAccessoryWithPosition___block_invoke()
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -70,11 +70,11 @@ void __49__UIPointerAccessory_arrowAccessoryWithPosition___block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIPointerAccessory *)self shape];
-      v7 = [(UIPointerAccessory *)v5 shape];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      shape = [(UIPointerAccessory *)self shape];
+      shape2 = [(UIPointerAccessory *)v5 shape];
+      v8 = shape;
+      v9 = shape2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -125,8 +125,8 @@ LABEL_19:
 
 - (unint64_t)hash
 {
-  v3 = [(UIPointerAccessory *)self shape];
-  v4 = [v3 hash];
+  shape = [(UIPointerAccessory *)self shape];
+  v4 = [shape hash];
   [(UIPointerAccessory *)self position];
   v6 = v5;
   [(UIPointerAccessory *)self position];

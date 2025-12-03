@@ -1,12 +1,12 @@
 @interface NSPointerArray
 - (BOOL)tsu_hasNonNullPointers;
 - (id)tsu_description;
-- (unint64_t)tsu_indexOfPointer:(void *)a3;
-- (void)tsu_addPointersFromPointerArray:(id)a3;
-- (void)tsu_enumerateNonNullObjectUsingBlock:(id)a3;
-- (void)tsu_enumerateNonNullPointersUsingBlock:(id)a3;
-- (void)tsu_insertRange:(_NSRange)a3;
-- (void)tsu_removeRange:(_NSRange)a3;
+- (unint64_t)tsu_indexOfPointer:(void *)pointer;
+- (void)tsu_addPointersFromPointerArray:(id)array;
+- (void)tsu_enumerateNonNullObjectUsingBlock:(id)block;
+- (void)tsu_enumerateNonNullPointersUsingBlock:(id)block;
+- (void)tsu_insertRange:(_NSRange)range;
+- (void)tsu_removeRange:(_NSRange)range;
 @end
 
 @implementation NSPointerArray
@@ -17,8 +17,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = self;
-  v3 = [(NSPointerArray *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  selfCopy = self;
+  v3 = [(NSPointerArray *)selfCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -28,7 +28,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         if (*(*(&v7 + 1) + 8 * i))
@@ -38,7 +38,7 @@
         }
       }
 
-      v3 = [(NSPointerArray *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [(NSPointerArray *)selfCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -53,9 +53,9 @@ LABEL_11:
   return v3;
 }
 
-- (void)tsu_enumerateNonNullPointersUsingBlock:(id)a3
+- (void)tsu_enumerateNonNullPointersUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = 0;
   v5 = [(NSPointerArray *)self count];
   if (v5)
@@ -67,7 +67,7 @@ LABEL_11:
       v8 = [(NSPointerArray *)self pointerAtIndex:v7 - 1];
       if (v8)
       {
-        v4[2](v4, v8, v7 - 1, &v9);
+        blockCopy[2](blockCopy, v8, v7 - 1, &v9);
       }
 
       if (v7 >= v6)
@@ -82,16 +82,16 @@ LABEL_11:
   }
 }
 
-- (void)tsu_enumerateNonNullObjectUsingBlock:(id)a3
+- (void)tsu_enumerateNonNullObjectUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v16 = 0;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = self;
-  v6 = [(NSPointerArray *)v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  selfCopy = self;
+  v6 = [(NSPointerArray *)selfCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -103,13 +103,13 @@ LABEL_3:
     {
       if (*v13 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(selfCopy);
       }
 
       v11 = *(*(&v12 + 1) + 8 * v10);
       if (v11)
       {
-        v4[2](v4, v11, v8, &v16);
+        blockCopy[2](blockCopy, v11, v8, &v16);
         if (v16)
         {
           break;
@@ -119,7 +119,7 @@ LABEL_3:
       ++v8;
       if (v7 == ++v10)
       {
-        v7 = [(NSPointerArray *)v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+        v7 = [(NSPointerArray *)selfCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -131,11 +131,11 @@ LABEL_3:
   }
 }
 
-- (void)tsu_insertRange:(_NSRange)a3
+- (void)tsu_insertRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location >= [(NSPointerArray *)self count])
+  length = range.length;
+  location = range.location;
+  if (range.location >= [(NSPointerArray *)self count])
   {
 
     [(NSPointerArray *)self setCount:location + length];
@@ -172,11 +172,11 @@ LABEL_3:
   }
 }
 
-- (void)tsu_removeRange:(_NSRange)a3
+- (void)tsu_removeRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location < [(NSPointerArray *)self count])
+  length = range.length;
+  location = range.location;
+  if (range.location < [(NSPointerArray *)self count])
   {
     v6 = &location[length];
     if (&location[length] < [(NSPointerArray *)self count])
@@ -200,7 +200,7 @@ LABEL_3:
   }
 }
 
-- (unint64_t)tsu_indexOfPointer:(void *)a3
+- (unint64_t)tsu_indexOfPointer:(void *)pointer
 {
   v6 = 0;
   v7 = &v6;
@@ -211,25 +211,25 @@ LABEL_3:
   v5[2] = sub_1000702C8;
   v5[3] = &unk_1001CBDB8;
   v5[4] = &v6;
-  v5[5] = a3;
+  v5[5] = pointer;
   [(NSPointerArray *)self tsu_enumerateNonNullPointersUsingBlock:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
   return v3;
 }
 
-- (void)tsu_addPointersFromPointerArray:(id)a3
+- (void)tsu_addPointersFromPointerArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v5 = [(NSPointerArray *)self count];
-  -[NSPointerArray setCount:](self, "setCount:", [v4 count] + -[NSPointerArray count](self, "count"));
+  -[NSPointerArray setCount:](self, "setCount:", [arrayCopy count] + -[NSPointerArray count](self, "count"));
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000703AC;
   v6[3] = &unk_1001CBDE0;
   v6[4] = self;
   v6[5] = v5;
-  [v4 tsu_enumerateNonNullPointersUsingBlock:v6];
+  [arrayCopy tsu_enumerateNonNullPointersUsingBlock:v6];
 }
 
 - (id)tsu_description
@@ -239,8 +239,8 @@ LABEL_3:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = self;
-  v5 = [(NSPointerArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v5 = [(NSPointerArray *)selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -253,7 +253,7 @@ LABEL_3:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = [NSString stringWithFormat:@"\n    %@", *(*(&v12 + 1) + 8 * v8)];
@@ -264,7 +264,7 @@ LABEL_3:
       }
 
       while (v6 != v8);
-      v6 = [(NSPointerArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [(NSPointerArray *)selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);

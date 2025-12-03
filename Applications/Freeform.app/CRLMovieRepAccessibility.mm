@@ -1,5 +1,5 @@
 @interface CRLMovieRepAccessibility
-+ (id)crlaxCastFrom:(id)a3;
++ (id)crlaxCastFrom:(id)from;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)accessibilityActivate;
 - (BOOL)crlaxIsPlayable;
@@ -17,11 +17,11 @@
 
 @implementation CRLMovieRepAccessibility
 
-+ (id)crlaxCastFrom:(id)a3
++ (id)crlaxCastFrom:(id)from
 {
-  v3 = a3;
+  fromCopy = from;
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 0, 0);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, fromCopy, 0, 0);
 
   return v5;
 }
@@ -41,24 +41,24 @@
 
 - (NSString)crlaxMovieLabel
 {
-  v3 = [(CRLMovieRepAccessibility *)self crlaxTarget];
-  v4 = [v3 movieItem];
+  crlaxTarget = [(CRLMovieRepAccessibility *)self crlaxTarget];
+  movieItem = [crlaxTarget movieItem];
 
-  v5 = [v4 accessibilityDescription];
-  v6 = [v4 title];
-  v7 = [(CRLMovieRepAccessibility *)self _crlaxMovieInfo];
-  v8 = [v7 crlaxDurationDescription];
+  accessibilityDescription = [movieItem accessibilityDescription];
+  title = [movieItem title];
+  _crlaxMovieInfo = [(CRLMovieRepAccessibility *)self _crlaxMovieInfo];
+  crlaxDurationDescription = [_crlaxMovieInfo crlaxDurationDescription];
 
-  v9 = [v4 localizedName];
-  if (![v6 length])
+  localizedName = [movieItem localizedName];
+  if (![title length])
   {
-    v16 = [v4 movieAssetPayload];
-    v17 = [v16 filename];
+    movieAssetPayload = [movieItem movieAssetPayload];
+    filename = [movieAssetPayload filename];
 
-    v6 = v17;
+    title = filename;
   }
 
-  v18 = __CRLAccessibilityStringForVariables(1, v5, v10, v11, v12, v13, v14, v15, v6);
+  v18 = __CRLAccessibilityStringForVariables(1, accessibilityDescription, v10, v11, v12, v13, v14, v15, title);
 
   return v18;
 }
@@ -81,18 +81,18 @@
 
 - (BOOL)crlaxIsPlayable
 {
-  v2 = [(CRLMovieRepAccessibility *)self crlaxTarget];
-  v3 = [v2 isPlayable];
+  crlaxTarget = [(CRLMovieRepAccessibility *)self crlaxTarget];
+  isPlayable = [crlaxTarget isPlayable];
 
-  return v3;
+  return isPlayable;
 }
 
 - (BOOL)crlaxIsPlaying
 {
-  v2 = [(CRLMovieRepAccessibility *)self crlaxTarget];
-  v3 = [v2 isPlaying];
+  crlaxTarget = [(CRLMovieRepAccessibility *)self crlaxTarget];
+  isPlaying = [crlaxTarget isPlaying];
 
-  return v3;
+  return isPlaying;
 }
 
 - (id)crlaxKnobLabel
@@ -106,11 +106,11 @@
 - (CRLAVPlayerControllerAccessibility)crlaxPlayerControllerForcingCreationIfNotPreExisting
 {
   v8 = 0;
-  v2 = [(CRLMovieRepAccessibility *)self crlaxTarget];
-  v3 = [v2 playerControllerForcingCreationIfNotPreExisting];
+  crlaxTarget = [(CRLMovieRepAccessibility *)self crlaxTarget];
+  playerControllerForcingCreationIfNotPreExisting = [crlaxTarget playerControllerForcingCreationIfNotPreExisting];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, playerControllerForcingCreationIfNotPreExisting, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -124,19 +124,19 @@
 - (id)accessibilityUserInputLabels
 {
   v3 = +[NSMutableArray array];
-  v4 = [(CRLMovieRepAccessibility *)self crlaxTarget];
-  v5 = [v4 movieItem];
+  crlaxTarget = [(CRLMovieRepAccessibility *)self crlaxTarget];
+  movieItem = [crlaxTarget movieItem];
 
-  v6 = [v5 accessibilityDescription];
-  v7 = [v5 title];
-  if ([v6 length])
+  accessibilityDescription = [movieItem accessibilityDescription];
+  title = [movieItem title];
+  if ([accessibilityDescription length])
   {
-    [v3 addObject:v6];
+    [v3 addObject:accessibilityDescription];
   }
 
-  if ([v7 length])
+  if ([title length])
   {
-    [v3 addObject:v7];
+    [v3 addObject:title];
   }
 
   v8 = [v3 copy];
@@ -146,12 +146,12 @@
 
 - (id)crlaxDescriptionForConnections
 {
-  v3 = [(CRLMovieRepAccessibility *)self crlaxTarget];
-  v4 = [v3 movieItem];
-  v5 = [v4 movieAssetPayload];
-  v6 = [v5 filename];
-  v7 = [(CRLCanvasRepAccessibility *)self crlaxDefaultDescriptionForConnections];
-  v8 = [(CRLCanvasRepAccessibility *)self crlaxRemoveExtensionFromFile:v6 inString:v7];
+  crlaxTarget = [(CRLMovieRepAccessibility *)self crlaxTarget];
+  movieItem = [crlaxTarget movieItem];
+  movieAssetPayload = [movieItem movieAssetPayload];
+  filename = [movieAssetPayload filename];
+  crlaxDefaultDescriptionForConnections = [(CRLCanvasRepAccessibility *)self crlaxDefaultDescriptionForConnections];
+  v8 = [(CRLCanvasRepAccessibility *)self crlaxRemoveExtensionFromFile:filename inString:crlaxDefaultDescriptionForConnections];
 
   return v8;
 }
@@ -159,11 +159,11 @@
 - (CRLMovieItemAccessibility)_crlaxMovieInfo
 {
   v8 = 0;
-  v2 = [(CRLMovieRepAccessibility *)self crlaxTarget];
-  v3 = [v2 movieItem];
+  crlaxTarget = [(CRLMovieRepAccessibility *)self crlaxTarget];
+  movieItem = [crlaxTarget movieItem];
 
   v4 = objc_opt_class();
-  v5 = __CRLAccessibilityCastAsSafeCategory(v4, v3, 1, &v8);
+  v5 = __CRLAccessibilityCastAsSafeCategory(v4, movieItem, 1, &v8);
   if (v8 == 1)
   {
     abort();
@@ -178,7 +178,7 @@
 {
   v14.receiver = self;
   v14.super_class = CRLMovieRepAccessibility;
-  v3 = [(CRLCanvasRepAccessibility *)&v14 accessibilityHint];
+  accessibilityHint = [(CRLCanvasRepAccessibility *)&v14 accessibilityHint];
   if ([(CRLCanvasRepAccessibility *)self crlaxIsSelected])
   {
     v10 = +[NSBundle mainBundle];
@@ -190,7 +190,7 @@
     v11 = 0;
   }
 
-  v12 = __CRLAccessibilityStringForVariables(1, v11, v4, v5, v6, v7, v8, v9, v3);
+  v12 = __CRLAccessibilityStringForVariables(1, v11, v4, v5, v6, v7, v8, v9, accessibilityHint);
 
   return v12;
 }
@@ -212,23 +212,23 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
-  v4 = [v3 crlaxTarget];
-  v5 = [v4 layerHost];
-  v6 = [v5 asiOSCVC];
-  v7 = [v6 isCurrentlyInQuickSelectMode];
+  crlaxInteractiveCanvasController = [(CRLCanvasRepAccessibility *)self crlaxInteractiveCanvasController];
+  crlaxTarget = [crlaxInteractiveCanvasController crlaxTarget];
+  layerHost = [crlaxTarget layerHost];
+  asiOSCVC = [layerHost asiOSCVC];
+  isCurrentlyInQuickSelectMode = [asiOSCVC isCurrentlyInQuickSelectMode];
 
-  if (v7)
+  if (isCurrentlyInQuickSelectMode)
   {
     return 0;
   }
 
-  v9 = [(CRLCanvasRepAccessibility *)self crlaxRepForSelecting];
-  if ([v9 crlaxIsSelected])
+  crlaxRepForSelecting = [(CRLCanvasRepAccessibility *)self crlaxRepForSelecting];
+  if ([crlaxRepForSelecting crlaxIsSelected])
   {
-    v10 = [(CRLMovieRepAccessibility *)self crlaxIsPlayable];
+    crlaxIsPlayable = [(CRLMovieRepAccessibility *)self crlaxIsPlayable];
 
-    if (v10)
+    if (crlaxIsPlayable)
     {
       [(CRLMovieRepAccessibility *)self crlaxTogglePlayback];
       return 1;

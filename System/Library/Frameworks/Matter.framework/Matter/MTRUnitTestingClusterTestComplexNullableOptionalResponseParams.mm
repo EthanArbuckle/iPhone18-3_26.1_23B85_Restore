@@ -1,9 +1,9 @@
 @interface MTRUnitTestingClusterTestComplexNullableOptionalResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRUnitTestingClusterTestComplexNullableOptionalResponseParams)init;
-- (MTRUnitTestingClusterTestComplexNullableOptionalResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRUnitTestingClusterTestComplexNullableOptionalResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRUnitTestingClusterTestComplexNullableOptionalResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -108,95 +108,95 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams);
-  v5 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableIntWasNull];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableIntWasNull:v5];
+  nullableIntWasNull = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableIntWasNull];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableIntWasNull:nullableIntWasNull];
 
-  v6 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableIntValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableIntValue:v6];
+  nullableIntValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableIntValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableIntValue:nullableIntValue];
 
-  v7 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalIntWasPresent];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalIntWasPresent:v7];
+  optionalIntWasPresent = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalIntWasPresent];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalIntWasPresent:optionalIntWasPresent];
 
-  v8 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalIntValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalIntValue:v8];
+  optionalIntValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalIntValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalIntValue:optionalIntValue];
 
-  v9 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalIntWasPresent];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalIntWasPresent:v9];
+  nullableOptionalIntWasPresent = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalIntWasPresent];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalIntWasPresent:nullableOptionalIntWasPresent];
 
-  v10 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalIntWasNull];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalIntWasNull:v10];
+  nullableOptionalIntWasNull = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalIntWasNull];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalIntWasNull:nullableOptionalIntWasNull];
 
-  v11 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalIntValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalIntValue:v11];
+  nullableOptionalIntValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalIntValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalIntValue:nullableOptionalIntValue];
 
-  v12 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStringWasNull];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableStringWasNull:v12];
+  nullableStringWasNull = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStringWasNull];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableStringWasNull:nullableStringWasNull];
 
-  v13 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStringValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableStringValue:v13];
+  nullableStringValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStringValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableStringValue:nullableStringValue];
 
-  v14 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStringWasPresent];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalStringWasPresent:v14];
+  optionalStringWasPresent = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStringWasPresent];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalStringWasPresent:optionalStringWasPresent];
 
-  v15 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStringValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalStringValue:v15];
+  optionalStringValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStringValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalStringValue:optionalStringValue];
 
-  v16 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStringWasPresent];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStringWasPresent:v16];
+  nullableOptionalStringWasPresent = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStringWasPresent];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStringWasPresent:nullableOptionalStringWasPresent];
 
-  v17 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStringWasNull];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStringWasNull:v17];
+  nullableOptionalStringWasNull = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStringWasNull];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStringWasNull:nullableOptionalStringWasNull];
 
-  v18 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStringValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStringValue:v18];
+  nullableOptionalStringValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStringValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStringValue:nullableOptionalStringValue];
 
-  v19 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructWasNull];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableStructWasNull:v19];
+  nullableStructWasNull = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructWasNull];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableStructWasNull:nullableStructWasNull];
 
-  v20 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableStructValue:v20];
+  nullableStructValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableStructValue:nullableStructValue];
 
-  v21 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructWasPresent];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalStructWasPresent:v21];
+  optionalStructWasPresent = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructWasPresent];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalStructWasPresent:optionalStructWasPresent];
 
-  v22 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalStructValue:v22];
+  optionalStructValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalStructValue:optionalStructValue];
 
-  v23 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructWasPresent];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStructWasPresent:v23];
+  nullableOptionalStructWasPresent = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructWasPresent];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStructWasPresent:nullableOptionalStructWasPresent];
 
-  v24 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructWasNull];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStructWasNull:v24];
+  nullableOptionalStructWasNull = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructWasNull];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStructWasNull:nullableOptionalStructWasNull];
 
-  v25 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStructValue:v25];
+  nullableOptionalStructValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalStructValue:nullableOptionalStructValue];
 
-  v26 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableListWasNull];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableListWasNull:v26];
+  nullableListWasNull = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableListWasNull];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableListWasNull:nullableListWasNull];
 
-  v27 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableListValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableListValue:v27];
+  nullableListValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableListValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableListValue:nullableListValue];
 
-  v28 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalListWasPresent];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalListWasPresent:v28];
+  optionalListWasPresent = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalListWasPresent];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalListWasPresent:optionalListWasPresent];
 
-  v29 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalListValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalListValue:v29];
+  optionalListValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalListValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setOptionalListValue:optionalListValue];
 
-  v30 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalListWasPresent];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalListWasPresent:v30];
+  nullableOptionalListWasPresent = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalListWasPresent];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalListWasPresent:nullableOptionalListWasPresent];
 
-  v31 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalListWasNull];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalListWasNull:v31];
+  nullableOptionalListWasNull = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalListWasNull];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalListWasNull:nullableOptionalListWasNull];
 
-  v32 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalListValue];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalListValue:v32];
+  nullableOptionalListValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalListValue];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setNullableOptionalListValue:nullableOptionalListValue];
 
-  v33 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setTimedInvokeTimeoutMs:v33];
+  timedInvokeTimeoutMs = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -278,7 +278,7 @@ LABEL_10:
   return v11;
 }
 
-- (MTRUnitTestingClusterTestComplexNullableOptionalResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRUnitTestingClusterTestComplexNullableOptionalResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRUnitTestingClusterTestComplexNullableOptionalResponseParams;
@@ -286,7 +286,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -302,14 +302,14 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithBool:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithBool:*struct];
   [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableIntWasNull:v5];
 
-  if (*(a3 + 2) == 1)
+  if (*(struct + 2) == 1)
   {
-    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*sub_238E0A934(a3 + 2)];
+    v6 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*sub_238E0A934(struct + 2)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableIntValue:v6];
   }
 
@@ -318,12 +318,12 @@ LABEL_6:
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableIntValue:0];
   }
 
-  v7 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 6)];
+  v7 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 6)];
   [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalIntWasPresent:v7];
 
-  if (*(a3 + 8) == 1)
+  if (*(struct + 8) == 1)
   {
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*sub_238E0A934(a3 + 8)];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*sub_238E0A934(struct + 8)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalIntValue:v8];
   }
 
@@ -332,12 +332,12 @@ LABEL_6:
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalIntValue:0];
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 12)];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 12)];
   [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalIntWasPresent:v9];
 
-  if (*(a3 + 13) == 1)
+  if (*(struct + 13) == 1)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(a3 + 13)];
+    v10 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(struct + 13)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalIntWasNull:v10];
   }
 
@@ -346,9 +346,9 @@ LABEL_6:
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalIntWasNull:0];
   }
 
-  if (*(a3 + 16) == 1)
+  if (*(struct + 16) == 1)
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*sub_238E0A934(a3 + 16)];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*sub_238E0A934(struct + 16)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalIntValue:v11];
   }
 
@@ -357,25 +357,25 @@ LABEL_6:
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalIntValue:0];
   }
 
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 20)];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 20)];
   [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableStringWasNull:v12];
 
-  if (*(a3 + 24) != 1)
+  if (*(struct + 24) != 1)
   {
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableStringValue:0];
 LABEL_17:
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 48)];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 48)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalStringWasPresent:v17];
 
-    if (*(a3 + 56) == 1)
+    if (*(struct + 56) == 1)
     {
-      v18 = sub_238DE36B8(a3 + 56);
+      v18 = sub_238DE36B8(struct + 56);
       v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v18 length:v18[1] encoding:4];
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalStringValue:v19];
 
-      v20 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStringValue];
+      optionalStringValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStringValue];
 
-      if (!v20)
+      if (!optionalStringValue)
       {
         v16 = 0xB38B00000000;
         goto LABEL_53;
@@ -387,12 +387,12 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalStringValue:0];
     }
 
-    v21 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 80)];
+    v21 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 80)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStringWasPresent:v21];
 
-    if (*(a3 + 81) == 1)
+    if (*(struct + 81) == 1)
     {
-      v22 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(a3 + 81)];
+      v22 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(struct + 81)];
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStringWasNull:v22];
     }
 
@@ -401,15 +401,15 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStringWasNull:0];
     }
 
-    if (*(a3 + 88) == 1)
+    if (*(struct + 88) == 1)
     {
-      v23 = sub_238DE36B8(a3 + 88);
+      v23 = sub_238DE36B8(struct + 88);
       v24 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v23 length:v23[1] encoding:4];
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStringValue:v24];
 
-      v25 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStringValue];
+      nullableOptionalStringValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStringValue];
 
-      if (!v25)
+      if (!nullableOptionalStringValue)
       {
         v16 = 0xB3A000000000;
         goto LABEL_53;
@@ -421,38 +421,38 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStringValue:0];
     }
 
-    v26 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 112)];
+    v26 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 112)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableStructWasNull:v26];
 
-    if (*(a3 + 120) == 1)
+    if (*(struct + 120) == 1)
     {
       v27 = objc_opt_new();
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableStructValue:v27];
 
-      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36B8(a3 + 120)];
-      v29 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-      [v29 setA:v28];
+      v28 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36B8(struct + 120)];
+      nullableStructValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+      [nullableStructValue setA:v28];
 
-      v30 = [MEMORY[0x277CCABB0] numberWithBool:sub_238DE36B8(a3 + 120)[1]];
-      v31 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-      [v31 setB:v30];
+      v30 = [MEMORY[0x277CCABB0] numberWithBool:sub_238DE36B8(struct + 120)[1]];
+      nullableStructValue2 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+      [nullableStructValue2 setB:v30];
 
-      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(a3 + 120)[2]];
-      v33 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-      [v33 setC:v32];
+      v32 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(struct + 120)[2]];
+      nullableStructValue3 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+      [nullableStructValue3 setC:v32];
 
-      v34 = sub_238DE36B8(a3 + 120);
+      v34 = sub_238DE36B8(struct + 120);
       v35 = [MEMORY[0x277CBEA90] dataWithBytes:*(v34 + 1) length:*(v34 + 2)];
-      v36 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-      [v36 setD:v35];
+      nullableStructValue4 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+      [nullableStructValue4 setD:v35];
 
-      v37 = sub_238DE36B8(a3 + 120);
+      v37 = sub_238DE36B8(struct + 120);
       v38 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(v37 + 3) length:*(v37 + 4) encoding:4];
-      v39 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-      [v39 setE:v38];
+      nullableStructValue5 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+      [nullableStructValue5 setE:v38];
 
-      v40 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-      v41 = [v40 e];
+      nullableStructValue6 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+      v41 = [nullableStructValue6 e];
 
       if (!v41)
       {
@@ -460,33 +460,33 @@ LABEL_17:
         goto LABEL_53;
       }
 
-      v42 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(a3 + 120)[40]];
-      v43 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-      [v43 setF:v42];
+      v42 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(struct + 120)[40]];
+      nullableStructValue7 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+      [nullableStructValue7 setF:v42];
 
       v44 = MEMORY[0x277CCABB0];
-      LODWORD(v45) = *(sub_238DE36B8(a3 + 120) + 11);
+      LODWORD(v45) = *(sub_238DE36B8(struct + 120) + 11);
       v46 = [v44 numberWithFloat:v45];
-      v47 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-      [v47 setG:v46];
+      nullableStructValue8 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+      [nullableStructValue8 setG:v46];
 
-      v48 = [MEMORY[0x277CCABB0] numberWithDouble:*(sub_238DE36B8(a3 + 120) + 6)];
-      v49 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-      [v49 setH:v48];
+      v48 = [MEMORY[0x277CCABB0] numberWithDouble:*(sub_238DE36B8(struct + 120) + 6)];
+      nullableStructValue9 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+      [nullableStructValue9 setH:v48];
 
-      if (sub_238DE36B8(a3 + 120)[56] == 1)
+      if (sub_238DE36B8(struct + 120)[56] == 1)
       {
         v50 = MEMORY[0x277CCABB0];
-        v51 = sub_238DE36B8(a3 + 120);
-        v52 = [v50 numberWithUnsignedChar:*sub_238DE36D8(v51 + 56)];
-        v53 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-        [v53 setI:v52];
+        v51 = sub_238DE36B8(struct + 120);
+        nullableStructValue11 = [v50 numberWithUnsignedChar:*sub_238DE36D8(v51 + 56)];
+        nullableStructValue10 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+        [nullableStructValue10 setI:nullableStructValue11];
       }
 
       else
       {
-        v52 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
-        [v52 setI:0];
+        nullableStructValue11 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStructValue];
+        [nullableStructValue11 setI:0];
       }
     }
 
@@ -495,38 +495,38 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableStructValue:0];
     }
 
-    v54 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 192)];
+    v54 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 192)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalStructWasPresent:v54];
 
-    if (*(a3 + 200) == 1)
+    if (*(struct + 200) == 1)
     {
       v55 = objc_opt_new();
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalStructValue:v55];
 
-      v56 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36B8(a3 + 200)];
-      v57 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-      [v57 setA:v56];
+      v56 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36B8(struct + 200)];
+      optionalStructValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+      [optionalStructValue setA:v56];
 
-      v58 = [MEMORY[0x277CCABB0] numberWithBool:sub_238DE36B8(a3 + 200)[1]];
-      v59 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-      [v59 setB:v58];
+      v58 = [MEMORY[0x277CCABB0] numberWithBool:sub_238DE36B8(struct + 200)[1]];
+      optionalStructValue2 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+      [optionalStructValue2 setB:v58];
 
-      v60 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(a3 + 200)[2]];
-      v61 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-      [v61 setC:v60];
+      v60 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(struct + 200)[2]];
+      optionalStructValue3 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+      [optionalStructValue3 setC:v60];
 
-      v62 = sub_238DE36B8(a3 + 200);
+      v62 = sub_238DE36B8(struct + 200);
       v63 = [MEMORY[0x277CBEA90] dataWithBytes:*(v62 + 1) length:*(v62 + 2)];
-      v64 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-      [v64 setD:v63];
+      optionalStructValue4 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+      [optionalStructValue4 setD:v63];
 
-      v65 = sub_238DE36B8(a3 + 200);
+      v65 = sub_238DE36B8(struct + 200);
       v66 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(v65 + 3) length:*(v65 + 4) encoding:4];
-      v67 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-      [v67 setE:v66];
+      optionalStructValue5 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+      [optionalStructValue5 setE:v66];
 
-      v68 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-      v69 = [v68 e];
+      optionalStructValue6 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+      v69 = [optionalStructValue6 e];
 
       if (!v69)
       {
@@ -534,33 +534,33 @@ LABEL_17:
         goto LABEL_53;
       }
 
-      v70 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(a3 + 200)[40]];
-      v71 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-      [v71 setF:v70];
+      v70 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(struct + 200)[40]];
+      optionalStructValue7 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+      [optionalStructValue7 setF:v70];
 
       v72 = MEMORY[0x277CCABB0];
-      LODWORD(v73) = *(sub_238DE36B8(a3 + 200) + 11);
+      LODWORD(v73) = *(sub_238DE36B8(struct + 200) + 11);
       v74 = [v72 numberWithFloat:v73];
-      v75 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-      [v75 setG:v74];
+      optionalStructValue8 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+      [optionalStructValue8 setG:v74];
 
-      v76 = [MEMORY[0x277CCABB0] numberWithDouble:*(sub_238DE36B8(a3 + 200) + 6)];
-      v77 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-      [v77 setH:v76];
+      v76 = [MEMORY[0x277CCABB0] numberWithDouble:*(sub_238DE36B8(struct + 200) + 6)];
+      optionalStructValue9 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+      [optionalStructValue9 setH:v76];
 
-      if (sub_238DE36B8(a3 + 200)[56] == 1)
+      if (sub_238DE36B8(struct + 200)[56] == 1)
       {
         v78 = MEMORY[0x277CCABB0];
-        v79 = sub_238DE36B8(a3 + 200);
-        v80 = [v78 numberWithUnsignedChar:*sub_238DE36D8(v79 + 56)];
-        v81 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-        [v81 setI:v80];
+        v79 = sub_238DE36B8(struct + 200);
+        optionalStructValue11 = [v78 numberWithUnsignedChar:*sub_238DE36D8(v79 + 56)];
+        optionalStructValue10 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+        [optionalStructValue10 setI:optionalStructValue11];
       }
 
       else
       {
-        v80 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
-        [v80 setI:0];
+        optionalStructValue11 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self optionalStructValue];
+        [optionalStructValue11 setI:0];
       }
     }
 
@@ -569,12 +569,12 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalStructValue:0];
     }
 
-    v82 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 272)];
+    v82 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 272)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStructWasPresent:v82];
 
-    if (*(a3 + 273) == 1)
+    if (*(struct + 273) == 1)
     {
-      v83 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(a3 + 273)];
+      v83 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(struct + 273)];
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStructWasNull:v83];
     }
 
@@ -583,35 +583,35 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStructWasNull:0];
     }
 
-    if (*(a3 + 280) == 1)
+    if (*(struct + 280) == 1)
     {
       v84 = objc_opt_new();
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStructValue:v84];
 
-      v85 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36B8(a3 + 280)];
-      v86 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-      [v86 setA:v85];
+      v85 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*sub_238DE36B8(struct + 280)];
+      nullableOptionalStructValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+      [nullableOptionalStructValue setA:v85];
 
-      v87 = [MEMORY[0x277CCABB0] numberWithBool:sub_238DE36B8(a3 + 280)[1]];
-      v88 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-      [v88 setB:v87];
+      v87 = [MEMORY[0x277CCABB0] numberWithBool:sub_238DE36B8(struct + 280)[1]];
+      nullableOptionalStructValue2 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+      [nullableOptionalStructValue2 setB:v87];
 
-      v89 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(a3 + 280)[2]];
-      v90 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-      [v90 setC:v89];
+      v89 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(struct + 280)[2]];
+      nullableOptionalStructValue3 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+      [nullableOptionalStructValue3 setC:v89];
 
-      v91 = sub_238DE36B8(a3 + 280);
+      v91 = sub_238DE36B8(struct + 280);
       v92 = [MEMORY[0x277CBEA90] dataWithBytes:*(v91 + 1) length:*(v91 + 2)];
-      v93 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-      [v93 setD:v92];
+      nullableOptionalStructValue4 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+      [nullableOptionalStructValue4 setD:v92];
 
-      v94 = sub_238DE36B8(a3 + 280);
+      v94 = sub_238DE36B8(struct + 280);
       v95 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(v94 + 3) length:*(v94 + 4) encoding:4];
-      v96 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-      [v96 setE:v95];
+      nullableOptionalStructValue5 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+      [nullableOptionalStructValue5 setE:v95];
 
-      v97 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-      v98 = [v97 e];
+      nullableOptionalStructValue6 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+      v98 = [nullableOptionalStructValue6 e];
 
       if (!v98)
       {
@@ -619,33 +619,33 @@ LABEL_17:
         goto LABEL_53;
       }
 
-      v99 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(a3 + 280)[40]];
-      v100 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-      [v100 setF:v99];
+      v99 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:sub_238DE36B8(struct + 280)[40]];
+      nullableOptionalStructValue7 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+      [nullableOptionalStructValue7 setF:v99];
 
       v101 = MEMORY[0x277CCABB0];
-      LODWORD(v102) = *(sub_238DE36B8(a3 + 280) + 11);
+      LODWORD(v102) = *(sub_238DE36B8(struct + 280) + 11);
       v103 = [v101 numberWithFloat:v102];
-      v104 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-      [v104 setG:v103];
+      nullableOptionalStructValue8 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+      [nullableOptionalStructValue8 setG:v103];
 
-      v105 = [MEMORY[0x277CCABB0] numberWithDouble:*(sub_238DE36B8(a3 + 280) + 6)];
-      v106 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-      [v106 setH:v105];
+      v105 = [MEMORY[0x277CCABB0] numberWithDouble:*(sub_238DE36B8(struct + 280) + 6)];
+      nullableOptionalStructValue9 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+      [nullableOptionalStructValue9 setH:v105];
 
-      if (sub_238DE36B8(a3 + 280)[56] == 1)
+      if (sub_238DE36B8(struct + 280)[56] == 1)
       {
         v107 = MEMORY[0x277CCABB0];
-        v108 = sub_238DE36B8(a3 + 280);
-        v109 = [v107 numberWithUnsignedChar:*sub_238DE36D8(v108 + 56)];
-        v110 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-        [v110 setI:v109];
+        v108 = sub_238DE36B8(struct + 280);
+        nullableOptionalStructValue11 = [v107 numberWithUnsignedChar:*sub_238DE36D8(v108 + 56)];
+        nullableOptionalStructValue10 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+        [nullableOptionalStructValue10 setI:nullableOptionalStructValue11];
       }
 
       else
       {
-        v109 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
-        [v109 setI:0];
+        nullableOptionalStructValue11 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableOptionalStructValue];
+        [nullableOptionalStructValue11 setI:0];
       }
     }
 
@@ -654,13 +654,13 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalStructValue:0];
     }
 
-    v115 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 352)];
+    v115 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 352)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableListWasNull:v115];
 
-    if (*(a3 + 360) == 1)
+    if (*(struct + 360) == 1)
     {
       v116 = objc_opt_new();
-      v117 = sub_238DE36B8(a3 + 360);
+      v117 = sub_238DE36B8(struct + 360);
       sub_2393C5AAC(v128);
       v126 = 0;
       v127 = 0;
@@ -688,13 +688,13 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableListValue:0];
     }
 
-    v119 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 440)];
+    v119 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 440)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalListWasPresent:v119];
 
-    if (*(a3 + 448) == 1)
+    if (*(struct + 448) == 1)
     {
       v116 = objc_opt_new();
-      v120 = sub_238DE36B8(a3 + 448);
+      v120 = sub_238DE36B8(struct + 448);
       sub_2393C5AAC(v128);
       v126 = 0;
       v127 = 0;
@@ -722,12 +722,12 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setOptionalListValue:0];
     }
 
-    v122 = [MEMORY[0x277CCABB0] numberWithBool:*(a3 + 528)];
+    v122 = [MEMORY[0x277CCABB0] numberWithBool:*(struct + 528)];
     [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalListWasPresent:v122];
 
-    if (*(a3 + 529) == 1)
+    if (*(struct + 529) == 1)
     {
-      v123 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(a3 + 529)];
+      v123 = [MEMORY[0x277CCABB0] numberWithBool:*sub_238DE36D8(struct + 529)];
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalListWasNull:v123];
     }
 
@@ -736,10 +736,10 @@ LABEL_17:
       [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableOptionalListWasNull:0];
     }
 
-    if (*(a3 + 536) == 1)
+    if (*(struct + 536) == 1)
     {
       v116 = objc_opt_new();
-      v124 = sub_238DE36B8(a3 + 536);
+      v124 = sub_238DE36B8(struct + 536);
       sub_2393C5AAC(v128);
       v126 = 0;
       v127 = 0;
@@ -777,13 +777,13 @@ LABEL_83:
     goto LABEL_54;
   }
 
-  v13 = sub_238DE36B8(a3 + 24);
+  v13 = sub_238DE36B8(struct + 24);
   v14 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*v13 length:v13[1] encoding:4];
   [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self setNullableStringValue:v14];
 
-  v15 = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStringValue];
+  nullableStringValue = [(MTRUnitTestingClusterTestComplexNullableOptionalResponseParams *)self nullableStringValue];
 
-  if (v15)
+  if (nullableStringValue)
   {
     goto LABEL_17;
   }

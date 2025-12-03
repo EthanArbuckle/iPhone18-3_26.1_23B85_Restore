@@ -1,57 +1,57 @@
 @interface SBSColorGroup
-- (SBSColorGroup)initWithBackground:(id)a3 primaryText:(id)a4 secondaryText:(id)a5;
-- (SBSColorGroup)initWithCoder:(id)a3;
-- (SBSColorGroup)initWithData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SBSColorGroup)initWithBackground:(id)background primaryText:(id)text secondaryText:(id)secondaryText;
+- (SBSColorGroup)initWithCoder:(id)coder;
+- (SBSColorGroup)initWithData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSColorGroup
 
-- (SBSColorGroup)initWithCoder:(id)a3
+- (SBSColorGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"background"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"primaryText"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secondaryText"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"background"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"primaryText"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secondaryText"];
 
   v8 = [[SBSColorGroup alloc] initWithBackground:v5 primaryText:v6 secondaryText:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   background = self->_background;
-  v5 = a3;
-  [v5 encodeObject:background forKey:@"background"];
-  [v5 encodeObject:self->_primaryText forKey:@"primaryText"];
-  [v5 encodeObject:self->_secondaryText forKey:@"secondaryText"];
+  coderCopy = coder;
+  [coderCopy encodeObject:background forKey:@"background"];
+  [coderCopy encodeObject:self->_primaryText forKey:@"primaryText"];
+  [coderCopy encodeObject:self->_secondaryText forKey:@"secondaryText"];
 }
 
-- (SBSColorGroup)initWithBackground:(id)a3 primaryText:(id)a4 secondaryText:(id)a5
+- (SBSColorGroup)initWithBackground:(id)background primaryText:(id)text secondaryText:(id)secondaryText
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  backgroundCopy = background;
+  textCopy = text;
+  secondaryTextCopy = secondaryText;
   v15.receiver = self;
   v15.super_class = SBSColorGroup;
   v12 = [(SBSColorGroup *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_background, a3);
-    objc_storeStrong(&v13->_primaryText, a4);
-    objc_storeStrong(&v13->_secondaryText, a5);
+    objc_storeStrong(&v12->_background, background);
+    objc_storeStrong(&v13->_primaryText, text);
+    objc_storeStrong(&v13->_secondaryText, secondaryText);
   }
 
   return v13;
 }
 
-- (SBSColorGroup)initWithData:(id)a3
+- (SBSColorGroup)initWithData:(id)data
 {
   v4 = MEMORY[0x277CCAAC8];
-  v5 = a3;
+  dataCopy = data;
   v9 = 0;
-  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v9];
+  v6 = [v4 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v9];
 
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {

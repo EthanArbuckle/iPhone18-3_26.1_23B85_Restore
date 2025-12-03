@@ -1,41 +1,41 @@
 @interface _SFKeyPair
-+ (id)_secKeyCreationAttributesForSpecifier:(id)a3;
++ (id)_secKeyCreationAttributesForSpecifier:(id)specifier;
 - (NSString)privateKeyDomain;
-- (_SFKeyPair)initWithAttributes:(id)a3;
-- (_SFKeyPair)initWithData:(id)a3 specifier:(id)a4 error:(id *)a5;
-- (_SFKeyPair)initWithSecKey:(__SecKey *)a3;
-- (id)initRandomKeyPairWithSpecifier:(id)a3 privateKeyDomain:(id)a4;
+- (_SFKeyPair)initWithAttributes:(id)attributes;
+- (_SFKeyPair)initWithData:(id)data specifier:(id)specifier error:(id *)error;
+- (_SFKeyPair)initWithSecKey:(__SecKey *)key;
+- (id)initRandomKeyPairWithSpecifier:(id)specifier privateKeyDomain:(id)domain;
 - (id)keyData;
 - (void)dealloc;
 @end
 
 @implementation _SFKeyPair
 
-+ (id)_secKeyCreationAttributesForSpecifier:(id)a3
++ (id)_secKeyCreationAttributesForSpecifier:(id)specifier
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
-  v6 = NSStringFromClass(a1);
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  v6 = NSStringFromClass(self);
   v7 = NSStringFromSelector(a2);
-  [v5 handleFailureInMethod:a2 object:a1 file:@"SFKey.m" lineNumber:819 description:{@"subclass %@ must implement %@", v6, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SFKey.m" lineNumber:819 description:{@"subclass %@ must implement %@", v6, v7}];
 
   return 0;
 }
 
-- (_SFKeyPair)initWithAttributes:(id)a3
+- (_SFKeyPair)initWithAttributes:(id)attributes
 {
   v4.receiver = self;
   v4.super_class = _SFKeyPair;
-  return [(_SFKey *)&v4 initWithAttributes:a3];
+  return [(_SFKey *)&v4 initWithAttributes:attributes];
 }
 
-- (_SFKeyPair)initWithData:(id)a3 specifier:(id)a4 error:(id *)a5
+- (_SFKeyPair)initWithData:(id)data specifier:(id)specifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  dataCopy = data;
+  specifierCopy = specifier;
+  v10 = specifierCopy;
+  if (dataCopy)
   {
-    if (v9)
+    if (specifierCopy)
     {
       goto LABEL_3;
     }
@@ -57,7 +57,7 @@ LABEL_3:
   {
     v11 = v10;
     v12 = [objc_opt_class() _secKeyCreationAttributesForSpecifier:v11];
-    v13 = SecKeyCreateWithData(v8, v12, a5);
+    v13 = SecKeyCreateWithData(dataCopy, v12, error);
     if (v13)
     {
       v14 = v13;
@@ -73,32 +73,32 @@ LABEL_3:
 
     self = v15;
 
-    v16 = self;
+    selfCopy = self;
   }
 
-  else if (a5)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"SFCryptoServicesErrorDomain" code:4 userInfo:0];
-    *a5 = v16 = 0;
+    *error = selfCopy = 0;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (_SFKeyPair)initWithSecKey:(__SecKey *)a3
+- (_SFKeyPair)initWithSecKey:(__SecKey *)key
 {
-  if (!a3)
+  if (!key)
   {
     [_SFKeyPair initWithSecKey:];
   }
 
   v5 = [objc_msgSend(objc_opt_class() "_attributesClass")];
-  v6 = [objc_opt_class() _specifierForSecKey:a3];
+  v6 = [objc_opt_class() _specifierForSecKey:key];
   v7 = [v5 initWithSpecifier:v6];
   v12.receiver = self;
   v12.super_class = _SFKeyPair;
@@ -110,18 +110,18 @@ LABEL_3:
     keyPairInternal = v8->_keyPairInternal;
     v8->_keyPairInternal = v9;
 
-    *(v8->_keyPairInternal + 1) = a3;
+    *(v8->_keyPairInternal + 1) = key;
     CFRetain(*(v8->_keyPairInternal + 1));
   }
 
   return v8;
 }
 
-- (id)initRandomKeyPairWithSpecifier:(id)a3 privateKeyDomain:(id)a4
+- (id)initRandomKeyPairWithSpecifier:(id)specifier privateKeyDomain:(id)domain
 {
-  v5 = a3;
+  specifierCopy = specifier;
   v6 = objc_opt_new();
-  v7 = [(_SFKeyPair *)self initWithData:v6 specifier:v5 error:0];
+  v7 = [(_SFKeyPair *)self initWithData:v6 specifier:specifierCopy error:0];
 
   return v7;
 }

@@ -1,20 +1,20 @@
 @interface BWScalerProcessorController
-- (BWScalerProcessorController)initWithConfiguration:(id)a3;
-- (VTPixelTransferSessionRef)_ensurePixelTransferSessionForMediaKey:(uint64_t)a1;
-- (id)requestForInput:(id)a3 delegate:(id)a4 errOut:(int *)a5;
+- (BWScalerProcessorController)initWithConfiguration:(id)configuration;
+- (VTPixelTransferSessionRef)_ensurePixelTransferSessionForMediaKey:(uint64_t)key;
+- (id)requestForInput:(id)input delegate:(id)delegate errOut:(int *)out;
 - (int)process;
-- (uint64_t)_zoomSampleBuffer:(void *)a3 settings:(unsigned int)a4 processingMode:(void *)a5 mediaKey:(uint64_t)a6 bufferType:(void *)a7 request:(void *)a8 newZoomedSampleBufferOut:;
+- (uint64_t)_zoomSampleBuffer:(void *)buffer settings:(unsigned int)settings processingMode:(void *)mode mediaKey:(uint64_t)key bufferType:(void *)type request:(void *)request newZoomedSampleBufferOut:;
 - (void)dealloc;
 - (void)reset;
 @end
 
 @implementation BWScalerProcessorController
 
-- (BWScalerProcessorController)initWithConfiguration:(id)a3
+- (BWScalerProcessorController)initWithConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = BWScalerProcessorController;
-  v3 = [(BWStillImageProcessorController *)&v5 initWithName:@"ScalerPC" type:18 configuration:a3];
+  v3 = [(BWStillImageProcessorController *)&v5 initWithName:@"ScalerPC" type:18 configuration:configuration];
   if (v3)
   {
     v3->_pixelTransferSessionByMediaKey = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -44,9 +44,9 @@
   }
 }
 
-- (id)requestForInput:(id)a3 delegate:(id)a4 errOut:(int *)a5
+- (id)requestForInput:(id)input delegate:(id)delegate errOut:(int *)out
 {
-  v6 = [(BWStillImageProcessorControllerRequest *)[BWScalerProcessorControllerRequest alloc] initWithInput:a3 delegate:a4];
+  v6 = [(BWStillImageProcessorControllerRequest *)[BWScalerProcessorControllerRequest alloc] initWithInput:input delegate:delegate];
   if (v6)
   {
     v7 = 0;
@@ -57,9 +57,9 @@
     v7 = -12786;
   }
 
-  if (a5)
+  if (out)
   {
-    *a5 = v7;
+    *out = v7;
   }
 
   return v6;
@@ -72,18 +72,18 @@
     OUTLINED_FUNCTION_5_14();
   }
 
-  v7 = [(BWStillImageProcessorController *)self configuration];
-  v8 = [(BWStillImageProcessorController *)self currentRequest];
-  v9 = v8;
-  if (!v8)
+  configuration = [(BWStillImageProcessorController *)self configuration];
+  currentRequest = [(BWStillImageProcessorController *)self currentRequest];
+  v9 = currentRequest;
+  if (!currentRequest)
   {
     OUTLINED_FUNCTION_0();
     FigDebugAssert3();
     goto LABEL_72;
   }
 
-  v10 = [(BWStillImageProcessorControllerRequest *)v8 input];
-  if (!v10)
+  input = [(BWStillImageProcessorControllerRequest *)currentRequest input];
+  if (!input)
   {
 LABEL_72:
     OUTLINED_FUNCTION_2_95();
@@ -91,15 +91,15 @@ LABEL_72:
     goto LABEL_69;
   }
 
-  v11 = v10;
-  if ([(BWStillImageProcessorControllerInput *)v10 frame])
+  v11 = input;
+  if ([(BWStillImageProcessorControllerInput *)input frame])
   {
     if ([(BWStillImageProcessorControllerInput *)v11 bufferType])
     {
-      v95 = [(BWStillImageProcessorControllerInput *)v11 bufferType];
+      bufferType = [(BWStillImageProcessorControllerInput *)v11 bufferType];
       v12 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{-[BWStillImageProcessorControllerInput frame](v11, "frame")}];
       v102 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v112 = self;
+      selfCopy = self;
       v116 = 0;
       v106 = v12;
       v107 = v9;
@@ -107,13 +107,13 @@ LABEL_72:
       {
         v116 = [objc_msgSend(v9 "delegate")];
         v13 = [MEMORY[0x1E695DFA8] set];
-        v14 = [-[BWStillImageProcessorControllerConfiguration providedInferenceAttachedMediaByMode](v7 "providedInferenceAttachedMediaByMode")];
+        v14 = [-[BWStillImageProcessorControllerConfiguration providedInferenceAttachedMediaByMode](configuration "providedInferenceAttachedMediaByMode")];
         if (v14)
         {
           [v13 addObjectsFromArray:v14];
         }
 
-        v15 = [-[BWStillImageProcessorControllerConfiguration providedInferenceAttachedMediaByMode](v7 "providedInferenceAttachedMediaByMode")];
+        v15 = [-[BWStillImageProcessorControllerConfiguration providedInferenceAttachedMediaByMode](configuration "providedInferenceAttachedMediaByMode")];
         if (v15)
         {
           [v13 addObjectsFromArray:v15];
@@ -169,8 +169,8 @@ LABEL_72:
                 }
 
                 BWSampleBufferSetAttachedMediaFromPixelBuffer([(BWStillImageProcessorControllerInput *)v11 frame], v19, v22, &cf, v23, v27, 1);
-                self = v112;
-                [(NSMutableDictionary *)v112->_formatDescriptionByMediaKey setObject:cf forKeyedSubscript:v19];
+                self = selfCopy;
+                [(NSMutableDictionary *)selfCopy->_formatDescriptionByMediaKey setObject:cf forKeyedSubscript:v19];
                 if (cf)
                 {
                   CFRelease(cf);
@@ -184,15 +184,15 @@ LABEL_72:
               {
 LABEL_28:
                 v28 = AttachedMedia;
-                v29 = [v9 delegate];
-                v30 = [v9 input];
+                delegate = [v9 delegate];
+                input2 = [v9 input];
                 ImageBuffer = CMSampleBufferGetImageBuffer([(BWStillImageProcessorControllerInput *)v11 frame]);
-                LODWORD(v29) = [v29 processorController:self outputPixelBufferDimensionsForProcessorInput:v30 type:1 attachedMediaKey:@"PrimaryFormat" pixelFormat:CVPixelBufferGetPixelFormatType(ImageBuffer) dimensions:0];
+                LODWORD(delegate) = [delegate processorController:self outputPixelBufferDimensionsForProcessorInput:input2 type:1 attachedMediaKey:@"PrimaryFormat" pixelFormat:CVPixelBufferGetPixelFormatType(ImageBuffer) dimensions:0];
                 v32 = CMSampleBufferGetImageBuffer(v28);
                 Width = CVPixelBufferGetWidth(v32);
                 CVPixelBufferGetHeight(v32);
                 v34 = BWCMSampleBufferCopyReattachAndReturnMutableMetadata(v28);
-                *&v35 = v29 / Width;
+                *&v35 = delegate / Width;
                 [v34 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v35), v117}];
               }
             }
@@ -213,7 +213,7 @@ LABEL_28:
       v205 = 0u;
       v206 = 0u;
       v45 = &dword_1EB58E000;
-      v121 = OUTLINED_FUNCTION_7_59(v37, v38, v39, v40, v41, v42, v43, v44, @"PrimaryFormat", 0, v5, v95, v97, v100, v102, v106, v107, obj, v112, v116, v117, v120, v123, v126, v129, v132, v135, v138, v141, v144, v147, v150, v153, v156, v159, v162, v165, v168, v171, v174, v176, v178, v180, v182, v184, v186, *v188, *&v188[8], *&v188[16], v189, *(&v189 + 1), v190, cf, v192, v193, v194, v195, v196, v197, v198, v199, v200, v201);
+      v121 = OUTLINED_FUNCTION_7_59(v37, v38, v39, v40, v41, v42, v43, v44, @"PrimaryFormat", 0, v5, bufferType, v97, v100, v102, v106, v107, obj, selfCopy, v116, v117, v120, v123, v126, v129, v132, v135, v138, v141, v144, v147, v150, v153, v156, v159, v162, v165, v168, v171, v174, v176, v178, v180, v182, v184, v186, *v188, *&v188[8], *&v188[16], v189, *(&v189 + 1), v190, cf, v192, v193, v194, v195, v196, v197, v198, v199, v200, v201);
       if (v121)
       {
         obja = *v206;
@@ -263,7 +263,7 @@ LABEL_28:
 
               if (v56)
               {
-                v57 = [(FigCaptureStillImageSettings *)[(BWStillImageProcessorControllerInput *)v11 settings] settingsID];
+                settingsID = [(FigCaptureStillImageSettings *)[(BWStillImageProcessorControllerInput *)v11 settings] settingsID];
                 *v188 = v98;
                 *&v188[4] = "[BWScalerProcessorController process]";
                 *&v188[12] = 2113;
@@ -271,7 +271,7 @@ LABEL_28:
                 *&v188[22] = 1026;
                 LODWORD(v189) = v118;
                 WORD2(v189) = 2050;
-                *(&v189 + 6) = v57;
+                *(&v189 + 6) = settingsID;
                 LODWORD(v92) = 38;
                 v91 = v188;
                 _os_log_send_and_compose_impl();
@@ -405,19 +405,19 @@ LABEL_69:
   return v89;
 }
 
-- (uint64_t)_zoomSampleBuffer:(void *)a3 settings:(unsigned int)a4 processingMode:(void *)a5 mediaKey:(uint64_t)a6 bufferType:(void *)a7 request:(void *)a8 newZoomedSampleBufferOut:
+- (uint64_t)_zoomSampleBuffer:(void *)buffer settings:(unsigned int)settings processingMode:(void *)mode mediaKey:(uint64_t)key bufferType:(void *)type request:(void *)request newZoomedSampleBufferOut:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v146 = 0;
   v147 = 0;
-  v16 = [a5 isEqualToString:@"PrimaryFormat"];
-  v17 = [objc_msgSend(objc_msgSend(a1 "configuration")];
+  v16 = [mode isEqualToString:@"PrimaryFormat"];
+  v17 = [objc_msgSend(objc_msgSend(self "configuration")];
   v18 = v17;
-  v143 = a5;
+  modeCopy = mode;
   if ((v16 & 1) != 0 || v17)
   {
     ImageBuffer = CMSampleBufferGetImageBuffer(a2);
@@ -444,7 +444,7 @@ LABEL_69:
     }
 
     v140 = a2;
-    v23 = [a3 requestedSettings];
+    requestedSettings = [buffer requestedSettings];
     LODWORD(v8) = 1.0;
     if ((v16 & 1) == 0)
     {
@@ -453,22 +453,22 @@ LABEL_69:
     }
 
     v139 = Width | (Height << 32);
-    v138 = ([v23 outputWidth] / *&v8);
-    v137 = ([v23 outputHeight] / *&v8);
-    v25 = [a7 delegate];
-    v26 = [a7 input];
-    v27 = a6;
+    v138 = ([requestedSettings outputWidth] / *&v8);
+    v137 = ([requestedSettings outputHeight] / *&v8);
+    delegate = [type delegate];
+    input = [type input];
+    keyCopy = key;
     if ((v16 & 1) == 0)
     {
-      v27 = BWStillImageBufferTypeForAttachedMediaKey(a5);
+      keyCopy = BWStillImageBufferTypeForAttachedMediaKey(mode);
     }
 
-    v28 = [v25 processorController:a1 outputPixelBufferDimensionsForProcessorInput:v26 type:v27 attachedMediaKey:a5 pixelFormat:PixelFormatType dimensions:0];
+    v28 = [delegate processorController:self outputPixelBufferDimensionsForProcessorInput:input type:keyCopy attachedMediaKey:mode pixelFormat:PixelFormatType dimensions:0];
     FigCaptureMetadataUtilitiesGetFinalCropRect();
     OUTLINED_FUNCTION_2_3();
     v136 = v138 | (v137 << 32);
     v29 = FigCaptureAspectRatioForDimensions(v136);
-    if (a4 == 2)
+    if (settings == 2)
     {
       v33 = OUTLINED_FUNCTION_3();
       v37 = FigCaptureRectMidPoint(v33, v34, v35, v36);
@@ -540,7 +540,7 @@ LABEL_69:
     else
     {
       v30 = v29;
-      if (a4 == 1)
+      if (settings == 1)
       {
         v31 = 1.0;
       }
@@ -550,7 +550,7 @@ LABEL_69:
         v31 = v11;
       }
 
-      if (a4 == 1)
+      if (settings == 1)
       {
         v32 = 1.0;
       }
@@ -560,7 +560,7 @@ LABEL_69:
         v32 = v10;
       }
 
-      if (a4 == 1)
+      if (settings == 1)
       {
         v9 = 0.0;
         v8 = 0.0;
@@ -588,7 +588,7 @@ LABEL_69:
     }
 
     OUTLINED_FUNCTION_2_3();
-    v71 = a4;
+    settingsCopy = settings;
     if (CGRectIsNull(v152))
     {
 LABEL_114:
@@ -600,7 +600,7 @@ LABEL_114:
 
     v133 = v30;
     FigCaptureMetadataUtilitiesDenormalizeCropRect(v8, v9, v32, v31);
-    if (a4 || ((v75 = vabdd_f64(v73, v11), vabdd_f64(v72, v10) <= 2.0) ? (v76 = v75 <= 2.0) : (v76 = 0), v76))
+    if (settings || ((v75 = vabdd_f64(v73, v11), vabdd_f64(v72, v10) <= 2.0) ? (v76 = v75 <= 2.0) : (v76 = 0), v76))
     {
       v74 = 0;
     }
@@ -612,17 +612,17 @@ LABEL_114:
       v74 = 1;
     }
 
-    LODWORD(v71) = llround(v10);
+    LODWORD(settingsCopy) = llround(v10);
     LODWORD(v57) = llround(v11);
     v135 = v74;
-    v81 = (llround(v8) & 1) == 0 && ((llround(v9) | v71) & 1) == 0 && (v57 & 1) == 0;
-    v82 = [v23 outputFormat] == 1785750887 || objc_msgSend(v23, "outputFormat") == 1752589105;
-    v83 = FigCapturePixelFormatIsDemosaicedRaw([v23 rawOutputFormat]) && objc_msgSend(v23, "outputFormat") == 0;
-    v84 = v71 | (v57 << 32);
+    v81 = (llround(v8) & 1) == 0 && ((llround(v9) | settingsCopy) & 1) == 0 && (v57 & 1) == 0;
+    v82 = [requestedSettings outputFormat] == 1785750887 || objc_msgSend(requestedSettings, "outputFormat") == 1752589105;
+    v83 = FigCapturePixelFormatIsDemosaicedRaw([requestedSettings rawOutputFormat]) && objc_msgSend(requestedSettings, "outputFormat") == 0;
+    v84 = settingsCopy | (v57 << 32);
     if (v82)
     {
-      v85 = a4;
-      if (a4)
+      settingsCopy3 = settings;
+      if (settings)
       {
 LABEL_56:
         v86 = 1;
@@ -632,8 +632,8 @@ LABEL_56:
 
     else
     {
-      v85 = a4;
-      if (a4)
+      settingsCopy3 = settings;
+      if (settings)
       {
         v83 = 0;
       }
@@ -652,29 +652,29 @@ LABEL_56:
 
     v86 = !v87;
 LABEL_63:
-    if (((v85 == 0) & v86) != 0 || (Width <= v28 ? (v88 = Height <= SHIDWORD(v28)) : (v88 = 0), !v88))
+    if (((settingsCopy3 == 0) & v86) != 0 || (Width <= v28 ? (v88 = Height <= SHIDWORD(v28)) : (v88 = 0), !v88))
     {
-      v89 = [(BWScalerProcessorController *)a1 _ensurePixelTransferSessionForMediaKey:v143];
+      v89 = [(BWScalerProcessorController *)self _ensurePixelTransferSessionForMediaKey:modeCopy];
       if (v89)
       {
         v90 = v89;
-        v91 = [a7 delegate];
-        v92 = [a7 input];
+        delegate2 = [type delegate];
+        input2 = [type input];
         if ((v16 & 1) == 0)
         {
-          a6 = BWStillImageBufferTypeForAttachedMediaKey(v143);
+          key = BWStillImageBufferTypeForAttachedMediaKey(modeCopy);
         }
 
-        v93 = [v91 processorController:a1 newOutputPixelBufferForProcessorInput:v92 type:a6 attachedMediaKey:v143 pixelFormat:PixelFormatType dimensions:0];
+        v93 = [delegate2 processorController:self newOutputPixelBufferForProcessorInput:input2 type:key attachedMediaKey:modeCopy pixelFormat:PixelFormatType dimensions:0];
         if (!v93)
         {
           v128 = 4294954510;
           goto LABEL_101;
         }
 
-        v94 = a4;
+        settingsCopy5 = settings;
         v95 = v138 | (v137 << 32);
-        if (a4 == 2)
+        if (settings == 2)
         {
           v95 = v84;
         }
@@ -690,10 +690,10 @@ LABEL_63:
 
         if (v28 >= v138 && SHIDWORD(v28) >= v137)
         {
-          if (a4 - 1 >= 2)
+          if (settings - 1 >= 2)
           {
             v99 = 0.0;
-            if (a4)
+            if (settings)
             {
               v103 = v28;
             }
@@ -703,7 +703,7 @@ LABEL_63:
               v103 = v138;
             }
 
-            if (a4)
+            if (settings)
             {
               v104 = SHIDWORD(v28);
             }
@@ -729,7 +729,7 @@ LABEL_89:
             os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
             OUTLINED_FUNCTION_4_73();
             fig_log_call_emit_and_clean_up_after_send_and_compose();
-            v94 = a4;
+            settingsCopy5 = settings;
           }
 
           v106 = OUTLINED_FUNCTION_3();
@@ -740,7 +740,7 @@ LABEL_89:
             goto LABEL_101;
           }
 
-          v146 = [a1[9] objectForKeyedSubscript:v143];
+          v146 = [self[9] objectForKeyedSubscript:modeCopy];
           v112 = BWCMSampleBufferCreateCopyWithNewPixelBuffer(v140, v93, &v146, &v147);
           if (v112)
           {
@@ -749,7 +749,7 @@ LABEL_89:
             goto LABEL_101;
           }
 
-          [a1[9] setObject:v146 forKeyedSubscript:v143];
+          [self[9] setObject:v146 forKeyedSubscript:modeCopy];
           v113 = BWCMSampleBufferCopyReattachAndReturnMutableMetadata(v147);
           CVBufferRemoveAttachment(v93, *MEMORY[0x1E6965D70]);
           if (v135)
@@ -760,7 +760,7 @@ LABEL_89:
           v114 = OUTLINED_FUNCTION_3();
           FigCaptureMetadataUtilitiesUpdateMetadataForStillImageCrop(v115, v116, v28, v114, v117, v118, v119, v99, v98, v103, v104);
           FigCaptureMetadataUtilitiesUpdateMetadataForNewFinalDimensions(v113, v139, v28);
-          if (!v94)
+          if (!settingsCopy5)
           {
             v153.origin.x = OUTLINED_FUNCTION_6_66();
             if (CGRectEqualToRect(v153, v155))
@@ -769,7 +769,7 @@ LABEL_89:
             }
           }
 
-          [objc_msgSend(objc_msgSend(a1 configuration];
+          [objc_msgSend(objc_msgSend(self configuration];
           if (CMGetAttachment(v147, @"OriginalCameraIntrinsicMatrixReferenceDimensions", 0))
           {
             v148.width = v28;
@@ -817,9 +817,9 @@ LABEL_101:
     }
   }
 
-  else if (a8)
+  else if (request)
   {
-    *a8 = v147;
+    *request = v147;
   }
 
   CVPixelBufferRelease(v93);
@@ -831,14 +831,14 @@ LABEL_101:
   return v128;
 }
 
-- (VTPixelTransferSessionRef)_ensurePixelTransferSessionForMediaKey:(uint64_t)a1
+- (VTPixelTransferSessionRef)_ensurePixelTransferSessionForMediaKey:(uint64_t)key
 {
-  if (!a1)
+  if (!key)
   {
     return 0;
   }
 
-  v4 = [*(a1 + 64) objectForKeyedSubscript:a2];
+  v4 = [*(key + 64) objectForKeyedSubscript:a2];
   pixelTransferSessionOut = v4;
   if (!v4)
   {
@@ -846,7 +846,7 @@ LABEL_101:
     v4 = pixelTransferSessionOut;
     if (!v5)
     {
-      [*(a1 + 64) setObject:pixelTransferSessionOut forKeyedSubscript:a2];
+      [*(key + 64) setObject:pixelTransferSessionOut forKeyedSubscript:a2];
       if (pixelTransferSessionOut)
       {
         CFRelease(pixelTransferSessionOut);

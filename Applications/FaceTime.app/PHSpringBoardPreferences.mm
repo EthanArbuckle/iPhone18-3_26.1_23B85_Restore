@@ -10,7 +10,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000177BC;
   block[3] = &unk_10010AF00;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100126950 != -1)
   {
     dispatch_once(&qword_100126950, block);

@@ -1,18 +1,18 @@
 @interface WFTimeTriggerLogic
-+ (id)adjustedTime:(id)a3 byOffset:(unint64_t)a4;
-+ (id)nextFireDateForTrigger:(id)a3 currentDate:(id)a4 currentSunriseTime:(id)a5 currentSunsetTime:(id)a6;
-+ (id)nextFireDateFromNowWithTrigger:(id)a3 currentSunriseTime:(id)a4 currentSunsetTime:(id)a5;
-+ (int64_t)nextWeekdayFromDaysOfWeek:(id)a3 timeComponents:(id)a4 currentDate:(id)a5 calendar:(id)a6;
++ (id)adjustedTime:(id)time byOffset:(unint64_t)offset;
++ (id)nextFireDateForTrigger:(id)trigger currentDate:(id)date currentSunriseTime:(id)time currentSunsetTime:(id)sunsetTime;
++ (id)nextFireDateFromNowWithTrigger:(id)trigger currentSunriseTime:(id)time currentSunsetTime:(id)sunsetTime;
++ (int64_t)nextWeekdayFromDaysOfWeek:(id)week timeComponents:(id)components currentDate:(id)date calendar:(id)calendar;
 @end
 
 @implementation WFTimeTriggerLogic
 
-+ (id)adjustedTime:(id)a3 byOffset:(unint64_t)a4
++ (id)adjustedTime:(id)time byOffset:(unint64_t)offset
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-  v7 = v6;
-  switch(a4)
+  timeCopy = time;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  v7 = currentCalendar;
+  switch(offset)
   {
     case 0uLL:
       v8 = 32;
@@ -43,7 +43,7 @@
       v9 = -15;
       goto LABEL_18;
     case 7uLL:
-      v11 = v5;
+      v11 = timeCopy;
       goto LABEL_19;
     case 8uLL:
       v8 = 64;
@@ -73,7 +73,7 @@
       v8 = 32;
       v9 = 4;
 LABEL_18:
-      v11 = [v6 dateByAddingUnit:v8 value:v9 toDate:v5 options:0];
+      v11 = [currentCalendar dateByAddingUnit:v8 value:v9 toDate:timeCopy options:0];
 LABEL_19:
       v10 = v11;
       break;
@@ -87,33 +87,33 @@ LABEL_19:
   return v12;
 }
 
-+ (int64_t)nextWeekdayFromDaysOfWeek:(id)a3 timeComponents:(id)a4 currentDate:(id)a5 calendar:(id)a6
++ (int64_t)nextWeekdayFromDaysOfWeek:(id)week timeComponents:(id)components currentDate:(id)date calendar:(id)calendar
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = a3;
-  v13 = [v11 component:512 fromDate:v10];
+  componentsCopy = components;
+  dateCopy = date;
+  calendarCopy = calendar;
+  weekCopy = week;
+  v13 = [calendarCopy component:512 fromDate:dateCopy];
   v23 = MEMORY[0x1E69E9820];
   v24 = 3221225472;
   v25 = __84__WFTimeTriggerLogic_nextWeekdayFromDaysOfWeek_timeComponents_currentDate_calendar___block_invoke;
   v26 = &unk_1E8374218;
-  v27 = v11;
-  v28 = v10;
-  v29 = v9;
+  v27 = calendarCopy;
+  v28 = dateCopy;
+  v29 = componentsCopy;
   v30 = v13;
-  v14 = v9;
-  v15 = v10;
-  v16 = v11;
-  v17 = [v12 if_flatMap:&v23];
+  v14 = componentsCopy;
+  v15 = dateCopy;
+  v16 = calendarCopy;
+  v17 = [weekCopy if_flatMap:&v23];
 
   v18 = [v17 sortedArrayUsingSelector:{sel_compare_, v23, v24, v25, v26}];
-  v19 = [v18 firstObject];
-  v20 = [v19 integerValue];
+  firstObject = [v18 firstObject];
+  integerValue = [firstObject integerValue];
 
-  if (v20 % 7)
+  if (integerValue % 7)
   {
-    v21 = v20 % 7;
+    v21 = integerValue % 7;
   }
 
   else
@@ -176,22 +176,22 @@ LABEL_10:
   return v11;
 }
 
-+ (id)nextFireDateForTrigger:(id)a3 currentDate:(id)a4 currentSunriseTime:(id)a5 currentSunsetTime:(id)a6
++ (id)nextFireDateForTrigger:(id)trigger currentDate:(id)date currentSunriseTime:(id)time currentSunsetTime:(id)sunsetTime
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E695DEE8] currentCalendar];
-  if ([v10 event] == 2)
+  triggerCopy = trigger;
+  dateCopy = date;
+  timeCopy = time;
+  sunsetTimeCopy = sunsetTime;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+  if ([triggerCopy event] == 2)
   {
-    v15 = [v10 time];
+    time = [triggerCopy time];
 
-    if (v15)
+    if (time)
     {
-      v16 = [v10 time];
-      v17 = [v16 copy];
+      time2 = [triggerCopy time];
+      v17 = [time2 copy];
 
       goto LABEL_13;
     }
@@ -202,7 +202,7 @@ LABEL_10:
       v36 = 136315394;
       v37 = "+[WFTimeTriggerLogic nextFireDateForTrigger:currentDate:currentSunriseTime:currentSunsetTime:]";
       v38 = 2112;
-      v39 = v10;
+      event = triggerCopy;
       v21 = "%s Can't calculate nextFireDate; No time set for %@";
 LABEL_23:
       v29 = v17;
@@ -216,13 +216,13 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if (![v10 event])
+  if (![triggerCopy event])
   {
-    if (v12)
+    if (timeCopy)
     {
-      v18 = [v10 timeOffset];
-      v19 = a1;
-      v20 = v12;
+      timeOffset = [triggerCopy timeOffset];
+      selfCopy2 = self;
+      v20 = timeCopy;
       goto LABEL_12;
     }
 
@@ -242,7 +242,7 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ([v10 event] != 1)
+  if ([triggerCopy event] != 1)
   {
     v17 = getWFTriggersLogObject();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
@@ -250,7 +250,7 @@ LABEL_34:
       v36 = 136315394;
       v37 = "+[WFTimeTriggerLogic nextFireDateForTrigger:currentDate:currentSunriseTime:currentSunsetTime:]";
       v38 = 2048;
-      v39 = [v10 event];
+      event = [triggerCopy event];
       v21 = "%s Unhandled time trigger event: %ld; can't calculate nextFireDate";
       goto LABEL_23;
     }
@@ -260,7 +260,7 @@ LABEL_36:
     goto LABEL_37;
   }
 
-  if (!v13)
+  if (!sunsetTimeCopy)
   {
     v17 = getWFTriggersLogObject();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -274,22 +274,22 @@ LABEL_36:
     goto LABEL_34;
   }
 
-  v18 = [v10 timeOffset];
-  v19 = a1;
-  v20 = v13;
+  timeOffset = [triggerCopy timeOffset];
+  selfCopy2 = self;
+  v20 = sunsetTimeCopy;
 LABEL_12:
-  v17 = [v19 adjustedTime:v20 byOffset:v18];
+  v17 = [selfCopy2 adjustedTime:v20 byOffset:timeOffset];
 LABEL_13:
-  if ([v10 mode] != 1)
+  if ([triggerCopy mode] != 1)
   {
-    v24 = [v10 daysOfWeek];
-    v25 = [v24 count];
+    daysOfWeek = [triggerCopy daysOfWeek];
+    v25 = [daysOfWeek count];
 
     if (v25)
     {
-      v23 = [v10 daysOfWeek];
+      daysOfWeek2 = [triggerCopy daysOfWeek];
       v26 = [v17 copy];
-      -[NSObject setWeekday:](v17, "setWeekday:", [a1 nextWeekdayFromDaysOfWeek:v23 timeComponents:v26 currentDate:v11 calendar:v14]);
+      -[NSObject setWeekday:](v17, "setWeekday:", [self nextWeekdayFromDaysOfWeek:daysOfWeek2 timeComponents:v26 currentDate:dateCopy calendar:currentCalendar]);
 
       goto LABEL_18;
     }
@@ -303,14 +303,14 @@ LABEL_13:
     v36 = 136315394;
     v37 = "+[WFTimeTriggerLogic nextFireDateForTrigger:currentDate:currentSunriseTime:currentSunsetTime:]";
     v38 = 2112;
-    v39 = v10;
+    event = triggerCopy;
     v33 = "%s Can't calculate nextFireDate; No days of week set for %@";
     goto LABEL_28;
   }
 
-  v22 = [v10 dayOfMonth];
+  dayOfMonth = [triggerCopy dayOfMonth];
 
-  if (!v22)
+  if (!dayOfMonth)
   {
     v32 = getWFTriggersLogObject();
     if (!os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
@@ -323,25 +323,25 @@ LABEL_29:
     v36 = 136315394;
     v37 = "+[WFTimeTriggerLogic nextFireDateForTrigger:currentDate:currentSunriseTime:currentSunsetTime:]";
     v38 = 2112;
-    v39 = v10;
+    event = triggerCopy;
     v33 = "%s Can't calculate nextFireDate; No days of month set for %@";
 LABEL_28:
     _os_log_impl(&dword_1CA256000, v32, OS_LOG_TYPE_FAULT, v33, &v36, 0x16u);
     goto LABEL_29;
   }
 
-  v23 = [v10 dayOfMonth];
-  -[NSObject setDay:](v17, "setDay:", [v23 integerValue]);
+  daysOfWeek2 = [triggerCopy dayOfMonth];
+  -[NSObject setDay:](v17, "setDay:", [daysOfWeek2 integerValue]);
 LABEL_18:
 
-  v27 = [v14 nextDateAfterDate:v11 matchingComponents:v17 options:4098];
+  v27 = [currentCalendar nextDateAfterDate:dateCopy matchingComponents:v17 options:4098];
   v28 = getWFTriggersLogObject();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
     v36 = 136315650;
     v37 = "+[WFTimeTriggerLogic nextFireDateForTrigger:currentDate:currentSunriseTime:currentSunsetTime:]";
     v38 = 2112;
-    v39 = v10;
+    event = triggerCopy;
     v40 = 2112;
     v41 = v27;
     _os_log_impl(&dword_1CA256000, v28, OS_LOG_TYPE_INFO, "%s nextFireDate for trigger (%@): %@", &v36, 0x20u);
@@ -353,13 +353,13 @@ LABEL_37:
   return v27;
 }
 
-+ (id)nextFireDateFromNowWithTrigger:(id)a3 currentSunriseTime:(id)a4 currentSunsetTime:(id)a5
++ (id)nextFireDateFromNowWithTrigger:(id)trigger currentSunriseTime:(id)time currentSunsetTime:(id)sunsetTime
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  sunsetTimeCopy = sunsetTime;
+  timeCopy = time;
+  triggerCopy = trigger;
   v11 = objc_opt_new();
-  v12 = [a1 nextFireDateForTrigger:v10 currentDate:v11 currentSunriseTime:v9 currentSunsetTime:v8];
+  v12 = [self nextFireDateForTrigger:triggerCopy currentDate:v11 currentSunriseTime:timeCopy currentSunsetTime:sunsetTimeCopy];
 
   return v12;
 }

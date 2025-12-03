@@ -8,13 +8,13 @@
 
 - (void)storeAccountDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_24EA4E32C();
 }
 
 - (void)appEnteredWhileAppeared
 {
-  v2 = self;
+  selfCopy = self;
   sub_24EA4E8D4();
 }
 

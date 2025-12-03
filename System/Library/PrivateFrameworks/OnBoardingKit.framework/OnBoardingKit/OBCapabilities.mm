@@ -1,7 +1,7 @@
 @interface OBCapabilities
 + (id)sharedCapabilities;
-- (BOOL)_eligibilityContextHasCountryPolicyChina:(id)a3;
-- (BOOL)_eligibilityCountryPolicyStringIsChina:(const char *)a3;
+- (BOOL)_eligibilityContextHasCountryPolicyChina:(id)china;
+- (BOOL)_eligibilityCountryPolicyStringIsChina:(const char *)china;
 - (BOOL)deviceSupportsGenerativeModels;
 - (BOOL)eligibilityForGreymatterHasCountryPolicyChina;
 - (BOOL)eligibleForChlorine;
@@ -11,13 +11,13 @@
 - (NSNumber)overrideEligibleForChlorine;
 - (NSString)overrideAdditionalDisplayLanguage;
 - (id)_potentialAdditionalDisplayLanguage;
-- (id)additionalDisplayLanguageForDisplayLanguage:(id)a3;
+- (id)additionalDisplayLanguageForDisplayLanguage:(id)language;
 - (void)eligibilityForGreymatterHasCountryPolicyChina;
 - (void)eligibleForChlorine;
-- (void)setOverrideAdditionalDisplayLanguage:(id)a3;
-- (void)setOverrideDeviceSupportsGenerativeModels:(id)a3;
-- (void)setOverrideEligibilityForGreymatterHasCountryPolicyChina:(id)a3;
-- (void)setOverrideEligibleForChlorine:(id)a3;
+- (void)setOverrideAdditionalDisplayLanguage:(id)language;
+- (void)setOverrideDeviceSupportsGenerativeModels:(id)models;
+- (void)setOverrideEligibilityForGreymatterHasCountryPolicyChina:(id)china;
+- (void)setOverrideEligibleForChlorine:(id)chlorine;
 @end
 
 @implementation OBCapabilities
@@ -36,18 +36,18 @@
 
 - (BOOL)eligibleForChlorine
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  overrideEligibleForChlorine = v2->_overrideEligibleForChlorine;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  overrideEligibleForChlorine = selfCopy->_overrideEligibleForChlorine;
   if (overrideEligibleForChlorine)
   {
-    v4 = [(NSNumber *)overrideEligibleForChlorine BOOLValue];
-    objc_sync_exit(v2);
+    bOOLValue = [(NSNumber *)overrideEligibleForChlorine BOOLValue];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
     domain_answer = os_eligibility_get_domain_answer();
     v6 = _OBLoggingFacility();
@@ -59,7 +59,7 @@
     return 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 uint64_t __36__OBCapabilities_sharedCapabilities__block_invoke()
@@ -88,20 +88,20 @@ uint64_t __24__OBCapabilities_isWAPI__block_invoke()
 
 - (BOOL)deviceSupportsGenerativeModels
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  overrideDeviceSupportsGenerativeModels = v2->_overrideDeviceSupportsGenerativeModels;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  overrideDeviceSupportsGenerativeModels = selfCopy->_overrideDeviceSupportsGenerativeModels;
   if (overrideDeviceSupportsGenerativeModels)
   {
-    v4 = [(NSNumber *)overrideDeviceSupportsGenerativeModels BOOLValue];
-    objc_sync_exit(v2);
+    bOOLValue = [(NSNumber *)overrideDeviceSupportsGenerativeModels BOOLValue];
+    objc_sync_exit(selfCopy);
 
-    return v4;
+    return bOOLValue;
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
     return MGGetBoolAnswer();
   }
@@ -109,60 +109,60 @@ uint64_t __24__OBCapabilities_isWAPI__block_invoke()
 
 - (NSNumber)overrideDeviceSupportsGenerativeModels
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_overrideDeviceSupportsGenerativeModels;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_overrideDeviceSupportsGenerativeModels;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setOverrideDeviceSupportsGenerativeModels:(id)a3
+- (void)setOverrideDeviceSupportsGenerativeModels:(id)models
 {
-  v4 = a3;
+  modelsCopy = models;
   obj = self;
   objc_sync_enter(obj);
   overrideDeviceSupportsGenerativeModels = obj->_overrideDeviceSupportsGenerativeModels;
-  obj->_overrideDeviceSupportsGenerativeModels = v4;
+  obj->_overrideDeviceSupportsGenerativeModels = modelsCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSNumber)overrideEligibleForChlorine
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_overrideEligibleForChlorine;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_overrideEligibleForChlorine;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setOverrideEligibleForChlorine:(id)a3
+- (void)setOverrideEligibleForChlorine:(id)chlorine
 {
-  v4 = a3;
+  chlorineCopy = chlorine;
   obj = self;
   objc_sync_enter(obj);
   overrideEligibleForChlorine = obj->_overrideEligibleForChlorine;
-  obj->_overrideEligibleForChlorine = v4;
+  obj->_overrideEligibleForChlorine = chlorineCopy;
 
   objc_sync_exit(obj);
 }
 
 - (BOOL)eligibilityForGreymatterHasCountryPolicyChina
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  overrideEligibilityForGreymatterHasCountryPolicyChina = v2->_overrideEligibilityForGreymatterHasCountryPolicyChina;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  overrideEligibilityForGreymatterHasCountryPolicyChina = selfCopy->_overrideEligibilityForGreymatterHasCountryPolicyChina;
   if (overrideEligibilityForGreymatterHasCountryPolicyChina)
   {
-    v4 = [(NSNumber *)overrideEligibilityForGreymatterHasCountryPolicyChina BOOLValue];
-    objc_sync_exit(v2);
+    bOOLValue = [(NSNumber *)overrideEligibilityForGreymatterHasCountryPolicyChina BOOLValue];
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
 
     domain_answer = os_eligibility_get_domain_answer();
     v6 = _OBLoggingFacility();
@@ -171,19 +171,19 @@ uint64_t __24__OBCapabilities_isWAPI__block_invoke()
       [(OBCapabilities *)domain_answer eligibilityForGreymatterHasCountryPolicyChina];
     }
 
-    v4 = [(OBCapabilities *)v2 _eligibilityContextHasCountryPolicyChina:0, 0];
+    bOOLValue = [(OBCapabilities *)selfCopy _eligibilityContextHasCountryPolicyChina:0, 0];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (BOOL)_eligibilityContextHasCountryPolicyChina:(id)a3
+- (BOOL)_eligibilityContextHasCountryPolicyChina:(id)china
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  chinaCopy = china;
+  v5 = chinaCopy;
+  if (chinaCopy)
   {
-    v6 = xpc_dictionary_get_array(v4, "OS_ELIGIBILITY_CONTEXT_COUNTRY_POLICY");
+    v6 = xpc_dictionary_get_array(chinaCopy, "OS_ELIGIBILITY_CONTEXT_COUNTRY_POLICY");
     v7 = v6;
     if (v6)
     {
@@ -231,20 +231,20 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)_eligibilityCountryPolicyStringIsChina:(const char *)a3
+- (BOOL)_eligibilityCountryPolicyStringIsChina:(const char *)china
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3];
+  v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:china];
   v4 = [v3 componentsSeparatedByString:@"_"];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  if ([v5 isEqualToString:@"CN"])
+  if ([firstObject isEqualToString:@"CN"])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 isEqualToString:@"CHN"];
+    v6 = [firstObject isEqualToString:@"CHN"];
   }
 
   return v6;
@@ -252,107 +252,107 @@ LABEL_14:
 
 - (NSNumber)overrideEligibilityForGreymatterHasCountryPolicyChina
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_overrideEligibilityForGreymatterHasCountryPolicyChina;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_overrideEligibilityForGreymatterHasCountryPolicyChina;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setOverrideEligibilityForGreymatterHasCountryPolicyChina:(id)a3
+- (void)setOverrideEligibilityForGreymatterHasCountryPolicyChina:(id)china
 {
-  v4 = a3;
+  chinaCopy = china;
   obj = self;
   objc_sync_enter(obj);
   overrideEligibilityForGreymatterHasCountryPolicyChina = obj->_overrideEligibilityForGreymatterHasCountryPolicyChina;
-  obj->_overrideEligibilityForGreymatterHasCountryPolicyChina = v4;
+  obj->_overrideEligibilityForGreymatterHasCountryPolicyChina = chinaCopy;
 
   objc_sync_exit(obj);
 }
 
-- (id)additionalDisplayLanguageForDisplayLanguage:(id)a3
+- (id)additionalDisplayLanguageForDisplayLanguage:(id)language
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  languageCopy = language;
   v5 = _OBLoggingFacility();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v4;
+    v19 = languageCopy;
     _os_log_impl(&dword_1B4FB6000, v5, OS_LOG_TYPE_DEFAULT, "additionalDisplayLanguageForDisplayLanguage displayLanguage %@", &v18, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  if (v6->_overrideAdditionalDisplayLanguage)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_overrideAdditionalDisplayLanguage)
   {
     v7 = _OBLoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      overrideAdditionalDisplayLanguage = v6->_overrideAdditionalDisplayLanguage;
+      overrideAdditionalDisplayLanguage = selfCopy->_overrideAdditionalDisplayLanguage;
       v18 = 138412290;
       v19 = overrideAdditionalDisplayLanguage;
       _os_log_impl(&dword_1B4FB6000, v7, OS_LOG_TYPE_DEFAULT, "additionalDisplayLanguageForDisplayLanguage returning _overrideAdditionalDisplayLanguage %@", &v18, 0xCu);
     }
 
-    v9 = v6->_overrideAdditionalDisplayLanguage;
-    objc_sync_exit(v6);
+    _potentialAdditionalDisplayLanguage = selfCopy->_overrideAdditionalDisplayLanguage;
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    objc_sync_exit(v6);
+    objc_sync_exit(selfCopy);
 
-    v9 = [(OBCapabilities *)v6 _potentialAdditionalDisplayLanguage];
-    if (v9)
+    _potentialAdditionalDisplayLanguage = [(OBCapabilities *)selfCopy _potentialAdditionalDisplayLanguage];
+    if (_potentialAdditionalDisplayLanguage)
     {
-      v10 = v4;
-      if (!v10)
+      languageCode2 = languageCopy;
+      if (!languageCode2)
       {
         v11 = _OBLoggingFacility();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
-          v12 = [MEMORY[0x1E695DF58] currentLocale];
-          v13 = [v12 languageCode];
+          currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+          languageCode = [currentLocale languageCode];
           v18 = 138412290;
-          v19 = v13;
+          v19 = languageCode;
           _os_log_impl(&dword_1B4FB6000, v11, OS_LOG_TYPE_DEFAULT, "additionalDisplayLanguageForDisplayLanguage languageCode %@", &v18, 0xCu);
         }
 
-        v14 = [MEMORY[0x1E695DF58] currentLocale];
-        v10 = [v14 languageCode];
+        currentLocale2 = [MEMORY[0x1E695DF58] currentLocale];
+        languageCode2 = [currentLocale2 languageCode];
       }
 
       v15 = _OBLoggingFacility();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         v18 = 138412546;
-        v19 = v9;
+        v19 = _potentialAdditionalDisplayLanguage;
         v20 = 2112;
-        v21 = v10;
+        v21 = languageCode2;
         _os_log_impl(&dword_1B4FB6000, v15, OS_LOG_TYPE_DEFAULT, "additionalDisplayLanguageForDisplayLanguage additionalDisplayLanguage %@ resolvedDisplayLanguage %@", &v18, 0x16u);
       }
 
-      if ([(NSString *)v9 isEqualToString:v10])
+      if ([(NSString *)_potentialAdditionalDisplayLanguage isEqualToString:languageCode2])
       {
 
-        v9 = 0;
+        _potentialAdditionalDisplayLanguage = 0;
       }
     }
 
-    v6 = _OBLoggingFacility();
-    if (os_log_type_enabled(&v6->super, OS_LOG_TYPE_DEFAULT))
+    selfCopy = _OBLoggingFacility();
+    if (os_log_type_enabled(&selfCopy->super, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v9;
-      _os_log_impl(&dword_1B4FB6000, &v6->super, OS_LOG_TYPE_DEFAULT, "additionalDisplayLanguageForDisplayLanguage returning %@", &v18, 0xCu);
+      v19 = _potentialAdditionalDisplayLanguage;
+      _os_log_impl(&dword_1B4FB6000, &selfCopy->super, OS_LOG_TYPE_DEFAULT, "additionalDisplayLanguageForDisplayLanguage returning %@", &v18, 0xCu);
     }
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return _potentialAdditionalDisplayLanguage;
 }
 
 - (id)_potentialAdditionalDisplayLanguage
@@ -361,10 +361,10 @@ LABEL_14:
   v2 = _OBLoggingFacility();
   if (os_log_type_enabled(v2, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [MEMORY[0x1E695DF58] currentLocale];
-    v4 = [v3 languageIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    languageIdentifier = [currentLocale languageIdentifier];
     v8 = 138412290;
-    v9 = v4;
+    v9 = languageIdentifier;
     _os_log_impl(&dword_1B4FB6000, v2, OS_LOG_TYPE_DEFAULT, "_potentialAdditionalDisplayLanguage languageIdentifier %@", &v8, 0xCu);
   }
 
@@ -382,21 +382,21 @@ LABEL_14:
 
 - (NSString)overrideAdditionalDisplayLanguage
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_overrideAdditionalDisplayLanguage;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_overrideAdditionalDisplayLanguage;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setOverrideAdditionalDisplayLanguage:(id)a3
+- (void)setOverrideAdditionalDisplayLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   obj = self;
   objc_sync_enter(obj);
   overrideAdditionalDisplayLanguage = obj->_overrideAdditionalDisplayLanguage;
-  obj->_overrideAdditionalDisplayLanguage = v4;
+  obj->_overrideAdditionalDisplayLanguage = languageCopy;
 
   objc_sync_exit(obj);
 }
@@ -405,7 +405,7 @@ LABEL_14:
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1B4FB6000, a2, OS_LOG_TYPE_ERROR, "Failed to get eligibility for chlorine with error %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -414,7 +414,7 @@ LABEL_14:
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1;
+  v3[1] = self;
   _os_log_error_impl(&dword_1B4FB6000, a2, OS_LOG_TYPE_ERROR, "Failed to get eligibility for greymatter with error %d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

@@ -1,30 +1,30 @@
 @interface AFUISceneConfiguration
-+ (BOOL)shouldFenceConfigurationChange:(id)a3 fromCurrentSceneSettings:(id)a4;
++ (BOOL)shouldFenceConfigurationChange:(id)change fromCurrentSceneSettings:(id)settings;
 + (id)_sceneIdentifier;
-+ (id)defaultSiriSceneConfigurationWithInitialBounds:(CGRect)a3 onDisplay:(id)a4;
-+ (id)stringForInvalidationReason:(unint64_t)a3;
++ (id)defaultSiriSceneConfigurationWithInitialBounds:(CGRect)bounds onDisplay:(id)display;
++ (id)stringForInvalidationReason:(unint64_t)reason;
 - (AFUISceneConfiguration)init;
 - (CGRect)bounds;
 - (CGRect)initialBounds;
 - (FBSSceneDefinition)sceneDefinition;
 - (FBSSceneParameters)sceneParameters;
 - (UIEdgeInsets)initialSafeAreaInsets;
-- (id)_initWithInitialBounds:(CGRect)a3 displayConfiguration:(id)a4;
+- (id)_initWithInitialBounds:(CGRect)bounds displayConfiguration:(id)configuration;
 - (id)_sceneSpecification;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)_setupPlatformSpecificDefaultSettings;
-- (void)configureMutableSceneSettings:(id)a3;
+- (void)configureMutableSceneSettings:(id)settings;
 @end
 
 @implementation AFUISceneConfiguration
 
 - (void)_setupPlatformSpecificDefaultSettings
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 == 2)
+  if (userInterfaceIdiom == 2)
   {
     self->_foreground = 0;
     self->_launchIntent = 5;
@@ -33,7 +33,7 @@
 
   else
   {
-    if (v4 > 1)
+    if (userInterfaceIdiom > 1)
     {
       return;
     }
@@ -47,9 +47,9 @@
 + (id)_sceneIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v2 stringWithFormat:@"SiriHostedScene-%@-%@", @"com.apple.siri", v4];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [v2 stringWithFormat:@"SiriHostedScene-%@-%@", @"com.apple.siri", uUIDString];
 
   return v5;
 }
@@ -57,18 +57,18 @@
 - (FBSSceneDefinition)sceneDefinition
 {
   v3 = MEMORY[0x277D0ADC0];
-  v4 = [objc_opt_class() _sceneIdentifier];
-  v5 = [v3 identityForIdentifier:v4 workspaceIdentifier:@"com.apple.siri"];
+  _sceneIdentifier = [objc_opt_class() _sceneIdentifier];
+  v5 = [v3 identityForIdentifier:_sceneIdentifier workspaceIdentifier:@"com.apple.siri"];
 
   v6 = [MEMORY[0x277D46F60] identityForEmbeddedApplicationIdentifier:@"com.apple.siri"];
   v7 = [MEMORY[0x277D0ADA8] defaultIdentityForProcessIdentity:v6];
-  v8 = [MEMORY[0x277D0AD48] definition];
-  [v8 setIdentity:v5];
-  v9 = [(AFUISceneConfiguration *)self _sceneSpecification];
-  [v8 setSpecification:v9];
+  definition = [MEMORY[0x277D0AD48] definition];
+  [definition setIdentity:v5];
+  _sceneSpecification = [(AFUISceneConfiguration *)self _sceneSpecification];
+  [definition setSpecification:_sceneSpecification];
 
-  [v8 setClientIdentity:v7];
-  v10 = [v8 copy];
+  [definition setClientIdentity:v7];
+  v10 = [definition copy];
 
   return v10;
 }
@@ -89,36 +89,36 @@
 
 - (id)_sceneSpecification
 {
-  v2 = [(FBSDisplayConfiguration *)self->_displayConfiguration isCarDisplay];
+  isCarDisplay = [(FBSDisplayConfiguration *)self->_displayConfiguration isCarDisplay];
   v3 = off_278CD4830;
-  if (!v2)
+  if (!isCarDisplay)
   {
     v3 = off_278CD47D0;
   }
 
-  v4 = [(__objc2_class *)*v3 specification];
+  specification = [(__objc2_class *)*v3 specification];
 
-  return v4;
+  return specification;
 }
 
 - (AFUISceneConfiguration)init
 {
   v3 = objc_opt_class();
-  v4 = [MEMORY[0x277D0AA90] mainConfiguration];
-  v5 = [v3 defaultSiriSceneConfigurationWithInitialBounds:v4 onDisplay:{*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)}];
+  mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
+  v5 = [v3 defaultSiriSceneConfigurationWithInitialBounds:mainConfiguration onDisplay:{*MEMORY[0x277CBF398], *(MEMORY[0x277CBF398] + 8), *(MEMORY[0x277CBF398] + 16), *(MEMORY[0x277CBF398] + 24)}];
 
   return v5;
 }
 
-- (id)_initWithInitialBounds:(CGRect)a3 displayConfiguration:(id)a4
+- (id)_initWithInitialBounds:(CGRect)bounds displayConfiguration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  if (!v10)
+  configurationCopy = configuration;
+  if (!configurationCopy)
   {
     [AFUISceneConfiguration _initWithInitialBounds:a2 displayConfiguration:self];
   }
@@ -133,7 +133,7 @@
     v11->_initialBounds.origin.y = y;
     v11->_initialBounds.size.width = width;
     v11->_initialBounds.size.height = height;
-    v13 = [v10 copy];
+    v13 = [configurationCopy copy];
     displayConfiguration = v12->_displayConfiguration;
     v12->_displayConfiguration = v13;
 
@@ -204,15 +204,15 @@ LABEL_9:
 
 - (FBSSceneParameters)sceneParameters
 {
-  v3 = [(FBSDisplayConfiguration *)self->_displayConfiguration isCarDisplay];
+  isCarDisplay = [(FBSDisplayConfiguration *)self->_displayConfiguration isCarDisplay];
   v4 = off_278CD4830;
-  if (!v3)
+  if (!isCarDisplay)
   {
     v4 = off_278CD47D0;
   }
 
-  v5 = [(__objc2_class *)*v4 specification];
-  v6 = [objc_alloc(MEMORY[0x277D0AD50]) initWithSpecification:v5];
+  specification = [(__objc2_class *)*v4 specification];
+  v6 = [objc_alloc(MEMORY[0x277D0AD50]) initWithSpecification:specification];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __41__AFUISceneConfiguration_sceneParameters__block_invoke;
@@ -223,15 +223,15 @@ LABEL_9:
   return v6;
 }
 
-- (void)configureMutableSceneSettings:(id)a3
+- (void)configureMutableSceneSettings:(id)settings
 {
-  v18 = a3;
-  if ([v18 isUISubclass])
+  settingsCopy = settings;
+  if ([settingsCopy isUISubclass])
   {
     v4 = MEMORY[0x277D75DA0];
-    v5 = v18;
-    v6 = [v4 _applicationKeyWindow];
-    v7 = [v6 interfaceOrientation];
+    v5 = settingsCopy;
+    _applicationKeyWindow = [v4 _applicationKeyWindow];
+    interfaceOrientation = [_applicationKeyWindow interfaceOrientation];
 
     if (-[FBSDisplayConfiguration isCarDisplay](self->_displayConfiguration, "isCarDisplay") || ([MEMORY[0x277D75418] currentDevice], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "userInterfaceIdiom"), v8, v9 == 2))
     {
@@ -255,7 +255,7 @@ LABEL_9:
     [v5 setLevel:0.0];
     [v5 setDeviceOrientationEventsEnabled:0];
     [v5 setFrame:{x, y, width, height}];
-    [v5 setInterfaceOrientation:v7];
+    [v5 setInterfaceOrientation:interfaceOrientation];
     [v5 setUserInterfaceStyle:self->_userInterfaceStyle];
     [v5 setSafeAreaInsetsPortrait:{self->_initialSafeAreaInsets.top, self->_initialSafeAreaInsets.left, self->_initialSafeAreaInsets.bottom, self->_initialSafeAreaInsets.right}];
     [v5 setDeactivationReasons:self->_deactivationReasonMask];
@@ -264,44 +264,44 @@ LABEL_9:
   MEMORY[0x2821F96F8]();
 }
 
-+ (id)stringForInvalidationReason:(unint64_t)a3
++ (id)stringForInvalidationReason:(unint64_t)reason
 {
-  if (a3 < 6)
+  if (reason < 6)
   {
-    return off_278CD6118[a3];
+    return off_278CD6118[reason];
   }
 
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_ERROR))
   {
-    [(AFUISceneConfiguration *)a3 stringForInvalidationReason:v5];
+    [(AFUISceneConfiguration *)reason stringForInvalidationReason:v5];
   }
 
   return 0;
 }
 
-+ (id)defaultSiriSceneConfigurationWithInitialBounds:(CGRect)a3 onDisplay:(id)a4
++ (id)defaultSiriSceneConfigurationWithInitialBounds:(CGRect)bounds onDisplay:(id)display
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  v9 = [objc_alloc(objc_opt_class()) _initWithInitialBounds:v8 displayConfiguration:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  displayCopy = display;
+  v9 = [objc_alloc(objc_opt_class()) _initWithInitialBounds:displayCopy displayConfiguration:{x, y, width, height}];
 
   return v9;
 }
 
-+ (BOOL)shouldFenceConfigurationChange:(id)a3 fromCurrentSceneSettings:(id)a4
++ (BOOL)shouldFenceConfigurationChange:(id)change fromCurrentSceneSettings:(id)settings
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 isUISubclass])
+  changeCopy = change;
+  settingsCopy = settings;
+  if ([settingsCopy isUISubclass])
   {
-    v7 = v6;
-    v8 = [v5 userInterfaceStyle];
-    LOBYTE(v8) = v8 != [v7 userInterfaceStyle];
-    [v5 bounds];
+    v7 = settingsCopy;
+    userInterfaceStyle = [changeCopy userInterfaceStyle];
+    LOBYTE(userInterfaceStyle) = userInterfaceStyle != [v7 userInterfaceStyle];
+    [changeCopy bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
@@ -320,7 +320,7 @@ LABEL_9:
     v28.origin.y = v20;
     v28.size.width = v22;
     v28.size.height = v24;
-    v25 = v8 | CGRectEqualToRect(v27, v28);
+    v25 = userInterfaceStyle | CGRectEqualToRect(v27, v28);
   }
 
   else
@@ -331,7 +331,7 @@ LABEL_9:
   return v25 & 1;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) _initWithInitialBounds:self->_displayConfiguration displayConfiguration:{self->_initialBounds.origin.x, self->_initialBounds.origin.y, self->_initialBounds.size.width, self->_initialBounds.size.height}];
   [v4 setForeground:self->_foreground];

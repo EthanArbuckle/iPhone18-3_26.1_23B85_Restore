@@ -1,37 +1,37 @@
 @interface MSVARC4RandomSource
 + (MSVARC4RandomSource)sharedSource;
 - (MSVARC4RandomSource)init;
-- (MSVARC4RandomSource)initWithCoder:(id)a3;
-- (MSVARC4RandomSource)initWithSeed:(id)a3;
-- (id)bytesWithLength:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableBytesWithLength:(int64_t)a3;
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3;
+- (MSVARC4RandomSource)initWithCoder:(id)coder;
+- (MSVARC4RandomSource)initWithSeed:(id)seed;
+- (id)bytesWithLength:(int64_t)length;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableBytesWithLength:(int64_t)length;
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setSeed:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setSeed:(id)seed;
 @end
 
 @implementation MSVARC4RandomSource
 
-- (id)mutableBytesWithLength:(int64_t)a3
+- (id)mutableBytesWithLength:(int64_t)length
 {
-  v3 = a3;
-  if (a3 < 0)
+  lengthCopy = length;
+  if (length < 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"MSVRandom.m" lineNumber:127 description:{@"Must have a valid length > -1: %ld", v3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVRandom.m" lineNumber:127 description:{@"Must have a valid length > -1: %ld", lengthCopy}];
   }
 
-  else if (!a3)
+  else if (!length)
   {
-    v5 = [MEMORY[0x1E695DF88] data];
+    data = [MEMORY[0x1E695DF88] data];
     goto LABEL_7;
   }
 
-  v5 = [MEMORY[0x1E695DF88] dataWithLength:v3];
+  data = [MEMORY[0x1E695DF88] dataWithLength:lengthCopy];
   state = self->_state;
-  v7 = [v5 mutableBytes];
+  mutableBytes = [data mutableBytes];
   var2 = state->var2;
   LODWORD(v9) = state->var0;
   var1 = state->var1;
@@ -42,52 +42,52 @@
     LOBYTE(var1) = v11 + var1;
     var2[v9] = var2[var1];
     var2[var1] = v11;
-    *v7++ = var2[(var2[v9] + v11)];
-    --v3;
+    *mutableBytes++ = var2[(var2[v9] + v11)];
+    --lengthCopy;
   }
 
-  while (v3);
+  while (lengthCopy);
   state->var0 = v9;
   state->var1 = var1;
 LABEL_7:
 
-  return v5;
+  return data;
 }
 
-- (id)bytesWithLength:(int64_t)a3
+- (id)bytesWithLength:(int64_t)length
 {
-  if (a3 < 0)
+  if (length < 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MSVRandom.m" lineNumber:120 description:{@"Must have a valid length > -1: %ld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MSVRandom.m" lineNumber:120 description:{@"Must have a valid length > -1: %ld", length}];
 
     goto LABEL_3;
   }
 
-  if (a3)
+  if (length)
   {
 LABEL_3:
-    v5 = [(MSVARC4RandomSource *)self mutableBytesWithLength:a3];
-    v6 = [v5 copy];
+    v5 = [(MSVARC4RandomSource *)self mutableBytesWithLength:length];
+    data = [v5 copy];
 
     goto LABEL_5;
   }
 
-  v6 = [MEMORY[0x1E695DEF0] data];
+  data = [MEMORY[0x1E695DEF0] data];
 LABEL_5:
 
-  return v6;
+  return data;
 }
 
-- (unint64_t)nextIntWithUpperBound:(unint64_t)a3
+- (unint64_t)nextIntWithUpperBound:(unint64_t)bound
 {
-  if (a3 < 2)
+  if (bound < 2)
   {
     return 0;
   }
 
   v18 = 0;
-  if ((a3 & (a3 - 1)) != 0)
+  if ((bound & (bound - 1)) != 0)
   {
     do
     {
@@ -110,10 +110,10 @@ LABEL_5:
       state->var0 = v13;
       state->var1 = var1;
       v16 = bswap32(v18);
-      v3 = v16 % a3;
+      v3 = v16 % bound;
     }
 
-    while (a3 - 1 + v16 < v16 % a3);
+    while (bound - 1 + v16 < v16 % bound);
   }
 
   else
@@ -136,18 +136,18 @@ LABEL_5:
     while (v4 != 4);
     v5->var0 = v7;
     v5->var1 = v8;
-    return (bswap32(v18) * a3) >> 32;
+    return (bswap32(v18) * bound) >> 32;
   }
 
   return v3;
 }
 
-- (void)setSeed:(id)a3
+- (void)setSeed:(id)seed
 {
-  v17 = a3;
-  if ([v17 length])
+  seedCopy = seed;
+  if ([seedCopy length])
   {
-    v4 = v17;
+    v4 = seedCopy;
   }
 
   else
@@ -170,7 +170,7 @@ LABEL_5:
   self->_seed = v7;
 
   state = self->_state;
-  v10 = [(NSData *)self->_seed bytes];
+  bytes = [(NSData *)self->_seed bytes];
   v11 = [(NSData *)self->_seed length];
   v12 = 0;
   v13 = 0;
@@ -178,7 +178,7 @@ LABEL_5:
   do
   {
     v15 = var2[v12];
-    v13 += v15 + v10[v12 % v11];
+    v13 += v15 + bytes[v12 % v11];
     var2[v12] = var2[v13];
     var2[v13] = v15;
     ++v12;
@@ -202,18 +202,18 @@ LABEL_5:
   [(MSVARC4RandomSource *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   var0 = self->_state->var0;
-  v5 = a3;
-  [v5 encodeInt:var0 forKey:@"i"];
-  [v5 encodeInt:self->_state->var1 forKey:@"j"];
-  [v5 encodeBytes:self->_state->var2 length:256 forKey:@"bytes"];
+  coderCopy = coder;
+  [coderCopy encodeInt:var0 forKey:@"i"];
+  [coderCopy encodeInt:self->_state->var1 forKey:@"j"];
+  [coderCopy encodeBytes:self->_state->var2 length:256 forKey:@"bytes"];
 }
 
-- (MSVARC4RandomSource)initWithCoder:(id)a3
+- (MSVARC4RandomSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MSVARC4RandomSource;
   v5 = [(MSVARC4RandomSource *)&v14 init];
@@ -237,10 +237,10 @@ LABEL_5:
       while (v9 != 256);
     }
 
-    v5->_state->var0 = [v4 decodeIntForKey:@"i"];
-    v5->_state->var1 = [v4 decodeIntForKey:@"j"];
+    v5->_state->var0 = [coderCopy decodeIntForKey:@"i"];
+    v5->_state->var1 = [coderCopy decodeIntForKey:@"j"];
     v13 = 0;
-    v10 = [v4 decodeBytesForKey:@"bytes" returnedLength:&v13];
+    v10 = [coderCopy decodeBytesForKey:@"bytes" returnedLength:&v13];
     if (v13 >= 0x100)
     {
       v11 = 256;
@@ -257,7 +257,7 @@ LABEL_5:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = [objc_alloc(objc_opt_class()) initWithSeed:self->_seed];
   state = self->_state;
@@ -296,9 +296,9 @@ LABEL_5:
   return result;
 }
 
-- (MSVARC4RandomSource)initWithSeed:(id)a3
+- (MSVARC4RandomSource)initWithSeed:(id)seed
 {
-  v4 = a3;
+  seedCopy = seed;
   v11.receiver = self;
   v11.super_class = MSVARC4RandomSource;
   v5 = [(MSVARC4RandomSource *)&v11 init];
@@ -322,7 +322,7 @@ LABEL_5:
       while (v9 != 256);
     }
 
-    [(MSVARC4RandomSource *)v5 setSeed:v4];
+    [(MSVARC4RandomSource *)v5 setSeed:seedCopy];
   }
 
   return v5;
@@ -330,8 +330,8 @@ LABEL_5:
 
 - (MSVARC4RandomSource)init
 {
-  v3 = [MEMORY[0x1E695DEF0] data];
-  v4 = [(MSVARC4RandomSource *)self initWithSeed:v3];
+  data = [MEMORY[0x1E695DEF0] data];
+  v4 = [(MSVARC4RandomSource *)self initWithSeed:data];
 
   return v4;
 }

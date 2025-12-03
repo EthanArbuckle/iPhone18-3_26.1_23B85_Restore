@@ -1,23 +1,23 @@
 @interface SUUICardLayout
-+ (id)layoutWithCardViewElement:(id)a3 context:(id)a4;
-- (CGSize)sizeForViewElement:(id)a3 width:(double)a4;
-- (double)bottomInsetForLastViewElement:(id)a3 width:(double)a4;
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5;
++ (id)layoutWithCardViewElement:(id)element context:(id)context;
+- (CGSize)sizeForViewElement:(id)element width:(double)width;
+- (double)bottomInsetForLastViewElement:(id)element width:(double)width;
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width;
 @end
 
 @implementation SUUICardLayout
 
-+ (id)layoutWithCardViewElement:(id)a3 context:(id)a4
++ (id)layoutWithCardViewElement:(id)element context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  elementCopy = element;
+  contextCopy = context;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2050000000;
   v21 = 0;
-  v7 = [v5 style];
-  v8 = [v7 cardType];
-  v9 = [v8 isEqualToString:@"programmed"];
+  style = [elementCopy style];
+  cardType = [style cardType];
+  v9 = [cardType isEqualToString:@"programmed"];
 
   if (v9)
   {
@@ -34,7 +34,7 @@ LABEL_5:
     v17[2] = __52__SUUICardLayout_layoutWithCardViewElement_context___block_invoke;
     v17[3] = &unk_2798F5FB8;
     v17[4] = &v18;
-    [v5 enumerateChildrenUsingBlock:v17];
+    [elementCopy enumerateChildrenUsingBlock:v17];
     if (v19[3])
     {
       goto LABEL_7;
@@ -51,15 +51,15 @@ LABEL_5:
 LABEL_6:
   v19[3] = objc_opt_class();
 LABEL_7:
-  v11 = [v5 firstChildForElementType:7];
+  v11 = [elementCopy firstChildForElementType:7];
 
   v12 = objc_alloc_init(v19[3]);
   v13 = v12[1];
-  v12[1] = v5;
-  v14 = v5;
+  v12[1] = elementCopy;
+  v14 = elementCopy;
 
   v15 = v12[2];
-  v12[2] = v6;
+  v12[2] = contextCopy;
 
   *(v12 + 24) = v11 != 0;
   _Block_object_dispose(&v18, 8);
@@ -79,7 +79,7 @@ uint64_t __52__SUUICardLayout_layoutWithCardViewElement_context___block_invoke(u
   return result;
 }
 
-- (double)bottomInsetForLastViewElement:(id)a3 width:(double)a4
+- (double)bottomInsetForLastViewElement:(id)element width:(double)width
 {
   result = 0.0;
   if (self->_hasBackground)
@@ -90,25 +90,25 @@ uint64_t __52__SUUICardLayout_layoutWithCardViewElement_context___block_invoke(u
   return result;
 }
 
-- (CGSize)sizeForViewElement:(id)a3 width:(double)a4
+- (CGSize)sizeForViewElement:(id)element width:(double)width
 {
-  v6 = a3;
-  v7 = [v6 elementType];
-  if (v7 <= 65)
+  elementCopy = element;
+  elementType = [elementCopy elementType];
+  if (elementType <= 65)
   {
-    if (v7 == 7)
+    if (elementType == 7)
     {
-      v15 = [v6 firstChildForElementType:49];
-      [(SUUIViewElementLayoutContext *)self->_layoutContext sizeForViewElement:v15 width:a4];
+      v15 = [elementCopy firstChildForElementType:49];
+      [(SUUIViewElementLayoutContext *)self->_layoutContext sizeForViewElement:v15 width:width];
       v13 = v16;
       v14 = v17;
 
       goto LABEL_17;
     }
 
-    if (v7 == 50 && [(SUUICardViewElement *)self->_cardViewElement isAdCard])
+    if (elementType == 50 && [(SUUICardViewElement *)self->_cardViewElement isAdCard])
     {
-      v8 = [MEMORY[0x277D75418] currentDevice];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
 
@@ -118,10 +118,10 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v9 = [MEMORY[0x277D75418] currentDevice];
-      v10 = [v9 userInterfaceIdiom];
+      currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice2 userInterfaceIdiom];
 
-      if (!v10)
+      if (!userInterfaceIdiom)
       {
         goto LABEL_16;
       }
@@ -130,21 +130,21 @@ LABEL_16:
     goto LABEL_11;
   }
 
-  if (v7 == 108)
+  if (elementType == 108)
   {
     v13 = *MEMORY[0x277CBF3A8];
     v14 = *(MEMORY[0x277CBF3A8] + 8);
     goto LABEL_17;
   }
 
-  if (v7 != 66)
+  if (elementType != 66)
   {
 LABEL_11:
-    [(SUUIViewElementLayoutContext *)self->_layoutContext sizeForViewElement:v6 width:a4];
+    [(SUUIViewElementLayoutContext *)self->_layoutContext sizeForViewElement:elementCopy width:width];
     goto LABEL_12;
   }
 
-  [SUUIHorizontalLockupView sizeThatFitsWidth:v6 viewElement:self->_layoutContext context:a4];
+  [SUUIHorizontalLockupView sizeThatFitsWidth:elementCopy viewElement:self->_layoutContext context:width];
 LABEL_12:
   v13 = v11;
   v14 = v12;
@@ -157,16 +157,16 @@ LABEL_17:
   return result;
 }
 
-- (double)topInsetForViewElement:(id)a3 previousViewElement:(id)a4 width:(double)a5
+- (double)topInsetForViewElement:(id)element previousViewElement:(id)viewElement width:(double)width
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  elementCopy = element;
+  viewElementCopy = viewElement;
+  if (viewElementCopy)
   {
     v9 = 12.0;
-    if ([v7 elementType] != 131)
+    if ([elementCopy elementType] != 131)
     {
-      if ([v8 elementType] == 131)
+      if ([viewElementCopy elementType] == 131)
       {
         v9 = 12.0;
       }

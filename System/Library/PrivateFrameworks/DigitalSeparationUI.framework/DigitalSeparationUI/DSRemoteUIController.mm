@@ -23,8 +23,8 @@
   v6.super_class = DSRemoteUIController;
   [(OBBaseWelcomeController *)&v6 viewDidLoad];
   v3 = DSUILocStringForKey(@"CONTINUE");
-  v4 = [(DSRemoteUIController *)self delegate];
-  v5 = [DSUIUtilities setUpBoldButtonForController:self title:v3 target:v4 selector:sel_pushNextPane];
+  delegate = [(DSRemoteUIController *)self delegate];
+  v5 = [DSUIUtilities setUpBoldButtonForController:self title:v3 target:delegate selector:sel_pushNextPane];
 }
 
 - (DSNavigationDelegate)delegate

@@ -1,44 +1,44 @@
 @interface STKPreDeclare
-+ (id)createEmojiStrikeWithImage:(CGImage *)a3 metadata:(id)a4;
-+ (id)descriptionForAvatarWithRecord:(id)a3 includeVideoPrefix:(BOOL)a4;
-+ (void)clearActiveKBForwardingInputDelegateAndResign:(BOOL)a3;
++ (id)createEmojiStrikeWithImage:(CGImage *)image metadata:(id)metadata;
++ (id)descriptionForAvatarWithRecord:(id)record includeVideoPrefix:(BOOL)prefix;
++ (void)clearActiveKBForwardingInputDelegateAndResign:(BOOL)resign;
 + (void)setRestoresToEmojiInputMode;
 @end
 
 @implementation STKPreDeclare
 
-+ (void)clearActiveKBForwardingInputDelegateAndResign:(BOOL)a3
++ (void)clearActiveKBForwardingInputDelegateAndResign:(BOOL)resign
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DCBE0] activeInstance];
-  [v4 clearForwardingInputDelegateAndResign:v3];
+  resignCopy = resign;
+  activeInstance = [MEMORY[0x1E69DCBE0] activeInstance];
+  [activeInstance clearForwardingInputDelegateAndResign:resignCopy];
 }
 
 + (void)setRestoresToEmojiInputMode
 {
-  v2 = [MEMORY[0x1E69DCBE0] sharedInstance];
+  mEMORY[0x1E69DCBE0] = [MEMORY[0x1E69DCBE0] sharedInstance];
   v3 = objc_opt_respondsToSelector();
 
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DCBE0] sharedInstance];
-    [v4 setRestoresToEmojiInputMode];
+    mEMORY[0x1E69DCBE0]2 = [MEMORY[0x1E69DCBE0] sharedInstance];
+    [mEMORY[0x1E69DCBE0]2 setRestoresToEmojiInputMode];
   }
 }
 
-+ (id)createEmojiStrikeWithImage:(CGImage *)a3 metadata:(id)a4
++ (id)createEmojiStrikeWithImage:(CGImage *)image metadata:(id)metadata
 {
-  v5 = a4;
+  metadataCopy = metadata;
   v6 = [objc_opt_class() instancesRespondToSelector:sel_initWithImage_imageProperties_];
   v7 = objc_alloc(MEMORY[0x1E69655E8]);
   if (v6)
   {
-    v8 = [v7 initWithImage:a3 imageProperties:v5];
+    v8 = [v7 initWithImage:image imageProperties:metadataCopy];
   }
 
   else
   {
-    v8 = [v7 initWithImage:a3 alignmentInset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+    v8 = [v7 initWithImage:image alignmentInset:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   }
 
   v9 = v8;
@@ -46,10 +46,10 @@
   return v9;
 }
 
-+ (id)descriptionForAvatarWithRecord:(id)a3 includeVideoPrefix:(BOOL)a4
++ (id)descriptionForAvatarWithRecord:(id)record includeVideoPrefix:(BOOL)prefix
 {
-  v4 = a4;
-  v5 = a3;
+  prefixCopy = prefix;
+  recordCopy = record;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2050000000;
@@ -68,7 +68,7 @@
 
   v7 = v6;
   _Block_object_dispose(&v11, 8);
-  v8 = [v6 descriptionForAvatarWithRecord:v5 includeVideoPrefix:v4];
+  v8 = [v6 descriptionForAvatarWithRecord:recordCopy includeVideoPrefix:prefixCopy];
 
   return v8;
 }

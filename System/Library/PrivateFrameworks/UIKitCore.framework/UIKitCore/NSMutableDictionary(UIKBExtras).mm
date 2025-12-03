@@ -8,7 +8,7 @@
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -28,7 +28,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [v4 addEntriesFromDictionary:{*(*(&v11 + 1) + 8 * i), v11}];
+        [dictionary addEntriesFromDictionary:{*(*(&v11 + 1) + 8 * i), v11}];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -37,7 +37,7 @@
     while (v7);
   }
 
-  return v4;
+  return dictionary;
 }
 
 @end

@@ -3,11 +3,11 @@
 - (BOOL)isFetchNeeded;
 - (DSSafetyCheckWhenBlocking)init;
 - (void)cleanup;
-- (void)fetchSharingWithCompletion:(id)a3;
-- (void)isSharingWith:(id)a3 completion:(id)a4;
-- (void)isSharingWithContacts:(id)a3 completion:(id)a4;
-- (void)safetyCheckControllerWithPreview:(BOOL)a3 forPeople:(id)a4 completion:(id)a5;
-- (void)startManageSharingWithContact:(id)a3 completion:(id)a4;
+- (void)fetchSharingWithCompletion:(id)completion;
+- (void)isSharingWith:(id)with completion:(id)completion;
+- (void)isSharingWithContacts:(id)contacts completion:(id)completion;
+- (void)safetyCheckControllerWithPreview:(BOOL)preview forPeople:(id)people completion:(id)completion;
+- (void)startManageSharingWithContact:(id)contact completion:(id)completion;
 @end
 
 @implementation DSSafetyCheckWhenBlocking
@@ -23,8 +23,8 @@
     v4 = DSLog;
     DSLog = v3;
 
-    v5 = [MEMORY[0x277D054E8] sharedInstance];
-    [(DSSafetyCheckWhenBlocking *)v2 setPermissions:v5];
+    mEMORY[0x277D054E8] = [MEMORY[0x277D054E8] sharedInstance];
+    [(DSSafetyCheckWhenBlocking *)v2 setPermissions:mEMORY[0x277D054E8]];
   }
 
   return v2;
@@ -39,8 +39,8 @@
     _os_log_impl(&dword_248C7E000, v3, OS_LOG_TYPE_DEFAULT, "Disconnecting from safetycheckd", v5, 2u);
   }
 
-  v4 = [(DSSafetyCheckWhenBlocking *)self permissions];
-  [v4 disconnect];
+  permissions = [(DSSafetyCheckWhenBlocking *)self permissions];
+  [permissions disconnect];
 }
 
 + (BOOL)featureEnabled
@@ -48,21 +48,21 @@
   v2 = _os_feature_enabled_impl();
   if (v2)
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 sf_isiPhone];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    sf_isiPhone = [currentDevice sf_isiPhone];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(v2) = sf_isiPhone;
   }
 
   return v2;
 }
 
-- (void)fetchSharingWithCompletion:(id)a3
+- (void)fetchSharingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [objc_opt_class() featureEnabled];
+  completionCopy = completion;
+  featureEnabled = [objc_opt_class() featureEnabled];
   v6 = DSLog;
-  if (v5)
+  if (featureEnabled)
   {
     if (os_log_type_enabled(DSLog, OS_LOG_TYPE_INFO))
     {
@@ -71,14 +71,14 @@
     }
 
     objc_initWeak(buf, self);
-    v7 = [(DSSafetyCheckWhenBlocking *)self permissions];
+    permissions = [(DSSafetyCheckWhenBlocking *)self permissions];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __56__DSSafetyCheckWhenBlocking_fetchSharingWithCompletion___block_invoke;
     v8[3] = &unk_278F75390;
     objc_copyWeak(&v10, buf);
-    v9 = v4;
-    [v7 fetchSharingWithCompletion:v8];
+    v9 = completionCopy;
+    [permissions fetchSharingWithCompletion:v8];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(buf);
@@ -91,7 +91,7 @@
       [DSSafetyCheckWhenBlocking fetchSharingWithCompletion:v6];
     }
 
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -115,31 +115,31 @@ void __56__DSSafetyCheckWhenBlocking_fetchSharingWithCompletion___block_invoke(u
 
 - (BOOL)isFetchNeeded
 {
-  v3 = [objc_opt_class() featureEnabled];
-  if (v3)
+  featureEnabled = [objc_opt_class() featureEnabled];
+  if (featureEnabled)
   {
-    v4 = [(DSSafetyCheckWhenBlocking *)self permissions];
-    v5 = [v4 isFetchNeeded];
+    permissions = [(DSSafetyCheckWhenBlocking *)self permissions];
+    isFetchNeeded = [permissions isFetchNeeded];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(featureEnabled) = isFetchNeeded;
   }
 
-  return v3;
+  return featureEnabled;
 }
 
-- (void)isSharingWith:(id)a3 completion:(id)a4
+- (void)isSharingWith:(id)with completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  withCopy = with;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __54__DSSafetyCheckWhenBlocking_isSharingWith_completion___block_invoke;
   v10[3] = &unk_278F753B8;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = withCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [(DSSafetyCheckWhenBlocking *)self fetchSharingWithCompletion:v10];
 
@@ -201,19 +201,19 @@ void __54__DSSafetyCheckWhenBlocking_isSharingWith_completion___block_invoke(uin
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isSharingWithContacts:(id)a3 completion:(id)a4
+- (void)isSharingWithContacts:(id)contacts completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contactsCopy = contacts;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__DSSafetyCheckWhenBlocking_isSharingWithContacts_completion___block_invoke;
   v10[3] = &unk_278F753B8;
   objc_copyWeak(&v13, &location);
-  v8 = v6;
+  v8 = contactsCopy;
   v11 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [(DSSafetyCheckWhenBlocking *)self fetchSharingWithCompletion:v10];
 
@@ -352,48 +352,48 @@ void __62__DSSafetyCheckWhenBlocking_isSharingWithContacts_completion___block_in
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startManageSharingWithContact:(id)a3 completion:(id)a4
+- (void)startManageSharingWithContact:(id)contact completion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  contactCopy = contact;
   v6 = MEMORY[0x277CBEA60];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
+  completionCopy = completion;
+  contactCopy2 = contact;
+  v9 = [v6 arrayWithObjects:&contactCopy count:1];
 
-  [(DSSafetyCheckWhenBlocking *)self safetyCheckControllerWithPreview:1 forContacts:v9 completion:v7, v11, v12];
+  [(DSSafetyCheckWhenBlocking *)self safetyCheckControllerWithPreview:1 forContacts:v9 completion:completionCopy, contactCopy, v12];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)safetyCheckControllerWithPreview:(BOOL)a3 forPeople:(id)a4 completion:(id)a5
+- (void)safetyCheckControllerWithPreview:(BOOL)preview forPeople:(id)people completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  if ([v8 count])
+  peopleCopy = people;
+  completionCopy = completion;
+  if ([peopleCopy count])
   {
-    v10 = [MEMORY[0x277D054F0] sortedXPCArray:v8];
-    v11 = [(DSSafetyCheckWhenBlocking *)self permissions];
-    v12 = [(DSSafetyCheckWhenBlocking *)self prefetchError];
+    v10 = [MEMORY[0x277D054F0] sortedXPCArray:peopleCopy];
+    permissions = [(DSSafetyCheckWhenBlocking *)self permissions];
+    prefetchError = [(DSSafetyCheckWhenBlocking *)self prefetchError];
     [(DSSafetyCheckWhenBlocking *)self setPrefetchError:0];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __83__DSSafetyCheckWhenBlocking_safetyCheckControllerWithPreview_forPeople_completion___block_invoke;
     v16[3] = &unk_278F753E0;
-    v17 = v8;
-    v18 = v11;
-    v19 = v12;
+    v17 = peopleCopy;
+    v18 = permissions;
+    v19 = prefetchError;
     v20 = v10;
-    v22 = a3;
-    v21 = v9;
+    previewCopy = preview;
+    v21 = completionCopy;
     v13 = v10;
-    v14 = v12;
-    v15 = v11;
+    v14 = prefetchError;
+    v15 = permissions;
     dispatch_async(MEMORY[0x277D85CD0], v16);
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 

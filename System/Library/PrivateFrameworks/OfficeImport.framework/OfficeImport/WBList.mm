@@ -1,25 +1,25 @@
 @interface WBList
-+ (void)readFrom:(id)a3 list:(id)a4 override:(void *)a5;
-+ (void)write:(id)a3 list:(id)a4 to:(void *)a5;
++ (void)readFrom:(id)from list:(id)list override:(void *)override;
++ (void)write:(id)write list:(id)list to:(void *)to;
 @end
 
 @implementation WBList
 
-+ (void)readFrom:(id)a3 list:(id)a4 override:(void *)a5
++ (void)readFrom:(id)from list:(id)list override:(void *)override
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = *(a5 + 8) - *(a5 + 6);
+  fromCopy = from;
+  listCopy = list;
+  v8 = *(override + 8) - *(override + 6);
   v9 = (v8 >> 3);
   if ((v8 >> 3))
   {
     v10 = 0;
     do
     {
-      DefaultFormat = XlChartDataSeries::getDefaultFormat(a5, v10);
-      v12 = [v7 addLevelOverrideWithLevel:*(DefaultFormat + 20)];
-      v13 = [v14 targetDocument];
-      [WBListLevelOverride readFrom:v14 listLevelOverride:v12 formatOverride:DefaultFormat document:v13];
+      DefaultFormat = XlChartDataSeries::getDefaultFormat(override, v10);
+      v12 = [listCopy addLevelOverrideWithLevel:*(DefaultFormat + 20)];
+      targetDocument = [fromCopy targetDocument];
+      [WBListLevelOverride readFrom:fromCopy listLevelOverride:v12 formatOverride:DefaultFormat document:targetDocument];
 
       ++v10;
     }
@@ -28,19 +28,19 @@
   }
 }
 
-+ (void)write:(id)a3 list:(id)a4 to:(void *)a5
++ (void)write:(id)write list:(id)list to:(void *)to
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = [v7 levelOverrideCount];
-  WrdListFormatOverride::setNumberOfLevelsOverridden(a5, v8);
-  *(a5 + 4) = [v7 listDefinitionId];
-  if (v8)
+  writeCopy = write;
+  listCopy = list;
+  levelOverrideCount = [listCopy levelOverrideCount];
+  WrdListFormatOverride::setNumberOfLevelsOverridden(to, levelOverrideCount);
+  *(to + 4) = [listCopy listDefinitionId];
+  if (levelOverrideCount)
   {
-    for (i = 0; i != v8; ++i)
+    for (i = 0; i != levelOverrideCount; ++i)
     {
-      v10 = [v7 levelOverrideAt:i];
-      [WBListLevelOverride write:v11 listLevelOverride:v10 wrdFormatOverride:XlChartDataSeries::getDefaultFormat(a5, i)];
+      v10 = [listCopy levelOverrideAt:i];
+      [WBListLevelOverride write:writeCopy listLevelOverride:v10 wrdFormatOverride:XlChartDataSeries::getDefaultFormat(to, i)];
     }
   }
 }

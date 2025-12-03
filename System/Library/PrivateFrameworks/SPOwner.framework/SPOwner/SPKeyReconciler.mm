@@ -1,21 +1,21 @@
 @interface SPKeyReconciler
-- (SPKeyReconciler)initWithDictionary:(id)a3;
+- (SPKeyReconciler)initWithDictionary:(id)dictionary;
 - (id)description;
-- (id)reconcileKey:(id)a3 matchedIndex:(unsigned int *)a4 sequence:(unsigned __int8 *)a5 error:(unsigned __int8 *)a6;
+- (id)reconcileKey:(id)key matchedIndex:(unsigned int *)index sequence:(unsigned __int8 *)sequence error:(unsigned __int8 *)error;
 @end
 
 @implementation SPKeyReconciler
 
-- (SPKeyReconciler)initWithDictionary:(id)a3
+- (SPKeyReconciler)initWithDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SPKeyReconciler;
   v6 = [(SPKeyReconciler *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_backingDictionary, a3);
+    objc_storeStrong(&v6->_backingDictionary, dictionary);
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     keyIndices = v7->_keyIndices;
     v7->_keyIndices = v8;
@@ -25,7 +25,7 @@
     v11[2] = __38__SPKeyReconciler_initWithDictionary___block_invoke;
     v11[3] = &unk_279B59EA0;
     v12 = v7;
-    [v5 enumerateKeysAndObjectsUsingBlock:v11];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v11];
   }
 
   return v7;
@@ -90,7 +90,7 @@ void __38__SPKeyReconciler_initWithDictionary___block_invoke_2(uint64_t a1, void
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
-        v9 = [v8 beaconIdentifier];
+        beaconIdentifier = [v8 beaconIdentifier];
         if ([v8 sequence] == 1)
         {
           v10 = "primary";
@@ -101,10 +101,10 @@ void __38__SPKeyReconciler_initWithDictionary___block_invoke_2(uint64_t a1, void
           v10 = "secondary";
         }
 
-        [v3 appendFormat:@"\tIndex for beacon %@ sequence %s\n", v9, v10];
+        [v3 appendFormat:@"\tIndex for beacon %@ sequence %s\n", beaconIdentifier, v10];
 
-        v11 = [v8 headerString];
-        [v3 appendFormat:@"\t%@\n", v11];
+        headerString = [v8 headerString];
+        [v3 appendFormat:@"\t%@\n", headerString];
       }
 
       v5 = [(NSMutableArray *)obj countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -118,13 +118,13 @@ void __38__SPKeyReconciler_initWithDictionary___block_invoke_2(uint64_t a1, void
   return v3;
 }
 
-- (id)reconcileKey:(id)a3 matchedIndex:(unsigned int *)a4 sequence:(unsigned __int8 *)a5 error:(unsigned __int8 *)a6
+- (id)reconcileKey:(id)key matchedIndex:(unsigned int *)index sequence:(unsigned __int8 *)sequence error:(unsigned __int8 *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  if ([v10 length] >= 6 && objc_msgSend(v10, "length") < 0x1D)
+  keyCopy = key;
+  if ([keyCopy length] >= 6 && objc_msgSend(keyCopy, "length") < 0x1D)
   {
-    v21 = a5;
+    sequenceCopy = sequence;
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -146,24 +146,24 @@ void __38__SPKeyReconciler_initWithDictionary___block_invoke_2(uint64_t a1, void
 
           v18 = *(*(&v23 + 1) + 8 * i);
           v22 = 0;
-          if (sp_key_index_map_contains_key_prefix([v18 mapHandle], objc_msgSend(v10, "bytes"), objc_msgSend(v10, "length"), &v22))
+          if (sp_key_index_map_contains_key_prefix([v18 mapHandle], objc_msgSend(keyCopy, "bytes"), objc_msgSend(keyCopy, "length"), &v22))
           {
-            if (a4)
+            if (index)
             {
-              *a4 = v22;
+              *index = v22;
             }
 
-            if (v21)
+            if (sequenceCopy)
             {
-              *v21 = [v18 sequence];
+              *sequenceCopy = [v18 sequence];
             }
 
-            if (a6)
+            if (error)
             {
-              *a6 = 0;
+              *error = 0;
             }
 
-            v11 = [v18 beaconIdentifier];
+            beaconIdentifier = [v18 beaconIdentifier];
 
             goto LABEL_24;
           }
@@ -179,29 +179,29 @@ void __38__SPKeyReconciler_initWithDictionary___block_invoke_2(uint64_t a1, void
       }
     }
 
-    if (a6)
+    if (error)
     {
-      v11 = 0;
+      beaconIdentifier = 0;
       v12 = 2;
       goto LABEL_5;
     }
   }
 
-  else if (a6)
+  else if (error)
   {
-    v11 = 0;
+    beaconIdentifier = 0;
     v12 = 1;
 LABEL_5:
-    *a6 = v12;
+    *error = v12;
     goto LABEL_24;
   }
 
-  v11 = 0;
+  beaconIdentifier = 0;
 LABEL_24:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return beaconIdentifier;
 }
 
 @end

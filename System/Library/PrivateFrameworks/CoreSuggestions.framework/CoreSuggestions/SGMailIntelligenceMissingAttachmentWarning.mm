@@ -1,5 +1,5 @@
 @interface SGMailIntelligenceMissingAttachmentWarning
-- (SGMailIntelligenceMissingAttachmentWarning)initWithCoder:(id)a3;
+- (SGMailIntelligenceMissingAttachmentWarning)initWithCoder:(id)coder;
 - (id)description;
 @end
 
@@ -8,29 +8,29 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SGMailIntelligenceWarning *)self snippet];
-  v5 = [(SGMailIntelligenceWarning *)self signature];
-  v6 = [(SGMailIntelligenceWarning *)self score];
-  v7 = [v3 initWithFormat:@"<SGMailIntelligenceMissingAttachmentWarning triggered on: %@ (with signature %@) score: %@>", v4, v5, v6];
+  snippet = [(SGMailIntelligenceWarning *)self snippet];
+  signature = [(SGMailIntelligenceWarning *)self signature];
+  score = [(SGMailIntelligenceWarning *)self score];
+  v7 = [v3 initWithFormat:@"<SGMailIntelligenceMissingAttachmentWarning triggered on: %@ (with signature %@) score: %@>", snippet, signature, score];
 
   return v7;
 }
 
-- (SGMailIntelligenceMissingAttachmentWarning)initWithCoder:(id)a3
+- (SGMailIntelligenceMissingAttachmentWarning)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [[SGMailIntelligenceWarning alloc] initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [[SGMailIntelligenceWarning alloc] initWithCoder:coderCopy];
 
   if (v5)
   {
     v6 = [SGMailIntelligenceMissingAttachmentWarning alloc];
-    v7 = [(SGMailIntelligenceWarning *)v5 snippet];
-    v8 = [(SGMailIntelligenceWarning *)v5 core];
-    v9 = [(SGMailIntelligenceWarning *)v5 signature];
-    v10 = [(SGMailIntelligenceWarning *)v5 detectedLanguage];
-    v11 = [(SGMailIntelligenceWarning *)v5 isIncomingMessage];
-    v12 = [(SGMailIntelligenceWarning *)v5 score];
-    v13 = [(SGMailIntelligenceWarning *)v6 initWithSnippet:v7 core:v8 signature:v9 detectedLanguage:v10 isIncomingMessage:v11 score:v12];
+    snippet = [(SGMailIntelligenceWarning *)v5 snippet];
+    core = [(SGMailIntelligenceWarning *)v5 core];
+    signature = [(SGMailIntelligenceWarning *)v5 signature];
+    detectedLanguage = [(SGMailIntelligenceWarning *)v5 detectedLanguage];
+    isIncomingMessage = [(SGMailIntelligenceWarning *)v5 isIncomingMessage];
+    score = [(SGMailIntelligenceWarning *)v5 score];
+    v13 = [(SGMailIntelligenceWarning *)v6 initWithSnippet:snippet core:core signature:signature detectedLanguage:detectedLanguage isIncomingMessage:isIncomingMessage score:score];
   }
 
   else

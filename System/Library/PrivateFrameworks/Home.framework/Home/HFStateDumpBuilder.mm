@@ -1,40 +1,40 @@
 @interface HFStateDumpBuilder
-+ (id)_coerceObjectToPropertyList:(id)a3 options:(unint64_t)a4;
-+ (id)builderWithObject:(id)a3 context:(id)a4;
-- (HFStateDumpBuilder)initWithObject:(id)a3 context:(id)a4;
++ (id)_coerceObjectToPropertyList:(id)list options:(unint64_t)options;
++ (id)builderWithObject:(id)object context:(id)context;
+- (HFStateDumpBuilder)initWithObject:(id)object context:(id)context;
 - (id)_filteredEntries;
-- (id)_formattedObjectForEntry:(id)a3 withRepresentation:(unint64_t)a4;
-- (id)_formattedObjectForObject:(id)a3 withRepresentation:(unint64_t)a4 context:(id)a5 options:(unint64_t)a6;
+- (id)_formattedObjectForEntry:(id)entry withRepresentation:(unint64_t)representation;
+- (id)_formattedObjectForObject:(id)object withRepresentation:(unint64_t)representation context:(id)context options:(unint64_t)options;
 - (id)buildDescription;
 - (id)buildPropertyListRepresentation;
-- (void)appendBool:(BOOL)a3 withName:(id)a4;
-- (void)appendBool:(BOOL)a3 withName:(id)a4 ifEqualTo:(BOOL)a5;
-- (void)appendObject:(id)a3 withName:(id)a4 context:(id)a5 options:(unint64_t)a6;
+- (void)appendBool:(BOOL)bool withName:(id)name;
+- (void)appendBool:(BOOL)bool withName:(id)name ifEqualTo:(BOOL)to;
+- (void)appendObject:(id)object withName:(id)name context:(id)context options:(unint64_t)options;
 @end
 
 @implementation HFStateDumpBuilder
 
-+ (id)builderWithObject:(id)a3 context:(id)a4
++ (id)builderWithObject:(id)object context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithObject:v7 context:v6];
+  contextCopy = context;
+  objectCopy = object;
+  v8 = [[self alloc] initWithObject:objectCopy context:contextCopy];
 
   return v8;
 }
 
-- (HFStateDumpBuilder)initWithObject:(id)a3 context:(id)a4
+- (HFStateDumpBuilder)initWithObject:(id)object context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = HFStateDumpBuilder;
   v9 = [(HFStateDumpBuilder *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_object, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_object, object);
+    v11 = [contextCopy copy];
     v12 = v11;
     if (v11)
     {
@@ -57,30 +57,30 @@
   return v10;
 }
 
-- (void)appendObject:(id)a3 withName:(id)a4 context:(id)a5 options:(unint64_t)a6
+- (void)appendObject:(id)object withName:(id)name context:(id)context options:(unint64_t)options
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HFStateDumpBuilder *)self context];
-  v13 = [v12 objectsToExclude];
-  v14 = [v13 containsObject:v17];
+  objectCopy = object;
+  nameCopy = name;
+  contextCopy = context;
+  context = [(HFStateDumpBuilder *)self context];
+  objectsToExclude = [context objectsToExclude];
+  v14 = [objectsToExclude containsObject:objectCopy];
 
   if ((v14 & 1) == 0)
   {
     v15 = objc_alloc_init(HFStateDumpEntry);
-    [(HFStateDumpEntry *)v15 setObject:v17];
-    [(HFStateDumpEntry *)v15 setName:v10];
-    [(HFStateDumpEntry *)v15 setContext:v11];
-    [(HFStateDumpEntry *)v15 setOptions:a6];
-    v16 = [(HFStateDumpBuilder *)self entries];
-    [v16 addObject:v15];
+    [(HFStateDumpEntry *)v15 setObject:objectCopy];
+    [(HFStateDumpEntry *)v15 setName:nameCopy];
+    [(HFStateDumpEntry *)v15 setContext:contextCopy];
+    [(HFStateDumpEntry *)v15 setOptions:options];
+    entries = [(HFStateDumpBuilder *)self entries];
+    [entries addObject:v15];
   }
 }
 
-- (void)appendBool:(BOOL)a3 withName:(id)a4
+- (void)appendBool:(BOOL)bool withName:(id)name
 {
-  if (a3)
+  if (bool)
   {
     v4 = @"YES";
   }
@@ -90,12 +90,12 @@
     v4 = @"NO";
   }
 
-  [(HFStateDumpBuilder *)self appendObject:v4 withName:a4];
+  [(HFStateDumpBuilder *)self appendObject:v4 withName:name];
 }
 
-- (void)appendBool:(BOOL)a3 withName:(id)a4 ifEqualTo:(BOOL)a5
+- (void)appendBool:(BOOL)bool withName:(id)name ifEqualTo:(BOOL)to
 {
-  if (a3 == a5)
+  if (bool == to)
   {
     [HFStateDumpBuilder appendBool:"appendBool:withName:" withName:?];
   }
@@ -104,18 +104,18 @@
 - (id)buildPropertyListRepresentation
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = [(HFStateDumpBuilder *)self context];
-  v5 = [v4 derivedOutputStyle];
+  context = [(HFStateDumpBuilder *)self context];
+  derivedOutputStyle = [context derivedOutputStyle];
 
-  if ((v5 - 1) < 2)
+  if ((derivedOutputStyle - 1) < 2)
   {
     a2 = [@"<" mutableCopy];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v14 = [(HFStateDumpBuilder *)self _filteredEntries];
-    v15 = [v14 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    _filteredEntries = [(HFStateDumpBuilder *)self _filteredEntries];
+    v15 = [_filteredEntries countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v15)
     {
       v16 = v15;
@@ -127,7 +127,7 @@
         {
           if (*v33 != v18)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(_filteredEntries);
           }
 
           v20 = *(*(&v32 + 1) + 8 * i);
@@ -141,14 +141,14 @@
               [a2 appendString:{@", "}];
             }
 
-            v24 = [v20 name];
-            [a2 appendFormat:@"%@: %@", v24, v23];
+            name = [v20 name];
+            [a2 appendFormat:@"%@: %@", name, v23];
 
             ++v17;
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v16 = [_filteredEntries countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v16);
@@ -157,17 +157,17 @@
     [a2 appendString:@">"];
   }
 
-  else if (v5)
+  else if (derivedOutputStyle)
   {
-    if (v5 == 3)
+    if (derivedOutputStyle == 3)
     {
       a2 = objc_opt_new();
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v6 = [(HFStateDumpBuilder *)self _filteredEntries];
-      v7 = [v6 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      _filteredEntries2 = [(HFStateDumpBuilder *)self _filteredEntries];
+      v7 = [_filteredEntries2 countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v7)
       {
         v8 = v7;
@@ -178,16 +178,16 @@
           {
             if (*v29 != v9)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(_filteredEntries2);
             }
 
             v11 = *(*(&v28 + 1) + 8 * j);
             v12 = [(HFStateDumpBuilder *)self _formattedObjectForEntry:v11 withRepresentation:1];
-            v13 = [v11 name];
-            [a2 setObject:v12 forKeyedSubscript:v13];
+            name2 = [v11 name];
+            [a2 setObject:v12 forKeyedSubscript:name2];
           }
 
-          v8 = [v6 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v8 = [_filteredEntries2 countByEnumeratingWithState:&v28 objects:v36 count:16];
         }
 
         while (v8);
@@ -197,8 +197,8 @@
 
   else
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"HFStateDumpBuilder.m" lineNumber:133 description:@"Unexpected output style!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFStateDumpBuilder.m" lineNumber:133 description:@"Unexpected output style!"];
 
     a2 = @"(internal error)";
   }
@@ -211,35 +211,35 @@
 - (id)buildDescription
 {
   v4 = MEMORY[0x277D2C8F8];
-  v5 = [(HFStateDumpBuilder *)self object];
-  v6 = [v4 builderWithObject:v5];
+  object = [(HFStateDumpBuilder *)self object];
+  v6 = [v4 builderWithObject:object];
 
   v18 = MEMORY[0x277D85DD0];
   v19 = 3221225472;
   v20 = __38__HFStateDumpBuilder_buildDescription__block_invoke;
   v21 = &unk_277DF3370;
-  v22 = self;
+  selfCopy = self;
   v7 = v6;
   v23 = v7;
   v8 = _Block_copy(&v18);
   v9 = [(HFStateDumpBuilder *)self context:v18];
-  v10 = [v9 derivedOutputStyle];
+  derivedOutputStyle = [v9 derivedOutputStyle];
 
-  if ((v10 - 1) < 2)
+  if ((derivedOutputStyle - 1) < 2)
   {
     v8[2](v8);
   }
 
-  else if (v10)
+  else if (derivedOutputStyle)
   {
-    if (v10 == 3)
+    if (derivedOutputStyle == 3)
     {
-      v11 = [(HFStateDumpBuilder *)self context];
-      v12 = [v11 multilinePrefix];
-      v13 = v12;
-      if (v12)
+      context = [(HFStateDumpBuilder *)self context];
+      multilinePrefix = [context multilinePrefix];
+      v13 = multilinePrefix;
+      if (multilinePrefix)
       {
-        v14 = v12;
+        v14 = multilinePrefix;
       }
 
       else
@@ -253,13 +253,13 @@
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HFStateDumpBuilder.m" lineNumber:175 description:@"Unexpected output style!"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFStateDumpBuilder.m" lineNumber:175 description:@"Unexpected output style!"];
   }
 
-  v16 = [v7 build];
+  build = [v7 build];
 
-  return v16;
+  return build;
 }
 
 void __38__HFStateDumpBuilder_buildDescription__block_invoke(uint64_t a1)
@@ -368,39 +368,39 @@ LABEL_14:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_formattedObjectForEntry:(id)a3 withRepresentation:(unint64_t)a4
+- (id)_formattedObjectForEntry:(id)entry withRepresentation:(unint64_t)representation
 {
-  v6 = a3;
-  v7 = [v6 object];
-  v8 = [v6 context];
-  v9 = v8;
-  if (!v8)
+  entryCopy = entry;
+  object = [entryCopy object];
+  context = [entryCopy context];
+  context2 = context;
+  if (!context)
   {
-    v9 = [(HFStateDumpBuilder *)self context];
+    context2 = [(HFStateDumpBuilder *)self context];
   }
 
-  v10 = -[HFStateDumpBuilder _formattedObjectForObject:withRepresentation:context:options:](self, "_formattedObjectForObject:withRepresentation:context:options:", v7, a4, v9, [v6 options]);
-  if (!v8)
+  v10 = -[HFStateDumpBuilder _formattedObjectForObject:withRepresentation:context:options:](self, "_formattedObjectForObject:withRepresentation:context:options:", object, representation, context2, [entryCopy options]);
+  if (!context)
   {
   }
 
   return v10;
 }
 
-- (id)_formattedObjectForObject:(id)a3 withRepresentation:(unint64_t)a4 context:(id)a5 options:(unint64_t)a6
+- (id)_formattedObjectForObject:(id)object withRepresentation:(unint64_t)representation context:(id)context options:(unint64_t)options
 {
-  v10 = a3;
-  v11 = a5;
+  objectCopy = object;
+  contextCopy = context;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __83__HFStateDumpBuilder__formattedObjectForObject_withRepresentation_context_options___block_invoke;
   aBlock[3] = &unk_277E00B10;
-  v12 = v11;
+  v12 = contextCopy;
   v48 = v12;
-  v49 = self;
+  selfCopy = self;
   v13 = _Block_copy(aBlock);
   objc_opt_class();
-  v14 = v10;
+  v14 = objectCopy;
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -413,7 +413,7 @@ LABEL_14:
 
   v16 = v15;
 
-  v17 = v14;
+  allObjects = v14;
   if (!v16)
   {
     objc_opt_class();
@@ -430,7 +430,7 @@ LABEL_14:
 
     v20 = v19;
 
-    v17 = [v20 allObjects];
+    allObjects = [v20 allObjects];
   }
 
   objc_opt_class();
@@ -447,15 +447,15 @@ LABEL_14:
 
   v23 = v22;
 
-  if ((a6 & 1) != 0 && (v17 && ![v17 count] || v23 && !objc_msgSend(v23, "count")))
+  if ((options & 1) != 0 && (allObjects && ![allObjects count] || v23 && !objc_msgSend(v23, "count")))
   {
     v31 = 0;
     goto LABEL_35;
   }
 
-  v36 = a6;
+  optionsCopy = options;
   v37 = v12;
-  v24 = a4;
+  representationCopy = representation;
   v25 = v21;
   if ([v25 conformsToProtocol:&unk_2825462B8])
   {
@@ -474,17 +474,17 @@ LABEL_14:
     v28 = v13[2](v13);
     v29 = [v27 hf_stateDumpBuilderWithContext:v28];
 
-    if (v24 == 1)
+    if (representationCopy == 1)
     {
-      v30 = [v29 buildPropertyListRepresentation];
+      buildPropertyListRepresentation = [v29 buildPropertyListRepresentation];
       goto LABEL_26;
     }
 
-    if (!v24)
+    if (!representationCopy)
     {
-      v30 = [v29 buildDescription];
+      buildPropertyListRepresentation = [v29 buildDescription];
 LABEL_26:
-      v31 = v30;
+      v31 = buildPropertyListRepresentation;
 
 LABEL_33:
       v12 = v37;
@@ -492,7 +492,7 @@ LABEL_33:
     }
   }
 
-  if (!v17)
+  if (!allObjects)
   {
     if (v23)
     {
@@ -504,7 +504,7 @@ LABEL_33:
       v38[4] = self;
       v33 = v32;
       v39 = v33;
-      v41 = v24;
+      v41 = representationCopy;
       v40 = v13;
       [v23 enumerateKeysAndObjectsUsingBlock:v38];
       v34 = v40;
@@ -513,7 +513,7 @@ LABEL_33:
 
     else
     {
-      v31 = [objc_opt_class() _coerceObjectToPropertyList:v25 options:v36];
+      v31 = [objc_opt_class() _coerceObjectToPropertyList:v25 options:optionsCopy];
     }
 
     goto LABEL_33;
@@ -525,10 +525,10 @@ LABEL_33:
   v42[3] = &unk_277E00B38;
   v12 = v37;
   v43 = v37;
-  v44 = self;
-  v46 = v24;
+  selfCopy2 = self;
+  v46 = representationCopy;
   v45 = v13;
-  v31 = [v17 na_map:v42];
+  v31 = [allObjects na_map:v42];
 
 LABEL_34:
 LABEL_35:
@@ -600,12 +600,12 @@ void __83__HFStateDumpBuilder__formattedObjectForObject_withRepresentation_conte
   [*(a1 + 40) setObject:v11 forKeyedSubscript:v12];
 }
 
-+ (id)_coerceObjectToPropertyList:(id)a3 options:(unint64_t)a4
++ (id)_coerceObjectToPropertyList:(id)list options:(unint64_t)options
 {
-  v4 = a4;
-  v5 = a3;
+  optionsCopy = options;
+  listCopy = list;
   objc_opt_class();
-  v6 = v5;
+  v6 = listCopy;
   if (objc_opt_isKindOfClass())
   {
     v7 = v6;
@@ -650,7 +650,7 @@ void __83__HFStateDumpBuilder__formattedObjectForObject_withRepresentation_conte
       goto LABEL_21;
     }
 
-    if (v4)
+    if (optionsCopy)
     {
       v9 = HFPrunePropertyList(v6);
     }
@@ -663,7 +663,7 @@ void __83__HFStateDumpBuilder__formattedObjectForObject_withRepresentation_conte
     goto LABEL_8;
   }
 
-  if ((v4 & 1) == 0 || [v8 length])
+  if ((optionsCopy & 1) == 0 || [v8 length])
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"Data (%luB)", objc_msgSend(v8, "length")];
 LABEL_8:
@@ -679,14 +679,14 @@ LABEL_21:
 
 - (id)_filteredEntries
 {
-  v3 = [(HFStateDumpBuilder *)self context];
-  v4 = [v3 excludePrimaryID];
+  context = [(HFStateDumpBuilder *)self context];
+  excludePrimaryID = [context excludePrimaryID];
 
-  v5 = [(HFStateDumpBuilder *)self entries];
-  v6 = v5;
-  if (v4)
+  entries = [(HFStateDumpBuilder *)self entries];
+  v6 = entries;
+  if (excludePrimaryID)
   {
-    v7 = [v5 na_filter:&__block_literal_global_206];
+    v7 = [entries na_filter:&__block_literal_global_206];
 
     v6 = v7;
   }

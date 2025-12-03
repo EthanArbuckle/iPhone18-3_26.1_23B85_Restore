@@ -1,37 +1,37 @@
 @interface PGFeatureExtractorStandardAspectRatio
-- (id)_generateErrorWithErrorCode:(int64_t)a3 andMessage:(id)a4;
+- (id)_generateErrorWithErrorCode:(int64_t)code andMessage:(id)message;
 - (id)featureNames;
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4;
-- (int64_t)standardAspectRatioFromFloatVector:(id)a3;
+- (id)floatVectorWithEntity:(id)entity error:(id *)error;
+- (int64_t)standardAspectRatioFromFloatVector:(id)vector;
 @end
 
 @implementation PGFeatureExtractorStandardAspectRatio
 
-- (id)_generateErrorWithErrorCode:(int64_t)a3 andMessage:(id)a4
+- (id)_generateErrorWithErrorCode:(int64_t)code andMessage:(id)message
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
   v12 = *MEMORY[0x277CCA450];
-  v13[0] = a4;
+  v13[0] = message;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
+  messageCopy = message;
   v8 = [v6 dictionaryWithObjects:v13 forKeys:&v12 count:1];
-  v9 = [v5 errorWithDomain:@"com.apple.PhotosGraph.PGFeatureExtractorPHAssetAttributes" code:a3 userInfo:v8];
+  v9 = [v5 errorWithDomain:@"com.apple.PhotosGraph.PGFeatureExtractorPHAssetAttributes" code:code userInfo:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (id)floatVectorWithEntity:(id)a3 error:(id *)a4
+- (id)floatVectorWithEntity:(id)entity error:(id *)error
 {
-  v6 = a3;
-  if ([v6 pixelHeight])
+  entityCopy = entity;
+  if ([entityCopy pixelHeight])
   {
-    v7 = [v6 pixelWidth];
-    *&v8 = v7 / [v6 pixelHeight];
-    v9 = [MEMORY[0x277D22C40] vectorRepeatingFloat:1 count:v8];
-    v10 = [(PGFeatureExtractorStandardAspectRatio *)self standardAspectRatioFromFloatVector:v9];
+    pixelWidth = [entityCopy pixelWidth];
+    *&v8 = pixelWidth / [entityCopy pixelHeight];
+    localIdentifier = [MEMORY[0x277D22C40] vectorRepeatingFloat:1 count:v8];
+    v10 = [(PGFeatureExtractorStandardAspectRatio *)self standardAspectRatioFromFloatVector:localIdentifier];
     v11 = [MEMORY[0x277D22C68] zerosOfCount:{-[PGFeatureExtractorStandardAspectRatio featureLength](self, "featureLength")}];
     v13 = v11;
     if (v10 <= 3)
@@ -43,12 +43,12 @@
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     v14 = MEMORY[0x277CCACA8];
-    v9 = [v6 localIdentifier];
-    v15 = [v14 stringWithFormat:@"Divide by 0 is not a valid operation, in asset %@", v9];
-    *a4 = [(PGFeatureExtractorStandardAspectRatio *)self _generateErrorWithErrorCode:0 andMessage:v15];
+    localIdentifier = [entityCopy localIdentifier];
+    v15 = [v14 stringWithFormat:@"Divide by 0 is not a valid operation, in asset %@", localIdentifier];
+    *error = [(PGFeatureExtractorStandardAspectRatio *)self _generateErrorWithErrorCode:0 andMessage:v15];
 
     v13 = 0;
 LABEL_6:
@@ -62,15 +62,15 @@ LABEL_7:
   return v13;
 }
 
-- (int64_t)standardAspectRatioFromFloatVector:(id)a3
+- (int64_t)standardAspectRatioFromFloatVector:(id)vector
 {
-  v4 = a3;
+  vectorCopy = vector;
   v15 = 1068149419;
   v13 = 1071877689;
   v14 = 1069547520;
   v5 = [objc_alloc(MEMORY[0x277D22C40]) initWithFloats:&v15 count:1];
   [(PGFeatureExtractorStandardAspectRatio *)self precisionEpsilon];
-  v6 = [v4 isApproximatelyEqualTo:v5 epsilon:?];
+  v6 = [vectorCopy isApproximatelyEqualTo:v5 epsilon:?];
 
   if (v6)
   {
@@ -82,13 +82,13 @@ LABEL_7:
     v7 = 1;
     v8 = [objc_alloc(MEMORY[0x277D22C40]) initWithFloats:&v14 count:1];
     [(PGFeatureExtractorStandardAspectRatio *)self precisionEpsilon];
-    v9 = [v4 isApproximatelyEqualTo:v8 epsilon:?];
+    v9 = [vectorCopy isApproximatelyEqualTo:v8 epsilon:?];
 
     if ((v9 & 1) == 0)
     {
       v10 = [objc_alloc(MEMORY[0x277D22C40]) initWithFloats:&v13 count:1];
       [(PGFeatureExtractorStandardAspectRatio *)self precisionEpsilon];
-      v11 = [v4 isApproximatelyEqualTo:v10 epsilon:?];
+      v11 = [vectorCopy isApproximatelyEqualTo:v10 epsilon:?];
 
       if (v11)
       {

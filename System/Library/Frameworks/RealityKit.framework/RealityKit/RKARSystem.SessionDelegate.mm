@@ -1,42 +1,42 @@
 @interface RKARSystem.SessionDelegate
 - (_TtCC10RealityKit10RKARSystemP33_7C42569567E429B6AB2725E2C535D52915SessionDelegate)init;
-- (void)session:(id)a3 didOutputCollaborationData:(id)a4;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)session:(id)a3 requestedRunWithConfiguration:(id)a4 options:(unint64_t)a5;
+- (void)session:(id)session didOutputCollaborationData:(id)data;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)session:(id)session requestedRunWithConfiguration:(id)configuration options:(unint64_t)options;
 @end
 
 @implementation RKARSystem.SessionDelegate
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v8 = Strong;
-    v9 = a3;
-    v10 = a4;
-    v11 = self;
-    specialized RKARSystem.session(_:didUpdate:)(v10);
+    sessionCopy = session;
+    frameCopy = frame;
+    selfCopy = self;
+    specialized RKARSystem.session(_:didUpdate:)(frameCopy);
   }
 }
 
-- (void)session:(id)a3 didOutputCollaborationData:(id)a4
+- (void)session:(id)session didOutputCollaborationData:(id)data
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v7 = Strong;
-    v8 = a4;
-    v9 = self;
-    RKARSystem.sendCollaborationDataToPeers(_:)(a4);
+    dataCopy = data;
+    selfCopy = self;
+    RKARSystem.sendCollaborationDataToPeers(_:)(data);
   }
 }
 
-- (void)session:(id)a3 requestedRunWithConfiguration:(id)a4 options:(unint64_t)a5
+- (void)session:(id)session requestedRunWithConfiguration:(id)configuration options:(unint64_t)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  sessionCopy = session;
+  configurationCopy = configuration;
+  selfCopy = self;
   specialized RKARSystem.SessionDelegate.session(_:requestedRunWith:options:)();
 }
 

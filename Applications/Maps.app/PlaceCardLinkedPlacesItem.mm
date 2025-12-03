@@ -17,8 +17,8 @@
 - (PersonalizedItemSource)source;
 - (PersonalizedItemStyleAttributesAdornment)styleAttributes;
 - (PlaceCardLinkedPlacesItem)init;
-- (PlaceCardLinkedPlacesItem)initWithGEOMapItem:(id)a3;
-- (PlaceCardLinkedPlacesItem)initWithPersonalizedItem:(id)a3;
+- (PlaceCardLinkedPlacesItem)initWithGEOMapItem:(id)item;
+- (PlaceCardLinkedPlacesItem)initWithPersonalizedItem:(id)item;
 - (SearchDotPlace)searchDotPlace;
 - (SearchResult)searchResult;
 - (VKLabelMarker)sourceLabelMarker;
@@ -138,11 +138,11 @@
 
   else
   {
-    v5 = [(PlaceCardLinkedPlacesItem *)self styleAttributes];
-    v6 = [v5 styleAttributes];
-    v7 = [v6 isLabelPOI];
+    styleAttributes = [(PlaceCardLinkedPlacesItem *)self styleAttributes];
+    v5StyleAttributes = [styleAttributes styleAttributes];
+    isLabelPOI = [v5StyleAttributes isLabelPOI];
 
-    return v7 ^ 1;
+    return isLabelPOI ^ 1;
   }
 }
 
@@ -165,10 +165,10 @@
     personalizedItem = self->_personalizedItem;
     if (personalizedItem)
     {
-      v5 = [(PersonalizedItem *)personalizedItem styleAttributes];
-      v6 = [v5 styleAttributes];
+      styleAttributes = [(PersonalizedItem *)personalizedItem styleAttributes];
+      v5StyleAttributes = [styleAttributes styleAttributes];
 
-      if (v6)
+      if (v5StyleAttributes)
       {
         goto LABEL_5;
       }
@@ -176,11 +176,11 @@
 
     else
     {
-      v6 = [(GEOMapItem *)self->_geoMapItem _styleAttributes];
-      if (v6)
+      v5StyleAttributes = [(GEOMapItem *)self->_geoMapItem _styleAttributes];
+      if (v5StyleAttributes)
       {
 LABEL_5:
-        v7 = [v6 copy];
+        v7 = [v5StyleAttributes copy];
 
         v8 = +[NSUserDefaults standardUserDefaults];
         v9 = [v8 BOOLForKey:@"__internalChinaAOIInjectPOIsAsSearchResults"];
@@ -219,7 +219,7 @@ LABEL_12:
       }
     }
 
-    v6 = [[GEOFeatureStyleAttributes alloc] initWithAttributes:{4, 226, 5, 3, 6, 348, 10, 2, 0}];
+    v5StyleAttributes = [[GEOFeatureStyleAttributes alloc] initWithAttributes:{4, 226, 5, 3, 6, 348, 10, 2, 0}];
     goto LABEL_5;
   }
 
@@ -268,25 +268,25 @@ LABEL_13:
   personalizedItem = self->_personalizedItem;
   if (personalizedItem)
   {
-    v4 = [(PersonalizedItem *)personalizedItem title];
+    title = [(PersonalizedItem *)personalizedItem title];
   }
 
   else
   {
-    v5 = [(GEOMapItem *)self->_geoMapItem name];
-    v6 = v5;
+    name = [(GEOMapItem *)self->_geoMapItem name];
+    v6 = name;
     v7 = &stru_1016631F0;
-    if (v5)
+    if (name)
     {
-      v7 = v5;
+      v7 = name;
     }
 
     v8 = v7;
 
-    v4 = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v8 priority:100];
+    title = [PersonalizedItemPrioritizedStringAdornment adornmentWithString:v8 priority:100];
   }
 
-  return v4;
+  return title;
 }
 
 - (unint64_t)priority
@@ -305,15 +305,15 @@ LABEL_13:
   personalizedItem = self->_personalizedItem;
   if (personalizedItem)
   {
-    v4 = [(PersonalizedItem *)personalizedItem mapItem];
+    mapItem = [(PersonalizedItem *)personalizedItem mapItem];
   }
 
   else
   {
-    v4 = self->_mapItem;
+    mapItem = self->_mapItem;
   }
 
-  return v4;
+  return mapItem;
 }
 
 - (NSSet)keys
@@ -321,7 +321,7 @@ LABEL_13:
   personalizedItem = self->_personalizedItem;
   if (personalizedItem)
   {
-    v4 = [(PersonalizedItem *)personalizedItem keys];
+    keys = [(PersonalizedItem *)personalizedItem keys];
   }
 
   else
@@ -335,10 +335,10 @@ LABEL_13:
     {
       +[NSSet set];
     }
-    v4 = ;
+    keys = ;
   }
 
-  return v4;
+  return keys;
 }
 
 - (GEOLabelGeometry)labelGeometry
@@ -346,16 +346,16 @@ LABEL_13:
   personalizedItem = self->_personalizedItem;
   if (personalizedItem)
   {
-    v4 = [(PersonalizedItem *)personalizedItem labelGeometry];
+    labelGeometry = [(PersonalizedItem *)personalizedItem labelGeometry];
   }
 
   else
   {
-    v5 = [(PlaceCardLinkedPlacesItem *)self mapItem];
-    v4 = [v5 _labelGeometry];
+    mapItem = [(PlaceCardLinkedPlacesItem *)self mapItem];
+    labelGeometry = [mapItem _labelGeometry];
   }
 
-  return v4;
+  return labelGeometry;
 }
 
 - (GEOEnhancedPlacement)enhancedPlacement
@@ -363,16 +363,16 @@ LABEL_13:
   personalizedItem = self->_personalizedItem;
   if (personalizedItem)
   {
-    v4 = [(PersonalizedItem *)personalizedItem enhancedPlacement];
+    enhancedPlacement = [(PersonalizedItem *)personalizedItem enhancedPlacement];
   }
 
   else
   {
-    v5 = [(PlaceCardLinkedPlacesItem *)self mapItem];
-    v4 = [v5 _enhancedPlacement];
+    mapItem = [(PlaceCardLinkedPlacesItem *)self mapItem];
+    enhancedPlacement = [mapItem _enhancedPlacement];
   }
 
-  return v4;
+  return enhancedPlacement;
 }
 
 - (CLLocationCoordinate2D)coordinate
@@ -394,23 +394,23 @@ LABEL_13:
   return result;
 }
 
-- (PlaceCardLinkedPlacesItem)initWithGEOMapItem:(id)a3
+- (PlaceCardLinkedPlacesItem)initWithGEOMapItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v15.receiver = self;
   v15.super_class = PlaceCardLinkedPlacesItem;
   v6 = [(PlaceCardLinkedPlacesItem *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_geoMapItem, a3);
-    [v5 coordinate];
+    objc_storeStrong(&v6->_geoMapItem, item);
+    [itemCopy coordinate];
     v7->_coordinate = CLLocationCoordinate2DMake(v8, v9);
-    v10 = [[PersonalizedMapItemKey alloc] initWithGeoMapItem:v5];
+    v10 = [[PersonalizedMapItemKey alloc] initWithGeoMapItem:itemCopy];
     key = v7->_key;
     v7->_key = v10;
 
-    v12 = [[MKMapItem alloc] initWithGeoMapItem:v5 isPlaceHolderPlace:{objc_msgSend(v5, "_hasResolvablePartialInformation")}];
+    v12 = [[MKMapItem alloc] initWithGeoMapItem:itemCopy isPlaceHolderPlace:{objc_msgSend(itemCopy, "_hasResolvablePartialInformation")}];
     mapItem = v7->_mapItem;
     v7->_mapItem = v12;
   }
@@ -418,16 +418,16 @@ LABEL_13:
   return v7;
 }
 
-- (PlaceCardLinkedPlacesItem)initWithPersonalizedItem:(id)a3
+- (PlaceCardLinkedPlacesItem)initWithPersonalizedItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = PlaceCardLinkedPlacesItem;
   v6 = [(PlaceCardLinkedPlacesItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_personalizedItem, a3);
+    objc_storeStrong(&v6->_personalizedItem, item);
   }
 
   return v7;

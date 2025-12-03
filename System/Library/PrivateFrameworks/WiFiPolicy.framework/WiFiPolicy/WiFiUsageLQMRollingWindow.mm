@@ -1,20 +1,20 @@
 @interface WiFiUsageLQMRollingWindow
-+ (id)getValue:(id)a3 ForField:(id)a4 ScaledByDuration:(BOOL)a5;
++ (id)getValue:(id)value ForField:(id)field ScaledByDuration:(BOOL)duration;
 + (void)initialize;
 + (void)updateConfig;
-- (BOOL)checkCriteriaBSSIDWithSample:(id)a3;
+- (BOOL)checkCriteriaBSSIDWithSample:(id)sample;
 - (BOOL)configureDataTriggeredCriteria;
 - (BOOL)endOngoingCriteria;
-- (BOOL)hasChanged:(id)a3;
-- (WiFiUsageLQMRollingWindow)initWithInterfaceName:(id)a3 andDuration:(double)a4 andInterfaceCapabilities:(id)a5;
-- (id)evaluateCriteriaWithStopUponFirstMatch:(BOOL)a3;
+- (BOOL)hasChanged:(id)changed;
+- (WiFiUsageLQMRollingWindow)initWithInterfaceName:(id)name andDuration:(double)duration andInterfaceCapabilities:(id)capabilities;
+- (id)evaluateCriteriaWithStopUponFirstMatch:(BOOL)match;
 - (id)getTriggerCriteriaList;
-- (void)addSample:(id)a3;
-- (void)addSamples:(id)a3;
-- (void)addTrigger:(id)a3;
+- (void)addSample:(id)sample;
+- (void)addSamples:(id)samples;
+- (void)addTrigger:(id)trigger;
 - (void)cleanUpStashedMedians;
 - (void)clearOngoingCriteriaDates;
-- (void)setCurrentApplicationName:(id)a3 withAttributes:(id)a4;
+- (void)setCurrentApplicationName:(id)name withAttributes:(id)attributes;
 - (void)updateWindow;
 @end
 
@@ -22,8 +22,8 @@
 
 - (void)updateWindow
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v8 = [v3 dateByAddingTimeInterval:-self->_duration];
+  date = [MEMORY[0x277CBEAA8] date];
+  v8 = [date dateByAddingTimeInterval:-self->_duration];
 
   samples = self->_samples;
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"timestamp >= %@", v8];
@@ -58,8 +58,8 @@
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * v7) features];
-        [v8 setValue:0 forKey:@"median"];
+        features = [*(*(&v10 + 1) + 8 * v7) features];
+        [features setValue:0 forKey:@"median"];
 
         ++v7;
       }
@@ -101,8 +101,8 @@
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v7 = [v6 criterias];
-        v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        criterias = [v6 criterias];
+        v8 = [criterias countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v8)
         {
           v9 = v8;
@@ -113,16 +113,16 @@
             {
               if (*v20 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(criterias);
               }
 
               v12 = *(*(&v19 + 1) + 8 * j);
-              v13 = [v12 matched];
-              if ((v13 & 1) == 0)
+              matched = [v12 matched];
+              if ((matched & 1) == 0)
               {
-                v14 = [v12 firstTriggered];
-                v2 = v14;
-                if (v14)
+                firstTriggered = [v12 firstTriggered];
+                v2 = firstTriggered;
+                if (firstTriggered)
                 {
 
 LABEL_17:
@@ -134,19 +134,19 @@ LABEL_17:
                 }
               }
 
-              v15 = [v12 lastTriggered];
+              lastTriggered = [v12 lastTriggered];
 
-              if ((v13 & 1) == 0)
+              if ((matched & 1) == 0)
               {
               }
 
-              if (v15)
+              if (lastTriggered)
               {
                 goto LABEL_17;
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v9 = [criterias countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v9);
@@ -235,28 +235,28 @@ LABEL_17:
   NSLog(&cfstr_SMinsamplesSet.isa, "+[WiFiUsageLQMRollingWindow updateConfig]", _config_minSamples);
 }
 
-- (WiFiUsageLQMRollingWindow)initWithInterfaceName:(id)a3 andDuration:(double)a4 andInterfaceCapabilities:(id)a5
+- (WiFiUsageLQMRollingWindow)initWithInterfaceName:(id)name andDuration:(double)duration andInterfaceCapabilities:(id)capabilities
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  nameCopy = name;
+  capabilitiesCopy = capabilities;
+  if (nameCopy)
   {
     v24.receiver = self;
     v24.super_class = WiFiUsageLQMRollingWindow;
     v10 = [(WiFiUsageLQMRollingWindow *)&v24 init];
-    v11 = [v8 copy];
+    v11 = [nameCopy copy];
     interfaceName = v10->_interfaceName;
     v10->_interfaceName = v11;
 
-    v13 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     createdTimestamp = v10->_createdTimestamp;
-    v10->_createdTimestamp = v13;
+    v10->_createdTimestamp = date;
 
-    v10->_duration = a4;
+    v10->_duration = duration;
     samples = v10->_samples;
     v10->_samples = 0;
 
-    objc_storeStrong(&v10->_capabilities, a5);
+    objc_storeStrong(&v10->_capabilities, capabilities);
     v16 = objc_opt_new();
     triggerCriteriaFilterList = v10->_triggerCriteriaFilterList;
     v10->_triggerCriteriaFilterList = v16;
@@ -272,51 +272,51 @@ LABEL_17:
     v10->_fgApp = 0;
 
     self = v10;
-    v22 = self;
+    selfCopy = self;
   }
 
   else
   {
     NSLog(&cfstr_SInvalidInterf.isa, "[WiFiUsageLQMRollingWindow initWithInterfaceName:andDuration:andInterfaceCapabilities:]", 0);
-    v22 = 0;
+    selfCopy = 0;
   }
 
-  return v22;
+  return selfCopy;
 }
 
-- (void)setCurrentApplicationName:(id)a3 withAttributes:(id)a4
+- (void)setCurrentApplicationName:(id)name withAttributes:(id)attributes
 {
-  v6 = a3;
-  objc_storeStrong(&_current_fgApp, a3);
+  nameCopy = name;
+  objc_storeStrong(&_current_fgApp, name);
   fgApp = self->_fgApp;
-  self->_fgApp = v6;
+  self->_fgApp = nameCopy;
 }
 
-- (void)addSample:(id)a3
+- (void)addSample:(id)sample
 {
-  v4 = a3;
-  if (v4)
+  sampleCopy = sample;
+  if (sampleCopy)
   {
-    v11 = v4;
+    v11 = sampleCopy;
     if (!self->_samples)
     {
-      v5 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       samples = self->_samples;
-      self->_samples = v5;
+      self->_samples = array;
 
-      v4 = v11;
+      sampleCopy = v11;
     }
 
-    [v4 setFgApp:_current_fgApp];
-    v7 = [(NSMutableArray *)self->_samples lastObject];
-    v8 = [v7 interfaceName];
+    [sampleCopy setFgApp:_current_fgApp];
+    lastObject = [(NSMutableArray *)self->_samples lastObject];
+    interfaceName = [lastObject interfaceName];
 
-    v9 = [v11 interfaceName];
-    v10 = [v9 isEqualToString:v8];
+    interfaceName2 = [v11 interfaceName];
+    v10 = [interfaceName2 isEqualToString:interfaceName];
 
     if (v10)
     {
-      [v11 setInterfaceName:v8];
+      [v11 setInterfaceName:interfaceName];
     }
 
     [(NSMutableArray *)self->_samples addObject:v11];
@@ -327,40 +327,40 @@ LABEL_17:
 
     [(WiFiUsageLQMRollingWindow *)self updateWindow];
 
-    v4 = v11;
+    sampleCopy = v11;
   }
 }
 
-- (void)addSamples:(id)a3
+- (void)addSamples:(id)samples
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  samplesCopy = samples;
+  v5 = samplesCopy;
+  if (samplesCopy)
   {
     samples = self->_samples;
     v9 = v5;
     if (!samples)
     {
-      v7 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v8 = self->_samples;
-      self->_samples = v7;
+      self->_samples = array;
 
       samples = self->_samples;
     }
 
     [(NSMutableArray *)samples addObjectsFromArray:v9];
-    v4 = [(WiFiUsageLQMRollingWindow *)self updateWindow];
+    samplesCopy = [(WiFiUsageLQMRollingWindow *)self updateWindow];
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](samplesCopy, v5);
 }
 
-- (void)addTrigger:(id)a3
+- (void)addTrigger:(id)trigger
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  triggerCopy = trigger;
+  v5 = triggerCopy;
+  if (triggerCopy)
   {
     preceedingTriggers = self->_preceedingTriggers;
     v9 = v5;
@@ -373,11 +373,11 @@ LABEL_17:
       preceedingTriggers = self->_preceedingTriggers;
     }
 
-    v4 = [(NSMutableArray *)preceedingTriggers addObject:v9];
+    triggerCopy = [(NSMutableArray *)preceedingTriggers addObject:v9];
     v5 = v9;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](triggerCopy, v5);
 }
 
 - (BOOL)endOngoingCriteria
@@ -408,8 +408,8 @@ LABEL_17:
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v7 = [v6 criterias];
-        v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        criterias = [v6 criterias];
+        v8 = [criterias countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v8)
         {
           v9 = v8;
@@ -420,23 +420,23 @@ LABEL_17:
             {
               if (*v25 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(criterias);
               }
 
               v12 = *(*(&v24 + 1) + 8 * j);
               [v12 setMatched:0];
               [v12 setValid:0];
-              v13 = [v12 firstTriggered];
-              if (v13)
+              firstTriggered = [v12 firstTriggered];
+              if (firstTriggered)
               {
-                v14 = v13;
-                v15 = [v12 lastTriggered];
+                v14 = firstTriggered;
+                lastTriggered = [v12 lastTriggered];
 
-                if (!v15)
+                if (!lastTriggered)
                 {
-                  v16 = [v12 currentSample];
+                  currentSample = [v12 currentSample];
 
-                  if (v16)
+                  if (currentSample)
                   {
                     [v12 currentSample];
                   }
@@ -455,7 +455,7 @@ LABEL_17:
               [v12 setBssid:0];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v9 = [criterias countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v9);
@@ -505,8 +505,8 @@ LABEL_17:
 
         v9 = *(*(&v15 + 1) + 8 * i);
         v10 = objc_alloc(MEMORY[0x277CBEA60]);
-        v11 = [v9 criterias];
-        v12 = [v10 initWithArray:v11 copyItems:1];
+        criterias = [v9 criterias];
+        v12 = [v10 initWithArray:criterias copyItems:1];
 
         [v3 addObjectsFromArray:v12];
       }
@@ -522,21 +522,21 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)checkCriteriaBSSIDWithSample:(id)a3
+- (BOOL)checkCriteriaBSSIDWithSample:(id)sample
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = [a3 networkDetails];
-  v5 = [v4 connectedBss];
-  v6 = [v5 bssid];
+  networkDetails = [sample networkDetails];
+  connectedBss = [networkDetails connectedBss];
+  bssid = [connectedBss bssid];
 
-  if ([(NSString *)self->_lastSampleBssid isEqualToString:v6])
+  if ([(NSString *)self->_lastSampleBssid isEqualToString:bssid])
   {
     v7 = 0;
   }
 
   else
   {
-    v23 = v6;
+    v23 = bssid;
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
@@ -562,8 +562,8 @@ LABEL_17:
           v25 = 0u;
           v26 = 0u;
           v27 = 0u;
-          v14 = [v13 criterias];
-          v15 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+          criterias = [v13 criterias];
+          v15 = [criterias countByEnumeratingWithState:&v24 objects:v32 count:16];
           if (v15)
           {
             v16 = v15;
@@ -574,20 +574,20 @@ LABEL_17:
               {
                 if (*v25 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(criterias);
                 }
 
                 v19 = *(*(&v24 + 1) + 8 * j);
                 if ([v19 matched])
                 {
-                  v20 = [v19 currentSample];
-                  [v19 setLastTriggered:v20];
+                  currentSample = [v19 currentSample];
+                  [v19 setLastTriggered:currentSample];
 
                   v7 = 1;
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v24 objects:v32 count:16];
+              v16 = [criterias countByEnumeratingWithState:&v24 objects:v32 count:16];
             }
 
             while (v16);
@@ -605,36 +605,36 @@ LABEL_17:
       v7 = 0;
     }
 
-    v6 = v23;
+    bssid = v23;
   }
 
   v21 = *MEMORY[0x277D85DE8];
   return v7 & 1;
 }
 
-- (id)evaluateCriteriaWithStopUponFirstMatch:(BOOL)a3
+- (id)evaluateCriteriaWithStopUponFirstMatch:(BOOL)match
 {
-  v78 = a3;
-  v3 = self;
+  matchCopy = match;
+  selfCopy = self;
   v103 = *MEMORY[0x277D85DE8];
-  v4 = [(NSMutableArray *)self->_samples lastObject];
-  v5 = [v4 networkDetails];
-  v6 = [v5 connectedBss];
-  v7 = [v6 bssid];
+  lastObject = [(NSMutableArray *)self->_samples lastObject];
+  networkDetails = [lastObject networkDetails];
+  connectedBss = [networkDetails connectedBss];
+  bssid = [connectedBss bssid];
 
   v79 = 0;
-  v75 = v3;
-  v81 = v7;
-  if ([(NSMutableArray *)v3->_samples count])
+  v75 = selfCopy;
+  v81 = bssid;
+  if ([(NSMutableArray *)selfCopy->_samples count])
   {
-    v8 = v78;
-    if (!v7)
+    v8 = matchCopy;
+    if (!bssid)
     {
       goto LABEL_15;
     }
 
-    samples = v3->_samples;
-    v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"networkDetails.connectedBss.bssid == %@", v7];
+    samples = selfCopy->_samples;
+    v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"networkDetails.connectedBss.bssid == %@", bssid];
     v11 = [(NSMutableArray *)samples filteredArrayUsingPredicate:v10];
 
     v79 = v11;
@@ -648,7 +648,7 @@ LABEL_17:
     v98 = 0u;
     v95 = 0u;
     v96 = 0u;
-    v13 = v3->_features;
+    v13 = selfCopy->_features;
     v14 = [(NSMutableSet *)v13 countByEnumeratingWithState:&v95 objects:v102 count:16];
     if (v14)
     {
@@ -664,12 +664,12 @@ LABEL_17:
           }
 
           v18 = *(*(&v95 + 1) + 8 * i);
-          v19 = [v18 median];
+          median = [v18 median];
 
-          if (!v19)
+          if (!median)
           {
-            v20 = [v18 fieldName];
-            v21 = +[WiFiUsageLQMRollingWindow medianIntegerValueForField:ScaledByDuration:OnSamples:](WiFiUsageLQMRollingWindow, "medianIntegerValueForField:ScaledByDuration:OnSamples:", v20, [v18 isPerSecond], v79);
+            fieldName = [v18 fieldName];
+            v21 = +[WiFiUsageLQMRollingWindow medianIntegerValueForField:ScaledByDuration:OnSamples:](WiFiUsageLQMRollingWindow, "medianIntegerValueForField:ScaledByDuration:OnSamples:", fieldName, [v18 isPerSecond], v79);
             [v18 setMedian:v21];
           }
         }
@@ -680,27 +680,27 @@ LABEL_17:
       while (v15);
     }
 
-    v3 = v75;
+    selfCopy = v75;
   }
 
-  v8 = v78;
+  v8 = matchCopy;
 LABEL_15:
   v93 = 0u;
   v94 = 0u;
   v91 = 0u;
   v92 = 0u;
-  obj = v3->_triggerCriteriaFilterList;
+  obj = selfCopy->_triggerCriteriaFilterList;
   v72 = [(NSMutableArray *)obj countByEnumeratingWithState:&v91 objects:v101 count:16];
-  v22 = 0;
+  firstTriggered2 = 0;
   if (!v72)
   {
-    v23 = v7;
+    v23 = bssid;
     goto LABEL_92;
   }
 
-  v23 = v7;
+  v23 = bssid;
   v71 = *v92;
-  if (v7)
+  if (bssid)
   {
     v24 = v79 == 0;
   }
@@ -724,8 +724,8 @@ LABEL_15:
       v27 = *(*(&v91 + 1) + 8 * j);
       if (v82 && [v79 count] && (objc_msgSend(v27, "filterSamplesPredicate"), v28 = objc_claimAutoreleasedReturnValue(), v28, v28))
       {
-        v29 = [v27 filterSamplesPredicate];
-        v30 = [v79 filteredArrayUsingPredicate:v29];
+        filterSamplesPredicate = [v27 filterSamplesPredicate];
+        v30 = [v79 filteredArrayUsingPredicate:filterSamplesPredicate];
 
         if (v30 && [v30 count])
         {
@@ -735,8 +735,8 @@ LABEL_15:
           v87 = 0u;
           v88 = 0u;
           v76 = v27;
-          v31 = [v27 features];
-          v32 = [v31 countByEnumeratingWithState:&v87 objects:v100 count:16];
+          features = [v27 features];
+          v32 = [features countByEnumeratingWithState:&v87 objects:v100 count:16];
           if (v32)
           {
             v33 = v32;
@@ -747,21 +747,21 @@ LABEL_15:
               {
                 if (*v88 != v34)
                 {
-                  objc_enumerationMutation(v31);
+                  objc_enumerationMutation(features);
                 }
 
                 v36 = *(*(&v87 + 1) + 8 * k);
-                v37 = [v36 median];
+                median2 = [v36 median];
 
-                if (!v37)
+                if (!median2)
                 {
-                  v38 = [v36 fieldName];
-                  v39 = +[WiFiUsageLQMRollingWindow medianIntegerValueForField:ScaledByDuration:OnSamples:](WiFiUsageLQMRollingWindow, "medianIntegerValueForField:ScaledByDuration:OnSamples:", v38, [v36 isPerSecond], v30);
+                  fieldName2 = [v36 fieldName];
+                  v39 = +[WiFiUsageLQMRollingWindow medianIntegerValueForField:ScaledByDuration:OnSamples:](WiFiUsageLQMRollingWindow, "medianIntegerValueForField:ScaledByDuration:OnSamples:", fieldName2, [v36 isPerSecond], v30);
                   [v36 setMedian:v39];
                 }
               }
 
-              v33 = [v31 countByEnumeratingWithState:&v87 objects:v100 count:16];
+              v33 = [features countByEnumeratingWithState:&v87 objects:v100 count:16];
             }
 
             while (v33);
@@ -782,8 +782,8 @@ LABEL_15:
       v86 = 0u;
       v83 = 0u;
       v84 = 0u;
-      v80 = [v27 criterias];
-      v40 = [v80 countByEnumeratingWithState:&v83 objects:v99 count:16];
+      criterias = [v27 criterias];
+      v40 = [criterias countByEnumeratingWithState:&v83 objects:v99 count:16];
       if (!v40)
       {
         v43 = 0;
@@ -794,7 +794,7 @@ LABEL_15:
       v77 = v27;
       v74 = j;
       v42 = *v84;
-      v43 = v22;
+      v43 = firstTriggered2;
       while (2)
       {
         for (m = 0; m != v41; ++m)
@@ -802,7 +802,7 @@ LABEL_15:
           v45 = v43;
           if (*v84 != v42)
           {
-            objc_enumerationMutation(v80);
+            objc_enumerationMutation(criterias);
           }
 
           v43 = *(*(&v83 + 1) + 8 * m);
@@ -824,12 +824,12 @@ LABEL_54:
               goto LABEL_54;
             }
 
-            v48 = [v43 type];
-            if (v48)
+            type = [v43 type];
+            if (type)
             {
-              if (v48 == 1)
+              if (type == 1)
               {
-                v49 = [v77 features];
+                features2 = [v77 features];
                 goto LABEL_56;
               }
 
@@ -838,18 +838,18 @@ LABEL_54:
 
             else
             {
-              v49 = [(NSMutableArray *)v75->_samples lastObject];
+              features2 = [(NSMutableArray *)v75->_samples lastObject];
 LABEL_56:
-              v50 = v49;
+              v50 = features2;
             }
 
-            v51 = [v43 requiredFieldsValid];
-            v47 = [v51 evaluateWithObject:v50];
+            requiredFieldsValid = [v43 requiredFieldsValid];
+            v47 = [requiredFieldsValid evaluateWithObject:v50];
 
             if (v47)
             {
-              v52 = [v43 predicate];
-              v46 = [v52 evaluateWithObject:v50];
+              predicate = [v43 predicate];
+              v46 = [predicate evaluateWithObject:v50];
             }
 
             else
@@ -857,34 +857,34 @@ LABEL_56:
               v46 = 0;
             }
 
-            v53 = [v30 lastObject];
-            v54 = [v53 timestamp];
-            [v43 setCurrentSample:v54];
+            lastObject2 = [v30 lastObject];
+            timestamp = [lastObject2 timestamp];
+            [v43 setCurrentSample:timestamp];
 
-            v8 = v78;
+            v8 = matchCopy;
             v23 = v81;
           }
 
 LABEL_62:
           [v43 setMatched:v46];
           [v43 setValid:v47];
-          v55 = [v43 firstTriggered];
-          v56 = v55;
+          firstTriggered = [v43 firstTriggered];
+          v56 = firstTriggered;
           if (v46)
           {
 
             if (!v56)
             {
-              v57 = [v43 currentSample];
-              [v43 setFirstTriggered:v57];
+              currentSample = [v43 currentSample];
+              [v43 setFirstTriggered:currentSample];
             }
 
             [v43 setBssid:v23];
             if (v8)
             {
-              v22 = [v43 firstTriggered];
-              v58 = [v43 currentSample];
-              v59 = [v22 isEqual:v58];
+              firstTriggered2 = [v43 firstTriggered];
+              currentSample2 = [v43 currentSample];
+              v59 = [firstTriggered2 isEqual:currentSample2];
 
               if (v59)
               {
@@ -898,24 +898,24 @@ LABEL_62:
 
           else
           {
-            if (v55)
+            if (firstTriggered)
             {
-              v60 = [v43 lastTriggered];
+              lastTriggered = [v43 lastTriggered];
 
-              if (!v60)
+              if (!lastTriggered)
               {
                 if (v30 && [v30 count] >= 2)
                 {
                   v61 = [v30 objectAtIndex:{objc_msgSend(v30, "count") - 2}];
-                  v62 = [v61 timestamp];
-                  [v43 setLastTriggered:v62];
+                  timestamp2 = [v61 timestamp];
+                  [v43 setLastTriggered:timestamp2];
                 }
 
                 else
                 {
-                  v63 = [v43 currentSample];
+                  currentSample3 = [v43 currentSample];
 
-                  if (v63)
+                  if (currentSample3)
                   {
                     [v43 currentSample];
                   }
@@ -934,11 +934,11 @@ LABEL_62:
             [v43 setBssid:v81];
             if (v8)
             {
-              v64 = [v43 lastTriggered];
+              lastTriggered2 = [v43 lastTriggered];
 
-              if (v64)
+              if (lastTriggered2)
               {
-                v22 = v43;
+                firstTriggered2 = v43;
                 j = v74;
                 goto LABEL_88;
               }
@@ -946,7 +946,7 @@ LABEL_62:
           }
         }
 
-        v41 = [v80 countByEnumeratingWithState:&v83 objects:v99 count:16];
+        v41 = [criterias countByEnumeratingWithState:&v83 objects:v99 count:16];
         if (v41)
         {
           continue;
@@ -955,13 +955,13 @@ LABEL_62:
         break;
       }
 
-      v22 = v43;
+      firstTriggered2 = v43;
       v43 = 0;
 LABEL_86:
       j = v74;
 LABEL_87:
 
-      v22 = v43;
+      firstTriggered2 = v43;
 LABEL_88:
     }
 
@@ -978,7 +978,7 @@ LABEL_92:
 
   v68 = *MEMORY[0x277D85DE8];
 
-  return v22;
+  return firstTriggered2;
 }
 
 - (BOOL)configureDataTriggeredCriteria
@@ -1055,15 +1055,15 @@ LABEL_92:
     }
 
     v16 = MEMORY[0x277CCACA8];
-    v17 = [(WiFiUsageLQMRollingWindow *)self getTriggerCriteriaList];
-    v18 = [v16 stringWithFormat:@"%s: DataTriggered criteria configured %@: %@", "-[WiFiUsageLQMRollingWindow configureDataTriggeredCriteria]", v14, v17];
+    getTriggerCriteriaList = [(WiFiUsageLQMRollingWindow *)self getTriggerCriteriaList];
+    v18 = [v16 stringWithFormat:@"%s: DataTriggered criteria configured %@: %@", "-[WiFiUsageLQMRollingWindow configureDataTriggeredCriteria]", v14, getTriggerCriteriaList];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"[WiFiPolicy] %s", objc_msgSend(v18, "UTF8String")];
-      v20 = [v19 UTF8String];
+      uTF8String = [v19 UTF8String];
       *buf = 136446210;
-      v28 = v20;
+      v28 = uTF8String;
       _os_log_impl(&dword_2332D7000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
     }
   }
@@ -1077,29 +1077,29 @@ LABEL_92:
   return v15;
 }
 
-+ (id)getValue:(id)a3 ForField:(id)a4 ScaledByDuration:(BOOL)a5
++ (id)getValue:(id)value ForField:(id)field ScaledByDuration:(BOOL)duration
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  durationCopy = duration;
+  valueCopy = value;
+  fieldCopy = field;
   if (objc_opt_respondsToSelector())
   {
-    [v7 numberForKeyPath:v8];
+    [valueCopy numberForKeyPath:fieldCopy];
   }
 
   else
   {
-    [v7 valueForKeyPath:v8];
+    [valueCopy valueForKeyPath:fieldCopy];
   }
   v9 = ;
 
-  if (v9 && ([v7 duration] || !v5))
+  if (v9 && ([valueCopy duration] || !durationCopy))
   {
-    if (v5 && [v7 duration])
+    if (durationCopy && [valueCopy duration])
     {
       v11 = MEMORY[0x277CCABB0];
       [v9 doubleValue];
-      v13 = [v11 numberWithLong:{(v12 / objc_msgSend(v7, "duration"))}];
+      v13 = [v11 numberWithLong:{(v12 / objc_msgSend(valueCopy, "duration"))}];
 
       v9 = v13;
     }
@@ -1116,10 +1116,10 @@ LABEL_92:
   return v10;
 }
 
-- (BOOL)hasChanged:(id)a3
+- (BOOL)hasChanged:(id)changed
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1141,7 +1141,7 @@ LABEL_92:
           objc_enumerationMutation(v5);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v9) numberForKeyPath:{v4, v14}];
+        v11 = [*(*(&v14 + 1) + 8 * v9) numberForKeyPath:{changedCopy, v14}];
         v7 = v11;
         if (v10 && ([v11 isEqual:v10] & 1) == 0)
         {

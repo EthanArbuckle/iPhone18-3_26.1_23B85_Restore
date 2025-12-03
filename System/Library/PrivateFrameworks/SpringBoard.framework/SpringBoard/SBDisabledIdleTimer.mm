@@ -1,8 +1,8 @@
 @interface SBDisabledIdleTimer
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)reset;
-- (void)setActivated:(BOOL)a3;
+- (void)setActivated:(BOOL)activated;
 @end
 
 @implementation SBDisabledIdleTimer
@@ -14,10 +14,10 @@
   [(SBIdleTimerBase *)&v2 reset];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -27,7 +27,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+      v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
       v6 = [v5 isEqual];
     }
 
@@ -40,17 +40,17 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = objc_opt_class();
 
   return objc_alloc_init(v3);
 }
 
-- (void)setActivated:(BOOL)a3
+- (void)setActivated:(BOOL)activated
 {
-  self->_activated = a3;
-  if (a3)
+  self->_activated = activated;
+  if (activated)
   {
     [(SBIdleTimerBase *)self _logExpirationTimeout:-1.0];
   }

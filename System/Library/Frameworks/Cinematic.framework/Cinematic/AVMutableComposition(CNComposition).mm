@@ -7,12 +7,12 @@
 - (id)addTracksForCinematicAssetInfo:()CNComposition preferredStartingTrackID:
 {
   v6 = a3;
-  v7 = [v6 cinematicVideoTrack];
-  v8 = [v7 mediaType];
-  v9 = [a1 addMutableTrackWithMediaType:v8 preferredTrackID:a4];
+  cinematicVideoTrack = [v6 cinematicVideoTrack];
+  mediaType = [cinematicVideoTrack mediaType];
+  v9 = [self addMutableTrackWithMediaType:mediaType preferredTrackID:a4];
 
-  v10 = [v6 cinematicDisparityTrack];
-  v11 = [v10 mediaType];
+  cinematicDisparityTrack = [v6 cinematicDisparityTrack];
+  mediaType2 = [cinematicDisparityTrack mediaType];
   if (a4)
   {
     v12 = (a4 + 1);
@@ -33,12 +33,12 @@
     v13 = 0;
   }
 
-  v14 = [a1 addMutableTrackWithMediaType:v11 preferredTrackID:v12];
+  v14 = [self addMutableTrackWithMediaType:mediaType2 preferredTrackID:v12];
 
-  v15 = [v6 cinematicMetadataTrack];
+  cinematicMetadataTrack = [v6 cinematicMetadataTrack];
 
-  v16 = [v15 mediaType];
-  v17 = [a1 addMutableTrackWithMediaType:v16 preferredTrackID:v13];
+  mediaType3 = [cinematicMetadataTrack mediaType];
+  v17 = [self addMutableTrackWithMediaType:mediaType3 preferredTrackID:v13];
 
   v18 = [(CNAssetInfo *)[CNCompositionInfo alloc] _initWithVideoTrack:v9 disparityTrack:v14 metadataTrack:v17];
 

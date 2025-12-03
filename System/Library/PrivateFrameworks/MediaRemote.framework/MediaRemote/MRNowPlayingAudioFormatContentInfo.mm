@@ -1,8 +1,8 @@
 @interface MRNowPlayingAudioFormatContentInfo
-- (BOOL)isEqual:(id)a3;
-- (MRNowPlayingAudioFormatContentInfo)initWithData:(id)a3;
-- (MRNowPlayingAudioFormatContentInfo)initWithPid:(int)a3 bundleID:(id)a4 audioSessionID:(id)a5 audioFormat:(id)a6 channelCount:(id)a7 bestAvailableContent:(id)a8 isEligibleForSpatialization:(id)a9 isSpatialized:(id)a10;
-- (MRNowPlayingAudioFormatContentInfo)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRNowPlayingAudioFormatContentInfo)initWithData:(id)data;
+- (MRNowPlayingAudioFormatContentInfo)initWithPid:(int)pid bundleID:(id)d audioSessionID:(id)iD audioFormat:(id)format channelCount:(id)count bestAvailableContent:(id)content isEligibleForSpatialization:(id)spatialization isSpatialized:(id)self0;
+- (MRNowPlayingAudioFormatContentInfo)initWithProtobuf:(id)protobuf;
 - (NSData)data;
 - (NSString)audioFormatDescription;
 - (NSString)bestAvailableAudioFormatDescription;
@@ -36,8 +36,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   audioSessionID = self->_audioSessionID;
-  v6 = [(MRNowPlayingAudioFormatContentInfo *)self audioFormatDescription];
-  v7 = v6;
+  audioFormatDescription = [(MRNowPlayingAudioFormatContentInfo *)self audioFormatDescription];
+  v7 = audioFormatDescription;
   v8 = @"No";
   if (self->_eligibleForSpatialization)
   {
@@ -54,7 +54,7 @@
     v8 = @"Yes";
   }
 
-  v10 = [v3 stringWithFormat:@"<%@: %p | session id: %@ | audio format: %@ - %@ | channel #: %@ | available: %@ | eligible: %@ | active: %@ | intended :%ld | resolved :%ld | pid: %i | bundleID: %@>", v4, self, audioSessionID, v6, *&self->_audioFormat, self->_bestAvailableContent, v9, v8, self->_intendedSpatialExperience, self->_resolvedSpatialExperience, self->_pid, self->_bundleID];
+  v10 = [v3 stringWithFormat:@"<%@: %p | session id: %@ | audio format: %@ - %@ | channel #: %@ | available: %@ | eligible: %@ | active: %@ | intended :%ld | resolved :%ld | pid: %i | bundleID: %@>", v4, self, audioSessionID, audioFormatDescription, *&self->_audioFormat, self->_bestAvailableContent, v9, v8, self->_intendedSpatialExperience, self->_resolvedSpatialExperience, self->_pid, self->_bundleID];
 
   return v10;
 }
@@ -80,25 +80,25 @@
 
 - (NSString)bestAvailableAudioFormatDescription
 {
-  v3 = [(MRNowPlayingAudioFormatContentInfo *)self bestAvailableAudioFormat];
-  if (v3 == 1)
+  bestAvailableAudioFormat = [(MRNowPlayingAudioFormatContentInfo *)self bestAvailableAudioFormat];
+  if (bestAvailableAudioFormat == 1)
   {
     v4 = @"MULTICHANNEL_AVAILABLE";
     goto LABEL_5;
   }
 
-  if (v3 == 2)
+  if (bestAvailableAudioFormat == 2)
   {
     v4 = @"SPATIAL_ATMOS_AVAILABLE";
 LABEL_5:
-    v5 = MRLocalizedString(v4);
+    audioFormatDescription = MRLocalizedString(v4);
     goto LABEL_7;
   }
 
-  v5 = [(MRNowPlayingAudioFormatContentInfo *)self audioFormatDescription];
+  audioFormatDescription = [(MRNowPlayingAudioFormatContentInfo *)self audioFormatDescription];
 LABEL_7:
 
-  return v5;
+  return audioFormatDescription;
 }
 
 - (int64_t)bestAvailableAudioFormat
@@ -161,10 +161,10 @@ LABEL_7:
 
 - (NSData)data
 {
-  v2 = [(MRNowPlayingAudioFormatContentInfo *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRNowPlayingAudioFormatContentInfo *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (_MRMRNowPlayingAudioFormatContentInfoProtobuf)protobuf
@@ -200,116 +200,116 @@ LABEL_7:
   return v3;
 }
 
-- (MRNowPlayingAudioFormatContentInfo)initWithPid:(int)a3 bundleID:(id)a4 audioSessionID:(id)a5 audioFormat:(id)a6 channelCount:(id)a7 bestAvailableContent:(id)a8 isEligibleForSpatialization:(id)a9 isSpatialized:(id)a10
+- (MRNowPlayingAudioFormatContentInfo)initWithPid:(int)pid bundleID:(id)d audioSessionID:(id)iD audioFormat:(id)format channelCount:(id)count bestAvailableContent:(id)content isEligibleForSpatialization:(id)spatialization isSpatialized:(id)self0
 {
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v17 = a8;
-  v18 = a9;
-  v19 = a10;
+  dCopy = d;
+  iDCopy = iD;
+  formatCopy = format;
+  countCopy = count;
+  contentCopy = content;
+  spatializationCopy = spatialization;
+  spatializedCopy = spatialized;
   v27.receiver = self;
   v27.super_class = MRNowPlayingAudioFormatContentInfo;
   v20 = [(MRNowPlayingAudioFormatContentInfo *)&v27 init];
   v21 = v20;
   if (v20)
   {
-    v20->_pid = a3;
-    objc_storeStrong(&v20->_bundleID, a4);
-    objc_storeStrong(&v21->_audioSessionID, a5);
-    objc_storeStrong(&v21->_audioFormat, a6);
-    objc_storeStrong(&v21->_channelCount, a7);
-    objc_storeStrong(&v21->_bestAvailableContent, a8);
-    v21->_spatialized = [v19 BOOLValue];
-    v21->_eligibleForSpatialization = [v18 BOOLValue];
+    v20->_pid = pid;
+    objc_storeStrong(&v20->_bundleID, d);
+    objc_storeStrong(&v21->_audioSessionID, iD);
+    objc_storeStrong(&v21->_audioFormat, format);
+    objc_storeStrong(&v21->_channelCount, count);
+    objc_storeStrong(&v21->_bestAvailableContent, content);
+    v21->_spatialized = [spatializedCopy BOOLValue];
+    v21->_eligibleForSpatialization = [spatializationCopy BOOLValue];
   }
 
   return v21;
 }
 
-- (MRNowPlayingAudioFormatContentInfo)initWithProtobuf:(id)a3
+- (MRNowPlayingAudioFormatContentInfo)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v18.receiver = self;
     v18.super_class = MRNowPlayingAudioFormatContentInfo;
     v5 = [(MRNowPlayingAudioFormatContentInfo *)&v18 init];
     if (v5)
     {
-      v6 = [v4 bundleID];
+      bundleID = [protobufCopy bundleID];
       bundleID = v5->_bundleID;
-      v5->_bundleID = v6;
+      v5->_bundleID = bundleID;
 
-      if ([v4 hasAudioSessionID])
+      if ([protobufCopy hasAudioSessionID])
       {
-        v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "audioSessionID")}];
+        v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(protobufCopy, "audioSessionID")}];
         audioSessionID = v5->_audioSessionID;
         v5->_audioSessionID = v8;
       }
 
-      if ([v4 hasAudioFormat])
+      if ([protobufCopy hasAudioFormat])
       {
-        v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "audioFormat")}];
+        v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(protobufCopy, "audioFormat")}];
         audioFormat = v5->_audioFormat;
         v5->_audioFormat = v10;
       }
 
-      if ([v4 hasChannelCount])
+      if ([protobufCopy hasChannelCount])
       {
-        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v4, "channelCount")}];
+        v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(protobufCopy, "channelCount")}];
         channelCount = v5->_channelCount;
         v5->_channelCount = v12;
       }
 
-      v14 = [v4 bestAvailableContent];
+      bestAvailableContent = [protobufCopy bestAvailableContent];
       bestAvailableContent = v5->_bestAvailableContent;
-      v5->_bestAvailableContent = v14;
+      v5->_bestAvailableContent = bestAvailableContent;
 
-      v5->_eligibleForSpatialization = [v4 eligibleForSpatialization];
-      v5->_spatialized = [v4 spatialized];
-      v5->_intendedSpatialExperience = [v4 intendedSpatialExperience];
-      v5->_resolvedSpatialExperience = [v4 resolvedSpatialExperience];
-      v5->_pid = [v4 pid];
-      v5->_renderingMode = [v4 renderingMode];
+      v5->_eligibleForSpatialization = [protobufCopy eligibleForSpatialization];
+      v5->_spatialized = [protobufCopy spatialized];
+      v5->_intendedSpatialExperience = [protobufCopy intendedSpatialExperience];
+      v5->_resolvedSpatialExperience = [protobufCopy resolvedSpatialExperience];
+      v5->_pid = [protobufCopy pid];
+      v5->_renderingMode = [protobufCopy renderingMode];
     }
 
     self = v5;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (MRNowPlayingAudioFormatContentInfo)initWithData:(id)a3
+- (MRNowPlayingAudioFormatContentInfo)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRMRNowPlayingAudioFormatContentInfoProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRMRNowPlayingAudioFormatContentInfoProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRNowPlayingAudioFormatContentInfo *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v23 = 1;
   }
@@ -319,11 +319,11 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(MRNowPlayingAudioFormatContentInfo *)v5 pid];
       pid = self->_pid;
-      v8 = [(MRNowPlayingAudioFormatContentInfo *)v5 bundleID];
-      v9 = [v8 isEqualToString:self->_bundleID];
+      bundleID = [(MRNowPlayingAudioFormatContentInfo *)v5 bundleID];
+      v9 = [bundleID isEqualToString:self->_bundleID];
       if (v6 == pid)
       {
         v10 = v9;
@@ -334,23 +334,23 @@ LABEL_7:
         v10 = 0;
       }
 
-      v11 = [(MRNowPlayingAudioFormatContentInfo *)v5 audioSessionID];
-      v12 = [v11 unsignedIntValue];
-      if (v12 != [(NSNumber *)self->_audioSessionID unsignedIntValue])
+      audioSessionID = [(MRNowPlayingAudioFormatContentInfo *)v5 audioSessionID];
+      unsignedIntValue = [audioSessionID unsignedIntValue];
+      if (unsignedIntValue != [(NSNumber *)self->_audioSessionID unsignedIntValue])
       {
         v10 = 0;
       }
 
-      v13 = [(MRNowPlayingAudioFormatContentInfo *)v5 audioFormat];
-      v14 = [v13 unsignedIntValue];
-      if (v14 != [(NSNumber *)self->_audioFormat unsignedIntValue])
+      audioFormat = [(MRNowPlayingAudioFormatContentInfo *)v5 audioFormat];
+      unsignedIntValue2 = [audioFormat unsignedIntValue];
+      if (unsignedIntValue2 != [(NSNumber *)self->_audioFormat unsignedIntValue])
       {
         v10 = 0;
       }
 
-      v15 = [(MRNowPlayingAudioFormatContentInfo *)v5 channelCount];
-      v16 = [v15 unsignedIntValue];
-      if (v16 == [(NSNumber *)self->_channelCount unsignedIntValue])
+      channelCount = [(MRNowPlayingAudioFormatContentInfo *)v5 channelCount];
+      unsignedIntValue3 = [channelCount unsignedIntValue];
+      if (unsignedIntValue3 == [(NSNumber *)self->_channelCount unsignedIntValue])
       {
         v17 = v10;
       }
@@ -360,8 +360,8 @@ LABEL_7:
         v17 = 0;
       }
 
-      v18 = [(MRNowPlayingAudioFormatContentInfo *)v5 bestAvailableContent];
-      v19 = v17 & [v18 isEqualToString:self->_bestAvailableContent];
+      bestAvailableContent = [(MRNowPlayingAudioFormatContentInfo *)v5 bestAvailableContent];
+      v19 = v17 & [bestAvailableContent isEqualToString:self->_bestAvailableContent];
 
       if (self->_eligibleForSpatialization == [(MRNowPlayingAudioFormatContentInfo *)v5 isEligibleForSpatialization])
       {
@@ -384,9 +384,9 @@ LABEL_7:
       }
 
       v21 = [(MRNowPlayingAudioFormatContentInfo *)v5 resolvedSpatialExperience]== self->_resolvedSpatialExperience && v20;
-      v22 = [(MRNowPlayingAudioFormatContentInfo *)v5 renderingMode];
+      renderingMode = [(MRNowPlayingAudioFormatContentInfo *)v5 renderingMode];
 
-      v23 = v22 == self->_renderingMode && v21;
+      v23 = renderingMode == self->_renderingMode && v21;
     }
 
     else
@@ -400,9 +400,9 @@ LABEL_7:
 
 - (void)bestAvailableAudioFormat
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getkMXSession_SourceFormatInfoKey_BestAvailableContentType_Multichannel(void)"];
-  [v0 handleFailureInFunction:v1 file:@"MRNowPlayingAudioFormatContentInfo.m" lineNumber:23 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"MRNowPlayingAudioFormatContentInfo.m" lineNumber:23 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

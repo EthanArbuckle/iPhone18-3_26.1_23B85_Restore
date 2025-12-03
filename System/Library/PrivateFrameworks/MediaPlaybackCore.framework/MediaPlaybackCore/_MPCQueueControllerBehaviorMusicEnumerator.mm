@@ -1,6 +1,6 @@
 @interface _MPCQueueControllerBehaviorMusicEnumerator
-- (_MPCQueueControllerBehaviorMusicEnumerator)initWithQueueEnumerator:(id)a3 startingComponents:(id)a4;
-- (id)_loadingComponentsForHeadOfSection:(id)a3;
+- (_MPCQueueControllerBehaviorMusicEnumerator)initWithQueueEnumerator:(id)enumerator startingComponents:(id)components;
+- (id)_loadingComponentsForHeadOfSection:(id)section;
 - (id)nextObject;
 @end
 
@@ -8,22 +8,22 @@
 
 - (id)nextObject
 {
-  v3 = self;
+  selfCopy = self;
   v112 = *MEMORY[0x1E69E9840];
-  v93 = [(_MPCQueueControllerEnumerator *)self->_queueEnumerator musicBehavior];
-  v86 = [v93 host];
-  v4 = [(_MPCQueueControllerEnumerator *)v3->_queueEnumerator mode];
-  v84 = [(_MPCQueueControllerEnumerator *)v3->_queueEnumerator options];
-  v87 = v4;
-  v90 = v3;
-  if (v4 != 3 || [v93 repeatType] != 1)
+  musicBehavior = [(_MPCQueueControllerEnumerator *)self->_queueEnumerator musicBehavior];
+  host = [musicBehavior host];
+  mode = [(_MPCQueueControllerEnumerator *)selfCopy->_queueEnumerator mode];
+  options = [(_MPCQueueControllerEnumerator *)selfCopy->_queueEnumerator options];
+  v87 = mode;
+  v90 = selfCopy;
+  if (mode != 3 || [musicBehavior repeatType] != 1)
   {
     v83 = a2;
     v96 = 0u;
     v97 = 0u;
     v94 = 0u;
     v95 = 0u;
-    v24 = v3->_queueEnumerator;
+    v24 = selfCopy->_queueEnumerator;
     v25 = [(_MPCQueueControllerEnumerator *)v24 countByEnumeratingWithState:&v94 objects:v110 count:16];
     if (!v25)
     {
@@ -31,12 +31,12 @@
     }
 
     v26 = v25;
-    v27 = (v84 >> 3) & 1;
-    v88 = v4 & 0xFFFFFFFFFFFFFFFELL;
+    v27 = (options >> 3) & 1;
+    v88 = mode & 0xFFFFFFFFFFFFFFFELL;
     v28 = *v95;
-    v29 = (v4 & 0xFFFFFFFFFFFFFFFELL) != 2 || (v84 & 8) != 0;
+    v29 = (mode & 0xFFFFFFFFFFFFFFFELL) != 2 || (options & 8) != 0;
     v92 = v29;
-    if (!v4)
+    if (!mode)
     {
       LOBYTE(v27) = 1;
     }
@@ -54,60 +54,60 @@
         }
 
         v31 = *(*(&v94 + 1) + 8 * v30);
-        v32 = [v31 entryType];
-        if (v32 == 2)
+        entryType = [v31 entryType];
+        if (entryType == 2)
         {
           if (v92)
           {
             goto LABEL_62;
           }
 
-          v42 = [v31 trackingEntryResult];
-          v43 = [v42 sectionIdentifier];
-          v46 = [(_MPCQueueControllerBehaviorMusicEnumerator *)v90 _loadingComponentsForHeadOfSection:v43];
+          trackingEntryResult = [v31 trackingEntryResult];
+          sectionIdentifier = [trackingEntryResult sectionIdentifier];
+          v46 = [(_MPCQueueControllerBehaviorMusicEnumerator *)v90 _loadingComponentsForHeadOfSection:sectionIdentifier];
           if (v46)
           {
             v45 = v46;
-            v91 = [v46 contentItemID];
+            contentItemID = [v46 contentItemID];
 LABEL_100:
 
 LABEL_101:
-            v59 = v91;
+            contentItemID4 = contentItemID;
             goto LABEL_102;
           }
 
           goto LABEL_52;
         }
 
-        if (v32 == 4)
+        if (entryType == 4)
         {
-          v42 = [v31 trackingEntryResult];
-          v43 = [v42 sectionIdentifier];
-          v44 = [v93 dataSources];
-          v45 = [v44 objectForKeyedSubscript:v43];
+          trackingEntryResult = [v31 trackingEntryResult];
+          sectionIdentifier = [trackingEntryResult sectionIdentifier];
+          dataSources = [musicBehavior dataSources];
+          v45 = [dataSources objectForKeyedSubscript:sectionIdentifier];
 
           if ([v45 isRadioDataSource] && objc_msgSend(v45, "shouldRequestAdditionalItemsAtTail"))
           {
             if (v87 == 1)
             {
-              if ((v84 & 8) != 0)
+              if ((options & 8) != 0)
               {
                 v60 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicBehavior");
                 if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
                 {
-                  v61 = [v86 engineID];
-                  v62 = [v93 sessionID];
+                  engineID = [host engineID];
+                  sessionID = [musicBehavior sessionID];
                   *buf = 138543874;
-                  v103 = v61;
+                  v103 = engineID;
                   v104 = 2114;
-                  v105 = v62;
+                  v105 = sessionID;
                   v106 = 2114;
-                  v107 = v43;
+                  v107 = sectionIdentifier;
                   _os_log_impl(&dword_1C5C61000, v60, OS_LOG_TYPE_DEFAULT, "[BMUS:%{public}@:%{public}@] enumerator nextObject: | returning nil [encountered radio tail while reverse enumerating in display mode] sectionID=%{public}@", buf, 0x20u);
                 }
               }
 
-              v63 = 0;
+              contentItemID3 = 0;
               queueEnumerator = v90->_queueEnumerator;
               v90->_queueEnumerator = 0;
               goto LABEL_99;
@@ -115,39 +115,39 @@ LABEL_101:
 
             if (v88 == 2)
             {
-              v70 = [MEMORY[0x1E6970948] positionForTailOfSection:v43];
-              queueEnumerator = [_MPCQueueControllerEnumerator enumeratorWithMusicBehavior:v93 mode:0 options:8 startPosition:v70 endPosition:0];
+              v70 = [MEMORY[0x1E6970948] positionForTailOfSection:sectionIdentifier];
+              queueEnumerator = [_MPCQueueControllerEnumerator enumeratorWithMusicBehavior:musicBehavior mode:0 options:8 startPosition:v70 endPosition:0];
 
-              v71 = [queueEnumerator nextObject];
-              v72 = v71;
-              if (v71)
+              nextObject = [queueEnumerator nextObject];
+              v72 = nextObject;
+              if (nextObject)
               {
-                if ([v71 entryType] != 3)
+                if ([nextObject entryType] != 3)
                 {
-                  v80 = [MEMORY[0x1E696AAA8] currentHandler];
-                  [v80 handleFailureInMethod:v83 object:v90 file:@"_MPCQueueControllerBehaviorMusic.m" lineNumber:4692 description:{@"Encountered unexpected enumeration result type: %ld", objc_msgSend(v72, "entryType")}];
+                  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                  [currentHandler handleFailureInMethod:v83 object:v90 file:@"_MPCQueueControllerBehaviorMusic.m" lineNumber:4692 description:{@"Encountered unexpected enumeration result type: %ld", objc_msgSend(v72, "entryType")}];
                 }
 
-                v73 = [v72 itemResult];
-                v74 = [v73 sectionIdentifier];
-                v75 = [v73 itemIdentifier];
-                v76 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:v74 itemID:v75];
-                v77 = [v76 copyAsDeferredWithLoadingSectionID:v43];
+                itemResult = [v72 itemResult];
+                sectionIdentifier2 = [itemResult sectionIdentifier];
+                itemIdentifier = [itemResult itemIdentifier];
+                v76 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:sectionIdentifier2 itemID:itemIdentifier];
+                v77 = [v76 copyAsDeferredWithLoadingSectionID:sectionIdentifier];
 
-                v78 = [v77 contentItemID];
+                contentItemID2 = [v77 contentItemID];
 
-                v63 = v78;
+                contentItemID3 = contentItemID2;
                 v24 = v89;
               }
 
               else
               {
-                v73 = [MPCQueueControllerBehaviorMusicIdentifierComponents placeholderComponentsWithLoadingSectionID:v43];
-                v63 = [v73 contentItemID];
+                itemResult = [MPCQueueControllerBehaviorMusicIdentifierComponents placeholderComponentsWithLoadingSectionID:sectionIdentifier];
+                contentItemID3 = [itemResult contentItemID];
               }
 
 LABEL_99:
-              v91 = v63;
+              contentItemID = contentItemID3;
 
               goto LABEL_100;
             }
@@ -157,36 +157,36 @@ LABEL_52:
           goto LABEL_62;
         }
 
-        if (v32 != 3)
+        if (entryType != 3)
         {
           goto LABEL_62;
         }
 
-        v33 = [v31 itemResult];
-        v34 = [v33 sectionIdentifier];
-        v35 = [v33 itemIdentifier];
-        v36 = [v93 dataSources];
-        v37 = [v36 objectForKeyedSubscript:v34];
+        itemResult2 = [v31 itemResult];
+        sectionIdentifier3 = [itemResult2 sectionIdentifier];
+        itemIdentifier2 = [itemResult2 itemIdentifier];
+        dataSources2 = [musicBehavior dataSources];
+        v37 = [dataSources2 objectForKeyedSubscript:sectionIdentifier3];
 
         if (!v37)
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v57 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v57 handleFailureInMethod:v83 object:v90 file:@"_MPCQueueControllerBehaviorMusic.m" lineNumber:4615 description:{@"Enumerated an itemResult that has no dataSourceState: sectionID=%@", v34}];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:v83 object:v90 file:@"_MPCQueueControllerBehaviorMusic.m" lineNumber:4615 description:{@"Enumerated an itemResult that has no dataSourceState: sectionID=%@", sectionIdentifier3}];
           }
 
-          p_super = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:v34 itemID:v35];
-          v47 = [p_super copyAsPlaceholder];
+          p_super = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:sectionIdentifier3 itemID:itemIdentifier2];
+          copyAsPlaceholder = [p_super copyAsPlaceholder];
 LABEL_56:
-          v41 = v47;
+          copyAsPlaceholder2 = copyAsPlaceholder;
 LABEL_57:
 
 LABEL_58:
-          p_super = v41;
+          p_super = copyAsPlaceholder2;
 LABEL_59:
-          v91 = [p_super contentItemID];
+          contentItemID = [p_super contentItemID];
 LABEL_60:
           v48 = 0;
           goto LABEL_61;
@@ -199,60 +199,60 @@ LABEL_60:
             p_super = os_log_create("com.apple.amp.mediaplaybackcore", "MusicBehavior");
             if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
             {
-              v39 = [v86 engineID];
-              v40 = [v93 sessionID];
+              engineID2 = [host engineID];
+              sessionID2 = [musicBehavior sessionID];
               *buf = 138543874;
-              v103 = v39;
+              v103 = engineID2;
               v104 = 2114;
-              v105 = v40;
+              v105 = sessionID2;
               v106 = 2114;
-              v107 = v34;
+              v107 = sectionIdentifier3;
               _os_log_impl(&dword_1C5C61000, p_super, OS_LOG_TYPE_DEFAULT, "[BMUS:%{public}@:%{public}@] enumerator nextObject: | returning nil [encountered loading section in non-playback mode] sectionID=%{public}@", buf, 0x20u);
             }
 
-            v41 = 0;
+            copyAsPlaceholder2 = 0;
             goto LABEL_57;
           }
 
-          v50 = [(_MPCQueueControllerBehaviorMusicEnumerator *)v90 _loadingComponentsForHeadOfSection:v34];
+          v50 = [(_MPCQueueControllerBehaviorMusicEnumerator *)v90 _loadingComponentsForHeadOfSection:sectionIdentifier3];
           p_super = v50;
           if (!v50)
           {
             goto LABEL_59;
           }
 
-          v91 = [v50 contentItemID];
+          contentItemID = [v50 contentItemID];
           v51 = os_log_create("com.apple.amp.mediaplaybackcore", "MusicBehavior");
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
-            v81 = [v86 engineID];
-            v52 = [v93 sessionID];
+            engineID3 = [host engineID];
+            sessionID3 = [musicBehavior sessionID];
             *buf = 138544130;
-            v103 = v81;
+            v103 = engineID3;
             v104 = 2114;
-            v105 = v52;
-            v53 = v52;
+            v105 = sessionID3;
+            v53 = sessionID3;
             v106 = 2114;
-            v107 = v34;
+            v107 = sectionIdentifier3;
             v108 = 2114;
-            v109 = v91;
+            v109 = contentItemID;
             _os_log_impl(&dword_1C5C61000, v51, OS_LOG_TYPE_DEFAULT, "[BMUS:%{public}@:%{public}@] enumerator nextObject: | returning placeholder [dataSource loading, playback mode] sectionID=%{public}@ nextContentItemID=%{public}@", buf, 0x2Au);
           }
 
           goto LABEL_60;
         }
 
-        if ([v37 shouldUsePlaceholderForItem:v35 inSection:v34])
+        if ([v37 shouldUsePlaceholderForItem:itemIdentifier2 inSection:sectionIdentifier3])
         {
           if (v88 == 2)
           {
-            v49 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:v34 itemID:v35];
-            v41 = [v49 copyAsPlaceholder];
+            v49 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:sectionIdentifier3 itemID:itemIdentifier2];
+            copyAsPlaceholder2 = [v49 copyAsPlaceholder];
           }
 
           else
           {
-            v41 = 0;
+            copyAsPlaceholder2 = 0;
           }
 
           if ((v85 & 1) == 0)
@@ -265,13 +265,13 @@ LABEL_60:
           goto LABEL_58;
         }
 
-        if (v88 != 2 || ([v37 isPlayableItem:v35 inSection:v34] & 1) != 0)
+        if (v88 != 2 || ([v37 isPlayableItem:itemIdentifier2 inSection:sectionIdentifier3] & 1) != 0)
         {
-          v54 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:v34 itemID:v35];
+          v54 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:sectionIdentifier3 itemID:itemIdentifier2];
           p_super = v54;
           if (v88 == 2)
           {
-            v47 = [v54 copyWithRepeatIteration:v90->_repeatIteration];
+            copyAsPlaceholder = [v54 copyWithRepeatIteration:v90->_repeatIteration];
             goto LABEL_56;
           }
 
@@ -281,16 +281,16 @@ LABEL_60:
         p_super = os_log_create("com.apple.amp.mediaplaybackcore", "MusicBehavior");
         if (os_log_type_enabled(p_super, OS_LOG_TYPE_DEFAULT))
         {
-          v55 = [v86 engineID];
-          v56 = [v93 sessionID];
+          engineID4 = [host engineID];
+          sessionID4 = [musicBehavior sessionID];
           *buf = 138544130;
-          v103 = v55;
+          v103 = engineID4;
           v104 = 2114;
-          v105 = v56;
+          v105 = sessionID4;
           v106 = 2114;
-          v107 = v35;
+          v107 = itemIdentifier2;
           v108 = 2114;
-          v109 = v34;
+          v109 = sectionIdentifier3;
           _os_log_impl(&dword_1C5C61000, p_super, OS_LOG_TYPE_DEFAULT, "[BMUS:%{public}@:%{public}@] enumerator nextObject: | skipping item [unplayable] itemID=%{public}@ sectionID=%{public}@", buf, 0x2Au);
         }
 
@@ -314,29 +314,29 @@ LABEL_62:
       {
 LABEL_82:
 
-        v59 = 0;
+        contentItemID4 = 0;
         goto LABEL_102;
       }
     }
   }
 
-  repeatOneComponents = v3->_repeatOneComponents;
+  repeatOneComponents = selfCopy->_repeatOneComponents;
   if (repeatOneComponents)
   {
     goto LABEL_91;
   }
 
   v82 = a2;
-  if (v3->_startingComponents)
+  if (selfCopy->_startingComponents)
   {
-    ++v3->_repeatIteration;
+    ++selfCopy->_repeatIteration;
   }
 
   v100 = 0u;
   v101 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v6 = v3->_queueEnumerator;
+  v6 = selfCopy->_queueEnumerator;
   v7 = [(_MPCQueueControllerEnumerator *)v6 countByEnumeratingWithState:&v98 objects:v111 count:16];
   if (v7)
   {
@@ -355,15 +355,15 @@ LABEL_82:
         v11 = *(*(&v98 + 1) + 8 * v10);
         if ([v11 entryType] == 3)
         {
-          v12 = [v11 itemResult];
-          v13 = [v12 sectionIdentifier];
-          v14 = [v12 itemIdentifier];
-          v15 = [v93 dataSources];
-          v16 = [v15 objectForKeyedSubscript:v13];
+          itemResult3 = [v11 itemResult];
+          sectionIdentifier4 = [itemResult3 sectionIdentifier];
+          itemIdentifier3 = [itemResult3 itemIdentifier];
+          dataSources3 = [musicBehavior dataSources];
+          v16 = [dataSources3 objectForKeyedSubscript:sectionIdentifier4];
 
-          if ([v16 isPlayableItem:v14 inSection:v13])
+          if ([v16 isPlayableItem:itemIdentifier3 inSection:sectionIdentifier4])
           {
-            v65 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:v13 itemID:v14];
+            v65 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:sectionIdentifier4 itemID:itemIdentifier3];
             v66 = [v65 copyWithRepeatIteration:v90->_repeatIteration];
             v67 = v90->_repeatOneComponents;
             v90->_repeatOneComponents = v66;
@@ -376,22 +376,22 @@ LABEL_82:
 
         if ([v11 entryType] == 2)
         {
-          v12 = [v11 trackingEntryResult];
-          v13 = [v12 sectionIdentifier];
-          v14 = [(_MPCQueueControllerBehaviorMusicEnumerator *)v90 _loadingComponentsForHeadOfSection:v13];
-          if (!v14)
+          itemResult3 = [v11 trackingEntryResult];
+          sectionIdentifier4 = [itemResult3 sectionIdentifier];
+          itemIdentifier3 = [(_MPCQueueControllerBehaviorMusicEnumerator *)v90 _loadingComponentsForHeadOfSection:sectionIdentifier4];
+          if (!itemIdentifier3)
           {
             goto LABEL_19;
           }
 
-          v17 = [MEMORY[0x1E696AAA8] currentHandler];
-          v16 = v17;
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          v16 = currentHandler3;
           v18 = v82;
           v19 = v90;
           v20 = 4586;
           v21 = @"Encountered unexpected loading section Head in Natural Repeat One enumerator";
 LABEL_23:
-          [v17 handleFailureInMethod:v18 object:v19 file:@"_MPCQueueControllerBehaviorMusic.m" lineNumber:v20 description:v21];
+          [currentHandler3 handleFailureInMethod:v18 object:v19 file:@"_MPCQueueControllerBehaviorMusic.m" lineNumber:v20 description:v21];
 LABEL_13:
 
           goto LABEL_19;
@@ -402,15 +402,15 @@ LABEL_13:
           goto LABEL_20;
         }
 
-        v12 = [v11 trackingEntryResult];
-        v13 = [v12 sectionIdentifier];
-        v22 = [v93 dataSources];
-        v14 = [v22 objectForKeyedSubscript:v13];
+        itemResult3 = [v11 trackingEntryResult];
+        sectionIdentifier4 = [itemResult3 sectionIdentifier];
+        dataSources4 = [musicBehavior dataSources];
+        itemIdentifier3 = [dataSources4 objectForKeyedSubscript:sectionIdentifier4];
 
-        if ([v14 shouldRequestAdditionalItemsAtTail])
+        if ([itemIdentifier3 shouldRequestAdditionalItemsAtTail])
         {
-          v17 = [MEMORY[0x1E696AAA8] currentHandler];
-          v16 = v17;
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          v16 = currentHandler3;
           v18 = v82;
           v19 = v90;
           v20 = 4593;
@@ -434,32 +434,32 @@ LABEL_20:
 
 LABEL_90:
 
-  v3 = v90;
+  selfCopy = v90;
   repeatOneComponents = v90->_repeatOneComponents;
   if (repeatOneComponents)
   {
 LABEL_91:
-    v68 = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)repeatOneComponents copyWithRepeatIteration:v3->_repeatIteration];
-    v69 = v3->_repeatOneComponents;
-    v3->_repeatOneComponents = v68;
+    v68 = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)repeatOneComponents copyWithRepeatIteration:selfCopy->_repeatIteration];
+    v69 = selfCopy->_repeatOneComponents;
+    selfCopy->_repeatOneComponents = v68;
 
-    ++v3->_repeatIteration;
-    repeatOneComponents = v3->_repeatOneComponents;
+    ++selfCopy->_repeatIteration;
+    repeatOneComponents = selfCopy->_repeatOneComponents;
   }
 
-  v59 = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)repeatOneComponents contentItemID];
+  contentItemID4 = [(MPCQueueControllerBehaviorMusicIdentifierComponents *)repeatOneComponents contentItemID];
 LABEL_102:
 
-  return v59;
+  return contentItemID4;
 }
 
-- (id)_loadingComponentsForHeadOfSection:(id)a3
+- (id)_loadingComponentsForHeadOfSection:(id)section
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_MPCQueueControllerEnumerator *)self->_queueEnumerator musicBehavior];
-  v6 = [v5 dataSources];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  sectionCopy = section;
+  musicBehavior = [(_MPCQueueControllerEnumerator *)self->_queueEnumerator musicBehavior];
+  dataSources = [musicBehavior dataSources];
+  v7 = [dataSources objectForKeyedSubscript:sectionCopy];
 
   if (!v7)
   {
@@ -467,10 +467,10 @@ LABEL_102:
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [v5 dataSources];
-    v9 = [v8 allValues];
+    dataSources2 = [musicBehavior dataSources];
+    allValues = [dataSources2 allValues];
 
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    v10 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v10)
     {
       v11 = v10;
@@ -481,7 +481,7 @@ LABEL_102:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           if ([*(*(&v16 + 1) + 8 * i) state] != 1)
@@ -491,7 +491,7 @@ LABEL_102:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v11)
         {
           continue;
@@ -507,7 +507,7 @@ LABEL_102:
   if ([v7 state] == 1)
   {
 LABEL_13:
-    v14 = [MPCQueueControllerBehaviorMusicIdentifierComponents placeholderComponentsWithLoadingSectionID:v4];
+    v14 = [MPCQueueControllerBehaviorMusicIdentifierComponents placeholderComponentsWithLoadingSectionID:sectionCopy];
     goto LABEL_16;
   }
 
@@ -518,18 +518,18 @@ LABEL_16:
   return v14;
 }
 
-- (_MPCQueueControllerBehaviorMusicEnumerator)initWithQueueEnumerator:(id)a3 startingComponents:(id)a4
+- (_MPCQueueControllerBehaviorMusicEnumerator)initWithQueueEnumerator:(id)enumerator startingComponents:(id)components
 {
-  v7 = a3;
-  v8 = a4;
+  enumeratorCopy = enumerator;
+  componentsCopy = components;
   v20.receiver = self;
   v20.super_class = _MPCQueueControllerBehaviorMusicEnumerator;
   v9 = [(_MPCQueueControllerBehaviorMusicEnumerator *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startingComponents, a4);
-    objc_storeStrong(&v10->_queueEnumerator, a3);
+    objc_storeStrong(&v9->_startingComponents, components);
+    objc_storeStrong(&v10->_queueEnumerator, enumerator);
     objc_initWeak(&location, v10);
     v14 = MEMORY[0x1E69E9820];
     v15 = 3221225472;
@@ -539,12 +539,12 @@ LABEL_16:
     [(_MPCQueueControllerEnumerator *)v10->_queueEnumerator setRepeatBoundaryBlock:&v14];
     if (([(_MPCQueueControllerEnumerator *)v10->_queueEnumerator mode:v14]& 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v11 = [(_MPCQueueControllerEnumerator *)v10->_queueEnumerator musicBehavior];
-      v12 = [v11 repeatType];
+      musicBehavior = [(_MPCQueueControllerEnumerator *)v10->_queueEnumerator musicBehavior];
+      repeatType = [musicBehavior repeatType];
 
-      if (v12)
+      if (repeatType)
       {
-        v10->_repeatIteration = [v8 repeatIteration];
+        v10->_repeatIteration = [componentsCopy repeatIteration];
       }
     }
 

@@ -9,15 +9,15 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(IMDAccount *)self idsAccount];
+    idsAccount = [(IMDAccount *)self idsAccount];
   }
 
   else
   {
-    v3 = 0;
+    idsAccount = 0;
   }
 
-  return v3;
+  return idsAccount;
 }
 
 @end

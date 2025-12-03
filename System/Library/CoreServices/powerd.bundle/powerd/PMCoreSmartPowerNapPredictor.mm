@@ -1,46 +1,46 @@
 @interface PMCoreSmartPowerNapPredictor
 + (id)sharedInstance;
 - (BOOL)readStateFromDefaults;
-- (PMCoreSmartPowerNapPredictor)initWithQueue:(id)a3;
+- (PMCoreSmartPowerNapPredictor)initWithQueue:(id)queue;
 - (id)CAEventForInactivityTooShortToQueryModel;
 - (id)CAEventForModelHesitancy;
-- (id)convertTimeToNumberFromDate:(id)a3;
-- (id)getCustomizedDayOfWeekFromDate:(id)a3;
+- (id)convertTimeToNumberFromDate:(id)date;
+- (id)getCustomizedDayOfWeekFromDate:(id)date;
 - (id)parseDeviceUsageFrequencyFromDiagnosis;
 - (id)readEndTimeFromDefaults;
 - (id)readStartTimeFromDefaults;
-- (id)sleepTimeBucketOfDate:(id)a3 AtResolution:(unint64_t)a4;
-- (void)alarmDidFire:(id)a3 error:(id)a4;
-- (void)alarmDidRegister:(id)a3 error:(id)a4;
-- (void)alarmDidUnregister:(id)a3 error:(id)a4;
+- (id)sleepTimeBucketOfDate:(id)date AtResolution:(unint64_t)resolution;
+- (void)alarmDidFire:(id)fire error:(id)error;
+- (void)alarmDidRegister:(id)register error:(id)error;
+- (void)alarmDidUnregister:(id)unregister error:(id)error;
 - (void)armQueryTimer;
 - (void)cancelModelQuery;
 - (void)cancelModelRequery;
 - (void)enterCoreSmartPowerNap;
-- (void)evaluateCoreSmartPowerNap:(BOOL)a3;
-- (void)evaluateEngagementWithPredictorOutput:(id)a3 allRemotesDevicesAway:(BOOL)a4;
-- (void)evaluateInterruption:(BOOL)a3;
-- (void)exitCoreSmartPowerNapWithReason:(id)a3;
+- (void)evaluateCoreSmartPowerNap:(BOOL)nap;
+- (void)evaluateEngagementWithPredictorOutput:(id)output allRemotesDevicesAway:(BOOL)away;
+- (void)evaluateInterruption:(BOOL)interruption;
+- (void)exitCoreSmartPowerNapWithReason:(id)reason;
 - (void)handlePredictedEndTimer;
 - (void)handleRemoteDeviceIsNear;
 - (void)handleSessionCoolOffTimer;
-- (void)handleUserInterruption:(BOOL)a3;
+- (void)handleUserInterruption:(BOOL)interruption;
 - (void)initMobileTimerMonitor;
 - (void)initMotionAlarm;
 - (void)initializePredictor;
 - (void)initializeTrialClient;
-- (void)logEndOfSessionWithReason:(id)a3;
+- (void)logEndOfSessionWithReason:(id)reason;
 - (void)logNotEngaging;
-- (void)postCSPNDarwinNotification:(unint64_t)a3;
+- (void)postCSPNDarwinNotification:(unint64_t)notification;
 - (void)queryModelAndEngage;
 - (void)registerMotionAlarm;
 - (void)restoreState;
-- (void)saveState:(BOOL)a3 withEndTime:(id)a4;
-- (void)scheduleModelRequeryWithOutputReason:(int64_t)a3;
+- (void)saveState:(BOOL)state withEndTime:(id)time;
+- (void)scheduleModelRequeryWithOutputReason:(int64_t)reason;
 - (void)unregisterMotionAlarm;
-- (void)updateInactiveState:(unint64_t)a3;
-- (void)updateMotionState:(BOOL)a3;
-- (void)updateQueryDelta:(unsigned int)a3;
+- (void)updateInactiveState:(unint64_t)state;
+- (void)updateMotionState:(BOOL)state;
+- (void)updateQueryDelta:(unsigned int)delta;
 - (void)updateTrialFactors;
 @end
 
@@ -48,17 +48,17 @@
 
 - (void)cancelModelQuery
 {
-  v3 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
+  evaluation_timer = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
 
-  if (v3)
+  if (evaluation_timer)
   {
     if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEBUG))
     {
       sub_1000653EC();
     }
 
-    v4 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
-    dispatch_source_cancel(v4);
+    evaluation_timer2 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
+    dispatch_source_cancel(evaluation_timer2);
   }
 }
 
@@ -71,12 +71,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: Cancelling timer to re query model", v6, 2u);
   }
 
-  v4 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
+  requery_timer = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
 
-  if (v4)
+  if (requery_timer)
   {
-    v5 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
-    dispatch_source_cancel(v5);
+    requery_timer2 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
+    dispatch_source_cancel(requery_timer2);
   }
 }
 
@@ -84,14 +84,14 @@
 {
   [(PMCoreSmartPowerNapPredictor *)self delta_to_query];
   v4 = v3;
-  v5 = [(PMCoreSmartPowerNapPredictor *)self inactivity_end];
-  v6 = [(PMCoreSmartPowerNapPredictor *)self inactivity_start];
-  [v5 timeIntervalSinceDate:v6];
+  inactivity_end = [(PMCoreSmartPowerNapPredictor *)self inactivity_end];
+  inactivity_start = [(PMCoreSmartPowerNapPredictor *)self inactivity_start];
+  [inactivity_end timeIntervalSinceDate:inactivity_start];
   v8 = v7;
 
   if (v8 <= v4)
   {
-    v9 = [(PMCoreSmartPowerNapPredictor *)self CAEventForInactivityTooShortToQueryModel];
+    cAEventForInactivityTooShortToQueryModel = [(PMCoreSmartPowerNapPredictor *)self CAEventForInactivityTooShortToQueryModel];
     v16 = qword_1000AB9A8;
     if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
     {
@@ -102,25 +102,25 @@
 
   else
   {
-    v9 = [(PMCoreSmartPowerNapPredictor *)self CAEventForModelHesitancy];
+    cAEventForInactivityTooShortToQueryModel = [(PMCoreSmartPowerNapPredictor *)self CAEventForModelHesitancy];
     v10 = qword_1000AB9A8;
     if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-      [v12 confidenceValue];
+      predictor_output = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+      [predictor_output confidenceValue];
       v14 = v13;
-      v15 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+      predictor_output2 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
       *buf = 134218240;
       v20 = v14;
       v21 = 2048;
-      v22 = [v15 confidenceLevel];
+      confidenceLevel = [predictor_output2 confidenceLevel];
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap session did not engage model confidence: %lf:%ld", buf, 0x16u);
     }
   }
 
-  v18 = v9;
-  v17 = v9;
+  v18 = cAEventForInactivityTooShortToQueryModel;
+  v17 = cAEventForInactivityTooShortToQueryModel;
   AnalyticsSendEventLazy();
 }
 
@@ -131,15 +131,15 @@
   current_experiment_ids = self->_current_experiment_ids;
   if (current_experiment_ids)
   {
-    v5 = [(TRIExperimentIdentifiers *)current_experiment_ids experimentId];
-    [v3 setObject:v5 forKeyedSubscript:@"trialDeploymentId"];
+    experimentId = [(TRIExperimentIdentifiers *)current_experiment_ids experimentId];
+    [v3 setObject:experimentId forKeyedSubscript:@"trialDeploymentId"];
 
     v6 = [NSNumber numberWithInt:[(TRIExperimentIdentifiers *)self->_current_experiment_ids deploymentId]];
-    v7 = [v6 stringValue];
-    [v3 setObject:v7 forKeyedSubscript:@"trialExperimentId"];
+    stringValue = [v6 stringValue];
+    [v3 setObject:stringValue forKeyedSubscript:@"trialExperimentId"];
 
-    v8 = [(TRIExperimentIdentifiers *)self->_current_experiment_ids treatmentId];
-    [v3 setObject:v8 forKeyedSubscript:@"trialTreatmentId"];
+    treatmentId = [(TRIExperimentIdentifiers *)self->_current_experiment_ids treatmentId];
+    [v3 setObject:treatmentId forKeyedSubscript:@"trialTreatmentId"];
   }
 
   v9 = qword_1000AB9A8;
@@ -178,9 +178,9 @@
   return v2;
 }
 
-- (PMCoreSmartPowerNapPredictor)initWithQueue:(id)a3
+- (PMCoreSmartPowerNapPredictor)initWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (qword_1000ACB30 != -1)
   {
     sub_100065078();
@@ -188,7 +188,7 @@
 
   if ((byte_1000ACB2C & 1) != 0 || (v27.receiver = self, v27.super_class = PMCoreSmartPowerNapPredictor, v5 = [(PMCoreSmartPowerNapPredictor *)&v27 init], (self = v5) == 0))
   {
-    v9 = 0;
+    selfCopy4 = 0;
   }
 
   else
@@ -198,7 +198,7 @@
     [(PMCoreSmartPowerNapPredictor *)self setRequery_delta_init_value:450];
     [(PMCoreSmartPowerNapPredictor *)self setDelta_to_query:*&qword_1000AB130];
     [(PMCoreSmartPowerNapPredictor *)self setFeature_enabled:_os_feature_enabled_impl()];
-    [(PMCoreSmartPowerNapPredictor *)self setQueue:v4];
+    [(PMCoreSmartPowerNapPredictor *)self setQueue:queueCopy];
     [(PMCoreSmartPowerNapPredictor *)self setSession_logged:0];
     v6 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.powerd.coresmartpowernap.state"];
     [(PMCoreSmartPowerNapPredictor *)self setDefaults:v6];
@@ -208,15 +208,15 @@
       if (MKBDeviceUnlockedSinceBoot())
       {
         [(PMCoreSmartPowerNapPredictor *)self initializePredictor];
-        v7 = [(PMCoreSmartPowerNapPredictor *)self queue];
+        queue = [(PMCoreSmartPowerNapPredictor *)self queue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_1000323E0;
         block[3] = &unk_100099210;
-        v26 = self;
-        dispatch_async(v7, block);
+        selfCopy = self;
+        dispatch_async(queue, block);
 
-        v8 = v26;
+        v8 = selfCopy;
       }
 
       else
@@ -229,15 +229,15 @@
         }
 
         *buf = 0;
-        v12 = [(PMCoreSmartPowerNapPredictor *)self queue];
+        queue2 = [(PMCoreSmartPowerNapPredictor *)self queue];
         handler[0] = _NSConcreteStackBlock;
         handler[1] = 3221225472;
         handler[2] = sub_1000323E8;
         handler[3] = &unk_1000991E8;
-        v23 = self;
-        notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", buf, v12, handler);
+        selfCopy2 = self;
+        notify_register_dispatch("com.apple.mobile.keybagd.first_unlock", buf, queue2, handler);
 
-        v8 = v23;
+        v8 = selfCopy2;
       }
     }
 
@@ -261,13 +261,13 @@
       }
 
       v14 = dispatch_time(0xFFFFFFFFFFFFFFFELL, 300000000000);
-      v15 = [(PMCoreSmartPowerNapPredictor *)self queue];
+      queue3 = [(PMCoreSmartPowerNapPredictor *)self queue];
       v17 = _NSConcreteStackBlock;
       v18 = 3221225472;
       v19 = sub_1000324F4;
       v20 = &unk_100099210;
-      v21 = self;
-      dispatch_after(v14, v15, &v17);
+      selfCopy3 = self;
+      dispatch_after(v14, queue3, &v17);
     }
 
     else
@@ -279,10 +279,10 @@
     [(PMCoreSmartPowerNapPredictor *)self initMobileTimerMonitor];
     [(PMCoreSmartPowerNapPredictor *)self setRequery_delta:[(PMCoreSmartPowerNapPredictor *)self requery_delta_init_value]];
     self = self;
-    v9 = self;
+    selfCopy4 = self;
   }
 
-  return v9;
+  return selfCopy4;
 }
 
 - (void)initializePredictor
@@ -296,8 +296,8 @@
     if (_os_feature_enabled_impl())
     {
       v4 = [PMCoreSmartPowerNapLocationMonitor alloc];
-      v6 = [(PMCoreSmartPowerNapPredictor *)self queue];
-      v5 = [(PMCoreSmartPowerNapLocationMonitor *)v4 initWithQueue:v6];
+      queue = [(PMCoreSmartPowerNapPredictor *)self queue];
+      v5 = [(PMCoreSmartPowerNapLocationMonitor *)v4 initWithQueue:queue];
       [(PMCoreSmartPowerNapPredictor *)self setLocation_monitor:v5];
     }
   }
@@ -308,16 +308,16 @@
   if ([(PMCoreSmartPowerNapPredictor *)self readStateFromDefaults])
   {
     [(PMCoreSmartPowerNapPredictor *)self setIn_coresmartpowernap:1];
-    v3 = [(PMCoreSmartPowerNapPredictor *)self readStartTimeFromDefaults];
-    [(PMCoreSmartPowerNapPredictor *)self setFull_session_start_time:v3];
+    readStartTimeFromDefaults = [(PMCoreSmartPowerNapPredictor *)self readStartTimeFromDefaults];
+    [(PMCoreSmartPowerNapPredictor *)self setFull_session_start_time:readStartTimeFromDefaults];
 
-    v4 = [(PMCoreSmartPowerNapPredictor *)self readEndTimeFromDefaults];
-    if (v4)
+    readEndTimeFromDefaults = [(PMCoreSmartPowerNapPredictor *)self readEndTimeFromDefaults];
+    if (readEndTimeFromDefaults)
     {
-      [(PMCoreSmartPowerNapPredictor *)self setPredicted_end_time:v4];
+      [(PMCoreSmartPowerNapPredictor *)self setPredicted_end_time:readEndTimeFromDefaults];
       v5 = +[NSDate date];
-      v6 = [(PMCoreSmartPowerNapPredictor *)self predicted_end_time];
-      v7 = [v5 compare:v6];
+      predicted_end_time = [(PMCoreSmartPowerNapPredictor *)self predicted_end_time];
+      v7 = [v5 compare:predicted_end_time];
 
       if (v7 == 1)
       {
@@ -333,47 +333,47 @@
 
       else
       {
-        v9 = [(PMCoreSmartPowerNapPredictor *)self predicted_end_time];
-        [v9 timeIntervalSinceDate:v5];
+        predicted_end_time2 = [(PMCoreSmartPowerNapPredictor *)self predicted_end_time];
+        [predicted_end_time2 timeIntervalSinceDate:v5];
         v11 = v10;
 
-        v12 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+        end_session_timer = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
 
-        if (v12)
+        if (end_session_timer)
         {
-          v13 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
-          dispatch_suspend(v13);
+          end_session_timer2 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+          dispatch_suspend(end_session_timer2);
         }
 
         else
         {
-          v14 = [(PMCoreSmartPowerNapPredictor *)self queue];
-          v15 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v14);
+          queue = [(PMCoreSmartPowerNapPredictor *)self queue];
+          v15 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
           [(PMCoreSmartPowerNapPredictor *)self setEnd_session_timer:v15];
 
-          v16 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+          end_session_timer3 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
           handler[0] = _NSConcreteStackBlock;
           handler[1] = 3221225472;
           handler[2] = sub_100032A24;
           handler[3] = &unk_100099210;
           handler[4] = self;
-          dispatch_source_set_event_handler(v16, handler);
+          dispatch_source_set_event_handler(end_session_timer3, handler);
 
-          v13 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+          end_session_timer2 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
           v24[0] = _NSConcreteStackBlock;
           v24[1] = 3221225472;
           v24[2] = sub_100032A2C;
           v24[3] = &unk_100099210;
           v24[4] = self;
-          dispatch_source_set_cancel_handler(v13, v24);
+          dispatch_source_set_cancel_handler(end_session_timer2, v24);
         }
 
-        v17 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+        end_session_timer4 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
         v18 = dispatch_walltime(0, (v11 * 1000000000.0));
-        dispatch_source_set_timer(v17, v18, 0xFFFFFFFFFFFFFFFFLL, 0);
+        dispatch_source_set_timer(end_session_timer4, v18, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-        v19 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
-        dispatch_resume(v19);
+        end_session_timer5 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+        dispatch_resume(end_session_timer5);
 
         [(PMCoreSmartPowerNapPredictor *)self updateNextFireTime:v11];
       }
@@ -387,65 +387,65 @@
   }
 
   v21 = dispatch_time(0xFFFFFFFFFFFFFFFELL, 2000000000);
-  v22 = [(PMCoreSmartPowerNapPredictor *)self queue];
+  queue2 = [(PMCoreSmartPowerNapPredictor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100032A38;
   block[3] = &unk_100099210;
   block[4] = self;
-  dispatch_after(v21, v22, block);
+  dispatch_after(v21, queue2, block);
 }
 
-- (void)saveState:(BOOL)a3 withEndTime:(id)a4
+- (void)saveState:(BOOL)state withEndTime:(id)time
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-  v8 = v7;
-  if (v4)
+  stateCopy = state;
+  timeCopy = time;
+  defaults = [(PMCoreSmartPowerNapPredictor *)self defaults];
+  v8 = defaults;
+  if (stateCopy)
   {
-    [v7 setBool:1 forKey:@"state"];
+    [defaults setBool:1 forKey:@"state"];
 
-    v9 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-    v10 = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
-    [v9 setObject:v10 forKey:@"startTime"];
+    defaults2 = [(PMCoreSmartPowerNapPredictor *)self defaults];
+    full_session_start_time = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
+    [defaults2 setObject:full_session_start_time forKey:@"startTime"];
 
-    v11 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-    [v11 setObject:v6 forKey:@"predictedEndTime"];
+    defaults3 = [(PMCoreSmartPowerNapPredictor *)self defaults];
+    [defaults3 setObject:timeCopy forKey:@"predictedEndTime"];
   }
 
   else
   {
-    [v7 removeObjectForKey:@"predictedEndTime"];
+    [defaults removeObjectForKey:@"predictedEndTime"];
 
-    v12 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-    [v12 removeObjectForKey:@"startTime"];
+    defaults4 = [(PMCoreSmartPowerNapPredictor *)self defaults];
+    [defaults4 removeObjectForKey:@"startTime"];
 
-    v11 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-    [v11 setBool:0 forKey:@"state"];
+    defaults3 = [(PMCoreSmartPowerNapPredictor *)self defaults];
+    [defaults3 setBool:0 forKey:@"state"];
   }
 
-  v13 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-  [v13 synchronize];
+  defaults5 = [(PMCoreSmartPowerNapPredictor *)self defaults];
+  [defaults5 synchronize];
 
   v14 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     v15[0] = 67109378;
-    v15[1] = v4;
+    v15[1] = stateCopy;
     v16 = 2112;
-    v17 = v6;
+    v17 = timeCopy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: saved state %d with end time %@", v15, 0x12u);
   }
 }
 
 - (BOOL)readStateFromDefaults
 {
-  v3 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-  [v3 synchronize];
+  defaults = [(PMCoreSmartPowerNapPredictor *)self defaults];
+  [defaults synchronize];
 
-  v4 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-  v5 = [v4 valueForKey:@"state"];
+  defaults2 = [(PMCoreSmartPowerNapPredictor *)self defaults];
+  v5 = [defaults2 valueForKey:@"state"];
 
   v6 = qword_1000AB9A8;
   v7 = os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT);
@@ -459,7 +459,7 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: Read defaults state=%d", v11, 8u);
     }
 
-    v9 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -470,16 +470,16 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: No previous defaults state saved", v11, 2u);
     }
 
-    v9 = 0;
+    bOOLValue = 0;
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 - (id)readStartTimeFromDefaults
 {
-  v2 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-  v3 = [v2 objectForKey:@"startTime"];
+  defaults = [(PMCoreSmartPowerNapPredictor *)self defaults];
+  v3 = [defaults objectForKey:@"startTime"];
 
   v4 = qword_1000AB9A8;
   v5 = os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT);
@@ -506,8 +506,8 @@
 
 - (id)readEndTimeFromDefaults
 {
-  v2 = [(PMCoreSmartPowerNapPredictor *)self defaults];
-  v3 = [v2 objectForKey:@"predictedEndTime"];
+  defaults = [(PMCoreSmartPowerNapPredictor *)self defaults];
+  v3 = [defaults objectForKey:@"predictedEndTime"];
 
   if (v3)
   {
@@ -538,12 +538,12 @@
   return v3;
 }
 
-- (void)evaluateInterruption:(BOOL)a3
+- (void)evaluateInterruption:(BOOL)interruption
 {
-  v3 = a3;
+  interruptionCopy = interruption;
   if ([(PMCoreSmartPowerNapPredictor *)self in_coresmartpowernap])
   {
-    if (v3)
+    if (interruptionCopy)
     {
       [(PMCoreSmartPowerNapPredictor *)self setSession_interrupted:1];
       v5 = qword_1000AB9A8;
@@ -555,7 +555,7 @@
     }
   }
 
-  if ([(PMCoreSmartPowerNapPredictor *)self session_interrupted]&& !v3)
+  if ([(PMCoreSmartPowerNapPredictor *)self session_interrupted]&& !interruptionCopy)
   {
     [(PMCoreSmartPowerNapPredictor *)self setSession_interrupted:0];
     v6 = qword_1000AB9A8;
@@ -569,40 +569,40 @@
 
 - (void)armQueryTimer
 {
-  v3 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
+  evaluation_timer = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
 
-  if (v3)
+  if (evaluation_timer)
   {
-    v4 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
-    dispatch_suspend(v4);
+    evaluation_timer2 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
+    dispatch_suspend(evaluation_timer2);
   }
 
   else
   {
-    v5 = [(PMCoreSmartPowerNapPredictor *)self queue];
-    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v5);
+    queue = [(PMCoreSmartPowerNapPredictor *)self queue];
+    v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
     [(PMCoreSmartPowerNapPredictor *)self setEvaluation_timer:v6];
 
-    v7 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
+    evaluation_timer3 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_1000334F8;
     handler[3] = &unk_100099210;
     handler[4] = self;
-    dispatch_source_set_event_handler(v7, handler);
+    dispatch_source_set_event_handler(evaluation_timer3, handler);
 
-    v4 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
+    evaluation_timer2 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100017788;
     v14[3] = &unk_100099210;
     v14[4] = self;
-    dispatch_source_set_cancel_handler(v4, v14);
+    dispatch_source_set_cancel_handler(evaluation_timer2, v14);
   }
 
-  v8 = [(PMCoreSmartPowerNapPredictor *)self inactivity_predictor];
+  inactivity_predictor = [(PMCoreSmartPowerNapPredictor *)self inactivity_predictor];
 
-  if (v8)
+  if (inactivity_predictor)
   {
     v9 = qword_1000AB9A8;
     if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEBUG))
@@ -610,39 +610,39 @@
       sub_1000650A0(v9, self);
     }
 
-    v10 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
+    evaluation_timer4 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
     [(PMCoreSmartPowerNapPredictor *)self delta_to_query];
     v12 = dispatch_walltime(0, 1000000000 * v11);
-    dispatch_source_set_timer(v10, v12, 0xFFFFFFFFFFFFFFFFLL, 0);
+    dispatch_source_set_timer(evaluation_timer4, v12, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-    v13 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
-    dispatch_resume(v13);
+    evaluation_timer5 = [(PMCoreSmartPowerNapPredictor *)self evaluation_timer];
+    dispatch_resume(evaluation_timer5);
 
     [(PMCoreSmartPowerNapPredictor *)self delta_to_query];
     [(PMCoreSmartPowerNapPredictor *)self updateNextFireTime:?];
   }
 }
 
-- (void)evaluateCoreSmartPowerNap:(BOOL)a3
+- (void)evaluateCoreSmartPowerNap:(BOOL)nap
 {
   if ([(PMCoreSmartPowerNapPredictor *)self feature_enabled]&& ([(PMCoreSmartPowerNapPredictor *)self inactivity_predictor], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     if ([(PMCoreSmartPowerNapPredictor *)self user_inactive])
     {
-      v6 = [(PMCoreSmartPowerNapPredictor *)self in_coresmartpowernap];
+      in_coresmartpowernap = [(PMCoreSmartPowerNapPredictor *)self in_coresmartpowernap];
       v7 = os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEBUG);
-      if (!v6)
+      if (!in_coresmartpowernap)
       {
         if (v7)
         {
           sub_10006513C();
-          if (a3)
+          if (nap)
           {
             return;
           }
         }
 
-        else if (a3)
+        else if (nap)
         {
           return;
         }
@@ -672,55 +672,55 @@
   }
 }
 
-- (void)evaluateEngagementWithPredictorOutput:(id)a3 allRemotesDevicesAway:(BOOL)a4
+- (void)evaluateEngagementWithPredictorOutput:(id)output allRemotesDevicesAway:(BOOL)away
 {
-  v4 = a4;
-  v6 = a3;
-  [(PMCoreSmartPowerNapPredictor *)self setPredictor_output:v6];
-  v7 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+  awayCopy = away;
+  outputCopy = output;
+  [(PMCoreSmartPowerNapPredictor *)self setPredictor_output:outputCopy];
+  predictor_output = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
 
-  if (v7)
+  if (predictor_output)
   {
     v8 = qword_1000AB9A8;
     if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-      v11 = [v10 confidenceLevel];
-      v12 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-      [v12 confidenceValue];
+      predictor_output2 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+      confidenceLevel = [predictor_output2 confidenceLevel];
+      predictor_output3 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+      [predictor_output3 confidenceValue];
       v14 = v13;
-      v15 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-      [v15 predictedDuration];
+      predictor_output4 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+      [predictor_output4 predictedDuration];
       v17 = v16;
-      v18 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+      predictor_output5 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
       *buf = 134218752;
-      v55 = v11;
+      v55 = confidenceLevel;
       v56 = 2048;
       v57 = v14;
       v58 = 2048;
       v59 = v17;
       v60 = 1024;
-      v61 = [v18 outputReason];
+      outputReason = [predictor_output5 outputReason];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: predictor_output confidencelevel: %ld, confidenceValue: %f, predictedDuration: %f, reason: %d", buf, 0x26u);
     }
 
-    v19 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-    [v19 predictedDuration];
+    predictor_output6 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+    [predictor_output6 predictedDuration];
     v21 = v20;
 
-    v22 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-    v23 = [v22 confidenceLevel];
+    predictor_output7 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+    confidenceLevel2 = [predictor_output7 confidenceLevel];
 
-    if (v23 != 2 || ((v24 = (v21 * 60.0 * 60.0), v24 >= 1) ? (v25 = !v4) : (v25 = 1), v25))
+    if (confidenceLevel2 != 2 || ((v24 = (v21 * 60.0 * 60.0), v24 >= 1) ? (v25 = !awayCopy) : (v25 = 1), v25))
     {
-      -[PMCoreSmartPowerNapPredictor scheduleModelRequeryWithOutputReason:](self, "scheduleModelRequeryWithOutputReason:", [v6 outputReason]);
+      -[PMCoreSmartPowerNapPredictor scheduleModelRequeryWithOutputReason:](self, "scheduleModelRequeryWithOutputReason:", [outputCopy outputReason]);
     }
 
     else
     {
-      v26 = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
-      v27 = [v26 dateByAddingTimeInterval:v24];
+      full_session_start_time = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
+      v27 = [full_session_start_time dateByAddingTimeInterval:v24];
       [(PMCoreSmartPowerNapPredictor *)self setPredicted_end_time:v27];
 
       if (![(PMCoreSmartPowerNapPredictor *)self in_coresmartpowernap])
@@ -736,7 +736,7 @@
       {
         v30 = v29;
         v31 = [NSNumber numberWithLong:v24];
-        v32 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 outputReason]);
+        v32 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [outputCopy outputReason]);
         *buf = 138412546;
         v55 = v31;
         v56 = 2112;
@@ -744,85 +744,85 @@
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: Setting timer for duration %@, output reason: %@", buf, 0x16u);
       }
 
-      v33 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+      end_session_timer = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
 
-      if (v33)
+      if (end_session_timer)
       {
-        v34 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
-        dispatch_suspend(v34);
+        end_session_timer2 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+        dispatch_suspend(end_session_timer2);
       }
 
       else
       {
-        v35 = [(PMCoreSmartPowerNapPredictor *)self queue];
-        v36 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v35);
+        queue = [(PMCoreSmartPowerNapPredictor *)self queue];
+        v36 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
         [(PMCoreSmartPowerNapPredictor *)self setEnd_session_timer:v36];
 
-        v37 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+        end_session_timer3 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
         handler[0] = _NSConcreteStackBlock;
         handler[1] = 3221225472;
         handler[2] = sub_100033D4C;
         handler[3] = &unk_100099210;
         handler[4] = self;
-        dispatch_source_set_event_handler(v37, handler);
+        dispatch_source_set_event_handler(end_session_timer3, handler);
 
-        v34 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+        end_session_timer2 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
         v52[0] = _NSConcreteStackBlock;
         v52[1] = 3221225472;
         v52[2] = sub_100033D54;
         v52[3] = &unk_100099210;
         v52[4] = self;
-        dispatch_source_set_cancel_handler(v34, v52);
+        dispatch_source_set_cancel_handler(end_session_timer2, v52);
       }
 
-      v38 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+      end_session_timer4 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
       v39 = dispatch_walltime(0, 1000000000 * v24);
-      dispatch_source_set_timer(v38, v39, 0xFFFFFFFFFFFFFFFFLL, 0);
+      dispatch_source_set_timer(end_session_timer4, v39, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-      v40 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
-      dispatch_resume(v40);
+      end_session_timer5 = [(PMCoreSmartPowerNapPredictor *)self end_session_timer];
+      dispatch_resume(end_session_timer5);
 
       [(PMCoreSmartPowerNapPredictor *)self updateNextFireTime:v24];
-      v41 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
+      session_cooloff_timer = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
 
-      if (v41)
+      if (session_cooloff_timer)
       {
-        v42 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
-        dispatch_suspend(v42);
+        session_cooloff_timer2 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
+        dispatch_suspend(session_cooloff_timer2);
       }
 
       else
       {
-        v43 = [(PMCoreSmartPowerNapPredictor *)self queue];
-        v44 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v43);
+        queue2 = [(PMCoreSmartPowerNapPredictor *)self queue];
+        v44 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue2);
         [(PMCoreSmartPowerNapPredictor *)self setSession_cooloff_timer:v44];
 
-        v45 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
+        session_cooloff_timer3 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
         v51[0] = _NSConcreteStackBlock;
         v51[1] = 3221225472;
         v51[2] = sub_100033D60;
         v51[3] = &unk_100099210;
         v51[4] = self;
-        dispatch_source_set_event_handler(v45, v51);
+        dispatch_source_set_event_handler(session_cooloff_timer3, v51);
 
-        v42 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
+        session_cooloff_timer2 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
         v50[0] = _NSConcreteStackBlock;
         v50[1] = 3221225472;
         v50[2] = sub_100033D68;
         v50[3] = &unk_100099210;
         v50[4] = self;
-        dispatch_source_set_cancel_handler(v42, v50);
+        dispatch_source_set_cancel_handler(session_cooloff_timer2, v50);
       }
 
       if (v24 >= 0x709)
       {
         v46 = (v24 - 1800);
-        v47 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
+        session_cooloff_timer4 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
         v48 = dispatch_walltime(0, (v46 * 1000000000.0));
-        dispatch_source_set_timer(v47, v48, 0xFFFFFFFFFFFFFFFFLL, 0);
+        dispatch_source_set_timer(session_cooloff_timer4, v48, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-        v49 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
-        dispatch_resume(v49);
+        session_cooloff_timer5 = [(PMCoreSmartPowerNapPredictor *)self session_cooloff_timer];
+        dispatch_resume(session_cooloff_timer5);
       }
     }
   }
@@ -837,28 +837,28 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: queryModelAndEngage", buf, 2u);
   }
 
-  v4 = [(PMCoreSmartPowerNapPredictor *)self location_monitor];
+  location_monitor = [(PMCoreSmartPowerNapPredictor *)self location_monitor];
 
-  if (v4)
+  if (location_monitor)
   {
-    v5 = [(PMCoreSmartPowerNapPredictor *)self location_monitor];
-    v6 = [v5 areAllRemoteDevicesAway];
+    location_monitor2 = [(PMCoreSmartPowerNapPredictor *)self location_monitor];
+    areAllRemoteDevicesAway = [location_monitor2 areAllRemoteDevicesAway];
   }
 
   else
   {
-    v6 = 1;
+    areAllRemoteDevicesAway = 1;
   }
 
   [(PMCoreSmartPowerNapPredictor *)self raiseAssertionForEvaluation];
-  v7 = [(PMCoreSmartPowerNapPredictor *)self inactivity_predictor];
+  inactivity_predictor = [(PMCoreSmartPowerNapPredictor *)self inactivity_predictor];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100033EA0;
   v8[3] = &unk_100099380;
   v8[4] = self;
-  v9 = v6;
-  [v7 longInactivityPredictionResultWithOptions:0 withHandler:v8];
+  v9 = areAllRemoteDevicesAway;
+  [inactivity_predictor longInactivityPredictionResultWithOptions:0 withHandler:v8];
 
   [(PMCoreSmartPowerNapPredictor *)self releaseAssertion];
 }
@@ -875,13 +875,13 @@
   [(PMCoreSmartPowerNapPredictor *)self cancelModelRequery];
   [(PMCoreSmartPowerNapPredictor *)self setSession_end_reason:0];
   [(PMCoreSmartPowerNapPredictor *)self postCSPNDarwinNotification:2];
-  v5 = [(PMCoreSmartPowerNapPredictor *)self predicted_end_time];
-  [(PMCoreSmartPowerNapPredictor *)self saveState:1 withEndTime:v5];
+  predicted_end_time = [(PMCoreSmartPowerNapPredictor *)self predicted_end_time];
+  [(PMCoreSmartPowerNapPredictor *)self saveState:1 withEndTime:predicted_end_time];
 
-  v6 = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
-  v7 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-  [v7 predictedDuration];
-  v9 = [v6 dateByAddingTimeInterval:v8 * 3600.0];
+  full_session_start_time = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
+  predictor_output = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+  [predictor_output predictedDuration];
+  v9 = [full_session_start_time dateByAddingTimeInterval:v8 * 3600.0];
 
   v10 = [v9 dateByAddingTimeInterval:{--[PMCoreSmartPowerNapPredictor motion_alarm_start_before](self, "motion_alarm_start_before")}];
   v11 = +[NSDate date];
@@ -911,9 +911,9 @@
   PLLogRegisteredEvent();
 }
 
-- (void)exitCoreSmartPowerNapWithReason:(id)a3
+- (void)exitCoreSmartPowerNapWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = +[NSDate date];
   [(PMCoreSmartPowerNapPredictor *)self setFull_session_end_time:v5];
 
@@ -921,63 +921,63 @@
   v6 = +[PMCoreSmartPowerNapService sharedInstance];
   [v6 exitCoreSmartPowerNap];
 
-  [(PMCoreSmartPowerNapPredictor *)self setSession_end_reason:v4];
-  [(PMCoreSmartPowerNapPredictor *)self setLast_session_end_reason:v4];
+  [(PMCoreSmartPowerNapPredictor *)self setSession_end_reason:reasonCopy];
+  [(PMCoreSmartPowerNapPredictor *)self setLast_session_end_reason:reasonCopy];
   v7 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
-    v10 = [(PMCoreSmartPowerNapPredictor *)self full_session_end_time];
-    v11 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-    v12 = [v11 confidenceLevel];
-    v13 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-    [v13 confidenceValue];
+    full_session_start_time = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
+    full_session_end_time = [(PMCoreSmartPowerNapPredictor *)self full_session_end_time];
+    predictor_output = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+    confidenceLevel = [predictor_output confidenceLevel];
+    predictor_output2 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+    [predictor_output2 confidenceValue];
     v15 = v14;
-    v16 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-    [v16 predictedDuration];
+    predictor_output3 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+    [predictor_output3 predictedDuration];
     v18 = v17;
-    v19 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+    predictor_output4 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
     *buf = 138413826;
-    v27 = v9;
+    v27 = full_session_start_time;
     v28 = 2112;
-    v29 = v10;
+    v29 = full_session_end_time;
     v30 = 2112;
-    v31 = v4;
+    v31 = reasonCopy;
     v32 = 2048;
-    v33 = v12;
+    v33 = confidenceLevel;
     v34 = 2048;
     v35 = v15;
     v36 = 2048;
     v37 = v18;
     v38 = 1024;
-    v39 = [v19 outputReason];
+    outputReason = [predictor_output4 outputReason];
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap session end: start %@ end %@ reason %@, predicted confidence level %ld, confidence value %lf, predicted duration %lf, outputReason %d", buf, 0x44u);
   }
 
   [(PMCoreSmartPowerNapPredictor *)self postCSPNDarwinNotification:0];
   [(PMCoreSmartPowerNapPredictor *)self saveState:0 withEndTime:0];
   [(PMCoreSmartPowerNapPredictor *)self unregisterMotionAlarm];
-  v20 = [v4 isEqualToString:@"PredictedEndOfSession"];
+  v20 = [reasonCopy isEqualToString:@"PredictedEndOfSession"];
   v21 = 0;
   if ((v20 & 1) == 0)
   {
-    if ([v4 isEqualToString:@"UserInterrupted"])
+    if ([reasonCopy isEqualToString:@"UserInterrupted"])
     {
       v21 = 1;
     }
 
-    else if ([v4 isEqualToString:@"RemoteDeviceIsNear"])
+    else if ([reasonCopy isEqualToString:@"RemoteDeviceIsNear"])
     {
       v21 = 2;
     }
 
-    else if ([v4 isEqualToString:@"MotionDetected"])
+    else if ([reasonCopy isEqualToString:@"MotionDetected"])
     {
       v21 = 3;
     }
 
-    else if ([v4 isEqualToString:@"MobileTimerFired"])
+    else if ([reasonCopy isEqualToString:@"MobileTimerFired"])
     {
       v21 = 5;
     }
@@ -998,16 +998,16 @@
   }
 
   PLLogRegisteredEvent();
-  [(PMCoreSmartPowerNapPredictor *)self logEndOfSessionWithReason:v4];
+  [(PMCoreSmartPowerNapPredictor *)self logEndOfSessionWithReason:reasonCopy];
 }
 
 - (void)handlePredictedEndTimer
 {
   if ([(PMCoreSmartPowerNapPredictor *)self in_coresmartpowernap])
   {
-    v3 = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
+    full_session_start_time = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
 
-    if (!v3 && os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_ERROR))
+    if (!full_session_start_time && os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_ERROR))
     {
       sub_1000653B8();
     }
@@ -1028,10 +1028,10 @@
 
 - (void)handleSessionCoolOffTimer
 {
-  v2 = [(PMCoreSmartPowerNapPredictor *)self in_coresmartpowernap];
+  in_coresmartpowernap = [(PMCoreSmartPowerNapPredictor *)self in_coresmartpowernap];
   v3 = qword_1000AB9A8;
   v4 = os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT);
-  if (v2)
+  if (in_coresmartpowernap)
   {
     if (v4)
     {
@@ -1050,37 +1050,37 @@
   }
 }
 
-- (void)scheduleModelRequeryWithOutputReason:(int64_t)a3
+- (void)scheduleModelRequeryWithOutputReason:(int64_t)reason
 {
-  v4 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
+  requery_timer = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
 
-  if (v4)
+  if (requery_timer)
   {
-    v5 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
-    dispatch_suspend(v5);
+    requery_timer2 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
+    dispatch_suspend(requery_timer2);
   }
 
   else
   {
-    v6 = [(PMCoreSmartPowerNapPredictor *)self queue];
-    v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v6);
+    queue = [(PMCoreSmartPowerNapPredictor *)self queue];
+    v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
     [(PMCoreSmartPowerNapPredictor *)self setRequery_timer:v7];
 
-    v8 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
+    requery_timer3 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100034A40;
     handler[3] = &unk_100099210;
     handler[4] = self;
-    dispatch_source_set_event_handler(v8, handler);
+    dispatch_source_set_event_handler(requery_timer3, handler);
 
-    v5 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
+    requery_timer2 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100034A8C;
     v15[3] = &unk_100099210;
     v15[4] = self;
-    dispatch_source_set_cancel_handler(v5, v15);
+    dispatch_source_set_cancel_handler(requery_timer2, v15);
   }
 
   if ([(PMCoreSmartPowerNapPredictor *)self requery_delta]<= 3599)
@@ -1092,18 +1092,18 @@
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(PMCoreSmartPowerNapPredictor *)self requery_delta];
+    requery_delta = [(PMCoreSmartPowerNapPredictor *)self requery_delta];
     *buf = 67109120;
-    v18 = v11;
+    v18 = requery_delta;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: Setting timer to re query in %u seconds", buf, 8u);
   }
 
-  v12 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
+  requery_timer4 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
   v13 = dispatch_walltime(0, 1000000000 * [(PMCoreSmartPowerNapPredictor *)self requery_delta]);
-  dispatch_source_set_timer(v12, v13, 0xFFFFFFFFFFFFFFFFLL, 0);
+  dispatch_source_set_timer(requery_timer4, v13, 0xFFFFFFFFFFFFFFFFLL, 0);
 
-  v14 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
-  dispatch_resume(v14);
+  requery_timer5 = [(PMCoreSmartPowerNapPredictor *)self requery_timer];
+  dispatch_resume(requery_timer5);
 
   [(PMCoreSmartPowerNapPredictor *)self updateNextFireTime:[(PMCoreSmartPowerNapPredictor *)self requery_delta]];
 }
@@ -1123,14 +1123,14 @@
   }
 }
 
-- (void)updateInactiveState:(unint64_t)a3
+- (void)updateInactiveState:(unint64_t)state
 {
-  if ([(PMCoreSmartPowerNapPredictor *)self user_inactive]!= a3)
+  if ([(PMCoreSmartPowerNapPredictor *)self user_inactive]!= state)
   {
-    [(PMCoreSmartPowerNapPredictor *)self setUser_inactive:a3];
+    [(PMCoreSmartPowerNapPredictor *)self setUser_inactive:state];
     v5 = qword_1000AB9A8;
     v6 = os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT);
-    if (a3 == 1)
+    if (state == 1)
     {
       if (v6)
       {
@@ -1150,7 +1150,7 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, v7, v8, 2u);
     }
 
-    v9 = a3 != 1;
+    v9 = state != 1;
     [(PMCoreSmartPowerNapPredictor *)self handleUserInterruption:v9, v10];
     [(PMCoreSmartPowerNapPredictor *)self evaluateCoreSmartPowerNap:v9];
   }
@@ -1162,17 +1162,17 @@ LABEL_7:
   if (objc_opt_class())
   {
     sub_100034E58();
-    v3 = [objc_opt_class() alarmStream];
-    sub_100034F38(v3, v4, v5, v6, v7, v8, v9, v10);
+    alarmStream = [objc_opt_class() alarmStream];
+    sub_100034F38(alarmStream, v4, v5, v6, v7, v8, v9, v10);
     v11 = objc_opt_class();
     if (v11)
     {
       v19 = objc_alloc(sub_100034F38(v11, v12, v13, v14, v15, v16, v17, v18));
-      v20 = [(PMCoreSmartPowerNapPredictor *)self queue];
-      v21 = [v19 initWithIdentifier:@"com.apple.powerd.cspn.biomeAlarm" targetQueue:v20 waking:1];
+      queue = [(PMCoreSmartPowerNapPredictor *)self queue];
+      v21 = [v19 initWithIdentifier:@"com.apple.powerd.cspn.biomeAlarm" targetQueue:queue waking:1];
 
-      v22 = [v3 publisher];
-      v23 = [v22 filterWithKeyPath:@"eventBody.eventType" value:&off_1000A2AE0];
+      publisher = [alarmStream publisher];
+      v23 = [publisher filterWithKeyPath:@"eventBody.eventType" value:&off_1000A2AE0];
 
       objc_initWeak(location, self);
       v24 = [v23 subscribeOn:v21];
@@ -1181,7 +1181,7 @@ LABEL_7:
       v29 = sub_100035068;
       v30 = &unk_100099410;
       objc_copyWeak(&v32, location);
-      v31 = self;
+      selfCopy = self;
       v25 = [v24 sinkWithCompletion:&stru_100099B10 receiveInput:&v27];
 
       [(PMCoreSmartPowerNapPredictor *)self setSink:v25, v27, v28, v29, v30];
@@ -1211,14 +1211,14 @@ LABEL_7:
   }
 }
 
-- (void)updateMotionState:(BOOL)a3
+- (void)updateMotionState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = stateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Motion state changed %d. Exiting CoreSmartPowerNap", v6, 8u);
   }
 
@@ -1233,8 +1233,8 @@ LABEL_7:
   v3 = [[CMMotionAlarmManager alloc] initWithName:@"com.apple.powerd.cspn"];
   [(PMCoreSmartPowerNapPredictor *)self setMotion_alarm_manager:v3];
 
-  v4 = [(PMCoreSmartPowerNapPredictor *)self motion_alarm_manager];
-  [v4 setDelegate:self];
+  motion_alarm_manager = [(PMCoreSmartPowerNapPredictor *)self motion_alarm_manager];
+  [motion_alarm_manager setDelegate:self];
 
   [(PMCoreSmartPowerNapPredictor *)self setMotion_alarm_threshold:1800];
   [(PMCoreSmartPowerNapPredictor *)self setMotion_alarm_start_before:3600];
@@ -1244,9 +1244,9 @@ LABEL_7:
 
 - (void)registerMotionAlarm
 {
-  v3 = [(PMCoreSmartPowerNapPredictor *)self motion_alarm_manager];
+  motion_alarm_manager = [(PMCoreSmartPowerNapPredictor *)self motion_alarm_manager];
   v6 = 0;
-  v4 = [v3 registerAlarmWithName:@"CSPN motion alarm" type:6 duration:-[PMCoreSmartPowerNapPredictor motion_alarm_threshold](self repeats:"motion_alarm_threshold") error:{0, &v6}];
+  v4 = [motion_alarm_manager registerAlarmWithName:@"CSPN motion alarm" type:6 duration:-[PMCoreSmartPowerNapPredictor motion_alarm_threshold](self repeats:"motion_alarm_threshold") error:{0, &v6}];
   v5 = v6;
 
   if ((v4 & 1) != 0 || !v5)
@@ -1262,9 +1262,9 @@ LABEL_7:
 
 - (void)unregisterMotionAlarm
 {
-  v3 = [(PMCoreSmartPowerNapPredictor *)self motion_alarm_manager];
+  motion_alarm_manager = [(PMCoreSmartPowerNapPredictor *)self motion_alarm_manager];
   v6 = 0;
-  v4 = [v3 unregisterAlarmWithName:@"CSPN motion alarm" error:&v6];
+  v4 = [motion_alarm_manager unregisterAlarmWithName:@"CSPN motion alarm" error:&v6];
   v5 = v6;
 
   if ((v4 & 1) != 0 || !v5)
@@ -1278,7 +1278,7 @@ LABEL_7:
   }
 }
 
-- (void)alarmDidRegister:(id)a3 error:(id)a4
+- (void)alarmDidRegister:(id)register error:(id)error
 {
   v4 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
@@ -1288,7 +1288,7 @@ LABEL_7:
   }
 }
 
-- (void)alarmDidUnregister:(id)a3 error:(id)a4
+- (void)alarmDidUnregister:(id)unregister error:(id)error
 {
   v4 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
@@ -1298,22 +1298,22 @@ LABEL_7:
   }
 }
 
-- (void)alarmDidFire:(id)a3 error:(id)a4
+- (void)alarmDidFire:(id)fire error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  fireCopy = fire;
+  errorCopy = error;
   v8 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v13 = v6;
+    v13 = fireCopy;
     v14 = 2112;
-    v15 = v7;
+    v15 = errorCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "CoreSmartPowerNap: motion alarm did fire alarm %@, error %@", buf, 0x16u);
   }
 
   v11 = 0;
-  [v6 acknowledgeWithError:&v11];
+  [fireCopy acknowledgeWithError:&v11];
   v9 = v11;
   v10 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
@@ -1325,9 +1325,9 @@ LABEL_7:
   [(PMCoreSmartPowerNapPredictor *)self updateMotionState:1];
 }
 
-- (void)handleUserInterruption:(BOOL)a3
+- (void)handleUserInterruption:(BOOL)interruption
 {
-  if (a3)
+  if (interruption)
   {
     [(PMCoreSmartPowerNapPredictor *)self evaluateInterruption:1];
     v4 = +[NSDate date];
@@ -1351,16 +1351,16 @@ LABEL_7:
 
     else
     {
-      v6 = [(PMCoreSmartPowerNapPredictor *)self inactivity_start];
-      if (v6)
+      inactivity_start = [(PMCoreSmartPowerNapPredictor *)self inactivity_start];
+      if (inactivity_start)
       {
-        v11 = v6;
-        v7 = [(PMCoreSmartPowerNapPredictor *)self inactivity_end];
-        if (v7)
+        v11 = inactivity_start;
+        inactivity_end = [(PMCoreSmartPowerNapPredictor *)self inactivity_end];
+        if (inactivity_end)
         {
-          v8 = v7;
-          v9 = [(PMCoreSmartPowerNapPredictor *)self last_session_end_reason];
-          v10 = [v9 isEqualToString:@"MotionDetected"];
+          v8 = inactivity_end;
+          last_session_end_reason = [(PMCoreSmartPowerNapPredictor *)self last_session_end_reason];
+          v10 = [last_session_end_reason isEqualToString:@"MotionDetected"];
 
           if ((v10 & 1) == 0)
           {
@@ -1383,31 +1383,31 @@ LABEL_7:
   }
 }
 
-- (void)postCSPNDarwinNotification:(unint64_t)a3
+- (void)postCSPNDarwinNotification:(unint64_t)notification
 {
   if (!notify_register_check("com.apple.powerd.coresmartpowernap", &dword_1000ACB28))
   {
-    notify_set_state(dword_1000ACB28, a3);
+    notify_set_state(dword_1000ACB28, notification);
 
     notify_post("com.apple.powerd.coresmartpowernap");
   }
 }
 
-- (void)logEndOfSessionWithReason:(id)a3
+- (void)logEndOfSessionWithReason:(id)reason
 {
-  v5 = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
-  if (v5)
+  full_session_start_time = [(PMCoreSmartPowerNapPredictor *)self full_session_start_time];
+  if (full_session_start_time)
   {
-    v14 = v5;
-    v6 = [(PMCoreSmartPowerNapPredictor *)self full_session_end_time];
-    if (v6)
+    v14 = full_session_start_time;
+    full_session_end_time = [(PMCoreSmartPowerNapPredictor *)self full_session_end_time];
+    if (full_session_end_time)
     {
-      v7 = v6;
-      v8 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+      v7 = full_session_end_time;
+      predictor_output = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
 
-      if (v8)
+      if (predictor_output)
       {
-        v10 = a3 == @"UserInterrupted" || a3 == @"MotionDetected";
+        v10 = reason == @"UserInterrupted" || reason == @"MotionDetected";
         v11 = [(PMCoreSmartPowerNapPredictor *)self CAEventForEngagedSessionWhereUserInterrupted:v10];
         v12 = qword_1000AB9A8;
         if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
@@ -1431,15 +1431,15 @@ LABEL_7:
 
 - (id)parseDeviceUsageFrequencyFromDiagnosis
 {
-  v2 = [(PMCoreSmartPowerNapPredictor *)self inactivity_predictor];
-  v3 = [v2 deviceUsageDiagnosis];
+  inactivity_predictor = [(PMCoreSmartPowerNapPredictor *)self inactivity_predictor];
+  deviceUsageDiagnosis = [inactivity_predictor deviceUsageDiagnosis];
 
-  if ([v3 containsString:@"is NOT frequently"])
+  if ([deviceUsageDiagnosis containsString:@"is NOT frequently"])
   {
     v4 = @"rare";
   }
 
-  else if ([v3 containsString:@"is frequently"])
+  else if ([deviceUsageDiagnosis containsString:@"is frequently"])
   {
     v4 = @"frequent";
   }
@@ -1452,24 +1452,24 @@ LABEL_7:
   return v4;
 }
 
-- (id)sleepTimeBucketOfDate:(id)a3 AtResolution:(unint64_t)a4
+- (id)sleepTimeBucketOfDate:(id)date AtResolution:(unint64_t)resolution
 {
-  v5 = a3;
+  dateCopy = date;
   v6 = +[NSCalendar currentCalendar];
-  v7 = [v6 components:32 fromDate:v5];
+  v7 = [v6 components:32 fromDate:dateCopy];
 
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", ([v7 hour] + 4) % 24 / a4);
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", ([v7 hour] + 4) % 24 / resolution);
 
   return v8;
 }
 
-- (id)getCustomizedDayOfWeekFromDate:(id)a3
+- (id)getCustomizedDayOfWeekFromDate:(id)date
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (dateCopy)
   {
-    v5 = v3;
+    v5 = dateCopy;
     v6 = +[NSCalendar currentCalendar];
     v7 = [v6 components:544 fromDate:v5];
     if ([v7 hour] >= 21)
@@ -1482,15 +1482,15 @@ LABEL_7:
       v7 = v9;
     }
 
-    v10 = [v7 weekday];
-    if (v10 == 1)
+    weekday = [v7 weekday];
+    if (weekday == 1)
     {
       v11 = 7;
     }
 
     else
     {
-      v11 = v10 - 1;
+      v11 = weekday - 1;
     }
 
     v12 = [NSNumber numberWithInteger:v11];
@@ -1504,16 +1504,16 @@ LABEL_7:
   return v12;
 }
 
-- (id)convertTimeToNumberFromDate:(id)a3
+- (id)convertTimeToNumberFromDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v3 = a3;
+    dateCopy = date;
     v4 = +[NSCalendar currentCalendar];
-    v5 = [v4 components:96 fromDate:v3];
+    v5 = [v4 components:96 fromDate:dateCopy];
 
-    v6 = [v5 hour];
-    *&v7 = ([v5 minute] / 60.0) + v6;
+    hour = [v5 hour];
+    *&v7 = ([v5 minute] / 60.0) + hour;
     v8 = [NSNumber numberWithFloat:v7];
   }
 
@@ -1527,8 +1527,8 @@ LABEL_7:
 
 - (id)CAEventForModelHesitancy
 {
-  v3 = [(PMCoreSmartPowerNapPredictor *)self inactivity_predictor];
-  v4 = [v3 modelMetadata];
+  inactivity_predictor = [(PMCoreSmartPowerNapPredictor *)self inactivity_predictor];
+  modelMetadata = [inactivity_predictor modelMetadata];
 
   v5 = objc_opt_new();
   v36[0] = @"eventIsSessionInt";
@@ -1536,30 +1536,30 @@ LABEL_7:
   v37[0] = &off_1000A2B10;
   v37[1] = &off_1000A2B10;
   v36[2] = @"deviceUsageFrequencyStr";
-  v32 = [(PMCoreSmartPowerNapPredictor *)self parseDeviceUsageFrequencyFromDiagnosis];
-  v37[2] = v32;
+  parseDeviceUsageFrequencyFromDiagnosis = [(PMCoreSmartPowerNapPredictor *)self parseDeviceUsageFrequencyFromDiagnosis];
+  v37[2] = parseDeviceUsageFrequencyFromDiagnosis;
   v36[3] = @"entryConfidenceLevelEnum";
-  v6 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v6 confidenceLevel]);
+  predictor_output = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+  v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [predictor_output confidenceLevel]);
   v37[3] = v7;
   v36[4] = @"entryConfidenceValueInt";
-  v8 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-  [v8 confidenceValue];
+  predictor_output2 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+  [predictor_output2 confidenceValue];
   v10 = [NSNumber numberWithDouble:round(v9 * 100.0)];
   v37[4] = v10;
   v36[5] = @"predictedDurationHrFloat";
-  v11 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
-  [v11 predictedDuration];
+  predictor_output3 = [(PMCoreSmartPowerNapPredictor *)self predictor_output];
+  [predictor_output3 predictedDuration];
   v12 = [NSNumber numberWithDouble:?];
   v37[5] = v12;
   v36[6] = @"predictorTypeStr";
-  v33 = v4;
-  v13 = [v4 predictorType];
-  v14 = v13;
+  v33 = modelMetadata;
+  predictorType = [modelMetadata predictorType];
+  v14 = predictorType;
   v15 = @"None";
-  if (v13)
+  if (predictorType)
   {
-    v15 = v13;
+    v15 = predictorType;
   }
 
   v37[6] = v15;
@@ -1569,21 +1569,21 @@ LABEL_7:
   current_experiment_ids = self->_current_experiment_ids;
   if (current_experiment_ids)
   {
-    v18 = [(TRIExperimentIdentifiers *)current_experiment_ids experimentId];
-    [v5 setObject:v18 forKeyedSubscript:@"trialDeploymentId"];
+    experimentId = [(TRIExperimentIdentifiers *)current_experiment_ids experimentId];
+    [v5 setObject:experimentId forKeyedSubscript:@"trialDeploymentId"];
 
     v19 = [NSNumber numberWithInt:[(TRIExperimentIdentifiers *)self->_current_experiment_ids deploymentId]];
-    v20 = [v19 stringValue];
-    [v5 setObject:v20 forKeyedSubscript:@"trialExperimentId"];
+    stringValue = [v19 stringValue];
+    [v5 setObject:stringValue forKeyedSubscript:@"trialExperimentId"];
 
-    v21 = [(TRIExperimentIdentifiers *)self->_current_experiment_ids treatmentId];
-    [v5 setObject:v21 forKeyedSubscript:@"trialTreatmentId"];
+    treatmentId = [(TRIExperimentIdentifiers *)self->_current_experiment_ids treatmentId];
+    [v5 setObject:treatmentId forKeyedSubscript:@"trialTreatmentId"];
   }
 
   v22 = [v5 objectForKeyedSubscript:@"entryConfidenceLevelEnum"];
-  v23 = [v22 integerValue];
+  integerValue = [v22 integerValue];
 
-  if (v23 == 2 && os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_ERROR))
+  if (integerValue == 2 && os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_ERROR))
   {
     sub_1000657AC();
   }
@@ -1596,9 +1596,9 @@ LABEL_7:
   else
   {
     v25 = [v5 objectForKeyedSubscript:@"entryConfidenceValueInt"];
-    v26 = [v25 intValue];
+    intValue = [v25 intValue];
 
-    if (v26 < 101)
+    if (intValue < 101)
     {
       goto LABEL_14;
     }
@@ -1656,25 +1656,25 @@ LABEL_14:
 
 - (void)updateTrialFactors
 {
-  v3 = [(PMCoreSmartPowerNapPredictor *)self trial_client];
-  [v3 refresh];
+  trial_client = [(PMCoreSmartPowerNapPredictor *)self trial_client];
+  [trial_client refresh];
 
-  v5 = [(PMCoreSmartPowerNapPredictor *)self trial_client];
-  v4 = [v5 experimentIdentifiersWithNamespaceName:@"COREOS_PREDICTION_INACTIVITY"];
+  trial_client2 = [(PMCoreSmartPowerNapPredictor *)self trial_client];
+  v4 = [trial_client2 experimentIdentifiersWithNamespaceName:@"COREOS_PREDICTION_INACTIVITY"];
   [(PMCoreSmartPowerNapPredictor *)self setCurrent_experiment_ids:v4];
 }
 
-- (void)updateQueryDelta:(unsigned int)a3
+- (void)updateQueryDelta:(unsigned int)delta
 {
   v5 = qword_1000AB9A8;
   if (os_log_type_enabled(qword_1000AB9A8, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = a3;
+    v6[1] = delta;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Updating query delta to %u seconds", v6, 8u);
   }
 
-  [(PMCoreSmartPowerNapPredictor *)self setDelta_to_query:a3];
+  [(PMCoreSmartPowerNapPredictor *)self setDelta_to_query:delta];
 }
 
 @end

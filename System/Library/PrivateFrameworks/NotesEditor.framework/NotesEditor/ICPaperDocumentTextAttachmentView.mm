@@ -1,36 +1,36 @@
 @interface ICPaperDocumentTextAttachmentView
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGRect)bounds;
-- (ICPaperDocumentTextAttachmentView)initWithFrame:(CGRect)a3;
+- (ICPaperDocumentTextAttachmentView)initWithFrame:(CGRect)frame;
 - (NSArray)accessibilityElements;
 - (NSArray)supportedRotorTypes;
 - (NSString)accessibilityLabel;
 - (NSTextAttachment)textAttachment;
 - (_NSRange)_icaxRangeInTextStorage;
-- (double)additionalXOffsetForTextDragPreviewInTextView:(id)a3;
+- (double)additionalXOffsetForTextDragPreviewInTextView:(id)view;
 - (id)_icaxEnclosingTextView;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)paperDocumentEngagementData;
 - (id)tiledViewAttachmentViews;
 - (id)viewForTextDragPreview;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)imageForTextPreviewUsingFindingResult:(id)a3 inTextView:(id)a4 completion:(id)a5;
+- (void)imageForTextPreviewUsingFindingResult:(id)result inTextView:(id)view completion:(id)completion;
 - (void)layoutSubviews;
 - (void)openAttachment;
-- (void)pinch:(id)a3;
-- (void)quickLook:(id)a3;
+- (void)pinch:(id)pinch;
+- (void)quickLook:(id)look;
 - (void)resetPaperDocumentEngagementData;
-- (void)setBounds:(CGRect)a3;
-- (void)setEngagementData:(id)a3;
-- (void)setTextAttachment:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setEngagementData:(id)data;
+- (void)setTextAttachment:(id)attachment;
 - (void)updateHeaderConfiguration;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation ICPaperDocumentTextAttachmentView
@@ -46,15 +46,15 @@
 
 - (_NSRange)_icaxRangeInTextStorage
 {
-  v3 = [(ICPaperDocumentTextAttachmentView *)self _icaxEnclosingTextView];
-  v4 = [v3 textStorage];
+  _icaxEnclosingTextView = [(ICPaperDocumentTextAttachmentView *)self _icaxEnclosingTextView];
+  textStorage = [_icaxEnclosingTextView textStorage];
 
   v12 = 0;
   v13 = &v12;
   v14 = 0x3010000000;
   v15 = &unk_21552D17E;
   v16 = xmmword_2154BBE70;
-  v5 = [v4 length];
+  v5 = [textStorage length];
   v6 = *MEMORY[0x277D74060];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -62,7 +62,7 @@
   v11[3] = &unk_2781AC9B8;
   v11[4] = self;
   v11[5] = &v12;
-  [v4 enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v11}];
+  [textStorage enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v11}];
   v7 = v13[4];
   v8 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -91,8 +91,8 @@ void __75__ICPaperDocumentTextAttachmentView_Accessibility___icaxRangeInTextStor
 
 - (id)_icaxEnclosingTextView
 {
-  v2 = [(ICPaperDocumentTextAttachmentView *)self superview];
-  if (v2)
+  superview = [(ICPaperDocumentTextAttachmentView *)self superview];
+  if (superview)
   {
     while (1)
     {
@@ -102,26 +102,26 @@ void __75__ICPaperDocumentTextAttachmentView_Accessibility___icaxRangeInTextStor
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
-      if (!v3)
+      superview = v2Superview;
+      if (!v2Superview)
       {
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
+    superview = superview;
   }
 
 LABEL_6:
 
-  return v2;
+  return superview;
 }
 
 - (id)paperDocumentEngagementData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_21531E718();
   swift_unknownObjectRetain();
 
@@ -136,16 +136,16 @@ LABEL_6:
   }
 }
 
-- (void)setEngagementData:(id)a3
+- (void)setEngagementData:(id)data
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___ICPaperDocumentTextAttachmentView_engagementData);
-  *(&self->super.super.super.isa + OBJC_IVAR___ICPaperDocumentTextAttachmentView_engagementData) = a3;
-  v3 = a3;
+  *(&self->super.super.super.isa + OBJC_IVAR___ICPaperDocumentTextAttachmentView_engagementData) = data;
+  dataCopy = data;
 }
 
 - (NSArray)accessibilityElements
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2152F01DC();
 
   if (v3)
@@ -173,25 +173,25 @@ LABEL_6:
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = type metadata accessor for PaperDocumentTextAttachmentView();
   v23.receiver = self;
   v23.super_class = v8;
-  v9 = self;
+  selfCopy = self;
   [(ICPaperDocumentTextAttachmentView *)&v23 bounds];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v22.receiver = v9;
+  v22.receiver = selfCopy;
   v22.super_class = v8;
   [(ICPaperDocumentTextAttachmentView *)&v22 setBounds:x, y, width, height];
-  [(ICPaperDocumentTextAttachmentView *)v9 bounds];
+  [(ICPaperDocumentTextAttachmentView *)selfCopy bounds];
   v25.origin.x = v18;
   v25.origin.y = v19;
   v25.size.width = v20;
@@ -213,37 +213,37 @@ LABEL_6:
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setTextAttachment:(id)a3
+- (void)setTextAttachment:(id)attachment
 {
   v5 = OBJC_IVAR___ICPaperDocumentTextAttachmentView_textAttachment;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.isa + v5) = attachment;
+  attachmentCopy = attachment;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v5 = a3;
-  v6 = self;
-  sub_2152F3C10(a3);
+  windowCopy = window;
+  selfCopy = self;
+  sub_2152F3C10(window);
 }
 
 - (void)didMoveToWindow
 {
-  v2 = self;
+  selfCopy = self;
   sub_2152F59F8();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for PaperDocumentTextAttachmentView();
   v7 = v13.receiver;
-  v8 = a4;
-  v9 = [(ICPaperDocumentTextAttachmentView *)&v13 hitTest:v8 withEvent:x, y];
+  eventCopy = event;
+  v9 = [(ICPaperDocumentTextAttachmentView *)&v13 hitTest:eventCopy withEvent:x, y];
   if (!v9)
   {
 
@@ -266,76 +266,76 @@ LABEL_5:
   return v7;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_2152FC8AC(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = sub_2152FC8AC(beginCopy);
 
   return self & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2152FCC68(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  sub_2152FCC68(recognizerCopy, gestureRecognizerCopy);
   v10 = v9;
 
   return v10 & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_2152FCF98(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  sub_2152FCF98(recognizerCopy, gestureRecognizerCopy);
   v10 = v9;
 
   return v10 & 1;
 }
 
-- (void)pinch:(id)a3
+- (void)pinch:(id)pinch
 {
-  v4 = a3;
-  v5 = self;
-  sub_2152FD42C(v4);
+  pinchCopy = pinch;
+  selfCopy = self;
+  sub_2152FD42C(pinchCopy);
 }
 
 - (void)updateHeaderConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_2152FE858();
 }
 
-- (void)quickLook:(id)a3
+- (void)quickLook:(id)look
 {
-  v3 = self;
+  selfCopy = self;
   sub_21530127C(0);
 }
 
 - (void)dealloc
 {
-  v2 = self;
-  v3 = [(ICPaperDocumentTextAttachmentView *)v2 undoManager];
-  if (v3)
+  selfCopy = self;
+  undoManager = [(ICPaperDocumentTextAttachmentView *)selfCopy undoManager];
+  if (undoManager)
   {
-    v4 = v3;
-    [v3 removeAllActionsWithTarget_];
+    v4 = undoManager;
+    [undoManager removeAllActionsWithTarget_];
   }
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for PaperDocumentTextAttachmentView();
   [(ICPaperDocumentTextAttachmentView *)&v5 dealloc];
 }
 
 - (void)openAttachment
 {
-  v3 = self;
-  v2 = [(ICPaperDocumentTextAttachmentView *)v3 window];
-  if (v2)
+  selfCopy = self;
+  window = [(ICPaperDocumentTextAttachmentView *)selfCopy window];
+  if (window)
   {
 
     sub_21530127C(0);
@@ -343,7 +343,7 @@ LABEL_5:
 
   else
   {
-    *(&v3->super.super.super.isa + OBJC_IVAR___ICPaperDocumentTextAttachmentView_openAttachmentWhenVisible) = 1;
+    *(&selfCopy->super.super.super.isa + OBJC_IVAR___ICPaperDocumentTextAttachmentView_openAttachmentWhenVisible) = 1;
   }
 }
 
@@ -355,21 +355,21 @@ LABEL_5:
   return v2;
 }
 
-- (ICPaperDocumentTextAttachmentView)initWithFrame:(CGRect)a3
+- (ICPaperDocumentTextAttachmentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)imageForTextPreviewUsingFindingResult:(id)a3 inTextView:(id)a4 completion:(id)a5
+- (void)imageForTextPreviewUsingFindingResult:(id)result inTextView:(id)view completion:(id)completion
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(completion);
   _Block_copy(v8);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_2153218A4(a3, v11, v8);
+  resultCopy = result;
+  viewCopy = view;
+  selfCopy = self;
+  sub_2153218A4(result, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
@@ -384,11 +384,11 @@ LABEL_5:
   return self;
 }
 
-- (double)additionalXOffsetForTextDragPreviewInTextView:(id)a3
+- (double)additionalXOffsetForTextDragPreviewInTextView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  PaperDocumentTextAttachmentView.additionalXOffsetForTextDragPreview(in:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  PaperDocumentTextAttachmentView.additionalXOffsetForTextDragPreview(in:)(viewCopy);
   v7 = v6;
 
   return v7;
@@ -396,43 +396,43 @@ LABEL_5:
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PaperDocumentTextAttachmentView.layoutSubviews()();
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  v5 = a3;
-  v6 = self;
+  interactionCopy = interaction;
+  selfCopy = self;
   v7 = _s11NotesEditor31PaperDocumentTextAttachmentViewC22contextMenuInteraction_016configurationForI10AtLocationSo09UIContextI13ConfigurationCSgSo0oiJ0C_So7CGPointVtF_0();
 
   return v7;
 }
 
-- (id)contextMenuInteraction:(id)a3 previewForHighlightingMenuWithConfiguration:(id)a4
+- (id)contextMenuInteraction:(id)interaction previewForHighlightingMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
   v9 = _s11NotesEditor31PaperDocumentTextAttachmentViewC22contextMenuInteraction_022previewForHighlightingI17WithConfigurationSo17UITargetedPreviewCSgSo09UIContextiJ0C_So0riO0CtF_0();
 
   return v9;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_215322540(a5);
+  selfCopy = self;
+  sub_215322540(animator);
 
   swift_unknownObjectRelease();
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   PaperDocumentTextAttachmentView.accessibilityLabel.getter();
   v4 = v3;
 

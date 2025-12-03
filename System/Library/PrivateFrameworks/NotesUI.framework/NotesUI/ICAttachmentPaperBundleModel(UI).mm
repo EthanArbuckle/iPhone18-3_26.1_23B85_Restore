@@ -9,8 +9,8 @@
 - (ICAttachmentPaperBundleActivityItemSource)activityItem
 {
   v2 = [ICAttachmentPaperBundleActivityItemSource alloc];
-  v3 = [a1 attachment];
-  v4 = [(ICAttachmentActivityItemSource *)v2 initWithAttachment:v3];
+  attachment = [self attachment];
+  v4 = [(ICAttachmentActivityItemSource *)v2 initWithAttachment:attachment];
 
   return v4;
 }
@@ -18,11 +18,11 @@
 - (id)activityItems
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v1 = [a1 activityItem];
-  v2 = v1;
-  if (v1)
+  activityItem = [self activityItem];
+  v2 = activityItem;
+  if (activityItem)
   {
-    v5[0] = v1;
+    v5[0] = activityItem;
     v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
   }
 
@@ -38,48 +38,48 @@
 {
   v27 = *MEMORY[0x1E69E9840];
   v10 = objc_autoreleasePoolPush();
-  v11 = [a1 attachment];
-  if ([v11 isPasswordProtected])
+  attachment = [self attachment];
+  if ([attachment isPasswordProtected])
   {
   }
 
   else
   {
-    v12 = [a1 attachment];
-    v13 = [v12 hasFallbackPDF];
+    attachment2 = [self attachment];
+    hasFallbackPDF = [attachment2 hasFallbackPDF];
 
-    if (v13)
+    if (hasFallbackPDF)
     {
       v14 = objc_alloc(MEMORY[0x1E6978028]);
-      v15 = [a1 attachment];
-      v16 = [v15 fallbackPDFURL];
-      v17 = [v14 initWithURL:v16];
+      attachment3 = [self attachment];
+      fallbackPDFURL = [attachment3 fallbackPDFURL];
+      v17 = [v14 initWithURL:fallbackPDFURL];
 
       goto LABEL_10;
     }
   }
 
-  v18 = [a1 attachment];
-  v15 = [v18 fallbackPDFData];
+  attachment4 = [self attachment];
+  attachment3 = [attachment4 fallbackPDFData];
 
-  if (!v15)
+  if (!attachment3)
   {
     v19 = os_log_create("com.apple.notes", "SystemPaper");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
-      v20 = [a1 attachment];
-      v21 = [v20 ic_loggingIdentifier];
+      attachment5 = [self attachment];
+      ic_loggingIdentifier = [attachment5 ic_loggingIdentifier];
       v25 = 138412290;
-      v26 = v21;
+      v26 = ic_loggingIdentifier;
       _os_log_impl(&dword_1D4171000, v19, OS_LOG_TYPE_INFO, "Fallback PDF data didn't exist for attachment, taking some extra time to generate it: %@", &v25, 0xCu);
     }
 
     v22 = objc_opt_class();
-    v23 = [a1 attachment];
-    v15 = [v22 generateFallbackPDFDataForAttachment:v23];
+    attachment6 = [self attachment];
+    attachment3 = [v22 generateFallbackPDFDataForAttachment:attachment6];
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E6978028]) initWithData:v15];
+  v17 = [objc_alloc(MEMORY[0x1E6978028]) initWithData:attachment3];
 LABEL_10:
 
   if (!v17)
@@ -87,7 +87,7 @@ LABEL_10:
     v24 = os_log_create("com.apple.notes", "SystemPaper");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [ICAttachmentPaperBundleModel(UI) drawPreviewInRect:a1];
+      [ICAttachmentPaperBundleModel(UI) drawPreviewInRect:self];
     }
 
     goto LABEL_16;
@@ -98,7 +98,7 @@ LABEL_10:
     v24 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      [ICAttachmentPDFModel(UI) drawPreviewInRect:a1];
+      [ICAttachmentPDFModel(UI) drawPreviewInRect:self];
     }
 
 LABEL_16:

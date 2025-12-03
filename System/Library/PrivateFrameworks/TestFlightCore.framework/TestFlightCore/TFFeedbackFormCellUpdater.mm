@@ -1,59 +1,59 @@
 @interface TFFeedbackFormCellUpdater
-- (void)updateCell:(id)a3 displayingEntry:(id)a4 contentDataSource:(id)a5 updateProxy:(id)a6;
+- (void)updateCell:(id)cell displayingEntry:(id)entry contentDataSource:(id)source updateProxy:(id)proxy;
 @end
 
 @implementation TFFeedbackFormCellUpdater
 
-- (void)updateCell:(id)a3 displayingEntry:(id)a4 contentDataSource:(id)a5 updateProxy:(id)a6
+- (void)updateCell:(id)cell displayingEntry:(id)entry contentDataSource:(id)source updateProxy:(id)proxy
 {
-  v15 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  [v15 applyContentsOfEntry:v9];
-  [v15 prepareSeparatorsForCellInSectionLocation:{objc_msgSend(v15, "sectionLocation")}];
-  v12 = [v15 displayableDataType];
-  if (v12 > 1)
+  cellCopy = cell;
+  entryCopy = entry;
+  sourceCopy = source;
+  proxyCopy = proxy;
+  [cellCopy applyContentsOfEntry:entryCopy];
+  [cellCopy prepareSeparatorsForCellInSectionLocation:{objc_msgSend(cellCopy, "sectionLocation")}];
+  displayableDataType = [cellCopy displayableDataType];
+  if (displayableDataType > 1)
   {
-    if (v12 == 2)
+    if (displayableDataType == 2)
     {
-      v13 = [v9 identifier];
-      [v15 setDisplayedDataGroupInclusionBool:{objc_msgSend(v10, "isGroupWithIdentifierIncluded:", v13)}];
+      identifier = [entryCopy identifier];
+      [cellCopy setDisplayedDataGroupInclusionBool:{objc_msgSend(sourceCopy, "isGroupWithIdentifierIncluded:", identifier)}];
       goto LABEL_11;
     }
 
-    if (v12 != 3)
+    if (displayableDataType != 3)
     {
       goto LABEL_12;
     }
 
-    v13 = [v9 identifier];
-    v14 = [v10 imageCollectionForIdentifer:v13];
-    [v15 setDisplayedDataImageCollection:v14];
+    identifier = [entryCopy identifier];
+    v14 = [sourceCopy imageCollectionForIdentifer:identifier];
+    [cellCopy setDisplayedDataImageCollection:v14];
   }
 
-  else if (v12)
+  else if (displayableDataType)
   {
-    if (v12 != 1)
+    if (displayableDataType != 1)
     {
       goto LABEL_12;
     }
 
-    v13 = [v9 identifier];
-    v14 = [v10 numberForIdentifier:v13];
-    [v15 setDisplayedDataNumber:v14];
+    identifier = [entryCopy identifier];
+    v14 = [sourceCopy numberForIdentifier:identifier];
+    [cellCopy setDisplayedDataNumber:v14];
   }
 
   else
   {
-    v13 = [v9 identifier];
-    v14 = [v10 stringForIdentifier:v13];
-    [v15 setDisplayedDataString:v14];
+    identifier = [entryCopy identifier];
+    v14 = [sourceCopy stringForIdentifier:identifier];
+    [cellCopy setDisplayedDataString:v14];
   }
 
 LABEL_11:
 LABEL_12:
-  [v15 setUpdateProxy:v11];
+  [cellCopy setUpdateProxy:proxyCopy];
 }
 
 @end

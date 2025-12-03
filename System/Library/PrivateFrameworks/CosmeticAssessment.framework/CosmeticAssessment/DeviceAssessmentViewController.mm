@@ -1,13 +1,13 @@
 @interface DeviceAssessmentViewController
 - (BOOL)accessibilityPerformEscape;
-- (_TtC18CosmeticAssessment30DeviceAssessmentViewController)initWithCoder:(id)a3;
-- (_TtC18CosmeticAssessment30DeviceAssessmentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18CosmeticAssessment30DeviceAssessmentViewController)initWithCoder:(id)coder;
+- (_TtC18CosmeticAssessment30DeviceAssessmentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation DeviceAssessmentViewController
 
-- (_TtC18CosmeticAssessment30DeviceAssessmentViewController)initWithCoder:(id)a3
+- (_TtC18CosmeticAssessment30DeviceAssessmentViewController)initWithCoder:(id)coder
 {
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -17,7 +17,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_247CDA3F4();
 }
 
@@ -31,7 +31,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   DeviceAssessmentViewController.viewDidLoad()();
 }
 
@@ -45,13 +45,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   DeviceAssessmentViewController.accessibilityPerformEscape()();
 
   return 1;
 }
 
-- (_TtC18CosmeticAssessment30DeviceAssessmentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18CosmeticAssessment30DeviceAssessmentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_247D1FEA8();
   sub_247D1FE98();

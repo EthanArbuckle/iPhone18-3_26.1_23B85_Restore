@@ -2,8 +2,8 @@
 - (BOOL)hasStatusToReport;
 - (CKDZoneGatekeeperImplementation)init;
 - (id)CKStatusReportArray;
-- (void)registerWaiter:(id)a3 forZoneIDs:(id)a4 completionHandler:(id)a5;
-- (void)relinquishLocksForWaiter:(id)a3 deferRelinquish:(BOOL)a4;
+- (void)registerWaiter:(id)waiter forZoneIDs:(id)ds completionHandler:(id)handler;
+- (void)relinquishLocksForWaiter:(id)waiter deferRelinquish:(BOOL)relinquish;
 @end
 
 @implementation CKDZoneGatekeeperImplementation
@@ -27,14 +27,14 @@
   return v2;
 }
 
-- (void)registerWaiter:(id)a3 forZoneIDs:(id)a4 completionHandler:(id)a5
+- (void)registerWaiter:(id)waiter forZoneIDs:(id)ds completionHandler:(id)handler
 {
   v71 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v52 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
+  waiterCopy = waiter;
+  dsCopy = ds;
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (*MEMORY[0x277CBC880] != -1)
   {
     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -45,9 +45,9 @@
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v65 = v9;
+    v65 = dsCopy;
     v66 = 2112;
-    v67 = v8;
+    v67 = waiterCopy;
     _os_log_debug_impl(&dword_22506F000, v12, OS_LOG_TYPE_DEBUG, "Registering zone gate locks for IDs %@ waiter %@", buf, 0x16u);
   }
 
@@ -55,7 +55,7 @@
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v13 = v9;
+  v13 = dsCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v13, v14, &v59, v70, 16);
   if (v17)
   {
@@ -70,7 +70,7 @@
         }
 
         v20 = *(*(&v59 + 1) + 8 * i);
-        v21 = objc_msgSend_zoneIDsToGateHolders(v10, v15, v16, v52);
+        v21 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v15, v16, handlerCopy);
         v23 = objc_msgSend_objectForKeyedSubscript_(v21, v22, v20);
 
         if (v23)
@@ -83,10 +83,10 @@
           v38 = *v11;
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
           {
-            v49 = objc_msgSend_zoneIDsToGateHolders(v10, v39, v40);
+            v49 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v39, v40);
             v51 = objc_msgSend_objectForKeyedSubscript_(v49, v50, v20);
             *buf = 138412802;
-            v65 = v8;
+            v65 = waiterCopy;
             v66 = 2112;
             v67 = v20;
             v68 = 2112;
@@ -96,9 +96,9 @@
 
           v41 = [CKWaiterWrapper alloc];
           v42 = _os_activity_create(&dword_22506F000, "CKDZoneGatekeeper", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
-          v37 = objc_msgSend_initWithWaiter_zoneIDs_waitCompletedHandler_activity_(v41, v43, v8, v13, v52, v42);
+          v37 = objc_msgSend_initWithWaiter_zoneIDs_waitCompletedHandler_activity_(v41, v43, waiterCopy, v13, handlerCopy, v42);
 
-          v46 = objc_msgSend_waiterWrappers(v10, v44, v45);
+          v46 = objc_msgSend_waiterWrappers(selfCopy, v44, v45);
           objc_msgSend_addObject_(v46, v47, v37);
 
           goto LABEL_26;
@@ -134,8 +134,8 @@
         }
 
         v31 = *(*(&v55 + 1) + 8 * j);
-        v32 = objc_msgSend_zoneIDsToGateHolders(v10, v26, v27, v52);
-        objc_msgSend_setObject_forKeyedSubscript_(v32, v33, v8, v31);
+        v32 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v26, v27, handlerCopy);
+        objc_msgSend_setObject_forKeyedSubscript_(v32, v33, waiterCopy, v31);
       }
 
       v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v24, v26, &v55, v63, 16);
@@ -144,37 +144,37 @@
     while (v28);
   }
 
-  objc_msgSend_qualityOfService(v8, v34, v35);
+  objc_msgSend_qualityOfService(waiterCopy, v34, v35);
   v36 = CKGetGlobalQueue();
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22540DA3C;
   block[3] = &unk_2785456A0;
-  v54 = v52;
+  v54 = handlerCopy;
   dispatch_async(v36, block);
 
   v37 = v54;
 LABEL_26:
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
   v48 = *MEMORY[0x277D85DE8];
 }
 
-- (void)relinquishLocksForWaiter:(id)a3 deferRelinquish:(BOOL)a4
+- (void)relinquishLocksForWaiter:(id)waiter deferRelinquish:(BOOL)relinquish
 {
-  v4 = a4;
+  relinquishCopy = relinquish;
   v183 = *MEMORY[0x277D85DE8];
-  v142 = a3;
+  waiterCopy = waiter;
   v133 = objc_opt_new();
   v134 = objc_opt_new();
-  v6 = self;
-  objc_sync_enter(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v7 = MEMORY[0x277CBC880];
-  v140 = v4;
-  if (v4)
+  v140 = relinquishCopy;
+  if (relinquishCopy)
   {
     v8 = [CKDDeferredRelinquishPlaceholder alloc];
-    v136 = objc_msgSend_initWithExistingWaiter_(v8, v9, v142);
+    v136 = objc_msgSend_initWithExistingWaiter_(v8, v9, waiterCopy);
     if (*v7 != -1)
     {
       dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -184,7 +184,7 @@ LABEL_26:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v175 = v142;
+      v175 = waiterCopy;
       _os_log_debug_impl(&dword_22506F000, v10, OS_LOG_TYPE_DEBUG, "Deferring relinquish of zone gate locks for waiter %@", buf, 0xCu);
     }
   }
@@ -199,7 +199,7 @@ LABEL_26:
     v13 = *MEMORY[0x277CBC830];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v131 = objc_msgSend_ckShortDescription(v142, v14, v15);
+      v131 = objc_msgSend_ckShortDescription(waiterCopy, v14, v15);
       *buf = 138412290;
       v175 = v131;
       _os_log_debug_impl(&dword_22506F000, v13, OS_LOG_TYPE_DEBUG, "Relinquishing zone gate locks for waiter %@", buf, 0xCu);
@@ -212,7 +212,7 @@ LABEL_26:
   v170 = 0u;
   v167 = 0u;
   v168 = 0u;
-  v16 = objc_msgSend_zoneIDsToGateHolders(v6, v11, v12);
+  v16 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v11, v12);
   v19 = objc_msgSend_allKeys(v16, v17, v18);
   v22 = objc_msgSend_copy(v19, v20, v21);
 
@@ -230,12 +230,12 @@ LABEL_26:
         }
 
         v29 = *(*(&v167 + 1) + 8 * i);
-        v30 = objc_msgSend_zoneIDsToGateHolders(v6, v24, v25);
+        v30 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v24, v25);
         v32 = objc_msgSend_objectForKeyedSubscript_(v30, v31, v29);
 
-        if (objc_msgSend_isEqual_(v32, v33, v142))
+        if (objc_msgSend_isEqual_(v32, v33, waiterCopy))
         {
-          v37 = objc_msgSend_zoneIDsToGateHolders(v6, v34, v35);
+          v37 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v34, v35);
           if (v140)
           {
             objc_msgSend_setObject_forKeyedSubscript_(v37, v36, v136, v29);
@@ -254,7 +254,7 @@ LABEL_26:
     while (v26);
   }
 
-  v40 = objc_msgSend_waiterWrappers(v6, v38, v39);
+  v40 = objc_msgSend_waiterWrappers(selfCopy, v38, v39);
   v43 = objc_msgSend_copy(v40, v41, v42);
 
   v48 = objc_msgSend_count(v43, v44, v45);
@@ -264,12 +264,12 @@ LABEL_26:
     {
       v49 = objc_msgSend_objectAtIndexedSubscript_(v43, v46, --v48);
       v52 = objc_msgSend_waiter(v49, v50, v51);
-      isEqual = objc_msgSend_isEqual_(v52, v53, v142);
+      isEqual = objc_msgSend_isEqual_(v52, v53, waiterCopy);
 
       if (isEqual)
       {
         objc_msgSend_addObject_(v133, v55, v49);
-        v58 = objc_msgSend_waiterWrappers(v6, v56, v57);
+        v58 = objc_msgSend_waiterWrappers(selfCopy, v56, v57);
         objc_msgSend_removeObjectAtIndex_(v58, v59, v48);
       }
     }
@@ -277,7 +277,7 @@ LABEL_26:
     while (v48 > 0);
   }
 
-  v60 = objc_msgSend_waiterWrappers(v6, v46, v47);
+  v60 = objc_msgSend_waiterWrappers(selfCopy, v46, v47);
   v63 = objc_msgSend_copy(v60, v61, v62);
 
   v165 = 0u;
@@ -327,7 +327,7 @@ LABEL_26:
               }
 
               v81 = *(*(&v158 + 1) + 8 * j);
-              v82 = objc_msgSend_zoneIDsToGateHolders(v6, v76, v77);
+              v82 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v76, v77);
               v84 = objc_msgSend_objectForKeyedSubscript_(v82, v83, v81);
 
               if (v84)
@@ -340,7 +340,7 @@ LABEL_26:
                 v105 = *MEMORY[0x277CBC830];
                 if (os_log_type_enabled(v105, OS_LOG_TYPE_DEBUG))
                 {
-                  v108 = objc_msgSend_zoneIDsToGateHolders(v6, v106, v107);
+                  v108 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v106, v107);
                   v110 = objc_msgSend_objectForKeyedSubscript_(v108, v109, v81);
                   *buf = 138412802;
                   v175 = v70;
@@ -398,7 +398,7 @@ LABEL_26:
 
               v95 = *(*(&v154 + 1) + 8 * k);
               v96 = objc_msgSend_waiter(v70, v90, v91);
-              v99 = objc_msgSend_zoneIDsToGateHolders(v6, v97, v98);
+              v99 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v97, v98);
               objc_msgSend_setObject_forKeyedSubscript_(v99, v100, v96, v95);
             }
 
@@ -409,7 +409,7 @@ LABEL_26:
         }
 
         objc_msgSend_addObject_(v134, v101, v70);
-        v74 = objc_msgSend_waiterWrappers(v6, v102, v103);
+        v74 = objc_msgSend_waiterWrappers(selfCopy, v102, v103);
         objc_msgSend_removeObject_(v74, v104, v70);
 LABEL_57:
 
@@ -432,12 +432,12 @@ LABEL_57:
     block[1] = 3221225472;
     block[2] = sub_22540E4F4;
     block[3] = &unk_278545898;
-    block[4] = v6;
+    block[4] = selfCopy;
     v153 = v136;
     dispatch_after(v111, v112, block);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
   v150 = 0u;
   v151 = 0u;
   v148 = 0u;
@@ -507,9 +507,9 @@ LABEL_57:
 
 - (BOOL)hasStatusToReport
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v5 = objc_msgSend_zoneIDsToGateHolders(v2, v3, v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v3, v4);
   if (objc_msgSend_count(v5, v6, v7))
   {
     v10 = 1;
@@ -517,11 +517,11 @@ LABEL_57:
 
   else
   {
-    v11 = objc_msgSend_waiterWrappers(v2, v8, v9);
+    v11 = objc_msgSend_waiterWrappers(selfCopy, v8, v9);
     v10 = objc_msgSend_count(v11, v12, v13) != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v10;
 }
 
@@ -529,10 +529,10 @@ LABEL_57:
 {
   v100 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = self;
-  objc_sync_enter(v4);
-  v84 = v4;
-  v7 = objc_msgSend_zoneIDsToGateHolders(v4, v5, v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v84 = selfCopy;
+  v7 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
 
   if (v10)
@@ -542,7 +542,7 @@ LABEL_57:
     v96 = 0u;
     v93 = 0u;
     v94 = 0u;
-    v14 = objc_msgSend_zoneIDsToGateHolders(v4, v12, v13);
+    v14 = objc_msgSend_zoneIDsToGateHolders(selfCopy, v12, v13);
     v17 = objc_msgSend_allKeys(v14, v15, v16);
 
     v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v93, v99, 16);

@@ -1,28 +1,28 @@
 @interface PUIImageOnDiskFormat
 + (PUIImageOnDiskFormat)png;
-+ (id)atxWithBlockSize:(unsigned int)a3 twiddling:(BOOL)a4;
-- (PUIImageOnDiskFormat)initWithTypeIdentifier:(id)a3 filenameExtension:(id)a4 destinationOptions:(id)a5 addImageOptions:(id)a6;
-- (PUIImageOnDiskFormat)initWithTypeRecord:(id)a3 destinationOptions:(id)a4 addImageOptions:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formatByAppendingDestinationOptions:(id)a3 addImageOptions:(id)a4;
-- (id)resolveAddImageOptionsForImage:(CGImage *)a3;
-- (id)resolveDestinationOptionsForImage:(CGImage *)a3;
++ (id)atxWithBlockSize:(unsigned int)size twiddling:(BOOL)twiddling;
+- (PUIImageOnDiskFormat)initWithTypeIdentifier:(id)identifier filenameExtension:(id)extension destinationOptions:(id)options addImageOptions:(id)imageOptions;
+- (PUIImageOnDiskFormat)initWithTypeRecord:(id)record destinationOptions:(id)options addImageOptions:(id)imageOptions;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formatByAppendingDestinationOptions:(id)options addImageOptions:(id)imageOptions;
+- (id)resolveAddImageOptionsForImage:(CGImage *)image;
+- (id)resolveDestinationOptionsForImage:(CGImage *)image;
 @end
 
 @implementation PUIImageOnDiskFormat
 
-+ (id)atxWithBlockSize:(unsigned int)a3 twiddling:(BOOL)a4
++ (id)atxWithBlockSize:(unsigned int)size twiddling:(BOOL)twiddling
 {
-  v4 = a4;
+  twiddlingCopy = twiddling;
   v12[4] = *MEMORY[0x1E69E9840];
   v12[0] = *MEMORY[0x1E696D3E8];
   v5 = *MEMORY[0x1E696D3E0];
   v11[0] = *MEMORY[0x1E696D8A0];
   v11[1] = v5;
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&size];
   v12[1] = v6;
   v11[2] = *MEMORY[0x1E696D400];
-  v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v7 = [MEMORY[0x1E696AD98] numberWithBool:twiddlingCopy];
   v11[3] = *MEMORY[0x1E696D408];
   v12[2] = v7;
   v12[3] = MEMORY[0x1E695E110];
@@ -49,42 +49,42 @@
 
   v6 = [PUIImageOnDiskFormat alloc];
   v7 = *MEMORY[0x1E6982F28];
-  v8 = [*MEMORY[0x1E6982F28] identifier];
-  v9 = [v7 preferredFilenameExtension];
-  v10 = [(PUIImageOnDiskFormat *)v6 initWithTypeIdentifier:v8 filenameExtension:v9 destinationOptions:0 addImageOptions:v5];
+  identifier = [*MEMORY[0x1E6982F28] identifier];
+  preferredFilenameExtension = [v7 preferredFilenameExtension];
+  v10 = [(PUIImageOnDiskFormat *)v6 initWithTypeIdentifier:identifier filenameExtension:preferredFilenameExtension destinationOptions:0 addImageOptions:v5];
 
   return v10;
 }
 
-- (PUIImageOnDiskFormat)initWithTypeIdentifier:(id)a3 filenameExtension:(id)a4 destinationOptions:(id)a5 addImageOptions:(id)a6
+- (PUIImageOnDiskFormat)initWithTypeIdentifier:(id)identifier filenameExtension:(id)extension destinationOptions:(id)options addImageOptions:(id)imageOptions
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  identifierCopy = identifier;
+  extensionCopy = extension;
+  optionsCopy = options;
+  imageOptionsCopy = imageOptions;
+  if (!identifierCopy)
   {
     [PUIImageOnDiskFormat initWithTypeIdentifier:a2 filenameExtension:? destinationOptions:? addImageOptions:?];
   }
 
-  if (!v12)
+  if (!extensionCopy)
   {
     [PUIImageOnDiskFormat initWithTypeIdentifier:a2 filenameExtension:? destinationOptions:? addImageOptions:?];
   }
 
-  v15 = v14;
+  v15 = imageOptionsCopy;
   v16 = [(PUIImageOnDiskFormat *)self init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [extensionCopy copy];
     filenameExtension = v16->_filenameExtension;
     v16->_filenameExtension = v17;
 
-    v19 = [v11 copy];
+    v19 = [identifierCopy copy];
     typeIdentifier = v16->_typeIdentifier;
     v16->_typeIdentifier = v19;
 
-    v21 = [v13 copy];
+    v21 = [optionsCopy copy];
     destinationOptions = v16->_destinationOptions;
     v16->_destinationOptions = v21;
 
@@ -96,19 +96,19 @@
   return v16;
 }
 
-- (PUIImageOnDiskFormat)initWithTypeRecord:(id)a3 destinationOptions:(id)a4 addImageOptions:(id)a5
+- (PUIImageOnDiskFormat)initWithTypeRecord:(id)record destinationOptions:(id)options addImageOptions:(id)imageOptions
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 identifier];
-  v12 = [v10 preferredFilenameExtension];
+  imageOptionsCopy = imageOptions;
+  optionsCopy = options;
+  recordCopy = record;
+  identifier = [recordCopy identifier];
+  preferredFilenameExtension = [recordCopy preferredFilenameExtension];
 
-  v13 = [(PUIImageOnDiskFormat *)self initWithTypeIdentifier:v11 filenameExtension:v12 destinationOptions:v9 addImageOptions:v8];
+  v13 = [(PUIImageOnDiskFormat *)self initWithTypeIdentifier:identifier filenameExtension:preferredFilenameExtension destinationOptions:optionsCopy addImageOptions:imageOptionsCopy];
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PUIImageOnDiskFormat alloc];
   filenameExtension = self->_filenameExtension;
@@ -119,19 +119,19 @@
   return [(PUIImageOnDiskFormat *)v4 initWithTypeIdentifier:typeIdentifier filenameExtension:filenameExtension destinationOptions:destinationOptions addImageOptions:addImageOptions];
 }
 
-- (id)resolveDestinationOptionsForImage:(CGImage *)a3
+- (id)resolveDestinationOptionsForImage:(CGImage *)image
 {
-  if (!a3)
+  if (!image)
   {
     [PUIImageOnDiskFormat resolveDestinationOptionsForImage:a2];
   }
 
-  v4 = [(PUIImageOnDiskFormat *)self destinationOptions];
+  destinationOptions = [(PUIImageOnDiskFormat *)self destinationOptions];
 
-  if (v4)
+  if (destinationOptions)
   {
-    v5 = [(PUIImageOnDiskFormat *)self destinationOptions];
-    v6 = [v5 mutableCopy];
+    destinationOptions2 = [(PUIImageOnDiskFormat *)self destinationOptions];
+    v6 = [destinationOptions2 mutableCopy];
 
     PUIResolveMaxPixelOption(v6);
   }
@@ -144,19 +144,19 @@
   return v6;
 }
 
-- (id)resolveAddImageOptionsForImage:(CGImage *)a3
+- (id)resolveAddImageOptionsForImage:(CGImage *)image
 {
-  if (!a3)
+  if (!image)
   {
     [PUIImageOnDiskFormat resolveAddImageOptionsForImage:a2];
   }
 
-  v4 = [(PUIImageOnDiskFormat *)self addImageOptions];
+  addImageOptions = [(PUIImageOnDiskFormat *)self addImageOptions];
 
-  if (v4)
+  if (addImageOptions)
   {
-    v5 = [(PUIImageOnDiskFormat *)self addImageOptions];
-    v6 = [v5 mutableCopy];
+    addImageOptions2 = [(PUIImageOnDiskFormat *)self addImageOptions];
+    v6 = [addImageOptions2 mutableCopy];
 
     PUIResolveMaxPixelOption(v6);
   }
@@ -169,7 +169,7 @@
   return v6;
 }
 
-- (id)formatByAppendingDestinationOptions:(id)a3 addImageOptions:(id)a4
+- (id)formatByAppendingDestinationOptions:(id)options addImageOptions:(id)imageOptions
 {
   v6 = MEMORY[0x1E695E0F8];
   if (self->_destinationOptions)
@@ -182,8 +182,8 @@
     destinationOptions = MEMORY[0x1E695E0F8];
   }
 
-  v8 = a4;
-  v9 = [(NSDictionary *)destinationOptions bs_dictionaryByAddingEntriesFromDictionary:a3];
+  imageOptionsCopy = imageOptions;
+  v9 = [(NSDictionary *)destinationOptions bs_dictionaryByAddingEntriesFromDictionary:options];
   if (self->_addImageOptions)
   {
     addImageOptions = self->_addImageOptions;
@@ -194,7 +194,7 @@
     addImageOptions = v6;
   }
 
-  v11 = [(NSDictionary *)addImageOptions bs_dictionaryByAddingEntriesFromDictionary:v8];
+  v11 = [(NSDictionary *)addImageOptions bs_dictionaryByAddingEntriesFromDictionary:imageOptionsCopy];
 
   v12 = [objc_alloc(objc_opt_class()) initWithTypeIdentifier:self->_typeIdentifier filenameExtension:self->_filenameExtension destinationOptions:v9 addImageOptions:v11];
 

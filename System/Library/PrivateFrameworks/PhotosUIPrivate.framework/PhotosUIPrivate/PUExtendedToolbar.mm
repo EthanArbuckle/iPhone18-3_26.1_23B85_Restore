@@ -1,36 +1,36 @@
 @interface PUExtendedToolbar
 - (BOOL)_needsUpdate;
 - (BOOL)_shouldStretchDuringCrossfadeTransition;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PUExtendedToolbar)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PUExtendedToolbar)initWithFrame:(CGRect)frame;
 - (double)_containedToolbarHeight;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_assertInsideChangeBlock;
 - (void)_assertInsideUpdate;
-- (void)_getContainedToolbarFrame:(CGRect *)a3 accessoryViewContainerFrame:(CGRect *)a4 forBounds:(CGRect)a5;
+- (void)_getContainedToolbarFrame:(CGRect *)frame accessoryViewContainerFrame:(CGRect *)containerFrame forBounds:(CGRect)bounds;
 - (void)_invalidateAccessoryView;
 - (void)_invalidateAccessoryViewContainer;
 - (void)_invalidateAccessoryViewTopOutset;
 - (void)_invalidateContainedToolbar;
 - (void)_invalidateSize;
 - (void)_invalidateToolbarItems;
-- (void)_performChanges:(id)a3 withAnimatorBlock:(id)a4;
-- (void)_setAccessoryView:(id)a3;
-- (void)_setAccessoryViewContainer:(id)a3;
-- (void)_setAccessoryViewTopOutset:(double)a3;
-- (void)_setContainedToolbar:(id)a3;
+- (void)_performChanges:(id)changes withAnimatorBlock:(id)block;
+- (void)_setAccessoryView:(id)view;
+- (void)_setAccessoryViewContainer:(id)container;
+- (void)_setAccessoryViewTopOutset:(double)outset;
+- (void)_setContainedToolbar:(id)toolbar;
 - (void)_setNeedsUpdate;
-- (void)_setToolbarItems:(id)a3;
+- (void)_setToolbarItems:(id)items;
 - (void)_updateAccessoryTopOutsetViewIfNeeded;
 - (void)_updateAccessoryViewIfNeeded;
-- (void)_updateIfNeededWithAnimatorBlock:(id)a3;
+- (void)_updateIfNeededWithAnimatorBlock:(id)block;
 - (void)_updateToolbarItemsIfNeeded;
-- (void)_updateViewsIfNeededWithAnimatorBlock:(id)a3;
+- (void)_updateViewsIfNeededWithAnimatorBlock:(id)block;
 - (void)layoutSubviews;
-- (void)setBarStyle:(int64_t)a3;
-- (void)setToolbarViewModel:(id)a3 withAnimatorBlock:(id)a4;
+- (void)setBarStyle:(int64_t)style;
+- (void)setToolbarViewModel:(id)model withAnimatorBlock:(id)block;
 - (void)tintColorDidChange;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUExtendedToolbar
@@ -46,8 +46,8 @@
 {
   if (![(PUExtendedToolbar *)self _isUpdating]&& [(PUExtendedToolbar *)self _numberOfNestedChanges]<= 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:268 description:@"not within an update or change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:268 description:@"not within an update or change block"];
   }
 }
 
@@ -94,10 +94,10 @@
   if ([(PUExtendedToolbar *)self _needsUpdateToolbarItems])
   {
     [(PUExtendedToolbar *)self _setNeedsUpdateToolbarItems:0];
-    v3 = [(PUExtendedToolbar *)self toolbarViewModel];
-    v4 = [v3 toolbarItems];
+    toolbarViewModel = [(PUExtendedToolbar *)self toolbarViewModel];
+    toolbarItems = [toolbarViewModel toolbarItems];
 
-    [(PUExtendedToolbar *)self _setToolbarItems:v4];
+    [(PUExtendedToolbar *)self _setToolbarItems:toolbarItems];
   }
 }
 
@@ -105,8 +105,8 @@
 {
   if (![(PUExtendedToolbar *)self _isUpdating])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:236 description:@"not withing update"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:236 description:@"not withing update"];
   }
 }
 
@@ -115,10 +115,10 @@
   if ([(PUExtendedToolbar *)self _needsUpdateAccessoryView])
   {
     [(PUExtendedToolbar *)self _setNeedsUpdateAccessoryView:0];
-    v3 = [(PUExtendedToolbar *)self toolbarViewModel];
-    v4 = [v3 accessoryView];
+    toolbarViewModel = [(PUExtendedToolbar *)self toolbarViewModel];
+    accessoryView = [toolbarViewModel accessoryView];
 
-    [(PUExtendedToolbar *)self _setAccessoryView:v4];
+    [(PUExtendedToolbar *)self _setAccessoryView:accessoryView];
   }
 }
 
@@ -127,24 +127,24 @@
   if ([(PUExtendedToolbar *)self _needsUpdateAccessoryViewTopOutset])
   {
     [(PUExtendedToolbar *)self _setNeedsUpdateAccessoryViewTopOutset:0];
-    v3 = [(PUExtendedToolbar *)self toolbarViewModel];
-    [v3 accessoryViewTopOutset];
+    toolbarViewModel = [(PUExtendedToolbar *)self toolbarViewModel];
+    [toolbarViewModel accessoryViewTopOutset];
     v5 = v4;
 
     [(PUExtendedToolbar *)self _setAccessoryViewTopOutset:v5];
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__PUExtendedToolbar_viewModel_didChange___block_invoke;
   v7[3] = &unk_1E7B80C38;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   [(PUExtendedToolbar *)self _performChanges:v7];
 }
 
@@ -175,13 +175,13 @@ uint64_t __41__PUExtendedToolbar_viewModel_didChange___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_updateViewsIfNeededWithAnimatorBlock:(id)a3
+- (void)_updateViewsIfNeededWithAnimatorBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PUExtendedToolbar *)self _needsUpdateContainedToolbar];
-  v6 = [(PUExtendedToolbar *)self _needsUpdateAccessoryViewContainer];
-  v7 = v6;
-  if (!v5 && !v6)
+  blockCopy = block;
+  _needsUpdateContainedToolbar = [(PUExtendedToolbar *)self _needsUpdateContainedToolbar];
+  _needsUpdateAccessoryViewContainer = [(PUExtendedToolbar *)self _needsUpdateAccessoryViewContainer];
+  v7 = _needsUpdateAccessoryViewContainer;
+  if (!_needsUpdateContainedToolbar && !_needsUpdateAccessoryViewContainer)
   {
     goto LABEL_29;
   }
@@ -193,18 +193,18 @@ uint64_t __41__PUExtendedToolbar_viewModel_didChange___block_invoke(uint64_t a1)
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(PUExtendedToolbar *)self _toolbarItems];
-  v17 = [(PUExtendedToolbar *)self _accessoryView];
-  v18 = [(PUExtendedToolbar *)self _containedToolbar];
-  v19 = v18;
-  if (v5)
+  _toolbarItems = [(PUExtendedToolbar *)self _toolbarItems];
+  _accessoryView = [(PUExtendedToolbar *)self _accessoryView];
+  _containedToolbar = [(PUExtendedToolbar *)self _containedToolbar];
+  v19 = _containedToolbar;
+  if (_needsUpdateContainedToolbar)
   {
-    if (v18 && ![v16 count])
+    if (_containedToolbar && ![_toolbarItems count])
     {
       [(PUExtendedToolbar *)self _setContainedToolbar:0];
       v20 = v19;
       v19 = 0;
-      if (v4)
+      if (blockCopy)
       {
 LABEL_7:
         v21 = [v19 snapshotViewAfterScreenUpdates:0];
@@ -214,7 +214,7 @@ LABEL_7:
         if (!v19)
         {
 LABEL_13:
-          if (![v16 count])
+          if (![_toolbarItems count])
           {
             v19 = 0;
             if (v7)
@@ -226,23 +226,23 @@ LABEL_13:
           }
 
           v22 = objc_alloc(MEMORY[0x1E69DD180]);
-          v23 = [(PUExtendedToolbar *)self px_screen];
-          [v23 bounds];
+          px_screen = [(PUExtendedToolbar *)self px_screen];
+          [px_screen bounds];
           v19 = [v22 initWithFrame:{0.0, 0.0}];
 
           [v19 setBarStyle:{-[PUExtendedToolbar barStyle](self, "barStyle")}];
-          v24 = [(PUExtendedToolbar *)self tintColor];
-          [v19 setTintColor:v24];
+          tintColor = [(PUExtendedToolbar *)self tintColor];
+          [v19 setTintColor:tintColor];
 
-          v25 = [MEMORY[0x1E69DC888] clearColor];
-          [v19 setBackgroundColor:v25];
+          clearColor = [MEMORY[0x1E69DC888] clearColor];
+          [v19 setBackgroundColor:clearColor];
 
           v26 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
           [v19 setBackgroundImage:v26 forToolbarPosition:0 barMetrics:0];
 
           v27 = objc_alloc_init(MEMORY[0x1E69DD250]);
-          v28 = [MEMORY[0x1E69DC888] clearColor];
-          [v27 setBackgroundColor:v28];
+          clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+          [v27 setBackgroundColor:clearColor2];
 
           [v19 _setBackgroundView:v27];
           v29 = objc_alloc_init(MEMORY[0x1E69DCAB8]);
@@ -259,11 +259,11 @@ LABEL_13:
         }
 
 LABEL_15:
-        [v19 setItems:v16];
+        [v19 setItems:_toolbarItems];
         [v19 setAlpha:0.0];
-        v31 = [v19 superview];
+        superview = [v19 superview];
 
-        if (!v31)
+        if (!superview)
         {
           [(PUExtendedToolbar *)self addSubview:v19];
         }
@@ -281,7 +281,7 @@ LABEL_17:
     else
     {
       v20 = 0;
-      if (v4)
+      if (blockCopy)
       {
         goto LABEL_7;
       }
@@ -301,7 +301,7 @@ LABEL_17:
   if (v7)
   {
 LABEL_18:
-    if (v17)
+    if (_accessoryView)
     {
       v32 = objc_alloc_init(MEMORY[0x1E69DD250]);
       v63.origin.x = v9;
@@ -316,14 +316,14 @@ LABEL_18:
       [(PUExtendedToolbar *)self _accessoryViewTopOutset];
       v37 = v36;
       [v32 bounds];
-      [v17 setFrame:{v33 + v38, v39 - v37, v40 - (v33 + v35), v41 - (v34 - v37)}];
-      [v17 setAutoresizingMask:18];
-      [v32 addSubview:v17];
+      [_accessoryView setFrame:{v33 + v38, v39 - v37, v40 - (v33 + v35), v41 - (v34 - v37)}];
+      [_accessoryView setAutoresizingMask:18];
+      [v32 addSubview:_accessoryView];
       [(PUExtendedToolbar *)self addSubview:v32];
       if (v32)
       {
-        v42 = [(PUExtendedToolbar *)self _accessoryViewContainers];
-        [v42 addObject:v32];
+        _accessoryViewContainers = [(PUExtendedToolbar *)self _accessoryViewContainers];
+        [_accessoryViewContainers addObject:v32];
       }
     }
 
@@ -332,14 +332,14 @@ LABEL_18:
       v32 = 0;
     }
 
-    v43 = [(PUExtendedToolbar *)self _accessoryViewContainer];
+    _accessoryViewContainer = [(PUExtendedToolbar *)self _accessoryViewContainer];
     [(PUExtendedToolbar *)self _setAccessoryViewContainer:v32];
     goto LABEL_25;
   }
 
 LABEL_24:
   v32 = 0;
-  v43 = 0;
+  _accessoryViewContainer = 0;
 LABEL_25:
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -351,10 +351,10 @@ LABEL_25:
   v59 = v45;
   v46 = v19;
   v60 = v46;
-  v61 = v43;
+  v61 = _accessoryViewContainer;
   v62 = v32;
   v47 = v32;
-  v48 = v43;
+  v48 = _accessoryViewContainer;
   v49 = _Block_copy(aBlock);
   v53[0] = MEMORY[0x1E69E9820];
   v53[1] = 3221225472;
@@ -362,13 +362,13 @@ LABEL_25:
   v53[3] = &unk_1E7B76EA8;
   v54 = v44;
   v55 = v45;
-  v56 = self;
+  selfCopy = self;
   v50 = v45;
   v51 = v44;
   v52 = _Block_copy(v53);
-  if (v4)
+  if (blockCopy)
   {
-    v4[2](v4, v49, v52);
+    blockCopy[2](blockCopy, v49, v52);
   }
 
   else
@@ -442,67 +442,67 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
   }
 }
 
-- (void)_setAccessoryViewTopOutset:(double)a3
+- (void)_setAccessoryViewTopOutset:(double)outset
 {
   [(PUExtendedToolbar *)self _assertInsideUpdate];
-  if (self->__accessoryViewTopOutset != a3)
+  if (self->__accessoryViewTopOutset != outset)
   {
-    self->__accessoryViewTopOutset = a3;
+    self->__accessoryViewTopOutset = outset;
 
     [(PUExtendedToolbar *)self _invalidateAccessoryViewContainer];
   }
 }
 
-- (void)_setAccessoryView:(id)a3
+- (void)_setAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(PUExtendedToolbar *)self _assertInsideUpdate];
-  if (self->__accessoryView != v5)
+  if (self->__accessoryView != viewCopy)
   {
-    objc_storeStrong(&self->__accessoryView, a3);
+    objc_storeStrong(&self->__accessoryView, view);
     [(PUExtendedToolbar *)self _invalidateAccessoryViewContainer];
   }
 }
 
-- (void)_setToolbarItems:(id)a3
+- (void)_setToolbarItems:(id)items
 {
-  v8 = a3;
-  v4 = [(PUExtendedToolbar *)self _assertInsideUpdate];
-  v5 = v8;
-  if (self->__toolbarItems != v8)
+  itemsCopy = items;
+  _assertInsideUpdate = [(PUExtendedToolbar *)self _assertInsideUpdate];
+  v5 = itemsCopy;
+  if (self->__toolbarItems != itemsCopy)
   {
-    v4 = [(NSArray *)v8 isEqual:?];
-    v5 = v8;
-    if ((v4 & 1) == 0)
+    _assertInsideUpdate = [(NSArray *)itemsCopy isEqual:?];
+    v5 = itemsCopy;
+    if ((_assertInsideUpdate & 1) == 0)
     {
-      v6 = [(NSArray *)v8 copy];
+      v6 = [(NSArray *)itemsCopy copy];
       toolbarItems = self->__toolbarItems;
       self->__toolbarItems = v6;
 
-      v4 = [(PUExtendedToolbar *)self _invalidateContainedToolbar];
-      v5 = v8;
+      _assertInsideUpdate = [(PUExtendedToolbar *)self _invalidateContainedToolbar];
+      v5 = itemsCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](_assertInsideUpdate, v5);
 }
 
-- (void)_updateIfNeededWithAnimatorBlock:(id)a3
+- (void)_updateIfNeededWithAnimatorBlock:(id)block
 {
-  v7 = a3;
+  blockCopy = block;
   if ([(PUExtendedToolbar *)self _needsUpdate])
   {
-    v5 = [(PUExtendedToolbar *)self _isUpdating];
+    _isUpdating = [(PUExtendedToolbar *)self _isUpdating];
     [(PUExtendedToolbar *)self _setUpdating:1];
     [(PUExtendedToolbar *)self _updateToolbarItemsIfNeeded];
     [(PUExtendedToolbar *)self _updateAccessoryViewIfNeeded];
     [(PUExtendedToolbar *)self _updateAccessoryTopOutsetViewIfNeeded];
-    [(PUExtendedToolbar *)self _updateViewsIfNeededWithAnimatorBlock:v7];
-    [(PUExtendedToolbar *)self _setUpdating:v5];
+    [(PUExtendedToolbar *)self _updateViewsIfNeededWithAnimatorBlock:blockCopy];
+    [(PUExtendedToolbar *)self _setUpdating:_isUpdating];
     if ([(PUExtendedToolbar *)self _needsUpdate])
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:252 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:252 description:@"updates still needed after an update cycle"];
     }
   }
 }
@@ -511,24 +511,24 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
 {
   if ([(PUExtendedToolbar *)self _numberOfNestedChanges]<= 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:231 description:@"not within a change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:231 description:@"not within a change block"];
   }
 }
 
-- (void)_performChanges:(id)a3 withAnimatorBlock:(id)a4
+- (void)_performChanges:(id)changes withAnimatorBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  changesCopy = changes;
+  blockCopy = block;
+  if (!changesCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"changeBlock"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUExtendedToolbar.m" lineNumber:212 description:{@"Invalid parameter not satisfying: %@", @"changeBlock"}];
   }
 
-  v9 = [(PUExtendedToolbar *)self _numberOfNestedChanges];
-  [(PUExtendedToolbar *)self _setNumberOfNestedChanges:v9 + 1];
-  if (v8 && v9 >= 1)
+  _numberOfNestedChanges = [(PUExtendedToolbar *)self _numberOfNestedChanges];
+  [(PUExtendedToolbar *)self _setNumberOfNestedChanges:_numberOfNestedChanges + 1];
+  if (blockCopy && _numberOfNestedChanges >= 1)
   {
     v10 = PLUIGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -538,59 +538,59 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
     }
   }
 
-  v7[2](v7);
-  [(PUExtendedToolbar *)self _setNumberOfNestedChanges:v9];
-  if (!v9)
+  changesCopy[2](changesCopy);
+  [(PUExtendedToolbar *)self _setNumberOfNestedChanges:_numberOfNestedChanges];
+  if (!_numberOfNestedChanges)
   {
-    [(PUExtendedToolbar *)self _updateIfNeededWithAnimatorBlock:v8];
+    [(PUExtendedToolbar *)self _updateIfNeededWithAnimatorBlock:blockCopy];
   }
 }
 
 - (void)_invalidateSize
 {
-  v2 = [(PUExtendedToolbar *)self toolbarViewModel];
-  [v2 setNeedsToUpdateToolbarSize:1];
+  toolbarViewModel = [(PUExtendedToolbar *)self toolbarViewModel];
+  [toolbarViewModel setNeedsToUpdateToolbarSize:1];
 }
 
-- (void)_setAccessoryViewContainer:(id)a3
+- (void)_setAccessoryViewContainer:(id)container
 {
-  v5 = a3;
-  if (self->__accessoryViewContainer != v5)
+  containerCopy = container;
+  if (self->__accessoryViewContainer != containerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__accessoryViewContainer, a3);
+    v6 = containerCopy;
+    objc_storeStrong(&self->__accessoryViewContainer, container);
     [(PUExtendedToolbar *)self _invalidateSize];
-    v5 = v6;
+    containerCopy = v6;
   }
 }
 
-- (void)_setContainedToolbar:(id)a3
+- (void)_setContainedToolbar:(id)toolbar
 {
-  v5 = a3;
-  if (self->__containedToolbar != v5)
+  toolbarCopy = toolbar;
+  if (self->__containedToolbar != toolbarCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->__containedToolbar, a3);
+    v6 = toolbarCopy;
+    objc_storeStrong(&self->__containedToolbar, toolbar);
     [(PUExtendedToolbar *)self _invalidateSize];
-    v5 = v6;
+    toolbarCopy = v6;
   }
 }
 
-- (void)_getContainedToolbarFrame:(CGRect *)a3 accessoryViewContainerFrame:(CGRect *)a4 forBounds:(CGRect)a5
+- (void)_getContainedToolbarFrame:(CGRect *)frame accessoryViewContainerFrame:(CGRect *)containerFrame forBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  slice = a5;
-  v19 = a5;
-  v12 = [(PUExtendedToolbar *)self _containedToolbar];
-  if (v12)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  slice = bounds;
+  boundsCopy = bounds;
+  _containedToolbar = [(PUExtendedToolbar *)self _containedToolbar];
+  if (_containedToolbar)
   {
-    v13 = v12;
-    v14 = [(PUExtendedToolbar *)self _accessoryViewContainer];
+    v13 = _containedToolbar;
+    _accessoryViewContainer = [(PUExtendedToolbar *)self _accessoryViewContainer];
 
-    if (v14)
+    if (_accessoryViewContainer)
     {
       [(PUExtendedToolbar *)self _containedToolbarHeight];
       v16 = v15;
@@ -598,22 +598,22 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
       v21.origin.y = y;
       v21.size.width = width;
       v21.size.height = height;
-      CGRectDivide(v21, &slice, &v19, v16, CGRectMaxYEdge);
+      CGRectDivide(v21, &slice, &boundsCopy, v16, CGRectMaxYEdge);
     }
   }
 
-  if (a3)
+  if (frame)
   {
     size = slice.size;
-    a3->origin = slice.origin;
-    a3->size = size;
+    frame->origin = slice.origin;
+    frame->size = size;
   }
 
-  if (a4)
+  if (containerFrame)
   {
-    v18 = v19.size;
-    a4->origin = v19.origin;
-    a4->size = v18;
+    v18 = boundsCopy.size;
+    containerFrame->origin = boundsCopy.origin;
+    containerFrame->size = v18;
   }
 }
 
@@ -634,8 +634,8 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
   v10.receiver = self;
   v10.super_class = PUExtendedToolbar;
   [(PUExtendedToolbar *)&v10 layoutSubviews];
-  v3 = [(PUExtendedToolbar *)self _containedToolbar];
-  v4 = [(PUExtendedToolbar *)self _accessoryViewContainer];
+  _containedToolbar = [(PUExtendedToolbar *)self _containedToolbar];
+  _accessoryViewContainer = [(PUExtendedToolbar *)self _accessoryViewContainer];
   v5 = *(MEMORY[0x1E695F058] + 16);
   v8 = *MEMORY[0x1E695F058];
   v9 = v5;
@@ -643,23 +643,23 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
   v7 = v5;
   [(PUExtendedToolbar *)self bounds];
   [(PUExtendedToolbar *)self _getContainedToolbarFrame:&v8 accessoryViewContainerFrame:&v6 forBounds:?];
-  [v3 pu_setCenterAndBoundsForFrameRect:{v8, v9}];
-  [v4 pu_setCenterAndBoundsForFrameRect:{v6, v7}];
+  [_containedToolbar pu_setCenterAndBoundsForFrameRect:{v8, v9}];
+  [_accessoryViewContainer pu_setCenterAndBoundsForFrameRect:{v6, v7}];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [(PUExtendedToolbar *)self _containedToolbar];
-  [(PUExtendedToolbar *)self convertPoint:v8 toView:x, y];
+  eventCopy = event;
+  _containedToolbar = [(PUExtendedToolbar *)self _containedToolbar];
+  [(PUExtendedToolbar *)self convertPoint:_containedToolbar toView:x, y];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(PUExtendedToolbar *)self _containedToolbar];
-  v14 = [v13 hitTest:v7 withEvent:{v10, v12}];
+  _containedToolbar2 = [(PUExtendedToolbar *)self _containedToolbar];
+  v14 = [_containedToolbar2 hitTest:eventCopy withEvent:{v10, v12}];
 
   if (!v14)
   {
@@ -667,8 +667,8 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v15 = [(PUExtendedToolbar *)self _accessoryViewContainers];
-    v16 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    _accessoryViewContainers = [(PUExtendedToolbar *)self _accessoryViewContainers];
+    v16 = [_accessoryViewContainers countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v16)
     {
       v17 = v16;
@@ -679,14 +679,14 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
         {
           if (*v25 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(_accessoryViewContainers);
           }
 
-          v20 = [*(*(&v24 + 1) + 8 * i) subviews];
-          v21 = [v20 firstObject];
+          subviews = [*(*(&v24 + 1) + 8 * i) subviews];
+          firstObject = [subviews firstObject];
 
-          [(PUExtendedToolbar *)self convertPoint:v21 toView:x, y];
-          v14 = [v21 hitTest:v7 withEvent:?];
+          [(PUExtendedToolbar *)self convertPoint:firstObject toView:x, y];
+          v14 = [firstObject hitTest:eventCopy withEvent:?];
 
           if (v14)
           {
@@ -695,7 +695,7 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v17 = [_accessoryViewContainers countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v17)
         {
           continue;
@@ -707,7 +707,7 @@ void __59__PUExtendedToolbar__updateViewsIfNeededWithAnimatorBlock___block_invok
 
     v23.receiver = self;
     v23.super_class = PUExtendedToolbar;
-    v14 = [(PUExtendedToolbar *)&v23 hitTest:v7 withEvent:x, y];
+    v14 = [(PUExtendedToolbar *)&v23 hitTest:eventCopy withEvent:x, y];
   }
 
 LABEL_12:
@@ -715,20 +715,20 @@ LABEL_12:
   return v14;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v22.receiver = self;
   v22.super_class = PUExtendedToolbar;
-  [(PUExtendedToolbar *)&v22 sizeThatFits:a3.width, a3.height];
+  [(PUExtendedToolbar *)&v22 sizeThatFits:fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   [(PUExtendedToolbar *)self _setContainedToolbarHeight:v6];
-  v8 = [(PUExtendedToolbar *)self _containedToolbar];
-  v9 = [(PUExtendedToolbar *)self _accessoryViewContainer];
-  v10 = v9;
-  if (v8 | v9)
+  _containedToolbar = [(PUExtendedToolbar *)self _containedToolbar];
+  _accessoryViewContainer = [(PUExtendedToolbar *)self _accessoryViewContainer];
+  v10 = _accessoryViewContainer;
+  if (_containedToolbar | _accessoryViewContainer)
   {
-    if (v8)
+    if (_containedToolbar)
     {
       v11 = v7 + 0.0;
     }
@@ -738,10 +738,10 @@ LABEL_12:
       v11 = 0.0;
     }
 
-    if (v9)
+    if (_accessoryViewContainer)
     {
-      v12 = [(PUExtendedToolbar *)self toolbarViewModel];
-      [v12 accessoryViewMaximumHeight];
+      toolbarViewModel = [(PUExtendedToolbar *)self toolbarViewModel];
+      [toolbarViewModel accessoryViewMaximumHeight];
       v14 = v13;
 
       if (v7 >= v14)
@@ -762,8 +762,8 @@ LABEL_12:
       v11 = v11 + v15;
     }
 
-    v16 = [(PUExtendedToolbar *)self toolbarViewModel];
-    [v16 maximumHeight];
+    toolbarViewModel2 = [(PUExtendedToolbar *)self toolbarViewModel];
+    [toolbarViewModel2 maximumHeight];
     v18 = v17;
 
     if (v11 >= v18)
@@ -799,36 +799,36 @@ LABEL_12:
   v5.receiver = self;
   v5.super_class = PUExtendedToolbar;
   [(PUExtendedToolbar *)&v5 tintColorDidChange];
-  v3 = [(PUExtendedToolbar *)self _containedToolbar];
-  v4 = [(PUExtendedToolbar *)self tintColor];
-  [v3 setTintColor:v4];
+  _containedToolbar = [(PUExtendedToolbar *)self _containedToolbar];
+  tintColor = [(PUExtendedToolbar *)self tintColor];
+  [_containedToolbar setTintColor:tintColor];
 }
 
-- (void)setBarStyle:(int64_t)a3
+- (void)setBarStyle:(int64_t)style
 {
   v6.receiver = self;
   v6.super_class = PUExtendedToolbar;
   [(PUExtendedToolbar *)&v6 setBarStyle:?];
-  v5 = [(PUExtendedToolbar *)self _containedToolbar];
-  [v5 setBarStyle:a3];
+  _containedToolbar = [(PUExtendedToolbar *)self _containedToolbar];
+  [_containedToolbar setBarStyle:style];
 }
 
-- (void)setToolbarViewModel:(id)a3 withAnimatorBlock:(id)a4
+- (void)setToolbarViewModel:(id)model withAnimatorBlock:(id)block
 {
-  v7 = a3;
+  modelCopy = model;
   toolbarViewModel = self->_toolbarViewModel;
-  if (toolbarViewModel != v7)
+  if (toolbarViewModel != modelCopy)
   {
-    v9 = a4;
+    blockCopy = block;
     [(PUViewModel *)toolbarViewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_toolbarViewModel, a3);
+    objc_storeStrong(&self->_toolbarViewModel, model);
     [(PUViewModel *)self->_toolbarViewModel registerChangeObserver:self];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __59__PUExtendedToolbar_setToolbarViewModel_withAnimatorBlock___block_invoke;
     v10[3] = &unk_1E7B80DD0;
     v10[4] = self;
-    [(PUExtendedToolbar *)self _performChanges:v10 withAnimatorBlock:v9];
+    [(PUExtendedToolbar *)self _performChanges:v10 withAnimatorBlock:blockCopy];
   }
 }
 
@@ -845,36 +845,36 @@ uint64_t __59__PUExtendedToolbar_setToolbarViewModel_withAnimatorBlock___block_i
 
 - (BOOL)_shouldStretchDuringCrossfadeTransition
 {
-  v3 = [(PUExtendedToolbar *)self toolbarViewModel];
-  v4 = [v3 toolbarItems];
-  if ([v4 count])
+  toolbarViewModel = [(PUExtendedToolbar *)self toolbarViewModel];
+  toolbarItems = [toolbarViewModel toolbarItems];
+  if ([toolbarItems count])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(PUExtendedToolbar *)self toolbarViewModel];
-    v7 = [v6 accessoryView];
-    v5 = v7 != 0;
+    toolbarViewModel2 = [(PUExtendedToolbar *)self toolbarViewModel];
+    accessoryView = [toolbarViewModel2 accessoryView];
+    v5 = accessoryView != 0;
   }
 
   return v5;
 }
 
-- (PUExtendedToolbar)initWithFrame:(CGRect)a3
+- (PUExtendedToolbar)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PUExtendedToolbar;
-  v3 = [(PUExtendedToolbar *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUExtendedToolbar *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [MEMORY[0x1E695DFA8] setWithCapacity:3];
     accessoryViewContainers = v3->__accessoryViewContainers;
     v3->__accessoryViewContainers = v4;
 
-    v6 = [(PUExtendedToolbar *)v3 layer];
-    [v6 setAllowsGroupOpacity:0];
+    layer = [(PUExtendedToolbar *)v3 layer];
+    [layer setAllowsGroupOpacity:0];
   }
 
   return v3;

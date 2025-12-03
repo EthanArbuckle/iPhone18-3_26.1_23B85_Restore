@@ -1,30 +1,30 @@
 @interface _UIWallpaperEffectEntry
-- (void)addEffectToView:(id)a3;
-- (void)applyIdentityEffectToView:(id)a3;
-- (void)applyRequestedEffectToView:(id)a3;
+- (void)addEffectToView:(id)view;
+- (void)applyIdentityEffectToView:(id)view;
+- (void)applyRequestedEffectToView:(id)view;
 @end
 
 @implementation _UIWallpaperEffectEntry
 
-- (void)addEffectToView:(id)a3
+- (void)addEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIWallpaperEffectEntry *)self backgroundColor];
-  [v4 setBackgroundColor:v5];
+  viewCopy = view;
+  backgroundColor = [(_UIWallpaperEffectEntry *)self backgroundColor];
+  [viewCopy setBackgroundColor:backgroundColor];
 }
 
-- (void)applyRequestedEffectToView:(id)a3
+- (void)applyRequestedEffectToView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIWallpaperEffectEntry *)self backgroundColor];
-  [v4 setBackgroundColor:v5];
+  viewCopy = view;
+  backgroundColor = [(_UIWallpaperEffectEntry *)self backgroundColor];
+  [viewCopy setBackgroundColor:backgroundColor];
 }
 
-- (void)applyIdentityEffectToView:(id)a3
+- (void)applyIdentityEffectToView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 _nilBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  viewCopy = view;
+  _nilBackgroundColor = [viewCopy _nilBackgroundColor];
+  [viewCopy setBackgroundColor:_nilBackgroundColor];
 }
 
 @end

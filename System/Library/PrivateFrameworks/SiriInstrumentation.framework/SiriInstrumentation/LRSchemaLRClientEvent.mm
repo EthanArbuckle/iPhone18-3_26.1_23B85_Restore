@@ -1,31 +1,31 @@
 @interface LRSchemaLRClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (LRSchemaLRClientEvent)initWithDictionary:(id)a3;
-- (LRSchemaLRClientEvent)initWithJSON:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
+- (LRSchemaLRClientEvent)initWithDictionary:(id)dictionary;
+- (LRSchemaLRClientEvent)initWithJSON:(id)n;
 - (LRSchemaLRRedactionSummaryReported)redactionSummaryReported;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)qualifiedMessageName;
 - (id)suppressMessageUnderConditions;
 - (void)deleteRedactionSummaryReported;
-- (void)setRedactionSummaryReported:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setRedactionSummaryReported:(id)reported;
+- (void)writeTo:(id)to;
 @end
 
 @implementation LRSchemaLRClientEvent
 
-- (LRSchemaLRClientEvent)initWithDictionary:(id)a3
+- (LRSchemaLRClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = LRSchemaLRClientEvent;
   v5 = [(LRSchemaLRClientEvent *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"redactionSummaryReported"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"redactionSummaryReported"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -39,30 +39,30 @@
   return v5;
 }
 
-- (LRSchemaLRClientEvent)initWithJSON:(id)a3
+- (LRSchemaLRClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(LRSchemaLRClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(LRSchemaLRClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(LRSchemaLRClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -75,43 +75,43 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_redactionSummaryReported)
   {
-    v4 = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    redactionSummaryReported = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
+    dictionaryRepresentation = [redactionSummaryReported dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"redactionSummaryReported"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"redactionSummaryReported"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"redactionSummaryReported"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"redactionSummaryReported"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     whichEvent_Type = self->_whichEvent_Type;
-    if (whichEvent_Type == [v4 whichEvent_Type])
+    if (whichEvent_Type == [equalCopy whichEvent_Type])
     {
-      v6 = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
-      v7 = [v4 redactionSummaryReported];
-      v8 = v7;
-      if ((v6 != 0) != (v7 == 0))
+      redactionSummaryReported = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
+      redactionSummaryReported2 = [equalCopy redactionSummaryReported];
+      v8 = redactionSummaryReported2;
+      if ((redactionSummaryReported != 0) != (redactionSummaryReported2 == 0))
       {
-        v9 = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
-        if (!v9)
+        redactionSummaryReported3 = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
+        if (!redactionSummaryReported3)
         {
 
 LABEL_11:
@@ -119,10 +119,10 @@ LABEL_11:
           goto LABEL_9;
         }
 
-        v10 = v9;
-        v11 = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
-        v12 = [v4 redactionSummaryReported];
-        v13 = [v11 isEqual:v12];
+        v10 = redactionSummaryReported3;
+        redactionSummaryReported4 = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
+        redactionSummaryReported5 = [equalCopy redactionSummaryReported];
+        v13 = [redactionSummaryReported4 isEqual:redactionSummaryReported5];
 
         if (v13)
         {
@@ -142,14 +142,14 @@ LABEL_9:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
+  toCopy = to;
+  redactionSummaryReported = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
 
-  if (v4)
+  if (redactionSummaryReported)
   {
-    v5 = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
+    redactionSummaryReported2 = [(LRSchemaLRClientEvent *)self redactionSummaryReported];
     PBDataWriterWriteSubmessage();
   }
 }
@@ -179,16 +179,16 @@ LABEL_9:
   return v3;
 }
 
-- (void)setRedactionSummaryReported:(id)a3
+- (void)setRedactionSummaryReported:(id)reported
 {
   v3 = 101;
-  if (!a3)
+  if (!reported)
   {
     v3 = 0;
   }
 
   self->_whichEvent_Type = v3;
-  objc_storeStrong(&self->_redactionSummaryReported, a3);
+  objc_storeStrong(&self->_redactionSummaryReported, reported);
 }
 
 - (id)qualifiedMessageName
@@ -204,17 +204,17 @@ LABEL_9:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = LRSchemaLRClientEvent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(LRSchemaLRClientEvent *)self redactionSummaryReported:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(LRSchemaLRClientEvent *)self deleteRedactionSummaryReported];
   }
@@ -245,9 +245,9 @@ LABEL_9:
   return v3;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 == 101)
+  if (tag == 101)
   {
     return @"redactionSummaryReported";
   }

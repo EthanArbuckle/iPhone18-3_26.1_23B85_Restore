@@ -1,22 +1,22 @@
 @interface TRIActiveSysctlFactorsProvider
-- (TRIActiveSysctlFactorsProvider)initWithActiveNamespacesProvider:(id)a3 factorLevelsRetriever:(id)a4;
+- (TRIActiveSysctlFactorsProvider)initWithActiveNamespacesProvider:(id)provider factorLevelsRetriever:(id)retriever;
 - (id)activeSysctlFactorLevels;
 @end
 
 @implementation TRIActiveSysctlFactorsProvider
 
-- (TRIActiveSysctlFactorsProvider)initWithActiveNamespacesProvider:(id)a3 factorLevelsRetriever:(id)a4
+- (TRIActiveSysctlFactorsProvider)initWithActiveNamespacesProvider:(id)provider factorLevelsRetriever:(id)retriever
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  retrieverCopy = retriever;
   v12.receiver = self;
   v12.super_class = TRIActiveSysctlFactorsProvider;
   v9 = [(TRIActiveSysctlFactorsProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_namespacesProvider, a3);
-    objc_storeStrong(&v10->_factorLevelsRetriever, a4);
+    objc_storeStrong(&v9->_namespacesProvider, provider);
+    objc_storeStrong(&v10->_factorLevelsRetriever, retriever);
   }
 
   return v10;
@@ -25,13 +25,13 @@
 - (id)activeSysctlFactorLevels
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(TRIActiveSysctlNamespacesProviding *)self->_namespacesProvider activeSysctlNamespaces];
+  activeSysctlNamespaces = [(TRIActiveSysctlNamespacesProviding *)self->_namespacesProvider activeSysctlNamespaces];
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = activeSysctlNamespaces;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {

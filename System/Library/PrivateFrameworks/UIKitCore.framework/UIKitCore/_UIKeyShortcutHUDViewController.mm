@@ -1,41 +1,41 @@
 @interface _UIKeyShortcutHUDViewController
-- (BOOL)_canChangeFirstResponder:(id)a3 toResponder:(id)a4;
+- (BOOL)_canChangeFirstResponder:(id)responder toResponder:(id)toResponder;
 - (BOOL)_disableAutomaticKeyboardUI;
 - (BOOL)hasText;
-- (BOOL)menuViewController:(id)a3 shouldPersistSelectionForShortcut:(id)a4;
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5;
-- (BOOL)passthroughScrollInteractionDidRecognize:(id)a3;
+- (BOOL)menuViewController:(id)controller shouldPersistSelectionForShortcut:(id)shortcut;
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event;
+- (BOOL)passthroughScrollInteractionDidRecognize:(id)recognize;
 - (BOOL)shouldDismissHUDForModifierKeyTap;
 - (UIKeyCommand)showShortcutsKeyCommand;
 - (_UIKeyShortcutHUDViewController)init;
 - (_UIKeyShortcutHUDViewControllerDelegate)delegate;
 - (_UIKeyShortcutHUDWindow)hudWindow;
-- (id)_defaultHUDAppearanceAnimatorForHidden:(BOOL)a3;
+- (id)_defaultHUDAppearanceAnimatorForHidden:(BOOL)hidden;
 - (id)_defaultSearchTransitionAnimator;
-- (void)_focusTopSearchResultWithDelay:(BOOL)a3;
-- (void)_hudWillBecomeHidden:(BOOL)a3;
-- (void)_setDisplayedMenu:(id)a3 animated:(BOOL)a4;
-- (void)_setMenuHeight:(double)a3;
-- (void)_setSearching:(BOOL)a3 animated:(BOOL)a4 initialSearchText:(id)a5;
+- (void)_focusTopSearchResultWithDelay:(BOOL)delay;
+- (void)_hudWillBecomeHidden:(BOOL)hidden;
+- (void)_setDisplayedMenu:(id)menu animated:(BOOL)animated;
+- (void)_setMenuHeight:(double)height;
+- (void)_setSearching:(BOOL)searching animated:(BOOL)animated initialSearchText:(id)text;
 - (void)_setupCollectionViewManagement;
 - (void)_setupHUDKeyCommands;
 - (void)_setupInitialViewState;
 - (void)_setupLayout;
 - (void)_setupMetrics;
 - (void)_setupSubviews;
-- (void)_stopInFlightAnimationsForAnimator:(id)a3 endPosition:(int64_t)a4;
-- (void)_updateDisplayedMenuForCurrentHeldModifierFlagsAnimated:(BOOL)a3;
-- (void)handleEscapeKeyCommand:(id)a3;
-- (void)handleModelKeyCommand:(id)a3;
-- (void)handleShowShortcutsKeyCommand:(id)a3;
-- (void)insertText:(id)a3;
-- (void)menuViewController:(id)a3 didSelectShortcut:(id)a4;
-- (void)setHeldModifierFlags:(int64_t)a3;
-- (void)setHidden:(BOOL)a3 completionHandler:(id)a4;
+- (void)_stopInFlightAnimationsForAnimator:(id)animator endPosition:(int64_t)position;
+- (void)_updateDisplayedMenuForCurrentHeldModifierFlagsAnimated:(BOOL)animated;
+- (void)handleEscapeKeyCommand:(id)command;
+- (void)handleModelKeyCommand:(id)command;
+- (void)handleShowShortcutsKeyCommand:(id)command;
+- (void)insertText:(id)text;
+- (void)menuViewController:(id)controller didSelectShortcut:(id)shortcut;
+- (void)setHeldModifierFlags:(int64_t)flags;
+- (void)setHidden:(BOOL)hidden completionHandler:(id)handler;
 - (void)setupPassthroughScrollInteraction;
-- (void)toolbarViewController:(id)a3 didUpdateSearchText:(id)a4;
+- (void)toolbarViewController:(id)controller didUpdateSearchText:(id)text;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation _UIKeyShortcutHUDViewController
@@ -73,14 +73,14 @@
   [(UIView *)self->_hudContainerView setAlpha:0.0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = _UIKeyShortcutHUDViewController;
-  [(UIViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(UIViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -90,7 +90,7 @@
   v8[4] = self;
   v9[1] = *&width;
   v9[2] = *&height;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);
 }
@@ -98,9 +98,9 @@
 - (void)_setupMetrics
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(_UIKeyShortcutHUDViewController *)self metricsProvider];
+  metricsProvider = [(_UIKeyShortcutHUDViewController *)self metricsProvider];
   WeakRetained = objc_loadWeakRetained(&self->_hudWindow);
-  v5 = [v3 metricsForWindow:WeakRetained];
+  v5 = [metricsProvider metricsForWindow:WeakRetained];
   metrics = self->_metrics;
   self->_metrics = v5;
 
@@ -115,28 +115,28 @@
   }
 
   v9 = objc_loadWeakRetained(&self->_hudWindow);
-  v10 = [v9 traitCollection];
-  [(UIKeyShortcutHUDMetrics *)self->_metrics setTraitCollection:v10];
+  traitCollection = [v9 traitCollection];
+  [(UIKeyShortcutHUDMetrics *)self->_metrics setTraitCollection:traitCollection];
 
-  v11 = [(_UIKeyShortcutHUDConfiguration *)self->_configuration clientTraits];
-  [(UIKeyShortcutHUDMetrics *)self->_metrics setClientTraits:v11];
+  clientTraits = [(_UIKeyShortcutHUDConfiguration *)self->_configuration clientTraits];
+  [(UIKeyShortcutHUDMetrics *)self->_metrics setClientTraits:clientTraits];
 
   v12 = objc_loadWeakRetained(&self->_hudWindow);
-  v13 = [v12 windowScene];
-  v14 = [v13 _coordinateSpace];
-  [v14 bounds];
+  windowScene = [v12 windowScene];
+  _coordinateSpace = [windowScene _coordinateSpace];
+  [_coordinateSpace bounds];
   [(UIKeyShortcutHUDMetrics *)self->_metrics setAvailableVerticalSpace:CGRectGetHeight(v22)];
 
   [(UIKeyShortcutHUDMetrics *)self->_metrics computeOneTimeMetrics];
   v15 = objc_opt_new();
   [v15 setHidden:1];
-  v16 = [(UIViewController *)self view];
-  [v16 addSubview:v15];
+  view = [(UIViewController *)self view];
+  [view addSubview:v15];
 
   [(UIKeyShortcutHUDMetrics *)self->_metrics setSelfSizingPlayground:v15];
-  v17 = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
-  v18 = [v17 menu];
-  [(UIKeyShortcutHUDMetrics *)self->_metrics setBaseMenu:v18];
+  model = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
+  menu = [model menu];
+  [(UIKeyShortcutHUDMetrics *)self->_metrics setBaseMenu:menu];
 }
 
 - (void)_setupSubviews
@@ -148,22 +148,22 @@
   [(UIView *)self->_hudContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIKeyShortcutHUDMetrics *)self->_metrics platterShadowOpacity];
   v6 = v5;
-  v7 = [(UIView *)self->_hudContainerView layer];
+  layer = [(UIView *)self->_hudContainerView layer];
   *&v8 = v6;
-  [v7 setShadowOpacity:v8];
+  [layer setShadowOpacity:v8];
 
   [(UIKeyShortcutHUDMetrics *)self->_metrics platterShadowRadius];
   v10 = v9;
-  v11 = [(UIView *)self->_hudContainerView layer];
-  [v11 setShadowRadius:v10];
+  layer2 = [(UIView *)self->_hudContainerView layer];
+  [layer2 setShadowRadius:v10];
 
   v12 = *MEMORY[0x1E695F060];
   v13 = *(MEMORY[0x1E695F060] + 8);
-  v14 = [(UIView *)self->_hudContainerView layer];
-  [v14 setShadowOffset:{v12, v13}];
+  layer3 = [(UIView *)self->_hudContainerView layer];
+  [layer3 setShadowOffset:{v12, v13}];
 
-  v15 = [(UIViewController *)self view];
-  [v15 addSubview:self->_hudContainerView];
+  view = [(UIViewController *)self view];
+  [view addSubview:self->_hudContainerView];
 
   v16 = objc_opt_new();
   menuVC = self->_menuVC;
@@ -171,12 +171,12 @@
 
   [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC setMetrics:self->_metrics];
   [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC setDelegate:self];
-  v18 = [(UIViewController *)self->_menuVC view];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view2 = [(UIViewController *)self->_menuVC view];
+  [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v19 = self->_hudContainerView;
-  v20 = [(UIViewController *)self->_menuVC view];
-  [(UIView *)v19 addSubview:v20];
+  view3 = [(UIViewController *)self->_menuVC view];
+  [(UIView *)v19 addSubview:view3];
 
   [(UIViewController *)self addChildViewController:self->_menuVC];
   [(UIViewController *)self->_menuVC didMoveToParentViewController:self];
@@ -184,18 +184,18 @@
   toolbarVC = self->_toolbarVC;
   self->_toolbarVC = v21;
 
-  v23 = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
-  v24 = [v23 menu];
-  [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC setMenu:v24];
+  model = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
+  menu = [model menu];
+  [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC setMenu:menu];
 
   [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC setMetrics:self->_metrics];
   [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC setDelegate:self];
-  v25 = [(UIViewController *)self->_toolbarVC view];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view4 = [(UIViewController *)self->_toolbarVC view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v26 = self->_hudContainerView;
-  v27 = [(UIViewController *)self->_toolbarVC view];
-  [(UIView *)v26 addSubview:v27];
+  view5 = [(UIViewController *)self->_toolbarVC view];
+  [(UIView *)v26 addSubview:view5];
 
   [(UIViewController *)self addChildViewController:self->_toolbarVC];
   v28 = self->_toolbarVC;
@@ -206,43 +206,43 @@
 - (void)_setupLayout
 {
   v91[5] = *MEMORY[0x1E69E9840];
-  v3 = [(UIView *)self->_hudContainerView topAnchor];
-  v4 = [(UIViewController *)self view];
-  v5 = [v4 topAnchor];
+  topAnchor = [(UIView *)self->_hudContainerView topAnchor];
+  view = [(UIViewController *)self view];
+  topAnchor2 = [view topAnchor];
   [(UIKeyShortcutHUDMetrics *)self->_metrics minimumScreenEdgeDistance];
-  v6 = [v3 constraintGreaterThanOrEqualToAnchor:v5 constant:?];
+  v6 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:?];
   hudContainerTopEdgeConstraint = self->_hudContainerTopEdgeConstraint;
   self->_hudContainerTopEdgeConstraint = v6;
 
-  v8 = [(UIView *)self->_hudContainerView leadingAnchor];
-  v9 = [(UIViewController *)self view];
-  v10 = [v9 leadingAnchor];
+  leadingAnchor = [(UIView *)self->_hudContainerView leadingAnchor];
+  view2 = [(UIViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
   [(UIKeyShortcutHUDMetrics *)self->_metrics minimumScreenEdgeDistance];
-  v11 = [v8 constraintGreaterThanOrEqualToAnchor:v10 constant:?];
+  v11 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:?];
   hudContainerLeadingEdgeConstraint = self->_hudContainerLeadingEdgeConstraint;
   self->_hudContainerLeadingEdgeConstraint = v11;
 
-  v13 = [(UIViewController *)self view];
-  v14 = [v13 trailingAnchor];
-  v15 = [(UIView *)self->_hudContainerView trailingAnchor];
+  view3 = [(UIViewController *)self view];
+  trailingAnchor = [view3 trailingAnchor];
+  trailingAnchor2 = [(UIView *)self->_hudContainerView trailingAnchor];
   [(UIKeyShortcutHUDMetrics *)self->_metrics minimumScreenEdgeDistance];
-  v16 = [v14 constraintGreaterThanOrEqualToAnchor:v15 constant:?];
+  v16 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2 constant:?];
   hudContainerTrailingEdgeConstraint = self->_hudContainerTrailingEdgeConstraint;
   self->_hudContainerTrailingEdgeConstraint = v16;
 
-  v18 = [(UIViewController *)self view];
-  v19 = [v18 bottomAnchor];
-  v20 = [(UIView *)self->_hudContainerView bottomAnchor];
+  view4 = [(UIViewController *)self view];
+  bottomAnchor = [view4 bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_hudContainerView bottomAnchor];
   [(UIKeyShortcutHUDMetrics *)self->_metrics minimumBottomScreenEdgeDistance];
-  v21 = [v19 constraintGreaterThanOrEqualToAnchor:v20 constant:?];
+  v21 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2 constant:?];
   hudContainerBottomEdgeConstraint = self->_hudContainerBottomEdgeConstraint;
   self->_hudContainerBottomEdgeConstraint = v21;
 
-  v23 = [(UIViewController *)self view];
-  v24 = [v23 safeAreaLayoutGuide];
-  v25 = [v24 bottomAnchor];
-  v26 = [(UIView *)self->_hudContainerView bottomAnchor];
-  v27 = [v25 constraintEqualToAnchor:v26];
+  view5 = [(UIViewController *)self view];
+  safeAreaLayoutGuide = [view5 safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_hudContainerView bottomAnchor];
+  v27 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   hudContainerBottomSafeAreaEdgeConstraint = self->_hudContainerBottomSafeAreaEdgeConstraint;
   self->_hudContainerBottomSafeAreaEdgeConstraint = v27;
 
@@ -255,10 +255,10 @@
   v32 = self->_hudContainerBottomEdgeConstraint;
   v91[2] = self->_hudContainerTrailingEdgeConstraint;
   v91[3] = v32;
-  v33 = [(UIView *)self->_hudContainerView centerXAnchor];
-  v34 = [(UIViewController *)self view];
-  v35 = [v34 centerXAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  centerXAnchor = [(UIView *)self->_hudContainerView centerXAnchor];
+  view6 = [(UIViewController *)self view];
+  centerXAnchor2 = [view6 centerXAnchor];
+  v36 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v91[4] = v36;
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:5];
   [v30 activateConstraints:v37];
@@ -268,80 +268,80 @@
     [(NSLayoutConstraint *)self->_hudContainerBottomSafeAreaEdgeConstraint setActive:1];
   }
 
-  v38 = [(UIViewController *)self->_menuVC view];
-  v39 = [v38 widthAnchor];
+  view7 = [(UIViewController *)self->_menuVC view];
+  widthAnchor = [view7 widthAnchor];
   [(UIKeyShortcutHUDMetrics *)self->_metrics standardHUDWidth];
-  v40 = [v39 constraintEqualToConstant:?];
+  v40 = [widthAnchor constraintEqualToConstant:?];
   menuPreferredWidthConstraint = self->_menuPreferredWidthConstraint;
   self->_menuPreferredWidthConstraint = v40;
 
-  v42 = [(UIViewController *)self->_menuVC view];
-  v43 = [v42 heightAnchor];
+  view8 = [(UIViewController *)self->_menuVC view];
+  heightAnchor = [view8 heightAnchor];
   [(UIKeyShortcutHUDMetrics *)self->_metrics standardMenuPanelHeight];
-  v44 = [v43 constraintEqualToConstant:?];
+  v44 = [heightAnchor constraintEqualToConstant:?];
   menuPreferredHeightConstraint = self->_menuPreferredHeightConstraint;
   self->_menuPreferredHeightConstraint = v44;
 
-  v46 = [(UIViewController *)self->_toolbarVC view];
-  v47 = [v46 topAnchor];
-  v48 = [(UIViewController *)self->_menuVC view];
-  v49 = [v48 bottomAnchor];
+  view9 = [(UIViewController *)self->_toolbarVC view];
+  topAnchor3 = [view9 topAnchor];
+  view10 = [(UIViewController *)self->_menuVC view];
+  bottomAnchor5 = [view10 bottomAnchor];
   [(UIKeyShortcutHUDMetrics *)self->_metrics standardMenuToolbarSpacing];
-  v50 = [v47 constraintEqualToAnchor:v49 constant:?];
+  v50 = [topAnchor3 constraintEqualToAnchor:bottomAnchor5 constant:?];
   menuToolbarSpacingConstraint = self->_menuToolbarSpacingConstraint;
   self->_menuToolbarSpacingConstraint = v50;
 
-  v52 = [(UIViewController *)self->_toolbarVC view];
-  v53 = [v52 widthAnchor];
+  view11 = [(UIViewController *)self->_toolbarVC view];
+  widthAnchor2 = [view11 widthAnchor];
   [(UIKeyShortcutHUDMetrics *)self->_metrics standardHUDWidth];
-  v54 = [v53 constraintEqualToConstant:?];
+  v54 = [widthAnchor2 constraintEqualToConstant:?];
   toolbarPreferredWidthConstraint = self->_toolbarPreferredWidthConstraint;
   self->_toolbarPreferredWidthConstraint = v54;
 
   v76 = MEMORY[0x1E69977A0];
-  v89 = [(UIViewController *)self->_menuVC view];
-  v88 = [v89 topAnchor];
-  v87 = [(UIView *)self->_hudContainerView topAnchor];
-  v86 = [v88 constraintEqualToAnchor:v87];
+  view12 = [(UIViewController *)self->_menuVC view];
+  topAnchor4 = [view12 topAnchor];
+  topAnchor5 = [(UIView *)self->_hudContainerView topAnchor];
+  v86 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v90[0] = v86;
-  v85 = [(UIViewController *)self->_menuVC view];
-  v84 = [v85 leadingAnchor];
-  v83 = [(UIView *)self->_hudContainerView leadingAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  view13 = [(UIViewController *)self->_menuVC view];
+  leadingAnchor3 = [view13 leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_hudContainerView leadingAnchor];
+  v82 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v90[1] = v82;
-  v81 = [(UIViewController *)self->_menuVC view];
-  v80 = [v81 trailingAnchor];
-  v78 = [(UIView *)self->_hudContainerView trailingAnchor];
-  v77 = [v80 constraintEqualToAnchor:v78];
+  view14 = [(UIViewController *)self->_menuVC view];
+  trailingAnchor3 = [view14 trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_hudContainerView trailingAnchor];
+  v77 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v56 = self->_menuPreferredWidthConstraint;
   v90[2] = v77;
   v90[3] = v56;
   v57 = self->_menuToolbarSpacingConstraint;
   v90[4] = self->_menuPreferredHeightConstraint;
   v90[5] = v57;
-  v79 = [(UIViewController *)self->_toolbarVC view];
-  v75 = [v79 centerXAnchor];
-  v74 = [(UIView *)self->_hudContainerView centerXAnchor];
-  v73 = [v75 constraintEqualToAnchor:v74];
+  view15 = [(UIViewController *)self->_toolbarVC view];
+  centerXAnchor3 = [view15 centerXAnchor];
+  centerXAnchor4 = [(UIView *)self->_hudContainerView centerXAnchor];
+  v73 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v90[6] = v73;
-  v72 = [(UIViewController *)self->_toolbarVC view];
-  v71 = [v72 bottomAnchor];
-  v70 = [(UIView *)self->_hudContainerView bottomAnchor];
-  v69 = [v71 constraintEqualToAnchor:v70];
+  view16 = [(UIViewController *)self->_toolbarVC view];
+  bottomAnchor6 = [view16 bottomAnchor];
+  bottomAnchor7 = [(UIView *)self->_hudContainerView bottomAnchor];
+  v69 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v58 = self->_toolbarPreferredWidthConstraint;
   v90[7] = v69;
   v90[8] = v58;
-  v59 = [(UIViewController *)self->_toolbarVC view];
-  v60 = [v59 widthAnchor];
-  v61 = [(UIView *)self->_hudContainerView widthAnchor];
-  v62 = [v60 constraintLessThanOrEqualToAnchor:v61];
+  view17 = [(UIViewController *)self->_toolbarVC view];
+  widthAnchor3 = [view17 widthAnchor];
+  widthAnchor4 = [(UIView *)self->_hudContainerView widthAnchor];
+  v62 = [widthAnchor3 constraintLessThanOrEqualToAnchor:widthAnchor4];
   v90[9] = v62;
-  v63 = [(UIView *)self->_hudContainerView safeAreaLayoutGuide];
-  v64 = [v63 bottomAnchor];
-  v65 = [(UIViewController *)self->_toolbarVC view];
-  v66 = [v65 topAnchor];
+  safeAreaLayoutGuide2 = [(UIView *)self->_hudContainerView safeAreaLayoutGuide];
+  bottomAnchor8 = [safeAreaLayoutGuide2 bottomAnchor];
+  view18 = [(UIViewController *)self->_toolbarVC view];
+  topAnchor6 = [view18 topAnchor];
   [(UIKeyShortcutHUDMetrics *)self->_metrics standardToolbarContentHeight];
-  v67 = [v64 constraintEqualToAnchor:v66 constant:?];
+  v67 = [bottomAnchor8 constraintEqualToAnchor:topAnchor6 constant:?];
   v90[10] = v67;
   v68 = [MEMORY[0x1E695DEC8] arrayWithObjects:v90 count:11];
   [v76 activateConstraints:v68];
@@ -356,8 +356,8 @@
   [(_UIKeyShortcutHUDCollectionViewManager *)self->_collectionViewManager setHudVC:self];
   [(_UIKeyShortcutHUDCollectionViewManager *)self->_collectionViewManager setMenu:self->_menuVC];
   [(_UIKeyShortcutHUDCollectionViewManager *)self->_collectionViewManager setToolbar:self->_toolbarVC];
-  v5 = [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC searchButton];
-  [(_UIKeyShortcutHUDCollectionViewManager *)self->_collectionViewManager setSearchButton:v5];
+  searchButton = [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC searchButton];
+  [(_UIKeyShortcutHUDCollectionViewManager *)self->_collectionViewManager setSearchButton:searchButton];
 
   [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC setCollectionViewManager:self->_collectionViewManager];
   [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC setCollectionViewManager:self->_collectionViewManager];
@@ -368,12 +368,12 @@
 
 - (void)_setupInitialViewState
 {
-  v3 = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
-  v4 = [v3 menu];
-  v5 = [v4 children];
-  v6 = [v5 firstObject];
+  model = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
+  menu = [model menu];
+  children = [menu children];
+  firstObject = [children firstObject];
 
-  [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC selectCategory:v6 withCategoryIndex:0];
+  [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC selectCategory:firstObject withCategoryIndex:0];
   if ([(_UIKeyShortcutHUDConfiguration *)self->_configuration isSearching])
   {
     [(_UIKeyShortcutHUDViewController *)self _setSearching:1 animated:0];
@@ -386,38 +386,38 @@
 - (void)_setupHUDKeyCommands
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v4 = [UIKeyCommand keyCommandWithInput:@"UIKeyInputEscape" modifierFlags:0 action:sel_handleEscapeKeyCommand_];
   [v4 setRepeatBehavior:2];
   [v4 _setEnumerationPriority:0];
   [v4 setAttributes:4];
   v27 = v4;
-  [v3 addObject:v4];
+  [array addObject:v4];
   v5 = [UIKeyCommand keyCommandWithInput:@"?" modifierFlags:0x100000 action:sel_showHelp_];
   [v5 setRepeatBehavior:2];
   [v5 setAttributes:4];
-  [v3 addObject:v5];
-  v6 = [(_UIKeyShortcutHUDViewController *)self configuration];
-  v7 = [v6 clientTraits];
-  v8 = [v7 isSystemApp];
+  [array addObject:v5];
+  configuration = [(_UIKeyShortcutHUDViewController *)self configuration];
+  clientTraits = [configuration clientTraits];
+  isSystemApp = [clientTraits isSystemApp];
 
-  if (v8)
+  if (isSystemApp)
   {
     v9 = [UIKeyCommand keyCommandWithInput:@"m" modifierFlags:0x800000 action:sel_handleShowShortcutsKeyCommand_];
-    v10 = [v9 _allowGlobeModifierKeyCommand];
+    _allowGlobeModifierKeyCommand = [v9 _allowGlobeModifierKeyCommand];
 
-    [v10 setRepeatBehavior:2];
-    [v10 setAttributes:4];
-    [v3 addObject:v10];
-    objc_storeWeak(&self->_showShortcutsKeyCommand, v10);
+    [_allowGlobeModifierKeyCommand setRepeatBehavior:2];
+    [_allowGlobeModifierKeyCommand setAttributes:4];
+    [array addObject:_allowGlobeModifierKeyCommand];
+    objc_storeWeak(&self->_showShortcutsKeyCommand, _allowGlobeModifierKeyCommand);
   }
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   hudToModelKeyCommandsMap = self->_hudToModelKeyCommandsMap;
-  self->_hudToModelKeyCommandsMap = v11;
+  self->_hudToModelKeyCommandsMap = dictionary;
 
-  v13 = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
-  v14 = [v13 modelKeyCommandsExcludingHUDCommands:v3];
+  model = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
+  v14 = [model modelKeyCommandsExcludingHUDCommands:array];
 
   v31 = 0u;
   v32 = 0u;
@@ -433,26 +433,26 @@
     {
       for (i = 0; i != v16; ++i)
       {
-        v19 = self;
-        v20 = v3;
+        selfCopy = self;
+        v20 = array;
         if (*v30 != v17)
         {
           objc_enumerationMutation(obj);
         }
 
         v21 = *(*(&v29 + 1) + 8 * i);
-        v22 = [v21 _keyCodes];
+        _keyCodes = [v21 _keyCodes];
 
-        if (v22)
+        if (_keyCodes)
         {
-          v23 = [v21 _keyCodes];
-          +[UIKeyCommand keyCommandWithKeyCodes:modifierFlags:action:](UIKeyCommand, "keyCommandWithKeyCodes:modifierFlags:action:", v23, [v21 modifierFlags], sel_handleModelKeyCommand_);
+          _keyCodes2 = [v21 _keyCodes];
+          +[UIKeyCommand keyCommandWithKeyCodes:modifierFlags:action:](UIKeyCommand, "keyCommandWithKeyCodes:modifierFlags:action:", _keyCodes2, [v21 modifierFlags], sel_handleModelKeyCommand_);
         }
 
         else
         {
-          v23 = [v21 input];
-          +[UIKeyCommand keyCommandWithInput:modifierFlags:action:](UIKeyCommand, "keyCommandWithInput:modifierFlags:action:", v23, [v21 modifierFlags], sel_handleModelKeyCommand_);
+          _keyCodes2 = [v21 input];
+          +[UIKeyCommand keyCommandWithInput:modifierFlags:action:](UIKeyCommand, "keyCommandWithInput:modifierFlags:action:", _keyCodes2, [v21 modifierFlags], sel_handleModelKeyCommand_);
         }
         v24 = ;
 
@@ -460,12 +460,12 @@
         [v24 setWantsPriorityOverSystemBehavior:0];
         [v24 setAllowsAutomaticLocalization:{objc_msgSend(v21, "allowsAutomaticMirroring")}];
         [v24 setAllowsAutomaticMirroring:{objc_msgSend(v21, "allowsAutomaticMirroring")}];
-        v25 = [v24 _allowGlobeModifierKeyCommand];
+        _allowGlobeModifierKeyCommand2 = [v24 _allowGlobeModifierKeyCommand];
 
-        self = v19;
-        [(NSMutableDictionary *)v19->_hudToModelKeyCommandsMap setObject:v21 forKeyedSubscript:v25];
-        v3 = v20;
-        [v20 addObject:v25];
+        self = selfCopy;
+        [(NSMutableDictionary *)selfCopy->_hudToModelKeyCommandsMap setObject:v21 forKeyedSubscript:_allowGlobeModifierKeyCommand2];
+        array = v20;
+        [v20 addObject:_allowGlobeModifierKeyCommand2];
       }
 
       v16 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
@@ -475,7 +475,7 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_hudWindow);
-  [WeakRetained setHudKeyCommands:v3];
+  [WeakRetained setHudKeyCommands:array];
 }
 
 - (void)setupPassthroughScrollInteraction
@@ -485,26 +485,26 @@
   self->_passthroughScrollInteraction = v3;
 
   [(_UIPassthroughScrollInteraction *)self->_passthroughScrollInteraction setDelegate:self];
-  v5 = [(UIViewController *)self view];
-  [v5 addInteraction:self->_passthroughScrollInteraction];
+  view = [(UIViewController *)self view];
+  [view addInteraction:self->_passthroughScrollInteraction];
 }
 
-- (void)setHidden:(BOOL)a3 completionHandler:(id)a4
+- (void)setHidden:(BOOL)hidden completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
-  if (self->_hidden != v4)
+  hiddenCopy = hidden;
+  handlerCopy = handler;
+  if (self->_hidden != hiddenCopy)
   {
-    self->_hidden = v4;
+    self->_hidden = hiddenCopy;
     [(_UIKeyShortcutHUDViewController *)self _stopInFlightAnimationsForAnimator:self->_hudAppearanceAnimator endPosition:2];
-    v7 = [(_UIKeyShortcutHUDViewController *)self _defaultHUDAppearanceAnimatorForHidden:v4];
+    v7 = [(_UIKeyShortcutHUDViewController *)self _defaultHUDAppearanceAnimatorForHidden:hiddenCopy];
     hudAppearanceAnimator = self->_hudAppearanceAnimator;
     self->_hudAppearanceAnimator = v7;
 
-    [(_UIKeyShortcutHUDViewController *)self _hudWillBecomeHidden:v4];
-    [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC hudWillBecomeHidden:v4];
-    [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC hudWillBecomeHidden:v4];
-    if (v4)
+    [(_UIKeyShortcutHUDViewController *)self _hudWillBecomeHidden:hiddenCopy];
+    [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC hudWillBecomeHidden:hiddenCopy];
+    [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC hudWillBecomeHidden:hiddenCopy];
+    if (hiddenCopy)
     {
       self->_completelyPresented = 0;
     }
@@ -516,7 +516,7 @@
     v18[2] = __63___UIKeyShortcutHUDViewController_setHidden_completionHandler___block_invoke;
     v18[3] = &unk_1E7101C60;
     objc_copyWeak(&v19, &location);
-    v20 = v4;
+    v20 = hiddenCopy;
     [(UIViewPropertyAnimator *)v9 addAnimations:v18];
     v10 = self->_hudAppearanceAnimator;
     v11 = MEMORY[0x1E69E9820];
@@ -524,8 +524,8 @@
     v13 = __63___UIKeyShortcutHUDViewController_setHidden_completionHandler___block_invoke_2;
     v14 = &unk_1E7107288;
     objc_copyWeak(&v16, &location);
-    v17 = v4;
-    v15 = v6;
+    v17 = hiddenCopy;
+    v15 = handlerCopy;
     [(UIViewPropertyAnimator *)v10 addCompletion:&v11];
     [(UIViewPropertyAnimator *)self->_hudAppearanceAnimator startAnimation:v11];
 
@@ -535,38 +535,38 @@
   }
 }
 
-- (void)_hudWillBecomeHidden:(BOOL)a3
+- (void)_hudWillBecomeHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
-    v4 = [(UIViewController *)self view];
-    [v4 setUserInteractionEnabled:0];
+    view = [(UIViewController *)self view];
+    [view setUserInteractionEnabled:0];
 
-    v5 = [(_UIKeyShortcutHUDViewController *)self hudContainerView];
-    [v5 _setSafeAreaInsetsFrozen:1];
+    hudContainerView = [(_UIKeyShortcutHUDViewController *)self hudContainerView];
+    [hudContainerView _setSafeAreaInsetsFrozen:1];
   }
 }
 
 - (BOOL)shouldDismissHUDForModifierKeyTap
 {
-  v2 = [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC searchBar];
-  v3 = [v2 isEditing];
+  searchBar = [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC searchBar];
+  isEditing = [searchBar isEditing];
 
-  return v3 ^ 1;
+  return isEditing ^ 1;
 }
 
-- (BOOL)passthroughScrollInteraction:(id)a3 shouldInteractAtLocation:(CGPoint)a4 withEvent:(id)a5
+- (BOOL)passthroughScrollInteraction:(id)interaction shouldInteractAtLocation:(CGPoint)location withEvent:(id)event
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = a5;
-  v9 = [(UIViewController *)self view];
-  v10 = [v9 hitTest:v8 withEvent:{x, y}];
+  y = location.y;
+  x = location.x;
+  eventCopy = event;
+  view = [(UIViewController *)self view];
+  v10 = [view hitTest:eventCopy withEvent:{x, y}];
 
-  v11 = [(UIViewController *)self view];
+  view2 = [(UIViewController *)self view];
   if (v10)
   {
-    v12 = v10 == v11;
+    v12 = v10 == view2;
   }
 
   else
@@ -579,7 +579,7 @@
   return v13;
 }
 
-- (BOOL)passthroughScrollInteractionDidRecognize:(id)a3
+- (BOOL)passthroughScrollInteractionDidRecognize:(id)recognize
 {
   v4 = _UIKeyShortcutHUDLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -588,13 +588,13 @@
     _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "Dismissing HUD due to interaction outside HUD", v7, 2u);
   }
 
-  v5 = [(_UIKeyShortcutHUDViewController *)self delegate];
-  [v5 keyShortcutHUDViewControllerDidRequestDismissal:self];
+  delegate = [(_UIKeyShortcutHUDViewController *)self delegate];
+  [delegate keyShortcutHUDViewControllerDidRequestDismissal:self];
 
   return 1;
 }
 
-- (void)handleEscapeKeyCommand:(id)a3
+- (void)handleEscapeKeyCommand:(id)command
 {
   if ([(_UIKeyShortcutHUDViewController *)self isSearching]&& ![(_UIKeyShortcutHUDViewController *)self isHUDPresentedIntoSearchMode])
   {
@@ -611,12 +611,12 @@
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "Dismissing HUD due to esc key command", v6, 2u);
     }
 
-    v5 = [(_UIKeyShortcutHUDViewController *)self delegate];
-    [v5 keyShortcutHUDViewControllerDidRequestDismissal:self];
+    delegate = [(_UIKeyShortcutHUDViewController *)self delegate];
+    [delegate keyShortcutHUDViewControllerDidRequestDismissal:self];
   }
 }
 
-- (void)handleShowShortcutsKeyCommand:(id)a3
+- (void)handleShowShortcutsKeyCommand:(id)command
 {
   if ([(_UIKeyShortcutHUDViewController *)self isSearching])
   {
@@ -633,23 +633,23 @@
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "Dismissing HUD due to hitting Globe-M key command", v6, 2u);
     }
 
-    v5 = [(_UIKeyShortcutHUDViewController *)self delegate];
-    [v5 keyShortcutHUDViewControllerDidRequestDismissal:self];
+    delegate = [(_UIKeyShortcutHUDViewController *)self delegate];
+    [delegate keyShortcutHUDViewControllerDidRequestDismissal:self];
   }
 }
 
-- (void)handleModelKeyCommand:(id)a3
+- (void)handleModelKeyCommand:(id)command
 {
-  v4 = [(NSMutableDictionary *)self->_hudToModelKeyCommandsMap objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_hudToModelKeyCommandsMap objectForKeyedSubscript:command];
   if (v4)
   {
-    v5 = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
-    v6 = [v5 modelShortcutForModelKeyCommand:v4];
+    model = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
+    v6 = [model modelShortcutForModelKeyCommand:v4];
 
     if (v6)
     {
-      v7 = [(UIViewController *)self view];
-      [v7 setUserInteractionEnabled:0];
+      view = [(UIViewController *)self view];
+      [view setUserInteractionEnabled:0];
 
       WeakRetained = objc_loadWeakRetained(&self->_hudWindow);
       [WeakRetained setHudKeyCommands:0];
@@ -667,16 +667,16 @@
   }
 }
 
-- (void)_setDisplayedMenu:(id)a3 animated:(BOOL)a4
+- (void)_setDisplayedMenu:(id)menu animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   metrics = self->_metrics;
-  v7 = a3;
-  [(UIKeyShortcutHUDMetrics *)metrics setDisplayedMenu:v7 searching:[(_UIKeyShortcutHUDViewController *)self isSearching]];
-  [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC setMenu:v7 animated:v4];
+  menuCopy = menu;
+  [(UIKeyShortcutHUDMetrics *)metrics setDisplayedMenu:menuCopy searching:[(_UIKeyShortcutHUDViewController *)self isSearching]];
+  [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC setMenu:menuCopy animated:animatedCopy];
 }
 
-- (void)_focusTopSearchResultWithDelay:(BOOL)a3
+- (void)_focusTopSearchResultWithDelay:(BOOL)delay
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -685,7 +685,7 @@
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = v4;
-  if (a3)
+  if (delay)
   {
     v6 = dispatch_time(0, 50000000);
     v7[0] = MEMORY[0x1E69E9820];
@@ -702,17 +702,17 @@
   }
 }
 
-- (void)setHeldModifierFlags:(int64_t)a3
+- (void)setHeldModifierFlags:(int64_t)flags
 {
-  if (self->_heldModifierFlags != a3)
+  if (self->_heldModifierFlags != flags)
   {
-    self->_heldModifierFlags = a3;
+    self->_heldModifierFlags = flags;
     if ([(UIViewController *)self isViewLoaded])
     {
-      v4 = [(UIViewController *)self view];
-      v5 = [v4 isUserInteractionEnabled];
+      view = [(UIViewController *)self view];
+      isUserInteractionEnabled = [view isUserInteractionEnabled];
 
-      if (v5)
+      if (isUserInteractionEnabled)
       {
 
         [(_UIKeyShortcutHUDViewController *)self _updateDisplayedMenuForCurrentHeldModifierFlagsAnimated:0];
@@ -721,55 +721,55 @@
   }
 }
 
-- (void)_updateDisplayedMenuForCurrentHeldModifierFlagsAnimated:(BOOL)a3
+- (void)_updateDisplayedMenuForCurrentHeldModifierFlagsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (![(_UIKeyShortcutHUDViewController *)self isSearching])
   {
-    v6 = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
-    v5 = [v6 menuWithAlternatesForModifierFlags:self->_heldModifierFlags];
-    [(_UIKeyShortcutHUDViewController *)self _setDisplayedMenu:v5 animated:v3];
+    model = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
+    v5 = [model menuWithAlternatesForModifierFlags:self->_heldModifierFlags];
+    [(_UIKeyShortcutHUDViewController *)self _setDisplayedMenu:v5 animated:animatedCopy];
   }
 }
 
-- (void)_setSearching:(BOOL)a3 animated:(BOOL)a4 initialSearchText:(id)a5
+- (void)_setSearching:(BOOL)searching animated:(BOOL)animated initialSearchText:(id)text
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  if (self->_searching == v6)
+  animatedCopy = animated;
+  searchingCopy = searching;
+  textCopy = text;
+  if (self->_searching == searchingCopy)
   {
-    [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC prepareForSearchTransition:v6];
-    [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC prepareForSearchTransition:v6];
-    [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC setSearching:v6];
-    [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC setSearching:v6];
+    [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC prepareForSearchTransition:searchingCopy];
+    [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC prepareForSearchTransition:searchingCopy];
+    [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC setSearching:searchingCopy];
+    [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC setSearching:searchingCopy];
     [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC didCompleteSearchTransition];
     [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC didCompleteSearchTransition];
   }
 
   else
   {
-    self->_searching = v6;
-    if (!v6)
+    self->_searching = searchingCopy;
+    if (!searchingCopy)
     {
       [(_UIKeyShortcutHUDViewController *)self setHudPresentedIntoSearchMode:0];
     }
 
     [(_UIKeyShortcutHUDViewController *)self _stopInFlightAnimationsForAnimator:self->_menuPanelAnimator endPosition:2];
     [(_UIKeyShortcutHUDViewController *)self _stopInFlightAnimationsForAnimator:self->_searchTransitionAnimator endPosition:0];
-    [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC prepareForSearchTransition:v6];
-    [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC prepareForSearchTransition:v6];
+    [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC prepareForSearchTransition:searchingCopy];
+    [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC prepareForSearchTransition:searchingCopy];
     objc_initWeak(location, self);
-    v9 = [(UIViewController *)self->_menuVC view];
-    [v9 alpha];
+    view = [(UIViewController *)self->_menuVC view];
+    [view alpha];
     v11 = v10;
     v12 = v10 > 0.0;
 
-    v13 = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
-    v14 = [v13 searchMenuWithSearchText:v8 maxSearchResultEntries:{-[UIKeyShortcutHUDMetrics maxNumberOfCellsInSearchResults](self->_metrics, "maxNumberOfCellsInSearchResults")}];
+    model = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
+    v14 = [model searchMenuWithSearchText:textCopy maxSearchResultEntries:{-[UIKeyShortcutHUDMetrics maxNumberOfCellsInSearchResults](self->_metrics, "maxNumberOfCellsInSearchResults")}];
 
     v15 = 0;
-    if (v6 && v14)
+    if (searchingCopy && v14)
     {
       if ([v14 isEmpty])
       {
@@ -783,13 +783,13 @@
       }
     }
 
-    v31 = v8;
+    v31 = textCopy;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __76___UIKeyShortcutHUDViewController__setSearching_animated_initialSearchText___block_invoke;
     aBlock[3] = &unk_1E71072D8;
     objc_copyWeak(&v56, location);
-    v57 = v6;
+    v57 = searchingCopy;
     v58 = v15;
     v32 = _Block_copy(aBlock);
     v47[0] = MEMORY[0x1E69E9820];
@@ -797,13 +797,13 @@
     v47[2] = __76___UIKeyShortcutHUDViewController__setSearching_animated_initialSearchText___block_invoke_2;
     v47[3] = &unk_1E7107300;
     objc_copyWeak(&v50, location);
-    v51 = v6;
+    v51 = searchingCopy;
     v52 = v15;
     v16 = v14;
-    v53 = v5;
+    v53 = animatedCopy;
     v30 = v16;
     v48 = v16;
-    v49 = self;
+    selfCopy = self;
     v54 = v12;
     v17 = _Block_copy(v47);
     v43[0] = MEMORY[0x1E69E9820];
@@ -811,7 +811,7 @@
     v43[2] = __76___UIKeyShortcutHUDViewController__setSearching_animated_initialSearchText___block_invoke_4;
     v43[3] = &unk_1E7107328;
     objc_copyWeak(&v44, location);
-    v45 = v6;
+    v45 = searchingCopy;
     v46 = v15;
     v18 = _Block_copy(v43);
     v41[0] = MEMORY[0x1E69E9820];
@@ -821,7 +821,7 @@
     objc_copyWeak(&v42, location);
     v19 = _Block_copy(v41);
     metrics = self->_metrics;
-    if (v6)
+    if (searchingCopy)
     {
       if (v15)
       {
@@ -848,8 +848,8 @@
       {
         [(_UIKeyShortcutHUDMenuViewController *)self->_menuVC setSearching:0];
         [(_UIKeyShortcutHUDViewController *)self _updateDisplayedMenuForCurrentHeldModifierFlagsAnimated:0];
-        v21 = [(UIViewController *)self view];
-        [v21 layoutIfNeeded];
+        view2 = [(UIViewController *)self view];
+        [view2 layoutIfNeeded];
       }
 
       [(UIKeyShortcutHUDMetrics *)self->_metrics standardHUDWidth];
@@ -858,11 +858,11 @@
     }
 
     [(NSLayoutConstraint *)self->_toolbarPreferredWidthConstraint setConstant:?];
-    if (v5)
+    if (animatedCopy)
     {
-      v22 = [(_UIKeyShortcutHUDViewController *)self _defaultMenuPanelAnimator];
+      _defaultMenuPanelAnimator = [(_UIKeyShortcutHUDViewController *)self _defaultMenuPanelAnimator];
       menuPanelAnimator = self->_menuPanelAnimator;
-      self->_menuPanelAnimator = v22;
+      self->_menuPanelAnimator = _defaultMenuPanelAnimator;
 
       v24 = self->_menuPanelAnimator;
       v39[0] = MEMORY[0x1E69E9820];
@@ -878,9 +878,9 @@
       v37[3] = &unk_1E70FFB68;
       v38 = v18;
       [(UIViewPropertyAnimator *)v25 addCompletion:v37];
-      v26 = [(_UIKeyShortcutHUDViewController *)self _defaultSearchTransitionAnimator];
+      _defaultSearchTransitionAnimator = [(_UIKeyShortcutHUDViewController *)self _defaultSearchTransitionAnimator];
       searchTransitionAnimator = self->_searchTransitionAnimator;
-      self->_searchTransitionAnimator = v26;
+      self->_searchTransitionAnimator = _defaultSearchTransitionAnimator;
 
       v28 = self->_searchTransitionAnimator;
       v35[0] = MEMORY[0x1E69E9820];
@@ -915,15 +915,15 @@
     objc_destroyWeak(&v56);
 
     objc_destroyWeak(location);
-    v8 = v31;
+    textCopy = v31;
   }
 }
 
-- (BOOL)_canChangeFirstResponder:(id)a3 toResponder:(id)a4
+- (BOOL)_canChangeFirstResponder:(id)responder toResponder:(id)toResponder
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(UIResponder *)self _containsResponder:v7]&& [(_UIKeyShortcutHUDViewController *)self isHidden])
+  responderCopy = responder;
+  toResponderCopy = toResponder;
+  if ([(UIResponder *)self _containsResponder:toResponderCopy]&& [(_UIKeyShortcutHUDViewController *)self isHidden])
   {
     v8 = 0;
   }
@@ -932,31 +932,31 @@
   {
     v10.receiver = self;
     v10.super_class = _UIKeyShortcutHUDViewController;
-    v8 = [(UIResponder *)&v10 _canChangeFirstResponder:v6 toResponder:v7];
+    v8 = [(UIResponder *)&v10 _canChangeFirstResponder:responderCopy toResponder:toResponderCopy];
   }
 
   return v8;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   if ([(_UIKeyShortcutHUDViewController *)self isHidden])
   {
-    v5 = v4;
+    v5 = textCopy;
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v8 = [v4 stringByTrimmingCharactersInSet:v6];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v8 = [textCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if ([v8 length])
     {
       [(_UIKeyShortcutHUDViewController *)self _setSearching:1 animated:1 initialSearchText:v8];
       [(_UIKeyShortcutHUDViewController *)self setShouldIgnoreNextSearchFieldTextChangedCallback:1];
-      v7 = [(_UIKeyShortcutHUDViewController *)self delegate];
-      [v7 keyShortcutHUDViewControllerDidBeginTypeAheadSearch:self];
+      delegate = [(_UIKeyShortcutHUDViewController *)self delegate];
+      [delegate keyShortcutHUDViewControllerDidBeginTypeAheadSearch:self];
     }
 
     v5 = v8;
@@ -965,9 +965,9 @@
 
 - (BOOL)hasText
 {
-  v2 = [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC searchBar];
-  v3 = [v2 text];
-  v4 = [v3 length] != 0;
+  searchBar = [(_UIKeyShortcutHUDToolbarViewController *)self->_toolbarVC searchBar];
+  text = [searchBar text];
+  v4 = [text length] != 0;
 
   return v4;
 }
@@ -984,9 +984,9 @@
   return [(UIResponder *)&v4 _disableAutomaticKeyboardUI];
 }
 
-- (id)_defaultHUDAppearanceAnimatorForHidden:(BOOL)a3
+- (id)_defaultHUDAppearanceAnimatorForHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v3 = [[UICubicTimingParameters alloc] initWithAnimationCurve:0];
   }
@@ -1010,31 +1010,31 @@
   return v3;
 }
 
-- (void)_stopInFlightAnimationsForAnimator:(id)a3 endPosition:(int64_t)a4
+- (void)_stopInFlightAnimationsForAnimator:(id)animator endPosition:(int64_t)position
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  animatorCopy = animator;
+  v6 = animatorCopy;
+  if (animatorCopy)
   {
-    v8 = v5;
-    v7 = [v5 state];
+    v8 = animatorCopy;
+    state = [animatorCopy state];
     v6 = v8;
-    if (v7)
+    if (state)
     {
       [v8 stopAnimation:0];
-      [v8 finishAnimationAtPosition:a4];
+      [v8 finishAnimationAtPosition:position];
       v6 = v8;
     }
   }
 }
 
-- (void)_setMenuHeight:(double)a3
+- (void)_setMenuHeight:(double)height
 {
   [(NSLayoutConstraint *)self->_menuPreferredHeightConstraint setConstant:?];
   [(UIKeyShortcutHUDMetrics *)self->_metrics hiddenMenuPanelHeight];
   v6 = v5;
   v7 = 0.0;
-  if (v6 != a3)
+  if (v6 != height)
   {
     [(UIKeyShortcutHUDMetrics *)self->_metrics standardMenuToolbarSpacing];
   }
@@ -1044,56 +1044,56 @@
   [(NSLayoutConstraint *)menuToolbarSpacingConstraint setConstant:v7];
 }
 
-- (void)menuViewController:(id)a3 didSelectShortcut:(id)a4
+- (void)menuViewController:(id)controller didSelectShortcut:(id)shortcut
 {
-  v14 = a4;
-  v5 = [(_UIKeyShortcutHUDViewController *)self configuration];
-  v6 = [v5 clientTraits];
-  if (([v6 isSystemApp] & 1) == 0)
+  shortcutCopy = shortcut;
+  configuration = [(_UIKeyShortcutHUDViewController *)self configuration];
+  clientTraits = [configuration clientTraits];
+  if (([clientTraits isSystemApp] & 1) == 0)
   {
 
     goto LABEL_6;
   }
 
-  v7 = [v14 uiKeyCommand];
+  uiKeyCommand = [shortcutCopy uiKeyCommand];
   WeakRetained = objc_loadWeakRetained(&self->_showShortcutsKeyCommand);
-  v9 = [v7 isEqual:WeakRetained];
+  v9 = [uiKeyCommand isEqual:WeakRetained];
 
   if (!v9)
   {
 LABEL_6:
-    v12 = [(UIViewController *)self view];
-    [v12 setUserInteractionEnabled:0];
+    view = [(UIViewController *)self view];
+    [view setUserInteractionEnabled:0];
 
-    v13 = [(_UIKeyShortcutHUDViewController *)self delegate];
-    [v13 keyShortcutHUDViewController:self didSelectShortcut:v14];
+    delegate = [(_UIKeyShortcutHUDViewController *)self delegate];
+    [delegate keyShortcutHUDViewController:self didSelectShortcut:shortcutCopy];
 
     goto LABEL_7;
   }
 
-  v10 = [(_UIKeyShortcutHUDViewController *)self isSearching];
-  v11 = v14;
-  if (!v10)
+  isSearching = [(_UIKeyShortcutHUDViewController *)self isSearching];
+  v11 = shortcutCopy;
+  if (!isSearching)
   {
     goto LABEL_8;
   }
 
   [(_UIKeyShortcutHUDViewController *)self _setSearching:0 animated:1];
 LABEL_7:
-  v11 = v14;
+  v11 = shortcutCopy;
 LABEL_8:
 }
 
-- (BOOL)menuViewController:(id)a3 shouldPersistSelectionForShortcut:(id)a4
+- (BOOL)menuViewController:(id)controller shouldPersistSelectionForShortcut:(id)shortcut
 {
-  v5 = a4;
-  v6 = [(_UIKeyShortcutHUDViewController *)self configuration];
-  v7 = [v6 clientTraits];
-  if ([v7 isSystemApp])
+  shortcutCopy = shortcut;
+  configuration = [(_UIKeyShortcutHUDViewController *)self configuration];
+  clientTraits = [configuration clientTraits];
+  if ([clientTraits isSystemApp])
   {
-    v8 = [v5 uiKeyCommand];
+    uiKeyCommand = [shortcutCopy uiKeyCommand];
     WeakRetained = objc_loadWeakRetained(&self->_showShortcutsKeyCommand);
-    v10 = [v8 isEqual:WeakRetained];
+    v10 = [uiKeyCommand isEqual:WeakRetained];
 
     v11 = v10 ^ 1;
   }
@@ -1106,10 +1106,10 @@ LABEL_8:
   return v11;
 }
 
-- (void)toolbarViewController:(id)a3 didUpdateSearchText:(id)a4
+- (void)toolbarViewController:(id)controller didUpdateSearchText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  textCopy = text;
   if ([(_UIKeyShortcutHUDViewController *)self shouldIgnoreNextSearchFieldTextChangedCallback])
   {
     [(_UIKeyShortcutHUDViewController *)self setShouldIgnoreNextSearchFieldTextChangedCallback:0];
@@ -1118,8 +1118,8 @@ LABEL_8:
   else if ([(_UIKeyShortcutHUDViewController *)self isSearching])
   {
     [(_UIKeyShortcutHUDViewController *)self _stopInFlightAnimationsForAnimator:self->_menuPanelAnimator endPosition:2];
-    v8 = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
-    v9 = [v8 searchMenuWithSearchText:v7 maxSearchResultEntries:{-[UIKeyShortcutHUDMetrics maxNumberOfCellsInSearchResults](self->_metrics, "maxNumberOfCellsInSearchResults")}];
+    model = [(_UIKeyShortcutHUDConfiguration *)self->_configuration model];
+    v9 = [model searchMenuWithSearchText:textCopy maxSearchResultEntries:{-[UIKeyShortcutHUDMetrics maxNumberOfCellsInSearchResults](self->_metrics, "maxNumberOfCellsInSearchResults")}];
 
     if (([v9 isEmpty] & 1) == 0)
     {
@@ -1127,13 +1127,13 @@ LABEL_8:
       [(_UIKeyShortcutHUDViewController *)self _focusTopSearchResultWithDelay:0];
     }
 
-    v10 = [(UIViewController *)self->_menuVC view];
-    [v10 alpha];
+    view = [(UIViewController *)self->_menuVC view];
+    [view alpha];
     v12 = v11;
 
-    v13 = [v9 isEmpty];
+    isEmpty = [v9 isEmpty];
     metrics = self->_metrics;
-    if ((v13 ^ 1))
+    if ((isEmpty ^ 1))
     {
       [(UIKeyShortcutHUDMetrics *)metrics searchModePreferredMenuPanelHeight];
       v16 = v18;
@@ -1149,9 +1149,9 @@ LABEL_8:
 
     v19 = v17;
     objc_initWeak(&location, self);
-    v20 = [(_UIKeyShortcutHUDViewController *)self _defaultMenuPanelAnimator];
+    _defaultMenuPanelAnimator = [(_UIKeyShortcutHUDViewController *)self _defaultMenuPanelAnimator];
     menuPanelAnimator = self->_menuPanelAnimator;
-    self->_menuPanelAnimator = v20;
+    self->_menuPanelAnimator = _defaultMenuPanelAnimator;
 
     v22 = self->_menuPanelAnimator;
     v28[0] = MEMORY[0x1E69E9820];
@@ -1159,14 +1159,14 @@ LABEL_8:
     v28[2] = __77___UIKeyShortcutHUDViewController_toolbarViewController_didUpdateSearchText___block_invoke;
     v28[3] = &unk_1E7101C60;
     objc_copyWeak(&v29, &location);
-    v30 = v13 ^ 1;
+    v30 = isEmpty ^ 1;
     [(UIViewPropertyAnimator *)v22 addAnimations:v28];
-    if ((((v12 > 0.0) ^ v13) & 1) != 0 || (v13 & 1) == 0)
+    if ((((v12 > 0.0) ^ isEmpty) & 1) != 0 || (isEmpty & 1) == 0)
     {
       [(_UIKeyShortcutHUDViewController *)self _setMenuHeight:*&v16];
       [(_UIKeyShortcutHUDViewController *)self _setMenuWidth:*&v19];
-      v24 = [(UIViewController *)self view];
-      [v24 layoutIfNeeded];
+      view2 = [(UIViewController *)self view];
+      [view2 layoutIfNeeded];
     }
 
     else

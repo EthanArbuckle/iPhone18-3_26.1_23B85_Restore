@@ -1,6 +1,6 @@
 @interface SBUIExpandedNotificationContainerViewProvider
 - (NSString)description;
-- (SBUIExpandedNotificationContainerViewProvider)initWithRequester:(id)a3 containerView:(id)a4 reason:(id)a5 invalidationBlock:(id)a6;
+- (SBUIExpandedNotificationContainerViewProvider)initWithRequester:(id)requester containerView:(id)view reason:(id)reason invalidationBlock:(id)block;
 - (UIView)containerView;
 - (id)requester;
 - (void)dealloc;
@@ -9,16 +9,16 @@
 
 @implementation SBUIExpandedNotificationContainerViewProvider
 
-- (SBUIExpandedNotificationContainerViewProvider)initWithRequester:(id)a3 containerView:(id)a4 reason:(id)a5 invalidationBlock:(id)a6
+- (SBUIExpandedNotificationContainerViewProvider)initWithRequester:(id)requester containerView:(id)view reason:(id)reason invalidationBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  requesterCopy = requester;
+  viewCopy = view;
+  reasonCopy = reason;
+  blockCopy = block;
+  if (requesterCopy)
   {
-    if (v11)
+    if (viewCopy)
     {
       goto LABEL_3;
     }
@@ -27,7 +27,7 @@
   else
   {
     [SBUIExpandedNotificationContainerViewProvider initWithRequester:containerView:reason:invalidationBlock:];
-    if (v11)
+    if (viewCopy)
     {
       goto LABEL_3;
     }
@@ -35,7 +35,7 @@
 
   [SBUIExpandedNotificationContainerViewProvider initWithRequester:containerView:reason:invalidationBlock:];
 LABEL_3:
-  if (![v12 length])
+  if (![reasonCopy length])
   {
     [SBUIExpandedNotificationContainerViewProvider initWithRequester:containerView:reason:invalidationBlock:];
   }
@@ -46,13 +46,13 @@ LABEL_3:
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_requester, v10);
-    objc_storeWeak(&v15->_containerView, v11);
-    v16 = [v12 copy];
+    objc_storeWeak(&v14->_requester, requesterCopy);
+    objc_storeWeak(&v15->_containerView, viewCopy);
+    v16 = [reasonCopy copy];
     reason = v15->_reason;
     v15->_reason = v16;
 
-    v18 = [v13 copy];
+    v18 = [blockCopy copy];
     invalidationBlock = v15->_invalidationBlock;
     v15->_invalidationBlock = v18;
 
@@ -109,7 +109,7 @@ LABEL_3:
 - (void)invalidate
 {
   OUTLINED_FUNCTION_0();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_1();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

@@ -1,20 +1,20 @@
 @interface HRERecommendationItem
-- (HRERecommendationItem)initWithRecommendation:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HRERecommendationItem)initWithRecommendation:(id)recommendation;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HRERecommendationItem
 
-- (HRERecommendationItem)initWithRecommendation:(id)a3
+- (HRERecommendationItem)initWithRecommendation:(id)recommendation
 {
-  v5 = a3;
+  recommendationCopy = recommendation;
   v9.receiver = self;
   v9.super_class = HRERecommendationItem;
   v6 = [(HRERecommendationItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recommendation, a3);
+    objc_storeStrong(&v6->_recommendation, recommendation);
     v7->_selected = 0;
     v7->_accessoryCountType = 0;
   }
@@ -22,50 +22,50 @@
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_opt_new();
-  v5 = [(HRERecommendationItem *)self recommendation];
-  [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x277D14070]];
+  recommendation = [(HRERecommendationItem *)self recommendation];
+  [v4 setObject:recommendation forKeyedSubscript:*MEMORY[0x277D14070]];
 
   v6 = [MEMORY[0x277CBEB58] set];
-  v7 = [(HRERecommendationItem *)self recommendation];
+  recommendation2 = [(HRERecommendationItem *)self recommendation];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v9 = [(HRERecommendationItem *)self recommendation];
-  v10 = v9;
+  recommendation3 = [(HRERecommendationItem *)self recommendation];
+  recommendation5 = recommendation3;
   if (isKindOfClass)
   {
-    v11 = [v9 selectedTriggerBuilder];
-    v12 = [v11 naturalLanguageNameOfType:2];
+    selectedTriggerBuilder = [recommendation3 selectedTriggerBuilder];
+    v12 = [selectedTriggerBuilder naturalLanguageNameOfType:2];
     [v4 setObject:v12 forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-    v13 = [v10 selectedTriggerBuilder];
-    v14 = [v13 triggerActionSets];
-    v15 = [v14 anonymousActionBuilder];
+    selectedTriggerBuilder2 = [recommendation5 selectedTriggerBuilder];
+    triggerActionSets = [selectedTriggerBuilder2 triggerActionSets];
+    anonymousActionBuilder = [triggerActionSets anonymousActionBuilder];
 
     v16 = objc_alloc(MEMORY[0x277D14C78]);
-    v17 = [v10 selectedTriggerBuilder];
-    v18 = [v17 trigger];
-    v19 = [v10 home];
-    v20 = [v16 initWithTrigger:v18 inHome:v19 forceDisabled:0 ignoringDisabled:1];
+    selectedTriggerBuilder3 = [recommendation5 selectedTriggerBuilder];
+    trigger = [selectedTriggerBuilder3 trigger];
+    home = [recommendation5 home];
+    actionSetBuilders = [v16 initWithTrigger:trigger inHome:home forceDisabled:0 ignoringDisabled:1];
 
-    [v4 setObject:v20 forKeyedSubscript:*MEMORY[0x277D140E0]];
-    v21 = [v20 triggerIconDescriptor];
+    [v4 setObject:actionSetBuilders forKeyedSubscript:*MEMORY[0x277D140E0]];
+    triggerIconDescriptor = [actionSetBuilders triggerIconDescriptor];
     v22 = *MEMORY[0x277D13E88];
-    [v4 setObject:v21 forKeyedSubscript:*MEMORY[0x277D13E88]];
+    [v4 setObject:triggerIconDescriptor forKeyedSubscript:*MEMORY[0x277D13E88]];
 
-    v23 = [v10 iconDescriptor];
+    iconDescriptor = [recommendation5 iconDescriptor];
 
-    if (v23)
+    if (iconDescriptor)
     {
-      v24 = [v10 iconDescriptor];
-      [v4 setObject:v24 forKeyedSubscript:v22];
+      iconDescriptor2 = [recommendation5 iconDescriptor];
+      [v4 setObject:iconDescriptor2 forKeyedSubscript:v22];
     }
 
-    v25 = [v10 triggerBuilders];
-    v26 = [v25 na_flatMap:&__block_literal_global_2];
+    triggerBuilders = [recommendation5 triggerBuilders];
+    v26 = [triggerBuilders na_flatMap:&__block_literal_global_2];
     [v6 unionSet:v26];
 
     goto LABEL_7;
@@ -74,24 +74,24 @@
   objc_opt_class();
   v27 = objc_opt_isKindOfClass();
 
-  v28 = [(HRERecommendationItem *)self recommendation];
-  v10 = v28;
+  recommendation4 = [(HRERecommendationItem *)self recommendation];
+  recommendation5 = recommendation4;
   if (v27)
   {
-    v29 = [v28 selectedActionSetBuilder];
-    v30 = [v29 name];
-    [v4 setObject:v30 forKeyedSubscript:*MEMORY[0x277D13F60]];
+    selectedActionSetBuilder = [recommendation4 selectedActionSetBuilder];
+    name = [selectedActionSetBuilder name];
+    [v4 setObject:name forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-    v31 = [v10 selectedActionSetBuilder];
-    v15 = [v31 actions];
+    selectedActionSetBuilder2 = [recommendation5 selectedActionSetBuilder];
+    anonymousActionBuilder = [selectedActionSetBuilder2 actions];
 
-    v32 = [v10 selectedActionSetBuilder];
-    v33 = [v32 iconDescriptor];
-    [v4 setObject:v33 forKeyedSubscript:*MEMORY[0x277D13E88]];
+    selectedActionSetBuilder3 = [recommendation5 selectedActionSetBuilder];
+    iconDescriptor3 = [selectedActionSetBuilder3 iconDescriptor];
+    [v4 setObject:iconDescriptor3 forKeyedSubscript:*MEMORY[0x277D13E88]];
 
-    v20 = [v10 actionSetBuilders];
-    v25 = [v20 na_map:&__block_literal_global_7_0];
-    [v6 unionSet:v25];
+    actionSetBuilders = [recommendation5 actionSetBuilders];
+    triggerBuilders = [actionSetBuilders na_map:&__block_literal_global_7_0];
+    [v6 unionSet:triggerBuilders];
 LABEL_7:
 
 LABEL_8:
@@ -103,25 +103,25 @@ LABEL_8:
 
   if (v47)
   {
-    v10 = [(HRERecommendationItem *)self recommendation];
-    v48 = [v10 name];
-    [v4 setObject:v48 forKeyedSubscript:*MEMORY[0x277D13F60]];
+    recommendation5 = [(HRERecommendationItem *)self recommendation];
+    name2 = [recommendation5 name];
+    [v4 setObject:name2 forKeyedSubscript:*MEMORY[0x277D13F60]];
 
-    v20 = [v10 iconDescriptor];
-    [v4 setObject:v20 forKeyedSubscript:*MEMORY[0x277D13E88]];
-    v15 = 0;
+    actionSetBuilders = [recommendation5 iconDescriptor];
+    [v4 setObject:actionSetBuilders forKeyedSubscript:*MEMORY[0x277D13E88]];
+    anonymousActionBuilder = 0;
     goto LABEL_8;
   }
 
-  v15 = 0;
+  anonymousActionBuilder = 0;
 LABEL_9:
   v34 = objc_alloc(MEMORY[0x277D14388]);
-  v35 = [(HRERecommendationItem *)self recommendation];
-  v36 = [v35 home];
-  v37 = [v34 initWithHome:v36 formattingContext:2];
+  recommendation6 = [(HRERecommendationItem *)self recommendation];
+  home2 = [recommendation6 home];
+  v37 = [v34 initWithHome:home2 formattingContext:2];
 
   [v37 setAccessoryCountType:{-[HRERecommendationItem accessoryCountType](self, "accessoryCountType")}];
-  v38 = [v15 na_map:&__block_literal_global_12];
+  v38 = [anonymousActionBuilder na_map:&__block_literal_global_12];
   v39 = [v38 na_filter:&__block_literal_global_15];
 
   v40 = [MEMORY[0x277D14390] hf_naturalLanguageDescriptionForActions:v39 withOptions:v37];

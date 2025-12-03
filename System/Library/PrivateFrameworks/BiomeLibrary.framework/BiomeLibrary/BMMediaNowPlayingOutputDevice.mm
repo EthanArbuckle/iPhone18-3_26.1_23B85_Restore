@@ -1,41 +1,41 @@
 @interface BMMediaNowPlayingOutputDevice
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMMediaNowPlayingOutputDevice)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMMediaNowPlayingOutputDevice)initWithType:(int)a3 subType:(int)a4 outputDeviceID:(id)a5;
-- (BOOL)isEqual:(id)a3;
+- (BMMediaNowPlayingOutputDevice)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMMediaNowPlayingOutputDevice)initWithType:(int)type subType:(int)subType outputDeviceID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMMediaNowPlayingOutputDevice
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMMediaNowPlayingOutputDevice *)self type];
-    if (v6 == [v5 type] && (v7 = -[BMMediaNowPlayingOutputDevice subType](self, "subType"), v7 == objc_msgSend(v5, "subType")))
+    v5 = equalCopy;
+    type = [(BMMediaNowPlayingOutputDevice *)self type];
+    if (type == [v5 type] && (v7 = -[BMMediaNowPlayingOutputDevice subType](self, "subType"), v7 == objc_msgSend(v5, "subType")))
     {
-      v8 = [(BMMediaNowPlayingOutputDevice *)self outputDeviceID];
-      v9 = [v5 outputDeviceID];
-      if (v8 == v9)
+      outputDeviceID = [(BMMediaNowPlayingOutputDevice *)self outputDeviceID];
+      outputDeviceID2 = [v5 outputDeviceID];
+      if (outputDeviceID == outputDeviceID2)
       {
         v12 = 1;
       }
 
       else
       {
-        v10 = [(BMMediaNowPlayingOutputDevice *)self outputDeviceID];
-        v11 = [v5 outputDeviceID];
-        v12 = [v10 isEqual:v11];
+        outputDeviceID3 = [(BMMediaNowPlayingOutputDevice *)self outputDeviceID];
+        outputDeviceID4 = [v5 outputDeviceID];
+        v12 = [outputDeviceID3 isEqual:outputDeviceID4];
       }
     }
 
@@ -58,33 +58,33 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaNowPlayingOutputDevice type](self, "type")}];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[BMMediaNowPlayingOutputDevice subType](self, "subType")}];
-  v5 = [(BMMediaNowPlayingOutputDevice *)self outputDeviceID];
+  outputDeviceID = [(BMMediaNowPlayingOutputDevice *)self outputDeviceID];
   v12[0] = @"type";
-  v6 = v3;
+  null = v3;
   if (!v3)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"subType";
-  v7 = v4;
+  null2 = v4;
   if (!v4)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"outputDeviceID";
-  v8 = v5;
-  if (!v5)
+  null3 = outputDeviceID;
+  if (!outputDeviceID)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (v5)
+  if (outputDeviceID)
   {
     if (v4)
     {
@@ -120,16 +120,16 @@ LABEL_10:
   return v9;
 }
 
-- (BMMediaNowPlayingOutputDevice)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMMediaNowPlayingOutputDevice)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"type"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"type"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_9:
-    v10 = [v6 objectForKeyedSubscript:@"subType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subType"];
     if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
@@ -143,10 +143,10 @@ LABEL_9:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
-          if (!a4)
+          if (!error)
           {
             v11 = 0;
-            v15 = 0;
+            selfCopy = 0;
             goto LABEL_22;
           }
 
@@ -158,8 +158,8 @@ LABEL_9:
           v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
           v23 = [v26 initWithDomain:v22 code:2 userInfo:v13];
           v11 = 0;
-          v15 = 0;
-          *a4 = v23;
+          selfCopy = 0;
+          *error = v23;
           goto LABEL_21;
         }
 
@@ -174,13 +174,13 @@ LABEL_9:
       v11 = 0;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"outputDeviceID"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"outputDeviceID"];
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v25 = objc_alloc(MEMORY[0x1E696ABC0]);
           v24 = *MEMORY[0x1E698F240];
@@ -188,11 +188,11 @@ LABEL_9:
           v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"outputDeviceID"];
           v28 = v18;
           v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
-          *a4 = [v25 initWithDomain:v24 code:2 userInfo:v19];
+          *error = [v25 initWithDomain:v24 code:2 userInfo:v19];
         }
 
         v14 = 0;
-        v15 = 0;
+        selfCopy = 0;
         goto LABEL_21;
       }
 
@@ -205,7 +205,7 @@ LABEL_9:
     }
 
     self = -[BMMediaNowPlayingOutputDevice initWithType:subType:outputDeviceID:](self, "initWithType:subType:outputDeviceID:", [v8 intValue], objc_msgSend(v11, "intValue"), v14);
-    v15 = self;
+    selfCopy = self;
 LABEL_21:
 
     goto LABEL_22;
@@ -227,10 +227,10 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_23;
   }
 
@@ -241,27 +241,27 @@ LABEL_8:
   v32[0] = v11;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:&v31 count:1];
   v8 = 0;
-  v15 = 0;
-  *a4 = [v20 initWithDomain:v21 code:2 userInfo:v10];
+  selfCopy = 0;
+  *error = [v20 initWithDomain:v21 code:2 userInfo:v10];
 LABEL_22:
 
 LABEL_23:
   v16 = *MEMORY[0x1E69E9840];
-  return v15;
+  return selfCopy;
 }
 
 - (id)serialize
 {
   v3 = objc_opt_new();
   [(BMMediaNowPlayingOutputDevice *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   type = self->_type;
   PBDataWriterWriteUint32Field();
   subType = self->_subType;
@@ -272,9 +272,9 @@ LABEL_23:
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v34.receiver = self;
   v34.super_class = BMMediaNowPlayingOutputDevice;
   v5 = [(BMEventBase *)&v34 init];
@@ -283,12 +283,12 @@ LABEL_23:
     goto LABEL_54;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_52;
       }
@@ -299,18 +299,18 @@ LABEL_23:
       while (1)
       {
         v35 = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v35 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (v35 & 0x7F) << v7;
@@ -327,9 +327,9 @@ LABEL_23:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         goto LABEL_52;
       }
@@ -358,18 +358,18 @@ LABEL_16:
         while (1)
         {
           v35 = 0;
-          v19 = [v4 position] + 1;
-          if (v19 >= [v4 position] && (v20 = objc_msgSend(v4, "position") + 1, v20 <= objc_msgSend(v4, "length")))
+          v19 = [fromCopy position] + 1;
+          if (v19 >= [fromCopy position] && (v20 = objc_msgSend(fromCopy, "position") + 1, v20 <= objc_msgSend(fromCopy, "length")))
           {
-            v21 = [v4 data];
-            [v21 getBytes:&v35 range:{objc_msgSend(v4, "position"), 1}];
+            data2 = [fromCopy data];
+            [data2 getBytes:&v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-            [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+            [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
           }
 
           else
           {
-            [v4 _setError];
+            [fromCopy _setError];
           }
 
           v18 |= (v35 & 0x7F) << v16;
@@ -386,7 +386,7 @@ LABEL_16:
           }
         }
 
-        if (([v4 hasError] & 1) != 0 || v18 > 0x15)
+        if (([fromCopy hasError] & 1) != 0 || v18 > 0x15)
         {
 LABEL_48:
           LODWORD(v18) = 0;
@@ -401,8 +401,8 @@ LABEL_48:
       v5->_outputDeviceID = v23;
 
 LABEL_51:
-      v31 = [v4 position];
-      if (v31 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_52;
       }
@@ -414,18 +414,18 @@ LABEL_51:
     while (1)
     {
       v35 = 0;
-      v27 = [v4 position] + 1;
-      if (v27 >= [v4 position] && (v28 = objc_msgSend(v4, "position") + 1, v28 <= objc_msgSend(v4, "length")))
+      v27 = [fromCopy position] + 1;
+      if (v27 >= [fromCopy position] && (v28 = objc_msgSend(fromCopy, "position") + 1, v28 <= objc_msgSend(fromCopy, "length")))
       {
-        v29 = [v4 data];
-        [v29 getBytes:&v35 range:{objc_msgSend(v4, "position"), 1}];
+        data3 = [fromCopy data];
+        [data3 getBytes:&v35 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-        [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+        [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
       }
 
       else
       {
-        [v4 _setError];
+        [fromCopy _setError];
       }
 
       v18 |= (v35 & 0x7F) << v25;
@@ -442,7 +442,7 @@ LABEL_51:
       }
     }
 
-    if (([v4 hasError] & 1) != 0 || v18 > 5)
+    if (([fromCopy hasError] & 1) != 0 || v18 > 5)
     {
 LABEL_44:
       LODWORD(v18) = 0;
@@ -455,7 +455,7 @@ LABEL_50:
   }
 
 LABEL_52:
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_53:
     v32 = 0;
@@ -475,24 +475,24 @@ LABEL_54:
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = BMMediaNowPlayingOutputDeviceTypeAsString([(BMMediaNowPlayingOutputDevice *)self type]);
   v5 = BMMediaNowPlayingOutputDeviceSubTypeAsString([(BMMediaNowPlayingOutputDevice *)self subType]);
-  v6 = [(BMMediaNowPlayingOutputDevice *)self outputDeviceID];
-  v7 = [v3 initWithFormat:@"BMMediaNowPlayingOutputDevice with type: %@, subType: %@, outputDeviceID: %@", v4, v5, v6];
+  outputDeviceID = [(BMMediaNowPlayingOutputDevice *)self outputDeviceID];
+  v7 = [v3 initWithFormat:@"BMMediaNowPlayingOutputDevice with type: %@, subType: %@, outputDeviceID: %@", v4, v5, outputDeviceID];
 
   return v7;
 }
 
-- (BMMediaNowPlayingOutputDevice)initWithType:(int)a3 subType:(int)a4 outputDeviceID:(id)a5
+- (BMMediaNowPlayingOutputDevice)initWithType:(int)type subType:(int)subType outputDeviceID:(id)d
 {
-  v9 = a5;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = BMMediaNowPlayingOutputDevice;
   v10 = [(BMEventBase *)&v12 init];
   if (v10)
   {
     v10->_dataVersion = [objc_opt_class() latestDataVersion];
-    v10->_type = a3;
-    v10->_subType = a4;
-    objc_storeStrong(&v10->_outputDeviceID, a5);
+    v10->_type = type;
+    v10->_subType = subType;
+    objc_storeStrong(&v10->_outputDeviceID, d);
   }
 
   return v10;
@@ -529,13 +529,13 @@ LABEL_54:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMMediaNowPlayingOutputDevice alloc] initByReadFrom:v6];
     v8 = v7;

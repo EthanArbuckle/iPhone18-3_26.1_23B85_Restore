@@ -1,9 +1,9 @@
 @interface SGMultiHeadEspressoModelCached
-+ (id)classifierWithEspressoModelFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5;
-- (SGMultiHeadEspressoModelCached)initWithEspressoModelFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5;
++ (id)classifierWithEspressoModelFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality;
+- (SGMultiHeadEspressoModelCached)initWithEspressoModelFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality;
 - (id)headDimensionality;
-- (id)predict:(id)a3;
-- (id)predict:(id)a3 heads:(id)a4;
+- (id)predict:(id)predict;
+- (id)predict:(id)predict heads:(id)heads;
 - (unint64_t)inputNumParameters;
 @end
 
@@ -25,52 +25,52 @@
   return v4;
 }
 
-- (id)predict:(id)a3
+- (id)predict:(id)predict
 {
-  v4 = a3;
+  predictCopy = predict;
   v5 = +[SGMultiHeadEspressoModelCache sharedInstance];
-  v6 = [v5 predict:v4 withFile:self->_espressoModelFile inputName:self->_inputName headDimensionality:self->_headDimensionality];
+  v6 = [v5 predict:predictCopy withFile:self->_espressoModelFile inputName:self->_inputName headDimensionality:self->_headDimensionality];
 
   return v6;
 }
 
-- (id)predict:(id)a3 heads:(id)a4
+- (id)predict:(id)predict heads:(id)heads
 {
-  v6 = a4;
-  v7 = a3;
+  headsCopy = heads;
+  predictCopy = predict;
   v8 = +[SGMultiHeadEspressoModelCache sharedInstance];
-  v9 = [v8 predict:v7 heads:v6 withFile:self->_espressoModelFile inputName:self->_inputName headDimensionality:self->_headDimensionality];
+  v9 = [v8 predict:predictCopy heads:headsCopy withFile:self->_espressoModelFile inputName:self->_inputName headDimensionality:self->_headDimensionality];
 
   return v9;
 }
 
-- (SGMultiHeadEspressoModelCached)initWithEspressoModelFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5
+- (SGMultiHeadEspressoModelCached)initWithEspressoModelFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  fileCopy = file;
+  nameCopy = name;
+  dimensionalityCopy = dimensionality;
   v15.receiver = self;
   v15.super_class = SGMultiHeadEspressoModelCached;
   v12 = [(SGMultiHeadEspressoModelCached *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_espressoModelFile, a3);
-    objc_storeStrong(&v13->_inputName, a4);
-    objc_storeStrong(&v13->_headDimensionality, a5);
+    objc_storeStrong(&v12->_espressoModelFile, file);
+    objc_storeStrong(&v13->_inputName, name);
+    objc_storeStrong(&v13->_headDimensionality, dimensionality);
   }
 
   return v13;
 }
 
-+ (id)classifierWithEspressoModelFile:(id)a3 inputName:(id)a4 headDimensionality:(id)a5
++ (id)classifierWithEspressoModelFile:(id)file inputName:(id)name headDimensionality:(id)dimensionality
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 length] && (+[SGMultiHeadEspressoModelCache sharedInstance](SGMultiHeadEspressoModelCache, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "setCachedEspressoClassifierWithFile:inputName:headDimensionality:", v8, v9, v10), v11, v12))
+  fileCopy = file;
+  nameCopy = name;
+  dimensionalityCopy = dimensionality;
+  if ([fileCopy length] && (+[SGMultiHeadEspressoModelCache sharedInstance](SGMultiHeadEspressoModelCache, "sharedInstance"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "setCachedEspressoClassifierWithFile:inputName:headDimensionality:", fileCopy, nameCopy, dimensionalityCopy), v11, v12))
   {
-    v13 = [[a1 alloc] initWithEspressoModelFile:v8 inputName:v9 headDimensionality:v10];
+    v13 = [[self alloc] initWithEspressoModelFile:fileCopy inputName:nameCopy headDimensionality:dimensionalityCopy];
   }
 
   else

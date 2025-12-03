@@ -1,5 +1,5 @@
 @interface EmojiForegroundLayersViewController
-- (_TtC11EmojiPoster35EmojiForegroundLayersViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11EmojiPoster35EmojiForegroundLayersViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -11,11 +11,11 @@
   v5.super_class = type metadata accessor for EmojiForegroundLayersViewController();
   v2 = v5.receiver;
   [(EmojiForegroundLayersViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setClipsToBounds_];
+    v4 = view;
+    [view setClipsToBounds_];
   }
 
   else
@@ -24,7 +24,7 @@
   }
 }
 
-- (_TtC11EmojiPoster35EmojiForegroundLayersViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11EmojiPoster35EmojiForegroundLayersViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,5 +1,5 @@
 @interface RoundChevronButton
-- (_TtC22SubscribePageExtension18RoundChevronButton)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension18RoundChevronButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100604D9C();
 }
 
-- (_TtC22SubscribePageExtension18RoundChevronButton)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension18RoundChevronButton)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

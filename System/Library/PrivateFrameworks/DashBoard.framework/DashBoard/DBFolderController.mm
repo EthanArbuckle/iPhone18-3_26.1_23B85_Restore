@@ -1,25 +1,25 @@
 @interface DBFolderController
 - (DBEnvironment)environment;
 - (int64_t)defaultPageIndex;
-- (void)setEnvironment:(id)a3;
-- (void)setLayoutEngine:(id)a3;
+- (void)setEnvironment:(id)environment;
+- (void)setLayoutEngine:(id)engine;
 @end
 
 @implementation DBFolderController
 
-- (void)setEnvironment:(id)a3
+- (void)setEnvironment:(id)environment
 {
-  v4 = a3;
-  objc_storeWeak(&self->_environment, v4);
-  v5 = [(SBFolderController *)self contentView];
-  [v5 setEnvironment:v4];
+  environmentCopy = environment;
+  objc_storeWeak(&self->_environment, environmentCopy);
+  contentView = [(SBFolderController *)self contentView];
+  [contentView setEnvironment:environmentCopy];
 }
 
-- (void)setLayoutEngine:(id)a3
+- (void)setLayoutEngine:(id)engine
 {
-  v4 = a3;
-  v5 = [(SBFolderController *)self contentView];
-  [v5 setLayoutEngine:v4];
+  engineCopy = engine;
+  contentView = [(SBFolderController *)self contentView];
+  [contentView setLayoutEngine:engineCopy];
 }
 
 - (int64_t)defaultPageIndex

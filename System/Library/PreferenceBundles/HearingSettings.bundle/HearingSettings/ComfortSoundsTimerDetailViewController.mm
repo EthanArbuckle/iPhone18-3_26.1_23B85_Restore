@@ -1,18 +1,18 @@
 @interface ComfortSoundsTimerDetailViewController
 - (ComfortSoundsTimerDetailViewController)init;
-- (id)datePickerForSpecifier:(id)a3;
+- (id)datePickerForSpecifier:(id)specifier;
 - (id)durationPickerSpecifiers;
 - (id)endIntervalPickerSpecifiers;
-- (id)identifierForTimerOption:(unint64_t)a3;
-- (id)localizedTimerOption:(unint64_t)a3;
+- (id)identifierForTimerOption:(unint64_t)option;
+- (id)localizedTimerOption:(unint64_t)option;
 - (id)specifiers;
-- (id)timerDuration:(id)a3;
-- (id)timerEnabled:(id)a3;
-- (id)timerOnlyOnFirstSession:(id)a3;
-- (void)datePickerChanged:(id)a3;
-- (void)setTimerEnabled:(id)a3 specifier:(id)a4;
-- (void)setTimerOnlyOnFirstSession:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)timerDuration:(id)duration;
+- (id)timerEnabled:(id)enabled;
+- (id)timerOnlyOnFirstSession:(id)session;
+- (void)datePickerChanged:(id)changed;
+- (void)setTimerEnabled:(id)enabled specifier:(id)specifier;
+- (void)setTimerOnlyOnFirstSession:(id)session specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateTimerOptionSpecifiers;
 @end
 
@@ -94,10 +94,10 @@
       [v15 setIdentifier:v17];
 
       v18 = v12;
-      v19 = [v12[167] sharedInstance];
-      v20 = [v19 timerOption];
+      sharedInstance = [v12[167] sharedInstance];
+      timerOption = [sharedInstance timerOption];
 
-      if (v20 == v9)
+      if (timerOption == v9)
       {
         [v37 setProperty:v15 forKey:v10];
       }
@@ -113,15 +113,15 @@
     v21 = +[PSSpecifier emptyGroupSpecifier];
 
     [v8 addObject:v21];
-    v22 = [v18[167] sharedInstance];
-    v23 = [v22 timerOption];
+    sharedInstance2 = [v18[167] sharedInstance];
+    timerOption2 = [sharedInstance2 timerOption];
 
-    if (v23)
+    if (timerOption2)
     {
-      v24 = [v12[167] sharedInstance];
-      v25 = [v24 timerOption];
+      sharedInstance3 = [v12[167] sharedInstance];
+      timerOption3 = [sharedInstance3 timerOption];
 
-      if (v25 != &dword_0 + 1)
+      if (timerOption3 != &dword_0 + 1)
       {
 LABEL_11:
         v28 = +[PSSpecifier emptyGroupSpecifier];
@@ -143,16 +143,16 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v26 = [(ComfortSoundsTimerDetailViewController *)self durationPickerSpecifiers];
+      durationPickerSpecifiers = [(ComfortSoundsTimerDetailViewController *)self durationPickerSpecifiers];
     }
 
     else
     {
-      v26 = [(ComfortSoundsTimerDetailViewController *)self endIntervalPickerSpecifiers];
+      durationPickerSpecifiers = [(ComfortSoundsTimerDetailViewController *)self endIntervalPickerSpecifiers];
     }
 
-    v27 = v26;
-    [v8 addObjectsFromArray:v26];
+    v27 = durationPickerSpecifiers;
+    [v8 addObjectsFromArray:durationPickerSpecifiers];
 
     goto LABEL_11;
   }
@@ -200,32 +200,32 @@ LABEL_12:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = ComfortSoundsTimerDetailViewController;
-  v6 = a4;
-  [(ComfortSoundsTimerDetailViewController *)&v12 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(ComfortSoundsTimerDetailViewController *)self specifierAtIndexPath:v6, v12.receiver, v12.super_class];
+  pathCopy = path;
+  [(ComfortSoundsTimerDetailViewController *)&v12 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(ComfortSoundsTimerDetailViewController *)self specifierAtIndexPath:pathCopy, v12.receiver, v12.super_class];
 
-  v8 = [v7 userInfo];
+  userInfo = [v7 userInfo];
 
-  if (v8)
+  if (userInfo)
   {
-    v9 = [v7 userInfo];
-    v10 = [v9 unsignedIntegerValue];
+    userInfo2 = [v7 userInfo];
+    unsignedIntegerValue = [userInfo2 unsignedIntegerValue];
 
     v11 = +[HUComfortSoundsSettings sharedInstance];
-    [v11 setTimerOption:v10];
+    [v11 setTimerOption:unsignedIntegerValue];
   }
 }
 
-- (id)datePickerForSpecifier:(id)a3
+- (id)datePickerForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = objc_alloc_init(UIDatePicker);
-  v6 = [v4 identifier];
-  v7 = [v6 isEqual:@"CSTimePickerSpecID"];
+  identifier = [specifierCopy identifier];
+  v7 = [identifier isEqual:@"CSTimePickerSpecID"];
 
   if (v7)
   {
@@ -239,8 +239,8 @@ LABEL_12:
 
   else
   {
-    v10 = [v4 identifier];
-    v11 = [v10 isEqual:@"CSDurationPickerSpecID"];
+    identifier2 = [specifierCopy identifier];
+    v11 = [identifier2 isEqual:@"CSDurationPickerSpecID"];
 
     if (v11)
     {
@@ -258,16 +258,16 @@ LABEL_12:
   return v5;
 }
 
-- (void)datePickerChanged:(id)a3
+- (void)datePickerChanged:(id)changed
 {
-  v10 = a3;
+  changedCopy = changed;
   v4 = +[HUComfortSoundsSettings sharedInstance];
-  v5 = [v4 timerOption];
+  timerOption = [v4 timerOption];
 
-  if (v5 == &dword_0 + 1)
+  if (timerOption == &dword_0 + 1)
   {
     v9 = +[HUComfortSoundsSettings sharedInstance];
-    [v10 countDownDuration];
+    [changedCopy countDownDuration];
     [v9 setTimerDurationInSeconds:?];
 
     [(ComfortSoundsTimerDetailViewController *)self reloadSpecifierID:@"CSDurationLabelSpecID"];
@@ -275,25 +275,25 @@ LABEL_12:
 
   else
   {
-    v6 = v10;
-    if (v5)
+    v6 = changedCopy;
+    if (timerOption)
     {
       goto LABEL_6;
     }
 
     v7 = +[HUComfortSoundsSettings sharedInstance];
-    v8 = [v10 date];
-    [v8 timeIntervalSinceReferenceDate];
+    date = [changedCopy date];
+    [date timeIntervalSinceReferenceDate];
     [v7 setTimerEndInterval:?];
   }
 
-  v6 = v10;
+  v6 = changedCopy;
 LABEL_6:
 }
 
-- (id)localizedTimerOption:(unint64_t)a3
+- (id)localizedTimerOption:(unint64_t)option
 {
-  if (a3 <= 1)
+  if (option <= 1)
   {
     self = comfortSoundsLocString();
   }
@@ -301,9 +301,9 @@ LABEL_6:
   return self;
 }
 
-- (id)identifierForTimerOption:(unint64_t)a3
+- (id)identifierForTimerOption:(unint64_t)option
 {
-  if (a3)
+  if (option)
   {
     return @"CSDurationOptionSpecID";
   }
@@ -314,16 +314,16 @@ LABEL_6:
   }
 }
 
-- (void)setTimerEnabled:(id)a3 specifier:(id)a4
+- (void)setTimerEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[HUComfortSoundsSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setTimerEnabled:v5];
+  [v6 setTimerEnabled:bOOLValue];
 }
 
-- (id)timerEnabled:(id)a3
+- (id)timerEnabled:(id)enabled
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 timerEnabled]);
@@ -331,7 +331,7 @@ LABEL_6:
   return v4;
 }
 
-- (id)timerDuration:(id)a3
+- (id)timerDuration:(id)duration
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   [v3 timerDurationInSeconds];
@@ -340,16 +340,16 @@ LABEL_6:
   return v4;
 }
 
-- (void)setTimerOnlyOnFirstSession:(id)a3 specifier:(id)a4
+- (void)setTimerOnlyOnFirstSession:(id)session specifier:(id)specifier
 {
-  v4 = a3;
+  sessionCopy = session;
   v6 = +[HUComfortSoundsSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [sessionCopy BOOLValue];
 
-  [v6 setTimerOnlyOnFirstSession:v5 ^ 1];
+  [v6 setTimerOnlyOnFirstSession:bOOLValue ^ 1];
 }
 
-- (id)timerOnlyOnFirstSession:(id)a3
+- (id)timerOnlyOnFirstSession:(id)session
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   v4 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v3 timerOnlyOnFirstSession] ^ 1);
@@ -384,9 +384,9 @@ LABEL_6:
       v18[0] = v12;
       v13 = [(ComfortSoundsTimerDetailViewController *)self specifierForID:@"CSDurationPickerSpecID"];
       v18[1] = v13;
-      v14 = [NSArray arrayWithObjects:v18 count:2];
-      v15 = [(ComfortSoundsTimerDetailViewController *)self endIntervalPickerSpecifiers];
-      [(ComfortSoundsTimerDetailViewController *)self replaceContiguousSpecifiers:v14 withSpecifiers:v15 animated:1];
+      durationPickerSpecifiers = [NSArray arrayWithObjects:v18 count:2];
+      endIntervalPickerSpecifiers = [(ComfortSoundsTimerDetailViewController *)self endIntervalPickerSpecifiers];
+      [(ComfortSoundsTimerDetailViewController *)self replaceContiguousSpecifiers:durationPickerSpecifiers withSpecifiers:endIntervalPickerSpecifiers animated:1];
 
 LABEL_11:
       return;
@@ -406,8 +406,8 @@ LABEL_11:
     v12 = [(ComfortSoundsTimerDetailViewController *)self specifierForID:@"CSTimePickerSpecID"];
     v17 = v12;
     v13 = [NSArray arrayWithObjects:&v17 count:1];
-    v14 = [(ComfortSoundsTimerDetailViewController *)self durationPickerSpecifiers];
-    [(ComfortSoundsTimerDetailViewController *)self replaceContiguousSpecifiers:v13 withSpecifiers:v14 animated:1];
+    durationPickerSpecifiers = [(ComfortSoundsTimerDetailViewController *)self durationPickerSpecifiers];
+    [(ComfortSoundsTimerDetailViewController *)self replaceContiguousSpecifiers:v13 withSpecifiers:durationPickerSpecifiers animated:1];
     goto LABEL_11;
   }
 }

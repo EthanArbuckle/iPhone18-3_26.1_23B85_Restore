@@ -1,49 +1,49 @@
 @interface FPDMoveAtom
-- (BOOL)shouldAccountForDownloadOfSourceItemForMoveInfo:(id)a3 extensionManager:(id)a4;
-- (FPDMoveAtom)initWithKind:(unsigned __int8)a3 source:(id)a4 targetName:(id)a5 targetFolder:(id)a6 root:(id)a7 atomically:(BOOL)a8 sourceMaterializeOption:(unint64_t)a9 targetMaterializeOption:(unint64_t)a10 useDiskWriter:(BOOL)a11;
+- (BOOL)shouldAccountForDownloadOfSourceItemForMoveInfo:(id)info extensionManager:(id)manager;
+- (FPDMoveAtom)initWithKind:(unsigned __int8)kind source:(id)source targetName:(id)name targetFolder:(id)folder root:(id)root atomically:(BOOL)atomically sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)self0 useDiskWriter:(BOOL)self1;
 - (id)description;
 @end
 
 @implementation FPDMoveAtom
 
-- (FPDMoveAtom)initWithKind:(unsigned __int8)a3 source:(id)a4 targetName:(id)a5 targetFolder:(id)a6 root:(id)a7 atomically:(BOOL)a8 sourceMaterializeOption:(unint64_t)a9 targetMaterializeOption:(unint64_t)a10 useDiskWriter:(BOOL)a11
+- (FPDMoveAtom)initWithKind:(unsigned __int8)kind source:(id)source targetName:(id)name targetFolder:(id)folder root:(id)root atomically:(BOOL)atomically sourceMaterializeOption:(unint64_t)option targetMaterializeOption:(unint64_t)self0 useDiskWriter:(BOOL)self1
 {
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
+  sourceCopy = source;
+  nameCopy = name;
+  folderCopy = folder;
+  rootCopy = root;
   v27.receiver = self;
   v27.super_class = FPDMoveAtom;
   v22 = [(FPDMoveAtom *)&v27 init];
   v23 = v22;
   if (v22)
   {
-    v22->_kind = a3;
-    objc_storeStrong(&v22->_source, a4);
-    v24 = [v19 fp_filenameFromDisplayNameWithExtension:0];
+    v22->_kind = kind;
+    objc_storeStrong(&v22->_source, source);
+    v24 = [nameCopy fp_filenameFromDisplayNameWithExtension:0];
     targetName = v23->_targetName;
     v23->_targetName = v24;
 
-    objc_storeStrong(&v23->_targetFolder, a6);
-    objc_storeStrong(&v23->_root, a7);
-    v23->_useAtomicMove = a8;
-    v23->_useDiskWriter = a11;
-    v23->_materializeOption = a9;
-    v23->_targetMaterializeOption = a10;
+    objc_storeStrong(&v23->_targetFolder, folder);
+    objc_storeStrong(&v23->_root, root);
+    v23->_useAtomicMove = atomically;
+    v23->_useDiskWriter = writer;
+    v23->_materializeOption = option;
+    v23->_targetMaterializeOption = materializeOption;
   }
 
   return v23;
 }
 
-- (BOOL)shouldAccountForDownloadOfSourceItemForMoveInfo:(id)a3 extensionManager:(id)a4
+- (BOOL)shouldAccountForDownloadOfSourceItemForMoveInfo:(id)info extensionManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  managerCopy = manager;
   if ([(FPDMoveAtom *)self kind]== 2)
   {
-    v8 = [(FPDMoveAtom *)self source];
-    v9 = [v6 targetFolder];
-    v10 = [v8 materializeOptionForDestinationItem:v9 recursively:0 isCopy:objc_msgSend(v6 extensionManager:{"byCopy"), v7}];
+    source = [(FPDMoveAtom *)self source];
+    targetFolder = [infoCopy targetFolder];
+    v10 = [source materializeOptionForDestinationItem:targetFolder recursively:0 isCopy:objc_msgSend(infoCopy extensionManager:{"byCopy"), managerCopy}];
 
     v11 = v10 == 1;
   }

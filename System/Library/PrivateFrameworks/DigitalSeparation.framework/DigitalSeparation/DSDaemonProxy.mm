@@ -2,8 +2,8 @@
 + (void)initialize;
 - (DSDaemonProxy)init;
 - (NSArray)signalsToReport;
-- (void)addSignalWithIdentifier:(id)a3 sharingType:(id)a4 signalType:(id)a5;
-- (void)removeSignalWithIdentifier:(id)a3 sharingType:(id)a4 signalType:(id)a5;
+- (void)addSignalWithIdentifier:(id)identifier sharingType:(id)type signalType:(id)signalType;
+- (void)removeSignalWithIdentifier:(id)identifier sharingType:(id)type signalType:(id)signalType;
 - (void)sendAggregatedSignals;
 @end
 
@@ -11,7 +11,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     DSLog_7 = os_log_create("com.apple.DigitalSeparation", "DSDaemonProxy");
 
@@ -33,55 +33,55 @@
   return v2;
 }
 
-- (void)addSignalWithIdentifier:(id)a3 sharingType:(id)a4 signalType:(id)a5
+- (void)addSignalWithIdentifier:(id)identifier sharingType:(id)type signalType:(id)signalType
 {
-  if (a3 && a4 && a5)
+  if (identifier && type && signalType)
   {
     v8 = MEMORY[0x277D48DD0];
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    signalTypeCopy = signalType;
+    typeCopy = type;
+    identifierCopy = identifier;
     v13 = objc_alloc_init(v8);
-    [v13 setSharingIdentifier:v11];
+    [v13 setSharingIdentifier:identifierCopy];
 
-    [v13 setSharingType:v10];
-    [v13 setSignalType:v9];
+    [v13 setSharingType:typeCopy];
+    [v13 setSignalType:signalTypeCopy];
 
-    v12 = [(DSDaemonProxy *)self unreportedSignals];
-    [v12 addObject:v13];
+    unreportedSignals = [(DSDaemonProxy *)self unreportedSignals];
+    [unreportedSignals addObject:v13];
   }
 }
 
-- (void)removeSignalWithIdentifier:(id)a3 sharingType:(id)a4 signalType:(id)a5
+- (void)removeSignalWithIdentifier:(id)identifier sharingType:(id)type signalType:(id)signalType
 {
-  if (a3 && a4 && a5)
+  if (identifier && type && signalType)
   {
     v8 = MEMORY[0x277D48DD0];
-    v9 = a5;
-    v10 = a4;
-    v11 = a3;
+    signalTypeCopy = signalType;
+    typeCopy = type;
+    identifierCopy = identifier;
     v13 = objc_alloc_init(v8);
-    [v13 setSharingIdentifier:v11];
+    [v13 setSharingIdentifier:identifierCopy];
 
-    [v13 setSharingType:v10];
-    [v13 setSignalType:v9];
+    [v13 setSharingType:typeCopy];
+    [v13 setSignalType:signalTypeCopy];
 
-    v12 = [(DSDaemonProxy *)self unreportedSignals];
-    [v12 removeObject:v13];
+    unreportedSignals = [(DSDaemonProxy *)self unreportedSignals];
+    [unreportedSignals removeObject:v13];
   }
 }
 
 - (void)sendAggregatedSignals
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(DSDaemonProxy *)self unreportedSignals];
-  v4 = [v3 allObjects];
-  v5 = [v4 copy];
+  unreportedSignals = [(DSDaemonProxy *)self unreportedSignals];
+  allObjects = [unreportedSignals allObjects];
+  v5 = [allObjects copy];
 
   if ([v5 count])
   {
-    v6 = [objc_alloc(MEMORY[0x277D48DC8]) initConnection];
-    [(DSDaemonProxy *)self setDaemonConnection:v6];
+    initConnection = [objc_alloc(MEMORY[0x277D48DC8]) initConnection];
+    [(DSDaemonProxy *)self setDaemonConnection:initConnection];
 
     v7 = DSLog_7;
     if (os_log_type_enabled(DSLog_7, OS_LOG_TYPE_INFO))
@@ -92,14 +92,14 @@
     }
 
     objc_initWeak(buf, self);
-    v8 = [(DSDaemonProxy *)self daemonConnection];
+    daemonConnection = [(DSDaemonProxy *)self daemonConnection];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __38__DSDaemonProxy_sendAggregatedSignals__block_invoke;
     v10[3] = &unk_278F72FE0;
     objc_copyWeak(&v12, buf);
     v11 = v5;
-    [v8 handleSignals:v11 completion:v10];
+    [daemonConnection handleSignals:v11 completion:v10];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
@@ -144,10 +144,10 @@ void __38__DSDaemonProxy_sendAggregatedSignals__block_invoke(uint64_t a1, char a
 
 - (NSArray)signalsToReport
 {
-  v2 = [(DSDaemonProxy *)self unreportedSignals];
-  v3 = [v2 allObjects];
+  unreportedSignals = [(DSDaemonProxy *)self unreportedSignals];
+  allObjects = [unreportedSignals allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 @end

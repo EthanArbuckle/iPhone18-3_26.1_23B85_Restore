@@ -1,38 +1,38 @@
 @interface NTKAnalogDialShapeEditOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)optionWithShape:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)optionWithShape:(unint64_t)shape forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (unint64_t)_value;
 @end
 
 @implementation NTKAnalogDialShapeEditOption
 
-+ (id)optionWithShape:(unint64_t)a3 forDevice:(id)a4
++ (id)optionWithShape:(unint64_t)shape forDevice:(id)device
 {
-  v6 = a4;
-  if ([v6 deviceCategory] == 1)
+  deviceCopy = device;
+  if ([deviceCopy deviceCategory] == 1)
   {
-    v7 = 0;
+    shapeCopy = 0;
   }
 
   else
   {
-    v7 = a3;
+    shapeCopy = shape;
   }
 
-  v8 = [a1 _optionWithValue:v7 forDevice:v6];
+  v8 = [self _optionWithValue:shapeCopy forDevice:deviceCopy];
 
   return v8;
 }
 
 - (unint64_t)_value
 {
-  v3 = [(NTKEditOption *)self device];
-  v4 = [v3 deviceCategory];
+  device = [(NTKEditOption *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v4 == 1)
+  if (deviceCategory == 1)
   {
     return 0;
   }
@@ -85,14 +85,14 @@ id __65__NTKAnalogDialShapeEditOption__orderedValuesRestrictedByDevice___block_i
   return v3;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __56__NTKAnalogDialShapeEditOption__orderedValuesForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __56__NTKAnalogDialShapeEditOption__orderedValuesForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __56__NTKAnalogDialShapeEditOption__orderedValuesForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -139,15 +139,15 @@ id __56__NTKAnalogDialShapeEditOption__orderedValuesForDevice___block_invoke_2(u
   return v3;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"fullscreen";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }
@@ -158,15 +158,15 @@ id __56__NTKAnalogDialShapeEditOption__orderedValuesForDevice___block_invoke_2(u
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"EDIT_OPTION_LABEL_ANALOG_DIAL_SHAPE_FULLSCREEN";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }

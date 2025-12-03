@@ -1,19 +1,19 @@
 @interface ODICycle7
-+ (BOOL)map1NodeWithState:(id)a3;
-+ (BOOL)map2NodeWithState:(id)a3;
-+ (CGRect)mapGSpaceWithState:(id)a3;
-+ (CGSize)nodeSizeWithState:(id)a3;
-+ (void)addShapeForNode:(id)a3 relativeBounds:(CGRect)a4 state:(id)a5;
-+ (void)addShapeForTransition:(id)a3 relativeBounds:(CGRect)a4 rotation:(float)a5 state:(id)a6;
-+ (void)mapNode:(id)a3 index:(unsigned int)a4 state:(id)a5;
-+ (void)mapTransition:(id)a3 index:(unsigned int)a4 state:(id)a5;
++ (BOOL)map1NodeWithState:(id)state;
++ (BOOL)map2NodeWithState:(id)state;
++ (CGRect)mapGSpaceWithState:(id)state;
++ (CGSize)nodeSizeWithState:(id)state;
++ (void)addShapeForNode:(id)node relativeBounds:(CGRect)bounds state:(id)state;
++ (void)addShapeForTransition:(id)transition relativeBounds:(CGRect)bounds rotation:(float)rotation state:(id)state;
++ (void)mapNode:(id)node index:(unsigned int)index state:(id)state;
++ (void)mapTransition:(id)transition index:(unsigned int)index state:(id)state;
 @end
 
 @implementation ODICycle7
 
-+ (CGSize)nodeSizeWithState:(id)a3
++ (CGSize)nodeSizeWithState:(id)state
 {
-  v3 = sin(3.14159265 / [a1 nodeCountWithState:a3]);
+  v3 = sin(3.14159265 / [self nodeCountWithState:state]);
   *&v3 = (v3 + v3) * 0.6;
   v4 = *&v3 * 0.5;
   v5 = *&v3;
@@ -23,9 +23,9 @@
   return result;
 }
 
-+ (CGRect)mapGSpaceWithState:(id)a3
++ (CGRect)mapGSpaceWithState:(id)state
 {
-  [a1 boundingBoxWithIsTight:1 state:a3];
+  [self boundingBoxWithIsTight:1 state:state];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -33,84 +33,84 @@
   return result;
 }
 
-+ (void)addShapeForNode:(id)a3 relativeBounds:(CGRect)a4 state:(id)a5
++ (void)addShapeForNode:(id)node relativeBounds:(CGRect)bounds state:(id)state
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v14 = a3;
-  v10 = a5;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  nodeCopy = node;
+  stateCopy = state;
   LODWORD(v11) = 1045220557;
   v12 = [ODIDrawable shapeGeometryForRoundedRectangleWithRadius:v11];
-  v13 = [ODIDrawable addShapeWithBounds:v12 rotation:v10 geometry:x state:y, width, height, 0.0];
-  [ODIDrawable mapStyleAndTextFromPoint:v14 shape:v13 state:v10];
+  v13 = [ODIDrawable addShapeWithBounds:v12 rotation:stateCopy geometry:x state:y, width, height, 0.0];
+  [ODIDrawable mapStyleAndTextFromPoint:nodeCopy shape:v13 state:stateCopy];
 }
 
-+ (void)mapNode:(id)a3 index:(unsigned int)a4 state:(id)a5
++ (void)mapNode:(id)node index:(unsigned int)index state:(id)state
 {
-  v6 = *&a4;
-  v9 = a3;
-  v8 = a5;
-  [a1 nodeBoundsWithIndex:v6 state:v8];
-  [a1 addShapeForNode:v9 relativeBounds:v8 state:?];
+  v6 = *&index;
+  nodeCopy = node;
+  stateCopy = state;
+  [self nodeBoundsWithIndex:v6 state:stateCopy];
+  [self addShapeForNode:nodeCopy relativeBounds:stateCopy state:?];
 }
 
-+ (void)addShapeForTransition:(id)a3 relativeBounds:(CGRect)a4 rotation:(float)a5 state:(id)a6
++ (void)addShapeForTransition:(id)transition relativeBounds:(CGRect)bounds rotation:(float)rotation state:(id)state
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a3;
-  v12 = a6;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  transitionCopy = transition;
+  stateCopy = state;
   v13 = [ODIDrawable shapeGeometryForDoubleArrowWithControlPoint:0.1, 0.15];
-  *&v14 = a5;
-  v15 = [ODIDrawable addShapeWithBounds:v13 rotation:v12 geometry:x state:y, width, height, v14];
-  [ODIDrawable mapStyleAndTextFromPoint:v16 shape:v15 state:v12];
+  *&v14 = rotation;
+  v15 = [ODIDrawable addShapeWithBounds:v13 rotation:stateCopy geometry:x state:y, width, height, v14];
+  [ODIDrawable mapStyleAndTextFromPoint:transitionCopy shape:v15 state:stateCopy];
 }
 
-+ (void)mapTransition:(id)a3 index:(unsigned int)a4 state:(id)a5
++ (void)mapTransition:(id)transition index:(unsigned int)index state:(id)state
 {
-  v15 = a3;
-  v8 = a5;
-  v9 = [a1 nodeCountWithState:v8];
-  v10 = ((2 * a4) | 1) * 3.14159265 / v9 + -1.57079633;
+  transitionCopy = transition;
+  stateCopy = state;
+  v9 = [self nodeCountWithState:stateCopy];
+  v10 = ((2 * index) | 1) * 3.14159265 / v9 + -1.57079633;
   v11 = __sincos_stret(3.14159265 / v9);
   cosval = v11.__cosval;
   v13 = __sincosf_stret(v10);
   v14 = (v11.__sinval + v11.__sinval) * 0.4;
-  [a1 addShapeForTransition:v15 relativeBounds:v8 rotation:TSURectWithCenterAndSize((v13.__cosval * cosval) state:{(v13.__sinval * cosval), v14)}];
+  [self addShapeForTransition:transitionCopy relativeBounds:stateCopy rotation:TSURectWithCenterAndSize((v13.__cosval * cosval) state:{(v13.__sinval * cosval), v14)}];
 }
 
-+ (BOOL)map1NodeWithState:(id)a3
++ (BOOL)map1NodeWithState:(id)state
 {
-  v4 = a3;
-  [v4 setLogicalBounds:{0.0, 0.0, 1.0, 0.5}];
-  v5 = [v4 diagram];
-  v6 = [v5 documentPoint];
-  v7 = [v6 children];
-  v8 = [v7 objectAtIndex:0];
+  stateCopy = state;
+  [stateCopy setLogicalBounds:{0.0, 0.0, 1.0, 0.5}];
+  diagram = [stateCopy diagram];
+  documentPoint = [diagram documentPoint];
+  children = [documentPoint children];
+  v8 = [children objectAtIndex:0];
 
-  [a1 addShapeForNode:v8 relativeBounds:v4 state:{0.0, 0.0, 1.0, 0.5}];
+  [self addShapeForNode:v8 relativeBounds:stateCopy state:{0.0, 0.0, 1.0, 0.5}];
   return 1;
 }
 
-+ (BOOL)map2NodeWithState:(id)a3
++ (BOOL)map2NodeWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = MEMORY[0x277CBF348];
-  [v4 setLogicalBounds:{TSURectWithCenterAndSize(*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), 1.0)}];
+  [stateCopy setLogicalBounds:{TSURectWithCenterAndSize(*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), 1.0)}];
   v6 = 0;
   v7 = 1;
   do
   {
     v8 = v7;
-    [v4 setPointIndex:v6];
-    v9 = [v4 diagram];
-    v10 = [v9 documentPoint];
-    v11 = [v10 children];
-    v12 = [v11 objectAtIndex:v6];
+    [stateCopy setPointIndex:v6];
+    diagram = [stateCopy diagram];
+    documentPoint = [diagram documentPoint];
+    children = [documentPoint children];
+    v12 = [children objectAtIndex:v6];
 
     if (v8)
     {
@@ -122,12 +122,12 @@
       v13 = 0.625;
     }
 
-    [a1 addShapeForNode:v12 relativeBounds:v4 state:{TSURectWithCenterAndSize(0.0, v13, 1.0)}];
+    [self addShapeForNode:v12 relativeBounds:stateCopy state:{TSURectWithCenterAndSize(0.0, v13, 1.0)}];
     v14 = TSURectWithCenterAndSize(*v5, v5[1], 0.5625);
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [v12 siblingTransition];
+    siblingTransition = [v12 siblingTransition];
     if (v8)
     {
       *&v22 = 90.0;
@@ -138,7 +138,7 @@
       *&v22 = 270.0;
     }
 
-    [a1 addShapeForTransition:v21 relativeBounds:v4 rotation:v14 state:{v16, v18, v20, v22}];
+    [self addShapeForTransition:siblingTransition relativeBounds:stateCopy rotation:v14 state:{v16, v18, v20, v22}];
 
     v7 = 0;
     v6 = 1;

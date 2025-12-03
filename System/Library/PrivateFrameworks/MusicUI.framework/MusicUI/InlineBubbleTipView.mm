@@ -1,13 +1,13 @@
 @interface InlineBubbleTipView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 @end
 
 @implementation InlineBubbleTipView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_2167C7BF0();
   v5 = v4;
   v7 = v6;
@@ -21,7 +21,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_2167C7CA0();
   v4 = v3;
   v6 = v5;

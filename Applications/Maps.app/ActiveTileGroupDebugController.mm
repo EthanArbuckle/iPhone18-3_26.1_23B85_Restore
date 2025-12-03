@@ -1,135 +1,135 @@
 @interface ActiveTileGroupDebugController
 - (ActiveTileGroupDebugController)init;
-- (ActiveTileGroupDebugController)initWithResourceManifest:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)activeTileGroupOverridesDidChange:(id)a3;
+- (ActiveTileGroupDebugController)initWithResourceManifest:(id)manifest;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)activeTileGroupOverridesDidChange:(id)change;
 - (void)dealloc;
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ActiveTileGroupDebugController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v32 = a3;
-  v6 = a4;
-  [v32 deselectRowAtIndexPath:v6 animated:1];
-  v7 = [v6 section];
-  if (v7 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  section = [pathCopy section];
+  if (section == 1)
   {
     v18 = [TileSetOverrideDebugController alloc];
-    v19 = [(ActiveTileGroupDebugController *)self tableView];
-    v8 = -[TileSetOverrideDebugController initWithStyle:](v18, "initWithStyle:", [v19 style]);
+    tableView = [(ActiveTileGroupDebugController *)self tableView];
+    v8 = -[TileSetOverrideDebugController initWithStyle:](v18, "initWithStyle:", [tableView style]);
 
     [(TileSetOverrideDebugController *)v8 setTitle:@"Custom Tile Set Override"];
     v11 = GEOConfigGetArray();
-    v20 = [v6 row];
+    v20 = [pathCopy row];
     if (v20 < [(TileGroupSectionsDebugController *)v11 count])
     {
-      v21 = -[TileGroupSectionsDebugController objectAtIndexedSubscript:](v11, "objectAtIndexedSubscript:", [v6 row]);
+      v21 = -[TileGroupSectionsDebugController objectAtIndexedSubscript:](v11, "objectAtIndexedSubscript:", [pathCopy row]);
       v22 = [v21 objectForKeyedSubscript:GEOActiveTileGroupOverrideStyleKey];
-      v31 = [v22 intValue];
+      intValue = [v22 intValue];
 
       v23 = [v21 objectForKeyedSubscript:GEOActiveTileGroupOverrideSizeKey];
-      v24 = [v23 intValue];
+      intValue2 = [v23 intValue];
 
       v25 = [v21 objectForKeyedSubscript:GEOActiveTileGroupOverrideScaleKey];
-      v26 = [v25 intValue];
+      intValue3 = [v25 intValue];
 
       v27 = [v21 objectForKeyedSubscript:GEOActiveTileGroupOverrideVersionKey];
-      v28 = [v27 unsignedIntValue];
+      unsignedIntValue = [v27 unsignedIntValue];
 
       v29 = [v21 objectForKeyedSubscript:GEOActiveTileGroupOverrideBaseURLKey];
       v30 = [v21 objectForKeyedSubscript:GEOActiveTileGroupOverrideLocalizationURLKey];
-      [(TileSetOverrideDebugController *)v8 setStyle:v31];
-      [(TileSetOverrideDebugController *)v8 setSize:v24];
-      [(TileSetOverrideDebugController *)v8 setScale:v26];
-      [(TileSetOverrideDebugController *)v8 setVersion:v28];
+      [(TileSetOverrideDebugController *)v8 setStyle:intValue];
+      [(TileSetOverrideDebugController *)v8 setSize:intValue2];
+      [(TileSetOverrideDebugController *)v8 setScale:intValue3];
+      [(TileSetOverrideDebugController *)v8 setVersion:unsignedIntValue];
       [(TileSetOverrideDebugController *)v8 setBaseURL:v29];
       [(TileSetOverrideDebugController *)v8 setLocalizationURL:v30];
     }
 
-    v15 = [(ActiveTileGroupDebugController *)self navigationController];
-    v16 = v15;
+    navigationController = [(ActiveTileGroupDebugController *)self navigationController];
+    v16 = navigationController;
     v17 = v8;
   }
 
   else
   {
-    if (v7)
+    if (section)
     {
       goto LABEL_10;
     }
 
-    v8 = [v32 cellForRowAtIndexPath:v6];
+    v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
     v9 = [TileGroupSectionsDebugController alloc];
-    v10 = [(ActiveTileGroupDebugController *)self tableView];
-    v11 = -[TileGroupSectionsDebugController initWithStyle:](v9, "initWithStyle:", [v10 style]);
+    tableView2 = [(ActiveTileGroupDebugController *)self tableView];
+    v11 = -[TileGroupSectionsDebugController initWithStyle:](v9, "initWithStyle:", [tableView2 style]);
 
     [(TileGroupSectionsDebugController *)v11 setTileGroupIdentifier:[(TileSetOverrideDebugController *)v8 tag]];
     [(TileGroupSectionsDebugController *)v11 setCanChangeActiveTileGroup:self->_canChangeTileGroup];
     [(TileGroupSectionsDebugController *)v11 setResourceManifest:self->_resourceManifest];
     [(TileGroupSectionsDebugController *)v11 setTitle:@"Tile Group Details"];
-    v12 = [(ActiveTileGroupDebugController *)self navigationItem];
-    v13 = [v12 rightBarButtonItem];
+    navigationItem = [(ActiveTileGroupDebugController *)self navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    if (!v13)
+    if (!rightBarButtonItem)
     {
-      v14 = [(TileGroupSectionsDebugController *)v11 navigationItem];
-      [v14 setRightBarButtonItem:0];
+      navigationItem2 = [(TileGroupSectionsDebugController *)v11 navigationItem];
+      [navigationItem2 setRightBarButtonItem:0];
     }
 
-    v15 = [(ActiveTileGroupDebugController *)self navigationController];
-    v16 = v15;
+    navigationController = [(ActiveTileGroupDebugController *)self navigationController];
+    v16 = navigationController;
     v17 = v11;
   }
 
-  [v15 pushViewController:v17 animated:1];
+  [navigationController pushViewController:v17 animated:1];
 
 LABEL_10:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section] > 1)
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section] > 1)
   {
     goto LABEL_11;
   }
 
-  v8 = [v7 section];
-  if (v8 == 1)
+  section = [pathCopy section];
+  if (section == 1)
   {
-    v10 = GEOConfigGetArray();
-    v17 = [v7 row];
-    if (v17 < [v10 count])
+    resources = GEOConfigGetArray();
+    v17 = [pathCopy row];
+    if (v17 < [resources count])
     {
-      v12 = [v6 dequeueReusableCellWithIdentifier:@"ExistingTileGroupOverrideCell"];
+      v12 = [viewCopy dequeueReusableCellWithIdentifier:@"ExistingTileGroupOverrideCell"];
       if (!v12)
       {
         v12 = [[UITableViewCell alloc] initWithStyle:3 reuseIdentifier:@"ExistingTileGroupOverrideCell"];
       }
 
-      v18 = [v10 objectAtIndexedSubscript:{objc_msgSend(v7, "row")}];
+      v18 = [resources objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       v19 = [v18 objectForKeyedSubscript:GEOActiveTileGroupOverrideStyleKey];
-      v20 = [v19 intValue];
+      intValue = [v19 intValue];
 
       v21 = [v18 objectForKeyedSubscript:GEOActiveTileGroupOverrideSizeKey];
-      v22 = [v21 intValue];
+      intValue2 = [v21 intValue];
 
       v23 = [v18 objectForKeyedSubscript:GEOActiveTileGroupOverrideScaleKey];
-      v24 = [v23 intValue];
+      intValue3 = [v23 intValue];
 
       v25 = [v18 objectForKeyedSubscript:GEOActiveTileGroupOverrideVersionKey];
-      v26 = [v25 unsignedIntValue];
+      unsignedIntValue = [v25 unsignedIntValue];
 
       v27 = @"RASTER_STANDARD";
-      switch(v20)
+      switch(intValue)
       {
         case 0:
           break;
@@ -476,53 +476,53 @@ LABEL_10:
           v27 = @"UNUSED_119";
           break;
         default:
-          v27 = [NSString stringWithFormat:@"(unknown: %i)", v20];
+          v27 = [NSString stringWithFormat:@"(unknown: %i)", intValue];
           break;
       }
 
-      v40 = [v12 textLabel];
-      [v40 setText:v27];
+      textLabel = [v12 textLabel];
+      [textLabel setText:v27];
 
-      if (v22 >= 3)
+      if (intValue2 >= 3)
       {
-        v41 = [NSString stringWithFormat:@"(unknown: %i)", v22];
+        v41 = [NSString stringWithFormat:@"(unknown: %i)", intValue2];
       }
 
       else
       {
-        v41 = *(&off_1016301B8 + v22);
+        v41 = *(&off_1016301B8 + intValue2);
       }
 
-      if (v24 >= 3)
+      if (intValue3 >= 3)
       {
-        v42 = [NSString stringWithFormat:@"(unknown: %i)", v24];
+        v42 = [NSString stringWithFormat:@"(unknown: %i)", intValue3];
       }
 
       else
       {
-        v42 = *(&off_1016301D0 + v24);
+        v42 = *(&off_1016301D0 + intValue3);
       }
 
-      v43 = [NSString stringWithFormat:@"%@ - %@ - %u", v41, v42, v26];
-      v44 = [v12 detailTextLabel];
-      [v44 setText:v43];
+      v43 = [NSString stringWithFormat:@"%@ - %@ - %u", v41, v42, unsignedIntValue];
+      detailTextLabel = [v12 detailTextLabel];
+      [detailTextLabel setText:v43];
 
       [v12 setAccessoryType:1];
       goto LABEL_152;
     }
 
-    v12 = [v6 dequeueReusableCellWithIdentifier:@"AddActiveTileGroupOverrideCell"];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:@"AddActiveTileGroupOverrideCell"];
     if (!v12)
     {
       v12 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"AddActiveTileGroupOverrideCell"];
     }
 
-    v28 = [v12 textLabel];
-    [v28 setText:@"Add TileSet Override"];
+    textLabel2 = [v12 textLabel];
+    [textLabel2 setText:@"Add TileSet Override"];
     goto LABEL_29;
   }
 
-  if (v8)
+  if (section)
   {
 LABEL_11:
     v12 = 0;
@@ -530,11 +530,11 @@ LABEL_11:
   }
 
   canChangeTileGroup = self->_canChangeTileGroup;
-  v10 = [(GEOResourceManifestDownload *)self->_resourceManifest resources];
-  v11 = [v7 row];
-  if (v11 < [v10 tileGroupsCount] + canChangeTileGroup)
+  resources = [(GEOResourceManifestDownload *)self->_resourceManifest resources];
+  v11 = [pathCopy row];
+  if (v11 < [resources tileGroupsCount] + canChangeTileGroup)
   {
-    v12 = [v6 dequeueReusableCellWithIdentifier:@"ActiveTileGroupCell"];
+    v12 = [viewCopy dequeueReusableCellWithIdentifier:@"ActiveTileGroupCell"];
     if (!v12)
     {
       v12 = [[UITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"ActiveTileGroupCell"];
@@ -542,65 +542,65 @@ LABEL_11:
 
     [v12 setAccessoryView:0];
     v13 = +[UIColor labelColor];
-    v14 = [v12 textLabel];
-    [v14 setTextColor:v13];
+    textLabel3 = [v12 textLabel];
+    [textLabel3 setTextColor:v13];
 
-    if ([v7 row] || !canChangeTileGroup)
+    if ([pathCopy row] || !canChangeTileGroup)
     {
-      v29 = [v10 tileGroupAtIndex:{objc_msgSend(v7, "row") - canChangeTileGroup}];
-      v30 = [v29 identifier];
+      v29 = [resources tileGroupAtIndex:{objc_msgSend(pathCopy, "row") - canChangeTileGroup}];
+      identifier = [v29 identifier];
 
-      v31 = [NSString stringWithFormat:@"%d", v30];
-      v32 = [v12 textLabel];
-      [v32 setText:v31];
+      v31 = [NSString stringWithFormat:@"%d", identifier];
+      textLabel4 = [v12 textLabel];
+      [textLabel4 setText:v31];
 
-      [v12 setTag:v30];
+      [v12 setTag:identifier];
       if (!GEOConfigGetBOOL())
       {
         goto LABEL_30;
       }
 
       v33 = +[GEOResourceManifestManager modernManager];
-      v34 = [v33 activeTileGroupIdentifier];
+      activeTileGroupIdentifier = [v33 activeTileGroupIdentifier];
 
-      if (v30 != v34)
+      if (identifier != activeTileGroupIdentifier)
       {
         goto LABEL_30;
       }
 
-      v28 = +[UIColor systemBlueColor];
-      v35 = [v12 textLabel];
-      [v35 setTextColor:v28];
+      textLabel2 = +[UIColor systemBlueColor];
+      textLabel5 = [v12 textLabel];
+      [textLabel5 setTextColor:textLabel2];
     }
 
     else
     {
-      if ([v10 tileGroupsCount])
+      if ([resources tileGroupsCount])
       {
-        v15 = [v10 tileGroupAtIndex:0];
-        v16 = [v15 identifier];
+        v15 = [resources tileGroupAtIndex:0];
+        identifier2 = [v15 identifier];
       }
 
       else
       {
-        v16 = 0;
+        identifier2 = 0;
       }
 
       [v12 setTag:-1];
       if ((GEOConfigGetBOOL() & 1) == 0)
       {
         v36 = +[UIColor systemBlueColor];
-        v37 = [v12 textLabel];
-        [v37 setTextColor:v36];
+        textLabel6 = [v12 textLabel];
+        [textLabel6 setTextColor:v36];
 
         v38 = +[GEOResourceManifestManager modernManager];
-        v39 = [v38 activeTileGroup];
-        v16 = [v39 identifier];
+        activeTileGroup = [v38 activeTileGroup];
+        identifier2 = [activeTileGroup identifier];
       }
 
-      v28 = [NSString stringWithFormat:@"Default (%d)", v16];
-      v35 = [v12 textLabel];
-      [v35 setText:v28];
+      textLabel2 = [NSString stringWithFormat:@"Default (%d)", identifier2];
+      textLabel5 = [v12 textLabel];
+      [textLabel5 setText:textLabel2];
     }
 
 LABEL_29:
@@ -617,24 +617,24 @@ LABEL_153:
   return v12;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   resourceManifest = self->_resourceManifest;
   if (resourceManifest)
   {
-    if (a4 == 1)
+    if (section == 1)
     {
-      v9 = GEOConfigGetArray();
-      v10 = [v9 count] + 1;
+      resources = GEOConfigGetArray();
+      v10 = [resources count] + 1;
       goto LABEL_7;
     }
 
-    if (!a4)
+    if (!section)
     {
       canChangeTileGroup = self->_canChangeTileGroup;
-      v9 = [(GEOResourceManifestDownload *)resourceManifest resources];
-      v10 = [v9 tileGroupsCount] + canChangeTileGroup;
+      resources = [(GEOResourceManifestDownload *)resourceManifest resources];
+      v10 = [resources tileGroupsCount] + canChangeTileGroup;
 LABEL_7:
 
       goto LABEL_8;
@@ -647,15 +647,15 @@ LABEL_8:
   return v10;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   v4 = @"Tile Set Overrides";
-  if (a4 != 1)
+  if (section != 1)
   {
     v4 = 0;
   }
 
-  if (a4)
+  if (section)
   {
     return v4;
   }
@@ -666,7 +666,7 @@ LABEL_8:
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (!self->_resourceManifest)
   {
@@ -694,19 +694,19 @@ LABEL_8:
   [(MapsDebugValuesViewController *)&v5 dealloc];
 }
 
-- (ActiveTileGroupDebugController)initWithResourceManifest:(id)a3
+- (ActiveTileGroupDebugController)initWithResourceManifest:(id)manifest
 {
-  v5 = a3;
+  manifestCopy = manifest;
   v11.receiver = self;
   v11.super_class = ActiveTileGroupDebugController;
   v6 = [(ActiveTileGroupDebugController *)&v11 initWithStyle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resourceManifest, a3);
+    objc_storeStrong(&v6->_resourceManifest, manifest);
     v7->_canChangeTileGroup = 0;
-    v8 = [(ActiveTileGroupDebugController *)v7 navigationItem];
-    [v8 setRightBarButtonItem:0];
+    navigationItem = [(ActiveTileGroupDebugController *)v7 navigationItem];
+    [navigationItem setRightBarButtonItem:0];
 
     v9 = v7;
   }
@@ -742,16 +742,16 @@ LABEL_8:
   return v3;
 }
 
-- (void)activeTileGroupOverridesDidChange:(id)a3
+- (void)activeTileGroupOverridesDidChange:(id)change
 {
-  v3 = [(ActiveTileGroupDebugController *)self tableView];
-  [v3 reloadData];
+  tableView = [(ActiveTileGroupDebugController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)a3
+- (void)resourceManifestManagerDidChangeActiveTileGroup:(id)group
 {
-  v3 = [(ActiveTileGroupDebugController *)self tableView];
-  [v3 reloadData];
+  tableView = [(ActiveTileGroupDebugController *)self tableView];
+  [tableView reloadData];
 }
 
 @end

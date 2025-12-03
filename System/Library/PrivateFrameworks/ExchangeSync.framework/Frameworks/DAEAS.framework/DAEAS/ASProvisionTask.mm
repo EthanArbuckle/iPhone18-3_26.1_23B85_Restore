@@ -1,11 +1,11 @@
 @interface ASProvisionTask
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5;
-- (BOOL)processContext:(id)a3;
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken;
+- (BOOL)processContext:(id)context;
 - (id)_policyID;
 - (id)_provisioningType;
 - (id)requestBody;
-- (int64_t)taskStatusForExchangeStatus:(int)a3;
-- (void)finishWithError:(id)a3;
+- (int64_t)taskStatusForExchangeStatus:(int)status;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation ASProvisionTask
@@ -27,12 +27,12 @@
 
 - (id)_provisioningType
 {
-  v2 = [(ASTask *)self taskManager];
-  v3 = [v2 protocol];
-  v4 = [v3 shouldUseWBXMLProvisioning];
+  taskManager = [(ASTask *)self taskManager];
+  protocol = [taskManager protocol];
+  shouldUseWBXMLProvisioning = [protocol shouldUseWBXMLProvisioning];
 
   v5 = WBXMLProvisioningXMLPolicyType;
-  if (!v4)
+  if (!shouldUseWBXMLProvisioning)
   {
     v5 = MSWAPProvisiningXMLPolicyType;
   }
@@ -53,12 +53,12 @@
     v9 = 232;
     if ([(NSDictionary *)self->_deviceInfo count])
     {
-      v10 = [(ASTask *)self taskManager];
-      v11 = [v10 account];
-      v12 = [v11 protocol];
-      v13 = [v12 sendDeviceInfoOnProvision];
+      taskManager = [(ASTask *)self taskManager];
+      account = [taskManager account];
+      protocol = [account protocol];
+      sendDeviceInfoOnProvision = [protocol sendDeviceInfoOnProvision];
 
-      if (v13)
+      if (sendDeviceInfoOnProvision)
       {
         [v3 switchToCodePage:18];
         [v3 openTag:22];
@@ -67,8 +67,8 @@
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v14 = [(NSDictionary *)self->_deviceInfo allKeys];
-        v15 = [v14 countByEnumeratingWithState:&v44 objects:v48 count:16];
+        allKeys = [(NSDictionary *)self->_deviceInfo allKeys];
+        v15 = [allKeys countByEnumeratingWithState:&v44 objects:v48 count:16];
         if (!v15)
         {
           goto LABEL_38;
@@ -84,23 +84,23 @@
           {
             if (*v45 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(allKeys);
             }
 
             v19 = *(*(&v44 + 1) + 8 * i);
-            v20 = [v19 intValue];
-            if (v20 <= 2)
+            intValue = [v19 intValue];
+            if (intValue <= 2)
             {
-              if (v20)
+              if (intValue)
               {
-                if (v20 == 1)
+                if (intValue == 1)
                 {
                   v21 = 24;
                 }
 
                 else
                 {
-                  if (v20 != 2)
+                  if (intValue != 2)
                   {
                     continue;
                   }
@@ -117,9 +117,9 @@
               goto LABEL_35;
             }
 
-            if (v20 <= 4)
+            if (intValue <= 4)
             {
-              if (v20 == 3)
+              if (intValue == 3)
               {
                 v21 = 26;
               }
@@ -132,32 +132,32 @@
               goto LABEL_35;
             }
 
-            if (v20 == 5)
+            if (intValue == 5)
             {
               v21 = 28;
               goto LABEL_35;
             }
 
-            if (v20 == 6)
+            if (intValue == 6)
             {
-              v22 = [(ASTask *)self taskManager];
-              v23 = [v22 account];
-              [v23 protocol];
+              taskManager2 = [(ASTask *)self taskManager];
+              account2 = [taskManager2 account];
+              [account2 protocol];
               v24 = v16;
-              v25 = v14;
+              v25 = allKeys;
               v26 = v9;
               v28 = v27 = self;
-              v29 = [v28 sendUserAgentInDeviceInfo];
+              sendUserAgentInDeviceInfo = [v28 sendUserAgentInDeviceInfo];
 
               self = v27;
               v9 = v26;
-              v14 = v25;
+              allKeys = v25;
               v16 = v24;
 
               v3 = v41;
               v17 = v42;
 
-              if (v29)
+              if (sendUserAgentInDeviceInfo)
               {
                 v21 = 32;
 LABEL_35:
@@ -169,7 +169,7 @@ LABEL_35:
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v44 objects:v48 count:16];
+          v16 = [allKeys countByEnumeratingWithState:&v44 objects:v48 count:16];
           if (!v16)
           {
 LABEL_38:
@@ -195,8 +195,8 @@ LABEL_38:
         policy = self->_policy;
         if (policy)
         {
-          v5 = [(ASPolicy *)policy type];
-          [v3 appendTag:8 withStringContent:v5];
+          type = [(ASPolicy *)policy type];
+          [v3 appendTag:8 withStringContent:type];
 
           v6 = [(ASPolicy *)self->_policy key];
           v7 = v6;
@@ -219,8 +219,8 @@ LABEL_38:
 
     else
     {
-      v31 = [(ASProvisionTask *)self _provisioningType];
-      [v3 appendTag:8 withStringContent:v31];
+      _provisioningType = [(ASProvisionTask *)self _provisioningType];
+      [v3 appendTag:8 withStringContent:_provisioningType];
     }
 
     [v3 closeTag:7];
@@ -230,10 +230,10 @@ LABEL_38:
   if ([(ASProvisionTask *)self type]== 2)
   {
     [v3 openTag:12];
-    v32 = [MEMORY[0x277D262A0] sharedConnection];
-    v33 = [v32 isEphemeralMultiUser];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    isEphemeralMultiUser = [mEMORY[0x277D262A0] isEphemeralMultiUser];
 
-    if (v33)
+    if (isEphemeralMultiUser)
     {
       v34 = DALoggingwithCategory();
       v35 = *(MEMORY[0x277D03988] + 5);
@@ -273,59 +273,59 @@ LABEL_38:
   }
 
   [v3 closeTag:5];
-  v38 = [v3 data];
+  data = [v3 data];
 
   v39 = *MEMORY[0x277D85DE8];
 
-  return v38;
+  return data;
 }
 
-- (int64_t)taskStatusForExchangeStatus:(int)a3
+- (int64_t)taskStatusForExchangeStatus:(int)status
 {
-  if ((a3 - 1) > 3)
+  if ((status - 1) > 3)
   {
     return 10;
   }
 
   else
   {
-    return qword_24A14E088[a3 - 1];
+    return qword_24A14E088[status - 1];
   }
 }
 
-- (BOOL)getTopLevelToken:(char *)a3 outStatusCodePage:(char *)a4 outStatusToken:(char *)a5
+- (BOOL)getTopLevelToken:(char *)token outStatusCodePage:(char *)page outStatusToken:(char *)statusToken
 {
-  *a4 = 14;
-  *a3 = 5;
-  *a5 = 11;
+  *page = 14;
+  *token = 5;
+  *statusToken = 11;
   return 1;
 }
 
-- (BOOL)processContext:(id)a3
+- (BOOL)processContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self currentlyParsingItem];
+  contextCopy = context;
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
 
-  if (!v5)
+  if (!currentlyParsingItem)
   {
     if (!self->super._haveSwitchedCodePage)
     {
-      if (![v4 hasNumberOfTokensRemaining:2])
+      if (![contextCopy hasNumberOfTokensRemaining:2])
       {
         goto LABEL_17;
       }
 
-      if ([v4 currentByte])
+      if ([contextCopy currentByte])
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to provision code page"];
-        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASProvisionTask.m", 224, objc_msgSend(v4, "curOffset")];
+        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASProvisionTask.m", 224, objc_msgSend(contextCopy, "curOffset")];
         v15 = DALoggingwithCategory();
         v16 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v15, v16))
         {
           *buf = 134217984;
-          v25 = [v4 curOffset];
+          curOffset = [contextCopy curOffset];
           _os_log_impl(&dword_24A0AC000, v15, v16, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -336,21 +336,21 @@ LABEL_38:
         }
 
         *buf = 138412290;
-        v25 = v13;
+        curOffset = v13;
         goto LABEL_28;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      if ([v4 currentByte] != 14)
+      [contextCopy advanceOffsetByAmount:1];
+      if ([contextCopy currentByte] != 14)
       {
         v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected switch to provision code page"];
-        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASProvisionTask.m", 224, objc_msgSend(v4, "curOffset")];
+        v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASProvisionTask.m", 224, objc_msgSend(contextCopy, "curOffset")];
         v20 = DALoggingwithCategory();
         v16 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v20, v16))
         {
           *buf = 134217984;
-          v25 = [v4 curOffset];
+          curOffset = [contextCopy curOffset];
           _os_log_impl(&dword_24A0AC000, v20, v16, "Failure at index %lld:", buf, 0xCu);
         }
 
@@ -361,12 +361,12 @@ LABEL_38:
         }
 
         *buf = 138412290;
-        v25 = v13;
+        curOffset = v13;
         goto LABEL_28;
       }
 
-      [v4 advanceOffsetByAmount:1];
-      [v4 setCodePage:14];
+      [contextCopy advanceOffsetByAmount:1];
+      [contextCopy setCodePage:14];
       self->super._haveSwitchedCodePage = 1;
     }
 
@@ -374,32 +374,32 @@ LABEL_38:
     {
 LABEL_7:
       v10 = [ASProvisionResponse alloc];
-      v11 = [(ASProvisionTask *)self _provisioningType];
-      v12 = [(ASProvisionResponse *)v10 initWithPolicyType:v11];
+      _provisioningType = [(ASProvisionTask *)self _provisioningType];
+      v12 = [(ASProvisionResponse *)v10 initWithPolicyType:_provisioningType];
 
       [(ASTask *)self setCurrentlyParsingItem:v12];
       goto LABEL_2;
     }
 
-    if (![v4 hasNumberOfTokensRemaining:1])
+    if (![contextCopy hasNumberOfTokensRemaining:1])
     {
       goto LABEL_17;
     }
 
-    if (([v4 currentByte] & 0x3F) == 5)
+    if (([contextCopy currentByte] & 0x3F) == 5)
     {
       self->super._haveParsedCommand = 1;
       goto LABEL_7;
     }
 
     v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Expected provision response"];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASProvisionTask.m", 225, objc_msgSend(v4, "curOffset")];
+    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d - Failure at index %lld:", "/Library/Caches/com.apple.xbs/Sources/ExchangeSync/ActiveSync/ASTasks/ASProvisionTask.m", 225, objc_msgSend(contextCopy, "curOffset")];
     v19 = DALoggingwithCategory();
     v16 = *(MEMORY[0x277D03988] + 3);
     if (os_log_type_enabled(v19, v16))
     {
       *buf = 134217984;
-      v25 = [v4 curOffset];
+      curOffset = [contextCopy curOffset];
       _os_log_impl(&dword_24A0AC000, v19, v16, "Failure at index %lld:", buf, 0xCu);
     }
 
@@ -408,26 +408,26 @@ LABEL_7:
     {
 LABEL_29:
 
-      [v4 setParseErrorReason:v14];
+      [contextCopy setParseErrorReason:v14];
 LABEL_30:
-      v21 = [v4 parseErrorReason];
-      v18 = v21 == 0;
+      parseErrorReason = [contextCopy parseErrorReason];
+      v18 = parseErrorReason == 0;
 
       goto LABEL_31;
     }
 
     *buf = 138412290;
-    v25 = v13;
+    curOffset = v13;
 LABEL_28:
     _os_log_impl(&dword_24A0AC000, v17, v16, "failure reason was %@", buf, 0xCu);
     goto LABEL_29;
   }
 
 LABEL_2:
-  v6 = [(ASTask *)self currentlyParsingItem];
-  v7 = [(ASTask *)self taskManager];
-  v8 = [v7 account];
-  [v6 parseASParseContext:v4 root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:v8];
+  currentlyParsingItem2 = [(ASTask *)self currentlyParsingItem];
+  taskManager = [(ASTask *)self taskManager];
+  account = [taskManager account];
+  [currentlyParsingItem2 parseASParseContext:contextCopy root:0 parent:0 callbackDict:0 streamCallbackDict:0 account:account];
 
   currentlyParsingItem = self->super._currentlyParsingItem;
   if (currentlyParsingItem && [(ASItem *)currentlyParsingItem parsingState]>= 2)
@@ -443,13 +443,13 @@ LABEL_31:
   return v18;
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASTask *)self currentlyParsingItem];
-  v6 = v5;
-  if (!v4 && v5 && [v5 parsingState] == 2)
+  errorCopy = error;
+  currentlyParsingItem = [(ASTask *)self currentlyParsingItem];
+  v6 = currentlyParsingItem;
+  if (!errorCopy && currentlyParsingItem && [currentlyParsingItem parsingState] == 2)
   {
     v7 = DALoggingwithCategory();
     v8 = *(MEMORY[0x277D03988] + 6);
@@ -463,8 +463,8 @@ LABEL_31:
       _os_log_impl(&dword_24A0AC000, v7, v8, "%@ Parsed response of %@", buf, 0x16u);
     }
 
-    v10 = [v6 status];
-    v11 = -[ASProvisionTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [v10 intValue]);
+    status = [v6 status];
+    v11 = -[ASProvisionTask taskStatusForExchangeStatus:](self, "taskStatusForExchangeStatus:", [status intValue]);
 
     if (![(ASTask *)self attemptRetryWithStatus:v11 error:0])
     {
@@ -485,7 +485,7 @@ LABEL_17:
     goto LABEL_15;
   }
 
-  v13 = [(ASTask *)self taskStatusForError:v4];
+  v13 = [(ASTask *)self taskStatusForError:errorCopy];
   v14 = DALoggingwithCategory();
   v15 = v14;
   if (v13 == -1)
@@ -516,7 +516,7 @@ LABEL_17:
     *buf = 138412546;
     v30 = objc_opt_class();
     v31 = 2112;
-    v32 = v4;
+    v32 = errorCopy;
     v17 = v30;
     v18 = "%@ failed: %@";
     v19 = v15;
@@ -527,14 +527,14 @@ LABEL_17:
   _os_log_impl(&dword_24A0AC000, v19, v20, v18, buf, v21);
 
 LABEL_14:
-  if (![(ASTask *)self attemptRetryWithStatus:v13 error:v4])
+  if (![(ASTask *)self attemptRetryWithStatus:v13 error:errorCopy])
   {
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __35__ASProvisionTask_finishWithError___block_invoke;
     v27[3] = &unk_278FC78E8;
     v27[4] = self;
-    v28 = v4;
+    v28 = errorCopy;
     [(ASTask *)self finishWithError:v28 afterDelegateCallout:v27];
     v12 = v28;
     goto LABEL_17;

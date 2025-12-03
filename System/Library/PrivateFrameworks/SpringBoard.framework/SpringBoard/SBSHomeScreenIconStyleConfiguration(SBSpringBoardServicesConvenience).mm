@@ -8,19 +8,19 @@
 
 - (id)sb_iconImageStyleConfiguration
 {
-  v2 = [a1 sb_iconImageStyleConfigurationType];
-  v3 = [a1 sb_iconImageStyleConfigurationVariant];
-  v4 = [a1 tintColor];
+  sb_iconImageStyleConfigurationType = [self sb_iconImageStyleConfigurationType];
+  sb_iconImageStyleConfigurationVariant = [self sb_iconImageStyleConfigurationVariant];
+  tintColor = [self tintColor];
   v5 = objc_alloc(MEMORY[0x277D661D8]);
-  v6 = [v4 UIColor];
-  v7 = [v5 initWithConfigurationType:v2 variant:v3 tintColor:v6];
+  uIColor = [tintColor UIColor];
+  v7 = [v5 initWithConfigurationType:sb_iconImageStyleConfigurationType variant:sb_iconImageStyleConfigurationVariant tintColor:uIColor];
 
   return v7;
 }
 
 - (uint64_t)sb_iconImageStyleConfigurationType
 {
-  result = [a1 updatedConfigurationType];
+  result = [self updatedConfigurationType];
   if (result != 2)
   {
     return result == 1;
@@ -31,7 +31,7 @@
 
 - (uint64_t)sb_iconImageStyleConfigurationVariant
 {
-  result = [a1 variant];
+  result = [self variant];
   v2 = 3;
   if (result == 1)
   {

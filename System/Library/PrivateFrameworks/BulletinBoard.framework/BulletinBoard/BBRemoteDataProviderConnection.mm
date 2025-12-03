@@ -1,26 +1,26 @@
 @interface BBRemoteDataProviderConnection
-- (BBRemoteDataProviderConnection)initWithServiceName:(id)a3 bundleID:(id)a4 delegate:(id)a5;
-- (id)dataProviderForSectionID:(id)a3;
-- (id)dataProvidersForUniversalSectionID:(id)a3;
-- (id)debugDescriptionWithChildren:(unint64_t)a3;
-- (void)_queue_removeDataProvider:(id)a3;
-- (void)addDataProviderWithSectionID:(id)a3 clientProxy:(id)a4 identity:(id)a5 completion:(id)a6;
-- (void)addParentSectionFactory:(id)a3;
-- (void)clientIsReady:(id)a3;
-- (void)performBlockOnDataProviders:(id)a3;
-- (void)removeDataProvider:(id)a3;
-- (void)removeDataProviderWithSectionID:(id)a3;
-- (void)setConnected:(BOOL)a3 completion:(id)a4;
+- (BBRemoteDataProviderConnection)initWithServiceName:(id)name bundleID:(id)d delegate:(id)delegate;
+- (id)dataProviderForSectionID:(id)d;
+- (id)dataProvidersForUniversalSectionID:(id)d;
+- (id)debugDescriptionWithChildren:(unint64_t)children;
+- (void)_queue_removeDataProvider:(id)provider;
+- (void)addDataProviderWithSectionID:(id)d clientProxy:(id)proxy identity:(id)identity completion:(id)completion;
+- (void)addParentSectionFactory:(id)factory;
+- (void)clientIsReady:(id)ready;
+- (void)performBlockOnDataProviders:(id)providers;
+- (void)removeDataProvider:(id)provider;
+- (void)removeDataProviderWithSectionID:(id)d;
+- (void)setConnected:(BOOL)connected completion:(id)completion;
 @end
 
 @implementation BBRemoteDataProviderConnection
 
-- (BBRemoteDataProviderConnection)initWithServiceName:(id)a3 bundleID:(id)a4 delegate:(id)a5
+- (BBRemoteDataProviderConnection)initWithServiceName:(id)name bundleID:(id)d delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  nameCopy = name;
+  dCopy = d;
+  delegateCopy = delegate;
+  if (!nameCopy)
   {
     [BBRemoteDataProviderConnection initWithServiceName:a2 bundleID:self delegate:?];
   }
@@ -29,7 +29,7 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_delegate, a5);
+    objc_storeStrong(&v12->_delegate, delegate);
     v13->_connected = 0;
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v15 = dispatch_queue_create("com.apple.bulletinboard.BBRemoteDataProviderConnection.queue", v14);
@@ -44,27 +44,27 @@
     dataProvidersByUniversalSectionID = v13->_dataProvidersByUniversalSectionID;
     v13->_dataProvidersByUniversalSectionID = v19;
 
-    [(BBRemoteDataProviderConnection *)v13 setServiceName:v9];
-    [(BBRemoteDataProviderConnection *)v13 setBundleID:v10];
+    [(BBRemoteDataProviderConnection *)v13 setServiceName:nameCopy];
+    [(BBRemoteDataProviderConnection *)v13 setBundleID:dCopy];
     v13->_clientReady = 0;
   }
 
   return v13;
 }
 
-- (id)debugDescriptionWithChildren:(unint64_t)a3
+- (id)debugDescriptionWithChildren:(unint64_t)children
 {
   v5 = [MEMORY[0x277CCAB68] stringWithString:&stru_28541A970];
-  if (a3)
+  if (children)
   {
-    v6 = a3;
+    childrenCopy = children;
     do
     {
       [v5 appendString:@"    "];
-      --v6;
+      --childrenCopy;
     }
 
-    while (v6);
+    while (childrenCopy);
   }
 
   v7 = MEMORY[0x277CCAB68];
@@ -97,7 +97,7 @@
   block[4] = self;
   v13 = v10;
   v18 = v13;
-  v19 = a3;
+  childrenCopy2 = children;
   dispatch_sync(queue, block);
   v14 = v18;
   v15 = v13;
@@ -149,18 +149,18 @@ void __63__BBRemoteDataProviderConnection_debugDescriptionWithChildren___block_i
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setConnected:(BOOL)a3 completion:(id)a4
+- (void)setConnected:(BOOL)connected completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__BBRemoteDataProviderConnection_setConnected_completion___block_invoke;
   block[3] = &unk_278D2B638;
-  v11 = a3;
+  connectedCopy = connected;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, block);
 }
 
@@ -272,41 +272,41 @@ LABEL_19:
   return result;
 }
 
-- (void)_queue_removeDataProvider:(id)a3
+- (void)_queue_removeDataProvider:(id)provider
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 sectionIdentifier];
-  if (v5)
+  providerCopy = provider;
+  sectionIdentifier = [providerCopy sectionIdentifier];
+  if (sectionIdentifier)
   {
-    [v4 setClientProxy:0 completion:0];
-    [(NSMutableDictionary *)self->_dataProvidersBySectionID removeObjectForKey:v5];
-    v6 = [v4 universalSectionIdentifier];
-    if (v6)
+    [providerCopy setClientProxy:0 completion:0];
+    [(NSMutableDictionary *)self->_dataProvidersBySectionID removeObjectForKey:sectionIdentifier];
+    universalSectionIdentifier = [providerCopy universalSectionIdentifier];
+    if (universalSectionIdentifier)
     {
-      v7 = [(NSMutableDictionary *)self->_dataProvidersByUniversalSectionID objectForKey:v6];
-      [v7 removeObject:v4];
+      v7 = [(NSMutableDictionary *)self->_dataProvidersByUniversalSectionID objectForKey:universalSectionIdentifier];
+      [v7 removeObject:providerCopy];
       if (![v7 count])
       {
-        [(NSMutableDictionary *)self->_dataProvidersByUniversalSectionID removeObjectForKey:v6];
+        [(NSMutableDictionary *)self->_dataProvidersByUniversalSectionID removeObjectForKey:universalSectionIdentifier];
       }
     }
 
-    [(BBRemoteDataProviderStoreDelegate *)self->_delegate dataProviderStore:self didRemoveDataProvider:v4];
+    [(BBRemoteDataProviderStoreDelegate *)self->_delegate dataProviderStore:self didRemoveDataProvider:providerCopy];
     goto LABEL_9;
   }
 
   v8 = BBLogConnection;
   if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = v8;
+    universalSectionIdentifier = v8;
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v12 = 138543618;
     v13 = v10;
     v14 = 2112;
-    v15 = v4;
-    _os_log_impl(&dword_241EFF000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Asked to remove a data provider (%@) without a sectionID. Ignoring.", &v12, 0x16u);
+    v15 = providerCopy;
+    _os_log_impl(&dword_241EFF000, universalSectionIdentifier, OS_LOG_TYPE_DEFAULT, "%{public}@ Asked to remove a data provider (%@) without a sectionID. Ignoring.", &v12, 0x16u);
 
 LABEL_9:
   }
@@ -314,13 +314,13 @@ LABEL_9:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDataProviderWithSectionID:(id)a3 clientProxy:(id)a4 identity:(id)a5 completion:(id)a6
+- (void)addDataProviderWithSectionID:(id)d clientProxy:(id)proxy identity:(id)identity completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  proxyCopy = proxy;
+  identityCopy = identity;
+  completionCopy = completion;
   v14 = BBLogConnection;
   if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -328,7 +328,7 @@ LABEL_9:
     *buf = 138543618;
     v28 = serviceName;
     v29 = 2114;
-    v30 = v10;
+    v30 = dCopy;
     _os_log_impl(&dword_241EFF000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ updating data provider proxy for section %{public}@", buf, 0x16u);
   }
 
@@ -338,14 +338,14 @@ LABEL_9:
   block[2] = __95__BBRemoteDataProviderConnection_addDataProviderWithSectionID_clientProxy_identity_completion___block_invoke;
   block[3] = &unk_278D2B1D8;
   block[4] = self;
-  v23 = v10;
-  v24 = v12;
-  v25 = v11;
-  v26 = v13;
-  v17 = v13;
-  v18 = v11;
-  v19 = v12;
-  v20 = v10;
+  v23 = dCopy;
+  v24 = identityCopy;
+  v25 = proxyCopy;
+  v26 = completionCopy;
+  v17 = completionCopy;
+  v18 = proxyCopy;
+  v19 = identityCopy;
+  v20 = dCopy;
   dispatch_async(queue, block);
 
   v21 = *MEMORY[0x277D85DE8];
@@ -467,17 +467,17 @@ uint64_t __95__BBRemoteDataProviderConnection_addDataProviderWithSectionID_clien
   return v3();
 }
 
-- (void)removeDataProviderWithSectionID:(id)a3
+- (void)removeDataProviderWithSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__BBRemoteDataProviderConnection_removeDataProviderWithSectionID___block_invoke;
   v7[3] = &unk_278D2A628;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dCopy;
+  v6 = dCopy;
   dispatch_async(queue, v7);
 }
 
@@ -488,36 +488,36 @@ void __66__BBRemoteDataProviderConnection_removeDataProviderWithSectionID___bloc
   [v1 _queue_removeDataProvider:v2];
 }
 
-- (void)addParentSectionFactory:(id)a3
+- (void)addParentSectionFactory:(id)factory
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  factoryCopy = factory;
   v5 = BBLogConnection;
   if (os_log_type_enabled(BBLogConnection, OS_LOG_TYPE_DEFAULT))
   {
     serviceName = self->_serviceName;
     v7 = v5;
-    v8 = [v4 sectionIdentifier];
+    sectionIdentifier = [factoryCopy sectionIdentifier];
     v11 = 138543618;
     v12 = serviceName;
     v13 = 2114;
-    v14 = v8;
+    v14 = sectionIdentifier;
     _os_log_impl(&dword_241EFF000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ adding parent section factory for section %{public}@", &v11, 0x16u);
   }
 
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
-    [(BBRemoteDataProviderStoreDelegate *)self->_delegate dataProviderStore:self didAddParentSectionFactory:v4];
+    [(BBRemoteDataProviderStoreDelegate *)self->_delegate dataProviderStore:self didAddParentSectionFactory:factoryCopy];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clientIsReady:(id)a3
+- (void)clientIsReady:(id)ready
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   if (!self->_clientReady)
   {
     v5 = BBLogConnection;
@@ -532,14 +532,14 @@ void __66__BBRemoteDataProviderConnection_removeDataProviderWithSectionID___bloc
     self->_clientReady = 1;
   }
 
-  v4[2](v4);
+  readyCopy[2](readyCopy);
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)dataProviderForSectionID:(id)a3
+- (id)dataProviderForSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -551,10 +551,10 @@ void __66__BBRemoteDataProviderConnection_removeDataProviderWithSectionID___bloc
   block[1] = 3221225472;
   block[2] = __59__BBRemoteDataProviderConnection_dataProviderForSectionID___block_invoke;
   block[3] = &unk_278D2A8D8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -573,9 +573,9 @@ uint64_t __59__BBRemoteDataProviderConnection_dataProviderForSectionID___block_i
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)dataProvidersForUniversalSectionID:(id)a3
+- (id)dataProvidersForUniversalSectionID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -587,10 +587,10 @@ uint64_t __59__BBRemoteDataProviderConnection_dataProviderForSectionID___block_i
   block[1] = 3221225472;
   block[2] = __69__BBRemoteDataProviderConnection_dataProvidersForUniversalSectionID___block_invoke;
   block[3] = &unk_278D2A8D8;
-  v10 = v4;
+  v10 = dCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = dCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -609,9 +609,9 @@ uint64_t __69__BBRemoteDataProviderConnection_dataProvidersForUniversalSectionID
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)removeDataProvider:(id)a3
+- (void)removeDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -624,15 +624,15 @@ uint64_t __69__BBRemoteDataProviderConnection_dataProvidersForUniversalSectionID
   v8[2] = __53__BBRemoteDataProviderConnection_removeDataProvider___block_invoke;
   v8[3] = &unk_278D2A628;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = providerCopy;
+  v7 = providerCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)performBlockOnDataProviders:(id)a3
+- (void)performBlockOnDataProviders:(id)providers
 {
-  v5 = a3;
-  if (!v5)
+  providersCopy = providers;
+  if (!providersCopy)
   {
     [(BBRemoteDataProviderConnection *)a2 performBlockOnDataProviders:?];
   }
@@ -643,8 +643,8 @@ uint64_t __69__BBRemoteDataProviderConnection_dataProvidersForUniversalSectionID
   v8[2] = __62__BBRemoteDataProviderConnection_performBlockOnDataProviders___block_invoke;
   v8[3] = &unk_278D2AC38;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = providersCopy;
+  v7 = providersCopy;
   dispatch_async(queue, v8);
 }
 

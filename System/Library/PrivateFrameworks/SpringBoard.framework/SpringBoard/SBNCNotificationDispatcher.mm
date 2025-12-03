@@ -1,13 +1,13 @@
 @interface SBNCNotificationDispatcher
 - (BOOL)_lockScreenWantsBanners;
-- (BOOL)isNotificationContentExtensionVisible:(id)a3;
+- (BOOL)isNotificationContentExtensionVisible:(id)visible;
 - (SBNCNotificationDispatcher)init;
-- (id)keyWindowForScreen:(id)a3;
+- (id)keyWindowForScreen:(id)screen;
 - (void)_aggregateLockStateDidChange;
 - (void)_carPlayDestinationAvailabilityDidChange;
-- (void)_setupNewDestinationsForDispatcher:(id)a3;
+- (void)_setupNewDestinationsForDispatcher:(id)dispatcher;
 - (void)_updateActiveDestinations;
-- (void)coverSheetViewController:(id)a3 didChangeActiveBehavior:(id)a4;
+- (void)coverSheetViewController:(id)controller didChangeActiveBehavior:(id)behavior;
 @end
 
 @implementation SBNCNotificationDispatcher
@@ -16,31 +16,31 @@
 {
   v22 = *MEMORY[0x277D85DE8];
   v3 = +[SBLockScreenManager sharedInstance];
-  v4 = [v3 isUILocked];
+  isUILocked = [v3 isUILocked];
 
-  v5 = [(SBNCNotificationDispatcher *)self lockScreenManager];
-  v6 = [v5 isInLostMode];
+  lockScreenManager = [(SBNCNotificationDispatcher *)self lockScreenManager];
+  isInLostMode = [lockScreenManager isInLostMode];
 
-  v7 = [(SBNCNotificationDispatcher *)self isCarDestinationActive];
-  v8 = v4 ^ 1 | [(SBNCNotificationDispatcher *)self _lockScreenWantsBanners];
+  isCarDestinationActive = [(SBNCNotificationDispatcher *)self isCarDestinationActive];
+  v8 = isUILocked ^ 1 | [(SBNCNotificationDispatcher *)self _lockScreenWantsBanners];
   v9 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v15[0] = 67109888;
-    v15[1] = v4;
+    v15[1] = isUILocked;
     v16 = 1024;
-    v17 = v6;
+    v17 = isInLostMode;
     v18 = 1024;
-    v19 = v7;
+    v19 = isCarDestinationActive;
     v20 = 1024;
     v21 = v8 & 1;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Updating active destinations [ lockScreenVisible: %d lostMode: %d carPlay: %d bannersActive : %d ]", v15, 0x1Au);
   }
 
-  v10 = [(SBNCNotificationDispatcher *)self dispatcher];
-  [v10 registerDestination:self->_bannerDestination];
-  v11 = [(SBNCNotificationDispatcher *)self bannerDestination];
-  [v10 setDestination:v11 enabled:v8 & 1];
+  dispatcher = [(SBNCNotificationDispatcher *)self dispatcher];
+  [dispatcher registerDestination:self->_bannerDestination];
+  bannerDestination = [(SBNCNotificationDispatcher *)self bannerDestination];
+  [dispatcher setDestination:bannerDestination enabled:v8 & 1];
 
   if ((v8 & 1) == 0)
   {
@@ -49,31 +49,31 @@
 
   if (self->_dashBoardDestination)
   {
-    [v10 registerDestination:?];
-    v12 = [(SBNCNotificationDispatcher *)self dashBoardDestination];
-    [v10 setDestination:v12 enabled:1];
+    [dispatcher registerDestination:?];
+    dashBoardDestination = [(SBNCNotificationDispatcher *)self dashBoardDestination];
+    [dispatcher setDestination:dashBoardDestination enabled:1];
   }
 
   carDestination = self->_carDestination;
-  if (v7)
+  if (isCarDestinationActive)
   {
-    [v10 registerDestination:carDestination];
-    v14 = [(SBNCNotificationDispatcher *)self carDestination];
-    [v10 setDestination:v14 enabled:1];
+    [dispatcher registerDestination:carDestination];
+    carDestination = [(SBNCNotificationDispatcher *)self carDestination];
+    [dispatcher setDestination:carDestination enabled:1];
   }
 
   else
   {
-    [v10 unregisterDestination:carDestination];
+    [dispatcher unregisterDestination:carDestination];
   }
 }
 
 - (BOOL)_lockScreenWantsBanners
 {
   v2 = +[SBLockScreenManager sharedInstanceIfExists];
-  v3 = [v2 coverSheetViewController];
-  v4 = [v3 activeBehavior];
-  v5 = [v4 notificationBehavior] == 2;
+  coverSheetViewController = [v2 coverSheetViewController];
+  activeBehavior = [coverSheetViewController activeBehavior];
+  v5 = [activeBehavior notificationBehavior] == 2;
 
   return v5;
 }
@@ -152,22 +152,22 @@
     v25 = +[SBAlertItemsController sharedInstance];
     [v25 setLockScreenNotificationsAlertItemPresenter:v2->_userNotificationAlertSource];
 
-    v26 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v26 addObserver:v2 selector:sel__aggregateLockStateDidChange name:@"SBAggregateLockStateDidChangeNotification" object:0];
-    [v26 addObserver:v2 selector:sel__carPlayDestinationAvailabilityDidChange name:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:0];
-    v27 = [(SBLockScreenManager *)v2->_lockScreenManager coverSheetViewController];
-    [v27 addCoverSheetObserver:v2];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__aggregateLockStateDidChange name:@"SBAggregateLockStateDidChangeNotification" object:0];
+    [defaultCenter addObserver:v2 selector:sel__carPlayDestinationAvailabilityDidChange name:@"SBNotificationCarPlayDestinationAvailabilityDidChange" object:0];
+    coverSheetViewController = [(SBLockScreenManager *)v2->_lockScreenManager coverSheetViewController];
+    [coverSheetViewController addCoverSheetObserver:v2];
   }
 
   return v2;
 }
 
-- (id)keyWindowForScreen:(id)a3
+- (id)keyWindowForScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   if ([(SBNCNotificationDispatcher *)self isCarDestinationActive])
   {
-    v5 = [(SBNotificationCarPlayDestination *)self->_carDestination keyWindowForScreen:v4];
+    v5 = [(SBNotificationCarPlayDestination *)self->_carDestination keyWindowForScreen:screenCopy];
   }
 
   else
@@ -190,15 +190,15 @@
   [(SBNCNotificationDispatcher *)self _updateActiveDestinations];
 }
 
-- (void)_setupNewDestinationsForDispatcher:(id)a3
+- (void)_setupNewDestinationsForDispatcher:(id)dispatcher
 {
   v4 = objc_alloc_init(SBNotificationCarPlayDestination);
   carDestination = self->_carDestination;
   self->_carDestination = v4;
 
   v6 = self->_carDestination;
-  v7 = [(SBNCNotificationDispatcher *)self alertingController];
-  [(SBNotificationCarPlayDestination *)v6 setAlertingController:v7];
+  alertingController = [(SBNCNotificationDispatcher *)self alertingController];
+  [(SBNotificationCarPlayDestination *)v6 setAlertingController:alertingController];
 
   v8 = objc_alloc_init(SBNotificationBannerDestination);
   bannerDestination = self->_bannerDestination;
@@ -218,16 +218,16 @@
 
   [(SBNCNotificationDispatcherDelegate *)self->_dispatcherDelegate setBannerDestination:self->_bannerDestination];
   v16 = +[SBLockScreenManager sharedInstance];
-  v17 = [v16 notificationDestination];
+  notificationDestination = [v16 notificationDestination];
   dashBoardDestination = self->_dashBoardDestination;
-  self->_dashBoardDestination = v17;
+  self->_dashBoardDestination = notificationDestination;
 
   v19 = self->_dashBoardDestination;
-  v20 = [(SBNCNotificationDispatcher *)self alertingController];
-  [(SBNotificationDestination *)v19 setAlertingController:v20];
+  alertingController2 = [(SBNCNotificationDispatcher *)self alertingController];
+  [(SBNotificationDestination *)v19 setAlertingController:alertingController2];
 }
 
-- (void)coverSheetViewController:(id)a3 didChangeActiveBehavior:(id)a4
+- (void)coverSheetViewController:(id)controller didChangeActiveBehavior:(id)behavior
 {
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
@@ -239,19 +239,19 @@
   [(SBNCNotificationDispatcher *)self _updateActiveDestinations];
 }
 
-- (BOOL)isNotificationContentExtensionVisible:(id)a3
+- (BOOL)isNotificationContentExtensionVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(SBNCNotificationDispatcher *)self dashBoardDestination];
-  if ([v5 isNotificationContentExtensionVisible:v4])
+  visibleCopy = visible;
+  dashBoardDestination = [(SBNCNotificationDispatcher *)self dashBoardDestination];
+  if ([dashBoardDestination isNotificationContentExtensionVisible:visibleCopy])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(SBNCNotificationDispatcher *)self bannerDestination];
-    v6 = [v7 isNotificationContentExtensionVisible:v4];
+    bannerDestination = [(SBNCNotificationDispatcher *)self bannerDestination];
+    v6 = [bannerDestination isNotificationContentExtensionVisible:visibleCopy];
   }
 
   return v6;

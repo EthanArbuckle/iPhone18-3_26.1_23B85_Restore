@@ -1,24 +1,24 @@
 @interface HDHealthRecordProcessingContext
-- (BOOL)didProcessClinicalRecord:(id)a3 forMedicalRecord:(id)a4 error:(id *)a5;
-- (BOOL)didProcessMedicalRecord:(id)a3 forResource:(id)a4 error:(id *)a5;
-- (BOOL)foundResource:(id)a3 parentResource:(id)a4 error:(id *)a5;
-- (HDHealthRecordProcessingContext)initWithRuleset:(id)a3 resources:(id)a4;
+- (BOOL)didProcessClinicalRecord:(id)record forMedicalRecord:(id)medicalRecord error:(id *)error;
+- (BOOL)didProcessMedicalRecord:(id)record forResource:(id)resource error:(id *)error;
+- (BOOL)foundResource:(id)resource parentResource:(id)parentResource error:(id *)error;
+- (HDHealthRecordProcessingContext)initWithRuleset:(id)ruleset resources:(id)resources;
 - (NSArray)resources;
-- (id)createExtractionResultWithError:(id *)a3;
-- (id)extractedClinicalItemsForClinicalType:(int64_t)a3;
-- (void)setExtractedClinicalItems:(id)a3 forClinicalType:(int64_t)a4;
+- (id)createExtractionResultWithError:(id *)error;
+- (id)extractedClinicalItemsForClinicalType:(int64_t)type;
+- (void)setExtractedClinicalItems:(id)items forClinicalType:(int64_t)type;
 @end
 
 @implementation HDHealthRecordProcessingContext
 
-- (HDHealthRecordProcessingContext)initWithRuleset:(id)a3 resources:(id)a4
+- (HDHealthRecordProcessingContext)initWithRuleset:(id)ruleset resources:(id)resources
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  rulesetCopy = ruleset;
+  resourcesCopy = resources;
+  v9 = resourcesCopy;
+  if (rulesetCopy)
   {
-    if (v8)
+    if (resourcesCopy)
     {
       goto LABEL_3;
     }
@@ -41,7 +41,7 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_extractionRuleset, a3);
+    objc_storeStrong(&v10->_extractionRuleset, ruleset);
     v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v9];
     mutableResources = v11->_mutableResources;
     v11->_mutableResources = v12;
@@ -66,7 +66,7 @@ LABEL_3:
   return v11;
 }
 
-- (id)createExtractionResultWithError:(id *)a3
+- (id)createExtractionResultWithError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -124,14 +124,14 @@ id __67__HDHealthRecordProcessingContext_createExtractionResultWithError___block
   return v7;
 }
 
-- (BOOL)foundResource:(id)a3 parentResource:(id)a4 error:(id *)a5
+- (BOOL)foundResource:(id)resource parentResource:(id)parentResource error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  resourceCopy = resource;
+  parentResourceCopy = parentResource;
+  v10 = parentResourceCopy;
+  if (resourceCopy)
   {
-    if (v9)
+    if (parentResourceCopy)
     {
       goto LABEL_3;
     }
@@ -148,30 +148,30 @@ id __67__HDHealthRecordProcessingContext_createExtractionResultWithError___block
 
   [HDHealthRecordProcessingContext foundResource:parentResource:error:];
 LABEL_3:
-  if ([v8 isEqual:v10])
+  if ([resourceCopy isEqual:v10])
   {
     [HDHealthRecordProcessingContext foundResource:parentResource:error:];
   }
 
-  v11 = [v8 FHIRVersion];
-  v12 = [v11 FHIRRelease];
+  fHIRVersion = [resourceCopy FHIRVersion];
+  fHIRRelease = [fHIRVersion FHIRRelease];
 
-  v13 = [(HDHealthRecordRuleset *)self->_extractionRuleset FHIRRelease];
+  fHIRRelease2 = [(HDHealthRecordRuleset *)self->_extractionRuleset FHIRRelease];
 
-  if (v12 == v13)
+  if (fHIRRelease == fHIRRelease2)
   {
-    [(NSMutableArray *)self->_mutableResources addObject:v8];
-    [(NSMutableDictionary *)self->_parentResourcesByResource setObject:v10 forKeyedSubscript:v8];
+    [(NSMutableArray *)self->_mutableResources addObject:resourceCopy];
+    [(NSMutableDictionary *)self->_parentResourcesByResource setObject:v10 forKeyedSubscript:resourceCopy];
   }
 
   else
   {
     v14 = MEMORY[0x277CCA9B8];
-    v15 = [(HDHealthRecordRuleset *)self->_extractionRuleset FHIRRelease];
-    [v14 hk_assignError:a5 code:3 format:{@"Cannot add resource from release %@ to a processing context associated with release %@", v12, v15}];
+    fHIRRelease3 = [(HDHealthRecordRuleset *)self->_extractionRuleset FHIRRelease];
+    [v14 hk_assignError:error code:3 format:{@"Cannot add resource from release %@ to a processing context associated with release %@", fHIRRelease, fHIRRelease3}];
   }
 
-  return v12 == v13;
+  return fHIRRelease == fHIRRelease2;
 }
 
 - (NSArray)resources
@@ -181,34 +181,34 @@ LABEL_3:
   return v2;
 }
 
-- (id)extractedClinicalItemsForClinicalType:(int64_t)a3
+- (id)extractedClinicalItemsForClinicalType:(int64_t)type
 {
   clinicalItemsByType = self->_clinicalItemsByType;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v5 = [(NSMutableDictionary *)clinicalItemsByType objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)setExtractedClinicalItems:(id)a3 forClinicalType:(int64_t)a4
+- (void)setExtractedClinicalItems:(id)items forClinicalType:(int64_t)type
 {
-  v8 = [a3 copy];
+  v8 = [items copy];
   clinicalItemsByType = self->_clinicalItemsByType;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [(NSMutableDictionary *)clinicalItemsByType setObject:v8 forKeyedSubscript:v7];
 }
 
-- (BOOL)didProcessClinicalRecord:(id)a3 forMedicalRecord:(id)a4 error:(id *)a5
+- (BOOL)didProcessClinicalRecord:(id)record forMedicalRecord:(id)medicalRecord error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  recordCopy = record;
+  medicalRecordCopy = medicalRecord;
+  if (!recordCopy)
   {
     [HDHealthRecordProcessingContext didProcessClinicalRecord:forMedicalRecord:error:];
   }
 
-  if (!v8)
+  if (!medicalRecordCopy)
   {
     [HDHealthRecordProcessingContext didProcessClinicalRecord:forMedicalRecord:error:];
   }
@@ -237,14 +237,14 @@ LABEL_3:
         v22[1] = 3221225472;
         v22[2] = __83__HDHealthRecordProcessingContext_didProcessClinicalRecord_forMedicalRecord_error___block_invoke;
         v22[3] = &unk_2796E2950;
-        v15 = v8;
+        v15 = medicalRecordCopy;
         v23 = v15;
-        v16 = [v14 hk_firstObjectPassingTest:v22];
+        fHIRIdentifier = [v14 hk_firstObjectPassingTest:v22];
 
-        if (v16)
+        if (fHIRIdentifier)
         {
 
-          [(NSMutableDictionary *)self->_clinicalRecordsByMedicalRecord setObject:v7 forKeyedSubscript:v15];
+          [(NSMutableDictionary *)self->_clinicalRecordsByMedicalRecord setObject:recordCopy forKeyedSubscript:v15];
           v18 = 1;
           goto LABEL_15;
         }
@@ -261,8 +261,8 @@ LABEL_3:
   }
 
   v17 = MEMORY[0x277CCA9B8];
-  v16 = [v8 FHIRIdentifier];
-  [v17 hk_assignError:a5 code:3 format:{@"cannot accept a clinical record without a matching medical record, %@ is unknown to us", v16}];
+  fHIRIdentifier = [medicalRecordCopy FHIRIdentifier];
+  [v17 hk_assignError:error code:3 format:{@"cannot accept a clinical record without a matching medical record, %@ is unknown to us", fHIRIdentifier}];
   v18 = 0;
 LABEL_15:
 
@@ -270,14 +270,14 @@ LABEL_15:
   return v18;
 }
 
-- (BOOL)didProcessMedicalRecord:(id)a3 forResource:(id)a4 error:(id *)a5
+- (BOOL)didProcessMedicalRecord:(id)record forResource:(id)resource error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  recordCopy = record;
+  resourceCopy = resource;
+  v9 = resourceCopy;
+  if (recordCopy)
   {
-    if (v8)
+    if (resourceCopy)
     {
       goto LABEL_3;
     }
@@ -312,12 +312,12 @@ LABEL_3:
   if (v14)
   {
     v15 = v14;
-    [v14 addObject:v7];
+    [v14 addObject:recordCopy];
   }
 
   else
   {
-    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v7, 0}];
+    v15 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{recordCopy, 0}];
     [(NSMutableDictionary *)self->_medicalRecordsByOriginalResource setObject:v15 forKeyedSubscript:v13];
   }
 

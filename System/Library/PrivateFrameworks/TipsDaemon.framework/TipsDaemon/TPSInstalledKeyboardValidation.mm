@@ -1,20 +1,20 @@
 @interface TPSInstalledKeyboardValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSInstalledKeyboardValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TPSTargetingValidation *)self arrayValue];
-  v6 = [(TPSTargetingValidation *)self value];
+  completionCopy = completion;
+  arrayValue = [(TPSTargetingValidation *)self arrayValue];
+  value = [(TPSTargetingValidation *)self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 TPSSafeArrayForKey:@"values"];
+    v7 = [value TPSSafeArrayForKey:@"values"];
 
-    v8 = [v6 TPSSafeStringForKey:@"joinType"];
+    v8 = [value TPSSafeStringForKey:@"joinType"];
     if ([v8 isEqualToString:@"AND"])
     {
       v9 = 0;
@@ -26,7 +26,7 @@
       {
 LABEL_7:
 
-        v5 = v7;
+        arrayValue = v7;
         goto LABEL_8;
       }
 
@@ -38,16 +38,16 @@ LABEL_7:
   }
 
 LABEL_8:
-  v10 = [(TPSTargetingValidation *)self joinType];
-  if (v10 == 1)
+  joinType = [(TPSTargetingValidation *)self joinType];
+  if (joinType == 1)
   {
-    v11 = [v5 na_any:&__block_literal_global_13_0];
+    v11 = [arrayValue na_any:&__block_literal_global_13_0];
     goto LABEL_12;
   }
 
-  if (!v10)
+  if (!joinType)
   {
-    v11 = [v5 na_all:&__block_literal_global_10];
+    v11 = [arrayValue na_all:&__block_literal_global_10];
 LABEL_12:
     v12 = v11;
     goto LABEL_14;
@@ -55,13 +55,13 @@ LABEL_12:
 
   v12 = 0;
 LABEL_14:
-  v13 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+  targeting = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSDictationLanguageValidation *)self validateWithCompletion:v12, v13];
+    [(TPSDictationLanguageValidation *)self validateWithCompletion:v12, targeting];
   }
 
-  v4[2](v4, v12, 0);
+  completionCopy[2](completionCopy, v12, 0);
 }
 
 @end

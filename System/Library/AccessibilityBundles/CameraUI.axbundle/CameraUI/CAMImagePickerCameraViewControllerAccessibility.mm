@@ -1,22 +1,22 @@
 @interface CAMImagePickerCameraViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)cropOverlayWasCancelled:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)cropOverlayWasCancelled:(id)cancelled;
 @end
 
 @implementation CAMImagePickerCameraViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CAMImagePickerCameraViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"CAMImagePickerCameraViewController" hasInstanceMethod:@"cropOverlayWasCancelled:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CAMImagePickerCameraViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"CAMImagePickerCameraViewController" hasInstanceMethod:@"cropOverlayWasCancelled:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)cropOverlayWasCancelled:(id)a3
+- (void)cropOverlayWasCancelled:(id)cancelled
 {
   v5.receiver = self;
   v5.super_class = CAMImagePickerCameraViewControllerAccessibility;
-  [(CAMImagePickerCameraViewControllerAccessibility *)&v5 cropOverlayWasCancelled:a3];
+  [(CAMImagePickerCameraViewControllerAccessibility *)&v5 cropOverlayWasCancelled:cancelled];
   v4 = [(CAMImagePickerCameraViewControllerAccessibility *)self safeValueForKey:@"view"];
   [v4 _accessibilityLoadAccessibilityInformation];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);

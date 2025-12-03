@@ -1,8 +1,8 @@
 @interface PodcastRequestManager
 + (_TtC18PodcastsFoundation21PodcastRequestManager)sharedInstance;
 - (_TtC18PodcastsFoundation21PodcastRequestManager)init;
-- (void)updatePodcastWithEpisodeAdamId:(id)a3 completion:(id)a4;
-- (void)updatePodcastWithStoreId:(int64_t)a3 completion:(id)a4;
+- (void)updatePodcastWithEpisodeAdamId:(id)id completion:(id)completion;
+- (void)updatePodcastWithStoreId:(int64_t)id completion:(id)completion;
 @end
 
 @implementation PodcastRequestManager
@@ -19,23 +19,23 @@
   return v3;
 }
 
-- (void)updatePodcastWithStoreId:(int64_t)a3 completion:(id)a4
+- (void)updatePodcastWithStoreId:(int64_t)id completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = self;
-  sub_1D90578D4(a3, sub_1D9058E7C, v7);
+  selfCopy = self;
+  sub_1D90578D4(id, sub_1D9058E7C, v7);
 }
 
-- (void)updatePodcastWithEpisodeAdamId:(id)a3 completion:(id)a4
+- (void)updatePodcastWithEpisodeAdamId:(id)id completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1D90581C0(v8, sub_1D9058E74, v7);
+  idCopy = id;
+  selfCopy = self;
+  sub_1D90581C0(idCopy, sub_1D9058E74, v7);
 }
 
 - (_TtC18PodcastsFoundation21PodcastRequestManager)init

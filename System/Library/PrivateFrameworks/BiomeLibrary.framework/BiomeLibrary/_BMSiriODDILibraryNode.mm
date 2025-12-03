@@ -5,26 +5,26 @@
 + (id)configurationForSegmentsCohorts;
 + (id)storeConfigurationForScorecardMetrics;
 + (id)storeConfigurationForSegmentsCohorts;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMSiriODDILibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ScorecardMetrics"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ScorecardMetrics"])
   {
-    v5 = [a1 ScorecardMetrics];
+    scorecardMetrics = [self ScorecardMetrics];
 LABEL_5:
-    v6 = v5;
+    v6 = scorecardMetrics;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"SegmentsCohorts"])
+  if ([nameCopy isEqualToString:@"SegmentsCohorts"])
   {
-    v5 = [a1 SegmentsCohorts];
+    scorecardMetrics = [self SegmentsCohorts];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForSegmentsCohorts
 {
-  v3 = [a1 storeConfigurationForSegmentsCohorts];
-  v4 = [a1 syncPolicyForSegmentsCohorts];
+  storeConfigurationForSegmentsCohorts = [self storeConfigurationForSegmentsCohorts];
+  syncPolicyForSegmentsCohorts = [self syncPolicyForSegmentsCohorts];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"9EAB138E-5A47-47BF-BF02-8935BD38E4EE"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.ODDI.SegmentsCohorts" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Siri.ODDI.SegmentsCohorts" eventClass:objc_opt_class() storeConfig:storeConfigurationForSegmentsCohorts syncPolicy:syncPolicyForSegmentsCohorts legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -73,8 +73,8 @@ LABEL_7:
 + (id)configurationForScorecardMetrics
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = [a1 storeConfigurationForScorecardMetrics];
-  v4 = [a1 syncPolicyForScorecardMetrics];
+  storeConfigurationForScorecardMetrics = [self storeConfigurationForScorecardMetrics];
+  syncPolicyForScorecardMetrics = [self syncPolicyForScorecardMetrics];
   v5 = objc_alloc(MEMORY[0x1E698F330]);
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"TRUEPREDICATE" argumentArray:0];
   v7 = [v5 initWithIdentifier:@"delete-siri-dictation-history" predicate:v6];
@@ -85,7 +85,7 @@ LABEL_7:
   v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"64F4EE74-AE3C-4FEC-A346-7D27AD9ED34D"];
   BYTE2(v14) = 1;
   LOWORD(v14) = 1;
-  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Siri.ODDI.ScorecardMetrics" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v11 = [v9 _libraryStreamConfigurationWithUUID:v10 streamIdentifier:@"Siri.ODDI.ScorecardMetrics" eventClass:objc_opt_class() storeConfig:storeConfigurationForScorecardMetrics syncPolicy:syncPolicyForScorecardMetrics legacyNames:0 internalMetadata:0 enableSubscriptions:v14 enableSubscriptionSubstream:0 enableTombstoneSubstream:v8 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   v12 = *MEMORY[0x1E69E9840];
 
@@ -104,7 +104,7 @@ LABEL_7:
 + (id)SegmentsCohorts
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSegmentsCohorts];
+  configurationForSegmentsCohorts = [self configurationForSegmentsCohorts];
   v3 = +[BMSiriSegmentsCohorts columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -116,7 +116,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.ODDI.SegmentsCohorts" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.ODDI.SegmentsCohorts" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.ODDI.SegmentsCohorts" schema:v9 configuration:configurationForSegmentsCohorts];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -126,7 +126,7 @@ LABEL_7:
 + (id)ScorecardMetrics
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForScorecardMetrics];
+  configurationForScorecardMetrics = [self configurationForScorecardMetrics];
   v3 = +[BMSiriScorecardMetrics columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -138,7 +138,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Siri.ODDI.ScorecardMetrics" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.ODDI.ScorecardMetrics" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Siri.ODDI.ScorecardMetrics" schema:v9 configuration:configurationForScorecardMetrics];
 
   v11 = *MEMORY[0x1E69E9840];
 

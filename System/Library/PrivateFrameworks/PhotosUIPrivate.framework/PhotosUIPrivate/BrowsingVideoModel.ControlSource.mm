@@ -1,6 +1,6 @@
 @interface BrowsingVideoModel.ControlSource
 - (NSArray)timeRangeMarks;
-- (void)setTimeRangeMarks:(id)a3;
+- (void)setTimeRangeMarks:(id)marks;
 @end
 
 @implementation BrowsingVideoModel.ControlSource
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (void)setTimeRangeMarks:(id)a3
+- (void)setTimeRangeMarks:(id)marks
 {
   sub_1B3710718(0, &qword_1EB84F868);
   v4 = sub_1B3C9C788();
-  v5 = self;
+  selfCopy = self;
   sub_1B372DB28(v4);
 }
 

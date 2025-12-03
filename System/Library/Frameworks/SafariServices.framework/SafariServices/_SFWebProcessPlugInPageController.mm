@@ -1,33 +1,33 @@
 @interface _SFWebProcessPlugInPageController
-+ (id)pageControllerForBrowserContextController:(id)a3;
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7;
++ (id)pageControllerForBrowserContextController:(id)controller;
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response;
 @end
 
 @implementation _SFWebProcessPlugInPageController
 
-+ (id)pageControllerForBrowserContextController:(id)a3
++ (id)pageControllerForBrowserContextController:(id)controller
 {
-  v3 = objc_getAssociatedObject(a3, &kContextControllerToPlugInPageControllerAssociationKey);
+  v3 = objc_getAssociatedObject(controller, &kContextControllerToPlugInPageControllerAssociationKey);
 
   return v3;
 }
 
-- (id)webProcessPlugInBrowserContextController:(id)a3 frame:(id)a4 willSendRequestForResource:(unint64_t)a5 request:(id)a6 redirectResponse:(id)a7
+- (id)webProcessPlugInBrowserContextController:(id)controller frame:(id)frame willSendRequestForResource:(unint64_t)resource request:(id)request redirectResponse:(id)response
 {
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v41 = v12;
-  v13 = [(WBSWebProcessPlugInPageController *)self webProcessPlugIn];
-  v14 = [v13 searchEnginesForRedirectToSafeSearch];
+  controllerCopy = controller;
+  frameCopy = frame;
+  requestCopy = request;
+  v41 = requestCopy;
+  webProcessPlugIn = [(WBSWebProcessPlugInPageController *)self webProcessPlugIn];
+  searchEnginesForRedirectToSafeSearch = [webProcessPlugIn searchEnginesForRedirectToSafeSearch];
 
-  if (v14)
+  if (searchEnginesForRedirectToSafeSearch)
   {
-    v12 = v12;
-    v39 = v14;
-    v15 = [v12 URL];
-    v16 = v11;
+    requestCopy = requestCopy;
+    v39 = searchEnginesForRedirectToSafeSearch;
+    v15 = [requestCopy URL];
+    v16 = frameCopy;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
@@ -36,7 +36,7 @@
     v18 = [v17 countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (v18)
     {
-      v40 = v10;
+      v40 = controllerCopy;
       v19 = *v43;
       while (2)
       {
@@ -51,11 +51,11 @@
           if ([v21 urlIsValidSearch:v15])
           {
             v23 = [v21 safeSearchURLForSearchURL:v15];
-            v10 = v40;
-            v11 = v16;
+            controllerCopy = v40;
+            frameCopy = v16;
             if (v23 && ([v15 isEqual:v23] & 1) == 0)
             {
-              v22 = [v12 mutableCopy];
+              v22 = [requestCopy mutableCopy];
               [v22 setURL:v23];
               [v22 setAttribution:1];
             }
@@ -79,7 +79,7 @@
       }
 
       v22 = 0;
-      v10 = v40;
+      controllerCopy = v40;
     }
 
     else
@@ -87,41 +87,41 @@
       v22 = 0;
     }
 
-    v11 = v16;
+    frameCopy = v16;
 LABEL_18:
 
     if (v22)
     {
       v24 = v22;
 
-      v12 = v24;
+      requestCopy = v24;
     }
   }
 
-  v25 = [(WBSWebProcessPlugInPageController *)self webProcessPlugIn];
-  if (![v25 isABTestingEnabled])
+  webProcessPlugIn2 = [(WBSWebProcessPlugInPageController *)self webProcessPlugIn];
+  if (![webProcessPlugIn2 isABTestingEnabled])
   {
     goto LABEL_24;
   }
 
-  v26 = [v10 mainFrame];
-  if (v26 != v11)
+  mainFrame = [controllerCopy mainFrame];
+  if (mainFrame != frameCopy)
   {
     goto LABEL_23;
   }
 
   v28 = [v41 URL];
-  v29 = [v11 _provisionalURL];
+  _provisionalURL = [frameCopy _provisionalURL];
   v30 = WBSIsEqual();
 
   if (v30)
   {
-    [v10 _bundlePageRef];
+    [controllerCopy _bundlePageRef];
     IsUsingEphemeralSession = WKBundlePageIsUsingEphemeralSession();
-    v32 = [(WBSWebProcessPlugInPageController *)self webProcessPlugIn];
-    v12 = v12;
-    v33 = v32;
-    v34 = [v12 URL];
+    webProcessPlugIn3 = [(WBSWebProcessPlugInPageController *)self webProcessPlugIn];
+    requestCopy = requestCopy;
+    v33 = webProcessPlugIn3;
+    v34 = [requestCopy URL];
     if (v34)
     {
       v35 = IsUsingEphemeralSession;
@@ -134,41 +134,41 @@ LABEL_18:
 
     if ((v35 & 1) != 0 || (v36 = [v33 abGroupIdentifier]) == 0)
     {
-      v25 = 0;
+      webProcessPlugIn2 = 0;
     }
 
     else
     {
-      v37 = [v33 defaultSearchProvider];
-      v38 = [v37 urlByIncorporatingGroupIdentifier:v36 ifIsValidSearchResultsURL:v34];
+      defaultSearchProvider = [v33 defaultSearchProvider];
+      v38 = [defaultSearchProvider urlByIncorporatingGroupIdentifier:v36 ifIsValidSearchResultsURL:v34];
 
       if (v38 && (WBSIsEqual() & 1) == 0)
       {
-        v25 = [v12 mutableCopy];
-        [v25 setURL:v38];
-        [v25 setAttribution:1];
+        webProcessPlugIn2 = [requestCopy mutableCopy];
+        [webProcessPlugIn2 setURL:v38];
+        [webProcessPlugIn2 setAttribution:1];
       }
 
       else
       {
-        v25 = 0;
+        webProcessPlugIn2 = 0;
       }
     }
 
-    if (!v25)
+    if (!webProcessPlugIn2)
     {
       goto LABEL_24;
     }
 
-    v25 = v25;
-    v26 = v12;
-    v12 = v25;
+    webProcessPlugIn2 = webProcessPlugIn2;
+    mainFrame = requestCopy;
+    requestCopy = webProcessPlugIn2;
 LABEL_23:
 
 LABEL_24:
   }
 
-  return v12;
+  return requestCopy;
 }
 
 @end

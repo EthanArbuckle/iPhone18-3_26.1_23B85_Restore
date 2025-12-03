@@ -1,7 +1,7 @@
 @interface FRArticleNotificationViewController
 - (CGSize)articlePreferredSize;
 - (FRArticleNotificationArticleSource)articleSource;
-- (void)didReceiveNotification:(id)a3;
+- (void)didReceiveNotification:(id)notification;
 - (void)viewDidLoad;
 @end
 
@@ -15,30 +15,30 @@
   v3 = [[NSSArticleViewControllerInternal alloc] initWithNibName:0 bundle:0];
   [(FRArticleNotificationViewController *)self setArticleViewController:v3];
 
-  v4 = [(FRArticleNotificationViewController *)self articleViewController];
-  v5 = [v4 view];
-  [v5 setAutoresizingMask:18];
+  articleViewController = [(FRArticleNotificationViewController *)self articleViewController];
+  view = [articleViewController view];
+  [view setAutoresizingMask:18];
 
-  v6 = [(FRArticleNotificationViewController *)self view];
-  [v6 bounds];
+  view2 = [(FRArticleNotificationViewController *)self view];
+  [view2 bounds];
   Width = CGRectGetWidth(v18);
-  v8 = [(FRArticleNotificationViewController *)self view];
-  [v8 bounds];
+  view3 = [(FRArticleNotificationViewController *)self view];
+  [view3 bounds];
   Height = CGRectGetHeight(v19);
-  v10 = [(FRArticleNotificationViewController *)self articleViewController];
-  v11 = [v10 view];
-  [v11 setFrame:{0.0, 0.0, Width, Height}];
+  articleViewController2 = [(FRArticleNotificationViewController *)self articleViewController];
+  view4 = [articleViewController2 view];
+  [view4 setFrame:{0.0, 0.0, Width, Height}];
 
-  v12 = [(FRArticleNotificationViewController *)self articleViewController];
-  [(FRArticleNotificationViewController *)self addChildViewController:v12];
+  articleViewController3 = [(FRArticleNotificationViewController *)self articleViewController];
+  [(FRArticleNotificationViewController *)self addChildViewController:articleViewController3];
 
-  v13 = [(FRArticleNotificationViewController *)self view];
-  v14 = [(FRArticleNotificationViewController *)self articleViewController];
-  v15 = [v14 view];
-  [v13 addSubview:v15];
+  view5 = [(FRArticleNotificationViewController *)self view];
+  articleViewController4 = [(FRArticleNotificationViewController *)self articleViewController];
+  view6 = [articleViewController4 view];
+  [view5 addSubview:view6];
 
-  v16 = [(FRArticleNotificationViewController *)self articleViewController];
-  [v16 didMoveToParentViewController:self];
+  articleViewController5 = [(FRArticleNotificationViewController *)self articleViewController];
+  [articleViewController5 didMoveToParentViewController:self];
 }
 
 - (FRArticleNotificationArticleSource)articleSource
@@ -57,19 +57,19 @@
   return articleSource;
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 request];
-  v6 = [v5 content];
-  v7 = [v6 userInfo];
+  notificationCopy = notification;
+  request = [notificationCopy request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v8 = [v4 request];
-  v9 = [v8 content];
-  v10 = [v9 attachments];
-  v11 = [v10 count];
+  request2 = [notificationCopy request];
+  content2 = [request2 content];
+  attachments = [content2 attachments];
+  v11 = [attachments count];
 
-  v12 = [v7 objectForKeyedSubscript:FCNotificationPayloadNewsKey];
+  v12 = [userInfo objectForKeyedSubscript:FCNotificationPayloadNewsKey];
   v13 = [v12 objectForKeyedSubscript:FCNotificationPayloadArticleIDKey];
   [(FRArticleNotificationViewController *)self setArticleID:v13];
   objc_initWeak(&location, self);
@@ -80,20 +80,20 @@
     v19[2] = sub_100002404;
     v19[3] = &unk_100008358;
     objc_copyWeak(&v20, &location);
-    [NSSArticleInternal articleFromNotification:v4 completion:v19];
+    [NSSArticleInternal articleFromNotification:notificationCopy completion:v19];
     v14 = &v20;
   }
 
   else
   {
-    v15 = [(FRArticleNotificationViewController *)self articleSource];
+    articleSource = [(FRArticleNotificationViewController *)self articleSource];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100002508;
     v16[3] = &unk_100008380;
     objc_copyWeak(&v18, &location);
-    v17 = v4;
-    [v15 fetchArticleWithID:v13 completion:v16];
+    v17 = notificationCopy;
+    [articleSource fetchArticleWithID:v13 completion:v16];
 
     v14 = &v18;
   }

@@ -1,5 +1,5 @@
 @interface FCNewsTabiRecipeScoringEndpoint
-- (FCNewsTabiRecipeScoringEndpoint)initWithDictionary:(id)a3;
+- (FCNewsTabiRecipeScoringEndpoint)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,27 +8,27 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiRecipeScoringEndpoint *)self packageAssetID];
-  [v3 appendFormat:@"\n\tpackageAssetID: %@;", v4];
+  packageAssetID = [(FCNewsTabiRecipeScoringEndpoint *)self packageAssetID];
+  [v3 appendFormat:@"\n\tpackageAssetID: %@;", packageAssetID];
 
-  v5 = [(FCNewsTabiRecipeScoringEndpoint *)self configuration];
-  v6 = [v5 indentedDescription];
-  [v3 appendFormat:@"\n\tconfiguration: %@;", v6];
+  configuration = [(FCNewsTabiRecipeScoringEndpoint *)self configuration];
+  indentedDescription = [configuration indentedDescription];
+  [v3 appendFormat:@"\n\tconfiguration: %@;", indentedDescription];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiRecipeScoringEndpoint)initWithDictionary:(id)a3
+- (FCNewsTabiRecipeScoringEndpoint)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"packageAssetID", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"packageAssetID", 0);
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    v8 = [[FCNewsTabiRecipeScoringConfiguration alloc] initWithDictionary:v4];
+    v8 = [[FCNewsTabiRecipeScoringConfiguration alloc] initWithDictionary:dictionaryCopy];
     v9 = v8;
     if (v8)
     {
@@ -44,7 +44,7 @@
       }
 
       self = p_isa;
-      v13 = self;
+      selfCopy = self;
     }
 
     else
@@ -53,8 +53,8 @@
       v16[1] = 3221225472;
       v16[2] = __54__FCNewsTabiRecipeScoringEndpoint_initWithDictionary___block_invoke_76;
       v16[3] = &unk_1E7C36F98;
-      v17 = v4;
-      v13 = __54__FCNewsTabiRecipeScoringEndpoint_initWithDictionary___block_invoke_76(v16);
+      v17 = dictionaryCopy;
+      selfCopy = __54__FCNewsTabiRecipeScoringEndpoint_initWithDictionary___block_invoke_76(v16);
       v10 = v17;
     }
   }
@@ -65,12 +65,12 @@
     v18[1] = 3221225472;
     v18[2] = __54__FCNewsTabiRecipeScoringEndpoint_initWithDictionary___block_invoke;
     v18[3] = &unk_1E7C36F98;
-    v19 = v4;
-    v13 = __54__FCNewsTabiRecipeScoringEndpoint_initWithDictionary___block_invoke(v18);
+    v19 = dictionaryCopy;
+    selfCopy = __54__FCNewsTabiRecipeScoringEndpoint_initWithDictionary___block_invoke(v18);
     v7 = v19;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 uint64_t __54__FCNewsTabiRecipeScoringEndpoint_initWithDictionary___block_invoke(uint64_t a1)

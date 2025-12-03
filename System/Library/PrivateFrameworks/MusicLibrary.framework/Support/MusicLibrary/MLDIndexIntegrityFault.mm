@@ -1,25 +1,25 @@
 @interface MLDIndexIntegrityFault
-- (BOOL)attemptRecoveryUsingHandle:(sqlite3 *)a3 withError:(id *)a4;
-- (MLDIndexIntegrityFault)initWithIndex:(id)a3;
-- (id)_createErrorWithDescription:(id)a3;
+- (BOOL)attemptRecoveryUsingHandle:(sqlite3 *)handle withError:(id *)error;
+- (MLDIndexIntegrityFault)initWithIndex:(id)index;
+- (id)_createErrorWithDescription:(id)description;
 @end
 
 @implementation MLDIndexIntegrityFault
 
-- (id)_createErrorWithDescription:(id)a3
+- (id)_createErrorWithDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
   v9 = NSLocalizedDescriptionKey;
-  v10 = v3;
+  v10 = descriptionCopy;
   v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v7 = [NSError errorWithDomain:v5 code:-1 userInfo:v6];
 
   return v7;
 }
 
-- (BOOL)attemptRecoveryUsingHandle:(sqlite3 *)a3 withError:(id *)a4
+- (BOOL)attemptRecoveryUsingHandle:(sqlite3 *)handle withError:(id *)error
 {
   v7 = os_log_create("com.apple.amp.medialibraryd", "Default");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -63,19 +63,19 @@
         }
 
         v16 = [NSString stringWithFormat:@"DROP INDEX %@", self->_indexName];
-        if (sqlite3_exec(a3, [v16 UTF8String], 0, 0, 0))
+        if (sqlite3_exec(handle, [v16 UTF8String], 0, 0, 0))
         {
           v17 = @"failed to drop bad index";
         }
 
-        else if (sqlite3_exec(a3, [v15 UTF8String], 0, 0, 0))
+        else if (sqlite3_exec(handle, [v15 UTF8String], 0, 0, 0))
         {
           v17 = @"failed to rebuild index";
         }
 
         else
         {
-          if (!sqlite3_exec(a3, "ANALYZE", 0, 0, 0))
+          if (!sqlite3_exec(handle, "ANALYZE", 0, 0, 0))
           {
             v18 = 0;
             goto LABEL_21;
@@ -120,24 +120,24 @@ LABEL_22:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v21 = v18;
-    *a4 = v18;
+    *error = v18;
   }
 
   return v18 == 0;
 }
 
-- (MLDIndexIntegrityFault)initWithIndex:(id)a3
+- (MLDIndexIntegrityFault)initWithIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   v9.receiver = self;
   v9.super_class = MLDIndexIntegrityFault;
   v5 = [(MLDIndexIntegrityFault *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [indexCopy copy];
     indexName = v5->_indexName;
     v5->_indexName = v6;
   }

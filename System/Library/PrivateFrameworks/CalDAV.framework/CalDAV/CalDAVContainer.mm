@@ -1,6 +1,6 @@
 @interface CalDAVContainer
 + (id)copyPropertyMappingsForParser;
-- (BOOL)_isComponentSupportedForString:(id)a3;
+- (BOOL)_isComponentSupportedForString:(id)string;
 - (BOOL)isCalendar;
 - (BOOL)isFamilyCalendar;
 - (BOOL)isNotification;
@@ -11,9 +11,9 @@
 - (BOOL)isSubscribed;
 - (BOOL)supportsFreebusy;
 - (id)description;
-- (void)_setTimeZoneFromProperties:(id)a3 onCalendar:(id)a4;
-- (void)applyParsedProperties:(id)a3;
-- (void)postProcessWithResponseHeaders:(id)a3;
+- (void)_setTimeZoneFromProperties:(id)properties onCalendar:(id)calendar;
+- (void)applyParsedProperties:(id)properties;
+- (void)postProcessWithResponseHeaders:(id)headers;
 @end
 
 @implementation CalDAVContainer
@@ -44,60 +44,60 @@
   [v7 appendFormat:@"\n\tIs Family: %d", -[CalDAVContainer isFamilyCalendar](self, "isFamilyCalendar")];
   [v7 appendFormat:@"\n\tIs Marked Undeletable: %d", -[CalDAVContainer isMarkedUndeletable](self, "isMarkedUndeletable")];
   [v7 appendFormat:@"\n\tIs Marked Immutable Sharees: %d", -[CalDAVContainer isMarkedImmutableSharees](self, "isMarkedImmutableSharees")];
-  v8 = [(CalDAVContainer *)self calendarDescription];
-  [v7 appendFormat:@"\n\tCalendar Description: %@", v8];
+  calendarDescription = [(CalDAVContainer *)self calendarDescription];
+  [v7 appendFormat:@"\n\tCalendar Description: %@", calendarDescription];
 
-  v9 = [(CalDAVContainer *)self ctag];
-  [v7 appendFormat:@"\n\tctag: %@", v9];
+  ctag = [(CalDAVContainer *)self ctag];
+  [v7 appendFormat:@"\n\tctag: %@", ctag];
 
-  v10 = [(CalDAVContainer *)self calendarColor];
-  [v7 appendFormat:@"\n\tCalendar Color: %@", v10];
+  calendarColor = [(CalDAVContainer *)self calendarColor];
+  [v7 appendFormat:@"\n\tCalendar Color: %@", calendarColor];
 
-  v11 = [(CalDAVContainer *)self calendarOrder];
-  [v7 appendFormat:@"\n\tCalendar Order: %@", v11];
+  calendarOrder = [(CalDAVContainer *)self calendarOrder];
+  [v7 appendFormat:@"\n\tCalendar Order: %@", calendarOrder];
 
   [v7 appendFormat:@"\n\tsubscribedStripAlarms: %d", -[CalDAVContainer subscribedStripAlarms](self, "subscribedStripAlarms")];
   [v7 appendFormat:@" subscribedStripTodos: %d", -[CalDAVContainer subscribedStripTodos](self, "subscribedStripTodos")];
   [v7 appendFormat:@" subscribedStripAttachments: %d", -[CalDAVContainer subscribedStripAttachments](self, "subscribedStripAttachments")];
-  v12 = [(CalDAVContainer *)self subscribedRefreshRate];
-  [v12 timeInterval];
+  subscribedRefreshRate = [(CalDAVContainer *)self subscribedRefreshRate];
+  [subscribedRefreshRate timeInterval];
   [v7 appendFormat:@"\n\tRefresh Rate: %f", v13];
 
-  v14 = [(CalDAVContainer *)self publishURL];
-  [v7 appendFormat:@"\n\tPublish URL: %@", v14];
+  publishURL = [(CalDAVContainer *)self publishURL];
+  [v7 appendFormat:@"\n\tPublish URL: %@", publishURL];
 
-  v15 = [(CalDAVContainer *)self prePublishURL];
-  [v7 appendFormat:@"\n\tPre publish URL: %@", v15];
+  prePublishURL = [(CalDAVContainer *)self prePublishURL];
+  [v7 appendFormat:@"\n\tPre publish URL: %@", prePublishURL];
 
-  v16 = [(CalDAVContainer *)self timeZone];
-  [v7 appendFormat:@"\n\tTime Zone: %@", v16];
+  timeZone = [(CalDAVContainer *)self timeZone];
+  [v7 appendFormat:@"\n\tTime Zone: %@", timeZone];
 
-  v17 = [(CalDAVContainer *)self source];
-  [v7 appendFormat:@"\n\tSource : %@", v17];
+  source = [(CalDAVContainer *)self source];
+  [v7 appendFormat:@"\n\tSource : %@", source];
 
-  v18 = [(CalDAVContainer *)self freeBusySet];
-  [v7 appendFormat:@"\n\tFree Busy Set: %@", v18];
+  freeBusySet = [(CalDAVContainer *)self freeBusySet];
+  [v7 appendFormat:@"\n\tFree Busy Set: %@", freeBusySet];
 
-  v19 = [(CalDAVContainer *)self scheduleDefaultCalendarURL];
-  [v7 appendFormat:@"\n\tSchedule Default URL: %@", v19];
+  scheduleDefaultCalendarURL = [(CalDAVContainer *)self scheduleDefaultCalendarURL];
+  [v7 appendFormat:@"\n\tSchedule Default URL: %@", scheduleDefaultCalendarURL];
 
-  v20 = [(CalDAVContainer *)self defaultTimedAlarms];
-  [v7 appendFormat:@"\n\tDefault Timed Alarms: %@", v20];
+  defaultTimedAlarms = [(CalDAVContainer *)self defaultTimedAlarms];
+  [v7 appendFormat:@"\n\tDefault Timed Alarms: %@", defaultTimedAlarms];
 
-  v21 = [(CalDAVContainer *)self defaultAllDayAlarms];
-  [v7 appendFormat:@"\n\tDefault All-Day Alarms: %@", v21];
+  defaultAllDayAlarms = [(CalDAVContainer *)self defaultAllDayAlarms];
+  [v7 appendFormat:@"\n\tDefault All-Day Alarms: %@", defaultAllDayAlarms];
 
-  v22 = [(CalDAVContainer *)self sharees];
-  [v7 appendFormat:@"\n\tSharees: %@", v22];
+  sharees = [(CalDAVContainer *)self sharees];
+  [v7 appendFormat:@"\n\tSharees: %@", sharees];
 
-  v23 = [(CalDAVContainer *)self supportedCalendarComponentSets];
-  [v7 appendFormat:@"\n\tSupported Calendar Components Sets: %@", v23];
+  supportedCalendarComponentSets = [(CalDAVContainer *)self supportedCalendarComponentSets];
+  [v7 appendFormat:@"\n\tSupported Calendar Components Sets: %@", supportedCalendarComponentSets];
 
-  v24 = [(CalDAVContainer *)self locationCode];
-  [v7 appendFormat:@"\n\tLocation Code: %@", v24];
+  locationCode = [(CalDAVContainer *)self locationCode];
+  [v7 appendFormat:@"\n\tLocation Code: %@", locationCode];
 
-  v25 = [(CalDAVContainer *)self languageCode];
-  [v7 appendFormat:@"\n\tLanguage Code: %@", v25];
+  languageCode = [(CalDAVContainer *)self languageCode];
+  [v7 appendFormat:@"\n\tLanguage Code: %@", languageCode];
 
   [v7 appendFormat:@"\n\tAuto Provisioned: %d", -[CalDAVContainer autoprovisioned](self, "autoprovisioned")];
   [v7 appendFormat:@"\n\tMax Attendees: %ld", -[CalDAVContainer maxAttendees](self, "maxAttendees")];
@@ -140,162 +140,162 @@
   return v2;
 }
 
-- (void)applyParsedProperties:(id)a3
+- (void)applyParsedProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v66.receiver = self;
   v66.super_class = CalDAVContainer;
-  [(CoreDAVContainer *)&v66 applyParsedProperties:v4];
+  [(CoreDAVContainer *)&v66 applyParsedProperties:propertiesCopy];
   v5 = *MEMORY[0x277CFDDC0];
-  v6 = [v4 CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDDC0] andName:*MEMORY[0x277CFDDE0]];
-  v7 = [v6 payloadAsString];
-  [(CalDAVContainer *)self setCalendarDescription:v7];
+  v6 = [propertiesCopy CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDDC0] andName:*MEMORY[0x277CFDDE0]];
+  payloadAsString = [v6 payloadAsString];
+  [(CalDAVContainer *)self setCalendarDescription:payloadAsString];
 
   v8 = *MEMORY[0x277CFDE90];
-  v9 = [v4 CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDE90] andName:*MEMORY[0x277CFDE30]];
-  v10 = [v9 payloadAsString];
-  [(CalDAVContainer *)self setCtag:v10];
+  v9 = [propertiesCopy CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDE90] andName:*MEMORY[0x277CFDE30]];
+  payloadAsString2 = [v9 payloadAsString];
+  [(CalDAVContainer *)self setCtag:payloadAsString2];
 
   v11 = *MEMORY[0x277CFE050];
-  v12 = [v4 CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFE050] andName:*MEMORY[0x277CFDDD8]];
-  v13 = [v12 symbolicColorName];
-  [(CalDAVContainer *)self setSymbolicColorName:v13];
+  v12 = [propertiesCopy CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFE050] andName:*MEMORY[0x277CFDDD8]];
+  symbolicColorName = [v12 symbolicColorName];
+  [(CalDAVContainer *)self setSymbolicColorName:symbolicColorName];
 
-  v14 = [v12 colorString];
-  [(CalDAVContainer *)self setCalendarColor:v14];
+  colorString = [v12 colorString];
+  [(CalDAVContainer *)self setCalendarColor:colorString];
 
-  v15 = [v4 CDVObjectForKeyWithNameSpace:v11 andName:*MEMORY[0x277CFDDF0]];
-  v16 = [v15 payloadAsString];
-  [(CalDAVContainer *)self setCalendarOrder:v16];
+  v15 = [propertiesCopy CDVObjectForKeyWithNameSpace:v11 andName:*MEMORY[0x277CFDDF0]];
+  payloadAsString3 = [v15 payloadAsString];
+  [(CalDAVContainer *)self setCalendarOrder:payloadAsString3];
 
-  v17 = [v4 CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFE028]];
-  v18 = [v17 compNames];
-  [(CalDAVContainer *)self setSupportedCalendarComponentSet:v18];
+  v17 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFE028]];
+  compNames = [v17 compNames];
+  [(CalDAVContainer *)self setSupportedCalendarComponentSet:compNames];
 
-  v19 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE68]];
+  v19 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE68]];
   [(CalDAVContainer *)self setSubscribedStripAlarms:v19 != 0];
 
-  v20 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE70]];
+  v20 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE70]];
   [(CalDAVContainer *)self setSubscribedStripAttachments:v20 != 0];
 
-  v21 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE78]];
+  v21 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE78]];
   [(CalDAVContainer *)self setSubscribedStripTodos:v21 != 0];
 
-  v22 = [v4 CDVObjectForKeyWithNameSpace:v11 andName:*MEMORY[0x277CFDFD8]];
-  v23 = [v22 payloadAsString];
+  v22 = [propertiesCopy CDVObjectForKeyWithNameSpace:v11 andName:*MEMORY[0x277CFDFD8]];
+  payloadAsString4 = [v22 payloadAsString];
 
-  if (v23)
+  if (payloadAsString4)
   {
-    v24 = [MEMORY[0x277D7F110] generateDurationFromICSString:v23];
+    v24 = [MEMORY[0x277D7F110] generateDurationFromICSString:payloadAsString4];
     [(CalDAVContainer *)self setSubscribedRefreshRate:v24];
   }
 
-  v25 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE50]];
-  v26 = [v25 href];
-  v27 = [v26 payloadAsFullURL];
-  [(CalDAVContainer *)self setPublishURL:v27];
+  v25 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE50]];
+  href = [v25 href];
+  payloadAsFullURL = [href payloadAsFullURL];
+  [(CalDAVContainer *)self setPublishURL:payloadAsFullURL];
 
-  v28 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:@"pre-publish-url"];
-  v29 = [v28 href];
-  v30 = [v29 payloadAsFullURL];
-  [(CalDAVContainer *)self setPrePublishURL:v30];
+  v28 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:@"pre-publish-url"];
+  href2 = [v28 href];
+  payloadAsFullURL2 = [href2 payloadAsFullURL];
+  [(CalDAVContainer *)self setPrePublishURL:payloadAsFullURL2];
 
-  v31 = [v4 CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFDDE8]];
-  v32 = [v31 hrefsAsOriginalURLs];
-  [(CalDAVContainer *)self setFreeBusySet:v32];
+  v31 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFDDE8]];
+  hrefsAsOriginalURLs = [v31 hrefsAsOriginalURLs];
+  [(CalDAVContainer *)self setFreeBusySet:hrefsAsOriginalURLs];
 
-  v33 = [v4 CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFE000]];
-  v34 = [v33 href];
-  v35 = [v34 payloadAsFullURL];
-  [(CalDAVContainer *)self setScheduleDefaultCalendarURL:v35];
+  v33 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFE000]];
+  href3 = [v33 href];
+  payloadAsFullURL3 = [href3 payloadAsFullURL];
+  [(CalDAVContainer *)self setScheduleDefaultCalendarURL:payloadAsFullURL3];
 
-  v36 = [v4 CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFDFF8]];
+  v36 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFDFF8]];
   -[CalDAVContainer setIsScheduleTransparent:](self, "setIsScheduleTransparent:", [v36 isScheduleTransparent]);
 
-  [(CalDAVContainer *)self _setTimeZoneFromProperties:v4 onCalendar:self];
+  [(CalDAVContainer *)self _setTimeZoneFromProperties:propertiesCopy onCalendar:self];
   v37 = *MEMORY[0x277CFDE00];
-  v38 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE00]];
-  v39 = [v38 canBePublished];
-  [(CalDAVContainer *)self setCanBePublished:v39 != 0];
+  v38 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE00]];
+  canBePublished = [v38 canBePublished];
+  [(CalDAVContainer *)self setCanBePublished:canBePublished != 0];
 
-  v40 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:v37];
-  v41 = [v40 canBeShared];
-  [(CalDAVContainer *)self setCanBeShared:v41 != 0];
+  v40 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:v37];
+  canBeShared = [v40 canBeShared];
+  [(CalDAVContainer *)self setCanBeShared:canBeShared != 0];
 
-  v42 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:v37];
-  v43 = [v42 isMarkedImmutableSharees];
-  [(CalDAVContainer *)self setIsMarkedImmutableSharees:v43 != 0];
+  v42 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:v37];
+  isMarkedImmutableSharees = [v42 isMarkedImmutableSharees];
+  [(CalDAVContainer *)self setIsMarkedImmutableSharees:isMarkedImmutableSharees != 0];
 
-  v44 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:v37];
-  v45 = [v44 isMarkedUndeletable];
-  [(CalDAVContainer *)self setIsMarkedUndeletable:v45 != 0];
+  v44 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:v37];
+  isMarkedUndeletable = [v44 isMarkedUndeletable];
+  [(CalDAVContainer *)self setIsMarkedUndeletable:isMarkedUndeletable != 0];
 
-  v46 = [v4 CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFDF90]];
+  v46 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:*MEMORY[0x277CFDF90]];
   -[CalDAVContainer setMaxAttendees:](self, "setMaxAttendees:", [v46 payloadAsNSInteger]);
 
-  LODWORD(v43) = [(CalDAVContainer *)self isSubscribed];
-  v47 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE60]];
-  v48 = [v47 href];
-  v49 = v48;
-  if (v43)
+  LODWORD(isMarkedImmutableSharees) = [(CalDAVContainer *)self isSubscribed];
+  v47 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:*MEMORY[0x277CFDE60]];
+  href4 = [v47 href];
+  v49 = href4;
+  if (isMarkedImmutableSharees)
   {
-    [v48 payloadAsOriginalURL];
+    [href4 payloadAsOriginalURL];
   }
 
   else
   {
-    [v48 payloadAsFullURL];
+    [href4 payloadAsFullURL];
   }
   v50 = ;
   [(CalDAVContainer *)self setSource:v50];
 
-  v51 = [v4 CDVObjectForKeyWithNameSpace:v5 andName:@"default-alarm-vevent-date"];
-  v52 = [v51 payloadAsString];
-  [(CalDAVContainer *)self setDefaultAllDayAlarms:v52];
+  v51 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:@"default-alarm-vevent-date"];
+  payloadAsString5 = [v51 payloadAsString];
+  [(CalDAVContainer *)self setDefaultAllDayAlarms:payloadAsString5];
 
-  v53 = [v4 CDVObjectForKeyWithNameSpace:v5 andName:@"default-alarm-vevent-datetime"];
-  v54 = [v53 payloadAsString];
-  [(CalDAVContainer *)self setDefaultTimedAlarms:v54];
+  v53 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:@"default-alarm-vevent-datetime"];
+  payloadAsString6 = [v53 payloadAsString];
+  [(CalDAVContainer *)self setDefaultTimedAlarms:payloadAsString6];
 
-  v55 = [v4 CDVObjectForKeyWithNameSpace:v5 andName:@"calendar-alarm"];
-  v56 = [v55 payloadAsString];
-  [(CalDAVContainer *)self setAlarms:v56];
+  v55 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:@"calendar-alarm"];
+  payloadAsString7 = [v55 payloadAsString];
+  [(CalDAVContainer *)self setAlarms:payloadAsString7];
 
-  v57 = [v4 CDVObjectForKeyWithNameSpace:v8 andName:@"invite"];
-  v58 = [v57 users];
-  [(CalDAVContainer *)self setSharees:v58];
+  v57 = [propertiesCopy CDVObjectForKeyWithNameSpace:v8 andName:@"invite"];
+  users = [v57 users];
+  [(CalDAVContainer *)self setSharees:users];
 
-  v59 = [v4 CDVObjectForKeyWithNameSpace:v5 andName:@"supported-calendar-component-sets"];
-  v60 = [v59 componentsAsString];
-  [(CalDAVContainer *)self setSupportedCalendarComponentSets:v60];
+  v59 = [propertiesCopy CDVObjectForKeyWithNameSpace:v5 andName:@"supported-calendar-component-sets"];
+  componentsAsString = [v59 componentsAsString];
+  [(CalDAVContainer *)self setSupportedCalendarComponentSets:componentsAsString];
 
-  v61 = [v4 CDVObjectForKeyWithNameSpace:v11 andName:@"language-code"];
-  v62 = [v61 payloadAsString];
-  [(CalDAVContainer *)self setLanguageCode:v62];
+  v61 = [propertiesCopy CDVObjectForKeyWithNameSpace:v11 andName:@"language-code"];
+  payloadAsString8 = [v61 payloadAsString];
+  [(CalDAVContainer *)self setLanguageCode:payloadAsString8];
 
-  v63 = [v4 CDVObjectForKeyWithNameSpace:v11 andName:@"location-code"];
-  v64 = [v63 payloadAsString];
-  [(CalDAVContainer *)self setLocationCode:v64];
+  v63 = [propertiesCopy CDVObjectForKeyWithNameSpace:v11 andName:@"location-code"];
+  payloadAsString9 = [v63 payloadAsString];
+  [(CalDAVContainer *)self setLocationCode:payloadAsString9];
 
-  v65 = [v4 CDVObjectForKeyWithNameSpace:v11 andName:@"autoprovisioned"];
+  v65 = [propertiesCopy CDVObjectForKeyWithNameSpace:v11 andName:@"autoprovisioned"];
   [(CalDAVContainer *)self setAutoprovisioned:v65 != 0];
 }
 
-- (void)_setTimeZoneFromProperties:(id)a3 onCalendar:(id)a4
+- (void)_setTimeZoneFromProperties:(id)properties onCalendar:(id)calendar
 {
-  v5 = a4;
-  v6 = [a3 CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDDC0] andName:*MEMORY[0x277CFDE98]];
-  v7 = [v6 payloadAsString];
+  calendarCopy = calendar;
+  v6 = [properties CDVObjectForKeyWithNameSpace:*MEMORY[0x277CFDDC0] andName:*MEMORY[0x277CFDE98]];
+  payloadAsString = [v6 payloadAsString];
 
-  if (v7)
+  if (payloadAsString)
   {
     v24 = 0;
-    v8 = [objc_alloc(MEMORY[0x277D7F108]) initWithICSString:v7 options:0 error:&v24];
+    v8 = [objc_alloc(MEMORY[0x277D7F108]) initWithICSString:payloadAsString options:0 error:&v24];
     v9 = v24;
     if (v9)
     {
-      v10 = [MEMORY[0x277CFDC18] sharedLogging];
-      v11 = [v10 logHandleForAccountInfoProvider:0];
+      mEMORY[0x277CFDC18] = [MEMORY[0x277CFDC18] sharedLogging];
+      v11 = [mEMORY[0x277CFDC18] logHandleForAccountInfoProvider:0];
       v12 = v11;
       if (v11 && os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
@@ -306,37 +306,37 @@
 
     else
     {
-      v13 = [v8 calendar];
-      v10 = v13;
-      if (!v13)
+      calendar = [v8 calendar];
+      mEMORY[0x277CFDC18] = calendar;
+      if (!calendar)
       {
         goto LABEL_11;
       }
 
-      v14 = [v13 components];
-      v15 = [v14 count];
+      components = [calendar components];
+      v15 = [components count];
 
       if (v15 != 1)
       {
         goto LABEL_11;
       }
 
-      v16 = [v10 components];
-      v12 = [v16 objectAtIndex:0];
+      components2 = [mEMORY[0x277CFDC18] components];
+      v12 = [components2 objectAtIndex:0];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v17 = MEMORY[0x277CBEA80];
         v12 = v12;
-        v18 = [v17 currentCalendar];
-        v19 = [MEMORY[0x277CBEAA8] date];
-        v20 = [v18 components:28 fromDate:v19];
+        currentCalendar = [v17 currentCalendar];
+        date = [MEMORY[0x277CBEAA8] date];
+        v20 = [currentCalendar components:28 fromDate:date];
 
         v21 = [objc_alloc(MEMORY[0x277D7F0F8]) initWithYear:objc_msgSend(v20 month:"year") - 1 day:{objc_msgSend(v20, "month"), objc_msgSend(v20, "day")}];
         v22 = [v12 systemTimeZoneForDate:v21];
 
-        [v5 setTimeZone:v22];
+        [calendarCopy setTimeZone:v22];
       }
     }
 
@@ -344,20 +344,20 @@ LABEL_11:
   }
 }
 
-- (void)postProcessWithResponseHeaders:(id)a3
+- (void)postProcessWithResponseHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   v7.receiver = self;
   v7.super_class = CalDAVContainer;
-  [(CoreDAVContainer *)&v7 postProcessWithResponseHeaders:v4];
+  [(CoreDAVContainer *)&v7 postProcessWithResponseHeaders:headersCopy];
   if ([(CalDAVContainer *)self isScheduleOutbox])
   {
-    v5 = [(CalDAVContainer *)self supportsFreebusy];
-    if (v4)
+    supportsFreebusy = [(CalDAVContainer *)self supportsFreebusy];
+    if (headersCopy)
     {
-      if (!v5)
+      if (!supportsFreebusy)
       {
-        v6 = [CalDAVServerVersion versionWithHTTPHeaders:v4];
+        v6 = [CalDAVServerVersion versionWithHTTPHeaders:headersCopy];
         if ([v6 alwaysSupportsFreebusyOnOutbox])
         {
           [(CalDAVContainer *)self setOverrideSupportsFreebusy:1];
@@ -367,15 +367,15 @@ LABEL_11:
   }
 }
 
-- (BOOL)_isComponentSupportedForString:(id)a3
+- (BOOL)_isComponentSupportedForString:(id)string
 {
-  v4 = a3;
-  v5 = [(CalDAVContainer *)self supportedCalendarComponentSet];
+  stringCopy = string;
+  supportedCalendarComponentSet = [(CalDAVContainer *)self supportedCalendarComponentSet];
 
-  if (v5)
+  if (supportedCalendarComponentSet)
   {
-    v6 = [(CalDAVContainer *)self supportedCalendarComponentSet];
-    v7 = [v6 containsObject:v4];
+    supportedCalendarComponentSet2 = [(CalDAVContainer *)self supportedCalendarComponentSet];
+    v7 = [supportedCalendarComponentSet2 containsObject:stringCopy];
   }
 
   else
@@ -388,12 +388,12 @@ LABEL_11:
 
 - (BOOL)isCalendar
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 calendar];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    calendar = [resourceType2 calendar];
+    v6 = calendar != 0;
   }
 
   else
@@ -406,12 +406,12 @@ LABEL_11:
 
 - (BOOL)isScheduleInbox
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 scheduleInbox];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    scheduleInbox = [resourceType2 scheduleInbox];
+    v6 = scheduleInbox != 0;
   }
 
   else
@@ -424,12 +424,12 @@ LABEL_11:
 
 - (BOOL)isScheduleOutbox
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 scheduleOutbox];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    scheduleOutbox = [resourceType2 scheduleOutbox];
+    v6 = scheduleOutbox != 0;
   }
 
   else
@@ -442,12 +442,12 @@ LABEL_11:
 
 - (BOOL)isNotification
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 notification];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    notification = [resourceType2 notification];
+    v6 = notification != 0;
   }
 
   else
@@ -460,12 +460,12 @@ LABEL_11:
 
 - (BOOL)isSubscribed
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 subscribed];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    subscribed = [resourceType2 subscribed];
+    v6 = subscribed != 0;
   }
 
   else
@@ -478,12 +478,12 @@ LABEL_11:
 
 - (BOOL)isSharedOwner
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 sharedOwner];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    sharedOwner = [resourceType2 sharedOwner];
+    v6 = sharedOwner != 0;
   }
 
   else
@@ -496,12 +496,12 @@ LABEL_11:
 
 - (BOOL)isShared
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 shared];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    shared = [resourceType2 shared];
+    v6 = shared != 0;
   }
 
   else
@@ -514,12 +514,12 @@ LABEL_11:
 
 - (BOOL)isFamilyCalendar
 {
-  v3 = [(CoreDAVContainer *)self resourceType];
-  if (v3)
+  resourceType = [(CoreDAVContainer *)self resourceType];
+  if (resourceType)
   {
-    v4 = [(CoreDAVContainer *)self resourceType];
-    v5 = [v4 isFamilyCalendar];
-    v6 = v5 != 0;
+    resourceType2 = [(CoreDAVContainer *)self resourceType];
+    isFamilyCalendar = [resourceType2 isFamilyCalendar];
+    v6 = isFamilyCalendar != 0;
   }
 
   else

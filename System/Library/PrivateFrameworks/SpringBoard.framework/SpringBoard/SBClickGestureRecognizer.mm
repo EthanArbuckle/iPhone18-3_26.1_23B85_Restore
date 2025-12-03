@@ -1,20 +1,20 @@
 @interface SBClickGestureRecognizer
-- (BOOL)_areRequiredPressTypesContainedInSet:(id)a3;
-- (SBClickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (id)gestureStateInfoForUnbalancedPressBeganCount:(int64_t)a3 previousCount:(int64_t)a4;
-- (void)_notePressReceivedWithType:(int64_t)a3 phase:(int64_t)a4;
-- (void)addShortcutWithPressTypes:(id)a3;
+- (BOOL)_areRequiredPressTypesContainedInSet:(id)set;
+- (SBClickGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (id)gestureStateInfoForUnbalancedPressBeganCount:(int64_t)count previousCount:(int64_t)previousCount;
+- (void)_notePressReceivedWithType:(int64_t)type phase:(int64_t)phase;
+- (void)addShortcutWithPressTypes:(id)types;
 - (void)reset;
 - (void)resetShortcutsTracking;
 @end
 
 @implementation SBClickGestureRecognizer
 
-- (SBClickGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBClickGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v13.receiver = self;
   v13.super_class = SBClickGestureRecognizer;
-  v4 = [(SBPressGestureRecognizer *)&v13 initWithTarget:a3 action:a4];
+  v4 = [(SBPressGestureRecognizer *)&v13 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -50,10 +50,10 @@
   self->_gestureWasRecognized = 0;
 }
 
-- (BOOL)_areRequiredPressTypesContainedInSet:(id)a3
+- (BOOL)_areRequiredPressTypesContainedInSet:(id)set
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  setCopy = set;
   if ([(NSMutableArray *)self->_shortcutPressTypesSubsets count])
   {
     v13 = 0u;
@@ -74,7 +74,7 @@
             objc_enumerationMutation(v5);
           }
 
-          if ([*(*(&v11 + 1) + 8 * i) isSubsetOfSet:{v4, v11}])
+          if ([*(*(&v11 + 1) + 8 * i) isSubsetOfSet:{setCopy, v11}])
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;
@@ -96,23 +96,23 @@ LABEL_12:
 
   else
   {
-    v9 = [(SBPressGestureRecognizer *)self requiredPressTypesCount];
-    LOBYTE(v6) = v9 == [v4 count];
+    requiredPressTypesCount = [(SBPressGestureRecognizer *)self requiredPressTypesCount];
+    LOBYTE(v6) = requiredPressTypesCount == [setCopy count];
   }
 
   return v6;
 }
 
-- (void)addShortcutWithPressTypes:(id)a3
+- (void)addShortcutWithPressTypes:(id)types
 {
   shortcutPressTypesSubsets = self->_shortcutPressTypesSubsets;
-  v4 = [MEMORY[0x277CBEB98] setWithArray:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithArray:types];
   [(NSMutableArray *)shortcutPressTypesSubsets addObject:v4];
 }
 
-- (void)_notePressReceivedWithType:(int64_t)a3 phase:(int64_t)a4
+- (void)_notePressReceivedWithType:(int64_t)type phase:(int64_t)phase
 {
-  if ([(SBPressGestureRecognizer *)self latestPressPhase:a3])
+  if ([(SBPressGestureRecognizer *)self latestPressPhase:type])
   {
     if ([(SBPressGestureRecognizer *)self latestPressPhase]!= 3)
     {
@@ -128,11 +128,11 @@ LABEL_12:
   }
 
   v7 = *(&self->super.super.super.isa + *v6);
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   [v7 addObject:v8];
 }
 
-- (id)gestureStateInfoForUnbalancedPressBeganCount:(int64_t)a3 previousCount:(int64_t)a4
+- (id)gestureStateInfoForUnbalancedPressBeganCount:(int64_t)count previousCount:(int64_t)previousCount
 {
   v34 = *MEMORY[0x277D85DE8];
   v7 = objc_alloc_init(SBPressGestureStateInfo);
@@ -143,11 +143,11 @@ LABEL_12:
     goto LABEL_20;
   }
 
-  if (a4 < a3)
+  if (previousCount < count)
   {
-    v8 = [(SBClickGestureRecognizer *)self didReceiveRequiredPressBeganCount];
-    self->_allPressBeganReceived = v8;
-    if (!a4 || v8)
+    didReceiveRequiredPressBeganCount = [(SBClickGestureRecognizer *)self didReceiveRequiredPressBeganCount];
+    self->_allPressBeganReceived = didReceiveRequiredPressBeganCount;
+    if (!previousCount || didReceiveRequiredPressBeganCount)
     {
       [(SBPressGestureStateInfo *)v7 setState:0];
       if (self->_allPressBeganReceived)
@@ -167,21 +167,21 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (a4 <= a3)
+  if (previousCount <= count)
   {
 LABEL_17:
     [(SBPressGestureStateInfo *)v7 setIsCoalescing:1];
-    v13 = [(SBClickGestureRecognizer *)self state];
+    state = [(SBClickGestureRecognizer *)self state];
     v14 = v7;
 LABEL_18:
-    [(SBPressGestureStateInfo *)v14 setState:v13];
+    [(SBPressGestureStateInfo *)v14 setState:state];
     goto LABEL_19;
   }
 
   if (!self->_allPressBeganReceived)
   {
     v14 = v7;
-    v13 = 5;
+    state = 5;
     goto LABEL_18;
   }
 
@@ -212,7 +212,7 @@ LABEL_29:
   if (v12 == self->_numberOfClicksRequired)
   {
     v14 = v7;
-    v13 = 3;
+    state = 3;
     goto LABEL_18;
   }
 
@@ -229,17 +229,17 @@ LABEL_20:
   v15 = SBLogButtonsCombo();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [(SBPressGestureRecognizer *)self name];
+    name = [(SBPressGestureRecognizer *)self name];
     v18 = SBSystemGestureRecognizerStateDescription([(SBPressGestureStateInfo *)v7 state]);
     [(SBPressGestureStateInfo *)v7 expirationTime];
     v20 = v19;
     v21 = SBSystemGestureRecognizerStateDescription([(SBPressGestureStateInfo *)v7 stateUponExpiration]);
     v22 = 138544642;
-    v23 = v17;
+    v23 = name;
     v24 = 1024;
-    v25 = a3;
+    countCopy = count;
     v26 = 1024;
-    v27 = a4;
+    previousCountCopy = previousCount;
     v28 = 2114;
     v29 = v18;
     v30 = 2048;

@@ -1,13 +1,13 @@
 @interface _NSTextHighlightRunSegment
-- (BOOL)anyRunHasBottomBorderOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5;
-- (BOOL)anyRunHasTopBorderOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5;
-- (BOOL)doesAnySegmentHaveBottomBorderOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5;
-- (BOOL)doesAnySegmentHaveTopBorderOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5;
+- (BOOL)anyRunHasBottomBorderOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance;
+- (BOOL)anyRunHasTopBorderOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance;
+- (BOOL)doesAnySegmentHaveBottomBorderOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance;
+- (BOOL)doesAnySegmentHaveTopBorderOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance;
 - (BOOL)isLastSegmentOfRun;
 - (BOOL)isSecondFromLastSegmentOfRun;
-- (BOOL)nextSegmentInCurrentRunIsOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5;
-- (BOOL)previousSegmentInCurrentRunIsOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5;
-- (CGPath)createCornerExtensionWithOrigin:(CGPoint)a3 radius:(double)a4 firstPoint:(CGPoint)a5 secondPoint:(CGPoint)a6 arcCenter:(CGPoint)a7 startAngle:(double)a8 endAngle:(double)a9;
+- (BOOL)nextSegmentInCurrentRunIsOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance;
+- (BOOL)previousSegmentInCurrentRunIsOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance;
+- (CGPath)createCornerExtensionWithOrigin:(CGPoint)origin radius:(double)radius firstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint arcCenter:(CGPoint)center startAngle:(double)angle endAngle:(double)endAngle;
 - (CGPoint)bottomLeftCornerPoint;
 - (CGPoint)bottomRightCornerPoint;
 - (CGPoint)topLeftCornerPoint;
@@ -22,7 +22,7 @@
 - (void)cornerOutset;
 - (void)cornerRadius;
 - (void)prevSegment;
-- (void)setTextRange:(uint64_t)a1;
+- (void)setTextRange:(uint64_t)range;
 @end
 
 @implementation _NSTextHighlightRunSegment
@@ -65,24 +65,24 @@
 
 - (uint64_t)calculateCGPath
 {
-  v1 = a1;
+  selfCopy = self;
   v12 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [a1 _calculateHighlightSegmentShape];
-    v13.val[0] = *(v1 + 48);
+    [self _calculateHighlightSegmentShape];
+    v13.val[0] = *(selfCopy + 48);
     v13.val[1] = v13.val[0];
     v2 = &v10;
     vst2q_f64(v2, v13);
     v2 += 4;
-    v13.val[0] = *(v1 + 32);
+    v13.val[0] = *(selfCopy + 32);
     *v2 = vdupq_laneq_s64(v13.val[0], 1);
     v11 = vdupq_lane_s64(*&v13.val[0].f64[0], 0);
     v6 = 0;
     v7 = &v6;
     v8 = 0x2020000000;
     v9 = CGPathCreateWithUnevenCornersRoundedRect();
-    v3 = *(v1 + 64);
+    v3 = *(selfCopy + 64);
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __45___NSTextHighlightRunSegment_calculateCGPath__block_invoke;
@@ -90,36 +90,36 @@
     v5[4] = &v6;
     [v3 enumerateObjectsUsingBlock:v5];
 
-    v1 = v7[3];
+    selfCopy = v7[3];
     _Block_object_dispose(&v6, 8);
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (CGPath)createCornerExtensionWithOrigin:(CGPoint)a3 radius:(double)a4 firstPoint:(CGPoint)a5 secondPoint:(CGPoint)a6 arcCenter:(CGPoint)a7 startAngle:(double)a8 endAngle:(double)a9
+- (CGPath)createCornerExtensionWithOrigin:(CGPoint)origin radius:(double)radius firstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint arcCenter:(CGPoint)center startAngle:(double)angle endAngle:(double)endAngle
 {
-  y = a6.y;
-  x = a6.x;
-  v11 = a5.y;
-  v12 = a5.x;
-  v13 = a3.y;
-  v14 = a3.x;
+  y = secondPoint.y;
+  x = secondPoint.x;
+  v11 = point.y;
+  v12 = point.x;
+  v13 = origin.y;
+  v14 = origin.x;
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, v12, v11);
   CGPathAddLineToPoint(Mutable, 0, v14, v13);
   CGPathAddLineToPoint(Mutable, 0, x, y);
-  CGPathAddArc(Mutable, 0, a7.x, a7.y, a4, a8, a9, 0);
+  CGPathAddArc(Mutable, 0, center.x, center.y, radius, angle, endAngle, 0);
   CGPathCloseSubpath(Mutable);
   v16 = MEMORY[0x193AD3410](Mutable);
   CFRelease(Mutable);
   return v16;
 }
 
-- (BOOL)doesAnySegmentHaveBottomBorderOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5
+- (BOOL)doesAnySegmentHaveBottomBorderOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if (!self)
   {
 LABEL_4:
@@ -130,7 +130,7 @@ LABEL_4:
   segmentIndex = self->_segmentIndex;
   if (segmentIndex == 1)
   {
-    if ([(_NSTextHighlightRunSegment *)self previousSegmentInCurrentRunIsOnPoint:a4 withLeftCornerExtensionDistance:a5 withRightCornerExtensionDistance:a3.x, a3.y])
+    if ([(_NSTextHighlightRunSegment *)self previousSegmentInCurrentRunIsOnPoint:distance withLeftCornerExtensionDistance:extensionDistance withRightCornerExtensionDistance:point.x, point.y])
     {
       return 1;
     }
@@ -141,7 +141,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  return [(_NSTextHighlightRunSegment *)self anyRunHasBottomBorderOnPoint:a4 withLeftCornerExtensionDistance:a5 withRightCornerExtensionDistance:x, y];
+  return [(_NSTextHighlightRunSegment *)self anyRunHasBottomBorderOnPoint:distance withLeftCornerExtensionDistance:extensionDistance withRightCornerExtensionDistance:x, y];
 }
 
 - (uint64_t)initWithTextSegmentFrame:withRun:
@@ -180,9 +180,9 @@ LABEL_4:
       *(v5 + 152) = v0;
       *(v5 + 32) = 0u;
       *(v5 + 48) = 0u;
-      v11 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       v12 = *(v5 + 64);
-      *(v5 + 64) = v11;
+      *(v5 + 64) = array;
 
       if (*(v5 + 112) == 0.0)
       {
@@ -197,9 +197,9 @@ LABEL_4:
 
 - (void)cornerOutset
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((self + 16));
     v3 = WeakRetained;
     if (WeakRetained)
     {
@@ -210,38 +210,38 @@ LABEL_4:
 
     if (v4)
     {
-      v6 = objc_loadWeakRetained((a1 + 16));
+      v6 = objc_loadWeakRetained((self + 16));
       [(_NSTextHighlightRun *)v6 cornerOutset];
     }
 
     else
     {
       v8 = 0;
-      v5 = objc_loadWeakRetained((a1 + 16));
-      [(_NSTextHighlightRun *)v5 getMetricsForTextSize:&v8 cornerRadius:*(a1 + 144) cornerOutset:*(a1 + 152)];
+      v5 = objc_loadWeakRetained((self + 16));
+      [(_NSTextHighlightRun *)v5 getMetricsForTextSize:&v8 cornerRadius:*(self + 144) cornerOutset:*(self + 152)];
     }
   }
 }
 
 - (void)cornerRadius
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 112) == 0.0)
+    if (*(self + 112) == 0.0)
     {
-      [(_NSTextHighlightRunSegment *)a1 cornerOutset];
+      [(_NSTextHighlightRunSegment *)self cornerOutset];
     }
 
     else
     {
-      v2 = *(a1 + 144);
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      v4 = [(_NSTextHighlightRun *)WeakRetained cornerRadius];
-      v5 = v4 + v4;
+      v2 = *(self + 144);
+      WeakRetained = objc_loadWeakRetained((self + 16));
+      cornerRadius = [(_NSTextHighlightRun *)WeakRetained cornerRadius];
+      v5 = cornerRadius + cornerRadius;
 
       if (v2 >= v5)
       {
-        v6 = objc_loadWeakRetained((a1 + 16));
+        v6 = objc_loadWeakRetained((self + 16));
         [(_NSTextHighlightRun *)v6 cornerRadius];
       }
     }
@@ -250,33 +250,33 @@ LABEL_4:
 
 - (uint64_t)needsLeftOutset
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (*(a1 + 24))
+    if (*(self + 24))
     {
       return 1;
     }
 
     else
     {
-      WeakRetained = objc_loadWeakRetained((a1 + 16));
-      v1 = WeakRetained && (WeakRetained[32] & 1) != 0 || *(v1 + 112) == 0.0;
+      WeakRetained = objc_loadWeakRetained((self + 16));
+      selfCopy = WeakRetained && (WeakRetained[32] & 1) != 0 || *(selfCopy + 112) == 0.0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (uint64_t)needsRightOutset
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if ([(_NSTextHighlightRunSegment *)a1 isLastSegmentOfRun])
+    if ([(_NSTextHighlightRunSegment *)self isLastSegmentOfRun])
     {
-      WeakRetained = objc_loadWeakRetained((v1 + 16));
-      v1 = WeakRetained && (WeakRetained[33] & 1) != 0 || *(v1 + 112) == 0.0;
+      WeakRetained = objc_loadWeakRetained((selfCopy + 16));
+      selfCopy = WeakRetained && (WeakRetained[33] & 1) != 0 || *(selfCopy + 112) == 0.0;
     }
 
     else
@@ -285,18 +285,18 @@ LABEL_4:
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)isLastSegmentOfRun
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = *(a1 + 24);
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
+  v1 = *(self + 24);
+  WeakRetained = objc_loadWeakRetained((self + 16));
   v3 = WeakRetained;
   if (WeakRetained)
   {
@@ -310,13 +310,13 @@ LABEL_4:
 
 - (BOOL)isSecondFromLastSegmentOfRun
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = *(a1 + 24);
-  WeakRetained = objc_loadWeakRetained((a1 + 16));
+  v1 = *(self + 24);
+  WeakRetained = objc_loadWeakRetained((self + 16));
   v3 = WeakRetained;
   if (WeakRetained)
   {
@@ -330,37 +330,37 @@ LABEL_4:
 
 - (void)prevSegment
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a1[3])
+    if (self[3])
     {
-      WeakRetained = objc_loadWeakRetained(a1 + 2);
+      WeakRetained = objc_loadWeakRetained(self + 2);
       v3 = WeakRetained;
       if (WeakRetained)
       {
         WeakRetained = WeakRetained[7];
       }
 
-      v1 = [WeakRetained objectAtIndex:v1[3] - 1];
+      selfCopy = [WeakRetained objectAtIndex:selfCopy[3] - 1];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (id)nextSegment
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = a1[3];
-    WeakRetained = objc_loadWeakRetained(a1 + 2);
+    v2 = self[3];
+    WeakRetained = objc_loadWeakRetained(self + 2);
     v4 = WeakRetained;
     if (WeakRetained)
     {
@@ -371,23 +371,23 @@ LABEL_4:
 
     if (v2 == v5)
     {
-      v1 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v6 = objc_loadWeakRetained(v1 + 2);
+      v6 = objc_loadWeakRetained(selfCopy + 2);
       v7 = v6;
       if (v6)
       {
         v6 = v6[7];
       }
 
-      v1 = [v6 objectAtIndex:v1[3] + 1];
+      selfCopy = [v6 objectAtIndex:selfCopy[3] + 1];
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)_calculateHighlightSegmentShape
@@ -658,7 +658,7 @@ LABEL_50:
   }
 }
 
-- (BOOL)doesAnySegmentHaveTopBorderOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5
+- (BOOL)doesAnySegmentHaveTopBorderOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance
 {
   OUTLINED_FUNCTION_1_2();
   v6 = v5;
@@ -680,7 +680,7 @@ LABEL_50:
   return [v7 anyRunHasTopBorderOnPoint:? withLeftCornerExtensionDistance:? withRightCornerExtensionDistance:?];
 }
 
-- (BOOL)anyRunHasBottomBorderOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5
+- (BOOL)anyRunHasBottomBorderOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance
 {
   OUTLINED_FUNCTION_1_2();
   v8 = v7;
@@ -708,7 +708,7 @@ LABEL_4:
   return v16;
 }
 
-- (BOOL)anyRunHasTopBorderOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5
+- (BOOL)anyRunHasTopBorderOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance
 {
   OUTLINED_FUNCTION_1_2();
   v8 = v7;
@@ -736,13 +736,13 @@ LABEL_4:
   return v16;
 }
 
-- (BOOL)previousSegmentInCurrentRunIsOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5
+- (BOOL)previousSegmentInCurrentRunIsOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance
 {
   OUTLINED_FUNCTION_1_2();
   v6 = v5;
-  v7 = [(_NSTextHighlightRunSegment *)v5 prevSegment];
+  prevSegment = [(_NSTextHighlightRunSegment *)v5 prevSegment];
 
-  if (!v7)
+  if (!prevSegment)
   {
     return 0;
   }
@@ -777,8 +777,8 @@ LABEL_4:
   v13 = 0;
 LABEL_7:
   [(_NSTextHighlightRunSegment *)v6 cornerRadius];
-  v14 = [(_NSTextHighlightRunSegment *)v6 prevSegment];
-  if (!v14)
+  prevSegment2 = [(_NSTextHighlightRunSegment *)v6 prevSegment];
+  if (!prevSegment2)
   {
     OUTLINED_FUNCTION_15_0();
   }
@@ -790,13 +790,13 @@ LABEL_7:
   return (v16 & 1) != 0;
 }
 
-- (BOOL)nextSegmentInCurrentRunIsOnPoint:(CGPoint)a3 withLeftCornerExtensionDistance:(double *)a4 withRightCornerExtensionDistance:(double *)a5
+- (BOOL)nextSegmentInCurrentRunIsOnPoint:(CGPoint)point withLeftCornerExtensionDistance:(double *)distance withRightCornerExtensionDistance:(double *)extensionDistance
 {
   OUTLINED_FUNCTION_1_2();
   v6 = v5;
-  v7 = [(_NSTextHighlightRunSegment *)v5 nextSegment];
+  nextSegment = [(_NSTextHighlightRunSegment *)v5 nextSegment];
 
-  if (!v7)
+  if (!nextSegment)
   {
     return 0;
   }
@@ -831,8 +831,8 @@ LABEL_7:
   v13 = 0;
 LABEL_7:
   [(_NSTextHighlightRunSegment *)v6 cornerRadius];
-  v14 = [(_NSTextHighlightRunSegment *)v6 nextSegment];
-  if (!v14)
+  nextSegment2 = [(_NSTextHighlightRunSegment *)v6 nextSegment];
+  if (!nextSegment2)
   {
     OUTLINED_FUNCTION_15_0();
   }
@@ -876,16 +876,16 @@ LABEL_7:
     v21 = 0;
   }
 
-  v22 = [v20 stringWithFormat:@"_NSTextHighlightRunSegment\n\tSegment Index:%lu\nCorners:\n%@\n%@", v21, v19, p_isa];
+  p_isa = [v20 stringWithFormat:@"_NSTextHighlightRunSegment\n\tSegment Index:%lu\nCorners:\n%@\n%@", v21, v19, p_isa];
 
-  return v22;
+  return p_isa;
 }
 
-- (void)setTextRange:(uint64_t)a1
+- (void)setTextRange:(uint64_t)range
 {
-  if (a1)
+  if (range)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((range + 88), a2);
   }
 }
 

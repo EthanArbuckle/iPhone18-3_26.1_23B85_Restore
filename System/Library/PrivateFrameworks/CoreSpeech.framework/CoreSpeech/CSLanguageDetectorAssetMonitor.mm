@@ -2,9 +2,9 @@
 + (id)sharedInstance;
 - (CSLanguageDetectorAssetMonitor)init;
 - (CSLanguageDetectorAssetMonitorDelegate)delegate;
-- (void)_supportedLocale:(id)a3;
+- (void)_supportedLocale:(id)locale;
 - (void)startMonitor;
-- (void)supportedLocale:(id)a3;
+- (void)supportedLocale:(id)locale;
 @end
 
 @implementation CSLanguageDetectorAssetMonitor
@@ -16,10 +16,10 @@
   return WeakRetained;
 }
 
-- (void)_supportedLocale:(id)a3
+- (void)_supportedLocale:(id)locale
 {
-  v3 = a3;
-  if (v3)
+  localeCopy = locale;
+  if (localeCopy)
   {
     if ([MEMORY[0x277D018F8] supportLanguageDetector])
     {
@@ -33,14 +33,14 @@
       v7[1] = 3221225472;
       v7[2] = __51__CSLanguageDetectorAssetMonitor__supportedLocale___block_invoke;
       v7[3] = &unk_2784C6B00;
-      v8 = v3;
+      v8 = localeCopy;
       [v6 assetOfType:2 language:@"en-US" completion:v7];
     }
 
     else
     {
       v4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D01590] code:1052 userInfo:0];
-      (*(v3 + 2))(v3, 0, v4);
+      (*(localeCopy + 2))(localeCopy, 0, v4);
     }
   }
 }
@@ -77,17 +77,17 @@ void __51__CSLanguageDetectorAssetMonitor__supportedLocale___block_invoke(uint64
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)supportedLocale:(id)a3
+- (void)supportedLocale:(id)locale
 {
-  v4 = a3;
+  localeCopy = locale;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__CSLanguageDetectorAssetMonitor_supportedLocale___block_invoke;
   v7[3] = &unk_2784C6E98;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = localeCopy;
+  v6 = localeCopy;
   dispatch_async(queue, v7);
 }
 

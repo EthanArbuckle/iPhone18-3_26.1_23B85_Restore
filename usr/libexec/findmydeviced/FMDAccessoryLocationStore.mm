@@ -1,26 +1,26 @@
 @interface FMDAccessoryLocationStore
 + (id)defaultStorageLocation;
 - (BOOL)canRetrieveLockedRecords;
-- (BOOL)shouldRetrieveLocationForAccessory:(id)a3;
+- (BOOL)shouldRetrieveLocationForAccessory:(id)accessory;
 - (FMDAccessoryLocationStore)init;
-- (FMDAccessoryLocationStore)initWithSupportedAccessoryRegistry:(id)a3 accessoryRegistry:(id)a4;
+- (FMDAccessoryLocationStore)initWithSupportedAccessoryRegistry:(id)registry accessoryRegistry:(id)accessoryRegistry;
 - (FMDAccessoryRegistry)accessoryRegistry;
 - (FMDSupportedAccessoryRegistry)supportedAccessoryRegistry;
-- (id)contextKeyForAccessory:(id)a3 protectionClass:(int64_t)a4;
-- (id)historicalLocationForAccessory:(id)a3;
-- (id)saveLocationToDisk:(id)a3 accessory:(id)a4 protection:(unint64_t)a5;
-- (void)accessoryDidDisconnect:(id)a3;
-- (void)accessoryDidUnpair:(id)a3;
+- (id)contextKeyForAccessory:(id)accessory protectionClass:(int64_t)class;
+- (id)historicalLocationForAccessory:(id)accessory;
+- (id)saveLocationToDisk:(id)disk accessory:(id)accessory protection:(unint64_t)protection;
+- (void)accessoryDidDisconnect:(id)disconnect;
+- (void)accessoryDidUnpair:(id)unpair;
 - (void)clearAccessoryLocationStore;
 - (void)clearAllRecords;
 - (void)expungeAccessoryLocationStore;
-- (void)expungeRecordsForAccessory:(id)a3 allRecords:(BOOL)a4;
-- (void)locationForAccessory:(id)a3 locator:(id)a4 completion:(id)a5;
+- (void)expungeRecordsForAccessory:(id)accessory allRecords:(BOOL)records;
+- (void)locationForAccessory:(id)accessory locator:(id)locator completion:(id)completion;
 - (void)readLocationsFromDisk;
 - (void)removeOrphanedLocationFiles;
-- (void)retreiveLocationForAccessory:(id)a3 forEvent:(int64_t)a4 locator:(id)a5 completion:(id)a6;
-- (void)saveLocation:(id)a3 forAccessory:(id)a4;
-- (void)scheduleJanitor:(id)a3;
+- (void)retreiveLocationForAccessory:(id)accessory forEvent:(int64_t)event locator:(id)locator completion:(id)completion;
+- (void)saveLocation:(id)location forAccessory:(id)accessory;
+- (void)scheduleJanitor:(id)janitor;
 - (void)setup;
 @end
 
@@ -49,18 +49,18 @@
   return v3;
 }
 
-- (FMDAccessoryLocationStore)initWithSupportedAccessoryRegistry:(id)a3 accessoryRegistry:(id)a4
+- (FMDAccessoryLocationStore)initWithSupportedAccessoryRegistry:(id)registry accessoryRegistry:(id)accessoryRegistry
 {
-  v6 = a3;
-  v7 = a4;
+  registryCopy = registry;
+  accessoryRegistryCopy = accessoryRegistry;
   v11.receiver = self;
   v11.super_class = FMDAccessoryLocationStore;
   v8 = [(FMDAccessoryLocationStore *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(FMDAccessoryLocationStore *)v8 setSupportedAccessoryRegistry:v6];
-    [(FMDAccessoryLocationStore *)v9 setAccessoryRegistry:v7];
+    [(FMDAccessoryLocationStore *)v8 setSupportedAccessoryRegistry:registryCopy];
+    [(FMDAccessoryLocationStore *)v9 setAccessoryRegistry:accessoryRegistryCopy];
     [(FMDAccessoryLocationStore *)v9 setup];
   }
 
@@ -70,18 +70,18 @@
 - (void)setup
 {
   v3 = [FMDataArchiver alloc];
-  v4 = [objc_opt_class() defaultStorageLocation];
-  v5 = [v3 initWithFileURL:v4];
+  defaultStorageLocation = [objc_opt_class() defaultStorageLocation];
+  v5 = [v3 initWithFileURL:defaultStorageLocation];
   [(FMDAccessoryLocationStore *)self setDataArchiver:v5];
 
-  v6 = [(FMDAccessoryLocationStore *)self dataArchiver];
-  [v6 setDataProtectionClass:4];
+  dataArchiver = [(FMDAccessoryLocationStore *)self dataArchiver];
+  [dataArchiver setDataProtectionClass:4];
 
-  v7 = [(FMDAccessoryLocationStore *)self dataArchiver];
-  [v7 setBackedUp:0];
+  dataArchiver2 = [(FMDAccessoryLocationStore *)self dataArchiver];
+  [dataArchiver2 setBackedUp:0];
 
-  v8 = [(FMDAccessoryLocationStore *)self dataArchiver];
-  [v8 setCreateDirectories:1];
+  dataArchiver3 = [(FMDAccessoryLocationStore *)self dataArchiver];
+  [dataArchiver3 setCreateDirectories:1];
 
   v9 = dispatch_queue_create("FMDAccessoryLocationStoreSerialQueue", 0);
   [(FMDAccessoryLocationStore *)self setSerialQueue:v9];
@@ -98,9 +98,9 @@
   [(FMDAccessoryLocationStore *)self setJanitor:v11];
 
   v12 = +[FMDSystemConfig sharedInstance];
-  LOBYTE(v4) = [v12 isLocationServicesEnabled];
+  LOBYTE(defaultStorageLocation) = [v12 isLocationServicesEnabled];
 
-  if (v4)
+  if (defaultStorageLocation)
   {
     [(FMDAccessoryLocationStore *)self expungeAccessoryLocationStore];
   }
@@ -118,53 +118,53 @@
   v15[2] = sub_1001B0C74;
   v15[3] = &unk_1002D08A8;
   objc_copyWeak(&v16, &location);
-  v14 = [(FMDAccessoryLocationStore *)self stateCapture];
-  [v14 setStateCaptureBlock:v15];
+  stateCapture = [(FMDAccessoryLocationStore *)self stateCapture];
+  [stateCapture setStateCaptureBlock:v15];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&v18);
   objc_destroyWeak(&location);
 }
 
-- (void)locationForAccessory:(id)a3 locator:(id)a4 completion:(id)a5
+- (void)locationForAccessory:(id)accessory locator:(id)locator completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FMDAccessoryLocationStore *)self historicalLocationForAccessory:v8];
-  if (v10)
+  accessoryCopy = accessory;
+  locatorCopy = locator;
+  completionCopy = completion;
+  v11 = [(FMDAccessoryLocationStore *)self historicalLocationForAccessory:accessoryCopy];
+  if (completionCopy)
   {
-    v10[2](v10, v11, 0);
+    completionCopy[2](completionCopy, v11, 0);
   }
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001B10C0;
   v13[3] = &unk_1002D08D0;
-  v14 = v10;
-  v12 = v10;
-  [(FMDAccessoryLocationStore *)self retreiveLocationForAccessory:v8 forEvent:3 locator:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(FMDAccessoryLocationStore *)self retreiveLocationForAccessory:accessoryCopy forEvent:3 locator:locatorCopy completion:v13];
 }
 
-- (id)historicalLocationForAccessory:(id)a3
+- (id)historicalLocationForAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_10000AB24;
   v16 = sub_100002B5C;
   v17 = 0;
-  v5 = [(FMDAccessoryLocationStore *)self serialQueue];
+  serialQueue = [(FMDAccessoryLocationStore *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B12D4;
   block[3] = &unk_1002CD450;
   block[4] = self;
-  v10 = v4;
+  v10 = accessoryCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = accessoryCopy;
+  dispatch_sync(serialQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -174,26 +174,26 @@
 
 - (void)clearAccessoryLocationStore
 {
-  v3 = [(FMDAccessoryLocationStore *)self serialQueue];
+  serialQueue = [(FMDAccessoryLocationStore *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B1740;
   block[3] = &unk_1002CD4C8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(serialQueue, block);
 }
 
 - (void)expungeAccessoryLocationStore
 {
   objc_initWeak(&location, self);
-  v3 = [(FMDAccessoryLocationStore *)self accessoryRegistry];
+  accessoryRegistry = [(FMDAccessoryLocationStore *)self accessoryRegistry];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001B1910;
   v4[3] = &unk_1002D0960;
   v4[4] = self;
   objc_copyWeak(&v5, &location);
-  [v3 accessories:v4];
+  [accessoryRegistry accessories:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -208,8 +208,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "AccessoryLocationStore checking for orphaned files", buf, 2u);
   }
 
-  v4 = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
-  v5 = [v4 allValues];
+  recordsByAccessoryIdentifier = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
+  allValues = [recordsByAccessoryIdentifier allValues];
 
   +[NSMutableSet set];
   v15[0] = _NSConcreteStackBlock;
@@ -217,7 +217,7 @@
   v15[2] = sub_1001B1D38;
   v6 = v15[3] = &unk_1002D0988;
   v16 = v6;
-  [v5 enumerateObjectsUsingBlock:v15];
+  [allValues enumerateObjectsUsingBlock:v15];
   v7 = sub_100002880();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -230,26 +230,26 @@
   v9 = +[FMDProtectedContextManager sharedManager];
   v10 = [v9 contextKeysForType:@"AccessoryLocation" enumerationOption:1];
 
-  v11 = [v10 allObjects];
+  allObjects = [v10 allObjects];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001B1E1C;
   v13[3] = &unk_1002CDA48;
   v14 = v6;
   v12 = v6;
-  [v11 enumerateObjectsUsingBlock:v13];
+  [allObjects enumerateObjectsUsingBlock:v13];
 }
 
-- (void)retreiveLocationForAccessory:(id)a3 forEvent:(int64_t)a4 locator:(id)a5 completion:(id)a6
+- (void)retreiveLocationForAccessory:(id)accessory forEvent:(int64_t)event locator:(id)locator completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  accessoryCopy = accessory;
+  locatorCopy = locator;
+  completionCopy = completion;
   v13 = sub_100002880();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v10;
+    v26 = accessoryCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "FMDAccessoryLocationStore retreiveLocationForAccessory %@", buf, 0xCu);
   }
 
@@ -260,13 +260,13 @@
   v21[2] = sub_1001B20D4;
   v21[3] = &unk_1002D09B0;
   objc_copyWeak(&v24, buf);
-  v15 = v10;
+  v15 = accessoryCopy;
   v22 = v15;
-  v16 = v12;
+  v16 = completionCopy;
   v23 = v16;
-  v17 = [(AccessoryCurrentLocationAction *)v14 initWithAccessory:v15 locator:v11 event:a4 completion:v21];
-  v18 = [(FMDAccessoryLocationStore *)self accessoryRegistry];
-  [v18 registerDelegate:v17];
+  v17 = [(AccessoryCurrentLocationAction *)v14 initWithAccessory:v15 locator:locatorCopy event:event completion:v21];
+  accessoryRegistry = [(FMDAccessoryLocationStore *)self accessoryRegistry];
+  [accessoryRegistry registerDelegate:v17];
 
   v19 = +[ActionManager sharedManager];
   v20 = [v19 enqueueAction:v17];
@@ -275,21 +275,21 @@
   objc_destroyWeak(buf);
 }
 
-- (BOOL)shouldRetrieveLocationForAccessory:(id)a3
+- (BOOL)shouldRetrieveLocationForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [(FMDAccessoryLocationStore *)self historicalLocationForAccessory:v4];
+  accessoryCopy = accessory;
+  v5 = [(FMDAccessoryLocationStore *)self historicalLocationForAccessory:accessoryCopy];
   if (v5)
   {
-    v6 = [(FMDAccessoryLocationStore *)self supportedAccessoryRegistry];
-    v7 = [v5 location];
-    v8 = [v7 speed];
-    [v8 doubleValue];
-    [v6 locationThrottleTimeIntervalForAccessory:v4 speed:?];
+    supportedAccessoryRegistry = [(FMDAccessoryLocationStore *)self supportedAccessoryRegistry];
+    location = [v5 location];
+    speed = [location speed];
+    [speed doubleValue];
+    [supportedAccessoryRegistry locationThrottleTimeIntervalForAccessory:accessoryCopy speed:?];
     v10 = v9;
 
-    v11 = [v5 timeStamp];
-    v12 = [v11 dateByAddingTimeInterval:v10];
+    timeStamp = [v5 timeStamp];
+    v12 = [timeStamp dateByAddingTimeInterval:v10];
 
     if (v12)
     {
@@ -323,7 +323,7 @@
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v4;
+    v22 = accessoryCopy;
     v23 = 1024;
     v24 = v18;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "AccessoryLocationStore : Retrieve a location for accessory %@? %i", &v21, 0x12u);
@@ -332,22 +332,22 @@
   return v18;
 }
 
-- (void)saveLocation:(id)a3 forAccessory:(id)a4
+- (void)saveLocation:(id)location forAccessory:(id)accessory
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  locationCopy = location;
+  accessoryCopy = accessory;
+  if (locationCopy)
   {
     objc_initWeak(location, self);
-    v8 = [(FMDAccessoryLocationStore *)self serialQueue];
+    serialQueue = [(FMDAccessoryLocationStore *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001B2498;
     block[3] = &unk_1002CE3B8;
     objc_copyWeak(&v13, location);
-    v11 = v7;
-    v12 = v6;
-    dispatch_async(v8, block);
+    v11 = accessoryCopy;
+    v12 = locationCopy;
+    dispatch_async(serialQueue, block);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(location);
@@ -364,11 +364,11 @@
   }
 }
 
-- (id)saveLocationToDisk:(id)a3 accessory:(id)a4 protection:(unint64_t)a5
+- (id)saveLocationToDisk:(id)disk accessory:(id)accessory protection:(unint64_t)protection
 {
-  v8 = a4;
-  v30 = a5;
-  if (a5 == 1)
+  accessoryCopy = accessory;
+  protectionCopy = protection;
+  if (protection == 1)
   {
     v9 = 2;
   }
@@ -378,13 +378,13 @@
     v9 = 3;
   }
 
-  v10 = a3;
-  v11 = [(FMDAccessoryLocationStore *)self contextKeyForAccessory:v8 protectionClass:v9];
-  v12 = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
-  v13 = [v12 mutableCopy];
+  diskCopy = disk;
+  v11 = [(FMDAccessoryLocationStore *)self contextKeyForAccessory:accessoryCopy protectionClass:v9];
+  recordsByAccessoryIdentifier = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
+  v13 = [recordsByAccessoryIdentifier mutableCopy];
 
-  v14 = [v8 accessoryIdentifier];
-  v15 = [v13 objectForKeyedSubscript:v14];
+  accessoryIdentifier = [accessoryCopy accessoryIdentifier];
+  v15 = [v13 objectForKeyedSubscript:accessoryIdentifier];
   v16 = [v15 mutableCopy];
 
   v17 = [NSPredicate predicateWithFormat:@"SELF.recordName contains[cd] %@", v11];
@@ -393,8 +393,8 @@
   if (v18)
   {
     [v16 removeObjectsInArray:v18];
-    v19 = [v8 accessoryIdentifier];
-    [v13 setObject:v16 forKeyedSubscript:v19];
+    accessoryIdentifier2 = [accessoryCopy accessoryIdentifier];
+    [v13 setObject:v16 forKeyedSubscript:accessoryIdentifier2];
 
     [(FMDAccessoryLocationStore *)self setRecordsByAccessoryIdentifier:v13];
   }
@@ -413,9 +413,9 @@
   }
 
   v22 = +[FMDProtectedContextManager sharedManager];
-  v23 = [v10 dictionaryValue];
+  dictionaryValue = [diskCopy dictionaryValue];
 
-  v24 = [v22 saveContext:v23 forContextKey:v11 dataProtectionClass:v21];
+  v24 = [v22 saveContext:dictionaryValue forContextKey:v11 dataProtectionClass:v21];
 
   v25 = sub_100002880();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
@@ -429,37 +429,37 @@
 
   v26 = [FMDAccessoryLocationStoreRecord alloc];
   v27 = +[NSDate date];
-  v28 = [(FMDAccessoryLocationStoreRecord *)v26 initWithRecordName:v11 contextUUID:v24 creationDate:v27 protection:v30];
+  v28 = [(FMDAccessoryLocationStoreRecord *)v26 initWithRecordName:v11 contextUUID:v24 creationDate:v27 protection:protectionCopy];
 
   return v28;
 }
 
-- (void)expungeRecordsForAccessory:(id)a3 allRecords:(BOOL)a4
+- (void)expungeRecordsForAccessory:(id)accessory allRecords:(BOOL)records
 {
-  v6 = a3;
-  v7 = [(FMDAccessoryLocationStore *)self supportedAccessoryRegistry];
-  v8 = v7;
-  v9 = 1;
+  accessoryCopy = accessory;
+  supportedAccessoryRegistry = [(FMDAccessoryLocationStore *)self supportedAccessoryRegistry];
+  v8 = supportedAccessoryRegistry;
+  unsignedIntegerValue = 1;
   v10 = 0x47EFFFFFE0000000;
   v11 = 0x47EFFFFFE0000000;
-  if (v7 && !a4)
+  if (supportedAccessoryRegistry && !records)
   {
-    v12 = [v7 longTermLocationExpiryTimeIntervalForAccessory:v6];
+    v12 = [supportedAccessoryRegistry longTermLocationExpiryTimeIntervalForAccessory:accessoryCopy];
     [v12 doubleValue];
     v11 = v13;
 
-    v14 = [v8 shortTermLocationExpiryTimeIntervalForAccessory:v6];
+    v14 = [v8 shortTermLocationExpiryTimeIntervalForAccessory:accessoryCopy];
     [v14 doubleValue];
     v10 = v15;
 
-    v16 = [v8 maximumHistoricalLocationsForAccessory:v6];
-    v9 = [v16 unsignedIntegerValue];
+    v16 = [v8 maximumHistoricalLocationsForAccessory:accessoryCopy];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
   }
 
   v17 = +[FMSystemInfo sharedInstance];
-  v18 = [v17 isInternalBuild];
+  isInternalBuild = [v17 isInternalBuild];
 
-  if (v18)
+  if (isInternalBuild)
   {
     v19 = [FMPreferencesUtil objectForKey:@"LocationStoreCleanup" inDomain:kFMDNotBackedUpPrefDomain];
     v20 = v19;
@@ -478,13 +478,13 @@
     *&buf[12] = 2048;
     *&buf[14] = v11;
     *&buf[22] = 2048;
-    v65 = v9;
+    v65 = unsignedIntegerValue;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Expunging accessory locations older than (short) %f (long) %f, maxlocates %li", buf, 0x20u);
   }
 
-  v23 = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
-  v24 = [v6 accessoryIdentifier];
-  v25 = [v23 objectForKeyedSubscript:v24];
+  recordsByAccessoryIdentifier = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
+  accessoryIdentifier = [accessoryCopy accessoryIdentifier];
+  v25 = [recordsByAccessoryIdentifier objectForKeyedSubscript:accessoryIdentifier];
   v26 = [v25 copy];
 
   v27 = [NSPredicate predicateWithFormat:@"class == %@", objc_opt_class()];
@@ -529,17 +529,17 @@
   v46[1] = 3221225472;
   v46[2] = sub_1001B304C;
   v46[3] = &unk_1002D09F8;
-  v47 = a4;
+  recordsCopy = records;
   v46[8] = v10;
   v46[9] = v32;
   v46[10] = v11;
   v46[4] = buf;
   v46[5] = &v54;
   v46[6] = &v48;
-  v46[7] = v9;
+  v46[7] = unsignedIntegerValue;
   [v29 enumerateObjectsUsingBlock:v46];
-  v35 = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
-  v36 = [v35 mutableCopy];
+  recordsByAccessoryIdentifier2 = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
+  v36 = [recordsByAccessoryIdentifier2 mutableCopy];
 
   v37 = sub_100002880();
   if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
@@ -554,13 +554,13 @@
   }
 
   v40 = v55[5];
-  v41 = [v6 accessoryIdentifier];
-  [v36 setObject:v40 forKeyedSubscript:v41];
+  accessoryIdentifier2 = [accessoryCopy accessoryIdentifier];
+  [v36 setObject:v40 forKeyedSubscript:accessoryIdentifier2];
 
   [(FMDAccessoryLocationStore *)self setRecordsByAccessoryIdentifier:v36];
-  v42 = [(FMDAccessoryLocationStore *)self dataArchiver];
-  v43 = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
-  v44 = [v42 saveDictionary:v43];
+  dataArchiver = [(FMDAccessoryLocationStore *)self dataArchiver];
+  recordsByAccessoryIdentifier3 = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
+  v44 = [dataArchiver saveDictionary:recordsByAccessoryIdentifier3];
 
   if (v44)
   {
@@ -589,9 +589,9 @@
   }
 
   [(FMDAccessoryLocationStore *)self readLocationsFromDisk];
-  v4 = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
-  v5 = [v4 allValues];
-  v6 = [v5 copy];
+  recordsByAccessoryIdentifier = [(FMDAccessoryLocationStore *)self recordsByAccessoryIdentifier];
+  allValues = [recordsByAccessoryIdentifier allValues];
+  v6 = [allValues copy];
 
   [v6 enumerateObjectsUsingBlock:&stru_1002D0A38];
 }
@@ -599,13 +599,13 @@
 - (void)readLocationsFromDisk
 {
   objc_initWeak(&location, self);
-  v3 = [(FMDAccessoryLocationStore *)self serialQueue];
+  serialQueue = [(FMDAccessoryLocationStore *)self serialQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001B35D0;
   v4[3] = &unk_1002CD518;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(serialQueue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -614,61 +614,61 @@
 - (BOOL)canRetrieveLockedRecords
 {
   v2 = +[FMDSystemConfig sharedInstance];
-  v3 = [v2 isLocked];
+  isLocked = [v2 isLocked];
 
-  return v3 ^ 1;
+  return isLocked ^ 1;
 }
 
-- (id)contextKeyForAccessory:(id)a3 protectionClass:(int64_t)a4
+- (id)contextKeyForAccessory:(id)accessory protectionClass:(int64_t)class
 {
   v5 = @"classC";
-  if (a4 == 2)
+  if (class == 2)
   {
     v5 = @"classB";
   }
 
   v6 = v5;
-  v7 = [a3 accessoryIdentifier];
-  v8 = [NSString stringWithFormat:@"%@:%@:%@", @"AccessoryLocation", v7, v6];
+  accessoryIdentifier = [accessory accessoryIdentifier];
+  v8 = [NSString stringWithFormat:@"%@:%@:%@", @"AccessoryLocation", accessoryIdentifier, v6];
 
   return v8;
 }
 
-- (void)scheduleJanitor:(id)a3
+- (void)scheduleJanitor:(id)janitor
 {
-  v4 = a3;
-  if (v4)
+  janitorCopy = janitor;
+  if (janitorCopy)
   {
-    v5 = [(FMDAccessoryLocationStore *)self nextScheduledJanitorDate];
-    if (!v5)
+    nextScheduledJanitorDate = [(FMDAccessoryLocationStore *)self nextScheduledJanitorDate];
+    if (!nextScheduledJanitorDate)
     {
       goto LABEL_4;
     }
 
-    v6 = v5;
-    v7 = [(FMDAccessoryLocationStore *)self nextScheduledJanitorDate];
-    [v7 timeIntervalSinceReferenceDate];
+    v6 = nextScheduledJanitorDate;
+    nextScheduledJanitorDate2 = [(FMDAccessoryLocationStore *)self nextScheduledJanitorDate];
+    [nextScheduledJanitorDate2 timeIntervalSinceReferenceDate];
     v9 = v8;
-    [v4 timeIntervalSinceReferenceDate];
+    [janitorCopy timeIntervalSinceReferenceDate];
     v11 = v10;
 
     if (v9 <= v11)
     {
-      v15 = [(FMDAccessoryLocationStore *)self nextScheduledJanitorDate];
+      nextScheduledJanitorDate3 = [(FMDAccessoryLocationStore *)self nextScheduledJanitorDate];
 
       v16 = sub_100002880();
-      v13 = v16;
-      if (v15)
+      janitor = v16;
+      if (nextScheduledJanitorDate3)
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
         {
-          sub_10022D484(self, v13);
+          sub_10022D484(self, janitor);
         }
       }
 
       else if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        sub_10022D518(v13);
+        sub_10022D518(janitor);
       }
     }
 
@@ -681,9 +681,9 @@ LABEL_4:
         sub_10022D55C();
       }
 
-      [(FMDAccessoryLocationStore *)self setNextScheduledJanitorDate:v4];
-      v13 = [(FMDAccessoryLocationStore *)self janitor];
-      [v13 schedule:v4];
+      [(FMDAccessoryLocationStore *)self setNextScheduledJanitorDate:janitorCopy];
+      janitor = [(FMDAccessoryLocationStore *)self janitor];
+      [janitor schedule:janitorCopy];
     }
   }
 
@@ -696,32 +696,32 @@ LABEL_4:
     }
 
     [(FMDAccessoryLocationStore *)self setNextScheduledJanitorDate:0];
-    v13 = [(FMDAccessoryLocationStore *)self janitor];
-    [v13 deactivate];
+    janitor = [(FMDAccessoryLocationStore *)self janitor];
+    [janitor deactivate];
   }
 }
 
-- (void)accessoryDidUnpair:(id)a3
+- (void)accessoryDidUnpair:(id)unpair
 {
-  v4 = a3;
+  unpairCopy = unpair;
   objc_initWeak(&location, self);
-  v5 = [(FMDAccessoryLocationStore *)self serialQueue];
+  serialQueue = [(FMDAccessoryLocationStore *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001B3A80;
   block[3] = &unk_1002CD288;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = unpairCopy;
+  v6 = unpairCopy;
+  dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)accessoryDidDisconnect:(id)a3
+- (void)accessoryDidDisconnect:(id)disconnect
 {
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = sub_100002880();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -729,22 +729,22 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "accesory disconnected storing last known location", &v10, 2u);
   }
 
-  if ([(FMDAccessoryLocationStore *)self shouldRetrieveLocationForAccessory:v4])
+  if ([(FMDAccessoryLocationStore *)self shouldRetrieveLocationForAccessory:disconnectCopy])
   {
-    v6 = [(FMDAccessoryLocationStore *)self supportedAccessoryRegistry];
-    v7 = [v6 locatorForAccessory:v4];
+    supportedAccessoryRegistry = [(FMDAccessoryLocationStore *)self supportedAccessoryRegistry];
+    v7 = [supportedAccessoryRegistry locatorForAccessory:disconnectCopy];
     v8 = sub_100002880();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v4 name];
+      name = [disconnectCopy name];
       v10 = 138412546;
-      v11 = v9;
+      v11 = name;
       v12 = 2112;
       v13 = v7;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "accesory = %@, locator = %@", &v10, 0x16u);
     }
 
-    [(FMDAccessoryLocationStore *)self retreiveLocationForAccessory:v4 forEvent:2 locator:v7 completion:0];
+    [(FMDAccessoryLocationStore *)self retreiveLocationForAccessory:disconnectCopy forEvent:2 locator:v7 completion:0];
   }
 }
 

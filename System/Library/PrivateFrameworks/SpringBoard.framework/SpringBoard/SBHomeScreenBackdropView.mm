@@ -1,18 +1,18 @@
 @interface SBHomeScreenBackdropView
-- (SBHomeScreenBackdropView)initWithFrame:(CGRect)a3 materialRecipe:(int64_t)a4 scaleAdjustment:(id)a5;
+- (SBHomeScreenBackdropView)initWithFrame:(CGRect)frame materialRecipe:(int64_t)recipe scaleAdjustment:(id)adjustment;
 - (id)homeScreenBlurredContentSnapshotImage;
 - (void)_configureBackdropAnimatableProperty;
 - (void)_invalidateBackdropSnapshot;
 - (void)_resetHomeScreenBlurredContentSnapshotImage;
-- (void)_setupBackdropViewWithRecipe:(int64_t)a3 scaleAdjustment:(id)a4;
-- (void)_updateBackdropViewIfNeededInvalidatingSnapshot:(BOOL)a3;
-- (void)beginRequiringBackdropViewForReason:(id)a3;
-- (void)beginRequiringLiveBackdropViewForReason:(id)a3;
+- (void)_setupBackdropViewWithRecipe:(int64_t)recipe scaleAdjustment:(id)adjustment;
+- (void)_updateBackdropViewIfNeededInvalidatingSnapshot:(BOOL)snapshot;
+- (void)beginRequiringBackdropViewForReason:(id)reason;
+- (void)beginRequiringLiveBackdropViewForReason:(id)reason;
 - (void)cancelInProcessAnimations;
-- (void)endRequiringBackdropViewForReason:(id)a3;
-- (void)endRequiringLiveBackdropViewForReason:(id)a3;
-- (void)setBlurProgress:(double)a3 behaviorMode:(int64_t)a4 completion:(id)a5;
-- (void)setMaterialRecipeName:(id)a3;
+- (void)endRequiringBackdropViewForReason:(id)reason;
+- (void)endRequiringLiveBackdropViewForReason:(id)reason;
+- (void)setBlurProgress:(double)progress behaviorMode:(int64_t)mode completion:(id)completion;
+- (void)setMaterialRecipeName:(id)name;
 @end
 
 @implementation SBHomeScreenBackdropView
@@ -100,31 +100,31 @@ uint64_t __53__SBHomeScreenBackdropView_cancelInProcessAnimations__block_invoke(
   return [v1 setValue:?];
 }
 
-- (SBHomeScreenBackdropView)initWithFrame:(CGRect)a3 materialRecipe:(int64_t)a4 scaleAdjustment:(id)a5
+- (SBHomeScreenBackdropView)initWithFrame:(CGRect)frame materialRecipe:(int64_t)recipe scaleAdjustment:(id)adjustment
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  adjustmentCopy = adjustment;
   v15.receiver = self;
   v15.super_class = SBHomeScreenBackdropView;
-  v12 = [(SBHomeScreenBackdropViewBase *)&v15 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(SBHomeScreenBackdropViewBase *)&v15 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    [(SBHomeScreenBackdropView *)v12 _setupBackdropViewWithRecipe:a4 scaleAdjustment:v11];
+    [(SBHomeScreenBackdropView *)height _setupBackdropViewWithRecipe:recipe scaleAdjustment:adjustmentCopy];
   }
 
   return v13;
 }
 
-- (void)setMaterialRecipeName:(id)a3
+- (void)setMaterialRecipeName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if ((BSEqualStrings() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     materialRecipeName = self->_materialRecipeName;
     self->_materialRecipeName = v4;
 
@@ -132,21 +132,21 @@ uint64_t __53__SBHomeScreenBackdropView_cancelInProcessAnimations__block_invoke(
   }
 }
 
-- (void)_setupBackdropViewWithRecipe:(int64_t)a3 scaleAdjustment:(id)a4
+- (void)_setupBackdropViewWithRecipe:(int64_t)recipe scaleAdjustment:(id)adjustment
 {
-  v6 = a4;
-  if (!v6)
+  adjustmentCopy = adjustment;
+  if (!adjustmentCopy)
   {
-    v6 = &__block_literal_global_241;
+    adjustmentCopy = &__block_literal_global_241;
   }
 
-  v20 = v6;
+  v20 = adjustmentCopy;
   materialRecipeName = self->_materialRecipeName;
   self->_materialRecipeName = 0;
 
-  if (a3)
+  if (recipe)
   {
-    v8 = [MEMORY[0x277D26718] materialViewWithRecipe:a3 options:2 initialWeighting:v20 scaleAdjustment:0.0];
+    v8 = [MEMORY[0x277D26718] materialViewWithRecipe:recipe options:2 initialWeighting:v20 scaleAdjustment:0.0];
     materialView = self->_materialView;
     self->_materialView = v8;
   }
@@ -233,41 +233,41 @@ double __73__SBHomeScreenBackdropView__setupBackdropViewWithRecipe_scaleAdjustme
   }
 }
 
-- (void)beginRequiringBackdropViewForReason:(id)a3
+- (void)beginRequiringBackdropViewForReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenBackdropView;
-  [(SBHomeScreenBackdropViewBase *)&v4 beginRequiringBackdropViewForReason:a3];
+  [(SBHomeScreenBackdropViewBase *)&v4 beginRequiringBackdropViewForReason:reason];
   [(SBHomeScreenBackdropView *)self _updateBackdropViewIfNeeded];
 }
 
-- (void)beginRequiringLiveBackdropViewForReason:(id)a3
+- (void)beginRequiringLiveBackdropViewForReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenBackdropView;
-  [(SBHomeScreenBackdropViewBase *)&v4 beginRequiringLiveBackdropViewForReason:a3];
+  [(SBHomeScreenBackdropViewBase *)&v4 beginRequiringLiveBackdropViewForReason:reason];
   [(SBHomeScreenBackdropView *)self _updateBackdropViewIfNeeded];
 }
 
-- (void)endRequiringBackdropViewForReason:(id)a3
+- (void)endRequiringBackdropViewForReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenBackdropView;
-  [(SBHomeScreenBackdropViewBase *)&v4 endRequiringBackdropViewForReason:a3];
+  [(SBHomeScreenBackdropViewBase *)&v4 endRequiringBackdropViewForReason:reason];
   [(SBHomeScreenBackdropView *)self _updateBackdropViewIfNeeded];
 }
 
-- (void)endRequiringLiveBackdropViewForReason:(id)a3
+- (void)endRequiringLiveBackdropViewForReason:(id)reason
 {
   v4.receiver = self;
   v4.super_class = SBHomeScreenBackdropView;
-  [(SBHomeScreenBackdropViewBase *)&v4 endRequiringLiveBackdropViewForReason:a3];
+  [(SBHomeScreenBackdropViewBase *)&v4 endRequiringLiveBackdropViewForReason:reason];
   [(SBHomeScreenBackdropView *)self _updateBackdropViewIfNeeded];
 }
 
-- (void)setBlurProgress:(double)a3 behaviorMode:(int64_t)a4 completion:(id)a5
+- (void)setBlurProgress:(double)progress behaviorMode:(int64_t)mode completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -275,12 +275,12 @@ double __73__SBHomeScreenBackdropView__setupBackdropViewWithRecipe_scaleAdjustme
   v19 = 0;
   self->_materialViewAnimationCount = materialViewAnimationCount + 1;
   v10 = MEMORY[0x277D75D18];
-  v11 = [(SBHomeScreenBackdropViewBase *)self backdropBlurSettings];
+  backdropBlurSettings = [(SBHomeScreenBackdropViewBase *)self backdropBlurSettings];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __68__SBHomeScreenBackdropView_setBlurProgress_behaviorMode_completion___block_invoke;
   v15[3] = &unk_2783BAB80;
-  *&v15[6] = a3;
+  *&v15[6] = progress;
   v15[4] = self;
   v15[5] = &v16;
   v13[0] = MEMORY[0x277D85DD0];
@@ -288,9 +288,9 @@ double __73__SBHomeScreenBackdropView__setupBackdropViewWithRecipe_scaleAdjustme
   v13[2] = __68__SBHomeScreenBackdropView_setBlurProgress_behaviorMode_completion___block_invoke_2;
   v13[3] = &unk_2783AE668;
   v13[4] = self;
-  v12 = v8;
+  v12 = completionCopy;
   v14 = v12;
-  [v10 sb_animateWithSettings:v11 mode:a4 animations:v15 completion:v13];
+  [v10 sb_animateWithSettings:backdropBlurSettings mode:mode animations:v15 completion:v13];
 
   if (*(v17 + 24) == 1)
   {
@@ -336,21 +336,21 @@ uint64_t __68__SBHomeScreenBackdropView_setBlurProgress_behaviorMode_completion_
   blurredContentSnapshotImage = self->_blurredContentSnapshotImage;
   if (!blurredContentSnapshotImage)
   {
-    v4 = [(SBHomeScreenBackdropView *)self window];
-    v5 = [v4 interfaceOrientation];
+    window = [(SBHomeScreenBackdropView *)self window];
+    interfaceOrientation = [window interfaceOrientation];
 
-    if ((v5 - 2) >= 3)
+    if ((interfaceOrientation - 2) >= 3)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = v5 - 1;
+      v6 = interfaceOrientation - 1;
     }
 
-    v7 = [(SBHomeScreenBackdropView *)self window];
-    v8 = SBCreateSnapshotBelowWindowWithOptions(v7, 1, v6, 0, 1u, 0.25);
+    window2 = [(SBHomeScreenBackdropView *)self window];
+    v8 = SBCreateSnapshotBelowWindowWithOptions(window2, 1, v6, 0, 1u, 0.25);
     v9 = self->_blurredContentSnapshotImage;
     self->_blurredContentSnapshotImage = v8;
 
@@ -360,18 +360,18 @@ uint64_t __68__SBHomeScreenBackdropView_setBlurProgress_behaviorMode_completion_
   return blurredContentSnapshotImage;
 }
 
-- (void)_updateBackdropViewIfNeededInvalidatingSnapshot:(BOOL)a3
+- (void)_updateBackdropViewIfNeededInvalidatingSnapshot:(BOOL)snapshot
 {
-  v3 = a3;
-  v5 = [(SBHomeScreenBackdropViewBase *)self requiresLiveBackdropView];
-  v6 = v5 || [(SBHomeScreenBackdropViewBase *)self requiresBackdropView];
-  v7 = [(SBHomeScreenBackdropView *)self isOpaque];
-  if (v3)
+  snapshotCopy = snapshot;
+  requiresLiveBackdropView = [(SBHomeScreenBackdropViewBase *)self requiresLiveBackdropView];
+  v6 = requiresLiveBackdropView || [(SBHomeScreenBackdropViewBase *)self requiresBackdropView];
+  isOpaque = [(SBHomeScreenBackdropView *)self isOpaque];
+  if (snapshotCopy)
   {
     [(SBHomeScreenBackdropView *)self _invalidateBackdropSnapshot];
   }
 
-  if (v5)
+  if (requiresLiveBackdropView)
   {
     [(MTMaterialView *)self->_materialView setHidden:0];
     [(SBHomeScreenBackdropView *)self _invalidateBackdropSnapshot];
@@ -396,11 +396,11 @@ LABEL_18:
   if (([(MTMaterialView *)self->_materialView isHidden]& 1) == 0 && !self->_materialViewAnimationCount && !self->_waitingForBackdropViewToRender)
   {
     blurredContentSnapshotImageView = self->_blurredContentSnapshotImageView;
-    v17 = [(SBHomeScreenBackdropView *)self homeScreenBlurredContentSnapshotImage];
-    [(UIImageView *)blurredContentSnapshotImageView setImage:v17];
+    homeScreenBlurredContentSnapshotImage = [(SBHomeScreenBackdropView *)self homeScreenBlurredContentSnapshotImage];
+    [(UIImageView *)blurredContentSnapshotImageView setImage:homeScreenBlurredContentSnapshotImage];
 
-    v18 = [(UIImageView *)self->_blurredContentSnapshotImageView layer];
-    [v18 setContentsOpaque:1];
+    layer = [(UIImageView *)self->_blurredContentSnapshotImageView layer];
+    [layer setContentsOpaque:1];
 
     [(MTMaterialView *)self->_materialView setHidden:1];
     materialView = self->_blurredContentSnapshotImageView;
@@ -427,12 +427,12 @@ LABEL_18:
   }
 
 LABEL_19:
-  v11 = [(SBHomeScreenBackdropView *)self isOpaque];
-  if (v7 != v11)
+  isOpaque2 = [(SBHomeScreenBackdropView *)self isOpaque];
+  if (isOpaque != isOpaque2)
   {
-    v12 = v11;
-    v13 = [(SBHomeScreenBackdropViewBase *)self delegate];
-    [v13 homeScreenBackdropView:self opaquenessDidChange:v12];
+    v12 = isOpaque2;
+    delegate = [(SBHomeScreenBackdropViewBase *)self delegate];
+    [delegate homeScreenBackdropView:self opaquenessDidChange:v12];
   }
 
   v14 = self->_materialView;

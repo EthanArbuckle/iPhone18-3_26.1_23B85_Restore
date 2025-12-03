@@ -1,24 +1,24 @@
 @interface TKCompactTLVRecord
-+ (id)parseFromDataSource:(id)a3;
++ (id)parseFromDataSource:(id)source;
 @end
 
 @implementation TKCompactTLVRecord
 
-+ (id)parseFromDataSource:(id)a3
++ (id)parseFromDataSource:(id)source
 {
-  v4 = a3;
-  if ([v4 bytesSafeToRead:1])
+  sourceCopy = source;
+  if ([sourceCopy bytesSafeToRead:1])
   {
-    v5 = [v4 ptr];
-    v6 = [v4 fetchByte];
-    v7 = v6;
-    v8 = [v4 fetchDataWithLength:v6 & 0xF];
+    v5 = [sourceCopy ptr];
+    fetchByte = [sourceCopy fetchByte];
+    v7 = fetchByte;
+    v8 = [sourceCopy fetchDataWithLength:fetchByte & 0xF];
     if (v8)
     {
-      v13.receiver = a1;
+      v13.receiver = self;
       v13.super_class = &OBJC_METACLASS___TKCompactTLVRecord;
       v9 = objc_msgSendSuper2(&v13, sel_alloc);
-      v10 = [v4 dataFromPtr:v5];
+      v10 = [sourceCopy dataFromPtr:v5];
       v11 = [v9 initWithTag:v7 >> 4 value:v8 data:v10];
     }
 

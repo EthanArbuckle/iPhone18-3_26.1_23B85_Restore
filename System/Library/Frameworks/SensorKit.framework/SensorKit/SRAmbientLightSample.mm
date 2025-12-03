@@ -5,37 +5,37 @@
 - (NSString)placementString;
 - (NSString)typeString;
 - (SRAmbientLightChromaticity)chromaticity;
-- (SRAmbientLightSample)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SRAmbientLightSample)initWithCoder:(id)a3;
-- (SRAmbientLightSample)initWithSRALSSampleStruct:(id *)a3;
-- (SRAmbientLightSample)initWithSample:(id *)a3;
+- (SRAmbientLightSample)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SRAmbientLightSample)initWithCoder:(id)coder;
+- (SRAmbientLightSample)initWithSRALSSampleStruct:(id *)struct;
+- (SRAmbientLightSample)initWithSample:(id *)sample;
 - (id)binarySampleRepresentation;
 - (id)sr_dictionaryRepresentation;
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3;
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRAmbientLightSample
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogAmbientLightSample = os_log_create("com.apple.SensorKit", "SRAmbientLightSample");
   }
 }
 
-- (SRAmbientLightSample)initWithCoder:(id)a3
+- (SRAmbientLightSample)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
   v12 = 0u;
   v13 = 0u;
-  v6 = [a3 decodeInt64ForKey:@"tp"];
+  v6 = [coder decodeInt64ForKey:@"tp"];
   if (v6)
   {
     *&v12 = HIDWORD(v6);
@@ -44,35 +44,35 @@
 
   else
   {
-    *&v12 = [a3 decodeIntegerForKey:@"sensorType"];
-    v7 = [a3 decodeIntegerForKey:@"placement"];
+    *&v12 = [coder decodeIntegerForKey:@"sensorType"];
+    v7 = [coder decodeIntegerForKey:@"placement"];
   }
 
   *(&v12 + 1) = v7;
-  [a3 decodeFloatForKey:@"lux"];
+  [coder decodeFloatForKey:@"lux"];
   LODWORD(v13) = v8;
-  [a3 decodeFloatForKey:@"x"];
+  [coder decodeFloatForKey:@"x"];
   DWORD1(v13) = v9;
-  [a3 decodeFloatForKey:@"y"];
+  [coder decodeFloatForKey:@"y"];
   DWORD2(v13) = v10;
   return [(SRAmbientLightSample *)self initWithSRALSSampleStruct:&v12];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeInt64:self->_comboTypePlacement forKey:@"tp"];
-  [a3 encodeDouble:@"lux" forKey:self->_luxValue];
+  [coder encodeInt64:self->_comboTypePlacement forKey:@"tp"];
+  [coder encodeDouble:@"lux" forKey:self->_luxValue];
   [(SRAmbientLightSample *)self chromaticity];
-  [a3 encodeFloat:@"x" forKey:?];
+  [coder encodeFloat:@"x" forKey:?];
   [(SRAmbientLightSample *)self chromaticity];
   LODWORD(v7) = v6;
 
-  [a3 encodeFloat:@"y" forKey:v7];
+  [coder encodeFloat:@"y" forKey:v7];
 }
 
 - (id)binarySampleRepresentation
@@ -83,10 +83,10 @@
   return [MEMORY[0x1E695DEF0] dataWithBytes:&comboTypePlacement length:20];
 }
 
-- (SRAmbientLightSample)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SRAmbientLightSample)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (![a3 length])
+  if (![representation length])
   {
 
     goto LABEL_6;
@@ -99,7 +99,7 @@
   {
     v8 = result;
     v14 = 0;
-    v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v14];
+    v9 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representation error:&v14];
     if (v9)
     {
       v10 = v9;
@@ -108,9 +108,9 @@
       goto LABEL_7;
     }
 
-    v12 = [a3 bytes];
+    bytes = [representation bytes];
 
-    result = [[SRAmbientLightSample alloc] initWithSample:v12];
+    result = [[SRAmbientLightSample alloc] initWithSample:bytes];
     if (result)
     {
       goto LABEL_7;
@@ -120,7 +120,7 @@
     if (os_log_type_enabled(SRLogAmbientLightSample, OS_LOG_TYPE_ERROR))
     {
       *buf = 138477827;
-      v17 = a3;
+      representationCopy = representation;
       _os_log_error_impl(&dword_1C914D000, v13, OS_LOG_TYPE_ERROR, "Failed to instantiate ALS sample from binary %{private}@", buf, 0xCu);
     }
 
@@ -133,9 +133,9 @@ LABEL_7:
   return result;
 }
 
-- (SRAmbientLightSample)initWithSRALSSampleStruct:(id *)a3
+- (SRAmbientLightSample)initWithSRALSSampleStruct:(id *)struct
 {
-  if (!a3)
+  if (!struct)
   {
     return 0;
   }
@@ -145,25 +145,25 @@ LABEL_7:
   result = [(SRAmbientLightSample *)&v5 init];
   if (result)
   {
-    result->_comboTypePlacement = a3->var1 | (a3->var0 << 32);
-    result->_luxValue = a3->var2;
-    result->_chromaticity = a3->var3;
+    result->_comboTypePlacement = struct->var1 | (struct->var0 << 32);
+    result->_luxValue = struct->var2;
+    result->_chromaticity = struct->var3;
   }
 
   return result;
 }
 
-- (SRAmbientLightSample)initWithSample:(id *)a3
+- (SRAmbientLightSample)initWithSample:(id *)sample
 {
   v7.receiver = self;
   v7.super_class = SRAmbientLightSample;
   result = [(SRAmbientLightSample *)&v7 init];
   if (result)
   {
-    var0 = a3->var0;
-    result->_comboTypePlacement = a3->var0;
-    result->_luxValue = a3->var1;
-    result->_chromaticity = a3->var2;
+    var0 = sample->var0;
+    result->_comboTypePlacement = sample->var0;
+    result->_luxValue = sample->var1;
+    result->_chromaticity = sample->var2;
     if (var0 >> 33)
     {
       v6 = 1;
@@ -222,15 +222,15 @@ LABEL_7:
 
 - (NSString)placementString
 {
-  v2 = [(SRAmbientLightSample *)self placement];
-  if ((v2 - 1) > 7)
+  placement = [(SRAmbientLightSample *)self placement];
+  if ((placement - 1) > 7)
   {
     return @"Unknown";
   }
 
   else
   {
-    return &off_1E83305B0[v2 - 1]->isa;
+    return &off_1E83305B0[placement - 1]->isa;
   }
 }
 
@@ -239,12 +239,12 @@ LABEL_7:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SRAmbientLightSample *)self typeString];
-  v7 = [(SRAmbientLightSample *)self placementString];
+  typeString = [(SRAmbientLightSample *)self typeString];
+  placementString = [(SRAmbientLightSample *)self placementString];
   [(SRAmbientLightSample *)self chromaticity];
   v9 = v8;
   [(SRAmbientLightSample *)self chromaticity];
-  return [v3 stringWithFormat:@"<%@: %p> chipType: %@, placement: %@, chromaticity {x = %f, y = %f}, lux: (%@)", v5, self, v6, v7, *&v9, v10, -[SRAmbientLightSample lux](self, "lux")];
+  return [v3 stringWithFormat:@"<%@: %p> chipType: %@, placement: %@, chromaticity {x = %f, y = %f}, lux: (%@)", v5, self, typeString, placementString, *&v9, v10, -[SRAmbientLightSample lux](self, "lux")];
 }
 
 - (id)sr_dictionaryRepresentation
@@ -270,7 +270,7 @@ LABEL_7:
   return result;
 }
 
-- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)a3
+- (int64_t)sr_writeUTF8RepresentationToOutputStream:(id)stream
 {
   LODWORD(result) = snprintf_l(sr_writeUTF8RepresentationToOutputStream__buf, 0x9CuLL, 0, "{sensorType: %ld, placement: %ld, chromaticity: {x: %0.*g, y: %0.*g}, lux: %0.*g}", HIDWORD(self->_comboTypePlacement), self->_comboTypePlacement, 17, self->_chromaticity.x, 17, self->_chromaticity.y, 17, self->_luxValue);
   if (result <= 0)
@@ -278,7 +278,7 @@ LABEL_7:
     return result;
   }
 
-  return [a3 write:sr_writeUTF8RepresentationToOutputStream__buf maxLength:result];
+  return [stream write:sr_writeUTF8RepresentationToOutputStream__buf maxLength:result];
 }
 
 - (SRAmbientLightChromaticity)chromaticity

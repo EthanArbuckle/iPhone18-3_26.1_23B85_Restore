@@ -1,36 +1,36 @@
 @interface NSKeyedUnarchiver
-+ (id)cls_secureUnarchiveObjectOfClass:(Class)a3 withData:(id)a4;
-+ (id)cls_secureUnarchiveObjectOfClasses:(id)a3 withData:(id)a4;
++ (id)cls_secureUnarchiveObjectOfClass:(Class)class withData:(id)data;
++ (id)cls_secureUnarchiveObjectOfClasses:(id)classes withData:(id)data;
 @end
 
 @implementation NSKeyedUnarchiver
 
-+ (id)cls_secureUnarchiveObjectOfClass:(Class)a3 withData:(id)a4
++ (id)cls_secureUnarchiveObjectOfClass:(Class)class withData:(id)data
 {
-  if (a3)
+  if (class)
   {
-    v6 = a4;
-    v7 = [NSSet setWithObject:a3];
-    v8 = [a1 cls_secureUnarchiveObjectOfClasses:v7 withData:v6];
+    dataCopy = data;
+    dataCopy2 = [NSSet setWithObject:class];
+    v8 = [self cls_secureUnarchiveObjectOfClasses:dataCopy2 withData:dataCopy];
   }
 
   else
   {
-    v7 = a4;
-    v8 = [a1 cls_secureUnarchiveObjectOfClasses:0 withData:v7];
+    dataCopy2 = data;
+    v8 = [self cls_secureUnarchiveObjectOfClasses:0 withData:dataCopy2];
   }
 
   return v8;
 }
 
-+ (id)cls_secureUnarchiveObjectOfClasses:(id)a3 withData:(id)a4
++ (id)cls_secureUnarchiveObjectOfClasses:(id)classes withData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v6 length])
+  classesCopy = classes;
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v12 = 0;
-    v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v6 error:&v12];
+    v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:dataCopy error:&v12];
     v8 = v12;
     v9 = v8;
     if (v8)
@@ -41,7 +41,7 @@
 
     else
     {
-      v10 = [v7 decodeObjectOfClasses:v5 forKey:NSKeyedArchiveRootObjectKey];
+      v10 = [v7 decodeObjectOfClasses:classesCopy forKey:NSKeyedArchiveRootObjectKey];
     }
   }
 

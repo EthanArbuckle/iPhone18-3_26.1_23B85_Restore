@@ -1,40 +1,40 @@
 @interface PKCollapsibleHeaderView
-- ($3CC2805F0189FCCE51047C0D2B5A52A9)_layoutWithBounds:(SEL)a3 isTemplateLayout:(CGRect)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCollapsibleHeaderView)initWithFrame:(CGRect)a3;
+- ($3CC2805F0189FCCE51047C0D2B5A52A9)_layoutWithBounds:(SEL)bounds isTemplateLayout:(CGRect)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCollapsibleHeaderView)initWithFrame:(CGRect)frame;
 - (PKCollapsibleHeaderViewDelegate)delegate;
 - (UIEdgeInsets)readableContentInsets;
 - (UIImage)image;
-- (double)_maxTitleWidthInsideFrameWidth:(double)a3 reserveSpace:(BOOL)a4;
+- (double)_maxTitleWidthInsideFrameWidth:(double)width reserveSpace:(BOOL)space;
 - (double)_titleTopPadding;
 - (double)_topArtTopPadding;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_contentSizeCategoryDidChange;
 - (void)_setLabelFonts;
 - (void)layoutSubviews;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
-- (void)searchBarTextDidBeginEditing:(id)a3;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)setAdditionalCollapsibleHeight:(double)a3;
-- (void)setImage:(id)a3;
-- (void)setShowSearchBar:(BOOL)a3;
-- (void)setShowSpinner:(BOOL)a3;
-- (void)setTitle:(id)a3 subtitle:(id)a4;
-- (void)setTitleAccessoriesEnabled:(BOOL)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTopArtView:(id)a3;
-- (void)showCheckmark:(BOOL)a3 animated:(BOOL)a4;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
+- (void)searchBarTextDidBeginEditing:(id)editing;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)setAdditionalCollapsibleHeight:(double)height;
+- (void)setImage:(id)image;
+- (void)setShowSearchBar:(BOOL)bar;
+- (void)setShowSpinner:(BOOL)spinner;
+- (void)setTitle:(id)title subtitle:(id)subtitle;
+- (void)setTitleAccessoriesEnabled:(BOOL)enabled;
+- (void)setTitleFont:(id)font;
+- (void)setTopArtView:(id)view;
+- (void)showCheckmark:(BOOL)checkmark animated:(BOOL)animated;
 - (void)updateTitleLabelText;
 @end
 
 @implementation PKCollapsibleHeaderView
 
-- (PKCollapsibleHeaderView)initWithFrame:(CGRect)a3
+- (PKCollapsibleHeaderView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = PKCollapsibleHeaderView;
-  v3 = [(PKCollapsibleHeaderView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKCollapsibleHeaderView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -83,8 +83,8 @@
     v4->_checkmarkView = v17;
 
     [(PKCollapsibleHeaderView *)v4 setTitleAccessoriesEnabled:1];
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v4 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__contentSizeCategoryDidChange name:*MEMORY[0x1E69DDC48] object:0];
 
     [(PKCollapsibleHeaderView *)v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9840]];
   }
@@ -92,11 +92,11 @@
   return v4;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   [(UISearchBar *)self->_searchBar frame];
   v12.x = x;
   v12.y = y;
@@ -104,7 +104,7 @@
   {
     searchBar = self->_searchBar;
     [(PKCollapsibleHeaderView *)self convertPoint:searchBar toView:x, y];
-    v9 = [(UISearchBar *)searchBar hitTest:v7 withEvent:?];
+    v9 = [(UISearchBar *)searchBar hitTest:eventCopy withEvent:?];
   }
 
   else
@@ -115,10 +115,10 @@
   return v9;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(PKCollapsibleHeaderView *)self heightBoundsForWidth:a3.width, a3.height, 0, 0, 0, 0];
+  width = fits.width;
+  [(PKCollapsibleHeaderView *)self heightBoundsForWidth:fits.width, fits.height, 0, 0, 0, 0];
   v4 = 0.0;
   v5 = width;
   result.height = v4;
@@ -135,19 +135,19 @@
   [(PKCollapsibleHeaderView *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- ($3CC2805F0189FCCE51047C0D2B5A52A9)_layoutWithBounds:(SEL)a3 isTemplateLayout:(CGRect)a4
+- ($3CC2805F0189FCCE51047C0D2B5A52A9)_layoutWithBounds:(SEL)bounds isTemplateLayout:(CGRect)layout
 {
   v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
+  height = layout.size.height;
+  width = layout.size.width;
+  x = layout.origin.x;
   p_readableContentInsets = &self->_readableContentInsets;
   right = self->_readableContentInsets.right;
   left = self->_readableContentInsets.left;
   MaxY = 0.0;
   if (!a5)
   {
-    [(PKCollapsibleHeaderView *)self _layoutWithBounds:1 isTemplateLayout:0.0, 0.0, a4.size.width, 1.79769313e308];
+    [(PKCollapsibleHeaderView *)self _layoutWithBounds:1 isTemplateLayout:0.0, 0.0, layout.size.width, 1.79769313e308];
     MaxY = height - v52;
   }
 
@@ -215,8 +215,8 @@
     }
   }
 
-  v31 = [(UILabel *)self->_subtitleLabel text];
-  v32 = [v31 length];
+  text = [(UILabel *)self->_subtitleLabel text];
+  v32 = [text length];
 
   if (!v32)
   {
@@ -361,25 +361,25 @@ LABEL_37:
   return result;
 }
 
-- (double)_maxTitleWidthInsideFrameWidth:(double)a3 reserveSpace:(BOOL)a4
+- (double)_maxTitleWidthInsideFrameWidth:(double)width reserveSpace:(BOOL)space
 {
   v5 = 0.0;
-  if (a4)
+  if (space)
   {
-    [(UIActivityIndicatorView *)self->_activityIndicator sizeThatFits:a3, 1.79769313e308];
+    [(UIActivityIndicatorView *)self->_activityIndicator sizeThatFits:width, 1.79769313e308];
     v5 = fmax(v6, 30.0) * 2.0 + 10.0;
   }
 
-  return a3 - v5;
+  return width - v5;
 }
 
-- (void)setTitleAccessoriesEnabled:(BOOL)a3
+- (void)setTitleAccessoriesEnabled:(BOOL)enabled
 {
-  if (self->_titleAccessoriesEnabled == !a3)
+  if (self->_titleAccessoriesEnabled == !enabled)
   {
-    self->_titleAccessoriesEnabled = a3;
+    self->_titleAccessoriesEnabled = enabled;
     titleLabel = self->_titleLabel;
-    if (a3)
+    if (enabled)
     {
       checkmarkView = self->_checkmarkView;
       [(PKCheckmarkView *)checkmarkView intrinsicContentSize];
@@ -399,13 +399,13 @@ LABEL_37:
   }
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  if (self->_showSpinner == !a3)
+  if (self->_showSpinner == !spinner)
   {
-    self->_showSpinner = a3;
+    self->_showSpinner = spinner;
     activityIndicator = self->_activityIndicator;
-    if (a3)
+    if (spinner)
     {
       [(UIActivityIndicatorView *)activityIndicator setHidden:0];
       v5 = self->_activityIndicator;
@@ -421,12 +421,12 @@ LABEL_37:
   }
 }
 
-- (void)setShowSearchBar:(BOOL)a3
+- (void)setShowSearchBar:(BOOL)bar
 {
-  if (self->_showSearchBar == !a3)
+  if (self->_showSearchBar == !bar)
   {
-    self->_showSearchBar = a3;
-    if (a3)
+    self->_showSearchBar = bar;
+    if (bar)
     {
       [(PKCollapsibleHeaderView *)self addSubview:self->_searchBar];
     }
@@ -440,43 +440,43 @@ LABEL_37:
   }
 }
 
-- (void)setAdditionalCollapsibleHeight:(double)a3
+- (void)setAdditionalCollapsibleHeight:(double)height
 {
-  if (a3 < 0.0)
+  if (height < 0.0)
   {
-    a3 = 0.0;
+    height = 0.0;
   }
 
-  if (self->_additionalCollapsibleHeight != a3)
+  if (self->_additionalCollapsibleHeight != height)
   {
-    self->_additionalCollapsibleHeight = a3;
+    self->_additionalCollapsibleHeight = height;
   }
 }
 
-- (void)showCheckmark:(BOOL)a3 animated:(BOOL)a4
+- (void)showCheckmark:(BOOL)checkmark animated:(BOOL)animated
 {
-  if (self->_showCheckmark == !a3)
+  if (self->_showCheckmark == !checkmark)
   {
-    self->_showCheckmark = a3;
+    self->_showCheckmark = checkmark;
     [PKCheckmarkView showCheckmark:"showCheckmark:animated:" animated:?];
   }
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  objc_storeStrong(&self->_titleFont, a3);
+  objc_storeStrong(&self->_titleFont, font);
   [(PKCollapsibleHeaderView *)self updateTitleLabelText];
 
   [(PKCollapsibleHeaderView *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3 subtitle:(id)a4
+- (void)setTitle:(id)title subtitle:(id)subtitle
 {
-  objc_storeStrong(&self->_titleText, a3);
-  v7 = a3;
-  v8 = a4;
+  objc_storeStrong(&self->_titleText, title);
+  titleCopy = title;
+  subtitleCopy = subtitle;
   [(PKCollapsibleHeaderView *)self updateTitleLabelText];
-  [(UILabel *)self->_subtitleLabel setText:v8];
+  [(UILabel *)self->_subtitleLabel setText:subtitleCopy];
 
   [(PKCollapsibleHeaderView *)self setNeedsLayout];
 }
@@ -513,14 +513,14 @@ LABEL_37:
   [(PKTrailingAccessoryLabel *)self->_titleLabel setAttributedText:v11];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   self->_imageSize = *MEMORY[0x1E695F060];
-  v8 = v4;
-  if (v4)
+  v8 = imageCopy;
+  if (imageCopy)
   {
-    [v4 size];
+    [imageCopy size];
     self->_imageSize.width = v5;
     self->_imageSize.height = v6;
     v7 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -536,11 +536,11 @@ LABEL_37:
   }
 }
 
-- (void)setTopArtView:(id)a3
+- (void)setTopArtView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(UIView *)self->_topArtView removeFromSuperview];
-  objc_storeStrong(&self->_topArtView, a3);
+  objc_storeStrong(&self->_topArtView, view);
   if (self->_topArtView)
   {
     [(PKCollapsibleHeaderView *)self addSubview:?];
@@ -554,32 +554,32 @@ LABEL_37:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIView *)self->_topArtView image];
+    image = [(UIView *)self->_topArtView image];
   }
 
   else
   {
-    v3 = 0;
+    image = 0;
   }
 
-  return v3;
+  return image;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v7 = a4;
+  changeCopy = change;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_delegate);
-    [v6 searchTextDidChangeTo:v7];
+    [v6 searchTextDidChangeTo:changeCopy];
   }
 }
 
-- (void)searchBarTextDidBeginEditing:(id)a3
+- (void)searchBarTextDidBeginEditing:(id)editing
 {
-  [a3 setShowsCancelButton:1];
+  [editing setShowsCancelButton:1];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
@@ -589,11 +589,11 @@ LABEL_37:
   }
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  [v4 resignFirstResponder];
-  [v4 setShowsCancelButton:0];
+  editingCopy = editing;
+  [editingCopy resignFirstResponder];
+  [editingCopy setShowsCancelButton:0];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
@@ -603,11 +603,11 @@ LABEL_37:
   }
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  [v4 setText:0];
-  [v4 resignFirstResponder];
+  clickedCopy = clicked;
+  [clickedCopy setText:0];
+  [clickedCopy resignFirstResponder];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)

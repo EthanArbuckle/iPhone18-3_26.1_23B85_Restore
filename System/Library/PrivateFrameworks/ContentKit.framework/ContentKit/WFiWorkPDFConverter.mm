@@ -1,66 +1,66 @@
 @interface WFiWorkPDFConverter
-+ (BOOL)canHandleFile:(id)a3;
-- (void)convertToPDF:(WFFileRepresentation *)a3 completionHandler:(id)a4;
-- (void)executor:(id)a3 didPerformActionWithResult:(id)a4 error:(id)a5;
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4;
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4;
++ (BOOL)canHandleFile:(id)file;
+- (void)convertToPDF:(WFFileRepresentation *)f completionHandler:(id)handler;
+- (void)executor:(id)executor didPerformActionWithResult:(id)result error:(id)error;
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request;
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request;
+- (void)executor:(id)executor needsValueWithRequest:(id)request;
 @end
 
 @implementation WFiWorkPDFConverter
 
-+ (BOOL)canHandleFile:(id)a3
++ (BOOL)canHandleFile:(id)file
 {
-  v3 = a3;
-  v4 = static WFiWorkPDFConverter.canHandleFile(_:)(v3);
+  fileCopy = file;
+  v4 = static WFiWorkPDFConverter.canHandleFile(_:)(fileCopy);
 
   return v4;
 }
 
-- (void)convertToPDF:(WFFileRepresentation *)a3 completionHandler:(id)a4
+- (void)convertToPDF:(WFFileRepresentation *)f completionHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = swift_allocObject();
-  v7[2] = a3;
+  v7[2] = f;
   v7[3] = v6;
   v7[4] = self;
-  v8 = a3;
-  v9 = self;
+  fCopy = f;
+  selfCopy = self;
 
   sub_21E1C66A4(&unk_21E3524D8, v7);
 }
 
-- (void)executor:(id)a3 didPerformActionWithResult:(id)a4 error:(id)a5
+- (void)executor:(id)executor didPerformActionWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  WFiWorkPDFConverter.executor(_:didPerformActionWith:error:)(v11, a4, a5);
+  executorCopy = executor;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  WFiWorkPDFConverter.executor(_:didPerformActionWith:error:)(errorCopy, result, error);
 }
 
-- (void)executor:(id)a3 needsConfirmationWithRequest:(id)a4
+- (void)executor:(id)executor needsConfirmationWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = self;
-  WFiWorkPDFConverter.executor(_:needsConfirmationWith:)(v9, v8);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  WFiWorkPDFConverter.executor(_:needsConfirmationWith:)(selfCopy, v8);
 }
 
-- (void)executor:(id)a3 needsDisambiguationWithRequest:(id)a4
+- (void)executor:(id)executor needsDisambiguationWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = self;
-  WFiWorkPDFConverter.executor(_:needsDisambiguationWith:)(v9, v8);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  WFiWorkPDFConverter.executor(_:needsDisambiguationWith:)(selfCopy, v8);
 }
 
-- (void)executor:(id)a3 needsValueWithRequest:(id)a4
+- (void)executor:(id)executor needsValueWithRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = self;
-  WFiWorkPDFConverter.executor(_:needsValueWith:)(v9, v8);
+  executorCopy = executor;
+  requestCopy = request;
+  selfCopy = self;
+  WFiWorkPDFConverter.executor(_:needsValueWith:)(selfCopy, v8);
 }
 
 @end

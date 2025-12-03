@@ -1,38 +1,38 @@
 @interface CaptureMTLComputePipelineState
 - ($F99D9A4FB75BC57F3386B8DC8EE08D7A)requiredThreadsPerThreadgroup;
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)newFunctionHandle:(id *)a3 associatedWithBaseFunctionHandle:(id)a4 captureFunction:(id)a5;
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 captureComputePipelineState:(id)a4 additionalBinaryFunctions:(id)a5;
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 captureDevice:(id)a4;
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 capturePipelineLibrary:(id)a4;
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 captureCompiler:(id)a5;
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 dynamicLinkingDescriptor:(id)a5 captureCompiler:(id)a6;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)newFunctionHandle:(id *)handle associatedWithBaseFunctionHandle:(id)functionHandle captureFunction:(id)function;
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object captureComputePipelineState:(id)state additionalBinaryFunctions:(id)functions;
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object captureDevice:(id)device;
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object capturePipelineLibrary:(id)library;
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor captureCompiler:(id)compiler;
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor captureCompiler:(id)compiler;
 - (NSString)description;
 - (id)functionHandleMap;
-- (id)functionHandleWithBinaryFunction:(id)a3;
-- (id)functionHandleWithFunction:(id)a3;
-- (id)functionHandleWithName:(id)a3;
-- (id)functionReflectionWithFunctionDescriptor:(id)a3;
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newComputePipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4;
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3;
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3;
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3;
+- (id)functionHandleWithBinaryFunction:(id)function;
+- (id)functionHandleWithFunction:(id)function;
+- (id)functionHandleWithName:(id)name;
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor;
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error;
+- (id)newComputePipelineStateWithBinaryFunctions:(id)functions error:(id *)error;
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor;
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor;
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions;
 - (unint64_t)streamReference;
-- (void)commonInit:(id)a3 captureDevice:(id)a4;
+- (void)commonInit:(id)init captureDevice:(id)device;
 - (void)dealloc;
 - (void)touch;
 @end
 
 @implementation CaptureMTLComputePipelineState
 
-- (id)newVisibleFunctionTableWithDescriptor:(id)a3
+- (id)newVisibleFunctionTableWithDescriptor:(id)descriptor
 {
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  descriptorCopy = descriptor;
   v27 = traceContext;
   *&v28 = 0;
   *(&v28 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -46,10 +46,10 @@
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
   baseObject = self->_baseObject;
-  v11 = [v5 copy];
+  v11 = [descriptorCopy copy];
   v12 = [(MTLComputePipelineStateSPI *)baseObject newVisibleFunctionTableWithDescriptor:v11];
 
-  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:v5];
+  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeVisibleFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:descriptorCopy];
 
   if (v12)
   {
@@ -82,10 +82,10 @@
 
   *(v15 + 13) = v16;
   SaveMTLVisibleFunctionTableInfo(&v27, v12);
-  v20 = [(CaptureMTLComputePipelineState *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLComputePipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -93,10 +93,10 @@
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLVisibleFunctionTable *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLVisibleFunctionTable *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -118,13 +118,13 @@
   return v14;
 }
 
-- (id)newIntersectionFunctionTableWithDescriptor:(id)a3
+- (id)newIntersectionFunctionTableWithDescriptor:(id)descriptor
 {
   v28 = 0u;
   v29 = 0u;
   v27 = 0u;
   traceContext = self->_traceContext;
-  v5 = a3;
+  descriptorCopy = descriptor;
   v27 = traceContext;
   *&v28 = 0;
   *(&v28 + 1) = atomic_fetch_add(&traceContext->var3, 1uLL);
@@ -138,10 +138,10 @@
   *(&v29 + 11) = 0;
   HIBYTE(v29) = 0;
   baseObject = self->_baseObject;
-  v11 = [v5 copy];
+  v11 = [descriptorCopy copy];
   v12 = [(MTLComputePipelineStateSPI *)baseObject newIntersectionFunctionTableWithDescriptor:v11];
 
-  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:v5];
+  v13 = [(CaptureMTLDevice *)self->_captureDevice dummyEncodeIntersectionFunctionTableIntoArgumentBufferForResourceIndex:v12 withDescriptor:descriptorCopy];
 
   if (v12)
   {
@@ -174,10 +174,10 @@
 
   *(v15 + 13) = v16;
   SaveMTLIntersectionFunctionTableInfo(&v27, v12);
-  v20 = [(CaptureMTLComputePipelineState *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLComputePipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -185,10 +185,10 @@
     var0 = 0;
   }
 
-  v22 = [(CaptureMTLIntersectionFunctionTable *)v14 traceStream];
-  if (v22)
+  traceStream2 = [(CaptureMTLIntersectionFunctionTable *)v14 traceStream];
+  if (traceStream2)
   {
-    v23 = v22->var0;
+    v23 = traceStream2->var0;
   }
 
   else
@@ -210,28 +210,28 @@
   return v14;
 }
 
-- (unint64_t)imageblockMemoryLengthForDimensions:(id *)a3
+- (unint64_t)imageblockMemoryLengthForDimensions:(id *)dimensions
 {
   baseObject = self->_baseObject;
-  v5 = *a3;
+  v5 = *dimensions;
   return [(MTLComputePipelineStateSPI *)baseObject imageblockMemoryLengthForDimensions:&v5];
 }
 
-- (id)functionReflectionWithFunctionDescriptor:(id)a3
+- (id)functionReflectionWithFunctionDescriptor:(id)descriptor
 {
   baseObject = self->_baseObject;
-  v4 = unwrapMTL4FunctionDescriptor(a3);
+  v4 = unwrapMTL4FunctionDescriptor(descriptor);
   v5 = [(MTLComputePipelineStateSPI *)baseObject functionReflectionWithFunctionDescriptor:v4];
 
   return v5;
 }
 
-- (id)functionHandleWithFunction:(id)a3
+- (id)functionHandleWithFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   baseObject = self->_baseObject;
-  v6 = [v4 baseObject];
-  v7 = [(MTLComputePipelineStateSPI *)baseObject functionHandleWithFunction:v6];
+  baseObject = [functionCopy baseObject];
+  v7 = [(MTLComputePipelineStateSPI *)baseObject functionHandleWithFunction:baseObject];
 
   v30 = 0;
   if (!v7)
@@ -240,7 +240,7 @@
     goto LABEL_5;
   }
 
-  v8 = [(CaptureMTLComputePipelineState *)self newFunctionHandle:&v30 associatedWithBaseFunctionHandle:v7 captureFunction:v4];
+  v8 = [(CaptureMTLComputePipelineState *)self newFunctionHandle:&v30 associatedWithBaseFunctionHandle:v7 captureFunction:functionCopy];
   v9 = v30;
   if (v8)
   {
@@ -271,10 +271,10 @@ LABEL_5:
 
     *(v12 + 13) = v13;
     SaveMTLFunctionHandleInfo(&v27, v7);
-    v17 = [(CaptureMTLComputePipelineState *)self traceStream];
-    if (v17)
+    traceStream = [(CaptureMTLComputePipelineState *)self traceStream];
+    if (traceStream)
     {
-      var0 = v17->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -282,10 +282,10 @@ LABEL_5:
       var0 = 0;
     }
 
-    v19 = [v30 traceStream];
-    if (v19)
+    traceStream2 = [v30 traceStream];
+    if (traceStream2)
     {
-      v20 = *v19;
+      v20 = *traceStream2;
     }
 
     else
@@ -293,10 +293,10 @@ LABEL_5:
       v20 = 0;
     }
 
-    v21 = [v4 traceStream];
-    if (v21)
+    traceStream3 = [functionCopy traceStream];
+    if (traceStream3)
     {
-      v22 = *v21;
+      v22 = *traceStream3;
     }
 
     else
@@ -322,14 +322,14 @@ LABEL_18:
   return v25;
 }
 
-- (id)functionHandleWithBinaryFunction:(id)a3
+- (id)functionHandleWithBinaryFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLComputePipelineState_functionHandleWithBinaryFunction", "Metal 4 Additional Binary Functions", 0, 0);
   baseObject = self->_baseObject;
-  v6 = [v4 baseObject];
+  baseObject = [functionCopy baseObject];
 
-  v7 = [(MTLComputePipelineStateSPI *)baseObject functionHandleWithBinaryFunction:v6];
+  v7 = [(MTLComputePipelineStateSPI *)baseObject functionHandleWithBinaryFunction:baseObject];
 
   return v7;
 }
@@ -360,10 +360,10 @@ LABEL_18:
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLComputePipelineState *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLComputePipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -396,13 +396,13 @@ LABEL_18:
   return result;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLComputePipelineStateSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLComputePipelineStateSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -457,23 +457,23 @@ LABEL_18:
   }
 }
 
-- (id)functionHandleWithName:(id)a3
+- (id)functionHandleWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLComputePipelineState_functionHandleWithName", "Metal 4 Additional Binary Functions", 0, 0);
-  v5 = [(MTLComputePipelineStateSPI *)self->_baseObject functionHandleWithName:v4];
+  v5 = [(MTLComputePipelineStateSPI *)self->_baseObject functionHandleWithName:nameCopy];
 
   return v5;
 }
 
-- (id)newComputePipelineStateWithBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithBinaryFunctions:(id)functions error:(id *)error
 {
-  v6 = a3;
+  functionsCopy = functions;
   GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLComputePipelineState_newComputePipelineStateWithBinaryFunctions_error", "Metal 4 Additional Binary Functions", 0, 0);
   baseObject = self->_baseObject;
-  v8 = unwrapNSArray(v6);
+  v8 = unwrapNSArray(functionsCopy);
 
-  v9 = [(MTLComputePipelineStateSPI *)baseObject newComputePipelineStateWithBinaryFunctions:v8 error:a4];
+  v9 = [(MTLComputePipelineStateSPI *)baseObject newComputePipelineStateWithBinaryFunctions:v8 error:error];
   if (v9)
   {
     v10 = [[CaptureMTLComputePipelineState alloc] initWithBaseObject:v9 captureDevice:self->_captureDevice];
@@ -487,9 +487,9 @@ LABEL_18:
   return v10;
 }
 
-- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)a3 error:(id *)a4
+- (id)newComputePipelineStateWithAdditionalBinaryFunctions:(id)functions error:(id *)error
 {
-  v6 = a3;
+  functionsCopy = functions;
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
@@ -507,13 +507,13 @@ LABEL_18:
   *(&v35 + 11) = 0;
   HIBYTE(v35) = 0;
   baseObject = self->_baseObject;
-  v13 = unwrapNSArray(v6);
-  v14 = [(MTLComputePipelineStateSPI *)baseObject newComputePipelineStateWithAdditionalBinaryFunctions:v13 error:a4];
+  v13 = unwrapNSArray(functionsCopy);
+  v14 = [(MTLComputePipelineStateSPI *)baseObject newComputePipelineStateWithAdditionalBinaryFunctions:v13 error:error];
 
   if (v14)
   {
     v15 = [CaptureMTLComputePipelineState alloc];
-    v16 = [v6 copy];
+    v16 = [functionsCopy copy];
     v17 = [(CaptureMTLComputePipelineState *)v15 initWithBaseObject:v14 captureComputePipelineState:self additionalBinaryFunctions:v16];
   }
 
@@ -547,13 +547,13 @@ LABEL_18:
   *(v18 + 13) = v19;
   reflection = self->_reflection;
   v24 = unwrapMTLComputePipelineDescriptor(self->_descriptor);
-  v25 = [(MTLFunction *)self->_function baseObject];
-  SaveMTLComputePipelineReflection(&v33, v14, reflection, v24, v25);
+  baseObject = [(MTLFunction *)self->_function baseObject];
+  SaveMTLComputePipelineReflection(&v33, v14, reflection, v24, baseObject);
 
-  v26 = [(CaptureMTLComputePipelineState *)self traceStream];
-  if (v26)
+  traceStream = [(CaptureMTLComputePipelineState *)self traceStream];
+  if (traceStream)
   {
-    var0 = v26->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -561,11 +561,11 @@ LABEL_18:
     var0 = 0;
   }
 
-  v28 = [(CaptureMTLComputePipelineState *)v17 traceStream];
-  if (!v28)
+  traceStream2 = [(CaptureMTLComputePipelineState *)v17 traceStream];
+  if (!traceStream2)
   {
     v29 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -573,18 +573,18 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  v29 = v28->var0;
-  if (a4)
+  v29 = traceStream2->var0;
+  if (error)
   {
 LABEL_12:
-    a4 = *a4;
+    error = *error;
   }
 
 LABEL_13:
-  v30 = StreamMTLNameArray(&v33, v6);
+  v30 = StreamMTLNameArray(&v33, functionsCopy);
   *v20 = var0;
   *(v20 + 1) = v29;
-  *(v20 + 2) = a4;
+  *(v20 + 2) = error;
   v20[24] = v30;
   *(v20 + 25) = 0;
   *(v20 + 7) = 0;
@@ -596,24 +596,24 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)newFunctionHandle:(id *)a3 associatedWithBaseFunctionHandle:(id)a4 captureFunction:(id)a5
+- (BOOL)newFunctionHandle:(id *)handle associatedWithBaseFunctionHandle:(id)functionHandle captureFunction:(id)function
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(CaptureMTLComputePipelineState *)self functionHandleMap];
-  v11 = [v10 objectForKey:v8];
-  v12 = *a3;
-  *a3 = v11;
+  functionHandleCopy = functionHandle;
+  functionCopy = function;
+  functionHandleMap = [(CaptureMTLComputePipelineState *)self functionHandleMap];
+  v11 = [functionHandleMap objectForKey:functionHandleCopy];
+  v12 = *handle;
+  *handle = v11;
 
-  v13 = *a3;
-  if (!*a3)
+  v13 = *handle;
+  if (!*handle)
   {
-    v14 = [[CaptureMTLFunctionHandle alloc] initWithBaseObject:v8 captureComputePipelineState:self captureFunction:v9];
-    v15 = *a3;
-    *a3 = v14;
+    v14 = [[CaptureMTLFunctionHandle alloc] initWithBaseObject:functionHandleCopy captureComputePipelineState:self captureFunction:functionCopy];
+    v15 = *handle;
+    *handle = v14;
 
-    v16 = [(CaptureMTLComputePipelineState *)self functionHandleMap];
-    [v16 setObject:*a3 forKey:v8];
+    functionHandleMap2 = [(CaptureMTLComputePipelineState *)self functionHandleMap];
+    [functionHandleMap2 setObject:*handle forKey:functionHandleCopy];
   }
 
   return v13 == 0;
@@ -634,112 +634,112 @@ LABEL_13:
   return functionHandleMap;
 }
 
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 dynamicLinkingDescriptor:(id)a5 captureCompiler:(id)a6
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor dynamicLinkingDescriptor:(id)linkingDescriptor captureCompiler:(id)compiler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  objectCopy = object;
+  descriptorCopy = descriptor;
+  linkingDescriptorCopy = linkingDescriptor;
+  compilerCopy = compiler;
   v17.receiver = self;
   v17.super_class = CaptureMTLComputePipelineState;
   v14 = [(CaptureMTLComputePipelineState *)&v17 init];
   if (v14)
   {
-    v15 = [v13 captureDevice];
-    [(CaptureMTLComputePipelineState *)v14 commonInit:v10 captureDevice:v15];
+    captureDevice = [compilerCopy captureDevice];
+    [(CaptureMTLComputePipelineState *)v14 commonInit:objectCopy captureDevice:captureDevice];
 
-    objc_storeStrong(&v14->_captureCompiler, a6);
-    objc_storeStrong(&v14->_mtl4Descriptor, a4);
-    objc_storeStrong(&v14->_dynamicLinkingDescriptor, a5);
+    objc_storeStrong(&v14->_captureCompiler, compiler);
+    objc_storeStrong(&v14->_mtl4Descriptor, descriptor);
+    objc_storeStrong(&v14->_dynamicLinkingDescriptor, linkingDescriptor);
   }
 
   return v14;
 }
 
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 descriptor:(id)a4 captureCompiler:(id)a5
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object descriptor:(id)descriptor captureCompiler:(id)compiler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  descriptorCopy = descriptor;
+  compilerCopy = compiler;
   v14.receiver = self;
   v14.super_class = CaptureMTLComputePipelineState;
   v11 = [(CaptureMTLComputePipelineState *)&v14 init];
   if (v11)
   {
-    v12 = [v10 captureDevice];
-    [(CaptureMTLComputePipelineState *)v11 commonInit:v8 captureDevice:v12];
+    captureDevice = [compilerCopy captureDevice];
+    [(CaptureMTLComputePipelineState *)v11 commonInit:objectCopy captureDevice:captureDevice];
 
-    objc_storeStrong(&v11->_captureCompiler, a5);
-    objc_storeStrong(&v11->_mtl4Descriptor, a4);
+    objc_storeStrong(&v11->_captureCompiler, compiler);
+    objc_storeStrong(&v11->_mtl4Descriptor, descriptor);
   }
 
   return v11;
 }
 
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 capturePipelineLibrary:(id)a4
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object capturePipelineLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  libraryCopy = library;
   v11.receiver = self;
   v11.super_class = CaptureMTLComputePipelineState;
   v8 = [(CaptureMTLComputePipelineState *)&v11 init];
   if (v8)
   {
-    v9 = [v7 device];
-    [(CaptureMTLComputePipelineState *)v8 commonInit:v6 captureDevice:v9];
+    device = [libraryCopy device];
+    [(CaptureMTLComputePipelineState *)v8 commonInit:objectCopy captureDevice:device];
 
-    objc_storeStrong(&v8->_retainedPipelineLibrary, a4);
+    objc_storeStrong(&v8->_retainedPipelineLibrary, library);
   }
 
   return v8;
 }
 
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 captureComputePipelineState:(id)a4 additionalBinaryFunctions:(id)a5
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object captureComputePipelineState:(id)state additionalBinaryFunctions:(id)functions
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  stateCopy = state;
+  functionsCopy = functions;
   v14.receiver = self;
   v14.super_class = CaptureMTLComputePipelineState;
   v11 = [(CaptureMTLComputePipelineState *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(CaptureMTLComputePipelineState *)v11 commonInit:v8 captureDevice:v9[2]];
-    objc_storeStrong(&v12->_captureComputePipelineState, a4);
-    objc_storeStrong(&v12->_functions, a5);
+    [(CaptureMTLComputePipelineState *)v11 commonInit:objectCopy captureDevice:stateCopy[2]];
+    objc_storeStrong(&v12->_captureComputePipelineState, state);
+    objc_storeStrong(&v12->_functions, functions);
   }
 
   return v12;
 }
 
-- (CaptureMTLComputePipelineState)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLComputePipelineState)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v11.receiver = self;
   v11.super_class = CaptureMTLComputePipelineState;
   v8 = [(CaptureMTLComputePipelineState *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(CaptureMTLComputePipelineState *)v8 commonInit:v6 captureDevice:v7];
+    [(CaptureMTLComputePipelineState *)v8 commonInit:objectCopy captureDevice:deviceCopy];
   }
 
   return v9;
 }
 
-- (void)commonInit:(id)a3 captureDevice:(id)a4
+- (void)commonInit:(id)init captureDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  initCopy = init;
+  deviceCopy = device;
   baseObject = self->_baseObject;
-  self->_baseObject = v6;
-  v17 = v6;
+  self->_baseObject = initCopy;
+  v17 = initCopy;
 
   captureDevice = self->_captureDevice;
-  self->_captureDevice = v7;
-  v10 = v7;
+  self->_captureDevice = deviceCopy;
+  v10 = deviceCopy;
 
   captureComputePipelineState = self->_captureComputePipelineState;
   self->_captureComputePipelineState = 0;
@@ -747,10 +747,10 @@ LABEL_13:
   functions = self->_functions;
   self->_functions = 0;
 
-  v13 = [(CaptureMTLDevice *)v10 traceContext];
-  self->_traceContext = v13;
+  traceContext = [(CaptureMTLDevice *)v10 traceContext];
+  self->_traceContext = traceContext;
   v14 = DEVICEOBJECT(v17);
-  self->_traceStream = GTTraceContext_openStream(v13, v14, self);
+  self->_traceStream = GTTraceContext_openStream(traceContext, v14, self);
 
   functionHandleMap = self->_functionHandleMap;
   self->_functionHandleMap = 0;

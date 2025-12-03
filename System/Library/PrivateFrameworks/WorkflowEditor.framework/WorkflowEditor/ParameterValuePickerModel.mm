@@ -1,21 +1,21 @@
 @interface ParameterValuePickerModel
 - (void)_reload;
-- (void)parameterAttributesDidChange:(id)a3;
+- (void)parameterAttributesDidChange:(id)change;
 @end
 
 @implementation ParameterValuePickerModel
 
 - (void)_reload
 {
-  v2 = self;
+  selfCopy = self;
   sub_274469440();
 }
 
-- (void)parameterAttributesDidChange:(id)a3
+- (void)parameterAttributesDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_27446CC28(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_27446CC28(changeCopy);
 }
 
 @end

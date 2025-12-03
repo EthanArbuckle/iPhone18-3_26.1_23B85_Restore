@@ -1,20 +1,20 @@
 @interface AKToolsPickerController
 - (AKController)controller;
-- (AKToolsPickerController)initWithController:(id)a3;
+- (AKToolsPickerController)initWithController:(id)controller;
 @end
 
 @implementation AKToolsPickerController
 
-- (AKToolsPickerController)initWithController:(id)a3
+- (AKToolsPickerController)initWithController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = AKToolsPickerController;
   v5 = [(AKToolsPickerController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(AKToolsPickerController *)v5 setController:v4];
+    [(AKToolsPickerController *)v5 setController:controllerCopy];
     v7 = [[AKToolsListViewController alloc] initWithNibName:0 bundle:0];
     [(AKToolsPickerController *)v6 setToolsListController:v7];
   }

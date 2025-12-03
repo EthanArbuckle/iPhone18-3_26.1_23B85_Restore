@@ -1,24 +1,24 @@
 @interface SBDynamicFlashlightActivityElementPackageLayerController
-- (SBDynamicFlashlightActivityElementPackageLayerController)initWithPackageView:(id)a3;
+- (SBDynamicFlashlightActivityElementPackageLayerController)initWithPackageView:(id)view;
 - (id)sensorShadowPortalLayer;
-- (void)setBeamIntensity:(double)a3 width:(double)a4 animated:(BOOL)a5;
-- (void)setTouching:(BOOL)a3 animated:(BOOL)a4;
-- (void)updateBeamLayersForIntensity:(double)a3 width:(double)a4 animated:(BOOL)a5;
-- (void)updateIndicatorLayersForIntensity:(double)a3 width:(double)a4 animated:(BOOL)a5;
+- (void)setBeamIntensity:(double)intensity width:(double)width animated:(BOOL)animated;
+- (void)setTouching:(BOOL)touching animated:(BOOL)animated;
+- (void)updateBeamLayersForIntensity:(double)intensity width:(double)width animated:(BOOL)animated;
+- (void)updateIndicatorLayersForIntensity:(double)intensity width:(double)width animated:(BOOL)animated;
 @end
 
 @implementation SBDynamicFlashlightActivityElementPackageLayerController
 
-- (SBDynamicFlashlightActivityElementPackageLayerController)initWithPackageView:(id)a3
+- (SBDynamicFlashlightActivityElementPackageLayerController)initWithPackageView:(id)view
 {
-  v6 = a3;
+  viewCopy = view;
   v56.receiver = self;
   v56.super_class = SBDynamicFlashlightActivityElementPackageLayerController;
   v7 = [(SBDynamicFlashlightActivityElementPackageLayerController *)&v56 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_packageView, a3);
+    objc_storeStrong(&v7->_packageView, view);
     v9 = [(BSUICAPackageView *)v8->_packageView publishedObjectWithName:@"sensor hiding gradient"];
     shadowLayer = v8->_shadowLayer;
     v8->_shadowLayer = v9;
@@ -259,33 +259,33 @@
   return shadowPortalLayer;
 }
 
-- (void)updateIndicatorLayersForIntensity:(double)a3 width:(double)a4 animated:(BOOL)a5
+- (void)updateIndicatorLayersForIntensity:(double)intensity width:(double)width animated:(BOOL)animated
 {
-  v8 = 1.0 - a4;
+  v8 = 1.0 - width;
   arcCropLeftLayer = self->_arcCropLeftLayer;
-  CGAffineTransformMakeRotation(&v20, (a4 * 42.0 + (1.0 - a4) * 5.0) * 0.0174532925);
+  CGAffineTransformMakeRotation(&v20, (width * 42.0 + (1.0 - width) * 5.0) * 0.0174532925);
   [(CALayer *)arcCropLeftLayer setAffineTransform:&v20];
   arcCropRightLayer = self->_arcCropRightLayer;
-  CGAffineTransformMakeRotation(&v20, (a4 * -35.0 + v8 * -5.0) * 0.0174532925);
+  CGAffineTransformMakeRotation(&v20, (width * -35.0 + v8 * -5.0) * 0.0174532925);
   [(CALayer *)arcCropRightLayer setAffineTransform:&v20];
-  v11 = 1.0 - a3;
+  v11 = 1.0 - intensity;
   glyphHolderLayer = self->_glyphHolderLayer;
-  CGAffineTransformMakeRotation(&v20, (a3 * 0.0 + (1.0 - a3) * -10.0) * 0.0174532925 + (a4 * -38.0 + v8 * -6.4) * 0.0174532925);
+  CGAffineTransformMakeRotation(&v20, (intensity * 0.0 + (1.0 - intensity) * -10.0) * 0.0174532925 + (width * -38.0 + v8 * -6.4) * 0.0174532925);
   [(CALayer *)glyphHolderLayer setAffineTransform:&v20];
-  v13 = a4 + v8 * 1.35;
-  [(CALayer *)self->_circleLayer setBounds:0.0, 0.0, ((a3 * 1000.0 + v11 * 180.0) * v13), ((a3 * 1000.0 + v11 * 180.0) * v13)];
-  [(CALayer *)self->_circleLayer setCornerRadius:((a3 * 1000.0 + (1.0 - a3) * 180.0) * v13 * 0.5)];
+  v13 = width + v8 * 1.35;
+  [(CALayer *)self->_circleLayer setBounds:0.0, 0.0, ((intensity * 1000.0 + v11 * 180.0) * v13), ((intensity * 1000.0 + v11 * 180.0) * v13)];
+  [(CALayer *)self->_circleLayer setCornerRadius:((intensity * 1000.0 + (1.0 - intensity) * 180.0) * v13 * 0.5)];
   v14 = (v13 * 641.0 + -641.0) * 0.5;
   [(CALayer *)self->_tickLineLayer setPosition:19.0, (v14 + 822.1)];
   ticksRingLayer = self->_ticksRingLayer;
-  CATransform3DMakeRotation(&v20, (a4 * 3.8 + v8 * 2.5) * 0.0174532925, 0.0, 0.0, 1.0);
+  CATransform3DMakeRotation(&v20, (width * 3.8 + v8 * 2.5) * 0.0174532925, 0.0, 0.0, 1.0);
   [(CAReplicatorLayer *)ticksRingLayer setInstanceTransform:&v20];
   v16 = self->_ticksRingLayer;
-  CATransform3DMakeRotation(&v20, (a4 * 0.0 + v8 * 10.5) * 0.0174532925, 0.0, 0.0, 1.0);
+  CATransform3DMakeRotation(&v20, (width * 0.0 + v8 * 10.5) * 0.0174532925, 0.0, 0.0, 1.0);
   [(CAReplicatorLayer *)v16 setTransform:&v20];
   v17 = pow(v8, 3.0) * 12.0;
-  [(CALayer *)self->_glyphLayer setPosition:(v8 * 10.0 * a3 + v11 * 20.0 + 276.1637), (v11 * (a4 * -50.0 + v8 * 0.0) + v14 * a3 + v11 * -220.0 + v17 * pow(a4, 3.0) + 320.5)];
-  if (a3 >= 0.9)
+  [(CALayer *)self->_glyphLayer setPosition:(v8 * 10.0 * intensity + v11 * 20.0 + 276.1637), (v11 * (width * -50.0 + v8 * 0.0) + v14 * intensity + v11 * -220.0 + v17 * pow(width, 3.0) + 320.5)];
+  if (intensity >= 0.9)
   {
     v18 = @"normal";
   }
@@ -303,38 +303,38 @@
   }
 }
 
-- (void)updateBeamLayersForIntensity:(double)a3 width:(double)a4 animated:(BOOL)a5
+- (void)updateBeamLayersForIntensity:(double)intensity width:(double)width animated:(BOOL)animated
 {
-  v5 = a4;
-  v8 = 1.0 - a4;
+  widthCopy = width;
+  v8 = 1.0 - width;
   wideRainbowLayer = self->_wideRainbowLayer;
-  CGAffineTransformMakeScale(&v31, a4 * 0.57 + (1.0 - a4) * 0.79, a4 * 1.11 + (1.0 - a4) * 0.79);
+  CGAffineTransformMakeScale(&v31, width * 0.57 + (1.0 - width) * 0.79, width * 1.11 + (1.0 - width) * 0.79);
   [(CALayer *)wideRainbowLayer setAffineTransform:&v31];
-  v10 = v5 * 0.53 + v8 * 0.25;
+  v10 = widthCopy * 0.53 + v8 * 0.25;
   *&v10 = v10;
   [(CALayer *)self->_wideRainbowLayer setOpacity:v10];
-  [(CALayer *)self->_wideRainbowLayer setPosition:237.6717, (v5 * 312.0 + v8 * 390.0)];
+  [(CALayer *)self->_wideRainbowLayer setPosition:237.6717, (widthCopy * 312.0 + v8 * 390.0)];
   spreadBeamImageLayer = self->_spreadBeamImageLayer;
-  CATransform3DMakeScale(&v31, v5 * 3.749 + v8 * 1.969, 1.37, 1.81);
+  CATransform3DMakeScale(&v31, widthCopy * 3.749 + v8 * 1.969, 1.37, 1.81);
   [(CALayer *)spreadBeamImageLayer setTransform:&v31];
   v12 = pow(v8, 3.0);
   v13 = v12 * 0.525 + (1.0 - v12) * 0.0;
   *&v13 = v13;
   [(CALayer *)self->_straightBeamImageLayer setOpacity:v13];
   straightBeamImageLayer = self->_straightBeamImageLayer;
-  CGAffineTransformMakeScale(&v31, v5 * 3.33 + v8 * 0.63, v5 + v8 * 2.96);
+  CGAffineTransformMakeScale(&v31, widthCopy * 3.33 + v8 * 0.63, widthCopy + v8 * 2.96);
   [(CALayer *)straightBeamImageLayer setAffineTransform:&v31];
-  v15 = v5 * 0.28 + v8 * 0.03;
+  v15 = widthCopy * 0.28 + v8 * 0.03;
   v16 = v15;
   *&v15 = v16;
   [(CALayer *)self->_rainbowLeftLayer setOpacity:v15];
   *&v17 = v16;
   [(CALayer *)self->_rainbowRightLayer setOpacity:v17];
   v18 = self->_wideRainbowLayer;
-  CGAffineTransformMakeScale(&v31, v5 + v8 * 0.3, v5 + v8 * 0.5);
+  CGAffineTransformMakeScale(&v31, widthCopy + v8 * 0.3, widthCopy + v8 * 0.5);
   [(CALayer *)v18 setAffineTransform:&v31];
   memset(&v31, 0, 48);
-  CGAffineTransformMakeRotation(&t1, (v5 * 0.0 + v8 * -50.9) * 0.0174532925);
+  CGAffineTransformMakeRotation(&t1, (widthCopy * 0.0 + v8 * -50.9) * 0.0174532925);
   CGAffineTransformMakeScale(&t2, 3.56, 3.56);
   CGAffineTransformConcat(&v31, &t1, &t2);
   rainbowLeftLayer = self->_rainbowLeftLayer;
@@ -343,46 +343,46 @@
   *&t1.tx = *&v31.m21;
   [(CALayer *)rainbowLeftLayer setAffineTransform:&t1];
   memset(&t1, 0, sizeof(t1));
-  CGAffineTransformMakeRotation(&t2, (v5 * 0.0 + v8 * 54.1) * 0.0174532925);
+  CGAffineTransformMakeRotation(&t2, (widthCopy * 0.0 + v8 * 54.1) * 0.0174532925);
   CGAffineTransformMakeScale(&v28, 3.56, 3.56);
   CGAffineTransformConcat(&t1, &t2, &v28);
   rainbowRightLayer = self->_rainbowRightLayer;
   t2 = t1;
   [(CALayer *)rainbowRightLayer setAffineTransform:&t2];
-  v21 = a3 * 0.0 + (1.0 - a3) * 0.7;
+  v21 = intensity * 0.0 + (1.0 - intensity) * 0.7;
   *&v8 = v21;
   LODWORD(v21) = LODWORD(v8);
   [(CALayer *)self->_spreadBeamDimmerLayer setOpacity:v21];
   LODWORD(v22) = LODWORD(v8);
   [(CALayer *)self->_straightBeamDimmerLayer setOpacity:v22];
-  v23 = a3 * 0.0 + (1.0 - a3) * 0.95;
-  *&v5 = v23;
-  LODWORD(v23) = LODWORD(v5);
+  v23 = intensity * 0.0 + (1.0 - intensity) * 0.95;
+  *&widthCopy = v23;
+  LODWORD(v23) = LODWORD(widthCopy);
   [(CALayer *)self->_rainbowLeftdimmerLayer setOpacity:v23];
-  LODWORD(v24) = LODWORD(v5);
+  LODWORD(v24) = LODWORD(widthCopy);
   [(CALayer *)self->_rainbowRightdimmerLayer setOpacity:v24];
-  v25 = a3 * 0.419 + (1.0 - a3) * 0.25;
+  v25 = intensity * 0.419 + (1.0 - intensity) * 0.25;
   *&v25 = v25;
   [(CALayer *)self->_flashlightImageLayer setOpacity:v25];
   LODWORD(v26) = LODWORD(v8);
   [(CALayer *)self->_wideRainbowDimmerLayer setOpacity:v26];
-  v27 = 1.0 - a3 + a3 * 0.0;
+  v27 = 1.0 - intensity + intensity * 0.0;
   *&v27 = v27;
   [(CALayer *)self->_middleGlowDimmerLayer setOpacity:v27];
 }
 
-- (void)setBeamIntensity:(double)a3 width:(double)a4 animated:(BOOL)a5
+- (void)setBeamIntensity:(double)intensity width:(double)width animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   [SBDynamicFlashlightActivityElementPackageLayerController updateBeamLayersForIntensity:"updateBeamLayersForIntensity:width:animated:" width:? animated:?];
 
-  [(SBDynamicFlashlightActivityElementPackageLayerController *)self updateIndicatorLayersForIntensity:v5 width:a3 animated:a4];
+  [(SBDynamicFlashlightActivityElementPackageLayerController *)self updateIndicatorLayersForIntensity:animatedCopy width:intensity animated:width];
 }
 
-- (void)setTouching:(BOOL)a3 animated:(BOOL)a4
+- (void)setTouching:(BOOL)touching animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (touching)
   {
     v7 = @"touching";
   }
@@ -398,11 +398,11 @@
     v9 = SBLogFlashlightHUD();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [SBDynamicFlashlightActivityElementPackageLayerController setTouching:a3 animated:v9];
+      [SBDynamicFlashlightActivityElementPackageLayerController setTouching:touching animated:v9];
     }
 
     objc_storeStrong(&self->_touchingState, v7);
-    [(BSUICAPackageView *)self->_packageView setState:self->_touchingState onLayer:self->_indicatorLayer animated:v4 transitionSpeed:0 completion:1.0];
+    [(BSUICAPackageView *)self->_packageView setState:self->_touchingState onLayer:self->_indicatorLayer animated:animatedCopy transitionSpeed:0 completion:1.0];
   }
 }
 

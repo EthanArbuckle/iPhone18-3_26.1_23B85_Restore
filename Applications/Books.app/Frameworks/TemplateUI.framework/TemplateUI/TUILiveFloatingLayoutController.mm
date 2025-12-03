@@ -1,20 +1,20 @@
 @interface TUILiveFloatingLayoutController
 - (CGPoint)currentContentOffset;
-- (id)liveAttributesForRenderModel:(id)a3;
-- (void)didUpdateContentOffset:(CGPoint)a3 withInvalidationContext:(id)a4;
-- (void)setRenderModel:(id)a3 withInvalidationContext:(id)a4;
+- (id)liveAttributesForRenderModel:(id)model;
+- (void)didUpdateContentOffset:(CGPoint)offset withInvalidationContext:(id)context;
+- (void)setRenderModel:(id)model withInvalidationContext:(id)context;
 @end
 
 @implementation TUILiveFloatingLayoutController
 
-- (void)setRenderModel:(id)a3 withInvalidationContext:(id)a4
+- (void)setRenderModel:(id)model withInvalidationContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (self->_renderModel != v7)
+  modelCopy = model;
+  contextCopy = context;
+  if (self->_renderModel != modelCopy)
   {
-    v38 = v7;
-    objc_storeStrong(&self->_renderModel, a3);
+    v38 = modelCopy;
+    objc_storeStrong(&self->_renderModel, model);
     v9 = [NSMapTable mapTableWithKeyOptions:512 valueOptions:512];
     entryMap = self->_entryMap;
     self->_entryMap = v9;
@@ -109,16 +109,16 @@
     entries = self->_entries;
     self->_entries = v36;
 
-    [(TUILiveFloatingLayoutController *)self didUpdateContentOffset:v8 withInvalidationContext:self->_currentContentOffset.x, self->_currentContentOffset.y];
-    v7 = v38;
+    [(TUILiveFloatingLayoutController *)self didUpdateContentOffset:contextCopy withInvalidationContext:self->_currentContentOffset.x, self->_currentContentOffset.y];
+    modelCopy = v38;
   }
 }
 
-- (void)didUpdateContentOffset:(CGPoint)a3 withInvalidationContext:(id)a4
+- (void)didUpdateContentOffset:(CGPoint)offset withInvalidationContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = offset.y;
+  x = offset.x;
+  contextCopy = context;
   self->_currentContentOffset.x = x;
   self->_currentContentOffset.y = y;
   v8 = [(NSArray *)self->_entries count];
@@ -127,21 +127,21 @@
   v11[1] = 3221225472;
   v11[2] = sub_13CB40;
   v11[3] = &unk_262788;
-  v12 = v7;
+  v12 = contextCopy;
   v13 = v8;
   v11[4] = self;
-  v10 = v7;
+  v10 = contextCopy;
   [(NSArray *)entries enumerateObjectsUsingBlock:v11];
 }
 
-- (id)liveAttributesForRenderModel:(id)a3
+- (id)liveAttributesForRenderModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 liveTransform];
-  v6 = [(NSMapTable *)self->_entryMap objectForKey:v5];
-  [v4 center];
+  modelCopy = model;
+  liveTransform = [modelCopy liveTransform];
+  v6 = [(NSMapTable *)self->_entryMap objectForKey:liveTransform];
+  [modelCopy center];
   v8 = v7;
-  [v4 center];
+  [modelCopy center];
   v10 = v9;
   [v6 currentOffset];
   v12 = v8 + v11;
@@ -152,11 +152,11 @@
   v18 = v14 - v17;
   v19 = objc_alloc_init(TUILayoutAttributes);
   [(TUILayoutAttributes *)v19 setCenter:v16, v18];
-  [v4 size];
+  [modelCopy size];
   [(TUILayoutAttributes *)v19 setSize:?];
-  if (v4)
+  if (modelCopy)
   {
-    [v4 transform];
+    [modelCopy transform];
   }
 
   else

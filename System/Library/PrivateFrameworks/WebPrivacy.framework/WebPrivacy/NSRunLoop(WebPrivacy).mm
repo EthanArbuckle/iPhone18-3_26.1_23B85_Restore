@@ -9,8 +9,8 @@
   v5 = *MEMORY[0x277CBE640];
   do
   {
-    v6 = [MEMORY[0x277CBEAA8] distantPast];
-    v7 = [a1 runMode:v5 beforeDate:v6];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    v7 = [self runMode:v5 beforeDate:distantPast];
   }
 
   while (v7 && (*a3 & 1) == 0);

@@ -1,5 +1,5 @@
 @interface ATXHeuristicOpenPackageTrackingURL
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
 @end
 
@@ -15,18 +15,18 @@
   return v4;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  environmentCopy = environment;
   v5 = [ATXHeuristicClipboardUtilities alloc];
-  v6 = [v4 heuristicDevice];
+  heuristicDevice = [environmentCopy heuristicDevice];
 
-  v7 = [(ATXHeuristicClipboardUtilities *)v5 initWithDevice:v6];
+  v7 = [(ATXHeuristicClipboardUtilities *)v5 initWithDevice:heuristicDevice];
   [(ATXHeuristicClipboardUtilities *)v7 fetchContents];
-  v8 = [(ATXHeuristicClipboardUtilities *)v7 dataDetectors];
-  v9 = [(ATXHeuristicClipboardUtilities *)v7 appName];
-  v10 = [v9 isEqualToString:@"Safari"];
+  dataDetectors = [(ATXHeuristicClipboardUtilities *)v7 dataDetectors];
+  appName = [(ATXHeuristicClipboardUtilities *)v7 appName];
+  v10 = [appName isEqualToString:@"Safari"];
 
   if (v10)
   {
@@ -42,7 +42,7 @@
 
   else
   {
-    v13 = [(ATXHeuristicOpenPackageTrackingURL *)self packageTrackingNumbersFromDataDetectorResults:v8];
+    v13 = [(ATXHeuristicOpenPackageTrackingURL *)self packageTrackingNumbersFromDataDetectorResults:dataDetectors];
 
     v14 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -54,10 +54,10 @@
 
     if ([v13 count] == 1)
     {
-      v15 = [v13 firstObject];
-      v16 = [v15 objectForKeyedSubscript:@"trackingNumber"];
-      v17 = [v15 objectForKeyedSubscript:@"urlEncodedTrackingNumber"];
-      v18 = [v15 objectForKeyedSubscript:@"companyName"];
+      firstObject = [v13 firstObject];
+      v16 = [firstObject objectForKeyedSubscript:@"trackingNumber"];
+      v17 = [firstObject objectForKeyedSubscript:@"urlEncodedTrackingNumber"];
+      v18 = [firstObject objectForKeyedSubscript:@"companyName"];
       v34 = v17;
       v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://trackingshipment.apple.com/?Company=%@&TrackingNumber=%@", v18, v17];
       v20 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -102,7 +102,7 @@
       v12 = objc_opt_new();
     }
 
-    v8 = v13;
+    dataDetectors = v13;
   }
 
   v31 = *MEMORY[0x277D85DE8];

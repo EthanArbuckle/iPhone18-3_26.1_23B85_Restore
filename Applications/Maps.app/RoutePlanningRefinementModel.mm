@@ -1,8 +1,8 @@
 @interface RoutePlanningRefinementModel
 - (RoutePlanningRefinementDelegate)delegate;
-- (RoutePlanningRefinementModel)initWithDelegate:(id)a3 value:(id)a4;
+- (RoutePlanningRefinementModel)initWithDelegate:(id)delegate value:(id)value;
 - (id)identifier;
-- (void)setValue:(id)a3;
+- (void)setValue:(id)value;
 @end
 
 @implementation RoutePlanningRefinementModel
@@ -21,30 +21,30 @@
   return NSStringFromClass(v2);
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (self->_value != v5)
+  valueCopy = value;
+  if (self->_value != valueCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_value, a3);
+    v6 = valueCopy;
+    objc_storeStrong(&self->_value, value);
     [(RoutePlanningRefinementModel *)self _assertValidValue];
-    v5 = v6;
+    valueCopy = v6;
   }
 }
 
-- (RoutePlanningRefinementModel)initWithDelegate:(id)a3 value:(id)a4
+- (RoutePlanningRefinementModel)initWithDelegate:(id)delegate value:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = RoutePlanningRefinementModel;
   v8 = [(RoutePlanningRefinementModel *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v6);
-    objc_storeStrong(&v9->_value, a4);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    objc_storeStrong(&v9->_value, value);
     [(RoutePlanningRefinementModel *)v9 _assertValidValue];
   }
 

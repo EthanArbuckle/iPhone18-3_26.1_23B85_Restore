@@ -1,46 +1,46 @@
 @interface TVRXDeviceAuthenticationChallenge
-+ (id)_challengeWithCodeToEnterLocally:(id)a3;
-+ (id)_challengeWithCodeToEnterOnDevice:(id)a3 cancellationHandler:(id)a4;
++ (id)_challengeWithCodeToEnterLocally:(id)locally;
++ (id)_challengeWithCodeToEnterOnDevice:(id)device cancellationHandler:(id)handler;
 - (id)_init;
 - (void)cancel;
-- (void)userEnteredCodeLocally:(id)a3;
+- (void)userEnteredCodeLocally:(id)locally;
 @end
 
 @implementation TVRXDeviceAuthenticationChallenge
 
-+ (id)_challengeWithCodeToEnterOnDevice:(id)a3 cancellationHandler:(id)a4
++ (id)_challengeWithCodeToEnterOnDevice:(id)device cancellationHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TVRXDeviceAuthenticationChallenge alloc] _init];
-  v7[3] = 1;
-  v8 = [v5 copy];
+  handlerCopy = handler;
+  deviceCopy = device;
+  _init = [[TVRXDeviceAuthenticationChallenge alloc] _init];
+  _init[3] = 1;
+  v8 = [handlerCopy copy];
 
-  v9 = v7[2];
-  v7[2] = v8;
+  v9 = _init[2];
+  _init[2] = v8;
 
-  v10 = [v6 copy];
-  v11 = v7[6];
-  v7[6] = v10;
+  v10 = [deviceCopy copy];
+  v11 = _init[6];
+  _init[6] = v10;
 
-  v7[5] = -1;
+  _init[5] = -1;
 
-  return v7;
+  return _init;
 }
 
-+ (id)_challengeWithCodeToEnterLocally:(id)a3
++ (id)_challengeWithCodeToEnterLocally:(id)locally
 {
-  v3 = a3;
-  v4 = [[TVRXDeviceAuthenticationChallenge alloc] _init];
-  v4[3] = 0;
-  v5 = [v3 copy];
+  locallyCopy = locally;
+  _init = [[TVRXDeviceAuthenticationChallenge alloc] _init];
+  _init[3] = 0;
+  v5 = [locallyCopy copy];
 
-  v6 = v4[1];
-  v4[1] = v5;
+  v6 = _init[1];
+  _init[1] = v5;
 
-  *(v4 + 2) = xmmword_26CFC89D0;
+  *(_init + 2) = xmmword_26CFC89D0;
 
-  return v4;
+  return _init;
 }
 
 - (id)_init
@@ -50,10 +50,10 @@
   return [(TVRXDeviceAuthenticationChallenge *)&v3 init];
 }
 
-- (void)userEnteredCodeLocally:(id)a3
+- (void)userEnteredCodeLocally:(id)locally
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  locallyCopy = locally;
   if (self->_challengeType)
   {
     v6 = _TVRCGeneralLog();
@@ -71,7 +71,7 @@
     continuation = self->_continuation;
     if (continuation)
     {
-      continuation[2](continuation, v5, 0);
+      continuation[2](continuation, locallyCopy, 0);
     }
   }
 

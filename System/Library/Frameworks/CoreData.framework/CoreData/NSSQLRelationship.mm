@@ -1,8 +1,8 @@
 @interface NSSQLRelationship
-- (NSSQLRelationship)initWithEntity:(id)a3 propertyDescription:(id)a4;
-- (id)initForReadOnlyFetchWithEntity:(id)a3 propertyDescription:(id)a4;
-- (void)_setInverseRelationship:(void *)a1;
-- (void)copyValuesForReadOnlyFetch:(id)a3;
+- (NSSQLRelationship)initWithEntity:(id)entity propertyDescription:(id)description;
+- (id)initForReadOnlyFetchWithEntity:(id)entity propertyDescription:(id)description;
+- (void)_setInverseRelationship:(void *)relationship;
+- (void)copyValuesForReadOnlyFetch:(id)fetch;
 - (void)dealloc;
 @end
 
@@ -18,24 +18,24 @@
   [(NSSQLProperty *)&v3 dealloc];
 }
 
-- (NSSQLRelationship)initWithEntity:(id)a3 propertyDescription:(id)a4
+- (NSSQLRelationship)initWithEntity:(id)entity propertyDescription:(id)description
 {
   v12.receiver = self;
   v12.super_class = NSSQLRelationship;
   v6 = [NSSQLProperty initWithEntity:sel_initWithEntity_propertyDescription_ propertyDescription:?];
   if (v6)
   {
-    v7 = [a4 destinationEntity];
-    if (v7)
+    destinationEntity = [description destinationEntity];
+    if (destinationEntity)
     {
-      v6->_destinationEntity = [objc_msgSend(a3 "model")];
+      v6->_destinationEntity = [objc_msgSend(entity "model")];
     }
 
-    v8 = [a4 name];
+    name = [description name];
     name = v6->_name;
-    if (name != v8)
+    if (name != name)
     {
-      v10 = v8;
+      v10 = name;
 
       v6->_name = [v10 copy];
     }
@@ -44,7 +44,7 @@
   return v6;
 }
 
-- (id)initForReadOnlyFetchWithEntity:(id)a3 propertyDescription:(id)a4
+- (id)initForReadOnlyFetchWithEntity:(id)entity propertyDescription:(id)description
 {
   v12.receiver = self;
   v12.super_class = NSSQLRelationship;
@@ -52,12 +52,12 @@
   v7 = v6;
   if (v6)
   {
-    v6->_destinationEntity = a3;
-    v8 = [a4 name];
+    v6->_destinationEntity = entity;
+    name = [description name];
     name = v7->_name;
-    if (name != v8)
+    if (name != name)
     {
-      v10 = v8;
+      v10 = name;
 
       v7->_name = [v10 copy];
     }
@@ -66,42 +66,42 @@
   return v7;
 }
 
-- (void)_setInverseRelationship:(void *)a1
+- (void)_setInverseRelationship:(void *)relationship
 {
-  if (a1)
+  if (relationship)
   {
-    v3 = a1[7];
-    if (v3 != a1 || v3 != a2)
+    v3 = relationship[7];
+    if (v3 != relationship || v3 != a2)
     {
-      a1[7] = a2;
-      if (!a1[6])
+      relationship[7] = a2;
+      if (!relationship[6])
       {
-        a1[6] = [a2 sourceEntity];
+        relationship[6] = [a2 sourceEntity];
       }
 
-      v5 = [a1 foreignKey];
-      v6 = a1[7];
-      if (v6)
+      foreignKey = [relationship foreignKey];
+      propertyDescription = relationship[7];
+      if (propertyDescription)
       {
-        v6 = [v6 propertyDescription];
+        propertyDescription = [propertyDescription propertyDescription];
       }
 
-      if ([v6 _isOrdered] && v5)
+      if ([propertyDescription _isOrdered] && foreignKey)
       {
-        v7 = -[NSSQLForeignOrderKey initWithEntity:foreignKey:]([NSSQLForeignOrderKey alloc], "initWithEntity:foreignKey:", [a1 entity], v5);
-        [a1 _setForeignOrderKey:v7];
+        v7 = -[NSSQLForeignOrderKey initWithEntity:foreignKey:]([NSSQLForeignOrderKey alloc], "initWithEntity:foreignKey:", [relationship entity], foreignKey);
+        [relationship _setForeignOrderKey:v7];
       }
     }
   }
 }
 
-- (void)copyValuesForReadOnlyFetch:(id)a3
+- (void)copyValuesForReadOnlyFetch:(id)fetch
 {
   v5.receiver = self;
   v5.super_class = NSSQLRelationship;
   [(NSSQLProperty *)&v5 copyValuesForReadOnlyFetch:?];
-  self->_name = [objc_msgSend(a3 "name")];
-  self->_destinationEntity = [a3 destinationEntity];
+  self->_name = [objc_msgSend(fetch "name")];
+  self->_destinationEntity = [fetch destinationEntity];
 }
 
 @end

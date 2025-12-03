@@ -1,15 +1,15 @@
 @interface HKVerifiableHealthRecordsParser
-- (id)parseDataSource:(id)a3 options:(unint64_t)a4 error:(id *)a5;
+- (id)parseDataSource:(id)source options:(unint64_t)options error:(id *)error;
 @end
 
 @implementation HKVerifiableHealthRecordsParser
 
-- (id)parseDataSource:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (id)parseDataSource:(id)source options:(unint64_t)options error:(id *)error
 {
-  v7 = a3;
+  sourceCopy = source;
   v8 = objc_alloc_init(HDHRSignedClinicalDataHandler);
   v38 = 0;
-  v9 = [(HDHRSignedClinicalDataHandler *)v8 preprocessDataInSource:v7 options:5 error:&v38];
+  v9 = [(HDHRSignedClinicalDataHandler *)v8 preprocessDataInSource:sourceCopy options:5 error:&v38];
   v10 = v38;
   v11 = v10;
   if (v9)
@@ -41,22 +41,22 @@
     v14 = v33[5];
     if (v14)
     {
-      v15 = [v14 items];
-      v16 = [v15 hk_map:&__block_literal_global_2];
+      items = [v14 items];
+      v16 = [items hk_map:&__block_literal_global_2];
 
-      v17 = [objc_alloc(MEMORY[0x277D124B0]) initWithOptions:a4 localizedTypeDisplayNames:v16];
+      v17 = [objc_alloc(MEMORY[0x277D124B0]) initWithOptions:options localizedTypeDisplayNames:v16];
     }
 
     else
     {
-      v20 = [v11 mappedError];
-      v16 = v20;
-      if (v20)
+      mappedError = [v11 mappedError];
+      v16 = mappedError;
+      if (mappedError)
       {
-        if (a5)
+        if (error)
         {
-          v21 = v20;
-          *a5 = v16;
+          v21 = mappedError;
+          *error = v16;
         }
 
         else
@@ -74,13 +74,13 @@
 
   else
   {
-    v18 = [v10 mappedError];
-    if (v18)
+    mappedError2 = [v10 mappedError];
+    if (mappedError2)
     {
-      if (a5)
+      if (error)
       {
-        v19 = v18;
-        *a5 = v18;
+        v19 = mappedError2;
+        *error = mappedError2;
       }
 
       else

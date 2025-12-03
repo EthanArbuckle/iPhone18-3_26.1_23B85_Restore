@@ -14,9 +14,9 @@
   v8 = v7;
   v10 = v9;
   v11 = [(ACSportsSiriUIContentLabelAccessibility *)self _accessibilityValueForKey:@"AXIsSportsPeriodVenueLabel"];
-  v12 = [v11 BOOLValue];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
     v13 = v10 + -20.0;
   }
@@ -26,7 +26,7 @@
     v13 = v10;
   }
 
-  if (v12)
+  if (bOOLValue)
   {
     v14 = v6 + 10.0;
   }

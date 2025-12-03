@@ -11,9 +11,9 @@
 
 - (int)_filter
 {
-  v2 = [(ALAssetsFilter *)self internal];
+  internal = [(ALAssetsFilter *)self internal];
 
-  return [(ALAssetsFilterInternal *)v2 filter];
+  return [(ALAssetsFilterInternal *)internal filter];
 }
 
 - (void)dealloc

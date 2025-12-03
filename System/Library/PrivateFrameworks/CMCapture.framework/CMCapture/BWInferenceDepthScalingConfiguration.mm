@@ -1,23 +1,23 @@
 @interface BWInferenceDepthScalingConfiguration
-- (BWInferenceDepthScalingConfiguration)initWithflipX:(BOOL)a3 clampMin:(id)a4 clampMax:(id)a5 NANValue:(id)a6 allowUpsampling:(BOOL)a7 concurrencyWidth:(unint64_t)a8;
+- (BWInferenceDepthScalingConfiguration)initWithflipX:(BOOL)x clampMin:(id)min clampMax:(id)max NANValue:(id)value allowUpsampling:(BOOL)upsampling concurrencyWidth:(unint64_t)width;
 - (void)dealloc;
 @end
 
 @implementation BWInferenceDepthScalingConfiguration
 
-- (BWInferenceDepthScalingConfiguration)initWithflipX:(BOOL)a3 clampMin:(id)a4 clampMax:(id)a5 NANValue:(id)a6 allowUpsampling:(BOOL)a7 concurrencyWidth:(unint64_t)a8
+- (BWInferenceDepthScalingConfiguration)initWithflipX:(BOOL)x clampMin:(id)min clampMax:(id)max NANValue:(id)value allowUpsampling:(BOOL)upsampling concurrencyWidth:(unint64_t)width
 {
   v15.receiver = self;
   v15.super_class = BWInferenceDepthScalingConfiguration;
   result = [(BWInferenceDepthScalingConfiguration *)&v15 init];
   if (result)
   {
-    result->_flipX = a3;
-    result->_clampMin = a4;
-    result->_clampMax = a5;
-    result->_NANValue = a6;
-    result->_allowUpsampling = a7;
-    result->_concurrencyWidth = a8;
+    result->_flipX = x;
+    result->_clampMin = min;
+    result->_clampMax = max;
+    result->_NANValue = value;
+    result->_allowUpsampling = upsampling;
+    result->_concurrencyWidth = width;
   }
 
   return result;

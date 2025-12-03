@@ -1,23 +1,23 @@
 @interface PKPeerPaymentServiceRegistrationResponse
-- (PKPeerPaymentServiceRegistrationResponse)initWithData:(id)a3;
+- (PKPeerPaymentServiceRegistrationResponse)initWithData:(id)data;
 @end
 
 @implementation PKPeerPaymentServiceRegistrationResponse
 
-- (PKPeerPaymentServiceRegistrationResponse)initWithData:(id)a3
+- (PKPeerPaymentServiceRegistrationResponse)initWithData:(id)data
 {
   v23 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = PKPeerPaymentServiceRegistrationResponse;
-  v3 = [(PKWebServiceResponse *)&v18 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v18 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = jSONObject;
       v7 = [v6 PKStringForKey:@"deviceIdentifier"];
       deviceIdentifier = v4->_deviceIdentifier;
       v4->_deviceIdentifier = v7;

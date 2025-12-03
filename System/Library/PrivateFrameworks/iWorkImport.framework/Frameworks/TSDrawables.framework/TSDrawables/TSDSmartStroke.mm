@@ -1,33 +1,33 @@
 @interface TSDSmartStroke
-+ (Class)classForName:(id)a3;
++ (Class)classForName:(id)name;
 + (id)p_mapOfStrokeNamesToAlternatesForOldVersions;
-+ (id)strokeWithName:(id)a3 color:(id)a4 width:(double)a5;
-- (BOOL)canDrawWithOtherStroke:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (TSDSmartStroke)initWithArchive:(const void *)a3 unarchiver:(id)a4;
-- (TSDSmartStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5;
-- (TSDSmartStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(int)a6 join:(int)a7 pattern:(id)a8 miterLimit:(double)a9;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
++ (id)strokeWithName:(id)name color:(id)color width:(double)width;
+- (BOOL)canDrawWithOtherStroke:(id)stroke;
+- (BOOL)isEqual:(id)equal;
+- (TSDSmartStroke)initWithArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (TSDSmartStroke)initWithName:(id)name color:(id)color width:(double)width;
+- (TSDSmartStroke)initWithName:(id)name color:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDSmartStroke
 
-- (TSDSmartStroke)initWithArchive:(const void *)a3 unarchiver:(id)a4
+- (TSDSmartStroke)initWithArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v21.receiver = self;
   v21.super_class = TSDSmartStroke;
-  v7 = [(TSDStroke *)&v21 initWithArchive:a3 unarchiver:v6];
+  v7 = [(TSDStroke *)&v21 initWithArchive:archive unarchiver:unarchiverCopy];
   if (v7)
   {
-    if (*(a3 + 5))
+    if (*(archive + 5))
     {
-      v8 = *(a3 + 5);
+      v8 = *(archive + 5);
     }
 
     else
@@ -47,25 +47,25 @@
   return v7;
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v42.receiver = self;
   v42.super_class = TSDSmartStroke;
-  [(TSDStroke *)&v42 saveToArchive:a3 archiver:v6];
-  *(a3 + 4) |= 4u;
-  v9 = *(a3 + 5);
+  [(TSDStroke *)&v42 saveToArchive:archive archiver:archiverCopy];
+  *(archive + 4) |= 4u;
+  v9 = *(archive + 5);
   if (!v9)
   {
-    v10 = *(a3 + 1);
+    v10 = *(archive + 1);
     if (v10)
     {
       v10 = *(v10 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v9 = google::protobuf::Arena::CreateMaybeMessage<TSD::SmartStrokeArchive>(v10);
-    *(a3 + 5) = v9;
+    *(archive + 5) = v9;
   }
 
   v11 = objc_msgSend_strokeName(self, v7, v8);
@@ -78,7 +78,7 @@
   v22 = objc_msgSend_strokeName(self, v20, v21);
   v24 = objc_msgSend_objectForKeyedSubscript_(v19, v23, v22);
 
-  shouldSaveAlternates = objc_msgSend_shouldSaveAlternates(v6, v25, v26);
+  shouldSaveAlternates = objc_msgSend_shouldSaveAlternates(archiverCopy, v25, v26);
   if (v24)
   {
     v28 = shouldSaveAlternates;
@@ -91,7 +91,7 @@
 
   if (v28 == 1)
   {
-    v29 = v6;
+    v29 = archiverCopy;
     google::protobuf::internal::AssignDescriptors();
     v31 = objc_msgSend_messageWithNewFunction_descriptor_(v29, v30, sub_2766BFC3C, off_2812F5188[58]);
 
@@ -121,10 +121,10 @@
   return v2;
 }
 
-+ (Class)classForName:(id)a3
++ (Class)classForName:(id)name
 {
   v28[6] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v28[0] = @"Chalk2";
   v28[1] = @"Dry Brush";
   v28[2] = @"Feathered Brush";
@@ -132,26 +132,26 @@
   v28[4] = @"Pencil";
   v28[5] = @"Crayon";
   v5 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v4, v28, 6);
-  v7 = objc_msgSend_containsObject_(v5, v6, v3);
+  v7 = objc_msgSend_containsObject_(v5, v6, nameCopy);
 
   if ((v7 & 1) == 0)
   {
     v27 = @"Calligraphy";
     v9 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v8, &v27, 1);
-    v11 = objc_msgSend_containsObject_(v9, v10, v3);
+    v11 = objc_msgSend_containsObject_(v9, v10, nameCopy);
 
     if ((v11 & 1) == 0)
     {
       v26 = @"Doodles";
       v13 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v12, &v26, 1);
-      v15 = objc_msgSend_containsObject_(v13, v14, v3);
+      v15 = objc_msgSend_containsObject_(v13, v14, nameCopy);
 
       if ((v15 & 1) == 0)
       {
         v17 = MEMORY[0x277D81150];
         v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, "+[TSDSmartStroke classForName:]");
         v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDSmartStroke.mm");
-        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v21, v18, v20, 71, 0, "Unable to find Smart Stroke class for name: %@", v3);
+        objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v21, v18, v20, 71, 0, "Unable to find Smart Stroke class for name: %@", nameCopy);
 
         objc_msgSend_logFullBacktrace(MEMORY[0x277D81150], v22, v23);
       }
@@ -163,39 +163,39 @@
   return v24;
 }
 
-+ (id)strokeWithName:(id)a3 color:(id)a4 width:(double)a5
++ (id)strokeWithName:(id)name color:(id)color width:(double)width
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  colorCopy = color;
   v9 = objc_alloc(objc_opt_class());
-  v11 = objc_msgSend_initWithName_color_width_(v9, v10, v7, v8, a5);
+  v11 = objc_msgSend_initWithName_color_width_(v9, v10, nameCopy, colorCopy, width);
 
   return v11;
 }
 
-- (TSDSmartStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5
+- (TSDSmartStroke)initWithName:(id)name color:(id)color width:(double)width
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  colorCopy = color;
   v12 = objc_msgSend_solidPattern(TSDStrokePattern, v10, v11);
-  v14 = objc_msgSend_initWithName_color_width_cap_join_pattern_miterLimit_(self, v13, v8, v9, 0, 0, v12, a5, 4.0);
+  v14 = objc_msgSend_initWithName_color_width_cap_join_pattern_miterLimit_(self, v13, nameCopy, colorCopy, 0, 0, v12, width, 4.0);
 
   return v14;
 }
 
-- (TSDSmartStroke)initWithName:(id)a3 color:(id)a4 width:(double)a5 cap:(int)a6 join:(int)a7 pattern:(id)a8 miterLimit:(double)a9
+- (TSDSmartStroke)initWithName:(id)name color:(id)color width:(double)width cap:(int)cap join:(int)join pattern:(id)pattern miterLimit:(double)limit
 {
-  v11 = *&a7;
-  v12 = *&a6;
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
+  v11 = *&join;
+  v12 = *&cap;
+  nameCopy = name;
+  colorCopy = color;
+  patternCopy = pattern;
   v25.receiver = self;
   v25.super_class = TSDSmartStroke;
-  v21 = [(TSDStroke *)&v25 initWithColor:v17 width:v12 cap:v11 join:v18 pattern:a5 miterLimit:a9];
+  v21 = [(TSDStroke *)&v25 initWithColor:colorCopy width:v12 cap:v11 join:patternCopy pattern:width miterLimit:limit];
   if (v21)
   {
-    v22 = objc_msgSend_copy(v16, v19, v20);
+    v22 = objc_msgSend_copy(nameCopy, v19, v20);
     mStrokeName = v21->mStrokeName;
     v21->mStrokeName = v22;
   }
@@ -203,7 +203,7 @@
   return v21;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = MEMORY[0x277D81150];
   v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDSmartStroke copyWithZone:]");
@@ -217,7 +217,7 @@
   return 0;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = MEMORY[0x277D81150];
   v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSDSmartStroke mutableCopyWithZone:]");
@@ -231,9 +231,9 @@
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v8 = v5;
@@ -252,9 +252,9 @@
   return v15;
 }
 
-- (BOOL)canDrawWithOtherStroke:(id)a3
+- (BOOL)canDrawWithOtherStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (v6)
@@ -278,12 +278,12 @@
   return objc_msgSend_hash(self->mStrokeName, v4, v5) ^ v3;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a3;
+  objectCopy = object;
   v25.receiver = self;
   v25.super_class = TSDSmartStroke;
-  v7 = [(TSDStroke *)&v25 mixingTypeWithObject:v6 context:a4];
+  v7 = [(TSDStroke *)&v25 mixingTypeWithObject:objectCopy context:context];
   objc_opt_class();
   v10 = TSUDynamicCast();
   if (v10)
@@ -316,9 +316,9 @@
   return v7;
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
-  v56 = a4;
+  objectCopy = object;
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (!v7)
@@ -335,12 +335,12 @@
   v57 = objc_msgSend_strokeName(self, v15, v16);
   v19 = objc_msgSend_color(self, v17, v18);
   v22 = objc_msgSend_color(v7, v20, v21);
-  v24 = objc_msgSend_blendedColorWithFraction_ofColor_(v19, v23, v22, a3);
+  v24 = objc_msgSend_blendedColorWithFraction_ofColor_(v19, v23, v22, fraction);
   objc_msgSend_width(self, v25, v26);
   objc_msgSend_width(v7, v27, v28);
   TSUMix();
   v32 = v31;
-  if (a3 >= 0.5)
+  if (fraction >= 0.5)
   {
     v33 = objc_msgSend_cap(v7, v29, v30);
     v36 = objc_msgSend_join(v7, v39, v40);
@@ -355,7 +355,7 @@
   v41 = v36;
   v42 = objc_msgSend_pattern(self, v37, v38);
   v45 = objc_msgSend_pattern(v7, v43, v44);
-  v46 = TSDMixingMixedObjectWithFraction(v42, v45, a3);
+  v46 = TSDMixingMixedObjectWithFraction(v42, v45, fraction);
   objc_msgSend_miterLimit(self, v47, v48);
   objc_msgSend_miterLimit(v7, v49, v50);
   TSUMix();

@@ -1,29 +1,29 @@
 @interface FTLanguageDetectionStreamingContext
-- (FTLanguageDetectionStreamingContext)initWithGRPCStreamingCallContext:(id)a3;
-- (void)sendLanguageDetectionStreamingRequest:(id)a3;
+- (FTLanguageDetectionStreamingContext)initWithGRPCStreamingCallContext:(id)context;
+- (void)sendLanguageDetectionStreamingRequest:(id)request;
 @end
 
 @implementation FTLanguageDetectionStreamingContext
 
-- (FTLanguageDetectionStreamingContext)initWithGRPCStreamingCallContext:(id)a3
+- (FTLanguageDetectionStreamingContext)initWithGRPCStreamingCallContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = FTLanguageDetectionStreamingContext;
   v6 = [(FTLanguageDetectionStreamingContext *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_grpcContext, a3);
+    objc_storeStrong(&v6->_grpcContext, context);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)sendLanguageDetectionStreamingRequest:(id)a3
+- (void)sendLanguageDetectionStreamingRequest:(id)request
 {
-  v4 = [a3 flatbuffData];
+  flatbuffData = [request flatbuffData];
   [(OspreyClientStreamingContext *)self->_grpcContext writeFrame:?];
 }
 

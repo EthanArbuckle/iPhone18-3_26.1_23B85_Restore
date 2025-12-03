@@ -1,15 +1,15 @@
 @interface PLModelMigrationAction_RemoveInvalidExtendedAttributesDateTimezone
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_RemoveInvalidExtendedAttributesDateTimezone
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v77[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AB28];
   v5 = MEMORY[0x1E696AE18];
-  v6 = a3;
+  contextCopy = context;
   v7 = [v5 predicateWithFormat:@"%K = nil", @"dateCreated"];
   v77[0] = v7;
   v8 = MEMORY[0x1E696AB28];
@@ -24,25 +24,25 @@
   v14 = [v4 andPredicateWithSubpredicates:v13];
 
   v74[0] = @"timezoneName";
-  v15 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v74[1] = @"timezoneOffset";
-  v75[0] = v15;
-  v16 = [MEMORY[0x1E695DFB0] null];
-  v75[1] = v16;
+  v75[0] = null;
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v75[1] = null2;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v75 forKeys:v74 count:2];
 
   v18 = +[PLExtendedAttributes entityName];
   v38 = 0;
-  LOBYTE(v15) = [PLModelMigrator executeBatchUpdateWithEntityName:v18 predicate:v14 propertiesToUpdate:v17 managedObjectContext:v6 error:&v38];
+  LOBYTE(null) = [PLModelMigrator executeBatchUpdateWithEntityName:v18 predicate:v14 propertiesToUpdate:v17 managedObjectContext:contextCopy error:&v38];
 
   v19 = v38;
-  if (v15)
+  if (null)
   {
     [(PLModelMigrationActionCore *)self finalizeProgress];
     v20 = v19;
-    if (a4)
+    if (error)
     {
-      *a4 = v20;
+      *error = v20;
     }
 
     v21 = 1;
@@ -55,9 +55,9 @@
 
     if (v23)
     {
-      v24 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v24)
+      if (logger)
       {
         v72 = 0u;
         v73 = 0u;

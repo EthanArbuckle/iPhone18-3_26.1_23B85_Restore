@@ -1,27 +1,27 @@
 @interface SUUINavigationBarMenusView
-+ (id)_attributedStringWithMenuItem:(id)a3 context:(id)a4;
-+ (void)requestLayoutWithMenus:(id)a3 width:(int64_t)a4 context:(id)a5;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (id)_attributedStringWithMenuItem:(id)item context:(id)context;
++ (void)requestLayoutWithMenus:(id)menus width:(int64_t)width context:(id)context;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)contentInset;
 - (void)layoutSubviews;
-- (void)reloadWithMenus:(id)a3 width:(int64_t)a4 context:(id)a5;
-- (void)setButtonTarget:(id)a3 action:(SEL)a4;
-- (void)setContentInset:(UIEdgeInsets)a3;
+- (void)reloadWithMenus:(id)menus width:(int64_t)width context:(id)context;
+- (void)setButtonTarget:(id)target action:(SEL)action;
+- (void)setContentInset:(UIEdgeInsets)inset;
 @end
 
 @implementation SUUINavigationBarMenusView
 
-+ (void)requestLayoutWithMenus:(id)a3 width:(int64_t)a4 context:(id)a5
++ (void)requestLayoutWithMenus:(id)menus width:(int64_t)width context:(id)context
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v9 labelLayoutCache];
+  menusCopy = menus;
+  contextCopy = context;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = v8;
+  v11 = menusCopy;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
@@ -37,9 +37,9 @@
           objc_enumerationMutation(v11);
         }
 
-        v16 = [*(*(&v18 + 1) + 8 * v15) titleItem];
-        v17 = [a1 _attributedStringWithMenuItem:v16 context:v9];
-        [v10 requestLayoutForViewElement:v16 attributedString:v17 width:a4];
+        titleItem = [*(*(&v18 + 1) + 8 * v15) titleItem];
+        v17 = [self _attributedStringWithMenuItem:titleItem context:contextCopy];
+        [labelLayoutCache requestLayoutForViewElement:titleItem attributedString:v17 width:width];
 
         ++v15;
       }
@@ -52,11 +52,11 @@
   }
 }
 
-- (void)reloadWithMenus:(id)a3 width:(int64_t)a4 context:(id)a5
+- (void)reloadWithMenus:(id)menus width:(int64_t)width context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 copy];
+  menusCopy = menus;
+  contextCopy = context;
+  v10 = [menusCopy copy];
   menuViewElements = self->_menuViewElements;
   self->_menuViewElements = v10;
 
@@ -64,12 +64,12 @@
   v14[1] = 3221225472;
   v14[2] = __60__SUUINavigationBarMenusView_reloadWithMenus_width_context___block_invoke;
   v14[3] = &unk_2798F5EF0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = a4;
-  v12 = v9;
-  v13 = v8;
+  v15 = menusCopy;
+  v16 = contextCopy;
+  selfCopy = self;
+  widthCopy = width;
+  v12 = contextCopy;
+  v13 = menusCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:v14];
 }
 
@@ -119,31 +119,31 @@ void __60__SUUINavigationBarMenusView_reloadWithMenus_width_context___block_invo
   }
 }
 
-- (void)setButtonTarget:(id)a3 action:(SEL)a4
+- (void)setButtonTarget:(id)target action:(SEL)action
 {
-  if (a4)
+  if (action)
   {
-    v4 = a4;
+    actionCopy = action;
   }
 
   else
   {
-    v4 = 0;
+    actionCopy = 0;
   }
 
-  self->_buttonAction = v4;
-  objc_storeWeak(&self->_buttonTarget, a3);
+  self->_buttonAction = actionCopy;
+  objc_storeWeak(&self->_buttonTarget, target);
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = inset.top;
+  v3.f64[1] = inset.left;
+  v4.f64[0] = inset.bottom;
+  v4.f64[1] = inset.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentInset.top, v3), vceqq_f64(*&self->_contentInset.bottom, v4)))) & 1) == 0)
   {
-    self->_contentInset = a3;
+    self->_contentInset = inset;
     [(SUUINavigationBarMenusView *)self setNeedsLayout];
   }
 }
@@ -156,12 +156,12 @@ void __60__SUUINavigationBarMenusView_reloadWithMenus_width_context___block_invo
   v6 = v5;
   p_contentInset = &self->_contentInset;
   v8 = self->_contentInset.left + self->_contentInset.right;
-  v9 = [(SUUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v56 objects:v61 count:16];
+  v10 = [allExistingViews countByEnumeratingWithState:&v56 objects:v61 count:16];
   if (v10)
   {
     v11 = v10;
@@ -175,7 +175,7 @@ void __60__SUUINavigationBarMenusView_reloadWithMenus_width_context___block_invo
       {
         if (*v57 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allExistingViews);
         }
 
         v17 = *(*(&v56 + 1) + 8 * i);
@@ -192,7 +192,7 @@ void __60__SUUINavigationBarMenusView_reloadWithMenus_width_context___block_invo
         v8 = v8 + v19;
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v56 objects:v61 count:16];
+      v11 = [allExistingViews countByEnumeratingWithState:&v56 objects:v61 count:16];
     }
 
     while (v11);
@@ -203,7 +203,7 @@ void __60__SUUINavigationBarMenusView_reloadWithMenus_width_context___block_invo
     v15 = 0.0;
   }
 
-  v22 = [v9 count];
+  v22 = [allExistingViews count];
   if (v22 < 2)
   {
     v26 = 40.0;
@@ -228,7 +228,7 @@ void __60__SUUINavigationBarMenusView_reloadWithMenus_width_context___block_invo
       while (v26 > 20.0 && v8 > v4);
       if (v8 > v4)
       {
-        v28 = [v9 sortedArrayWithOptions:0 usingComparator:&__block_literal_global_43];
+        v28 = [allExistingViews sortedArrayWithOptions:0 usingComparator:&__block_literal_global_43];
         v29 = 1;
         do
         {
@@ -253,7 +253,7 @@ void __60__SUUINavigationBarMenusView_reloadWithMenus_width_context___block_invo
 
     while (v8 > v4)
     {
-      v34 = [v9 objectAtIndex:v24];
+      v34 = [allExistingViews objectAtIndex:v24];
       [v34 setHidden:1];
       [v34 frame];
       v8 = v8 - (v26 + v35);
@@ -272,7 +272,7 @@ void __60__SUUINavigationBarMenusView_reloadWithMenus_width_context___block_invo
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v37 = v9;
+  v37 = allExistingViews;
   v38 = [v37 countByEnumeratingWithState:&v52 objects:v60 count:16];
   if (v38)
   {
@@ -354,19 +354,19 @@ uint64_t __44__SUUINavigationBarMenusView_layoutSubviews__block_invoke(uint64_t 
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v26 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CBF3A8];
   v7 = *(MEMORY[0x277CBF3A8] + 8);
-  v8 = [(SUUIViewReuseView *)self allExistingViews];
+  allExistingViews = [(SUUIViewReuseView *)self allExistingViews];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v9 = [allExistingViews countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v9)
   {
     v10 = v9;
@@ -378,7 +378,7 @@ uint64_t __44__SUUINavigationBarMenusView_layoutSubviews__block_invoke(uint64_t 
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allExistingViews);
         }
 
         [*(*(&v21 + 1) + 8 * v12) sizeThatFits:{width, height}];
@@ -392,15 +392,15 @@ uint64_t __44__SUUINavigationBarMenusView_layoutSubviews__block_invoke(uint64_t 
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v10 = [allExistingViews countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v10);
   }
 
-  if ([v8 count] >= 2)
+  if ([allExistingViews count] >= 2)
   {
-    v6 = v6 + (([v8 count] - 1) * 40.0);
+    v6 = v6 + (([allExistingViews count] - 1) * 40.0);
   }
 
   top = self->_contentInset.top;
@@ -415,27 +415,27 @@ uint64_t __44__SUUINavigationBarMenusView_layoutSubviews__block_invoke(uint64_t 
   return result;
 }
 
-+ (id)_attributedStringWithMenuItem:(id)a3 context:(id)a4
++ (id)_attributedStringWithMenuItem:(id)item context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 style];
-  v8 = SUUIViewElementFontWithStyle(v7);
+  itemCopy = item;
+  contextCopy = context;
+  style = [itemCopy style];
+  v8 = SUUIViewElementFontWithStyle(style);
   if (!v8)
   {
     v8 = [MEMORY[0x277D74300] systemFontOfSize:14.0];
   }
 
-  v9 = [v6 tintColor];
-  v10 = SUUIViewElementPlainColorWithStyle(v7, v9);
+  tintColor = [contextCopy tintColor];
+  blackColor = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v10)
+  if (!blackColor)
   {
-    v10 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v11 = [v5 itemText];
-  v12 = [v11 attributedStringWithDefaultFont:v8 foregroundColor:v10 style:v7];
+  itemText = [itemCopy itemText];
+  v12 = [itemText attributedStringWithDefaultFont:v8 foregroundColor:blackColor style:style];
 
   return v12;
 }

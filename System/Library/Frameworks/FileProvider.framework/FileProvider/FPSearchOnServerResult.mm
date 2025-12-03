@@ -1,38 +1,38 @@
 @interface FPSearchOnServerResult
-- (FPSearchOnServerResult)initWithCoder:(id)a3;
-- (FPSearchOnServerResult)initWithFilename:(id)a3 creationDate:(id)a4 contentModificationDate:(id)a5 lastUsedDate:(id)a6 contentType:(id)a7 documentSize:(id)a8 itemIdentifier:(id)a9 providerID:(id)a10 domainIdentifier:(id)a11;
+- (FPSearchOnServerResult)initWithCoder:(id)coder;
+- (FPSearchOnServerResult)initWithFilename:(id)filename creationDate:(id)date contentModificationDate:(id)modificationDate lastUsedDate:(id)usedDate contentType:(id)type documentSize:(id)size itemIdentifier:(id)identifier providerID:(id)self0 domainIdentifier:(id)self1;
 - (id)description;
 - (id)toSearchableItem;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FPSearchOnServerResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   filename = self->_filename;
-  v5 = a3;
-  [v5 encodeObject:filename forKey:@"filename"];
-  [v5 encodeObject:self->_creationDate forKey:@"creationDate"];
-  [v5 encodeObject:self->_contentModificationDate forKey:@"contentModificationDate"];
-  [v5 encodeObject:self->_lastUsedDate forKey:@"lastUsedDate"];
-  [v5 encodeObject:self->_contentType forKey:@"contentType"];
-  [v5 encodeObject:self->_documentSize forKey:@"documentSize"];
-  [v5 encodeObject:self->_itemIdentifier forKey:@"itemIdentifier"];
-  [v5 encodeObject:self->_providerID forKey:@"providerID"];
-  [v5 encodeObject:self->_domainIdentifier forKey:@"domainIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:filename forKey:@"filename"];
+  [coderCopy encodeObject:self->_creationDate forKey:@"creationDate"];
+  [coderCopy encodeObject:self->_contentModificationDate forKey:@"contentModificationDate"];
+  [coderCopy encodeObject:self->_lastUsedDate forKey:@"lastUsedDate"];
+  [coderCopy encodeObject:self->_contentType forKey:@"contentType"];
+  [coderCopy encodeObject:self->_documentSize forKey:@"documentSize"];
+  [coderCopy encodeObject:self->_itemIdentifier forKey:@"itemIdentifier"];
+  [coderCopy encodeObject:self->_providerID forKey:@"providerID"];
+  [coderCopy encodeObject:self->_domainIdentifier forKey:@"domainIdentifier"];
 }
 
-- (FPSearchOnServerResult)initWithCoder:(id)a3
+- (FPSearchOnServerResult)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filename"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filename"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentModificationDate"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedDate"];
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentModificationDate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUsedDate"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contentType"];
     if (!v9)
     {
       v13 = fp_current_or_default_log();
@@ -41,7 +41,7 @@
         [FPSearchOnServerResult initWithCoder:];
       }
 
-      v19 = 0;
+      selfCopy = 0;
       goto LABEL_24;
     }
 
@@ -49,11 +49,11 @@
     v23 = v8;
     v24 = v7;
     v11 = MEMORY[0x1E6982C40];
-    v12 = [v9 identifier];
-    v13 = [v11 fp_cachedTypeWithIdentifier:v12 alreadyAvailableType:v10];
+    identifier = [v9 identifier];
+    v13 = [v11 fp_cachedTypeWithIdentifier:identifier alreadyAvailableType:v10];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentSize"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentSize"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemIdentifier"];
     if (!v15)
     {
       v16 = fp_current_or_default_log();
@@ -62,20 +62,20 @@
         [FPSearchOnServerResult initWithCoder:];
       }
 
-      v19 = 0;
+      selfCopy = 0;
       goto LABEL_23;
     }
 
     v22 = v14;
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"providerID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"providerID"];
     if (v16)
     {
-      v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
+      v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
       v18 = v17;
       if (v17)
       {
         self = [(FPSearchOnServerResult *)self initWithFilename:v5 creationDate:v6 contentModificationDate:v24 lastUsedDate:v23 contentType:v13 documentSize:v22 itemIdentifier:v15 providerID:v16 domainIdentifier:v17];
-        v19 = self;
+        selfCopy = self;
 LABEL_22:
 
         v14 = v22;
@@ -104,7 +104,7 @@ LABEL_24:
       }
     }
 
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_22;
   }
 
@@ -114,20 +114,20 @@ LABEL_24:
     [FPSearchOnServerResult initWithCoder:];
   }
 
-  v19 = 0;
+  selfCopy = 0;
 LABEL_25:
 
-  return v19;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(FPSearchOnServerResult *)self itemIdentifier];
-  v6 = [(FPSearchOnServerResult *)self filename];
-  v7 = [v6 fp_obfuscatedFilename];
-  v8 = [v3 stringWithFormat:@"<%@: itemIdentifier:%@, filename: %@>", v4, v5, v7];
+  itemIdentifier = [(FPSearchOnServerResult *)self itemIdentifier];
+  filename = [(FPSearchOnServerResult *)self filename];
+  fp_obfuscatedFilename = [filename fp_obfuscatedFilename];
+  v8 = [v3 stringWithFormat:@"<%@: itemIdentifier:%@, filename: %@>", v4, itemIdentifier, fp_obfuscatedFilename];
 
   return v8;
 }
@@ -158,8 +158,8 @@ LABEL_25:
   [v6 setFileProviderID:self->_providerID];
   [v6 setFileProviderDomainIdentifier:self->_domainIdentifier];
   [v6 setBundleID:self->_providerID];
-  v7 = [(UTType *)self->_contentType identifier];
-  [v6 setContentType:v7];
+  identifier = [(UTType *)self->_contentType identifier];
+  [v6 setContentType:identifier];
 
   [v6 setAttribute:self->_documentSize forKey:@"kMDItemLogicalSize"];
   [v6 setFilename:self->_filename];
@@ -190,32 +190,32 @@ LABEL_25:
   return v10;
 }
 
-- (FPSearchOnServerResult)initWithFilename:(id)a3 creationDate:(id)a4 contentModificationDate:(id)a5 lastUsedDate:(id)a6 contentType:(id)a7 documentSize:(id)a8 itemIdentifier:(id)a9 providerID:(id)a10 domainIdentifier:(id)a11
+- (FPSearchOnServerResult)initWithFilename:(id)filename creationDate:(id)date contentModificationDate:(id)modificationDate lastUsedDate:(id)usedDate contentType:(id)type documentSize:(id)size itemIdentifier:(id)identifier providerID:(id)self0 domainIdentifier:(id)self1
 {
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v26 = a6;
-  v25 = a7;
-  v24 = a8;
-  v23 = a9;
-  v22 = a10;
-  v18 = a11;
+  filenameCopy = filename;
+  dateCopy = date;
+  modificationDateCopy = modificationDate;
+  usedDateCopy = usedDate;
+  typeCopy = type;
+  sizeCopy = size;
+  identifierCopy = identifier;
+  dCopy = d;
+  domainIdentifierCopy = domainIdentifier;
   v30.receiver = self;
   v30.super_class = FPSearchOnServerResult;
   v19 = [(FPSearchOnServerResult *)&v30 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_filename, a3);
-    objc_storeStrong(&v20->_creationDate, a4);
-    objc_storeStrong(&v20->_contentModificationDate, a5);
-    objc_storeStrong(&v20->_lastUsedDate, a6);
-    objc_storeStrong(&v20->_contentType, a7);
-    objc_storeStrong(&v20->_documentSize, a8);
-    objc_storeStrong(&v20->_itemIdentifier, a9);
-    objc_storeStrong(&v20->_providerID, a10);
-    objc_storeStrong(&v20->_domainIdentifier, a11);
+    objc_storeStrong(&v19->_filename, filename);
+    objc_storeStrong(&v20->_creationDate, date);
+    objc_storeStrong(&v20->_contentModificationDate, modificationDate);
+    objc_storeStrong(&v20->_lastUsedDate, usedDate);
+    objc_storeStrong(&v20->_contentType, type);
+    objc_storeStrong(&v20->_documentSize, size);
+    objc_storeStrong(&v20->_itemIdentifier, identifier);
+    objc_storeStrong(&v20->_providerID, d);
+    objc_storeStrong(&v20->_domainIdentifier, domainIdentifier);
     v20->_rankingHint = 1.0;
   }
 

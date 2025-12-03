@@ -1,6 +1,6 @@
 @interface ATXInterruptingNotificationsAccumulator
 - (ATXInterruptingNotificationsAccumulator)init;
-- (ATXInterruptingNotificationsAccumulator)initWithNotificationPublisher:(id)a3 appLaunchPublisher:(id)a4;
+- (ATXInterruptingNotificationsAccumulator)initWithNotificationPublisher:(id)publisher appLaunchPublisher:(id)launchPublisher;
 - (BOOL)successfullyAccumulatedInterruptingSessions;
 - (void)successfullyAccumulatedInterruptingSessions;
 @end
@@ -11,26 +11,26 @@
 {
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v4 = BiomeLibrary();
-  v5 = [v4 Notification];
-  v6 = [v5 Usage];
+  notification = [v4 Notification];
+  usage = [notification Usage];
 
   v7 = BiomeLibrary();
   v8 = [v7 App];
-  v9 = [v8 InFocus];
+  inFocus = [v8 InFocus];
 
   v10 = [objc_alloc(MEMORY[0x277CF1A50]) initWithStartDate:v3 endDate:0 maxEvents:0 lastN:0 reversed:0];
   v11 = *MEMORY[0x277CEBB48];
-  v12 = [v6 publisherWithUseCase:*MEMORY[0x277CEBB48] options:v10];
-  v13 = [v9 publisherWithUseCase:v11 options:v10];
+  v12 = [usage publisherWithUseCase:*MEMORY[0x277CEBB48] options:v10];
+  v13 = [inFocus publisherWithUseCase:v11 options:v10];
   v14 = [(ATXInterruptingNotificationsAccumulator *)self initWithNotificationPublisher:v12 appLaunchPublisher:v13];
 
   return v14;
 }
 
-- (ATXInterruptingNotificationsAccumulator)initWithNotificationPublisher:(id)a3 appLaunchPublisher:(id)a4
+- (ATXInterruptingNotificationsAccumulator)initWithNotificationPublisher:(id)publisher appLaunchPublisher:(id)launchPublisher
 {
-  v7 = a3;
-  v8 = a4;
+  publisherCopy = publisher;
+  launchPublisherCopy = launchPublisher;
   v13.receiver = self;
   v13.super_class = ATXInterruptingNotificationsAccumulator;
   v9 = [(ATXInterruptingNotificationsAccumulator *)&v13 init];
@@ -40,8 +40,8 @@
     interruptingNotifications = v9->_interruptingNotifications;
     v9->_interruptingNotifications = v10;
 
-    objc_storeStrong(&v9->_notificationPublisher, a3);
-    objc_storeStrong(&v9->_appLaunchPublisher, a4);
+    objc_storeStrong(&v9->_notificationPublisher, publisher);
+    objc_storeStrong(&v9->_appLaunchPublisher, launchPublisher);
   }
 
   return v9;
@@ -52,8 +52,8 @@
   v25 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
   v4 = +[_ATXAppIconState sharedInstance];
-  v5 = [v4 allInstalledAppsKnownToSpringBoard];
-  v6 = [v3 initWithArray:v5];
+  allInstalledAppsKnownToSpringBoard = [v4 allInstalledAppsKnownToSpringBoard];
+  v6 = [v3 initWithArray:allInstalledAppsKnownToSpringBoard];
 
   v7 = [(BPSPublisher *)self->_notificationPublisher orderedMergeWithOther:self->_appLaunchPublisher comparator:&__block_literal_global_182];
   v20 = 0;
@@ -73,7 +73,7 @@
   v16[3] = &unk_2785988C8;
   v8 = v6;
   v17 = v8;
-  v18 = self;
+  selfCopy = self;
   v9 = [v7 sinkWithCompletion:v19 receiveInput:v16];
   v10 = *(v21[0] + 40);
   if (v10)
@@ -95,9 +95,9 @@
       _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_INFO, "%s: Successfully accumulated interrupting app session events", buf, 0xCu);
     }
 
-    v13 = [(ATXInterruptingNotificationsHelper *)self->_interruptingNotifications interruptingAppsessions];
+    interruptingAppsessions = [(ATXInterruptingNotificationsHelper *)self->_interruptingNotifications interruptingAppsessions];
     p_super = &self->_allInterruptingAppSessions->super;
-    self->_allInterruptingAppSessions = v13;
+    self->_allInterruptingAppSessions = interruptingAppsessions;
   }
 
   _Block_object_dispose(&v20, 8);
@@ -187,7 +187,7 @@ LABEL_12:
 - (void)successfullyAccumulatedInterruptingSessions
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 136315394;
   v5 = "[ATXInterruptingNotificationsAccumulator successfullyAccumulatedInterruptingSessions]";
   v6 = 2112;

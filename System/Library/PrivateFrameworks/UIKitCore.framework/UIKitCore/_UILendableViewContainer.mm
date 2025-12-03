@@ -1,10 +1,10 @@
 @interface _UILendableViewContainer
 - (UIView)view;
-- (_UILendableViewContainer)initWithView:(id)a3;
+- (_UILendableViewContainer)initWithView:(id)view;
 - (_UILendableViewContainerDelegate)delegate;
 - (id)description;
 - (id)lend;
-- (void)_returnView:(id)a3;
+- (void)_returnView:(id)view;
 @end
 
 @implementation _UILendableViewContainer
@@ -28,8 +28,8 @@
 {
   if (self->_loaned)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UILendableViewContainer.m" lineNumber:82 description:@"View has already been loaned out."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UILendableViewContainer.m" lineNumber:82 description:@"View has already been loaned out."];
   }
 
   self->_loaned = 1;
@@ -41,34 +41,34 @@
   return v4;
 }
 
-- (_UILendableViewContainer)initWithView:(id)a3
+- (_UILendableViewContainer)initWithView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _UILendableViewContainer;
   v6 = [(_UILendableViewContainer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_view, a3);
+    objc_storeStrong(&v6->_view, view);
   }
 
   return v7;
 }
 
-- (void)_returnView:(id)a3
+- (void)_returnView:(id)view
 {
-  v8 = a3;
-  if (self->_view != v8)
+  viewCopy = view;
+  if (self->_view != viewCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UILendableViewContainer.m" lineNumber:73 description:@"View returned that didn't belong to lendable view."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UILendableViewContainer.m" lineNumber:73 description:@"View returned that didn't belong to lendable view."];
   }
 
   if (!self->_loaned)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"_UILendableViewContainer.m" lineNumber:74 description:@"View returned that was not loaned out."];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UILendableViewContainer.m" lineNumber:74 description:@"View returned that was not loaned out."];
   }
 
   self->_loaned = 0;

@@ -1,13 +1,13 @@
 @interface NavigationBarView
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 @end
 
 @implementation NavigationBarView
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  width = a3.width;
-  v5 = self;
+  width = subviews.width;
+  selfCopy = self;
   v6 = sub_1E37DBB94(width);
   v8 = v7;
 

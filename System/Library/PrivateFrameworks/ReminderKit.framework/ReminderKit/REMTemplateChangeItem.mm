@@ -1,25 +1,25 @@
 @interface REMTemplateChangeItem
 + (void)initialize;
 - (BOOL)isUnsupported;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (REMAccountCapabilities)accountCapabilities;
 - (REMListBadge)badge;
-- (REMTemplateChangeItem)initWithObjectID:(id)a3 name:(id)a4 configuration:(id)a5 insertIntoAccountChangeItem:(id)a6;
-- (REMTemplateChangeItem)initWithSaveRequest:(id)a3 storage:(id)a4 changedKeysObserver:(id)a5;
+- (REMTemplateChangeItem)initWithObjectID:(id)d name:(id)name configuration:(id)configuration insertIntoAccountChangeItem:(id)item;
+- (REMTemplateChangeItem)initWithSaveRequest:(id)request storage:(id)storage changedKeysObserver:(id)observer;
 - (REMTemplateSectionContextChangeItem)sectionsContextChangeItem;
 - (id)changedKeys;
-- (id)resolutionTokenKeyForChangedKey:(id)a3;
-- (id)shallowCopyWithSaveRequest:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (void)setBadge:(id)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (id)resolutionTokenKeyForChangedKey:(id)key;
+- (id)shallowCopyWithSaveRequest:(id)request;
+- (id)valueForUndefinedKey:(id)key;
+- (void)setBadge:(id)badge;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation REMTemplateChangeItem
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = __sKeysToObserve_1;
     __sKeysToObserve_1 = &unk_1F0D998F8;
@@ -30,12 +30,12 @@
   }
 }
 
-- (REMTemplateChangeItem)initWithSaveRequest:(id)a3 storage:(id)a4 changedKeysObserver:(id)a5
+- (REMTemplateChangeItem)initWithSaveRequest:(id)request storage:(id)storage changedKeysObserver:(id)observer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v11)
+  requestCopy = request;
+  storageCopy = storage;
+  observerCopy = observer;
+  if (storageCopy)
   {
     v18.receiver = self;
     v18.super_class = REMTemplateChangeItem;
@@ -43,13 +43,13 @@
     p_isa = &v13->super.isa;
     if (v13)
     {
-      objc_storeStrong(&v13->_saveRequest, a3);
-      objc_storeStrong(p_isa + 2, a4);
-      objc_storeStrong(p_isa + 3, a5);
+      objc_storeStrong(&v13->_saveRequest, request);
+      objc_storeStrong(p_isa + 2, storage);
+      objc_storeStrong(p_isa + 3, observer);
     }
 
     self = p_isa;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
@@ -61,69 +61,69 @@
     }
 
     NSLog(&cfstr_SIsUnexpectedl.isa, "storage");
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (REMTemplateChangeItem)initWithObjectID:(id)a3 name:(id)a4 configuration:(id)a5 insertIntoAccountChangeItem:(id)a6
+- (REMTemplateChangeItem)initWithObjectID:(id)d name:(id)name configuration:(id)configuration insertIntoAccountChangeItem:(id)item
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [v10 capabilities];
-  LOBYTE(a3) = [v14 supportsTemplates];
+  itemCopy = item;
+  configurationCopy = configuration;
+  nameCopy = name;
+  dCopy = d;
+  capabilities = [itemCopy capabilities];
+  LOBYTE(d) = [capabilities supportsTemplates];
 
-  if ((a3 & 1) == 0)
+  if ((d & 1) == 0)
   {
-    [REMTemplateChangeItem initWithObjectID:v10 name:? configuration:? insertIntoAccountChangeItem:?];
+    [REMTemplateChangeItem initWithObjectID:itemCopy name:? configuration:? insertIntoAccountChangeItem:?];
   }
 
   v15 = [REMTemplateStorage alloc];
-  v16 = [v10 objectID];
-  v17 = [(REMTemplateStorage *)v15 initWithObjectID:v13 accountID:v16 name:v12];
+  objectID = [itemCopy objectID];
+  v17 = [(REMTemplateStorage *)v15 initWithObjectID:dCopy accountID:objectID name:nameCopy];
 
-  v18 = [v10 objectID];
-  [(REMTemplateStorage *)v17 setParentAccountID:v18];
+  objectID2 = [itemCopy objectID];
+  [(REMTemplateStorage *)v17 setParentAccountID:objectID2];
 
-  [(REMTemplateStorage *)v17 setConfiguration:v11];
+  [(REMTemplateStorage *)v17 setConfiguration:configurationCopy];
   v19 = +[REMManualOrdering newObjectID];
   v20 = [REMManualOrdering alloc];
-  v21 = [v13 uuid];
+  uuid = [dCopy uuid];
 
-  v22 = [v21 UUIDString];
+  uUIDString = [uuid UUIDString];
   v23 = objc_opt_new();
-  v24 = [(REMManualOrdering *)v20 initWithObjectID:v19 listType:6 listID:v22 modifiedDate:v23];
+  v24 = [(REMManualOrdering *)v20 initWithObjectID:v19 listType:6 listID:uUIDString modifiedDate:v23];
 
   [(REMTemplateStorage *)v17 setUnsavedManualOrdering:v24];
-  v25 = [v10 saveRequest];
-  v26 = [(REMTemplateChangeItem *)self initWithSaveRequest:v25 storage:v17 observeInitialValues:1];
+  saveRequest = [itemCopy saveRequest];
+  v26 = [(REMTemplateChangeItem *)self initWithSaveRequest:saveRequest storage:v17 observeInitialValues:1];
 
   return v26;
 }
 
 - (id)changedKeys
 {
-  v2 = [(REMTemplateChangeItem *)self changedKeysObserver];
-  v3 = [v2 changedKeys];
+  changedKeysObserver = [(REMTemplateChangeItem *)self changedKeysObserver];
+  changedKeys = [changedKeysObserver changedKeys];
 
-  return v3;
+  return changedKeys;
 }
 
-- (id)resolutionTokenKeyForChangedKey:(id)a3
+- (id)resolutionTokenKeyForChangedKey:(id)key
 {
   v3 = __resolutionTokenKeyDenylist_0;
-  v4 = a3;
-  if ([v3 containsObject:v4])
+  keyCopy = key;
+  if ([v3 containsObject:keyCopy])
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = v4;
+    v5 = keyCopy;
   }
 
   v6 = v5;
@@ -133,22 +133,22 @@
 
 - (REMAccountCapabilities)accountCapabilities
 {
-  v2 = [(REMTemplateChangeItem *)self storage];
-  v3 = [v2 accountCapabilities];
+  storage = [(REMTemplateChangeItem *)self storage];
+  accountCapabilities = [storage accountCapabilities];
 
-  return v3;
+  return accountCapabilities;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REMTemplateChangeItem *)self storage];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  storage = [(REMTemplateChangeItem *)self storage];
+  v6 = [storage valueForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = REMTemplateChangeItem;
@@ -159,21 +159,21 @@
 
   else
   {
-    v5 = [(REMTemplateChangeItem *)self storage];
+    storage = [(REMTemplateChangeItem *)self storage];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMTemplateChangeItem *)self saveRequest];
-  v9 = [v8 isSaved];
+  keyCopy = key;
+  valueCopy = value;
+  saveRequest = [(REMTemplateChangeItem *)self saveRequest];
+  isSaved = [saveRequest isSaved];
 
-  if (v9)
+  if (isSaved)
   {
     v10 = +[REMLogStore write];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -183,22 +183,22 @@
     }
   }
 
-  v11 = [(REMTemplateChangeItem *)self storage];
-  [v11 setValue:v7 forKey:v6];
+  storage = [(REMTemplateChangeItem *)self storage];
+  [storage setValue:valueCopy forKey:keyCopy];
 }
 
-- (void)setBadge:(id)a3
+- (void)setBadge:(id)badge
 {
-  v4 = [a3 rawValue];
-  [(REMTemplateChangeItem *)self setBadgeEmblem:v4];
+  rawValue = [badge rawValue];
+  [(REMTemplateChangeItem *)self setBadgeEmblem:rawValue];
 }
 
 - (REMListBadge)badge
 {
-  v2 = [(REMTemplateChangeItem *)self badgeEmblem];
-  if (v2)
+  badgeEmblem = [(REMTemplateChangeItem *)self badgeEmblem];
+  if (badgeEmblem)
   {
-    v3 = [[REMListBadge alloc] initWithRawValue:v2];
+    v3 = [[REMListBadge alloc] initWithRawValue:badgeEmblem];
   }
 
   else
@@ -211,23 +211,23 @@
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMTemplateChangeItem *)self storage];
-  v3 = [v2 isUnsupported];
+  storage = [(REMTemplateChangeItem *)self storage];
+  isUnsupported = [storage isUnsupported];
 
-  return v3;
+  return isUnsupported;
 }
 
-- (id)shallowCopyWithSaveRequest:(id)a3
+- (id)shallowCopyWithSaveRequest:(id)request
 {
-  v5 = a3;
-  v6 = [(REMTemplateChangeItem *)self storage];
+  requestCopy = request;
+  storage = [(REMTemplateChangeItem *)self storage];
 
-  if (v6)
+  if (storage)
   {
     v7 = [REMTemplateChangeItem alloc];
-    v8 = [(REMTemplateChangeItem *)self storage];
-    v9 = [(REMTemplateChangeItem *)self changedKeysObserver];
-    v10 = [(REMTemplateChangeItem *)v7 initWithSaveRequest:v5 storage:v8 changedKeysObserver:v9];
+    storage2 = [(REMTemplateChangeItem *)self storage];
+    changedKeysObserver = [(REMTemplateChangeItem *)self changedKeysObserver];
+    storage3 = [(REMTemplateChangeItem *)v7 initWithSaveRequest:requestCopy storage:storage2 changedKeysObserver:changedKeysObserver];
   }
 
   else
@@ -238,11 +238,11 @@
       [(REMTemplateChangeItem *)self shallowCopyWithSaveRequest:a2];
     }
 
-    v10 = [(REMTemplateChangeItem *)self storage];
+    storage3 = [(REMTemplateChangeItem *)self storage];
 
-    if (v10)
+    if (storage3)
     {
-      v10 = 0;
+      storage3 = 0;
     }
 
     else
@@ -251,15 +251,15 @@
     }
   }
 
-  return v10;
+  return storage3;
 }
 
 - (REMTemplateSectionContextChangeItem)sectionsContextChangeItem
 {
-  v3 = [(REMTemplateChangeItem *)self accountCapabilities];
-  v4 = [v3 supportsSections];
+  accountCapabilities = [(REMTemplateChangeItem *)self accountCapabilities];
+  supportsSections = [accountCapabilities supportsSections];
 
-  if (v4)
+  if (supportsSections)
   {
     v5 = [[REMTemplateSectionContextChangeItem alloc] initWithTemplateChangeItem:self];
   }

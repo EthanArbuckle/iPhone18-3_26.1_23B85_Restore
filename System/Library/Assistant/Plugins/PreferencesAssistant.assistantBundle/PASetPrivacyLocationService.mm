@@ -1,25 +1,25 @@
 @interface PASetPrivacyLocationService
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation PASetPrivacyLocationService
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[PSLocationServicesSettingsDetail isEnabled];
   if ([(PASetPrivacyLocationService *)self toggle])
   {
-    v6 = (v5 ^ 1);
+    value = (v5 ^ 1);
   }
 
   else
   {
-    v6 = [(PASetPrivacyLocationService *)self value];
+    value = [(PASetPrivacyLocationService *)self value];
   }
 
-  v7 = [(PASetPrivacyLocationService *)self dryRun];
-  if (v5 == v6)
+  dryRun = [(PASetPrivacyLocationService *)self dryRun];
+  if (v5 == value)
   {
     v8 = objc_alloc_init(SACommandFailed);
     [v8 setErrorCode:SASettingValueUnchangedErrorCode];
@@ -58,19 +58,19 @@ LABEL_8:
 
   else
   {
-    v9 = v7;
+    v9 = dryRun;
   }
 
   if ((v9 & 1) == 0)
   {
-    [PSLocationServicesSettingsDetail setEnabled:v6];
+    [PSLocationServicesSettingsDetail setEnabled:value];
   }
 
   v10 = PALogForCategory(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = @"Set";
-    if (v7)
+    if (dryRun)
     {
       v11 = @"Dry Run";
     }
@@ -90,7 +90,7 @@ LABEL_8:
     *&v20[12] = 2112;
     *&v20[14] = v12;
     *&v20[22] = 2112;
-    if (v6)
+    if (value)
     {
       v13 = @"ON";
     }
@@ -116,7 +116,7 @@ LABEL_8:
   else
   {
     v17 = objc_alloc_init(SASettingBooleanEntity);
-    [v17 setValue:v6];
+    [v17 setValue:value];
     v18 = [NSNumber numberWithBool:v5];
     [v17 setPreviousValue:v18];
 
@@ -127,8 +127,8 @@ LABEL_8:
   }
 
 LABEL_29:
-  v19 = [v15 dictionary];
-  v4[2](v4, v19);
+  dictionary = [v15 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

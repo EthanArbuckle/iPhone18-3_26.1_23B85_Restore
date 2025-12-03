@@ -1,16 +1,16 @@
 @interface AVUnitTestUnplayableAPACAssetTrackInspector
 - (BOOL)isPlayable;
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5;
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index;
 - (void)dealloc;
 @end
 
 @implementation AVUnitTestUnplayableAPACAssetTrackInspector
 
-- (id)_initWithAsset:(id)a3 trackID:(int)a4 trackIndex:(int64_t)a5
+- (id)_initWithAsset:(id)asset trackID:(int)d trackIndex:(int64_t)index
 {
   v6.receiver = self;
   v6.super_class = AVUnitTestUnplayableAPACAssetTrackInspector;
-  return [(AVFigAssetTrackInspector *)&v6 _initWithAsset:a3 trackID:*&a4 trackIndex:a5];
+  return [(AVFigAssetTrackInspector *)&v6 _initWithAsset:asset trackID:*&d trackIndex:index];
 }
 
 - (void)dealloc

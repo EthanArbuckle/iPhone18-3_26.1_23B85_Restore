@@ -1,22 +1,22 @@
 @interface PHPhotoLibraryFeatureAvailabilityTask
-+ (id)availabilityStatusTaskForFeature:(unint64_t)a3 photoLibrary:(id)a4 availabilityConfig:(id)a5 error:(id *)a6;
-- (BOOL)_recordCaptionAndEmbeddingAnalysisToAvailability:(id)a3 error:(id *)a4;
-- (BOOL)_recordFaceAndSceneAnalysisToAvailability:(id)a3 error:(id *)a4;
-- (BOOL)addAnalysisStateToAvailabilityStatus:(id)a3 error:(id *)a4;
-- (BOOL)addGraphAvailabilityToAvailabilityStatus:(id)a3 error:(id *)a4;
-- (BOOL)addIndexingStateToAvailabilityStatus:(id)a3 error:(id *)a4;
-- (PHPhotoLibraryFeatureAvailabilityTask)initWithFeature:(unint64_t)a3 photoLibrary:(id)a4 availabilityConfig:(id)a5;
-- (double)_fractionOfAssetsProcessedForPrioritiesByMediaTaskIDs:(id)a3 error:(id *)a4;
-- (void)computeSearchDonationProgressForTaskID:(unint64_t)a3 libraryClient:(id)a4 completionHandler:(id)a5;
-- (void)executeWithCompletionHandler:(id)a3;
++ (id)availabilityStatusTaskForFeature:(unint64_t)feature photoLibrary:(id)library availabilityConfig:(id)config error:(id *)error;
+- (BOOL)_recordCaptionAndEmbeddingAnalysisToAvailability:(id)availability error:(id *)error;
+- (BOOL)_recordFaceAndSceneAnalysisToAvailability:(id)availability error:(id *)error;
+- (BOOL)addAnalysisStateToAvailabilityStatus:(id)status error:(id *)error;
+- (BOOL)addGraphAvailabilityToAvailabilityStatus:(id)status error:(id *)error;
+- (BOOL)addIndexingStateToAvailabilityStatus:(id)status error:(id *)error;
+- (PHPhotoLibraryFeatureAvailabilityTask)initWithFeature:(unint64_t)feature photoLibrary:(id)library availabilityConfig:(id)config;
+- (double)_fractionOfAssetsProcessedForPrioritiesByMediaTaskIDs:(id)ds error:(id *)error;
+- (void)computeSearchDonationProgressForTaskID:(unint64_t)d libraryClient:(id)client completionHandler:(id)handler;
+- (void)executeWithCompletionHandler:(id)handler;
 @end
 
 @implementation PHPhotoLibraryFeatureAvailabilityTask
 
-- (double)_fractionOfAssetsProcessedForPrioritiesByMediaTaskIDs:(id)a3 error:(id *)a4
+- (double)_fractionOfAssetsProcessedForPrioritiesByMediaTaskIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibraryFeatureAvailabilityTask *)self photoLibrary];
+  dsCopy = ds;
+  photoLibrary = [(PHPhotoLibraryFeatureAvailabilityTask *)self photoLibrary];
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -39,20 +39,20 @@
   v12[1] = 3221225472;
   v12[2] = __101__PHPhotoLibraryFeatureAvailabilityTask__fractionOfAssetsProcessedForPrioritiesByMediaTaskIDs_error___block_invoke;
   v12[3] = &unk_1E75A75B0;
-  v8 = v7;
+  v8 = photoLibrary;
   v15 = &v19;
   v16 = &v25;
   v13 = v8;
-  v14 = self;
+  selfCopy = self;
   v17 = &v33;
   v18 = &v29;
-  [v6 enumerateKeysAndObjectsUsingBlock:v12];
+  [dsCopy enumerateKeysAndObjectsUsingBlock:v12];
   if (*(v26 + 24) == 1)
   {
     v9 = 0.0;
-    if (a4)
+    if (error)
     {
-      *a4 = v20[5];
+      *error = v20[5];
     }
   }
 
@@ -199,10 +199,10 @@ LABEL_24:
 LABEL_25:
 }
 
-- (BOOL)_recordCaptionAndEmbeddingAnalysisToAvailability:(id)a3 error:(id *)a4
+- (BOOL)_recordCaptionAndEmbeddingAnalysisToAvailability:(id)availability error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  availabilityCopy = availability;
   v7 = PLPhotosSearchGetLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -225,10 +225,10 @@ LABEL_25:
   if (v15)
   {
     v16 = v15;
-    if (a4)
+    if (error)
     {
       v17 = v15;
-      *a4 = v16;
+      *error = v16;
     }
 
     v18 = v10;
@@ -257,10 +257,10 @@ LABEL_25:
     if (v24)
     {
       v16 = v24;
-      if (a4)
+      if (error)
       {
         v25 = v24;
-        *a4 = v16;
+        *error = v16;
       }
 
       v26 = v10;
@@ -276,10 +276,10 @@ LABEL_25:
 
     else
     {
-      [v6 setFractionOfCuratedAssetsWithCaptions:v14];
-      [v6 setFractionOfCuratedAssetsWithEmbeddings:v14];
-      [v6 setFractionOfAssetsWithCaptions:v23];
-      [v6 setFractionOfAssetsWithEmbeddings:v23];
+      [availabilityCopy setFractionOfCuratedAssetsWithCaptions:v14];
+      [availabilityCopy setFractionOfCuratedAssetsWithEmbeddings:v14];
+      [availabilityCopy setFractionOfAssetsWithCaptions:v23];
+      [availabilityCopy setFractionOfAssetsWithEmbeddings:v23];
       v28 = v10;
       v16 = v28;
       if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
@@ -297,10 +297,10 @@ LABEL_25:
   return v20;
 }
 
-- (BOOL)_recordFaceAndSceneAnalysisToAvailability:(id)a3 error:(id *)a4
+- (BOOL)_recordFaceAndSceneAnalysisToAvailability:(id)availability error:(id *)error
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  availabilityCopy = availability;
   v7 = PLPhotosSearchGetLog();
   v8 = os_signpost_id_generate(v7);
 
@@ -323,10 +323,10 @@ LABEL_25:
   if (v15)
   {
     v16 = v15;
-    if (a4)
+    if (error)
     {
       v17 = v15;
-      *a4 = v16;
+      *error = v16;
     }
 
     v18 = v10;
@@ -353,10 +353,10 @@ LABEL_25:
     if (v24)
     {
       v16 = v24;
-      if (a4)
+      if (error)
       {
         v25 = v24;
-        *a4 = v16;
+        *error = v16;
       }
 
       v26 = v10;
@@ -372,8 +372,8 @@ LABEL_25:
 
     else
     {
-      [v6 setFractionOfAssetsWithFaceAnalysis:v14];
-      [v6 setFractionOfAssetsWithSceneAnalysis:v23];
+      [availabilityCopy setFractionOfAssetsWithFaceAnalysis:v14];
+      [availabilityCopy setFractionOfAssetsWithSceneAnalysis:v23];
       v28 = v10;
       v16 = v28;
       if (v11 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
@@ -391,9 +391,9 @@ LABEL_25:
   return v20;
 }
 
-- (BOOL)addIndexingStateToAvailabilityStatus:(id)a3 error:(id *)a4
+- (BOOL)addIndexingStateToAvailabilityStatus:(id)status error:(id *)error
 {
-  v6 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_queue);
   v7 = PLPhotosSearchGetLog();
   v8 = os_signpost_id_generate(v7);
@@ -412,12 +412,12 @@ LABEL_25:
   v13 = v24;
   if (v13)
   {
-    if (a4)
+    if (error)
     {
 LABEL_6:
       v13 = v13;
       v14 = 0;
-      *a4 = v13;
+      *error = v13;
       goto LABEL_17;
     }
 
@@ -426,7 +426,7 @@ LABEL_9:
     goto LABEL_17;
   }
 
-  [v6 setNumberOfCuratedAssets:v12];
+  [statusCopy setNumberOfCuratedAssets:v12];
   v15 = self->_photoLibrary;
   versionProvider = self->_versionProvider;
   v23 = 0;
@@ -434,7 +434,7 @@ LABEL_9:
   v13 = v23;
   if (v13)
   {
-    if (a4)
+    if (error)
     {
       goto LABEL_6;
     }
@@ -453,8 +453,8 @@ LABEL_9:
   }
 
   v19 = fmin(v18, 1.0);
-  [v6 setFractionOfStillAssetsWithEmbeddingsInIndex:v19];
-  [v6 setFractionOfStillAssetsWithCaptions:v19];
+  [statusCopy setFractionOfStillAssetsWithEmbeddingsInIndex:v19];
+  [statusCopy setFractionOfStillAssetsWithCaptions:v19];
   v20 = v10;
   v21 = v20;
   if (v8 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v20))
@@ -470,9 +470,9 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)addGraphAvailabilityToAvailabilityStatus:(id)a3 error:(id *)a4
+- (BOOL)addGraphAvailabilityToAvailabilityStatus:(id)status error:(id *)error
 {
-  v6 = a3;
+  statusCopy = status;
   dispatch_assert_queue_V2(self->_queue);
   v7 = PLPhotosSearchGetLog();
   v8 = os_signpost_id_generate(v7);
@@ -486,16 +486,16 @@ LABEL_17:
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v10, OS_SIGNPOST_INTERVAL_BEGIN, v8, "PhotosKnowledgeGraphAvailability", byte_19CB567AE, buf, 2u);
   }
 
-  v12 = [(PHPhotoLibrary *)self->_photoLibrary photoAnalysisClient];
-  v13 = v12;
-  if (v12)
+  photoAnalysisClient = [(PHPhotoLibrary *)self->_photoLibrary photoAnalysisClient];
+  v13 = photoAnalysisClient;
+  if (photoAnalysisClient)
   {
-    v14 = [v12 requestGraphStatus:a4];
+    v14 = [photoAnalysisClient requestGraphStatus:error];
     v15 = v14;
     v16 = v14 != 0;
     if (v14)
     {
-      [v6 setPhotosKnowledgeGraphIsReady:{-[NSObject availability](v14, "availability") == 2}];
+      [statusCopy setPhotosKnowledgeGraphIsReady:{-[NSObject availability](v14, "availability") == 2}];
       v17 = v10;
       if (v11 > 0xFFFFFFFFFFFFFFFDLL)
       {
@@ -514,9 +514,9 @@ LABEL_17:
 
     else
     {
-      if (a4)
+      if (error)
       {
-        *a4 = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:@"Could not get graph status."];
+        *error = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:@"Could not get graph status."];
       }
 
       v21 = v10;
@@ -541,9 +541,9 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:@"Could not get PhotoAnalysis client."];
+    *error = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:@"Could not get PhotoAnalysis client."];
   }
 
   v20 = v10;
@@ -560,11 +560,11 @@ LABEL_22:
   return v16;
 }
 
-- (BOOL)addAnalysisStateToAvailabilityStatus:(id)a3 error:(id *)a4
+- (BOOL)addAnalysisStateToAvailabilityStatus:(id)status error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PHPhotoLibraryFeatureAvailabilityTask *)self queue];
-  dispatch_assert_queue_V2(v7);
+  statusCopy = status;
+  queue = [(PHPhotoLibraryFeatureAvailabilityTask *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v8 = PLPhotosSearchGetLog();
   v9 = os_signpost_id_generate(v8);
@@ -578,21 +578,21 @@ LABEL_22:
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "AddAnalysisStateToAvailability", byte_19CB567AE, buf, 2u);
   }
 
-  v13 = [(PHPhotoLibraryFeatureAvailabilityTask *)self photoLibrary];
-  v14 = [v13 photoAnalysisClient];
+  photoLibrary = [(PHPhotoLibraryFeatureAvailabilityTask *)self photoLibrary];
+  photoAnalysisClient = [photoLibrary photoAnalysisClient];
 
-  if (v14)
+  if (photoAnalysisClient)
   {
     v33 = 0;
-    v15 = [(PHPhotoLibraryFeatureAvailabilityTask *)self _recordFaceAndSceneAnalysisToAvailability:v6 error:&v33];
+    v15 = [(PHPhotoLibraryFeatureAvailabilityTask *)self _recordFaceAndSceneAnalysisToAvailability:statusCopy error:&v33];
     v16 = v33;
     v17 = v16;
     if (!v15)
     {
-      if (a4)
+      if (error)
       {
         v26 = v16;
-        *a4 = v17;
+        *error = v17;
       }
 
       v27 = v11;
@@ -609,15 +609,15 @@ LABEL_22:
     }
 
     v32 = v16;
-    v18 = [(PHPhotoLibraryFeatureAvailabilityTask *)self _recordCaptionAndEmbeddingAnalysisToAvailability:v6 error:&v32];
+    v18 = [(PHPhotoLibraryFeatureAvailabilityTask *)self _recordCaptionAndEmbeddingAnalysisToAvailability:statusCopy error:&v32];
     v19 = v32;
 
     if (!v18)
     {
-      if (a4)
+      if (error)
       {
         v28 = v19;
-        *a4 = v19;
+        *error = v19;
       }
 
       v29 = v11;
@@ -632,12 +632,12 @@ LABEL_22:
       goto LABEL_34;
     }
 
-    v20 = [v14 requestGraphStatus:a4];
+    v20 = [photoAnalysisClient requestGraphStatus:error];
     v21 = v20;
     v22 = v20 != 0;
     if (v20)
     {
-      [v6 setPhotosKnowledgeGraphIsReady:{-[NSObject availability](v20, "availability") == 2}];
+      [statusCopy setPhotosKnowledgeGraphIsReady:{-[NSObject availability](v20, "availability") == 2}];
       v23 = v11;
       if (v12 > 0xFFFFFFFFFFFFFFFDLL)
       {
@@ -677,9 +677,9 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:@"Could not get PhotoAnalysis client."];
+    *error = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:@"Could not get PhotoAnalysis client."];
   }
 
   v25 = v11;
@@ -696,11 +696,11 @@ LABEL_35:
   return v22;
 }
 
-- (void)computeSearchDonationProgressForTaskID:(unint64_t)a3 libraryClient:(id)a4 completionHandler:(id)a5
+- (void)computeSearchDonationProgressForTaskID:(unint64_t)d libraryClient:(id)client completionHandler:(id)handler
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  clientCopy = client;
+  handlerCopy = handler;
   v10 = PLPhotosSearchGetLog();
   v11 = os_signpost_id_generate(v10);
 
@@ -712,9 +712,9 @@ LABEL_35:
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v13, OS_SIGNPOST_INTERVAL_BEGIN, v11, "ComputeSearchDonationProgress", byte_19CB567AE, buf, 2u);
   }
 
-  if (v8)
+  if (clientCopy)
   {
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:d];
     v24[0] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
     v19[0] = MEMORY[0x1E69E9820];
@@ -722,16 +722,16 @@ LABEL_35:
     v19[2] = __112__PHPhotoLibraryFeatureAvailabilityTask_computeSearchDonationProgressForTaskID_libraryClient_completionHandler___block_invoke;
     v19[3] = &unk_1F0FC3E68;
     v19[4] = self;
-    v20 = v9;
+    v20 = handlerCopy;
     v21 = v13;
     v22 = v11;
-    [v8 searchDonationProgressForTaskIDs:v15 completionHandler:v19];
+    [clientCopy searchDonationProgressForTaskIDs:v15 completionHandler:v19];
   }
 
   else
   {
     v16 = [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:@"Library client is nil"];
-    (*(v9 + 2))(v9, 0, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v16);
     v17 = v13;
     v18 = v17;
     if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
@@ -777,18 +777,18 @@ void __112__PHPhotoLibraryFeatureAvailabilityTask_computeSearchDonationProgressF
   }
 }
 
-- (void)executeWithCompletionHandler:(id)a3
+- (void)executeWithCompletionHandler:(id)handler
 {
   v3 = MEMORY[0x1E696ABC0];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [v3 ph_errorWithCode:-1 localizedDescription:@"Base class execute not supported."];
-  v4[2](v4, 0, v5);
+  handlerCopy[2](handlerCopy, 0, v5);
 }
 
-- (PHPhotoLibraryFeatureAvailabilityTask)initWithFeature:(unint64_t)a3 photoLibrary:(id)a4 availabilityConfig:(id)a5
+- (PHPhotoLibraryFeatureAvailabilityTask)initWithFeature:(unint64_t)feature photoLibrary:(id)library availabilityConfig:(id)config
 {
-  v9 = a4;
-  v10 = a5;
+  libraryCopy = library;
+  configCopy = config;
   v22.receiver = self;
   v22.super_class = PHPhotoLibraryFeatureAvailabilityTask;
   v11 = [(PHPhotoLibraryFeatureAvailabilityTask *)&v22 init];
@@ -802,50 +802,50 @@ void __112__PHPhotoLibraryFeatureAvailabilityTask_computeSearchDonationProgressF
     [(PHMediaProcessingAlgorithmVersionProvider *)v11->_versionProvider setFaceAnalysisVersion:1];
     [(PHMediaProcessingAlgorithmVersionProvider *)v11->_versionProvider setMediaAnalysisVersion:66];
     [(PHMediaProcessingAlgorithmVersionProvider *)v11->_versionProvider setMediaAnalysisImageVersion:66];
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [v14 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     taskID = v11->_taskID;
-    v11->_taskID = v15;
+    v11->_taskID = uUIDString;
 
-    v11->_feature = a3;
-    objc_storeStrong(&v11->_photoLibrary, a4);
+    v11->_feature = feature;
+    objc_storeStrong(&v11->_photoLibrary, library);
     v11->_lock._os_unfair_lock_opaque = 0;
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_create("com.apple.photolibrary.availability", v17);
     queue = v11->_queue;
     v11->_queue = v18;
 
-    objc_storeStrong(&v11->_availabilityConfig, a5);
+    objc_storeStrong(&v11->_availabilityConfig, config);
     v20 = v11;
   }
 
   return v11;
 }
 
-+ (id)availabilityStatusTaskForFeature:(unint64_t)a3 photoLibrary:(id)a4 availabilityConfig:(id)a5 error:(id *)a6
++ (id)availabilityStatusTaskForFeature:(unint64_t)feature photoLibrary:(id)library availabilityConfig:(id)config error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 == 6)
+  libraryCopy = library;
+  configCopy = config;
+  if (feature == 6)
   {
     v11 = [_PHPhotoLibraryFeatureAvailabilityTaskGlobalProcessing alloc];
     v12 = 6;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (feature == 1)
   {
     v11 = [_PHPhotoLibraryFeatureAvailabilityTaskMemoryCreation alloc];
     v12 = 1;
 LABEL_5:
-    v13 = [(PHPhotoLibraryFeatureAvailabilityTask *)v11 initWithFeature:v12 photoLibrary:v9 availabilityConfig:v10];
+    v13 = [(PHPhotoLibraryFeatureAvailabilityTask *)v11 initWithFeature:v12 photoLibrary:libraryCopy availabilityConfig:configCopy];
     goto LABEL_9;
   }
 
-  if (a6)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] ph_errorWithCode:-1 localizedDescription:@"Feature availability status for feature not yet supported."];
-    *a6 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else

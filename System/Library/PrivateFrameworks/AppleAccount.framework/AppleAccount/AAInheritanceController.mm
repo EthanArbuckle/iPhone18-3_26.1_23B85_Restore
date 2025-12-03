@@ -1,25 +1,25 @@
 @interface AAInheritanceController
 - (AAInheritanceController)init;
-- (void)configureRemoteInterface:(id)a3;
+- (void)configureRemoteInterface:(id)interface;
 - (void)dealloc;
-- (void)fetchAllHealthInfoWithCompletion:(id)a3;
-- (void)fetchBenefactorsWithCompletion:(id)a3;
-- (void)fetchBeneficiariesWithCompletion:(id)a3;
-- (void)fetchInvitationWithBeneficiaryID:(id)a3 completion:(id)a4;
-- (void)fetchInvitationsWithCompletion:(id)a3;
-- (void)fetchManifestOptionsForContact:(id)a3 completion:(id)a4;
-- (void)fetchSuggestedBeneficiariesWithCompletion:(id)a3;
-- (void)isRecipient:(id)a3 capableOf:(id)a4 completion:(id)a5;
-- (void)presentInheritanceInvitationUIWithBeneficiaryID:(id)a3 completion:(id)a4;
-- (void)removeAccessCodeForContactInfo:(id)a3 completion:(id)a4;
-- (void)removeBenefactor:(id)a3 completion:(id)a4;
-- (void)removeBeneficiary:(id)a3 manifest:(id)a4 completion:(id)a5;
-- (void)removeInvitation:(id)a3 completion:(id)a4;
-- (void)sendInvitationToContact:(id)a3 completion:(id)a4;
-- (void)setupBeneficiaryAliasWithAccessKey:(id)a3 password:(id)a4 firstName:(id)a5 lastName:(id)a6 authToken:(id)a7 completion:(id)a8;
-- (void)setupBeneficiaryManifest:(id)a3 contactInfo:(id)a4 setupAuthToken:(id)a5 completion:(id)a6;
-- (void)updateAccessCodeForContactInfo:(id)a3 completion:(id)a4;
-- (void)updateBeneficiaryManifest:(id)a3 contactInfo:(id)a4 completion:(id)a5;
+- (void)fetchAllHealthInfoWithCompletion:(id)completion;
+- (void)fetchBenefactorsWithCompletion:(id)completion;
+- (void)fetchBeneficiariesWithCompletion:(id)completion;
+- (void)fetchInvitationWithBeneficiaryID:(id)d completion:(id)completion;
+- (void)fetchInvitationsWithCompletion:(id)completion;
+- (void)fetchManifestOptionsForContact:(id)contact completion:(id)completion;
+- (void)fetchSuggestedBeneficiariesWithCompletion:(id)completion;
+- (void)isRecipient:(id)recipient capableOf:(id)of completion:(id)completion;
+- (void)presentInheritanceInvitationUIWithBeneficiaryID:(id)d completion:(id)completion;
+- (void)removeAccessCodeForContactInfo:(id)info completion:(id)completion;
+- (void)removeBenefactor:(id)benefactor completion:(id)completion;
+- (void)removeBeneficiary:(id)beneficiary manifest:(id)manifest completion:(id)completion;
+- (void)removeInvitation:(id)invitation completion:(id)completion;
+- (void)sendInvitationToContact:(id)contact completion:(id)completion;
+- (void)setupBeneficiaryAliasWithAccessKey:(id)key password:(id)password firstName:(id)name lastName:(id)lastName authToken:(id)token completion:(id)completion;
+- (void)setupBeneficiaryManifest:(id)manifest contactInfo:(id)info setupAuthToken:(id)token completion:(id)completion;
+- (void)updateAccessCodeForContactInfo:(id)info completion:(id)completion;
+- (void)updateBeneficiaryManifest:(id)manifest contactInfo:(id)info completion:(id)completion;
 @end
 
 @implementation AAInheritanceController
@@ -46,22 +46,22 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1B6F6A000, a2, OS_LOG_TYPE_DEBUG, "%@ deallocated.", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchManifestOptionsForContact:(id)a3 completion:(id)a4
+- (void)fetchManifestOptionsForContact:(id)contact completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  contactCopy = contact;
+  completionCopy = completion;
+  if (!contactCopy)
   {
     [AAInheritanceController fetchManifestOptionsForContact:completion:];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [AAInheritanceController fetchManifestOptionsForContact:completion:];
   }
@@ -95,8 +95,8 @@
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__6;
   v34 = __Block_byref_object_dispose__6;
-  v16 = self;
-  v35 = v16;
+  selfCopy = self;
+  v35 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__AAInheritanceController_fetchManifestOptionsForContact_completion___block_invoke;
@@ -104,10 +104,10 @@
   p_buf = &buf;
   v28 = v10;
   v29 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v26 = v17;
   v18 = _Block_copy(aBlock);
-  remoteService = v16->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __69__AAInheritanceController_fetchManifestOptionsForContact_completion___block_invoke_86;
@@ -115,7 +115,7 @@
   v20 = v18;
   v24 = v20;
   v21 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v23];
-  [v21 fetchManifestOptionsForContact:v6 completion:v20];
+  [v21 fetchManifestOptionsForContact:contactCopy completion:v20];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -176,23 +176,23 @@ void __69__AAInheritanceController_fetchManifestOptionsForContact_completion___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)isRecipient:(id)a3 capableOf:(id)a4 completion:(id)a5
+- (void)isRecipient:(id)recipient capableOf:(id)of completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  recipientCopy = recipient;
+  ofCopy = of;
+  completionCopy = completion;
+  if (!recipientCopy)
   {
     [AAInheritanceController isRecipient:capableOf:completion:];
   }
 
-  if (!v9)
+  if (!ofCopy)
   {
     [AAInheritanceController isRecipient:capableOf:completion:];
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     [AAInheritanceController isRecipient:capableOf:completion:];
   }
@@ -226,8 +226,8 @@ void __69__AAInheritanceController_fetchManifestOptionsForContact_completion___b
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__6;
   v37 = __Block_byref_object_dispose__6;
-  v19 = self;
-  v38 = v19;
+  selfCopy = self;
+  v38 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__AAInheritanceController_isRecipient_capableOf_completion___block_invoke;
@@ -235,10 +235,10 @@ void __69__AAInheritanceController_fetchManifestOptionsForContact_completion___b
   p_buf = &buf;
   v31 = v13;
   v32 = v15;
-  v20 = v10;
+  v20 = completionCopy;
   v29 = v20;
   v21 = _Block_copy(aBlock);
-  remoteService = v19->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __60__AAInheritanceController_isRecipient_capableOf_completion___block_invoke_95;
@@ -246,7 +246,7 @@ void __69__AAInheritanceController_fetchManifestOptionsForContact_completion___b
   v23 = v21;
   v27 = v23;
   v24 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v26];
-  [v24 isRecipient:v8 capableOf:v9 completion:v23];
+  [v24 isRecipient:recipientCopy capableOf:ofCopy completion:v23];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -306,29 +306,29 @@ void __60__AAInheritanceController_isRecipient_capableOf_completion___block_invo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setupBeneficiaryManifest:(id)a3 contactInfo:(id)a4 setupAuthToken:(id)a5 completion:(id)a6
+- (void)setupBeneficiaryManifest:(id)manifest contactInfo:(id)info setupAuthToken:(id)token completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  manifestCopy = manifest;
+  infoCopy = info;
+  tokenCopy = token;
+  completionCopy = completion;
+  if (!manifestCopy)
   {
     [AAInheritanceController setupBeneficiaryManifest:contactInfo:setupAuthToken:completion:];
   }
 
-  if (!v11)
+  if (!infoCopy)
   {
     [AAInheritanceController setupBeneficiaryManifest:contactInfo:setupAuthToken:completion:];
   }
 
-  if (!v12)
+  if (!tokenCopy)
   {
     [AAInheritanceController setupBeneficiaryManifest:contactInfo:setupAuthToken:completion:];
   }
 
-  if (!v13)
+  if (!completionCopy)
   {
     [AAInheritanceController setupBeneficiaryManifest:contactInfo:setupAuthToken:completion:];
   }
@@ -362,8 +362,8 @@ void __60__AAInheritanceController_isRecipient_capableOf_completion___block_invo
   v38 = 0x3032000000;
   v39 = __Block_byref_object_copy__6;
   v40 = __Block_byref_object_dispose__6;
-  v22 = self;
-  v41 = v22;
+  selfCopy = self;
+  v41 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __90__AAInheritanceController_setupBeneficiaryManifest_contactInfo_setupAuthToken_completion___block_invoke;
@@ -371,10 +371,10 @@ void __60__AAInheritanceController_isRecipient_capableOf_completion___block_invo
   p_buf = &buf;
   v34 = v16;
   v35 = v18;
-  v23 = v13;
+  v23 = completionCopy;
   v32 = v23;
   v24 = _Block_copy(aBlock);
-  remoteService = v22->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __90__AAInheritanceController_setupBeneficiaryManifest_contactInfo_setupAuthToken_completion___block_invoke_106;
@@ -382,7 +382,7 @@ void __60__AAInheritanceController_isRecipient_capableOf_completion___block_invo
   v26 = v24;
   v30 = v26;
   v27 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v29];
-  [v27 setupBeneficiaryManifest:v10 contactInfo:v11 setupAuthToken:v12 completion:v26];
+  [v27 setupBeneficiaryManifest:manifestCopy contactInfo:infoCopy setupAuthToken:tokenCopy completion:v26];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -443,17 +443,17 @@ void __90__AAInheritanceController_setupBeneficiaryManifest_contactInfo_setupAut
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeAccessCodeForContactInfo:(id)a3 completion:(id)a4
+- (void)removeAccessCodeForContactInfo:(id)info completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  infoCopy = info;
+  completionCopy = completion;
+  if (!infoCopy)
   {
     [AAInheritanceController removeAccessCodeForContactInfo:completion:];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [AAInheritanceController removeAccessCodeForContactInfo:completion:];
   }
@@ -487,8 +487,8 @@ void __90__AAInheritanceController_setupBeneficiaryManifest_contactInfo_setupAut
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__6;
   v34 = __Block_byref_object_dispose__6;
-  v16 = self;
-  v35 = v16;
+  selfCopy = self;
+  v35 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__AAInheritanceController_removeAccessCodeForContactInfo_completion___block_invoke;
@@ -496,10 +496,10 @@ void __90__AAInheritanceController_setupBeneficiaryManifest_contactInfo_setupAut
   p_buf = &buf;
   v28 = v10;
   v29 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v26 = v17;
   v18 = _Block_copy(aBlock);
-  remoteService = v16->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __69__AAInheritanceController_removeAccessCodeForContactInfo_completion___block_invoke_107;
@@ -507,7 +507,7 @@ void __90__AAInheritanceController_setupBeneficiaryManifest_contactInfo_setupAut
   v20 = v18;
   v24 = v20;
   v21 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v23];
-  [v21 removeAccessCodeForContactInfo:v6 completion:v20];
+  [v21 removeAccessCodeForContactInfo:infoCopy completion:v20];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -567,18 +567,18 @@ void __69__AAInheritanceController_removeAccessCodeForContactInfo_completion___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeBeneficiary:(id)a3 manifest:(id)a4 completion:(id)a5
+- (void)removeBeneficiary:(id)beneficiary manifest:(id)manifest completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  beneficiaryCopy = beneficiary;
+  manifestCopy = manifest;
+  completionCopy = completion;
+  if (!beneficiaryCopy)
   {
     [AAInheritanceController removeBeneficiary:manifest:completion:];
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     [AAInheritanceController removeBeneficiary:manifest:completion:];
   }
@@ -612,8 +612,8 @@ void __69__AAInheritanceController_removeAccessCodeForContactInfo_completion___b
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__6;
   v37 = __Block_byref_object_dispose__6;
-  v19 = self;
-  v38 = v19;
+  selfCopy = self;
+  v38 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __65__AAInheritanceController_removeBeneficiary_manifest_completion___block_invoke;
@@ -621,10 +621,10 @@ void __69__AAInheritanceController_removeAccessCodeForContactInfo_completion___b
   p_buf = &buf;
   v31 = v13;
   v32 = v15;
-  v20 = v10;
+  v20 = completionCopy;
   v29 = v20;
   v21 = _Block_copy(aBlock);
-  remoteService = v19->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __65__AAInheritanceController_removeBeneficiary_manifest_completion___block_invoke_111;
@@ -632,7 +632,7 @@ void __69__AAInheritanceController_removeAccessCodeForContactInfo_completion___b
   v23 = v21;
   v27 = v23;
   v24 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v26];
-  [v24 removeBeneficiary:v8 manifest:v9 completion:v23];
+  [v24 removeBeneficiary:beneficiaryCopy manifest:manifestCopy completion:v23];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -692,17 +692,17 @@ void __65__AAInheritanceController_removeBeneficiary_manifest_completion___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeBenefactor:(id)a3 completion:(id)a4
+- (void)removeBenefactor:(id)benefactor completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  benefactorCopy = benefactor;
+  completionCopy = completion;
+  if (!benefactorCopy)
   {
     [AAInheritanceController removeBenefactor:completion:];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [AAInheritanceController removeBenefactor:completion:];
   }
@@ -736,8 +736,8 @@ void __65__AAInheritanceController_removeBeneficiary_manifest_completion___block
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__6;
   v34 = __Block_byref_object_dispose__6;
-  v16 = self;
-  v35 = v16;
+  selfCopy = self;
+  v35 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__AAInheritanceController_removeBenefactor_completion___block_invoke;
@@ -745,10 +745,10 @@ void __65__AAInheritanceController_removeBeneficiary_manifest_completion___block
   p_buf = &buf;
   v28 = v10;
   v29 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v26 = v17;
   v18 = _Block_copy(aBlock);
-  remoteService = v16->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __55__AAInheritanceController_removeBenefactor_completion___block_invoke_115;
@@ -756,7 +756,7 @@ void __65__AAInheritanceController_removeBeneficiary_manifest_completion___block
   v20 = v18;
   v24 = v20;
   v21 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v23];
-  [v21 removeBenefactor:v6 completion:v20];
+  [v21 removeBenefactor:benefactorCopy completion:v20];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -816,17 +816,17 @@ void __55__AAInheritanceController_removeBenefactor_completion___block_invoke_11
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)updateAccessCodeForContactInfo:(id)a3 completion:(id)a4
+- (void)updateAccessCodeForContactInfo:(id)info completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  infoCopy = info;
+  completionCopy = completion;
+  if (!infoCopy)
   {
     [AAInheritanceController updateAccessCodeForContactInfo:completion:];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [AAInheritanceController updateAccessCodeForContactInfo:completion:];
   }
@@ -860,8 +860,8 @@ void __55__AAInheritanceController_removeBenefactor_completion___block_invoke_11
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__6;
   v34 = __Block_byref_object_dispose__6;
-  v16 = self;
-  v35 = v16;
+  selfCopy = self;
+  v35 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__AAInheritanceController_updateAccessCodeForContactInfo_completion___block_invoke;
@@ -869,10 +869,10 @@ void __55__AAInheritanceController_removeBenefactor_completion___block_invoke_11
   p_buf = &buf;
   v28 = v10;
   v29 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v26 = v17;
   v18 = _Block_copy(aBlock);
-  remoteService = v16->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __69__AAInheritanceController_updateAccessCodeForContactInfo_completion___block_invoke_116;
@@ -880,7 +880,7 @@ void __55__AAInheritanceController_removeBenefactor_completion___block_invoke_11
   v20 = v18;
   v24 = v20;
   v21 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v23];
-  [v21 updateAccessCodeForContactInfo:v6 completion:v20];
+  [v21 updateAccessCodeForContactInfo:infoCopy completion:v20];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -940,23 +940,23 @@ void __69__AAInheritanceController_updateAccessCodeForContactInfo_completion___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)updateBeneficiaryManifest:(id)a3 contactInfo:(id)a4 completion:(id)a5
+- (void)updateBeneficiaryManifest:(id)manifest contactInfo:(id)info completion:(id)completion
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  manifestCopy = manifest;
+  infoCopy = info;
+  completionCopy = completion;
+  if (!manifestCopy)
   {
     [AAInheritanceController updateBeneficiaryManifest:contactInfo:completion:];
   }
 
-  if (!v9)
+  if (!infoCopy)
   {
     [AAInheritanceController updateBeneficiaryManifest:contactInfo:completion:];
   }
 
-  if (!v10)
+  if (!completionCopy)
   {
     [AAInheritanceController updateBeneficiaryManifest:contactInfo:completion:];
   }
@@ -990,8 +990,8 @@ void __69__AAInheritanceController_updateAccessCodeForContactInfo_completion___b
   v35 = 0x3032000000;
   v36 = __Block_byref_object_copy__6;
   v37 = __Block_byref_object_dispose__6;
-  v19 = self;
-  v38 = v19;
+  selfCopy = self;
+  v38 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __76__AAInheritanceController_updateBeneficiaryManifest_contactInfo_completion___block_invoke;
@@ -999,10 +999,10 @@ void __69__AAInheritanceController_updateAccessCodeForContactInfo_completion___b
   p_buf = &buf;
   v31 = v13;
   v32 = v15;
-  v20 = v10;
+  v20 = completionCopy;
   v29 = v20;
   v21 = _Block_copy(aBlock);
-  remoteService = v19->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __76__AAInheritanceController_updateBeneficiaryManifest_contactInfo_completion___block_invoke_117;
@@ -1010,7 +1010,7 @@ void __69__AAInheritanceController_updateAccessCodeForContactInfo_completion___b
   v23 = v21;
   v27 = v23;
   v24 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v26];
-  [v24 updateBeneficiaryManifest:v8 contactInfo:v9 completion:v23];
+  [v24 updateBeneficiaryManifest:manifestCopy contactInfo:infoCopy completion:v23];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -1070,11 +1070,11 @@ void __76__AAInheritanceController_updateBeneficiaryManifest_contactInfo_complet
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchBeneficiariesWithCompletion:(id)a3
+- (void)fetchBeneficiariesWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAInheritanceController fetchBeneficiariesWithCompletion:];
   }
@@ -1108,8 +1108,8 @@ void __76__AAInheritanceController_updateBeneficiaryManifest_contactInfo_complet
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__6;
   v31 = __Block_byref_object_dispose__6;
-  v13 = self;
-  v32 = v13;
+  selfCopy = self;
+  v32 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__AAInheritanceController_fetchBeneficiariesWithCompletion___block_invoke;
@@ -1117,10 +1117,10 @@ void __76__AAInheritanceController_updateBeneficiaryManifest_contactInfo_complet
   p_buf = &buf;
   v25 = v7;
   v26 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v23 = v14;
   v15 = _Block_copy(aBlock);
-  remoteService = v13->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __60__AAInheritanceController_fetchBeneficiariesWithCompletion___block_invoke_119;
@@ -1201,11 +1201,11 @@ void __60__AAInheritanceController_fetchBeneficiariesWithCompletion___block_invo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchBenefactorsWithCompletion:(id)a3
+- (void)fetchBenefactorsWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAInheritanceController fetchBenefactorsWithCompletion:];
   }
@@ -1239,8 +1239,8 @@ void __60__AAInheritanceController_fetchBeneficiariesWithCompletion___block_invo
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__6;
   v31 = __Block_byref_object_dispose__6;
-  v13 = self;
-  v32 = v13;
+  selfCopy = self;
+  v32 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__AAInheritanceController_fetchBenefactorsWithCompletion___block_invoke;
@@ -1248,10 +1248,10 @@ void __60__AAInheritanceController_fetchBeneficiariesWithCompletion___block_invo
   p_buf = &buf;
   v25 = v7;
   v26 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v23 = v14;
   v15 = _Block_copy(aBlock);
-  remoteService = v13->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __58__AAInheritanceController_fetchBenefactorsWithCompletion___block_invoke_120;
@@ -1332,11 +1332,11 @@ void __58__AAInheritanceController_fetchBenefactorsWithCompletion___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchSuggestedBeneficiariesWithCompletion:(id)a3
+- (void)fetchSuggestedBeneficiariesWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAInheritanceController fetchSuggestedBeneficiariesWithCompletion:];
   }
@@ -1370,8 +1370,8 @@ void __58__AAInheritanceController_fetchBenefactorsWithCompletion___block_invoke
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__6;
   v31 = __Block_byref_object_dispose__6;
-  v13 = self;
-  v32 = v13;
+  selfCopy = self;
+  v32 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__AAInheritanceController_fetchSuggestedBeneficiariesWithCompletion___block_invoke;
@@ -1379,10 +1379,10 @@ void __58__AAInheritanceController_fetchBenefactorsWithCompletion___block_invoke
   p_buf = &buf;
   v25 = v7;
   v26 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v23 = v14;
   v15 = _Block_copy(aBlock);
-  remoteService = v13->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __69__AAInheritanceController_fetchSuggestedBeneficiariesWithCompletion___block_invoke_121;
@@ -1463,17 +1463,17 @@ void __69__AAInheritanceController_fetchSuggestedBeneficiariesWithCompletion___b
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)sendInvitationToContact:(id)a3 completion:(id)a4
+- (void)sendInvitationToContact:(id)contact completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  contactCopy = contact;
+  completionCopy = completion;
+  if (!contactCopy)
   {
     [AAInheritanceController sendInvitationToContact:completion:];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [AAInheritanceController sendInvitationToContact:completion:];
   }
@@ -1507,8 +1507,8 @@ void __69__AAInheritanceController_fetchSuggestedBeneficiariesWithCompletion___b
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__6;
   v34 = __Block_byref_object_dispose__6;
-  v16 = self;
-  v35 = v16;
+  selfCopy = self;
+  v35 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __62__AAInheritanceController_sendInvitationToContact_completion___block_invoke;
@@ -1516,10 +1516,10 @@ void __69__AAInheritanceController_fetchSuggestedBeneficiariesWithCompletion___b
   p_buf = &buf;
   v28 = v10;
   v29 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v26 = v17;
   v18 = _Block_copy(aBlock);
-  remoteService = v16->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __62__AAInheritanceController_sendInvitationToContact_completion___block_invoke_122;
@@ -1527,7 +1527,7 @@ void __69__AAInheritanceController_fetchSuggestedBeneficiariesWithCompletion___b
   v20 = v18;
   v24 = v20;
   v21 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v23];
-  [v21 sendInvitationToContact:v6 completion:v20];
+  [v21 sendInvitationToContact:contactCopy completion:v20];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -1598,11 +1598,11 @@ void __62__AAInheritanceController_sendInvitationToContact_completion___block_in
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchInvitationsWithCompletion:(id)a3
+- (void)fetchInvitationsWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAInheritanceController fetchInvitationsWithCompletion:];
   }
@@ -1636,8 +1636,8 @@ void __62__AAInheritanceController_sendInvitationToContact_completion___block_in
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__6;
   v31 = __Block_byref_object_dispose__6;
-  v13 = self;
-  v32 = v13;
+  selfCopy = self;
+  v32 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__AAInheritanceController_fetchInvitationsWithCompletion___block_invoke;
@@ -1645,10 +1645,10 @@ void __62__AAInheritanceController_sendInvitationToContact_completion___block_in
   p_buf = &buf;
   v25 = v7;
   v26 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v23 = v14;
   v15 = _Block_copy(aBlock);
-  remoteService = v13->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __58__AAInheritanceController_fetchInvitationsWithCompletion___block_invoke_123;
@@ -1729,12 +1729,12 @@ void __58__AAInheritanceController_fetchInvitationsWithCompletion___block_invoke
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchInvitationWithBeneficiaryID:(id)a3 completion:(id)a4
+- (void)fetchInvitationWithBeneficiaryID:(id)d completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAInheritanceController fetchInvitationWithBeneficiaryID:completion:];
   }
@@ -1768,8 +1768,8 @@ void __58__AAInheritanceController_fetchInvitationsWithCompletion___block_invoke
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__6;
   v34 = __Block_byref_object_dispose__6;
-  v16 = self;
-  v35 = v16;
+  selfCopy = self;
+  v35 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __71__AAInheritanceController_fetchInvitationWithBeneficiaryID_completion___block_invoke;
@@ -1777,10 +1777,10 @@ void __58__AAInheritanceController_fetchInvitationsWithCompletion___block_invoke
   p_buf = &buf;
   v28 = v10;
   v29 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v26 = v17;
   v18 = _Block_copy(aBlock);
-  remoteService = v16->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __71__AAInheritanceController_fetchInvitationWithBeneficiaryID_completion___block_invoke_125;
@@ -1788,7 +1788,7 @@ void __58__AAInheritanceController_fetchInvitationsWithCompletion___block_invoke
   v20 = v18;
   v24 = v20;
   v21 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v23];
-  [v21 fetchInvitationWithBeneficiaryID:v6 completion:v20];
+  [v21 fetchInvitationWithBeneficiaryID:dCopy completion:v20];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -1861,12 +1861,12 @@ void __71__AAInheritanceController_fetchInvitationWithBeneficiaryID_completion__
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)removeInvitation:(id)a3 completion:(id)a4
+- (void)removeInvitation:(id)invitation completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  invitationCopy = invitation;
+  completionCopy = completion;
+  if (!invitationCopy)
   {
     [AAInheritanceController removeInvitation:completion:];
   }
@@ -1900,8 +1900,8 @@ void __71__AAInheritanceController_fetchInvitationWithBeneficiaryID_completion__
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__6;
   v34 = __Block_byref_object_dispose__6;
-  v16 = self;
-  v35 = v16;
+  selfCopy = self;
+  v35 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__AAInheritanceController_removeInvitation_completion___block_invoke;
@@ -1909,10 +1909,10 @@ void __71__AAInheritanceController_fetchInvitationWithBeneficiaryID_completion__
   p_buf = &buf;
   v28 = v10;
   v29 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v26 = v17;
   v18 = _Block_copy(aBlock);
-  remoteService = v16->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __55__AAInheritanceController_removeInvitation_completion___block_invoke_129;
@@ -1920,7 +1920,7 @@ void __71__AAInheritanceController_fetchInvitationWithBeneficiaryID_completion__
   v20 = v18;
   v24 = v20;
   v21 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v23];
-  [v21 removeInvitation:v6 completion:v20];
+  [v21 removeInvitation:invitationCopy completion:v20];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -2043,11 +2043,11 @@ void __67__AAInheritanceController_respondToInvitation_accepted_completion___blo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)fetchAllHealthInfoWithCompletion:(id)a3
+- (void)fetchAllHealthInfoWithCompletion:(id)completion
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [AAInheritanceController fetchAllHealthInfoWithCompletion:];
   }
@@ -2081,8 +2081,8 @@ void __67__AAInheritanceController_respondToInvitation_accepted_completion___blo
   v29 = 0x3032000000;
   v30 = __Block_byref_object_copy__6;
   v31 = __Block_byref_object_dispose__6;
-  v13 = self;
-  v32 = v13;
+  selfCopy = self;
+  v32 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __60__AAInheritanceController_fetchAllHealthInfoWithCompletion___block_invoke;
@@ -2090,10 +2090,10 @@ void __67__AAInheritanceController_respondToInvitation_accepted_completion___blo
   p_buf = &buf;
   v25 = v7;
   v26 = v9;
-  v14 = v4;
+  v14 = completionCopy;
   v23 = v14;
   v15 = _Block_copy(aBlock);
-  remoteService = v13->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __60__AAInheritanceController_fetchAllHealthInfoWithCompletion___block_invoke_134;
@@ -2174,17 +2174,17 @@ void __60__AAInheritanceController_fetchAllHealthInfoWithCompletion___block_invo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)presentInheritanceInvitationUIWithBeneficiaryID:(id)a3 completion:(id)a4
+- (void)presentInheritanceInvitationUIWithBeneficiaryID:(id)d completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  dCopy = d;
+  completionCopy = completion;
+  if (!dCopy)
   {
     [AAInheritanceController presentInheritanceInvitationUIWithBeneficiaryID:completion:];
   }
 
-  if (!v7)
+  if (!completionCopy)
   {
     [AAInheritanceController presentInheritanceInvitationUIWithBeneficiaryID:completion:];
   }
@@ -2218,8 +2218,8 @@ void __60__AAInheritanceController_fetchAllHealthInfoWithCompletion___block_invo
   v32 = 0x3032000000;
   v33 = __Block_byref_object_copy__6;
   v34 = __Block_byref_object_dispose__6;
-  v16 = self;
-  v35 = v16;
+  selfCopy = self;
+  v35 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__AAInheritanceController_presentInheritanceInvitationUIWithBeneficiaryID_completion___block_invoke;
@@ -2227,10 +2227,10 @@ void __60__AAInheritanceController_fetchAllHealthInfoWithCompletion___block_invo
   p_buf = &buf;
   v28 = v10;
   v29 = v12;
-  v17 = v7;
+  v17 = completionCopy;
   v26 = v17;
   v18 = _Block_copy(aBlock);
-  remoteService = v16->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __86__AAInheritanceController_presentInheritanceInvitationUIWithBeneficiaryID_completion___block_invoke_135;
@@ -2238,7 +2238,7 @@ void __60__AAInheritanceController_fetchAllHealthInfoWithCompletion___block_invo
   v20 = v18;
   v24 = v20;
   v21 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:v23];
-  [v21 presentInheritanceInvitationUIWithBeneficiaryID:v6 completion:v20];
+  [v21 presentInheritanceInvitationUIWithBeneficiaryID:dCopy completion:v20];
 
   _Block_object_dispose(&buf, 8);
   os_activity_scope_leave(&state);
@@ -2309,17 +2309,17 @@ void __86__AAInheritanceController_presentInheritanceInvitationUIWithBeneficiary
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setupBeneficiaryAliasWithAccessKey:(id)a3 password:(id)a4 firstName:(id)a5 lastName:(id)a6 authToken:(id)a7 completion:(id)a8
+- (void)setupBeneficiaryAliasWithAccessKey:(id)key password:(id)password firstName:(id)name lastName:(id)lastName authToken:(id)token completion:(id)completion
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v14)
+  keyCopy = key;
+  passwordCopy = password;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  tokenCopy = token;
+  completionCopy = completion;
+  if (keyCopy)
   {
-    if (v15)
+    if (passwordCopy)
     {
       goto LABEL_3;
     }
@@ -2328,17 +2328,17 @@ void __86__AAInheritanceController_presentInheritanceInvitationUIWithBeneficiary
   else
   {
     [AAInheritanceController setupBeneficiaryAliasWithAccessKey:password:firstName:lastName:authToken:completion:];
-    if (v15)
+    if (passwordCopy)
     {
 LABEL_3:
-      if (v18)
+      if (tokenCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
       [AAInheritanceController setupBeneficiaryAliasWithAccessKey:password:firstName:lastName:authToken:completion:];
-      if (v19)
+      if (completionCopy)
       {
         goto LABEL_5;
       }
@@ -2350,13 +2350,13 @@ LABEL_9:
   }
 
   [AAInheritanceController setupBeneficiaryAliasWithAccessKey:password:firstName:lastName:authToken:completion:];
-  if (!v18)
+  if (!tokenCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  if (!v19)
+  if (!completionCopy)
   {
     goto LABEL_9;
   }
@@ -2371,17 +2371,17 @@ LABEL_5:
   v35[2] = 0x3032000000;
   v35[3] = __Block_byref_object_copy__6;
   v35[4] = __Block_byref_object_dispose__6;
-  v21 = self;
-  v36 = v21;
+  selfCopy = self;
+  v36 = selfCopy;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_firstName_lastName_authToken_completion___block_invoke;
   aBlock[3] = &unk_1E7C9BFC0;
   v34 = v35;
-  v22 = v19;
+  v22 = completionCopy;
   v33 = v22;
   v23 = _Block_copy(aBlock);
-  remoteService = v21->_remoteService;
+  remoteService = selfCopy->_remoteService;
   v27 = MEMORY[0x1E69E9820];
   v28 = 3221225472;
   v29 = __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_firstName_lastName_authToken_completion___block_invoke_146;
@@ -2389,7 +2389,7 @@ LABEL_5:
   v25 = v23;
   v31 = v25;
   v26 = [(AAFXPCSession *)remoteService remoteServiceProxyWithErrorHandler:&v27];
-  [v26 setupBeneficiaryAliasWithAccessKey:v14 password:v15 firstName:v16 lastName:v17 authToken:v18 completion:{v25, v27, v28, v29, v30}];
+  [v26 setupBeneficiaryAliasWithAccessKey:keyCopy password:passwordCopy firstName:nameCopy lastName:lastNameCopy authToken:tokenCopy completion:{v25, v27, v28, v29, v30}];
 
   _Block_object_dispose(v35, 8);
   os_activity_scope_leave(&state);
@@ -2429,17 +2429,17 @@ void __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)configureRemoteInterface:(id)a3
+- (void)configureRemoteInterface:(id)interface
 {
   v28[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  interfaceCopy = interface;
   v28[0] = objc_opt_class();
   v28[1] = objc_opt_class();
   v28[2] = objc_opt_class();
   v28[3] = objc_opt_class();
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
   v4 = [MEMORY[0x1E695DFD8] setWithArray:v20];
-  [v3 setClasses:v4 forSelector:sel_setupBeneficiaryManifest_contactInfo_setupAuthToken_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v4 forSelector:sel_setupBeneficiaryManifest_contactInfo_setupAuthToken_completion_ argumentIndex:0 ofReply:1];
 
   v27[0] = objc_opt_class();
   v27[1] = objc_opt_class();
@@ -2449,7 +2449,7 @@ void __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_
   v27[5] = objc_opt_class();
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:6];
   v5 = [MEMORY[0x1E695DFD8] setWithArray:v19];
-  [v3 setClasses:v5 forSelector:sel_fetchManifestOptionsForContact_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v5 forSelector:sel_fetchManifestOptionsForContact_completion_ argumentIndex:0 ofReply:1];
 
   v26[0] = objc_opt_class();
   v26[1] = objc_opt_class();
@@ -2458,7 +2458,7 @@ void __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_
   v26[4] = objc_opt_class();
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:5];
   v6 = [MEMORY[0x1E695DFD8] setWithArray:v18];
-  [v3 setClasses:v6 forSelector:sel_fetchBeneficiariesWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v6 forSelector:sel_fetchBeneficiariesWithCompletion_ argumentIndex:0 ofReply:1];
 
   v25[0] = objc_opt_class();
   v25[1] = objc_opt_class();
@@ -2466,7 +2466,7 @@ void __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_
   v25[3] = objc_opt_class();
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:4];
   v8 = [MEMORY[0x1E695DFD8] setWithArray:v7];
-  [v3 setClasses:v8 forSelector:sel_fetchBenefactorsWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v8 forSelector:sel_fetchBenefactorsWithCompletion_ argumentIndex:0 ofReply:1];
 
   v24[0] = objc_opt_class();
   v24[1] = objc_opt_class();
@@ -2474,7 +2474,7 @@ void __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_
   v24[3] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:4];
   v10 = [MEMORY[0x1E695DFD8] setWithArray:v9];
-  [v3 setClasses:v10 forSelector:sel_fetchSuggestedBeneficiariesWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v10 forSelector:sel_fetchSuggestedBeneficiariesWithCompletion_ argumentIndex:0 ofReply:1];
 
   v23[0] = objc_opt_class();
   v23[1] = objc_opt_class();
@@ -2482,7 +2482,7 @@ void __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_
   v23[3] = objc_opt_class();
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
   v12 = [MEMORY[0x1E695DFD8] setWithArray:v11];
-  [v3 setClasses:v12 forSelector:sel_fetchInvitationsWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v12 forSelector:sel_fetchInvitationsWithCompletion_ argumentIndex:0 ofReply:1];
 
   v22[0] = objc_opt_class();
   v22[1] = objc_opt_class();
@@ -2490,7 +2490,7 @@ void __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_
   v22[3] = objc_opt_class();
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
   v14 = [MEMORY[0x1E695DFD8] setWithArray:v13];
-  [v3 setClasses:v14 forSelector:sel_fetchInvitationWithBeneficiaryID_completion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v14 forSelector:sel_fetchInvitationWithBeneficiaryID_completion_ argumentIndex:0 ofReply:1];
 
   v21[0] = objc_opt_class();
   v21[1] = objc_opt_class();
@@ -2498,7 +2498,7 @@ void __111__AAInheritanceController_setupBeneficiaryAliasWithAccessKey_password_
   v21[3] = objc_opt_class();
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:4];
   v16 = [MEMORY[0x1E695DFD8] setWithArray:v15];
-  [v3 setClasses:v16 forSelector:sel_fetchAllHealthInfoWithCompletion_ argumentIndex:0 ofReply:1];
+  [interfaceCopy setClasses:v16 forSelector:sel_fetchAllHealthInfoWithCompletion_ argumentIndex:0 ofReply:1];
 
   v17 = *MEMORY[0x1E69E9840];
 }

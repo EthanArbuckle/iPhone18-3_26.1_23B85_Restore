@@ -1,30 +1,30 @@
 @interface CFXFrame
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFrame:(id)a3;
-- (CFXFrame)initWithARFrame:(id)a3;
-- (CFXFrame)initWithFrameSet:(id)a3;
-- (CFXFrame)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFrame:(id)frame;
+- (CFXFrame)initWithARFrame:(id)frame;
+- (CFXFrame)initWithFrameSet:(id)set;
+- (CFXFrame)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLatency:(id *)a3;
-- (void)setRequestTime:(id *)a3;
-- (void)setTimestamp:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLatency:(id *)latency;
+- (void)setRequestTime:(id *)time;
+- (void)setTimestamp:(id *)timestamp;
 @end
 
 @implementation CFXFrame
 
-- (CFXFrame)initWithARFrame:(id)a3
+- (CFXFrame)initWithARFrame:(id)frame
 {
-  v5 = a3;
+  frameCopy = frame;
   v12.receiver = self;
   v12.super_class = CFXFrame;
   v6 = [(CFXFrame *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_arFrame, a3);
-    v7->_pixelBuffer = CVPixelBufferRetain([v5 capturedImage]);
-    [v5 timestamp];
+    objc_storeStrong(&v6->_arFrame, frame);
+    v7->_pixelBuffer = CVPixelBufferRetain([frameCopy capturedImage]);
+    [frameCopy timestamp];
     CMTimeMakeWithSeconds(&v11, v8, 1000000000);
     v7->_timestamp = v11;
     v9 = MEMORY[0x277CC08F0];
@@ -35,16 +35,16 @@
   return v7;
 }
 
-- (CFXFrame)initWithPixelBuffer:(__CVBuffer *)a3 timestamp:(id *)a4
+- (CFXFrame)initWithPixelBuffer:(__CVBuffer *)buffer timestamp:(id *)timestamp
 {
   v10.receiver = self;
   v10.super_class = CFXFrame;
   v6 = [(CFXFrame *)&v10 init];
   if (v6)
   {
-    *(v6 + 1) = CVPixelBufferRetain(a3);
-    var3 = a4->var3;
-    *(v6 + 56) = *&a4->var0;
+    *(v6 + 1) = CVPixelBufferRetain(buffer);
+    var3 = timestamp->var3;
+    *(v6 + 56) = *&timestamp->var0;
     *(v6 + 9) = var3;
     v8 = MEMORY[0x277CC08F0];
     *(v6 + 2) = *MEMORY[0x277CC08F0];
@@ -54,22 +54,22 @@
   return v6;
 }
 
-- (CFXFrame)initWithFrameSet:(id)a3
+- (CFXFrame)initWithFrameSet:(id)set
 {
-  v5 = a3;
+  setCopy = set;
   v13.receiver = self;
   v13.super_class = CFXFrame;
   v6 = [(CFXFrame *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pvFrameSet, a3);
-    v8 = [v5 colorImageBuffer];
-    v7->_pixelBuffer = CVPixelBufferRetain([v8 cvPixelBuffer]);
+    objc_storeStrong(&v6->_pvFrameSet, set);
+    colorImageBuffer = [setCopy colorImageBuffer];
+    v7->_pixelBuffer = CVPixelBufferRetain([colorImageBuffer cvPixelBuffer]);
 
-    if (v5)
+    if (setCopy)
     {
-      [v5 presentationTimeStamp];
+      [setCopy presentationTimeStamp];
     }
 
     else
@@ -96,17 +96,17 @@
   [(CFXFrame *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(CFXFrame *)self timestamp];
-  [v4 encodeCMTime:v5 forKey:@"timestamp"];
+  [coderCopy encodeCMTime:v5 forKey:@"timestamp"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -114,22 +114,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CFXFrame *)self isEqualToFrame:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CFXFrame *)self isEqualToFrame:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToFrame:(id)a3
+- (BOOL)isEqualToFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(CFXFrame *)self pixelBuffer];
-  if (v5 == [v4 pixelBuffer])
+  frameCopy = frame;
+  pixelBuffer = [(CFXFrame *)self pixelBuffer];
+  if (pixelBuffer == [frameCopy pixelBuffer])
   {
     [(CFXFrame *)self timestamp];
-    if (v4)
+    if (frameCopy)
     {
-      [v4 timestamp];
+      [frameCopy timestamp];
     }
 
     else
@@ -148,24 +148,24 @@
   return v6;
 }
 
-- (void)setLatency:(id *)a3
+- (void)setLatency:(id *)latency
 {
-  v3 = *&a3->var0;
-  self->_latency.epoch = a3->var3;
+  v3 = *&latency->var0;
+  self->_latency.epoch = latency->var3;
   *&self->_latency.value = v3;
 }
 
-- (void)setTimestamp:(id *)a3
+- (void)setTimestamp:(id *)timestamp
 {
-  v3 = *&a3->var0;
-  self->_timestamp.epoch = a3->var3;
+  v3 = *&timestamp->var0;
+  self->_timestamp.epoch = timestamp->var3;
   *&self->_timestamp.value = v3;
 }
 
-- (void)setRequestTime:(id *)a3
+- (void)setRequestTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_requestTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_requestTime.epoch = time->var3;
   *&self->_requestTime.value = v3;
 }
 

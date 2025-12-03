@@ -1,12 +1,12 @@
 @interface PLAggregateAlbumList
-+ (PLAggregateAlbumList)albumListWithFilter:(int)a3 inPhotoLibrary:(id)a4;
-- (PLAggregateAlbumList)initWithFilter:(int)a3 inPhotoLibrary:(id)a4;
++ (PLAggregateAlbumList)albumListWithFilter:(int)filter inPhotoLibrary:(id)library;
+- (PLAggregateAlbumList)initWithFilter:(int)filter inPhotoLibrary:(id)library;
 - (id)albums;
 - (id)managedObjectContext;
 - (id)photoLibrary;
 - (unint64_t)albumsCount;
 - (void)_invalidateAllAlbums;
-- (void)assetContainerListDidChange:(id)a3;
+- (void)assetContainerListDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -14,24 +14,24 @@
 
 - (id)photoLibrary
 {
-  v2 = [(NSMutableOrderedSet *)self->_childAlbumLists lastObject];
-  v3 = [v2 photoLibrary];
+  lastObject = [(NSMutableOrderedSet *)self->_childAlbumLists lastObject];
+  photoLibrary = [lastObject photoLibrary];
 
-  return v3;
+  return photoLibrary;
 }
 
 - (id)managedObjectContext
 {
-  v2 = [(NSMutableOrderedSet *)self->_childAlbumLists lastObject];
-  v3 = [v2 managedObjectContext];
+  lastObject = [(NSMutableOrderedSet *)self->_childAlbumLists lastObject];
+  managedObjectContext = [lastObject managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
 - (unint64_t)albumsCount
 {
-  v2 = [(PLAggregateAlbumList *)self albums];
-  v3 = [v2 count];
+  albums = [(PLAggregateAlbumList *)self albums];
+  v3 = [albums count];
 
   return v3;
 }
@@ -67,8 +67,8 @@
           }
 
           v11 = self->_allAlbums;
-          v12 = [*(*(&v15 + 1) + 8 * v10) albums];
-          [(NSMutableOrderedSet *)v11 unionOrderedSet:v12];
+          albums = [*(*(&v15 + 1) + 8 * v10) albums];
+          [(NSMutableOrderedSet *)v11 unionOrderedSet:albums];
 
           ++v10;
         }
@@ -88,10 +88,10 @@
   return v13;
 }
 
-- (void)assetContainerListDidChange:(id)a3
+- (void)assetContainerListDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 albumList];
+  changeCopy = change;
+  albumList = [changeCopy albumList];
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -101,11 +101,11 @@
   v21[1] = 3221225472;
   v21[2] = __52__PLAggregateAlbumList_assetContainerListDidChange___block_invoke;
   v21[3] = &unk_1E75708F0;
-  v7 = v5;
+  v7 = albumList;
   v22 = v7;
   v23 = &v24;
   [(NSMutableOrderedSet *)childAlbumLists enumerateObjectsUsingBlock:v21];
-  v8 = [PLAggregateAlbumListChangeNotification notificationForAggregateAlbumList:self fromAlbumListChangeNotification:v4 indexOffset:v25[3]];
+  v8 = [PLAggregateAlbumListChangeNotification notificationForAggregateAlbumList:self fromAlbumListChangeNotification:changeCopy indexOffset:v25[3]];
   v17 = 0;
   v18 = &v17;
   v19 = 0x2020000000;
@@ -116,7 +116,7 @@
   v16[3] = &unk_1E7570918;
   v16[4] = &v17;
   [v8 enumerateMovesWithBlock:v16];
-  if (([v4 shouldReload] & 1) != 0 || *(v18 + 24) == 1)
+  if (([changeCopy shouldReload] & 1) != 0 || *(v18 + 24) == 1)
   {
     [(PLAggregateAlbumList *)self willChangeValueForKey:@"albums"];
     [(PLAggregateAlbumList *)self _invalidateAllAlbums];
@@ -126,32 +126,32 @@
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = [v8 deletedIndexes];
-    if ([v10 count])
+    deletedIndexes = [v8 deletedIndexes];
+    if ([deletedIndexes count])
     {
-      [(PLAggregateAlbumList *)self willChange:3 valuesAtIndexes:v10 forKey:@"albums"];
-      [(NSMutableOrderedSet *)self->_allAlbums removeObjectsAtIndexes:v10];
-      [(PLAggregateAlbumList *)self didChange:3 valuesAtIndexes:v10 forKey:@"albums"];
+      [(PLAggregateAlbumList *)self willChange:3 valuesAtIndexes:deletedIndexes forKey:@"albums"];
+      [(NSMutableOrderedSet *)self->_allAlbums removeObjectsAtIndexes:deletedIndexes];
+      [(PLAggregateAlbumList *)self didChange:3 valuesAtIndexes:deletedIndexes forKey:@"albums"];
     }
 
-    v11 = [v8 insertedIndexes];
+    insertedIndexes = [v8 insertedIndexes];
 
-    if ([v11 count])
+    if ([insertedIndexes count])
     {
-      [(PLAggregateAlbumList *)self willChange:2 valuesAtIndexes:v11 forKey:@"albums"];
+      [(PLAggregateAlbumList *)self willChange:2 valuesAtIndexes:insertedIndexes forKey:@"albums"];
       allAlbums = self->_allAlbums;
-      v13 = [v8 insertedObjects];
-      [(NSMutableOrderedSet *)allAlbums insertObjects:v13 atIndexes:v11];
+      insertedObjects = [v8 insertedObjects];
+      [(NSMutableOrderedSet *)allAlbums insertObjects:insertedObjects atIndexes:insertedIndexes];
 
-      [(PLAggregateAlbumList *)self didChange:2 valuesAtIndexes:v11 forKey:@"albums"];
+      [(PLAggregateAlbumList *)self didChange:2 valuesAtIndexes:insertedIndexes forKey:@"albums"];
     }
 
-    v14 = [v8 changedIndexes];
+    changedIndexes = [v8 changedIndexes];
 
-    if ([v14 count])
+    if ([changedIndexes count])
     {
-      [(PLAggregateAlbumList *)self willChange:1 valuesAtIndexes:v14 forKey:@"albums"];
-      [(PLAggregateAlbumList *)self didChange:1 valuesAtIndexes:v14 forKey:@"albums"];
+      [(PLAggregateAlbumList *)self willChange:1 valuesAtIndexes:changedIndexes forKey:@"albums"];
+      [(PLAggregateAlbumList *)self didChange:1 valuesAtIndexes:changedIndexes forKey:@"albums"];
     }
 
     objc_autoreleasePoolPop(v9);
@@ -229,10 +229,10 @@ void __52__PLAggregateAlbumList_assetContainerListDidChange___block_invoke(uint6
   [(PLAggregateAlbumList *)&v11 dealloc];
 }
 
-- (PLAggregateAlbumList)initWithFilter:(int)a3 inPhotoLibrary:(id)a4
+- (PLAggregateAlbumList)initWithFilter:(int)filter inPhotoLibrary:(id)library
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&filter;
+  libraryCopy = library;
   v17.receiver = self;
   v17.super_class = PLAggregateAlbumList;
   v7 = [(PLAggregateAlbumList *)&v17 init];
@@ -252,13 +252,13 @@ void __52__PLAggregateAlbumList_assetContainerListDidChange___block_invoke(uint6
       {
         if (!__albumListTypes[v11])
         {
-          v13 = [PLManagedAlbumList albumListInPhotoLibrary:v6];
+          v13 = [PLManagedAlbumList albumListInPhotoLibrary:libraryCopy];
           goto LABEL_19;
         }
 
         if (v12 == 1)
         {
-          v13 = [PLManagedAlbumList eventListInPhotoLibrary:v6];
+          v13 = [PLManagedAlbumList eventListInPhotoLibrary:libraryCopy];
 LABEL_19:
           v14 = v13;
           if (v13)
@@ -273,7 +273,7 @@ LABEL_19:
 
         if (v12 == 2)
         {
-          v13 = [PLManagedAlbumList facesAlbumListInPhotoLibrary:v6];
+          v13 = [PLManagedAlbumList facesAlbumListInPhotoLibrary:libraryCopy];
           goto LABEL_19;
         }
       }
@@ -282,13 +282,13 @@ LABEL_19:
       {
         if (v12 == 7)
         {
-          v13 = [PLManagedAlbumList importListInPhotoLibrary:v6];
+          v13 = [PLManagedAlbumList importListInPhotoLibrary:libraryCopy];
           goto LABEL_19;
         }
 
         if (v12 == 10)
         {
-          v13 = [PLManagedAlbumList scenesAlbumListInPhotoLibrary:v6];
+          v13 = [PLManagedAlbumList scenesAlbumListInPhotoLibrary:libraryCopy];
           goto LABEL_19;
         }
       }
@@ -297,13 +297,13 @@ LABEL_19:
       {
         if (v12 == 3)
         {
-          v13 = [PLManagedAlbumList placesAlbumListInPhotoLibrary:v6];
+          v13 = [PLManagedAlbumList placesAlbumListInPhotoLibrary:libraryCopy];
           goto LABEL_19;
         }
 
         if (v12 == 4)
         {
-          v13 = [PLManagedAlbumList allStreamedAlbumsListInPhotoLibrary:v6];
+          v13 = [PLManagedAlbumList allStreamedAlbumsListInPhotoLibrary:libraryCopy];
           goto LABEL_19;
         }
       }
@@ -320,11 +320,11 @@ LABEL_21:
   return v7;
 }
 
-+ (PLAggregateAlbumList)albumListWithFilter:(int)a3 inPhotoLibrary:(id)a4
++ (PLAggregateAlbumList)albumListWithFilter:(int)filter inPhotoLibrary:(id)library
 {
-  v4 = *&a3;
-  v6 = a4;
-  v7 = [[a1 alloc] initWithFilter:v4 inPhotoLibrary:v6];
+  v4 = *&filter;
+  libraryCopy = library;
+  v7 = [[self alloc] initWithFilter:v4 inPhotoLibrary:libraryCopy];
 
   return v7;
 }

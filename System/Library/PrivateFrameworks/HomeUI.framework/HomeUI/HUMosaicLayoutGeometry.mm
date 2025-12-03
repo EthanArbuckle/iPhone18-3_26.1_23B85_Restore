@@ -13,7 +13,7 @@
   v12 = __37__HUMosaicLayoutGeometry_description__block_invoke;
   v13 = &unk_277DB7558;
   v14 = v3;
-  v15 = self;
+  selfCopy = self;
   v4 = v3;
   [v4 appendBodySectionWithName:@"gridSize" multilinePrefix:@"\t" block:&v10];
   [(HUMosaicLayoutGeometry *)self cellSize:v10];
@@ -21,9 +21,9 @@
   [(HUMosaicLayoutGeometry *)self cellSpacing];
   v6 = [v4 appendDouble:@"cellSpacing" withName:0 decimalPrecision:?];
   v7 = [v4 appendBool:-[HUMosaicLayoutGeometry isPortrait](self withName:{"isPortrait"), @"isPortrait"}];
-  v8 = [v4 build];
+  build = [v4 build];
 
-  return v8;
+  return build;
 }
 
 id __37__HUMosaicLayoutGeometry_description__block_invoke(uint64_t a1)

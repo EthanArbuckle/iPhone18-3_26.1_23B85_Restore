@@ -3,20 +3,20 @@
 - (id)_viewControllerToPresentFrom;
 - (id)delegate;
 - (id)presentationContextProvider;
-- (void)_failRequestWithError:(id)a3;
+- (void)_failRequestWithError:(id)error;
 - (void)_invalidate;
-- (void)_performReplacePasswordWithSignInWithAppleRequest:(id)a3;
-- (void)_performUpgradePasswordToStrongPasswordRequest:(id)a3;
-- (void)_requestRemoteViewController:(id)a3;
-- (void)_showUpgradeToStrongPasswordPromptForRequest:(id)a3;
-- (void)accountModificationRemoteViewController:(id)a3 didFinishWithCredential:(id)a4 userInfo:(id)a5 completion:(id)a6;
-- (void)accountModificationRemoteViewController:(id)a3 requestCanceledWithError:(id)a4 completion:(id)a5;
-- (void)accountModificationRemoteViewController:(id)a3 viewServiceDidTerminateWithError:(id)a4;
-- (void)accountModificationRemoteViewControllerDidFinishUpgradeToSignInWithApple:(id)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)dismissAccountModificationRemoteViewController:(id)a3;
+- (void)_performReplacePasswordWithSignInWithAppleRequest:(id)request;
+- (void)_performUpgradePasswordToStrongPasswordRequest:(id)request;
+- (void)_requestRemoteViewController:(id)controller;
+- (void)_showUpgradeToStrongPasswordPromptForRequest:(id)request;
+- (void)accountModificationRemoteViewController:(id)controller didFinishWithCredential:(id)credential userInfo:(id)info completion:(id)completion;
+- (void)accountModificationRemoteViewController:(id)controller requestCanceledWithError:(id)error completion:(id)completion;
+- (void)accountModificationRemoteViewController:(id)controller viewServiceDidTerminateWithError:(id)error;
+- (void)accountModificationRemoteViewControllerDidFinishUpgradeToSignInWithApple:(id)apple userInfo:(id)info completion:(id)completion;
+- (void)dismissAccountModificationRemoteViewController:(id)controller;
 - (void)init;
 - (void)performRequest:(ASAccountAuthenticationModificationRequest *)request;
-- (void)presentAccountModificationRemoteViewController:(id)a3;
+- (void)presentAccountModificationRemoteViewController:(id)controller;
 @end
 
 @implementation ASAccountAuthenticationModificationController
@@ -35,9 +35,9 @@
     v12 = 0;
     v4 = [MEMORY[0x1E696ABD0] extensionsWithMatchingAttributes:v3 error:&v12];
     v5 = v12;
-    v6 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     helperExtension = v2->_helperExtension;
-    v2->_helperExtension = v6;
+    v2->_helperExtension = firstObject;
 
     if (v2->_helperExtension)
     {
@@ -126,14 +126,14 @@ LABEL_12:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_requestRemoteViewController:(id)a3
+- (void)_requestRemoteViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__ASAccountAuthenticationModificationController__requestRemoteViewController___block_invoke;
   aBlock[3] = &unk_1E7AF8478;
-  v5 = v4;
+  v5 = controllerCopy;
   v14 = v5;
   v6 = _Block_copy(aBlock);
   if ([MEMORY[0x1E69C8880] hasInternalContent] && (objc_msgSend(MEMORY[0x1E695E000], "standardUserDefaults"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "BOOLForKey:", @"ASDebugASAccountAuthenticationModificationControllerUsesSafariViewService"), v7, v8))
@@ -153,16 +153,16 @@ LABEL_12:
   }
 }
 
-- (void)_performReplacePasswordWithSignInWithAppleRequest:(id)a3
+- (void)_performReplacePasswordWithSignInWithAppleRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __99__ASAccountAuthenticationModificationController__performReplacePasswordWithSignInWithAppleRequest___block_invoke;
   v6[3] = &unk_1E7AF84C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = requestCopy;
+  v5 = requestCopy;
   [(ASAccountAuthenticationModificationController *)self _requestRemoteViewController:v6];
 }
 
@@ -210,26 +210,26 @@ void __99__ASAccountAuthenticationModificationController__performReplacePassword
   }
 }
 
-- (void)_showUpgradeToStrongPasswordPromptForRequest:(id)a3
+- (void)_showUpgradeToStrongPasswordPromptForRequest:(id)request
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  requestCopy = request;
   v5 = MEMORY[0x1E69635E0];
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v5 applicationProxyForIdentifier:v7];
-  v9 = [v8 localizedName];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [v5 applicationProxyForIdentifier:bundleIdentifier];
+  localizedName = [v8 localizedName];
 
-  v10 = [MEMORY[0x1E69C8860] currentDevice];
-  [v10 deviceClass];
+  currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+  [currentDevice deviceClass];
 
   v11 = MEMORY[0x1E696AEC0];
   v12 = _WBSLocalizedString();
-  v13 = [v11 stringWithFormat:v12, v9];
+  v13 = [v11 stringWithFormat:v12, localizedName];
 
   v14 = _WBSLocalizedString();
   v15 = MEMORY[0x1E69DC650];
-  v16 = v9;
+  v16 = localizedName;
   if (deviceAlertStyle_onceToken != -1)
   {
     [ASAccountAuthenticationModificationController _showUpgradeToStrongPasswordPromptForRequest:];
@@ -244,7 +244,7 @@ void __99__ASAccountAuthenticationModificationController__performReplacePassword
   v36[2] = __94__ASAccountAuthenticationModificationController__showUpgradeToStrongPasswordPromptForRequest___block_invoke;
   v36[3] = &unk_1E7AF84F0;
   v36[4] = self;
-  v20 = v4;
+  v20 = requestCopy;
   v37 = v20;
   v21 = [v18 actionWithTitle:v19 style:0 handler:v36];
   [v17 addAction:v21];
@@ -259,11 +259,11 @@ void __99__ASAccountAuthenticationModificationController__performReplacePassword
   v24 = [v22 actionWithTitle:v23 style:1 handler:v35];
   [v17 addAction:v24];
 
-  v25 = [(ASAccountAuthenticationModificationController *)self _viewControllerToPresentFrom];
-  v26 = v25;
-  if (v25)
+  _viewControllerToPresentFrom = [(ASAccountAuthenticationModificationController *)self _viewControllerToPresentFrom];
+  v26 = _viewControllerToPresentFrom;
+  if (_viewControllerToPresentFrom)
   {
-    [v25 presentViewController:v17 animated:1 completion:0];
+    [_viewControllerToPresentFrom presentViewController:v17 animated:1 completion:0];
   }
 
   else
@@ -306,16 +306,16 @@ void __94__ASAccountAuthenticationModificationController__showUpgradeToStrongPas
   [*(a1 + 32) _invalidate];
 }
 
-- (void)_performUpgradePasswordToStrongPasswordRequest:(id)a3
+- (void)_performUpgradePasswordToStrongPasswordRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __96__ASAccountAuthenticationModificationController__performUpgradePasswordToStrongPasswordRequest___block_invoke;
   v6[3] = &unk_1E7AF84C8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = requestCopy;
+  v5 = requestCopy;
   [(ASAccountAuthenticationModificationController *)self _requestRemoteViewController:v6];
 }
 
@@ -376,13 +376,13 @@ void __96__ASAccountAuthenticationModificationController__performUpgradePassword
   self->_referenceToSelf = 0;
 }
 
-- (void)_failRequestWithError:(id)a3
+- (void)_failRequestWithError:(id)error
 {
-  v5 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountAuthenticationModificationController:self didFailRequest:self->_request withError:v5];
+    [WeakRetained accountAuthenticationModificationController:self didFailRequest:self->_request withError:errorCopy];
   }
 
   [(ASAccountAuthenticationModificationController *)self _invalidate];
@@ -390,73 +390,73 @@ void __96__ASAccountAuthenticationModificationController__performUpgradePassword
 
 - (id)_viewControllerToPresentFrom
 {
-  v3 = [(ASAccountAuthenticationModificationController *)self presentationContextProvider];
-  v4 = [v3 presentationAnchorForAccountAuthenticationModificationController:self];
-  v5 = [v4 rootViewController];
+  presentationContextProvider = [(ASAccountAuthenticationModificationController *)self presentationContextProvider];
+  v4 = [presentationContextProvider presentationAnchorForAccountAuthenticationModificationController:self];
+  rootViewController = [v4 rootViewController];
 
-  v6 = [v5 _as_viewControllerToPresentFrom];
+  _as_viewControllerToPresentFrom = [rootViewController _as_viewControllerToPresentFrom];
 
-  return v6;
+  return _as_viewControllerToPresentFrom;
 }
 
-- (void)accountModificationRemoteViewControllerDidFinishUpgradeToSignInWithApple:(id)a3 userInfo:(id)a4 completion:(id)a5
+- (void)accountModificationRemoteViewControllerDidFinishUpgradeToSignInWithApple:(id)apple userInfo:(id)info completion:(id)completion
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(_ASAccountAuthenticationModificationRemoteViewController *)self->_accountAuthenticationModificationRemoteViewController presentingViewController];
-  v9 = v8;
-  if (v8)
+  infoCopy = info;
+  completionCopy = completion;
+  presentingViewController = [(_ASAccountAuthenticationModificationRemoteViewController *)self->_accountAuthenticationModificationRemoteViewController presentingViewController];
+  v9 = presentingViewController;
+  if (presentingViewController)
   {
-    [v8 dismissViewControllerAnimated:1 completion:v7];
+    [presentingViewController dismissViewControllerAnimated:1 completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountAuthenticationModificationController:self didSuccessfullyCompleteRequest:self->_request withUserInfo:v11];
+    [WeakRetained accountAuthenticationModificationController:self didSuccessfullyCompleteRequest:self->_request withUserInfo:infoCopy];
   }
 
   [(ASAccountAuthenticationModificationController *)self _invalidate];
 }
 
-- (void)accountModificationRemoteViewController:(id)a3 didFinishWithCredential:(id)a4 userInfo:(id)a5 completion:(id)a6
+- (void)accountModificationRemoteViewController:(id)controller didFinishWithCredential:(id)credential userInfo:(id)info completion:(id)completion
 {
-  v12 = a5;
-  v8 = a6;
-  v9 = [(_ASAccountAuthenticationModificationRemoteViewController *)self->_accountAuthenticationModificationRemoteViewController presentingViewController];
-  v10 = v9;
-  if (v9)
+  infoCopy = info;
+  completionCopy = completion;
+  presentingViewController = [(_ASAccountAuthenticationModificationRemoteViewController *)self->_accountAuthenticationModificationRemoteViewController presentingViewController];
+  v10 = presentingViewController;
+  if (presentingViewController)
   {
-    [v9 dismissViewControllerAnimated:1 completion:v8];
+    [presentingViewController dismissViewControllerAnimated:1 completion:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountAuthenticationModificationController:self didSuccessfullyCompleteRequest:self->_request withUserInfo:v12];
+    [WeakRetained accountAuthenticationModificationController:self didSuccessfullyCompleteRequest:self->_request withUserInfo:infoCopy];
   }
 
   [(ASAccountAuthenticationModificationController *)self _invalidate];
 }
 
-- (void)presentAccountModificationRemoteViewController:(id)a3
+- (void)presentAccountModificationRemoteViewController:(id)controller
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v4 = [(ASAccountAuthenticationModificationController *)self _viewControllerToPresentFrom];
-  v5 = v4;
-  if (v4)
+  _viewControllerToPresentFrom = [(ASAccountAuthenticationModificationController *)self _viewControllerToPresentFrom];
+  v5 = _viewControllerToPresentFrom;
+  if (_viewControllerToPresentFrom)
   {
-    [v4 presentViewController:self->_accountAuthenticationModificationRemoteViewController animated:1 completion:0];
+    [_viewControllerToPresentFrom presentViewController:self->_accountAuthenticationModificationRemoteViewController animated:1 completion:0];
   }
 
   else
@@ -485,50 +485,50 @@ void __96__ASAccountAuthenticationModificationController__performUpgradePassword
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accountModificationRemoteViewController:(id)a3 requestCanceledWithError:(id)a4 completion:(id)a5
+- (void)accountModificationRemoteViewController:(id)controller requestCanceledWithError:(id)error completion:(id)completion
 {
-  v11 = a4;
-  v7 = a5;
-  v8 = [(_ASAccountAuthenticationModificationRemoteViewController *)self->_accountAuthenticationModificationRemoteViewController presentingViewController];
-  v9 = v8;
-  if (v8)
+  errorCopy = error;
+  completionCopy = completion;
+  presentingViewController = [(_ASAccountAuthenticationModificationRemoteViewController *)self->_accountAuthenticationModificationRemoteViewController presentingViewController];
+  v9 = presentingViewController;
+  if (presentingViewController)
   {
-    [v8 dismissViewControllerAnimated:1 completion:v7];
+    [presentingViewController dismissViewControllerAnimated:1 completion:completionCopy];
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountAuthenticationModificationController:self didFailRequest:self->_request withError:v11];
+    [WeakRetained accountAuthenticationModificationController:self didFailRequest:self->_request withError:errorCopy];
   }
 
   [(ASAccountAuthenticationModificationController *)self _invalidate];
 }
 
-- (void)accountModificationRemoteViewController:(id)a3 viewServiceDidTerminateWithError:(id)a4
+- (void)accountModificationRemoteViewController:(id)controller viewServiceDidTerminateWithError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [WeakRetained accountAuthenticationModificationController:self didFailRequest:self->_request withError:v6];
+    [WeakRetained accountAuthenticationModificationController:self didFailRequest:self->_request withError:errorCopy];
   }
 
   [(ASAccountAuthenticationModificationController *)self _invalidate];
 }
 
-- (void)dismissAccountModificationRemoteViewController:(id)a3
+- (void)dismissAccountModificationRemoteViewController:(id)controller
 {
-  v4 = [(ASAccountAuthenticationModificationController *)self presentationContextProvider];
-  v5 = [v4 presentationAnchorForAccountAuthenticationModificationController:self];
-  v6 = [v5 rootViewController];
+  presentationContextProvider = [(ASAccountAuthenticationModificationController *)self presentationContextProvider];
+  v5 = [presentationContextProvider presentationAnchorForAccountAuthenticationModificationController:self];
+  rootViewController = [v5 rootViewController];
 
-  [v6 dismissViewControllerAnimated:1 completion:0];
+  [rootViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (id)delegate
@@ -548,8 +548,8 @@ void __96__ASAccountAuthenticationModificationController__performUpgradePassword
 - (void)init
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a1;
-  v4 = [a2 safari_privacyPreservingDescription];
+  selfCopy = self;
+  safari_privacyPreservingDescription = [a2 safari_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_0(&dword_1B1C8D000, v5, v6, "Failed to find helper extension to perform Account Authentication Modification Extension requests with error %{public}@.", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x1E69E9840];

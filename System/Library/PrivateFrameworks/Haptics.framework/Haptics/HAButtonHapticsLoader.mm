@@ -1,11 +1,11 @@
 @interface HAButtonHapticsLoader
 + (id)sharedInstance;
-- (BOOL)hapticAssetType:(int64_t)a3 hasAudio:(BOOL *)a4 hasHaptic:(BOOL *)a5 error:(id *)a6;
-- (BOOL)loadButtonHapticOfType:(int64_t)a3 withParameters:(id)a4 atSlot:(int64_t)a5 error:(id *)a6;
-- (float)audioGainForType:(int64_t)a3;
-- (float)defaultDownGainForType:(int64_t)a3;
-- (float)defaultUpGainForType:(int64_t)a3;
-- (float)hapticGainForType:(int64_t)a3;
+- (BOOL)hapticAssetType:(int64_t)type hasAudio:(BOOL *)audio hasHaptic:(BOOL *)haptic error:(id *)error;
+- (BOOL)loadButtonHapticOfType:(int64_t)type withParameters:(id)parameters atSlot:(int64_t)slot error:(id *)error;
+- (float)audioGainForType:(int64_t)type;
+- (float)defaultDownGainForType:(int64_t)type;
+- (float)defaultUpGainForType:(int64_t)type;
+- (float)hapticGainForType:(int64_t)type;
 - (void)dealloc;
 @end
 
@@ -135,24 +135,24 @@ LABEL_25:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)loadButtonHapticOfType:(int64_t)a3 withParameters:(id)a4 atSlot:(int64_t)a5 error:(id *)a6
+- (BOOL)loadButtonHapticOfType:(int64_t)type withParameters:(id)parameters atSlot:(int64_t)slot error:(id *)error
 {
-  v7 = a5;
+  slotCopy = slot;
   v52 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  parametersCopy = parameters;
   v10 = *MEMORY[0x277CCA590];
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   if (gServiceAvailable == 1)
   {
     v11 = _sharedMemoryPtr;
     bzero(_sharedMemoryPtr, _sharedMemorySize);
-    *v11 = v7;
+    *v11 = slotCopy;
     v42 = 0;
-    Property = dictForType(a3, &v42);
+    Property = dictForType(type, &v42);
     if (Property)
     {
       [HAButtonHapticsLoader loadButtonHapticOfType:withParameters:atSlot:error:];
@@ -265,9 +265,9 @@ LABEL_25:
     v19 = v18 != 0;
     if (!v18)
     {
-      if (a6)
+      if (error)
       {
-        *a6 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:v10 code:-50 userInfo:0];
+        *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:v10 code:-50 userInfo:0];
       }
 
       goto LABEL_44;
@@ -344,19 +344,19 @@ LABEL_25:
           getFloat64(v13, @"PostSilence", v36);
           v25 = vcvtmd_s64_f64(v24 * v22 + 0.5);
           v26 = vcvtmd_s64_f64(v36[0] * v22 + 0.5);
-          if (v9)
+          if (parametersCopy)
           {
             *buf = 0;
-            if (getFloat64(v9, @"AudioPreSilence", buf) && v11[1029])
+            if (getFloat64(parametersCopy, @"AudioPreSilence", buf) && v11[1029])
             {
               v23 = vcvtmd_s64_f64(*buf * v17 + 0.5);
             }
 
             v36[0] = 0.0;
-            Float64 = getFloat64(v9, @"HapticPreSilence", v36);
+            Float64 = getFloat64(parametersCopy, @"HapticPreSilence", v36);
             v28 = v36[0];
             *&outAudioFile = 0.0;
-            v29 = getFloat64(v9, @"PostSilence", &outAudioFile);
+            v29 = getFloat64(parametersCopy, @"PostSilence", &outAudioFile);
             v30 = vcvtmd_s64_f64(v28 * v22 + 0.5);
             if (Float64)
             {
@@ -448,9 +448,9 @@ LABEL_40:
   }
 
   v19 = 0;
-  if (a6)
+  if (error)
   {
-    *a6 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:v10 code:Property userInfo:0];
+    *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:v10 code:Property userInfo:0];
   }
 
 LABEL_45:
@@ -459,17 +459,17 @@ LABEL_45:
   return v19;
 }
 
-- (BOOL)hapticAssetType:(int64_t)a3 hasAudio:(BOOL *)a4 hasHaptic:(BOOL *)a5 error:(id *)a6
+- (BOOL)hapticAssetType:(int64_t)type hasAudio:(BOOL *)audio hasHaptic:(BOOL *)haptic error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
   v10 = *MEMORY[0x277CCA590];
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v15 = 0;
-  v11 = dictForType(a3, &v15);
+  v11 = dictForType(type, &v15);
   if (v11)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -494,9 +494,9 @@ LABEL_45:
       _os_log_impl(&dword_2510D3000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Haptics loadButtonHapticOfType FAILED %d", buf, 8u);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:v10 code:v11 userInfo:0];
+      *error = [objc_alloc(MEMORY[0x277CCA9B8]) initWithDomain:v10 code:v11 userInfo:0];
     }
   }
 
@@ -504,14 +504,14 @@ LABEL_45:
   {
     v12 = v15;
     *buf = v15;
-    if (a4)
+    if (audio)
     {
-      *a4 = getString(v15, @"AudioFilePath") != 0;
+      *audio = getString(v15, @"AudioFilePath") != 0;
     }
 
-    if (a5)
+    if (haptic)
     {
-      *a5 = getString(v12, @"HapticFilePath") != 0;
+      *haptic = getString(v12, @"HapticFilePath") != 0;
     }
 
     CFDictionaryReleaser::~CFDictionaryReleaser(buf);
@@ -521,10 +521,10 @@ LABEL_45:
   return v11 == 0;
 }
 
-- (float)defaultDownGainForType:(int64_t)a3
+- (float)defaultDownGainForType:(int64_t)type
 {
   v8 = 0;
-  v3 = dictForType(a3, &v8);
+  v3 = dictForType(type, &v8);
   v7 = v8;
   v4 = 0.0;
   if (!v3)
@@ -538,10 +538,10 @@ LABEL_45:
   return v4;
 }
 
-- (float)defaultUpGainForType:(int64_t)a3
+- (float)defaultUpGainForType:(int64_t)type
 {
   v8 = 0;
-  v3 = dictForType(a3, &v8);
+  v3 = dictForType(type, &v8);
   v7 = v8;
   v4 = 0.5;
   if (!v3)
@@ -555,10 +555,10 @@ LABEL_45:
   return v4;
 }
 
-- (float)hapticGainForType:(int64_t)a3
+- (float)hapticGainForType:(int64_t)type
 {
   v8 = 0;
-  v3 = dictForType(a3, &v8);
+  v3 = dictForType(type, &v8);
   v7 = v8;
   v4 = 0.5;
   if (!v3)
@@ -572,10 +572,10 @@ LABEL_45:
   return v4;
 }
 
-- (float)audioGainForType:(int64_t)a3
+- (float)audioGainForType:(int64_t)type
 {
   v8 = 0;
-  v3 = dictForType(a3, &v8);
+  v3 = dictForType(type, &v8);
   v7 = v8;
   v4 = 0.5;
   if (!v3)

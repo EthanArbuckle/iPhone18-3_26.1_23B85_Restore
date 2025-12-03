@@ -1,15 +1,15 @@
 @interface DeviceObserverTimberLorryDevelopment
 - (_TtC11Diagnostics36DeviceObserverTimberLorryDevelopment)init;
-- (id)beginDiscoveringDevicesWithHandler:(id)a3;
+- (id)beginDiscoveringDevicesWithHandler:(id)handler;
 @end
 
 @implementation DeviceObserverTimberLorryDevelopment
 
-- (id)beginDiscoveringDevicesWithHandler:(id)a3
+- (id)beginDiscoveringDevicesWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1000519C0(v4);
   _Block_release(v4);
   _Block_release(v4);

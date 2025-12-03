@@ -1,24 +1,24 @@
 @interface TintableShapeLayer
 - (_TtC9SeymourUI18TintableShapeLayer)init;
-- (_TtC9SeymourUI18TintableShapeLayer)initWithLayer:(id)a3;
-- (void)setBorderColor:(CGColor *)a3;
-- (void)setStrokeColor:(CGColor *)a3;
+- (_TtC9SeymourUI18TintableShapeLayer)initWithLayer:(id)layer;
+- (void)setBorderColor:(CGColor *)color;
+- (void)setStrokeColor:(CGColor *)color;
 @end
 
 @implementation TintableShapeLayer
 
-- (void)setBorderColor:(CGColor *)a3
+- (void)setBorderColor:(CGColor *)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_20B5EB248(a3, &selRef_setBorderColor_, &selRef_borderColor, &OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedBorderColor);
+  colorCopy = color;
+  selfCopy = self;
+  sub_20B5EB248(color, &selRef_setBorderColor_, &selRef_borderColor, &OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedBorderColor);
 }
 
-- (void)setStrokeColor:(CGColor *)a3
+- (void)setStrokeColor:(CGColor *)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_20B5EB248(a3, &selRef_setStrokeColor_, &selRef_strokeColor, &OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedStrokeColor);
+  colorCopy = color;
+  selfCopy = self;
+  sub_20B5EB248(color, &selRef_setStrokeColor_, &selRef_strokeColor, &OBJC_IVAR____TtC9SeymourUI18TintableShapeLayer_undimmedStrokeColor);
 }
 
 - (_TtC9SeymourUI18TintableShapeLayer)init
@@ -31,7 +31,7 @@
   return [(TintableShapeLayer *)&v3 init];
 }
 
-- (_TtC9SeymourUI18TintableShapeLayer)initWithLayer:(id)a3
+- (_TtC9SeymourUI18TintableShapeLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   sub_20C13DA64();

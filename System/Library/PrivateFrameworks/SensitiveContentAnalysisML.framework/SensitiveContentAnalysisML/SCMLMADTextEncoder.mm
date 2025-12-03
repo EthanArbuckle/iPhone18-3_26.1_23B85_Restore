@@ -1,22 +1,22 @@
 @interface SCMLMADTextEncoder
-+ (id)getServiceWithError:(id *)a3;
-+ (id)newRequestWithError:(id *)a3 withVersion:(unint64_t)a4;
-- (SCMLMADTextEncoder)initWithError:(id *)a3;
-- (void)embedTextAsynchronously:(id)a3 version:(unint64_t)a4 completionHandler:(id)a5;
++ (id)getServiceWithError:(id *)error;
++ (id)newRequestWithError:(id *)error withVersion:(unint64_t)version;
+- (SCMLMADTextEncoder)initWithError:(id *)error;
+- (void)embedTextAsynchronously:(id)asynchronously version:(unint64_t)version completionHandler:(id)handler;
 @end
 
 @implementation SCMLMADTextEncoder
 
-+ (id)newRequestWithError:(id *)a3 withVersion:(unint64_t)a4
++ (id)newRequestWithError:(id *)error withVersion:(unint64_t)version
 {
   if (!getMADTextEmbeddingRequestClass())
   {
-    if (a3)
+    if (error)
     {
       v9 = scml::error(0x15u, "failed to get MADTextEmbeddingRequest class", 43);
 LABEL_12:
       v8 = 0;
-      *a3 = v9;
+      *error = v9;
       return v8;
     }
 
@@ -26,7 +26,7 @@ LABEL_12:
   v6 = objc_alloc(getMADTextEmbeddingRequestClass());
   if (!v6)
   {
-    if (a3)
+    if (error)
     {
       v10 = "failed to alloc MADTextEmbeddingRequest";
       v11 = 39;
@@ -43,7 +43,7 @@ LABEL_11:
 
   if (!v8)
   {
-    if (a3)
+    if (error)
     {
       v10 = "failed to init MADTextEmbeddingRequest";
       v11 = 38;
@@ -53,42 +53,42 @@ LABEL_11:
     return 0;
   }
 
-  [v8 setVersion:toMADUnifiedEmbeddingVersion(a4)];
+  [v8 setVersion:toMADUnifiedEmbeddingVersion(version)];
   [v8 setComputeThreshold:1];
   return v8;
 }
 
-+ (id)getServiceWithError:(id *)a3
++ (id)getServiceWithError:(id *)error
 {
   if (getMADServiceClass())
   {
-    v4 = [getMADServiceClass() service];
+    service = [getMADServiceClass() service];
   }
 
-  else if (a3)
+  else if (error)
   {
     v5 = scml::error(0x15u, "failed to get MADService class", 30);
     v6 = v5;
-    v4 = 0;
-    *a3 = v5;
+    service = 0;
+    *error = v5;
   }
 
   else
   {
-    v4 = 0;
+    service = 0;
   }
 
-  return v4;
+  return service;
 }
 
-- (SCMLMADTextEncoder)initWithError:(id *)a3
+- (SCMLMADTextEncoder)initWithError:(id *)error
 {
   v8.receiver = self;
   v8.super_class = SCMLMADTextEncoder;
   v4 = [(SCMLMADTextEncoder *)&v8 init];
   if (v4)
   {
-    v5 = [SCMLMADTextEncoder getServiceWithError:a3];
+    v5 = [SCMLMADTextEncoder getServiceWithError:error];
     service = v4->_service;
     v4->_service = v5;
 
@@ -102,33 +102,33 @@ LABEL_11:
   return v4;
 }
 
-- (void)embedTextAsynchronously:(id)a3 version:(unint64_t)a4 completionHandler:(id)a5
+- (void)embedTextAsynchronously:(id)asynchronously version:(unint64_t)version completionHandler:(id)handler
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  asynchronouslyCopy = asynchronously;
+  handlerCopy = handler;
   v19 = 0;
-  v10 = [SCMLMADTextEncoder newRequestWithError:&v19 withVersion:a4];
+  v10 = [SCMLMADTextEncoder newRequestWithError:&v19 withVersion:version];
   v11 = v19;
   if (v10)
   {
     v21[0] = v10;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:1];
     service = self->_service;
-    v20 = v8;
+    v20 = asynchronouslyCopy;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v20 count:1];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __72__SCMLMADTextEncoder_embedTextAsynchronously_version_completionHandler___block_invoke;
     v16[3] = &unk_1E7EB3BD0;
     v17 = v10;
-    v18 = v9;
+    v18 = handlerCopy;
     [(MADService *)service performRequests:v12 text:v14 identifier:0 completionHandler:v16];
   }
 
   else
   {
-    (*(v9 + 2))(v9, 0, v11);
+    (*(handlerCopy + 2))(handlerCopy, 0, v11);
   }
 
   v15 = *MEMORY[0x1E69E9840];

@@ -39,12 +39,12 @@
 
 - (id)eventDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:self->_reactionType forKeyedSubscript:@"reactionType"];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_uiTriggeredReaction), @"uiTriggeredReaction"}];
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", +[BWCoreAnalyticsReporter clientApplicationIDType:](BWCoreAnalyticsReporter, "clientApplicationIDType:", self->_clientApplicationID)), @"clientIDType"}];
-  [v3 setObject:self->_clientApplicationID forKeyedSubscript:@"clientApplicationID"];
-  [v3 setObject:+[BWCoreAnalyticsReporter commonClientApplicationID:](BWCoreAnalyticsReporter forKeyedSubscript:{self->_clientApplicationID), @"commonClientApplicationID"}];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:self->_reactionType forKeyedSubscript:@"reactionType"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithBool:", self->_uiTriggeredReaction), @"uiTriggeredReaction"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", +[BWCoreAnalyticsReporter clientApplicationIDType:](BWCoreAnalyticsReporter, "clientApplicationIDType:", self->_clientApplicationID)), @"clientIDType"}];
+  [dictionary setObject:self->_clientApplicationID forKeyedSubscript:@"clientApplicationID"];
+  [dictionary setObject:+[BWCoreAnalyticsReporter commonClientApplicationID:](BWCoreAnalyticsReporter forKeyedSubscript:{self->_clientApplicationID), @"commonClientApplicationID"}];
   continuityCameraClientDeviceClass = self->_continuityCameraClientDeviceClass;
   v5 = @"AppleTV";
   if (continuityCameraClientDeviceClass != 4)
@@ -64,10 +64,10 @@
 
   if (v6)
   {
-    [v3 setObject:v6 forKeyedSubscript:@"continuityCameraClientDeviceClass"];
+    [dictionary setObject:v6 forKeyedSubscript:@"continuityCameraClientDeviceClass"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 @end

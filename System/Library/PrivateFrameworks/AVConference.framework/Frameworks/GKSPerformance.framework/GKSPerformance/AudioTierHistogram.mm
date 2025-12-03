@@ -1,7 +1,7 @@
 @interface AudioTierHistogram
 - (AudioTierHistogram)init;
 - (id)newReport;
-- (void)accumulateTime:(double)a3 forAudioTier:(id)a4;
+- (void)accumulateTime:(double)time forAudioTier:(id)tier;
 - (void)dealloc;
 - (void)end;
 @end
@@ -48,18 +48,18 @@
   [(AudioTierHistogram *)&v6 dealloc];
 }
 
-- (void)accumulateTime:(double)a3 forAudioTier:(id)a4
+- (void)accumulateTime:(double)time forAudioTier:(id)tier
 {
   v7 = objc_autoreleasePoolPush();
-  v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->histogram, "objectForKeyedSubscript:", [a4 description]);
+  v8 = -[NSMutableDictionary objectForKeyedSubscript:](self->histogram, "objectForKeyedSubscript:", [tier description]);
   if (v8)
   {
-    a4 = v8;
+    tier = v8;
   }
 
-  [a4 duration];
-  [a4 setDuration:v9 + a3];
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->histogram, "setObject:forKeyedSubscript:", a4, [a4 description]);
+  [tier duration];
+  [tier setDuration:v9 + time];
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->histogram, "setObject:forKeyedSubscript:", tier, [tier description]);
 
   objc_autoreleasePoolPop(v7);
 }

@@ -1,42 +1,42 @@
 @interface _SFPBMailResultDetails
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBMailResultDetails)initWithDictionary:(id)a3;
-- (_SFPBMailResultDetails)initWithFacade:(id)a3;
-- (_SFPBMailResultDetails)initWithJSON:(id)a3;
+- (_SFPBMailResultDetails)initWithDictionary:(id)dictionary;
+- (_SFPBMailResultDetails)initWithFacade:(id)facade;
+- (_SFPBMailResultDetails)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBMailResultDetails
 
-- (_SFPBMailResultDetails)initWithFacade:(id)a3
+- (_SFPBMailResultDetails)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBMailResultDetails *)self init];
   if (v5)
   {
-    if ([v4 hasDataSources])
+    if ([facadeCopy hasDataSources])
     {
-      -[_SFPBMailResultDetails setDataSources:](v5, "setDataSources:", [v4 dataSources]);
+      -[_SFPBMailResultDetails setDataSources:](v5, "setDataSources:", [facadeCopy dataSources]);
     }
 
-    v6 = [v4 suggestionScore];
+    suggestionScore = [facadeCopy suggestionScore];
 
-    if (v6)
+    if (suggestionScore)
     {
-      v7 = [v4 suggestionScore];
-      [v7 floatValue];
+      suggestionScore2 = [facadeCopy suggestionScore];
+      [suggestionScore2 floatValue];
       [(_SFPBMailResultDetails *)v5 setSuggestionScore:?];
     }
 
-    v8 = [v4 skgMegadomeSpotlightIndexEntries];
+    skgMegadomeSpotlightIndexEntries = [facadeCopy skgMegadomeSpotlightIndexEntries];
 
-    if (v8)
+    if (skgMegadomeSpotlightIndexEntries)
     {
-      v9 = [v4 skgMegadomeSpotlightIndexEntries];
-      -[_SFPBMailResultDetails setSkgMegadomeSpotlightIndexEntries:](v5, "setSkgMegadomeSpotlightIndexEntries:", [v9 intValue]);
+      skgMegadomeSpotlightIndexEntries2 = [facadeCopy skgMegadomeSpotlightIndexEntries];
+      -[_SFPBMailResultDetails setSkgMegadomeSpotlightIndexEntries:](v5, "setSkgMegadomeSpotlightIndexEntries:", [skgMegadomeSpotlightIndexEntries2 intValue]);
     }
 
     v10 = v5;
@@ -45,22 +45,22 @@
   return v5;
 }
 
-- (_SFPBMailResultDetails)initWithDictionary:(id)a3
+- (_SFPBMailResultDetails)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = _SFPBMailResultDetails;
   v5 = [(_SFPBMailResultDetails *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"dataSources"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"dataSources"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[_SFPBMailResultDetails setDataSources:](v5, "setDataSources:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"suggestionScore"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"suggestionScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -68,7 +68,7 @@
       [(_SFPBMailResultDetails *)v5 setSuggestionScore:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"skgMegadomeSpotlightIndexEntries"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"skgMegadomeSpotlightIndexEntries"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (_SFPBMailResultDetails)initWithJSON:(id)a3
+- (_SFPBMailResultDetails)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBMailResultDetails *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBMailResultDetails *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBMailResultDetails *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,27 +117,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dataSources)
   {
-    v4 = [(_SFPBMailResultDetails *)self dataSources];
-    if (v4 >= 4)
+    dataSources = [(_SFPBMailResultDetails *)self dataSources];
+    if (dataSources >= 4)
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", dataSources];
     }
 
     else
     {
-      v5 = off_1E7ACE560[v4];
+      v5 = off_1E7ACE560[dataSources];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"dataSources"];
+    [dictionary setObject:v5 forKeyedSubscript:@"dataSources"];
   }
 
   if (self->_skgMegadomeSpotlightIndexEntries)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:{-[_SFPBMailResultDetails skgMegadomeSpotlightIndexEntries](self, "skgMegadomeSpotlightIndexEntries")}];
-    [v3 setObject:v6 forKeyedSubscript:@"skgMegadomeSpotlightIndexEntries"];
+    [dictionary setObject:v6 forKeyedSubscript:@"skgMegadomeSpotlightIndexEntries"];
   }
 
   if (self->_suggestionScore != 0.0)
@@ -145,10 +145,10 @@
     v7 = MEMORY[0x1E696AD98];
     [(_SFPBMailResultDetails *)self suggestionScore];
     v8 = [v7 numberWithFloat:?];
-    [v3 setObject:v8 forKeyedSubscript:@"suggestionScore"];
+    [dictionary setObject:v8 forKeyedSubscript:@"suggestionScore"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -191,13 +191,13 @@
   return v9 ^ (2654435761 * self->_dataSources) ^ (2654435761 * self->_skgMegadomeSpotlightIndexEntries);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (dataSources = self->_dataSources, dataSources == objc_msgSend(v4, "dataSources")) && (suggestionScore = self->_suggestionScore, objc_msgSend(v4, "suggestionScore"), suggestionScore == v7))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (dataSources = self->_dataSources, dataSources == objc_msgSend(equalCopy, "dataSources")) && (suggestionScore = self->_suggestionScore, objc_msgSend(equalCopy, "suggestionScore"), suggestionScore == v7))
   {
     skgMegadomeSpotlightIndexEntries = self->_skgMegadomeSpotlightIndexEntries;
-    v8 = skgMegadomeSpotlightIndexEntries == [v4 skgMegadomeSpotlightIndexEntries];
+    v8 = skgMegadomeSpotlightIndexEntries == [equalCopy skgMegadomeSpotlightIndexEntries];
   }
 
   else
@@ -208,9 +208,9 @@
   return v8;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if ([(_SFPBMailResultDetails *)self dataSources])
   {
     PBDataWriterWriteInt32Field();
@@ -222,12 +222,12 @@
     PBDataWriterWriteFloatField();
   }
 
-  v5 = [(_SFPBMailResultDetails *)self skgMegadomeSpotlightIndexEntries];
-  v6 = v7;
-  if (v5)
+  skgMegadomeSpotlightIndexEntries = [(_SFPBMailResultDetails *)self skgMegadomeSpotlightIndexEntries];
+  v6 = toCopy;
+  if (skgMegadomeSpotlightIndexEntries)
   {
     PBDataWriterWriteInt32Field();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 

@@ -4,18 +4,18 @@
 - (HMDHomeManager)homeManager;
 - (HMDIdentityRegistry)init;
 - (NSArray)registeredIdentities;
-- (id)_userForIdenity:(id)a3;
-- (id)accountsForIdentity:(id)a3;
+- (id)_userForIdenity:(id)idenity;
+- (id)accountsForIdentity:(id)identity;
 - (id)attributeDescriptions;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
-- (id)identitiesForAccount:(id)a3;
-- (id)identitiesForAccountIdentifier:(id)a3;
-- (id)identitiesForDevice:(id)a3;
-- (id)identityForIdentifier:(id)a3;
-- (id)userForDevice:(id)a3;
-- (void)deregisterIdentity:(id)a3 object:(id)a4;
-- (void)registerIdentity:(id)a3 account:(id)a4 object:(id)a5;
-- (void)registerIdentity:(id)a3 device:(id)a4 object:(id)a5;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
+- (id)identitiesForAccount:(id)account;
+- (id)identitiesForAccountIdentifier:(id)identifier;
+- (id)identitiesForDevice:(id)device;
+- (id)identityForIdentifier:(id)identifier;
+- (id)userForDevice:(id)device;
+- (void)deregisterIdentity:(id)identity object:(id)object;
+- (void)registerIdentity:(id)identity account:(id)account object:(id)object;
+- (void)registerIdentity:(id)identity device:(id)device object:(id)object;
 - (void)reset;
 @end
 
@@ -28,17 +28,17 @@
   return WeakRetained;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v132 = *MEMORY[0x277D85DE8];
-  v67 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(HMDIdentityRegistry *)self registeredIdentities];
-  v76 = [MEMORY[0x277CCAB00] mapTableWithStrongToStrongObjects];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  registeredIdentities = [(HMDIdentityRegistry *)self registeredIdentities];
+  mapTableWithStrongToStrongObjects = [MEMORY[0x277CCAB00] mapTableWithStrongToStrongObjects];
   v116 = 0u;
   v117 = 0u;
   v118 = 0u;
   v119 = 0u;
-  v5 = v4;
+  v5 = registeredIdentities;
   v6 = [v5 countByEnumeratingWithState:&v116 objects:v131 count:16];
   if (v6)
   {
@@ -69,14 +69,14 @@
 
         if (v12)
         {
-          v13 = [v12 device];
-          v14 = [v76 objectForKey:v13];
+          device = [v12 device];
+          v14 = [mapTableWithStrongToStrongObjects objectForKey:device];
 
           if (!v14)
           {
             v14 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-            v15 = [v12 device];
-            [v76 setObject:v14 forKey:v15];
+            device2 = [v12 device];
+            [mapTableWithStrongToStrongObjects setObject:v14 forKey:device2];
           }
 
           [v14 addObject:v12];
@@ -91,12 +91,12 @@
 
   v65 = v5;
 
-  v72 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v76, "count")}];
+  v72 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(mapTableWithStrongToStrongObjects, "count")}];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
   v115 = 0u;
-  obj = [v76 keyEnumerator];
+  obj = [mapTableWithStrongToStrongObjects keyEnumerator];
   v74 = [obj countByEnumeratingWithState:&v112 objects:v130 count:16];
   if (v74)
   {
@@ -113,7 +113,7 @@
 
         v78 = *(*(&v112 + 1) + 8 * v16);
         v80 = v16;
-        v17 = [v76 objectForKey:v65];
+        v17 = [mapTableWithStrongToStrongObjects objectForKey:v65];
         v86 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v17, "count")}];
         v108 = 0u;
         v109 = 0u;
@@ -135,13 +135,13 @@
               }
 
               v21 = *(*(&v108 + 1) + 8 * j);
-              v22 = [MEMORY[0x277CBEB18] array];
+              array = [MEMORY[0x277CBEB18] array];
               v104 = 0u;
               v105 = 0u;
               v106 = 0u;
               v107 = 0u;
-              v23 = [v21 registeredObjects];
-              v24 = [v23 countByEnumeratingWithState:&v104 objects:v128 count:16];
+              registeredObjects = [v21 registeredObjects];
+              v24 = [registeredObjects countByEnumeratingWithState:&v104 objects:v128 count:16];
               if (v24)
               {
                 v25 = v24;
@@ -152,15 +152,15 @@
                   {
                     if (*v105 != v26)
                     {
-                      objc_enumerationMutation(v23);
+                      objc_enumerationMutation(registeredObjects);
                     }
 
-                    v28 = [*(*(&v104 + 1) + 8 * k) observedObject];
-                    v29 = [v28 description];
-                    [v22 addObject:v29];
+                    observedObject = [*(*(&v104 + 1) + 8 * k) observedObject];
+                    v29 = [observedObject description];
+                    [array addObject:v29];
                   }
 
-                  v25 = [v23 countByEnumeratingWithState:&v104 objects:v128 count:16];
+                  v25 = [registeredObjects countByEnumeratingWithState:&v104 objects:v128 count:16];
                 }
 
                 while (v25);
@@ -170,7 +170,7 @@
               v30 = [v21 description];
               v126[1] = @"Objects";
               v127[0] = v30;
-              v127[1] = v22;
+              v127[1] = array;
               v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v127 forKeys:v126 count:2];
               [v86 addObject:v31];
             }
@@ -181,8 +181,8 @@
           while (v19);
         }
 
-        v32 = [v78 shortDescription];
-        [v72 setObject:v86 forKey:v32];
+        shortDescription = [v78 shortDescription];
+        [v72 setObject:v86 forKey:shortDescription];
 
         v16 = v80 + 1;
       }
@@ -195,9 +195,9 @@
   }
 
   v33 = [v72 copy];
-  [v67 setObject:v33 forKeyedSubscript:@"deviceIdentities"];
+  [dictionary setObject:v33 forKeyedSubscript:@"deviceIdentities"];
 
-  v77 = [MEMORY[0x277CCAB00] mapTableWithStrongToStrongObjects];
+  mapTableWithStrongToStrongObjects2 = [MEMORY[0x277CCAB00] mapTableWithStrongToStrongObjects];
   v100 = 0u;
   v101 = 0u;
   v102 = 0u;
@@ -233,14 +233,14 @@
 
         if (v41)
         {
-          v42 = [v41 account];
-          v43 = [v77 objectForKey:v42];
+          account = [v41 account];
+          v43 = [mapTableWithStrongToStrongObjects2 objectForKey:account];
 
           if (!v43)
           {
             v43 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
-            v44 = [v41 account];
-            [v77 setObject:v43 forKey:v44];
+            account2 = [v41 account];
+            [mapTableWithStrongToStrongObjects2 setObject:v43 forKey:account2];
           }
 
           [v43 addObject:{v41, v65}];
@@ -255,12 +255,12 @@
 
   v66 = v34;
 
-  v73 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v77, "count")}];
+  v73 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(mapTableWithStrongToStrongObjects2, "count")}];
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  obja = [v77 keyEnumerator];
+  obja = [mapTableWithStrongToStrongObjects2 keyEnumerator];
   v75 = [obja countByEnumeratingWithState:&v96 objects:v124 count:16];
   if (v75)
   {
@@ -277,7 +277,7 @@
 
         v79 = *(*(&v96 + 1) + 8 * v45);
         v81 = v45;
-        v46 = [v77 objectForKey:v66];
+        v46 = [mapTableWithStrongToStrongObjects2 objectForKey:v66];
         v87 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v46, "count")}];
         v92 = 0u;
         v93 = 0u;
@@ -299,13 +299,13 @@
               }
 
               v50 = *(*(&v92 + 1) + 8 * n);
-              v51 = [MEMORY[0x277CBEB18] array];
+              array2 = [MEMORY[0x277CBEB18] array];
               v88 = 0u;
               v89 = 0u;
               v90 = 0u;
               v91 = 0u;
-              v52 = [v50 registeredObjects];
-              v53 = [v52 countByEnumeratingWithState:&v88 objects:v122 count:16];
+              registeredObjects2 = [v50 registeredObjects];
+              v53 = [registeredObjects2 countByEnumeratingWithState:&v88 objects:v122 count:16];
               if (v53)
               {
                 v54 = v53;
@@ -316,15 +316,15 @@
                   {
                     if (*v89 != v55)
                     {
-                      objc_enumerationMutation(v52);
+                      objc_enumerationMutation(registeredObjects2);
                     }
 
-                    v57 = [*(*(&v88 + 1) + 8 * ii) observedObject];
-                    v58 = [v57 description];
-                    [v51 addObject:v58];
+                    observedObject2 = [*(*(&v88 + 1) + 8 * ii) observedObject];
+                    v58 = [observedObject2 description];
+                    [array2 addObject:v58];
                   }
 
-                  v54 = [v52 countByEnumeratingWithState:&v88 objects:v122 count:16];
+                  v54 = [registeredObjects2 countByEnumeratingWithState:&v88 objects:v122 count:16];
                 }
 
                 while (v54);
@@ -334,7 +334,7 @@
               v59 = [v50 description];
               v120[1] = @"Objects";
               v121[0] = v59;
-              v121[1] = v51;
+              v121[1] = array2;
               v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v121 forKeys:v120 count:2];
               [v87 addObject:v60];
             }
@@ -345,8 +345,8 @@
           while (v48);
         }
 
-        v61 = [v79 shortDescription];
-        [v73 setObject:v87 forKey:v61];
+        shortDescription2 = [v79 shortDescription];
+        [v73 setObject:v87 forKey:shortDescription2];
 
         v45 = v81 + 1;
       }
@@ -359,22 +359,22 @@
   }
 
   v62 = [v73 copy];
-  [v67 setObject:v62 forKeyedSubscript:@"accountIdentities"];
+  [dictionary setObject:v62 forKeyedSubscript:@"accountIdentities"];
 
   v63 = *MEMORY[0x277D85DE8];
 
-  return v67;
+  return dictionary;
 }
 
 - (void)reset
 {
-  v3 = [(HMDIdentityRegistry *)self lock];
+  lock = [(HMDIdentityRegistry *)self lock];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __28__HMDIdentityRegistry_reset__block_invoke;
   v4[3] = &unk_279735D00;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [lock performBlock:v4];
 }
 
 uint64_t __28__HMDIdentityRegistry_reset__block_invoke(uint64_t a1)
@@ -427,22 +427,22 @@ uint64_t __28__HMDIdentityRegistry_reset__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)deregisterIdentity:(id)a3 object:(id)a4
+- (void)deregisterIdentity:(id)identity object:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6 && v7)
+  identityCopy = identity;
+  objectCopy = object;
+  v8 = objectCopy;
+  if (identityCopy && objectCopy)
   {
-    v9 = [(HMDIdentityRegistry *)self lock];
+    lock = [(HMDIdentityRegistry *)self lock];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __49__HMDIdentityRegistry_deregisterIdentity_object___block_invoke;
     v10[3] = &unk_279734960;
     v10[4] = self;
-    v11 = v6;
+    v11 = identityCopy;
     v12 = v8;
-    [v9 performBlock:v10];
+    [lock performBlock:v10];
   }
 }
 
@@ -554,28 +554,28 @@ LABEL_19:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerIdentity:(id)a3 account:(id)a4 object:(id)a5
+- (void)registerIdentity:(id)identity account:(id)account object:(id)object
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  identityCopy = identity;
+  accountCopy = account;
+  objectCopy = object;
+  v11 = objectCopy;
+  if (identityCopy && accountCopy && objectCopy)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v9 shortDescription];
+      shortDescription = [accountCopy shortDescription];
       *buf = 138544130;
       v26 = v15;
       v27 = 2112;
-      v28 = v8;
+      v28 = identityCopy;
       v29 = 2112;
-      v30 = v16;
+      v30 = shortDescription;
       v31 = 2112;
       v32 = v11;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Registering identity, %@, for account, %@, for object: %@", buf, 0x2Au);
@@ -583,17 +583,17 @@ LABEL_19:
 
     objc_autoreleasePoolPop(v12);
     v17 = [objc_alloc(MEMORY[0x277D0F898]) initWithObservedObject:v11];
-    v18 = [(HMDIdentityRegistry *)v13 lock];
+    lock = [(HMDIdentityRegistry *)selfCopy lock];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __55__HMDIdentityRegistry_registerIdentity_account_object___block_invoke;
     v21[3] = &unk_279734870;
-    v21[4] = v13;
-    v22 = v8;
-    v23 = v9;
+    v21[4] = selfCopy;
+    v22 = identityCopy;
+    v23 = accountCopy;
     v24 = v17;
     v19 = v17;
-    [v18 performBlock:v21];
+    [lock performBlock:v21];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -684,28 +684,28 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerIdentity:(id)a3 device:(id)a4 object:(id)a5
+- (void)registerIdentity:(id)identity device:(id)device object:(id)object
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v8 && v9 && v10)
+  identityCopy = identity;
+  deviceCopy = device;
+  objectCopy = object;
+  v11 = objectCopy;
+  if (identityCopy && deviceCopy && objectCopy)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v9 shortDescription];
+      shortDescription = [deviceCopy shortDescription];
       *buf = 138544130;
       v26 = v15;
       v27 = 2112;
-      v28 = v8;
+      v28 = identityCopy;
       v29 = 2112;
-      v30 = v16;
+      v30 = shortDescription;
       v31 = 2112;
       v32 = v11;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_DEBUG, "%{public}@Registering identity, %@, for device, %@, for object: %@", buf, 0x2Au);
@@ -713,17 +713,17 @@ LABEL_17:
 
     objc_autoreleasePoolPop(v12);
     v17 = [objc_alloc(MEMORY[0x277D0F898]) initWithObservedObject:v11];
-    v18 = [(HMDIdentityRegistry *)v13 lock];
+    lock = [(HMDIdentityRegistry *)selfCopy lock];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __54__HMDIdentityRegistry_registerIdentity_device_object___block_invoke;
     v21[3] = &unk_279734870;
-    v21[4] = v13;
-    v22 = v8;
-    v23 = v9;
+    v21[4] = selfCopy;
+    v22 = identityCopy;
+    v23 = deviceCopy;
     v24 = v17;
     v19 = v17;
-    [v18 performBlock:v21];
+    [lock performBlock:v21];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -814,10 +814,10 @@ LABEL_17:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)accountsForIdentity:(id)a3
+- (id)accountsForIdentity:(id)identity
 {
-  v4 = a3;
-  if (v4)
+  identityCopy = identity;
+  if (identityCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -825,15 +825,15 @@ LABEL_17:
     v14 = __Block_byref_object_copy__11258;
     v15 = __Block_byref_object_dispose__11259;
     v16 = 0;
-    v5 = [(HMDIdentityRegistry *)self lock];
+    lock = [(HMDIdentityRegistry *)self lock];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __43__HMDIdentityRegistry_accountsForIdentity___block_invoke;
     v8[3] = &unk_279735BC0;
     v8[4] = self;
-    v9 = v4;
+    v9 = identityCopy;
     v10 = &v11;
-    [v5 performBlock:v8];
+    [lock performBlock:v8];
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -945,10 +945,10 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)identitiesForAccountIdentifier:(id)a3
+- (id)identitiesForAccountIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -956,15 +956,15 @@ LABEL_12:
     v14 = __Block_byref_object_copy__11258;
     v15 = __Block_byref_object_dispose__11259;
     v16 = 0;
-    v5 = [(HMDIdentityRegistry *)self lock];
+    lock = [(HMDIdentityRegistry *)self lock];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __54__HMDIdentityRegistry_identitiesForAccountIdentifier___block_invoke;
     v8[3] = &unk_279735BC0;
     v8[4] = self;
-    v9 = v4;
+    v9 = identifierCopy;
     v10 = &v11;
-    [v5 performBlock:v8];
+    [lock performBlock:v8];
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -1044,10 +1044,10 @@ void __54__HMDIdentityRegistry_identitiesForAccountIdentifier___block_invoke(voi
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)identitiesForAccount:(id)a3
+- (id)identitiesForAccount:(id)account
 {
-  v4 = a3;
-  if (v4)
+  accountCopy = account;
+  if (accountCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -1055,15 +1055,15 @@ void __54__HMDIdentityRegistry_identitiesForAccountIdentifier___block_invoke(voi
     v14 = __Block_byref_object_copy__11258;
     v15 = __Block_byref_object_dispose__11259;
     v16 = 0;
-    v5 = [(HMDIdentityRegistry *)self lock];
+    lock = [(HMDIdentityRegistry *)self lock];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __44__HMDIdentityRegistry_identitiesForAccount___block_invoke;
     v8[3] = &unk_279735BC0;
     v8[4] = self;
-    v9 = v4;
+    v9 = accountCopy;
     v10 = &v11;
-    [v5 performBlock:v8];
+    [lock performBlock:v8];
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -1142,30 +1142,30 @@ void __44__HMDIdentityRegistry_identitiesForAccount___block_invoke(void *a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)identitiesForDevice:(id)a3
+- (id)identitiesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (deviceCopy)
   {
-    v6 = [v4 account];
+    account = [deviceCopy account];
     v15 = 0;
     v16 = &v15;
     v17 = 0x3032000000;
     v18 = __Block_byref_object_copy__11258;
     v19 = __Block_byref_object_dispose__11259;
     v20 = 0;
-    v7 = [(HMDIdentityRegistry *)self lock];
+    lock = [(HMDIdentityRegistry *)self lock];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __43__HMDIdentityRegistry_identitiesForDevice___block_invoke;
     v11[3] = &unk_279722F58;
     v11[4] = self;
     v12 = v5;
-    v8 = v6;
+    v8 = account;
     v13 = v8;
     v14 = &v15;
-    [v7 performBlock:v11];
+    [lock performBlock:v11];
 
     v9 = v16[5];
     _Block_object_dispose(&v15, 8);
@@ -1264,25 +1264,25 @@ LABEL_17:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)userForDevice:(id)a3
+- (id)userForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = +[HMDIdentityRegistry sharedRegistry];
-  v6 = [v5 identitiesForDevice:v4];
+  v6 = [v5 identitiesForDevice:deviceCopy];
 
   if ([v6 count])
   {
-    v7 = [v6 firstObject];
-    if (v7)
+    firstObject = [v6 firstObject];
+    if (firstObject)
     {
-      v8 = [(HMDIdentityRegistry *)self _userForIdenity:v7];
+      v8 = [(HMDIdentityRegistry *)self _userForIdenity:firstObject];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
   v8 = 0;
@@ -1291,18 +1291,18 @@ LABEL_6:
   return v8;
 }
 
-- (id)_userForIdenity:(id)a3
+- (id)_userForIdenity:(id)idenity
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idenityCopy = idenity;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(HMDIdentityRegistry *)self homeManager];
-  v6 = [v5 homes];
+  homeManager = [(HMDIdentityRegistry *)self homeManager];
+  homes = [homeManager homes];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [homes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1313,10 +1313,10 @@ LABEL_6:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(homes);
         }
 
-        v11 = [*(*(&v15 + 1) + 8 * i) userWithPairingIdentity:v4];
+        v11 = [*(*(&v15 + 1) + 8 * i) userWithPairingIdentity:idenityCopy];
         if (v11)
         {
           v12 = v11;
@@ -1324,7 +1324,7 @@ LABEL_6:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [homes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -1342,10 +1342,10 @@ LABEL_11:
   return v12;
 }
 
-- (id)identityForIdentifier:(id)a3
+- (id)identityForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -1353,15 +1353,15 @@ LABEL_11:
     v14 = __Block_byref_object_copy__11258;
     v15 = __Block_byref_object_dispose__11259;
     v16 = 0;
-    v5 = [(HMDIdentityRegistry *)self lock];
+    lock = [(HMDIdentityRegistry *)self lock];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __45__HMDIdentityRegistry_identityForIdentifier___block_invoke;
     v8[3] = &unk_279735BC0;
     v8[4] = self;
-    v9 = v4;
+    v9 = identifierCopy;
     v10 = &v11;
-    [v5 performBlock:v8];
+    [lock performBlock:v8];
 
     v6 = v12[5];
     _Block_object_dispose(&v11, 8);
@@ -1487,14 +1487,14 @@ LABEL_21:
   v10 = __Block_byref_object_copy__11258;
   v11 = __Block_byref_object_dispose__11259;
   v12 = 0;
-  v3 = [(HMDIdentityRegistry *)self lock];
+  lock = [(HMDIdentityRegistry *)self lock];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __43__HMDIdentityRegistry_registeredIdentities__block_invoke;
   v6[3] = &unk_279734898;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlock:v6];
+  [lock performBlock:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1516,8 +1516,8 @@ uint64_t __43__HMDIdentityRegistry_registeredIdentities__block_invoke(uint64_t a
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDIdentityRegistry *)self registeredIdentities];
-  v5 = [v3 initWithName:@"Identities" value:v4];
+  registeredIdentities = [(HMDIdentityRegistry *)self registeredIdentities];
+  v5 = [v3 initWithName:@"Identities" value:registeredIdentities];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -1537,9 +1537,9 @@ uint64_t __43__HMDIdentityRegistry_registeredIdentities__block_invoke(uint64_t a
     lock = v2->_lock;
     v2->_lock = v3;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     registeredIdentities = v2->_registeredIdentities;
-    v2->_registeredIdentities = v5;
+    v2->_registeredIdentities = array;
   }
 
   return v2;
@@ -1571,7 +1571,7 @@ uint64_t __34__HMDIdentityRegistry_logCategory__block_invoke()
   block[1] = 3221225472;
   block[2] = __37__HMDIdentityRegistry_sharedRegistry__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedRegistry_onceToken != -1)
   {
     dispatch_once(&sharedRegistry_onceToken, block);

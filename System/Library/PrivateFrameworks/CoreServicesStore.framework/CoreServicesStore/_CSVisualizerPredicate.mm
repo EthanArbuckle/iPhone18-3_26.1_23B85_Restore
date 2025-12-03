@@ -1,13 +1,13 @@
 @interface _CSVisualizerPredicate
-+ (id)constantValueForExpression:(id)a3;
-+ (id)predicateWithFormatString:(id)a3 error:(id *)a4;
-+ (id)translateNSPredicate:(id)a3 error:(id *)a4;
-+ (void)getRanges:(void *)a3 matchingPredicate:(id)a4 inDescription:(id)a5;
-- (BOOL)evaluateNumerically:(id)a3;
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4;
-- (BOOL)getRanges:(void *)a3 inDescription:(id)a4 options:(unint64_t)a5 limit:(unint64_t)a6 searchedInRange:(_NSRange *)a7;
-- (_CSVisualizerPredicate)initWithExpression:(id)a3;
-- (_CSVisualizerPredicate)initWithSearchString:(id)a3 forTitle:(id)a4 operator:(unint64_t)a5 error:(id *)a6;
++ (id)constantValueForExpression:(id)expression;
++ (id)predicateWithFormatString:(id)string error:(id *)error;
++ (id)translateNSPredicate:(id)predicate error:(id *)error;
++ (void)getRanges:(void *)ranges matchingPredicate:(id)predicate inDescription:(id)description;
+- (BOOL)evaluateNumerically:(id)numerically;
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables;
+- (BOOL)getRanges:(void *)ranges inDescription:(id)description options:(unint64_t)options limit:(unint64_t)limit searchedInRange:(_NSRange *)range;
+- (_CSVisualizerPredicate)initWithExpression:(id)expression;
+- (_CSVisualizerPredicate)initWithSearchString:(id)string forTitle:(id)title operator:(unint64_t)operator error:(id *)error;
 - (id)debugDescription;
 - (id)predicateFormat;
 @end
@@ -18,8 +18,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(_CSVisualizerPredicate *)self predicateFormat];
-  v6 = [v3 stringWithFormat:@"<%@ %p> { %@ }", v4, self, v5];
+  predicateFormat = [(_CSVisualizerPredicate *)self predicateFormat];
+  v6 = [v3 stringWithFormat:@"<%@ %p> { %@ }", v4, self, predicateFormat];
 
   return v6;
 }
@@ -40,17 +40,17 @@
   v5 = [MEMORY[0x1E696ABC8] expressionForConstantValue:title];
   v6 = [MEMORY[0x1E696ABC8] expressionForConstantValue:self->_searchString];
   v7 = [objc_alloc(MEMORY[0x1E696AB18]) initWithLeftExpression:v5 rightExpression:v6 modifier:0 type:self->_operator options:0];
-  v8 = [v7 predicateFormat];
+  predicateFormat = [v7 predicateFormat];
 
   objc_autoreleasePoolPop(v3);
 
-  return v8;
+  return predicateFormat;
 }
 
-- (BOOL)evaluateWithObject:(id)a3 substitutionVariables:(id)a4
+- (BOOL)evaluateWithObject:(id)object substitutionVariables:(id)variables
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -64,18 +64,18 @@
   return 0;
 }
 
-- (BOOL)getRanges:(void *)a3 inDescription:(id)a4 options:(unint64_t)a5 limit:(unint64_t)a6 searchedInRange:(_NSRange *)a7
+- (BOOL)getRanges:(void *)ranges inDescription:(id)description options:(unint64_t)options limit:(unint64_t)limit searchedInRange:(_NSRange *)range
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v12 = a4;
+  descriptionCopy = description;
   context = objc_autoreleasePoolPush();
   v33 = self->_searchString;
-  v13 = [v12 string];
-  v14 = v13;
+  string = [descriptionCopy string];
+  v14 = string;
   title = self->_title;
   if (title)
   {
-    v16 = [_CSVisualizer rangeOfValueForTitle:title inDescription:v12];
+    v16 = [_CSVisualizer rangeOfValueForTitle:title inDescription:descriptionCopy];
     v18 = v17;
     v35.location = v16;
     v35.length = v17;
@@ -84,7 +84,7 @@
 
   else
   {
-    v18 = [v13 length];
+    v18 = [string length];
     v16 = 0;
     v35.location = 0;
     v35.length = v18;
@@ -92,18 +92,18 @@
   }
 
   v31 = v19;
-  if (a7)
+  if (range)
   {
-    *a7 = v35;
+    *range = v35;
   }
 
   if (v14 && v16 != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (self->_numericPredicate)
     {
-      if ([(_CSVisualizerPredicate *)self evaluateNumerically:v12])
+      if ([(_CSVisualizerPredicate *)self evaluateNumerically:descriptionCopy])
       {
-        std::vector<_NSRange>::push_back[abi:nn200100](a3, &v35);
+        std::vector<_NSRange>::push_back[abi:nn200100](ranges, &v35);
       }
     }
 
@@ -134,7 +134,7 @@
 
       if ([v21 evaluateWithObject:0 substitutionVariables:v23])
       {
-        std::vector<_NSRange>::push_back[abi:nn200100](a3, &v35);
+        std::vector<_NSRange>::push_back[abi:nn200100](ranges, &v35);
       }
     }
 
@@ -144,12 +144,12 @@
       v25 = v16;
       do
       {
-        if (a6 <= (*(a3 + 1) - *a3) >> 4)
+        if (limit <= (*(ranges + 1) - *ranges) >> 4)
         {
           break;
         }
 
-        v26 = [v14 rangeOfString:v33 options:a5 | 1 range:{v25, v24}];
+        v26 = [v14 rangeOfString:v33 options:options | 1 range:{v25, v24}];
         v28 = v27;
         *&v34 = v26;
         *(&v34 + 1) = v27;
@@ -158,7 +158,7 @@
           break;
         }
 
-        std::vector<_NSRange>::push_back[abi:nn200100](a3, &v34);
+        std::vector<_NSRange>::push_back[abi:nn200100](ranges, &v34);
         v25 = v28 + v26;
         if (v28 + v26 == 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -177,20 +177,20 @@
   return v31;
 }
 
-- (BOOL)evaluateNumerically:(id)a3
+- (BOOL)evaluateNumerically:(id)numerically
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  numericallyCopy = numerically;
+  v5 = numericallyCopy;
   title = self->_title;
   if (title)
   {
-    v8 = [_CSVisualizer rangeOfValueForTitle:title inDescription:v4];
+    v8 = [_CSVisualizer rangeOfValueForTitle:title inDescription:numericallyCopy];
   }
 
   else
   {
-    v7 = [v4 length];
+    v7 = [numericallyCopy length];
     v8 = 0;
   }
 
@@ -201,8 +201,8 @@
     if (!v11)
     {
       v17 = objc_alloc(MEMORY[0x1E696AE88]);
-      v18 = [v10 string];
-      v14 = [v17 initWithString:v18];
+      string = [v10 string];
+      v14 = [v17 initWithString:string];
 
       [v14 setCaseSensitive:0];
       v24 = 0;
@@ -255,11 +255,11 @@ LABEL_10:
   return v9;
 }
 
-- (_CSVisualizerPredicate)initWithSearchString:(id)a3 forTitle:(id)a4 operator:(unint64_t)a5 error:(id *)a6
+- (_CSVisualizerPredicate)initWithSearchString:(id)string forTitle:(id)title operator:(unint64_t)operator error:(id *)error
 {
   v42[6] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  stringCopy = string;
+  titleCopy = title;
   v36.receiver = self;
   v36.super_class = _CSVisualizerPredicate;
   v12 = [(_CSVisualizerPredicate *)&v36 init];
@@ -274,22 +274,22 @@ LABEL_10:
     v38[2] = @"Failed to allocate NSPredicate instance.";
     v37[2] = v25;
     v37[3] = @"Operator";
-    v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+    v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:operator];
     v38[3] = v26;
-    v38[4] = v10;
+    v38[4] = stringCopy;
     v37[4] = @"SearchString";
     v37[5] = @"Title";
-    v38[5] = v11;
+    v38[5] = titleCopy;
     v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:6];
     v28 = [v24 errorWithDomain:*MEMORY[0x1E696A768] code:-41 userInfo:v27];
 LABEL_8:
     v17 = v28;
 
-    if (a6)
+    if (error)
     {
       v29 = v17;
       v12 = 0;
-      *a6 = v17;
+      *error = v17;
     }
 
     else
@@ -300,27 +300,27 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  v13 = [v10 copy];
+  v13 = [stringCopy copy];
   searchString = v12->_searchString;
   v12->_searchString = v13;
 
-  v15 = [v11 copy];
+  v15 = [titleCopy copy];
   title = v12->_title;
   v12->_title = v15;
 
   v17 = 0;
-  v12->_operator = a5;
-  if (a5 - 4 >= 6 && a5 != 99)
+  v12->_operator = operator;
+  if (operator - 4 >= 6 && operator != 99)
   {
-    if (v11)
+    if (titleCopy)
     {
-      if ([objc_opt_class() operatorIsNumeric:a5])
+      if ([objc_opt_class() operatorIsNumeric:operator])
       {
-        v18 = [MEMORY[0x1E696AB90] decimalNumberWithString:v10];
+        v18 = [MEMORY[0x1E696AB90] decimalNumberWithString:stringCopy];
         v19 = objc_alloc(MEMORY[0x1E696AB18]);
         v20 = [MEMORY[0x1E696ABC8] expressionForVariable:@"HAYSTACK"];
         v21 = [MEMORY[0x1E696ABC8] expressionForConstantValue:v18];
-        v22 = [v19 initWithLeftExpression:v20 rightExpression:v21 modifier:0 type:a5 options:0];
+        v22 = [v19 initWithLeftExpression:v20 rightExpression:v21 modifier:0 type:operator options:0];
         numericPredicate = v12->_numericPredicate;
         v12->_numericPredicate = v22;
 
@@ -337,12 +337,12 @@ LABEL_8:
       v42[2] = @"Unsupported operator type.";
       v41[2] = v35;
       v41[3] = @"Operator";
-      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:operator];
       v42[3] = v26;
-      v42[4] = v10;
+      v42[4] = stringCopy;
       v41[4] = @"SearchString";
       v41[5] = @"Title";
-      v42[5] = v11;
+      v42[5] = titleCopy;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:6];
       v28 = [v34 errorWithDomain:*MEMORY[0x1E696A768] code:-9495 userInfo:v27];
     }
@@ -359,10 +359,10 @@ LABEL_8:
       v40[2] = @"Unsupported operator type.";
       v39[2] = v33;
       v39[3] = @"Operator";
-      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+      v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:operator];
       v39[4] = @"SearchString";
       v40[3] = v26;
-      v40[4] = v10;
+      v40[4] = stringCopy;
       v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:5];
       v28 = [v32 errorWithDomain:*MEMORY[0x1E696A768] code:-9495 userInfo:v27];
     }
@@ -376,10 +376,10 @@ LABEL_11:
   return v12;
 }
 
-- (_CSVisualizerPredicate)initWithExpression:(id)a3
+- (_CSVisualizerPredicate)initWithExpression:(id)expression
 {
-  v4 = a3;
-  v5 = [objc_opt_class() constantValueForExpression:v4];
+  expressionCopy = expression;
+  v5 = [objc_opt_class() constantValueForExpression:expressionCopy];
   if (v5)
   {
     v6 = [(_CSVisualizerPredicate *)self initWithSearchString:v5 operator:99 error:0];
@@ -394,15 +394,15 @@ LABEL_11:
   return v6;
 }
 
-+ (void)getRanges:(void *)a3 matchingPredicate:(id)a4 inDescription:(id)a5
++ (void)getRanges:(void *)ranges matchingPredicate:(id)predicate inDescription:(id)description
 {
   v27 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  predicateCopy = predicate;
+  descriptionCopy = description;
+  v11 = descriptionCopy;
+  if (predicateCopy)
   {
-    if (v10)
+    if (descriptionCopy)
     {
       goto LABEL_3;
     }
@@ -410,8 +410,8 @@ LABEL_11:
 
   else
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:a1 file:@"CSPredicate.mm" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"predicate != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CSPredicate.mm" lineNumber:373 description:{@"Invalid parameter not satisfying: %@", @"predicate != nil"}];
 
     if (v11)
     {
@@ -419,18 +419,18 @@ LABEL_11:
     }
   }
 
-  v21 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v21 handleFailureInMethod:a2 object:a1 file:@"CSPredicate.mm" lineNumber:374 description:{@"Invalid parameter not satisfying: %@", @"description != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"CSPredicate.mm" lineNumber:374 description:{@"Invalid parameter not satisfying: %@", @"description != nil"}];
 
 LABEL_3:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v9;
+    v12 = predicateCopy;
     v13 = v12;
     if (v12[4] != 5)
     {
-      [v12 getRanges:a3 inDescription:v11 options:0 limit:-1 searchedInRange:0];
+      [v12 getRanges:ranges inDescription:v11 options:0 limit:-1 searchedInRange:0];
     }
   }
 
@@ -439,15 +439,15 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v14 = v9;
+      v14 = predicateCopy;
       if ([v14 compoundPredicateType])
       {
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v15 = [v14 subpredicates];
-        v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        subpredicates = [v14 subpredicates];
+        v16 = [subpredicates countByEnumeratingWithState:&v22 objects:v26 count:16];
         if (v16)
         {
           v17 = *v23;
@@ -458,14 +458,14 @@ LABEL_3:
             {
               if (*v23 != v17)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(subpredicates);
               }
 
-              [a1 getRanges:a3 matchingPredicate:*(*(&v22 + 1) + 8 * v18++) inDescription:v11];
+              [self getRanges:ranges matchingPredicate:*(*(&v22 + 1) + 8 * v18++) inDescription:v11];
             }
 
             while (v16 != v18);
-            v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+            v16 = [subpredicates countByEnumeratingWithState:&v22 objects:v26 count:16];
           }
 
           while (v16);
@@ -477,16 +477,16 @@ LABEL_3:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)predicateWithFormatString:(id)a3 error:(id *)a4
++ (id)predicateWithFormatString:(id)string error:(id *)error
 {
   v20[15] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  stringCopy = string;
   v7 = objc_autoreleasePoolPush();
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:v6 argumentArray:MEMORY[0x1E695E0F0]];
+  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:stringCopy argumentArray:MEMORY[0x1E695E0F0]];
   if (v8)
   {
     v18[0] = 0;
-    v9 = [a1 translateNSPredicate:v8 error:v18];
+    v9 = [self translateNSPredicate:v8 error:v18];
     v10 = v18[0];
 
     if (v9)
@@ -500,10 +500,10 @@ LABEL_3:
     v10 = 0;
   }
 
-  v11 = [MEMORY[0x1E696ABC8] expressionWithFormat:v6 argumentArray:MEMORY[0x1E695E0F0]];
+  v11 = [MEMORY[0x1E696ABC8] expressionWithFormat:stringCopy argumentArray:MEMORY[0x1E695E0F0]];
   if (v11)
   {
-    v9 = [[a1 alloc] initWithExpression:v11];
+    v9 = [[self alloc] initWithExpression:v11];
     if (!v9)
     {
       v12 = MEMORY[0x1E696ABC0];
@@ -530,10 +530,10 @@ LABEL_3:
 
 LABEL_10:
   objc_autoreleasePoolPop(v7);
-  if (a4 && !v9)
+  if (error && !v9)
   {
     v15 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -541,13 +541,13 @@ LABEL_10:
   return v9;
 }
 
-+ (id)translateNSPredicate:(id)a3 error:(id *)a4
++ (id)translateNSPredicate:(id)predicate error:(id *)error
 {
   v58 = *MEMORY[0x1E69E9840];
-  v40 = a3;
+  predicateCopy = predicate;
   v39 = [MEMORY[0x1E696AE18] predicateWithValue:1];
   v38 = [MEMORY[0x1E696AE18] predicateWithValue:0];
-  if (([v40 isEqual:v39] & 1) != 0 || objc_msgSend(v40, "isEqual:", v38))
+  if (([predicateCopy isEqual:v39] & 1) != 0 || objc_msgSend(predicateCopy, "isEqual:", v38))
   {
     goto LABEL_3;
   }
@@ -555,22 +555,22 @@ LABEL_10:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v36 = v40;
-    v12 = [v36 subpredicates];
-    if ([v12 count] == 1)
+    v36 = predicateCopy;
+    subpredicates = [v36 subpredicates];
+    if ([subpredicates count] == 1)
     {
-      v13 = [v36 compoundPredicateType];
+      compoundPredicateType = [v36 compoundPredicateType];
 
-      if (v13)
+      if (compoundPredicateType)
       {
-        v14 = [v36 subpredicates];
-        v15 = [v14 objectAtIndexedSubscript:0];
+        subpredicates2 = [v36 subpredicates];
+        array = [subpredicates2 objectAtIndexedSubscript:0];
         v48 = 0;
-        v5 = [a1 translateNSPredicate:v15 error:&v48];
+        v5 = [self translateNSPredicate:array error:&v48];
         v6 = v48;
 LABEL_35:
 
-        v15 = v14;
+        array = subpredicates2;
         goto LABEL_36;
       }
     }
@@ -579,14 +579,14 @@ LABEL_35:
     {
     }
 
-    v15 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v14 = [v36 subpredicates];
+    subpredicates2 = [v36 subpredicates];
     v6 = 0;
-    v25 = [v14 countByEnumeratingWithState:&v44 objects:v57 count:16];
+    v25 = [subpredicates2 countByEnumeratingWithState:&v44 objects:v57 count:16];
     if (v25)
     {
       v26 = *v45;
@@ -598,12 +598,12 @@ LABEL_35:
         {
           if (*v45 != v26)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(subpredicates2);
           }
 
           v29 = *(*(&v44 + 1) + 8 * v27);
           v43 = v28;
-          v30 = [a1 translateNSPredicate:v29 error:&v43];
+          v30 = [self translateNSPredicate:v29 error:&v43];
           v6 = v43;
 
           if (!v30)
@@ -612,14 +612,14 @@ LABEL_35:
             goto LABEL_35;
           }
 
-          [v15 addObject:v30];
+          [array addObject:v30];
 
           ++v27;
           v28 = v6;
         }
 
         while (v25 != v27);
-        v25 = [v14 countByEnumeratingWithState:&v44 objects:v57 count:16];
+        v25 = [subpredicates2 countByEnumeratingWithState:&v44 objects:v57 count:16];
         if (v25)
         {
           continue;
@@ -629,13 +629,13 @@ LABEL_35:
       }
     }
 
-    if (!v15)
+    if (!array)
     {
       v5 = 0;
       goto LABEL_37;
     }
 
-    v5 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(v36 subpredicates:{"compoundPredicateType"), v15}];
+    v5 = [objc_alloc(MEMORY[0x1E696AB28]) initWithType:objc_msgSend(v36 subpredicates:{"compoundPredicateType"), array}];
 LABEL_36:
 
 LABEL_37:
@@ -645,13 +645,13 @@ LABEL_37:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = v40;
-    v17 = [v16 leftExpression];
-    v18 = [a1 constantValueForExpression:v17];
+    v16 = predicateCopy;
+    leftExpression = [v16 leftExpression];
+    v18 = [self constantValueForExpression:leftExpression];
 
-    v19 = [v16 predicateOperatorType];
-    v20 = [v16 rightExpression];
-    v21 = [a1 constantValueForExpression:v20];
+    predicateOperatorType = [v16 predicateOperatorType];
+    rightExpression = [v16 rightExpression];
+    v21 = [self constantValueForExpression:rightExpression];
 
     if (v18)
     {
@@ -665,14 +665,14 @@ LABEL_37:
           {
             v42 = 0;
             v34 = &v42;
-            v35 = [[_CSVisualizerPredicate alloc] initWithSearchString:v33 operator:v19 error:&v42];
+            v35 = [[_CSVisualizerPredicate alloc] initWithSearchString:v33 operator:predicateOperatorType error:&v42];
           }
 
           else
           {
             v41 = 0;
             v34 = &v41;
-            v35 = [[_CSVisualizerPredicate alloc] initWithSearchString:v33 forTitle:v23 operator:v19 error:&v41];
+            v35 = [[_CSVisualizerPredicate alloc] initWithSearchString:v33 forTitle:v23 operator:predicateOperatorType error:&v41];
           }
 
           v5 = v35;
@@ -741,10 +741,10 @@ LABEL_41:
   }
 
 LABEL_3:
-  v5 = v40;
+  v5 = predicateCopy;
   v6 = 0;
 LABEL_4:
-  if (a4 && !v5)
+  if (error && !v5)
   {
     if (!v6)
     {
@@ -756,13 +756,13 @@ LABEL_4:
       v49[2] = *MEMORY[0x1E696A588];
       v49[3] = @"Predicate";
       v50[2] = @"Could not translate generated predicate to a form usable by CoreServicesStore.";
-      v50[3] = v40;
+      v50[3] = predicateCopy;
       v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v50 forKeys:v49 count:4];
       v6 = [v7 errorWithDomain:*MEMORY[0x1E696A768] code:-9495 userInfo:v8];
     }
 
     v9 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -770,16 +770,16 @@ LABEL_4:
   return v5;
 }
 
-+ (id)constantValueForExpression:(id)a3
++ (id)constantValueForExpression:(id)expression
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  expressionCopy = expression;
+  v4 = expressionCopy;
+  if (!expressionCopy)
   {
     goto LABEL_11;
   }
 
-  if ([v3 expressionType])
+  if ([expressionCopy expressionType])
   {
     if ([v4 expressionType] != 3)
     {
@@ -788,16 +788,16 @@ LABEL_11:
       goto LABEL_14;
     }
 
-    v5 = [v4 keyPath];
+    keyPath = [v4 keyPath];
   }
 
   else
   {
-    v5 = [v4 constantValue];
+    keyPath = [v4 constantValue];
   }
 
-  v6 = v5;
-  if (!v5)
+  v6 = keyPath;
+  if (!keyPath)
   {
     goto LABEL_11;
   }
@@ -805,9 +805,9 @@ LABEL_11:
   TypeID = CFBooleanGetTypeID();
   if (TypeID == CFGetTypeID(v6))
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
     v9 = @"false";
-    if (v8)
+    if (bOOLValue)
     {
       v9 = @"true";
     }

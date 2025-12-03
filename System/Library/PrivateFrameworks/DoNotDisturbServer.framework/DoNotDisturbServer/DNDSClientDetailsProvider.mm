@@ -1,8 +1,8 @@
 @interface DNDSClientDetailsProvider
 + (id)_defaultModuleDirectories;
 - (DNDSClientDetailsProvider)init;
-- (id)clientDetailsForIdentifier:(id)a3 applicationBundleURL:(id)a4;
-- (id)findClientDetailsForIdentifier:(id)a3;
+- (id)clientDetailsForIdentifier:(id)identifier applicationBundleURL:(id)l;
+- (id)findClientDetailsForIdentifier:(id)identifier;
 - (void)_loadPreloadBundles;
 @end
 
@@ -25,25 +25,25 @@
   return v2;
 }
 
-- (id)findClientDetailsForIdentifier:(id)a3
+- (id)findClientDetailsForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_detailsByIdentifier;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_detailsByIdentifier objectForKey:v4];
+  v6 = [(NSMutableDictionary *)self->_detailsByIdentifier objectForKey:identifierCopy];
   objc_sync_exit(v5);
 
   return v6;
 }
 
-- (id)clientDetailsForIdentifier:(id)a3 applicationBundleURL:(id)a4
+- (id)clientDetailsForIdentifier:(id)identifier applicationBundleURL:(id)l
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  lCopy = l;
   v8 = self->_detailsByIdentifier;
   objc_sync_enter(v8);
-  v9 = [(NSMutableDictionary *)self->_detailsByIdentifier objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_detailsByIdentifier objectForKey:identifierCopy];
   if (!v9)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -52,21 +52,21 @@
     aBlock[3] = &unk_278F8B558;
     aBlock[4] = self;
     v10 = _Block_copy(aBlock);
-    v11 = v10[2](v10, v6);
+    v11 = v10[2](v10, identifierCopy);
     v9 = v11;
-    if (v7 && !v11)
+    if (lCopy && !v11)
     {
-      v9 = [DNDSClientDetails detailsForClientIdentifier:v6 applicationBundleURL:v7];
+      v9 = [DNDSClientDetails detailsForClientIdentifier:identifierCopy applicationBundleURL:lCopy];
     }
 
     if (!v9)
     {
-      if ([v6 isEqualToString:@"com.apple.donotdisturb.private.schedule"])
+      if ([identifierCopy isEqualToString:@"com.apple.donotdisturb.private.schedule"])
       {
         goto LABEL_11;
       }
 
-      if (![v6 hasSuffix:@".private.schedule"])
+      if (![identifierCopy hasSuffix:@".private.schedule"])
       {
         goto LABEL_11;
       }
@@ -83,29 +83,29 @@
       }
 
       v24 = [DNDSClientDetails alloc];
-      v27[0] = v6;
+      v27[0] = identifierCopy;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
-      v23 = [v12 isResolutionContextAssumingDeviceUILocked];
-      v22 = [v12 isUserInteractionClient];
-      v14 = [v12 isPersistentAssertionClient];
-      v15 = [v12 isSyncSuppressedClient];
-      v16 = [v12 isIOS14SyncSuppressedClient];
+      isResolutionContextAssumingDeviceUILocked = [v12 isResolutionContextAssumingDeviceUILocked];
+      isUserInteractionClient = [v12 isUserInteractionClient];
+      isPersistentAssertionClient = [v12 isPersistentAssertionClient];
+      isSyncSuppressedClient = [v12 isSyncSuppressedClient];
+      isIOS14SyncSuppressedClient = [v12 isIOS14SyncSuppressedClient];
       BYTE1(v21) = [v12 forcesAssertionStatusUpdate];
-      LOBYTE(v21) = v16;
-      v9 = [(DNDSClientDetails *)v24 initWithClientIdentifier:v6 identifiers:v13 resolutionContextAssumingDeviceUILocked:v23 userInteractionClient:v22 persistentAssertionClient:v14 syncSuppressedClient:v15 iOS14SyncSuppressedClient:v21 forcesAssertionStatusUpdate:?];
+      LOBYTE(v21) = isIOS14SyncSuppressedClient;
+      v9 = [(DNDSClientDetails *)v24 initWithClientIdentifier:identifierCopy identifiers:v13 resolutionContextAssumingDeviceUILocked:isResolutionContextAssumingDeviceUILocked userInteractionClient:isUserInteractionClient persistentAssertionClient:isPersistentAssertionClient syncSuppressedClient:isSyncSuppressedClient iOS14SyncSuppressedClient:v21 forcesAssertionStatusUpdate:?];
 
       if (!v9)
       {
 LABEL_11:
         v17 = [DNDSClientDetails alloc];
-        v26 = v6;
+        v26 = identifierCopy;
         v18 = [MEMORY[0x277CBEA60] arrayWithObjects:&v26 count:1];
         LOWORD(v21) = 0;
-        v9 = [(DNDSClientDetails *)v17 initWithClientIdentifier:v6 identifiers:v18 resolutionContextAssumingDeviceUILocked:0 userInteractionClient:0 persistentAssertionClient:0 syncSuppressedClient:0 iOS14SyncSuppressedClient:v21 forcesAssertionStatusUpdate:?];
+        v9 = [(DNDSClientDetails *)v17 initWithClientIdentifier:identifierCopy identifiers:v18 resolutionContextAssumingDeviceUILocked:0 userInteractionClient:0 persistentAssertionClient:0 syncSuppressedClient:0 iOS14SyncSuppressedClient:v21 forcesAssertionStatusUpdate:?];
       }
     }
 
-    [(NSMutableDictionary *)self->_detailsByIdentifier setObject:v9 forKey:v6];
+    [(NSMutableDictionary *)self->_detailsByIdentifier setObject:v9 forKey:identifierCopy];
   }
 
   objc_sync_exit(v8);
@@ -227,11 +227,11 @@ id __54__DNDSClientDetailsProvider__defaultModuleDirectories__block_invoke_2(uin
 - (void)_loadPreloadBundles
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [objc_opt_class() _defaultModuleDirectories];
-  v18 = [v3 bs_mapNoNulls:&__block_literal_global_32];
+  _defaultModuleDirectories = [objc_opt_class() _defaultModuleDirectories];
+  v18 = [_defaultModuleDirectories bs_mapNoNulls:&__block_literal_global_32];
 
-  v17 = [v18 bs_flatten];
-  v16 = [v17 bs_filter:&__block_literal_global_35];
+  bs_flatten = [v18 bs_flatten];
+  v16 = [bs_flatten bs_filter:&__block_literal_global_35];
   v4 = [v16 bs_mapNoNulls:&__block_literal_global_41];
   obj = self->_detailsByIdentifier;
   objc_sync_enter(obj);
@@ -259,8 +259,8 @@ id __54__DNDSClientDetailsProvider__defaultModuleDirectories__block_invoke_2(uin
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v10 = [v9 identifiers];
-        v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        identifiers = [v9 identifiers];
+        v11 = [identifiers countByEnumeratingWithState:&v19 objects:v27 count:16];
         if (v11)
         {
           v12 = *v20;
@@ -271,14 +271,14 @@ id __54__DNDSClientDetailsProvider__defaultModuleDirectories__block_invoke_2(uin
             {
               if (*v20 != v12)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(identifiers);
               }
 
               [(NSMutableDictionary *)self->_detailsByIdentifier setObject:v9 forKey:*(*(&v19 + 1) + 8 * v13++)];
             }
 
             while (v11 != v13);
-            v11 = [v10 countByEnumeratingWithState:&v19 objects:v27 count:16];
+            v11 = [identifiers countByEnumeratingWithState:&v19 objects:v27 count:16];
           }
 
           while (v11);

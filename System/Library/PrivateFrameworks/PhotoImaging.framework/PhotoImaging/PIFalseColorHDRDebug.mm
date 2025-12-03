@@ -95,8 +95,8 @@ void __30__PIFalseColorHDRDebug_kernel__block_invoke()
         v27 = dispatch_get_specific(*v21);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v27;
         v35 = 2114;
@@ -107,8 +107,8 @@ void __30__PIFalseColorHDRDebug_kernel__block_invoke()
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v26;
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -117,21 +117,21 @@ void __30__PIFalseColorHDRDebug_kernel__block_invoke()
     _NUAssertFailHandler();
   }
 
-  v4 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
-  v5 = [objc_opt_class() kernel];
+  imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+  kernel = [objc_opt_class() kernel];
   [(CIImage *)self->_inputImage extent];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:{self->_inputCutoff, v4}];
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:{self->_inputCutoff, imageByUnpremultiplyingAlpha}];
   v32[1] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
-  v16 = [v5 applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
+  v16 = [kernel applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
 
-  v17 = [v16 imageByPremultiplyingAlpha];
+  imageByPremultiplyingAlpha = [v16 imageByPremultiplyingAlpha];
 
-  return v17;
+  return imageByPremultiplyingAlpha;
 }
 
 @end

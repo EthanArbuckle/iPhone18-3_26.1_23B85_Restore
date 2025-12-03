@@ -1,51 +1,51 @@
 @interface ABSContactsLinkCluster
 + (id)null;
-- (ABSContactsLinkCluster)initWithContact:(id)a3;
-- (ABSContactsLinkCluster)initWithContact_LOCKED:(id)a3;
-- (ABSContactsLinkCluster)initWithIdentifier:(id)a3;
-- (ABSContactsLinkCluster)initWithIdentifier_LOCKED:(id)a3;
-- (ABSContactsLinkCluster)initWithPBStuff:(id)a3 contact:(id)a4;
+- (ABSContactsLinkCluster)initWithContact:(id)contact;
+- (ABSContactsLinkCluster)initWithContact_LOCKED:(id)d;
+- (ABSContactsLinkCluster)initWithIdentifier:(id)identifier;
+- (ABSContactsLinkCluster)initWithIdentifier_LOCKED:(id)d;
+- (ABSContactsLinkCluster)initWithPBStuff:(id)stuff contact:(id)contact;
 - (BOOL)haveAllContacts_LOCKED;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNull;
 - (NSMutableDictionary)clusterDictionary;
 - (id)description;
-- (void)enumerateContacts_LOCKED:(id)a3;
+- (void)enumerateContacts_LOCKED:(id)d;
 @end
 
 @implementation ABSContactsLinkCluster
 
-- (ABSContactsLinkCluster)initWithPBStuff:(id)a3 contact:(id)a4
+- (ABSContactsLinkCluster)initWithPBStuff:(id)stuff contact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  stuffCopy = stuff;
+  contactCopy = contact;
   v39.receiver = self;
   v39.super_class = ABSContactsLinkCluster;
   v8 = [(ABSContactsLinkCluster *)&v39 init];
   if (!v8)
   {
 LABEL_23:
-    v27 = v8;
+    null = v8;
     goto LABEL_24;
   }
 
-  v9 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v9 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(stuffCopy, "count")}];
   cluster = v8->_cluster;
   v8->_cluster = v9;
 
-  if (v6 && [v6 count])
+  if (stuffCopy && [stuffCopy count])
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v11 = v6;
+    v11 = stuffCopy;
     v12 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v12)
     {
       v13 = v12;
-      v33 = v7;
-      v34 = v6;
+      v33 = contactCopy;
+      v34 = stuffCopy;
       v14 = 0;
       v15 = 0;
       v16 = *v36;
@@ -59,24 +59,24 @@ LABEL_23:
           }
 
           v18 = *(*(&v35 + 1) + 8 * i);
-          v19 = [v18 isImage];
-          v14 |= v19;
-          v20 = [v18 isName];
-          v15 |= v20;
-          if (v20)
+          isImage = [v18 isImage];
+          v14 |= isImage;
+          isName = [v18 isName];
+          v15 |= isName;
+          if (isName)
           {
-            v21 = v19 & 1 | 2;
+            v21 = isImage & 1 | 2;
           }
 
           else
           {
-            v21 = v19 & 1;
+            v21 = isImage & 1;
           }
 
           v22 = [NSNumber numberWithInteger:v21];
           v23 = v8->_cluster;
-          v24 = [v18 toGuid];
-          [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:v24];
+          toGuid = [v18 toGuid];
+          [(NSMutableDictionary *)v23 setObject:v22 forKeyedSubscript:toGuid];
         }
 
         v13 = [v11 countByEnumeratingWithState:&v35 objects:v40 count:16];
@@ -100,8 +100,8 @@ LABEL_23:
         v26 = v25;
       }
 
-      v7 = v33;
-      v6 = v34;
+      contactCopy = v33;
+      stuffCopy = v34;
     }
 
     else
@@ -112,22 +112,22 @@ LABEL_23:
 
     v28 = [NSNumber numberWithInteger:v26];
     v29 = v8->_cluster;
-    v30 = [v7 identifier];
-    [(NSMutableDictionary *)v29 setObject:v28 forKeyedSubscript:v30];
+    identifier = [contactCopy identifier];
+    [(NSMutableDictionary *)v29 setObject:v28 forKeyedSubscript:identifier];
 
     goto LABEL_23;
   }
 
-  v27 = [objc_opt_class() null];
+  null = [objc_opt_class() null];
 LABEL_24:
-  v31 = v27;
+  v31 = null;
 
   return v31;
 }
 
-- (ABSContactsLinkCluster)initWithContact:(id)a3
+- (ABSContactsLinkCluster)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -140,9 +140,9 @@ LABEL_24:
   v12[2] = sub_100023CF0;
   v12[3] = &unk_10005D5F0;
   v15 = &v16;
-  v6 = self;
-  v13 = v6;
-  v7 = v4;
+  selfCopy = self;
+  v13 = selfCopy;
+  v7 = contactCopy;
   v14 = v7;
   [v5 accessSync:v12];
 
@@ -154,17 +154,17 @@ LABEL_24:
   return v10;
 }
 
-- (ABSContactsLinkCluster)initWithContact_LOCKED:(id)a3
+- (ABSContactsLinkCluster)initWithContact_LOCKED:(id)d
 {
-  v4 = [a3 identifier];
-  v5 = [(ABSContactsLinkCluster *)self initWithIdentifier_LOCKED:v4];
+  identifier = [d identifier];
+  v5 = [(ABSContactsLinkCluster *)self initWithIdentifier_LOCKED:identifier];
 
   return v5;
 }
 
-- (ABSContactsLinkCluster)initWithIdentifier:(id)a3
+- (ABSContactsLinkCluster)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -177,9 +177,9 @@ LABEL_24:
   v12[2] = sub_100023EE4;
   v12[3] = &unk_10005D5F0;
   v15 = &v16;
-  v6 = self;
-  v13 = v6;
-  v7 = v4;
+  selfCopy = self;
+  v13 = selfCopy;
+  v7 = identifierCopy;
   v14 = v7;
   [v5 accessSync:v12];
 
@@ -191,9 +191,9 @@ LABEL_24:
   return v10;
 }
 
-- (ABSContactsLinkCluster)initWithIdentifier_LOCKED:(id)a3
+- (ABSContactsLinkCluster)initWithIdentifier_LOCKED:(id)d
 {
-  v22 = a3;
+  dCopy = d;
   v36.receiver = self;
   v36.super_class = ABSContactsLinkCluster;
   v4 = [(ABSContactsLinkCluster *)&v36 init];
@@ -210,7 +210,7 @@ LABEL_24:
     v27[1] = 3221225472;
     v27[2] = sub_100024218;
     v27[3] = &unk_10005D660;
-    v28 = v22;
+    v28 = dCopy;
     v29 = &v30;
     [v5 accessAssert:v27];
 
@@ -241,9 +241,9 @@ LABEL_24:
             }
 
             v14 = *(*(&v23 + 1) + 8 * i);
-            v15 = [v14 isPreferredForName];
-            v16 = [v14 isPreferredForImage];
-            if (v15)
+            isPreferredForName = [v14 isPreferredForName];
+            isPreferredForImage = [v14 isPreferredForImage];
+            if (isPreferredForName)
             {
               v17 = 2;
             }
@@ -253,10 +253,10 @@ LABEL_24:
               v17 = 0;
             }
 
-            v18 = [NSNumber numberWithInteger:v17 | v16];
+            v18 = [NSNumber numberWithInteger:v17 | isPreferredForImage];
             v19 = v4->_cluster;
-            v20 = [v14 identifier];
-            [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:v20];
+            identifier = [v14 identifier];
+            [(NSMutableDictionary *)v19 setObject:v18 forKeyedSubscript:identifier];
           }
 
           v11 = [v10 countByEnumeratingWithState:&v23 objects:v37 count:16];
@@ -293,9 +293,9 @@ LABEL_24:
   return self;
 }
 
-- (void)enumerateContacts_LOCKED:(id)a3
+- (void)enumerateContacts_LOCKED:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if (![(ABSContactsLinkCluster *)self isNull]&& [(NSMutableDictionary *)self->_cluster count])
   {
     v5 = [[NSMutableArray alloc] initWithCapacity:{-[NSMutableDictionary count](self->_cluster, "count")}];
@@ -306,19 +306,19 @@ LABEL_24:
     v8[3] = &unk_10005D6B0;
     v8[4] = self;
     v9 = v5;
-    v10 = v4;
+    v10 = dCopy;
     v7 = v5;
     [v6 accessAssert:v8];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ABSContactsLinkCluster *)self isEqualToABSContactsLinkCluster:v4];
+    v5 = [(ABSContactsLinkCluster *)self isEqualToABSContactsLinkCluster:equalCopy];
   }
 
   else
@@ -350,8 +350,8 @@ LABEL_24:
 
 - (BOOL)isNull
 {
-  v3 = [objc_opt_class() null];
-  LOBYTE(self) = v3 == self;
+  null = [objc_opt_class() null];
+  LOBYTE(self) = null == self;
 
   return self;
 }

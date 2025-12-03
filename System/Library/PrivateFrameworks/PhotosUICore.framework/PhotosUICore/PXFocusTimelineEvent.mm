@@ -1,6 +1,6 @@
 @interface PXFocusTimelineEvent
 - (CGPoint)location;
-- (PXFocusTimelineEvent)initWithTime:(id *)a3 type:(unint64_t)a4;
+- (PXFocusTimelineEvent)initWithTime:(id *)time type:(unint64_t)type;
 @end
 
 @implementation PXFocusTimelineEvent
@@ -14,17 +14,17 @@
   return result;
 }
 
-- (PXFocusTimelineEvent)initWithTime:(id *)a3 type:(unint64_t)a4
+- (PXFocusTimelineEvent)initWithTime:(id *)time type:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = PXFocusTimelineEvent;
   result = [(PXFocusTimelineEvent *)&v8 init];
   if (result)
   {
-    v7 = *&a3->var0;
-    result->_time.epoch = a3->var3;
+    v7 = *&time->var0;
+    result->_time.epoch = time->var3;
     *&result->_time.value = v7;
-    result->_type = a4;
+    result->_type = type;
   }
 
   return result;

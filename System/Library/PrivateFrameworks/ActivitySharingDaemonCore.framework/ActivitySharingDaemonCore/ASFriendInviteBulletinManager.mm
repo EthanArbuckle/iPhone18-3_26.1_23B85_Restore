@@ -2,30 +2,30 @@
 - (ASFriendInviteBulletinManager)init;
 - (ASFriendInviteBulletinManagerDelegate)delegate;
 - (id)_inviteNotificationCategories;
-- (id)_newPrepolulatedUserInfoForInvitationFromContactUUID:(id)a3 categoryIdentifier:(id)a4 notificationContent:(id)a5 title:(id)a6 message:(id)a7;
-- (id)_notificationRequestForInvitationFromContact:(id)a3 categoryIdentifier:(id)a4 requestIdentifier:(id)a5 title:(id)a6 formatString:(id)a7;
-- (id)_notificationRequestForInvitationFromContact:(id)a3 requestIdentifier:(id)a4;
-- (id)_notificationRequestForInvitationFromContactUUID:(id)a3 categoryIdentifier:(id)a4 requestIdentifier:(id)a5 title:(id)a6 message:(id)a7;
-- (id)_userInfoForInvitationResponseFromContact:(id)a3 notificationContent:(id)a4 message:(id)a5;
-- (void)_newPrepopulatedNotificationContentForNotificationContent:(id)a3 title:(id)a4 message:(id)a5;
-- (void)_showIncompatibleVersionForContact:(id)a3 title:(id)a4 formatString:(id)a5;
-- (void)_submitNotificationRequest:(id)a3 forContact:(id)a4;
-- (void)activitySharingManagerReady:(id)a3;
-- (void)bulletinPostingManager:(id)a3 didReceiveNotificationResponse:(id)a4;
+- (id)_newPrepolulatedUserInfoForInvitationFromContactUUID:(id)d categoryIdentifier:(id)identifier notificationContent:(id)content title:(id)title message:(id)message;
+- (id)_notificationRequestForInvitationFromContact:(id)contact categoryIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier title:(id)title formatString:(id)string;
+- (id)_notificationRequestForInvitationFromContact:(id)contact requestIdentifier:(id)identifier;
+- (id)_notificationRequestForInvitationFromContactUUID:(id)d categoryIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier title:(id)title message:(id)message;
+- (id)_userInfoForInvitationResponseFromContact:(id)contact notificationContent:(id)content message:(id)message;
+- (void)_newPrepopulatedNotificationContentForNotificationContent:(id)content title:(id)title message:(id)message;
+- (void)_showIncompatibleVersionForContact:(id)contact title:(id)title formatString:(id)string;
+- (void)_submitNotificationRequest:(id)request forContact:(id)contact;
+- (void)activitySharingManagerReady:(id)ready;
+- (void)bulletinPostingManager:(id)manager didReceiveNotificationResponse:(id)response;
 - (void)processPendingResponses;
-- (void)processResponse:(id)a3;
+- (void)processResponse:(id)response;
 - (void)secureCloudReady;
-- (void)showErrorAcceptingInviteFrom:(id)a3;
-- (void)showInviteAcceptResponseFrom:(id)a3;
-- (void)showInviteAttemptNeedToSignInFrom:(id)a3;
-- (void)showInviteAttemptNeedToUpgradeFrom:(id)a3;
-- (void)showInviteAttemptNeedsSetupFromContact:(id)a3;
-- (void)showInviteRequestFromContact:(id)a3 withPostingStyle:(int64_t)a4;
+- (void)showErrorAcceptingInviteFrom:(id)from;
+- (void)showInviteAcceptResponseFrom:(id)from;
+- (void)showInviteAttemptNeedToSignInFrom:(id)from;
+- (void)showInviteAttemptNeedToUpgradeFrom:(id)from;
+- (void)showInviteAttemptNeedsSetupFromContact:(id)contact;
+- (void)showInviteRequestFromContact:(id)contact withPostingStyle:(int64_t)style;
 - (void)showMaxNumberOfFriendsError;
-- (void)showVersionTooHighForOutgoingInviteTo:(id)a3;
-- (void)showVersionTooLowForIncomingInviteFrom:(id)a3;
-- (void)showVersionTooLowForOutgoingInviteTo:(id)a3;
-- (void)withdrawInviteNotificationsForContact:(id)a3;
+- (void)showVersionTooHighForOutgoingInviteTo:(id)to;
+- (void)showVersionTooLowForIncomingInviteFrom:(id)from;
+- (void)showVersionTooLowForOutgoingInviteTo:(id)to;
+- (void)withdrawInviteNotificationsForContact:(id)contact;
 @end
 
 @implementation ASFriendInviteBulletinManager
@@ -53,16 +53,16 @@
   return v2;
 }
 
-- (void)activitySharingManagerReady:(id)a3
+- (void)activitySharingManagerReady:(id)ready
 {
-  v4 = [a3 bulletinPostingManager];
+  bulletinPostingManager = [ready bulletinPostingManager];
   bulletinPostingManager = self->_bulletinPostingManager;
-  self->_bulletinPostingManager = v4;
+  self->_bulletinPostingManager = bulletinPostingManager;
 
   [(ASBulletinPostingManager *)self->_bulletinPostingManager setDelegate:self];
   v6 = self->_bulletinPostingManager;
-  v7 = [(ASFriendInviteBulletinManager *)self _inviteNotificationCategories];
-  [(ASBulletinPostingManager *)v6 registerNotificationCategories:v7];
+  _inviteNotificationCategories = [(ASFriendInviteBulletinManager *)self _inviteNotificationCategories];
+  [(ASBulletinPostingManager *)v6 registerNotificationCategories:_inviteNotificationCategories];
 }
 
 - (id)_inviteNotificationCategories
@@ -104,16 +104,16 @@
   dispatch_async(notificationQueue, block);
 }
 
-- (void)showInviteRequestFromContact:(id)a3 withPostingStyle:(int64_t)a4
+- (void)showInviteRequestFromContact:(id)contact withPostingStyle:(int64_t)style
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ASFriendInviteBulletinManager *)self _isSharingSetup];
+  contactCopy = contact;
+  _isSharingSetup = [(ASFriendInviteBulletinManager *)self _isSharingSetup];
   ASLoggingInitialize();
   v8 = MEMORY[0x277CE8FF8];
   v9 = *MEMORY[0x277CE8FF8];
   v10 = os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT);
-  if (a4 == 1 || v7)
+  if (style == 1 || _isSharingSetup)
   {
     if (v10)
     {
@@ -126,16 +126,16 @@
     if (os_log_type_enabled(*v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [v6 UUID];
+      uUID = [contactCopy UUID];
       v16 = 138543618;
-      v17 = v13;
+      v17 = uUID;
       v18 = 2112;
-      v19 = v6;
+      v19 = contactCopy;
       _os_log_impl(&dword_23E5E3000, v12, OS_LOG_TYPE_DEFAULT, "Showing invitation request bulletin from %{public}@ - %@", &v16, 0x16u);
     }
 
-    v14 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:v6 requestIdentifier:@"InviteRequest"];
-    [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v14 forContact:v6];
+    v14 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:contactCopy requestIdentifier:@"InviteRequest"];
+    [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v14 forContact:contactCopy];
   }
 
   else
@@ -146,26 +146,26 @@
       _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "Sharing is not set up. Showing invite request without actions.", &v16, 2u);
     }
 
-    [(ASFriendInviteBulletinManager *)self showInviteAttemptNeedsSetupFromContact:v6];
+    [(ASFriendInviteBulletinManager *)self showInviteAttemptNeedsSetupFromContact:contactCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showInviteAttemptNeedsSetupFromContact:(id)a3
+- (void)showInviteAttemptNeedsSetupFromContact:(id)contact
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contactCopy = contact;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 UUID];
+    uUID = [contactCopy UUID];
     v16 = 138543618;
-    v17 = v7;
+    v17 = uUID;
     v18 = 2112;
-    v19 = v4;
+    v19 = contactCopy;
     _os_log_impl(&dword_23E5E3000, v6, OS_LOG_TYPE_DEFAULT, "Notifying about invitation request from %{public}@ - %@", &v16, 0x16u);
   }
 
@@ -175,15 +175,15 @@
   v11 = [v9 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_REQUEST_SETUP_TITLE" value:&stru_2850E59E8 table:*MEMORY[0x277CCC1C8]];
   v12 = HKHealthKitFrameworkBundle();
   v13 = [v12 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_REQUEST_SETUP_BODY" value:&stru_2850E59E8 table:v10];
-  v14 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:v4 categoryIdentifier:v8 requestIdentifier:@"InviteAttemptNeedsSetup" title:v11 formatString:v13];
+  v14 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:contactCopy categoryIdentifier:v8 requestIdentifier:@"InviteAttemptNeedsSetup" title:v11 formatString:v13];
 
-  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v14 forContact:v4];
+  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v14 forContact:contactCopy];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showInviteAttemptNeedToSignInFrom:(id)a3
+- (void)showInviteAttemptNeedToSignInFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
@@ -198,14 +198,14 @@
   v9 = [v7 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_REQUEST_SIGNIN_TITLE" value:&stru_2850E59E8 table:*MEMORY[0x277CCC1C8]];
   v10 = HKHealthKitFrameworkBundle();
   v11 = [v10 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_REQUEST_SIGNIN_BODY" value:&stru_2850E59E8 table:v8];
-  v12 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:v4 categoryIdentifier:v6 requestIdentifier:@"InviteAttemptNeedToSignIn" title:v9 formatString:v11];
+  v12 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:fromCopy categoryIdentifier:v6 requestIdentifier:@"InviteAttemptNeedToSignIn" title:v9 formatString:v11];
 
-  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v12 forContact:v4];
+  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v12 forContact:fromCopy];
 }
 
-- (void)showInviteAttemptNeedToUpgradeFrom:(id)a3
+- (void)showInviteAttemptNeedToUpgradeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
@@ -220,25 +220,25 @@
   v9 = [v7 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_REQUEST_UPGRADE_TITLE" value:&stru_2850E59E8 table:*MEMORY[0x277CCC1C8]];
   v10 = HKHealthKitFrameworkBundle();
   v11 = [v10 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_REQUEST_UPGRADE_BODY" value:&stru_2850E59E8 table:v8];
-  v12 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:v4 categoryIdentifier:v6 requestIdentifier:@"InviteAttemptedNeedToUpgrade" title:v9 formatString:v11];
+  v12 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:fromCopy categoryIdentifier:v6 requestIdentifier:@"InviteAttemptedNeedToUpgrade" title:v9 formatString:v11];
 
-  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v12 forContact:v4];
+  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v12 forContact:fromCopy];
 }
 
-- (void)_submitNotificationRequest:(id)a3 forContact:(id)a4
+- (void)_submitNotificationRequest:(id)request forContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  contactCopy = contact;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__ASFriendInviteBulletinManager__submitNotificationRequest_forContact___block_invoke;
   block[3] = &unk_278C4BB98;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = contactCopy;
+  selfCopy = self;
+  v14 = requestCopy;
+  v9 = requestCopy;
+  v10 = contactCopy;
   dispatch_async(notificationQueue, block);
 }
 
@@ -258,17 +258,17 @@ uint64_t __71__ASFriendInviteBulletinManager__submitNotificationRequest_forConta
   return [v6 postNotificationRequest:v5];
 }
 
-- (void)withdrawInviteNotificationsForContact:(id)a3
+- (void)withdrawInviteNotificationsForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __71__ASFriendInviteBulletinManager_withdrawInviteNotificationsForContact___block_invoke;
   v7[3] = &unk_278C4B250;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = contactCopy;
+  selfCopy = self;
+  v6 = contactCopy;
   dispatch_async(notificationQueue, v7);
 }
 
@@ -306,9 +306,9 @@ void __71__ASFriendInviteBulletinManager_withdrawInviteNotificationsForContact__
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showVersionTooLowForIncomingInviteFrom:(id)a3
+- (void)showVersionTooLowForIncomingInviteFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v5 = HKHealthKitFrameworkBundle();
   v6 = *MEMORY[0x277CCC1C8];
   v9 = [v5 localizedStringForKey:@"ACTIVITY_SHARING_VERSION_TOO_LOW_TITLE" value:&stru_2850E59E8 table:*MEMORY[0x277CCC1C8]];
@@ -316,12 +316,12 @@ void __71__ASFriendInviteBulletinManager_withdrawInviteNotificationsForContact__
   v7 = HKHealthKitFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"ACTIVITY_SHARING_INCOMING_REQUEST_VERSION_TOO_LOW_BODY" value:&stru_2850E59E8 table:v6];
 
-  [(ASFriendInviteBulletinManager *)self _showIncompatibleVersionForContact:v4 title:v9 formatString:v8];
+  [(ASFriendInviteBulletinManager *)self _showIncompatibleVersionForContact:fromCopy title:v9 formatString:v8];
 }
 
-- (void)showVersionTooLowForOutgoingInviteTo:(id)a3
+- (void)showVersionTooLowForOutgoingInviteTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = HKHealthKitFrameworkBundle();
   v6 = *MEMORY[0x277CCC1C8];
   v9 = [v5 localizedStringForKey:@"ACTIVITY_SHARING_VERSION_TOO_LOW_TITLE" value:&stru_2850E59E8 table:*MEMORY[0x277CCC1C8]];
@@ -329,12 +329,12 @@ void __71__ASFriendInviteBulletinManager_withdrawInviteNotificationsForContact__
   v7 = HKHealthKitFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"ACTIVITY_SHARING_OUTGOING_REQUEST_VERSION_TOO_LOW_BODY" value:&stru_2850E59E8 table:v6];
 
-  [(ASFriendInviteBulletinManager *)self _showIncompatibleVersionForContact:v4 title:v9 formatString:v8];
+  [(ASFriendInviteBulletinManager *)self _showIncompatibleVersionForContact:toCopy title:v9 formatString:v8];
 }
 
-- (void)showVersionTooHighForOutgoingInviteTo:(id)a3
+- (void)showVersionTooHighForOutgoingInviteTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = HKHealthKitFrameworkBundle();
   v6 = *MEMORY[0x277CCC1C8];
   v9 = [v5 localizedStringForKey:@"ACTIVITY_SHARING_VERSION_TOO_HIGH_TITLE" value:&stru_2850E59E8 table:*MEMORY[0x277CCC1C8]];
@@ -342,79 +342,79 @@ void __71__ASFriendInviteBulletinManager_withdrawInviteNotificationsForContact__
   v7 = HKHealthKitFrameworkBundle();
   v8 = [v7 localizedStringForKey:@"ACTIVITY_SHARING_OUTGOING_REQUEST_VERSION_TOO_HIGH_TITLE" value:&stru_2850E59E8 table:v6];
 
-  [(ASFriendInviteBulletinManager *)self _showIncompatibleVersionForContact:v4 title:v9 formatString:v8];
+  [(ASFriendInviteBulletinManager *)self _showIncompatibleVersionForContact:toCopy title:v9 formatString:v8];
 }
 
-- (void)_showIncompatibleVersionForContact:(id)a3 title:(id)a4 formatString:(id)a5
+- (void)_showIncompatibleVersionForContact:(id)contact title:(id)title formatString:(id)string
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  contactCopy = contact;
+  stringCopy = string;
+  titleCopy = title;
   ASLoggingInitialize();
   v11 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v8 UUID];
+    uUID = [contactCopy UUID];
     v16 = 138543618;
-    v17 = v13;
+    v17 = uUID;
     v18 = 2112;
-    v19 = v8;
+    v19 = contactCopy;
     _os_log_impl(&dword_23E5E3000, v12, OS_LOG_TYPE_DEFAULT, "Showing version incompatible notification for %{public}@ - %@", &v16, 0x16u);
   }
 
-  v14 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:v8 categoryIdentifier:*MEMORY[0x277CE91A0] requestIdentifier:@"InviteIncompatibleVersion" title:v10 formatString:v9];
+  v14 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:contactCopy categoryIdentifier:*MEMORY[0x277CE91A0] requestIdentifier:@"InviteIncompatibleVersion" title:titleCopy formatString:stringCopy];
 
-  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v14 forContact:v8];
+  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v14 forContact:contactCopy];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showInviteAcceptResponseFrom:(id)a3
+- (void)showInviteAcceptResponseFrom:(id)from
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 UUID];
+    uUID = [fromCopy UUID];
     *buf = 138543618;
-    v35 = v7;
+    v35 = uUID;
     v36 = 2112;
-    v37 = v4;
+    v37 = fromCopy;
     _os_log_impl(&dword_23E5E3000, v6, OS_LOG_TYPE_DEFAULT, "Showing invitation response bulletin from %{public}@ - %@", buf, 0x16u);
   }
 
-  v8 = [v4 primaryRelationship];
-  v9 = [v8 cloudKitAddress];
+  primaryRelationship = [fromCopy primaryRelationship];
+  cloudKitAddress = [primaryRelationship cloudKitAddress];
 
-  v10 = [v4 displayName];
+  displayName = [fromCopy displayName];
   v11 = MEMORY[0x277CCACA8];
   v12 = HKHealthKitFrameworkBundle();
   v13 = *MEMORY[0x277CCC1C8];
   v14 = [v12 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_RESPONSE_BODY" value:&stru_2850E59E8 table:*MEMORY[0x277CCC1C8]];
-  v15 = [v11 stringWithFormat:v14, v10];
+  v15 = [v11 stringWithFormat:v14, displayName];
 
-  if (v9 && ([v9 isEqualToString:v10] & 1) == 0)
+  if (cloudKitAddress && ([cloudKitAddress isEqualToString:displayName] & 1) == 0)
   {
     v16 = MEMORY[0x277CCACA8];
     v17 = HKHealthKitFrameworkBundle();
     v18 = [v17 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_RESPONSE_BODY_WITH_CLOUDKIT_ADDRESS" value:&stru_2850E59E8 table:v13];
-    v19 = [v16 stringWithFormat:v18, v10, v9];
+    v19 = [v16 stringWithFormat:v18, displayName, cloudKitAddress];
 
     v15 = v19;
   }
 
   v20 = objc_alloc_init(MEMORY[0x277CE1F60]);
-  v21 = [(ASFriendInviteBulletinManager *)self _userInfoForInvitationResponseFromContact:v4 notificationContent:v20 message:v15];
+  v21 = [(ASFriendInviteBulletinManager *)self _userInfoForInvitationResponseFromContact:fromCopy notificationContent:v20 message:v15];
   [v20 setUserInfo:v21];
 
   [v20 setCategoryIdentifier:*MEMORY[0x277CE91A0]];
-  v22 = [(ASBulletinPostingManager *)self->_bulletinPostingManager topicIdentifiers];
+  topicIdentifiers = [(ASBulletinPostingManager *)self->_bulletinPostingManager topicIdentifiers];
   v23 = *MEMORY[0x277CE9268];
-  v24 = [v22 containsObject:*MEMORY[0x277CE9268]];
+  v24 = [topicIdentifiers containsObject:*MEMORY[0x277CE9268]];
 
   if (v24)
   {
@@ -427,43 +427,43 @@ void __71__ASFriendInviteBulletinManager_withdrawInviteNotificationsForContact__
   }
 
   v28 = MEMORY[0x277CE1FC0];
-  v29 = [v4 UUID];
-  v30 = [v29 UUIDString];
-  v31 = [v28 requestWithIdentifier:v30 content:v20 trigger:0];
+  uUID2 = [fromCopy UUID];
+  uUIDString = [uUID2 UUIDString];
+  v31 = [v28 requestWithIdentifier:uUIDString content:v20 trigger:0];
 
-  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v31 forContact:v4];
+  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v31 forContact:fromCopy];
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)showErrorAcceptingInviteFrom:(id)a3
+- (void)showErrorAcceptingInviteFrom:(id)from
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  fromCopy = from;
   ASLoggingInitialize();
   v4 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [v3 UUID];
+    uUID = [fromCopy UUID];
     *buf = 138543618;
-    v20 = v6;
+    v20 = uUID;
     v21 = 2112;
-    v22 = v3;
+    v22 = fromCopy;
     _os_log_impl(&dword_23E5E3000, v5, OS_LOG_TYPE_DEFAULT, "Showing invite response error for %{public}@ - %@", buf, 0x16u);
   }
 
-  v7 = [v3 UUID];
+  uUID2 = [fromCopy UUID];
   v8 = *MEMORY[0x277CE91A0];
-  v9 = [MEMORY[0x277CCAD78] UUID];
-  v10 = [v9 UUIDString];
+  uUID3 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID3 UUIDString];
   v11 = HKHealthKitFrameworkBundle();
   v12 = *MEMORY[0x277CCC1C8];
   v13 = [v11 localizedStringForKey:@"ACCEPT" value:&stru_2850E59E8 table:*MEMORY[0x277CCC1C8]];
   v14 = HKHealthKitFrameworkBundle();
   v15 = [v14 localizedStringForKey:@"ACTIVITY_SHARING_INVITE_ACCEPT_ERROR" value:&stru_2850E59E8 table:v12];
-  v16 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContactUUID:v7 categoryIdentifier:v8 requestIdentifier:v10 title:v13 message:v15];
+  v16 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContactUUID:uUID2 categoryIdentifier:v8 requestIdentifier:uUIDString title:v13 message:v15];
 
-  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v16 forContact:v3];
+  [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v16 forContact:fromCopy];
   v17 = *MEMORY[0x277D85DE8];
 }
 
@@ -490,126 +490,126 @@ void __71__ASFriendInviteBulletinManager_withdrawInviteNotificationsForContact__
   [(ASFriendInviteBulletinManager *)self _newPrepopulatedNotificationContentForNotificationContent:v11 title:v6 message:v10];
   [v11 setCategoryIdentifier:*MEMORY[0x277CE91A0]];
   v12 = MEMORY[0x277CE1FC0];
-  v13 = [MEMORY[0x277CCAD78] UUID];
-  v14 = [v13 UUIDString];
-  v15 = [v12 requestWithIdentifier:v14 content:v11 trigger:0];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v15 = [v12 requestWithIdentifier:uUIDString content:v11 trigger:0];
 
   [(ASFriendInviteBulletinManager *)self _submitNotificationRequest:v15 forContact:0];
 }
 
-- (id)_notificationRequestForInvitationFromContact:(id)a3 requestIdentifier:(id)a4
+- (id)_notificationRequestForInvitationFromContact:(id)contact requestIdentifier:(id)identifier
 {
   v6 = *MEMORY[0x277CE91A8];
-  v7 = a4;
-  v8 = a3;
+  identifierCopy = identifier;
+  contactCopy = contact;
   v9 = HKHealthKitFrameworkBundle();
   v10 = *MEMORY[0x277CCC1C8];
   v11 = [v9 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_REQUEST_TITLE" value:&stru_2850E59E8 table:*MEMORY[0x277CCC1C8]];
   v12 = HKHealthKitFrameworkBundle();
   v13 = [v12 localizedStringForKey:@"ACTIVITY_SHARING_INVITATION_REQUEST_BODY" value:&stru_2850E59E8 table:v10];
-  v14 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:v8 categoryIdentifier:v6 requestIdentifier:v7 title:v11 formatString:v13];
+  v14 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContact:contactCopy categoryIdentifier:v6 requestIdentifier:identifierCopy title:v11 formatString:v13];
 
   return v14;
 }
 
-- (id)_notificationRequestForInvitationFromContact:(id)a3 categoryIdentifier:(id)a4 requestIdentifier:(id)a5 title:(id)a6 formatString:(id)a7
+- (id)_notificationRequestForInvitationFromContact:(id)contact categoryIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier title:(id)title formatString:(id)string
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [v16 UUID];
+  stringCopy = string;
+  titleCopy = title;
+  requestIdentifierCopy = requestIdentifier;
+  identifierCopy = identifier;
+  contactCopy = contact;
+  uUID = [contactCopy UUID];
   v18 = MEMORY[0x277CCACA8];
-  v19 = [v16 displayName];
+  displayName = [contactCopy displayName];
 
-  v20 = [v18 stringWithFormat:v12, v19];
+  v20 = [v18 stringWithFormat:stringCopy, displayName];
 
-  v21 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContactUUID:v17 categoryIdentifier:v15 requestIdentifier:v14 title:v13 message:v20];
+  v21 = [(ASFriendInviteBulletinManager *)self _notificationRequestForInvitationFromContactUUID:uUID categoryIdentifier:identifierCopy requestIdentifier:requestIdentifierCopy title:titleCopy message:v20];
 
   return v21;
 }
 
-- (id)_notificationRequestForInvitationFromContactUUID:(id)a3 categoryIdentifier:(id)a4 requestIdentifier:(id)a5 title:(id)a6 message:(id)a7
+- (id)_notificationRequestForInvitationFromContactUUID:(id)d categoryIdentifier:(id)identifier requestIdentifier:(id)requestIdentifier title:(id)title message:(id)message
 {
   v12 = MEMORY[0x277CE1F60];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  messageCopy = message;
+  titleCopy = title;
+  requestIdentifierCopy = requestIdentifier;
+  identifierCopy = identifier;
+  dCopy = d;
   v18 = objc_alloc_init(v12);
-  v19 = [(ASFriendInviteBulletinManager *)self _newPrepolulatedUserInfoForInvitationFromContactUUID:v17 categoryIdentifier:v16 notificationContent:v18 title:v14 message:v13];
+  v19 = [(ASFriendInviteBulletinManager *)self _newPrepolulatedUserInfoForInvitationFromContactUUID:dCopy categoryIdentifier:identifierCopy notificationContent:v18 title:titleCopy message:messageCopy];
 
   [v18 setUserInfo:v19];
   v20 = MEMORY[0x277CCACA8];
-  v21 = [v17 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v22 = [v20 stringWithFormat:@"%@-%@", v21, v15];
+  requestIdentifierCopy = [v20 stringWithFormat:@"%@-%@", uUIDString, requestIdentifierCopy];
 
-  v23 = [MEMORY[0x277CE1FC0] requestWithIdentifier:v22 content:v18 trigger:0];
+  v23 = [MEMORY[0x277CE1FC0] requestWithIdentifier:requestIdentifierCopy content:v18 trigger:0];
 
   return v23;
 }
 
-- (id)_newPrepolulatedUserInfoForInvitationFromContactUUID:(id)a3 categoryIdentifier:(id)a4 notificationContent:(id)a5 title:(id)a6 message:(id)a7
+- (id)_newPrepolulatedUserInfoForInvitationFromContactUUID:(id)d categoryIdentifier:(id)identifier notificationContent:(id)content title:(id)title message:(id)message
 {
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  [(ASFriendInviteBulletinManager *)self _newPrepopulatedNotificationContentForNotificationContent:v12 title:a6 message:a7];
-  [v12 setCategoryIdentifier:v13];
+  contentCopy = content;
+  identifierCopy = identifier;
+  dCopy = d;
+  [(ASFriendInviteBulletinManager *)self _newPrepopulatedNotificationContentForNotificationContent:contentCopy title:title message:message];
+  [contentCopy setCategoryIdentifier:identifierCopy];
 
-  v15 = [MEMORY[0x277CBEB38] dictionary];
-  v16 = [v14 UUIDString];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  uUIDString = [dCopy UUIDString];
 
-  [v15 setObject:v16 forKey:@"ASUserInfoIDContactUUID"];
-  [v15 setObject:@"ASUserInfoNotificationTypeInviteRequest" forKey:@"ASUserInfoNotificationTypeKey"];
-  return v15;
+  [dictionary setObject:uUIDString forKey:@"ASUserInfoIDContactUUID"];
+  [dictionary setObject:@"ASUserInfoNotificationTypeInviteRequest" forKey:@"ASUserInfoNotificationTypeKey"];
+  return dictionary;
 }
 
-- (id)_userInfoForInvitationResponseFromContact:(id)a3 notificationContent:(id)a4 message:(id)a5
+- (id)_userInfoForInvitationResponseFromContact:(id)contact notificationContent:(id)content message:(id)message
 {
-  v8 = a3;
-  [(ASFriendInviteBulletinManager *)self _newPrepopulatedNotificationContentForNotificationContent:a4 title:0 message:a5];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
-  v10 = [v8 UUID];
+  contactCopy = contact;
+  [(ASFriendInviteBulletinManager *)self _newPrepopulatedNotificationContentForNotificationContent:content title:0 message:message];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  uUID = [contactCopy UUID];
 
-  v11 = [v10 UUIDString];
-  [v9 setObject:v11 forKey:@"ASUserInfoIDContactUUID"];
+  uUIDString = [uUID UUIDString];
+  [dictionary setObject:uUIDString forKey:@"ASUserInfoIDContactUUID"];
 
-  [v9 setObject:@"ASUserInfoNotificationTypeInviteRequest" forKey:@"ASUserInfoNotificationTypeKey"];
+  [dictionary setObject:@"ASUserInfoNotificationTypeInviteRequest" forKey:@"ASUserInfoNotificationTypeKey"];
 
-  return v9;
+  return dictionary;
 }
 
-- (void)_newPrepopulatedNotificationContentForNotificationContent:(id)a3 title:(id)a4 message:(id)a5
+- (void)_newPrepopulatedNotificationContentForNotificationContent:(id)content title:(id)title message:(id)message
 {
   v7 = MEMORY[0x277CE1F70];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  messageCopy = message;
+  titleCopy = title;
+  contentCopy = content;
   v12 = [v7 soundWithAlertType:19];
   [v12 setAlertTopic:*MEMORY[0x277D71F98]];
-  [v10 setSound:v12];
-  v11 = [MEMORY[0x277CBEAA8] date];
-  [v10 setDate:v11];
+  [contentCopy setSound:v12];
+  date = [MEMORY[0x277CBEAA8] date];
+  [contentCopy setDate:date];
 
-  [v10 setTitle:v9];
-  [v10 setBody:v8];
+  [contentCopy setTitle:titleCopy];
+  [contentCopy setBody:messageCopy];
 }
 
-- (void)bulletinPostingManager:(id)a3 didReceiveNotificationResponse:(id)a4
+- (void)bulletinPostingManager:(id)manager didReceiveNotificationResponse:(id)response
 {
-  v5 = a4;
+  responseCopy = response;
   notificationQueue = self->_notificationQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __87__ASFriendInviteBulletinManager_bulletinPostingManager_didReceiveNotificationResponse___block_invoke;
   v8[3] = &unk_278C4B250;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = responseCopy;
+  v7 = responseCopy;
   dispatch_async(notificationQueue, v8);
 }
 
@@ -644,30 +644,30 @@ uint64_t __87__ASFriendInviteBulletinManager_bulletinPostingManager_didReceiveNo
   return result;
 }
 
-- (void)processResponse:(id)a3
+- (void)processResponse:(id)response
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   ASLoggingInitialize();
   v5 = *MEMORY[0x277CE8FF8];
   if (os_log_type_enabled(*MEMORY[0x277CE8FF8], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 actionIdentifier];
+    actionIdentifier = [responseCopy actionIdentifier];
     v16 = 138543618;
-    v17 = v7;
+    v17 = actionIdentifier;
     v18 = 2114;
-    v19 = v4;
+    v19 = responseCopy;
     _os_log_impl(&dword_23E5E3000, v6, OS_LOG_TYPE_DEFAULT, "Handling notification action response: %{public}@ RESPONSE: %{public}@", &v16, 0x16u);
   }
 
-  v8 = [v4 userInfo];
+  userInfo = [responseCopy userInfo];
   v9 = objc_alloc(MEMORY[0x277CCAD78]);
-  v10 = [v8 objectForKeyedSubscript:@"ASUserInfoIDContactUUID"];
+  v10 = [userInfo objectForKeyedSubscript:@"ASUserInfoIDContactUUID"];
   v11 = [v9 initWithUUIDString:v10];
 
-  v12 = [v4 actionIdentifier];
-  if ([v12 isEqualToString:@"Accept"])
+  actionIdentifier2 = [responseCopy actionIdentifier];
+  if ([actionIdentifier2 isEqualToString:@"Accept"])
   {
     v13 = 1;
 LABEL_7:
@@ -677,7 +677,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v12 isEqualToString:@"Ignore"])
+  if ([actionIdentifier2 isEqualToString:@"Ignore"])
   {
     v13 = 0;
     goto LABEL_7;

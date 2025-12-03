@@ -12,10 +12,10 @@
   self->_taskGroup = v3;
 
   [(HDSynchronousTaskGroup *)self->_taskGroup setDelegate:self];
-  v5 = [(HDCloudSyncOperation *)self configuration];
-  v6 = [v5 cachedCloudState];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
   v80 = 0;
-  v7 = [v6 zonesByIdentifierWithError:&v80];
+  v7 = [cachedCloudState zonesByIdentifierWithError:&v80];
   v8 = v80;
 
   if (!v7 && v8)
@@ -31,11 +31,11 @@
       _os_log_error_impl(&dword_228986000, v9, OS_LOG_TYPE_ERROR, "%{public}@ Failed to retrieve cached zone identifiers, %{public}@", buf, 0x16u);
     }
 
-    v10 = self;
+    selfCopy2 = self;
     v11 = 0;
     v12 = v8;
 LABEL_47:
-    [(HDCloudSyncOperation *)v10 finishWithSuccess:v11 error:v12];
+    [(HDCloudSyncOperation *)selfCopy2 finishWithSuccess:v11 error:v12];
     goto LABEL_48;
   }
 
@@ -50,7 +50,7 @@ LABEL_47:
       _os_log_debug_impl(&dword_228986000, v55, OS_LOG_TYPE_DEBUG, "%{public}@ No cached zones found.", buf, 0xCu);
     }
 
-    v10 = self;
+    selfCopy2 = self;
     v11 = 1;
     v12 = 0;
     goto LABEL_47;
@@ -101,11 +101,11 @@ LABEL_47:
           if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
           {
             v57 = v53;
-            v58 = [v17 zoneIdentifier];
+            zoneIdentifier = [v17 zoneIdentifier];
             *buf = 138543874;
             *&buf[4] = self;
             *&buf[12] = 2114;
-            *&buf[14] = v58;
+            *&buf[14] = zoneIdentifier;
             *&buf[22] = 2114;
             v85 = v21;
             _os_log_error_impl(&dword_228986000, v57, OS_LOG_TYPE_ERROR, "%{public}@ Failed to get store records for %{public}@, %{public}@", buf, 0x20u);
@@ -135,8 +135,8 @@ LABEL_47:
                 objc_enumerationMutation(v23);
               }
 
-              v28 = [*(*(&v71 + 1) + 8 * j) ownerIdentifier];
-              [v13 addObject:v28];
+              ownerIdentifier = [*(*(&v71 + 1) + 8 * j) ownerIdentifier];
+              [v13 addObject:ownerIdentifier];
             }
 
             v25 = [v23 countByEnumeratingWithState:&v71 objects:v82 count:16];
@@ -163,12 +163,12 @@ LABEL_47:
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v29 = [(HDCloudSyncOperation *)self configuration];
-  v30 = [v29 repository];
-  v31 = [v30 allCKContainers];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration2 repository];
+  allCKContainers = [repository allCKContainers];
 
-  obja = v31;
-  v32 = [v31 countByEnumeratingWithState:&v67 objects:v81 count:16];
+  obja = allCKContainers;
+  v32 = [allCKContainers countByEnumeratingWithState:&v67 objects:v81 count:16];
   if (v32)
   {
     v33 = v32;
@@ -183,14 +183,14 @@ LABEL_47:
         }
 
         v35 = *(*(&v67 + 1) + 8 * k);
-        v36 = [(HDCloudSyncOperation *)self configuration];
-        v37 = [v36 repository];
-        v38 = [v37 profileIdentifier];
-        v39 = HDDatabaseForContainer(v35, v38);
+        configuration3 = [(HDCloudSyncOperation *)self configuration];
+        repository2 = [configuration3 repository];
+        profileIdentifier = [repository2 profileIdentifier];
+        v39 = HDDatabaseForContainer(v35, profileIdentifier);
 
         if ([v39 databaseScope] == 2)
         {
-          v40 = [v7 allValues];
+          allValues = [v7 allValues];
           v41 = v35;
           v42 = v13;
           *buf = MEMORY[0x277D85DD0];
@@ -202,7 +202,7 @@ LABEL_47:
           *(&v86 + 1) = self;
           v44 = v42;
           v87 = v44;
-          v45 = [v40 hk_map:buf];
+          v45 = [allValues hk_map:buf];
 
           if ([v45 count])
           {
@@ -213,21 +213,21 @@ LABEL_47:
             {
               v47 = v46;
               v48 = [v45 count];
-              v49 = [v43 containerIdentifier];
+              containerIdentifier = [v43 containerIdentifier];
               *buf = 138544130;
               *&buf[4] = self;
               *&buf[12] = 2048;
               *&buf[14] = v48;
               *&buf[22] = 2114;
-              v85 = v49;
+              v85 = containerIdentifier;
               LOWORD(v86) = 2114;
               *(&v86 + 2) = v45;
               _os_log_impl(&dword_228986000, v47, OS_LOG_TYPE_DEFAULT, "%{public}@: Saving %ld records in %{public}@: %{public}@", buf, 0x2Au);
             }
 
             v50 = [HDCloudSyncModifyRecordsOperation alloc];
-            v51 = [(HDCloudSyncOperation *)self configuration];
-            v52 = [(HDCloudSyncModifyRecordsOperation *)v50 initWithConfiguration:v51 container:v43 recordsToSave:v45 recordIDsToDelete:0];
+            configuration4 = [(HDCloudSyncOperation *)self configuration];
+            v52 = [(HDCloudSyncModifyRecordsOperation *)v50 initWithConfiguration:configuration4 container:v43 recordsToSave:v45 recordIDsToDelete:0];
 
             v66[0] = MEMORY[0x277D85DD0];
             v66[1] = 3221225472;

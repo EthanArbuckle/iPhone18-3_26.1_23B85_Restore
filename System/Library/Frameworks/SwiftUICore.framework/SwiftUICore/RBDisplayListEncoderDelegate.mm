@@ -1,27 +1,27 @@
 @interface RBDisplayListEncoderDelegate
-- (BOOL)shouldEncodeFontSubset:(CGFont *)a3;
+- (BOOL)shouldEncodeFontSubset:(CGFont *)subset;
 - (RBEncoderSet)encoderSet;
 - (_TtC7SwiftUI28RBDisplayListEncoderDelegate)init;
-- (id)encodedCGFontData:(CGFont *)a3 error:(id *)a4;
-- (id)encodedFontData:(id)a3 cgFont:(CGFont *)a4 error:(id *)a5;
-- (id)encodedImageData:(id)a3 error:(id *)a4;
+- (id)encodedCGFontData:(CGFont *)data error:(id *)error;
+- (id)encodedFontData:(id)data cgFont:(CGFont *)font error:(id *)error;
+- (id)encodedImageData:(id)data error:(id *)error;
 @end
 
 @implementation RBDisplayListEncoderDelegate
 
 - (RBEncoderSet)encoderSet
 {
-  v2 = self;
+  selfCopy = self;
   v3 = RBDisplayListEncoderDelegate.encoderSet.getter();
 
   return v3;
 }
 
-- (id)encodedImageData:(id)a3 error:(id *)a4
+- (id)encodedImageData:(id)data error:(id *)error
 {
-  var1 = a3.var1;
-  v5 = *&a3.var0;
-  v6 = self;
+  var1 = data.var1;
+  v5 = *&data.var0;
+  selfCopy = self;
   v7 = RBDisplayListEncoderDelegate.encodedData(image:)(v5, var1);
   v9 = v8;
 
@@ -31,11 +31,11 @@
   return v10.super.isa;
 }
 
-- (id)encodedCGFontData:(CGFont *)a3 error:(id *)a4
+- (id)encodedCGFontData:(CGFont *)data error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
-  v7 = RBDisplayListEncoderDelegate.encodedData(cgFont:)(v5);
+  dataCopy = data;
+  selfCopy = self;
+  v7 = RBDisplayListEncoderDelegate.encodedData(cgFont:)(dataCopy);
   v9 = v8;
 
   v10.super.isa = Data._bridgeToObjectiveC()().super.isa;
@@ -44,7 +44,7 @@
   return v10.super.isa;
 }
 
-- (BOOL)shouldEncodeFontSubset:(CGFont *)a3
+- (BOOL)shouldEncodeFontSubset:(CGFont *)subset
 {
   v3 = *&self->encoder[OBJC_IVAR____TtC7SwiftUI28RBDisplayListEncoderDelegate_encoder + 8];
   v6 = *(&self->super.isa + OBJC_IVAR____TtC7SwiftUI28RBDisplayListEncoderDelegate_encoder);
@@ -54,11 +54,11 @@
   return (v5[0] & 0x14) != 4;
 }
 
-- (id)encodedFontData:(id)a3 cgFont:(CGFont *)a4 error:(id *)a5
+- (id)encodedFontData:(id)data cgFont:(CGFont *)font error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  dataCopy = data;
+  fontCopy = font;
+  selfCopy = self;
   v10 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v12 = v11;
 

@@ -1,16 +1,16 @@
 @interface MapsSuggestionsCircuitBoard
 - (MapsSuggestionsCircuitBoard)init;
 - (id).cxx_construct;
-- (id)addAction:(id)a3;
-- (id)addCircuit:(id)a3;
-- (id)addCondition:(id)a3;
-- (id)addTrigger:(id)a3;
+- (id)addAction:(id)action;
+- (id)addCircuit:(id)circuit;
+- (id)addCondition:(id)condition;
+- (id)addTrigger:(id)trigger;
 - (id)objectForJSON;
 - (id)uniqueName;
-- (void)connectCondition:(id)a3 toCircuit:(id)a4;
-- (void)connectTrigger:(id)a3 toCircuit:(id)a4;
-- (void)disconnectCondition:(id)a3 fromCircuit:(id)a4;
-- (void)disconnectTrigger:(id)a3 fromCircuit:(id)a4;
+- (void)connectCondition:(id)condition toCircuit:(id)circuit;
+- (void)connectTrigger:(id)trigger toCircuit:(id)circuit;
+- (void)disconnectCondition:(id)condition fromCircuit:(id)circuit;
+- (void)disconnectTrigger:(id)trigger fromCircuit:(id)circuit;
 @end
 
 @implementation MapsSuggestionsCircuitBoard
@@ -50,18 +50,18 @@
   return v2;
 }
 
-- (id)addTrigger:(id)a3
+- (id)addTrigger:(id)trigger
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  triggerCopy = trigger;
+  v5 = triggerCopy;
+  if (triggerCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __42__MapsSuggestionsCircuitBoard_addTrigger___block_invoke;
     v10[3] = &unk_1E81F6CA8;
-    v6 = v4;
+    v6 = triggerCopy;
     v11 = v6;
     MSg::Queue::async<MapsSuggestionsCircuitBoard>(&self->_queue, self, v10);
     v7 = v6;
@@ -96,18 +96,18 @@ void __42__MapsSuggestionsCircuitBoard_addTrigger___block_invoke(uint64_t a1, vo
   v5[4] = v3;
 }
 
-- (id)addCondition:(id)a3
+- (id)addCondition:(id)condition
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  conditionCopy = condition;
+  v5 = conditionCopy;
+  if (conditionCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __44__MapsSuggestionsCircuitBoard_addCondition___block_invoke;
     v10[3] = &unk_1E81F6CA8;
-    v6 = v4;
+    v6 = conditionCopy;
     v11 = v6;
     MSg::Queue::async<MapsSuggestionsCircuitBoard>(&self->_queue, self, v10);
     v7 = v6;
@@ -142,18 +142,18 @@ void __44__MapsSuggestionsCircuitBoard_addCondition___block_invoke(uint64_t a1, 
   v5[5] = v3;
 }
 
-- (id)addCircuit:(id)a3
+- (id)addCircuit:(id)circuit
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  circuitCopy = circuit;
+  v5 = circuitCopy;
+  if (circuitCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __42__MapsSuggestionsCircuitBoard_addCircuit___block_invoke;
     v10[3] = &unk_1E81F6CA8;
-    v6 = v4;
+    v6 = circuitCopy;
     v11 = v6;
     MSg::Queue::async<MapsSuggestionsCircuitBoard>(&self->_queue, self, v10);
     v7 = v6;
@@ -188,13 +188,13 @@ void __42__MapsSuggestionsCircuitBoard_addCircuit___block_invoke(uint64_t a1, vo
   v5[3] = v3;
 }
 
-- (id)addAction:(id)a3
+- (id)addAction:(id)action
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v5 = [[MapsSuggestionsActionCircuit alloc] initWithAction:v4];
+    v5 = [[MapsSuggestionsActionCircuit alloc] initWithAction:actionCopy];
     v6 = [(MapsSuggestionsCircuitBoard *)self addCircuit:v5];
   }
 
@@ -220,13 +220,13 @@ void __42__MapsSuggestionsCircuitBoard_addCircuit___block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (void)connectTrigger:(id)a3 toCircuit:(id)a4
+- (void)connectTrigger:(id)trigger toCircuit:(id)circuit
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  triggerCopy = trigger;
+  circuitCopy = circuit;
+  v8 = circuitCopy;
+  if (!triggerCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -248,7 +248,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!circuitCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -272,8 +272,8 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = __56__MapsSuggestionsCircuitBoard_connectTrigger_toCircuit___block_invoke;
   v11[3] = &unk_1E81F6CD0;
-  v12 = v7;
-  v13 = v6;
+  v12 = circuitCopy;
+  v13 = triggerCopy;
   MSg::Queue::async<MapsSuggestionsCircuitBoard>(&self->_queue, self, v11);
 
   v9 = v12;
@@ -331,13 +331,13 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)connectCondition:(id)a3 toCircuit:(id)a4
+- (void)connectCondition:(id)condition toCircuit:(id)circuit
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  conditionCopy = condition;
+  circuitCopy = circuit;
+  v8 = circuitCopy;
+  if (!conditionCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -359,7 +359,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!circuitCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -383,8 +383,8 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = __58__MapsSuggestionsCircuitBoard_connectCondition_toCircuit___block_invoke;
   v11[3] = &unk_1E81F6CD0;
-  v12 = v7;
-  v13 = v6;
+  v12 = circuitCopy;
+  v13 = conditionCopy;
   MSg::Queue::async<MapsSuggestionsCircuitBoard>(&self->_queue, self, v11);
 
   v9 = v12;
@@ -442,13 +442,13 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)disconnectTrigger:(id)a3 fromCircuit:(id)a4
+- (void)disconnectTrigger:(id)trigger fromCircuit:(id)circuit
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  triggerCopy = trigger;
+  circuitCopy = circuit;
+  v8 = circuitCopy;
+  if (!triggerCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -470,7 +470,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!circuitCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -494,8 +494,8 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = __61__MapsSuggestionsCircuitBoard_disconnectTrigger_fromCircuit___block_invoke;
   v11[3] = &unk_1E81F6CD0;
-  v12 = v7;
-  v13 = v6;
+  v12 = circuitCopy;
+  v13 = triggerCopy;
   MSg::Queue::async<MapsSuggestionsCircuitBoard>(&self->_queue, self, v11);
 
   v9 = v12;
@@ -553,13 +553,13 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)disconnectCondition:(id)a3 fromCircuit:(id)a4
+- (void)disconnectCondition:(id)condition fromCircuit:(id)circuit
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  conditionCopy = condition;
+  circuitCopy = circuit;
+  v8 = circuitCopy;
+  if (!conditionCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -581,7 +581,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!circuitCopy)
   {
     v9 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -605,8 +605,8 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = __63__MapsSuggestionsCircuitBoard_disconnectCondition_fromCircuit___block_invoke;
   v11[3] = &unk_1E81F6CD0;
-  v12 = v7;
-  v13 = v6;
+  v12 = circuitCopy;
+  v13 = conditionCopy;
   MSg::Queue::async<MapsSuggestionsCircuitBoard>(&self->_queue, self, v11);
 
   v9 = v12;

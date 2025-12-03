@@ -1,26 +1,26 @@
 @interface RPBroadcastActivityViewController
-+ (void)loadBroadcastActivityViewControllerWithPreferredExtension:(id)a3 handler:(id)a4 broadcastActivitiesNotInstalledAlertTitle:(id)a5 broadcastActivitiesNotInstalledAlertMessage:(id)a6 atPoint:(CGPoint)a7 fromWindow:(id)a8;
-+ (void)viewControllerForExtension:(id)a3 inputItems:(id)a4 completionHandler:(id)a5;
++ (void)loadBroadcastActivityViewControllerWithPreferredExtension:(id)extension handler:(id)handler broadcastActivitiesNotInstalledAlertTitle:(id)title broadcastActivitiesNotInstalledAlertMessage:(id)message atPoint:(CGPoint)point fromWindow:(id)window;
++ (void)viewControllerForExtension:(id)extension inputItems:(id)items completionHandler:(id)handler;
 - (id)delegate;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)extensionDidFinishWithLaunchURL:(id)a3 broadcastURL:(id)a4 extensionBundleID:(id)a5 cancelled:(BOOL)a6;
-- (void)setModalPresentationStyle:(int64_t)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)extensionDidFinishWithLaunchURL:(id)l broadcastURL:(id)rL extensionBundleID:(id)d cancelled:(BOOL)cancelled;
+- (void)setModalPresentationStyle:(int64_t)style;
 @end
 
 @implementation RPBroadcastActivityViewController
 
-+ (void)loadBroadcastActivityViewControllerWithPreferredExtension:(id)a3 handler:(id)a4 broadcastActivitiesNotInstalledAlertTitle:(id)a5 broadcastActivitiesNotInstalledAlertMessage:(id)a6 atPoint:(CGPoint)a7 fromWindow:(id)a8
++ (void)loadBroadcastActivityViewControllerWithPreferredExtension:(id)extension handler:(id)handler broadcastActivitiesNotInstalledAlertTitle:(id)title broadcastActivitiesNotInstalledAlertMessage:(id)message atPoint:(CGPoint)point fromWindow:(id)window
 {
   v57[2] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v48 = a5;
-  v47 = a6;
+  extensionCopy = extension;
+  handlerCopy = handler;
+  titleCopy = title;
+  messageCopy = message;
   v13 = objc_alloc_init(RPBroadcastActivityViewController);
-  [(RPBroadcastActivityViewController *)v13 setDidFinishHandler:v12];
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 infoDictionary];
-  v16 = [v15 objectForKeyedSubscript:@"CFBundleIcons"];
+  [(RPBroadcastActivityViewController *)v13 setDidFinishHandler:handlerCopy];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary = [mainBundle infoDictionary];
+  v16 = [infoDictionary objectForKeyedSubscript:@"CFBundleIcons"];
   v17 = [v16 objectForKeyedSubscript:@"CFBundlePrimaryIcon"];
 
   objc_opt_class();
@@ -28,7 +28,7 @@
   if (objc_opt_isKindOfClass())
   {
     v18 = [v17 objectForKeyedSubscript:@"CFBundleIconFiles"];
-    v19 = [v18 firstObject];
+    firstObject = [v18 firstObject];
   }
 
   else
@@ -36,21 +36,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = v17;
+      firstObject = v17;
     }
 
     else
     {
-      v19 = 0;
+      firstObject = 0;
     }
   }
 
   v56[0] = @"RPBroadcastExtensionKeyExtensionHostInfoAppName";
-  v20 = [v14 _rpLocalizedAppName];
-  v21 = v20;
-  if (v20)
+  _rpLocalizedAppName = [mainBundle _rpLocalizedAppName];
+  v21 = _rpLocalizedAppName;
+  if (_rpLocalizedAppName)
   {
-    v22 = v20;
+    v22 = _rpLocalizedAppName;
   }
 
   else
@@ -60,13 +60,13 @@
 
   v56[1] = @"RPBroadcastExtensionKeyExtensionHostInfoBundleID";
   v57[0] = v22;
-  v23 = [v14 bundleIdentifier];
-  v57[1] = v23;
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v57[1] = bundleIdentifier;
   v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v57 forKeys:v56 count:2];
   v25 = [v24 mutableCopy];
 
-  v44 = v19;
-  v26 = [MEMORY[0x277D755B8] imageNamed:v19];
+  v44 = firstObject;
+  v26 = [MEMORY[0x277D755B8] imageNamed:firstObject];
   v27 = v26;
   if (v26)
   {
@@ -74,21 +74,21 @@
     [v25 setObject:v28 forKeyedSubscript:@"RPBroadcastExtensionKeyExtensionHostInfoAppIcon"];
   }
 
-  v30 = v47;
-  v29 = v48;
-  if (v48)
+  v30 = messageCopy;
+  v29 = titleCopy;
+  if (titleCopy)
   {
-    [v25 setObject:v48 forKeyedSubscript:@"RPBroadcastExtensionKeyExtensionHostInfoBroadcastActivitiesNotInstalledAlertTitle"];
+    [v25 setObject:titleCopy forKeyedSubscript:@"RPBroadcastExtensionKeyExtensionHostInfoBroadcastActivitiesNotInstalledAlertTitle"];
   }
 
-  if (v47)
+  if (messageCopy)
   {
-    [v25 setObject:v47 forKeyedSubscript:@"RPBroadcastExtensionKeyExtensionHostInfoBroadcastActivitiesNotInstalledAlertMessage"];
+    [v25 setObject:messageCopy forKeyedSubscript:@"RPBroadcastExtensionKeyExtensionHostInfoBroadcastActivitiesNotInstalledAlertMessage"];
   }
 
-  if (v11)
+  if (extensionCopy)
   {
-    [v25 setObject:v11 forKeyedSubscript:@"RPBroadcastExtensionKeyExtensionHostInfoPreferredExtension"];
+    [v25 setObject:extensionCopy forKeyedSubscript:@"RPBroadcastExtensionKeyExtensionHostInfoPreferredExtension"];
   }
 
   v45 = v17;
@@ -97,7 +97,7 @@
   v32 = v53;
   if (v32)
   {
-    v12[2](v12, 0, v32);
+    handlerCopy[2](handlerCopy, 0, v32);
     v33 = v46;
   }
 
@@ -111,7 +111,7 @@
     v37 = [v36 initWithItem:v25 typeIdentifier:*MEMORY[0x277CC2050]];
     v55 = v37;
     [MEMORY[0x277CBEA60] arrayWithObjects:&v55 count:1];
-    v38 = v43 = v11;
+    v38 = v43 = extensionCopy;
     [v34 setAttachments:v38];
 
     v39 = objc_opt_class();
@@ -124,13 +124,13 @@
     v33 = v46;
     v50 = v46;
     v51 = 0;
-    v52 = v12;
+    v52 = handlerCopy;
     v41 = v39;
-    v30 = v47;
+    v30 = messageCopy;
     [v41 viewControllerForExtension:v31 inputItems:v40 completionHandler:v49];
 
-    v11 = v43;
-    v29 = v48;
+    extensionCopy = v43;
+    v29 = titleCopy;
   }
 
   v42 = *MEMORY[0x277D85DE8];
@@ -182,19 +182,19 @@ void __208__RPBroadcastActivityViewController_loadBroadcastActivityViewControlle
   (*(*(a1 + 56) + 16))();
 }
 
-+ (void)viewControllerForExtension:(id)a3 inputItems:(id)a4 completionHandler:(id)a5
++ (void)viewControllerForExtension:(id)extension inputItems:(id)items completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
-  if (v7)
+  extensionCopy = extension;
+  handlerCopy = handler;
+  if (extensionCopy)
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __93__RPBroadcastActivityViewController_viewControllerForExtension_inputItems_completionHandler___block_invoke;
     v9[3] = &unk_278B624C0;
-    v10 = v7;
-    v11 = v8;
-    [v10 instantiateViewControllerWithInputItems:a4 connectionHandler:v9];
+    v10 = extensionCopy;
+    v11 = handlerCopy;
+    [v10 instantiateViewControllerWithInputItems:items connectionHandler:v9];
   }
 }
 
@@ -220,49 +220,49 @@ void __93__RPBroadcastActivityViewController_viewControllerForExtension_inputIte
   }
 }
 
-- (void)extensionDidFinishWithLaunchURL:(id)a3 broadcastURL:(id)a4 extensionBundleID:(id)a5 cancelled:(BOOL)a6
+- (void)extensionDidFinishWithLaunchURL:(id)l broadcastURL:(id)rL extensionBundleID:(id)d cancelled:(BOOL)cancelled
 {
-  v21 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v21)
+  lCopy = l;
+  rLCopy = rL;
+  dCopy = d;
+  if (lCopy)
   {
-    v12 = [MEMORY[0x277D75128] sharedApplication];
-    [v12 openURL:v21 options:MEMORY[0x277CBEC10] completionHandler:0];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    [mEMORY[0x277D75128] openURL:lCopy options:MEMORY[0x277CBEC10] completionHandler:0];
   }
 
-  v13 = [(RPBroadcastActivityViewController *)self delegate];
+  delegate = [(RPBroadcastActivityViewController *)self delegate];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    if (a6)
+    if (cancelled)
     {
-      v15 = [(RPBroadcastActivityViewController *)self delegate];
+      delegate2 = [(RPBroadcastActivityViewController *)self delegate];
       v16 = [MEMORY[0x277CCA9B8] _rpUserErrorForCode:-5801 userInfo:MEMORY[0x277CBEC10]];
-      v17 = v15;
-      v18 = self;
+      delegate3 = delegate2;
+      selfCopy2 = self;
       v19 = 0;
       v20 = v16;
     }
 
     else
     {
-      v15 = [[RPBroadcastController alloc] initWithExtensionBundleID:v11 broadcastURL:v10];
-      v17 = [(RPBroadcastActivityViewController *)self delegate];
-      v16 = v17;
-      v18 = self;
-      v19 = v15;
+      delegate2 = [[RPBroadcastController alloc] initWithExtensionBundleID:dCopy broadcastURL:rLCopy];
+      delegate3 = [(RPBroadcastActivityViewController *)self delegate];
+      v16 = delegate3;
+      selfCopy2 = self;
+      v19 = delegate2;
       v20 = 0;
     }
 
-    [v17 broadcastActivityViewController:v18 didFinishWithBroadcastController:v19 error:v20];
+    [delegate3 broadcastActivityViewController:selfCopy2 didFinishWithBroadcastController:v19 error:v20];
   }
 }
 
-- (void)setModalPresentationStyle:(int64_t)a3
+- (void)setModalPresentationStyle:(int64_t)style
 {
-  if (a3 == 7)
+  if (style == 7)
   {
     v4 = [objc_alloc(MEMORY[0x277D758A8]) initWithPresentedViewController:self->_hostViewController presentingViewController:self];
     [(RPBroadcastActivityViewController *)self setPopoverPresentationControllerProxy:v4];
@@ -276,16 +276,16 @@ void __93__RPBroadcastActivityViewController_viewControllerForExtension_inputIte
   }
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __78__RPBroadcastActivityViewController_dismissViewControllerAnimated_completion___block_invoke;
   v7[3] = &unk_278B61CF8;
   v7[4] = self;
-  v8 = v5;
-  v6 = v5;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 

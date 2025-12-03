@@ -1,51 +1,51 @@
 @interface WOWorkoutEntity
-+ (BOOL)_shouldInsertOrReplaceLocal:(id)a3 withRemote:(id)a4;
-+ (BOOL)bind:(id)a3 provenance:(int64_t)a4 syncIdentity:(int64_t)a5 toBinder:(HDSQLiteStatementBinder *)a6;
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
-+ (BOOL)isPropertyFatal:(id)a3 version:(int64_t)a4;
-+ (Class)classForPersistenceType:(unint64_t)a3;
++ (BOOL)_shouldInsertOrReplaceLocal:(id)local withRemote:(id)remote;
++ (BOOL)bind:(id)bind provenance:(int64_t)provenance syncIdentity:(int64_t)identity toBinder:(HDSQLiteStatementBinder *)binder;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
++ (BOOL)isPropertyFatal:(id)fatal version:(int64_t)version;
++ (Class)classForPersistenceType:(unint64_t)type;
 + (HDSyncEntityIdentifier)syncEntityIdentifier;
-+ (const)columnDefinitionsWithCount:(unint64_t *)a3;
-+ (double)_cleanupTombstoneExpirationIntervalForPersistenceType:(unint64_t)a3;
-+ (id)_lookup:(id)a3 ofType:(unint64_t)a4 profile:(id)a5 transaction:(id)a6;
-+ (id)_nonRaceConfigPredicate:(Class)a3;
++ (const)columnDefinitionsWithCount:(unint64_t *)count;
++ (double)_cleanupTombstoneExpirationIntervalForPersistenceType:(unint64_t)type;
++ (id)_lookup:(id)_lookup ofType:(unint64_t)type profile:(id)profile transaction:(id)transaction;
++ (id)_nonRaceConfigPredicate:(Class)predicate;
 + (id)allProperties;
 + (id)databaseTable;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (id)persistenceFromRow:(HDSQLiteRow *)a3 type:(unint64_t)a4 profile:(id)a5 transaction:(id)a6;
-+ (id)protoPersistenceFromRow:(HDSQLiteRow *)a3 type:(unint64_t)a4 profile:(id)a5 transaction:(id)a6;
++ (id)decodeSyncObjectWithData:(id)data;
++ (id)persistenceFromRow:(HDSQLiteRow *)row type:(unint64_t)type profile:(id)profile transaction:(id)transaction;
++ (id)protoPersistenceFromRow:(HDSQLiteRow *)row type:(unint64_t)type profile:(id)profile transaction:(id)transaction;
 + (id)tableName;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 + (unint64_t)persistenceType;
-+ (void)_cleanupDeletedObjectsWithProfile:(id)a3 type:(unint64_t)a4;
-+ (void)preparePersistenceForDelete:(id)a3;
++ (void)_cleanupDeletedObjectsWithProfile:(id)profile type:(unint64_t)type;
++ (void)preparePersistenceForDelete:(id)delete;
 @end
 
 @implementation WOWorkoutEntity
 
 + (id)allProperties
 {
-  v17 = a1;
+  selfCopy = self;
   v16[1] = a2;
   v13 = 0;
   v2 = [NSMutableArray arrayWithObjects:@"uuid", @"serialization_version", @"serialized", @"sync_provenance", @"object_state", @"object_modification_date", @"sync_identity", @"proto", 0];
   v14 = v16;
   v16[0] = v2;
   v5 = v2;
-  v6 = [v17 integerProperties];
+  integerProperties = [selfCopy integerProperties];
   [(NSMutableArray *)v5 addObjectsFromArray:?];
 
   v7 = v16[0];
-  v8 = [v17 stringProperties];
+  stringProperties = [selfCopy stringProperties];
   [v7 addObjectsFromArray:?];
 
   v9 = v16[0];
-  v10 = [v17 dateProperties];
+  dateProperties = [selfCopy dateProperties];
   [v9 addObjectsFromArray:?];
 
   v11 = v16[0];
-  v12 = [v17 dataProperties];
+  dataProperties = [selfCopy dataProperties];
   [v11 addObjectsFromArray:?];
 
   v15 = v16[0];
@@ -55,45 +55,45 @@
   return v3;
 }
 
-+ (BOOL)isPropertyFatal:(id)a3 version:(int64_t)a4
++ (BOOL)isPropertyFatal:(id)fatal version:(int64_t)version
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, fatal);
   objc_storeStrong(location, 0);
   return 1;
 }
 
-+ (BOOL)bind:(id)a3 provenance:(int64_t)a4 syncIdentity:(int64_t)a5 toBinder:(HDSQLiteStatementBinder *)a6
++ (BOOL)bind:(id)bind provenance:(int64_t)provenance syncIdentity:(int64_t)identity toBinder:(HDSQLiteStatementBinder *)binder
 {
-  v66 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v64 = a4;
-  v63 = a5;
-  v62 = a6;
-  v48 = [location[0] uuid];
+  objc_storeStrong(location, bind);
+  provenanceCopy = provenance;
+  identityCopy = identity;
+  binderCopy = binder;
+  uuid = [location[0] uuid];
   HDSQLiteBindUUIDToProperty();
 
   [location[0] version];
   HDSQLiteBindInt64ToProperty();
-  v49 = [location[0] persistedData];
+  persistedData = [location[0] persistedData];
   HDSQLiteBindDataToProperty();
 
   HDSQLiteBindInt64ToProperty();
   [location[0] objectState];
   HDSQLiteBindInt64ToProperty();
-  v50 = [location[0] objectModificationDate];
+  objectModificationDate = [location[0] objectModificationDate];
   HDSQLiteBindDateToProperty();
 
   HDSQLiteBindInt64ToProperty();
-  v51 = [location[0] persistedProtoData];
+  persistedProtoData = [location[0] persistedProtoData];
   HDSQLiteBindDataToProperty();
 
   memset(__b, 0, sizeof(__b));
-  obj = [v66 integerProperties];
+  obj = [selfCopy integerProperties];
   v53 = [obj countByEnumeratingWithState:__b objects:v70 count:16];
   if (v53)
   {
@@ -109,13 +109,13 @@
       }
 
       v61 = *(__b[1] + 8 * v43);
-      v39 = [location[0] keyedNumbers];
-      v40 = [v39 objectForKeyedSubscript:v61];
+      keyedNumbers = [location[0] keyedNumbers];
+      v40 = [keyedNumbers objectForKeyedSubscript:v61];
 
       if (v40)
       {
-        v38 = [location[0] keyedNumbers];
-        v37 = [v38 objectForKeyedSubscript:v61];
+        keyedNumbers2 = [location[0] keyedNumbers];
+        v37 = [keyedNumbers2 objectForKeyedSubscript:v61];
         HDSQLiteBindNumberToProperty();
       }
 
@@ -138,8 +138,8 @@
   }
 
   memset(v58, 0, sizeof(v58));
-  v35 = [v66 stringProperties];
-  v36 = [v35 countByEnumeratingWithState:v58 objects:v69 count:16];
+  stringProperties = [selfCopy stringProperties];
+  v36 = [stringProperties countByEnumeratingWithState:v58 objects:v69 count:16];
   if (v36)
   {
     v32 = *v58[2];
@@ -150,17 +150,17 @@
       v31 = v33;
       if (*v58[2] != v32)
       {
-        objc_enumerationMutation(v35);
+        objc_enumerationMutation(stringProperties);
       }
 
       v59 = *(v58[1] + 8 * v33);
-      v29 = [location[0] keyedStrings];
-      v30 = [v29 objectForKeyedSubscript:v59];
+      keyedStrings = [location[0] keyedStrings];
+      v30 = [keyedStrings objectForKeyedSubscript:v59];
 
       if (v30)
       {
-        v28 = [location[0] keyedStrings];
-        v27 = [v28 objectForKeyedSubscript:v59];
+        keyedStrings2 = [location[0] keyedStrings];
+        v27 = [keyedStrings2 objectForKeyedSubscript:v59];
         HDSQLiteBindStringToProperty();
       }
 
@@ -173,7 +173,7 @@
       if (v31 + 1 >= v34)
       {
         v33 = 0;
-        v34 = [v35 countByEnumeratingWithState:v58 objects:v69 count:16];
+        v34 = [stringProperties countByEnumeratingWithState:v58 objects:v69 count:16];
         if (!v34)
         {
           break;
@@ -183,8 +183,8 @@
   }
 
   memset(v56, 0, sizeof(v56));
-  v25 = [v66 dateProperties];
-  v26 = [v25 countByEnumeratingWithState:v56 objects:v68 count:16];
+  dateProperties = [selfCopy dateProperties];
+  v26 = [dateProperties countByEnumeratingWithState:v56 objects:v68 count:16];
   if (v26)
   {
     v22 = *v56[2];
@@ -195,17 +195,17 @@
       v21 = v23;
       if (*v56[2] != v22)
       {
-        objc_enumerationMutation(v25);
+        objc_enumerationMutation(dateProperties);
       }
 
       v57 = *(v56[1] + 8 * v23);
-      v19 = [location[0] keyedDates];
-      v20 = [v19 objectForKeyedSubscript:v57];
+      keyedDates = [location[0] keyedDates];
+      v20 = [keyedDates objectForKeyedSubscript:v57];
 
       if (v20)
       {
-        v18 = [location[0] keyedDates];
-        v17 = [v18 objectForKeyedSubscript:v57];
+        keyedDates2 = [location[0] keyedDates];
+        v17 = [keyedDates2 objectForKeyedSubscript:v57];
         HDSQLiteBindDateToProperty();
       }
 
@@ -218,7 +218,7 @@
       if (v21 + 1 >= v24)
       {
         v23 = 0;
-        v24 = [v25 countByEnumeratingWithState:v56 objects:v68 count:16];
+        v24 = [dateProperties countByEnumeratingWithState:v56 objects:v68 count:16];
         if (!v24)
         {
           break;
@@ -228,8 +228,8 @@
   }
 
   memset(v54, 0, sizeof(v54));
-  v15 = [v66 dataProperties];
-  v16 = [v15 countByEnumeratingWithState:v54 objects:v67 count:16];
+  dataProperties = [selfCopy dataProperties];
+  v16 = [dataProperties countByEnumeratingWithState:v54 objects:v67 count:16];
   if (v16)
   {
     v12 = *v54[2];
@@ -240,17 +240,17 @@
       v11 = v13;
       if (*v54[2] != v12)
       {
-        objc_enumerationMutation(v15);
+        objc_enumerationMutation(dataProperties);
       }
 
       v55 = *(v54[1] + 8 * v13);
-      v9 = [location[0] keyedDatas];
-      v10 = [v9 objectForKeyedSubscript:v55];
+      keyedDatas = [location[0] keyedDatas];
+      v10 = [keyedDatas objectForKeyedSubscript:v55];
 
       if (v10)
       {
-        v8 = [location[0] keyedDatas];
-        v7 = [v8 objectForKeyedSubscript:v55];
+        keyedDatas2 = [location[0] keyedDatas];
+        v7 = [keyedDatas2 objectForKeyedSubscript:v55];
         HDSQLiteBindDataToProperty();
       }
 
@@ -263,7 +263,7 @@
       if (v11 + 1 >= v14)
       {
         v13 = 0;
-        v14 = [v15 countByEnumeratingWithState:v54 objects:v67 count:16];
+        v14 = [dataProperties countByEnumeratingWithState:v54 objects:v67 count:16];
         if (!v14)
         {
           break;
@@ -276,16 +276,16 @@
   return 1;
 }
 
-+ (id)protoPersistenceFromRow:(HDSQLiteRow *)a3 type:(unint64_t)a4 profile:(id)a5 transaction:(id)a6
++ (id)protoPersistenceFromRow:(HDSQLiteRow *)row type:(unint64_t)type profile:(id)profile transaction:(id)transaction
 {
-  v105 = a1;
+  selfCopy = self;
   v104 = a2;
-  v103 = a3;
-  v102 = a4;
+  rowCopy = row;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, profile);
   v100 = 0;
-  objc_storeStrong(&v100, a6);
+  objc_storeStrong(&v100, transaction);
   v99 = HDSQLiteColumnWithNameAsInteger();
   v98 = HDSQLiteColumnWithNameAsUUID();
   if (v98)
@@ -320,9 +320,9 @@
 
     v86 = HDSQLiteColumnWithNameAsInteger();
     v85 = 0;
-    v52 = [location syncIdentityManager];
+    syncIdentityManager = [location syncIdentityManager];
     v83 = v85;
-    v51 = [v52 identityForEntityID:v86 transaction:v100 error:&v83];
+    v51 = [syncIdentityManager identityForEntityID:v86 transaction:v100 error:&v83];
     objc_storeStrong(&v85, v83);
     v84 = v51;
 
@@ -345,8 +345,8 @@
 
     v80 = objc_alloc_init(WOHealthBridgeProtoPersistence);
     [v80 setVersion:v99];
-    [v80 setType:v102];
-    v37 = [v98 hk_dataForUUIDBytes];
+    [v80 setType:typeCopy];
+    hk_dataForUUIDBytes = [v98 hk_dataForUUIDBytes];
     [v80 setUuid:?];
 
     [v80 setPersistedData:v93];
@@ -354,26 +354,26 @@
     [v80 setObjectState:v88];
     [v87 timeIntervalSinceReferenceDate];
     [v80 setObjectModificationTimeSinceReferenceDate:?];
-    v41 = [v84 identity];
-    v40 = [v41 hardwareIdentifier];
-    v39 = [v40 hk_dataForUUIDBytes];
-    v38 = [v80 syncIdentity];
-    [v38 setHardwareIdentifier:v39];
+    identity = [v84 identity];
+    hardwareIdentifier = [identity hardwareIdentifier];
+    hk_dataForUUIDBytes2 = [hardwareIdentifier hk_dataForUUIDBytes];
+    syncIdentity = [v80 syncIdentity];
+    [syncIdentity setHardwareIdentifier:hk_dataForUUIDBytes2];
 
-    v45 = [v84 identity];
-    v44 = [v45 databaseIdentifier];
-    v43 = [v44 hk_dataForUUIDBytes];
-    v42 = [v80 syncIdentity];
-    [v42 setDatabaseIdentifier:v43];
+    identity2 = [v84 identity];
+    databaseIdentifier = [identity2 databaseIdentifier];
+    hk_dataForUUIDBytes3 = [databaseIdentifier hk_dataForUUIDBytes];
+    syncIdentity2 = [v80 syncIdentity];
+    [syncIdentity2 setDatabaseIdentifier:hk_dataForUUIDBytes3];
 
-    v48 = [v84 identity];
-    v47 = [v48 instanceDiscriminator];
-    v46 = [v80 syncIdentity];
-    [v46 setInstanceDiscriminator:v47];
+    identity3 = [v84 identity];
+    instanceDiscriminator = [identity3 instanceDiscriminator];
+    syncIdentity3 = [v80 syncIdentity];
+    [syncIdentity3 setInstanceDiscriminator:instanceDiscriminator];
 
     memset(__b, 0, sizeof(__b));
-    v49 = [v105 integerProperties];
-    v50 = [v49 countByEnumeratingWithState:__b objects:v113 count:16];
+    integerProperties = [selfCopy integerProperties];
+    v50 = [integerProperties countByEnumeratingWithState:__b objects:v113 count:16];
     if (v50)
     {
       v34 = *__b[2];
@@ -384,7 +384,7 @@
         v33 = v35;
         if (*__b[2] != v34)
         {
-          objc_enumerationMutation(v49);
+          objc_enumerationMutation(integerProperties);
         }
 
         v79 = *(__b[1] + 8 * v35);
@@ -399,7 +399,7 @@
         if (v33 + 1 >= v36)
         {
           v35 = 0;
-          v36 = [v49 countByEnumeratingWithState:__b objects:v113 count:16];
+          v36 = [integerProperties countByEnumeratingWithState:__b objects:v113 count:16];
           if (!v36)
           {
             break;
@@ -409,8 +409,8 @@
     }
 
     memset(v74, 0, sizeof(v74));
-    v31 = [v105 stringProperties];
-    v32 = [v31 countByEnumeratingWithState:v74 objects:v112 count:16];
+    stringProperties = [selfCopy stringProperties];
+    v32 = [stringProperties countByEnumeratingWithState:v74 objects:v112 count:16];
     if (v32)
     {
       v28 = *v74[2];
@@ -421,7 +421,7 @@
         v27 = v29;
         if (*v74[2] != v28)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(stringProperties);
         }
 
         v75 = *(v74[1] + 8 * v29);
@@ -435,7 +435,7 @@
           objc_storeStrong(&v70, 0);
         }
 
-        else if ([v105 isPropertyFatal:v75 version:v99])
+        else if ([selfCopy isPropertyFatal:v75 version:v99])
         {
           _HKInitializeLogging();
           v72 = HKLogWorkouts;
@@ -466,7 +466,7 @@ LABEL_33:
         if (v27 + 1 >= v30)
         {
           v29 = 0;
-          v30 = [v31 countByEnumeratingWithState:v74 objects:v112 count:16];
+          v30 = [stringProperties countByEnumeratingWithState:v74 objects:v112 count:16];
           if (!v30)
           {
             break;
@@ -481,8 +481,8 @@ LABEL_37:
     if (!v94)
     {
       memset(v68, 0, sizeof(v68));
-      v23 = [v105 dateProperties];
-      v24 = [v23 countByEnumeratingWithState:v68 objects:v110 count:16];
+      dateProperties = [selfCopy dateProperties];
+      v24 = [dateProperties countByEnumeratingWithState:v68 objects:v110 count:16];
       if (v24)
       {
         v20 = *v68[2];
@@ -493,7 +493,7 @@ LABEL_37:
           v19 = v21;
           if (*v68[2] != v20)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(dateProperties);
           }
 
           v69 = *(v68[1] + 8 * v21);
@@ -508,7 +508,7 @@ LABEL_37:
             objc_storeStrong(&v64, 0);
           }
 
-          else if ([v105 isPropertyFatal:v69 version:v99])
+          else if ([selfCopy isPropertyFatal:v69 version:v99])
           {
             _HKInitializeLogging();
             v66 = HKLogWorkouts;
@@ -539,7 +539,7 @@ LABEL_50:
           if (v19 + 1 >= v22)
           {
             v21 = 0;
-            v22 = [v23 countByEnumeratingWithState:v68 objects:v110 count:16];
+            v22 = [dateProperties countByEnumeratingWithState:v68 objects:v110 count:16];
             if (!v22)
             {
               break;
@@ -554,8 +554,8 @@ LABEL_54:
       if (!v94)
       {
         memset(v62, 0, sizeof(v62));
-        v15 = [v105 dataProperties];
-        v16 = [v15 countByEnumeratingWithState:v62 objects:v108 count:16];
+        dataProperties = [selfCopy dataProperties];
+        v16 = [dataProperties countByEnumeratingWithState:v62 objects:v108 count:16];
         if (v16)
         {
           v12 = *v62[2];
@@ -566,7 +566,7 @@ LABEL_54:
             v11 = v13;
             if (*v62[2] != v12)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(dataProperties);
             }
 
             v63 = *(v62[1] + 8 * v13);
@@ -580,7 +580,7 @@ LABEL_54:
               objc_storeStrong(&v58, 0);
             }
 
-            else if ([v105 isPropertyFatal:v63 version:v99])
+            else if ([selfCopy isPropertyFatal:v63 version:v99])
             {
               _HKInitializeLogging();
               v60 = HKLogWorkouts;
@@ -611,7 +611,7 @@ LABEL_67:
             if (v11 + 1 >= v14)
             {
               v13 = 0;
-              v14 = [v15 countByEnumeratingWithState:v62 objects:v108 count:16];
+              v14 = [dataProperties countByEnumeratingWithState:v62 objects:v108 count:16];
               if (!v14)
               {
                 break;
@@ -648,9 +648,9 @@ LABEL_75:
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
   {
     log = oslog;
-    v56 = type;
+    typeCopy2 = type;
     __os_log_helper_16_0_0(v95);
-    _os_log_error_impl(&dword_0, log, v56, "Unable to deserialize - missing UUID", v95, 2u);
+    _os_log_error_impl(&dword_0, log, typeCopy2, "Unable to deserialize - missing UUID", v95, 2u);
   }
 
   objc_storeStrong(&oslog, 0);
@@ -665,16 +665,16 @@ LABEL_76:
   return v7;
 }
 
-+ (id)persistenceFromRow:(HDSQLiteRow *)a3 type:(unint64_t)a4 profile:(id)a5 transaction:(id)a6
++ (id)persistenceFromRow:(HDSQLiteRow *)row type:(unint64_t)type profile:(id)profile transaction:(id)transaction
 {
-  v99 = a1;
+  selfCopy = self;
   v98 = a2;
-  v97 = a3;
-  v96 = a4;
+  rowCopy = row;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a5);
+  objc_storeStrong(&location, profile);
   v94 = 0;
-  objc_storeStrong(&v94, a6);
+  objc_storeStrong(&v94, transaction);
   v93 = HDSQLiteColumnWithNameAsInteger();
   v92 = HDSQLiteColumnWithNameAsUUID();
   if (v92)
@@ -709,9 +709,9 @@ LABEL_76:
 
     v80 = HDSQLiteColumnWithNameAsInteger();
     v79 = 0;
-    v44 = [location syncIdentityManager];
+    syncIdentityManager = [location syncIdentityManager];
     v77 = v79;
-    v43 = [v44 identityForEntityID:v80 transaction:v94 error:&v77];
+    v43 = [syncIdentityManager identityForEntityID:v80 transaction:v94 error:&v77];
     objc_storeStrong(&v79, v77);
     v78 = v43;
 
@@ -733,19 +733,19 @@ LABEL_76:
     }
 
     v34 = [WOSyncIdentity alloc];
-    v40 = [v78 identity];
-    v39 = [v40 hardwareIdentifier];
-    v38 = [v78 identity];
-    v37 = [v38 databaseIdentifier];
-    v36 = [v78 identity];
-    v35 = [v36 instanceDiscriminator];
-    v74 = [v34 initWithHardwareIdentifier:v39 databaseIdentifier:v37 instanceDiscriminator:?];
+    identity = [v78 identity];
+    hardwareIdentifier = [identity hardwareIdentifier];
+    identity2 = [v78 identity];
+    databaseIdentifier = [identity2 databaseIdentifier];
+    identity3 = [v78 identity];
+    instanceDiscriminator = [identity3 instanceDiscriminator];
+    v74 = [v34 initWithHardwareIdentifier:hardwareIdentifier databaseIdentifier:databaseIdentifier instanceDiscriminator:?];
 
-    v73 = [[WOPersistence alloc] initWithVersion:v93 type:v96 uuid:v92 persistedData:v87 persistedProtoData:v83 objectState:v82 objectModificationDate:v81 syncIdentity:v74];
+    v73 = [[WOPersistence alloc] initWithVersion:v93 type:typeCopy uuid:v92 persistedData:v87 persistedProtoData:v83 objectState:v82 objectModificationDate:v81 syncIdentity:v74];
     v72 = +[NSMutableDictionary dictionary];
     memset(__b, 0, sizeof(__b));
-    v41 = [v99 integerProperties];
-    v42 = [v41 countByEnumeratingWithState:__b objects:v108 count:16];
+    integerProperties = [selfCopy integerProperties];
+    v42 = [integerProperties countByEnumeratingWithState:__b objects:v108 count:16];
     if (v42)
     {
       v31 = *__b[2];
@@ -756,7 +756,7 @@ LABEL_76:
         v30 = v32;
         if (*__b[2] != v31)
         {
-          objc_enumerationMutation(v41);
+          objc_enumerationMutation(integerProperties);
         }
 
         v71 = *(__b[1] + 8 * v32);
@@ -766,7 +766,7 @@ LABEL_76:
           [v72 setObject:v69 forKeyedSubscript:v71];
         }
 
-        else if ([v99 isPropertyFatal:v71 version:v93])
+        else if ([selfCopy isPropertyFatal:v71 version:v93])
         {
           _HKInitializeLogging();
           v68 = HKLogWorkouts;
@@ -796,7 +796,7 @@ LABEL_27:
         if (v30 + 1 >= v33)
         {
           v32 = 0;
-          v33 = [v41 countByEnumeratingWithState:__b objects:v108 count:16];
+          v33 = [integerProperties countByEnumeratingWithState:__b objects:v108 count:16];
           if (!v33)
           {
             break;
@@ -813,8 +813,8 @@ LABEL_31:
       [v73 setKeyedNumbers:v72];
       v66 = +[NSMutableDictionary dictionary];
       memset(v64, 0, sizeof(v64));
-      v27 = [v99 stringProperties];
-      v28 = [v27 countByEnumeratingWithState:v64 objects:v106 count:16];
+      stringProperties = [selfCopy stringProperties];
+      v28 = [stringProperties countByEnumeratingWithState:v64 objects:v106 count:16];
       if (v28)
       {
         v24 = *v64[2];
@@ -825,7 +825,7 @@ LABEL_31:
           v23 = v25;
           if (*v64[2] != v24)
           {
-            objc_enumerationMutation(v27);
+            objc_enumerationMutation(stringProperties);
           }
 
           v65 = *(v64[1] + 8 * v25);
@@ -835,7 +835,7 @@ LABEL_31:
             [v66 setObject:v63 forKeyedSubscript:v65];
           }
 
-          else if ([v99 isPropertyFatal:v65 version:v93])
+          else if ([selfCopy isPropertyFatal:v65 version:v93])
           {
             _HKInitializeLogging();
             v62 = HKLogWorkouts;
@@ -865,7 +865,7 @@ LABEL_44:
           if (v23 + 1 >= v26)
           {
             v25 = 0;
-            v26 = [v27 countByEnumeratingWithState:v64 objects:v106 count:16];
+            v26 = [stringProperties countByEnumeratingWithState:v64 objects:v106 count:16];
             if (!v26)
             {
               break;
@@ -882,8 +882,8 @@ LABEL_48:
         [v73 setKeyedStrings:v66];
         v60 = +[NSMutableDictionary dictionary];
         memset(v58, 0, sizeof(v58));
-        v20 = [v99 dateProperties];
-        v21 = [v20 countByEnumeratingWithState:v58 objects:v104 count:16];
+        dateProperties = [selfCopy dateProperties];
+        v21 = [dateProperties countByEnumeratingWithState:v58 objects:v104 count:16];
         if (v21)
         {
           v17 = *v58[2];
@@ -894,7 +894,7 @@ LABEL_48:
             v16 = v18;
             if (*v58[2] != v17)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(dateProperties);
             }
 
             v59 = *(v58[1] + 8 * v18);
@@ -904,7 +904,7 @@ LABEL_48:
               [v60 setObject:v57 forKeyedSubscript:v59];
             }
 
-            else if ([v99 isPropertyFatal:v59 version:v93])
+            else if ([selfCopy isPropertyFatal:v59 version:v93])
             {
               _HKInitializeLogging();
               oslog = HKLogWorkouts;
@@ -934,7 +934,7 @@ LABEL_61:
             if (v16 + 1 >= v19)
             {
               v18 = 0;
-              v19 = [v20 countByEnumeratingWithState:v58 objects:v104 count:16];
+              v19 = [dateProperties countByEnumeratingWithState:v58 objects:v104 count:16];
               if (!v19)
               {
                 break;
@@ -951,8 +951,8 @@ LABEL_65:
           [v73 setKeyedDates:v60];
           v54 = +[NSMutableDictionary dictionary];
           memset(v52, 0, sizeof(v52));
-          v13 = [v99 dataProperties];
-          v14 = [v13 countByEnumeratingWithState:v52 objects:v102 count:16];
+          dataProperties = [selfCopy dataProperties];
+          v14 = [dataProperties countByEnumeratingWithState:v52 objects:v102 count:16];
           if (v14)
           {
             v10 = *v52[2];
@@ -963,7 +963,7 @@ LABEL_65:
               v9 = v11;
               if (*v52[2] != v10)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(dataProperties);
               }
 
               v53 = *(v52[1] + 8 * v11);
@@ -973,7 +973,7 @@ LABEL_65:
                 [v54 setObject:v51 forKeyedSubscript:v53];
               }
 
-              else if ([v99 isPropertyFatal:v53 version:v93])
+              else if ([selfCopy isPropertyFatal:v53 version:v93])
               {
                 _HKInitializeLogging();
                 v50 = HKLogWorkouts;
@@ -1002,7 +1002,7 @@ LABEL_78:
               if (v9 + 1 >= v12)
               {
                 v11 = 0;
-                v12 = [v13 countByEnumeratingWithState:v52 objects:v102 count:16];
+                v12 = [dataProperties countByEnumeratingWithState:v52 objects:v102 count:16];
                 if (!v12)
                 {
                   break;
@@ -1049,9 +1049,9 @@ LABEL_89:
   if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
   {
     log = v91;
-    v48 = type;
+    typeCopy2 = type;
     __os_log_helper_16_0_0(v89);
-    _os_log_error_impl(&dword_0, log, v48, "Unable to deserialize - missing UUID", v89, 2u);
+    _os_log_error_impl(&dword_0, log, typeCopy2, "Unable to deserialize - missing UUID", v89, 2u);
   }
 
   objc_storeStrong(&v91, 0);
@@ -1083,9 +1083,9 @@ LABEL_90:
   return 0;
 }
 
-+ (Class)classForPersistenceType:(unint64_t)a3
++ (Class)classForPersistenceType:(unint64_t)type
 {
-  if (a3 == 2 || a3 == 3 || a3 == 4)
+  if (type == 2 || type == 3 || type == 4)
   {
     v4 = objc_opt_class();
   }
@@ -1093,18 +1093,18 @@ LABEL_90:
   return v4;
 }
 
-+ (void)preparePersistenceForDelete:(id)a3
++ (void)preparePersistenceForDelete:(id)delete
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, delete);
   objc_storeStrong(location, 0);
 }
 
-+ (double)_cleanupTombstoneExpirationIntervalForPersistenceType:(unint64_t)a3
++ (double)_cleanupTombstoneExpirationIntervalForPersistenceType:(unint64_t)type
 {
-  if (a3 - 2 <= 2)
+  if (type - 2 <= 2)
   {
     return 31557600.0;
   }
@@ -1114,13 +1114,13 @@ LABEL_90:
 
 + (id)databaseTable
 {
-  v3 = [a1 tableName];
-  v4 = [NSString stringWithFormat:@"%@_%@", @"WorkoutHealthPlugin", v3];
+  tableName = [self tableName];
+  v4 = [NSString stringWithFormat:@"%@_%@", @"WorkoutHealthPlugin", tableName];
 
   return v4;
 }
 
-+ (const)columnDefinitionsWithCount:(unint64_t *)a3
++ (const)columnDefinitionsWithCount:(unint64_t *)count
 {
   objc_opt_class();
   objc_opt_class();
@@ -1130,20 +1130,20 @@ LABEL_90:
 
 + (HDSyncEntityIdentifier)syncEntityIdentifier
 {
-  v11 = a1;
+  selfCopy = self;
   v10 = a2;
   v9 = 0;
-  if ([a1 isEqual:objc_opt_class()])
+  if ([self isEqual:objc_opt_class()])
   {
     v9 = 2;
   }
 
-  else if ([v11 isEqual:objc_opt_class()])
+  else if ([selfCopy isEqual:objc_opt_class()])
   {
     v9 = 3;
   }
 
-  else if ([v11 isEqual:objc_opt_class()])
+  else if ([selfCopy isEqual:objc_opt_class()])
   {
     v9 = 4;
   }
@@ -1171,20 +1171,20 @@ LABEL_90:
   return [HDSyncEntityIdentifier identifierWithSchema:@"WorkoutHealthPlugin" entity:v9];
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v27 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, session);
+  anchorCopy = anchor;
   v24 = 0;
-  objc_storeStrong(&v24, a5);
-  v23 = a6;
-  v16 = v27;
-  v14 = v25;
+  objc_storeStrong(&v24, profile);
+  errorCopy = error;
+  v16 = selfCopy;
+  v14 = anchorCopy;
   v15 = location[0];
-  v17 = [v24 database];
+  database = [v24 database];
   v18 = [v16 nextSyncAnchorWithStartAnchor:v14 predicate:0 session:v15 healthDatabase:? error:?];
 
   v22 = v18;
@@ -1213,18 +1213,18 @@ LABEL_90:
   return v8;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v92 = a4;
-  v91 = a1;
+  versionCopy = version;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, objects);
   v89 = 0;
-  objc_storeStrong(&v89, a5);
+  objc_storeStrong(&v89, store);
   v88 = 0;
-  objc_storeStrong(&v88, a6);
-  v87 = a7;
+  objc_storeStrong(&v88, profile);
+  errorCopy = error;
   if ([location[0] count])
   {
     _HKInitializeLogging();
@@ -1322,9 +1322,9 @@ LABEL_90:
       v65 = 32;
       v66 = 0;
       v61 = +[NSMutableSet set];
-      v22 = v91;
-      v19 = [v88 database];
-      v20 = v87;
+      v22 = selfCopy;
+      database = [v88 database];
+      v20 = errorCopy;
       v51 = _NSConcreteStackBlock;
       v52 = -1073741824;
       v53 = 0;
@@ -1332,15 +1332,15 @@ LABEL_90:
       v55 = &unk_206A0;
       v56 = v79;
       v57 = v88;
-      v59[2] = v91;
+      v59[2] = selfCopy;
       v58 = v89;
       v59[1] = &v62;
       v59[0] = v61;
-      v21 = [v22 performWriteTransactionWithHealthDatabase:v19 error:v20 block:&v51];
+      v21 = [v22 performWriteTransactionWithHealthDatabase:database error:v20 block:&v51];
 
       v60 = v21;
-      [v91 _cleanupDeletedObjectsWithProfile:v88 type:2];
-      [v91 _cleanupDeletedObjectsWithProfile:v88 type:3];
+      [selfCopy _cleanupDeletedObjectsWithProfile:v88 type:2];
+      [selfCopy _cleanupDeletedObjectsWithProfile:v88 type:3];
       if (v63[3] > 0)
       {
         _HKInitializeLogging();
@@ -1699,23 +1699,23 @@ void __70__WOWorkoutEntity_receiveSyncObjects_version_syncStore_profile_error___
   [v5 bind:v3 provenance:v4 syncIdentity:objc_msgSend(v6 toBinder:{"persistentID"), a2}];
 }
 
-+ (BOOL)_shouldInsertOrReplaceLocal:(id)a3 withRemote:(id)a4
++ (BOOL)_shouldInsertOrReplaceLocal:(id)local withRemote:(id)remote
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, local);
   v27 = 0;
-  objc_storeStrong(&v27, a4);
-  v20 = [location[0] uuid];
-  v19 = [v27 uuid];
-  v21 = [v20 isEqual:?];
+  objc_storeStrong(&v27, remote);
+  uuid = [location[0] uuid];
+  uuid2 = [v27 uuid];
+  v21 = [uuid isEqual:?];
 
   if (v21)
   {
-    v16 = [location[0] objectModificationDate];
-    v15 = [v27 objectModificationDate];
-    v17 = [v16 compare:?];
+    objectModificationDate = [location[0] objectModificationDate];
+    objectModificationDate2 = [v27 objectModificationDate];
+    v17 = [objectModificationDate compare:?];
 
     v25 = v17;
     if (v17 == -1)
@@ -1726,8 +1726,8 @@ void __70__WOWorkoutEntity_receiveSyncObjects_version_syncStore_profile_error___
 
     else if (v25 == &dword_0 + 1)
     {
-      v13 = [v27 objectModificationDate];
-      [v13 timeIntervalSinceReferenceDate];
+      objectModificationDate3 = [v27 objectModificationDate];
+      [objectModificationDate3 timeIntervalSinceReferenceDate];
       v14 = v4;
 
       v29 = v14 == 0.0;
@@ -1746,10 +1746,10 @@ void __70__WOWorkoutEntity_receiveSyncObjects_version_syncStore_profile_error___
         v5 = objc_opt_class();
         v7 = v5;
         v22 = v7;
-        v12 = [location[0] uuid];
-        v11 = [location[0] objectModificationDate];
-        v10 = [v27 objectModificationDate];
-        __os_log_helper_16_2_4_8_66_8_64_8_64_8_64(v30, v7, v12, v11, v10);
+        uuid3 = [location[0] uuid];
+        objectModificationDate4 = [location[0] objectModificationDate];
+        objectModificationDate5 = [v27 objectModificationDate];
+        __os_log_helper_16_2_4_8_66_8_64_8_64_8_64(v30, v7, uuid3, objectModificationDate4, objectModificationDate5);
         _os_log_error_impl(&dword_0, log, type, "[WOSync] %{public}@ (%@) objectModificationDate comparison failed (local: %@, remote: %@), keep local object", v30, 0x2Au);
 
         objc_storeStrong(&v22, 0);
@@ -1778,18 +1778,18 @@ void __70__WOWorkoutEntity_receiveSyncObjects_version_syncStore_profile_error___
   return v29;
 }
 
-+ (id)_lookup:(id)a3 ofType:(unint64_t)a4 profile:(id)a5 transaction:(id)a6
++ (id)_lookup:(id)_lookup ofType:(unint64_t)type profile:(id)profile transaction:(id)transaction
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v42 = a4;
+  objc_storeStrong(location, _lookup);
+  typeCopy = type;
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, profile);
   v40 = 0;
-  objc_storeStrong(&v40, a6);
-  v39 = [WOWorkoutEntity classForPersistenceType:v42];
+  objc_storeStrong(&v40, transaction);
+  v39 = [WOWorkoutEntity classForPersistenceType:typeCopy];
   v32 = 0;
   v33 = &v32;
   v34 = 838860800;
@@ -1798,13 +1798,13 @@ void __70__WOWorkoutEntity_receiveSyncObjects_version_syncStore_profile_error___
   v37 = __Block_byref_object_dispose_;
   v38 = 0;
   v31 = 0;
-  v15 = [(objc_class *)v39 propertyForUUID];
+  propertyForUUID = [(objc_class *)v39 propertyForUUID];
   v30 = [HDSQLiteComparisonPredicate predicateWithProperty:"predicateWithProperty:equalToValue:" equalToValue:?];
 
   v14 = v39;
-  v12 = [(objc_class *)v39 allProperties];
+  allProperties = [(objc_class *)v39 allProperties];
   v13 = v30;
-  v11 = [v41 database];
+  database = [v41 database];
   v29 = 0;
   v22 = _NSConcreteStackBlock;
   v23 = -1073741824;
@@ -1812,11 +1812,11 @@ void __70__WOWorkoutEntity_receiveSyncObjects_version_syncStore_profile_error___
   v25 = __54__WOWorkoutEntity__lookup_ofType_profile_transaction___block_invoke;
   v26 = &unk_206C8;
   v28[2] = v39;
-  v28[3] = v42;
+  v28[3] = typeCopy;
   v27 = v41;
   v28[0] = v40;
   v28[1] = &v32;
-  [(objc_class *)v14 enumerateProperties:v12 withPredicate:v13 healthDatabase:v11 error:&v29 enumerationHandler:&v22];
+  [(objc_class *)v14 enumerateProperties:allProperties withPredicate:v13 healthDatabase:database error:&v29 enumerationHandler:&v22];
   objc_storeStrong(&v31, v29);
 
   if (v31)
@@ -1827,11 +1827,11 @@ void __70__WOWorkoutEntity_receiveSyncObjects_version_syncStore_profile_error___
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       log = oslog;
-      v9 = type;
+      typeCopy2 = type;
       v10 = objc_opt_class();
       v19 = v10;
       __os_log_helper_16_2_3_8_66_8_64_8_64(v44, v19, location[0], v31);
-      _os_log_error_impl(&dword_0, log, v9, "[WOSync] %{public}@ unable to lookup local entity of uuid %@, error: %@", v44, 0x20u);
+      _os_log_error_impl(&dword_0, log, typeCopy2, "[WOSync] %{public}@ unable to lookup local entity of uuid %@, error: %@", v44, 0x20u);
       objc_storeStrong(&v19, 0);
     }
 
@@ -1878,39 +1878,39 @@ uint64_t __54__WOWorkoutEntity__lookup_ofType_profile_transaction___block_invoke
   return v11 & 1;
 }
 
-+ (void)_cleanupDeletedObjectsWithProfile:(id)a3 type:(unint64_t)a4
++ (void)_cleanupDeletedObjectsWithProfile:(id)profile type:(unint64_t)type
 {
-  v51 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v49 = a4;
-  v48 = [WOWorkoutEntity classForPersistenceType:a4];
-  v19 = [(objc_class *)v48 propertyForObjectState];
+  objc_storeStrong(location, profile);
+  typeCopy = type;
+  v48 = [WOWorkoutEntity classForPersistenceType:type];
+  propertyForObjectState = [(objc_class *)v48 propertyForObjectState];
   v47 = [HDSQLiteComparisonPredicate predicateWithProperty:"predicateWithProperty:equalToValue:" equalToValue:?];
 
   +[NSDate timeIntervalSinceReferenceDate];
   v20 = v4;
-  [v51 _cleanupTombstoneExpirationIntervalForPersistenceType:a4];
+  [selfCopy _cleanupTombstoneExpirationIntervalForPersistenceType:type];
   v46 = v20 - v5;
-  v22 = [(objc_class *)v48 propertyForObjectModificationDate];
+  propertyForObjectModificationDate = [(objc_class *)v48 propertyForObjectModificationDate];
   v21 = [NSNumber numberWithDouble:v46];
-  v45 = [HDSQLiteComparisonPredicate predicateWithProperty:v22 lessThanValue:?];
+  v45 = [HDSQLiteComparisonPredicate predicateWithProperty:propertyForObjectModificationDate lessThanValue:?];
 
   v44 = [HDSQLitePredicate compoundPredicateWithPredicate:v45 otherPredicate:v47];
   v43 = 0;
-  v23 = v51;
-  v24 = [location[0] database];
+  v23 = selfCopy;
+  database = [location[0] database];
   v41 = v43;
   v34 = _NSConcreteStackBlock;
   v35 = -1073741824;
   v36 = 0;
   v37 = __58__WOWorkoutEntity__cleanupDeletedObjectsWithProfile_type___block_invoke;
   v38 = &unk_206F0;
-  v40[1] = v51;
+  v40[1] = selfCopy;
   v39 = v44;
   v40[0] = location[0];
-  v25 = [v23 performWriteTransactionWithHealthDatabase:v24 error:&v41 block:&v34];
+  v25 = [v23 performWriteTransactionWithHealthDatabase:database error:&v41 block:&v34];
   objc_storeStrong(&v43, v41);
 
   v42 = v25;
@@ -1922,14 +1922,14 @@ uint64_t __54__WOWorkoutEntity__lookup_ofType_profile_transaction___block_invoke
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       log = oslog;
-      v16 = type;
+      typeCopy2 = type;
       v6 = objc_opt_class();
       v14 = v6;
       v31 = v14;
       v17 = NSStringForWOPersistenceType();
       v30 = v17;
       __os_log_helper_16_2_4_8_66_8_66_8_0_8_64(v53, v14, v30, *&v46, v43);
-      _os_log_error_impl(&dword_0, log, v16, "[WOSync] %{public}@ unable to cleanup deleted '%{public}@' objects (tombstones) older than %.2f secs, error: %@", v53, 0x2Au);
+      _os_log_error_impl(&dword_0, log, typeCopy2, "[WOSync] %{public}@ unable to cleanup deleted '%{public}@' objects (tombstones) older than %.2f secs, error: %@", v53, 0x2Au);
 
       objc_storeStrong(&v30, 0);
       objc_storeStrong(&v31, 0);
@@ -1992,14 +1992,14 @@ uint64_t __58__WOWorkoutEntity__cleanupDeletedObjectsWithProfile_type___block_in
   return v7;
 }
 
-+ (id)_nonRaceConfigPredicate:(Class)a3
++ (id)_nonRaceConfigPredicate:(Class)predicate
 {
-  v9 = a1;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
-  if ([a1 isEqual:objc_opt_class()])
+  predicateCopy = predicate;
+  if ([self isEqual:objc_opt_class()])
   {
-    v5 = [(objc_class *)v7 propertyForConfigurationType];
+    propertyForConfigurationType = [(objc_class *)predicateCopy propertyForConfigurationType];
     v6 = [HDSQLiteComparisonPredicate predicateWithProperty:"predicateWithProperty:notEqualToValue:" notEqualToValue:?];
 
     v10 = v6;
@@ -2016,47 +2016,47 @@ uint64_t __58__WOWorkoutEntity__cleanupDeletedObjectsWithProfile_type___block_in
   return v3;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  v49 = a4;
-  v48 = a1;
+  rangeCopy = range;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, session);
   v46 = 0;
-  objc_storeStrong(&v46, a5);
+  objc_storeStrong(&v46, profile);
   v45 = 0;
-  objc_storeStrong(&v45, a6);
-  v44 = a7;
+  objc_storeStrong(&v45, handler);
+  errorCopy = error;
   v43 = +[NSMutableSet set];
   v38 = 0;
   v39 = &v38;
   v40 = 0x20000000;
   v41 = 32;
   v42 = -1;
-  v37 = [location[0] maxEncodedBytesPerCodableChangeForSyncEntityClass:v48] / 3;
+  v37 = [location[0] maxEncodedBytesPerCodableChangeForSyncEntityClass:selfCopy] / 3;
   v33[0] = 0;
   v33[1] = v33;
   v34 = 0x20000000;
   v35 = 32;
   v36 = 0;
-  v15 = v48;
-  v12 = [v46 database];
-  v13 = v44;
+  v15 = selfCopy;
+  database = [v46 database];
+  v13 = errorCopy;
   v22 = _NSConcreteStackBlock;
   v23 = -1073741824;
   v24 = 0;
   v25 = __94__WOWorkoutEntity_generateSyncObjectsForSession_syncAnchorRange_profile_messageHandler_error___block_invoke;
   v26 = &unk_20740;
-  v29[3] = v48;
+  v29[3] = selfCopy;
   v27 = location[0];
-  v30 = v49;
+  v30 = rangeCopy;
   v29[1] = &v38;
   v28 = v46;
   v29[0] = v43;
   v29[2] = v33;
   v31 = v37;
-  v14 = [v15 performReadTransactionWithHealthDatabase:v12 error:v13 block:&v22];
+  v14 = [v15 performReadTransactionWithHealthDatabase:database error:v13 block:&v22];
 
   v32 = v14;
   if (v14)
@@ -2075,7 +2075,7 @@ uint64_t __58__WOWorkoutEntity__cleanupDeletedObjectsWithProfile_type___block_in
 
     objc_storeStrong(&oslog, 0);
     v10 = v45;
-    v9 = [v43 allObjects];
+    allObjects = [v43 allObjects];
     v7 = v39[3];
     v50 = [v10 sendCodableChange:? resultAnchor:? sequence:? done:? error:?] & 1;
   }
@@ -2196,12 +2196,12 @@ uint64_t __94__WOWorkoutEntity_generateSyncObjectsForSession_syncAnchorRange_pro
   return v33 & 1;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v3 = [WOPersistence alloc];
   v5 = [v3 initWithData:location[0]];
   objc_storeStrong(location, 0);

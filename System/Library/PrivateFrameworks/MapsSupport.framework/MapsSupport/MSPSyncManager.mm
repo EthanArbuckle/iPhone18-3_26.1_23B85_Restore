@@ -1,26 +1,26 @@
 @interface MSPSyncManager
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5;
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4;
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error;
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error;
 - (MSPSyncManager)init;
-- (id)_wrapPin:(id)a3 changeType:(int64_t)a4;
+- (id)_wrapPin:(id)pin changeType:(int64_t)type;
 - (id)pins;
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5;
-- (void)_addPin:(id)a3;
-- (void)_applyAddItem:(id)a3;
-- (void)_applyDeleteItem:(id)a3;
-- (void)_applyUpdateItem:(id)a3;
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error;
+- (void)_addPin:(id)pin;
+- (void)_applyAddItem:(id)item;
+- (void)_applyDeleteItem:(id)item;
+- (void)_applyUpdateItem:(id)item;
 - (void)_clearAllNanoPersistableData;
 - (void)_notifyObservers;
-- (void)_removePin:(id)a3;
+- (void)_removePin:(id)pin;
 - (void)_resumeSyncService;
 - (void)_setHasChangesAvailable;
 - (void)_updateFromDisk;
-- (void)_updatePin:(id)a3;
-- (void)service:(id)a3 didSwitchFromPairingID:(id)a4 toPairingID:(id)a5;
-- (void)setDroppedPin:(id)a3;
+- (void)_updatePin:(id)pin;
+- (void)service:(id)service didSwitchFromPairingID:(id)d toPairingID:(id)iD;
+- (void)setDroppedPin:(id)pin;
 - (void)setNeedsFullSync;
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5;
-- (void)syncSession:(id)a3 didEndWithError:(id)a4;
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion;
+- (void)syncSession:(id)session didEndWithError:(id)error;
 @end
 
 @implementation MSPSyncManager
@@ -79,10 +79,10 @@
 
     v11 = v10;
     _Block_object_dispose(&v21, 8);
-    v12 = [v10 sharedInstance];
-    v13 = [v12 getActivePairedDevice];
+    sharedInstance = [v10 sharedInstance];
+    getActivePairedDevice = [sharedInstance getActivePairedDevice];
 
-    if (v13)
+    if (getActivePairedDevice)
     {
       [(MSPSyncManager *)v2 _resumeSyncService];
     }
@@ -141,11 +141,11 @@
   }
 }
 
-- (BOOL)service:(id)a3 startSession:(id)a4 error:(id *)a5
+- (BOOL)service:(id)service startSession:(id)session error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  sessionCopy = session;
   v9 = *MEMORY[0x277D0E798];
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -201,28 +201,28 @@
     [(MSPSyncManager *)self preparingSync];
   }
 
-  [v8 setDelegate:{self, v22}];
+  [sessionCopy setDelegate:{self, v22}];
   v19 = objc_alloc_init(MSPSerializer);
-  [v8 setSerializer:v19];
+  [sessionCopy setSerializer:v19];
 
-  [v8 setTargetQueue:self->_saveQueue];
+  [sessionCopy setTargetQueue:self->_saveQueue];
   v20 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)service:(id)a3 didSwitchFromPairingID:(id)a4 toPairingID:(id)a5
+- (void)service:(id)service didSwitchFromPairingID:(id)d toPairingID:(id)iD
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v9 = *MEMORY[0x277D0E798];
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138478083;
-    v14 = v7;
+    v14 = dCopy;
     v15 = 2113;
-    v16 = v8;
+    v16 = iDCopy;
     _os_log_impl(&dword_25813A000, v10, OS_LOG_TYPE_DEBUG, "com.apple.pairedsync.mapssync Isync:didSwitchFromPairingID:%{private}@ toPairingID:%{private}@", buf, 0x16u);
   }
 
@@ -236,11 +236,11 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)syncSession:(id)a3 enqueueChanges:(id)a4 error:(id *)a5
+- (unsigned)syncSession:(id)session enqueueChanges:(id)changes error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v35 = a3;
-  v36 = a4;
+  sessionCopy = session;
+  changesCopy = changes;
   v32 = *MEMORY[0x277D0E798];
   v7 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -253,28 +253,28 @@
   obja = self->_pendingSyncItems;
   objc_sync_enter(obja);
   v38 = [(NSMutableArray *)self->_pendingSyncItems mutableCopy];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   pendingSyncItems = self->_pendingSyncItems;
-  self->_pendingSyncItems = v8;
+  self->_pendingSyncItems = array;
 
   objc_sync_exit(obja);
-  v10 = [v38 firstObject];
-  if (v10)
+  firstObject = [v38 firstObject];
+  if (firstObject)
   {
-    v11 = v10;
+    v11 = firstObject;
     while (1)
     {
       v37 = v11;
-      if ((v36[2]() & 1) == 0)
+      if ((changesCopy[2]() & 1) == 0)
       {
         break;
       }
 
       [v38 removeObjectAtIndex:0];
-      v12 = [v38 firstObject];
+      firstObject2 = [v38 firstObject];
 
-      v11 = v12;
-      if (!v12)
+      v11 = firstObject2;
+      if (!firstObject2)
       {
         goto LABEL_7;
       }
@@ -301,8 +301,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v20 = [*(*(&v43 + 1) + 8 * i) syncId];
-          [v15 addObject:v20];
+          syncId = [*(*(&v43 + 1) + 8 * i) syncId];
+          [v15 addObject:syncId];
         }
 
         v17 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v43 objects:v48 count:16];
@@ -331,8 +331,8 @@
           }
 
           v26 = *(*(&v39 + 1) + 8 * j);
-          v27 = [v26 syncId];
-          v28 = [v15 containsObject:v27];
+          syncId2 = [v26 syncId];
+          v28 = [v15 containsObject:syncId2];
 
           if ((v28 & 1) == 0)
           {
@@ -362,7 +362,7 @@
   else
   {
 LABEL_7:
-    if ([v35 isResetSync])
+    if ([sessionCopy isResetSync])
     {
       [(MSPSyncManager *)self completedPreparingSync];
     }
@@ -381,11 +381,11 @@ LABEL_7:
   return v13;
 }
 
-- (void)syncSession:(id)a3 applyChanges:(id)a4 completion:(id)a5
+- (void)syncSession:(id)session applyChanges:(id)changes completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  changesCopy = changes;
+  completionCopy = completion;
   v9 = *MEMORY[0x277D0E798];
   v10 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -399,7 +399,7 @@ LABEL_7:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = v7;
+  v11 = changesCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -416,8 +416,8 @@ LABEL_7:
         }
 
         v16 = *(*(&v19 + 1) + 8 * v15);
-        v17 = [v16 changeType];
-        switch(v17)
+        changeType = [v16 changeType];
+        switch(changeType)
         {
           case 3:
             [(MSPSyncManager *)self _applyDeleteItem:v16];
@@ -440,20 +440,20 @@ LABEL_7:
     while (v13);
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
     [(MSPSyncManager *)self _notifyObservers];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncSession:(id)a3 didEndWithError:(id)a4
+- (void)syncSession:(id)session didEndWithError:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  sessionCopy = session;
+  errorCopy = error;
   v8 = *MEMORY[0x277D0E798];
   v9 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -461,13 +461,13 @@ LABEL_7:
     v11 = 138478339;
     v12 = @"complete";
     v13 = 1024;
-    v14 = [v6 isResetSync];
+    isResetSync = [sessionCopy isResetSync];
     v15 = 2113;
-    v16 = v7;
+    v16 = errorCopy;
     _os_log_impl(&dword_25813A000, v9, OS_LOG_TYPE_DEBUG, "com.apple.pairedsync.mapssync Isync:%{private}@ (resetSync:%i error:%{private}@)", &v11, 0x1Cu);
   }
 
-  if ([v6 isResetSync])
+  if ([sessionCopy isResetSync])
   {
     [(MSPSyncManager *)self completedSync];
   }
@@ -475,7 +475,7 @@ LABEL_7:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)syncSession:(id)a3 resetDataStoreWithError:(id *)a4
+- (BOOL)syncSession:(id)session resetDataStoreWithError:(id *)error
 {
   v11 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277D0E798];
@@ -502,32 +502,32 @@ LABEL_7:
   objc_sync_exit(obj);
 }
 
-- (void)_applyAddItem:(id)a3
+- (void)_applyAddItem:(id)item
 {
-  v5 = a3;
-  if ([v5 hasPin])
+  itemCopy = item;
+  if ([itemCopy hasPin])
   {
-    v4 = [v5 pin];
+    v4 = [itemCopy pin];
     [(MSPSyncManager *)self _addPin:v4];
   }
 }
 
-- (void)_applyUpdateItem:(id)a3
+- (void)_applyUpdateItem:(id)item
 {
-  v5 = a3;
-  if ([v5 hasPin])
+  itemCopy = item;
+  if ([itemCopy hasPin])
   {
-    v4 = [v5 pin];
+    v4 = [itemCopy pin];
     [(MSPSyncManager *)self _updatePin:v4];
   }
 }
 
-- (void)_applyDeleteItem:(id)a3
+- (void)_applyDeleteItem:(id)item
 {
-  v5 = a3;
-  if ([v5 hasPin])
+  itemCopy = item;
+  if ([itemCopy hasPin])
   {
-    v4 = [v5 pin];
+    v4 = [itemCopy pin];
     [(MSPSyncManager *)self _removePin:v4];
   }
 }
@@ -557,18 +557,18 @@ uint64_t __34__MSPSyncManager__notifyObservers__block_invoke(uint64_t a1)
 - (void)_updateFromDisk
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   pendingSyncItems = self->_pendingSyncItems;
-  self->_pendingSyncItems = v3;
+  self->_pendingSyncItems = array;
 
-  v5 = [(MSPSyncManager *)self readPins];
-  v6 = [v5 mutableCopy];
+  readPins = [(MSPSyncManager *)self readPins];
+  v6 = [readPins mutableCopy];
   pins = self->_pins;
   self->_pins = v6;
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   pinsMap = self->_pinsMap;
-  self->_pinsMap = v8;
+  self->_pinsMap = dictionary;
 
   v21 = 0u;
   v22 = 0u;
@@ -591,8 +591,8 @@ uint64_t __34__MSPSyncManager__notifyObservers__block_invoke(uint64_t a1)
 
         v15 = *(*(&v19 + 1) + 8 * i);
         v16 = self->_pinsMap;
-        v17 = [v15 identifier];
-        [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:v17];
+        identifier = [v15 identifier];
+        [(NSMutableDictionary *)v16 setObject:v15 forKeyedSubscript:identifier];
       }
 
       v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -604,50 +604,50 @@ uint64_t __34__MSPSyncManager__notifyObservers__block_invoke(uint64_t a1)
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_wrapPin:(id)a3 changeType:(int64_t)a4
+- (id)_wrapPin:(id)pin changeType:(int64_t)type
 {
-  v5 = a3;
+  pinCopy = pin;
   v6 = objc_alloc_init(MSPCompanionSyncedItem);
-  v7 = [v5 identifier];
-  v8 = [MSPCompanionSyncedItem syncIdWithPrefix:@"pin:" identifier:v7];
+  identifier = [pinCopy identifier];
+  v8 = [MSPCompanionSyncedItem syncIdWithPrefix:@"pin:" identifier:identifier];
   [(MSPCompanionSyncedItem *)v6 setSyncId:v8];
 
-  [(MSPCompanionSyncedItem *)v6 setPin:v5];
-  [(MSPCompanionSyncedItem *)v6 setSyChangeType:a4];
+  [(MSPCompanionSyncedItem *)v6 setPin:pinCopy];
+  [(MSPCompanionSyncedItem *)v6 setSyChangeType:type];
 
   return v6;
 }
 
-- (void)_addPin:(id)a3
+- (void)_addPin:(id)pin
 {
   pins = self->_pins;
-  v5 = a3;
-  [(NSMutableArray *)pins addObject:v5];
+  pinCopy = pin;
+  [(NSMutableArray *)pins addObject:pinCopy];
   pinsMap = self->_pinsMap;
-  v7 = [v5 identifier];
-  [(NSMutableDictionary *)pinsMap setObject:v5 forKey:v7];
+  identifier = [pinCopy identifier];
+  [(NSMutableDictionary *)pinsMap setObject:pinCopy forKey:identifier];
 }
 
-- (void)_updatePin:(id)a3
+- (void)_updatePin:(id)pin
 {
   pinsMap = self->_pinsMap;
-  v5 = a3;
-  v6 = [v5 identifier];
-  v9 = [(NSMutableDictionary *)pinsMap objectForKeyedSubscript:v6];
+  pinCopy = pin;
+  identifier = [pinCopy identifier];
+  v9 = [(NSMutableDictionary *)pinsMap objectForKeyedSubscript:identifier];
 
   [(NSMutableArray *)self->_pins removeObject:v9];
-  [(NSMutableArray *)self->_pins addObject:v5];
+  [(NSMutableArray *)self->_pins addObject:pinCopy];
   v7 = self->_pinsMap;
-  v8 = [v5 identifier];
-  [(NSMutableDictionary *)v7 setObject:v5 forKey:v8];
+  identifier2 = [pinCopy identifier];
+  [(NSMutableDictionary *)v7 setObject:pinCopy forKey:identifier2];
 }
 
-- (void)_removePin:(id)a3
+- (void)_removePin:(id)pin
 {
-  v5 = [a3 identifier];
-  v4 = [(NSMutableDictionary *)self->_pinsMap objectForKeyedSubscript:v5];
+  identifier = [pin identifier];
+  v4 = [(NSMutableDictionary *)self->_pinsMap objectForKeyedSubscript:identifier];
   [(NSMutableArray *)self->_pins removeObject:v4];
-  [(NSMutableDictionary *)self->_pinsMap removeObjectForKey:v5];
+  [(NSMutableDictionary *)self->_pinsMap removeObjectForKey:identifier];
 }
 
 - (id)pins
@@ -657,10 +657,10 @@ uint64_t __34__MSPSyncManager__notifyObservers__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)setDroppedPin:(id)a3
+- (void)setDroppedPin:(id)pin
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pinCopy = pin;
   v5 = self->_pendingSyncItems;
   objc_sync_enter(v5);
   v18 = 0u;
@@ -696,11 +696,11 @@ uint64_t __34__MSPSyncManager__notifyObservers__block_invoke(uint64_t a1)
     while (v10);
   }
 
-  if (v4)
+  if (pinCopy)
   {
-    [(MSPSyncManager *)self _addPin:v4];
+    [(MSPSyncManager *)self _addPin:pinCopy];
     v15 = self->_pendingSyncItems;
-    v16 = [(MSPSyncManager *)self _wrapPin:v4 changeType:1];
+    v16 = [(MSPSyncManager *)self _wrapPin:pinCopy changeType:1];
     [(NSMutableArray *)v15 addObject:v16];
 
     objc_sync_exit(v5);

@@ -17,9 +17,9 @@
 + (id)CNToABPersonSocialProfileConstantsMapping;
 + (id)CNToABPersonSortOrderingConstantsMapping;
 + (id)CNToABSourceTypeConstantsMapping;
-- (CNiOSABConstantsMapping)initWithMapping:(id)a3;
+- (CNiOSABConstantsMapping)initWithMapping:(id)mapping;
 - (id)invertedMapping;
-- (id)mappedConstant:(id)a3;
+- (id)mappedConstant:(id)constant;
 @end
 
 @implementation CNiOSABConstantsMapping
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __67__CNiOSABConstantsMapping_CNToABPersonSortOrderingConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (CNToABPersonSortOrderingConstantsMapping_onceToken != -1)
   {
     dispatch_once(&CNToABPersonSortOrderingConstantsMapping_onceToken, block);
@@ -86,13 +86,13 @@ uint64_t __67__CNiOSABConstantsMapping_CNToABPersonSortOrderingConstantsMapping_
 - (id)invertedMapping
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CNiOSABConstantsMapping *)self mapping];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  mapping = [(CNiOSABConstantsMapping *)self mapping];
+  v5 = [mapping countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -103,23 +103,23 @@ uint64_t __67__CNiOSABConstantsMapping_CNToABPersonSortOrderingConstantsMapping_
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mapping);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [(CNiOSABConstantsMapping *)self mapping];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        mapping2 = [(CNiOSABConstantsMapping *)self mapping];
+        v11 = [mapping2 objectForKeyedSubscript:v9];
 
-        [v3 setObject:v9 forKeyedSubscript:v11];
+        [dictionary setObject:v9 forKeyedSubscript:v11];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [mapping countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
   }
 
-  v12 = [objc_alloc(objc_opt_class()) initWithMapping:v3];
+  v12 = [objc_alloc(objc_opt_class()) initWithMapping:dictionary];
 
   return v12;
 }
@@ -239,7 +239,7 @@ uint64_t __59__CNiOSABConstantsMapping_ABToCNPersonKindConstantsMapping__block_i
   block[1] = 3221225472;
   block[2] = __59__CNiOSABConstantsMapping_CNToABPersonKindConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (CNToABPersonKindConstantsMapping_onceToken != -1)
   {
     dispatch_once(&CNToABPersonKindConstantsMapping_onceToken, block);
@@ -269,7 +269,7 @@ uint64_t __59__CNiOSABConstantsMapping_CNToABPersonKindConstantsMapping__block_i
   block[1] = 3221225472;
   block[2] = __68__CNiOSABConstantsMapping_CNToABCompositeNameFormatConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (CNToABCompositeNameFormatConstantsMapping_onceToken != -1)
   {
     dispatch_once(&CNToABCompositeNameFormatConstantsMapping_onceToken, block);
@@ -340,7 +340,7 @@ void __62__CNiOSABConstantsMapping_ABToCNPersonAddressConstantsMapping__block_in
   block[1] = 3221225472;
   block[2] = __62__CNiOSABConstantsMapping_CNToABPersonAddressConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (CNToABPersonAddressConstantsMapping_onceToken != -1)
   {
     dispatch_once(&CNToABPersonAddressConstantsMapping_onceToken, block);
@@ -365,7 +365,7 @@ void __62__CNiOSABConstantsMapping_CNToABPersonAddressConstantsMapping__block_in
   block[1] = 3221225472;
   block[2] = __69__CNiOSABConstantsMapping_CNToABPersonInstantMessageConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (CNToABPersonInstantMessageConstantsMapping_onceToken != -1)
   {
     dispatch_once(&CNToABPersonInstantMessageConstantsMapping_onceToken, block);
@@ -439,7 +439,7 @@ void __68__CNiOSABConstantsMapping_ABToCNPersonSocialProfileConstantsMapping__bl
   block[1] = 3221225472;
   block[2] = __68__CNiOSABConstantsMapping_CNToABPersonSocialProfileConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (CNToABPersonSocialProfileConstantsMapping_onceToken != -1)
   {
     dispatch_once(&CNToABPersonSocialProfileConstantsMapping_onceToken, block);
@@ -563,7 +563,7 @@ void __54__CNiOSABConstantsMapping_ABToCNLabelConstantsMapping__block_invoke()
   block[1] = 3221225472;
   block[2] = __54__CNiOSABConstantsMapping_CNToABLabelConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (CNToABLabelConstantsMapping_onceToken != -1)
   {
     dispatch_once(&CNToABLabelConstantsMapping_onceToken, block);
@@ -626,7 +626,7 @@ uint64_t __62__CNiOSABConstantsMapping_ABToCNContainerTypeConstantsMapping__bloc
   block[1] = 3221225472;
   block[2] = __59__CNiOSABConstantsMapping_CNToABSourceTypeConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (CNToABSourceTypeConstantsMapping_onceToken != -1)
   {
     dispatch_once(&CNToABSourceTypeConstantsMapping_onceToken, block);
@@ -685,7 +685,7 @@ void __71__CNiOSABConstantsMapping_ABToCNContactShortNameFormatConstantsMapping_
   block[1] = 3221225472;
   block[2] = __70__CNiOSABConstantsMapping_CNToABPersonShortNameFormatConstantsMapping__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (CNToABPersonShortNameFormatConstantsMapping_onceToken != -1)
   {
     dispatch_once(&CNToABPersonShortNameFormatConstantsMapping_onceToken, block);
@@ -708,15 +708,15 @@ void __70__CNiOSABConstantsMapping_CNToABPersonShortNameFormatConstantsMapping__
   [v4 setDefaultConstant:v5];
 }
 
-- (CNiOSABConstantsMapping)initWithMapping:(id)a3
+- (CNiOSABConstantsMapping)initWithMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v9.receiver = self;
   v9.super_class = CNiOSABConstantsMapping;
   v5 = [(CNiOSABConstantsMapping *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [mappingCopy copy];
     mapping = v5->_mapping;
     v5->_mapping = v6;
   }
@@ -724,33 +724,33 @@ void __70__CNiOSABConstantsMapping_CNToABPersonShortNameFormatConstantsMapping__
   return v5;
 }
 
-- (id)mappedConstant:(id)a3
+- (id)mappedConstant:(id)constant
 {
-  v4 = a3;
-  v5 = [(CNiOSABConstantsMapping *)self mapping];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  constantCopy = constant;
+  mapping = [(CNiOSABConstantsMapping *)self mapping];
+  v6 = [mapping objectForKeyedSubscript:constantCopy];
 
   if (v6)
   {
-    v7 = v6;
+    defaultConstant2 = v6;
   }
 
   else
   {
-    v8 = [(CNiOSABConstantsMapping *)self defaultConstant];
+    defaultConstant = [(CNiOSABConstantsMapping *)self defaultConstant];
 
-    if (v8)
+    if (defaultConstant)
     {
-      v7 = [(CNiOSABConstantsMapping *)self defaultConstant];
+      defaultConstant2 = [(CNiOSABConstantsMapping *)self defaultConstant];
     }
 
     else
     {
-      v7 = v4;
+      defaultConstant2 = constantCopy;
     }
   }
 
-  v9 = v7;
+  v9 = defaultConstant2;
 
   return v9;
 }

@@ -6,10 +6,10 @@
 - (const)_rb_xml_document;
 - (float)contentHeadroom;
 - (id).cxx_construct;
-- (id)encodedDataForDelegate:(id)a3 error:(id *)a4;
-- (id)initWithInterpolator:(float)a3 by:;
-- (void)_contentsWithScale:(double)a3@<D0>;
-- (void)renderInContext:(CGContext *)a3 options:(id)a4;
+- (id)encodedDataForDelegate:(id)delegate error:(id *)error;
+- (id)initWithInterpolator:(float)interpolator by:;
+- (void)_contentsWithScale:(double)scale@<D0>;
+- (void)renderInContext:(CGContext *)context options:(id)options;
 @end
 
 @implementation RBInterpolatedDisplayListContents
@@ -22,29 +22,29 @@
   return self;
 }
 
-- (void)_contentsWithScale:(double)a3@<D0>
+- (void)_contentsWithScale:(double)scale@<D0>
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 20));
-    v6 = *(a1 + 24);
-    if (!v6 || *(a1 + 32) != a3)
+    os_unfair_lock_lock((self + 20));
+    v6 = *(self + 24);
+    if (!v6 || *(self + 32) != scale)
     {
       v7 = objc_opt_new();
-      [v7 setDeviceScale:a3];
+      [v7 setDeviceScale:scale];
       LODWORD(v8) = 1.0;
-      [a1 _drawInState:v7[37] alpha:v8];
-      v9 = [v7 moveContents];
+      [self _drawInState:v7[37] alpha:v8];
+      moveContents = [v7 moveContents];
 
-      *(a1 + 24) = v9;
-      *(a1 + 32) = a3;
+      *(self + 24) = moveContents;
+      *(self + 32) = scale;
 
-      v6 = *(a1 + 24);
+      v6 = *(self + 24);
     }
 
     *a2 = v6;
 
-    os_unfair_lock_unlock((a1 + 20));
+    os_unfair_lock_unlock((self + 20));
   }
 
   else
@@ -77,9 +77,9 @@
   return result;
 }
 
-- (void)renderInContext:(CGContext *)a3 options:(id)a4
+- (void)renderInContext:(CGContext *)context options:(id)options
 {
-  v7 = [a4 objectForKeyedSubscript:RBDisplayListRenderRasterizationScale];
+  v7 = [options objectForKeyedSubscript:RBDisplayListRenderRasterizationScale];
   if (v7)
   {
     [v7 doubleValue];
@@ -92,23 +92,23 @@
 
   [(RBInterpolatedDisplayListContents *)self _contentsWithScale:v8];
   v9 = v10;
-  [v10 renderInContext:a3 options:a4];
+  [v10 renderInContext:context options:options];
 }
 
 - (NSString)xmlDescription
 {
   [(RBInterpolatedDisplayListContents *)self _contentsWithScale:1.0];
   v2 = v5;
-  v3 = [v5 xmlDescription];
+  xmlDescription = [v5 xmlDescription];
 
-  return v3;
+  return xmlDescription;
 }
 
-- (id)encodedDataForDelegate:(id)a3 error:(id *)a4
+- (id)encodedDataForDelegate:(id)delegate error:(id *)error
 {
   [(RBInterpolatedDisplayListContents *)self _contentsWithScale:1.0];
   v6 = v9;
-  v7 = [v9 encodedDataForDelegate:a3 error:a4];
+  v7 = [v9 encodedDataForDelegate:delegate error:error];
 
   return v7;
 }
@@ -117,28 +117,28 @@
 {
   [(RBInterpolatedDisplayListContents *)self _contentsWithScale:1.0];
   v2 = v5;
-  v3 = [v5 _rb_contents];
+  _rb_contents = [v5 _rb_contents];
 
-  return v3;
+  return _rb_contents;
 }
 
 - (const)_rb_xml_document
 {
   [(RBInterpolatedDisplayListContents *)self _contentsWithScale:1.0];
   v2 = v5;
-  v3 = [v5 _rb_xml_document];
+  _rb_xml_document = [v5 _rb_xml_document];
 
-  return v3;
+  return _rb_xml_document;
 }
 
-- (id)initWithInterpolator:(float)a3 by:
+- (id)initWithInterpolator:(float)interpolator by:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = RBInterpolatedDisplayListContents;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   if (v5)
@@ -146,7 +146,7 @@
     v6 = [a2 copy];
 
     v5[1] = v6;
-    *(v5 + 4) = a3;
+    *(v5 + 4) = interpolator;
   }
 
   return v5;

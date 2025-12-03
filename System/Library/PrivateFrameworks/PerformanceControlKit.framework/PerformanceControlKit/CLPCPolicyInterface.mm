@@ -1,12 +1,12 @@
 @interface CLPCPolicyInterface
-+ (id)createClient:(id *)a3;
++ (id)createClient:(id *)client;
 @end
 
 @implementation CLPCPolicyInterface
 
-+ (id)createClient:(id *)a3
++ (id)createClient:(id *)client
 {
-  v3 = [[CLPCPolicyClient alloc] init:a3];
+  v3 = [[CLPCPolicyClient alloc] init:client];
 
   return v3;
 }

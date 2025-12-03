@@ -1,16 +1,16 @@
 @interface CPAnalyticsCoreDuetEventMatcher
-- (CPAnalyticsCoreDuetEventMatcher)initWithConfig:(id)a3;
+- (CPAnalyticsCoreDuetEventMatcher)initWithConfig:(id)config;
 @end
 
 @implementation CPAnalyticsCoreDuetEventMatcher
 
-- (CPAnalyticsCoreDuetEventMatcher)initWithConfig:(id)a3
+- (CPAnalyticsCoreDuetEventMatcher)initWithConfig:(id)config
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"sourceEventMatchCriteria"];
-  v6 = [v4 objectForKeyedSubscript:@"identifierPropertyName"];
-  v7 = [v4 objectForKeyedSubscript:@"subsetPropertyName"];
-  v8 = [v4 objectForKeyedSubscript:@"datasetName"];
+  configCopy = config;
+  v5 = [configCopy objectForKeyedSubscript:@"sourceEventMatchCriteria"];
+  v6 = [configCopy objectForKeyedSubscript:@"identifierPropertyName"];
+  v7 = [configCopy objectForKeyedSubscript:@"subsetPropertyName"];
+  v8 = [configCopy objectForKeyedSubscript:@"datasetName"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -28,7 +28,7 @@
   if (!v9)
   {
 LABEL_12:
-    v15 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -42,19 +42,19 @@ LABEL_12:
     objc_storeStrong(&v11->_identifierPropertyName, v6);
     objc_storeStrong(&v11->_subsetPropertyName, v7);
     objc_storeStrong(&v11->_datasetName, v8);
-    v12 = [v4 objectForKeyedSubscript:@"subsetPropertyValue"];
+    v12 = [configCopy objectForKeyedSubscript:@"subsetPropertyValue"];
     subsetPropertyValue = v11->_subsetPropertyValue;
     v11->_subsetPropertyValue = v12;
 
-    v14 = [v4 objectForKeyedSubscript:@"matchNextEvent"];
+    v14 = [configCopy objectForKeyedSubscript:@"matchNextEvent"];
     v11->_matchNextEvent = [v14 BOOLValue];
   }
 
   self = v11;
-  v15 = self;
+  selfCopy = self;
 LABEL_13:
 
-  return v15;
+  return selfCopy;
 }
 
 @end

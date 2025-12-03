@@ -1,33 +1,33 @@
 @interface ASDTDeviceManager
-+ (ASDTDeviceManager)deviceManagerWithConfig:(id)a3 withDelegate:(id)a4;
++ (ASDTDeviceManager)deviceManagerWithConfig:(id)config withDelegate:(id)delegate;
 + (id)concurrentQueue;
-- (ASDTDeviceManager)initWithConfig:(id)a3 withDelegate:(id)a4;
+- (ASDTDeviceManager)initWithConfig:(id)config withDelegate:(id)delegate;
 - (ASDTDeviceManagerDelegate)delegate;
 - (ASDTPlugin)plugin;
-- (BOOL)addAudioDeviceWithCheck:(id)a3;
+- (BOOL)addAudioDeviceWithCheck:(id)check;
 - (NSArray)allDeviceFactories;
-- (id)factoryForDeviceUID:(id)a3;
-- (id)generateUnderlyingDeviceUIDsFromConfig:(id)a3;
-- (id)messageForDroppedPacketsFromDevice:(id)a3 withScope:(unsigned int)a4 andElement:(unsigned int)a5;
-- (int)getInitStatusForDeviceUID:(id)a3;
-- (void)buildAndInitializeDevice:(id)a3;
+- (id)factoryForDeviceUID:(id)d;
+- (id)generateUnderlyingDeviceUIDsFromConfig:(id)config;
+- (id)messageForDroppedPacketsFromDevice:(id)device withScope:(unsigned int)scope andElement:(unsigned int)element;
+- (int)getInitStatusForDeviceUID:(id)d;
+- (void)buildAndInitializeDevice:(id)device;
 - (void)configureDevices;
-- (void)deviceConfigurationFailed:(id)a3;
-- (void)deviceInitializationFailed:(id)a3;
-- (void)initializeDevice:(id)a3;
-- (void)ioServiceAvailable:(id)a3 withManager:(id)a4;
-- (void)ioServiceWillTerminate:(id)a3 withManager:(id)a4;
+- (void)deviceConfigurationFailed:(id)failed;
+- (void)deviceInitializationFailed:(id)failed;
+- (void)initializeDevice:(id)device;
+- (void)ioServiceAvailable:(id)available withManager:(id)manager;
+- (void)ioServiceWillTerminate:(id)terminate withManager:(id)manager;
 - (void)lockedSignalThread;
-- (void)logStatsForDevice:(id)a3 withPowerState:(int)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)publishDevice:(id)a3;
-- (void)publishDeviceLocked:(id)a3;
-- (void)removeAudioDevice:(id)a3;
-- (void)removeAudioDevices:(id)a3;
+- (void)logStatsForDevice:(id)device withPowerState:(int)state;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)publishDevice:(id)device;
+- (void)publishDeviceLocked:(id)locked;
+- (void)removeAudioDevice:(id)device;
+- (void)removeAudioDevices:(id)devices;
 - (void)stopThread;
 - (void)systemHasPoweredOn;
 - (void)systemWillSleep;
-- (void)threadLoop:(id)a3;
+- (void)threadLoop:(id)loop;
 - (void)waitForInitialization;
 - (void)waitForThreadStart;
 @end
@@ -60,46 +60,46 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v6 systemCompletedPowerOn];
-          if (v7)
+          systemCompletedPowerOn = [v6 systemCompletedPowerOn];
+          if (systemCompletedPowerOn)
           {
             v8 = ASDTBaseLogType();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
             {
-              v9 = [(ASDTDeviceManager *)self name];
-              v10 = [v6 deviceUID];
-              v11 = v10;
-              v12 = v7;
-              if (v7 - 32 >= 0x5F)
+              name = [(ASDTDeviceManager *)self name];
+              deviceUID = [v6 deviceUID];
+              v11 = deviceUID;
+              v12 = systemCompletedPowerOn;
+              if (systemCompletedPowerOn - 32 >= 0x5F)
               {
                 v12 = 32;
               }
 
               *buf = 138413826;
-              v24 = v9;
-              v13 = BYTE1(v7);
-              if (BYTE1(v7) - 32 >= 0x5F)
+              v24 = name;
+              v13 = BYTE1(systemCompletedPowerOn);
+              if (BYTE1(systemCompletedPowerOn) - 32 >= 0x5F)
               {
                 v13 = 32;
               }
 
               v25 = 1024;
-              v26 = v7;
-              v14 = BYTE2(v7);
-              if (BYTE2(v7) - 32 >= 0x5F)
+              v26 = systemCompletedPowerOn;
+              v14 = BYTE2(systemCompletedPowerOn);
+              if (BYTE2(systemCompletedPowerOn) - 32 >= 0x5F)
               {
                 v14 = 32;
               }
 
               v27 = 1024;
-              if ((v7 - 0x20000000) >> 24 >= 0x5F)
+              if ((systemCompletedPowerOn - 0x20000000) >> 24 >= 0x5F)
               {
                 v15 = 32;
               }
 
               else
               {
-                v15 = HIBYTE(v7);
+                v15 = HIBYTE(systemCompletedPowerOn);
               }
 
               v28 = v15;
@@ -110,7 +110,7 @@
               v33 = 1024;
               v34 = v12;
               v35 = 2112;
-              v36 = v10;
+              v36 = deviceUID;
               _os_log_error_impl(&dword_241659000, v8, OS_LOG_TYPE_ERROR, "%@: systemHasPoweredOn: Received error %x (%c%c%c%c) from device '%@'.", buf, 0x34u);
             }
           }
@@ -130,21 +130,21 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (ASDTDeviceManager)deviceManagerWithConfig:(id)a3 withDelegate:(id)a4
++ (ASDTDeviceManager)deviceManagerWithConfig:(id)config withDelegate:(id)delegate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(objc_msgSend(v5 "asdtDeviceManager"))];
+  configCopy = config;
+  delegateCopy = delegate;
+  v7 = [objc_alloc(objc_msgSend(configCopy "asdtDeviceManager"))];
   [v7 configureDevices];
 
   return v7;
 }
 
-- (ASDTDeviceManager)initWithConfig:(id)a3 withDelegate:(id)a4
+- (ASDTDeviceManager)initWithConfig:(id)config withDelegate:(id)delegate
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configCopy = config;
+  delegateCopy = delegate;
   v65.receiver = self;
   v65.super_class = ASDTDeviceManager;
   v8 = [(ASDTDeviceList *)&v65 init];
@@ -153,29 +153,29 @@
     goto LABEL_42;
   }
 
-  v9 = [v6 asdtName];
-  [(ASDTDeviceManager *)v8 setName:v9];
+  asdtName = [configCopy asdtName];
+  [(ASDTDeviceManager *)v8 setName:asdtName];
 
-  v10 = [(ASDTDeviceManager *)v8 name];
-  LODWORD(v9) = v10 == 0;
+  name = [(ASDTDeviceManager *)v8 name];
+  LODWORD(asdtName) = name == 0;
 
-  if (v9)
+  if (asdtName)
   {
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
     [(ASDTDeviceManager *)v8 setName:v12];
   }
 
-  [(ASDTDeviceManager *)v8 setConfiguration:v6];
-  [(ASDTDeviceManager *)v8 setDelegate:v7];
+  [(ASDTDeviceManager *)v8 setConfiguration:configCopy];
+  [(ASDTDeviceManager *)v8 setDelegate:delegateCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(ASDTDeviceManager *)v8 setPlugin:v7];
+    [(ASDTDeviceManager *)v8 setPlugin:delegateCopy];
   }
 
-  v13 = [(ASDTDeviceManager *)v8 plugin];
-  v14 = v13 == 0;
+  plugin = [(ASDTDeviceManager *)v8 plugin];
+  v14 = plugin == 0;
 
   if (v14)
   {
@@ -186,56 +186,56 @@
     [(ASDTDeviceManager *)v8 setConcurrentQueue:v21];
 
     v22 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_attr_make_with_qos_class(v22, QOS_CLASS_USER_INTERACTIVE, 0);
+    plugin3 = dispatch_queue_attr_make_with_qos_class(v22, QOS_CLASS_USER_INTERACTIVE, 0);
 
-    v18 = dispatch_queue_create("com.apple.AudioServerDriverTransports.ASDTDeviceManager.serialQueue", v17);
+    powerNotificationQueue = dispatch_queue_create("com.apple.AudioServerDriverTransports.ASDTDeviceManager.serialQueue", plugin3);
   }
 
   else
   {
-    v15 = [(ASDTDeviceManager *)v8 plugin];
-    v16 = [v15 concurrentQueue];
-    [(ASDTDeviceManager *)v8 setConcurrentQueue:v16];
+    plugin2 = [(ASDTDeviceManager *)v8 plugin];
+    concurrentQueue = [plugin2 concurrentQueue];
+    [(ASDTDeviceManager *)v8 setConcurrentQueue:concurrentQueue];
 
-    v17 = [(ASDTDeviceManager *)v8 plugin];
-    v18 = [v17 powerNotificationQueue];
+    plugin3 = [(ASDTDeviceManager *)v8 plugin];
+    powerNotificationQueue = [plugin3 powerNotificationQueue];
   }
 
-  [(ASDTDeviceManager *)v8 setSerialQueue:v18];
+  [(ASDTDeviceManager *)v8 setSerialQueue:powerNotificationQueue];
 
-  v23 = [(ASDTDeviceManager *)v8 configuration];
-  v24 = [v23 asdtDevices];
+  configuration = [(ASDTDeviceManager *)v8 configuration];
+  asdtDevices = [configuration asdtDevices];
 
-  v25 = [v24 count];
-  v26 = [v6 asdtManagerAudioObjectMaxCount];
-  if (v26)
+  v25 = [asdtDevices count];
+  asdtManagerAudioObjectMaxCount = [configCopy asdtManagerAudioObjectMaxCount];
+  if (asdtManagerAudioObjectMaxCount)
   {
     v27 = ASDTBaseLogType();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(ASDTDeviceManager *)v8 name];
+      name2 = [(ASDTDeviceManager *)v8 name];
       *buf = 138412546;
-      v67 = v28;
+      v67 = name2;
       v68 = 1024;
-      LODWORD(v69) = v26;
+      LODWORD(v69) = asdtManagerAudioObjectMaxCount;
       _os_log_impl(&dword_241659000, v27, OS_LOG_TYPE_DEFAULT, "%@: Setting maximum number of objects to %u.", buf, 0x12u);
     }
 
-    v29 = [(ASDTDeviceManager *)v8 plugin];
-    [v29 setMaximumNumberOfObjects:v26];
+    plugin4 = [(ASDTDeviceManager *)v8 plugin];
+    [plugin4 setMaximumNumberOfObjects:asdtManagerAudioObjectMaxCount];
   }
 
   v8->_userIsActive = 1;
-  -[ASDTDeviceManager setVerboseDeviceLogging:](v8, "setVerboseDeviceLogging:", [v6 asdtManagerVerboseLogging]);
-  [v6 asdtManagerRunningLogPeriod];
+  -[ASDTDeviceManager setVerboseDeviceLogging:](v8, "setVerboseDeviceLogging:", [configCopy asdtManagerVerboseLogging]);
+  [configCopy asdtManagerRunningLogPeriod];
   [(ASDTDeviceManager *)v8 setRunningLogPeriod:?];
   v30 = ASDTBaseLogType();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [(ASDTDeviceManager *)v8 name];
+    name3 = [(ASDTDeviceManager *)v8 name];
     [(ASDTDeviceManager *)v8 runningLogPeriod];
     *buf = 138412546;
-    v67 = v31;
+    v67 = name3;
     v68 = 2048;
     v69 = v32;
     _os_log_impl(&dword_241659000, v30, OS_LOG_TYPE_DEFAULT, "%@: Running log period: %1.1lf", buf, 0x16u);
@@ -253,10 +253,10 @@
   v36 = [MEMORY[0x277CBEB58] setWithCapacity:v25];
   [(ASDTDeviceManager *)v8 setDevicesRunning:v36];
 
-  v37 = [MEMORY[0x277CBEB18] array];
-  [(ASDTDeviceManager *)v8 setIoServiceDependencies:v37];
+  array = [MEMORY[0x277CBEB18] array];
+  [(ASDTDeviceManager *)v8 setIoServiceDependencies:array];
 
-  v38 = [(ASDTDeviceManager *)v8 generateUnderlyingDeviceUIDsFromConfig:v24];
+  v38 = [(ASDTDeviceManager *)v8 generateUnderlyingDeviceUIDsFromConfig:asdtDevices];
   [(ASDTDeviceManager *)v8 setUnderlyingDeviceUIDs:v38];
 
   v39 = [ASDTCondition conditionWithName:@"com.apple.AudioServerDriverTransports.ASDTDeviceManager.initCond"];
@@ -271,47 +271,47 @@
   v42 = [objc_alloc(MEMORY[0x277CCACC8]) initWithTarget:v8 selector:sel_threadLoop_ object:0];
   [(ASDTDeviceManager *)v8 setThread:v42];
 
-  v43 = [(ASDTDeviceManager *)v8 thread];
-  [v43 setName:@"com.apple.AudioServerDriverTransports.ASDTDeviceManager.thread"];
+  thread = [(ASDTDeviceManager *)v8 thread];
+  [thread setName:@"com.apple.AudioServerDriverTransports.ASDTDeviceManager.thread"];
 
-  v44 = [(ASDTDeviceManager *)v8 thread];
-  [v44 setQualityOfService:33];
+  thread2 = [(ASDTDeviceManager *)v8 thread];
+  [thread2 setQualityOfService:33];
 
-  v45 = [(ASDTDeviceManager *)v8 deviceInitStatus];
-  if (v45)
+  deviceInitStatus = [(ASDTDeviceManager *)v8 deviceInitStatus];
+  if (deviceInitStatus)
   {
-    v46 = [(ASDTDeviceManager *)v8 devicesRunning];
-    if (v46)
+    devicesRunning = [(ASDTDeviceManager *)v8 devicesRunning];
+    if (devicesRunning)
     {
-      v47 = [(ASDTDeviceManager *)v8 thread];
-      if (v47)
+      thread3 = [(ASDTDeviceManager *)v8 thread];
+      if (thread3)
       {
-        v48 = [(ASDTDeviceManager *)v8 threadCond];
-        if (v48)
+        threadCond = [(ASDTDeviceManager *)v8 threadCond];
+        if (threadCond)
         {
-          v49 = [(ASDTDeviceManager *)v8 deviceFactories];
-          if (v49)
+          deviceFactories = [(ASDTDeviceManager *)v8 deviceFactories];
+          if (deviceFactories)
           {
-            v50 = [(ASDTDeviceManager *)v8 matchedDeviceFactories];
-            if (v50)
+            matchedDeviceFactories = [(ASDTDeviceManager *)v8 matchedDeviceFactories];
+            if (matchedDeviceFactories)
             {
-              v62 = [(ASDTDeviceManager *)v8 initializingCond];
-              if (v62)
+              initializingCond = [(ASDTDeviceManager *)v8 initializingCond];
+              if (initializingCond)
               {
-                v61 = [(ASDTDeviceManager *)v8 underlyingDeviceUIDs];
-                if (v61)
+                underlyingDeviceUIDs = [(ASDTDeviceManager *)v8 underlyingDeviceUIDs];
+                if (underlyingDeviceUIDs)
                 {
-                  v60 = [(ASDTDeviceManager *)v8 ioServiceDependencies];
-                  if (v60)
+                  ioServiceDependencies = [(ASDTDeviceManager *)v8 ioServiceDependencies];
+                  if (ioServiceDependencies)
                   {
-                    v59 = [(ASDTDeviceManager *)v8 concurrentQueue];
-                    if (v59)
+                    concurrentQueue2 = [(ASDTDeviceManager *)v8 concurrentQueue];
+                    if (concurrentQueue2)
                     {
-                      v58 = [(ASDTDeviceManager *)v8 serialQueue];
-                      if (v58)
+                      serialQueue = [(ASDTDeviceManager *)v8 serialQueue];
+                      if (serialQueue)
                       {
-                        v51 = [(ASDTDeviceManager *)v8 factoryPublishCond];
-                        v57 = v51 == 0;
+                        factoryPublishCond = [(ASDTDeviceManager *)v8 factoryPublishCond];
+                        v57 = factoryPublishCond == 0;
                       }
 
                       else
@@ -322,13 +322,13 @@
                       if (!v57)
                       {
                         objc_initWeak(buf, v8);
-                        v54 = [(ASDTDeviceManager *)v8 concurrentQueue];
+                        concurrentQueue3 = [(ASDTDeviceManager *)v8 concurrentQueue];
                         block[0] = MEMORY[0x277D85DD0];
                         block[1] = 3221225472;
                         block[2] = __49__ASDTDeviceManager_initWithConfig_withDelegate___block_invoke;
                         block[3] = &unk_278CE6068;
                         objc_copyWeak(&v64, buf);
-                        dispatch_async(v54, block);
+                        dispatch_async(concurrentQueue3, block);
 
                         objc_destroyWeak(&v64);
                         objc_destroyWeak(buf);
@@ -394,73 +394,73 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
   +[ASDTDeviceManager concurrentQueue]::sConcurrentQueue = v1;
 }
 
-- (BOOL)addAudioDeviceWithCheck:(id)a3
+- (BOOL)addAudioDeviceWithCheck:(id)check
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASDTDeviceManager *)self threadCond];
-  [v5 lock];
+  checkCopy = check;
+  threadCond = [(ASDTDeviceManager *)self threadCond];
+  [threadCond lock];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 addObserver:self forKeyPath:@"powerState" options:1 context:0];
+    [checkCopy addObserver:self forKeyPath:@"powerState" options:1 context:0];
   }
 
-  v6 = [(ASDTDeviceManager *)self threadCond];
-  [v6 unlock];
+  threadCond2 = [(ASDTDeviceManager *)self threadCond];
+  [threadCond2 unlock];
 
   v17.receiver = self;
   v17.super_class = ASDTDeviceManager;
-  v7 = [(ASDTDeviceList *)&v17 addAudioDeviceWithCheck:v4];
+  v7 = [(ASDTDeviceList *)&v17 addAudioDeviceWithCheck:checkCopy];
   if (v7)
   {
     v8 = ASDTBaseLogType();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(ASDTDeviceManager *)self name];
+      name = [(ASDTDeviceManager *)self name];
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
-      v12 = [v4 deviceUID];
+      deviceUID = [checkCopy deviceUID];
       *buf = 138413058;
-      v19 = v9;
+      v19 = name;
       v20 = 2048;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
       v23 = v11;
       v24 = 2112;
-      v25 = v12;
+      v25 = deviceUID;
       _os_log_impl(&dword_241659000, v8, OS_LOG_TYPE_DEFAULT, "%@(%p): Added %@ '%@'", buf, 0x2Au);
     }
 
-    [v4 logDiagnostics:{-[ASDTDeviceManager verboseDeviceLogging](self, "verboseDeviceLogging")}];
+    [checkCopy logDiagnostics:{-[ASDTDeviceManager verboseDeviceLogging](self, "verboseDeviceLogging")}];
   }
 
   else
   {
-    v13 = [(ASDTDeviceManager *)self threadCond];
-    [v13 lock];
+    threadCond3 = [(ASDTDeviceManager *)self threadCond];
+    [threadCond3 lock];
 
-    [v4 removeObserver:self forKeyPath:@"powerState"];
-    v14 = [(ASDTDeviceManager *)self threadCond];
-    [v14 unlock];
+    [checkCopy removeObserver:self forKeyPath:@"powerState"];
+    threadCond4 = [(ASDTDeviceManager *)self threadCond];
+    [threadCond4 unlock];
   }
 
   v15 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (id)generateUnderlyingDeviceUIDsFromConfig:(id)a3
+- (id)generateUnderlyingDeviceUIDsFromConfig:(id)config
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  configCopy = config;
+  v4 = [configCopy count];
   v5 = [MEMORY[0x277CBEB58] setWithCapacity:v4];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v3;
+  v6 = configCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -474,10 +474,10 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) asdtUnderlyingDeviceUID];
-        if (v10)
+        asdtUnderlyingDeviceUID = [*(*(&v14 + 1) + 8 * i) asdtUnderlyingDeviceUID];
+        if (asdtUnderlyingDeviceUID)
         {
-          [v5 addObject:v10];
+          [v5 addObject:asdtUnderlyingDeviceUID];
         }
       }
 
@@ -493,111 +493,111 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
   return v11;
 }
 
-- (void)removeAudioDevice:(id)a3
+- (void)removeAudioDevice:(id)device
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ASDTDeviceManager *)self initializingCond];
-  [v5 lock];
+  deviceCopy = device;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  if (v4 && (-[ASDTDeviceList audioDevices](self, "audioDevices"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 containsObject:v4], v6, (v7 & 1) != 0))
+  if (deviceCopy && (-[ASDTDeviceList audioDevices](self, "audioDevices"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 containsObject:deviceCopy], v6, (v7 & 1) != 0))
   {
-    v8 = [(ASDTDeviceManager *)self delegate];
-    v9 = [v8 audioDevices];
-    v10 = [v9 containsObject:v4];
+    delegate = [(ASDTDeviceManager *)self delegate];
+    audioDevices = [delegate audioDevices];
+    v10 = [audioDevices containsObject:deviceCopy];
 
     if (v10)
     {
       v11 = ASDTBaseLogType();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(ASDTDeviceManager *)self name];
-        v13 = [v4 deviceUID];
+        name = [(ASDTDeviceManager *)self name];
+        deviceUID = [deviceCopy deviceUID];
         *buf = 138412546;
-        v38 = v12;
+        v38 = name;
         v39 = 2112;
-        v40 = v13;
+        v40 = deviceUID;
         _os_log_impl(&dword_241659000, v11, OS_LOG_TYPE_DEFAULT, "%@: Unpublishing '%@'.", buf, 0x16u);
       }
 
-      v14 = [(ASDTDeviceManager *)self delegate];
-      [v14 removeAudioDevice:v4];
+      delegate2 = [(ASDTDeviceManager *)self delegate];
+      [delegate2 removeAudioDevice:deviceCopy];
     }
 
-    v15 = [(ASDTDeviceManager *)self matchedDeviceFactories];
-    v16 = [v4 deviceUID];
-    v17 = [v15 objectForKey:v16];
+    matchedDeviceFactories = [(ASDTDeviceManager *)self matchedDeviceFactories];
+    deviceUID2 = [deviceCopy deviceUID];
+    v17 = [matchedDeviceFactories objectForKey:deviceUID2];
 
     if (v17)
     {
       [v17 cleanup];
-      v18 = [(ASDTDeviceManager *)self deviceFactories];
-      [v18 removeObject:v17];
+      deviceFactories = [(ASDTDeviceManager *)self deviceFactories];
+      [deviceFactories removeObject:v17];
 
-      v19 = [(ASDTDeviceManager *)self matchedDeviceFactories];
-      v20 = [v4 deviceUID];
-      [v19 removeObjectForKey:v20];
+      matchedDeviceFactories2 = [(ASDTDeviceManager *)self matchedDeviceFactories];
+      deviceUID3 = [deviceCopy deviceUID];
+      [matchedDeviceFactories2 removeObjectForKey:deviceUID3];
     }
 
-    v21 = [(ASDTDeviceManager *)self deviceInitStatus];
-    v22 = [v4 deviceUID];
-    [v21 removeObjectForKey:v22];
+    deviceInitStatus = [(ASDTDeviceManager *)self deviceInitStatus];
+    deviceUID4 = [deviceCopy deviceUID];
+    [deviceInitStatus removeObjectForKey:deviceUID4];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = [(ASDTDeviceManager *)self threadCond];
-      [v23 lock];
+      threadCond = [(ASDTDeviceManager *)self threadCond];
+      [threadCond lock];
 
-      v24 = [(ASDTDeviceManager *)self devicesRunning];
-      v25 = [v24 containsObject:v4];
+      devicesRunning = [(ASDTDeviceManager *)self devicesRunning];
+      v25 = [devicesRunning containsObject:deviceCopy];
 
       if (v25)
       {
-        v26 = [(ASDTDeviceManager *)self devicesRunning];
-        [v26 removeObject:v4];
+        devicesRunning2 = [(ASDTDeviceManager *)self devicesRunning];
+        [devicesRunning2 removeObject:deviceCopy];
       }
 
-      [v4 removeObserver:self forKeyPath:@"powerState"];
-      v27 = [(ASDTDeviceManager *)self threadCond];
-      [v27 unlock];
+      [deviceCopy removeObserver:self forKeyPath:@"powerState"];
+      threadCond2 = [(ASDTDeviceManager *)self threadCond];
+      [threadCond2 unlock];
     }
 
     v28 = ASDTBaseLogType();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(ASDTDeviceManager *)self name];
-      v30 = [v4 deviceUID];
+      name2 = [(ASDTDeviceManager *)self name];
+      deviceUID5 = [deviceCopy deviceUID];
       *buf = 138412546;
-      v38 = v29;
+      v38 = name2;
       v39 = 2112;
-      v40 = v30;
+      v40 = deviceUID5;
       _os_log_impl(&dword_241659000, v28, OS_LOG_TYPE_DEFAULT, "%@: Removing '%@'.", buf, 0x16u);
     }
 
     v36.receiver = self;
     v36.super_class = ASDTDeviceManager;
-    [(ASDTDeviceList *)&v36 removeAudioDevice:v4];
-    v31 = [(ASDTDeviceManager *)self initializingCond];
-    [v31 unlock];
+    [(ASDTDeviceList *)&v36 removeAudioDevice:deviceCopy];
+    initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+    [initializingCond2 unlock];
   }
 
   else
   {
-    v32 = [(ASDTDeviceManager *)self initializingCond];
-    [v32 unlock];
+    initializingCond3 = [(ASDTDeviceManager *)self initializingCond];
+    [initializingCond3 unlock];
 
     v17 = ASDTBaseLogType();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [(ASDTDeviceManager *)self name];
-      v35 = [v4 deviceUID];
+      name3 = [(ASDTDeviceManager *)self name];
+      deviceUID6 = [deviceCopy deviceUID];
       *buf = 138412802;
-      v38 = v34;
+      v38 = name3;
       v39 = 2048;
-      v40 = v4;
+      v40 = deviceCopy;
       v41 = 2112;
-      v42 = v35;
+      v42 = deviceUID6;
       _os_log_debug_impl(&dword_241659000, v17, OS_LOG_TYPE_DEBUG, "%@: Bad or unmanaged device(%p) with UID: %@", buf, 0x20u);
     }
   }
@@ -605,45 +605,45 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAudioDevices:(id)a3
+- (void)removeAudioDevices:(id)devices
 {
   v62 = *MEMORY[0x277D85DE8];
-  v46 = a3;
-  v4 = [(ASDTDeviceManager *)self initializingCond];
-  [v4 lock];
+  devicesCopy = devices;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
   v5 = MEMORY[0x277CBEB58];
-  v6 = [(ASDTDeviceList *)self audioDevices];
-  v45 = [v5 setWithArray:v6];
+  audioDevices = [(ASDTDeviceList *)self audioDevices];
+  v45 = [v5 setWithArray:audioDevices];
 
-  v7 = [MEMORY[0x277CBEB98] setWithArray:v46];
+  v7 = [MEMORY[0x277CBEB98] setWithArray:devicesCopy];
   [v45 intersectSet:v7];
 
   if ([v45 count])
   {
     v8 = [v45 count];
-    if (v8 != [v46 count])
+    if (v8 != [devicesCopy count])
     {
-      v9 = [v45 allObjects];
+      allObjects = [v45 allObjects];
 
-      v46 = v9;
+      devicesCopy = allObjects;
     }
 
-    v10 = [(ASDTDeviceManager *)self delegate];
-    v11 = [v10 audioDevices];
+    delegate = [(ASDTDeviceManager *)self delegate];
+    audioDevices2 = [delegate audioDevices];
 
-    v44 = v11;
-    if ([v11 count])
+    initializingCond3 = audioDevices2;
+    if ([audioDevices2 count])
     {
-      v12 = [MEMORY[0x277CBEB58] setWithArray:v46];
-      v13 = [MEMORY[0x277CBEB98] setWithArray:v11];
+      v12 = [MEMORY[0x277CBEB58] setWithArray:devicesCopy];
+      v13 = [MEMORY[0x277CBEB98] setWithArray:audioDevices2];
       [v12 intersectSet:v13];
 
       if ([v12 count])
       {
-        v14 = [(ASDTDeviceManager *)self delegate];
-        v15 = [v12 allObjects];
-        [v14 removeAudioDevices:v15];
+        delegate2 = [(ASDTDeviceManager *)self delegate];
+        allObjects2 = [v12 allObjects];
+        [delegate2 removeAudioDevices:allObjects2];
       }
     }
 
@@ -651,7 +651,7 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
     v55 = 0u;
     v52 = 0u;
     v53 = 0u;
-    v16 = v46;
+    v16 = devicesCopy;
     v17 = [v16 countByEnumeratingWithState:&v52 objects:v57 count:16];
     if (v17)
     {
@@ -666,34 +666,34 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
           }
 
           v20 = *(*(&v52 + 1) + 8 * i);
-          v21 = [(ASDTDeviceManager *)self matchedDeviceFactories];
-          v22 = [v20 deviceUID];
-          v23 = [v21 objectForKey:v22];
+          matchedDeviceFactories = [(ASDTDeviceManager *)self matchedDeviceFactories];
+          deviceUID = [v20 deviceUID];
+          v23 = [matchedDeviceFactories objectForKey:deviceUID];
 
           if (v23)
           {
             [v23 cleanup];
-            v24 = [(ASDTDeviceManager *)self deviceFactories];
-            [v24 removeObject:v23];
+            deviceFactories = [(ASDTDeviceManager *)self deviceFactories];
+            [deviceFactories removeObject:v23];
 
-            v25 = [(ASDTDeviceManager *)self matchedDeviceFactories];
-            v26 = [v20 deviceUID];
-            [v25 removeObjectForKey:v26];
+            matchedDeviceFactories2 = [(ASDTDeviceManager *)self matchedDeviceFactories];
+            deviceUID2 = [v20 deviceUID];
+            [matchedDeviceFactories2 removeObjectForKey:deviceUID2];
           }
 
-          v27 = [(ASDTDeviceManager *)self deviceInitStatus];
-          v28 = [v20 deviceUID];
-          [v27 removeObjectForKey:v28];
+          deviceInitStatus = [(ASDTDeviceManager *)self deviceInitStatus];
+          deviceUID3 = [v20 deviceUID];
+          [deviceInitStatus removeObjectForKey:deviceUID3];
 
           v29 = ASDTBaseLogType();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
           {
-            v30 = [(ASDTDeviceManager *)self name];
-            v31 = [v20 deviceUID];
+            name = [(ASDTDeviceManager *)self name];
+            deviceUID4 = [v20 deviceUID];
             *buf = 138412546;
-            v59 = v30;
+            v59 = name;
             v60 = 2112;
-            v61 = v31;
+            v61 = deviceUID4;
             _os_log_impl(&dword_241659000, v29, OS_LOG_TYPE_DEFAULT, "%@: Removing '%@'.", buf, 0x16u);
           }
         }
@@ -704,12 +704,12 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
       while (v17);
     }
 
-    v32 = [(ASDTDeviceManager *)self threadCond];
-    [v32 lock];
+    threadCond = [(ASDTDeviceManager *)self threadCond];
+    [threadCond lock];
 
-    v33 = [(ASDTDeviceManager *)self devicesRunning];
+    devicesRunning = [(ASDTDeviceManager *)self devicesRunning];
     v34 = [MEMORY[0x277CBEB98] setWithArray:v16];
-    [v33 minusSet:v34];
+    [devicesRunning minusSet:v34];
 
     v50 = 0u;
     v51 = 0u;
@@ -743,14 +743,14 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
       while (v36);
     }
 
-    v40 = [(ASDTDeviceManager *)self threadCond];
-    [v40 unlock];
+    threadCond2 = [(ASDTDeviceManager *)self threadCond];
+    [threadCond2 unlock];
 
     v47.receiver = self;
     v47.super_class = ASDTDeviceManager;
     [(ASDTDeviceList *)&v47 removeAudioDevices:v35];
-    v41 = [(ASDTDeviceManager *)self initializingCond];
-    [v41 unlock];
+    initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+    [initializingCond2 unlock];
   }
 
   else
@@ -763,27 +763,27 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
       [ASDTDeviceManager removeAudioDevices:];
     }
 
-    v44 = [(ASDTDeviceManager *)self initializingCond];
-    [v44 unlock];
-    v35 = v46;
+    initializingCond3 = [(ASDTDeviceManager *)self initializingCond];
+    [initializingCond3 unlock];
+    v35 = devicesCopy;
   }
 
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (id)factoryForDeviceUID:(id)a3
+- (id)factoryForDeviceUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(ASDTDeviceManager *)self initializingCond];
-    [v5 lock];
+    initializingCond = [(ASDTDeviceManager *)self initializingCond];
+    [initializingCond lock];
 
-    v6 = [(ASDTDeviceManager *)self matchedDeviceFactories];
-    v7 = [v6 objectForKey:v4];
+    matchedDeviceFactories = [(ASDTDeviceManager *)self matchedDeviceFactories];
+    v7 = [matchedDeviceFactories objectForKey:dCopy];
 
-    v8 = [(ASDTDeviceManager *)self initializingCond];
-    [v8 unlock];
+    initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+    [initializingCond2 unlock];
   }
 
   else
@@ -796,101 +796,101 @@ void __36__ASDTDeviceManager_concurrentQueue__block_invoke()
 
 - (NSArray)allDeviceFactories
 {
-  v3 = [(ASDTDeviceManager *)self initializingCond];
-  [v3 lock];
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  v4 = [(ASDTDeviceManager *)self deviceFactories];
-  v5 = [v4 allObjects];
+  deviceFactories = [(ASDTDeviceManager *)self deviceFactories];
+  allObjects = [deviceFactories allObjects];
 
-  v6 = [(ASDTDeviceManager *)self initializingCond];
-  [v6 unlock];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 
-  return v5;
+  return allObjects;
 }
 
-- (void)buildAndInitializeDevice:(id)a3
+- (void)buildAndInitializeDevice:(id)device
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 deviceUID];
-  v6 = [(ASDTDeviceManager *)self initializingCond];
-  [v6 lock];
+  deviceCopy = device;
+  deviceUID = [deviceCopy deviceUID];
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  v7 = [(ASDTDeviceManager *)self matchedDeviceFactories];
-  v8 = [v7 objectForKey:v5];
+  matchedDeviceFactories = [(ASDTDeviceManager *)self matchedDeviceFactories];
+  v8 = [matchedDeviceFactories objectForKey:deviceUID];
 
-  if (!v8 || v8 == v4)
+  if (!v8 || v8 == deviceCopy)
   {
     if (!v8)
     {
       [(ASDTDeviceManager *)self setNumDevicesToInitialize:[(ASDTDeviceManager *)self numDevicesToInitialize]+ 1];
-      v11 = [(ASDTDeviceManager *)self matchedDeviceFactories];
-      [v11 setObject:v4 forKey:v5];
+      matchedDeviceFactories2 = [(ASDTDeviceManager *)self matchedDeviceFactories];
+      [matchedDeviceFactories2 setObject:deviceCopy forKey:deviceUID];
     }
 
-    v12 = [v4 device];
+    device = [deviceCopy device];
 
-    if (v12)
+    if (device)
     {
       goto LABEL_9;
     }
 
-    if ([v4 deviceIsBuilding])
+    if ([deviceCopy deviceIsBuilding])
     {
-      v18 = [(ASDTDeviceManager *)self initializingCond];
-      [v18 unlock];
+      initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+      [initializingCond2 unlock];
 
       goto LABEL_18;
     }
 
-    [v4 setDeviceIsBuilding:1];
-    v19 = [(ASDTDeviceManager *)self initializingCond];
-    [v19 unlock];
+    [deviceCopy setDeviceIsBuilding:1];
+    initializingCond3 = [(ASDTDeviceManager *)self initializingCond];
+    [initializingCond3 unlock];
 
-    LODWORD(v19) = [v4 buildDevice];
-    v20 = [(ASDTDeviceManager *)self initializingCond];
-    [v20 lock];
+    LODWORD(initializingCond3) = [deviceCopy buildDevice];
+    initializingCond4 = [(ASDTDeviceManager *)self initializingCond];
+    [initializingCond4 lock];
 
-    [v4 setDeviceIsBuilding:0];
-    if (!v19)
+    [deviceCopy setDeviceIsBuilding:0];
+    if (!initializingCond3)
     {
       goto LABEL_15;
     }
 
-    v21 = [v4 device];
+    device2 = [deviceCopy device];
 
-    if (v21)
+    if (device2)
     {
 LABEL_9:
-      v13 = [(ASDTDeviceManager *)self initializingCond];
-      [v13 unlock];
+      initializingCond5 = [(ASDTDeviceManager *)self initializingCond];
+      [initializingCond5 unlock];
 
-      v14 = [(ASDTDeviceList *)self audioDevices];
-      v15 = [v4 device];
-      v16 = [v14 containsObject:v15];
+      audioDevices = [(ASDTDeviceList *)self audioDevices];
+      device3 = [deviceCopy device];
+      v16 = [audioDevices containsObject:device3];
 
       if ((v16 & 1) == 0)
       {
-        v17 = [v4 device];
-        [(ASDTDeviceList *)self addAudioDevice:v17];
+        device4 = [deviceCopy device];
+        [(ASDTDeviceList *)self addAudioDevice:device4];
 
-        [(ASDTDeviceManager *)self initializeDevice:v4];
+        [(ASDTDeviceManager *)self initializeDevice:deviceCopy];
       }
     }
 
     else
     {
 LABEL_15:
-      v22 = [v4 config];
-      [v4 cleanup];
-      v23 = [(ASDTDeviceManager *)self deviceFactories];
-      [v23 removeObject:v4];
+      config = [deviceCopy config];
+      [deviceCopy cleanup];
+      deviceFactories = [(ASDTDeviceManager *)self deviceFactories];
+      [deviceFactories removeObject:deviceCopy];
 
-      v24 = [(ASDTDeviceManager *)self matchedDeviceFactories];
-      [v24 removeObjectForKey:v5];
+      matchedDeviceFactories3 = [(ASDTDeviceManager *)self matchedDeviceFactories];
+      [matchedDeviceFactories3 removeObjectForKey:deviceUID];
 
-      v25 = [(ASDTDeviceManager *)self initializingCond];
-      [v25 unlock];
+      initializingCond6 = [(ASDTDeviceManager *)self initializingCond];
+      [initializingCond6 unlock];
 
       v26 = ASDTBaseLogType();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -900,14 +900,14 @@ LABEL_15:
         [ASDTDeviceManager buildAndInitializeDevice:];
       }
 
-      [(ASDTDeviceManager *)self deviceConfigurationFailed:v22];
+      [(ASDTDeviceManager *)self deviceConfigurationFailed:config];
     }
   }
 
   else
   {
-    v9 = [(ASDTDeviceManager *)self initializingCond];
-    [v9 unlock];
+    initializingCond7 = [(ASDTDeviceManager *)self initializingCond];
+    [initializingCond7 unlock];
 
     v10 = ASDTBaseLogType();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -923,33 +923,33 @@ LABEL_18:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initializeDevice:(id)a3
+- (void)initializeDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(ASDTDeviceManager *)self initializingCond];
-  [v5 lock];
+  deviceCopy = device;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  v6 = [(ASDTDeviceManager *)self deviceInitStatus];
-  v7 = [v4 deviceUID];
-  v8 = [v6 objectForKey:v7];
+  deviceInitStatus = [(ASDTDeviceManager *)self deviceInitStatus];
+  deviceUID = [deviceCopy deviceUID];
+  v8 = [deviceInitStatus objectForKey:deviceUID];
 
   if (!v8)
   {
-    v9 = [(ASDTDeviceManager *)self deviceInitStatus];
-    v10 = [v4 deviceUID];
-    [v9 setObject:&unk_2853549C0 forKey:v10];
+    deviceInitStatus2 = [(ASDTDeviceManager *)self deviceInitStatus];
+    deviceUID2 = [deviceCopy deviceUID];
+    [deviceInitStatus2 setObject:&unk_2853549C0 forKey:deviceUID2];
 
-    v11 = [(ASDTDeviceManager *)self concurrentQueue];
+    concurrentQueue = [(ASDTDeviceManager *)self concurrentQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __38__ASDTDeviceManager_initializeDevice___block_invoke;
     block[3] = &unk_278CE64F0;
-    v14 = v4;
-    dispatch_async(v11, block);
+    v14 = deviceCopy;
+    dispatch_async(concurrentQueue, block);
   }
 
-  v12 = [(ASDTDeviceManager *)self initializingCond];
-  [v12 unlock];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 }
 
 void __38__ASDTDeviceManager_initializeDevice___block_invoke(uint64_t a1)
@@ -986,29 +986,29 @@ void __38__ASDTDeviceManager_initializeDevice___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (int)getInitStatusForDeviceUID:(id)a3
+- (int)getInitStatusForDeviceUID:(id)d
 {
-  v4 = a3;
-  v5 = [(ASDTDeviceManager *)self initializingCond];
-  [v5 lock];
+  dCopy = d;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  v6 = [(ASDTDeviceManager *)self deviceInitStatus];
-  v7 = [v6 objectForKey:v4];
-  v8 = [v7 unsignedIntValue];
+  deviceInitStatus = [(ASDTDeviceManager *)self deviceInitStatus];
+  v7 = [deviceInitStatus objectForKey:dCopy];
+  unsignedIntValue = [v7 unsignedIntValue];
 
-  v9 = [(ASDTDeviceManager *)self initializingCond];
-  [v9 unlock];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 
-  return v8;
+  return unsignedIntValue;
 }
 
-- (void)publishDeviceLocked:(id)a3
+- (void)publishDeviceLocked:(id)locked
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 deviceUID];
+  lockedCopy = locked;
+  deviceUID = [lockedCopy deviceUID];
 
-  if (!v6)
+  if (!deviceUID)
   {
     v7 = ASDTBaseLogType();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -1018,61 +1018,61 @@ void __38__ASDTDeviceManager_initializeDevice___block_invoke(uint64_t a1)
       [ASDTDeviceManager publishDeviceLocked:];
     }
 
-    v8 = [v5 deviceUID];
-    v9 = v8 == 0;
+    deviceUID2 = [lockedCopy deviceUID];
+    v9 = deviceUID2 == 0;
 
     if (v9)
     {
-      v28 = [MEMORY[0x277CCA890] currentHandler];
-      v29 = [(ASDTDeviceManager *)self name];
-      [v28 handleFailureInMethod:a2 object:self file:@"ASDTDeviceManager.mm" lineNumber:501 description:{@"%@: Bad device factory.", v29}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      name = [(ASDTDeviceManager *)self name];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ASDTDeviceManager.mm" lineNumber:501 description:{@"%@: Bad device factory.", name}];
     }
   }
 
-  v10 = [v5 device];
-  if (!v10)
+  device = [lockedCopy device];
+  if (!device)
   {
     v11 = ASDTBaseLogType();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       [(ASDTDeviceManager *)self name];
       objc_claimAutoreleasedReturnValue();
-      [v5 deviceUID];
+      [lockedCopy deviceUID];
       objc_claimAutoreleasedReturnValue();
       [ASDTDeviceManager publishDeviceLocked:];
     }
 
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    v13 = [(ASDTDeviceManager *)self name];
-    v14 = [v5 deviceUID];
-    [v12 handleFailureInMethod:a2 object:self file:@"ASDTDeviceManager.mm" lineNumber:505 description:{@"%@: Device factory for '%@' missing device object.", v13, v14}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    name2 = [(ASDTDeviceManager *)self name];
+    deviceUID3 = [lockedCopy deviceUID];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"ASDTDeviceManager.mm" lineNumber:505 description:{@"%@: Device factory for '%@' missing device object.", name2, deviceUID3}];
   }
 
-  v15 = [(ASDTDeviceManager *)self delegate];
-  v16 = [v15 audioDevices];
-  v17 = [v16 containsObject:v10];
+  delegate = [(ASDTDeviceManager *)self delegate];
+  audioDevices = [delegate audioDevices];
+  v17 = [audioDevices containsObject:device];
 
   if ((v17 & 1) == 0)
   {
     v18 = ASDTBaseLogType();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [v10 deviceUID];
-      v20 = [v10 deviceName];
+      deviceUID4 = [device deviceUID];
+      deviceName = [device deviceName];
       *buf = 138412546;
-      *&buf[4] = v19;
+      *&buf[4] = deviceUID4;
       *&buf[12] = 2112;
-      *&buf[14] = v20;
+      *&buf[14] = deviceName;
       _os_log_impl(&dword_241659000, v18, OS_LOG_TYPE_DEFAULT, "Publishing %@ (%@)", buf, 0x16u);
     }
 
-    v21 = [(ASDTDeviceManager *)self delegate];
-    [v21 addAudioDevice:v10];
+    delegate2 = [(ASDTDeviceManager *)self delegate];
+    [delegate2 addAudioDevice:device];
 
     ASDTTime::machAbsoluteTime(v22, v31);
-    if (v5)
+    if (lockedCopy)
     {
-      [v5 initTime];
+      [lockedCopy initTime];
     }
 
     else
@@ -1086,9 +1086,9 @@ void __38__ASDTDeviceManager_initializeDevice___block_invoke(uint64_t a1)
     v25 = ASDTBaseLogType();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
-      v26 = [v5 deviceUID];
+      deviceUID5 = [lockedCopy deviceUID];
       *v31 = 138412546;
-      *&v31[4] = v26;
+      *&v31[4] = deviceUID5;
       *&v31[12] = 2048;
       *&v31[14] = *buf / 1000000000.0;
       _os_log_impl(&dword_241659000, v25, OS_LOG_TYPE_DEFAULT, "Device '%@' published after %1.4lfs", v31, 0x16u);
@@ -1098,34 +1098,34 @@ void __38__ASDTDeviceManager_initializeDevice___block_invoke(uint64_t a1)
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)publishDevice:(id)a3
+- (void)publishDevice:(id)device
 {
-  v6 = a3;
-  v4 = [(ASDTDeviceManager *)self initializingCond];
-  [v4 lock];
+  deviceCopy = device;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  [(ASDTDeviceManager *)self publishDeviceLocked:v6];
-  v5 = [(ASDTDeviceManager *)self initializingCond];
-  [v5 unlock];
+  [(ASDTDeviceManager *)self publishDeviceLocked:deviceCopy];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 }
 
 - (void)waitForInitialization
 {
-  v3 = [(ASDTDeviceManager *)self configuration];
-  -[ASDTDeviceManager waitForInitializationWithTimeoutUs:](self, "waitForInitializationWithTimeoutUs:", [v3 asdtManagerInitializationWaitUs]);
+  configuration = [(ASDTDeviceManager *)self configuration];
+  -[ASDTDeviceManager waitForInitializationWithTimeoutUs:](self, "waitForInitializationWithTimeoutUs:", [configuration asdtManagerInitializationWaitUs]);
 }
 
 - (void)configureDevices
 {
   v58 = *MEMORY[0x277D85DE8];
-  v3 = [(ASDTDeviceManager *)self configuration];
-  v4 = [v3 asdtDevices];
+  configuration = [(ASDTDeviceManager *)self configuration];
+  asdtDevices = [configuration asdtDevices];
 
   v49 = 0u;
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = v4;
+  obj = asdtDevices;
   v5 = [obj countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v5)
   {
@@ -1142,33 +1142,33 @@ void __38__ASDTDeviceManager_initializeDevice___block_invoke(uint64_t a1)
         }
 
         v9 = *(*(&v47 + 1) + 8 * i);
-        v10 = [v9 asdtDeviceUID];
-        if (v10)
+        asdtDeviceUID = [v9 asdtDeviceUID];
+        if (asdtDeviceUID)
         {
           v11 = [ASDTAudioDeviceFactory forDeviceConfig:v9 withManager:self];
           if (v11)
           {
-            v12 = [(ASDTDeviceManager *)self initializingCond];
-            [v12 lock];
+            initializingCond = [(ASDTDeviceManager *)self initializingCond];
+            [initializingCond lock];
 
-            v13 = [(ASDTDeviceManager *)self deviceFactories];
-            [v13 addObject:v11];
+            deviceFactories = [(ASDTDeviceManager *)self deviceFactories];
+            [deviceFactories addObject:v11];
 
-            v14 = [(ASDTDeviceManager *)self initializingCond];
-            [v14 unlock];
+            initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+            [initializingCond2 unlock];
           }
 
           else
           {
-            v14 = ASDTBaseLogType();
-            if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+            initializingCond2 = ASDTBaseLogType();
+            if (os_log_type_enabled(initializingCond2, OS_LOG_TYPE_ERROR))
             {
-              v19 = [(ASDTDeviceManager *)self name];
+              name = [(ASDTDeviceManager *)self name];
               *buf = v37;
-              v54 = v19;
+              v54 = name;
               v55 = 2112;
               v56 = v9;
-              _os_log_error_impl(&dword_241659000, v14, OS_LOG_TYPE_ERROR, "%@: Failure creating factory for: %@", buf, 0x16u);
+              _os_log_error_impl(&dword_241659000, initializingCond2, OS_LOG_TYPE_ERROR, "%@: Failure creating factory for: %@", buf, 0x16u);
             }
           }
 
@@ -1177,33 +1177,33 @@ LABEL_19:
           goto LABEL_20;
         }
 
-        v15 = [v9 asdtSubclass];
-        if ([v15 conformsToProtocol:&unk_285364B48])
+        asdtSubclass = [v9 asdtSubclass];
+        if ([asdtSubclass conformsToProtocol:&unk_285364B48])
         {
-          v11 = [v15 ioServiceDependenciesForConfig:v9];
+          v11 = [asdtSubclass ioServiceDependenciesForConfig:v9];
           if ([v11 count])
           {
-            v16 = [(ASDTDeviceManager *)self initializingCond];
-            [v16 lock];
+            initializingCond3 = [(ASDTDeviceManager *)self initializingCond];
+            [initializingCond3 lock];
 
-            v17 = [(ASDTDeviceManager *)self ioServiceDependencies];
-            [v17 addObjectsFromArray:v11];
+            ioServiceDependencies = [(ASDTDeviceManager *)self ioServiceDependencies];
+            [ioServiceDependencies addObjectsFromArray:v11];
 
-            v14 = [(ASDTDeviceManager *)self initializingCond];
-            [v14 unlock];
+            initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+            [initializingCond2 unlock];
           }
 
           else
           {
-            v14 = ASDTBaseLogType();
-            if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+            initializingCond2 = ASDTBaseLogType();
+            if (os_log_type_enabled(initializingCond2, OS_LOG_TYPE_ERROR))
             {
-              v20 = [(ASDTDeviceManager *)self name];
+              name2 = [(ASDTDeviceManager *)self name];
               *buf = v37;
-              v54 = v20;
+              v54 = name2;
               v55 = 2112;
               v56 = v9;
-              _os_log_error_impl(&dword_241659000, v14, OS_LOG_TYPE_ERROR, "%@: Could not identify service dependencies for configuration: %@", buf, 0x16u);
+              _os_log_error_impl(&dword_241659000, initializingCond2, OS_LOG_TYPE_ERROR, "%@: Could not identify service dependencies for configuration: %@", buf, 0x16u);
             }
           }
 
@@ -1213,9 +1213,9 @@ LABEL_19:
         v11 = ASDTBaseLogType();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          v18 = [(ASDTDeviceManager *)self name];
+          name3 = [(ASDTDeviceManager *)self name];
           *buf = v37;
-          v54 = v18;
+          v54 = name3;
           v55 = 2112;
           v56 = v9;
           _os_log_error_impl(&dword_241659000, v11, OS_LOG_TYPE_ERROR, "%@: Could not identify required services for configuration: %@", buf, 0x16u);
@@ -1230,23 +1230,23 @@ LABEL_20:
     while (v5);
   }
 
-  v21 = [(ASDTDeviceManager *)self initializingCond];
-  [v21 lock];
+  initializingCond4 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond4 lock];
 
-  v22 = [(ASDTDeviceManager *)self deviceFactories];
-  v23 = [v22 allObjects];
+  deviceFactories2 = [(ASDTDeviceManager *)self deviceFactories];
+  allObjects = [deviceFactories2 allObjects];
 
-  v24 = [(ASDTDeviceManager *)self ioServiceDependencies];
-  v25 = [v24 copy];
+  ioServiceDependencies2 = [(ASDTDeviceManager *)self ioServiceDependencies];
+  v25 = [ioServiceDependencies2 copy];
 
-  v26 = [(ASDTDeviceManager *)self initializingCond];
-  [v26 unlock];
+  initializingCond5 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond5 unlock];
 
   v45 = 0u;
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v27 = v23;
+  v27 = allObjects;
   v28 = [v27 countByEnumeratingWithState:&v43 objects:v52 count:16];
   if (v28)
   {
@@ -1304,19 +1304,19 @@ LABEL_20:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ioServiceAvailable:(id)a3 withManager:(id)a4
+- (void)ioServiceAvailable:(id)available withManager:(id)manager
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v31 = a4;
-  v7 = [(ASDTDeviceManager *)self initializingCond];
-  [v7 lock];
+  availableCopy = available;
+  managerCopy = manager;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  v8 = [(ASDTDeviceManager *)self ioServiceDependencies];
-  v29 = [v8 copy];
+  ioServiceDependencies = [(ASDTDeviceManager *)self ioServiceDependencies];
+  v29 = [ioServiceDependencies copy];
 
-  v9 = [(ASDTDeviceManager *)self initializingCond];
-  [v9 unlock];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 
   v34 = 0u;
   v35 = 0u;
@@ -1337,51 +1337,51 @@ LABEL_20:
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
-        if ([v13 ioServiceMatches:v6 withManager:v31])
+        if ([v13 ioServiceMatches:availableCopy withManager:managerCopy])
         {
-          v14 = [v6 idValue];
-          v15 = [v14 identifier];
+          idValue = [availableCopy idValue];
+          identifier = [idValue identifier];
 
-          v16 = [(ASDTDeviceManager *)self initializingCond];
-          [v16 lock];
+          initializingCond3 = [(ASDTDeviceManager *)self initializingCond];
+          [initializingCond3 lock];
 
-          v17 = [(ASDTDeviceManager *)self matchedDeviceFactories];
-          v18 = [v17 objectForKey:v15];
+          matchedDeviceFactories = [(ASDTDeviceManager *)self matchedDeviceFactories];
+          v18 = [matchedDeviceFactories objectForKey:identifier];
 
-          v19 = [(ASDTDeviceManager *)self initializingCond];
-          [v19 unlock];
+          initializingCond4 = [(ASDTDeviceManager *)self initializingCond];
+          [initializingCond4 unlock];
 
           if (v18)
           {
             v20 = ASDTBaseLogType();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
-              v21 = [(ASDTDeviceManager *)self name];
+              name = [(ASDTDeviceManager *)self name];
               *buf = 138412546;
-              v37 = v21;
+              v37 = name;
               v38 = 2112;
-              v39 = v15;
+              v39 = identifier;
               _os_log_error_impl(&dword_241659000, v20, OS_LOG_TYPE_ERROR, "%@: Device with UID '%@' already matched.", buf, 0x16u);
             }
           }
 
           else
           {
-            v22 = [v13 configuration];
-            v20 = [v22 mutableCopy];
+            configuration = [v13 configuration];
+            v20 = [configuration mutableCopy];
 
-            [v20 setObject:v15 forKey:@"DeviceUID"];
+            [v20 setObject:identifier forKey:@"DeviceUID"];
             v18 = [ASDTAudioDeviceFactory forDeviceConfig:v20 withManager:self];
             if (v18)
             {
-              v23 = [(ASDTDeviceManager *)self initializingCond];
-              [v23 lock];
+              initializingCond5 = [(ASDTDeviceManager *)self initializingCond];
+              [initializingCond5 lock];
 
-              v24 = [(ASDTDeviceManager *)self deviceFactories];
-              [v24 addObject:v18];
+              deviceFactories = [(ASDTDeviceManager *)self deviceFactories];
+              [deviceFactories addObject:v18];
 
-              v25 = [(ASDTDeviceManager *)self initializingCond];
-              [v25 unlock];
+              initializingCond6 = [(ASDTDeviceManager *)self initializingCond];
+              [initializingCond6 unlock];
 
               [(ASDTDeviceManager *)self buildAndInitializeDevice:v18];
             }
@@ -1391,9 +1391,9 @@ LABEL_20:
               v26 = ASDTBaseLogType();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
               {
-                v27 = [(ASDTDeviceManager *)self name];
+                name2 = [(ASDTDeviceManager *)self name];
                 *buf = 138412546;
-                v37 = v27;
+                v37 = name2;
                 v38 = 2112;
                 v39 = v20;
                 _os_log_error_impl(&dword_241659000, v26, OS_LOG_TYPE_ERROR, "%@: Failure creating factory for: %@", buf, 0x16u);
@@ -1414,31 +1414,31 @@ LABEL_20:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ioServiceWillTerminate:(id)a3 withManager:(id)a4
+- (void)ioServiceWillTerminate:(id)terminate withManager:(id)manager
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(ASDTDeviceManager *)self initializingCond];
-  [v6 lock];
+  terminateCopy = terminate;
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
-  v7 = [v5 idValue];
-  v8 = [v7 identifier];
-  v9 = [(ASDTDeviceList *)self getAudioDeviceWithUID:v8];
+  idValue = [terminateCopy idValue];
+  identifier = [idValue identifier];
+  v9 = [(ASDTDeviceList *)self getAudioDeviceWithUID:identifier];
 
-  v10 = [(ASDTDeviceManager *)self initializingCond];
-  [v10 unlock];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 unlock];
 
   if (v9)
   {
     v11 = ASDTBaseLogType();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(ASDTDeviceManager *)self name];
-      v13 = [v9 deviceUID];
+      name = [(ASDTDeviceManager *)self name];
+      deviceUID = [v9 deviceUID];
       v15 = 138412546;
-      v16 = v12;
+      v16 = name;
       v17 = 2112;
-      v18 = v13;
+      v18 = deviceUID;
       _os_log_impl(&dword_241659000, v11, OS_LOG_TYPE_DEFAULT, "%@: Terminate notification incoming for '%@'.", &v15, 0x16u);
     }
 
@@ -1448,10 +1448,10 @@ LABEL_20:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceConfigurationFailed:(id)a3
+- (void)deviceConfigurationFailed:(id)failed
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failedCopy = failed;
   v5 = ASDTBaseLogType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
@@ -1463,16 +1463,16 @@ LABEL_20:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceInitializationFailed:(id)a3
+- (void)deviceInitializationFailed:(id)failed
 {
   v7 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failedCopy = failed;
   v5 = ASDTBaseLogType();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [(ASDTDeviceManager *)self name];
     objc_claimAutoreleasedReturnValue();
-    [v4 deviceUID];
+    [failedCopy deviceUID];
     objc_claimAutoreleasedReturnValue();
     [ASDTDeviceManager deviceInitializationFailed:];
   }
@@ -1506,46 +1506,46 @@ LABEL_20:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v6 systemSleepPending];
-          if (v7)
+          systemSleepPending = [v6 systemSleepPending];
+          if (systemSleepPending)
           {
             v8 = ASDTBaseLogType();
             if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
             {
-              v9 = [(ASDTDeviceManager *)self name];
-              v10 = [v6 deviceUID];
-              v11 = v10;
-              v12 = v7;
-              if (v7 - 32 >= 0x5F)
+              name = [(ASDTDeviceManager *)self name];
+              deviceUID = [v6 deviceUID];
+              v11 = deviceUID;
+              v12 = systemSleepPending;
+              if (systemSleepPending - 32 >= 0x5F)
               {
                 v12 = 32;
               }
 
               *buf = 138413826;
-              v24 = v9;
-              v13 = BYTE1(v7);
-              if (BYTE1(v7) - 32 >= 0x5F)
+              v24 = name;
+              v13 = BYTE1(systemSleepPending);
+              if (BYTE1(systemSleepPending) - 32 >= 0x5F)
               {
                 v13 = 32;
               }
 
               v25 = 1024;
-              v26 = v7;
-              v14 = BYTE2(v7);
-              if (BYTE2(v7) - 32 >= 0x5F)
+              v26 = systemSleepPending;
+              v14 = BYTE2(systemSleepPending);
+              if (BYTE2(systemSleepPending) - 32 >= 0x5F)
               {
                 v14 = 32;
               }
 
               v27 = 1024;
-              if ((v7 - 0x20000000) >> 24 >= 0x5F)
+              if ((systemSleepPending - 0x20000000) >> 24 >= 0x5F)
               {
                 v15 = 32;
               }
 
               else
               {
-                v15 = HIBYTE(v7);
+                v15 = HIBYTE(systemSleepPending);
               }
 
               v28 = v15;
@@ -1556,7 +1556,7 @@ LABEL_20:
               v33 = 1024;
               v34 = v12;
               v35 = 2112;
-              v36 = v10;
+              v36 = deviceUID;
               _os_log_error_impl(&dword_241659000, v8, OS_LOG_TYPE_ERROR, "%@: systemWillSleep: Received error %x (%c%c%c%c) from device '%@'.", buf, 0x34u);
             }
           }
@@ -1586,26 +1586,26 @@ LABEL_20:
 - (void)stopThread
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(ASDTDeviceManager *)self threadCond];
-  [v3 lock];
+  threadCond = [(ASDTDeviceManager *)self threadCond];
+  [threadCond lock];
 
-  v4 = [(ASDTDeviceManager *)self thread];
-  [v4 cancel];
+  thread = [(ASDTDeviceManager *)self thread];
+  [thread cancel];
 
-  v5 = [(ASDTDeviceManager *)self threadCond];
-  [v5 signal];
+  threadCond2 = [(ASDTDeviceManager *)self threadCond];
+  [threadCond2 signal];
 
-  v6 = [(ASDTDeviceManager *)self threadCond];
-  [v6 unlock];
+  threadCond3 = [(ASDTDeviceManager *)self threadCond];
+  [threadCond3 unlock];
 
   *&v7 = 138412290;
   v13 = v7;
   while (1)
   {
-    v8 = [(ASDTDeviceManager *)self thread];
-    v9 = [v8 isFinished];
+    thread2 = [(ASDTDeviceManager *)self thread];
+    isFinished = [thread2 isFinished];
 
-    if (v9)
+    if (isFinished)
     {
       break;
     }
@@ -1613,9 +1613,9 @@ LABEL_20:
     v10 = ASDTBaseLogType();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(ASDTDeviceManager *)self name];
+      name = [(ASDTDeviceManager *)self name];
       *buf = v13;
-      v15 = v11;
+      v15 = name;
       _os_log_impl(&dword_241659000, v10, OS_LOG_TYPE_INFO, "%@: Waiting for thread to finish...", buf, 0xCu);
     }
 
@@ -1629,46 +1629,46 @@ LABEL_20:
 - (void)lockedSignalThread
 {
   [(ASDTDeviceManager *)self setThreadWorkToDo:1];
-  v3 = [(ASDTDeviceManager *)self threadCond];
-  [v3 signal];
+  threadCond = [(ASDTDeviceManager *)self threadCond];
+  [threadCond signal];
 }
 
-- (void)threadLoop:(id)a3
+- (void)threadLoop:(id)loop
 {
   v44 = *MEMORY[0x277D85DE8];
   v4 = ASDTBaseLogType();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(ASDTDeviceManager *)self name];
+    name = [(ASDTDeviceManager *)self name];
     *buf = 138412290;
-    *&buf[4] = v5;
+    *&buf[4] = name;
     _os_log_impl(&dword_241659000, v4, OS_LOG_TYPE_DEFAULT, "%@: Started background thread.", buf, 0xCu);
   }
 
-  v6 = [(ASDTDeviceManager *)self initializingCond];
-  [v6 lock];
+  initializingCond = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond lock];
 
   [(ASDTDeviceManager *)self setThreadStarted:1];
-  v7 = [(ASDTDeviceManager *)self initializingCond];
-  [v7 broadcast];
+  initializingCond2 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond2 broadcast];
 
-  v8 = [(ASDTDeviceManager *)self initializingCond];
-  [v8 unlock];
+  initializingCond3 = [(ASDTDeviceManager *)self initializingCond];
+  [initializingCond3 unlock];
 
-  v9 = [(ASDTDeviceManager *)self thread];
-  [v9 setQualityOfService:17];
+  thread = [(ASDTDeviceManager *)self thread];
+  [thread setQualityOfService:17];
 
   v39 = 0uLL;
   v40 = 0x10000;
-  v10 = [(ASDTDeviceManager *)self threadCond];
-  [v10 lock];
+  threadCond = [(ASDTDeviceManager *)self threadCond];
+  [threadCond lock];
 
   while (1)
   {
-    v11 = [(ASDTDeviceManager *)self thread];
-    v12 = [v11 isCancelled];
+    thread2 = [(ASDTDeviceManager *)self thread];
+    isCancelled = [thread2 isCancelled];
 
-    if (v12)
+    if (isCancelled)
     {
       break;
     }
@@ -1678,27 +1678,27 @@ LABEL_20:
     {
       if (v39)
       {
-        v14 = [(ASDTDeviceManager *)self threadCond];
+        threadCond2 = [(ASDTDeviceManager *)self threadCond];
         *buf = v39;
         v43 = v40;
-        [v14 waitUntilTime:buf];
+        [threadCond2 waitUntilTime:buf];
       }
 
       else
       {
-        v14 = [(ASDTDeviceManager *)self threadCond];
-        [v14 wait];
+        threadCond2 = [(ASDTDeviceManager *)self threadCond];
+        [threadCond2 wait];
       }
     }
 
     [(ASDTDeviceManager *)self setThreadWorkToDo:0];
-    v15 = [(ASDTDeviceManager *)self devicesRunning];
-    v16 = [v15 allObjects];
+    devicesRunning = [(ASDTDeviceManager *)self devicesRunning];
+    allObjects = [devicesRunning allObjects];
 
-    v17 = [(ASDTDeviceManager *)self threadCond];
-    [v17 unlock];
+    threadCond3 = [(ASDTDeviceManager *)self threadCond];
+    [threadCond3 unlock];
 
-    v18 = [v16 count];
+    v18 = [allObjects count];
     if (!v18)
     {
       ASDTTime::ASDTTime(buf, 0, 1, v19);
@@ -1710,8 +1710,8 @@ LABEL_23:
 
     if (!v39)
     {
-      v28 = [(ASDTDeviceManager *)self runningLogPeriod];
-      ASDTTime::futureSecs(v28, v29, buf);
+      runningLogPeriod = [(ASDTDeviceManager *)self runningLogPeriod];
+      ASDTTime::futureSecs(runningLogPeriod, v29, buf);
       goto LABEL_23;
     }
 
@@ -1722,7 +1722,7 @@ LABEL_23:
       v38 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v20 = v16;
+      v20 = allObjects;
       v21 = [v20 countByEnumeratingWithState:&v35 objects:v41 count:16];
       if (v21)
       {
@@ -1754,56 +1754,56 @@ LABEL_23:
     }
 
 LABEL_24:
-    v30 = [(ASDTDeviceManager *)self threadCond];
-    [v30 lock];
+    threadCond4 = [(ASDTDeviceManager *)self threadCond];
+    [threadCond4 lock];
 
     objc_autoreleasePoolPop(v13);
   }
 
-  v31 = [(ASDTDeviceManager *)self threadCond];
-  [v31 unlock];
+  threadCond5 = [(ASDTDeviceManager *)self threadCond];
+  [threadCond5 unlock];
 
   v32 = ASDTBaseLogType();
   if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
   {
-    v33 = [(ASDTDeviceManager *)self name];
+    name2 = [(ASDTDeviceManager *)self name];
     *buf = 138412290;
-    *&buf[4] = v33;
+    *&buf[4] = name2;
     _os_log_impl(&dword_241659000, v32, OS_LOG_TYPE_DEFAULT, "%@: Finished background thread.", buf, 0xCu);
   }
 
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"powerState"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"powerState"])
   {
-    v13 = [v12 objectForKey:*MEMORY[0x277CCA2F0]];
-    -[ASDTDeviceManager powerStateChangedForDevice:toState:](self, "powerStateChangedForDevice:toState:", v11, [v13 unsignedIntValue]);
+    v13 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
+    -[ASDTDeviceManager powerStateChangedForDevice:toState:](self, "powerStateChangedForDevice:toState:", objectCopy, [v13 unsignedIntValue]);
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = ASDTDeviceManager;
-    [(ASDTDeviceManager *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(ASDTDeviceManager *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (id)messageForDroppedPacketsFromDevice:(id)a3 withScope:(unsigned int)a4 andElement:(unsigned int)a5
+- (id)messageForDroppedPacketsFromDevice:(id)device withScope:(unsigned int)scope andElement:(unsigned int)element
 {
-  v7 = a3;
+  deviceCopy = device;
   v13[0] = 1883533936;
-  v13[1] = a4;
-  v13[2] = a5;
-  if ([v7 hasProperty:v13] & 1) != 0 && (v11 = 4, v12 = 0, (objc_msgSend(v7, "getProperty:withQualifierSize:qualifierData:dataSize:andData:forClient:", v13, 0, 0, &v11, &v12, 0)))
+  v13[1] = scope;
+  v13[2] = element;
+  if ([deviceCopy hasProperty:v13] & 1) != 0 && (v11 = 4, v12 = 0, (objc_msgSend(deviceCopy, "getProperty:withQualifierSize:qualifierData:dataSize:andData:forClient:", v13, 0, 0, &v11, &v12, 0)))
   {
     v8 = "Host";
-    if (a5 != 1)
+    if (element != 1)
     {
       v8 = "Remote";
     }
@@ -1819,30 +1819,30 @@ LABEL_24:
   return v9;
 }
 
-- (void)logStatsForDevice:(id)a3 withPowerState:(int)a4
+- (void)logStatsForDevice:(id)device withPowerState:(int)state
 {
   v37 = *MEMORY[0x277D85DE8];
-  v30 = a3;
-  v31 = [MEMORY[0x277CBEB18] array];
+  deviceCopy = device;
+  array = [MEMORY[0x277CBEB18] array];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [(ASDTDeviceManager *)self name];
-  v8 = [v30 deviceUID];
-  v9 = v8;
+  name = [(ASDTDeviceManager *)self name];
+  deviceUID = [deviceCopy deviceUID];
+  v9 = deviceUID;
   v10 = "not ";
-  if (a4 == 1920298606)
+  if (state == 1920298606)
   {
     v10 = "";
   }
 
-  v11 = [v6 stringWithFormat:@"%@: '%@' is %srunning", v7, v8, v10];
+  v11 = [v6 stringWithFormat:@"%@: '%@' is %srunning", name, deviceUID, v10];
 
   if (v11)
   {
-    [v31 addObject:v11];
+    [array addObject:v11];
   }
 
-  v29 = [(ASDTDeviceManager *)self messageForDroppedPacketsFromDevice:v30 withScope:1869968496];
-  v12 = [(ASDTDeviceManager *)self messageForDroppedPacketsFromDevice:v30 withScope:1768845428];
+  v29 = [(ASDTDeviceManager *)self messageForDroppedPacketsFromDevice:deviceCopy withScope:1869968496];
+  v12 = [(ASDTDeviceManager *)self messageForDroppedPacketsFromDevice:deviceCopy withScope:1768845428];
   v28 = v12;
   if (__PAIR128__(v29, v12) != 0)
   {
@@ -1883,7 +1883,7 @@ LABEL_24:
     if (v17)
     {
       v11 = v17;
-      [v31 addObject:v17];
+      [array addObject:v17];
     }
 
     else
@@ -1895,13 +1895,13 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v30 status];
+    status = [deviceCopy status];
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v19 = [v18 allKeys];
-    v20 = [v19 countByEnumeratingWithState:&v32 objects:v36 count:16];
+    allKeys = [status allKeys];
+    v20 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v20)
     {
       v21 = *v33;
@@ -1911,29 +1911,29 @@ LABEL_24:
         {
           if (*v33 != v21)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(allKeys);
           }
 
           v23 = *(*(&v32 + 1) + 8 * i);
           v24 = MEMORY[0x277CCACA8];
-          v25 = [v18 objectForKeyedSubscript:v23];
+          v25 = [status objectForKeyedSubscript:v23];
           v26 = [v24 stringWithFormat:@"%@: %@", v23, v25];
 
           v11 = v26;
           if (v26)
           {
-            [v31 addObject:v26];
+            [array addObject:v26];
           }
         }
 
-        v20 = [v19 countByEnumeratingWithState:&v32 objects:v36 count:16];
+        v20 = [allKeys countByEnumeratingWithState:&v32 objects:v36 count:16];
       }
 
       while (v20);
     }
   }
 
-  [MEMORY[0x277CEFB58] asdtLogComponents:v31 withSeparator:{@", "}];
+  [MEMORY[0x277CEFB58] asdtLogComponents:array withSeparator:{@", "}];
 
   v27 = *MEMORY[0x277D85DE8];
 }

@@ -1,6 +1,6 @@
 @interface MarqueeUILabel
-- (_TtC16CommunicationsUI14MarqueeUILabel)initWithCoder:(id)a3;
-- (_TtC16CommunicationsUI14MarqueeUILabel)initWithFrame:(CGRect)a3;
+- (_TtC16CommunicationsUI14MarqueeUILabel)initWithCoder:(id)coder;
+- (_TtC16CommunicationsUI14MarqueeUILabel)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -15,12 +15,12 @@
   sub_1C2DC3FF0();
 }
 
-- (_TtC16CommunicationsUI14MarqueeUILabel)initWithFrame:(CGRect)a3
+- (_TtC16CommunicationsUI14MarqueeUILabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI14MarqueeUILabel_shouldAnimateMarquee) = 1;
   v7 = self + OBJC_IVAR____TtC16CommunicationsUI14MarqueeUILabel_proposedWidth;
   *v7 = 0;
@@ -30,7 +30,7 @@
   return [(MarqueeUILabel *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16CommunicationsUI14MarqueeUILabel)initWithCoder:(id)a3
+- (_TtC16CommunicationsUI14MarqueeUILabel)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC16CommunicationsUI14MarqueeUILabel_shouldAnimateMarquee) = 1;
   v4 = self + OBJC_IVAR____TtC16CommunicationsUI14MarqueeUILabel_proposedWidth;
@@ -38,8 +38,8 @@
   v4[8] = 1;
   v8.receiver = self;
   v8.super_class = type metadata accessor for MarqueeUILabel();
-  v5 = a3;
-  v6 = [(MarqueeUILabel *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(MarqueeUILabel *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

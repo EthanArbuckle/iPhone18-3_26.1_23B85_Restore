@@ -8,80 +8,80 @@
 
 - (id)description
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  if ([a1 cycling])
+  array = [MEMORY[0x277CBEB18] array];
+  if ([self cycling])
   {
-    [v2 addObject:@"cycling"];
+    [array addObject:@"cycling"];
   }
 
-  if ([a1 automotive])
+  if ([self automotive])
   {
-    [v2 addObject:@"automotive"];
+    [array addObject:@"automotive"];
   }
 
-  if ([a1 running])
+  if ([self running])
   {
-    [v2 addObject:@"running"];
+    [array addObject:@"running"];
   }
 
-  if ([a1 walking])
+  if ([self walking])
   {
-    [v2 addObject:@"walking"];
+    [array addObject:@"walking"];
   }
 
-  if ([a1 stationary])
+  if ([self stationary])
   {
-    [v2 addObject:@"stationary"];
+    [array addObject:@"stationary"];
   }
 
-  if ([a1 unknown])
+  if ([self unknown])
   {
-    [v2 addObject:@"unknown"];
+    [array addObject:@"unknown"];
   }
 
-  if (![v2 count])
+  if (![array count])
   {
-    [v2 addObject:@"moving"];
+    [array addObject:@"moving"];
   }
 
   v3 = MEMORY[0x277CCACA8];
-  v4 = [v2 componentsJoinedByString:{@", "}];
-  v5 = [a1 confidence];
-  v6 = [a1 startDate];
-  v7 = [v6 stringFromDate];
-  v8 = [v3 stringWithFormat:@"type, <%@>, confidence %ld, startDate, %@", v4, v5, v7];
+  v4 = [array componentsJoinedByString:{@", "}];
+  confidence = [self confidence];
+  startDate = [self startDate];
+  stringFromDate = [startDate stringFromDate];
+  v8 = [v3 stringWithFormat:@"type, <%@>, confidence %ld, startDate, %@", v4, confidence, stringFromDate];
 
   return v8;
 }
 
 - (uint64_t)rtMotionActivityType
 {
-  if ([a1 cycling])
+  if ([self cycling])
   {
     return 5;
   }
 
-  if ([a1 automotive])
+  if ([self automotive])
   {
     return 4;
   }
 
-  if ([a1 running])
+  if ([self running])
   {
     return 3;
   }
 
-  if ([a1 walking])
+  if ([self walking])
   {
     return 2;
   }
 
-  if ([a1 stationary])
+  if ([self stationary])
   {
     return 1;
   }
 
-  if ([a1 unknown])
+  if ([self unknown])
   {
     return 0;
   }
@@ -91,10 +91,10 @@
 
 - (unint64_t)rtMotionActivityConfidence
 {
-  v1 = [a1 confidence];
-  if (v1 < 3)
+  confidence = [self confidence];
+  if (confidence < 3)
   {
-    return v1 + 1;
+    return confidence + 1;
   }
 
   else

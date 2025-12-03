@@ -6,14 +6,14 @@
 
 - (__CFString)hm_shortDescription
 {
-  v2 = [a1 units];
+  units = [self units];
 
-  if (v2)
+  if (units)
   {
     v3 = MEMORY[0x1E696AEC0];
     v4 = *MEMORY[0x1E69C7D30];
-    v5 = [a1 units];
-    v6 = [v3 stringWithFormat:@"%@=%@", v4, v5];
+    units2 = [self units];
+    v6 = [v3 stringWithFormat:@"%@=%@", v4, units2];
   }
 
   else

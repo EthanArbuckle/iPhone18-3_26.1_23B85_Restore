@@ -30,7 +30,7 @@
     v8 = v7;
     v9 = _NRCopyLogObjectForNRUUID();
     v14 = 63;
-    v15 = self;
+    selfCopy = self;
     v12 = "";
     v13 = "[NRNWActivityReporter dealloc]";
     _NRLogWithArgs();

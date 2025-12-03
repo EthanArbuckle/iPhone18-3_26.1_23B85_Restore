@@ -1,22 +1,22 @@
 @interface EQKitHBox
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4;
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4;
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset;
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant;
 - (CGRect)p_cacheErasableBounds;
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5;
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4;
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width;
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset;
 @end
 
 @implementation EQKitHBox
 
-- (void)renderIntoContext:(CGContext *)a3 offset:(CGPoint)a4
+- (void)renderIntoContext:(CGContext *)context offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v30 = *MEMORY[0x277D85DE8];
   v28.receiver = self;
   v28.super_class = EQKitHBox;
   [EQKitBox renderIntoContext:sel_renderIntoContext_offset_ offset:?];
-  if (a3)
+  if (context)
   {
     v26 = 0u;
     v27 = 0u;
@@ -38,7 +38,7 @@
           }
 
           v19 = *(*(&v24 + 1) + 8 * i);
-          objc_msgSend_renderIntoContext_offset_(v19, v14, a3, v15, x, y);
+          objc_msgSend_renderIntoContext_offset_(v19, v14, context, v15, x, y);
           objc_msgSend_width(v19, v20, v21, v22);
           x = x + v23;
         }
@@ -51,15 +51,15 @@
   }
 }
 
-- (BOOL)appendOpticalAlignToSpec:(void *)a3 offset:(CGPoint)a4
+- (BOOL)appendOpticalAlignToSpec:(void *)spec offset:(CGPoint)offset
 {
-  y = a4.y;
-  x = a4.x;
+  y = offset.y;
+  x = offset.x;
   v56 = *MEMORY[0x277D85DE8];
-  v9 = *(a3 + 6);
+  v9 = *(spec + 6);
   if (v9 == 2)
   {
-    objc_msgSend_width(self, a2, a3, v4);
+    objc_msgSend_width(self, a2, spec, v4);
     v24 = v23;
     v46 = 0u;
     v47 = 0u;
@@ -85,7 +85,7 @@ LABEL_14:
         v41 = *(*(&v46 + 1) + 8 * v40);
         objc_msgSend_width(v41, v34, v35, v36);
         v38 = v38 - v42;
-        if (objc_msgSend_appendOpticalAlignToSpec_offset_(v41, v43, a3, v44, v38, y))
+        if (objc_msgSend_appendOpticalAlignToSpec_offset_(v41, v43, spec, v44, v38, y))
         {
           goto LABEL_21;
         }
@@ -117,7 +117,7 @@ LABEL_14:
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v10 = objc_msgSend_childBoxes(self, a2, a3, v4);
+    v10 = objc_msgSend_childBoxes(self, a2, spec, v4);
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v50, v55, 16);
     if (v12)
     {
@@ -133,7 +133,7 @@ LABEL_5:
         }
 
         v18 = *(*(&v50 + 1) + 8 * v17);
-        if (objc_msgSend_appendOpticalAlignToSpec_offset_(v18, v13, a3, v14, x, y))
+        if (objc_msgSend_appendOpticalAlignToSpec_offset_(v18, v13, spec, v14, x, y))
         {
           break;
         }
@@ -161,10 +161,10 @@ LABEL_21:
   return v12;
 }
 
-- (BOOL)p_getTransform:(CGAffineTransform *)a3 fromDescendant:(id)a4
+- (BOOL)p_getTransform:(CGAffineTransform *)transform fromDescendant:(id)descendant
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (a4 == self)
+  if (descendant == self)
   {
 LABEL_12:
     LOBYTE(v8) = 1;
@@ -176,7 +176,7 @@ LABEL_12:
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v6 = objc_msgSend_childBoxes(self, a2, a3, a4);
+    v6 = objc_msgSend_childBoxes(self, a2, transform, descendant);
     v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v7, &v24, v28, 16);
     if (v8)
     {
@@ -193,17 +193,17 @@ LABEL_12:
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
-          if (objc_msgSend_p_getTransform_fromDescendant_(v14, v9, a3, a4))
+          if (objc_msgSend_p_getTransform_fromDescendant_(v14, v9, transform, descendant))
           {
-            v19 = *&a3->c;
-            *&v22.a = *&a3->a;
+            v19 = *&transform->c;
+            *&v22.a = *&transform->a;
             *&v22.c = v19;
-            *&v22.tx = *&a3->tx;
+            *&v22.tx = *&transform->tx;
             CGAffineTransformTranslate(&v23, &v22, v12, 0.0);
             v20 = *&v23.c;
-            *&a3->a = *&v23.a;
-            *&a3->c = v20;
-            *&a3->tx = *&v23.tx;
+            *&transform->a = *&v23.a;
+            *&transform->c = v20;
+            *&transform->tx = *&v23.tx;
             goto LABEL_12;
           }
 
@@ -226,29 +226,29 @@ LABEL_12:
   return v8;
 }
 
-- (void)p_cacheDimensionsForHeight:(double *)a3 depth:(double *)a4 width:(double *)a5
+- (void)p_cacheDimensionsForHeight:(double *)height depth:(double *)depth width:(double *)width
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (!a3 && !a4 && !a5)
+  if (!height && !depth && !width)
   {
     return;
   }
 
-  if (a5)
+  if (width)
   {
-    *a5 = 0.0;
+    *width = 0.0;
   }
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = objc_msgSend_childBoxes(self, a2, a3, a4, 0);
+  v8 = objc_msgSend_childBoxes(self, a2, height, depth, 0);
   v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v9, &v28, v32, 16);
   if (!v10)
   {
     v16 = 1;
-    if (a3)
+    if (height)
     {
       goto LABEL_34;
     }
@@ -276,49 +276,49 @@ LABEL_12:
         goto LABEL_24;
       }
 
-      if (a3)
+      if (height)
       {
-        if ((v16 & 1) != 0 || (v20 = *a3, objc_msgSend_height(v18, v11, v12, v13), v20 <= v21))
+        if ((v16 & 1) != 0 || (v20 = *height, objc_msgSend_height(v18, v11, v12, v13), v20 <= v21))
         {
           objc_msgSend_height(v18, v11, v12, v13);
         }
 
         else
         {
-          v22 = *a3;
+          v22 = *height;
         }
 
-        *a3 = v22;
+        *height = v22;
       }
 
-      if (a4)
+      if (depth)
       {
-        if ((v16 & 1) != 0 || (v23 = *a4, objc_msgSend_depth(v18, v11, v12, v13), v23 <= v24))
+        if ((v16 & 1) != 0 || (v23 = *depth, objc_msgSend_depth(v18, v11, v12, v13), v23 <= v24))
         {
           objc_msgSend_depth(v18, v11, v12, v13);
         }
 
         else
         {
-          v25 = *a4;
+          v25 = *depth;
         }
 
         v16 = 0;
-        *a4 = v25;
+        *depth = v25;
 LABEL_24:
-        if (!a5)
+        if (!width)
         {
           goto LABEL_26;
         }
 
 LABEL_25:
         objc_msgSend_width(v18, v11, v12, v13);
-        *a5 = v26 + *a5;
+        *width = v26 + *width;
         goto LABEL_26;
       }
 
       v16 = 0;
-      if (a5)
+      if (width)
       {
         goto LABEL_25;
       }
@@ -333,7 +333,7 @@ LABEL_26:
   }
 
   while (v27);
-  if (!a3)
+  if (!height)
   {
     goto LABEL_36;
   }
@@ -341,13 +341,13 @@ LABEL_26:
 LABEL_34:
   if (v16)
   {
-    *a3 = 0.0;
+    *height = 0.0;
   }
 
 LABEL_36:
-  if (((a4 != 0) & v16) == 1)
+  if (((depth != 0) & v16) == 1)
   {
-    *a4 = 0.0;
+    *depth = 0.0;
   }
 }
 

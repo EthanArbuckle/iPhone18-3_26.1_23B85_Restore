@@ -2,22 +2,22 @@
 - (NSDictionary)textInfo;
 - (NSString)identifier;
 - (NSString)name;
-- (PKNANEndpoint)initWithDiscoveryResult:(id)a3;
+- (PKNANEndpoint)initWithDiscoveryResult:(id)result;
 - (id)debugDescription;
 @end
 
 @implementation PKNANEndpoint
 
-- (PKNANEndpoint)initWithDiscoveryResult:(id)a3
+- (PKNANEndpoint)initWithDiscoveryResult:(id)result
 {
-  v5 = a3;
+  resultCopy = result;
   v9.receiver = self;
   v9.super_class = PKNANEndpoint;
   v6 = [(PKNANEndpoint *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_discoveryResult, a3);
+    objc_storeStrong(&v6->_discoveryResult, result);
   }
 
   return v7;
@@ -29,30 +29,30 @@
   v4 = [NSString stringWithFormat:@"Endpoint: <%@:%p>", objc_opt_class(), self];
   [v3 addObject:v4];
 
-  v5 = [(PKNANEndpoint *)self name];
-  v6 = [NSString stringWithFormat:@"Instance Name: %@", v5];
+  name = [(PKNANEndpoint *)self name];
+  v6 = [NSString stringWithFormat:@"Instance Name: %@", name];
   [v3 addObject:v6];
 
-  v7 = [(PKNANEndpoint *)self textInfo];
-  v8 = [v7 debugDescription];
+  textInfo = [(PKNANEndpoint *)self textInfo];
+  v8 = [textInfo debugDescription];
   v9 = [NSString stringWithFormat:@"TXT Record: %@", v8];
   [v3 addObject:v9];
 
-  v10 = [(PKNANEndpoint *)self discoveryResult];
-  v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"RSSI: %d", [v10 rssi]);
+  discoveryResult = [(PKNANEndpoint *)self discoveryResult];
+  v11 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"RSSI: %d", [discoveryResult rssi]);
   [v3 addObject:v11];
 
-  v12 = [(PKNANEndpoint *)self discoveryResult];
-  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Publisher ID: %d", [v12 publishID]);
+  discoveryResult2 = [(PKNANEndpoint *)self discoveryResult];
+  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Publisher ID: %d", [discoveryResult2 publishID]);
   [v3 addObject:v13];
 
-  v14 = [(PKNANEndpoint *)self discoveryResult];
-  v15 = [v14 publisherAddress];
-  v16 = [NSString stringWithFormat:@"Publisher address: %@", v15];
+  discoveryResult3 = [(PKNANEndpoint *)self discoveryResult];
+  publisherAddress = [discoveryResult3 publisherAddress];
+  v16 = [NSString stringWithFormat:@"Publisher address: %@", publisherAddress];
   [v3 addObject:v16];
 
-  v17 = [(PKNANEndpoint *)self discoveryResult];
-  if ([v17 datapathSupported])
+  discoveryResult4 = [(PKNANEndpoint *)self discoveryResult];
+  if ([discoveryResult4 datapathSupported])
   {
     v18 = @"YES";
   }
@@ -65,8 +65,8 @@
   v19 = [NSString stringWithFormat:@"Datapath Supported: %@", v18];
   [v3 addObject:v19];
 
-  v20 = [(PKNANEndpoint *)self discoveryResult];
-  if ([v20 datapathSecurityRequired])
+  discoveryResult5 = [(PKNANEndpoint *)self discoveryResult];
+  if ([discoveryResult5 datapathSecurityRequired])
   {
     v21 = @"YES";
   }
@@ -79,8 +79,8 @@
   v22 = [NSString stringWithFormat:@"Datapath Security Required: %@", v21];
   [v3 addObject:v22];
 
-  v23 = [(PKNANEndpoint *)self discoveryResult];
-  if ([v23 furtherServiceDiscoveryRequired])
+  discoveryResult6 = [(PKNANEndpoint *)self discoveryResult];
+  if ([discoveryResult6 furtherServiceDiscoveryRequired])
   {
     v24 = @"YES";
   }
@@ -101,19 +101,19 @@
 - (NSString)identifier
 {
   memset(v18, 0, sizeof(v18));
-  v3 = [(PKNANEndpoint *)self discoveryResult];
-  v4 = [v3 publisherAddress];
-  v5 = [v4 data];
+  discoveryResult = [(PKNANEndpoint *)self discoveryResult];
+  publisherAddress = [discoveryResult publisherAddress];
+  data = [publisherAddress data];
 
-  if (v5)
+  if (data)
   {
-    v6 = [v5 bytes];
-    v7 = [v5 length];
+    bytes = [data bytes];
+    v7 = [data length];
     v8 = v18;
     if (v7 >= 1)
     {
       v9 = 0;
-      v10 = v6 + 1;
+      v10 = bytes + 1;
       do
       {
         v11 = v18 + v9;
@@ -130,7 +130,7 @@
         v9 += 3;
       }
 
-      while (v10++ < &v6[v7]);
+      while (v10++ < &bytes[v7]);
       v8 = v18 + v13;
     }
   }
@@ -140,34 +140,34 @@
     v8 = v18;
   }
 
-  v15 = [(PKNANEndpoint *)self discoveryResult];
-  v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"peer[%.*s]-pubid[%d]", v8 - v18, v18, [v15 publishID]);
+  discoveryResult2 = [(PKNANEndpoint *)self discoveryResult];
+  v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"peer[%.*s]-pubid[%d]", v8 - v18, v18, [discoveryResult2 publishID]);
 
   return v16;
 }
 
 - (NSString)name
 {
-  v2 = [(PKNANEndpoint *)self discoveryResult];
-  v3 = [v2 serviceSpecificInfo];
-  v4 = [v3 instanceName];
+  discoveryResult = [(PKNANEndpoint *)self discoveryResult];
+  serviceSpecificInfo = [discoveryResult serviceSpecificInfo];
+  instanceName = [serviceSpecificInfo instanceName];
 
-  return v4;
+  return instanceName;
 }
 
 - (NSDictionary)textInfo
 {
   v3 = objc_opt_new();
-  v4 = [(PKNANEndpoint *)self discoveryResult];
-  v5 = [v4 serviceSpecificInfo];
-  v6 = [v5 txtRecordData];
+  discoveryResult = [(PKNANEndpoint *)self discoveryResult];
+  serviceSpecificInfo = [discoveryResult serviceSpecificInfo];
+  txtRecordData = [serviceSpecificInfo txtRecordData];
 
-  if (v6)
+  if (txtRecordData)
   {
-    v7 = [(PKNANEndpoint *)self discoveryResult];
-    v8 = [v7 serviceSpecificInfo];
-    v9 = [v8 txtRecordData];
-    v10 = [NSNetService dictionaryFromTXTRecordData:v9];
+    discoveryResult2 = [(PKNANEndpoint *)self discoveryResult];
+    serviceSpecificInfo2 = [discoveryResult2 serviceSpecificInfo];
+    txtRecordData2 = [serviceSpecificInfo2 txtRecordData];
+    v10 = [NSNetService dictionaryFromTXTRecordData:txtRecordData2];
 
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;

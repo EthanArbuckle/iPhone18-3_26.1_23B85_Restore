@@ -1,49 +1,49 @@
 @interface _SFPBMapRegion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBMapRegion)initWithDictionary:(id)a3;
-- (_SFPBMapRegion)initWithFacade:(id)a3;
-- (_SFPBMapRegion)initWithJSON:(id)a3;
+- (_SFPBMapRegion)initWithDictionary:(id)dictionary;
+- (_SFPBMapRegion)initWithFacade:(id)facade;
+- (_SFPBMapRegion)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBMapRegion
 
-- (_SFPBMapRegion)initWithFacade:(id)a3
+- (_SFPBMapRegion)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBMapRegion *)self init];
   if (v5)
   {
-    if ([v4 hasSouthLat])
+    if ([facadeCopy hasSouthLat])
     {
-      [v4 southLat];
+      [facadeCopy southLat];
       [(_SFPBMapRegion *)v5 setSouthLat:?];
     }
 
-    if ([v4 hasWestLng])
+    if ([facadeCopy hasWestLng])
     {
-      [v4 westLng];
+      [facadeCopy westLng];
       [(_SFPBMapRegion *)v5 setWestLng:?];
     }
 
-    if ([v4 hasNorthLat])
+    if ([facadeCopy hasNorthLat])
     {
-      [v4 northLat];
+      [facadeCopy northLat];
       [(_SFPBMapRegion *)v5 setNorthLat:?];
     }
 
-    if ([v4 hasEastLng])
+    if ([facadeCopy hasEastLng])
     {
-      [v4 eastLng];
+      [facadeCopy eastLng];
       [(_SFPBMapRegion *)v5 setEastLng:?];
     }
 
-    if ([v4 hasAltitudeInMeters])
+    if ([facadeCopy hasAltitudeInMeters])
     {
-      [v4 altitudeInMeters];
+      [facadeCopy altitudeInMeters];
       [(_SFPBMapRegion *)v5 setAltitudeInMeters:?];
     }
 
@@ -53,15 +53,15 @@
   return v5;
 }
 
-- (_SFPBMapRegion)initWithDictionary:(id)a3
+- (_SFPBMapRegion)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _SFPBMapRegion;
   v5 = [(_SFPBMapRegion *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"southLat"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"southLat"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(_SFPBMapRegion *)v5 setSouthLat:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"westLng"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"westLng"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -77,7 +77,7 @@
       [(_SFPBMapRegion *)v5 setWestLng:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"northLat"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"northLat"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
       [(_SFPBMapRegion *)v5 setNorthLat:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"eastLng"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"eastLng"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,7 +93,7 @@
       [(_SFPBMapRegion *)v5 setEastLng:?];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"altitudeInMeters"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"altitudeInMeters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -107,30 +107,30 @@
   return v5;
 }
 
-- (_SFPBMapRegion)initWithJSON:(id)a3
+- (_SFPBMapRegion)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBMapRegion *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBMapRegion *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBMapRegion *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -143,13 +143,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_altitudeInMeters != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(_SFPBMapRegion *)self altitudeInMeters];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"altitudeInMeters"];
+    [dictionary setObject:v5 forKeyedSubscript:@"altitudeInMeters"];
   }
 
   if (self->_eastLng != 0.0)
@@ -157,7 +157,7 @@
     v6 = MEMORY[0x1E696AD98];
     [(_SFPBMapRegion *)self eastLng];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"eastLng"];
+    [dictionary setObject:v7 forKeyedSubscript:@"eastLng"];
   }
 
   if (self->_northLat != 0.0)
@@ -165,7 +165,7 @@
     v8 = MEMORY[0x1E696AD98];
     [(_SFPBMapRegion *)self northLat];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:@"northLat"];
+    [dictionary setObject:v9 forKeyedSubscript:@"northLat"];
   }
 
   if (self->_southLat != 0.0)
@@ -173,7 +173,7 @@
     v10 = MEMORY[0x1E696AD98];
     [(_SFPBMapRegion *)self southLat];
     v11 = [v10 numberWithDouble:?];
-    [v3 setObject:v11 forKeyedSubscript:@"southLat"];
+    [dictionary setObject:v11 forKeyedSubscript:@"southLat"];
   }
 
   if (self->_westLng != 0.0)
@@ -181,10 +181,10 @@
     v12 = MEMORY[0x1E696AD98];
     [(_SFPBMapRegion *)self westLng];
     v13 = [v12 numberWithDouble:?];
-    [v3 setObject:v13 forKeyedSubscript:@"westLng"];
+    [dictionary setObject:v13 forKeyedSubscript:@"westLng"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -361,27 +361,27 @@
   return v11 ^ v7 ^ v15 ^ v19 ^ v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_6;
   }
 
   southLat = self->_southLat;
-  [v4 southLat];
+  [equalCopy southLat];
   if (southLat != v6)
   {
     goto LABEL_6;
   }
 
   westLng = self->_westLng;
-  [v4 westLng];
-  if (westLng == v8 && (northLat = self->_northLat, [v4 northLat], northLat == v10) && (eastLng = self->_eastLng, objc_msgSend(v4, "eastLng"), eastLng == v12))
+  [equalCopy westLng];
+  if (westLng == v8 && (northLat = self->_northLat, [equalCopy northLat], northLat == v10) && (eastLng = self->_eastLng, objc_msgSend(equalCopy, "eastLng"), eastLng == v12))
   {
     altitudeInMeters = self->_altitudeInMeters;
-    [v4 altitudeInMeters];
+    [equalCopy altitudeInMeters];
     v13 = altitudeInMeters == v16;
   }
 
@@ -394,9 +394,9 @@ LABEL_6:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   [(_SFPBMapRegion *)self southLat];
   if (v4 != 0.0)
   {
@@ -422,11 +422,11 @@ LABEL_6:
   }
 
   [(_SFPBMapRegion *)self altitudeInMeters];
-  v8 = v10;
+  v8 = toCopy;
   if (v9 != 0.0)
   {
     PBDataWriterWriteDoubleField();
-    v8 = v10;
+    v8 = toCopy;
   }
 }
 

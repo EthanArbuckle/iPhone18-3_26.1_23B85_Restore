@@ -1,7 +1,7 @@
 @interface _UITextFieldClearButton
 - (_UITextFieldClearButtonImageProviding)imageProvider;
-- (id)_defaultImageForState:(unint64_t)a3 withConfiguration:(id)a4;
-- (void)setPointerInteractionEnabled:(BOOL)a3;
+- (id)_defaultImageForState:(unint64_t)state withConfiguration:(id)configuration;
+- (void)setPointerInteractionEnabled:(BOOL)enabled;
 @end
 
 @implementation _UITextFieldClearButton
@@ -13,41 +13,41 @@
   return WeakRetained;
 }
 
-- (id)_defaultImageForState:(unint64_t)a3 withConfiguration:(id)a4
+- (id)_defaultImageForState:(unint64_t)state withConfiguration:(id)configuration
 {
-  v6 = a4;
-  v7 = [(_UITextFieldClearButton *)self imageProvider];
+  configurationCopy = configuration;
+  imageProvider = [(_UITextFieldClearButton *)self imageProvider];
 
-  if (v7)
+  if (imageProvider)
   {
-    v8 = [(_UITextFieldClearButton *)self imageProvider];
-    v9 = [v8 defaultClearButtonImageForState:a3];
+    imageProvider2 = [(_UITextFieldClearButton *)self imageProvider];
+    v9 = [imageProvider2 defaultClearButtonImageForState:state];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = _UITextFieldClearButton;
-    v9 = [(UIButton *)&v11 _defaultImageForState:a3 withConfiguration:v6];
+    v9 = [(UIButton *)&v11 _defaultImageForState:state withConfiguration:configurationCopy];
   }
 
   return v9;
 }
 
-- (void)setPointerInteractionEnabled:(BOOL)a3
+- (void)setPointerInteractionEnabled:(BOOL)enabled
 {
   v7.receiver = self;
   v7.super_class = _UITextFieldClearButton;
   [(UIControl *)&v7 setPointerInteractionEnabled:?];
-  v5 = [(UIButton *)self pointerStyleProvider];
-  if (a3 && v5 == 0)
+  pointerStyleProvider = [(UIButton *)self pointerStyleProvider];
+  if (enabled && pointerStyleProvider == 0)
   {
     v6 = &__block_literal_global_432;
   }
 
   else
   {
-    v6 = v5;
+    v6 = pointerStyleProvider;
   }
 
   [(UIButton *)self setPointerStyleProvider:v6];

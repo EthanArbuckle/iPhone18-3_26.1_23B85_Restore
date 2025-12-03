@@ -1,9 +1,9 @@
 @interface MTRThreadBorderRouterManagementClusterDatasetResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRThreadBorderRouterManagementClusterDatasetResponseParams)init;
-- (MTRThreadBorderRouterManagementClusterDatasetResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTRThreadBorderRouterManagementClusterDatasetResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTRThreadBorderRouterManagementClusterDatasetResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTRThreadBorderRouterManagementClusterDatasetResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -16,19 +16,19 @@
   v2 = [(MTRThreadBorderRouterManagementClusterDatasetResponseParams *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     dataset = v2->_dataset;
-    v2->_dataset = v3;
+    v2->_dataset = data;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThreadBorderRouterManagementClusterDatasetResponseParams);
-  v5 = [(MTRThreadBorderRouterManagementClusterDatasetResponseParams *)self dataset];
-  [(MTRThreadBorderRouterManagementClusterDatasetResponseParams *)v4 setDataset:v5];
+  dataset = [(MTRThreadBorderRouterManagementClusterDatasetResponseParams *)self dataset];
+  [(MTRThreadBorderRouterManagementClusterDatasetResponseParams *)v4 setDataset:dataset];
 
   return v4;
 }
@@ -44,9 +44,9 @@
   return v7;
 }
 
-- (MTRThreadBorderRouterManagementClusterDatasetResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTRThreadBorderRouterManagementClusterDatasetResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v15.receiver = self;
   v15.super_class = MTRThreadBorderRouterManagementClusterDatasetResponseParams;
   v7 = [(MTRThreadBorderRouterManagementClusterDatasetResponseParams *)&v15 init];
@@ -56,7 +56,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:1106 commandID:2 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:1106 commandID:2 error:error];
   if (v14)
   {
     sub_2393C5AAC(v13);
@@ -77,7 +77,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -88,7 +88,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRThreadBorderRouterManagementClusterDatasetResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRThreadBorderRouterManagementClusterDatasetResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRThreadBorderRouterManagementClusterDatasetResponseParams;
@@ -96,7 +96,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRThreadBorderRouterManagementClusterDatasetResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRThreadBorderRouterManagementClusterDatasetResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -112,9 +112,9 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:*a3 length:*(a3 + 1)];
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:*struct length:*(struct + 1)];
   [(MTRThreadBorderRouterManagementClusterDatasetResponseParams *)self setDataset:v4];
 
   v5 = 0;

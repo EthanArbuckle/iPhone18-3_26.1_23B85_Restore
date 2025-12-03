@@ -1,11 +1,11 @@
 @interface SHDataCompression
-+ (int)supportedCompressionTypeFromFilePathExtension:(id)a3;
-+ (int)supportedCompressionTypeFromFileURL:(id)a3;
++ (int)supportedCompressionTypeFromFilePathExtension:(id)extension;
++ (int)supportedCompressionTypeFromFileURL:(id)l;
 - ($D199E5C2C3D9BBBBA45D19FC310E2D7B)stream;
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)performOperation:(int)a3 withData:(id)a4 algorithm:(int)a5 flags:(int)a6 error:(id *)a7;
-- (BOOL)processData:(id)a3 error:(id *)a4;
-- (SHDataCompression)initWithOperation:(int)a3 algorithm:(int)a4;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)performOperation:(int)operation withData:(id)data algorithm:(int)algorithm flags:(int)flags error:(id *)error;
+- (BOOL)processData:(id)data error:(id *)error;
+- (SHDataCompression)initWithOperation:(int)operation algorithm:(int)algorithm;
 - (void)dealloc;
 @end
 
@@ -19,13 +19,13 @@
   [(SHDataCompression *)&v3 dealloc];
 }
 
-- (SHDataCompression)initWithOperation:(int)a3 algorithm:(int)a4
+- (SHDataCompression)initWithOperation:(int)operation algorithm:(int)algorithm
 {
   v10.receiver = self;
   v10.super_class = SHDataCompression;
   v6 = [(SHDataCompression *)&v10 init];
   v7 = v6;
-  if (v6 && (v6->_operation = a3, v6->_algorithm = a4, ![(SHDataCompression *)v6 setup]))
+  if (v6 && (v6->_operation = operation, v6->_algorithm = algorithm, ![(SHDataCompression *)v6 setup]))
   {
     v8 = 0;
   }
@@ -38,46 +38,46 @@
   return v8;
 }
 
-- (BOOL)processData:(id)a3 error:(id *)a4
+- (BOOL)processData:(id)data error:(id *)error
 {
-  v6 = a3;
-  LOBYTE(a4) = [(SHDataCompression *)self performOperation:[(SHDataCompression *)self operation] withData:v6 algorithm:[(SHDataCompression *)self algorithm] flags:0 error:a4];
+  dataCopy = data;
+  LOBYTE(error) = [(SHDataCompression *)self performOperation:[(SHDataCompression *)self operation] withData:dataCopy algorithm:[(SHDataCompression *)self algorithm] flags:0 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
-  v5 = [(SHDataCompression *)self operation];
-  v6 = [MEMORY[0x277CBEA90] data];
+  operation = [(SHDataCompression *)self operation];
+  data = [MEMORY[0x277CBEA90] data];
   v7 = 1;
-  [(SHDataCompression *)self performOperation:v5 withData:v6 algorithm:[(SHDataCompression *)self algorithm] flags:1 error:0];
+  [(SHDataCompression *)self performOperation:operation withData:data algorithm:[(SHDataCompression *)self algorithm] flags:1 error:0];
 
   compression_stream_destroy(&self->_stream);
   *&self->_stream.dst_ptr = 0u;
   *&self->_stream.src_ptr = 0u;
   self->_stream.state = 0;
-  v8 = [(SHDataCompression *)self next];
-  if (v8)
+  next = [(SHDataCompression *)self next];
+  if (next)
   {
-    v9 = [(SHDataCompression *)self next];
-    v7 = [v9 closeWithError:a3];
+    next2 = [(SHDataCompression *)self next];
+    v7 = [next2 closeWithError:error];
   }
 
   return v7;
 }
 
-- (BOOL)performOperation:(int)a3 withData:(id)a4 algorithm:(int)a5 flags:(int)a6 error:(id *)a7
+- (BOOL)performOperation:(int)operation withData:(id)data algorithm:(int)algorithm flags:(int)flags error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  self->_stream.src_ptr = [v10 bytes];
-  self->_stream.src_size = [v10 length];
+  dataCopy = data;
+  self->_stream.src_ptr = [dataCopy bytes];
+  self->_stream.src_size = [dataCopy length];
   while (1)
   {
     self->_stream.dst_ptr = v29;
     self->_stream.dst_size = 2048;
-    v11 = compression_stream_process(&self->_stream, a6);
+    v11 = compression_stream_process(&self->_stream, flags);
     v12 = v11;
     if (v11 == COMPRESSION_STATUS_END)
     {
@@ -87,7 +87,7 @@
     if (v11)
     {
       v22 = [SHCoreError errorWithCode:301 underlyingError:0];
-      [SHCoreError annotateError:a7 withError:v22];
+      [SHCoreError annotateError:error withError:v22];
 
       compression_stream_destroy(&self->_stream);
 LABEL_15:
@@ -100,19 +100,19 @@ LABEL_15:
       break;
     }
 
-    v18 = [(SHDataCompression *)self next];
-    if (!v18)
+    next = [(SHDataCompression *)self next];
+    if (!next)
     {
       goto LABEL_12;
     }
 
-    v14 = v18;
-    v15 = [(SHDataCompression *)self next];
+    v14 = next;
+    next2 = [(SHDataCompression *)self next];
     v16 = MEMORY[0x277CBEA90];
     v17 = 2048;
 LABEL_11:
     v19 = [v16 dataWithBytes:v29 length:v17];
-    v20 = [v15 processData:v19 error:a7];
+    v20 = [next2 processData:v19 error:error];
 
     if ((v20 & 1) == 0)
     {
@@ -135,14 +135,14 @@ LABEL_6:
       goto LABEL_12;
     }
 
-    v13 = [(SHDataCompression *)self next];
-    if (!v13)
+    next3 = [(SHDataCompression *)self next];
+    if (!next3)
     {
       goto LABEL_12;
     }
 
-    v14 = v13;
-    v15 = [(SHDataCompression *)self next];
+    v14 = next3;
+    next2 = [(SHDataCompression *)self next];
     v16 = MEMORY[0x277CBEA90];
     v17 = self->_stream.dst_ptr - v29;
     goto LABEL_11;
@@ -153,16 +153,16 @@ LABEL_6:
     goto LABEL_20;
   }
 
-  v25 = [(SHDataCompression *)self next];
-  if (!v25)
+  next4 = [(SHDataCompression *)self next];
+  if (!next4)
   {
     goto LABEL_20;
   }
 
-  v26 = v25;
-  v27 = [(SHDataCompression *)self next];
+  v26 = next4;
+  next5 = [(SHDataCompression *)self next];
   v28 = [MEMORY[0x277CBEA90] dataWithBytes:v29 length:self->_stream.dst_ptr - v29];
-  v21 = [v27 processData:v28 error:a7];
+  v21 = [next5 processData:v28 error:error];
 
   if (v21)
   {
@@ -176,19 +176,19 @@ LABEL_16:
   return v21;
 }
 
-+ (int)supportedCompressionTypeFromFileURL:(id)a3
++ (int)supportedCompressionTypeFromFileURL:(id)l
 {
-  v4 = [a3 pathExtension];
-  LODWORD(a1) = [a1 supportedCompressionTypeFromFilePathExtension:v4];
+  pathExtension = [l pathExtension];
+  LODWORD(self) = [self supportedCompressionTypeFromFilePathExtension:pathExtension];
 
-  return a1;
+  return self;
 }
 
-+ (int)supportedCompressionTypeFromFilePathExtension:(id)a3
++ (int)supportedCompressionTypeFromFilePathExtension:(id)extension
 {
-  v3 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:a3];
-  v4 = [v3 preferredFilenameExtension];
-  v5 = [v4 isEqualToString:@"lzma"];
+  v3 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:extension];
+  preferredFilenameExtension = [v3 preferredFilenameExtension];
+  v5 = [preferredFilenameExtension isEqualToString:@"lzma"];
 
   if (v5)
   {

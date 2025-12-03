@@ -1,18 +1,18 @@
 @interface MenstrualCyclesAppDelegate
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification;
 @end
 
 @implementation MenstrualCyclesAppDelegate
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!test)
   {
     v8 = 0;
     v10 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -22,26 +22,26 @@
 
   v8 = _sSo25HKMCDisplayTypeIdentifiera24MenstrualCyclesAppPluginE2idSSvg_0();
   v10 = v9;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = sub_29E2C3214();
+    optionsCopy = sub_29E2C3214();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  v13 = sub_29DF00CCC(a3, v8, v10, v5);
+  applicationCopy = application;
+  selfCopy = self;
+  v13 = sub_29DF00CCC(application, v8, v10, optionsCopy);
 
   return v13 & 1;
 }
 
-- (void)userNotificationCenter:(id)a3 openSettingsForNotification:(id)a4
+- (void)userNotificationCenter:(id)center openSettingsForNotification:(id)notification
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_29DFC30B8(a4);
+  centerCopy = center;
+  notificationCopy = notification;
+  selfCopy = self;
+  sub_29DFC30B8(notification);
 }
 
 @end

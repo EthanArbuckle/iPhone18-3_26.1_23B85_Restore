@@ -1,64 +1,64 @@
 @interface HUNetworkConfigurationSettingsItemManager
 - (HFNetworkConfigurationGroupItem)sourceNetworkConfigurationGroupItem;
-- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)a3;
-- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)a3 networkConfigurationGroupItem:(id)a4;
-- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (id)_buildItemModulesForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)delegate;
+- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)delegate networkConfigurationGroupItem:(id)item;
+- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (id)_buildItemModulesForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUNetworkConfigurationSettingsItemManager
 
-- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)a3 networkConfigurationGroupItem:(id)a4
+- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)delegate networkConfigurationGroupItem:(id)item
 {
   v5.receiver = self;
   v5.super_class = HUNetworkConfigurationSettingsItemManager;
-  return [(HFItemManager *)&v5 initWithDelegate:a3 sourceItem:a4];
+  return [(HFItemManager *)&v5 initWithDelegate:delegate sourceItem:item];
 }
 
-- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)a3
+- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)delegate
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithDelegate_networkConfigurationGroupItem_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsItemManager.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationSettingsItemManager initWithDelegate:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsItemManager.m" lineNumber:30 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationSettingsItemManager initWithDelegate:]", v6}];
 
   return 0;
 }
 
-- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUNetworkConfigurationSettingsItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithDelegate_networkConfigurationGroupItem_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsItemManager.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationSettingsItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUNetworkConfigurationSettingsItemManager.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HUNetworkConfigurationSettingsItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (id)_buildItemModulesForHome:(id)a3
+- (id)_buildItemModulesForHome:(id)home
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = [HUNetworkConfigurationSettingsModule alloc];
-  v5 = [(HUNetworkConfigurationSettingsItemManager *)self sourceNetworkConfigurationGroupItem];
-  v6 = [v5 group];
-  v7 = [(HUNetworkConfigurationSettingsModule *)v4 initWithItemUpdater:self group:v6];
+  sourceNetworkConfigurationGroupItem = [(HUNetworkConfigurationSettingsItemManager *)self sourceNetworkConfigurationGroupItem];
+  group = [sourceNetworkConfigurationGroupItem group];
+  v7 = [(HUNetworkConfigurationSettingsModule *)v4 initWithItemUpdater:self group:group];
   [(HUNetworkConfigurationSettingsItemManager *)self setNetworkConfigurationSettingsModule:v7];
 
-  v8 = [(HUNetworkConfigurationSettingsItemManager *)self networkConfigurationSettingsModule];
-  v11[0] = v8;
+  networkConfigurationSettingsModule = [(HUNetworkConfigurationSettingsItemManager *)self networkConfigurationSettingsModule];
+  v11[0] = networkConfigurationSettingsModule;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
   return v9;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  v6 = [(HUNetworkConfigurationSettingsItemManager *)self networkConfigurationSettingsModule];
-  v7 = [v6 buildSectionsWithDisplayedItems:v4];
+  networkConfigurationSettingsModule = [(HUNetworkConfigurationSettingsItemManager *)self networkConfigurationSettingsModule];
+  v7 = [networkConfigurationSettingsModule buildSectionsWithDisplayedItems:itemsCopy];
 
   [v5 addObjectsFromArray:v7];
-  v8 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:v4];
+  v8 = [MEMORY[0x277D14778] filterSections:v5 toDisplayedItems:itemsCopy];
 
   return v8;
 }
@@ -66,12 +66,12 @@
 - (HFNetworkConfigurationGroupItem)sourceNetworkConfigurationGroupItem
 {
   v3 = objc_opt_class();
-  v4 = [(HFItemManager *)self sourceItem];
-  if (v4)
+  sourceItem = [(HFItemManager *)self sourceItem];
+  if (sourceItem)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = sourceItem;
     }
 
     else
@@ -79,15 +79,15 @@
       v5 = 0;
     }
 
-    v6 = v4;
+    v6 = sourceItem;
     if (v5)
     {
       goto LABEL_8;
     }
 
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v7 handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v8 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v3, objc_opt_class()}];
   }
 
   v6 = 0;

@@ -1,9 +1,9 @@
 @interface AXCKMentionSubelement
-- (AXCKMentionSubelement)initWithTextView:(id)a3;
+- (AXCKMentionSubelement)initWithTextView:(id)view;
 - (CGRect)accessibilityFrame;
 - (UITextView)accessibilityContainerTextView;
 - (_NSRange)range;
-- (id)_textRangeForTextView:(id)a3;
+- (id)_textRangeForTextView:(id)view;
 - (unint64_t)accessibilityTraits;
 @end
 
@@ -12,14 +12,14 @@
 - (unint64_t)accessibilityTraits
 {
   objc_opt_class();
-  v3 = [(AXCKMentionSubelement *)self accessibilityContainer];
+  accessibilityContainer = [(AXCKMentionSubelement *)self accessibilityContainer];
   v4 = __UIAccessibilityCastAsClass();
 
   if (v4)
   {
-    v5 = [v4 isSelectable];
+    isSelectable = [v4 isSelectable];
     v6 = MEMORY[0x29EDC7F70];
-    if ((v5 & 1) == 0 && ![v4 isEditable])
+    if ((isSelectable & 1) == 0 && ![v4 isEditable])
     {
       v6 = MEMORY[0x29EDC7FA0];
     }
@@ -35,26 +35,26 @@
   return v7;
 }
 
-- (AXCKMentionSubelement)initWithTextView:(id)a3
+- (AXCKMentionSubelement)initWithTextView:(id)view
 {
   v4.receiver = self;
   v4.super_class = AXCKMentionSubelement;
-  return [(AXCKMentionSubelement *)&v4 initWithAccessibilityContainer:a3];
+  return [(AXCKMentionSubelement *)&v4 initWithAccessibilityContainer:view];
 }
 
-- (id)_textRangeForTextView:(id)a3
+- (id)_textRangeForTextView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 beginningOfDocument];
-  v6 = [v4 positionFromPosition:v5 offset:{-[AXCKMentionSubelement range](self, "range")}];
-  v7 = [(AXCKMentionSubelement *)self range];
+  viewCopy = view;
+  beginningOfDocument = [viewCopy beginningOfDocument];
+  v6 = [viewCopy positionFromPosition:beginningOfDocument offset:{-[AXCKMentionSubelement range](self, "range")}];
+  range = [(AXCKMentionSubelement *)self range];
   [(AXCKMentionSubelement *)self range];
-  v9 = [v4 positionFromPosition:v5 offset:v8 + v7];
+  v9 = [viewCopy positionFromPosition:beginningOfDocument offset:v8 + range];
   v10 = v9;
   v11 = 0;
   if (v6 && v9)
   {
-    v11 = [v4 textRangeFromPosition:v6 toPosition:v9];
+    v11 = [viewCopy textRangeFromPosition:v6 toPosition:v9];
   }
 
   return v11;
@@ -62,10 +62,10 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(AXCKMentionSubelement *)self accessibilityContainer];
-  v4 = [(AXCKMentionSubelement *)self _textRangeForTextView:v3];
+  accessibilityContainer = [(AXCKMentionSubelement *)self accessibilityContainer];
+  v4 = [(AXCKMentionSubelement *)self _textRangeForTextView:accessibilityContainer];
   v5 = v4;
-  if (!v3)
+  if (!accessibilityContainer)
   {
     v6 = *MEMORY[0x29EDB90E0];
     v7 = *(MEMORY[0x29EDB90E0] + 8);
@@ -79,15 +79,15 @@
     goto LABEL_3;
   }
 
-  [(UIView *)v3 bounds];
+  [(UIView *)accessibilityContainer bounds];
   if (v5)
   {
 LABEL_3:
-    [(UIView *)v3 firstRectForRange:v5];
+    [(UIView *)accessibilityContainer firstRectForRange:v5];
   }
 
 LABEL_4:
-  v18 = UIAccessibilityConvertFrameToScreenCoordinates(*&v6, v3);
+  v18 = UIAccessibilityConvertFrameToScreenCoordinates(*&v6, accessibilityContainer);
   x = v18.origin.x;
   y = v18.origin.y;
   width = v18.size.width;

@@ -1,9 +1,9 @@
 @interface BRLTJJapaneseProcessor
-- (BOOL)isWordDescriptionLike:(id)a3;
+- (BOOL)isWordDescriptionLike:(id)like;
 - (BRLTJJapaneseProcessor)init;
-- (id)longVowelExpressedFor:(id)a3 partOfSpeech:(int64_t)a4;
-- (id)replaceKataWithHira:(id)a3;
-- (id)spacedYomiOfWordDescription:(id)a3;
+- (id)longVowelExpressedFor:(id)for partOfSpeech:(int64_t)speech;
+- (id)replaceKataWithHira:(id)hira;
+- (id)spacedYomiOfWordDescription:(id)description;
 @end
 
 @implementation BRLTJJapaneseProcessor
@@ -26,32 +26,32 @@
   return v2;
 }
 
-- (id)longVowelExpressedFor:(id)a3 partOfSpeech:(int64_t)a4
+- (id)longVowelExpressedFor:(id)for partOfSpeech:(int64_t)speech
 {
-  v5 = a3;
-  if (([v5 isEqual:@"うろうろ"] & 1) != 0 || objc_msgSend(v5, "isEqual:", @"こうり"))
+  forCopy = for;
+  if (([forCopy isEqual:@"うろうろ"] & 1) != 0 || objc_msgSend(forCopy, "isEqual:", @"こうり"))
   {
-    v6 = v5;
+    v6 = forCopy;
   }
 
   else
   {
     v6 = objc_opt_new();
-    if ([v5 length])
+    if ([forCopy length])
     {
       v8 = 0;
       v9 = 0;
       do
       {
         v10 = 1;
-        v11 = [v5 substringWithRange:{v9, 1}];
+        v11 = [forCopy substringWithRange:{v9, 1}];
         v12 = v11;
         if (v8)
         {
           v10 = [(__CFString *)v11 isEqual:@"う"]^ 1;
         }
 
-        v13 = a4 == 1 && v9 == [v5 length] - 1;
+        v13 = speech == 1 && v9 == [forCopy length] - 1;
         if ((v10 | v13))
         {
           v14 = v12;
@@ -76,18 +76,18 @@
         ++v9;
       }
 
-      while (v9 < [v5 length]);
+      while (v9 < [forCopy length]);
     }
   }
 
   return v6;
 }
 
-- (BOOL)isWordDescriptionLike:(id)a3
+- (BOOL)isWordDescriptionLike:(id)like
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_kataToHira && [v4 length] >= 2)
+  likeCopy = like;
+  v5 = likeCopy;
+  if (self->_kataToHira && [likeCopy length] >= 2)
   {
     if ([v5 length])
     {
@@ -119,10 +119,10 @@ LABEL_3:
   return v6;
 }
 
-- (id)replaceKataWithHira:(id)a3
+- (id)replaceKataWithHira:(id)hira
 {
-  v4 = a3;
-  v5 = v4;
+  hiraCopy = hira;
+  v5 = hiraCopy;
   if (self->_kataToHira)
   {
     v6 = objc_opt_new();
@@ -154,15 +154,15 @@ LABEL_3:
 
   else
   {
-    v6 = v4;
+    v6 = hiraCopy;
   }
 
   return v6;
 }
 
-- (id)spacedYomiOfWordDescription:(id)a3
+- (id)spacedYomiOfWordDescription:(id)description
 {
-  v3 = [(BRLTJJapaneseProcessor *)self replaceKataWithHira:a3];
+  v3 = [(BRLTJJapaneseProcessor *)self replaceKataWithHira:description];
   v4 = *MEMORY[0x277CBECE8];
   v5 = CFLocaleCreate(*MEMORY[0x277CBECE8], @"ja");
   v51.location = 0;

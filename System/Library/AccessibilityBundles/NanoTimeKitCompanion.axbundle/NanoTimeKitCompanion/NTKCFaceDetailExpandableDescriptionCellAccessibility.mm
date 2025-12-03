@@ -1,5 +1,5 @@
 @interface NTKCFaceDetailExpandableDescriptionCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (NTKCFaceDetailExpandableDescriptionCellAccessibility)init;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
@@ -7,13 +7,13 @@
 
 @implementation NTKCFaceDetailExpandableDescriptionCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKCFaceDetailExpandableDescriptionCell" isKindOfClass:@"NTKCCFaceDetailDescriptionCell"];
-  [v3 validateClass:@"NTKCFaceDetailDescriptionCell" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCFaceDetailExpandableDescriptionCell" hasInstanceMethod:@"init" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCFaceDetailExpandableDescriptionCell" hasInstanceMethod:@"setExpanded:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKCFaceDetailExpandableDescriptionCell" isKindOfClass:@"NTKCCFaceDetailDescriptionCell"];
+  [validationsCopy validateClass:@"NTKCFaceDetailDescriptionCell" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCFaceDetailExpandableDescriptionCell" hasInstanceMethod:@"init" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCFaceDetailExpandableDescriptionCell" hasInstanceMethod:@"setExpanded:" withFullSignature:{"v", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -36,17 +36,17 @@
 
   if ([v4 length])
   {
-    v5 = v4;
+    accessibilityLabel = v4;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NTKCFaceDetailExpandableDescriptionCellAccessibility;
-    v5 = [(NTKCFaceDetailExpandableDescriptionCellAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel = [(NTKCFaceDetailExpandableDescriptionCellAccessibility *)&v8 accessibilityLabel];
   }
 
-  v6 = v5;
+  v6 = accessibilityLabel;
 
   return v6;
 }

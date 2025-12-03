@@ -2,20 +2,20 @@
 - (BOOL)running;
 - (BOOL)runsForever;
 - (BOOL)timed;
-- (VKCompoundAnimation)initWithAnimations:(id)a3;
+- (VKCompoundAnimation)initWithAnimations:(id)animations;
 - (double)duration;
-- (void)onTimerFired:(double)a3;
+- (void)onTimerFired:(double)fired;
 - (void)pause;
 - (void)resume;
-- (void)setDuration:(double)a3;
-- (void)setRunsForever:(BOOL)a3;
-- (void)startWithRunner:(id)a3;
-- (void)stopAnimation:(BOOL)a3;
+- (void)setDuration:(double)duration;
+- (void)setRunsForever:(BOOL)forever;
+- (void)startWithRunner:(id)runner;
+- (void)stopAnimation:(BOOL)animation;
 @end
 
 @implementation VKCompoundAnimation
 
-- (void)onTimerFired:(double)a3
+- (void)onTimerFired:(double)fired
 {
   v19 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
@@ -44,7 +44,7 @@
         v11 = *(v10 + 40);
         if (v11 == 1)
         {
-          [*(*(&v13 + 1) + 8 * i) onTimerFired:{a3, v13}];
+          [*(*(&v13 + 1) + 8 * i) onTimerFired:{fired, v13}];
           v11 = *(v10 + 40);
         }
 
@@ -69,9 +69,9 @@
   }
 }
 
-- (void)stopAnimation:(BOOL)a3
+- (void)stopAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   v16 = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = VKCompoundAnimation;
@@ -98,7 +98,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) stopAnimation:{v3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) stopAnimation:{animationCopy, v10}];
       }
 
       while (v7 != v9);
@@ -109,9 +109,9 @@
   }
 }
 
-- (VKCompoundAnimation)initWithAnimations:(id)a3
+- (VKCompoundAnimation)initWithAnimations:(id)animations
 {
-  v4 = a3;
+  animationsCopy = animations;
   v16.receiver = self;
   v16.super_class = VKCompoundAnimation;
   v5 = [(VKCompoundAnimation *)&v16 init];
@@ -122,14 +122,14 @@
     v5->_animations = v6;
 
     v15 = &v17;
-    v8 = v4;
+    v8 = animationsCopy;
     if (v8)
     {
       v9 = v8;
       do
       {
-        v10 = [(VKCompoundAnimation *)v5 animations];
-        [v10 addObject:v9];
+        animations = [(VKCompoundAnimation *)v5 animations];
+        [animations addObject:v9];
 
         v11 = v15++;
         v12 = *v11;
@@ -218,12 +218,12 @@
   }
 }
 
-- (void)startWithRunner:(id)a3
+- (void)startWithRunner:(id)runner
 {
   v14 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = VKCompoundAnimation;
-  [(VKAnimation *)&v12 startWithRunner:a3];
+  [(VKAnimation *)&v12 startWithRunner:runner];
   v10 = 0u;
   v11 = 0u;
   v8 = 0u;
@@ -298,7 +298,7 @@ LABEL_11:
   return v6;
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
@@ -320,7 +320,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v8 + 1) + 8 * v7++) setDuration:{a3, v8}];
+        [*(*(&v8 + 1) + 8 * v7++) setDuration:{duration, v8}];
       }
 
       while (v5 != v7);
@@ -371,9 +371,9 @@ LABEL_11:
   return v5;
 }
 
-- (void)setRunsForever:(BOOL)a3
+- (void)setRunsForever:(BOOL)forever
 {
-  v3 = a3;
+  foreverCopy = forever;
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
@@ -394,7 +394,7 @@ LABEL_11:
           objc_enumerationMutation(v4);
         }
 
-        [*(*(&v8 + 1) + 8 * v7++) setRunsForever:{v3, v8}];
+        [*(*(&v8 + 1) + 8 * v7++) setRunsForever:{foreverCopy, v8}];
       }
 
       while (v5 != v7);

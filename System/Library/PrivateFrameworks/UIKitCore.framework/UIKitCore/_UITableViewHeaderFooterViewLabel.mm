@@ -1,8 +1,8 @@
 @interface _UITableViewHeaderFooterViewLabel
 - (CGSize)patternPhase;
 - (_UITableViewHeaderFooterViewLabel)init;
-- (void)drawRect:(CGRect)a3;
-- (void)setPatternPhase:(CGSize)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setPatternPhase:(CGSize)phase;
 @end
 
 @implementation _UITableViewHeaderFooterViewLabel
@@ -29,21 +29,21 @@
   return result;
 }
 
-- (void)setPatternPhase:(CGSize)a3
+- (void)setPatternPhase:(CGSize)phase
 {
-  if (self->_patternPhase.width != a3.width || self->_patternPhase.height != a3.height)
+  if (self->_patternPhase.width != phase.width || self->_patternPhase.height != phase.height)
   {
-    self->_patternPhase = a3;
+    self->_patternPhase = phase;
     [(UILabel *)self setNeedsDisplay];
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (self->_patternPhase.width != *MEMORY[0x1E695F060] || self->_patternPhase.height != *(MEMORY[0x1E695F060] + 8))
   {
     ContextStack = GetContextStack(0);
@@ -59,8 +59,8 @@
 
     [(_UITableViewHeaderFooterViewLabel *)self patternPhase];
     CGContextSetPatternPhase(v10, v13);
-    v11 = [(UIView *)self backgroundColor];
-    [v11 set];
+    backgroundColor = [(UIView *)self backgroundColor];
+    [backgroundColor set];
 
     UIRectFillUsingOperation(1, x, y, width, height);
   }

@@ -1,8 +1,8 @@
 @interface VSInstrumentMetrics
 + (id)descriptionFormatter;
-+ (id)stringOfSourceOfTTS:(int64_t)a3;
-+ (id)vs_metricsFromSTSMetrics:(id)a3;
-- (VSInstrumentMetrics)initWithCoder:(id)a3;
++ (id)stringOfSourceOfTTS:(int64_t)s;
++ (id)vs_metricsFromSTSMetrics:(id)metrics;
+- (VSInstrumentMetrics)initWithCoder:(id)coder;
 - (double)_clockFactor;
 - (double)audioQueueLatency;
 - (double)eagerRequestTimeGap;
@@ -15,7 +15,7 @@
 - (id)description;
 - (id)dictionaryMetrics;
 - (int64_t)speechEstimatedOutputBeginTimestamp;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSInstrumentMetrics
@@ -265,110 +265,110 @@ double __35__VSInstrumentMetrics__clockFactor__block_invoke()
   return result;
 }
 
-- (VSInstrumentMetrics)initWithCoder:(id)a3
+- (VSInstrumentMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = VSInstrumentMetrics;
   v5 = [(VSInstrumentMetrics *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_utterance"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_utterance"];
     utterance = v5->_utterance;
     v5->_utterance = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_voiceAssetKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_voiceAssetKey"];
     voiceAssetKey = v5->_voiceAssetKey;
     v5->_voiceAssetKey = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_voiceResourceAssetKey"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_voiceResourceAssetKey"];
     voiceResourceAssetKey = v5->_voiceResourceAssetKey;
     v5->_voiceResourceAssetKey = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_audioOutputRoute"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_audioOutputRoute"];
     audioOutputRoute = v5->_audioOutputRoute;
     v5->_audioOutputRoute = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_clientBundleIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_clientBundleIdentifier"];
     clientBundleIdentifier = v5->_clientBundleIdentifier;
     v5->_clientBundleIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_experimentIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_experimentIdentifier"];
     experimentIdentifier = v5->_experimentIdentifier;
     v5->_experimentIdentifier = v16;
 
-    v5->_promptCount = [v4 decodeIntegerForKey:@"_promptCount"];
-    v5->_sourceOfTTS = [v4 decodeIntegerForKey:@"_sourceOfTTS"];
-    v5->_errorCode = [v4 decodeIntegerForKey:@"_errorCode"];
-    v5->_requestCreatedTimestamp = [v4 decodeInt64ForKey:@"_requestCreatedTimestamp"];
-    v5->_synthesisBeginTimestamp = [v4 decodeInt64ForKey:@"_synthesisBeginTimestamp"];
-    v5->_synthesisEndTimestamp = [v4 decodeInt64ForKey:@"_synthesisEndTimestamp"];
-    v5->_speechBeginTimestamp = [v4 decodeInt64ForKey:@"_speechBeginTimestamp"];
-    v5->_speechEndTimestamp = [v4 decodeInt64ForKey:@"_speechEndTimestamp"];
-    v5->_audioStartTimestampDiffs = [v4 decodeInt64ForKey:@"_audioStartTimestampDiffs"];
-    v5->_serverFirstPacketTimestamp = [v4 decodeInt64ForKey:@"_serverFirstPacketTimestamp"];
-    [v4 decodeDoubleForKey:@"_audioDuration"];
+    v5->_promptCount = [coderCopy decodeIntegerForKey:@"_promptCount"];
+    v5->_sourceOfTTS = [coderCopy decodeIntegerForKey:@"_sourceOfTTS"];
+    v5->_errorCode = [coderCopy decodeIntegerForKey:@"_errorCode"];
+    v5->_requestCreatedTimestamp = [coderCopy decodeInt64ForKey:@"_requestCreatedTimestamp"];
+    v5->_synthesisBeginTimestamp = [coderCopy decodeInt64ForKey:@"_synthesisBeginTimestamp"];
+    v5->_synthesisEndTimestamp = [coderCopy decodeInt64ForKey:@"_synthesisEndTimestamp"];
+    v5->_speechBeginTimestamp = [coderCopy decodeInt64ForKey:@"_speechBeginTimestamp"];
+    v5->_speechEndTimestamp = [coderCopy decodeInt64ForKey:@"_speechEndTimestamp"];
+    v5->_audioStartTimestampDiffs = [coderCopy decodeInt64ForKey:@"_audioStartTimestampDiffs"];
+    v5->_serverFirstPacketTimestamp = [coderCopy decodeInt64ForKey:@"_serverFirstPacketTimestamp"];
+    [coderCopy decodeDoubleForKey:@"_audioDuration"];
     v5->_audioDuration = v18;
-    [v4 decodeDoubleForKey:@"_serverStreamedAudioDuration"];
+    [coderCopy decodeDoubleForKey:@"_serverStreamedAudioDuration"];
     v5->_serverStreamedAudioDuration = v19;
-    v5->_isWarmStart = [v4 decodeBoolForKey:@"_isWarmStart"];
-    v5->_isCacheHitFromDisk = [v4 decodeBoolForKey:@"_isCacheHitFromDisk"];
-    v5->_isCacheHitFromMemory = [v4 decodeBoolForKey:@"_isCacheHitFromMemory"];
-    v5->_isSpeechRequest = [v4 decodeBoolForKey:@"_isSpeechRequest"];
-    v5->_canUseServerTTS = [v4 decodeBoolForKey:@"_canUseServerTTS"];
-    v5->_isServerTTS = [v4 decodeBoolForKey:@"_isServerTTS"];
-    v5->_isServerStreamTTS = [v4 decodeBoolForKey:@"_isServerStreamTTS"];
-    v5->_isServerTimeout = [v4 decodeBoolForKey:@"_isServerTimeout"];
-    v5->_isServerTTSRacing = [v4 decodeBoolForKey:@"_isServerTTSRacing"];
-    v5->_neuralAlignmentStall = [v4 decodeBoolForKey:@"_neuralAlignmentStall"];
-    v5->_neuralAudioClick = [v4 decodeBoolForKey:@"_neuralAudioClick"];
-    v5->_neuralFallback = [v4 decodeBoolForKey:@"_neuralFallback"];
+    v5->_isWarmStart = [coderCopy decodeBoolForKey:@"_isWarmStart"];
+    v5->_isCacheHitFromDisk = [coderCopy decodeBoolForKey:@"_isCacheHitFromDisk"];
+    v5->_isCacheHitFromMemory = [coderCopy decodeBoolForKey:@"_isCacheHitFromMemory"];
+    v5->_isSpeechRequest = [coderCopy decodeBoolForKey:@"_isSpeechRequest"];
+    v5->_canUseServerTTS = [coderCopy decodeBoolForKey:@"_canUseServerTTS"];
+    v5->_isServerTTS = [coderCopy decodeBoolForKey:@"_isServerTTS"];
+    v5->_isServerStreamTTS = [coderCopy decodeBoolForKey:@"_isServerStreamTTS"];
+    v5->_isServerTimeout = [coderCopy decodeBoolForKey:@"_isServerTimeout"];
+    v5->_isServerTTSRacing = [coderCopy decodeBoolForKey:@"_isServerTTSRacing"];
+    v5->_neuralAlignmentStall = [coderCopy decodeBoolForKey:@"_neuralAlignmentStall"];
+    v5->_neuralAudioClick = [coderCopy decodeBoolForKey:@"_neuralAudioClick"];
+    v5->_neuralFallback = [coderCopy decodeBoolForKey:@"_neuralFallback"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   utterance = self->_utterance;
-  v5 = a3;
-  [v5 encodeObject:utterance forKey:@"_utterance"];
-  [v5 encodeObject:self->_voiceAssetKey forKey:@"_voiceAssetKey"];
-  [v5 encodeObject:self->_voiceResourceAssetKey forKey:@"_voiceResourceAssetKey"];
-  [v5 encodeObject:self->_audioOutputRoute forKey:@"_audioOutputRoute"];
-  [v5 encodeObject:self->_clientBundleIdentifier forKey:@"_clientBundleIdentifier"];
-  [v5 encodeObject:self->_experimentIdentifier forKey:@"_experimentIdentifier"];
-  [v5 encodeInteger:self->_promptCount forKey:@"_promptCount"];
-  [v5 encodeInteger:self->_sourceOfTTS forKey:@"_sourceOfTTS"];
-  [v5 encodeInteger:self->_errorCode forKey:@"_errorCode"];
-  [v5 encodeInt64:self->_requestCreatedTimestamp forKey:@"_requestCreatedTimestamp"];
-  [v5 encodeInt64:self->_synthesisBeginTimestamp forKey:@"_synthesisBeginTimestamp"];
-  [v5 encodeInt64:self->_synthesisEndTimestamp forKey:@"_synthesisEndTimestamp"];
-  [v5 encodeInt64:self->_speechBeginTimestamp forKey:@"_speechBeginTimestamp"];
-  [v5 encodeInt64:self->_speechEndTimestamp forKey:@"_speechEndTimestamp"];
-  [v5 encodeInt64:self->_audioStartTimestampDiffs forKey:@"_audioStartTimestampDiffs"];
-  [v5 encodeInt64:self->_serverFirstPacketTimestamp forKey:@"_serverFirstPacketTimestamp"];
-  [v5 encodeDouble:@"_audioDuration" forKey:self->_audioDuration];
-  [v5 encodeDouble:@"_serverStreamedAudioDuration" forKey:self->_serverStreamedAudioDuration];
-  [v5 encodeBool:self->_isWarmStart forKey:@"_isWarmStart"];
-  [v5 encodeBool:self->_isCacheHitFromDisk forKey:@"_isCacheHitFromDisk"];
-  [v5 encodeBool:self->_isCacheHitFromMemory forKey:@"_isCacheHitFromMemory"];
-  [v5 encodeBool:self->_isSpeechRequest forKey:@"_isSpeechRequest"];
-  [v5 encodeBool:self->_canUseServerTTS forKey:@"_canUseServerTTS"];
-  [v5 encodeBool:self->_isServerTTS forKey:@"_isServerTTS"];
-  [v5 encodeBool:self->_isServerStreamTTS forKey:@"_isServerStreamTTS"];
-  [v5 encodeBool:self->_isServerTimeout forKey:@"_isServerTimeout"];
-  [v5 encodeBool:self->_isServerTTSRacing forKey:@"_isServerTTSRacing"];
-  [v5 encodeBool:self->_neuralAlignmentStall forKey:@"_neuralAlignmentStall"];
-  [v5 encodeBool:self->_neuralAudioClick forKey:@"_neuralAudioClick"];
-  [v5 encodeBool:self->_neuralFallback forKey:@"_neuralFallback"];
+  coderCopy = coder;
+  [coderCopy encodeObject:utterance forKey:@"_utterance"];
+  [coderCopy encodeObject:self->_voiceAssetKey forKey:@"_voiceAssetKey"];
+  [coderCopy encodeObject:self->_voiceResourceAssetKey forKey:@"_voiceResourceAssetKey"];
+  [coderCopy encodeObject:self->_audioOutputRoute forKey:@"_audioOutputRoute"];
+  [coderCopy encodeObject:self->_clientBundleIdentifier forKey:@"_clientBundleIdentifier"];
+  [coderCopy encodeObject:self->_experimentIdentifier forKey:@"_experimentIdentifier"];
+  [coderCopy encodeInteger:self->_promptCount forKey:@"_promptCount"];
+  [coderCopy encodeInteger:self->_sourceOfTTS forKey:@"_sourceOfTTS"];
+  [coderCopy encodeInteger:self->_errorCode forKey:@"_errorCode"];
+  [coderCopy encodeInt64:self->_requestCreatedTimestamp forKey:@"_requestCreatedTimestamp"];
+  [coderCopy encodeInt64:self->_synthesisBeginTimestamp forKey:@"_synthesisBeginTimestamp"];
+  [coderCopy encodeInt64:self->_synthesisEndTimestamp forKey:@"_synthesisEndTimestamp"];
+  [coderCopy encodeInt64:self->_speechBeginTimestamp forKey:@"_speechBeginTimestamp"];
+  [coderCopy encodeInt64:self->_speechEndTimestamp forKey:@"_speechEndTimestamp"];
+  [coderCopy encodeInt64:self->_audioStartTimestampDiffs forKey:@"_audioStartTimestampDiffs"];
+  [coderCopy encodeInt64:self->_serverFirstPacketTimestamp forKey:@"_serverFirstPacketTimestamp"];
+  [coderCopy encodeDouble:@"_audioDuration" forKey:self->_audioDuration];
+  [coderCopy encodeDouble:@"_serverStreamedAudioDuration" forKey:self->_serverStreamedAudioDuration];
+  [coderCopy encodeBool:self->_isWarmStart forKey:@"_isWarmStart"];
+  [coderCopy encodeBool:self->_isCacheHitFromDisk forKey:@"_isCacheHitFromDisk"];
+  [coderCopy encodeBool:self->_isCacheHitFromMemory forKey:@"_isCacheHitFromMemory"];
+  [coderCopy encodeBool:self->_isSpeechRequest forKey:@"_isSpeechRequest"];
+  [coderCopy encodeBool:self->_canUseServerTTS forKey:@"_canUseServerTTS"];
+  [coderCopy encodeBool:self->_isServerTTS forKey:@"_isServerTTS"];
+  [coderCopy encodeBool:self->_isServerStreamTTS forKey:@"_isServerStreamTTS"];
+  [coderCopy encodeBool:self->_isServerTimeout forKey:@"_isServerTimeout"];
+  [coderCopy encodeBool:self->_isServerTTSRacing forKey:@"_isServerTTSRacing"];
+  [coderCopy encodeBool:self->_neuralAlignmentStall forKey:@"_neuralAlignmentStall"];
+  [coderCopy encodeBool:self->_neuralAudioClick forKey:@"_neuralAudioClick"];
+  [coderCopy encodeBool:self->_neuralFallback forKey:@"_neuralFallback"];
 }
 
 - (id)description
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCAB68] stringWithString:@"{\n"];
-  v4 = [(VSInstrumentMetrics *)self dictionaryMetrics];
+  dictionaryMetrics = [(VSInstrumentMetrics *)self dictionaryMetrics];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -388,7 +388,7 @@ double __35__VSInstrumentMetrics__clockFactor__block_invoke()
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v4 objectForKeyedSubscript:v9];
+        v10 = [dictionaryMetrics objectForKeyedSubscript:v9];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -416,16 +416,16 @@ double __35__VSInstrumentMetrics__clockFactor__block_invoke()
   return v3;
 }
 
-+ (id)stringOfSourceOfTTS:(int64_t)a3
++ (id)stringOfSourceOfTTS:(int64_t)s
 {
-  if (a3 > 8)
+  if (s > 8)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279E4EC20[a3];
+    return off_279E4EC20[s];
   }
 }
 
@@ -453,61 +453,61 @@ uint64_t __43__VSInstrumentMetrics_descriptionFormatter__block_invoke()
   return [v2 setMaximumFractionDigits:4];
 }
 
-+ (id)vs_metricsFromSTSMetrics:(id)a3
++ (id)vs_metricsFromSTSMetrics:(id)metrics
 {
-  v3 = a3;
+  metricsCopy = metrics;
   v4 = objc_alloc_init(VSInstrumentMetrics);
-  v5 = [v3 utterance];
-  [(VSInstrumentMetrics *)v4 setUtterance:v5];
+  utterance = [metricsCopy utterance];
+  [(VSInstrumentMetrics *)v4 setUtterance:utterance];
 
-  v6 = [v3 voiceAssetKey];
-  [(VSInstrumentMetrics *)v4 setVoiceAssetKey:v6];
+  voiceAssetKey = [metricsCopy voiceAssetKey];
+  [(VSInstrumentMetrics *)v4 setVoiceAssetKey:voiceAssetKey];
 
-  v7 = [v3 voiceResourceAssetKey];
-  [(VSInstrumentMetrics *)v4 setVoiceResourceAssetKey:v7];
+  voiceResourceAssetKey = [metricsCopy voiceResourceAssetKey];
+  [(VSInstrumentMetrics *)v4 setVoiceResourceAssetKey:voiceResourceAssetKey];
 
-  v8 = [v3 audioOutputRoute];
-  [(VSInstrumentMetrics *)v4 setAudioOutputRoute:v8];
+  audioOutputRoute = [metricsCopy audioOutputRoute];
+  [(VSInstrumentMetrics *)v4 setAudioOutputRoute:audioOutputRoute];
 
-  v9 = [v3 clientBundleIdentifier];
-  [(VSInstrumentMetrics *)v4 setClientBundleIdentifier:v9];
+  clientBundleIdentifier = [metricsCopy clientBundleIdentifier];
+  [(VSInstrumentMetrics *)v4 setClientBundleIdentifier:clientBundleIdentifier];
 
-  v10 = [v3 experimentIdentifier];
-  [(VSInstrumentMetrics *)v4 setExperimentIdentifier:v10];
+  experimentIdentifier = [metricsCopy experimentIdentifier];
+  [(VSInstrumentMetrics *)v4 setExperimentIdentifier:experimentIdentifier];
 
-  -[VSInstrumentMetrics setRequestCreatedTimestamp:](v4, "setRequestCreatedTimestamp:", [v3 requestCreatedTime]);
-  [v3 eagerRequestGapInterval];
+  -[VSInstrumentMetrics setRequestCreatedTimestamp:](v4, "setRequestCreatedTimestamp:", [metricsCopy requestCreatedTime]);
+  [metricsCopy eagerRequestGapInterval];
   v12 = v11;
   [(VSInstrumentMetrics *)v4 _clockFactor];
   [(VSInstrumentMetrics *)v4 setEagerRequestCreatedTimestampDiffs:(v12 / v13)];
-  -[VSInstrumentMetrics setSynthesisBeginTimestamp:](v4, "setSynthesisBeginTimestamp:", [v3 synthesisBeginTime]);
-  -[VSInstrumentMetrics setSynthesisEndTimestamp:](v4, "setSynthesisEndTimestamp:", [v3 synthesisEndTime]);
-  -[VSInstrumentMetrics setSpeechBeginTimestamp:](v4, "setSpeechBeginTimestamp:", [v3 speechBeginTime]);
-  -[VSInstrumentMetrics setSpeechEndTimestamp:](v4, "setSpeechEndTimestamp:", [v3 speechEndTime]);
-  [v3 audioStartLatency];
+  -[VSInstrumentMetrics setSynthesisBeginTimestamp:](v4, "setSynthesisBeginTimestamp:", [metricsCopy synthesisBeginTime]);
+  -[VSInstrumentMetrics setSynthesisEndTimestamp:](v4, "setSynthesisEndTimestamp:", [metricsCopy synthesisEndTime]);
+  -[VSInstrumentMetrics setSpeechBeginTimestamp:](v4, "setSpeechBeginTimestamp:", [metricsCopy speechBeginTime]);
+  -[VSInstrumentMetrics setSpeechEndTimestamp:](v4, "setSpeechEndTimestamp:", [metricsCopy speechEndTime]);
+  [metricsCopy audioStartLatency];
   v15 = v14;
   [(VSInstrumentMetrics *)v4 _clockFactor];
   [(VSInstrumentMetrics *)v4 setAudioStartTimestampDiffs:(v15 / v16)];
-  -[VSInstrumentMetrics setServerFirstPacketTimestamp:](v4, "setServerFirstPacketTimestamp:", [v3 serverFirstPacketTime]);
-  -[VSInstrumentMetrics setServerLastPacketTimestamp:](v4, "setServerLastPacketTimestamp:", [v3 serverLastPacketTime]);
-  [v3 serverStreamedAudioDuration];
+  -[VSInstrumentMetrics setServerFirstPacketTimestamp:](v4, "setServerFirstPacketTimestamp:", [metricsCopy serverFirstPacketTime]);
+  -[VSInstrumentMetrics setServerLastPacketTimestamp:](v4, "setServerLastPacketTimestamp:", [metricsCopy serverLastPacketTime]);
+  [metricsCopy serverStreamedAudioDuration];
   [(VSInstrumentMetrics *)v4 setServerStreamedAudioDuration:?];
-  [v3 audioDuration];
+  [metricsCopy audioDuration];
   [(VSInstrumentMetrics *)v4 setAudioDuration:?];
-  -[VSInstrumentMetrics setIsWarmStart:](v4, "setIsWarmStart:", [v3 isWarmStart]);
-  v17 = [v3 sourceOfTTS] == 5 || objc_msgSend(v3, "sourceOfTTS") == 3;
+  -[VSInstrumentMetrics setIsWarmStart:](v4, "setIsWarmStart:", [metricsCopy isWarmStart]);
+  v17 = [metricsCopy sourceOfTTS] == 5 || objc_msgSend(metricsCopy, "sourceOfTTS") == 3;
   [(VSInstrumentMetrics *)v4 setIsServerTTS:v17];
-  -[VSInstrumentMetrics setIsServerStreamTTS:](v4, "setIsServerStreamTTS:", [v3 sourceOfTTS] == 5);
-  -[VSInstrumentMetrics setIsServerTimeout:](v4, "setIsServerTimeout:", [v3 errorCode] == 602);
-  -[VSInstrumentMetrics setIsServerTTSRacing:](v4, "setIsServerTTSRacing:", [v3 isServerTTSRacing]);
-  -[VSInstrumentMetrics setCanUseServerTTS:](v4, "setCanUseServerTTS:", [v3 privacySensitive] ^ 1);
-  -[VSInstrumentMetrics setNeuralAlignmentStall:](v4, "setNeuralAlignmentStall:", [v3 neuralAlignmentStall]);
-  -[VSInstrumentMetrics setNeuralAudioClick:](v4, "setNeuralAudioClick:", [v3 neuralAudioClick]);
-  -[VSInstrumentMetrics setNeuralFallback:](v4, "setNeuralFallback:", [v3 neuralFallback]);
-  -[VSInstrumentMetrics setPromptCount:](v4, "setPromptCount:", [v3 promptCount]);
-  -[VSInstrumentMetrics setErrorCode:](v4, "setErrorCode:", [v3 errorCode]);
-  -[VSInstrumentMetrics setSourceOfTTS:](v4, "setSourceOfTTS:", [v3 sourceOfTTS]);
-  -[VSInstrumentMetrics setIsCacheHitFromDisk:](v4, "setIsCacheHitFromDisk:", [v3 sourceOfTTS] == 8);
+  -[VSInstrumentMetrics setIsServerStreamTTS:](v4, "setIsServerStreamTTS:", [metricsCopy sourceOfTTS] == 5);
+  -[VSInstrumentMetrics setIsServerTimeout:](v4, "setIsServerTimeout:", [metricsCopy errorCode] == 602);
+  -[VSInstrumentMetrics setIsServerTTSRacing:](v4, "setIsServerTTSRacing:", [metricsCopy isServerTTSRacing]);
+  -[VSInstrumentMetrics setCanUseServerTTS:](v4, "setCanUseServerTTS:", [metricsCopy privacySensitive] ^ 1);
+  -[VSInstrumentMetrics setNeuralAlignmentStall:](v4, "setNeuralAlignmentStall:", [metricsCopy neuralAlignmentStall]);
+  -[VSInstrumentMetrics setNeuralAudioClick:](v4, "setNeuralAudioClick:", [metricsCopy neuralAudioClick]);
+  -[VSInstrumentMetrics setNeuralFallback:](v4, "setNeuralFallback:", [metricsCopy neuralFallback]);
+  -[VSInstrumentMetrics setPromptCount:](v4, "setPromptCount:", [metricsCopy promptCount]);
+  -[VSInstrumentMetrics setErrorCode:](v4, "setErrorCode:", [metricsCopy errorCode]);
+  -[VSInstrumentMetrics setSourceOfTTS:](v4, "setSourceOfTTS:", [metricsCopy sourceOfTTS]);
+  -[VSInstrumentMetrics setIsCacheHitFromDisk:](v4, "setIsCacheHitFromDisk:", [metricsCopy sourceOfTTS] == 8);
 
   return v4;
 }

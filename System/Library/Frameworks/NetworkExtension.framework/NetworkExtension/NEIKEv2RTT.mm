@@ -1,5 +1,5 @@
 @interface NEIKEv2RTT
-- (BOOL)getCurrentTime:(uint64_t)a1;
+- (BOOL)getCurrentTime:(uint64_t)time;
 - (NEIKEv2RTT)init;
 - (uint64_t)resetRTTMeasurement;
 - (unint64_t)nextRetransmissionInterval;
@@ -39,10 +39,10 @@
   return v3;
 }
 
-- (BOOL)getCurrentTime:(uint64_t)a1
+- (BOOL)getCurrentTime:(uint64_t)time
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (time)
   {
     if (getCurrentTime__onceToken != -1)
     {
@@ -50,8 +50,8 @@
     }
 
     v2 = mach_continuous_time() * getCurrentTime__tb_info / *algn_1EBC11B5C;
-    *a1 = v2 / 0x3B9ACA00;
-    *(a1 + 8) = v2 % 0x3B9ACA00 / 0x3E8;
+    *time = v2 / 0x3B9ACA00;
+    *(time + 8) = v2 % 0x3B9ACA00 / 0x3E8;
   }
 
   else
@@ -65,7 +65,7 @@
     }
   }
 
-  result = a1 != 0;
+  result = time != 0;
   v4 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -133,13 +133,13 @@ LABEL_10:
 
 - (unint64_t)nextRetransmissionInterval
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = *(a1 + 48);
-  v2 = *(a1 + 32) + (*(a1 + 24) >> 3);
+  v1 = *(self + 48);
+  v2 = *(self + 32) + (*(self + 24) >> 3);
   if (v1 <= v2 >> 2)
   {
     v3 = v2 >> 2;
@@ -147,12 +147,12 @@ LABEL_10:
 
   else
   {
-    v3 = *(a1 + 48);
+    v3 = *(self + 48);
   }
 
-  v4 = *(a1 + 8);
-  v5 = v3 * IKEV2_SESSION_RXMT_BACKOFF[*(a1 + 8)];
-  *(a1 + 64) = v5;
+  v4 = *(self + 8);
+  v5 = v3 * IKEV2_SESSION_RXMT_BACKOFF[*(self + 8)];
+  *(self + 64) = v5;
   if (v5 >= v1)
   {
     if (v5 < 0xFA01)
@@ -163,12 +163,12 @@ LABEL_10:
     v1 = 64000;
   }
 
-  *(a1 + 64) = v1;
+  *(self + 64) = v1;
   v5 = v1;
 LABEL_9:
   if (v4 <= 0xB)
   {
-    *(a1 + 8) = v4 + 1;
+    *(self + 8) = v4 + 1;
   }
 
   return v5;

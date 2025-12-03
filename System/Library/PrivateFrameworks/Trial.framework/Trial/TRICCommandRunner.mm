@@ -1,24 +1,24 @@
 @interface TRICCommandRunner
-+ (BOOL)runWithRootPrivilegesDroppedDescription:(const char *)a3 block:(id)a4;
-+ (id)convertToTrialToolArgs:(id)a3;
-+ (id)convertToTrialToolCommand:(id)a3;
-+ (id)runCommandAsync:(id)a3 withArgs:(id)a4 taskOutputOut:(id *)a5 error:(id *)a6;
-+ (int)_withLoggingRunCommand:(id)a3 arguments:(id)a4 output:(id *)a5;
-+ (int)_withoutLoggingRunCommand:(id)a3 withArgs:(id)a4 output:(id *)a5 error:(id *)a6;
-+ (int)runCommand:(id)a3 withArgs:(id)a4 withTimesToAttemptOnTimeOut:(int64_t)a5 withTimeOut:(double)a6;
-+ (int)runCommandAsTrialDaemonUserName:(id)a3 withArgs:(id)a4 output:(id *)a5 error:(id *)a6;
++ (BOOL)runWithRootPrivilegesDroppedDescription:(const char *)description block:(id)block;
++ (id)convertToTrialToolArgs:(id)args;
++ (id)convertToTrialToolCommand:(id)command;
++ (id)runCommandAsync:(id)async withArgs:(id)args taskOutputOut:(id *)out error:(id *)error;
++ (int)_withLoggingRunCommand:(id)command arguments:(id)arguments output:(id *)output;
++ (int)_withoutLoggingRunCommand:(id)command withArgs:(id)args output:(id *)output error:(id *)error;
++ (int)runCommand:(id)command withArgs:(id)args withTimesToAttemptOnTimeOut:(int64_t)out withTimeOut:(double)timeOut;
++ (int)runCommandAsTrialDaemonUserName:(id)name withArgs:(id)args output:(id *)output error:(id *)error;
 @end
 
 @implementation TRICCommandRunner
 
-+ (id)convertToTrialToolCommand:(id)a3
++ (id)convertToTrialToolCommand:(id)command
 {
   v3 = MEMORY[0x277CBEB18];
-  v4 = a3;
+  commandCopy = command;
   v5 = [v3 alloc];
-  v6 = [v4 pathComponents];
+  pathComponents = [commandCopy pathComponents];
 
-  v7 = [v5 initWithArray:v6];
+  v7 = [v5 initWithArray:pathComponents];
   [v7 removeLastObject];
   [v7 addObject:@"trialtool"];
   v8 = [MEMORY[0x277CCACA8] pathWithComponents:v7];
@@ -26,33 +26,33 @@
   return v8;
 }
 
-+ (id)convertToTrialToolArgs:(id)a3
++ (id)convertToTrialToolArgs:(id)args
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v3];
-  v5 = [v4 firstObject];
-  v6 = [&unk_28436FA88 allKeys];
-  v7 = [v6 containsObject:v5];
+  argsCopy = args;
+  v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:argsCopy];
+  firstObject = [v4 firstObject];
+  allKeys = [&unk_28436FA88 allKeys];
+  v7 = [allKeys containsObject:firstObject];
 
   if (v7)
   {
     [v4 removeObjectAtIndex:0];
-    v8 = [&unk_28436FA88 valueForKey:v5];
+    v8 = [&unk_28436FA88 valueForKey:firstObject];
     v9 = [v8 componentsSeparatedByString:@" "];
     v10 = [v9 arrayByAddingObjectsFromArray:v4];
   }
 
   else
   {
-    v10 = v3;
+    v10 = argsCopy;
   }
 
   return v10;
 }
 
-+ (BOOL)runWithRootPrivilegesDroppedDescription:(const char *)a3 block:(id)a4
++ (BOOL)runWithRootPrivilegesDroppedDescription:(const char *)description block:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   if (!geteuid())
   {
     v7 = +[TRICEnvironmentManager getLoginPasswd];
@@ -74,8 +74,8 @@
 
       else
       {
-        fprintf(v11, "trialcontroller was invoked as root; temporarily switched to account %s to carry out operation %s.\n", pw_name, a3);
-        v5[2](v5);
+        fprintf(v11, "trialcontroller was invoked as root; temporarily switched to account %s to carry out operation %s.\n", pw_name, description);
+        blockCopy[2](blockCopy);
         if (!seteuid(0))
         {
           goto LABEL_3;
@@ -98,7 +98,7 @@
     goto LABEL_11;
   }
 
-  v5[2](v5);
+  blockCopy[2](blockCopy);
 LABEL_3:
   v6 = 1;
 LABEL_11:
@@ -106,10 +106,10 @@ LABEL_11:
   return v6;
 }
 
-+ (int)runCommand:(id)a3 withArgs:(id)a4 withTimesToAttemptOnTimeOut:(int64_t)a5 withTimeOut:(double)a6
++ (int)runCommand:(id)command withArgs:(id)args withTimesToAttemptOnTimeOut:(int64_t)out withTimeOut:(double)timeOut
 {
-  v10 = a3;
-  v11 = a4;
+  commandCopy = command;
+  argsCopy = args;
   v12 = 0;
   v27 = 0;
   v28 = &v27;
@@ -118,7 +118,7 @@ LABEL_11:
   v13 = MEMORY[0x277D85DF8];
   do
   {
-    if (v12 >= a5)
+    if (v12 >= out)
     {
       break;
     }
@@ -130,14 +130,14 @@ LABEL_11:
     block[2] = __81__TRICCommandRunner_runCommand_withArgs_withTimesToAttemptOnTimeOut_withTimeOut___block_invoke;
     block[3] = &unk_27885DEC0;
     v25 = &v27;
-    v26 = a1;
-    v22 = v10;
-    v23 = v11;
+    selfCopy = self;
+    v22 = commandCopy;
+    v23 = argsCopy;
     v16 = v14;
     v24 = v16;
     dispatch_async(v15, block);
 
-    v17 = dispatch_time(0, (a6 * 1000000000.0));
+    v17 = dispatch_time(0, (timeOut * 1000000000.0));
     if (!dispatch_semaphore_wait(v16, v17))
     {
       goto LABEL_6;
@@ -172,14 +172,14 @@ intptr_t __81__TRICCommandRunner_runCommand_withArgs_withTimesToAttemptOnTimeOut
   return dispatch_semaphore_signal(v2);
 }
 
-+ (int)_withoutLoggingRunCommand:(id)a3 withArgs:(id)a4 output:(id *)a5 error:(id *)a6
++ (int)_withoutLoggingRunCommand:(id)command withArgs:(id)args output:(id *)output error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = v12;
-  if (v11)
+  commandCopy = command;
+  argsCopy = args;
+  v13 = argsCopy;
+  if (commandCopy)
   {
-    if (v12)
+    if (argsCopy)
     {
       goto LABEL_3;
     }
@@ -187,13 +187,13 @@ intptr_t __81__TRICCommandRunner_runCommand_withArgs_withTimesToAttemptOnTimeOut
 
   else
   {
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"TRICCommandRunner.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"command"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRICCommandRunner.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"command"}];
 
     if (v13)
     {
 LABEL_3:
-      if (!a5)
+      if (!output)
       {
         goto LABEL_5;
       }
@@ -202,69 +202,69 @@ LABEL_3:
     }
   }
 
-  v19 = [MEMORY[0x277CCA890] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"TRICCommandRunner.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRICCommandRunner.m" lineNumber:178 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
 
-  if (a5)
+  if (output)
   {
 LABEL_4:
-    *a5 = 0;
+    *output = 0;
   }
 
 LABEL_5:
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v20 = 0;
-  v14 = [a1 runCommandAsync:v11 withArgs:v13 taskOutputOut:&v20 error:a6];
+  v14 = [self runCommandAsync:commandCopy withArgs:v13 taskOutputOut:&v20 error:error];
   if (v14)
   {
-    v15 = [v20 readDataToEndOfFile];
+    readDataToEndOfFile = [v20 readDataToEndOfFile];
     [v14 waitUntilExit];
-    if (a5 && v15)
+    if (output && readDataToEndOfFile)
     {
-      *a5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v15 encoding:4];
+      *output = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:readDataToEndOfFile encoding:4];
     }
 
-    v16 = [v14 terminationStatus];
+    terminationStatus = [v14 terminationStatus];
   }
 
   else
   {
-    v16 = -1;
+    terminationStatus = -1;
   }
 
-  return v16;
+  return terminationStatus;
 }
 
-+ (id)runCommandAsync:(id)a3 withArgs:(id)a4 taskOutputOut:(id *)a5 error:(id *)a6
++ (id)runCommandAsync:(id)async withArgs:(id)args taskOutputOut:(id *)out error:(id *)error
 {
-  v9 = a4;
-  v10 = [TRIStandardPaths resolveHardCodedPath:a3];
-  v11 = [MEMORY[0x277CCAC38] processInfo];
-  v12 = [v11 environment];
-  v13 = [v12 mutableCopy];
+  argsCopy = args;
+  v10 = [TRIStandardPaths resolveHardCodedPath:async];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  environment = [processInfo environment];
+  v13 = [environment mutableCopy];
 
   [v13 setObject:0 forKeyedSubscript:@"OS_ACTIVITY_DT_MODE"];
   v14 = objc_opt_new();
   [v14 setEnvironment:v13];
-  v15 = [v9 mutableCopy];
+  v15 = [argsCopy mutableCopy];
 
   [v15 insertObject:v10 atIndex:0];
   v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/usr/local/bin/dvdo"];
   [v14 setExecutableURL:v16];
 
   [v14 setArguments:v15];
-  v17 = [MEMORY[0x277CCAC10] pipe];
-  [v14 setStandardOutput:v17];
-  [v14 setStandardError:v17];
-  if (a5)
+  pipe = [MEMORY[0x277CCAC10] pipe];
+  [v14 setStandardOutput:pipe];
+  [v14 setStandardError:pipe];
+  if (out)
   {
-    v18 = [v17 fileHandleForReading];
-    v19 = *a5;
-    *a5 = v18;
+    fileHandleForReading = [pipe fileHandleForReading];
+    v19 = *out;
+    *out = fileHandleForReading;
   }
 
   v25 = 0;
@@ -273,10 +273,10 @@ LABEL_5:
   v22 = v21;
   if ((v20 & 1) == 0)
   {
-    if (a6)
+    if (error)
     {
       v23 = v21;
-      *a6 = v22;
+      *error = v22;
     }
 
     v14 = 0;
@@ -285,17 +285,17 @@ LABEL_5:
   return v14;
 }
 
-+ (int)_withLoggingRunCommand:(id)a3 arguments:(id)a4 output:(id *)a5
++ (int)_withLoggingRunCommand:(id)command arguments:(id)arguments output:(id *)output
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  commandCopy = command;
   v21 = 0;
   v22 = 0;
-  v9 = a4;
-  v10 = [a1 _withoutLoggingRunCommand:v8 withArgs:v9 output:&v22 error:&v21];
+  argumentsCopy = arguments;
+  v10 = [self _withoutLoggingRunCommand:commandCopy withArgs:argumentsCopy output:&v22 error:&v21];
   v11 = v22;
   v12 = v21;
-  v13 = [v9 _pas_mappedArrayWithTransform:&__block_literal_global];
+  v13 = [argumentsCopy _pas_mappedArrayWithTransform:&__block_literal_global];
 
   v14 = [v13 componentsJoinedByString:{@", "}];
 
@@ -306,7 +306,7 @@ LABEL_5:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *v24 = v8;
+      *v24 = commandCopy;
       *&v24[8] = 2112;
       *&v24[10] = v14;
       *&v24[18] = 2112;
@@ -315,10 +315,10 @@ LABEL_5:
     }
 
 LABEL_14:
-    [TRICPrinter printNewlineUsingStderr:1 format:@"Spawned subprocess: %@ [%@]", v8, v14];
-    [TRICPrinter printNewlineUsingStderr:1 format:@"Subprocess %@ output: %@", v8, v11];
-    [TRICPrinter printNewlineUsingStderr:1 format:@"Subprocess %@ failed with status %d; error: %@", v8, v10, v12];
-    if (!a5)
+    [TRICPrinter printNewlineUsingStderr:1 format:@"Spawned subprocess: %@ [%@]", commandCopy, v14];
+    [TRICPrinter printNewlineUsingStderr:1 format:@"Subprocess %@ output: %@", commandCopy, v11];
+    [TRICPrinter printNewlineUsingStderr:1 format:@"Subprocess %@ failed with status %d; error: %@", commandCopy, v10, v12];
+    if (!output)
     {
       goto LABEL_10;
     }
@@ -331,7 +331,7 @@ LABEL_14:
     *buf = 67109634;
     *v24 = v10;
     *&v24[4] = 2112;
-    *&v24[6] = v8;
+    *&v24[6] = commandCopy;
     *&v24[14] = 2112;
     *&v24[16] = v14;
     _os_log_impl(&dword_22EA6B000, v16, OS_LOG_TYPE_DEFAULT, "Spawned subprocess with exit code %d: %@ [%@]", buf, 0x1Cu);
@@ -341,7 +341,7 @@ LABEL_14:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *v24 = v8;
+    *v24 = commandCopy;
     *&v24[8] = 2112;
     *&v24[10] = v11;
     _os_log_impl(&dword_22EA6B000, v17, OS_LOG_TYPE_DEFAULT, "Subprocess %@ output: %@", buf, 0x16u);
@@ -352,11 +352,11 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a5)
+  if (output)
   {
 LABEL_9:
     v18 = v11;
-    *a5 = v11;
+    *output = v11;
   }
 
 LABEL_10:
@@ -374,23 +374,23 @@ id __61__TRICCommandRunner__withLoggingRunCommand_arguments_output___block_invok
   return v4;
 }
 
-+ (int)runCommandAsTrialDaemonUserName:(id)a3 withArgs:(id)a4 output:(id *)a5 error:(id *)a6
++ (int)runCommandAsTrialDaemonUserName:(id)name withArgs:(id)args output:(id *)output error:(id *)error
 {
   v17[4] = *MEMORY[0x277D85DE8];
   v17[0] = @"-q";
   v17[1] = @"-f";
-  v10 = a4;
-  v11 = a3;
+  argsCopy = args;
+  nameCopy = name;
   v12 = +[TRICEnvironmentManager trialDaemonUserName];
   v17[2] = v12;
-  v17[3] = v11;
+  v17[3] = nameCopy;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:4];
 
-  v14 = [v13 arrayByAddingObjectsFromArray:v10];
+  v14 = [v13 arrayByAddingObjectsFromArray:argsCopy];
 
-  LODWORD(a6) = [a1 runCommand:@"/usr/bin/login" withArgs:v14 output:a5 error:a6];
+  LODWORD(error) = [self runCommand:@"/usr/bin/login" withArgs:v14 output:output error:error];
   v15 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
 @end

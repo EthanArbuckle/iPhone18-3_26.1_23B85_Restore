@@ -1,12 +1,12 @@
 @interface Caller
 + (id)current;
-+ (id)pathFromPid:(int)a3;
++ (id)pathFromPid:(int)pid;
 - ($115C4C562B26FF47E01F9F4EA65B5887)auditToken;
-- (BOOL)hasEntitlement:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAuditToken:(id *)a3;
-- (BOOL)isEqualToAuditTokenData:(id)a3;
-- (Caller)initWithConnection:(id)a3;
+- (BOOL)hasEntitlement:(id)entitlement;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAuditToken:(id *)token;
+- (BOOL)isEqualToAuditTokenData:(id)data;
+- (Caller)initWithConnection:(id)connection;
 - (NSData)auditTokenData;
 - (NSString)path;
 - (NSXPCConnection)connection;
@@ -18,37 +18,37 @@
 
 + (id)current
 {
-  v2 = [MEMORY[0x277CCAE80] currentConnection];
-  if (v2)
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (currentConnection)
   {
-    v3 = [[Caller alloc] initWithConnection:v2];
+    caller = [[Caller alloc] initWithConnection:currentConnection];
   }
 
   else
   {
     v4 = +[Request current];
-    v3 = [v4 caller];
+    caller = [v4 caller];
   }
 
-  return v3;
+  return caller;
 }
 
-- (Caller)initWithConnection:(id)a3
+- (Caller)initWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = Caller;
   v5 = [(Caller *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_connection, v4);
-    if (v4)
+    objc_storeWeak(&v5->_connection, connectionCopy);
+    if (connectionCopy)
     {
-      v6->_pid = [v4 processIdentifier];
-      v6->_euid = [v4 effectiveUserIdentifier];
-      v6->_asid = [v4 auditSessionIdentifier];
-      [v4 auditToken];
+      v6->_pid = [connectionCopy processIdentifier];
+      v6->_euid = [connectionCopy effectiveUserIdentifier];
+      v6->_asid = [connectionCopy auditSessionIdentifier];
+      [connectionCopy auditToken];
       *v6->_auditToken.val = v8;
       *&v6->_auditToken.val[4] = v9;
     }
@@ -69,16 +69,16 @@
 - (id)clientInfo
 {
   v3 = objc_alloc(MEMORY[0x277D24120]);
-  v4 = [(Caller *)self connection];
-  v5 = [v3 initWithConnection:v4];
+  connection = [(Caller *)self connection];
+  v5 = [v3 initWithConnection:connection];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -88,9 +88,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v4)
+      if (equalCopy)
       {
-        [(Caller *)v4 auditToken];
+        [(Caller *)equalCopy auditToken];
       }
 
       else
@@ -105,7 +105,7 @@
     {
       v8.receiver = self;
       v8.super_class = Caller;
-      v6 = [(Caller *)&v8 isEqual:v4];
+      v6 = [(Caller *)&v8 isEqual:equalCopy];
     }
 
     v5 = v6;
@@ -114,21 +114,21 @@
   return v5;
 }
 
-- (BOOL)isEqualToAuditToken:(id *)a3
+- (BOOL)isEqualToAuditToken:(id *)token
 {
   [(Caller *)self auditToken];
   v4 = audit_token_to_pid(&v7);
-  v5 = *&a3->var0[4];
-  *v7.val = *a3->var0;
+  v5 = *&token->var0[4];
+  *v7.val = *token->var0;
   *&v7.val[4] = v5;
   return v4 == audit_token_to_pid(&v7);
 }
 
-- (BOOL)isEqualToAuditTokenData:(id)a3
+- (BOOL)isEqualToAuditTokenData:(id)data
 {
   v5 = MEMORY[0x277CCAE60];
-  v6 = a3;
-  v7 = [v5 valueWithBytes:objc_msgSend(a3 objCType:{"bytes"), "{?=[8I]}"}];
+  dataCopy = data;
+  v7 = [v5 valueWithBytes:objc_msgSend(data objCType:{"bytes"), "{?=[8I]}"}];
   v8 = v7;
   if (v7)
   {
@@ -162,8 +162,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(Caller *)self path];
-  v5 = [v3 stringWithFormat:@"<%@[%d] UID: %u>", v4, -[Caller pid](self, "pid"), -[Caller euid](self, "euid")];
+  path = [(Caller *)self path];
+  v5 = [v3 stringWithFormat:@"<%@[%d] UID: %u>", path, -[Caller pid](self, "pid"), -[Caller euid](self, "euid")];
 
   return v5;
 }
@@ -173,9 +173,9 @@
   v3 = objc_alloc(MEMORY[0x277D23FF8]);
   [(Caller *)self auditToken];
   v4 = [v3 initWithRawValue:&v7];
-  v5 = [v4 data];
+  data = [v4 data];
 
-  return v5;
+  return data;
 }
 
 - (NSString)path
@@ -193,29 +193,29 @@
   return path;
 }
 
-- (BOOL)hasEntitlement:(id)a3
+- (BOOL)hasEntitlement:(id)entitlement
 {
-  v4 = a3;
-  v5 = [(Caller *)self connection];
-  if (v5)
+  entitlementCopy = entitlement;
+  connection = [(Caller *)self connection];
+  if (connection)
   {
-    v6 = [(Caller *)self connection];
-    v7 = [v6 valueForEntitlement:v4];
-    v8 = [v7 BOOLValue];
+    connection2 = [(Caller *)self connection];
+    v7 = [connection2 valueForEntitlement:entitlementCopy];
+    bOOLValue = [v7 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-+ (id)pathFromPid:(int)a3
++ (id)pathFromPid:(int)pid
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = proc_pidpath(a3, buffer, 0x1000u);
+  v3 = proc_pidpath(pid, buffer, 0x1000u);
   if (v3 < 1)
   {
     v4 = 0;

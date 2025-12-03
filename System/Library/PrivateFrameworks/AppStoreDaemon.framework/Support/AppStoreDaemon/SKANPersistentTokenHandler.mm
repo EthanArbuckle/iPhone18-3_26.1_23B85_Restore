@@ -1,29 +1,29 @@
 @interface SKANPersistentTokenHandler
 + (id)generateRandomPrivateInput;
 - (_TtC9appstored26SKANPersistentTokenHandler)init;
-- (_TtC9appstored26SKANPersistentTokenHandler)initWithRandomPrivateInput:(id)a3;
-- (id)tryFinalizeWithPublicData:(id)a3 finalizationDict:(id)a4 pubCertString:(id)a5 error:(id *)a6;
+- (_TtC9appstored26SKANPersistentTokenHandler)initWithRandomPrivateInput:(id)input;
+- (id)tryFinalizeWithPublicData:(id)data finalizationDict:(id)dict pubCertString:(id)string error:(id *)error;
 - (id)tryGenerateBlindedElement;
-- (void)setBlindedData:(id)a3;
+- (void)setBlindedData:(id)data;
 @end
 
 @implementation SKANPersistentTokenHandler
 
-- (void)setBlindedData:(id)a3
+- (void)setBlindedData:(id)data
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC9appstored26SKANPersistentTokenHandler_blindedData);
-  *(&self->super.isa + OBJC_IVAR____TtC9appstored26SKANPersistentTokenHandler_blindedData) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC9appstored26SKANPersistentTokenHandler_blindedData) = data;
+  dataCopy = data;
 }
 
-- (_TtC9appstored26SKANPersistentTokenHandler)initWithRandomPrivateInput:(id)a3
+- (_TtC9appstored26SKANPersistentTokenHandler)initWithRandomPrivateInput:(id)input
 {
   ObjectType = swift_getObjectType();
   v6 = type metadata accessor for SKANUTClient();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = a3;
+  inputCopy = input;
   v11 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
 
@@ -52,18 +52,18 @@
 
 - (id)tryGenerateBlindedElement
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1000BC7FC();
 
   return v3;
 }
 
-- (id)tryFinalizeWithPublicData:(id)a3 finalizationDict:(id)a4 pubCertString:(id)a5 error:(id *)a6
+- (id)tryFinalizeWithPublicData:(id)data finalizationDict:(id)dict pubCertString:(id)string error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
+  dataCopy = data;
+  dictCopy = dict;
+  stringCopy = string;
+  selfCopy = self;
   v13 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v15 = v14;
 

@@ -2,61 +2,61 @@
 - (BOOL)_allowChangingIndividualStatusBarParts;
 - (BOOL)_statusBarNeedsSpecialLayoutForClassic;
 - (BOOL)isStatusBarEffectivelyHidden;
-- (CGAffineTransform)_hiddenTransformForAnimation:(SEL)a3;
+- (CGAffineTransform)_hiddenTransformForAnimation:(SEL)animation;
 - (CGRect)_statusBarAvoidanceFrame;
-- (CGRect)_statusBarFrameForOrientation:(int64_t)a3;
-- (SBMainDisplaySceneLayoutStatusBarView)initWithFrame:(CGRect)a3;
+- (CGRect)_statusBarFrameForOrientation:(int64_t)orientation;
+- (SBMainDisplaySceneLayoutStatusBarView)initWithFrame:(CGRect)frame;
 - (SBMainDisplaySceneLayoutStatusBarViewDataSource)dataSource;
 - (UIStatusBarStyleDelegate_SpringBoardOnly)realStyleDelegate;
-- (double)_hiddenAlphaForAnimation:(int64_t)a3;
+- (double)_hiddenAlphaForAnimation:(int64_t)animation;
 - (id)_anyAppViewControllerOwningInterfaceOrientation;
 - (id)_currentlyValidStatusBarPartIdentifiers;
 - (id)_effectiveBackgroundActivityIdentifiersToSuppress;
 - (id)_reusePool;
 - (id)_sceneHandleForClassicApplicationIfAny;
 - (id)_statusBarDescriberForPrimaryApplicationIfAny;
-- (id)_validStatusBarPartIdentifiersForSceneWithIdentifier:(id)a3;
+- (id)_validStatusBarPartIdentifiersForSceneWithIdentifier:(id)identifier;
 - (id)allValidStatusBarPartIdentifiers;
-- (id)createStatusBarWithFrame:(CGRect)a3 interfaceOrientation:(int64_t)a4 reason:(id)a5;
-- (id)statusBarStyleRequestForStatusBarPart:(id)a3;
-- (id)statusBarSystemNavigationAction:(id)a3;
-- (int64_t)_effectiveStyleForPartIdentifier:(id)a3;
-- (int64_t)overriddenRequestedStyleFromStyle:(int64_t)a3;
-- (int64_t)statusBar:(id)a3 styleForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5;
+- (id)createStatusBarWithFrame:(CGRect)frame interfaceOrientation:(int64_t)orientation reason:(id)reason;
+- (id)statusBarStyleRequestForStatusBarPart:(id)part;
+- (id)statusBarSystemNavigationAction:(id)action;
+- (int64_t)_effectiveStyleForPartIdentifier:(id)identifier;
+- (int64_t)overriddenRequestedStyleFromStyle:(int64_t)style;
+- (int64_t)statusBar:(id)bar styleForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides;
 - (unint64_t)_effectiveStatusBarStyleOverridesToSuppress;
-- (unint64_t)statusBar:(id)a3 effectiveStyleOverridesForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5;
+- (unint64_t)statusBar:(id)bar effectiveStyleOverridesForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides;
 - (void)_addStatusBarIfNeeded;
-- (void)_animateHidden:(BOOL)a3 withAnimation:(int64_t)a4 transitionHandler:(id)a5 applyHandler:(id)a6;
-- (void)_applyBackgroundActivitiesToSuppress:(id)a3 toSceneWithIdentifier:(id)a4;
-- (void)_applyStatusBarAlpha:(double)a3 toSceneWithIdentifier:(id)a4;
-- (void)_applyStatusBarAvoidanceFrame:(CGRect)a3 toSceneWithIdentifier:(id)a4;
-- (void)_applyStatusBarHidden:(BOOL)a3 withAnimation:(int64_t)a4 toSceneWithIdentifier:(id)a5;
-- (void)_applyStatusBarStyle:(int64_t)a3 toPartIdentifier:(id)a4 ofSceneWithIdentifier:(id)a5;
-- (void)_applyStatusBarStyle:(int64_t)a3 toSceneWithIdentifier:(id)a4;
-- (void)_enumerateValidStatusBarPartIdentifiersForSceneWithIdentifier:(id)a3 withBlock:(id)a4;
-- (void)_layoutStatusBarForOrientation:(int64_t)a3;
-- (void)_setDebugBackgroundColor:(id)a3;
-- (void)_setDebugOffsetIndex:(unint64_t)a3;
+- (void)_animateHidden:(BOOL)hidden withAnimation:(int64_t)animation transitionHandler:(id)handler applyHandler:(id)applyHandler;
+- (void)_applyBackgroundActivitiesToSuppress:(id)suppress toSceneWithIdentifier:(id)identifier;
+- (void)_applyStatusBarAlpha:(double)alpha toSceneWithIdentifier:(id)identifier;
+- (void)_applyStatusBarAvoidanceFrame:(CGRect)frame toSceneWithIdentifier:(id)identifier;
+- (void)_applyStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation toSceneWithIdentifier:(id)identifier;
+- (void)_applyStatusBarStyle:(int64_t)style toPartIdentifier:(id)identifier ofSceneWithIdentifier:(id)withIdentifier;
+- (void)_applyStatusBarStyle:(int64_t)style toSceneWithIdentifier:(id)identifier;
+- (void)_enumerateValidStatusBarPartIdentifiersForSceneWithIdentifier:(id)identifier withBlock:(id)block;
+- (void)_layoutStatusBarForOrientation:(int64_t)orientation;
+- (void)_setDebugBackgroundColor:(id)color;
+- (void)_setDebugOffsetIndex:(unint64_t)index;
 - (void)_setupDebugging;
-- (void)_statusBarTapped:(id)a3 type:(int64_t)a4;
+- (void)_statusBarTapped:(id)tapped type:(int64_t)type;
 - (void)_tearDownStatusBar;
 - (void)_updateDebugBackgroundColor;
 - (void)_updateDebugOffset;
 - (void)_updateHitTestLayers;
-- (void)applyStatusBarStylesForDescriber:(id)a3;
-- (void)beginRequiringStatusBarForReason:(id)a3;
+- (void)applyStatusBarStylesForDescriber:(id)describer;
+- (void)beginRequiringStatusBarForReason:(id)reason;
 - (void)dealloc;
-- (void)didInvalidateStatusBarDescriptionForSceneWithIdentifier:(id)a3;
-- (void)endRequiringStatusBarForReason:(id)a3;
-- (void)layoutStatusBarForSpringBoardRotationToOrientation:(int64_t)a3;
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarOrientationTo:(int64_t)a4;
-- (void)setDataSource:(id)a3;
-- (void)setRealStyleDelegate:(id)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
-- (void)statusBar:(id)a3 didAnimateFromHeight:(double)a4 toHeight:(double)a5 animation:(int)a6;
-- (void)statusBar:(id)a3 didTriggerButtonType:(int64_t)a4 withAction:(int64_t)a5;
-- (void)statusBar:(id)a3 didTriggerButtonType:(int64_t)a4 withAction:(int64_t)a5 context:(id)a6;
-- (void)statusBar:(id)a3 willAnimateFromHeight:(double)a4 toHeight:(double)a5 duration:(double)a6 animation:(int)a7;
+- (void)didInvalidateStatusBarDescriptionForSceneWithIdentifier:(id)identifier;
+- (void)endRequiringStatusBarForReason:(id)reason;
+- (void)layoutStatusBarForSpringBoardRotationToOrientation:(int64_t)orientation;
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarOrientationTo:(int64_t)to;
+- (void)setDataSource:(id)source;
+- (void)setRealStyleDelegate:(id)delegate;
+- (void)settings:(id)settings changedValueForKey:(id)key;
+- (void)statusBar:(id)bar didAnimateFromHeight:(double)height toHeight:(double)toHeight animation:(int)animation;
+- (void)statusBar:(id)bar didTriggerButtonType:(int64_t)type withAction:(int64_t)action;
+- (void)statusBar:(id)bar didTriggerButtonType:(int64_t)type withAction:(int64_t)action context:(id)context;
+- (void)statusBar:(id)bar willAnimateFromHeight:(double)height toHeight:(double)toHeight duration:(double)duration animation:(int)animation;
 - (void)updateBreadcrumbActionIfNecessary;
 - (void)updateStatusBarOrientationForLegacyApp;
 @end
@@ -82,11 +82,11 @@
   return v3;
 }
 
-- (SBMainDisplaySceneLayoutStatusBarView)initWithFrame:(CGRect)a3
+- (SBMainDisplaySceneLayoutStatusBarView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBMainDisplaySceneLayoutStatusBarView;
-  v3 = [(SBMainDisplaySceneLayoutStatusBarView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBMainDisplaySceneLayoutStatusBarView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -105,9 +105,9 @@
   [(SBMainDisplaySceneLayoutStatusBarView *)&v3 dealloc];
 }
 
-- (void)beginRequiringStatusBarForReason:(id)a3
+- (void)beginRequiringStatusBarForReason:(id)reason
 {
-  v10 = a3;
+  reasonCopy = reason;
   statusBarRequiringReasons = self->_statusBarRequiringReasons;
   if (!statusBarRequiringReasons)
   {
@@ -119,7 +119,7 @@
   }
 
   v7 = [(NSMutableSet *)statusBarRequiringReasons count];
-  [(NSMutableSet *)self->_statusBarRequiringReasons addObject:v10];
+  [(NSMutableSet *)self->_statusBarRequiringReasons addObject:reasonCopy];
   v8 = [(NSMutableSet *)self->_statusBarRequiringReasons count];
   if (v7)
   {
@@ -137,12 +137,12 @@
   }
 }
 
-- (void)endRequiringStatusBarForReason:(id)a3
+- (void)endRequiringStatusBarForReason:(id)reason
 {
   statusBarRequiringReasons = self->_statusBarRequiringReasons;
-  v5 = a3;
+  reasonCopy = reason;
   v6 = [(NSMutableSet *)statusBarRequiringReasons count];
-  [(NSMutableSet *)self->_statusBarRequiringReasons removeObject:v5];
+  [(NSMutableSet *)self->_statusBarRequiringReasons removeObject:reasonCopy];
 
   v7 = [(NSMutableSet *)self->_statusBarRequiringReasons count];
   if (v6)
@@ -162,24 +162,24 @@
   }
 }
 
-- (id)createStatusBarWithFrame:(CGRect)a3 interfaceOrientation:(int64_t)a4 reason:(id)a5
+- (id)createStatusBarWithFrame:(CGRect)frame interfaceOrientation:(int64_t)orientation reason:(id)reason
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a5;
-  v11 = [(SBMainDisplaySceneLayoutStatusBarView *)self _defaultStatusBarStyleRequest];
-  [MEMORY[0x277D75A78] heightForStyle:objc_msgSend(v11 orientation:{"style"), a4}];
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  reasonCopy = reason;
+  _defaultStatusBarStyleRequest = [(SBMainDisplaySceneLayoutStatusBarView *)self _defaultStatusBarStyleRequest];
+  [MEMORY[0x277D75A78] heightForStyle:objc_msgSend(_defaultStatusBarStyleRequest orientation:{"style"), orientation}];
   v13 = v12;
-  v14 = [(SBMainDisplaySceneLayoutStatusBarView *)self _reusePool];
-  v15 = [v14 getReusableStatusBarWithReason:v10 withFrame:{x, y, width, v13}];
+  _reusePool = [(SBMainDisplaySceneLayoutStatusBarView *)self _reusePool];
+  v15 = [_reusePool getReusableStatusBarWithReason:reasonCopy withFrame:{x, y, width, v13}];
 
   [v15 setBounds:{x, y, width, v13}];
   UIRectGetCenter();
   [v15 setCenter:?];
   [v15 setStyleDelegate:self];
   [v15 setAutoresizingMask:34];
-  [v15 setOrientation:a4];
+  [v15 setOrientation:orientation];
   [v15 setLegibilityStyle:0];
   [v15 setForegroundColor:0];
 
@@ -191,64 +191,64 @@
   v60 = *MEMORY[0x277D85DE8];
   if (!self->_statusBar)
   {
-    v3 = self;
-    WeakRetained = objc_loadWeakRetained(&v3->_dataSource);
+    selfCopy = self;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_dataSource);
     v5 = objc_alloc(MEMORY[0x277CF0D78]);
-    [(SBMainDisplaySceneLayoutStatusBarView *)v3 bounds];
+    [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy bounds];
     v6 = [v5 initWithFrame:?];
-    statusBarContainerView = v3->_statusBarContainerView;
-    v3->_statusBarContainerView = v6;
+    statusBarContainerView = selfCopy->_statusBarContainerView;
+    selfCopy->_statusBarContainerView = v6;
 
-    -[BSUIOrientationTransformWrapperView setContentOrientation:](v3->_statusBarContainerView, "setContentOrientation:", [WeakRetained statusBarOrientation]);
-    [(BSUIOrientationTransformWrapperView *)v3->_statusBarContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [(SBMainDisplaySceneLayoutStatusBarView *)v3 addSubview:v3->_statusBarContainerView];
-    v8 = [(BSUIOrientationTransformWrapperView *)v3->_statusBarContainerView leftAnchor];
-    v9 = [(SBMainDisplaySceneLayoutStatusBarView *)v3 leftAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    -[BSUIOrientationTransformWrapperView setContentOrientation:](selfCopy->_statusBarContainerView, "setContentOrientation:", [WeakRetained statusBarOrientation]);
+    [(BSUIOrientationTransformWrapperView *)selfCopy->_statusBarContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy addSubview:selfCopy->_statusBarContainerView];
+    leftAnchor = [(BSUIOrientationTransformWrapperView *)selfCopy->_statusBarContainerView leftAnchor];
+    leftAnchor2 = [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy leftAnchor];
+    v10 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     [v10 setActive:1];
 
-    v11 = [(BSUIOrientationTransformWrapperView *)v3->_statusBarContainerView rightAnchor];
-    v12 = [(SBMainDisplaySceneLayoutStatusBarView *)v3 rightAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    rightAnchor = [(BSUIOrientationTransformWrapperView *)selfCopy->_statusBarContainerView rightAnchor];
+    rightAnchor2 = [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy rightAnchor];
+    v13 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     [v13 setActive:1];
 
-    v14 = [(BSUIOrientationTransformWrapperView *)v3->_statusBarContainerView topAnchor];
-    v15 = [(SBMainDisplaySceneLayoutStatusBarView *)v3 topAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    topAnchor = [(BSUIOrientationTransformWrapperView *)selfCopy->_statusBarContainerView topAnchor];
+    topAnchor2 = [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy topAnchor];
+    v16 = [topAnchor constraintEqualToAnchor:topAnchor2];
     [v16 setActive:1];
 
-    v17 = [(BSUIOrientationTransformWrapperView *)v3->_statusBarContainerView bottomAnchor];
-    v18 = [(SBMainDisplaySceneLayoutStatusBarView *)v3 bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [(BSUIOrientationTransformWrapperView *)selfCopy->_statusBarContainerView bottomAnchor];
+    bottomAnchor2 = [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     [v19 setActive:1];
 
-    v20 = v3->_statusBarContainerView;
-    [(SBMainDisplaySceneLayoutStatusBarView *)v3 bounds];
+    v20 = selfCopy->_statusBarContainerView;
+    [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy bounds];
     [(BSUIOrientationTransformWrapperView *)v20 convertRectFromContainerInterfaceOrientationToContentInterfaceOrientation:?];
     v25 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v21, v22, v23, v24}];
-    statusBarWrapperView = v3->_statusBarWrapperView;
-    v3->_statusBarWrapperView = v25;
+    statusBarWrapperView = selfCopy->_statusBarWrapperView;
+    selfCopy->_statusBarWrapperView = v25;
 
-    v27 = [WeakRetained statusBarOrientation];
-    [(SBMainDisplaySceneLayoutStatusBarView *)v3 _statusBarFrameForOrientation:v27];
+    statusBarOrientation = [WeakRetained statusBarOrientation];
+    [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy _statusBarFrameForOrientation:statusBarOrientation];
     v29 = v28;
     v31 = v30;
     v33 = v32;
     v35 = v34;
-    v53 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %p", objc_opt_class(), v3];
-    v36 = [(SBMainDisplaySceneLayoutStatusBarView *)v3 createStatusBarWithFrame:v27 interfaceOrientation:v29 reason:v31, v33, v35];
+    selfCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ - %p", objc_opt_class(), selfCopy];
+    v36 = [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy createStatusBarWithFrame:statusBarOrientation interfaceOrientation:v29 reason:v31, v33, v35];
     statusBar = self->_statusBar;
     self->_statusBar = v36;
 
     [(UIStatusBar *)self->_statusBar requestResolvedStyle:0];
-    v38 = [(UIStatusBar *)self->_statusBar statusBar];
-    statusBarUnderlyingViewAccessor = v3->_statusBarUnderlyingViewAccessor;
-    v3->_statusBarUnderlyingViewAccessor = v38;
+    statusBar = [(UIStatusBar *)self->_statusBar statusBar];
+    statusBarUnderlyingViewAccessor = selfCopy->_statusBarUnderlyingViewAccessor;
+    selfCopy->_statusBarUnderlyingViewAccessor = statusBar;
 
-    if (![(SBMainDisplaySceneLayoutStatusBarView *)v3 _allowChangingIndividualStatusBarParts])
+    if (![(SBMainDisplaySceneLayoutStatusBarView *)selfCopy _allowChangingIndividualStatusBarParts])
     {
-      v40 = [(UIStatusBar *)self->_statusBar layer];
-      [v40 setHitTestsAsOpaque:1];
+      layer = [(UIStatusBar *)self->_statusBar layer];
+      [layer setHitTestsAsOpaque:1];
     }
 
     v57 = 0u;
@@ -256,8 +256,8 @@
     v55 = 0u;
     v56 = 0u;
     v54 = WeakRetained;
-    v41 = [WeakRetained statusBarDescribers];
-    v42 = [v41 countByEnumeratingWithState:&v55 objects:v59 count:16];
+    statusBarDescribers = [WeakRetained statusBarDescribers];
+    v42 = [statusBarDescribers countByEnumeratingWithState:&v55 objects:v59 count:16];
     if (v42)
     {
       v43 = v42;
@@ -269,62 +269,62 @@
         {
           if (*v56 != v44)
           {
-            objc_enumerationMutation(v41);
+            objc_enumerationMutation(statusBarDescribers);
           }
 
-          [(SBMainDisplaySceneLayoutStatusBarView *)v3 applyStatusBarStylesForDescriber:*(*(&v55 + 1) + 8 * v45++)];
+          [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy applyStatusBarStylesForDescriber:*(*(&v55 + 1) + 8 * v45++)];
         }
 
         while (v43 != v45);
-        v43 = [v41 countByEnumeratingWithState:&v55 objects:v59 count:16];
+        v43 = [statusBarDescribers countByEnumeratingWithState:&v55 objects:v59 count:16];
       }
 
       while (v43);
     }
 
-    v46 = [(_UIStatusBar *)v3->_statusBarUnderlyingViewAccessor actionGestureRecognizer];
-    v47 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v3 action:sel__statusBarScrollToTop_];
-    scrollToTopGestureRecognizer = v3->_scrollToTopGestureRecognizer;
-    v3->_scrollToTopGestureRecognizer = v47;
+    actionGestureRecognizer = [(_UIStatusBar *)selfCopy->_statusBarUnderlyingViewAccessor actionGestureRecognizer];
+    v47 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:selfCopy action:sel__statusBarScrollToTop_];
+    scrollToTopGestureRecognizer = selfCopy->_scrollToTopGestureRecognizer;
+    selfCopy->_scrollToTopGestureRecognizer = v47;
 
-    [(UITapGestureRecognizer *)v3->_scrollToTopGestureRecognizer requireGestureRecognizerToFail:v46];
-    [(_UIStatusBar *)v3->_statusBarUnderlyingViewAccessor addGestureRecognizer:v3->_scrollToTopGestureRecognizer];
+    [(UITapGestureRecognizer *)selfCopy->_scrollToTopGestureRecognizer requireGestureRecognizerToFail:actionGestureRecognizer];
+    [(_UIStatusBar *)selfCopy->_statusBarUnderlyingViewAccessor addGestureRecognizer:selfCopy->_scrollToTopGestureRecognizer];
     v49 = +[SBPlatformController sharedInstance];
-    v50 = [v49 isInternalInstall];
+    isInternalInstall = [v49 isInternalInstall];
 
-    if (v50)
+    if (isInternalInstall)
     {
-      v51 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:v3 action:sel__statusBarShowDebug_];
-      showDebugGestureRecognizer = v3->_showDebugGestureRecognizer;
-      v3->_showDebugGestureRecognizer = v51;
+      v51 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:selfCopy action:sel__statusBarShowDebug_];
+      showDebugGestureRecognizer = selfCopy->_showDebugGestureRecognizer;
+      selfCopy->_showDebugGestureRecognizer = v51;
 
-      [(UITapGestureRecognizer *)v3->_showDebugGestureRecognizer setNumberOfTouchesRequired:2];
-      [(UITapGestureRecognizer *)v3->_showDebugGestureRecognizer requireGestureRecognizerToFail:v46];
-      [(_UIStatusBar *)v3->_statusBarUnderlyingViewAccessor addGestureRecognizer:v3->_showDebugGestureRecognizer];
+      [(UITapGestureRecognizer *)selfCopy->_showDebugGestureRecognizer setNumberOfTouchesRequired:2];
+      [(UITapGestureRecognizer *)selfCopy->_showDebugGestureRecognizer requireGestureRecognizerToFail:actionGestureRecognizer];
+      [(_UIStatusBar *)selfCopy->_statusBarUnderlyingViewAccessor addGestureRecognizer:selfCopy->_showDebugGestureRecognizer];
     }
 
-    [(UIView *)v3->_statusBarWrapperView addSubview:self->_statusBar];
-    [(BSUIOrientationTransformWrapperView *)v3->_statusBarContainerView addContentView:v3->_statusBarWrapperView];
-    [(BSUIOrientationTransformWrapperView *)v3->_statusBarContainerView addHitTestView:self->_statusBar];
-    [(SBMainDisplaySceneLayoutStatusBarView *)v3 _updateHitTestLayers];
-    [(SBMainDisplaySceneLayoutStatusBarView *)v3 _updateDebugBackgroundColor];
+    [(UIView *)selfCopy->_statusBarWrapperView addSubview:self->_statusBar];
+    [(BSUIOrientationTransformWrapperView *)selfCopy->_statusBarContainerView addContentView:selfCopy->_statusBarWrapperView];
+    [(BSUIOrientationTransformWrapperView *)selfCopy->_statusBarContainerView addHitTestView:self->_statusBar];
+    [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy _updateHitTestLayers];
+    [(SBMainDisplaySceneLayoutStatusBarView *)selfCopy _updateDebugBackgroundColor];
   }
 }
 
-- (void)_statusBarTapped:(id)a3 type:(int64_t)a4
+- (void)_statusBarTapped:(id)tapped type:(int64_t)type
 {
-  v6 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v16 = *MEMORY[0x277CBF348];
   if ((*(&self->_conformanceFlags + 1) & 4) == 0)
   {
-    v8 = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarDescriberForPrimaryApplicationIfAny];
-    v9 = [v8 sceneToHandleStatusBarTapIfExists];
+    _statusBarDescriberForPrimaryApplicationIfAny = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarDescriberForPrimaryApplicationIfAny];
+    sceneToHandleStatusBarTapIfExists = [_statusBarDescriberForPrimaryApplicationIfAny sceneToHandleStatusBarTapIfExists];
 
-    [v6 locationInView:self->_statusBarUnderlyingViewAccessor];
+    [tappedCopy locationInView:self->_statusBarUnderlyingViewAccessor];
     *&v16 = v10;
     *(&v16 + 1) = v11;
-    if (!v9)
+    if (!sceneToHandleStatusBarTapIfExists)
     {
       goto LABEL_6;
     }
@@ -332,17 +332,17 @@
     goto LABEL_5;
   }
 
-  [v6 locationInView:self];
+  [tappedCopy locationInView:self];
   v12 = [WeakRetained statusBarDescriberAtPoint:self inView:&v16 pointInSceneLayoutSpace:?];
-  v9 = [v12 sceneToHandleStatusBarTapIfExists];
+  sceneToHandleStatusBarTapIfExists = [v12 sceneToHandleStatusBarTapIfExists];
 
-  if (v9)
+  if (sceneToHandleStatusBarTapIfExists)
   {
 LABEL_5:
     v13 = objc_alloc(MEMORY[0x277D75AB0]);
-    v14 = [v13 initWithType:a4 xPosition:*&v16];
+    v14 = [v13 initWithType:type xPosition:*&v16];
     v15 = [MEMORY[0x277CBEB98] setWithObject:v14];
-    [v9 sendActions:v15];
+    [sceneToHandleStatusBarTapIfExists sendActions:v15];
   }
 
 LABEL_6:
@@ -356,9 +356,9 @@ LABEL_6:
   v11 = 0u;
   v12 = 0u;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v3 = [WeakRetained statusBarDescribers];
+  statusBarDescribers = [WeakRetained statusBarDescribers];
 
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [statusBarDescribers countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -368,7 +368,7 @@ LABEL_6:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(statusBarDescribers);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -379,7 +379,7 @@ LABEL_6:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [statusBarDescribers countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -404,28 +404,28 @@ LABEL_11:
 
 - (id)_sceneHandleForClassicApplicationIfAny
 {
-  v2 = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarDescriberForPrimaryApplicationIfAny];
-  v3 = [v2 classicApplicationSceneHandleIfExists];
+  _statusBarDescriberForPrimaryApplicationIfAny = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarDescriberForPrimaryApplicationIfAny];
+  classicApplicationSceneHandleIfExists = [_statusBarDescriberForPrimaryApplicationIfAny classicApplicationSceneHandleIfExists];
 
-  return v3;
+  return classicApplicationSceneHandleIfExists;
 }
 
-- (void)layoutStatusBarForSpringBoardRotationToOrientation:(int64_t)a3
+- (void)layoutStatusBarForSpringBoardRotationToOrientation:(int64_t)orientation
 {
-  v5 = [(SBMainDisplaySceneLayoutStatusBarView *)self _anyAppViewControllerOwningInterfaceOrientation];
+  _anyAppViewControllerOwningInterfaceOrientation = [(SBMainDisplaySceneLayoutStatusBarView *)self _anyAppViewControllerOwningInterfaceOrientation];
 
-  if (!v5)
+  if (!_anyAppViewControllerOwningInterfaceOrientation)
   {
 
-    [(SBMainDisplaySceneLayoutStatusBarView *)self _layoutStatusBarForOrientation:a3];
+    [(SBMainDisplaySceneLayoutStatusBarView *)self _layoutStatusBarForOrientation:orientation];
   }
 }
 
 - (void)updateStatusBarOrientationForLegacyApp
 {
-  v3 = [(SBMainDisplaySceneLayoutStatusBarView *)self _anyAppViewControllerOwningInterfaceOrientation];
+  _anyAppViewControllerOwningInterfaceOrientation = [(SBMainDisplaySceneLayoutStatusBarView *)self _anyAppViewControllerOwningInterfaceOrientation];
 
-  if (v3)
+  if (_anyAppViewControllerOwningInterfaceOrientation)
   {
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     v5 = [WeakRetained statusBarDescriberForStatusBarPart:*MEMORY[0x277D775D0]];
@@ -436,13 +436,13 @@ LABEL_11:
 
 - (BOOL)_statusBarNeedsSpecialLayoutForClassic
 {
-  v2 = [(SBMainDisplaySceneLayoutStatusBarView *)self _sceneHandleForClassicApplicationIfAny];
-  if (v2 && ([MEMORY[0x277D75418] currentDevice], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "userInterfaceIdiom"), v3, (v4 & 0xFFFFFFFFFFFFFFFBLL) == 1))
+  _sceneHandleForClassicApplicationIfAny = [(SBMainDisplaySceneLayoutStatusBarView *)self _sceneHandleForClassicApplicationIfAny];
+  if (_sceneHandleForClassicApplicationIfAny && ([MEMORY[0x277D75418] currentDevice], v3 = objc_claimAutoreleasedReturnValue(), v4 = objc_msgSend(v3, "userInterfaceIdiom"), v3, (v4 & 0xFFFFFFFFFFFFFFFBLL) == 1))
   {
-    v5 = [v2 application];
-    if ([v5 classicAppNonFullScreenWithHomeAffordance])
+    application = [_sceneHandleForClassicApplicationIfAny application];
+    if ([application classicAppNonFullScreenWithHomeAffordance])
     {
-      v6 = [v5 classicAppPhoneAppRunningOnPad] ^ 1;
+      v6 = [application classicAppPhoneAppRunningOnPad] ^ 1;
     }
 
     else
@@ -459,7 +459,7 @@ LABEL_11:
   return v6;
 }
 
-- (CGRect)_statusBarFrameForOrientation:(int64_t)a3
+- (CGRect)_statusBarFrameForOrientation:(int64_t)orientation
 {
   statusBarContainerView = self->_statusBarContainerView;
   [(SBMainDisplaySceneLayoutStatusBarView *)self bounds];
@@ -468,19 +468,19 @@ LABEL_11:
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [(SBMainDisplaySceneLayoutStatusBarView *)self _defaultStatusBarStyleRequest];
+  _defaultStatusBarStyleRequest = [(SBMainDisplaySceneLayoutStatusBarView *)self _defaultStatusBarStyleRequest];
   if ([(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarNeedsSpecialLayoutForClassic])
   {
-    v15 = [(SBMainDisplaySceneLayoutStatusBarView *)self _sceneHandleForClassicApplicationIfAny];
-    v16 = [v15 displayIdentity];
-    v17 = [v16 currentConfiguration];
-    [SBUIController statusBarFrameForDeviceApplicationSceneHandle:v15 displayConfiguration:v17 interfaceOrientation:a3 statusBarStyleRequest:v14 withinBounds:0 inReferenceSpace:v7, v9, v11, v13];
+    _sceneHandleForClassicApplicationIfAny = [(SBMainDisplaySceneLayoutStatusBarView *)self _sceneHandleForClassicApplicationIfAny];
+    displayIdentity = [_sceneHandleForClassicApplicationIfAny displayIdentity];
+    currentConfiguration = [displayIdentity currentConfiguration];
+    [SBUIController statusBarFrameForDeviceApplicationSceneHandle:_sceneHandleForClassicApplicationIfAny displayConfiguration:currentConfiguration interfaceOrientation:orientation statusBarStyleRequest:_defaultStatusBarStyleRequest withinBounds:0 inReferenceSpace:v7, v9, v11, v13];
     v7 = v18;
     v9 = v19;
     v11 = v20;
   }
 
-  [MEMORY[0x277D75A78] heightForStyle:objc_msgSend(v14 orientation:{"style"), a3}];
+  [MEMORY[0x277D75A78] heightForStyle:objc_msgSend(_defaultStatusBarStyleRequest orientation:{"style"), orientation}];
   v22 = v21;
   if (self->_debugOffsetEnabled)
   {
@@ -503,16 +503,16 @@ LABEL_11:
   return result;
 }
 
-- (void)_layoutStatusBarForOrientation:(int64_t)a3
+- (void)_layoutStatusBarForOrientation:(int64_t)orientation
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = [(UIStatusBar *)self->_statusBar orientation];
+  orientation = [(UIStatusBar *)self->_statusBar orientation];
   statusBarLaidOutForClassic = self->_statusBarLaidOutForClassic;
-  v7 = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarNeedsSpecialLayoutForClassic];
-  v8 = v5 != a3;
-  if (statusBarLaidOutForClassic != v7)
+  _statusBarNeedsSpecialLayoutForClassic = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarNeedsSpecialLayoutForClassic];
+  v8 = orientation != orientation;
+  if (statusBarLaidOutForClassic != _statusBarNeedsSpecialLayoutForClassic)
   {
-    self->_statusBarLaidOutForClassic = v7;
+    self->_statusBarLaidOutForClassic = _statusBarNeedsSpecialLayoutForClassic;
     v8 = 1;
   }
 
@@ -532,25 +532,25 @@ LABEL_11:
     v23 = 1024;
     v24 = v8;
     v25 = 1024;
-    v26 = v5 != a3;
+    v26 = orientation != orientation;
     _os_log_debug_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEBUG, "%@ statusBar laying out for orientation %@ (was %@) needsFrameUpdate = %{BOOL}u, needsOrientationUpdate = %{BOOL}u", buf, 0x2Cu);
   }
 
   if (v8)
   {
-    [(BSUIOrientationTransformWrapperView *)self->_statusBarContainerView setContentOrientation:a3];
+    [(BSUIOrientationTransformWrapperView *)self->_statusBarContainerView setContentOrientation:orientation];
     statusBar = self->_statusBar;
-    [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarFrameForOrientation:a3];
+    [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarFrameForOrientation:orientation];
     [(UIStatusBar *)statusBar setFrame:?];
-    v11 = [(UIView *)self _sbWindowScene];
-    v12 = [v11 statusBarManager];
+    _sbWindowScene = [(UIView *)self _sbWindowScene];
+    statusBarManager = [_sbWindowScene statusBarManager];
     [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarAvoidanceFrame];
-    [v12 setAvoidanceFrame:@"SBMainDisplaySceneLayoutStatusBarView _layoutStatusBarForOrientation" reason:self->_statusBar statusBar:0 animationSettings:?];
+    [statusBarManager setAvoidanceFrame:@"SBMainDisplaySceneLayoutStatusBarView _layoutStatusBarForOrientation" reason:self->_statusBar statusBar:0 animationSettings:?];
   }
 
-  if (v5 != a3)
+  if (orientation != orientation)
   {
-    [(UIStatusBar *)self->_statusBar setOrientation:a3];
+    [(UIStatusBar *)self->_statusBar setOrientation:orientation];
   }
 
   [(SBMainDisplaySceneLayoutStatusBarView *)self _updateHitTestLayers];
@@ -558,20 +558,20 @@ LABEL_11:
 
 - (void)_tearDownStatusBar
 {
-  v3 = [(UITapGestureRecognizer *)self->_scrollToTopGestureRecognizer view];
-  [v3 removeGestureRecognizer:self->_scrollToTopGestureRecognizer];
+  view = [(UITapGestureRecognizer *)self->_scrollToTopGestureRecognizer view];
+  [view removeGestureRecognizer:self->_scrollToTopGestureRecognizer];
 
   scrollToTopGestureRecognizer = self->_scrollToTopGestureRecognizer;
   self->_scrollToTopGestureRecognizer = 0;
 
-  v5 = [(UITapGestureRecognizer *)self->_showDebugGestureRecognizer view];
-  [v5 removeGestureRecognizer:self->_showDebugGestureRecognizer];
+  view2 = [(UITapGestureRecognizer *)self->_showDebugGestureRecognizer view];
+  [view2 removeGestureRecognizer:self->_showDebugGestureRecognizer];
 
   showDebugGestureRecognizer = self->_showDebugGestureRecognizer;
   self->_showDebugGestureRecognizer = 0;
 
-  v7 = [(SBMainDisplaySceneLayoutStatusBarView *)self _reusePool];
-  [v7 recycleStatusBar:self->_statusBar];
+  _reusePool = [(SBMainDisplaySceneLayoutStatusBarView *)self _reusePool];
+  [_reusePool recycleStatusBar:self->_statusBar];
 
   [(BSUIOrientationTransformWrapperView *)self->_statusBarContainerView removeFromSuperview];
   statusBar = self->_statusBar;
@@ -596,8 +596,8 @@ LABEL_11:
 
   if ([(SBMainDisplaySceneLayoutStatusBarView *)self _allowChangingIndividualStatusBarParts])
   {
-    v3 = [(_UIStatusBar *)self->_statusBarUnderlyingViewAccessor enabledPartIdentifiers];
-    v4 = [v3 count] == 0;
+    enabledPartIdentifiers = [(_UIStatusBar *)self->_statusBarUnderlyingViewAccessor enabledPartIdentifiers];
+    v4 = [enabledPartIdentifiers count] == 0;
 
     return v4;
   }
@@ -610,20 +610,20 @@ LABEL_11:
 - (BOOL)_allowChangingIndividualStatusBarParts
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-  v3 = [WeakRetained allowsConfiguringIndividualStatusBarParts];
+  allowsConfiguringIndividualStatusBarParts = [WeakRetained allowsConfiguringIndividualStatusBarParts];
 
-  return v3;
+  return allowsConfiguringIndividualStatusBarParts;
 }
 
 - (void)updateBreadcrumbActionIfNecessary
 {
-  v3 = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarDescriberForPrimaryApplicationIfAny];
-  v4 = [v3 statusBarSceneIdentifier];
-  v5 = [v3 overlayStatusBarData];
-  if (!BSEqualStrings() || ([(_UIStatusBar *)self->_statusBarUnderlyingViewAccessor currentData], v6 = objc_claimAutoreleasedReturnValue(), v6, v6 != v5))
+  _statusBarDescriberForPrimaryApplicationIfAny = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarDescriberForPrimaryApplicationIfAny];
+  statusBarSceneIdentifier = [_statusBarDescriberForPrimaryApplicationIfAny statusBarSceneIdentifier];
+  overlayStatusBarData = [_statusBarDescriberForPrimaryApplicationIfAny overlayStatusBarData];
+  if (!BSEqualStrings() || ([(_UIStatusBar *)self->_statusBarUnderlyingViewAccessor currentData], v6 = objc_claimAutoreleasedReturnValue(), v6, v6 != overlayStatusBarData))
   {
-    v7 = [v3 breadcrumbProvider];
-    if (v7 && self->_statusBarUnderlyingViewAccessor)
+    breadcrumbProvider = [_statusBarDescriberForPrimaryApplicationIfAny breadcrumbProvider];
+    if (breadcrumbProvider && self->_statusBarUnderlyingViewAccessor)
     {
       v8 = MEMORY[0x277D75D18];
       v15[0] = MEMORY[0x277D85DD0];
@@ -631,10 +631,10 @@ LABEL_11:
       v15[2] = __74__SBMainDisplaySceneLayoutStatusBarView_updateBreadcrumbActionIfNecessary__block_invoke;
       v15[3] = &unk_2783A92D8;
       v15[4] = self;
-      v9 = v5;
+      v9 = overlayStatusBarData;
       v16 = v9;
       [v8 performWithoutAnimation:v15];
-      if (v9 && [v7 hasBreadcrumb])
+      if (v9 && [breadcrumbProvider hasBreadcrumb])
       {
         statusBarUnderlyingViewAccessor = self->_statusBarUnderlyingViewAccessor;
         v11 = MEMORY[0x277D76290];
@@ -642,13 +642,13 @@ LABEL_11:
         v13[1] = 3221225472;
         v13[2] = __74__SBMainDisplaySceneLayoutStatusBarView_updateBreadcrumbActionIfNecessary__block_invoke_2;
         v13[3] = &unk_2783B2BF8;
-        v14 = v7;
+        v14 = breadcrumbProvider;
         v12 = [v11 actionWithBlock:v13];
         [(_UIStatusBar *)statusBarUnderlyingViewAccessor setAction:v12 forPartWithIdentifier:*MEMORY[0x277D775A0]];
       }
     }
 
-    objc_storeStrong(&self->_statusBarBreadcrumbSceneIdentifier, v4);
+    objc_storeStrong(&self->_statusBarBreadcrumbSceneIdentifier, statusBarSceneIdentifier);
   }
 }
 
@@ -660,9 +660,9 @@ LABEL_11:
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
     if (!self->_hitTestLayers)
     {
-      v4 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       hitTestLayers = self->_hitTestLayers;
-      self->_hitTestLayers = v4;
+      self->_hitTestLayers = dictionary;
     }
 
     v45 = 0u;
@@ -690,7 +690,7 @@ LABEL_11:
 
           v10 = *(*(&v43 + 1) + 8 * i);
           v11 = [WeakRetained statusBarDescriberForStatusBarPart:v10];
-          v12 = [(NSMutableDictionary *)self->_hitTestLayers objectForKeyedSubscript:v10];
+          layer2 = [(NSMutableDictionary *)self->_hitTestLayers objectForKeyedSubscript:v10];
           height = v39;
           width = v40;
           y = v41;
@@ -722,8 +722,8 @@ LABEL_11:
               x = v42;
               if (!CGRectIsNull(v49))
               {
-                v27 = [(UIStatusBar *)self->_statusBar layer];
-                [v27 bounds];
+                layer = [(UIStatusBar *)self->_statusBar layer];
+                [layer bounds];
                 v29 = v28;
                 v31 = v30;
                 v33 = v32;
@@ -753,27 +753,27 @@ LABEL_11:
           v52.size.height = height;
           if (CGRectIsEmpty(v52))
           {
-            [v12 removeFromSuperlayer];
+            [layer2 removeFromSuperlayer];
           }
 
           else
           {
-            if (!v12)
+            if (!layer2)
             {
-              v12 = [MEMORY[0x277CD9ED0] layer];
-              [v12 setHitTestsAsOpaque:1];
-              [(NSMutableDictionary *)self->_hitTestLayers setObject:v12 forKeyedSubscript:v10];
+              layer2 = [MEMORY[0x277CD9ED0] layer];
+              [layer2 setHitTestsAsOpaque:1];
+              [(NSMutableDictionary *)self->_hitTestLayers setObject:layer2 forKeyedSubscript:v10];
             }
 
-            v36 = [v12 superlayer];
+            superlayer = [layer2 superlayer];
 
-            if (!v36)
+            if (!superlayer)
             {
-              v37 = [(UIStatusBar *)self->_statusBar layer];
-              [v37 addSublayer:v12];
+              layer3 = [(UIStatusBar *)self->_statusBar layer];
+              [layer3 addSublayer:layer2];
             }
 
-            [v12 setFrame:{x, y, width, height}];
+            [layer2 setFrame:{x, y, width, height}];
           }
         }
 
@@ -785,9 +785,9 @@ LABEL_11:
   }
 }
 
-- (id)statusBarStyleRequestForStatusBarPart:(id)a3
+- (id)statusBarStyleRequestForStatusBarPart:(id)part
 {
-  if (a3)
+  if (part)
   {
     v3 = _SBStatusBarLegacyStyleFromStyle([(SBMainDisplaySceneLayoutStatusBarView *)self _effectiveStyleForPartIdentifier:?]);
   }
@@ -802,46 +802,46 @@ LABEL_11:
   return v4;
 }
 
-- (void)applyStatusBarStylesForDescriber:(id)a3
+- (void)applyStatusBarStylesForDescriber:(id)describer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 statusBarSceneIdentifier];
+  describerCopy = describer;
+  statusBarSceneIdentifier = [describerCopy statusBarSceneIdentifier];
   v6 = SBLogAppStatusBars();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v10 = objc_opt_class();
     v11 = v10;
     *buf = 138413058;
-    v17 = v5;
+    v17 = statusBarSceneIdentifier;
     v18 = 2112;
     v19 = v10;
     v20 = 2112;
     v21 = objc_opt_class();
     v22 = 2048;
-    v23 = v4;
+    v23 = describerCopy;
     v12 = v21;
     _os_log_debug_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEBUG, "(%@) %@ applying styles for <%@ %p>", buf, 0x2Au);
   }
 
-  -[SBMainDisplaySceneLayoutStatusBarView _applyStatusBarHidden:withAnimation:toSceneWithIdentifier:](self, "_applyStatusBarHidden:withAnimation:toSceneWithIdentifier:", [v4 statusBarHidden], 0, v5);
-  v7 = [v4 backgroundActivitiesToSuppress];
-  [(SBMainDisplaySceneLayoutStatusBarView *)self _applyBackgroundActivitiesToSuppress:v7 toSceneWithIdentifier:v5];
+  -[SBMainDisplaySceneLayoutStatusBarView _applyStatusBarHidden:withAnimation:toSceneWithIdentifier:](self, "_applyStatusBarHidden:withAnimation:toSceneWithIdentifier:", [describerCopy statusBarHidden], 0, statusBarSceneIdentifier);
+  backgroundActivitiesToSuppress = [describerCopy backgroundActivitiesToSuppress];
+  [(SBMainDisplaySceneLayoutStatusBarView *)self _applyBackgroundActivitiesToSuppress:backgroundActivitiesToSuppress toSceneWithIdentifier:statusBarSceneIdentifier];
 
-  -[SBMainDisplaySceneLayoutStatusBarView _applyStatusBarStyle:toSceneWithIdentifier:](self, "_applyStatusBarStyle:toSceneWithIdentifier:", [v4 statusBarStyle], v5);
-  [v4 statusBarAlpha];
-  [(SBMainDisplaySceneLayoutStatusBarView *)self _applyStatusBarAlpha:v5 toSceneWithIdentifier:?];
-  [v4 statusBarAvoidanceFrame];
-  [(SBMainDisplaySceneLayoutStatusBarView *)self _applyStatusBarAvoidanceFrame:v5 toSceneWithIdentifier:?];
+  -[SBMainDisplaySceneLayoutStatusBarView _applyStatusBarStyle:toSceneWithIdentifier:](self, "_applyStatusBarStyle:toSceneWithIdentifier:", [describerCopy statusBarStyle], statusBarSceneIdentifier);
+  [describerCopy statusBarAlpha];
+  [(SBMainDisplaySceneLayoutStatusBarView *)self _applyStatusBarAlpha:statusBarSceneIdentifier toSceneWithIdentifier:?];
+  [describerCopy statusBarAvoidanceFrame];
+  [(SBMainDisplaySceneLayoutStatusBarView *)self _applyStatusBarAvoidanceFrame:statusBarSceneIdentifier toSceneWithIdentifier:?];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__SBMainDisplaySceneLayoutStatusBarView_applyStatusBarStylesForDescriber___block_invoke;
   v13[3] = &unk_2783B2C20;
   v13[4] = self;
-  v14 = v4;
-  v15 = v5;
-  v8 = v5;
-  v9 = v4;
+  v14 = describerCopy;
+  v15 = statusBarSceneIdentifier;
+  v8 = statusBarSceneIdentifier;
+  v9 = describerCopy;
   [(SBMainDisplaySceneLayoutStatusBarView *)self _enumerateValidStatusBarPartIdentifiersForSceneWithIdentifier:v8 withBlock:v13];
 }
 
@@ -853,10 +853,10 @@ void __74__SBMainDisplaySceneLayoutStatusBarView_applyStatusBarStylesForDescribe
   [v3 _applyStatusBarStyle:objc_msgSend(v4 toPartIdentifier:"statusBarStyleForPartWithIdentifier:" ofSceneWithIdentifier:{v5), v5, a1[6]}];
 }
 
-- (void)_applyStatusBarStyle:(int64_t)a3 toSceneWithIdentifier:(id)a4
+- (void)_applyStatusBarStyle:(int64_t)style toSceneWithIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   if (self->_statusBarUnderlyingViewAccessor)
   {
     if ([(SBMainDisplaySceneLayoutStatusBarView *)self _allowChangingIndividualStatusBarParts])
@@ -866,8 +866,8 @@ void __74__SBMainDisplaySceneLayoutStatusBarView_applyStatusBarStylesForDescribe
       v11[2] = __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarStyle_toSceneWithIdentifier___block_invoke;
       v11[3] = &unk_2783B2C48;
       v11[4] = self;
-      v13 = a3;
-      v12 = v6;
+      styleCopy = style;
+      v12 = identifierCopy;
       [(SBMainDisplaySceneLayoutStatusBarView *)self _enumerateValidStatusBarPartIdentifiersForSceneWithIdentifier:v12 withBlock:v11];
     }
 
@@ -878,9 +878,9 @@ void __74__SBMainDisplaySceneLayoutStatusBarView_applyStatusBarStylesForDescribe
       {
         v8 = objc_opt_class();
         v9 = v8;
-        v10 = _SBStringFromStatusBarStyle(a3);
+        v10 = _SBStringFromStatusBarStyle(style);
         *buf = 138412802;
-        v15 = v6;
+        v15 = identifierCopy;
         v16 = 2112;
         v17 = v8;
         v18 = 2112;
@@ -888,7 +888,7 @@ void __74__SBMainDisplaySceneLayoutStatusBarView_applyStatusBarStylesForDescribe
         _os_log_debug_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEBUG, "(%@) %@ changing style for whole bar to %@", buf, 0x20u);
       }
 
-      [(UIStatusBar *)self->_statusBar requestResolvedStyle:a3];
+      [(UIStatusBar *)self->_statusBar requestResolvedStyle:style];
     }
   }
 }
@@ -935,29 +935,29 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarStyle_toSceneWit
   }
 }
 
-- (void)_applyStatusBarStyle:(int64_t)a3 toPartIdentifier:(id)a4 ofSceneWithIdentifier:(id)a5
+- (void)_applyStatusBarStyle:(int64_t)style toPartIdentifier:(id)identifier ofSceneWithIdentifier:(id)withIdentifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  withIdentifierCopy = withIdentifier;
   if (self->_statusBarUnderlyingViewAccessor)
   {
     if ([(SBMainDisplaySceneLayoutStatusBarView *)self _allowChangingIndividualStatusBarParts])
     {
-      v10 = [(SBMainDisplaySceneLayoutStatusBarView *)self _validStatusBarPartIdentifiersForSceneWithIdentifier:v9];
-      v11 = [v10 containsObject:v8];
+      v10 = [(SBMainDisplaySceneLayoutStatusBarView *)self _validStatusBarPartIdentifiersForSceneWithIdentifier:withIdentifierCopy];
+      v11 = [v10 containsObject:identifierCopy];
 
       if (v11)
       {
-        if (a3 == 4)
+        if (style == 4)
         {
-          v12 = [(NSMutableDictionary *)self->_partIdentifiersDefaultStyles objectForKeyedSubscript:v8];
-          a3 = [v12 integerValue];
+          v12 = [(NSMutableDictionary *)self->_partIdentifiersDefaultStyles objectForKeyedSubscript:identifierCopy];
+          style = [v12 integerValue];
 
           partIdentifiersCustomStyles = self->_partIdentifiersCustomStyles;
           if (partIdentifiersCustomStyles)
           {
-            [(NSMutableDictionary *)partIdentifiersCustomStyles removeObjectForKey:v8];
+            [(NSMutableDictionary *)partIdentifiersCustomStyles removeObjectForKey:identifierCopy];
           }
         }
 
@@ -965,13 +965,13 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarStyle_toSceneWit
         {
           if (!self->_partIdentifiersCustomStyles)
           {
-            v14 = [MEMORY[0x277CBEB38] dictionary];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
             v15 = self->_partIdentifiersCustomStyles;
-            self->_partIdentifiersCustomStyles = v14;
+            self->_partIdentifiersCustomStyles = dictionary;
           }
 
-          v16 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
-          [(NSMutableDictionary *)self->_partIdentifiersCustomStyles setObject:v16 forKeyedSubscript:v8];
+          v16 = [MEMORY[0x277CCABB0] numberWithInteger:style];
+          [(NSMutableDictionary *)self->_partIdentifiersCustomStyles setObject:v16 forKeyedSubscript:identifierCopy];
         }
 
         v17 = SBLogAppStatusBars();
@@ -979,29 +979,29 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarStyle_toSceneWit
         {
           v18 = objc_opt_class();
           v19 = v18;
-          v20 = _SBStringFromStatusBarStyle(a3);
+          v20 = _SBStringFromStatusBarStyle(style);
           v21 = 138413058;
-          v22 = v9;
+          v22 = withIdentifierCopy;
           v23 = 2112;
           v24 = v18;
           v25 = 2112;
-          v26 = v8;
+          v26 = identifierCopy;
           v27 = 2112;
           v28 = v20;
           _os_log_debug_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEBUG, "(%@) %@ changing style for %@ to %@", &v21, 0x2Au);
         }
 
-        [(_UIStatusBar *)self->_statusBarUnderlyingViewAccessor setStyle:a3 forPartWithIdentifier:v8];
+        [(_UIStatusBar *)self->_statusBarUnderlyingViewAccessor setStyle:style forPartWithIdentifier:identifierCopy];
       }
     }
   }
 }
 
-- (void)_applyStatusBarHidden:(BOOL)a3 withAnimation:(int64_t)a4 toSceneWithIdentifier:(id)a5
+- (void)_applyStatusBarHidden:(BOOL)hidden withAnimation:(int64_t)animation toSceneWithIdentifier:(id)identifier
 {
-  v6 = a3;
+  hiddenCopy = hidden;
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  identifierCopy = identifier;
   if (self->_statusBarUnderlyingViewAccessor)
   {
     v9 = SBLogAppStatusBars();
@@ -1011,18 +1011,18 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarStyle_toSceneWit
       v17 = v16;
       v18 = NSStringFromBOOL();
       *buf = 138413058;
-      v29 = v8;
+      v29 = identifierCopy;
       v30 = 2112;
       v31 = v16;
       v32 = 2112;
       v33 = v18;
       v34 = 2048;
-      v35 = a4;
+      animationCopy = animation;
       _os_log_debug_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEBUG, "(%@) %@ begin to change status bar hidden to %@ with animation %ld", buf, 0x2Au);
     }
 
-    v10 = [(UIView *)self _sbWindowScene];
-    v11 = [v10 recordingIndicatorManager];
+    _sbWindowScene = [(UIView *)self _sbWindowScene];
+    recordingIndicatorManager = [_sbWindowScene recordingIndicatorManager];
     if ([(SBMainDisplaySceneLayoutStatusBarView *)self _allowChangingIndividualStatusBarParts])
     {
       v22[0] = MEMORY[0x277D85DD0];
@@ -1031,7 +1031,7 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarStyle_toSceneWit
       v22[3] = &unk_2783B2C98;
       v22[4] = self;
       v12 = &v23;
-      v23 = v8;
+      v23 = identifierCopy;
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __99__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarHidden_withAnimation_toSceneWithIdentifier___block_invoke_2_46;
@@ -1039,9 +1039,9 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarStyle_toSceneWit
       v19[4] = self;
       v13 = &v20;
       v20 = v23;
-      v21 = v11;
-      v14 = v11;
-      [(SBMainDisplaySceneLayoutStatusBarView *)self _animateHidden:v6 withAnimation:a4 transitionHandler:v22 applyHandler:v19];
+      v21 = recordingIndicatorManager;
+      v14 = recordingIndicatorManager;
+      [(SBMainDisplaySceneLayoutStatusBarView *)self _animateHidden:hiddenCopy withAnimation:animation transitionHandler:v22 applyHandler:v19];
     }
 
     else
@@ -1056,12 +1056,12 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarStyle_toSceneWit
       v24[2] = __99__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarHidden_withAnimation_toSceneWithIdentifier___block_invoke_2;
       v24[3] = &unk_2783A9940;
       v12 = v25;
-      v25[0] = v8;
+      v25[0] = identifierCopy;
       v25[1] = self;
       v13 = &v26;
-      v26 = v11;
-      v15 = v11;
-      [(SBMainDisplaySceneLayoutStatusBarView *)self _animateHidden:v6 withAnimation:a4 transitionHandler:v27 applyHandler:v24];
+      v26 = recordingIndicatorManager;
+      v15 = recordingIndicatorManager;
+      [(SBMainDisplaySceneLayoutStatusBarView *)self _animateHidden:hiddenCopy withAnimation:animation transitionHandler:v27 applyHandler:v24];
     }
   }
 }
@@ -1228,14 +1228,14 @@ LABEL_15:
   [*(a1 + 32) _updateHitTestLayers];
 }
 
-- (void)_applyStatusBarAlpha:(double)a3 toSceneWithIdentifier:(id)a4
+- (void)_applyStatusBarAlpha:(double)alpha toSceneWithIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  identifierCopy = identifier;
   if (self->_statusBarUnderlyingViewAccessor)
   {
-    v7 = [(UIView *)self _sbWindowScene];
-    v8 = [v7 recordingIndicatorManager];
+    _sbWindowScene = [(UIView *)self _sbWindowScene];
+    recordingIndicatorManager = [_sbWindowScene recordingIndicatorManager];
     if ([(SBMainDisplaySceneLayoutStatusBarView *)self _allowChangingIndividualStatusBarParts])
     {
       v11[0] = MEMORY[0x277D85DD0];
@@ -1243,9 +1243,9 @@ LABEL_15:
       v11[2] = __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWithIdentifier___block_invoke;
       v11[3] = &unk_2783B2CC0;
       v11[4] = self;
-      v14 = a3;
-      v12 = v6;
-      v13 = v8;
+      alphaCopy = alpha;
+      v12 = identifierCopy;
+      v13 = recordingIndicatorManager;
       [(SBMainDisplaySceneLayoutStatusBarView *)self _enumerateValidStatusBarPartIdentifiersForSceneWithIdentifier:v12 withBlock:v11];
     }
 
@@ -1255,17 +1255,17 @@ LABEL_15:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412802;
-        v16 = v6;
+        v16 = identifierCopy;
         v17 = 2112;
         v18 = objc_opt_class();
         v19 = 2048;
-        v20 = a3;
+        alphaCopy2 = alpha;
         v10 = v18;
         _os_log_debug_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEBUG, "(%@) %@ changing alpha for whole bar to %f", buf, 0x20u);
       }
 
-      [(_UIStatusBar *)self->_statusBarUnderlyingViewAccessor setAlpha:a3];
-      [v8 updateRecordingIndicatorForStatusBarChanges];
+      [(_UIStatusBar *)self->_statusBarUnderlyingViewAccessor setAlpha:alpha];
+      [recordingIndicatorManager updateRecordingIndicatorForStatusBarChanges];
     }
   }
 }
@@ -1299,11 +1299,11 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
   }
 }
 
-- (void)_applyBackgroundActivitiesToSuppress:(id)a3 toSceneWithIdentifier:(id)a4
+- (void)_applyBackgroundActivitiesToSuppress:(id)suppress toSceneWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  suppressCopy = suppress;
+  identifierCopy = identifier;
   if (self->_statusBarUnderlyingViewAccessor)
   {
     [(UIStatusBar *)self->_statusBar requestResolvedStyle:[(UIStatusBar *)self->_statusBar currentResolvedStyle]];
@@ -1313,14 +1313,14 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
     if (v9)
     {
       v10 = STBackgroundActivityIdentifiersDescription();
-      v11 = [(SBMainDisplaySceneLayoutStatusBarView *)self _effectiveBackgroundActivityIdentifiersToSuppress];
+      _effectiveBackgroundActivityIdentifiersToSuppress = [(SBMainDisplaySceneLayoutStatusBarView *)self _effectiveBackgroundActivityIdentifiersToSuppress];
       v12 = STBackgroundActivityIdentifiersDescription();
 
       v13 = SBLogAppStatusBars();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
         v15 = 138413058;
-        v16 = v7;
+        v16 = identifierCopy;
         v17 = 2112;
         v18 = objc_opt_class();
         v19 = 2112;
@@ -1334,23 +1334,23 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
   }
 }
 
-- (void)_applyStatusBarAvoidanceFrame:(CGRect)a3 toSceneWithIdentifier:(id)a4
+- (void)_applyStatusBarAvoidanceFrame:(CGRect)frame toSceneWithIdentifier:(id)identifier
 {
   if (self->_statusBarUnderlyingViewAccessor)
   {
-    v6 = [(UIView *)self _sbWindowScene:a4];
-    v5 = [v6 statusBarManager];
+    v6 = [(UIView *)self _sbWindowScene:identifier];
+    statusBarManager = [v6 statusBarManager];
     [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarAvoidanceFrame];
-    [v5 setAvoidanceFrame:@"SBMainDisplaySceneLayoutStatusBarView _applyStatusBarAvoidanceFrame" reason:self->_statusBar statusBar:0 animationSettings:?];
+    [statusBarManager setAvoidanceFrame:@"SBMainDisplaySceneLayoutStatusBarView _applyStatusBarAvoidanceFrame" reason:self->_statusBar statusBar:0 animationSettings:?];
   }
 }
 
-- (void)sceneWithIdentifier:(id)a3 didChangeStatusBarOrientationTo:(int64_t)a4
+- (void)sceneWithIdentifier:(id)identifier didChangeStatusBarOrientationTo:(int64_t)to
 {
-  v17 = a3;
-  v7 = [(SBMainDisplaySceneLayoutStatusBarView *)self _anyAppViewControllerOwningInterfaceOrientation];
+  identifierCopy = identifier;
+  _anyAppViewControllerOwningInterfaceOrientation = [(SBMainDisplaySceneLayoutStatusBarView *)self _anyAppViewControllerOwningInterfaceOrientation];
 
-  if (v7)
+  if (_anyAppViewControllerOwningInterfaceOrientation)
   {
     v8 = SBLogAppStatusBars();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -1360,10 +1360,10 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
       if ((*&self->_conformanceFlags & 0x100) != 0)
       {
         WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-        v11 = [WeakRetained statusBarPartsForSceneWithIdentifier:v17];
+        v11 = [WeakRetained statusBarPartsForSceneWithIdentifier:identifierCopy];
 
-        v12 = [(SBMainDisplaySceneLayoutStatusBarView *)self allValidStatusBarPartIdentifiers];
-        v13 = [v11 isEqualToArray:v12];
+        allValidStatusBarPartIdentifiers = [(SBMainDisplaySceneLayoutStatusBarView *)self allValidStatusBarPartIdentifiers];
+        v13 = [v11 isEqualToArray:allValidStatusBarPartIdentifiers];
 
         if ((v13 & 1) == 0)
         {
@@ -1371,9 +1371,9 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
         }
       }
 
-      v14 = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarDescriberForPrimaryApplicationIfAny];
-      v15 = [v14 statusBarSceneIdentifier];
-      v16 = [v17 isEqualToString:v15];
+      _statusBarDescriberForPrimaryApplicationIfAny = [(SBMainDisplaySceneLayoutStatusBarView *)self _statusBarDescriberForPrimaryApplicationIfAny];
+      statusBarSceneIdentifier = [_statusBarDescriberForPrimaryApplicationIfAny statusBarSceneIdentifier];
+      v16 = [identifierCopy isEqualToString:statusBarSceneIdentifier];
 
       if ((v16 & 1) == 0)
       {
@@ -1381,24 +1381,24 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
       }
     }
 
-    [(SBMainDisplaySceneLayoutStatusBarView *)self _layoutStatusBarForOrientation:a4];
+    [(SBMainDisplaySceneLayoutStatusBarView *)self _layoutStatusBarForOrientation:to];
     [(BSUIOrientationTransformWrapperView *)self->_statusBarContainerView setNeedsLayout];
     [(BSUIOrientationTransformWrapperView *)self->_statusBarContainerView layoutIfNeeded];
   }
 }
 
-- (void)didInvalidateStatusBarDescriptionForSceneWithIdentifier:(id)a3
+- (void)didInvalidateStatusBarDescriptionForSceneWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(SBMainDisplaySceneLayoutStatusBarView *)self dataSource];
-  v6 = [v5 statusBarDescribers];
+  dataSource = [(SBMainDisplaySceneLayoutStatusBarView *)self dataSource];
+  statusBarDescribers = [dataSource statusBarDescribers];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [statusBarDescribers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1409,12 +1409,12 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(statusBarDescribers);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 statusBarSceneIdentifier];
-        v13 = [v12 isEqual:v4];
+        statusBarSceneIdentifier = [v11 statusBarSceneIdentifier];
+        v13 = [statusBarSceneIdentifier isEqual:identifierCopy];
 
         if (v13)
         {
@@ -1422,16 +1422,16 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [statusBarDescribers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   if (WeakRetained != obj)
@@ -1545,14 +1545,14 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
   return result;
 }
 
-- (id)_validStatusBarPartIdentifiersForSceneWithIdentifier:(id)a3
+- (id)_validStatusBarPartIdentifiersForSceneWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   v6 = WeakRetained;
   if ((*&self->_conformanceFlags & 0x100) != 0)
   {
-    [WeakRetained statusBarPartsForSceneWithIdentifier:v4];
+    [WeakRetained statusBarPartsForSceneWithIdentifier:identifierCopy];
   }
 
   else
@@ -1564,35 +1564,35 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
   return v7;
 }
 
-- (int64_t)_effectiveStyleForPartIdentifier:(id)a3
+- (int64_t)_effectiveStyleForPartIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = _SBStatusBarStyleFromLegacyStyle([(UIStatusBar *)self->_statusBar currentStyle]);
+  identifierCopy = identifier;
+  integerValue = _SBStatusBarStyleFromLegacyStyle([(UIStatusBar *)self->_statusBar currentStyle]);
   if ([(SBMainDisplaySceneLayoutStatusBarView *)self _allowChangingIndividualStatusBarParts])
   {
-    v6 = [(NSMutableDictionary *)self->_partIdentifiersDefaultStyles objectForKeyedSubscript:v4];
-    v7 = [(NSMutableDictionary *)self->_partIdentifiersCustomStyles objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_partIdentifiersDefaultStyles objectForKeyedSubscript:identifierCopy];
+    v7 = [(NSMutableDictionary *)self->_partIdentifiersCustomStyles objectForKeyedSubscript:identifierCopy];
     v8 = v7;
     if (v7 || (v7 = v6) != 0)
     {
-      v5 = [v7 integerValue];
+      integerValue = [v7 integerValue];
     }
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)_enumerateValidStatusBarPartIdentifiersForSceneWithIdentifier:(id)a3 withBlock:(id)a4
+- (void)_enumerateValidStatusBarPartIdentifiersForSceneWithIdentifier:(id)identifier withBlock:(id)block
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (v6)
+  blockCopy = block;
+  if (blockCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v7 = [(SBMainDisplaySceneLayoutStatusBarView *)self _validStatusBarPartIdentifiersForSceneWithIdentifier:a3, 0];
+    v7 = [(SBMainDisplaySceneLayoutStatusBarView *)self _validStatusBarPartIdentifiersForSceneWithIdentifier:identifier, 0];
     v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v8)
     {
@@ -1608,7 +1608,7 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
             objc_enumerationMutation(v7);
           }
 
-          v6[2](v6, *(*(&v12 + 1) + 8 * v11++));
+          blockCopy[2](blockCopy, *(*(&v12 + 1) + 8 * v11++));
         }
 
         while (v9 != v11);
@@ -1622,7 +1622,7 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
 
 - (unint64_t)_effectiveStatusBarStyleOverridesToSuppress
 {
-  v2 = [(SBMainDisplaySceneLayoutStatusBarView *)self _effectiveBackgroundActivityIdentifiersToSuppress];
+  _effectiveBackgroundActivityIdentifiersToSuppress = [(SBMainDisplaySceneLayoutStatusBarView *)self _effectiveBackgroundActivityIdentifiersToSuppress];
   v3 = STUIStyleOverridesForBackgroundActivityIdentifiers();
 
   return v3;
@@ -1636,10 +1636,10 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(SBMainDisplaySceneLayoutStatusBarView *)self dataSource];
-  v5 = [v4 statusBarDescribers];
+  dataSource = [(SBMainDisplaySceneLayoutStatusBarView *)self dataSource];
+  statusBarDescribers = [dataSource statusBarDescribers];
 
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [statusBarDescribers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1650,14 +1650,14 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(statusBarDescribers);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) backgroundActivitiesToSuppress];
-        [v3 unionSet:v10];
+        backgroundActivitiesToSuppress = [*(*(&v12 + 1) + 8 * i) backgroundActivitiesToSuppress];
+        [v3 unionSet:backgroundActivitiesToSuppress];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [statusBarDescribers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1666,29 +1666,29 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
   return v3;
 }
 
-- (void)_animateHidden:(BOOL)a3 withAnimation:(int64_t)a4 transitionHandler:(id)a5 applyHandler:(id)a6
+- (void)_animateHidden:(BOOL)hidden withAnimation:(int64_t)animation transitionHandler:(id)handler applyHandler:(id)applyHandler
 {
-  v10 = a5;
-  v11 = a6;
+  handlerCopy = handler;
+  applyHandlerCopy = applyHandler;
   v40 = 0u;
   v41 = 0u;
   v39 = 0u;
-  [(SBMainDisplaySceneLayoutStatusBarView *)self _hiddenTransformForAnimation:a4];
-  [(SBMainDisplaySceneLayoutStatusBarView *)self _hiddenAlphaForAnimation:a4];
+  [(SBMainDisplaySceneLayoutStatusBarView *)self _hiddenTransformForAnimation:animation];
+  [(SBMainDisplaySceneLayoutStatusBarView *)self _hiddenAlphaForAnimation:animation];
   v13 = v12;
-  self->_lastHiddenValueForAnimation = a3;
-  v14 = [MEMORY[0x277D75D18] _isInAnimationBlock];
-  if (a4 && v14)
+  self->_lastHiddenValueForAnimation = hidden;
+  _isInAnimationBlock = [MEMORY[0x277D75D18] _isInAnimationBlock];
+  if (animation && _isInAnimationBlock)
   {
-    if (!a3)
+    if (!hidden)
     {
       v15 = MEMORY[0x277D75D18];
       v32[0] = MEMORY[0x277D85DD0];
       v32[1] = 3221225472;
       v32[2] = __101__SBMainDisplaySceneLayoutStatusBarView__animateHidden_withAnimation_transitionHandler_applyHandler___block_invoke;
       v32[3] = &unk_2783B2CE8;
-      v33 = v11;
-      v34 = v10;
+      v33 = applyHandlerCopy;
+      v34 = handlerCopy;
       v35 = v13;
       v36 = v39;
       v37 = v40;
@@ -1702,8 +1702,8 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
     v26[2] = __101__SBMainDisplaySceneLayoutStatusBarView__animateHidden_withAnimation_transitionHandler_applyHandler___block_invoke_2;
     v26[3] = &unk_2783B2D10;
     v17 = v27;
-    v27[0] = v10;
-    v31 = a3;
+    v27[0] = handlerCopy;
+    hiddenCopy = hidden;
     v27[1] = v13;
     v28 = v39;
     v29 = v40;
@@ -1713,9 +1713,9 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
     v23[2] = __101__SBMainDisplaySceneLayoutStatusBarView__animateHidden_withAnimation_transitionHandler_applyHandler___block_invoke_3;
     v23[3] = &unk_2783B2D38;
     v23[4] = self;
-    v24 = v11;
+    v24 = applyHandlerCopy;
     v25 = v27[0];
-    v18 = v11;
+    v18 = applyHandlerCopy;
     [v16 animateWithDuration:v26 animations:v23 completion:0.0];
   }
 
@@ -1728,8 +1728,8 @@ void __84__SBMainDisplaySceneLayoutStatusBarView__applyStatusBarAlpha_toSceneWit
     v21[3] = &unk_2783A9878;
     v17 = &v22;
     v21[4] = self;
-    v22 = v11;
-    v20 = v11;
+    v22 = applyHandlerCopy;
+    v20 = applyHandlerCopy;
     [v19 performWithoutAnimation:v21];
   }
 }
@@ -1788,7 +1788,7 @@ uint64_t __101__SBMainDisplaySceneLayoutStatusBarView__animateHidden_withAnimati
   return result;
 }
 
-- (CGAffineTransform)_hiddenTransformForAnimation:(SEL)a3
+- (CGAffineTransform)_hiddenTransformForAnimation:(SEL)animation
 {
   if (a4 == 2)
   {
@@ -1810,10 +1810,10 @@ uint64_t __101__SBMainDisplaySceneLayoutStatusBarView__animateHidden_withAnimati
   return self;
 }
 
-- (double)_hiddenAlphaForAnimation:(int64_t)a3
+- (double)_hiddenAlphaForAnimation:(int64_t)animation
 {
   result = 0.0;
-  if (a3 == 2)
+  if (animation == 2)
   {
     return 1.0;
   }
@@ -1823,12 +1823,12 @@ uint64_t __101__SBMainDisplaySceneLayoutStatusBarView__animateHidden_withAnimati
 
 - (id)_reusePool
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
-  v4 = [v3 statusBarManager];
-  v5 = [v4 reusePool];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  statusBarManager = [embeddedDisplayWindowScene statusBarManager];
+  reusePool = [statusBarManager reusePool];
 
-  return v5;
+  return reusePool;
 }
 
 - (void)_setupDebugging
@@ -1842,14 +1842,14 @@ uint64_t __101__SBMainDisplaySceneLayoutStatusBarView__animateHidden_withAnimati
   self->_debugOffsetEnabled = [(SBMedusaSettings *)self->_medusaSettings statusBarDebugOffsettingEnabled];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_medusaSettings == a3)
+  keyCopy = key;
+  v7 = keyCopy;
+  if (self->_medusaSettings == settings)
   {
-    v9 = v6;
-    if ([v6 isEqualToString:@"statusBarDebugBackgroundColorsEnabled"])
+    v9 = keyCopy;
+    if ([keyCopy isEqualToString:@"statusBarDebugBackgroundColorsEnabled"])
     {
       self->_debugBackgroundColorEnabled = [(SBMedusaSettings *)self->_medusaSettings statusBarDebugBackgroundColorsEnabled];
       [(SBMainDisplaySceneLayoutStatusBarView *)self _updateDebugBackgroundColor];
@@ -1874,21 +1874,21 @@ uint64_t __101__SBMainDisplaySceneLayoutStatusBarView__animateHidden_withAnimati
 LABEL_7:
 }
 
-- (void)_setDebugBackgroundColor:(id)a3
+- (void)_setDebugBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_debugBackgroundColor] & 1) == 0)
+  colorCopy = color;
+  if (([colorCopy isEqual:self->_debugBackgroundColor] & 1) == 0)
   {
-    objc_storeStrong(&self->_debugBackgroundColor, a3);
+    objc_storeStrong(&self->_debugBackgroundColor, color);
     [(SBMainDisplaySceneLayoutStatusBarView *)self _updateDebugBackgroundColor];
   }
 }
 
-- (void)_setDebugOffsetIndex:(unint64_t)a3
+- (void)_setDebugOffsetIndex:(unint64_t)index
 {
-  if (self->_debugOffsetIndex != a3)
+  if (self->_debugOffsetIndex != index)
   {
-    self->_debugOffsetIndex = a3;
+    self->_debugOffsetIndex = index;
     [(SBMainDisplaySceneLayoutStatusBarView *)self _updateDebugOffset];
   }
 }
@@ -1917,9 +1917,9 @@ LABEL_7:
   [(UIStatusBar *)statusBar setFrame:?];
 }
 
-- (void)setRealStyleDelegate:(id)a3
+- (void)setRealStyleDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_realStyleDelegate);
 
   if (WeakRetained != obj)
@@ -2006,49 +2006,49 @@ LABEL_7:
   }
 }
 
-- (int64_t)statusBar:(id)a3 styleForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5
+- (int64_t)statusBar:(id)bar styleForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides
 {
   if ((*&self->_conformanceFlags & 1) == 0)
   {
-    return a4;
+    return style;
   }
 
-  v9 = a3;
+  barCopy = bar;
   WeakRetained = objc_loadWeakRetained(&self->_realStyleDelegate);
-  v11 = [WeakRetained statusBar:v9 styleForRequestedStyle:a4 overrides:a5];
+  v11 = [WeakRetained statusBar:barCopy styleForRequestedStyle:style overrides:overrides];
 
   return v11;
 }
 
-- (void)statusBar:(id)a3 willAnimateFromHeight:(double)a4 toHeight:(double)a5 duration:(double)a6 animation:(int)a7
+- (void)statusBar:(id)bar willAnimateFromHeight:(double)height toHeight:(double)toHeight duration:(double)duration animation:(int)animation
 {
   if ((*&self->_conformanceFlags & 2) != 0)
   {
-    v8 = *&a7;
-    v13 = a3;
+    v8 = *&animation;
+    barCopy = bar;
     WeakRetained = objc_loadWeakRetained(&self->_realStyleDelegate);
-    [WeakRetained statusBar:v13 willAnimateFromHeight:v8 toHeight:a4 duration:a5 animation:a6];
+    [WeakRetained statusBar:barCopy willAnimateFromHeight:v8 toHeight:height duration:toHeight animation:duration];
   }
 }
 
-- (void)statusBar:(id)a3 didAnimateFromHeight:(double)a4 toHeight:(double)a5 animation:(int)a6
+- (void)statusBar:(id)bar didAnimateFromHeight:(double)height toHeight:(double)toHeight animation:(int)animation
 {
   if ((*&self->_conformanceFlags & 4) != 0)
   {
-    v7 = *&a6;
-    v11 = a3;
+    v7 = *&animation;
+    barCopy = bar;
     WeakRetained = objc_loadWeakRetained(&self->_realStyleDelegate);
-    [WeakRetained statusBar:v11 didAnimateFromHeight:v7 toHeight:a4 animation:a5];
+    [WeakRetained statusBar:barCopy didAnimateFromHeight:v7 toHeight:height animation:toHeight];
   }
 }
 
-- (id)statusBarSystemNavigationAction:(id)a3
+- (id)statusBarSystemNavigationAction:(id)action
 {
   if ((*&self->_conformanceFlags & 8) != 0)
   {
-    v5 = a3;
+    actionCopy = action;
     WeakRetained = objc_loadWeakRetained(&self->_realStyleDelegate);
-    v3 = [WeakRetained statusBarSystemNavigationAction:v5];
+    v3 = [WeakRetained statusBarSystemNavigationAction:actionCopy];
   }
 
   else
@@ -2059,43 +2059,43 @@ LABEL_7:
   return v3;
 }
 
-- (void)statusBar:(id)a3 didTriggerButtonType:(int64_t)a4 withAction:(int64_t)a5
+- (void)statusBar:(id)bar didTriggerButtonType:(int64_t)type withAction:(int64_t)action
 {
   if ((*&self->_conformanceFlags & 0x10) != 0)
   {
-    [(SBMainDisplaySceneLayoutStatusBarView *)self statusBar:a3 didTriggerButtonType:a4 withAction:a5];
+    [(SBMainDisplaySceneLayoutStatusBarView *)self statusBar:bar didTriggerButtonType:type withAction:action];
   }
 }
 
-- (void)statusBar:(id)a3 didTriggerButtonType:(int64_t)a4 withAction:(int64_t)a5 context:(id)a6
+- (void)statusBar:(id)bar didTriggerButtonType:(int64_t)type withAction:(int64_t)action context:(id)context
 {
   if ((*&self->_conformanceFlags & 0x20) != 0)
   {
-    [(SBMainDisplaySceneLayoutStatusBarView *)self statusBar:a3 didTriggerButtonType:a4 withAction:a5 context:a6];
+    [(SBMainDisplaySceneLayoutStatusBarView *)self statusBar:bar didTriggerButtonType:type withAction:action context:context];
   }
 }
 
-- (unint64_t)statusBar:(id)a3 effectiveStyleOverridesForRequestedStyle:(int64_t)a4 overrides:(unint64_t)a5
+- (unint64_t)statusBar:(id)bar effectiveStyleOverridesForRequestedStyle:(int64_t)style overrides:(unint64_t)overrides
 {
   if ((*&self->_conformanceFlags & 0x40) != 0)
   {
-    v8 = a3;
+    barCopy = bar;
     WeakRetained = objc_loadWeakRetained(&self->_realStyleDelegate);
-    a5 = [WeakRetained statusBar:v8 effectiveStyleOverridesForRequestedStyle:a4 overrides:a5];
+    overrides = [WeakRetained statusBar:barCopy effectiveStyleOverridesForRequestedStyle:style overrides:overrides];
   }
 
-  return a5 & ~[(SBMainDisplaySceneLayoutStatusBarView *)self _effectiveStatusBarStyleOverridesToSuppress:a3];
+  return overrides & ~[(SBMainDisplaySceneLayoutStatusBarView *)self _effectiveStatusBarStyleOverridesToSuppress:bar];
 }
 
-- (int64_t)overriddenRequestedStyleFromStyle:(int64_t)a3
+- (int64_t)overriddenRequestedStyleFromStyle:(int64_t)style
 {
   if ((*&self->_conformanceFlags & 0x80) != 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_realStyleDelegate);
-    a3 = [WeakRetained overriddenRequestedStyleFromStyle:a3];
+    style = [WeakRetained overriddenRequestedStyleFromStyle:style];
   }
 
-  return a3;
+  return style;
 }
 
 - (UIStatusBarStyleDelegate_SpringBoardOnly)realStyleDelegate

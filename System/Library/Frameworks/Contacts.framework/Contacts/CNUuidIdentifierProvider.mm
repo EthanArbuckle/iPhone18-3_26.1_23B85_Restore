@@ -1,5 +1,5 @@
 @interface CNUuidIdentifierProvider
-- (CNUuidIdentifierProvider)initWithSuffix:(id)a3;
+- (CNUuidIdentifierProvider)initWithSuffix:(id)suffix;
 - (id)makeIdentifier;
 @end
 
@@ -7,24 +7,24 @@
 
 - (id)makeIdentifier
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [v4 stringByAppendingString:self->_suffix];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [uUIDString stringByAppendingString:self->_suffix];
 
   return v5;
 }
 
-- (CNUuidIdentifierProvider)initWithSuffix:(id)a3
+- (CNUuidIdentifierProvider)initWithSuffix:(id)suffix
 {
-  v4 = a3;
+  suffixCopy = suffix;
   v10.receiver = self;
   v10.super_class = CNUuidIdentifierProvider;
   v5 = [(CNUuidIdentifierProvider *)&v10 init];
   if (v5)
   {
-    if (v4)
+    if (suffixCopy)
     {
-      v6 = [@":" stringByAppendingString:v4];
+      v6 = [@":" stringByAppendingString:suffixCopy];
     }
 
     else

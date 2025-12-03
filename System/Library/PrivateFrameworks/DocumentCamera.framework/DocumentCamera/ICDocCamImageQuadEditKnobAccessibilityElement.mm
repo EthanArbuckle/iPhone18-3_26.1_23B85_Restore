@@ -1,25 +1,25 @@
 @interface ICDocCamImageQuadEditKnobAccessibilityElement
 - (CALayer)knobLayer;
 - (CGRect)accessibilityFrame;
-- (ICDocCamImageQuadEditKnobAccessibilityElement)initWithKnobLayer:(id)a3 overlayView:(id)a4;
+- (ICDocCamImageQuadEditKnobAccessibilityElement)initWithKnobLayer:(id)layer overlayView:(id)view;
 - (ICDocCamImageQuadEditOverlay)overlayView;
 - (id)accessibilityLabel;
 @end
 
 @implementation ICDocCamImageQuadEditKnobAccessibilityElement
 
-- (ICDocCamImageQuadEditKnobAccessibilityElement)initWithKnobLayer:(id)a3 overlayView:(id)a4
+- (ICDocCamImageQuadEditKnobAccessibilityElement)initWithKnobLayer:(id)layer overlayView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = ICDocCamImageQuadEditKnobAccessibilityElement;
-  v8 = [(ICDocCamImageQuadEditKnobAccessibilityElement *)&v11 initWithAccessibilityContainer:v7];
+  v8 = [(ICDocCamImageQuadEditKnobAccessibilityElement *)&v11 initWithAccessibilityContainer:viewCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_knobLayer, v6);
-    objc_storeWeak(&v9->_overlayView, v7);
+    objc_storeWeak(&v8->_knobLayer, layerCopy);
+    objc_storeWeak(&v9->_overlayView, viewCopy);
   }
 
   return v9;
@@ -27,10 +27,10 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(ICDocCamImageQuadEditKnobAccessibilityElement *)self overlayView];
-  v4 = [v3 accessibilityElements];
+  overlayView = [(ICDocCamImageQuadEditKnobAccessibilityElement *)self overlayView];
+  accessibilityElements = [overlayView accessibilityElements];
 
-  if (![v4 count])
+  if (![accessibilityElements count])
   {
     goto LABEL_11;
   }
@@ -40,13 +40,13 @@
   v7 = 0;
   do
   {
-    v8 = [v4 objectAtIndexedSubscript:v7];
+    v8 = [accessibilityElements objectAtIndexedSubscript:v7];
 
     if (v8 != self)
     {
       [(ICDocCamImageQuadEditKnobAccessibilityElement *)self accessibilityFrame];
       v10 = v9;
-      v11 = [v4 objectAtIndexedSubscript:v7];
+      v11 = [accessibilityElements objectAtIndexedSubscript:v7];
       [v11 accessibilityFrame];
       v13 = v12;
 
@@ -57,7 +57,7 @@
 
       [(ICDocCamImageQuadEditKnobAccessibilityElement *)self accessibilityFrame];
       v15 = v14;
-      v16 = [v4 objectAtIndexedSubscript:v7];
+      v16 = [accessibilityElements objectAtIndexedSubscript:v7];
       [v16 accessibilityFrame];
       v18 = v17;
 
@@ -70,7 +70,7 @@
     ++v7;
   }
 
-  while (v7 < [v4 count]);
+  while (v7 < [accessibilityElements count]);
   if (v5 >= 2)
   {
     if (v6 > 1)
@@ -104,8 +104,8 @@ LABEL_16:
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(ICDocCamImageQuadEditKnobAccessibilityElement *)self knobLayer];
-  [v2 accessibilityFrame];
+  knobLayer = [(ICDocCamImageQuadEditKnobAccessibilityElement *)self knobLayer];
+  [knobLayer accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;

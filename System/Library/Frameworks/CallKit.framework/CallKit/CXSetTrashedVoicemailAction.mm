@@ -1,21 +1,21 @@
 @interface CXSetTrashedVoicemailAction
-- (CXSetTrashedVoicemailAction)initWithCoder:(id)a3;
-- (CXSetTrashedVoicemailAction)initWithVoicemailUUID:(id)a3 trashed:(BOOL)a4;
+- (CXSetTrashedVoicemailAction)initWithCoder:(id)coder;
+- (CXSetTrashedVoicemailAction)initWithVoicemailUUID:(id)d trashed:(BOOL)trashed;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXSetTrashedVoicemailAction
 
-- (CXSetTrashedVoicemailAction)initWithVoicemailUUID:(id)a3 trashed:(BOOL)a4
+- (CXSetTrashedVoicemailAction)initWithVoicemailUUID:(id)d trashed:(BOOL)trashed
 {
   v6.receiver = self;
   v6.super_class = CXSetTrashedVoicemailAction;
-  result = [(CXVoicemailAction *)&v6 initWithVoicemailUUID:a3];
+  result = [(CXVoicemailAction *)&v6 initWithVoicemailUUID:d];
   if (result)
   {
-    result->_trashed = a4;
+    result->_trashed = trashed;
   }
 
   return result;
@@ -25,45 +25,45 @@
 {
   v5.receiver = self;
   v5.super_class = CXSetTrashedVoicemailAction;
-  v3 = [(CXVoicemailAction *)&v5 customDescription];
-  [v3 appendFormat:@" trashed=%d", -[CXSetTrashedVoicemailAction isTrashed](self, "isTrashed")];
+  customDescription = [(CXVoicemailAction *)&v5 customDescription];
+  [customDescription appendFormat:@" trashed=%d", -[CXSetTrashedVoicemailAction isTrashed](self, "isTrashed")];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CXSetTrashedVoicemailAction;
-  v6 = a3;
-  [(CXVoicemailAction *)&v7 updateSanitizedCopy:v6 withZone:a4];
-  [v6 setTrashed:{-[CXSetTrashedVoicemailAction isTrashed](self, "isTrashed", v7.receiver, v7.super_class)}];
+  copyCopy = copy;
+  [(CXVoicemailAction *)&v7 updateSanitizedCopy:copyCopy withZone:zone];
+  [copyCopy setTrashed:{-[CXSetTrashedVoicemailAction isTrashed](self, "isTrashed", v7.receiver, v7.super_class)}];
 }
 
-- (CXSetTrashedVoicemailAction)initWithCoder:(id)a3
+- (CXSetTrashedVoicemailAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CXSetTrashedVoicemailAction;
-  v5 = [(CXVoicemailAction *)&v8 initWithCoder:v4];
+  v5 = [(CXVoicemailAction *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_isTrashed);
-    v5->_trashed = [v4 decodeBoolForKey:v6];
+    v5->_trashed = [coderCopy decodeBoolForKey:v6];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CXSetTrashedVoicemailAction;
-  v4 = a3;
-  [(CXVoicemailAction *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXVoicemailAction *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CXSetTrashedVoicemailAction *)self isTrashed:v7.receiver];
   v6 = NSStringFromSelector(sel_isTrashed);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:v5 forKey:v6];
 }
 
 @end

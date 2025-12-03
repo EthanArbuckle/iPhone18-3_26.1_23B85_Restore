@@ -1,19 +1,19 @@
 @interface APSConfiguration
-+ (id)_onQueue_configurationForEnvironment:(id)a3 connectionType:(int64_t)a4;
-+ (id)configurationForEnvironment:(id)a3 connectionType:(int64_t)a4;
++ (id)_onQueue_configurationForEnvironment:(id)environment connectionType:(int64_t)type;
++ (id)configurationForEnvironment:(id)environment connectionType:(int64_t)type;
 + (void)initialize;
-+ (void)invalidateConfigurationForEnvironment:(id)a3 connectionType:(int64_t)a4;
-+ (void)loadConfigurationForEnvironment:(id)a3 connectionType:(int64_t)a4 block:(id)a5;
-- (APSConfiguration)initWithEnvironment:(id)a3 connectionType:(int64_t)a4;
++ (void)invalidateConfigurationForEnvironment:(id)environment connectionType:(int64_t)type;
++ (void)loadConfigurationForEnvironment:(id)environment connectionType:(int64_t)type block:(id)block;
+- (APSConfiguration)initWithEnvironment:(id)environment connectionType:(int64_t)type;
 - (BOOL)_isExpired;
 - (int)status;
 - (unint64_t)serverCount;
-- (void)_callCompletionBlocksWithError:(id)a3;
-- (void)_failWithError:(id)a3;
-- (void)_finishLoadWithResponse:(id)a3 urlHost:(id)a4 data:(id)a5;
-- (void)addCompletionBlock:(id)a3;
+- (void)_callCompletionBlocksWithError:(id)error;
+- (void)_failWithError:(id)error;
+- (void)_finishLoadWithResponse:(id)response urlHost:(id)host data:(id)data;
+- (void)addCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)setExpiryInterval:(double)a3 expirationBlock:(id)a4;
+- (void)setExpiryInterval:(double)interval expirationBlock:(id)block;
 @end
 
 @implementation APSConfiguration
@@ -41,28 +41,28 @@
   _objc_release_x1(v2, v3);
 }
 
-+ (id)_onQueue_configurationForEnvironment:(id)a3 connectionType:(int64_t)a4
++ (id)_onQueue_configurationForEnvironment:(id)environment connectionType:(int64_t)type
 {
-  v5 = a3;
-  v6 = sub_100012D68(a4);
-  v7 = [v5 name];
-  v8 = [v6 objectForKey:v7];
+  environmentCopy = environment;
+  v6 = sub_100012D68(type);
+  name = [environmentCopy name];
+  v8 = [v6 objectForKey:name];
 
   if (v8 && [v8 _isExpired])
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 name];
+      name2 = [environmentCopy name];
       v13 = 138412546;
       v14 = v8;
       v15 = 2112;
-      v16 = v9;
+      v16 = name2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Config %@ for env %@ expired, flushing", &v13, 0x16u);
     }
 
-    v10 = sub_100012D68(a4);
-    v11 = [v5 name];
-    [v10 removeObjectForKey:v11];
+    v10 = sub_100012D68(type);
+    name3 = [environmentCopy name];
+    [v10 removeObjectForKey:name3];
 
     v8 = 0;
   }
@@ -70,12 +70,12 @@
   return v8;
 }
 
-+ (id)configurationForEnvironment:(id)a3 connectionType:(int64_t)a4
++ (id)configurationForEnvironment:(id)environment connectionType:(int64_t)type
 {
-  v7 = a3;
+  environmentCopy = environment;
   if (!+[NSThread isMainThread])
   {
-    sub_10010B244(a2, a1);
+    sub_10010B244(a2, self);
   }
 
   v17 = 0;
@@ -89,11 +89,11 @@
   v12[1] = 3221225472;
   v12[2] = sub_1000780C8;
   v12[3] = &unk_100187EA0;
-  v13 = v7;
+  v13 = environmentCopy;
   v14 = &v17;
-  v15 = a1;
-  v16 = a4;
-  v9 = v7;
+  selfCopy = self;
+  typeCopy = type;
+  v9 = environmentCopy;
   dispatch_sync(v8, v12);
 
   v10 = v18[5];
@@ -102,23 +102,23 @@
   return v10;
 }
 
-+ (void)loadConfigurationForEnvironment:(id)a3 connectionType:(int64_t)a4 block:(id)a5
++ (void)loadConfigurationForEnvironment:(id)environment connectionType:(int64_t)type block:(id)block
 {
-  v9 = a3;
-  v10 = a5;
+  environmentCopy = environment;
+  blockCopy = block;
   if (!+[NSThread isMainThread])
   {
-    sub_10010B2B8(a2, a1);
+    sub_10010B2B8(a2, self);
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 name];
-    v12 = sub_10001B3FC(a4);
+    name = [environmentCopy name];
+    v12 = sub_10001B3FC(type);
     *buf = 138412802;
-    v22 = v9;
+    v22 = environmentCopy;
     v23 = 2112;
-    v24 = v11;
+    v24 = name;
     v25 = 2112;
     v26 = v12;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "loadConfigurationForEnvironment: %@ %@ interface: %@", buf, 0x20u);
@@ -129,32 +129,32 @@
   v16[1] = 3221225472;
   v16[2] = sub_1000782D4;
   v16[3] = &unk_100187EC8;
-  v19 = a1;
-  v20 = a4;
-  v17 = v9;
-  v18 = v10;
-  v14 = v10;
-  v15 = v9;
+  selfCopy = self;
+  typeCopy = type;
+  v17 = environmentCopy;
+  v18 = blockCopy;
+  v14 = blockCopy;
+  v15 = environmentCopy;
   dispatch_sync(v13, v16);
 }
 
-+ (void)invalidateConfigurationForEnvironment:(id)a3 connectionType:(int64_t)a4
++ (void)invalidateConfigurationForEnvironment:(id)environment connectionType:(int64_t)type
 {
-  v7 = a3;
+  environmentCopy = environment;
   if (!+[NSThread isMainThread])
   {
-    sub_10010B32C(a2, a1);
+    sub_10010B32C(a2, self);
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v7 name];
+    name = [environmentCopy name];
     *buf = 138412802;
-    v15 = a1;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v7;
+    v17 = environmentCopy;
     v18 = 2112;
-    v19 = v8;
+    v19 = name;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@: invalidateConfigurationForEnvironment: %@ %@", buf, 0x20u);
   }
 
@@ -163,39 +163,39 @@
   v11[1] = 3221225472;
   v11[2] = sub_10007850C;
   v11[3] = &unk_100187EF0;
-  v12 = v7;
-  v13 = a4;
-  v10 = v7;
+  v12 = environmentCopy;
+  typeCopy = type;
+  v10 = environmentCopy;
   dispatch_sync(v9, v11);
 }
 
-- (APSConfiguration)initWithEnvironment:(id)a3 connectionType:(int64_t)a4
+- (APSConfiguration)initWithEnvironment:(id)environment connectionType:(int64_t)type
 {
-  v6 = a3;
+  environmentCopy = environment;
   v35.receiver = self;
   v35.super_class = APSConfiguration;
   v7 = [(APSConfiguration *)&v35 init];
   if (v7)
   {
-    v8 = [v6 name];
-    v9 = [v8 copy];
+    name = [environmentCopy name];
+    v9 = [name copy];
     name = v7->_name;
     v7->_name = v9;
 
-    v11 = [v6 configurationURL];
-    v12 = [v11 copy];
+    configurationURL = [environmentCopy configurationURL];
+    v12 = [configurationURL copy];
     url = v7->_url;
     v7->_url = v12;
 
-    v7->_isLoadBalanced = [v6 isLoadBalanced];
-    v7->_connectionType = a4;
+    v7->_isLoadBalanced = [environmentCopy isLoadBalanced];
+    v7->_connectionType = type;
     v7->_isLoaded = 0;
     v14 = [NSDate dateWithTimeIntervalSinceNow:900.0];
     expiry = v7->_expiry;
     v7->_expiry = v14;
 
-    v16 = [v6 configurationURL];
-    v17 = [NSURLComponents componentsWithURL:v16 resolvingAgainstBaseURL:1];
+    configurationURL2 = [environmentCopy configurationURL];
+    v17 = [NSURLComponents componentsWithURL:configurationURL2 resolvingAgainstBaseURL:1];
 
     v18 = +[NSMutableArray array];
     v31 = [NSURLQueryItem queryItemWithName:@"v" value:@"1"];
@@ -208,11 +208,11 @@
     else
     {
       v20 = [PCInterfaceMonitor sharedInstanceForIdentifier:1];
-      v21 = [v20 networkCode];
+      networkCode = [v20 networkCode];
 
-      if ([v21 length])
+      if ([networkCode length])
       {
-        v19 = v21;
+        v19 = networkCode;
       }
 
       else
@@ -233,8 +233,8 @@
       sub_10010B3A0();
     }
 
-    v25 = [NSString stringWithFormat:@"%@/%@ (%@)", qword_1001BF7B8, qword_1001BF7C0, qword_1001BF7C8];
-    [v24 setValue:v25 forHTTPHeaderField:@"User-Agent"];
+    qword_1001BF7C8 = [NSString stringWithFormat:@"%@/%@ (%@)", qword_1001BF7B8, qword_1001BF7C0, qword_1001BF7C8];
+    [v24 setValue:qword_1001BF7C8 forHTTPHeaderField:@"User-Agent"];
 
     if (sub_10000712C())
     {
@@ -272,32 +272,32 @@
   [(APSConfiguration *)&v4 dealloc];
 }
 
-- (void)addCompletionBlock:(id)a3
+- (void)addCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = sub_100012D24();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100078CAC;
   v7[3] = &unk_1001872B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)_callCompletionBlocksWithError:(id)a3
+- (void)_callCompletionBlocksWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     expiry = self->_expiry;
     *buf = 138412802;
-    v15 = self;
+    selfCopy = self;
     v16 = 2112;
     v17 = expiry;
     v18 = 2112;
-    v19 = v4;
+    v19 = errorCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%@ Calling configuration completion blocks, expiration date %@ error: %@", buf, 0x20u);
   }
 
@@ -310,31 +310,31 @@
   block[2] = sub_100078EC0;
   block[3] = &unk_100186330;
   v11 = v6;
-  v12 = self;
-  v13 = v4;
-  v8 = v4;
+  selfCopy2 = self;
+  v13 = errorCopy;
+  v8 = errorCopy;
   v9 = v6;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_failWithError:(id)a3
+- (void)_failWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = sub_100012D24();
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007906C;
   v7[3] = &unk_1001864D8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(v5, v7);
 }
 
-- (void)_finishLoadWithResponse:(id)a3 urlHost:(id)a4 data:(id)a5
+- (void)_finishLoadWithResponse:(id)response urlHost:(id)host data:(id)data
 {
   v18 = 0;
-  v6 = [NSPropertyListSerialization propertyListWithData:a5 options:0 format:0 error:&v18];
+  v6 = [NSPropertyListSerialization propertyListWithData:data options:0 format:0 error:&v18];
   v7 = v18;
   if (!v6)
   {
@@ -369,10 +369,10 @@ LABEL_9:
     v17[3] = &unk_100186D90;
     v17[4] = self;
     v10 = objc_retainBlock(v17);
-    v11 = [(APSConfiguration *)self bagExpiryInterval];
-    v12 = [v11 integerValue];
+    bagExpiryInterval = [(APSConfiguration *)self bagExpiryInterval];
+    integerValue = [bagExpiryInterval integerValue];
 
-    [(APSConfiguration *)self setExpiryInterval:v10 expirationBlock:v12];
+    [(APSConfiguration *)self setExpiryInterval:v10 expirationBlock:integerValue];
     v13 = +[NSDate date];
     fetchDate = self->_fetchDate;
     self->_fetchDate = v13;
@@ -390,29 +390,29 @@ LABEL_10:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (int)status
 {
   v2 = [(NSDictionary *)self->_plist objectForKey:@"APNSCourierStatus"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3 ^ 1;
+  return bOOLValue ^ 1;
 }
 
-- (void)setExpiryInterval:(double)a3 expirationBlock:(id)a4
+- (void)setExpiryInterval:(double)interval expirationBlock:(id)block
 {
-  v6 = a4;
-  if (a3 <= 0.0)
+  blockCopy = block;
+  if (interval <= 0.0)
   {
     v10 = [NSDate dateWithTimeIntervalSinceNow:900.0];
     expiry = self->_expiry;
@@ -421,7 +421,7 @@ LABEL_10:
 
   else
   {
-    v7 = [NSDate dateWithTimeIntervalSinceNow:a3];
+    v7 = [NSDate dateWithTimeIntervalSinceNow:interval];
     v8 = self->_expiry;
     self->_expiry = v7;
 
@@ -444,13 +444,13 @@ LABEL_10:
       v18[2] = sub_1000799F0;
       v18[3] = &unk_1001872B8;
       v18[4] = self;
-      v19 = v6;
+      v19 = blockCopy;
       dispatch_source_set_event_handler(v15, v18);
     }
 
     v16 = self->_expireTimer;
-    v17 = dispatch_time(0, (a3 * 1000000000.0));
-    dispatch_source_set_timer(v16, v17, 0xFFFFFFFFFFFFFFFFLL, (a3 / 10.0 * 1000000000.0));
+    v17 = dispatch_time(0, (interval * 1000000000.0));
+    dispatch_source_set_timer(v16, v17, 0xFFFFFFFFFFFFFFFFLL, (interval / 10.0 * 1000000000.0));
     dispatch_resume(self->_expireTimer);
   }
 }

@@ -1,22 +1,22 @@
 @interface AVAirMessageTransformer
-- (AVAirMessageTransformer)initWithMessageClass:(Class)a3;
-- (id)dataForMessage:(id)a3;
-- (id)reverseTransformerForMessageData:(id)a3;
+- (AVAirMessageTransformer)initWithMessageClass:(Class)class;
+- (id)dataForMessage:(id)message;
+- (id)reverseTransformerForMessageData:(id)data;
 @end
 
 @implementation AVAirMessageTransformer
 
-- (id)reverseTransformerForMessageData:(id)a3
+- (id)reverseTransformerForMessageData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
+  dataCopy = data;
+  v5 = dataCopy;
   if ([(NSData *)self->_previousUnusedData length])
   {
-    v5 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:{objc_msgSend(v4, "length") + -[NSData length](self->_previousUnusedData, "length")}];
+    v5 = [objc_alloc(MEMORY[0x1E695DF88]) initWithCapacity:{objc_msgSend(dataCopy, "length") + -[NSData length](self->_previousUnusedData, "length")}];
     [v5 appendData:self->_previousUnusedData];
-    if (v4)
+    if (dataCopy)
     {
-      [v5 appendData:v4];
+      [v5 appendData:dataCopy];
     }
   }
 
@@ -27,16 +27,16 @@
 
     if ([v7 isIncomplete])
     {
-      v8 = v5;
+      extraData = v5;
     }
 
     else
     {
-      v8 = [v7 extraData];
+      extraData = [v7 extraData];
     }
 
     previousUnusedData = self->_previousUnusedData;
-    self->_previousUnusedData = v8;
+    self->_previousUnusedData = extraData;
   }
 
   else
@@ -47,15 +47,15 @@
   return v7;
 }
 
-- (id)dataForMessage:(id)a3
+- (id)dataForMessage:(id)message
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  messageCopy = message;
+  if (messageCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      v4 = [v3 messageDataRepresentation];
+      messageDataRepresentation = [messageCopy messageDataRepresentation];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -85,21 +85,21 @@
         _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s value does not implement AVMessageTransformerProtocol", &v9, 0xCu);
       }
 
-      v4 = 0;
+      messageDataRepresentation = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    messageDataRepresentation = 0;
   }
 
 LABEL_11:
 
-  return v4;
+  return messageDataRepresentation;
 }
 
-- (AVAirMessageTransformer)initWithMessageClass:(Class)a3
+- (AVAirMessageTransformer)initWithMessageClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = AVAirMessageTransformer;
@@ -107,7 +107,7 @@ LABEL_11:
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_messageClass, a3);
+    objc_storeStrong(&v4->_messageClass, class);
   }
 
   return v5;

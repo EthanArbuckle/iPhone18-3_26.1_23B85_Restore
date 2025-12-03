@@ -1,21 +1,21 @@
 @interface PPContactScorer
-+ (double)_scoreWithInitialScore:(void *)a3 identifier:(void *)a4 rankMap:;
-+ (id)_contactRankMapWithRankedIdentifiers:(uint64_t)a1;
-+ (id)_contactsWithIdentifiers:(void *)a3 store:;
-+ (id)_scoreAndSortContacts:(void *)a3 rankMap:;
-+ (id)_scoredLabeledValues:(uint64_t)a1;
-+ (id)mostRelevantContactsWithName:(id)a3 store:(id)a4;
-+ (id)mostRelevantContactsWithStore:(id)a3 shouldContinueBlock:(id)a4;
-+ (id)scoredContactsWithContacts:(id)a3;
-+ (void)scoreContactNameRecords:(id)a3;
++ (double)_scoreWithInitialScore:(void *)score identifier:(void *)identifier rankMap:;
++ (id)_contactRankMapWithRankedIdentifiers:(uint64_t)identifiers;
++ (id)_contactsWithIdentifiers:(void *)identifiers store:;
++ (id)_scoreAndSortContacts:(void *)contacts rankMap:;
++ (id)_scoredLabeledValues:(uint64_t)values;
++ (id)mostRelevantContactsWithName:(id)name store:(id)store;
++ (id)mostRelevantContactsWithStore:(id)store shouldContinueBlock:(id)block;
++ (id)scoredContactsWithContacts:(id)contacts;
++ (void)scoreContactNameRecords:(id)records;
 @end
 
 @implementation PPContactScorer
 
-+ (void)scoreContactNameRecords:(id)a3
++ (void)scoreContactNameRecords:(id)records
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordsCopy = records;
   v5 = pp_contacts_signpost_handle();
   v6 = os_signpost_id_generate(v5);
 
@@ -30,14 +30,14 @@
   spid = v6;
 
   v9 = +[PPPeopleSuggester sharedInstance];
-  v10 = [v9 rankedContactIdentifiers];
-  v11 = [(PPContactScorer *)a1 _contactRankMapWithRankedIdentifiers:v10];
+  rankedContactIdentifiers = [v9 rankedContactIdentifiers];
+  v11 = [(PPContactScorer *)self _contactRankMapWithRankedIdentifiers:rankedContactIdentifiers];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = v4;
+  v12 = recordsCopy;
   v13 = [v12 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v13)
   {
@@ -53,10 +53,10 @@
         }
 
         v17 = *(*(&v28 + 1) + 8 * i);
-        v18 = [v17 source];
+        source = [v17 source];
         v19 = +[PPConfiguration sharedInstance];
         v20 = v19;
-        if (v18 == 1)
+        if (source == 1)
         {
           [v19 recordSourceContactsInitialScore];
         }
@@ -68,8 +68,8 @@
 
         v22 = v21;
 
-        v23 = [v17 sourceIdentifier];
-        [v17 setScore:{+[PPContactScorer _scoreWithInitialScore:identifier:rankMap:](v22, a1, v23, v11)}];
+        sourceIdentifier = [v17 sourceIdentifier];
+        [v17 setScore:{+[PPContactScorer _scoreWithInitialScore:identifier:rankMap:](v22, self, sourceIdentifier, v11)}];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v28 objects:v33 count:16];
@@ -90,7 +90,7 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_contactRankMapWithRankedIdentifiers:(uint64_t)a1
++ (id)_contactRankMapWithRankedIdentifiers:(uint64_t)identifiers
 {
   v2 = a2;
   objc_opt_self();
@@ -106,20 +106,20 @@
   return v4;
 }
 
-+ (double)_scoreWithInitialScore:(void *)a3 identifier:(void *)a4 rankMap:
++ (double)_scoreWithInitialScore:(void *)score identifier:(void *)identifier rankMap:
 {
-  v6 = a4;
-  v7 = a3;
+  identifierCopy = identifier;
+  scoreCopy = score;
   objc_opt_self();
-  v8 = [v6 objectForKeyedSubscript:v7];
+  v8 = [identifierCopy objectForKeyedSubscript:scoreCopy];
 
   if (v8)
   {
-    v9 = [v8 unsignedIntegerValue];
-    a1 = a1 + (1.0 - v9 / [v6 count]) * (1.0 - a1);
+    unsignedIntegerValue = [v8 unsignedIntegerValue];
+    self = self + (1.0 - unsignedIntegerValue / [identifierCopy count]) * (1.0 - self);
   }
 
-  return a1;
+  return self;
 }
 
 uint64_t __43__PPContactScorer_scoreContactNameRecords___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -142,9 +142,9 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
   [*(a1 + 32) setObject:v7 forKeyedSubscript:v6];
 }
 
-+ (id)scoredContactsWithContacts:(id)a3
++ (id)scoredContactsWithContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v5 = pp_contacts_signpost_handle();
   v6 = os_signpost_id_generate(v5);
 
@@ -157,10 +157,10 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
   }
 
   v9 = +[PPPeopleSuggester sharedInstance];
-  v10 = [v9 rankedContactIdentifiers];
-  v11 = [(PPContactScorer *)a1 _contactRankMapWithRankedIdentifiers:v10];
+  rankedContactIdentifiers = [v9 rankedContactIdentifiers];
+  v11 = [(PPContactScorer *)self _contactRankMapWithRankedIdentifiers:rankedContactIdentifiers];
 
-  v12 = [(PPContactScorer *)a1 _scoreAndSortContacts:v4 rankMap:v11];
+  v12 = [(PPContactScorer *)self _scoreAndSortContacts:contactsCopy rankMap:v11];
 
   v13 = pp_contacts_signpost_handle();
   v14 = v13;
@@ -173,11 +173,11 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
   return v12;
 }
 
-+ (id)_scoreAndSortContacts:(void *)a3 rankMap:
++ (id)_scoreAndSortContacts:(void *)contacts rankMap:
 {
   v41 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  v28 = a3;
+  contactsCopy = contacts;
   v5 = objc_opt_self();
   if ([v4 count])
   {
@@ -204,10 +204,10 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
 
           v7 = *(*(&v36 + 1) + 8 * i);
           context = objc_autoreleasePoolPush();
-          v8 = [v7 source];
+          source = [v7 source];
           v9 = +[PPConfiguration sharedInstance];
           v10 = v9;
-          if (v8 == 1)
+          if (source == 1)
           {
             [v9 recordSourceContactsInitialScore];
           }
@@ -224,18 +224,18 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
           v34 = v14;
           if (v14)
           {
-            v13 = [(PPContactScorer *)v13 _scoreWithInitialScore:v5 identifier:v14 rankMap:v28];
+            v13 = [(PPContactScorer *)v13 _scoreWithInitialScore:v5 identifier:v14 rankMap:contactsCopy];
           }
 
           v15 = MEMORY[0x277D3A488];
-          v33 = [v7 phoneNumbers];
-          v16 = [(PPContactScorer *)v5 _scoredLabeledValues:v33];
-          v17 = [v7 emailAddresses];
-          v18 = [(PPContactScorer *)v5 _scoredLabeledValues:v17];
-          v19 = [v7 socialProfiles];
-          v20 = [(PPContactScorer *)v5 _scoredLabeledValues:v19];
-          v21 = [v7 postalAddresses];
-          v22 = [(PPContactScorer *)v5 _scoredLabeledValues:v21];
+          phoneNumbers = [v7 phoneNumbers];
+          v16 = [(PPContactScorer *)v5 _scoredLabeledValues:phoneNumbers];
+          emailAddresses = [v7 emailAddresses];
+          v18 = [(PPContactScorer *)v5 _scoredLabeledValues:emailAddresses];
+          socialProfiles = [v7 socialProfiles];
+          v20 = [(PPContactScorer *)v5 _scoredLabeledValues:socialProfiles];
+          postalAddresses = [v7 postalAddresses];
+          v22 = [(PPContactScorer *)v5 _scoredLabeledValues:postalAddresses];
           v23 = [v15 scoredContactWithContact:v7 scoredPhoneNumbers:v16 scoredEmailAddresses:v18 scoredSocialProfiles:v20 scoredPostalAddresses:v22 score:0 flags:v13];
 
           if (v23)
@@ -267,7 +267,7 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
   return v29;
 }
 
-+ (id)_scoredLabeledValues:(uint64_t)a1
++ (id)_scoredLabeledValues:(uint64_t)values
 {
   v24 = *MEMORY[0x277D85DE8];
   v2 = a2;
@@ -295,8 +295,8 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
 
         v9 = *(*(&v19 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 label];
-        v12 = [v3 objectForKeyedSubscript:v11];
+        label = [v9 label];
+        v12 = [v3 objectForKeyedSubscript:label];
 
         if (v12)
         {
@@ -330,10 +330,10 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
   return v4;
 }
 
-+ (id)mostRelevantContactsWithName:(id)a3 store:(id)a4
++ (id)mostRelevantContactsWithName:(id)name store:(id)store
 {
-  v6 = a4;
-  v7 = a3;
+  storeCopy = store;
+  nameCopy = name;
   v8 = pp_contacts_signpost_handle();
   v9 = os_signpost_id_generate(v8);
 
@@ -346,14 +346,14 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
   }
 
   v12 = +[PPPeopleSuggester sharedInstance];
-  v13 = [v12 rankedContactIdentifiersMatchingName:v7];
+  v13 = [v12 rankedContactIdentifiersMatchingName:nameCopy];
 
-  v14 = [v12 rankedContactIdentifiers];
-  v15 = [(PPContactScorer *)a1 _contactRankMapWithRankedIdentifiers:v14];
+  rankedContactIdentifiers = [v12 rankedContactIdentifiers];
+  v15 = [(PPContactScorer *)self _contactRankMapWithRankedIdentifiers:rankedContactIdentifiers];
 
-  v16 = [(PPContactScorer *)a1 _contactsWithIdentifiers:v13 store:v6];
+  v16 = [(PPContactScorer *)self _contactsWithIdentifiers:v13 store:storeCopy];
 
-  v17 = [(PPContactScorer *)a1 _scoreAndSortContacts:v16 rankMap:v15];
+  v17 = [(PPContactScorer *)self _scoreAndSortContacts:v16 rankMap:v15];
 
   v18 = pp_contacts_signpost_handle();
   v19 = v18;
@@ -366,17 +366,17 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
   return v17;
 }
 
-+ (id)_contactsWithIdentifiers:(void *)a3 store:
++ (id)_contactsWithIdentifiers:(void *)identifiers store:
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = a2;
   objc_opt_self();
   v6 = objc_opt_new();
   [v6 setMatchingIdentifiers:v5];
 
   v12 = 0;
-  v7 = [v4 contactsWithQuery:v6 error:&v12];
+  v7 = [identifiersCopy contactsWithQuery:v6 error:&v12];
 
   v8 = v12;
   if (!v7)
@@ -395,10 +395,10 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
   return v7;
 }
 
-+ (id)mostRelevantContactsWithStore:(id)a3 shouldContinueBlock:(id)a4
++ (id)mostRelevantContactsWithStore:(id)store shouldContinueBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  blockCopy = block;
   v8 = pp_contacts_signpost_handle();
   v9 = os_signpost_id_generate(v8);
 
@@ -410,18 +410,18 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
     _os_signpost_emit_with_name_impl(&dword_23224A000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "PPContactScorer.mostRelevantContacts", "", buf, 2u);
   }
 
-  if (v7[2](v7))
+  if (blockCopy[2](blockCopy))
   {
     v12 = +[PPPeopleSuggester sharedInstance];
-    v13 = [v12 rankedContactIdentifiers];
+    rankedContactIdentifiers = [v12 rankedContactIdentifiers];
 
-    if (v7[2](v7))
+    if (blockCopy[2](blockCopy))
     {
-      v14 = [(PPContactScorer *)a1 _contactRankMapWithRankedIdentifiers:v13];
-      v15 = [(PPContactScorer *)a1 _contactsWithIdentifiers:v13 store:v6];
-      if (v7[2](v7))
+      v14 = [(PPContactScorer *)self _contactRankMapWithRankedIdentifiers:rankedContactIdentifiers];
+      v15 = [(PPContactScorer *)self _contactsWithIdentifiers:rankedContactIdentifiers store:storeCopy];
+      if (blockCopy[2](blockCopy))
       {
-        v16 = [(PPContactScorer *)a1 _scoreAndSortContacts:v15 rankMap:v14];
+        v16 = [(PPContactScorer *)self _scoreAndSortContacts:v15 rankMap:v14];
         v17 = pp_contacts_signpost_handle();
         v18 = v17;
         if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
@@ -459,11 +459,11 @@ void __56__PPContactScorer__contactRankMapWithRankedIdentifiers___block_invoke(u
 
   else
   {
-    v13 = pp_contacts_log_handle();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    rankedContactIdentifiers = pp_contacts_log_handle();
+    if (os_log_type_enabled(rankedContactIdentifiers, OS_LOG_TYPE_DEFAULT))
     {
       *v23 = 0;
-      _os_log_impl(&dword_23224A000, v13, OS_LOG_TYPE_DEFAULT, "mostRelevantContactsWithStore stopping due to shouldContinueBlock", v23, 2u);
+      _os_log_impl(&dword_23224A000, rankedContactIdentifiers, OS_LOG_TYPE_DEFAULT, "mostRelevantContactsWithStore stopping due to shouldContinueBlock", v23, 2u);
     }
 
     v16 = MEMORY[0x277CBEBF8];

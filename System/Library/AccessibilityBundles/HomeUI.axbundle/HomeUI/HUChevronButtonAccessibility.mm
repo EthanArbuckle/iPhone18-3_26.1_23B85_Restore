@@ -1,5 +1,5 @@
 @interface HUChevronButtonAccessibility
-- (HUChevronButtonAccessibility)initWithFrame:(CGRect)a3;
+- (HUChevronButtonAccessibility)initWithFrame:(CGRect)frame;
 - (id)accessibilityLabel;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
@@ -9,9 +9,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(HUChevronButtonAccessibility *)self safeValueForKey:@"titleLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -23,11 +23,11 @@
   [v3 setIsAccessibilityElement:0];
 }
 
-- (HUChevronButtonAccessibility)initWithFrame:(CGRect)a3
+- (HUChevronButtonAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = HUChevronButtonAccessibility;
-  v3 = [(HUChevronButtonAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUChevronButtonAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(HUChevronButtonAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

@@ -4,20 +4,20 @@
 - (NSString)totalCountDescription;
 - (PXContentSyndicationCountsController)init;
 - (int64_t)savedCount;
-- (void)performChanges:(id)a3;
-- (void)setAssetCollection:(id)a3;
-- (void)setDetailedCounts:(id *)a3;
-- (void)setSavedCount:(int64_t)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)performChanges:(id)changes;
+- (void)setAssetCollection:(id)collection;
+- (void)setDetailedCounts:(id *)counts;
+- (void)setSavedCount:(int64_t)count;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation PXContentSyndicationCountsController
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = NSStringFromSelector(sel_mockNumberOfAssetsSaved);
-  if ([v5 isEqualToString:v6])
+  if ([keyCopy isEqualToString:v6])
   {
 
 LABEL_4:
@@ -31,7 +31,7 @@ LABEL_4:
   }
 
   v7 = NSStringFromSelector(sel_footerMockType);
-  v8 = [v5 isEqualToString:v7];
+  v8 = [keyCopy isEqualToString:v7];
 
   if (v8)
   {
@@ -49,59 +49,59 @@ uint64_t __68__PXContentSyndicationCountsController_settings_changedValueForKey_
   return [v2 signalChange:1];
 }
 
-- (void)setSavedCount:(int64_t)a3
+- (void)setSavedCount:(int64_t)count
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (self->_savedCount != a3)
+  if (self->_savedCount != count)
   {
     v5 = PXContentSyndicationCountsControllerGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
-      if (a3 == -1)
+      if (count == -1)
       {
         v7 = @"-";
       }
 
       else
       {
-        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%td", a3];
+        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%td", count];
       }
 
       *buf = 138412802;
       v9 = v6;
       v10 = 2048;
-      v11 = self;
+      selfCopy = self;
       v12 = 2114;
       v13 = v7;
       _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "<%@:%p> >>> Saved Count: %{public}@", buf, 0x20u);
     }
 
-    self->_savedCount = a3;
+    self->_savedCount = count;
     [(PXContentSyndicationCountsController *)self signalChange:1];
   }
 }
 
 - (int64_t)savedCount
 {
-  v2 = [(PXContentSyndicationCountsController *)self actualSavedCount];
+  actualSavedCount = [(PXContentSyndicationCountsController *)self actualSavedCount];
   v3 = +[PXContentSyndicationSettings sharedInstance];
   if ([v3 mockNumberOfAssetsSaved])
   {
-    v4 = [v3 footerMockType];
-    if (v4 < 3)
+    footerMockType = [v3 footerMockType];
+    if (footerMockType < 3)
     {
-      v2 = v4;
+      actualSavedCount = footerMockType;
     }
   }
 
-  return v2;
+  return actualSavedCount;
 }
 
-- (void)setDetailedCounts:(id *)a3
+- (void)setDetailedCounts:(id *)counts
 {
   p_detailedCounts = &self->_detailedCounts;
-  if (self->_detailedCounts.photosCount != a3->var0 || self->_detailedCounts.videosCount != a3->var1 || self->_detailedCounts.othersCount != a3->var2)
+  if (self->_detailedCounts.photosCount != counts->var0 || self->_detailedCounts.videosCount != counts->var1 || self->_detailedCounts.othersCount != counts->var2)
   {
     v8 = PXContentSyndicationCountsControllerGetLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -110,8 +110,8 @@ uint64_t __68__PXContentSyndicationCountsController_settings_changedValueForKey_
       PXDisplayAssetDetailedCountsDescription();
     }
 
-    v9 = *&a3->var0;
-    p_detailedCounts->othersCount = a3->var2;
+    v9 = *&counts->var0;
+    p_detailedCounts->othersCount = counts->var2;
     *&p_detailedCounts->photosCount = v9;
     [(PXContentSyndicationCountsController *)self signalChange:2];
   }
@@ -134,17 +134,17 @@ uint64_t __68__PXContentSyndicationCountsController_settings_changedValueForKey_
   return result;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXContentSyndicationCountsController;
-  [(PXContentSyndicationCountsController *)&v3 performChanges:a3];
+  [(PXContentSyndicationCountsController *)&v3 performChanges:changes];
 }
 
 - (NSString)savedCountDescription
 {
   [(PXContentSyndicationCountsController *)self detailedCounts];
-  v3 = [(PXContentSyndicationCountsController *)self savedCount];
+  savedCount = [(PXContentSyndicationCountsController *)self savedCount];
   if (v12 == 0x7FFFFFFFFFFFFFFFLL || *(&v12 + 1) == 0x7FFFFFFFFFFFFFFFLL || v13 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -153,14 +153,14 @@ uint64_t __68__PXContentSyndicationCountsController_settings_changedValueForKey_
   else
   {
     v6 = 0;
-    if (v3 != -1)
+    if (savedCount != -1)
     {
       v7 = *(&v12 + 1) + v12 + v13;
       if (v7)
       {
-        if (v3)
+        if (savedCount)
         {
-          if (v7 != v3)
+          if (v7 != savedCount)
           {
             v14 = v12;
             v15 = v13;
@@ -210,29 +210,29 @@ uint64_t __68__PXContentSyndicationCountsController_settings_changedValueForKey_
   return v4;
 }
 
-- (void)setAssetCollection:(id)a3
+- (void)setAssetCollection:(id)collection
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  collectionCopy = collection;
+  if (!collectionCopy)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationCountsController.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"assetCollection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationCountsController.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"assetCollection"}];
   }
 
   assetCollection = self->_assetCollection;
-  if (assetCollection != v5 && ([(PXDisplayAssetCollection *)assetCollection isEqual:v5]& 1) == 0)
+  if (assetCollection != collectionCopy && ([(PXDisplayAssetCollection *)assetCollection isEqual:collectionCopy]& 1) == 0)
   {
     v7 = PXContentSyndicationCountsControllerGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
-      v9 = v5;
-      v10 = [(PXDisplayAssetCollection *)v9 px_cheapLogIdentifier];
-      v11 = v10;
-      if (v10)
+      v9 = collectionCopy;
+      px_cheapLogIdentifier = [(PXDisplayAssetCollection *)v9 px_cheapLogIdentifier];
+      v11 = px_cheapLogIdentifier;
+      if (px_cheapLogIdentifier)
       {
-        v12 = v10;
+        v12 = px_cheapLogIdentifier;
       }
 
       else
@@ -245,17 +245,17 @@ uint64_t __68__PXContentSyndicationCountsController_settings_changedValueForKey_
       *buf = 138412802;
       v18 = v8;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = v13;
       _os_log_impl(&dword_1A3C1C000, v7, OS_LOG_TYPE_DEFAULT, "<%@:%p> Set Asset Collection: %{public}@", buf, 0x20u);
     }
 
-    v14 = [(PXDisplayAssetCollection *)v5 copyWithZone:0];
+    v14 = [(PXDisplayAssetCollection *)collectionCopy copyWithZone:0];
     v15 = self->_assetCollection;
     self->_assetCollection = v14;
 
-    [(PXContentSyndicationCountsController *)self didSetAssetCollection:v5];
+    [(PXContentSyndicationCountsController *)self didSetAssetCollection:collectionCopy];
   }
 }
 
@@ -264,8 +264,8 @@ uint64_t __68__PXContentSyndicationCountsController_settings_changedValueForKey_
   v4 = objc_opt_class();
   if (v4 == objc_opt_class())
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXContentSyndicationCountsController.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXContentSyndicationCountsController init]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXContentSyndicationCountsController.m" lineNumber:44 description:{@"%s is not available as initializer", "-[PXContentSyndicationCountsController init]"}];
 
     abort();
   }

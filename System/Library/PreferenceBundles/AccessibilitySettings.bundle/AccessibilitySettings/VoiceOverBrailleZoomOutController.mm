@@ -1,7 +1,7 @@
 @interface VoiceOverBrailleZoomOutController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation VoiceOverBrailleZoomOutController
@@ -68,33 +68,33 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a4;
-  v7 = [(VoiceOverBrailleZoomOutController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v7 = [(VoiceOverBrailleZoomOutController *)self specifierForIndexPath:path];
   v8 = [v7 propertyForKey:@"numCellsPerElement"];
   if (v8)
   {
     v9 = +[AXSettings sharedInstance];
-    v10 = [v9 voiceOverTouchBrailleZoomOutNumCellsPerElement];
+    voiceOverTouchBrailleZoomOutNumCellsPerElement = [v9 voiceOverTouchBrailleZoomOutNumCellsPerElement];
 
-    [v11 setChecked:{objc_msgSend(v8, "integerValue") == v10}];
+    [cellCopy setChecked:{objc_msgSend(v8, "integerValue") == voiceOverTouchBrailleZoomOutNumCellsPerElement}];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v25.receiver = self;
   v25.super_class = VoiceOverBrailleZoomOutController;
-  [(VoiceOverBrailleZoomOutController *)&v25 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(VoiceOverBrailleZoomOutController *)&v25 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [v6 visibleCells];
-  v9 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  visibleCells = [viewCopy visibleCells];
+  v9 = [visibleCells countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v9)
   {
     v10 = v9;
@@ -105,31 +105,31 @@
       {
         if (*v22 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(visibleCells);
         }
 
         v13 = __UIAccessibilitySafeClass();
         [v13 setChecked:0];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v10 = [visibleCells countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [v6 cellForRowAtIndexPath:v7];
+  v14 = [viewCopy cellForRowAtIndexPath:pathCopy];
   v15 = __UIAccessibilitySafeClass();
 
   [v15 setChecked:1];
-  v16 = [(VoiceOverBrailleZoomOutController *)self specifierForIndexPath:v7];
+  v16 = [(VoiceOverBrailleZoomOutController *)self specifierForIndexPath:pathCopy];
   v17 = [v16 propertyForKey:@"numCellsPerElement"];
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 integerValue];
+    integerValue = [v17 integerValue];
     v20 = +[AXSettings sharedInstance];
-    [v20 setVoiceOverTouchBrailleZoomOutNumCellsPerElement:v19];
+    [v20 setVoiceOverTouchBrailleZoomOutNumCellsPerElement:integerValue];
 
     [(VoiceOverBrailleZoomOutController *)self reload];
   }

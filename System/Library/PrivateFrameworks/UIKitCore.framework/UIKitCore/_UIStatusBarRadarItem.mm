@@ -1,28 +1,28 @@
 @interface _UIStatusBarRadarItem
 - (_UIStatusBarRadarView)radarItemView;
-- (id)imageForUpdate:(id)a3;
+- (id)imageForUpdate:(id)update;
 - (void)_create_radarItemView;
 @end
 
 @implementation _UIStatusBarRadarItem
 
-- (id)imageForUpdate:(id)a3
+- (id)imageForUpdate:(id)update
 {
-  v3 = a3;
-  v4 = [v3 data];
-  v5 = [v4 radarEntry];
-  v6 = [v5 BOOLValue];
+  updateCopy = update;
+  data = [updateCopy data];
+  radarEntry = [data radarEntry];
+  bOOLValue = [radarEntry BOOLValue];
 
   v7 = MEMORY[0x1E696AAE8];
   v8 = _UIKitResourceBundlePath(@"CarPlayArtwork.bundle");
   v9 = [v7 bundleWithPath:v8];
 
-  v10 = [v3 styleAttributes];
+  styleAttributes = [updateCopy styleAttributes];
 
-  v11 = [v10 traitCollection];
-  v12 = [UIImage imageNamed:@"Black_Radar" inBundle:v9 compatibleWithTraitCollection:v11];
+  traitCollection = [styleAttributes traitCollection];
+  v12 = [UIImage imageNamed:@"Black_Radar" inBundle:v9 compatibleWithTraitCollection:traitCollection];
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [v12 size];
     _UIGraphicsBeginImageContextWithOptions(0, 0, v13, v14, 1.0);

@@ -10,7 +10,7 @@
   v10 = a3;
   if (v10)
   {
-    v11 = [a1 propertyListWithData:v10 options:a4 format:a5 error:a6];
+    v11 = [self propertyListWithData:v10 options:a4 format:a5 error:a6];
   }
 
   else

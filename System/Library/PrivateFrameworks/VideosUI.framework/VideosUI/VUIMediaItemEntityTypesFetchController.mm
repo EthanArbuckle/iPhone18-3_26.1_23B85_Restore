@@ -1,24 +1,24 @@
 @interface VUIMediaItemEntityTypesFetchController
-- (BOOL)_updateResponseWithResult:(id)a3 replaceContentsOnNilChanges:(BOOL)a4;
-- (VUIMediaItemEntityTypesFetchController)initWithMediaLibrary:(id)a3;
+- (BOOL)_updateResponseWithResult:(id)result replaceContentsOnNilChanges:(BOOL)changes;
+- (VUIMediaItemEntityTypesFetchController)initWithMediaLibrary:(id)library;
 - (VUIMediaItemEntityTypesFetchControllerDelegate)delegate;
-- (id)_fetchOperationForFetchReason:(int64_t)a3;
-- (void)_didCompleteFetchOperation:(id)a3;
-- (void)_handleContentsChangeFetchControllerOperationDidCompleteWithResult:(id)a3 error:(id)a4;
-- (void)_handleInitialFetchControllerOperationDidCompleteWithResult:(id)a3 error:(id)a4;
-- (void)_notifyDelegateWithBlock:(id)a3;
-- (void)_notifyFetchDidCompleteWithResult:(id)a3;
-- (void)_notifyFetchDidFailWithError:(id)a3;
+- (id)_fetchOperationForFetchReason:(int64_t)reason;
+- (void)_didCompleteFetchOperation:(id)operation;
+- (void)_handleContentsChangeFetchControllerOperationDidCompleteWithResult:(id)result error:(id)error;
+- (void)_handleInitialFetchControllerOperationDidCompleteWithResult:(id)result error:(id)error;
+- (void)_notifyDelegateWithBlock:(id)block;
+- (void)_notifyFetchDidCompleteWithResult:(id)result;
+- (void)_notifyFetchDidFailWithError:(id)error;
 - (void)cancelFetch;
 @end
 
 @implementation VUIMediaItemEntityTypesFetchController
 
-- (VUIMediaItemEntityTypesFetchController)initWithMediaLibrary:(id)a3
+- (VUIMediaItemEntityTypesFetchController)initWithMediaLibrary:(id)library
 {
   v4.receiver = self;
   v4.super_class = VUIMediaItemEntityTypesFetchController;
-  return [(VUIMediaLibraryFetchController *)&v4 initWithMediaLibrary:a3];
+  return [(VUIMediaLibraryFetchController *)&v4 initWithMediaLibrary:library];
 }
 
 - (void)cancelFetch
@@ -29,47 +29,47 @@
   [(VUIMediaLibraryFetchController *)&v3 cancelFetch];
 }
 
-- (id)_fetchOperationForFetchReason:(int64_t)a3
+- (id)_fetchOperationForFetchReason:(int64_t)reason
 {
   v5 = [VUIMediaItemEntityTypesFetchControllerOperation alloc];
-  v6 = [(VUIMediaLibraryFetchController *)self mediaLibrary];
-  v7 = [(VUIMediaItemEntityTypesFetchControllerOperation *)v5 initWithMediaLibrary:v6 fetchReason:a3];
+  mediaLibrary = [(VUIMediaLibraryFetchController *)self mediaLibrary];
+  v7 = [(VUIMediaItemEntityTypesFetchControllerOperation *)v5 initWithMediaLibrary:mediaLibrary fetchReason:reason];
 
-  if (a3 == 1)
+  if (reason == 1)
   {
-    v8 = [(VUIMediaItemEntityTypesFetchController *)self response];
-    [(VUIMediaItemEntityTypesFetchControllerOperation *)v7 setCurrentFetchResponse:v8];
+    response = [(VUIMediaItemEntityTypesFetchController *)self response];
+    [(VUIMediaItemEntityTypesFetchControllerOperation *)v7 setCurrentFetchResponse:response];
   }
 
   return v7;
 }
 
-- (void)_didCompleteFetchOperation:(id)a3
+- (void)_didCompleteFetchOperation:(id)operation
 {
-  v4 = a3;
-  v7 = [v4 result];
-  v5 = [v4 error];
-  v6 = [v4 fetchReason];
+  operationCopy = operation;
+  result = [operationCopy result];
+  error = [operationCopy error];
+  fetchReason = [operationCopy fetchReason];
 
-  if (v6)
+  if (fetchReason)
   {
-    [(VUIMediaItemEntityTypesFetchController *)self _handleContentsChangeFetchControllerOperationDidCompleteWithResult:v7 error:v5];
+    [(VUIMediaItemEntityTypesFetchController *)self _handleContentsChangeFetchControllerOperationDidCompleteWithResult:result error:error];
   }
 
   else
   {
-    [(VUIMediaItemEntityTypesFetchController *)self _handleInitialFetchControllerOperationDidCompleteWithResult:v7 error:v5];
+    [(VUIMediaItemEntityTypesFetchController *)self _handleInitialFetchControllerOperationDidCompleteWithResult:result error:error];
   }
 }
 
-- (void)_handleInitialFetchControllerOperationDidCompleteWithResult:(id)a3 error:(id)a4
+- (void)_handleInitialFetchControllerOperationDidCompleteWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  resultCopy = result;
+  errorCopy = error;
+  if (resultCopy)
   {
-    [(VUIMediaItemEntityTypesFetchController *)self _updateResponseWithResult:v6 replaceContentsOnNilChanges:1];
-    [(VUIMediaItemEntityTypesFetchController *)self _notifyFetchDidCompleteWithResult:v6];
+    [(VUIMediaItemEntityTypesFetchController *)self _updateResponseWithResult:resultCopy replaceContentsOnNilChanges:1];
+    [(VUIMediaItemEntityTypesFetchController *)self _notifyFetchDidCompleteWithResult:resultCopy];
   }
 
   else
@@ -77,23 +77,23 @@
     v8 = VUIDefaultLogObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [VUIMediaItemEntityTypesFetchController _handleInitialFetchControllerOperationDidCompleteWithResult:v7 error:v8];
+      [VUIMediaItemEntityTypesFetchController _handleInitialFetchControllerOperationDidCompleteWithResult:errorCopy error:v8];
     }
 
-    [(VUIMediaItemEntityTypesFetchController *)self _notifyFetchDidFailWithError:v7];
+    [(VUIMediaItemEntityTypesFetchController *)self _notifyFetchDidFailWithError:errorCopy];
   }
 }
 
-- (void)_handleContentsChangeFetchControllerOperationDidCompleteWithResult:(id)a3 error:(id)a4
+- (void)_handleContentsChangeFetchControllerOperationDidCompleteWithResult:(id)result error:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  resultCopy = result;
+  errorCopy = error;
+  if (resultCopy)
   {
-    if ([(VUIMediaItemEntityTypesFetchController *)self _updateResponseWithResult:v6 replaceContentsOnNilChanges:0])
+    if ([(VUIMediaItemEntityTypesFetchController *)self _updateResponseWithResult:resultCopy replaceContentsOnNilChanges:0])
     {
-      [(VUIMediaItemEntityTypesFetchController *)self _notifyFetchDidCompleteWithResult:v6];
+      [(VUIMediaItemEntityTypesFetchController *)self _notifyFetchDidCompleteWithResult:resultCopy];
     }
   }
 
@@ -103,43 +103,43 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v7;
+      v10 = errorCopy;
       _os_log_impl(&dword_1E323F000, v8, OS_LOG_TYPE_DEFAULT, "Contents change media category types fetch failed with error (%@)", &v9, 0xCu);
     }
 
-    [(VUIMediaItemEntityTypesFetchController *)self _notifyFetchDidFailWithError:v7];
+    [(VUIMediaItemEntityTypesFetchController *)self _notifyFetchDidFailWithError:errorCopy];
   }
 }
 
-- (void)_notifyDelegateWithBlock:(id)a3
+- (void)_notifyDelegateWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(VUIMediaItemEntityTypesFetchController *)self delegate];
-  v6 = [(VUIMediaLibraryFetchController *)self mediaLibrary];
-  v7 = [v6 manager];
+  blockCopy = block;
+  delegate = [(VUIMediaItemEntityTypesFetchController *)self delegate];
+  mediaLibrary = [(VUIMediaLibraryFetchController *)self mediaLibrary];
+  manager = [mediaLibrary manager];
 
-  v8 = [v7 completionDispatchQueue];
+  completionDispatchQueue = [manager completionDispatchQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__VUIMediaItemEntityTypesFetchController__notifyDelegateWithBlock___block_invoke;
   v11[3] = &unk_1E872DC10;
-  v12 = v5;
-  v13 = v4;
-  v9 = v5;
-  v10 = v4;
-  dispatch_async(v8, v11);
+  v12 = delegate;
+  v13 = blockCopy;
+  v9 = delegate;
+  v10 = blockCopy;
+  dispatch_async(completionDispatchQueue, v11);
 }
 
-- (void)_notifyFetchDidCompleteWithResult:(id)a3
+- (void)_notifyFetchDidCompleteWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__VUIMediaItemEntityTypesFetchController__notifyFetchDidCompleteWithResult___block_invoke;
   v6[3] = &unk_1E8733B18;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = resultCopy;
+  v5 = resultCopy;
   [(VUIMediaItemEntityTypesFetchController *)self _notifyDelegateWithBlock:v6];
 }
 
@@ -152,16 +152,16 @@ void __76__VUIMediaItemEntityTypesFetchController__notifyFetchDidCompleteWithRes
   }
 }
 
-- (void)_notifyFetchDidFailWithError:(id)a3
+- (void)_notifyFetchDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__VUIMediaItemEntityTypesFetchController__notifyFetchDidFailWithError___block_invoke;
   v6[3] = &unk_1E8733B18;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = errorCopy;
+  v5 = errorCopy;
   [(VUIMediaItemEntityTypesFetchController *)self _notifyDelegateWithBlock:v6];
 }
 
@@ -174,21 +174,21 @@ void __71__VUIMediaItemEntityTypesFetchController__notifyFetchDidFailWithError__
   }
 }
 
-- (BOOL)_updateResponseWithResult:(id)a3 replaceContentsOnNilChanges:(BOOL)a4
+- (BOOL)_updateResponseWithResult:(id)result replaceContentsOnNilChanges:(BOOL)changes
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(VUIMediaItemEntityTypesFetchController *)self response];
-  v8 = [v6 fetchResponse];
-  if (v7)
+  changesCopy = changes;
+  resultCopy = result;
+  response = [(VUIMediaItemEntityTypesFetchController *)self response];
+  fetchResponse = [resultCopy fetchResponse];
+  if (response)
   {
-    v9 = [v6 fetchChanges];
-    v10 = [v7 _updateWithResponse:v8 changes:v9 replaceContentsOnNilChanges:v4];
+    fetchChanges = [resultCopy fetchChanges];
+    v10 = [response _updateWithResponse:fetchResponse changes:fetchChanges replaceContentsOnNilChanges:changesCopy];
   }
 
   else
   {
-    [(VUIMediaItemEntityTypesFetchController *)self setResponse:v8];
+    [(VUIMediaItemEntityTypesFetchController *)self setResponse:fetchResponse];
     v10 = 1;
   }
 

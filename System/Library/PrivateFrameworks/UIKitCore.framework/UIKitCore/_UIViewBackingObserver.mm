@@ -1,8 +1,8 @@
 @interface _UIViewBackingObserver
 + (id)sharedObserver;
 - (id)additionalBlocks;
-- (void)observe:(id)a3 forKeyPath:(id)a4 once:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observe:(id)observe forKeyPath:(id)path once:(id)once;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation _UIViewBackingObserver
@@ -19,16 +19,16 @@
   return v3;
 }
 
-- (void)observe:(id)a3 forKeyPath:(id)a4 once:(id)a5
+- (void)observe:(id)observe forKeyPath:(id)path once:(id)once
 {
-  v8 = a5;
+  onceCopy = once;
   if (self->_observerBlock)
   {
-    v9 = a4;
-    v10 = a3;
+    pathCopy = path;
+    observeCopy = observe;
     v11 = objc_alloc_init(_UIViewBackingObserver);
-    v12 = [(_UIViewBackingObserver *)self additionalObservers];
-    [v12 addObject:v11];
+    additionalObservers = [(_UIViewBackingObserver *)self additionalObservers];
+    [additionalObservers addObject:v11];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -36,28 +36,28 @@
     v17[3] = &unk_1E70FCE28;
     v17[4] = self;
     v18 = v11;
-    v19 = v8;
-    v13 = v11;
-    [(_UIViewBackingObserver *)v13 observe:v10 forKeyPath:v9 once:v17];
+    v19 = onceCopy;
+    observeCopy2 = v11;
+    [(_UIViewBackingObserver *)observeCopy2 observe:observeCopy forKeyPath:pathCopy once:v17];
   }
 
   else
   {
-    v14 = a4;
-    v13 = a3;
-    v15 = _Block_copy(v8);
+    pathCopy2 = path;
+    observeCopy2 = observe;
+    v15 = _Block_copy(onceCopy);
     observerBlock = self->_observerBlock;
     self->_observerBlock = v15;
 
-    [(_UIViewBackingObserver *)v13 addObserver:self forKeyPath:v14 options:0 context:&_UIViewBackingObserverContext];
+    [(_UIViewBackingObserver *)observeCopy2 addObserver:self forKeyPath:pathCopy2 options:0 context:&_UIViewBackingObserverContext];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &_UIViewBackingObserverContext)
+  if (context == &_UIViewBackingObserverContext)
   {
-    [a4 removeObserver:self forKeyPath:a3 context:&_UIViewBackingObserverContext];
+    [object removeObserver:self forKeyPath:path context:&_UIViewBackingObserverContext];
     v9 = _Block_copy(self->_observerBlock);
     observerBlock = self->_observerBlock;
     self->_observerBlock = 0;

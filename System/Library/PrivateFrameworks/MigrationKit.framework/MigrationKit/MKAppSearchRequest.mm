@@ -1,51 +1,51 @@
 @interface MKAppSearchRequest
-- (void)search:(id)a3 androidIDs:(id)a4 completion:(id)a5;
+- (void)search:(id)search androidIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation MKAppSearchRequest
 
-- (void)search:(id)a3 androidIDs:(id)a4 completion:(id)a5
+- (void)search:(id)search androidIDs:(id)ds completion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count] || objc_msgSend(v8, "count"))
+  searchCopy = search;
+  dsCopy = ds;
+  completionCopy = completion;
+  if ([searchCopy count] || objc_msgSend(dsCopy, "count"))
   {
     v10 = objc_alloc_init(MKDevice);
-    v11 = [(MKDevice *)v10 type];
-    v12 = [MEMORY[0x277CEE570] createBagForSubProfile];
-    v13 = [objc_alloc(MEMORY[0x277CEE570]) initWithType:0 clientIdentifier:@"com.apple.welcomemat" clientVersion:@"1" bag:v12];
-    if ([v7 count])
+    type = [(MKDevice *)v10 type];
+    createBagForSubProfile = [MEMORY[0x277CEE570] createBagForSubProfile];
+    v13 = [objc_alloc(MEMORY[0x277CEE570]) initWithType:0 clientIdentifier:@"com.apple.welcomemat" clientVersion:@"1" bag:createBagForSubProfile];
+    if ([searchCopy count])
     {
-      [v13 setBundleIdentifiers:v7];
+      [v13 setBundleIdentifiers:searchCopy];
     }
 
-    if ([v8 count])
+    if ([dsCopy count])
     {
       v21 = @"androidAppId";
-      v14 = [v8 componentsJoinedByString:{@", "}];
+      v14 = [dsCopy componentsJoinedByString:{@", "}];
       v22[0] = v14;
       v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
       [v13 setFilters:v15];
     }
 
-    v16 = [v13 perform];
+    perform = [v13 perform];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __51__MKAppSearchRequest_search_androidIDs_completion___block_invoke;
     v18[3] = &unk_2798DCDB8;
-    v19 = v9;
-    v20 = v11;
-    [v16 addFinishBlock:v18];
+    v19 = completionCopy;
+    v20 = type;
+    [perform addFinishBlock:v18];
   }
 
   else
   {
     v10 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MKAppSearchRequestError" code:1 userInfo:0];
-    if (v9)
+    if (completionCopy)
     {
-      (*(v9 + 2))(v9, 0, v10);
+      (*(completionCopy + 2))(completionCopy, 0, v10);
     }
   }
 

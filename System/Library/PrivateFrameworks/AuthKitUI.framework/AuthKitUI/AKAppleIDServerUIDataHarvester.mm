@@ -2,13 +2,13 @@
 - (AKAppleIDServerUIDataHarvester)init;
 - (NSDictionary)harvestedData;
 - (void)_clearPendingDOBFromPrimaryAppleAccount;
-- (void)_harvestIDMSRecoveryHeadersInfo:(id)a3;
-- (void)harvestDataFromClientInfo:(id)a3 withExtractor:(id)a4;
-- (void)harvestDataFromCompanionResponse:(id)a3;
-- (void)harvestDataFromServerHTTPResponse:(id)a3;
-- (void)harvestDataFromServerUIObjectModel:(id)a3;
-- (void)harvestIDMSRecoveryInfoFromClientInfo:(id)a3;
-- (void)harvestIDMSRecoveryInfoFromHeaders:(id)a3;
+- (void)_harvestIDMSRecoveryHeadersInfo:(id)info;
+- (void)harvestDataFromClientInfo:(id)info withExtractor:(id)extractor;
+- (void)harvestDataFromCompanionResponse:(id)response;
+- (void)harvestDataFromServerHTTPResponse:(id)response;
+- (void)harvestDataFromServerUIObjectModel:(id)model;
+- (void)harvestIDMSRecoveryInfoFromClientInfo:(id)info;
+- (void)harvestIDMSRecoveryInfoFromHeaders:(id)headers;
 @end
 
 @implementation AKAppleIDServerUIDataHarvester
@@ -41,13 +41,13 @@
   return v2;
 }
 
-- (void)harvestDataFromServerUIObjectModel:(id)a3
+- (void)harvestDataFromServerUIObjectModel:(id)model
 {
   v12 = *MEMORY[0x277D85DE8];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, model);
   v8 = _AKLogSystem();
   v7 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -59,33 +59,33 @@
   objc_storeStrong(&v8, 0);
   v3 = [AKAppleIDObjectModelFieldExtractor alloc];
   v6 = [(AKAppleIDObjectModelFieldExtractor *)v3 initWithObjectModel:location[0]];
-  v4 = v10;
-  v5 = [location[0] clientInfo];
+  v4 = selfCopy;
+  clientInfo = [location[0] clientInfo];
   [AKAppleIDServerUIDataHarvester harvestDataFromClientInfo:v4 withExtractor:"harvestDataFromClientInfo:withExtractor:"];
-  MEMORY[0x277D82BD8](v5);
+  MEMORY[0x277D82BD8](clientInfo);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)harvestDataFromCompanionResponse:(id)a3
+- (void)harvestDataFromCompanionResponse:(id)response
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   objc_storeStrong(location, 0);
 }
 
-- (void)harvestDataFromClientInfo:(id)a3 withExtractor:(id)a4
+- (void)harvestDataFromClientInfo:(id)info withExtractor:(id)extractor
 {
   v40 = *MEMORY[0x277D85DE8];
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, extractor);
   v33 = _AKLogSystem();
   v32 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -152,7 +152,7 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(NSMutableDictionary *)v36->_harvestedData setObject:v30 forKeyedSubscript:*MEMORY[0x277CEFFD8]];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v30 forKeyedSubscript:*MEMORY[0x277CEFFD8]];
   }
 
   v15 = [location[0] objectForKeyedSubscript:@"passwordRowId"];
@@ -194,10 +194,10 @@
     }
 
     objc_storeStrong(&v17, 0);
-    [(NSMutableDictionary *)v36->_harvestedData setObject:v18 forKeyedSubscript:*MEMORY[0x277CEFFC8]];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v18 forKeyedSubscript:*MEMORY[0x277CEFFC8]];
   }
 
-  [(AKAppleIDServerUIDataHarvester *)v36 harvestIDMSRecoveryInfoFromClientInfo:location[0], location];
+  [(AKAppleIDServerUIDataHarvester *)selfCopy harvestIDMSRecoveryInfoFromClientInfo:location[0], location];
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v21, 0);
   objc_storeStrong(&v30, 0);
@@ -207,13 +207,13 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)harvestDataFromServerHTTPResponse:(id)a3
+- (void)harvestDataFromServerHTTPResponse:(id)response
 {
   v35 = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v27 = _AKLogSystem();
   v26 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -223,9 +223,9 @@
   }
 
   objc_storeStrong(&v27, 0);
-  v10 = [location[0] allHeaderFields];
-  v25 = [v10 objectForKeyedSubscript:*MEMORY[0x277CF0000]];
-  *&v3 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  allHeaderFields = [location[0] allHeaderFields];
+  v25 = [allHeaderFields objectForKeyedSubscript:*MEMORY[0x277CF0000]];
+  *&v3 = MEMORY[0x277D82BD8](allHeaderFields).n128_u64[0];
   if (v25)
   {
     v24 = _AKLogSystem();
@@ -239,11 +239,11 @@
     }
 
     objc_storeStrong(&v24, 0);
-    [(NSMutableDictionary *)v29->_harvestedData setObject:v25 forKeyedSubscript:*MEMORY[0x277CEFFC0]];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v25 forKeyedSubscript:*MEMORY[0x277CEFFC0]];
   }
 
-  v7 = [location[0] allHeaderFields];
-  v21 = [v7 objectForKeyedSubscript:*MEMORY[0x277CEFEB0]];
+  allHeaderFields2 = [location[0] allHeaderFields];
+  v21 = [allHeaderFields2 objectForKeyedSubscript:*MEMORY[0x277CEFEB0]];
   if ([v21 length])
   {
     v20 = _AKLogSystem();
@@ -255,11 +255,11 @@
     }
 
     objc_storeStrong(&v20, 0);
-    [(NSMutableDictionary *)v29->_harvestedData setObject:v21 forKeyedSubscript:*MEMORY[0x277CEFFD8]];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v21 forKeyedSubscript:*MEMORY[0x277CEFFD8]];
   }
 
-  v6 = [location[0] allHeaderFields];
-  v18 = [v6 objectForKeyedSubscript:@"X-Apple-I-Birthday-Updated"];
+  allHeaderFields3 = [location[0] allHeaderFields];
+  v18 = [allHeaderFields3 objectForKeyedSubscript:@"X-Apple-I-Birthday-Updated"];
   if ([v18 length])
   {
     v17 = _AKLogSystem();
@@ -273,12 +273,12 @@
     objc_storeStrong(&v17, 0);
     if ([v18 isEqualToString:@"1"])
     {
-      [(AKAppleIDServerUIDataHarvester *)v29 _clearPendingDOBFromPrimaryAppleAccount];
+      [(AKAppleIDServerUIDataHarvester *)selfCopy _clearPendingDOBFromPrimaryAppleAccount];
     }
   }
 
-  v5 = [location[0] allHeaderFields];
-  v15 = [v5 objectForKeyedSubscript:*MEMORY[0x277CF0048]];
+  allHeaderFields4 = [location[0] allHeaderFields];
+  v15 = [allHeaderFields4 objectForKeyedSubscript:*MEMORY[0x277CF0048]];
   if ([v15 length])
   {
     v14 = _AKLogSystem();
@@ -290,11 +290,11 @@
     }
 
     objc_storeStrong(&v14, 0);
-    [(NSMutableDictionary *)v29->_harvestedData setObject:v15 forKeyedSubscript:*MEMORY[0x277CF0050]];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v15 forKeyedSubscript:*MEMORY[0x277CF0050]];
   }
 
-  v4 = [location[0] allHeaderFields];
-  v12 = [v4 objectForKeyedSubscript:@"X-Apple-I-Private-Email-Client-Bundle"];
+  allHeaderFields5 = [location[0] allHeaderFields];
+  v12 = [allHeaderFields5 objectForKeyedSubscript:@"X-Apple-I-Private-Email-Client-Bundle"];
   if ([v12 length])
   {
     oslog = _AKLogSystem();
@@ -305,10 +305,10 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(NSMutableDictionary *)v29->_harvestedData setObject:v12 forKeyedSubscript:@"X-Apple-I-Private-Email-Client-Bundle"];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v12 forKeyedSubscript:@"X-Apple-I-Private-Email-Client-Bundle"];
   }
 
-  [(AKAppleIDServerUIDataHarvester *)v29 _harvestIDMSRecoveryHeadersInfo:location[0]];
+  [(AKAppleIDServerUIDataHarvester *)selfCopy _harvestIDMSRecoveryHeadersInfo:location[0]];
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v18, 0);
@@ -318,29 +318,29 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_harvestIDMSRecoveryHeadersInfo:(id)a3
+- (void)_harvestIDMSRecoveryHeadersInfo:(id)info
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [location[0] allHeaderFields];
-  [(AKAppleIDServerUIDataHarvester *)v5 harvestIDMSRecoveryInfoFromHeaders:v3];
-  objc_storeStrong(&v3, 0);
+  objc_storeStrong(location, info);
+  allHeaderFields = [location[0] allHeaderFields];
+  [(AKAppleIDServerUIDataHarvester *)selfCopy harvestIDMSRecoveryInfoFromHeaders:allHeaderFields];
+  objc_storeStrong(&allHeaderFields, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)harvestIDMSRecoveryInfoFromClientInfo:(id)a3
+- (void)harvestIDMSRecoveryInfoFromClientInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v17 = [location[0] objectForKeyedSubscript:*MEMORY[0x277CEFFD8]];
   if (v17)
   {
-    [(NSMutableDictionary *)v19->_harvestedData setObject:v17 forKeyedSubscript:*MEMORY[0x277CEFFD8]];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v17 forKeyedSubscript:*MEMORY[0x277CEFFD8]];
   }
 
   v7 = [location[0] objectForKeyedSubscript:*MEMORY[0x277CF0078]];
@@ -377,13 +377,13 @@
     }
 
     objc_storeStrong(&v13, 0);
-    [(NSMutableDictionary *)v19->_harvestedData setObject:v16 forKeyedSubscript:*MEMORY[0x277CF0078]];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v16 forKeyedSubscript:*MEMORY[0x277CF0078]];
   }
 
   v10 = [location[0] objectForKeyedSubscript:{*MEMORY[0x277CF0320], v4}];
   if (v10)
   {
-    [(NSMutableDictionary *)v19->_harvestedData setObject:v10 forKeyedSubscript:*MEMORY[0x277CF0320]];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v10 forKeyedSubscript:*MEMORY[0x277CF0320]];
   }
 
   v9 = [location[0] objectForKeyedSubscript:*MEMORY[0x277CF0068]];
@@ -395,7 +395,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(NSMutableDictionary *)v19->_harvestedData setObject:v9 forKeyedSubscript:*MEMORY[0x277CF0068]];
+  [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v9 forKeyedSubscript:*MEMORY[0x277CF0068]];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v16, 0);
@@ -404,17 +404,17 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)harvestIDMSRecoveryInfoFromHeaders:(id)a3
+- (void)harvestIDMSRecoveryInfoFromHeaders:(id)headers
 {
   v31 = *MEMORY[0x277D85DE8];
-  v29 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, headers);
   v27 = [location[0] objectForKeyedSubscript:*MEMORY[0x277CEFEE0]];
   if (v27)
   {
-    [(NSMutableDictionary *)v29->_harvestedData setObject:v27 forKeyedSubscript:*MEMORY[0x277CEFEE0]];
+    [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v27 forKeyedSubscript:*MEMORY[0x277CEFEE0]];
     if ([v27 isEqualToString:*MEMORY[0x277CEFEF8]] & 1) != 0 || (objc_msgSend(v27, "isEqualToString:", *MEMORY[0x277CEFF00]))
     {
       v26 = _AKLogSystem();
@@ -449,7 +449,7 @@
       *&v4 = MEMORY[0x277D82BD8](v10).n128_u64[0];
       if (v24)
       {
-        [(NSMutableDictionary *)v29->_harvestedData setObject:v24 forKeyedSubscript:*MEMORY[0x277CF0070], v4];
+        [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v24 forKeyedSubscript:*MEMORY[0x277CF0070], v4];
       }
 
       v9 = [location[0] objectForKeyedSubscript:{*MEMORY[0x277CF0310], v4}];
@@ -475,25 +475,25 @@
       *&v6 = MEMORY[0x277D82BD8](v9).n128_u64[0];
       if (v21)
       {
-        [(NSMutableDictionary *)v29->_harvestedData setObject:v21 forKeyedSubscript:*MEMORY[0x277CF0060], v6];
+        [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v21 forKeyedSubscript:*MEMORY[0x277CF0060], v6];
       }
 
       v18 = [location[0] objectForKeyedSubscript:{*MEMORY[0x277CEFF10], v6}];
       if (v18)
       {
-        [(NSMutableDictionary *)v29->_harvestedData setObject:v18 forKeyedSubscript:*MEMORY[0x277CEFF10]];
+        [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v18 forKeyedSubscript:*MEMORY[0x277CEFF10]];
       }
 
       v17 = [location[0] objectForKeyedSubscript:*MEMORY[0x277CF0008]];
       if (v17)
       {
-        [(NSMutableDictionary *)v29->_harvestedData setObject:v17 forKeyedSubscript:*MEMORY[0x277CF0008]];
+        [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v17 forKeyedSubscript:*MEMORY[0x277CF0008]];
       }
 
       v16 = [location[0] objectForKeyedSubscript:*MEMORY[0x277CEFEB0]];
       if (v16)
       {
-        [(NSMutableDictionary *)v29->_harvestedData setObject:v16 forKeyedSubscript:*MEMORY[0x277CEFFD8]];
+        [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v16 forKeyedSubscript:*MEMORY[0x277CEFFD8]];
       }
 
       v15 = [location[0] objectForKeyedSubscript:@"X-Apple-AK-Recovery-URL-Key"];
@@ -510,13 +510,13 @@
         }
 
         objc_storeStrong(&oslog, 0);
-        [(NSMutableDictionary *)v29->_harvestedData setObject:v15 forKeyedSubscript:*MEMORY[0x277CF0078]];
+        [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v15 forKeyedSubscript:*MEMORY[0x277CF0078]];
       }
 
       v11 = [location[0] objectForKeyedSubscript:*MEMORY[0x277CEFE98]];
       if (v11)
       {
-        [(NSMutableDictionary *)v29->_harvestedData setObject:v11 forKeyedSubscript:*MEMORY[0x277CEFE98]];
+        [(NSMutableDictionary *)selfCopy->_harvestedData setObject:v11 forKeyedSubscript:*MEMORY[0x277CEFE98]];
       }
 
       objc_storeStrong(&v11, 0);
@@ -539,19 +539,19 @@
   v24 = *MEMORY[0x277D85DE8];
   v22[2] = self;
   v22[1] = a2;
-  v10 = [MEMORY[0x277CF0130] sharedInstance];
-  v22[0] = [v10 primaryiCloudAccount];
-  *&v2 = MEMORY[0x277D82BD8](v10).n128_u64[0];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  v22[0] = [mEMORY[0x277CF0130] primaryiCloudAccount];
+  *&v2 = MEMORY[0x277D82BD8](mEMORY[0x277CF0130]).n128_u64[0];
   if (v22[0])
   {
-    v5 = [MEMORY[0x277CF0130] sharedInstance];
-    [v5 setPendingDOB:0 forAccount:v22[0]];
+    mEMORY[0x277CF0130]2 = [MEMORY[0x277CF0130] sharedInstance];
+    [mEMORY[0x277CF0130]2 setPendingDOB:0 forAccount:v22[0]];
     v17 = 0;
-    v6 = [MEMORY[0x277CF0130] sharedInstance];
+    mEMORY[0x277CF0130]3 = [MEMORY[0x277CF0130] sharedInstance];
     v16 = v17;
-    v7 = [v6 saveAccount:v22[0] error:&v16];
+    v7 = [mEMORY[0x277CF0130]3 saveAccount:v22[0] error:&v16];
     objc_storeStrong(&v17, v16);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](mEMORY[0x277CF0130]3);
     if (v7)
     {
       oslog = _AKLogSystem();

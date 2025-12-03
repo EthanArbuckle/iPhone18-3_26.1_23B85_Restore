@@ -1,7 +1,7 @@
 @interface HMHomePersonManager
 + (id)logCategory;
-+ (id)personManagerUUIDFromHomeUUID:(id)a3;
-- (HMHomePersonManager)initWithHome:(id)a3;
++ (id)personManagerUUIDFromHomeUUID:(id)d;
+- (HMHomePersonManager)initWithHome:(id)home;
 - (id)logIdentifier;
 @end
 
@@ -29,15 +29,15 @@ uint64_t __34__HMHomePersonManager_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)personManagerUUIDFromHomeUUID:(id)a3
++ (id)personManagerUUIDFromHomeUUID:(id)d
 {
   v3 = MEMORY[0x1E696AFB0];
-  v4 = a3;
+  dCopy = d;
   v5 = [[v3 alloc] initWithUUIDString:@"063D0514-8CFB-4333-AFF0-C2A70F412508"];
   v6 = MEMORY[0x1E696AFB0];
-  v7 = [v4 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v8 = [v7 dataUsingEncoding:4];
+  v8 = [uUIDString dataUsingEncoding:4];
   v9 = [v6 hmf_UUIDWithNamespace:v5 data:v8];
 
   return v9;
@@ -45,28 +45,28 @@ uint64_t __34__HMHomePersonManager_logCategory__block_invoke()
 
 - (id)logIdentifier
 {
-  v2 = [(HMPersonManager *)self UUID];
-  v3 = [v2 UUIDString];
+  uUID = [(HMPersonManager *)self UUID];
+  uUIDString = [uUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (HMHomePersonManager)initWithHome:(id)a3
+- (HMHomePersonManager)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v5 = objc_opt_class();
-  v6 = [v4 uuid];
-  v7 = [v5 personManagerUUIDFromHomeUUID:v6];
+  uuid = [homeCopy uuid];
+  v7 = [v5 personManagerUUIDFromHomeUUID:uuid];
 
   v8 = HMHomePersonManagerZoneNamePrefix;
-  v9 = [v4 personManagerZoneUUID];
-  v10 = [v9 UUIDString];
-  v11 = [v8 stringByAppendingString:v10];
+  personManagerZoneUUID = [homeCopy personManagerZoneUUID];
+  uUIDString = [personManagerZoneUUID UUIDString];
+  v11 = [v8 stringByAppendingString:uUIDString];
 
-  v12 = [v4 context];
+  context = [homeCopy context];
 
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
-  v14 = [(HMPersonManager *)self initWithContext:v12 UUID:v7 zoneName:v11 notificationCenter:v13];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  v14 = [(HMPersonManager *)self initWithContext:context UUID:v7 zoneName:v11 notificationCenter:defaultCenter];
 
   return v14;
 }

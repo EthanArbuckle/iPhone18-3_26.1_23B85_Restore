@@ -1,9 +1,9 @@
 @interface CTRemoteDevice
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTRemoteDevice)init;
-- (CTRemoteDevice)initWithCoder:(id)a3;
+- (CTRemoteDevice)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTRemoteDevice
@@ -32,24 +32,24 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTRemoteDevice *)self deviceID];
-  [v3 appendFormat:@" deviceID=%@", v4];
+  deviceID = [(CTRemoteDevice *)self deviceID];
+  [v3 appendFormat:@" deviceID=%@", deviceID];
 
-  v5 = [(CTRemoteDevice *)self remoteDisplayPlans];
-  [v3 appendFormat:@" remoteDisplayPlans:%@", v5];
+  remoteDisplayPlans = [(CTRemoteDevice *)self remoteDisplayPlans];
+  [v3 appendFormat:@" remoteDisplayPlans:%@", remoteDisplayPlans];
 
-  v6 = [(CTRemoteDevice *)self remotePlans];
-  [v3 appendFormat:@" remotePlans=%@", v6];
+  remotePlans = [(CTRemoteDevice *)self remotePlans];
+  [v3 appendFormat:@" remotePlans=%@", remotePlans];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -59,39 +59,39 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTRemoteDevice *)self deviceID];
-      v8 = [(CTRemoteDevice *)v6 deviceID];
-      if (v7 != v8)
+      deviceID = [(CTRemoteDevice *)self deviceID];
+      deviceID2 = [(CTRemoteDevice *)equalCopy deviceID];
+      if (deviceID != deviceID2)
       {
-        v3 = [(CTRemoteDevice *)self deviceID];
-        v4 = [(CTRemoteDevice *)v6 deviceID];
-        if (![v3 isEqual:v4])
+        deviceID3 = [(CTRemoteDevice *)self deviceID];
+        deviceID4 = [(CTRemoteDevice *)equalCopy deviceID];
+        if (![deviceID3 isEqual:deviceID4])
         {
           v9 = 0;
           goto LABEL_18;
         }
       }
 
-      v10 = [(CTRemoteDevice *)self remoteDisplayPlans];
-      v11 = [(CTRemoteDevice *)v6 remoteDisplayPlans];
-      if (v10 != v11)
+      remoteDisplayPlans = [(CTRemoteDevice *)self remoteDisplayPlans];
+      remoteDisplayPlans2 = [(CTRemoteDevice *)equalCopy remoteDisplayPlans];
+      if (remoteDisplayPlans != remoteDisplayPlans2)
       {
-        v12 = [(CTRemoteDevice *)self remoteDisplayPlans];
-        v13 = [(CTRemoteDevice *)v6 remoteDisplayPlans];
-        if (![v12 isEqual:v13])
+        remoteDisplayPlans3 = [(CTRemoteDevice *)self remoteDisplayPlans];
+        remoteDisplayPlans4 = [(CTRemoteDevice *)equalCopy remoteDisplayPlans];
+        if (![remoteDisplayPlans3 isEqual:remoteDisplayPlans4])
         {
           v9 = 0;
           goto LABEL_16;
         }
 
-        v25 = v13;
-        v26 = v12;
+        v25 = remoteDisplayPlans4;
+        v26 = remoteDisplayPlans3;
       }
 
-      v14 = [(CTRemoteDevice *)self remotePlans];
-      v15 = [(CTRemoteDevice *)v6 remotePlans];
-      v16 = v15;
-      if (v14 == v15)
+      remotePlans = [(CTRemoteDevice *)self remotePlans];
+      remotePlans2 = [(CTRemoteDevice *)equalCopy remotePlans];
+      v16 = remotePlans2;
+      if (remotePlans == remotePlans2)
       {
 
         v9 = 1;
@@ -100,29 +100,29 @@
       else
       {
         [(CTRemoteDevice *)self remotePlans];
-        v17 = v24 = v3;
-        [(CTRemoteDevice *)v6 remotePlans];
-        v23 = v10;
-        v18 = v8;
-        v19 = v7;
-        v21 = v20 = v4;
+        v17 = v24 = deviceID3;
+        [(CTRemoteDevice *)equalCopy remotePlans];
+        v23 = remoteDisplayPlans;
+        v18 = deviceID2;
+        v19 = deviceID;
+        v21 = v20 = deviceID4;
         v9 = [v17 isEqual:v21];
 
-        v4 = v20;
-        v7 = v19;
-        v8 = v18;
-        v10 = v23;
+        deviceID4 = v20;
+        deviceID = v19;
+        deviceID2 = v18;
+        remoteDisplayPlans = v23;
 
-        v3 = v24;
+        deviceID3 = v24;
       }
 
-      v13 = v25;
-      v12 = v26;
-      if (v10 == v11)
+      remoteDisplayPlans4 = v25;
+      remoteDisplayPlans3 = v26;
+      if (remoteDisplayPlans == remoteDisplayPlans2)
       {
 LABEL_17:
 
-        if (v7 == v8)
+        if (deviceID == deviceID2)
         {
 LABEL_19:
 
@@ -147,29 +147,29 @@ LABEL_20:
   return v9;
 }
 
-- (CTRemoteDevice)initWithCoder:(id)a3
+- (CTRemoteDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = CTRemoteDevice;
   v5 = [(CTRemoteDevice *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
     deviceID = v5->_deviceID;
     v5->_deviceID = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"remoteDisplayPlans"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"remoteDisplayPlans"];
     remoteDisplayPlans = v5->_remoteDisplayPlans;
     v5->_remoteDisplayPlans = v11;
 
     v13 = MEMORY[0x1E695DFD8];
     v14 = objc_opt_class();
     v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-    v16 = [v4 decodeObjectOfClasses:v15 forKey:@"remotePlans"];
+    v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"remotePlans"];
     remotePlans = v5->_remotePlans;
     v5->_remotePlans = v16;
   }
@@ -177,13 +177,13 @@ LABEL_20:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   deviceID = self->_deviceID;
-  v5 = a3;
-  [v5 encodeObject:deviceID forKey:@"deviceID"];
-  [v5 encodeObject:self->_remoteDisplayPlans forKey:@"remoteDisplayPlans"];
-  [v5 encodeObject:self->_remotePlans forKey:@"remotePlans"];
+  coderCopy = coder;
+  [coderCopy encodeObject:deviceID forKey:@"deviceID"];
+  [coderCopy encodeObject:self->_remoteDisplayPlans forKey:@"remoteDisplayPlans"];
+  [coderCopy encodeObject:self->_remotePlans forKey:@"remotePlans"];
 }
 
 @end

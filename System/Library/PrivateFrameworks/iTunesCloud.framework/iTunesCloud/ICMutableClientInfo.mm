@@ -1,64 +1,64 @@
 @interface ICMutableClientInfo
-- (void)setBagProfile:(id)a3;
-- (void)setBagProfileVersion:(id)a3;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setClientIdentifier:(id)a3;
-- (void)setClientVersion:(id)a3;
-- (void)setProcessName:(id)a3;
-- (void)setRequestingBundleIdentifier:(id)a3;
-- (void)setRequestingBundleVersion:(id)a3;
+- (void)setBagProfile:(id)profile;
+- (void)setBagProfileVersion:(id)version;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setClientVersion:(id)version;
+- (void)setProcessName:(id)name;
+- (void)setRequestingBundleIdentifier:(id)identifier;
+- (void)setRequestingBundleVersion:(id)version;
 @end
 
 @implementation ICMutableClientInfo
 
-- (void)setBagProfileVersion:(id)a3
+- (void)setBagProfileVersion:(id)version
 {
-  v4 = [a3 copy];
+  v4 = [version copy];
   bagProfileVersion = self->super._bagProfileVersion;
   self->super._bagProfileVersion = v4;
 
   MEMORY[0x1EEE66BB8](v4, bagProfileVersion);
 }
 
-- (void)setBagProfile:(id)a3
+- (void)setBagProfile:(id)profile
 {
-  v4 = [a3 copy];
+  v4 = [profile copy];
   bagProfile = self->super._bagProfile;
   self->super._bagProfile = v4;
 
   MEMORY[0x1EEE66BB8](v4, bagProfile);
 }
 
-- (void)setRequestingBundleVersion:(id)a3
+- (void)setRequestingBundleVersion:(id)version
 {
-  v4 = [a3 copy];
+  v4 = [version copy];
   requestingBundleVersion = self->super._requestingBundleVersion;
   self->super._requestingBundleVersion = v4;
 
   MEMORY[0x1EEE66BB8](v4, requestingBundleVersion);
 }
 
-- (void)setRequestingBundleIdentifier:(id)a3
+- (void)setRequestingBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   requestingBundleIdentifier = self->super._requestingBundleIdentifier;
   self->super._requestingBundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, requestingBundleIdentifier);
 }
 
-- (void)setClientVersion:(id)a3
+- (void)setClientVersion:(id)version
 {
-  v4 = [a3 copy];
+  v4 = [version copy];
   clientVersion = self->super._clientVersion;
   self->super._clientVersion = v4;
 
   MEMORY[0x1EEE66BB8](v4, clientVersion);
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   clientIdentifier = self->super._clientIdentifier;
   self->super._clientIdentifier = v4;
 
@@ -67,18 +67,18 @@
   [(ICClientInfo *)self _setDefaultBagProfileForClientIdentifier:v6];
 }
 
-- (void)setProcessName:(id)a3
+- (void)setProcessName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   processName = self->super._processName;
   self->super._processName = v4;
 
   MEMORY[0x1EEE66BB8](v4, processName);
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   bundleIdentifier = self->super._bundleIdentifier;
   self->super._bundleIdentifier = v4;
 

@@ -1,10 +1,10 @@
 @interface ATXDayZeroDeterminer
-+ (BOOL)doesBiomeAppLaunchDataGoBackAtLeastNumberOfDaysAgo:(unint64_t)a3;
++ (BOOL)doesBiomeAppLaunchDataGoBackAtLeastNumberOfDaysAgo:(unint64_t)ago;
 @end
 
 @implementation ATXDayZeroDeterminer
 
-+ (BOOL)doesBiomeAppLaunchDataGoBackAtLeastNumberOfDaysAgo:(unint64_t)a3
++ (BOOL)doesBiomeAppLaunchDataGoBackAtLeastNumberOfDaysAgo:(unint64_t)ago
 {
   v29 = *MEMORY[0x1E69E9840];
   v19 = 0;
@@ -15,8 +15,8 @@
   v24 = 0;
   v4 = BiomeLibrary();
   v5 = [v4 App];
-  v6 = [v5 InFocus];
-  v7 = [v6 atx_publisherFromStartDate:0];
+  inFocus = [v5 InFocus];
+  v7 = [inFocus atx_publisherFromStartDate:0];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__ATXDayZeroDeterminer_doesBiomeAppLaunchDataGoBackAtLeastNumberOfDaysAgo___block_invoke_2;
@@ -24,9 +24,9 @@
   v18[4] = &v19;
   v8 = [v7 sinkWithCompletion:&__block_literal_global_8 shouldContinue:v18];
 
-  v9 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v10 = [MEMORY[0x1E695DF00] now];
-  v11 = [v9 dateByAddingUnit:16 value:-a3 toDate:v10 options:0];
+  v11 = [currentCalendar dateByAddingUnit:16 value:-ago toDate:v10 options:0];
 
   v12 = v20[5];
   if (v12 && [v12 compare:v11] != 1)

@@ -1,28 +1,28 @@
 @interface TRDeviceSetupAction
-+ (id)actionWithActionType:(id)a3 parameters:(id)a4;
-+ (id)actionWithData:(id)a3 error:(id *)a4 supportsLegacy:(BOOL)a5;
-- (id)_initWithActionType:(id)a3 parameters:(id)a4;
-- (id)dataRepresentationWithError:(id *)a3;
++ (id)actionWithActionType:(id)type parameters:(id)parameters;
++ (id)actionWithData:(id)data error:(id *)error supportsLegacy:(BOOL)legacy;
+- (id)_initWithActionType:(id)type parameters:(id)parameters;
+- (id)dataRepresentationWithError:(id *)error;
 - (id)description;
 - (id)propertyListRepresentation;
 @end
 
 @implementation TRDeviceSetupAction
 
-- (id)_initWithActionType:(id)a3 parameters:(id)a4
+- (id)_initWithActionType:(id)type parameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  typeCopy = type;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = TRDeviceSetupAction;
   v8 = [(TRDeviceSetupAction *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [typeCopy copy];
     actionType = v8->_actionType;
     v8->_actionType = v9;
 
-    v11 = [v7 copy];
+    v11 = [parametersCopy copy];
     parameters = v8->_parameters;
     v8->_parameters = v11;
   }
@@ -30,40 +30,40 @@
   return v8;
 }
 
-+ (id)actionWithActionType:(id)a3 parameters:(id)a4
++ (id)actionWithActionType:(id)type parameters:(id)parameters
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithActionType:v7 parameters:v6];
+  parametersCopy = parameters;
+  typeCopy = type;
+  v8 = [[self alloc] _initWithActionType:typeCopy parameters:parametersCopy];
 
   return v8;
 }
 
 - (id)propertyListRepresentation
 {
-  v3 = [(TRDeviceSetupAction *)self actionType];
-  v4 = v3;
+  actionType = [(TRDeviceSetupAction *)self actionType];
+  v4 = actionType;
   v5 = &stru_287F58968;
-  if (v3)
+  if (actionType)
   {
-    v5 = v3;
+    v5 = actionType;
   }
 
   v6 = v5;
 
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  [v7 setObject:v6 forKey:@"a2"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:v6 forKey:@"a2"];
 
-  v8 = [(TRDeviceSetupAction *)self parameters];
+  parameters = [(TRDeviceSetupAction *)self parameters];
 
-  if (v8)
+  if (parameters)
   {
-    v9 = [(TRDeviceSetupAction *)self parameters];
-    [v7 setObject:v9 forKey:@"p2"];
+    parameters2 = [(TRDeviceSetupAction *)self parameters];
+    [dictionary setObject:parameters2 forKey:@"p2"];
   }
 
-  [v7 setObject:&unk_287F62978 forKey:@"_v_"];
-  v10 = [v7 copy];
+  [dictionary setObject:&unk_287F62978 forKey:@"_v_"];
+  v10 = [dictionary copy];
 
   return v10;
 }
@@ -74,35 +74,35 @@
   v9.receiver = self;
   v9.super_class = TRDeviceSetupAction;
   v4 = [(TRDeviceSetupAction *)&v9 description];
-  v5 = [(TRDeviceSetupAction *)self actionType];
-  v6 = [(TRDeviceSetupAction *)self parameters];
-  v7 = [v3 stringWithFormat:@"%@ action: %@ paramaters: %@", v4, v5, v6];;
+  actionType = [(TRDeviceSetupAction *)self actionType];
+  parameters = [(TRDeviceSetupAction *)self parameters];
+  v7 = [v3 stringWithFormat:@"%@ action: %@ paramaters: %@", v4, actionType, parameters];;
 
   return v7;
 }
 
-+ (id)actionWithData:(id)a3 error:(id *)a4 supportsLegacy:(BOOL)a5
++ (id)actionWithData:(id)data error:(id *)error supportsLegacy:(BOOL)legacy
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = v8;
-  if (!v8)
+  legacyCopy = legacy;
+  dataCopy = data;
+  v9 = dataCopy;
+  if (!dataCopy)
   {
-    v18 = objc_alloc_init(a1);
+    v18 = objc_alloc_init(self);
     goto LABEL_45;
   }
 
-  v10 = v8;
-  v11 = [v10 TR_decompressedGzipData];
-  v12 = v11;
-  if (v11)
+  v10 = dataCopy;
+  tR_decompressedGzipData = [v10 TR_decompressedGzipData];
+  v12 = tR_decompressedGzipData;
+  if (tR_decompressedGzipData)
   {
-    v13 = v11;
+    v13 = tR_decompressedGzipData;
 
     v10 = v13;
   }
 
-  v14 = [MEMORY[0x277CCAC58] propertyListWithData:v10 options:0 format:0 error:a4];
+  v14 = [MEMORY[0x277CCAC58] propertyListWithData:v10 options:0 format:0 error:error];
   if (v14)
   {
     objc_opt_class();
@@ -125,7 +125,7 @@
       }
 
       v17 = [v14 objectForKeyedSubscript:@"a"];
-      if ([v17 length] && !v5 && !v15)
+      if ([v17 length] && !legacyCopy && !v15)
       {
         v18 = 0;
 LABEL_43:
@@ -133,39 +133,39 @@ LABEL_43:
         goto LABEL_44;
       }
 
-      if (![v17 length] || !v5)
+      if (![v17 length] || !legacyCopy)
       {
         if ([v15 isEqualToString:@"connect"])
         {
-          v21 = TRDeviceSetupConnectAction;
+          selfCopy = TRDeviceSetupConnectAction;
         }
 
         else if ([v15 isEqualToString:@"auth"])
         {
-          v21 = TRDeviceSetupAuthenticateAction;
+          selfCopy = TRDeviceSetupAuthenticateAction;
         }
 
         else if ([v15 isEqualToString:@"setup"])
         {
-          v21 = TRDeviceSetupGeneralSetupAction;
+          selfCopy = TRDeviceSetupGeneralSetupAction;
         }
 
         else if ([v15 isEqualToString:@"finish"])
         {
-          v21 = TRDeviceSetupFinishAction;
+          selfCopy = TRDeviceSetupFinishAction;
         }
 
         else if ([v15 isEqualToString:@"cancel"])
         {
-          v21 = TRDeviceSetupCancelAction;
+          selfCopy = TRDeviceSetupCancelAction;
         }
 
         else
         {
-          v21 = a1;
+          selfCopy = self;
         }
 
-        v18 = [(__objc2_class *)v21 actionWithActionType:v15 parameters:v16];
+        v18 = [(__objc2_class *)selfCopy actionWithActionType:v15 parameters:v16];
         goto LABEL_43;
       }
 
@@ -218,14 +218,14 @@ LABEL_45:
   return v18;
 }
 
-- (id)dataRepresentationWithError:(id *)a3
+- (id)dataRepresentationWithError:(id *)error
 {
   v4 = MEMORY[0x277CCAC58];
-  v5 = [(TRDeviceSetupAction *)self propertyListRepresentation];
-  v6 = [v4 dataWithPropertyList:v5 format:200 options:0 error:a3];
-  v7 = [v6 TR_compressedGzipData];
+  propertyListRepresentation = [(TRDeviceSetupAction *)self propertyListRepresentation];
+  v6 = [v4 dataWithPropertyList:propertyListRepresentation format:200 options:0 error:error];
+  tR_compressedGzipData = [v6 TR_compressedGzipData];
 
-  return v7;
+  return tR_compressedGzipData;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface EKUIListViewCellBackground
-+ (BOOL)drawsBackgroundForEvent:(id)a3;
-+ (id)_angledStripeBackground:(id)a3;
-- (EKUIListViewCellBackground)initWithCornerRadius:(double)a3;
-- (id)_backgroundViewFilterColorForHighlighted:(BOOL)a3 carplayMode:(BOOL)a4;
-- (id)_backgroundViewFilterForHighlighted:(BOOL)a3 carplayMode:(BOOL)a4;
-- (id)_carplayAngledStripeBackgroundForHighlighted:(BOOL)a3;
-- (void)_configureLayer:(id)a3;
-- (void)_updateBackgroundWithSolidColor:(id)a3 stripedColor:(id)a4 highlighted:(BOOL)a5 dimmed:(BOOL)a6 carplayMode:(BOOL)a7;
-- (void)layoutSublayersOfLayer:(id)a3;
++ (BOOL)drawsBackgroundForEvent:(id)event;
++ (id)_angledStripeBackground:(id)background;
+- (EKUIListViewCellBackground)initWithCornerRadius:(double)radius;
+- (id)_backgroundViewFilterColorForHighlighted:(BOOL)highlighted carplayMode:(BOOL)mode;
+- (id)_backgroundViewFilterForHighlighted:(BOOL)highlighted carplayMode:(BOOL)mode;
+- (id)_carplayAngledStripeBackgroundForHighlighted:(BOOL)highlighted;
+- (void)_configureLayer:(id)layer;
+- (void)_updateBackgroundWithSolidColor:(id)color stripedColor:(id)stripedColor highlighted:(BOOL)highlighted dimmed:(BOOL)dimmed carplayMode:(BOOL)mode;
+- (void)layoutSublayersOfLayer:(id)layer;
 - (void)layoutSubviews;
-- (void)updateBackgroundColorForEvent:(id)a3 highlighted:(BOOL)a4 dimmed:(BOOL)a5 carplayMode:(BOOL)a6 dragPreview:(BOOL)a7 traitCollection:(id)a8;
+- (void)updateBackgroundColorForEvent:(id)event highlighted:(BOOL)highlighted dimmed:(BOOL)dimmed carplayMode:(BOOL)mode dragPreview:(BOOL)preview traitCollection:(id)collection;
 @end
 
 @implementation EKUIListViewCellBackground
 
-- (EKUIListViewCellBackground)initWithCornerRadius:(double)a3
+- (EKUIListViewCellBackground)initWithCornerRadius:(double)radius
 {
   v8.receiver = self;
   v8.super_class = EKUIListViewCellBackground;
@@ -22,9 +22,9 @@
   v5 = v4;
   if (v4)
   {
-    v4->_cornerRadius = a3;
-    v6 = [(EKUIListViewCellBackground *)v4 layer];
-    [(EKUIListViewCellBackground *)v5 _configureLayer:v6];
+    v4->_cornerRadius = radius;
+    layer = [(EKUIListViewCellBackground *)v4 layer];
+    [(EKUIListViewCellBackground *)v5 _configureLayer:layer];
   }
 
   return v5;
@@ -35,23 +35,23 @@
   v4.receiver = self;
   v4.super_class = EKUIListViewCellBackground;
   [(EKUIListViewCellBackground *)&v4 layoutSubviews];
-  v3 = [(EKUIListViewCellBackground *)self layer];
-  [(EKUIListViewCellBackground *)self _configureLayer:v3];
+  layer = [(EKUIListViewCellBackground *)self layer];
+  [(EKUIListViewCellBackground *)self _configureLayer:layer];
 }
 
-- (void)layoutSublayersOfLayer:(id)a3
+- (void)layoutSublayersOfLayer:(id)layer
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  layerCopy = layer;
   v15.receiver = self;
   v15.super_class = EKUIListViewCellBackground;
-  [(EKUIListViewCellBackground *)&v15 layoutSublayersOfLayer:v4];
+  [(EKUIListViewCellBackground *)&v15 layoutSublayersOfLayer:layerCopy];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 sublayers];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  sublayers = [layerCopy sublayers];
+  v6 = [sublayers countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -63,31 +63,31 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sublayers);
         }
 
         v10 = *(*(&v11 + 1) + 8 * v9);
-        [v4 bounds];
+        [layerCopy bounds];
         [v10 setFrame:?];
         ++v9;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v7 = [sublayers countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-+ (BOOL)drawsBackgroundForEvent:(id)a3
++ (BOOL)drawsBackgroundForEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = CUIKEventDisplaysAsNeedsReply();
-  v5 = [v3 status];
+  status = [eventCopy status];
   v6 = CUIKEventDisplaysAsTentative();
 
-  if (v5 == 3)
+  if (status == 3)
   {
     v7 = 0;
   }
@@ -100,25 +100,25 @@
   return (v7 | v6) & 1;
 }
 
-- (void)updateBackgroundColorForEvent:(id)a3 highlighted:(BOOL)a4 dimmed:(BOOL)a5 carplayMode:(BOOL)a6 dragPreview:(BOOL)a7 traitCollection:(id)a8
+- (void)updateBackgroundColorForEvent:(id)event highlighted:(BOOL)highlighted dimmed:(BOOL)dimmed carplayMode:(BOOL)mode dragPreview:(BOOL)preview traitCollection:(id)collection
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v38 = a3;
-  v14 = a8;
-  if (!v14)
+  previewCopy = preview;
+  modeCopy = mode;
+  dimmedCopy = dimmed;
+  highlightedCopy = highlighted;
+  eventCopy = event;
+  collectionCopy = collection;
+  if (!collectionCopy)
   {
-    v14 = [(EKUIListViewCellBackground *)self traitCollection];
+    collectionCopy = [(EKUIListViewCellBackground *)self traitCollection];
   }
 
-  v15 = [v38 calendar];
-  v16 = [v15 displayColor];
-  [v14 userInterfaceStyle];
+  calendar = [eventCopy calendar];
+  displayColor = [calendar displayColor];
+  [collectionCopy userInterfaceStyle];
   v17 = CUIKAdjustedColorForColor();
 
-  if (v12)
+  if (highlightedCopy)
   {
     v18 = v17;
   }
@@ -136,12 +136,12 @@
   }
 
   v21 = v18;
-  v22 = [v38 status];
-  if (CUIKEventDisplaysAsNeedsReply() && v22 != 3)
+  status = [eventCopy status];
+  if (CUIKEventDisplaysAsNeedsReply() && status != 3)
   {
-    if (v10)
+    if (modeCopy)
     {
-      if (v12)
+      if (highlightedCopy)
       {
         if (MEMORY[0x1D38B98D0]())
         {
@@ -161,27 +161,27 @@
 
       v29 = v23;
       v34 = MEMORY[0x1E69DC888];
-      v28 = [(EKUIListViewCellBackground *)self _carplayAngledStripeBackgroundForHighlighted:v12];
+      v28 = [(EKUIListViewCellBackground *)self _carplayAngledStripeBackgroundForHighlighted:highlightedCopy];
       v24 = [v34 colorWithPatternImage:v28];
     }
 
     else
     {
       v27 = MEMORY[0x1E69DC888];
-      v28 = [objc_opt_class() _angledStripeBackground:v14];
+      v28 = [objc_opt_class() _angledStripeBackground:collectionCopy];
       v24 = [v27 colorWithPatternImage:v28];
       v29 = 0;
     }
 
-    [(EKUIListViewCellBackground *)self _updateBackgroundWithSolidColor:v29 stripedColor:v24 highlighted:v12 dimmed:v11 carplayMode:v10];
+    [(EKUIListViewCellBackground *)self _updateBackgroundWithSolidColor:v29 stripedColor:v24 highlighted:highlightedCopy dimmed:dimmedCopy carplayMode:modeCopy];
     goto LABEL_41;
   }
 
   if (!CUIKEventDisplaysAsTentative())
   {
-    if (v10)
+    if (modeCopy)
     {
-      if (v12)
+      if (highlightedCopy)
       {
         if (MEMORY[0x1D38B98D0]())
         {
@@ -204,28 +204,28 @@
 
     else
     {
-      if (!v9)
+      if (!previewCopy)
       {
         v24 = 0;
         goto LABEL_40;
       }
 
-      [v14 userInterfaceStyle];
+      [collectionCopy userInterfaceStyle];
       v33 = CUIKBackgroundColorForCalendarColorWithOpaqueForStyle();
     }
 
     v24 = v33;
 LABEL_40:
-    [(EKUIListViewCellBackground *)self _updateBackgroundWithSolidColor:v24 stripedColor:0 highlighted:v12 dimmed:v11 carplayMode:v10];
+    [(EKUIListViewCellBackground *)self _updateBackgroundWithSolidColor:v24 stripedColor:0 highlighted:highlightedCopy dimmed:dimmedCopy carplayMode:modeCopy];
     goto LABEL_41;
   }
 
-  [v14 userInterfaceStyle];
+  [collectionCopy userInterfaceStyle];
   v24 = CUIKBackgroundColorForCalendarColorWithOpaqueForStyle();
-  v37 = v11;
-  if (v10)
+  v37 = dimmedCopy;
+  if (modeCopy)
   {
-    if (v12)
+    if (highlightedCopy)
     {
       if (MEMORY[0x1D38B98D0]())
       {
@@ -246,7 +246,7 @@ LABEL_40:
     v35 = v25;
 
     v36 = MEMORY[0x1E69DC888];
-    v31 = [(EKUIListViewCellBackground *)self _carplayAngledStripeBackgroundForHighlighted:v12];
+    v31 = [(EKUIListViewCellBackground *)self _carplayAngledStripeBackgroundForHighlighted:highlightedCopy];
     v32 = [v36 colorWithPatternImage:v31];
     v24 = v35;
   }
@@ -254,17 +254,17 @@ LABEL_40:
   else
   {
     v30 = MEMORY[0x1E69DC888];
-    v31 = [objc_opt_class() _angledStripeBackground:v14];
+    v31 = [objc_opt_class() _angledStripeBackground:collectionCopy];
     v32 = [v30 colorWithPatternImage:v31];
   }
 
-  [(EKUIListViewCellBackground *)self _updateBackgroundWithSolidColor:v24 stripedColor:v32 highlighted:v12 dimmed:v37 carplayMode:v10];
+  [(EKUIListViewCellBackground *)self _updateBackgroundWithSolidColor:v24 stripedColor:v32 highlighted:highlightedCopy dimmed:v37 carplayMode:modeCopy];
 LABEL_41:
 }
 
-- (void)_configureLayer:(id)a3
+- (void)_configureLayer:(id)layer
 {
-  v6 = a3;
+  layerCopy = layer;
   cornerRadius = self->_cornerRadius;
   if (cornerRadius == 0.0)
   {
@@ -272,31 +272,31 @@ LABEL_41:
     cornerRadius = v5 * 0.5;
   }
 
-  [v6 setCornerRadius:cornerRadius];
+  [layerCopy setCornerRadius:cornerRadius];
 }
 
-- (void)_updateBackgroundWithSolidColor:(id)a3 stripedColor:(id)a4 highlighted:(BOOL)a5 dimmed:(BOOL)a6 carplayMode:(BOOL)a7
+- (void)_updateBackgroundWithSolidColor:(id)color stripedColor:(id)stripedColor highlighted:(BOOL)highlighted dimmed:(BOOL)dimmed carplayMode:(BOOL)mode
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
+  modeCopy = mode;
+  dimmedCopy = dimmed;
+  highlightedCopy = highlighted;
   v38 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  if (v8)
+  colorCopy = color;
+  stripedColorCopy = stripedColor;
+  if (dimmedCopy)
   {
     v14 = *MEMORY[0x1E6993300];
-    v15 = [v12 cuik_colorWithAlphaScaled:*MEMORY[0x1E6993300]];
+    v15 = [colorCopy cuik_colorWithAlphaScaled:*MEMORY[0x1E6993300]];
 
-    v16 = [v13 cuik_colorWithAlphaScaled:v14];
+    v16 = [stripedColorCopy cuik_colorWithAlphaScaled:v14];
 
-    v13 = v16;
-    v12 = v15;
+    stripedColorCopy = v16;
+    colorCopy = v15;
   }
 
-  v17 = [(EKUIListViewCellBackground *)self layer];
-  v18 = [v17 sublayers];
-  v19 = [v18 copy];
+  layer = [(EKUIListViewCellBackground *)self layer];
+  sublayers = [layer sublayers];
+  v19 = [sublayers copy];
 
   v35 = 0u;
   v36 = 0u;
@@ -328,8 +328,8 @@ LABEL_41:
     while (v22);
   }
 
-  v25 = [(EKUIListViewCellBackground *)self _backgroundViewFilterForHighlighted:v9 carplayMode:v7];
-  v26 = [(EKUIListViewCellBackground *)self _backgroundViewFilterColorForHighlighted:v9 carplayMode:v7];
+  v25 = [(EKUIListViewCellBackground *)self _backgroundViewFilterForHighlighted:highlightedCopy carplayMode:modeCopy];
+  v26 = [(EKUIListViewCellBackground *)self _backgroundViewFilterColorForHighlighted:highlightedCopy carplayMode:modeCopy];
   v27 = v26;
   if (v25 && v26)
   {
@@ -337,30 +337,30 @@ LABEL_41:
     [(EKUIListViewCellBackground *)self _configureLayer:v28];
     [v28 setCompositingFilter:v25];
     [v28 setBackgroundColor:{objc_msgSend(v27, "CGColor")}];
-    v29 = [(EKUIListViewCellBackground *)self layer];
-    [v29 addSublayer:v28];
+    layer2 = [(EKUIListViewCellBackground *)self layer];
+    [layer2 addSublayer:v28];
   }
 
-  [(EKUIListViewCellBackground *)self setBackgroundColor:v12];
-  if (v13)
+  [(EKUIListViewCellBackground *)self setBackgroundColor:colorCopy];
+  if (stripedColorCopy)
   {
     v30 = objc_opt_new();
     [(EKUIListViewCellBackground *)self _configureLayer:v30];
-    [v30 setBackgroundColor:{objc_msgSend(v13, "CGColor")}];
+    [v30 setBackgroundColor:{objc_msgSend(stripedColorCopy, "CGColor")}];
     CATransform3DMakeScale(&v32, 1.0, -1.0, 1.0);
     [v30 setTransform:&v32];
-    v31 = [(EKUIListViewCellBackground *)self layer];
-    [v31 addSublayer:v30];
+    layer3 = [(EKUIListViewCellBackground *)self layer];
+    [layer3 addSublayer:v30];
   }
 
   [(EKUIListViewCellBackground *)self setNeedsLayout];
 }
 
-- (id)_carplayAngledStripeBackgroundForHighlighted:(BOOL)a3
+- (id)_carplayAngledStripeBackgroundForHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  if (v3)
+  highlightedCopy = highlighted;
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  if (highlightedCopy)
   {
     v5 = @"carplayNeedsReplyStripeColorHighlighted";
   }
@@ -378,22 +378,22 @@ LABEL_41:
   return v8;
 }
 
-+ (id)_angledStripeBackground:(id)a3
++ (id)_angledStripeBackground:(id)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   if (!_angledStripeBackground__imageCache)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = _angledStripeBackground__imageCache;
-    _angledStripeBackground__imageCache = v4;
+    _angledStripeBackground__imageCache = dictionary;
   }
 
-  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%zd", objc_msgSend(v3, "userInterfaceStyle")];
+  v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%zd", objc_msgSend(backgroundCopy, "userInterfaceStyle")];
   v7 = [_angledStripeBackground__imageCache objectForKey:v6];
   if (!v7)
   {
-    v8 = [MEMORY[0x1E69DC888] clearColor];
-    v9 = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    quaternarySystemFillColor = [MEMORY[0x1E69DC888] quaternarySystemFillColor];
     EKUIScaleFactor();
     v10 = CUIKCreateStripedUIImage();
     v7 = [v10 resizableImageWithCapInsets:0 resizingMode:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
@@ -404,44 +404,44 @@ LABEL_41:
   return v7;
 }
 
-- (id)_backgroundViewFilterColorForHighlighted:(BOOL)a3 carplayMode:(BOOL)a4
+- (id)_backgroundViewFilterColorForHighlighted:(BOOL)highlighted carplayMode:(BOOL)mode
 {
   v4 = 0;
-  if (a3 && a4)
+  if (highlighted && mode)
   {
-    v5 = [(EKUIListViewCellBackground *)self traitCollection];
-    v6 = [v5 userInterfaceStyle];
+    traitCollection = [(EKUIListViewCellBackground *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v6 == 1)
+    if (userInterfaceStyle == 1)
     {
-      v7 = [MEMORY[0x1E69DC888] blackColor];
-      v8 = v7;
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      v8 = blackColor;
       v9 = 0.3;
     }
 
     else
     {
-      v7 = [MEMORY[0x1E69DC888] whiteColor];
-      v8 = v7;
+      blackColor = [MEMORY[0x1E69DC888] whiteColor];
+      v8 = blackColor;
       v9 = 0.1;
     }
 
-    v4 = [v7 colorWithAlphaComponent:v9];
+    v4 = [blackColor colorWithAlphaComponent:v9];
   }
 
   return v4;
 }
 
-- (id)_backgroundViewFilterForHighlighted:(BOOL)a3 carplayMode:(BOOL)a4
+- (id)_backgroundViewFilterForHighlighted:(BOOL)highlighted carplayMode:(BOOL)mode
 {
   v6 = 0;
-  if (a3 && a4)
+  if (highlighted && mode)
   {
-    v7 = [(EKUIListViewCellBackground *)self traitCollection];
-    v8 = [v7 userInterfaceStyle];
+    traitCollection = [(EKUIListViewCellBackground *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
     v9 = MEMORY[0x1E6979C58];
-    if (v8 == 1)
+    if (userInterfaceStyle == 1)
     {
       v9 = MEMORY[0x1E6979C50];
     }

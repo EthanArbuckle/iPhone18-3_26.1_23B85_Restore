@@ -1,10 +1,10 @@
 @interface FCTodayMarkAsReadTransaction
 - (FCTodayMarkAsReadTransaction)init;
-- (FCTodayMarkAsReadTransaction)initWithArticleID:(id)a3 articleVersion:(int64_t)a4 readDate:(id)a5;
-- (FCTodayMarkAsReadTransaction)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)performWithPrivateDataContext:(id)a3;
-- (void)performWithTodayPrivateData:(id)a3;
+- (FCTodayMarkAsReadTransaction)initWithArticleID:(id)d articleVersion:(int64_t)version readDate:(id)date;
+- (FCTodayMarkAsReadTransaction)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)performWithPrivateDataContext:(id)context;
+- (void)performWithTodayPrivateData:(id)data;
 @end
 
 @implementation FCTodayMarkAsReadTransaction
@@ -35,12 +35,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCTodayMarkAsReadTransaction)initWithArticleID:(id)a3 articleVersion:(int64_t)a4 readDate:(id)a5
+- (FCTodayMarkAsReadTransaction)initWithArticleID:(id)d articleVersion:(int64_t)version readDate:(id)date
 {
   v28 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  dateCopy = date;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "articleID"];
     *buf = 136315906;
@@ -53,13 +53,13 @@
     v27 = v17;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v9)
+    if (dateCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (dateCopy)
   {
     goto LABEL_6;
   }
@@ -84,12 +84,12 @@ LABEL_6:
   v10 = [(FCTodayMarkAsReadTransaction *)&v19 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     articleID = v10->_articleID;
     v10->_articleID = v11;
 
-    v10->_articleVersion = a4;
-    v13 = [v9 copy];
+    v10->_articleVersion = version;
+    v13 = [dateCopy copy];
     readDate = v10->_readDate;
     v10->_readDate = v13;
   }
@@ -98,100 +98,100 @@ LABEL_6:
   return v10;
 }
 
-- (void)performWithPrivateDataContext:(id)a3
+- (void)performWithPrivateDataContext:(id)context
 {
   v16 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AF00];
-  v5 = a3;
+  contextCopy = context;
   [v4 isMainThread];
   v6 = FCPrivateDataLog;
   if (os_log_type_enabled(FCPrivateDataLog, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(FCTodayMarkAsReadTransaction *)self articleID];
+    articleID = [(FCTodayMarkAsReadTransaction *)self articleID];
     v14 = 138543362;
-    v15 = v8;
+    v15 = articleID;
     _os_log_impl(&dword_1B63EF000, v7, OS_LOG_TYPE_DEFAULT, "Will apply mark-as-read transaction to reading history, articleID=%{public}@", &v14, 0xCu);
   }
 
-  v9 = [v5 readingHistory];
+  readingHistory = [contextCopy readingHistory];
 
-  v10 = [(FCTodayMarkAsReadTransaction *)self articleID];
-  v11 = [(FCTodayMarkAsReadTransaction *)self articleVersion];
-  v12 = [(FCTodayMarkAsReadTransaction *)self readDate];
-  [v9 markArticleAsReadWithArticleID:v10 articleVersion:v11 readDate:v12];
+  articleID2 = [(FCTodayMarkAsReadTransaction *)self articleID];
+  articleVersion = [(FCTodayMarkAsReadTransaction *)self articleVersion];
+  readDate = [(FCTodayMarkAsReadTransaction *)self readDate];
+  [readingHistory markArticleAsReadWithArticleID:articleID2 articleVersion:articleVersion readDate:readDate];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)performWithTodayPrivateData:(id)a3
+- (void)performWithTodayPrivateData:(id)data
 {
-  v17 = a3;
-  v4 = [v17 recentlyReadHistoryItems];
+  dataCopy = data;
+  recentlyReadHistoryItems = [dataCopy recentlyReadHistoryItems];
   objc_opt_class();
-  if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
+  if (recentlyReadHistoryItems && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v5 = v4;
+    v5 = recentlyReadHistoryItems;
   }
 
   else
   {
-    v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v4];
-    [v17 setRecentlyReadHistoryItems:v5];
+    v5 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:recentlyReadHistoryItems];
+    [dataCopy setRecentlyReadHistoryItems:v5];
   }
 
-  v6 = [(FCTodayMarkAsReadTransaction *)self articleID];
-  v7 = [(FCTodayMarkAsReadTransaction *)self articleVersion];
-  v8 = [(FCTodayMarkAsReadTransaction *)self readDate];
-  v9 = [v5 objectForKeyedSubscript:v6];
+  articleID = [(FCTodayMarkAsReadTransaction *)self articleID];
+  articleVersion = [(FCTodayMarkAsReadTransaction *)self articleVersion];
+  readDate = [(FCTodayMarkAsReadTransaction *)self readDate];
+  v9 = [v5 objectForKeyedSubscript:articleID];
   if (v9 && (FCCheckedProtocolCast(&unk_1F2ECDE28, v9), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
-    v12 = [v10 maxVersionRead];
-    if (v12 <= v7)
+    maxVersionRead = [v10 maxVersionRead];
+    if (maxVersionRead <= articleVersion)
     {
-      v13 = v7;
+      v13 = articleVersion;
     }
 
     else
     {
-      v13 = v12;
+      v13 = maxVersionRead;
     }
 
     [v11 setMaxVersionRead:v13];
     v14 = MEMORY[0x1E695DF00];
-    v15 = [v11 lastVisitedAt];
-    v16 = [v14 fc_laterDateAllowingNilWithDate:v15 andDate:v8];
+    lastVisitedAt = [v11 lastVisitedAt];
+    v16 = [v14 fc_laterDateAllowingNilWithDate:lastVisitedAt andDate:readDate];
     [v11 setLastVisitedAt:v16];
   }
 
   else
   {
     v11 = objc_opt_new();
-    [v11 setArticleID:v6];
-    [v11 setMaxVersionRead:v7];
-    [v11 setLastVisitedAt:v8];
-    [v5 setObject:v11 forKeyedSubscript:v6];
+    [v11 setArticleID:articleID];
+    [v11 setMaxVersionRead:articleVersion];
+    [v11 setLastVisitedAt:readDate];
+    [v5 setObject:v11 forKeyedSubscript:articleID];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(FCTodayMarkAsReadTransaction *)self articleID];
-  [v4 encodeObject:v5 forKey:@"a"];
+  coderCopy = coder;
+  articleID = [(FCTodayMarkAsReadTransaction *)self articleID];
+  [coderCopy encodeObject:articleID forKey:@"a"];
 
-  [v4 encodeInt64:-[FCTodayMarkAsReadTransaction articleVersion](self forKey:{"articleVersion"), @"b"}];
-  v6 = [(FCTodayMarkAsReadTransaction *)self readDate];
-  [v4 encodeObject:v6 forKey:@"c"];
+  [coderCopy encodeInt64:-[FCTodayMarkAsReadTransaction articleVersion](self forKey:{"articleVersion"), @"b"}];
+  readDate = [(FCTodayMarkAsReadTransaction *)self readDate];
+  [coderCopy encodeObject:readDate forKey:@"c"];
 }
 
-- (FCTodayMarkAsReadTransaction)initWithCoder:(id)a3
+- (FCTodayMarkAsReadTransaction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"a"];
-  v6 = [v4 decodeInt64ForKey:@"b"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"c"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"a"];
+  v6 = [coderCopy decodeInt64ForKey:@"b"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"c"];
 
   v8 = [(FCTodayMarkAsReadTransaction *)self initWithArticleID:v5 articleVersion:v6 readDate:v7];
   return v8;

@@ -1,13 +1,13 @@
 @interface GeoRequestCounterDurations
 - (GeoRequestCounterDurations)init;
 - (double)currentDurationInterval;
-- (id)stringForRow:(int64_t)a3;
-- (void)setSelection:(id)a3;
+- (id)stringForRow:(int64_t)row;
+- (void)setSelection:(id)selection;
 @end
 
 @implementation GeoRequestCounterDurations
 
-- (id)stringForRow:(int64_t)a3
+- (id)stringForRow:(int64_t)row
 {
   v7[0] = @"10 minutes";
   v7[1] = @"1 hour";
@@ -17,7 +17,7 @@
   v7[5] = @"7 days";
   v7[6] = @"30 days";
   v4 = [NSArray arrayWithObjects:v7 count:7];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  v5 = [v4 objectAtIndexedSubscript:row];
 
   return v5;
 }
@@ -31,9 +31,9 @@
   return v4;
 }
 
-- (void)setSelection:(id)a3
+- (void)setSelection:(id)selection
 {
-  self->_selectedRow = [a3 firstIndex];
+  self->_selectedRow = [selection firstIndex];
   v5 = +[NSUserDefaults standardUserDefaults];
   v4 = [NSNumber numberWithInteger:self->_selectedRow];
   [v5 setObject:v4 forKey:@"_debug_geoReqCountDuration"];

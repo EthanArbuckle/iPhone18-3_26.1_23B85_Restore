@@ -1,39 +1,39 @@
 @interface _TUIWPAttachmentLayout
-- (_TUIWPAttachmentLayout)initWithLayout:(id)a3 baselineOffset:(double)a4 intrinsic:(BOOL)a5 charIndex:(unint64_t)a6;
+- (_TUIWPAttachmentLayout)initWithLayout:(id)layout baselineOffset:(double)offset intrinsic:(BOOL)intrinsic charIndex:(unint64_t)index;
 - (double)inlineVerticalOffset;
 @end
 
 @implementation _TUIWPAttachmentLayout
 
-- (_TUIWPAttachmentLayout)initWithLayout:(id)a3 baselineOffset:(double)a4 intrinsic:(BOOL)a5 charIndex:(unint64_t)a6
+- (_TUIWPAttachmentLayout)initWithLayout:(id)layout baselineOffset:(double)offset intrinsic:(BOOL)intrinsic charIndex:(unint64_t)index
 {
-  v7 = a5;
-  v11 = a3;
+  intrinsicCopy = intrinsic;
+  layoutCopy = layout;
   v22.receiver = self;
   v22.super_class = _TUIWPAttachmentLayout;
   v12 = [(_TUIWPAttachmentLayout *)&v22 initWithInfo:0];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_layout, a3);
-    v13->_baselineOffset = a4;
-    v13->_charIndex = a6;
-    if (v7)
+    objc_storeStrong(&v12->_layout, layout);
+    v13->_baselineOffset = offset;
+    v13->_charIndex = index;
+    if (intrinsicCopy)
     {
-      [v11 validatedIntrinsicSize];
+      [layoutCopy validatedIntrinsicSize];
     }
 
     else
     {
-      [v11 computedNaturalSize];
+      [layoutCopy computedNaturalSize];
     }
 
     v16 = v14;
     v17 = v15;
     v18 = [TSDLayoutGeometry alloc];
-    if (v11)
+    if (layoutCopy)
     {
-      [v11 computedTransform];
+      [layoutCopy computedTransform];
     }
 
     else

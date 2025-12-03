@@ -1,38 +1,38 @@
 @interface SBDynamicFlashlightActivityElementViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityContainerView;
 - (id)accessibilityCustomActions;
 - (id)accessibilityPath;
 - (void)_transitionToCollapsedState;
-- (void)_transitionToExpandedStateWithIntensity:(double)a3 width:(double)a4;
+- (void)_transitionToExpandedStateWithIntensity:(double)intensity width:(double)width;
 @end
 
 @implementation SBDynamicFlashlightActivityElementViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
+  validationsCopy = validations;
   objc_opt_class();
-  [v3 validateClass:@"SBDynamicFlashlightActivityElementViewController" hasInstanceVariable:@"_torchState" withType:__ax_verbose_encode_with_type_encoding_group_class()];
-  [v3 validateClass:@"SBDynamicFlashlightActivityElementViewController" hasInstanceMethod:@"currentIntensity" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBDynamicFlashlightActivityElementViewController" hasInstanceMethod:@"currentWidth" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SBDynamicFlashlightActivityElementViewController" hasInstanceMethod:@"_accessibilitySetTorchState:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"SBDynamicFlashlightActivityElementView" hasInstanceMethod:@"_transitionToExpandedStateWithIntensity:width:" withFullSignature:{"v", "d", "d", 0}];
-  [v3 validateClass:@"SBDynamicFlashlightActivityElementView" hasInstanceMethod:@"_transitionToCollapsedState" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBDynamicFlashlightActivityElementViewController" hasInstanceVariable:@"_torchState" withType:__ax_verbose_encode_with_type_encoding_group_class()];
+  [validationsCopy validateClass:@"SBDynamicFlashlightActivityElementViewController" hasInstanceMethod:@"currentIntensity" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBDynamicFlashlightActivityElementViewController" hasInstanceMethod:@"currentWidth" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SBDynamicFlashlightActivityElementViewController" hasInstanceMethod:@"_accessibilitySetTorchState:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"SBDynamicFlashlightActivityElementView" hasInstanceMethod:@"_transitionToExpandedStateWithIntensity:width:" withFullSignature:{"v", "d", "d", 0}];
+  [validationsCopy validateClass:@"SBDynamicFlashlightActivityElementView" hasInstanceMethod:@"_transitionToCollapsedState" withFullSignature:{"v", 0}];
 }
 
 - (id)accessibilityCustomActions
 {
   v34[4] = *MEMORY[0x29EDCA608];
-  v2 = [(SBDynamicFlashlightActivityElementViewAccessibility *)self _accessibilityViewController];
-  [v2 safeCGPointForKey:@"_torchState"];
+  _accessibilityViewController = [(SBDynamicFlashlightActivityElementViewAccessibility *)self _accessibilityViewController];
+  [_accessibilityViewController safeCGPointForKey:@"_torchState"];
   v4 = v3;
   v6 = v5;
-  [v2 safeCGFloatForKey:@"currentIntensity"];
+  [_accessibilityViewController safeCGFloatForKey:@"currentIntensity"];
   v8 = v7;
-  [v2 safeCGFloatForKey:@"currentWidth"];
+  [_accessibilityViewController safeCGFloatForKey:@"currentWidth"];
   v10 = v9;
-  objc_initWeak(&location, v2);
+  objc_initWeak(&location, _accessibilityViewController);
   v11 = objc_alloc(MEMORY[0x29EDC78E0]);
   v12 = accessibilityLocalizedString(@"increase.flashlight.intensity");
   v31[0] = MEMORY[0x29EDCA5F8];
@@ -175,11 +175,11 @@ void __81__SBDynamicFlashlightActivityElementViewAccessibility_accessibilityCust
 
 - (id)accessibilityPath
 {
-  v3 = [(SBDynamicFlashlightActivityElementViewAccessibility *)self _accessibilityContainerView];
-  v4 = v3;
-  if (v3)
+  _accessibilityContainerView = [(SBDynamicFlashlightActivityElementViewAccessibility *)self _accessibilityContainerView];
+  v4 = _accessibilityContainerView;
+  if (_accessibilityContainerView)
   {
-    [v3 accessibilityFrame];
+    [_accessibilityContainerView accessibilityFrame];
     x = v26.origin.x;
     y = v26.origin.y;
     width = v26.size.width;
@@ -206,50 +206,50 @@ void __81__SBDynamicFlashlightActivityElementViewAccessibility_accessibilityCust
     v30.size.width = width;
     v30.size.height = height;
     v14 = v13 / CGRectGetHeight(v30);
-    v15 = [v4 layer];
-    [v15 cornerRadius];
+    layer = [v4 layer];
+    [layer cornerRadius];
     v17 = fmax(v22, v14) * v16;
 
-    v18 = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v23 cornerRadius:{v10, v11, v21, v17}];
+    accessibilityPath = [MEMORY[0x29EDC7948] _bezierPathWithArcRoundedRect:v23 cornerRadius:{v10, v11, v21, v17}];
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = SBDynamicFlashlightActivityElementViewAccessibility;
-    v18 = [(SBDynamicFlashlightActivityElementViewAccessibility *)&v24 accessibilityPath];
+    accessibilityPath = [(SBDynamicFlashlightActivityElementViewAccessibility *)&v24 accessibilityPath];
   }
 
-  v19 = v18;
+  v19 = accessibilityPath;
 
   return v19;
 }
 
 - (id)_accessibilityContainerView
 {
-  v2 = [MEMORY[0x29EDC7938] sharedApplication];
-  v3 = [v2 safeValueForKey:@"systemApertureControllerForMainDisplay"];
+  mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+  v3 = [mEMORY[0x29EDC7938] safeValueForKey:@"systemApertureControllerForMainDisplay"];
 
   v4 = [v3 safeValueForKey:@"_systemApertureViewController"];
   v5 = [v4 safeArrayForKey:@"_orderedContainerViews"];
   if ([v5 count])
   {
-    v6 = [v5 firstObject];
+    firstObject = [v5 firstObject];
   }
 
   else
   {
-    v6 = 0;
+    firstObject = 0;
   }
 
-  return v6;
+  return firstObject;
 }
 
-- (void)_transitionToExpandedStateWithIntensity:(double)a3 width:(double)a4
+- (void)_transitionToExpandedStateWithIntensity:(double)intensity width:(double)width
 {
   v5.receiver = self;
   v5.super_class = SBDynamicFlashlightActivityElementViewAccessibility;
-  [(SBDynamicFlashlightActivityElementViewAccessibility *)&v5 _transitionToExpandedStateWithIntensity:a3 width:a4];
+  [(SBDynamicFlashlightActivityElementViewAccessibility *)&v5 _transitionToExpandedStateWithIntensity:intensity width:width];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], self);
 }
 

@@ -1,6 +1,6 @@
 @interface AVPresentationController
 - (AVPresentationContainerView)presentedPresentationContainerView;
-- (AVPresentationController)initWithPresentationController:(id)a3 presentedViewController:(id)a4 presentingViewController:(id)a5 withConfiguration:(id)a6;
+- (AVPresentationController)initWithPresentationController:(id)controller presentedViewController:(id)viewController presentingViewController:(id)presentingViewController withConfiguration:(id)configuration;
 - (BOOL)dismissed;
 - (BOOL)dismissing;
 - (BOOL)presented;
@@ -11,14 +11,14 @@
 - (UIViewController)presentingViewController;
 - (UIWindow)presentationWindowForDisablingAutorotation;
 - (id)presentedView;
-- (void)_ensureOrientation:(int64_t)a3 enablingMixedOrientations:(BOOL)a4;
+- (void)_ensureOrientation:(int64_t)orientation enablingMixedOrientations:(BOOL)orientations;
 - (void)_observeSceneDidBecomeActiveForRestoringRotatability;
 - (void)_prepareDismissingTransitionContext;
 - (void)containerViewWillLayoutSubviews;
 - (void)dealloc;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
 @end
 
@@ -33,8 +33,8 @@
 
 - (void)_observeSceneDidBecomeActiveForRestoringRotatability
 {
-  v2 = [(AVPresentationController *)self observationController];
-  [v2 startObservingNotificationForName:*MEMORY[0x1E69DE338] object:0 notificationCenter:0 observationHandler:&__block_literal_global_14191];
+  observationController = [(AVPresentationController *)self observationController];
+  [observationController startObservingNotificationForName:*MEMORY[0x1E69DE338] object:0 notificationCenter:0 observationHandler:&__block_literal_global_14191];
 }
 
 void __80__AVPresentationController__observeSceneDidBecomeActiveForRestoringRotatability__block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -73,20 +73,20 @@ void __80__AVPresentationController__observeSceneDidBecomeActiveForRestoringRota
   }
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [(AVPresentationController *)self context];
-  v6 = [v5 dismissingTransition];
-  if ([v6 wasCancelledWithInactiveScene])
+  context = [(AVPresentationController *)self context];
+  dismissingTransition = [context dismissingTransition];
+  if ([dismissingTransition wasCancelledWithInactiveScene])
   {
-    v7 = [(AVPresentationController *)self context];
-    v8 = [v7 presentedViewController];
-    v9 = [v8 view];
-    v10 = [v9 window];
-    v11 = [v10 windowScene];
-    v12 = [v11 activationState] != 0;
+    context2 = [(AVPresentationController *)self context];
+    presentedViewController = [context2 presentedViewController];
+    view = [presentedViewController view];
+    window = [view window];
+    windowScene = [window windowScene];
+    v12 = [windowScene activationState] != 0;
   }
 
   else
@@ -102,7 +102,7 @@ void __80__AVPresentationController__observeSceneDidBecomeActiveForRestoringRota
     v27 = "[AVPresentationController dismissalTransitionDidEnd:]";
     v29 = "completed";
     v28 = 2080;
-    if (v3)
+    if (endCopy)
     {
       v14 = "YES";
     }
@@ -112,45 +112,45 @@ void __80__AVPresentationController__observeSceneDidBecomeActiveForRestoringRota
     _os_log_impl(&dword_18B49C000, v13, OS_LOG_TYPE_DEFAULT, "%s %s %s", buf, 0x20u);
   }
 
-  v15 = [(AVPresentationController *)self context];
-  v16 = [v15 dismissingTransition];
-  v17 = [v16 hasAVKitAnimator];
+  context3 = [(AVPresentationController *)self context];
+  dismissingTransition2 = [context3 dismissingTransition];
+  hasAVKitAnimator = [dismissingTransition2 hasAVKitAnimator];
 
-  if (v17)
+  if (hasAVKitAnimator)
   {
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __54__AVPresentationController_dismissalTransitionDidEnd___block_invoke;
     v24[3] = &unk_1E7208B88;
     v24[4] = self;
-    v25 = v3;
+    v25 = endCopy;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v24];
   }
 
-  else if (!v3)
+  else if (!endCopy)
   {
-    v18 = [(AVPresentationController *)self context];
-    [v18 setDismissingTransition:0];
+    context4 = [(AVPresentationController *)self context];
+    [context4 setDismissingTransition:0];
   }
 
   if (v12)
   {
-    v19 = [(AVPresentationController *)self presentationWindowForDisablingAutorotation];
+    presentationWindowForDisablingAutorotation = [(AVPresentationController *)self presentationWindowForDisablingAutorotation];
 
-    if (!v19)
+    if (!presentationWindowForDisablingAutorotation)
     {
-      v20 = [(AVPresentationController *)self context];
-      v21 = [v20 presentationWindow];
-      [(AVPresentationController *)self setPresentationWindowForDisablingAutorotation:v21];
+      context5 = [(AVPresentationController *)self context];
+      presentationWindow = [context5 presentationWindow];
+      [(AVPresentationController *)self setPresentationWindowForDisablingAutorotation:presentationWindow];
 
       v22 = _AVLog();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [(AVPresentationController *)self presentationWindowForDisablingAutorotation];
+        presentationWindowForDisablingAutorotation2 = [(AVPresentationController *)self presentationWindowForDisablingAutorotation];
         *buf = 136315394;
         v27 = "[AVPresentationController dismissalTransitionDidEnd:]";
         v28 = 2048;
-        v29 = v23;
+        v29 = presentationWindowForDisablingAutorotation2;
         _os_log_impl(&dword_18B49C000, v22, OS_LOG_TYPE_DEFAULT, "%s Disabling autorotation for window: %p", buf, 0x16u);
       }
     }
@@ -273,86 +273,86 @@ void __54__AVPresentationController_dismissalTransitionDidEnd___block_invoke(uin
 - (void)_prepareDismissingTransitionContext
 {
   v3 = objc_alloc_init(AVPresentationContextTransition);
-  v4 = [(AVPresentationController *)self context];
-  [v4 setDismissingTransition:v3];
+  context = [(AVPresentationController *)self context];
+  [context setDismissingTransition:v3];
 
-  v5 = [(AVPresentationController *)self presentedViewController];
-  v6 = [v5 transitionCoordinator];
-  v7 = [v6 isInteractive];
-  v8 = [(AVPresentationController *)self context];
-  v9 = [v8 dismissingTransition];
-  [v9 setWasInitiallyInteractive:v7];
+  presentedViewController = [(AVPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
+  isInteractive = [transitionCoordinator isInteractive];
+  context2 = [(AVPresentationController *)self context];
+  dismissingTransition = [context2 dismissingTransition];
+  [dismissingTransition setWasInitiallyInteractive:isInteractive];
 
-  v10 = [(AVPresentationController *)self presentedViewController];
-  v11 = [v10 transitioningDelegate];
+  presentedViewController2 = [(AVPresentationController *)self presentedViewController];
+  transitioningDelegate = [presentedViewController2 transitioningDelegate];
   objc_opt_class();
-  LOBYTE(v7) = objc_opt_isKindOfClass();
-  v12 = [(AVPresentationController *)self context];
-  v13 = [v12 dismissingTransition];
-  [v13 setHasAVKitAnimator:v7 & 1];
+  LOBYTE(isInteractive) = objc_opt_isKindOfClass();
+  context3 = [(AVPresentationController *)self context];
+  dismissingTransition2 = [context3 dismissingTransition];
+  [dismissingTransition2 setHasAVKitAnimator:isInteractive & 1];
 
-  v14 = [(AVPresentationController *)self containerView];
-  v15 = [v14 window];
-  if ([v15 autorotates])
+  containerView = [(AVPresentationController *)self containerView];
+  window = [containerView window];
+  if ([window autorotates])
   {
     v16 = *MEMORY[0x1E69DDA98];
-    v17 = [(AVPresentationController *)self containerView];
-    v18 = [v17 window];
-    v19 = [v16 _supportedInterfaceOrientationsForWindow:v18];
+    containerView2 = [(AVPresentationController *)self containerView];
+    window2 = [containerView2 window];
+    v19 = [v16 _supportedInterfaceOrientationsForWindow:window2];
   }
 
   else
   {
-    v17 = [(AVPresentationController *)self containerView];
-    v18 = [v17 window];
-    v19 = 1 << [v18 _windowInterfaceOrientation];
+    containerView2 = [(AVPresentationController *)self containerView];
+    window2 = [containerView2 window];
+    v19 = 1 << [window2 _windowInterfaceOrientation];
   }
 
-  v20 = [(AVPresentationController *)self presentingViewController];
-  if ([v20 shouldAutorotate])
+  presentingViewController = [(AVPresentationController *)self presentingViewController];
+  if ([presentingViewController shouldAutorotate])
   {
   }
 
   else
   {
-    v21 = [(AVPresentationController *)self presentingViewController];
-    v22 = [v21 supportedInterfaceOrientations];
-    v23 = [(AVPresentationController *)self containerView];
-    v24 = [v23 window];
-    v25 = (1 << [v24 _windowInterfaceOrientation]) & ~v22;
+    presentingViewController2 = [(AVPresentationController *)self presentingViewController];
+    supportedInterfaceOrientations = [presentingViewController2 supportedInterfaceOrientations];
+    containerView3 = [(AVPresentationController *)self containerView];
+    window3 = [containerView3 window];
+    v25 = (1 << [window3 _windowInterfaceOrientation]) & ~supportedInterfaceOrientations;
 
     if (!v25)
     {
-      v26 = [(AVPresentationController *)self containerView];
-      v27 = [v26 window];
-      v28 = 1 << [v27 _windowInterfaceOrientation];
+      containerView4 = [(AVPresentationController *)self containerView];
+      window4 = [containerView4 window];
+      supportedInterfaceOrientations2 = 1 << [window4 _windowInterfaceOrientation];
 
       goto LABEL_9;
     }
   }
 
-  v26 = [(AVPresentationController *)self presentingViewController];
-  v28 = [v26 supportedInterfaceOrientations];
+  containerView4 = [(AVPresentationController *)self presentingViewController];
+  supportedInterfaceOrientations2 = [containerView4 supportedInterfaceOrientations];
 LABEL_9:
 
-  v29 = [(AVPresentationController *)self context];
-  v30 = [v29 dismissingTransition];
-  [v30 setPresenterSupportedOrientations:v28 & v19];
+  context4 = [(AVPresentationController *)self context];
+  dismissingTransition3 = [context4 dismissingTransition];
+  [dismissingTransition3 setPresenterSupportedOrientations:supportedInterfaceOrientations2 & v19];
 
-  v31 = [(AVPresentationController *)self context];
-  v32 = [v31 presentationWindow];
-  v33 = [v32 windowScene];
-  v34 = [v33 interfaceOrientation];
-  v35 = [(AVPresentationController *)self context];
-  v36 = [v35 dismissingTransition];
-  [v36 setInitialInterfaceOrientation:v34];
+  context5 = [(AVPresentationController *)self context];
+  presentationWindow = [context5 presentationWindow];
+  windowScene = [presentationWindow windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
+  context6 = [(AVPresentationController *)self context];
+  dismissingTransition4 = [context6 dismissingTransition];
+  [dismissingTransition4 setInitialInterfaceOrientation:interfaceOrientation];
 
-  v41 = [(AVPresentationController *)self context];
-  v37 = [v41 presentationWindow];
-  v38 = [v37 interfaceOrientation];
-  v39 = [(AVPresentationController *)self context];
-  v40 = [v39 dismissingTransition];
-  [v40 setFinalInterfaceOrientation:v38];
+  context7 = [(AVPresentationController *)self context];
+  presentationWindow2 = [context7 presentationWindow];
+  interfaceOrientation2 = [presentationWindow2 interfaceOrientation];
+  context8 = [(AVPresentationController *)self context];
+  dismissingTransition5 = [context8 dismissingTransition];
+  [dismissingTransition5 setFinalInterfaceOrientation:interfaceOrientation2];
 }
 
 - (void)dismissalTransitionWillBegin
@@ -368,40 +368,40 @@ LABEL_9:
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d", buf, 0x12u);
   }
 
-  v4 = [(AVPresentationController *)self containerView];
-  [v4 bounds];
+  containerView = [(AVPresentationController *)self containerView];
+  [containerView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(AVPresentationController *)self context];
-  v14 = [v13 backgroundView];
-  [v14 setFrame:{v6, v8, v10, v12}];
+  context = [(AVPresentationController *)self context];
+  backgroundView = [context backgroundView];
+  [backgroundView setFrame:{v6, v8, v10, v12}];
 
-  v15 = [(AVPresentationController *)self containerView];
-  [v15 bounds];
+  containerView2 = [(AVPresentationController *)self containerView];
+  [containerView2 bounds];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(AVPresentationController *)self context];
-  v25 = [v24 touchBlockingView];
-  [v25 setFrame:{v17, v19, v21, v23}];
+  context2 = [(AVPresentationController *)self context];
+  touchBlockingView = [context2 touchBlockingView];
+  [touchBlockingView setFrame:{v17, v19, v21, v23}];
 
   [(AVPresentationController *)self _prepareDismissingTransitionContext];
-  v26 = [(AVPresentationController *)self context];
-  v27 = [v26 dismissingTransition];
-  LODWORD(v25) = [v27 hasAVKitAnimator];
+  context3 = [(AVPresentationController *)self context];
+  dismissingTransition = [context3 dismissingTransition];
+  LODWORD(touchBlockingView) = [dismissingTransition hasAVKitAnimator];
 
-  if (v25)
+  if (touchBlockingView)
   {
-    v28 = [(AVPresentationController *)self context];
-    v29 = [v28 presentedPresentationContainerView];
-    [v29 willBeginAdjustingOrientation];
+    context4 = [(AVPresentationController *)self context];
+    presentedPresentationContainerView = [context4 presentedPresentationContainerView];
+    [presentedPresentationContainerView willBeginAdjustingOrientation];
 
-    v30 = [(AVPresentationController *)self context];
-    v31 = [v30 dismissingTransition];
-    -[AVPresentationController _ensureOrientation:enablingMixedOrientations:](self, "_ensureOrientation:enablingMixedOrientations:", [v31 finalInterfaceOrientation], 0);
+    context5 = [(AVPresentationController *)self context];
+    dismissingTransition2 = [context5 dismissingTransition];
+    -[AVPresentationController _ensureOrientation:enablingMixedOrientations:](self, "_ensureOrientation:enablingMixedOrientations:", [dismissingTransition2 finalInterfaceOrientation], 0);
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
@@ -467,74 +467,74 @@ LABEL_5:
   [v35 setFrame:{v27, v29, v31, v33}];
 }
 
-- (void)_ensureOrientation:(int64_t)a3 enablingMixedOrientations:(BOOL)a4
+- (void)_ensureOrientation:(int64_t)orientation enablingMixedOrientations:(BOOL)orientations
 {
-  if (!a4)
+  if (!orientations)
   {
-    v11 = [MEMORY[0x1E69DC888] clearColor];
-    v12 = [(AVPresentationController *)self context];
-    v13 = [v12 rotatableSecondWindow];
-    [v13 setBackgroundColor:v11];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    context = [(AVPresentationController *)self context];
+    rotatableSecondWindow = [context rotatableSecondWindow];
+    [rotatableSecondWindow setBackgroundColor:clearColor];
 
-    v55 = [(AVPresentationController *)self context];
-    v14 = [(AVFullScreenViewController *)v55 avFullScreenViewController];
-    [v14 attachContentView];
+    context2 = [(AVPresentationController *)self context];
+    avFullScreenViewController = [(AVFullScreenViewController *)context2 avFullScreenViewController];
+    [avFullScreenViewController attachContentView];
     goto LABEL_10;
   }
 
-  v5 = [(AVPresentationController *)self context];
-  if ([v5 allowsSecondWindowPresentations])
+  context3 = [(AVPresentationController *)self context];
+  if ([context3 allowsSecondWindowPresentations])
   {
-    v6 = [(AVPresentationController *)self context];
-    if ([v6 wasInitiallyPresentedWithoutSecondWindow])
+    context4 = [(AVPresentationController *)self context];
+    if ([context4 wasInitiallyPresentedWithoutSecondWindow])
     {
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    v7 = [(AVPresentationController *)self context];
-    v8 = [v7 presentationWindow];
-    v9 = [(AVPresentationController *)self context];
-    v10 = [v9 presentedViewController];
-    if ([v8 avkit_supportsAutorotationForInterfaceOrientationMask:{objc_msgSend(v10, "supportedInterfaceOrientations")}])
+    context5 = [(AVPresentationController *)self context];
+    presentationWindow = [context5 presentationWindow];
+    context6 = [(AVPresentationController *)self context];
+    presentedViewController = [context6 presentedViewController];
+    if ([presentationWindow avkit_supportsAutorotationForInterfaceOrientationMask:{objc_msgSend(presentedViewController, "supportedInterfaceOrientations")}])
     {
 
       goto LABEL_6;
     }
 
-    v15 = [(AVPresentationController *)self context];
-    v16 = [v15 presentationWindow];
-    v17 = [v16 avkit_canAttemptSecondWindowForRotability];
+    context7 = [(AVPresentationController *)self context];
+    presentationWindow2 = [context7 presentationWindow];
+    avkit_canAttemptSecondWindowForRotability = [presentationWindow2 avkit_canAttemptSecondWindowForRotability];
 
-    if ((v17 & 1) == 0)
+    if ((avkit_canAttemptSecondWindowForRotability & 1) == 0)
     {
       goto LABEL_8;
     }
 
-    v18 = [(AVPresentationController *)self context];
-    v19 = [v18 avFullScreenViewController];
+    context8 = [(AVPresentationController *)self context];
+    avFullScreenViewController2 = [context8 avFullScreenViewController];
 
-    if (!v19)
+    if (!avFullScreenViewController2)
     {
       return;
     }
 
-    v20 = [(AVPresentationController *)self context];
-    v21 = [v20 rotatableSecondWindow];
-    [v21 setHidden:1];
+    context9 = [(AVPresentationController *)self context];
+    rotatableSecondWindow2 = [context9 rotatableSecondWindow];
+    [rotatableSecondWindow2 setHidden:1];
 
     v22 = objc_alloc(MEMORY[0x1E69DD2E8]);
-    v23 = [(AVPresentationController *)self containerView];
-    v24 = [v23 window];
-    v25 = [v24 windowScene];
-    v26 = [v22 initWithWindowScene:v25];
-    v27 = [(AVPresentationController *)self context];
-    [v27 setRotatableSecondWindow:v26];
+    containerView = [(AVPresentationController *)self containerView];
+    window = [containerView window];
+    windowScene = [window windowScene];
+    v26 = [v22 initWithWindowScene:windowScene];
+    context10 = [(AVPresentationController *)self context];
+    [context10 setRotatableSecondWindow:v26];
 
-    v28 = [(AVPresentationController *)self context];
-    v29 = [v28 presentationWindow];
-    [v29 windowLevel];
+    context11 = [(AVPresentationController *)self context];
+    presentationWindow3 = [context11 presentationWindow];
+    [presentationWindow3 windowLevel];
     v31 = v30 + 1.0;
 
     if (v31 >= *MEMORY[0x1E69DE7F0])
@@ -542,46 +542,46 @@ LABEL_6:
       v31 = *MEMORY[0x1E69DE7F0];
     }
 
-    v32 = [(AVPresentationController *)self context];
-    v33 = [v32 rotatableSecondWindow];
-    [v33 setWindowLevel:v31];
+    context12 = [(AVPresentationController *)self context];
+    rotatableSecondWindow3 = [context12 rotatableSecondWindow];
+    [rotatableSecondWindow3 setWindowLevel:v31];
 
-    v55 = objc_alloc_init(AVFullScreenViewController);
-    v34 = [(AVPresentationController *)self context];
-    v35 = [v34 rotatableSecondWindow];
-    [v35 setRootViewController:v55];
+    context2 = objc_alloc_init(AVFullScreenViewController);
+    context13 = [(AVPresentationController *)self context];
+    rotatableSecondWindow4 = [context13 rotatableSecondWindow];
+    [rotatableSecondWindow4 setRootViewController:context2];
 
-    v36 = [(AVPresentationController *)self context];
-    v37 = [v36 avFullScreenViewController];
-    v38 = [(AVPresentationController *)self context];
-    v39 = [v38 rotatableWindowViewController];
-    [v39 setSourceFullScreenViewController:v37];
+    context14 = [(AVPresentationController *)self context];
+    avFullScreenViewController3 = [context14 avFullScreenViewController];
+    context15 = [(AVPresentationController *)self context];
+    rotatableWindowViewController = [context15 rotatableWindowViewController];
+    [rotatableWindowViewController setSourceFullScreenViewController:avFullScreenViewController3];
 
-    v40 = [(AVPresentationController *)self context];
-    v41 = [v40 avFullScreenViewController];
-    v42 = [v41 delegate];
-    v43 = [(AVPresentationController *)self context];
-    v44 = [v43 rotatableWindowViewController];
-    [v44 setDelegate:v42];
+    context16 = [(AVPresentationController *)self context];
+    avFullScreenViewController4 = [context16 avFullScreenViewController];
+    delegate = [avFullScreenViewController4 delegate];
+    context17 = [(AVPresentationController *)self context];
+    rotatableWindowViewController2 = [context17 rotatableWindowViewController];
+    [rotatableWindowViewController2 setDelegate:delegate];
 
-    v45 = [(AVPresentationController *)self context];
-    v46 = [v45 rotatableWindowViewController];
-    v47 = [(AVPresentationController *)self context];
-    v48 = [v47 avFullScreenViewController];
-    [v48 setAssociatedFullScreenViewController:v46];
+    context18 = [(AVPresentationController *)self context];
+    rotatableWindowViewController3 = [context18 rotatableWindowViewController];
+    context19 = [(AVPresentationController *)self context];
+    avFullScreenViewController5 = [context19 avFullScreenViewController];
+    [avFullScreenViewController5 setAssociatedFullScreenViewController:rotatableWindowViewController3];
 
-    v49 = [(AVPresentationController *)self context];
-    v50 = [v49 rotatableSecondWindow];
-    v51 = [v50 rootViewController];
-    [v51 _setIgnoreAppSupportedOrientations:1];
+    context20 = [(AVPresentationController *)self context];
+    rotatableSecondWindow5 = [context20 rotatableSecondWindow];
+    rootViewController = [rotatableSecondWindow5 rootViewController];
+    [rootViewController _setIgnoreAppSupportedOrientations:1];
 
-    v52 = [(AVPresentationController *)self context];
-    v53 = [v52 rotatableSecondWindow];
-    [v53 setHidden:0];
+    context21 = [(AVPresentationController *)self context];
+    rotatableSecondWindow6 = [context21 rotatableSecondWindow];
+    [rotatableSecondWindow6 setHidden:0];
 
-    v14 = [(AVPresentationController *)self context];
-    v54 = [v14 rotatableWindowViewController];
-    [v54 attachContentView];
+    avFullScreenViewController = [(AVPresentationController *)self context];
+    rotatableWindowViewController4 = [avFullScreenViewController rotatableWindowViewController];
+    [rotatableWindowViewController4 attachContentView];
 
 LABEL_10:
     goto LABEL_11;
@@ -590,14 +590,14 @@ LABEL_10:
 LABEL_7:
 
 LABEL_8:
-  v55 = [(AVPresentationController *)self context];
-  [(AVFullScreenViewController *)v55 setWasInitiallyPresentedWithoutSecondWindow:1];
+  context2 = [(AVPresentationController *)self context];
+  [(AVFullScreenViewController *)context2 setWasInitiallyPresentedWithoutSecondWindow:1];
 LABEL_11:
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v3 = a3;
+  endCopy = end;
   v18 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -607,7 +607,7 @@ LABEL_11:
     v13 = "[AVPresentationController presentationTransitionDidEnd:]";
     v15 = "completed";
     v14 = 2080;
-    if (v3)
+    if (endCopy)
     {
       v6 = "YES";
     }
@@ -617,18 +617,18 @@ LABEL_11:
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %s %s", buf, 0x20u);
   }
 
-  v7 = [(AVPresentationController *)self context];
-  v8 = [v7 presentingTransition];
-  v9 = [v8 hasAVKitAnimator];
+  context = [(AVPresentationController *)self context];
+  presentingTransition = [context presentingTransition];
+  hasAVKitAnimator = [presentingTransition hasAVKitAnimator];
 
-  if (v9)
+  if (hasAVKitAnimator)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __57__AVPresentationController_presentationTransitionDidEnd___block_invoke;
     v10[3] = &unk_1E7208B88;
     v10[4] = self;
-    v11 = v3;
+    v11 = endCopy;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v10];
   }
 }
@@ -700,115 +700,115 @@ void __57__AVPresentationController_presentationTransitionDidEnd___block_invoke(
   }
 
   v4 = objc_alloc_init(AVPresentationContextTransition);
-  v5 = [(AVPresentationController *)self context];
-  [v5 setPresentingTransition:v4];
+  context = [(AVPresentationController *)self context];
+  [context setPresentingTransition:v4];
 
-  v6 = [(AVPresentationController *)self presentedViewController];
-  v7 = [v6 transitionCoordinator];
-  v8 = [v7 isInteractive];
-  v9 = [(AVPresentationController *)self context];
-  v10 = [v9 presentingTransition];
-  [v10 setWasInitiallyInteractive:v8];
+  presentedViewController = [(AVPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
+  isInteractive = [transitionCoordinator isInteractive];
+  context2 = [(AVPresentationController *)self context];
+  presentingTransition = [context2 presentingTransition];
+  [presentingTransition setWasInitiallyInteractive:isInteractive];
 
-  v11 = [(AVPresentationController *)self presentedViewController];
-  v12 = [v11 transitioningDelegate];
+  presentedViewController2 = [(AVPresentationController *)self presentedViewController];
+  transitioningDelegate = [presentedViewController2 transitioningDelegate];
   objc_opt_class();
-  LOBYTE(v8) = objc_opt_isKindOfClass();
-  v13 = [(AVPresentationController *)self context];
-  v14 = [v13 presentingTransition];
-  [v14 setHasAVKitAnimator:v8 & 1];
+  LOBYTE(isInteractive) = objc_opt_isKindOfClass();
+  context3 = [(AVPresentationController *)self context];
+  presentingTransition2 = [context3 presentingTransition];
+  [presentingTransition2 setHasAVKitAnimator:isInteractive & 1];
 
-  v15 = [(AVPresentationController *)self containerView];
-  v16 = [v15 window];
-  if ([v16 autorotates])
+  containerView = [(AVPresentationController *)self containerView];
+  window = [containerView window];
+  if ([window autorotates])
   {
     v17 = *MEMORY[0x1E69DDA98];
-    v18 = [(AVPresentationController *)self containerView];
-    v19 = [v18 window];
-    v20 = [v17 _supportedInterfaceOrientationsForWindow:v19];
+    containerView2 = [(AVPresentationController *)self containerView];
+    window2 = [containerView2 window];
+    v20 = [v17 _supportedInterfaceOrientationsForWindow:window2];
   }
 
   else
   {
-    v18 = [(AVPresentationController *)self containerView];
-    v19 = [v18 window];
-    v20 = 1 << [v19 _windowInterfaceOrientation];
+    containerView2 = [(AVPresentationController *)self containerView];
+    window2 = [containerView2 window];
+    v20 = 1 << [window2 _windowInterfaceOrientation];
   }
 
-  v21 = [(AVPresentationController *)self presentingViewController];
-  if ([v21 shouldAutorotate])
+  presentingViewController = [(AVPresentationController *)self presentingViewController];
+  if ([presentingViewController shouldAutorotate])
   {
-    v22 = [(AVPresentationController *)self presentingViewController];
-    v23 = [v22 supportedInterfaceOrientations];
+    presentingViewController2 = [(AVPresentationController *)self presentingViewController];
+    supportedInterfaceOrientations = [presentingViewController2 supportedInterfaceOrientations];
   }
 
   else
   {
-    v22 = [(AVPresentationController *)self containerView];
-    v24 = [v22 window];
-    v23 = 1 << [v24 _windowInterfaceOrientation];
+    presentingViewController2 = [(AVPresentationController *)self containerView];
+    window3 = [presentingViewController2 window];
+    supportedInterfaceOrientations = 1 << [window3 _windowInterfaceOrientation];
   }
 
-  v25 = [(AVPresentationController *)self context];
-  v26 = [v25 presentingTransition];
-  [v26 setPresenterSupportedOrientations:v23 & v20];
+  context4 = [(AVPresentationController *)self context];
+  presentingTransition3 = [context4 presentingTransition];
+  [presentingTransition3 setPresenterSupportedOrientations:supportedInterfaceOrientations & v20];
 
-  v27 = [(AVPresentationController *)self context];
-  v28 = [v27 presentedViewController];
-  [v28 _setIgnoreAppSupportedOrientations:1];
+  context5 = [(AVPresentationController *)self context];
+  presentedViewController3 = [context5 presentedViewController];
+  [presentedViewController3 _setIgnoreAppSupportedOrientations:1];
 
-  v29 = [(AVPresentationController *)self context];
-  v30 = [v29 presentationWindow];
-  v31 = [v30 windowScene];
-  v32 = [v31 interfaceOrientation];
-  v33 = [(AVPresentationController *)self context];
-  v34 = [v33 presentingTransition];
-  [v34 setInitialInterfaceOrientation:v32];
+  context6 = [(AVPresentationController *)self context];
+  presentationWindow = [context6 presentationWindow];
+  windowScene = [presentationWindow windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
+  context7 = [(AVPresentationController *)self context];
+  presentingTransition4 = [context7 presentingTransition];
+  [presentingTransition4 setInitialInterfaceOrientation:interfaceOrientation];
 
-  v35 = [(AVPresentationController *)self context];
-  v36 = [v35 presentationWindow];
-  v37 = [v36 interfaceOrientation];
-  v38 = [(AVPresentationController *)self context];
-  v39 = [v38 presentingTransition];
-  [v39 setFinalInterfaceOrientation:v37];
+  context8 = [(AVPresentationController *)self context];
+  presentationWindow2 = [context8 presentationWindow];
+  interfaceOrientation2 = [presentationWindow2 interfaceOrientation];
+  context9 = [(AVPresentationController *)self context];
+  presentingTransition5 = [context9 presentingTransition];
+  [presentingTransition5 setFinalInterfaceOrientation:interfaceOrientation2];
 
-  v40 = [(AVPresentationController *)self context];
-  v41 = [v40 presentingTransition];
-  LODWORD(v37) = [v41 hasAVKitAnimator];
+  context10 = [(AVPresentationController *)self context];
+  presentingTransition6 = [context10 presentingTransition];
+  LODWORD(interfaceOrientation2) = [presentingTransition6 hasAVKitAnimator];
 
-  if (v37)
+  if (interfaceOrientation2)
   {
-    v42 = [(AVPresentationController *)self presentedView];
-    [v42 setAutoresizingMask:0];
+    presentedView = [(AVPresentationController *)self presentedView];
+    [presentedView setAutoresizingMask:0];
 
-    v43 = [(AVPresentationController *)self containerView];
-    [v43 bounds];
+    containerView3 = [(AVPresentationController *)self containerView];
+    [containerView3 bounds];
     v45 = v44;
     v47 = v46;
     v49 = v48;
     v51 = v50;
-    v52 = [(AVPresentationController *)self presentedView];
-    [v52 setFrame:{v45, v47, v49, v51}];
+    presentedView2 = [(AVPresentationController *)self presentedView];
+    [presentedView2 setFrame:{v45, v47, v49, v51}];
 
-    v53 = [(AVPresentationController *)self containerView];
-    [v53 bounds];
+    containerView4 = [(AVPresentationController *)self containerView];
+    [containerView4 bounds];
     v55 = v54;
     v57 = v56;
     v59 = v58;
     v61 = v60;
-    v62 = [(AVPresentationController *)self context];
-    v63 = [v62 backgroundView];
-    [v63 setFrame:{v55, v57, v59, v61}];
+    context11 = [(AVPresentationController *)self context];
+    backgroundView = [context11 backgroundView];
+    [backgroundView setFrame:{v55, v57, v59, v61}];
 
-    v64 = [(AVPresentationController *)self containerView];
-    [v64 bounds];
+    containerView5 = [(AVPresentationController *)self containerView];
+    [containerView5 bounds];
     v66 = v65;
     v68 = v67;
     v70 = v69;
     v72 = v71;
-    v73 = [(AVPresentationController *)self context];
-    v74 = [v73 touchBlockingView];
-    [v74 setFrame:{v66, v68, v70, v72}];
+    context12 = [(AVPresentationController *)self context];
+    touchBlockingView = [context12 touchBlockingView];
+    [touchBlockingView setFrame:{v66, v68, v70, v72}];
   }
 }
 
@@ -822,106 +822,106 @@ void __57__AVPresentationController_presentationTransitionDidEnd___block_invoke(
 - (id)presentedView
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationController);
-  v3 = [WeakRetained presentedView];
+  presentedView = [WeakRetained presentedView];
 
-  return v3;
+  return presentedView;
 }
 
 - (UIView)containerView
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationController);
-  v3 = [WeakRetained containerView];
+  containerView = [WeakRetained containerView];
 
-  return v3;
+  return containerView;
 }
 
 - (UIViewController)presentedViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationController);
-  v3 = [WeakRetained presentedViewController];
+  presentedViewController = [WeakRetained presentedViewController];
 
-  return v3;
+  return presentedViewController;
 }
 
 - (UIViewController)presentingViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationController);
-  v3 = [WeakRetained presentingViewController];
+  presentingViewController = [WeakRetained presentingViewController];
 
-  return v3;
+  return presentingViewController;
 }
 
 - (void)containerViewWillLayoutSubviews
 {
   if ([(AVPresentationController *)self presented])
   {
-    v3 = [(AVPresentationController *)self containerView];
-    [v3 bounds];
+    containerView = [(AVPresentationController *)self containerView];
+    [containerView bounds];
     v5 = v4;
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(AVPresentationController *)self presentedView];
-    [v12 setFrame:{v5, v7, v9, v11}];
+    presentedView = [(AVPresentationController *)self presentedView];
+    [presentedView setFrame:{v5, v7, v9, v11}];
 
-    v13 = [(AVPresentationController *)self containerView];
-    [v13 bounds];
+    containerView2 = [(AVPresentationController *)self containerView];
+    [containerView2 bounds];
     v15 = v14;
     v17 = v16;
     v19 = v18;
     v21 = v20;
-    v22 = [(AVPresentationController *)self context];
-    v23 = [v22 backgroundView];
-    [v23 setFrame:{v15, v17, v19, v21}];
+    context = [(AVPresentationController *)self context];
+    backgroundView = [context backgroundView];
+    [backgroundView setFrame:{v15, v17, v19, v21}];
 
-    v34 = [(AVPresentationController *)self containerView];
-    [v34 bounds];
+    containerView3 = [(AVPresentationController *)self containerView];
+    [containerView3 bounds];
     v25 = v24;
     v27 = v26;
     v29 = v28;
     v31 = v30;
-    v32 = [(AVPresentationController *)self context];
-    v33 = [v32 touchBlockingView];
-    [v33 setFrame:{v25, v27, v29, v31}];
+    context2 = [(AVPresentationController *)self context];
+    touchBlockingView = [context2 touchBlockingView];
+    [touchBlockingView setFrame:{v25, v27, v29, v31}];
   }
 }
 
 - (BOOL)dismissed
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationController);
-  v3 = [WeakRetained dismissed];
+  dismissed = [WeakRetained dismissed];
 
-  return v3;
+  return dismissed;
 }
 
 - (BOOL)presented
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationController);
-  v3 = [WeakRetained presented];
+  presented = [WeakRetained presented];
 
-  return v3;
+  return presented;
 }
 
 - (BOOL)presenting
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationController);
-  v3 = [WeakRetained presenting];
+  presenting = [WeakRetained presenting];
 
-  return v3;
+  return presenting;
 }
 
 - (BOOL)dismissing
 {
   WeakRetained = objc_loadWeakRetained(&self->_presentationController);
-  v3 = [WeakRetained dismissing];
+  dismissing = [WeakRetained dismissing];
 
-  return v3;
+  return dismissing;
 }
 
 - (BOOL)shouldRemovePresentersView
 {
-  v2 = [(AVPresentationController *)self presentedViewController];
-  v3 = [v2 modalPresentationStyle] == 0;
+  presentedViewController = [(AVPresentationController *)self presentedViewController];
+  v3 = [presentedViewController modalPresentationStyle] == 0;
 
   return v3;
 }
@@ -930,17 +930,17 @@ void __57__AVPresentationController_presentationTransitionDidEnd___block_invoke(
 {
   v12 = *MEMORY[0x1E69E9840];
   [(AVObservationController *)self->_observationController stopAllObservation];
-  v3 = [(AVPresentationController *)self presentationWindowForDisablingAutorotation];
-  [v3 endDisablingInterfaceAutorotation];
+  presentationWindowForDisablingAutorotation = [(AVPresentationController *)self presentationWindowForDisablingAutorotation];
+  [presentationWindowForDisablingAutorotation endDisablingInterfaceAutorotation];
 
   v4 = _AVLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(AVPresentationController *)self presentationWindowForDisablingAutorotation];
+    presentationWindowForDisablingAutorotation2 = [(AVPresentationController *)self presentationWindowForDisablingAutorotation];
     *buf = 136315394;
     v9 = "[AVPresentationController dealloc]";
     v10 = 2048;
-    v11 = v5;
+    v11 = presentationWindowForDisablingAutorotation2;
     _os_log_impl(&dword_18B49C000, v4, OS_LOG_TYPE_DEFAULT, "%s Enabling autorotation for window: %p", buf, 0x16u);
   }
 
@@ -960,12 +960,12 @@ void __57__AVPresentationController_presentationTransitionDidEnd___block_invoke(
   [(AVPresentationController *)&v7 dealloc];
 }
 
-- (AVPresentationController)initWithPresentationController:(id)a3 presentedViewController:(id)a4 presentingViewController:(id)a5 withConfiguration:(id)a6
+- (AVPresentationController)initWithPresentationController:(id)controller presentedViewController:(id)viewController presentingViewController:(id)presentingViewController withConfiguration:(id)configuration
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = AVPresentationController;
   v12 = [(AVPresentationController *)&v21 init];
@@ -981,13 +981,13 @@ void __57__AVPresentationController_presentationTransitionDidEnd___block_invoke(
 
   if (v12)
   {
-    objc_storeWeak(&v12->_presentationController, v9);
-    v14 = [v10 view];
+    objc_storeWeak(&v12->_presentationController, controllerCopy);
+    view = [viewControllerCopy view];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [v10 view];
-      objc_storeWeak(&v12->_presentedPresentationContainerView, v15);
+      view2 = [viewControllerCopy view];
+      objc_storeWeak(&v12->_presentedPresentationContainerView, view2);
     }
 
     else
@@ -995,7 +995,7 @@ void __57__AVPresentationController_presentationTransitionDidEnd___block_invoke(
       objc_storeWeak(&v12->_presentedPresentationContainerView, 0);
     }
 
-    v16 = [[AVPresentationContext alloc] initWithPresentationController:v12 configuration:v11];
+    v16 = [[AVPresentationContext alloc] initWithPresentationController:v12 configuration:configurationCopy];
     context = v12->_context;
     v12->_context = v16;
 

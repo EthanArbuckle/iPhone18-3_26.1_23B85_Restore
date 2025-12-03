@@ -1,28 +1,28 @@
 @interface SortButton
-- (_TtC9SeymourUI10SortButton)initWithCoder:(id)a3;
-- (_TtC9SeymourUI10SortButton)initWithFrame:(CGRect)a3;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (_TtC9SeymourUI10SortButton)initWithCoder:(id)coder;
+- (_TtC9SeymourUI10SortButton)initWithFrame:(CGRect)frame;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation SortButton
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_20B8B6CCC(v8, v9, a5);
+  selfCopy = self;
+  sub_20B8B6CCC(interactionCopy, configurationCopy, animator);
 
   swift_unknownObjectRelease();
 }
 
-- (_TtC9SeymourUI10SortButton)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI10SortButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI10SortButton_delegate) = 0;
   swift_unknownObjectWeakInit();
   v9.receiver = self;
@@ -30,14 +30,14 @@
   return [(SortButton *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC9SeymourUI10SortButton)initWithCoder:(id)a3
+- (_TtC9SeymourUI10SortButton)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super._responderFlags + OBJC_IVAR____TtC9SeymourUI10SortButton_delegate) = 0;
   swift_unknownObjectWeakInit();
   v8.receiver = self;
   v8.super_class = type metadata accessor for SortButton();
-  v5 = a3;
-  v6 = [(SortButton *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SortButton *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

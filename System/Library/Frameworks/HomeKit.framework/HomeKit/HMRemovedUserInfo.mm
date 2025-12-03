@@ -1,12 +1,12 @@
 @interface HMRemovedUserInfo
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMRemovedUserInfo)initWithCoder:(id)a3;
-- (HMRemovedUserInfo)initWithName:(id)a3 userUUID:(id)a4 userID:(id)a5 dateRemoved:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMRemovedUserInfo)initWithCoder:(id)coder;
+- (HMRemovedUserInfo)initWithName:(id)name userUUID:(id)d userID:(id)iD dateRemoved:(id)removed;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMRemovedUserInfo
@@ -16,28 +16,28 @@
   v23[3] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
   v4 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v5 = [(HMRemovedUserInfo *)self name];
-  v6 = [MEMORY[0x1E69A2A48] defaultFormatter];
-  v7 = [v4 initWithName:@"name" value:v5 options:2 formatter:v6];
+  name = [(HMRemovedUserInfo *)self name];
+  defaultFormatter = [MEMORY[0x1E69A2A48] defaultFormatter];
+  v7 = [v4 initWithName:@"name" value:name options:2 formatter:defaultFormatter];
   v8 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v9 = [(HMRemovedUserInfo *)self userUUID];
-  v10 = [v8 initWithName:@"userUUID" value:v9];
+  userUUID = [(HMRemovedUserInfo *)self userUUID];
+  v10 = [v8 initWithName:@"userUUID" value:userUUID];
   v23[1] = v10;
   v11 = objc_alloc(MEMORY[0x1E69A29C8]);
-  v12 = [(HMRemovedUserInfo *)self dateRemoved];
-  v13 = [v11 initWithName:@"dateRemoved" value:v12];
+  dateRemoved = [(HMRemovedUserInfo *)self dateRemoved];
+  v13 = [v11 initWithName:@"dateRemoved" value:dateRemoved];
   v23[2] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:3];
   v15 = [v3 arrayWithArray:v14];
 
-  v16 = [(HMRemovedUserInfo *)self userID];
+  userID = [(HMRemovedUserInfo *)self userID];
 
-  if (v16)
+  if (userID)
   {
     v17 = objc_alloc(MEMORY[0x1E69A29C8]);
-    v18 = [(HMRemovedUserInfo *)self userID];
-    v19 = [MEMORY[0x1E69A2A48] defaultFormatter];
-    v20 = [v17 initWithName:@"userID" value:v18 options:2 formatter:v19];
+    userID2 = [(HMRemovedUserInfo *)self userID];
+    defaultFormatter2 = [MEMORY[0x1E69A2A48] defaultFormatter];
+    v20 = [v17 initWithName:@"userID" value:userID2 options:2 formatter:defaultFormatter2];
     [v15 addObject:v20];
   }
 
@@ -53,14 +53,14 @@
   return [v2 shortDescription];
 }
 
-- (HMRemovedUserInfo)initWithCoder:(id)a3
+- (HMRemovedUserInfo)initWithCoder:(id)coder
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMRemovedUserInfoCodingKeyName"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMRemovedUserInfoCodingKeyUserUUID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMRemovedUserInfoCodingKeyUserID"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMRemovedUserInfoCodingKeyDateRemoved"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMRemovedUserInfoCodingKeyName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMRemovedUserInfoCodingKeyUserUUID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMRemovedUserInfoCodingKeyUserID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMRemovedUserInfoCodingKeyDateRemoved"];
   v9 = v8;
   if (v5)
   {
@@ -75,7 +75,7 @@
   if (v10 || v8 == 0)
   {
     v12 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -97,51 +97,51 @@
 
   else
   {
-    v15 = [(HMRemovedUserInfo *)self initWithName:v5 userUUID:v6 userID:v7 dateRemoved:v8];
-    v16 = v15;
+    selfCopy = [(HMRemovedUserInfo *)self initWithName:v5 userUUID:v6 userID:v7 dateRemoved:v8];
+    v16 = selfCopy;
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMRemovedUserInfo *)self name];
-  [v4 encodeObject:v5 forKey:@"HMRemovedUserInfoCodingKeyName"];
+  coderCopy = coder;
+  name = [(HMRemovedUserInfo *)self name];
+  [coderCopy encodeObject:name forKey:@"HMRemovedUserInfoCodingKeyName"];
 
-  v6 = [(HMRemovedUserInfo *)self userUUID];
-  [v4 encodeObject:v6 forKey:@"HMRemovedUserInfoCodingKeyUserUUID"];
+  userUUID = [(HMRemovedUserInfo *)self userUUID];
+  [coderCopy encodeObject:userUUID forKey:@"HMRemovedUserInfoCodingKeyUserUUID"];
 
-  v7 = [(HMRemovedUserInfo *)self userID];
-  [v4 encodeObject:v7 forKey:@"HMRemovedUserInfoCodingKeyUserID"];
+  userID = [(HMRemovedUserInfo *)self userID];
+  [coderCopy encodeObject:userID forKey:@"HMRemovedUserInfoCodingKeyUserID"];
 
-  v8 = [(HMRemovedUserInfo *)self dateRemoved];
-  [v4 encodeObject:v8 forKey:@"HMRemovedUserInfoCodingKeyDateRemoved"];
+  dateRemoved = [(HMRemovedUserInfo *)self dateRemoved];
+  [coderCopy encodeObject:dateRemoved forKey:@"HMRemovedUserInfoCodingKeyDateRemoved"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HMRemovedUserInfo *)self name];
-  v4 = [v3 hash];
-  v5 = [(HMRemovedUserInfo *)self userUUID];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HMRemovedUserInfo *)self userID];
-  v8 = [v7 hash];
-  v9 = [(HMRemovedUserInfo *)self dateRemoved];
-  v10 = v8 ^ [v9 hash];
+  name = [(HMRemovedUserInfo *)self name];
+  v4 = [name hash];
+  userUUID = [(HMRemovedUserInfo *)self userUUID];
+  v6 = [userUUID hash] ^ v4;
+  userID = [(HMRemovedUserInfo *)self userID];
+  v8 = [userID hash];
+  dateRemoved = [(HMRemovedUserInfo *)self dateRemoved];
+  v10 = v8 ^ [dateRemoved hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -155,8 +155,8 @@
     goto LABEL_9;
   }
 
-  v7 = [(HMRemovedUserInfo *)self name];
-  v8 = [v6 name];
+  name = [(HMRemovedUserInfo *)self name];
+  name2 = [v6 name];
   v9 = HMFEqualObjects();
 
   if (!v9)
@@ -164,8 +164,8 @@
     goto LABEL_9;
   }
 
-  v10 = [(HMRemovedUserInfo *)self userUUID];
-  v11 = [v6 userUUID];
+  userUUID = [(HMRemovedUserInfo *)self userUUID];
+  userUUID2 = [v6 userUUID];
   v12 = HMFEqualObjects();
 
   if (!v12)
@@ -173,14 +173,14 @@
     goto LABEL_9;
   }
 
-  v13 = [(HMRemovedUserInfo *)self userID];
-  v14 = [v6 userID];
+  userID = [(HMRemovedUserInfo *)self userID];
+  userID2 = [v6 userID];
   v15 = HMFEqualObjects();
 
   if (v15)
   {
-    v16 = [(HMRemovedUserInfo *)self dateRemoved];
-    v17 = [v6 dateRemoved];
+    dateRemoved = [(HMRemovedUserInfo *)self dateRemoved];
+    dateRemoved2 = [v6 dateRemoved];
     v18 = HMFEqualObjects();
   }
 
@@ -193,30 +193,30 @@ LABEL_9:
   return v18;
 }
 
-- (HMRemovedUserInfo)initWithName:(id)a3 userUUID:(id)a4 userID:(id)a5 dateRemoved:(id)a6
+- (HMRemovedUserInfo)initWithName:(id)name userUUID:(id)d userID:(id)iD dateRemoved:(id)removed
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  removedCopy = removed;
   v24.receiver = self;
   v24.super_class = HMRemovedUserInfo;
   v14 = [(HMRemovedUserInfo *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     name = v14->_name;
     v14->_name = v15;
 
-    v17 = [v11 copy];
+    v17 = [dCopy copy];
     userUUID = v14->_userUUID;
     v14->_userUUID = v17;
 
-    v19 = [v12 copy];
+    v19 = [iDCopy copy];
     userID = v14->_userID;
     v14->_userID = v19;
 
-    v21 = [v13 copy];
+    v21 = [removedCopy copy];
     dateRemoved = v14->_dateRemoved;
     v14->_dateRemoved = v21;
   }

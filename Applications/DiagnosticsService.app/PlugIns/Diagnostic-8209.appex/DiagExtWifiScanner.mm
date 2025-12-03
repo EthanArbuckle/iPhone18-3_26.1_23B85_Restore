@@ -1,8 +1,8 @@
 @interface DiagExtWifiScanner
 - (BOOL)setupWifiManagerClient;
-- (BOOL)startMonitoring:(double)a3;
+- (BOOL)startMonitoring:(double)monitoring;
 - (BOOL)startWiFiNetworkScan;
-- (DiagExtWifiScanner)initWithDelegate:(id)a3;
+- (DiagExtWifiScanner)initWithDelegate:(id)delegate;
 - (DiagExtWifiScannerDelegate)delegate;
 - (void)dealloc;
 - (void)disableAutoJoin;
@@ -12,18 +12,18 @@
 - (void)startRunLoop_sync;
 - (void)stopMonitoring;
 - (void)stopWiFiNetworkScan;
-- (void)wifiScanCompleted:(__CFArray *)a3 withError:(int)a4;
+- (void)wifiScanCompleted:(__CFArray *)completed withError:(int)error;
 @end
 
 @implementation DiagExtWifiScanner
 
-- (DiagExtWifiScanner)initWithDelegate:(id)a3
+- (DiagExtWifiScanner)initWithDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = DiagExtWifiScanner;
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = [(DiagExtWifiScanner *)&v6 init];
-  [(DiagExtWifiScanner *)v4 setDelegate:v3, v6.receiver, v6.super_class];
+  [(DiagExtWifiScanner *)v4 setDelegate:delegateCopy, v6.receiver, v6.super_class];
 
   [(DiagExtWifiScanner *)v4 setFWaitForResult:0];
   [(DiagExtWifiScanner *)v4 setFAvailabilityState:0];
@@ -235,7 +235,7 @@ LABEL_13:
   }
 }
 
-- (BOOL)startMonitoring:(double)a3
+- (BOOL)startMonitoring:(double)monitoring
 {
   fIsMonitoring = self->fIsMonitoring;
   v6 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
@@ -256,11 +256,11 @@ LABEL_13:
     if (v7)
     {
       v10 = 134217984;
-      v11 = a3;
+      monitoringCopy = monitoring;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "DiagExtWifiScanner: Start monitoring w/ scan interval=%lf", &v10, 0xCu);
     }
 
-    [(DiagExtWifiScanner *)self setFScanIntervalInSec:a3];
+    [(DiagExtWifiScanner *)self setFScanIntervalInSec:monitoring];
     v8 = 1;
     [(DiagExtWifiScanner *)self setFScanRepeatRequired:1];
     if ([(DiagExtWifiScanner *)self startWiFiNetworkScan])
@@ -313,15 +313,15 @@ LABEL_13:
   [(DiagExtWifiScanner *)self setFIsScanning:0];
 }
 
-- (void)wifiScanCompleted:(__CFArray *)a3 withError:(int)a4
+- (void)wifiScanCompleted:(__CFArray *)completed withError:(int)error
 {
-  if (a4)
+  if (error)
   {
     v6 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      LODWORD(v21) = a4;
+      LODWORD(v21) = error;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "DiagExtWifiScanner: Scan finished with error 0x%x", buf, 8u);
       [(DiagExtWifiScanner *)self setFIsScanning:0];
       if ([(DiagExtWifiScanner *)self fScanRepeatRequired])
@@ -348,7 +348,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  Count = CFArrayGetCount(a3);
+  Count = CFArrayGetCount(completed);
   if (Count < 1)
   {
     v10 = 0;
@@ -363,7 +363,7 @@ LABEL_4:
   {
     while (1)
     {
-      CFArrayGetValueAtIndex(a3, v11);
+      CFArrayGetValueAtIndex(completed, v11);
       v13 = WiFiNetworkGetSSID();
       v14 = +[ABMDiagnosticExtensionLogging getOSLogHandler];
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -421,8 +421,8 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "DiagExtWifiScanner: Scan finished and report %d networks", buf, 8u);
   }
 
-  v18 = [(DiagExtWifiScanner *)self delegate];
-  [v18 handleWifiAvailabilityEvent:{-[DiagExtWifiScanner fAvailabilityState](self, "fAvailabilityState")}];
+  delegate = [(DiagExtWifiScanner *)self delegate];
+  [delegate handleWifiAvailabilityEvent:{-[DiagExtWifiScanner fAvailabilityState](self, "fAvailabilityState")}];
 
   [(DiagExtWifiScanner *)self setFIsScanning:0];
   if (![(DiagExtWifiScanner *)self fScanRepeatRequired])

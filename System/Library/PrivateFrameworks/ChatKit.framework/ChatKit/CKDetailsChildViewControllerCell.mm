@@ -1,24 +1,24 @@
 @interface CKDetailsChildViewControllerCell
-- (CKDetailsChildViewControllerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKDetailsChildViewControllerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setChildViewControllerView:(id)a3;
+- (void)setChildViewControllerView:(id)view;
 @end
 
 @implementation CKDetailsChildViewControllerCell
 
-- (CKDetailsChildViewControllerCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsChildViewControllerCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v8.receiver = self;
   v8.super_class = CKDetailsChildViewControllerCell;
-  v4 = [(CKDetailsCell *)&v8 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsCell *)&v8 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(CKDetailsChildViewControllerCell *)v4 setShouldUseLayoutMargins:1];
     [(CKDetailsChildViewControllerCell *)v5 setSelectionStyle:0];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(CKDetailsChildViewControllerCell *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CKDetailsChildViewControllerCell *)v5 setBackgroundColor:clearColor];
   }
 
   return v5;
@@ -29,18 +29,18 @@
   v16.receiver = self;
   v16.super_class = CKDetailsChildViewControllerCell;
   [(CKDetailsCell *)&v16 layoutSubviews];
-  v3 = [(CKDetailsChildViewControllerCell *)self contentView];
-  [v3 bounds];
+  contentView = [(CKDetailsChildViewControllerCell *)self contentView];
+  [contentView bounds];
   x = v4;
   y = v6;
   width = v8;
   height = v10;
 
-  v12 = [(CKDetailsChildViewControllerCell *)self childViewControllerView];
+  childViewControllerView = [(CKDetailsChildViewControllerCell *)self childViewControllerView];
   if ([(CKDetailsChildViewControllerCell *)self shouldUseLayoutMargins])
   {
-    v13 = [(CKDetailsChildViewControllerCell *)self contentView];
-    [v13 layoutMargins];
+    contentView2 = [(CKDetailsChildViewControllerCell *)self contentView];
+    [contentView2 layoutMargins];
     v15 = v14;
 
     v17.origin.x = x;
@@ -54,7 +54,7 @@
     height = v18.size.height;
   }
 
-  [v12 setFrame:{x, y, width, height}];
+  [childViewControllerView setFrame:{x, y, width, height}];
 }
 
 - (void)prepareForReuse
@@ -65,19 +65,19 @@
   [(CKDetailsChildViewControllerCell *)self setShouldUseLayoutMargins:1];
 }
 
-- (void)setChildViewControllerView:(id)a3
+- (void)setChildViewControllerView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   childViewControllerView = self->_childViewControllerView;
-  if (childViewControllerView != v5)
+  if (childViewControllerView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(UIView *)childViewControllerView removeFromSuperview];
-    objc_storeStrong(&self->_childViewControllerView, a3);
-    v7 = [(CKDetailsChildViewControllerCell *)self contentView];
-    [v7 addSubview:self->_childViewControllerView];
+    objc_storeStrong(&self->_childViewControllerView, view);
+    contentView = [(CKDetailsChildViewControllerCell *)self contentView];
+    [contentView addSubview:self->_childViewControllerView];
 
-    v5 = v8;
+    viewCopy = v8;
   }
 }
 

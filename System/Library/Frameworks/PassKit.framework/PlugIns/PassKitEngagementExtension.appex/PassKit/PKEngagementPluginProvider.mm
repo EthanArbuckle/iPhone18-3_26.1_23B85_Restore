@@ -1,27 +1,27 @@
 @interface PKEngagementPluginProvider
 + (id)unknownError;
 + (id)unrecognizedPropertyError;
-+ (id)wrapBatchResponse:(id)a3;
-+ (id)wrapError:(id)a3;
-+ (id)wrapValue:(id)a3 forProperty:(id)a4;
-+ (void)fetchProperties:(id)a3 finHealthProperties:(id)a4 withParameters:(id)a5 completion:(id)a6;
-+ (void)handleBatchPayload:(id)a3 completion:(id)a4;
-+ (void)performRequest:(id)a3 completion:(id)a4;
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4;
++ (id)wrapBatchResponse:(id)response;
++ (id)wrapError:(id)error;
++ (id)wrapValue:(id)value forProperty:(id)property;
++ (void)fetchProperties:(id)properties finHealthProperties:(id)healthProperties withParameters:(id)parameters completion:(id)completion;
++ (void)handleBatchPayload:(id)payload completion:(id)completion;
++ (void)performRequest:(id)request completion:(id)completion;
++ (void)performRequestWithObject:(id)object completion:(id)completion;
 @end
 
 @implementation PKEngagementPluginProvider
 
-+ (void)performRequestWithObject:(id)a3 completion:(id)a4
++ (void)performRequestWithObject:(id)object completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  objectCopy = object;
+  completionCopy = completion;
+  if (completionCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v6 PKDictionaryForKey:@"json-payload"];
+      v8 = [objectCopy PKDictionaryForKey:@"json-payload"];
       v9 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
@@ -37,7 +37,7 @@
 
         if (v11)
         {
-          [a1 handleBatchPayload:v8 completion:v7];
+          [self handleBatchPayload:v8 completion:completionCopy];
         }
 
         else
@@ -47,12 +47,12 @@
           v14 = v15;
           if (v14)
           {
-            v7[2](v7, 0, v14);
+            completionCopy[2](completionCopy, 0, v14);
           }
 
           else
           {
-            [a1 performRequest:v13 completion:v7];
+            [self performRequest:v13 completion:completionCopy];
           }
         }
       }
@@ -60,23 +60,23 @@
       else
       {
         v12 = +[PKEngagementRequest malformedRequest];
-        v7[2](v7, 0, v12);
+        completionCopy[2](completionCopy, 0, v12);
       }
     }
 
     else
     {
       v8 = +[PKEngagementRequest malformedRequest];
-      v7[2](v7, 0, v8);
+      completionCopy[2](completionCopy, 0, v8);
     }
   }
 }
 
-+ (void)handleBatchPayload:(id)a3 completion:(id)a4
++ (void)handleBatchPayload:(id)payload completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 PKDictionaryForKey:@"request"];
+  payloadCopy = payload;
+  completionCopy = completion;
+  v8 = [payloadCopy PKDictionaryForKey:@"request"];
   v21 = 0;
   v22 = 0;
   v9 = [[PKEngagementBatchRequest alloc] initWithDictionary:v8 errorsByRequestID:&v22 error:&v21];
@@ -90,39 +90,39 @@
       *buf = 138543618;
       v24 = v11;
       v25 = 2114;
-      v26 = v6;
+      v26 = payloadCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Unable to parse engagement request due to error %{public}@:\n%{public}@", buf, 0x16u);
     }
 
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
   {
     v13 = [v9 propertiesForSource:1];
     v14 = [v9 propertiesForSource:2];
-    v15 = [v9 parametersByPropertyName];
+    parametersByPropertyName = [v9 parametersByPropertyName];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1000010B8;
     v16[3] = &unk_100004228;
     v17 = v9;
     v18 = v10;
-    v20 = a1;
-    v19 = v7;
-    [a1 fetchProperties:v13 finHealthProperties:v14 withParameters:v15 completion:v16];
+    selfCopy = self;
+    v19 = completionCopy;
+    [self fetchProperties:v13 finHealthProperties:v14 withParameters:parametersByPropertyName completion:v16];
   }
 }
 
-+ (void)performRequest:(id)a3 completion:(id)a4
++ (void)performRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 propertyName];
-  v10 = [v7 propertySource];
-  if (v10 == 1)
+  requestCopy = request;
+  completionCopy = completion;
+  propertyName = [requestCopy propertyName];
+  propertySource = [requestCopy propertySource];
+  if (propertySource == 1)
   {
-    v25 = v9;
+    v25 = propertyName;
     v17 = [NSArray arrayWithObjects:&v25 count:1];
   }
 
@@ -131,10 +131,10 @@
     v17 = &__NSArray0__struct;
   }
 
-  v11 = [v7 propertySource];
-  if (v11 == 2)
+  propertySource2 = [requestCopy propertySource];
+  if (propertySource2 == 2)
   {
-    v24 = v9;
+    v24 = propertyName;
     v12 = [NSArray arrayWithObjects:&v24 count:1];
   }
 
@@ -143,12 +143,12 @@
     v12 = &__NSArray0__struct;
   }
 
-  v13 = [v7 parameters];
-  if (v13)
+  parameters = [requestCopy parameters];
+  if (parameters)
   {
-    v22 = v9;
-    v4 = [v7 parameters];
-    v23 = v4;
+    v22 = propertyName;
+    parameters2 = [requestCopy parameters];
+    v23 = parameters2;
     v14 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
   }
 
@@ -161,31 +161,31 @@
   v18[1] = 3221225472;
   v18[2] = sub_100001570;
   v18[3] = &unk_100004250;
-  v20 = v8;
-  v21 = a1;
-  v19 = v9;
-  v15 = v9;
-  v16 = v8;
-  [a1 fetchProperties:v17 finHealthProperties:v12 withParameters:v14 completion:v18];
-  if (v13)
+  v20 = completionCopy;
+  selfCopy = self;
+  v19 = propertyName;
+  v15 = propertyName;
+  v16 = completionCopy;
+  [self fetchProperties:v17 finHealthProperties:v12 withParameters:v14 completion:v18];
+  if (parameters)
   {
   }
 
-  if (v11 == 2)
+  if (propertySource2 == 2)
   {
   }
 
-  if (v10 == 1)
+  if (propertySource == 1)
   {
   }
 }
 
-+ (void)fetchProperties:(id)a3 finHealthProperties:(id)a4 withParameters:(id)a5 completion:(id)a6
++ (void)fetchProperties:(id)properties finHealthProperties:(id)healthProperties withParameters:(id)parameters completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v38 = a5;
-  v37 = a6;
+  propertiesCopy = properties;
+  healthPropertiesCopy = healthProperties;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v63[0] = 0;
   v63[1] = v63;
   v63[2] = 0x3032000000;
@@ -200,14 +200,14 @@
   v62 = 0;
   v11 = dispatch_group_create();
   v12 = PKLogFacilityTypeGetObject();
-  v13 = os_signpost_id_make_with_pointer(v12, a1);
+  v13 = os_signpost_id_make_with_pointer(v12, self);
   if (v13 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
     v14 = v13;
     if (os_signpost_enabled(v12))
     {
-      v15 = [v9 componentsJoinedByString:{@", "}];
-      v16 = [v10 componentsJoinedByString:{@", "}];
+      v15 = [propertiesCopy componentsJoinedByString:{@", "}];
+      v16 = [healthPropertiesCopy componentsJoinedByString:{@", "}];
       *buf = 138543618;
       v68 = v15;
       v69 = 2114;
@@ -216,7 +216,7 @@
     }
   }
 
-  if (v10 && [v10 count])
+  if (healthPropertiesCopy && [healthPropertiesCopy count])
   {
     dispatch_group_enter(v11);
     v17 = objc_alloc_init(NSMutableDictionary);
@@ -224,7 +224,7 @@
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v18 = v38;
+    v18 = parametersCopy;
     v19 = [v18 countByEnumeratingWithState:&v57 objects:v66 count:16];
     if (v19)
     {
@@ -239,7 +239,7 @@
           }
 
           v22 = *(*(&v57 + 1) + 8 * i);
-          if ([v10 containsObject:{v22, v37}])
+          if ([healthPropertiesCopy containsObject:{v22, completionCopy}])
           {
             v23 = [v18 objectForKeyedSubscript:v22];
             [v17 setObject:v23 forKey:v22];
@@ -268,10 +268,10 @@
     v55 = v63;
     v56 = v61;
     v54 = v11;
-    [v25 fetchUserProperties:v10 withParameters:v26 completion:v53];
+    [v25 fetchUserProperties:healthPropertiesCopy withParameters:v26 completion:v53];
   }
 
-  if (v9 && [v9 count])
+  if (propertiesCopy && [propertiesCopy count])
   {
     dispatch_group_enter(v11);
     v27 = objc_alloc_init(NSMutableDictionary);
@@ -279,7 +279,7 @@
     v52 = 0u;
     v50 = 0u;
     v49 = 0u;
-    v28 = v38;
+    v28 = parametersCopy;
     v29 = [v28 countByEnumeratingWithState:&v49 objects:v65 count:16];
     if (v29)
     {
@@ -294,7 +294,7 @@
           }
 
           v32 = *(*(&v49 + 1) + 8 * j);
-          if ([v9 containsObject:{v32, v37}])
+          if ([propertiesCopy containsObject:{v32, completionCopy}])
           {
             v33 = [v28 objectForKeyedSubscript:v32];
             [v27 setObject:v33 forKey:v32];
@@ -316,37 +316,37 @@
     v47 = v63;
     v48 = v61;
     v46 = v11;
-    [v34 fetchUserProperties:v9 withParameters:v35 completion:v45];
+    [v34 fetchUserProperties:propertiesCopy withParameters:v35 completion:v45];
   }
 
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001DC4;
   block[3] = &unk_1000042A0;
-  v41 = v37;
+  v41 = completionCopy;
   v42 = v63;
   v43 = v61;
-  v44 = a1;
-  v36 = v37;
+  selfCopy = self;
+  v36 = completionCopy;
   dispatch_group_notify(v11, &_dispatch_main_q, block);
 
   _Block_object_dispose(v61, 8);
   _Block_object_dispose(v63, 8);
 }
 
-+ (id)wrapValue:(id)a3 forProperty:(id)a4
++ (id)wrapValue:(id)value forProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  valueCopy = value;
+  propertyCopy = property;
+  if (valueCopy)
   {
     v18 = @"json-payload";
     v16[0] = @"error";
     v8 = +[NSNull null];
     v16[1] = @"response";
     v17[0] = v8;
-    v14 = v7;
-    v15 = v6;
+    v14 = propertyCopy;
+    v15 = valueCopy;
     v9 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
     v17[1] = v9;
     v10 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
@@ -356,27 +356,27 @@
 
   else
   {
-    v12 = [a1 unrecognizedPropertyError];
-    v11 = [a1 wrapError:v12];
+    unrecognizedPropertyError = [self unrecognizedPropertyError];
+    v11 = [self wrapError:unrecognizedPropertyError];
   }
 
   return v11;
 }
 
-+ (id)wrapError:(id)a3
++ (id)wrapError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v4 = [a1 unknownError];
+    errorCopy = [self unknownError];
   }
 
   v5 = [NSMutableDictionary alloc];
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v4 code]);
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [errorCopy code]);
   v7 = [v5 initWithObjectsAndKeys:{v6, @"code", 0}];
 
-  v8 = [v4 userInfo];
-  v9 = [v8 objectForKey:NSDebugDescriptionErrorKey];
+  userInfo = [errorCopy userInfo];
+  v9 = [userInfo objectForKey:NSDebugDescriptionErrorKey];
   v10 = v9;
   if (v9)
   {
@@ -385,14 +385,14 @@
 
   else
   {
-    v11 = [v4 debugDescription];
+    v11 = [errorCopy debugDescription];
   }
 
   v12 = v11;
 
   [v7 safelySetObject:v12 forKey:@"message"];
-  v13 = [v4 domain];
-  [v7 safelySetObject:v13 forKey:@"domain"];
+  domain = [errorCopy domain];
+  [v7 safelySetObject:domain forKey:@"domain"];
 
   v20 = @"json-payload";
   v18[0] = @"error";
@@ -407,17 +407,17 @@
   return v16;
 }
 
-+ (id)wrapBatchResponse:(id)a3
++ (id)wrapBatchResponse:(id)response
 {
-  v4 = a3;
-  if (v4)
+  responseCopy = response;
+  if (responseCopy)
   {
     v11 = @"json-payload";
     v9[0] = @"error";
-    v5 = +[NSNull null];
+    unknownError = +[NSNull null];
     v9[1] = @"response";
-    v10[0] = v5;
-    v10[1] = v4;
+    v10[0] = unknownError;
+    v10[1] = responseCopy;
     v6 = [NSDictionary dictionaryWithObjects:v10 forKeys:v9 count:2];
     v12 = v6;
     v7 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
@@ -425,8 +425,8 @@
 
   else
   {
-    v5 = [a1 unknownError];
-    v7 = [a1 wrapError:v5];
+    unknownError = [self unknownError];
+    v7 = [self wrapError:unknownError];
   }
 
   return v7;

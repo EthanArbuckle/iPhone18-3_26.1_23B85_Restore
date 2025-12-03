@@ -24,7 +24,7 @@
 
   v11[0] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v7 = [a1 pf_errorWithCode:a3 underlyingError:0 userInfo:v6];
+  v7 = [self pf_errorWithCode:a3 underlyingError:0 userInfo:v6];
 
   v8 = *MEMORY[0x1E69E9840];
 
@@ -64,28 +64,28 @@
   }
 
   [v12 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696A588]];
-  v14 = [a1 errorWithDomain:@"com.apple.PosterFoundation" code:a3 userInfo:v12];
+  v14 = [self errorWithDomain:@"com.apple.PosterFoundation" code:a3 userInfo:v12];
 
   return v14;
 }
 
 - (uint64_t)pf_isFileNotFoundError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v3 = (([a1 code] - 4) & 0xFFFFFFFFFFFFFEFFLL) == 0;
+    v3 = (([self code] - 4) & 0xFFFFFFFFFFFFFEFFLL) == 0;
   }
 
   else
   {
-    if (![v2 isEqualToString:*MEMORY[0x1E696A798]])
+    if (![domain isEqualToString:*MEMORY[0x1E696A798]])
     {
       v4 = 0;
       goto LABEL_9;
     }
 
-    v3 = [a1 code] == 2;
+    v3 = [self code] == 2;
   }
 
   v4 = v3;
@@ -96,23 +96,23 @@ LABEL_9:
 
 - (id)pf_jetsamReason
 {
-  v1 = a1;
-  if (v1)
+  selfCopy = self;
+  if (selfCopy)
   {
     v2 = *MEMORY[0x1E696AA08];
     while (1)
     {
-      v3 = [v1 domain];
-      v4 = [v3 isEqualToString:@"jetsam"];
+      domain = [selfCopy domain];
+      v4 = [domain isEqualToString:@"jetsam"];
 
-      v5 = [v1 userInfo];
-      v6 = v5;
+      userInfo = [selfCopy userInfo];
+      v6 = userInfo;
       if (v4)
       {
         break;
       }
 
-      v7 = [v5 objectForKey:v2];
+      v7 = [userInfo objectForKey:v2];
       v8 = objc_opt_class();
       v9 = v7;
       if (v8)
@@ -135,14 +135,14 @@ LABEL_9:
 
       v11 = v10;
 
-      v1 = v11;
+      selfCopy = v11;
       if (!v11)
       {
         goto LABEL_10;
       }
     }
 
-    v12 = [v5 objectForKey:*MEMORY[0x1E696A588]];
+    v12 = [userInfo objectForKey:*MEMORY[0x1E696A588]];
   }
 
   else
@@ -156,10 +156,10 @@ LABEL_10:
 
 - (id)pf_description
 {
-  v2 = [a1 localizedDescription];
-  if (v2)
+  localizedDescription = [self localizedDescription];
+  if (localizedDescription)
   {
-    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{localizedDescription: %@", v2];
+    v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"{localizedDescription: %@", localizedDescription];
     v4 = [0 stringByAppendingString:v3];
   }
 
@@ -168,17 +168,17 @@ LABEL_10:
     v4 = 0;
   }
 
-  v5 = [a1 localizedFailureReason];
-  v6 = [a1 userInfo];
-  v7 = v6;
-  if (v5)
+  localizedFailureReason = [self localizedFailureReason];
+  userInfo = [self userInfo];
+  v7 = userInfo;
+  if (localizedFailureReason)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@", localizedFailureReason: %@}", v5];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@", localizedFailureReason: %@}", localizedFailureReason];
   }
 
   else
   {
-    if (!v6)
+    if (!userInfo)
     {
       goto LABEL_9;
     }
@@ -192,7 +192,7 @@ LABEL_10:
 LABEL_9:
   if (!v4)
   {
-    v4 = [a1 debugDescription];
+    v4 = [self debugDescription];
   }
 
   return v4;

@@ -1,6 +1,6 @@
 @interface DSDateFormatter
 + (id)sharedFormatter;
-- (DSDateFormatter)formatterWithType:(int64_t)a3;
+- (DSDateFormatter)formatterWithType:(int64_t)type;
 - (DSDateFormatter)init;
 @end
 
@@ -40,17 +40,17 @@ void __34__DSDateFormatter_sharedFormatter__block_invoke(id a1)
   return v2;
 }
 
-- (DSDateFormatter)formatterWithType:(int64_t)a3
+- (DSDateFormatter)formatterWithType:(int64_t)type
 {
-  v5 = [(DSDateFormatter *)self dateFormatters];
-  v6 = [NSNumber numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  dateFormatters = [(DSDateFormatter *)self dateFormatters];
+  v6 = [NSNumber numberWithInteger:type];
+  v7 = [dateFormatters objectForKeyedSubscript:v6];
 
   if (v7)
   {
-    v8 = [(DSDateFormatter *)self dateFormatters];
-    v9 = [NSNumber numberWithInteger:a3];
-    v10 = [v8 objectForKeyedSubscript:v9];
+    dateFormatters2 = [(DSDateFormatter *)self dateFormatters];
+    v9 = [NSNumber numberWithInteger:type];
+    v10 = [dateFormatters2 objectForKeyedSubscript:v9];
     goto LABEL_21;
   }
 
@@ -59,13 +59,13 @@ void __34__DSDateFormatter_sharedFormatter__block_invoke(id a1)
   [v10 setLocale:v11];
 
   [v10 setFormatterBehavior:1040];
-  if (a3 > 2)
+  if (type > 2)
   {
-    if (a3 > 4)
+    if (type > 4)
     {
-      if (a3 != 5)
+      if (type != 5)
       {
-        if (a3 == 6)
+        if (type == 6)
         {
           v14 = +[NSLocale autoupdatingCurrentLocale];
           [v10 setLocale:v14];
@@ -81,7 +81,7 @@ void __34__DSDateFormatter_sharedFormatter__block_invoke(id a1)
       v12 = @"yyyy-MM-dd HH.mm.ss.SSS Z";
     }
 
-    else if (a3 == 3)
+    else if (type == 3)
     {
       v12 = @"yyyy-MM-dd";
     }
@@ -94,7 +94,7 @@ void __34__DSDateFormatter_sharedFormatter__block_invoke(id a1)
     goto LABEL_17;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 0:
       v12 = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
@@ -116,9 +116,9 @@ LABEL_19:
   }
 
 LABEL_20:
-  v8 = [(DSDateFormatter *)self dateFormatters];
-  v9 = [NSNumber numberWithInteger:a3];
-  [v8 setObject:v10 forKeyedSubscript:v9];
+  dateFormatters2 = [(DSDateFormatter *)self dateFormatters];
+  v9 = [NSNumber numberWithInteger:type];
+  [dateFormatters2 setObject:v10 forKeyedSubscript:v9];
 LABEL_21:
 
   return v10;

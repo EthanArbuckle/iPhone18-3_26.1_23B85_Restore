@@ -1,13 +1,13 @@
 @interface ALMotionState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALMotionState
@@ -52,7 +52,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -73,26 +73,26 @@
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = *&self->_timestamp;
-    *(a3 + 36) |= 1u;
+    *(to + 1) = *&self->_timestamp;
+    *(to + 36) |= 1u;
   }
 
-  [a3 setMotion:self->_motion];
+  [to setMotion:self->_motion];
   if (self->_natalieFeatures)
   {
-    [a3 setNatalieFeatures:?];
+    [to setNatalieFeatures:?];
   }
 
-  *(a3 + 32) = self->_regularEntry;
+  *(to + 32) = self->_regularEntry;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -100,26 +100,26 @@
     *(v5 + 36) |= 1u;
   }
 
-  v6[2] = [(ALCMMotionContextMotionState *)self->_motion copyWithZone:a3];
-  v6[3] = [(ALCLNatalieFeatures *)self->_natalieFeatures copyWithZone:a3];
+  v6[2] = [(ALCMMotionContextMotionState *)self->_motion copyWithZone:zone];
+  v6[3] = [(ALCLNatalieFeatures *)self->_natalieFeatures copyWithZone:zone];
   *(v6 + 32) = self->_regularEntry;
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 36) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 36) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_12;
       }
     }
 
-    else if (*(a3 + 36))
+    else if (*(equal + 36))
     {
 LABEL_12:
       LOBYTE(v5) = 0;
@@ -127,12 +127,12 @@ LABEL_12:
     }
 
     motion = self->_motion;
-    if (!(motion | *(a3 + 2)) || (v5 = [(ALCMMotionContextMotionState *)motion isEqual:?]) != 0)
+    if (!(motion | *(equal + 2)) || (v5 = [(ALCMMotionContextMotionState *)motion isEqual:?]) != 0)
     {
       natalieFeatures = self->_natalieFeatures;
-      if (!(natalieFeatures | *(a3 + 3)) || (v5 = [(ALCLNatalieFeatures *)natalieFeatures isEqual:?]) != 0)
+      if (!(natalieFeatures | *(equal + 3)) || (v5 = [(ALCLNatalieFeatures *)natalieFeatures isEqual:?]) != 0)
       {
-        LOBYTE(v5) = self->_regularEntry == *(a3 + 32);
+        LOBYTE(v5) = self->_regularEntry == *(equal + 32);
       }
     }
   }
@@ -179,16 +179,16 @@ LABEL_12:
   return v9 ^ [(ALCLNatalieFeatures *)self->_natalieFeatures hash]^ (2654435761 * self->_regularEntry);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 36))
+  if (*(from + 36))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
   motion = self->_motion;
-  v6 = *(a3 + 2);
+  v6 = *(from + 2);
   if (motion)
   {
     if (v6)
@@ -203,7 +203,7 @@ LABEL_12:
   }
 
   natalieFeatures = self->_natalieFeatures;
-  v8 = *(a3 + 3);
+  v8 = *(from + 3);
   if (natalieFeatures)
   {
     if (v8)
@@ -217,7 +217,7 @@ LABEL_12:
     [(ALMotionState *)self setNatalieFeatures:?];
   }
 
-  self->_regularEntry = *(a3 + 32);
+  self->_regularEntry = *(from + 32);
 }
 
 @end

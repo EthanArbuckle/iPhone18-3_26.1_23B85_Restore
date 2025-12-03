@@ -1,6 +1,6 @@
 @interface CNPromise
 - (CNPromise)init;
-- (CNPromise)initWithSchedulerProvider:(id)a3;
+- (CNPromise)initWithSchedulerProvider:(id)provider;
 @end
 
 @implementation CNPromise
@@ -13,15 +13,15 @@
   return v4;
 }
 
-- (CNPromise)initWithSchedulerProvider:(id)a3
+- (CNPromise)initWithSchedulerProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = CNPromise;
   v5 = [(CNPromise *)&v10 init];
   if (v5)
   {
-    v6 = [[CNFuture alloc] initWithSchedulerProvider:v4];
+    v6 = [[CNFuture alloc] initWithSchedulerProvider:providerCopy];
     future = v5->_future;
     v5->_future = v6;
 

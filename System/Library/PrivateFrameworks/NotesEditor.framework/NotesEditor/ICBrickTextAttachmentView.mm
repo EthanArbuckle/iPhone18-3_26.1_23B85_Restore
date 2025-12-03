@@ -1,6 +1,6 @@
 @interface ICBrickTextAttachmentView
 - (BOOL)shouldForceLightContent;
-- (CGSize)attachmentSizeForTextContainer:(id)a3;
+- (CGSize)attachmentSizeForTextContainer:(id)container;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityUserInputLabels;
@@ -11,10 +11,10 @@
 - (void)didChangeAttachment;
 - (void)didChangeAttachmentTitle;
 - (void)requestAttachmentContentUpdate;
-- (void)setHighlightColor:(id)a3;
-- (void)setHighlightPatternRegexFinder:(id)a3;
+- (void)setHighlightColor:(id)color;
+- (void)setHighlightPatternRegexFinder:(id)finder;
 - (void)setupConstraints;
-- (void)sharedInit:(BOOL)a3;
+- (void)sharedInit:(BOOL)init;
 - (void)updateCornerRadius;
 @end
 
@@ -22,40 +22,40 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  v3 = [v2 accessibilityLabel];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  accessibilityLabel = [attachmentBrickView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  v3 = [v2 accessibilityValue];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  accessibilityValue = [attachmentBrickView accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (id)accessibilityHint
 {
-  v2 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  v3 = [v2 accessibilityHint];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  accessibilityHint = [attachmentBrickView accessibilityHint];
 
-  return v3;
+  return accessibilityHint;
 }
 
 - (id)accessibilityUserInputLabels
 {
-  v2 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  v3 = [v2 accessibilityUserInputLabels];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  accessibilityUserInputLabels = [attachmentBrickView accessibilityUserInputLabels];
 
-  return v3;
+  return accessibilityUserInputLabels;
 }
 
-- (CGSize)attachmentSizeForTextContainer:(id)a3
+- (CGSize)attachmentSizeForTextContainer:(id)container
 {
-  v4 = a3;
-  [v4 size];
+  containerCopy = container;
+  [containerCopy size];
   if (v5 <= 0.0)
   {
     v15 = *MEMORY[0x277CBF3A8];
@@ -64,14 +64,14 @@
 
   else
   {
-    [v4 size];
+    [containerCopy size];
     v7 = v6;
-    v8 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-    [v8 computedSize];
+    attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+    [attachmentBrickView computedSize];
     v10 = v9;
     v12 = v11;
 
-    [v4 lineFragmentPadding];
+    [containerCopy lineFragmentPadding];
     v14 = v7 + v13 * -2.0;
     if (v14 >= v10)
     {
@@ -91,29 +91,29 @@
   return result;
 }
 
-- (void)sharedInit:(BOOL)a3
+- (void)sharedInit:(BOOL)init
 {
   v9.receiver = self;
   v9.super_class = ICBrickTextAttachmentView;
-  [(ICAttachmentView *)&v9 sharedInit:a3];
+  [(ICAttachmentView *)&v9 sharedInit:init];
   v4 = [objc_alloc(MEMORY[0x277D366A0]) initWithType:2];
   [(ICBrickTextAttachmentView *)self setAttachmentBrickView:v4];
 
-  v5 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  [attachmentBrickView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v6 = [(ICAttachmentView *)self insideSystemPaper];
-  v7 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  [v7 setInsideSystemPaper:v6];
+  insideSystemPaper = [(ICAttachmentView *)self insideSystemPaper];
+  attachmentBrickView2 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  [attachmentBrickView2 setInsideSystemPaper:insideSystemPaper];
 
-  v8 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  [(ICBrickTextAttachmentView *)self addSubview:v8];
+  attachmentBrickView3 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  [(ICBrickTextAttachmentView *)self addSubview:attachmentBrickView3];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76810] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76810] object:0];
 
   v4.receiver = self;
   v4.super_class = ICBrickTextAttachmentView;
@@ -126,15 +126,15 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v4 = MEMORY[0x277CCAAD0];
   v11 = @"brick";
-  v5 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  v12[0] = v5;
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  v12[0] = attachmentBrickView;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   v7 = [v4 constraintsWithVisualFormat:@"H:|-0-[brick]-0-|" options:0 metrics:0 views:v6];
   [v3 addObjectsFromArray:v7];
 
   v8 = MEMORY[0x277CCAAD0];
-  v9 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  v10 = [v8 constraintWithItem:v9 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
+  attachmentBrickView2 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  v10 = [v8 constraintWithItem:attachmentBrickView2 attribute:10 relatedBy:0 toItem:self attribute:10 multiplier:1.0 constant:0.0];
   [v3 addObject:v10];
 
   [MEMORY[0x277CCAAD0] activateConstraints:v3];
@@ -142,17 +142,17 @@
 
 - (void)requestAttachmentContentUpdate
 {
-  v3 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  [v3 reloadData];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  [attachmentBrickView reloadData];
 
   [(ICBrickTextAttachmentView *)self updateCornerRadius];
 }
 
 - (void)didChangeAttachment
 {
-  v3 = [(ICBrickTextAttachmentView *)self attachment];
-  v4 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  [v4 setAttachment:v3];
+  attachment = [(ICBrickTextAttachmentView *)self attachment];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  [attachmentBrickView setAttachment:attachment];
 
   v5.receiver = self;
   v5.super_class = ICBrickTextAttachmentView;
@@ -162,97 +162,97 @@
 
 - (void)didChangeAttachmentTitle
 {
-  v2 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  [v2 updateTitle];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  [attachmentBrickView updateTitle];
 }
 
-- (void)setHighlightPatternRegexFinder:(id)a3
+- (void)setHighlightPatternRegexFinder:(id)finder
 {
   v6.receiver = self;
   v6.super_class = ICBrickTextAttachmentView;
-  v4 = a3;
-  [(ICBrickTextAttachmentView *)&v6 setHighlightPatternRegexFinder:v4];
+  finderCopy = finder;
+  [(ICBrickTextAttachmentView *)&v6 setHighlightPatternRegexFinder:finderCopy];
   v5 = [(ICBrickTextAttachmentView *)self attachmentBrickView:v6.receiver];
-  [v5 setHighlightPatternRegexFinder:v4];
+  [v5 setHighlightPatternRegexFinder:finderCopy];
 }
 
-- (void)setHighlightColor:(id)a3
+- (void)setHighlightColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = ICBrickTextAttachmentView;
-  v4 = a3;
-  [(ICBrickTextAttachmentView *)&v6 setHighlightColor:v4];
+  colorCopy = color;
+  [(ICBrickTextAttachmentView *)&v6 setHighlightColor:colorCopy];
   v5 = [(ICBrickTextAttachmentView *)self attachmentBrickView:v6.receiver];
-  [v5 setHighlightColor:v4];
+  [v5 setHighlightColor:colorCopy];
 }
 
 - (id)quickLookTransitionView
 {
-  v2 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  v3 = [v2 quickLookTransitionView];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  quickLookTransitionView = [attachmentBrickView quickLookTransitionView];
 
-  return v3;
+  return quickLookTransitionView;
 }
 
 - (id)imageForPrinting
 {
-  v3 = [(ICBrickTextAttachmentView *)self attachment];
-  v4 = [v3 usesLinkPresentation];
+  attachment = [(ICBrickTextAttachmentView *)self attachment];
+  usesLinkPresentation = [attachment usesLinkPresentation];
 
-  if (v4)
+  if (usesLinkPresentation)
   {
     v5 = objc_alloc(MEMORY[0x277D36810]);
-    v6 = [(ICBrickTextAttachmentView *)self attachment];
-    v7 = [v5 initWithAttachment:v6];
+    attachment2 = [(ICBrickTextAttachmentView *)self attachment];
+    v7 = [v5 initWithAttachment:attachment2];
 
     [v7 setForcesLightMode:{-[ICBrickTextAttachmentView shouldForceLightContent](self, "shouldForceLightContent")}];
-    v8 = [v7 snapshot];
+    snapshot = [v7 snapshot];
   }
 
   else
   {
     [(ICBrickTextAttachmentView *)self layoutIfNeeded];
     v9 = [(ICBrickTextAttachmentView *)self snapshotViewAfterScreenUpdates:1];
-    v8 = [(ICBrickTextAttachmentView *)self ic_imageRenderedFromLayer];
+    snapshot = [(ICBrickTextAttachmentView *)self ic_imageRenderedFromLayer];
   }
 
-  return v8;
+  return snapshot;
 }
 
 - (void)updateCornerRadius
 {
-  v6 = [(ICBrickTextAttachmentView *)self attachmentBrickView];
-  [v6 effectiveLayoutCornerRadius];
+  attachmentBrickView = [(ICBrickTextAttachmentView *)self attachmentBrickView];
+  [attachmentBrickView effectiveLayoutCornerRadius];
   v4 = v3;
-  v5 = [(ICBrickTextAttachmentView *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(ICBrickTextAttachmentView *)self layer];
+  [layer setCornerRadius:v4];
 }
 
 - (BOOL)shouldForceLightContent
 {
-  v3 = [(ICAttachmentView *)self textContainer];
-  v4 = [v3 tk2TextView];
+  textContainer = [(ICAttachmentView *)self textContainer];
+  tk2TextView = [textContainer tk2TextView];
 
   objc_opt_class();
-  if (v4)
+  if (tk2TextView)
   {
-    v5 = [v4 textStorage];
+    textStorage = [tk2TextView textStorage];
     v6 = ICDynamicCast();
 
-    v7 = [v6 styler];
-    v8 = [v7 isForPrint];
+    styler = [v6 styler];
+    isForPrint = [styler isForPrint];
   }
 
   else
   {
-    v9 = [(ICAttachmentView *)self textContainer];
-    v10 = [v9 layoutManager];
+    textContainer2 = [(ICAttachmentView *)self textContainer];
+    layoutManager = [textContainer2 layoutManager];
     v6 = ICDynamicCast();
 
-    v8 = [v6 isRenderingImageForPrint];
+    isForPrint = [v6 isRenderingImageForPrint];
   }
 
-  return v8;
+  return isForPrint;
 }
 
 @end

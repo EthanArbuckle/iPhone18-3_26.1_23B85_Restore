@@ -1,30 +1,30 @@
 @interface MultiwayViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityPerformEscape;
 - (BOOL)axShouldDisableAutoHidingControls;
 - (id)_axParticipantShutters;
 - (void)_accessibilityExpandControls;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)setDeviceOrientation:(int64_t)a3;
+- (void)setDeviceOrientation:(int64_t)orientation;
 @end
 
 @implementation MultiwayViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasProperty:@"isShowingReactions" withType:"B"];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasProperty:@"localParticipantView" withType:"@"];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"setControlsState:animated:" withFullSignature:{"v", "q", "B", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"axShouldDisableAutoHidingControls" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"accessibilityConstraintController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"isPipped" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNKFaceTimeConstraintsController" hasInstanceMethod:@"inCallControlsState" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"isOnScreen" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"isDisplayedInBanner" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"setDeviceOrientation:" withFullSignature:{"v", "q", 0}];
-  [v3 validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"call" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasProperty:@"isShowingReactions" withType:"B"];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasProperty:@"localParticipantView" withType:"@"];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"setControlsState:animated:" withFullSignature:{"v", "q", "B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"axShouldDisableAutoHidingControls" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"accessibilityConstraintController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"isPipped" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNKFaceTimeConstraintsController" hasInstanceMethod:@"inCallControlsState" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"isOnScreen" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"isDisplayedInBanner" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"setDeviceOrientation:" withFullSignature:{"v", "q", 0}];
+  [validationsCopy validateClass:@"ConversationKit.MultiwayViewController" hasInstanceMethod:@"call" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)accessibilityPerformEscape
@@ -33,9 +33,9 @@
   if ([(MultiwayViewControllerAccessibility *)self safeBoolForKey:@"isShowingReactions"])
   {
     v3 = [(MultiwayViewControllerAccessibility *)self safeValueForKey:@"localParticipantView"];
-    v4 = [v3 accessibilityActivate];
+    accessibilityActivate = [v3 accessibilityActivate];
 
-    return v4;
+    return accessibilityActivate;
   }
 
   v6 = [(MultiwayViewControllerAccessibility *)self safeValueForKey:@"accessibilityConstraintController"];
@@ -191,7 +191,7 @@ uint64_t __81__MultiwayViewControllerAccessibility__accessibilityLoadAccessibili
   return v3;
 }
 
-- (void)setDeviceOrientation:(int64_t)a3
+- (void)setDeviceOrientation:(int64_t)orientation
 {
   v14.receiver = self;
   v14.super_class = MultiwayViewControllerAccessibility;
@@ -207,16 +207,16 @@ uint64_t __81__MultiwayViewControllerAccessibility__accessibilityLoadAccessibili
       v7 = 0;
       v8 = 1;
       v9 = 1;
-      if (a3 > 1)
+      if (orientation > 1)
       {
-        if (a3 == 2)
+        if (orientation == 2)
         {
           v9 = 0;
           v7 = @"rotate.landscape";
           v8 = 4;
         }
 
-        else if (a3 == 3)
+        else if (orientation == 3)
         {
           v9 = 0;
           v7 = @"rotate.portrait.upsidedown";
@@ -224,9 +224,9 @@ uint64_t __81__MultiwayViewControllerAccessibility__accessibilityLoadAccessibili
         }
       }
 
-      else if (a3)
+      else if (orientation)
       {
-        if (a3 == 1)
+        if (orientation == 1)
         {
           v9 = 0;
           v7 = @"rotate.portrait";
@@ -241,10 +241,10 @@ uint64_t __81__MultiwayViewControllerAccessibility__accessibilityLoadAccessibili
         v8 = 3;
       }
 
-      v10 = [MEMORY[0x29EDC7938] sharedApplication];
-      if ([v10 _accessibilityApplicationOrientation] != v8)
+      mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+      if ([mEMORY[0x29EDC7938] _accessibilityApplicationOrientation] != v8)
       {
-        [v10 _accessibilitySetApplicationOrientation:v8];
+        [mEMORY[0x29EDC7938] _accessibilitySetApplicationOrientation:v8];
         v11 = [(MultiwayViewControllerAccessibility *)self safeBoolForKey:@"isOnScreen"];
         v12 = [(MultiwayViewControllerAccessibility *)self safeBoolForKey:@"isPipped"];
         if (v11)

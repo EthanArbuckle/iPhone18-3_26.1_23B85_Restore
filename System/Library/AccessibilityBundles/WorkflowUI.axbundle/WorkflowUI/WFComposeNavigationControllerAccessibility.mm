@@ -1,15 +1,15 @@
 @interface WFComposeNavigationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation WFComposeNavigationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFComposeNavigationController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFComposeNavigationController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
 }
 
 - (void)viewWillLayoutSubviews

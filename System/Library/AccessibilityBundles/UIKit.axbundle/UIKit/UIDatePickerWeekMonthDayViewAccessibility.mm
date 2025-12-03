@@ -1,25 +1,25 @@
 @interface UIDatePickerWeekMonthDayViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)_accessibilityDatePickerComponentType;
 @end
 
 @implementation UIDatePickerWeekMonthDayViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   objc_storeStrong(location, 0);
 }
 
 - (unint64_t)_accessibilityDatePickerComponentType
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
   v14[0] = [(UIDatePickerWeekMonthDayViewAccessibility *)self _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uidatepickervi.isa)];
-  v13 = [(UIDatePickerWeekMonthDayViewAccessibility *)v15 _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uipickercolumn.isa)];
+  v13 = [(UIDatePickerWeekMonthDayViewAccessibility *)selfCopy _accessibilityAncestorIsKindOf:NSClassFromString(&cfstr_Uipickercolumn.isa)];
   v12 = [v14[0] safeValueForKey:@"_tables"];
   v11 = [v12 indexOfObject:v13];
   v6 = 0;

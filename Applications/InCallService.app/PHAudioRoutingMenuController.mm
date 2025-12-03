@@ -1,50 +1,50 @@
 @interface PHAudioRoutingMenuController
-+ (id)menuControllerWithCallStyle:(int64_t)a3 dataSource:(id)a4 delegate:(id)a5;
++ (id)menuControllerWithCallStyle:(int64_t)style dataSource:(id)source delegate:(id)delegate;
 - (BOOL)isMuted;
 - (BOOL)isSharePlayActive;
 - (NSArray)menuActions;
-- (PHAudioRoutingMenuController)initWithStyle:(int64_t)a3 dataSource:(id)a4 delegate:(id)a5 wantsAsyncReload:(BOOL)a6 menuChangeHandler:(id)a7;
+- (PHAudioRoutingMenuController)initWithStyle:(int64_t)style dataSource:(id)source delegate:(id)delegate wantsAsyncReload:(BOOL)reload menuChangeHandler:(id)handler;
 - (PHAudioRoutingMenuControllerDataSource)dataSource;
 - (PHAudioRoutingMenuControllerDelegate)delegate;
-- (id)lagunaActionForConversation:(id)a3 deviceHandle:(id)a4;
+- (id)lagunaActionForConversation:(id)conversation deviceHandle:(id)handle;
 - (id)lagunaActions;
-- (id)menuActionsWithRoutes:(id)a3;
+- (id)menuActionsWithRoutes:(id)routes;
 - (id)muteActionTitle;
 - (id)muteMenuAction;
-- (id)routeActionWithTitle:(id)a3 route:(id)a4;
-- (void)fetchMenuActionsWithCompletionHandler:(id)a3;
+- (id)routeActionWithTitle:(id)title route:(id)route;
+- (void)fetchMenuActionsWithCompletionHandler:(id)handler;
 - (void)reload;
-- (void)setMenu:(id)a3;
+- (void)setMenu:(id)menu;
 @end
 
 @implementation PHAudioRoutingMenuController
 
-+ (id)menuControllerWithCallStyle:(int64_t)a3 dataSource:(id)a4 delegate:(id)a5
++ (id)menuControllerWithCallStyle:(int64_t)style dataSource:(id)source delegate:(id)delegate
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = [[PHAudioRoutingMenuController alloc] initWithStyle:a3 dataSource:v8 delegate:v7 wantsAsyncReload:0 menuChangeHandler:0];
+  delegateCopy = delegate;
+  sourceCopy = source;
+  v9 = [[PHAudioRoutingMenuController alloc] initWithStyle:style dataSource:sourceCopy delegate:delegateCopy wantsAsyncReload:0 menuChangeHandler:0];
 
   return v9;
 }
 
-- (PHAudioRoutingMenuController)initWithStyle:(int64_t)a3 dataSource:(id)a4 delegate:(id)a5 wantsAsyncReload:(BOOL)a6 menuChangeHandler:(id)a7
+- (PHAudioRoutingMenuController)initWithStyle:(int64_t)style dataSource:(id)source delegate:(id)delegate wantsAsyncReload:(BOOL)reload menuChangeHandler:(id)handler
 {
-  v8 = a6;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  reloadCopy = reload;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v27.receiver = self;
   v27.super_class = PHAudioRoutingMenuController;
   v15 = [(PHAudioRoutingMenuController *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    v15->_wantsAsyncReload = v8;
-    v15->_style = a3;
-    objc_storeWeak(&v15->_dataSource, v12);
-    objc_storeWeak(&v16->_delegate, v13);
-    v17 = objc_retainBlock(v14);
+    v15->_wantsAsyncReload = reloadCopy;
+    v15->_style = style;
+    objc_storeWeak(&v15->_dataSource, sourceCopy);
+    objc_storeWeak(&v16->_delegate, delegateCopy);
+    v17 = objc_retainBlock(handlerCopy);
     menuChangeHandler = v16->_menuChangeHandler;
     v16->_menuChangeHandler = v17;
 
@@ -57,7 +57,7 @@
     reloadQueue = v16->_reloadQueue;
     v16->_reloadQueue = v22;
 
-    if (v8)
+    if (reloadCopy)
     {
       v24 = [[TUCallCenter alloc] initWithQueue:v16->_reloadQueue wantsCallNotifications:0];
     }
@@ -93,22 +93,22 @@
     v5[3] = &unk_100357528;
     v6 = v3;
     [(PHAudioRoutingMenuController *)self fetchMenuActionsWithCompletionHandler:v5];
-    v4 = v6;
+    menuActions = v6;
   }
 
   else
   {
-    v4 = [(PHAudioRoutingMenuController *)self menuActions];
-    (v3[2])(v3, v4);
+    menuActions = [(PHAudioRoutingMenuController *)self menuActions];
+    (v3[2])(v3, menuActions);
   }
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
-  v5 = a3;
+  menuCopy = menu;
   if ([(PHAudioRoutingMenuController *)self wantsAsyncReload])
   {
     v6[0] = _NSConcreteStackBlock;
@@ -116,33 +116,33 @@
     v6[2] = sub_10006CC40;
     v6[3] = &unk_100357110;
     v6[4] = self;
-    v7 = v5;
+    v7 = menuCopy;
     dispatch_async(&_dispatch_main_q, v6);
   }
 
   else
   {
-    objc_storeStrong(&self->_menu, a3);
+    objc_storeStrong(&self->_menu, menu);
   }
 }
 
-- (void)fetchMenuActionsWithCompletionHandler:(id)a3
+- (void)fetchMenuActionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PHAudioRoutingMenuController *)self delegate];
+  handlerCopy = handler;
+  delegate = [(PHAudioRoutingMenuController *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     objc_initWeak(&location, self);
-    v7 = [(PHAudioRoutingMenuController *)self dataSource];
+    dataSource = [(PHAudioRoutingMenuController *)self dataSource];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10006CE94;
     v9[3] = &unk_100357578;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
-    [v7 fetchRoutesForAudioRoutingMenuController:self completionHandler:v9];
+    v10 = handlerCopy;
+    [dataSource fetchRoutesForAudioRoutingMenuController:self completionHandler:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -150,25 +150,25 @@
 
   else
   {
-    v8 = [(PHAudioRoutingMenuController *)self reloadQueue];
+    reloadQueue = [(PHAudioRoutingMenuController *)self reloadQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10006CE7C;
     block[3] = &unk_100356D38;
-    v14 = v4;
-    dispatch_async(v8, block);
+    v14 = handlerCopy;
+    dispatch_async(reloadQueue, block);
   }
 }
 
 - (NSArray)menuActions
 {
-  v3 = [(PHAudioRoutingMenuController *)self delegate];
+  delegate = [(PHAudioRoutingMenuController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PHAudioRoutingMenuController *)self dataSource];
-    v6 = [v5 routesForAudioRoutingMenuController:self];
+    dataSource = [(PHAudioRoutingMenuController *)self dataSource];
+    v6 = [dataSource routesForAudioRoutingMenuController:self];
 
     v7 = sub_100004F84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -189,17 +189,17 @@
   return v8;
 }
 
-- (id)menuActionsWithRoutes:(id)a3
+- (id)menuActionsWithRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   v23 = +[NSMutableArray array];
-  v5 = [(PHAudioRoutingMenuController *)self isSharePlayActive];
+  isSharePlayActive = [(PHAudioRoutingMenuController *)self isSharePlayActive];
   v24 = objc_alloc_init(NSMutableArray);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v4;
+  obj = routesCopy;
   v6 = [obj countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v6)
   {
@@ -215,14 +215,14 @@
         }
 
         v10 = *(*(&v25 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [(PHAudioRoutingMenuController *)self routeActionWithTitle:v11 route:v10];
+        name = [v10 name];
+        v12 = [(PHAudioRoutingMenuController *)self routeActionWithTitle:name route:v10];
 
         [v12 setState:{objc_msgSend(v10, "isCurrentlyPicked")}];
-        v13 = [v10 name];
-        v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"route title: %@, route state: %ld", v13, [v12 state]);
+        name2 = [v10 name];
+        v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"route title: %@, route state: %ld", name2, [v12 state]);
 
-        if (v5 && ([v10 supportsSharePlay] & 1) == 0)
+        if (isSharePlayActive && ([v10 supportsSharePlay] & 1) == 0)
         {
           [v12 setAttributes:1];
           v15 = TUBundle();
@@ -256,10 +256,10 @@
 
   if ([(PHAudioRoutingMenuController *)self style]== 2)
   {
-    v18 = [(PHAudioRoutingMenuController *)self muteMenuAction];
-    if (v18)
+    muteMenuAction = [(PHAudioRoutingMenuController *)self muteMenuAction];
+    if (muteMenuAction)
     {
-      [v23 addObject:v18];
+      [v23 addObject:muteMenuAction];
     }
   }
 
@@ -276,11 +276,11 @@
   return v20;
 }
 
-- (id)routeActionWithTitle:(id)a3 route:(id)a4
+- (id)routeActionWithTitle:(id)title route:(id)route
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 length])
+  titleCopy = title;
+  routeCopy = route;
+  if ([titleCopy length])
   {
     objc_initWeak(&location, self);
     v13[0] = _NSConcreteStackBlock;
@@ -288,11 +288,11 @@
     v13[2] = sub_10006D5B8;
     v13[3] = &unk_1003575A0;
     objc_copyWeak(&v15, &location);
-    v8 = v7;
+    v8 = routeCopy;
     v14 = v8;
     v9 = objc_retainBlock(v13);
     v10 = [v8 audioRouteGlyphForDisplayStyle:0];
-    v11 = [UIAction actionWithTitle:v6 image:v10 identifier:0 handler:v9];
+    v11 = [UIAction actionWithTitle:titleCopy image:v10 identifier:0 handler:v9];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&location);
@@ -308,15 +308,15 @@
 
 - (id)lagunaActions
 {
-  v3 = [(PHAudioRoutingMenuController *)self callCenter];
-  v4 = [v3 frontmostAudioOrVideoCall];
+  callCenter = [(PHAudioRoutingMenuController *)self callCenter];
+  frontmostAudioOrVideoCall = [callCenter frontmostAudioOrVideoCall];
 
-  v5 = [(PHAudioRoutingMenuController *)self callCenter];
-  v19 = v4;
-  v6 = [v5 activeConversationForCall:v4];
+  callCenter2 = [(PHAudioRoutingMenuController *)self callCenter];
+  v19 = frontmostAudioOrVideoCall;
+  v6 = [callCenter2 activeConversationForCall:frontmostAudioOrVideoCall];
 
-  v7 = [(PHAudioRoutingMenuController *)self callCenter];
-  v8 = [TPAudioRouting eligibleLagunaDevices:v7];
+  callCenter3 = [(PHAudioRoutingMenuController *)self callCenter];
+  v8 = [TPAudioRouting eligibleLagunaDevices:callCenter3];
 
   v9 = +[NSMutableArray array];
   v20 = 0u;
@@ -367,12 +367,12 @@
   return v9;
 }
 
-- (id)lagunaActionForConversation:(id)a3 deviceHandle:(id)a4
+- (id)lagunaActionForConversation:(id)conversation deviceHandle:(id)handle
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 name];
-  v9 = [v8 length];
+  conversationCopy = conversation;
+  handleCopy = handle;
+  name = [handleCopy name];
+  v9 = [name length];
 
   if (v9)
   {
@@ -382,14 +382,14 @@
     v18 = sub_10006DA3C;
     v19 = &unk_1003575C8;
     objc_copyWeak(&v22, &location);
-    v10 = v7;
+    v10 = handleCopy;
     v20 = v10;
-    v21 = v6;
+    v21 = conversationCopy;
     v11 = objc_retainBlock(&v16);
     [v10 deviceModel];
     v12 = [UIImage systemImageNamed:@"appletv"];
-    v13 = [v10 name];
-    v14 = [UIAction actionWithTitle:v13 image:v12 identifier:0 handler:v11];
+    name2 = [v10 name];
+    v14 = [UIAction actionWithTitle:name2 image:v12 identifier:0 handler:v11];
 
     objc_destroyWeak(&v22);
     objc_destroyWeak(&location);
@@ -406,8 +406,8 @@
 - (id)muteMenuAction
 {
   v3 = [UIImage muteRouteGlyphForDisplayStyle:0];
-  v4 = [(PHAudioRoutingMenuController *)self muteActionTitle];
-  if (v4)
+  muteActionTitle = [(PHAudioRoutingMenuController *)self muteActionTitle];
+  if (muteActionTitle)
   {
     objc_initWeak(&location, self);
     v8 = _NSConcreteStackBlock;
@@ -416,7 +416,7 @@
     v11 = &unk_100357018;
     objc_copyWeak(&v12, &location);
     v5 = objc_retainBlock(&v8);
-    v6 = [UIAction actionWithTitle:v4 image:v3 identifier:0 handler:v5, v8, v9, v10, v11];
+    v6 = [UIAction actionWithTitle:muteActionTitle image:v3 identifier:0 handler:v5, v8, v9, v10, v11];
     [v6 setState:{-[PHAudioRoutingMenuController isMuted](self, "isMuted")}];
 
     objc_destroyWeak(&v12);
@@ -433,51 +433,51 @@
 
 - (BOOL)isMuted
 {
-  v2 = [(PHAudioRoutingMenuController *)self callCenter];
-  v3 = [v2 frontmostAudioOrVideoCall];
+  callCenter = [(PHAudioRoutingMenuController *)self callCenter];
+  frontmostAudioOrVideoCall = [callCenter frontmostAudioOrVideoCall];
 
-  LOBYTE(v2) = [v3 isUplinkMuted];
-  return v2;
+  LOBYTE(callCenter) = [frontmostAudioOrVideoCall isUplinkMuted];
+  return callCenter;
 }
 
 - (BOOL)isSharePlayActive
 {
-  v3 = [(PHAudioRoutingMenuController *)self callCenter];
-  v4 = [v3 frontmostAudioOrVideoCall];
+  callCenter = [(PHAudioRoutingMenuController *)self callCenter];
+  frontmostAudioOrVideoCall = [callCenter frontmostAudioOrVideoCall];
 
-  if (v4)
+  if (frontmostAudioOrVideoCall)
   {
-    v5 = [(PHAudioRoutingMenuController *)self callCenter];
-    v6 = [v5 activeConversationForCall:v4];
+    callCenter2 = [(PHAudioRoutingMenuController *)self callCenter];
+    v6 = [callCenter2 activeConversationForCall:frontmostAudioOrVideoCall];
 
     if (v6)
     {
-      v7 = [v6 hasJoinedActivitySession];
+      hasJoinedActivitySession = [v6 hasJoinedActivitySession];
     }
 
     else
     {
-      v7 = 0;
+      hasJoinedActivitySession = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    hasJoinedActivitySession = 0;
   }
 
-  return v7;
+  return hasJoinedActivitySession;
 }
 
 - (id)muteActionTitle
 {
-  v3 = [(PHAudioRoutingMenuController *)self dataSource];
+  dataSource = [(PHAudioRoutingMenuController *)self dataSource];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PHAudioRoutingMenuController *)self dataSource];
-    v6 = [v5 muteActionTitleForAudioRoutingMenuController:self];
+    dataSource2 = [(PHAudioRoutingMenuController *)self dataSource];
+    v6 = [dataSource2 muteActionTitleForAudioRoutingMenuController:self];
   }
 
   else

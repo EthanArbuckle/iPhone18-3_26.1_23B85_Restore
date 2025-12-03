@@ -1,6 +1,6 @@
 @interface BYDaemonDataMigrator
 - (BYDaemonDataMigrator)init;
-- (void)migrateWithStoredMigratorVersion:(unsigned int)a3 userDataDisposition:(unsigned int)a4;
+- (void)migrateWithStoredMigratorVersion:(unsigned int)version userDataDisposition:(unsigned int)disposition;
 @end
 
 @implementation BYDaemonDataMigrator
@@ -19,33 +19,33 @@
   return v2;
 }
 
-- (void)migrateWithStoredMigratorVersion:(unsigned int)a3 userDataDisposition:(unsigned int)a4
+- (void)migrateWithStoredMigratorVersion:(unsigned int)version userDataDisposition:(unsigned int)disposition
 {
   v7 = _BYLoggingFacility();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 67109376;
-    LODWORD(v14[0]) = a3;
+    LODWORD(v14[0]) = version;
     WORD2(v14[0]) = 1024;
-    *(v14 + 6) = a4;
+    *(v14 + 6) = disposition;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "BYDaemonDataMigrator will migrate with storedMigratorVersion %d user data disposition %d", &v13, 0xEu);
   }
 
-  if (a3 <= 0xC && (a4 & 2) != 0)
+  if (version <= 0xC && (disposition & 2) != 0)
   {
     v8 = +[NSLocale currentLocale];
-    v9 = [v8 regionCode];
+    regionCode = [v8 regionCode];
 
     v10 = _BYLoggingFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14[0] = v9;
+      v14[0] = regionCode;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "BYDaemonDataMigrator: Setting eligibility device locale to %@", &v13, 0xCu);
     }
 
-    v11 = [(BYDaemonDataMigrator *)self capabilities];
-    [v11 eligibilitySetDeviceLocale:v9];
+    capabilities = [(BYDaemonDataMigrator *)self capabilities];
+    [capabilities eligibilitySetDeviceLocale:regionCode];
   }
 
   v12 = _BYLoggingFacility();

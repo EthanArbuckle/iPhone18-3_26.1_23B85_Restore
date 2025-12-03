@@ -1,28 +1,28 @@
 @interface HFTelevisionServiceItem
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
 @end
 
 @implementation HFTelevisionServiceItem
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
+  controlItemValueSourceForPrimaryService = [(HFServiceItem *)self controlItemValueSourceForPrimaryService];
   v22 = @"controlItemPurpose";
   v23[0] = &unk_282523C40;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-  v7 = [[HFPowerStateControlItem alloc] initWithValueSource:v5 displayResults:v6];
+  v7 = [[HFPowerStateControlItem alloc] initWithValueSource:controlItemValueSourceForPrimaryService displayResults:v6];
   [v4 addObject:v7];
-  v8 = [(HFServiceItem *)self service];
-  v9 = [v8 hf_childServices];
-  v10 = [v9 na_filter:&__block_literal_global_67];
+  service = [(HFServiceItem *)self service];
+  hf_childServices = [service hf_childServices];
+  v10 = [hf_childServices na_filter:&__block_literal_global_67];
 
   if ([v10 count])
   {
-    v11 = [(HFServiceItem *)self service];
-    v12 = [v10 setByAddingObject:v11];
+    service2 = [(HFServiceItem *)self service];
+    v12 = [v10 setByAddingObject:service2];
 
     v13 = [(HFServiceItem *)self controlItemValueSourceForServices:v12];
     v14 = [HFTVInputControlItem alloc];
@@ -50,10 +50,10 @@ uint64_t __57__HFTelevisionServiceItem_createControlItemsWithOptions___block_inv
   return v3;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  optionsCopy = options;
   v5 = MEMORY[0x277CBEB98];
   v6 = *MEMORY[0x277CCF750];
   v16[0] = *MEMORY[0x277CCF748];
@@ -61,14 +61,14 @@ uint64_t __57__HFTelevisionServiceItem_createControlItemsWithOptions___block_inv
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
   v8 = [v5 setWithArray:v7];
 
-  v9 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v8 options:v4];
+  v9 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v8 options:optionsCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__HFTelevisionServiceItem__subclass_updateWithOptions___block_invoke;
   v14[3] = &unk_277DF5578;
   v14[4] = self;
-  v15 = v4;
-  v10 = v4;
+  v15 = optionsCopy;
+  v10 = optionsCopy;
   v11 = [v9 flatMap:v14];
 
   v12 = *MEMORY[0x277D85DE8];

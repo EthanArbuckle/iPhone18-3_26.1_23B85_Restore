@@ -1,7 +1,7 @@
 @interface CPTemplateApplicationSceneGeometrySettingsDiffAction
 - (UIApplicationSceneSettingsDiffInspector)sceneSettingsGeometryMutationDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)_updateSceneGeometryWithSettingObserverContext:(id)a3 windowScene:(id)a4 transitionContext:(id)a5;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)_updateSceneGeometryWithSettingObserverContext:(id)context windowScene:(id)scene transitionContext:(id)transitionContext;
 @end
 
 @implementation CPTemplateApplicationSceneGeometrySettingsDiffAction
@@ -22,14 +22,14 @@
   return sceneSettingsGeometryMutationDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v10 = a3;
-  v14 = a5;
-  v15 = a7;
-  v11 = v14;
-  v12 = v15;
-  v13 = v10;
+  sceneCopy = scene;
+  diffCopy = diff;
+  contextCopy = context;
+  v11 = diffCopy;
+  v12 = contextCopy;
+  v13 = sceneCopy;
   _UISceneSettingsDiffActionPerformActionsWithDelayForTransitionContext();
 }
 
@@ -42,13 +42,13 @@ uint64_t __166__CPTemplateApplicationSceneGeometrySettingsDiffAction__performAct
   return [*(a1 + 32) _updateSceneGeometryWithSettingObserverContext:v4 windowScene:*(a1 + 48) transitionContext:*(a1 + 56)];
 }
 
-- (void)_updateSceneGeometryWithSettingObserverContext:(id)a3 windowScene:(id)a4 transitionContext:(id)a5
+- (void)_updateSceneGeometryWithSettingObserverContext:(id)context windowScene:(id)scene transitionContext:(id)transitionContext
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3.var0)
+  sceneCopy = scene;
+  v7 = sceneCopy;
+  if (context.var0)
   {
-    v8 = v6;
+    v8 = sceneCopy;
     _UISceneSettingsDiffActionPerformChangesWithTransitionContext();
   }
 }

@@ -1,88 +1,88 @@
 @interface HUClipScrubberScrollDelegate
-- (BOOL)_doesPrecedingSpacerSpanMultipleDaysForEvent:(id)a3;
+- (BOOL)_doesPrecedingSpacerSpanMultipleDaysForEvent:(id)event;
 - (BOOL)_shouldScrollBypassPlaybackEngineUpdate;
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (HFCameraPlaybackEngine)playbackEngine;
 - (HUClipScrubberDataSource)dataSource;
-- (HUClipScrubberScrollDelegate)initWithDataSource:(id)a3;
+- (HUClipScrubberScrollDelegate)initWithDataSource:(id)source;
 - (UICollectionView)clipCollectionView;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (float)playheadPosition;
-- (id)_interpolatedDateFromEvent:(id)a3 toEvent:(id)a4 insideRect:(CGRect)a5 atTimelinePosition:(float)a6;
-- (id)_selectedDateForAreaOfNoActivityAtPoint:(CGPoint)a3 inScrollView:(id)a4;
-- (id)_selectedDateForEventInRect:(CGRect)a3;
-- (id)_selectedDateForTodayFromEvent:(id)a3 percentDuration:(float)a4;
-- (id)_selectedDateForYesterdayFromPreviousEvent:(id)a3 percentDuration:(float)a4;
-- (void)_handleOutOfBoundsTimelinePosition:(float)a3;
+- (id)_interpolatedDateFromEvent:(id)event toEvent:(id)toEvent insideRect:(CGRect)rect atTimelinePosition:(float)position;
+- (id)_selectedDateForAreaOfNoActivityAtPoint:(CGPoint)point inScrollView:(id)view;
+- (id)_selectedDateForEventInRect:(CGRect)rect;
+- (id)_selectedDateForTodayFromEvent:(id)event percentDuration:(float)duration;
+- (id)_selectedDateForYesterdayFromPreviousEvent:(id)event percentDuration:(float)duration;
+- (void)_handleOutOfBoundsTimelinePosition:(float)position;
 - (void)_updateFamiliarFaceCell;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setUserScrubbing:(BOOL)a3;
-- (void)updateCollectionView:(id)a3;
-- (void)updatePlaybackEngineDate:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setUserScrubbing:(BOOL)scrubbing;
+- (void)updateCollectionView:(id)view;
+- (void)updatePlaybackEngineDate:(id)date;
 @end
 
 @implementation HUClipScrubberScrollDelegate
 
-- (HUClipScrubberScrollDelegate)initWithDataSource:(id)a3
+- (HUClipScrubberScrollDelegate)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v8.receiver = self;
   v8.super_class = HUClipScrubberScrollDelegate;
   v5 = [(HUClipScrubberScrollDelegate *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_dataSource, v4);
+    objc_storeWeak(&v5->_dataSource, sourceCopy);
   }
 
   return v6;
 }
 
-- (void)updatePlaybackEngineDate:(id)a3
+- (void)updatePlaybackEngineDate:(id)date
 {
-  v18 = a3;
-  v4 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  if ([v4 currentTimelineState] != 5)
+  dateCopy = date;
+  dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+  if ([dataSource currentTimelineState] != 5)
   {
-    v5 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v6 = [v5 currentTimelineState];
+    dataSource2 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    currentTimelineState = [dataSource2 currentTimelineState];
 
-    if (v6 == 6)
+    if (currentTimelineState == 6)
     {
       goto LABEL_12;
     }
 
-    v7 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v8 = [v7 currentTimelineState];
-    v9 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-    [v9 setTimelineState:v8];
+    dataSource3 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    currentTimelineState2 = [dataSource3 currentTimelineState];
+    playbackEngine = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+    [playbackEngine setTimelineState:currentTimelineState2];
 
-    v10 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v11 = [v10 currentTimelineState];
+    dataSource4 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    currentTimelineState3 = [dataSource4 currentTimelineState];
 
-    if (!v18 || v11 == 1)
+    if (!dateCopy || currentTimelineState3 == 1)
     {
-      v4 = [MEMORY[0x277D144D0] livePosition];
-      v17 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-      [v17 setPlaybackPosition:v4];
+      dataSource = [MEMORY[0x277D144D0] livePosition];
+      playbackEngine2 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+      [playbackEngine2 setPlaybackPosition:dataSource];
     }
 
     else
     {
       objc_opt_class();
-      v12 = [(HUClipScrubberScrollDelegate *)self currentEvent];
+      currentEvent = [(HUClipScrubberScrollDelegate *)self currentEvent];
       if (objc_opt_isKindOfClass())
       {
-        v13 = v12;
+        v13 = currentEvent;
       }
 
       else
@@ -92,53 +92,53 @@
 
       v14 = v13;
 
-      v15 = [MEMORY[0x277D144F0] sharedManager];
-      v4 = [v15 timelapseClipPositionForDate:v18 inHighQualityClip:v14 scrubbingType:{-[HUClipScrubberScrollDelegate isScrollingForward](self, "isScrollingForward") ^ 1}];
+      mEMORY[0x277D144F0] = [MEMORY[0x277D144F0] sharedManager];
+      dataSource = [mEMORY[0x277D144F0] timelapseClipPositionForDate:dateCopy inHighQualityClip:v14 scrubbingType:{-[HUClipScrubberScrollDelegate isScrollingForward](self, "isScrollingForward") ^ 1}];
 
-      v16 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-      [v16 setShouldBypassHighQualityScrubbing:v4 != 0];
+      playbackEngine3 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+      [playbackEngine3 setShouldBypassHighQualityScrubbing:dataSource != 0];
 
-      v17 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-      [v17 updatePlaybackPositionToDate:v18 usingClip:v14];
+      playbackEngine2 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+      [playbackEngine2 updatePlaybackPositionToDate:dateCopy usingClip:v14];
     }
   }
 
 LABEL_12:
 }
 
-- (void)setUserScrubbing:(BOOL)a3
+- (void)setUserScrubbing:(BOOL)scrubbing
 {
-  if (self->_userScrubbing != a3)
+  if (self->_userScrubbing != scrubbing)
   {
-    v4 = a3;
-    self->_userScrubbing = a3;
-    v6 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-    v8 = v6;
-    if (v4)
+    scrubbingCopy = scrubbing;
+    self->_userScrubbing = scrubbing;
+    playbackEngine = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+    dataSource = playbackEngine;
+    if (scrubbingCopy)
     {
-      [v6 beginScrubbing];
+      [playbackEngine beginScrubbing];
     }
 
     else
     {
-      [v6 endScrubbing];
+      [playbackEngine endScrubbing];
 
-      v8 = [(HUClipScrubberScrollDelegate *)self dataSource];
-      v7 = [v8 currentDate];
-      [(HUClipScrubberScrollDelegate *)self updatePlaybackEngineDate:v7];
+      dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+      currentDate = [dataSource currentDate];
+      [(HUClipScrubberScrollDelegate *)self updatePlaybackEngineDate:currentDate];
     }
   }
 }
 
-- (BOOL)_doesPrecedingSpacerSpanMultipleDaysForEvent:(id)a3
+- (BOOL)_doesPrecedingSpacerSpanMultipleDaysForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v6 = [v5 playbackEngine];
-  if ([v6 isFirstEventOfTheDay:v4])
+  eventCopy = event;
+  dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+  playbackEngine = [dataSource playbackEngine];
+  if ([playbackEngine isFirstEventOfTheDay:eventCopy])
   {
-    v7 = [v4 dateOfOccurrence];
-    v8 = [v7 hf_isMidnight] ^ 1;
+    dateOfOccurrence = [eventCopy dateOfOccurrence];
+    v8 = [dateOfOccurrence hf_isMidnight] ^ 1;
   }
 
   else
@@ -149,7 +149,7 @@ LABEL_12:
   return v8;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   v5 = *MEMORY[0x277D768C8];
   v6 = *(MEMORY[0x277D768C8] + 8);
@@ -162,9 +162,9 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForHeaderInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForHeaderInSection:(int64_t)section
 {
-  if (a5)
+  if (section)
   {
     v7 = *MEMORY[0x277CBF3A8];
     v8 = *(MEMORY[0x277CBF3A8] + 8);
@@ -172,7 +172,7 @@ LABEL_12:
 
   else
   {
-    [a3 bounds];
+    [view bounds];
     v7 = v9 * 0.5;
     v8 = 0.0;
   }
@@ -182,19 +182,19 @@ LABEL_12:
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 referenceSizeForFooterInSection:(int64_t)a5
+- (CGSize)collectionView:(id)view layout:(id)layout referenceSizeForFooterInSection:(int64_t)section
 {
-  v7 = a3;
-  v8 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  if ([v8 mostRecentClipIndex] + 1 != a5)
+  viewCopy = view;
+  dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+  if ([dataSource mostRecentClipIndex] + 1 != section)
   {
-    v12 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    if ([v12 isEditing])
+    dataSource2 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    if ([dataSource2 isEditing])
     {
-      v13 = [(HUClipScrubberScrollDelegate *)self dataSource];
-      v14 = [v13 mostRecentClipIndex];
+      dataSource3 = [(HUClipScrubberScrollDelegate *)self dataSource];
+      mostRecentClipIndex = [dataSource3 mostRecentClipIndex];
 
-      if (v14 == a5)
+      if (mostRecentClipIndex == section)
       {
         goto LABEL_3;
       }
@@ -204,13 +204,13 @@ LABEL_12:
     {
     }
 
-    v15 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    if ([v15 isEditing])
+    dataSource4 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    if ([dataSource4 isEditing])
     {
-      v16 = [(HUClipScrubberScrollDelegate *)self dataSource];
-      v17 = [v16 mostRecentClipIndex];
+      dataSource5 = [(HUClipScrubberScrollDelegate *)self dataSource];
+      mostRecentClipIndex2 = [dataSource5 mostRecentClipIndex];
 
-      if (v17 == a5)
+      if (mostRecentClipIndex2 == section)
       {
         goto LABEL_3;
       }
@@ -226,7 +226,7 @@ LABEL_12:
   }
 
 LABEL_3:
-  [v7 bounds];
+  [viewCopy bounds];
   v10 = v9 * 0.5;
   v11 = 0.0;
 LABEL_13:
@@ -238,62 +238,62 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v4 = [(HUClipScrubberScrollDelegate *)self dataSource:a3];
-  v5 = [v4 isEditing];
+  v4 = [(HUClipScrubberScrollDelegate *)self dataSource:view];
+  isEditing = [v4 isEditing];
 
-  return v5;
+  return isEditing;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
-  v7 = [v6 section];
-  v8 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v9 = [v8 currentEvents];
-  v10 = [v9 count];
+  pathCopy = path;
+  section = [pathCopy section];
+  dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+  currentEvents = [dataSource currentEvents];
+  v10 = [currentEvents count];
 
   v11 = 30.0;
-  if (v7 != v10)
+  if (section != v10)
   {
-    v12 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v13 = [v12 eventForSection:{objc_msgSend(v6, "section")}];
+    dataSource2 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    v13 = [dataSource2 eventForSection:{objc_msgSend(pathCopy, "section")}];
 
-    v14 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v15 = [v14 isValidEventAtIndexPath:v6];
+    dataSource3 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    v15 = [dataSource3 isValidEventAtIndexPath:pathCopy];
 
     if (!v15)
     {
       goto LABEL_6;
     }
 
-    v16 = [v13 containerType];
-    if (v16 == 2)
+    containerType = [v13 containerType];
+    if (containerType == 2)
     {
       v11 = 60.0;
       goto LABEL_14;
     }
 
-    if (v16 == 1)
+    if (containerType == 1)
     {
-      v17 = [(HUClipScrubberScrollDelegate *)self dataSource];
-      v18 = [v17 timeController];
-      [v18 timelineWidthForEvent:v13];
+      dataSource4 = [(HUClipScrubberScrollDelegate *)self dataSource];
+      timeController = [dataSource4 timeController];
+      [timeController timelineWidthForEvent:v13];
       v11 = v19;
     }
 
     else
     {
 LABEL_6:
-      v20 = [(HUClipScrubberScrollDelegate *)self dataSource];
-      v21 = [v20 playbackEngine];
-      if ([v21 isFirstEventOfTheDay:v13])
+      dataSource5 = [(HUClipScrubberScrollDelegate *)self dataSource];
+      playbackEngine = [dataSource5 playbackEngine];
+      if ([playbackEngine isFirstEventOfTheDay:v13])
       {
-        v22 = [v13 dateOfOccurrence];
-        v23 = [v22 hf_isMidnight];
+        dateOfOccurrence = [v13 dateOfOccurrence];
+        hf_isMidnight = [dateOfOccurrence hf_isMidnight];
 
-        if (!v23)
+        if (!hf_isMidnight)
         {
           goto LABEL_14;
         }
@@ -303,12 +303,12 @@ LABEL_6:
       {
       }
 
-      v24 = [(HUClipScrubberScrollDelegate *)self dataSource];
-      v17 = [v24 previousEventForSection:{objc_msgSend(v6, "section")}];
+      dataSource6 = [(HUClipScrubberScrollDelegate *)self dataSource];
+      dataSource4 = [dataSource6 previousEventForSection:{objc_msgSend(pathCopy, "section")}];
 
-      if (v17)
+      if (dataSource4)
       {
-        [v17 hf_duration];
+        [dataSource4 hf_duration];
         if (v25 < 0.00000011920929)
         {
           v11 = 60.0;
@@ -326,40 +326,40 @@ LABEL_14:
   return result;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
+  deceleratingCopy = decelerating;
   [(HUClipScrubberScrollDelegate *)self setShouldIgnoreScrolling:0];
-  v5 = [v4 isDragging];
+  isDragging = [deceleratingCopy isDragging];
 
-  if ((v5 & 1) == 0)
+  if ((isDragging & 1) == 0)
   {
 
     [(HUClipScrubberScrollDelegate *)self setUserScrubbing:0];
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(HUClipScrubberScrollDelegate *)self setShouldIgnoreScrolling:0];
   [(HUClipScrubberScrollDelegate *)self setUserScrubbing:1];
-  v4 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-  [v4 setUserScrubbing:1];
+  playbackEngine = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+  [playbackEngine setUserScrubbing:1];
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
 
   [(HUClipScrubberScrollDelegate *)self setElapsedTime:?];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
+  x = velocity.x;
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  draggingCopy = dragging;
   if (x == 0.0)
   {
-    v12 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-    v13 = v12;
+    playbackEngine = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+    v13 = playbackEngine;
     v14 = 0;
   }
 
@@ -368,8 +368,8 @@ LABEL_14:
     v9 = HFLogForCategory();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = a5->x;
-      [v8 contentOffset];
+      v10 = offset->x;
+      [draggingCopy contentOffset];
       v15 = 134218496;
       v16 = v10;
       v17 = 2048;
@@ -379,44 +379,44 @@ LABEL_14:
       _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "Will end scrolling at offset:%.2f with velocity:%.2f vs current offset %.2f", &v15, 0x20u);
     }
 
-    [(HUClipScrubberScrollDelegate *)self setTargetScrollOffset:a5->x];
-    v12 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-    v13 = v12;
+    [(HUClipScrubberScrollDelegate *)self setTargetScrollOffset:offset->x];
+    playbackEngine = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+    v13 = playbackEngine;
     v14 = 1;
   }
 
-  [v12 setShouldBypassVideoFetchRequest:v14];
+  [playbackEngine setShouldBypassVideoFetchRequest:v14];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-  [v6 setUserScrubbing:0];
+  playbackEngine = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+  [playbackEngine setUserScrubbing:0];
 
-  if (!a4)
+  if (!decelerate)
   {
 
     [(HUClipScrubberScrollDelegate *)self setUserScrubbing:0];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v70 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  scrollCopy = scroll;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v6 = v5;
   [(HUClipScrubberScrollDelegate *)self lastContentOffset];
   v8 = v7;
-  [v4 contentOffset];
+  [scrollCopy contentOffset];
   v10 = vabdd_f64(v8, v9);
   [(HUClipScrubberScrollDelegate *)self elapsedTime];
   v12 = v10 / (v6 - v11);
   [(HUClipScrubberScrollDelegate *)self setElapsedTime:v6];
   if (v12 >= 100.0)
   {
-    v13 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-    v14 = v13;
+    playbackEngine = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+    v14 = playbackEngine;
     if (v12 >= 500.0)
     {
       v15 = 2;
@@ -430,30 +430,30 @@ LABEL_14:
 
   else
   {
-    v13 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-    v14 = v13;
+    playbackEngine = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+    v14 = playbackEngine;
     v15 = 0;
   }
 
-  [v13 setScrubbingSpeed:v15];
+  [playbackEngine setScrubbingSpeed:v15];
 
   v16 = HFLogForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+    playbackEngine2 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
     v66 = 134218240;
     v67 = v12;
     v68 = 2048;
-    v69 = [v17 scrubbingSpeed];
+    scrubbingSpeed = [playbackEngine2 scrubbingSpeed];
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "Scrubbing speed %.3f engineSpeed:%ld", &v66, 0x16u);
   }
 
-  v18 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-  v19 = [v18 shouldBypassVideoFetchRequest];
+  playbackEngine3 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+  shouldBypassVideoFetchRequest = [playbackEngine3 shouldBypassVideoFetchRequest];
 
-  if (v19)
+  if (shouldBypassVideoFetchRequest)
   {
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     v21 = v20;
     [(HUClipScrubberScrollDelegate *)self targetScrollOffset];
     if (vabdd_f64(v21, v22) < 100.0)
@@ -461,33 +461,33 @@ LABEL_14:
       v23 = HFLogForCategory();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        [v4 contentOffset];
+        [scrollCopy contentOffset];
         v66 = 134217984;
         v67 = v24;
         _os_log_impl(&dword_20CEB6000, v23, OS_LOG_TYPE_DEFAULT, "Scrollview did scroll and stopping at %.f", &v66, 0xCu);
       }
 
-      v25 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-      [v25 setShouldBypassVideoFetchRequest:0];
+      playbackEngine4 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+      [playbackEngine4 setShouldBypassVideoFetchRequest:0];
     }
   }
 
-  [v4 contentOffset];
+  [scrollCopy contentOffset];
   v27 = v26;
   [(HUClipScrubberScrollDelegate *)self lastContentOffset];
   [(HUClipScrubberScrollDelegate *)self setScrollingForward:v27 >= v28];
-  [v4 contentOffset];
+  [scrollCopy contentOffset];
   [(HUClipScrubberScrollDelegate *)self setLastContentOffset:?];
-  v29 = [(HUClipScrubberScrollDelegate *)self _shouldScrollBypassPlaybackEngineUpdate];
-  v30 = v29;
-  v31 = !v29;
-  [v4 contentOffset];
+  _shouldScrollBypassPlaybackEngineUpdate = [(HUClipScrubberScrollDelegate *)self _shouldScrollBypassPlaybackEngineUpdate];
+  v30 = _shouldScrollBypassPlaybackEngineUpdate;
+  v31 = !_shouldScrollBypassPlaybackEngineUpdate;
+  [scrollCopy contentOffset];
   v33 = v32;
   v35 = v34;
   [(HUClipScrubberScrollDelegate *)self playheadPosition];
   v37 = v33 + v36;
-  v38 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-  [v38 indexPathForItemAtPoint:{v37, v35}];
+  clipCollectionView = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+  [clipCollectionView indexPathForItemAtPoint:{v37, v35}];
   v39 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 
   if (v39 == 0.0)
@@ -497,54 +497,54 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v41 = [*&v39 section];
-  v42 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v43 = [v42 currentEvents];
-  v44 = [v43 count];
+  section = [*&v39 section];
+  dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+  currentEvents = [dataSource currentEvents];
+  v44 = [currentEvents count];
 
-  v45 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v46 = v45;
-  if (v41 == v44)
+  dataSource2 = [(HUClipScrubberScrollDelegate *)self dataSource];
+  v46 = dataSource2;
+  if (section == v44)
   {
-    [v45 setCurrentTimelineState:1];
+    [dataSource2 setCurrentTimelineState:1];
 
 LABEL_17:
     v47 = 0;
     goto LABEL_18;
   }
 
-  v52 = [v45 isValidEventAtIndexPath:*&v39];
+  v52 = [dataSource2 isValidEventAtIndexPath:*&v39];
 
   if (v52)
   {
-    v53 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-    v54 = [v53 cellForItemAtIndexPath:*&v39];
+    clipCollectionView2 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+    v54 = [clipCollectionView2 cellForItemAtIndexPath:*&v39];
 
     if (!v54)
     {
       v55 = HFLogForCategory();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
       {
-        v63 = [(HUClipScrubberScrollDelegate *)self dataSource];
-        v64 = [v63 currentEvents];
-        v65 = [v64 count];
+        dataSource3 = [(HUClipScrubberScrollDelegate *)self dataSource];
+        currentEvents2 = [dataSource3 currentEvents];
+        v65 = [currentEvents2 count];
         v66 = 138412546;
         v67 = v39;
         v68 = 2048;
-        v69 = v65;
+        scrubbingSpeed = v65;
         _os_log_error_impl(&dword_20CEB6000, v55, OS_LOG_TYPE_ERROR, "Unable to scroll to find cell for valid indexPath %@ for clip count = %lu!", &v66, 0x16u);
       }
 
       v31 = 0;
     }
 
-    v56 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v57 = [v56 eventForSection:{objc_msgSend(*&v39, "section")}];
+    dataSource4 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    v57 = [dataSource4 eventForSection:{objc_msgSend(*&v39, "section")}];
 
-    v58 = [v57 containerType];
-    v59 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v60 = v59;
-    if (v58 == 1)
+    containerType = [v57 containerType];
+    dataSource5 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    v60 = dataSource5;
+    if (containerType == 1)
     {
       v61 = 2;
     }
@@ -554,7 +554,7 @@ LABEL_17:
       v61 = 3;
     }
 
-    [v59 setCurrentTimelineState:v61];
+    [dataSource5 setCurrentTimelineState:v61];
 
     [(HUClipScrubberScrollDelegate *)self setCurrentEvent:v57];
     if (v31)
@@ -571,8 +571,8 @@ LABEL_17:
 
   else
   {
-    v62 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    [v62 setCurrentTimelineState:4];
+    dataSource6 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    [dataSource6 setCurrentTimelineState:4];
 
     if (v30)
     {
@@ -582,21 +582,21 @@ LABEL_17:
 
     else
     {
-      v47 = [(HUClipScrubberScrollDelegate *)self _selectedDateForAreaOfNoActivityAtPoint:v4 inScrollView:v37, v35];
+      v47 = [(HUClipScrubberScrollDelegate *)self _selectedDateForAreaOfNoActivityAtPoint:scrollCopy inScrollView:v37, v35];
       v31 = 1;
     }
   }
 
 LABEL_18:
-  v48 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v49 = [v48 currentTimelineState];
-  v50 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-  [v50 setTimelineState:v49];
+  dataSource7 = [(HUClipScrubberScrollDelegate *)self dataSource];
+  currentTimelineState = [dataSource7 currentTimelineState];
+  playbackEngine5 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+  [playbackEngine5 setTimelineState:currentTimelineState];
 
   if (v31)
   {
-    v51 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    [v51 setCurrentDate:v47];
+    dataSource8 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    [dataSource8 setCurrentDate:v47];
 
     [(HUClipScrubberScrollDelegate *)self updatePlaybackEngineDate:v47];
   }
@@ -604,40 +604,40 @@ LABEL_18:
   [(HUClipScrubberScrollDelegate *)self _updateFamiliarFaceCell];
 }
 
-- (void)updateCollectionView:(id)a3
+- (void)updateCollectionView:(id)view
 {
-  v7 = a3;
-  v4 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+  viewCopy = view;
+  clipCollectionView = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
 
-  if (v4 != v7)
+  if (clipCollectionView != viewCopy)
   {
-    v5 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-    [v5 removeObserver:self forKeyPath:@"contentSize"];
+    clipCollectionView2 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+    [clipCollectionView2 removeObserver:self forKeyPath:@"contentSize"];
   }
 
-  [(HUClipScrubberScrollDelegate *)self setClipCollectionView:v7];
-  v6 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-  [v6 addObserver:self forKeyPath:@"contentSize" options:0 context:0];
+  [(HUClipScrubberScrollDelegate *)self setClipCollectionView:viewCopy];
+  clipCollectionView3 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+  [clipCollectionView3 addObserver:self forKeyPath:@"contentSize" options:0 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"contentSize"] && (-[HUClipScrubberScrollDelegate clipCollectionView](self, "clipCollectionView"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == v11))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"contentSize"] && (-[HUClipScrubberScrollDelegate clipCollectionView](self, "clipCollectionView"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13 == objectCopy))
   {
     [(HUClipScrubberScrollDelegate *)self lastContentWidth];
     v15 = v14;
-    v16 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-    [v16 contentSize];
+    clipCollectionView = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+    [clipCollectionView contentSize];
     v18 = v17;
 
     if (v15 != v18)
     {
-      v19 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-      [v19 contentSize];
+      clipCollectionView2 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+      [clipCollectionView2 contentSize];
       [(HUClipScrubberScrollDelegate *)self setLastContentWidth:?];
 
       v20 = HFLogForCategory();
@@ -649,33 +649,33 @@ LABEL_18:
         _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "Updating clip scrubber to lastContentWidth:%.0f", buf, 0xCu);
       }
 
-      v22 = [(HUClipScrubberScrollDelegate *)self dataSource];
-      v23 = [v22 isUpdating];
+      dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+      isUpdating = [dataSource isUpdating];
 
-      if ((v23 & 1) == 0)
+      if ((isUpdating & 1) == 0)
       {
-        v24 = [(HUClipScrubberScrollDelegate *)self dataSource];
-        v25 = [(HUClipScrubberScrollDelegate *)self dataSource];
-        v26 = [v25 currentEvent];
-        [v24 offsetForEvent:v26];
+        dataSource2 = [(HUClipScrubberScrollDelegate *)self dataSource];
+        dataSource3 = [(HUClipScrubberScrollDelegate *)self dataSource];
+        currentEvent = [dataSource3 currentEvent];
+        [dataSource2 offsetForEvent:currentEvent];
         v28 = v27;
 
-        v29 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-        [v29 contentOffset];
+        clipCollectionView3 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+        [clipCollectionView3 contentOffset];
         v31 = v30;
 
-        v32 = [(HUClipScrubberScrollDelegate *)self playbackEngine];
-        v33 = [v32 playbackPosition];
-        v34 = [v33 contentType];
+        playbackEngine = [(HUClipScrubberScrollDelegate *)self playbackEngine];
+        playbackPosition = [playbackEngine playbackPosition];
+        contentType = [playbackPosition contentType];
 
-        v35 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-        v36 = v35;
-        if (v34)
+        clipCollectionView4 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+        v36 = clipCollectionView4;
+        if (contentType)
         {
-          [v35 bounds];
+          [clipCollectionView4 bounds];
           v38 = v37;
-          v39 = [(HUClipScrubberScrollDelegate *)self dataSource];
-          [v39 posterFrameWidth];
+          dataSource4 = [(HUClipScrubberScrollDelegate *)self dataSource];
+          [dataSource4 posterFrameWidth];
           v41 = v40;
 
           if (v38 <= v41)
@@ -683,8 +683,8 @@ LABEL_18:
             goto LABEL_4;
           }
 
-          v42 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-          [v42 bounds];
+          clipCollectionView5 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+          [clipCollectionView5 bounds];
           v44 = v28 + v43 * -0.5;
 
           [(HUClipScrubberScrollDelegate *)self setShouldIgnoreScrolling:1];
@@ -692,15 +692,15 @@ LABEL_18:
 
         else
         {
-          [v35 contentSize];
+          [clipCollectionView4 contentSize];
           v46 = v45;
-          v47 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-          [v47 bounds];
+          clipCollectionView6 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+          [clipCollectionView6 bounds];
           v44 = v46 - v48;
         }
 
-        v49 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-        [v49 setContentOffset:0 animated:{v44, v31}];
+        clipCollectionView7 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+        [clipCollectionView7 setContentOffset:0 animated:{v44, v31}];
       }
     }
   }
@@ -709,7 +709,7 @@ LABEL_18:
   {
     v50.receiver = self;
     v50.super_class = HUClipScrubberScrollDelegate;
-    [(HUClipScrubberScrollDelegate *)&v50 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(HUClipScrubberScrollDelegate *)&v50 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
 LABEL_4:
@@ -722,9 +722,9 @@ LABEL_4:
     return 1;
   }
 
-  v3 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v4 = [v3 currentEvents];
-  v5 = [v4 count];
+  dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+  currentEvents = [dataSource currentEvents];
+  v5 = [currentEvents count];
 
   if (!v5)
   {
@@ -737,18 +737,18 @@ LABEL_4:
   }
 }
 
-- (void)_handleOutOfBoundsTimelinePosition:(float)a3
+- (void)_handleOutOfBoundsTimelinePosition:(float)position
 {
   v19 = *MEMORY[0x277D85DE8];
   [(HUClipScrubberScrollDelegate *)self playheadPosition];
-  if (v5 < a3)
+  if (v5 < position)
   {
-    v6 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v7 = [v6 isEditing];
+    dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+    isEditing = [dataSource isEditing];
 
-    v8 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v14 = v8;
-    if (v7)
+    dataSource2 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    v14 = dataSource2;
+    if (isEditing)
     {
       v9 = 6;
     }
@@ -759,16 +759,16 @@ LABEL_4:
     }
 
 LABEL_7:
-    [v8 setCurrentTimelineState:v9];
+    [dataSource2 setCurrentTimelineState:v9];
 
     return;
   }
 
   [(HUClipScrubberScrollDelegate *)self playheadPosition];
-  if (v10 > a3)
+  if (v10 > position)
   {
-    v8 = [(HUClipScrubberScrollDelegate *)self dataSource];
-    v14 = v8;
+    dataSource2 = [(HUClipScrubberScrollDelegate *)self dataSource];
+    v14 = dataSource2;
     v9 = 5;
     goto LABEL_7;
   }
@@ -778,32 +778,32 @@ LABEL_7:
   {
     [(HUClipScrubberScrollDelegate *)self playheadPosition];
     *buf = 134218240;
-    v16 = a3;
+    positionCopy = position;
     v17 = 2048;
     v18 = v13;
     _os_log_error_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_ERROR, "invalid _handleOutOfBoundsTimelinePosition: call. timelinePosition:%.2f playheadPosition:%.2f", buf, 0x16u);
   }
 
-  v12 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  [v12 setCurrentTimelineState:4];
+  dataSource3 = [(HUClipScrubberScrollDelegate *)self dataSource];
+  [dataSource3 setCurrentTimelineState:4];
 }
 
-- (id)_selectedDateForAreaOfNoActivityAtPoint:(CGPoint)a3 inScrollView:(id)a4
+- (id)_selectedDateForAreaOfNoActivityAtPoint:(CGPoint)point inScrollView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-  v9 = [v8 indexPathForItemAtPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  viewCopy = view;
+  clipCollectionView = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+  v9 = [clipCollectionView indexPathForItemAtPoint:{x, y}];
 
-  v10 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-  v11 = [v10 cellForItemAtIndexPath:v9];
+  clipCollectionView2 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+  v11 = [clipCollectionView2 cellForItemAtIndexPath:v9];
 
-  v12 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v13 = [v12 eventForSection:{objc_msgSend(v9, "section")}];
+  dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+  v13 = [dataSource eventForSection:{objc_msgSend(v9, "section")}];
 
-  v14 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v15 = [v14 previousEventForSection:{objc_msgSend(v9, "section")}];
+  dataSource2 = [(HUClipScrubberScrollDelegate *)self dataSource];
+  v15 = [dataSource2 previousEventForSection:{objc_msgSend(v9, "section")}];
 
   if ([(HUClipScrubberScrollDelegate *)self _doesPrecedingSpacerSpanMultipleDaysForEvent:v13])
   {
@@ -832,7 +832,7 @@ LABEL_7:
     v24 = v23;
     v26 = v25;
     v28 = v27;
-    [v7 contentOffset];
+    [viewCopy contentOffset];
     *&v30 = v29;
     v20 = [(HUClipScrubberScrollDelegate *)self _interpolatedDateFromEvent:v15 toEvent:v13 insideRect:v22 atTimelinePosition:v24, v26, v28, v30];
   }
@@ -844,17 +844,17 @@ LABEL_7:
 
 - (void)_updateFamiliarFaceCell
 {
-  v3 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v4 = [v3 clipCollectionView];
-  [v4 contentOffset];
+  dataSource = [(HUClipScrubberScrollDelegate *)self dataSource];
+  clipCollectionView = [dataSource clipCollectionView];
+  [clipCollectionView contentOffset];
   v6 = v5;
   v8 = v7;
 
   [(HUClipScrubberScrollDelegate *)self playheadPosition];
   v10 = v6 + v9;
-  v11 = [(HUClipScrubberScrollDelegate *)self dataSource];
-  v12 = [v11 clipCollectionView];
-  v13 = [v12 visibleCells];
+  dataSource2 = [(HUClipScrubberScrollDelegate *)self dataSource];
+  clipCollectionView2 = [dataSource2 clipCollectionView];
+  visibleCells = [clipCollectionView2 visibleCells];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __55__HUClipScrubberScrollDelegate__updateFamiliarFaceCell__block_invoke;
@@ -862,7 +862,7 @@ LABEL_7:
   *&v14[5] = v10;
   v14[6] = v8;
   v14[4] = self;
-  [v13 enumerateObjectsUsingBlock:v14];
+  [visibleCells enumerateObjectsUsingBlock:v14];
 }
 
 void __55__HUClipScrubberScrollDelegate__updateFamiliarFaceCell__block_invoke(uint64_t a1, void *a2)
@@ -914,80 +914,80 @@ void __55__HUClipScrubberScrollDelegate__updateFamiliarFaceCell__block_invoke(ui
 
 - (float)playheadPosition
 {
-  v2 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-  [v2 bounds];
+  clipCollectionView = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+  [clipCollectionView bounds];
   v4 = v3 * 0.5;
 
   return v4;
 }
 
-- (id)_selectedDateForEventInRect:(CGRect)a3
+- (id)_selectedDateForEventInRect:(CGRect)rect
 {
-  width = a3.size.width;
-  MaxX = CGRectGetMaxX(a3);
+  width = rect.size.width;
+  MaxX = CGRectGetMaxX(rect);
   [(HUClipScrubberScrollDelegate *)self playheadPosition];
   *&MaxX = MaxX - v6;
-  v7 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-  [v7 contentOffset];
+  clipCollectionView = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+  [clipCollectionView contentOffset];
   v9 = v8;
 
   v10 = 1.0 - (*&MaxX - v9) / width;
   v11 = v10;
-  v12 = [(HUClipScrubberScrollDelegate *)self currentEvent];
-  [v12 hf_duration];
+  currentEvent = [(HUClipScrubberScrollDelegate *)self currentEvent];
+  [currentEvent hf_duration];
   *&v11 = v13 * v11;
 
-  v14 = [(HUClipScrubberScrollDelegate *)self currentEvent];
-  v15 = [v14 dateOfOccurrence];
-  v16 = [v15 dateByAddingTimeInterval:*&v11];
+  currentEvent2 = [(HUClipScrubberScrollDelegate *)self currentEvent];
+  dateOfOccurrence = [currentEvent2 dateOfOccurrence];
+  v16 = [dateOfOccurrence dateByAddingTimeInterval:*&v11];
 
   return v16;
 }
 
-- (id)_selectedDateForTodayFromEvent:(id)a3 percentDuration:(float)a4
+- (id)_selectedDateForTodayFromEvent:(id)event percentDuration:(float)duration
 {
-  v5 = a3;
-  v6 = [v5 dateOfOccurrence];
-  v7 = [v6 hf_startOfDay];
+  eventCopy = event;
+  dateOfOccurrence = [eventCopy dateOfOccurrence];
+  hf_startOfDay = [dateOfOccurrence hf_startOfDay];
 
-  v8 = [v5 dateOfOccurrence];
+  dateOfOccurrence2 = [eventCopy dateOfOccurrence];
 
-  [v8 timeIntervalSinceDate:v7];
+  [dateOfOccurrence2 timeIntervalSinceDate:hf_startOfDay];
   v10 = v9;
 
-  v11 = v10 * a4;
-  v12 = [v7 dateByAddingTimeInterval:v11];
+  v11 = v10 * duration;
+  v12 = [hf_startOfDay dateByAddingTimeInterval:v11];
 
   return v12;
 }
 
-- (id)_selectedDateForYesterdayFromPreviousEvent:(id)a3 percentDuration:(float)a4
+- (id)_selectedDateForYesterdayFromPreviousEvent:(id)event percentDuration:(float)duration
 {
-  v5 = a3;
-  v6 = [v5 dateOfOccurrence];
-  v7 = [v6 hf_startOfNextDay];
+  eventCopy = event;
+  dateOfOccurrence = [eventCopy dateOfOccurrence];
+  hf_startOfNextDay = [dateOfOccurrence hf_startOfNextDay];
 
-  v8 = [v5 hf_endDate];
+  hf_endDate = [eventCopy hf_endDate];
 
-  [v7 timeIntervalSinceDate:v8];
+  [hf_startOfNextDay timeIntervalSinceDate:hf_endDate];
   v10 = v9;
 
-  v11 = v10 * a4;
-  v12 = [v7 dateByAddingTimeInterval:v11];
+  v11 = v10 * duration;
+  v12 = [hf_startOfNextDay dateByAddingTimeInterval:v11];
 
   return v12;
 }
 
-- (id)_interpolatedDateFromEvent:(id)a3 toEvent:(id)a4 insideRect:(CGRect)a5 atTimelinePosition:(float)a6
+- (id)_interpolatedDateFromEvent:(id)event toEvent:(id)toEvent insideRect:(CGRect)rect atTimelinePosition:(float)position
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = [a4 dateOfOccurrence];
-  v15 = [v13 hf_endDate];
-  [v14 timeIntervalSinceDate:v15];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  eventCopy = event;
+  dateOfOccurrence = [toEvent dateOfOccurrence];
+  hf_endDate = [eventCopy hf_endDate];
+  [dateOfOccurrence timeIntervalSinceDate:hf_endDate];
   v17 = v16;
 
   v27.origin.x = x;
@@ -997,19 +997,19 @@ void __55__HUClipScrubberScrollDelegate__updateFamiliarFaceCell__block_invoke(ui
   MaxX = CGRectGetMaxX(v27);
   [(HUClipScrubberScrollDelegate *)self playheadPosition];
   v20 = MaxX - v19;
-  v21 = 1.0 - (v20 - a6) / width;
+  v21 = 1.0 - (v20 - position) / width;
   v22 = v17 * v21;
-  v23 = [v13 hf_endDate];
+  hf_endDate2 = [eventCopy hf_endDate];
 
-  v24 = [v23 dateByAddingTimeInterval:v22];
+  v24 = [hf_endDate2 dateByAddingTimeInterval:v22];
 
   return v24;
 }
 
 - (void)dealloc
 {
-  v3 = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
-  [v3 removeObserver:self forKeyPath:@"contentSize"];
+  clipCollectionView = [(HUClipScrubberScrollDelegate *)self clipCollectionView];
+  [clipCollectionView removeObserver:self forKeyPath:@"contentSize"];
 
   v4.receiver = self;
   v4.super_class = HUClipScrubberScrollDelegate;

@@ -1,15 +1,15 @@
 @interface XPCMobileDocumentReaderRequest
 - (_TtC7CoreIDV30XPCMobileDocumentReaderRequest)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation XPCMobileDocumentReaderRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  _s7CoreIDV30XPCMobileDocumentReaderRequestC6encode4withySo7NSCoderC_tF_0(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  _s7CoreIDV30XPCMobileDocumentReaderRequestC6encode4withySo7NSCoderC_tF_0(coderCopy);
 }
 
 - (_TtC7CoreIDV30XPCMobileDocumentReaderRequest)init

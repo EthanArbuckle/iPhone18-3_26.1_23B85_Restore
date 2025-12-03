@@ -1,37 +1,37 @@
 @interface PKSqueezePaletteViewExpandedEraserToolLayout
 - (PKSqueezePaletteRoundedButton)lastTappedAttributeButton;
 - (PKSqueezePaletteView)paletteView;
-- (void)_didTapAttributeButton:(id)a3;
-- (void)_didTapDrawingTool:(id)a3;
-- (void)handlePencilInteractionDidTap:(int64_t)a3;
-- (void)initWithContext:(void *)a3 attributeButtons:;
+- (void)_didTapAttributeButton:(id)button;
+- (void)_didTapDrawingTool:(id)tool;
+- (void)handlePencilInteractionDidTap:(int64_t)tap;
+- (void)initWithContext:(void *)context attributeButtons:;
 - (void)setupUI;
 - (void)updateUI;
-- (void)willTransitionToLayout:(id)a3;
+- (void)willTransitionToLayout:(id)layout;
 @end
 
 @implementation PKSqueezePaletteViewExpandedEraserToolLayout
 
-- (void)initWithContext:(void *)a3 attributeButtons:
+- (void)initWithContext:(void *)context attributeButtons:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  contextCopy = context;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = PKSqueezePaletteViewExpandedEraserToolLayout;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 3, a2);
-      v9 = [v7 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = [contextCopy copy];
+      v10 = self[2];
+      self[2] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)setupUI
@@ -44,9 +44,9 @@
     return;
   }
 
-  v4 = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
-  v5 = v4;
-  if (!v4)
+  context = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
+  v5 = context;
+  if (!context)
   {
     v6 = 0;
     v7 = 0.0;
@@ -60,7 +60,7 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  v6 = *(v4 + 24);
+  v6 = *(context + 24);
   v7 = v5[1];
   if (!self)
   {
@@ -71,15 +71,15 @@ LABEL_4:
   attributeButtons = self->_attributeButtons;
 LABEL_5:
   v9 = attributeButtons;
-  v10 = [v6 centerXAnchor];
+  centerXAnchor = [v6 centerXAnchor];
   v11 = objc_loadWeakRetained(&self->_paletteView);
-  v12 = [v11 centerXAnchor];
-  v13 = [v10 constraintEqualToAnchor:v12];
+  centerXAnchor2 = [v11 centerXAnchor];
+  v13 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-  v14 = [v6 centerYAnchor];
+  centerYAnchor = [v6 centerYAnchor];
   v15 = objc_loadWeakRetained(&self->_paletteView);
-  v16 = [v15 centerYAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  centerYAnchor2 = [v15 centerYAnchor];
+  v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
   v18 = objc_loadWeakRetained(&self->_paletteView);
   v19 = v18;
@@ -244,18 +244,18 @@ void __55__PKSqueezePaletteViewExpandedEraserToolLayout_setupUI__block_invoke_2(
 
 - (void)updateUI
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_attributeButtons;
   }
 
   [(PKSqueezePaletteViewExpandedEraserToolLayout *)self enumerateObjectsUsingBlock:&__block_literal_global_81];
-  v3 = [(PKSqueezePaletteViewExpandedEraserToolLayout *)v2 context];
-  v4 = v3;
-  if (v3)
+  context = [(PKSqueezePaletteViewExpandedEraserToolLayout *)selfCopy context];
+  v4 = context;
+  if (context)
   {
-    v5 = *(v3 + 24);
+    v5 = *(context + 24);
   }
 
   else
@@ -278,9 +278,9 @@ void __55__PKSqueezePaletteViewExpandedEraserToolLayout_setupUI__block_invoke_2(
   v8 = v7;
   [v8 width];
   [PKInkingTool _weightForWidth:@"com.apple.ink.eraser" type:?];
-  if (v2)
+  if (selfCopy)
   {
-    v2 = v2->_attributeButtons;
+    selfCopy = selfCopy->_attributeButtons;
   }
 
   v11[0] = MEMORY[0x1E69E9820];
@@ -290,7 +290,7 @@ void __55__PKSqueezePaletteViewExpandedEraserToolLayout_setupUI__block_invoke_2(
   v13 = v9;
   v12 = v8;
   v10 = v8;
-  [(PKSqueezePaletteViewExpandedEraserToolLayout *)v2 enumerateObjectsUsingBlock:v11];
+  [(PKSqueezePaletteViewExpandedEraserToolLayout *)selfCopy enumerateObjectsUsingBlock:v11];
 }
 
 void __56__PKSqueezePaletteViewExpandedEraserToolLayout_updateUI__block_invoke_2(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -329,11 +329,11 @@ void __56__PKSqueezePaletteViewExpandedEraserToolLayout_updateUI__block_invoke_2
   }
 }
 
-- (void)willTransitionToLayout:(id)a3
+- (void)willTransitionToLayout:(id)layout
 {
   v4 = MEMORY[0x1E696ACD8];
-  v5 = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self layoutConstraints];
-  [v4 deactivateConstraints:v5];
+  layoutConstraints = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self layoutConstraints];
+  [v4 deactivateConstraints:layoutConstraints];
 
   if (self)
   {
@@ -346,11 +346,11 @@ void __56__PKSqueezePaletteViewExpandedEraserToolLayout_updateUI__block_invoke_2
   }
 
   [(NSArray *)attributeButtons makeObjectsPerformSelector:sel_removeFromSuperview];
-  v7 = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
-  v10 = v7;
-  if (v7)
+  context = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
+  v10 = context;
+  if (context)
   {
-    v8 = *(v7 + 24);
+    v8 = *(context + 24);
   }
 
   else
@@ -362,7 +362,7 @@ void __56__PKSqueezePaletteViewExpandedEraserToolLayout_updateUI__block_invoke_2
   [v9 removeTarget:self action:sel__didTapDrawingTool_ forControlEvents:64];
 }
 
-- (void)handlePencilInteractionDidTap:(int64_t)a3
+- (void)handlePencilInteractionDidTap:(int64_t)tap
 {
   context = self->_context;
   if (context)
@@ -375,7 +375,7 @@ void __56__PKSqueezePaletteViewExpandedEraserToolLayout_updateUI__block_invoke_2
   [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:v6];
 }
 
-- (void)_didTapDrawingTool:(id)a3
+- (void)_didTapDrawingTool:(id)tool
 {
   v4 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -384,11 +384,11 @@ void __56__PKSqueezePaletteViewExpandedEraserToolLayout_updateUI__block_invoke_2
     _os_log_impl(&dword_1C7CCA000, v4, OS_LOG_TYPE_DEFAULT, "Drawing tool tapped", v10, 2u);
   }
 
-  v5 = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
-  v6 = v5;
-  if (v5)
+  context = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
+  v6 = context;
+  if (context)
   {
-    v7 = *(v5 + 16);
+    v7 = *(context + 16);
   }
 
   else
@@ -401,19 +401,19 @@ void __56__PKSqueezePaletteViewExpandedEraserToolLayout_updateUI__block_invoke_2
   [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:v8];
 }
 
-- (void)_didTapAttributeButton:(id)a3
+- (void)_didTapAttributeButton:(id)button
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self lastTappedAttributeButton];
+  buttonCopy = button;
+  lastTappedAttributeButton = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self lastTappedAttributeButton];
 
-  if (v5 == v4)
+  if (lastTappedAttributeButton == buttonCopy)
   {
-    v15 = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
-    v9 = v15;
-    if (v15)
+    context = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
+    v9 = context;
+    if (context)
     {
-      v16 = *(v15 + 16);
+      v16 = *(context + 16);
     }
 
     else
@@ -428,12 +428,12 @@ void __56__PKSqueezePaletteViewExpandedEraserToolLayout_updateUI__block_invoke_2
 
   else
   {
-    [(PKSqueezePaletteViewExpandedEraserToolLayout *)self setLastTappedAttributeButton:v4];
-    v6 = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
-    v7 = v6;
-    if (v6)
+    [(PKSqueezePaletteViewExpandedEraserToolLayout *)self setLastTappedAttributeButton:buttonCopy];
+    context2 = [(PKSqueezePaletteViewExpandedEraserToolLayout *)self context];
+    v7 = context2;
+    if (context2)
     {
-      v8 = *(v6 + 24);
+      v8 = *(context2 + 24);
     }
 
     else
@@ -457,9 +457,9 @@ void __56__PKSqueezePaletteViewExpandedEraserToolLayout_updateUI__block_invoke_2
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v4)
+      if (buttonCopy)
       {
-        v12 = v4[93];
+        v12 = buttonCopy[93];
       }
 
       else

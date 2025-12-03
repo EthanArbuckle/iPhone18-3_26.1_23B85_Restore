@@ -1,21 +1,21 @@
 @interface UNCPushRegistrationRepository
-- (UNCPushRegistrationRepository)initWithDirectory:(id)a3 librarian:(id)a4;
-- (id)_queue_registrationForBundleIdentifier:(id)a3;
+- (UNCPushRegistrationRepository)initWithDirectory:(id)directory librarian:(id)librarian;
+- (id)_queue_registrationForBundleIdentifier:(id)identifier;
 - (id)allBundleIdentifiers;
-- (id)registrationForBundleIdentifier:(id)a3;
-- (void)_queue_setRegistration:(id)a3 forBundleIdentifier:(id)a4;
-- (void)notificationSourcesDidUninstall:(id)a3;
-- (void)removeRegistrationForBundleIdentifier:(id)a3;
-- (void)setRegistration:(id)a3 forBundleIdentifier:(id)a4;
+- (id)registrationForBundleIdentifier:(id)identifier;
+- (void)_queue_setRegistration:(id)registration forBundleIdentifier:(id)identifier;
+- (void)notificationSourcesDidUninstall:(id)uninstall;
+- (void)removeRegistrationForBundleIdentifier:(id)identifier;
+- (void)setRegistration:(id)registration forBundleIdentifier:(id)identifier;
 @end
 
 @implementation UNCPushRegistrationRepository
 
-- (UNCPushRegistrationRepository)initWithDirectory:(id)a3 librarian:(id)a4
+- (UNCPushRegistrationRepository)initWithDirectory:(id)directory librarian:(id)librarian
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[UNCKeyedDictionaryRepository alloc] initWithDirectory:v7 fileName:@"PushRegistration" pathExtension:@"plist" librarian:v6];
+  librarianCopy = librarian;
+  directoryCopy = directory;
+  v8 = [[UNCKeyedDictionaryRepository alloc] initWithDirectory:directoryCopy fileName:@"PushRegistration" pathExtension:@"plist" librarian:librarianCopy];
 
   v14.receiver = self;
   v14.super_class = UNCPushRegistrationRepository;
@@ -65,9 +65,9 @@ uint64_t __53__UNCPushRegistrationRepository_allBundleIdentifiers__block_invoke(
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)registrationForBundleIdentifier:(id)a3
+- (id)registrationForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -79,10 +79,10 @@ uint64_t __53__UNCPushRegistrationRepository_allBundleIdentifiers__block_invoke(
   block[1] = 3221225472;
   block[2] = __65__UNCPushRegistrationRepository_registrationForBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F48;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = identifierCopy;
   dispatch_sync(queue, block);
   v7 = v13[5];
 
@@ -101,48 +101,48 @@ uint64_t __65__UNCPushRegistrationRepository_registrationForBundleIdentifier___b
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setRegistration:(id)a3 forBundleIdentifier:(id)a4
+- (void)setRegistration:(id)registration forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  registrationCopy = registration;
+  identifierCopy = identifier;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __69__UNCPushRegistrationRepository_setRegistration_forBundleIdentifier___block_invoke;
   block[3] = &unk_1E85D6F20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = registrationCopy;
+  v13 = identifierCopy;
+  v9 = identifierCopy;
+  v10 = registrationCopy;
   dispatch_async(queue, block);
 }
 
-- (void)removeRegistrationForBundleIdentifier:(id)a3
+- (void)removeRegistrationForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__UNCPushRegistrationRepository_removeRegistrationForBundleIdentifier___block_invoke;
   v7[3] = &unk_1E85D6E70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_sync(queue, v7);
 }
 
-- (void)notificationSourcesDidUninstall:(id)a3
+- (void)notificationSourcesDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__UNCPushRegistrationRepository_notificationSourcesDidUninstall___block_invoke;
   v7[3] = &unk_1E85D6E70;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = uninstallCopy;
+  selfCopy = self;
+  v6 = uninstallCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -186,9 +186,9 @@ void __65__UNCPushRegistrationRepository_notificationSourcesDidUninstall___block
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_queue_registrationForBundleIdentifier:(id)a3
+- (id)_queue_registrationForBundleIdentifier:(id)identifier
 {
-  v3 = [(UNCKeyedDictionaryRepository *)self->_repository dictionaryForKey:a3];
+  v3 = [(UNCKeyedDictionaryRepository *)self->_repository dictionaryForKey:identifier];
   if (v3)
   {
     v4 = (*(UNCDictionaryToUNCPushRegistration + 2))(UNCDictionaryToUNCPushRegistration, v3);
@@ -202,14 +202,14 @@ void __65__UNCPushRegistrationRepository_notificationSourcesDidUninstall___block
   return v4;
 }
 
-- (void)_queue_setRegistration:(id)a3 forBundleIdentifier:(id)a4
+- (void)_queue_setRegistration:(id)registration forBundleIdentifier:(id)identifier
 {
   repository = self->_repository;
   v6 = UNCPushRegistrationToDictionary;
   v7 = *(UNCPushRegistrationToDictionary + 2);
-  v8 = a4;
-  v9 = v7(v6, a3);
-  [(UNCKeyedDictionaryRepository *)repository setDictionary:v9 forKey:v8];
+  identifierCopy = identifier;
+  v9 = v7(v6, registration);
+  [(UNCKeyedDictionaryRepository *)repository setDictionary:v9 forKey:identifierCopy];
 }
 
 @end

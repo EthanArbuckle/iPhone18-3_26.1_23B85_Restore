@@ -1,13 +1,13 @@
 @interface ContextualContentUnavailableView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC22SubscribePageExtension32ContextualContentUnavailableView)initWithCoder:(id)a3;
-- (_TtC22SubscribePageExtension32ContextualContentUnavailableView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC22SubscribePageExtension32ContextualContentUnavailableView)initWithCoder:(id)coder;
+- (_TtC22SubscribePageExtension32ContextualContentUnavailableView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation ContextualContentUnavailableView
 
-- (_TtC22SubscribePageExtension32ContextualContentUnavailableView)initWithCoder:(id)a3
+- (_TtC22SubscribePageExtension32ContextualContentUnavailableView)initWithCoder:(id)coder
 {
   v4 = type metadata accessor for SearchResultsContextCardView.Style(0);
   __chkstk_darwin(v4);
@@ -43,15 +43,15 @@
   sub_100066950();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [*(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension32ContextualContentUnavailableView_emptyReason) sizeThatFits:{a3.width, a3.height}];
+  [*(&self->super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension32ContextualContentUnavailableView_emptyReason) sizeThatFits:{fits.width, fits.height}];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (_TtC22SubscribePageExtension32ContextualContentUnavailableView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension32ContextualContentUnavailableView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -2,8 +2,8 @@
 - (BOOL)isInviteNotification;
 - (BOOL)isInviteReply;
 - (BOOL)isResourceChanged;
-- (BOOL)notificationNameIn:(id)a3;
-- (BOOL)notificationNameMatches:(id)a3;
+- (BOOL)notificationNameIn:(id)in;
+- (BOOL)notificationNameMatches:(id)matches;
 - (id)copyParseRules;
 - (id)description;
 @end
@@ -41,67 +41,67 @@
 
 - (BOOL)isInviteNotification
 {
-  v2 = [(CalDAVCalendarServerNotificationTypeItem *)self inviteNotification];
-  v3 = v2 != 0;
+  inviteNotification = [(CalDAVCalendarServerNotificationTypeItem *)self inviteNotification];
+  v3 = inviteNotification != 0;
 
   return v3;
 }
 
 - (BOOL)isInviteReply
 {
-  v2 = [(CalDAVCalendarServerNotificationTypeItem *)self inviteReply];
-  v3 = v2 != 0;
+  inviteReply = [(CalDAVCalendarServerNotificationTypeItem *)self inviteReply];
+  v3 = inviteReply != 0;
 
   return v3;
 }
 
 - (BOOL)isResourceChanged
 {
-  v2 = [(CalDAVCalendarServerNotificationTypeItem *)self resourceChanged];
-  v3 = v2 != 0;
+  resourceChanged = [(CalDAVCalendarServerNotificationTypeItem *)self resourceChanged];
+  v3 = resourceChanged != 0;
 
   return v3;
 }
 
-- (BOOL)notificationNameMatches:(id)a3
+- (BOOL)notificationNameMatches:(id)matches
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"invite-notification"])
+  matchesCopy = matches;
+  if ([matchesCopy isEqualToString:@"invite-notification"])
   {
-    v5 = [(CalDAVCalendarServerNotificationTypeItem *)self isInviteNotification];
+    isInviteNotification = [(CalDAVCalendarServerNotificationTypeItem *)self isInviteNotification];
   }
 
-  else if ([v4 isEqualToString:@"invite-reply"])
+  else if ([matchesCopy isEqualToString:@"invite-reply"])
   {
-    v5 = [(CalDAVCalendarServerNotificationTypeItem *)self isInviteReply];
+    isInviteNotification = [(CalDAVCalendarServerNotificationTypeItem *)self isInviteReply];
   }
 
   else
   {
-    if (![v4 isEqualToString:@"resource-changed"])
+    if (![matchesCopy isEqualToString:@"resource-changed"])
     {
       v6 = 0;
       goto LABEL_8;
     }
 
-    v5 = [(CalDAVCalendarServerNotificationTypeItem *)self isResourceChanged];
+    isInviteNotification = [(CalDAVCalendarServerNotificationTypeItem *)self isResourceChanged];
   }
 
-  v6 = v5;
+  v6 = isInviteNotification;
 LABEL_8:
 
   return v6;
 }
 
-- (BOOL)notificationNameIn:(id)a3
+- (BOOL)notificationNameIn:(id)in
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  inCopy = in;
+  v5 = [inCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -112,7 +112,7 @@ LABEL_8:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(inCopy);
         }
 
         if ([(CalDAVCalendarServerNotificationTypeItem *)self notificationNameMatches:*(*(&v12 + 1) + 8 * i), v12])
@@ -122,7 +122,7 @@ LABEL_8:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [inCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;

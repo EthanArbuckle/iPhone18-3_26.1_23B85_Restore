@@ -1,25 +1,25 @@
 @interface EMSortableMessage
-- (EMSortableMessage)initWithObjectID:(id)a3 date:(id)a4 displayDate:(id)a5 readLater:(id)a6 sendLaterDate:(id)a7;
+- (EMSortableMessage)initWithObjectID:(id)d date:(id)date displayDate:(id)displayDate readLater:(id)later sendLaterDate:(id)laterDate;
 @end
 
 @implementation EMSortableMessage
 
-- (EMSortableMessage)initWithObjectID:(id)a3 date:(id)a4 displayDate:(id)a5 readLater:(id)a6 sendLaterDate:(id)a7
+- (EMSortableMessage)initWithObjectID:(id)d date:(id)date displayDate:(id)displayDate readLater:(id)later sendLaterDate:(id)laterDate
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dateCopy = date;
+  displayDateCopy = displayDate;
+  laterCopy = later;
+  laterDateCopy = laterDate;
   v20.receiver = self;
   v20.super_class = EMSortableMessage;
-  v17 = [(EMObject *)&v20 initWithObjectID:a3];
+  v17 = [(EMObject *)&v20 initWithObjectID:d];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_date, a4);
-    objc_storeStrong(&v18->_displayDate, a5);
-    objc_storeStrong(&v18->_readLater, a6);
-    objc_storeStrong(&v18->_sendLaterDate, a7);
+    objc_storeStrong(&v17->_date, date);
+    objc_storeStrong(&v18->_displayDate, displayDate);
+    objc_storeStrong(&v18->_readLater, later);
+    objc_storeStrong(&v18->_sendLaterDate, laterDate);
   }
 
   return v18;

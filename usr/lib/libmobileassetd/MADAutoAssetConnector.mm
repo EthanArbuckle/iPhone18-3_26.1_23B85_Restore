@@ -1,87 +1,87 @@
 @interface MADAutoAssetConnector
 + (id)_getAutoAssetConnectorStateTable;
 + (id)autoAssetConnector;
-+ (void)alteredMonitoringMarkers:(id)a3 withTriggeredNoRetry:(id)a4 withTriggeredRequiringRetry:(id)a5;
-+ (void)observedNetworkPathToServerDown:(id)a3;
-+ (void)observedNetworkPathToServerUp:(id)a3;
-+ (void)resumeMonitoringMarkers:(id)a3 withMarkersRequiringRetry:(id)a4;
-+ (void)scheduledMarkerFinished:(id)a3 withPotentialNetworkFailure:(BOOL)a4;
-+ (void)simulateNetworkPathDown:(id)a3;
-+ (void)simulateNetworkPathUp:(id)a3;
-- (BOOL)_isAnyServerUpForJobsToBeAttempted:(id)a3;
-- (BOOL)_isBackoffRetryRequired:(id)a3;
-- (BOOL)_isMarker:(id)a3 trackedByArray:(id)a4;
-- (BOOL)_isMarkerBeingMonitored:(id)a3;
-- (BOOL)_isPathToServerForMarkerUp:(id)a3;
++ (void)alteredMonitoringMarkers:(id)markers withTriggeredNoRetry:(id)retry withTriggeredRequiringRetry:(id)requiringRetry;
++ (void)observedNetworkPathToServerDown:(id)down;
++ (void)observedNetworkPathToServerUp:(id)up;
++ (void)resumeMonitoringMarkers:(id)markers withMarkersRequiringRetry:(id)retry;
++ (void)scheduledMarkerFinished:(id)finished withPotentialNetworkFailure:(BOOL)failure;
++ (void)simulateNetworkPathDown:(id)down;
++ (void)simulateNetworkPathUp:(id)up;
+- (BOOL)_isAnyServerUpForJobsToBeAttempted:(id)attempted;
+- (BOOL)_isBackoffRetryRequired:(id)required;
+- (BOOL)_isMarker:(id)marker trackedByArray:(id)array;
+- (BOOL)_isMarkerBeingMonitored:(id)monitored;
+- (BOOL)_isPathToServerForMarkerUp:(id)up;
 - (BOOL)_triggerNextMarker;
 - (MADAutoAssetConnector)init;
-- (id)_followupInUseServerStatus:(id)a3;
-- (id)_startTimer:(id)a3 ofTimerCategory:(id)a4 forOneShotSecs:(int64_t)a5 withFiredMessage:(id)a6 postingEvent:(id)a7;
+- (id)_followupInUseServerStatus:(id)status;
+- (id)_startTimer:(id)timer ofTimerCategory:(id)category forOneShotSecs:(int64_t)secs withFiredMessage:(id)message postingEvent:(id)event;
 - (id)_updateLatestSummary;
 - (id)summary;
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4;
-- (int64_t)action_AlteredJobsDecidePreemptBackoff:(id)a3 error:(id *)a4;
-- (int64_t)action_AlteredJobsDecideStillActiveJob:(id)a3 error:(id *)a4;
-- (int64_t)action_AlteredJobsReplaceDecideHaveJobs:(id)a3 error:(id *)a4;
-- (int64_t)action_ClearOSTransaction:(id)a3 error:(id *)a4;
-- (int64_t)action_DecideServerApplicableToJobs:(id)a3 error:(id *)a4;
-- (int64_t)action_FiredBackoffDecideServerApplicableToJobs:(id)a3 error:(id *)a4;
-- (int64_t)action_FiredBackoffIgnored:(id)a3 error:(id *)a4;
-- (int64_t)action_FiredInitial:(id)a3 error:(id *)a4;
-- (int64_t)action_FiredInitialDecideServerApplicableToJobs:(id)a3 error:(id *)a4;
-- (int64_t)action_FiredRetryConnOrderAttemptFirstJobActive:(id)a3 error:(id *)a4;
-- (int64_t)action_FiredRetryDiscTakeOSXactOrderAttempt1st:(id)a3 error:(id *)a4;
-- (int64_t)action_FiredRetryWait:(id)a3 error:(id *)a4;
-- (int64_t)action_FiredRetryWaitIgnored:(id)a3 error:(id *)a4;
-- (int64_t)action_JobFinishedDecideHaveJobs:(id)a3 error:(id *)a4;
-- (int64_t)action_JobFinishedDecideStillActiveJob:(id)a3 error:(id *)a4;
-- (int64_t)action_NextScheduledJobNowActive:(id)a3 error:(id *)a4;
-- (int64_t)action_OrderAttemptTakeOSXactFirstJobActive:(id)a3 error:(id *)a4;
-- (int64_t)action_ResumeDecideRequiringRetry:(id)a3 error:(id *)a4;
-- (int64_t)action_StartBackoffAndRetryWaitTimersClearOSXact:(id)a3 error:(id *)a4;
-- (int64_t)action_StartInitialWaitTimer:(id)a3 error:(id *)a4;
-- (int64_t)action_StartupAlteredJobsReplaceDecideHaveJobs:(id)a3 error:(id *)a4;
-- (int64_t)action_StopBackoffTakeOSXactOrderAttempt1st:(id)a3 error:(id *)a4;
-- (int64_t)action_StopBackoffTimer:(id)a3 error:(id *)a4;
-- (int64_t)action_StopBackoffTimerTakeOSTransaction:(id)a3 error:(id *)a4;
-- (int64_t)action_TakeOSTransaction:(id)a3 error:(id *)a4;
-- (int64_t)action_TrackServerDown:(id)a3 error:(id *)a4;
-- (int64_t)action_TrackServerDownDecideApplicableToJobs:(id)a3 error:(id *)a4;
-- (int64_t)action_TrackServerDownDecideInUseActiveJob:(id)a3 error:(id *)a4;
-- (int64_t)action_TrackServerUp:(id)a3 error:(id *)a4;
-- (int64_t)action_TrackServerUpDecideApplicableToJobs:(id)a3 error:(id *)a4;
-- (int64_t)action_TrackServerUpDecideInUseActiveJob:(id)a3 error:(id *)a4;
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8;
-- (void)_addObserverForMarker:(id)a3;
-- (void)_adoptAlteredMarkers:(id)a3 fromLocation:(id)a4;
-- (void)_chooseOrderForNextAttemptAndStartFirstJob:(id)a3 beginningOSTransaction:(BOOL)a4;
-- (void)_firedTimer:(id)a3 ofTimerCategory:(id)a4;
-- (void)_issueFollowupApplicableServersUpDown:(id)a3;
-- (void)_issueFollowupWhetherHaveJobs:(id)a3 notifyingWhenNoJobs:(BOOL)a4;
-- (void)_logClearedActiveJobAndAttemptRemainingMarkers:(id)a3;
-- (void)_logClearedActiveJobMarker:(id)a3;
-- (void)_logClearedAttemptRemainingMarkers:(id)a3;
-- (void)_logCurrentAttemptRemainingMarkers:(id)a3;
-- (void)_logMarkerRequiringRetry:(id)a3 addedMarker:(id)a4;
-- (void)_logMarkerRequiringRetry:(id)a3 removedMarker:(id)a4;
-- (void)_logMarkersBeingMonitored:(id)a3;
-- (void)_logMarkersRequiringRetry:(id)a3;
-- (void)_logNextActiveJobForAttemptRemainingMarkers:(id)a3;
-- (void)_logTriggeredMarkerNoRetry:(id)a3 addedMarker:(id)a4;
-- (void)_logTriggeredMarkerNoRetry:(id)a3 removedMarker:(id)a4;
-- (void)_logTriggeredMarkerRequiringRetry:(id)a3 addedMarker:(id)a4;
-- (void)_logTriggeredMarkerRequiringRetry:(id)a3 removedMarker:(id)a4;
-- (void)_logTriggeredMarkersCleared:(id)a3;
-- (void)_logTriggeredMarkersNoRetry:(id)a3;
-- (void)_logTriggeredMarkersRequiringRetry:(id)a3;
-- (void)_refreshTrackingOfFinishedMarker:(id)a3 withPotentialNetworkFailure:(BOOL)a4;
-- (void)_removeObserverForMarker:(id)a3;
-- (void)_setBackoffRetryLevel:(int64_t)a3 forReason:(id)a4;
-- (void)_stoppedTimer:(id)a3 ofTimerCategory:(id)a4;
-- (void)_trackServerDown:(id)a3 fromLocation:(id)a4;
-- (void)_trackServerUp:(id)a3 fromLocation:(id)a4;
-- (void)osTransactionBegin:(id)a3;
-- (void)osTransactionEnd:(id)a3;
+- (int64_t)actionUnknownAction:(id)action error:(id *)error;
+- (int64_t)action_AlteredJobsDecidePreemptBackoff:(id)backoff error:(id *)error;
+- (int64_t)action_AlteredJobsDecideStillActiveJob:(id)job error:(id *)error;
+- (int64_t)action_AlteredJobsReplaceDecideHaveJobs:(id)jobs error:(id *)error;
+- (int64_t)action_ClearOSTransaction:(id)transaction error:(id *)error;
+- (int64_t)action_DecideServerApplicableToJobs:(id)jobs error:(id *)error;
+- (int64_t)action_FiredBackoffDecideServerApplicableToJobs:(id)jobs error:(id *)error;
+- (int64_t)action_FiredBackoffIgnored:(id)ignored error:(id *)error;
+- (int64_t)action_FiredInitial:(id)initial error:(id *)error;
+- (int64_t)action_FiredInitialDecideServerApplicableToJobs:(id)jobs error:(id *)error;
+- (int64_t)action_FiredRetryConnOrderAttemptFirstJobActive:(id)active error:(id *)error;
+- (int64_t)action_FiredRetryDiscTakeOSXactOrderAttempt1st:(id)attempt1st error:(id *)error;
+- (int64_t)action_FiredRetryWait:(id)wait error:(id *)error;
+- (int64_t)action_FiredRetryWaitIgnored:(id)ignored error:(id *)error;
+- (int64_t)action_JobFinishedDecideHaveJobs:(id)jobs error:(id *)error;
+- (int64_t)action_JobFinishedDecideStillActiveJob:(id)job error:(id *)error;
+- (int64_t)action_NextScheduledJobNowActive:(id)active error:(id *)error;
+- (int64_t)action_OrderAttemptTakeOSXactFirstJobActive:(id)active error:(id *)error;
+- (int64_t)action_ResumeDecideRequiringRetry:(id)retry error:(id *)error;
+- (int64_t)action_StartBackoffAndRetryWaitTimersClearOSXact:(id)xact error:(id *)error;
+- (int64_t)action_StartInitialWaitTimer:(id)timer error:(id *)error;
+- (int64_t)action_StartupAlteredJobsReplaceDecideHaveJobs:(id)jobs error:(id *)error;
+- (int64_t)action_StopBackoffTakeOSXactOrderAttempt1st:(id)attempt1st error:(id *)error;
+- (int64_t)action_StopBackoffTimer:(id)timer error:(id *)error;
+- (int64_t)action_StopBackoffTimerTakeOSTransaction:(id)transaction error:(id *)error;
+- (int64_t)action_TakeOSTransaction:(id)transaction error:(id *)error;
+- (int64_t)action_TrackServerDown:(id)down error:(id *)error;
+- (int64_t)action_TrackServerDownDecideApplicableToJobs:(id)jobs error:(id *)error;
+- (int64_t)action_TrackServerDownDecideInUseActiveJob:(id)job error:(id *)error;
+- (int64_t)action_TrackServerUp:(id)up error:(id *)error;
+- (int64_t)action_TrackServerUpDecideApplicableToJobs:(id)jobs error:(id *)error;
+- (int64_t)action_TrackServerUpDecideInUseActiveJob:(id)job error:(id *)error;
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error;
+- (void)_addObserverForMarker:(id)marker;
+- (void)_adoptAlteredMarkers:(id)markers fromLocation:(id)location;
+- (void)_chooseOrderForNextAttemptAndStartFirstJob:(id)job beginningOSTransaction:(BOOL)transaction;
+- (void)_firedTimer:(id)timer ofTimerCategory:(id)category;
+- (void)_issueFollowupApplicableServersUpDown:(id)down;
+- (void)_issueFollowupWhetherHaveJobs:(id)jobs notifyingWhenNoJobs:(BOOL)noJobs;
+- (void)_logClearedActiveJobAndAttemptRemainingMarkers:(id)markers;
+- (void)_logClearedActiveJobMarker:(id)marker;
+- (void)_logClearedAttemptRemainingMarkers:(id)markers;
+- (void)_logCurrentAttemptRemainingMarkers:(id)markers;
+- (void)_logMarkerRequiringRetry:(id)retry addedMarker:(id)marker;
+- (void)_logMarkerRequiringRetry:(id)retry removedMarker:(id)marker;
+- (void)_logMarkersBeingMonitored:(id)monitored;
+- (void)_logMarkersRequiringRetry:(id)retry;
+- (void)_logNextActiveJobForAttemptRemainingMarkers:(id)markers;
+- (void)_logTriggeredMarkerNoRetry:(id)retry addedMarker:(id)marker;
+- (void)_logTriggeredMarkerNoRetry:(id)retry removedMarker:(id)marker;
+- (void)_logTriggeredMarkerRequiringRetry:(id)retry addedMarker:(id)marker;
+- (void)_logTriggeredMarkerRequiringRetry:(id)retry removedMarker:(id)marker;
+- (void)_logTriggeredMarkersCleared:(id)cleared;
+- (void)_logTriggeredMarkersNoRetry:(id)retry;
+- (void)_logTriggeredMarkersRequiringRetry:(id)retry;
+- (void)_refreshTrackingOfFinishedMarker:(id)marker withPotentialNetworkFailure:(BOOL)failure;
+- (void)_removeObserverForMarker:(id)marker;
+- (void)_setBackoffRetryLevel:(int64_t)level forReason:(id)reason;
+- (void)_stoppedTimer:(id)timer ofTimerCategory:(id)category;
+- (void)_trackServerDown:(id)down fromLocation:(id)location;
+- (void)_trackServerUp:(id)up fromLocation:(id)location;
+- (void)osTransactionBegin:(id)begin;
+- (void)osTransactionEnd:(id)end;
 @end
 
 @implementation MADAutoAssetConnector
@@ -841,175 +841,175 @@
   return v15;
 }
 
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error
 {
-  v11 = a3;
-  v12 = a6;
-  if ([v11 isEqualToString:kSUCoreFSMActionNoOp])
+  actionCopy = action;
+  infoCopy = info;
+  if ([actionCopy isEqualToString:kSUCoreFSMActionNoOp])
   {
     v13 = 0;
   }
 
   else
   {
-    if ([v11 isEqualToString:@"ResumeDecideRequiringRetry"])
+    if ([actionCopy isEqualToString:@"ResumeDecideRequiringRetry"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_ResumeDecideRequiringRetry:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_ResumeDecideRequiringRetry:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"StartInitialWaitTimer"])
+    else if ([actionCopy isEqualToString:@"StartInitialWaitTimer"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_StartInitialWaitTimer:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_StartInitialWaitTimer:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"StartBackoffAndRetryWaitTimersClearOSXact"])
+    else if ([actionCopy isEqualToString:@"StartBackoffAndRetryWaitTimersClearOSXact"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_StartBackoffAndRetryWaitTimersClearOSXact:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_StartBackoffAndRetryWaitTimersClearOSXact:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"StopBackoffTimer"])
+    else if ([actionCopy isEqualToString:@"StopBackoffTimer"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_StopBackoffTimer:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_StopBackoffTimer:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"StopBackoffTimerTakeOSTransaction"])
+    else if ([actionCopy isEqualToString:@"StopBackoffTimerTakeOSTransaction"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_StopBackoffTimerTakeOSTransaction:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_StopBackoffTimerTakeOSTransaction:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"StopBackoffTakeOSXactOrderAttempt1st"])
+    else if ([actionCopy isEqualToString:@"StopBackoffTakeOSXactOrderAttempt1st"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_StopBackoffTakeOSXactOrderAttempt1st:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_StopBackoffTakeOSXactOrderAttempt1st:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"FiredInitial"])
+    else if ([actionCopy isEqualToString:@"FiredInitial"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_FiredInitial:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_FiredInitial:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"FiredInitialDecideServerApplicableToJobs"])
+    else if ([actionCopy isEqualToString:@"FiredInitialDecideServerApplicableToJobs"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_FiredInitialDecideServerApplicableToJobs:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_FiredInitialDecideServerApplicableToJobs:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"FiredRetryWaitIgnored"])
+    else if ([actionCopy isEqualToString:@"FiredRetryWaitIgnored"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_FiredRetryWaitIgnored:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_FiredRetryWaitIgnored:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"FiredBackoffIgnored"])
+    else if ([actionCopy isEqualToString:@"FiredBackoffIgnored"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_FiredBackoffIgnored:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_FiredBackoffIgnored:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"FiredRetryWait"])
+    else if ([actionCopy isEqualToString:@"FiredRetryWait"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_FiredRetryWait:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_FiredRetryWait:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"FiredBackoffDecideServerApplicableToJobs"])
+    else if ([actionCopy isEqualToString:@"FiredBackoffDecideServerApplicableToJobs"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_FiredBackoffDecideServerApplicableToJobs:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_FiredBackoffDecideServerApplicableToJobs:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"FiredRetryDiscTakeOSXactOrderAttempt1st"])
+    else if ([actionCopy isEqualToString:@"FiredRetryDiscTakeOSXactOrderAttempt1st"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_FiredRetryDiscTakeOSXactOrderAttempt1st:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_FiredRetryDiscTakeOSXactOrderAttempt1st:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"FiredRetryConnOrderAttemptFirstJobActive"])
+    else if ([actionCopy isEqualToString:@"FiredRetryConnOrderAttemptFirstJobActive"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_FiredRetryConnOrderAttemptFirstJobActive:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_FiredRetryConnOrderAttemptFirstJobActive:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"TrackServerUp"])
+    else if ([actionCopy isEqualToString:@"TrackServerUp"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_TrackServerUp:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_TrackServerUp:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"TrackServerDown"])
+    else if ([actionCopy isEqualToString:@"TrackServerDown"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_TrackServerDown:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_TrackServerDown:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"TrackServerUpDecideApplicableToJobs"])
+    else if ([actionCopy isEqualToString:@"TrackServerUpDecideApplicableToJobs"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_TrackServerUpDecideApplicableToJobs:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_TrackServerUpDecideApplicableToJobs:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"TrackServerDownDecideApplicableToJobs"])
+    else if ([actionCopy isEqualToString:@"TrackServerDownDecideApplicableToJobs"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_TrackServerDownDecideApplicableToJobs:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_TrackServerDownDecideApplicableToJobs:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"TrackServerUpDecideInUseActiveJob"])
+    else if ([actionCopy isEqualToString:@"TrackServerUpDecideInUseActiveJob"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_TrackServerUpDecideInUseActiveJob:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_TrackServerUpDecideInUseActiveJob:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"TrackServerDownDecideInUseActiveJob"])
+    else if ([actionCopy isEqualToString:@"TrackServerDownDecideInUseActiveJob"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_TrackServerDownDecideInUseActiveJob:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_TrackServerDownDecideInUseActiveJob:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"StartupAlteredJobsReplaceDecideHaveJobs"])
+    else if ([actionCopy isEqualToString:@"StartupAlteredJobsReplaceDecideHaveJobs"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_StartupAlteredJobsReplaceDecideHaveJobs:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_StartupAlteredJobsReplaceDecideHaveJobs:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"AlteredJobsReplaceDecideHaveJobs"])
+    else if ([actionCopy isEqualToString:@"AlteredJobsReplaceDecideHaveJobs"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_AlteredJobsReplaceDecideHaveJobs:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_AlteredJobsReplaceDecideHaveJobs:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"AlteredJobsDecideStillActiveJob"])
+    else if ([actionCopy isEqualToString:@"AlteredJobsDecideStillActiveJob"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_AlteredJobsDecideStillActiveJob:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_AlteredJobsDecideStillActiveJob:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"AlteredJobsDecidePreemptBackoff"])
+    else if ([actionCopy isEqualToString:@"AlteredJobsDecidePreemptBackoff"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_AlteredJobsDecidePreemptBackoff:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_AlteredJobsDecidePreemptBackoff:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"DecideServerApplicableToJobs"])
+    else if ([actionCopy isEqualToString:@"DecideServerApplicableToJobs"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_DecideServerApplicableToJobs:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_DecideServerApplicableToJobs:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"TakeOSTransaction"])
+    else if ([actionCopy isEqualToString:@"TakeOSTransaction"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_TakeOSTransaction:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_TakeOSTransaction:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"ClearOSTransaction"])
+    else if ([actionCopy isEqualToString:@"ClearOSTransaction"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_ClearOSTransaction:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_ClearOSTransaction:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"OrderAttemptTakeOSXactFirstJobActive"])
+    else if ([actionCopy isEqualToString:@"OrderAttemptTakeOSXactFirstJobActive"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_OrderAttemptTakeOSXactFirstJobActive:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_OrderAttemptTakeOSXactFirstJobActive:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"NextScheduledJobNowActive"])
+    else if ([actionCopy isEqualToString:@"NextScheduledJobNowActive"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_NextScheduledJobNowActive:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_NextScheduledJobNowActive:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"JobFinishedDecideHaveJobs"])
+    else if ([actionCopy isEqualToString:@"JobFinishedDecideHaveJobs"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_JobFinishedDecideHaveJobs:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_JobFinishedDecideHaveJobs:infoCopy error:error];
     }
 
-    else if ([v11 isEqualToString:@"JobFinishedDecideStillActiveJob"])
+    else if ([actionCopy isEqualToString:@"JobFinishedDecideStillActiveJob"])
     {
-      v14 = [(MADAutoAssetConnector *)self action_JobFinishedDecideStillActiveJob:v12 error:a8];
+      v14 = [(MADAutoAssetConnector *)self action_JobFinishedDecideStillActiveJob:infoCopy error:error];
     }
 
     else
     {
-      v14 = [(MADAutoAssetConnector *)self actionUnknownAction:v11 error:a8];
+      v14 = [(MADAutoAssetConnector *)self actionUnknownAction:actionCopy error:error];
     }
 
     v13 = v14;
@@ -1025,9 +1025,9 @@
   v2 = [(MADAutoAssetConnector *)&v31 init];
   if (v2)
   {
-    v3 = [objc_opt_class() _getAutoAssetConnectorStateTable];
+    _getAutoAssetConnectorStateTable = [objc_opt_class() _getAutoAssetConnectorStateTable];
     stateTable = v2->_stateTable;
-    v2->_stateTable = v3;
+    v2->_stateTable = _getAutoAssetConnectorStateTable;
 
     latestSafeSummary = v2->_latestSafeSummary;
     v2->_latestSafeSummary = @"INIT";
@@ -1116,18 +1116,18 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (void)resumeMonitoringMarkers:(id)a3 withMarkersRequiringRetry:(id)a4
++ (void)resumeMonitoringMarkers:(id)markers withMarkersRequiringRetry:(id)retry
 {
-  v5 = a3;
-  v6 = a4;
+  markersCopy = markers;
+  retryCopy = retry;
   v7 = +[MADAutoAssetConnector autoAssetConnector];
   if (v7)
   {
     [@"com.apple.MobileAsset.AutoAssetConnector.alteredMonitoringMarkers" UTF8String];
     v8 = os_transaction_create();
-    v9 = [v7 autoConnectorFSM];
-    v10 = [[MADAutoAssetConnectorParam alloc] initWithMonitorMarkers:v5 withMarkersNoRetry:0 withMarkersRequiringRetry:v6 withEventOSTransaction:v8];
-    [v9 postEvent:@"ResumeMonitoringMarkers" withInfo:v10];
+    autoConnectorFSM = [v7 autoConnectorFSM];
+    v10 = [[MADAutoAssetConnectorParam alloc] initWithMonitorMarkers:markersCopy withMarkersNoRetry:0 withMarkersRequiringRetry:retryCopy withEventOSTransaction:v8];
+    [autoConnectorFSM postEvent:@"ResumeMonitoringMarkers" withInfo:v10];
   }
 
   else
@@ -1141,19 +1141,19 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   }
 }
 
-+ (void)alteredMonitoringMarkers:(id)a3 withTriggeredNoRetry:(id)a4 withTriggeredRequiringRetry:(id)a5
++ (void)alteredMonitoringMarkers:(id)markers withTriggeredNoRetry:(id)retry withTriggeredRequiringRetry:(id)requiringRetry
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  markersCopy = markers;
+  retryCopy = retry;
+  requiringRetryCopy = requiringRetry;
   v10 = +[MADAutoAssetConnector autoAssetConnector];
   if (v10)
   {
     [@"com.apple.MobileAsset.AutoAssetConnector.alteredMonitoringMarkers" UTF8String];
     v11 = os_transaction_create();
-    v12 = [v10 autoConnectorFSM];
-    v13 = [[MADAutoAssetConnectorParam alloc] initWithMonitorMarkers:v7 withMarkersNoRetry:v8 withMarkersRequiringRetry:v9 withEventOSTransaction:v11];
-    [v12 postEvent:@"AlteredTriggeredMarkers" withInfo:v13];
+    autoConnectorFSM = [v10 autoConnectorFSM];
+    v13 = [[MADAutoAssetConnectorParam alloc] initWithMonitorMarkers:markersCopy withMarkersNoRetry:retryCopy withMarkersRequiringRetry:requiringRetryCopy withEventOSTransaction:v11];
+    [autoConnectorFSM postEvent:@"AlteredTriggeredMarkers" withInfo:v13];
   }
 
   else
@@ -1167,17 +1167,17 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   }
 }
 
-+ (void)scheduledMarkerFinished:(id)a3 withPotentialNetworkFailure:(BOOL)a4
++ (void)scheduledMarkerFinished:(id)finished withPotentialNetworkFailure:(BOOL)failure
 {
-  v4 = a4;
-  v5 = a3;
+  failureCopy = failure;
+  finishedCopy = finished;
   v6 = +[MADAutoAssetConnector autoAssetConnector];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 autoConnectorFSM];
-    v9 = [[MADAutoAssetConnectorParam alloc] initWithScheduledMarkerFinished:v5 withPotentialNetworkFailure:v4];
-    [v8 postEvent:@"JobFinishedForMarker" withInfo:v9];
+    autoConnectorFSM = [v6 autoConnectorFSM];
+    v9 = [[MADAutoAssetConnectorParam alloc] initWithScheduledMarkerFinished:finishedCopy withPotentialNetworkFailure:failureCopy];
+    [autoConnectorFSM postEvent:@"JobFinishedForMarker" withInfo:v9];
   }
 
   else
@@ -1191,70 +1191,70 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   }
 }
 
-+ (void)observedNetworkPathToServerUp:(id)a3
++ (void)observedNetworkPathToServerUp:(id)up
 {
-  v3 = a3;
+  upCopy = up;
   if (!+[MADAutoAssetControlManager preferenceAutoAssetObserverIgnoreNetworkStatus])
   {
     v4 = +[MADAutoAssetConnector autoAssetConnector];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 autoConnectorFSM];
-      v7 = [[MADAutoAssetConnectorParam alloc] initWithObservedNetworkPath:v3];
-      [v6 postEvent:@"NetworkPathToServerUp" withInfo:v7];
+      autoConnectorFSM = [v4 autoConnectorFSM];
+      v7 = [[MADAutoAssetConnectorParam alloc] initWithObservedNetworkPath:upCopy];
+      [autoConnectorFSM postEvent:@"NetworkPathToServerUp" withInfo:v7];
     }
 
     else
     {
-      v6 = _MADLog(@"AutoScheduler");
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      autoConnectorFSM = _MADLog(@"AutoScheduler");
+      if (os_log_type_enabled(autoConnectorFSM, OS_LOG_TYPE_ERROR))
       {
         *v8 = 0;
-        _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "{AUTO-CONNECTOR:observedNetworkPathToServerUp} | no auto-asset-connector", v8, 2u);
+        _os_log_impl(&dword_0, autoConnectorFSM, OS_LOG_TYPE_ERROR, "{AUTO-CONNECTOR:observedNetworkPathToServerUp} | no auto-asset-connector", v8, 2u);
       }
     }
   }
 }
 
-+ (void)observedNetworkPathToServerDown:(id)a3
++ (void)observedNetworkPathToServerDown:(id)down
 {
-  v3 = a3;
+  downCopy = down;
   if (!+[MADAutoAssetControlManager preferenceAutoAssetObserverIgnoreNetworkStatus])
   {
     v4 = +[MADAutoAssetConnector autoAssetConnector];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 autoConnectorFSM];
-      v7 = [[MADAutoAssetConnectorParam alloc] initWithObservedNetworkPath:v3];
-      [v6 postEvent:@"NetworkPathToServerDown" withInfo:v7];
+      autoConnectorFSM = [v4 autoConnectorFSM];
+      v7 = [[MADAutoAssetConnectorParam alloc] initWithObservedNetworkPath:downCopy];
+      [autoConnectorFSM postEvent:@"NetworkPathToServerDown" withInfo:v7];
     }
 
     else
     {
-      v6 = _MADLog(@"AutoScheduler");
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      autoConnectorFSM = _MADLog(@"AutoScheduler");
+      if (os_log_type_enabled(autoConnectorFSM, OS_LOG_TYPE_ERROR))
       {
         *v8 = 0;
-        _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "{AUTO-CONNECTOR:observedNetworkPathToServerDown} | no auto-asset-connector", v8, 2u);
+        _os_log_impl(&dword_0, autoConnectorFSM, OS_LOG_TYPE_ERROR, "{AUTO-CONNECTOR:observedNetworkPathToServerDown} | no auto-asset-connector", v8, 2u);
       }
     }
   }
 }
 
-+ (void)simulateNetworkPathUp:(id)a3
++ (void)simulateNetworkPathUp:(id)up
 {
-  v3 = a3;
+  upCopy = up;
   v4 = +[MADAutoAssetConnector autoAssetConnector];
   if (v4)
   {
-    v5 = [v3 assetType];
-    v6 = [DownloadManager pathToCatalogLookupServer:v5 usingDownloadOptions:0];
+    assetType = [upCopy assetType];
+    v6 = [DownloadManager pathToCatalogLookupServer:assetType usingDownloadOptions:0];
 
-    v7 = [v4 autoConnectorFSM];
+    autoConnectorFSM = [v4 autoConnectorFSM];
     v8 = [[MADAutoAssetConnectorParam alloc] initWithObservedNetworkPath:v6];
-    [v7 postEvent:@"NetworkPathToServerUp" withInfo:v8];
+    [autoConnectorFSM postEvent:@"NetworkPathToServerUp" withInfo:v8];
   }
 
   else
@@ -1268,18 +1268,18 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   }
 }
 
-+ (void)simulateNetworkPathDown:(id)a3
++ (void)simulateNetworkPathDown:(id)down
 {
-  v3 = a3;
+  downCopy = down;
   v4 = +[MADAutoAssetConnector autoAssetConnector];
   if (v4)
   {
-    v5 = [v3 assetType];
-    v6 = [DownloadManager pathToCatalogLookupServer:v5 usingDownloadOptions:0];
+    assetType = [downCopy assetType];
+    v6 = [DownloadManager pathToCatalogLookupServer:assetType usingDownloadOptions:0];
 
-    v7 = [v4 autoConnectorFSM];
+    autoConnectorFSM = [v4 autoConnectorFSM];
     v8 = [[MADAutoAssetConnectorParam alloc] initWithObservedNetworkPath:v6];
-    [v7 postEvent:@"NetworkPathToServerDown" withInfo:v8];
+    [autoConnectorFSM postEvent:@"NetworkPathToServerDown" withInfo:v8];
   }
 
   else
@@ -1293,25 +1293,25 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   }
 }
 
-- (int64_t)action_ResumeDecideRequiringRetry:(id)a3 error:(id *)a4
+- (int64_t)action_ResumeDecideRequiringRetry:(id)retry error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  retryCopy = retry;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 monitorMarkers];
-  if (v8)
+  monitorMarkers = [retryCopy monitorMarkers];
+  if (monitorMarkers)
   {
-    v9 = v8;
-    v10 = [v5 monitorMarkers];
-    v11 = [v10 count];
+    v9 = monitorMarkers;
+    monitorMarkers2 = [retryCopy monitorMarkers];
+    v11 = [monitorMarkers2 count];
 
     if (v11)
     {
       v12 = [NSMutableArray alloc];
-      v13 = [v5 monitorMarkers];
-      v14 = [v12 initWithArray:v13];
+      monitorMarkers3 = [retryCopy monitorMarkers];
+      v14 = [v12 initWithArray:monitorMarkers3];
       [(MADAutoAssetConnector *)self setMonitorMarkers:v14];
 
       [(MADAutoAssetConnector *)self _logMarkersBeingMonitored:@"ResumeDecideRequiringRetry"];
@@ -1319,8 +1319,8 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
       v33 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v15 = [v5 monitorMarkers];
-      v16 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+      monitorMarkers4 = [retryCopy monitorMarkers];
+      v16 = [monitorMarkers4 countByEnumeratingWithState:&v30 objects:v34 count:16];
       if (v16)
       {
         v17 = v16;
@@ -1332,7 +1332,7 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
           {
             if (*v31 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(monitorMarkers4);
             }
 
             [(MADAutoAssetConnector *)self _addObserverForMarker:*(*(&v30 + 1) + 8 * v19)];
@@ -1340,7 +1340,7 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
           }
 
           while (v17 != v19);
-          v17 = [v15 countByEnumeratingWithState:&v30 objects:v34 count:16];
+          v17 = [monitorMarkers4 countByEnumeratingWithState:&v30 objects:v34 count:16];
         }
 
         while (v17);
@@ -1348,12 +1348,12 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
     }
   }
 
-  v20 = [v5 markersRequiringRetry];
-  if (v20 && (v21 = v20, [v5 markersRequiringRetry], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, v21, v23))
+  markersRequiringRetry = [retryCopy markersRequiringRetry];
+  if (markersRequiringRetry && (v21 = markersRequiringRetry, [retryCopy markersRequiringRetry], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "count"), v22, v21, v23))
   {
     v24 = [NSMutableArray alloc];
-    v25 = [v5 markersRequiringRetry];
-    v26 = [v24 initWithArray:v25];
+    markersRequiringRetry2 = [retryCopy markersRequiringRetry];
+    v26 = [v24 initWithArray:markersRequiringRetry2];
     [(MADAutoAssetConnector *)self setMarkersRequiringRetry:v26];
 
     [(MADAutoAssetConnector *)self _logMarkersRequiringRetry:@"ResumeDecideRequiringRetry"];
@@ -1365,17 +1365,17 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
     v27 = @"ResumeNothingRequiringRetry";
   }
 
-  v28 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  [v28 followupEvent:v27 withInfo:v5];
+  autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  [autoConnectorFSM2 followupEvent:v27 withInfo:retryCopy];
 
   return 0;
 }
 
-- (int64_t)action_StartInitialWaitTimer:(id)a3 error:(id *)a4
+- (int64_t)action_StartInitialWaitTimer:(id)timer error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:timer];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v7 = +[MADAutoAssetControlManager preferenceConnectorInitialWaitSecs];
   if (v7 == -1)
@@ -1394,11 +1394,11 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_StartBackoffAndRetryWaitTimersClearOSXact:(id)a3 error:(id *)a4
+- (int64_t)action_StartBackoffAndRetryWaitTimersClearOSXact:(id)xact error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:xact];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(MADAutoAssetConnector *)self osTransactionEnd:@"StartBackoffAndRetryWaitTimersClearOSXact"];
   v7 = +[MADAutoAssetControlManager preferenceConnectorBackoffRetryTimes];
@@ -1416,13 +1416,13 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   v9 = [v7 count];
   if (v9 <= [(MADAutoAssetConnector *)self backoffRetryLevel])
   {
-    v11 = &loc_93A80;
+    integerValue = &loc_93A80;
   }
 
   else
   {
     v10 = [v7 objectAtIndex:{-[MADAutoAssetConnector backoffRetryLevel](self, "backoffRetryLevel")}];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
   }
 
   if (v8 == -1)
@@ -1430,7 +1430,7 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
     v8 = 30;
   }
 
-  v12 = [(MADAutoAssetConnector *)self _startTimer:@"StartBackoffAndRetryWaitTimersClearOSXact" ofTimerCategory:@"BACKOFF_RETRY_TIMER" forOneShotSecs:v11 withFiredMessage:@"BACKOFF_RETRY_TIMER" postingEvent:@"TimeoutBackoffRetry"];
+  v12 = [(MADAutoAssetConnector *)self _startTimer:@"StartBackoffAndRetryWaitTimersClearOSXact" ofTimerCategory:@"BACKOFF_RETRY_TIMER" forOneShotSecs:integerValue withFiredMessage:@"BACKOFF_RETRY_TIMER" postingEvent:@"TimeoutBackoffRetry"];
   [(MADAutoAssetConnector *)self setBackoffRetryTimer:v12];
 
   v13 = [(MADAutoAssetConnector *)self _startTimer:@"StartBackoffAndRetryWaitTimersClearOSXact" ofTimerCategory:@"WAIT_BEFORE_RETRY_TIMER" forOneShotSecs:v8 withFiredMessage:@"WAIT_BEFORE_RETRY_TIMER" postingEvent:@"TimeoutRetryWait"];
@@ -1439,18 +1439,18 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_StopBackoffTimer:(id)a3 error:(id *)a4
+- (int64_t)action_StopBackoffTimer:(id)timer error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:timer];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self backoffRetryTimer];
+  backoffRetryTimer = [(MADAutoAssetConnector *)self backoffRetryTimer];
 
-  if (v7)
+  if (backoffRetryTimer)
   {
-    v8 = [(MADAutoAssetConnector *)self backoffRetryTimer];
-    [v8 invalidate];
+    backoffRetryTimer2 = [(MADAutoAssetConnector *)self backoffRetryTimer];
+    [backoffRetryTimer2 invalidate];
 
     [(MADAutoAssetConnector *)self setBackoffRetryTimer:0];
     [(MADAutoAssetConnector *)self _stoppedTimer:@"StopBackoffTimer" ofTimerCategory:@"BACKOFF_RETRY_TIMER"];
@@ -1459,18 +1459,18 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_StopBackoffTimerTakeOSTransaction:(id)a3 error:(id *)a4
+- (int64_t)action_StopBackoffTimerTakeOSTransaction:(id)transaction error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:transaction];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self backoffRetryTimer];
+  backoffRetryTimer = [(MADAutoAssetConnector *)self backoffRetryTimer];
 
-  if (v7)
+  if (backoffRetryTimer)
   {
-    v8 = [(MADAutoAssetConnector *)self backoffRetryTimer];
-    [v8 invalidate];
+    backoffRetryTimer2 = [(MADAutoAssetConnector *)self backoffRetryTimer];
+    [backoffRetryTimer2 invalidate];
 
     [(MADAutoAssetConnector *)self setBackoffRetryTimer:0];
     [(MADAutoAssetConnector *)self _stoppedTimer:@"StopBackoffTimerTakeOSTransaction" ofTimerCategory:@"BACKOFF_RETRY_TIMER"];
@@ -1480,18 +1480,18 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_StopBackoffTakeOSXactOrderAttempt1st:(id)a3 error:(id *)a4
+- (int64_t)action_StopBackoffTakeOSXactOrderAttempt1st:(id)attempt1st error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:attempt1st];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self backoffRetryTimer];
+  backoffRetryTimer = [(MADAutoAssetConnector *)self backoffRetryTimer];
 
-  if (v7)
+  if (backoffRetryTimer)
   {
-    v8 = [(MADAutoAssetConnector *)self backoffRetryTimer];
-    [v8 invalidate];
+    backoffRetryTimer2 = [(MADAutoAssetConnector *)self backoffRetryTimer];
+    [backoffRetryTimer2 invalidate];
 
     [(MADAutoAssetConnector *)self setBackoffRetryTimer:0];
     [(MADAutoAssetConnector *)self _stoppedTimer:@"StopBackoffTakeOSXactOrderAttempt1st" ofTimerCategory:@"WAIT_BEFORE_RETRY_TIMER"];
@@ -1501,15 +1501,15 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_FiredInitial:(id)a3 error:(id *)a4
+- (int64_t)action_FiredInitial:(id)initial error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:initial];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self initialWaitTimer];
+  initialWaitTimer = [(MADAutoAssetConnector *)self initialWaitTimer];
 
-  if (v7)
+  if (initialWaitTimer)
   {
     [(MADAutoAssetConnector *)self setInitialWaitTimer:0];
     [(MADAutoAssetConnector *)self _firedTimer:@"FiredInitial" ofTimerCategory:@"INITIAL_WAIT_TIMER"];
@@ -1518,15 +1518,15 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_FiredInitialDecideServerApplicableToJobs:(id)a3 error:(id *)a4
+- (int64_t)action_FiredInitialDecideServerApplicableToJobs:(id)jobs error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:jobs];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self initialWaitTimer];
+  initialWaitTimer = [(MADAutoAssetConnector *)self initialWaitTimer];
 
-  if (v7)
+  if (initialWaitTimer)
   {
     [(MADAutoAssetConnector *)self setInitialWaitTimer:0];
     [(MADAutoAssetConnector *)self _firedTimer:@"FiredInitialDecideServerApplicableToJobs" ofTimerCategory:@"INITIAL_WAIT_TIMER"];
@@ -1536,15 +1536,15 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_FiredRetryWaitIgnored:(id)a3 error:(id *)a4
+- (int64_t)action_FiredRetryWaitIgnored:(id)ignored error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:ignored];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self initialWaitTimer];
+  initialWaitTimer = [(MADAutoAssetConnector *)self initialWaitTimer];
 
-  if (v7)
+  if (initialWaitTimer)
   {
     [(MADAutoAssetConnector *)self setInitialWaitTimer:0];
     [(MADAutoAssetConnector *)self _firedTimer:@"FiredRetryWaitIgnored" ofTimerCategory:@"WAIT_BEFORE_RETRY_TIMER"];
@@ -1553,15 +1553,15 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_FiredBackoffIgnored:(id)a3 error:(id *)a4
+- (int64_t)action_FiredBackoffIgnored:(id)ignored error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:ignored];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self initialWaitTimer];
+  initialWaitTimer = [(MADAutoAssetConnector *)self initialWaitTimer];
 
-  if (v7)
+  if (initialWaitTimer)
   {
     [(MADAutoAssetConnector *)self setInitialWaitTimer:0];
     [(MADAutoAssetConnector *)self _firedTimer:@"FiredBackoffIgnored" ofTimerCategory:@"BACKOFF_RETRY_TIMER"];
@@ -1570,15 +1570,15 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_FiredRetryWait:(id)a3 error:(id *)a4
+- (int64_t)action_FiredRetryWait:(id)wait error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:wait];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self initialWaitTimer];
+  initialWaitTimer = [(MADAutoAssetConnector *)self initialWaitTimer];
 
-  if (v7)
+  if (initialWaitTimer)
   {
     [(MADAutoAssetConnector *)self setInitialWaitTimer:0];
     [(MADAutoAssetConnector *)self _firedTimer:@"FiredRetryWait" ofTimerCategory:@"WAIT_BEFORE_RETRY_TIMER"];
@@ -1587,15 +1587,15 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_FiredBackoffDecideServerApplicableToJobs:(id)a3 error:(id *)a4
+- (int64_t)action_FiredBackoffDecideServerApplicableToJobs:(id)jobs error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:jobs];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self initialWaitTimer];
+  initialWaitTimer = [(MADAutoAssetConnector *)self initialWaitTimer];
 
-  if (v7)
+  if (initialWaitTimer)
   {
     [(MADAutoAssetConnector *)self setInitialWaitTimer:0];
     [(MADAutoAssetConnector *)self _firedTimer:@"FiredBackoffDecideServerApplicableToJobs" ofTimerCategory:@"BACKOFF_RETRY_TIMER"];
@@ -1605,15 +1605,15 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_FiredRetryDiscTakeOSXactOrderAttempt1st:(id)a3 error:(id *)a4
+- (int64_t)action_FiredRetryDiscTakeOSXactOrderAttempt1st:(id)attempt1st error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:attempt1st];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self initialWaitTimer];
+  initialWaitTimer = [(MADAutoAssetConnector *)self initialWaitTimer];
 
-  if (v7)
+  if (initialWaitTimer)
   {
     [(MADAutoAssetConnector *)self setInitialWaitTimer:0];
     [(MADAutoAssetConnector *)self _firedTimer:@"FiredRetryDiscTakeOSXactOrderAttempt1st" ofTimerCategory:@"WAIT_BEFORE_RETRY_TIMER"];
@@ -1623,15 +1623,15 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_FiredRetryConnOrderAttemptFirstJobActive:(id)a3 error:(id *)a4
+- (int64_t)action_FiredRetryConnOrderAttemptFirstJobActive:(id)active error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:active];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self initialWaitTimer];
+  initialWaitTimer = [(MADAutoAssetConnector *)self initialWaitTimer];
 
-  if (v7)
+  if (initialWaitTimer)
   {
     [(MADAutoAssetConnector *)self setInitialWaitTimer:0];
     [(MADAutoAssetConnector *)self _firedTimer:@"FiredRetryConnOrderAttemptFirstJobActive" ofTimerCategory:@"WAIT_BEFORE_RETRY_TIMER"];
@@ -1641,144 +1641,144 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
   return 0;
 }
 
-- (int64_t)action_TrackServerUp:(id)a3 error:(id *)a4
+- (int64_t)action_TrackServerUp:(id)up error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  upCopy = up;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 observedNetworkPath];
+  observedNetworkPath = [upCopy observedNetworkPath];
 
-  [(MADAutoAssetConnector *)self _trackServerUp:v8 fromLocation:@"TrackServerUp"];
+  [(MADAutoAssetConnector *)self _trackServerUp:observedNetworkPath fromLocation:@"TrackServerUp"];
   return 0;
 }
 
-- (int64_t)action_TrackServerDown:(id)a3 error:(id *)a4
+- (int64_t)action_TrackServerDown:(id)down error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  downCopy = down;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 observedNetworkPath];
+  observedNetworkPath = [downCopy observedNetworkPath];
 
-  [(MADAutoAssetConnector *)self _trackServerDown:v8 fromLocation:@"TrackServerDown"];
+  [(MADAutoAssetConnector *)self _trackServerDown:observedNetworkPath fromLocation:@"TrackServerDown"];
   return 0;
 }
 
-- (int64_t)action_TrackServerUpDecideApplicableToJobs:(id)a3 error:(id *)a4
+- (int64_t)action_TrackServerUpDecideApplicableToJobs:(id)jobs error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  jobsCopy = jobs;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 observedNetworkPath];
-  [(MADAutoAssetConnector *)self _trackServerUp:v8 fromLocation:@"TrackServerUpDecideApplicableToJobs"];
+  observedNetworkPath = [jobsCopy observedNetworkPath];
+  [(MADAutoAssetConnector *)self _trackServerUp:observedNetworkPath fromLocation:@"TrackServerUpDecideApplicableToJobs"];
 
   if ([(MADAutoAssetConnector *)self _isAnyServerUpForJobsToBeAttempted:@"TrackServerUpDecideApplicableToJobs"])
   {
-    v9 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    [v9 followupEvent:@"ApplicableServersUp" withInfo:v5];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    [autoConnectorFSM2 followupEvent:@"ApplicableServersUp" withInfo:jobsCopy];
   }
 
   return 0;
 }
 
-- (int64_t)action_TrackServerDownDecideApplicableToJobs:(id)a3 error:(id *)a4
+- (int64_t)action_TrackServerDownDecideApplicableToJobs:(id)jobs error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  jobsCopy = jobs;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 observedNetworkPath];
-  [(MADAutoAssetConnector *)self _trackServerDown:v8 fromLocation:@"TrackServerDownDecideApplicableToJobs"];
+  observedNetworkPath = [jobsCopy observedNetworkPath];
+  [(MADAutoAssetConnector *)self _trackServerDown:observedNetworkPath fromLocation:@"TrackServerDownDecideApplicableToJobs"];
 
   if (![(MADAutoAssetConnector *)self _isAnyServerUpForJobsToBeAttempted:@"TrackServerUpDecideApplicableToJobs"])
   {
-    v9 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    [v9 followupEvent:@"ApplicableServersDown" withInfo:v5];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    [autoConnectorFSM2 followupEvent:@"ApplicableServersDown" withInfo:jobsCopy];
   }
 
   return 0;
 }
 
-- (int64_t)action_TrackServerUpDecideInUseActiveJob:(id)a3 error:(id *)a4
+- (int64_t)action_TrackServerUpDecideInUseActiveJob:(id)job error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  jobCopy = job;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v8 = [(MADAutoAssetConnector *)self _followupInUseServerStatus:@"TrackServerUpDecideInUseActiveJob"];
-  v9 = [v5 observedNetworkPath];
-  [(MADAutoAssetConnector *)self _trackServerUp:v9 fromLocation:@"TrackServerUpDecideInUseActiveJob"];
+  observedNetworkPath = [jobCopy observedNetworkPath];
+  [(MADAutoAssetConnector *)self _trackServerUp:observedNetworkPath fromLocation:@"TrackServerUpDecideInUseActiveJob"];
 
-  v10 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  [v10 followupEvent:v8 withInfo:v5];
+  autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  [autoConnectorFSM2 followupEvent:v8 withInfo:jobCopy];
 
   return 0;
 }
 
-- (int64_t)action_TrackServerDownDecideInUseActiveJob:(id)a3 error:(id *)a4
+- (int64_t)action_TrackServerDownDecideInUseActiveJob:(id)job error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  jobCopy = job;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v8 = [(MADAutoAssetConnector *)self _followupInUseServerStatus:@"TrackServerUpDecideInUseActiveJob"];
-  v9 = [v5 observedNetworkPath];
-  [(MADAutoAssetConnector *)self _trackServerDown:v9 fromLocation:@"TrackServerDownDecideInUseActiveJob"];
+  observedNetworkPath = [jobCopy observedNetworkPath];
+  [(MADAutoAssetConnector *)self _trackServerDown:observedNetworkPath fromLocation:@"TrackServerDownDecideInUseActiveJob"];
 
-  v10 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  [v10 followupEvent:v8 withInfo:v5];
+  autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  [autoConnectorFSM2 followupEvent:v8 withInfo:jobCopy];
 
   return 0;
 }
 
-- (int64_t)action_StartupAlteredJobsReplaceDecideHaveJobs:(id)a3 error:(id *)a4
+- (int64_t)action_StartupAlteredJobsReplaceDecideHaveJobs:(id)jobs error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  jobsCopy = jobs;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  [(MADAutoAssetConnector *)self _adoptAlteredMarkers:v5 fromLocation:@"StartupAlteredJobsReplaceDecideHaveJobs"];
+  [(MADAutoAssetConnector *)self _adoptAlteredMarkers:jobsCopy fromLocation:@"StartupAlteredJobsReplaceDecideHaveJobs"];
   [(MADAutoAssetConnector *)self _issueFollowupWhetherHaveJobs:@"[STARTUP] set of monitored markers replaced" notifyingWhenNoJobs:0];
   return 0;
 }
 
-- (int64_t)action_AlteredJobsReplaceDecideHaveJobs:(id)a3 error:(id *)a4
+- (int64_t)action_AlteredJobsReplaceDecideHaveJobs:(id)jobs error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  jobsCopy = jobs;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  [(MADAutoAssetConnector *)self _adoptAlteredMarkers:v5 fromLocation:@"AlteredJobsReplaceDecideHaveJobs"];
+  [(MADAutoAssetConnector *)self _adoptAlteredMarkers:jobsCopy fromLocation:@"AlteredJobsReplaceDecideHaveJobs"];
   [(MADAutoAssetConnector *)self _issueFollowupWhetherHaveJobs:@"set of monitored markers replaced" notifyingWhenNoJobs:1];
   return 0;
 }
 
-- (int64_t)action_AlteredJobsDecideStillActiveJob:(id)a3 error:(id *)a4
+- (int64_t)action_AlteredJobsDecideStillActiveJob:(id)job error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  jobCopy = job;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v8 = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:@"set of monitored markers altered mid-attempt"];
-  [(MADAutoAssetConnector *)self _adoptAlteredMarkers:v5 fromLocation:@"AlteredJobsDecideStillActiveJob"];
+  [(MADAutoAssetConnector *)self _adoptAlteredMarkers:jobCopy fromLocation:@"AlteredJobsDecideStillActiveJob"];
 
-  v9 = [(MADAutoAssetConnector *)self activeJobMarker];
+  activeJobMarker = [(MADAutoAssetConnector *)self activeJobMarker];
 
-  if (v9)
+  if (activeJobMarker)
   {
-    v10 = [(MADAutoAssetConnector *)self activeJobMarker];
-    v11 = [(MADAutoAssetConnector *)self _isMarkerBeingMonitored:v10];
+    activeJobMarker2 = [(MADAutoAssetConnector *)self activeJobMarker];
+    v11 = [(MADAutoAssetConnector *)self _isMarkerBeingMonitored:activeJobMarker2];
 
     if (v11)
     {
@@ -1789,26 +1789,26 @@ void __43__MADAutoAssetConnector_autoAssetConnector__block_invoke(id a1)
 
   else
   {
-    v13 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v14 = [v13 diag];
-    [v14 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{AlteredJobsDecideStillActiveJob} no active-job-marker when deciding whether still active job" withResult:6111 withError:0];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [autoConnectorFSM2 diag];
+    [diag trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{AlteredJobsDecideStillActiveJob} no active-job-marker when deciding whether still active job" withResult:6111 withError:0];
   }
 
   [(MADAutoAssetConnector *)self setActiveJobMarker:0];
   [(MADAutoAssetConnector *)self _logClearedActiveJobMarker:@"AlteredJobsDecideStillActiveJob"];
-  v15 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-  v16 = [v15 count];
+  currentAttemptRemainingMarkers = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+  v16 = [currentAttemptRemainingMarkers count];
 
   if (!v16)
   {
-    v19 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-    if (![v19 count])
+    markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
+    if (![markersRequiringRetry count])
     {
-      v20 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-      if (![v20 count])
+      triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+      if (![triggeredMarkersNoRetry count])
       {
-        v23 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-        v24 = [v23 count];
+        triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+        v24 = [triggeredMarkersRequiringRetry count];
 
         if (!v24)
         {
@@ -1826,8 +1826,8 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v17 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-  v18 = [v17 objectAtIndex:0];
+  currentAttemptRemainingMarkers2 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+  v18 = [currentAttemptRemainingMarkers2 objectAtIndex:0];
 
   if ([(MADAutoAssetConnector *)self _isPathToServerForMarkerUp:v18])
   {
@@ -1840,32 +1840,32 @@ LABEL_14:
   }
 
 LABEL_15:
-  v21 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  [v21 followupEvent:v12 withInfo:v8];
+  autoConnectorFSM3 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  [autoConnectorFSM3 followupEvent:v12 withInfo:v8];
 
   return 0;
 }
 
-- (int64_t)action_AlteredJobsDecidePreemptBackoff:(id)a3 error:(id *)a4
+- (int64_t)action_AlteredJobsDecidePreemptBackoff:(id)backoff error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  backoffCopy = backoff;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 markersNoRetry];
-  if ([v8 count])
+  markersNoRetry = [backoffCopy markersNoRetry];
+  if ([markersNoRetry count])
   {
 
-    [(MADAutoAssetConnector *)self _adoptAlteredMarkers:v5 fromLocation:@"AlteredJobsDecidePreemptBackoff"];
+    [(MADAutoAssetConnector *)self _adoptAlteredMarkers:backoffCopy fromLocation:@"AlteredJobsDecidePreemptBackoff"];
   }
 
   else
   {
-    v9 = [v5 markersRequiringRetry];
-    v10 = [v9 count];
+    markersRequiringRetry = [backoffCopy markersRequiringRetry];
+    v10 = [markersRequiringRetry count];
 
-    [(MADAutoAssetConnector *)self _adoptAlteredMarkers:v5 fromLocation:@"AlteredJobsDecidePreemptBackoff"];
+    [(MADAutoAssetConnector *)self _adoptAlteredMarkers:backoffCopy fromLocation:@"AlteredJobsDecidePreemptBackoff"];
     if (!v10)
     {
       goto LABEL_8;
@@ -1873,8 +1873,8 @@ LABEL_15:
   }
 
   v11 = [(MADAutoAssetConnector *)self _isAnyServerUpForJobsToBeAttempted:@"AlteredJobsDecidePreemptBackoff"];
-  v12 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v13 = v12;
+  autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  v13 = autoConnectorFSM2;
   if (v11)
   {
     v14 = @"AlteredPreemptConnected";
@@ -1885,72 +1885,72 @@ LABEL_15:
     v14 = @"AlteredPreemptDisconnected";
   }
 
-  [v12 followupEvent:v14 withInfo:v5];
+  [autoConnectorFSM2 followupEvent:v14 withInfo:backoffCopy];
 
 LABEL_8:
   return 0;
 }
 
-- (int64_t)action_DecideServerApplicableToJobs:(id)a3 error:(id *)a4
+- (int64_t)action_DecideServerApplicableToJobs:(id)jobs error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:jobs];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(MADAutoAssetConnector *)self _issueFollowupApplicableServersUpDown:@"DecideServerApplicableToJobs"];
   return 0;
 }
 
-- (int64_t)action_TakeOSTransaction:(id)a3 error:(id *)a4
+- (int64_t)action_TakeOSTransaction:(id)transaction error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:transaction];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(MADAutoAssetConnector *)self osTransactionBegin:@"TakeOSTransaction"];
   return 0;
 }
 
-- (int64_t)action_ClearOSTransaction:(id)a3 error:(id *)a4
+- (int64_t)action_ClearOSTransaction:(id)transaction error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:transaction];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(MADAutoAssetConnector *)self osTransactionEnd:@"ClearOSTransaction"];
   return 0;
 }
 
-- (int64_t)action_OrderAttemptTakeOSXactFirstJobActive:(id)a3 error:(id *)a4
+- (int64_t)action_OrderAttemptTakeOSXactFirstJobActive:(id)active error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:active];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   [(MADAutoAssetConnector *)self _chooseOrderForNextAttemptAndStartFirstJob:@"OrderAttemptTakeOSXactFirstJobActive" beginningOSTransaction:1];
   return 0;
 }
 
-- (int64_t)action_NextScheduledJobNowActive:(id)a3 error:(id *)a4
+- (int64_t)action_NextScheduledJobNowActive:(id)active error:(id *)error
 {
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:a3];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM:active];
+  extendedStateQueue = [v5 extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self activeJobMarker];
+  activeJobMarker = [(MADAutoAssetConnector *)self activeJobMarker];
 
-  if (v7)
+  if (activeJobMarker)
   {
-    v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v9 = [v8 diag];
-    [v9 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{NextScheduledJobNowActive} active-job-marker when not expected" withResult:6103 withError:0];
+    autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [autoConnectorFSM diag];
+    [diag trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{NextScheduledJobNowActive} active-job-marker when not expected" withResult:6103 withError:0];
 
     [(MADAutoAssetConnector *)self setActiveJobMarker:0];
     [(MADAutoAssetConnector *)self _logClearedActiveJobMarker:@"NextScheduledJobNowActive"];
   }
 
-  v10 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-  if (!v10 || (v11 = v10, -[MADAutoAssetConnector currentAttemptRemainingMarkers](self, "currentAttemptRemainingMarkers"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 count], v12, v11, !v13))
+  currentAttemptRemainingMarkers = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+  if (!currentAttemptRemainingMarkers || (v11 = currentAttemptRemainingMarkers, -[MADAutoAssetConnector currentAttemptRemainingMarkers](self, "currentAttemptRemainingMarkers"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v12 count], v12, v11, !v13))
   {
     v14 = @"{NextScheduledJobNowActive} no [more] jobs remaining for current attempt when jobs expected";
     goto LABEL_8;
@@ -1960,43 +1960,43 @@ LABEL_8:
   {
     v14 = @"{NextScheduledJobNowActive} unable to start next triggered job";
 LABEL_8:
-    v15 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v16 = [v15 diag];
-    [v16 trackAnomaly:@"AUTO-CONNECTOR" forReason:v14 withResult:6110 withError:0];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag2 = [autoConnectorFSM2 diag];
+    [diag2 trackAnomaly:@"AUTO-CONNECTOR" forReason:v14 withResult:6110 withError:0];
 
     [(MADAutoAssetConnector *)self setCurrentAttemptBeginningMarkers:0];
     v17 = objc_alloc_init(NSMutableArray);
     [(MADAutoAssetConnector *)self setCurrentAttemptRemainingMarkers:v17];
 
     [(MADAutoAssetConnector *)self _logClearedAttemptRemainingMarkers:v14];
-    v18 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    autoConnectorFSM3 = [(MADAutoAssetConnector *)self autoConnectorFSM];
     v19 = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:v14];
-    [v18 postEvent:@"AttemptAbandoned" withInfo:v19];
+    [autoConnectorFSM3 postEvent:@"AttemptAbandoned" withInfo:v19];
   }
 
   return 0;
 }
 
-- (int64_t)action_JobFinishedDecideHaveJobs:(id)a3 error:(id *)a4
+- (int64_t)action_JobFinishedDecideHaveJobs:(id)jobs error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  jobsCopy = jobs;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 finishedMarker];
+  finishedMarker = [jobsCopy finishedMarker];
 
-  if (v8)
+  if (finishedMarker)
   {
-    v9 = [v5 finishedMarker];
-    v10 = [(MADAutoAssetConnector *)self activeJobMarker];
-    v11 = [v9 isEqual:v10];
+    finishedMarker2 = [jobsCopy finishedMarker];
+    activeJobMarker = [(MADAutoAssetConnector *)self activeJobMarker];
+    v11 = [finishedMarker2 isEqual:activeJobMarker];
 
     if (v11)
     {
-      v12 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-      v13 = [v12 diag];
-      [v13 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{JobFinishedDecideHaveJobs} finishedMarker = activeJobMarker (when no attempt in progress)" withResult:6102 withError:0];
+      autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+      diag = [autoConnectorFSM2 diag];
+      [diag trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{JobFinishedDecideHaveJobs} finishedMarker = activeJobMarker (when no attempt in progress)" withResult:6102 withError:0];
 
       [(MADAutoAssetConnector *)self setActiveJobMarker:0];
       [(MADAutoAssetConnector *)self setCurrentAttemptBeginningMarkers:0];
@@ -2006,58 +2006,58 @@ LABEL_8:
       [(MADAutoAssetConnector *)self _logClearedActiveJobAndAttemptRemainingMarkers:@"JobFinishedDecideHaveJobs"];
     }
 
-    v15 = [v5 finishedMarker];
-    -[MADAutoAssetConnector _refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:](self, "_refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:", v15, [v5 potentialNetworkFailure]);
+    finishedMarker3 = [jobsCopy finishedMarker];
+    -[MADAutoAssetConnector _refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:](self, "_refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:", finishedMarker3, [jobsCopy potentialNetworkFailure]);
   }
 
   else
   {
-    v15 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v16 = [v15 diag];
-    [v16 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{JobFinishedDecideHaveJobs} no finishedMarker" withResult:6102 withError:0];
+    finishedMarker3 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag2 = [finishedMarker3 diag];
+    [diag2 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{JobFinishedDecideHaveJobs} no finishedMarker" withResult:6102 withError:0];
   }
 
   [(MADAutoAssetConnector *)self _issueFollowupWhetherHaveJobs:@"active-job (known to marker) finished" notifyingWhenNoJobs:0];
   return 0;
 }
 
-- (int64_t)action_JobFinishedDecideStillActiveJob:(id)a3 error:(id *)a4
+- (int64_t)action_JobFinishedDecideStillActiveJob:(id)job error:(id *)error
 {
-  v5 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  jobCopy = job;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [v5 finishedMarker];
+  finishedMarker = [jobCopy finishedMarker];
 
-  if (!v8)
+  if (!finishedMarker)
   {
-    v18 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v19 = [v18 diag];
-    [(MADAutoAssetConnectorParam *)v19 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{JobFinishedDecideStillActiveJob} no finishedMarker" withResult:6102 withError:0];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [autoConnectorFSM2 diag];
+    [(MADAutoAssetConnectorParam *)diag trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{JobFinishedDecideStillActiveJob} no finishedMarker" withResult:6102 withError:0];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v9 = [v5 finishedMarker];
-  v10 = [(MADAutoAssetConnector *)self activeJobMarker];
-  v11 = [v9 isEqual:v10];
+  finishedMarker2 = [jobCopy finishedMarker];
+  activeJobMarker = [(MADAutoAssetConnector *)self activeJobMarker];
+  v11 = [finishedMarker2 isEqual:activeJobMarker];
 
   if (v11)
   {
     [(MADAutoAssetConnector *)self setActiveJobMarker:0];
     [(MADAutoAssetConnector *)self _logClearedActiveJobMarker:@"JobFinishedDecideStillActiveJob"];
-    v12 = [v5 finishedMarker];
-    -[MADAutoAssetConnector _refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:](self, "_refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:", v12, [v5 potentialNetworkFailure]);
+    finishedMarker3 = [jobCopy finishedMarker];
+    -[MADAutoAssetConnector _refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:](self, "_refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:", finishedMarker3, [jobCopy potentialNetworkFailure]);
 
-    v13 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-    v14 = [v13 count];
+    currentAttemptRemainingMarkers = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+    v14 = [currentAttemptRemainingMarkers count];
 
     if (v14)
     {
-      v15 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-      v16 = [v15 objectAtIndex:0];
+      currentAttemptRemainingMarkers2 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+      v16 = [currentAttemptRemainingMarkers2 objectAtIndex:0];
 
       if ([(MADAutoAssetConnector *)self _isPathToServerForMarkerUp:v16])
       {
@@ -2080,59 +2080,59 @@ LABEL_14:
       v17 = @"JobFinishedAttemptDoneNoJobs";
     }
 
-    v18 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v19 = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:@"JobFinishedDecideStillActiveJob"];
-    [v18 followupEvent:v17 withInfo:v19];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:@"JobFinishedDecideStillActiveJob"];
+    [autoConnectorFSM2 followupEvent:v17 withInfo:diag];
     goto LABEL_14;
   }
 
-  v18 = [v5 finishedMarker];
-  -[MADAutoAssetConnector _refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:](self, "_refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:", v18, [v5 potentialNetworkFailure]);
+  autoConnectorFSM2 = [jobCopy finishedMarker];
+  -[MADAutoAssetConnector _refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:](self, "_refreshTrackingOfFinishedMarker:withPotentialNetworkFailure:", autoConnectorFSM2, [jobCopy potentialNetworkFailure]);
 LABEL_15:
 
   return 0;
 }
 
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4
+- (int64_t)actionUnknownAction:(id)action error:(id *)error
 {
-  v5 = a3;
-  v6 = [[NSString alloc] initWithFormat:@"unknown action(%@)", v5];
+  actionCopy = action;
+  actionCopy = [[NSString alloc] initWithFormat:@"unknown action(%@)", actionCopy];
 
-  v7 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v8 = [v7 diag];
-  [v8 dumpTracked:v6 dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  diag = [autoConnectorFSM diag];
+  [diag dumpTracked:actionCopy dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
 
   return 0;
 }
 
-- (void)_adoptAlteredMarkers:(id)a3 fromLocation:(id)a4
+- (void)_adoptAlteredMarkers:(id)markers fromLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  markersCopy = markers;
+  locationCopy = location;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v125 = v7;
-  v128 = [[NSString alloc] initWithFormat:@"%@:_adoptAlteredMarkers", v7];
+  v125 = locationCopy;
+  locationCopy = [[NSString alloc] initWithFormat:@"%@:_adoptAlteredMarkers", locationCopy];
   v10 = [[NSMutableString alloc] initWithString:&stru_4BD3F0];
-  v11 = [v6 monitorMarkers];
+  monitorMarkers = [markersCopy monitorMarkers];
 
-  v126 = v6;
-  if (v11)
+  v126 = markersCopy;
+  if (monitorMarkers)
   {
-    v12 = [(MADAutoAssetConnector *)self monitorMarkers];
+    monitorMarkers2 = [(MADAutoAssetConnector *)self monitorMarkers];
     objc_msgSend(v10, "appendString:", @"monitorMarkers(");
     v13 = [NSMutableArray alloc];
-    v14 = [v6 monitorMarkers];
-    v15 = [v13 initWithArray:v14];
+    monitorMarkers3 = [markersCopy monitorMarkers];
+    v15 = [v13 initWithArray:monitorMarkers3];
     [(MADAutoAssetConnector *)self setMonitorMarkers:v15];
 
     v163 = 0u;
     v164 = 0u;
     v161 = 0u;
     v162 = 0u;
-    v16 = v12;
+    v16 = monitorMarkers2;
     v17 = [v16 countByEnumeratingWithState:&v161 objects:v177 count:16];
     if (v17)
     {
@@ -2151,8 +2151,8 @@ LABEL_15:
           if (![(MADAutoAssetConnector *)self _isMarkerBeingMonitored:v21])
           {
             [(MADAutoAssetConnector *)self _removeObserverForMarker:v21];
-            v22 = [v21 summary];
-            [v10 appendFormat:@"removeObserver:%@|", v22];
+            summary = [v21 summary];
+            [v10 appendFormat:@"removeObserver:%@|", summary];
           }
         }
 
@@ -2166,8 +2166,8 @@ LABEL_15:
     v160 = 0u;
     v157 = 0u;
     v158 = 0u;
-    v23 = [(MADAutoAssetConnector *)self monitorMarkers];
-    v24 = [v23 countByEnumeratingWithState:&v157 objects:v176 count:16];
+    monitorMarkers4 = [(MADAutoAssetConnector *)self monitorMarkers];
+    v24 = [monitorMarkers4 countByEnumeratingWithState:&v157 objects:v176 count:16];
     if (v24)
     {
       v25 = v24;
@@ -2178,29 +2178,29 @@ LABEL_15:
         {
           if (*v158 != v26)
           {
-            objc_enumerationMutation(v23);
+            objc_enumerationMutation(monitorMarkers4);
           }
 
           v28 = *(*(&v157 + 1) + 8 * j);
           [(MADAutoAssetConnector *)self _addObserverForMarker:v28];
-          v29 = [v28 summary];
-          [v10 appendFormat:@"addObserver:%@|", v29];
+          summary2 = [v28 summary];
+          [v10 appendFormat:@"addObserver:%@|", summary2];
         }
 
-        v25 = [v23 countByEnumeratingWithState:&v157 objects:v176 count:16];
+        v25 = [monitorMarkers4 countByEnumeratingWithState:&v157 objects:v176 count:16];
       }
 
       while (v25);
     }
 
-    [(MADAutoAssetConnector *)self _logMarkersBeingMonitored:v128];
+    [(MADAutoAssetConnector *)self _logMarkersBeingMonitored:locationCopy];
     v30 = objc_alloc_init(NSMutableArray);
     v153 = 0u;
     v154 = 0u;
     v155 = 0u;
     v156 = 0u;
-    v31 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-    v32 = [v31 countByEnumeratingWithState:&v153 objects:v175 count:16];
+    triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+    v32 = [triggeredMarkersNoRetry countByEnumeratingWithState:&v153 objects:v175 count:16];
     if (v32)
     {
       v33 = v32;
@@ -2211,33 +2211,33 @@ LABEL_15:
         {
           if (*v154 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(triggeredMarkersNoRetry);
           }
 
           v36 = *(*(&v153 + 1) + 8 * k);
           if ([(MADAutoAssetConnector *)self _isMarkerBeingMonitored:v36])
           {
             [v30 addObject:v36];
-            v37 = [v36 summary];
-            [v10 appendFormat:@"trimTrigNoRetry:%@|", v37];
+            summary3 = [v36 summary];
+            [v10 appendFormat:@"trimTrigNoRetry:%@|", summary3];
           }
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v153 objects:v175 count:16];
+        v33 = [triggeredMarkersNoRetry countByEnumeratingWithState:&v153 objects:v175 count:16];
       }
 
       while (v33);
     }
 
     v38 = [v30 count];
-    v39 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-    v40 = [v39 count];
+    triggeredMarkersNoRetry2 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+    v40 = [triggeredMarkersNoRetry2 count];
 
     if (v38 != v40)
     {
       [(MADAutoAssetConnector *)self setTriggeredMarkersNoRetry:v30];
       [v10 appendString:@"setTrigNoRetry|"];
-      [(MADAutoAssetConnector *)self _logTriggeredMarkersNoRetry:v128];
+      [(MADAutoAssetConnector *)self _logTriggeredMarkersNoRetry:locationCopy];
     }
 
     v41 = objc_alloc_init(NSMutableArray);
@@ -2246,8 +2246,8 @@ LABEL_15:
     v152 = 0u;
     v149 = 0u;
     v150 = 0u;
-    v42 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-    v43 = [v42 countByEnumeratingWithState:&v149 objects:v174 count:16];
+    triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+    v43 = [triggeredMarkersRequiringRetry countByEnumeratingWithState:&v149 objects:v174 count:16];
     if (v43)
     {
       v44 = v43;
@@ -2258,33 +2258,33 @@ LABEL_15:
         {
           if (*v150 != v45)
           {
-            objc_enumerationMutation(v42);
+            objc_enumerationMutation(triggeredMarkersRequiringRetry);
           }
 
           v47 = *(*(&v149 + 1) + 8 * m);
           if ([(MADAutoAssetConnector *)self _isMarkerBeingMonitored:v47])
           {
             [v41 addObject:v47];
-            v48 = [v47 summary];
-            [v10 appendFormat:@"trimTrigRetry:%@|", v48];
+            summary4 = [v47 summary];
+            [v10 appendFormat:@"trimTrigRetry:%@|", summary4];
           }
         }
 
-        v44 = [v42 countByEnumeratingWithState:&v149 objects:v174 count:16];
+        v44 = [triggeredMarkersRequiringRetry countByEnumeratingWithState:&v149 objects:v174 count:16];
       }
 
       while (v44);
     }
 
     v49 = [v41 count];
-    v50 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-    v51 = [v50 count];
+    triggeredMarkersRequiringRetry2 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+    v51 = [triggeredMarkersRequiringRetry2 count];
 
     if (v49 != v51)
     {
       [(MADAutoAssetConnector *)self setTriggeredMarkersRequiringRetry:v41];
       [v10 appendString:@"setTrigRetry|"];
-      [(MADAutoAssetConnector *)self _logTriggeredMarkersRequiringRetry:v128];
+      [(MADAutoAssetConnector *)self _logTriggeredMarkersRequiringRetry:locationCopy];
     }
 
     v52 = objc_alloc_init(NSMutableArray);
@@ -2293,8 +2293,8 @@ LABEL_15:
     v148 = 0u;
     v145 = 0u;
     v146 = 0u;
-    v53 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-    v54 = [v53 countByEnumeratingWithState:&v145 objects:v173 count:16];
+    markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
+    v54 = [markersRequiringRetry countByEnumeratingWithState:&v145 objects:v173 count:16];
     if (v54)
     {
       v55 = v54;
@@ -2305,51 +2305,51 @@ LABEL_15:
         {
           if (*v146 != v56)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(markersRequiringRetry);
           }
 
           v58 = *(*(&v145 + 1) + 8 * n);
           if ([(MADAutoAssetConnector *)self _isMarkerBeingMonitored:v58])
           {
             [v52 addObject:v58];
-            v59 = [v58 summary];
-            [v10 appendFormat:@"trimRetry:%@|", v59];
+            summary5 = [v58 summary];
+            [v10 appendFormat:@"trimRetry:%@|", summary5];
           }
         }
 
-        v55 = [v53 countByEnumeratingWithState:&v145 objects:v173 count:16];
+        v55 = [markersRequiringRetry countByEnumeratingWithState:&v145 objects:v173 count:16];
       }
 
       while (v55);
     }
 
     v60 = [v52 count];
-    v61 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-    v62 = [v61 count];
+    markersRequiringRetry2 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+    v62 = [markersRequiringRetry2 count];
 
     if (v60 != v62)
     {
       [(MADAutoAssetConnector *)self setMarkersRequiringRetry:v52];
       [v10 appendString:@"setRetry|"];
-      [(MADAutoAssetConnector *)self _logMarkersRequiringRetry:v128];
+      [(MADAutoAssetConnector *)self _logMarkersRequiringRetry:locationCopy];
     }
 
     [v10 appendString:@""]);
 
-    v6 = v126;
+    markersCopy = v126;
   }
 
-  v63 = [v6 markersNoRetry];
+  markersNoRetry = [markersCopy markersNoRetry];
 
-  if (v63)
+  if (markersNoRetry)
   {
     objc_msgSend(v10, "appendString:", @"markersNoRetry(");
     v143 = 0u;
     v144 = 0u;
     v141 = 0u;
     v142 = 0u;
-    v64 = [v6 markersNoRetry];
-    v65 = [v64 countByEnumeratingWithState:&v141 objects:v172 count:16];
+    markersNoRetry2 = [markersCopy markersNoRetry];
+    v65 = [markersNoRetry2 countByEnumeratingWithState:&v141 objects:v172 count:16];
     if (v65)
     {
       v66 = v65;
@@ -2360,57 +2360,57 @@ LABEL_15:
         {
           if (*v142 != v67)
           {
-            objc_enumerationMutation(v64);
+            objc_enumerationMutation(markersNoRetry2);
           }
 
           v69 = *(*(&v141 + 1) + 8 * ii);
           if ([(MADAutoAssetConnector *)self _isMarkerBeingMonitored:v69])
           {
-            v70 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-            v71 = [(MADAutoAssetConnector *)self _isMarker:v69 trackedByArray:v70];
+            triggeredMarkersNoRetry3 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+            v71 = [(MADAutoAssetConnector *)self _isMarker:v69 trackedByArray:triggeredMarkersNoRetry3];
 
             if ((v71 & 1) == 0)
             {
-              v72 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-              [v72 addObject:v69];
+              triggeredMarkersNoRetry4 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+              [triggeredMarkersNoRetry4 addObject:v69];
 
-              v73 = [v69 summary];
-              [v10 appendFormat:@"trigNoRetry:%@|", v73];
+              summary6 = [v69 summary];
+              [v10 appendFormat:@"trigNoRetry:%@|", summary6];
 
-              [(MADAutoAssetConnector *)self _logTriggeredMarkerNoRetry:v128 addedMarker:v69];
+              [(MADAutoAssetConnector *)self _logTriggeredMarkerNoRetry:locationCopy addedMarker:v69];
             }
           }
 
           else
           {
-            v74 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-            v75 = [v74 diag];
-            v76 = [[NSString alloc] initWithFormat:@"{%@} auto-asset-scheduled provided markersNoRetry entry not being monitored | marker:%@", v128, v69];
-            [v75 trackAnomaly:@"AUTO-CONNECTOR" forReason:v76 withResult:6103 withError:0];
+            autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+            diag = [autoConnectorFSM2 diag];
+            v76 = [[NSString alloc] initWithFormat:@"{%@} auto-asset-scheduled provided markersNoRetry entry not being monitored | marker:%@", locationCopy, v69];
+            [diag trackAnomaly:@"AUTO-CONNECTOR" forReason:v76 withResult:6103 withError:0];
           }
         }
 
-        v66 = [v64 countByEnumeratingWithState:&v141 objects:v172 count:16];
+        v66 = [markersNoRetry2 countByEnumeratingWithState:&v141 objects:v172 count:16];
       }
 
       while (v66);
     }
 
     [v10 appendString:@""]);
-    v6 = v126;
+    markersCopy = v126;
   }
 
-  v77 = [v6 markersRequiringRetry];
+  markersRequiringRetry3 = [markersCopy markersRequiringRetry];
 
-  if (v77)
+  if (markersRequiringRetry3)
   {
     objc_msgSend(v10, "appendString:", @"markersRequiringRetry(");
     v139 = 0u;
     v140 = 0u;
     v137 = 0u;
     v138 = 0u;
-    v78 = [v6 markersRequiringRetry];
-    v79 = [v78 countByEnumeratingWithState:&v137 objects:v171 count:16];
+    markersRequiringRetry4 = [markersCopy markersRequiringRetry];
+    v79 = [markersRequiringRetry4 countByEnumeratingWithState:&v137 objects:v171 count:16];
     if (v79)
     {
       v80 = v79;
@@ -2421,92 +2421,92 @@ LABEL_15:
         {
           if (*v138 != v81)
           {
-            objc_enumerationMutation(v78);
+            objc_enumerationMutation(markersRequiringRetry4);
           }
 
           v83 = *(*(&v137 + 1) + 8 * jj);
           if ([(MADAutoAssetConnector *)self _isMarkerBeingMonitored:v83])
           {
-            v84 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-            v85 = [(MADAutoAssetConnector *)self _isMarker:v83 trackedByArray:v84];
+            triggeredMarkersRequiringRetry3 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+            v85 = [(MADAutoAssetConnector *)self _isMarker:v83 trackedByArray:triggeredMarkersRequiringRetry3];
 
             if ((v85 & 1) == 0)
             {
-              v86 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-              [v86 addObject:v83];
+              triggeredMarkersRequiringRetry4 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+              [triggeredMarkersRequiringRetry4 addObject:v83];
 
-              v87 = [v83 summary];
-              [v10 appendFormat:@"trigRetry:%@|", v87];
+              summary7 = [v83 summary];
+              [v10 appendFormat:@"trigRetry:%@|", summary7];
 
-              [(MADAutoAssetConnector *)self _logTriggeredMarkerRequiringRetry:v128 addedMarker:v83];
-              v88 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-              v89 = [(MADAutoAssetConnector *)self _isMarker:v83 trackedByArray:v88];
+              [(MADAutoAssetConnector *)self _logTriggeredMarkerRequiringRetry:locationCopy addedMarker:v83];
+              markersRequiringRetry5 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+              v89 = [(MADAutoAssetConnector *)self _isMarker:v83 trackedByArray:markersRequiringRetry5];
 
               if ((v89 & 1) == 0)
               {
-                v90 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-                [v90 addObject:v83];
+                markersRequiringRetry6 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+                [markersRequiringRetry6 addObject:v83];
 
-                v91 = [v83 summary];
-                [v10 appendFormat:@"markerRetry:%@|", v91];
+                summary8 = [v83 summary];
+                [v10 appendFormat:@"markerRetry:%@|", summary8];
 
-                [(MADAutoAssetConnector *)self _logMarkerRequiringRetry:v128 addedMarker:v83];
+                [(MADAutoAssetConnector *)self _logMarkerRequiringRetry:locationCopy addedMarker:v83];
               }
             }
           }
 
           else
           {
-            v92 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-            v93 = [v92 diag];
-            v94 = [[NSString alloc] initWithFormat:@"{%@} auto-asset-scheduled provided markersRequiringRetry entry not being monitored | marker:%@", v128, v83];
-            [v93 trackAnomaly:@"AUTO-CONNECTOR" forReason:v94 withResult:6103 withError:0];
+            autoConnectorFSM3 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+            diag2 = [autoConnectorFSM3 diag];
+            v94 = [[NSString alloc] initWithFormat:@"{%@} auto-asset-scheduled provided markersRequiringRetry entry not being monitored | marker:%@", locationCopy, v83];
+            [diag2 trackAnomaly:@"AUTO-CONNECTOR" forReason:v94 withResult:6103 withError:0];
           }
         }
 
-        v80 = [v78 countByEnumeratingWithState:&v137 objects:v171 count:16];
+        v80 = [markersRequiringRetry4 countByEnumeratingWithState:&v137 objects:v171 count:16];
       }
 
       while (v80);
     }
 
     [v10 appendString:@""]);
-    v6 = v126;
+    markersCopy = v126;
   }
 
-  v95 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-  v96 = [v95 count];
+  currentAttemptRemainingMarkers = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+  v96 = [currentAttemptRemainingMarkers count];
 
   if (v96)
   {
-    v97 = [(MADAutoAssetConnector *)self currentAttemptBeginningMarkers];
+    currentAttemptBeginningMarkers = [(MADAutoAssetConnector *)self currentAttemptBeginningMarkers];
 
-    if (v97)
+    if (currentAttemptBeginningMarkers)
     {
       v98 = [NSMutableArray alloc];
-      v99 = [(MADAutoAssetConnector *)self currentAttemptBeginningMarkers];
-      v100 = [v98 initWithArray:v99];
+      currentAttemptBeginningMarkers2 = [(MADAutoAssetConnector *)self currentAttemptBeginningMarkers];
+      v100 = [v98 initWithArray:currentAttemptBeginningMarkers2];
     }
 
     else
     {
-      v99 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-      v101 = [v99 diag];
-      [v101 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"have currentAttemptRemainingMarkers yet nil currentAttemptBeginningMarkers" withResult:6110 withError:0];
+      currentAttemptBeginningMarkers2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+      diag3 = [currentAttemptBeginningMarkers2 diag];
+      [diag3 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"have currentAttemptRemainingMarkers yet nil currentAttemptBeginningMarkers" withResult:6110 withError:0];
 
       v100 = 0;
     }
 
-    v102 = [v6 markersNoRetry];
+    markersNoRetry3 = [markersCopy markersNoRetry];
 
-    if (v102)
+    if (markersNoRetry3)
     {
       v135 = 0u;
       v136 = 0u;
       v133 = 0u;
       v134 = 0u;
-      v103 = [v6 markersNoRetry];
-      v104 = [v103 countByEnumeratingWithState:&v133 objects:v170 count:16];
+      markersNoRetry4 = [markersCopy markersNoRetry];
+      v104 = [markersNoRetry4 countByEnumeratingWithState:&v133 objects:v170 count:16];
       if (v104)
       {
         v105 = v104;
@@ -2518,17 +2518,17 @@ LABEL_15:
           {
             if (*v134 != v106)
             {
-              objc_enumerationMutation(v103);
+              objc_enumerationMutation(markersNoRetry4);
             }
 
             v108 = *(*(&v133 + 1) + 8 * kk);
-            v109 = [(MADAutoAssetConnector *)self currentAttemptBeginningMarkers];
-            v110 = [(MADAutoAssetConnector *)self _isMarker:v108 trackedByArray:v109];
+            currentAttemptBeginningMarkers3 = [(MADAutoAssetConnector *)self currentAttemptBeginningMarkers];
+            v110 = [(MADAutoAssetConnector *)self _isMarker:v108 trackedByArray:currentAttemptBeginningMarkers3];
 
             if ((v110 & 1) == 0)
             {
-              v111 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-              [v111 addObject:v108];
+              currentAttemptRemainingMarkers2 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+              [currentAttemptRemainingMarkers2 addObject:v108];
 
               if (v100)
               {
@@ -2536,12 +2536,12 @@ LABEL_15:
                 v127 = 1;
               }
 
-              v112 = [v108 summary];
-              [v10 appendFormat:@"addNoRetryCurrent:%@|", v112];
+              summary9 = [v108 summary];
+              [v10 appendFormat:@"addNoRetryCurrent:%@|", summary9];
             }
           }
 
-          v105 = [v103 countByEnumeratingWithState:&v133 objects:v170 count:16];
+          v105 = [markersNoRetry4 countByEnumeratingWithState:&v133 objects:v170 count:16];
         }
 
         while (v105);
@@ -2552,7 +2552,7 @@ LABEL_15:
         v127 = 0;
       }
 
-      v6 = v126;
+      markersCopy = v126;
     }
 
     else
@@ -2560,16 +2560,16 @@ LABEL_15:
       v127 = 0;
     }
 
-    v113 = [v6 markersRequiringRetry];
+    markersRequiringRetry7 = [markersCopy markersRequiringRetry];
 
-    if (v113)
+    if (markersRequiringRetry7)
     {
       v131 = 0u;
       v132 = 0u;
       v129 = 0u;
       v130 = 0u;
-      v114 = [v6 markersRequiringRetry];
-      v115 = [v114 countByEnumeratingWithState:&v129 objects:v169 count:16];
+      markersRequiringRetry8 = [markersCopy markersRequiringRetry];
+      v115 = [markersRequiringRetry8 countByEnumeratingWithState:&v129 objects:v169 count:16];
       if (v115)
       {
         v116 = v115;
@@ -2580,17 +2580,17 @@ LABEL_15:
           {
             if (*v130 != v117)
             {
-              objc_enumerationMutation(v114);
+              objc_enumerationMutation(markersRequiringRetry8);
             }
 
             v119 = *(*(&v129 + 1) + 8 * mm);
-            v120 = [(MADAutoAssetConnector *)self currentAttemptBeginningMarkers];
-            v121 = [(MADAutoAssetConnector *)self _isMarker:v119 trackedByArray:v120];
+            currentAttemptBeginningMarkers4 = [(MADAutoAssetConnector *)self currentAttemptBeginningMarkers];
+            v121 = [(MADAutoAssetConnector *)self _isMarker:v119 trackedByArray:currentAttemptBeginningMarkers4];
 
             if ((v121 & 1) == 0)
             {
-              v122 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-              [v122 addObject:v119];
+              currentAttemptRemainingMarkers3 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+              [currentAttemptRemainingMarkers3 addObject:v119];
 
               if (v100)
               {
@@ -2598,18 +2598,18 @@ LABEL_15:
                 v127 = 1;
               }
 
-              v123 = [v119 summary];
-              [v10 appendFormat:@"addRetryCurrent:%@|", v123];
+              summary10 = [v119 summary];
+              [v10 appendFormat:@"addRetryCurrent:%@|", summary10];
             }
           }
 
-          v116 = [v114 countByEnumeratingWithState:&v129 objects:v169 count:16];
+          v116 = [markersRequiringRetry8 countByEnumeratingWithState:&v129 objects:v169 count:16];
         }
 
         while (v116);
       }
 
-      v6 = v126;
+      markersCopy = v126;
     }
 
     if (v127)
@@ -2622,26 +2622,26 @@ LABEL_15:
   if (os_log_type_enabled(v124, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543618;
-    v166 = v128;
+    v166 = locationCopy;
     v167 = 2114;
     v168 = v10;
     _os_log_impl(&dword_0, v124, OS_LOG_TYPE_DEBUG, "{%{public}@} adoptMarkersFlow:%{public}@", buf, 0x16u);
   }
 }
 
-- (BOOL)_isMarkerBeingMonitored:(id)a3
+- (BOOL)_isMarkerBeingMonitored:(id)monitored
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  monitoredCopy = monitored;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(MADAutoAssetConnector *)self monitorMarkers];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  monitorMarkers = [(MADAutoAssetConnector *)self monitorMarkers];
+  v8 = [monitorMarkers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = *v13;
@@ -2651,17 +2651,17 @@ LABEL_15:
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(monitorMarkers);
         }
 
-        if ([v4 isEqual:*(*(&v12 + 1) + 8 * i)])
+        if ([monitoredCopy isEqual:*(*(&v12 + 1) + 8 * i)])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [monitorMarkers countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         continue;
@@ -2676,15 +2676,15 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)_isMarker:(id)a3 trackedByArray:(id)a4
+- (BOOL)_isMarker:(id)marker trackedByArray:(id)array
 {
-  v5 = a3;
+  markerCopy = marker;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = a4;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  arrayCopy = array;
+  v7 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = *v12;
@@ -2694,17 +2694,17 @@ LABEL_11:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayCopy);
         }
 
-        if ([v5 isEqual:{*(*(&v11 + 1) + 8 * i), v11}])
+        if ([markerCopy isEqual:{*(*(&v11 + 1) + 8 * i), v11}])
         {
           LOBYTE(v7) = 1;
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [arrayCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v7)
       {
         continue;
@@ -2719,20 +2719,20 @@ LABEL_11:
   return v7;
 }
 
-- (void)_issueFollowupWhetherHaveJobs:(id)a3 notifyingWhenNoJobs:(BOOL)a4
+- (void)_issueFollowupWhetherHaveJobs:(id)jobs notifyingWhenNoJobs:(BOOL)noJobs
 {
-  v4 = a4;
-  v17 = a3;
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [v6 extendedStateQueue];
-  dispatch_assert_queue_V2(v7);
+  noJobsCopy = noJobs;
+  jobsCopy = jobs;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v8 = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:v17];
-  v9 = [(MADAutoAssetConnector *)self monitorMarkers];
-  if ([v9 count])
+  v8 = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:jobsCopy];
+  monitorMarkers = [(MADAutoAssetConnector *)self monitorMarkers];
+  if ([monitorMarkers count])
   {
-    v10 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-    if ([v10 count])
+    markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
+    if ([markersRequiringRetry count])
     {
 LABEL_5:
 
@@ -2741,15 +2741,15 @@ LABEL_6:
       goto LABEL_11;
     }
 
-    v11 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-    if ([v11 count])
+    triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+    if ([triggeredMarkersNoRetry count])
     {
 
       goto LABEL_5;
     }
 
-    v15 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-    v16 = [v15 count];
+    triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+    v16 = [triggeredMarkersRequiringRetry count];
 
     if (v16)
     {
@@ -2761,47 +2761,47 @@ LABEL_6:
   {
   }
 
-  v13 = [[NSString alloc] initWithFormat:@"no [more] jobs triggered or requiring retry (%@)", v17];
-  [(MADAutoAssetConnector *)self _setBackoffRetryLevel:0 forReason:v13];
+  jobsCopy = [[NSString alloc] initWithFormat:@"no [more] jobs triggered or requiring retry (%@)", jobsCopy];
+  [(MADAutoAssetConnector *)self _setBackoffRetryLevel:0 forReason:jobsCopy];
 
-  if (v4)
+  if (noJobsCopy)
   {
     +[MADAutoAssetControlManager schedulerTriggeredNoActivity];
   }
 
   v12 = @"AlteredNoJobs";
 LABEL_11:
-  v14 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  [v14 followupEvent:v12 withInfo:v8];
+  autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  [autoConnectorFSM2 followupEvent:v12 withInfo:v8];
 }
 
-- (void)_refreshTrackingOfFinishedMarker:(id)a3 withPotentialNetworkFailure:(BOOL)a4
+- (void)_refreshTrackingOfFinishedMarker:(id)marker withPotentialNetworkFailure:(BOOL)failure
 {
-  v6 = a3;
-  v7 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v8 = [v7 extendedStateQueue];
-  dispatch_assert_queue_V2(v8);
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v9 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-  v10 = [v9 count];
+  triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+  v10 = [triggeredMarkersNoRetry count];
 
   if (v10)
   {
     v11 = 0;
     while (1)
     {
-      v12 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-      v13 = [v12 objectAtIndex:v11];
+      triggeredMarkersNoRetry2 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+      v13 = [triggeredMarkersNoRetry2 objectAtIndex:v11];
 
-      LOBYTE(v12) = [v13 isEqual:v6];
-      if (v12)
+      LOBYTE(triggeredMarkersNoRetry2) = [v13 isEqual:markerCopy];
+      if (triggeredMarkersNoRetry2)
       {
         break;
       }
 
       ++v11;
-      v14 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-      v15 = [v14 count];
+      triggeredMarkersNoRetry3 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+      v15 = [triggeredMarkersNoRetry3 count];
 
       if (v11 >= v15)
       {
@@ -2809,39 +2809,39 @@ LABEL_11:
       }
     }
 
-    v16 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-    v17 = [v16 count];
+    triggeredMarkersNoRetry4 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+    v17 = [triggeredMarkersNoRetry4 count];
 
     if (v11 < v17)
     {
-      v18 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-      [v18 removeObjectAtIndex:v11];
+      triggeredMarkersNoRetry5 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+      [triggeredMarkersNoRetry5 removeObjectAtIndex:v11];
 
-      [(MADAutoAssetConnector *)self _logTriggeredMarkerNoRetry:@"_refreshTrackingOfFinishedMarker" removedMarker:v6];
+      [(MADAutoAssetConnector *)self _logTriggeredMarkerNoRetry:@"_refreshTrackingOfFinishedMarker" removedMarker:markerCopy];
     }
   }
 
 LABEL_8:
-  v19 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-  v20 = [v19 count];
+  triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+  v20 = [triggeredMarkersRequiringRetry count];
 
   if (v20)
   {
     v21 = 0;
     while (1)
     {
-      v22 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-      v23 = [v22 objectAtIndex:v21];
+      triggeredMarkersRequiringRetry2 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+      v23 = [triggeredMarkersRequiringRetry2 objectAtIndex:v21];
 
-      LOBYTE(v22) = [v23 isEqual:v6];
-      if (v22)
+      LOBYTE(triggeredMarkersRequiringRetry2) = [v23 isEqual:markerCopy];
+      if (triggeredMarkersRequiringRetry2)
       {
         break;
       }
 
       ++v21;
-      v24 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-      v25 = [v24 count];
+      triggeredMarkersRequiringRetry3 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+      v25 = [triggeredMarkersRequiringRetry3 count];
 
       if (v21 >= v25)
       {
@@ -2849,29 +2849,29 @@ LABEL_8:
       }
     }
 
-    v26 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-    v27 = [v26 count];
+    triggeredMarkersRequiringRetry4 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+    v27 = [triggeredMarkersRequiringRetry4 count];
 
     if (v21 < v27)
     {
-      v28 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-      [v28 removeObjectAtIndex:v21];
+      triggeredMarkersRequiringRetry5 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+      [triggeredMarkersRequiringRetry5 removeObjectAtIndex:v21];
 
-      [(MADAutoAssetConnector *)self _logTriggeredMarkerRequiringRetry:@"_refreshTrackingOfFinishedMarker" removedMarker:v6];
+      [(MADAutoAssetConnector *)self _logTriggeredMarkerRequiringRetry:@"_refreshTrackingOfFinishedMarker" removedMarker:markerCopy];
     }
   }
 
 LABEL_15:
-  if ([(MADAutoAssetConnector *)self _isMarkerBeingMonitored:v6])
+  if ([(MADAutoAssetConnector *)self _isMarkerBeingMonitored:markerCopy])
   {
-    if (a4)
+    if (failure)
     {
       v47 = 0u;
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v29 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-      v30 = [v29 countByEnumeratingWithState:&v45 objects:v49 count:16];
+      markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
+      v30 = [markersRequiringRetry countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (v30)
       {
         v31 = v30;
@@ -2883,10 +2883,10 @@ LABEL_15:
           {
             if (*v46 != v32)
             {
-              objc_enumerationMutation(v29);
+              objc_enumerationMutation(markersRequiringRetry);
             }
 
-            if ([*(*(&v45 + 1) + 8 * v33) isEqual:v6])
+            if ([*(*(&v45 + 1) + 8 * v33) isEqual:markerCopy])
             {
 
               goto LABEL_34;
@@ -2896,7 +2896,7 @@ LABEL_15:
           }
 
           while (v31 != v33);
-          v31 = [v29 countByEnumeratingWithState:&v45 objects:v49 count:16];
+          v31 = [markersRequiringRetry countByEnumeratingWithState:&v45 objects:v49 count:16];
           if (v31)
           {
             continue;
@@ -2906,34 +2906,34 @@ LABEL_15:
         }
       }
 
-      v34 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-      [v34 addObject:v6];
+      markersRequiringRetry2 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+      [markersRequiringRetry2 addObject:markerCopy];
 
-      [(MADAutoAssetConnector *)self _logMarkerRequiringRetry:@"_refreshTrackingOfFinishedMarker" addedMarker:v6];
+      [(MADAutoAssetConnector *)self _logMarkerRequiringRetry:@"_refreshTrackingOfFinishedMarker" addedMarker:markerCopy];
     }
 
     else
     {
-      v35 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-      v36 = [v35 count];
+      markersRequiringRetry3 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+      v36 = [markersRequiringRetry3 count];
 
       if (v36)
       {
         v37 = 0;
         while (1)
         {
-          v38 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-          v39 = [v38 objectAtIndex:v37];
+          markersRequiringRetry4 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+          v39 = [markersRequiringRetry4 objectAtIndex:v37];
 
-          LOBYTE(v38) = [v39 isEqual:v6];
-          if (v38)
+          LOBYTE(markersRequiringRetry4) = [v39 isEqual:markerCopy];
+          if (markersRequiringRetry4)
           {
             break;
           }
 
           ++v37;
-          v40 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-          v41 = [v40 count];
+          markersRequiringRetry5 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+          v41 = [markersRequiringRetry5 count];
 
           if (v37 >= v41)
           {
@@ -2941,15 +2941,15 @@ LABEL_15:
           }
         }
 
-        v42 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-        v43 = [v42 count];
+        markersRequiringRetry6 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+        v43 = [markersRequiringRetry6 count];
 
         if (v37 < v43)
         {
-          v44 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-          [v44 removeObjectAtIndex:v37];
+          markersRequiringRetry7 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+          [markersRequiringRetry7 removeObjectAtIndex:v37];
 
-          [(MADAutoAssetConnector *)self _logMarkerRequiringRetry:@"_refreshTrackingOfFinishedMarker" removedMarker:v6];
+          [(MADAutoAssetConnector *)self _logMarkerRequiringRetry:@"_refreshTrackingOfFinishedMarker" removedMarker:markerCopy];
         }
       }
     }
@@ -2958,13 +2958,13 @@ LABEL_15:
 LABEL_34:
 }
 
-- (void)_chooseOrderForNextAttemptAndStartFirstJob:(id)a3 beginningOSTransaction:(BOOL)a4
+- (void)_chooseOrderForNextAttemptAndStartFirstJob:(id)job beginningOSTransaction:(BOOL)transaction
 {
-  v75 = a4;
-  v76 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  transactionCopy = transaction;
+  jobCopy = job;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v77 = objc_alloc_init(NSMutableArray);
   v78 = objc_alloc_init(NSMutableArray);
@@ -2973,8 +2973,8 @@ LABEL_34:
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v7 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-  v8 = [v7 countByEnumeratingWithState:&v96 objects:v116 count:16];
+  markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
+  v8 = [markersRequiringRetry countByEnumeratingWithState:&v96 objects:v116 count:16];
   if (v8)
   {
     v9 = v8;
@@ -2985,30 +2985,30 @@ LABEL_34:
       {
         if (*v97 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(markersRequiringRetry);
         }
 
         v12 = *(*(&v96 + 1) + 8 * i);
-        v13 = [v12 assetType];
-        v14 = [DownloadManager pathToCatalogLookupServer:v13 usingDownloadOptions:0];
+        assetType = [v12 assetType];
+        v14 = [DownloadManager pathToCatalogLookupServer:assetType usingDownloadOptions:0];
 
         if (!v14)
         {
           v19 = _MADLog(@"AutoScheduler");
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
-            v20 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-            v21 = [v12 summary];
+            _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+            summary = [v12 summary];
             *buf = 138544642;
-            v105 = v20;
+            v105 = _updateLatestSummary;
             v106 = 2114;
             v107 = @">----->";
             v108 = 2114;
-            v109 = v76;
+            v109 = jobCopy;
             v110 = 2114;
             v111 = @"MARKERS_REQUIRING_RETRY";
             v112 = 2114;
-            v113 = v21;
+            v113 = summary;
             v114 = 2114;
             v115 = @"<-----<";
             _os_log_impl(&dword_0, v19, OS_LOG_TYPE_ERROR, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | unable to determine path to catalog lookup server\n#_CONNR:(%{public}@) markerRequiringRetry:%{public}@\n#_CONNR:%{public}@", buf, 0x3Eu);
@@ -3019,9 +3019,9 @@ LABEL_13:
           goto LABEL_16;
         }
 
-        v15 = [v14 absoluteString];
-        v16 = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
-        v17 = [v16 safeObjectForKey:v15 ofClass:objc_opt_class()];
+        absoluteString = [v14 absoluteString];
+        catalogServerNetworkPathStatus = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
+        v17 = [catalogServerNetworkPathStatus safeObjectForKey:absoluteString ofClass:objc_opt_class()];
 
         if (!v17)
         {
@@ -3043,7 +3043,7 @@ LABEL_13:
 LABEL_16:
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v96 objects:v116 count:16];
+      v9 = [markersRequiringRetry countByEnumeratingWithState:&v96 objects:v116 count:16];
     }
 
     while (v9);
@@ -3053,8 +3053,8 @@ LABEL_16:
   v95 = 0u;
   v92 = 0u;
   v93 = 0u;
-  v22 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-  v23 = [v22 countByEnumeratingWithState:&v92 objects:v103 count:16];
+  triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+  v23 = [triggeredMarkersNoRetry countByEnumeratingWithState:&v92 objects:v103 count:16];
   if (!v23)
   {
     goto LABEL_35;
@@ -3068,30 +3068,30 @@ LABEL_16:
     {
       if (*v93 != v25)
       {
-        objc_enumerationMutation(v22);
+        objc_enumerationMutation(triggeredMarkersNoRetry);
       }
 
       v27 = *(*(&v92 + 1) + 8 * j);
-      v28 = [v27 assetType];
-      v29 = [DownloadManager pathToCatalogLookupServer:v28 usingDownloadOptions:0];
+      assetType2 = [v27 assetType];
+      v29 = [DownloadManager pathToCatalogLookupServer:assetType2 usingDownloadOptions:0];
 
       if (!v29)
       {
         v34 = _MADLog(@"AutoScheduler");
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
-          v35 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-          v36 = [v27 summary];
+          _updateLatestSummary2 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+          summary2 = [v27 summary];
           *buf = 138544642;
-          v105 = v35;
+          v105 = _updateLatestSummary2;
           v106 = 2114;
           v107 = @">----->";
           v108 = 2114;
-          v109 = v76;
+          v109 = jobCopy;
           v110 = 2114;
           v111 = @"TRIGGERED_MARKERS_NO_RETRY";
           v112 = 2114;
-          v113 = v36;
+          v113 = summary2;
           v114 = 2114;
           v115 = @"<-----<";
           _os_log_impl(&dword_0, v34, OS_LOG_TYPE_ERROR, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | unable to determine path to catalog lookup server\n#_CONNR:(%{public}@) triggeredNoRetry:%{public}@\n#_CONNR:%{public}@", buf, 0x3Eu);
@@ -3102,9 +3102,9 @@ LABEL_30:
         goto LABEL_33;
       }
 
-      v30 = [v29 absoluteString];
-      v31 = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
-      v32 = [v31 safeObjectForKey:v30 ofClass:objc_opt_class()];
+      absoluteString2 = [v29 absoluteString];
+      catalogServerNetworkPathStatus2 = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
+      v32 = [catalogServerNetworkPathStatus2 safeObjectForKey:absoluteString2 ofClass:objc_opt_class()];
 
       if (!v32)
       {
@@ -3126,7 +3126,7 @@ LABEL_30:
 LABEL_33:
     }
 
-    v24 = [v22 countByEnumeratingWithState:&v92 objects:v103 count:16];
+    v24 = [triggeredMarkersNoRetry countByEnumeratingWithState:&v92 objects:v103 count:16];
   }
 
   while (v24);
@@ -3160,8 +3160,8 @@ LABEL_35:
 
         v41 = *(*(&v88 + 1) + 8 * v43);
 
-        v45 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-        [v45 addObject:v41];
+        currentAttemptRemainingMarkers = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+        [currentAttemptRemainingMarkers addObject:v41];
 
         v43 = v43 + 1;
         v44 = v41;
@@ -3198,8 +3198,8 @@ LABEL_35:
 
         v49 = *(*(&v84 + 1) + 8 * v51);
 
-        v53 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-        [v53 addObject:v49];
+        currentAttemptRemainingMarkers2 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+        [currentAttemptRemainingMarkers2 addObject:v49];
 
         v51 = v51 + 1;
         v52 = v49;
@@ -3236,8 +3236,8 @@ LABEL_35:
 
         v57 = *(*(&v80 + 1) + 8 * v59);
 
-        v61 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-        [v61 addObject:v57];
+        currentAttemptRemainingMarkers3 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+        [currentAttemptRemainingMarkers3 addObject:v57];
 
         v59 = v59 + 1;
         v60 = v57;
@@ -3250,13 +3250,13 @@ LABEL_35:
     while (v56);
   }
 
-  v62 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-  v63 = [v62 count];
+  currentAttemptRemainingMarkers4 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+  v63 = [currentAttemptRemainingMarkers4 count];
 
   if (v63)
   {
-    v64 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-    v65 = [v64 copy];
+    currentAttemptRemainingMarkers5 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+    v65 = [currentAttemptRemainingMarkers5 copy];
     [(MADAutoAssetConnector *)self setCurrentAttemptBeginningMarkers:v65];
   }
 
@@ -3266,81 +3266,81 @@ LABEL_35:
   v67 = objc_alloc_init(NSMutableArray);
   [(MADAutoAssetConnector *)self setTriggeredMarkersRequiringRetry:v67];
 
-  v68 = v76;
-  [(MADAutoAssetConnector *)self _logTriggeredMarkersCleared:v76];
-  if (v75)
+  v68 = jobCopy;
+  [(MADAutoAssetConnector *)self _logTriggeredMarkersCleared:jobCopy];
+  if (transactionCopy)
   {
-    [(MADAutoAssetConnector *)self osTransactionBegin:v76];
+    [(MADAutoAssetConnector *)self osTransactionBegin:jobCopy];
   }
 
   if ([(MADAutoAssetConnector *)self _triggerNextMarker])
   {
-    [(MADAutoAssetConnector *)self _logCurrentAttemptRemainingMarkers:v76];
+    [(MADAutoAssetConnector *)self _logCurrentAttemptRemainingMarkers:jobCopy];
   }
 
   else
   {
-    v69 = [[NSString alloc] initWithFormat:@"{%@} unable to start first triggered job", v76];
-    v70 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v71 = [v70 diag];
-    [v71 trackAnomaly:@"AUTO-CONNECTOR" forReason:v69 withResult:6110 withError:0];
+    jobCopy = [[NSString alloc] initWithFormat:@"{%@} unable to start first triggered job", jobCopy];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [autoConnectorFSM2 diag];
+    [diag trackAnomaly:@"AUTO-CONNECTOR" forReason:jobCopy withResult:6110 withError:0];
 
-    v68 = v76;
+    v68 = jobCopy;
     [(MADAutoAssetConnector *)self setActiveJobMarker:0];
     [(MADAutoAssetConnector *)self setCurrentAttemptBeginningMarkers:0];
     v72 = objc_alloc_init(NSMutableArray);
     [(MADAutoAssetConnector *)self setCurrentAttemptRemainingMarkers:v72];
 
-    [(MADAutoAssetConnector *)self _logClearedActiveJobAndAttemptRemainingMarkers:v76];
-    v73 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v74 = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:v69];
-    [v73 postEvent:@"AttemptAbandoned" withInfo:v74];
+    [(MADAutoAssetConnector *)self _logClearedActiveJobAndAttemptRemainingMarkers:jobCopy];
+    autoConnectorFSM3 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    v74 = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:jobCopy];
+    [autoConnectorFSM3 postEvent:@"AttemptAbandoned" withInfo:v74];
   }
 }
 
 - (BOOL)_triggerNextMarker
 {
-  v3 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-  v4 = [v3 count];
+  currentAttemptRemainingMarkers = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+  v4 = [currentAttemptRemainingMarkers count];
 
   if (v4)
   {
-    v5 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-    v6 = [v5 objectAtIndex:0];
+    currentAttemptRemainingMarkers2 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+    v6 = [currentAttemptRemainingMarkers2 objectAtIndex:0];
     [(MADAutoAssetConnector *)self setActiveJobMarker:v6];
 
-    v7 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-    [v7 removeObjectAtIndex:0];
+    currentAttemptRemainingMarkers3 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+    [currentAttemptRemainingMarkers3 removeObjectAtIndex:0];
 
     [(MADAutoAssetConnector *)self _logNextActiveJobForAttemptRemainingMarkers:@"_triggerNextMarker"];
-    v8 = [(MADAutoAssetConnector *)self activeJobMarker];
-    LODWORD(v6) = [v8 isSetJob];
+    activeJobMarker = [(MADAutoAssetConnector *)self activeJobMarker];
+    LODWORD(v6) = [activeJobMarker isSetJob];
 
     if (v6)
     {
-      v9 = [(MADAutoAssetConnector *)self activeJobMarker];
-      v10 = [v9 setPolicy];
+      activeJobMarker2 = [(MADAutoAssetConnector *)self activeJobMarker];
+      setPolicy = [activeJobMarker2 setPolicy];
 
-      v11 = [(MADAutoAssetConnector *)self activeJobMarker];
-      v12 = [v11 pushedPolicy];
+      activeJobMarker3 = [(MADAutoAssetConnector *)self activeJobMarker];
+      pushedPolicy = [activeJobMarker3 pushedPolicy];
 
-      if (v12)
+      if (pushedPolicy)
       {
-        v13 = [(MADAutoAssetConnector *)self activeJobMarker];
-        v14 = [v13 pushedPolicy];
+        activeJobMarker4 = [(MADAutoAssetConnector *)self activeJobMarker];
+        pushedPolicy2 = [activeJobMarker4 pushedPolicy];
 
-        v15 = [(MADAutoAssetConnector *)self activeJobMarker];
-        [v15 setPushedPolicy:0];
+        activeJobMarker5 = [(MADAutoAssetConnector *)self activeJobMarker];
+        [activeJobMarker5 setPushedPolicy:0];
 
-        v10 = v14;
+        setPolicy = pushedPolicy2;
       }
 
       v16 = [MADAutoSetSchedulerTriggered alloc];
-      v17 = [(MADAutoAssetConnector *)self activeJobMarker];
-      v18 = [v17 clientDomainName];
-      v19 = [(MADAutoAssetConnector *)self activeJobMarker];
-      v20 = [v19 assetSetIdentifier];
-      v21 = [(MADAutoSetSchedulerTriggered *)v16 initForClientDomainName:v18 forAssetSetIdentifier:v20 withSchedulerPolicy:v10];
+      activeJobMarker6 = [(MADAutoAssetConnector *)self activeJobMarker];
+      clientDomainName = [activeJobMarker6 clientDomainName];
+      activeJobMarker7 = [(MADAutoAssetConnector *)self activeJobMarker];
+      assetSetIdentifier = [activeJobMarker7 assetSetIdentifier];
+      v21 = [(MADAutoSetSchedulerTriggered *)v16 initForClientDomainName:clientDomainName forAssetSetIdentifier:assetSetIdentifier withSchedulerPolicy:setPolicy];
       v25 = v21;
       v22 = [NSArray arrayWithObjects:&v25 count:1];
       [MADAutoAssetControlManager schedulerTriggeredSets:v22];
@@ -3348,33 +3348,33 @@ LABEL_35:
 
     else
     {
-      v10 = [(MADAutoAssetConnector *)self activeJobMarker];
-      v17 = [v10 assetSelector];
-      v24 = v17;
-      v18 = [NSArray arrayWithObjects:&v24 count:1];
-      [MADAutoAssetControlManager schedulerTriggeredSelectors:v18];
+      setPolicy = [(MADAutoAssetConnector *)self activeJobMarker];
+      activeJobMarker6 = [setPolicy assetSelector];
+      v24 = activeJobMarker6;
+      clientDomainName = [NSArray arrayWithObjects:&v24 count:1];
+      [MADAutoAssetControlManager schedulerTriggeredSelectors:clientDomainName];
     }
   }
 
   return v4 != 0;
 }
 
-- (void)osTransactionBegin:(id)a3
+- (void)osTransactionBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  beginCopy = begin;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [[NSString alloc] initWithFormat:@"%@:osTransactionBegin", v4];
-  v8 = [(MADAutoAssetConnector *)self activeAttemptOSTransaction];
+  beginCopy = [[NSString alloc] initWithFormat:@"%@:osTransactionBegin", beginCopy];
+  activeAttemptOSTransaction = [(MADAutoAssetConnector *)self activeAttemptOSTransaction];
 
-  if (v8)
+  if (activeAttemptOSTransaction)
   {
-    v9 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v10 = [v9 diag];
-    v11 = [[NSString alloc] initWithFormat:@"{%@} OS-transaction already being held", v7];
-    v12 = v10;
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [autoConnectorFSM2 diag];
+    v11 = [[NSString alloc] initWithFormat:@"{%@} OS-transaction already being held", beginCopy];
+    v12 = diag;
     v13 = v11;
     v14 = 6103;
 LABEL_3:
@@ -3387,14 +3387,14 @@ LABEL_3:
   v15 = os_transaction_create();
   [(MADAutoAssetConnector *)self setActiveAttemptOSTransaction:v15];
 
-  v16 = [(MADAutoAssetConnector *)self activeAttemptOSTransaction];
+  activeAttemptOSTransaction2 = [(MADAutoAssetConnector *)self activeAttemptOSTransaction];
 
-  if (!v16)
+  if (!activeAttemptOSTransaction2)
   {
-    v9 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v10 = [v9 diag];
-    v11 = [[NSString alloc] initWithFormat:@"{%@} unable to create OS-transaction", v7];
-    v12 = v10;
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [autoConnectorFSM2 diag];
+    v11 = [[NSString alloc] initWithFormat:@"{%@} unable to create OS-transaction", beginCopy];
+    v12 = diag;
     v13 = v11;
     v14 = 6101;
     goto LABEL_3;
@@ -3403,100 +3403,100 @@ LABEL_3:
   v17 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
     *buf = 138543618;
-    v20 = v18;
+    v20 = _updateLatestSummary;
     v21 = 2114;
-    v22 = v4;
+    v22 = beginCopy;
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ {%{public}@}\n#_CONNR: [OS-TRANSACTION-CONNECTOR] [BEGIN]", buf, 0x16u);
   }
 
 LABEL_8:
 }
 
-- (void)osTransactionEnd:(id)a3
+- (void)osTransactionEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  endCopy = end;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [[NSString alloc] initWithFormat:@"%@:osTransactionEnd", v4];
-  v8 = [(MADAutoAssetConnector *)self activeAttemptOSTransaction];
+  endCopy = [[NSString alloc] initWithFormat:@"%@:osTransactionEnd", endCopy];
+  activeAttemptOSTransaction = [(MADAutoAssetConnector *)self activeAttemptOSTransaction];
 
-  if (v8)
+  if (activeAttemptOSTransaction)
   {
     [(MADAutoAssetConnector *)self setActiveAttemptOSTransaction:0];
     v9 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+      _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
       *buf = 138543618;
-      v15 = v10;
+      v15 = _updateLatestSummary;
       v16 = 2114;
-      v17 = v7;
+      v17 = endCopy;
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ {%{public}@}\n#_CONNR: [OS-TRANSACTION-CONNECTOR] [END]", buf, 0x16u);
     }
   }
 
   else
   {
-    v11 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v12 = [v11 diag];
-    v13 = [[NSString alloc] initWithFormat:@"{%@} not holding any OS-transaction", v7];
-    [v12 trackAnomaly:@"AUTO-CONNECTOR" forReason:v13 withResult:6103 withError:0];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [autoConnectorFSM2 diag];
+    v13 = [[NSString alloc] initWithFormat:@"{%@} not holding any OS-transaction", endCopy];
+    [diag trackAnomaly:@"AUTO-CONNECTOR" forReason:v13 withResult:6103 withError:0];
   }
 }
 
-- (void)_setBackoffRetryLevel:(int64_t)a3 forReason:(id)a4
+- (void)_setBackoffRetryLevel:(int64_t)level forReason:(id)reason
 {
-  v6 = a4;
-  v7 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v8 = [v7 extendedStateQueue];
-  dispatch_assert_queue_V2(v8);
+  reasonCopy = reason;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  if ([(MADAutoAssetConnector *)self backoffRetryLevel]!= a3)
+  if ([(MADAutoAssetConnector *)self backoffRetryLevel]!= level)
   {
     v9 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+      _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
       v11 = 138544898;
-      v12 = v10;
+      v12 = _updateLatestSummary;
       v13 = 2114;
       v14 = @">----->";
       v15 = 2114;
-      v16 = v6;
+      v16 = reasonCopy;
       v17 = 2114;
       v18 = @"BACKOFF_RETRY_LEVEL";
       v19 = 2048;
-      v20 = [(MADAutoAssetConnector *)self backoffRetryLevel];
+      backoffRetryLevel = [(MADAutoAssetConnector *)self backoffRetryLevel];
       v21 = 2048;
-      v22 = a3;
+      levelCopy = level;
       v23 = 2114;
       v24 = @"<-----<";
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "%{public}@\n#_CONNR:%{public}@ {_setBackoffRetryLevel} | %{public}@\n#_CONNR:(%{public}@) backoff-retry level change: %ld => %ld\n#_CONNR:%{public}@", &v11, 0x48u);
     }
 
-    [(MADAutoAssetConnector *)self setBackoffRetryLevel:a3];
+    [(MADAutoAssetConnector *)self setBackoffRetryLevel:level];
   }
 }
 
-- (BOOL)_isBackoffRetryRequired:(id)a3
+- (BOOL)_isBackoffRetryRequired:(id)required
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  requiredCopy = required;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-  if ([v7 count])
+  markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
+  if ([markersRequiringRetry count])
   {
     goto LABEL_4;
   }
 
-  v8 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-  if ([v8 count])
+  triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+  if ([triggeredMarkersNoRetry count])
   {
 
 LABEL_4:
@@ -3504,8 +3504,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v11 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-  v12 = [v11 count];
+  triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+  v12 = [triggeredMarkersRequiringRetry count];
 
   if (v12)
   {
@@ -3513,8 +3513,8 @@ LABEL_4:
     goto LABEL_6;
   }
 
-  v7 = [[NSString alloc] initWithFormat:@"{%@} no [more] backoff-retry required", v4];
-  [(MADAutoAssetConnector *)self _setBackoffRetryLevel:0 forReason:v7];
+  markersRequiringRetry = [[NSString alloc] initWithFormat:@"{%@} no [more] backoff-retry required", requiredCopy];
+  [(MADAutoAssetConnector *)self _setBackoffRetryLevel:0 forReason:markersRequiringRetry];
   v9 = 0;
 LABEL_5:
 
@@ -3522,39 +3522,39 @@ LABEL_6:
   return v9;
 }
 
-- (void)_addObserverForMarker:(id)a3
+- (void)_addObserverForMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [v4 assetType];
-  v8 = [DownloadManager pathToCatalogLookupServer:v7 usingDownloadOptions:0];
+  assetType = [markerCopy assetType];
+  v8 = [DownloadManager pathToCatalogLookupServer:assetType usingDownloadOptions:0];
 
   if (v8)
   {
-    v9 = [v8 absoluteString];
-    v10 = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
-    v11 = [v10 safeObjectForKey:v9 ofClass:objc_opt_class()];
+    absoluteString = [v8 absoluteString];
+    catalogServerNetworkPathObservers = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
+    _updateLatestSummary2 = [catalogServerNetworkPathObservers safeObjectForKey:absoluteString ofClass:objc_opt_class()];
 
-    if (v11)
+    if (_updateLatestSummary2)
     {
       v12 = _MADLog(@"AutoScheduler");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v13 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-        v14 = [v4 summary];
+        _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+        summary = [markerCopy summary];
         v18 = 138544642;
-        v19 = v13;
+        v19 = _updateLatestSummary;
         v20 = 2114;
         v21 = @">----->";
         v22 = 2114;
         v23 = @"NETWORK_PATH_OBSERVERS";
         v24 = 2114;
-        v25 = v14;
+        v25 = summary;
         v26 = 2114;
-        v27 = v9;
+        v27 = absoluteString;
         v28 = 2114;
         v29 = @"<-----<";
         v15 = "%{public}@\n#_CONNR:%{public}@ {_addObserverForMarker} | additional marker for catalog lookup server already being observed\n#_CONNR:(%{public}@) markerToObserve:%{public}@ | pathToServer:%{public}@\n#_CONNR:%{public}@";
@@ -3565,25 +3565,25 @@ LABEL_9:
 
     else
     {
-      v11 = [[MADAutoAssetConnectorObserver alloc] initForServerPath:v8];
-      v17 = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
-      [v17 setSafeObject:v11 forKey:v9];
+      _updateLatestSummary2 = [[MADAutoAssetConnectorObserver alloc] initForServerPath:v8];
+      catalogServerNetworkPathObservers2 = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
+      [catalogServerNetworkPathObservers2 setSafeObject:_updateLatestSummary2 forKey:absoluteString];
 
       v12 = _MADLog(@"AutoScheduler");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v13 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-        v14 = [v4 summary];
+        _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+        summary = [markerCopy summary];
         v18 = 138544642;
-        v19 = v13;
+        v19 = _updateLatestSummary;
         v20 = 2114;
         v21 = @">----->";
         v22 = 2114;
         v23 = @"NETWORK_PATH_OBSERVERS";
         v24 = 2114;
-        v25 = v14;
+        v25 = summary;
         v26 = 2114;
-        v27 = v9;
+        v27 = absoluteString;
         v28 = 2114;
         v29 = @"<-----<";
         v15 = "%{public}@\n#_CONNR:%{public}@ {_addObserverForMarker} | observing path to catalog lookup server\n#_CONNR:(%{public}@) [+] markerToObserve:%{public}@ | pathToServer:%{public}@\n#_CONNR:%{public}@";
@@ -3594,54 +3594,54 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v9 = _MADLog(@"AutoScheduler");
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  absoluteString = _MADLog(@"AutoScheduler");
+  if (os_log_type_enabled(absoluteString, OS_LOG_TYPE_ERROR))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v16 = [v4 summary];
+    _updateLatestSummary2 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    summary2 = [markerCopy summary];
     v18 = 138544386;
-    v19 = v11;
+    v19 = _updateLatestSummary2;
     v20 = 2114;
     v21 = @">----->";
     v22 = 2114;
     v23 = @"NETWORK_PATH_OBSERVERS";
     v24 = 2114;
-    v25 = v16;
+    v25 = summary2;
     v26 = 2114;
     v27 = @"<-----<";
-    _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "%{public}@\n#_CONNR:%{public}@ {_addObserverForMarker} | unable to determine path to catalog lookup server\n#_CONNR:(%{public}@) markerToObserve:%{public}@\n#_CONNR:%{public}@", &v18, 0x34u);
+    _os_log_impl(&dword_0, absoluteString, OS_LOG_TYPE_ERROR, "%{public}@\n#_CONNR:%{public}@ {_addObserverForMarker} | unable to determine path to catalog lookup server\n#_CONNR:(%{public}@) markerToObserve:%{public}@\n#_CONNR:%{public}@", &v18, 0x34u);
 
 LABEL_11:
   }
 }
 
-- (void)_removeObserverForMarker:(id)a3
+- (void)_removeObserverForMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [v4 assetType];
-  v8 = [DownloadManager pathToCatalogLookupServer:v7 usingDownloadOptions:0];
+  assetType = [markerCopy assetType];
+  v8 = [DownloadManager pathToCatalogLookupServer:assetType usingDownloadOptions:0];
 
   if (v8)
   {
-    v9 = [v8 absoluteString];
-    v10 = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
-    v11 = [v10 safeObjectForKey:v9 ofClass:objc_opt_class()];
+    absoluteString = [v8 absoluteString];
+    catalogServerNetworkPathObservers = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
+    _updateLatestSummary3 = [catalogServerNetworkPathObservers safeObjectForKey:absoluteString ofClass:objc_opt_class()];
 
-    if (v11)
+    if (_updateLatestSummary3)
     {
-      v28 = v11;
-      v29 = v9;
-      v30 = v4;
+      v28 = _updateLatestSummary3;
+      v29 = absoluteString;
+      v30 = markerCopy;
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v12 = [(MADAutoAssetConnector *)self monitorMarkers];
-      v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      monitorMarkers = [(MADAutoAssetConnector *)self monitorMarkers];
+      v13 = [monitorMarkers countByEnumeratingWithState:&v31 objects:v35 count:16];
       if (v13)
       {
         v14 = v13;
@@ -3652,27 +3652,27 @@ LABEL_11:
           {
             if (*v32 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(monitorMarkers);
             }
 
-            v17 = [*(*(&v31 + 1) + 8 * i) assetType];
-            v18 = [DownloadManager pathToCatalogLookupServer:v17 usingDownloadOptions:0];
+            assetType2 = [*(*(&v31 + 1) + 8 * i) assetType];
+            v18 = [DownloadManager pathToCatalogLookupServer:assetType2 usingDownloadOptions:0];
 
-            v19 = [v18 absoluteString];
-            v20 = [v8 absoluteString];
-            LOBYTE(v17) = [SUCore stringIsEqual:v19 to:v20];
+            absoluteString2 = [v18 absoluteString];
+            absoluteString3 = [v8 absoluteString];
+            LOBYTE(assetType2) = [SUCore stringIsEqual:absoluteString2 to:absoluteString3];
 
-            if (v17)
+            if (assetType2)
             {
-              v9 = v29;
-              v4 = v30;
-              v11 = v28;
-              v22 = v12;
+              absoluteString = v29;
+              markerCopy = v30;
+              _updateLatestSummary3 = v28;
+              v22 = monitorMarkers;
               goto LABEL_20;
             }
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
+          v14 = [monitorMarkers countByEnumeratingWithState:&v31 objects:v35 count:16];
           if (v14)
           {
             continue;
@@ -3682,24 +3682,24 @@ LABEL_11:
         }
       }
 
-      v21 = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
-      v9 = v29;
-      [v21 removeObjectForKey:v29];
+      catalogServerNetworkPathObservers2 = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
+      absoluteString = v29;
+      [catalogServerNetworkPathObservers2 removeObjectForKey:v29];
 
       v22 = _MADLog(@"AutoScheduler");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        v23 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-        v4 = v30;
-        v24 = [v30 summary];
+        _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+        markerCopy = v30;
+        summary = [v30 summary];
         *buf = 138544642;
-        v37 = v23;
+        v37 = _updateLatestSummary;
         v38 = 2114;
         v39 = @">----->";
         v40 = 2114;
         v41 = @"NETWORK_PATH_OBSERVERS";
         v42 = 2114;
-        v43 = v24;
+        v43 = summary;
         v44 = 2114;
         v45 = v29;
         v46 = 2114;
@@ -3709,10 +3709,10 @@ LABEL_11:
 
       else
       {
-        v4 = v30;
+        markerCopy = v30;
       }
 
-      v11 = v28;
+      _updateLatestSummary3 = v28;
     }
 
     else
@@ -3720,18 +3720,18 @@ LABEL_11:
       v22 = _MADLog(@"AutoScheduler");
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
-        v26 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-        v27 = [v4 summary];
+        _updateLatestSummary2 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+        summary2 = [markerCopy summary];
         *buf = 138544642;
-        v37 = v26;
+        v37 = _updateLatestSummary2;
         v38 = 2114;
         v39 = @">----->";
         v40 = 2114;
         v41 = @"NETWORK_PATH_OBSERVERS";
         v42 = 2114;
-        v43 = v27;
+        v43 = summary2;
         v44 = 2114;
-        v45 = v9;
+        v45 = absoluteString;
         v46 = 2114;
         v47 = @"<-----<";
         _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {_removeObserverForMarker} | marker for catalog lookup server was not being observed\n#_CONNR:(%{public}@) markerToRemove:%{public}@ | pathToServer:%{public}@\n#_CONNR:%{public}@", buf, 0x3Eu);
@@ -3743,60 +3743,60 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v9 = _MADLog(@"AutoScheduler");
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+  absoluteString = _MADLog(@"AutoScheduler");
+  if (os_log_type_enabled(absoluteString, OS_LOG_TYPE_ERROR))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v25 = [v4 summary];
+    _updateLatestSummary3 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    summary3 = [markerCopy summary];
     *buf = 138544386;
-    v37 = v11;
+    v37 = _updateLatestSummary3;
     v38 = 2114;
     v39 = @">----->";
     v40 = 2114;
     v41 = @"NETWORK_PATH_OBSERVERS";
     v42 = 2114;
-    v43 = v25;
+    v43 = summary3;
     v44 = 2114;
     v45 = @"<-----<";
-    _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "%{public}@\n#_CONNR:%{public}@ {_removeObserverForMarker} | unable to determine path to catalog lookup server\n#_CONNR:(%{public}@) markerToRemove:%{public}@\n#_CONNR:%{public}@", buf, 0x34u);
+    _os_log_impl(&dword_0, absoluteString, OS_LOG_TYPE_ERROR, "%{public}@\n#_CONNR:%{public}@ {_removeObserverForMarker} | unable to determine path to catalog lookup server\n#_CONNR:(%{public}@) markerToRemove:%{public}@\n#_CONNR:%{public}@", buf, 0x34u);
 
 LABEL_21:
   }
 }
 
-- (void)_trackServerUp:(id)a3 fromLocation:(id)a4
+- (void)_trackServerUp:(id)up fromLocation:(id)location
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  locationCopy = location;
+  upCopy = up;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v10 = [v7 absoluteString];
+  absoluteString = [upCopy absoluteString];
 
-  v11 = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
-  v12 = [v11 safeObjectForKey:v10 ofClass:objc_opt_class()];
+  catalogServerNetworkPathObservers = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
+  v12 = [catalogServerNetworkPathObservers safeObjectForKey:absoluteString ofClass:objc_opt_class()];
 
   if (v12)
   {
     v13 = [[NSNumber alloc] initWithInt:2];
-    v14 = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
-    [v14 setSafeObject:v13 forKey:v10];
+    catalogServerNetworkPathStatus = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
+    [catalogServerNetworkPathStatus setSafeObject:v13 forKey:absoluteString];
 
     v15 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+      _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
       v19 = 138544642;
-      v20 = v16;
+      v20 = _updateLatestSummary;
       v21 = 2114;
       v22 = @">----->";
       v23 = 2114;
-      v24 = v6;
+      v24 = locationCopy;
       v25 = 2114;
       v26 = @"NETWORK_PATH_OBSERVERS";
       v27 = 2114;
-      v28 = v10;
+      v28 = absoluteString;
       v29 = 2114;
       v30 = @"<-----<";
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | observed path to catalog lookup server now UP\n#_CONNR:(%{public}@) observedNetworkPath:%{public}@ | UP\n#_CONNR:%{public}@", &v19, 0x3Eu);
@@ -3805,45 +3805,45 @@ LABEL_21:
 
   else
   {
-    v17 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v18 = [v17 diag];
-    [v18 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{_trackServerUp} network path observer is missing" withResult:6103 withError:0];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [autoConnectorFSM2 diag];
+    [diag trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{_trackServerUp} network path observer is missing" withResult:6103 withError:0];
   }
 }
 
-- (void)_trackServerDown:(id)a3 fromLocation:(id)a4
+- (void)_trackServerDown:(id)down fromLocation:(id)location
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  locationCopy = location;
+  downCopy = down;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v10 = [v7 absoluteString];
+  absoluteString = [downCopy absoluteString];
 
-  v11 = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
-  v12 = [v11 safeObjectForKey:v10 ofClass:objc_opt_class()];
+  catalogServerNetworkPathObservers = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
+  v12 = [catalogServerNetworkPathObservers safeObjectForKey:absoluteString ofClass:objc_opt_class()];
 
   if (v12)
   {
     v13 = [[NSNumber alloc] initWithInt:1];
-    v14 = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
-    [v14 setSafeObject:v13 forKey:v10];
+    catalogServerNetworkPathStatus = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
+    [catalogServerNetworkPathStatus setSafeObject:v13 forKey:absoluteString];
 
     v15 = _MADLog(@"AutoScheduler");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+      _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
       v19 = 138544642;
-      v20 = v16;
+      v20 = _updateLatestSummary;
       v21 = 2114;
       v22 = @">----->";
       v23 = 2114;
-      v24 = v6;
+      v24 = locationCopy;
       v25 = 2114;
       v26 = @"NETWORK_PATH_STATUS";
       v27 = 2114;
-      v28 = v10;
+      v28 = absoluteString;
       v29 = 2114;
       v30 = @"<-----<";
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | observed path to catalog lookup server now DOWN\n#_CONNR:(%{public}@) observedNetworkPath:%{public}@ | DOWN\n#_CONNR:%{public}@", &v19, 0x3Eu);
@@ -3852,26 +3852,26 @@ LABEL_21:
 
   else
   {
-    v17 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-    v18 = [v17 diag];
-    [v18 trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{_trackServerDown} network path observer is missing" withResult:6103 withError:0];
+    autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+    diag = [autoConnectorFSM2 diag];
+    [diag trackAnomaly:@"AUTO-CONNECTOR" forReason:@"{_trackServerDown} network path observer is missing" withResult:6103 withError:0];
   }
 }
 
-- (BOOL)_isPathToServerForMarkerUp:(id)a3
+- (BOOL)_isPathToServerForMarkerUp:(id)up
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  upCopy = up;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [v4 assetType];
+  assetType = [upCopy assetType];
 
-  v8 = [DownloadManager pathToCatalogLookupServer:v7 usingDownloadOptions:0];
+  v8 = [DownloadManager pathToCatalogLookupServer:assetType usingDownloadOptions:0];
 
-  v9 = [v8 absoluteString];
-  v10 = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
-  v11 = [v10 safeObjectForKey:v9 ofClass:objc_opt_class()];
+  absoluteString = [v8 absoluteString];
+  catalogServerNetworkPathStatus = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
+  v11 = [catalogServerNetworkPathStatus safeObjectForKey:absoluteString ofClass:objc_opt_class()];
 
   if (v11)
   {
@@ -3886,18 +3886,18 @@ LABEL_21:
   return v12;
 }
 
-- (BOOL)_isAnyServerUpForJobsToBeAttempted:(id)a3
+- (BOOL)_isAnyServerUpForJobsToBeAttempted:(id)attempted
 {
-  v4 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v5 = [v4 extendedStateQueue];
-  dispatch_assert_queue_V2(v5);
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
+  v7 = [markersRequiringRetry countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -3908,7 +3908,7 @@ LABEL_3:
     {
       if (*v22 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(markersRequiringRetry);
       }
 
       if ([(MADAutoAssetConnector *)self _isPathToServerForMarkerUp:*(*(&v21 + 1) + 8 * v10)])
@@ -3918,7 +3918,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v8 = [markersRequiringRetry countByEnumeratingWithState:&v21 objects:v26 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -3933,8 +3933,8 @@ LABEL_3:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-  v11 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  markersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+  v11 = [markersRequiringRetry countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v11)
   {
     v12 = v11;
@@ -3945,7 +3945,7 @@ LABEL_11:
     {
       if (*v18 != v13)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(markersRequiringRetry);
       }
 
       if ([(MADAutoAssetConnector *)self _isPathToServerForMarkerUp:*(*(&v17 + 1) + 8 * v14)])
@@ -3955,7 +3955,7 @@ LABEL_11:
 
       if (v12 == ++v14)
       {
-        v12 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v12 = [markersRequiringRetry countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v12)
         {
           goto LABEL_11;
@@ -3977,26 +3977,26 @@ LABEL_19:
   return v15;
 }
 
-- (id)_followupInUseServerStatus:(id)a3
+- (id)_followupInUseServerStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  statusCopy = status;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self activeJobMarker];
+  activeJobMarker = [(MADAutoAssetConnector *)self activeJobMarker];
 
-  if (v7)
+  if (activeJobMarker)
   {
-    v8 = [(MADAutoAssetConnector *)self activeJobMarker];
-    v9 = [v8 assetType];
-    v10 = [DownloadManager pathToCatalogLookupServer:v9 usingDownloadOptions:0];
+    activeJobMarker2 = [(MADAutoAssetConnector *)self activeJobMarker];
+    assetType = [activeJobMarker2 assetType];
+    v10 = [DownloadManager pathToCatalogLookupServer:assetType usingDownloadOptions:0];
 
     if (v10)
     {
-      v11 = [v10 absoluteString];
-      v12 = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
-      v13 = [v12 safeObjectForKey:v11 ofClass:objc_opt_class()];
+      absoluteString = [v10 absoluteString];
+      catalogServerNetworkPathStatus = [(MADAutoAssetConnector *)self catalogServerNetworkPathStatus];
+      v13 = [catalogServerNetworkPathStatus safeObjectForKey:absoluteString ofClass:objc_opt_class()];
 
       v14 = @"InUseServerDown";
       if (v13 && [v13 integerValue] == &dword_0 + 2)
@@ -4010,19 +4010,19 @@ LABEL_19:
       v15 = _MADLog(@"AutoScheduler");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-        v17 = [(MADAutoAssetConnector *)self activeJobMarker];
-        v18 = [v17 summary];
+        _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+        activeJobMarker3 = [(MADAutoAssetConnector *)self activeJobMarker];
+        summary = [activeJobMarker3 summary];
         v20 = 138544642;
-        v21 = v16;
+        v21 = _updateLatestSummary;
         v22 = 2114;
         v23 = @">----->";
         v24 = 2114;
-        v25 = v4;
+        v25 = statusCopy;
         v26 = 2114;
         v27 = @"ACTIVE_MARKER";
         v28 = 2114;
-        v29 = v18;
+        v29 = summary;
         v30 = 2114;
         v31 = @"<-----<";
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | unable to determine path to catalog lookup server\n#_CONNR:(%{public}@) activeJobMarker:%{public}@\n#_CONNR:%{public}@", &v20, 0x3Eu);
@@ -4040,17 +4040,17 @@ LABEL_19:
   return v14;
 }
 
-- (void)_issueFollowupApplicableServersUpDown:(id)a3
+- (void)_issueFollowupApplicableServersUpDown:(id)down
 {
-  v9 = a3;
-  v4 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v5 = [v4 extendedStateQueue];
-  dispatch_assert_queue_V2(v5);
+  downCopy = down;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  LODWORD(v4) = [(MADAutoAssetConnector *)self _isAnyServerUpForJobsToBeAttempted:v9];
-  v6 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v7 = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:v9];
-  if (v4)
+  LODWORD(autoConnectorFSM) = [(MADAutoAssetConnector *)self _isAnyServerUpForJobsToBeAttempted:downCopy];
+  autoConnectorFSM2 = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  v7 = [[MADAutoAssetConnectorParam alloc] initWithSafeSummary:downCopy];
+  if (autoConnectorFSM)
   {
     v8 = @"ApplicableServersUp";
   }
@@ -4060,28 +4060,28 @@ LABEL_19:
     v8 = @"ApplicableServersDown";
   }
 
-  [v6 followupEvent:v8 withInfo:v7];
+  [autoConnectorFSM2 followupEvent:v8 withInfo:v7];
 }
 
-- (id)_startTimer:(id)a3 ofTimerCategory:(id)a4 forOneShotSecs:(int64_t)a5 withFiredMessage:(id)a6 postingEvent:(id)a7
+- (id)_startTimer:(id)timer ofTimerCategory:(id)category forOneShotSecs:(int64_t)secs withFiredMessage:(id)message postingEvent:(id)event
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v17 = [v16 extendedStateQueue];
-  dispatch_assert_queue_V2(v17);
+  timerCopy = timer;
+  categoryCopy = category;
+  messageCopy = message;
+  eventCopy = event;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v27 = _NSConcreteStackBlock;
   v28 = 3221225472;
   v29 = __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_withFiredMessage_postingEvent___block_invoke;
   v30 = &unk_4B2B88;
-  v18 = v14;
+  v18 = messageCopy;
   v31 = v18;
-  v19 = v15;
+  v19 = eventCopy;
   v32 = v19;
-  v20 = [NSTimer timerWithTimeInterval:0 repeats:&v27 block:a5];
+  v20 = [NSTimer timerWithTimeInterval:0 repeats:&v27 block:secs];
   v21 = _MADLog(@"AutoScheduler");
   v22 = v21;
   if (v20)
@@ -4089,15 +4089,15 @@ LABEL_19:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v23 = [(MADAutoAssetConnector *)self _updateLatestSummary:v27];
-      v24 = [MADAutoAssetControlManager allocIntervalString:a5];
+      v24 = [MADAutoAssetControlManager allocIntervalString:secs];
       *buf = 138544898;
       v34 = v23;
       v35 = 2114;
       v36 = @">----->";
       v37 = 2114;
-      v38 = v12;
+      v38 = timerCopy;
       v39 = 2114;
-      v40 = v13;
+      v40 = categoryCopy;
       v41 = 2114;
       v42 = v24;
       v43 = 2114;
@@ -4119,9 +4119,9 @@ LABEL_19:
     v35 = 2114;
     v36 = @">----->";
     v37 = 2114;
-    v38 = v12;
+    v38 = timerCopy;
     v39 = 2114;
-    v40 = v13;
+    v40 = categoryCopy;
     v41 = 2114;
     v42 = v18;
     v43 = 2114;
@@ -4140,83 +4140,83 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
   [v3 postEvent:*(a1 + 40) withInfo:v2];
 }
 
-- (void)_stoppedTimer:(id)a3 ofTimerCategory:(id)a4
+- (void)_stoppedTimer:(id)timer ofTimerCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  timerCopy = timer;
+  categoryCopy = category;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v10 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
     v12 = 138544386;
-    v13 = v11;
+    v13 = _updateLatestSummary;
     v14 = 2114;
     v15 = @">----->";
     v16 = 2114;
-    v17 = v6;
+    v17 = timerCopy;
     v18 = 2114;
-    v19 = v7;
+    v19 = categoryCopy;
     v20 = 2114;
     v21 = @"<-----<";
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}@\n#_CONNR:%{public}@ {%{public}@}\n#_CONNR:(%{public}@) [-] timer stopped\n#_CONNR:%{public}@", &v12, 0x34u);
   }
 }
 
-- (void)_firedTimer:(id)a3 ofTimerCategory:(id)a4
+- (void)_firedTimer:(id)timer ofTimerCategory:(id)category
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  timerCopy = timer;
+  categoryCopy = category;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v10 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
     v12 = 138544386;
-    v13 = v11;
+    v13 = _updateLatestSummary;
     v14 = 2114;
     v15 = @">----->";
     v16 = 2114;
-    v17 = v6;
+    v17 = timerCopy;
     v18 = 2114;
-    v19 = v7;
+    v19 = categoryCopy;
     v20 = 2114;
     v21 = @"<-----<";
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "%{public}@\n#_CONNR:%{public}@ {%{public}@}\n#_CONNR:(%{public}@) [!] timer fired\n#_CONNR:%{public}@", &v12, 0x34u);
   }
 }
 
-- (void)_logMarkersBeingMonitored:(id)a3
+- (void)_logMarkersBeingMonitored:(id)monitored
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  monitoredCopy = monitored;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self monitorMarkers];
-  v8 = [v7 count];
+  monitorMarkers = [(MADAutoAssetConnector *)self monitorMarkers];
+  v8 = [monitorMarkers count];
 
   v9 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v11 = [(MADAutoAssetConnector *)self monitorMarkers];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    monitorMarkers2 = [(MADAutoAssetConnector *)self monitorMarkers];
     *buf = 138544386;
-    v20 = v10;
+    v20 = _updateLatestSummary;
     v21 = 2114;
     v22 = @">----->";
     v23 = 2114;
-    v24 = v4;
+    v24 = monitoredCopy;
     v25 = 2114;
     v26 = @"MONITORED_MARKERS";
     v27 = 2048;
-    v28 = [v11 count];
+    v28 = [monitorMarkers2 count];
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | all markers being monitored\n#_CONNR:(%{public}@) monitorMarkers:%ld", buf, 0x34u);
   }
 
@@ -4225,14 +4225,14 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
     v12 = 0;
     do
     {
-      v13 = [(MADAutoAssetConnector *)self monitorMarkers];
-      v14 = [v13 objectAtIndex:v12];
+      monitorMarkers3 = [(MADAutoAssetConnector *)self monitorMarkers];
+      v14 = [monitorMarkers3 objectAtIndex:v12];
 
       v15 = _MADLog(@"AutoScheduler");
       v12 = (v12 + 1);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v14 summary];
+        summary = [v14 summary];
         *buf = 138544130;
         v20 = @"MONITORED_MARKERS";
         v21 = 2048;
@@ -4240,7 +4240,7 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
         v23 = 2048;
         v24 = v8;
         v25 = 2114;
-        v26 = v16;
+        v26 = summary;
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEBUG, "\n#_CONNR:(%{public}@) %ld of %ld | monitorMarker:%{public}@", buf, 0x2Au);
       }
     }
@@ -4251,40 +4251,40 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
   v17 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary2 = [(MADAutoAssetConnector *)self _updateLatestSummary];
     *buf = 138543618;
-    v20 = v18;
+    v20 = _updateLatestSummary2;
     v21 = 2114;
     v22 = @"<-----<";
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@", buf, 0x16u);
   }
 }
 
-- (void)_logMarkersRequiringRetry:(id)a3
+- (void)_logMarkersRequiringRetry:(id)retry
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  retryCopy = retry;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-  v8 = [v7 count];
+  markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
+  v8 = [markersRequiringRetry count];
 
   v9 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v11 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    markersRequiringRetry2 = [(MADAutoAssetConnector *)self markersRequiringRetry];
     *buf = 138544386;
-    v20 = v10;
+    v20 = _updateLatestSummary;
     v21 = 2114;
     v22 = @">----->";
     v23 = 2114;
-    v24 = v4;
+    v24 = retryCopy;
     v25 = 2114;
     v26 = @"MARKERS_REQUIRING_RETRY";
     v27 = 2048;
-    v28 = [v11 count];
+    v28 = [markersRequiringRetry2 count];
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | all requiring retry\n#_CONNR:(%{public}@) requiringRetry:%ld", buf, 0x34u);
   }
 
@@ -4293,14 +4293,14 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
     v12 = 0;
     do
     {
-      v13 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-      v14 = [v13 objectAtIndex:v12];
+      markersRequiringRetry3 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+      v14 = [markersRequiringRetry3 objectAtIndex:v12];
 
       v15 = _MADLog(@"AutoScheduler");
       v12 = (v12 + 1);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v14 summary];
+        summary = [v14 summary];
         *buf = 138544130;
         v20 = @"MARKERS_REQUIRING_RETRY";
         v21 = 2048;
@@ -4308,7 +4308,7 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
         v23 = 2048;
         v24 = v8;
         v25 = 2114;
-        v26 = v16;
+        v26 = summary;
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEBUG, "\n#_CONNR:(%{public}@) %ld of %ld | requiringRetry:%{public}@", buf, 0x2Au);
       }
     }
@@ -4319,104 +4319,104 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
   v17 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary2 = [(MADAutoAssetConnector *)self _updateLatestSummary];
     *buf = 138543618;
-    v20 = v18;
+    v20 = _updateLatestSummary2;
     v21 = 2114;
     v22 = @"<-----<";
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@", buf, 0x16u);
   }
 }
 
-- (void)_logMarkerRequiringRetry:(id)a3 addedMarker:(id)a4
+- (void)_logMarkerRequiringRetry:(id)retry addedMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  retryCopy = retry;
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v10 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v12 = [v7 summary];
-    v13 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    summary = [markerCopy summary];
+    markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
     v14 = 138544898;
-    v15 = v11;
+    v15 = _updateLatestSummary;
     v16 = 2114;
     v17 = @">----->";
     v18 = 2114;
-    v19 = v6;
+    v19 = retryCopy;
     v20 = 2114;
     v21 = @"MARKERS_REQUIRING_RETRY";
     v22 = 2114;
-    v23 = v12;
+    v23 = summary;
     v24 = 2048;
-    v25 = [v13 count];
+    v25 = [markersRequiringRetry count];
     v26 = 2114;
     v27 = @"<-----<";
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | marker just added to the set requiring retry\n#_CONNR:(%{public}@) [+] addedMarker:%{public}@ | markersRequiringRetry:%ld\n#_CONNR:%{public}@", &v14, 0x48u);
   }
 }
 
-- (void)_logMarkerRequiringRetry:(id)a3 removedMarker:(id)a4
+- (void)_logMarkerRequiringRetry:(id)retry removedMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  retryCopy = retry;
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v10 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v12 = [v7 summary];
-    v13 = [(MADAutoAssetConnector *)self markersRequiringRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    summary = [markerCopy summary];
+    markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
     v14 = 138544898;
-    v15 = v11;
+    v15 = _updateLatestSummary;
     v16 = 2114;
     v17 = @">----->";
     v18 = 2114;
-    v19 = v6;
+    v19 = retryCopy;
     v20 = 2114;
     v21 = @"MARKERS_REQUIRING_RETRY";
     v22 = 2114;
-    v23 = v12;
+    v23 = summary;
     v24 = 2048;
-    v25 = [v13 count];
+    v25 = [markersRequiringRetry count];
     v26 = 2114;
     v27 = @"<-----<";
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | marker just removed from the set requiring retry\n#_CONNR:(%{public}@) [-] removedMarker:%{public}@ | markersRequiringRetry:%ld\n#_CONNR:%{public}@", &v14, 0x48u);
   }
 }
 
-- (void)_logTriggeredMarkersNoRetry:(id)a3
+- (void)_logTriggeredMarkersNoRetry:(id)retry
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  retryCopy = retry;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-  v8 = [v7 count];
+  triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+  v8 = [triggeredMarkersNoRetry count];
 
   v9 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v11 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    triggeredMarkersNoRetry2 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
     *buf = 138544386;
-    v20 = v10;
+    v20 = _updateLatestSummary;
     v21 = 2114;
     v22 = @">----->";
     v23 = 2114;
-    v24 = v4;
+    v24 = retryCopy;
     v25 = 2114;
     v26 = @"TRIGGERED_MARKERS_NO_RETRY";
     v27 = 2048;
-    v28 = [v11 count];
+    v28 = [triggeredMarkersNoRetry2 count];
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | all triggered (which do not require retry)\n#_CONNR:(%{public}@) triggeredNoRetry:%ld", buf, 0x34u);
   }
 
@@ -4425,14 +4425,14 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
     v12 = 0;
     do
     {
-      v13 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-      v14 = [v13 objectAtIndex:v12];
+      triggeredMarkersNoRetry3 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+      v14 = [triggeredMarkersNoRetry3 objectAtIndex:v12];
 
       v15 = _MADLog(@"AutoScheduler");
       v12 = (v12 + 1);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v14 summary];
+        summary = [v14 summary];
         *buf = 138544130;
         v20 = @"TRIGGERED_MARKERS_NO_RETRY";
         v21 = 2048;
@@ -4440,7 +4440,7 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
         v23 = 2048;
         v24 = v8;
         v25 = 2114;
-        v26 = v16;
+        v26 = summary;
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEBUG, "\n#_CONNR:(%{public}@) %ld of %ld | triggeredNoRetry:%{public}@", buf, 0x2Au);
       }
     }
@@ -4451,104 +4451,104 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
   v17 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary2 = [(MADAutoAssetConnector *)self _updateLatestSummary];
     *buf = 138543618;
-    v20 = v18;
+    v20 = _updateLatestSummary2;
     v21 = 2114;
     v22 = @"<-----<";
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@", buf, 0x16u);
   }
 }
 
-- (void)_logTriggeredMarkerNoRetry:(id)a3 addedMarker:(id)a4
+- (void)_logTriggeredMarkerNoRetry:(id)retry addedMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  retryCopy = retry;
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v10 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v12 = [v7 summary];
-    v13 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    summary = [markerCopy summary];
+    triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
     v14 = 138544898;
-    v15 = v11;
+    v15 = _updateLatestSummary;
     v16 = 2114;
     v17 = @">----->";
     v18 = 2114;
-    v19 = v6;
+    v19 = retryCopy;
     v20 = 2114;
     v21 = @"TRIGGERED_MARKERS_NO_RETRY";
     v22 = 2114;
-    v23 = v12;
+    v23 = summary;
     v24 = 2048;
-    v25 = [v13 count];
+    v25 = [triggeredMarkersNoRetry count];
     v26 = 2114;
     v27 = @"<-----<";
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | marker just added to triggered (which do not require retry)\n#_CONNR:(%{public}@) [+] addedMarker:%{public}@ | triggeredNoRetry:%ld\n#_CONNR:%{public}@", &v14, 0x48u);
   }
 }
 
-- (void)_logTriggeredMarkerNoRetry:(id)a3 removedMarker:(id)a4
+- (void)_logTriggeredMarkerNoRetry:(id)retry removedMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  retryCopy = retry;
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v10 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v12 = [v7 summary];
-    v13 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    summary = [markerCopy summary];
+    triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
     v14 = 138544898;
-    v15 = v11;
+    v15 = _updateLatestSummary;
     v16 = 2114;
     v17 = @">----->";
     v18 = 2114;
-    v19 = v6;
+    v19 = retryCopy;
     v20 = 2114;
     v21 = @"TRIGGERED_MARKERS_NO_RETRY";
     v22 = 2114;
-    v23 = v12;
+    v23 = summary;
     v24 = 2048;
-    v25 = [v13 count];
+    v25 = [triggeredMarkersNoRetry count];
     v26 = 2114;
     v27 = @"<-----<";
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | marker just removed from triggered (which do not require retry)\n#_CONNR:(%{public}@) [-] removedMarker:%{public}@ | triggeredNoRetry:%ld\n#_CONNR:%{public}@", &v14, 0x48u);
   }
 }
 
-- (void)_logTriggeredMarkersRequiringRetry:(id)a3
+- (void)_logTriggeredMarkersRequiringRetry:(id)retry
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  retryCopy = retry;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-  v8 = [v7 count];
+  triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+  v8 = [triggeredMarkersRequiringRetry count];
 
   v9 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v11 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    triggeredMarkersRequiringRetry2 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
     *buf = 138544386;
-    v20 = v10;
+    v20 = _updateLatestSummary;
     v21 = 2114;
     v22 = @">----->";
     v23 = 2114;
-    v24 = v4;
+    v24 = retryCopy;
     v25 = 2114;
     v26 = @"TRIGGERED_MARKERS_REQUIRING_RETRY";
     v27 = 2048;
-    v28 = [v11 count];
+    v28 = [triggeredMarkersRequiringRetry2 count];
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | all triggered (which require retry)\n#_CONNR:(%{public}@) triggeredRequiringRetry:%ld", buf, 0x34u);
   }
 
@@ -4557,14 +4557,14 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
     v12 = 0;
     do
     {
-      v13 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-      v14 = [v13 objectAtIndex:v12];
+      triggeredMarkersRequiringRetry3 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+      v14 = [triggeredMarkersRequiringRetry3 objectAtIndex:v12];
 
       v15 = _MADLog(@"AutoScheduler");
       v12 = (v12 + 1);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v14 summary];
+        summary = [v14 summary];
         *buf = 138544130;
         v20 = @"TRIGGERED_MARKERS_REQUIRING_RETRY";
         v21 = 2048;
@@ -4572,7 +4572,7 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
         v23 = 2048;
         v24 = v8;
         v25 = 2114;
-        v26 = v16;
+        v26 = summary;
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEBUG, "\n#_CONNR:(%{public}@) %ld of %ld | triggeredRequiringRetry:%{public}@", buf, 0x2Au);
       }
     }
@@ -4583,99 +4583,99 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
   v17 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary2 = [(MADAutoAssetConnector *)self _updateLatestSummary];
     *buf = 138543618;
-    v20 = v18;
+    v20 = _updateLatestSummary2;
     v21 = 2114;
     v22 = @"<-----<";
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@", buf, 0x16u);
   }
 }
 
-- (void)_logTriggeredMarkerRequiringRetry:(id)a3 addedMarker:(id)a4
+- (void)_logTriggeredMarkerRequiringRetry:(id)retry addedMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  retryCopy = retry;
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v10 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v12 = [v7 summary];
-    v13 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    summary = [markerCopy summary];
+    triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
     v14 = 138544898;
-    v15 = v11;
+    v15 = _updateLatestSummary;
     v16 = 2114;
     v17 = @">----->";
     v18 = 2114;
-    v19 = v6;
+    v19 = retryCopy;
     v20 = 2114;
     v21 = @"TRIGGERED_MARKERS_REQUIRING_RETRY";
     v22 = 2114;
-    v23 = v12;
+    v23 = summary;
     v24 = 2048;
-    v25 = [v13 count];
+    v25 = [triggeredMarkersRequiringRetry count];
     v26 = 2114;
     v27 = @"<-----<";
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | marker just added to triggered (which require retry)\n#_CONNR:(%{public}@) [+] addedMarker:%{public}@ | triggeredMarkersRequiringRetry:%ld\n#_CONNR:%{public}@", &v14, 0x48u);
   }
 }
 
-- (void)_logTriggeredMarkerRequiringRetry:(id)a3 removedMarker:(id)a4
+- (void)_logTriggeredMarkerRequiringRetry:(id)retry removedMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v9 = [v8 extendedStateQueue];
-  dispatch_assert_queue_V2(v9);
+  retryCopy = retry;
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v10 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v12 = [v7 summary];
-    v13 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    summary = [markerCopy summary];
+    triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
     v14 = 138544898;
-    v15 = v11;
+    v15 = _updateLatestSummary;
     v16 = 2114;
     v17 = @">----->";
     v18 = 2114;
-    v19 = v6;
+    v19 = retryCopy;
     v20 = 2114;
     v21 = @"TRIGGERED_MARKERS_REQUIRING_RETRY";
     v22 = 2114;
-    v23 = v12;
+    v23 = summary;
     v24 = 2048;
-    v25 = [v13 count];
+    v25 = [triggeredMarkersRequiringRetry count];
     v26 = 2114;
     v27 = @"<-----<";
     _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | marker just removed from triggered (which require retry)\n#_CONNR:(%{public}@) [-] removedMarker:%{public}@ | triggeredMarkersRequiringRetry:%ld\n#_CONNR:%{public}@", &v14, 0x48u);
   }
 }
 
-- (void)_logTriggeredMarkersCleared:(id)a3
+- (void)_logTriggeredMarkersCleared:(id)cleared
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  clearedCopy = cleared;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v7 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v9 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-    v10 = [v9 count];
-    v11 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+    v10 = [triggeredMarkersNoRetry count];
+    triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
     v12 = 138545154;
-    v13 = v8;
+    v13 = _updateLatestSummary;
     v14 = 2114;
     v15 = @">----->";
     v16 = 2114;
-    v17 = v4;
+    v17 = clearedCopy;
     v18 = 2114;
     v19 = @"TRIGGERED_MARKERS_NO_RETRY";
     v20 = 2048;
@@ -4683,38 +4683,38 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
     v22 = 2114;
     v23 = @"TRIGGERED_MARKERS_REQUIRING_RETRY";
     v24 = 2048;
-    v25 = [v11 count];
+    v25 = [triggeredMarkersRequiringRetry count];
     v26 = 2114;
     v27 = @"<-----<";
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | triggered markers cleared (all now part of current attempt set)\n#_CONNR:(%{public}@) [!] triggeredMarkersNoRetry:%ld\n#_CONNR:(%{public}@) [!] triggeredMarkersRequiringRetry:%ld\n#_CONNR:%{public}@", &v12, 0x52u);
   }
 }
 
-- (void)_logCurrentAttemptRemainingMarkers:(id)a3
+- (void)_logCurrentAttemptRemainingMarkers:(id)markers
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  markersCopy = markers;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v7 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-  v8 = [v7 count];
+  currentAttemptRemainingMarkers = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+  v8 = [currentAttemptRemainingMarkers count];
 
   v9 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v11 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    currentAttemptRemainingMarkers2 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
     *buf = 138544386;
-    v20 = v10;
+    v20 = _updateLatestSummary;
     v21 = 2114;
     v22 = @">----->";
     v23 = 2114;
-    v24 = v4;
+    v24 = markersCopy;
     v25 = 2114;
     v26 = @"CURRENT_ATTEMPT_REMAINING_MARKERS";
     v27 = 2048;
-    v28 = [v11 count];
+    v28 = [currentAttemptRemainingMarkers2 count];
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | markers for next attempt determined\n#_CONNR:(%{public}@) currentAttemptRemainingMarkers:%ld", buf, 0x34u);
   }
 
@@ -4723,14 +4723,14 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
     v12 = 0;
     do
     {
-      v13 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-      v14 = [v13 objectAtIndex:v12];
+      currentAttemptRemainingMarkers3 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+      v14 = [currentAttemptRemainingMarkers3 objectAtIndex:v12];
 
       v15 = _MADLog(@"AutoScheduler");
       v12 = (v12 + 1);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v14 summary];
+        summary = [v14 summary];
         *buf = 138544130;
         v20 = @"CURRENT_ATTEMPT_REMAINING_MARKERS";
         v21 = 2048;
@@ -4738,7 +4738,7 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
         v23 = 2048;
         v24 = v8;
         v25 = 2114;
-        v26 = v16;
+        v26 = summary;
         _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEBUG, "\n#_CONNR:(%{public}@) %ld of %ld | currentAttemptRemainingMarker:%{public}@", buf, 0x2Au);
       }
     }
@@ -4749,32 +4749,32 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
   v17 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary2 = [(MADAutoAssetConnector *)self _updateLatestSummary];
     *buf = 138543618;
-    v20 = v18;
+    v20 = _updateLatestSummary2;
     v21 = 2114;
     v22 = @"<-----<";
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@", buf, 0x16u);
   }
 }
 
-- (void)_logClearedActiveJobMarker:(id)a3
+- (void)_logClearedActiveJobMarker:(id)marker
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  markerCopy = marker;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v7 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
     v9 = 138544386;
-    v10 = v8;
+    v10 = _updateLatestSummary;
     v11 = 2114;
     v12 = @">----->";
     v13 = 2114;
-    v14 = v4;
+    v14 = markerCopy;
     v15 = 2114;
     v16 = @"ACTIVE_MARKER";
     v17 = 2114;
@@ -4783,23 +4783,23 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
   }
 }
 
-- (void)_logClearedAttemptRemainingMarkers:(id)a3
+- (void)_logClearedAttemptRemainingMarkers:(id)markers
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  markersCopy = markers;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v7 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
     v9 = 138544386;
-    v10 = v8;
+    v10 = _updateLatestSummary;
     v11 = 2114;
     v12 = @">----->";
     v13 = 2114;
-    v14 = v4;
+    v14 = markersCopy;
     v15 = 2114;
     v16 = @"CURRENT_ATTEMPT_REMAINING_MARKERS";
     v17 = 2114;
@@ -4808,23 +4808,23 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
   }
 }
 
-- (void)_logClearedActiveJobAndAttemptRemainingMarkers:(id)a3
+- (void)_logClearedActiveJobAndAttemptRemainingMarkers:(id)markers
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  markersCopy = markers;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v7 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
     v9 = 138544386;
-    v10 = v8;
+    v10 = _updateLatestSummary;
     v11 = 2114;
     v12 = @">----->";
     v13 = 2114;
-    v14 = v4;
+    v14 = markersCopy;
     v15 = 2114;
     v16 = @"CURRENT_ATTEMPT_REMAINING_MARKERS";
     v17 = 2114;
@@ -4833,32 +4833,32 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
   }
 }
 
-- (void)_logNextActiveJobForAttemptRemainingMarkers:(id)a3
+- (void)_logNextActiveJobForAttemptRemainingMarkers:(id)markers
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v6 = [v5 extendedStateQueue];
-  dispatch_assert_queue_V2(v6);
+  markersCopy = markers;
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
   v7 = _MADLog(@"AutoScheduler");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [(MADAutoAssetConnector *)self _updateLatestSummary];
-    v9 = [(MADAutoAssetConnector *)self activeJobMarker];
-    v10 = [v9 summary];
-    v11 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+    _updateLatestSummary = [(MADAutoAssetConnector *)self _updateLatestSummary];
+    activeJobMarker = [(MADAutoAssetConnector *)self activeJobMarker];
+    summary = [activeJobMarker summary];
+    currentAttemptRemainingMarkers = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
     v12 = 138544898;
-    v13 = v8;
+    v13 = _updateLatestSummary;
     v14 = 2114;
     v15 = @">----->";
     v16 = 2114;
-    v17 = v4;
+    v17 = markersCopy;
     v18 = 2114;
     v19 = @"CURRENT_ATTEMPT_REMAINING_MARKERS";
     v20 = 2114;
-    v21 = v10;
+    v21 = summary;
     v22 = 2048;
-    v23 = [v11 count];
+    v23 = [currentAttemptRemainingMarkers count];
     v24 = 2114;
     v25 = @"<-----<";
     _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEBUG, "%{public}@\n#_CONNR:%{public}@ {%{public}@} | advanced to next marker\n#_CONNR:(%{public}@) [~] activeJobMarker:%{public}@ | currentAttemptRemainingMarkers:%ld\n#_CONNR:%{public}@", &v12, 0x48u);
@@ -4867,16 +4867,16 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
 
 - (id)summary
 {
-  v20 = [(MADAutoAssetConnector *)self monitorMarkers];
-  v17 = [v20 count];
-  v19 = [(MADAutoAssetConnector *)self markersRequiringRetry];
-  v16 = [v19 count];
-  v18 = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
-  v15 = [v18 count];
-  v3 = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
-  v4 = [v3 count];
-  v5 = [(MADAutoAssetConnector *)self activeAttemptOSTransaction];
-  if (v5)
+  monitorMarkers = [(MADAutoAssetConnector *)self monitorMarkers];
+  v17 = [monitorMarkers count];
+  markersRequiringRetry = [(MADAutoAssetConnector *)self markersRequiringRetry];
+  v16 = [markersRequiringRetry count];
+  triggeredMarkersNoRetry = [(MADAutoAssetConnector *)self triggeredMarkersNoRetry];
+  v15 = [triggeredMarkersNoRetry count];
+  triggeredMarkersRequiringRetry = [(MADAutoAssetConnector *)self triggeredMarkersRequiringRetry];
+  v4 = [triggeredMarkersRequiringRetry count];
+  activeAttemptOSTransaction = [(MADAutoAssetConnector *)self activeAttemptOSTransaction];
+  if (activeAttemptOSTransaction)
   {
     v6 = @"Y";
   }
@@ -4886,25 +4886,25 @@ void __98__MADAutoAssetConnector__startTimer_ofTimerCategory_forOneShotSecs_with
     v6 = @"N";
   }
 
-  v7 = [(MADAutoAssetConnector *)self backoffRetryLevel];
-  v8 = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
-  v9 = [v8 count];
-  v10 = [(MADAutoAssetConnector *)self activeJobMarker];
-  v11 = [v10 summary];
-  v12 = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
-  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[monitor:%ld,requiringRetry:%ld|triggered(noRetry:%ld,retryRequired:%ld)|osTrans:%@|backoffLevel:%ld|observers:%ld|attempt(activeMarker:%@,remaining:%ld)]", v17, v16, v15, v4, v6, v7, v9, v11, [v12 count]);
+  backoffRetryLevel = [(MADAutoAssetConnector *)self backoffRetryLevel];
+  catalogServerNetworkPathObservers = [(MADAutoAssetConnector *)self catalogServerNetworkPathObservers];
+  v9 = [catalogServerNetworkPathObservers count];
+  activeJobMarker = [(MADAutoAssetConnector *)self activeJobMarker];
+  summary = [activeJobMarker summary];
+  currentAttemptRemainingMarkers = [(MADAutoAssetConnector *)self currentAttemptRemainingMarkers];
+  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[monitor:%ld,requiringRetry:%ld|triggered(noRetry:%ld,retryRequired:%ld)|osTrans:%@|backoffLevel:%ld|observers:%ld|attempt(activeMarker:%@,remaining:%ld)]", v17, v16, v15, v4, v6, backoffRetryLevel, v9, summary, [currentAttemptRemainingMarkers count]);
 
   return v13;
 }
 
 - (id)_updateLatestSummary
 {
-  v3 = [(MADAutoAssetConnector *)self autoConnectorFSM];
-  v4 = [v3 extendedStateQueue];
-  dispatch_assert_queue_V2(v4);
+  autoConnectorFSM = [(MADAutoAssetConnector *)self autoConnectorFSM];
+  extendedStateQueue = [autoConnectorFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
 
-  v5 = [(MADAutoAssetConnector *)self summary];
-  [(MADAutoAssetConnector *)self setLatestSafeSummary:v5];
+  summary = [(MADAutoAssetConnector *)self summary];
+  [(MADAutoAssetConnector *)self setLatestSafeSummary:summary];
 
   return [(MADAutoAssetConnector *)self latestSafeSummary];
 }

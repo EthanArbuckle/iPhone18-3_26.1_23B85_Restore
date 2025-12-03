@@ -1,76 +1,76 @@
 @interface WeatherMapViewController
-- (BOOL)popoverPresentationControllerShouldDismissPopover:(id)a3;
-- (_TtC11WeatherMaps24WeatherMapViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)popoverPresentationControllerShouldDismissPopover:(id)popover;
+- (_TtC11WeatherMaps24WeatherMapViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
-- (void)mapSnapshotViewDidRetrieveSnapshot:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)mapSnapshotViewDidRetrieveSnapshot:(id)snapshot;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation WeatherMapViewController
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   WeatherMapViewController.loadView()();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WeatherMapViewController.viewDidLoad()();
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  WeatherMapViewController.willMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  WeatherMapViewController.willMove(toParent:)(controller);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  WeatherMapViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  WeatherMapViewController.viewDidAppear(_:)(appear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   WeatherMapViewController.viewDidLayoutSubviews()();
 }
 
-- (_TtC11WeatherMaps24WeatherMapViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11WeatherMaps24WeatherMapViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_220FC2700();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   WeatherMapViewController.init(nibName:bundle:)();
 }
 
-- (void)mapSnapshotViewDidRetrieveSnapshot:(id)a3
+- (void)mapSnapshotViewDidRetrieveSnapshot:(id)snapshot
 {
   v4 = sub_220FBFDC0();
   v5 = *(v4 - 8);
   MEMORY[0x28223BE20](v4, v6);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_220FBFD90();
-  v9 = self;
+  selfCopy = self;
   sub_220E7E3E4();
 
   (*(v5 + 8))(v8, v4);
 }
 
-- (BOOL)popoverPresentationControllerShouldDismissPopover:(id)a3
+- (BOOL)popoverPresentationControllerShouldDismissPopover:(id)popover
 {
-  v4 = a3;
-  v5 = self;
-  WeatherMapViewController.popoverPresentationControllerShouldDismissPopover(_:)(v5);
+  popoverCopy = popover;
+  selfCopy = self;
+  WeatherMapViewController.popoverPresentationControllerShouldDismissPopover(_:)(selfCopy);
 
   return 1;
 }

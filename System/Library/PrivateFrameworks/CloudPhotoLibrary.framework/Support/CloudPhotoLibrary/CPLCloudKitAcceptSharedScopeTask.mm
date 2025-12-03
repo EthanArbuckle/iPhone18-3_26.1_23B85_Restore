@@ -1,27 +1,27 @@
 @interface CPLCloudKitAcceptSharedScopeTask
-- (CPLCloudKitAcceptSharedScopeTask)initWithController:(id)a3 scope:(id)a4 completionHandler:(id)a5;
-- (void)_acceptShareWithMetadata:(id)a3 currentUserID:(id)a4 completionHandler:(id)a5;
-- (void)_acceptShareWithURL:(id)a3 currentUserID:(id)a4 completionHandler:(id)a5;
-- (void)_fetchMetadataForShareURL:(id)a3 currentUserID:(id)a4 completion:(id)a5;
-- (void)_updateScopeAndFlagsWithCKRecord:(id)a3 currentUserID:(id)a4;
-- (void)_updateScopeParticipantsWithCKShare:(id)a3 currentUserID:(id)a4;
+- (CPLCloudKitAcceptSharedScopeTask)initWithController:(id)controller scope:(id)scope completionHandler:(id)handler;
+- (void)_acceptShareWithMetadata:(id)metadata currentUserID:(id)d completionHandler:(id)handler;
+- (void)_acceptShareWithURL:(id)l currentUserID:(id)d completionHandler:(id)handler;
+- (void)_fetchMetadataForShareURL:(id)l currentUserID:(id)d completion:(id)completion;
+- (void)_updateScopeAndFlagsWithCKRecord:(id)record currentUserID:(id)d;
+- (void)_updateScopeParticipantsWithCKShare:(id)share currentUserID:(id)d;
 - (void)runOperations;
 @end
 
 @implementation CPLCloudKitAcceptSharedScopeTask
 
-- (CPLCloudKitAcceptSharedScopeTask)initWithController:(id)a3 scope:(id)a4 completionHandler:(id)a5
+- (CPLCloudKitAcceptSharedScopeTask)initWithController:(id)controller scope:(id)scope completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
+  scopeCopy = scope;
+  handlerCopy = handler;
   v16.receiver = self;
   v16.super_class = CPLCloudKitAcceptSharedScopeTask;
-  v11 = [(CPLCloudKitTransportTask *)&v16 initWithController:a3];
+  v11 = [(CPLCloudKitTransportTask *)&v16 initWithController:controller];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_scope, a4);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_scope, scope);
+    v13 = [handlerCopy copy];
     completionHandler = v12->_completionHandler;
     v12->_completionHandler = v13;
   }
@@ -43,8 +43,8 @@
   if (![(CPLScopeChange *)self->_scope scopeType])
   {
     completionHandler = self->_completionHandler;
-    v9 = [(CPLScopeChange *)self->_scope scopeIdentifier];
-    [CPLErrors cplErrorWithCode:38 description:@"Scope %@ is unknown", v9];
+    scopeIdentifier = [(CPLScopeChange *)self->_scope scopeIdentifier];
+    [CPLErrors cplErrorWithCode:38 description:@"Scope %@ is unknown", scopeIdentifier];
     v10 = LABEL_9:;
     (*(completionHandler + 2))(completionHandler, 0, 0, 0, v10);
 
@@ -54,13 +54,13 @@
   if (![(CPLScopeChange *)self->_scope canAcceptShareWithCloudKit])
   {
     completionHandler = self->_completionHandler;
-    v9 = [(CPLScopeChange *)self->_scope scopeIdentifier];
-    [CPLErrors cplErrorWithCode:38 description:@"Scope %@ can't be accepted by this user", v9];
+    scopeIdentifier = [(CPLScopeChange *)self->_scope scopeIdentifier];
+    [CPLErrors cplErrorWithCode:38 description:@"Scope %@ can't be accepted by this user", scopeIdentifier];
     goto LABEL_9;
   }
 
-  v5 = [(CPLScopeChange *)self->_scope share];
-  v6 = [v5 URL];
+  share = [(CPLScopeChange *)self->_scope share];
+  v6 = [share URL];
   v7 = v6;
   if (v6)
   {
@@ -82,11 +82,11 @@
 LABEL_12:
 }
 
-- (void)_updateScopeAndFlagsWithCKRecord:(id)a3 currentUserID:(id)a4
+- (void)_updateScopeAndFlagsWithCKRecord:(id)record currentUserID:(id)d
 {
-  v11 = a3;
-  v7 = a4;
-  if (v11)
+  recordCopy = record;
+  dCopy = d;
+  if (recordCopy)
   {
     identification = self->_identification;
     if (!identification)
@@ -94,13 +94,13 @@ LABEL_12:
       sub_10019B41C(self, a2);
     }
 
-    v9 = [(CPLCloudKitZoneIdentification *)identification updatedScopeChangeFromScopeChange:self->_scope currentUserID:v7 withCKRecord:v11];
+    v9 = [(CPLCloudKitZoneIdentification *)identification updatedScopeChangeFromScopeChange:self->_scope currentUserID:dCopy withCKRecord:recordCopy];
     if (v9)
     {
       objc_storeStrong(&self->_scope, v9);
     }
 
-    v10 = [(CPLCloudKitZoneIdentification *)self->_identification updatedFlagsFromCKRecord:v11];
+    v10 = [(CPLCloudKitZoneIdentification *)self->_identification updatedFlagsFromCKRecord:recordCopy];
     if (v10)
     {
       objc_storeStrong(&self->_flags, v10);
@@ -108,52 +108,52 @@ LABEL_12:
   }
 }
 
-- (void)_updateScopeParticipantsWithCKShare:(id)a3 currentUserID:(id)a4
+- (void)_updateScopeParticipantsWithCKShare:(id)share currentUserID:(id)d
 {
-  if (a3)
+  if (share)
   {
     scope = self->_scope;
-    v7 = a4;
-    v8 = a3;
+    dCopy = d;
+    shareCopy = share;
     v9 = [(CPLScopeChange *)scope copy];
-    v10 = [v8 participants];
+    participants = [shareCopy participants];
 
-    v11 = [CPLShareParticipant shareParticipantsFromCKShareParticipants:v10 currentUserID:v7];
+    v11 = [CPLShareParticipant shareParticipantsFromCKShareParticipants:participants currentUserID:dCopy];
 
-    v12 = [v9 share];
-    [v12 setParticipants:v11];
+    share = [v9 share];
+    [share setParticipants:v11];
 
     v13 = self->_scope;
     self->_scope = v9;
   }
 }
 
-- (void)_acceptShareWithURL:(id)a3 currentUserID:(id)a4 completionHandler:(id)a5
+- (void)_acceptShareWithURL:(id)l currentUserID:(id)d completionHandler:(id)handler
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10004E2F8;
   v10[3] = &unk_100274680;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  handlerCopy = handler;
   v10[4] = self;
-  v8 = v11;
-  v9 = v12;
-  [(CPLCloudKitAcceptSharedScopeTask *)self _fetchMetadataForShareURL:a3 currentUserID:v8 completion:v10];
+  v8 = dCopy;
+  v9 = handlerCopy;
+  [(CPLCloudKitAcceptSharedScopeTask *)self _fetchMetadataForShareURL:l currentUserID:v8 completion:v10];
 }
 
-- (void)_fetchMetadataForShareURL:(id)a3 currentUserID:(id)a4 completion:(id)a5
+- (void)_fetchMetadataForShareURL:(id)l currentUserID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  dCopy = d;
+  completionCopy = completion;
   v31 = 0;
   v11 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v31];
   v12 = v31;
   if (v11)
   {
     v13 = [CKFetchShareMetadataOperation alloc];
-    v32 = v8;
+    v32 = lCopy;
     v14 = [NSArray arrayWithObjects:&v32 count:1];
     v15 = [v13 initWithShareURLs:v14];
 
@@ -182,14 +182,14 @@ LABEL_12:
     v17 = 3221225472;
     v18 = sub_10004E728;
     v19 = &unk_1002746F8;
-    v20 = self;
+    selfCopy = self;
     v24 = v27;
     v25 = v29;
-    v23 = v10;
-    v21 = v8;
-    v22 = v9;
+    v23 = completionCopy;
+    v21 = lCopy;
+    v22 = dCopy;
     [v15 setFetchShareMetadataCompletionBlock:&v16];
-    [(CPLCloudKitTransportTask *)self launchOperation:v15 type:0 withContext:0, v16, v17, v18, v19, v20];
+    [(CPLCloudKitTransportTask *)self launchOperation:v15 type:0 withContext:0, v16, v17, v18, v19, selfCopy];
 
     _Block_object_dispose(v27, 8);
     _Block_object_dispose(v29, 8);
@@ -197,15 +197,15 @@ LABEL_12:
 
   else
   {
-    (*(v10 + 2))(v10, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
   }
 }
 
-- (void)_acceptShareWithMetadata:(id)a3 currentUserID:(id)a4 completionHandler:(id)a5
+- (void)_acceptShareWithMetadata:(id)metadata currentUserID:(id)d completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  metadataCopy = metadata;
+  dCopy = d;
+  handlerCopy = handler;
   v19 = 0;
   v12 = [(CPLCloudKitTransportTask *)self shouldRunOperationsWithError:&v19];
   v13 = v19;
@@ -221,16 +221,16 @@ LABEL_12:
     v15[1] = 3221225472;
     v15[2] = sub_10004F050;
     v15[3] = &unk_100274798;
-    v18 = v11;
+    v18 = handlerCopy;
     v15[4] = self;
-    v16 = v9;
-    v17 = v10;
+    v16 = metadataCopy;
+    v17 = dCopy;
     [(CPLCloudKitZoneIdentification *)identification validateAcceptSharedScopeTask:self completionHandler:v15];
   }
 
   else
   {
-    (*(v11 + 2))(v11, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
   }
 }
 

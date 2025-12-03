@@ -1,25 +1,25 @@
 @interface VCPProtoMovieMovingObjectResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (void)addBounds:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBounds:(id)bounds;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieMovingObjectResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v20, 0, sizeof(v20));
-  CMTimeRangeMakeFromDictionary(&v20, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+  CMTimeRangeMakeFromDictionary(&v20, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = [v4 objectForKeyedSubscript:@"objectBounds"];
   v6 = v5;
   if ((v20.start.flags & 1) == 0)
@@ -89,11 +89,11 @@ LABEL_15:
     [v3 addObject:v6];
   }
 
-  v7 = [(VCPProtoMovieMovingObjectResult *)self timeRange];
-  v8 = v7;
-  if (v7)
+  timeRange = [(VCPProtoMovieMovingObjectResult *)self timeRange];
+  v8 = timeRange;
+  if (timeRange)
   {
-    [v7 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -113,22 +113,22 @@ LABEL_15:
   return v10;
 }
 
-- (void)addBounds:(id)a3
+- (void)addBounds:(id)bounds
 {
-  v4 = a3;
+  boundsCopy = bounds;
   bounds = self->_bounds;
-  v8 = v4;
+  v8 = boundsCopy;
   if (!bounds)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_bounds;
     self->_bounds = v6;
 
-    v4 = v8;
+    boundsCopy = v8;
     bounds = self->_bounds;
   }
 
-  [(NSMutableArray *)bounds addObject:v4];
+  [(NSMutableArray *)bounds addObject:boundsCopy];
 }
 
 - (id)description
@@ -137,8 +137,8 @@ LABEL_15:
   v8.receiver = self;
   v8.super_class = VCPProtoMovieMovingObjectResult;
   v4 = [(VCPProtoMovieMovingObjectResult *)&v8 description];
-  v5 = [(VCPProtoMovieMovingObjectResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieMovingObjectResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -146,12 +146,12 @@ LABEL_15:
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   if ([(NSMutableArray *)self->_bounds count])
@@ -176,8 +176,8 @@ LABEL_15:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -186,16 +186,16 @@ LABEL_15:
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"bounds"];
+    [dictionary setObject:v6 forKey:@"bounds"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   v12 = 0u;
   v13 = 0u;
@@ -229,31 +229,31 @@ LABEL_15:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setTimeRange:self->_timeRange];
+  toCopy = to;
+  [toCopy setTimeRange:self->_timeRange];
   if ([(VCPProtoMovieMovingObjectResult *)self boundsCount])
   {
-    [v8 clearBounds];
-    v4 = [(VCPProtoMovieMovingObjectResult *)self boundsCount];
-    if (v4)
+    [toCopy clearBounds];
+    boundsCount = [(VCPProtoMovieMovingObjectResult *)self boundsCount];
+    if (boundsCount)
     {
-      v5 = v4;
+      v5 = boundsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(VCPProtoMovieMovingObjectResult *)self boundsAtIndex:i];
-        [v8 addBounds:v7];
+        [toCopy addBounds:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -277,7 +277,7 @@ LABEL_15:
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addBounds:v13];
 
         ++v12;
@@ -293,13 +293,13 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | v4[2])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | equalCopy[2])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")))
   {
     bounds = self->_bounds;
-    if (bounds | v4[1])
+    if (bounds | equalCopy[1])
     {
       v7 = [(NSMutableArray *)bounds isEqual:?];
     }
@@ -318,12 +318,12 @@ LABEL_15:
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (timeRange)
   {
     if (v6)
@@ -341,7 +341,7 @@ LABEL_15:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

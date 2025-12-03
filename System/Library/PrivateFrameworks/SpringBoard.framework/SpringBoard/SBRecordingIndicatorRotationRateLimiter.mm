@@ -1,8 +1,8 @@
 @interface SBRecordingIndicatorRotationRateLimiter
 - (BOOL)shouldAllowRotationUnderRateLimits;
 - (SBRecordingIndicatorRotationRateLimiter)init;
-- (void)_addTimestampForTime:(double)a3;
-- (void)_removeTimestampsEarlierThan:(double)a3;
+- (void)_addTimestampForTime:(double)time;
+- (void)_removeTimestampsEarlierThan:(double)than;
 @end
 
 @implementation SBRecordingIndicatorRotationRateLimiter
@@ -29,7 +29,7 @@
 - (BOOL)shouldAllowRotationUnderRateLimits
 {
   BSDispatchQueueAssertMain();
-  v3 = [(SBRecordingIndicatorSettings *)self->_settings rateLimitNumber];
+  rateLimitNumber = [(SBRecordingIndicatorSettings *)self->_settings rateLimitNumber];
   [(SBRecordingIndicatorSettings *)self->_settings rateLimitPeriod];
   mach_continuous_time();
   BSMachTimeForTimeDifferenceFromMachTime();
@@ -39,23 +39,23 @@
   v7 = v6;
   [(SBRecordingIndicatorRotationRateLimiter *)self _removeTimestampsEarlierThan:v5];
   v8 = [(NSHashTable *)self->_rotationTimestamps count];
-  if (v8 < v3)
+  if (v8 < rateLimitNumber)
   {
     [(SBRecordingIndicatorRotationRateLimiter *)self _addTimestampForTime:v7];
   }
 
-  return v8 < v3;
+  return v8 < rateLimitNumber;
 }
 
-- (void)_removeTimestampsEarlierThan:(double)a3
+- (void)_removeTimestampsEarlierThan:(double)than
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSHashTable *)self->_rotationTimestamps allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObjects = [(NSHashTable *)self->_rotationTimestamps allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -66,28 +66,28 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
         [v10 doubleValue];
-        if (v11 < a3)
+        if (v11 < than)
         {
           [(NSHashTable *)self->_rotationTimestamps removeObject:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_addTimestampForTime:(double)a3
+- (void)_addTimestampForTime:(double)time
 {
   rotationTimestamps = self->_rotationTimestamps;
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:time];
   [(NSHashTable *)rotationTimestamps addObject:v4];
 }
 

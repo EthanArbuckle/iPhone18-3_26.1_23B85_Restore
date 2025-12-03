@@ -1,15 +1,15 @@
 @interface CSPowerlogDBReader
 + (CSPowerlogDBReader)sharedInstance;
-- (double)getTotalCPUTimeWithStartDate:(id)a3 andEndDate:(id)a4;
+- (double)getTotalCPUTimeWithStartDate:(id)date andEndDate:(id)endDate;
 - (id)_init;
-- (id)getAPWakeIntervalListWithStartDate:(id)a3 andEndDate:(id)a4;
-- (id)getCPUBasedIntervalListMapWithStartDate:(id)a3 andEndDate:(id)a4 andAllowListCoalitions:(id)a5 andDenyListCoalitions:(id)a6 andDaemonOnly:(BOOL)a7 andMetricType:(int)a8;
+- (id)getAPWakeIntervalListWithStartDate:(id)date andEndDate:(id)endDate;
+- (id)getCPUBasedIntervalListMapWithStartDate:(id)date andEndDate:(id)endDate andAllowListCoalitions:(id)coalitions andDenyListCoalitions:(id)listCoalitions andDaemonOnly:(BOOL)only andMetricType:(int)type;
 - (id)getDeviceBootTime;
-- (id)getMonotonicTime:(id)a3;
-- (id)getPowerExceptionsRecordsWithStartDate:(id)a3 andEndDate:(id)a4;
-- (id)getSystemTime:(id)a3;
-- (id)getTotalBatteryDrainWithStartDate:(id)a3 andEndDate:(id)a4;
-- (id)getUnpluggedIntervalListWithStartDate:(id)a3 andEndDate:(id)a4;
+- (id)getMonotonicTime:(id)time;
+- (id)getPowerExceptionsRecordsWithStartDate:(id)date andEndDate:(id)endDate;
+- (id)getSystemTime:(id)time;
+- (id)getTotalBatteryDrainWithStartDate:(id)date andEndDate:(id)endDate;
+- (id)getUnpluggedIntervalListWithStartDate:(id)date andEndDate:(id)endDate;
 - (void)closeConnection;
 - (void)openConnection;
 @end
@@ -53,8 +53,8 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
 - (void)openConnection
 {
   v3 = objc_alloc(MEMORY[0x277D3F210]);
-  v7 = [MEMORY[0x277D3F258] containerPath];
-  v4 = [v7 stringByAppendingString:@"/Library/BatteryLife/CurrentPowerlog.PLSQL"];
+  containerPath = [MEMORY[0x277D3F258] containerPath];
+  v4 = [containerPath stringByAppendingString:@"/Library/BatteryLife/CurrentPowerlog.PLSQL"];
   v5 = [v3 initWithFilePath:v4];
   conn = self->_conn;
   self->_conn = v5;
@@ -67,12 +67,12 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
   self->_conn = 0;
 }
 
-- (id)getTotalBatteryDrainWithStartDate:(id)a3 andEndDate:(id)a4
+- (id)getTotalBatteryDrainWithStartDate:(id)date andEndDate:(id)endDate
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CSPowerlogDBReader *)self getMonotonicTime:a3];
-  v8 = [(CSPowerlogDBReader *)self getMonotonicTime:v6];
+  endDateCopy = endDate;
+  v7 = [(CSPowerlogDBReader *)self getMonotonicTime:date];
+  v8 = [(CSPowerlogDBReader *)self getMonotonicTime:endDateCopy];
 
   v9 = MEMORY[0x277CCACA8];
   [v7 timeIntervalSince1970];
@@ -94,13 +94,13 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
   return v15;
 }
 
-- (double)getTotalCPUTimeWithStartDate:(id)a3 andEndDate:(id)a4
+- (double)getTotalCPUTimeWithStartDate:(id)date andEndDate:(id)endDate
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CSPowerlogDBReader *)self getMonotonicTime:a3];
-  v33 = v6;
-  v8 = [(CSPowerlogDBReader *)self getMonotonicTime:v6];
+  endDateCopy = endDate;
+  v7 = [(CSPowerlogDBReader *)self getMonotonicTime:date];
+  v33 = endDateCopy;
+  v8 = [(CSPowerlogDBReader *)self getMonotonicTime:endDateCopy];
   v9 = MEMORY[0x277CCACA8];
   v32 = v7;
   [v7 timeIntervalSince1970];
@@ -143,9 +143,9 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
         {
           v23 = v22;
           v24 = [v21 objectForKeyedSubscript:@"Total"];
-          v25 = [MEMORY[0x277CBEB68] null];
+          null = [MEMORY[0x277CBEB68] null];
 
-          if (v24 != v25)
+          if (v24 != null)
           {
             v26 = [v21 objectForKeyedSubscript:@"Total"];
             [v26 doubleValue];
@@ -169,23 +169,23 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
   return v19;
 }
 
-- (id)getCPUBasedIntervalListMapWithStartDate:(id)a3 andEndDate:(id)a4 andAllowListCoalitions:(id)a5 andDenyListCoalitions:(id)a6 andDaemonOnly:(BOOL)a7 andMetricType:(int)a8
+- (id)getCPUBasedIntervalListMapWithStartDate:(id)date andEndDate:(id)endDate andAllowListCoalitions:(id)coalitions andDenyListCoalitions:(id)listCoalitions andDaemonOnly:(BOOL)only andMetricType:(int)type
 {
-  v9 = a7;
+  onlyCopy = only;
   v102 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v82 = a5;
-  v81 = a6;
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  v80 = [(CSPowerlogDBReader *)self getMonotonicTime:v14];
-  v79 = [(CSPowerlogDBReader *)self getMonotonicTime:v15];
-  if (v9)
+  dateCopy = date;
+  endDateCopy = endDate;
+  coalitionsCopy = coalitions;
+  listCoalitionsCopy = listCoalitions;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v80 = [(CSPowerlogDBReader *)self getMonotonicTime:dateCopy];
+  v79 = [(CSPowerlogDBReader *)self getMonotonicTime:endDateCopy];
+  if (onlyCopy)
   {
-    v86 = v9;
-    v88 = v16;
-    v17 = v15;
-    v18 = v14;
+    v86 = onlyCopy;
+    v88 = dictionary;
+    v17 = endDateCopy;
+    v18 = dateCopy;
     v90 = [MEMORY[0x277CBEB58] set];
     v19 = [(PLSQLiteConnection *)self->_conn performQuery:@"select distinct Identifier as bundleId from PLApplicationAgent_EventForward_Application"];
     v95 = 0u;
@@ -216,10 +216,10 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
       while (v21);
     }
 
-    v14 = v18;
-    v15 = v17;
-    v16 = v88;
-    v9 = v86;
+    dateCopy = v18;
+    endDateCopy = v17;
+    dictionary = v88;
+    onlyCopy = v86;
   }
 
   else
@@ -227,8 +227,8 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
     v90 = 0;
   }
 
-  v25 = a8 - 3;
-  if (a8 - 3) < 6 && ((0x33u >> v25))
+  v25 = type - 3;
+  if (type - 3) < 6 && ((0x33u >> v25))
   {
     v26 = off_278DF5480[v25];
     v27 = off_278DF54B0[v25];
@@ -246,22 +246,22 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
     [v79 timeIntervalSince1970];
     v84 = v26;
     v40 = [v28 stringWithFormat:@"        SELECT LaunchdName AS %@, LaunchdCoalitionID AS %@, BundleId AS %@, CASE WHEN timestamp > %f THEN timestamp ELSE %f END AS %@, CASE WHEN timestampEnd < %f THEN timestampEnd ELSE %f END AS %@, %@ AS %@         FROM PLCoalitionAgent_EventInterval_CoalitionInterval WHERE timestampEnd >= %f AND timestamp <= %f", @"LaunchdName", @"LaunchdCoalitionID", @"BundleID", v30, v32, @"TimestampStart", v34, v36, @"TimestampEnd", v27, v26, v38, v39];
-    if (v82 && [v82 count])
+    if (coalitionsCopy && [coalitionsCopy count])
     {
       v41 = MEMORY[0x277CCACA8];
-      v42 = [v82 componentsJoinedByString:{@", "}];
+      v42 = [coalitionsCopy componentsJoinedByString:{@", "}];
       v43 = [v41 stringWithFormat:@" AND LaunchdName in (\"%@\"", v42];
       v44 = [v40 stringByAppendingString:v43];
 
       v40 = v44;
     }
 
-    v77 = v15;
-    v78 = v14;
-    if (v81 && [v81 count])
+    v77 = endDateCopy;
+    v78 = dateCopy;
+    if (listCoalitionsCopy && [listCoalitionsCopy count])
     {
       v45 = MEMORY[0x277CCACA8];
-      v46 = [v81 componentsJoinedByString:{@", "}];
+      v46 = [listCoalitionsCopy componentsJoinedByString:{@", "}];
       v47 = [v45 stringWithFormat:@" AND LaunchdName not in (\"%@\"", v46];
       v48 = [v40 stringByAppendingString:v47];
 
@@ -281,7 +281,7 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
     {
       if (v90)
       {
-        v50 = v9;
+        v50 = onlyCopy;
       }
 
       else
@@ -327,11 +327,11 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
           [v64 doubleValue];
           v65 = [v63 dateWithTimeIntervalSince1970:?];
           [v52 valueForKey:v84];
-          v67 = v66 = v16;
+          v67 = v66 = dictionary;
           [v67 doubleValue];
           v68 = [(CSInterval *)v59 initWithStartTime:v62 endTime:v65 value:?];
 
-          v16 = v66;
+          dictionary = v66;
           v69 = [v66 objectForKey:v58];
 
           if (v69)
@@ -356,8 +356,8 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
       while (v89);
     }
 
-    v15 = v77;
-    v14 = v78;
+    endDateCopy = v77;
+    dateCopy = v78;
   }
 
   else
@@ -365,24 +365,24 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
     logger = self->_logger;
     if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
     {
-      [CSPowerlogDBReader getCPUBasedIntervalListMapWithStartDate:a8 andEndDate:logger andAllowListCoalitions:? andDenyListCoalitions:? andDaemonOnly:? andMetricType:?];
+      [CSPowerlogDBReader getCPUBasedIntervalListMapWithStartDate:type andEndDate:logger andAllowListCoalitions:? andDenyListCoalitions:? andDaemonOnly:? andMetricType:?];
     }
   }
 
   v74 = *MEMORY[0x277D85DE8];
 
-  return v16;
+  return dictionary;
 }
 
-- (id)getUnpluggedIntervalListWithStartDate:(id)a3 andEndDate:(id)a4
+- (id)getUnpluggedIntervalListWithStartDate:(id)date andEndDate:(id)endDate
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v8 = [CSIntervalList alloc];
   v47 = [(CSIntervalList *)v8 initWithIntervals:MEMORY[0x277CBEBF8]];
-  v9 = [(CSPowerlogDBReader *)self getMonotonicTime:v6];
-  v10 = [(CSPowerlogDBReader *)self getMonotonicTime:v7];
+  v9 = [(CSPowerlogDBReader *)self getMonotonicTime:dateCopy];
+  v10 = [(CSPowerlogDBReader *)self getMonotonicTime:endDateCopy];
   v11 = MEMORY[0x277CCACA8];
   [v9 timeIntervalSince1970];
   v13 = v12;
@@ -405,10 +405,10 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
 
   v20 = v18;
   v44 = v15;
-  v45 = v7;
-  v46 = v6;
+  v45 = endDateCopy;
+  v46 = dateCopy;
   v21 = 0;
-  v22 = 1;
+  intValue = 1;
   v23 = *v52;
   v50 = v17;
   v19 = v17;
@@ -445,7 +445,7 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
             v30 = v31;
           }
 
-          if (!v22)
+          if (!intValue)
           {
             v32 = v47;
             if (![(CSIntervalList *)v47 count])
@@ -453,12 +453,12 @@ uint64_t __36__CSPowerlogDBReader_sharedInstance__block_invoke()
               goto LABEL_14;
             }
 
-            v33 = [(CSIntervalList *)v47 lastInterval];
-            v34 = [(CSInterval *)v33 endTime];
+            lastInterval = [(CSIntervalList *)v47 lastInterval];
+            endTime = [(CSInterval *)lastInterval endTime];
 
-            if (v34 == v19)
+            if (endTime == v19)
             {
-              [(CSInterval *)v33 setEndTime:v30];
+              [(CSInterval *)lastInterval setEndTime:v30];
             }
 
             else
@@ -477,14 +477,14 @@ LABEL_14:
                 v36 = v50;
               }
 
-              v33 = [(CSInterval *)v35 initWithStartTime:v36 endTime:v30];
-              [(CSIntervalList *)v32 addInterval:v33];
+              lastInterval = [(CSInterval *)v35 initWithStartTime:v36 endTime:v30];
+              [(CSIntervalList *)v32 addInterval:lastInterval];
             }
           }
         }
 
         v37 = [v21 valueForKey:@"ExternalConnected"];
-        v22 = [v37 intValue];
+        intValue = [v37 intValue];
 
         v19 = v30;
       }
@@ -499,19 +499,19 @@ LABEL_14:
 
   while (v20);
 
-  if (!v22)
+  if (!intValue)
   {
     if (![(CSIntervalList *)v47 count])
     {
       goto LABEL_27;
     }
 
-    v38 = [(CSIntervalList *)v47 lastInterval];
-    v39 = [(CSInterval *)v38 endTime];
+    lastInterval2 = [(CSIntervalList *)v47 lastInterval];
+    endTime2 = [(CSInterval *)lastInterval2 endTime];
 
-    if (v39 == v19)
+    if (endTime2 == v19)
     {
-      [(CSInterval *)v38 setEndTime:v48];
+      [(CSInterval *)lastInterval2 setEndTime:v48];
     }
 
     else
@@ -529,13 +529,13 @@ LABEL_27:
         v41 = v50;
       }
 
-      v38 = [(CSInterval *)v40 initWithStartTime:v41 endTime:v48];
-      [(CSIntervalList *)v47 addInterval:v38];
+      lastInterval2 = [(CSInterval *)v40 initWithStartTime:v41 endTime:v48];
+      [(CSIntervalList *)v47 addInterval:lastInterval2];
     }
   }
 
-  v7 = v45;
-  v6 = v46;
+  endDateCopy = v45;
+  dateCopy = v46;
   v15 = v44;
   v17 = v50;
 LABEL_34:
@@ -545,15 +545,15 @@ LABEL_34:
   return v47;
 }
 
-- (id)getAPWakeIntervalListWithStartDate:(id)a3 andEndDate:(id)a4
+- (id)getAPWakeIntervalListWithStartDate:(id)date andEndDate:(id)endDate
 {
   v51 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v8 = [CSIntervalList alloc];
   v45 = [(CSIntervalList *)v8 initWithIntervals:MEMORY[0x277CBEBF8]];
-  v9 = [(CSPowerlogDBReader *)self getMonotonicTime:v6];
-  v10 = [(CSPowerlogDBReader *)self getMonotonicTime:v7];
+  v9 = [(CSPowerlogDBReader *)self getMonotonicTime:dateCopy];
+  v10 = [(CSPowerlogDBReader *)self getMonotonicTime:endDateCopy];
   v11 = MEMORY[0x277CCACA8];
   [v10 timeIntervalSince1970];
   v13 = v12;
@@ -578,8 +578,8 @@ LABEL_34:
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v19 = v17;
-  v20 = [(CSInterval *)v19 countByEnumeratingWithState:&v46 objects:v50 count:16];
+  lastInterval2 = v17;
+  v20 = [(CSInterval *)lastInterval2 countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (!v20)
   {
     goto LABEL_30;
@@ -589,8 +589,8 @@ LABEL_34:
   v40 = v17;
   v41 = v15;
   v42 = v9;
-  v43 = v7;
-  v44 = v6;
+  v43 = endDateCopy;
+  v44 = dateCopy;
   v22 = *v47;
   v23 = -1;
   do
@@ -601,7 +601,7 @@ LABEL_34:
     {
       if (*v47 != v22)
       {
-        objc_enumerationMutation(v19);
+        objc_enumerationMutation(lastInterval2);
       }
 
       v26 = *(*(&v46 + 1) + 8 * v24);
@@ -634,20 +634,20 @@ LABEL_34:
           goto LABEL_17;
         }
 
-        v34 = [(CSIntervalList *)v45 lastInterval];
-        v35 = [(CSInterval *)v34 endTime];
+        lastInterval = [(CSIntervalList *)v45 lastInterval];
+        endTime = [(CSInterval *)lastInterval endTime];
 
-        if (v35 == v25)
+        if (endTime == v25)
         {
-          [(CSInterval *)v34 setEndTime:v18];
+          [(CSInterval *)lastInterval setEndTime:v18];
         }
 
         else
         {
 
 LABEL_17:
-          v34 = [[CSInterval alloc] initWithStartTime:v25 endTime:v18];
-          [(CSIntervalList *)v45 addInterval:v34];
+          lastInterval = [[CSInterval alloc] initWithStartTime:v25 endTime:v18];
+          [(CSIntervalList *)v45 addInterval:lastInterval];
         }
       }
 
@@ -658,7 +658,7 @@ LABEL_17:
     }
 
     while (v21 != v24);
-    v21 = [(CSInterval *)v19 countByEnumeratingWithState:&v46 objects:v50 count:16];
+    v21 = [(CSInterval *)lastInterval2 countByEnumeratingWithState:&v46 objects:v50 count:16];
   }
 
   while (v21);
@@ -666,8 +666,8 @@ LABEL_17:
   v15 = v41;
   if (v32 == 4.0)
   {
-    v7 = v43;
-    v6 = v44;
+    endDateCopy = v43;
+    dateCopy = v44;
     v9 = v42;
     v17 = v40;
   }
@@ -675,8 +675,8 @@ LABEL_17:
   else
   {
     v36 = v45;
-    v7 = v43;
-    v6 = v44;
+    endDateCopy = v43;
+    dateCopy = v44;
     v9 = v42;
     v17 = v40;
     if (![(CSIntervalList *)v45 count])
@@ -684,12 +684,12 @@ LABEL_17:
       goto LABEL_26;
     }
 
-    v19 = [(CSIntervalList *)v45 lastInterval];
-    v37 = [(CSInterval *)v19 endTime];
+    lastInterval2 = [(CSIntervalList *)v45 lastInterval];
+    endTime2 = [(CSInterval *)lastInterval2 endTime];
 
-    if (v37 == v18)
+    if (endTime2 == v18)
     {
-      [(CSInterval *)v19 setEndTime:v10];
+      [(CSInterval *)lastInterval2 setEndTime:v10];
     }
 
     else
@@ -697,8 +697,8 @@ LABEL_17:
 
       v36 = v45;
 LABEL_26:
-      v19 = [[CSInterval alloc] initWithStartTime:v18 endTime:v10];
-      [(CSIntervalList *)v36 addInterval:v19];
+      lastInterval2 = [[CSInterval alloc] initWithStartTime:v18 endTime:v10];
+      [(CSIntervalList *)v36 addInterval:lastInterval2];
     }
 
 LABEL_30:
@@ -711,13 +711,13 @@ LABEL_31:
   return v45;
 }
 
-- (id)getPowerExceptionsRecordsWithStartDate:(id)a3 andEndDate:(id)a4
+- (id)getPowerExceptionsRecordsWithStartDate:(id)date andEndDate:(id)endDate
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(CSPowerlogDBReader *)self getMonotonicTime:a3];
-  v67 = v6;
-  v8 = [(CSPowerlogDBReader *)self getMonotonicTime:v6];
+  endDateCopy = endDate;
+  v7 = [(CSPowerlogDBReader *)self getMonotonicTime:date];
+  v67 = endDateCopy;
+  v8 = [(CSPowerlogDBReader *)self getMonotonicTime:endDateCopy];
   v9 = MEMORY[0x277CCACA8];
   v66 = v7;
   [v7 timeIntervalSince1970];
@@ -735,7 +735,7 @@ LABEL_31:
 
   v64 = v13;
   v15 = [(PLSQLiteConnection *)self->_conn performQuery:v13];
-  v68 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
@@ -856,7 +856,7 @@ LABEL_31:
 
                                               if (v61)
                                               {
-                                                [v68 addObject:v21];
+                                                [array addObject:v21];
                                               }
                                             }
                                           }
@@ -887,14 +887,14 @@ LABEL_31:
 
   v62 = *MEMORY[0x277D85DE8];
 
-  return v68;
+  return array;
 }
 
-- (id)getMonotonicTime:(id)a3
+- (id)getMonotonicTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = MEMORY[0x277CCACA8];
-  [v4 timeIntervalSince1970];
+  [timeCopy timeIntervalSince1970];
   v7 = [v5 stringWithFormat:@"SELECT system FROM PLStorageOperator_EventForward_TimeOffset WHERE timestamp + system <= %f ORDER BY timestamp DESC LIMIT 1", v6];;
   v8 = [(PLSQLiteConnection *)self->_conn performQuery:v7];
   if ([v8 count])
@@ -904,20 +904,20 @@ LABEL_31:
     [v10 doubleValue];
     v12 = v11;
 
-    v13 = [v4 dateByAddingTimeInterval:-v12];
+    v13 = [timeCopy dateByAddingTimeInterval:-v12];
 LABEL_3:
     v14 = v13;
     goto LABEL_6;
   }
 
   v15 = MEMORY[0x277CCACA8];
-  [v4 timeIntervalSince1970];
+  [timeCopy timeIntervalSince1970];
   v17 = [v15 stringWithFormat:@"SELECT system FROM PLStorageOperator_EventForward_TimeOffset WHERE timestamp + system > %f ORDER BY timestamp LIMIT 1", v16];;
   v18 = [(PLSQLiteConnection *)self->_conn performQuery:v17];
   if (![v18 count])
   {
 
-    v13 = v4;
+    v13 = timeCopy;
     goto LABEL_3;
   }
 
@@ -926,18 +926,18 @@ LABEL_3:
   [v20 doubleValue];
   v22 = v21;
 
-  v14 = [v4 dateByAddingTimeInterval:-v22];
+  v14 = [timeCopy dateByAddingTimeInterval:-v22];
 
 LABEL_6:
 
   return v14;
 }
 
-- (id)getSystemTime:(id)a3
+- (id)getSystemTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   v5 = MEMORY[0x277CCACA8];
-  [v4 timeIntervalSince1970];
+  [timeCopy timeIntervalSince1970];
   v7 = [v5 stringWithFormat:@"SELECT system FROM PLStorageOperator_EventForward_TimeOffset WHERE timestamp <= %f ORDER BY timestamp DESC LIMIT 1", v6];;
   v8 = [(PLSQLiteConnection *)self->_conn performQuery:v7];
   if ([v8 count])
@@ -947,20 +947,20 @@ LABEL_6:
     [v10 doubleValue];
     v12 = v11;
 
-    v13 = [v4 dateByAddingTimeInterval:v12];
+    v13 = [timeCopy dateByAddingTimeInterval:v12];
 LABEL_3:
     v14 = v13;
     goto LABEL_6;
   }
 
   v15 = MEMORY[0x277CCACA8];
-  [v4 timeIntervalSince1970];
+  [timeCopy timeIntervalSince1970];
   v17 = [v15 stringWithFormat:@"SELECT system FROM PLStorageOperator_EventForward_TimeOffset WHERE timestamp > %f ORDER BY timestamp LIMIT 1", v16];;
   v18 = [(PLSQLiteConnection *)self->_conn performQuery:v17];
   if (![v18 count])
   {
 
-    v13 = v4;
+    v13 = timeCopy;
     goto LABEL_3;
   }
 
@@ -969,7 +969,7 @@ LABEL_3:
   [v20 doubleValue];
   v22 = v21;
 
-  v14 = [v4 dateByAddingTimeInterval:v22];
+  v14 = [timeCopy dateByAddingTimeInterval:v22];
 
 LABEL_6:
 

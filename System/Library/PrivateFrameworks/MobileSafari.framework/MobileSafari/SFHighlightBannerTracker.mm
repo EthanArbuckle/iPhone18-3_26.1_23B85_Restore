@@ -1,8 +1,8 @@
 @interface SFHighlightBannerTracker
 + (id)sharedTracker;
-- (void)blockBannerForHighlight:(id)a3;
-- (void)isBannerBlockedForHighlight:(id)a3 completion:(id)a4;
-- (void)unblockBannerForHighlight:(id)a3;
+- (void)blockBannerForHighlight:(id)highlight;
+- (void)isBannerBlockedForHighlight:(id)highlight completion:(id)completion;
+- (void)unblockBannerForHighlight:(id)highlight;
 @end
 
 @implementation SFHighlightBannerTracker
@@ -26,25 +26,25 @@ void __41__SFHighlightBannerTracker_sharedTracker__block_invoke()
   sharedTracker_sharedTracker_0 = v0;
 }
 
-- (void)isBannerBlockedForHighlight:(id)a3 completion:(id)a4
+- (void)isBannerBlockedForHighlight:(id)highlight completion:(id)completion
 {
   v4.receiver = self;
   v4.super_class = SFHighlightBannerTracker;
-  [(WBSBannerTracker *)&v4 isBannerBlockedForIdentifier:a3 completion:a4];
+  [(WBSBannerTracker *)&v4 isBannerBlockedForIdentifier:highlight completion:completion];
 }
 
-- (void)blockBannerForHighlight:(id)a3
+- (void)blockBannerForHighlight:(id)highlight
 {
   v3.receiver = self;
   v3.super_class = SFHighlightBannerTracker;
-  [(WBSBannerTracker *)&v3 blockBannerForIdentifier:a3];
+  [(WBSBannerTracker *)&v3 blockBannerForIdentifier:highlight];
 }
 
-- (void)unblockBannerForHighlight:(id)a3
+- (void)unblockBannerForHighlight:(id)highlight
 {
   v3.receiver = self;
   v3.super_class = SFHighlightBannerTracker;
-  [(WBSBannerTracker *)&v3 unblockBannerForIdentifier:a3];
+  [(WBSBannerTracker *)&v3 unblockBannerForIdentifier:highlight];
 }
 
 @end

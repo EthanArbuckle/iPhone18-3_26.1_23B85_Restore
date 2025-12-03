@@ -7,17 +7,17 @@
 
 - (BOOL)safari_isThenable
 {
-  v2 = [a1 context];
-  v3 = [v2 JSGlobalContextRef];
+  context = [self context];
+  jSGlobalContextRef = [context JSGlobalContextRef];
 
-  v4 = [a1 JSValueRef];
-  if (!JSValueIsObject(v3, v4))
+  jSValueRef = [self JSValueRef];
+  if (!JSValueIsObject(jSGlobalContextRef, jSValueRef))
   {
     return 0;
   }
 
-  v5 = JSValueToObject(v3, v4, 0);
-  return SafariShared::JSUtilities::functionObjectByName(v3, v5, "then", v6) != 0;
+  v5 = JSValueToObject(jSGlobalContextRef, jSValueRef, 0);
+  return SafariShared::JSUtilities::functionObjectByName(jSGlobalContextRef, v5, "then", v6) != 0;
 }
 
 - (void)safari_awaitThenableResolutionWithCompletionHandler:()SafariThenableExtras
@@ -43,7 +43,7 @@
   v10 = MEMORY[0x1BFB13CE0](v8);
   v17[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v12 = [a1 invokeMethod:@"then" withArguments:v11];
+  v12 = [self invokeMethod:@"then" withArguments:v11];
 }
 
 @end

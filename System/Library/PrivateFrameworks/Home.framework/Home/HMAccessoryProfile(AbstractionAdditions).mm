@@ -20,17 +20,17 @@
 
 - (id)hf_serviceNameComponents
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_serviceNameComponents];
+  accessory = [self accessory];
+  hf_serviceNameComponents = [accessory hf_serviceNameComponents];
 
-  return v2;
+  return hf_serviceNameComponents;
 }
 
 - (id)hf_associatedAccessories
 {
   v1 = MEMORY[0x277CBEB98];
-  v2 = [a1 accessory];
-  v3 = [v1 na_setWithSafeObject:v2];
+  accessory = [self accessory];
+  v3 = [v1 na_setWithSafeObject:accessory];
 
   return v3;
 }
@@ -61,72 +61,72 @@
 
 - (id)hf_accessoryType
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_accessoryType];
+  accessory = [self accessory];
+  hf_accessoryType = [accessory hf_accessoryType];
 
-  return v2;
+  return hf_accessoryType;
 }
 
 - (uint64_t)hf_isInRoom:()AbstractionAdditions
 {
   v4 = a3;
-  v5 = [a1 accessory];
-  v6 = [v5 room];
-  v7 = [v6 uniqueIdentifier];
-  v8 = [v4 uniqueIdentifier];
+  accessory = [self accessory];
+  room = [accessory room];
+  uniqueIdentifier = [room uniqueIdentifier];
+  uniqueIdentifier2 = [v4 uniqueIdentifier];
 
-  v9 = [v7 hmf_isEqualToUUID:v8];
+  v9 = [uniqueIdentifier hmf_isEqualToUUID:uniqueIdentifier2];
   return v9;
 }
 
 - (id)hf_safeRoom
 {
-  v1 = [a1 accessory];
-  v2 = [v1 room];
+  accessory = [self accessory];
+  room = [accessory room];
 
-  return v2;
+  return room;
 }
 
 - (uint64_t)hf_isIdentifiable
 {
-  v2 = [a1 accessory];
-  if ([v2 supportsIdentify])
+  accessory = [self accessory];
+  if ([accessory supportsIdentify])
   {
-    v3 = 1;
+    hf_isHomePod = 1;
   }
 
   else
   {
-    v4 = [a1 accessory];
-    v3 = [v4 hf_isHomePod];
+    accessory2 = [self accessory];
+    hf_isHomePod = [accessory2 hf_isHomePod];
   }
 
-  return v3;
+  return hf_isHomePod;
 }
 
 - (uint64_t)hf_canShowInControlCenter
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_showsAsAccessoryInControlCentre];
+  accessory = [self accessory];
+  hf_showsAsAccessoryInControlCentre = [accessory hf_showsAsAccessoryInControlCentre];
 
-  return v2;
+  return hf_showsAsAccessoryInControlCentre;
 }
 
 - (id)hf_moveToRoom:()AbstractionAdditions
 {
   v4 = a3;
-  v5 = [a1 accessory];
-  v6 = [v5 hf_moveToRoom:v4];
+  accessory = [self accessory];
+  v6 = [accessory hf_moveToRoom:v4];
 
   return v6;
 }
 
 - (id)hf_updateIsFavorite:()AbstractionAdditions
 {
-  v5 = [a1 accessory];
-  v6 = [v5 hf_isCamera];
+  accessory = [self accessory];
+  hf_isCamera = [accessory hf_isCamera];
 
-  if (v6)
+  if (hf_isCamera)
   {
     NSLog(&cfstr_AttemptingToUp_0.isa);
     [MEMORY[0x277D2C900] futureWithNoResult];
@@ -134,7 +134,7 @@
 
   else
   {
-    [a1 hf_updateValue:a3 forContextType:2];
+    [self hf_updateValue:a3 forContextType:2];
   }
   v7 = ;
 
@@ -143,26 +143,26 @@
 
 - (uint64_t)hf_isVisibleInHomeStatus
 {
-  if ([a1 hf_isForcedVisibleInHomeStatus])
+  if ([self hf_isForcedVisibleInHomeStatus])
   {
     return 1;
   }
 
-  return [a1 hf_shouldBeOnForContextType:1];
+  return [self hf_shouldBeOnForContextType:1];
 }
 
 - (uint64_t)hf_isForcedVisibleInHomeStatus
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_isForcedVisibleInHomeStatus];
+  accessory = [self accessory];
+  hf_isForcedVisibleInHomeStatus = [accessory hf_isForcedVisibleInHomeStatus];
 
-  return v2;
+  return hf_isForcedVisibleInHomeStatus;
 }
 
 - (id)hf_tileSize
 {
-  v1 = [a1 accessory];
-  v2 = [HFHomeKitObjectSettingsStore tileSizeForObject:v1];
+  accessory = [self accessory];
+  v2 = [HFHomeKitObjectSettingsStore tileSizeForObject:accessory];
 
   return v2;
 }
@@ -170,8 +170,8 @@
 - (id)hf_setTileSize:()AbstractionAdditions
 {
   v4 = a3;
-  v5 = [a1 accessory];
-  v6 = [HFHomeKitObjectSettingsStore setTileSize:v4 forObject:v5];
+  accessory = [self accessory];
+  v6 = [HFHomeKitObjectSettingsStore setTileSize:v4 forObject:accessory];
 
   return v6;
 }

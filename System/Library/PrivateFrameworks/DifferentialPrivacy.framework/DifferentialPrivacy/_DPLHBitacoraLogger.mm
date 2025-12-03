@@ -1,14 +1,14 @@
 @interface _DPLHBitacoraLogger
-+ (id)trialIdentifiersForKey:(id)a3;
++ (id)trialIdentifiersForKey:(id)key;
 @end
 
 @implementation _DPLHBitacoraLogger
 
-+ (id)trialIdentifiersForKey:(id)a3
++ (id)trialIdentifiersForKey:(id)key
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@":"];
+  keyCopy = key;
+  v4 = [keyCopy componentsSeparatedByString:@":"];
   v5 = [v4 count];
   if (v5 > 4)
   {
@@ -44,7 +44,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *&buf[4] = v3;
+      *&buf[4] = keyCopy;
       *&buf[12] = 2048;
       *&buf[14] = 5;
       _os_log_impl(&dword_22622D000, v6, OS_LOG_TYPE_INFO, "Skipping donation to Bitacora; malformed collection ID %@. The number of colon separated components is less than %ld", buf, 0x16u);

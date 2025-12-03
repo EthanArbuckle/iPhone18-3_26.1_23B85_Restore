@@ -1,25 +1,25 @@
 @interface FIUIDepthFormatter
 - (FIUIDepthFormatter)init;
-- (FIUIDepthFormatter)initWithUnitManager:(id)a3;
-- (id)formatGoalValueForDive:(id)a3;
-- (id)formatMaxDepthFromWorkout:(id)a3;
-- (id)formatUnderwaterTime:(double)a3;
-- (id)formatWaterTemperatureRangeWithLower:(double)a3 upper:(double)a4;
-- (id)formatWaterTemperatureValue:(double)a3;
+- (FIUIDepthFormatter)initWithUnitManager:(id)manager;
+- (id)formatGoalValueForDive:(id)dive;
+- (id)formatMaxDepthFromWorkout:(id)workout;
+- (id)formatUnderwaterTime:(double)time;
+- (id)formatWaterTemperatureRangeWithLower:(double)lower upper:(double)upper;
+- (id)formatWaterTemperatureValue:(double)value;
 - (id)formatZeroDepth;
 @end
 
 @implementation FIUIDepthFormatter
 
-- (FIUIDepthFormatter)initWithUnitManager:(id)a3
+- (FIUIDepthFormatter)initWithUnitManager:(id)manager
 {
-  v3 = a3;
-  v4 = sub_1E5D8934C(v3);
+  managerCopy = manager;
+  v4 = sub_1E5D8934C(managerCopy);
 
   return v4;
 }
 
-- (id)formatWaterTemperatureValue:(double)a3
+- (id)formatWaterTemperatureValue:(double)value
 {
   v4 = sub_1E5DA906C();
   v5 = *(v4 - 8);
@@ -30,7 +30,7 @@
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   (*(v5 + 104))(v7, *MEMORY[0x1E6999C20], v4);
-  v12 = self;
+  selfCopy = self;
   sub_1E5DA902C();
   (*(v9 + 104))(v11, *MEMORY[0x1E6999C08], v8);
   sub_1E5DA8F7C();
@@ -41,7 +41,7 @@
   return v13;
 }
 
-- (id)formatWaterTemperatureRangeWithLower:(double)a3 upper:(double)a4
+- (id)formatWaterTemperatureRangeWithLower:(double)lower upper:(double)upper
 {
   v5 = sub_1E5DA906C();
   v6 = *(v5 - 8);
@@ -69,9 +69,9 @@
   return v15;
 }
 
-- (id)formatUnderwaterTime:(double)a3
+- (id)formatUnderwaterTime:(double)time
 {
-  v3 = self;
+  selfCopy = self;
   sub_1E5DA8F8C();
 
   v4 = sub_1E5DA911C();
@@ -79,10 +79,10 @@
   return v4;
 }
 
-- (id)formatMaxDepthFromWorkout:(id)a3
+- (id)formatMaxDepthFromWorkout:(id)workout
 {
-  v4 = a3;
-  v5 = self;
+  workoutCopy = workout;
+  selfCopy = self;
   v6 = FIUIDepthFormatter.formatMaxDepth(from:)();
 
   return v6;
@@ -90,15 +90,15 @@
 
 - (id)formatZeroDepth
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FIUIDepthFormatter.formatZeroDepth()();
 
   return v3;
 }
 
-- (id)formatGoalValueForDive:(id)a3
+- (id)formatGoalValueForDive:(id)dive
 {
-  v3 = [(FIUIDepthFormatter *)self formatMaxDepthFromWorkout:a3];
+  v3 = [(FIUIDepthFormatter *)self formatMaxDepthFromWorkout:dive];
 
   return v3;
 }

@@ -8,8 +8,8 @@
 
 - (int)getWindowSize
 {
-  v3 = [(NSData *)self bytes];
-  if ([(NSData *)self length]>= 3 && *v3 == 31 && v3[1] == 139)
+  bytes = [(NSData *)self bytes];
+  if ([(NSData *)self length]>= 3 && *bytes == 31 && bytes[1] == 139)
   {
     return 31;
   }
@@ -23,9 +23,9 @@
 - (id)inflate
 {
   memset(&v10.avail_in, 0, 104);
-  v3 = [(NSData *)self getWindowSize];
+  getWindowSize = [(NSData *)self getWindowSize];
   v10.avail_in = [(NSData *)self length];
-  v4 = inflateInit2_(&v10, v3, "1.2.12", 112);
+  v4 = inflateInit2_(&v10, getWindowSize, "1.2.12", 112);
   v5 = 0;
   if (!v4)
   {
@@ -65,13 +65,13 @@
 - (id)hexString
 {
   v3 = [NSMutableString stringWithCapacity:2 * [(NSData *)self length]];
-  v4 = [(NSData *)self bytes];
+  bytes = [(NSData *)self bytes];
   if ([(NSData *)self length])
   {
     v5 = 0;
     do
     {
-      [v3 appendFormat:@"%02lX", v4[v5++]];
+      [v3 appendFormat:@"%02lX", bytes[v5++]];
     }
 
     while (v5 < [(NSData *)self length]);

@@ -1,41 +1,41 @@
 @interface GKMatchRequest
-+ (BOOL)instancesRespondToSelector:(SEL)a3;
++ (BOOL)instancesRespondToSelector:(SEL)selector;
 + (NSUInteger)maxPlayersAllowedForMatchOfType:(GKMatchType)matchType;
-+ (id)instanceMethodSignatureForSelector:(SEL)a3;
-+ (id)sanitizeProperties:(id)a3;
++ (id)instanceMethodSignatureForSelector:(SEL)selector;
++ (id)sanitizeProperties:(id)properties;
 - (BOOL)defaultNumberOfPlayersIsValid;
 - (BOOL)hasFutureRecipientProperties;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isIncorrectlyInvitingPlayers;
 - (BOOL)isRecipientCountValid;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (GKMatchRequest)init;
-- (GKMatchRequest)initWithInternalRepresentation:(id)a3;
+- (GKMatchRequest)initWithInternalRepresentation:(id)representation;
 - (NSArray)playersToInvite;
 - (NSArray)recipients;
 - (NSDictionary)recipientProperties;
 - (NSString)internalDescription;
 - (NSString)inviteMessage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)guestPlayers;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (id)validateNumbersOfPlayersWithMax:(unint64_t)a3;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (id)validateNumbersOfPlayersWithMax:(unint64_t)max;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
-- (void)ensureValidityHosted:(BOOL)a3;
-- (void)expectFutureRecipientPropertiesForPlayers:(id)a3;
-- (void)loadRecipientsWithCompletionHandler:(id)a3;
+- (void)ensureValidityHosted:(BOOL)hosted;
+- (void)expectFutureRecipientPropertiesForPlayers:(id)players;
+- (void)loadRecipientsWithCompletionHandler:(id)handler;
 - (void)playersToInvite;
 - (void)removeLocalPlayerFromPlayersToInvite;
 - (void)setInviteMessage:(NSString *)inviteMessage;
 - (void)setPlayersToInvite:(NSArray *)playersToInvite;
-- (void)setProperties:(id)a3;
-- (void)setRecipientProperties:(id)a3;
+- (void)setProperties:(id)properties;
+- (void)setRecipientProperties:(id)properties;
 - (void)setRecipients:(NSArray *)recipients;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
-- (void)updateRecipientProperties:(id)a3 forPlayer:(id)a4;
-- (void)updateRecipientProperties:(id)a3 forPlayer:(id)a4 withSanitization:(BOOL)a5;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
+- (void)updateRecipientProperties:(id)properties forPlayer:(id)player;
+- (void)updateRecipientProperties:(id)properties forPlayer:(id)player withSanitization:(BOOL)sanitization;
 @end
 
 @implementation GKMatchRequest
@@ -44,17 +44,17 @@
 {
   v3 = +[(GKInternalRepresentation *)GKMatchRequestInternal];
   v4 = +[GKLocalPlayer local];
-  v5 = [v4 internal];
-  v6 = [v5 playerID];
-  [v3 setLocalPlayerID:v6];
+  internal = [v4 internal];
+  playerID = [internal playerID];
+  [v3 setLocalPlayerID:playerID];
 
   v7 = [(GKMatchRequest *)self initWithInternalRepresentation:v3];
   return v7;
 }
 
-- (GKMatchRequest)initWithInternalRepresentation:(id)a3
+- (GKMatchRequest)initWithInternalRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -72,12 +72,12 @@
   v7 = [(GKMatchRequest *)&v11 init];
   if (v7)
   {
-    if (!v4)
+    if (!representationCopy)
     {
-      v4 = +[(GKInternalRepresentation *)GKMatchRequestInternal];
+      representationCopy = +[(GKInternalRepresentation *)GKMatchRequestInternal];
     }
 
-    objc_storeStrong(&v7->_internal, v4);
+    objc_storeStrong(&v7->_internal, representationCopy);
     v8 = dispatch_queue_create("com.apple.GameKit.matchRequest.serialQueue", 0);
     serialQueue = v7->_serialQueue;
     v7->_serialQueue = v8;
@@ -86,17 +86,17 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(GKMatchRequest *)self internal];
-    v7 = [v5 internal];
+    v5 = equalCopy;
+    internal = [(GKMatchRequest *)self internal];
+    internal2 = [v5 internal];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [internal isEqual:internal2];
   }
 
   else
@@ -109,30 +109,30 @@
 
 - (unint64_t)hash
 {
-  v2 = [(GKMatchRequest *)self internal];
-  v3 = [v2 hash];
+  internal = [(GKMatchRequest *)self internal];
+  v3 = [internal hash];
 
   return v3;
 }
 
 - (id)description
 {
-  v3 = 0x277CCA000;
+  inviteMessage2 = 0x277CCA000;
   v17 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v16 = [(GKMatchRequest *)self minPlayers];
-  v6 = [(GKMatchRequest *)self maxPlayers];
-  v7 = [(GKMatchRequest *)self playerGroup];
-  v8 = [(GKMatchRequest *)self recipients];
-  v9 = [v8 _gkMapWithBlock:&__block_literal_global_49];
-  v10 = [(GKMatchRequest *)self defaultNumberOfPlayers];
-  v11 = [(GKMatchRequest *)self inviteMessage];
-  if (v11)
+  minPlayers = [(GKMatchRequest *)self minPlayers];
+  maxPlayers = [(GKMatchRequest *)self maxPlayers];
+  playerGroup = [(GKMatchRequest *)self playerGroup];
+  recipients = [(GKMatchRequest *)self recipients];
+  v9 = [recipients _gkMapWithBlock:&__block_literal_global_49];
+  defaultNumberOfPlayers = [(GKMatchRequest *)self defaultNumberOfPlayers];
+  inviteMessage = [(GKMatchRequest *)self inviteMessage];
+  if (inviteMessage)
   {
     v12 = MEMORY[0x277CCACA8];
-    v3 = [(GKMatchRequest *)self inviteMessage];
-    v13 = [v12 stringWithFormat:@"'%@'", v3];
+    inviteMessage2 = [(GKMatchRequest *)self inviteMessage];
+    v13 = [v12 stringWithFormat:@"'%@'", inviteMessage2];
   }
 
   else
@@ -140,8 +140,8 @@
     v13 = 0;
   }
 
-  v14 = [v17 stringWithFormat:@"<%@ %p - minPlayers:%u maxPlayers:%u playerGroup:%ld recipients:%@ defaultNumberOfPlayers:%u inviteMessage:%@ playerAttributes:0x%08X>", v5, self, v16, v6, v7, v9, v10, v13, -[GKMatchRequest playerAttributes](self, "playerAttributes")];
-  if (v11)
+  v14 = [v17 stringWithFormat:@"<%@ %p - minPlayers:%u maxPlayers:%u playerGroup:%ld recipients:%@ defaultNumberOfPlayers:%u inviteMessage:%@ playerAttributes:0x%08X>", v5, self, minPlayers, maxPlayers, playerGroup, v9, defaultNumberOfPlayers, v13, -[GKMatchRequest playerAttributes](self, "playerAttributes")];
+  if (inviteMessage)
   {
   }
 
@@ -156,18 +156,18 @@ id __29__GKMatchRequest_description__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(GKMatchRequest *)self internal];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  internal = [(GKMatchRequest *)self internal];
+  v7 = [internal copyWithZone:zone];
   [v5 setInternal:v7];
 
-  v8 = [(GKMatchRequest *)self inviteeResponseHandler];
-  [v5 setInviteeResponseHandler:v8];
+  inviteeResponseHandler = [(GKMatchRequest *)self inviteeResponseHandler];
+  [v5 setInviteeResponseHandler:inviteeResponseHandler];
 
-  v9 = [(GKMatchRequest *)self recipientResponseHandler];
-  [v5 setRecipientResponseHandler:v9];
+  recipientResponseHandler = [(GKMatchRequest *)self recipientResponseHandler];
+  [v5 setRecipientResponseHandler:recipientResponseHandler];
 
   return v5;
 }
@@ -179,62 +179,62 @@ id __29__GKMatchRequest_description__block_invoke(uint64_t a1, void *a2)
     return 1;
   }
 
-  v3 = [(GKMatchRequest *)self defaultNumberOfPlayers];
-  if (v3 < [(GKMatchRequest *)self minPlayers])
+  defaultNumberOfPlayers = [(GKMatchRequest *)self defaultNumberOfPlayers];
+  if (defaultNumberOfPlayers < [(GKMatchRequest *)self minPlayers])
   {
     return 0;
   }
 
-  v5 = [(GKMatchRequest *)self defaultNumberOfPlayers];
-  return v5 <= [(GKMatchRequest *)self maxPlayers];
+  defaultNumberOfPlayers2 = [(GKMatchRequest *)self defaultNumberOfPlayers];
+  return defaultNumberOfPlayers2 <= [(GKMatchRequest *)self maxPlayers];
 }
 
-- (id)validateNumbersOfPlayersWithMax:(unint64_t)a3
+- (id)validateNumbersOfPlayersWithMax:(unint64_t)max
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([(GKMatchRequest *)self maxPlayers]> a3)
+  array = [MEMORY[0x277CBEB18] array];
+  if ([(GKMatchRequest *)self maxPlayers]> max)
   {
     v6 = MEMORY[0x277CCA9B8];
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"The maximum number of players must be <= %lu", a3];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"The maximum number of players must be <= %lu", max];
     v8 = [v6 userErrorForCode:17 description:v7];
-    [v5 addObject:v8];
+    [array addObject:v8];
   }
 
-  v9 = [(GKMatchRequest *)self maxPlayers];
-  if (v9 < [(GKMatchRequest *)self minPlayers])
+  maxPlayers = [(GKMatchRequest *)self maxPlayers];
+  if (maxPlayers < [(GKMatchRequest *)self minPlayers])
   {
     v10 = [MEMORY[0x277CCA9B8] userErrorForCode:17 description:@"The maximum number of players can't be less than the minimum number of players."];
-    [v5 addObject:v10];
+    [array addObject:v10];
   }
 
   if ([(GKMatchRequest *)self minPlayers]<= 1)
   {
     v11 = [MEMORY[0x277CCA9B8] userErrorForCode:17 description:@"The minimum number of players must be >1"];
-    [v5 addObject:v11];
+    [array addObject:v11];
   }
 
   if (![(GKMatchRequest *)self defaultNumberOfPlayersIsValid])
   {
     v12 = [MEMORY[0x277CCA9B8] userErrorForCode:17 description:@"The default number of players is invalid"];
-    [v5 addObject:v12];
+    [array addObject:v12];
   }
 
-  v13 = [(GKMatchRequest *)self recipients];
-  v14 = [v13 count];
-  v15 = [(GKMatchRequest *)self maxPlayers];
+  recipients = [(GKMatchRequest *)self recipients];
+  v14 = [recipients count];
+  maxPlayers2 = [(GKMatchRequest *)self maxPlayers];
 
-  if (v14 >= v15)
+  if (v14 >= maxPlayers2)
   {
     v16 = [MEMORY[0x277CCA9B8] userErrorForCode:17 description:@"The number of recipients must be less than the maximum number of players."];
-    [v5 addObject:v16];
+    [array addObject:v16];
   }
 
-  return v5;
+  return array;
 }
 
-- (void)ensureValidityHosted:(BOOL)a3
+- (void)ensureValidityHosted:(BOOL)hosted
 {
-  v3 = a3;
+  hostedCopy = hosted;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -249,45 +249,45 @@ id __29__GKMatchRequest_description__block_invoke(uint64_t a1, void *a2)
 
   v7 = +[GKPreferences shared];
   v8 = v7;
-  if (v3)
+  if (hostedCopy)
   {
-    v9 = [v7 maxPlayersHosted];
+    maxPlayersHosted = [v7 maxPlayersHosted];
   }
 
   else
   {
-    v9 = [v7 maxPlayersP2P];
+    maxPlayersHosted = [v7 maxPlayersP2P];
   }
 
-  v10 = v9;
-  if ([(GKMatchRequest *)self maxPlayers]<= v9)
+  maxPlayers = maxPlayersHosted;
+  if ([(GKMatchRequest *)self maxPlayers]<= maxPlayersHosted)
   {
-    v10 = [(GKMatchRequest *)self maxPlayers];
+    maxPlayers = [(GKMatchRequest *)self maxPlayers];
   }
 
-  [(GKMatchRequest *)self setMaxPlayers:v10];
+  [(GKMatchRequest *)self setMaxPlayers:maxPlayers];
   if ([(GKMatchRequest *)self minPlayers])
   {
-    v11 = [(GKMatchRequest *)self minPlayers];
+    minPlayers = [(GKMatchRequest *)self minPlayers];
   }
 
   else
   {
-    v11 = 1;
+    minPlayers = 1;
   }
 
-  [(GKMatchRequest *)self setMinPlayers:v11];
+  [(GKMatchRequest *)self setMinPlayers:minPlayers];
   if ([(GKMatchRequest *)self defaultNumberOfPlayersIsValid])
   {
-    v12 = [(GKMatchRequest *)self defaultNumberOfPlayers];
+    defaultNumberOfPlayers = [(GKMatchRequest *)self defaultNumberOfPlayers];
   }
 
   else
   {
-    v12 = [(GKMatchRequest *)self maxPlayers];
+    defaultNumberOfPlayers = [(GKMatchRequest *)self maxPlayers];
   }
 
-  [(GKMatchRequest *)self setDefaultNumberOfPlayers:v12];
+  [(GKMatchRequest *)self setDefaultNumberOfPlayers:defaultNumberOfPlayers];
 }
 
 - (void)removeLocalPlayerFromPlayersToInvite
@@ -305,22 +305,22 @@ id __29__GKMatchRequest_description__block_invoke(uint64_t a1, void *a2)
   }
 
   v5 = +[GKLocalPlayer localPlayer];
-  v6 = [(GKMatchRequest *)self internal];
-  v7 = [v6 recipientPlayerIDs];
-  v8 = [v5 internal];
-  v9 = [v8 playerID];
-  v10 = [v7 containsObject:v9];
+  internal = [(GKMatchRequest *)self internal];
+  recipientPlayerIDs = [internal recipientPlayerIDs];
+  internal2 = [v5 internal];
+  playerID = [internal2 playerID];
+  v10 = [recipientPlayerIDs containsObject:playerID];
 
   if (v10)
   {
     v11 = MEMORY[0x277CBEB18];
-    v12 = [(GKMatchRequest *)self internal];
-    v13 = [v12 recipientPlayerIDs];
-    v14 = [v11 arrayWithArray:v13];
+    internal3 = [(GKMatchRequest *)self internal];
+    recipientPlayerIDs2 = [internal3 recipientPlayerIDs];
+    v14 = [v11 arrayWithArray:recipientPlayerIDs2];
 
     [v14 removeObject:v5];
-    v15 = [(GKMatchRequest *)self internal];
-    [v15 setRecipientPlayerIDs:v14];
+    internal4 = [(GKMatchRequest *)self internal];
+    [internal4 setRecipientPlayerIDs:v14];
   }
 }
 
@@ -331,15 +331,15 @@ id __29__GKMatchRequest_description__block_invoke(uint64_t a1, void *a2)
   switch(matchType)
   {
     case GKMatchTypeTurnBased:
-      v6 = [v4 maxPlayersTurnBased];
+      maxPlayersTurnBased = [v4 maxPlayersTurnBased];
       goto LABEL_7;
     case GKMatchTypeHosted:
-      v6 = [v4 maxPlayersHosted];
+      maxPlayersTurnBased = [v4 maxPlayersHosted];
       goto LABEL_7;
     case GKMatchTypePeerToPeer:
-      v6 = [v4 maxPlayersP2P];
+      maxPlayersTurnBased = [v4 maxPlayersP2P];
 LABEL_7:
-      v7 = v6;
+      v7 = maxPlayersTurnBased;
       goto LABEL_9;
   }
 
@@ -360,17 +360,17 @@ LABEL_9:
 
 - (BOOL)isRecipientCountValid
 {
-  v2 = self;
-  v3 = [(GKMatchRequest *)self recipients];
-  v4 = [v3 count] + 1;
-  LOBYTE(v2) = v4 <= [(GKMatchRequest *)v2 maxPlayers];
+  selfCopy = self;
+  recipients = [(GKMatchRequest *)self recipients];
+  v4 = [recipients count] + 1;
+  LOBYTE(selfCopy) = v4 <= [(GKMatchRequest *)selfCopy maxPlayers];
 
-  return v2;
+  return selfCopy;
 }
 
-+ (id)instanceMethodSignatureForSelector:(SEL)a3
++ (id)instanceMethodSignatureForSelector:(SEL)selector
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___GKMatchRequest;
   v4 = objc_msgSendSuper2(&v9, sel_instanceMethodSignatureForSelector_);
   v5 = v4;
@@ -381,7 +381,7 @@ LABEL_9:
 
   else
   {
-    v6 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v6 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   }
 
   v7 = v6;
@@ -389,7 +389,7 @@ LABEL_9:
   return v7;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v10.receiver = self;
   v10.super_class = GKMatchRequest;
@@ -402,14 +402,14 @@ LABEL_9:
 
   else
   {
-    v8 = [(GKMatchRequest *)self forwardingTargetForSelector:a3];
-    v7 = [v8 methodSignatureForSelector:a3];
+    v8 = [(GKMatchRequest *)self forwardingTargetForSelector:selector];
+    v7 = [v8 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = GKMatchRequest;
@@ -420,18 +420,18 @@ LABEL_9:
 
   else
   {
-    v6 = [(GKMatchRequest *)self forwardingTargetForSelector:a3];
+    v6 = [(GKMatchRequest *)self forwardingTargetForSelector:selector];
     v5 = objc_opt_respondsToSelector();
   }
 
   return v5 & 1;
 }
 
-+ (BOOL)instancesRespondToSelector:(SEL)a3
++ (BOOL)instancesRespondToSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    if (class_respondsToSelector(a1, a3))
+    if (class_respondsToSelector(self, selector))
     {
       LOBYTE(v4) = 1;
     }
@@ -442,7 +442,7 @@ LABEL_9:
       if (v4)
       {
 
-        LOBYTE(v4) = [GKMatchRequestInternal instancesRespondToSelector:a3];
+        LOBYTE(v4) = [GKMatchRequestInternal instancesRespondToSelector:selector];
       }
     }
   }
@@ -457,21 +457,21 @@ LABEL_9:
 
 - (id)guestPlayers
 {
-  v2 = [(GKMatchRequest *)self recipients];
-  v3 = [v2 _gkGuestPlayersFromPlayers];
+  recipients = [(GKMatchRequest *)self recipients];
+  _gkGuestPlayersFromPlayers = [recipients _gkGuestPlayersFromPlayers];
 
-  return v3;
+  return _gkGuestPlayersFromPlayers;
 }
 
 - (NSArray)recipients
 {
-  v2 = [(GKMatchRequest *)self internal];
-  v3 = [v2 recipients];
-  v4 = [v3 _gkPlayersFromInternals];
+  internal = [(GKMatchRequest *)self internal];
+  recipients = [internal recipients];
+  _gkPlayersFromInternals = [recipients _gkPlayersFromInternals];
 
-  [v4 _gkValidatePlayersForReturnFromAPI];
+  [_gkPlayersFromInternals _gkValidatePlayersForReturnFromAPI];
 
-  return v4;
+  return _gkPlayersFromInternals;
 }
 
 - (void)setRecipients:(NSArray *)recipients
@@ -489,26 +489,26 @@ LABEL_9:
       v8 = MEMORY[0x277CCACA8];
       v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"All recipients must be unique %@", v4];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKMatchRequest.m"];
-      v11 = [v10 lastPathComponent];
-      v12 = [v8 stringWithFormat:@"%@ ([recipients count] == [[NSMutableSet setWithArray:recipients] count])\n[%s (%s:%d)]", v9, "-[GKMatchRequest setRecipients:]", objc_msgSend(v11, "UTF8String"), 294];
+      lastPathComponent = [v10 lastPathComponent];
+      v12 = [v8 stringWithFormat:@"%@ ([recipients count] == [[NSMutableSet setWithArray:recipients] count])\n[%s (%s:%d)]", v9, "-[GKMatchRequest setRecipients:]", objc_msgSend(lastPathComponent, "UTF8String"), 294];
 
       [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v12}];
     }
   }
 
-  v13 = [(NSArray *)v4 _gkInternalsFromPlayers];
-  v14 = [(GKMatchRequest *)self internal];
-  [v14 setRecipients:v13];
+  _gkInternalsFromPlayers = [(NSArray *)v4 _gkInternalsFromPlayers];
+  internal = [(GKMatchRequest *)self internal];
+  [internal setRecipients:_gkInternalsFromPlayers];
 
-  v15 = [(NSArray *)v4 _gkPlayersIDsFromPlayers];
-  v16 = [(GKMatchRequest *)self internal];
-  [v16 setRecipientPlayerIDs:v15];
+  _gkPlayersIDsFromPlayers = [(NSArray *)v4 _gkPlayersIDsFromPlayers];
+  internal2 = [(GKMatchRequest *)self internal];
+  [internal2 setRecipientPlayerIDs:_gkPlayersIDsFromPlayers];
 
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v20 = @"request";
   v21[0] = self;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-  [v17 postNotificationName:@"GKSetMatchRequestRecipientsNotification" object:0 userInfo:v18];
+  [defaultCenter postNotificationName:@"GKSetMatchRequestRecipientsNotification" object:0 userInfo:v18];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -516,32 +516,32 @@ LABEL_9:
 - (NSString)inviteMessage
 {
   v3 = +[GKPreferences shared];
-  v4 = [v3 shouldAllowCustomCommunication];
+  shouldAllowCustomCommunication = [v3 shouldAllowCustomCommunication];
 
-  if (v4)
+  if (shouldAllowCustomCommunication)
   {
-    v5 = [(GKMatchRequest *)self internal];
-    v6 = [v5 inviteMessage];
+    internal = [(GKMatchRequest *)self internal];
+    inviteMessage = [internal inviteMessage];
   }
 
   else
   {
-    v6 = 0;
+    inviteMessage = 0;
   }
 
-  return v6;
+  return inviteMessage;
 }
 
 - (void)setInviteMessage:(NSString *)inviteMessage
 {
   v7 = inviteMessage;
   v4 = +[GKPreferences shared];
-  v5 = [v4 shouldAllowCustomCommunication];
+  shouldAllowCustomCommunication = [v4 shouldAllowCustomCommunication];
 
-  if (v5)
+  if (shouldAllowCustomCommunication)
   {
-    v6 = [(GKMatchRequest *)self internal];
-    [v6 setInviteMessage:v7];
+    internal = [(GKMatchRequest *)self internal];
+    [internal setInviteMessage:v7];
   }
 }
 
@@ -562,18 +562,18 @@ LABEL_9:
     }
 
     v9[0] = @"playerID is no longer available";
-    v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
+    recipientPlayerIDs = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
   }
 
   else
   {
-    v6 = [(GKMatchRequest *)self internal];
-    v5 = [v6 recipientPlayerIDs];
+    internal = [(GKMatchRequest *)self internal];
+    recipientPlayerIDs = [internal recipientPlayerIDs];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return recipientPlayerIDs;
 }
 
 - (void)setPlayersToInvite:(NSArray *)playersToInvite
@@ -590,28 +590,28 @@ LABEL_9:
       v7 = MEMORY[0x277CCACA8];
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"All playersToInvite must be unique %@", v13];
       v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKMatchRequest.m"];
-      v10 = [v9 lastPathComponent];
-      v11 = [v7 stringWithFormat:@"%@ ([playersToInvite count] == [[NSMutableSet setWithArray:playersToInvite] count])\n[%s (%s:%d)]", v8, "-[GKMatchRequest setPlayersToInvite:]", objc_msgSend(v10, "UTF8String"), 340];
+      lastPathComponent = [v9 lastPathComponent];
+      v11 = [v7 stringWithFormat:@"%@ ([playersToInvite count] == [[NSMutableSet setWithArray:playersToInvite] count])\n[%s (%s:%d)]", v8, "-[GKMatchRequest setPlayersToInvite:]", objc_msgSend(lastPathComponent, "UTF8String"), 340];
 
       [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v11}];
     }
   }
 
-  v12 = [(GKMatchRequest *)self internal];
-  [v12 setRecipientPlayerIDs:v13];
+  internal = [(GKMatchRequest *)self internal];
+  [internal setRecipientPlayerIDs:v13];
 }
 
-+ (id)sanitizeProperties:(id)a3
++ (id)sanitizeProperties:(id)properties
 {
-  v3 = a3;
-  if (!v3)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
 LABEL_13:
     v8 = 0;
     goto LABEL_14;
   }
 
-  if (([MEMORY[0x277CCAAA0] isValidJSONObject:v3] & 1) == 0)
+  if (([MEMORY[0x277CCAAA0] isValidJSONObject:propertiesCopy] & 1) == 0)
   {
     if (!os_log_GKGeneral)
     {
@@ -627,7 +627,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v4 = [v3 objectForKeyedSubscript:@"gc"];
+  v4 = [propertiesCopy objectForKeyedSubscript:@"gc"];
 
   if (v4)
   {
@@ -642,14 +642,14 @@ LABEL_13:
       [GKMatchRequest sanitizeProperties:v6];
     }
 
-    v7 = [v3 mutableCopy];
+    v7 = [propertiesCopy mutableCopy];
     [v7 removeObjectForKey:@"gc"];
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v7];
   }
 
   else
   {
-    v8 = v3;
+    v8 = propertiesCopy;
   }
 
 LABEL_14:
@@ -657,13 +657,13 @@ LABEL_14:
   return v8;
 }
 
-- (void)setProperties:(id)a3
+- (void)setProperties:(id)properties
 {
-  v4 = a3;
-  v6 = [objc_opt_class() sanitizeProperties:v4];
+  propertiesCopy = properties;
+  v6 = [objc_opt_class() sanitizeProperties:propertiesCopy];
 
-  v5 = [(GKMatchRequest *)self internal];
-  [v5 setProperties:v6];
+  internal = [(GKMatchRequest *)self internal];
+  [internal setProperties:v6];
 }
 
 - (NSDictionary)recipientProperties
@@ -673,15 +673,15 @@ LABEL_14:
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__15;
   v11 = __Block_byref_object_dispose__15;
-  v12 = [MEMORY[0x277CBEB38] dictionary];
-  v3 = [(GKMatchRequest *)self serialQueue];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  serialQueue = [(GKMatchRequest *)self serialQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__GKMatchRequest_recipientProperties__block_invoke;
   v6[3] = &unk_2785E1220;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(serialQueue, v6);
 
   if ([v8[5] count])
   {
@@ -748,10 +748,10 @@ void __37__GKMatchRequest_recipientProperties__block_invoke(uint64_t a1)
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRecipientProperties:(id)a3
+- (void)setRecipientProperties:(id)properties
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  propertiesCopy = properties;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -761,18 +761,18 @@ void __37__GKMatchRequest_recipientProperties__block_invoke(uint64_t a1)
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v30 = v4;
+    v30 = propertiesCopy;
     _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, "setRecipientProperties: %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (propertiesCopy)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v4;
+    v8 = propertiesCopy;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
@@ -800,8 +800,8 @@ void __37__GKMatchRequest_recipientProperties__block_invoke(uint64_t a1)
 
           if (v16)
           {
-            v17 = [v13 internal];
-            [v7 setObject:v16 forKey:v17];
+            internal = [v13 internal];
+            [dictionary setObject:v16 forKey:internal];
           }
         }
 
@@ -814,18 +814,18 @@ void __37__GKMatchRequest_recipientProperties__block_invoke(uint64_t a1)
 
   else
   {
-    v7 = 0;
+    dictionary = 0;
   }
 
-  v18 = [(GKMatchRequest *)self serialQueue];
+  serialQueue = [(GKMatchRequest *)self serialQueue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __41__GKMatchRequest_setRecipientProperties___block_invoke;
   v22[3] = &unk_2785DEBA8;
   v22[4] = self;
-  v23 = v7;
-  v19 = v7;
-  dispatch_sync(v18, v22);
+  v23 = dictionary;
+  v19 = dictionary;
+  dispatch_sync(serialQueue, v22);
 
   v20 = *MEMORY[0x277D85DE8];
 }
@@ -853,23 +853,23 @@ void __41__GKMatchRequest_setRecipientProperties___block_invoke(uint64_t a1)
 
 - (BOOL)hasFutureRecipientProperties
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(GKMatchRequest *)self serialQueue];
+  serialQueue = [(GKMatchRequest *)self serialQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__GKMatchRequest_hasFutureRecipientProperties__block_invoke;
   v5[3] = &unk_2785E1220;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __46__GKMatchRequest_hasFutureRecipientProperties__block_invoke(uint64_t a1)
@@ -925,9 +925,9 @@ LABEL_11:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)expectFutureRecipientPropertiesForPlayers:(id)a3
+- (void)expectFutureRecipientPropertiesForPlayers:(id)players
 {
-  v4 = a3;
+  playersCopy = players;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -938,15 +938,15 @@ LABEL_11:
     [GKMatchRequest expectFutureRecipientPropertiesForPlayers:];
   }
 
-  v6 = [(GKMatchRequest *)self serialQueue];
+  serialQueue = [(GKMatchRequest *)self serialQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__GKMatchRequest_expectFutureRecipientPropertiesForPlayers___block_invoke;
   v8[3] = &unk_2785DEBA8;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = playersCopy;
+  selfCopy = self;
+  v7 = playersCopy;
+  dispatch_sync(serialQueue, v8);
 }
 
 void __60__GKMatchRequest_expectFutureRecipientPropertiesForPlayers___block_invoke(uint64_t a1)
@@ -992,10 +992,10 @@ void __60__GKMatchRequest_expectFutureRecipientPropertiesForPlayers___block_invo
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRecipientProperties:(id)a3 forPlayer:(id)a4
+- (void)updateRecipientProperties:(id)properties forPlayer:(id)player
 {
-  v6 = a3;
-  v7 = a4;
+  propertiesCopy = properties;
+  playerCopy = player;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -1006,83 +1006,83 @@ void __60__GKMatchRequest_expectFutureRecipientPropertiesForPlayers___block_invo
     [GKMatchRequest updateRecipientProperties:forPlayer:];
   }
 
-  v9 = [(GKMatchRequest *)self serialQueue];
+  serialQueue = [(GKMatchRequest *)self serialQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__GKMatchRequest_updateRecipientProperties_forPlayer___block_invoke;
   block[3] = &unk_2785DDB40;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_sync(v9, block);
+  v13 = propertiesCopy;
+  v14 = playerCopy;
+  v10 = playerCopy;
+  v11 = propertiesCopy;
+  dispatch_sync(serialQueue, block);
 }
 
-- (void)updateRecipientProperties:(id)a3 forPlayer:(id)a4 withSanitization:(BOOL)a5
+- (void)updateRecipientProperties:(id)properties forPlayer:(id)player withSanitization:(BOOL)sanitization
 {
-  v37 = a3;
-  v8 = a4;
+  propertiesCopy = properties;
+  playerCopy = player;
   v9 = dispatch_get_current_queue();
-  v10 = [(GKMatchRequest *)self serialQueue];
+  serialQueue = [(GKMatchRequest *)self serialQueue];
 
   v11 = 0x277CCA000;
   v12 = 0x277CBE000;
-  if (v9 != v10)
+  if (v9 != serialQueue)
   {
     v13 = MEMORY[0x277CCACA8];
-    v36 = a5;
+    sanitizationCopy = sanitization;
     label = dispatch_queue_get_label(v9);
-    v15 = [(GKMatchRequest *)self serialQueue];
-    v16 = dispatch_queue_get_label(v15);
-    v17 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v18 = [v13 stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "-[GKMatchRequest updateRecipientProperties:forPlayer:withSanitization:]", label, v16, v17];
+    serialQueue2 = [(GKMatchRequest *)self serialQueue];
+    v16 = dispatch_queue_get_label(serialQueue2);
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v18 = [v13 stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "-[GKMatchRequest updateRecipientProperties:forPlayer:withSanitization:]", label, v16, callStackSymbols];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKMatchRequest.m"];
-    v20 = [v19 lastPathComponent];
-    v21 = [v13 stringWithFormat:@"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v18, "-[GKMatchRequest updateRecipientProperties:forPlayer:withSanitization:]", objc_msgSend(v20, "UTF8String"), 446];
+    lastPathComponent = [v19 lastPathComponent];
+    v21 = [v13 stringWithFormat:@"%@ (_actualCurrentQueue == self.serialQueue)\n[%s (%s:%d)]", v18, "-[GKMatchRequest updateRecipientProperties:forPlayer:withSanitization:]", objc_msgSend(lastPathComponent, "UTF8String"), 446];
 
-    a5 = v36;
+    sanitization = sanitizationCopy;
     v12 = 0x277CBE000uLL;
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v21}];
     v11 = 0x277CCA000uLL;
   }
 
-  if ([v8 isLocalPlayer])
+  if ([playerCopy isLocalPlayer])
   {
     v22 = *(v11 + 3240);
     v23 = [v22 stringWithFormat:@"GKLocalPlayer can't have recipient properties"];
     v24 = [*(v11 + 3240) stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterFoundation/API/GKMatchRequest.m"];
-    v25 = [v24 lastPathComponent];
-    v26 = [v22 stringWithFormat:@"%@ (!player.isLocalPlayer)\n[%s (%s:%d)]", v23, "-[GKMatchRequest updateRecipientProperties:forPlayer:withSanitization:]", objc_msgSend(v25, "UTF8String"), 447];
+    lastPathComponent2 = [v24 lastPathComponent];
+    v26 = [v22 stringWithFormat:@"%@ (!player.isLocalPlayer)\n[%s (%s:%d)]", v23, "-[GKMatchRequest updateRecipientProperties:forPlayer:withSanitization:]", objc_msgSend(lastPathComponent2, "UTF8String"), 447];
 
     [*(v12 + 2776) raise:@"GameKit Exception" format:{@"%@", v26}];
   }
 
   v27 = MEMORY[0x277CBEB38];
-  v28 = [(GKMatchRequest *)self internal];
-  v29 = [v28 recipientProperties];
-  v30 = [v27 dictionaryWithDictionary:v29];
+  internal = [(GKMatchRequest *)self internal];
+  recipientProperties = [internal recipientProperties];
+  v30 = [v27 dictionaryWithDictionary:recipientProperties];
 
-  if (a5)
+  if (sanitization)
   {
-    v31 = [objc_opt_class() sanitizeProperties:v37];
+    v31 = [objc_opt_class() sanitizeProperties:propertiesCopy];
   }
 
   else
   {
-    v31 = v37;
+    v31 = propertiesCopy;
   }
 
   v32 = v31;
   if ([v31 count])
   {
-    [v30 setObject:v32 forKeyedSubscript:v8];
+    [v30 setObject:v32 forKeyedSubscript:playerCopy];
   }
 
   else
   {
-    [v30 removeObjectForKey:v8];
+    [v30 removeObjectForKey:playerCopy];
   }
 
   v33 = [v30 count];
@@ -1096,35 +1096,35 @@ void __60__GKMatchRequest_expectFutureRecipientPropertiesForPlayers___block_invo
     v34 = 0;
   }
 
-  v35 = [(GKMatchRequest *)self internal];
-  [v35 setRecipientProperties:v34];
+  internal2 = [(GKMatchRequest *)self internal];
+  [internal2 setRecipientProperties:v34];
 
   if (v33)
   {
   }
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(GKMatchRequest *)self internal];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  internal = [(GKMatchRequest *)self internal];
+  v6 = [internal valueForKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GKMatchRequest *)self internal];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  internal = [(GKMatchRequest *)self internal];
+  [internal setValue:valueCopy forKey:keyCopy];
 }
 
-- (void)loadRecipientsWithCompletionHandler:(id)a3
+- (void)loadRecipientsWithCompletionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -1137,20 +1137,20 @@ void __60__GKMatchRequest_expectFutureRecipientPropertiesForPlayers___block_invo
     _os_log_impl(&dword_227904000, v6, OS_LOG_TYPE_INFO, "GKMatchmaker: loadRecipientsWithCompletionHandler", buf, 2u);
   }
 
-  v7 = [(GKMatchRequest *)self recipients];
-  v8 = [v7 count];
+  recipients = [(GKMatchRequest *)self recipients];
+  v8 = [recipients count];
 
   if (v8)
   {
-    v9 = [(GKMatchRequest *)self recipients];
-    v10 = [v9 _gkNonGuestPlayersFromPlayers];
-    v11 = [v10 _gkPlayersIDsFromPlayers];
+    recipients2 = [(GKMatchRequest *)self recipients];
+    _gkNonGuestPlayersFromPlayers = [recipients2 _gkNonGuestPlayersFromPlayers];
+    _gkPlayersIDsFromPlayers = [_gkNonGuestPlayersFromPlayers _gkPlayersIDsFromPlayers];
   }
 
   else
   {
-    v9 = [(GKMatchRequest *)self internal];
-    v11 = [v9 recipientPlayerIDs];
+    recipients2 = [(GKMatchRequest *)self internal];
+    _gkPlayersIDsFromPlayers = [recipients2 recipientPlayerIDs];
   }
 
   if (!os_log_GKGeneral)
@@ -1162,32 +1162,32 @@ void __60__GKMatchRequest_expectFutureRecipientPropertiesForPlayers___block_invo
   if (os_log_type_enabled(os_log_GKMatch, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v11;
+    v25 = _gkPlayersIDsFromPlayers;
     _os_log_impl(&dword_227904000, v13, OS_LOG_TYPE_INFO, "Load recipients -- invitees:%@", buf, 0xCu);
   }
 
   v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKMatchRequest.m", 486, "-[GKMatchRequest loadRecipientsWithCompletionHandler:]"];
   v15 = [GKDispatchGroup dispatchGroupWithName:v14];
 
-  if ([v11 count])
+  if ([_gkPlayersIDsFromPlayers count])
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __54__GKMatchRequest_loadRecipientsWithCompletionHandler___block_invoke;
     v21[3] = &unk_2785DD898;
-    v22 = v11;
+    v22 = _gkPlayersIDsFromPlayers;
     v23 = v15;
     [v23 perform:v21];
   }
 
-  if (v4)
+  if (handlerCopy)
   {
     v16 = dispatch_get_global_queue(0, 0);
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __54__GKMatchRequest_loadRecipientsWithCompletionHandler___block_invoke_3;
     v18[3] = &unk_2785DDC10;
-    v20 = v4;
+    v20 = handlerCopy;
     v19 = v15;
     [v19 notifyOnQueue:v16 block:v18];
   }
@@ -1237,16 +1237,16 @@ void __54__GKMatchRequest_loadRecipientsWithCompletionHandler___block_invoke_3(u
 
 - (BOOL)isIncorrectlyInvitingPlayers
 {
-  v3 = [(GKMatchRequest *)self internal];
-  v4 = [v3 recipientPlayerIDs];
-  if ([v4 count])
+  internal = [(GKMatchRequest *)self internal];
+  recipientPlayerIDs = [internal recipientPlayerIDs];
+  if ([recipientPlayerIDs count])
   {
   }
 
   else
   {
-    v5 = [(GKMatchRequest *)self recipients];
-    v6 = [v5 count];
+    recipients = [(GKMatchRequest *)self recipients];
+    v6 = [recipients count];
 
     if (!v6)
     {
@@ -1259,8 +1259,8 @@ void __54__GKMatchRequest_loadRecipientsWithCompletionHandler___block_invoke_3(u
 
 - (NSString)internalDescription
 {
-  v2 = [(GKMatchRequest *)self internal];
-  v3 = [v2 description];
+  internal = [(GKMatchRequest *)self internal];
+  v3 = [internal description];
 
   return v3;
 }

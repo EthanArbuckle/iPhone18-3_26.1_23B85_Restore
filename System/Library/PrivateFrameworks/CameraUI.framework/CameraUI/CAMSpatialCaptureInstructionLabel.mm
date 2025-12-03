@@ -1,33 +1,33 @@
 @interface CAMSpatialCaptureInstructionLabel
 - (void)_updateText;
-- (void)setStereoCaptureStatus:(int64_t)a3;
-- (void)setUseHoldStillLowLightInstruction:(BOOL)a3;
+- (void)setStereoCaptureStatus:(int64_t)status;
+- (void)setUseHoldStillLowLightInstruction:(BOOL)instruction;
 @end
 
 @implementation CAMSpatialCaptureInstructionLabel
 
-- (void)setStereoCaptureStatus:(int64_t)a3
+- (void)setStereoCaptureStatus:(int64_t)status
 {
-  if (self->_stereoCaptureStatus != a3)
+  if (self->_stereoCaptureStatus != status)
   {
-    self->_stereoCaptureStatus = a3;
+    self->_stereoCaptureStatus = status;
     [(CAMSpatialCaptureInstructionLabel *)self _updateText];
   }
 }
 
-- (void)setUseHoldStillLowLightInstruction:(BOOL)a3
+- (void)setUseHoldStillLowLightInstruction:(BOOL)instruction
 {
-  if (self->_useHoldStillLowLightInstruction != a3)
+  if (self->_useHoldStillLowLightInstruction != instruction)
   {
-    self->_useHoldStillLowLightInstruction = a3;
+    self->_useHoldStillLowLightInstruction = instruction;
     [(CAMSpatialCaptureInstructionLabel *)self _updateText];
   }
 }
 
 - (void)_updateText
 {
-  v3 = [(CAMSpatialCaptureInstructionLabel *)self stereoCaptureStatus];
-  if ((~v3 & 3) == 0)
+  stereoCaptureStatus = [(CAMSpatialCaptureInstructionLabel *)self stereoCaptureStatus];
+  if ((~stereoCaptureStatus & 3) == 0)
   {
     v4 = @"SPATIAL_MORE_LIGHT_REQUIRED_INSTRUCTION_LABEL";
 LABEL_8:
@@ -35,13 +35,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if ((v3 & 4) != 0)
+  if ((stereoCaptureStatus & 4) != 0)
   {
     v4 = @"SPATIAL_VIDEO_SUBJECT_TOO_CLOSE_INSTRUCTION_LABEL";
     goto LABEL_8;
   }
 
-  if ((v3 & 2) == 0)
+  if ((stereoCaptureStatus & 2) == 0)
   {
     goto LABEL_11;
   }
@@ -61,8 +61,8 @@ LABEL_9:
   }
 
 LABEL_11:
-  v7 = [(CAMInstructionLabel *)self delegate];
-  [v7 instructionLabelDidChangeIntrinsicContentSize:self];
+  delegate = [(CAMInstructionLabel *)self delegate];
+  [delegate instructionLabelDidChangeIntrinsicContentSize:self];
 }
 
 @end

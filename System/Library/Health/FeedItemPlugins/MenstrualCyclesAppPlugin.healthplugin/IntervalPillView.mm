@@ -1,12 +1,12 @@
 @interface IntervalPillView
-- (_TtC24MenstrualCyclesAppPlugin16IntervalPillView)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin16IntervalPillView)initWithFrame:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin16IntervalPillView)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin16IntervalPillView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation IntervalPillView
 
-- (_TtC24MenstrualCyclesAppPlugin16IntervalPillView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin16IntervalPillView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin16IntervalPillView_maxDays) = 60;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin16IntervalPillView____lazy_storage___dateComponentLabel) = 0;
@@ -25,11 +25,11 @@
   CGRectGetHeight(v7);
   HKUIFloorToScreenScale();
   v4 = v3;
-  v5 = [v2 layer];
-  [v5 setCornerRadius_];
+  layer = [v2 layer];
+  [layer setCornerRadius_];
 }
 
-- (_TtC24MenstrualCyclesAppPlugin16IntervalPillView)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin16IntervalPillView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

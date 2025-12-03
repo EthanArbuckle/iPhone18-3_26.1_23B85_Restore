@@ -8,14 +8,14 @@
 
 - (id)nsWindowProxy
 {
-  v1 = [a1 valueForKeyPath:@"_hostWindow"];
+  v1 = [self valueForKeyPath:@"_hostWindow"];
 
   return v1;
 }
 
 - (double)nsWindowFrame
 {
-  v1 = [a1 valueForKeyPath:@"nsWindowProxy.attachedWindow.frame"];
+  v1 = [self valueForKeyPath:@"nsWindowProxy.attachedWindow.frame"];
   [v1 CGRectValue];
   v3 = v2;
 
@@ -24,7 +24,7 @@
 
 - (id)nsScreen
 {
-  v1 = [a1 valueForKeyPath:@"nsWindowProxy.attachedWindow.screen"];
+  v1 = [self valueForKeyPath:@"nsWindowProxy.attachedWindow.screen"];
 
   return v1;
 }

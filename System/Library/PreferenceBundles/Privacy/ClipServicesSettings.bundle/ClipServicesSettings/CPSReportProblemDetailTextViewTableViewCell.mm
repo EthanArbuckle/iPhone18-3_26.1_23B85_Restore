@@ -1,14 +1,14 @@
 @interface CPSReportProblemDetailTextViewTableViewCell
-- (CPSReportProblemDetailTextViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CPSReportProblemDetailTextViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation CPSReportProblemDetailTextViewTableViewCell
 
-- (CPSReportProblemDetailTextViewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CPSReportProblemDetailTextViewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v34.receiver = self;
   v34.super_class = CPSReportProblemDetailTextViewTableViewCell;
-  v4 = [(CPSReportProblemDetailTextViewTableViewCell *)&v34 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CPSReportProblemDetailTextViewTableViewCell *)&v34 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(UITextView);
@@ -25,31 +25,31 @@
     [(UITextView *)v4->_textView setAttributedPlaceholder:v8];
 
     [(UITextView *)v4->_textView setAccessibilityLabel:v33];
-    v9 = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_textView];
+    contentView = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_textView];
 
-    v31 = [(UITextView *)v4->_textView topAnchor];
-    v32 = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
-    v30 = [v32 topAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    topAnchor = [(UITextView *)v4->_textView topAnchor];
+    contentView2 = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v35[0] = v29;
-    v27 = [(UITextView *)v4->_textView leadingAnchor];
-    v28 = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
-    v26 = [v28 leadingAnchor];
-    v25 = [v27 constraintEqualToAnchor:v26];
+    leadingAnchor = [(UITextView *)v4->_textView leadingAnchor];
+    contentView3 = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v35[1] = v25;
-    v24 = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
-    v23 = [v24 trailingAnchor];
-    v22 = [(UITextView *)v4->_textView trailingAnchor];
-    v10 = [v23 constraintEqualToAnchor:v22];
+    contentView4 = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
+    trailingAnchor = [contentView4 trailingAnchor];
+    trailingAnchor2 = [(UITextView *)v4->_textView trailingAnchor];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v35[2] = v10;
-    v11 = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
-    v12 = [v11 bottomAnchor];
-    v13 = [(UITextView *)v4->_textView bottomAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    contentView5 = [(CPSReportProblemDetailTextViewTableViewCell *)v4 contentView];
+    bottomAnchor = [contentView5 bottomAnchor];
+    bottomAnchor2 = [(UITextView *)v4->_textView bottomAnchor];
+    v14 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v35[3] = v14;
-    v15 = [(UITextView *)v4->_textView heightAnchor];
-    v16 = [v15 constraintEqualToConstant:200.0];
+    heightAnchor = [(UITextView *)v4->_textView heightAnchor];
+    v16 = [heightAnchor constraintEqualToConstant:200.0];
     LODWORD(v17) = 1144750080;
     v18 = [v16 cps_setPriority:v17];
     v35[4] = v18;

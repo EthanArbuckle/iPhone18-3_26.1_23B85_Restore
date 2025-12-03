@@ -1,84 +1,84 @@
 @interface MIPMediaItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)mediaTypeAsString:(int)a3;
-- (int)StringAsMediaType:(id)a3;
+- (id)mediaTypeAsString:(int)string;
+- (int)StringAsMediaType:(id)type;
 - (int)mediaType;
 - (unint64_t)hash;
-- (void)addLibraryIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAssetStoreItemId:(BOOL)a3;
-- (void)setHasBookmarkTimeMilliseconds:(BOOL)a3;
-- (void)setHasCloudAssetAvailable:(BOOL)a3;
-- (void)setHasCloudMatchedStatus:(BOOL)a3;
-- (void)setHasCloudPlaybackEndpointType:(BOOL)a3;
-- (void)setHasCloudStatus:(BOOL)a3;
-- (void)setHasContentRating:(BOOL)a3;
-- (void)setHasContentRatingLevel:(BOOL)a3;
-- (void)setHasCreationDateTime:(BOOL)a3;
-- (void)setHasDrmKey1IdCode:(BOOL)a3;
-- (void)setHasDrmKey2IdCode:(BOOL)a3;
-- (void)setHasDrmPlatformIdCode:(BOOL)a3;
-- (void)setHasDrmVersionsCode:(BOOL)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)setHasExplicitContent:(BOOL)a3;
-- (void)setHasFamilyAccountId:(BOOL)a3;
-- (void)setHasFileKind:(BOOL)a3;
-- (void)setHasFileSize:(BOOL)a3;
-- (void)setHasHasChapterData:(BOOL)a3;
-- (void)setHasHasLocalAsset:(BOOL)a3;
-- (void)setHasHidden:(BOOL)a3;
-- (void)setHasInUsersCloudLibrary:(BOOL)a3;
-- (void)setHasIsInUsersLibrary:(BOOL)a3;
-- (void)setHasIsPreorder:(BOOL)a3;
-- (void)setHasLastPlayedDateTime:(BOOL)a3;
-- (void)setHasLastSkippedDateTime:(BOOL)a3;
-- (void)setHasLikedState:(BOOL)a3;
-- (void)setHasLikedStateChanged:(BOOL)a3;
-- (void)setHasLikedStateChangedDate:(BOOL)a3;
-- (void)setHasMediaType:(BOOL)a3;
-- (void)setHasModificationDateTime:(BOOL)a3;
-- (void)setHasNeedsReporting:(BOOL)a3;
-- (void)setHasPlayCount:(BOOL)a3;
-- (void)setHasPlayCountDelta:(BOOL)a3;
-- (void)setHasPlaybackEndpointType:(BOOL)a3;
-- (void)setHasPurchaseDateTime:(BOOL)a3;
-- (void)setHasPurchaseHistoryId:(BOOL)a3;
-- (void)setHasPurchaseHistoryToken:(BOOL)a3;
-- (void)setHasReleaseDateTime:(BOOL)a3;
-- (void)setHasRememberBookmark:(BOOL)a3;
-- (void)setHasReportingStoreItemId:(BOOL)a3;
-- (void)setHasSagaId:(BOOL)a3;
-- (void)setHasSecondaryArtworkSourceType:(BOOL)a3;
-- (void)setHasSkipCount:(BOOL)a3;
-- (void)setHasSkipCountDelta:(BOOL)a3;
-- (void)setHasStoreId:(BOOL)a3;
-- (void)setHasStorePlaylistId:(BOOL)a3;
-- (void)setHasStoreProtectionType:(BOOL)a3;
-- (void)setHasStorefrontId:(BOOL)a3;
-- (void)setHasSubscriptionStoreItemId:(BOOL)a3;
-- (void)setHasUserDisabled:(BOOL)a3;
-- (void)setHasYear:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addLibraryIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAssetStoreItemId:(BOOL)id;
+- (void)setHasBookmarkTimeMilliseconds:(BOOL)milliseconds;
+- (void)setHasCloudAssetAvailable:(BOOL)available;
+- (void)setHasCloudMatchedStatus:(BOOL)status;
+- (void)setHasCloudPlaybackEndpointType:(BOOL)type;
+- (void)setHasCloudStatus:(BOOL)status;
+- (void)setHasContentRating:(BOOL)rating;
+- (void)setHasContentRatingLevel:(BOOL)level;
+- (void)setHasCreationDateTime:(BOOL)time;
+- (void)setHasDrmKey1IdCode:(BOOL)code;
+- (void)setHasDrmKey2IdCode:(BOOL)code;
+- (void)setHasDrmPlatformIdCode:(BOOL)code;
+- (void)setHasDrmVersionsCode:(BOOL)code;
+- (void)setHasDuration:(BOOL)duration;
+- (void)setHasExplicitContent:(BOOL)content;
+- (void)setHasFamilyAccountId:(BOOL)id;
+- (void)setHasFileKind:(BOOL)kind;
+- (void)setHasFileSize:(BOOL)size;
+- (void)setHasHasChapterData:(BOOL)data;
+- (void)setHasHasLocalAsset:(BOOL)asset;
+- (void)setHasHidden:(BOOL)hidden;
+- (void)setHasInUsersCloudLibrary:(BOOL)library;
+- (void)setHasIsInUsersLibrary:(BOOL)library;
+- (void)setHasIsPreorder:(BOOL)preorder;
+- (void)setHasLastPlayedDateTime:(BOOL)time;
+- (void)setHasLastSkippedDateTime:(BOOL)time;
+- (void)setHasLikedState:(BOOL)state;
+- (void)setHasLikedStateChanged:(BOOL)changed;
+- (void)setHasLikedStateChangedDate:(BOOL)date;
+- (void)setHasMediaType:(BOOL)type;
+- (void)setHasModificationDateTime:(BOOL)time;
+- (void)setHasNeedsReporting:(BOOL)reporting;
+- (void)setHasPlayCount:(BOOL)count;
+- (void)setHasPlayCountDelta:(BOOL)delta;
+- (void)setHasPlaybackEndpointType:(BOOL)type;
+- (void)setHasPurchaseDateTime:(BOOL)time;
+- (void)setHasPurchaseHistoryId:(BOOL)id;
+- (void)setHasPurchaseHistoryToken:(BOOL)token;
+- (void)setHasReleaseDateTime:(BOOL)time;
+- (void)setHasRememberBookmark:(BOOL)bookmark;
+- (void)setHasReportingStoreItemId:(BOOL)id;
+- (void)setHasSagaId:(BOOL)id;
+- (void)setHasSecondaryArtworkSourceType:(BOOL)type;
+- (void)setHasSkipCount:(BOOL)count;
+- (void)setHasSkipCountDelta:(BOOL)delta;
+- (void)setHasStoreId:(BOOL)id;
+- (void)setHasStorePlaylistId:(BOOL)id;
+- (void)setHasStoreProtectionType:(BOOL)type;
+- (void)setHasStorefrontId:(BOOL)id;
+- (void)setHasSubscriptionStoreItemId:(BOOL)id;
+- (void)setHasUserDisabled:(BOOL)disabled;
+- (void)setHasYear:(BOOL)year;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MIPMediaItem
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 499) & 0x80) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 499) & 0x80) != 0)
   {
-    self->_mediaType = v4[82];
+    self->_mediaType = fromCopy[82];
     *&self->_has |= 0x80000000uLL;
   }
 
-  if (*(v4 + 58))
+  if (*(fromCopy + 58))
   {
     [(MIPMediaItem *)self setTitle:?];
   }
@@ -1626,18 +1626,18 @@ LABEL_119:
   return v21 ^ v25 ^ [(MIPAudiobook *)self->_audiobook hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_55;
   }
 
-  v5 = *(v4 + 62);
+  v5 = *(equalCopy + 62);
   if ((*(&self->_has + 3) & 0x80) != 0)
   {
-    if ((v5 & 0x80000000) == 0 || self->_mediaType != *(v4 + 82))
+    if ((v5 & 0x80000000) == 0 || self->_mediaType != *(equalCopy + 82))
     {
       goto LABEL_55;
     }
@@ -1649,13 +1649,13 @@ LABEL_119:
   }
 
   title = self->_title;
-  if (title | *(v4 + 58) && ![(NSString *)title isEqual:?])
+  if (title | *(equalCopy + 58) && ![(NSString *)title isEqual:?])
   {
     goto LABEL_55;
   }
 
   sortTitle = self->_sortTitle;
-  if (sortTitle | *(v4 + 54))
+  if (sortTitle | *(equalCopy + 54))
   {
     if (![(NSString *)sortTitle isEqual:?])
     {
@@ -1664,10 +1664,10 @@ LABEL_119:
   }
 
   has = self->_has;
-  v9 = *(v4 + 62);
+  v9 = *(equalCopy + 62);
   if ((*&has & 0x10000) != 0)
   {
-    if ((v9 & 0x10000) == 0 || self->_releaseDateTime != *(v4 + 17))
+    if ((v9 & 0x10000) == 0 || self->_releaseDateTime != *(equalCopy + 17))
     {
       goto LABEL_55;
     }
@@ -1680,7 +1680,7 @@ LABEL_119:
 
   if ((*&has & 8) != 0)
   {
-    if ((v9 & 8) == 0 || self->_creationDateTime != *(v4 + 4))
+    if ((v9 & 8) == 0 || self->_creationDateTime != *(equalCopy + 4))
     {
       goto LABEL_55;
     }
@@ -1693,7 +1693,7 @@ LABEL_119:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v9 & 0x2000) == 0 || self->_modificationDateTime != *(v4 + 14))
+    if ((v9 & 0x2000) == 0 || self->_modificationDateTime != *(equalCopy + 14))
     {
       goto LABEL_55;
     }
@@ -1706,7 +1706,7 @@ LABEL_119:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v9 & 0x200) == 0 || self->_fileSize != *(v4 + 10))
+    if ((v9 & 0x200) == 0 || self->_fileSize != *(equalCopy + 10))
     {
       goto LABEL_55;
     }
@@ -1719,7 +1719,7 @@ LABEL_119:
 
   if ((*&has & 0x80) != 0)
   {
-    if ((v9 & 0x80) == 0 || self->_duration != *(v4 + 8))
+    if ((v9 & 0x80) == 0 || self->_duration != *(equalCopy + 8))
     {
       goto LABEL_55;
     }
@@ -1732,7 +1732,7 @@ LABEL_119:
 
   if ((*&has & 0x4000000) != 0)
   {
-    if ((v9 & 0x4000000) == 0 || self->_contentRating != *(v4 + 62))
+    if ((v9 & 0x4000000) == 0 || self->_contentRating != *(equalCopy + 62))
     {
       goto LABEL_55;
     }
@@ -1752,13 +1752,13 @@ LABEL_119:
 
     if (self->_explicitContent)
     {
-      if ((*(v4 + 485) & 1) == 0)
+      if ((*(equalCopy + 485) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 485))
+    else if (*(equalCopy + 485))
     {
       goto LABEL_55;
     }
@@ -1770,13 +1770,13 @@ LABEL_119:
   }
 
   shortDescription = self->_shortDescription;
-  if (shortDescription | *(v4 + 51) && ![(NSString *)shortDescription isEqual:?])
+  if (shortDescription | *(equalCopy + 51) && ![(NSString *)shortDescription isEqual:?])
   {
     goto LABEL_55;
   }
 
   longDescription = self->_longDescription;
-  if (longDescription | *(v4 + 40))
+  if (longDescription | *(equalCopy + 40))
   {
     if (![(NSString *)longDescription isEqual:?])
     {
@@ -1785,7 +1785,7 @@ LABEL_119:
   }
 
   copyright = self->_copyright;
-  if (copyright | *(v4 + 32))
+  if (copyright | *(equalCopy + 32))
   {
     if (![(NSString *)copyright isEqual:?])
     {
@@ -1794,7 +1794,7 @@ LABEL_119:
   }
 
   artworkId = self->_artworkId;
-  if (artworkId | *(v4 + 24))
+  if (artworkId | *(equalCopy + 24))
   {
     if (![(NSString *)artworkId isEqual:?])
     {
@@ -1803,10 +1803,10 @@ LABEL_119:
   }
 
   v14 = self->_has;
-  v15 = *(v4 + 62);
+  v15 = *(equalCopy + 62);
   if ((*&v14 & 0x10000000000) != 0)
   {
-    if ((v15 & 0x10000000000) == 0 || self->_year != *(v4 + 120))
+    if ((v15 & 0x10000000000) == 0 || self->_year != *(equalCopy + 120))
     {
       goto LABEL_55;
     }
@@ -1819,7 +1819,7 @@ LABEL_119:
 
   if ((*&v14 & 0x8000000) != 0)
   {
-    if ((v15 & 0x8000000) == 0 || self->_contentRatingLevel != *(v4 + 63))
+    if ((v15 & 0x8000000) == 0 || self->_contentRatingLevel != *(equalCopy + 63))
     {
       goto LABEL_55;
     }
@@ -1831,7 +1831,7 @@ LABEL_119:
   }
 
   comment = self->_comment;
-  if (comment | *(v4 + 30))
+  if (comment | *(equalCopy + 30))
   {
     if (![(NSString *)comment isEqual:?])
     {
@@ -1839,12 +1839,12 @@ LABEL_119:
     }
 
     v14 = self->_has;
-    v15 = *(v4 + 62);
+    v15 = *(equalCopy + 62);
   }
 
   if ((*&v14 & 0x20000000) != 0)
   {
-    if ((v15 & 0x20000000) == 0 || self->_fileKind != *(v4 + 70))
+    if ((v15 & 0x20000000) == 0 || self->_fileKind != *(equalCopy + 70))
     {
       goto LABEL_55;
     }
@@ -1857,7 +1857,7 @@ LABEL_119:
 
   if ((*&v14 & 0x100) != 0)
   {
-    if ((v15 & 0x100) == 0 || self->_familyAccountId != *(v4 + 9))
+    if ((v15 & 0x100) == 0 || self->_familyAccountId != *(equalCopy + 9))
     {
       goto LABEL_55;
     }
@@ -1870,7 +1870,7 @@ LABEL_119:
 
   if ((*&v14 & 0x10000000) != 0)
   {
-    if ((v15 & 0x10000000) == 0 || self->_drmVersionsCode != *(v4 + 66))
+    if ((v15 & 0x10000000) == 0 || self->_drmVersionsCode != *(equalCopy + 66))
     {
       goto LABEL_55;
     }
@@ -1883,7 +1883,7 @@ LABEL_119:
 
   if ((*&v14 & 0x40) != 0)
   {
-    if ((v15 & 0x40) == 0 || self->_drmPlatformIdCode != *(v4 + 7))
+    if ((v15 & 0x40) == 0 || self->_drmPlatformIdCode != *(equalCopy + 7))
     {
       goto LABEL_55;
     }
@@ -1896,7 +1896,7 @@ LABEL_119:
 
   if ((*&v14 & 0x10) != 0)
   {
-    if ((v15 & 0x10) == 0 || self->_drmKey1IdCode != *(v4 + 5))
+    if ((v15 & 0x10) == 0 || self->_drmKey1IdCode != *(equalCopy + 5))
     {
       goto LABEL_55;
     }
@@ -1909,7 +1909,7 @@ LABEL_119:
 
   if ((*&v14 & 0x20) != 0)
   {
-    if ((v15 & 0x20) == 0 || self->_drmKey2IdCode != *(v4 + 6))
+    if ((v15 & 0x20) == 0 || self->_drmKey2IdCode != *(equalCopy + 6))
     {
       goto LABEL_55;
     }
@@ -1921,13 +1921,13 @@ LABEL_119:
   }
 
   chapterMetadataUrl = self->_chapterMetadataUrl;
-  if (chapterMetadataUrl | *(v4 + 26) && ![(NSString *)chapterMetadataUrl isEqual:?])
+  if (chapterMetadataUrl | *(equalCopy + 26) && ![(NSString *)chapterMetadataUrl isEqual:?])
   {
     goto LABEL_55;
   }
 
   storeAssetFlavor = self->_storeAssetFlavor;
-  if (storeAssetFlavor | *(v4 + 55))
+  if (storeAssetFlavor | *(equalCopy + 55))
   {
     if (![(NSString *)storeAssetFlavor isEqual:?])
     {
@@ -1936,7 +1936,7 @@ LABEL_119:
   }
 
   extrasUrl = self->_extrasUrl;
-  if (extrasUrl | *(v4 + 34))
+  if (extrasUrl | *(equalCopy + 34))
   {
     if (![(NSString *)extrasUrl isEqual:?])
     {
@@ -1945,10 +1945,10 @@ LABEL_119:
   }
 
   v22 = self->_has;
-  v23 = *(v4 + 62);
+  v23 = *(equalCopy + 62);
   if ((*&v22 & 0x4000) != 0)
   {
-    if ((v23 & 0x4000) == 0 || self->_purchaseDateTime != *(v4 + 15))
+    if ((v23 & 0x4000) == 0 || self->_purchaseDateTime != *(equalCopy + 15))
     {
       goto LABEL_55;
     }
@@ -1961,7 +1961,7 @@ LABEL_119:
 
   if ((*&v22 & 0x2000000) != 0)
   {
-    if ((v23 & 0x2000000) == 0 || self->_cloudStatus != *(v4 + 56))
+    if ((v23 & 0x2000000) == 0 || self->_cloudStatus != *(equalCopy + 56))
     {
       goto LABEL_55;
     }
@@ -1974,7 +1974,7 @@ LABEL_119:
 
   if ((*&v22 & 0x100000000) != 0)
   {
-    if ((v23 & 0x100000000) == 0 || self->_playCount != *(v4 + 86))
+    if ((v23 & 0x100000000) == 0 || self->_playCount != *(equalCopy + 86))
     {
       goto LABEL_55;
     }
@@ -1987,7 +1987,7 @@ LABEL_119:
 
   if ((*&v22 & 0x200000000) != 0)
   {
-    if ((v23 & 0x200000000) == 0 || self->_playCountDelta != *(v4 + 87))
+    if ((v23 & 0x200000000) == 0 || self->_playCountDelta != *(equalCopy + 87))
     {
       goto LABEL_55;
     }
@@ -2000,7 +2000,7 @@ LABEL_119:
 
   if ((*&v22 & 0x400) != 0)
   {
-    if ((v23 & 0x400) == 0 || self->_lastPlayedDateTime != *(v4 + 11))
+    if ((v23 & 0x400) == 0 || self->_lastPlayedDateTime != *(equalCopy + 11))
     {
       goto LABEL_55;
     }
@@ -2013,7 +2013,7 @@ LABEL_119:
 
   if ((*&v22 & 0x2000000000) != 0)
   {
-    if ((v23 & 0x2000000000) == 0 || self->_skipCount != *(v4 + 104))
+    if ((v23 & 0x2000000000) == 0 || self->_skipCount != *(equalCopy + 104))
     {
       goto LABEL_55;
     }
@@ -2026,7 +2026,7 @@ LABEL_119:
 
   if ((*&v22 & 0x4000000000) != 0)
   {
-    if ((v23 & 0x4000000000) == 0 || self->_skipCountDelta != *(v4 + 105))
+    if ((v23 & 0x4000000000) == 0 || self->_skipCountDelta != *(equalCopy + 105))
     {
       goto LABEL_55;
     }
@@ -2039,7 +2039,7 @@ LABEL_119:
 
   if ((*&v22 & 0x800) != 0)
   {
-    if ((v23 & 0x800) == 0 || self->_lastSkippedDateTime != *(v4 + 12))
+    if ((v23 & 0x800) == 0 || self->_lastSkippedDateTime != *(equalCopy + 12))
     {
       goto LABEL_55;
     }
@@ -2059,13 +2059,13 @@ LABEL_119:
 
     if (self->_rememberBookmark)
     {
-      if ((*(v4 + 494) & 1) == 0)
+      if ((*(equalCopy + 494) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 494))
+    else if (*(equalCopy + 494))
     {
       goto LABEL_55;
     }
@@ -2078,7 +2078,7 @@ LABEL_119:
 
   if ((*&v22 & 4) != 0)
   {
-    if ((v23 & 4) == 0 || self->_bookmarkTimeMilliseconds != *(v4 + 3))
+    if ((v23 & 4) == 0 || self->_bookmarkTimeMilliseconds != *(equalCopy + 3))
     {
       goto LABEL_55;
     }
@@ -2098,13 +2098,13 @@ LABEL_119:
 
     if (self->_hidden)
     {
-      if ((*(v4 + 488) & 1) == 0)
+      if ((*(equalCopy + 488) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 488))
+    else if (*(equalCopy + 488))
     {
       goto LABEL_55;
     }
@@ -2117,7 +2117,7 @@ LABEL_119:
 
   if ((*&v22 & 0x100000) != 0)
   {
-    if ((v23 & 0x100000) == 0 || self->_storePlaylistId != *(v4 + 21))
+    if ((v23 & 0x100000) == 0 || self->_storePlaylistId != *(equalCopy + 21))
     {
       goto LABEL_55;
     }
@@ -2137,13 +2137,13 @@ LABEL_119:
 
     if (self->_hasLocalAsset)
     {
-      if ((*(v4 + 487) & 1) == 0)
+      if ((*(equalCopy + 487) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 487))
+    else if (*(equalCopy + 487))
     {
       goto LABEL_55;
     }
@@ -2155,7 +2155,7 @@ LABEL_119:
   }
 
   grouping = self->_grouping;
-  if (grouping | *(v4 + 37))
+  if (grouping | *(equalCopy + 37))
   {
     if (![(NSString *)grouping isEqual:?])
     {
@@ -2163,12 +2163,12 @@ LABEL_119:
     }
 
     v22 = self->_has;
-    v23 = *(v4 + 62);
+    v23 = *(equalCopy + 62);
   }
 
   if ((*&v22 & 0x40000000) != 0)
   {
-    if ((v23 & 0x40000000) == 0 || self->_likedState != *(v4 + 78))
+    if ((v23 & 0x40000000) == 0 || self->_likedState != *(equalCopy + 78))
     {
       goto LABEL_55;
     }
@@ -2188,13 +2188,13 @@ LABEL_119:
 
     if (self->_needsReporting)
     {
-      if ((*(v4 + 493) & 1) == 0)
+      if ((*(equalCopy + 493) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 493))
+    else if (*(equalCopy + 493))
     {
       goto LABEL_55;
     }
@@ -2214,13 +2214,13 @@ LABEL_119:
 
     if (self->_likedStateChanged)
     {
-      if ((*(v4 + 492) & 1) == 0)
+      if ((*(equalCopy + 492) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 492))
+    else if (*(equalCopy + 492))
     {
       goto LABEL_55;
     }
@@ -2240,13 +2240,13 @@ LABEL_119:
 
     if (self->_isInUsersLibrary)
     {
-      if ((*(v4 + 490) & 1) == 0)
+      if ((*(equalCopy + 490) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 490))
+    else if (*(equalCopy + 490))
     {
       goto LABEL_55;
     }
@@ -2266,13 +2266,13 @@ LABEL_119:
 
     if (self->_cloudAssetAvailable)
     {
-      if ((*(v4 + 484) & 1) == 0)
+      if ((*(equalCopy + 484) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 484))
+    else if (*(equalCopy + 484))
     {
       goto LABEL_55;
     }
@@ -2285,7 +2285,7 @@ LABEL_119:
 
   if ((*&v22 & 0x8000000000) != 0)
   {
-    if ((v23 & 0x8000000000) == 0 || self->_storeProtectionType != *(v4 + 112))
+    if ((v23 & 0x8000000000) == 0 || self->_storeProtectionType != *(equalCopy + 112))
     {
       goto LABEL_55;
     }
@@ -2305,13 +2305,13 @@ LABEL_119:
 
     if (self->_userDisabled)
     {
-      if ((*(v4 + 495) & 1) == 0)
+      if ((*(equalCopy + 495) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 495))
+    else if (*(equalCopy + 495))
     {
       goto LABEL_55;
     }
@@ -2324,7 +2324,7 @@ LABEL_119:
 
   if ((*&v22 & 0x1000000) != 0)
   {
-    if ((v23 & 0x1000000) == 0 || self->_cloudPlaybackEndpointType != *(v4 + 55))
+    if ((v23 & 0x1000000) == 0 || self->_cloudPlaybackEndpointType != *(equalCopy + 55))
     {
       goto LABEL_55;
     }
@@ -2337,7 +2337,7 @@ LABEL_119:
 
   if ((*&v22 & 0x400000000) != 0)
   {
-    if ((v23 & 0x400000000) == 0 || self->_playbackEndpointType != *(v4 + 88))
+    if ((v23 & 0x400000000) == 0 || self->_playbackEndpointType != *(equalCopy + 88))
     {
       goto LABEL_55;
     }
@@ -2350,7 +2350,7 @@ LABEL_119:
 
   if ((*&v22 & 0x800000) != 0)
   {
-    if ((v23 & 0x800000) == 0 || self->_cloudMatchedStatus != *(v4 + 54))
+    if ((v23 & 0x800000) == 0 || self->_cloudMatchedStatus != *(equalCopy + 54))
     {
       goto LABEL_55;
     }
@@ -2370,13 +2370,13 @@ LABEL_119:
 
     if (self->_inUsersCloudLibrary)
     {
-      if ((*(v4 + 489) & 1) == 0)
+      if ((*(equalCopy + 489) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 489))
+    else if (*(equalCopy + 489))
     {
       goto LABEL_55;
     }
@@ -2389,7 +2389,7 @@ LABEL_119:
 
   if ((*&v22 & 0x1000000000) != 0)
   {
-    if ((v23 & 0x1000000000) == 0 || self->_secondaryArtworkSourceType != *(v4 + 100))
+    if ((v23 & 0x1000000000) == 0 || self->_secondaryArtworkSourceType != *(equalCopy + 100))
     {
       goto LABEL_55;
     }
@@ -2401,7 +2401,7 @@ LABEL_119:
   }
 
   secondaryArtworkId = self->_secondaryArtworkId;
-  if (secondaryArtworkId | *(v4 + 49))
+  if (secondaryArtworkId | *(equalCopy + 49))
   {
     if (![(NSString *)secondaryArtworkId isEqual:?])
     {
@@ -2409,7 +2409,7 @@ LABEL_119:
     }
 
     v22 = self->_has;
-    v23 = *(v4 + 62);
+    v23 = *(equalCopy + 62);
   }
 
   if ((*&v22 & 0x80000000000) != 0)
@@ -2421,13 +2421,13 @@ LABEL_119:
 
     if (self->_hasChapterData)
     {
-      if ((*(v4 + 486) & 1) == 0)
+      if ((*(equalCopy + 486) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 486))
+    else if (*(equalCopy + 486))
     {
       goto LABEL_55;
     }
@@ -2439,7 +2439,7 @@ LABEL_119:
   }
 
   flattenedChapterData = self->_flattenedChapterData;
-  if (flattenedChapterData | *(v4 + 36))
+  if (flattenedChapterData | *(equalCopy + 36))
   {
     if (![(NSData *)flattenedChapterData isEqual:?])
     {
@@ -2447,7 +2447,7 @@ LABEL_119:
     }
 
     v22 = self->_has;
-    v23 = *(v4 + 62);
+    v23 = *(equalCopy + 62);
   }
 
   if ((*&v22 & 0x1000000000000) != 0)
@@ -2459,13 +2459,13 @@ LABEL_119:
 
     if (self->_isPreorder)
     {
-      if ((*(v4 + 491) & 1) == 0)
+      if ((*(equalCopy + 491) & 1) == 0)
       {
         goto LABEL_55;
       }
     }
 
-    else if (*(v4 + 491))
+    else if (*(equalCopy + 491))
     {
       goto LABEL_55;
     }
@@ -2478,7 +2478,7 @@ LABEL_119:
 
   if ((*&v22 & 0x1000) != 0)
   {
-    if ((v23 & 0x1000) == 0 || self->_likedStateChangedDate != *(v4 + 13))
+    if ((v23 & 0x1000) == 0 || self->_likedStateChangedDate != *(equalCopy + 13))
     {
       goto LABEL_55;
     }
@@ -2490,7 +2490,7 @@ LABEL_119:
   }
 
   libraryIdentifiers = self->_libraryIdentifiers;
-  if (libraryIdentifiers | *(v4 + 38))
+  if (libraryIdentifiers | *(equalCopy + 38))
   {
     if (![(NSMutableArray *)libraryIdentifiers isEqual:?])
     {
@@ -2498,12 +2498,12 @@ LABEL_119:
     }
 
     v22 = self->_has;
-    v23 = *(v4 + 62);
+    v23 = *(equalCopy + 62);
   }
 
   if ((*&v22 & 0x80000) != 0)
   {
-    if ((v23 & 0x80000) == 0 || self->_storeId != *(v4 + 20))
+    if ((v23 & 0x80000) == 0 || self->_storeId != *(equalCopy + 20))
     {
       goto LABEL_55;
     }
@@ -2516,7 +2516,7 @@ LABEL_119:
 
   if ((*&v22 & 0x200000) != 0)
   {
-    if ((v23 & 0x200000) == 0 || self->_storefrontId != *(v4 + 22))
+    if ((v23 & 0x200000) == 0 || self->_storefrontId != *(equalCopy + 22))
     {
       goto LABEL_55;
     }
@@ -2529,7 +2529,7 @@ LABEL_119:
 
   if (*&v22)
   {
-    if ((v23 & 1) == 0 || self->_accountId != *(v4 + 1))
+    if ((v23 & 1) == 0 || self->_accountId != *(equalCopy + 1))
     {
       goto LABEL_55;
     }
@@ -2542,7 +2542,7 @@ LABEL_119:
 
   if ((*&v22 & 0x8000) != 0)
   {
-    if ((v23 & 0x8000) == 0 || self->_purchaseHistoryId != *(v4 + 16))
+    if ((v23 & 0x8000) == 0 || self->_purchaseHistoryId != *(equalCopy + 16))
     {
       goto LABEL_55;
     }
@@ -2555,7 +2555,7 @@ LABEL_119:
 
   if ((*&v22 & 0x800000000) != 0)
   {
-    if ((v23 & 0x800000000) == 0 || self->_purchaseHistoryToken != *(v4 + 94))
+    if ((v23 & 0x800000000) == 0 || self->_purchaseHistoryToken != *(equalCopy + 94))
     {
       goto LABEL_55;
     }
@@ -2567,7 +2567,7 @@ LABEL_119:
   }
 
   purchaseHistoryRedownloadParams = self->_purchaseHistoryRedownloadParams;
-  if (purchaseHistoryRedownloadParams | *(v4 + 46))
+  if (purchaseHistoryRedownloadParams | *(equalCopy + 46))
   {
     if (![(NSString *)purchaseHistoryRedownloadParams isEqual:?])
     {
@@ -2575,12 +2575,12 @@ LABEL_119:
     }
 
     v22 = self->_has;
-    v23 = *(v4 + 62);
+    v23 = *(equalCopy + 62);
   }
 
   if ((*&v22 & 0x40000) != 0)
   {
-    if ((v23 & 0x40000) == 0 || self->_sagaId != *(v4 + 19))
+    if ((v23 & 0x40000) == 0 || self->_sagaId != *(equalCopy + 19))
     {
       goto LABEL_55;
     }
@@ -2592,13 +2592,13 @@ LABEL_119:
   }
 
   sagaRedownloadParams = self->_sagaRedownloadParams;
-  if (sagaRedownloadParams | *(v4 + 48) && ![(NSString *)sagaRedownloadParams isEqual:?])
+  if (sagaRedownloadParams | *(equalCopy + 48) && ![(NSString *)sagaRedownloadParams isEqual:?])
   {
     goto LABEL_55;
   }
 
   storeXID = self->_storeXID;
-  if (storeXID | *(v4 + 57))
+  if (storeXID | *(equalCopy + 57))
   {
     if (![(NSString *)storeXID isEqual:?])
     {
@@ -2607,10 +2607,10 @@ LABEL_119:
   }
 
   v31 = self->_has;
-  v32 = *(v4 + 62);
+  v32 = *(equalCopy + 62);
   if ((*&v31 & 0x400000) != 0)
   {
-    if ((v32 & 0x400000) == 0 || self->_subscriptionStoreItemId != *(v4 + 23))
+    if ((v32 & 0x400000) == 0 || self->_subscriptionStoreItemId != *(equalCopy + 23))
     {
       goto LABEL_55;
     }
@@ -2622,7 +2622,7 @@ LABEL_119:
   }
 
   cloudUniversalLibraryId = self->_cloudUniversalLibraryId;
-  if (cloudUniversalLibraryId | *(v4 + 29))
+  if (cloudUniversalLibraryId | *(equalCopy + 29))
   {
     if (![(NSString *)cloudUniversalLibraryId isEqual:?])
     {
@@ -2630,12 +2630,12 @@ LABEL_119:
     }
 
     v31 = self->_has;
-    v32 = *(v4 + 62);
+    v32 = *(equalCopy + 62);
   }
 
   if ((*&v31 & 0x20000) != 0)
   {
-    if ((v32 & 0x20000) == 0 || self->_reportingStoreItemId != *(v4 + 18))
+    if ((v32 & 0x20000) == 0 || self->_reportingStoreItemId != *(equalCopy + 18))
     {
       goto LABEL_55;
     }
@@ -2658,20 +2658,20 @@ LABEL_55:
     goto LABEL_56;
   }
 
-  if ((v32 & 2) == 0 || self->_assetStoreItemId != *(v4 + 2))
+  if ((v32 & 2) == 0 || self->_assetStoreItemId != *(equalCopy + 2))
   {
     goto LABEL_55;
   }
 
 LABEL_348:
   song = self->_song;
-  if (song | *(v4 + 53) && ![(MIPSong *)song isEqual:?])
+  if (song | *(equalCopy + 53) && ![(MIPSong *)song isEqual:?])
   {
     goto LABEL_55;
   }
 
   movie = self->_movie;
-  if (movie | *(v4 + 42))
+  if (movie | *(equalCopy + 42))
   {
     if (![(MIPMovie *)movie isEqual:?])
     {
@@ -2680,7 +2680,7 @@ LABEL_348:
   }
 
   tvShow = self->_tvShow;
-  if (tvShow | *(v4 + 59))
+  if (tvShow | *(equalCopy + 59))
   {
     if (![(MIPTVShow *)tvShow isEqual:?])
     {
@@ -2689,7 +2689,7 @@ LABEL_348:
   }
 
   podcast = self->_podcast;
-  if (podcast | *(v4 + 45))
+  if (podcast | *(equalCopy + 45))
   {
     if (![(MIPPodcast *)podcast isEqual:?])
     {
@@ -2698,7 +2698,7 @@ LABEL_348:
   }
 
   audiobook = self->_audiobook;
-  if (audiobook | *(v4 + 25))
+  if (audiobook | *(equalCopy + 25))
   {
     v16 = [(MIPAudiobook *)audiobook isEqual:?];
   }
@@ -2713,10 +2713,10 @@ LABEL_56:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v72 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*(&self->_has + 3) & 0x80) != 0)
   {
@@ -2724,11 +2724,11 @@ LABEL_56:
     *(v5 + 496) |= 0x80000000uLL;
   }
 
-  v7 = [(NSString *)self->_title copyWithZone:a3];
+  v7 = [(NSString *)self->_title copyWithZone:zone];
   v8 = *(v6 + 464);
   *(v6 + 464) = v7;
 
-  v9 = [(NSString *)self->_sortTitle copyWithZone:a3];
+  v9 = [(NSString *)self->_sortTitle copyWithZone:zone];
   v10 = *(v6 + 432);
   *(v6 + 432) = v9;
 
@@ -2825,19 +2825,19 @@ LABEL_10:
   }
 
 LABEL_11:
-  v12 = [(NSString *)self->_shortDescription copyWithZone:a3];
+  v12 = [(NSString *)self->_shortDescription copyWithZone:zone];
   v13 = *(v6 + 408);
   *(v6 + 408) = v12;
 
-  v14 = [(NSString *)self->_longDescription copyWithZone:a3];
+  v14 = [(NSString *)self->_longDescription copyWithZone:zone];
   v15 = *(v6 + 320);
   *(v6 + 320) = v14;
 
-  v16 = [(NSString *)self->_copyright copyWithZone:a3];
+  v16 = [(NSString *)self->_copyright copyWithZone:zone];
   v17 = *(v6 + 256);
   *(v6 + 256) = v16;
 
-  v18 = [(NSString *)self->_artworkId copyWithZone:a3];
+  v18 = [(NSString *)self->_artworkId copyWithZone:zone];
   v19 = *(v6 + 192);
   *(v6 + 192) = v18;
 
@@ -2855,7 +2855,7 @@ LABEL_11:
     *(v6 + 496) |= 0x8000000uLL;
   }
 
-  v21 = [(NSString *)self->_comment copyWithZone:a3];
+  v21 = [(NSString *)self->_comment copyWithZone:zone];
   v22 = *(v6 + 240);
   *(v6 + 240) = v21;
 
@@ -2937,15 +2937,15 @@ LABEL_21:
   }
 
 LABEL_22:
-  v24 = [(NSString *)self->_chapterMetadataUrl copyWithZone:a3];
+  v24 = [(NSString *)self->_chapterMetadataUrl copyWithZone:zone];
   v25 = *(v6 + 208);
   *(v6 + 208) = v24;
 
-  v26 = [(NSString *)self->_storeAssetFlavor copyWithZone:a3];
+  v26 = [(NSString *)self->_storeAssetFlavor copyWithZone:zone];
   v27 = *(v6 + 440);
   *(v6 + 440) = v26;
 
-  v28 = [(NSString *)self->_extrasUrl copyWithZone:a3];
+  v28 = [(NSString *)self->_extrasUrl copyWithZone:zone];
   v29 = *(v6 + 272);
   *(v6 + 272) = v28;
 
@@ -3132,7 +3132,7 @@ LABEL_35:
   }
 
 LABEL_36:
-  v31 = [(NSString *)self->_grouping copyWithZone:a3];
+  v31 = [(NSString *)self->_grouping copyWithZone:zone];
   v32 = *(v6 + 296);
   *(v6 + 296) = v31;
 
@@ -3304,7 +3304,7 @@ LABEL_48:
   }
 
 LABEL_49:
-  v34 = [(NSString *)self->_secondaryArtworkId copyWithZone:a3];
+  v34 = [(NSString *)self->_secondaryArtworkId copyWithZone:zone];
   v35 = *(v6 + 392);
   *(v6 + 392) = v34;
 
@@ -3314,7 +3314,7 @@ LABEL_49:
     *(v6 + 496) |= 0x80000000000uLL;
   }
 
-  v36 = [(NSData *)self->_flattenedChapterData copyWithZone:a3];
+  v36 = [(NSData *)self->_flattenedChapterData copyWithZone:zone];
   v37 = *(v6 + 288);
   *(v6 + 288) = v36;
 
@@ -3352,7 +3352,7 @@ LABEL_49:
           objc_enumerationMutation(v39);
         }
 
-        v44 = [*(*(&v67 + 1) + 8 * v43) copyWithZone:{a3, v67}];
+        v44 = [*(*(&v67 + 1) + 8 * v43) copyWithZone:{zone, v67}];
         [v6 addLibraryIdentifiers:v44];
 
         ++v43;
@@ -3428,7 +3428,7 @@ LABEL_67:
   }
 
 LABEL_68:
-  v46 = [(NSString *)self->_purchaseHistoryRedownloadParams copyWithZone:a3, v67];
+  v46 = [(NSString *)self->_purchaseHistoryRedownloadParams copyWithZone:zone, v67];
   v47 = *(v6 + 368);
   *(v6 + 368) = v46;
 
@@ -3438,11 +3438,11 @@ LABEL_68:
     *(v6 + 496) |= 0x40000uLL;
   }
 
-  v48 = [(NSString *)self->_sagaRedownloadParams copyWithZone:a3];
+  v48 = [(NSString *)self->_sagaRedownloadParams copyWithZone:zone];
   v49 = *(v6 + 384);
   *(v6 + 384) = v48;
 
-  v50 = [(NSString *)self->_storeXID copyWithZone:a3];
+  v50 = [(NSString *)self->_storeXID copyWithZone:zone];
   v51 = *(v6 + 456);
   *(v6 + 456) = v50;
 
@@ -3452,7 +3452,7 @@ LABEL_68:
     *(v6 + 496) |= 0x400000uLL;
   }
 
-  v52 = [(NSString *)self->_cloudUniversalLibraryId copyWithZone:a3];
+  v52 = [(NSString *)self->_cloudUniversalLibraryId copyWithZone:zone];
   v53 = *(v6 + 232);
   *(v6 + 232) = v52;
 
@@ -3470,23 +3470,23 @@ LABEL_68:
     *(v6 + 496) |= 2uLL;
   }
 
-  v55 = [(MIPSong *)self->_song copyWithZone:a3];
+  v55 = [(MIPSong *)self->_song copyWithZone:zone];
   v56 = *(v6 + 424);
   *(v6 + 424) = v55;
 
-  v57 = [(MIPMovie *)self->_movie copyWithZone:a3];
+  v57 = [(MIPMovie *)self->_movie copyWithZone:zone];
   v58 = *(v6 + 336);
   *(v6 + 336) = v57;
 
-  v59 = [(MIPTVShow *)self->_tvShow copyWithZone:a3];
+  v59 = [(MIPTVShow *)self->_tvShow copyWithZone:zone];
   v60 = *(v6 + 472);
   *(v6 + 472) = v59;
 
-  v61 = [(MIPPodcast *)self->_podcast copyWithZone:a3];
+  v61 = [(MIPPodcast *)self->_podcast copyWithZone:zone];
   v62 = *(v6 + 360);
   *(v6 + 360) = v61;
 
-  v63 = [(MIPAudiobook *)self->_audiobook copyWithZone:a3];
+  v63 = [(MIPAudiobook *)self->_audiobook copyWithZone:zone];
   v64 = *(v6 + 200);
   *(v6 + 200) = v63;
 
@@ -3494,33 +3494,33 @@ LABEL_68:
   return v65;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*(&self->_has + 3) & 0x80) != 0)
   {
-    v4[82] = self->_mediaType;
-    *(v4 + 62) |= 0x80000000uLL;
+    toCopy[82] = self->_mediaType;
+    *(toCopy + 62) |= 0x80000000uLL;
   }
 
-  v18 = v4;
+  v18 = toCopy;
   if (self->_title)
   {
-    [v4 setTitle:?];
-    v4 = v18;
+    [toCopy setTitle:?];
+    toCopy = v18;
   }
 
   if (self->_sortTitle)
   {
     [v18 setSortTitle:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   has = self->_has;
   if ((*&has & 0x10000) != 0)
   {
-    *(v4 + 17) = self->_releaseDateTime;
-    *(v4 + 62) |= 0x10000uLL;
+    *(toCopy + 17) = self->_releaseDateTime;
+    *(toCopy + 62) |= 0x10000uLL;
     has = self->_has;
     if ((*&has & 8) == 0)
     {
@@ -3539,8 +3539,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 4) = self->_creationDateTime;
-  *(v4 + 62) |= 8uLL;
+  *(toCopy + 4) = self->_creationDateTime;
+  *(toCopy + 62) |= 8uLL;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -3554,8 +3554,8 @@ LABEL_10:
   }
 
 LABEL_122:
-  *(v4 + 14) = self->_modificationDateTime;
-  *(v4 + 62) |= 0x2000uLL;
+  *(toCopy + 14) = self->_modificationDateTime;
+  *(toCopy + 62) |= 0x2000uLL;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -3569,8 +3569,8 @@ LABEL_11:
   }
 
 LABEL_123:
-  *(v4 + 10) = self->_fileSize;
-  *(v4 + 62) |= 0x200uLL;
+  *(toCopy + 10) = self->_fileSize;
+  *(toCopy + 62) |= 0x200uLL;
   has = self->_has;
   if ((*&has & 0x80) == 0)
   {
@@ -3584,8 +3584,8 @@ LABEL_12:
   }
 
 LABEL_124:
-  *(v4 + 8) = self->_duration;
-  *(v4 + 62) |= 0x80uLL;
+  *(toCopy + 8) = self->_duration;
+  *(toCopy + 62) |= 0x80uLL;
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
   {
@@ -3599,65 +3599,65 @@ LABEL_13:
   }
 
 LABEL_125:
-  v4[62] = self->_contentRating;
-  *(v4 + 62) |= 0x4000000uLL;
+  toCopy[62] = self->_contentRating;
+  *(toCopy + 62) |= 0x4000000uLL;
   if ((*&self->_has & 0x40000000000) != 0)
   {
 LABEL_14:
-    *(v4 + 485) = self->_explicitContent;
-    *(v4 + 62) |= 0x40000000000uLL;
+    *(toCopy + 485) = self->_explicitContent;
+    *(toCopy + 62) |= 0x40000000000uLL;
   }
 
 LABEL_15:
   if (self->_shortDescription)
   {
     [v18 setShortDescription:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_longDescription)
   {
     [v18 setLongDescription:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_copyright)
   {
     [v18 setCopyright:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_artworkId)
   {
     [v18 setArtworkId:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   v6 = self->_has;
   if ((*&v6 & 0x10000000000) != 0)
   {
-    v4[120] = self->_year;
-    *(v4 + 62) |= 0x10000000000uLL;
+    toCopy[120] = self->_year;
+    *(toCopy + 62) |= 0x10000000000uLL;
     v6 = self->_has;
   }
 
   if ((*&v6 & 0x8000000) != 0)
   {
-    v4[63] = self->_contentRatingLevel;
-    *(v4 + 62) |= 0x8000000uLL;
+    toCopy[63] = self->_contentRatingLevel;
+    *(toCopy + 62) |= 0x8000000uLL;
   }
 
   if (self->_comment)
   {
     [v18 setComment:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   v7 = self->_has;
   if ((*&v7 & 0x20000000) != 0)
   {
-    v4[70] = self->_fileKind;
-    *(v4 + 62) |= 0x20000000uLL;
+    toCopy[70] = self->_fileKind;
+    *(toCopy + 62) |= 0x20000000uLL;
     v7 = self->_has;
     if ((*&v7 & 0x100) == 0)
     {
@@ -3676,8 +3676,8 @@ LABEL_31:
     goto LABEL_31;
   }
 
-  *(v4 + 9) = self->_familyAccountId;
-  *(v4 + 62) |= 0x100uLL;
+  *(toCopy + 9) = self->_familyAccountId;
+  *(toCopy + 62) |= 0x100uLL;
   v7 = self->_has;
   if ((*&v7 & 0x10000000) == 0)
   {
@@ -3691,8 +3691,8 @@ LABEL_32:
   }
 
 LABEL_129:
-  v4[66] = self->_drmVersionsCode;
-  *(v4 + 62) |= 0x10000000uLL;
+  toCopy[66] = self->_drmVersionsCode;
+  *(toCopy + 62) |= 0x10000000uLL;
   v7 = self->_has;
   if ((*&v7 & 0x40) == 0)
   {
@@ -3706,8 +3706,8 @@ LABEL_33:
   }
 
 LABEL_130:
-  *(v4 + 7) = self->_drmPlatformIdCode;
-  *(v4 + 62) |= 0x40uLL;
+  *(toCopy + 7) = self->_drmPlatformIdCode;
+  *(toCopy + 62) |= 0x40uLL;
   v7 = self->_has;
   if ((*&v7 & 0x10) == 0)
   {
@@ -3721,39 +3721,39 @@ LABEL_34:
   }
 
 LABEL_131:
-  *(v4 + 5) = self->_drmKey1IdCode;
-  *(v4 + 62) |= 0x10uLL;
+  *(toCopy + 5) = self->_drmKey1IdCode;
+  *(toCopy + 62) |= 0x10uLL;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_35:
-    *(v4 + 6) = self->_drmKey2IdCode;
-    *(v4 + 62) |= 0x20uLL;
+    *(toCopy + 6) = self->_drmKey2IdCode;
+    *(toCopy + 62) |= 0x20uLL;
   }
 
 LABEL_36:
   if (self->_chapterMetadataUrl)
   {
     [v18 setChapterMetadataUrl:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_storeAssetFlavor)
   {
     [v18 setStoreAssetFlavor:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if (self->_extrasUrl)
   {
     [v18 setExtrasUrl:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   v8 = self->_has;
   if ((*&v8 & 0x4000) != 0)
   {
-    *(v4 + 15) = self->_purchaseDateTime;
-    *(v4 + 62) |= 0x4000uLL;
+    *(toCopy + 15) = self->_purchaseDateTime;
+    *(toCopy + 62) |= 0x4000uLL;
     v8 = self->_has;
     if ((*&v8 & 0x2000000) == 0)
     {
@@ -3772,8 +3772,8 @@ LABEL_44:
     goto LABEL_44;
   }
 
-  v4[56] = self->_cloudStatus;
-  *(v4 + 62) |= 0x2000000uLL;
+  toCopy[56] = self->_cloudStatus;
+  *(toCopy + 62) |= 0x2000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x100000000) == 0)
   {
@@ -3787,8 +3787,8 @@ LABEL_45:
   }
 
 LABEL_135:
-  v4[86] = self->_playCount;
-  *(v4 + 62) |= 0x100000000uLL;
+  toCopy[86] = self->_playCount;
+  *(toCopy + 62) |= 0x100000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x200000000) == 0)
   {
@@ -3802,8 +3802,8 @@ LABEL_46:
   }
 
 LABEL_136:
-  v4[87] = self->_playCountDelta;
-  *(v4 + 62) |= 0x200000000uLL;
+  toCopy[87] = self->_playCountDelta;
+  *(toCopy + 62) |= 0x200000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x400) == 0)
   {
@@ -3817,8 +3817,8 @@ LABEL_47:
   }
 
 LABEL_137:
-  *(v4 + 11) = self->_lastPlayedDateTime;
-  *(v4 + 62) |= 0x400uLL;
+  *(toCopy + 11) = self->_lastPlayedDateTime;
+  *(toCopy + 62) |= 0x400uLL;
   v8 = self->_has;
   if ((*&v8 & 0x2000000000) == 0)
   {
@@ -3832,8 +3832,8 @@ LABEL_48:
   }
 
 LABEL_138:
-  v4[104] = self->_skipCount;
-  *(v4 + 62) |= 0x2000000000uLL;
+  toCopy[104] = self->_skipCount;
+  *(toCopy + 62) |= 0x2000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x4000000000) == 0)
   {
@@ -3847,8 +3847,8 @@ LABEL_49:
   }
 
 LABEL_139:
-  v4[105] = self->_skipCountDelta;
-  *(v4 + 62) |= 0x4000000000uLL;
+  toCopy[105] = self->_skipCountDelta;
+  *(toCopy + 62) |= 0x4000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x800) == 0)
   {
@@ -3862,8 +3862,8 @@ LABEL_50:
   }
 
 LABEL_140:
-  *(v4 + 12) = self->_lastSkippedDateTime;
-  *(v4 + 62) |= 0x800uLL;
+  *(toCopy + 12) = self->_lastSkippedDateTime;
+  *(toCopy + 62) |= 0x800uLL;
   v8 = self->_has;
   if ((*&v8 & 0x8000000000000) == 0)
   {
@@ -3877,8 +3877,8 @@ LABEL_51:
   }
 
 LABEL_141:
-  *(v4 + 494) = self->_rememberBookmark;
-  *(v4 + 62) |= 0x8000000000000uLL;
+  *(toCopy + 494) = self->_rememberBookmark;
+  *(toCopy + 62) |= 0x8000000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 4) == 0)
   {
@@ -3892,8 +3892,8 @@ LABEL_52:
   }
 
 LABEL_142:
-  *(v4 + 3) = self->_bookmarkTimeMilliseconds;
-  *(v4 + 62) |= 4uLL;
+  *(toCopy + 3) = self->_bookmarkTimeMilliseconds;
+  *(toCopy + 62) |= 4uLL;
   v8 = self->_has;
   if ((*&v8 & 0x200000000000) == 0)
   {
@@ -3907,8 +3907,8 @@ LABEL_53:
   }
 
 LABEL_143:
-  *(v4 + 488) = self->_hidden;
-  *(v4 + 62) |= 0x200000000000uLL;
+  *(toCopy + 488) = self->_hidden;
+  *(toCopy + 62) |= 0x200000000000uLL;
   v8 = self->_has;
   if ((*&v8 & 0x100000) == 0)
   {
@@ -3922,27 +3922,27 @@ LABEL_54:
   }
 
 LABEL_144:
-  *(v4 + 21) = self->_storePlaylistId;
-  *(v4 + 62) |= 0x100000uLL;
+  *(toCopy + 21) = self->_storePlaylistId;
+  *(toCopy + 62) |= 0x100000uLL;
   if ((*&self->_has & 0x100000000000) != 0)
   {
 LABEL_55:
-    *(v4 + 487) = self->_hasLocalAsset;
-    *(v4 + 62) |= 0x100000000000uLL;
+    *(toCopy + 487) = self->_hasLocalAsset;
+    *(toCopy + 62) |= 0x100000000000uLL;
   }
 
 LABEL_56:
   if (self->_grouping)
   {
     [v18 setGrouping:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   v9 = self->_has;
   if ((*&v9 & 0x40000000) != 0)
   {
-    v4[78] = self->_likedState;
-    *(v4 + 62) |= 0x40000000uLL;
+    toCopy[78] = self->_likedState;
+    *(toCopy + 62) |= 0x40000000uLL;
     v9 = self->_has;
     if ((*&v9 & 0x4000000000000) == 0)
     {
@@ -3961,8 +3961,8 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  *(v4 + 493) = self->_needsReporting;
-  *(v4 + 62) |= 0x4000000000000uLL;
+  *(toCopy + 493) = self->_needsReporting;
+  *(toCopy + 62) |= 0x4000000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x2000000000000) == 0)
   {
@@ -3976,8 +3976,8 @@ LABEL_61:
   }
 
 LABEL_148:
-  *(v4 + 492) = self->_likedStateChanged;
-  *(v4 + 62) |= 0x2000000000000uLL;
+  *(toCopy + 492) = self->_likedStateChanged;
+  *(toCopy + 62) |= 0x2000000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x800000000000) == 0)
   {
@@ -3991,8 +3991,8 @@ LABEL_62:
   }
 
 LABEL_149:
-  *(v4 + 490) = self->_isInUsersLibrary;
-  *(v4 + 62) |= 0x800000000000uLL;
+  *(toCopy + 490) = self->_isInUsersLibrary;
+  *(toCopy + 62) |= 0x800000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x20000000000) == 0)
   {
@@ -4006,8 +4006,8 @@ LABEL_63:
   }
 
 LABEL_150:
-  *(v4 + 484) = self->_cloudAssetAvailable;
-  *(v4 + 62) |= 0x20000000000uLL;
+  *(toCopy + 484) = self->_cloudAssetAvailable;
+  *(toCopy + 62) |= 0x20000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x8000000000) == 0)
   {
@@ -4021,8 +4021,8 @@ LABEL_64:
   }
 
 LABEL_151:
-  v4[112] = self->_storeProtectionType;
-  *(v4 + 62) |= 0x8000000000uLL;
+  toCopy[112] = self->_storeProtectionType;
+  *(toCopy + 62) |= 0x8000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x10000000000000) == 0)
   {
@@ -4036,8 +4036,8 @@ LABEL_65:
   }
 
 LABEL_152:
-  *(v4 + 495) = self->_userDisabled;
-  *(v4 + 62) |= 0x10000000000000uLL;
+  *(toCopy + 495) = self->_userDisabled;
+  *(toCopy + 62) |= 0x10000000000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x1000000) == 0)
   {
@@ -4051,8 +4051,8 @@ LABEL_66:
   }
 
 LABEL_153:
-  v4[55] = self->_cloudPlaybackEndpointType;
-  *(v4 + 62) |= 0x1000000uLL;
+  toCopy[55] = self->_cloudPlaybackEndpointType;
+  *(toCopy + 62) |= 0x1000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x400000000) == 0)
   {
@@ -4066,8 +4066,8 @@ LABEL_67:
   }
 
 LABEL_154:
-  v4[88] = self->_playbackEndpointType;
-  *(v4 + 62) |= 0x400000000uLL;
+  toCopy[88] = self->_playbackEndpointType;
+  *(toCopy + 62) |= 0x400000000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x800000) == 0)
   {
@@ -4081,8 +4081,8 @@ LABEL_68:
   }
 
 LABEL_155:
-  v4[54] = self->_cloudMatchedStatus;
-  *(v4 + 62) |= 0x800000uLL;
+  toCopy[54] = self->_cloudMatchedStatus;
+  *(toCopy + 62) |= 0x800000uLL;
   v9 = self->_has;
   if ((*&v9 & 0x400000000000) == 0)
   {
@@ -4096,55 +4096,55 @@ LABEL_69:
   }
 
 LABEL_156:
-  *(v4 + 489) = self->_inUsersCloudLibrary;
-  *(v4 + 62) |= 0x400000000000uLL;
+  *(toCopy + 489) = self->_inUsersCloudLibrary;
+  *(toCopy + 62) |= 0x400000000000uLL;
   if ((*&self->_has & 0x1000000000) != 0)
   {
 LABEL_70:
-    v4[100] = self->_secondaryArtworkSourceType;
-    *(v4 + 62) |= 0x1000000000uLL;
+    toCopy[100] = self->_secondaryArtworkSourceType;
+    *(toCopy + 62) |= 0x1000000000uLL;
   }
 
 LABEL_71:
   if (self->_secondaryArtworkId)
   {
     [v18 setSecondaryArtworkId:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   if ((*(&self->_has + 5) & 8) != 0)
   {
-    *(v4 + 486) = self->_hasChapterData;
-    *(v4 + 62) |= 0x80000000000uLL;
+    *(toCopy + 486) = self->_hasChapterData;
+    *(toCopy + 62) |= 0x80000000000uLL;
   }
 
   if (self->_flattenedChapterData)
   {
     [v18 setFlattenedChapterData:?];
-    v4 = v18;
+    toCopy = v18;
   }
 
   v10 = self->_has;
   if ((*&v10 & 0x1000000000000) != 0)
   {
-    *(v4 + 491) = self->_isPreorder;
-    *(v4 + 62) |= 0x1000000000000uLL;
+    *(toCopy + 491) = self->_isPreorder;
+    *(toCopy + 62) |= 0x1000000000000uLL;
     v10 = self->_has;
   }
 
   if ((*&v10 & 0x1000) != 0)
   {
-    *(v4 + 13) = self->_likedStateChangedDate;
-    *(v4 + 62) |= 0x1000uLL;
+    *(toCopy + 13) = self->_likedStateChangedDate;
+    *(toCopy + 62) |= 0x1000uLL;
   }
 
   if ([(MIPMediaItem *)self libraryIdentifiersCount])
   {
     [v18 clearLibraryIdentifiers];
-    v11 = [(MIPMediaItem *)self libraryIdentifiersCount];
-    if (v11)
+    libraryIdentifiersCount = [(MIPMediaItem *)self libraryIdentifiersCount];
+    if (libraryIdentifiersCount)
     {
-      v12 = v11;
+      v12 = libraryIdentifiersCount;
       for (i = 0; i != v12; ++i)
       {
         v14 = [(MIPMediaItem *)self libraryIdentifiersAtIndex:i];
@@ -4298,10 +4298,10 @@ LABEL_91:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if ((*(&self->_has + 3) & 0x80) != 0)
   {
     PBDataWriterWriteInt32Field();
@@ -5045,7 +5045,7 @@ LABEL_94:
 - (id)dictionaryRepresentation
 {
   v107 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*(&self->_has + 3) & 0x80) != 0)
   {
     v4 = self->_mediaType - 1;
@@ -5059,26 +5059,26 @@ LABEL_94:
       v5 = off_278765FD8[v4];
     }
 
-    [v3 setObject:v5 forKey:@"mediaType"];
+    [dictionary setObject:v5 forKey:@"mediaType"];
   }
 
   title = self->_title;
   if (title)
   {
-    [v3 setObject:title forKey:@"title"];
+    [dictionary setObject:title forKey:@"title"];
   }
 
   sortTitle = self->_sortTitle;
   if (sortTitle)
   {
-    [v3 setObject:sortTitle forKey:@"sortTitle"];
+    [dictionary setObject:sortTitle forKey:@"sortTitle"];
   }
 
   has = self->_has;
   if ((*&has & 0x10000) != 0)
   {
     v64 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_releaseDateTime];
-    [v3 setObject:v64 forKey:@"releaseDateTime"];
+    [dictionary setObject:v64 forKey:@"releaseDateTime"];
 
     has = self->_has;
     if ((*&has & 8) == 0)
@@ -5099,7 +5099,7 @@ LABEL_12:
   }
 
   v65 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_creationDateTime];
-  [v3 setObject:v65 forKey:@"creationDateTime"];
+  [dictionary setObject:v65 forKey:@"creationDateTime"];
 
   has = self->_has;
   if ((*&has & 0x2000) == 0)
@@ -5115,7 +5115,7 @@ LABEL_13:
 
 LABEL_128:
   v66 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_modificationDateTime];
-  [v3 setObject:v66 forKey:@"modificationDateTime"];
+  [dictionary setObject:v66 forKey:@"modificationDateTime"];
 
   has = self->_has;
   if ((*&has & 0x200) == 0)
@@ -5131,7 +5131,7 @@ LABEL_14:
 
 LABEL_129:
   v67 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_fileSize];
-  [v3 setObject:v67 forKey:@"fileSize"];
+  [dictionary setObject:v67 forKey:@"fileSize"];
 
   has = self->_has;
   if ((*&has & 0x80) == 0)
@@ -5147,7 +5147,7 @@ LABEL_15:
 
 LABEL_130:
   v68 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_duration];
-  [v3 setObject:v68 forKey:@"duration"];
+  [dictionary setObject:v68 forKey:@"duration"];
 
   has = self->_has;
   if ((*&has & 0x4000000) == 0)
@@ -5163,45 +5163,45 @@ LABEL_16:
 
 LABEL_131:
   v69 = [MEMORY[0x277CCABB0] numberWithInt:self->_contentRating];
-  [v3 setObject:v69 forKey:@"contentRating"];
+  [dictionary setObject:v69 forKey:@"contentRating"];
 
   if ((*&self->_has & 0x40000000000) != 0)
   {
 LABEL_17:
     v9 = [MEMORY[0x277CCABB0] numberWithBool:self->_explicitContent];
-    [v3 setObject:v9 forKey:@"explicitContent"];
+    [dictionary setObject:v9 forKey:@"explicitContent"];
   }
 
 LABEL_18:
   shortDescription = self->_shortDescription;
   if (shortDescription)
   {
-    [v3 setObject:shortDescription forKey:@"shortDescription"];
+    [dictionary setObject:shortDescription forKey:@"shortDescription"];
   }
 
   longDescription = self->_longDescription;
   if (longDescription)
   {
-    [v3 setObject:longDescription forKey:@"longDescription"];
+    [dictionary setObject:longDescription forKey:@"longDescription"];
   }
 
   copyright = self->_copyright;
   if (copyright)
   {
-    [v3 setObject:copyright forKey:@"copyright"];
+    [dictionary setObject:copyright forKey:@"copyright"];
   }
 
   artworkId = self->_artworkId;
   if (artworkId)
   {
-    [v3 setObject:artworkId forKey:@"artworkId"];
+    [dictionary setObject:artworkId forKey:@"artworkId"];
   }
 
   v14 = self->_has;
   if ((*&v14 & 0x10000000000) != 0)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithInt:self->_year];
-    [v3 setObject:v15 forKey:@"year"];
+    [dictionary setObject:v15 forKey:@"year"];
 
     v14 = self->_has;
   }
@@ -5209,20 +5209,20 @@ LABEL_18:
   if ((*&v14 & 0x8000000) != 0)
   {
     v16 = [MEMORY[0x277CCABB0] numberWithInt:self->_contentRatingLevel];
-    [v3 setObject:v16 forKey:@"contentRatingLevel"];
+    [dictionary setObject:v16 forKey:@"contentRatingLevel"];
   }
 
   comment = self->_comment;
   if (comment)
   {
-    [v3 setObject:comment forKey:@"comment"];
+    [dictionary setObject:comment forKey:@"comment"];
   }
 
   v18 = self->_has;
   if ((*&v18 & 0x20000000) != 0)
   {
     v70 = [MEMORY[0x277CCABB0] numberWithInt:self->_fileKind];
-    [v3 setObject:v70 forKey:@"fileKind"];
+    [dictionary setObject:v70 forKey:@"fileKind"];
 
     v18 = self->_has;
     if ((*&v18 & 0x100) == 0)
@@ -5243,7 +5243,7 @@ LABEL_34:
   }
 
   v71 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_familyAccountId];
-  [v3 setObject:v71 forKey:@"familyAccountId"];
+  [dictionary setObject:v71 forKey:@"familyAccountId"];
 
   v18 = self->_has;
   if ((*&v18 & 0x10000000) == 0)
@@ -5259,7 +5259,7 @@ LABEL_35:
 
 LABEL_135:
   v72 = [MEMORY[0x277CCABB0] numberWithInt:self->_drmVersionsCode];
-  [v3 setObject:v72 forKey:@"drmVersionsCode"];
+  [dictionary setObject:v72 forKey:@"drmVersionsCode"];
 
   v18 = self->_has;
   if ((*&v18 & 0x40) == 0)
@@ -5275,7 +5275,7 @@ LABEL_36:
 
 LABEL_136:
   v73 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_drmPlatformIdCode];
-  [v3 setObject:v73 forKey:@"drmPlatformIdCode"];
+  [dictionary setObject:v73 forKey:@"drmPlatformIdCode"];
 
   v18 = self->_has;
   if ((*&v18 & 0x10) == 0)
@@ -5291,39 +5291,39 @@ LABEL_37:
 
 LABEL_137:
   v74 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_drmKey1IdCode];
-  [v3 setObject:v74 forKey:@"drmKey1IdCode"];
+  [dictionary setObject:v74 forKey:@"drmKey1IdCode"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_38:
     v19 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_drmKey2IdCode];
-    [v3 setObject:v19 forKey:@"drmKey2IdCode"];
+    [dictionary setObject:v19 forKey:@"drmKey2IdCode"];
   }
 
 LABEL_39:
   chapterMetadataUrl = self->_chapterMetadataUrl;
   if (chapterMetadataUrl)
   {
-    [v3 setObject:chapterMetadataUrl forKey:@"chapterMetadataUrl"];
+    [dictionary setObject:chapterMetadataUrl forKey:@"chapterMetadataUrl"];
   }
 
   storeAssetFlavor = self->_storeAssetFlavor;
   if (storeAssetFlavor)
   {
-    [v3 setObject:storeAssetFlavor forKey:@"storeAssetFlavor"];
+    [dictionary setObject:storeAssetFlavor forKey:@"storeAssetFlavor"];
   }
 
   extrasUrl = self->_extrasUrl;
   if (extrasUrl)
   {
-    [v3 setObject:extrasUrl forKey:@"extrasUrl"];
+    [dictionary setObject:extrasUrl forKey:@"extrasUrl"];
   }
 
   v23 = self->_has;
   if ((*&v23 & 0x4000) != 0)
   {
     v75 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_purchaseDateTime];
-    [v3 setObject:v75 forKey:@"purchaseDateTime"];
+    [dictionary setObject:v75 forKey:@"purchaseDateTime"];
 
     v23 = self->_has;
     if ((*&v23 & 0x2000000) == 0)
@@ -5344,7 +5344,7 @@ LABEL_47:
   }
 
   v76 = [MEMORY[0x277CCABB0] numberWithInt:self->_cloudStatus];
-  [v3 setObject:v76 forKey:@"cloudStatus"];
+  [dictionary setObject:v76 forKey:@"cloudStatus"];
 
   v23 = self->_has;
   if ((*&v23 & 0x100000000) == 0)
@@ -5360,7 +5360,7 @@ LABEL_48:
 
 LABEL_141:
   v77 = [MEMORY[0x277CCABB0] numberWithInt:self->_playCount];
-  [v3 setObject:v77 forKey:@"playCount"];
+  [dictionary setObject:v77 forKey:@"playCount"];
 
   v23 = self->_has;
   if ((*&v23 & 0x200000000) == 0)
@@ -5376,7 +5376,7 @@ LABEL_49:
 
 LABEL_142:
   v78 = [MEMORY[0x277CCABB0] numberWithInt:self->_playCountDelta];
-  [v3 setObject:v78 forKey:@"playCountDelta"];
+  [dictionary setObject:v78 forKey:@"playCountDelta"];
 
   v23 = self->_has;
   if ((*&v23 & 0x400) == 0)
@@ -5392,7 +5392,7 @@ LABEL_50:
 
 LABEL_143:
   v79 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_lastPlayedDateTime];
-  [v3 setObject:v79 forKey:@"lastPlayedDateTime"];
+  [dictionary setObject:v79 forKey:@"lastPlayedDateTime"];
 
   v23 = self->_has;
   if ((*&v23 & 0x2000000000) == 0)
@@ -5408,7 +5408,7 @@ LABEL_51:
 
 LABEL_144:
   v80 = [MEMORY[0x277CCABB0] numberWithInt:self->_skipCount];
-  [v3 setObject:v80 forKey:@"skipCount"];
+  [dictionary setObject:v80 forKey:@"skipCount"];
 
   v23 = self->_has;
   if ((*&v23 & 0x4000000000) == 0)
@@ -5424,7 +5424,7 @@ LABEL_52:
 
 LABEL_145:
   v81 = [MEMORY[0x277CCABB0] numberWithInt:self->_skipCountDelta];
-  [v3 setObject:v81 forKey:@"skipCountDelta"];
+  [dictionary setObject:v81 forKey:@"skipCountDelta"];
 
   v23 = self->_has;
   if ((*&v23 & 0x800) == 0)
@@ -5440,7 +5440,7 @@ LABEL_53:
 
 LABEL_146:
   v82 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_lastSkippedDateTime];
-  [v3 setObject:v82 forKey:@"lastSkippedDateTime"];
+  [dictionary setObject:v82 forKey:@"lastSkippedDateTime"];
 
   v23 = self->_has;
   if ((*&v23 & 0x8000000000000) == 0)
@@ -5456,7 +5456,7 @@ LABEL_54:
 
 LABEL_147:
   v83 = [MEMORY[0x277CCABB0] numberWithBool:self->_rememberBookmark];
-  [v3 setObject:v83 forKey:@"rememberBookmark"];
+  [dictionary setObject:v83 forKey:@"rememberBookmark"];
 
   v23 = self->_has;
   if ((*&v23 & 4) == 0)
@@ -5472,7 +5472,7 @@ LABEL_55:
 
 LABEL_148:
   v84 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_bookmarkTimeMilliseconds];
-  [v3 setObject:v84 forKey:@"bookmarkTimeMilliseconds"];
+  [dictionary setObject:v84 forKey:@"bookmarkTimeMilliseconds"];
 
   v23 = self->_has;
   if ((*&v23 & 0x200000000000) == 0)
@@ -5488,7 +5488,7 @@ LABEL_56:
 
 LABEL_149:
   v85 = [MEMORY[0x277CCABB0] numberWithBool:self->_hidden];
-  [v3 setObject:v85 forKey:@"hidden"];
+  [dictionary setObject:v85 forKey:@"hidden"];
 
   v23 = self->_has;
   if ((*&v23 & 0x100000) == 0)
@@ -5504,27 +5504,27 @@ LABEL_57:
 
 LABEL_150:
   v86 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_storePlaylistId];
-  [v3 setObject:v86 forKey:@"storePlaylistId"];
+  [dictionary setObject:v86 forKey:@"storePlaylistId"];
 
   if ((*&self->_has & 0x100000000000) != 0)
   {
 LABEL_58:
     v24 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasLocalAsset];
-    [v3 setObject:v24 forKey:@"hasLocalAsset"];
+    [dictionary setObject:v24 forKey:@"hasLocalAsset"];
   }
 
 LABEL_59:
   grouping = self->_grouping;
   if (grouping)
   {
-    [v3 setObject:grouping forKey:@"grouping"];
+    [dictionary setObject:grouping forKey:@"grouping"];
   }
 
   v26 = self->_has;
   if ((*&v26 & 0x40000000) != 0)
   {
     v87 = [MEMORY[0x277CCABB0] numberWithInt:self->_likedState];
-    [v3 setObject:v87 forKey:@"likedState"];
+    [dictionary setObject:v87 forKey:@"likedState"];
 
     v26 = self->_has;
     if ((*&v26 & 0x4000000000000) == 0)
@@ -5545,7 +5545,7 @@ LABEL_63:
   }
 
   v88 = [MEMORY[0x277CCABB0] numberWithBool:self->_needsReporting];
-  [v3 setObject:v88 forKey:@"needsReporting"];
+  [dictionary setObject:v88 forKey:@"needsReporting"];
 
   v26 = self->_has;
   if ((*&v26 & 0x2000000000000) == 0)
@@ -5561,7 +5561,7 @@ LABEL_64:
 
 LABEL_154:
   v89 = [MEMORY[0x277CCABB0] numberWithBool:self->_likedStateChanged];
-  [v3 setObject:v89 forKey:@"likedStateChanged"];
+  [dictionary setObject:v89 forKey:@"likedStateChanged"];
 
   v26 = self->_has;
   if ((*&v26 & 0x800000000000) == 0)
@@ -5577,7 +5577,7 @@ LABEL_65:
 
 LABEL_155:
   v90 = [MEMORY[0x277CCABB0] numberWithBool:self->_isInUsersLibrary];
-  [v3 setObject:v90 forKey:@"isInUsersLibrary"];
+  [dictionary setObject:v90 forKey:@"isInUsersLibrary"];
 
   v26 = self->_has;
   if ((*&v26 & 0x20000000000) == 0)
@@ -5593,7 +5593,7 @@ LABEL_66:
 
 LABEL_156:
   v91 = [MEMORY[0x277CCABB0] numberWithBool:self->_cloudAssetAvailable];
-  [v3 setObject:v91 forKey:@"cloudAssetAvailable"];
+  [dictionary setObject:v91 forKey:@"cloudAssetAvailable"];
 
   v26 = self->_has;
   if ((*&v26 & 0x8000000000) == 0)
@@ -5609,7 +5609,7 @@ LABEL_67:
 
 LABEL_157:
   v92 = [MEMORY[0x277CCABB0] numberWithInt:self->_storeProtectionType];
-  [v3 setObject:v92 forKey:@"storeProtectionType"];
+  [dictionary setObject:v92 forKey:@"storeProtectionType"];
 
   v26 = self->_has;
   if ((*&v26 & 0x10000000000000) == 0)
@@ -5625,7 +5625,7 @@ LABEL_68:
 
 LABEL_158:
   v93 = [MEMORY[0x277CCABB0] numberWithBool:self->_userDisabled];
-  [v3 setObject:v93 forKey:@"userDisabled"];
+  [dictionary setObject:v93 forKey:@"userDisabled"];
 
   v26 = self->_has;
   if ((*&v26 & 0x1000000) == 0)
@@ -5641,7 +5641,7 @@ LABEL_69:
 
 LABEL_159:
   v94 = [MEMORY[0x277CCABB0] numberWithInt:self->_cloudPlaybackEndpointType];
-  [v3 setObject:v94 forKey:@"cloudPlaybackEndpointType"];
+  [dictionary setObject:v94 forKey:@"cloudPlaybackEndpointType"];
 
   v26 = self->_has;
   if ((*&v26 & 0x400000000) == 0)
@@ -5657,7 +5657,7 @@ LABEL_70:
 
 LABEL_160:
   v95 = [MEMORY[0x277CCABB0] numberWithInt:self->_playbackEndpointType];
-  [v3 setObject:v95 forKey:@"playbackEndpointType"];
+  [dictionary setObject:v95 forKey:@"playbackEndpointType"];
 
   v26 = self->_has;
   if ((*&v26 & 0x800000) == 0)
@@ -5673,7 +5673,7 @@ LABEL_71:
 
 LABEL_161:
   v96 = [MEMORY[0x277CCABB0] numberWithInt:self->_cloudMatchedStatus];
-  [v3 setObject:v96 forKey:@"cloudMatchedStatus"];
+  [dictionary setObject:v96 forKey:@"cloudMatchedStatus"];
 
   v26 = self->_has;
   if ((*&v26 & 0x400000000000) == 0)
@@ -5689,39 +5689,39 @@ LABEL_72:
 
 LABEL_162:
   v97 = [MEMORY[0x277CCABB0] numberWithBool:self->_inUsersCloudLibrary];
-  [v3 setObject:v97 forKey:@"inUsersCloudLibrary"];
+  [dictionary setObject:v97 forKey:@"inUsersCloudLibrary"];
 
   if ((*&self->_has & 0x1000000000) != 0)
   {
 LABEL_73:
     v27 = [MEMORY[0x277CCABB0] numberWithInt:self->_secondaryArtworkSourceType];
-    [v3 setObject:v27 forKey:@"secondaryArtworkSourceType"];
+    [dictionary setObject:v27 forKey:@"secondaryArtworkSourceType"];
   }
 
 LABEL_74:
   secondaryArtworkId = self->_secondaryArtworkId;
   if (secondaryArtworkId)
   {
-    [v3 setObject:secondaryArtworkId forKey:@"secondaryArtworkId"];
+    [dictionary setObject:secondaryArtworkId forKey:@"secondaryArtworkId"];
   }
 
   if ((*(&self->_has + 5) & 8) != 0)
   {
     v29 = [MEMORY[0x277CCABB0] numberWithBool:self->_hasChapterData];
-    [v3 setObject:v29 forKey:@"hasChapterData"];
+    [dictionary setObject:v29 forKey:@"hasChapterData"];
   }
 
   flattenedChapterData = self->_flattenedChapterData;
   if (flattenedChapterData)
   {
-    [v3 setObject:flattenedChapterData forKey:@"flattenedChapterData"];
+    [dictionary setObject:flattenedChapterData forKey:@"flattenedChapterData"];
   }
 
   v31 = self->_has;
   if ((*&v31 & 0x1000000000000) != 0)
   {
     v32 = [MEMORY[0x277CCABB0] numberWithBool:self->_isPreorder];
-    [v3 setObject:v32 forKey:@"isPreorder"];
+    [dictionary setObject:v32 forKey:@"isPreorder"];
 
     v31 = self->_has;
   }
@@ -5729,7 +5729,7 @@ LABEL_74:
   if ((*&v31 & 0x1000) != 0)
   {
     v33 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_likedStateChangedDate];
-    [v3 setObject:v33 forKey:@"likedStateChangedDate"];
+    [dictionary setObject:v33 forKey:@"likedStateChangedDate"];
   }
 
   if ([(NSMutableArray *)self->_libraryIdentifiers count])
@@ -5754,8 +5754,8 @@ LABEL_74:
             objc_enumerationMutation(v35);
           }
 
-          v40 = [*(*(&v102 + 1) + 8 * i) dictionaryRepresentation];
-          [v34 addObject:v40];
+          dictionaryRepresentation = [*(*(&v102 + 1) + 8 * i) dictionaryRepresentation];
+          [v34 addObject:dictionaryRepresentation];
         }
 
         v37 = [(NSMutableArray *)v35 countByEnumeratingWithState:&v102 objects:v106 count:16];
@@ -5764,14 +5764,14 @@ LABEL_74:
       while (v37);
     }
 
-    [v3 setObject:v34 forKey:@"libraryIdentifiers"];
+    [dictionary setObject:v34 forKey:@"libraryIdentifiers"];
   }
 
   v41 = self->_has;
   if ((*&v41 & 0x80000) != 0)
   {
     v98 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_storeId];
-    [v3 setObject:v98 forKey:@"storeId"];
+    [dictionary setObject:v98 forKey:@"storeId"];
 
     v41 = self->_has;
     if ((*&v41 & 0x200000) == 0)
@@ -5792,7 +5792,7 @@ LABEL_95:
   }
 
   v99 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_storefrontId];
-  [v3 setObject:v99 forKey:@"storefrontId"];
+  [dictionary setObject:v99 forKey:@"storefrontId"];
 
   v41 = self->_has;
   if ((*&v41 & 1) == 0)
@@ -5808,7 +5808,7 @@ LABEL_96:
 
 LABEL_166:
   v100 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_accountId];
-  [v3 setObject:v100 forKey:@"accountId"];
+  [dictionary setObject:v100 forKey:@"accountId"];
 
   v41 = self->_has;
   if ((*&v41 & 0x8000) == 0)
@@ -5824,57 +5824,57 @@ LABEL_97:
 
 LABEL_167:
   v101 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_purchaseHistoryId];
-  [v3 setObject:v101 forKey:@"purchaseHistoryId"];
+  [dictionary setObject:v101 forKey:@"purchaseHistoryId"];
 
   if ((*&self->_has & 0x800000000) != 0)
   {
 LABEL_98:
     v42 = [MEMORY[0x277CCABB0] numberWithInt:self->_purchaseHistoryToken];
-    [v3 setObject:v42 forKey:@"purchaseHistoryToken"];
+    [dictionary setObject:v42 forKey:@"purchaseHistoryToken"];
   }
 
 LABEL_99:
   purchaseHistoryRedownloadParams = self->_purchaseHistoryRedownloadParams;
   if (purchaseHistoryRedownloadParams)
   {
-    [v3 setObject:purchaseHistoryRedownloadParams forKey:@"purchaseHistoryRedownloadParams"];
+    [dictionary setObject:purchaseHistoryRedownloadParams forKey:@"purchaseHistoryRedownloadParams"];
   }
 
   if ((*(&self->_has + 2) & 4) != 0)
   {
     v44 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_sagaId];
-    [v3 setObject:v44 forKey:@"sagaId"];
+    [dictionary setObject:v44 forKey:@"sagaId"];
   }
 
   sagaRedownloadParams = self->_sagaRedownloadParams;
   if (sagaRedownloadParams)
   {
-    [v3 setObject:sagaRedownloadParams forKey:@"sagaRedownloadParams"];
+    [dictionary setObject:sagaRedownloadParams forKey:@"sagaRedownloadParams"];
   }
 
   storeXID = self->_storeXID;
   if (storeXID)
   {
-    [v3 setObject:storeXID forKey:@"storeXID"];
+    [dictionary setObject:storeXID forKey:@"storeXID"];
   }
 
   if ((*(&self->_has + 2) & 0x40) != 0)
   {
     v47 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_subscriptionStoreItemId];
-    [v3 setObject:v47 forKey:@"subscriptionStoreItemId"];
+    [dictionary setObject:v47 forKey:@"subscriptionStoreItemId"];
   }
 
   cloudUniversalLibraryId = self->_cloudUniversalLibraryId;
   if (cloudUniversalLibraryId)
   {
-    [v3 setObject:cloudUniversalLibraryId forKey:@"cloudUniversalLibraryId"];
+    [dictionary setObject:cloudUniversalLibraryId forKey:@"cloudUniversalLibraryId"];
   }
 
   v49 = self->_has;
   if ((*&v49 & 0x20000) != 0)
   {
     v50 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_reportingStoreItemId];
-    [v3 setObject:v50 forKey:@"reportingStoreItemId"];
+    [dictionary setObject:v50 forKey:@"reportingStoreItemId"];
 
     v49 = self->_has;
   }
@@ -5882,47 +5882,47 @@ LABEL_99:
   if ((*&v49 & 2) != 0)
   {
     v51 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_assetStoreItemId];
-    [v3 setObject:v51 forKey:@"assetStoreItemId"];
+    [dictionary setObject:v51 forKey:@"assetStoreItemId"];
   }
 
   song = self->_song;
   if (song)
   {
-    v53 = [(MIPSong *)song dictionaryRepresentation];
-    [v3 setObject:v53 forKey:@"song"];
+    dictionaryRepresentation2 = [(MIPSong *)song dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"song"];
   }
 
   movie = self->_movie;
   if (movie)
   {
-    v55 = [(MIPMovie *)movie dictionaryRepresentation];
-    [v3 setObject:v55 forKey:@"movie"];
+    dictionaryRepresentation3 = [(MIPMovie *)movie dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"movie"];
   }
 
   tvShow = self->_tvShow;
   if (tvShow)
   {
-    v57 = [(MIPTVShow *)tvShow dictionaryRepresentation];
-    [v3 setObject:v57 forKey:@"tvShow"];
+    dictionaryRepresentation4 = [(MIPTVShow *)tvShow dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"tvShow"];
   }
 
   podcast = self->_podcast;
   if (podcast)
   {
-    v59 = [(MIPPodcast *)podcast dictionaryRepresentation];
-    [v3 setObject:v59 forKey:@"podcast"];
+    dictionaryRepresentation5 = [(MIPPodcast *)podcast dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"podcast"];
   }
 
   audiobook = self->_audiobook;
   if (audiobook)
   {
-    v61 = [(MIPAudiobook *)audiobook dictionaryRepresentation];
-    [v3 setObject:v61 forKey:@"audiobook"];
+    dictionaryRepresentation6 = [(MIPAudiobook *)audiobook dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"audiobook"];
   }
 
-  v62 = v3;
+  v62 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -5931,16 +5931,16 @@ LABEL_99:
   v8.receiver = self;
   v8.super_class = MIPMediaItem;
   v4 = [(MIPMediaItem *)&v8 description];
-  v5 = [(MIPMediaItem *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MIPMediaItem *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasAssetStoreItemId:(BOOL)a3
+- (void)setHasAssetStoreItemId:(BOOL)id
 {
   v3 = 2;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -5948,10 +5948,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFDLL | v3);
 }
 
-- (void)setHasReportingStoreItemId:(BOOL)a3
+- (void)setHasReportingStoreItemId:(BOOL)id
 {
   v3 = 0x20000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -5959,10 +5959,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFDFFFFLL | v3);
 }
 
-- (void)setHasSubscriptionStoreItemId:(BOOL)a3
+- (void)setHasSubscriptionStoreItemId:(BOOL)id
 {
   v3 = 0x400000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -5970,10 +5970,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFBFFFFFLL | v3);
 }
 
-- (void)setHasSagaId:(BOOL)a3
+- (void)setHasSagaId:(BOOL)id
 {
   v3 = 0x40000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -5981,10 +5981,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFBFFFFLL | v3);
 }
 
-- (void)setHasPurchaseHistoryToken:(BOOL)a3
+- (void)setHasPurchaseHistoryToken:(BOOL)token
 {
   v3 = 0x800000000;
-  if (!a3)
+  if (!token)
   {
     v3 = 0;
   }
@@ -5992,10 +5992,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFF7FFFFFFFFLL | v3);
 }
 
-- (void)setHasPurchaseHistoryId:(BOOL)a3
+- (void)setHasPurchaseHistoryId:(BOOL)id
 {
   v3 = 0x8000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -6003,10 +6003,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFF7FFFLL | v3);
 }
 
-- (void)setHasStorefrontId:(BOOL)a3
+- (void)setHasStorefrontId:(BOOL)id
 {
   v3 = 0x200000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -6014,10 +6014,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFDFFFFFLL | v3);
 }
 
-- (void)setHasStoreId:(BOOL)a3
+- (void)setHasStoreId:(BOOL)id
 {
   v3 = 0x80000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -6025,28 +6025,28 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFF7FFFFLL | v3);
 }
 
-- (void)addLibraryIdentifiers:(id)a3
+- (void)addLibraryIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   libraryIdentifiers = self->_libraryIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!libraryIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_libraryIdentifiers;
     self->_libraryIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     libraryIdentifiers = self->_libraryIdentifiers;
   }
 
-  [(NSMutableArray *)libraryIdentifiers addObject:v4];
+  [(NSMutableArray *)libraryIdentifiers addObject:identifiersCopy];
 }
 
-- (void)setHasLikedStateChangedDate:(BOOL)a3
+- (void)setHasLikedStateChangedDate:(BOOL)date
 {
   v3 = 4096;
-  if (!a3)
+  if (!date)
   {
     v3 = 0;
   }
@@ -6054,10 +6054,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFEFFFLL | v3);
 }
 
-- (void)setHasIsPreorder:(BOOL)a3
+- (void)setHasIsPreorder:(BOOL)preorder
 {
   v3 = 0x1000000000000;
-  if (!a3)
+  if (!preorder)
   {
     v3 = 0;
   }
@@ -6065,10 +6065,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFEFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasHasChapterData:(BOOL)a3
+- (void)setHasHasChapterData:(BOOL)data
 {
   v3 = 0x80000000000;
-  if (!a3)
+  if (!data)
   {
     v3 = 0;
   }
@@ -6076,10 +6076,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFF7FFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSecondaryArtworkSourceType:(BOOL)a3
+- (void)setHasSecondaryArtworkSourceType:(BOOL)type
 {
   v3 = 0x1000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -6087,10 +6087,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFEFFFFFFFFFLL | v3);
 }
 
-- (void)setHasInUsersCloudLibrary:(BOOL)a3
+- (void)setHasInUsersCloudLibrary:(BOOL)library
 {
   v3 = 0x400000000000;
-  if (!a3)
+  if (!library)
   {
     v3 = 0;
   }
@@ -6098,10 +6098,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFBFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasCloudMatchedStatus:(BOOL)a3
+- (void)setHasCloudMatchedStatus:(BOOL)status
 {
   v3 = 0x800000;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -6109,10 +6109,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFF7FFFFFLL | v3);
 }
 
-- (void)setHasPlaybackEndpointType:(BOOL)a3
+- (void)setHasPlaybackEndpointType:(BOOL)type
 {
   v3 = 0x400000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -6120,10 +6120,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFBFFFFFFFFLL | v3);
 }
 
-- (void)setHasCloudPlaybackEndpointType:(BOOL)a3
+- (void)setHasCloudPlaybackEndpointType:(BOOL)type
 {
   v3 = 0x1000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -6131,10 +6131,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFEFFFFFFLL | v3);
 }
 
-- (void)setHasUserDisabled:(BOOL)a3
+- (void)setHasUserDisabled:(BOOL)disabled
 {
   v3 = 0x10000000000000;
-  if (!a3)
+  if (!disabled)
   {
     v3 = 0;
   }
@@ -6142,10 +6142,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFEFFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasStoreProtectionType:(BOOL)a3
+- (void)setHasStoreProtectionType:(BOOL)type
 {
   v3 = 0x8000000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }
@@ -6153,10 +6153,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFF7FFFFFFFFFLL | v3);
 }
 
-- (void)setHasCloudAssetAvailable:(BOOL)a3
+- (void)setHasCloudAssetAvailable:(BOOL)available
 {
   v3 = 0x20000000000;
-  if (!a3)
+  if (!available)
   {
     v3 = 0;
   }
@@ -6164,10 +6164,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFDFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasIsInUsersLibrary:(BOOL)a3
+- (void)setHasIsInUsersLibrary:(BOOL)library
 {
   v3 = 0x800000000000;
-  if (!a3)
+  if (!library)
   {
     v3 = 0;
   }
@@ -6175,10 +6175,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFF7FFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasLikedStateChanged:(BOOL)a3
+- (void)setHasLikedStateChanged:(BOOL)changed
 {
   v3 = 0x2000000000000;
-  if (!a3)
+  if (!changed)
   {
     v3 = 0;
   }
@@ -6186,10 +6186,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFDFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasNeedsReporting:(BOOL)a3
+- (void)setHasNeedsReporting:(BOOL)reporting
 {
   v3 = 0x4000000000000;
-  if (!a3)
+  if (!reporting)
   {
     v3 = 0;
   }
@@ -6197,10 +6197,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFBFFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasLikedState:(BOOL)a3
+- (void)setHasLikedState:(BOOL)state
 {
   v3 = 0x40000000;
-  if (!a3)
+  if (!state)
   {
     v3 = 0;
   }
@@ -6208,10 +6208,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFBFFFFFFFLL | v3);
 }
 
-- (void)setHasHasLocalAsset:(BOOL)a3
+- (void)setHasHasLocalAsset:(BOOL)asset
 {
   v3 = 0x100000000000;
-  if (!a3)
+  if (!asset)
   {
     v3 = 0;
   }
@@ -6219,10 +6219,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFEFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasStorePlaylistId:(BOOL)a3
+- (void)setHasStorePlaylistId:(BOOL)id
 {
   v3 = 0x100000;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -6230,10 +6230,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFEFFFFFLL | v3);
 }
 
-- (void)setHasHidden:(BOOL)a3
+- (void)setHasHidden:(BOOL)hidden
 {
   v3 = 0x200000000000;
-  if (!a3)
+  if (!hidden)
   {
     v3 = 0;
   }
@@ -6241,10 +6241,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFDFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasBookmarkTimeMilliseconds:(BOOL)a3
+- (void)setHasBookmarkTimeMilliseconds:(BOOL)milliseconds
 {
   v3 = 4;
-  if (!a3)
+  if (!milliseconds)
   {
     v3 = 0;
   }
@@ -6252,10 +6252,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFFBLL | v3);
 }
 
-- (void)setHasRememberBookmark:(BOOL)a3
+- (void)setHasRememberBookmark:(BOOL)bookmark
 {
   v3 = 0x8000000000000;
-  if (!a3)
+  if (!bookmark)
   {
     v3 = 0;
   }
@@ -6263,10 +6263,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFF7FFFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasLastSkippedDateTime:(BOOL)a3
+- (void)setHasLastSkippedDateTime:(BOOL)time
 {
   v3 = 2048;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -6274,10 +6274,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFF7FFLL | v3);
 }
 
-- (void)setHasSkipCountDelta:(BOOL)a3
+- (void)setHasSkipCountDelta:(BOOL)delta
 {
   v3 = 0x4000000000;
-  if (!a3)
+  if (!delta)
   {
     v3 = 0;
   }
@@ -6285,10 +6285,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFBFFFFFFFFFLL | v3);
 }
 
-- (void)setHasSkipCount:(BOOL)a3
+- (void)setHasSkipCount:(BOOL)count
 {
   v3 = 0x2000000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -6296,10 +6296,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFDFFFFFFFFFLL | v3);
 }
 
-- (void)setHasLastPlayedDateTime:(BOOL)a3
+- (void)setHasLastPlayedDateTime:(BOOL)time
 {
   v3 = 1024;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -6307,10 +6307,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFBFFLL | v3);
 }
 
-- (void)setHasPlayCountDelta:(BOOL)a3
+- (void)setHasPlayCountDelta:(BOOL)delta
 {
   v3 = 0x200000000;
-  if (!a3)
+  if (!delta)
   {
     v3 = 0;
   }
@@ -6318,10 +6318,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFDFFFFFFFFLL | v3);
 }
 
-- (void)setHasPlayCount:(BOOL)a3
+- (void)setHasPlayCount:(BOOL)count
 {
   v3 = 0x100000000;
-  if (!a3)
+  if (!count)
   {
     v3 = 0;
   }
@@ -6329,10 +6329,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFEFFFFFFFFLL | v3);
 }
 
-- (void)setHasCloudStatus:(BOOL)a3
+- (void)setHasCloudStatus:(BOOL)status
 {
   v3 = 0x2000000;
-  if (!a3)
+  if (!status)
   {
     v3 = 0;
   }
@@ -6340,10 +6340,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFDFFFFFFLL | v3);
 }
 
-- (void)setHasPurchaseDateTime:(BOOL)a3
+- (void)setHasPurchaseDateTime:(BOOL)time
 {
   v3 = 0x4000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -6351,10 +6351,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFBFFFLL | v3);
 }
 
-- (void)setHasDrmKey2IdCode:(BOOL)a3
+- (void)setHasDrmKey2IdCode:(BOOL)code
 {
   v3 = 32;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -6362,10 +6362,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFDFLL | v3);
 }
 
-- (void)setHasDrmKey1IdCode:(BOOL)a3
+- (void)setHasDrmKey1IdCode:(BOOL)code
 {
   v3 = 16;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -6373,10 +6373,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFEFLL | v3);
 }
 
-- (void)setHasDrmPlatformIdCode:(BOOL)a3
+- (void)setHasDrmPlatformIdCode:(BOOL)code
 {
   v3 = 64;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -6384,10 +6384,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFBFLL | v3);
 }
 
-- (void)setHasDrmVersionsCode:(BOOL)a3
+- (void)setHasDrmVersionsCode:(BOOL)code
 {
   v3 = 0x10000000;
-  if (!a3)
+  if (!code)
   {
     v3 = 0;
   }
@@ -6395,10 +6395,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFEFFFFFFFLL | v3);
 }
 
-- (void)setHasFamilyAccountId:(BOOL)a3
+- (void)setHasFamilyAccountId:(BOOL)id
 {
   v3 = 256;
-  if (!a3)
+  if (!id)
   {
     v3 = 0;
   }
@@ -6406,10 +6406,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFEFFLL | v3);
 }
 
-- (void)setHasFileKind:(BOOL)a3
+- (void)setHasFileKind:(BOOL)kind
 {
   v3 = 0x20000000;
-  if (!a3)
+  if (!kind)
   {
     v3 = 0;
   }
@@ -6417,10 +6417,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFDFFFFFFFLL | v3);
 }
 
-- (void)setHasContentRatingLevel:(BOOL)a3
+- (void)setHasContentRatingLevel:(BOOL)level
 {
   v3 = 0x8000000;
-  if (!a3)
+  if (!level)
   {
     v3 = 0;
   }
@@ -6428,10 +6428,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFF7FFFFFFLL | v3);
 }
 
-- (void)setHasYear:(BOOL)a3
+- (void)setHasYear:(BOOL)year
 {
   v3 = 0x10000000000;
-  if (!a3)
+  if (!year)
   {
     v3 = 0;
   }
@@ -6439,10 +6439,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFEFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasExplicitContent:(BOOL)a3
+- (void)setHasExplicitContent:(BOOL)content
 {
   v3 = 0x40000000000;
-  if (!a3)
+  if (!content)
   {
     v3 = 0;
   }
@@ -6450,10 +6450,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFBFFFFFFFFFFLL | v3);
 }
 
-- (void)setHasContentRating:(BOOL)a3
+- (void)setHasContentRating:(BOOL)rating
 {
   v3 = 0x4000000;
-  if (!a3)
+  if (!rating)
   {
     v3 = 0;
   }
@@ -6461,10 +6461,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFBFFFFFFLL | v3);
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
   v3 = 128;
-  if (!a3)
+  if (!duration)
   {
     v3 = 0;
   }
@@ -6472,10 +6472,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFF7FLL | v3);
 }
 
-- (void)setHasFileSize:(BOOL)a3
+- (void)setHasFileSize:(BOOL)size
 {
   v3 = 512;
-  if (!a3)
+  if (!size)
   {
     v3 = 0;
   }
@@ -6483,10 +6483,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFDFFLL | v3);
 }
 
-- (void)setHasModificationDateTime:(BOOL)a3
+- (void)setHasModificationDateTime:(BOOL)time
 {
   v3 = 0x2000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -6494,10 +6494,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFDFFFLL | v3);
 }
 
-- (void)setHasCreationDateTime:(BOOL)a3
+- (void)setHasCreationDateTime:(BOOL)time
 {
   v3 = 8;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -6505,10 +6505,10 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFFFFF7 | v3);
 }
 
-- (void)setHasReleaseDateTime:(BOOL)a3
+- (void)setHasReleaseDateTime:(BOOL)time
 {
   v3 = 0x10000;
-  if (!a3)
+  if (!time)
   {
     v3 = 0;
   }
@@ -6516,70 +6516,70 @@ LABEL_99:
   self->_has = (*&self->_has & 0xFFFFFFFFFFFEFFFFLL | v3);
 }
 
-- (int)StringAsMediaType:(id)a3
+- (int)StringAsMediaType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Song"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Song"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Movie"])
+  else if ([typeCopy isEqualToString:@"Movie"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"TVShow"])
+  else if ([typeCopy isEqualToString:@"TVShow"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Podcast"])
+  else if ([typeCopy isEqualToString:@"Podcast"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"VoiceMemo"])
+  else if ([typeCopy isEqualToString:@"VoiceMemo"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"VideoPodcast"])
+  else if ([typeCopy isEqualToString:@"VideoPodcast"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MusicVideo"])
+  else if ([typeCopy isEqualToString:@"MusicVideo"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"AudioBook"])
+  else if ([typeCopy isEqualToString:@"AudioBook"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"DigitalBooklet"])
+  else if ([typeCopy isEqualToString:@"DigitalBooklet"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ITunesUAudio"])
+  else if ([typeCopy isEqualToString:@"ITunesUAudio"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ITunesUVideo"])
+  else if ([typeCopy isEqualToString:@"ITunesUVideo"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"HomeVideo"])
+  else if ([typeCopy isEqualToString:@"HomeVideo"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"MusicQuiz"])
+  else if ([typeCopy isEqualToString:@"MusicQuiz"])
   {
     v4 = 13;
   }
@@ -6592,25 +6592,25 @@ LABEL_99:
   return v4;
 }
 
-- (id)mediaTypeAsString:(int)a3
+- (id)mediaTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 0xD)
+  if ((string - 1) >= 0xD)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_278765FD8[a3 - 1];
+    v4 = off_278765FD8[string - 1];
   }
 
   return v4;
 }
 
-- (void)setHasMediaType:(BOOL)a3
+- (void)setHasMediaType:(BOOL)type
 {
   v3 = 0x80000000;
-  if (!a3)
+  if (!type)
   {
     v3 = 0;
   }

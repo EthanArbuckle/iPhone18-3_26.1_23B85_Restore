@@ -1,12 +1,12 @@
 @interface PKInputPointUtility
-+ (double)correctedTimestampFromOldTimestampIfNecessary:(double)a1;
-+ (double)timestampFromTouchTimestamp:(double)a1;
-+ (void)drawingInputPoint:(char)a3@<W3> view:(char)a4@<W4> touch:(uint64_t)a5@<X8> predicted:(double)a6@<D0> activeInputProperties:(double)a7@<D1>;
++ (double)correctedTimestampFromOldTimestampIfNecessary:(double)necessary;
++ (double)timestampFromTouchTimestamp:(double)timestamp;
++ (void)drawingInputPoint:(char)point@<W3> view:(char)view@<W4> touch:(uint64_t)touch@<X8> predicted:(double)predicted@<D0> activeInputProperties:(double)properties@<D1>;
 @end
 
 @implementation PKInputPointUtility
 
-+ (double)timestampFromTouchTimestamp:(double)a1
++ (double)timestampFromTouchTimestamp:(double)timestamp
 {
   objc_opt_self();
   if (qword_1ED6A55C8 != -1)
@@ -14,13 +14,13 @@
     dispatch_once(&qword_1ED6A55C8, &__block_literal_global_98);
   }
 
-  return *&_MergedGlobals_176 + a1;
+  return *&_MergedGlobals_176 + timestamp;
 }
 
-+ (double)correctedTimestampFromOldTimestampIfNecessary:(double)a1
++ (double)correctedTimestampFromOldTimestampIfNecessary:(double)necessary
 {
   objc_opt_self();
-  v2 = a1 - CACurrentMediaTime();
+  v2 = necessary - CACurrentMediaTime();
   if (v2 < 0.0)
   {
     v2 = -v2;
@@ -28,15 +28,15 @@
 
   if (v2 >= 5.0)
   {
-    return a1;
+    return necessary;
   }
 
-  return [PKInputPointUtility timestampFromTouchTimestamp:a1];
+  return [PKInputPointUtility timestampFromTouchTimestamp:necessary];
 }
 
-+ (void)drawingInputPoint:(char)a3@<W3> view:(char)a4@<W4> touch:(uint64_t)a5@<X8> predicted:(double)a6@<D0> activeInputProperties:(double)a7@<D1>
++ (void)drawingInputPoint:(char)point@<W3> view:(char)view@<W4> touch:(uint64_t)touch@<X8> predicted:(double)predicted@<D0> activeInputProperties:(double)properties@<D1>
 {
-  v13 = a1;
+  selfCopy = self;
   v14 = a2;
   objc_opt_self();
   [v14 PK_rollAngle];
@@ -69,9 +69,9 @@
   if ([v14 type] == 2)
   {
     v23 = 0.0;
-    if (a4)
+    if (view)
     {
-      [v14 azimuthAngleInView:v13];
+      [v14 azimuthAngleInView:selfCopy];
       if ((*&v24 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
       {
         v23 = v24 + -3.14159265;
@@ -89,7 +89,7 @@
     }
 
     v26 = 0.785398163;
-    if ((a4 & 2) != 0)
+    if ((view & 2) != 0)
     {
       [v14 altitudeAngle];
       if ((*&v28 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
@@ -108,44 +108,44 @@
       }
     }
 
-    v30 = [v14 estimationUpdateIndex];
+    estimationUpdateIndex = [v14 estimationUpdateIndex];
 
-    if (v30)
+    if (estimationUpdateIndex)
     {
-      v31 = [v14 estimationUpdateIndex];
-      v27 = [v31 integerValue];
+      estimationUpdateIndex2 = [v14 estimationUpdateIndex];
+      integerValue = [estimationUpdateIndex2 integerValue];
     }
 
     else
     {
-      v27 = -1;
+      integerValue = -1;
     }
   }
 
   else
   {
     v26 = 0.0;
-    v27 = -1;
+    integerValue = -1;
     v23 = 0.0;
   }
 
-  *(a5 + 104) = 0;
-  *(a5 + 88) = 0u;
-  *(a5 + 72) = 0u;
-  *a5 = a6;
-  *(a5 + 8) = a7;
-  *(a5 + 16) = v17;
-  *(a5 + 24) = v23;
-  *(a5 + 32) = v26;
-  *(a5 + 48) = 0;
-  *(a5 + 56) = 0;
-  *(a5 + 40) = 0;
+  *(touch + 104) = 0;
+  *(touch + 88) = 0u;
+  *(touch + 72) = 0u;
+  *touch = predicted;
+  *(touch + 8) = properties;
+  *(touch + 16) = v17;
+  *(touch + 24) = v23;
+  *(touch + 32) = v26;
+  *(touch + 48) = 0;
+  *(touch + 56) = 0;
+  *(touch + 40) = 0;
   [v14 timestamp];
-  *(a5 + 64) = [PKInputPointUtility timestampFromTouchTimestamp:v32];
-  *(a5 + 72) = a3;
-  *(a5 + 88) = 0;
-  *(a5 + 96) = 0;
-  *(a5 + 80) = v27;
+  *(touch + 64) = [PKInputPointUtility timestampFromTouchTimestamp:v32];
+  *(touch + 72) = point;
+  *(touch + 88) = 0;
+  *(touch + 96) = 0;
+  *(touch + 80) = integerValue;
   if (([v14 estimatedProperties] & 2) != 0)
   {
     LOBYTE(v33) = 1;
@@ -156,16 +156,16 @@
     v33 = ([v14 estimatedProperties] >> 2) & 1;
   }
 
-  *(a5 + 104) = v33;
-  *(a5 + 112) = v16;
-  v34 = [v14 estimatedProperties];
+  *(touch + 104) = v33;
+  *(touch + 112) = v16;
+  estimatedProperties = [v14 estimatedProperties];
   objc_opt_self();
-  v35 = [v14 estimatedPropertiesExpectingUpdates];
+  estimatedPropertiesExpectingUpdates = [v14 estimatedPropertiesExpectingUpdates];
   objc_opt_self();
-  v36.i64[0] = v34;
-  v36.i64[1] = v35;
+  v36.i64[0] = estimatedProperties;
+  v36.i64[1] = estimatedPropertiesExpectingUpdates;
   v37 = vshrq_n_u64(v36, 1uLL);
-  *(a5 + 120) = vorrq_s8(vorrq_s8(vandq_s8(v37, vdupq_n_s64(1uLL)), vandq_s8(v36, vdupq_n_s64(0x10uLL))), vorrq_s8(vandq_s8(vshlq_n_s64(v36, 2uLL), vdupq_n_s64(4uLL)), vandq_s8(v37, vdupq_n_s64(2uLL))));
+  *(touch + 120) = vorrq_s8(vorrq_s8(vandq_s8(v37, vdupq_n_s64(1uLL)), vandq_s8(v36, vdupq_n_s64(0x10uLL))), vorrq_s8(vandq_s8(vshlq_n_s64(v36, 2uLL), vdupq_n_s64(4uLL)), vandq_s8(v37, vdupq_n_s64(2uLL))));
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface ATXPBLightweightProactiveSuggestion
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBLightweightProactiveSuggestion
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = ATXPBLightweightProactiveSuggestion;
   v4 = [(ATXPBLightweightProactiveSuggestion *)&v8 description];
-  v5 = [(ATXPBLightweightProactiveSuggestion *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBLightweightProactiveSuggestion *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   executableIdentifier = self->_executableIdentifier;
   if (executableIdentifier)
   {
-    [v3 setObject:executableIdentifier forKey:@"executableIdentifier"];
+    [dictionary setObject:executableIdentifier forKey:@"executableIdentifier"];
   }
 
   executableType = self->_executableType;
@@ -42,8 +42,8 @@
   scoreSpecification = self->_scoreSpecification;
   if (scoreSpecification)
   {
-    v8 = [(ATXPBProactiveSuggestionScoreSpecification *)scoreSpecification dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"scoreSpecification"];
+    dictionaryRepresentation = [(ATXPBProactiveSuggestionScoreSpecification *)scoreSpecification dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"scoreSpecification"];
   }
 
   if (*&self->_has)
@@ -55,77 +55,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_executableIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_executableType)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_scoreSpecification)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     predictionReasons = self->_predictionReasons;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_executableIdentifier)
   {
-    [v4 setExecutableIdentifier:?];
-    v4 = v5;
+    [toCopy setExecutableIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_executableType)
   {
     [v5 setExecutableType:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_scoreSpecification)
   {
     [v5 setScoreSpecification:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_predictionReasons;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 1) = self->_predictionReasons;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_executableIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_executableIdentifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
-  v8 = [(NSString *)self->_executableType copyWithZone:a3];
+  v8 = [(NSString *)self->_executableType copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(ATXPBProactiveSuggestionScoreSpecification *)self->_scoreSpecification copyWithZone:a3];
+  v10 = [(ATXPBProactiveSuggestionScoreSpecification *)self->_scoreSpecification copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
@@ -138,16 +138,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   executableIdentifier = self->_executableIdentifier;
-  if (executableIdentifier | *(v4 + 2))
+  if (executableIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)executableIdentifier isEqual:?])
     {
@@ -156,7 +156,7 @@
   }
 
   executableType = self->_executableType;
-  if (executableType | *(v4 + 3))
+  if (executableType | *(equalCopy + 3))
   {
     if (![(NSString *)executableType isEqual:?])
     {
@@ -165,7 +165,7 @@
   }
 
   scoreSpecification = self->_scoreSpecification;
-  if (scoreSpecification | *(v4 + 4))
+  if (scoreSpecification | *(equalCopy + 4))
   {
     if (![(ATXPBProactiveSuggestionScoreSpecification *)scoreSpecification isEqual:?])
     {
@@ -173,10 +173,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_predictionReasons == *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_predictionReasons == *(equalCopy + 1))
     {
       v8 = 1;
       goto LABEL_13;
@@ -209,25 +209,25 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4[2];
-  v8 = v4;
+  fromCopy = from;
+  v5 = fromCopy[2];
+  v8 = fromCopy;
   if (v5)
   {
-    [(ATXPBLightweightProactiveSuggestion *)self setExecutableIdentifier:v5, v4];
-    v4 = v8;
+    [(ATXPBLightweightProactiveSuggestion *)self setExecutableIdentifier:v5, fromCopy];
+    fromCopy = v8;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(ATXPBLightweightProactiveSuggestion *)self setExecutableType:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
   scoreSpecification = self->_scoreSpecification;
-  v7 = v4[4];
+  v7 = fromCopy[4];
   if (scoreSpecification)
   {
     if (!v7)
@@ -245,14 +245,14 @@ LABEL_13:
       goto LABEL_11;
     }
 
-    [(ATXPBLightweightProactiveSuggestion *)self setScoreSpecification:v4[4]];
+    [(ATXPBLightweightProactiveSuggestion *)self setScoreSpecification:fromCopy[4]];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_11:
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_predictionReasons = v4[1];
+    self->_predictionReasons = fromCopy[1];
     *&self->_has |= 1u;
   }
 

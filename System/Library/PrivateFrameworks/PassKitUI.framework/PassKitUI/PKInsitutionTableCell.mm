@@ -1,40 +1,40 @@
 @interface PKInsitutionTableCell
 + (double)estimatedHeightForCell;
 + (id)bankConnectImageProvider;
-- (PKInsitutionTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
-- (void)_configureCellWithSpecifier:(id)a3;
-- (void)_configureMainLabelWithText:(id)a3;
-- (void)_configureSubTextLabelWithText:(id)a3 textColor:(id)a4;
+- (PKInsitutionTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
+- (void)_configureCellWithSpecifier:(id)specifier;
+- (void)_configureMainLabelWithText:(id)text;
+- (void)_configureSubTextLabelWithText:(id)text textColor:(id)color;
 - (void)layoutSubviews;
-- (void)setConnectedInstitution:(id)a3;
-- (void)setSpecifier:(id)a3;
+- (void)setConnectedInstitution:(id)institution;
+- (void)setSpecifier:(id)specifier;
 @end
 
 @implementation PKInsitutionTableCell
 
-- (PKInsitutionTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (PKInsitutionTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v12.receiver = self;
   v12.super_class = PKInsitutionTableCell;
-  v9 = [(PSTableCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v9 = [(PSTableCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   v10 = v9;
   if (v9)
   {
-    [(PKInsitutionTableCell *)v9 setSpecifier:v8];
+    [(PKInsitutionTableCell *)v9 setSpecifier:specifierCopy];
     [(PKInsitutionTableCell *)v10 setAutoresizingMask:18];
   }
 
   return v10;
 }
 
-- (void)setConnectedInstitution:(id)a3
+- (void)setConnectedInstitution:(id)institution
 {
-  v5 = a3;
-  if (self->_connectedInstitution != v5)
+  institutionCopy = institution;
+  if (self->_connectedInstitution != institutionCopy)
   {
-    objc_storeStrong(&self->_connectedInstitution, a3);
-    v6 = [(PKInsitutionTableCell *)self contentView];
+    objc_storeStrong(&self->_connectedInstitution, institution);
+    contentView = [(PKInsitutionTableCell *)self contentView];
     snapshotSpinner = self->_snapshotSpinner;
     if (!snapshotSpinner)
     {
@@ -46,24 +46,24 @@
       snapshotSpinner = self->_snapshotSpinner;
     }
 
-    [v6 addSubview:snapshotSpinner];
+    [contentView addSubview:snapshotSpinner];
     [(UIImageView *)self->_iconImageView setImage:0];
     v10 = PKUIScreenScale();
     v11 = +[PKInsitutionTableCell bankConnectImageProvider];
-    v12 = [(FKBankConnectInstitutionsProviderResponse *)self->_connectedInstitution institution];
-    v13 = [v12 institutionIdentifier];
+    institution = [(FKBankConnectInstitutionsProviderResponse *)self->_connectedInstitution institution];
+    institutionIdentifier = [institution institutionIdentifier];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __49__PKInsitutionTableCell_setConnectedInstitution___block_invoke;
     v17[3] = &unk_1E80148C8;
-    v18 = v13;
-    v19 = self;
-    v20 = v6;
+    v18 = institutionIdentifier;
+    selfCopy = self;
+    v20 = contentView;
     v21 = v11;
     v14 = v11;
-    v15 = v6;
-    v16 = v13;
+    v15 = contentView;
+    v16 = institutionIdentifier;
     [v14 logoForInstitutionID:v16 size:v17 scale:29.0 completion:{29.0, v10}];
   }
 }
@@ -143,11 +143,11 @@ void __49__PKInsitutionTableCell_bankConnectImageProvider__block_invoke()
   _MergedGlobals_1_3 = v0;
 }
 
-- (void)_configureMainLabelWithText:(id)a3
+- (void)_configureMainLabelWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   titleLabel = self->_titleLabel;
-  v11 = v4;
+  v11 = textCopy;
   if (!titleLabel)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -155,23 +155,23 @@ void __49__PKInsitutionTableCell_bankConnectImageProvider__block_invoke()
     self->_titleLabel = v6;
 
     v8 = self->_titleLabel;
-    v9 = [objc_opt_class() titleFont];
-    [(UILabel *)v8 setFont:v9];
+    titleFont = [objc_opt_class() titleFont];
+    [(UILabel *)v8 setFont:titleFont];
 
-    v4 = v11;
+    textCopy = v11;
     titleLabel = self->_titleLabel;
   }
 
-  [(UILabel *)titleLabel setText:v4];
+  [(UILabel *)titleLabel setText:textCopy];
   [(UILabel *)self->_titleLabel sizeToFit];
-  v10 = [(PKInsitutionTableCell *)self contentView];
-  [v10 addSubview:self->_titleLabel];
+  contentView = [(PKInsitutionTableCell *)self contentView];
+  [contentView addSubview:self->_titleLabel];
 }
 
-- (void)_configureSubTextLabelWithText:(id)a3 textColor:(id)a4
+- (void)_configureSubTextLabelWithText:(id)text textColor:(id)color
 {
-  v13 = a3;
-  v6 = a4;
+  textCopy = text;
+  colorCopy = color;
   subTitleLabel = self->_subTitleLabel;
   if (!subTitleLabel)
   {
@@ -180,29 +180,29 @@ void __49__PKInsitutionTableCell_bankConnectImageProvider__block_invoke()
     self->_subTitleLabel = v8;
 
     v10 = self->_subTitleLabel;
-    v11 = [objc_opt_class() subTitleFont];
-    [(UILabel *)v10 setFont:v11];
+    subTitleFont = [objc_opt_class() subTitleFont];
+    [(UILabel *)v10 setFont:subTitleFont];
 
     subTitleLabel = self->_subTitleLabel;
   }
 
-  if (v6)
+  if (colorCopy)
   {
-    [(UILabel *)subTitleLabel setTextColor:v6];
+    [(UILabel *)subTitleLabel setTextColor:colorCopy];
     subTitleLabel = self->_subTitleLabel;
   }
 
-  [(UILabel *)subTitleLabel setText:v13];
+  [(UILabel *)subTitleLabel setText:textCopy];
   [(UILabel *)self->_subTitleLabel sizeToFit];
-  v12 = [(PKInsitutionTableCell *)self contentView];
-  [v12 addSubview:self->_subTitleLabel];
+  contentView = [(PKInsitutionTableCell *)self contentView];
+  [contentView addSubview:self->_subTitleLabel];
 }
 
-- (void)_configureCellWithSpecifier:(id)a3
+- (void)_configureCellWithSpecifier:(id)specifier
 {
-  v4 = [(FKBankConnectInstitutionsProviderResponse *)self->_connectedInstitution institution];
-  v5 = [v4 name];
-  [(PKInsitutionTableCell *)self _configureMainLabelWithText:v5];
+  institution = [(FKBankConnectInstitutionsProviderResponse *)self->_connectedInstitution institution];
+  name = [institution name];
+  [(PKInsitutionTableCell *)self _configureMainLabelWithText:name];
 
   [(PKInsitutionTableCell *)self setAccessoryType:1];
   if ([(FKBankConnectInstitutionsProviderResponse *)self->_connectedInstitution consentStatus]== 1)
@@ -215,24 +215,24 @@ void __49__PKInsitutionTableCell_bankConnectImageProvider__block_invoke()
     v7 = 0;
   }
 
-  v6 = [MEMORY[0x1E69DC888] systemBlueColor];
-  [(PKInsitutionTableCell *)self _configureSubTextLabelWithText:v7 textColor:v6];
+  systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+  [(PKInsitutionTableCell *)self _configureSubTextLabelWithText:v7 textColor:systemBlueColor];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   WeakRetained = objc_loadWeakRetained((&self->super.super.super.super.super.isa + *MEMORY[0x1E69C57F8]));
-  v6 = [WeakRetained isEqual:v4];
+  v6 = [WeakRetained isEqual:specifierCopy];
 
   if ((v6 & 1) == 0)
   {
     v8.receiver = self;
     v8.super_class = PKInsitutionTableCell;
-    [(PSTableCell *)&v8 setSpecifier:v4];
-    v7 = [v4 objectForKeyedSubscript:@"pkConnectedInsitution"];
+    [(PSTableCell *)&v8 setSpecifier:specifierCopy];
+    v7 = [specifierCopy objectForKeyedSubscript:@"pkConnectedInsitution"];
     [(PKInsitutionTableCell *)self setConnectedInstitution:v7];
-    [(PKInsitutionTableCell *)self _configureCellWithSpecifier:v4];
+    [(PKInsitutionTableCell *)self _configureCellWithSpecifier:specifierCopy];
   }
 }
 
@@ -251,8 +251,8 @@ void __49__PKInsitutionTableCell_bankConnectImageProvider__block_invoke()
     v3 = CGRectMinXEdge;
   }
 
-  v4 = [(PKInsitutionTableCell *)self contentView];
-  [v4 bounds];
+  contentView = [(PKInsitutionTableCell *)self contentView];
+  [contentView bounds];
   memset(&slice, 0, sizeof(slice));
   memset(&rect, 0, sizeof(rect));
   remainder = v27;
@@ -296,9 +296,9 @@ void __49__PKInsitutionTableCell_bankConnectImageProvider__block_invoke()
   iconImageView = self->_iconImageView;
   if (iconImageView)
   {
-    v22 = [(UIImageView *)iconImageView image];
+    image = [(UIImageView *)iconImageView image];
 
-    if (v22)
+    if (image)
     {
       PKSizeAlignedInRect();
       [(UIImageView *)self->_iconImageView setFrame:?];
@@ -310,11 +310,11 @@ void __49__PKInsitutionTableCell_bankConnectImageProvider__block_invoke()
 
 + (double)estimatedHeightForCell
 {
-  v3 = [a1 titleFont];
-  [v3 lineHeight];
+  titleFont = [self titleFont];
+  [titleFont lineHeight];
   v5 = v4;
-  v6 = [a1 subTitleFont];
-  [v6 lineHeight];
+  subTitleFont = [self subTitleFont];
+  [subTitleFont lineHeight];
   v8 = v5 + v7;
 
   return fmax(fmax(v8 + 2.0 + 16.0, 45.0), 60.0);

@@ -1,9 +1,9 @@
 @interface DashboardActivityFeedPresenter
 - (NSIndexPath)scrollToIndexPath;
 - (NSString)title;
-- (_TtC12GameCenterUI30DashboardActivityFeedPresenter)initWithPlayerId:(id)a3;
-- (void)loadMoreActivityFeedWithContinuationToken:(id)a3;
-- (void)setScrollToIndexPath:(id)a3;
+- (_TtC12GameCenterUI30DashboardActivityFeedPresenter)initWithPlayerId:(id)id;
+- (void)loadMoreActivityFeedWithContinuationToken:(id)token;
+- (void)setScrollToIndexPath:(id)path;
 - (void)updateSnapshot;
 @end
 
@@ -11,7 +11,7 @@
 
 - (NSString)title
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2B5160();
 
   v3 = sub_24E347CB8();
@@ -36,12 +36,12 @@
   return v6;
 }
 
-- (void)setScrollToIndexPath:(id)a3
+- (void)setScrollToIndexPath:(id)path
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27F1E6C80);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v11 - v6;
-  if (a3)
+  if (path)
   {
     sub_24E343498();
     v8 = sub_24E343518();
@@ -55,26 +55,26 @@
   }
 
   __swift_storeEnumTagSinglePayload(v7, v9, 1, v8);
-  v10 = self;
+  selfCopy = self;
   sub_24E2B5BD8(v7);
 }
 
 - (void)updateSnapshot
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E2B7644();
 }
 
-- (void)loadMoreActivityFeedWithContinuationToken:(id)a3
+- (void)loadMoreActivityFeedWithContinuationToken:(id)token
 {
   sub_24E347CF8();
-  v4 = self;
+  selfCopy = self;
   sub_24E2B52B0();
 }
 
-- (_TtC12GameCenterUI30DashboardActivityFeedPresenter)initWithPlayerId:(id)a3
+- (_TtC12GameCenterUI30DashboardActivityFeedPresenter)initWithPlayerId:(id)id
 {
-  if (a3)
+  if (id)
   {
     sub_24E347CF8();
   }

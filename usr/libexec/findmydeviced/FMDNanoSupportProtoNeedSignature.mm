@@ -1,12 +1,12 @@
 @interface FMDNanoSupportProtoNeedSignature
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FMDNanoSupportProtoNeedSignature
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = FMDNanoSupportProtoNeedSignature;
   v3 = [(FMDNanoSupportProtoNeedSignature *)&v7 description];
-  v4 = [(FMDNanoSupportProtoNeedSignature *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(FMDNanoSupportProtoNeedSignature *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -53,9 +53,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_dsid)
   {
     sub_100230384();
@@ -82,45 +82,45 @@
   PBDataWriterWriteStringField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   dsid = self->_dsid;
-  v5 = a3;
-  [v5 setDsid:dsid];
-  [v5 setUdid:self->_udid];
-  [v5 setSerialNumber:self->_serialNumber];
-  [v5 setProductType:self->_productType];
+  toCopy = to;
+  [toCopy setDsid:dsid];
+  [toCopy setUdid:self->_udid];
+  [toCopy setSerialNumber:self->_serialNumber];
+  [toCopy setProductType:self->_productType];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_dsid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_dsid copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_udid copyWithZone:a3];
+  v8 = [(NSString *)self->_udid copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v10 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_productType copyWithZone:a3];
+  v12 = [(NSString *)self->_productType copyWithZone:zone];
   v13 = v5[2];
   v5[2] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((dsid = self->_dsid, !(dsid | v4[1])) || -[NSString isEqual:](dsid, "isEqual:")) && ((udid = self->_udid, !(udid | v4[4])) || -[NSString isEqual:](udid, "isEqual:")) && ((serialNumber = self->_serialNumber, !(serialNumber | v4[3])) || -[NSString isEqual:](serialNumber, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((dsid = self->_dsid, !(dsid | equalCopy[1])) || -[NSString isEqual:](dsid, "isEqual:")) && ((udid = self->_udid, !(udid | equalCopy[4])) || -[NSString isEqual:](udid, "isEqual:")) && ((serialNumber = self->_serialNumber, !(serialNumber | equalCopy[3])) || -[NSString isEqual:](serialNumber, "isEqual:")))
   {
     productType = self->_productType;
-    if (productType | v4[2])
+    if (productType | equalCopy[2])
     {
       v9 = [(NSString *)productType isEqual:?];
     }
@@ -147,25 +147,25 @@
   return v4 ^ v5 ^ [(NSString *)self->_productType hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[1])
+  fromCopy = from;
+  if (fromCopy[1])
   {
     [(FMDNanoSupportProtoNeedSignature *)self setDsid:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(FMDNanoSupportProtoNeedSignature *)self setUdid:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(FMDNanoSupportProtoNeedSignature *)self setSerialNumber:?];
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(FMDNanoSupportProtoNeedSignature *)self setProductType:?];
   }

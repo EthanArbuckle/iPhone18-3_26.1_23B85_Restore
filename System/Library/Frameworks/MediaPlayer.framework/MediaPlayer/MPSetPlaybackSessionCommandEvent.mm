@@ -1,19 +1,19 @@
 @interface MPSetPlaybackSessionCommandEvent
-- (MPSetPlaybackSessionCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5;
+- (MPSetPlaybackSessionCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options;
 @end
 
 @implementation MPSetPlaybackSessionCommandEvent
 
-- (MPSetPlaybackSessionCommandEvent)initWithCommand:(id)a3 mediaRemoteType:(unsigned int)a4 options:(id)a5
+- (MPSetPlaybackSessionCommandEvent)initWithCommand:(id)command mediaRemoteType:(unsigned int)type options:(id)options
 {
-  v5 = *&a4;
-  v8 = a5;
+  v5 = *&type;
+  optionsCopy = options;
   v20.receiver = self;
   v20.super_class = MPSetPlaybackSessionCommandEvent;
-  v9 = [(MPRemoteCommandEvent *)&v20 initWithCommand:a3 mediaRemoteType:v5 options:v8];
+  v9 = [(MPRemoteCommandEvent *)&v20 initWithCommand:command mediaRemoteType:v5 options:optionsCopy];
   if (v9)
   {
-    v10 = [v8 objectForKey:*MEMORY[0x1E69B1190]];
+    v10 = [optionsCopy objectForKey:*MEMORY[0x1E69B1190]];
     v11 = MRPlaybackSessionCreateFromExternalRepresentation();
     if (v11)
     {

@@ -1,19 +1,19 @@
 @interface CVNLPPerformance
-- (CVNLPPerformance)initWithOptions:(id)a3;
-- (void)run:(id)a3 block:(id)a4;
+- (CVNLPPerformance)initWithOptions:(id)options;
+- (void)run:(id)run block:(id)block;
 @end
 
 @implementation CVNLPPerformance
 
-- (CVNLPPerformance)initWithOptions:(id)a3
+- (CVNLPPerformance)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v19.receiver = self;
   v19.super_class = CVNLPPerformance;
   v7 = [(CVNLPPerformance *)&v19 init];
   if (v7)
   {
-    v8 = objc_msgSend_objectForKeyedSubscript_(v4, v5, CVNLPCaptionTrackPerformance, v6);
+    v8 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v5, CVNLPCaptionTrackPerformance, v6);
     v12 = objc_msgSend_BOOLValue(v8, v9, v10, v11);
     v7->_computePerf = v12;
     if (v12)
@@ -27,10 +27,10 @@
   return v7;
 }
 
-- (void)run:(id)a3 block:(id)a4
+- (void)run:(id)run block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  runCopy = run;
+  blockCopy = block;
   if (objc_msgSend_computePerf(self, v8, v9, v10))
   {
     pc_session_create();
@@ -45,9 +45,9 @@
     pc_session_add_metric();
     pc_session_begin();
     v24 = objc_msgSend_date(MEMORY[0x1E695DF00], v18, v19, v20);
-    if (v7)
+    if (blockCopy)
     {
-      v7[2](v7);
+      blockCopy[2](blockCopy);
     }
 
     v25 = objc_msgSend_date(MEMORY[0x1E695DF00], v21, v22, v23);
@@ -56,7 +56,7 @@
 
     pc_session_end();
     v30 = [CVNLPPerformanceResult alloc];
-    v33 = objc_msgSend_initWithName_(v30, v31, v6, v32);
+    v33 = objc_msgSend_initWithName_(v30, v31, runCopy, v32);
     pc_session_get_value();
     pc_session_get_value();
     pc_session_get_value();
@@ -70,24 +70,24 @@
     *(v33 + 40) = *(v33 + 40) * 0.000001;
     *(v33 + 56) = v29;
     v38 = objc_msgSend_results(self, v35, v36, v37);
-    v41 = objc_msgSend_objectForKeyedSubscript_(v38, v39, v6, v40);
+    v41 = objc_msgSend_objectForKeyedSubscript_(v38, v39, runCopy, v40);
 
     if (!v41)
     {
       v45 = objc_msgSend_array(MEMORY[0x1E695DF70], v42, v43, v44);
       v49 = objc_msgSend_results(self, v46, v47, v48);
-      objc_msgSend_setObject_forKeyedSubscript_(v49, v50, v45, v6);
+      objc_msgSend_setObject_forKeyedSubscript_(v49, v50, v45, runCopy);
     }
 
     v51 = objc_msgSend_results(self, v42, v43, v44);
-    v54 = objc_msgSend_objectForKeyedSubscript_(v51, v52, v6, v53);
+    v54 = objc_msgSend_objectForKeyedSubscript_(v51, v52, runCopy, v53);
     v58 = objc_msgSend_dict(v33, v55, v56, v57);
     objc_msgSend_addObject_(v54, v59, v58, v60);
   }
 
-  else if (v7)
+  else if (blockCopy)
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 }
 

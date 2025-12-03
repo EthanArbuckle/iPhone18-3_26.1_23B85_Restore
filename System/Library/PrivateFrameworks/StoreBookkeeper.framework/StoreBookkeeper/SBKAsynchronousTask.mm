@@ -1,39 +1,39 @@
 @interface SBKAsynchronousTask
 - (NSError)error;
-- (SBKAsynchronousTask)initWithHandlerQueue:(id)a3 timeout:(double)a4 debugDescription:(id)a5;
+- (SBKAsynchronousTask)initWithHandlerQueue:(id)queue timeout:(double)timeout debugDescription:(id)description;
 - (id)description;
 - (id)expirationHandler;
 - (id)finishedHandler;
 - (id)result;
 - (int)cancelType;
-- (void)_invalidateAssertion:(BOOL)a3;
+- (void)_invalidateAssertion:(BOOL)assertion;
 - (void)_invalidateTimer;
 - (void)_onQueueFireExpirationHandlerIfNecesary;
-- (void)addTaskCompletionBlock:(id)a3;
+- (void)addTaskCompletionBlock:(id)block;
 - (void)beginTaskOperation;
 - (void)dealloc;
 - (void)endTaskOperation;
-- (void)finishTaskOperationWithResult:(id)a3 error:(id)a4;
+- (void)finishTaskOperationWithResult:(id)result error:(id)error;
 - (void)invalidate;
-- (void)invokeTaskCompletionBlocksWithBlock:(id)a3;
-- (void)setCancelType:(int)a3;
-- (void)setError:(id)a3;
-- (void)setExpirationHandler:(id)a3;
-- (void)setFinishedHandler:(id)a3;
-- (void)setResult:(id)a3;
+- (void)invokeTaskCompletionBlocksWithBlock:(id)block;
+- (void)setCancelType:(int)type;
+- (void)setError:(id)error;
+- (void)setExpirationHandler:(id)handler;
+- (void)setFinishedHandler:(id)handler;
+- (void)setResult:(id)result;
 @end
 
 @implementation SBKAsynchronousTask
 
-- (void)invokeTaskCompletionBlocksWithBlock:(id)a3
+- (void)invokeTaskCompletionBlocksWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SBKAsynchronousTask *)self completions];
-  v6 = [v5 copy];
+  blockCopy = block;
+  completions = [(SBKAsynchronousTask *)self completions];
+  v6 = [completions copy];
 
   [(SBKAsynchronousTask *)self setCompletions:0];
-  v7 = [(SBKAsynchronousTask *)self result];
-  v8 = [(SBKAsynchronousTask *)self error];
+  result = [(SBKAsynchronousTask *)self result];
+  error = [(SBKAsynchronousTask *)self error];
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
@@ -53,11 +53,11 @@
   v16[3] = &unk_279D230C8;
   v11 = v10;
   v17 = v11;
-  v12 = v4;
+  v12 = blockCopy;
   v20 = v12;
-  v13 = v7;
+  v13 = result;
   v18 = v13;
-  v14 = v8;
+  v14 = error;
   v19 = v14;
   [v6 enumerateObjectsUsingBlock:v16];
   v15[0] = MEMORY[0x277D85DD0];
@@ -127,18 +127,18 @@ void __59__SBKAsynchronousTask_invokeTaskCompletionBlocksWithBlock___block_invok
   dispatch_group_leave(v5);
 }
 
-- (void)addTaskCompletionBlock:(id)a3
+- (void)addTaskCompletionBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = v4;
+    v5 = blockCopy;
     v6 = MEMORY[0x26D6917A0]();
     v9 = [v6 copy];
 
-    v7 = [(SBKAsynchronousTask *)self completions];
+    completions = [(SBKAsynchronousTask *)self completions];
     v8 = MEMORY[0x26D6917A0](v9);
-    [v7 addObject:v8];
+    [completions addObject:v8];
   }
 }
 
@@ -151,7 +151,7 @@ void __59__SBKAsynchronousTask_invokeTaskCompletionBlocksWithBlock___block_invok
   [(SBKAsynchronousTask *)self _invalidateAssertion:0];
 }
 
-- (void)_invalidateAssertion:(BOOL)a3
+- (void)_invalidateAssertion:(BOOL)assertion
 {
   v7 = 0;
   v8 = &v7;
@@ -164,7 +164,7 @@ void __59__SBKAsynchronousTask_invokeTaskCompletionBlocksWithBlock___block_invok
   block[1] = 3221225472;
   block[2] = __44__SBKAsynchronousTask__invalidateAssertion___block_invoke;
   block[3] = &unk_279D23078;
-  v6 = a3;
+  assertionCopy = assertion;
   block[4] = self;
   block[5] = &v7;
   dispatch_sync(queue, block);
@@ -197,12 +197,12 @@ void __44__SBKAsynchronousTask__invalidateAssertion___block_invoke(uint64_t a1)
   [(SBKAsynchronousTask *)self invalidate];
 }
 
-- (void)finishTaskOperationWithResult:(id)a3 error:(id)a4
+- (void)finishTaskOperationWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  [(SBKAsynchronousTask *)self setResult:v6];
-  [(SBKAsynchronousTask *)self setError:v7];
+  resultCopy = result;
+  errorCopy = error;
+  [(SBKAsynchronousTask *)self setResult:resultCopy];
+  [(SBKAsynchronousTask *)self setError:errorCopy];
   [(SBKAsynchronousTask *)self setExpirationHandler:0];
   handlerQueue = self->_handlerQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -210,10 +210,10 @@ void __44__SBKAsynchronousTask__invalidateAssertion___block_invoke(uint64_t a1)
   block[2] = __59__SBKAsynchronousTask_finishTaskOperationWithResult_error___block_invoke;
   block[3] = &unk_279D23050;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = resultCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = resultCopy;
   dispatch_async(handlerQueue, block);
 }
 
@@ -253,15 +253,15 @@ void __59__SBKAsynchronousTask_finishTaskOperationWithResult_error___block_invok
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26BC19000, v4, OS_LOG_TYPE_DEFAULT, "beginTaskOperation %@", buf, 0xCu);
   }
 
-  v5 = [(SBKAsynchronousTask *)self finishedHandler];
-  if (!v5 || (v6 = v5, [(SBKAsynchronousTask *)self expirationHandler], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
+  finishedHandler = [(SBKAsynchronousTask *)self finishedHandler];
+  if (!finishedHandler || (v6 = finishedHandler, [(SBKAsynchronousTask *)self expirationHandler], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, !v7))
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"SBKAsynchronousTask.m" lineNumber:201 description:@"must have a finish and expiration handler specified"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SBKAsynchronousTask.m" lineNumber:201 description:@"must have a finish and expiration handler specified"];
   }
 
   queue = self->_queue;
@@ -333,17 +333,17 @@ void __41__SBKAsynchronousTask_beginTaskOperation__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __32__SBKAsynchronousTask_setError___block_invoke;
   v7[3] = &unk_279D23150;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = errorCopy;
+  selfCopy = self;
+  v6 = errorCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -381,17 +381,17 @@ void __32__SBKAsynchronousTask_setError___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setResult:(id)a3
+- (void)setResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__SBKAsynchronousTask_setResult___block_invoke;
   v7[3] = &unk_279D23150;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = resultCopy;
+  selfCopy = self;
+  v6 = resultCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -426,14 +426,14 @@ void __33__SBKAsynchronousTask_setResult___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setCancelType:(int)a3
+- (void)setCancelType:(int)type
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __37__SBKAsynchronousTask_setCancelType___block_invoke;
   v4[3] = &unk_279D23000;
-  v5 = a3;
+  typeCopy = type;
   v4[4] = self;
   dispatch_sync(queue, v4);
 }
@@ -528,17 +528,17 @@ uint64_t __38__SBKAsynchronousTask_finishedHandler__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setFinishedHandler:(id)a3
+- (void)setFinishedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__SBKAsynchronousTask_setFinishedHandler___block_invoke;
   v7[3] = &unk_279D23100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -590,17 +590,17 @@ uint64_t __40__SBKAsynchronousTask_expirationHandler__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setExpirationHandler:(id)a3
+- (void)setExpirationHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SBKAsynchronousTask_setExpirationHandler___block_invoke;
   v7[3] = &unk_279D23100;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(queue, v7);
 }
 
@@ -679,26 +679,26 @@ void __39__SBKAsynchronousTask__invalidateTimer__block_invoke(uint64_t a1)
   [(SBKAsynchronousTask *)&v5 dealloc];
 }
 
-- (SBKAsynchronousTask)initWithHandlerQueue:(id)a3 timeout:(double)a4 debugDescription:(id)a5
+- (SBKAsynchronousTask)initWithHandlerQueue:(id)queue timeout:(double)timeout debugDescription:(id)description
 {
-  v9 = a3;
-  v10 = a5;
+  queueCopy = queue;
+  descriptionCopy = description;
   v23.receiver = self;
   v23.super_class = SBKAsynchronousTask;
   v11 = [(SBKAsynchronousTask *)&v23 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_handlerQueue, a3);
+    objc_storeStrong(&v11->_handlerQueue, queue);
     v13 = dispatch_queue_create(0, 0);
     queue = v12->_queue;
     v12->_queue = v13;
 
-    v12->_timeout = a4;
-    v15 = [MEMORY[0x277CBEB18] array];
-    [(SBKAsynchronousTask *)v12 setCompletions:v15];
+    v12->_timeout = timeout;
+    array = [MEMORY[0x277CBEB18] array];
+    [(SBKAsynchronousTask *)v12 setCompletions:array];
 
-    objc_storeStrong(&v12->_debugDescription, a5);
+    objc_storeStrong(&v12->_debugDescription, description);
     v16 = dispatch_queue_create(0, 0);
     v17 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v16);
     timeoutTimer = v12->_timeoutTimer;

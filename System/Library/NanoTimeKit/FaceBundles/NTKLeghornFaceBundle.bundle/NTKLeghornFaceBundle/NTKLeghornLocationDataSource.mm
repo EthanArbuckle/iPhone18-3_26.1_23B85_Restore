@@ -1,16 +1,16 @@
 @interface NTKLeghornLocationDataSource
 + (id)sharedInstance;
 - (NTKLeghornLocationDataSource)init;
-- (void)_ntkLocationManagerDidUpdateLocation:(id)a3;
+- (void)_ntkLocationManagerDidUpdateLocation:(id)location;
 - (void)_startLocationManager;
 - (void)_startNTKLocationManager;
 - (void)_stopLocationManager;
 - (void)_stopNTKLocationManager;
-- (void)_updateLocation:(id)a3;
+- (void)_updateLocation:(id)location;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didFailWithError:(id)a4;
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
+- (void)locationManager:(id)manager didFailWithError:(id)error;
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
 - (void)start;
 - (void)stop;
 @end
@@ -63,8 +63,8 @@
 
 + (id)sharedInstance
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   WeakRetained = objc_loadWeakRetained(&qword_27E1DF038);
   if (!WeakRetained)
   {
@@ -72,15 +72,15 @@
     objc_storeWeak(&qword_27E1DF038, WeakRetained);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return WeakRetained;
 }
 
-- (void)_updateLocation:(id)a3
+- (void)_updateLocation:(id)location
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   v5 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -94,11 +94,11 @@
     v23 = 2048;
     v24 = slcLocationUpdateCount;
     v25 = 2112;
-    v26 = v4;
+    v26 = locationCopy;
     _os_log_impl(&dword_23BEB1000, v5, OS_LOG_TYPE_DEFAULT, "%s: cl-updates = %llu, slc-updates = %llu @ %@", &v19, 0x2Au);
   }
 
-  if (v4)
+  if (locationCopy)
   {
     currentLocation = self->_currentLocation;
     if (currentLocation && (objc_msgSend_timestamp(currentLocation, v8, v9), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend_timeIntervalSinceNow(v11, v12, v13), v15 = v14, v11, v15 > 0.0))
@@ -110,7 +110,7 @@
         v19 = 136315650;
         v20 = "[NTKLeghornLocationDataSource _updateLocation:]";
         v21 = 2112;
-        v22 = v4;
+        v22 = locationCopy;
         v23 = 2112;
         v24 = v18;
         _os_log_impl(&dword_23BEB1000, p_super, OS_LOG_TYPE_DEFAULT, "%s: received stale location %@, which is older than %@ - ignoring", &v19, 0x20u);
@@ -119,7 +119,7 @@
 
     else
     {
-      v16 = v4;
+      v16 = locationCopy;
       p_super = &self->_currentLocation->super;
       self->_currentLocation = v16;
     }
@@ -135,9 +135,9 @@
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocations:(id)a4
+- (void)locationManager:(id)manager didUpdateLocations:(id)locations
 {
-  v6 = objc_msgSend_lastObject(a4, a2, v4, a3);
+  v6 = objc_msgSend_lastObject(locations, a2, v4, manager);
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -152,30 +152,30 @@
   objc_destroyWeak(&location);
 }
 
-- (void)locationManager:(id)a3 didFailWithError:(id)a4
+- (void)locationManager:(id)manager didFailWithError:(id)error
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  errorCopy = error;
   v5 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[NTKLeghornLocationDataSource locationManager:didFailWithError:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = errorCopy;
     _os_log_impl(&dword_23BEB1000, v5, OS_LOG_TYPE_DEFAULT, "%s: error = %@", &v6, 0x16u);
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_authorizationStatus(v4, v5, v6);
+  authorizationCopy = authorization;
+  v7 = objc_msgSend_authorizationStatus(authorizationCopy, v5, v6);
   v8 = NTKFoghornFaceBundleLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    objc_msgSend__limitsPrecision(v4, v9, v10);
+    objc_msgSend__limitsPrecision(authorizationCopy, v9, v10);
     v11 = LogBool();
     *buf = 136315650;
     v16 = "[NTKLeghornLocationDataSource locationManagerDidChangeAuthorization:]";
@@ -228,12 +228,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_ntkLocationManagerDidUpdateLocation:(id)a3
+- (void)_ntkLocationManagerDidUpdateLocation:(id)location
 {
-  v6 = a3;
+  locationCopy = location;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   ++self->_slcLocationUpdateCount;
-  objc_msgSend__updateLocation_(self, v4, v5, v6);
+  objc_msgSend__updateLocation_(self, v4, v5, locationCopy);
 }
 
 - (void)_startNTKLocationManager

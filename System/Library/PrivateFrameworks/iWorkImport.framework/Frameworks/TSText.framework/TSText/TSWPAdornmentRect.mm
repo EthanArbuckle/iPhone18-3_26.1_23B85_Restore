@@ -2,29 +2,29 @@
 - (CGRect)erasableBounds;
 - (CGRect)rect;
 - (TSUBezierPath)path;
-- (TSWPAdornmentRect)initWithCharacterFillAdornmentState:(id)a3;
-- (TSWPAdornmentRect)initWithCharacterStrokeAdornmentState:(id)a3;
-- (TSWPAdornmentRect)initWithRect:(CGRect)a3 paragraphPath:(id)a4 stroke:(id)a5 fill:(id)a6 type:(int)a7;
-- (TSWPAdornmentRect)initWithRect:(CGRect)a3 stroke:(id)a4 fill:(id)a5 type:(int)a6 range:(_NSRange)a7 paths:(id)a8 rubyPaths:(id)a9 shadow:(id)a10;
+- (TSWPAdornmentRect)initWithCharacterFillAdornmentState:(id)state;
+- (TSWPAdornmentRect)initWithCharacterStrokeAdornmentState:(id)state;
+- (TSWPAdornmentRect)initWithRect:(CGRect)rect paragraphPath:(id)path stroke:(id)stroke fill:(id)fill type:(int)type;
+- (TSWPAdornmentRect)initWithRect:(CGRect)rect stroke:(id)stroke fill:(id)fill type:(int)type range:(_NSRange)range paths:(id)paths rubyPaths:(id)rubyPaths shadow:(id)self0;
 - (_NSRange)range;
-- (id)pathFromExcludeRange:(_NSRange)a3 limitSelection:(id)a4 rubyGlyphRange:(_NSRange)a5;
+- (id)pathFromExcludeRange:(_NSRange)range limitSelection:(id)selection rubyGlyphRange:(_NSRange)glyphRange;
 @end
 
 @implementation TSWPAdornmentRect
 
-- (TSWPAdornmentRect)initWithRect:(CGRect)a3 stroke:(id)a4 fill:(id)a5 type:(int)a6 range:(_NSRange)a7 paths:(id)a8 rubyPaths:(id)a9 shadow:(id)a10
+- (TSWPAdornmentRect)initWithRect:(CGRect)rect stroke:(id)stroke fill:(id)fill type:(int)type range:(_NSRange)range paths:(id)paths rubyPaths:(id)rubyPaths shadow:(id)self0
 {
-  length = a7.length;
-  location = a7.location;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v52 = a4;
-  v21 = a5;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
+  length = range.length;
+  location = range.location;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  strokeCopy = stroke;
+  fillCopy = fill;
+  pathsCopy = paths;
+  rubyPathsCopy = rubyPaths;
+  shadowCopy = shadow;
   v53.receiver = self;
   v53.super_class = TSWPAdornmentRect;
   v25 = [(TSWPAdornmentRect *)&v53 init];
@@ -35,12 +35,12 @@
     v25->_rect.origin.y = y;
     v25->_rect.size.width = width;
     v25->_rect.size.height = height;
-    objc_storeStrong(&v25->_stroke, a4);
-    objc_storeStrong(&v26->_fill, a5);
-    v26->_type = a6;
+    objc_storeStrong(&v25->_stroke, stroke);
+    objc_storeStrong(&v26->_fill, fill);
+    v26->_type = type;
     v26->_range.location = location;
     v26->_range.length = length;
-    v29 = objc_msgSend_copy(v22, v27, v28);
+    v29 = objc_msgSend_copy(pathsCopy, v27, v28);
     paths = v26->_paths;
     v26->_paths = v29;
 
@@ -55,11 +55,11 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44);
     }
 
-    v45 = objc_msgSend_copy(v23, v33, v34);
+    v45 = objc_msgSend_copy(rubyPathsCopy, v33, v34);
     rubyPaths = v26->_rubyPaths;
     v26->_rubyPaths = v45;
 
-    v49 = objc_msgSend_copy(v24, v47, v48);
+    v49 = objc_msgSend_copy(shadowCopy, v47, v48);
     shadow = v26->_shadow;
     v26->_shadow = v49;
   }
@@ -67,28 +67,28 @@
   return v26;
 }
 
-- (TSWPAdornmentRect)initWithRect:(CGRect)a3 paragraphPath:(id)a4 stroke:(id)a5 fill:(id)a6 type:(int)a7
+- (TSWPAdornmentRect)initWithRect:(CGRect)rect paragraphPath:(id)path stroke:(id)stroke fill:(id)fill type:(int)type
 {
-  v7 = *&a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v18 = objc_msgSend_initWithRect_stroke_fill_type_range_paths_rubyPaths_shadow_(self, v17, a5, a6, v7, *MEMORY[0x277D81490], *(MEMORY[0x277D81490] + 8), 0, x, y, width, height, 0, 0);
+  v7 = *&type;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  pathCopy = path;
+  v18 = objc_msgSend_initWithRect_stroke_fill_type_range_paths_rubyPaths_shadow_(self, v17, stroke, fill, v7, *MEMORY[0x277D81490], *(MEMORY[0x277D81490] + 8), 0, x, y, width, height, 0, 0);
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong((v18 + 16), a4);
+    objc_storeStrong((v18 + 16), path);
   }
 
   return v19;
 }
 
-- (TSWPAdornmentRect)initWithCharacterFillAdornmentState:(id)a3
+- (TSWPAdornmentRect)initWithCharacterFillAdornmentState:(id)state
 {
-  v4 = a3;
-  objc_msgSend_currentFillRect(v4, v5, v6);
+  stateCopy = state;
+  objc_msgSend_currentFillRect(stateCopy, v5, v6);
   if ((TSURectIsFinite() & 1) == 0)
   {
     v9 = MEMORY[0x277D81150];
@@ -99,26 +99,26 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  objc_msgSend_currentFillRect(v4, v7, v8);
+  objc_msgSend_currentFillRect(stateCopy, v7, v8);
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v26 = objc_msgSend_currentAdornmentFill(v4, v24, v25);
-  v29 = objc_msgSend_currentFillRange(v4, v27, v28);
+  v26 = objc_msgSend_currentAdornmentFill(stateCopy, v24, v25);
+  v29 = objc_msgSend_currentFillRange(stateCopy, v27, v28);
   v31 = v30;
-  v33 = objc_msgSend_currentFillPaths(v4, v30, v32);
-  v36 = objc_msgSend_currentRubyFillPaths(v4, v34, v35);
-  v39 = objc_msgSend_currentFillShadow(v4, v37, v38);
+  v33 = objc_msgSend_currentFillPaths(stateCopy, v30, v32);
+  v36 = objc_msgSend_currentRubyFillPaths(stateCopy, v34, v35);
+  v39 = objc_msgSend_currentFillShadow(stateCopy, v37, v38);
 
   v41 = objc_msgSend_initWithRect_stroke_fill_type_range_paths_rubyPaths_shadow_(self, v40, 0, v26, 4, v29, v31, v33, v17, v19, v21, v23, v36, v39);
   return v41;
 }
 
-- (TSWPAdornmentRect)initWithCharacterStrokeAdornmentState:(id)a3
+- (TSWPAdornmentRect)initWithCharacterStrokeAdornmentState:(id)state
 {
-  v4 = a3;
-  objc_msgSend_currentStrokeRect(v4, v5, v6);
+  stateCopy = state;
+  objc_msgSend_currentStrokeRect(stateCopy, v5, v6);
   if ((TSURectIsFinite() & 1) == 0)
   {
     v9 = MEMORY[0x277D81150];
@@ -129,17 +129,17 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
   }
 
-  objc_msgSend_currentStrokeRect(v4, v7, v8);
+  objc_msgSend_currentStrokeRect(stateCopy, v7, v8);
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v26 = objc_msgSend_currentAdornmentStroke(v4, v24, v25);
-  v29 = objc_msgSend_currentStrokeRange(v4, v27, v28);
+  v26 = objc_msgSend_currentAdornmentStroke(stateCopy, v24, v25);
+  v29 = objc_msgSend_currentStrokeRange(stateCopy, v27, v28);
   v31 = v30;
-  v33 = objc_msgSend_currentStrokePaths(v4, v30, v32);
-  v36 = objc_msgSend_currentRubyStrokePaths(v4, v34, v35);
-  v39 = objc_msgSend_currentStrokeShadow(v4, v37, v38);
+  v33 = objc_msgSend_currentStrokePaths(stateCopy, v30, v32);
+  v36 = objc_msgSend_currentRubyStrokePaths(stateCopy, v34, v35);
+  v39 = objc_msgSend_currentStrokeShadow(stateCopy, v37, v38);
 
   v41 = objc_msgSend_initWithRect_stroke_fill_type_range_paths_rubyPaths_shadow_(self, v40, v26, 0, 5, v29, v31, v33, v17, v19, v21, v23, v36, v39);
   return v41;
@@ -221,13 +221,13 @@
   return v17;
 }
 
-- (id)pathFromExcludeRange:(_NSRange)a3 limitSelection:(id)a4 rubyGlyphRange:(_NSRange)a5
+- (id)pathFromExcludeRange:(_NSRange)range limitSelection:(id)selection rubyGlyphRange:(_NSRange)glyphRange
 {
-  length = a5.length;
-  location = a5.location;
-  v7 = a3.length;
-  v8 = a3.location;
-  v10 = a4;
+  length = glyphRange.length;
+  location = glyphRange.location;
+  v7 = range.length;
+  v8 = range.location;
+  selectionCopy = selection;
   v13 = objc_msgSend_bezierPath(MEMORY[0x277D81160], v11, v12);
   v16 = objc_msgSend_paths(self, v14, v15);
   v42[0] = MEMORY[0x277D85DD0];
@@ -236,7 +236,7 @@
   v42[3] = &unk_27A6F4B28;
   v45 = v8;
   v46 = v7;
-  v17 = v10;
+  v17 = selectionCopy;
   v43 = v17;
   v18 = v13;
   v44 = v18;

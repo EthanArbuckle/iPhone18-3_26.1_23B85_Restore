@@ -1,27 +1,27 @@
 @interface ULAirplaneModeMonitor
 - (BOOL)_checkAirplaneMode;
-- (id)latestEventAfterAddingObserverForEventName:(id)a3;
+- (id)latestEventAfterAddingObserverForEventName:(id)name;
 - (void)airplaneModeChanged;
-- (void)startMonitoring:(id)a3;
-- (void)stopMonitoring:(id)a3;
+- (void)startMonitoring:(id)monitoring;
+- (void)stopMonitoring:(id)monitoring;
 @end
 
 @implementation ULAirplaneModeMonitor
 
-- (void)startMonitoring:(id)a3
+- (void)startMonitoring:(id)monitoring
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = objc_alloc(MEMORY[0x277CEC5D0]);
-  v7 = [(ULEventMonitor *)self queue];
-  v8 = [v6 initWithQueue:v7];
+  queue2 = [(ULEventMonitor *)self queue];
+  v8 = [v6 initWithQueue:queue2];
   [(ULAirplaneModeMonitor *)self setRadiosPref:v8];
 
-  v9 = [(ULAirplaneModeMonitor *)self radiosPref];
-  [v9 setDelegate:self];
+  radiosPref = [(ULAirplaneModeMonitor *)self radiosPref];
+  [radiosPref setDelegate:self];
 
   [(ULAirplaneModeMonitor *)self setAirplaneMode:[(ULAirplaneModeMonitor *)self _checkAirplaneMode]];
   if (onceToken_MicroLocation_Default != -1)
@@ -33,15 +33,15 @@
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [(ULAirplaneModeMonitor *)self airplaneMode];
+    airplaneMode = [(ULAirplaneModeMonitor *)self airplaneMode];
     v13 = @"NO";
-    if (v12)
+    if (airplaneMode)
     {
       v13 = @"YES";
     }
 
     v15 = 138412546;
-    v16 = v4;
+    v16 = monitoringCopy;
     v17 = 2112;
     v18 = v13;
     _os_log_impl(&dword_258FE9000, v11, OS_LOG_TYPE_DEFAULT, "Start monitoring: %@, airplaneMode: %@", &v15, 0x16u);
@@ -50,12 +50,12 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopMonitoring:(id)a3
+- (void)stopMonitoring:(id)monitoring
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  monitoringCopy = monitoring;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -66,12 +66,12 @@
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = monitoringCopy;
     _os_log_impl(&dword_258FE9000, v6, OS_LOG_TYPE_DEFAULT, "Stop monitoring: %@", &v9, 0xCu);
   }
 
-  v7 = [(ULAirplaneModeMonitor *)self radiosPref];
-  [v7 setDelegate:0];
+  radiosPref = [(ULAirplaneModeMonitor *)self radiosPref];
+  [radiosPref setDelegate:0];
 
   [(ULAirplaneModeMonitor *)self setRadiosPref:0];
   [(ULAirplaneModeMonitor *)self setAirplaneMode:0];
@@ -79,14 +79,14 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)latestEventAfterAddingObserverForEventName:(id)a3
+- (id)latestEventAfterAddingObserverForEventName:(id)name
 {
-  v4 = a3;
-  v5 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v5);
+  nameCopy = name;
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = +[(ULEvent *)ULAirplaneModeMonitorEventAirplaneMode];
-  v7 = [v4 isEqual:v6];
+  v7 = [nameCopy isEqual:v6];
 
   if (v7)
   {
@@ -104,23 +104,23 @@
 
 - (BOOL)_checkAirplaneMode
 {
-  v2 = [(ULAirplaneModeMonitor *)self radiosPref];
-  v3 = [v2 airplaneMode];
+  radiosPref = [(ULAirplaneModeMonitor *)self radiosPref];
+  airplaneMode = [radiosPref airplaneMode];
 
-  return v3;
+  return airplaneMode;
 }
 
 - (void)airplaneModeChanged
 {
-  v3 = [(ULEventMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ULEventMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(ULAirplaneModeMonitor *)self _checkAirplaneMode];
-  if (v4 != [(ULAirplaneModeMonitor *)self airplaneMode])
+  _checkAirplaneMode = [(ULAirplaneModeMonitor *)self _checkAirplaneMode];
+  if (_checkAirplaneMode != [(ULAirplaneModeMonitor *)self airplaneMode])
   {
-    [(ULAirplaneModeMonitor *)self setAirplaneMode:v4];
+    [(ULAirplaneModeMonitor *)self setAirplaneMode:_checkAirplaneMode];
     v5 = objc_alloc_init(ULAirplaneModeMonitorEventAirplaneMode);
-    [(ULAirplaneModeMonitorEventAirplaneMode *)v5 setAirplaneMode:v4];
+    [(ULAirplaneModeMonitorEventAirplaneMode *)v5 setAirplaneMode:_checkAirplaneMode];
     [(ULEventMonitor *)self postEvent:v5];
   }
 }

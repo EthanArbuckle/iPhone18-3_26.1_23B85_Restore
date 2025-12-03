@@ -1,16 +1,16 @@
 @interface TVSettingsStreamingQualityListItemCell
-- (id)_subtitleForSpecifier:(id)a3;
+- (id)_subtitleForSpecifier:(id)specifier;
 @end
 
 @implementation TVSettingsStreamingQualityListItemCell
 
-- (id)_subtitleForSpecifier:(id)a3
+- (id)_subtitleForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v29.receiver = self;
   v29.super_class = TVSettingsStreamingQualityListItemCell;
-  v5 = [(TVSettingsStreamingQualityListItemCell *)&v29 _tableView];
-  v6 = [v5 dataSource];
+  _tableView = [(TVSettingsStreamingQualityListItemCell *)&v29 _tableView];
+  dataSource = [_tableView dataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -18,18 +18,18 @@
   {
     v28.receiver = self;
     v28.super_class = TVSettingsStreamingQualityListItemCell;
-    v8 = [(TVSettingsStreamingQualityListItemCell *)&v28 _tableView];
-    v9 = [v8 dataSource];
-    v10 = [v9 title];
+    _tableView2 = [(TVSettingsStreamingQualityListItemCell *)&v28 _tableView];
+    dataSource2 = [_tableView2 dataSource];
+    title = [dataSource2 title];
 
     v11 = @"PLAYBACK_QUALITY_LOW_WIFI_SUBTITLE";
-    if (v10)
+    if (title)
     {
       v12 = [NSBundle bundleForClass:objc_opt_class()];
       v13 = [v12 localizedStringForKey:@"CELLULAR_QUALITY_PLAYBACK_SELECTION_TITLE" value:&stru_21328 table:@"TVSettings"];
       v14 = v13;
       v15 = v13 ? v13 : &stru_21328;
-      v16 = [v10 isEqualToString:v15];
+      v16 = [title isEqualToString:v15];
 
       if (v16)
       {
@@ -43,7 +43,7 @@
     v11 = @"PLAYBACK_QUALITY_LOW_WIFI_SUBTITLE";
   }
 
-  v17 = [v4 name];
+  name = [specifierCopy name];
   v18 = [NSBundle bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"PLAYBACK_QUALITY_HIGH_TITLE" value:&stru_21328 table:@"TVSettings"];
   v20 = v19;
@@ -57,7 +57,7 @@
     v21 = &stru_21328;
   }
 
-  v22 = [v17 isEqualToString:v21];
+  v22 = [name isEqualToString:v21];
 
   v23 = [NSBundle bundleForClass:objc_opt_class()];
   v24 = v23;

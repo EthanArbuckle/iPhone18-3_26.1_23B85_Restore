@@ -1,16 +1,16 @@
 @interface GKOnboardingWhatsNewListCell
-- (GKOnboardingWhatsNewListCell)initWithType:(unint64_t)a3;
-- (id)getIconImageFromBundle:(id)a3;
-- (id)getIconImageFromSFSymbol:(id)a3;
+- (GKOnboardingWhatsNewListCell)initWithType:(unint64_t)type;
+- (id)getIconImageFromBundle:(id)bundle;
+- (id)getIconImageFromSFSymbol:(id)symbol;
 - (void)createConstarints;
 - (void)loadView;
 - (void)setupCell;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation GKOnboardingWhatsNewListCell
 
-- (GKOnboardingWhatsNewListCell)initWithType:(unint64_t)a3
+- (GKOnboardingWhatsNewListCell)initWithType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = GKOnboardingWhatsNewListCell;
@@ -18,7 +18,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_currentCellType = a3;
+    v4->_currentCellType = type;
     [(GKOnboardingWhatsNewListCell *)v4 loadView];
   }
 
@@ -30,67 +30,67 @@
   v3 = objc_opt_new();
   [(GKOnboardingWhatsNewListCell *)self setIcon:v3];
 
-  v4 = [(GKOnboardingWhatsNewListCell *)self icon];
-  [v4 setAccessibilityIgnoresInvertColors:1];
+  icon = [(GKOnboardingWhatsNewListCell *)self icon];
+  [icon setAccessibilityIgnoresInvertColors:1];
 
-  v5 = [(GKOnboardingWhatsNewListCell *)self icon];
-  [v5 setContentMode:1];
+  icon2 = [(GKOnboardingWhatsNewListCell *)self icon];
+  [icon2 setContentMode:1];
 
-  v6 = [(GKOnboardingWhatsNewListCell *)self icon];
-  [(GKOnboardingWhatsNewListCell *)self addSubview:v6];
+  icon3 = [(GKOnboardingWhatsNewListCell *)self icon];
+  [(GKOnboardingWhatsNewListCell *)self addSubview:icon3];
 
   v7 = objc_opt_new();
   [(GKOnboardingWhatsNewListCell *)self setTitleLabel:v7];
 
-  v8 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  [v8 setNumberOfLines:0];
+  titleLabel = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  v9 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  [v9 setAdjustsFontForContentSizeCategory:1];
+  titleLabel2 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  [titleLabel2 setAdjustsFontForContentSizeCategory:1];
 
-  v10 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  [v10 setLineBreakMode:0];
+  titleLabel3 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  [titleLabel3 setLineBreakMode:0];
 
-  v11 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  [(GKOnboardingWhatsNewListCell *)self addSubview:v11];
+  titleLabel4 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  [(GKOnboardingWhatsNewListCell *)self addSubview:titleLabel4];
 
   v12 = objc_opt_new();
   [(GKOnboardingWhatsNewListCell *)self setSubtitleLabel:v12];
 
-  v13 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [v13 setLineBreakMode:0];
+  subtitleLabel = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [subtitleLabel setLineBreakMode:0];
 
-  v14 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v15 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [v15 setTextColor:v14];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  subtitleLabel2 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [subtitleLabel2 setTextColor:secondaryLabelColor];
 
-  v16 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [v16 setNumberOfLines:0];
+  subtitleLabel3 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [subtitleLabel3 setNumberOfLines:0];
 
-  v17 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [v17 setAdjustsFontForContentSizeCategory:1];
+  subtitleLabel4 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [subtitleLabel4 setAdjustsFontForContentSizeCategory:1];
 
-  v18 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [v18 setLineBreakMode:0];
+  subtitleLabel5 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [subtitleLabel5 setLineBreakMode:0];
 
-  v19 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [(GKOnboardingWhatsNewListCell *)self addSubview:v19];
+  subtitleLabel6 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [(GKOnboardingWhatsNewListCell *)self addSubview:subtitleLabel6];
 
-  v20 = [(GKOnboardingWhatsNewListCell *)self icon];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  icon4 = [(GKOnboardingWhatsNewListCell *)self icon];
+  [icon4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v21 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  [v21 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel5 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  [titleLabel5 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v22 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subtitleLabel7 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [subtitleLabel7 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(GKOnboardingWhatsNewListCell *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  v23 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  [v23 setTextAlignment:4];
+  titleLabel6 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  [titleLabel6 setTextAlignment:4];
 
-  v24 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [v24 setTextAlignment:4];
+  subtitleLabel8 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [subtitleLabel8 setTextAlignment:4];
 
   [(GKOnboardingWhatsNewListCell *)self setupCell];
 }
@@ -170,54 +170,54 @@ LABEL_15:
 LABEL_18:
   v27 = [v4 imageWithRenderingMode:v14];
 
-  v16 = [MEMORY[0x277D75348] systemBlueColor];
-  v17 = [(GKOnboardingWhatsNewListCell *)self icon];
-  [v17 setTintColor:v16];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  icon = [(GKOnboardingWhatsNewListCell *)self icon];
+  [icon setTintColor:systemBlueColor];
 
   v18 = *MEMORY[0x277D769D0];
   v19 = [MEMORY[0x277D74300] _gkPreferredFontForTextStyle:*MEMORY[0x277D769D0] symbolicTraits:2];
-  v20 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  [v20 setFont:v19];
+  titleLabel = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  [titleLabel setFont:v19];
 
   v21 = [MEMORY[0x277D74300] preferredFontForTextStyle:v18];
-  v22 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [v22 setFont:v21];
+  subtitleLabel = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [subtitleLabel setFont:v21];
 
-  v23 = [(GKOnboardingWhatsNewListCell *)self icon];
-  [v23 setContentMode:4];
+  icon2 = [(GKOnboardingWhatsNewListCell *)self icon];
+  [icon2 setContentMode:4];
 
-  v24 = [(GKOnboardingWhatsNewListCell *)self icon];
-  [v24 setImage:v27];
+  icon3 = [(GKOnboardingWhatsNewListCell *)self icon];
+  [icon3 setImage:v27];
 
-  v25 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  [v25 setText:v6];
+  titleLabel2 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  [titleLabel2 setText:v6];
 
-  v26 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  [v26 setText:v12];
+  subtitleLabel2 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  [subtitleLabel2 setText:v12];
 
   [(GKOnboardingWhatsNewListCell *)self createConstarints];
 }
 
-- (id)getIconImageFromBundle:(id)a3
+- (id)getIconImageFromBundle:(id)bundle
 {
   v3 = MEMORY[0x277D755D0];
   v4 = *MEMORY[0x277D769A8];
-  v5 = a3;
+  bundleCopy = bundle;
   v6 = [v3 configurationWithTextStyle:v4];
   v7 = MEMORY[0x277D755B8];
   v8 = GKGameCenterUIFrameworkBundle();
-  v9 = [v7 imageNamed:v5 inBundle:v8 withConfiguration:v6];
+  v9 = [v7 imageNamed:bundleCopy inBundle:v8 withConfiguration:v6];
 
   return v9;
 }
 
-- (id)getIconImageFromSFSymbol:(id)a3
+- (id)getIconImageFromSFSymbol:(id)symbol
 {
   v3 = MEMORY[0x277D755D0];
   v4 = *MEMORY[0x277D769A8];
-  v5 = a3;
+  symbolCopy = symbol;
   v6 = [v3 configurationWithTextStyle:v4];
-  v7 = [MEMORY[0x277D755B8] systemImageNamed:v5 withConfiguration:v6];
+  v7 = [MEMORY[0x277D755B8] systemImageNamed:symbolCopy withConfiguration:v6];
 
   return v7;
 }
@@ -225,141 +225,141 @@ LABEL_18:
 - (void)createConstarints
 {
   v108[12] = *MEMORY[0x277D85DE8];
-  v105 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v103 = [v105 widthAnchor];
-  v101 = [v103 constraintEqualToConstant:40.0];
+  icon = [(GKOnboardingWhatsNewListCell *)self icon];
+  widthAnchor = [icon widthAnchor];
+  v101 = [widthAnchor constraintEqualToConstant:40.0];
   v108[0] = v101;
-  v99 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v97 = [v99 heightAnchor];
-  v95 = [v97 constraintEqualToConstant:40.0];
+  icon2 = [(GKOnboardingWhatsNewListCell *)self icon];
+  heightAnchor = [icon2 heightAnchor];
+  v95 = [heightAnchor constraintEqualToConstant:40.0];
   v108[1] = v95;
-  v93 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v91 = [v93 leadingAnchor];
-  v89 = [(GKOnboardingWhatsNewListCell *)self leadingAnchor];
-  v87 = [v91 constraintEqualToAnchor:v89];
+  icon3 = [(GKOnboardingWhatsNewListCell *)self icon];
+  leadingAnchor = [icon3 leadingAnchor];
+  leadingAnchor2 = [(GKOnboardingWhatsNewListCell *)self leadingAnchor];
+  v87 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v108[2] = v87;
-  v85 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v83 = [v85 centerYAnchor];
-  v81 = [(GKOnboardingWhatsNewListCell *)self centerYAnchor];
-  v79 = [v83 constraintEqualToAnchor:v81];
+  icon4 = [(GKOnboardingWhatsNewListCell *)self icon];
+  centerYAnchor = [icon4 centerYAnchor];
+  centerYAnchor2 = [(GKOnboardingWhatsNewListCell *)self centerYAnchor];
+  v79 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v108[3] = v79;
-  v77 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v73 = [v77 leadingAnchor];
-  v75 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v71 = [v75 trailingAnchor];
-  v69 = [v73 constraintEqualToAnchor:v71 constant:14.0];
+  titleLabel = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  leadingAnchor3 = [titleLabel leadingAnchor];
+  icon5 = [(GKOnboardingWhatsNewListCell *)self icon];
+  trailingAnchor = [icon5 trailingAnchor];
+  v69 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:14.0];
   v108[4] = v69;
-  v67 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v65 = [v67 trailingAnchor];
-  v63 = [(GKOnboardingWhatsNewListCell *)self trailingAnchor];
-  v61 = [v65 constraintEqualToAnchor:v63];
+  titleLabel2 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  trailingAnchor2 = [titleLabel2 trailingAnchor];
+  trailingAnchor3 = [(GKOnboardingWhatsNewListCell *)self trailingAnchor];
+  v61 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   v108[5] = v61;
-  v59 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v57 = [v59 topAnchor];
-  v55 = [(GKOnboardingWhatsNewListCell *)self topAnchor];
-  v53 = [v57 constraintEqualToAnchor:v55];
+  titleLabel3 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  topAnchor = [titleLabel3 topAnchor];
+  topAnchor2 = [(GKOnboardingWhatsNewListCell *)self topAnchor];
+  v53 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v108[6] = v53;
-  v52 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  v48 = [v52 leadingAnchor];
-  v50 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v46 = [v50 leadingAnchor];
-  v44 = [v48 constraintEqualToAnchor:v46];
+  subtitleLabel = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  leadingAnchor4 = [subtitleLabel leadingAnchor];
+  titleLabel4 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  leadingAnchor5 = [titleLabel4 leadingAnchor];
+  v44 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
   v108[7] = v44;
-  v42 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  v38 = [v42 trailingAnchor];
-  v40 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v36 = [v40 trailingAnchor];
-  v34 = [v38 constraintEqualToAnchor:v36];
+  subtitleLabel2 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  trailingAnchor4 = [subtitleLabel2 trailingAnchor];
+  titleLabel5 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  trailingAnchor5 = [titleLabel5 trailingAnchor];
+  v34 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor5];
   v108[8] = v34;
-  v32 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  v30 = [v32 topAnchor];
-  v3 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v4 = [v3 bottomAnchor];
-  v5 = [v30 constraintEqualToAnchor:v4 constant:2.0];
+  subtitleLabel3 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  topAnchor3 = [subtitleLabel3 topAnchor];
+  titleLabel6 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  bottomAnchor = [titleLabel6 bottomAnchor];
+  v5 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:2.0];
   v108[9] = v5;
-  v6 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  v7 = [v6 bottomAnchor];
-  v8 = [(GKOnboardingWhatsNewListCell *)self bottomAnchor];
-  v9 = [v7 constraintLessThanOrEqualToAnchor:v8];
+  subtitleLabel4 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  bottomAnchor2 = [subtitleLabel4 bottomAnchor];
+  bottomAnchor3 = [(GKOnboardingWhatsNewListCell *)self bottomAnchor];
+  v9 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
   v108[10] = v9;
-  v10 = [(GKOnboardingWhatsNewListCell *)self heightAnchor];
-  v11 = [v10 constraintGreaterThanOrEqualToConstant:45.0];
+  heightAnchor2 = [(GKOnboardingWhatsNewListCell *)self heightAnchor];
+  v11 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:45.0];
   v108[11] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v108 count:12];
   normalConstraints = self->_normalConstraints;
   self->_normalConstraints = v12;
 
-  v106 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v104 = [v106 widthAnchor];
-  v102 = [v104 constraintEqualToConstant:62.0];
+  icon6 = [(GKOnboardingWhatsNewListCell *)self icon];
+  widthAnchor2 = [icon6 widthAnchor];
+  v102 = [widthAnchor2 constraintEqualToConstant:62.0];
   v107[0] = v102;
-  v100 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v98 = [v100 heightAnchor];
-  v96 = [v98 constraintEqualToConstant:74.0];
+  icon7 = [(GKOnboardingWhatsNewListCell *)self icon];
+  heightAnchor3 = [icon7 heightAnchor];
+  v96 = [heightAnchor3 constraintEqualToConstant:74.0];
   v107[1] = v96;
-  v94 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v92 = [v94 leadingAnchor];
-  v90 = [(GKOnboardingWhatsNewListCell *)self leadingAnchor];
-  v88 = [v92 constraintEqualToAnchor:v90];
+  icon8 = [(GKOnboardingWhatsNewListCell *)self icon];
+  leadingAnchor6 = [icon8 leadingAnchor];
+  leadingAnchor7 = [(GKOnboardingWhatsNewListCell *)self leadingAnchor];
+  v88 = [leadingAnchor6 constraintEqualToAnchor:leadingAnchor7];
   v107[2] = v88;
-  v86 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v84 = [v86 topAnchor];
-  v82 = [(GKOnboardingWhatsNewListCell *)self topAnchor];
-  v80 = [v84 constraintEqualToAnchor:v82];
+  icon9 = [(GKOnboardingWhatsNewListCell *)self icon];
+  topAnchor4 = [icon9 topAnchor];
+  topAnchor5 = [(GKOnboardingWhatsNewListCell *)self topAnchor];
+  v80 = [topAnchor4 constraintEqualToAnchor:topAnchor5];
   v107[3] = v80;
-  v78 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v74 = [v78 leadingAnchor];
-  v76 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v72 = [v76 leadingAnchor];
-  v70 = [v74 constraintEqualToAnchor:v72];
+  titleLabel7 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  leadingAnchor8 = [titleLabel7 leadingAnchor];
+  icon10 = [(GKOnboardingWhatsNewListCell *)self icon];
+  leadingAnchor9 = [icon10 leadingAnchor];
+  v70 = [leadingAnchor8 constraintEqualToAnchor:leadingAnchor9];
   v107[4] = v70;
-  v68 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v66 = [v68 trailingAnchor];
-  v64 = [(GKOnboardingWhatsNewListCell *)self trailingAnchor];
-  v62 = [v66 constraintEqualToAnchor:v64];
+  titleLabel8 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  trailingAnchor6 = [titleLabel8 trailingAnchor];
+  trailingAnchor7 = [(GKOnboardingWhatsNewListCell *)self trailingAnchor];
+  v62 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7];
   v107[5] = v62;
-  v60 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v56 = [v60 topAnchor];
-  v58 = [(GKOnboardingWhatsNewListCell *)self icon];
-  v54 = [v58 bottomAnchor];
-  v51 = [v56 constraintEqualToAnchor:v54];
+  titleLabel9 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  topAnchor6 = [titleLabel9 topAnchor];
+  icon11 = [(GKOnboardingWhatsNewListCell *)self icon];
+  bottomAnchor4 = [icon11 bottomAnchor];
+  v51 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4];
   v107[6] = v51;
-  v49 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  v45 = [v49 leadingAnchor];
-  v47 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v43 = [v47 leadingAnchor];
-  v41 = [v45 constraintEqualToAnchor:v43];
+  subtitleLabel5 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  leadingAnchor10 = [subtitleLabel5 leadingAnchor];
+  titleLabel10 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  leadingAnchor11 = [titleLabel10 leadingAnchor];
+  v41 = [leadingAnchor10 constraintEqualToAnchor:leadingAnchor11];
   v107[7] = v41;
-  v39 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  v35 = [v39 trailingAnchor];
-  v37 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v33 = [v37 trailingAnchor];
-  v31 = [v35 constraintEqualToAnchor:v33];
+  subtitleLabel6 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  trailingAnchor8 = [subtitleLabel6 trailingAnchor];
+  titleLabel11 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  trailingAnchor9 = [titleLabel11 trailingAnchor];
+  v31 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9];
   v107[8] = v31;
-  v29 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  v28 = [v29 topAnchor];
-  v14 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
-  v15 = [v14 bottomAnchor];
-  v16 = [v28 constraintEqualToAnchor:v15 constant:4.0];
+  subtitleLabel7 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  topAnchor7 = [subtitleLabel7 topAnchor];
+  titleLabel12 = [(GKOnboardingWhatsNewListCell *)self titleLabel];
+  bottomAnchor5 = [titleLabel12 bottomAnchor];
+  v16 = [topAnchor7 constraintEqualToAnchor:bottomAnchor5 constant:4.0];
   v107[9] = v16;
-  v17 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
-  v18 = [v17 bottomAnchor];
-  v19 = [(GKOnboardingWhatsNewListCell *)self bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  subtitleLabel8 = [(GKOnboardingWhatsNewListCell *)self subtitleLabel];
+  bottomAnchor6 = [subtitleLabel8 bottomAnchor];
+  bottomAnchor7 = [(GKOnboardingWhatsNewListCell *)self bottomAnchor];
+  v20 = [bottomAnchor6 constraintEqualToAnchor:bottomAnchor7];
   v107[10] = v20;
-  v21 = [(GKOnboardingWhatsNewListCell *)self heightAnchor];
-  v22 = [v21 constraintGreaterThanOrEqualToConstant:80.0];
+  heightAnchor4 = [(GKOnboardingWhatsNewListCell *)self heightAnchor];
+  v22 = [heightAnchor4 constraintGreaterThanOrEqualToConstant:80.0];
   v107[11] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v107 count:12];
   axConstraints = self->_axConstraints;
   self->_axConstraints = v23;
 
-  v25 = [(GKOnboardingWhatsNewListCell *)self traitCollection];
-  v26 = [v25 preferredContentSizeCategory];
-  LODWORD(v21) = UIContentSizeCategoryIsAccessibilityCategory(v26);
+  traitCollection = [(GKOnboardingWhatsNewListCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  LODWORD(heightAnchor4) = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   v27 = 440;
-  if (v21)
+  if (heightAnchor4)
   {
     v27 = 448;
   }
@@ -367,11 +367,11 @@ LABEL_18:
   [MEMORY[0x277CCAAD0] activateConstraints:*(&self->super.super.super.isa + v27)];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = [(GKOnboardingWhatsNewListCell *)self traitCollection];
-  v5 = [v4 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v5);
+  traitCollection = [(GKOnboardingWhatsNewListCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {

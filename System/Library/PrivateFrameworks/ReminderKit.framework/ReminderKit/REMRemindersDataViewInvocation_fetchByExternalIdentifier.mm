@@ -1,85 +1,85 @@
 @interface REMRemindersDataViewInvocation_fetchByExternalIdentifier
-- (BOOL)isEqual:(id)a3;
-- (REMRemindersDataViewInvocation_fetchByExternalIdentifier)initWithCoder:(id)a3;
-- (REMRemindersDataViewInvocation_fetchByExternalIdentifier)initWithExternalIdentifiers:(id)a3 listObjectID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (REMRemindersDataViewInvocation_fetchByExternalIdentifier)initWithCoder:(id)coder;
+- (REMRemindersDataViewInvocation_fetchByExternalIdentifier)initWithExternalIdentifiers:(id)identifiers listObjectID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRemindersDataViewInvocation_fetchByExternalIdentifier
 
-- (REMRemindersDataViewInvocation_fetchByExternalIdentifier)initWithExternalIdentifiers:(id)a3 listObjectID:(id)a4
+- (REMRemindersDataViewInvocation_fetchByExternalIdentifier)initWithExternalIdentifiers:(id)identifiers listObjectID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = REMRemindersDataViewInvocation_fetchByExternalIdentifier;
   v9 = [(REMStoreInvocationValueStorage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_externalIdentifiers, a3);
-    objc_storeStrong(&v10->_listObjectID, a4);
+    objc_storeStrong(&v9->_externalIdentifiers, identifiers);
+    objc_storeStrong(&v10->_listObjectID, d);
   }
 
   return v10;
 }
 
-- (REMRemindersDataViewInvocation_fetchByExternalIdentifier)initWithCoder:(id)a3
+- (REMRemindersDataViewInvocation_fetchByExternalIdentifier)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"externalIdentifiers"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"externalIdentifiers"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"listObjectID"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"listObjectID"];
 
   if (v8)
   {
     self = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self initWithExternalIdentifiers:v8 listObjectID:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self externalIdentifiers];
-  [v4 encodeObject:v5 forKey:@"externalIdentifiers"];
+  coderCopy = coder;
+  externalIdentifiers = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self externalIdentifiers];
+  [coderCopy encodeObject:externalIdentifiers forKey:@"externalIdentifiers"];
 
-  v6 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
-  [v4 encodeObject:v6 forKey:@"listObjectID"];
+  listObjectID = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
+  [coderCopy encodeObject:listObjectID forKey:@"listObjectID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_4;
   }
 
-  v5 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self externalIdentifiers];
-  v6 = [v4 externalIdentifiers];
-  v7 = v6;
-  if (v5 == v6)
+  externalIdentifiers = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self externalIdentifiers];
+  externalIdentifiers2 = [equalCopy externalIdentifiers];
+  v7 = externalIdentifiers2;
+  if (externalIdentifiers == externalIdentifiers2)
   {
   }
 
   else
   {
-    v8 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self externalIdentifiers];
-    v9 = [v4 externalIdentifiers];
-    v10 = [v8 isEqual:v9];
+    externalIdentifiers3 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self externalIdentifiers];
+    externalIdentifiers4 = [equalCopy externalIdentifiers];
+    v10 = [externalIdentifiers3 isEqual:externalIdentifiers4];
 
     if (!v10)
     {
@@ -89,18 +89,18 @@ LABEL_4:
     }
   }
 
-  v12 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
-  v13 = [v4 listObjectID];
-  if (v12 == v13)
+  listObjectID = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
+  listObjectID2 = [equalCopy listObjectID];
+  if (listObjectID == listObjectID2)
   {
     v11 = 1;
   }
 
   else
   {
-    v14 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
-    v15 = [v4 listObjectID];
-    v11 = [v14 isEqual:v15];
+    listObjectID3 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
+    listObjectID4 = [equalCopy listObjectID];
+    v11 = [listObjectID3 isEqual:listObjectID4];
   }
 
 LABEL_10:
@@ -109,13 +109,13 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
-  v4 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self externalIdentifiers];
-  v5 = [v4 hash];
-  if (v3)
+  listObjectID = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
+  externalIdentifiers = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self externalIdentifiers];
+  v5 = [externalIdentifiers hash];
+  if (listObjectID)
   {
-    v6 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
-    v5 ^= [v6 hash];
+    listObjectID2 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)self listObjectID];
+    v5 ^= [listObjectID2 hash];
   }
 
   return v5;

@@ -1,21 +1,21 @@
 @interface W5PeerFileTransferListener
-- (BOOL)handleClientRequest:(id)a3;
-- (W5PeerFileTransferListener)initWithTransferManager:(id)a3;
-- (id)_listFiles:(id)a3;
+- (BOOL)handleClientRequest:(id)request;
+- (W5PeerFileTransferListener)initWithTransferManager:(id)manager;
+- (id)_listFiles:(id)files;
 @end
 
 @implementation W5PeerFileTransferListener
 
-- (W5PeerFileTransferListener)initWithTransferManager:(id)a3
+- (W5PeerFileTransferListener)initWithTransferManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v10.receiver = self;
   v10.super_class = W5PeerFileTransferListener;
   v5 = [(W5PeerFileTransferListener *)&v10 init];
   v6 = v5;
-  if (v4 && v5)
+  if (managerCopy && v5)
   {
-    v7 = v4;
+    v7 = managerCopy;
     p_super = &v6->_transferManager->super;
     v6->_transferManager = v7;
   }
@@ -41,14 +41,14 @@
   return v6;
 }
 
-- (BOOL)handleClientRequest:(id)a3
+- (BOOL)handleClientRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 payload];
-  v6 = v5;
-  if (v5)
+  requestCopy = request;
+  payload = [requestCopy payload];
+  v6 = payload;
+  if (payload)
   {
-    v7 = [v5 version];
+    version = [payload version];
     v8 = sub_100098A04();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
@@ -59,11 +59,11 @@
       v34 = 1024;
       *v35 = 47;
       *&v35[4] = 2114;
-      *&v35[6] = v4;
+      *&v35[6] = requestCopy;
       v36 = 2114;
       v37 = v6;
       v38 = 2114;
-      v39 = v7;
+      v39 = version;
       _os_log_send_and_compose_impl();
     }
 
@@ -71,36 +71,36 @@
     v10 = [NSNumber numberWithInteger:[(W5PeerFileTransferListener *)self currentVersion]];
     [(W5PeerFileTransferResponsePayload *)v9 setVersion:v10];
 
-    v11 = [v7 integerValue];
-    if (v11 == [(W5PeerFileTransferListener *)self currentVersion])
+    integerValue = [version integerValue];
+    if (integerValue == [(W5PeerFileTransferListener *)self currentVersion])
     {
-      v12 = [v6 type];
-      if (v12 == 2)
+      type = [v6 type];
+      if (type == 2)
       {
-        v13 = [v6 remotePath];
+        remotePath = [v6 remotePath];
         v23 = sub_100098A04();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
           v30 = 138543362;
-          v31 = v13;
+          v31 = remotePath;
           _os_log_send_and_compose_impl();
         }
 
-        v17 = v13 != 0;
-        if (v13)
+        v17 = remotePath != 0;
+        if (remotePath)
         {
           [(W5PeerFileTransferResponsePayload *)v9 setStatus:1];
-          v24 = [(W5PeerFileTransferListener *)self _listFiles:v13];
+          v24 = [(W5PeerFileTransferListener *)self _listFiles:remotePath];
           [(W5PeerFileTransferResponsePayload *)v9 setFiles:v24];
 
-          v25 = [v4 handler];
-          (*(v25 + 16))(v25, v9, 0);
+          handler = [requestCopy handler];
+          (*(handler + 16))(handler, v9, 0);
         }
 
         else
         {
-          v25 = sub_100098A04();
-          if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+          handler = sub_100098A04();
+          if (os_log_type_enabled(handler, OS_LOG_TYPE_DEFAULT))
           {
             LOWORD(v30) = 0;
             _os_log_send_and_compose_impl();
@@ -110,7 +110,7 @@
 
       else
       {
-        if (v12 != 1)
+        if (type != 1)
         {
           v17 = 0;
 LABEL_28:
@@ -119,32 +119,32 @@ LABEL_28:
         }
 
         [(W5PeerFileTransferResponsePayload *)v9 setStatus:1];
-        v13 = [v6 targetID];
-        v14 = [v6 remotePath];
-        v15 = [v6 publicKey];
+        remotePath = [v6 targetID];
+        remotePath2 = [v6 remotePath];
+        publicKey = [v6 publicKey];
         v16 = sub_100098A04();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           [v6 publicKey];
           v30 = 138543874;
-          v31 = v14;
+          v31 = remotePath2;
           v33 = v32 = 2114;
           v34 = 2114;
-          *v35 = v13;
+          *v35 = remotePath;
           _os_log_send_and_compose_impl();
         }
 
-        v17 = v14 != 0;
-        if (v14)
+        v17 = remotePath2 != 0;
+        if (remotePath2)
         {
-          [(W5FileTransferManager *)self->_transferManager initializeSenderWithTargetID:v13 peerPublicKey:v15];
-          v18 = [(W5FileTransferManager *)self->_transferManager publicKeySelf];
-          [(W5PeerFileTransferResponsePayload *)v9 setPublicKey:v18];
+          [(W5FileTransferManager *)self->_transferManager initializeSenderWithTargetID:remotePath peerPublicKey:publicKey];
+          publicKeySelf = [(W5FileTransferManager *)self->_transferManager publicKeySelf];
+          [(W5PeerFileTransferResponsePayload *)v9 setPublicKey:publicKeySelf];
 
-          v19 = [v4 handler];
-          (v19)[2](v19, v9, 0);
+          handler2 = [requestCopy handler];
+          (handler2)[2](handler2, v9, 0);
 
-          [(W5FileTransferManager *)self->_transferManager startW5FileSenderForFile:v14];
+          [(W5FileTransferManager *)self->_transferManager startW5FileSenderForFile:remotePath2];
         }
 
         else
@@ -165,7 +165,7 @@ LABEL_28:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
         v30 = 138543362;
-        v31 = v7;
+        v31 = version;
         _os_log_send_and_compose_impl();
       }
 
@@ -177,8 +177,8 @@ LABEL_28:
       v22 = [NSError errorWithDomain:@"com.apple.wifivelocity.error" code:11 userInfo:v21];
       [(W5PeerFileTransferResponsePayload *)v9 setError:v22];
 
-      v13 = [v4 handler];
-      (*(v13 + 2))(v13, v9, 0);
+      remotePath = [requestCopy handler];
+      (*(remotePath + 2))(remotePath, v9, 0);
     }
 
     goto LABEL_28;
@@ -190,13 +190,13 @@ LABEL_29:
   return v17;
 }
 
-- (id)_listFiles:(id)a3
+- (id)_listFiles:(id)files
 {
-  v3 = a3;
+  filesCopy = files;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = +[NSFileManager defaultManager];
   v19 = 0;
-  v6 = [v5 contentsOfDirectoryAtURL:v3 includingPropertiesForKeys:&__NSArray0__struct options:4 error:&v19];
+  v6 = [v5 contentsOfDirectoryAtURL:filesCopy includingPropertiesForKeys:&__NSArray0__struct options:4 error:&v19];
   v7 = v19;
 
   if (v7)
@@ -211,7 +211,7 @@ LABEL_29:
       v25 = 1024;
       v26 = 139;
       v27 = 2114;
-      v28 = v3;
+      v28 = filesCopy;
       _os_log_send_and_compose_impl();
     }
   }

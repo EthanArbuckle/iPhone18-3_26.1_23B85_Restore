@@ -15,7 +15,7 @@
 - (void)medicalIDDidChange
 {
   v2 = *((*MEMORY[0x1E69E7D40] & self->super.isa) + 0xF8);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 

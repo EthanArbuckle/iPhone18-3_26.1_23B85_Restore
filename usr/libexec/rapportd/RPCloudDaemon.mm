@@ -1,6 +1,6 @@
 @interface RPCloudDaemon
 + (id)sharedCloudDaemon;
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionForID:(SEL)a3;
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionForID:(SEL)d;
 - ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionForSelf;
 - (BOOL)idsHasAppleTV;
 - (BOOL)idsHasHomePod;
@@ -9,43 +9,43 @@
 - (BOOL)idsHasWatch;
 - (BOOL)idsHasiPad;
 - (BOOL)idsIsSignedIn;
-- (BOOL)sendIDSMessage:(id)a3 cloudServiceID:(id)a4 frameType:(unsigned __int8)a5 destinationID:(id)a6 sendFlags:(unsigned int)a7 msgCtx:(id)a8 error:(id *)a9;
+- (BOOL)sendIDSMessage:(id)message cloudServiceID:(id)d frameType:(unsigned __int8)type destinationID:(id)iD sendFlags:(unsigned int)flags msgCtx:(id)ctx error:(id *)error;
 - (NSArray)idsDeviceArray;
 - (NSDictionary)idsDeviceMap;
 - (NSDictionary)idsFamilyEndpointMap;
 - (NSSet)idsAccountSet;
 - (NSString)idsDeviceIDSelf;
 - (RPCloudDaemon)init;
-- (id)_idsAccountWithURI:(id)a3 senderID:(id *)a4;
-- (id)_idsURIWithID:(id)a3;
-- (id)descriptionWithLevel:(int)a3;
+- (id)_idsAccountWithURI:(id)i senderID:(id *)d;
+- (id)_idsURIWithID:(id)d;
+- (id)descriptionWithLevel:(int)level;
 - (id)idsCorrelationIdentifier;
-- (id)idsDeviceForBluetoothUUID:(id)a3;
+- (id)idsDeviceForBluetoothUUID:(id)d;
 - (int)idsHandheldCount;
 - (void)_idsEnsureStarted;
 - (void)_idsEnsureStopped;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_primaryAppleIDChanged;
-- (void)_receivedFamilyIdentityFrameType:(unsigned __int8)a3 ptr:(const char *)a4 length:(unint64_t)a5 msgCtx:(id)a6;
-- (void)_receivedFriendIdentityFrameType:(unsigned __int8)a3 ptr:(const char *)a4 length:(unint64_t)a5 msgCtx:(id)a6;
-- (void)_receivedWatchIdentityFrameType:(unsigned __int8)a3 ptr:(const char *)a4 length:(unint64_t)a5 fromID:(id)a6;
-- (void)_receivedWatchIdentityRequest:(id)a3 fromIDSDevice:(id)a4;
-- (void)_receivedWatchIdentityResponse:(id)a3 fromIDSDevice:(id)a4;
+- (void)_receivedFamilyIdentityFrameType:(unsigned __int8)type ptr:(const char *)ptr length:(unint64_t)length msgCtx:(id)ctx;
+- (void)_receivedFriendIdentityFrameType:(unsigned __int8)type ptr:(const char *)ptr length:(unint64_t)length msgCtx:(id)ctx;
+- (void)_receivedWatchIdentityFrameType:(unsigned __int8)type ptr:(const char *)ptr length:(unint64_t)length fromID:(id)d;
+- (void)_receivedWatchIdentityRequest:(id)request fromIDSDevice:(id)device;
+- (void)_receivedWatchIdentityResponse:(id)response fromIDSDevice:(id)device;
 - (void)_update;
 - (void)activate;
-- (void)daemonInfoChanged:(unint64_t)a3;
-- (void)idsFamilyEndpointQueryWithCompletion:(id)a3;
-- (void)idsFamilyEndpointsUpdateWithForce:(BOOL)a3;
+- (void)daemonInfoChanged:(unint64_t)changed;
+- (void)idsFamilyEndpointQueryWithCompletion:(id)completion;
+- (void)idsFamilyEndpointsUpdateWithForce:(BOOL)force;
 - (void)invalidate;
 - (void)prefsChanged;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)serviceSpaceDidBecomeAvailable:(id)a3;
-- (void)setIdsFamilyEndpointMap:(id)a3;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)serviceSpaceDidBecomeAvailable:(id)available;
+- (void)setIdsFamilyEndpointMap:(id)map;
 @end
 
 @implementation RPCloudDaemon
@@ -64,15 +64,15 @@
 
 - (NSString)idsDeviceIDSelf
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_idsDeviceIDSelf;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_idsDeviceIDSelf;
   if (!v3)
   {
     v3 = IDSCopyLocalDeviceUniqueID();
     if (v3)
     {
-      objc_storeStrong(&v2->_idsDeviceIDSelf, v3);
+      objc_storeStrong(&selfCopy->_idsDeviceIDSelf, v3);
     }
 
     else
@@ -86,30 +86,30 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (BOOL)idsIsSignedIn
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  prefIsSignedInForce = v2->_prefIsSignedInForce;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  prefIsSignedInForce = selfCopy->_prefIsSignedInForce;
   if (prefIsSignedInForce < 0)
   {
-    if (v2->_idsIsSignedInCache < 0)
+    if (selfCopy->_idsIsSignedInCache < 0)
     {
-      nearbyIDSService = v2->_nearbyIDSService;
+      nearbyIDSService = selfCopy->_nearbyIDSService;
       if (nearbyIDSService)
       {
-        v2->_idsIsSignedInCache = 0;
+        selfCopy->_idsIsSignedInCache = 0;
         v11 = 0u;
         v12 = 0u;
         v13 = 0u;
         v14 = 0u;
-        v6 = [nearbyIDSService accounts];
-        v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        accounts = [nearbyIDSService accounts];
+        v7 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v7)
         {
           v8 = *v12;
@@ -119,17 +119,17 @@
             {
               if (*v12 != v8)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(accounts);
               }
 
               if ([*(*(&v11 + 1) + 8 * i) isActive])
               {
-                v2->_idsIsSignedInCache = 1;
+                selfCopy->_idsIsSignedInCache = 1;
                 goto LABEL_15;
               }
             }
 
-            v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+            v7 = [accounts countByEnumeratingWithState:&v11 objects:v15 count:16];
             if (v7)
             {
               continue;
@@ -143,7 +143,7 @@ LABEL_15:
       }
     }
 
-    v4 = v2->_idsIsSignedInCache > 0;
+    v4 = selfCopy->_idsIsSignedInCache > 0;
   }
 
   else
@@ -151,25 +151,25 @@ LABEL_15:
     v4 = prefIsSignedInForce != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (int)idsHandheldCount
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  idsHandheldCountCache = v2->_idsHandheldCountCache;
-  if (idsHandheldCountCache < 0 && v2->_nearbyIDSService)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsHandheldCountCache = selfCopy->_idsHandheldCountCache;
+  if (idsHandheldCountCache < 0 && selfCopy->_nearbyIDSService)
   {
-    v2->_idsHandheldCountCache = 0;
+    selfCopy->_idsHandheldCountCache = 0;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(RPCloudDaemon *)v2 idsDeviceArray];
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+    v5 = [idsDeviceArray countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = *v12;
@@ -179,48 +179,48 @@ LABEL_15:
         {
           if (*v12 != v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(idsDeviceArray);
           }
 
-          v8 = [*(*(&v11 + 1) + 8 * i) modelIdentifier];
+          modelIdentifier = [*(*(&v11 + 1) + 8 * i) modelIdentifier];
           v9 = GestaltProductTypeStringToDeviceClass() - 4 < 0xFFFFFFFD;
 
           if (!v9)
           {
-            ++v2->_idsHandheldCountCache;
+            ++selfCopy->_idsHandheldCountCache;
           }
         }
 
-        v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v5 = [idsDeviceArray countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v5);
     }
 
-    idsHandheldCountCache = v2->_idsHandheldCountCache;
+    idsHandheldCountCache = selfCopy->_idsHandheldCountCache;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return idsHandheldCountCache;
 }
 
 - (BOOL)idsHasMac
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  prefHasMacForce = v2->_prefHasMacForce;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  prefHasMacForce = selfCopy->_prefHasMacForce;
   if (prefHasMacForce < 0)
   {
-    if (v2->_idsHasMacCache < 0 && v2->_nearbyIDSService)
+    if (selfCopy->_idsHasMacCache < 0 && selfCopy->_nearbyIDSService)
     {
-      v2->_idsHasMacCache = 0;
+      selfCopy->_idsHasMacCache = 0;
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [(RPCloudDaemon *)v2 idsDeviceArray];
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+      v6 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         v7 = *v13;
@@ -230,20 +230,20 @@ LABEL_15:
           {
             if (*v13 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(idsDeviceArray);
             }
 
-            v9 = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
-            v10 = [v9 containsString:@"Mac"];
+            modelIdentifier = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
+            v10 = [modelIdentifier containsString:@"Mac"];
 
             if (v10)
             {
-              v2->_idsHasMacCache = 1;
+              selfCopy->_idsHasMacCache = 1;
               goto LABEL_15;
             }
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v6 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v6)
           {
             continue;
@@ -256,7 +256,7 @@ LABEL_15:
 LABEL_15:
     }
 
-    v4 = v2->_idsHasMacCache > 0;
+    v4 = selfCopy->_idsHasMacCache > 0;
   }
 
   else
@@ -264,27 +264,27 @@ LABEL_15:
     v4 = prefHasMacForce != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (BOOL)idsHasHomePod
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  prefHasHomePodForce = v2->_prefHasHomePodForce;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  prefHasHomePodForce = selfCopy->_prefHasHomePodForce;
   if (prefHasHomePodForce < 0)
   {
-    if (v2->_idsHasHomePodCache < 0 && v2->_nearbyIDSService)
+    if (selfCopy->_idsHasHomePodCache < 0 && selfCopy->_nearbyIDSService)
     {
-      v2->_idsHasHomePodCache = 0;
+      selfCopy->_idsHasHomePodCache = 0;
       v11 = 0u;
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = [(RPCloudDaemon *)v2 idsDeviceArray];
-      v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+      v6 = [idsDeviceArray countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         v7 = *v12;
@@ -294,19 +294,19 @@ LABEL_15:
           {
             if (*v12 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(idsDeviceArray);
             }
 
-            v9 = [*(*(&v11 + 1) + 8 * i) modelIdentifier];
-            if ([v9 hasPrefix:{@"AudioAccessory1, "}] & 1) != 0 || (objc_msgSend(v9, "hasPrefix:", @"AudioAccessory5,") & 1) != 0 || (objc_msgSend(v9, "hasPrefix:", @"AudioAccessory6,") & 1) != 0 || (objc_msgSend(v9, "hasPrefix:", @"HomePod"))
+            modelIdentifier = [*(*(&v11 + 1) + 8 * i) modelIdentifier];
+            if ([modelIdentifier hasPrefix:{@"AudioAccessory1, "}] & 1) != 0 || (objc_msgSend(modelIdentifier, "hasPrefix:", @"AudioAccessory5,") & 1) != 0 || (objc_msgSend(modelIdentifier, "hasPrefix:", @"AudioAccessory6,") & 1) != 0 || (objc_msgSend(modelIdentifier, "hasPrefix:", @"HomePod"))
             {
 
-              v2->_idsHasHomePodCache = 1;
+              selfCopy->_idsHasHomePodCache = 1;
               goto LABEL_18;
             }
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v6 = [idsDeviceArray countByEnumeratingWithState:&v11 objects:v15 count:16];
           if (v6)
           {
             continue;
@@ -319,7 +319,7 @@ LABEL_15:
 LABEL_18:
     }
 
-    v4 = v2->_idsHasHomePodCache > 0;
+    v4 = selfCopy->_idsHasHomePodCache > 0;
   }
 
   else
@@ -327,27 +327,27 @@ LABEL_18:
     v4 = prefHasHomePodForce != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (BOOL)idsHasAppleTV
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  prefHasAppleTVForce = v2->_prefHasAppleTVForce;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  prefHasAppleTVForce = selfCopy->_prefHasAppleTVForce;
   if (prefHasAppleTVForce < 0)
   {
-    if (v2->_idsHasAppleTVCache < 0 && v2->_nearbyIDSService)
+    if (selfCopy->_idsHasAppleTVCache < 0 && selfCopy->_nearbyIDSService)
     {
-      v2->_idsHasAppleTVCache = 0;
+      selfCopy->_idsHasAppleTVCache = 0;
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [(RPCloudDaemon *)v2 idsDeviceArray];
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+      v6 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         v7 = *v13;
@@ -357,20 +357,20 @@ LABEL_18:
           {
             if (*v13 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(idsDeviceArray);
             }
 
-            v9 = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
-            v10 = [v9 hasPrefix:@"AppleTV"];
+            modelIdentifier = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
+            v10 = [modelIdentifier hasPrefix:@"AppleTV"];
 
             if (v10)
             {
-              v2->_idsHasAppleTVCache = 1;
+              selfCopy->_idsHasAppleTVCache = 1;
               goto LABEL_15;
             }
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v6 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v6)
           {
             continue;
@@ -383,7 +383,7 @@ LABEL_18:
 LABEL_15:
     }
 
-    v4 = v2->_idsHasAppleTVCache > 0;
+    v4 = selfCopy->_idsHasAppleTVCache > 0;
   }
 
   else
@@ -391,7 +391,7 @@ LABEL_15:
     v4 = prefHasAppleTVForce != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -403,14 +403,14 @@ LABEL_15:
     return 0;
   }
 
-  v3 = self;
-  objc_sync_enter(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(RPCloudDaemon *)v3 idsDeviceArray];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+  v5 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = *v13;
@@ -420,11 +420,11 @@ LABEL_15:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(idsDeviceArray);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
-        v9 = [v8 hasPrefix:@"Watch"];
+        modelIdentifier = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
+        v9 = [modelIdentifier hasPrefix:@"Watch"];
 
         if (v9)
         {
@@ -433,7 +433,7 @@ LABEL_15:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -446,15 +446,15 @@ LABEL_15:
   v10 = 0;
 LABEL_13:
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
   return v10;
 }
 
 - (NSArray)idsDeviceArray
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  idsDeviceArray = v2->_idsDeviceArray;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsDeviceArray = selfCopy->_idsDeviceArray;
   if (!idsDeviceArray)
   {
     if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
@@ -462,24 +462,24 @@ LABEL_13:
       LogPrintF();
     }
 
-    v4 = [v2->_nearbyIDSService devices];
-    v5 = v2->_idsDeviceArray;
-    v2->_idsDeviceArray = v4;
+    devices = [selfCopy->_nearbyIDSService devices];
+    v5 = selfCopy->_idsDeviceArray;
+    selfCopy->_idsDeviceArray = devices;
 
-    idsDeviceArray = v2->_idsDeviceArray;
+    idsDeviceArray = selfCopy->_idsDeviceArray;
   }
 
   v6 = idsDeviceArray;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSDictionary)idsDeviceMap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  idsDeviceMap = v2->_idsDeviceMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsDeviceMap = selfCopy->_idsDeviceMap;
   if (idsDeviceMap)
   {
 LABEL_13:
@@ -487,15 +487,15 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v4 = [(RPCloudDaemon *)v2 idsDeviceArray];
-  if (v4)
+  idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+  if (idsDeviceArray)
   {
     v5 = objc_alloc_init(NSMutableDictionary);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = idsDeviceArray;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -510,10 +510,10 @@ LABEL_13:
           }
 
           v10 = *(*(&v16 + 1) + 8 * i);
-          v11 = [v10 uniqueIDOverride];
-          if (v11)
+          uniqueIDOverride = [v10 uniqueIDOverride];
+          if (uniqueIDOverride)
           {
-            [v5 setObject:v10 forKeyedSubscript:v11];
+            [v5 setObject:v10 forKeyedSubscript:uniqueIDOverride];
           }
         }
 
@@ -524,16 +524,16 @@ LABEL_13:
     }
 
     v12 = [v5 copy];
-    v13 = v2->_idsDeviceMap;
-    v2->_idsDeviceMap = v12;
+    v13 = selfCopy->_idsDeviceMap;
+    selfCopy->_idsDeviceMap = v12;
 
-    idsDeviceMap = v2->_idsDeviceMap;
+    idsDeviceMap = selfCopy->_idsDeviceMap;
     goto LABEL_13;
   }
 
   v14 = 0;
 LABEL_14:
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
@@ -550,11 +550,11 @@ LABEL_14:
 
     else
     {
-      v4 = [(CUSystemMonitor *)self->_systemMonitor primaryAppleID];
-      v5 = [v4 _bestGuessURI];
-      if (v5)
+      primaryAppleID = [(CUSystemMonitor *)self->_systemMonitor primaryAppleID];
+      _bestGuessURI = [primaryAppleID _bestGuessURI];
+      if (_bestGuessURI)
       {
-        v6 = [NSArray arrayWithObject:v5];
+        v6 = [NSArray arrayWithObject:_bestGuessURI];
         v7 = +[IDSIDQueryController sharedInstance];
         dispatchQueue = self->_dispatchQueue;
         v10[0] = _NSConcreteStackBlock;
@@ -562,7 +562,7 @@ LABEL_14:
         v10[2] = sub_100016F3C;
         v10[3] = &unk_1001AAAF0;
         v10[4] = self;
-        v10[5] = v4;
+        v10[5] = primaryAppleID;
         [v7 currentRemoteDevicesForDestinations:v6 service:@"com.apple.private.alloy.nearby" listenerID:@"com.apple.private.alloy.nearby" queue:dispatchQueue completionBlock:v10];
         self->_idQueryInProgress = 1;
       }
@@ -605,7 +605,7 @@ LABEL_14:
   return v3;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
   v25 = 0u;
   v26 = 0u;
@@ -630,12 +630,12 @@ LABEL_14:
 
         v6 = *(*(&v25 + 1) + 8 * v4);
         v7 = [(NSDictionary *)self->_idsFamilyEndpointMap objectForKeyedSubscript:v6];
-        v8 = [v7 familyEndpointData];
-        v9 = [v8 deviceName];
+        familyEndpointData = [v7 familyEndpointData];
+        deviceName = [familyEndpointData deviceName];
         v10 = [(NSDictionary *)self->_idsFamilyEndpointMap objectForKeyedSubscript:v6];
-        v11 = [v10 familyEndpointData];
-        v12 = [v11 productVersion];
-        v13 = [NSString stringWithFormat:@"    IDSID: %@, name: %@, productVersion: %@\n", v6, v9, v12];
+        familyEndpointData2 = [v10 familyEndpointData];
+        productVersion = [familyEndpointData2 productVersion];
+        v13 = [NSString stringWithFormat:@"    IDSID: %@, name: %@, productVersion: %@\n", v6, deviceName, productVersion];
 
         v3 = [(__CFString *)v5 stringByAppendingString:v13];
 
@@ -655,8 +655,8 @@ LABEL_14:
     v3 = &stru_1001B1A70;
   }
 
-  v14 = [(RPCloudDaemon *)self idsDeviceArray];
-  [v14 count];
+  idsDeviceArray = [(RPCloudDaemon *)self idsDeviceArray];
+  [idsDeviceArray count];
   [(RPCloudDaemon *)self idsIsSignedIn];
   [(RPCloudDaemon *)self idsHasAppleTV];
   [(RPCloudDaemon *)self idsHasHomePod];
@@ -665,12 +665,12 @@ LABEL_14:
   [(RPCloudDaemon *)self idsHasWatch];
   [(RPCloudDaemon *)self idsHasRealityDevice];
   [(RPCloudDaemon *)self idsHandheldCount];
-  v15 = [(RPCloudDaemon *)self idsFamilyEndpointMap];
-  [v15 count];
+  idsFamilyEndpointMap = [(RPCloudDaemon *)self idsFamilyEndpointMap];
+  [idsFamilyEndpointMap count];
   NSAppendPrintF();
   v16 = 0;
 
-  if (a3 <= 20)
+  if (level <= 20)
   {
     NSAppendPrintF();
     v17 = v16;
@@ -738,9 +738,9 @@ LABEL_14:
   }
 }
 
-- (void)daemonInfoChanged:(unint64_t)a3
+- (void)daemonInfoChanged:(unint64_t)changed
 {
-  if ((a3 & 0x400) != 0)
+  if ((changed & 0x400) != 0)
   {
     if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
     {
@@ -982,31 +982,31 @@ LABEL_41:
   self->_idsCorrelationIdentifier = 0;
 }
 
-- (id)_idsAccountWithURI:(id)a3 senderID:(id *)a4
+- (id)_idsAccountWithURI:(id)i senderID:(id *)d
 {
-  v6 = a3;
+  iCopy = i;
   v7 = IDSCopyRawAddressForDestination();
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
-  v8 = [self->_nearbyIDSService accounts];
-  v9 = [v8 countByEnumeratingWithState:&v59 objects:v66 count:16];
+  accounts = [self->_nearbyIDSService accounts];
+  v9 = [accounts countByEnumeratingWithState:&v59 objects:v66 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v60;
-    v44 = a4;
-    v46 = v6;
+    dCopy = d;
+    v46 = iCopy;
     v40 = *v60;
-    v42 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v10; i = i + 1)
       {
         if (*v60 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(accounts);
         }
 
         v13 = *(*(&v59 + 1) + 8 * i);
@@ -1016,8 +1016,8 @@ LABEL_41:
           v58 = 0u;
           v55 = 0u;
           v56 = 0u;
-          v14 = [v13 aliasStrings];
-          v15 = [v14 countByEnumeratingWithState:&v55 objects:v65 count:16];
+          aliasStrings = [v13 aliasStrings];
+          v15 = [aliasStrings countByEnumeratingWithState:&v55 objects:v65 count:16];
           if (v15)
           {
             v16 = v15;
@@ -1028,17 +1028,17 @@ LABEL_41:
               {
                 if (*v56 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(aliasStrings);
                 }
 
                 v19 = *(*(&v55 + 1) + 8 * j);
                 if ([v19 isEqual:v7])
                 {
-                  if (v44)
+                  if (dCopy)
                   {
-                    v33 = [(RPCloudDaemon *)v42 _idsURIWithID:v19];
-                    v34 = *v44;
-                    *v44 = v33;
+                    v33 = [(RPCloudDaemon *)selfCopy _idsURIWithID:v19];
+                    v34 = *dCopy;
+                    *dCopy = v33;
                   }
 
                   v32 = v13;
@@ -1046,7 +1046,7 @@ LABEL_41:
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v55 objects:v65 count:16];
+              v16 = [aliasStrings countByEnumeratingWithState:&v55 objects:v65 count:16];
               if (v16)
               {
                 continue;
@@ -1060,35 +1060,35 @@ LABEL_41:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v59 objects:v66 count:16];
-      a4 = v44;
-      v6 = v46;
-      self = v42;
+      v10 = [accounts countByEnumeratingWithState:&v59 objects:v66 count:16];
+      d = dCopy;
+      iCopy = v46;
+      self = selfCopy;
     }
 
     while (v10);
   }
 
-  if ([v6 _FZIDType] == -1)
+  if ([iCopy _FZIDType] == -1)
   {
     v32 = 0;
   }
 
   else
   {
-    v8 = IMCanonicalizeFormattedString();
+    accounts = IMCanonicalizeFormattedString();
     v51 = 0u;
     v52 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v14 = [self->_nearbyIDSService accounts];
-    v20 = [v14 countByEnumeratingWithState:&v51 objects:v64 count:16];
+    aliasStrings = [self->_nearbyIDSService accounts];
+    v20 = [aliasStrings countByEnumeratingWithState:&v51 objects:v64 count:16];
     if (v20)
     {
       v21 = v20;
-      v43 = self;
-      v45 = a4;
-      v46 = v6;
+      selfCopy2 = self;
+      dCopy2 = d;
+      v46 = iCopy;
       v22 = *v52;
       v38 = *v52;
       do
@@ -1099,7 +1099,7 @@ LABEL_41:
         {
           if (*v52 != v22)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(aliasStrings);
           }
 
           v24 = *(*(&v51 + 1) + 8 * v23);
@@ -1110,8 +1110,8 @@ LABEL_41:
             v47 = 0u;
             v48 = 0u;
             v41 = v24;
-            v25 = [v24 aliasStrings];
-            v26 = [v25 countByEnumeratingWithState:&v47 objects:v63 count:16];
+            aliasStrings2 = [v24 aliasStrings];
+            v26 = [aliasStrings2 countByEnumeratingWithState:&v47 objects:v63 count:16];
             if (v26)
             {
               v27 = v26;
@@ -1122,18 +1122,18 @@ LABEL_41:
                 {
                   if (*v48 != v28)
                   {
-                    objc_enumerationMutation(v25);
+                    objc_enumerationMutation(aliasStrings2);
                   }
 
                   v30 = *(*(&v47 + 1) + 8 * k);
                   v31 = IMCanonicalizeFormattedString();
-                  if ([v31 isEqual:v8])
+                  if ([v31 isEqual:accounts])
                   {
-                    if (v45)
+                    if (dCopy2)
                     {
-                      v36 = [(RPCloudDaemon *)v43 _idsURIWithID:v30];
-                      v37 = *v45;
-                      *v45 = v36;
+                      v36 = [(RPCloudDaemon *)selfCopy2 _idsURIWithID:v30];
+                      v37 = *dCopy2;
+                      *dCopy2 = v36;
                     }
 
                     v32 = v41;
@@ -1142,7 +1142,7 @@ LABEL_41:
                   }
                 }
 
-                v27 = [v25 countByEnumeratingWithState:&v47 objects:v63 count:16];
+                v27 = [aliasStrings2 countByEnumeratingWithState:&v47 objects:v63 count:16];
                 if (v27)
                 {
                   continue;
@@ -1160,13 +1160,13 @@ LABEL_41:
         }
 
         while (v23 != v21);
-        v21 = [v14 countByEnumeratingWithState:&v51 objects:v64 count:16];
+        v21 = [aliasStrings countByEnumeratingWithState:&v51 objects:v64 count:16];
       }
 
       while (v21);
       v32 = 0;
 LABEL_40:
-      v6 = v46;
+      iCopy = v46;
     }
 
     else
@@ -1180,9 +1180,9 @@ LABEL_40:
 
 - (NSSet)idsAccountSet
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  idsAccountSet = v2->_idsAccountSet;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsAccountSet = selfCopy->_idsAccountSet;
   if (!idsAccountSet)
   {
     if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
@@ -1190,30 +1190,30 @@ LABEL_40:
       LogPrintF();
     }
 
-    v4 = [v2->_nearbyIDSService accounts];
-    v5 = v2->_idsAccountSet;
-    v2->_idsAccountSet = v4;
+    accounts = [selfCopy->_nearbyIDSService accounts];
+    v5 = selfCopy->_idsAccountSet;
+    selfCopy->_idsAccountSet = accounts;
 
-    idsAccountSet = v2->_idsAccountSet;
+    idsAccountSet = selfCopy->_idsAccountSet;
   }
 
   v6 = idsAccountSet;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)idsDeviceForBluetoothUUID:(id)a3
+- (id)idsDeviceForBluetoothUUID:(id)d
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  dCopy = d;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(RPCloudDaemon *)v5 idsDeviceArray];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+  v7 = [idsDeviceArray countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -1223,12 +1223,12 @@ LABEL_40:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(idsDeviceArray);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 nsuuid];
-        v12 = [v11 isEqual:v4];
+        nsuuid = [v10 nsuuid];
+        v12 = [nsuuid isEqual:dCopy];
 
         if (v12)
         {
@@ -1237,7 +1237,7 @@ LABEL_40:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [idsDeviceArray countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -1249,16 +1249,16 @@ LABEL_40:
 
 LABEL_11:
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)idsFamilyEndpointQueryWithCompletion:(id)a3
+- (void)idsFamilyEndpointQueryWithCompletion:(id)completion
 {
-  v8 = a3;
+  completionCopy = completion;
   v4 = +[RPPeopleDaemon sharedPeopleDaemon];
-  v5 = [v4 getFamilyURIs];
+  getFamilyURIs = [v4 getFamilyURIs];
 
   v6 = +[IDSIDQueryController sharedInstance];
   v7 = +[IDSIDInfoOptions refreshIDInfo];
@@ -1267,18 +1267,18 @@ LABEL_11:
     sub_10010E14C();
   }
 
-  [v6 idInfoForDestinations:v5 service:@"com.apple.private.alloy.nearby.family" infoTypes:1 options:v7 listenerID:@"com.apple.private.alloy.nearby" queue:self->_dispatchQueue completionBlock:v8];
+  [v6 idInfoForDestinations:getFamilyURIs service:@"com.apple.private.alloy.nearby.family" infoTypes:1 options:v7 listenerID:@"com.apple.private.alloy.nearby" queue:self->_dispatchQueue completionBlock:completionCopy];
 }
 
-- (void)setIdsFamilyEndpointMap:(id)a3
+- (void)setIdsFamilyEndpointMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   idsFamilyEndpointMap = self->_idsFamilyEndpointMap;
-  self->_idsFamilyEndpointMap = v4;
+  self->_idsFamilyEndpointMap = mapCopy;
 }
 
-- (void)idsFamilyEndpointsUpdateWithForce:(BOOL)a3
+- (void)idsFamilyEndpointsUpdateWithForce:(BOOL)force
 {
   v5 = +[NSDate date];
   v6 = v5;
@@ -1293,7 +1293,7 @@ LABEL_11:
     v8 = 0.0;
   }
 
-  if ([(RPCloudDaemon *)self getDeviceClass]== 4 && !self->_idQueryInProgress && (a3 || v8 == 0.0 || v8 > 300.0))
+  if ([(RPCloudDaemon *)self getDeviceClass]== 4 && !self->_idQueryInProgress && (force || v8 == 0.0 || v8 > 300.0))
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -1307,20 +1307,20 @@ LABEL_11:
 
 - (BOOL)idsHasiPad
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  prefHasiPadForce = v2->_prefHasiPadForce;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  prefHasiPadForce = selfCopy->_prefHasiPadForce;
   if (prefHasiPadForce < 0)
   {
-    if (v2->_idsHasiPadCache < 0 && v2->_nearbyIDSService)
+    if (selfCopy->_idsHasiPadCache < 0 && selfCopy->_nearbyIDSService)
     {
-      v2->_idsHasiPadCache = 0;
+      selfCopy->_idsHasiPadCache = 0;
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [(RPCloudDaemon *)v2 idsDeviceArray];
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+      v6 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         v7 = *v13;
@@ -1330,20 +1330,20 @@ LABEL_11:
           {
             if (*v13 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(idsDeviceArray);
             }
 
-            v9 = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
-            v10 = [v9 hasPrefix:@"iPad"];
+            modelIdentifier = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
+            v10 = [modelIdentifier hasPrefix:@"iPad"];
 
             if (v10)
             {
-              v2->_idsHasiPadCache = 1;
+              selfCopy->_idsHasiPadCache = 1;
               goto LABEL_15;
             }
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v6 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v6)
           {
             continue;
@@ -1356,7 +1356,7 @@ LABEL_11:
 LABEL_15:
     }
 
-    v4 = v2->_idsHasiPadCache > 0;
+    v4 = selfCopy->_idsHasiPadCache > 0;
   }
 
   else
@@ -1364,27 +1364,27 @@ LABEL_15:
     v4 = prefHasiPadForce != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (BOOL)idsHasRealityDevice
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  prefHasRealityDeviceForce = v2->_prefHasRealityDeviceForce;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  prefHasRealityDeviceForce = selfCopy->_prefHasRealityDeviceForce;
   if (prefHasRealityDeviceForce < 0)
   {
-    if (v2->_idsHasRealityDeviceCache < 0 && v2->_nearbyIDSService)
+    if (selfCopy->_idsHasRealityDeviceCache < 0 && selfCopy->_nearbyIDSService)
     {
-      v2->_idsHasRealityDeviceCache = 0;
+      selfCopy->_idsHasRealityDeviceCache = 0;
       v12 = 0u;
       v13 = 0u;
       v14 = 0u;
       v15 = 0u;
-      v5 = [(RPCloudDaemon *)v2 idsDeviceArray];
-      v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+      v6 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         v7 = *v13;
@@ -1394,20 +1394,20 @@ LABEL_15:
           {
             if (*v13 != v7)
             {
-              objc_enumerationMutation(v5);
+              objc_enumerationMutation(idsDeviceArray);
             }
 
-            v9 = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
-            v10 = [v9 hasPrefix:@"RealityDevice"];
+            modelIdentifier = [*(*(&v12 + 1) + 8 * i) modelIdentifier];
+            v10 = [modelIdentifier hasPrefix:@"RealityDevice"];
 
             if (v10)
             {
-              v2->_idsHasRealityDeviceCache = 1;
+              selfCopy->_idsHasRealityDeviceCache = 1;
               goto LABEL_15;
             }
           }
 
-          v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+          v6 = [idsDeviceArray countByEnumeratingWithState:&v12 objects:v16 count:16];
           if (v6)
           {
             continue;
@@ -1420,7 +1420,7 @@ LABEL_15:
 LABEL_15:
     }
 
-    v4 = v2->_idsHasRealityDeviceCache > 0;
+    v4 = selfCopy->_idsHasRealityDeviceCache > 0;
   }
 
   else
@@ -1428,24 +1428,24 @@ LABEL_15:
     v4 = prefHasRealityDeviceForce != 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
-- (id)_idsURIWithID:(id)a3
+- (id)_idsURIWithID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dCopy = d;
+  v4 = dCopy;
+  if (dCopy)
   {
-    if ([v3 _FZIDType] == -1)
+    if ([dCopy _FZIDType] == -1)
     {
-      v6 = [v4 _bestGuessURI];
-      v7 = v6;
-      if (v6)
+      _bestGuessURI = [v4 _bestGuessURI];
+      v7 = _bestGuessURI;
+      if (_bestGuessURI)
       {
-        v8 = v6;
+        v8 = _bestGuessURI;
       }
 
       else
@@ -1470,21 +1470,21 @@ LABEL_15:
   return v5;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingData:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingData:(id)data fromID:(id)d context:(id)context
 {
-  v27 = a5;
-  v11 = a6;
-  v12 = a7;
+  dataCopy = data;
+  dCopy = d;
+  contextCopy = context;
   dispatchQueue = self->_dispatchQueue;
-  v14 = a3;
+  serviceCopy = service;
   dispatch_assert_queue_V2(dispatchQueue);
-  v15 = [v27 length];
+  v15 = [dataCopy length];
   nearbyIDSService = self->_nearbyIDSService;
 
-  if (nearbyIDSService == v14)
+  if (nearbyIDSService == serviceCopy)
   {
     v17 = @"com.apple.private.alloy.nearby";
-    v18 = [v27 bytes];
+    bytes = [dataCopy bytes];
     v19 = v15 - 4;
     if (v15 < 4)
     {
@@ -1496,8 +1496,8 @@ LABEL_15:
       goto LABEL_12;
     }
 
-    v20 = v18;
-    v21 = (v18[1] << 16) | (v18[2] << 8) | v18[3];
+    v20 = bytes;
+    v21 = (bytes[1] << 16) | (bytes[2] << 8) | bytes[3];
     if (v19 < v21)
     {
       if (dword_1001D30F8 > 90 || dword_1001D30F8 == -1 && !_LogCategory_Initialize())
@@ -1512,14 +1512,14 @@ LABEL_12:
 
     v22 = objc_alloc_init(RPCloudMessageContext);
     [(RPCloudMessageContext *)v22 setCloudServiceID:v17];
-    [(RPCloudMessageContext *)v22 setFromID:v11];
-    v23 = [v12 toID];
-    [(RPCloudMessageContext *)v22 setToID:v23];
+    [(RPCloudMessageContext *)v22 setFromID:dCopy];
+    toID = [contextCopy toID];
+    [(RPCloudMessageContext *)v22 setToID:toID];
 
     v24 = *v20;
     if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
     {
-      v25 = [(RPCloudMessageContext *)v22 toID];
+      toID2 = [(RPCloudMessageContext *)v22 toID];
       LogPrintF();
     }
 
@@ -1534,7 +1534,7 @@ LABEL_12:
 
       if (((1 << v26) & 0x30000) != 0)
       {
-        [(RPCloudDaemon *)self _receivedWatchIdentityFrameType:v24 ptr:v20 + 4 length:v21 fromID:v11];
+        [(RPCloudDaemon *)self _receivedWatchIdentityFrameType:v24 ptr:v20 + 4 length:v21 fromID:dCopy];
         goto LABEL_38;
       }
 
@@ -1565,14 +1565,14 @@ LABEL_38:
 LABEL_15:
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
-  v17 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a8;
-  if (v15 || !a6)
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
+  contextCopy = context;
+  if (errorCopy || !success)
   {
     if (dword_1001D30F8 <= 90 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
     {
@@ -1586,62 +1586,62 @@ LABEL_15:
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  contextCopy = context;
   if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
   {
     sub_10010E278();
   }
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
-  v12 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
   {
-    sub_10010E2B8(v6);
+    sub_10010E2B8(changedCopy);
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  idsDeviceArray = v7->_idsDeviceArray;
-  v7->_idsDeviceArray = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsDeviceArray = selfCopy->_idsDeviceArray;
+  selfCopy->_idsDeviceArray = 0;
 
-  idsAccountSet = v7->_idsAccountSet;
-  v7->_idsAccountSet = 0;
+  idsAccountSet = selfCopy->_idsAccountSet;
+  selfCopy->_idsAccountSet = 0;
 
-  idsDeviceMap = v7->_idsDeviceMap;
-  v7->_idsDeviceMap = 0;
+  idsDeviceMap = selfCopy->_idsDeviceMap;
+  selfCopy->_idsDeviceMap = 0;
 
-  v7->_idsIsSignedInCache = -1;
-  *&v7->_idsHasHomePodCache = -1;
-  *&v7->_idsHasMacCache = -1;
-  *&v7->_idsHandheldCountCache = -1;
-  objc_sync_exit(v7);
+  selfCopy->_idsIsSignedInCache = -1;
+  *&selfCopy->_idsHasHomePodCache = -1;
+  *&selfCopy->_idsHasMacCache = -1;
+  *&selfCopy->_idsHandheldCountCache = -1;
+  objc_sync_exit(selfCopy);
 
   v11 = +[RPDaemon sharedDaemon];
   [v11 postDaemonInfoChanges:1];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  changedCopy = changed;
   if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
   {
-    sub_10010E2FC(v7);
+    sub_10010E2FC(changedCopy);
   }
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = v7;
+  v8 = changedCopy;
   v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
@@ -1685,20 +1685,20 @@ LABEL_15:
   }
 
   v14 = [v8 copy];
-  v15 = self;
-  objc_sync_enter(v15);
-  idsDeviceArray = v15->_idsDeviceArray;
-  v15->_idsDeviceArray = v14;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  idsDeviceArray = selfCopy->_idsDeviceArray;
+  selfCopy->_idsDeviceArray = v14;
   v17 = v14;
 
-  idsDeviceMap = v15->_idsDeviceMap;
-  v15->_idsDeviceMap = 0;
+  idsDeviceMap = selfCopy->_idsDeviceMap;
+  selfCopy->_idsDeviceMap = 0;
 
-  v15->_idsIsSignedInCache = -1;
-  *&v15->_idsHasHomePodCache = -1;
-  *&v15->_idsHasMacCache = -1;
-  *&v15->_idsHandheldCountCache = -1;
-  objc_sync_exit(v15);
+  selfCopy->_idsIsSignedInCache = -1;
+  *&selfCopy->_idsHasHomePodCache = -1;
+  *&selfCopy->_idsHasMacCache = -1;
+  *&selfCopy->_idsHandheldCountCache = -1;
+  objc_sync_exit(selfCopy);
 
   v19 = +[RPDaemon sharedDaemon];
 
@@ -1706,13 +1706,13 @@ LABEL_15:
 LABEL_16:
 }
 
-- (void)serviceSpaceDidBecomeAvailable:(id)a3
+- (void)serviceSpaceDidBecomeAvailable:(id)available
 {
-  v3 = a3;
-  v4 = v3;
+  availableCopy = available;
+  v4 = availableCopy;
   if (dword_1001D30F8 <= 30)
   {
-    v6 = v3;
+    v6 = availableCopy;
     if (dword_1001D30F8 != -1 || (v5 = _LogCategory_Initialize(), v4 = v6, v5))
     {
       sub_10010E380();
@@ -1721,11 +1721,11 @@ LABEL_16:
   }
 }
 
-- (void)_receivedFamilyIdentityFrameType:(unsigned __int8)a3 ptr:(const char *)a4 length:(unint64_t)a5 msgCtx:(id)a6
+- (void)_receivedFamilyIdentityFrameType:(unsigned __int8)type ptr:(const char *)ptr length:(unint64_t)length msgCtx:(id)ctx
 {
-  v6 = a3;
-  v7 = a6;
-  v8 = [v7 fromID];
+  typeCopy = type;
+  ctxCopy = ctx;
+  fromID = [ctxCopy fromID];
   v9 = OPACKDecodeBytes();
   if (v9)
   {
@@ -1754,26 +1754,26 @@ LABEL_16:
         CUNormalizeEmailAddress();
       }
       v12 = ;
-      [v7 setAppleID:v12];
+      [ctxCopy setAppleID:v12];
 
-      switch(v6)
+      switch(typeCopy)
       {
         case '""':
           v13 = +[RPPeopleDaemon sharedPeopleDaemon];
-          [v13 receivedFamilyIdentityUpdate:v9 msgCtx:v7];
+          [v13 receivedFamilyIdentityUpdate:v9 msgCtx:ctxCopy];
           break;
         case '!':
           v13 = +[RPPeopleDaemon sharedPeopleDaemon];
-          [v13 receivedFamilyIdentityResponse:v9 msgCtx:v7];
+          [v13 receivedFamilyIdentityResponse:v9 msgCtx:ctxCopy];
           break;
         case ' ':
           v13 = +[RPPeopleDaemon sharedPeopleDaemon];
-          [v13 receivedFamilyIdentityRequest:v9 msgCtx:v7];
+          [v13 receivedFamilyIdentityRequest:v9 msgCtx:ctxCopy];
           break;
         default:
           if (dword_1001D30F8 <= 90 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
           {
-            sub_10010E39C(v6);
+            sub_10010E39C(typeCopy);
           }
 
           goto LABEL_28;
@@ -1798,11 +1798,11 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)_receivedFriendIdentityFrameType:(unsigned __int8)a3 ptr:(const char *)a4 length:(unint64_t)a5 msgCtx:(id)a6
+- (void)_receivedFriendIdentityFrameType:(unsigned __int8)type ptr:(const char *)ptr length:(unint64_t)length msgCtx:(id)ctx
 {
-  v6 = a3;
-  v7 = a6;
-  v8 = [v7 fromID];
+  typeCopy = type;
+  ctxCopy = ctx;
+  fromID = [ctxCopy fromID];
   v9 = OPACKDecodeBytes();
   if (v9)
   {
@@ -1831,26 +1831,26 @@ LABEL_34:
         CUNormalizeEmailAddress();
       }
       v12 = ;
-      [v7 setAppleID:v12];
+      [ctxCopy setAppleID:v12];
 
-      switch(v6)
+      switch(typeCopy)
       {
         case 'B':
           v13 = +[RPPeopleDaemon sharedPeopleDaemon];
-          [v13 receivedFriendIdentityUpdate:v9 msgCtx:v7];
+          [v13 receivedFriendIdentityUpdate:v9 msgCtx:ctxCopy];
           break;
         case 'A':
           v13 = +[RPPeopleDaemon sharedPeopleDaemon];
-          [v13 receivedFriendIdentityResponse:v9 msgCtx:v7];
+          [v13 receivedFriendIdentityResponse:v9 msgCtx:ctxCopy];
           break;
         case '@':
           v13 = +[RPPeopleDaemon sharedPeopleDaemon];
-          [v13 receivedFriendIdentityRequest:v9 msgCtx:v7];
+          [v13 receivedFriendIdentityRequest:v9 msgCtx:ctxCopy];
           break;
         default:
           if (dword_1001D30F8 <= 90 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
           {
-            sub_10010E424(v6);
+            sub_10010E424(typeCopy);
           }
 
           goto LABEL_28;
@@ -1875,15 +1875,15 @@ LABEL_33:
 LABEL_34:
 }
 
-- (void)_receivedWatchIdentityFrameType:(unsigned __int8)a3 ptr:(const char *)a4 length:(unint64_t)a5 fromID:(id)a6
+- (void)_receivedWatchIdentityFrameType:(unsigned __int8)type ptr:(const char *)ptr length:(unint64_t)length fromID:(id)d
 {
-  v6 = a3;
-  v8 = a6;
-  if ([v8 hasPrefix:@"device:"])
+  typeCopy = type;
+  dCopy = d;
+  if ([dCopy hasPrefix:@"device:"])
   {
-    v9 = [(RPCloudDaemon *)self idsDeviceMap];
-    v10 = [v8 substringFromIndex:7];
-    v11 = [v9 objectForKeyedSubscript:v10];
+    idsDeviceMap = [(RPCloudDaemon *)self idsDeviceMap];
+    v10 = [dCopy substringFromIndex:7];
+    v11 = [idsDeviceMap objectForKeyedSubscript:v10];
 
     if (!v11)
     {
@@ -1901,19 +1901,19 @@ LABEL_34:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if (v6 == 49)
+        if (typeCopy == 49)
         {
           [(RPCloudDaemon *)self _receivedWatchIdentityResponse:v12 fromIDSDevice:v11];
         }
 
-        else if (v6 == 48)
+        else if (typeCopy == 48)
         {
           [(RPCloudDaemon *)self _receivedWatchIdentityRequest:v12 fromIDSDevice:v11];
         }
 
         else if (dword_1001D30F8 <= 90 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
         {
-          sub_10010E4EC(v6);
+          sub_10010E4EC(typeCopy);
         }
 
         goto LABEL_31;
@@ -1945,15 +1945,15 @@ LABEL_32:
 LABEL_33:
 }
 
-- (void)_receivedWatchIdentityRequest:(id)a3 fromIDSDevice:(id)a4
+- (void)_receivedWatchIdentityRequest:(id)request fromIDSDevice:(id)device
 {
-  v11 = a3;
-  v6 = a4;
+  requestCopy = request;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (([(CUSystemMonitor *)self->_systemMonitor firstUnlocked]& 1) != 0)
   {
-    v7 = [v6 uniqueIDOverride];
-    if (v7)
+    uniqueIDOverride = [deviceCopy uniqueIDOverride];
+    if (uniqueIDOverride)
     {
       if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
       {
@@ -1961,13 +1961,13 @@ LABEL_33:
       }
 
       v8 = +[RPIdentityDaemon sharedIdentityDaemon];
-      [v8 saveIdentityWithIDSDeviceID:v7 message:v11 error:0];
+      [v8 saveIdentityWithIDSDeviceID:uniqueIDOverride message:requestCopy error:0];
 
       v9 = objc_alloc_init(NSMutableDictionary);
       v10 = +[RPIdentityDaemon sharedIdentityDaemon];
       [v10 addSelfIdentityInfoToMessage:v9 flags:0];
 
-      [(RPCloudDaemon *)self sendIDSMessage:v9 cloudServiceID:@"com.apple.private.alloy.nearby" frameType:49 destinationDevice:v6 sendFlags:1 msgCtx:0 error:0];
+      [(RPCloudDaemon *)self sendIDSMessage:v9 cloudServiceID:@"com.apple.private.alloy.nearby" frameType:49 destinationDevice:deviceCopy sendFlags:1 msgCtx:0 error:0];
     }
 
     else if (dword_1001D30F8 <= 90 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
@@ -1982,15 +1982,15 @@ LABEL_33:
   }
 }
 
-- (void)_receivedWatchIdentityResponse:(id)a3 fromIDSDevice:(id)a4
+- (void)_receivedWatchIdentityResponse:(id)response fromIDSDevice:(id)device
 {
-  v9 = a3;
-  v6 = a4;
+  responseCopy = response;
+  deviceCopy = device;
   dispatch_assert_queue_V2(self->_dispatchQueue);
   if (([(CUSystemMonitor *)self->_systemMonitor firstUnlocked]& 1) != 0)
   {
-    v7 = [v6 uniqueIDOverride];
-    if (v7)
+    uniqueIDOverride = [deviceCopy uniqueIDOverride];
+    if (uniqueIDOverride)
     {
       if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
       {
@@ -1998,7 +1998,7 @@ LABEL_33:
       }
 
       v8 = +[RPIdentityDaemon sharedIdentityDaemon];
-      [v8 saveIdentityWithIDSDeviceID:v7 message:v9 error:0];
+      [v8 saveIdentityWithIDSDeviceID:uniqueIDOverride message:responseCopy error:0];
     }
 
     else if (dword_1001D30F8 <= 90 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
@@ -2013,19 +2013,19 @@ LABEL_33:
   }
 }
 
-- (BOOL)sendIDSMessage:(id)a3 cloudServiceID:(id)a4 frameType:(unsigned __int8)a5 destinationID:(id)a6 sendFlags:(unsigned int)a7 msgCtx:(id)a8 error:(id *)a9
+- (BOOL)sendIDSMessage:(id)message cloudServiceID:(id)d frameType:(unsigned __int8)type destinationID:(id)iD sendFlags:(unsigned int)flags msgCtx:(id)ctx error:(id *)error
 {
-  v10 = a7;
-  v14 = a4;
-  v15 = a6;
-  v16 = a8;
+  flagsCopy = flags;
+  dCopy = d;
+  iDCopy = iD;
+  ctxCopy = ctx;
   v58 = 0;
   Data = OPACKEncoderCreateData();
   v18 = Data;
   if (Data)
   {
-    v50 = v14;
-    v57[0] = a5;
+    v50 = dCopy;
+    v57[0] = type;
     v19 = [Data length];
     v57[1] = BYTE2(v19);
     v57[2] = BYTE1(v19);
@@ -2035,18 +2035,18 @@ LABEL_33:
     [v20 appendData:v18];
     v21 = objc_alloc_init(NSMutableDictionary);
     v22 = v21;
-    if (v10)
+    if (flagsCopy)
     {
       [v21 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionLocalDeliveryKey];
       [v22 setObject:&__kCFBooleanTrue forKeyedSubscript:IDSSendMessageOptionRequireBluetoothKey];
     }
 
     v23 = IDSSendMessageOptionFromIDKey;
-    v24 = [v16 toID];
-    if (v24)
+    toID = [ctxCopy toID];
+    if (toID)
     {
-      [v22 setObject:v24 forKeyedSubscript:v23];
-      v25 = [(RPCloudDaemon *)self _idsAccountWithURI:v24 senderID:0];
+      [v22 setObject:toID forKeyedSubscript:v23];
+      v25 = [(RPCloudDaemon *)self _idsAccountWithURI:toID senderID:0];
 
       if (v25)
       {
@@ -2058,8 +2058,8 @@ LABEL_33:
     {
     }
 
-    v27 = [v16 sendersKnownAlias];
-    v56 = [(RPCloudDaemon *)self _idsURIWithID:v27];
+    sendersKnownAlias = [ctxCopy sendersKnownAlias];
+    v56 = [(RPCloudDaemon *)self _idsURIWithID:sendersKnownAlias];
 
     v28 = v56;
     if (v56)
@@ -2079,12 +2079,12 @@ LABEL_33:
     }
 
 LABEL_16:
-    if ([v16 nonWakingRequest])
+    if ([ctxCopy nonWakingRequest])
     {
       [v22 setObject:&off_1001B7D20 forKeyedSubscript:IDSSendMessageOptionPushPriorityKey];
     }
 
-    v14 = v50;
+    dCopy = v50;
     if (![v50 isEqual:@"com.apple.private.alloy.nearby"] || (v29 = self->_nearbyIDSService) == 0)
     {
       v30 = RPErrorF();
@@ -2093,11 +2093,11 @@ LABEL_16:
         LogPrintF();
       }
 
-      if (a9)
+      if (error)
       {
         v33 = v30;
         v34 = 0;
-        *a9 = v30;
+        *error = v30;
       }
 
       else
@@ -2109,11 +2109,11 @@ LABEL_16:
     }
 
     v30 = v29;
-    v15 = v15;
-    v31 = v15;
-    if (([(__CFString *)v15 hasPrefix:@"token:"]& 1) == 0)
+    iDCopy = iDCopy;
+    v31 = iDCopy;
+    if (([(__CFString *)iDCopy hasPrefix:@"token:"]& 1) == 0)
     {
-      if ([(__CFString *)v15 _appearsToBePhoneNumber])
+      if ([(__CFString *)iDCopy _appearsToBePhoneNumber])
       {
         v32 = IDSCopyIDForPhoneNumber();
 LABEL_36:
@@ -2122,8 +2122,8 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v31 = v15;
-      if ([(__CFString *)v15 _appearsToBeEmail])
+      v31 = iDCopy;
+      if ([(__CFString *)iDCopy _appearsToBeEmail])
       {
         v32 = IDSCopyIDForEmailAddress();
         goto LABEL_36;
@@ -2131,10 +2131,10 @@ LABEL_36:
     }
 
 LABEL_37:
-    if ([v31 isEqual:v15])
+    if ([v31 isEqual:iDCopy])
     {
 
-      v15 = @"=";
+      iDCopy = @"=";
     }
 
     v48 = v31;
@@ -2168,24 +2168,24 @@ LABEL_37:
         NSAppendPrintF();
         v51 = 0;
         sub_10001BB10(" (", v39);
-        v49 = v15;
-        v44 = v15;
+        v49 = iDCopy;
+        v44 = iDCopy;
         NSAppendPrintF();
         v40 = v51;
 
         sub_10001BB10("), Account ", v39);
-        v45 = [v25 loginID];
+        loginID = [v25 loginID];
         NSAppendPrintF();
         v41 = v40;
 
-        v14 = v50;
+        dCopy = v50;
         if (dword_1001D30F8 <= 30 && (dword_1001D30F8 != -1 || _LogCategory_Initialize()))
         {
           LogPrintF();
         }
 
         v34 = 1;
-        v15 = v49;
+        iDCopy = v49;
       }
 
       else
@@ -2195,11 +2195,11 @@ LABEL_37:
           LogPrintF();
         }
 
-        v14 = v50;
-        if (a9)
+        dCopy = v50;
+        if (error)
         {
           RPNestedErrorF();
-          *a9 = v34 = 0;
+          *error = v34 = 0;
         }
 
         else
@@ -2213,10 +2213,10 @@ LABEL_37:
 
     else
     {
-      if (a9)
+      if (error)
       {
         RPErrorF();
-        *a9 = v34 = 0;
+        *error = v34 = 0;
       }
 
       else
@@ -2237,10 +2237,10 @@ LABEL_58:
     LogPrintF();
   }
 
-  if (a9)
+  if (error)
   {
     v35 = v26;
-    *a9 = v26;
+    *error = v26;
   }
 
   v34 = 0;
@@ -2249,7 +2249,7 @@ LABEL_59:
   return v34;
 }
 
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionForID:(SEL)a3
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)operatingSystemVersionForID:(SEL)d
 {
   v6 = a4;
   retstr->var1 = 0;
@@ -2257,14 +2257,14 @@ LABEL_59:
   retstr->var0 = 0;
   if ([(RPCloudDaemon *)self idsIsSignedIn])
   {
-    v7 = self;
-    objc_sync_enter(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = [(RPCloudDaemon *)v7 idsDeviceArray];
-    v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    idsDeviceArray = [(RPCloudDaemon *)selfCopy idsDeviceArray];
+    v9 = [idsDeviceArray countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
       v10 = *v19;
@@ -2274,12 +2274,12 @@ LABEL_59:
         {
           if (*v19 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(idsDeviceArray);
           }
 
           v12 = *(*(&v18 + 1) + 8 * i);
-          v13 = [v12 uniqueID];
-          v14 = [v13 isEqualToString:v6];
+          uniqueID = [v12 uniqueID];
+          v14 = [uniqueID isEqualToString:v6];
 
           if (v14)
           {
@@ -2300,7 +2300,7 @@ LABEL_59:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v9 = [idsDeviceArray countByEnumeratingWithState:&v18 objects:v22 count:16];
         if (v9)
         {
           continue;
@@ -2312,7 +2312,7 @@ LABEL_59:
 
 LABEL_15:
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   return result;

@@ -1,8 +1,8 @@
 @interface CLSJunkClassificationModel
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3;
-- (CLSJunkClassificationModel)initWithSceneAnalysisVersion:(unint64_t)a3;
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version;
+- (CLSJunkClassificationModel)initWithSceneAnalysisVersion:(unint64_t)version;
 - (id)modelInfo;
-- (id)nodeForSignalIdentifier:(unint64_t)a3;
+- (id)nodeForSignalIdentifier:(unint64_t)identifier;
 - (void)setupVersion31;
 - (void)setupVersion32;
 - (void)setupVersion40;
@@ -52,9 +52,9 @@ void __39__CLSJunkClassificationModel_modelInfo__block_invoke(uint64_t a1, void 
   [v2 addObject:v3];
 }
 
-- (id)nodeForSignalIdentifier:(unint64_t)a3
+- (id)nodeForSignalIdentifier:(unint64_t)identifier
 {
-  switch(a3)
+  switch(identifier)
   {
     case 0x7FFFFFED:
       textDocumentNode = self->_textDocumentNode;
@@ -116,10 +116,10 @@ LABEL_21:
       v5 = textDocumentNode;
       break;
     default:
-      if ([(CLSJunkClassificationModel *)self isResponsibleForSignalIdentifier:a3])
+      if ([(CLSJunkClassificationModel *)self isResponsibleForSignalIdentifier:identifier])
       {
-        v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Junk - Unknown (%X)", a3];
-        v5 = [[CLSSignalNode alloc] initWithIdentifier:a3 name:v7 operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
+        identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"Junk - Unknown (%X)", identifier];
+        v5 = [[CLSSignalNode alloc] initWithIdentifier:identifier name:identifier operatingPoint:0.0 highPrecisionOperatingPoint:0.0 highRecallOperatingPoint:0.0];
       }
 
       else
@@ -460,7 +460,7 @@ LABEL_21:
   MEMORY[0x2821F96F8]();
 }
 
-- (CLSJunkClassificationModel)initWithSceneAnalysisVersion:(unint64_t)a3
+- (CLSJunkClassificationModel)initWithSceneAnalysisVersion:(unint64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
   v9.receiver = self;
@@ -469,15 +469,15 @@ LABEL_21:
   v5 = v4;
   if (v4)
   {
-    if (a3 < 0x56)
+    if (version < 0x56)
     {
-      if (a3 < 0x51)
+      if (version < 0x51)
       {
-        if (a3 < 0x28)
+        if (version < 0x28)
         {
-          if (a3 < 0x20)
+          if (version < 0x20)
           {
-            if (a3 == 31)
+            if (version == 31)
             {
               [(CLSJunkClassificationModel *)v4 setupVersion31];
             }
@@ -488,7 +488,7 @@ LABEL_21:
               {
                 v6 = objc_opt_class();
                 *buf = 67109378;
-                v11 = a3;
+                versionCopy = version;
                 v12 = 2112;
                 v13 = v6;
                 _os_log_impl(&dword_25E5F0000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Unsupported version %d in %@", buf, 0x12u);
@@ -526,12 +526,12 @@ LABEL_21:
   return v5;
 }
 
-+ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)a3
++ (unint64_t)baseSceneAnalysisVersionWithSceneAnalysisVersion:(unint64_t)version
 {
   v3 = 81;
   v4 = 40;
   v5 = 32;
-  if (a3 == 31)
+  if (version == 31)
   {
     v6 = 31;
   }
@@ -541,22 +541,22 @@ LABEL_21:
     v6 = 0;
   }
 
-  if (a3 <= 0x1F)
+  if (version <= 0x1F)
   {
     v5 = v6;
   }
 
-  if (a3 <= 0x27)
+  if (version <= 0x27)
   {
     v4 = v5;
   }
 
-  if (a3 <= 0x50)
+  if (version <= 0x50)
   {
     v3 = v4;
   }
 
-  if (a3 <= 0x55)
+  if (version <= 0x55)
   {
     return v3;
   }

@@ -9,30 +9,30 @@
 {
   if ([(ServerRPC *)self rpcType]== 1)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)singleQuery
 {
   if ([(ServerRPC *)self rpcType])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

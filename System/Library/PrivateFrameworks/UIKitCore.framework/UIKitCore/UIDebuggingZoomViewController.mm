@@ -1,25 +1,25 @@
 @interface UIDebuggingZoomViewController
-- (CGImage)newCaptureSnapshotAtRect:(CGRect)a3 window:(id)a4;
-- (UIDebuggingZoomViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)drawLinesAtPoint:(CGPoint)a3;
-- (id)drawViewLinesAtPoint:(CGPoint)a3 forView:(id)a4;
+- (CGImage)newCaptureSnapshotAtRect:(CGRect)rect window:(id)window;
+- (UIDebuggingZoomViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)drawLinesAtPoint:(CGPoint)point;
+- (id)drawViewLinesAtPoint:(CGPoint)point forView:(id)view;
 - (void)dealloc;
-- (void)toggleDirection:(id)a3;
-- (void)toggleMeasuring:(id)a3;
-- (void)toggleMode:(id)a3;
-- (void)updateGesture:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)toggleDirection:(id)direction;
+- (void)toggleMeasuring:(id)measuring;
+- (void)toggleMode:(id)mode;
+- (void)updateGesture:(id)gesture;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation UIDebuggingZoomViewController
 
-- (UIDebuggingZoomViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (UIDebuggingZoomViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = UIDebuggingZoomViewController;
-  v4 = [(UIViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(UIViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = dispatch_group_create();
@@ -42,9 +42,9 @@
   v54.receiver = self;
   v54.super_class = UIDebuggingZoomViewController;
   [(UIViewController *)&v54 viewDidLoad];
-  v3 = [(UIViewController *)self view];
+  view = [(UIViewController *)self view];
   v4 = +[UIColor whiteColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [[UILabel alloc] initWithFrame:0.0, 0.0, 200.0, 50.0];
   v6 = +[UIColor blackColor];
@@ -54,12 +54,12 @@
   [(UILabel *)v5 setFont:v7];
 
   [(UIDebuggingZoomViewController *)self setLabel:v5];
-  v8 = [(UIDebuggingZoomViewController *)self label];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  label = [(UIDebuggingZoomViewController *)self label];
+  [label setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(UIViewController *)self view];
+  view2 = [(UIViewController *)self view];
   v10 = v5;
-  [v9 addSubview:v5];
+  [view2 addSubview:v5];
 
   v11 = [[UILabel alloc] initWithFrame:0.0, 0.0, 200.0, 50.0];
   v12 = +[UIColor blackColor];
@@ -69,39 +69,39 @@
   [(UILabel *)v11 setFont:v13];
 
   [(UIDebuggingZoomViewController *)self setDistanceLabel:v11];
-  v14 = [(UIDebuggingZoomViewController *)self distanceLabel];
-  [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+  distanceLabel = [(UIDebuggingZoomViewController *)self distanceLabel];
+  [distanceLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v15 = [(UIViewController *)self view];
-  [v15 addSubview:v11];
+  view3 = [(UIViewController *)self view];
+  [view3 addSubview:v11];
 
   v16 = objc_alloc_init(UIDebuggingZoomLoupeView);
   [(UIDebuggingZoomViewController *)self setLoupe:v16];
 
-  v17 = [(UIDebuggingZoomViewController *)self loupe];
-  [v17 setDelegate:self];
+  loupe = [(UIDebuggingZoomViewController *)self loupe];
+  [loupe setDelegate:self];
 
-  v18 = [(UIDebuggingZoomViewController *)self loupe];
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
+  loupe2 = [(UIDebuggingZoomViewController *)self loupe];
+  [loupe2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v19 = [(UIViewController *)self view];
-  v20 = [(UIDebuggingZoomViewController *)self loupe];
-  [v19 addSubview:v20];
+  view4 = [(UIViewController *)self view];
+  loupe3 = [(UIDebuggingZoomViewController *)self loupe];
+  [view4 addSubview:loupe3];
 
   v21 = [[UISegmentedControl alloc] initWithItems:&unk_1EFE2DDF8];
   [(UISegmentedControl *)v21 setSelectedSegmentIndex:0];
   [(UIControl *)v21 addTarget:self action:sel_toggleDirection_ forControlEvents:4096];
   [(UIDebuggingZoomViewController *)self setDirectionSegmentedControl:v21];
-  v22 = [(UIViewController *)self view];
-  [v22 addSubview:v21];
+  view5 = [(UIViewController *)self view];
+  [view5 addSubview:v21];
 
   v23 = objc_alloc_init(UISwitch);
   [(UIView *)v23 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UIControl *)v23 addTarget:self action:sel_toggleMode_ forControlEvents:4096];
-  v24 = [(UIViewController *)self view];
+  view6 = [(UIViewController *)self view];
   v25 = v23;
   v53 = v23;
-  [v24 addSubview:v23];
+  [view6 addSubview:v23];
 
   v26 = [[UILabel alloc] initWithFrame:0.0, 0.0, 200.0, 20.0];
   v27 = +[UIColor blackColor];
@@ -112,14 +112,14 @@
 
   [(UIView *)v26 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UILabel *)v26 setText:@"View Mode"];
-  v29 = [(UIViewController *)self view];
-  [v29 addSubview:v26];
+  view7 = [(UIViewController *)self view];
+  [view7 addSubview:v26];
 
   v56[0] = v21;
   v55[0] = @"segment";
   v55[1] = @"loupe";
-  v30 = [(UIDebuggingZoomViewController *)self loupe];
-  v56[1] = v30;
+  loupe4 = [(UIDebuggingZoomViewController *)self loupe];
+  v56[1] = loupe4;
   v56[2] = v10;
   v31 = v10;
   v55[2] = @"label";
@@ -131,183 +131,183 @@
   v56[5] = v26;
   v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:6];
 
-  v33 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   [(UIView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
   v34 = MEMORY[0x1E69977A0];
-  v35 = [(UIViewController *)self view];
-  v36 = [v34 constraintWithItem:v35 attribute:9 relatedBy:0 toItem:v21 attribute:9 multiplier:1.0 constant:0.0];
-  [v33 addObject:v36];
+  view8 = [(UIViewController *)self view];
+  v36 = [v34 constraintWithItem:view8 attribute:9 relatedBy:0 toItem:v21 attribute:9 multiplier:1.0 constant:0.0];
+  [array addObject:v36];
 
   v37 = MEMORY[0x1E69977A0];
-  v38 = [(UIViewController *)self view];
-  v39 = [v37 constraintWithItem:v21 attribute:3 relatedBy:0 toItem:v38 attribute:3 multiplier:1.0 constant:10.0];
-  [v33 addObject:v39];
+  view9 = [(UIViewController *)self view];
+  v39 = [v37 constraintWithItem:v21 attribute:3 relatedBy:0 toItem:view9 attribute:3 multiplier:1.0 constant:10.0];
+  [array addObject:v39];
 
   v40 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:[segment]-padding-[loupe(>=loupesize)]" options:0 metrics:&unk_1EFE34B58 views:v32];
-  [v33 addObjectsFromArray:v40];
+  [array addObjectsFromArray:v40];
 
   v41 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:[segment]-padding-[switch]" options:0 metrics:&unk_1EFE34B58 views:v32];
-  [v33 addObjectsFromArray:v41];
+  [array addObjectsFromArray:v41];
 
   v42 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"H:|-padding-[loupe(>=loupesize)]-padding-[switch]-padding-|" options:0 metrics:&unk_1EFE34B58 views:v32];
-  [v33 addObjectsFromArray:v42];
+  [array addObjectsFromArray:v42];
 
   v43 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:[switch]-padding-[modeLabel]" options:0 metrics:&unk_1EFE34B58 views:v32];
-  [v33 addObjectsFromArray:v43];
+  [array addObjectsFromArray:v43];
 
   v44 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"H:|-padding-[loupe(>=loupesize)]-padding-[modeLabel(>=labelsize)]-padding-|" options:0 metrics:&unk_1EFE34B58 views:v32];
-  [v33 addObjectsFromArray:v44];
+  [array addObjectsFromArray:v44];
 
   v45 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:[loupe]-padding-[label]" options:0 metrics:&unk_1EFE34B58 views:v32];
-  [v33 addObjectsFromArray:v45];
+  [array addObjectsFromArray:v45];
 
   v46 = MEMORY[0x1E69977A0];
-  v47 = [(UIViewController *)self view];
-  v48 = [v46 constraintWithItem:v47 attribute:9 relatedBy:0 toItem:v31 attribute:9 multiplier:1.0 constant:0.0];
-  [v33 addObject:v48];
+  view10 = [(UIViewController *)self view];
+  v48 = [v46 constraintWithItem:view10 attribute:9 relatedBy:0 toItem:v31 attribute:9 multiplier:1.0 constant:0.0];
+  [array addObject:v48];
 
   v49 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"V:[label]-5-[distanceLabel]-padding-|" options:0 metrics:&unk_1EFE34B58 views:v32];
-  [v33 addObjectsFromArray:v49];
+  [array addObjectsFromArray:v49];
 
   v50 = MEMORY[0x1E69977A0];
-  v51 = [(UIViewController *)self view];
-  v52 = [v50 constraintWithItem:v51 attribute:9 relatedBy:0 toItem:v11 attribute:9 multiplier:1.0 constant:0.0];
-  [v33 addObject:v52];
+  view11 = [(UIViewController *)self view];
+  v52 = [v50 constraintWithItem:view11 attribute:9 relatedBy:0 toItem:v11 attribute:9 multiplier:1.0 constant:0.0];
+  [array addObject:v52];
 
-  [MEMORY[0x1E69977A0] activateConstraints:v33];
+  [MEMORY[0x1E69977A0] activateConstraints:array];
   [(UIViewController *)self setEdgesForExtendedLayout:0];
   [(UIViewController *)self setExtendedLayoutIncludesOpaqueBars:0];
 }
 
-- (void)toggleMode:(id)a3
+- (void)toggleMode:(id)mode
 {
-  v4 = a3;
-  -[UIDebuggingZoomViewController setUseViewForEdges:](self, "setUseViewForEdges:", [v4 isOn]);
-  v5 = [v4 isOn];
+  modeCopy = mode;
+  -[UIDebuggingZoomViewController setUseViewForEdges:](self, "setUseViewForEdges:", [modeCopy isOn]);
+  isOn = [modeCopy isOn];
 
-  if ((v5 & 1) == 0)
+  if ((isOn & 1) == 0)
   {
     v6 = *MEMORY[0x1E695F058];
     v7 = *(MEMORY[0x1E695F058] + 8);
     v8 = *(MEMORY[0x1E695F058] + 16);
     v9 = *(MEMORY[0x1E695F058] + 24);
-    v10 = [(UIDebuggingZoomViewController *)self lineView];
-    [v10 setRect:{v6, v7, v8, v9}];
+    lineView = [(UIDebuggingZoomViewController *)self lineView];
+    [lineView setRect:{v6, v7, v8, v9}];
 
-    v11 = [(UIDebuggingZoomViewController *)self lineView];
-    [v11 setNeedsDisplay];
+    lineView2 = [(UIDebuggingZoomViewController *)self lineView];
+    [lineView2 setNeedsDisplay];
   }
 }
 
-- (void)toggleDirection:(id)a3
+- (void)toggleDirection:(id)direction
 {
-  v13 = a3;
-  v4 = [v13 selectedSegmentIndex];
+  directionCopy = direction;
+  selectedSegmentIndex = [directionCopy selectedSegmentIndex];
   v5 = +[UIDebuggingInformationOverlay overlay];
   v6 = v5;
-  if (v4)
+  if (selectedSegmentIndex)
   {
-    v7 = [v5 touchCaptureEnabled];
+    touchCaptureEnabled = [v5 touchCaptureEnabled];
 
-    if ((v7 & 1) == 0)
+    if ((touchCaptureEnabled & 1) == 0)
     {
       v8 = +[UIDebuggingInformationOverlay overlay];
       [v8 setTouchCaptureEnabled:1];
 
-      v9 = [(UIDebuggingZoomViewController *)self lineView];
-      [v9 setHidden:0];
+      lineView = [(UIDebuggingZoomViewController *)self lineView];
+      [lineView setHidden:0];
     }
 
-    if ([v13 selectedSegmentIndex] == 1)
+    if ([directionCopy selectedSegmentIndex] == 1)
     {
-      v10 = self;
+      selfCopy2 = self;
       v11 = 0;
     }
 
     else
     {
-      v10 = self;
+      selfCopy2 = self;
       v11 = 1;
     }
 
-    [(UIDebuggingZoomViewController *)v10 setCurrentDirection:v11];
+    [(UIDebuggingZoomViewController *)selfCopy2 setCurrentDirection:v11];
   }
 
   else
   {
     [v5 setTouchCaptureEnabled:0];
 
-    v12 = [(UIDebuggingZoomViewController *)self lineView];
-    [v12 setHidden:1];
+    lineView2 = [(UIDebuggingZoomViewController *)self lineView];
+    [lineView2 setHidden:1];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v18.receiver = self;
   v18.super_class = UIDebuggingZoomViewController;
-  [(UIViewController *)&v18 viewDidAppear:a3];
-  v4 = [(UIDebuggingZoomViewController *)self lineView];
+  [(UIViewController *)&v18 viewDidAppear:appear];
+  lineView = [(UIDebuggingZoomViewController *)self lineView];
 
-  if (!v4)
+  if (!lineView)
   {
     v5 = [UIDebuggingZoomLineView alloc];
-    v6 = [(UIViewController *)self view];
-    v7 = [v6 window];
-    [v7 frame];
+    view = [(UIViewController *)self view];
+    window = [view window];
+    [window frame];
     v8 = [(UIDebuggingZoomLineView *)v5 initWithFrame:?];
     [(UIDebuggingZoomViewController *)self setLineView:v8];
 
-    v9 = [(UIViewController *)self view];
-    v10 = [v9 window];
-    v11 = [v10 rootViewController];
-    v12 = [v11 view];
-    v13 = [(UIDebuggingZoomViewController *)self lineView];
-    [v12 insertSubview:v13 atIndex:0];
+    view2 = [(UIViewController *)self view];
+    window2 = [view2 window];
+    rootViewController = [window2 rootViewController];
+    view3 = [rootViewController view];
+    lineView2 = [(UIDebuggingZoomViewController *)self lineView];
+    [view3 insertSubview:lineView2 atIndex:0];
 
     v14 = [[UIPanGestureRecognizer alloc] initWithTarget:self action:sel_updateGesture_];
-    v15 = [(UIDebuggingZoomViewController *)self lineView];
-    [v15 addGestureRecognizer:v14];
+    lineView3 = [(UIDebuggingZoomViewController *)self lineView];
+    [lineView3 addGestureRecognizer:v14];
 
     [(UIDebuggingZoomViewController *)self setPan:v14];
-    v16 = [(UIDebuggingZoomViewController *)self lineView];
+    lineView4 = [(UIDebuggingZoomViewController *)self lineView];
     v17 = +[UIDebuggingInformationOverlay overlay];
-    [v16 setHidden:{objc_msgSend(v17, "touchCaptureEnabled") ^ 1}];
+    [lineView4 setHidden:{objc_msgSend(v17, "touchCaptureEnabled") ^ 1}];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = UIDebuggingZoomViewController;
-  [(UIViewController *)&v6 viewWillDisappear:a3];
-  v4 = [(UIDebuggingZoomViewController *)self lineView];
-  [v4 setHidden:1];
+  [(UIViewController *)&v6 viewWillDisappear:disappear];
+  lineView = [(UIDebuggingZoomViewController *)self lineView];
+  [lineView setHidden:1];
 
   v5 = +[UIDebuggingInformationOverlay overlay];
   [v5 setTouchCaptureEnabled:0];
 }
 
-- (void)updateGesture:(id)a3
+- (void)updateGesture:(id)gesture
 {
-  v48 = a3;
-  v4 = [v48 state] == 2;
-  v5 = v48;
+  gestureCopy = gesture;
+  v4 = [gestureCopy state] == 2;
+  v5 = gestureCopy;
   if (v4)
   {
-    [v48 locationInView:0];
+    [gestureCopy locationInView:0];
     v7 = v6;
     v9 = v8;
-    v10 = [(UIDebuggingZoomViewController *)self loupe];
-    [v10 setCurrentlyInspectedPoint:{v7, v9}];
+    loupe = [(UIDebuggingZoomViewController *)self loupe];
+    [loupe setCurrentlyInspectedPoint:{v7, v9}];
 
     v11 = +[UIDebuggingInformationOverlay overlay];
-    v12 = [v11 inspectedWindow];
-    v13 = [v12 hitTest:0 withEvent:{v7, v9}];
+    inspectedWindow = [v11 inspectedWindow];
+    v13 = [inspectedWindow hitTest:0 withEvent:{v7, v9}];
 
-    v14 = [v13 superview];
+    superview = [v13 superview];
     [v13 frame];
-    [v14 convertPoint:0 toView:?];
+    [superview convertPoint:0 toView:?];
     v16 = v15;
     v18 = v17;
     [v13 frame];
@@ -316,20 +316,20 @@
 
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    v25 = [(UIDebuggingZoomViewController *)self label];
-    [v25 setText:v24];
+    label = [(UIDebuggingZoomViewController *)self label];
+    [label setText:v24];
 
     if ([(UIDebuggingZoomViewController *)self useViewForEdges])
     {
-      v26 = [(UIDebuggingZoomViewController *)self lineView];
-      [v26 setRect:{v16, v18, v20, v22}];
+      lineView = [(UIDebuggingZoomViewController *)self lineView];
+      [lineView setRect:{v16, v18, v20, v22}];
 
-      v27 = [(UIDebuggingZoomViewController *)self lastViewSeen];
+      lastViewSeen = [(UIDebuggingZoomViewController *)self lastViewSeen];
 
-      if (v27)
+      if (lastViewSeen)
       {
-        v28 = [(UIDebuggingZoomViewController *)self lastViewSeen];
-        v29 = [(UIDebuggingZoomViewController *)self drawViewLinesAtPoint:v28 forView:v7, v9];
+        lastViewSeen2 = [(UIDebuggingZoomViewController *)self lastViewSeen];
+        v29 = [(UIDebuggingZoomViewController *)self drawViewLinesAtPoint:lastViewSeen2 forView:v7, v9];
 
         goto LABEL_9;
       }
@@ -344,50 +344,50 @@
 
     v29 = v30;
 LABEL_9:
-    v31 = [(UIDebuggingZoomViewController *)self lineView];
+    lineView2 = [(UIDebuggingZoomViewController *)self lineView];
     v32 = [v29 objectAtIndexedSubscript:0];
     [v32 CGPointValue];
-    [v31 setStart:?];
+    [lineView2 setStart:?];
 
-    v33 = [(UIDebuggingZoomViewController *)self lineView];
+    lineView3 = [(UIDebuggingZoomViewController *)self lineView];
     v34 = [v29 objectAtIndexedSubscript:1];
     [v34 CGPointValue];
-    [v33 setEnd:?];
+    [lineView3 setEnd:?];
 
-    v35 = [(UIDebuggingZoomViewController *)self currentDirection];
-    if (v35 == 1)
+    currentDirection = [(UIDebuggingZoomViewController *)self currentDirection];
+    if (currentDirection == 1)
     {
       v36 = MEMORY[0x1E696AEC0];
-      v37 = [(UIDebuggingZoomViewController *)self lineView];
-      [v37 end];
+      lineView4 = [(UIDebuggingZoomViewController *)self lineView];
+      [lineView4 end];
       v44 = v43;
-      v40 = [(UIDebuggingZoomViewController *)self lineView];
-      [v40 start];
+      lineView5 = [(UIDebuggingZoomViewController *)self lineView];
+      [lineView5 start];
       v42 = v44 - v45;
     }
 
     else
     {
-      if (v35)
+      if (currentDirection)
       {
 LABEL_14:
 
-        v5 = v48;
+        v5 = gestureCopy;
         goto LABEL_15;
       }
 
       v36 = MEMORY[0x1E696AEC0];
-      v37 = [(UIDebuggingZoomViewController *)self lineView];
-      [v37 end];
+      lineView4 = [(UIDebuggingZoomViewController *)self lineView];
+      [lineView4 end];
       v39 = v38;
-      v40 = [(UIDebuggingZoomViewController *)self lineView];
-      [v40 start];
+      lineView5 = [(UIDebuggingZoomViewController *)self lineView];
+      [lineView5 start];
       v42 = v39 - v41;
     }
 
     v46 = [v36 stringWithFormat:@"%.1f", *&v42];
-    v47 = [(UIDebuggingZoomViewController *)self distanceLabel];
-    [v47 setText:v46];
+    distanceLabel = [(UIDebuggingZoomViewController *)self distanceLabel];
+    [distanceLabel setText:v46];
 
     goto LABEL_14;
   }
@@ -395,39 +395,39 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)toggleMeasuring:(id)a3
+- (void)toggleMeasuring:(id)measuring
 {
   v4 = +[UIDebuggingInformationOverlay overlay];
-  v5 = [v4 touchCaptureEnabled];
+  touchCaptureEnabled = [v4 touchCaptureEnabled];
 
   v6 = +[UIDebuggingInformationOverlay overlay];
-  [v6 setTouchCaptureEnabled:v5 ^ 1];
+  [v6 setTouchCaptureEnabled:touchCaptureEnabled ^ 1];
 
-  v7 = [(UIDebuggingZoomViewController *)self lineView];
-  [v7 setHidden:v5];
+  lineView = [(UIDebuggingZoomViewController *)self lineView];
+  [lineView setHidden:touchCaptureEnabled];
 }
 
-- (id)drawLinesAtPoint:(CGPoint)a3
+- (id)drawLinesAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   image = self->_image;
   if (!image)
   {
     v7 = +[UIDebuggingInformationOverlay overlay];
-    v8 = [v7 inspectedWindow];
+    inspectedWindow = [v7 inspectedWindow];
 
-    [v8 frame];
-    self->_image = [(UIDebuggingZoomViewController *)self newCaptureSnapshotAtRect:v8 window:?];
+    [inspectedWindow frame];
+    self->_image = [(UIDebuggingZoomViewController *)self newCaptureSnapshotAtRect:inspectedWindow window:?];
 
     image = self->_image;
   }
 
   BitsPerPixel = CGImageGetBitsPerPixel(image);
   BytesPerRow = CGImageGetBytesPerRow(image);
-  v11 = [MEMORY[0x1E695DF70] array];
-  v12 = [objc_opt_self() mainScreen];
-  [v12 scale];
+  array = [MEMORY[0x1E695DF70] array];
+  mainScreen = [objc_opt_self() mainScreen];
+  [mainScreen scale];
   v14 = v13;
 
   DataProvider = CGImageGetDataProvider(image);
@@ -458,8 +458,8 @@ LABEL_15:
 
     v39[3] = v21;
     v43[3] = v21;
-    v22 = [(UIDebuggingZoomViewController *)self group];
-    v23 = [(UIDebuggingZoomViewController *)self queue];
+    group = [(UIDebuggingZoomViewController *)self group];
+    queue = [(UIDebuggingZoomViewController *)self queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __50__UIDebuggingZoomViewController_drawLinesAtPoint___block_invoke;
@@ -472,10 +472,10 @@ LABEL_15:
     block[11] = &v18[(v20 * BytesPerRow + v19 * (BitsPerPixel >> 3))];
     block[4] = self;
     block[5] = &v42;
-    dispatch_group_async(v22, v23, block);
+    dispatch_group_async(group, queue, block);
 
-    v24 = [(UIDebuggingZoomViewController *)self group];
-    v25 = [(UIDebuggingZoomViewController *)self queue];
+    group2 = [(UIDebuggingZoomViewController *)self group];
+    queue2 = [(UIDebuggingZoomViewController *)self queue];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __50__UIDebuggingZoomViewController_drawLinesAtPoint___block_invoke_2;
@@ -489,14 +489,14 @@ LABEL_15:
     v36[4] = self;
     v36[5] = &v38;
     v36[6] = image;
-    dispatch_group_async(v24, v25, v36);
+    dispatch_group_async(group2, queue2, v36);
 
-    v26 = [(UIDebuggingZoomViewController *)self group];
-    dispatch_group_wait(v26, 0xFFFFFFFFFFFFFFFFLL);
+    group3 = [(UIDebuggingZoomViewController *)self group];
+    dispatch_group_wait(group3, 0xFFFFFFFFFFFFFFFFLL);
 
-    v27 = [(UIDebuggingZoomViewController *)self currentDirection];
+    currentDirection = [(UIDebuggingZoomViewController *)self currentDirection];
     v28 = v39[3] / v14;
-    if (v27)
+    if (currentDirection)
     {
       v29 = v43[3] / v14;
       v30 = v20 / v14;
@@ -512,17 +512,17 @@ LABEL_15:
     }
 
     v32 = [MEMORY[0x1E696B098] valueWithCGPoint:{v29, v30}];
-    [v11 addObject:v32];
+    [array addObject:v32];
 
     v33 = [MEMORY[0x1E696B098] valueWithCGPoint:{v31, v28}];
-    [v11 addObject:v33];
+    [array addObject:v33];
 
     _Block_object_dispose(&v38, 8);
     _Block_object_dispose(&v42, 8);
   }
 
   CFRelease(v16);
-  v34 = [v11 copy];
+  v34 = [array copy];
 
   return v34;
 }
@@ -690,32 +690,32 @@ LABEL_17:
   return result;
 }
 
-- (id)drawViewLinesAtPoint:(CGPoint)a3 forView:(id)a4
+- (id)drawViewLinesAtPoint:(CGPoint)point forView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v28[2] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (v7)
+  viewCopy = view;
+  if (viewCopy)
   {
-    v8 = v7;
-    v9 = [v7 window];
-    [v9 convertPoint:v8 toView:{x, y}];
+    inspectedWindow = viewCopy;
+    window = [viewCopy window];
+    [window convertPoint:inspectedWindow toView:{x, y}];
     x = v10;
     y = v11;
   }
 
   else
   {
-    v9 = +[UIDebuggingInformationOverlay overlay];
-    v8 = [v9 inspectedWindow];
+    window = +[UIDebuggingInformationOverlay overlay];
+    inspectedWindow = [window inspectedWindow];
   }
 
-  v12 = [v8 hitTest:0 withEvent:{x, y}];
-  v13 = [(UIDebuggingZoomViewController *)self currentDirection];
+  v12 = [inspectedWindow hitTest:0 withEvent:{x, y}];
+  currentDirection = [(UIDebuggingZoomViewController *)self currentDirection];
   [v12 bounds];
   [v12 convertPoint:0 toView:?];
-  if (v13)
+  if (currentDirection)
   {
     v16 = v14;
     v17 = [MEMORY[0x1E696B098] valueWithCGPoint:?];
@@ -757,25 +757,25 @@ LABEL_17:
   [(UIViewController *)&v4 dealloc];
 }
 
-- (CGImage)newCaptureSnapshotAtRect:(CGRect)a3 window:(id)a4
+- (CGImage)newCaptureSnapshotAtRect:(CGRect)rect window:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v68[16] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  windowCopy = window;
   v54 = [MEMORY[0x1E695DF70] arrayWithCapacity:10];
-  v9 = [(UIWindow *)v8 _fbsScene];
-  v10 = [v8 screen];
-  v11 = [UIWindow allWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 forScreen:v10];
+  _fbsScene = [(UIWindow *)windowCopy _fbsScene];
+  screen = [windowCopy screen];
+  v11 = [UIWindow allWindowsIncludingInternalWindows:1 onlyVisibleWindows:1 forScreen:screen];
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
   v56 = v11;
-  v55 = v9;
+  v55 = _fbsScene;
   v58 = [v56 countByEnumeratingWithState:&v63 objects:v68 count:16];
   if (v58)
   {
@@ -790,30 +790,30 @@ LABEL_17:
         }
 
         v13 = *(*(&v63 + 1) + 8 * i);
-        v14 = [(UIWindow *)v8 _fbsScene];
-        v15 = v9;
+        _fbsScene2 = [(UIWindow *)windowCopy _fbsScene];
+        v15 = _fbsScene;
         v16 = v15;
-        if (v14 == v15)
+        if (_fbsScene2 == v15)
         {
         }
 
         else
         {
-          if (!v9 || !v14 || ([v14 settings], v17 = v8, v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "frame"), v20 = v19, v22 = v21, v24 = v23, v26 = v25, objc_msgSend(v16, "settings"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "frame"), v70.origin.x = v28, v70.origin.y = v29, v70.size.width = v30, v70.size.height = v31, v69.origin.x = v20, v69.origin.y = v22, v69.size.width = v24, v69.size.height = v26, v32 = CGRectEqualToRect(v69, v70), v27, v9 = v55, v18, v8 = v17, !v32))
+          if (!_fbsScene || !_fbsScene2 || ([_fbsScene2 settings], v17 = windowCopy, v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "frame"), v20 = v19, v22 = v21, v24 = v23, v26 = v25, objc_msgSend(v16, "settings"), v27 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "frame"), v70.origin.x = v28, v70.origin.y = v29, v70.size.width = v30, v70.size.height = v31, v69.origin.x = v20, v69.origin.y = v22, v69.size.width = v24, v69.size.height = v26, v32 = CGRectEqualToRect(v69, v70), v27, _fbsScene = v55, v18, windowCopy = v17, !v32))
           {
 
 LABEL_14:
             continue;
           }
 
-          v33 = [v14 settings];
-          v34 = [v33 interfaceOrientation];
-          v35 = [v16 settings];
-          v36 = [v35 interfaceOrientation];
+          settings = [_fbsScene2 settings];
+          interfaceOrientation = [settings interfaceOrientation];
+          settings2 = [v16 settings];
+          interfaceOrientation2 = [settings2 interfaceOrientation];
 
-          v8 = v17;
-          v37 = v34 == v36;
-          v9 = v55;
+          windowCopy = v17;
+          v37 = interfaceOrientation == interfaceOrientation2;
+          _fbsScene = v55;
           if (!v37)
           {
             goto LABEL_14;
@@ -875,11 +875,11 @@ LABEL_14:
     v45 = 0;
   }
 
-  v49 = [UIWindow createIOSurfaceWithContextIds:v41 count:v45 frame:x, y, width, height];
-  if (v49)
+  height = [UIWindow createIOSurfaceWithContextIds:v41 count:v45 frame:x, y, width, height];
+  if (height)
   {
-    v50 = v49;
-    v51 = _UICreateCGImageFromIOSurfaceWithOptions(v49, 0);
+    v50 = height;
+    v51 = _UICreateCGImageFromIOSurfaceWithOptions(height, 0);
     CFRelease(v50);
   }
 

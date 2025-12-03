@@ -1,37 +1,37 @@
 @interface MapsDebugTextFieldTableRow
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (BOOL)textFieldShouldReturn:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (BOOL)textFieldShouldReturn:(id)return;
 - (MapsDebugTextFieldTableRow)init;
 - (id)_setupTextField;
-- (void)_fieldDidChangeValue:(id)a3;
-- (void)configureCell:(id)a3;
-- (void)configureCollectionViewCell:(id)a3;
+- (void)_fieldDidChangeValue:(id)value;
+- (void)configureCell:(id)cell;
+- (void)configureCollectionViewCell:(id)cell;
 - (void)dealloc;
 - (void)invalidate;
-- (void)textFieldDidBeginEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
 @end
 
 @implementation MapsDebugTextFieldTableRow
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  if (-[MapsDebugTextFieldTableRow maximumNumberOfCharacters](self, "maximumNumberOfCharacters") && ((v11 = length + location, [v9 text], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v11 > v13) || (objc_msgSend(v9, "text"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v16 = &v15[objc_msgSend(v10, "length") - length], v14, v16 > -[MapsDebugTextFieldTableRow maximumNumberOfCharacters](self, "maximumNumberOfCharacters"))))
+  length = range.length;
+  location = range.location;
+  fieldCopy = field;
+  stringCopy = string;
+  if (-[MapsDebugTextFieldTableRow maximumNumberOfCharacters](self, "maximumNumberOfCharacters") && ((v11 = length + location, [fieldCopy text], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "length"), v12, v11 > v13) || (objc_msgSend(fieldCopy, "text"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "length"), v16 = &v15[objc_msgSend(stringCopy, "length") - length], v14, v16 > -[MapsDebugTextFieldTableRow maximumNumberOfCharacters](self, "maximumNumberOfCharacters"))))
   {
     v17 = 0;
   }
 
   else
   {
-    v18 = [(MapsDebugTextFieldTableRow *)self filter];
+    filter = [(MapsDebugTextFieldTableRow *)self filter];
 
-    if (v18)
+    if (filter)
     {
-      v19 = [(MapsDebugTextFieldTableRow *)self filter];
-      v17 = (v19)[2](v19, v10);
+      filter2 = [(MapsDebugTextFieldTableRow *)self filter];
+      v17 = (filter2)[2](filter2, stringCopy);
     }
 
     else if ([(MapsDebugTextFieldTableRow *)self inputType]== 1)
@@ -41,7 +41,7 @@
         dispatch_once(&qword_10195E3A0, &stru_101633150);
       }
 
-      v17 = [v10 rangeOfCharacterFromSet:qword_10195E398] == 0x7FFFFFFFFFFFFFFFLL;
+      v17 = [stringCopy rangeOfCharacterFromSet:qword_10195E398] == 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
@@ -53,61 +53,61 @@
   return v17;
 }
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = [(MapsDebugTextFieldTableRow *)self didBeginEditing];
+  didBeginEditing = [(MapsDebugTextFieldTableRow *)self didBeginEditing];
 
-  if (v4)
+  if (didBeginEditing)
   {
-    v5 = [(MapsDebugTextFieldTableRow *)self didBeginEditing];
-    v5[2]();
+    didBeginEditing2 = [(MapsDebugTextFieldTableRow *)self didBeginEditing];
+    didBeginEditing2[2]();
   }
 }
 
-- (BOOL)textFieldShouldReturn:(id)a3
+- (BOOL)textFieldShouldReturn:(id)return
 {
-  [a3 resignFirstResponder];
-  v4 = [(MapsDebugTextFieldTableRow *)self done];
+  [return resignFirstResponder];
+  done = [(MapsDebugTextFieldTableRow *)self done];
 
-  if (v4)
+  if (done)
   {
-    v5 = [(MapsDebugTextFieldTableRow *)self done];
-    v6 = [(MapsDebugTextFieldTableRow *)self text];
-    (v5)[2](v5, v6);
+    done2 = [(MapsDebugTextFieldTableRow *)self done];
+    text = [(MapsDebugTextFieldTableRow *)self text];
+    (done2)[2](done2, text);
   }
 
   return 0;
 }
 
-- (void)_fieldDidChangeValue:(id)a3
+- (void)_fieldDidChangeValue:(id)value
 {
-  v6 = [a3 text];
+  text = [value text];
   v4 = [(MapsDebugTextFieldTableRow *)self set];
 
   if (v4)
   {
     v5 = [(MapsDebugTextFieldTableRow *)self set];
-    (v5)[2](v5, v6);
+    (v5)[2](v5, text);
   }
 
-  [(MapsDebugTextFieldTableRow *)self setText:v6];
+  [(MapsDebugTextFieldTableRow *)self setText:text];
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v39.receiver = self;
   v39.super_class = MapsDebugTextFieldTableRow;
-  [(MapsDebugTableRow *)&v39 configureCell:v4];
-  v5 = [v4 contentView];
+  [(MapsDebugTableRow *)&v39 configureCell:cellCopy];
+  contentView = [cellCopy contentView];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v6 = [v4 contentView];
-  v7 = [v6 subviews];
+  contentView2 = [cellCopy contentView];
+  subviews = [contentView2 subviews];
 
-  v8 = [v7 countByEnumeratingWithState:&v35 objects:v42 count:16];
+  v8 = [subviews countByEnumeratingWithState:&v35 objects:v42 count:16];
   if (v8)
   {
     v9 = v8;
@@ -118,7 +118,7 @@
       {
         if (*v36 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
@@ -128,22 +128,22 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v35 objects:v42 count:16];
+      v9 = [subviews countByEnumeratingWithState:&v35 objects:v42 count:16];
     }
 
     while (v9);
   }
 
-  [v4 setSelectionStyle:0];
-  v13 = [(MapsDebugTextFieldTableRow *)self _setupTextField];
-  [v5 addSubview:v13];
+  [cellCopy setSelectionStyle:0];
+  _setupTextField = [(MapsDebugTextFieldTableRow *)self _setupTextField];
+  [contentView addSubview:_setupTextField];
 
-  v34 = v4;
-  [v4 setPreservesSuperviewLayoutMargins:1];
-  [v5 setPreservesSuperviewLayoutMargins:1];
+  v34 = cellCopy;
+  [cellCopy setPreservesSuperviewLayoutMargins:1];
+  [contentView setPreservesSuperviewLayoutMargins:1];
   v14 = objc_alloc_init(NSMutableArray);
-  v15 = [(MapsDebugTableRow *)self title];
-  v16 = [v15 length];
+  title = [(MapsDebugTableRow *)self title];
+  v16 = [title length];
 
   textField = self->_textField;
   if (v16)
@@ -151,71 +151,71 @@
     [(UITextField *)textField setTextAlignment:2];
     [(UITextField *)self->_textField leadingAnchor];
     v18 = v32 = v14;
-    v19 = [v5 textLayoutGuide];
-    v33 = [v19 trailingAnchor];
-    v20 = [v18 constraintEqualToAnchor:5.0 constant:?];
-    v41[0] = v20;
-    v21 = [(UITextField *)self->_textField trailingAnchor];
-    v22 = [v5 trailingAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 constant:-5.0];
+    textLayoutGuide = [contentView textLayoutGuide];
+    trailingAnchor = [textLayoutGuide trailingAnchor];
+    trailingAnchor4 = [v18 constraintEqualToAnchor:5.0 constant:?];
+    v41[0] = trailingAnchor4;
+    trailingAnchor2 = [(UITextField *)self->_textField trailingAnchor];
+    trailingAnchor3 = [contentView trailingAnchor];
+    v23 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-5.0];
     v41[1] = v23;
     v24 = [NSArray arrayWithObjects:v41 count:2];
     [(NSArray *)v32 addObjectsFromArray:v24];
 
-    v25 = v18;
+    leadingAnchor = v18;
     v14 = v32;
   }
 
   else
   {
     [(UITextField *)textField setTextAlignment:0];
-    v25 = [(UITextField *)self->_textField leadingAnchor];
-    v19 = [v5 leadingAnchor];
-    v33 = [v25 constraintEqualToAnchor:v19 constant:5.0];
-    v40[0] = v33;
-    v20 = [(UITextField *)self->_textField trailingAnchor];
-    v21 = [v5 trailingAnchor];
-    v22 = [v20 constraintEqualToAnchor:v21 constant:-5.0];
-    v40[1] = v22;
+    leadingAnchor = [(UITextField *)self->_textField leadingAnchor];
+    textLayoutGuide = [contentView leadingAnchor];
+    trailingAnchor = [leadingAnchor constraintEqualToAnchor:textLayoutGuide constant:5.0];
+    v40[0] = trailingAnchor;
+    trailingAnchor4 = [(UITextField *)self->_textField trailingAnchor];
+    trailingAnchor2 = [contentView trailingAnchor];
+    trailingAnchor3 = [trailingAnchor4 constraintEqualToAnchor:trailingAnchor2 constant:-5.0];
+    v40[1] = trailingAnchor3;
     v23 = [NSArray arrayWithObjects:v40 count:2];
     [(NSArray *)v14 addObjectsFromArray:v23];
   }
 
-  v26 = [(UITextField *)self->_textField centerYAnchor];
-  v27 = [v5 centerYAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  centerYAnchor = [(UITextField *)self->_textField centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v28 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [(NSArray *)v14 addObject:v28];
 
-  v29 = [v5 heightAnchor];
-  v30 = [v29 constraintGreaterThanOrEqualToConstant:44.0];
+  heightAnchor = [contentView heightAnchor];
+  v30 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
   [(NSArray *)v14 addObject:v30];
 
   if (self->_lastConstraints)
   {
-    [v5 removeConstraints:?];
+    [contentView removeConstraints:?];
   }
 
-  [v5 addConstraints:v14];
+  [contentView addConstraints:v14];
   lastConstraints = self->_lastConstraints;
   self->_lastConstraints = v14;
 }
 
-- (void)configureCollectionViewCell:(id)a3
+- (void)configureCollectionViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v49.receiver = self;
   v49.super_class = MapsDebugTextFieldTableRow;
-  [(MapsDebugTableRow *)&v49 configureCollectionViewCell:v4];
-  v5 = v4;
-  v6 = [v5 contentView];
+  [(MapsDebugTableRow *)&v49 configureCollectionViewCell:cellCopy];
+  v5 = cellCopy;
+  contentView = [v5 contentView];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v7 = [v5 contentView];
-  v8 = [v7 subviews];
+  contentView2 = [v5 contentView];
+  subviews = [contentView2 subviews];
 
-  v9 = [v8 countByEnumeratingWithState:&v45 objects:v52 count:16];
+  v9 = [subviews countByEnumeratingWithState:&v45 objects:v52 count:16];
   if (v9)
   {
     v10 = v9;
@@ -226,7 +226,7 @@
       {
         if (*v46 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
         v13 = *(*(&v45 + 1) + 8 * i);
@@ -236,97 +236,97 @@
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v45 objects:v52 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v45 objects:v52 count:16];
     }
 
     while (v10);
   }
 
-  v14 = [(MapsDebugTextFieldTableRow *)self _setupTextField];
+  _setupTextField = [(MapsDebugTextFieldTableRow *)self _setupTextField];
   textField = self->_textField;
-  self->_textField = v14;
+  self->_textField = _setupTextField;
 
   [(UITextField *)self->_textField setClearButtonMode:1];
   v16 = +[UIColor labelColor];
   [(UITextField *)self->_textField setTextColor:v16];
 
-  [v6 addSubview:self->_textField];
+  [contentView addSubview:self->_textField];
   [v5 setPreservesSuperviewLayoutMargins:1];
-  [v6 setPreservesSuperviewLayoutMargins:1];
+  [contentView setPreservesSuperviewLayoutMargins:1];
   v17 = objc_alloc_init(NSMutableArray);
-  v18 = [(MapsDebugTableRow *)self title];
-  v19 = [v18 length];
+  title = [(MapsDebugTableRow *)self title];
+  v19 = [title length];
 
   v20 = self->_textField;
   if (v19)
   {
     [(UITextField *)v20 setTextAlignment:2];
-    v21 = [(UITextField *)self->_textField leadingAnchor];
-    v22 = [v6 textLayoutGuide];
-    v23 = [v22 trailingAnchor];
-    v44 = [v21 constraintEqualToAnchor:v23 constant:16.0];
+    leadingAnchor = [(UITextField *)self->_textField leadingAnchor];
+    textLayoutGuide = [contentView textLayoutGuide];
+    trailingAnchor = [textLayoutGuide trailingAnchor];
+    v44 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:16.0];
     v51[0] = v44;
-    v24 = [(UITextField *)self->_textField trailingAnchor];
-    v42 = [v6 trailingAnchor];
-    v43 = v24;
-    v25 = [v24 constraintEqualToAnchor:-16.0 constant:?];
-    v51[1] = v25;
-    v26 = [NSArray arrayWithObjects:v51 count:2];
-    [(NSArray *)v17 addObjectsFromArray:v26];
+    trailingAnchor2 = [(UITextField *)self->_textField trailingAnchor];
+    trailingAnchor3 = [contentView trailingAnchor];
+    trailingAnchor5 = trailingAnchor2;
+    topAnchor = [trailingAnchor2 constraintEqualToAnchor:-16.0 constant:?];
+    v51[1] = topAnchor;
+    topAnchor2 = [NSArray arrayWithObjects:v51 count:2];
+    [(NSArray *)v17 addObjectsFromArray:topAnchor2];
   }
 
   else
   {
     [(UITextField *)v20 setTextAlignment:0];
-    v41 = [(UITextField *)self->_textField leadingAnchor];
-    v39 = [v6 leadingAnchor];
-    v40 = [v41 constraintEqualToAnchor:v39 constant:16.0];
+    leadingAnchor2 = [(UITextField *)self->_textField leadingAnchor];
+    leadingAnchor3 = [contentView leadingAnchor];
+    v40 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:16.0];
     v50[0] = v40;
-    v27 = [(UITextField *)self->_textField trailingAnchor];
-    v43 = [v6 trailingAnchor];
-    v44 = v27;
-    v42 = [v27 constraintEqualToAnchor:-16.0 constant:?];
-    v50[1] = v42;
-    v25 = [(UITextField *)self->_textField topAnchor];
-    v26 = [v6 topAnchor];
-    v38 = [v25 constraintEqualToAnchor:v26 constant:6.0];
+    trailingAnchor4 = [(UITextField *)self->_textField trailingAnchor];
+    trailingAnchor5 = [contentView trailingAnchor];
+    v44 = trailingAnchor4;
+    trailingAnchor3 = [trailingAnchor4 constraintEqualToAnchor:-16.0 constant:?];
+    v50[1] = trailingAnchor3;
+    topAnchor = [(UITextField *)self->_textField topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v38 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:6.0];
     v50[2] = v38;
-    v37 = [(UITextField *)self->_textField bottomAnchor];
-    [v6 bottomAnchor];
+    bottomAnchor = [(UITextField *)self->_textField bottomAnchor];
+    [contentView bottomAnchor];
     v29 = v28 = v17;
-    v30 = [v37 constraintEqualToAnchor:v29 constant:-6.0];
+    v30 = [bottomAnchor constraintEqualToAnchor:v29 constant:-6.0];
     v50[3] = v30;
     [NSArray arrayWithObjects:v50 count:4];
     v32 = v31 = v5;
     [(NSArray *)v28 addObjectsFromArray:v32];
 
     v5 = v31;
-    v22 = v39;
+    textLayoutGuide = leadingAnchor3;
 
-    v21 = v41;
+    leadingAnchor = leadingAnchor2;
     v17 = v28;
-    v23 = v40;
+    trailingAnchor = v40;
   }
 
-  v33 = [(UITextField *)self->_textField centerYAnchor];
-  v34 = [v6 centerYAnchor];
-  v35 = [v33 constraintEqualToAnchor:v34];
+  centerYAnchor = [(UITextField *)self->_textField centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v35 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [(NSArray *)v17 addObject:v35];
 
   if (self->_lastConstraints)
   {
-    [v6 removeConstraints:?];
+    [contentView removeConstraints:?];
   }
 
-  [v6 addConstraints:v17];
+  [contentView addConstraints:v17];
   lastConstraints = self->_lastConstraints;
   self->_lastConstraints = v17;
 }
 
 - (id)_setupTextField
 {
-  v3 = [(UITextField *)self->_textField traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UITextField *)self->_textField traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   textField = self->_textField;
   if (!textField)
@@ -338,7 +338,7 @@
     v8 = +[UIColor secondaryLabelColor];
     [(UITextField *)self->_textField setTextColor:v8];
 
-    if (v4 == 5)
+    if (userInterfaceIdiom == 5)
     {
       [UIFont systemFontOfSize:15.0];
     }
@@ -360,8 +360,8 @@
   }
 
   [(UITextField *)textField setDelegate:self];
-  v11 = [(MapsDebugTextFieldTableRow *)self placeholderText];
-  [(UITextField *)self->_textField setPlaceholder:v11];
+  placeholderText = [(MapsDebugTextFieldTableRow *)self placeholderText];
+  [(UITextField *)self->_textField setPlaceholder:placeholderText];
 
   [(UITextField *)self->_textField setAdjustsFontForContentSizeCategory:1];
   v12 = [(MapsDebugTextFieldTableRow *)self inputType]- 1;
@@ -378,8 +378,8 @@
   [(UITextField *)self->_textField setKeyboardType:v13];
   [(UITextField *)self->_textField setAutocorrectionType:[(MapsDebugTextFieldTableRow *)self inputType]- 1 < 4];
   [(UITextField *)self->_textField setAutocapitalizationType:2 * ([(MapsDebugTextFieldTableRow *)self inputType]- 1 > 3)];
-  v14 = [(UITextField *)self->_textField keyboardType];
-  if (v14 == 8 || v14 == 4)
+  keyboardType = [(UITextField *)self->_textField keyboardType];
+  if (keyboardType == 8 || keyboardType == 4)
   {
     v15 = objc_alloc_init(UIToolbar);
     [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -421,9 +421,9 @@
   [(MapsDebugTextFieldTableRow *)self setSet:0];
   [(UITextField *)self->_textField removeTarget:self action:"_fieldDidChangeValue:" forControlEvents:0x20000];
   [(UITextField *)self->_textField removeTarget:self action:"_fieldDidChangeValue:" forControlEvents:0x40000];
-  v3 = [(UITextField *)self->_textField delegate];
+  delegate = [(UITextField *)self->_textField delegate];
 
-  if (v3 == self)
+  if (delegate == self)
   {
     [(UITextField *)self->_textField setDelegate:0];
   }

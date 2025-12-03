@@ -1,8 +1,8 @@
 @interface BSCornerRadiusConfiguration
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
-- (BSCornerRadiusConfiguration)initWithCornerRadius:(double)a3;
-- (BSCornerRadiusConfiguration)initWithTopLeft:(double)a3 bottomLeft:(double)a4 bottomRight:(double)a5 topRight:(double)a6;
+- (BOOL)isEqual:(id)equal;
+- (BSCornerRadiusConfiguration)initWithCornerRadius:(double)radius;
+- (BSCornerRadiusConfiguration)initWithTopLeft:(double)left bottomLeft:(double)bottomLeft bottomRight:(double)right topRight:(double)topRight;
 - (NSString)description;
 - (id)membersForCoder;
 - (unint64_t)hash;
@@ -12,10 +12,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    BSXPCAutoCodingInitialize(a1, &__block_literal_global_28);
+    BSXPCAutoCodingInitialize(self, &__block_literal_global_28);
   }
 }
 
@@ -118,29 +118,29 @@ void __41__BSCornerRadiusConfiguration_initialize__block_invoke(uint64_t a1, voi
   return v42;
 }
 
-- (BSCornerRadiusConfiguration)initWithCornerRadius:(double)a3
+- (BSCornerRadiusConfiguration)initWithCornerRadius:(double)radius
 {
   result = [(BSCornerRadiusConfiguration *)self init];
   if (result)
   {
-    result->_topLeft = a3;
-    result->_bottomLeft = a3;
-    result->_bottomRight = a3;
-    result->_topRight = a3;
+    result->_topLeft = radius;
+    result->_bottomLeft = radius;
+    result->_bottomRight = radius;
+    result->_topRight = radius;
   }
 
   return result;
 }
 
-- (BSCornerRadiusConfiguration)initWithTopLeft:(double)a3 bottomLeft:(double)a4 bottomRight:(double)a5 topRight:(double)a6
+- (BSCornerRadiusConfiguration)initWithTopLeft:(double)left bottomLeft:(double)bottomLeft bottomRight:(double)right topRight:(double)topRight
 {
   result = [(BSCornerRadiusConfiguration *)self init];
   if (result)
   {
-    result->_topLeft = a3;
-    result->_bottomLeft = a4;
-    result->_bottomRight = a5;
-    result->_topRight = a6;
+    result->_topLeft = left;
+    result->_bottomLeft = bottomLeft;
+    result->_bottomRight = right;
+    result->_topRight = topRight;
   }
 
   return result;
@@ -168,13 +168,13 @@ void __41__BSCornerRadiusConfiguration_initialize__block_invoke(uint64_t a1, voi
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (self)
     {
       v6 = [BSEqualsBuilder builderWithObject:v5 ofExpectedClass:objc_opt_class()];

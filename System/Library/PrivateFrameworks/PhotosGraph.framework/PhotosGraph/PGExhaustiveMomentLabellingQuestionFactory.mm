@@ -1,8 +1,8 @@
 @interface PGExhaustiveMomentLabellingQuestionFactory
-- (id)_inferMeaningLabelsForMomentNode:(id)a3 graph:(id)a4 cache:(id)a5 meaningLabels:(id)a6 sceneTaxonomy:(id)a7;
+- (id)_inferMeaningLabelsForMomentNode:(id)node graph:(id)graph cache:(id)cache meaningLabels:(id)labels sceneTaxonomy:(id)taxonomy;
 - (id)_meaningLabelsForWhichToGenerateQuestions;
-- (id)_questionsToAddWithMomentNodes:(id)a3 graph:(id)a4 localFactoryScore:(double)a5 limit:(unint64_t)a6 sceneTaxonomy:(id)a7 alreadyGeneratedQuestions:(id)a8 progressBlock:(id)a9;
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4;
+- (id)_questionsToAddWithMomentNodes:(id)nodes graph:(id)graph localFactoryScore:(double)score limit:(unint64_t)limit sceneTaxonomy:(id)taxonomy alreadyGeneratedQuestions:(id)questions progressBlock:(id)block;
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block;
 @end
 
 @implementation PGExhaustiveMomentLabellingQuestionFactory
@@ -40,23 +40,23 @@
   return v2;
 }
 
-- (id)_inferMeaningLabelsForMomentNode:(id)a3 graph:(id)a4 cache:(id)a5 meaningLabels:(id)a6 sceneTaxonomy:(id)a7
+- (id)_inferMeaningLabelsForMomentNode:(id)node graph:(id)graph cache:(id)cache meaningLabels:(id)labels sceneTaxonomy:(id)taxonomy
 {
   v61 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v44 = a4;
-  v43 = a5;
-  v12 = a6;
-  v42 = a7;
-  v40 = [MEMORY[0x277CBEB38] dictionary];
-  v13 = [(PGSurveyQuestionFactory *)self workingContext];
-  v14 = [v13 serviceManager];
+  nodeCopy = node;
+  graphCopy = graph;
+  cacheCopy = cache;
+  labelsCopy = labels;
+  taxonomyCopy = taxonomy;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
+  serviceManager = [workingContext serviceManager];
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v15 = v12;
+  v15 = labelsCopy;
   v16 = [v15 countByEnumeratingWithState:&v54 objects:v60 count:16];
   obj = v15;
   if (v16)
@@ -75,9 +75,9 @@
         v20 = *(*(&v54 + 1) + 8 * i);
         v59 = v20;
         v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v59 count:1];
-        v22 = [PGMeaningfulEventLooseRequiredCriteriaFactory requiredCriteriaForIdentifiers:v21 graph:v44 sceneTaxonomy:v42];
+        v22 = [PGMeaningfulEventLooseRequiredCriteriaFactory requiredCriteriaForIdentifiers:v21 graph:graphCopy sceneTaxonomy:taxonomyCopy];
 
-        v23 = [PGMeaningfulEventProcessor processRequiredCriteria:v22 forMoment:v45 meaningfulEventProcessorCache:v43 serviceManager:v14];
+        v23 = [PGMeaningfulEventProcessor processRequiredCriteria:v22 forMoment:nodeCopy meaningfulEventProcessorCache:cacheCopy serviceManager:serviceManager];
         v50 = 0u;
         v51 = 0u;
         v52 = 0u;
@@ -111,7 +111,7 @@
           if (v27 != -2147483650.0)
           {
             v30 = [MEMORY[0x277CCABB0] numberWithDouble:v27];
-            [v40 setObject:v30 forKeyedSubscript:v20];
+            [dictionary setObject:v30 forKeyedSubscript:v20];
           }
         }
       }
@@ -124,17 +124,17 @@
   }
 
   v31 = objc_alloc_init(MEMORY[0x277CBEB40]);
-  if ([v40 count])
+  if ([dictionary count])
   {
-    v32 = [v40 keysSortedByValueUsingSelector:sel_compare_];
-    v33 = [v32 reverseObjectEnumerator];
-    v34 = [v33 allObjects];
+    v32 = [dictionary keysSortedByValueUsingSelector:sel_compare_];
+    reverseObjectEnumerator = [v32 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
     v48[0] = MEMORY[0x277D85DD0];
     v48[1] = 3221225472;
     v48[2] = __119__PGExhaustiveMomentLabellingQuestionFactory__inferMeaningLabelsForMomentNode_graph_cache_meaningLabels_sceneTaxonomy___block_invoke;
     v48[3] = &unk_278882530;
     v49 = v31;
-    [v34 enumerateObjectsUsingBlock:v48];
+    [allObjects enumerateObjectsUsingBlock:v48];
   }
 
   if ([v31 count] <= 4)
@@ -184,15 +184,15 @@ void __119__PGExhaustiveMomentLabellingQuestionFactory__inferMeaningLabelsForMom
   }
 }
 
-- (id)_questionsToAddWithMomentNodes:(id)a3 graph:(id)a4 localFactoryScore:(double)a5 limit:(unint64_t)a6 sceneTaxonomy:(id)a7 alreadyGeneratedQuestions:(id)a8 progressBlock:(id)a9
+- (id)_questionsToAddWithMomentNodes:(id)nodes graph:(id)graph localFactoryScore:(double)score limit:(unint64_t)limit sceneTaxonomy:(id)taxonomy alreadyGeneratedQuestions:(id)questions progressBlock:(id)block
 {
   v63 = *MEMORY[0x277D85DE8];
-  v37 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  v35 = a9;
-  v19 = _Block_copy(v35);
+  nodesCopy = nodes;
+  graphCopy = graph;
+  taxonomyCopy = taxonomy;
+  questionsCopy = questions;
+  blockCopy = block;
+  v19 = _Block_copy(blockCopy);
   v36 = [MEMORY[0x277CBEB98] set];
   v56 = 0;
   v57 = &v56;
@@ -203,32 +203,32 @@ void __119__PGExhaustiveMomentLabellingQuestionFactory__inferMeaningLabelsForMom
   v54 = 0x2020000000;
   v55 = 0;
   v20 = [MEMORY[0x277CBEB58] set];
-  v21 = [v18 count];
-  v22 = [[PGMeaningfulEventProcessorCache alloc] initWithMomentNodes:v37];
+  v21 = [questionsCopy count];
+  v22 = [[PGMeaningfulEventProcessorCache alloc] initWithMomentNodes:nodesCopy];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __161__PGExhaustiveMomentLabellingQuestionFactory__questionsToAddWithMomentNodes_graph_localFactoryScore_limit_sceneTaxonomy_alreadyGeneratedQuestions_progressBlock___block_invoke;
   v39[3] = &unk_278882508;
   v39[4] = self;
-  v23 = v16;
+  v23 = graphCopy;
   v40 = v23;
   v24 = v22;
   v41 = v24;
-  v25 = v17;
+  v25 = taxonomyCopy;
   v42 = v25;
-  v48 = a5;
-  v26 = v18;
+  scoreCopy = score;
+  v26 = questionsCopy;
   v43 = v26;
   v27 = v20;
   v44 = v27;
-  v49 = a6;
+  limitCopy = limit;
   v28 = v19;
   v45 = v28;
   v46 = &v52;
   v50 = 0x3F847AE147AE147BLL;
   v47 = &v56;
   v51 = v21;
-  [v37 enumerateNodesUsingBlock:v39];
+  [nodesCopy enumerateNodesUsingBlock:v39];
   if (v28 && (Current = CFAbsoluteTimeGetCurrent(), Current - v53[3] >= 0.01) && (v53[3] = Current, v38 = 0, (*(v28 + 2))(v28, &v38, 1.0), v30 = *(v57 + 24) | v38, *(v57 + 24) = v30, (v30 & 1) != 0))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -319,26 +319,26 @@ LABEL_10:
   }
 }
 
-- (id)generateQuestionsWithLimit:(unint64_t)a3 progressBlock:(id)a4
+- (id)generateQuestionsWithLimit:(unint64_t)limit progressBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = [MEMORY[0x277CBEB58] set];
-  v8 = [(PGSurveyQuestionFactory *)self workingContext];
+  workingContext = [(PGSurveyQuestionFactory *)self workingContext];
   v13 = MEMORY[0x277D85DD0];
   v14 = 3221225472;
   v15 = __87__PGExhaustiveMomentLabellingQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke;
   v16 = &unk_27888A2F8;
-  v19 = v6;
-  v20 = a3;
-  v17 = self;
+  v19 = blockCopy;
+  limitCopy = limit;
+  selfCopy = self;
   v18 = v7;
   v9 = v7;
-  v10 = v6;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:&v13];
+  v10 = blockCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:&v13];
 
-  v11 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v11;
+  return allObjects;
 }
 
 void __87__PGExhaustiveMomentLabellingQuestionFactory_generateQuestionsWithLimit_progressBlock___block_invoke(uint64_t a1, void *a2)

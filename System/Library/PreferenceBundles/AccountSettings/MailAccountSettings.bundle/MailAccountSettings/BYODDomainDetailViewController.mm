@@ -1,12 +1,12 @@
 @interface BYODDomainDetailViewController
 + (id)log;
-- (BOOL)_doesMemberBelongToDomain:(id)a3;
-- (BOOL)_isRowEditableAtIndexPath:(id)a3;
-- (BYODDomainDetailViewController)initWithAccount:(id)a3 domain:(id)a4 domainState:(id)a5;
+- (BOOL)_doesMemberBelongToDomain:(id)domain;
+- (BOOL)_isRowEditableAtIndexPath:(id)path;
+- (BYODDomainDetailViewController)initWithAccount:(id)account domain:(id)domain domainState:(id)state;
 - (id)_addDomainMemberSpecifier;
-- (id)_addExistingAddressButtonSpecifierForMember:(id)a3;
-- (id)_catchAllEmailAddressSpecifier:(id)a3;
-- (id)_catchAllEmailEnabledForSpecifier:(id)a3;
+- (id)_addExistingAddressButtonSpecifierForMember:(id)member;
+- (id)_catchAllEmailAddressSpecifier:(id)specifier;
+- (id)_catchAllEmailEnabledForSpecifier:(id)specifier;
 - (id)_domainEmailDetailSpecifierTitle;
 - (id)_domainNameSpecifier;
 - (id)_domainReverify;
@@ -15,44 +15,44 @@
 - (id)_getEmailList;
 - (id)_leaveDomainSpecifier;
 - (id)_manageEmailAddressSpecifier;
-- (id)_memberDetailSpecifiersByIdentifier:(id)a3 withFullName:(id)a4;
+- (id)_memberDetailSpecifiersByIdentifier:(id)identifier withFullName:(id)name;
 - (id)_resendVerificationSpecifier;
-- (id)_specifierForRowIndex:(int64_t)a3;
+- (id)_specifierForRowIndex:(int64_t)index;
 - (id)_stopUsingDomainSpecifier;
 - (id)_viewSetupInstructionSpecifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)_getMemberTypeByDsid:(id)a3;
-- (void)_addContentViewToOBController:(id)a3;
-- (void)_addExistingAddressButtonTapped:(id)a3;
-- (void)_deleteEmailFromServerForUser:(id)a3 specifier:(id)a4;
-- (void)_domainStoppedNotification:(id)a3;
-- (void)_editButtonTapped:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)_getMemberTypeByDsid:(id)dsid;
+- (void)_addContentViewToOBController:(id)controller;
+- (void)_addExistingAddressButtonTapped:(id)tapped;
+- (void)_deleteEmailFromServerForUser:(id)user specifier:(id)specifier;
+- (void)_domainStoppedNotification:(id)notification;
+- (void)_editButtonTapped:(id)tapped;
 - (void)_fetchAvailableSendFrom;
-- (void)_finishSetupDomainTapped:(id)a3;
+- (void)_finishSetupDomainTapped:(id)tapped;
 - (void)_getMemberPhoto;
-- (void)_leaveDomainTapped:(id)a3;
-- (void)_loadDnsRecords:(id)a3;
+- (void)_leaveDomainTapped:(id)tapped;
+- (void)_loadDnsRecords:(id)records;
 - (void)_loadDomainDetails;
-- (void)_mailSettingsTapped:(id)a3;
-- (void)_manageEmailWasTapped:(id)a3;
-- (void)_obContinueTapped:(id)a3;
-- (void)_okButtonTapped:(id)a3;
-- (void)_refreshDomainResultNotification:(id)a3;
-- (void)_removeDomainMember:(id)a3;
-- (void)_resendVerificationEmailButtonTapped:(id)a3;
-- (void)_reverifyDomainButtonTapped:(id)a3;
-- (void)_setBYODCatchAllEmailEnabled:(id)a3 specifier:(id)a4;
-- (void)_shouldRemoveDomainMember:(id)a3 completion:(id)a4;
+- (void)_mailSettingsTapped:(id)tapped;
+- (void)_manageEmailWasTapped:(id)tapped;
+- (void)_obContinueTapped:(id)tapped;
+- (void)_okButtonTapped:(id)tapped;
+- (void)_refreshDomainResultNotification:(id)notification;
+- (void)_removeDomainMember:(id)member;
+- (void)_resendVerificationEmailButtonTapped:(id)tapped;
+- (void)_reverifyDomainButtonTapped:(id)tapped;
+- (void)_setBYODCatchAllEmailEnabled:(id)enabled specifier:(id)specifier;
+- (void)_shouldRemoveDomainMember:(id)member completion:(id)completion;
 - (void)_showDomainConnectSignInAlert;
 - (void)_showEmailSelectWelcomeScreen;
 - (void)_showIntroScreen;
-- (void)_stopUsingDomain:(id)a3;
+- (void)_stopUsingDomain:(id)domain;
 - (void)_triggerManualDomainSetupFlow;
 - (void)dealloc;
 - (void)reloadSpecifiers;
-- (void)safariViewControllerDidFinish:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)safariViewControllerDidFinish:(id)finish;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -64,7 +64,7 @@
   block[1] = 3221225472;
   block[2] = sub_31DD4;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D6500 != -1)
   {
     dispatch_once(&qword_D6500, block);
@@ -75,27 +75,27 @@
   return v2;
 }
 
-- (BYODDomainDetailViewController)initWithAccount:(id)a3 domain:(id)a4 domainState:(id)a5
+- (BYODDomainDetailViewController)initWithAccount:(id)account domain:(id)domain domainState:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  accountCopy = account;
+  domainCopy = domain;
+  stateCopy = state;
   v21.receiver = self;
   v21.super_class = BYODDomainDetailViewController;
   v12 = [(BYODDomainDetailViewController *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_loggedInUserAccount, a3);
-    objc_storeStrong(&_domainResult, a4);
+    objc_storeStrong(&v12->_loggedInUserAccount, account);
+    objc_storeStrong(&_domainResult, domain);
     v14 = objc_alloc_init(NSMutableArray);
     v15 = _memberLastEmailSpecifier;
     _memberLastEmailSpecifier = v14;
 
-    v16 = [v10 domain];
-    v17 = [v16 withFamily];
+    domain = [domainCopy domain];
+    withFamily = [domain withFamily];
 
-    if (v17)
+    if (withFamily)
     {
       v18 = objc_alloc_init(FAFetchFamilyCircleRequest);
       v19 = _byodFamilyRequest;
@@ -104,7 +104,7 @@
       [_byodFamilyRequest setCachePolicy:1];
     }
 
-    objc_storeStrong(&v13->_domainState, a5);
+    objc_storeStrong(&v13->_domainState, state);
   }
 
   return v13;
@@ -115,13 +115,13 @@
   v12.receiver = self;
   v12.super_class = BYODDomainDetailViewController;
   [(BYODDomainDetailViewController *)&v12 viewDidLoad];
-  v3 = [(BYODDomainDetailViewController *)self table];
-  [v3 setAllowsSelectionDuringEditing:1];
+  table = [(BYODDomainDetailViewController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 
-  v4 = [(BYODDomainDetailViewController *)self navigationItem];
-  v5 = [_domainResult domain];
-  v6 = [v5 name];
-  [v4 setTitle:v6];
+  navigationItem = [(BYODDomainDetailViewController *)self navigationItem];
+  domain = [_domainResult domain];
+  name = [domain name];
+  [navigationItem setTitle:name];
 
   domainState = self->_domainState;
   if (domainState && [(NSString *)domainState isEqualToString:@"manageEmail"])
@@ -133,10 +133,10 @@
     [(BYODDomainDetailViewController *)self _manageEmailWasTapped:v9];
   }
 
-  v10 = [_domainResult domain];
-  v11 = [v10 withFamily];
+  domain2 = [_domainResult domain];
+  withFamily = [domain2 withFamily];
 
-  if (v11)
+  if (withFamily)
   {
     [(BYODDomainDetailViewController *)self _getMemberPhoto];
   }
@@ -145,27 +145,27 @@
 - (id)specifiers
 {
   v57 = objc_alloc_init(NSMutableArray);
-  v6 = [_domainResult domain];
-  v7 = [v6 status];
+  domain = [_domainResult domain];
+  status = [domain status];
 
-  v8 = [_domainResult domain];
-  v56 = [v8 verificationStatus];
+  domain2 = [_domainResult domain];
+  verificationStatus = [domain2 verificationStatus];
 
-  v9 = [_domainResult domain];
-  v55 = [v9 reverificationStatus];
+  domain3 = [_domainResult domain];
+  reverificationStatus = [domain3 reverificationStatus];
 
-  v10 = [_domainResult domain];
-  if (([v10 withEmailAddress] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"COMPLETE") & 1) == 0)
+  domain4 = [_domainResult domain];
+  if (([domain4 withEmailAddress] & 1) == 0 && (objc_msgSend(status, "isEqualToString:", @"COMPLETE") & 1) == 0)
   {
-    v11 = [v55 isEqualToString:@"NOT_STARTED"];
+    v11 = [reverificationStatus isEqualToString:@"NOT_STARTED"];
 
     if (!v11)
     {
       goto LABEL_10;
     }
 
-    v10 = [PSSpecifier groupSpecifierWithID:@"BYOD_DOMAIN_GROUP_TITLE_ID"];
-    if (([v56 isEqualToString:@"IN_PROGRESS"] & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"IN_PROGRESS"))
+    domain4 = [PSSpecifier groupSpecifierWithID:@"BYOD_DOMAIN_GROUP_TITLE_ID"];
+    if (([verificationStatus isEqualToString:@"IN_PROGRESS"] & 1) != 0 || objc_msgSend(status, "isEqualToString:", @"IN_PROGRESS"))
     {
       v12 = [NSBundle bundleForClass:objc_opt_class()];
       v13 = [v12 localizedStringForKey:@"BYOD_DOMAIN_VERIFICATION_TITLE_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -179,48 +179,48 @@
 
     v14 = v13;
 
-    [v10 setProperty:v14 forKey:PSFooterTextGroupKey];
-    [v57 addObject:v10];
+    [domain4 setProperty:v14 forKey:PSFooterTextGroupKey];
+    [v57 addObject:domain4];
   }
 
 LABEL_10:
-  if ([v7 isEqualToString:@"COMPLETE"])
+  if ([status isEqualToString:@"COMPLETE"])
   {
-    v15 = [(BYODDomainDetailViewController *)self _domainNameSpecifier];
-    [v57 addObjectsFromArray:v15];
+    _domainNameSpecifier = [(BYODDomainDetailViewController *)self _domainNameSpecifier];
+    [v57 addObjectsFromArray:_domainNameSpecifier];
   }
 
-  v16 = [_domainResult domain];
-  if ([v16 withEmailAddress])
+  domain5 = [_domainResult domain];
+  if ([domain5 withEmailAddress])
   {
-    v17 = [v7 isEqualToString:@"COMPLETE"];
+    v17 = [status isEqualToString:@"COMPLETE"];
 
     if (v17)
     {
       goto LABEL_16;
     }
 
-    v16 = [(BYODDomainDetailViewController *)self _domainEmailDetailSpecifierTitle];
-    [v57 addObjectsFromArray:v16];
+    domain5 = [(BYODDomainDetailViewController *)self _domainEmailDetailSpecifierTitle];
+    [v57 addObjectsFromArray:domain5];
   }
 
 LABEL_16:
-  v18 = [_domainResult domain];
-  if ([v18 isDomainConnect])
+  domain6 = [_domainResult domain];
+  if ([domain6 isDomainConnect])
   {
 LABEL_31:
 
     goto LABEL_32;
   }
 
-  v19 = [_domainResult domain];
-  v20 = [v19 reverificationStatus];
-  v2 = [v20 isEqualToString:@"NOT_STARTED"];
-  if ((v2 & 1) == 0)
+  domain7 = [_domainResult domain];
+  reverificationStatus2 = [domain7 reverificationStatus];
+  domain11 = [reverificationStatus2 isEqualToString:@"NOT_STARTED"];
+  if ((domain11 & 1) == 0)
   {
-    v3 = [_domainResult domain];
-    v4 = [v3 reverificationStatus];
-    if (![v4 isEqualToString:@"VERIFICATION_SUCCESS"])
+    domain8 = [_domainResult domain];
+    reverificationStatus3 = [domain8 reverificationStatus];
+    if (![reverificationStatus3 isEqualToString:@"VERIFICATION_SUCCESS"])
     {
 LABEL_26:
 
@@ -229,12 +229,12 @@ LABEL_27:
     }
   }
 
-  if (![v56 isEqualToString:@"NOT_STARTED"] || objc_msgSend(v7, "isEqualToString:", @"COMPLETE"))
+  if (![verificationStatus isEqualToString:@"NOT_STARTED"] || objc_msgSend(status, "isEqualToString:", @"COMPLETE"))
   {
-    if ([v56 isEqualToString:@"FAILED"])
+    if ([verificationStatus isEqualToString:@"FAILED"])
     {
-      v21 = [v7 isEqualToString:@"FAILED"];
-      if (v2)
+      v21 = [status isEqualToString:@"FAILED"];
+      if (domain11)
       {
         goto LABEL_23;
       }
@@ -242,7 +242,7 @@ LABEL_27:
       goto LABEL_29;
     }
 
-    if (v2)
+    if (domain11)
     {
       goto LABEL_27;
     }
@@ -251,7 +251,7 @@ LABEL_27:
   }
 
   v21 = 1;
-  if (v2)
+  if (domain11)
   {
 LABEL_23:
 
@@ -268,26 +268,26 @@ LABEL_29:
   if (v21)
   {
 LABEL_30:
-    v18 = [(BYODDomainDetailViewController *)self _viewSetupInstructionSpecifier];
-    [v57 addObjectsFromArray:v18];
+    domain6 = [(BYODDomainDetailViewController *)self _viewSetupInstructionSpecifier];
+    [v57 addObjectsFromArray:domain6];
     goto LABEL_31;
   }
 
 LABEL_32:
-  if ([v7 isEqualToString:@"COMPLETE"] && ((objc_msgSend(v55, "isEqualToString:", @"VERIFICATION_IN_PROGRESS") & 1) != 0 || objc_msgSend(v55, "isEqualToString:", @"VERIFICATION_FAILED")))
+  if ([status isEqualToString:@"COMPLETE"] && ((objc_msgSend(reverificationStatus, "isEqualToString:", @"VERIFICATION_IN_PROGRESS") & 1) != 0 || objc_msgSend(reverificationStatus, "isEqualToString:", @"VERIFICATION_FAILED")))
   {
-    v22 = [(BYODDomainDetailViewController *)self _domainReverify];
-    [v57 addObjectsFromArray:v22];
+    _domainReverify = [(BYODDomainDetailViewController *)self _domainReverify];
+    [v57 addObjectsFromArray:_domainReverify];
   }
 
-  v23 = [_domainResult domain];
-  v24 = [v23 reverificationStatus];
-  v25 = [v24 isEqualToString:@"NOT_STARTED"];
+  domain9 = [_domainResult domain];
+  reverificationStatus4 = [domain9 reverificationStatus];
+  v25 = [reverificationStatus4 isEqualToString:@"NOT_STARTED"];
   if ((v25 & 1) == 0)
   {
-    v54 = [_domainResult domain];
-    v3 = [v54 reverificationStatus];
-    if (![v3 isEqualToString:@"VERIFICATION_SUCCESS"])
+    domain10 = [_domainResult domain];
+    domain8 = [domain10 reverificationStatus];
+    if (![domain8 isEqualToString:@"VERIFICATION_SUCCESS"])
     {
 
 LABEL_58:
@@ -295,16 +295,16 @@ LABEL_58:
     }
   }
 
-  if ([v56 isEqualToString:@"NOT_STARTED"] && !objc_msgSend(v7, "isEqualToString:", @"COMPLETE") || objc_msgSend(v56, "isEqualToString:", @"FAILED") && (objc_msgSend(v7, "isEqualToString:", @"FAILED") & 1) != 0)
+  if ([verificationStatus isEqualToString:@"NOT_STARTED"] && !objc_msgSend(status, "isEqualToString:", @"COMPLETE") || objc_msgSend(verificationStatus, "isEqualToString:", @"FAILED") && (objc_msgSend(status, "isEqualToString:", @"FAILED") & 1) != 0)
   {
     goto LABEL_45;
   }
 
-  v26 = [v56 isEqualToString:@"IN_PROGRESS"];
+  v26 = [verificationStatus isEqualToString:@"IN_PROGRESS"];
   if (v26)
   {
-    v2 = [_domainResult domain];
-    if ([v2 withEmailAddress])
+    domain11 = [_domainResult domain];
+    if ([domain11 withEmailAddress])
     {
 
 LABEL_45:
@@ -313,15 +313,15 @@ LABEL_45:
       }
 
 LABEL_57:
-      v23 = [(BYODDomainDetailViewController *)self _finishSetupDomainSpecifier];
-      [v57 addObjectsFromArray:v23];
+      domain9 = [(BYODDomainDetailViewController *)self _finishSetupDomainSpecifier];
+      [v57 addObjectsFromArray:domain9];
       goto LABEL_58;
     }
   }
 
-  if (![v7 isEqualToString:@"DEFAULT_EMAIL_NOT_SELECTED"])
+  if (![status isEqualToString:@"DEFAULT_EMAIL_NOT_SELECTED"])
   {
-    v28 = 0;
+    withEmailAddress = 0;
     if ((v26 & 1) == 0)
     {
       goto LABEL_54;
@@ -330,8 +330,8 @@ LABEL_57:
     goto LABEL_53;
   }
 
-  v27 = [_domainResult domain];
-  v28 = [v27 withEmailAddress];
+  domain12 = [_domainResult domain];
+  withEmailAddress = [domain12 withEmailAddress];
 
   if (v26)
   {
@@ -343,67 +343,67 @@ LABEL_54:
   {
   }
 
-  if (v28)
+  if (withEmailAddress)
   {
     goto LABEL_57;
   }
 
 LABEL_59:
-  if ([v7 isEqualToString:@"COMPLETE"])
+  if ([status isEqualToString:@"COMPLETE"])
   {
-    v29 = [(BYODDomainDetailViewController *)self _manageEmailAddressSpecifier];
-    [v57 addObjectsFromArray:v29];
+    _manageEmailAddressSpecifier = [(BYODDomainDetailViewController *)self _manageEmailAddressSpecifier];
+    [v57 addObjectsFromArray:_manageEmailAddressSpecifier];
   }
 
-  if ([v7 isEqualToString:@"COMPLETE"])
+  if ([status isEqualToString:@"COMPLETE"])
   {
-    v30 = [_domainResult domain];
-    v31 = [v30 isOwner];
+    domain13 = [_domainResult domain];
+    isOwner = [domain13 isOwner];
 
-    if (v31)
+    if (isOwner)
     {
-      v32 = [_domainResult domain];
-      v33 = [(BYODDomainDetailViewController *)self _catchAllEmailAddressSpecifier:v32];
+      domain14 = [_domainResult domain];
+      v33 = [(BYODDomainDetailViewController *)self _catchAllEmailAddressSpecifier:domain14];
       [v57 addObjectsFromArray:v33];
     }
   }
 
-  v34 = [_domainResult domain];
-  if (![v34 withEmailAddress])
+  domain15 = [_domainResult domain];
+  if (![domain15 withEmailAddress])
   {
     goto LABEL_67;
   }
 
-  v35 = [v7 isEqualToString:@"COMPLETE"];
+  v35 = [status isEqualToString:@"COMPLETE"];
 
   if ((v35 & 1) == 0)
   {
-    v34 = [(BYODDomainDetailViewController *)self _existingEmailAddress];
-    [v57 addObjectsFromArray:v34];
+    domain15 = [(BYODDomainDetailViewController *)self _existingEmailAddress];
+    [v57 addObjectsFromArray:domain15];
 LABEL_67:
   }
 
-  v36 = [_domainResult domain];
-  if ([v36 withEmailAddress] && (objc_msgSend(v7, "isEqualToString:", @"COMPLETE") & 1) == 0)
+  domain16 = [_domainResult domain];
+  if ([domain16 withEmailAddress] && (objc_msgSend(status, "isEqualToString:", @"COMPLETE") & 1) == 0)
   {
-    v37 = [_domainResult hasUnverifiedEmail];
+    hasUnverifiedEmail = [_domainResult hasUnverifiedEmail];
 
-    if (!v37)
+    if (!hasUnverifiedEmail)
     {
       goto LABEL_73;
     }
 
-    v36 = [(BYODDomainDetailViewController *)self _resendVerificationSpecifier];
-    [v57 addObjectsFromArray:v36];
+    domain16 = [(BYODDomainDetailViewController *)self _resendVerificationSpecifier];
+    [v57 addObjectsFromArray:domain16];
   }
 
 LABEL_73:
-  if ([v7 isEqualToString:@"COMPLETE"])
+  if ([status isEqualToString:@"COMPLETE"])
   {
-    v38 = [_domainResult domain];
-    v39 = [v38 isOwner];
+    domain17 = [_domainResult domain];
+    isOwner2 = [domain17 isOwner];
 
-    if (v39)
+    if (isOwner2)
     {
       [(BYODDomainDetailViewController *)self _stopUsingDomainSpecifier];
     }
@@ -416,11 +416,11 @@ LABEL_73:
     [v57 addObjectsFromArray:v40];
   }
 
-  if ([v7 isEqualToString:@"COMPLETE"])
+  if ([status isEqualToString:@"COMPLETE"])
   {
-    v41 = [_domainResult domain];
-    v42 = [v41 introScreenIndicator];
-    v43 = [v42 isEqualToString:@"NOT_SEEN"];
+    domain18 = [_domainResult domain];
+    introScreenIndicator = [domain18 introScreenIndicator];
+    v43 = [introScreenIndicator isEqualToString:@"NOT_SEEN"];
 
     if (v43)
     {
@@ -459,10 +459,10 @@ LABEL_73:
   v5.receiver = self;
   v5.super_class = BYODDomainDetailViewController;
   [(BYODDomainDetailViewController *)&v5 reloadSpecifiers];
-  v3 = [_domainResult domain];
-  v4 = [v3 withFamily];
+  domain = [_domainResult domain];
+  withFamily = [domain withFamily];
 
-  if (v4)
+  if (withFamily)
   {
     [(BYODDomainDetailViewController *)self _getMemberPhoto];
   }
@@ -473,43 +473,43 @@ LABEL_73:
   v3 = objc_alloc_init(NSMutableArray);
   v28 = [PSSpecifier groupSpecifierWithID:@"BYOD_REVERIFY_DOMAIN"];
   [v3 addObject:v28];
-  v4 = [_domainResult domain];
-  v5 = [v4 isOwner];
+  domain = [_domainResult domain];
+  isOwner = [domain isOwner];
 
-  if (v5)
+  if (isOwner)
   {
-    v6 = [NSBundle bundleForClass:objc_opt_class()];
-    v7 = [v6 localizedStringForKey:@"BYOD_DOMAIN_REVERIFY_TITLE_OWNER" value:&stru_B9FC8 table:@"AccountPreferences"];
+    owner = [NSBundle bundleForClass:objc_opt_class()];
+    v7 = [owner localizedStringForKey:@"BYOD_DOMAIN_REVERIFY_TITLE_OWNER" value:&stru_B9FC8 table:@"AccountPreferences"];
   }
 
   else
   {
-    v8 = [_domainResult domain];
-    v6 = [v8 owner];
+    domain2 = [_domainResult domain];
+    owner = [domain2 owner];
 
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"BYOD_DOMAIN_REVERIFY_TITLE_MEMBER" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v11 = [v6 firstName];
-    v7 = [NSString stringWithFormat:v10, v11];
+    firstName = [owner firstName];
+    v7 = [NSString stringWithFormat:v10, firstName];
   }
 
   v12 = [PSSpecifier preferenceSpecifierNamed:v7 target:self set:0 get:0 detail:0 cell:-1 edit:0];
   [v12 setIdentifier:@"reVerifySpecifierTitleID"];
   [v12 setProperty:&__kCFBooleanTrue forKey:PSAllowMultilineTitleKey];
   [v3 addObject:v12];
-  v13 = [_domainResult domain];
-  v14 = [v13 isOwner];
+  domain3 = [_domainResult domain];
+  isOwner2 = [domain3 isOwner];
 
-  if (v14)
+  if (isOwner2)
   {
     v15 = [NSBundle bundleForClass:objc_opt_class()];
     v16 = [v15 localizedStringForKey:@"BYOD_REVERIFY_BUTTON" value:&stru_B9FC8 table:@"AccountPreferences"];
     v17 = [PSSpecifier preferenceSpecifierNamed:v16 target:self set:0 get:0 detail:0 cell:13 edit:0];
 
     [v17 setButtonAction:"_reverifyDomainButtonTapped:"];
-    v18 = [_domainResult domain];
-    v19 = [v18 reverificationStatus];
-    if ([v19 isEqualToString:@"VERIFICATION_IN_PROGRESS"])
+    domain4 = [_domainResult domain];
+    reverificationStatus = [domain4 reverificationStatus];
+    if ([reverificationStatus isEqualToString:@"VERIFICATION_IN_PROGRESS"])
     {
 
 LABEL_7:
@@ -521,13 +521,13 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v21 = [_domainResult domain];
-    v22 = [v21 reverificationStatus];
-    if ([v22 isEqualToString:@"VERIFICATION_FAILED"])
+    domain5 = [_domainResult domain];
+    reverificationStatus2 = [domain5 reverificationStatus];
+    if ([reverificationStatus2 isEqualToString:@"VERIFICATION_FAILED"])
     {
-      v23 = [_domainResult domain];
-      v24 = [v23 verificationStatus];
-      v27 = [v24 isEqualToString:@"IN_PROGRESS"];
+      domain6 = [_domainResult domain];
+      verificationStatus = [domain6 verificationStatus];
+      v27 = [verificationStatus isEqualToString:@"IN_PROGRESS"];
 
       if (v27)
       {
@@ -577,8 +577,8 @@ LABEL_14:
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v4 = [_domainResult members];
-  v5 = [v4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  members = [_domainResult members];
+  v5 = [members countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v5)
   {
     v6 = *v30;
@@ -588,25 +588,25 @@ LABEL_14:
       {
         if (*v30 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(members);
         }
 
         v8 = *(*(&v29 + 1) + 8 * i);
-        v9 = [v8 memberIdentifier];
-        v10 = [(BYODDomainDetailViewController *)self _getMemberTypeByDsid:v9];
+        memberIdentifier = [v8 memberIdentifier];
+        v10 = [(BYODDomainDetailViewController *)self _getMemberTypeByDsid:memberIdentifier];
 
         if (!v10)
         {
-          v11 = [v8 memberIdentifier];
-          v12 = [v8 fullName];
-          v13 = [(BYODDomainDetailViewController *)self _memberDetailSpecifiersByIdentifier:v11 withFullName:v12];
+          memberIdentifier2 = [v8 memberIdentifier];
+          fullName = [v8 fullName];
+          v13 = [(BYODDomainDetailViewController *)self _memberDetailSpecifiersByIdentifier:memberIdentifier2 withFullName:fullName];
           [v3 addObjectsFromArray:v13];
 
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v5 = [members countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v5)
       {
         continue;
@@ -622,8 +622,8 @@ LABEL_11:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v14 = [_domainResult members];
-  v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  members2 = [_domainResult members];
+  v15 = [members2 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v15)
   {
     v16 = *v26;
@@ -633,23 +633,23 @@ LABEL_11:
       {
         if (*v26 != v16)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(members2);
         }
 
         v18 = *(*(&v25 + 1) + 8 * j);
-        v19 = [v18 memberIdentifier];
-        v20 = [(BYODDomainDetailViewController *)self _getMemberTypeByDsid:v19];
+        memberIdentifier3 = [v18 memberIdentifier];
+        v20 = [(BYODDomainDetailViewController *)self _getMemberTypeByDsid:memberIdentifier3];
 
         if (v20)
         {
-          v21 = [v18 memberIdentifier];
-          v22 = [v18 fullName];
-          v23 = [(BYODDomainDetailViewController *)self _memberDetailSpecifiersByIdentifier:v21 withFullName:v22];
+          memberIdentifier4 = [v18 memberIdentifier];
+          fullName2 = [v18 fullName];
+          v23 = [(BYODDomainDetailViewController *)self _memberDetailSpecifiersByIdentifier:memberIdentifier4 withFullName:fullName2];
           [v3 addObjectsFromArray:v23];
         }
       }
 
-      v15 = [v14 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v15 = [members2 countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v15);
@@ -706,20 +706,20 @@ LABEL_11:
 - (id)_existingEmailAddress
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [_domainResult domain];
-  v5 = [v4 withFamily];
+  domain = [_domainResult domain];
+  withFamily = [domain withFamily];
 
-  if (v5)
+  if (withFamily)
   {
-    v6 = [(BYODDomainDetailViewController *)self _addDomainMemberSpecifier];
-    [v3 addObjectsFromArray:v6];
+    _addDomainMemberSpecifier = [(BYODDomainDetailViewController *)self _addDomainMemberSpecifier];
+    [v3 addObjectsFromArray:_addDomainMemberSpecifier];
   }
 
   else
   {
-    v6 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
-    v7 = [(ACAccount *)self->_loggedInUserAccount userFullName];
-    v8 = [(BYODDomainDetailViewController *)self _memberDetailSpecifiersByIdentifier:v6 withFullName:v7];
+    _addDomainMemberSpecifier = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
+    userFullName = [(ACAccount *)self->_loggedInUserAccount userFullName];
+    v8 = [(BYODDomainDetailViewController *)self _memberDetailSpecifiersByIdentifier:_addDomainMemberSpecifier withFullName:userFullName];
     [v3 addObjectsFromArray:v8];
   }
 
@@ -728,13 +728,13 @@ LABEL_11:
   return v9;
 }
 
-- (int64_t)_getMemberTypeByDsid:(id)a3
+- (int64_t)_getMemberTypeByDsid:(id)dsid
 {
-  v3 = a3;
-  v4 = [_domainResult domain];
-  v5 = [v4 owner];
-  v6 = [v5 dsid];
-  v7 = [v3 isEqualToString:v6];
+  dsidCopy = dsid;
+  domain = [_domainResult domain];
+  owner = [domain owner];
+  dsid = [owner dsid];
+  v7 = [dsidCopy isEqualToString:dsid];
 
   if (v7)
   {
@@ -743,16 +743,16 @@ LABEL_11:
 
   else
   {
-    v9 = [_domainResult members];
-    v10 = [NSPredicate predicateWithFormat:@"dsid MATCHES %@", v3];
-    v11 = [v9 filteredArrayUsingPredicate:v10];
+    members = [_domainResult members];
+    dsidCopy = [NSPredicate predicateWithFormat:@"dsid MATCHES %@", dsidCopy];
+    v11 = [members filteredArrayUsingPredicate:dsidCopy];
 
     if ([v11 count])
     {
-      v12 = [v11 firstObject];
-      v13 = [v12 isFamilyMember];
+      firstObject = [v11 firstObject];
+      isFamilyMember = [firstObject isFamilyMember];
 
-      if (v13)
+      if (isFamilyMember)
       {
         v8 = 1;
       }
@@ -772,38 +772,38 @@ LABEL_11:
   return v8;
 }
 
-- (id)_memberDetailSpecifiersByIdentifier:(id)a3 withFullName:(id)a4
+- (id)_memberDetailSpecifiersByIdentifier:(id)identifier withFullName:(id)name
 {
-  v5 = a3;
-  v45 = a4;
-  v46 = v5;
+  identifierCopy = identifier;
+  nameCopy = name;
+  v46 = identifierCopy;
   v51 = objc_alloc_init(NSMutableArray);
-  obj = [PSSpecifier groupSpecifierWithID:v5];
+  obj = [PSSpecifier groupSpecifierWithID:identifierCopy];
   [obj setButtonAction:"_editButtonTapped:"];
   [obj setTarget:self];
   [v51 addObject:obj];
-  v47 = [PSSpecifier preferenceSpecifierNamed:v45 target:self set:0 get:0 detail:0 cell:4 edit:0];
-  [v47 setProperty:v5 forKey:@"MEMBER_DSID"];
-  v6 = [NSString stringWithFormat:@"MEMBER_%@", v5];
-  [v47 setIdentifier:v6];
+  v47 = [PSSpecifier preferenceSpecifierNamed:nameCopy target:self set:0 get:0 detail:0 cell:4 edit:0];
+  [v47 setProperty:identifierCopy forKey:@"MEMBER_DSID"];
+  identifierCopy = [NSString stringWithFormat:@"MEMBER_%@", identifierCopy];
+  [v47 setIdentifier:identifierCopy];
 
-  v7 = [_domainResult domain];
-  LOBYTE(v5) = [v7 withFamily];
+  domain = [_domainResult domain];
+  LOBYTE(identifierCopy) = [domain withFamily];
 
-  if ((v5 & 1) == 0)
+  if ((identifierCopy & 1) == 0)
   {
     v8 = +[BYODContactsManager sharedInstance];
-    v9 = [v8 avatarImageForMeContact];
+    avatarImageForMeContact = [v8 avatarImageForMeContact];
 
-    if (!v9)
+    if (!avatarImageForMeContact)
     {
       v10 = +[BYODContactsManager sharedInstance];
-      v11 = [(ACAccount *)self->_loggedInUserAccount aa_firstName];
-      v12 = [(ACAccount *)self->_loggedInUserAccount aa_lastName];
-      v9 = [v10 monogramWithFirstName:v11 andLastName:v12];
+      aa_firstName = [(ACAccount *)self->_loggedInUserAccount aa_firstName];
+      aa_lastName = [(ACAccount *)self->_loggedInUserAccount aa_lastName];
+      avatarImageForMeContact = [v10 monogramWithFirstName:aa_firstName andLastName:aa_lastName];
     }
 
-    [v47 setProperty:v9 forKey:PSIconImageKey];
+    [v47 setProperty:avatarImageForMeContact forKey:PSIconImageKey];
   }
 
   v13 = [(BYODDomainDetailViewController *)self _getMemberTypeByDsid:v46];
@@ -865,8 +865,8 @@ LABEL_14:
   v55 = 0u;
   v52 = 0u;
   v49 = v53 = 0u;
-  v48 = [v49 emails];
-  v25 = [v48 countByEnumeratingWithState:&v52 objects:v56 count:16];
+  emails = [v49 emails];
+  v25 = [emails countByEnumeratingWithState:&v52 objects:v56 count:16];
   v26 = v24;
   v43 = v24;
   if (v25)
@@ -882,18 +882,18 @@ LABEL_14:
       {
         if (*v53 != v27)
         {
-          objc_enumerationMutation(v48);
+          objc_enumerationMutation(emails);
         }
 
         v31 = *(*(&v52 + 1) + 8 * v29);
-        v32 = [v31 email];
-        v26 = [PSSpecifier preferenceSpecifierNamed:v32 target:self set:0 get:0 detail:0 cell:4 edit:0, v43];
+        email = [v31 email];
+        v26 = [PSSpecifier preferenceSpecifierNamed:email target:self set:0 get:0 detail:0 cell:4 edit:0, v43];
 
-        v33 = [v31 status];
-        LODWORD(v32) = [v33 isEqualToString:@"VERIFIED"];
+        status = [v31 status];
+        LODWORD(email) = [status isEqualToString:@"VERIFIED"];
 
         v34 = [NSBundle bundleForClass:objc_opt_class()];
-        if (v32)
+        if (email)
         {
           [v34 localizedStringForKey:@"BYOD_EMAIL_VERIFIED_STATUS_TEXT" value:&stru_B9FC8 table:@"AccountPreferences"];
         }
@@ -906,8 +906,8 @@ LABEL_14:
         [v26 setProperty:v35 forKey:v28];
 
         [v26 setProperty:objc_opt_class() forKey:v23];
-        v36 = [v49 memberIdentifier];
-        [v26 setProperty:v36 forKey:@"MEMBER_DSID"];
+        memberIdentifier = [v49 memberIdentifier];
+        [v26 setProperty:memberIdentifier forKey:@"MEMBER_DSID"];
 
         [v26 setProperty:&__kCFBooleanTrue forKey:@"editableSpecifier"];
         [v51 addObject:v26];
@@ -917,7 +917,7 @@ LABEL_14:
       }
 
       while (v25 != v29);
-      v25 = [v48 countByEnumeratingWithState:&v52 objects:v56 count:16];
+      v25 = [emails countByEnumeratingWithState:&v52 objects:v56 count:16];
     }
 
     while (v25);
@@ -926,14 +926,14 @@ LABEL_14:
   [_memberLastEmailSpecifier addObject:v26];
   if (isEditing == 1)
   {
-    v37 = [v49 emails];
-    v38 = [v37 count];
+    emails2 = [v49 emails];
+    v38 = [emails2 count];
     LODWORD(v38) = v38 < [_domainResult maxEmailsPerUser];
 
     if (v38)
     {
-      v39 = [v49 memberIdentifier];
-      v40 = [(BYODDomainDetailViewController *)self _addExistingAddressButtonSpecifierForMember:v39];
+      memberIdentifier2 = [v49 memberIdentifier];
+      v40 = [(BYODDomainDetailViewController *)self _addExistingAddressButtonSpecifierForMember:memberIdentifier2];
 
       [v51 addObject:v40];
     }
@@ -957,9 +957,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [_domainResult domain];
-  v7 = [v6 verificationStatus];
-  v8 = [v7 isEqualToString:@"NOT_STARTED"];
+  domain = [_domainResult domain];
+  verificationStatus = [domain verificationStatus];
+  v8 = [verificationStatus isEqualToString:@"NOT_STARTED"];
 
   if (v8)
   {
@@ -968,9 +968,9 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [_domainResult domain];
-  v10 = [v9 verificationStatus];
-  if ([v10 isEqualToString:@"IN_PROGRESS"])
+  domain2 = [_domainResult domain];
+  verificationStatus2 = [domain2 verificationStatus];
+  if ([verificationStatus2 isEqualToString:@"IN_PROGRESS"])
   {
 
 LABEL_8:
@@ -979,9 +979,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v11 = [_domainResult domain];
-  v12 = [v11 verificationStatus];
-  v13 = [v12 isEqualToString:@"FAILED"];
+  domain3 = [_domainResult domain];
+  verificationStatus3 = [domain3 verificationStatus];
+  v13 = [verificationStatus3 isEqualToString:@"FAILED"];
 
   if (v13)
   {
@@ -990,9 +990,9 @@ LABEL_8:
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v17 = [v4 localizedStringForKey:@"BYOD_VERIFIED_EMAILS_DOMAIN_VERIFIED_SPECIFIER_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v18 = [_domainResult domain];
-  v19 = [v18 name];
-  v14 = [NSString stringWithFormat:v17, v19];
+  domain4 = [_domainResult domain];
+  name = [domain4 name];
+  v14 = [NSString stringWithFormat:v17, name];
 
 LABEL_10:
   [v3 setProperty:v14 forKey:PSFooterTextGroupKey];
@@ -1005,10 +1005,10 @@ LABEL_10:
 - (id)_viewSetupInstructionSpecifier
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [_domainResult domain];
-  v5 = [v4 isDomainConnect];
+  domain = [_domainResult domain];
+  isDomainConnect = [domain isDomainConnect];
 
-  if ((v5 & 1) == 0)
+  if ((isDomainConnect & 1) == 0)
   {
     v6 = [PSSpecifier groupSpecifierWithID:@"BYOD_DOMAIN_VIEW_INSTRUCTION_GROUP_SPECIFIER"];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1044,11 +1044,11 @@ LABEL_10:
   return v13;
 }
 
-- (void)_loadDnsRecords:(id)a3
+- (void)_loadDnsRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(BYODDomainDetailViewController *)self dnsRecords];
-  v6 = [v5 count];
+  recordsCopy = records;
+  dnsRecords = [(BYODDomainDetailViewController *)self dnsRecords];
+  v6 = [dnsRecords count];
 
   if (v6)
   {
@@ -1063,7 +1063,7 @@ LABEL_10:
 
   else
   {
-    [v4 byod_startSpinner];
+    [recordsCopy byod_startSpinner];
     objc_initWeak(&location, self);
     v8 = +[BYODDomainDetailViewController log];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1074,17 +1074,17 @@ LABEL_10:
 
     v9 = [BYODGetDnsRecordsRequest alloc];
     loggedInUserAccount = self->_loggedInUserAccount;
-    v11 = [(ACAccount *)loggedInUserAccount accountStore];
-    v12 = [_domainResult domain];
-    v13 = [v12 name];
-    v14 = [(BYODGetDnsRecordsRequest *)v9 initWithAccount:loggedInUserAccount accountStore:v11 domain:v13];
+    accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+    domain = [_domainResult domain];
+    name = [domain name];
+    v14 = [(BYODGetDnsRecordsRequest *)v9 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name];
 
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_3503C;
     v16[3] = &unk_B9360;
     objc_copyWeak(&v18, &location);
-    v17 = v4;
+    v17 = recordsCopy;
     [(BYODGetDnsRecordsRequest *)v14 performRequestWithCallback:v16];
 
     objc_destroyWeak(&v18);
@@ -1108,17 +1108,17 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v13 = [_domainResult domain];
-  v14 = [v13 verificationStatus];
-  v15 = [v14 isEqualToString:@"NOT_STARTED"];
+  domain = [_domainResult domain];
+  verificationStatus = [domain verificationStatus];
+  v15 = [verificationStatus isEqualToString:@"NOT_STARTED"];
 
   if (v15)
   {
-    v16 = [_domainResult domain];
-    v17 = [v16 isDomainConnect];
+    domain2 = [_domainResult domain];
+    isDomainConnect = [domain2 isDomainConnect];
 
     v5 = [NSBundle bundleForClass:objc_opt_class()];
-    if (v17)
+    if (isDomainConnect)
     {
       [v5 localizedStringForKey:@"BYOD_FINISH_SETUP_DOMAIN_VERIFICATION_NOT_STARTED_FOOTER" value:&stru_B9FC8 table:@"AccountPreferences"];
     }
@@ -1132,17 +1132,17 @@ LABEL_4:
     goto LABEL_3;
   }
 
-  v18 = [_domainResult domain];
-  v19 = [v18 status];
-  v20 = [v19 isEqualToString:@"FAILED"];
+  domain3 = [_domainResult domain];
+  status = [domain3 status];
+  v20 = [status isEqualToString:@"FAILED"];
 
   if (v20)
   {
     v21 = [NSBundle bundleForClass:objc_opt_class()];
     v22 = [v21 localizedStringForKey:@"BYOD_FINISH_SETUP_DOMAIN_VERIFICATION_FAILED_FOOTER" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v23 = [_domainResult domain];
-    v24 = [v23 name];
-    v5 = [NSString stringWithFormat:v22, v24];
+    domain4 = [_domainResult domain];
+    name = [domain4 name];
+    v5 = [NSString stringWithFormat:v22, name];
 
     [v29 setProperty:v5 forKey:PSFooterTextGroupKey];
     v4 = &ACUIDescriptionFromEmailAddress_ptr;
@@ -1159,18 +1159,18 @@ LABEL_5:
   [v10 setButtonAction:"_finishSetupDomainTapped:"];
   if (([_domainResult hasUnverifiedEmail] & 1) == 0)
   {
-    v11 = [_domainResult domain];
-    v12 = [v11 verificationStatus];
-    if ([v12 isEqualToString:@"IN_PROGRESS"])
+    domain5 = [_domainResult domain];
+    verificationStatus2 = [domain5 verificationStatus];
+    if ([verificationStatus2 isEqualToString:@"IN_PROGRESS"])
     {
     }
 
     else
     {
-      v25 = [_domainResult domain];
-      v26 = [v25 isDomainConnect];
+      domain6 = [_domainResult domain];
+      isDomainConnect2 = [domain6 isDomainConnect];
 
-      if (v26)
+      if (isDomainConnect2)
       {
         goto LABEL_16;
       }
@@ -1191,25 +1191,25 @@ LABEL_16:
 {
   v3 = objc_alloc_init(NSMutableArray);
   v4 = [PSSpecifier groupSpecifierWithID:@"BYOD_DOMAIN_NAME_SPECIFIER_ID"];
-  v5 = [_domainResult domain];
-  v6 = [v5 isOwner];
+  domain = [_domainResult domain];
+  isOwner = [domain isOwner];
 
-  if (v6)
+  if (isOwner)
   {
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"BYOD_DOMAIN_NAME_INFO_TITLE_ADD" value:&stru_B9FC8 table:@"AccountPreferences"];
 
-    v9 = [_domainResult domain];
-    v10 = [v9 isDomainPurchased];
+    domain2 = [_domainResult domain];
+    isDomainPurchased = [domain2 isDomainPurchased];
 
-    if (v10)
+    if (isDomainPurchased)
     {
       v11 = [NSBundle bundleForClass:objc_opt_class()];
       v35 = v4;
       v12 = [v11 localizedStringForKey:@"BYOD_DOMAIN_NAME_INFO_TITLE_PURCHASE" value:&stru_B9FC8 table:@"AccountPreferences"];
-      v13 = [_domainResult domain];
-      v14 = [v13 domainPurchaseProviderName];
-      v15 = [NSString stringWithFormat:v12, v14];
+      domain3 = [_domainResult domain];
+      domainPurchaseProviderName = [domain3 domainPurchaseProviderName];
+      v15 = [NSString stringWithFormat:v12, domainPurchaseProviderName];
 
       v8 = v15;
       v4 = v35;
@@ -1226,18 +1226,18 @@ LABEL_16:
   }
 
   [v3 addObject:v4];
-  v17 = [_domainResult domain];
-  v18 = [v17 name];
-  v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:self set:0 get:0 detail:0 cell:4 edit:0];
+  domain4 = [_domainResult domain];
+  name = [domain4 name];
+  v19 = [PSSpecifier preferenceSpecifierNamed:name target:self set:0 get:0 detail:0 cell:4 edit:0];
 
   v20 = [NSBundle bundleForClass:objc_opt_class()];
   v21 = [v20 localizedStringForKey:@"BYOD_DOMAIN_NAME_INFO_SUBTITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
   [v19 setProperty:v21 forKey:PSTableCellSubtitleTextKey];
 
   [v19 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v22 = [_domainResult domain];
-  v23 = [v22 name];
-  [v19 setIdentifier:v23];
+  domain5 = [_domainResult domain];
+  name2 = [domain5 name];
+  [v19 setIdentifier:name2];
 
   v24 = [NSBundle bundleForClass:objc_opt_class()];
   v25 = [UIImage imageNamed:@"CustomDomainRowIconL.png" inBundle:v24];
@@ -1278,19 +1278,19 @@ LABEL_16:
   return v10;
 }
 
-- (id)_catchAllEmailAddressSpecifier:(id)a3
+- (id)_catchAllEmailAddressSpecifier:(id)specifier
 {
-  v24 = a3;
+  specifierCopy = specifier;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = [PSSpecifier groupSpecifierWithID:@"BYOD_CATCH_ALL_GROUP_ID"];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v23 = self;
+  selfCopy = self;
   v7 = [v6 localizedStringForKey:@"BYOD_CATCH_ALL_EMAIL_FOOTER_LEARN_MORE" value:&stru_B9FC8 table:@"AccountPreferences"];
 
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"BYOD_CATCH_ALL_EMAIL_FOOTER" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v10 = [v24 name];
-  v11 = [NSString stringWithFormat:v9, v10];
+  name = [specifierCopy name];
+  v11 = [NSString stringWithFormat:v9, name];
   v12 = [NSString stringWithFormat:@"%@ %@", v11, v7];
 
   v13 = objc_opt_class();
@@ -1309,7 +1309,7 @@ LABEL_16:
   [v4 addObject:v5];
   v18 = [NSBundle bundleForClass:objc_opt_class()];
   v19 = [v18 localizedStringForKey:@"BYOD_CATCH_ALL_EMAIL_SPECIFIER_NAME" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:v23 set:"_setBYODCatchAllEmailEnabled:specifier:" get:"_catchAllEmailEnabledForSpecifier:" detail:0 cell:6 edit:0];
+  v20 = [PSSpecifier preferenceSpecifierNamed:v19 target:selfCopy set:"_setBYODCatchAllEmailEnabled:specifier:" get:"_catchAllEmailEnabledForSpecifier:" detail:0 cell:6 edit:0];
 
   [v4 addObject:v20];
   v21 = [v4 copy];
@@ -1323,9 +1323,9 @@ LABEL_16:
   v16 = +[PSSpecifier emptyGroupSpecifier];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_MEMBER_LEAVE_DOMAIN_FOOTER_TEXT" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v6 = [_domainResult domain];
-  v7 = [v6 name];
-  v8 = [NSString stringWithFormat:v5, v7];
+  domain = [_domainResult domain];
+  name = [domain name];
+  v8 = [NSString stringWithFormat:v5, name];
 
   [v16 setProperty:v8 forKey:PSFooterTextGroupKey];
   [v3 addObject:v16];
@@ -1352,9 +1352,9 @@ LABEL_16:
   v16 = [PSSpecifier groupSpecifierWithID:@"BYOD_STOP_USING_DOMAIN_GROUP"];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_STOP_USING_DOMAIN_FOOTER" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v6 = [_domainResult domain];
-  v7 = [v6 name];
-  v8 = [NSString stringWithFormat:v5, v7];
+  domain = [_domainResult domain];
+  name = [domain name];
+  v8 = [NSString stringWithFormat:v5, name];
 
   [v16 setProperty:v8 forKey:PSFooterTextGroupKey];
   [v3 addObject:v16];
@@ -1375,9 +1375,9 @@ LABEL_16:
   return v14;
 }
 
-- (id)_addExistingAddressButtonSpecifierForMember:(id)a3
+- (id)_addExistingAddressButtonSpecifierForMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v5 = [NSBundle bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"BYOD_ADD_EXISTING_ADDRESS_BUTTON" value:&stru_B9FC8 table:@"AccountPreferences"];
   v7 = [PSSpecifier preferenceSpecifierNamed:v6 target:self set:0 get:0 detail:0 cell:13 edit:0];
@@ -1385,38 +1385,38 @@ LABEL_16:
   [v7 setIdentifier:@"ADD_EXISTING_ADDRESS_SPECIFIER_ID"];
   [v7 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
   [v7 setButtonAction:"_addExistingAddressButtonTapped:"];
-  [v7 setProperty:v4 forKey:@"MEMBER_DSID"];
+  [v7 setProperty:memberCopy forKey:@"MEMBER_DSID"];
   [v7 setProperty:&__kCFBooleanFalse forKey:@"editableSpecifier"];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = BYODDomainDetailViewController;
-  v4 = [(BYODDomainDetailViewController *)&v11 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
-  v6 = [v5 identifier];
-  v7 = [v6 isEqualToString:@"reVerifySpecifierTitleID"];
+  v4 = [(BYODDomainDetailViewController *)&v11 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
+  identifier = [specifier identifier];
+  v7 = [identifier isEqualToString:@"reVerifySpecifierTitleID"];
 
   if (v7)
   {
-    v8 = [v4 titleLabel];
+    titleLabel = [v4 titleLabel];
     v9 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
-    [v8 setFont:v9];
+    [titleLabel setFont:v9];
   }
 
   return v4;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = a5;
-  v8 = v7;
-  if (a4 == 1)
+  pathCopy = path;
+  v8 = pathCopy;
+  if (style == 1)
   {
-    if ([v7 row])
+    if ([pathCopy row])
     {
       v9 = [(BYODDomainDetailViewController *)self _specifierForRowIndex:[(BYODDomainDetailViewController *)self indexForIndexPath:v8]];
       v10 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1437,7 +1437,7 @@ LABEL_16:
       v26[3] = &unk_B9388;
       v20 = v9;
       v27 = v20;
-      v28 = self;
+      selfCopy = self;
       v21 = [UIAlertAction actionWithTitle:v19 style:2 handler:v26];
 
       [v14 addAction:v17];
@@ -1470,17 +1470,17 @@ LABEL_16:
   }
 }
 
-- (id)_specifierForRowIndex:(int64_t)a3
+- (id)_specifierForRowIndex:(int64_t)index
 {
   v5 = OBJC_IVAR___PSListController__specifiers;
-  if ([*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] count] <= a3)
+  if ([*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] count] <= index)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [*&self->PSListController_opaque[v5] objectAtIndex:a3];
+    v6 = [*&self->PSListController_opaque[v5] objectAtIndex:index];
   }
 
   return v6;
@@ -1493,9 +1493,9 @@ LABEL_16:
 
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_DOMAIN_READY_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v6 = [_domainResult domain];
-  v7 = [v6 name];
-  v8 = [NSString stringWithFormat:v5, v7];
+  domain = [_domainResult domain];
+  name = [domain name];
+  v8 = [NSString stringWithFormat:v5, name];
 
   if (MUISolariumFeatureEnabled())
   {
@@ -1520,8 +1520,8 @@ LABEL_16:
   [v14 setTitle:v16 forState:0];
 
   [v14 addTarget:self action:"_obContinueTapped:" forControlEvents:64];
-  v17 = [_welcomeController buttonTray];
-  [v17 addButton:v14];
+  buttonTray = [_welcomeController buttonTray];
+  [buttonTray addButton:v14];
 
   v18 = [BYODSelectDefaultEmailNavController alloc];
   v19 = [(BYODSelectDefaultEmailNavController *)v18 initWithRootViewController:_welcomeController];
@@ -1532,26 +1532,26 @@ LABEL_16:
   [(BYODDomainDetailViewController *)self presentViewController:_selectDefaultEmailNavController animated:1 completion:0];
 }
 
-- (void)_manageEmailWasTapped:(id)a3
+- (void)_manageEmailWasTapped:(id)tapped
 {
   v4 = [BYODEmailAddressManageViewController alloc];
   v5 = [(BYODEmailAddressManageViewController *)v4 initWithAccount:self->_loggedInUserAccount domain:_domainResult];
   [(BYODDomainDetailViewController *)self showController:?];
 }
 
-- (void)_leaveDomainTapped:(id)a3
+- (void)_leaveDomainTapped:(id)tapped
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_MEMBER_LEAVE_DOMAIN_ALERT_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v6 = [_domainResult domain];
-  v7 = [v6 name];
-  v8 = [NSString stringWithFormat:v5, v7];
+  domain = [_domainResult domain];
+  name = [domain name];
+  v8 = [NSString stringWithFormat:v5, name];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"BYOD_MEMBER_LEAVE_DOMAIN_ALERT_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v11 = [_domainResult domain];
-  v12 = [v11 name];
-  v13 = [NSString stringWithFormat:v10, v12];
+  domain2 = [_domainResult domain];
+  name2 = [domain2 name];
+  v13 = [NSString stringWithFormat:v10, name2];
 
   v14 = [UIAlertController alertControllerWithTitle:v8 message:v13 preferredStyle:1];
   v15 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1573,44 +1573,44 @@ LABEL_16:
   [(BYODDomainDetailViewController *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (void)_stopUsingDomain:(id)a3
+- (void)_stopUsingDomain:(id)domain
 {
   v4 = [BYODStopUsingDomainViewController alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v6 = [_domainResult domain];
-  v8 = [(BYODStopUsingDomainViewController *)v4 initWithAccount:loggedInUserAccount domain:v6];
+  domain = [_domainResult domain];
+  v8 = [(BYODStopUsingDomainViewController *)v4 initWithAccount:loggedInUserAccount domain:domain];
 
   v7 = [[UINavigationController alloc] initWithRootViewController:v8];
   [(BYODDomainDetailViewController *)self presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)_finishSetupDomainTapped:(id)a3
+- (void)_finishSetupDomainTapped:(id)tapped
 {
-  v4 = [_domainResult domain];
-  v5 = [v4 verificationStatus];
-  if ([v5 isEqualToString:@"NOT_STARTED"])
+  domain = [_domainResult domain];
+  verificationStatus = [domain verificationStatus];
+  if ([verificationStatus isEqualToString:@"NOT_STARTED"])
   {
 
 LABEL_4:
-    v9 = [_domainResult domain];
-    v10 = [v9 isDomainConnect];
+    domain2 = [_domainResult domain];
+    isDomainConnect = [domain2 isDomainConnect];
 
-    if (v10)
+    if (isDomainConnect)
     {
-      v11 = [_domainResult domain];
-      v12 = [v11 dnsProviderName];
+      domain3 = [_domainResult domain];
+      dnsProviderName = [domain3 dnsProviderName];
 
-      if ([(BYODConfirmFinishSetupViewController *)v12 length])
+      if ([(BYODConfirmFinishSetupViewController *)dnsProviderName length])
       {
         v13 = [NSBundle bundleForClass:objc_opt_class()];
         v14 = [v13 localizedStringForKey:@"BYOD_FINISH_SETUP_DOMAIN_ALERT_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-        v15 = [NSString stringWithFormat:v14, v12];
+        v15 = [NSString stringWithFormat:v14, dnsProviderName];
 
         v16 = [NSBundle bundleForClass:objc_opt_class()];
         v17 = [v16 localizedStringForKey:@"BYOD_FINISH_SETUP_DOMAIN_ALERT_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-        v18 = [_domainResult domain];
-        v19 = [v18 name];
-        v20 = [NSString stringWithFormat:v17, v19, v12];
+        domain4 = [_domainResult domain];
+        name = [domain4 name];
+        v20 = [NSString stringWithFormat:v17, name, dnsProviderName];
 
         v21 = [UIAlertController alertControllerWithTitle:v15 message:v20 preferredStyle:1];
         v22 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1641,9 +1641,9 @@ LABEL_4:
         v15 = +[BYODDomainDetailViewController log];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v36 = [_domainResult ef_publicDescription];
+          ef_publicDescription = [_domainResult ef_publicDescription];
           LODWORD(location[0]) = 138412290;
-          *(location + 4) = v36;
+          *(location + 4) = ef_publicDescription;
           _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "dns provider name not present. domainInfo %@", location, 0xCu);
         }
       }
@@ -1652,18 +1652,18 @@ LABEL_4:
     else
     {
       v28 = [BYODConfirmFinishSetupViewController alloc];
-      v29 = [_domainResult domain];
-      v30 = [v29 name];
-      v12 = [(BYODConfirmFinishSetupViewController *)v28 initWithDomainName:v30 acAccount:self->_loggedInUserAccount];
+      domain5 = [_domainResult domain];
+      name2 = [domain5 name];
+      dnsProviderName = [(BYODConfirmFinishSetupViewController *)v28 initWithDomainName:name2 acAccount:self->_loggedInUserAccount];
 
-      v31 = [_domainResult domain];
-      if ([v31 withEmailAddress])
+      domain6 = [_domainResult domain];
+      if ([domain6 withEmailAddress])
       {
-        v32 = [_domainResult hasEmails];
+        hasEmails = [_domainResult hasEmails];
 
-        if (v32)
+        if (hasEmails)
         {
-          [(BYODConfirmFinishSetupViewController *)v12 setShowDefaultEmailSelect:1];
+          [(BYODConfirmFinishSetupViewController *)dnsProviderName setShowDefaultEmailSelect:1];
         }
       }
 
@@ -1671,7 +1671,7 @@ LABEL_4:
       {
       }
 
-      v33 = [[BYODSelectDefaultEmailNavController alloc] initWithRootViewController:v12];
+      v33 = [[BYODSelectDefaultEmailNavController alloc] initWithRootViewController:dnsProviderName];
       v34 = _selectDefaultEmailNavController;
       _selectDefaultEmailNavController = v33;
 
@@ -1689,9 +1689,9 @@ LABEL_4:
     return;
   }
 
-  v6 = [_domainResult domain];
-  v7 = [v6 verificationStatus];
-  v8 = [v7 isEqualToString:@"FAILED"];
+  domain7 = [_domainResult domain];
+  verificationStatus2 = [domain7 verificationStatus];
+  v8 = [verificationStatus2 isEqualToString:@"FAILED"];
 
   if (v8)
   {
@@ -1701,7 +1701,7 @@ LABEL_4:
   [(BYODDomainDetailViewController *)self _fetchAvailableSendFrom];
 }
 
-- (void)_obContinueTapped:(id)a3
+- (void)_obContinueTapped:(id)tapped
 {
   v14 = +[BYODIcon customEmailDomainIcon];
   v4 = [BYODSelectEmailTableViewController alloc];
@@ -1711,14 +1711,14 @@ LABEL_4:
   v8 = [v7 localizedStringForKey:@"BYOD_CHOOSE_DEFAULT_EMAIL_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
   loggedInUserAccount = self->_loggedInUserAccount;
   v10 = _emailList;
-  v11 = [_domainResult domain];
-  v12 = [v11 name];
-  v13 = [(BYODSelectEmailTableViewController *)v4 initWithTitle:v6 detailText:v8 icon:v14 adoptTableViewScrollView:1 userAccount:loggedInUserAccount emailListResponse:v10 domainName:v12];
+  domain = [_domainResult domain];
+  name = [domain name];
+  v13 = [(BYODSelectEmailTableViewController *)v4 initWithTitle:v6 detailText:v8 icon:v14 adoptTableViewScrollView:1 userAccount:loggedInUserAccount emailListResponse:v10 domainName:name];
 
   [_selectDefaultEmailNavController pushViewController:v13 animated:1];
 }
 
-- (void)_editButtonTapped:(id)a3
+- (void)_editButtonTapped:(id)tapped
 {
   v4 = +[BYODDomainDetailViewController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1728,8 +1728,8 @@ LABEL_4:
   }
 
   isEditing ^= 1u;
-  v5 = [(BYODDomainDetailViewController *)self table];
-  [v5 setEditing:isEditing animated:1];
+  table = [(BYODDomainDetailViewController *)self table];
+  [table setEditing:isEditing animated:1];
 
   v34 = [_emailDetailGroupSpecifierHeader propertyForKey:@"headerView"];
   [v34 toggleDoneButton:isEditing];
@@ -1745,9 +1745,9 @@ LABEL_4:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v7 = [_domainResult members];
-    obj = v7;
-    v8 = [v7 countByEnumeratingWithState:&v45 objects:v53 count:16];
+    members = [_domainResult members];
+    obj = members;
+    v8 = [members countByEnumeratingWithState:&v45 objects:v53 count:16];
     if (v8)
     {
       v9 = *v46;
@@ -1761,11 +1761,11 @@ LABEL_4:
           }
 
           v11 = *(*(&v45 + 1) + 8 * i);
-          v12 = [v11 dsid];
-          v13 = [_domainResult domain];
-          v14 = [v13 owner];
-          v15 = [v14 dsid];
-          v16 = [v12 isEqualToString:v15];
+          dsid = [v11 dsid];
+          domain = [_domainResult domain];
+          owner = [domain owner];
+          dsid2 = [owner dsid];
+          v16 = [dsid isEqualToString:dsid2];
 
           if (v16)
           {
@@ -1773,7 +1773,7 @@ LABEL_4:
           }
         }
 
-        v7 = obj;
+        members = obj;
         v8 = [obj countByEnumeratingWithState:&v45 objects:v53 count:16];
       }
 
@@ -1784,9 +1784,9 @@ LABEL_4:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v17 = [_domainResult members];
-    obja = v17;
-    v18 = [v17 countByEnumeratingWithState:&v41 objects:v52 count:16];
+    members2 = [_domainResult members];
+    obja = members2;
+    v18 = [members2 countByEnumeratingWithState:&v41 objects:v52 count:16];
     if (v18)
     {
       v19 = *v42;
@@ -1800,11 +1800,11 @@ LABEL_4:
           }
 
           v21 = *(*(&v41 + 1) + 8 * j);
-          v22 = [v21 dsid];
-          v23 = [_domainResult domain];
-          v24 = [v23 owner];
-          v25 = [v24 dsid];
-          v26 = [v22 isEqualToString:v25];
+          dsid3 = [v21 dsid];
+          domain2 = [_domainResult domain];
+          owner2 = [domain2 owner];
+          dsid4 = [owner2 dsid];
+          v26 = [dsid3 isEqualToString:dsid4];
 
           if ((v26 & 1) == 0)
           {
@@ -1812,7 +1812,7 @@ LABEL_4:
           }
         }
 
-        v17 = obja;
+        members2 = obja;
         v18 = [obja countByEnumeratingWithState:&v41 objects:v52 count:16];
       }
 
@@ -1841,8 +1841,8 @@ LABEL_4:
           }
 
           v31 = *(*(&v37 + 1) + 8 * k);
-          v32 = [v31 identifier];
-          v33 = [v32 containsString:@"ADD_EXISTING_ADDRESS_SPECIFIER_ID"];
+          identifier = [v31 identifier];
+          v33 = [identifier containsString:@"ADD_EXISTING_ADDRESS_SPECIFIER_ID"];
 
           if (v33)
           {
@@ -1858,9 +1858,9 @@ LABEL_4:
   }
 }
 
-- (void)_addExistingAddressButtonTapped:(id)a3
+- (void)_addExistingAddressButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = +[BYODDomainDetailViewController log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1870,14 +1870,14 @@ LABEL_4:
 
   v6 = [BYODUpdateEmailViewController alloc];
   v7 = [(BYODUpdateEmailViewController *)v6 initWithAccount:self->_loggedInUserAccount domain:_domainResult addAlias:0];
-  [(BYODUpdateEmailViewController *)v7 setCallingSpecifier:v4];
+  [(BYODUpdateEmailViewController *)v7 setCallingSpecifier:tappedCopy];
   v8 = [[UINavigationController alloc] initWithRootViewController:v7];
   [(BYODDomainDetailViewController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)_resendVerificationEmailButtonTapped:(id)a3
+- (void)_resendVerificationEmailButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = _byodSpinner;
   if (!_byodSpinner)
   {
@@ -1899,10 +1899,10 @@ LABEL_4:
 
   v9 = [BYODResendVerificationEmailRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v11 = [(ACAccount *)loggedInUserAccount accountStore];
-  v12 = [_domainResult domain];
-  v13 = [v12 name];
-  v14 = [(BYODResendVerificationEmailRequest *)v9 initWithAccount:loggedInUserAccount accountStore:v11 domain:v13];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  domain = [_domainResult domain];
+  name = [domain name];
+  v14 = [(BYODResendVerificationEmailRequest *)v9 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name];
 
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
@@ -1915,12 +1915,12 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (void)_reverifyDomainButtonTapped:(id)a3
+- (void)_reverifyDomainButtonTapped:(id)tapped
 {
-  v4 = [_domainResult domain];
-  v5 = [v4 isDomainConnect];
+  domain = [_domainResult domain];
+  isDomainConnect = [domain isDomainConnect];
 
-  if (v5)
+  if (isDomainConnect)
   {
 
     [(BYODDomainDetailViewController *)self _showDomainConnectSignInAlert];
@@ -1936,10 +1936,10 @@ LABEL_4:
 - (void)_triggerManualDomainSetupFlow
 {
   v3 = [BYODDomainManualSetupViewController alloc];
-  v4 = [_domainResult domain];
-  v5 = [v4 name];
-  v6 = [(BYODDomainDetailViewController *)self loggedInUserAccount];
-  v7 = [(BYODDomainManualSetupViewController *)v3 initWithDomainName:v5 acAccount:v6 showRedBadge:0];
+  domain = [_domainResult domain];
+  name = [domain name];
+  loggedInUserAccount = [(BYODDomainDetailViewController *)self loggedInUserAccount];
+  v7 = [(BYODDomainManualSetupViewController *)v3 initWithDomainName:name acAccount:loggedInUserAccount showRedBadge:0];
 
   v8 = [[UINavigationController alloc] initWithRootViewController:v7];
   v11 = v8;
@@ -1949,25 +1949,25 @@ LABEL_4:
 
 - (void)_showDomainConnectSignInAlert
 {
-  v3 = [_domainResult domain];
-  v4 = [v3 domainConnectServerUrl];
+  domain = [_domainResult domain];
+  domainConnectServerUrl = [domain domainConnectServerUrl];
 
-  if ([v4 length])
+  if ([domainConnectServerUrl length])
   {
-    v23 = [[NSURL alloc] initWithString:v4];
-    v5 = [_domainResult domain];
-    v26 = [v5 dnsProviderName];
+    v23 = [[NSURL alloc] initWithString:domainConnectServerUrl];
+    domain2 = [_domainResult domain];
+    dnsProviderName = [domain2 dnsProviderName];
 
-    v6 = [_domainResult domain];
-    v25 = [v6 name];
+    domain3 = [_domainResult domain];
+    name = [domain3 name];
 
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"BYOD_FINISH_SETUP_DOMAIN_ALERT_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v24 = [NSString stringWithFormat:v8, v26];
+    v24 = [NSString stringWithFormat:v8, dnsProviderName];
 
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"BYOD_FINISH_SETUP_DOMAIN_ALERT_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v11 = [NSString stringWithFormat:v10, v25, v26];
+    v11 = [NSString stringWithFormat:v10, name, dnsProviderName];
 
     v12 = [UIAlertController alertControllerWithTitle:v24 message:v11 preferredStyle:1];
     v13 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1982,7 +1982,7 @@ LABEL_4:
     v29[3] = &unk_B9388;
     v18 = v23;
     v30 = v18;
-    v31 = self;
+    selfCopy = self;
     v19 = [UIAlertAction actionWithTitle:v17 style:0 handler:v29];
 
     [v12 addAction:v15];
@@ -2004,42 +2004,42 @@ LABEL_4:
     v18 = +[BYODDomainDetailViewController log];
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [_domainResult ef_publicDescription];
+      ef_publicDescription = [_domainResult ef_publicDescription];
       *buf = 138412290;
-      v33 = v22;
+      v33 = ef_publicDescription;
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, "Domain connect URL not present. domain info %@", buf, 0xCu);
     }
   }
 }
 
-- (id)_catchAllEmailEnabledForSpecifier:(id)a3
+- (id)_catchAllEmailEnabledForSpecifier:(id)specifier
 {
-  v3 = [_domainResult domain];
-  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 catchAllEnabled]);
+  domain = [_domainResult domain];
+  v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [domain catchAllEnabled]);
 
   return v4;
 }
 
-- (void)_setBYODCatchAllEmailEnabled:(id)a3 specifier:(id)a4
+- (void)_setBYODCatchAllEmailEnabled:(id)enabled specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  enabledCopy = enabled;
+  specifierCopy = specifier;
   v8 = +[BYODDomainDetailViewController log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v24 = [v6 BOOLValue];
+    bOOLValue = [enabledCopy BOOLValue];
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_DEFAULT, "catch all switch toggled: %{BOOL}d", buf, 8u);
   }
 
-  if ([v6 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
     v9 = [BYODEnableCatchAllEmailRequest alloc];
     loggedInUserAccount = self->_loggedInUserAccount;
-    v11 = [(ACAccount *)loggedInUserAccount accountStore];
-    v12 = [_domainResult domain];
-    v13 = [v12 name];
-    v14 = [(BYODEnableCatchAllEmailRequest *)v9 initWithAccount:loggedInUserAccount accountStore:v11 domain:v13];
+    accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+    domain = [_domainResult domain];
+    name = [domain name];
+    v14 = [(BYODEnableCatchAllEmailRequest *)v9 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name];
 
     v15 = v22;
     v22[0] = _NSConcreteStackBlock;
@@ -2047,8 +2047,8 @@ LABEL_4:
     v22[2] = sub_3A4F8;
     v22[3] = &unk_B9418;
     v22[4] = self;
-    v22[5] = v7;
-    v22[6] = v6;
+    v22[5] = specifierCopy;
+    v22[6] = enabledCopy;
     [(BYODEnableCatchAllEmailRequest *)v14 performRequestWithCallback:v22];
   }
 
@@ -2056,10 +2056,10 @@ LABEL_4:
   {
     v16 = [BYODDisableCatchAllEmailRequest alloc];
     v17 = self->_loggedInUserAccount;
-    v18 = [(ACAccount *)v17 accountStore];
-    v19 = [_domainResult domain];
-    v20 = [v19 name];
-    v14 = [(BYODDisableCatchAllEmailRequest *)v16 initWithAccount:v17 accountStore:v18 domain:v20];
+    accountStore2 = [(ACAccount *)v17 accountStore];
+    domain2 = [_domainResult domain];
+    name2 = [domain2 name];
+    v14 = [(BYODDisableCatchAllEmailRequest *)v16 initWithAccount:v17 accountStore:accountStore2 domain:name2];
 
     v15 = v21;
     v21[0] = _NSConcreteStackBlock;
@@ -2067,8 +2067,8 @@ LABEL_4:
     v21[2] = sub_3A658;
     v21[3] = &unk_B9418;
     v21[4] = self;
-    v21[5] = v7;
-    v21[6] = v6;
+    v21[5] = specifierCopy;
+    v21[6] = enabledCopy;
     [(BYODEnableCatchAllEmailRequest *)v14 performRequestWithCallback:v21];
   }
 }
@@ -2077,10 +2077,10 @@ LABEL_4:
 {
   v3 = [BYODGetDomainRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v5 = [(ACAccount *)loggedInUserAccount accountStore];
-  v6 = [_domainResult domain];
-  v7 = [v6 name];
-  v8 = [(BYODGetDomainRequest *)v3 initWithAccount:loggedInUserAccount accountStore:v5 domain:v7];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  domain = [_domainResult domain];
+  name = [domain name];
+  v8 = [(BYODGetDomainRequest *)v3 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -2104,8 +2104,8 @@ LABEL_4:
 
   v6 = [BYODListEmailRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v8 = [(ACAccount *)loggedInUserAccount accountStore];
-  v9 = [(BYODListEmailRequest *)v6 initWithAccount:loggedInUserAccount accountStore:v8];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  v9 = [(BYODListEmailRequest *)v6 initWithAccount:loggedInUserAccount accountStore:accountStore];
 
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -2115,31 +2115,31 @@ LABEL_4:
   [(BYODListEmailRequest *)v9 performRequestWithCallback:v10];
 }
 
-- (void)_deleteEmailFromServerForUser:(id)a3 specifier:(id)a4
+- (void)_deleteEmailFromServerForUser:(id)user specifier:(id)specifier
 {
-  v6 = a3;
+  userCopy = user;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_3B018;
   v27[3] = &unk_B8EB0;
-  v7 = a4;
-  v28 = v7;
-  v21 = v6;
-  v22 = v7;
+  specifierCopy = specifier;
+  v28 = specifierCopy;
+  v21 = userCopy;
+  v22 = specifierCopy;
   v8 = +[EFScheduler mainThreadScheduler];
   [v8 performBlock:v27];
 
   v9 = [BYODDeleteEmailRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v20 = [(ACAccount *)loggedInUserAccount accountStore];
-  v11 = [_domainResult domain];
-  v12 = [v11 name];
-  v13 = [v7 name];
-  v14 = [NSMutableArray arrayWithObject:v13];
-  v15 = [v6 dsid];
-  v16 = [v6 invitedEmail];
-  v17 = [v6 invitedPhoneNumber];
-  v18 = [(BYODDeleteEmailRequest *)v9 initWithAccount:loggedInUserAccount accountStore:v20 domain:v12 emailArray:v14 dsid:v15 invitedEmail:v16 invitedPhone:v17];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  domain = [_domainResult domain];
+  name = [domain name];
+  name2 = [specifierCopy name];
+  v14 = [NSMutableArray arrayWithObject:name2];
+  dsid = [userCopy dsid];
+  invitedEmail = [userCopy invitedEmail];
+  invitedPhoneNumber = [userCopy invitedPhoneNumber];
+  v18 = [(BYODDeleteEmailRequest *)v9 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name emailArray:v14 dsid:dsid invitedEmail:invitedEmail invitedPhone:invitedPhoneNumber];
 
   objc_initWeak(&location, self);
   v23[0] = _NSConcreteStackBlock;
@@ -2155,9 +2155,9 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_isRowEditableAtIndexPath:(id)a3
+- (BOOL)_isRowEditableAtIndexPath:(id)path
 {
-  v3 = [(BYODDomainDetailViewController *)self specifierAtIndexPath:a3];
+  v3 = [(BYODDomainDetailViewController *)self specifierAtIndexPath:path];
   v4 = [v3 propertyForKey:@"editableSpecifier"];
   v5 = [v4 isEqual:&__kCFBooleanTrue];
 
@@ -2174,21 +2174,21 @@ LABEL_4:
   return v10;
 }
 
-- (void)_shouldRemoveDomainMember:(id)a3 completion:(id)a4
+- (void)_shouldRemoveDomainMember:(id)member completion:(id)completion
 {
-  v23 = a3;
-  v24 = a4;
+  memberCopy = member;
+  completionCopy = completion;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"BYOD_ADD_DOMAIN_DELETE_MEMBER_CONFIRMATION_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v8 = [v23 fullName];
-  v25 = [NSString stringWithFormat:v7, v8];
+  fullName = [memberCopy fullName];
+  v25 = [NSString stringWithFormat:v7, fullName];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"BYOD_ADD_DOMAIN_DELETE_MEMBER_CONFIRMATION_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v11 = [_domainResult domain];
-  v12 = [v11 name];
-  v13 = [NSString stringWithFormat:v10, v12];
-  v14 = self;
+  domain = [_domainResult domain];
+  name = [domain name];
+  v13 = [NSString stringWithFormat:v10, name];
+  selfCopy = self;
 
   v15 = [UIAlertController alertControllerWithTitle:v25 message:v13 preferredStyle:1];
   v16 = [NSBundle bundleForClass:objc_opt_class()];
@@ -2201,27 +2201,27 @@ LABEL_4:
   v26[1] = 3221225472;
   v26[2] = sub_3B780;
   v26[3] = &unk_B8CF8;
-  v21 = v24;
+  v21 = completionCopy;
   v27 = v21;
   v22 = [UIAlertAction actionWithTitle:v20 style:2 handler:v26];
 
   [v15 addAction:v18];
   [v15 addAction:v22];
   [v15 setPreferredAction:v22];
-  [(BYODDomainDetailViewController *)v14 presentViewController:v15 animated:1 completion:0];
+  [(BYODDomainDetailViewController *)selfCopy presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)_removeDomainMember:(id)a3
+- (void)_removeDomainMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v5 = [BYODRemoveMemberRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v7 = [(ACAccount *)loggedInUserAccount accountStore];
-  v8 = [_domainResult domain];
-  v9 = [v8 name];
-  v10 = [_domainResult domain];
-  v11 = [v10 status];
-  v12 = [(BYODRemoveMemberRequest *)v5 initWithAccount:loggedInUserAccount accountStore:v7 domain:v9 domainStatus:v11 domainMember:v4];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  domain = [_domainResult domain];
+  name = [domain name];
+  domain2 = [_domainResult domain];
+  status = [domain2 status];
+  v12 = [(BYODRemoveMemberRequest *)v5 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name domainStatus:status domainMember:memberCopy];
 
   v13 = _byodSpinner;
   if (!_byodSpinner)
@@ -2245,7 +2245,7 @@ LABEL_4:
   objc_destroyWeak(&location);
 }
 
-- (void)safariViewControllerDidFinish:(id)a3
+- (void)safariViewControllerDidFinish:(id)finish
 {
   v4 = +[BYODDomainDetailViewController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2267,7 +2267,7 @@ LABEL_4:
   [(BYODDomainDetailViewController *)&v4 dealloc];
 }
 
-- (void)_domainStoppedNotification:(id)a3
+- (void)_domainStoppedNotification:(id)notification
 {
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"BYOD_REFRESH_NOTIFICATION" object:0 userInfo:0];
@@ -2281,11 +2281,11 @@ LABEL_4:
   [v5 performBlock:v6];
 }
 
-- (void)_refreshDomainResultNotification:(id)a3
+- (void)_refreshDomainResultNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 valueForKey:@"domainData"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [userInfo valueForKey:@"domainData"];
   objc_storeStrong(&_domainResult, v6);
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -2299,8 +2299,8 @@ LABEL_4:
 - (void)_showIntroScreen
 {
   v3 = _domainResult;
-  v4 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
-  v5 = [v3 hasEmailsForDsid:v4];
+  normalizedDSID = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
+  v5 = [v3 hasEmailsForDsid:normalizedDSID];
 
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   if (v5)
@@ -2309,8 +2309,8 @@ LABEL_4:
 
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"BYOD_INTRO_MESSAGE_EMAIL" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v9 = [(BYODDomainDetailViewController *)self _getEmailList];
-    v10 = [NSString stringWithFormat:v8, v9];
+    _getEmailList = [(BYODDomainDetailViewController *)self _getEmailList];
+    v10 = [NSString stringWithFormat:v8, _getEmailList];
   }
 
   else
@@ -2319,9 +2319,9 @@ LABEL_4:
 
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"BYOD_INTRO_MESSAGE_NO_EMAIL" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v9 = [_domainResult domain];
-    v11 = [v9 name];
-    v10 = [NSString stringWithFormat:v8, v11];
+    _getEmailList = [_domainResult domain];
+    name = [_getEmailList name];
+    v10 = [NSString stringWithFormat:v8, name];
   }
 
   if (!MUISolariumFeatureEnabled())
@@ -2352,8 +2352,8 @@ LABEL_9:
   [v15 setTitle:v17 forState:0];
 
   [v15 addTarget:self action:"_okButtonTapped:" forControlEvents:64];
-  v18 = [v12 buttonTray];
-  [v18 addButton:v15];
+  buttonTray = [v12 buttonTray];
+  [buttonTray addButton:v15];
 
   if (v5)
   {
@@ -2363,31 +2363,31 @@ LABEL_9:
     [v19 setTitle:v21 forState:0];
 
     [v19 addTarget:self action:"_mailSettingsTapped:" forControlEvents:64];
-    v22 = [v12 buttonTray];
-    [v22 addButton:v19];
+    buttonTray2 = [v12 buttonTray];
+    [buttonTray2 addButton:v19];
   }
 
   [(BYODDomainDetailViewController *)self presentViewController:v12 animated:1 completion:0];
 }
 
-- (void)_mailSettingsTapped:(id)a3
+- (void)_mailSettingsTapped:(id)tapped
 {
   v4 = +[LSApplicationWorkspace defaultWorkspace];
   v3 = [NSURL URLWithString:@"prefs:root=APPLE_ACCOUNT&path=ICLOUD_SERVICE/com.apple.Dataclass.Mail"];
   [v4 openSensitiveURL:v3 withOptions:0];
 }
 
-- (void)_okButtonTapped:(id)a3
+- (void)_okButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = [BYODUpdateIntroFlagRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v7 = [(ACAccount *)loggedInUserAccount accountStore];
-  v8 = [_domainResult domain];
-  v9 = [v8 name];
-  v10 = [(BYODUpdateIntroFlagRequest *)v5 initWithAccount:loggedInUserAccount accountStore:v7 domain:v9];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+  domain = [_domainResult domain];
+  name = [domain name];
+  v10 = [(BYODUpdateIntroFlagRequest *)v5 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name];
 
-  v11 = v4;
+  v11 = tappedCopy;
   [v11 showsBusyIndicator];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
@@ -2399,9 +2399,9 @@ LABEL_9:
   [(BYODUpdateIntroFlagRequest *)v10 performRequestWithCallback:v13];
 }
 
-- (void)_addContentViewToOBController:(id)a3
+- (void)_addContentViewToOBController:(id)controller
 {
-  v30 = a3;
+  controllerCopy = controller;
   v3 = objc_alloc_init(UILabel);
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_INTRO_SUB_MESSAGE_EMAIL" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -2415,35 +2415,35 @@ LABEL_9:
   v6 = objc_alloc_init(UIView);
   [v6 addSubview:v3];
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v30 contentView];
-  [v7 addSubview:v6];
+  contentView = [controllerCopy contentView];
+  [contentView addSubview:v6];
 
-  v29 = [v6 topAnchor];
-  v25 = [v30 contentView];
-  v24 = [v25 topAnchor];
-  v23 = [v29 constraintEqualToAnchor:?];
+  topAnchor = [v6 topAnchor];
+  contentView2 = [controllerCopy contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v23 = [topAnchor constraintEqualToAnchor:?];
   v31[0] = v23;
-  v28 = [v6 trailingAnchor];
-  v22 = [v30 contentView];
-  v21 = [v22 trailingAnchor];
-  v20 = [v28 constraintEqualToAnchor:?];
+  trailingAnchor = [v6 trailingAnchor];
+  contentView3 = [controllerCopy contentView];
+  trailingAnchor2 = [contentView3 trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:?];
   v31[1] = v20;
-  v27 = [v6 leadingAnchor];
-  v19 = [v30 contentView];
-  v18 = [v19 leadingAnchor];
-  v17 = [v27 constraintEqualToAnchor:?];
+  leadingAnchor = [v6 leadingAnchor];
+  contentView4 = [controllerCopy contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v17 = [leadingAnchor constraintEqualToAnchor:?];
   v31[2] = v17;
-  v26 = [v3 topAnchor];
-  v16 = [v6 topAnchor];
-  v15 = [v26 constraintEqualToAnchor:?];
+  topAnchor3 = [v3 topAnchor];
+  topAnchor4 = [v6 topAnchor];
+  v15 = [topAnchor3 constraintEqualToAnchor:?];
   v31[3] = v15;
-  v8 = [v3 trailingAnchor];
-  v9 = [v6 trailingAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9];
+  trailingAnchor3 = [v3 trailingAnchor];
+  trailingAnchor4 = [v6 trailingAnchor];
+  v10 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v31[4] = v10;
-  v11 = [v3 leadingAnchor];
-  v12 = [v6 leadingAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  leadingAnchor3 = [v3 leadingAnchor];
+  leadingAnchor4 = [v6 leadingAnchor];
+  v13 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v31[5] = v13;
   v14 = [NSArray arrayWithObjects:v31 count:6];
   [NSLayoutConstraint activateConstraints:v14];
@@ -2452,8 +2452,8 @@ LABEL_9:
 - (id)_getEmailList
 {
   v2 = _domainResult;
-  v3 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
-  v4 = [v2 getMemberFromDSID:v3];
+  normalizedDSID = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
+  v4 = [v2 getMemberFromDSID:normalizedDSID];
 
   v34 = v4;
   if (!v4 || ([v4 emails], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
@@ -2462,18 +2462,18 @@ LABEL_9:
     goto LABEL_22;
   }
 
-  v6 = [v4 emails];
-  v7 = [v6 count];
+  emails = [v4 emails];
+  v7 = [emails count];
 
   if (v7 == &dword_0 + 1)
   {
-    v8 = [v4 emails];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    emails2 = [v4 emails];
+    v9 = [emails2 objectAtIndexedSubscript:0];
 
     v10 = [NSBundle bundleForClass:objc_opt_class()];
     v11 = [v10 localizedStringForKey:@"BYOD_INTRO_MESSAGE_EMAIL_DOUBLE_QUOTES" value:&stru_B9FC8 table:@"AccountPreferences"];
-    v12 = [v9 email];
-    v13 = [NSString stringWithFormat:v11, v12];
+    email = [v9 email];
+    v13 = [NSString stringWithFormat:v11, email];
 
     v14 = &stru_B9FC8;
     goto LABEL_23;
@@ -2483,9 +2483,9 @@ LABEL_9:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v16 = [v4 emails];
-  obj = v16;
-  v17 = [v16 countByEnumeratingWithState:&v35 objects:v39 count:16];
+  emails3 = [v4 emails];
+  obj = emails3;
+  v17 = [emails3 countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (!v17)
   {
     v15 = &stru_B9FC8;
@@ -2508,35 +2508,35 @@ LABEL_9:
       }
 
       v21 = *(*(&v35 + 1) + 8 * v19);
-      v22 = [v34 emails];
-      v23 = v20 == [v22 count];
+      emails4 = [v34 emails];
+      v23 = v20 == [emails4 count];
 
       if (v23)
       {
-        v24 = [NSBundle bundleForClass:objc_opt_class()];
-        v25 = [v24 localizedStringForKey:@"BYOD_INTRO_MESSAGE_EMAIL_LIST" value:&stru_B9FC8 table:@"AccountPreferences"];
-        v26 = [v21 email];
-        v27 = [NSString stringWithFormat:v25, v15, v26];
+        email3 = [NSBundle bundleForClass:objc_opt_class()];
+        v25 = [email3 localizedStringForKey:@"BYOD_INTRO_MESSAGE_EMAIL_LIST" value:&stru_B9FC8 table:@"AccountPreferences"];
+        email2 = [v21 email];
+        v27 = [NSString stringWithFormat:v25, v15, email2];
       }
 
       else
       {
-        v28 = [v34 emails];
-        v29 = v20 == [v28 count] - 1;
+        emails5 = [v34 emails];
+        v29 = v20 == [emails5 count] - 1;
 
         if (v29)
         {
-          v24 = [v21 email];
-          v25 = [NSString stringWithFormat:@"%@", v24];
+          email3 = [v21 email];
+          v25 = [NSString stringWithFormat:@"%@", email3];
           [(__CFString *)v15 stringByAppendingString:v25];
-          v15 = v26 = v15;
+          v15 = email2 = v15;
           goto LABEL_17;
         }
 
-        v24 = [v21 email];
+        email3 = [v21 email];
         v25 = [NSBundle bundleForClass:objc_opt_class()];
-        v26 = [v25 localizedStringForKey:@"BYOD_INTRO_MESSAGE_EMAIL_LIST_COMMA" value:&stru_B9FC8 table:@"AccountPreferences"];
-        v30 = [NSString stringWithFormat:@"%@%@ ", v24, v26];
+        email2 = [v25 localizedStringForKey:@"BYOD_INTRO_MESSAGE_EMAIL_LIST_COMMA" value:&stru_B9FC8 table:@"AccountPreferences"];
+        v30 = [NSString stringWithFormat:@"%@%@ ", email3, email2];
         v27 = [(__CFString *)v15 stringByAppendingString:v30];
 
         v15 = v30;
@@ -2550,7 +2550,7 @@ LABEL_17:
     }
 
     while (v17 != v19);
-    v16 = obj;
+    emails3 = obj;
     v17 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   }
 
@@ -2565,15 +2565,15 @@ LABEL_23:
   return v13;
 }
 
-- (BOOL)_doesMemberBelongToDomain:(id)a3
+- (BOOL)_doesMemberBelongToDomain:(id)domain
 {
-  v3 = a3;
+  domainCopy = domain;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [_domainResult members];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  members = [_domainResult members];
+  v5 = [members countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -2583,11 +2583,11 @@ LABEL_23:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(members);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) memberIdentifier];
-        v9 = [v8 isEqualToString:v3];
+        memberIdentifier = [*(*(&v11 + 1) + 8 * i) memberIdentifier];
+        v9 = [memberIdentifier isEqualToString:domainCopy];
 
         if (v9)
         {
@@ -2596,7 +2596,7 @@ LABEL_23:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [members countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;

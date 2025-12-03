@@ -1,5 +1,5 @@
 @interface FINodeIterator
-- (FINodeIterator)initWithIterator:(OpaqueNodeIterator *)a3;
+- (FINodeIterator)initWithIterator:(OpaqueNodeIterator *)iterator;
 - (id)first;
 - (id)next;
 - (void)dealloc;
@@ -33,12 +33,12 @@
   return v2;
 }
 
-- (FINodeIterator)initWithIterator:(OpaqueNodeIterator *)a3
+- (FINodeIterator)initWithIterator:(OpaqueNodeIterator *)iterator
 {
   v5.receiver = self;
   v5.super_class = FINodeIterator;
   result = [(FINodeIterator *)&v5 init];
-  result->_iterator = a3;
+  result->_iterator = iterator;
   return result;
 }
 

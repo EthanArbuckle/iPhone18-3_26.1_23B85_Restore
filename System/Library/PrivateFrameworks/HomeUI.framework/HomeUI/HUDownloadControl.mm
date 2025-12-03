@@ -1,15 +1,15 @@
 @interface HUDownloadControl
-+ (CGSize)_expectedSizeForControlStatusType:(int64_t)a3 controlTitle:(id)a4 hasControlImage:(BOOL)a5 displayScale:(double)a6 preferredHeight:(double)a7 minTitleLength:(double)a8;
-+ (id)_imageNamed:(id)a3 compatibleWithTraitCollection:(id)a4;
++ (CGSize)_expectedSizeForControlStatusType:(int64_t)type controlTitle:(id)title hasControlImage:(BOOL)image displayScale:(double)scale preferredHeight:(double)height minTitleLength:(double)length;
++ (id)_imageNamed:(id)named compatibleWithTraitCollection:(id)collection;
 + (id)_newControlTitleLabel;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGSize)intrinsicContentSize;
-- (CGSize)maximumSizeWithPreferredHeight:(double)a3;
-- (HUDownloadControl)initWithFrame:(CGRect)a3;
+- (CGSize)maximumSizeWithPreferredHeight:(double)height;
+- (HUDownloadControl)initWithFrame:(CGRect)frame;
 - (HUDownloadControlStatus)controlStatus;
 - (id)_currentContentSuperview;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)titleForControlStatusType:(int64_t)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)titleForControlStatusType:(int64_t)type;
 - (void)_beginTransientContentViewTransaction;
 - (void)_endTransientContentViewTransaction;
 - (void)_updateBackgroundViewCornerRadius;
@@ -19,33 +19,33 @@
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAllowsAddImage:(BOOL)a3;
-- (void)setContentHorizontalAlignment:(int64_t)a3;
-- (void)setControlStatus:(HUDownloadControlStatus)a3 animated:(BOOL)a4;
-- (void)setDisplayStyle:(int64_t)a3;
-- (void)setFilledTintColor:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setTitle:(id)a3 forControlStatusType:(int64_t)a4;
+- (void)setAllowsAddImage:(BOOL)image;
+- (void)setContentHorizontalAlignment:(int64_t)alignment;
+- (void)setControlStatus:(HUDownloadControlStatus)status animated:(BOOL)animated;
+- (void)setDisplayStyle:(int64_t)style;
+- (void)setFilledTintColor:(id)color;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setTitle:(id)title forControlStatusType:(int64_t)type;
 - (void)tintColorDidChange;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HUDownloadControl
 
-- (HUDownloadControl)initWithFrame:(CGRect)a3
+- (HUDownloadControl)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = HUDownloadControl;
-  v3 = [(HUDownloadControl *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUDownloadControl *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     v3->_allowsAddImage = 1;
-    v5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     filledTintColor = v4->_filledTintColor;
-    v4->_filledTintColor = v5;
+    v4->_filledTintColor = whiteColor;
 
     v4->_minTitleLength = 0.0;
   }
@@ -58,8 +58,8 @@
 {
   if (self->_controlStatus.statusType == 3)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
   }
 
   v4.receiver = self;
@@ -78,25 +78,25 @@
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  if ([(HUDownloadControl *)self pointInside:a4 withEvent:a3.x, a3.y]&& [(HUDownloadControl *)self isEnabled]&& ([(HUDownloadControl *)self isHidden]& 1) == 0)
+  if ([(HUDownloadControl *)self pointInside:event withEvent:test.x, test.y]&& [(HUDownloadControl *)self isEnabled]&& ([(HUDownloadControl *)self isHidden]& 1) == 0)
   {
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(HUDownloadControl *)self bounds];
   v7 = v15.origin.x;
   v8 = v15.origin.y;
@@ -124,8 +124,8 @@
     return 1;
   }
 
-  v13 = [(UILabel *)self->_controlTitleLabel text];
-  if ([v13 length])
+  text = [(UILabel *)self->_controlTitleLabel text];
+  if ([text length])
   {
     v11 = 1;
   }
@@ -148,8 +148,8 @@
   v6 = v5;
   r1 = v7;
   v9 = v8;
-  v10 = [(HUDownloadControl *)self traitCollection];
-  [v10 displayScale];
+  traitCollection = [(HUDownloadControl *)self traitCollection];
+  [traitCollection displayScale];
   SafeScaleForValue = HUFloatGetSafeScaleForValue(v11);
 
   [(UILabel *)self->_controlTitleLabel frame];
@@ -162,7 +162,7 @@
   v18 = *(MEMORY[0x277CBF398] + 8);
   v20 = *(MEMORY[0x277CBF398] + 16);
   v19 = *(MEMORY[0x277CBF398] + 24);
-  v21 = [(HUDownloadControl *)self contentHorizontalAlignment];
+  contentHorizontalAlignment = [(HUDownloadControl *)self contentHorizontalAlignment];
   controlImageView = self->_controlImageView;
   v174 = v17;
   v175 = v6;
@@ -174,8 +174,8 @@
     rect_8 = v20;
     statusType = self->_controlStatus.statusType;
     [(UIImageView *)controlImageView frame];
-    v24 = [(UILabel *)self->_controlTitleLabel text];
-    v25 = [v24 length];
+    text = [(UILabel *)self->_controlTitleLabel text];
+    v25 = [text length];
 
     v26 = fmin(r1, 45.0);
     v27 = fmin(v9, 45.0);
@@ -211,8 +211,8 @@
     v37 = v36;
     v162 = v39;
     v163 = v38;
-    v40 = [(UILabel *)self->_controlTitleLabel text];
-    v41 = [v40 length];
+    text2 = [(UILabel *)self->_controlTitleLabel text];
+    v41 = [text2 length];
 
     v173 = SafeScaleForValue;
     if (v41)
@@ -235,7 +235,7 @@
       r1a = v46;
       v53 = v28;
       v154 = v51;
-      if (v21 == 2)
+      if (contentHorizontalAlignment == 2)
       {
         v77 = v46;
         v194.origin.x = v184 + 5.0;
@@ -271,7 +271,7 @@
         v54 = v51;
         v56 = v162;
         v55 = v163;
-        if (v21 == 1)
+        if (contentHorizontalAlignment == 1)
         {
           v190.origin.x = v184 + 5.0;
           v190.origin.y = v49;
@@ -348,9 +348,9 @@
       v203.origin.y = v49;
       v203.size.height = v159;
       v97 = CGRectGetWidth(v203);
-      v98 = [(HUDownloadControl *)self traitCollection];
-      v99 = [v98 preferredContentSizeCategory];
-      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v99);
+      traitCollection2 = [(HUDownloadControl *)self traitCollection];
+      preferredContentSizeCategory = [traitCollection2 preferredContentSizeCategory];
+      IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
       if (!IsAccessibilityCategory)
       {
@@ -403,7 +403,7 @@
       v70 = 2;
       if (statusType != 3)
       {
-        v70 = v21;
+        v70 = contentHorizontalAlignment;
       }
 
       if (v70 == 2)
@@ -461,8 +461,8 @@
 
   else
   {
-    v62 = [(UILabel *)self->_controlTitleLabel text];
-    v63 = [v62 length];
+    text3 = [(UILabel *)self->_controlTitleLabel text];
+    v63 = [text3 length];
 
     if (!v63)
     {
@@ -476,7 +476,7 @@
 
     v64 = v4;
     v29 = r1;
-    if (v21 == 2)
+    if (contentHorizontalAlignment == 2)
     {
       v205.origin.x = v4;
       v205.origin.y = v6;
@@ -499,7 +499,7 @@
     else
     {
       v65 = v6;
-      if (v21 == 1)
+      if (contentHorizontalAlignment == 1)
       {
         v192.origin.x = v64;
         v192.origin.y = v6;
@@ -588,7 +588,7 @@ LABEL_38:
   [(HUDownloadProgressView *)self->_downloadProgressView frame];
   v140 = v139;
   v142 = v141;
-  if (v21 == 2)
+  if (contentHorizontalAlignment == 2)
   {
     v212.origin.x = v184;
     v212.size.width = r1b;
@@ -604,7 +604,7 @@ LABEL_38:
 
   else
   {
-    if (v21 != 1)
+    if (contentHorizontalAlignment != 1)
     {
       UIRectCenteredIntegralRectScale();
       v143 = v146;
@@ -656,7 +656,7 @@ LABEL_51:
   }
 }
 
-- (CGSize)maximumSizeWithPreferredHeight:(double)a3
+- (CGSize)maximumSizeWithPreferredHeight:(double)height
 {
   v5 = [(HUDownloadControl *)self traitCollection:0];
   [v5 displayScale];
@@ -673,7 +673,7 @@ LABEL_51:
     v14 = self->_allowsAddImage || v11 != 1;
     v15 = HUFloatGetSafeScaleForValue(SafeScaleForValue);
     [(HUDownloadControl *)self minTitleLength];
-    [v12 _expectedSizeForControlStatusType:v11 controlTitle:v13 hasControlImage:v14 displayScale:v15 preferredHeight:a3 minTitleLength:v16];
+    [v12 _expectedSizeForControlStatusType:v11 controlTitle:v13 hasControlImage:v14 displayScale:v15 preferredHeight:height minTitleLength:v16];
     v18 = v17;
     v20 = v19;
 
@@ -701,8 +701,8 @@ LABEL_51:
 - (CGSize)intrinsicContentSize
 {
   statusType = self->_controlStatus.statusType;
-  v4 = [(HUDownloadControl *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(HUDownloadControl *)self traitCollection];
+  [traitCollection displayScale];
   SafeScaleForValue = HUFloatGetSafeScaleForValue(v5);
 
   v7 = [(HUDownloadControl *)self titleForControlStatusType:statusType];
@@ -713,10 +713,10 @@ LABEL_51:
   [v8 _expectedSizeForControlStatusType:statusType controlTitle:v7 hasControlImage:v9 displayScale:v10 preferredHeight:28.0 minTitleLength:v11];
   v13 = v12;
   v15 = v14;
-  v16 = [(HUDownloadControl *)self displayStyle];
+  displayStyle = [(HUDownloadControl *)self displayStyle];
   if (v7)
   {
-    v17 = v16 == 1;
+    v17 = displayStyle == 1;
   }
 
   else
@@ -741,10 +741,10 @@ LABEL_51:
   v4.receiver = self;
   v4.super_class = HUDownloadControl;
   [(HUDownloadControl *)&v4 tintColorDidChange];
-  v3 = [(HUDownloadControl *)self tintColor];
+  tintColor = [(HUDownloadControl *)self tintColor];
   if (self->_displayStyle == 1)
   {
-    [(UIView *)self->_backgroundView setBackgroundColor:v3];
+    [(UIView *)self->_backgroundView setBackgroundColor:tintColor];
   }
 
   [(HUDownloadControl *)self _updateControlTitleLabelVisualProperties];
@@ -754,18 +754,18 @@ LABEL_51:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v11.receiver = self;
   v11.super_class = HUDownloadControl;
-  [(HUDownloadControl *)&v11 traitCollectionDidChange:v4];
-  v5 = [(HUDownloadControl *)self traitCollection];
-  [v5 displayScale];
+  [(HUDownloadControl *)&v11 traitCollectionDidChange:changeCopy];
+  traitCollection = [(HUDownloadControl *)self traitCollection];
+  [traitCollection displayScale];
   v7 = v6;
-  [v4 displayScale];
+  [changeCopy displayScale];
   *&v8 = v8;
-  if (vabds_f32(v7, *&v8) >= 0.00000011921 || ([v5 preferredContentSizeCategory], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "preferredContentSizeCategory"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v9 != v10))
+  if (vabds_f32(v7, *&v8) >= 0.00000011921 || ([traitCollection preferredContentSizeCategory], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(changeCopy, "preferredContentSizeCategory"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v9 != v10))
   {
     [(HUDownloadControl *)self _updateControlStatusProperties];
   }
@@ -773,47 +773,47 @@ LABEL_51:
   self->_traitCollectionDidChangeWasCalled = 1;
 }
 
-- (void)setContentHorizontalAlignment:(int64_t)a3
+- (void)setContentHorizontalAlignment:(int64_t)alignment
 {
-  v5 = [(HUDownloadControl *)self contentHorizontalAlignment];
+  contentHorizontalAlignment = [(HUDownloadControl *)self contentHorizontalAlignment];
   v6.receiver = self;
   v6.super_class = HUDownloadControl;
-  [(HUDownloadControl *)&v6 setContentHorizontalAlignment:a3];
-  if (v5 != [(HUDownloadControl *)self contentHorizontalAlignment])
+  [(HUDownloadControl *)&v6 setContentHorizontalAlignment:alignment];
+  if (contentHorizontalAlignment != [(HUDownloadControl *)self contentHorizontalAlignment])
   {
     [(HUDownloadControl *)self setNeedsLayout];
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = HUDownloadControl;
-  [(HUDownloadControl *)&v5 touchesCancelled:a3 withEvent:a4];
+  [(HUDownloadControl *)&v5 touchesCancelled:cancelled withEvent:event];
   self->_hadFirstTouchHighlight = 0;
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = HUDownloadControl;
-  [(HUDownloadControl *)&v5 touchesEnded:a3 withEvent:a4];
+  [(HUDownloadControl *)&v5 touchesEnded:ended withEvent:event];
   self->_hadFirstTouchHighlight = 0;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
-  v5 = [(HUDownloadControl *)self isHighlighted];
+  highlightedCopy = highlighted;
+  isHighlighted = [(HUDownloadControl *)self isHighlighted];
   v12.receiver = self;
   v12.super_class = HUDownloadControl;
-  [(HUDownloadControl *)&v12 setHighlighted:v3];
-  v6 = [(HUDownloadControl *)self isHighlighted];
-  if (v5 != v6)
+  [(HUDownloadControl *)&v12 setHighlighted:highlightedCopy];
+  isHighlighted2 = [(HUDownloadControl *)self isHighlighted];
+  if (isHighlighted != isHighlighted2)
   {
-    v7 = v6;
+    v7 = isHighlighted2;
     v8 = 1.0;
-    if (v6)
+    if (isHighlighted2)
     {
       [(HUDownloadControl *)self _beginTransientContentViewTransaction];
       v8 = 0.2;
@@ -858,11 +858,11 @@ uint64_t __36__HUDownloadControl_setHighlighted___block_invoke_2(uint64_t result
   return result;
 }
 
-- (void)setAllowsAddImage:(BOOL)a3
+- (void)setAllowsAddImage:(BOOL)image
 {
-  if (self->_allowsAddImage != a3)
+  if (self->_allowsAddImage != image)
   {
-    self->_allowsAddImage = a3;
+    self->_allowsAddImage = image;
     if (self->_controlStatus.statusType == 1)
     {
       [(HUDownloadControl *)self _updateControlStatusProperties];
@@ -870,29 +870,29 @@ uint64_t __36__HUDownloadControl_setHighlighted___block_invoke_2(uint64_t result
   }
 }
 
-- (void)setDisplayStyle:(int64_t)a3
+- (void)setDisplayStyle:(int64_t)style
 {
-  if (self->_displayStyle != a3)
+  if (self->_displayStyle != style)
   {
-    self->_displayStyle = a3;
+    self->_displayStyle = style;
     [(HUDownloadControl *)self _updateControlStatusProperties];
 
     [(HUDownloadControl *)self _updateControlTitleLabelVisualProperties];
   }
 }
 
-- (void)setControlStatus:(HUDownloadControlStatus)a3 animated:(BOOL)a4
+- (void)setControlStatus:(HUDownloadControlStatus)status animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   p_controlStatus = &self->_controlStatus;
   statusType = self->_controlStatus.statusType;
-  if (statusType == a3.statusType && vabdd_f64(self->_controlStatus.downloadProgress, a3.downloadProgress) <= 0.00000011920929)
+  if (statusType == status.statusType && vabdd_f64(self->_controlStatus.downloadProgress, status.downloadProgress) <= 0.00000011920929)
   {
     return;
   }
 
-  p_controlStatus->statusType = a3.statusType;
-  self->_controlStatus.downloadProgress = a3.downloadProgress;
+  p_controlStatus->statusType = status.statusType;
+  self->_controlStatus.downloadProgress = status.downloadProgress;
   v8 = self->_controlStatusRevision + 1;
   self->_controlStatusRevision = v8;
   v9 = p_controlStatus->statusType;
@@ -905,7 +905,7 @@ uint64_t __36__HUDownloadControl_setHighlighted___block_invoke_2(uint64_t result
     aBlock[4] = self;
     v12 = _Block_copy(aBlock);
     v13 = v12;
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x277D75D18] animateWithDuration:134 delay:v12 options:0 animations:0.25 completion:0.0];
     }
@@ -925,8 +925,8 @@ uint64_t __36__HUDownloadControl_setHighlighted___block_invoke_2(uint64_t result
       goto LABEL_15;
     }
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:self selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__applicationWillEnterForegroundNotification_ name:*MEMORY[0x277D76758] object:0];
   }
 
   else
@@ -936,16 +936,16 @@ uint64_t __36__HUDownloadControl_setHighlighted___block_invoke_2(uint64_t result
       goto LABEL_15;
     }
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 removeObserver:self name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76758] object:0];
   }
 
 LABEL_15:
-  v14 = [(HUDownloadControl *)self traitCollection];
-  v15 = [v14 preferredContentSizeCategory];
-  v16 = [v15 isEqualToString:*MEMORY[0x277D76860]];
+  traitCollection = [(HUDownloadControl *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v16 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76860]];
 
-  v17 = statusType != 4 || !v4;
+  v17 = statusType != 4 || !animatedCopy;
   if (v17 || p_controlStatus->statusType != 5)
   {
     if ((v16 & 1) == 0)
@@ -998,15 +998,15 @@ void *__47__HUDownloadControl_setControlStatus_animated___block_invoke_4(uint64_
   return result;
 }
 
-- (void)setFilledTintColor:(id)a3
+- (void)setFilledTintColor:(id)color
 {
-  v7 = a3;
-  v5 = [(HUDownloadControl *)self filledTintColor];
-  v6 = [v7 isEqual:v5];
+  colorCopy = color;
+  filledTintColor = [(HUDownloadControl *)self filledTintColor];
+  v6 = [colorCopy isEqual:filledTintColor];
 
   if ((v6 & 1) == 0)
   {
-    objc_storeStrong(&self->_filledTintColor, a3);
+    objc_storeStrong(&self->_filledTintColor, color);
     if (self->_displayStyle == 1)
     {
       [(HUDownloadControl *)self _updateControlTitleLabelVisualProperties];
@@ -1015,12 +1015,12 @@ void *__47__HUDownloadControl_setControlStatus_animated___block_invoke_4(uint64_
   }
 }
 
-- (void)setTitle:(id)a3 forControlStatusType:(int64_t)a4
+- (void)setTitle:(id)title forControlStatusType:(int64_t)type
 {
-  v12 = a3;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  titleCopy = title;
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   controlStatusTypeToTitle = self->_controlStatusTypeToTitle;
-  if (v12)
+  if (titleCopy)
   {
     if (!controlStatusTypeToTitle)
     {
@@ -1031,16 +1031,16 @@ void *__47__HUDownloadControl_setControlStatus_animated___block_invoke_4(uint64_
       controlStatusTypeToTitle = self->_controlStatusTypeToTitle;
     }
 
-    v10 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v10 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v11 = [(NSMutableDictionary *)controlStatusTypeToTitle objectForKey:v10];
 
-    if ([v11 isEqualToString:v12])
+    if ([v11 isEqualToString:titleCopy])
     {
 
       goto LABEL_12;
     }
 
-    [(NSMutableDictionary *)self->_controlStatusTypeToTitle setObject:v12 forKey:v6];
+    [(NSMutableDictionary *)self->_controlStatusTypeToTitle setObject:titleCopy forKey:v6];
   }
 
   else
@@ -1056,7 +1056,7 @@ void *__47__HUDownloadControl_setControlStatus_animated___block_invoke_4(uint64_
   }
 
 LABEL_10:
-  if (self->_controlStatus.statusType == a4)
+  if (self->_controlStatus.statusType == type)
   {
     [(HUDownloadControl *)self _updateControlStatusProperties];
   }
@@ -1064,82 +1064,82 @@ LABEL_10:
 LABEL_12:
 }
 
-- (id)titleForControlStatusType:(int64_t)a3
+- (id)titleForControlStatusType:(int64_t)type
 {
   controlStatusTypeToTitle = self->_controlStatusTypeToTitle;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v5 = [(NSMutableDictionary *)controlStatusTypeToTitle objectForKey:v4];
 
   return v5;
 }
 
-+ (CGSize)_expectedSizeForControlStatusType:(int64_t)a3 controlTitle:(id)a4 hasControlImage:(BOOL)a5 displayScale:(double)a6 preferredHeight:(double)a7 minTitleLength:(double)a8
++ (CGSize)_expectedSizeForControlStatusType:(int64_t)type controlTitle:(id)title hasControlImage:(BOOL)image displayScale:(double)scale preferredHeight:(double)height minTitleLength:(double)length
 {
-  v11 = a5;
-  v14 = a4;
-  v15 = v14;
+  imageCopy = image;
+  titleCopy = title;
+  v15 = titleCopy;
   v17 = *MEMORY[0x277CBF3A8];
-  v16 = *(MEMORY[0x277CBF3A8] + 8);
-  if (a3)
+  heightCopy2 = *(MEMORY[0x277CBF3A8] + 8);
+  if (type)
   {
-    if ([v14 length])
+    if ([titleCopy length])
     {
-      v18 = [a1 _newControlTitleLabel];
-      v19 = [a1 controlTitleFontForControlStatusType:a3];
-      [v18 setFont:v19];
+      _newControlTitleLabel = [self _newControlTitleLabel];
+      v19 = [self controlTitleFontForControlStatusType:type];
+      [_newControlTitleLabel setFont:v19];
 
-      [v18 setText:v15];
-      [v18 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+      [_newControlTitleLabel setText:v15];
+      [_newControlTitleLabel sizeThatFits:{1.79769313e308, 1.79769313e308}];
       v21 = v20;
       v23 = v22;
-      SafeScaleForValue = HUFloatGetSafeScaleForValue(a6);
+      SafeScaleForValue = HUFloatGetSafeScaleForValue(scale);
       v25 = ceil(SafeScaleForValue * v21) / SafeScaleForValue;
-      if (v25 >= a8)
+      if (v25 >= length)
       {
-        a8 = v25;
+        length = v25;
       }
 
-      if (v11)
+      if (imageCopy)
       {
-        v16 = fmax(v23, 28.0);
+        heightCopy2 = fmax(v23, 28.0);
         v26 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
         [v26 _scaledValueForValue:8.0];
-        v28 = v17 + a8 + 5.0 + v27;
+        v28 = v17 + length + 5.0 + v27;
 
-        v17 = v16 + v28;
+        v17 = heightCopy2 + v28;
       }
 
       else
       {
         v29 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
         [v29 _scaledValueForValue:8.0];
-        v17 = v17 + a8 + v30 * 2.0;
+        v17 = v17 + length + v30 * 2.0;
       }
 
-      if (v16 <= a7)
+      if (heightCopy2 <= height)
       {
-        v16 = a7;
+        heightCopy2 = height;
       }
     }
 
     else
     {
-      if (a7 >= 28.0)
+      if (height >= 28.0)
       {
-        v16 = a7;
+        heightCopy2 = height;
       }
 
       else
       {
-        v16 = 28.0;
+        heightCopy2 = 28.0;
       }
 
-      v17 = v16;
+      v17 = heightCopy2;
     }
   }
 
   v31 = v17;
-  v32 = v16;
+  v32 = heightCopy2;
   result.height = v32;
   result.width = v31;
   return result;
@@ -1149,20 +1149,20 @@ LABEL_12:
 {
   v2 = objc_alloc(MEMORY[0x277D756B8]);
   v3 = [v2 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   return v3;
 }
 
-+ (id)_imageNamed:(id)a3 compatibleWithTraitCollection:(id)a4
++ (id)_imageNamed:(id)named compatibleWithTraitCollection:(id)collection
 {
   v5 = MEMORY[0x277D755B8];
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a4;
-  v8 = a3;
+  collectionCopy = collection;
+  namedCopy = named;
   v9 = [v6 bundleForClass:objc_opt_class()];
-  v10 = [v5 imageNamed:v8 inBundle:v9 compatibleWithTraitCollection:v7];
+  v10 = [v5 imageNamed:namedCopy inBundle:v9 compatibleWithTraitCollection:collectionCopy];
 
   return v10;
 }
@@ -1189,8 +1189,8 @@ LABEL_12:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [(HUDownloadControl *)self subviews];
-    v8 = [v7 copy];
+    subviews = [(HUDownloadControl *)self subviews];
+    v8 = [subviews copy];
 
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v9)
@@ -1233,8 +1233,8 @@ LABEL_12:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(UIView *)self->_transientContentView subviews];
-  v4 = [v3 copy];
+  subviews = [(UIView *)self->_transientContentView subviews];
+  v4 = [subviews copy];
 
   v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
@@ -1288,7 +1288,7 @@ LABEL_12:
   if (self->_controlStatus.statusType == 5)
   {
     controlTitleLabel = self->_controlTitleLabel;
-    v3 = [MEMORY[0x277D75348] systemGrayColor];
+    systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
   }
 
   else
@@ -1303,10 +1303,10 @@ LABEL_12:
     {
       [(HUDownloadControl *)self tintColor];
     }
-    v3 = ;
+    systemGrayColor = ;
   }
 
-  v4 = v3;
+  v4 = systemGrayColor;
   [(UILabel *)controlTitleLabel setTextColor:?];
 }
 
@@ -1329,14 +1329,14 @@ LABEL_12:
   }
 
   v9 = v8 * 0.5;
-  v10 = [(UIView *)self->_backgroundView layer];
-  [v10 setCornerRadius:v9];
+  layer = [(UIView *)self->_backgroundView layer];
+  [layer setCornerRadius:v9];
 }
 
 - (void)_updateControlStatusProperties
 {
-  v62 = [(HUDownloadControl *)self traitCollection];
-  [v62 displayScale];
+  traitCollection = [(HUDownloadControl *)self traitCollection];
+  [traitCollection displayScale];
   v3 = v4;
   *&v4 = fabsf(v3);
   if (v3 < 0.0 || *&v4 < 0.00000011921)
@@ -1344,8 +1344,8 @@ LABEL_12:
     goto LABEL_55;
   }
 
-  v6 = [v62 preferredContentSizeCategory];
-  v7 = [v6 isEqualToString:*MEMORY[0x277D76860]];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  v7 = [preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76860]];
 
   if (v7)
   {
@@ -1365,17 +1365,17 @@ LABEL_12:
       self->_downloadProgressView = v11;
 
       v13 = self->_downloadProgressView;
-      v14 = [MEMORY[0x277D75348] systemFillColor];
-      [(HUDownloadProgressView *)v13 setOuterRingColor:v14];
+      systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+      [(HUDownloadProgressView *)v13 setOuterRingColor:systemFillColor];
 
       if ([(HUDownloadControl *)self showStopImageWhenDownloading])
       {
-        v15 = [objc_opt_class() _imageNamed:@"UniversalDownloadProgressStopButton" compatibleWithTraitCollection:v62];
+        v15 = [objc_opt_class() _imageNamed:@"UniversalDownloadProgressStopButton" compatibleWithTraitCollection:traitCollection];
         [(HUDownloadProgressView *)self->_downloadProgressView setCenterImage:v15];
       }
 
-      v16 = [(HUDownloadControl *)self _currentContentSuperview];
-      [v16 addSubview:self->_downloadProgressView];
+      _currentContentSuperview = [(HUDownloadControl *)self _currentContentSuperview];
+      [_currentContentSuperview addSubview:self->_downloadProgressView];
 
       downloadProgressView = self->_downloadProgressView;
     }
@@ -1400,13 +1400,13 @@ LABEL_12:
         self->_backgroundView = v19;
 
         v21 = self->_backgroundView;
-        v22 = [(HUDownloadControl *)self tintColor];
-        [(UIView *)v21 setBackgroundColor:v22];
+        tintColor = [(HUDownloadControl *)self tintColor];
+        [(UIView *)v21 setBackgroundColor:tintColor];
 
         [(UIView *)self->_backgroundView setClipsToBounds:1];
         [(HUDownloadControl *)self _updateBackgroundViewCornerRadius];
-        v23 = [(HUDownloadControl *)self _currentContentSuperview];
-        [v23 insertSubview:self->_backgroundView atIndex:0];
+        _currentContentSuperview2 = [(HUDownloadControl *)self _currentContentSuperview];
+        [_currentContentSuperview2 insertSubview:self->_backgroundView atIndex:0];
       }
 
       v24 = *MEMORY[0x277D768C8];
@@ -1417,15 +1417,15 @@ LABEL_26:
         goto LABEL_47;
       }
 
-      v29 = [objc_opt_class() _imageNamed:@"UniversalAddControlAdd" compatibleWithTraitCollection:v62];
+      v29 = [objc_opt_class() _imageNamed:@"UniversalAddControlAdd" compatibleWithTraitCollection:traitCollection];
       __asm { FMOV            V1.2D, #3.0 }
 
       if (self->_displayStyle == 1)
       {
         v59 = _Q1;
-        v34 = [(HUDownloadControl *)self filledTintColor];
+        filledTintColor = [(HUDownloadControl *)self filledTintColor];
         _Q1 = v59;
-        v35 = v34;
+        v35 = filledTintColor;
       }
 
       else
@@ -1464,7 +1464,7 @@ LABEL_26:
         v27 = objc_opt_class();
         v28 = @"UniversalAddControlWaiting";
 LABEL_33:
-        v29 = [v27 _imageNamed:v28 compatibleWithTraitCollection:{v62, v55}];
+        v29 = [v27 _imageNamed:v28 compatibleWithTraitCollection:{traitCollection, v55}];
         v35 = 0;
         _Q1 = vextq_s8(v58, v57, 8uLL);
         v37 = vextq_s8(v57, v58, 8uLL);
@@ -1513,8 +1513,8 @@ LABEL_47:
 
   else
   {
-    v43 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v44 = [v43 BOOLForKey:@"HUDownloadControlShouldShowDownloadedIndicator"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v44 = [standardUserDefaults BOOLForKey:@"HUDownloadControlShouldShowDownloadedIndicator"];
 
     v25 = v56;
     v24 = v60;
@@ -1524,7 +1524,7 @@ LABEL_47:
     }
   }
 
-  v29 = [objc_opt_class() _imageNamed:@"UniversalAddControlDownloaded" compatibleWithTraitCollection:v62];
+  v29 = [objc_opt_class() _imageNamed:@"UniversalAddControlDownloaded" compatibleWithTraitCollection:traitCollection];
   v45 = -2.0;
   if (fabsf(v3 + -2.0) < 0.00000011921)
   {
@@ -1558,8 +1558,8 @@ LABEL_34:
       v41 = self->_controlImageView;
       self->_controlImageView = v40;
 
-      v42 = [(HUDownloadControl *)self _currentContentSuperview];
-      [v42 addSubview:self->_controlImageView];
+      _currentContentSuperview3 = [(HUDownloadControl *)self _currentContentSuperview];
+      [_currentContentSuperview3 addSubview:self->_controlImageView];
 
       controlImageView = self->_controlImageView;
     }
@@ -1588,12 +1588,12 @@ LABEL_49:
   {
     if (!controlTitleLabel)
     {
-      v49 = [objc_opt_class() _newControlTitleLabel];
+      _newControlTitleLabel = [objc_opt_class() _newControlTitleLabel];
       v50 = self->_controlTitleLabel;
-      self->_controlTitleLabel = v49;
+      self->_controlTitleLabel = _newControlTitleLabel;
 
-      v51 = [(HUDownloadControl *)self _currentContentSuperview];
-      [v51 addSubview:self->_controlTitleLabel];
+      _currentContentSuperview4 = [(HUDownloadControl *)self _currentContentSuperview];
+      [_currentContentSuperview4 addSubview:self->_controlTitleLabel];
     }
 
     [(HUDownloadControl *)self _updateControlTitleLabelVisualProperties];
@@ -1621,23 +1621,23 @@ LABEL_55:
   controlImageView = self->_controlImageView;
   if (controlImageView)
   {
-    v15 = [(UIImageView *)controlImageView layer];
+    layer = [(UIImageView *)controlImageView layer];
     if (self->_controlStatus.statusType == 3)
     {
       v4 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform.rotation.z"];
-      v5 = [v15 presentationLayer];
-      if (v5)
+      presentationLayer = [layer presentationLayer];
+      if (presentationLayer)
       {
-        v6 = v5;
+        v6 = presentationLayer;
       }
 
       else
       {
-        v6 = v15;
+        v6 = layer;
       }
 
-      v7 = [v4 keyPath];
-      v8 = [v6 valueForKeyPath:v7];
+      keyPath = [v4 keyPath];
+      v8 = [v6 valueForKeyPath:keyPath];
 
       [v4 setFromValue:v8];
       v9 = MEMORY[0x277CCABB0];
@@ -1654,12 +1654,12 @@ LABEL_55:
       v13 = CACurrentMediaTime();
       [v4 duration];
       [v4 setBeginTime:{(v13 - fmod(v13, v14))}];
-      [v15 addAnimation:v4 forKey:@"_HUDownloadControlWaitingSpinnerAnimationKey"];
+      [layer addAnimation:v4 forKey:@"_HUDownloadControlWaitingSpinnerAnimationKey"];
     }
 
     else
     {
-      [v15 removeAnimationForKey:@"_HUDownloadControlWaitingSpinnerAnimationKey"];
+      [layer removeAnimationForKey:@"_HUDownloadControlWaitingSpinnerAnimationKey"];
     }
   }
 }

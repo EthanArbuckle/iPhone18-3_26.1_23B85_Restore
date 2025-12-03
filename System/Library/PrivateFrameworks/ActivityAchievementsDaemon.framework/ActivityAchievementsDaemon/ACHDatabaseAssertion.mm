@@ -1,18 +1,18 @@
 @interface ACHDatabaseAssertion
-+ (id)assertionWithDatabase:(id)a3 identifier:(id)a4 timeout:(double)a5 error:(id *)a6;
-- (ACHDatabaseAssertion)initWithHDAssertion:(id)a3;
++ (id)assertionWithDatabase:(id)database identifier:(id)identifier timeout:(double)timeout error:(id *)error;
+- (ACHDatabaseAssertion)initWithHDAssertion:(id)assertion;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation ACHDatabaseAssertion
 
-+ (id)assertionWithDatabase:(id)a3 identifier:(id)a4 timeout:(double)a5 error:(id *)a6
++ (id)assertionWithDatabase:(id)database identifier:(id)identifier timeout:(double)timeout error:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  identifierCopy = identifier;
   v18 = 0;
-  v10 = [a3 takeAccessibilityAssertionWithOwnerIdentifier:v9 timeout:&v18 error:a5];
+  v10 = [database takeAccessibilityAssertionWithOwnerIdentifier:identifierCopy timeout:&v18 error:timeout];
   v11 = v18;
   if (v10)
   {
@@ -25,9 +25,9 @@
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v20 = v9;
+      v20 = identifierCopy;
       v21 = 2048;
-      v22 = a5;
+      timeoutCopy = timeout;
       v23 = 2114;
       v24 = v11;
       _os_log_impl(&dword_221DDC000, v13, OS_LOG_TYPE_DEFAULT, "Failed to get accessibility assertion for %{public}@ with %lf second timeout with error %{public}@", buf, 0x20u);
@@ -36,10 +36,10 @@
     v14 = v11;
     if (v14)
     {
-      if (a6)
+      if (error)
       {
         v15 = v14;
-        *a6 = v14;
+        *error = v14;
       }
 
       else
@@ -56,16 +56,16 @@
   return v12;
 }
 
-- (ACHDatabaseAssertion)initWithHDAssertion:(id)a3
+- (ACHDatabaseAssertion)initWithHDAssertion:(id)assertion
 {
-  v5 = a3;
+  assertionCopy = assertion;
   v9.receiver = self;
   v9.super_class = ACHDatabaseAssertion;
   v6 = [(ACHDatabaseAssertion *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assertion, a3);
+    objc_storeStrong(&v6->_assertion, assertion);
   }
 
   return v7;
@@ -73,8 +73,8 @@
 
 - (void)invalidate
 {
-  v2 = [(ACHDatabaseAssertion *)self assertion];
-  [v2 invalidate];
+  assertion = [(ACHDatabaseAssertion *)self assertion];
+  [assertion invalidate];
 }
 
 - (void)dealloc

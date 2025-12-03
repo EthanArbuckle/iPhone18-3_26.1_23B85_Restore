@@ -1,16 +1,16 @@
 @interface AXGuestPassService
 + (AXGuestPassService)sharedInstance;
-- (id)getSyncedProfileData:(id)a3;
+- (id)getSyncedProfileData:(id)data;
 - (id)getSyncedProfiles;
-- (void)beginGuestPassSessionWithData:(NSData *)a3 completionBlock:(id)a4;
-- (void)beginGuestPassTransferWithCompletionBlock:(id)a3;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (void)beginGuestPassSessionWithData:(NSData *)data completionBlock:(id)block;
+- (void)beginGuestPassTransferWithCompletionBlock:(id)block;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)deleteDataFromiCloud;
-- (void)endGuestPassSessionWithCompletionBlock:(id)a3;
-- (void)endGuestPassTransferWithCompletionBlock:(id)a3;
+- (void)endGuestPassSessionWithCompletionBlock:(id)block;
+- (void)endGuestPassTransferWithCompletionBlock:(id)block;
 - (void)initializeMonitor;
 - (void)initializeSyncEngine;
-- (void)resumeGuestPassSessionWithCompletionBlock:(id)a3;
+- (void)resumeGuestPassSessionWithCompletionBlock:(id)block;
 - (void)syncLatestDataToiCloud;
 @end
 
@@ -30,16 +30,16 @@
 
 - (void)initializeMonitor
 {
-  v2 = self;
+  selfCopy = self;
   AXGuestPassService.initializeMonitor()();
 }
 
-- (void)beginGuestPassTransferWithCompletionBlock:(id)a3
+- (void)beginGuestPassTransferWithCompletionBlock:(id)block
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E2DF2C0, &qword_23D60D420) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(block);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -55,16 +55,16 @@
   v12[3] = 0;
   v12[4] = &unk_23D60D320;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_23D603178(0, 0, v7, &unk_23D60D328, v12);
 }
 
-- (void)endGuestPassTransferWithCompletionBlock:(id)a3
+- (void)endGuestPassTransferWithCompletionBlock:(id)block
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E2DF2C0, &qword_23D60D420) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(block);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -80,18 +80,18 @@
   v12[3] = 0;
   v12[4] = &unk_23D60D300;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_23D603178(0, 0, v7, &unk_23D60D308, v12);
 }
 
-- (void)beginGuestPassSessionWithData:(NSData *)a3 completionBlock:(id)a4
+- (void)beginGuestPassSessionWithData:(NSData *)data completionBlock:(id)block
 {
   v7 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E2DF2C0, &qword_23D60D420) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(block);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = data;
   v11[3] = v10;
   v11[4] = self;
   v12 = sub_23D60C4D0();
@@ -106,17 +106,17 @@
   v14[3] = 0;
   v14[4] = &unk_23D60D2E0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  dataCopy = data;
+  selfCopy = self;
   sub_23D603178(0, 0, v9, &unk_23D60D2E8, v14);
 }
 
-- (void)endGuestPassSessionWithCompletionBlock:(id)a3
+- (void)endGuestPassSessionWithCompletionBlock:(id)block
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E2DF2C0, &qword_23D60D420) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(block);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -132,16 +132,16 @@
   v12[3] = 0;
   v12[4] = &unk_23D60D2C0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_23D603178(0, 0, v7, &unk_23D60D2C8, v12);
 }
 
-- (void)resumeGuestPassSessionWithCompletionBlock:(id)a3
+- (void)resumeGuestPassSessionWithCompletionBlock:(id)block
 {
   v5 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27E2DF2C0, &qword_23D60D420) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(block);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -157,19 +157,19 @@
   v12[3] = 0;
   v12[4] = &unk_23D60D280;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_23D603178(0, 0, v7, &unk_23D60D290, v12);
 }
 
 - (void)syncLatestDataToiCloud
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D5FDB5C();
 }
 
 - (void)deleteDataFromiCloud
 {
-  v2 = self;
+  selfCopy = self;
   sub_23D5FDE80();
 }
 
@@ -184,13 +184,13 @@
   v7[2] = 0;
   v7[3] = 0;
   v7[4] = self;
-  v8 = self;
+  selfCopy = self;
   sub_23D5FE148(0, 0, v5, &unk_23D60D228, v7);
 }
 
 - (id)getSyncedProfiles
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXGuestPassService.getSyncedProfiles()();
 
   if (v3)
@@ -206,11 +206,11 @@
   return v4;
 }
 
-- (id)getSyncedProfileData:(id)a3
+- (id)getSyncedProfileData:(id)data
 {
   v4 = sub_23D60C400();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = AXGuestPassService.getSyncedProfileData(_:)(v4, v6);
   v10 = v9;
 
@@ -229,11 +229,11 @@
   return v11;
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  v5 = a3;
-  v6 = self;
-  AXGuestPassService.connectionWithServiceWasInterrupted(forUserInterfaceClient:)(a3);
+  clientCopy = client;
+  selfCopy = self;
+  AXGuestPassService.connectionWithServiceWasInterrupted(forUserInterfaceClient:)(client);
 }
 
 @end

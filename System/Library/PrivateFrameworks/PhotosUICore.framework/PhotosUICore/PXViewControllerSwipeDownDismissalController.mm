@@ -10,25 +10,25 @@
 
 - (void)setNeedsUpdate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A420F1A8();
 }
 
 - (void)updateInitialPlacement
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A420F4DC();
 }
 
 - (void)updateSwipeDownTracker
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A420F654();
 }
 
 - (void)updateCurrentPlacement
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A42103C4();
 }
 

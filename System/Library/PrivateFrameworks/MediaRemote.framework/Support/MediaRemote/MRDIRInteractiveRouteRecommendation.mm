@@ -1,49 +1,49 @@
 @interface MRDIRInteractiveRouteRecommendation
-+ (id)interactiveRecommendationWithRouteRecommendation:(id)a3;
++ (id)interactiveRecommendationWithRouteRecommendation:(id)recommendation;
 - (NSString)description;
 @end
 
 @implementation MRDIRInteractiveRouteRecommendation
 
-+ (id)interactiveRecommendationWithRouteRecommendation:(id)a3
++ (id)interactiveRecommendationWithRouteRecommendation:(id)recommendation
 {
-  v3 = a3;
-  if ([v3 classification] <= 2 && !objc_msgSend(v3, "isCallToAction"))
+  recommendationCopy = recommendation;
+  if ([recommendationCopy classification] <= 2 && !objc_msgSend(recommendationCopy, "isCallToAction"))
   {
     v8 = 0;
     goto LABEL_12;
   }
 
   v4 = objc_opt_new();
-  v5 = [v3 route];
-  [v4 setRoute:v5];
+  route = [recommendationCopy route];
+  [v4 setRoute:route];
 
-  [v4 setClassification:{objc_msgSend(v3, "classification")}];
-  v6 = [v3 contextIdentifier];
-  [v4 setContextIdentifier:v6];
+  [v4 setClassification:{objc_msgSend(recommendationCopy, "classification")}];
+  contextIdentifier = [recommendationCopy contextIdentifier];
+  [v4 setContextIdentifier:contextIdentifier];
 
-  [v4 setCallToAction:{objc_msgSend(v3, "isCallToAction")}];
-  [v4 setLockScreenControl:{objc_msgSend(v3, "isLockScreenControl")}];
-  [v4 setConservativelyFiltered:{objc_msgSend(v3, "isConservativelyFiltered")}];
-  if ([v3 classification] == 3)
+  [v4 setCallToAction:{objc_msgSend(recommendationCopy, "isCallToAction")}];
+  [v4 setLockScreenControl:{objc_msgSend(recommendationCopy, "isLockScreenControl")}];
+  [v4 setConservativelyFiltered:{objc_msgSend(recommendationCopy, "isConservativelyFiltered")}];
+  if ([recommendationCopy classification] == 3)
   {
     v7 = 0;
   }
 
-  else if ([v3 classification] == 4)
+  else if ([recommendationCopy classification] == 4)
   {
     v7 = 1;
   }
 
   else
   {
-    if (([v3 isCallToAction] & 1) == 0)
+    if (([recommendationCopy isCallToAction] & 1) == 0)
     {
       v10 = _MRLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v11 = 138412290;
-        v12 = v3;
+        v12 = recommendationCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[MRDRRC].IRD Invalid interactive recommendation: %@ - ignoring;", &v11, 0xCu);
       }
 
@@ -70,31 +70,31 @@ LABEL_12:
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@ (%p): ", v5, self];
 
-  v7 = [(MRDIRRouteRecommendation *)self route];
-  v8 = [v7 routeIdentifier];
-  [v6 appendFormat:@"routeIdentifier: %@", v8];
+  route = [(MRDIRRouteRecommendation *)self route];
+  routeIdentifier = [route routeIdentifier];
+  [v6 appendFormat:@"routeIdentifier: %@", routeIdentifier];
 
-  v9 = [(MRDIRRouteRecommendation *)self classification];
-  if ((v9 - 1) > 3)
+  classification = [(MRDIRRouteRecommendation *)self classification];
+  if ((classification - 1) > 3)
   {
     v10 = @"Unknown";
   }
 
   else
   {
-    v10 = *(&off_1004BC798 + v9 - 1);
+    v10 = *(&off_1004BC798 + classification - 1);
   }
 
   [v6 appendFormat:@", classification: %@", v10];
-  v11 = [(MRDIRInteractiveRouteRecommendation *)self recommendationType];
-  if ((v11 - 1) > 2)
+  recommendationType = [(MRDIRInteractiveRouteRecommendation *)self recommendationType];
+  if ((recommendationType - 1) > 2)
   {
     v12 = @"OneTapRoute";
   }
 
   else
   {
-    v12 = *(&off_1004BC7B8 + v11 - 1);
+    v12 = *(&off_1004BC7B8 + recommendationType - 1);
   }
 
   [v6 appendFormat:@", recommendationType: %@", v12];

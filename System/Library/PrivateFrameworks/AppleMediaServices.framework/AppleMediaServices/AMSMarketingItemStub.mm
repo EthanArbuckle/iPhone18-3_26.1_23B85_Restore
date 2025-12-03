@@ -1,14 +1,14 @@
 @interface AMSMarketingItemStub
-+ (id)stubForServiceType:(id)a3 placement:(id)a4;
++ (id)stubForServiceType:(id)type placement:(id)placement;
 @end
 
 @implementation AMSMarketingItemStub
 
-+ (id)stubForServiceType:(id)a3 placement:(id)a4
++ (id)stubForServiceType:(id)type placement:(id)placement
 {
-  v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", a3, a4];
+  placement = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", type, placement];
   v5 = +[AMSDefaults marketingItemOverrides];
-  v6 = [v5 valueForKeyPath:v4];
+  v6 = [v5 valueForKeyPath:placement];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

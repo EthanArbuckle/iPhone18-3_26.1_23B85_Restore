@@ -1,30 +1,30 @@
 @interface PPSanitizedStringFilter
-- (PPSanitizedStringFilter)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
+- (PPSanitizedStringFilter)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
 @end
 
 @implementation PPSanitizedStringFilter
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
   v40[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  featuresCopy = features;
+  optionsCopy = options;
   context = objc_autoreleasePoolPush();
-  v10 = [v8 featureValueForName:self->_inputName];
-  v11 = [v10 stringValue];
+  v10 = [featuresCopy featureValueForName:self->_inputName];
+  stringValue = [v10 stringValue];
 
-  if (v11)
+  if (stringValue)
   {
-    v31 = a5;
-    v12 = v9;
-    v13 = [MEMORY[0x277CCA900] alphanumericCharacterSet];
-    v14 = [v11 rangeOfCharacterFromSet:v13];
+    errorCopy = error;
+    v12 = optionsCopy;
+    alphanumericCharacterSet = [MEMORY[0x277CCA900] alphanumericCharacterSet];
+    v14 = [stringValue rangeOfCharacterFromSet:alphanumericCharacterSet];
 
     v15 = [MEMORY[0x277CCA900] characterSetWithCharactersInString:{@"0123456789., "}];
-    v16 = [v15 invertedSet];
+    invertedSet = [v15 invertedSet];
 
-    v17 = [v11 rangeOfCharacterFromSet:v16];
+    v17 = [stringValue rangeOfCharacterFromSet:invertedSet];
     if (v14)
     {
       v18 = 1;
@@ -48,16 +48,16 @@
     v25 = [v20 initWithDictionary:v24 error:&v33];
     v26 = v33;
 
-    v9 = v12;
-    a5 = v31;
+    optionsCopy = v12;
+    error = errorCopy;
   }
 
   else
   {
     v27 = objc_alloc(MEMORY[0x277CBFED0]);
     v39 = self->_outputName;
-    v16 = [MEMORY[0x277CCABB0] numberWithInt:1];
-    v38 = v16;
+    invertedSet = [MEMORY[0x277CCABB0] numberWithInt:1];
+    v38 = invertedSet;
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
     v22 = [PPCoreMLUtils _multiArrayForNumberArray:v21];
     v40[0] = v22;
@@ -68,10 +68,10 @@
   }
 
   objc_autoreleasePoolPop(context);
-  if (a5)
+  if (error)
   {
     v28 = v26;
-    *a5 = v26;
+    *error = v26;
   }
 
   v29 = *MEMORY[0x277D85DE8];
@@ -79,19 +79,19 @@
   return v25;
 }
 
-- (PPSanitizedStringFilter)initWithModelDescription:(id)a3 parameterDictionary:(id)a4 error:(id *)a5
+- (PPSanitizedStringFilter)initWithModelDescription:(id)description parameterDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a4;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = PPSanitizedStringFilter;
   v7 = [(PPSanitizedStringFilter *)&v13 init];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"inputName"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"inputName"];
     inputName = v7->_inputName;
     v7->_inputName = v8;
 
-    v10 = [v6 objectForKeyedSubscript:@"outputName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"outputName"];
     outputName = v7->_outputName;
     v7->_outputName = v10;
   }

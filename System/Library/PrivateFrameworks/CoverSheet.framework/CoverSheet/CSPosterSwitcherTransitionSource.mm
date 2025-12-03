@@ -7,7 +7,7 @@
 - (void)cancelTransition;
 - (void)cleanupPresentation;
 - (void)prepareForPresentation;
-- (void)updatePresentationWithProgress:(double)a3;
+- (void)updatePresentationWithProgress:(double)progress;
 @end
 
 @implementation CSPosterSwitcherTransitionSource
@@ -24,10 +24,10 @@
   *&self->_transitionContext.value = v24[0];
   *&self->_transitionContext.interval.start.inclusive = v3;
   *&self->_transitionContext.interval.end.inclusive = v24[2];
-  v4 = [(CSPosterSwitcherTransitionSource *)self transitioningDelegate];
+  transitioningDelegate = [(CSPosterSwitcherTransitionSource *)self transitioningDelegate];
   v5 = +[CSComponent wallpaper];
-  v6 = [(CSPosterSwitcherTransitionSource *)self appearanceIdentifier];
-  v7 = [v5 identifier:v6];
+  appearanceIdentifier = [(CSPosterSwitcherTransitionSource *)self appearanceIdentifier];
+  v7 = [v5 identifier:appearanceIdentifier];
   v8 = [v7 priority:40];
   v9 = [v8 hidden:0];
   wallpaper = self->_wallpaper;
@@ -35,25 +35,25 @@
 
   [(CSComponent *)self->_wallpaper setLevel:1];
   v11 = +[CSComponent wallpaperFloatingLayer];
-  v12 = [(CSPosterSwitcherTransitionSource *)self appearanceIdentifier];
-  v13 = [v11 identifier:v12];
+  appearanceIdentifier2 = [(CSPosterSwitcherTransitionSource *)self appearanceIdentifier];
+  v13 = [v11 identifier:appearanceIdentifier2];
   v14 = [v13 priority:40];
   wallpaperFloatingLayer = self->_wallpaperFloatingLayer;
   self->_wallpaperFloatingLayer = v14;
 
   [(CSComponent *)self->_wallpaperFloatingLayer setLevel:1];
   v16 = objc_opt_new();
-  v17 = [(CSPosterSwitcherTransitionSource *)self appearanceIdentifier];
-  v18 = [v16 identifier:v17];
+  appearanceIdentifier3 = [(CSPosterSwitcherTransitionSource *)self appearanceIdentifier];
+  v18 = [v16 identifier:appearanceIdentifier3];
   v19 = [v18 suppressTeachableMomentsAnimation:1];
   homeAffordance = self->_homeAffordance;
   self->_homeAffordance = v19;
 
-  [v4 transitionSource:self willBeginWithType:self->_transitionType];
+  [transitioningDelegate transitionSource:self willBeginWithType:self->_transitionType];
   [(CSPosterSwitcherTransitionSource *)self updatePresentationWithProgress:0.0];
 }
 
-- (void)updatePresentationWithProgress:(double)a3
+- (void)updatePresentationWithProgress:(double)progress
 {
   v7 = 0u;
   v8 = 0x3FF0000000000000;
@@ -64,12 +64,12 @@
   *&self->_transitionContext.value = v10;
   *&self->_transitionContext.interval.start.inclusive = v4;
   *&self->_transitionContext.interval.end.inclusive = v12;
-  v5 = [(CSPosterSwitcherTransitionSource *)self transitioningDelegate];
+  transitioningDelegate = [(CSPosterSwitcherTransitionSource *)self transitioningDelegate];
   v6 = *&self->_transitionContext.interval.start.inclusive;
   v10 = *&self->_transitionContext.value;
   v11 = v6;
   v12 = *&self->_transitionContext.interval.end.inclusive;
-  [v5 transitionSource:self didUpdateTransitionWithContext:&v10];
+  [transitioningDelegate transitionSource:self didUpdateTransitionWithContext:&v10];
 }
 
 - (void)cleanupPresentation
@@ -84,12 +84,12 @@
   self->_wallpaperFloatingLayer = 0;
 
   self->_transitionType = 0;
-  v6 = [(CSPosterSwitcherTransitionSource *)self transitioningDelegate];
+  transitioningDelegate = [(CSPosterSwitcherTransitionSource *)self transitioningDelegate];
   v7 = *&self->_transitionContext.interval.start.inclusive;
   v8[0] = *&self->_transitionContext.value;
   v8[1] = v7;
   v8[2] = *&self->_transitionContext.interval.end.inclusive;
-  [v6 transitionSource:self didEndWithContext:v8];
+  [transitioningDelegate transitionSource:self didEndWithContext:v8];
 }
 
 - (NSString)coverSheetIdentifier

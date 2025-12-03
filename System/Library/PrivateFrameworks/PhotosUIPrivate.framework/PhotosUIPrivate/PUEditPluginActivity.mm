@@ -1,5 +1,5 @@
 @interface PUEditPluginActivity
-- (PUEditPluginActivity)initWithPlugin:(id)a3;
+- (PUEditPluginActivity)initWithPlugin:(id)plugin;
 - (id)_activityImage;
 - (id)_activitySettingsImage;
 - (id)activityTitle;
@@ -10,47 +10,47 @@
 
 - (id)_activitySettingsImage
 {
-  v2 = [(PUEditPluginActivity *)self plugin];
-  v3 = [v2 smallIcon];
+  plugin = [(PUEditPluginActivity *)self plugin];
+  smallIcon = [plugin smallIcon];
 
-  return v3;
+  return smallIcon;
 }
 
 - (id)_activityImage
 {
-  v2 = [(PUEditPluginActivity *)self plugin];
-  v3 = [v2 icon];
+  plugin = [(PUEditPluginActivity *)self plugin];
+  icon = [plugin icon];
 
-  return v3;
+  return icon;
 }
 
 - (id)activityTitle
 {
-  v2 = [(PUEditPluginActivity *)self plugin];
-  v3 = [v2 title];
+  plugin = [(PUEditPluginActivity *)self plugin];
+  title = [plugin title];
 
-  return v3;
+  return title;
 }
 
 - (id)activityType
 {
-  v2 = [(PUEditPluginActivity *)self plugin];
-  v3 = [v2 extension];
-  v4 = [v3 identifier];
+  plugin = [(PUEditPluginActivity *)self plugin];
+  extension = [plugin extension];
+  identifier = [extension identifier];
 
-  return v4;
+  return identifier;
 }
 
-- (PUEditPluginActivity)initWithPlugin:(id)a3
+- (PUEditPluginActivity)initWithPlugin:(id)plugin
 {
-  v5 = a3;
+  pluginCopy = plugin;
   v9.receiver = self;
   v9.super_class = PUEditPluginActivity;
   v6 = [(UIActivity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_plugin, a3);
+    objc_storeStrong(&v6->_plugin, plugin);
   }
 
   return v7;

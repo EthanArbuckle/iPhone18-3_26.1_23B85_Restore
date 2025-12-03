@@ -1,9 +1,9 @@
 @interface CALNTriggeredEventNotificationSourceClientIdentifierUtilities
 + (id)_characterSetForEncodingIdentifierComponents;
-+ (id)alarmIDForSourceClientIdentifier:(id)a3;
-+ (id)eventIDForSourceClientIdentifier:(id)a3;
-+ (id)sourceClientIdentifierForEventID:(id)a3 alarmID:(id)a4;
-+ (void)eventID:(id *)a3 andAlarmID:(id *)a4 fromSourceClientIdentifier:(id)a5;
++ (id)alarmIDForSourceClientIdentifier:(id)identifier;
++ (id)eventIDForSourceClientIdentifier:(id)identifier;
++ (id)sourceClientIdentifierForEventID:(id)d alarmID:(id)iD;
++ (void)eventID:(id *)d andAlarmID:(id *)iD fromSourceClientIdentifier:(id)identifier;
 @end
 
 @implementation CALNTriggeredEventNotificationSourceClientIdentifierUtilities
@@ -29,13 +29,13 @@ void __109__CALNTriggeredEventNotificationSourceClientIdentifierUtilities__chara
   _characterSetForEncodingIdentifierComponents_characterSet = v1;
 }
 
-+ (id)sourceClientIdentifierForEventID:(id)a3 alarmID:(id)a4
++ (id)sourceClientIdentifierForEventID:(id)d alarmID:(id)iD
 {
   v21[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _characterSetForEncodingIdentifierComponents];
-  v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+  iDCopy = iD;
+  dCopy = d;
+  _characterSetForEncodingIdentifierComponents = [self _characterSetForEncodingIdentifierComponents];
+  v9 = [dCopy stringByAddingPercentEncodingWithAllowedCharacters:_characterSetForEncodingIdentifierComponents];
 
   if (v9)
   {
@@ -49,10 +49,10 @@ void __109__CALNTriggeredEventNotificationSourceClientIdentifierUtilities__chara
 
   v11 = v10;
 
-  if (v6)
+  if (iDCopy)
   {
-    v12 = [a1 _characterSetForEncodingIdentifierComponents];
-    v13 = [v6 stringByAddingPercentEncodingWithAllowedCharacters:v12];
+    _characterSetForEncodingIdentifierComponents2 = [self _characterSetForEncodingIdentifierComponents];
+    v13 = [iDCopy stringByAddingPercentEncodingWithAllowedCharacters:_characterSetForEncodingIdentifierComponents2];
     v14 = v13;
     if (v13)
     {
@@ -82,12 +82,12 @@ void __109__CALNTriggeredEventNotificationSourceClientIdentifierUtilities__chara
   return v18;
 }
 
-+ (id)alarmIDForSourceClientIdentifier:(id)a3
++ (id)alarmIDForSourceClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11 = 0;
   v12 = 0;
-  [a1 eventID:&v12 andAlarmID:&v11 fromSourceClientIdentifier:v4];
+  [self eventID:&v12 andAlarmID:&v11 fromSourceClientIdentifier:identifierCopy];
   v5 = v12;
   v6 = v11;
   v7 = v6;
@@ -101,52 +101,52 @@ void __109__CALNTriggeredEventNotificationSourceClientIdentifierUtilities__chara
     v9 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      [(CALNTriggeredEventNotificationSourceClientIdentifierUtilities *)v4 alarmIDForSourceClientIdentifier:v9];
+      [(CALNTriggeredEventNotificationSourceClientIdentifierUtilities *)identifierCopy alarmIDForSourceClientIdentifier:v9];
     }
   }
 
   return v7;
 }
 
-+ (id)eventIDForSourceClientIdentifier:(id)a3
++ (id)eventIDForSourceClientIdentifier:(id)identifier
 {
   v6 = 0;
   v7 = 0;
-  [a1 eventID:&v7 andAlarmID:&v6 fromSourceClientIdentifier:a3];
+  [self eventID:&v7 andAlarmID:&v6 fromSourceClientIdentifier:identifier];
   v3 = v7;
   v4 = v7;
 
   return v3;
 }
 
-+ (void)eventID:(id *)a3 andAlarmID:(id *)a4 fromSourceClientIdentifier:(id)a5
++ (void)eventID:(id *)d andAlarmID:(id *)iD fromSourceClientIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = [v7 componentsSeparatedByString:@""];;
-  *a3 = 0;
-  *a4 = 0;
+  identifierCopy = identifier;
+  v8 = [identifierCopy componentsSeparatedByString:@""];;
+  *d = 0;
+  *iD = 0;
   if ([v8 count])
   {
     v9 = [v8 objectAtIndexedSubscript:0];
-    v10 = [v9 stringByRemovingPercentEncoding];
+    stringByRemovingPercentEncoding = [v9 stringByRemovingPercentEncoding];
     if ([v8 count] == 2 && (objc_msgSend(v8, "objectAtIndexedSubscript:", 1), (v11 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v12 = v11;
-      v13 = [v11 stringByRemovingPercentEncoding];
-      v14 = v10;
-      *a3 = v10;
-      if (v13)
+      stringByRemovingPercentEncoding2 = [v11 stringByRemovingPercentEncoding];
+      v14 = stringByRemovingPercentEncoding;
+      *d = stringByRemovingPercentEncoding;
+      if (stringByRemovingPercentEncoding2)
       {
-        v15 = v13;
-        *a4 = v13;
+        v15 = stringByRemovingPercentEncoding2;
+        *iD = stringByRemovingPercentEncoding2;
       }
     }
 
     else
     {
-      v16 = v10;
+      v16 = stringByRemovingPercentEncoding;
       v12 = 0;
-      *a3 = v10;
+      *d = stringByRemovingPercentEncoding;
     }
   }
 
@@ -155,7 +155,7 @@ void __109__CALNTriggeredEventNotificationSourceClientIdentifierUtilities__chara
     v17 = +[CALNLogSubsystem calendar];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [CALNTriggeredEventNotificationSourceClientIdentifierUtilities eventID:v7 andAlarmID:v17 fromSourceClientIdentifier:?];
+      [CALNTriggeredEventNotificationSourceClientIdentifierUtilities eventID:identifierCopy andAlarmID:v17 fromSourceClientIdentifier:?];
     }
   }
 }

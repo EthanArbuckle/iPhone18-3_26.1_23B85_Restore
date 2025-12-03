@@ -1,70 +1,70 @@
 @interface VUILabel
-+ (VUILabel)labelWithAttributedString:(id)a3 textLayout:(id)a4 existingLabel:(id)a5;
-+ (VUILabel)labelWithString:(id)a3 textLayout:(id)a4 existingLabel:(id)a5;
-+ (unint64_t)_numberOfLinesForLayout:(id)a3;
++ (VUILabel)labelWithAttributedString:(id)string textLayout:(id)layout existingLabel:(id)label;
++ (VUILabel)labelWithString:(id)string textLayout:(id)layout existingLabel:(id)label;
++ (unint64_t)_numberOfLinesForLayout:(id)layout;
 - (BOOL)_isTruncatedForTruncationMask;
-- (BOOL)_updateTextColorExcludingAttachments:(id)a3;
+- (BOOL)_updateTextColorExcludingAttachments:(id)attachments;
 - (CGRect)cachedTextRectForBounds;
 - (CGRect)previousBounds;
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4;
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines;
 - (CGSize)cachedSizeThatFits;
 - (CGSize)previousTargetSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (UIEdgeInsets)padding;
-- (VUILabel)initWithFrame:(CGRect)a3;
-- (double)bottomMarginWithBaselineMargin:(double)a3;
-- (double)bottomMarginWithBaselineMargin:(double)a3 maximumContentSizeCategory:(unint64_t)a4;
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4;
-- (double)topMarginWithBaselineMargin:(double)a3;
-- (double)topMarginWithBaselineMargin:(double)a3 maximumContentSizeCategory:(unint64_t)a4;
+- (VUILabel)initWithFrame:(CGRect)frame;
+- (double)bottomMarginWithBaselineMargin:(double)margin;
+- (double)bottomMarginWithBaselineMargin:(double)margin maximumContentSizeCategory:(unint64_t)category;
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin;
+- (double)topMarginWithBaselineMargin:(double)margin;
+- (double)topMarginWithBaselineMargin:(double)margin maximumContentSizeCategory:(unint64_t)category;
 - (double)vuiBaselineHeight;
-- (id)_rangeOfStringExcludingAttachments:(id)a3;
+- (id)_rangeOfStringExcludingAttachments:(id)attachments;
 - (id)attributedText;
 - (id)defaultParagraphStyle;
-- (unint64_t)numberOfLinesRequiredForTextWidth:(double)a3;
+- (unint64_t)numberOfLinesRequiredForTextWidth:(double)width;
 - (void)_clearCachedValues;
 - (void)_configureAlignmentIfNeeded;
 - (void)_setupTruncationMask;
 - (void)_updateCompositingFilter;
-- (void)_updateTextColor:(BOOL)a3;
-- (void)_updateTextColorWithForceUpdate:(BOOL)a3;
+- (void)_updateTextColor:(BOOL)color;
+- (void)_updateTextColorWithForceUpdate:(BOOL)update;
 - (void)_updateTruncationMask;
 - (void)dealloc;
-- (void)drawTextInRect:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
 - (void)layoutSubviews;
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3;
-- (void)setAttributedText:(id)a3;
-- (void)setBaselineAdjustment:(int64_t)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setNumberOfLines:(int64_t)a3;
-- (void)setPadding:(UIEdgeInsets)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setVuiAttributedText:(id)a3;
-- (void)setVuiText:(id)a3;
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width;
+- (void)setAttributedText:(id)text;
+- (void)setBaselineAdjustment:(int64_t)adjustment;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFont:(id)font;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setNumberOfLines:(int64_t)lines;
+- (void)setPadding:(UIEdgeInsets)padding;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
+- (void)setVuiAttributedText:(id)text;
+- (void)setVuiText:(id)text;
 - (void)tintColorDidChange;
-- (void)updateTextLayout:(id)a3;
+- (void)updateTextLayout:(id)layout;
 - (void)useExtremeSizingOnTallScripts;
-- (void)vui_setHighlighted:(BOOL)a3;
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5;
+- (void)vui_setHighlighted:(BOOL)highlighted;
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator;
 @end
 
 @implementation VUILabel
 
-+ (VUILabel)labelWithString:(id)a3 textLayout:(id)a4 existingLabel:(id)a5
++ (VUILabel)labelWithString:(id)string textLayout:(id)layout existingLabel:(id)label
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  stringCopy = string;
+  layoutCopy = layout;
+  labelCopy = label;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = labelCopy;
   }
 
   else
@@ -73,22 +73,22 @@
   }
 
   v11 = v10;
-  v12 = [v8 fadesOutTextTruncation];
-  v13 = [v11 computationLabel];
-  v14 = v13;
-  if (v12)
+  fadesOutTextTruncation = [layoutCopy fadesOutTextTruncation];
+  computationLabel = [v11 computationLabel];
+  v14 = computationLabel;
+  if (fadesOutTextTruncation)
   {
-    if (v13)
+    if (computationLabel)
     {
-      v15 = [v11 computationLabel];
+      computationLabel2 = [v11 computationLabel];
     }
 
     else
     {
-      v15 = [objc_alloc(objc_opt_class()) initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+      computationLabel2 = [objc_alloc(objc_opt_class()) initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     }
 
-    v17 = v15;
+    v17 = computationLabel2;
 
     [v17 setVuiNumberOfLines:0];
     [v17 setVuiAlpha:0.0];
@@ -98,39 +98,39 @@
 
   else
   {
-    [v13 removeFromSuperview];
+    [computationLabel removeFromSuperview];
 
     [v11 setComputationLabel:0];
     [v11 setTruncationMask:0];
-    v16 = [v11 layer];
-    [v16 setMask:0];
+    layer = [v11 layer];
+    [layer setMask:0];
 
     v17 = 0;
   }
 
-  [v17 setTextLayout:v8];
-  [v11 setTextLayout:v8];
-  [v11 setPreferredVibrancy:{objc_msgSend(v8, "preferredVibrancy")}];
-  [v11 setVuiNumberOfLines:{+[VUILabel _numberOfLinesForLayout:](VUILabel, "_numberOfLinesForLayout:", v8)}];
-  [v8 padding];
+  [v17 setTextLayout:layoutCopy];
+  [v11 setTextLayout:layoutCopy];
+  [v11 setPreferredVibrancy:{objc_msgSend(layoutCopy, "preferredVibrancy")}];
+  [v11 setVuiNumberOfLines:{+[VUILabel _numberOfLinesForLayout:](VUILabel, "_numberOfLinesForLayout:", layoutCopy)}];
+  [layoutCopy padding];
   [v11 setPadding:?];
   [v11 setHighlightedTextColor:0];
-  [v8 fontSize];
+  [layoutCopy fontSize];
   [v11 setAdjustsFontForContentSizeCategory:v18 == 0.0];
-  [v8 fontSize];
+  [layoutCopy fontSize];
   [v17 setAdjustsFontForContentSizeCategory:v19 == 0.0];
-  [v8 minimumScaleFactor];
+  [layoutCopy minimumScaleFactor];
   if (v20 > 0.0)
   {
-    [v8 minimumScaleFactor];
+    [layoutCopy minimumScaleFactor];
     [v11 setMinimumScaleFactor:?];
     [v11 setAdjustsFontSizeToFitWidth:1];
-    [v8 minimumScaleFactor];
+    [layoutCopy minimumScaleFactor];
     [v17 setMinimumScaleFactor:?];
     [v17 setAdjustsFontSizeToFitWidth:1];
   }
 
-  v21 = [v8 attributedStringWithString:v7 view:v11];
+  v21 = [layoutCopy attributedStringWithString:stringCopy view:v11];
   if ([v11 vuiIsRTL] && objc_msgSend(v21, "length"))
   {
     v35 = xmmword_1E4296B90;
@@ -149,24 +149,24 @@
   }
 
   [v11 setVuiAttributedText:v21];
-  v26 = [v8 shadow];
-  if (v26)
+  shadow = [layoutCopy shadow];
+  if (shadow)
   {
-    v27 = v26;
-    v28 = [v8 appliesShadowToContainer];
+    v27 = shadow;
+    appliesShadowToContainer = [layoutCopy appliesShadowToContainer];
 
-    if (v28)
+    if (appliesShadowToContainer)
     {
-      v29 = [v8 shadow];
-      v30 = [v11 layer];
-      v31 = [v29 shadowColor];
-      [v30 setShadowColor:{objc_msgSend(v31, "CGColor")}];
+      shadow2 = [layoutCopy shadow];
+      layer2 = [v11 layer];
+      shadowColor = [shadow2 shadowColor];
+      [layer2 setShadowColor:{objc_msgSend(shadowColor, "CGColor")}];
 
-      [v29 shadowBlurRadius];
-      [v30 setShadowRadius:?];
-      [v29 shadowOffset];
-      [v30 setShadowOffset:?];
-      [v30 setMasksToBounds:0];
+      [shadow2 shadowBlurRadius];
+      [layer2 setShadowRadius:?];
+      [shadow2 shadowOffset];
+      [layer2 setShadowOffset:?];
+      [layer2 setMasksToBounds:0];
     }
   }
 
@@ -177,7 +177,7 @@
 
   else
   {
-    v32 = [v8 defaultAttributesForLabel:v11];
+    v32 = [layoutCopy defaultAttributesForLabel:v11];
   }
 
   v33 = v32;
@@ -185,7 +185,7 @@
   [v17 _setDefaultAttributes:v33];
   [v11 _updateCompositingFilter];
   [v11 _configureAlignmentIfNeeded];
-  if ([v8 enableAXUnderlineButtonShape])
+  if ([layoutCopy enableAXUnderlineButtonShape])
   {
     [v11 _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
   }
@@ -195,15 +195,15 @@
   return v11;
 }
 
-+ (VUILabel)labelWithAttributedString:(id)a3 textLayout:(id)a4 existingLabel:(id)a5
++ (VUILabel)labelWithAttributedString:(id)string textLayout:(id)layout existingLabel:(id)label
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
+  layoutCopy = layout;
+  labelCopy = label;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v8;
+    v10 = labelCopy;
   }
 
   else
@@ -212,22 +212,22 @@
   }
 
   v11 = v10;
-  v12 = [v7 fadesOutTextTruncation];
-  v13 = [v11 computationLabel];
-  v14 = v13;
-  if (v12)
+  fadesOutTextTruncation = [layoutCopy fadesOutTextTruncation];
+  computationLabel = [v11 computationLabel];
+  v14 = computationLabel;
+  if (fadesOutTextTruncation)
   {
-    if (v13)
+    if (computationLabel)
     {
-      v15 = [v11 computationLabel];
+      computationLabel2 = [v11 computationLabel];
     }
 
     else
     {
-      v15 = [objc_alloc(objc_opt_class()) initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+      computationLabel2 = [objc_alloc(objc_opt_class()) initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     }
 
-    v17 = v15;
+    v17 = computationLabel2;
 
     [v17 setVuiNumberOfLines:0];
     [v17 setVuiAlpha:0.0];
@@ -237,42 +237,42 @@
 
   else
   {
-    [v13 removeFromSuperview];
+    [computationLabel removeFromSuperview];
 
     [v11 setComputationLabel:0];
     [v11 setTruncationMask:0];
-    v16 = [v11 layer];
-    [v16 setMask:0];
+    layer = [v11 layer];
+    [layer setMask:0];
 
     v17 = 0;
   }
 
-  [v17 setTextLayout:v7];
-  [v11 setTextLayout:v7];
-  [v11 setVuiNumberOfLines:{+[VUILabel _numberOfLinesForLayout:](VUILabel, "_numberOfLinesForLayout:", v7)}];
-  [v11 setPreferredVibrancy:{objc_msgSend(v7, "preferredVibrancy")}];
+  [v17 setTextLayout:layoutCopy];
+  [v11 setTextLayout:layoutCopy];
+  [v11 setVuiNumberOfLines:{+[VUILabel _numberOfLinesForLayout:](VUILabel, "_numberOfLinesForLayout:", layoutCopy)}];
+  [v11 setPreferredVibrancy:{objc_msgSend(layoutCopy, "preferredVibrancy")}];
   [v11 setHighlightedTextColor:0];
-  [v7 fontSize];
+  [layoutCopy fontSize];
   [v11 setAdjustsFontForContentSizeCategory:v18 == 0.0];
-  [v7 fontSize];
+  [layoutCopy fontSize];
   [v17 setAdjustsFontForContentSizeCategory:v19 == 0.0];
-  [v7 minimumScaleFactor];
+  [layoutCopy minimumScaleFactor];
   if (v20 > 0.0)
   {
-    [v7 minimumScaleFactor];
+    [layoutCopy minimumScaleFactor];
     [v11 setMinimumScaleFactor:?];
     [v11 setAdjustsFontSizeToFitWidth:1];
-    [v7 minimumScaleFactor];
+    [layoutCopy minimumScaleFactor];
     [v17 setMinimumScaleFactor:?];
     [v17 setAdjustsFontSizeToFitWidth:1];
   }
 
-  v21 = [v7 attributedStringWithAttributedString:v9 view:v11 updateTextColor:{objc_msgSend(v7, "shouldUpdateTextColor")}];
+  v21 = [layoutCopy attributedStringWithAttributedString:stringCopy view:v11 updateTextColor:{objc_msgSend(layoutCopy, "shouldUpdateTextColor")}];
 
   [v11 setVuiAttributedText:v21];
   [v11 _updateCompositingFilter];
   [v11 _configureAlignmentIfNeeded];
-  if ([v7 enableAXUnderlineButtonShape])
+  if ([layoutCopy enableAXUnderlineButtonShape])
   {
     [v11 _setWantsUnderlineForAccessibilityButtonShapesEnabled:1];
   }
@@ -280,23 +280,23 @@
   return v11;
 }
 
-+ (unint64_t)_numberOfLinesForLayout:(id)a3
++ (unint64_t)_numberOfLinesForLayout:(id)layout
 {
   v3 = MEMORY[0x1E69DCEB0];
-  v4 = a3;
-  v5 = [v3 mainScreen];
-  v6 = [v5 traitCollection];
+  layoutCopy = layout;
+  mainScreen = [v3 mainScreen];
+  traitCollection = [mainScreen traitCollection];
 
-  v7 = [v4 numberOfLinesForTraitCollection:v6];
+  v7 = [layoutCopy numberOfLinesForTraitCollection:traitCollection];
   return v7;
 }
 
-- (VUILabel)initWithFrame:(CGRect)a3
+- (VUILabel)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v25[2] = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = VUILabel;
@@ -339,11 +339,11 @@
     objc_copyWeak(&v19, &location);
     [(VUILabel *)v8 vui_registerForTraitChanges:v14 withHandler:v18];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v8 selector:sel_contrastSettingsDidChange name:*MEMORY[0x1E69DD8B8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel_contrastSettingsDidChange name:*MEMORY[0x1E69DD8B8] object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v8 selector:sel_transparencySettingsDidChange name:*MEMORY[0x1E69DD920] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v8 selector:sel_transparencySettingsDidChange name:*MEMORY[0x1E69DD920] object:0];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v21);
@@ -435,35 +435,35 @@ void __26__VUILabel_initWithFrame___block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69DD8B8] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69DD8B8] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DD920] object:0];
 
   v5.receiver = self;
   v5.super_class = VUILabel;
   [(VUILabel *)&v5 dealloc];
 }
 
-- (double)topMarginToLabel:(id)a3 withBaselineMargin:(double)a4
+- (double)topMarginToLabel:(id)label withBaselineMargin:(double)margin
 {
-  v6 = a3;
-  if (v6)
+  labelCopy = label;
+  if (labelCopy)
   {
     HasExuberatedLineHeight = CTFontHasExuberatedLineHeight();
     [(VUILabel *)self languageAwareSystemSpacingMultiplier];
     v9 = v8;
     if ([(VUILabel *)self useLanguageAwareMarginScaling]&& HasExuberatedLineHeight)
     {
-      v10 = [(VUILabel *)self font];
-      [v10 _scaledValueForValue:1 useLanguageAwareScaling:a4];
+      font = [(VUILabel *)self font];
+      [font _scaledValueForValue:1 useLanguageAwareScaling:margin];
       v12 = v11;
 
 LABEL_13:
       [(VUILabel *)self baselineHeight];
       v20 = v12 - v19;
-      [v6 vui_baselineOffsetFromBottom];
+      [labelCopy vui_baselineOffsetFromBottom];
       v15 = v20 - v21;
       goto LABEL_14;
     }
@@ -481,19 +481,19 @@ LABEL_13:
     if (v14 != 1)
     {
       v16 = MEMORY[0x1E69DF6D0];
-      v17 = [(VUILabel *)self traitCollection];
-      [v16 scaleContentSizeValue:v17 forTraitCollection:-[VUITextLayout maximumContentSizeCategory](self->_textLayout maximumContentSizeCategory:{"maximumContentSizeCategory"), a4}];
+      traitCollection = [(VUILabel *)self traitCollection];
+      [v16 scaleContentSizeValue:traitCollection forTraitCollection:-[VUITextLayout maximumContentSizeCategory](self->_textLayout maximumContentSizeCategory:{"maximumContentSizeCategory"), margin}];
       v12 = v18;
 
       goto LABEL_13;
     }
 
-    [(VUILabel *)self _systemSpacingBelowView:v6 multiplier:v9];
+    [(VUILabel *)self _systemSpacingBelowView:labelCopy multiplier:v9];
   }
 
   else
   {
-    [(VUILabel *)self topMarginWithBaselineMargin:a4];
+    [(VUILabel *)self topMarginWithBaselineMargin:margin];
   }
 
   v15 = v13;
@@ -502,21 +502,21 @@ LABEL_14:
   return v15;
 }
 
-- (unint64_t)numberOfLinesRequiredForTextWidth:(double)a3
+- (unint64_t)numberOfLinesRequiredForTextWidth:(double)width
 {
   result = [(VUILabel *)self attributedText];
   if (result)
   {
     v6 = result;
-    v7 = [(VUILabel *)self attributedText];
-    v8 = [v7 length];
+    attributedText = [(VUILabel *)self attributedText];
+    v8 = [attributedText length];
 
     if (v8)
     {
-      [(UIView *)self vui_sizeThatFits:0 layout:a3, 0.0];
+      [(UIView *)self vui_sizeThatFits:0 layout:width, 0.0];
       v10 = v9;
-      v11 = [(VUILabel *)self font];
-      [v11 lineHeight];
+      font = [(VUILabel *)self font];
+      [font lineHeight];
       v13 = v12;
 
       if (v13 == 0.0)
@@ -552,32 +552,32 @@ LABEL_14:
   return result;
 }
 
-- (void)updateTextLayout:(id)a3
+- (void)updateTextLayout:(id)layout
 {
-  v4 = a3;
-  [(VUILabel *)self setTextLayout:v4];
-  v5 = [(VUILabel *)self computationLabel];
-  [v5 setTextLayout:v4];
+  layoutCopy = layout;
+  [(VUILabel *)self setTextLayout:layoutCopy];
+  computationLabel = [(VUILabel *)self computationLabel];
+  [computationLabel setTextLayout:layoutCopy];
 }
 
 - (id)attributedText
 {
   v4.receiver = self;
   v4.super_class = VUILabel;
-  v2 = [(VUILabel *)&v4 attributedText];
+  attributedText = [(VUILabel *)&v4 attributedText];
 
-  return v2;
+  return attributedText;
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
+  onlyCopy = only;
+  height = subviews.height;
+  width = subviews.width;
   v16.receiver = self;
   v16.super_class = VUILabel;
   [VUILabel vui_layoutSubviews:sel_vui_layoutSubviews_computationOnly_ computationOnly:?];
-  if (v4)
+  if (onlyCopy)
   {
     [(VUILabel *)self sizeThatFits:width, height];
     v11 = v10;
@@ -598,27 +598,27 @@ LABEL_14:
   return result;
 }
 
-- (double)topMarginWithBaselineMargin:(double)a3
+- (double)topMarginWithBaselineMargin:(double)margin
 {
-  v5 = [(VUITextLayout *)self->_textLayout maximumContentSizeCategory];
+  maximumContentSizeCategory = [(VUITextLayout *)self->_textLayout maximumContentSizeCategory];
 
-  [(VUILabel *)self topMarginWithBaselineMargin:v5 maximumContentSizeCategory:a3];
+  [(VUILabel *)self topMarginWithBaselineMargin:maximumContentSizeCategory maximumContentSizeCategory:margin];
   return result;
 }
 
-- (double)bottomMarginWithBaselineMargin:(double)a3
+- (double)bottomMarginWithBaselineMargin:(double)margin
 {
-  v5 = [(VUITextLayout *)self->_textLayout maximumContentSizeCategory];
+  maximumContentSizeCategory = [(VUITextLayout *)self->_textLayout maximumContentSizeCategory];
 
-  [(VUILabel *)self bottomMarginWithBaselineMargin:v5 maximumContentSizeCategory:a3];
+  [(VUILabel *)self bottomMarginWithBaselineMargin:maximumContentSizeCategory maximumContentSizeCategory:margin];
   return result;
 }
 
-- (void)setVuiText:(id)a3
+- (void)setVuiText:(id)text
 {
-  v4 = a3;
-  [(VUILabel *)self setText:v4];
-  [(VUILabel *)self->_computationLabel setText:v4];
+  textCopy = text;
+  [(VUILabel *)self setText:textCopy];
+  [(VUILabel *)self->_computationLabel setText:textCopy];
 }
 
 - (void)layoutSubviews
@@ -635,12 +635,12 @@ LABEL_14:
   v4 = v3;
   if (v3 <= 0.0)
   {
-    v5 = [(VUILabel *)self font];
+    font = [(VUILabel *)self font];
 
-    if (v5)
+    if (font)
     {
-      v6 = [(VUILabel *)self font];
-      [v6 baselineHeight];
+      font2 = [(VUILabel *)self font];
+      [font2 baselineHeight];
       v4 = v7;
     }
   }
@@ -648,59 +648,59 @@ LABEL_14:
   return v4;
 }
 
-- (void)setVuiAttributedText:(id)a3
+- (void)setVuiAttributedText:(id)text
 {
-  v4 = a3;
-  [(VUILabel *)self setAttributedText:v4];
-  [(VUILabel *)self->_computationLabel setAttributedText:v4];
+  textCopy = text;
+  [(VUILabel *)self setAttributedText:textCopy];
+  [(VUILabel *)self->_computationLabel setAttributedText:textCopy];
 }
 
-- (double)topMarginWithBaselineMargin:(double)a3 maximumContentSizeCategory:(unint64_t)a4
+- (double)topMarginWithBaselineMargin:(double)margin maximumContentSizeCategory:(unint64_t)category
 {
   v7 = MEMORY[0x1E69DF6D0];
-  v8 = [(VUILabel *)self vuiTraitCollection];
-  [v7 scaleContentSizeValue:v8 forTraitCollection:a4 maximumContentSizeCategory:a3];
+  vuiTraitCollection = [(VUILabel *)self vuiTraitCollection];
+  [v7 scaleContentSizeValue:vuiTraitCollection forTraitCollection:category maximumContentSizeCategory:margin];
   v10 = v9;
 
   [(VUILabel *)self baselineHeight];
   return v10 - v11;
 }
 
-- (double)bottomMarginWithBaselineMargin:(double)a3 maximumContentSizeCategory:(unint64_t)a4
+- (double)bottomMarginWithBaselineMargin:(double)margin maximumContentSizeCategory:(unint64_t)category
 {
   v7 = MEMORY[0x1E69DF6D0];
-  v8 = [(VUILabel *)self vuiTraitCollection];
-  [v7 scaleContentSizeValue:v8 forTraitCollection:a4 maximumContentSizeCategory:a3];
+  vuiTraitCollection = [(VUILabel *)self vuiTraitCollection];
+  [v7 scaleContentSizeValue:vuiTraitCollection forTraitCollection:category maximumContentSizeCategory:margin];
   v10 = v9;
 
   [(VUILabel *)self _baselineOffsetFromBottom];
   return v10 - v11;
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 mutableCopy];
+  textCopy = text;
+  v5 = [textCopy mutableCopy];
   if (UIAccessibilityDarkerSystemColorsEnabled() || UIAccessibilityIsReduceTransparencyEnabled())
   {
     v6 = *MEMORY[0x1E69DB650];
-    v7 = [v4 length];
+    v7 = [textCopy length];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __30__VUILabel_setAttributedText___block_invoke;
     v40[3] = &unk_1E8731988;
     v40[4] = self;
     v41 = v5;
-    [v4 enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, v40}];
+    [textCopy enumerateAttribute:v6 inRange:0 options:v7 usingBlock:{0, v40}];
   }
 
-  v8 = [(VUILabel *)self _rangeOfStringExcludingAttachments:v4];
+  v8 = [(VUILabel *)self _rangeOfStringExcludingAttachments:textCopy];
   textLayout = self->_textLayout;
   if (textLayout && -[VUITextLayout appliesDirectionalIsolates](textLayout, "appliesDirectionalIsolates") && [v8 count])
   {
-    v31 = v4;
-    v33 = self;
+    v31 = textCopy;
+    selfCopy = self;
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
@@ -721,13 +721,13 @@ LABEL_14:
             objc_enumerationMutation(obj);
           }
 
-          v14 = [*(*(&v36 + 1) + 8 * i) rangeValue];
+          rangeValue = [*(*(&v36 + 1) + 8 * i) rangeValue];
           v16 = v15;
           v17 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"⁨"];
-          [v5 insertAttributedString:v17 atIndex:v14];
+          [v5 insertAttributedString:v17 atIndex:rangeValue];
 
           v18 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@"⁩"];
-          [v5 insertAttributedString:v18 atIndex:v14 + v16];
+          [v5 insertAttributedString:v18 atIndex:rangeValue + v16];
         }
 
         v11 = [obj countByEnumeratingWithState:&v36 objects:v42 count:16];
@@ -736,10 +736,10 @@ LABEL_14:
       while (v11);
     }
 
-    self = v33;
-    v19 = [(VUILabel *)v33 effectiveUserInterfaceLayoutDirection];
+    self = selfCopy;
+    effectiveUserInterfaceLayoutDirection = [(VUILabel *)selfCopy effectiveUserInterfaceLayoutDirection];
     v20 = objc_alloc(MEMORY[0x1E696AAB0]);
-    if (v19 == 1)
+    if (effectiveUserInterfaceLayoutDirection == 1)
     {
       v21 = @"⁧";
     }
@@ -756,15 +756,15 @@ LABEL_14:
     [v5 appendAttributedString:v23];
 
     v8 = v30;
-    v4 = v32;
+    textCopy = v32;
   }
 
   v24 = +[VUIInterfaceFactory sharedInstance];
-  v25 = [v24 languageStringHandler];
+  languageStringHandler = [v24 languageStringHandler];
 
   v26 = [v5 copy];
-  v27 = [(VUILabel *)self defaultParagraphStyle];
-  v28 = [v25 makeLanguageAwareAttributedString:v26 defaultParagraphStyle:v27];
+  defaultParagraphStyle = [(VUILabel *)self defaultParagraphStyle];
+  v28 = [languageStringHandler makeLanguageAwareAttributedString:v26 defaultParagraphStyle:defaultParagraphStyle];
 
   v35.receiver = self;
   v35.super_class = VUILabel;
@@ -817,8 +817,8 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
 
 - (id)defaultParagraphStyle
 {
-  v3 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v4 = [v3 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v4 = [defaultParagraphStyle mutableCopy];
 
   [v4 setAlignment:{-[VUILabel textAlignment](self, "textAlignment")}];
   [v4 setLineBreakMode:{-[VUILabel lineBreakMode](self, "lineBreakMode")}];
@@ -827,14 +827,14 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
   return v5;
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = [(VUILabel *)self _accessibilityHigherContrastTintColorForColor:a3];
+  v4 = [(VUILabel *)self _accessibilityHigherContrastTintColorForColor:color];
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v5 = [v4 colorByRemovingTransparency];
+    colorByRemovingTransparency = [v4 colorByRemovingTransparency];
 
-    v4 = v5;
+    v4 = colorByRemovingTransparency;
   }
 
   v6.receiver = self;
@@ -851,86 +851,86 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
   }
 }
 
-- (void)setPadding:(UIEdgeInsets)a3
+- (void)setPadding:(UIEdgeInsets)padding
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = padding.top;
+  v3.f64[1] = padding.left;
+  v4.f64[0] = padding.bottom;
+  v4.f64[1] = padding.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_padding.top, v3), vceqq_f64(*&self->_padding.bottom, v4)))) & 1) == 0)
   {
-    self->_padding = a3;
+    self->_padding = padding;
     [(VUILabel *)self _clearCachedValues];
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4.receiver = self;
   v4.super_class = VUILabel;
-  [(VUILabel *)&v4 setText:a3];
+  [(VUILabel *)&v4 setText:text];
   [(VUILabel *)self _clearCachedValues];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   v4.receiver = self;
   v4.super_class = VUILabel;
-  [(VUILabel *)&v4 setFont:a3];
+  [(VUILabel *)&v4 setFont:font];
   [(VUILabel *)self _clearCachedValues];
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
   v4.receiver = self;
   v4.super_class = VUILabel;
-  [(VUILabel *)&v4 setLineBreakMode:a3];
+  [(VUILabel *)&v4 setLineBreakMode:mode];
   [(VUILabel *)self _clearCachedValues];
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
   v4.receiver = self;
   v4.super_class = VUILabel;
-  [(VUILabel *)&v4 setNumberOfLines:a3];
+  [(VUILabel *)&v4 setNumberOfLines:lines];
   [(VUILabel *)self _clearCachedValues];
 }
 
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width
 {
   v4.receiver = self;
   v4.super_class = VUILabel;
-  [(VUILabel *)&v4 setAdjustsFontSizeToFitWidth:a3];
+  [(VUILabel *)&v4 setAdjustsFontSizeToFitWidth:width];
   [(VUILabel *)self _clearCachedValues];
 }
 
-- (void)setBaselineAdjustment:(int64_t)a3
+- (void)setBaselineAdjustment:(int64_t)adjustment
 {
   v4.receiver = self;
   v4.super_class = VUILabel;
-  [(VUILabel *)&v4 setBaselineAdjustment:a3];
+  [(VUILabel *)&v4 setBaselineAdjustment:adjustment];
   [(VUILabel *)self _clearCachedValues];
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3 limitedToNumberOfLines:(int64_t)a4
+- (CGRect)textRectForBounds:(CGRect)bounds limitedToNumberOfLines:(int64_t)lines
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(VUILabel *)self previousBounds];
   v18.origin.x = x;
   v18.origin.y = y;
   v18.size.width = width;
   v18.size.height = height;
-  if (!CGRectEqualToRect(v15, v18) || [(VUILabel *)self previousNumberOfLines]!= a4 || ([(VUILabel *)self cachedTextRectForBounds], CGRectEqualToRect(v16, *MEMORY[0x1E695F058])))
+  if (!CGRectEqualToRect(v15, v18) || [(VUILabel *)self previousNumberOfLines]!= lines || ([(VUILabel *)self cachedTextRectForBounds], CGRectEqualToRect(v16, *MEMORY[0x1E695F058])))
   {
     v14.receiver = self;
     v14.super_class = VUILabel;
-    [(VUILabel *)&v14 textRectForBounds:a4 limitedToNumberOfLines:x, y, width, height];
+    [(VUILabel *)&v14 textRectForBounds:lines limitedToNumberOfLines:x, y, width, height];
     [(VUILabel *)self setCachedTextRectForBounds:?];
     [(VUILabel *)self setPreviousBounds:x, y, width, height];
-    [(VUILabel *)self setPreviousNumberOfLines:a4];
+    [(VUILabel *)self setPreviousNumberOfLines:lines];
   }
 
   [(VUILabel *)self cachedTextRectForBounds];
@@ -941,10 +941,10 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(VUILabel *)self padding];
   v7 = v6;
   v9 = v8;
@@ -958,8 +958,8 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
   [(VUILabel *)self previousTargetSize];
   v19 = v18;
   v21 = v20;
-  v22 = [(VUILabel *)self previousTraitCollection];
-  v23 = [(UIView *)self vui_shouldRecomputeCachedSizeThatFits:v22 previousTargetSize:v15 previousTraitCollection:v17 newTargetSize:v19, v21, v12, v13];
+  previousTraitCollection = [(VUILabel *)self previousTraitCollection];
+  v23 = [(UIView *)self vui_shouldRecomputeCachedSizeThatFits:previousTraitCollection previousTargetSize:v15 previousTraitCollection:v17 newTargetSize:v19, v21, v12, v13];
 
   if (v23)
   {
@@ -976,8 +976,8 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
       v25 = v12;
     }
 
-    v29 = [(VUILabel *)self vuiTraitCollection];
-    [(VUILabel *)self setPreviousTraitCollection:v29];
+    vuiTraitCollection = [(VUILabel *)self vuiTraitCollection];
+    [(VUILabel *)self setPreviousTraitCollection:vuiTraitCollection];
 
     [(VUILabel *)self setPreviousTargetSize:v25, v13];
   }
@@ -992,12 +992,12 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
   return result;
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(VUILabel *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -1050,22 +1050,22 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
         v7 = v6;
         [(VUILabel *)self bounds];
         [(CALayer *)self->_truncationMask setFrame:?];
-        v8 = [(CALayer *)self->_truncationMask sublayers];
-        v10 = [v8 firstObject];
+        sublayers = [(CALayer *)self->_truncationMask sublayers];
+        firstObject = [sublayers firstObject];
 
         [(VUILabel *)self numberOfLinesRequiredForTextWidth:v7];
         [(VUILabel *)self bounds];
         [(VUILabel *)self vuiIsRTL];
         VUIRectWithFlippedOriginRelativeToBoundingRectWithCondition();
-        [v10 setFrame:?];
-        v9 = [(VUILabel *)self layer];
-        [v9 setMask:self->_truncationMask];
+        [firstObject setFrame:?];
+        layer = [(VUILabel *)self layer];
+        [layer setMask:self->_truncationMask];
       }
 
       else
       {
-        v10 = [(VUILabel *)self layer];
-        [v10 setMask:0];
+        firstObject = [(VUILabel *)self layer];
+        [firstObject setMask:0];
       }
     }
   }
@@ -1079,16 +1079,16 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
   self->_truncationMask = v3;
 
   v5 = self->_truncationMask;
-  v6 = [MEMORY[0x1E69DC888] whiteColor];
-  -[CALayer setBackgroundColor:](v5, "setBackgroundColor:", [v6 CGColor]);
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  -[CALayer setBackgroundColor:](v5, "setBackgroundColor:", [whiteColor CGColor]);
 
-  v7 = [MEMORY[0x1E6979380] layer];
-  v8 = [MEMORY[0x1E69DC888] clearColor];
-  v13[0] = [v8 CGColor];
-  v9 = [MEMORY[0x1E69DC888] whiteColor];
-  v13[1] = [v9 CGColor];
+  layer = [MEMORY[0x1E6979380] layer];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  v13[0] = [clearColor CGColor];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  v13[1] = [whiteColor2 CGColor];
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
-  [v7 setColors:v10];
+  [layer setColors:v10];
 
   if ([(VUILabel *)self vuiIsRTL])
   {
@@ -1100,7 +1100,7 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
     v11 = 0.0;
   }
 
-  [v7 setStartPoint:{v11, 0.5}];
+  [layer setStartPoint:{v11, 0.5}];
   if ([(VUILabel *)self vuiIsRTL])
   {
     v12 = 0.0;
@@ -1111,9 +1111,9 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
     v12 = 1.0;
   }
 
-  [v7 setEndPoint:{v12, 0.5}];
-  [v7 setCompositingFilter:*MEMORY[0x1E69798E8]];
-  [(CALayer *)self->_truncationMask addSublayer:v7];
+  [layer setEndPoint:{v12, 0.5}];
+  [layer setCompositingFilter:*MEMORY[0x1E69798E8]];
+  [(CALayer *)self->_truncationMask addSublayer:layer];
 }
 
 - (BOOL)_isTruncatedForTruncationMask
@@ -1138,14 +1138,14 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
   [(VUILabel *)&v6 tintColorDidChange];
   if ([(VUILabel *)self tintAdjustmentMode]== 2)
   {
-    v3 = [MEMORY[0x1E69DC888] vui_keyColor];
-    v4 = [(VUILabel *)self textColor];
+    vui_keyColor = [MEMORY[0x1E69DC888] vui_keyColor];
+    textColor = [(VUILabel *)self textColor];
 
-    if (v4 == v3)
+    if (textColor == vui_keyColor)
     {
-      [(VUILabel *)self setAdjustmentModeNormalTintColor:v3];
-      v5 = [MEMORY[0x1E69DC888] systemMidGrayColor];
-      [(VUILabel *)self setTextColor:v5];
+      [(VUILabel *)self setAdjustmentModeNormalTintColor:vui_keyColor];
+      systemMidGrayColor = [MEMORY[0x1E69DC888] systemMidGrayColor];
+      [(VUILabel *)self setTextColor:systemMidGrayColor];
     }
   }
 
@@ -1156,45 +1156,45 @@ void __30__VUILabel_setAttributedText___block_invoke(uint64_t a1, void *a2, uint
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = VUILabel;
   [(VUILabel *)&v5 setHighlighted:?];
-  [(VUILabel *)self vui_setHighlighted:v3];
+  [(VUILabel *)self vui_setHighlighted:highlightedCopy];
 }
 
-- (void)vui_setHighlighted:(BOOL)a3
+- (void)vui_setHighlighted:(BOOL)highlighted
 {
   v5.receiver = self;
   v5.super_class = VUILabel;
-  [(VUILabel *)&v5 setHighlighted:a3];
+  [(VUILabel *)&v5 setHighlighted:highlighted];
   v4 = ([(VUILabel *)self isHighlighted]& 1) != 0 || self->_selected;
   [(VUILabel *)self _updateTextColor:v4];
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    self->_selected = v5;
+    self->_selected = selectedCopy;
   }
 
-  [(VUILabel *)self vui_setSelected:v5 animated:v4 withAnimationCoordinator:0];
+  [(VUILabel *)self vui_setSelected:selectedCopy animated:animatedCopy withAnimationCoordinator:0];
 }
 
-- (void)vui_setSelected:(BOOL)a3 animated:(BOOL)a4 withAnimationCoordinator:(id)a5
+- (void)vui_setSelected:(BOOL)selected animated:(BOOL)animated withAnimationCoordinator:(id)coordinator
 {
   if (_os_feature_enabled_impl())
   {
-    self->_selected = a3;
-    if (!a3)
+    self->_selected = selected;
+    if (!selected)
     {
 LABEL_3:
-      v7 = [(VUILabel *)self isHighlighted];
+      isHighlighted = [(VUILabel *)self isHighlighted];
       goto LABEL_6;
     }
   }
@@ -1204,57 +1204,57 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v7 = 1;
+  isHighlighted = 1;
 LABEL_6:
 
-  [(VUILabel *)self _updateTextColor:v7];
+  [(VUILabel *)self _updateTextColor:isHighlighted];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
   v5.receiver = self;
   v5.super_class = VUILabel;
-  [(VUILabel *)&v5 setEnabled:a3];
+  [(VUILabel *)&v5 setEnabled:enabled];
   v4 = ([(VUILabel *)self isHighlighted]& 1) != 0 || self->_selected;
   [(VUILabel *)self _updateTextColor:v4];
 }
 
-- (void)_updateTextColorWithForceUpdate:(BOOL)a3
+- (void)_updateTextColorWithForceUpdate:(BOOL)update
 {
-  v3 = a3;
-  v19 = [(VUITextLayout *)self->_textLayout color];
+  updateCopy = update;
+  color = [(VUITextLayout *)self->_textLayout color];
   if (UIAccessibilityDarkerSystemColorsEnabled())
   {
-    v5 = [(VUITextLayout *)self->_textLayout highContrastTintColor];
-    v6 = v5;
-    if (v5)
+    highContrastTintColor = [(VUITextLayout *)self->_textLayout highContrastTintColor];
+    v6 = highContrastTintColor;
+    if (highContrastTintColor)
     {
-      v7 = v5;
-      v8 = v19;
+      v7 = highContrastTintColor;
+      v8 = color;
     }
 
     else
     {
-      v9 = [(VUILabel *)self _accessibilityHigherContrastTintColorForColor:v19];
-      v8 = v19;
+      v9 = [(VUILabel *)self _accessibilityHigherContrastTintColorForColor:color];
+      v8 = color;
       v7 = v9;
     }
 
-    v19 = v7;
+    color = v7;
   }
 
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
-    v10 = [v19 colorByRemovingTransparency];
+    colorByRemovingTransparency = [color colorByRemovingTransparency];
 
-    v19 = v10;
+    color = colorByRemovingTransparency;
   }
 
   if (([(VUILabel *)self isEnabled]& 1) != 0 || ([(VUITextLayout *)self->_textLayout disabledColor], v11 = objc_claimAutoreleasedReturnValue(), v11, !v11))
   {
     if (self->_lastSelectedOrHighlighted && ([(VUITextLayout *)self->_textLayout highlightOrSelectedColor], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
     {
-      v12 = [(VUITextLayout *)self->_textLayout highlightOrSelectedColor];
+      highlightOrSelectedColor = [(VUITextLayout *)self->_textLayout highlightOrSelectedColor];
     }
 
     else
@@ -1264,105 +1264,105 @@ LABEL_6:
         goto LABEL_18;
       }
 
-      v14 = [(VUITextLayout *)self->_textLayout darkColor];
+      darkColor = [(VUITextLayout *)self->_textLayout darkColor];
 
-      if (!v14)
+      if (!darkColor)
       {
         goto LABEL_18;
       }
 
-      v12 = [(VUITextLayout *)self->_textLayout darkColor];
+      highlightOrSelectedColor = [(VUITextLayout *)self->_textLayout darkColor];
     }
   }
 
   else
   {
-    v12 = [(VUITextLayout *)self->_textLayout disabledColor];
+    highlightOrSelectedColor = [(VUITextLayout *)self->_textLayout disabledColor];
   }
 
-  v15 = v12;
+  v15 = highlightOrSelectedColor;
 
-  v19 = v15;
+  color = v15;
 LABEL_18:
-  if ([(VUITextLayout *)self->_textLayout appliesColorToStringAttachments]|| ((v16 = [(VUILabel *)self _updateTextColorExcludingAttachments:v19], v17 = v19, v16) ? (v18 = !v3) : (v18 = 0), !v18))
+  if ([(VUITextLayout *)self->_textLayout appliesColorToStringAttachments]|| ((v16 = [(VUILabel *)self _updateTextColorExcludingAttachments:color], v17 = color, v16) ? (v18 = !updateCopy) : (v18 = 0), !v18))
   {
-    [(VUILabel *)self setTextColor:v19];
-    v17 = v19;
+    [(VUILabel *)self setTextColor:color];
+    v17 = color;
   }
 }
 
-- (void)_updateTextColor:(BOOL)a3
+- (void)_updateTextColor:(BOOL)color
 {
-  v3 = a3;
-  if (self->_lastSelectedOrHighlighted != a3 || ([(VUILabel *)self isEnabled]& 1) == 0)
+  colorCopy = color;
+  if (self->_lastSelectedOrHighlighted != color || ([(VUILabel *)self isEnabled]& 1) == 0)
   {
-    v5 = [(VUITextLayout *)self->_textLayout color];
-    if (v5)
+    color = [(VUITextLayout *)self->_textLayout color];
+    if (color)
     {
-      v6 = v5;
-      v7 = [(VUITextLayout *)self->_textLayout shouldUpdateTextColor];
+      v6 = color;
+      shouldUpdateTextColor = [(VUITextLayout *)self->_textLayout shouldUpdateTextColor];
 
-      if (v7)
+      if (shouldUpdateTextColor)
       {
-        self->_lastSelectedOrHighlighted = v3;
-        v16 = [(VUITextLayout *)self->_textLayout color];
+        self->_lastSelectedOrHighlighted = colorCopy;
+        color2 = [(VUITextLayout *)self->_textLayout color];
         if ([(VUILabel *)self vuiUserInterfaceStyle]== 2)
         {
-          v8 = [(VUITextLayout *)self->_textLayout darkColor];
+          darkColor = [(VUITextLayout *)self->_textLayout darkColor];
 
-          if (v8)
+          if (darkColor)
           {
-            v9 = [(VUITextLayout *)self->_textLayout darkColor];
+            darkColor2 = [(VUITextLayout *)self->_textLayout darkColor];
 
-            v16 = v9;
+            color2 = darkColor2;
           }
         }
 
-        if (v3)
+        if (colorCopy)
         {
-          v10 = [(VUITextLayout *)self->_textLayout highlightOrSelectedColor];
+          highlightOrSelectedColor = [(VUITextLayout *)self->_textLayout highlightOrSelectedColor];
 
-          if (v10)
+          if (highlightOrSelectedColor)
           {
-            v11 = [(VUITextLayout *)self->_textLayout highlightOrSelectedColor];
+            highlightOrSelectedColor2 = [(VUITextLayout *)self->_textLayout highlightOrSelectedColor];
 
-            v16 = v11;
+            color2 = highlightOrSelectedColor2;
           }
         }
 
         if (([(VUILabel *)self isEnabled]& 1) == 0)
         {
-          v12 = [(VUITextLayout *)self->_textLayout disabledColor];
+          disabledColor = [(VUITextLayout *)self->_textLayout disabledColor];
 
-          if (v12)
+          if (disabledColor)
           {
-            v13 = [(VUITextLayout *)self->_textLayout disabledColor];
+            disabledColor2 = [(VUITextLayout *)self->_textLayout disabledColor];
 
-            v16 = v13;
+            color2 = disabledColor2;
           }
         }
 
-        if ([(VUITextLayout *)self->_textLayout appliesColorToStringAttachments]|| (v14 = [(VUILabel *)self _updateTextColorExcludingAttachments:v16], v15 = v16, !v14))
+        if ([(VUITextLayout *)self->_textLayout appliesColorToStringAttachments]|| (v14 = [(VUILabel *)self _updateTextColorExcludingAttachments:color2], v15 = color2, !v14))
         {
-          [(VUILabel *)self setTextColor:v16];
-          v15 = v16;
+          [(VUILabel *)self setTextColor:color2];
+          v15 = color2;
         }
       }
     }
   }
 }
 
-- (BOOL)_updateTextColorExcludingAttachments:(id)a3
+- (BOOL)_updateTextColorExcludingAttachments:(id)attachments
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUILabel *)self attributedText];
-  v6 = [(VUILabel *)self _rangeOfStringExcludingAttachments:v5];
+  attachmentsCopy = attachments;
+  attributedText = [(VUILabel *)self attributedText];
+  v6 = [(VUILabel *)self _rangeOfStringExcludingAttachments:attributedText];
 
-  if (v4 && [v6 count])
+  if (attachmentsCopy && [v6 count])
   {
-    v7 = [(VUILabel *)self vuiAttributedText];
-    v8 = [v7 mutableCopy];
+    vuiAttributedText = [(VUILabel *)self vuiAttributedText];
+    v8 = [vuiAttributedText mutableCopy];
 
     v25 = 0u;
     v26 = 0u;
@@ -1385,12 +1385,12 @@ LABEL_18:
             objc_enumerationMutation(v9);
           }
 
-          v15 = [*(*(&v23 + 1) + 8 * i) rangeValue];
+          rangeValue = [*(*(&v23 + 1) + 8 * i) rangeValue];
           v17 = v16;
           v18 = [v8 length];
-          if (v15 < v18 && v15 + v17 < v18)
+          if (rangeValue < v18 && rangeValue + v17 < v18)
           {
-            [v8 addAttribute:v13 value:v4 range:{v15, v17}];
+            [v8 addAttribute:v13 value:attachmentsCopy range:{rangeValue, v17}];
           }
         }
 
@@ -1411,11 +1411,11 @@ LABEL_18:
   return v20;
 }
 
-- (id)_rangeOfStringExcludingAttachments:(id)a3
+- (id)_rangeOfStringExcludingAttachments:(id)attachments
 {
-  v3 = a3;
-  v4 = [v3 length];
-  if (v3 && (v5 = v4, [v3 containsAttachmentsInRange:{0, v4}]))
+  attachmentsCopy = attachments;
+  v4 = [attachmentsCopy length];
+  if (attachmentsCopy && (v5 = v4, [attachmentsCopy containsAttachmentsInRange:{0, v4}]))
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v9[0] = MEMORY[0x1E69E9820];
@@ -1424,7 +1424,7 @@ LABEL_18:
     v9[3] = &unk_1E872FE58;
     v7 = v6;
     v10 = v7;
-    [v3 enumerateAttributesInRange:0 options:v5 usingBlock:{0, v9}];
+    [attachmentsCopy enumerateAttributesInRange:0 options:v5 usingBlock:{0, v9}];
   }
 
   else
@@ -1450,14 +1450,14 @@ void __47__VUILabel__rangeOfStringExcludingAttachments___block_invoke(uint64_t a
 
 - (void)_updateCompositingFilter
 {
-  v3 = [(VUITextLayout *)self->_textLayout darkCompositingFilter];
-  if (v3 && (v4 = v3, [(VUITextLayout *)self->_textLayout compositingFilter], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  darkCompositingFilter = [(VUITextLayout *)self->_textLayout darkCompositingFilter];
+  if (darkCompositingFilter && (v4 = darkCompositingFilter, [(VUITextLayout *)self->_textLayout compositingFilter], v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
-    v6 = [(VUILabel *)self traitCollection];
-    v7 = [v6 userInterfaceStyle];
+    traitCollection = [(VUILabel *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
     textLayout = self->_textLayout;
-    if (v7 == 2)
+    if (userInterfaceStyle == 2)
     {
       [(VUITextLayout *)textLayout darkCompositingFilter];
     }
@@ -1466,15 +1466,15 @@ void __47__VUILabel__rangeOfStringExcludingAttachments___block_invoke(uint64_t a
     {
       [(VUITextLayout *)textLayout compositingFilter];
     }
-    v10 = ;
-    v9 = [(VUILabel *)self layer];
-    [v9 setCompositingFilter:v10];
+    layer2 = ;
+    layer = [(VUILabel *)self layer];
+    [layer setCompositingFilter:layer2];
   }
 
   else
   {
-    v10 = [(VUILabel *)self layer];
-    [v10 setCompositingFilter:0];
+    layer2 = [(VUILabel *)self layer];
+    [layer2 setCompositingFilter:0];
   }
 }
 

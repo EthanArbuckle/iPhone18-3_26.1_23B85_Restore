@@ -1,10 +1,10 @@
 @interface PDSharingRelayServerEndpoint
 - (NSString)description;
 - (PDSharingRelayServerEndpoint)init;
-- (PDSharingRelayServerEndpoint)initWithMailboxIdentifier:(id)a3 provisioningType:(unint64_t)a4;
-- (PDSharingRelayServerEndpoint)initWithProvisioningType:(unint64_t)a3;
+- (PDSharingRelayServerEndpoint)initWithMailboxIdentifier:(id)identifier provisioningType:(unint64_t)type;
+- (PDSharingRelayServerEndpoint)initWithProvisioningType:(unint64_t)type;
 - (void)rollTransportIdentifer;
-- (void)setCreatedAt:(id)a3;
+- (void)setCreatedAt:(id)at;
 @end
 
 @implementation PDSharingRelayServerEndpoint
@@ -16,36 +16,36 @@
   return [(PDSharingRelayServerEndpoint *)&v3 init];
 }
 
-- (PDSharingRelayServerEndpoint)initWithProvisioningType:(unint64_t)a3
+- (PDSharingRelayServerEndpoint)initWithProvisioningType:(unint64_t)type
 {
   v5 = objc_alloc_init(NSUUID);
-  v6 = [v5 UUIDString];
-  v7 = [v6 stringByReplacingOccurrencesOfString:@"-" withString:&stru_10086D930];
+  uUIDString = [v5 UUIDString];
+  v7 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_10086D930];
 
-  v8 = [(PDSharingRelayServerEndpoint *)self initWithMailboxIdentifier:v7 provisioningType:a3];
+  v8 = [(PDSharingRelayServerEndpoint *)self initWithMailboxIdentifier:v7 provisioningType:type];
   return v8;
 }
 
-- (PDSharingRelayServerEndpoint)initWithMailboxIdentifier:(id)a3 provisioningType:(unint64_t)a4
+- (PDSharingRelayServerEndpoint)initWithMailboxIdentifier:(id)identifier provisioningType:(unint64_t)type
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PDSharingRelayServerEndpoint;
   v8 = [(PDSharingRelayServerEndpoint *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transportIdentifier, a3);
+    objc_storeStrong(&v8->_transportIdentifier, identifier);
     v9->_channelType = 1;
-    v9->_provisioningType = a4;
+    v9->_provisioningType = type;
     v9->_mailboxStatus = 0;
     v10 = objc_alloc_init(NSDate);
     createdAt = v9->_createdAt;
     v9->_createdAt = v10;
 
-    if (a4 <= 2)
+    if (type <= 2)
     {
-      v9->_timeToLive = qword_10068E580[a4];
+      v9->_timeToLive = qword_10068E580[type];
     }
   }
 
@@ -55,22 +55,22 @@
 - (void)rollTransportIdentifer
 {
   v3 = objc_alloc_init(NSUUID);
-  v4 = [v3 UUIDString];
-  v5 = [v4 stringByReplacingOccurrencesOfString:@"-" withString:&stru_10086D930];
+  uUIDString = [v3 UUIDString];
+  v5 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_10086D930];
 
   transportIdentifier = self->_transportIdentifier;
   self->_transportIdentifier = v5;
 }
 
-- (void)setCreatedAt:(id)a3
+- (void)setCreatedAt:(id)at
 {
-  v7 = a3;
-  objc_storeStrong(&self->_createdAt, a3);
+  atCopy = at;
+  objc_storeStrong(&self->_createdAt, at);
   updatedAt = self->_updatedAt;
   p_updatedAt = &self->_updatedAt;
   if (!updatedAt)
   {
-    objc_storeStrong(p_updatedAt, a3);
+    objc_storeStrong(p_updatedAt, at);
   }
 }
 

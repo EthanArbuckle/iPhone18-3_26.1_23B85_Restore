@@ -18,29 +18,29 @@
     _os_log_error_impl(&dword_2304B3000, v2, OS_LOG_TYPE_ERROR, "hasSuggestedLocation has an issue. Use EventModelProvider._hasSuggestedLocationForEvent (in %s:%d)", &v7, 0x12u);
   }
 
-  v3 = [a1 structuredLocation];
-  if (v3)
+  structuredLocation = [self structuredLocation];
+  if (structuredLocation)
   {
-    v4 = [a1 structuredLocation];
-    v5 = [v4 isPrediction];
+    structuredLocation2 = [self structuredLocation];
+    isPrediction = [structuredLocation2 isPrediction];
   }
 
   else
   {
-    v5 = 0;
+    isPrediction = 0;
   }
 
-  return v5;
+  return isPrediction;
 }
 
 - (BOOL)hasUserSpecifiedLocation
 {
-  v2 = [a1 preferredLocationWithoutPrediction];
-  if (v2)
+  preferredLocationWithoutPrediction = [self preferredLocationWithoutPrediction];
+  if (preferredLocationWithoutPrediction)
   {
-    v3 = [a1 preferredLocationWithoutPrediction];
-    v4 = [v3 geoLocation];
-    v5 = v4 != 0;
+    preferredLocationWithoutPrediction2 = [self preferredLocationWithoutPrediction];
+    geoLocation = [preferredLocationWithoutPrediction2 geoLocation];
+    v5 = geoLocation != 0;
   }
 
   else

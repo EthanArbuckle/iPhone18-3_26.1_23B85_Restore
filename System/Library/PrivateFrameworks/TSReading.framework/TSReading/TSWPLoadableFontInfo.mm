@@ -1,8 +1,8 @@
 @interface TSWPLoadableFontInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)dealloc;
-- (void)setCgFont:(CGFont *)a3;
+- (void)setCgFont:(CGFont *)font;
 @end
 
 @implementation TSWPLoadableFontInfo
@@ -15,22 +15,22 @@
   [(TSWPLoadableFontInfo *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
 
   else
   {
-    v5 = [a3 isMemberOfClass:objc_opt_class()];
+    v5 = [equal isMemberOfClass:objc_opt_class()];
     if (v5)
     {
-      v6 = [(TSWPLoadableFontInfo *)self fontName];
-      v7 = [a3 fontName];
+      fontName = [(TSWPLoadableFontInfo *)self fontName];
+      fontName2 = [equal fontName];
 
-      LOBYTE(v5) = [(NSString *)v6 isEqualToString:v7];
+      LOBYTE(v5) = [(NSString *)fontName isEqualToString:fontName2];
     }
   }
 
@@ -58,10 +58,10 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"<TSWPLoadableFontInfo groupUID=%@ name=%@ family=%@ obfuscated=%@ attemptedLoad=%@>", self->_groupUID, self->_fontName, self->_fontFamily, v3, v2];
 }
 
-- (void)setCgFont:(CGFont *)a3
+- (void)setCgFont:(CGFont *)font
 {
   cgFont = self->_cgFont;
-  if (cgFont != a3)
+  if (cgFont != font)
   {
     if (cgFont)
     {
@@ -70,8 +70,8 @@
       CGFontRelease(self->_cgFont);
     }
 
-    CGFontRetain(a3);
-    self->_cgFont = a3;
+    CGFontRetain(font);
+    self->_cgFont = font;
   }
 }
 

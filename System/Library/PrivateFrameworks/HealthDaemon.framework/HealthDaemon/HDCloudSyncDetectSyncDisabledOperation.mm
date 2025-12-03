@@ -8,26 +8,26 @@
 - (void)main
 {
   v79 = *MEMORY[0x277D85DE8];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
 
-  v5 = [v4 profile];
-  v6 = [v5 cloudSyncManager];
-  v7 = [v6 ownerIdentifierManager];
+  profile = [repository profile];
+  cloudSyncManager = [profile cloudSyncManager];
+  ownerIdentifierManager = [cloudSyncManager ownerIdentifierManager];
 
-  v8 = [v4 allCKContainers];
+  allCKContainers = [repository allCKContainers];
   v70[0] = MEMORY[0x277D85DD0];
   v70[1] = 3221225472;
   v70[2] = __46__HDCloudSyncDetectSyncDisabledOperation_main__block_invoke;
   v70[3] = &unk_27862B110;
-  v9 = v7;
+  v9 = ownerIdentifierManager;
   v71 = v9;
-  v62 = [v8 hk_map:v70];
+  v62 = [allCKContainers hk_map:v70];
 
-  v10 = [(HDCloudSyncOperation *)self configuration];
-  v11 = [v10 cachedCloudState];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration2 cachedCloudState];
   v69 = 0;
-  v12 = [v11 zonesByIdentifierWithError:&v69];
+  v12 = [cachedCloudState zonesByIdentifierWithError:&v69];
   v13 = v69;
 
   if (!v12 && v13)
@@ -37,7 +37,7 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v73 = self;
+      selfCopy = self;
       v74 = 2114;
       v75 = v13;
       _os_log_error_impl(&dword_228986000, v14, OS_LOG_TYPE_ERROR, "%{public}@: Failed to retrieve cached zones, %{public}@", buf, 0x16u);
@@ -50,14 +50,14 @@
   v57 = v13;
   v58 = v12;
   v59 = v9;
-  v60 = v4;
-  v61 = self;
+  v60 = repository;
+  selfCopy2 = self;
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v15 = [v12 allValues];
-  v16 = [v15 countByEnumeratingWithState:&v65 objects:v78 count:16];
+  allValues = [v12 allValues];
+  v16 = [allValues countByEnumeratingWithState:&v65 objects:v78 count:16];
   if (v16)
   {
     v18 = v16;
@@ -71,14 +71,14 @@ LABEL_8:
     {
       if (*v66 != v19)
       {
-        objc_enumerationMutation(v15);
+        objc_enumerationMutation(allValues);
       }
 
       v22 = *(*(&v65 + 1) + 8 * v21);
-      v23 = [v22 zoneIdentifier];
-      v24 = [v23 scope];
+      zoneIdentifier = [v22 zoneIdentifier];
+      scope = [zoneIdentifier scope];
 
-      if (v24 == 3)
+      if (scope == 3)
       {
         goto LABEL_33;
       }
@@ -87,7 +87,7 @@ LABEL_8:
       {
         v25 = objc_opt_class();
         v64 = 0;
-        v26 = [v22 recordsForClass:v25 error:&v64];
+        firstObject2 = [v22 recordsForClass:v25 error:&v64];
         v27 = v64;
         if (v27)
         {
@@ -97,11 +97,11 @@ LABEL_8:
           if (os_log_type_enabled(*v20, OS_LOG_TYPE_ERROR))
           {
             v30 = v29;
-            v31 = [v22 zoneIdentifier];
+            zoneIdentifier2 = [v22 zoneIdentifier];
             *buf = 138543874;
-            v73 = v61;
+            selfCopy = selfCopy2;
             v74 = 2114;
-            v75 = v31;
+            v75 = zoneIdentifier2;
             v76 = 2114;
             v77 = v28;
             _os_log_error_impl(&dword_228986000, v30, OS_LOG_TYPE_ERROR, "%{public}@: Failed to retrieve registry record from zone %{public}@, %{public}@", buf, 0x20u);
@@ -112,28 +112,28 @@ LABEL_32:
           goto LABEL_33;
         }
 
-        if ([v26 count] >= 2)
+        if ([firstObject2 count] >= 2)
         {
           _HKInitializeLogging();
           v32 = *v20;
           if (os_log_type_enabled(*v20, OS_LOG_TYPE_ERROR))
           {
             v46 = v32;
-            v47 = [v22 zoneIdentifier];
+            zoneIdentifier3 = [v22 zoneIdentifier];
             *buf = v56;
-            v73 = v61;
+            selfCopy = selfCopy2;
             v74 = 2114;
-            v75 = v47;
+            v75 = zoneIdentifier3;
             _os_log_error_impl(&dword_228986000, v46, OS_LOG_TYPE_ERROR, "%{public}@: Retrieved multiple registry records from zone %{public}@, This is unexpected.", buf, 0x16u);
           }
         }
 
-        v33 = [v26 firstObject];
-        v34 = v33;
-        if (v33)
+        firstObject = [firstObject2 firstObject];
+        v34 = firstObject;
+        if (firstObject)
         {
-          v35 = [v33 disabledOwnerIdentifiers];
-          v36 = [v35 intersectsSet:v62];
+          disabledOwnerIdentifiers = [firstObject disabledOwnerIdentifiers];
+          v36 = [disabledOwnerIdentifiers intersectsSet:v62];
 
           if (v36)
           {
@@ -142,8 +142,8 @@ LABEL_32:
             if (os_log_type_enabled(*v20, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543874;
-              v51 = v61;
-              v73 = v61;
+              v51 = selfCopy2;
+              selfCopy = selfCopy2;
               v74 = 2114;
               v75 = v34;
               v76 = 1024;
@@ -153,8 +153,8 @@ LABEL_32:
             }
 
 LABEL_42:
-            v4 = v60;
-            v51 = v61;
+            repository = v60;
+            v51 = selfCopy2;
             goto LABEL_43;
           }
         }
@@ -174,17 +174,17 @@ LABEL_42:
           if (os_log_type_enabled(*v20, OS_LOG_TYPE_ERROR))
           {
             v44 = v40;
-            v45 = [v22 zoneIdentifier];
+            zoneIdentifier4 = [v22 zoneIdentifier];
             *buf = 138543874;
-            v73 = v61;
+            selfCopy = selfCopy2;
             v74 = 2114;
-            v75 = v45;
+            v75 = zoneIdentifier4;
             v76 = 2114;
             v77 = v28;
             _os_log_error_impl(&dword_228986000, v44, OS_LOG_TYPE_ERROR, "%{public}@: Failed to retrieve master record from zone %{public}@, %{public}@", buf, 0x20u);
           }
 
-          v26 = v38;
+          firstObject2 = v38;
         }
 
         else
@@ -196,18 +196,18 @@ LABEL_42:
             if (os_log_type_enabled(*v20, OS_LOG_TYPE_ERROR))
             {
               v48 = v41;
-              v49 = [v22 zoneIdentifier];
+              zoneIdentifier5 = [v22 zoneIdentifier];
               *buf = v56;
-              v73 = v61;
+              selfCopy = selfCopy2;
               v74 = 2114;
-              v75 = v49;
+              v75 = zoneIdentifier5;
               _os_log_error_impl(&dword_228986000, v48, OS_LOG_TYPE_ERROR, "%{public}@: Retrieved multiple master records from zone %{public}@, This is unexpected.", buf, 0x16u);
             }
           }
 
-          v26 = [v38 firstObject];
-          v42 = [v26 disabledOwnerIdentifiers];
-          v43 = [v42 intersectsSet:v62];
+          firstObject2 = [v38 firstObject];
+          disabledOwnerIdentifiers2 = [firstObject2 disabledOwnerIdentifiers];
+          v43 = [disabledOwnerIdentifiers2 intersectsSet:v62];
 
           if (v43)
           {
@@ -215,24 +215,24 @@ LABEL_42:
             v52 = *v20;
             if (!os_log_type_enabled(*v20, OS_LOG_TYPE_DEFAULT))
             {
-              v34 = v26;
-              v26 = v38;
+              v34 = firstObject2;
+              firstObject2 = v38;
               goto LABEL_42;
             }
 
             v53 = v52;
-            v54 = [v38 firstObject];
+            firstObject3 = [v38 firstObject];
             *buf = v56;
-            v51 = v61;
-            v73 = v61;
+            v51 = selfCopy2;
+            selfCopy = selfCopy2;
             v74 = 2114;
-            v75 = v54;
+            v75 = firstObject3;
             _os_log_impl(&dword_228986000, v53, OS_LOG_TYPE_DEFAULT, "%{public}@: Master record %{public}@ contains one of our owner identifier; sync is disabled.", buf, 0x16u);
 
-            v34 = v26;
-            v26 = v38;
+            v34 = firstObject2;
+            firstObject2 = v38;
 LABEL_40:
-            v4 = v60;
+            repository = v60;
 LABEL_43:
             v12 = v58;
             v9 = v59;
@@ -250,7 +250,7 @@ LABEL_43:
 LABEL_33:
       if (v18 == ++v21)
       {
-        v18 = [v15 countByEnumeratingWithState:&v65 objects:v78 count:16];
+        v18 = [allValues countByEnumeratingWithState:&v65 objects:v78 count:16];
         if (v18)
         {
           goto LABEL_8;
@@ -261,9 +261,9 @@ LABEL_33:
     }
   }
 
-  [(HDCloudSyncOperation *)v61 finishWithSuccess:1 error:0];
+  [(HDCloudSyncOperation *)selfCopy2 finishWithSuccess:1 error:0];
   v9 = v59;
-  v4 = v60;
+  repository = v60;
   v12 = v58;
 LABEL_44:
   v13 = v57;
@@ -282,24 +282,24 @@ id __46__HDCloudSyncDetectSyncDisabledOperation_main__block_invoke(uint64_t a1, 
 
 - (void)_disableSyncLocally
 {
-  if (a1)
+  if (self)
   {
     v2 = [HDCloudSyncDisableSyncLocallyOperation alloc];
-    v3 = [a1 configuration];
-    v4 = [a1 cloudState];
-    v5 = [(HDCloudSyncOperation *)v2 initWithConfiguration:v3 cloudState:v4];
+    configuration = [self configuration];
+    cloudState = [self cloudState];
+    v5 = [(HDCloudSyncOperation *)v2 initWithConfiguration:configuration cloudState:cloudState];
 
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __61__HDCloudSyncDetectSyncDisabledOperation__disableSyncLocally__block_invoke;
     v7[3] = &unk_278613088;
-    v7[4] = a1;
+    v7[4] = self;
     [(HDCloudSyncOperation *)v5 setOnError:v7];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __61__HDCloudSyncDetectSyncDisabledOperation__disableSyncLocally__block_invoke_300;
     v6[3] = &unk_278613060;
-    v6[4] = a1;
+    v6[4] = self;
     [(HDCloudSyncOperation *)v5 setOnSuccess:v6];
     [(HDCloudSyncOperation *)v5 start];
   }

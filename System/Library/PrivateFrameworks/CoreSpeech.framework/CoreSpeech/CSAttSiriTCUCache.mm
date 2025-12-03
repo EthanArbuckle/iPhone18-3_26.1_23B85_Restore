@@ -1,25 +1,25 @@
 @interface CSAttSiriTCUCache
 - (CSAttSiriTCUCache)init;
-- (id)getRequestIdForTCUId:(id)a3;
-- (id)getTCUPackageWithTrpId:(id)a3;
-- (id)getTRPIdForTCUId:(id)a3;
-- (id)updateTcuState:(id)a3;
+- (id)getRequestIdForTCUId:(id)id;
+- (id)getTCUPackageWithTrpId:(id)id;
+- (id)getTRPIdForTCUId:(id)id;
+- (id)updateTcuState:(id)state;
 - (unint64_t)cachedTCUCount;
-- (void)addTCU:(id)a3 firstTRPId:(id)a4 lastTRPId:(id)a5;
-- (void)cleanUpTCUCache:(id)a3;
+- (void)addTCU:(id)u firstTRPId:(id)id lastTRPId:(id)pId;
+- (void)cleanUpTCUCache:(id)cache;
 - (void)clearTcuCache;
 @end
 
 @implementation CSAttSiriTCUCache
 
-- (id)getTRPIdForTCUId:(id)a3
+- (id)getTRPIdForTCUId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   cachedTCUList = self->_cachedTCUList;
-  if (cachedTCUList && ([(NSMutableDictionary *)cachedTCUList objectForKey:v4], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (cachedTCUList && ([(NSMutableDictionary *)cachedTCUList objectForKey:idCopy], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(NSMutableDictionary *)self->_cachedTCUList objectForKeyedSubscript:v4];
-    v8 = [v7 lastTRPId];
+    v7 = [(NSMutableDictionary *)self->_cachedTCUList objectForKeyedSubscript:idCopy];
+    lastTRPId = [v7 lastTRPId];
   }
 
   else
@@ -30,25 +30,25 @@
       v11 = 136315394;
       v12 = "[CSAttSiriTCUCache getTRPIdForTCUId:]";
       v13 = 2112;
-      v14 = v4;
+      v14 = idCopy;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s Cache object not found for tcuId: %@", &v11, 0x16u);
     }
 
-    v8 = 0;
+    lastTRPId = 0;
   }
 
-  return v8;
+  return lastTRPId;
 }
 
-- (id)getRequestIdForTCUId:(id)a3
+- (id)getRequestIdForTCUId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   cachedTCUList = self->_cachedTCUList;
-  if (cachedTCUList && ([(NSMutableDictionary *)cachedTCUList objectForKey:v4], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  if (cachedTCUList && ([(NSMutableDictionary *)cachedTCUList objectForKey:idCopy], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(NSMutableDictionary *)self->_cachedTCUList objectForKeyedSubscript:v4];
-    v8 = [v7 TCUPackage];
-    v9 = [v8 requestId];
+    v7 = [(NSMutableDictionary *)self->_cachedTCUList objectForKeyedSubscript:idCopy];
+    tCUPackage = [v7 TCUPackage];
+    requestId = [tCUPackage requestId];
   }
 
   else
@@ -59,14 +59,14 @@
       v12 = 136315394;
       v13 = "[CSAttSiriTCUCache getRequestIdForTCUId:]";
       v14 = 2112;
-      v15 = v4;
+      v15 = idCopy;
       _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%s Cache object not found for tcuId: %@", &v12, 0x16u);
     }
 
-    v9 = 0;
+    requestId = 0;
   }
 
-  return v9;
+  return requestId;
 }
 
 - (void)clearTcuCache
@@ -105,9 +105,9 @@
   }
 }
 
-- (void)cleanUpTCUCache:(id)a3
+- (void)cleanUpTCUCache:(id)cache
 {
-  v4 = a3;
+  cacheCopy = cache;
   v5 = [(NSMutableDictionary *)self->_cachedTCUList count];
   v6 = CSLogCategoryRequest;
   v7 = os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT);
@@ -139,7 +139,7 @@
     v18 = 3221225472;
     v19 = sub_100109404;
     v20 = &unk_100251AB0;
-    v21 = v4;
+    v21 = cacheCopy;
     v22 = buf;
     [(NSMutableDictionary *)v12 enumerateKeysAndObjectsUsingBlock:&v17];
     if ([*(*&buf[8] + 40) count])
@@ -180,18 +180,18 @@
   }
 }
 
-- (void)addTCU:(id)a3 firstTRPId:(id)a4 lastTRPId:(id)a5
+- (void)addTCU:(id)u firstTRPId:(id)id lastTRPId:(id)pId
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [[CSAttSiriTCUCachedObject alloc] initWithTCUPackage:v8 firstTRPId:v10 lastTRPId:v9];
+  uCopy = u;
+  pIdCopy = pId;
+  idCopy = id;
+  v11 = [[CSAttSiriTCUCachedObject alloc] initWithTCUPackage:uCopy firstTRPId:idCopy lastTRPId:pIdCopy];
 
   if (v11)
   {
     cachedTCUList = self->_cachedTCUList;
-    v13 = [v8 tcuId];
-    [(NSMutableDictionary *)cachedTCUList setObject:v11 forKey:v13];
+    tcuId = [uCopy tcuId];
+    [(NSMutableDictionary *)cachedTCUList setObject:v11 forKey:tcuId];
 
     v14 = CSLogCategoryRequest;
     if (os_log_type_enabled(CSLogCategoryRequest, OS_LOG_TYPE_DEFAULT))
@@ -219,9 +219,9 @@
   }
 }
 
-- (id)updateTcuState:(id)a3
+- (id)updateTcuState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -234,16 +234,16 @@
   v10[3] = &unk_100251AF8;
   v10[4] = self;
   v10[5] = &v11;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [stateCopy enumerateKeysAndObjectsUsingBlock:v10];
   if (v12[5])
   {
     v5 = [(NSMutableDictionary *)self->_cachedTCUList objectForKeyedSubscript:?];
-    v6 = [v5 lastTRPId];
+    lastTRPId = [v5 lastTRPId];
   }
 
   else
   {
-    v6 = 0;
+    lastTRPId = 0;
   }
 
   v7 = CSLogCategoryRequest;
@@ -259,12 +259,12 @@
 
   _Block_object_dispose(&v11, 8);
 
-  return v6;
+  return lastTRPId;
 }
 
-- (id)getTCUPackageWithTrpId:(id)a3
+- (id)getTCUPackageWithTrpId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -276,7 +276,7 @@
   v9[1] = 3221225472;
   v9[2] = sub_100109D54;
   v9[3] = &unk_100251AB0;
-  v6 = v4;
+  v6 = idCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableDictionary *)cachedTCUList enumerateKeysAndObjectsUsingBlock:v9];

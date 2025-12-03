@@ -1,10 +1,10 @@
 @interface CCInstanceRecord
 + (id)genSQLCreateStatements;
-+ (id)recordFromDatabaseValueRow:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToItemRecord:(id)a3;
++ (id)recordFromDatabaseValueRow:(id)row;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToItemRecord:(id)record;
 - (CCInstanceRecord)init;
-- (CCInstanceRecord)initWithDatabaseValueRow:(id)a3;
+- (CCInstanceRecord)initWithDatabaseValueRow:(id)row;
 - (NSString)description;
 - (unint64_t)hash;
 @end
@@ -17,10 +17,10 @@
   objc_exception_throw(v2);
 }
 
-+ (id)recordFromDatabaseValueRow:(id)a3
++ (id)recordFromDatabaseValueRow:(id)row
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:v3];
+  rowCopy = row;
+  v4 = [objc_alloc(objc_opt_class()) initWithDatabaseValueRow:rowCopy];
 
   return v4;
 }
@@ -39,23 +39,23 @@
   return v4;
 }
 
-- (CCInstanceRecord)initWithDatabaseValueRow:(id)a3
+- (CCInstanceRecord)initWithDatabaseValueRow:(id)row
 {
-  v4 = a3;
+  rowCopy = row;
   v13.receiver = self;
   v13.super_class = CCInstanceRecord;
   v5 = [(CCInstanceRecord *)&v13 init];
   if (v5)
   {
-    v6 = [v4 numberValueAtColumnIndex:0];
+    v6 = [rowCopy numberValueAtColumnIndex:0];
     sourceItemIdHash = v5->_sourceItemIdHash;
     v5->_sourceItemIdHash = v6;
 
-    v8 = [v4 numberValueAtColumnIndex:1];
+    v8 = [rowCopy numberValueAtColumnIndex:1];
     provenanceRowId = v5->_provenanceRowId;
     v5->_provenanceRowId = v8;
 
-    v10 = [v4 numberValueAtColumnIndex:2];
+    v10 = [rowCopy numberValueAtColumnIndex:2];
     modified = v5->_modified;
     v5->_modified = v10;
   }
@@ -73,40 +73,40 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCInstanceRecord *)self isEqualToItemRecord:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CCInstanceRecord *)self isEqualToItemRecord:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToItemRecord:(id)a3
+- (BOOL)isEqualToItemRecord:(id)record
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  recordCopy = record;
+  v5 = recordCopy;
+  if (recordCopy)
   {
     sourceItemIdHash = self->_sourceItemIdHash;
-    v7 = [v4 sourceItemIdHash];
-    if ([(NSNumber *)sourceItemIdHash isEqual:v7])
+    sourceItemIdHash = [recordCopy sourceItemIdHash];
+    if ([(NSNumber *)sourceItemIdHash isEqual:sourceItemIdHash])
     {
       provenanceRowId = self->_provenanceRowId;
-      v9 = [v5 provenanceRowId];
-      if ([(NSNumber *)provenanceRowId isEqual:v9])
+      provenanceRowId = [v5 provenanceRowId];
+      if ([(NSNumber *)provenanceRowId isEqual:provenanceRowId])
       {
         modified = self->_modified;
-        v11 = [v5 modified];
-        v12 = [(NSNumber *)modified isEqual:v11];
+        modified = [v5 modified];
+        v12 = [(NSNumber *)modified isEqual:modified];
       }
 
       else

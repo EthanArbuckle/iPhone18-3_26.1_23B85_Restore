@@ -1,8 +1,8 @@
 @interface BMCoreDuetMediaUsageStore
 - (BMCoreDuetMediaUsageStore)init;
-- (BOOL)addContextValue:(id)a3 toArrayAtKeyPath:(id)a4;
-- (BOOL)saveKnowledgeEvent:(id)a3 error:(id *)a4;
-- (id)removeObjectsMatchingPredicate:(id)a3 fromArrayAtKeyPath:(id)a4;
+- (BOOL)addContextValue:(id)value toArrayAtKeyPath:(id)path;
+- (BOOL)saveKnowledgeEvent:(id)event error:(id *)error;
+- (id)removeObjectsMatchingPredicate:(id)predicate fromArrayAtKeyPath:(id)path;
 @end
 
 @implementation BMCoreDuetMediaUsageStore
@@ -14,58 +14,58 @@
   v2 = [(BMCoreDuetMediaUsageStore *)&v8 init];
   if (v2)
   {
-    v3 = [get_DKKnowledgeStoreClass() userKnowledgeStore];
+    userKnowledgeStore = [get_DKKnowledgeStoreClass() userKnowledgeStore];
     knowledgeStore = v2->_knowledgeStore;
-    v2->_knowledgeStore = v3;
+    v2->_knowledgeStore = userKnowledgeStore;
 
-    v5 = [get_CDClientContextClass() userContext];
+    userContext = [get_CDClientContextClass() userContext];
     contextStore = v2->_contextStore;
-    v2->_contextStore = v5;
+    v2->_contextStore = userContext;
   }
 
   return v2;
 }
 
-- (BOOL)addContextValue:(id)a3 toArrayAtKeyPath:(id)a4
+- (BOOL)addContextValue:(id)value toArrayAtKeyPath:(id)path
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BMCoreDuetMediaUsageStore *)self contextStore];
-  v12[0] = v7;
+  pathCopy = path;
+  valueCopy = value;
+  contextStore = [(BMCoreDuetMediaUsageStore *)self contextStore];
+  v12[0] = valueCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
 
-  LOBYTE(v7) = [v8 addObjects:v9 toArrayAtKeyPath:v6];
+  LOBYTE(valueCopy) = [contextStore addObjects:v9 toArrayAtKeyPath:pathCopy];
   v10 = *MEMORY[0x1E69E9840];
-  return v7;
+  return valueCopy;
 }
 
-- (id)removeObjectsMatchingPredicate:(id)a3 fromArrayAtKeyPath:(id)a4
+- (id)removeObjectsMatchingPredicate:(id)predicate fromArrayAtKeyPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BMCoreDuetMediaUsageStore *)self contextStore];
-  v9 = [v8 removeObjectsMatchingPredicate:v7 fromArrayAtKeyPath:v6];
+  pathCopy = path;
+  predicateCopy = predicate;
+  contextStore = [(BMCoreDuetMediaUsageStore *)self contextStore];
+  v9 = [contextStore removeObjectsMatchingPredicate:predicateCopy fromArrayAtKeyPath:pathCopy];
 
   return v9;
 }
 
-- (BOOL)saveKnowledgeEvent:(id)a3 error:(id *)a4
+- (BOOL)saveKnowledgeEvent:(id)event error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  eventCopy = event;
+  if (eventCopy)
   {
-    v7 = [(BMCoreDuetMediaUsageStore *)self knowledgeStore];
-    v12[0] = v6;
+    knowledgeStore = [(BMCoreDuetMediaUsageStore *)self knowledgeStore];
+    v12[0] = eventCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    v9 = [v7 saveObjects:v8 error:a4];
+    v9 = [knowledgeStore saveObjects:v8 error:error];
   }
 
   else
   {
-    v7 = __biome_log_for_category();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    knowledgeStore = __biome_log_for_category();
+    if (os_log_type_enabled(knowledgeStore, OS_LOG_TYPE_ERROR))
     {
       [BMCoreDuetMediaUsageStore saveKnowledgeEvent:error:];
     }

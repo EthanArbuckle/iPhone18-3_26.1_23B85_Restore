@@ -1,5 +1,5 @@
 @interface CLSContextProviderServiceFinder
-- (CLSContextProviderServiceFinder)initWithDelegate:(id)a3;
+- (CLSContextProviderServiceFinder)initWithDelegate:(id)delegate;
 - (NSArray)availableServices;
 - (void)start;
 - (void)stop;
@@ -7,17 +7,17 @@
 
 @implementation CLSContextProviderServiceFinder
 
-- (CLSContextProviderServiceFinder)initWithDelegate:(id)a3
+- (CLSContextProviderServiceFinder)initWithDelegate:(id)delegate
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = CLSContextProviderServiceFinder;
   v5 = [(CLSContextProviderServiceFinder *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v21 = *MEMORY[0x277CCA0F8];
     v22[0] = 0x284A094C8;
     v8 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v7, v22, &v21, 1);
@@ -42,45 +42,45 @@
 
 - (void)start
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_extensionsFinderContext)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_extensionsFinderContext)
   {
-    extensionAttributes = v2->_extensionAttributes;
+    extensionAttributes = selfCopy->_extensionAttributes;
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = sub_236FA3B30;
     v7[3] = &unk_278A183D0;
-    v7[4] = v2;
+    v7[4] = selfCopy;
     v5 = objc_msgSend_beginMatchingExtensionsWithAttributes_completion_(MEMORY[0x277CCA9C8], v3, extensionAttributes, v7);
-    extensionsFinderContext = v2->_extensionsFinderContext;
-    v2->_extensionsFinderContext = v5;
+    extensionsFinderContext = selfCopy->_extensionsFinderContext;
+    selfCopy->_extensionsFinderContext = v5;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)stop
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  extensionsFinderContext = v2->_extensionsFinderContext;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  extensionsFinderContext = selfCopy->_extensionsFinderContext;
   if (extensionsFinderContext)
   {
     objc_msgSend_endMatchingExtensions_(MEMORY[0x277CCA9C8], v3, extensionsFinderContext);
-    v5 = v2->_extensionsFinderContext;
-    v2->_extensionsFinderContext = 0;
+    v5 = selfCopy->_extensionsFinderContext;
+    selfCopy->_extensionsFinderContext = 0;
 
-    servicesQueue = v2->_servicesQueue;
+    servicesQueue = selfCopy->_servicesQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = sub_236FA4068;
     block[3] = &unk_278A18210;
-    block[4] = v2;
+    block[4] = selfCopy;
     dispatch_barrier_async(servicesQueue, block);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)availableServices

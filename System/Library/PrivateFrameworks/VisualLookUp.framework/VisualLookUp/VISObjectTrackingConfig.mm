@@ -1,18 +1,18 @@
 @interface VISObjectTrackingConfig
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISObjectTrackingConfig)initWithDictionary:(id)a3;
-- (VISObjectTrackingConfig)initWithJSON:(id)a3;
+- (VISObjectTrackingConfig)initWithDictionary:(id)dictionary;
+- (VISObjectTrackingConfig)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISObjectTrackingConfig
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   [(VISObjectTrackingConfig *)self confidence_for_cache_update];
   if (v4 != 0.0)
   {
@@ -31,21 +31,21 @@
   }
 
   [(VISObjectTrackingConfig *)self reticle_padding];
-  v6 = v8;
+  v6 = toCopy;
   if (v7 != 0.0)
   {
     PBDataWriterWriteFloatField();
-    v6 = v8;
+    v6 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (confidence_for_cache_update = self->_confidence_for_cache_update, objc_msgSend(v4, "confidence_for_cache_update"), confidence_for_cache_update == v6) && (max_tracked_object_count = self->_max_tracked_object_count, max_tracked_object_count == objc_msgSend(v4, "max_tracked_object_count")) && (geo_distance_threshold = self->_geo_distance_threshold, objc_msgSend(v4, "geo_distance_threshold"), geo_distance_threshold == v9))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (confidence_for_cache_update = self->_confidence_for_cache_update, objc_msgSend(equalCopy, "confidence_for_cache_update"), confidence_for_cache_update == v6) && (max_tracked_object_count = self->_max_tracked_object_count, max_tracked_object_count == objc_msgSend(equalCopy, "max_tracked_object_count")) && (geo_distance_threshold = self->_geo_distance_threshold, objc_msgSend(equalCopy, "geo_distance_threshold"), geo_distance_threshold == v9))
   {
     reticle_padding = self->_reticle_padding;
-    [v4 reticle_padding];
+    [equalCopy reticle_padding];
     v10 = reticle_padding == v13;
   }
 
@@ -171,13 +171,13 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_confidence_for_cache_update != 0.0)
   {
     v4 = MEMORY[0x1E696AD98];
     [(VISObjectTrackingConfig *)self confidence_for_cache_update];
     v5 = [v4 numberWithFloat:?];
-    [v3 setObject:v5 forKeyedSubscript:@"confidenceForCacheUpdate"];
+    [dictionary setObject:v5 forKeyedSubscript:@"confidenceForCacheUpdate"];
   }
 
   if (self->_geo_distance_threshold != 0.0)
@@ -185,13 +185,13 @@
     v6 = MEMORY[0x1E696AD98];
     [(VISObjectTrackingConfig *)self geo_distance_threshold];
     v7 = [v6 numberWithFloat:?];
-    [v3 setObject:v7 forKeyedSubscript:@"geoDistanceThreshold"];
+    [dictionary setObject:v7 forKeyedSubscript:@"geoDistanceThreshold"];
   }
 
   if (self->_max_tracked_object_count)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[VISObjectTrackingConfig max_tracked_object_count](self, "max_tracked_object_count")}];
-    [v3 setObject:v8 forKeyedSubscript:@"maxTrackedObjectCount"];
+    [dictionary setObject:v8 forKeyedSubscript:@"maxTrackedObjectCount"];
   }
 
   if (self->_reticle_padding != 0.0)
@@ -199,18 +199,18 @@
     v9 = MEMORY[0x1E696AD98];
     [(VISObjectTrackingConfig *)self reticle_padding];
     v10 = [v9 numberWithFloat:?];
-    [v3 setObject:v10 forKeyedSubscript:@"reticlePadding"];
+    [dictionary setObject:v10 forKeyedSubscript:@"reticlePadding"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISObjectTrackingConfig *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISObjectTrackingConfig *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -221,33 +221,33 @@
   return v3;
 }
 
-- (VISObjectTrackingConfig)initWithJSON:(id)a3
+- (VISObjectTrackingConfig)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISObjectTrackingConfig *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISObjectTrackingConfig)initWithDictionary:(id)a3
+- (VISObjectTrackingConfig)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = VISObjectTrackingConfig;
   v5 = [(VISObjectTrackingConfig *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"confidenceForCacheUpdate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"confidenceForCacheUpdate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -255,14 +255,14 @@
       [(VISObjectTrackingConfig *)v5 setConfidence_for_cache_update:?];
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"maxTrackedObjectCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"maxTrackedObjectCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISObjectTrackingConfig setMax_tracked_object_count:](v5, "setMax_tracked_object_count:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"geoDistanceThreshold"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"geoDistanceThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -270,7 +270,7 @@
       [(VISObjectTrackingConfig *)v5 setGeo_distance_threshold:?];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"reticlePadding"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"reticlePadding"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

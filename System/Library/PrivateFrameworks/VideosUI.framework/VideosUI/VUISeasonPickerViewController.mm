@@ -1,31 +1,31 @@
 @interface VUISeasonPickerViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (VUISeasonPickerViewController)initWithDataSource:(id)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (VUISeasonPickerViewController)initWithDataSource:(id)source;
 - (id)_createDiffableDataSource;
 - (id)_createDiffableDataSourceSnapshot;
 - (id)_getSeasonIdentifiersFromSeasons;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)dataSourceDidFinishFetching:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)dataSourceDidFinishFetching:(id)fetching;
 - (void)loadView;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation VUISeasonPickerViewController
 
-- (VUISeasonPickerViewController)initWithDataSource:(id)a3
+- (VUISeasonPickerViewController)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v11.receiver = self;
   v11.super_class = VUISeasonPickerViewController;
   v6 = [(VUISeasonPickerViewController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
     v8 = objc_alloc_init(VUIViewControllerContentPresenter);
     contentPresenter = v7->_contentPresenter;
     v7->_contentPresenter = v8;
@@ -41,18 +41,18 @@
   v23.receiver = self;
   v23.super_class = VUISeasonPickerViewController;
   [(VUISeasonPickerViewController *)&v23 viewDidLoad];
-  v3 = [(VUISeasonPickerViewController *)self navigationItem];
-  [v3 _setSupportsTwoLineLargeTitles:1];
+  navigationItem = [(VUISeasonPickerViewController *)self navigationItem];
+  [navigationItem _setSupportsTwoLineLargeTitles:1];
   v4 = [_VUISeasonPickerView alloc];
   v5 = [(_VUISeasonPickerView *)v4 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   seasonPickerView = self->_seasonPickerView;
   self->_seasonPickerView = v5;
 
-  v7 = [(_VUISeasonPickerView *)self->_seasonPickerView collectionView];
-  [v7 setDelegate:self];
+  collectionView = [(_VUISeasonPickerView *)self->_seasonPickerView collectionView];
+  [collectionView setDelegate:self];
 
-  v8 = [(_VUISeasonPickerView *)self->_seasonPickerView collectionView];
-  [v8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"VUISeasonPickerCollectionViewCellIdentifier"];
+  collectionView2 = [(_VUISeasonPickerView *)self->_seasonPickerView collectionView];
+  [collectionView2 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"VUISeasonPickerCollectionViewCellIdentifier"];
 
   [(_VUISeasonPickerView *)self->_seasonPickerView setAutoresizingMask:18];
   [(VUIViewControllerContentPresenter *)self->_contentPresenter setContentView:self->_seasonPickerView];
@@ -65,64 +65,64 @@
   v12 = MEMORY[0x1E696AEC0];
   v13 = +[VUILocalizationManager sharedInstance];
   v14 = [v13 localizedStringForKey:@"GENERIC_DELETED_ERROR_MESSAGE_FORMAT"];
-  v15 = [(VUISeasonPickerViewController *)self title];
-  v16 = [v12 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, v15];
+  title = [(VUISeasonPickerViewController *)self title];
+  v16 = [v12 stringWithValidatedFormat:v14 validFormatSpecifiers:@"%@" error:0, title];
 
   [(VUIViewControllerContentPresenter *)self->_contentPresenter setDeletedContentErrorMessage:v16];
-  v17 = [(VUISeasonPickerViewController *)self _createDiffableDataSource];
+  _createDiffableDataSource = [(VUISeasonPickerViewController *)self _createDiffableDataSource];
   diffableDataSource = self->_diffableDataSource;
-  self->_diffableDataSource = v17;
+  self->_diffableDataSource = _createDiffableDataSource;
 
-  v19 = [(VUISeasonPickerViewController *)self dataSource];
-  [v19 setDelegate:self];
+  dataSource = [(VUISeasonPickerViewController *)self dataSource];
+  [dataSource setDelegate:self];
 
-  v20 = [(VUISeasonPickerViewController *)self dataSource];
-  [v20 startFetch];
+  dataSource2 = [(VUISeasonPickerViewController *)self dataSource];
+  [dataSource2 startFetch];
 
-  v21 = [(VUISeasonPickerViewController *)self view];
+  view = [(VUISeasonPickerViewController *)self view];
   v22 = [MEMORY[0x1E69DF678] makeAccessibilityIdentifierString:*MEMORY[0x1E69DF7C8] additionalString:@"Library.id=SeasonPicker"];
-  [v21 setAccessibilityIdentifier:v22];
+  [view setAccessibilityIdentifier:v22];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v18.receiver = self;
   v18.super_class = VUISeasonPickerViewController;
   [(VUISeasonPickerViewController *)&v18 viewWillAppear:?];
-  v5 = [(_VUISeasonPickerView *)self->_seasonPickerView collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
-  v7 = [v6 firstObject];
+  collectionView = [(_VUISeasonPickerView *)self->_seasonPickerView collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(VUISeasonPickerViewController *)self transitionCoordinator];
-    if (v8)
+    transitionCoordinator = [(VUISeasonPickerViewController *)self transitionCoordinator];
+    if (transitionCoordinator)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __48__VUISeasonPickerViewController_viewWillAppear___block_invoke;
       v14[3] = &unk_1E872D878;
-      v15 = v5;
-      v16 = v7;
-      v17 = a3;
+      v15 = collectionView;
+      v16 = firstObject;
+      appearCopy = appear;
       v11[0] = MEMORY[0x1E69E9820];
       v11[1] = 3221225472;
       v11[2] = __48__VUISeasonPickerViewController_viewWillAppear___block_invoke_2;
       v11[3] = &unk_1E872D8A0;
       v12 = v15;
       v13 = v16;
-      [v8 animateAlongsideTransition:v14 completion:v11];
+      [transitionCoordinator animateAlongsideTransition:v14 completion:v11];
     }
 
     else
     {
-      [v5 deselectItemAtIndexPath:v7 animated:1];
+      [collectionView deselectItemAtIndexPath:firstObject animated:1];
     }
   }
 
-  v9 = [(VUISeasonPickerViewController *)self currentSeasonViewController];
-  v10 = [v9 contentPresenter];
-  -[VUISeasonPickerViewController setLastViewedSeasonWasManuallyDeleted:](self, "setLastViewedSeasonWasManuallyDeleted:", [v10 contentHasBeenManuallyDeleted]);
+  currentSeasonViewController = [(VUISeasonPickerViewController *)self currentSeasonViewController];
+  contentPresenter = [currentSeasonViewController contentPresenter];
+  -[VUISeasonPickerViewController setLastViewedSeasonWasManuallyDeleted:](self, "setLastViewedSeasonWasManuallyDeleted:", [contentPresenter contentHasBeenManuallyDeleted]);
 
   [(VUISeasonPickerViewController *)self setCurrentSeasonViewController:0];
 }
@@ -141,11 +141,11 @@ uint64_t __48__VUISeasonPickerViewController_viewWillAppear___block_invoke_2(uin
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = VUISeasonPickerViewController;
-  [(VUISeasonPickerViewController *)&v3 viewDidAppear:a3];
+  [(VUISeasonPickerViewController *)&v3 viewDidAppear:appear];
   [VUILibraryMetrics recordPageEventWithPageType:@"LibrarySeasonPicker"];
 }
 
@@ -154,8 +154,8 @@ uint64_t __48__VUISeasonPickerViewController_viewWillAppear___block_invoke_2(uin
   v4.receiver = self;
   v4.super_class = VUISeasonPickerViewController;
   [(VUISeasonPickerViewController *)&v4 loadView];
-  v3 = [(VUISeasonPickerViewController *)self contentPresenter];
-  [v3 setRootViewForViewController:self];
+  contentPresenter = [(VUISeasonPickerViewController *)self contentPresenter];
+  [contentPresenter setRootViewForViewController:self];
 }
 
 - (void)viewWillLayoutSubviews
@@ -163,15 +163,15 @@ uint64_t __48__VUISeasonPickerViewController_viewWillAppear___block_invoke_2(uin
   v5.receiver = self;
   v5.super_class = VUISeasonPickerViewController;
   [(VUISeasonPickerViewController *)&v5 viewWillLayoutSubviews];
-  v3 = [(VUISeasonPickerViewController *)self contentPresenter];
-  v4 = [(VUISeasonPickerViewController *)self view];
-  [v4 bounds];
-  [v3 configureCurrentViewFrameForBounds:?];
+  contentPresenter = [(VUISeasonPickerViewController *)self contentPresenter];
+  view = [(VUISeasonPickerViewController *)self view];
+  [view bounds];
+  [contentPresenter configureCurrentViewFrameForBounds:?];
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = a5;
+  pathCopy = path;
   if (!self->_sizingCell)
   {
     v7 = objc_alloc_init(VUISeasonPickerCollectionViewCell);
@@ -179,17 +179,17 @@ uint64_t __48__VUISeasonPickerViewController_viewWillAppear___block_invoke_2(uin
     self->_sizingCell = v7;
   }
 
-  v9 = [(VUISeasonPickerViewController *)self dataSource];
-  v10 = [v9 mediaEntities];
-  v11 = [v10 objectAtIndex:{objc_msgSend(v6, "row")}];
+  dataSource = [(VUISeasonPickerViewController *)self dataSource];
+  mediaEntities = [dataSource mediaEntities];
+  v11 = [mediaEntities objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   v12 = self->_sizingCell;
-  v13 = [(VUISeasonPickerViewController *)self traitCollection];
-  [VUISeasonPickerCollectionViewCell configureSeasonPickerCell:v12 withMedia:v11 traitCollection:v13];
+  traitCollection = [(VUISeasonPickerViewController *)self traitCollection];
+  [VUISeasonPickerCollectionViewCell configureSeasonPickerCell:v12 withMedia:v11 traitCollection:traitCollection];
 
   v14 = self->_sizingCell;
-  v15 = [(VUISeasonPickerViewController *)self view];
-  [v15 bounds];
+  view = [(VUISeasonPickerViewController *)self view];
+  [view bounds];
   [(VUISeasonPickerCollectionViewCell *)v14 sizeThatFits:v16, 1.79769313e308];
   v18 = v17;
   v20 = v19;
@@ -201,9 +201,9 @@ uint64_t __48__VUISeasonPickerViewController_viewWillAppear___block_invoke_2(uin
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [VUIViewSpacer spacerC:a3];
+  [VUIViewSpacer spacerC:view];
   v6 = v5;
   v7 = 0.0;
   v8 = 0.0;
@@ -215,36 +215,36 @@ uint64_t __48__VUISeasonPickerViewController_viewWillAppear___block_invoke_2(uin
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(VUISeasonPickerViewController *)self dataSource];
-  v7 = [v6 mediaEntities];
-  v8 = [v5 row];
+  pathCopy = path;
+  dataSource = [(VUISeasonPickerViewController *)self dataSource];
+  mediaEntities = [dataSource mediaEntities];
+  v8 = [pathCopy row];
 
-  v13 = [v7 objectAtIndex:v8];
+  v13 = [mediaEntities objectAtIndex:v8];
 
-  v9 = [(VUISeasonPickerViewController *)self familyMember];
-  v10 = [VUILibraryViewFactory viewControllerForMediaEntity:v13 withFamilyMember:v9];
+  familyMember = [(VUISeasonPickerViewController *)self familyMember];
+  v10 = [VUILibraryViewFactory viewControllerForMediaEntity:v13 withFamilyMember:familyMember];
 
-  v11 = [(VUISeasonPickerViewController *)self title];
-  [v10 setTitle:v11];
+  title = [(VUISeasonPickerViewController *)self title];
+  [v10 setTitle:title];
 
   [(VUISeasonPickerViewController *)self setCurrentSeasonViewController:v10];
-  v12 = [(VUISeasonPickerViewController *)self navigationController];
-  [v12 pushViewController:v10 animated:1];
+  navigationController = [(VUISeasonPickerViewController *)self navigationController];
+  [navigationController pushViewController:v10 animated:1];
 }
 
-- (void)dataSourceDidFinishFetching:(id)a3
+- (void)dataSourceDidFinishFetching:(id)fetching
 {
-  v4 = [(VUISeasonPickerViewController *)self _createDiffableDataSourceSnapshot];
-  v5 = [(VUISeasonPickerViewController *)self diffableDataSource];
+  _createDiffableDataSourceSnapshot = [(VUISeasonPickerViewController *)self _createDiffableDataSourceSnapshot];
+  diffableDataSource = [(VUISeasonPickerViewController *)self diffableDataSource];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__VUISeasonPickerViewController_dataSourceDidFinishFetching___block_invoke;
   v6[3] = &unk_1E872D768;
   v6[4] = self;
-  [v5 applySnapshot:v4 animatingDifferences:1 completion:v6];
+  [diffableDataSource applySnapshot:_createDiffableDataSourceSnapshot animatingDifferences:1 completion:v6];
 }
 
 void __61__VUISeasonPickerViewController_dataSourceDidFinishFetching___block_invoke(uint64_t a1)
@@ -273,14 +273,14 @@ void __61__VUISeasonPickerViewController_dataSourceDidFinishFetching___block_inv
 {
   objc_initWeak(&location, self);
   v3 = objc_alloc(MEMORY[0x1E69DC820]);
-  v4 = [(VUISeasonPickerViewController *)self seasonPickerView];
-  v5 = [v4 collectionView];
+  seasonPickerView = [(VUISeasonPickerViewController *)self seasonPickerView];
+  collectionView = [seasonPickerView collectionView];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__VUISeasonPickerViewController__createDiffableDataSource__block_invoke;
   v8[3] = &unk_1E872D8C8;
   objc_copyWeak(&v9, &location);
-  v6 = [v3 initWithCollectionView:v5 cellProvider:v8];
+  v6 = [v3 initWithCollectionView:collectionView cellProvider:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -331,8 +331,8 @@ id __58__VUISeasonPickerViewController__createDiffableDataSource__block_invoke(u
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
   [v3 appendSectionsWithIdentifiers:v4];
 
-  v5 = [(VUISeasonPickerViewController *)self _getSeasonIdentifiersFromSeasons];
-  [v3 appendItemsWithIdentifiers:v5 intoSectionWithIdentifier:@"SeasonSection"];
+  _getSeasonIdentifiersFromSeasons = [(VUISeasonPickerViewController *)self _getSeasonIdentifiersFromSeasons];
+  [v3 appendItemsWithIdentifiers:_getSeasonIdentifiersFromSeasons intoSectionWithIdentifier:@"SeasonSection"];
 
   return v3;
 }
@@ -345,10 +345,10 @@ id __58__VUISeasonPickerViewController__createDiffableDataSource__block_invoke(u
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [(VUISeasonPickerViewController *)self dataSource];
-  v5 = [v4 mediaEntities];
+  dataSource = [(VUISeasonPickerViewController *)self dataSource];
+  mediaEntities = [dataSource mediaEntities];
 
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [mediaEntities countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -359,14 +359,14 @@ id __58__VUISeasonPickerViewController__createDiffableDataSource__block_invoke(u
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(mediaEntities);
         }
 
-        v10 = [*(*(&v19 + 1) + 8 * i) identifier];
-        [v3 addObject:v10];
+        identifier = [*(*(&v19 + 1) + 8 * i) identifier];
+        [v3 addObject:identifier];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [mediaEntities countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -384,8 +384,8 @@ id __58__VUISeasonPickerViewController__createDiffableDataSource__block_invoke(u
     [v3 enumerateObjectsUsingBlock:v17];
     if ([v12 count])
     {
-      v13 = [v12 array];
-      v14 = [v13 mutableCopy];
+      array = [v12 array];
+      v14 = [array mutableCopy];
 
       v3 = v14;
     }

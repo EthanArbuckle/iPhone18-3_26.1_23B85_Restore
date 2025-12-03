@@ -2,14 +2,14 @@
 - (BOOL)showsVerticalScrollIndicator;
 - (CGSize)collectionViewContentSize;
 - (SearchUICardCollectionViewController)init;
-- (id)cellForRowModel:(id)a3 atIndexPath:(id)a4;
+- (id)cellForRowModel:(id)model atIndexPath:(id)path;
 - (id)tableView;
 - (void)reloadViews;
-- (void)setShouldUseInsetRoundedSections:(BOOL)a3;
-- (void)setShouldUseStandardSectionInsets:(BOOL)a3;
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3;
+- (void)setShouldUseInsetRoundedSections:(BOOL)sections;
+- (void)setShouldUseStandardSectionInsets:(BOOL)insets;
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator;
 - (void)updateTopPadding;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation SearchUICardCollectionViewController
@@ -28,17 +28,17 @@
   return v3;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v12.receiver = self;
   v12.super_class = SearchUICardCollectionViewController;
-  [(SearchUICollectionViewController *)&v12 viewDidDisappear:a3];
-  v4 = [(SearchUICardCollectionViewController *)self navigationController];
-  v5 = [v4 visibleViewController];
+  [(SearchUICollectionViewController *)&v12 viewDidDisappear:disappear];
+  navigationController = [(SearchUICardCollectionViewController *)self navigationController];
+  visibleViewController = [navigationController visibleViewController];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [(SearchUICollectionViewController *)self feedbackListener];
+    feedbackListener = [(SearchUICollectionViewController *)self feedbackListener];
     v7 = objc_opt_respondsToSelector();
 
     if ((v7 & 1) == 0)
@@ -46,9 +46,9 @@
       return;
     }
 
-    v8 = [(SearchUICardCollectionViewController *)self navigationController];
-    v9 = [v8 interactivePopGestureRecognizer];
-    if ([v9 state] < 1)
+    navigationController2 = [(SearchUICardCollectionViewController *)self navigationController];
+    interactivePopGestureRecognizer = [navigationController2 interactivePopGestureRecognizer];
+    if ([interactivePopGestureRecognizer state] < 1)
     {
       v10 = 1;
     }
@@ -58,52 +58,52 @@
       v10 = 2;
     }
 
-    v4 = [objc_alloc(MEMORY[0x1E69C9F28]) initWithEvent:v10];
-    v11 = [(SearchUICollectionViewController *)self tableModel];
-    [v4 setQueryId:{objc_msgSend(v11, "queryId")}];
+    navigationController = [objc_alloc(MEMORY[0x1E69C9F28]) initWithEvent:v10];
+    tableModel = [(SearchUICollectionViewController *)self tableModel];
+    [navigationController setQueryId:{objc_msgSend(tableModel, "queryId")}];
 
-    v5 = [(SearchUICollectionViewController *)self feedbackListener];
-    [v5 cardViewDidDisappear:v4];
+    visibleViewController = [(SearchUICollectionViewController *)self feedbackListener];
+    [visibleViewController cardViewDidDisappear:navigationController];
   }
 }
 
-- (void)setShowsVerticalScrollIndicator:(BOOL)a3
+- (void)setShowsVerticalScrollIndicator:(BOOL)indicator
 {
-  v3 = a3;
-  v4 = [(SearchUICardCollectionViewController *)self collectionView];
-  [v4 setShowsVerticalScrollIndicator:v3];
+  indicatorCopy = indicator;
+  collectionView = [(SearchUICardCollectionViewController *)self collectionView];
+  [collectionView setShowsVerticalScrollIndicator:indicatorCopy];
 }
 
 - (BOOL)showsVerticalScrollIndicator
 {
-  v2 = [(SearchUICardCollectionViewController *)self collectionView];
-  v3 = [v2 showsVerticalScrollIndicator];
+  collectionView = [(SearchUICardCollectionViewController *)self collectionView];
+  showsVerticalScrollIndicator = [collectionView showsVerticalScrollIndicator];
 
-  return v3;
+  return showsVerticalScrollIndicator;
 }
 
 - (void)reloadViews
 {
-  v3 = [(SearchUICardCollectionViewController *)self collectionView];
-  [v3 reloadData];
+  collectionView = [(SearchUICardCollectionViewController *)self collectionView];
+  [collectionView reloadData];
 
-  v4 = [(SearchUICardCollectionViewController *)self collectionView];
-  [v4 layoutIfNeeded];
+  collectionView2 = [(SearchUICardCollectionViewController *)self collectionView];
+  [collectionView2 layoutIfNeeded];
 }
 
-- (void)setShouldUseInsetRoundedSections:(BOOL)a3
+- (void)setShouldUseInsetRoundedSections:(BOOL)sections
 {
   v4.receiver = self;
   v4.super_class = SearchUICardCollectionViewController;
-  [(SearchUICollectionViewController *)&v4 setShouldUseInsetRoundedSections:a3];
+  [(SearchUICollectionViewController *)&v4 setShouldUseInsetRoundedSections:sections];
   [(SearchUICardCollectionViewController *)self updateTopPadding];
 }
 
-- (void)setShouldUseStandardSectionInsets:(BOOL)a3
+- (void)setShouldUseStandardSectionInsets:(BOOL)insets
 {
   v4.receiver = self;
   v4.super_class = SearchUICardCollectionViewController;
-  [(SearchUICollectionViewController *)&v4 setShouldUseStandardSectionInsets:a3];
+  [(SearchUICollectionViewController *)&v4 setShouldUseStandardSectionInsets:insets];
   [(SearchUICardCollectionViewController *)self updateTopPadding];
 }
 
@@ -123,15 +123,15 @@
     }
   }
 
-  v4 = [(SearchUICardCollectionViewController *)self collectionView];
-  [v4 setContentInset:{v3, 0.0, 0.0, 0.0}];
+  collectionView = [(SearchUICardCollectionViewController *)self collectionView];
+  [collectionView setContentInset:{v3, 0.0, 0.0, 0.0}];
 }
 
 - (CGSize)collectionViewContentSize
 {
-  v2 = [(SearchUICardCollectionViewController *)self collectionView];
-  v3 = [v2 collectionViewLayout];
-  [v3 collectionViewContentSize];
+  collectionView = [(SearchUICardCollectionViewController *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
+  [collectionViewLayout collectionViewContentSize];
   v5 = v4;
   v7 = v6;
 
@@ -142,24 +142,24 @@
   return result;
 }
 
-- (id)cellForRowModel:(id)a3 atIndexPath:(id)a4
+- (id)cellForRowModel:(id)model atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SearchUICollectionViewController *)self cardViewDelegate];
+  modelCopy = model;
+  pathCopy = path;
+  cardViewDelegate = [(SearchUICollectionViewController *)self cardViewDelegate];
   v9 = objc_opt_respondsToSelector();
 
-  if ((v9 & 1) != 0 && ([v6 cardSection], v10 = objc_claimAutoreleasedReturnValue(), v10, v10) && (-[SearchUICollectionViewController cardViewDelegate](self, "cardViewDelegate"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "cardSection"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "customViewControllerForCardSection:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, v11, v13))
+  if ((v9 & 1) != 0 && ([modelCopy cardSection], v10 = objc_claimAutoreleasedReturnValue(), v10, v10) && (-[SearchUICollectionViewController cardViewDelegate](self, "cardViewDelegate"), v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(modelCopy, "cardSection"), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "customViewControllerForCardSection:", v12), v13 = objc_claimAutoreleasedReturnValue(), v12, v11, v13))
   {
     [(SearchUICardCollectionViewController *)self addChildViewController:v13];
-    v14 = [v6 cardSection];
-    v15 = [v14 description];
+    cardSection = [modelCopy cardSection];
+    v15 = [cardSection description];
 
-    v16 = [(SearchUICardCollectionViewController *)self collectionView];
-    [v16 registerClass:objc_opt_class() forCellWithReuseIdentifier:v15];
+    collectionView = [(SearchUICardCollectionViewController *)self collectionView];
+    [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:v15];
 
-    v17 = [(SearchUICardCollectionViewController *)self collectionView];
-    v18 = [v17 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v7];
+    collectionView2 = [(SearchUICardCollectionViewController *)self collectionView];
+    v18 = [collectionView2 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
 
     [v18 setEmbeddedViewController:v13];
   }
@@ -168,7 +168,7 @@
   {
     v20.receiver = self;
     v20.super_class = SearchUICardCollectionViewController;
-    v18 = [(SearchUICollectionViewController *)&v20 cellForRowModel:v6 atIndexPath:v7];
+    v18 = [(SearchUICollectionViewController *)&v20 cellForRowModel:modelCopy atIndexPath:pathCopy];
     if (![(SearchUICardCollectionViewController *)self rowSelectionAppearanceEnabled])
     {
       objc_opt_class();
@@ -184,11 +184,11 @@
 
 - (id)tableView
 {
-  v3 = [(SearchUICardCollectionViewController *)self collectionView];
-  [v3 setScrollEnabled:0];
+  collectionView = [(SearchUICardCollectionViewController *)self collectionView];
+  [collectionView setScrollEnabled:0];
 
-  v4 = [(SearchUICardCollectionViewController *)self collectionView];
-  [v4 _setSafeAreaInsetsFrozen:1];
+  collectionView2 = [(SearchUICardCollectionViewController *)self collectionView];
+  [collectionView2 _setSafeAreaInsetsFrozen:1];
 
   v5 = SearchUIGeneralLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))

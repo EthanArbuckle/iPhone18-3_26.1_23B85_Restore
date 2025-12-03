@@ -1,13 +1,13 @@
 @interface JSItemizedTextListViewController
-- (_TtC16MusicApplication32JSItemizedTextListViewController)initWithCoder:(id)a3;
-- (_TtC16MusicApplication32JSItemizedTextListViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16MusicApplication32JSItemizedTextListViewController)initWithCoder:(id)coder;
+- (_TtC16MusicApplication32JSItemizedTextListViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation JSItemizedTextListViewController
 
-- (_TtC16MusicApplication32JSItemizedTextListViewController)initWithCoder:(id)a3
+- (_TtC16MusicApplication32JSItemizedTextListViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication32JSItemizedTextListViewController_verticalStackItemPrefersTopHairline) = 1;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication32JSItemizedTextListViewController_textListView) = 0;
@@ -26,11 +26,11 @@
   if (v3)
   {
     v4 = v3;
-    v5 = [v2 view];
-    if (v5)
+    view = [v2 view];
+    if (view)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view;
+      [view bounds];
       [v4 setFrame:?];
 
       return;
@@ -47,11 +47,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_B5BB0();
 }
 
-- (_TtC16MusicApplication32JSItemizedTextListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MusicApplication32JSItemizedTextListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

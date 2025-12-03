@@ -1,25 +1,25 @@
 @interface BCSSubjectIndicatorView
-+ (CGSize)_fixedSubjectIndicatorSizeForReferenceBounds:(CGSize)a3;
-- (BCSSubjectIndicatorView)initWithFrame:(CGRect)a3;
++ (CGSize)_fixedSubjectIndicatorSizeForReferenceBounds:(CGSize)bounds;
+- (BCSSubjectIndicatorView)initWithFrame:(CGRect)frame;
 - (BOOL)isBouncing;
 - (BOOL)isInactive;
 - (BOOL)isPulsing;
 - (CGSize)intrinsicContentSize;
 - (void)layoutSubviews;
-- (void)setBouncing:(BOOL)a3;
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4;
-- (void)setPulsing:(BOOL)a3;
-- (void)startScalingWithExpansionWidth:(double)a3 duration:(double)a4 repeatCount:(unint64_t)a5 timingFunction:(id)a6;
-- (void)stopScalingWithDuration:(double)a3;
+- (void)setBouncing:(BOOL)bouncing;
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated;
+- (void)setPulsing:(BOOL)pulsing;
+- (void)startScalingWithExpansionWidth:(double)width duration:(double)duration repeatCount:(unint64_t)count timingFunction:(id)function;
+- (void)stopScalingWithDuration:(double)duration;
 @end
 
 @implementation BCSSubjectIndicatorView
 
-- (BCSSubjectIndicatorView)initWithFrame:(CGRect)a3
+- (BCSSubjectIndicatorView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = BCSSubjectIndicatorView;
-  v3 = [(BCSSubjectIndicatorView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BCSSubjectIndicatorView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x277D755B8];
@@ -42,16 +42,16 @@
 
 - (BOOL)isInactive
 {
-  v2 = [(BCSSubjectIndicatorView *)self _imageView];
-  v3 = [v2 isHighlighted];
+  _imageView = [(BCSSubjectIndicatorView *)self _imageView];
+  isHighlighted = [_imageView isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  [v2 _referenceBounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen _referenceBounds];
   v4 = v3;
   v6 = v5;
 
@@ -83,23 +83,23 @@
   CGRectGetMidY(v14);
   UIRoundToViewScale();
   v10 = v9;
-  v11 = [(BCSSubjectIndicatorView *)self _imageView];
-  [v11 setBounds:{x + -3.0, y + -3.0, width + 6.0, height + 6.0}];
-  [v11 setCenter:{v8, v10}];
+  _imageView = [(BCSSubjectIndicatorView *)self _imageView];
+  [_imageView setBounds:{x + -3.0, y + -3.0, width + 6.0, height + 6.0}];
+  [_imageView setCenter:{v8, v10}];
 }
 
-- (void)setHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v5 = a3;
-  v7 = [(BCSSubjectIndicatorView *)self _imageView];
-  v8 = [(BCSSubjectIndicatorView *)self layer];
-  v9 = [v7 layer];
-  v10 = [v8 animationForKey:@"opacity"];
+  hiddenCopy = hidden;
+  _imageView = [(BCSSubjectIndicatorView *)self _imageView];
+  layer = [(BCSSubjectIndicatorView *)self layer];
+  layer2 = [_imageView layer];
+  v10 = [layer animationForKey:@"opacity"];
 
-  v11 = [v9 animationForKey:@"transform"];
+  v11 = [layer2 animationForKey:@"transform"];
 
   [(BCSSubjectIndicatorView *)self alpha];
-  if (v5)
+  if (hiddenCopy)
   {
     v13 = 0.0;
   }
@@ -109,10 +109,10 @@
     v13 = 1.0;
   }
 
-  if (v5 && !a4)
+  if (hiddenCopy && !animated)
   {
-    [v8 removeAnimationForKey:@"opacity"];
-    [v9 removeAnimationForKey:@"transform"];
+    [layer removeAnimationForKey:@"opacity"];
+    [layer2 removeAnimationForKey:@"transform"];
 LABEL_7:
     [(BCSSubjectIndicatorView *)self setAlpha:v13];
     goto LABEL_16;
@@ -123,12 +123,12 @@ LABEL_7:
     goto LABEL_16;
   }
 
-  if (!a4)
+  if (!animated)
   {
     goto LABEL_7;
   }
 
-  if (v5)
+  if (hiddenCopy)
   {
     v14 = MEMORY[0x277D75D18];
     v24[0] = MEMORY[0x277D85DD0];
@@ -142,7 +142,7 @@ LABEL_7:
     v22[2] = __46__BCSSubjectIndicatorView_setHidden_animated___block_invoke_2;
     v22[3] = &unk_278D01C40;
     v22[4] = self;
-    v23 = v9;
+    v23 = layer2;
     [v14 animateWithDuration:6 delay:v24 options:v22 animations:0.25 completion:0.0];
     v15 = v23;
   }
@@ -155,7 +155,7 @@ LABEL_7:
       memset(&v21, 0, sizeof(v21));
       CGAffineTransformMakeScale(&v21, 1.22279793, 1.22279793);
       v20 = v21;
-      [v7 setTransform:&v20];
+      [_imageView setTransform:&v20];
     }
 
     v16 = MEMORY[0x277D75D18];
@@ -165,7 +165,7 @@ LABEL_7:
     v17[3] = &unk_278D01FD8;
     v17[4] = self;
     v19 = (v11 | v10) == 0;
-    v18 = v7;
+    v18 = _imageView;
     [v16 animateWithDuration:131078 delay:v17 options:0 animations:0.233333333 completion:0.0];
     v15 = v18;
   }
@@ -203,13 +203,13 @@ uint64_t __46__BCSSubjectIndicatorView_setHidden_animated___block_invoke_3(uint6
   return result;
 }
 
-- (void)startScalingWithExpansionWidth:(double)a3 duration:(double)a4 repeatCount:(unint64_t)a5 timingFunction:(id)a6
+- (void)startScalingWithExpansionWidth:(double)width duration:(double)duration repeatCount:(unint64_t)count timingFunction:(id)function
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = [(BCSSubjectIndicatorView *)self _imageView];
-  v12 = [v11 layer];
-  v13 = [v12 animationForKey:@"transform"];
+  functionCopy = function;
+  _imageView = [(BCSSubjectIndicatorView *)self _imageView];
+  layer = [_imageView layer];
+  v13 = [layer animationForKey:@"transform"];
 
   if (!v13)
   {
@@ -217,24 +217,24 @@ uint64_t __46__BCSSubjectIndicatorView_setHidden_animated___block_invoke_3(uint6
     if (v14 != 0.0)
     {
       v15 = v14;
-      if (!v10)
+      if (!functionCopy)
       {
-        v10 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B0]];
+        functionCopy = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B0]];
       }
 
       v16 = [MEMORY[0x277CD9EC8] animationWithKeyPath:@"transform.scale"];
-      [v16 setTimingFunction:v10];
-      [v16 setDuration:a4];
-      v17 = [MEMORY[0x277CCABB0] numberWithDouble:v15 / (v15 + a3 * 2.0)];
+      [v16 setTimingFunction:functionCopy];
+      [v16 setDuration:duration];
+      v17 = [MEMORY[0x277CCABB0] numberWithDouble:v15 / (v15 + width * 2.0)];
       v26[0] = v17;
       v26[1] = &unk_2853A10D8;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:2];
       [v16 setValues:v18];
 
-      *&v19 = a5;
+      *&v19 = count;
       [v16 setRepeatCount:v19];
       [v16 setAutoreverses:1];
-      [v12 addAnimation:v16 forKey:@"transform"];
+      [layer addAnimation:v16 forKey:@"transform"];
       v20 = *(MEMORY[0x277CD9DE8] + 80);
       v25[4] = *(MEMORY[0x277CD9DE8] + 64);
       v25[5] = v20;
@@ -247,31 +247,31 @@ uint64_t __46__BCSSubjectIndicatorView_setHidden_animated___block_invoke_3(uint6
       v23 = *(MEMORY[0x277CD9DE8] + 48);
       v25[2] = *(MEMORY[0x277CD9DE8] + 32);
       v25[3] = v23;
-      [v12 setTransform:v25];
+      [layer setTransform:v25];
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopScalingWithDuration:(double)a3
+- (void)stopScalingWithDuration:(double)duration
 {
-  v4 = [(BCSSubjectIndicatorView *)self _imageView];
-  v5 = [v4 layer];
+  _imageView = [(BCSSubjectIndicatorView *)self _imageView];
+  layer = [_imageView layer];
 
   v6 = MEMORY[0x277CD9DE8];
-  if (a3 > 0.0)
+  if (duration > 0.0)
   {
-    v7 = [v5 presentationLayer];
-    v8 = v7;
-    if (v7)
+    presentationLayer = [layer presentationLayer];
+    v8 = presentationLayer;
+    if (presentationLayer)
     {
-      v9 = v7;
+      v9 = presentationLayer;
     }
 
     else
     {
-      v9 = v5;
+      v9 = layer;
     }
 
     v10 = v9;
@@ -290,7 +290,7 @@ uint64_t __46__BCSSubjectIndicatorView_setHidden_animated___block_invoke_3(uint6
     }
 
     v11 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"transform"];
-    [v11 setDuration:a3];
+    [v11 setDuration:duration];
     v12 = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7C0]];
     [v11 setTimingFunction:v12];
 
@@ -320,10 +320,10 @@ uint64_t __46__BCSSubjectIndicatorView_setHidden_animated___block_invoke_3(uint6
     v18 = [MEMORY[0x277CCAE60] valueWithCATransform3D:&v23];
     [v11 setToValue:v18];
 
-    [v5 addAnimation:v11 forKey:@"stopScalingAnimation"];
+    [layer addAnimation:v11 forKey:@"stopScalingAnimation"];
   }
 
-  [v5 removeAnimationForKey:@"transform"];
+  [layer removeAnimationForKey:@"transform"];
   v19 = v6[5];
   v35 = v6[4];
   v36 = v19;
@@ -336,48 +336,48 @@ uint64_t __46__BCSSubjectIndicatorView_setHidden_animated___block_invoke_3(uint6
   v22 = v6[3];
   v33 = v6[2];
   v34 = v22;
-  [v5 setTransform:&v31];
+  [layer setTransform:&v31];
 }
 
 - (BOOL)isPulsing
 {
-  v2 = [(BCSSubjectIndicatorView *)self _imageView];
-  v3 = [v2 layer];
-  v4 = [v3 animationForKey:@"opacity"];
+  _imageView = [(BCSSubjectIndicatorView *)self _imageView];
+  layer = [_imageView layer];
+  v4 = [layer animationForKey:@"opacity"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (void)setPulsing:(BOOL)a3
+- (void)setPulsing:(BOOL)pulsing
 {
-  v3 = a3;
-  if ([(BCSSubjectIndicatorView *)self isPulsing]!= a3)
+  pulsingCopy = pulsing;
+  if ([(BCSSubjectIndicatorView *)self isPulsing]!= pulsing)
   {
-    v5 = [(BCSSubjectIndicatorView *)self _imageView];
-    v6 = [v5 layer];
-    v7 = v6;
-    if (v3)
+    _imageView = [(BCSSubjectIndicatorView *)self _imageView];
+    layer = [_imageView layer];
+    v7 = layer;
+    if (pulsingCopy)
     {
-      [v5 setAlpha:1.0];
+      [_imageView setAlpha:1.0];
       v8 = MEMORY[0x277D75D18];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __38__BCSSubjectIndicatorView_setPulsing___block_invoke;
       v9[3] = &unk_278D01AE0;
-      v10 = v5;
+      v10 = _imageView;
       [v8 animateWithDuration:30 delay:v9 options:0 animations:0.25 completion:0.0];
     }
 
     else
     {
-      [v6 removeAnimationForKey:@"opacity"];
-      [v5 setAlpha:1.0];
+      [layer removeAnimationForKey:@"opacity"];
+      [_imageView setAlpha:1.0];
     }
   }
 }
 
-+ (CGSize)_fixedSubjectIndicatorSizeForReferenceBounds:(CGSize)a3
++ (CGSize)_fixedSubjectIndicatorSizeForReferenceBounds:(CGSize)bounds
 {
   UIRoundToScale();
   v4 = v3;
@@ -391,20 +391,20 @@ uint64_t __46__BCSSubjectIndicatorView_setHidden_animated___block_invoke_3(uint6
 
 - (BOOL)isBouncing
 {
-  v2 = [(BCSSubjectIndicatorView *)self _imageView];
-  v3 = [v2 layer];
-  v4 = [v3 animationForKey:@"transform"];
+  _imageView = [(BCSSubjectIndicatorView *)self _imageView];
+  layer = [_imageView layer];
+  v4 = [layer animationForKey:@"transform"];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (void)setBouncing:(BOOL)a3
+- (void)setBouncing:(BOOL)bouncing
 {
-  v3 = a3;
-  if ([(BCSSubjectIndicatorView *)self isBouncing]!= a3)
+  bouncingCopy = bouncing;
+  if ([(BCSSubjectIndicatorView *)self isBouncing]!= bouncing)
   {
-    if (v3)
+    if (bouncingCopy)
     {
 
       [(BCSSubjectIndicatorView *)self startScalingWithExpansionWidth:-1 duration:10.0 repeatCount:0.5];

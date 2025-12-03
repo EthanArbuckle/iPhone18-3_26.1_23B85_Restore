@@ -1,17 +1,17 @@
 @interface CHFriendDetailCompetitionTotalWinsCell
-- (CHFriendDetailCompetitionTotalWinsCell)initWithFrame:(CGRect)a3;
-- (void)_updateConfigurationForStandalone:(BOOL)a3;
+- (CHFriendDetailCompetitionTotalWinsCell)initWithFrame:(CGRect)frame;
+- (void)_updateConfigurationForStandalone:(BOOL)standalone;
 - (void)layoutSubviews;
-- (void)setFriend:(id)a3 competition:(id)a4;
+- (void)setFriend:(id)friend competition:(id)competition;
 @end
 
 @implementation CHFriendDetailCompetitionTotalWinsCell
 
-- (CHFriendDetailCompetitionTotalWinsCell)initWithFrame:(CGRect)a3
+- (CHFriendDetailCompetitionTotalWinsCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CHFriendDetailCompetitionTotalWinsCell;
-  v3 = [(CHFriendDetailCompetitionTotalWinsCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHFriendDetailCompetitionTotalWinsCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,24 +30,24 @@
   [(ASCompetitionScoreView *)self->_scoreView setFrame:?];
 }
 
-- (void)setFriend:(id)a3 competition:(id)a4
+- (void)setFriend:(id)friend competition:(id)competition
 {
-  v7 = a3;
-  v6 = a4;
-  if (self->_standalone != ([v7 isCompetitionActive] ^ 1))
+  friendCopy = friend;
+  competitionCopy = competition;
+  if (self->_standalone != ([friendCopy isCompetitionActive] ^ 1))
   {
     [(CHFriendDetailCompetitionTotalWinsCell *)self _updateConfigurationForStandalone:?];
   }
 
-  [(ASCompetitionScoreView *)self->_scoreView setFriend:v7 competition:v6];
+  [(ASCompetitionScoreView *)self->_scoreView setFriend:friendCopy competition:competitionCopy];
 }
 
-- (void)_updateConfigurationForStandalone:(BOOL)a3
+- (void)_updateConfigurationForStandalone:(BOOL)standalone
 {
-  v3 = a3;
-  self->_standalone = a3;
+  standaloneCopy = standalone;
+  self->_standalone = standalone;
   [(ASCompetitionScoreView *)self->_scoreView removeFromSuperview];
-  if (v3)
+  if (standaloneCopy)
   {
     +[ASCompetitionScoreViewConfiguration companionTotalWinsStandaloneFriendDetailConfiguration];
   }

@@ -1,14 +1,14 @@
 @interface VUIUIStackView
-- (VUIUIStackView)initWithFrame:(CGRect)a3;
+- (VUIUIStackView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation VUIUIStackView
 
-- (VUIUIStackView)initWithFrame:(CGRect)a3
+- (VUIUIStackView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = VUIUIStackView;
-  result = [(VUIUIStackView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(VUIUIStackView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_axisFollowsDeviceOrientation = 1;

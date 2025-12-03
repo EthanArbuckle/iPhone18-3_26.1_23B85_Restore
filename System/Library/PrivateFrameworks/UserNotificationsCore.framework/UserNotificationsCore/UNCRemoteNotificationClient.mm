@@ -1,7 +1,7 @@
 @interface UNCRemoteNotificationClient
 + (void)initialize;
-- (UNCRemoteNotificationClient)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (UNCRemoteNotificationClient)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNCRemoteNotificationClient
@@ -15,38 +15,38 @@
   [v2 setClass:v3 forClassName:@"SBRemoteNotificationClient"];
 }
 
-- (UNCRemoteNotificationClient)initWithCoder:(id)a3
+- (UNCRemoteNotificationClient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UNCRemoteNotificationClient;
   v5 = [(UNCRemoteNotificationClient *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SBEnvironment"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SBEnvironment"];
     [(UNCRemoteNotificationClient *)v5 setEnvironment:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SBLastKnownDeviceToken"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SBLastKnownDeviceToken"];
     [(UNCRemoteNotificationClient *)v5 setLastKnownDeviceToken:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SBTokenId"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SBTokenId"];
     [(UNCRemoteNotificationClient *)v5 setTokenIdentifier:v8];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UNCRemoteNotificationClient *)self environment];
-  [v4 encodeObject:v5 forKey:@"SBEnvironment"];
+  coderCopy = coder;
+  environment = [(UNCRemoteNotificationClient *)self environment];
+  [coderCopy encodeObject:environment forKey:@"SBEnvironment"];
 
-  v6 = [(UNCRemoteNotificationClient *)self lastKnownDeviceToken];
-  [v4 encodeObject:v6 forKey:@"SBLastKnownDeviceToken"];
+  lastKnownDeviceToken = [(UNCRemoteNotificationClient *)self lastKnownDeviceToken];
+  [coderCopy encodeObject:lastKnownDeviceToken forKey:@"SBLastKnownDeviceToken"];
 
-  v7 = [(UNCRemoteNotificationClient *)self tokenIdentifier];
-  [v4 encodeObject:v7 forKey:@"SBTokenId"];
+  tokenIdentifier = [(UNCRemoteNotificationClient *)self tokenIdentifier];
+  [coderCopy encodeObject:tokenIdentifier forKey:@"SBTokenId"];
 }
 
 @end

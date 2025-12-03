@@ -1,5 +1,5 @@
 @interface AXUIKitGlue
-+ (id)wrapDOMRange:(id)a3;
++ (id)wrapDOMRange:(id)range;
 + (void)_accessibilityInitializeSubclassRuntimeOverrides;
 + (void)_handleWebKitLegacyInstallation;
 @end
@@ -8,11 +8,11 @@
 
 + (void)_accessibilityInitializeSubclassRuntimeOverrides
 {
-  v15 = a1;
+  selfCopy = self;
   location[1] = a2;
   if (!_Failover)
   {
-    v2 = [objc_allocWithZone(v15) init];
+    v2 = [objc_allocWithZone(selfCopy) init];
     v3 = _Failover;
     _Failover = v2;
     MEMORY[0x29EDC9740](v3);
@@ -34,7 +34,7 @@
   v8 = 0;
   v9 = __63__AXUIKitGlue__accessibilityInitializeSubclassRuntimeOverrides__block_invoke;
   v10 = &__block_descriptor_40_e5_v8__0l;
-  v11 = v15;
+  v11 = selfCopy;
   v17 = &_accessibilityInitializeSubclassRuntimeOverrides_onceToken;
   v16 = 0;
   objc_storeStrong(&v16, &obj);
@@ -1198,12 +1198,12 @@ void __46__AXUIKitGlue__handleWebKitLegacyInstallation__block_invoke_4(void *a1,
   objc_storeStrong(location, 0);
 }
 
-+ (id)wrapDOMRange:(id)a3
++ (id)wrapDOMRange:(id)range
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, range);
   objc_storeStrong(location, 0);
   return 0;
 }

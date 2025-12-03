@@ -2,18 +2,18 @@
 - (BOOL)prefersBaselineAlignment;
 - (CGSize)intrinsicContentSize;
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation;
-- (_UIStatusBarImageView)initWithFrame:(CGRect)a3;
-- (void)applyStyleAttributes:(id)a3;
-- (void)setIconScale:(double)a3;
+- (_UIStatusBarImageView)initWithFrame:(CGRect)frame;
+- (void)applyStyleAttributes:(id)attributes;
+- (void)setIconScale:(double)scale;
 @end
 
 @implementation _UIStatusBarImageView
 
-- (_UIStatusBarImageView)initWithFrame:(CGRect)a3
+- (_UIStatusBarImageView)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIStatusBarImageView;
-  v3 = [(UIImageView *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIImageView *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v3->_iconScale = 1.0;
   [(UIImageView *)v3 _setAnimatesContents:1];
   return v3;
@@ -26,10 +26,10 @@
   [(UIView *)&v12 intrinsicContentSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(UIImageView *)self image];
-  v8 = [v7 isFromStatusBarImageProvider];
+  image = [(UIImageView *)self image];
+  isFromStatusBarImageProvider = [image isFromStatusBarImageProvider];
 
-  if (v8)
+  if (isFromStatusBarImageProvider)
   {
     iconScale = self->_iconScale;
     v4 = v4 * iconScale;
@@ -45,51 +45,51 @@
 
 - (BOOL)prefersBaselineAlignment
 {
-  v2 = [(UIImageView *)self image];
-  v3 = [v2 _isSymbolImage];
+  image = [(UIImageView *)self image];
+  _isSymbolImage = [image _isSymbolImage];
 
-  return v3;
+  return _isSymbolImage;
 }
 
-- (void)setIconScale:(double)a3
+- (void)setIconScale:(double)scale
 {
-  if (self->_iconScale != a3)
+  if (self->_iconScale != scale)
   {
-    self->_iconScale = a3;
+    self->_iconScale = scale;
     [(UIView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)applyStyleAttributes:(id)a3
+- (void)applyStyleAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [v4 imageTintColor];
-  [(UIView *)self setTintColor:v5];
+  attributesCopy = attributes;
+  imageTintColor = [attributesCopy imageTintColor];
+  [(UIView *)self setTintColor:imageTintColor];
 
-  [v4 iconScale];
+  [attributesCopy iconScale];
   [(_UIStatusBarImageView *)self setIconScale:?];
-  v8 = [v4 fontForStyle:self->_fontStyle];
-  v6 = [v4 symbolScale];
+  v8 = [attributesCopy fontForStyle:self->_fontStyle];
+  symbolScale = [attributesCopy symbolScale];
 
-  v7 = [UIImageSymbolConfiguration configurationWithFont:v8 scale:v6];
+  v7 = [UIImageSymbolConfiguration configurationWithFont:v8 scale:symbolScale];
   [(UIImageView *)self setPreferredSymbolConfiguration:v7];
 }
 
 - (UIAccessibilityHUDItem)accessibilityHUDRepresentation
 {
-  v3 = [(_UIStatusBarImageView *)self accessibilityHUDImage];
-  v4 = v3;
-  if (v3)
+  accessibilityHUDImage = [(_UIStatusBarImageView *)self accessibilityHUDImage];
+  v4 = accessibilityHUDImage;
+  if (accessibilityHUDImage)
   {
-    v5 = v3;
+    image = accessibilityHUDImage;
   }
 
   else
   {
-    v5 = [(UIImageView *)self image];
+    image = [(UIImageView *)self image];
   }
 
-  v6 = v5;
+  v6 = image;
 
   v7 = [[UIAccessibilityHUDItem alloc] initWithTitle:0 image:v6 imageInsets:0.0, 0.0, 0.0, 0.0];
   [(UIAccessibilityHUDItem *)v7 setScaleImage:1];

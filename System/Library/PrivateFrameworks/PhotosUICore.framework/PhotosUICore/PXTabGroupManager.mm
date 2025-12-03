@@ -1,17 +1,17 @@
 @interface PXTabGroupManager
 - (BOOL)isCollapsedByDefault;
-- (BOOL)wantsFolderKeyAssetsForChildTab:(id)a3;
+- (BOOL)wantsFolderKeyAssetsForChildTab:(id)tab;
 - (NSString)description;
 - (PXTabGroupControllerDelegate)delegate;
-- (PXTabGroupManager)initWithOutlineItem:(id)a3 dataSectionManager:(id)a4;
-- (PXTabGroupManager)initWithTabGroup:(id)a3 dataSectionManager:(id)a4;
-- (id)_makeViewControllerForTab:(id)a3;
-- (id)auxiliaryObjectForChildTab:(id)a3 key:(id)a4;
-- (id)dataSectionArrayController:(id)a3 associatedObjectForTransformedObject:(id)a4;
+- (PXTabGroupManager)initWithOutlineItem:(id)item dataSectionManager:(id)manager;
+- (PXTabGroupManager)initWithTabGroup:(id)group dataSectionManager:(id)manager;
+- (id)_makeViewControllerForTab:(id)tab;
+- (id)auxiliaryObjectForChildTab:(id)tab key:(id)key;
+- (id)dataSectionArrayController:(id)controller associatedObjectForTransformedObject:(id)object;
 - (void)activateIfNeeded;
-- (void)dataSectionArrayController:(id)a3 didUpdateAuxiliaryObjectForTransformedObjects:(id)a4;
-- (void)persistDisplayOrderWithUndoManager:(id)a3;
-- (void)setCollapsedByDefault:(BOOL)a3;
+- (void)dataSectionArrayController:(id)controller didUpdateAuxiliaryObjectForTransformedObjects:(id)objects;
+- (void)persistDisplayOrderWithUndoManager:(id)manager;
+- (void)setCollapsedByDefault:(BOOL)default;
 - (void)updateTabGroup;
 @end
 
@@ -28,9 +28,9 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PXTabManager *)self isEnabled];
+  isEnabled = [(PXTabManager *)self isEnabled];
   v6 = @"NO";
-  if (v5)
+  if (isEnabled)
   {
     v6 = @"YES";
   }
@@ -41,16 +41,16 @@
   return v8;
 }
 
-- (BOOL)wantsFolderKeyAssetsForChildTab:(id)a3
+- (BOOL)wantsFolderKeyAssetsForChildTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(PXTabGroupManager *)self arrayController];
-  v6 = [v5 dataSectionObjectForTransformedObject:v4];
+  tabCopy = tab;
+  arrayController = [(PXTabGroupManager *)self arrayController];
+  v6 = [arrayController dataSectionObjectForTransformedObject:tabCopy];
 
-  v7 = [v6 collection];
-  if ([v7 px_isFolder] && (objc_msgSend(v7, "isTransient") & 1) == 0)
+  collection = [v6 collection];
+  if ([collection px_isFolder] && (objc_msgSend(collection, "isTransient") & 1) == 0)
   {
-    v8 = [v7 px_isTopLevelFolder] ^ 1;
+    v8 = [collection px_isTopLevelFolder] ^ 1;
   }
 
   else
@@ -61,15 +61,15 @@
   return v8;
 }
 
-- (id)auxiliaryObjectForChildTab:(id)a3 key:(id)a4
+- (id)auxiliaryObjectForChildTab:(id)tab key:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXTabGroupManager *)self arrayController];
-  v9 = [v8 auxiliaryObjectForTransformedObject:v7 key:v6];
+  keyCopy = key;
+  tabCopy = tab;
+  arrayController = [(PXTabGroupManager *)self arrayController];
+  v9 = [arrayController auxiliaryObjectForTransformedObject:tabCopy key:keyCopy];
 
-  v10 = [MEMORY[0x1E695DFB0] null];
-  if (v9 == v10)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (v9 == null)
   {
     v11 = 0;
   }
@@ -84,17 +84,17 @@
   return v11;
 }
 
-- (void)persistDisplayOrderWithUndoManager:(id)a3
+- (void)persistDisplayOrderWithUndoManager:(id)manager
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  managerCopy = manager;
   [(UITabGroup *)self->_tabGroup children];
   objc_claimAutoreleasedReturnValue();
   v5 = MEMORY[0x1E69E9820];
   v6 = 3221225472;
   v7 = __56__PXTabGroupManager_persistDisplayOrderWithUndoManager___block_invoke;
   v8 = &unk_1E7743148;
-  v9 = self;
+  selfCopy = self;
   PXMap();
 }
 
@@ -162,8 +162,8 @@ LABEL_6:
 
 - (void)updateTabGroup
 {
-  v3 = [(PXDataSectionArrayController *)self->_arrayController transformedObjects];
-  [(UITabGroup *)self->_tabGroup setChildren:v3];
+  transformedObjects = [(PXDataSectionArrayController *)self->_arrayController transformedObjects];
+  [(UITabGroup *)self->_tabGroup setChildren:transformedObjects];
 
   tabGroup = self->_tabGroup;
   v5 = MEMORY[0x1E695E0F0];
@@ -183,7 +183,7 @@ LABEL_6:
   return [(UITabGroup *)tabGroup isCollapsedByDefault];
 }
 
-- (void)setCollapsedByDefault:(BOOL)a3
+- (void)setCollapsedByDefault:(BOOL)default
 {
   if (objc_opt_respondsToSelector())
   {
@@ -193,81 +193,81 @@ LABEL_6:
   }
 }
 
-- (void)dataSectionArrayController:(id)a3 didUpdateAuxiliaryObjectForTransformedObjects:(id)a4
+- (void)dataSectionArrayController:(id)controller didUpdateAuxiliaryObjectForTransformedObjects:(id)objects
 {
-  v5 = a4;
-  v6 = [(PXTabGroupManager *)self delegate];
-  [v6 tabGroupController:self didUpdateAuxiliaryObjectsForTabs:v5];
+  objectsCopy = objects;
+  delegate = [(PXTabGroupManager *)self delegate];
+  [delegate tabGroupController:self didUpdateAuxiliaryObjectsForTabs:objectsCopy];
 }
 
-- (id)dataSectionArrayController:(id)a3 associatedObjectForTransformedObject:(id)a4
+- (id)dataSectionArrayController:(id)controller associatedObjectForTransformedObject:(id)object
 {
-  v5 = a4;
-  v6 = [(PXTabGroupManager *)self delegate];
-  v7 = [v6 tabGroupController:self makeViewControllerForTab:v5];
+  objectCopy = object;
+  delegate = [(PXTabGroupManager *)self delegate];
+  v7 = [delegate tabGroupController:self makeViewControllerForTab:objectCopy];
 
   return v7;
 }
 
-- (id)_makeViewControllerForTab:(id)a3
+- (id)_makeViewControllerForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [(PXTabGroupManager *)self delegate];
-  v6 = [v5 tabGroupController:self makeViewControllerForTab:v4];
+  tabCopy = tab;
+  delegate = [(PXTabGroupManager *)self delegate];
+  v6 = [delegate tabGroupController:self makeViewControllerForTab:tabCopy];
 
   return v6;
 }
 
-- (PXTabGroupManager)initWithTabGroup:(id)a3 dataSectionManager:(id)a4
+- (PXTabGroupManager)initWithTabGroup:(id)group dataSectionManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  groupCopy = group;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = PXTabGroupManager;
   v9 = [(PXTabGroupManager *)&v13 init];
   if (v9)
   {
-    v10 = -[PXDataSectionArrayController initWithDataSectionManager:transformerClass:]([PXDataSectionArrayController alloc], "initWithDataSectionManager:transformerClass:", v8, [objc_opt_class() transformerClass]);
+    v10 = -[PXDataSectionArrayController initWithDataSectionManager:transformerClass:]([PXDataSectionArrayController alloc], "initWithDataSectionManager:transformerClass:", managerCopy, [objc_opt_class() transformerClass]);
     arrayController = v9->_arrayController;
     v9->_arrayController = v10;
 
     [(PXDataSectionArrayController *)v9->_arrayController setDelegate:v9];
-    objc_storeStrong(&v9->_tabGroup, a3);
+    objc_storeStrong(&v9->_tabGroup, group);
   }
 
   return v9;
 }
 
-- (PXTabGroupManager)initWithOutlineItem:(id)a3 dataSectionManager:(id)a4
+- (PXTabGroupManager)initWithOutlineItem:(id)item dataSectionManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  managerCopy = manager;
   v23.receiver = self;
   v23.super_class = PXTabGroupManager;
   v8 = [(PXTabGroupManager *)&v23 init];
   if (v8)
   {
-    v9 = -[PXDataSectionArrayController initWithDataSectionManager:transformerClass:]([PXDataSectionArrayController alloc], "initWithDataSectionManager:transformerClass:", v7, [objc_opt_class() transformerClass]);
+    v9 = -[PXDataSectionArrayController initWithDataSectionManager:transformerClass:]([PXDataSectionArrayController alloc], "initWithDataSectionManager:transformerClass:", managerCopy, [objc_opt_class() transformerClass]);
     arrayController = v8->_arrayController;
     v8->_arrayController = v9;
 
     [(PXDataSectionArrayController *)v8->_arrayController setDelegate:v8];
     objc_initWeak(&location, v8);
     v11 = objc_alloc(MEMORY[0x1E69DD010]);
-    v12 = [v6 title];
-    v13 = [v6 identifier];
+    title = [itemCopy title];
+    identifier = [itemCopy identifier];
     v17 = MEMORY[0x1E69E9820];
     v18 = 3221225472;
     v19 = __60__PXTabGroupManager_initWithOutlineItem_dataSectionManager___block_invoke;
     v20 = &unk_1E7743120;
     objc_copyWeak(&v21, &location);
-    v14 = [v11 initWithTitle:v12 image:0 identifier:v13 viewControllerProvider:&v17];
+    v14 = [v11 initWithTitle:title image:0 identifier:identifier viewControllerProvider:&v17];
     tabGroup = v8->_tabGroup;
     v8->_tabGroup = v14;
 
     [(UITabGroup *)v8->_tabGroup setSidebarAppearance:2, v17, v18, v19, v20];
-    -[UITabGroup setAllowsReordering:](v8->_tabGroup, "setAllowsReordering:", [v6 canRearrangeContent]);
-    [(UITabGroup *)v8->_tabGroup setUserInfo:v6];
+    -[UITabGroup setAllowsReordering:](v8->_tabGroup, "setAllowsReordering:", [itemCopy canRearrangeContent]);
+    [(UITabGroup *)v8->_tabGroup setUserInfo:itemCopy];
     [(PXTabGroupManager *)v8 updateTabGroup];
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);

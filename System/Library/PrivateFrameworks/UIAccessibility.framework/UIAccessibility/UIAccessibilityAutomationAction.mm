@@ -1,33 +1,33 @@
 @interface UIAccessibilityAutomationAction
 - (SEL)selector;
-- (UIAccessibilityAutomationAction)initWithIdentifier:(id)a3 selector:(SEL)a4;
+- (UIAccessibilityAutomationAction)initWithIdentifier:(id)identifier selector:(SEL)selector;
 @end
 
 @implementation UIAccessibilityAutomationAction
 
-- (UIAccessibilityAutomationAction)initWithIdentifier:(id)a3 selector:(SEL)a4
+- (UIAccessibilityAutomationAction)initWithIdentifier:(id)identifier selector:(SEL)selector
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = UIAccessibilityAutomationAction;
   v7 = [(UIAccessibilityAutomationAction *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    if (a4)
+    if (selector)
     {
-      v10 = a4;
+      selectorCopy = selector;
     }
 
     else
     {
-      v10 = 0;
+      selectorCopy = 0;
     }
 
-    v7->_selector = v10;
+    v7->_selector = selectorCopy;
   }
 
   return v7;

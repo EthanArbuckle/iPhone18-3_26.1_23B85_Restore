@@ -1,5 +1,5 @@
 @interface DUIngestableFiletypes
-+ (BOOL)isFileURLSupported:(id)a3;
++ (BOOL)isFileURLSupported:(id)supported;
 + (NSArray)emlFileExtensions;
 + (NSArray)iWorkFileExtensions;
 + (NSArray)jsonFileExtensions;
@@ -21,7 +21,7 @@
   return v2;
 }
 
-+ (BOOL)isFileURLSupported:(id)a3
++ (BOOL)isFileURLSupported:(id)supported
 {
   v3 = sub_249D21E00();
   v4 = *(v3 - 8);

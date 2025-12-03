@@ -1,58 +1,58 @@
 @interface PLComputeCacheManager
-+ (BOOL)isEnabledWithPathManager:(id)a3 error:(id *)a4;
-+ (BOOL)shouldPublishAnalyticsForRestoreError:(id)a3;
-+ (id)_urlForLocation:(int64_t)a3 pathManager:(id)a4 createIfNeeded:(BOOL)a5 error:(id *)a6;
-+ (id)baseURLFromPathManager:(id)a3;
++ (BOOL)isEnabledWithPathManager:(id)manager error:(id *)error;
++ (BOOL)shouldPublishAnalyticsForRestoreError:(id)error;
++ (id)_urlForLocation:(int64_t)location pathManager:(id)manager createIfNeeded:(BOOL)needed error:(id *)error;
++ (id)baseURLFromPathManager:(id)manager;
 + (id)payloadClasses;
 + (id)restorePayloadClasses;
-- (BOOL)_addBackupCreatedMarkerWithError:(id *)a3;
-- (BOOL)_archivePrepareDirectoryWithError:(id *)a3;
-- (BOOL)_archiveSnapshotIfNecessaryWithError:(id *)a3;
-- (BOOL)_archiveSnapshotWithError:(id *)a3;
-- (BOOL)_cleanupLegacyArchiveURL:(id)a3 replacementURL:(id)a4 error:(id *)a5;
-- (BOOL)_createArchiveWithError:(id *)a3;
-- (BOOL)_getRestoreCount:(signed __int16 *)a3 error:(id *)a4;
+- (BOOL)_addBackupCreatedMarkerWithError:(id *)error;
+- (BOOL)_archivePrepareDirectoryWithError:(id *)error;
+- (BOOL)_archiveSnapshotIfNecessaryWithError:(id *)error;
+- (BOOL)_archiveSnapshotWithError:(id *)error;
+- (BOOL)_cleanupLegacyArchiveURL:(id)l replacementURL:(id)rL error:(id *)error;
+- (BOOL)_createArchiveWithError:(id *)error;
+- (BOOL)_getRestoreCount:(signed __int16 *)count error:(id *)error;
 - (BOOL)_hasBackupArchive;
 - (BOOL)_hasBackupCreatedMarker;
-- (BOOL)_hasPrepareDataToBackupWithError:(id *)a3;
-- (BOOL)_incrementRestoreCount:(signed __int16 *)a3 error:(id *)a4;
-- (BOOL)_isInitialSyncWithInitialSyncDate:(id)a3;
-- (BOOL)_isValidArchiveURL:(id)a3 filenameExclusionList:(id)a4;
-- (BOOL)_performSnapshotWithError:(id *)a3;
-- (BOOL)_removeComputeCacheDataForMatchingRestoreState:(int64_t)a3 error:(id *)a4;
-- (BOOL)_removeLocation:(int64_t)a3 error:(id *)a4;
-- (BOOL)_restoreComputeCacheArchiveWithProgress:(id)a3 error:(id *)a4;
-- (BOOL)_restoreComputeCacheWithProgress:(id)a3 error:(id *)a4;
-- (BOOL)_snapshotJournalsWithError:(id *)a3;
-- (BOOL)_transferAndPrepareComputeCacheFromBackupToRestoreLocationWithError:(id *)a3;
-- (BOOL)_transferToBackupLocationWithError:(id *)a3;
-- (BOOL)createArchiveWithError:(id *)a3;
-- (BOOL)resetComputeCacheWithError:(id *)a3;
-- (BOOL)restoreComputeCacheWithProgress:(id)a3 error:(id *)a4;
-- (BOOL)snapshotComputeCacheAndBackupIfNeededWithError:(id *)a3;
-- (BOOL)snapshotJournalsForPayloadClassIDs:(id)a3 error:(id *)a4;
-- (PLComputeCacheManager)initWithLibraryServicesManager:(id)a3;
+- (BOOL)_hasPrepareDataToBackupWithError:(id *)error;
+- (BOOL)_incrementRestoreCount:(signed __int16 *)count error:(id *)error;
+- (BOOL)_isInitialSyncWithInitialSyncDate:(id)date;
+- (BOOL)_isValidArchiveURL:(id)l filenameExclusionList:(id)list;
+- (BOOL)_performSnapshotWithError:(id *)error;
+- (BOOL)_removeComputeCacheDataForMatchingRestoreState:(int64_t)state error:(id *)error;
+- (BOOL)_removeLocation:(int64_t)location error:(id *)error;
+- (BOOL)_restoreComputeCacheArchiveWithProgress:(id)progress error:(id *)error;
+- (BOOL)_restoreComputeCacheWithProgress:(id)progress error:(id *)error;
+- (BOOL)_snapshotJournalsWithError:(id *)error;
+- (BOOL)_transferAndPrepareComputeCacheFromBackupToRestoreLocationWithError:(id *)error;
+- (BOOL)_transferToBackupLocationWithError:(id *)error;
+- (BOOL)createArchiveWithError:(id *)error;
+- (BOOL)resetComputeCacheWithError:(id *)error;
+- (BOOL)restoreComputeCacheWithProgress:(id)progress error:(id *)error;
+- (BOOL)snapshotComputeCacheAndBackupIfNeededWithError:(id *)error;
+- (BOOL)snapshotJournalsForPayloadClassIDs:(id)ds error:(id *)error;
+- (PLComputeCacheManager)initWithLibraryServicesManager:(id)manager;
 - (id)_cachedPolicyConfiguration;
 - (id)_filenameExclusionList;
 - (id)_newTransientContext;
 - (id)_shortLivedLibrary;
 - (id)_snapshotPolicy;
-- (id)resolveLocalIdentifiersForCloudIdentifiers:(id)a3 error:(id *)a4;
+- (id)resolveLocalIdentifiersForCloudIdentifiers:(id)identifiers error:(id *)error;
 - (id)status;
-- (id)statusFromPolicy:(id)a3;
+- (id)statusFromPolicy:(id)policy;
 - (int64_t)_iCloudBackupState;
 - (int64_t)_libraryAssetCount;
-- (int64_t)_performBlockOnRestoreStateLockAndWait:(id)a3;
+- (int64_t)_performBlockOnRestoreStateLockAndWait:(id)wait;
 - (unint64_t)_getArchiveSize;
 - (void)_cleanupLegacyArchiveFilename;
-- (void)_enumerateComputeCachePrepareDirectoryUsingBlock:(id)a3;
+- (void)_enumerateComputeCachePrepareDirectoryUsingBlock:(id)block;
 - (void)_publish;
 - (void)_setICloudBackupRestoreDateFromArchive;
-- (void)_updateCachedPolicyConfigurationWithCPLConfiguration:(id)a3;
-- (void)coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 completionHandler:(id)a5;
-- (void)notifyCPLConfiguration:(id)a3;
-- (void)notifyReadyToRestoreWithInitialSyncDate:(id)a3;
-- (void)snapshotJournalsForPayloadClassIDs:(id)a3 withCompletionHandler:(id)a4;
+- (void)_updateCachedPolicyConfigurationWithCPLConfiguration:(id)configuration;
+- (void)coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold completionHandler:(id)handler;
+- (void)notifyCPLConfiguration:(id)configuration;
+- (void)notifyReadyToRestoreWithInitialSyncDate:(id)date;
+- (void)snapshotJournalsForPayloadClassIDs:(id)ds withCompletionHandler:(id)handler;
 @end
 
 @implementation PLComputeCacheManager
@@ -68,9 +68,9 @@
   return v2;
 }
 
-- (id)resolveLocalIdentifiersForCloudIdentifiers:(id)a3 error:(id *)a4
+- (id)resolveLocalIdentifiersForCloudIdentifiers:(id)identifiers error:(id *)error
 {
-  v5 = a3;
+  identifiersCopy = identifiers;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -78,9 +78,9 @@
   v19 = __Block_byref_object_dispose__66777;
   v20 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v7 = [WeakRetained cloudPhotoLibraryManager];
+  cloudPhotoLibraryManager = [WeakRetained cloudPhotoLibraryManager];
 
-  if (v7)
+  if (cloudPhotoLibraryManager)
   {
     v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, &__block_literal_global_214);
     v12[0] = MEMORY[0x1E69E9820];
@@ -90,7 +90,7 @@
     v14 = &v15;
     v9 = v8;
     v13 = v9;
-    [v7 resolveLocalIdentifiersForCloudIdentifiers:v5 completionHandler:v12];
+    [cloudPhotoLibraryManager resolveLocalIdentifiersForCloudIdentifiers:identifiersCopy completionHandler:v12];
     dispatch_block_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   }
 
@@ -117,8 +117,8 @@ void __74__PLComputeCacheManager_resolveLocalIdentifiersForCloudIdentifiers_erro
   v7 = [v3 stringWithFormat:@"%@ - identifier:%td", v5, objc_msgSend(WeakRetained, "wellKnownPhotoLibraryIdentifier")];
 
   v8 = objc_loadWeakRetained(&self->_lsm);
-  v9 = [v8 databaseContext];
-  v10 = [v9 newShortLivedLibraryWithName:{objc_msgSend(v7, "UTF8String")}];
+  databaseContext = [v8 databaseContext];
+  v10 = [databaseContext newShortLivedLibraryWithName:{objc_msgSend(v7, "UTF8String")}];
 
   return v10;
 }
@@ -126,19 +126,19 @@ void __74__PLComputeCacheManager_resolveLocalIdentifiersForCloudIdentifiers_erro
 - (int64_t)_libraryAssetCount
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(PLComputeCacheManager *)self _shortLivedLibrary];
-  if (v3)
+  _shortLivedLibrary = [(PLComputeCacheManager *)self _shortLivedLibrary];
+  if (_shortLivedLibrary)
   {
-    v4 = [[PLComputeCachePolicyDataSource alloc] initWithPhotoLibrary:v3 restoreState:[(PLComputeCacheManager *)self _restoreState]];
-    v5 = [(PLComputeCachePolicyDataSource *)v4 assetCount];
-    if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+    v4 = [[PLComputeCachePolicyDataSource alloc] initWithPhotoLibrary:_shortLivedLibrary restoreState:[(PLComputeCacheManager *)self _restoreState]];
+    assetCount = [(PLComputeCachePolicyDataSource *)v4 assetCount];
+    if (assetCount == 0x7FFFFFFFFFFFFFFFLL)
     {
       v6 = -1;
     }
 
     else
     {
-      v6 = v5;
+      v6 = assetCount;
     }
   }
 
@@ -164,18 +164,18 @@ void __74__PLComputeCacheManager_resolveLocalIdentifiersForCloudIdentifiers_erro
   v3 = [objc_alloc(MEMORY[0x1E695D628]) initWithConcurrencyType:1];
   v4 = MEMORY[0x1E69BF238];
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v6 = [WeakRetained pathManager];
-  v7 = [v6 libraryURL];
-  v8 = [v4 redactedDescriptionForFileURL:v7];
+  pathManager = [WeakRetained pathManager];
+  libraryURL = [pathManager libraryURL];
+  v8 = [v4 redactedDescriptionForFileURL:libraryURL];
 
   v9 = MEMORY[0x1E696AEC0];
-  v10 = [(PLJournalManagerCore *)self->_journalManager name];
-  v11 = [v9 stringWithFormat:@"ComputeCacheManager[%@] transient context (%@)", v10, v8];
+  name = [(PLJournalManagerCore *)self->_journalManager name];
+  v11 = [v9 stringWithFormat:@"ComputeCacheManager[%@] transient context (%@)", name, v8];
   [v3 setName:v11];
 
   v12 = objc_loadWeakRetained(&self->_lsm);
-  v13 = [v12 persistentStoreCoordinator];
-  [v3 setPersistentStoreCoordinator:v13];
+  persistentStoreCoordinator = [v12 persistentStoreCoordinator];
+  [v3 setPersistentStoreCoordinator:persistentStoreCoordinator];
 
   [v3 setStalenessInterval:0.0];
   v17[0] = MEMORY[0x1E69E9820];
@@ -184,7 +184,7 @@ void __74__PLComputeCacheManager_resolveLocalIdentifiersForCloudIdentifiers_erro
   v17[3] = &unk_1E7578848;
   v14 = v3;
   v18 = v14;
-  v19 = self;
+  selfCopy = self;
   [v14 performBlockAndWait:v17];
   v15 = v14;
 
@@ -203,8 +203,8 @@ void __45__PLComputeCacheManager__newTransientContext__block_invoke(uint64_t a1)
 {
   v2 = MEMORY[0x1E69BF188];
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v4 = [WeakRetained libraryURL];
-  v5 = [v2 appPrivateDataForLibraryURL:v4];
+  libraryURL = [WeakRetained libraryURL];
+  v5 = [v2 appPrivateDataForLibraryURL:libraryURL];
 
   v6 = [v5 valueForKeyPath:@"ComputeCache.PolicyConfiguration"];
   v7 = [[PLComputeCachePolicyConfiguration alloc] initWithConfigurationDictionary:v6];
@@ -212,14 +212,14 @@ void __45__PLComputeCacheManager__newTransientContext__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)_updateCachedPolicyConfigurationWithCPLConfiguration:(id)a3
+- (void)_updateCachedPolicyConfigurationWithCPLConfiguration:(id)configuration
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = [a3 valueForKey:@"computecache.policyconfiguration"];
+  v4 = [configuration valueForKey:@"computecache.policyconfiguration"];
   v5 = MEMORY[0x1E69BF188];
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v7 = [WeakRetained libraryURL];
-  v8 = [v5 appPrivateDataForLibraryURL:v7];
+  libraryURL = [WeakRetained libraryURL];
+  v8 = [v5 appPrivateDataForLibraryURL:libraryURL];
 
   v9 = [v8 valueForKeyPath:@"ComputeCache.PolicyConfiguration"];
   v10 = v9;
@@ -237,11 +237,11 @@ void __45__PLComputeCacheManager__newTransientContext__block_invoke(uint64_t a1)
   }
 }
 
-- (id)statusFromPolicy:(id)a3
+- (id)statusFromPolicy:(id)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v3 snapshotAllowed])
+  if ([policyCopy snapshotAllowed])
   {
     v5 = @"YES";
   }
@@ -252,7 +252,7 @@ void __45__PLComputeCacheManager__newTransientContext__block_invoke(uint64_t a1)
   }
 
   [v4 setObject:v5 forKey:@"Snapshot Allowed"];
-  if ([v3 snapshotRequired])
+  if ([policyCopy snapshotRequired])
   {
     v6 = @"YES";
   }
@@ -263,42 +263,42 @@ void __45__PLComputeCacheManager__newTransientContext__block_invoke(uint64_t a1)
   }
 
   [v4 setObject:v6 forKey:@"Snapshot Required"];
-  v7 = PLStringFromPLComputeCacheSnapshotDenyPolicyShort([v3 denyPolicy]);
+  v7 = PLStringFromPLComputeCacheSnapshotDenyPolicyShort([policyCopy denyPolicy]);
   if (v7)
   {
     [v4 setObject:v7 forKey:@"Snapshot Deny Policy"];
   }
 
-  v8 = [v3 denyPolicy];
-  if ((v8 - 1) > 4)
+  denyPolicy = [policyCopy denyPolicy];
+  if ((denyPolicy - 1) > 4)
   {
     v9 = @"Snapshot enabled. Check allow policy";
   }
 
   else
   {
-    v9 = off_1E7572BA8[v8 - 1];
+    v9 = off_1E7572BA8[denyPolicy - 1];
   }
 
   v10 = v9;
   [v4 setObject:v10 forKey:@"Snapshot Deny Policy Reason"];
 
-  if (![v3 denyPolicy])
+  if (![policyCopy denyPolicy])
   {
-    v11 = PLStringFromPLComputeCacheSnapshotAllowPolicyShort([v3 allowPolicy]);
+    v11 = PLStringFromPLComputeCacheSnapshotAllowPolicyShort([policyCopy allowPolicy]);
     if (v11)
     {
       [v4 setObject:v11 forKey:@"Snapshot Allow Policy"];
     }
 
-    v12 = [v3 allowPolicy];
+    allowPolicy = [policyCopy allowPolicy];
     v13 = @"Snapshot disabled. Snapshot is current";
-    if (v12 == 1)
+    if (allowPolicy == 1)
     {
       v13 = @"Snapshot required. Snapshot is out of date";
     }
 
-    if (v12 == 2)
+    if (allowPolicy == 2)
     {
       v13 = @"Snapshot required. Snapshot has deleted asset records";
     }
@@ -307,10 +307,10 @@ void __45__PLComputeCacheManager__newTransientContext__block_invoke(uint64_t a1)
     [v4 setObject:v14 forKey:@"Snapshot Allow Policy Reason"];
   }
 
-  v15 = [v3 reason];
-  if (v15)
+  reason = [policyCopy reason];
+  if (reason)
   {
-    [v4 setObject:v15 forKey:@"Snapshot Reason"];
+    [v4 setObject:reason forKey:@"Snapshot Reason"];
   }
 
   return v4;
@@ -336,10 +336,10 @@ void __45__PLComputeCacheManager__newTransientContext__block_invoke(uint64_t a1)
   dispatch_sync(queue, v19);
   if (v21[5])
   {
-    v5 = [(PLComputeCacheManager *)self _restoreState];
-    v6 = [(PLComputeCacheManager *)self isReadyForAnalysis];
+    _restoreState = [(PLComputeCacheManager *)self _restoreState];
+    isReadyForAnalysis = [(PLComputeCacheManager *)self isReadyForAnalysis];
     v7 = @"NO";
-    if (v6)
+    if (isReadyForAnalysis)
     {
       v7 = @"YES";
     }
@@ -347,21 +347,21 @@ void __45__PLComputeCacheManager__newTransientContext__block_invoke(uint64_t a1)
     v8 = v7;
     [v3 setObject:v8 forKey:@"Ready for Analysis"];
 
-    v9 = PLStringFromPLComputeCacheRestoreStateShort(v5);
+    v9 = PLStringFromPLComputeCacheRestoreStateShort(_restoreState);
     if (v9)
     {
       [v3 setObject:v9 forKey:@"Restore State"];
     }
 
-    v10 = [v21[5] configuration];
-    v11 = v10;
-    switch(v5)
+    configuration = [v21[5] configuration];
+    v11 = configuration;
+    switch(_restoreState)
     {
       case 3:
         v12 = @"The restore is currently active";
         break;
       case 2:
-        if (([v10 isRestoreEnabled] & 1) == 0)
+        if (([configuration isRestoreEnabled] & 1) == 0)
         {
           v12 = [@"The compute cache archive is available for restore" stringByAppendingString:{@", but disabled by the configuration"}];
 
@@ -398,9 +398,9 @@ LABEL_19:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     WeakRetained = objc_loadWeakRetained(&self->_lsm);
-    v15 = [WeakRetained pathManager];
+    pathManager = [WeakRetained pathManager];
     *buf = 138412290;
-    v27 = v15;
+    v27 = pathManager;
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "ComputeCacheManager: Failed to access policy for library: %@", buf, 0xCu);
   }
 
@@ -424,8 +424,8 @@ void __31__PLComputeCacheManager_status__block_invoke(uint64_t a1)
   v19 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v5 = [WeakRetained pathManager];
-  v6 = [v3 _urlForLocation:6 pathManager:v5 createIfNeeded:0 error:0];
+  pathManager = [WeakRetained pathManager];
+  v6 = [v3 _urlForLocation:6 pathManager:pathManager createIfNeeded:0 error:0];
 
   memset(&v14, 0, sizeof(v14));
   if (stat([v6 fileSystemRepresentation], &v14))
@@ -456,15 +456,15 @@ void __31__PLComputeCacheManager_status__block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_cleanupLegacyArchiveURL:(id)a3 replacementURL:(id)a4 error:(id *)a5
+- (BOOL)_cleanupLegacyArchiveURL:(id)l replacementURL:(id)rL error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  lCopy = l;
+  rLCopy = rL;
+  v11 = rLCopy;
+  if (lCopy)
   {
-    if (v10)
+    if (rLCopy)
     {
       goto LABEL_3;
     }
@@ -472,8 +472,8 @@ void __31__PLComputeCacheManager_status__block_invoke(uint64_t a1)
 
   else
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"PLComputeCacheManager.m" lineNumber:1169 description:{@"Invalid parameter not satisfying: %@", @"legacyURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLComputeCacheManager.m" lineNumber:1169 description:{@"Invalid parameter not satisfying: %@", @"legacyURL"}];
 
     if (v11)
     {
@@ -481,12 +481,12 @@ void __31__PLComputeCacheManager_status__block_invoke(uint64_t a1)
     }
   }
 
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"PLComputeCacheManager.m" lineNumber:1170 description:{@"Invalid parameter not satisfying: %@", @"replacementURL"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PLComputeCacheManager.m" lineNumber:1170 description:{@"Invalid parameter not satisfying: %@", @"replacementURL"}];
 
 LABEL_3:
   v29 = 0;
-  v12 = [v9 checkResourceIsReachableAndReturnError:&v29];
+  v12 = [lCopy checkResourceIsReachableAndReturnError:&v29];
   v13 = v29;
   v14 = v13;
   if (v12)
@@ -498,7 +498,7 @@ LABEL_3:
     if (v15)
     {
       v27 = v16;
-      v17 = [MEMORY[0x1E69BF238] removeItemAtURL:v9 error:&v27];
+      v17 = [MEMORY[0x1E69BF238] removeItemAtURL:lCopy error:&v27];
       v14 = v27;
 
       if ((v17 & 1) == 0)
@@ -513,9 +513,9 @@ LABEL_8:
 
     if (PLIsErrorFileNotFound())
     {
-      v19 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v26 = v16;
-      v20 = [v19 moveItemAtURL:v9 toURL:v11 error:&v26];
+      v20 = [defaultManager moveItemAtURL:lCopy toURL:v11 error:&v26];
       v14 = v26;
 
       if ((v20 & 1) == 0)
@@ -543,11 +543,11 @@ LABEL_13:
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "ComputeCacheManager: Failed to cleanup legacy archive location. Error: %@", buf, 0xCu);
   }
 
-  if (a5)
+  if (error)
   {
     v22 = v14;
     v18 = 0;
-    *a5 = v14;
+    *error = v14;
   }
 
   else
@@ -565,11 +565,11 @@ LABEL_18:
   v33 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v5 = [WeakRetained pathManager];
-  v6 = [v3 _urlForLocation:1 pathManager:v5 createIfNeeded:0 error:0];
+  pathManager = [WeakRetained pathManager];
+  v6 = [v3 _urlForLocation:1 pathManager:pathManager createIfNeeded:0 error:0];
 
-  v7 = [v6 URLByDeletingLastPathComponent];
-  v8 = [v7 URLByAppendingPathComponent:@"computecache.aar"];
+  uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
+  v8 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"computecache.aar"];
 
   v30 = 0;
   v9 = [(PLComputeCacheManager *)self _cleanupLegacyArchiveURL:v8 replacementURL:v6 error:&v30];
@@ -578,25 +578,25 @@ LABEL_18:
   {
     v11 = objc_opt_class();
     v12 = objc_loadWeakRetained(&self->_lsm);
-    v13 = [v12 pathManager];
-    v14 = [v11 _urlForLocation:4 pathManager:v13 createIfNeeded:0 error:0];
+    pathManager2 = [v12 pathManager];
+    v14 = [v11 _urlForLocation:4 pathManager:pathManager2 createIfNeeded:0 error:0];
 
-    v15 = [v14 URLByDeletingLastPathComponent];
-    v16 = [v15 URLByAppendingPathComponent:@"computecache.aar"];
+    uRLByDeletingLastPathComponent2 = [v14 URLByDeletingLastPathComponent];
+    v16 = [uRLByDeletingLastPathComponent2 URLByAppendingPathComponent:@"computecache.aar"];
 
     v29 = v10;
-    LODWORD(v15) = [(PLComputeCacheManager *)self _cleanupLegacyArchiveURL:v16 replacementURL:v14 error:&v29];
+    LODWORD(uRLByDeletingLastPathComponent2) = [(PLComputeCacheManager *)self _cleanupLegacyArchiveURL:v16 replacementURL:v14 error:&v29];
     v17 = v29;
 
-    if (v15)
+    if (uRLByDeletingLastPathComponent2)
     {
       v18 = objc_opt_class();
       v19 = objc_loadWeakRetained(&self->_lsm);
-      v20 = [v19 pathManager];
-      v6 = [v18 _urlForLocation:6 pathManager:v20 createIfNeeded:0 error:0];
+      pathManager3 = [v19 pathManager];
+      v6 = [v18 _urlForLocation:6 pathManager:pathManager3 createIfNeeded:0 error:0];
 
-      v21 = [v6 URLByDeletingLastPathComponent];
-      v8 = [v21 URLByAppendingPathComponent:@"computecache.aar"];
+      uRLByDeletingLastPathComponent3 = [v6 URLByDeletingLastPathComponent];
+      v8 = [uRLByDeletingLastPathComponent3 URLByAppendingPathComponent:@"computecache.aar"];
 
       v28 = v17;
       v22 = [(PLComputeCacheManager *)self _cleanupLegacyArchiveURL:v8 replacementURL:v6 error:&v28];
@@ -643,7 +643,7 @@ LABEL_18:
 LABEL_12:
 }
 
-- (BOOL)_archivePrepareDirectoryWithError:(id *)a3
+- (BOOL)_archivePrepareDirectoryWithError:(id *)error
 {
   v47[1] = *MEMORY[0x1E69E9840];
   v42 = 0;
@@ -657,8 +657,8 @@ LABEL_12:
   v40 = __Block_byref_object_dispose__66777;
   v41 = 0;
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v6 = [WeakRetained clientSideEncryptionManager];
-  v7 = v6 == 0;
+  clientSideEncryptionManager = [WeakRetained clientSideEncryptionManager];
+  v7 = clientSideEncryptionManager == 0;
 
   if (v7)
   {
@@ -671,9 +671,9 @@ LABEL_12:
     v28 = v37[5];
     v37[5] = v27;
 
-    if (a3)
+    if (error)
     {
-      *a3 = v37[5];
+      *error = v37[5];
     }
 
     v24 = *(v43 + 24);
@@ -683,24 +683,24 @@ LABEL_12:
   {
     v8 = objc_opt_class();
     v9 = objc_loadWeakRetained(&self->_lsm);
-    v10 = [v9 pathManager];
-    v11 = [v8 _urlForLocation:1 pathManager:v10 createIfNeeded:1 error:0];
+    pathManager = [v9 pathManager];
+    v11 = [v8 _urlForLocation:1 pathManager:pathManager createIfNeeded:1 error:0];
 
     v12 = objc_opt_class();
     v13 = objc_loadWeakRetained(&self->_lsm);
-    v14 = [v13 pathManager];
-    v15 = [v12 _urlForLocation:0 pathManager:v14 createIfNeeded:1 error:0];
+    pathManager2 = [v13 pathManager];
+    v15 = [v12 _urlForLocation:0 pathManager:pathManager2 createIfNeeded:1 error:0];
 
-    v16 = [(PLComputeCacheManager *)self _filenameExclusionList];
+    _filenameExclusionList = [(PLComputeCacheManager *)self _filenameExclusionList];
     v17 = dispatch_semaphore_create(0);
     v18 = objc_loadWeakRetained(&self->_lsm);
-    v19 = [v18 clientSideEncryptionManager];
+    clientSideEncryptionManager2 = [v18 clientSideEncryptionManager];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __59__PLComputeCacheManager__archivePrepareDirectoryWithError___block_invoke;
     v34[3] = &unk_1E756FF00;
     v34[4] = self;
-    v20 = v16;
+    v20 = _filenameExclusionList;
     v35 = v20;
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -711,15 +711,15 @@ LABEL_12:
     v30[4] = self;
     v21 = v17;
     v31 = v21;
-    [v19 archiveDirectoryAtURL:v15 toOutputURL:v11 dataType:1 options:0 entryPredicate:v34 completionHandler:v30];
+    [clientSideEncryptionManager2 archiveDirectoryAtURL:v15 toOutputURL:v11 dataType:1 options:0 entryPredicate:v34 completionHandler:v30];
 
     dispatch_semaphore_wait(v21, 0xFFFFFFFFFFFFFFFFLL);
     v22 = *(v43 + 24);
     v23 = v37[5];
-    if (a3 && (v22 & 1) == 0)
+    if (error && (v22 & 1) == 0)
     {
       v23 = v23;
-      *a3 = v23;
+      *error = v23;
     }
 
     v24 = *(v43 + 24);
@@ -767,17 +767,17 @@ void __59__PLComputeCacheManager__archivePrepareDirectoryWithError___block_invok
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_isValidArchiveURL:(id)a3 filenameExclusionList:(id)a4
+- (BOOL)_isValidArchiveURL:(id)l filenameExclusionList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  lCopy = l;
+  listCopy = list;
+  if (!listCopy)
   {
-    v7 = [(PLComputeCacheManager *)self _filenameExclusionList];
+    listCopy = [(PLComputeCacheManager *)self _filenameExclusionList];
   }
 
   v12 = 0;
-  [v6 getResourceValue:&v12 forKey:*MEMORY[0x1E695DB78] error:0];
+  [lCopy getResourceValue:&v12 forKey:*MEMORY[0x1E695DB78] error:0];
   v8 = v12;
   if ([v8 BOOLValue])
   {
@@ -787,8 +787,8 @@ void __59__PLComputeCacheManager__archivePrepareDirectoryWithError___block_invok
   else
   {
     v11 = 0;
-    [v6 getResourceValue:&v11 forKey:*MEMORY[0x1E695DC30] error:0];
-    v9 = [v7 containsObject:v11] ^ 1;
+    [lCopy getResourceValue:&v11 forKey:*MEMORY[0x1E695DC30] error:0];
+    v9 = [listCopy containsObject:v11] ^ 1;
   }
 
   return v9;
@@ -798,43 +798,43 @@ void __59__PLComputeCacheManager__archivePrepareDirectoryWithError___block_invok
 {
   v3 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v5 = [WeakRetained pathManager];
-  v6 = [v3 _urlForLocation:2 pathManager:v5 createIfNeeded:0 error:0];
-  v7 = [v6 lastPathComponent];
+  pathManager = [WeakRetained pathManager];
+  v6 = [v3 _urlForLocation:2 pathManager:pathManager createIfNeeded:0 error:0];
+  lastPathComponent = [v6 lastPathComponent];
 
   v8 = objc_opt_class();
   v9 = objc_loadWeakRetained(&self->_lsm);
-  v10 = [v9 pathManager];
-  v11 = [v8 _urlForLocation:1 pathManager:v10 createIfNeeded:1 error:0];
-  v12 = [v11 lastPathComponent];
+  pathManager2 = [v9 pathManager];
+  v11 = [v8 _urlForLocation:1 pathManager:pathManager2 createIfNeeded:1 error:0];
+  lastPathComponent2 = [v11 lastPathComponent];
 
-  v13 = [(PLJournalManagerCore *)self->_journalManager historyTokenURL];
-  v14 = [v13 lastPathComponent];
+  historyTokenURL = [(PLJournalManagerCore *)self->_journalManager historyTokenURL];
+  lastPathComponent3 = [historyTokenURL lastPathComponent];
 
-  v15 = [MEMORY[0x1E695DFD8] setWithObjects:{v7, v12, v14, 0}];
+  v15 = [MEMORY[0x1E695DFD8] setWithObjects:{lastPathComponent, lastPathComponent2, lastPathComponent3, 0}];
 
   return v15;
 }
 
-- (void)_enumerateComputeCachePrepareDirectoryUsingBlock:(id)a3
+- (void)_enumerateComputeCachePrepareDirectoryUsingBlock:(id)block
 {
   v26[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = objc_opt_class();
     WeakRetained = objc_loadWeakRetained(&self->_lsm);
-    v7 = [WeakRetained pathManager];
-    v8 = [v5 _urlForLocation:0 pathManager:v7 createIfNeeded:0 error:0];
+    pathManager = [WeakRetained pathManager];
+    v8 = [v5 _urlForLocation:0 pathManager:pathManager createIfNeeded:0 error:0];
 
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v10 = *MEMORY[0x1E695DB78];
     v26[0] = *MEMORY[0x1E695DC30];
     v26[1] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:2];
-    v12 = [v9 enumeratorAtURL:v8 includingPropertiesForKeys:v11 options:7 errorHandler:0];
+    v12 = [defaultManager enumeratorAtURL:v8 includingPropertiesForKeys:v11 options:7 errorHandler:0];
 
-    v13 = [(PLComputeCacheManager *)self _filenameExclusionList];
+    _filenameExclusionList = [(PLComputeCacheManager *)self _filenameExclusionList];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -855,10 +855,10 @@ LABEL_4:
         }
 
         v19 = *(*(&v21 + 1) + 8 * v18);
-        if ([(PLComputeCacheManager *)self _isValidArchiveURL:v19 filenameExclusionList:v13])
+        if ([(PLComputeCacheManager *)self _isValidArchiveURL:v19 filenameExclusionList:_filenameExclusionList])
         {
           v20 = 0;
-          v4[2](v4, v19, &v20);
+          blockCopy[2](blockCopy, v19, &v20);
           if (v20)
           {
             break;
@@ -885,16 +885,16 @@ LABEL_4:
   v17 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v5 = [WeakRetained pathManager];
-  v6 = [v3 _urlForLocation:6 pathManager:v5 createIfNeeded:0 error:0];
+  pathManager = [WeakRetained pathManager];
+  v6 = [v3 _urlForLocation:6 pathManager:pathManager createIfNeeded:0 error:0];
 
   v14 = 0;
   v7 = *MEMORY[0x1E695DB50];
   v13 = 0;
-  LOBYTE(v5) = [v6 getResourceValue:&v14 forKey:v7 error:&v13];
+  LOBYTE(pathManager) = [v6 getResourceValue:&v14 forKey:v7 error:&v13];
   v8 = v14;
   v9 = v13;
-  if ((v5 & 1) == 0 && (PLIsErrorFileNotFound() & 1) == 0)
+  if ((pathManager & 1) == 0 && (PLIsErrorFileNotFound() & 1) == 0)
   {
     v10 = PLMigrationGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -905,20 +905,20 @@ LABEL_4:
     }
   }
 
-  v11 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  return v11;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)_getRestoreCount:(signed __int16 *)a3 error:(id *)a4
+- (BOOL)_getRestoreCount:(signed __int16 *)count error:(id *)error
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (count)
   {
     v7 = objc_opt_class();
     WeakRetained = objc_loadWeakRetained(&self->_lsm);
-    v9 = [WeakRetained pathManager];
-    v10 = [v7 _urlForLocation:6 pathManager:v9 createIfNeeded:0 error:0];
+    pathManager = [WeakRetained pathManager];
+    v10 = [v7 _urlForLocation:6 pathManager:pathManager createIfNeeded:0 error:0];
 
     v33 = 0;
     LOBYTE(WeakRetained) = [v10 checkResourceIsReachableAndReturnError:&v33];
@@ -964,11 +964,11 @@ LABEL_4:
 
           v30 = v28;
           v15 = v30;
-          if (a4)
+          if (error)
           {
             v31 = v30;
             v14 = 0;
-            *a4 = v15;
+            *error = v15;
           }
 
           else
@@ -982,7 +982,7 @@ LABEL_4:
         LOWORD(v13) = 0;
       }
 
-      *a3 = v13;
+      *count = v13;
     }
 
     v15 = v11;
@@ -995,19 +995,19 @@ LABEL_11:
   return 1;
 }
 
-- (BOOL)_incrementRestoreCount:(signed __int16 *)a3 error:(id *)a4
+- (BOOL)_incrementRestoreCount:(signed __int16 *)count error:(id *)error
 {
   v44[1] = *MEMORY[0x1E69E9840];
   v7 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v9 = [WeakRetained pathManager];
-  v10 = [v7 _urlForLocation:6 pathManager:v9 createIfNeeded:0 error:0];
+  pathManager = [WeakRetained pathManager];
+  v10 = [v7 _urlForLocation:6 pathManager:pathManager createIfNeeded:0 error:0];
 
   v38 = 0;
-  LODWORD(v9) = [v10 checkResourceIsReachableAndReturnError:&v38];
+  LODWORD(pathManager) = [v10 checkResourceIsReachableAndReturnError:&v38];
   v11 = v38;
   v12 = v11;
-  if (!v9)
+  if (!pathManager)
   {
     v28 = PLMigrationGetLog();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -1073,11 +1073,11 @@ LABEL_10:
 LABEL_14:
     v30 = v14;
     v31 = v30;
-    if (a4)
+    if (error)
     {
       v32 = v30;
       v33 = 0;
-      *a4 = v31;
+      *error = v31;
     }
 
     else
@@ -1088,9 +1088,9 @@ LABEL_14:
     goto LABEL_20;
   }
 
-  if (a3)
+  if (count)
   {
-    *a3 = v37;
+    *count = v37;
   }
 
   v31 = v14;
@@ -1100,13 +1100,13 @@ LABEL_20:
   return v33;
 }
 
-- (BOOL)_removeLocation:(int64_t)a3 error:(id *)a4
+- (BOOL)_removeLocation:(int64_t)location error:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   v7 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v9 = [WeakRetained pathManager];
-  v10 = [v7 _urlForLocation:a3 pathManager:v9 createIfNeeded:0 error:0];
+  pathManager = [WeakRetained pathManager];
+  v10 = [v7 _urlForLocation:location pathManager:pathManager createIfNeeded:0 error:0];
 
   v16 = 0;
   v11 = [MEMORY[0x1E69BF238] removeItemAtURL:v10 error:&v16];
@@ -1117,23 +1117,23 @@ LABEL_20:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v18 = a3;
+      locationCopy = location;
       v19 = 2112;
       v20 = v12;
       _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "ComputeCacheManager: Failed to remove location %tu. Error: %@", buf, 0x16u);
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
   return v11;
 }
 
-- (BOOL)_removeComputeCacheDataForMatchingRestoreState:(int64_t)a3 error:(id *)a4
+- (BOOL)_removeComputeCacheDataForMatchingRestoreState:(int64_t)state error:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -1152,14 +1152,14 @@ LABEL_20:
   v9[4] = self;
   v9[5] = &v10;
   v9[6] = &v14;
-  v9[7] = a3;
+  v9[7] = state;
   [(PLComputeCacheManager *)self _performBlockOnRestoreStateLockAndWait:v9];
   v5 = *(v11 + 24);
   v6 = v15[5];
-  if (a4 && (v5 & 1) == 0)
+  if (error && (v5 & 1) == 0)
   {
     v6 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
   v7 = *(v11 + 24);
@@ -1268,8 +1268,8 @@ LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v5 = [WeakRetained pathManager];
-  v6 = [v3 _urlForLocation:6 pathManager:v5 createIfNeeded:0 error:0];
+  pathManager = [WeakRetained pathManager];
+  v6 = [v3 _urlForLocation:6 pathManager:pathManager createIfNeeded:0 error:0];
 
   v11 = 0;
   v7 = [v6 checkResourceIsReachableAndReturnError:&v11];
@@ -1293,8 +1293,8 @@ LABEL_14:
   v14 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v5 = [WeakRetained pathManager];
-  v6 = [v3 _urlForLocation:2 pathManager:v5 createIfNeeded:0 error:0];
+  pathManager = [WeakRetained pathManager];
+  v6 = [v3 _urlForLocation:2 pathManager:pathManager createIfNeeded:0 error:0];
 
   v11 = 0;
   v7 = [v6 checkResourceIsReachableAndReturnError:&v11];
@@ -1328,9 +1328,9 @@ void __42__PLComputeCacheManager__setRestoreState___block_invoke(uint64_t a1)
   *(v3 + 32) = v2;
 }
 
-- (int64_t)_performBlockOnRestoreStateLockAndWait:(id)a3
+- (int64_t)_performBlockOnRestoreStateLockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   os_unfair_lock_lock(&self->_restoreStateLock);
   restoreState = self->_restoreState;
   if (!restoreState)
@@ -1342,9 +1342,9 @@ void __42__PLComputeCacheManager__setRestoreState___block_invoke(uint64_t a1)
       self->_restoreState = &unk_1F0FBD5E8;
     }
 
-    v7 = [(PLComputeCacheManager *)self _hasBackupCreatedMarker];
+    _hasBackupCreatedMarker = [(PLComputeCacheManager *)self _hasBackupCreatedMarker];
     restoreState = self->_restoreState;
-    if (v7)
+    if (_hasBackupCreatedMarker)
     {
       self->_restoreState = &unk_1F0FBD600;
 
@@ -1352,24 +1352,24 @@ void __42__PLComputeCacheManager__setRestoreState___block_invoke(uint64_t a1)
     }
   }
 
-  v8 = [(NSNumber *)restoreState integerValue];
-  if (v4)
+  integerValue = [(NSNumber *)restoreState integerValue];
+  if (waitCopy)
   {
-    v4[2](v4, v8);
+    waitCopy[2](waitCopy, integerValue);
   }
 
   os_unfair_lock_unlock(&self->_restoreStateLock);
 
-  return v8;
+  return integerValue;
 }
 
-- (BOOL)_transferAndPrepareComputeCacheFromBackupToRestoreLocationWithError:(id *)a3
+- (BOOL)_transferAndPrepareComputeCacheFromBackupToRestoreLocationWithError:(id *)error
 {
   v48[1] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v6 = [WeakRetained clientSideEncryptionManager];
+  clientSideEncryptionManager = [WeakRetained clientSideEncryptionManager];
 
-  if (v6)
+  if (clientSideEncryptionManager)
   {
     v44 = 0;
     v7 = [(PLComputeCacheManager *)self _removeLocation:3 error:&v44];
@@ -1381,14 +1381,14 @@ void __42__PLComputeCacheManager__setRestoreState___block_invoke(uint64_t a1)
 
     v9 = objc_opt_class();
     v10 = objc_loadWeakRetained(&self->_lsm);
-    v11 = [v10 pathManager];
-    v12 = [v9 _urlForLocation:6 pathManager:v11 createIfNeeded:0 error:0];
+    pathManager = [v10 pathManager];
+    v12 = [v9 _urlForLocation:6 pathManager:pathManager createIfNeeded:0 error:0];
 
     v13 = objc_opt_class();
     v14 = objc_loadWeakRetained(&self->_lsm);
-    v15 = [v14 pathManager];
+    pathManager2 = [v14 pathManager];
     v43 = v8;
-    v16 = [v13 _urlForLocation:4 pathManager:v15 createIfNeeded:1 error:&v43];
+    v16 = [v13 _urlForLocation:4 pathManager:pathManager2 createIfNeeded:1 error:&v43];
     v17 = v43;
 
     if (v16)
@@ -1413,13 +1413,13 @@ void __42__PLComputeCacheManager__setRestoreState___block_invoke(uint64_t a1)
 
       v20 = objc_opt_class();
       v21 = objc_loadWeakRetained(&self->_lsm);
-      v22 = [v21 pathManager];
-      v12 = [v20 _urlForLocation:4 pathManager:v22 createIfNeeded:0 error:0];
+      pathManager3 = [v21 pathManager];
+      v12 = [v20 _urlForLocation:4 pathManager:pathManager3 createIfNeeded:0 error:0];
 
       v23 = objc_loadWeakRetained(&self->_lsm);
-      v24 = [v23 clientSideEncryptionManager];
+      clientSideEncryptionManager2 = [v23 clientSideEncryptionManager];
       v41 = v8;
-      v25 = [v24 unarchiveDirectoryAtURL:v12 error:&v41];
+      v25 = [clientSideEncryptionManager2 unarchiveDirectoryAtURL:v12 error:&v41];
       v17 = v41;
 
       if (v25)
@@ -1481,11 +1481,11 @@ LABEL_21:
 LABEL_22:
     v36 = v8;
     v27 = v36;
-    if (a3)
+    if (error)
     {
       v37 = v36;
       v28 = 0;
-      *a3 = v27;
+      *error = v27;
     }
 
     else
@@ -1503,11 +1503,11 @@ LABEL_22:
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v48 forKeys:&v47 count:1];
   v27 = [v29 errorWithDomain:v30 code:52011 userInfo:v31];
 
-  if (a3)
+  if (error)
   {
     v32 = v27;
     v28 = 0;
-    *a3 = v27;
+    *error = v27;
   }
 
   else
@@ -1520,12 +1520,12 @@ LABEL_26:
   return v28;
 }
 
-- (BOOL)_restoreComputeCacheArchiveWithProgress:(id)a3 error:(id *)a4
+- (BOOL)_restoreComputeCacheArchiveWithProgress:(id)progress error:(id *)error
 {
   v68[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(PLComputeCacheManager *)self _cachedPolicyConfiguration];
-  if (([v7 isRestoreEnabled] & 1) == 0)
+  progressCopy = progress;
+  _cachedPolicyConfiguration = [(PLComputeCacheManager *)self _cachedPolicyConfiguration];
+  if (([_cachedPolicyConfiguration isRestoreEnabled] & 1) == 0)
   {
     v19 = MEMORY[0x1E696ABC0];
     v67 = *MEMORY[0x1E696A278];
@@ -1594,15 +1594,15 @@ LABEL_9:
 
   if (v26)
   {
-    v27 = [(PLComputeCacheManager *)self _shortLivedLibrary];
+    _shortLivedLibrary = [(PLComputeCacheManager *)self _shortLivedLibrary];
     restoreCachePhotoLibrary = self->_restoreCachePhotoLibrary;
-    self->_restoreCachePhotoLibrary = v27;
+    self->_restoreCachePhotoLibrary = _shortLivedLibrary;
 
-    v51 = [(PLPhotoLibrary *)self->_restoreCachePhotoLibrary libraryID];
+    libraryID = [(PLPhotoLibrary *)self->_restoreCachePhotoLibrary libraryID];
     WeakRetained = objc_loadWeakRetained(&self->_lsm);
-    v30 = [WeakRetained pathManager];
+    pathManager = [WeakRetained pathManager];
     v31 = PLLibraryIDFromPathManager();
-    v32 = [v51 isEqual:v31];
+    v32 = [libraryID isEqual:v31];
 
     v33 = self->_restoreCachePhotoLibrary;
     if ((v32 & 1) == 0)
@@ -1620,8 +1620,8 @@ LABEL_9:
     [(PLPhotoLibrary *)v33 disableOpportunisticTasks];
     v34 = objc_opt_class();
     v35 = objc_loadWeakRetained(&self->_lsm);
-    v36 = [v35 pathManager];
-    v37 = [v34 _urlForLocation:3 pathManager:v36 createIfNeeded:0 error:0];
+    pathManager2 = [v35 pathManager];
+    v37 = [v34 _urlForLocation:3 pathManager:pathManager2 createIfNeeded:0 error:0];
 
     v38 = objc_alloc(MEMORY[0x1E695DF70]);
     v39 = +[PLComputeCacheManager restorePayloadClasses];
@@ -1643,20 +1643,20 @@ LABEL_9:
     v57 = v43;
     [v41 enumerateObjectsUsingBlock:v55];
 
-    v44 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:*(*(&buf + 1) + 24) parent:v6 pendingUnitCount:{objc_msgSend(v6, "totalUnitCount")}];
+    v44 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:*(*(&buf + 1) + 24) parent:progressCopy pendingUnitCount:{objc_msgSend(progressCopy, "totalUnitCount")}];
     v52[0] = MEMORY[0x1E69E9820];
     v52[1] = 3221225472;
     v52[2] = __71__PLComputeCacheManager__restoreComputeCacheArchiveWithProgress_error___block_invoke_2;
     v52[3] = &unk_1E756FEB0;
     v52[4] = self;
-    v45 = v6;
+    v45 = progressCopy;
     v53 = v45;
     v46 = v44;
     v54 = v46;
     [v43 enumerateObjectsUsingBlock:v52];
     [(PLPhotoLibrary *)self->_restoreCachePhotoLibrary enableOpportunisticTasks];
-    v47 = [v45 isCancelled];
-    if (v47)
+    isCancelled = [v45 isCancelled];
+    if (isCancelled)
     {
       v48 = PLMigrationGetLog();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -1666,10 +1666,10 @@ LABEL_9:
       }
 
       v49 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:41031 userInfo:0];
-      if (a4)
+      if (error)
       {
         v49 = v49;
-        *a4 = v49;
+        *error = v49;
       }
     }
 
@@ -1678,7 +1678,7 @@ LABEL_9:
     self->_restoreCachePhotoLibrary = 0;
 
     _Block_object_dispose(&buf, 8);
-    if (!v47)
+    if (!isCancelled)
     {
       v24 = 1;
       goto LABEL_18;
@@ -1686,7 +1686,7 @@ LABEL_9:
   }
 
 LABEL_13:
-  [v6 setCompletedUnitCount:{objc_msgSend(v6, "totalUnitCount")}];
+  [progressCopy setCompletedUnitCount:{objc_msgSend(progressCopy, "totalUnitCount")}];
   v22 = PLMigrationGetLog();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
@@ -1695,11 +1695,11 @@ LABEL_13:
     _os_log_impl(&dword_19BF1F000, v22, OS_LOG_TYPE_ERROR, "ComputeCacheManager: Failed to restore compute cache. Error: %@", &buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v23 = v18;
     v24 = 0;
-    *a4 = v18;
+    *error = v18;
   }
 
   else
@@ -1803,15 +1803,15 @@ void __71__PLComputeCacheManager__restoreComputeCacheArchiveWithProgress_error__
   }
 }
 
-- (BOOL)_restoreComputeCacheWithProgress:(id)a3 error:(id *)a4
+- (BOOL)_restoreComputeCacheWithProgress:(id)progress error:(id *)error
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  progressCopy = progress;
   v7 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v9 = [WeakRetained pathManager];
+  pathManager = [WeakRetained pathManager];
   v45 = 0;
-  v10 = [v7 isEnabledWithPathManager:v9 error:&v45];
+  v10 = [v7 isEnabledWithPathManager:pathManager error:&v45];
   v11 = v45;
 
   if (!v10)
@@ -1820,9 +1820,9 @@ void __71__PLComputeCacheManager__restoreComputeCacheArchiveWithProgress_error__
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = objc_loadWeakRetained(&self->_lsm);
-      v21 = [v20 pathManager];
+      pathManager2 = [v20 pathManager];
       *buf = 138412546;
-      v47 = v21;
+      v47 = pathManager2;
       v48 = 2112;
       v49 = v11;
       _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "ComputeCacheManager: : Restore not permitted for library %@. Error: %@", buf, 0x16u);
@@ -1832,12 +1832,12 @@ void __71__PLComputeCacheManager__restoreComputeCacheArchiveWithProgress_error__
     goto LABEL_10;
   }
 
-  v12 = [(PLComputeCacheManager *)self _restoreState];
-  if (v12 > 1)
+  _restoreState = [(PLComputeCacheManager *)self _restoreState];
+  if (_restoreState > 1)
   {
-    if (v12 != 2)
+    if (_restoreState != 2)
     {
-      if (v12 == 3)
+      if (_restoreState == 3)
       {
         v32 = MEMORY[0x1E696ABC0];
         v33 = *MEMORY[0x1E69BFF48];
@@ -1862,9 +1862,9 @@ void __71__PLComputeCacheManager__restoreComputeCacheArchiveWithProgress_error__
     }
 
     [(PLComputeCacheManager *)self _setRestoreState:3];
-    if (v6)
+    if (progressCopy)
     {
-      v19 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1 parent:v6 pendingUnitCount:{objc_msgSend(v6, "totalUnitCount")}];
+      v19 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1 parent:progressCopy pendingUnitCount:{objc_msgSend(progressCopy, "totalUnitCount")}];
     }
 
     else
@@ -1896,9 +1896,9 @@ LABEL_10:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
         v27 = objc_loadWeakRetained(&self->_lsm);
-        v28 = [v27 pathManager];
+        pathManager3 = [v27 pathManager];
         *buf = 138412546;
-        v47 = v28;
+        v47 = pathManager3;
         v48 = 2112;
         v49 = v25;
         _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_ERROR, "ComputeCacheManager: : Cleanup restore data error for library %@. Error: %@", buf, 0x16u);
@@ -1910,7 +1910,7 @@ LABEL_10:
     v29 = v11;
     if (!v22)
     {
-      if (!a4)
+      if (!error)
       {
 LABEL_30:
         v31 = 0;
@@ -1925,9 +1925,9 @@ LABEL_25:
     goto LABEL_31;
   }
 
-  if (v12)
+  if (_restoreState)
   {
-    if (v12 == 1)
+    if (_restoreState == 1)
     {
       v13 = MEMORY[0x1E696ABC0];
       v14 = *MEMORY[0x1E69BFF48];
@@ -1980,7 +1980,7 @@ LABEL_28:
 LABEL_29:
 
   v29 = v16;
-  if (!a4)
+  if (!error)
   {
     goto LABEL_30;
   }
@@ -1988,15 +1988,15 @@ LABEL_29:
 LABEL_18:
   v30 = v29;
   v31 = 0;
-  *a4 = v29;
+  *error = v29;
 LABEL_31:
 
   return v31;
 }
 
-- (BOOL)restoreComputeCacheWithProgress:(id)a3 error:(id *)a4
+- (BOOL)restoreComputeCacheWithProgress:(id)progress error:(id *)error
 {
-  v6 = a3;
+  progressCopy = progress;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -2014,16 +2014,16 @@ LABEL_31:
   v13[3] = &unk_1E7578898;
   v15 = &v23;
   v13[4] = self;
-  v8 = v6;
+  v8 = progressCopy;
   v14 = v8;
   v16 = &v17;
   dispatch_sync(queue, v13);
   v9 = *(v24 + 24);
   v10 = v18[5];
-  if (a4 && (v9 & 1) == 0)
+  if (error && (v9 & 1) == 0)
   {
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v11 = *(v24 + 24);
@@ -2044,14 +2044,14 @@ void __63__PLComputeCacheManager_restoreComputeCacheWithProgress_error___block_i
   *(*(a1[6] + 8) + 24) = v5;
 }
 
-- (BOOL)_addBackupCreatedMarkerWithError:(id *)a3
+- (BOOL)_addBackupCreatedMarkerWithError:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v7 = [WeakRetained pathManager];
+  pathManager = [WeakRetained pathManager];
   v17 = 0;
-  v8 = [v5 _urlForLocation:2 pathManager:v7 createIfNeeded:1 error:&v17];
+  v8 = [v5 _urlForLocation:2 pathManager:pathManager createIfNeeded:1 error:&v17];
   v9 = v17;
 
   if (v8)
@@ -2080,11 +2080,11 @@ void __63__PLComputeCacheManager_restoreComputeCacheWithProgress_error___block_i
     _os_log_impl(&dword_19BF1F000, v13, OS_LOG_TYPE_ERROR, "ComputeCacheManager: Failed to create marker. Error: %@", buf, 0xCu);
   }
 
-  if (a3)
+  if (error)
   {
     v14 = v11;
     v12 = 0;
-    *a3 = v11;
+    *error = v11;
   }
 
   else
@@ -2097,14 +2097,14 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)_transferToBackupLocationWithError:(id *)a3
+- (BOOL)_transferToBackupLocationWithError:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v7 = [WeakRetained pathManager];
+  pathManager = [WeakRetained pathManager];
   v29 = 0;
-  v8 = [v5 _urlForLocation:5 pathManager:v7 createIfNeeded:1 error:&v29];
+  v8 = [v5 _urlForLocation:5 pathManager:pathManager createIfNeeded:1 error:&v29];
   v9 = v29;
 
   if (v8)
@@ -2117,20 +2117,20 @@ LABEL_10:
     {
       v12 = objc_opt_class();
       v13 = objc_loadWeakRetained(&self->_lsm);
-      v14 = [v13 pathManager];
-      v15 = [v12 _urlForLocation:6 pathManager:v14 createIfNeeded:0 error:0];
+      pathManager2 = [v13 pathManager];
+      v15 = [v12 _urlForLocation:6 pathManager:pathManager2 createIfNeeded:0 error:0];
 
       v16 = objc_opt_class();
       v17 = objc_loadWeakRetained(&self->_lsm);
-      v18 = [v17 pathManager];
-      v19 = [v16 _urlForLocation:1 pathManager:v18 createIfNeeded:0 error:0];
+      pathManager3 = [v17 pathManager];
+      v19 = [v16 _urlForLocation:1 pathManager:pathManager3 createIfNeeded:0 error:0];
 
-      v20 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v27 = v11;
-      LOBYTE(v18) = [v20 moveItemAtURL:v19 toURL:v15 error:&v27];
+      LOBYTE(pathManager3) = [defaultManager moveItemAtURL:v19 toURL:v15 error:&v27];
       v9 = v27;
 
-      if (v18)
+      if (pathManager3)
       {
 
         v21 = v9;
@@ -2163,11 +2163,11 @@ LABEL_10:
 
   v24 = v9;
   v21 = v24;
-  if (a3)
+  if (error)
   {
     v25 = v24;
     v22 = 0;
-    *a3 = v21;
+    *error = v21;
   }
 
   else
@@ -2180,7 +2180,7 @@ LABEL_15:
   return v22;
 }
 
-- (BOOL)_archiveSnapshotWithError:(id *)a3
+- (BOOL)_archiveSnapshotWithError:(id *)error
 {
   v15 = 0;
   v5 = [(PLComputeCacheManager *)self _archivePrepareDirectoryWithError:&v15];
@@ -2205,11 +2205,11 @@ LABEL_15:
     v10 = v6;
   }
 
-  if (a3)
+  if (error)
   {
     v12 = v10;
     v11 = 0;
-    *a3 = v10;
+    *error = v10;
   }
 
   else
@@ -2222,7 +2222,7 @@ LABEL_8:
   return v11;
 }
 
-- (BOOL)_hasPrepareDataToBackupWithError:(id *)a3
+- (BOOL)_hasPrepareDataToBackupWithError:(id *)error
 {
   v22[1] = *MEMORY[0x1E69E9840];
   v15 = 0;
@@ -2259,10 +2259,10 @@ LABEL_8:
     v9 = *(v16 + 24);
     v10 = v7;
     v4 = v10;
-    if (a3 && (v9 & 1) == 0)
+    if (error && (v9 & 1) == 0)
     {
       v11 = v10;
-      *a3 = v4;
+      *error = v4;
     }
   }
 
@@ -2278,18 +2278,18 @@ uint64_t __58__PLComputeCacheManager__hasPrepareDataToBackupWithError___block_in
   return result;
 }
 
-- (BOOL)_archiveSnapshotIfNecessaryWithError:(id *)a3
+- (BOOL)_archiveSnapshotIfNecessaryWithError:(id *)error
 {
-  v5 = [(PLComputeCacheManager *)self _hasPrepareDataToBackupWithError:?]&& [(PLComputeCacheManager *)self _archiveSnapshotWithError:a3]&& [(PLComputeCacheManager *)self _transferToBackupLocationWithError:a3];
+  v5 = [(PLComputeCacheManager *)self _hasPrepareDataToBackupWithError:?]&& [(PLComputeCacheManager *)self _archiveSnapshotWithError:error]&& [(PLComputeCacheManager *)self _transferToBackupLocationWithError:error];
   [(PLComputeCacheManager *)self _resetRestoreState];
   return v5;
 }
 
-- (BOOL)_createArchiveWithError:(id *)a3
+- (BOOL)_createArchiveWithError:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v5 = [(PLComputeCacheManager *)self _restoreState];
-  if (v5 < 2)
+  _restoreState = [(PLComputeCacheManager *)self _restoreState];
+  if (_restoreState < 2)
   {
     v16 = 0;
     v11 = [(PLComputeCacheManager *)self _archiveSnapshotIfNecessaryWithError:&v16];
@@ -2303,7 +2303,7 @@ uint64_t __58__PLComputeCacheManager__hasPrepareDataToBackupWithError___block_in
 
   else
   {
-    if (v5 - 2 > 1)
+    if (_restoreState - 2 > 1)
     {
       v9 = 0;
     }
@@ -2329,11 +2329,11 @@ uint64_t __58__PLComputeCacheManager__hasPrepareDataToBackupWithError___block_in
     v12 = v9;
   }
 
-  if (a3)
+  if (error)
   {
     v14 = v12;
     v13 = 0;
-    *a3 = v12;
+    *error = v12;
   }
 
   else
@@ -2346,7 +2346,7 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)createArchiveWithError:(id *)a3
+- (BOOL)createArchiveWithError:(id *)error
 {
   v7 = 0;
   v8 = &v7;
@@ -2359,7 +2359,7 @@ LABEL_13:
   block[3] = &unk_1E7576208;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = error;
   dispatch_sync(queue, block);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -2373,23 +2373,23 @@ uint64_t __48__PLComputeCacheManager_createArchiveWithError___block_invoke(uint6
   return result;
 }
 
-- (void)coalesceJournalsForPayloadClassIDs:(id)a3 withChangeJournalOverThreshold:(float)a4 completionHandler:(id)a5
+- (void)coalesceJournalsForPayloadClassIDs:(id)ds withChangeJournalOverThreshold:(float)threshold completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5, a4);
+    (*(handler + 2))(handler, threshold);
   }
 }
 
 - (id)_snapshotPolicy
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = [(PLComputeCacheManager *)self _shortLivedLibrary];
-  if (v3)
+  _shortLivedLibrary = [(PLComputeCacheManager *)self _shortLivedLibrary];
+  if (_shortLivedLibrary)
   {
-    v4 = [[PLComputeCachePolicyDataSource alloc] initWithPhotoLibrary:v3 restoreState:[(PLComputeCacheManager *)self _restoreState]];
-    v5 = [(PLComputeCacheManager *)self _cachedPolicyConfiguration];
-    v6 = [[PLComputeCachePolicy alloc] initWithPolicyData:v4 configuration:v5];
+    v4 = [[PLComputeCachePolicyDataSource alloc] initWithPhotoLibrary:_shortLivedLibrary restoreState:[(PLComputeCacheManager *)self _restoreState]];
+    _cachedPolicyConfiguration = [(PLComputeCacheManager *)self _cachedPolicyConfiguration];
+    v6 = [[PLComputeCachePolicy alloc] initWithPolicyData:v4 configuration:_cachedPolicyConfiguration];
   }
 
   else
@@ -2409,7 +2409,7 @@ uint64_t __48__PLComputeCacheManager_createArchiveWithError___block_invoke(uint6
   return v6;
 }
 
-- (BOOL)_performSnapshotWithError:(id *)a3
+- (BOOL)_performSnapshotWithError:(id *)error
 {
   v8 = 0;
   v9 = &v8;
@@ -2422,12 +2422,12 @@ uint64_t __48__PLComputeCacheManager_createArchiveWithError___block_invoke(uint6
   v7[3] = &unk_1E7576208;
   v7[4] = self;
   v7[5] = &v8;
-  v7[6] = a3;
+  v7[6] = error;
   [v5 sync:v7 identifyingBlock:0 library:0];
 
-  LOBYTE(a3) = *(v9 + 24);
+  LOBYTE(error) = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
-  return a3;
+  return error;
 }
 
 void __51__PLComputeCacheManager__performSnapshotWithError___block_invoke(void *a1)
@@ -2456,13 +2456,13 @@ uint64_t __51__PLComputeCacheManager__performSnapshotWithError___block_invoke_2(
   return v4;
 }
 
-- (BOOL)_snapshotJournalsWithError:(id *)a3
+- (BOOL)_snapshotJournalsWithError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_class();
   WeakRetained = objc_loadWeakRetained(&self->_lsm);
-  v7 = [WeakRetained pathManager];
-  v8 = [v5 isEnabledWithPathManager:v7 error:0];
+  pathManager = [WeakRetained pathManager];
+  v8 = [v5 isEnabledWithPathManager:pathManager error:0];
 
   v9 = PLMigrationGetLog();
   v10 = v9;
@@ -2471,9 +2471,9 @@ uint64_t __51__PLComputeCacheManager__performSnapshotWithError___block_invoke_2(
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v20 = objc_loadWeakRetained(&self->_lsm);
-      v21 = [v20 pathManager];
+      pathManager2 = [v20 pathManager];
       *buf = 138412290;
-      v25 = v21;
+      v25 = pathManager2;
       _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_ERROR, "ComputeCacheManager: Snapshot disabled for library: %@", buf, 0xCu);
     }
 
@@ -2484,9 +2484,9 @@ uint64_t __51__PLComputeCacheManager__performSnapshotWithError___block_invoke_2(
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v11 = objc_loadWeakRetained(&self->_lsm);
-    v12 = [v11 pathManager];
+    pathManager3 = [v11 pathManager];
     *buf = 138412290;
-    v25 = v12;
+    v25 = pathManager3;
     _os_log_impl(&dword_19BF1F000, v10, OS_LOG_TYPE_INFO, "ComputeCacheManager: Performing snapshot for library: %@", buf, 0xCu);
   }
 
@@ -2504,19 +2504,19 @@ LABEL_12:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     v16 = objc_loadWeakRetained(&self->_lsm);
-    v17 = [v16 pathManager];
+    pathManager4 = [v16 pathManager];
     *buf = 138412546;
-    v25 = v17;
+    v25 = pathManager4;
     v26 = 2112;
     v27 = v14;
     _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_ERROR, "ComputeCacheManager: : Snapshot failed for library %@. Error: %@", buf, 0x16u);
   }
 
-  if (a3)
+  if (error)
   {
     v18 = v14;
     v19 = 0;
-    *a3 = v14;
+    *error = v14;
   }
 
   else
@@ -2530,17 +2530,17 @@ LABEL_13:
   return v19;
 }
 
-- (void)snapshotJournalsForPayloadClassIDs:(id)a3 withCompletionHandler:(id)a4
+- (void)snapshotJournalsForPayloadClassIDs:(id)ds withCompletionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__PLComputeCacheManager_snapshotJournalsForPayloadClassIDs_withCompletionHandler___block_invoke;
   v8[3] = &unk_1E7577C08;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(queue, v8);
 }
 
@@ -2557,7 +2557,7 @@ void __82__PLComputeCacheManager_snapshotJournalsForPayloadClassIDs_withCompleti
   }
 }
 
-- (BOOL)snapshotJournalsForPayloadClassIDs:(id)a3 error:(id *)a4
+- (BOOL)snapshotJournalsForPayloadClassIDs:(id)ds error:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -2580,10 +2580,10 @@ void __82__PLComputeCacheManager_snapshotJournalsForPayloadClassIDs_withCompleti
   dispatch_sync(queue, block);
   v6 = *(v18 + 24);
   v7 = v12[5];
-  if (a4 && (v6 & 1) == 0)
+  if (error && (v6 & 1) == 0)
   {
     v7 = v7;
-    *a4 = v7;
+    *error = v7;
   }
 
   v8 = *(v18 + 24);
@@ -2603,7 +2603,7 @@ void __66__PLComputeCacheManager_snapshotJournalsForPayloadClassIDs_error___bloc
   *(*(a1[5] + 8) + 24) = v4;
 }
 
-- (BOOL)snapshotComputeCacheAndBackupIfNeededWithError:(id *)a3
+- (BOOL)snapshotComputeCacheAndBackupIfNeededWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -2626,10 +2626,10 @@ void __66__PLComputeCacheManager_snapshotJournalsForPayloadClassIDs_error___bloc
   dispatch_sync(queue, block);
   v5 = *(v17 + 24);
   v6 = v11[5];
-  if (a3 && (v5 & 1) == 0)
+  if (error && (v5 & 1) == 0)
   {
     v6 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   v7 = *(v17 + 24);
@@ -2781,7 +2781,7 @@ LABEL_20:
 LABEL_21:
 }
 
-- (BOOL)resetComputeCacheWithError:(id *)a3
+- (BOOL)resetComputeCacheWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -2804,10 +2804,10 @@ LABEL_21:
   dispatch_sync(queue, block);
   v5 = *(v17 + 24);
   v6 = v11[5];
-  if (a3 && (v5 & 1) == 0)
+  if (error && (v5 & 1) == 0)
   {
     v6 = v6;
-    *a3 = v6;
+    *error = v6;
   }
 
   v7 = *(v17 + 24);
@@ -2878,19 +2878,19 @@ uint64_t __52__PLComputeCacheManager_resetComputeCacheWithError___block_invoke(u
   return v3;
 }
 
-- (BOOL)_isInitialSyncWithInitialSyncDate:(id)a3
+- (BOOL)_isInitialSyncWithInitialSyncDate:(id)date
 {
   v12 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  dateCopy = date;
+  v4 = dateCopy;
+  if (!dateCopy)
   {
 LABEL_7:
     v7 = 0;
     goto LABEL_8;
   }
 
-  [v3 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v6 = v5;
   if (v5 >= 0.0)
   {
@@ -2911,23 +2911,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)notifyCPLConfiguration:(id)a3
+- (void)notifyCPLConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__PLComputeCacheManager_notifyCPLConfiguration___block_invoke;
   v7[3] = &unk_1E7578848;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)notifyReadyToRestoreWithInitialSyncDate:(id)a3
+- (void)notifyReadyToRestoreWithInitialSyncDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if (MEMORY[0x19EAEE230]() && ([MEMORY[0x1E695E000] standardUserDefaults], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "BOOLForKey:", @"PLDisableAutoComputeCacheRestore"), v5, v6))
   {
     v7 = PLMigrationGetLog();
@@ -2940,7 +2940,7 @@ LABEL_8:
 
   else
   {
-    v8 = [(PLComputeCacheManager *)self _isInitialSyncWithInitialSyncDate:v4];
+    v8 = [(PLComputeCacheManager *)self _isInitialSyncWithInitialSyncDate:dateCopy];
     queue = self->_queue;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -3087,13 +3087,13 @@ void __65__PLComputeCacheManager_notifyReadyToRestoreWithInitialSyncDate___block
   [(PLCoreAnalyticsEventManager *)coreAnalyticsManager removeEventWithName:v4];
 }
 
-- (PLComputeCacheManager)initWithLibraryServicesManager:(id)a3
+- (PLComputeCacheManager)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
-  if (!v5)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"PLComputeCacheManager.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"lsm"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLComputeCacheManager.m" lineNumber:231 description:{@"Invalid parameter not satisfying: %@", @"lsm"}];
   }
 
   v19.receiver = self;
@@ -3101,7 +3101,7 @@ void __65__PLComputeCacheManager_notifyReadyToRestoreWithInitialSyncDate___block
   v6 = [(PLComputeCacheManager *)&v19 init];
   if (v6)
   {
-    v7 = [PLJournalManager journalManagerWithClass:objc_opt_class() libraryServiceManager:v5];
+    v7 = [PLJournalManager journalManagerWithClass:objc_opt_class() libraryServiceManager:managerCopy];
     journalManager = v6->_journalManager;
     v6->_journalManager = v7;
 
@@ -3109,12 +3109,12 @@ void __65__PLComputeCacheManager_notifyReadyToRestoreWithInitialSyncDate___block
     coreAnalyticsManager = v6->_coreAnalyticsManager;
     v6->_coreAnalyticsManager = v9;
 
-    objc_storeWeak(&v6->_lsm, v5);
+    objc_storeWeak(&v6->_lsm, managerCopy);
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.%s.%@.queue", "assetsd", objc_opt_class()];
-    v12 = [v11 UTF8String];
+    uTF8String = [v11 UTF8String];
     v13 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v14 = dispatch_queue_attr_make_with_qos_class(v13, QOS_CLASS_BACKGROUND, 0);
-    v15 = dispatch_queue_create(v12, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
     queue = v6->_queue;
     v6->_queue = v15;
 
@@ -3125,54 +3125,54 @@ void __65__PLComputeCacheManager_notifyReadyToRestoreWithInitialSyncDate___block
   return v6;
 }
 
-+ (id)_urlForLocation:(int64_t)a3 pathManager:(id)a4 createIfNeeded:(BOOL)a5 error:(id *)a6
++ (id)_urlForLocation:(int64_t)location pathManager:(id)manager createIfNeeded:(BOOL)needed error:(id *)error
 {
-  v7 = a5;
+  neededCopy = needed;
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = v9;
-  if (v7)
+  managerCopy = manager;
+  v10 = managerCopy;
+  if (neededCopy)
   {
-    [v9 privateCacheDirectoryCreationMaskResetWithSubType:15];
+    [managerCopy privateCacheDirectoryCreationMaskResetWithSubType:15];
     [v10 privateDirectoryCreationMaskResetWithSubType:10];
   }
 
   v11 = 0;
   v12 = 1;
-  if (a3 > 2)
+  if (location > 2)
   {
-    if (a3 > 4)
+    if (location > 4)
     {
-      if (a3 != 5)
+      if (location != 5)
       {
-        if (a3 != 6)
+        if (location != 6)
         {
           goto LABEL_18;
         }
 
         v22 = 0;
-        v13 = [v10 privateDirectoryWithSubType:10 createIfNeeded:v7 error:&v22];
+        v13 = [v10 privateDirectoryWithSubType:10 createIfNeeded:neededCopy error:&v22];
         v14 = v22;
         goto LABEL_26;
       }
 
       v23 = 0;
-      v11 = [v10 privateDirectoryWithSubType:10 createIfNeeded:v7 error:&v23];
+      v11 = [v10 privateDirectoryWithSubType:10 createIfNeeded:neededCopy error:&v23];
       v17 = v23;
     }
 
     else
     {
-      if (a3 != 3)
+      if (location != 3)
       {
         v24 = 0;
-        v13 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"restore" createIfNeeded:v7 error:&v24];
+        v13 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"restore" createIfNeeded:neededCopy error:&v24];
         v14 = v24;
         goto LABEL_26;
       }
 
       v25 = 0;
-      v11 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"restore" createIfNeeded:v7 error:&v25];
+      v11 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"restore" createIfNeeded:neededCopy error:&v25];
       v17 = v25;
     }
 
@@ -3186,30 +3186,30 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!location)
   {
     v28 = 0;
-    v11 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"prepare" createIfNeeded:v7 error:&v28];
+    v11 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"prepare" createIfNeeded:neededCopy error:&v28];
     v17 = v28;
     goto LABEL_17;
   }
 
-  if (a3 != 1)
+  if (location != 1)
   {
-    if (a3 != 2)
+    if (location != 2)
     {
       goto LABEL_18;
     }
 
     v26 = 0;
-    v13 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"prepare" createIfNeeded:v7 error:&v26];
+    v13 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"prepare" createIfNeeded:neededCopy error:&v26];
     v15 = v26;
     v16 = @"backupcreatedmarker";
     goto LABEL_27;
   }
 
   v27 = 0;
-  v13 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"prepare" createIfNeeded:v7 error:&v27];
+  v13 = [v10 privateCacheDirectoryWithSubType:15 leafType:1 additionalPathComponents:@"prepare" createIfNeeded:neededCopy error:&v27];
   v14 = v27;
 LABEL_26:
   v15 = v14;
@@ -3225,14 +3225,14 @@ LABEL_28:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v30 = a3;
+      locationCopy = location;
       v31 = 2112;
       v32 = v15;
       _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "ComputeCacheManager: Failed to create location %tu compute cache data. Error: %@", buf, 0x16u);
     }
 
     v18 = v15;
-    if (!a6)
+    if (!error)
     {
       goto LABEL_21;
     }
@@ -3247,11 +3247,11 @@ LABEL_18:
     goto LABEL_22;
   }
 
-  if (a6)
+  if (error)
   {
 LABEL_20:
     v19 = v18;
-    *a6 = v18;
+    *error = v18;
   }
 
 LABEL_21:
@@ -3262,13 +3262,13 @@ LABEL_22:
   return v18;
 }
 
-+ (BOOL)shouldPublishAnalyticsForRestoreError:(id)a3
++ (BOOL)shouldPublishAnalyticsForRestoreError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:*MEMORY[0x1E69BFF48]];
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v5 = [domain isEqualToString:*MEMORY[0x1E69BFF48]];
 
-  if (!v5 || ((v6 = [v3 code], v7 = 0, (v6 - 52001) > 6) || ((1 << (v6 - 33)) & 0x59) == 0) && v6 != 45999)
+  if (!v5 || ((v6 = [errorCopy code], v7 = 0, (v6 - 52001) > 6) || ((1 << (v6 - 33)) & 0x59) == 0) && v6 != 45999)
   {
     v7 = 1;
   }
@@ -3276,19 +3276,19 @@ LABEL_22:
   return v7;
 }
 
-+ (BOOL)isEnabledWithPathManager:(id)a3 error:(id *)a4
++ (BOOL)isEnabledWithPathManager:(id)manager error:(id *)error
 {
   v32[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if (!v7)
+  managerCopy = manager;
+  if (!managerCopy)
   {
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:a1 file:@"PLComputeCacheManager.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLComputeCacheManager.m" lineNumber:168 description:{@"Invalid parameter not satisfying: %@", @"pathManager"}];
   }
 
   v8 = MEMORY[0x1E69BF2A0];
-  v9 = [v7 libraryURL];
-  v10 = [v8 wellKnownPhotoLibraryIdentifierForURL:v9];
+  libraryURL = [managerCopy libraryURL];
+  v10 = [v8 wellKnownPhotoLibraryIdentifierForURL:libraryURL];
 
   if (v10 - 2 < 2)
   {
@@ -3310,7 +3310,7 @@ LABEL_22:
 
   else
   {
-    if (v10 > 1 || ([v7 libraryURL], v11 = objc_claimAutoreleasedReturnValue(), v12 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(v11), v11, (v12 & 1) != 0))
+    if (v10 > 1 || ([managerCopy libraryURL], v11 = objc_claimAutoreleasedReturnValue(), v12 = PLIsCloudPhotoLibraryEnabledForPhotoLibraryURL(v11), v11, (v12 & 1) != 0))
     {
       v13 = 1;
       goto LABEL_16;
@@ -3337,10 +3337,10 @@ LABEL_22:
 
   v23 = v22;
   v24 = v23;
-  if (a4)
+  if (error)
   {
     v25 = v23;
-    *a4 = v24;
+    *error = v24;
   }
 
   v13 = 0;
@@ -3360,13 +3360,13 @@ LABEL_16:
   return v2;
 }
 
-+ (id)baseURLFromPathManager:(id)a3
++ (id)baseURLFromPathManager:(id)manager
 {
   v10 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (manager)
   {
     v7 = 0;
-    v3 = [a1 _urlForLocation:0 pathManager:a3 createIfNeeded:1 error:&v7];
+    v3 = [self _urlForLocation:0 pathManager:manager createIfNeeded:1 error:&v7];
     v4 = v7;
     if (v4)
     {

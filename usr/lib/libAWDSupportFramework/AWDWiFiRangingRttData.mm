@@ -1,33 +1,33 @@
 @interface AWDWiFiRangingRttData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasChannel:(BOOL)a3;
-- (void)setHasCoreId:(BOOL)a3;
-- (void)setHasFlags:(BOOL)a3;
-- (void)setHasLosPeakRatio:(BOOL)a3;
-- (void)setHasPeerBitErrorRate:(BOOL)a3;
-- (void)setHasPeerCoreId:(BOOL)a3;
-- (void)setHasPeerLosPeakRatio:(BOOL)a3;
-- (void)setHasPeerPhyError:(BOOL)a3;
-- (void)setHasPeerSnr:(BOOL)a3;
-- (void)setHasPhyError:(BOOL)a3;
-- (void)setHasRssi:(BOOL)a3;
-- (void)setHasRtt:(BOOL)a3;
-- (void)setHasSnr:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasChannel:(BOOL)channel;
+- (void)setHasCoreId:(BOOL)id;
+- (void)setHasFlags:(BOOL)flags;
+- (void)setHasLosPeakRatio:(BOOL)ratio;
+- (void)setHasPeerBitErrorRate:(BOOL)rate;
+- (void)setHasPeerCoreId:(BOOL)id;
+- (void)setHasPeerLosPeakRatio:(BOOL)ratio;
+- (void)setHasPeerPhyError:(BOOL)error;
+- (void)setHasPeerSnr:(BOOL)snr;
+- (void)setHasPhyError:(BOOL)error;
+- (void)setHasRssi:(BOOL)rssi;
+- (void)setHasRtt:(BOOL)rtt;
+- (void)setHasSnr:(BOOL)snr;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiRangingRttData
 
-- (void)setHasFlags:(BOOL)a3
+- (void)setHasFlags:(BOOL)flags
 {
-  if (a3)
+  if (flags)
   {
     v3 = 8;
   }
@@ -40,9 +40,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasRtt:(BOOL)a3
+- (void)setHasRtt:(BOOL)rtt
 {
-  if (a3)
+  if (rtt)
   {
     v3 = 4096;
   }
@@ -55,9 +55,9 @@
   *&self->_has = *&self->_has & 0xEFFF | v3;
 }
 
-- (void)setHasRssi:(BOOL)a3
+- (void)setHasRssi:(BOOL)rssi
 {
-  if (a3)
+  if (rssi)
   {
     v3 = 2048;
   }
@@ -70,9 +70,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasSnr:(BOOL)a3
+- (void)setHasSnr:(BOOL)snr
 {
-  if (a3)
+  if (snr)
   {
     v3 = 0x2000;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xDFFF | v3;
 }
 
-- (void)setHasCoreId:(BOOL)a3
+- (void)setHasCoreId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 4;
   }
@@ -100,9 +100,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasLosPeakRatio:(BOOL)a3
+- (void)setHasLosPeakRatio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 16;
   }
@@ -115,9 +115,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasPhyError:(BOOL)a3
+- (void)setHasPhyError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 1024;
   }
@@ -130,9 +130,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 0x4000;
   }
@@ -145,9 +145,9 @@
   *&self->_has = *&self->_has & 0xBFFF | v3;
 }
 
-- (void)setHasPeerSnr:(BOOL)a3
+- (void)setHasPeerSnr:(BOOL)snr
 {
-  if (a3)
+  if (snr)
   {
     v3 = 512;
   }
@@ -160,9 +160,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasPeerLosPeakRatio:(BOOL)a3
+- (void)setHasPeerLosPeakRatio:(BOOL)ratio
 {
-  if (a3)
+  if (ratio)
   {
     v3 = 128;
   }
@@ -175,9 +175,9 @@
   *&self->_has = *&self->_has & 0xFF7F | v3;
 }
 
-- (void)setHasPeerCoreId:(BOOL)a3
+- (void)setHasPeerCoreId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 64;
   }
@@ -190,9 +190,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasPeerBitErrorRate:(BOOL)a3
+- (void)setHasPeerBitErrorRate:(BOOL)rate
 {
-  if (a3)
+  if (rate)
   {
     v3 = 32;
   }
@@ -205,9 +205,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasPeerPhyError:(BOOL)a3
+- (void)setHasPeerPhyError:(BOOL)error
 {
-  if (a3)
+  if (error)
   {
     v3 = 256;
   }
@@ -220,9 +220,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasChannel:(BOOL)a3
+- (void)setHasChannel:(BOOL)channel
 {
-  if (a3)
+  if (channel)
   {
     v3 = 2;
   }
@@ -244,11 +244,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_flags), @"flags"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_flags), @"flags"}];
     has = self->_has;
     if ((has & 0x1000) == 0)
     {
@@ -267,7 +267,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rtt), @"rtt"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_rtt), @"rtt"}];
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -281,7 +281,7 @@ LABEL_4:
   }
 
 LABEL_20:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_rssi), @"rssi"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithInt:", self->_rssi), @"rssi"}];
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -295,7 +295,7 @@ LABEL_5:
   }
 
 LABEL_21:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_snr), @"snr"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_snr), @"snr"}];
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -309,7 +309,7 @@ LABEL_6:
   }
 
 LABEL_22:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreId), @"coreId"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_coreId), @"coreId"}];
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -323,7 +323,7 @@ LABEL_7:
   }
 
 LABEL_23:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_losPeakRatio), @"losPeakRatio"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_losPeakRatio), @"losPeakRatio"}];
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -337,7 +337,7 @@ LABEL_8:
   }
 
 LABEL_24:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bitErrorRate), @"bitErrorRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_bitErrorRate), @"bitErrorRate"}];
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -351,7 +351,7 @@ LABEL_9:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_phyError), @"phyError"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_phyError), @"phyError"}];
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -365,7 +365,7 @@ LABEL_10:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_status), @"status"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_status), @"status"}];
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -379,7 +379,7 @@ LABEL_11:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerSnr), @"peerSnr"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerSnr), @"peerSnr"}];
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -393,7 +393,7 @@ LABEL_12:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerLosPeakRatio), @"peerLosPeakRatio"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerLosPeakRatio), @"peerLosPeakRatio"}];
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -407,7 +407,7 @@ LABEL_13:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerCoreId), @"peerCoreId"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerCoreId), @"peerCoreId"}];
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -418,17 +418,17 @@ LABEL_14:
     }
 
 LABEL_31:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerPhyError), @"peerPhyError"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerPhyError), @"peerPhyError"}];
     if ((*&self->_has & 2) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_16;
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerBitErrorRate), @"peerBitErrorRate"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_peerBitErrorRate), @"peerBitErrorRate"}];
   has = self->_has;
   if ((has & 0x100) != 0)
   {
@@ -439,13 +439,13 @@ LABEL_15:
   if ((has & 2) != 0)
   {
 LABEL_16:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channel), @"channel"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_channel), @"channel"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
@@ -663,13 +663,13 @@ LABEL_31:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 5) = self->_flags;
-    *(a3 + 34) |= 8u;
+    *(to + 5) = self->_flags;
+    *(to + 34) |= 8u;
     has = self->_has;
     if ((has & 0x1000) == 0)
     {
@@ -688,8 +688,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 14) = self->_rtt;
-  *(a3 + 34) |= 0x1000u;
+  *(to + 14) = self->_rtt;
+  *(to + 34) |= 0x1000u;
   has = self->_has;
   if ((has & 0x800) == 0)
   {
@@ -703,8 +703,8 @@ LABEL_4:
   }
 
 LABEL_19:
-  *(a3 + 13) = self->_rssi;
-  *(a3 + 34) |= 0x800u;
+  *(to + 13) = self->_rssi;
+  *(to + 34) |= 0x800u;
   has = self->_has;
   if ((has & 0x2000) == 0)
   {
@@ -718,8 +718,8 @@ LABEL_5:
   }
 
 LABEL_20:
-  *(a3 + 15) = self->_snr;
-  *(a3 + 34) |= 0x2000u;
+  *(to + 15) = self->_snr;
+  *(to + 34) |= 0x2000u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -733,8 +733,8 @@ LABEL_6:
   }
 
 LABEL_21:
-  *(a3 + 4) = self->_coreId;
-  *(a3 + 34) |= 4u;
+  *(to + 4) = self->_coreId;
+  *(to + 34) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -748,8 +748,8 @@ LABEL_7:
   }
 
 LABEL_22:
-  *(a3 + 6) = self->_losPeakRatio;
-  *(a3 + 34) |= 0x10u;
+  *(to + 6) = self->_losPeakRatio;
+  *(to + 34) |= 0x10u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -763,8 +763,8 @@ LABEL_8:
   }
 
 LABEL_23:
-  *(a3 + 2) = self->_bitErrorRate;
-  *(a3 + 34) |= 1u;
+  *(to + 2) = self->_bitErrorRate;
+  *(to + 34) |= 1u;
   has = self->_has;
   if ((has & 0x400) == 0)
   {
@@ -778,8 +778,8 @@ LABEL_9:
   }
 
 LABEL_24:
-  *(a3 + 12) = self->_phyError;
-  *(a3 + 34) |= 0x400u;
+  *(to + 12) = self->_phyError;
+  *(to + 34) |= 0x400u;
   has = self->_has;
   if ((has & 0x4000) == 0)
   {
@@ -793,8 +793,8 @@ LABEL_10:
   }
 
 LABEL_25:
-  *(a3 + 16) = self->_status;
-  *(a3 + 34) |= 0x4000u;
+  *(to + 16) = self->_status;
+  *(to + 34) |= 0x4000u;
   has = self->_has;
   if ((has & 0x200) == 0)
   {
@@ -808,8 +808,8 @@ LABEL_11:
   }
 
 LABEL_26:
-  *(a3 + 11) = self->_peerSnr;
-  *(a3 + 34) |= 0x200u;
+  *(to + 11) = self->_peerSnr;
+  *(to + 34) |= 0x200u;
   has = self->_has;
   if ((has & 0x80) == 0)
   {
@@ -823,8 +823,8 @@ LABEL_12:
   }
 
 LABEL_27:
-  *(a3 + 9) = self->_peerLosPeakRatio;
-  *(a3 + 34) |= 0x80u;
+  *(to + 9) = self->_peerLosPeakRatio;
+  *(to + 34) |= 0x80u;
   has = self->_has;
   if ((has & 0x40) == 0)
   {
@@ -838,8 +838,8 @@ LABEL_13:
   }
 
 LABEL_28:
-  *(a3 + 8) = self->_peerCoreId;
-  *(a3 + 34) |= 0x40u;
+  *(to + 8) = self->_peerCoreId;
+  *(to + 34) |= 0x40u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -853,8 +853,8 @@ LABEL_14:
   }
 
 LABEL_29:
-  *(a3 + 7) = self->_peerBitErrorRate;
-  *(a3 + 34) |= 0x20u;
+  *(to + 7) = self->_peerBitErrorRate;
+  *(to + 34) |= 0x20u;
   has = self->_has;
   if ((has & 0x100) == 0)
   {
@@ -865,23 +865,23 @@ LABEL_15:
     }
 
 LABEL_31:
-    *(a3 + 3) = self->_channel;
-    *(a3 + 34) |= 2u;
+    *(to + 3) = self->_channel;
+    *(to + 34) |= 2u;
     return;
   }
 
 LABEL_30:
-  *(a3 + 10) = self->_peerPhyError;
-  *(a3 + 34) |= 0x100u;
+  *(to + 10) = self->_peerPhyError;
+  *(to + 34) |= 0x100u;
   if ((*&self->_has & 2) != 0)
   {
     goto LABEL_31;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -1098,16 +1098,16 @@ LABEL_16:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 34);
+    v7 = *(equal + 34);
     if ((has & 8) != 0)
     {
-      if ((v7 & 8) == 0 || self->_flags != *(a3 + 5))
+      if ((v7 & 8) == 0 || self->_flags != *(equal + 5))
       {
         goto LABEL_76;
       }
@@ -1122,46 +1122,46 @@ LABEL_76:
 
     if ((*&self->_has & 0x1000) != 0)
     {
-      if ((*(a3 + 34) & 0x1000) == 0 || self->_rtt != *(a3 + 14))
+      if ((*(equal + 34) & 0x1000) == 0 || self->_rtt != *(equal + 14))
       {
         goto LABEL_76;
       }
     }
 
-    else if ((*(a3 + 34) & 0x1000) != 0)
+    else if ((*(equal + 34) & 0x1000) != 0)
     {
       goto LABEL_76;
     }
 
     if ((*&self->_has & 0x800) != 0)
     {
-      if ((*(a3 + 34) & 0x800) == 0 || self->_rssi != *(a3 + 13))
+      if ((*(equal + 34) & 0x800) == 0 || self->_rssi != *(equal + 13))
       {
         goto LABEL_76;
       }
     }
 
-    else if ((*(a3 + 34) & 0x800) != 0)
+    else if ((*(equal + 34) & 0x800) != 0)
     {
       goto LABEL_76;
     }
 
     if ((*&self->_has & 0x2000) != 0)
     {
-      if ((*(a3 + 34) & 0x2000) == 0 || self->_snr != *(a3 + 15))
+      if ((*(equal + 34) & 0x2000) == 0 || self->_snr != *(equal + 15))
       {
         goto LABEL_76;
       }
     }
 
-    else if ((*(a3 + 34) & 0x2000) != 0)
+    else if ((*(equal + 34) & 0x2000) != 0)
     {
       goto LABEL_76;
     }
 
     if ((has & 4) != 0)
     {
-      if ((v7 & 4) == 0 || self->_coreId != *(a3 + 4))
+      if ((v7 & 4) == 0 || self->_coreId != *(equal + 4))
       {
         goto LABEL_76;
       }
@@ -1174,7 +1174,7 @@ LABEL_76:
 
     if ((has & 0x10) != 0)
     {
-      if ((v7 & 0x10) == 0 || self->_losPeakRatio != *(a3 + 6))
+      if ((v7 & 0x10) == 0 || self->_losPeakRatio != *(equal + 6))
       {
         goto LABEL_76;
       }
@@ -1187,7 +1187,7 @@ LABEL_76:
 
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_bitErrorRate != *(a3 + 2))
+      if ((v7 & 1) == 0 || self->_bitErrorRate != *(equal + 2))
       {
         goto LABEL_76;
       }
@@ -1200,46 +1200,46 @@ LABEL_76:
 
     if ((*&self->_has & 0x400) != 0)
     {
-      if ((*(a3 + 34) & 0x400) == 0 || self->_phyError != *(a3 + 12))
+      if ((*(equal + 34) & 0x400) == 0 || self->_phyError != *(equal + 12))
       {
         goto LABEL_76;
       }
     }
 
-    else if ((*(a3 + 34) & 0x400) != 0)
+    else if ((*(equal + 34) & 0x400) != 0)
     {
       goto LABEL_76;
     }
 
     if ((*&self->_has & 0x4000) != 0)
     {
-      if ((*(a3 + 34) & 0x4000) == 0 || self->_status != *(a3 + 16))
+      if ((*(equal + 34) & 0x4000) == 0 || self->_status != *(equal + 16))
       {
         goto LABEL_76;
       }
     }
 
-    else if ((*(a3 + 34) & 0x4000) != 0)
+    else if ((*(equal + 34) & 0x4000) != 0)
     {
       goto LABEL_76;
     }
 
     if ((*&self->_has & 0x200) != 0)
     {
-      if ((*(a3 + 34) & 0x200) == 0 || self->_peerSnr != *(a3 + 11))
+      if ((*(equal + 34) & 0x200) == 0 || self->_peerSnr != *(equal + 11))
       {
         goto LABEL_76;
       }
     }
 
-    else if ((*(a3 + 34) & 0x200) != 0)
+    else if ((*(equal + 34) & 0x200) != 0)
     {
       goto LABEL_76;
     }
 
     if ((has & 0x80) != 0)
     {
-      if ((v7 & 0x80) == 0 || self->_peerLosPeakRatio != *(a3 + 9))
+      if ((v7 & 0x80) == 0 || self->_peerLosPeakRatio != *(equal + 9))
       {
         goto LABEL_76;
       }
@@ -1252,7 +1252,7 @@ LABEL_76:
 
     if ((has & 0x40) != 0)
     {
-      if ((v7 & 0x40) == 0 || self->_peerCoreId != *(a3 + 8))
+      if ((v7 & 0x40) == 0 || self->_peerCoreId != *(equal + 8))
       {
         goto LABEL_76;
       }
@@ -1265,7 +1265,7 @@ LABEL_76:
 
     if ((has & 0x20) != 0)
     {
-      if ((v7 & 0x20) == 0 || self->_peerBitErrorRate != *(a3 + 7))
+      if ((v7 & 0x20) == 0 || self->_peerBitErrorRate != *(equal + 7))
       {
         goto LABEL_76;
       }
@@ -1278,13 +1278,13 @@ LABEL_76:
 
     if ((*&self->_has & 0x100) != 0)
     {
-      if ((*(a3 + 34) & 0x100) == 0 || self->_peerPhyError != *(a3 + 10))
+      if ((*(equal + 34) & 0x100) == 0 || self->_peerPhyError != *(equal + 10))
       {
         goto LABEL_76;
       }
     }
 
-    else if ((*(a3 + 34) & 0x100) != 0)
+    else if ((*(equal + 34) & 0x100) != 0)
     {
       goto LABEL_76;
     }
@@ -1292,7 +1292,7 @@ LABEL_76:
     LOBYTE(v5) = (v7 & 2) == 0;
     if ((has & 2) != 0)
     {
-      if ((v7 & 2) == 0 || self->_channel != *(a3 + 3))
+      if ((v7 & 2) == 0 || self->_channel != *(equal + 3))
       {
         goto LABEL_76;
       }
@@ -1513,14 +1513,14 @@ LABEL_16:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 8) != 0)
   {
-    self->_flags = *(a3 + 5);
+    self->_flags = *(from + 5);
     *&self->_has |= 8u;
-    v3 = *(a3 + 34);
+    v3 = *(from + 34);
     if ((v3 & 0x1000) == 0)
     {
 LABEL_3:
@@ -1533,14 +1533,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 34) & 0x1000) == 0)
+  else if ((*(from + 34) & 0x1000) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_rtt = *(a3 + 14);
+  self->_rtt = *(from + 14);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x800) == 0)
   {
 LABEL_4:
@@ -1553,9 +1553,9 @@ LABEL_4:
   }
 
 LABEL_19:
-  self->_rssi = *(a3 + 13);
+  self->_rssi = *(from + 13);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_5:
@@ -1568,9 +1568,9 @@ LABEL_5:
   }
 
 LABEL_20:
-  self->_snr = *(a3 + 15);
+  self->_snr = *(from + 15);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 4) == 0)
   {
 LABEL_6:
@@ -1583,9 +1583,9 @@ LABEL_6:
   }
 
 LABEL_21:
-  self->_coreId = *(a3 + 4);
+  self->_coreId = *(from + 4);
   *&self->_has |= 4u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x10) == 0)
   {
 LABEL_7:
@@ -1598,9 +1598,9 @@ LABEL_7:
   }
 
 LABEL_22:
-  self->_losPeakRatio = *(a3 + 6);
+  self->_losPeakRatio = *(from + 6);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 1) == 0)
   {
 LABEL_8:
@@ -1613,9 +1613,9 @@ LABEL_8:
   }
 
 LABEL_23:
-  self->_bitErrorRate = *(a3 + 2);
+  self->_bitErrorRate = *(from + 2);
   *&self->_has |= 1u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x400) == 0)
   {
 LABEL_9:
@@ -1628,9 +1628,9 @@ LABEL_9:
   }
 
 LABEL_24:
-  self->_phyError = *(a3 + 12);
+  self->_phyError = *(from + 12);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_10:
@@ -1643,9 +1643,9 @@ LABEL_10:
   }
 
 LABEL_25:
-  self->_status = *(a3 + 16);
+  self->_status = *(from + 16);
   *&self->_has |= 0x4000u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x200) == 0)
   {
 LABEL_11:
@@ -1658,9 +1658,9 @@ LABEL_11:
   }
 
 LABEL_26:
-  self->_peerSnr = *(a3 + 11);
+  self->_peerSnr = *(from + 11);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x80) == 0)
   {
 LABEL_12:
@@ -1673,9 +1673,9 @@ LABEL_12:
   }
 
 LABEL_27:
-  self->_peerLosPeakRatio = *(a3 + 9);
+  self->_peerLosPeakRatio = *(from + 9);
   *&self->_has |= 0x80u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x40) == 0)
   {
 LABEL_13:
@@ -1688,9 +1688,9 @@ LABEL_13:
   }
 
 LABEL_28:
-  self->_peerCoreId = *(a3 + 8);
+  self->_peerCoreId = *(from + 8);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x20) == 0)
   {
 LABEL_14:
@@ -1703,9 +1703,9 @@ LABEL_14:
   }
 
 LABEL_29:
-  self->_peerBitErrorRate = *(a3 + 7);
+  self->_peerBitErrorRate = *(from + 7);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 34);
+  v3 = *(from + 34);
   if ((v3 & 0x100) == 0)
   {
 LABEL_15:
@@ -1715,15 +1715,15 @@ LABEL_15:
     }
 
 LABEL_31:
-    self->_channel = *(a3 + 3);
+    self->_channel = *(from + 3);
     *&self->_has |= 2u;
     return;
   }
 
 LABEL_30:
-  self->_peerPhyError = *(a3 + 10);
+  self->_peerPhyError = *(from + 10);
   *&self->_has |= 0x100u;
-  if ((*(a3 + 34) & 2) != 0)
+  if ((*(from + 34) & 2) != 0)
   {
     goto LABEL_31;
   }

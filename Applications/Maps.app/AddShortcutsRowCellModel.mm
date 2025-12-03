@@ -1,5 +1,5 @@
 @interface AddShortcutsRowCellModel
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)image;
 - (id)title;
 - (unint64_t)hash;
@@ -7,16 +7,16 @@
 
 @implementation AddShortcutsRowCellModel
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     isKindOfClass = 1;
   }
 
   else
   {
-    v3 = a3;
+    equalCopy = equal;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -26,8 +26,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(AddShortcutsRowCellModel *)self title];
-  v3 = [v2 hash];
+  title = [(AddShortcutsRowCellModel *)self title];
+  v3 = [title hash];
 
   return v3;
 }

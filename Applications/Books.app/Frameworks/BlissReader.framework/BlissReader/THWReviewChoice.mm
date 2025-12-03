@@ -2,7 +2,7 @@
 - (TSUImage)contentImage;
 - (TSWPStorage)contentStorage;
 - (void)dealloc;
-- (void)setContent:(id)a3;
+- (void)setContent:(id)content;
 @end
 
 @implementation THWReviewChoice
@@ -16,8 +16,8 @@
 
 - (TSWPStorage)contentStorage
 {
-  v3 = [(THWReviewChoice *)self contentType];
-  if (![(NSString *)v3 isEqualToString:TSWReviewChoiceDescriptionContentTypeTextValue])
+  contentType = [(THWReviewChoice *)self contentType];
+  if (![(NSString *)contentType isEqualToString:TSWReviewChoiceDescriptionContentTypeTextValue])
   {
     return 0;
   }
@@ -30,8 +30,8 @@
 
 - (TSUImage)contentImage
 {
-  v3 = [(THWReviewChoice *)self contentType];
-  if (![(NSString *)v3 isEqualToString:TSWReviewChoiceDescriptionContentTypeImageValue])
+  contentType = [(THWReviewChoice *)self contentType];
+  if (![(NSString *)contentType isEqualToString:TSWReviewChoiceDescriptionContentTypeImageValue])
   {
     return 0;
   }
@@ -47,13 +47,13 @@
   return [TSDBitmapImageProvider TSUImageForImageData:v4];
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
   content = self->_content;
-  if (content != a3)
+  if (content != content)
   {
 
-    self->_content = a3;
+    self->_content = content;
     objc_opt_class();
     v6 = TSUDynamicCast();
     if (v6)

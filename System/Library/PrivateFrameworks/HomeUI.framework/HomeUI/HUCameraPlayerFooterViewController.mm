@@ -1,24 +1,24 @@
 @interface HUCameraPlayerFooterViewController
 - (UIButton)liveButton;
 - (UIButton)nearbyAccessoryButton;
-- (id)platterWithView:(id)a3;
+- (id)platterWithView:(id)view;
 - (void)viewDidLoad;
 @end
 
 @implementation HUCameraPlayerFooterViewController
 
-- (id)platterWithView:(id)a3
+- (id)platterWithView:(id)view
 {
   v3 = MEMORY[0x277CB8590];
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(v3);
   [v5 bounds];
-  [v4 setFrame:?];
-  [v4 setAutoresizingMask:18];
-  [v5 addSubview:v4 applyingMaterialStyle:0 tintEffectStyle:1];
+  [viewCopy setFrame:?];
+  [viewCopy setAutoresizingMask:18];
+  [v5 addSubview:viewCopy applyingMaterialStyle:0 tintEffectStyle:1];
   [v5 _setContinuousCornerRadius:16.0];
   [v5 center];
-  [v4 setCenter:?];
+  [viewCopy setCenter:?];
 
   return v5;
 }
@@ -28,59 +28,59 @@
   v36.receiver = self;
   v36.super_class = HUCameraPlayerFooterViewController;
   [(HUCameraPlayerFooterViewController *)&v36 viewDidLoad];
-  v3 = [(HUCameraPlayerFooterViewController *)self view];
-  v4 = [(HUCameraPlayerFooterViewController *)self liveButton];
-  [v3 addSubview:v4];
+  view = [(HUCameraPlayerFooterViewController *)self view];
+  liveButton = [(HUCameraPlayerFooterViewController *)self liveButton];
+  [view addSubview:liveButton];
 
-  v5 = [(HUCameraPlayerFooterViewController *)self nearbyAccessoryButton];
-  v6 = [(HUCameraPlayerFooterViewController *)self platterWithView:v5];
+  nearbyAccessoryButton = [(HUCameraPlayerFooterViewController *)self nearbyAccessoryButton];
+  v6 = [(HUCameraPlayerFooterViewController *)self platterWithView:nearbyAccessoryButton];
 
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [(HUCameraPlayerFooterViewController *)self view];
-  [v7 addSubview:v6];
+  view2 = [(HUCameraPlayerFooterViewController *)self view];
+  [view2 addSubview:v6];
 
-  v8 = [(HUCameraPlayerFooterViewController *)self liveButton];
-  v9 = [v8 heightAnchor];
-  v10 = [v9 constraintEqualToConstant:44.0];
+  liveButton2 = [(HUCameraPlayerFooterViewController *)self liveButton];
+  heightAnchor = [liveButton2 heightAnchor];
+  v10 = [heightAnchor constraintEqualToConstant:44.0];
   [v10 setActive:1];
 
-  v11 = [(HUCameraPlayerFooterViewController *)self liveButton];
-  v12 = [v11 widthAnchor];
-  v13 = [v12 constraintGreaterThanOrEqualToConstant:55.0];
+  liveButton3 = [(HUCameraPlayerFooterViewController *)self liveButton];
+  widthAnchor = [liveButton3 widthAnchor];
+  v13 = [widthAnchor constraintGreaterThanOrEqualToConstant:55.0];
   [v13 setActive:1];
 
-  v14 = [(HUCameraPlayerFooterViewController *)self liveButton];
-  v15 = [v14 centerYAnchor];
-  v16 = [(HUCameraPlayerFooterViewController *)self view];
-  v17 = [v16 centerYAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  liveButton4 = [(HUCameraPlayerFooterViewController *)self liveButton];
+  centerYAnchor = [liveButton4 centerYAnchor];
+  view3 = [(HUCameraPlayerFooterViewController *)self view];
+  centerYAnchor2 = [view3 centerYAnchor];
+  v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v18 setActive:1];
 
-  v19 = [(HUCameraPlayerFooterViewController *)self liveButton];
-  v20 = [v19 leftAnchor];
-  v21 = [(HUCameraPlayerFooterViewController *)self view];
-  v22 = [v21 leftAnchor];
-  v23 = [v20 constraintEqualToAnchor:v22];
+  liveButton5 = [(HUCameraPlayerFooterViewController *)self liveButton];
+  leftAnchor = [liveButton5 leftAnchor];
+  view4 = [(HUCameraPlayerFooterViewController *)self view];
+  leftAnchor2 = [view4 leftAnchor];
+  v23 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
   [v23 setActive:1];
 
-  v24 = [v6 heightAnchor];
-  v25 = [v24 constraintEqualToConstant:44.0];
+  heightAnchor2 = [v6 heightAnchor];
+  v25 = [heightAnchor2 constraintEqualToConstant:44.0];
   [v25 setActive:1];
 
-  v26 = [v6 widthAnchor];
-  v27 = [v26 constraintEqualToConstant:55.0];
+  widthAnchor2 = [v6 widthAnchor];
+  v27 = [widthAnchor2 constraintEqualToConstant:55.0];
   [v27 setActive:1];
 
-  v28 = [v6 centerYAnchor];
-  v29 = [(HUCameraPlayerFooterViewController *)self view];
-  v30 = [v29 centerYAnchor];
-  v31 = [v28 constraintEqualToAnchor:v30];
+  centerYAnchor3 = [v6 centerYAnchor];
+  view5 = [(HUCameraPlayerFooterViewController *)self view];
+  centerYAnchor4 = [view5 centerYAnchor];
+  v31 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
   [v31 setActive:1];
 
-  v32 = [v6 rightAnchor];
-  v33 = [(HUCameraPlayerFooterViewController *)self view];
-  v34 = [v33 rightAnchor];
-  v35 = [v32 constraintEqualToAnchor:v34];
+  rightAnchor = [v6 rightAnchor];
+  view6 = [(HUCameraPlayerFooterViewController *)self view];
+  rightAnchor2 = [view6 rightAnchor];
+  v35 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
   [v35 setActive:1];
 }
 
@@ -89,9 +89,9 @@
   nearbyAccessoryButton = self->_nearbyAccessoryButton;
   if (!nearbyAccessoryButton)
   {
-    v4 = [MEMORY[0x277D75220] hu_clipScrubberNearbyAccessoryButton];
+    hu_clipScrubberNearbyAccessoryButton = [MEMORY[0x277D75220] hu_clipScrubberNearbyAccessoryButton];
     v5 = self->_nearbyAccessoryButton;
-    self->_nearbyAccessoryButton = v4;
+    self->_nearbyAccessoryButton = hu_clipScrubberNearbyAccessoryButton;
 
     nearbyAccessoryButton = self->_nearbyAccessoryButton;
   }
@@ -105,8 +105,8 @@
   if (!liveButton)
   {
     v4 = [MEMORY[0x277D75220] hu_clipScrubberLiveButtonWithMaximimumLineHeight:0.0];
-    v5 = [MEMORY[0x277D75348] systemBlackColor];
-    [(UIButton *)v4 setTintColor:v5];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    [(UIButton *)v4 setTintColor:systemBlackColor];
 
     [(UIButton *)v4 setContentEdgeInsets:0.0, 18.0, 0.0, 18.0];
     [(UIButton *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];

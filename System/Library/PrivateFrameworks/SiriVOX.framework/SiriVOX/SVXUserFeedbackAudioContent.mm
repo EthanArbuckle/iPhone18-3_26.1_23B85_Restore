@@ -1,55 +1,55 @@
 @interface SVXUserFeedbackAudioContent
-+ (id)newWithBuilder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SVXUserFeedbackAudioContent)initWithCoder:(id)a3;
-- (SVXUserFeedbackAudioContent)initWithItemURL:(id)a3 numberOfLoops:(unint64_t)a4 fadeInDuration:(double)a5 fadeOutDuration:(double)a6;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (BOOL)isEqual:(id)equal;
+- (SVXUserFeedbackAudioContent)initWithCoder:(id)coder;
+- (SVXUserFeedbackAudioContent)initWithItemURL:(id)l numberOfLoops:(unint64_t)loops fadeInDuration:(double)duration fadeOutDuration:(double)outDuration;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SVXUserFeedbackAudioContent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   itemURL = self->_itemURL;
-  v5 = a3;
-  [v5 encodeObject:itemURL forKey:@"SVXUserFeedbackAudioContent::itemURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:itemURL forKey:@"SVXUserFeedbackAudioContent::itemURL"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_numberOfLoops];
-  [v5 encodeObject:v6 forKey:@"SVXUserFeedbackAudioContent::numberOfLoops"];
+  [coderCopy encodeObject:v6 forKey:@"SVXUserFeedbackAudioContent::numberOfLoops"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_fadeInDuration];
-  [v5 encodeObject:v7 forKey:@"SVXUserFeedbackAudioContent::fadeInDuration"];
+  [coderCopy encodeObject:v7 forKey:@"SVXUserFeedbackAudioContent::fadeInDuration"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_fadeOutDuration];
-  [v5 encodeObject:v8 forKey:@"SVXUserFeedbackAudioContent::fadeOutDuration"];
+  [coderCopy encodeObject:v8 forKey:@"SVXUserFeedbackAudioContent::fadeOutDuration"];
 }
 
-- (SVXUserFeedbackAudioContent)initWithCoder:(id)a3
+- (SVXUserFeedbackAudioContent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackAudioContent::itemURL"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackAudioContent::numberOfLoops"];
-  v7 = [v6 unsignedIntegerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackAudioContent::itemURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackAudioContent::numberOfLoops"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackAudioContent::fadeInDuration"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackAudioContent::fadeInDuration"];
   [v8 doubleValue];
   v10 = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackAudioContent::fadeOutDuration"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SVXUserFeedbackAudioContent::fadeOutDuration"];
 
   [v11 doubleValue];
   v13 = v12;
 
-  v14 = [(SVXUserFeedbackAudioContent *)self initWithItemURL:v5 numberOfLoops:v7 fadeInDuration:v10 fadeOutDuration:v13];
+  v14 = [(SVXUserFeedbackAudioContent *)self initWithItemURL:v5 numberOfLoops:unsignedIntegerValue fadeInDuration:v10 fadeOutDuration:v13];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -59,13 +59,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       numberOfLoops = self->_numberOfLoops;
       if (numberOfLoops == [(SVXUserFeedbackAudioContent *)v5 numberOfLoops]&& (fadeInDuration = self->_fadeInDuration, [(SVXUserFeedbackAudioContent *)v5 fadeInDuration], fadeInDuration == v8) && (fadeOutDuration = self->_fadeOutDuration, [(SVXUserFeedbackAudioContent *)v5 fadeOutDuration], fadeOutDuration == v10))
       {
-        v13 = [(SVXUserFeedbackAudioContent *)v5 itemURL];
+        itemURL = [(SVXUserFeedbackAudioContent *)v5 itemURL];
         itemURL = self->_itemURL;
-        v11 = itemURL == v13 || [(NSURL *)itemURL isEqual:v13];
+        v11 = itemURL == itemURL || [(NSURL *)itemURL isEqual:itemURL];
       }
 
       else
@@ -96,7 +96,7 @@
   return v5 ^ v9;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v8.receiver = self;
@@ -107,56 +107,56 @@
   return v6;
 }
 
-- (SVXUserFeedbackAudioContent)initWithItemURL:(id)a3 numberOfLoops:(unint64_t)a4 fadeInDuration:(double)a5 fadeOutDuration:(double)a6
+- (SVXUserFeedbackAudioContent)initWithItemURL:(id)l numberOfLoops:(unint64_t)loops fadeInDuration:(double)duration fadeOutDuration:(double)outDuration
 {
-  v10 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = SVXUserFeedbackAudioContent;
   v11 = [(SVXUserFeedbackAudioContent *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [lCopy copy];
     itemURL = v11->_itemURL;
     v11->_itemURL = v12;
 
-    v11->_numberOfLoops = a4;
-    v11->_fadeInDuration = a5;
-    v11->_fadeOutDuration = a6;
+    v11->_numberOfLoops = loops;
+    v11->_fadeInDuration = duration;
+    v11->_fadeOutDuration = outDuration;
   }
 
   return v11;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_SVXUserFeedbackAudioContentMutation alloc] initWithBaseModel:self];
-    v4[2](v4, v5);
-    v6 = [(_SVXUserFeedbackAudioContentMutation *)v5 generate];
+    mutatorCopy[2](mutatorCopy, v5);
+    generate = [(_SVXUserFeedbackAudioContentMutation *)v5 generate];
   }
 
   else
   {
-    v6 = [(SVXUserFeedbackAudioContent *)self copy];
+    generate = [(SVXUserFeedbackAudioContent *)self copy];
   }
 
-  return v6;
+  return generate;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(_SVXUserFeedbackAudioContentMutation);
-  if (v3)
+  if (builderCopy)
   {
-    v3[2](v3, v4);
+    builderCopy[2](builderCopy, v4);
   }
 
-  v5 = [(_SVXUserFeedbackAudioContentMutation *)v4 generate];
+  generate = [(_SVXUserFeedbackAudioContentMutation *)v4 generate];
 
-  return v5;
+  return generate;
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface TUIElementFocusItem
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5;
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context;
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context;
 @end
 
 @implementation TUIElementFocusItem
 
-+ (void)configureBox:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureBox:(id)box withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  var0 = a4.var0;
-  v8 = a5;
-  v9 = a3;
-  [v9 setGrouped:{objc_msgSend(v8, "BOOLForAttribute:node:", 93, var0)}];
-  v10 = [v8 focusStyleForAttribute:88 node:var0];
+  var0 = node.var0;
+  attributesCopy = attributes;
+  boxCopy = box;
+  [boxCopy setGrouped:{objc_msgSend(attributesCopy, "BOOLForAttribute:node:", 93, var0)}];
+  v10 = [attributesCopy focusStyleForAttribute:88 node:var0];
 
-  [v9 setFocusStyle:v10];
+  [boxCopy setFocusStyle:v10];
 }
 
-+ (void)configureObject:(id)a3 withBuilder:(id)a4 context:(id)a5
++ (void)configureObject:(id)object withBuilder:(id)builder context:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v8 finalizeModelsWithParent:v9 box:v9 context:v7];
+  contextCopy = context;
+  builderCopy = builder;
+  objectCopy = object;
+  v10 = [builderCopy finalizeModelsWithParent:objectCopy box:objectCopy context:contextCopy];
   v11 = [TUIElementActionTriggerHandler alloc];
-  v12 = [v8 finalizeTriggers];
-  v13 = [v7 actionObject];
-  v14 = [v7 actionDelegate];
+  finalizeTriggers = [builderCopy finalizeTriggers];
+  actionObject = [contextCopy actionObject];
+  actionDelegate = [contextCopy actionDelegate];
 
-  v15 = [(TUIElementActionTriggerHandler *)v11 initWithActionsData:v12 actionObject:v13 actionDelegate:v14];
-  [v9 setActionHandler:v15];
+  v15 = [(TUIElementActionTriggerHandler *)v11 initWithActionsData:finalizeTriggers actionObject:actionObject actionDelegate:actionDelegate];
+  [objectCopy setActionHandler:v15];
 
-  v16 = [v8 finalizeLinkEntities];
+  finalizeLinkEntities = [builderCopy finalizeLinkEntities];
 
-  [v9 setLinkEntities:v16];
+  [objectCopy setLinkEntities:finalizeLinkEntities];
 }
 
 @end

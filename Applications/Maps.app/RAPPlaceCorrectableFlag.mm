@@ -1,26 +1,26 @@
 @interface RAPPlaceCorrectableFlag
 - (NSString)localizedTitle;
-- (RAPPlaceCorrectableFlag)initWithKind:(int64_t)a3 originalValue:(BOOL)a4;
+- (RAPPlaceCorrectableFlag)initWithKind:(int64_t)kind originalValue:(BOOL)value;
 - (void)_invokeChangeHandlers;
-- (void)addObserver:(id)a3 changeHandler:(id)a4;
+- (void)addObserver:(id)observer changeHandler:(id)handler;
 - (void)revertCorrections;
-- (void)setValue:(BOOL)a3;
+- (void)setValue:(BOOL)value;
 @end
 
 @implementation RAPPlaceCorrectableFlag
 
 - (void)revertCorrections
 {
-  v3 = [(RAPPlaceCorrectableFlag *)self originalValue];
+  originalValue = [(RAPPlaceCorrectableFlag *)self originalValue];
 
-  [(RAPPlaceCorrectableFlag *)self setValue:v3];
+  [(RAPPlaceCorrectableFlag *)self setValue:originalValue];
 }
 
-- (void)setValue:(BOOL)a3
+- (void)setValue:(BOOL)value
 {
-  if (self->_value != a3)
+  if (self->_value != value)
   {
-    self->_value = a3;
+    self->_value = value;
     [(RAPPlaceCorrectableFlag *)self _invokeChangeHandlers];
   }
 }
@@ -30,10 +30,10 @@
   localizedTitle = self->_localizedTitle;
   if (!localizedTitle)
   {
-    v4 = [(RAPPlaceCorrectableFlag *)self kind];
-    if (v4 <= 0x15 && ((0x30FFFFu >> v4) & 1) != 0)
+    kind = [(RAPPlaceCorrectableFlag *)self kind];
+    if (kind <= 0x15 && ((0x30FFFFu >> kind) & 1) != 0)
     {
-      v5 = off_101624FB0[v4];
+      v5 = off_101624FB0[kind];
       v6 = +[NSBundle mainBundle];
       v7 = [v6 localizedStringForKey:v5 value:@"localized string not found" table:0];
     }
@@ -52,16 +52,16 @@
   return localizedTitle;
 }
 
-- (RAPPlaceCorrectableFlag)initWithKind:(int64_t)a3 originalValue:(BOOL)a4
+- (RAPPlaceCorrectableFlag)initWithKind:(int64_t)kind originalValue:(BOOL)value
 {
   v7.receiver = self;
   v7.super_class = RAPPlaceCorrectableFlag;
   result = [(RAPPlaceCorrectableFlag *)&v7 init];
   if (result)
   {
-    result->_kind = a3;
-    result->_originalValue = a4;
-    result->_value = a4;
+    result->_kind = kind;
+    result->_originalValue = value;
+    result->_value = value;
   }
 
   return result;
@@ -73,8 +73,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMapTable *)self->_observers keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyEnumerator = [(NSMapTable *)self->_observers keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -85,7 +85,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -93,17 +93,17 @@
         (v9)[2](v9, self, v8);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addObserver:(id)a3 changeHandler:(id)a4
+- (void)addObserver:(id)observer changeHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   observers = self->_observers;
   if (!observers)
   {
@@ -114,8 +114,8 @@
     observers = self->_observers;
   }
 
-  v10 = [v6 copy];
-  [(NSMapTable *)observers setObject:v10 forKey:v11];
+  v10 = [handlerCopy copy];
+  [(NSMapTable *)observers setObject:v10 forKey:observerCopy];
 }
 
 @end

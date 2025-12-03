@@ -1,13 +1,13 @@
 @interface STUIStatusBarRegionAxesLayout
 - (BOOL)canOverflowItems;
 - (BOOL)fitsAllItems;
-- (BOOL)mayFitDisplayItems:(id)a3 inContainerItem:(id)a4;
+- (BOOL)mayFitDisplayItems:(id)items inContainerItem:(id)item;
 - (STUIStatusBarRegion)region;
 - (void)_updateConstraints;
-- (void)setDisplayItems:(id)a3;
-- (void)setHorizontalLayout:(id)a3;
-- (void)setRegion:(id)a3;
-- (void)setVerticalLayout:(id)a3;
+- (void)setDisplayItems:(id)items;
+- (void)setHorizontalLayout:(id)layout;
+- (void)setRegion:(id)region;
+- (void)setVerticalLayout:(id)layout;
 @end
 
 @implementation STUIStatusBarRegionAxesLayout
@@ -55,33 +55,33 @@
     while (v5);
   }
 
-  v8 = [(STUIStatusBarRegionAxesLayout *)self region];
-  v9 = [v8 containerItem];
+  region = [(STUIStatusBarRegionAxesLayout *)self region];
+  containerItem = [region containerItem];
 
-  v10 = [MEMORY[0x277CBEB18] array];
-  v11 = [MEMORY[0x277CBEB18] array];
-  v12 = [MEMORY[0x277CBEB18] array];
-  if (v9 && [(NSArray *)self->_displayItems count])
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  if (containerItem && [(NSArray *)self->_displayItems count])
   {
     displayItems = self->_displayItems;
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __51__STUIStatusBarRegionAxesLayout__updateConstraints__block_invoke;
     v31[3] = &unk_279D37E98;
-    v14 = v9;
+    v14 = containerItem;
     v32 = v14;
     [(NSArray *)displayItems enumerateObjectsUsingBlock:v31];
-    v15 = [(STUIStatusBarRegionAxisLayout *)self->_horizontalLayout constraintsForDisplayItems:self->_displayItems layoutGuides:v10 inContainerItem:v14 axis:0];
-    [(NSArray *)v11 addObjectsFromArray:v15];
+    v15 = [(STUIStatusBarRegionAxisLayout *)self->_horizontalLayout constraintsForDisplayItems:self->_displayItems layoutGuides:array inContainerItem:v14 axis:0];
+    [(NSArray *)array2 addObjectsFromArray:v15];
 
-    v16 = [(STUIStatusBarRegionAxisLayout *)self->_verticalLayout constraintsForDisplayItems:self->_displayItems layoutGuides:v10 inContainerItem:v14 axis:1];
-    [(NSArray *)v12 addObjectsFromArray:v16];
+    v16 = [(STUIStatusBarRegionAxisLayout *)self->_verticalLayout constraintsForDisplayItems:self->_displayItems layoutGuides:array inContainerItem:v14 axis:1];
+    [(NSArray *)array3 addObjectsFromArray:v16];
 
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v17 = v10;
+    v17 = array;
     v18 = [(NSArray *)v17 countByEnumeratingWithState:&v27 objects:v37 count:16];
     if (v18)
     {
@@ -107,20 +107,20 @@
       while (v19);
     }
 
-    [MEMORY[0x277CCAAD0] activateConstraints:v11];
-    [MEMORY[0x277CCAAD0] activateConstraints:v12];
+    [MEMORY[0x277CCAAD0] activateConstraints:array2];
+    [MEMORY[0x277CCAAD0] activateConstraints:array3];
   }
 
   horizontalConstraints = self->_horizontalConstraints;
-  self->_horizontalConstraints = v11;
-  v23 = v11;
+  self->_horizontalConstraints = array2;
+  v23 = array2;
 
   verticalConstraints = self->_verticalConstraints;
-  self->_verticalConstraints = v12;
-  v25 = v12;
+  self->_verticalConstraints = array3;
+  v25 = array3;
 
   layoutGuides = self->_layoutGuides;
-  self->_layoutGuides = v10;
+  self->_layoutGuides = array;
 }
 
 - (STUIStatusBarRegion)region
@@ -139,17 +139,17 @@ void __51__STUIStatusBarRegionAxesLayout__updateConstraints__block_invoke(uint64
 
 - (BOOL)fitsAllItems
 {
-  v3 = [(STUIStatusBarRegionAxesLayout *)self displayItems];
-  v4 = [v3 count];
+  displayItems = [(STUIStatusBarRegionAxesLayout *)self displayItems];
+  v4 = [displayItems count];
 
   if (!v4)
   {
     return 1;
   }
 
-  v5 = [(STUIStatusBarRegionAxesLayout *)self region];
-  v6 = [v5 containerItem];
-  [v6 _ui_bounds];
+  region = [(STUIStatusBarRegionAxesLayout *)self region];
+  containerItem = [region containerItem];
+  [containerItem _ui_bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -184,10 +184,10 @@ void __51__STUIStatusBarRegionAxesLayout__updateConstraints__block_invoke(uint64
   y = v38.origin.y;
   width = v38.size.width;
   height = v38.size.height;
-  v21 = [(STUIStatusBarRegionAxesLayout *)self displayItems];
-  v22 = [v21 firstObject];
-  v23 = [v22 layoutItem];
-  [v23 _ui_frame];
+  displayItems2 = [(STUIStatusBarRegionAxesLayout *)self displayItems];
+  firstObject = [displayItems2 firstObject];
+  layoutItem = [firstObject layoutItem];
+  [layoutItem _ui_frame];
   v41.origin.x = v24;
   v41.origin.y = v25;
   v41.size.width = v26;
@@ -198,10 +198,10 @@ void __51__STUIStatusBarRegionAxesLayout__updateConstraints__block_invoke(uint64
   v39.size.height = height;
   if (CGRectContainsRect(v39, v41))
   {
-    v28 = [(STUIStatusBarRegionAxesLayout *)self displayItems];
-    v29 = [v28 lastObject];
-    v30 = [v29 layoutItem];
-    [v30 _ui_frame];
+    displayItems3 = [(STUIStatusBarRegionAxesLayout *)self displayItems];
+    lastObject = [displayItems3 lastObject];
+    layoutItem2 = [lastObject layoutItem];
+    [layoutItem2 _ui_frame];
     v42.origin.x = v31;
     v42.origin.y = v32;
     v42.size.width = v33;
@@ -221,9 +221,9 @@ void __51__STUIStatusBarRegionAxesLayout__updateConstraints__block_invoke(uint64
   return v35;
 }
 
-- (void)setRegion:(id)a3
+- (void)setRegion:(id)region
 {
-  obj = a3;
+  obj = region;
   WeakRetained = objc_loadWeakRetained(&self->_region);
 
   v5 = obj;
@@ -235,56 +235,56 @@ void __51__STUIStatusBarRegionAxesLayout__updateConstraints__block_invoke(uint64
   }
 }
 
-- (void)setDisplayItems:(id)a3
+- (void)setDisplayItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   p_displayItems = &self->_displayItems;
-  if (self->_displayItems != v5)
+  if (self->_displayItems != itemsCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_displayItems, a3);
+    v7 = itemsCopy;
+    objc_storeStrong(p_displayItems, items);
     p_displayItems = [(STUIStatusBarRegionAxesLayout *)self _updateConstraints];
-    v5 = v7;
+    itemsCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](p_displayItems, v5);
+  MEMORY[0x2821F96F8](p_displayItems, itemsCopy);
 }
 
-- (void)setHorizontalLayout:(id)a3
+- (void)setHorizontalLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   p_horizontalLayout = &self->_horizontalLayout;
-  if (self->_horizontalLayout != v5)
+  if (self->_horizontalLayout != layoutCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_horizontalLayout, a3);
+    v7 = layoutCopy;
+    objc_storeStrong(p_horizontalLayout, layout);
     p_horizontalLayout = [(STUIStatusBarRegionAxesLayout *)self _updateConstraints];
-    v5 = v7;
+    layoutCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](p_horizontalLayout, v5);
+  MEMORY[0x2821F96F8](p_horizontalLayout, layoutCopy);
 }
 
-- (void)setVerticalLayout:(id)a3
+- (void)setVerticalLayout:(id)layout
 {
-  v5 = a3;
+  layoutCopy = layout;
   p_verticalLayout = &self->_verticalLayout;
-  if (self->_verticalLayout != v5)
+  if (self->_verticalLayout != layoutCopy)
   {
-    v7 = v5;
-    objc_storeStrong(p_verticalLayout, a3);
+    v7 = layoutCopy;
+    objc_storeStrong(p_verticalLayout, layout);
     p_verticalLayout = [(STUIStatusBarRegionAxesLayout *)self _updateConstraints];
-    v5 = v7;
+    layoutCopy = v7;
   }
 
-  MEMORY[0x2821F96F8](p_verticalLayout, v5);
+  MEMORY[0x2821F96F8](p_verticalLayout, layoutCopy);
 }
 
-- (BOOL)mayFitDisplayItems:(id)a3 inContainerItem:(id)a4
+- (BOOL)mayFitDisplayItems:(id)items inContainerItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = ((objc_opt_respondsToSelector() & 1) == 0 || [(STUIStatusBarRegionAxisLayout *)self->_horizontalLayout mayFitDisplayItems:v6 inContainerItem:v7 axis:0]) && ((objc_opt_respondsToSelector() & 1) == 0 || [(STUIStatusBarRegionAxisLayout *)self->_verticalLayout mayFitDisplayItems:v6 inContainerItem:v7 axis:1]);
+  itemsCopy = items;
+  itemCopy = item;
+  v8 = ((objc_opt_respondsToSelector() & 1) == 0 || [(STUIStatusBarRegionAxisLayout *)self->_horizontalLayout mayFitDisplayItems:itemsCopy inContainerItem:itemCopy axis:0]) && ((objc_opt_respondsToSelector() & 1) == 0 || [(STUIStatusBarRegionAxisLayout *)self->_verticalLayout mayFitDisplayItems:itemsCopy inContainerItem:itemCopy axis:1]);
 
   return v8;
 }

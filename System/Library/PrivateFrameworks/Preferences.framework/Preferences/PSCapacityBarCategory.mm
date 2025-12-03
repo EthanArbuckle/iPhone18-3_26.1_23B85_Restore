@@ -1,40 +1,40 @@
 @interface PSCapacityBarCategory
-- (PSCapacityBarCategory)initWithIdentifier:(id)a3 title:(id)a4 color:(id)a5 bytes:(int64_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PSCapacityBarCategory)initWithIdentifier:(id)identifier title:(id)title color:(id)color bytes:(int64_t)bytes;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PSCapacityBarCategory
 
-- (PSCapacityBarCategory)initWithIdentifier:(id)a3 title:(id)a4 color:(id)a5 bytes:(int64_t)a6
+- (PSCapacityBarCategory)initWithIdentifier:(id)identifier title:(id)title color:(id)color bytes:(int64_t)bytes
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identifierCopy = identifier;
+  titleCopy = title;
+  colorCopy = color;
   v16.receiver = self;
   v16.super_class = PSCapacityBarCategory;
   v13 = [(PSCapacityBarCategory *)&v16 init];
   if (v13)
   {
-    if ([v10 length])
+    if ([identifierCopy length])
     {
-      v14 = v10;
+      v14 = identifierCopy;
     }
 
     else
     {
-      v14 = v11;
+      v14 = titleCopy;
     }
 
     objc_storeStrong(&v13->_identifier, v14);
-    objc_storeStrong(&v13->_title, a4);
-    objc_storeStrong(&v13->_color, a5);
-    v13->_bytes = a6;
+    objc_storeStrong(&v13->_title, title);
+    objc_storeStrong(&v13->_color, color);
+    v13->_bytes = bytes;
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [PSCapacityBarCategory alloc];
   title = self->_title;

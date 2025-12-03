@@ -1,24 +1,24 @@
 @interface SMTPAccount
-+ (BOOL)isCommonPortNumber:(unsigned int)a3;
++ (BOOL)isCommonPortNumber:(unsigned int)number;
 + (OS_os_log)log;
-- (BOOL)_shouldTryDirectSSLConnectionOnPort:(unsigned int)a3;
+- (BOOL)_shouldTryDirectSSLConnectionOnPort:(unsigned int)port;
 - (Class)connectionClass;
 - (Class)deliveryClass;
 - (__CFString)connectionServiceType;
-- (id)authenticatedConnection:(BOOL)a3;
-- (id)connectionSettingsForAuthentication:(BOOL)a3 secure:(id)a4 insecure:(id)a5;
-- (id)customAuthenticationErrorStringForError:(id)a3 authScheme:(id)a4;
-- (id)errorForResponse:(id)a3;
+- (id)authenticatedConnection:(BOOL)connection;
+- (id)connectionSettingsForAuthentication:(BOOL)authentication secure:(id)secure insecure:(id)insecure;
+- (id)customAuthenticationErrorStringForError:(id)error authScheme:(id)scheme;
+- (id)errorForResponse:(id)response;
 - (id)insecureConnectionSettings;
 - (id)preferredAuthScheme;
 - (id)secureConnectionSettings;
-- (void)checkInConnection:(id)a3;
-- (void)connectionExpired:(id)a3;
+- (void)checkInConnection:(id)connection;
+- (void)connectionExpired:(id)expired;
 - (void)dealloc;
 - (void)releaseAllConnections;
 - (void)releaseAllForcedConnections;
-- (void)setPreferredAuthScheme:(id)a3;
-- (void)setSupportsOutboxCopy:(BOOL)a3;
+- (void)setPreferredAuthScheme:(id)scheme;
+- (void)setSupportsOutboxCopy:(BOOL)copy;
 - (void)setTimer;
 @end
 
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __18__SMTPAccount_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_37 != -1)
   {
     dispatch_once(&log_onceToken_37, block);
@@ -91,12 +91,12 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (BOOL)isCommonPortNumber:(unsigned int)a3
++ (BOOL)isCommonPortNumber:(unsigned int)number
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___SMTPAccount;
   v4 = objc_msgSendSuper2(&v7, sel_isCommonPortNumber_);
-  if (a3 == 587)
+  if (number == 587)
   {
     v5 = 1;
   }
@@ -106,50 +106,50 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
     v5 = v4;
   }
 
-  return a3 == 465 || v5;
+  return number == 465 || v5;
 }
 
 - (Class)connectionClass
 {
   v4.receiver = self;
   v4.super_class = SMTPAccount;
-  v2 = [(MFAccount *)&v4 connectionClass];
-  if (!v2)
+  connectionClass = [(MFAccount *)&v4 connectionClass];
+  if (!connectionClass)
   {
-    v2 = objc_opt_class();
+    connectionClass = objc_opt_class();
   }
 
-  return v2;
+  return connectionClass;
 }
 
-- (id)connectionSettingsForAuthentication:(BOOL)a3 secure:(id)a4 insecure:(id)a5
+- (id)connectionSettingsForAuthentication:(BOOL)authentication secure:(id)secure insecure:(id)insecure
 {
-  v6 = a3;
+  authenticationCopy = authentication;
   v32 = *MEMORY[0x1E69E9840];
-  v29 = a4;
-  v28 = a5;
+  secureCopy = secure;
+  insecureCopy = insecure;
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v27 = v6;
-  v11 = [(MFAccount *)self defaultConnectionSettings];
+  v27 = authenticationCopy;
+  defaultConnectionSettings = [(MFAccount *)self defaultConnectionSettings];
   v30 = 0x190000024BLL;
   v31 = 465;
-  v12 = [v11 portNumber];
-  if ([v11 usesSSL])
+  portNumber = [defaultConnectionSettings portNumber];
+  if ([defaultConnectionSettings usesSSL])
   {
-    v13 = [(SMTPAccount *)self _defaultSettingsWithPort:v12 useSSL:0 directSSL:0];
+    v13 = [(SMTPAccount *)self _defaultSettingsWithPort:portNumber useSSL:0 directSSL:0];
     [v8 addObject:v13];
 
-    -[SMTPAccount _defaultSettingsWithPort:useSSL:directSSL:](self, "_defaultSettingsWithPort:useSSL:directSSL:", v12, 1, [v11 tryDirectSSL] ^ 1);
+    -[SMTPAccount _defaultSettingsWithPort:useSSL:directSSL:](self, "_defaultSettingsWithPort:useSSL:directSSL:", portNumber, 1, [defaultConnectionSettings tryDirectSSL] ^ 1);
   }
 
   else
   {
-    v15 = [(SMTPAccount *)self _defaultSettingsWithPort:v12 useSSL:1 directSSL:1];
+    v15 = [(SMTPAccount *)self _defaultSettingsWithPort:portNumber useSSL:1 directSSL:1];
     [v9 addObject:v15];
 
-    [(SMTPAccount *)self _defaultSettingsWithPort:v12 useSSL:1 directSSL:0];
+    [(SMTPAccount *)self _defaultSettingsWithPort:portNumber useSSL:1 directSSL:0];
   }
   v14 = ;
   [v9 addObject:v14];
@@ -157,7 +157,7 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
   for (i = 0; i != 12; i += 4)
   {
     v17 = *(&v30 + i);
-    if (v12 != v17)
+    if (portNumber != v17)
     {
       v18 = [(SMTPAccount *)self _defaultSettingsWithPort:*(&v30 + i) useSSL:1 directSSL:1];
       [v9 addObject:v18];
@@ -172,19 +172,19 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
 
   if (v27)
   {
-    v22 = v28;
-    v21 = v29;
+    v22 = insecureCopy;
+    v21 = secureCopy;
     [v10 addObjectsFromArray:v9];
     v23 = v8;
   }
 
   else
   {
-    v22 = v28;
-    v21 = v29;
-    v24 = [v11 usesSSL];
+    v22 = insecureCopy;
+    v21 = secureCopy;
+    usesSSL = [defaultConnectionSettings usesSSL];
     v23 = v9;
-    if ((v24 & 1) == 0)
+    if ((usesSSL & 1) == 0)
     {
       [v10 addObjectsFromArray:v8];
       v23 = v9;
@@ -209,43 +209,43 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
 
 - (id)secureConnectionSettings
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MFAccount *)self defaultConnectionSettings];
-  if ([v4 usesSSL])
+  array = [MEMORY[0x1E695DF70] array];
+  defaultConnectionSettings = [(MFAccount *)self defaultConnectionSettings];
+  if ([defaultConnectionSettings usesSSL])
   {
-    [v3 addObject:v4];
+    [array addObject:defaultConnectionSettings];
   }
 
-  v5 = [(SMTPAccount *)self connectionSettingsForAuthentication:1 secure:v3 insecure:0];
+  v5 = [(SMTPAccount *)self connectionSettingsForAuthentication:1 secure:array insecure:0];
 
-  return v3;
+  return array;
 }
 
 - (id)insecureConnectionSettings
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(MFAccount *)self defaultConnectionSettings];
-  if (([v4 usesSSL] & 1) == 0)
+  array = [MEMORY[0x1E695DF70] array];
+  defaultConnectionSettings = [(MFAccount *)self defaultConnectionSettings];
+  if (([defaultConnectionSettings usesSSL] & 1) == 0)
   {
-    [v3 addObject:v4];
+    [array addObject:defaultConnectionSettings];
   }
 
-  v5 = [(SMTPAccount *)self connectionSettingsForAuthentication:1 secure:0 insecure:v3];
+  v5 = [(SMTPAccount *)self connectionSettingsForAuthentication:1 secure:0 insecure:array];
 
-  return v3;
+  return array;
 }
 
-- (BOOL)_shouldTryDirectSSLConnectionOnPort:(unsigned int)a3
+- (BOOL)_shouldTryDirectSSLConnectionOnPort:(unsigned int)port
 {
-  v3 = a3 == 465;
+  bOOLValue = port == 465;
   v4 = [(MFAccount *)self _objectForAccountInfoKey:@"SSLIsDirect"];
   v5 = v4;
   if (v4)
   {
-    v3 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)preferredAuthScheme
@@ -254,49 +254,49 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
   {
     v5.receiver = self;
     v5.super_class = SMTPAccount;
-    v3 = [(MFAccount *)&v5 preferredAuthScheme];
-    if (!v3)
+    preferredAuthScheme = [(MFAccount *)&v5 preferredAuthScheme];
+    if (!preferredAuthScheme)
     {
-      v3 = [MEMORY[0x1E699B208] schemeWithName:*MEMORY[0x1E699B1E8]];
+      preferredAuthScheme = [MEMORY[0x1E699B208] schemeWithName:*MEMORY[0x1E699B1E8]];
     }
   }
 
   else
   {
-    v3 = 0;
+    preferredAuthScheme = 0;
   }
 
-  return v3;
+  return preferredAuthScheme;
 }
 
-- (void)setPreferredAuthScheme:(id)a3
+- (void)setPreferredAuthScheme:(id)scheme
 {
-  v4 = a3;
-  [(DeliveryAccount *)self setShouldUseAuthentication:v4 != 0];
+  schemeCopy = scheme;
+  [(DeliveryAccount *)self setShouldUseAuthentication:schemeCopy != 0];
   v5.receiver = self;
   v5.super_class = SMTPAccount;
-  [(MFAccount *)&v5 setPreferredAuthScheme:v4];
+  [(MFAccount *)&v5 setPreferredAuthScheme:schemeCopy];
 }
 
-- (id)customAuthenticationErrorStringForError:(id)a3 authScheme:(id)a4
+- (id)customAuthenticationErrorStringForError:(id)error authScheme:(id)scheme
 {
-  v4 = [a3 mf_shortDescription];
-  if (![v4 length])
+  mf_shortDescription = [error mf_shortDescription];
+  if (![mf_shortDescription length])
   {
     v5 = MFLookupLocalizedString(@"FAILED_SEND_TITLE", @"Cannot Send Mail", @"Delayed");
 
-    v4 = v5;
+    mf_shortDescription = v5;
   }
 
-  return v4;
+  return mf_shortDescription;
 }
 
-- (id)errorForResponse:(id)a3
+- (id)errorForResponse:(id)response
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = [a3 status];
-  v5 = v4 - 530;
-  if ((v4 - 530) > 8 || ((1 << (v4 - 18)) & 0x111) == 0)
+  status = [response status];
+  v5 = status - 530;
+  if ((status - 530) > 8 || ((1 << (status - 18)) & 0x111) == 0)
   {
     MFLookupLocalizedString(@"FAILED_SEND", @"Check the account settings for the outgoing server “%@”.", @"Delayed");
   }
@@ -314,8 +314,8 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
   }
 
   v10 = MEMORY[0x1E696AEC0];
-  v11 = [(DeliveryAccount *)self displayHostname];
-  v12 = [v10 stringWithFormat:v8, v11];
+  displayHostname = [(DeliveryAccount *)self displayHostname];
+  v12 = [v10 stringWithFormat:v8, displayHostname];
 
   v18 = @"UserFriendlyErrorDescription";
   v19[0] = v12;
@@ -328,9 +328,9 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (void)setSupportsOutboxCopy:(BOOL)a3
+- (void)setSupportsOutboxCopy:(BOOL)copy
 {
-  if (a3)
+  if (copy)
   {
     v3 = 2;
   }
@@ -356,11 +356,11 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)authenticatedConnection:(BOOL)a3
+- (id)authenticatedConnection:(BOOL)connection
 {
   v17 = *MEMORY[0x1E69E9840];
   [(SMTPAccount *)self mf_lock];
-  if (a3)
+  if (connection)
   {
     v5 = 0;
     v6 = 4;
@@ -382,30 +382,30 @@ void __18__SMTPAccount_log__block_invoke(uint64_t a1)
     v8 = time(0);
     if (v8 <= [(MFSMTPConnection *)v5 timeLastCommandWasSent]+ 30 || [(MFSMTPConnection *)v5 noop]== 2)
     {
-      v9 = v5;
+      _newConnection = v5;
       goto LABEL_15;
     }
   }
 
-  v9 = [(MFAccount *)self _newConnection];
-  if (v9)
+  _newConnection = [(MFAccount *)self _newConnection];
+  if (_newConnection)
   {
-    if ([(MFAccount *)self _connectAndAuthenticate:v9])
+    if ([(MFAccount *)self _connectAndAuthenticate:_newConnection])
     {
-      v10 = [(MFSMTPConnection *)v9 maximumMessageBytes];
-      if (v10)
+      maximumMessageBytes = [(MFSMTPConnection *)_newConnection maximumMessageBytes];
+      if (maximumMessageBytes)
       {
-        [(DeliveryAccount *)self setMaximumMessageBytes:v10];
+        [(DeliveryAccount *)self setMaximumMessageBytes:maximumMessageBytes];
       }
 
-      [(SMTPAccount *)self setSupportsPipelining:[(MFSMTPConnection *)v9 supportsPipelining]];
-      [(SMTPAccount *)self setSupportsOutboxCopy:[(MFSMTPConnection *)v9 supportsOutboxCopy]];
+      [(SMTPAccount *)self setSupportsPipelining:[(MFSMTPConnection *)_newConnection supportsPipelining]];
+      [(SMTPAccount *)self setSupportsOutboxCopy:[(MFSMTPConnection *)_newConnection supportsOutboxCopy]];
     }
 
     else
     {
 
-      v9 = 0;
+      _newConnection = 0;
     }
   }
 
@@ -413,18 +413,18 @@ LABEL_15:
   v11 = +[SMTPAccount log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(MFSMTPConnection *)self->_connection domainName];
+    domainName = [(MFSMTPConnection *)self->_connection domainName];
     v15 = 138543362;
-    v16 = v12;
+    v16 = domainName;
     _os_log_impl(&dword_1B0389000, v11, OS_LOG_TYPE_DEFAULT, "_connection domain name: %{public}@", &v15, 0xCu);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return _newConnection;
 }
 
-- (void)connectionExpired:(id)a3
+- (void)connectionExpired:(id)expired
 {
   timer = self->_timer;
   self->_timer = 0;
@@ -434,7 +434,7 @@ LABEL_15:
   connection = self->_connection;
   self->_connection = 0;
 
-  v6 = [(SMTPAccount *)self mf_unlock];
+  mf_unlock = [(SMTPAccount *)self mf_unlock];
   if (v9)
   {
     v7 = [MEMORY[0x1E695DF50] mf_invocationWithSelector:sel_disconnect_ target:self object:?];
@@ -442,7 +442,7 @@ LABEL_15:
     [v8 addInvocation:v7];
   }
 
-  MEMORY[0x1EEE66C38](v6);
+  MEMORY[0x1EEE66C38](mf_unlock);
 }
 
 - (void)setTimer
@@ -456,19 +456,19 @@ LABEL_15:
   [(SMTPAccount *)self mf_unlock];
 }
 
-- (void)checkInConnection:(id)a3
+- (void)checkInConnection:(id)connection
 {
-  v10 = a3;
+  connectionCopy = connection;
   v5 = MFUserAgent();
-  v6 = [v5 isMobileMail];
+  isMobileMail = [v5 isMobileMail];
 
-  if (v6)
+  if (isMobileMail)
   {
     [(SMTPAccount *)self mf_lock];
     connection = self->_connection;
     if (!connection)
     {
-      objc_storeStrong(&self->_connection, a3);
+      objc_storeStrong(&self->_connection, connection);
     }
 
     [(SMTPAccount *)self mf_unlock];
@@ -486,7 +486,7 @@ LABEL_15:
 
   else
   {
-    [v10 quit];
+    [connectionCopy quit];
   }
 }
 

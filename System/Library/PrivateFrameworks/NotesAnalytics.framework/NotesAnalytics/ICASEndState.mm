@@ -1,34 +1,34 @@
 @interface ICASEndState
-- (ICASEndState)initWithEndState:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASEndState)initWithEndState:(int64_t)state;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASEndState
 
-- (ICASEndState)initWithEndState:(int64_t)a3
+- (ICASEndState)initWithEndState:(int64_t)state
 {
   v5.receiver = self;
   v5.super_class = ICASEndState;
   result = [(ICASEndState *)&v5 init];
   if (result)
   {
-    result->_endState = a3;
+    result->_endState = state;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASEndState *)self endState];
-  if ((v3 - 1) > 2)
+  endState = [(ICASEndState *)self endState];
+  if ((endState - 1) > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_2799B0420[v3 - 1];
+    return off_2799B0420[endState - 1];
   }
 }
 

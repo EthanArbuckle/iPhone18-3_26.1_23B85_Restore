@@ -1,42 +1,42 @@
 @interface AAServicesXPCConnection
-- (BOOL)_entitledAndReturnError:(id *)a3;
-- (BOOL)_entitledForSystemStateMonitorAndReturnError:(id *)a3;
+- (BOOL)_entitledAndReturnError:(id *)error;
+- (BOOL)_entitledForSystemStateMonitorAndReturnError:(id *)error;
 - (BOOL)_shouldSendXPCMessage;
-- (void)areHeadphonesNearbyAndEligibleToPlay:(id)a3 completion:(id)a4;
-- (void)assetManagerShowDownloadNotificationForBTAddress:(id)a3 completionHandler:(id)a4;
-- (void)audioRoutingControlActivate:(id)a3 completion:(id)a4;
-- (void)audioSessionControlActivate:(id)a3 completion:(id)a4;
-- (void)audioSessionControlUpdate:(id)a3;
-- (void)deviceManagerActivate:(id)a3 completion:(id)a4;
-- (void)deviceManagerFetchAADeviceBatteryInfoForAddress:(id)a3 deviceHandler:(id)a4;
-- (void)deviceManagerFetchAADeviceBatteryInfoForIdentifier:(id)a3 deviceHandler:(id)a4;
-- (void)deviceManagerFetchAudioAccessoryDeviceForBTAddress:(id)a3 deviceHandler:(id)a4;
-- (void)deviceManagerFetchPairedAudioAccessoryDevices:(id)a3;
-- (void)deviceManagerHeadGestureDetected:(id)a3;
-- (void)deviceManagerReportDeviceBatteryInfoFound:(id)a3;
-- (void)deviceManagerReportDeviceBatteryInfoLost:(id)a3;
-- (void)deviceManagerReportDeviceFound:(id)a3;
-- (void)deviceManagerReportDeviceLost:(id)a3;
-- (void)deviceManagerSendDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5;
-- (void)deviceManagerUpdate:(id)a3 completion:(id)a4;
-- (void)informDRClientSensorDataAvailable:(id)a3 dataTypes:(unint64_t)a4 completion:(id)a5;
-- (void)informDRClientSensorDataUnavailable:(id)a3 dataTypes:(unint64_t)a4 completion:(id)a5;
-- (void)isTemporaryPairingConnectionAllowed:(id)a3;
-- (void)prewarmAudioAccessoriesForFitnessWorkout:(id)a3;
-- (void)sensorServiceActivate:(id)a3 completion:(id)a4;
-- (void)sensorServiceReportSensorInfo:(id)a3;
-- (void)systemStateMonitorActivate:(id)a3 completion:(id)a4;
-- (void)systemStateMonitorFetchHealthKitDataWriteAllowedForDevice:(id)a3 completionHandler:(id)a4;
-- (void)systemStateMonitorFetchPairedHRMDevices:(id)a3;
-- (void)systemStateMonitorReportActiveHRMDeviceChanged:(id)a3 withSREnabled:(BOOL)a4;
-- (void)systemStateMonitorShowFitEducationNotificationForIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)areHeadphonesNearbyAndEligibleToPlay:(id)play completion:(id)completion;
+- (void)assetManagerShowDownloadNotificationForBTAddress:(id)address completionHandler:(id)handler;
+- (void)audioRoutingControlActivate:(id)activate completion:(id)completion;
+- (void)audioSessionControlActivate:(id)activate completion:(id)completion;
+- (void)audioSessionControlUpdate:(id)update;
+- (void)deviceManagerActivate:(id)activate completion:(id)completion;
+- (void)deviceManagerFetchAADeviceBatteryInfoForAddress:(id)address deviceHandler:(id)handler;
+- (void)deviceManagerFetchAADeviceBatteryInfoForIdentifier:(id)identifier deviceHandler:(id)handler;
+- (void)deviceManagerFetchAudioAccessoryDeviceForBTAddress:(id)address deviceHandler:(id)handler;
+- (void)deviceManagerFetchPairedAudioAccessoryDevices:(id)devices;
+- (void)deviceManagerHeadGestureDetected:(id)detected;
+- (void)deviceManagerReportDeviceBatteryInfoFound:(id)found;
+- (void)deviceManagerReportDeviceBatteryInfoLost:(id)lost;
+- (void)deviceManagerReportDeviceFound:(id)found;
+- (void)deviceManagerReportDeviceLost:(id)lost;
+- (void)deviceManagerSendDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion;
+- (void)deviceManagerUpdate:(id)update completion:(id)completion;
+- (void)informDRClientSensorDataAvailable:(id)available dataTypes:(unint64_t)types completion:(id)completion;
+- (void)informDRClientSensorDataUnavailable:(id)unavailable dataTypes:(unint64_t)types completion:(id)completion;
+- (void)isTemporaryPairingConnectionAllowed:(id)allowed;
+- (void)prewarmAudioAccessoriesForFitnessWorkout:(id)workout;
+- (void)sensorServiceActivate:(id)activate completion:(id)completion;
+- (void)sensorServiceReportSensorInfo:(id)info;
+- (void)systemStateMonitorActivate:(id)activate completion:(id)completion;
+- (void)systemStateMonitorFetchHealthKitDataWriteAllowedForDevice:(id)device completionHandler:(id)handler;
+- (void)systemStateMonitorFetchPairedHRMDevices:(id)devices;
+- (void)systemStateMonitorReportActiveHRMDeviceChanged:(id)changed withSREnabled:(BOOL)enabled;
+- (void)systemStateMonitorShowFitEducationNotificationForIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)xpcConnectionInterrupted;
 - (void)xpcConnectionInvalidated;
 @end
 
 @implementation AAServicesXPCConnection
 
-- (BOOL)_entitledAndReturnError:(id *)a3
+- (BOOL)_entitledAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -57,26 +57,26 @@
   if (dword_1002F6480 <= 90 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D7E04(p_xpcCnx);
-    if (a3)
+    if (error)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_9:
     v9 = BTErrorF();
     v10 = v9;
     result = 0;
-    *a3 = v9;
+    *error = v9;
     return result;
   }
 
   return 0;
 }
 
-- (BOOL)_entitledForSystemStateMonitorAndReturnError:(id *)a3
+- (BOOL)_entitledForSystemStateMonitorAndReturnError:(id *)error
 {
   if (self->_entitled)
   {
@@ -97,19 +97,19 @@ LABEL_9:
   if (dword_1002F6480 <= 90 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D7E54(p_xpcCnx);
-    if (a3)
+    if (error)
     {
       goto LABEL_9;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
 LABEL_9:
     v9 = BTErrorF();
     v10 = v9;
     result = 0;
-    *a3 = v9;
+    *error = v9;
     return result;
   }
 
@@ -195,9 +195,9 @@ LABEL_13:
   [v3 handleXPCDisconnected:{-[AAServicesXPCConnection connectionID](self, "connectionID")}];
 }
 
-- (void)audioRoutingControlActivate:(id)a3 completion:(id)a4
+- (void)audioRoutingControlActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
+  activateCopy = activate;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -209,12 +209,12 @@ LABEL_13:
   v18[2] = sub_100029548;
   v18[3] = &unk_1002B74D0;
   v20 = &v21;
-  v8 = a4;
-  v19 = v8;
+  completionCopy = completion;
+  v19 = completionCopy;
   v9 = objc_retainBlock(v18);
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    v16 = v7;
+    v16 = activateCopy;
     LogPrintF();
   }
 
@@ -235,11 +235,11 @@ LABEL_13:
       activatedAudioRoutingControlSet = self->_daemon->_activatedAudioRoutingControlSet;
     }
 
-    [(NSMutableSet *)activatedAudioRoutingControlSet addObject:v7];
-    objc_storeStrong(&self->_daemon->_currentAudioRoutingControl, a3);
-    if (v8)
+    [(NSMutableSet *)activatedAudioRoutingControlSet addObject:activateCopy];
+    objc_storeStrong(&self->_daemon->_currentAudioRoutingControl, activate);
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     [(AAServicesDaemon *)self->_daemon _update];
@@ -250,9 +250,9 @@ LABEL_13:
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)areHeadphonesNearbyAndEligibleToPlay:(id)a3 completion:(id)a4
+- (void)areHeadphonesNearbyAndEligibleToPlay:(id)play completion:(id)completion
 {
-  v6 = a3;
+  playCopy = play;
   v25[0] = 0;
   v25[1] = v25;
   v25[2] = 0x2020000000;
@@ -268,8 +268,8 @@ LABEL_13:
   v15[2] = sub_100029834;
   v15[3] = &unk_1002B74F8;
   v17 = &v19;
-  v7 = a4;
-  v16 = v7;
+  completionCopy = completion;
+  v16 = completionCopy;
   v18 = v25;
   v8 = objc_retainBlock(v15);
   v9 = (v20 + 5);
@@ -282,7 +282,7 @@ LABEL_13:
     v11 = v10;
     if (v10)
     {
-      [v10 areHeadphonesNearbyAndEligibleToPlay:v7];
+      [v10 areHeadphonesNearbyAndEligibleToPlay:completionCopy];
     }
 
     else
@@ -299,9 +299,9 @@ LABEL_13:
   _Block_object_dispose(v25, 8);
 }
 
-- (void)prewarmAudioAccessoriesForFitnessWorkout:(id)a3
+- (void)prewarmAudioAccessoriesForFitnessWorkout:(id)workout
 {
-  v5 = a3;
+  workoutCopy = workout;
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
     sub_1001D7F00();
@@ -320,9 +320,9 @@ LABEL_13:
   }
 }
 
-- (void)audioSessionControlActivate:(id)a3 completion:(id)a4
+- (void)audioSessionControlActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
+  activateCopy = activate;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -334,12 +334,12 @@ LABEL_13:
   v18[2] = sub_10002A05C;
   v18[3] = &unk_1002B74D0;
   v20 = &v21;
-  v8 = a4;
-  v19 = v8;
+  completionCopy = completion;
+  v19 = completionCopy;
   v9 = objc_retainBlock(v18);
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    v16 = v7;
+    v16 = activateCopy;
     LogPrintF();
   }
 
@@ -349,7 +349,7 @@ LABEL_13:
   objc_storeStrong(v10, obj);
   if (v11)
   {
-    objc_storeStrong(&self->_audioSessionControl, a3);
+    objc_storeStrong(&self->_audioSessionControl, activate);
     activatedAudioSessionControlSet = self->_daemon->_activatedAudioSessionControlSet;
     if (!activatedAudioSessionControlSet)
     {
@@ -361,11 +361,11 @@ LABEL_13:
       activatedAudioSessionControlSet = self->_daemon->_activatedAudioSessionControlSet;
     }
 
-    [(NSMutableSet *)activatedAudioSessionControlSet addObject:v7];
-    objc_storeStrong(&self->_daemon->_currentAudioSessionControl, a3);
-    if (v8)
+    [(NSMutableSet *)activatedAudioSessionControlSet addObject:activateCopy];
+    objc_storeStrong(&self->_daemon->_currentAudioSessionControl, activate);
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     [(AAServicesDaemon *)self->_daemon _update];
@@ -376,9 +376,9 @@ LABEL_13:
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)audioSessionControlUpdate:(id)a3
+- (void)audioSessionControlUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -399,34 +399,34 @@ LABEL_13:
   {
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
-      v12 = v4;
+      v12 = updateCopy;
       LogPrintF();
     }
 
-    v8 = [(AAAudioSessionControl *)self->_audioSessionControl conversationDetectSignal];
-    v9 = [v4 conversationDetectSignal];
-    if (v8 != v9)
+    conversationDetectSignal = [(AAAudioSessionControl *)self->_audioSessionControl conversationDetectSignal];
+    conversationDetectSignal2 = [updateCopy conversationDetectSignal];
+    if (conversationDetectSignal != conversationDetectSignal2)
     {
       if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
       {
-        if (v8 > 0xB)
+        if (conversationDetectSignal > 0xB)
         {
           v10 = "?";
         }
 
         else
         {
-          v10 = (&off_1002B76E8)[v8];
+          v10 = (&off_1002B76E8)[conversationDetectSignal];
         }
 
-        if (v9 > 0xB)
+        if (conversationDetectSignal2 > 0xB)
         {
           v11 = "?";
         }
 
         else
         {
-          v11 = (&off_1002B76E8)[v9];
+          v11 = (&off_1002B76E8)[conversationDetectSignal2];
         }
 
         v13 = v10;
@@ -434,7 +434,7 @@ LABEL_13:
         LogPrintF();
       }
 
-      [(AAAudioSessionControl *)self->_audioSessionControl setConversationDetectSignal:v9, v13, v14];
+      [(AAAudioSessionControl *)self->_audioSessionControl setConversationDetectSignal:conversationDetectSignal2, v13, v14];
       [(AAServicesDaemon *)self->_daemon _update];
     }
   }
@@ -444,9 +444,9 @@ LABEL_13:
   _Block_object_dispose(&v17, 8);
 }
 
-- (void)systemStateMonitorActivate:(id)a3 completion:(id)a4
+- (void)systemStateMonitorActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
+  activateCopy = activate;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -458,12 +458,12 @@ LABEL_13:
   v19[2] = sub_10002AC3C;
   v19[3] = &unk_1002B74D0;
   v21 = &v22;
-  v8 = a4;
-  v20 = v8;
+  completionCopy = completion;
+  v20 = completionCopy;
   v9 = objc_retainBlock(v19);
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    v17 = v7;
+    v17 = activateCopy;
     LogPrintF();
   }
 
@@ -484,14 +484,14 @@ LABEL_13:
       activatedSystemStateMonitorSet = self->_daemon->_activatedSystemStateMonitorSet;
     }
 
-    [(NSMutableSet *)activatedSystemStateMonitorSet addObject:v7];
-    objc_storeStrong(&self->_systemStateMonitor, a3);
+    [(NSMutableSet *)activatedSystemStateMonitorSet addObject:activateCopy];
+    objc_storeStrong(&self->_systemStateMonitor, activate);
     v16 = +[BTSmartRoutingDaemon sharedBTSmartRoutingDaemon];
     [v16 systemStatePushRequired];
 
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     [(AAServicesDaemon *)self->_daemon _update];
@@ -502,9 +502,9 @@ LABEL_13:
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)systemStateMonitorFetchHealthKitDataWriteAllowedForDevice:(id)a3 completionHandler:(id)a4
+- (void)systemStateMonitorFetchHealthKitDataWriteAllowedForDevice:(id)device completionHandler:(id)handler
 {
-  v6 = a3;
+  deviceCopy = device;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -520,8 +520,8 @@ LABEL_13:
   v15[2] = sub_10002AFA4;
   v15[3] = &unk_1002B74F8;
   v17 = &v23;
-  v7 = a4;
-  v16 = v7;
+  handlerCopy = handler;
+  v16 = handlerCopy;
   v18 = &v19;
   v8 = objc_retainBlock(v15);
   v9 = v24;
@@ -534,18 +534,18 @@ LABEL_13:
   }
 
   v10 = +[AAPairedDeviceDaemon sharedAAPairedDeviceDaemon];
-  v11 = [v10 deviceWithIdentifier:v6];
+  v11 = [v10 deviceWithIdentifier:deviceCopy];
 
-  v12 = [v11 healthKitDataWriteAllowed];
-  *(v20 + 24) = v12;
+  healthKitDataWriteAllowed = [v11 healthKitDataWriteAllowed];
+  *(v20 + 24) = healthKitDataWriteAllowed;
   if (dword_1002F6480 <= 30)
   {
     if (dword_1002F6480 != -1)
     {
 LABEL_4:
-      if (v12 <= 2u)
+      if (healthKitDataWriteAllowed <= 2u)
       {
-        v13 = (&off_1002B7780)[v12];
+        v13 = (&off_1002B7780)[healthKitDataWriteAllowed];
       }
 
       LogPrintF();
@@ -554,15 +554,15 @@ LABEL_4:
 
     if (_LogCategory_Initialize())
     {
-      v12 = *(v20 + 24);
+      healthKitDataWriteAllowed = *(v20 + 24);
       goto LABEL_4;
     }
   }
 
 LABEL_9:
-  if (v7)
+  if (handlerCopy)
   {
-    (*(v7 + 2))(v7, *(v20 + 24));
+    (*(handlerCopy + 2))(handlerCopy, *(v20 + 24));
   }
 
 LABEL_12:
@@ -572,9 +572,9 @@ LABEL_12:
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)systemStateMonitorFetchPairedHRMDevices:(id)a3
+- (void)systemStateMonitorFetchPairedHRMDevices:(id)devices
 {
-  v4 = a3;
+  devicesCopy = devices;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -587,7 +587,7 @@ LABEL_12:
   v17[2] = sub_10002B3A0;
   v17[3] = &unk_1002B74D0;
   v19 = &v20;
-  v6 = v4;
+  v6 = devicesCopy;
   v18 = v6;
   v7 = objc_retainBlock(v17);
   v8 = (v21 + 5);
@@ -597,7 +597,7 @@ LABEL_12:
   if (self)
   {
     v9 = +[AAPairedDeviceDaemon sharedAAPairedDeviceDaemon];
-    v10 = [v9 pairedDevices];
+    pairedDevices = [v9 pairedDevices];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -605,7 +605,7 @@ LABEL_12:
     v14[3] = &unk_1002B7520;
     v11 = v5;
     v15 = v11;
-    [v10 enumerateKeysAndObjectsUsingBlock:v14];
+    [pairedDevices enumerateKeysAndObjectsUsingBlock:v14];
     v12 = [[NSSortDescriptor alloc] initWithKey:@"lastSeenConnectedTime" ascending:0];
     v26 = v12;
     v13 = [NSArray arrayWithObjects:&v26 count:1];
@@ -627,9 +627,9 @@ LABEL_12:
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)systemStateMonitorShowFitEducationNotificationForIdentifier:(id)a3 completionHandler:(id)a4
+- (void)systemStateMonitorShowFitEducationNotificationForIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -641,8 +641,8 @@ LABEL_12:
   v16[2] = sub_10002B774;
   v16[3] = &unk_1002B74D0;
   v18 = &v19;
-  v7 = a4;
-  v17 = v7;
+  handlerCopy = handler;
+  v17 = handlerCopy;
   v8 = objc_retainBlock(v16);
   v9 = (v20 + 5);
   obj = v20[5];
@@ -655,9 +655,9 @@ LABEL_12:
     v11[1] = 3221225472;
     v11[2] = sub_10002B84C;
     v11[3] = &unk_1002B7548;
-    v12 = v6;
+    v12 = identifierCopy;
     v14 = &v19;
-    v13 = v7;
+    v13 = handlerCopy;
     [v10 showFitEducationNotificationForIdentifier:v12 withErrorHandler:v11];
   }
 
@@ -666,9 +666,9 @@ LABEL_12:
   _Block_object_dispose(&v19, 8);
 }
 
-- (void)deviceManagerActivate:(id)a3 completion:(id)a4
+- (void)deviceManagerActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
+  activateCopy = activate;
   v40 = 0;
   v41 = &v40;
   v42 = 0x3032000000;
@@ -680,12 +680,12 @@ LABEL_12:
   v37[2] = sub_10002BE28;
   v37[3] = &unk_1002B74D0;
   v39 = &v40;
-  v8 = a4;
-  v38 = v8;
+  completionCopy = completion;
+  v38 = completionCopy;
   v30 = objc_retainBlock(v37);
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    v24 = v7;
+    v24 = activateCopy;
     LogPrintF();
   }
 
@@ -695,7 +695,7 @@ LABEL_12:
   objc_storeStrong(v9, obj);
   if (v10)
   {
-    objc_storeStrong(&self->_deviceManager, a3);
+    objc_storeStrong(&self->_deviceManager, activate);
     activatedDeviceManagerSet = self->_daemon->_activatedDeviceManagerSet;
     if (!activatedDeviceManagerSet)
     {
@@ -707,19 +707,19 @@ LABEL_12:
       activatedDeviceManagerSet = self->_daemon->_activatedDeviceManagerSet;
     }
 
-    [(NSMutableSet *)activatedDeviceManagerSet addObject:v7];
-    if (v8)
+    [(NSMutableSet *)activatedDeviceManagerSet addObject:activateCopy];
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
     [(AAServicesDaemon *)self->_daemon _update];
     v15 = +[AADeviceManagerDaemon sharedAADeviceManagerDaemon];
-    v16 = [v15 availableDevices];
+    availableDevices = [v15 availableDevices];
 
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
-      v25 = [v16 count];
+      v25 = [availableDevices count];
       LogPrintF();
     }
 
@@ -728,24 +728,24 @@ LABEL_12:
     v35[2] = sub_10002BF00;
     v35[3] = &unk_1002B7520;
     v35[4] = self;
-    [v16 enumerateKeysAndObjectsUsingBlock:{v35, v25}];
+    [availableDevices enumerateKeysAndObjectsUsingBlock:{v35, v25}];
     v17 = +[AABatteryMonitorDaemon sharedAABatteryMonitorDaemon];
-    v18 = [v17 devices];
+    devices = [v17 devices];
 
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
-      v26 = [v18 count];
+      v26 = [devices count];
       LogPrintF();
     }
 
-    v27 = v16;
-    v28 = v8;
-    v29 = v7;
+    v27 = availableDevices;
+    v28 = completionCopy;
+    v29 = activateCopy;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v19 = v18;
+    v19 = devices;
     v20 = [v19 countByEnumeratingWithState:&v31 objects:v46 count:16];
     if (v20)
     {
@@ -775,8 +775,8 @@ LABEL_12:
       while (v20);
     }
 
-    v8 = v28;
-    v7 = v29;
+    completionCopy = v28;
+    activateCopy = v29;
   }
 
   (v30[2])(v30);
@@ -784,9 +784,9 @@ LABEL_12:
   _Block_object_dispose(&v40, 8);
 }
 
-- (void)deviceManagerUpdate:(id)a3 completion:(id)a4
+- (void)deviceManagerUpdate:(id)update completion:(id)completion
 {
-  v6 = a3;
+  updateCopy = update;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x3032000000;
@@ -798,27 +798,27 @@ LABEL_12:
   v16 = sub_10002C140;
   v17 = &unk_1002B74D0;
   v19 = v20;
-  v7 = a4;
-  v18 = v7;
+  completionCopy = completion;
+  v18 = completionCopy;
   v8 = objc_retainBlock(&v14);
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    v11 = v6;
+    v11 = updateCopy;
     LogPrintF();
   }
 
-  v9 = [(AADeviceManager *)self->_deviceManager headGestureUpdateFlags];
-  v10 = [v6 headGestureUpdateFlags];
-  if (v9 != v10)
+  headGestureUpdateFlags = [(AADeviceManager *)self->_deviceManager headGestureUpdateFlags];
+  headGestureUpdateFlags2 = [updateCopy headGestureUpdateFlags];
+  if (headGestureUpdateFlags != headGestureUpdateFlags2)
   {
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
-      v12 = v9;
-      v13 = v10;
+      v12 = headGestureUpdateFlags;
+      v13 = headGestureUpdateFlags2;
       LogPrintF();
     }
 
-    [(AADeviceManager *)self->_deviceManager setHeadGestureUpdateFlags:v10, v12, v13, v14, v15, v16, v17];
+    [(AADeviceManager *)self->_deviceManager setHeadGestureUpdateFlags:headGestureUpdateFlags2, v12, v13, v14, v15, v16, v17];
     [(AAServicesDaemon *)self->_daemon _update];
   }
 
@@ -827,10 +827,10 @@ LABEL_12:
   _Block_object_dispose(v20, 8);
 }
 
-- (void)deviceManagerSendDeviceConfig:(id)a3 identifier:(id)a4 completion:(id)a5
+- (void)deviceManagerSendDeviceConfig:(id)config identifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  configCopy = config;
+  identifierCopy = identifier;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -842,8 +842,8 @@ LABEL_12:
   v19[2] = sub_10002C4E8;
   v19[3] = &unk_1002B74D0;
   v21 = &v22;
-  v10 = a5;
-  v20 = v10;
+  completionCopy = completion;
+  v20 = completionCopy;
   v11 = objc_retainBlock(v19);
   v12 = (v23 + 5);
   obj = v23[5];
@@ -864,8 +864,8 @@ LABEL_12:
       v16[1] = 3221225472;
       v16[2] = sub_10002C5C0;
       v16[3] = &unk_1002B6A10;
-      v17 = v10;
-      [v15 sendDeviceConfig:v8 identifier:v9 completion:v16];
+      v17 = completionCopy;
+      [v15 sendDeviceConfig:configCopy identifier:identifierCopy completion:v16];
     }
 
     else if (dword_1002F6480 <= 90 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
@@ -879,9 +879,9 @@ LABEL_12:
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)deviceManagerFetchAADeviceBatteryInfoForAddress:(id)a3 deviceHandler:(id)a4
+- (void)deviceManagerFetchAADeviceBatteryInfoForAddress:(id)address deviceHandler:(id)handler
 {
-  v6 = a3;
+  addressCopy = address;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -893,8 +893,8 @@ LABEL_12:
   v26[2] = sub_10002C968;
   v26[3] = &unk_1002B74D0;
   v28 = &v29;
-  v7 = a4;
-  v27 = v7;
+  handlerCopy = handler;
+  v27 = handlerCopy;
   v20 = objc_retainBlock(v26);
   v8 = v30;
   obj = v30[5];
@@ -907,9 +907,9 @@ LABEL_12:
     v21 = 0u;
     v22 = 0u;
     v9 = +[AABatteryMonitorDaemon sharedAABatteryMonitorDaemon];
-    v10 = [v9 devices];
+    devices = [v9 devices];
 
-    v11 = [v10 countByEnumeratingWithState:&v21 objects:v35 count:16];
+    v11 = [devices countByEnumeratingWithState:&v21 objects:v35 count:16];
     if (v11)
     {
       v12 = *v22;
@@ -919,14 +919,14 @@ LABEL_12:
         {
           if (*v22 != v12)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(devices);
           }
 
           v14 = *(*(&v21 + 1) + 8 * i);
-          v15 = [v14 bluetoothAddress];
-          v16 = v6;
+          bluetoothAddress = [v14 bluetoothAddress];
+          v16 = addressCopy;
           v17 = v16;
-          if (v15 == v16)
+          if (bluetoothAddress == v16)
           {
 
 LABEL_16:
@@ -935,13 +935,13 @@ LABEL_16:
               LogPrintF();
             }
 
-            (*(v7 + 2))(v7, v14);
+            (*(handlerCopy + 2))(handlerCopy, v14);
             goto LABEL_21;
           }
 
-          if ((v6 == 0) != (v15 != 0))
+          if ((addressCopy == 0) != (bluetoothAddress != 0))
           {
-            v18 = [v15 isEqual:v16];
+            v18 = [bluetoothAddress isEqual:v16];
 
             if (v18)
             {
@@ -954,7 +954,7 @@ LABEL_16:
           }
         }
 
-        v11 = [v10 countByEnumeratingWithState:&v21 objects:v35 count:16];
+        v11 = [devices countByEnumeratingWithState:&v21 objects:v35 count:16];
         if (v11)
         {
           continue;
@@ -965,7 +965,7 @@ LABEL_16:
     }
 
     v19 = NSErrorF();
-    v10 = v30[5];
+    devices = v30[5];
     v30[5] = v19;
 LABEL_21:
   }
@@ -975,9 +975,9 @@ LABEL_21:
   _Block_object_dispose(&v29, 8);
 }
 
-- (void)deviceManagerFetchAADeviceBatteryInfoForIdentifier:(id)a3 deviceHandler:(id)a4
+- (void)deviceManagerFetchAADeviceBatteryInfoForIdentifier:(id)identifier deviceHandler:(id)handler
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -989,8 +989,8 @@ LABEL_21:
   v15[2] = sub_10002CC88;
   v15[3] = &unk_1002B74D0;
   v17 = &v18;
-  v7 = a4;
-  v16 = v7;
+  handlerCopy = handler;
+  v16 = handlerCopy;
   v8 = objc_retainBlock(v15);
   v9 = (v19 + 5);
   obj = v19[5];
@@ -999,7 +999,7 @@ LABEL_21:
   if (self)
   {
     v10 = +[AABatteryMonitorDaemon sharedAABatteryMonitorDaemon];
-    v11 = [v10 deviceWithIdentifier:v6];
+    v11 = [v10 deviceWithIdentifier:identifierCopy];
 
     if (v11)
     {
@@ -1008,7 +1008,7 @@ LABEL_21:
         LogPrintF();
       }
 
-      (*(v7 + 2))(v7, v11);
+      (*(handlerCopy + 2))(handlerCopy, v11);
     }
 
     else
@@ -1024,9 +1024,9 @@ LABEL_21:
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)deviceManagerFetchAudioAccessoryDeviceForBTAddress:(id)a3 deviceHandler:(id)a4
+- (void)deviceManagerFetchAudioAccessoryDeviceForBTAddress:(id)address deviceHandler:(id)handler
 {
-  v6 = a3;
+  addressCopy = address;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -1044,8 +1044,8 @@ LABEL_21:
   v15[2] = sub_10002CFD4;
   v15[3] = &unk_1002B74F8;
   v17 = &v19;
-  v7 = a4;
-  v16 = v7;
+  handlerCopy = handler;
+  v16 = handlerCopy;
   v18 = &v25;
   v8 = objc_retainBlock(v15);
   v9 = (v20 + 5);
@@ -1055,7 +1055,7 @@ LABEL_21:
   if (self)
   {
     v10 = +[AADeviceManagerDaemon sharedAADeviceManagerDaemon];
-    v11 = [v10 deviceWithBluetoothAddress:v6];
+    v11 = [v10 deviceWithBluetoothAddress:addressCopy];
     v12 = v26[5];
     v26[5] = v11;
 
@@ -1065,7 +1065,7 @@ LABEL_21:
       LogPrintF();
     }
 
-    (*(v7 + 2))(v7, v26[5]);
+    (*(handlerCopy + 2))(handlerCopy, v26[5]);
   }
 
   (v8[2])(v8);
@@ -1074,7 +1074,7 @@ LABEL_21:
   _Block_object_dispose(&v25, 8);
 }
 
-- (void)deviceManagerFetchPairedAudioAccessoryDevices:(id)a3
+- (void)deviceManagerFetchPairedAudioAccessoryDevices:(id)devices
 {
   v14 = 0;
   v15 = &v14;
@@ -1087,9 +1087,9 @@ LABEL_21:
   v10[2] = sub_10002D2B4;
   v10[3] = &unk_1002B7570;
   v13 = &v14;
-  v4 = a3;
+  devicesCopy = devices;
   v11 = 0;
-  v12 = v4;
+  v12 = devicesCopy;
   v5 = objc_retainBlock(v10);
   v6 = (v15 + 5);
   obj = v15[5];
@@ -1098,22 +1098,22 @@ LABEL_21:
   if (self)
   {
     v7 = +[AAPairedDeviceDaemon sharedAAPairedDeviceDaemon];
-    v8 = [v7 pairedDevices];
+    pairedDevices = [v7 pairedDevices];
 
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
     }
 
-    if (v4)
+    if (devicesCopy)
     {
-      (*(v4 + 2))(v4, v8);
+      (*(devicesCopy + 2))(devicesCopy, pairedDevices);
     }
   }
 
   else
   {
-    v8 = 0;
+    pairedDevices = 0;
   }
 
   (v5[2])(v5);
@@ -1121,25 +1121,25 @@ LABEL_21:
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)informDRClientSensorDataAvailable:(id)a3 dataTypes:(unint64_t)a4 completion:(id)a5
+- (void)informDRClientSensorDataAvailable:(id)available dataTypes:(unint64_t)types completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  availableCopy = available;
   v10 = +[DataRelayDaemon sharedDataRelayInstance];
-  [v10 informDRClientSensorDataAvailable:v9 dataTypes:a4 connectionID:-[AAServicesXPCConnection connectionID](self completion:{"connectionID"), v8}];
+  [v10 informDRClientSensorDataAvailable:availableCopy dataTypes:types connectionID:-[AAServicesXPCConnection connectionID](self completion:{"connectionID"), completionCopy}];
 }
 
-- (void)informDRClientSensorDataUnavailable:(id)a3 dataTypes:(unint64_t)a4 completion:(id)a5
+- (void)informDRClientSensorDataUnavailable:(id)unavailable dataTypes:(unint64_t)types completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  unavailableCopy = unavailable;
   v10 = +[DataRelayDaemon sharedDataRelayInstance];
-  [v10 informDRClientSensorDataUnavailable:v9 dataTypes:a4 connectionID:-[AAServicesXPCConnection connectionID](self completion:{"connectionID"), v8}];
+  [v10 informDRClientSensorDataUnavailable:unavailableCopy dataTypes:types connectionID:-[AAServicesXPCConnection connectionID](self completion:{"connectionID"), completionCopy}];
 }
 
-- (void)sensorServiceActivate:(id)a3 completion:(id)a4
+- (void)sensorServiceActivate:(id)activate completion:(id)completion
 {
-  v7 = a3;
+  activateCopy = activate;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -1151,12 +1151,12 @@ LABEL_21:
   v18[2] = sub_10002D708;
   v18[3] = &unk_1002B74D0;
   v20 = &v21;
-  v8 = a4;
-  v19 = v8;
+  completionCopy = completion;
+  v19 = completionCopy;
   v9 = objc_retainBlock(v18);
   if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
   {
-    v16 = v7;
+    v16 = activateCopy;
     LogPrintF();
   }
 
@@ -1166,7 +1166,7 @@ LABEL_21:
   objc_storeStrong(v10, obj);
   if (v11)
   {
-    objc_storeStrong(&self->_sensorService, a3);
+    objc_storeStrong(&self->_sensorService, activate);
     activatedSensorServiceSet = self->_daemon->_activatedSensorServiceSet;
     if (!activatedSensorServiceSet)
     {
@@ -1178,10 +1178,10 @@ LABEL_21:
       activatedSensorServiceSet = self->_daemon->_activatedSensorServiceSet;
     }
 
-    [(NSMutableSet *)activatedSensorServiceSet addObject:v7];
-    if (v8)
+    [(NSMutableSet *)activatedSensorServiceSet addObject:activateCopy];
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -1190,7 +1190,7 @@ LABEL_21:
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)isTemporaryPairingConnectionAllowed:(id)a3
+- (void)isTemporaryPairingConnectionAllowed:(id)allowed
 {
   v21 = 0;
   v22 = &v21;
@@ -1207,8 +1207,8 @@ LABEL_21:
   v11[2] = sub_10002DA10;
   v11[3] = &unk_1002B74F8;
   v13 = &v15;
-  v4 = a3;
-  v12 = v4;
+  allowedCopy = allowed;
+  v12 = allowedCopy;
   v14 = &v21;
   v5 = objc_retainBlock(v11);
   v6 = (v16 + 5);
@@ -1220,8 +1220,8 @@ LABEL_21:
     if (_os_feature_enabled_impl())
     {
       v7 = +[AAManagedSettingsDaemon sharedAAManagedSettingsDaemon];
-      v8 = [v7 allowTemporaryPairingConnection];
-      *(v22 + 24) = v8;
+      allowTemporaryPairingConnection = [v7 allowTemporaryPairingConnection];
+      *(v22 + 24) = allowTemporaryPairingConnection;
 
       if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
       {
@@ -1270,8 +1270,8 @@ LABEL_21:
       sub_1001D805C(self, p_xpcMessageCounter);
     }
 
-    v5 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v5 aaServicesRequireReset];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy aaServicesRequireReset];
 
     return 0;
   }
@@ -1279,9 +1279,9 @@ LABEL_21:
   return 1;
 }
 
-- (void)assetManagerShowDownloadNotificationForBTAddress:(id)a3 completionHandler:(id)a4
+- (void)assetManagerShowDownloadNotificationForBTAddress:(id)address completionHandler:(id)handler
 {
-  v6 = a3;
+  addressCopy = address;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1293,8 +1293,8 @@ LABEL_21:
   v20[2] = sub_10002DF40;
   v20[3] = &unk_1002B74D0;
   v22 = &v23;
-  v7 = a4;
-  v21 = v7;
+  handlerCopy = handler;
+  v21 = handlerCopy;
   v8 = objc_retainBlock(v20);
   v9 = (v24 + 5);
   obj = v24[5];
@@ -1303,7 +1303,7 @@ LABEL_21:
   if (self)
   {
     v10 = +[AADeviceManagerDaemon sharedAADeviceManagerDaemon];
-    v11 = [v10 deviceWithBluetoothAddress:v6];
+    v11 = [v10 deviceWithBluetoothAddress:addressCopy];
 
     if (v11)
     {
@@ -1312,9 +1312,9 @@ LABEL_21:
       v15[1] = 3221225472;
       v15[2] = sub_10002E018;
       v15[3] = &unk_1002B7548;
-      v16 = v6;
+      v16 = addressCopy;
       v18 = &v23;
-      v17 = v7;
+      v17 = handlerCopy;
       [v12 showAssetManagerShowDownloadNotificationForDevice:v11 withErrorHandler:v15];
 
       v13 = v16;
@@ -1338,9 +1338,9 @@ LABEL_21:
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)systemStateMonitorReportActiveHRMDeviceChanged:(id)a3 withSREnabled:(BOOL)a4
+- (void)systemStateMonitorReportActiveHRMDeviceChanged:(id)changed withSREnabled:(BOOL)enabled
 {
-  v6 = a3;
+  changedCopy = changed;
   if ([(AAServicesXPCConnection *)self _shouldSendXPCMessage])
   {
     [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
@@ -1350,11 +1350,11 @@ LABEL_21:
   }
 }
 
-- (void)deviceManagerReportDeviceBatteryInfoFound:(id)a3
+- (void)deviceManagerReportDeviceBatteryInfoFound:(id)found
 {
-  v10 = a3;
-  v4 = [v10 identifier];
-  if (v4)
+  foundCopy = found;
+  identifier = [foundCopy identifier];
+  if (identifier)
   {
     v5 = self->_deviceManager;
     if (v5)
@@ -1369,7 +1369,7 @@ LABEL_21:
         batteryInfoDict = self->_batteryInfoDict;
       }
 
-      [(NSMutableDictionary *)batteryInfoDict setObject:v10 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)batteryInfoDict setObject:foundCopy forKeyedSubscript:identifier];
       if ([(AAServicesXPCConnection *)self _shouldSendXPCMessage])
       {
         [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
@@ -1381,20 +1381,20 @@ LABEL_21:
   }
 }
 
-- (void)deviceManagerReportDeviceBatteryInfoLost:(id)a3
+- (void)deviceManagerReportDeviceBatteryInfoLost:(id)lost
 {
-  v8 = a3;
-  v4 = [v8 identifier];
-  if (v4)
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_batteryInfoDict objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_batteryInfoDict objectForKeyedSubscript:identifier];
 
     if (v5)
     {
       v6 = self->_deviceManager;
       if (v6)
       {
-        [(NSMutableDictionary *)self->_batteryInfoDict setObject:0 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_batteryInfoDict setObject:0 forKeyedSubscript:identifier];
         if ([(AAServicesXPCConnection *)self _shouldSendXPCMessage])
         {
           [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
@@ -1407,14 +1407,14 @@ LABEL_21:
   }
 }
 
-- (void)deviceManagerReportDeviceFound:(id)a3
+- (void)deviceManagerReportDeviceFound:(id)found
 {
-  v12 = a3;
-  v4 = [v12 identifier];
-  if (v4)
+  foundCopy = found;
+  identifier = [foundCopy identifier];
+  if (identifier)
   {
-    v5 = [v12 bluetoothAddress];
-    if (v5)
+    bluetoothAddress = [foundCopy bluetoothAddress];
+    if (bluetoothAddress)
     {
       v6 = self->_deviceManager;
       if (v6)
@@ -1429,37 +1429,37 @@ LABEL_21:
           devices = self->_devices;
         }
 
-        [(NSMutableDictionary *)devices setObject:v12 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)devices setObject:foundCopy forKeyedSubscript:identifier];
         if ([(AAServicesXPCConnection *)self _shouldSendXPCMessage])
         {
           if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
           {
-            v11 = v12;
+            v11 = foundCopy;
             LogPrintF();
           }
 
-          v10 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-          [v10 deviceManagerFoundDevice:v12];
+          remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+          [remoteObjectProxy deviceManagerFoundDevice:foundCopy];
         }
       }
     }
   }
 }
 
-- (void)deviceManagerReportDeviceLost:(id)a3
+- (void)deviceManagerReportDeviceLost:(id)lost
 {
-  v8 = a3;
-  v4 = [v8 identifier];
-  if (v4)
+  lostCopy = lost;
+  identifier = [lostCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
 
     if (v5)
     {
       v6 = self->_deviceManager;
       if (v6)
       {
-        [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:v4];
+        [(NSMutableDictionary *)self->_devices setObject:0 forKeyedSubscript:identifier];
         if ([(AAServicesXPCConnection *)self _shouldSendXPCMessage])
         {
           [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
@@ -1472,13 +1472,13 @@ LABEL_21:
   }
 }
 
-- (void)deviceManagerHeadGestureDetected:(id)a3
+- (void)deviceManagerHeadGestureDetected:(id)detected
 {
-  v8 = a3;
-  v4 = [v8 identifier];
-  if (v4)
+  detectedCopy = detected;
+  identifier = [detectedCopy identifier];
+  if (identifier)
   {
-    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_devices objectForKeyedSubscript:identifier];
 
     if (v5)
     {
@@ -1494,27 +1494,27 @@ LABEL_21:
   }
 }
 
-- (void)sensorServiceReportSensorInfo:(id)a3
+- (void)sensorServiceReportSensorInfo:(id)info
 {
-  v9 = a3;
-  v4 = [(AAServicesXPCConnection *)self _shouldSendXPCMessage];
-  v5 = v9;
-  if (v4)
+  infoCopy = info;
+  _shouldSendXPCMessage = [(AAServicesXPCConnection *)self _shouldSendXPCMessage];
+  v5 = infoCopy;
+  if (_shouldSendXPCMessage)
   {
-    v6 = [v9 copy];
+    v6 = [infoCopy copy];
     if (dword_1002F6480 <= 30 && (dword_1002F6480 != -1 || _LogCategory_Initialize()))
     {
       v8 = v6;
       LogPrintF();
     }
 
-    v7 = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
-    [v7 sensorServiceReportSensorInfo:v6];
+    remoteObjectProxy = [(NSXPCConnection *)self->_xpcCnx remoteObjectProxy];
+    [remoteObjectProxy sensorServiceReportSensorInfo:v6];
 
-    v5 = v9;
+    v5 = infoCopy;
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(_shouldSendXPCMessage, v5);
 }
 
 @end

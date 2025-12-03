@@ -1,24 +1,24 @@
 @interface AGXG18PFamilyUserIntersectionFunctionTable
-- (AGXG18PFamilyUserIntersectionFunctionTable)initWithDevice:(id)a3 numTableFnSlots:(int)a4 pipelineSets:(const void *)a5 pipeline:(id)a6 stage:(int)a7 resourceIndex:(unsigned int)a8;
-- (id)clone:(id)a3 cloneTableHeap:(void *)a4 slProgramsTracker:(void *)a5;
-- (unint64_t)bufferAddressAtIndex:(unint64_t)a3;
+- (AGXG18PFamilyUserIntersectionFunctionTable)initWithDevice:(id)device numTableFnSlots:(int)slots pipelineSets:(const void *)sets pipeline:(id)pipeline stage:(int)stage resourceIndex:(unsigned int)index;
+- (id)clone:(id)clone cloneTableHeap:(void *)heap slProgramsTracker:(void *)tracker;
+- (unint64_t)bufferAddressAtIndex:(unint64_t)index;
 - (void)dealloc;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4;
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range;
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index;
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range;
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index;
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range;
 @end
 
 @implementation AGXG18PFamilyUserIntersectionFunctionTable
 
-- (unint64_t)bufferAddressAtIndex:(unint64_t)a3
+- (unint64_t)bufferAddressAtIndex:(unint64_t)index
 {
-  result = *(*(self->_impl + 6) + 8 * a3);
+  result = *(*(self->_impl + 6) + 8 * index);
   if (result)
   {
     v4 = result == 291945216;
@@ -37,11 +37,11 @@
   return result;
 }
 
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    if ((~a3 & 0x48) != 0)
+    if ((~signature & 0x48) != 0)
     {
       v4 = 3;
     }
@@ -51,13 +51,13 @@
       v4 = 4;
     }
 
-    v5 = a3 & 1;
-    if ((a3 & 0x40) != 0)
+    v5 = signature & 1;
+    if ((signature & 0x40) != 0)
     {
       v5 = 2;
     }
 
-    if ((a3 & 8) == 0)
+    if ((signature & 8) == 0)
     {
       v4 = v5;
     }
@@ -78,31 +78,31 @@
           block[4] = v8;
           if (AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupDriverIntersectionTableIfNeeded(void)::onceToken != -1)
           {
-            v9 = a4;
-            v10 = self;
+            rangeCopy = range;
+            selfCopy = self;
             dispatch_once(&AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupDriverIntersectionTableIfNeeded(void)::onceToken, block);
-            a4 = v9;
-            self = v10;
+            range = rangeCopy;
+            self = selfCopy;
           }
 
-          *(impl[3] + 4 * LODWORD(a4.location)) = (v6 + *(*(v8 + 6288) + 184)) & 0xFFFFFFF | 0x80000000;
+          *(impl[3] + 4 * LODWORD(range.location)) = (v6 + *(*(v8 + 6288) + 184)) & 0xFFFFFFF | 0x80000000;
         }
 
-        ++a4.location;
-        --a4.length;
+        ++range.location;
+        --range.length;
       }
 
-      while (a4.length);
+      while (range.length);
     }
   }
 }
 
-- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setOpaqueCurveIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index
 {
   impl = self->_impl;
   if (impl[1])
   {
-    if ((~a3 & 0x48) != 0)
+    if ((~signature & 0x48) != 0)
     {
       v5 = 3;
     }
@@ -112,13 +112,13 @@
       v5 = 4;
     }
 
-    v6 = a3 & 1;
-    if ((a3 & 0x40) != 0)
+    v6 = signature & 1;
+    if ((signature & 0x40) != 0)
     {
       v6 = 2;
     }
 
-    if ((a3 & 8) != 0)
+    if ((signature & 8) != 0)
     {
       v7 = v5;
     }
@@ -136,20 +136,20 @@
     block[4] = v8;
     if (AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupDriverIntersectionTableIfNeeded(void)::onceToken != -1)
     {
-      v9 = a4;
+      indexCopy = index;
       dispatch_once(&AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupDriverIntersectionTableIfNeeded(void)::onceToken, block);
-      LODWORD(a4) = v9;
+      LODWORD(index) = indexCopy;
     }
 
-    *(impl[3] + 4 * a4) = (*(*(v8 + 6288) + 184) + v7 + 8) & 0xFFFFFFF | 0x80000000;
+    *(impl[3] + 4 * index) = (*(*(v8 + 6288) + 184) + v7 + 8) & 0xFFFFFFF | 0x80000000;
   }
 }
 
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 withRange:(_NSRange)a4
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    if ((~a3 & 0x48) != 0)
+    if ((~signature & 0x48) != 0)
     {
       v4 = 3;
     }
@@ -159,13 +159,13 @@
       v4 = 4;
     }
 
-    v5 = a3 & 1;
-    if ((a3 & 0x40) != 0)
+    v5 = signature & 1;
+    if ((signature & 0x40) != 0)
     {
       v5 = 2;
     }
 
-    if ((a3 & 8) != 0)
+    if ((signature & 8) != 0)
     {
       v6 = v4;
     }
@@ -190,31 +190,31 @@
           block[4] = v8;
           if (AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupDriverIntersectionTableIfNeeded(void)::onceToken != -1)
           {
-            v9 = a4;
-            v10 = self;
+            rangeCopy = range;
+            selfCopy = self;
             dispatch_once(&AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupDriverIntersectionTableIfNeeded(void)::onceToken, block);
-            a4 = v9;
-            self = v10;
+            range = rangeCopy;
+            self = selfCopy;
           }
 
-          *(impl[3] + 4 * LODWORD(a4.location)) = (*(*(v8 + 6288) + 184) + v6) & 0xFFFFFFF | 0x80000000;
+          *(impl[3] + 4 * LODWORD(range.location)) = (*(*(v8 + 6288) + 184) + v6) & 0xFFFFFFF | 0x80000000;
         }
 
-        ++a4.location;
-        --a4.length;
+        ++range.location;
+        --range.length;
       }
 
-      while (a4.length);
+      while (range.length);
     }
   }
 }
 
-- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setOpaqueTriangleIntersectionFunctionWithSignature:(unint64_t)signature atIndex:(unint64_t)index
 {
   impl = self->_impl;
   if (impl[1])
   {
-    if ((~a3 & 0x48) != 0)
+    if ((~signature & 0x48) != 0)
     {
       v5 = 3;
     }
@@ -224,13 +224,13 @@
       v5 = 4;
     }
 
-    v6 = a3 & 1;
-    if ((a3 & 0x40) != 0)
+    v6 = signature & 1;
+    if ((signature & 0x40) != 0)
     {
       v6 = 2;
     }
 
-    if ((a3 & 8) != 0)
+    if ((signature & 8) != 0)
     {
       v7 = v5;
     }
@@ -248,37 +248,37 @@
     block[4] = v8;
     if (AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupDriverIntersectionTableIfNeeded(void)::onceToken != -1)
     {
-      v9 = a4;
+      indexCopy = index;
       dispatch_once(&AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupDriverIntersectionTableIfNeeded(void)::onceToken, block);
-      LODWORD(a4) = v9;
+      LODWORD(index) = indexCopy;
     }
 
-    *(impl[3] + 4 * a4) = (*(*(v8 + 6288) + 184) + v7) & 0xFFFFFFF | 0x80000000;
+    *(impl[3] + 4 * index) = (*(*(v8 + 6288) + 184) + v7) & 0xFFFFFFF | 0x80000000;
   }
 }
 
-- (void)setVisibleFunctionTables:(const void *)a3 withBufferRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withBufferRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
       if (location <= 0x1E)
       {
-        v8 = *a3;
+        resourceIndex = *tables;
         impl = self->_impl;
-        if (*a3)
+        if (*tables)
         {
-          v8 = [v8 resourceIndex];
+          resourceIndex = [resourceIndex resourceIndex];
         }
 
-        *(impl[6] + 8 * location) = v8;
+        *(impl[6] + 8 * location) = resourceIndex;
       }
 
       ++location;
-      ++a3;
+      ++tables;
       --length;
     }
 
@@ -286,35 +286,35 @@
   }
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atBufferIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atBufferIndex:(unint64_t)index
 {
-  if (a4 <= 0x1E)
+  if (index <= 0x1E)
   {
     impl = self->_impl;
-    v5 = a4;
-    if (a3)
+    indexCopy = index;
+    if (table)
     {
-      v6 = [a3 resourceIndex];
+      resourceIndex = [table resourceIndex];
     }
 
     else
     {
-      v6 = 0;
+      resourceIndex = 0;
     }
 
-    *(impl[6] + 8 * v5) = v6;
+    *(impl[6] + 8 * indexCopy) = resourceIndex;
   }
 }
 
-- (void)setFunctions:(const void *)a3 withRange:(_NSRange)a4
+- (void)setFunctions:(const void *)functions withRange:(_NSRange)range
 {
-  if (a4.length)
+  if (range.length)
   {
-    length = a4.length;
-    location = a4.location;
+    length = range.length;
+    location = range.location;
     do
     {
-      v8 = *a3++;
+      v8 = *functions++;
       AGX::UserIntersectionFunctionTableGen2<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setFunction(self->_impl, v8, location++);
       --length;
     }
@@ -323,21 +323,21 @@
   }
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  if (a5.length)
+  if (range.length)
   {
     impl = self->_impl;
     v6 = MEMORY[0x29EDC5638];
     do
     {
-      v9 = *a4++;
+      v9 = *offsets++;
       v8 = v9;
-      if (LODWORD(a5.location) <= 0x1E)
+      if (LODWORD(range.location) <= 0x1E)
       {
-        if (*a3)
+        if (*buffers)
         {
-          v7 = *(*a3 + *v6 + 8) + v8;
+          v7 = *(*buffers + *v6 + 8) + v8;
         }
 
         else
@@ -345,25 +345,25 @@
           v7 = 291945216;
         }
 
-        *(impl[6] + 8 * LODWORD(a5.location)) = v7;
+        *(impl[6] + 8 * LODWORD(range.location)) = v7;
       }
 
-      ++LODWORD(a5.location);
-      ++a3;
-      --a5.length;
+      ++LODWORD(range.location);
+      ++buffers;
+      --range.length;
     }
 
-    while (a5.length);
+    while (range.length);
   }
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  if (a5 <= 0x1E)
+  if (index <= 0x1E)
   {
-    if (a3)
+    if (buffer)
     {
-      v5 = *(a3 + *MEMORY[0x29EDC5638] + 8) + a4;
+      v5 = *(buffer + *MEMORY[0x29EDC5638] + 8) + offset;
     }
 
     else
@@ -371,7 +371,7 @@
       v5 = 291945216;
     }
 
-    *(*(self->_impl + 6) + 8 * a5) = v5;
+    *(*(self->_impl + 6) + 8 * index) = v5;
   }
 }
 
@@ -384,7 +384,7 @@
     {
       v4 = pipelineState[424];
       os_unfair_lock_lock(v4);
-      v5 = [(AGXG18PFamilyUserIntersectionFunctionTable *)self resourceIndex];
+      resourceIndex = [(AGXG18PFamilyUserIntersectionFunctionTable *)self resourceIndex];
       v6 = *(v4 + 16);
       if (v6)
       {
@@ -392,16 +392,16 @@
         v7.i16[0] = vaddlv_u8(v7);
         if (v7.u32[0] > 1uLL)
         {
-          v8 = v5;
-          if (v5 >= *&v6)
+          v8 = resourceIndex;
+          if (resourceIndex >= *&v6)
           {
-            v8 = v5 % *&v6;
+            v8 = resourceIndex % *&v6;
           }
         }
 
         else
         {
-          v8 = (*&v6 - 1) & v5;
+          v8 = (*&v6 - 1) & resourceIndex;
         }
 
         v13 = *(*(v4 + 8) + 8 * v8);
@@ -416,9 +416,9 @@
               while (1)
               {
                 v17 = v14[1];
-                if (v17 == v5)
+                if (v17 == resourceIndex)
                 {
-                  if (v14[2] == v5)
+                  if (v14[2] == resourceIndex)
                   {
                     goto LABEL_45;
                   }
@@ -440,9 +440,9 @@
             do
             {
               v16 = v14[1];
-              if (v16 == v5)
+              if (v16 == resourceIndex)
               {
-                if (v14[2] == v5)
+                if (v14[2] == resourceIndex)
                 {
                   goto LABEL_45;
                 }
@@ -474,7 +474,7 @@
     {
       v4 = pipelineState[85];
       os_unfair_lock_lock(v4);
-      v9 = [(AGXG18PFamilyUserIntersectionFunctionTable *)self resourceIndex];
+      resourceIndex2 = [(AGXG18PFamilyUserIntersectionFunctionTable *)self resourceIndex];
       v10 = *(v4 + 16);
       if (v10)
       {
@@ -482,16 +482,16 @@
         v11.i16[0] = vaddlv_u8(v11);
         if (v11.u32[0] > 1uLL)
         {
-          v12 = v9;
-          if (v9 >= *&v10)
+          v12 = resourceIndex2;
+          if (resourceIndex2 >= *&v10)
           {
-            v12 = v9 % *&v10;
+            v12 = resourceIndex2 % *&v10;
           }
         }
 
         else
         {
-          v12 = (*&v10 - 1) & v9;
+          v12 = (*&v10 - 1) & resourceIndex2;
         }
 
         v18 = *(*(v4 + 8) + 8 * v12);
@@ -506,9 +506,9 @@
               while (1)
               {
                 v21 = v14[1];
-                if (v21 == v9)
+                if (v21 == resourceIndex2)
                 {
-                  if (v14[2] == v9)
+                  if (v14[2] == resourceIndex2)
                   {
                     goto LABEL_45;
                   }
@@ -530,9 +530,9 @@
             do
             {
               v20 = v14[1];
-              if (v20 == v9)
+              if (v20 == resourceIndex2)
               {
-                if (v14[2] == v9)
+                if (v14[2] == resourceIndex2)
                 {
 LABEL_45:
                   std::__hash_table<std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,AGX::WeakObjCPtr<AGXG18PFamilyVisibleFunctionTable>>>>::remove(&__p, (v4 + 8), v14);
@@ -633,17 +633,17 @@ LABEL_49:
   [(IOGPUMetalIntersectionFunctionTable *)&v30 dealloc];
 }
 
-- (id)clone:(id)a3 cloneTableHeap:(void *)a4 slProgramsTracker:(void *)a5
+- (id)clone:(id)clone cloneTableHeap:(void *)heap slProgramsTracker:(void *)tracker
 {
   v9 = [AGXG18PFamilyUserIntersectionFunctionTable alloc];
 
-  return [(AGXG18PFamilyUserIntersectionFunctionTable *)v9 initWithDevice:a3 originalTable:self cloneTableHeap:a4 slProgramsTracker:a5];
+  return [(AGXG18PFamilyUserIntersectionFunctionTable *)v9 initWithDevice:clone originalTable:self cloneTableHeap:heap slProgramsTracker:tracker];
 }
 
-- (AGXG18PFamilyUserIntersectionFunctionTable)initWithDevice:(id)a3 numTableFnSlots:(int)a4 pipelineSets:(const void *)a5 pipeline:(id)a6 stage:(int)a7 resourceIndex:(unsigned int)a8
+- (AGXG18PFamilyUserIntersectionFunctionTable)initWithDevice:(id)device numTableFnSlots:(int)slots pipelineSets:(const void *)sets pipeline:(id)pipeline stage:(int)stage resourceIndex:(unsigned int)index
 {
-  self->_stage = a7;
-  self->_pipelineState = a6;
+  self->_stage = stage;
+  self->_pipelineState = pipeline;
   operator new();
 }
 

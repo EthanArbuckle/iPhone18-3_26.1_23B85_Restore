@@ -1,8 +1,8 @@
 @interface JSOrderedPlaylistSelectorModelRequest
 - (_TtC16MusicApplication37JSOrderedPlaylistSelectorModelRequest)init;
-- (_TtC16MusicApplication37JSOrderedPlaylistSelectorModelRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(void *)a3;
-- (id)newOperationWithResponseHandler:(id)a3;
+- (_TtC16MusicApplication37JSOrderedPlaylistSelectorModelRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(void *)zone;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation JSOrderedPlaylistSelectorModelRequest
@@ -16,7 +16,7 @@
   return [(JSOrderedPlaylistSelectorModelRequest *)&v5 init];
 }
 
-- (_TtC16MusicApplication37JSOrderedPlaylistSelectorModelRequest)initWithCoder:(id)a3
+- (_TtC16MusicApplication37JSOrderedPlaylistSelectorModelRequest)initWithCoder:(id)coder
 {
   swift_getObjectType();
   *&self->MPModelRequest_opaque[OBJC_IVAR____TtC16MusicApplication37JSOrderedPlaylistSelectorModelRequest_orderedPlaylistSelector] = 0;
@@ -24,10 +24,10 @@
   return 0;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_4CCA40(a3, v7);
+  selfCopy = self;
+  sub_4CCA40(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_ABB3A0();
@@ -35,13 +35,13 @@
   return v5;
 }
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
   swift_getObjectType();
-  v5 = _Block_copy(a3);
+  v5 = _Block_copy(handler);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = JSViewModelRequestCoordinator.sharedCoordinator.unsafeMutableAddressor();
   v9 = *v8;
   v10 = *(**v8 + 144);
@@ -54,7 +54,7 @@
   *(v13 + 5) = v6;
   v14 = type metadata accessor for JSOrderedPlaylistSelectorRequestOperation();
   v15 = objc_allocWithZone(v14);
-  [(JSOrderedPlaylistSelectorModelRequest *)v7 copy];
+  [(JSOrderedPlaylistSelectorModelRequest *)selfCopy copy];
   sub_ABAB50();
   swift_dynamicCast();
   *&v15[OBJC_IVAR____TtC16MusicApplicationP33_80AE2528D20BB280B10BEE706541B0E941JSOrderedPlaylistSelectorRequestOperation_request] = v20;

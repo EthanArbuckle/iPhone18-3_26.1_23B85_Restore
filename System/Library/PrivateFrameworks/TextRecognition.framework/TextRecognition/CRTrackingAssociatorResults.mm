@@ -1,32 +1,32 @@
 @interface CRTrackingAssociatorResults
-- (void)initWithTotalError:(void *)a3 tracked:(void *)a4 updatedRegionIDs:(void *)a5 removedRegionIDs:(double)a6 addedRegionIDs:;
+- (void)initWithTotalError:(void *)error tracked:(void *)tracked updatedRegionIDs:(void *)ds removedRegionIDs:(double)iDs addedRegionIDs:;
 @end
 
 @implementation CRTrackingAssociatorResults
 
-- (void)initWithTotalError:(void *)a3 tracked:(void *)a4 updatedRegionIDs:(void *)a5 removedRegionIDs:(double)a6 addedRegionIDs:
+- (void)initWithTotalError:(void *)error tracked:(void *)tracked updatedRegionIDs:(void *)ds removedRegionIDs:(double)iDs addedRegionIDs:
 {
   v11 = a2;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (a1)
+  errorCopy = error;
+  trackedCopy = tracked;
+  dsCopy = ds;
+  if (self)
   {
-    v17.receiver = a1;
+    v17.receiver = self;
     v17.super_class = CRTrackingAssociatorResults;
     v15 = objc_msgSendSuper2(&v17, sel_init);
-    a1 = v15;
+    self = v15;
     if (v15)
     {
-      [v15 setTotalError:a6];
-      [a1 setTracked:v11];
-      [a1 setUpdatedRegionIDs:v12];
-      [a1 setRemovedRegionIDs:v13];
-      [a1 setAddedRegionIDs:v14];
+      [v15 setTotalError:iDs];
+      [self setTracked:v11];
+      [self setUpdatedRegionIDs:errorCopy];
+      [self setRemovedRegionIDs:trackedCopy];
+      [self setAddedRegionIDs:dsCopy];
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

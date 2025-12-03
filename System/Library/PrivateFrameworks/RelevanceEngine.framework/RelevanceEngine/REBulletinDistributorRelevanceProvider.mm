@@ -1,8 +1,8 @@
 @interface REBulletinDistributorRelevanceProvider
-- (BOOL)isEqual:(id)a3;
-- (REBulletinDistributorRelevanceProvider)initWithBulletinSectionIdentifier:(id)a3;
-- (REBulletinDistributorRelevanceProvider)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (REBulletinDistributorRelevanceProvider)initWithBulletinSectionIdentifier:(id)identifier;
+- (REBulletinDistributorRelevanceProvider)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 - (unint64_t)_hash;
@@ -10,15 +10,15 @@
 
 @implementation REBulletinDistributorRelevanceProvider
 
-- (REBulletinDistributorRelevanceProvider)initWithBulletinSectionIdentifier:(id)a3
+- (REBulletinDistributorRelevanceProvider)initWithBulletinSectionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = REBulletinDistributorRelevanceProvider;
   v5 = [(RERelevanceProvider *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bulletinSectionIdentifier = v5->_bulletinSectionIdentifier;
     v5->_bulletinSectionIdentifier = v6;
   }
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (REBulletinDistributorRelevanceProvider)initWithDictionary:(id)a3
+- (REBulletinDistributorRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 objectForKeyedSubscript:@"bulletin_section"];
+  v4 = [dictionary objectForKeyedSubscript:@"bulletin_section"];
   v5 = v4;
   v6 = &stru_283B97458;
   if (v4)
@@ -54,11 +54,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = REBulletinDistributorRelevanceProvider;
-  v4 = [(RERelevanceProvider *)&v8 copyWithZone:a3];
+  v4 = [(RERelevanceProvider *)&v8 copyWithZone:zone];
   v5 = [(NSString *)self->_bulletinSectionIdentifier copy];
   v6 = v4[4];
   v4[4] = v5;
@@ -66,10 +66,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -78,9 +78,9 @@
   {
     v7.receiver = self;
     v7.super_class = REBulletinDistributorRelevanceProvider;
-    if ([(RERelevanceProvider *)&v7 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(RERelevanceProvider *)&v7 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = [(NSString *)v4->_bulletinSectionIdentifier isEqual:self->_bulletinSectionIdentifier];
+      v5 = [(NSString *)equalCopy->_bulletinSectionIdentifier isEqual:self->_bulletinSectionIdentifier];
     }
 
     else
@@ -96,8 +96,8 @@
 {
   v5.receiver = self;
   v5.super_class = REBulletinDistributorRelevanceProvider;
-  v3 = [(RERelevanceProvider *)&v5 _hash];
-  return [(NSString *)self->_bulletinSectionIdentifier hash]^ v3;
+  _hash = [(RERelevanceProvider *)&v5 _hash];
+  return [(NSString *)self->_bulletinSectionIdentifier hash]^ _hash;
 }
 
 - (id)description

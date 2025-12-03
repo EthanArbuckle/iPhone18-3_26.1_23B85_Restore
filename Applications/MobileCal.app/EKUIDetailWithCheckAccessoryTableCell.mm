@@ -1,14 +1,14 @@
 @interface EKUIDetailWithCheckAccessoryTableCell
-- (EKUIDetailWithCheckAccessoryTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (EKUIDetailWithCheckAccessoryTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 @end
 
 @implementation EKUIDetailWithCheckAccessoryTableCell
 
-- (EKUIDetailWithCheckAccessoryTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (EKUIDetailWithCheckAccessoryTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v47.receiver = self;
   v47.super_class = EKUIDetailWithCheckAccessoryTableCell;
-  v4 = [(EKUIDetailWithCheckAccessoryTableCell *)&v47 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(EKUIDetailWithCheckAccessoryTableCell *)&v47 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[UITableViewCell alloc] initWithStyle:1 reuseIdentifier:&stru_1002133B8];
@@ -18,14 +18,14 @@
     v4->_detailLabel = v6;
 
     [(UILabel *)v4->_detailLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [v5 detailTextLabel];
-    v9 = [v8 font];
-    [(UILabel *)v4->_detailLabel setFont:v9];
+    detailTextLabel = [v5 detailTextLabel];
+    font = [detailTextLabel font];
+    [(UILabel *)v4->_detailLabel setFont:font];
 
     v46 = v5;
-    v10 = [v5 detailTextLabel];
-    v11 = [v10 textColor];
-    [(UILabel *)v4->_detailLabel setTextColor:v11];
+    detailTextLabel2 = [v5 detailTextLabel];
+    textColor = [detailTextLabel2 textColor];
+    [(UILabel *)v4->_detailLabel setTextColor:textColor];
 
     LODWORD(v12) = 1144750080;
     [(UILabel *)v4->_detailLabel setContentHuggingPriority:0 forAxis:v12];
@@ -35,46 +35,46 @@
     v4->_titleLabel = v13;
 
     [(UILabel *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [v5 textLabel];
-    v16 = [v15 font];
-    [(UILabel *)v4->_titleLabel setFont:v16];
+    textLabel = [v5 textLabel];
+    font2 = [textLabel font];
+    [(UILabel *)v4->_titleLabel setFont:font2];
 
-    v17 = [v5 textLabel];
-    v18 = [v17 textColor];
-    [(UILabel *)v4->_titleLabel setTextColor:v18];
+    textLabel2 = [v5 textLabel];
+    textColor2 = [textLabel2 textColor];
+    [(UILabel *)v4->_titleLabel setTextColor:textColor2];
 
-    v19 = [(EKUIDetailWithCheckAccessoryTableCell *)v4 contentView];
-    [v19 addSubview:v4->_titleLabel];
+    contentView = [(EKUIDetailWithCheckAccessoryTableCell *)v4 contentView];
+    [contentView addSubview:v4->_titleLabel];
 
-    v45 = [(EKUIDetailWithCheckAccessoryTableCell *)v4 trailingAnchor];
-    v44 = [(UILabel *)v4->_detailLabel trailingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44 constant:46.0];
+    trailingAnchor = [(EKUIDetailWithCheckAccessoryTableCell *)v4 trailingAnchor];
+    trailingAnchor2 = [(UILabel *)v4->_detailLabel trailingAnchor];
+    v43 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:46.0];
     v48[0] = v43;
-    v42 = [(UILabel *)v4->_detailLabel firstBaselineAnchor];
-    v41 = [(UILabel *)v4->_titleLabel firstBaselineAnchor];
-    v40 = [v42 constraintEqualToAnchor:v41];
+    firstBaselineAnchor = [(UILabel *)v4->_detailLabel firstBaselineAnchor];
+    firstBaselineAnchor2 = [(UILabel *)v4->_titleLabel firstBaselineAnchor];
+    v40 = [firstBaselineAnchor constraintEqualToAnchor:firstBaselineAnchor2];
     v48[1] = v40;
-    v38 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v39 = [(EKUIDetailWithCheckAccessoryTableCell *)v4 contentView];
-    v37 = [v39 layoutMarginsGuide];
-    v36 = [v37 leadingAnchor];
-    v35 = [v38 constraintEqualToAnchor:v36];
+    leadingAnchor = [(UILabel *)v4->_titleLabel leadingAnchor];
+    contentView2 = [(EKUIDetailWithCheckAccessoryTableCell *)v4 contentView];
+    layoutMarginsGuide = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v48[2] = v35;
-    v34 = [(UILabel *)v4->_detailLabel leadingAnchor];
-    v33 = [(UILabel *)v4->_titleLabel trailingAnchor];
-    v32 = [v34 constraintEqualToSystemSpacingAfterAnchor:v33 multiplier:1.0];
+    leadingAnchor3 = [(UILabel *)v4->_detailLabel leadingAnchor];
+    trailingAnchor3 = [(UILabel *)v4->_titleLabel trailingAnchor];
+    v32 = [leadingAnchor3 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor3 multiplier:1.0];
     v48[3] = v32;
-    v30 = [(UILabel *)v4->_titleLabel topAnchor];
-    v31 = [(EKUIDetailWithCheckAccessoryTableCell *)v4 contentView];
-    v20 = [v31 layoutMarginsGuide];
-    v21 = [v20 topAnchor];
-    v22 = [v30 constraintEqualToAnchor:v21];
+    topAnchor = [(UILabel *)v4->_titleLabel topAnchor];
+    contentView3 = [(EKUIDetailWithCheckAccessoryTableCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide2 topAnchor];
+    v22 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v48[4] = v22;
-    v23 = [(UILabel *)v4->_titleLabel bottomAnchor];
-    v24 = [(EKUIDetailWithCheckAccessoryTableCell *)v4 contentView];
-    v25 = [v24 layoutMarginsGuide];
-    v26 = [v25 bottomAnchor];
-    v27 = [v23 constraintEqualToAnchor:v26];
+    bottomAnchor = [(UILabel *)v4->_titleLabel bottomAnchor];
+    contentView4 = [(EKUIDetailWithCheckAccessoryTableCell *)v4 contentView];
+    layoutMarginsGuide3 = [contentView4 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide3 bottomAnchor];
+    v27 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v48[5] = v27;
     v28 = [NSArray arrayWithObjects:v48 count:6];
     [NSLayoutConstraint activateConstraints:v28];

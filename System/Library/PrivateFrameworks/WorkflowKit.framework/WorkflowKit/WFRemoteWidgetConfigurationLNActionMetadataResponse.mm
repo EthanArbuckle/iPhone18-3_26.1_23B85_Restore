@@ -1,20 +1,20 @@
 @interface WFRemoteWidgetConfigurationLNActionMetadataResponse
-- (WFRemoteWidgetConfigurationLNActionMetadataResponse)initWithCoder:(id)a3;
-- (WFRemoteWidgetConfigurationLNActionMetadataResponse)initWithMetadata:(id)a3 error:(id)a4;
+- (WFRemoteWidgetConfigurationLNActionMetadataResponse)initWithCoder:(id)coder;
+- (WFRemoteWidgetConfigurationLNActionMetadataResponse)initWithMetadata:(id)metadata error:(id)error;
 - (id)description;
 @end
 
 @implementation WFRemoteWidgetConfigurationLNActionMetadataResponse
 
-- (WFRemoteWidgetConfigurationLNActionMetadataResponse)initWithCoder:(id)a3
+- (WFRemoteWidgetConfigurationLNActionMetadataResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFRemoteWidgetConfigurationLNActionMetadataResponse;
-  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFRemoteWidgetConfigurationResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"metadata"];
     metadata = v5->_metadata;
     v5->_metadata = v6;
 
@@ -27,23 +27,23 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WFRemoteWidgetConfigurationLNActionMetadataResponse *)self metadata];
-  v5 = [(WFRemoteWidgetConfigurationResponse *)self error];
-  v6 = [v3 stringWithFormat:@"metadata: %@, error: %@", v4, v5];
+  metadata = [(WFRemoteWidgetConfigurationLNActionMetadataResponse *)self metadata];
+  error = [(WFRemoteWidgetConfigurationResponse *)self error];
+  v6 = [v3 stringWithFormat:@"metadata: %@, error: %@", metadata, error];
 
   return v6;
 }
 
-- (WFRemoteWidgetConfigurationLNActionMetadataResponse)initWithMetadata:(id)a3 error:(id)a4
+- (WFRemoteWidgetConfigurationLNActionMetadataResponse)initWithMetadata:(id)metadata error:(id)error
 {
-  v7 = a3;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = WFRemoteWidgetConfigurationLNActionMetadataResponse;
-  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:a4];
+  v8 = [(WFRemoteWidgetConfigurationResponse *)&v12 initWithError:error];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_metadata, a3);
+    objc_storeStrong(&v8->_metadata, metadata);
     v10 = v9;
   }
 

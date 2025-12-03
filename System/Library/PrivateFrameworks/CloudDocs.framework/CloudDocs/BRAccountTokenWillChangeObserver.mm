@@ -1,13 +1,13 @@
 @interface BRAccountTokenWillChangeObserver
-- (BRAccountTokenWillChangeObserver)initWithPersonaID:(id)a3;
+- (BRAccountTokenWillChangeObserver)initWithPersonaID:(id)d;
 - (void)_accountWillChange;
 @end
 
 @implementation BRAccountTokenWillChangeObserver
 
-- (BRAccountTokenWillChangeObserver)initWithPersonaID:(id)a3
+- (BRAccountTokenWillChangeObserver)initWithPersonaID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = brc_bread_crumbs("[BRAccountTokenWillChangeObserver initWithPersonaID:]", 44);
   v6 = brc_default_log(1, 0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -16,12 +16,12 @@
   }
 
   personaID = self->_personaID;
-  self->_personaID = v4;
-  v8 = v4;
+  self->_personaID = dCopy;
+  v8 = dCopy;
 
   +[BRAccount startAccountTokenChangeObserverIfNeeded];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:self selector:sel__accountWillChange name:@"BRAccountTokenWillChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accountWillChange name:@"BRAccountTokenWillChangeNotification" object:0];
 
   return self;
 }
@@ -29,7 +29,7 @@
 - (void)_accountWillChange
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = [a1 personaID];
+  personaID = [self personaID];
   OUTLINED_FUNCTION_1();
   v8 = a2;
   _os_log_debug_impl(&dword_1AE2A9000, a3, OS_LOG_TYPE_DEBUG, "[DEBUG] received token change notification, invalidating cache for persona: %@%@", v7, 0x16u);

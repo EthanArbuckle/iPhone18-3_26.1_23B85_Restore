@@ -1,7 +1,7 @@
 @interface ASFSuggestionsController
 + (id)sharedController;
 - (ASFSuggestionsController)init;
-- (ASFSuggestionsController)initWithLockScreenSuggestionManager:(id)a3;
+- (ASFSuggestionsController)initWithLockScreenSuggestionManager:(id)manager;
 - (id)__loadDisabledShortcuts;
 - (id)__loadDisabledSuggestApps;
 - (id)_loadDisabledShortcutsSet;
@@ -38,16 +38,16 @@ uint64_t __44__ASFSuggestionsController_sharedController__block_invoke()
   return v4;
 }
 
-- (ASFSuggestionsController)initWithLockScreenSuggestionManager:(id)a3
+- (ASFSuggestionsController)initWithLockScreenSuggestionManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = ASFSuggestionsController;
   v6 = [(ASFSuggestionsController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lockScreenSuggestionManager, a3);
+    objc_storeStrong(&v6->_lockScreenSuggestionManager, manager);
     [(ASFSuggestionsController *)v7 _loadApps];
   }
 
@@ -80,9 +80,9 @@ uint64_t __44__ASFSuggestionsController_sharedController__block_invoke()
   disabledSpotlightBundles = self->_disabledSpotlightBundles;
   self->_disabledSpotlightBundles = v5;
 
-  v7 = [(ASFLockScreenSuggestionManaging *)self->_lockScreenSuggestionManager disabledLockScreenBundles];
+  disabledLockScreenBundles = [(ASFLockScreenSuggestionManaging *)self->_lockScreenSuggestionManager disabledLockScreenBundles];
   disabledLockScreenBundles = self->_disabledLockScreenBundles;
-  self->_disabledLockScreenBundles = v7;
+  self->_disabledLockScreenBundles = disabledLockScreenBundles;
 
   v18 = 0;
   v19 = &v18;
@@ -101,30 +101,30 @@ uint64_t __44__ASFSuggestionsController_sharedController__block_invoke()
   if (!v9)
   {
 LABEL_9:
-    v17 = [ASFAvailableSuggestionAppsController _allVisibleAppBundleIds];
+    _allVisibleAppBundleIds = [ASFAvailableSuggestionAppsController _allVisibleAppBundleIds];
     _Block_object_dispose(&v18, 8);
-    _Unwind_Resume(v17);
+    _Unwind_Resume(_allVisibleAppBundleIds);
   }
 
   v11 = v9(1);
   disabledSpotlightApps = self->_disabledSpotlightApps;
   self->_disabledSpotlightApps = v11;
 
-  v13 = [(ASFSuggestionsController *)self _loadDisabledShortcutsSet];
+  _loadDisabledShortcutsSet = [(ASFSuggestionsController *)self _loadDisabledShortcutsSet];
   disabledSpotlightShortcuts = self->_disabledSpotlightShortcuts;
-  self->_disabledSpotlightShortcuts = v13;
+  self->_disabledSpotlightShortcuts = _loadDisabledShortcutsSet;
 
-  v15 = [(ASFSuggestionsController *)self _loadDisabledSuggestAppsSet];
+  _loadDisabledSuggestAppsSet = [(ASFSuggestionsController *)self _loadDisabledSuggestAppsSet];
   disabledSuggestApps = self->_disabledSuggestApps;
-  self->_disabledSuggestApps = v15;
+  self->_disabledSuggestApps = _loadDisabledSuggestAppsSet;
 }
 
 - (id)_loadDisabledShortcutsSet
 {
-  v2 = [(ASFSuggestionsController *)self __loadDisabledShortcuts];
-  if (v2)
+  __loadDisabledShortcuts = [(ASFSuggestionsController *)self __loadDisabledShortcuts];
+  if (__loadDisabledShortcuts)
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v2];
+    v3 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:__loadDisabledShortcuts];
   }
 
   else
@@ -146,10 +146,10 @@ LABEL_9:
 
 - (id)_loadDisabledSuggestAppsSet
 {
-  v2 = [(ASFSuggestionsController *)self __loadDisabledSuggestApps];
-  if (v2)
+  __loadDisabledSuggestApps = [(ASFSuggestionsController *)self __loadDisabledSuggestApps];
+  if (__loadDisabledSuggestApps)
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:v2];
+    v3 = [objc_alloc(MEMORY[0x277CBEB58]) initWithArray:__loadDisabledSuggestApps];
   }
 
   else

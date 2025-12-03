@@ -1,6 +1,6 @@
 @interface _PXPhotosGridContainerUIView
 - (_PXPhotosGridContainerDelegate)delegate;
-- (void)willMoveToWindow:(id)a3;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation _PXPhotosGridContainerUIView
@@ -12,14 +12,14 @@
   return WeakRetained;
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v6.receiver = self;
   v6.super_class = _PXPhotosGridContainerUIView;
-  v4 = a3;
-  [(_PXPhotosGridContainerUIView *)&v6 willMoveToWindow:v4];
+  windowCopy = window;
+  [(_PXPhotosGridContainerUIView *)&v6 willMoveToWindow:windowCopy];
   v5 = [(_PXPhotosGridContainerUIView *)self delegate:v6.receiver];
-  [v5 containerView:self willMoveToWindow:v4];
+  [v5 containerView:self willMoveToWindow:windowCopy];
 }
 
 @end

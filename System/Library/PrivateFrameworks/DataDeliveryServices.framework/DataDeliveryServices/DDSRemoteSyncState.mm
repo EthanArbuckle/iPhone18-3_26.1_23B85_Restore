@@ -2,18 +2,18 @@
 + (double)timeIntervalUntilNextRegularUpdate;
 - (BOOL)shouldInitiateRegularUpdateCycle;
 - (BOOL)shouldRequestCompleteRefresh;
-- (DDSRemoteSyncState)initWithDelegate:(id)a3 assetType:(id)a4;
+- (DDSRemoteSyncState)initWithDelegate:(id)delegate assetType:(id)type;
 - (DDSRemoteSyncStateDelegate)delegate;
 - (NSString)metadataSyncStatePreferenceKey;
 - (NSString)scheduleRetryIdentifier;
 - (NSString)scheduleUpdateIdentifier;
-- (double)nextUpdateTimeIntervalForAttemptCount:(unint64_t)a3;
+- (double)nextUpdateTimeIntervalForAttemptCount:(unint64_t)count;
 - (double)timeBetweenSyncs;
 - (void)beganUpdateCycle;
-- (void)completedUpdateCycleWithError:(id)a3;
+- (void)completedUpdateCycleWithError:(id)error;
 - (void)loadState;
 - (void)loadStateAndScheduleUpdate;
-- (void)performScheduledActivityWithIdentifier:(id)a3;
+- (void)performScheduledActivityWithIdentifier:(id)identifier;
 - (void)requestCompleteRefresh;
 - (void)requestRetry;
 - (void)requestUpdate;
@@ -25,29 +25,29 @@
 
 @implementation DDSRemoteSyncState
 
-- (DDSRemoteSyncState)initWithDelegate:(id)a3 assetType:(id)a4
+- (DDSRemoteSyncState)initWithDelegate:(id)delegate assetType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = DDSRemoteSyncState;
   v8 = [(DDSRemoteSyncState *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    v8->_assetType = v7;
-    [(DDSRemoteSyncState *)v8 setDelegate:v6];
+    v8->_assetType = typeCopy;
+    [(DDSRemoteSyncState *)v8 setDelegate:delegateCopy];
     v10 = objc_alloc_init(DDSBackgroundActivityScheduler);
     [(DDSRemoteSyncState *)v9 setScheduler:v10];
 
-    v11 = [(DDSRemoteSyncState *)v9 scheduler];
-    [v11 setDelegate:v9];
+    scheduler = [(DDSRemoteSyncState *)v9 scheduler];
+    [scheduler setDelegate:v9];
 
-    v12 = [MEMORY[0x1E695DF00] date];
-    [(DDSRemoteSyncState *)v9 setDate:v12];
+    date = [MEMORY[0x1E695DF00] date];
+    [(DDSRemoteSyncState *)v9 setDate:date];
 
-    v13 = [objc_opt_class() buildVersionString];
-    [(DDSRemoteSyncState *)v9 setBuildVersion:v13];
+    buildVersionString = [objc_opt_class() buildVersionString];
+    [(DDSRemoteSyncState *)v9 setBuildVersion:buildVersionString];
 
     [(DDSRemoteSyncState *)v9 setSyncStatus:0];
   }
@@ -74,15 +74,15 @@
 
 - (NSString)scheduleUpdateIdentifier
 {
-  v3 = [(DDSRemoteSyncState *)self assetType];
-  v4 = [v3 isEqualToString:@"com.apple.MobileAsset.LinguisticData"];
+  assetType = [(DDSRemoteSyncState *)self assetType];
+  v4 = [assetType isEqualToString:@"com.apple.MobileAsset.LinguisticData"];
 
   v5 = @"com.apple.DataDeliveryServices.update";
   if ((v4 & 1) == 0)
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [(DDSRemoteSyncState *)self assetType];
-    v5 = [v6 initWithFormat:@"%@.%@", @"com.apple.DataDeliveryServices.update", v7];
+    assetType2 = [(DDSRemoteSyncState *)self assetType];
+    v5 = [v6 initWithFormat:@"%@.%@", @"com.apple.DataDeliveryServices.update", assetType2];
   }
 
   return v5;
@@ -90,15 +90,15 @@
 
 - (NSString)scheduleRetryIdentifier
 {
-  v3 = [(DDSRemoteSyncState *)self assetType];
-  v4 = [v3 isEqualToString:@"com.apple.MobileAsset.LinguisticData"];
+  assetType = [(DDSRemoteSyncState *)self assetType];
+  v4 = [assetType isEqualToString:@"com.apple.MobileAsset.LinguisticData"];
 
   v5 = @"com.apple.DataDeliveryServices.retry";
   if ((v4 & 1) == 0)
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [(DDSRemoteSyncState *)self assetType];
-    v5 = [v6 initWithFormat:@"%@.%@", @"com.apple.DataDeliveryServices.retry", v7];
+    assetType2 = [(DDSRemoteSyncState *)self assetType];
+    v5 = [v6 initWithFormat:@"%@.%@", @"com.apple.DataDeliveryServices.retry", assetType2];
   }
 
   return v5;
@@ -108,42 +108,42 @@
 {
   [(DDSRemoteSyncState *)self timeBetweenSyncs];
   v4 = v3;
-  v6 = [(DDSRemoteSyncState *)self scheduler];
-  v5 = [(DDSRemoteSyncState *)self scheduleUpdateIdentifier];
-  [v6 scheduleActivityWithIdentifier:v5 interval:v4 tolerance:v4 * 0.5];
+  scheduler = [(DDSRemoteSyncState *)self scheduler];
+  scheduleUpdateIdentifier = [(DDSRemoteSyncState *)self scheduleUpdateIdentifier];
+  [scheduler scheduleActivityWithIdentifier:scheduleUpdateIdentifier interval:v4 tolerance:v4 * 0.5];
 }
 
 - (void)scheduleRetry
 {
   [(DDSRemoteSyncState *)self nextUpdateTimeIntervalForAttemptCount:[(DDSRemoteSyncState *)self attemptCount]];
   v4 = v3;
-  v6 = [(DDSRemoteSyncState *)self scheduler];
-  v5 = [(DDSRemoteSyncState *)self scheduleRetryIdentifier];
-  [v6 scheduleActivityWithIdentifier:v5 interval:v4 tolerance:v4 * 0.5];
+  scheduler = [(DDSRemoteSyncState *)self scheduler];
+  scheduleRetryIdentifier = [(DDSRemoteSyncState *)self scheduleRetryIdentifier];
+  [scheduler scheduleActivityWithIdentifier:scheduleRetryIdentifier interval:v4 tolerance:v4 * 0.5];
 }
 
 - (BOOL)shouldRequestCompleteRefresh
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() buildVersionString];
-  v4 = [(DDSRemoteSyncState *)self buildVersion];
-  v5 = [v3 isEqualToString:v4];
+  buildVersionString = [objc_opt_class() buildVersionString];
+  buildVersion = [(DDSRemoteSyncState *)self buildVersion];
+  v5 = [buildVersionString isEqualToString:buildVersion];
 
   if ((v5 & 1) == 0)
   {
     v6 = UpdateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(DDSRemoteSyncState *)self buildVersion];
+      buildVersion2 = [(DDSRemoteSyncState *)self buildVersion];
       v11 = 138412546;
-      v12 = v3;
+      v12 = buildVersionString;
       v13 = 2112;
-      v14 = v7;
+      v14 = buildVersion2;
       _os_log_impl(&dword_1DF7C6000, v6, OS_LOG_TYPE_DEFAULT, "Determined new build version: %@, previously on: %@", &v11, 0x16u);
     }
 
-    v8 = [objc_opt_class() buildVersionString];
-    [(DDSRemoteSyncState *)self setBuildVersion:v8];
+    buildVersionString2 = [objc_opt_class() buildVersionString];
+    [(DDSRemoteSyncState *)self setBuildVersion:buildVersionString2];
   }
 
   v9 = *MEMORY[0x1E69E9840];
@@ -155,21 +155,21 @@
   v17 = *MEMORY[0x1E69E9840];
   if ([(DDSRemoteSyncState *)self syncStatus]|| [(DDSRemoteSyncState *)self attemptCount]> 9)
   {
-    v5 = [(DDSRemoteSyncState *)self date];
-    [v5 timeIntervalSinceNow];
+    date = [(DDSRemoteSyncState *)self date];
+    [date timeIntervalSinceNow];
     v4 = v6 < -86400.0;
 
     v3 = UpdateLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [(DDSRemoteSyncState *)self date];
-      [v7 timeIntervalSinceNow];
+      date2 = [(DDSRemoteSyncState *)self date];
+      [date2 timeIntervalSinceNow];
       v9 = -v8;
-      v10 = [(DDSRemoteSyncState *)self date];
+      date3 = [(DDSRemoteSyncState *)self date];
       v13 = 134218242;
       v14 = v9;
       v15 = 2112;
-      v16 = v10;
+      v16 = date3;
       _os_log_impl(&dword_1DF7C6000, v3, OS_LOG_TYPE_DEFAULT, "Time elapsed since last update: %f, date: %@", &v13, 0x16u);
     }
   }
@@ -199,18 +199,18 @@
   }
 }
 
-- (void)completedUpdateCycleWithError:(id)a3
+- (void)completedUpdateCycleWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
-    v5 = [MEMORY[0x1E695DF00] date];
-    [(DDSRemoteSyncState *)self setDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    [(DDSRemoteSyncState *)self setDate:date];
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 2;
 LABEL_9:
-    [(DDSRemoteSyncState *)v6 setSyncStatus:v7];
+    [(DDSRemoteSyncState *)selfCopy2 setSyncStatus:v7];
     [(DDSRemoteSyncState *)self setAttemptCount:0];
     goto LABEL_10;
   }
@@ -224,7 +224,7 @@ LABEL_9:
       _os_log_impl(&dword_1DF7C6000, v8, OS_LOG_TYPE_DEFAULT, "Sync failed, giving up for today", v10, 2u);
     }
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 3;
     goto LABEL_9;
   }
@@ -252,9 +252,9 @@ LABEL_10:
 
 - (void)requestUpdate
 {
-  v4 = [(DDSRemoteSyncState *)self delegate];
-  v3 = [(DDSRemoteSyncState *)self assetType];
-  [v4 remoteSyncStateRequestsUpdateForAssetType:v3];
+  delegate = [(DDSRemoteSyncState *)self delegate];
+  assetType = [(DDSRemoteSyncState *)self assetType];
+  [delegate remoteSyncStateRequestsUpdateForAssetType:assetType];
 }
 
 - (void)requestRetry
@@ -266,9 +266,9 @@ LABEL_10:
     _os_log_impl(&dword_1DF7C6000, v3, OS_LOG_TYPE_DEFAULT, "Requesting retry...", v6, 2u);
   }
 
-  v4 = [(DDSRemoteSyncState *)self delegate];
-  v5 = [(DDSRemoteSyncState *)self assetType];
-  [v4 remoteSyncStateRequestsRetryForAssetType:v5];
+  delegate = [(DDSRemoteSyncState *)self delegate];
+  assetType = [(DDSRemoteSyncState *)self assetType];
+  [delegate remoteSyncStateRequestsRetryForAssetType:assetType];
 }
 
 - (void)requestCompleteRefresh
@@ -280,16 +280,16 @@ LABEL_10:
     _os_log_impl(&dword_1DF7C6000, v3, OS_LOG_TYPE_DEFAULT, "Requesting complete refresh...", v6, 2u);
   }
 
-  v4 = [(DDSRemoteSyncState *)self delegate];
-  v5 = [(DDSRemoteSyncState *)self assetType];
-  [v4 remoteSyncStateRequestsResetForAssetType:v5];
+  delegate = [(DDSRemoteSyncState *)self delegate];
+  assetType = [(DDSRemoteSyncState *)self assetType];
+  [delegate remoteSyncStateRequestsResetForAssetType:assetType];
 }
 
-- (void)performScheduledActivityWithIdentifier:(id)a3
+- (void)performScheduledActivityWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = [(DDSRemoteSyncState *)self scheduleUpdateIdentifier];
-  v5 = [v8 isEqualToString:v4];
+  identifierCopy = identifier;
+  scheduleUpdateIdentifier = [(DDSRemoteSyncState *)self scheduleUpdateIdentifier];
+  v5 = [identifierCopy isEqualToString:scheduleUpdateIdentifier];
 
   if (v5)
   {
@@ -300,8 +300,8 @@ LABEL_10:
 
   else
   {
-    v6 = [(DDSRemoteSyncState *)self scheduleRetryIdentifier];
-    v7 = [v8 isEqualToString:v6];
+    scheduleRetryIdentifier = [(DDSRemoteSyncState *)self scheduleRetryIdentifier];
+    v7 = [identifierCopy isEqualToString:scheduleRetryIdentifier];
 
     if (v7)
     {
@@ -312,15 +312,15 @@ LABEL_10:
 
 - (NSString)metadataSyncStatePreferenceKey
 {
-  v3 = [(DDSRemoteSyncState *)self assetType];
-  v4 = [v3 isEqualToString:@"com.apple.MobileAsset.LinguisticData"];
+  assetType = [(DDSRemoteSyncState *)self assetType];
+  v4 = [assetType isEqualToString:@"com.apple.MobileAsset.LinguisticData"];
 
   v5 = @"MetadataSyncState";
   if ((v4 & 1) == 0)
   {
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v7 = [(DDSRemoteSyncState *)self assetType];
-    v5 = [v6 initWithFormat:@"%@.%@", @"MetadataSyncState", v7];
+    assetType2 = [(DDSRemoteSyncState *)self assetType];
+    v5 = [v6 initWithFormat:@"%@.%@", @"MetadataSyncState", assetType2];
   }
 
   return v5;
@@ -337,22 +337,22 @@ LABEL_10:
 - (void)loadState
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(DDSRemoteSyncState *)self metadataSyncStatePreferenceKey];
-  v4 = DDSGetPreferenceObjectForKey(v3);
+  metadataSyncStatePreferenceKey = [(DDSRemoteSyncState *)self metadataSyncStatePreferenceKey];
+  v4 = DDSGetPreferenceObjectForKey(metadataSyncStatePreferenceKey);
 
   v5 = [v4 objectForKey:@"Date"];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    date = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
   }
 
-  v8 = v7;
+  v8 = date;
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -360,23 +360,23 @@ LABEL_10:
     [DDSRemoteSyncState loadState];
   }
 
-  v9 = [MEMORY[0x1E695DF00] date];
-  v10 = [v8 earlierDate:v9];
+  date2 = [MEMORY[0x1E695DF00] date];
+  v10 = [v8 earlierDate:date2];
   [(DDSRemoteSyncState *)self setDate:v10];
 
   v11 = [v4 objectForKey:@"BuildVersion"];
   v12 = v11;
   if (v11)
   {
-    v13 = v11;
+    buildVersionString = v11;
   }
 
   else
   {
-    v13 = [objc_opt_class() buildVersionString];
+    buildVersionString = [objc_opt_class() buildVersionString];
   }
 
-  v14 = v13;
+  v14 = buildVersionString;
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -386,19 +386,19 @@ LABEL_10:
 
   [(DDSRemoteSyncState *)self setBuildVersion:v14];
   v15 = [v4 objectForKey:@"Status"];
-  v16 = [v15 integerValue];
+  integerValue = [v15 integerValue];
 
-  if (v16 == 1)
+  if (integerValue == 1)
   {
     v17 = 0;
   }
 
   else
   {
-    v17 = v16;
+    v17 = integerValue;
   }
 
-  if (v16 <= 3)
+  if (integerValue <= 3)
   {
     v18 = v17;
   }
@@ -410,30 +410,30 @@ LABEL_10:
 
   [(DDSRemoteSyncState *)self setSyncStatus:v18];
   v19 = [v4 objectForKey:@"AttemptCount"];
-  v20 = [v19 integerValue];
+  integerValue2 = [v19 integerValue];
 
-  if (v20 < 0)
+  if (integerValue2 < 0)
   {
     [DDSRemoteSyncState loadState];
   }
 
-  [(DDSRemoteSyncState *)self setAttemptCount:v20];
+  [(DDSRemoteSyncState *)self setAttemptCount:integerValue2];
   v21 = UpdateLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = [(DDSRemoteSyncState *)self assetType];
-    v23 = [(DDSRemoteSyncState *)self date];
-    v24 = [(DDSRemoteSyncState *)self buildVersion];
+    assetType = [(DDSRemoteSyncState *)self assetType];
+    date3 = [(DDSRemoteSyncState *)self date];
+    buildVersion = [(DDSRemoteSyncState *)self buildVersion];
     v26 = 138544386;
-    v27 = v22;
+    v27 = assetType;
     v28 = 2114;
-    v29 = v23;
+    v29 = date3;
     v30 = 2114;
-    v31 = v24;
+    v31 = buildVersion;
     v32 = 2050;
-    v33 = [(DDSRemoteSyncState *)self attemptCount];
+    attemptCount = [(DDSRemoteSyncState *)self attemptCount];
     v34 = 2050;
-    v35 = [(DDSRemoteSyncState *)self syncStatus];
+    syncStatus = [(DDSRemoteSyncState *)self syncStatus];
     _os_log_impl(&dword_1DF7C6000, v21, OS_LOG_TYPE_DEFAULT, "Loaded sync state for asset type: %{public}@ (date: %{public}@, buildVersion: %{public}@, attempts: %{public}lu, status: %{public}lu)", &v26, 0x34u);
   }
 
@@ -443,42 +443,42 @@ LABEL_10:
 - (void)saveState
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a1 assetType];
-  v5 = [a1 date];
-  v6 = [a1 buildVersion];
+  assetType = [self assetType];
+  date = [self date];
+  buildVersion = [self buildVersion];
   v8 = 138544386;
-  v9 = v4;
+  v9 = assetType;
   v10 = 2114;
-  v11 = v5;
+  v11 = date;
   v12 = 2114;
-  v13 = v6;
+  v13 = buildVersion;
   v14 = 2050;
-  v15 = [a1 attemptCount];
+  attemptCount = [self attemptCount];
   v16 = 2050;
-  v17 = [a1 syncStatus];
+  syncStatus = [self syncStatus];
   _os_log_debug_impl(&dword_1DF7C6000, a2, OS_LOG_TYPE_DEBUG, "Saving sync state for asset type: %{public}@ (date: %{public}@, buildVersion: %{public}@, attempts: %{public}lu, status: %{public}lu", &v8, 0x34u);
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (double)nextUpdateTimeIntervalForAttemptCount:(unint64_t)a3
+- (double)nextUpdateTimeIntervalForAttemptCount:(unint64_t)count
 {
-  if (a3 - 1 > 7)
+  if (count - 1 > 7)
   {
     return 10800.0;
   }
 
   else
   {
-    return dbl_1DF7EDC30[a3 - 1];
+    return dbl_1DF7EDC30[count - 1];
   }
 }
 
 + (double)timeIntervalUntilNextRegularUpdate
 {
   v2 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D850]];
-  v3 = [MEMORY[0x1E695DF00] date];
-  v4 = [v2 components:30 fromDate:v3];
+  date = [MEMORY[0x1E695DF00] date];
+  v4 = [v2 components:30 fromDate:date];
 
   v5 = [v2 dateFromComponents:v4];
   v6 = arc4random() % 3;
@@ -488,8 +488,8 @@ LABEL_10:
   [v8 setHour:v6 + 2];
   [v8 setMinute:v7];
   v9 = [v2 dateByAddingComponents:v8 toDate:v5 options:0];
-  v10 = [MEMORY[0x1E695DF00] date];
-  [v10 timeIntervalSinceDate:v9];
+  date2 = [MEMORY[0x1E695DF00] date];
+  [date2 timeIntervalSinceDate:v9];
   v12 = fabs(v11);
 
   return v12;

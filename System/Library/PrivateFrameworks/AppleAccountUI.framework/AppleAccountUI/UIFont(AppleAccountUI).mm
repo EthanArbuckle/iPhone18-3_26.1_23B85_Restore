@@ -9,17 +9,17 @@
 
 + (id)aa_fontForPageTitle
 {
-  v0 = [MEMORY[0x1E69DC938] currentDevice];
-  v1 = [v0 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v2 = v1 & 0xFFFFFFFFFFFFFFFBLL;
+  v2 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
   v3 = MEMORY[0x1E69DB878];
   v4 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v7 = 32.0;
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 36.0;
   }
@@ -41,17 +41,17 @@
 
 + (id)aa_fontForLargeButton
 {
-  v0 = [MEMORY[0x1E69DC938] currentDevice];
-  v1 = [v0 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v2 = v1 & 0xFFFFFFFFFFFFFFFBLL;
+  v2 = userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL;
   v3 = MEMORY[0x1E69DB878];
   v4 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v7 = 23.0;
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v7 = 26.0;
   }
@@ -85,11 +85,11 @@
 {
   v0 = MEMORY[0x1E69DB878];
   v1 = [MEMORY[0x1E69DCA40] metricsForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v2 = [MEMORY[0x1E69DC938] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v4 = 17.0;
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v4 = 23.0;
   }

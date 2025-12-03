@@ -1,19 +1,19 @@
 @interface CSFComputeDataBuffer
-- (CSFComputeDataBuffer)initWithInputArray:(id)a3 name:(id)a4 properties:(id)a5 errOut:(id *)a6;
-- (CSFComputeDataBuffer)initWithProperties:(id)a3 name:(id)a4 errOut:(id *)a5;
-- (id)_allocateDataWithTensorProperties:(id)a3 error:(id *)a4;
+- (CSFComputeDataBuffer)initWithInputArray:(id)array name:(id)name properties:(id)properties errOut:(id *)out;
+- (CSFComputeDataBuffer)initWithProperties:(id)properties name:(id)name errOut:(id *)out;
+- (id)_allocateDataWithTensorProperties:(id)properties error:(id *)error;
 - (id)convertDataToArray;
 - (id)description;
-- (unint64_t)_getTensorSizeWithProperties:(id)a3;
+- (unint64_t)_getTensorSizeWithProperties:(id)properties;
 @end
 
 @implementation CSFComputeDataBuffer
 
-- (id)_allocateDataWithTensorProperties:(id)a3 error:(id *)a4
+- (id)_allocateDataWithTensorProperties:(id)properties error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CSFComputeDataBuffer *)self _getTensorSizeWithProperties:v6];
+  propertiesCopy = properties;
+  v7 = [(CSFComputeDataBuffer *)self _getTensorSizeWithProperties:propertiesCopy];
   self->_elementSize = v7;
   if (v7)
   {
@@ -22,7 +22,7 @@
 
   else
   {
-    if (a4)
+    if (error)
     {
       v9 = objc_alloc(MEMORY[0x1E696ABC0]);
       v16 = *MEMORY[0x1E696A578];
@@ -31,7 +31,7 @@
       v12 = [v10 stringWithFormat:@"cannot get element size with property: %@", v11];
       v17[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-      *a4 = [v9 initWithDomain:@"com.apple.corespeech" code:2458 userInfo:v13];
+      *error = [v9 initWithDomain:@"com.apple.corespeech" code:2458 userInfo:v13];
     }
 
     v8 = 0;
@@ -42,18 +42,18 @@
   return v8;
 }
 
-- (unint64_t)_getTensorSizeWithProperties:(id)a3
+- (unint64_t)_getTensorSizeWithProperties:(id)properties
 {
-  v3 = a3;
-  v4 = [v3 shape];
-  v5 = v4;
+  propertiesCopy = properties;
+  shape = [propertiesCopy shape];
+  v5 = shape;
   v6 = 0;
-  if (v3)
+  if (propertiesCopy)
   {
-    if (v4)
+    if (shape)
     {
       v6 = 0;
-      if ([v4 count])
+      if ([shape count])
       {
         v7 = 1;
         while (v6 < [v5 count])
@@ -64,7 +64,7 @@
           ++v6;
         }
 
-        if ([v3 dataType] && objc_msgSend(v3, "dataType") != 1)
+        if ([propertiesCopy dataType] && objc_msgSend(propertiesCopy, "dataType") != 1)
         {
           v9 = 0;
         }
@@ -96,9 +96,9 @@
 {
   v42 = *MEMORY[0x1E69E9840];
   p_tensorProperties = &self->_tensorProperties;
-  v4 = [(CSFTensorProperties *)self->_tensorProperties shape];
-  v5 = [(CSFTensorProperties *)*p_tensorProperties dataType];
-  if ([v4 count] > 2 || !objc_msgSend(v4, "count"))
+  shape = [(CSFTensorProperties *)self->_tensorProperties shape];
+  dataType = [(CSFTensorProperties *)*p_tensorProperties dataType];
+  if ([shape count] > 2 || !objc_msgSend(shape, "count"))
   {
     v15 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -132,16 +132,16 @@ LABEL_36:
 
   v6 = 0x1E695D000uLL;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(NSData *)self->_data bytes];
-  v35 = [(NSData *)self->_data bytes];
-  if ([v4 count] == 1)
+  bytes = [(NSData *)self->_data bytes];
+  bytes2 = [(NSData *)self->_data bytes];
+  if ([shape count] == 1)
   {
     for (i = 0; ; ++i)
     {
-      v10 = [v4 firstObject];
-      v11 = [v10 unsignedLongValue];
+      firstObject = [shape firstObject];
+      unsignedLongValue = [firstObject unsignedLongValue];
 
-      if (i >= v11)
+      if (i >= unsignedLongValue)
       {
         break;
       }
@@ -165,15 +165,15 @@ LABEL_36:
         goto LABEL_39;
       }
 
-      if (v5)
+      if (dataType)
       {
-        LODWORD(v12) = v8[i];
+        LODWORD(v12) = bytes[i];
         [MEMORY[0x1E696AD98] numberWithFloat:v12];
       }
 
       else
       {
-        [MEMORY[0x1E696AD98] numberWithInt:v35[i]];
+        [MEMORY[0x1E696AD98] numberWithInt:bytes2[i]];
       }
       v14 = ;
       [v7 addObject:v14];
@@ -186,18 +186,18 @@ LABEL_36:
     v34 = 0;
     v20 = 0;
 LABEL_20:
-    v21 = [v4 firstObject];
-    v22 = [v21 unsignedLongValue];
+    firstObject2 = [shape firstObject];
+    unsignedLongValue2 = [firstObject2 unsignedLongValue];
 
-    if (v34 < v22)
+    if (v34 < unsignedLongValue2)
     {
       v23 = objc_alloc_init(*(v6 + 3952));
       for (j = 0; ; ++j)
       {
-        v25 = [v4 objectAtIndexedSubscript:1];
-        v26 = [v25 unsignedLongValue];
+        v25 = [shape objectAtIndexedSubscript:1];
+        unsignedLongValue3 = [v25 unsignedLongValue];
 
-        if (j >= v26)
+        if (j >= unsignedLongValue3)
         {
           v30 = [v23 copy];
           [v33 addObject:v30];
@@ -213,15 +213,15 @@ LABEL_20:
           break;
         }
 
-        if (v5)
+        if (dataType)
         {
-          LODWORD(v27) = v8[v20];
+          LODWORD(v27) = bytes[v20];
           [MEMORY[0x1E696AD98] numberWithFloat:v27];
         }
 
         else
         {
-          [MEMORY[0x1E696AD98] numberWithInt:v35[v20]];
+          [MEMORY[0x1E696AD98] numberWithInt:bytes2[v20]];
         }
         v29 = ;
         [v23 addObject:v29];
@@ -258,12 +258,12 @@ LABEL_14:
   return v16;
 }
 
-- (CSFComputeDataBuffer)initWithInputArray:(id)a3 name:(id)a4 properties:(id)a5 errOut:(id *)a6
+- (CSFComputeDataBuffer)initWithInputArray:(id)array name:(id)name properties:(id)properties errOut:(id *)out
 {
   v69[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v56 = a4;
-  v55 = a5;
+  arrayCopy = array;
+  nameCopy = name;
+  propertiesCopy = properties;
   v59.receiver = self;
   v59.super_class = CSFComputeDataBuffer;
   v11 = [(CSFComputeDataBuffer *)&v59 init];
@@ -272,53 +272,53 @@ LABEL_14:
     goto LABEL_36;
   }
 
-  if (!v10 || (v12 = [v10 count], !v56) || !v12)
+  if (!arrayCopy || (v12 = [arrayCopy count], !nameCopy) || !v12)
   {
-    if (a6)
+    if (out)
     {
       v19 = objc_alloc(MEMORY[0x1E696ABC0]);
       v68 = *MEMORY[0x1E696A578];
-      v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"initialize with inputArray: %@", v10];
-      v69[0] = v20;
+      arrayCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"initialize with inputArray: %@", arrayCopy];
+      v69[0] = arrayCopy;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v69 forKeys:&v68 count:1];
-      *a6 = [v19 initWithDomain:@"com.apple.corespeech" code:2458 userInfo:v21];
+      *out = [v19 initWithDomain:@"com.apple.corespeech" code:2458 userInfo:v21];
     }
 
     goto LABEL_15;
   }
 
-  v13 = [CSFModelComputeBackendUtils getRankOfTensor:v10];
-  if (v13 < 1 || ([v55 shape], v14 = objc_claimAutoreleasedReturnValue(), v15 = v13 == objc_msgSend(v14, "count"), v14, !v15))
+  v13 = [CSFModelComputeBackendUtils getRankOfTensor:arrayCopy];
+  if (v13 < 1 || ([propertiesCopy shape], v14 = objc_claimAutoreleasedReturnValue(), v15 = v13 == objc_msgSend(v14, "count"), v14, !v15))
   {
-    if (a6)
+    if (out)
     {
       v22 = objc_alloc(MEMORY[0x1E696ABC0]);
       v66 = *MEMORY[0x1E696A578];
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"initialize with inputArray: %@", v10];
-      v67 = v23;
+      arrayCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"initialize with inputArray: %@", arrayCopy];
+      v67 = arrayCopy2;
       v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v67 forKeys:&v66 count:1];
-      *a6 = [v22 initWithDomain:@"com.apple.corespeech" code:2458 userInfo:v24];
+      *out = [v22 initWithDomain:@"com.apple.corespeech" code:2458 userInfo:v24];
     }
 
     goto LABEL_15;
   }
 
   v58 = 0;
-  v53 = [(CSFComputeDataBuffer *)v11 _allocateDataWithTensorProperties:v55 error:&v58];
+  v53 = [(CSFComputeDataBuffer *)v11 _allocateDataWithTensorProperties:propertiesCopy error:&v58];
   v16 = v58;
   if (!v16)
   {
-    v52 = [v55 shape];
-    v26 = [v55 dataType];
-    if ([v52 count] == 1)
+    shape = [propertiesCopy shape];
+    dataType = [propertiesCopy dataType];
+    if ([shape count] == 1)
     {
       v27 = 0;
       v28 = 0;
-      while (v27 < [v10 count])
+      while (v27 < [arrayCopy count])
       {
-        if (v26 == 1)
+        if (dataType == 1)
         {
-          v31 = [v10 objectAtIndexedSubscript:v27];
+          v31 = [arrayCopy objectAtIndexedSubscript:v27];
           [v31 floatValue];
           v33 = v32;
 
@@ -328,9 +328,9 @@ LABEL_14:
 
         else
         {
-          if (v26)
+          if (dataType)
           {
-            if (!a6)
+            if (!out)
             {
               goto LABEL_47;
             }
@@ -344,10 +344,10 @@ LABEL_14:
             goto LABEL_44;
           }
 
-          v29 = [v10 objectAtIndexedSubscript:v27];
-          v30 = [v29 intValue];
+          v29 = [arrayCopy objectAtIndexedSubscript:v27];
+          intValue = [v29 intValue];
 
-          v57 = v30;
+          v57 = intValue;
           [(NSData *)v53 replaceBytesInRange:v28 withBytes:4, &v57];
         }
 
@@ -358,9 +358,9 @@ LABEL_14:
 
     else
     {
-      if ([v52 count] != 2)
+      if ([shape count] != 2)
       {
-        if (a6)
+        if (out)
         {
           v45 = objc_alloc(MEMORY[0x1E696ABC0]);
           v60 = *MEMORY[0x1E696A578];
@@ -369,7 +369,7 @@ LABEL_14:
           v46 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v61 forKeys:&v60 count:1];
           v47 = [v45 initWithDomain:@"com.apple.corespeech" code:2458 userInfo:v46];
 LABEL_44:
-          *a6 = v47;
+          *out = v47;
 LABEL_45:
 
 LABEL_46:
@@ -383,9 +383,9 @@ LABEL_47:
       v34 = 0;
       v51 = 0;
 LABEL_26:
-      if (v51 < [v10 count])
+      if (v51 < [arrayCopy count])
       {
-        v54 = [v10 objectAtIndexedSubscript:?];
+        v54 = [arrayCopy objectAtIndexedSubscript:?];
         for (i = 0; ; ++i)
         {
           if (i >= [v54 count])
@@ -395,7 +395,7 @@ LABEL_26:
             goto LABEL_26;
           }
 
-          if (v26 == 1)
+          if (dataType == 1)
           {
             v38 = [v54 objectAtIndexedSubscript:i];
             [v38 floatValue];
@@ -407,16 +407,16 @@ LABEL_26:
 
           else
           {
-            if (v26)
+            if (dataType)
             {
-              if (a6)
+              if (out)
               {
                 v48 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v62 = *MEMORY[0x1E696A578];
                 v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Compute data type not supported"];
                 v63 = v46;
                 v49 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
-                *a6 = [v48 initWithDomain:@"com.apple.corespeech" code:2458 userInfo:v49];
+                *out = [v48 initWithDomain:@"com.apple.corespeech" code:2458 userInfo:v49];
 
                 goto LABEL_45;
               }
@@ -425,9 +425,9 @@ LABEL_26:
             }
 
             v36 = [v54 objectAtIndexedSubscript:i];
-            v37 = [v36 intValue];
+            intValue2 = [v36 intValue];
 
-            v57 = v37;
+            v57 = intValue2;
             [(NSData *)v53 replaceBytesInRange:v34 withBytes:4, &v57];
           }
 
@@ -436,22 +436,22 @@ LABEL_26:
       }
     }
 
-    objc_storeStrong(&v11->_tensorProperties, a5);
+    objc_storeStrong(&v11->_tensorProperties, properties);
     data = v11->_data;
     v11->_data = v53;
     v42 = v53;
 
-    objc_storeStrong(&v11->_tensorName, a4);
+    objc_storeStrong(&v11->_tensorName, name);
 LABEL_36:
     v25 = v11;
     goto LABEL_37;
   }
 
   v17 = v16;
-  if (a6)
+  if (out)
   {
     v18 = v16;
-    *a6 = v17;
+    *out = v17;
   }
 
 LABEL_15:
@@ -462,10 +462,10 @@ LABEL_37:
   return v25;
 }
 
-- (CSFComputeDataBuffer)initWithProperties:(id)a3 name:(id)a4 errOut:(id *)a5
+- (CSFComputeDataBuffer)initWithProperties:(id)properties name:(id)name errOut:(id *)out
 {
-  v9 = a3;
-  v10 = a4;
+  propertiesCopy = properties;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = CSFComputeDataBuffer;
   v11 = [(CSFComputeDataBuffer *)&v22 init];
@@ -476,26 +476,26 @@ LABEL_37:
   }
 
   v21 = 0;
-  v13 = [(CSFComputeDataBuffer *)v11 _allocateDataWithTensorProperties:v9 error:&v21];
+  v13 = [(CSFComputeDataBuffer *)v11 _allocateDataWithTensorProperties:propertiesCopy error:&v21];
   v14 = v21;
   if (!v14)
   {
-    objc_storeStrong(&v12->_tensorProperties, a3);
+    objc_storeStrong(&v12->_tensorProperties, properties);
     data = v12->_data;
     v12->_data = v13;
     v19 = v13;
 
-    objc_storeStrong(&v12->_tensorName, a4);
+    objc_storeStrong(&v12->_tensorName, name);
 LABEL_7:
     v17 = v12;
     goto LABEL_8;
   }
 
   v15 = v14;
-  if (a5)
+  if (out)
   {
     v16 = v14;
-    *a5 = v15;
+    *out = v15;
   }
 
   v17 = 0;

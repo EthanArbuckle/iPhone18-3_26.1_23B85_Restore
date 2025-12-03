@@ -1,30 +1,30 @@
 @interface CIBilateralGridHash
-- (CIBilateralGridHash)initWithWidth:(int)a3 height:(int)a4 maxHashTableSize:(unint64_t)a5;
-- (const)blur_indices:(int)a3 n_blur_indices:(int *)a4;
-- (int)_addHashKeyAtX:(int)a3 Y:(int)a4 key:(unint64_t)a5 isKeyExist:(BOOL *)a6;
-- (int)_computeBilateralSpaceYCC444:(__IOSurface *)a3 region:(CGRect)a4 cropRect:(CGRect)a5 sigma_s:(int)a6 sigma_r_luma:(int)a7 sigma_r_chroma:(int)a8;
-- (int)_createWithSurface:(__IOSurface *)a3 region:(CGRect)a4 cropRect:(CGRect)a5 sigma_s:(int)a6 sigma_r_luma:(int)a7 sigma_r_chroma:(int)a8;
-- (int)createWithSurface:(__IOSurface *)a3 region:(CGRect)a4 cropRect:(CGRect)a5 sigma_s:(int)a6 sigma_r_luma:(int)a7 sigma_r_chroma:(int)a8;
+- (CIBilateralGridHash)initWithWidth:(int)width height:(int)height maxHashTableSize:(unint64_t)size;
+- (const)blur_indices:(int)blur_indices n_blur_indices:(int *)n_blur_indices;
+- (int)_addHashKeyAtX:(int)x Y:(int)y key:(unint64_t)key isKeyExist:(BOOL *)exist;
+- (int)_computeBilateralSpaceYCC444:(__IOSurface *)c444 region:(CGRect)region cropRect:(CGRect)rect sigma_s:(int)sigma_s sigma_r_luma:(int)sigma_r_luma sigma_r_chroma:(int)sigma_r_chroma;
+- (int)_createWithSurface:(__IOSurface *)surface region:(CGRect)region cropRect:(CGRect)rect sigma_s:(int)sigma_s sigma_r_luma:(int)sigma_r_luma sigma_r_chroma:(int)sigma_r_chroma;
+- (int)createWithSurface:(__IOSurface *)surface region:(CGRect)region cropRect:(CGRect)rect sigma_s:(int)sigma_s sigma_r_luma:(int)sigma_r_luma sigma_r_chroma:(int)sigma_r_chroma;
 - (void)_computeBlurIndices;
 - (void)_computeCoordIndices;
 - (void)_computeInterpIndices;
-- (void)blur:(const float *)a3 pout:(float *)a4;
-- (void)blur_n:(float *)a3;
-- (void)blur_ones:(float *)a3;
+- (void)blur:(const float *)blur pout:(float *)pout;
+- (void)blur_n:(float *)blur_n;
+- (void)blur_ones:(float *)blur_ones;
 - (void)clear;
 - (void)dealloc;
-- (void)normalize:(const float *)a3 pout:(float *)a4;
-- (void)normalize_blur:(const float *)a3 pout:(float *)a4;
-- (void)slice:(const float *)a3 outPixelBuffer:(__CVBuffer *)a4;
-- (void)slice_trilinear:(__IOSurface *)a3 pin:(const float *)a4 pout:(__CVBuffer *)a5;
-- (void)splat:(__CVBuffer *)a3 pout:(float *)a4;
-- (void)splat_ones:(float *)a3;
-- (void)splat_w_mul_x:(__CVBuffer *)a3 inPixelBuffer:(__CVBuffer *)a4 pout:(float *)a5;
+- (void)normalize:(const float *)normalize pout:(float *)pout;
+- (void)normalize_blur:(const float *)normalize_blur pout:(float *)pout;
+- (void)slice:(const float *)slice outPixelBuffer:(__CVBuffer *)buffer;
+- (void)slice_trilinear:(__IOSurface *)slice_trilinear pin:(const float *)pin pout:(__CVBuffer *)pout;
+- (void)splat:(__CVBuffer *)splat pout:(float *)pout;
+- (void)splat_ones:(float *)splat_ones;
+- (void)splat_w_mul_x:(__CVBuffer *)splat_w_mul_x inPixelBuffer:(__CVBuffer *)buffer pout:(float *)pout;
 @end
 
 @implementation CIBilateralGridHash
 
-- (CIBilateralGridHash)initWithWidth:(int)a3 height:(int)a4 maxHashTableSize:(unint64_t)a5
+- (CIBilateralGridHash)initWithWidth:(int)width height:(int)height maxHashTableSize:(unint64_t)size
 {
   v12.receiver = self;
   v12.super_class = CIBilateralGridHash;
@@ -33,23 +33,23 @@
   if (v8)
   {
     v8->_n_dims = 0;
-    v8->_width = a3;
-    v8->_height = a4;
+    v8->_width = width;
+    v8->_height = height;
     v8->_sigma_s = 0;
     *&v8->_sigma_r_luma = 0;
-    v8->_max_hash_table_size = a5;
+    v8->_max_hash_table_size = size;
     v8->_hash_table_size = 0;
-    v10 = 4 * a4 * a3;
+    v10 = 4 * height * width;
     v8->_hash_matrix_data = malloc_type_malloc(v10, 0x100004052888210uLL);
-    v9->_hash_table = malloc_type_malloc(24 * a5, 0x1000040504FFAC1uLL);
-    v9->_blur_indices = malloc_type_malloc(40 * a5, 0x100004052888210uLL);
-    v9->_coord_indices = malloc_type_malloc(4 * a5 + 4, 0x100004052888210uLL);
+    v9->_hash_table = malloc_type_malloc(24 * size, 0x1000040504FFAC1uLL);
+    v9->_blur_indices = malloc_type_malloc(40 * size, 0x100004052888210uLL);
+    v9->_coord_indices = malloc_type_malloc(4 * size + 4, 0x100004052888210uLL);
     v9->_coord_table = malloc_type_malloc(v10, 0x100004052888210uLL);
-    v9->_coord_indices_off = malloc_type_malloc(4 * a5, 0x100004052888210uLL);
-    v9->_interp_indices = malloc_type_malloc(4 * a5 + 4, 0x100004052888210uLL);
-    v9->_interp_table = malloc_type_malloc(20 * a5, 0x100004052888210uLL);
-    v9->_interp_pad = malloc_type_malloc(5 * a5, 0x100004077774924uLL);
-    v9->_hash_map = BGHashMapCreate(a5);
+    v9->_coord_indices_off = malloc_type_malloc(4 * size, 0x100004052888210uLL);
+    v9->_interp_indices = malloc_type_malloc(4 * size + 4, 0x100004052888210uLL);
+    v9->_interp_table = malloc_type_malloc(20 * size, 0x100004052888210uLL);
+    v9->_interp_pad = malloc_type_malloc(5 * size, 0x100004077774924uLL);
+    v9->_hash_map = BGHashMapCreate(size);
     bzero(v9->_hash_matrix_data, v10);
   }
 
@@ -81,21 +81,21 @@
   BGHashClear(self->_hash_map);
 }
 
-- (int)_createWithSurface:(__IOSurface *)a3 region:(CGRect)a4 cropRect:(CGRect)a5 sigma_s:(int)a6 sigma_r_luma:(int)a7 sigma_r_chroma:(int)a8
+- (int)_createWithSurface:(__IOSurface *)surface region:(CGRect)region cropRect:(CGRect)rect sigma_s:(int)sigma_s sigma_r_luma:(int)sigma_r_luma sigma_r_chroma:(int)sigma_r_chroma
 {
-  v8 = *&a8;
-  v9 = *&a7;
-  v10 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a4.size.height;
-  v16 = a4.size.width;
-  v17 = a4.origin.y;
-  v18 = a4.origin.x;
+  v8 = *&sigma_r_chroma;
+  v9 = *&sigma_r_luma;
+  v10 = *&sigma_s;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = region.size.height;
+  v16 = region.size.width;
+  v17 = region.origin.y;
+  v18 = region.origin.x;
   [(CIBilateralGridHash *)self clear];
-  if ([(CIBilateralGridHash *)self _computeBilateralSpaceYCC444:a3 region:v10 cropRect:v9 sigma_s:v8 sigma_r_luma:v18 sigma_r_chroma:v17, v16, v15, x, y, width, height])
+  if ([(CIBilateralGridHash *)self _computeBilateralSpaceYCC444:surface region:v10 cropRect:v9 sigma_s:v8 sigma_r_luma:v18 sigma_r_chroma:v17, v16, v15, x, y, width, height])
   {
     v21 = self->_height * self->_width;
     self->_hash_table_size = 0;
@@ -112,20 +112,20 @@
   }
 }
 
-- (int)createWithSurface:(__IOSurface *)a3 region:(CGRect)a4 cropRect:(CGRect)a5 sigma_s:(int)a6 sigma_r_luma:(int)a7 sigma_r_chroma:(int)a8
+- (int)createWithSurface:(__IOSurface *)surface region:(CGRect)region cropRect:(CGRect)rect sigma_s:(int)sigma_s sigma_r_luma:(int)sigma_r_luma sigma_r_chroma:(int)sigma_r_chroma
 {
-  v8 = *&a7;
-  v9 = *&a6;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4.size.height;
-  v15 = a4.size.width;
-  v16 = a4.origin.y;
-  v17 = a4.origin.x;
+  v8 = *&sigma_r_luma;
+  v9 = *&sigma_s;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v14 = region.size.height;
+  v15 = region.size.width;
+  v16 = region.origin.y;
+  v17 = region.origin.x;
   v24 = *MEMORY[0x1E69E9840];
-  result = [CIBilateralGridHash _createWithSurface:"_createWithSurface:region:cropRect:sigma_s:sigma_r_luma:sigma_r_chroma:" region:a3 cropRect:*&a6 sigma_s:*&a7 sigma_r_luma:*&a8 sigma_r_chroma:?];
+  result = [CIBilateralGridHash _createWithSurface:"_createWithSurface:region:cropRect:sigma_s:sigma_r_luma:sigma_r_chroma:" region:surface cropRect:*&sigma_s sigma_s:*&sigma_r_luma sigma_r_luma:*&sigma_r_chroma sigma_r_chroma:?];
   if (result)
   {
     v21 = ci_logger_performance();
@@ -136,35 +136,35 @@
       _os_log_impl(&dword_19CC36000, v21, OS_LOG_TYPE_INFO, "%{public}s Using 3D bilateral grid hash instead of 5D.", &v22, 0xCu);
     }
 
-    return [(CIBilateralGridHash *)self _createWithSurface:a3 region:v9 cropRect:v8 sigma_s:255 sigma_r_luma:v17 sigma_r_chroma:v16, v15, v14, x, y, width, height];
+    return [(CIBilateralGridHash *)self _createWithSurface:surface region:v9 cropRect:v8 sigma_s:255 sigma_r_luma:v17 sigma_r_chroma:v16, v15, v14, x, y, width, height];
   }
 
   return result;
 }
 
-- (void)splat:(__CVBuffer *)a3 pout:(float *)a4
+- (void)splat:(__CVBuffer *)splat pout:(float *)pout
 {
-  v7 = [(CIBilateralGridHash *)self countVertices];
-  v8 = [(CIBilateralGridHash *)self width];
-  v9 = [(CIBilateralGridHash *)self height];
-  CVPixelBufferLockBaseAddress(a3, 0);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-  bzero(a4, 4 * v7);
-  if (v9 >= 1)
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  width = [(CIBilateralGridHash *)self width];
+  height = [(CIBilateralGridHash *)self height];
+  CVPixelBufferLockBaseAddress(splat, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(splat, 0);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(splat, 0);
+  bzero(pout, 4 * countVertices);
+  if (height >= 1)
   {
     v12 = 0;
     v13 = 0;
-    v14 = 4 * v8;
+    v14 = 4 * width;
     do
     {
-      if (v8 >= 1)
+      if (width >= 1)
       {
         v15 = 0;
         v16 = self->_hash_matrix_data + v12;
         do
         {
-          a4[*&v16[v15]] = *&BaseAddressOfPlane[v15] + a4[*&v16[v15]];
+          pout[*&v16[v15]] = *&BaseAddressOfPlane[v15] + pout[*&v16[v15]];
           v15 += 4;
         }
 
@@ -176,38 +176,38 @@
       v12 += v14;
     }
 
-    while (v13 != v9);
+    while (v13 != height);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(splat, 0);
 }
 
-- (void)splat_w_mul_x:(__CVBuffer *)a3 inPixelBuffer:(__CVBuffer *)a4 pout:(float *)a5
+- (void)splat_w_mul_x:(__CVBuffer *)splat_w_mul_x inPixelBuffer:(__CVBuffer *)buffer pout:(float *)pout
 {
-  v20 = [(CIBilateralGridHash *)self countVertices];
-  v9 = [(CIBilateralGridHash *)self width];
-  v10 = [(CIBilateralGridHash *)self height];
-  CVPixelBufferLockBaseAddress(a3, 0);
-  CVPixelBufferLockBaseAddress(a4, 0);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a3, 0);
-  v12 = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a3, 0);
-  v14 = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-  bzero(a5, 4 * v20);
-  if (v10 >= 1)
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  width = [(CIBilateralGridHash *)self width];
+  height = [(CIBilateralGridHash *)self height];
+  CVPixelBufferLockBaseAddress(splat_w_mul_x, 0);
+  CVPixelBufferLockBaseAddress(buffer, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(splat_w_mul_x, 0);
+  v12 = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(splat_w_mul_x, 0);
+  v14 = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+  bzero(pout, 4 * countVertices);
+  if (height >= 1)
   {
     v15 = 0;
     v16 = 0;
-    v17 = 4 * v9;
+    v17 = 4 * width;
     do
     {
-      if (v9 >= 1)
+      if (width >= 1)
       {
         v18 = 0;
         v19 = self->_hash_matrix_data + v15;
         do
         {
-          a5[*&v19[v18]] = a5[*&v19[v18]] + (*&BaseAddressOfPlane[v18] * *&v14[v18]);
+          pout[*&v19[v18]] = pout[*&v19[v18]] + (*&BaseAddressOfPlane[v18] * *&v14[v18]);
           v18 += 4;
         }
 
@@ -220,35 +220,35 @@
       v15 += v17;
     }
 
-    while (v16 != v10);
+    while (v16 != height);
   }
 
-  CVPixelBufferUnlockBaseAddress(a3, 0);
+  CVPixelBufferUnlockBaseAddress(splat_w_mul_x, 0);
 
-  CVPixelBufferUnlockBaseAddress(a4, 0);
+  CVPixelBufferUnlockBaseAddress(buffer, 0);
 }
 
-- (void)slice:(const float *)a3 outPixelBuffer:(__CVBuffer *)a4
+- (void)slice:(const float *)slice outPixelBuffer:(__CVBuffer *)buffer
 {
-  v7 = [(CIBilateralGridHash *)self width];
-  v8 = [(CIBilateralGridHash *)self height];
-  CVPixelBufferLockBaseAddress(a4, 0);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a4, 0);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a4, 0);
-  if (v8 >= 1)
+  width = [(CIBilateralGridHash *)self width];
+  height = [(CIBilateralGridHash *)self height];
+  CVPixelBufferLockBaseAddress(buffer, 0);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(buffer, 0);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(buffer, 0);
+  if (height >= 1)
   {
     v11 = 0;
     v12 = 0;
-    v13 = 4 * v7;
+    v13 = 4 * width;
     do
     {
-      if (v7 >= 1)
+      if (width >= 1)
       {
         v14 = 0;
         v15 = self->_hash_matrix_data + v11;
         do
         {
-          *&BaseAddressOfPlane[v14] = a3[*&v15[v14]];
+          *&BaseAddressOfPlane[v14] = slice[*&v15[v14]];
           v14 += 4;
         }
 
@@ -260,37 +260,37 @@
       v11 += v13;
     }
 
-    while (v12 != v8);
+    while (v12 != height);
   }
 
-  CVPixelBufferUnlockBaseAddress(a4, 0);
+  CVPixelBufferUnlockBaseAddress(buffer, 0);
 }
 
-- (void)slice_trilinear:(__IOSurface *)a3 pin:(const float *)a4 pout:(__CVBuffer *)a5
+- (void)slice_trilinear:(__IOSurface *)slice_trilinear pin:(const float *)pin pout:(__CVBuffer *)pout
 {
-  v9 = [(CIBilateralGridHash *)self width];
-  v10 = [(CIBilateralGridHash *)self height];
+  width = [(CIBilateralGridHash *)self width];
+  height = [(CIBilateralGridHash *)self height];
   seed = 0;
-  IOSurfaceLock(a3, 1u, &seed);
-  CVPixelBufferLockBaseAddress(a5, 0);
-  BytesPerRow = IOSurfaceGetBytesPerRow(a3);
-  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(a5, 0);
-  BaseAddress = IOSurfaceGetBaseAddress(a3);
-  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(a5, 0);
-  if (v10 >= 1)
+  IOSurfaceLock(slice_trilinear, 1u, &seed);
+  CVPixelBufferLockBaseAddress(pout, 0);
+  BytesPerRow = IOSurfaceGetBytesPerRow(slice_trilinear);
+  BytesPerRowOfPlane = CVPixelBufferGetBytesPerRowOfPlane(pout, 0);
+  BaseAddress = IOSurfaceGetBaseAddress(slice_trilinear);
+  BaseAddressOfPlane = CVPixelBufferGetBaseAddressOfPlane(pout, 0);
+  if (height >= 1)
   {
     v16 = 0;
     __asm { FMOV            V1.2S, #1.0 }
 
     do
     {
-      if (v9 >= 1)
+      if (width >= 1)
       {
         v22 = 0;
         v23 = vcvt_f32_s32(*&self->_sigma_s);
         v24 = (v16 / v23.f32[0]) - (v16 / v23.f32[0]);
         interp_indices = self->_interp_indices;
-        v26 = &self->_hash_matrix_data[v16 * v9];
+        v26 = &self->_hash_matrix_data[v16 * width];
         do
         {
           v27.f32[0] = v22;
@@ -303,7 +303,7 @@
           v32 = vsub_f32(v31, vcvt_f32_s32(vcvt_s32_f32(v31)));
           v33 = vsub_f32(_D1, v32);
           v34 = vmuls_lane_f32((1.0 - v24) * v33.f32[0], v33, 1);
-          v15 = a4[v28] * v34;
+          v15 = pin[v28] * v34;
           if (v29 < v30)
           {
             v35 = &self->_interp_table[v29];
@@ -347,7 +347,7 @@
               }
 
               v45 = v44 * v43;
-              v15 = v15 + (v45 * a4[v38]);
+              v15 = v15 + (v45 * pin[v38]);
               v34 = v34 + v45;
               --v37;
             }
@@ -358,7 +358,7 @@
           BaseAddressOfPlane[v22++] = v15 / v34;
         }
 
-        while (v22 != v9);
+        while (v22 != width);
       }
 
       BaseAddress += BytesPerRow;
@@ -366,26 +366,26 @@
       ++v16;
     }
 
-    while (v16 != v10);
+    while (v16 != height);
   }
 
-  IOSurfaceUnlock(a3, 1u, &seed);
-  CVPixelBufferUnlockBaseAddress(a5, 0);
+  IOSurfaceUnlock(slice_trilinear, 1u, &seed);
+  CVPixelBufferUnlockBaseAddress(pout, 0);
 }
 
-- (void)blur:(const float *)a3 pout:(float *)a4
+- (void)blur:(const float *)blur pout:(float *)pout
 {
-  v7 = [(CIBilateralGridHash *)self countDims];
-  v8 = [(CIBilateralGridHash *)self countVertices];
-  if (v8 >= 1)
+  countDims = [(CIBilateralGridHash *)self countDims];
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  if (countVertices >= 1)
   {
-    v9 = v8;
-    v10 = a3;
-    v11 = a4;
+    v9 = countVertices;
+    blurCopy = blur;
+    poutCopy = pout;
     do
     {
-      v12 = *v10++;
-      *v11++ = v12 * (2 * v7);
+      v12 = *blurCopy++;
+      *poutCopy++ = v12 * (2 * countDims);
       --v9;
     }
 
@@ -406,14 +406,14 @@
       v15 = hash_table[v9].var4;
       if (var4 < v15)
       {
-        v16 = a4[v9];
+        v16 = pout[v9];
         v17 = &self->_blur_indices[var4];
         v18 = v15 - var4;
         do
         {
           v19 = *v17++;
-          v16 = a3[v19] + v16;
-          a4[v9] = v16;
+          v16 = blur[v19] + v16;
+          pout[v9] = v16;
           --v18;
         }
 
@@ -423,24 +423,24 @@
       ++v9;
     }
 
-    while (v9 != v8);
+    while (v9 != countVertices);
   }
 }
 
-- (void)normalize:(const float *)a3 pout:(float *)a4
+- (void)normalize:(const float *)normalize pout:(float *)pout
 {
-  v7 = [(CIBilateralGridHash *)self countVertices];
-  if (v7 >= 1)
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  if (countVertices >= 1)
   {
-    v8 = v7;
+    v8 = countVertices;
     p_var1 = &self->_hash_table->var1;
     do
     {
-      v10 = *a3++;
+      v10 = *normalize++;
       v11 = v10;
       v12 = *p_var1;
       p_var1 += 6;
-      *a4++ = v11 / v12;
+      *pout++ = v11 / v12;
       --v8;
     }
 
@@ -448,20 +448,20 @@
   }
 }
 
-- (void)normalize_blur:(const float *)a3 pout:(float *)a4
+- (void)normalize_blur:(const float *)normalize_blur pout:(float *)pout
 {
-  v7 = [(CIBilateralGridHash *)self countVertices];
-  if (v7 >= 1)
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  if (countVertices >= 1)
   {
-    v8 = v7;
+    v8 = countVertices;
     p_var2 = &self->_hash_table->var2;
     do
     {
-      v10 = *a3++;
+      v10 = *normalize_blur++;
       v11 = v10;
       v12 = *p_var2;
       p_var2 += 6;
-      *a4++ = v11 / v12;
+      *pout++ = v11 / v12;
       --v8;
     }
 
@@ -469,18 +469,18 @@
   }
 }
 
-- (void)splat_ones:(float *)a3
+- (void)splat_ones:(float *)splat_ones
 {
-  v5 = [(CIBilateralGridHash *)self countVertices];
-  if (v5 >= 1)
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  if (countVertices >= 1)
   {
-    v6 = v5;
+    v6 = countVertices;
     p_var1 = &self->_hash_table->var1;
     do
     {
       v8 = *p_var1;
       p_var1 += 6;
-      *a3++ = v8;
+      *splat_ones++ = v8;
       --v6;
     }
 
@@ -488,18 +488,18 @@
   }
 }
 
-- (void)blur_ones:(float *)a3
+- (void)blur_ones:(float *)blur_ones
 {
-  v5 = [(CIBilateralGridHash *)self countVertices];
-  if (v5 >= 1)
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  if (countVertices >= 1)
   {
-    v6 = v5;
+    v6 = countVertices;
     p_var2 = &self->_hash_table->var2;
     do
     {
       v8 = *p_var2;
       p_var2 += 6;
-      *a3++ = v8;
+      *blur_ones++ = v8;
       --v6;
     }
 
@@ -507,18 +507,18 @@
   }
 }
 
-- (void)blur_n:(float *)a3
+- (void)blur_n:(float *)blur_n
 {
-  v5 = [(CIBilateralGridHash *)self countVertices];
-  if (v5 >= 1)
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  if (countVertices >= 1)
   {
-    v6 = v5;
+    v6 = countVertices;
     p_var3 = &self->_hash_table->var3;
     do
     {
       v8 = *p_var3;
       p_var3 += 6;
-      *a3++ = v8;
+      *blur_n++ = v8;
       --v6;
     }
 
@@ -526,51 +526,51 @@
   }
 }
 
-- (const)blur_indices:(int)a3 n_blur_indices:(int *)a4
+- (const)blur_indices:(int)blur_indices n_blur_indices:(int *)n_blur_indices
 {
   hash_table = self->_hash_table;
-  if (a3 < 1)
+  if (blur_indices < 1)
   {
     var4 = 0;
   }
 
   else
   {
-    var4 = hash_table[a3 - 1].var4;
+    var4 = hash_table[blur_indices - 1].var4;
   }
 
-  *a4 = hash_table[a3].var4 - var4;
+  *n_blur_indices = hash_table[blur_indices].var4 - var4;
   return &self->_blur_indices[var4];
 }
 
-- (int)_computeBilateralSpaceYCC444:(__IOSurface *)a3 region:(CGRect)a4 cropRect:(CGRect)a5 sigma_s:(int)a6 sigma_r_luma:(int)a7 sigma_r_chroma:(int)a8
+- (int)_computeBilateralSpaceYCC444:(__IOSurface *)c444 region:(CGRect)region cropRect:(CGRect)rect sigma_s:(int)sigma_s sigma_r_luma:(int)sigma_r_luma sigma_r_chroma:(int)sigma_r_chroma
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a4.size.height;
-  v16 = a4.size.width;
-  v17 = a4.origin.x;
-  if (IOSurfaceGetPixelFormat(a3) != 1111970369)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v15 = region.size.height;
+  v16 = region.size.width;
+  v17 = region.origin.x;
+  if (IOSurfaceGetPixelFormat(c444) != 1111970369)
   {
     [CIBilateralGridHash _computeBilateralSpaceYCC444:region:cropRect:sigma_s:sigma_r_luma:sigma_r_chroma:];
   }
 
   seed = 0;
-  if (IOSurfaceLock(a3, 1u, &seed))
+  if (IOSurfaceLock(c444, 1u, &seed))
   {
     return 2;
   }
 
-  BaseAddress = IOSurfaceGetBaseAddress(a3);
-  buffer = a3;
+  BaseAddress = IOSurfaceGetBaseAddress(c444);
+  buffer = c444;
   if (BaseAddress)
   {
     v22 = BaseAddress;
-    v23 = IOSurfaceGetWidth(a3);
-    v24 = IOSurfaceGetHeight(a3);
-    BytesPerRow = IOSurfaceGetBytesPerRow(a3);
+    v23 = IOSurfaceGetWidth(c444);
+    v24 = IOSurfaceGetHeight(c444);
+    BytesPerRow = IOSurfaceGetBytesPerRow(c444);
     if (v16 != v23)
     {
       [CIBilateralGridHash _computeBilateralSpaceYCC444:region:cropRect:sigma_s:sigma_r_luma:sigma_r_chroma:];
@@ -592,7 +592,7 @@
       [CIBilateralGridHash _computeBilateralSpaceYCC444:region:cropRect:sigma_s:sigma_r_luma:sigma_r_chroma:];
     }
 
-    v61 = a7;
+    sigma_r_lumaCopy = sigma_r_luma;
     if (v24 < height)
     {
       [CIBilateralGridHash _computeBilateralSpaceYCC444:region:cropRect:sigma_s:sigma_r_luma:sigma_r_chroma:];
@@ -601,38 +601,38 @@
     v27 = BytesPerRow;
     v57 = height;
     v28 = 0;
-    if (a8)
+    if (sigma_r_chroma)
     {
-      v29 = vcnt_s8(a8);
+      v29 = vcnt_s8(sigma_r_chroma);
       v29.i16[0] = vaddlv_u8(v29);
       if (v29.u32[0] <= 1uLL)
       {
-        v28 = log2(a8);
+        v28 = log2(sigma_r_chroma);
       }
     }
 
     v30 = 0;
-    v31 = a6;
-    if (a6)
+    sigma_sCopy = sigma_s;
+    if (sigma_s)
     {
-      v32 = vcnt_s8(a6);
+      v32 = vcnt_s8(sigma_s);
       v32.i16[0] = vaddlv_u8(v32);
       if (v32.u32[0] <= 1uLL)
       {
-        v30 = log2(a6);
+        v30 = log2(sigma_s);
       }
     }
 
     v33 = 0;
     v34 = x - v17;
     v35 = y - v17;
-    if (v61)
+    if (sigma_r_lumaCopy)
     {
-      v36 = vcnt_s8(v61);
+      v36 = vcnt_s8(sigma_r_lumaCopy);
       v36.i16[0] = vaddlv_u8(v36);
       if (v36.u32[0] <= 1uLL)
       {
-        v33 = log2(v61);
+        v33 = log2(sigma_r_lumaCopy);
       }
     }
 
@@ -649,10 +649,10 @@
     }
 
     v41 = v39 || v33 == 0;
-    self->_sigma_s = a6;
-    self->_sigma_r_luma = v61;
-    self->_sigma_r_chroma = a8;
-    if (a8 == 255)
+    self->_sigma_s = sigma_s;
+    self->_sigma_r_luma = sigma_r_lumaCopy;
+    self->_sigma_r_chroma = sigma_r_chroma;
+    if (sigma_r_chroma == 255)
     {
       v42 = 3;
     }
@@ -664,12 +664,12 @@
 
     self->_n_dims = v42;
     v58 = v27;
-    if (a8 != 255 || (v41 & 1) != 0)
+    if (sigma_r_chroma != 255 || (v41 & 1) != 0)
     {
       if (v41)
       {
         v49 = 0;
-        if (a8 == 255)
+        if (sigma_r_chroma == 255)
         {
           v50 = hash3;
         }
@@ -685,11 +685,11 @@ LABEL_46:
         v59 = v51;
         while (1)
         {
-          v63[0] = v52 / v31;
-          v63[1] = v49 / v31;
-          v63[2] = v51[1] / v61;
-          v63[3] = *v51 / a8;
-          v63[4] = *(v51 - 1) / a8;
+          v63[0] = v52 / sigma_sCopy;
+          v63[1] = v49 / sigma_sCopy;
+          v63[2] = v51[1] / sigma_r_lumaCopy;
+          v63[3] = *v51 / sigma_r_chroma;
+          v63[4] = *(v51 - 1) / sigma_r_chroma;
           v48 = [(CIBilateralGridHash *)self _addHashKeyAtX:v52 Y:v49 key:v50(v63) isKeyExist:0];
           if (v48)
           {
@@ -791,20 +791,20 @@ LABEL_58:
 
 - (void)_computeBlurIndices
 {
-  v3 = [(CIBilateralGridHash *)self countDims];
-  v4 = [(CIBilateralGridHash *)self countVertices];
-  if (v4 >= 1)
+  countDims = [(CIBilateralGridHash *)self countDims];
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  if (countVertices >= 1)
   {
     v5 = 0;
     v6 = 0;
-    v17 = v4;
+    v17 = countVertices;
     do
     {
       v19 = v5;
       v7 = &self->_hash_table[v5];
-      v8 = 2 * v3 * v7->var1;
+      v8 = 2 * countDims * v7->var1;
       v18 = v7;
-      if (v3 < 1)
+      if (countDims < 1)
       {
         v10 = 0;
       }
@@ -843,7 +843,7 @@ LABEL_58:
           ++v9;
         }
 
-        while (v9 != v3);
+        while (v9 != countDims);
       }
 
       v18->var2 = v8;
@@ -858,11 +858,11 @@ LABEL_58:
 
 - (void)_computeCoordIndices
 {
-  v3 = [(CIBilateralGridHash *)self width];
-  v4 = [(CIBilateralGridHash *)self height];
-  v5 = [(CIBilateralGridHash *)self countVertices];
-  bzero(self->_coord_indices_off, 4 * v5);
-  if (v5 <= 0)
+  width = [(CIBilateralGridHash *)self width];
+  height = [(CIBilateralGridHash *)self height];
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  bzero(self->_coord_indices_off, 4 * countVertices);
+  if (countVertices <= 0)
   {
     v7 = 0;
     coord_indices = self->_coord_indices;
@@ -883,16 +883,16 @@ LABEL_58:
       ++v6;
     }
 
-    while (v5 != v6);
+    while (countVertices != v6);
   }
 
-  coord_indices[v5] = v7;
-  if (v4 >= 1)
+  coord_indices[countVertices] = v7;
+  if (height >= 1)
   {
     v11 = 0;
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != height; ++i)
     {
-      if (v3 >= 1)
+      if (width >= 1)
       {
         v13 = 0;
         coord_table = self->_coord_table;
@@ -906,18 +906,18 @@ LABEL_58:
           ++v13;
         }
 
-        while (v3 != v13);
+        while (width != v13);
       }
 
-      v11 += v3;
+      v11 += width;
     }
   }
 }
 
 - (void)_computeInterpIndices
 {
-  v3 = [(CIBilateralGridHash *)self countVertices];
-  if (v3 < 1)
+  countVertices = [(CIBilateralGridHash *)self countVertices];
+  if (countVertices < 1)
   {
     v5 = 0;
   }
@@ -950,27 +950,27 @@ LABEL_58:
       ++v4;
     }
 
-    while (v4 != v3);
+    while (v4 != countVertices);
   }
 
-  self->_interp_indices[v3] = v5;
+  self->_interp_indices[countVertices] = v5;
 }
 
-- (int)_addHashKeyAtX:(int)a3 Y:(int)a4 key:(unint64_t)a5 isKeyExist:(BOOL *)a6
+- (int)_addHashKeyAtX:(int)x Y:(int)y key:(unint64_t)key isKeyExist:(BOOL *)exist
 {
   v18 = 0;
-  if ([(CIBilateralGridHash *)self _hashMapFindKey:a5 to:&v18])
+  if ([(CIBilateralGridHash *)self _hashMapFindKey:key to:&v18])
   {
     v11 = v18;
     hash_table = self->_hash_table;
-    self->_hash_matrix_data[a3 + self->_width * a4] = v18;
+    self->_hash_matrix_data[x + self->_width * y] = v18;
     ++hash_table[v11].var1;
-    if (a6)
+    if (exist)
     {
       v13 = 1;
 LABEL_6:
       result = 0;
-      *a6 = v13;
+      *exist = v13;
       return result;
     }
 
@@ -983,12 +983,12 @@ LABEL_6:
     v15 = self->_hash_table;
     self->_hash_table_size = hash_table_size + 1;
     v16 = &v15[hash_table_size];
-    v16->var0.var0 = a5;
+    v16->var0.var0 = key;
     *&v16->var1 = xmmword_19CF22D70;
-    self->_hash_matrix_data[a3 + self->_width * a4] = hash_table_size;
-    [(CIBilateralGridHash *)self _hashMapAddKey:a5 andValue:?];
+    self->_hash_matrix_data[x + self->_width * y] = hash_table_size;
+    [(CIBilateralGridHash *)self _hashMapAddKey:key andValue:?];
     v13 = 0;
-    if (a6)
+    if (exist)
     {
       goto LABEL_6;
     }

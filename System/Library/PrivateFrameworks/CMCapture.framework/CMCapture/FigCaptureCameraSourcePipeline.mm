@@ -1,24 +1,24 @@
 @interface FigCaptureCameraSourcePipeline
 + (void)initialize;
 - (BOOL)requiresMasterClock;
-- (BWNodeOutput)createOutputNetworkForOutput:(uint64_t)a3 withFanOutCount:(void *)a4 graph:(uint64_t)a5 sessionID:;
+- (BWNodeOutput)createOutputNetworkForOutput:(uint64_t)output withFanOutCount:(void *)count graph:(uint64_t)graph sessionID:;
 - (NSString)description;
 - (double)trueVideoCaptureAdditionalZoomFactor;
-- (double)trueVideoCaptureAdditionalZoomFactorForPhotoGraphVideoZoomFactor:(uint64_t)a1;
+- (double)trueVideoCaptureAdditionalZoomFactorForPhotoGraphVideoZoomFactor:(uint64_t)factor;
 - (float)trueVideoTransitionPreviousPhotoGraphZoomFactor;
-- (id)_addDepthFromInfraredSynchronizer:(void *)a3 previewOutputsBySourceDeviceType:(uint64_t)a4 pipelineConfiguration:(uint64_t)a5 graph:(uint64_t)a6 sourceDeviceType:;
-- (id)_buildPointCloudOutputNetworkWithPipelineConfiguration:(id *)result graph:(uint64_t)a2;
-- (id)initWithConfiguration:(void *)a3 captureDevice:(void *)a4 graph:(uint64_t)a5 name:(uint64_t)a6 renderDelegate:(uint64_t)a7 ispFastSwitchEnabled:(uint64_t)a8 rtscProcessorsBySourceDeviceType:(uint64_t)a9 inferenceScheduler:(int *)a10 error:;
-- (uint64_t)_addCrossOverNodeToGraph:(int)a3 outputNetworkType:(void *)a4 inputs:(uint64_t)a5 mediaType:(uint64_t)a6 name:(_DWORD *)a7 outErr:;
-- (uint64_t)_addOverCaptureSourcePipelineToGraph:(void *)a3 upstreamVideoCaptureOutputsBySourceDeviceType:(unsigned int)a4 depthEnabled:(uint64_t)a5 depthFilterRenderingEnabled:(unsigned int)a6 preLTMThumbnailEnabled:(unsigned int)a7 postColorProcessingThumbnailEnabled:(char)a8 weightSegmentMapEnabled:(char)a9 forPreview:(unsigned int)a10 maxLossyCompressionLevel:(int)a11 numberOfSecondaryFramesToSkip:(_DWORD *)a12 outErr:;
-- (uint64_t)_buildMultiStreamCameraSourcePipeline:(void *)a3 graph:(uint64_t)a4 renderDelegate:(uint64_t)a5 fastModeSwitch:(uint64_t)a6 rtscProcessorsBySourceDeviceType:(uint64_t)a7 inferenceScheduler:;
-- (uint64_t)_buildPreviewOutputNetwork:(uint64_t)a3 videoCaptureOutputsBySourceDeviceType:(uint64_t)a4 pipelineConfiguration:graph:numberOfSecondaryFramesToSkip:;
-- (uint64_t)_buildSemanticMasksOutputNetwork:(uint64_t)a1 pipelineConfiguration:(void *)a2 graph:;
+- (id)_addDepthFromInfraredSynchronizer:(void *)synchronizer previewOutputsBySourceDeviceType:(uint64_t)type pipelineConfiguration:(uint64_t)configuration graph:(uint64_t)graph sourceDeviceType:;
+- (id)_buildPointCloudOutputNetworkWithPipelineConfiguration:(id *)result graph:(uint64_t)graph;
+- (id)initWithConfiguration:(void *)configuration captureDevice:(void *)device graph:(uint64_t)graph name:(uint64_t)name renderDelegate:(uint64_t)delegate ispFastSwitchEnabled:(uint64_t)enabled rtscProcessorsBySourceDeviceType:(uint64_t)type inferenceScheduler:(int *)self0 error:;
+- (uint64_t)_addCrossOverNodeToGraph:(int)graph outputNetworkType:(void *)type inputs:(uint64_t)inputs mediaType:(uint64_t)mediaType name:(_DWORD *)name outErr:;
+- (uint64_t)_addOverCaptureSourcePipelineToGraph:(void *)graph upstreamVideoCaptureOutputsBySourceDeviceType:(unsigned int)type depthEnabled:(uint64_t)enabled depthFilterRenderingEnabled:(unsigned int)renderingEnabled preLTMThumbnailEnabled:(unsigned int)thumbnailEnabled postColorProcessingThumbnailEnabled:(char)processingThumbnailEnabled weightSegmentMapEnabled:(char)mapEnabled forPreview:(unsigned int)self0 maxLossyCompressionLevel:(int)self1 numberOfSecondaryFramesToSkip:(_DWORD *)self2 outErr:;
+- (uint64_t)_buildMultiStreamCameraSourcePipeline:(void *)pipeline graph:(uint64_t)graph renderDelegate:(uint64_t)delegate fastModeSwitch:(uint64_t)switch rtscProcessorsBySourceDeviceType:(uint64_t)type inferenceScheduler:;
+- (uint64_t)_buildPreviewOutputNetwork:(uint64_t)network videoCaptureOutputsBySourceDeviceType:(uint64_t)type pipelineConfiguration:graph:numberOfSecondaryFramesToSkip:;
+- (uint64_t)_buildSemanticMasksOutputNetwork:(uint64_t)network pipelineConfiguration:(void *)configuration graph:;
 - (uint64_t)_canDeferSourceNodesForGraph:(uint64_t)result;
-- (uint64_t)_connectCinematicFramingNode:(void *)a3 videoOutputsBySourceDeviceType:(void *)a4 sourceDeviceTypes:(void *)a5 portTypes:(void *)a6 graph:(void *)a7 cameraConfiguration:stillImageCaptureEnabled:stillImageOutputsByPortType:;
-- (uint64_t)_getDeviceOrientationCorrectionEnabledForVideoCaptureConnectionConfigurations:(uint64_t)a1;
-- (uint64_t)_insertSubjectSelectionAndCinematicFramingNodesOnOutputsBySourceDeviceType:(uint64_t)a1 connectionConfigurations:(void *)a2 pipelineConfiguration:(void *)a3 cameraInfoByPortType:(uint64_t)a4 graph:(uint64_t)a5 stillImageCaptureEnabled:(void *)a6 stillImageOutputsByPortType:(unsigned int)a7;
-- (uint64_t)_stereoVideoAddSlaveFrameSynchronizerNode:(uint64_t)a3 input1:(uint64_t)a4 input2:(uint64_t)a5 mediaType:(uint64_t)a6 name:(_DWORD *)a7 outErr:;
+- (uint64_t)_connectCinematicFramingNode:(void *)node videoOutputsBySourceDeviceType:(void *)type sourceDeviceTypes:(void *)types portTypes:(void *)portTypes graph:(void *)graph cameraConfiguration:stillImageCaptureEnabled:stillImageOutputsByPortType:;
+- (uint64_t)_getDeviceOrientationCorrectionEnabledForVideoCaptureConnectionConfigurations:(uint64_t)configurations;
+- (uint64_t)_insertSubjectSelectionAndCinematicFramingNodesOnOutputsBySourceDeviceType:(uint64_t)type connectionConfigurations:(void *)configurations pipelineConfiguration:(void *)configuration cameraInfoByPortType:(uint64_t)portType graph:(uint64_t)graph stillImageCaptureEnabled:(void *)enabled stillImageOutputsByPortType:(unsigned int)byPortType;
+- (uint64_t)_stereoVideoAddSlaveFrameSynchronizerNode:(uint64_t)node input1:(uint64_t)input1 input2:(uint64_t)input2 mediaType:(uint64_t)type name:(_DWORD *)name outErr:;
 - (uint64_t)allocateSharedBufferPools;
 - (uint64_t)cameraConfiguration;
 - (uint64_t)captureDevice;
@@ -36,17 +36,17 @@
 - (uint64_t)hardwareDepthFilteringEnabled;
 - (uint64_t)isKeypointDescriptorDataOnVideoCaptureOutputsEnabledForSourceDeviceType:(uint64_t)result;
 - (uint64_t)isLightSourceMaskOnVideoCaptureOutputsEnabledForSourceDeviceType:(uint64_t)result;
-- (uint64_t)liveReconfigureForOutputDimensions:(uint64_t)a3 aspectRatio:;
+- (uint64_t)liveReconfigureForOutputDimensions:(uint64_t)dimensions aspectRatio:;
 - (uint64_t)loadInferenceNetworkForSmartStyle;
 - (uint64_t)lowLatencyStabilizationEnabled;
 - (uint64_t)metadataObjectConnectionConfigurationForSessionID:(uint64_t)result;
-- (uint64_t)metadataOutputsByCategoryForSourceDeviceType:(uint64_t)a1;
+- (uint64_t)metadataOutputsByCategoryForSourceDeviceType:(uint64_t)type;
 - (uint64_t)motionAttachmentsSource;
 - (uint64_t)nextPointCloudOutput;
 - (uint64_t)postColorProcessingThumbnailEnabled;
 - (uint64_t)preLTMThumbnailEnabled;
 - (uint64_t)preferredPreviewDimensions;
-- (uint64_t)previewOutputTransformForSourceDeviceType:(uint64_t)a1;
+- (uint64_t)previewOutputTransformForSourceDeviceType:(uint64_t)type;
 - (uint64_t)registerAttachedSessionID:(uint64_t)result;
 - (uint64_t)semanticMasksOutputsBySourceDeviceType:(uint64_t)result;
 - (uint64_t)semanticStyleSceneObserver;
@@ -55,10 +55,10 @@
 - (uint64_t)setDisableTemporalNoiseReductionWhenStopping:(uint64_t)result;
 - (uint64_t)setKeepISPStreamingWhenStopping:(uint64_t)result;
 - (uint64_t)setMasterClock:(uint64_t)result;
-- (uint64_t)setMetadataObjectConnectionConfiguration:(uint64_t)a3 forSessionID:;
+- (uint64_t)setMetadataObjectConnectionConfiguration:(uint64_t)configuration forSessionID:;
 - (uint64_t)setMotionToWakeTargetFrameRate:(uint64_t)result;
 - (uint64_t)setObjectDetectionTargetFrameRate:(uint64_t)result;
-- (uint64_t)setPreviewShift:(double)a3 previewScaleFactor:(double)a4 forPortType:(float)a5 previewShiftAtBaseZoom:(double)a6;
+- (uint64_t)setPreviewShift:(double)shift previewScaleFactor:(double)factor forPortType:(float)type previewShiftAtBaseZoom:(double)zoom;
 - (uint64_t)setSmartStyle:(uint64_t)result;
 - (uint64_t)setVideoHDRImageStatisticsEnabled:(uint64_t)result;
 - (uint64_t)smartCropHomographyProvider;
@@ -73,34 +73,34 @@
 - (uint64_t)trueVideoCaptureEnabled;
 - (uint64_t)usesFirmwareStillImageOutput;
 - (uint64_t)videoCaptureDimensionsWithoutOverscan;
-- (uint64_t)videoCaptureOutputTransformForSourceDeviceType:(uint64_t)a1;
+- (uint64_t)videoCaptureOutputTransformForSourceDeviceType:(uint64_t)type;
 - (uint64_t)videoHDRImageStatisticsEnabled;
 - (uint64_t)videoOutputColorInfo;
 - (uint64_t)visionDataOutputForSourceDeviceType:(uint64_t)result;
 - (uint64_t)weightSegmentMapEnabled;
-- (void)_addFunnelNodeToGraph:(uint64_t)a3 inputs:(uint64_t)a4 mediaType:(uint64_t)a5 name:(uint64_t)a6 outErr:(uint64_t)a7;
+- (void)_addFunnelNodeToGraph:(uint64_t)graph inputs:(uint64_t)inputs mediaType:(uint64_t)type name:(uint64_t)name outErr:(uint64_t)err;
 - (void)_buildDetectedObjectsOutputNetwork:pipelineConfiguration:graph:;
-- (void)_buildVideoCaptureOutputNetwork:(uint64_t)a3 previewOutputsBySourceDeviceType:(uint64_t)a4 stillImageOutputsByPortType:(uint64_t)a5 lightSourceMaskOutputsBySourceDeviceType:(uint64_t)a6 keypointDescriptorDataOutputsBySourceDeviceType:(uint64_t)a7 pipelineConfiguration:(uint64_t)a8 graph:(uint64_t)a9 videoCaptureDimensions:(uint64_t)a10 numberOfSecondaryFramesToSkip:(uint64_t)a11 rtscProcessorsBySourceDeviceType:(uint64_t)a12 inferenceScheduler:(uint64_t)a13;
-- (void)_connectSubjectSelectionNode:(uint64_t)a1 videoOutputsBySourceDeviceType:sourceDeviceTypes:portTypes:graph:;
+- (void)_buildVideoCaptureOutputNetwork:(uint64_t)network previewOutputsBySourceDeviceType:(uint64_t)type stillImageOutputsByPortType:(uint64_t)portType lightSourceMaskOutputsBySourceDeviceType:(uint64_t)deviceType keypointDescriptorDataOutputsBySourceDeviceType:(uint64_t)sourceDeviceType pipelineConfiguration:(uint64_t)configuration graph:(uint64_t)graph videoCaptureDimensions:(uint64_t)self0 numberOfSecondaryFramesToSkip:(uint64_t)self1 rtscProcessorsBySourceDeviceType:(uint64_t)self2 inferenceScheduler:(uint64_t)self3;
+- (void)_connectSubjectSelectionNode:(uint64_t)node videoOutputsBySourceDeviceType:sourceDeviceTypes:portTypes:graph:;
 - (void)_insertCrossOverAndOverCaptureNodesOnOutputsBySourceDeviceType:connectionConfigurations:pipelineConfiguration:graph:outputNetworkType:numberOfSecondaryFramesToSkip:;
 - (void)_insertFunnelOnMetadataOutputsBySourceDeviceType:connectionConfigurations:pipelineConfiguration:graph:mediaType:metadataName:;
 - (void)_insertFunnelOnPreviewOutputsBySourceDeviceType:previewDerivedConnectionConfigurations:graph:;
 - (void)_insertSmartStyleLearningNodeOnOutputsBySourceDeviceType:ifAllowedByAdditionalPreviewConnectionConfigurations:semanticMasksOutputsBySourceDeviceType:pipelineConfiguration:graph:;
 - (void)_insertSmartStyleMetadataSynchronizerNodeOnOutputsBySourceDeviceType:pipelineConfiguration:graph:;
 - (void)_rerouteDetectedObjectsOutputsForSourcesWithCinematicFramingEnabled:graph:;
-- (void)addMetadataOutputNetworksForSessionID:(uint64_t)a3 graph:(uint64_t)a4;
+- (void)addMetadataOutputNetworksForSessionID:(uint64_t)d graph:(uint64_t)graph;
 - (void)dealloc;
-- (void)metadataCategoriesForConnectionConfiguration:(uint64_t)a1;
+- (void)metadataCategoriesForConnectionConfiguration:(uint64_t)configuration;
 - (void)newConfigurationRequiresStreamRestart:tnrConfigurationChanged:newFormatIndexByPortTypeOut:;
-- (void)nextPreviewOutputForSourceDeviceType:(char)a3 intendedForVideoDataSinkPipeline:;
-- (void)nextVideoCaptureOutputForSourceDeviceType:(uint64_t)a3;
-- (void)nextVideoCaptureOutputForSourceDeviceType:(uint64_t)a3 sharesBuffersWithOtherConnections:(uint64_t)a4;
+- (void)nextPreviewOutputForSourceDeviceType:(char)type intendedForVideoDataSinkPipeline:;
+- (void)nextVideoCaptureOutputForSourceDeviceType:(uint64_t)type;
+- (void)nextVideoCaptureOutputForSourceDeviceType:(uint64_t)type sharesBuffersWithOtherConnections:(uint64_t)connections;
 - (void)nondisruptiveSwitchingFormatIndicesByPortTypeForConfiguration:;
-- (void)prepareForStillImageCaptureWithStillImageOutputRetainedBufferCountOverride:(uint64_t)a3 infraRedStillImageOutputRetainedBufferCountOverride:(uint64_t)a4 clientBracketCount:(uint64_t)a5 enableSushiRawAttachmentOption:(uint64_t)a6;
-- (void)setBackgroundBlurNodePropertiesWhileRunning:(uint64_t)a1 studioLightingEnabled:reactionEffectsEnabled:backgroundReplacementEnabled:;
-- (void)setCinematicFramingControlsWhileRunning:(float)a3 panningAngleX:(float)a4 panningAngleY:(float)a5 videoZoomFactor:(double)a6 manualFramingDefaultZoomFactor:;
+- (void)prepareForStillImageCaptureWithStillImageOutputRetainedBufferCountOverride:(uint64_t)override infraRedStillImageOutputRetainedBufferCountOverride:(uint64_t)countOverride clientBracketCount:(uint64_t)count enableSushiRawAttachmentOption:(uint64_t)option;
+- (void)setBackgroundBlurNodePropertiesWhileRunning:(uint64_t)running studioLightingEnabled:reactionEffectsEnabled:backgroundReplacementEnabled:;
+- (void)setCinematicFramingControlsWhileRunning:(float)running panningAngleX:(float)x panningAngleY:(float)y videoZoomFactor:(double)factor manualFramingDefaultZoomFactor:;
 - (void)setFaceFilteringDelegate:(void *)result;
-- (void)setStreamsSuspendedBySourceDeviceType:(uint64_t)a1;
+- (void)setStreamsSuspendedBySourceDeviceType:(uint64_t)type;
 @end
 
 @implementation FigCaptureCameraSourcePipeline
@@ -127,13 +127,13 @@
 
 - (double)trueVideoCaptureAdditionalZoomFactor
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = *(a1 + 56);
-  if ((*(a1 + 584) & 1) == 0)
+  v2 = *(self + 56);
+  if ((*(self + 584) & 1) == 0)
   {
     if (v2)
     {
@@ -164,14 +164,14 @@ LABEL_7:
   v3 = 0.0;
 LABEL_10:
 
-  return [(FigCaptureCameraSourcePipeline *)a1 trueVideoCaptureAdditionalZoomFactorForPhotoGraphVideoZoomFactor:v3];
+  return [(FigCaptureCameraSourcePipeline *)self trueVideoCaptureAdditionalZoomFactorForPhotoGraphVideoZoomFactor:v3];
 }
 
 - (uint64_t)trueVideoCaptureEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 584));
+    return OUTLINED_FUNCTION_5_27(*(self + 584));
   }
 
   else
@@ -182,9 +182,9 @@ LABEL_10:
 
 - (uint64_t)lowLatencyStabilizationEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 588));
+    return OUTLINED_FUNCTION_5_27(*(self + 588));
   }
 
   else
@@ -195,9 +195,9 @@ LABEL_10:
 
 - (uint64_t)videoHDRImageStatisticsEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 513));
+    return OUTLINED_FUNCTION_5_27(*(self + 513));
   }
 
   else
@@ -233,9 +233,9 @@ LABEL_10:
 {
   if (result)
   {
-    v1 = [*(result + 72) configuration];
+    configuration = [*(result + 72) configuration];
 
-    return [v1 motionAttachmentsSource];
+    return [configuration motionAttachmentsSource];
   }
 
   return result;
@@ -255,9 +255,9 @@ LABEL_10:
 {
   if (result)
   {
-    v1 = [*(result + 72) configuration];
+    configuration = [*(result + 72) configuration];
 
-    return [v1 usesFirmwareStillImageOutput];
+    return [configuration usesFirmwareStillImageOutput];
   }
 
   return result;
@@ -265,9 +265,9 @@ LABEL_10:
 
 - (uint64_t)stillImageOutputDerivesFromVideoCaptureOutput
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 488));
+    return OUTLINED_FUNCTION_5_27(*(self + 488));
   }
 
   else
@@ -312,9 +312,9 @@ LABEL_10:
 {
   if (result)
   {
-    v1 = [*(result + 72) configuration];
+    configuration = [*(result + 72) configuration];
 
-    return [v1 videoCaptureDimensions];
+    return [configuration videoCaptureDimensions];
   }
 
   return result;
@@ -387,9 +387,9 @@ LABEL_10:
 LABEL_11:
         v9 = *(v2 + v8);
 LABEL_12:
-        v13 = [v9 videoCaptureOutput];
+        videoCaptureOutput = [v9 videoCaptureOutput];
 
-        result = [v13 setRetainedBufferCount:v7];
+        result = [videoCaptureOutput setRetainedBufferCount:v7];
         break;
       default:
         return result;
@@ -401,13 +401,13 @@ LABEL_12:
 
 - (uint64_t)allocateSharedBufferPools
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [a1[9] allocateOrReuseBufferPoolsFromSourceNode:0];
-  if (v2 || (v2 = [a1[10] allocateOrReuseBufferPoolsFromSourceNode:a1[9]], v2) || (v2 = objc_msgSend(a1[11], "allocateOrReuseBufferPoolsFromSourceNode:", a1[9]), v2))
+  v2 = [self[9] allocateOrReuseBufferPoolsFromSourceNode:0];
+  if (v2 || (v2 = [self[10] allocateOrReuseBufferPoolsFromSourceNode:self[9]], v2) || (v2 = objc_msgSend(self[11], "allocateOrReuseBufferPoolsFromSourceNode:", self[9]), v2))
   {
     v3 = v2;
     OUTLINED_FUNCTION_1_5();
@@ -416,7 +416,7 @@ LABEL_9:
     return v3;
   }
 
-  v3 = [a1[12] allocateOrReuseBufferPoolsFromSourceNode:0];
+  v3 = [self[12] allocateOrReuseBufferPoolsFromSourceNode:0];
   if (v3)
   {
     OUTLINED_FUNCTION_0_8();
@@ -448,7 +448,7 @@ LABEL_9:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -457,7 +457,7 @@ LABEL_9:
   }
 }
 
-- (uint64_t)_buildMultiStreamCameraSourcePipeline:(void *)a3 graph:(uint64_t)a4 renderDelegate:(uint64_t)a5 fastModeSwitch:(uint64_t)a6 rtscProcessorsBySourceDeviceType:(uint64_t)a7 inferenceScheduler:
+- (uint64_t)_buildMultiStreamCameraSourcePipeline:(void *)pipeline graph:(uint64_t)graph renderDelegate:(uint64_t)delegate fastModeSwitch:(uint64_t)switch rtscProcessorsBySourceDeviceType:(uint64_t)type inferenceScheduler:
 {
   if (!result)
   {
@@ -467,19 +467,19 @@ LABEL_9:
   v9 = result;
   v817 = 0;
   v816 = 0;
-  v618 = [MEMORY[0x1E695DF90] dictionary];
-  v617 = [MEMORY[0x1E695DF90] dictionary];
-  v619 = [MEMORY[0x1E695DF90] dictionary];
-  v612 = [MEMORY[0x1E695DF90] dictionary];
-  v613 = [MEMORY[0x1E695DF90] dictionary];
-  v615 = [MEMORY[0x1E695DF90] dictionary];
-  v614 = [MEMORY[0x1E695DF90] dictionary];
-  v616 = [MEMORY[0x1E695DF90] dictionary];
-  v610 = [MEMORY[0x1E695DF90] dictionary];
-  v609 = [MEMORY[0x1E695DF90] dictionary];
-  v608 = [MEMORY[0x1E695DF90] dictionary];
-  v607 = [MEMORY[0x1E695DF90] dictionary];
-  v606 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary8 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary10 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary12 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary13 = [MEMORY[0x1E695DF90] dictionary];
   v708 = a2;
   if (a2)
   {
@@ -615,8 +615,8 @@ LABEL_9:
 
   v594 = 1;
 LABEL_31:
-  v21 = [v717 depthDataDeliveryEnabled];
-  v754 = v21;
+  depthDataDeliveryEnabled = [v717 depthDataDeliveryEnabled];
+  v754 = depthDataDeliveryEnabled;
   if (v689 == 3)
   {
     v22 = 0;
@@ -624,12 +624,12 @@ LABEL_31:
 
   else
   {
-    v22 = v21;
+    v22 = depthDataDeliveryEnabled;
   }
 
   *v680 = v22;
-  v636 = [v10 previewDepthFilterRenderingEnabled];
-  v23 = [v717 requiredFormat];
+  previewDepthFilterRenderingEnabled = [v10 previewDepthFilterRenderingEnabled];
+  requiredFormat = [v717 requiredFormat];
   v634 = [objc_msgSend(v692 "irisSinkConfiguration")];
   v24 = [objc_msgSend(objc_msgSend(objc_msgSend(*(v9 + 456) "captureStream")];
   if ([v717 cinematicFramingEnabled])
@@ -694,16 +694,16 @@ LABEL_31:
   }
 
   v30 = FigCaptureCinematicFramingNodeRequiredInGraph(isCenterStageOrManualFramingEnabledInVideoDataConnectionConfiguration, [objc_msgSend(v717 "requiredFormat")], v27);
-  v697 = v23;
+  v697 = requiredFormat;
   if ([v717 cinematicFramingEnabled] && objc_msgSend(objc_msgSend(v717, "requiredFormat"), "isSmartCropSupported") && (objc_msgSend(objc_msgSend(v717, "requiredFormat"), "isCinematicFramingSupported") & 1) == 0)
   {
-    v31 = a3;
+    pipelineCopy2 = pipeline;
     v32 = [objc_msgSend(v717 "requiredFormat")] ^ 1;
   }
 
   else
   {
-    v31 = a3;
+    pipelineCopy2 = pipeline;
     v32 = 0;
   }
 
@@ -723,10 +723,10 @@ LABEL_31:
   v682 = v35;
   csp_shouldUseDepthCompanionIndex(v717, v696, v35, v42, v43, v44, v45, v46, v535, v539, v542, v544, v546, v549, v552, v555, v558, v561, v564, v567, v570, v573, v576, v579, v582, v585, v588, v590);
   v632 = v47;
-  v631 = [*(v9 + 456) hasFlash];
+  hasFlash = [*(v9 + 456) hasFlash];
   if (FigCapturePlatformIdentifier() > 10)
   {
-    v630 = 0;
+    enabled = 0;
   }
 
   else
@@ -743,12 +743,12 @@ LABEL_31:
 
     if ([objc_msgSend(v48 "sinkConfiguration")] == 1)
     {
-      v630 = [v48 enabled];
+      enabled = [v48 enabled];
     }
 
     else
     {
-      v630 = 0;
+      enabled = 0;
     }
   }
 
@@ -766,9 +766,9 @@ LABEL_31:
   }
 
   v736 = HIDWORD(v35);
-  IsPackedBayerRaw = FigCapturePixelFormatIsPackedBayerRaw([v23 format]);
-  v719 = v31;
-  [v31 isRunningForContinuityCapture];
+  IsPackedBayerRaw = FigCapturePixelFormatIsPackedBayerRaw([requiredFormat format]);
+  v719 = pipelineCopy2;
+  [pipelineCopy2 isRunningForContinuityCapture];
   csp_dockKitNodeEnabled();
   v681 = v51;
   v52 = csp_willDecoupleWarperFromStreamProcessing(v661);
@@ -785,8 +785,8 @@ LABEL_31:
         v829 = 0u;
         v830 = 0u;
         v831 = 0u;
-        v57 = [v56 captureStreams];
-        v58 = [v57 countByEnumeratingWithState:&v828 objects:&v841 count:16];
+        captureStreams = [v56 captureStreams];
+        v58 = [captureStreams countByEnumeratingWithState:&v828 objects:&v841 count:16];
         if (!v58)
         {
 LABEL_79:
@@ -804,7 +804,7 @@ LABEL_70:
         {
           if (*v829 != v60)
           {
-            objc_enumerationMutation(v57);
+            objc_enumerationMutation(captureStreams);
           }
 
           v64 = *(*(&v828 + 1) + 8 * v63);
@@ -823,7 +823,7 @@ LABEL_70:
 
           if (v59 == ++v63)
           {
-            v59 = [v57 countByEnumeratingWithState:&v828 objects:&v841 count:16];
+            v59 = [captureStreams countByEnumeratingWithState:&v828 objects:&v841 count:16];
             if (!v59)
             {
               goto LABEL_79;
@@ -854,7 +854,7 @@ LABEL_70:
         }
 
         v54 = 1;
-        v23 = v697;
+        requiredFormat = v697;
       }
     }
 
@@ -884,7 +884,7 @@ LABEL_70:
 
   if ([objc_msgSend(objc_msgSend(*(v718 + 456) "captureStream")])
   {
-    v69 = [v23 isSecondaryScalerUnavailable] | v52 & (v733 == 0);
+    v69 = [requiredFormat isSecondaryScalerUnavailable] | v52 & (v733 == 0);
   }
 
   else
@@ -918,8 +918,8 @@ LABEL_70:
   }
 
   v73 = [objc_msgSend(objc_msgSend(*(v718 + 456) "captureStream")];
-  v74 = [v53 geometricDistortionCorrectionEnabled];
-  if (FigCapturePlatformIdentifier() <= 9 && v74 && (([v661 containsObject:&unk_1F2244788] & 1) != 0 || objc_msgSend(v661, "containsObject:", &unk_1F22447B8)))
+  geometricDistortionCorrectionEnabled = [v53 geometricDistortionCorrectionEnabled];
+  if (FigCapturePlatformIdentifier() <= 9 && geometricDistortionCorrectionEnabled && (([v661 containsObject:&unk_1F2244788] & 1) != 0 || objc_msgSend(v661, "containsObject:", &unk_1F22447B8)))
   {
     [FigCaptureCameraSourcePipeline _buildMultiStreamCameraSourcePipeline:? graph:? renderDelegate:? fastModeSwitch:? rtscProcessorsBySourceDeviceType:? inferenceScheduler:?];
     goto LABEL_609;
@@ -935,12 +935,12 @@ LABEL_70:
     v629[0] = *(v708 + 160);
     if ([v697 sushiRawSupported])
     {
-      v666 = *(v708 + 264) ^ 1;
+      sushiRawSupported = *(v708 + 264) ^ 1;
     }
 
     else
     {
-      v666 = 0;
+      sushiRawSupported = 0;
     }
 
     v75 = v748;
@@ -951,7 +951,7 @@ LABEL_70:
 
   else
   {
-    v666 = [v697 sushiRawSupported];
+    sushiRawSupported = [v697 sushiRawSupported];
     *v629 = 0;
     *v645 = 0;
     v635 = 0;
@@ -975,18 +975,18 @@ LABEL_70:
   }
 
   v638 = v78 | v79;
-  v81 = v692;
+  capturesStillsFromVideoStream = v692;
   *(v718 + 488) = csp_shouldCaptureStillsFromVideoStream(v53, v697, v647, v692 != 0);
   *(v718 + 40) = 0;
   if (v693)
   {
     if (v692)
     {
-      v81 = [v697 capturesStillsFromVideoStream];
+      capturesStillsFromVideoStream = [v697 capturesStillsFromVideoStream];
     }
 
     v82 = [v696 count] != 0;
-    if (v74)
+    if (geometricDistortionCorrectionEnabled)
     {
       v83 = [*(v718 + 456) isBravoVariant] & v660;
     }
@@ -1008,7 +1008,7 @@ LABEL_133:
       goto LABEL_134;
     }
 
-    if (((v82 | v81) & 1) != 0 && ((((v659 & 1) == 0) + (v68 ^ 1u) + v73 > 1) & (v80 | v83)) == 0)
+    if (((v82 | capturesStillsFromVideoStream) & 1) != 0 && ((((v659 & 1) == 0) + (v68 ^ 1u) + v73 > 1) & (v80 | v83)) == 0)
     {
       v84 = v718;
       *(v718 + 40) = 1;
@@ -1029,7 +1029,7 @@ LABEL_133:
 
       else if (v635 == v639)
       {
-        if (v74 & 1 | (([v661 containsObject:&unk_1F2244908] & 1) == 0))
+        if (geometricDistortionCorrectionEnabled & 1 | (([v661 containsObject:&unk_1F2244908] & 1) == 0))
         {
           v366 = [v697 previewDimensionsForAspectRatio:{objc_msgSend(v717, "outputAspectRatio")}];
           v367 = v736 * v682;
@@ -1048,18 +1048,18 @@ LABEL_133:
               goto LABEL_134;
             }
 
-            v369 = [v717 requiredFormat];
+            requiredFormat2 = [v717 requiredFormat];
             if (v647)
             {
-              v370 = [objc_msgSend(objc_msgSend(v369 "frontEndScalerCompanionFormats")];
+              nativeDimensions = [objc_msgSend(objc_msgSend(requiredFormat2 "frontEndScalerCompanionFormats")];
             }
 
             else
             {
-              v370 = [v369 nativeDimensions];
+              nativeDimensions = [requiredFormat2 nativeDimensions];
             }
 
-            *(v718 + 40) = (v682 * 1.2) < v370;
+            *(v718 + 40) = (v682 * 1.2) < nativeDimensions;
           }
         }
 
@@ -1138,22 +1138,22 @@ LABEL_134:
 
   v690 = csp_projectorModeFromPointCloudDataConnectionConfigurations(v90);
   v734 = csp_cinematicVideoEnabled(v88);
-  v91 = [v86 sensorCropDimensions];
-  if (v91 < 1 || SHIDWORD(v91) < 1)
+  sensorCropDimensions = [v86 sensorCropDimensions];
+  if (sensorCropDimensions < 1 || SHIDWORD(sensorCropDimensions) < 1)
   {
-    v92 = [v86 sensorDimensions];
+    sensorDimensions = [v86 sensorDimensions];
   }
 
   else
   {
-    v92 = [v86 sensorCropDimensions];
+    sensorDimensions = [v86 sensorCropDimensions];
   }
 
-  v93 = v92;
-  v94 = [v86 horizontalSensorBinningFactor];
-  v95 = [v86 verticalSensorBinningFactor];
+  v93 = sensorDimensions;
+  horizontalSensorBinningFactor = [v86 horizontalSensorBinningFactor];
+  verticalSensorBinningFactor = [v86 verticalSensorBinningFactor];
   v96 = v682 / v736;
-  v97 = v96 >= 1.0 && (v96 - (((v93 * v94) / SHIDWORD(v93)) * v95)) > 0.01;
+  v97 = v96 >= 1.0 && (v96 - (((v93 * horizontalSensorBinningFactor) / SHIDWORD(v93)) * verticalSensorBinningFactor)) > 0.01;
   if (v708)
   {
     v98 = *(v708 + 208);
@@ -1166,13 +1166,13 @@ LABEL_134:
 
   v99 = [FigVideoCaptureConnectionConfiguration videoStabilizationMethods:v98 includeIris:1];
   v723 = csp_stabilizationMethodWithMostOverscan(v99);
-  v100 = [v697 isDynamicAspectRatioSupported];
+  isDynamicAspectRatioSupported = [v697 isDynamicAspectRatioSupported];
   if (!v97)
   {
     goto LABEL_162;
   }
 
-  v101 = v100;
+  v101 = isDynamicAspectRatioSupported;
   if (v734 & 1 | (([objc_msgSend(+[FigCaptureSourceBackingsProvider sharedCaptureSourceBackingsProvider](FigCaptureSourceBackingsProvider "sharedCaptureSourceBackingsProvider")] & 1) == 0))
   {
     goto LABEL_162;
@@ -1242,12 +1242,12 @@ LABEL_165:
   }
 
   *&v841 = 0;
-  v110 = [v109 source];
+  source = [v109 source];
   v598 = *MEMORY[0x1E695E480];
   v111 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (v111)
   {
-    v111(v110, @"AttributesDictionary", v598, &v841);
+    v111(source, @"AttributesDictionary", v598, &v841);
     v112 = v841;
   }
 
@@ -1296,8 +1296,8 @@ LABEL_165:
   }
 
   v840 = 0;
-  v116 = [v53 requiredFormat];
-  v755 = [MEMORY[0x1E695DF90] dictionary];
+  requiredFormat3 = [v53 requiredFormat];
+  dictionary14 = [MEMORY[0x1E695DF90] dictionary];
   v836 = 0u;
   v837 = 0u;
   v838 = 0u;
@@ -1305,7 +1305,7 @@ LABEL_165:
   v741 = v104;
   obja = [v104 captureStreams];
   v117 = [obja countByEnumeratingWithState:&v836 objects:&v841 count:16];
-  v760 = v116;
+  v760 = requiredFormat3;
   if (v117)
   {
     v118 = v117;
@@ -1320,7 +1320,7 @@ LABEL_165:
         }
 
         v120 = *(*(&v836 + 1) + 8 * j);
-        v121 = FigVideoCaptureSourceCopyUnderlyingSourceFormatForFormatAndPortType([v53 source], v116, objc_msgSend(v120, "portType"), &v840);
+        v121 = FigVideoCaptureSourceCopyUnderlyingSourceFormatForFormatAndPortType([v53 source], requiredFormat3, objc_msgSend(v120, "portType"), &v840);
         v122 = v840;
         if (v840)
         {
@@ -1334,7 +1334,7 @@ LABEL_165:
 
         else
         {
-          v123 = v116;
+          v123 = requiredFormat3;
         }
 
         v124 = [MEMORY[0x1E695DFA8] set];
@@ -1342,8 +1342,8 @@ LABEL_165:
         v833 = 0u;
         v834 = 0u;
         v835 = 0u;
-        v125 = [v123 highResStillImageDimensions];
-        v126 = [v125 countByEnumeratingWithState:&v832 objects:&v828 count:16];
+        highResStillImageDimensions = [v123 highResStillImageDimensions];
+        v126 = [highResStillImageDimensions countByEnumeratingWithState:&v832 objects:&v828 count:16];
         if (v126)
         {
           v127 = v126;
@@ -1354,30 +1354,30 @@ LABEL_165:
             {
               if (*v833 != v128)
               {
-                objc_enumerationMutation(v125);
+                objc_enumerationMutation(highResStillImageDimensions);
               }
 
               v130 = MEMORY[0x1E696AD98];
-              v131 = [*(*(&v832 + 1) + 8 * k) flavor];
+              flavor = [*(*(&v832 + 1) + 8 * k) flavor];
               v132 = v130;
               v87 = 0x1E696A000;
-              [v124 addObject:{objc_msgSend(v132, "numberWithInt:", v131)}];
+              [v124 addObject:{objc_msgSend(v132, "numberWithInt:", flavor)}];
             }
 
-            v127 = [v125 countByEnumeratingWithState:&v832 objects:&v828 count:16];
+            v127 = [highResStillImageDimensions countByEnumeratingWithState:&v832 objects:&v828 count:16];
           }
 
           while (v127);
         }
 
-        [v755 setObject:objc_msgSend(v124 forKeyedSubscript:{"allObjects"), objc_msgSend(v120, "portType")}];
+        [dictionary14 setObject:objc_msgSend(v124 forKeyedSubscript:{"allObjects"), objc_msgSend(v120, "portType")}];
         if (v121)
         {
           CFRelease(v121);
         }
 
         v53 = v717;
-        v116 = v760;
+        requiredFormat3 = v760;
       }
 
       v118 = [obja countByEnumeratingWithState:&v836 objects:&v841 count:16];
@@ -1386,7 +1386,7 @@ LABEL_165:
     while (v118);
   }
 
-  v133 = [v53 depthDataDeliveryEnabled];
+  depthDataDeliveryEnabled2 = [v53 depthDataDeliveryEnabled];
   if (v689 == 3)
   {
     v134 = 0;
@@ -1394,7 +1394,7 @@ LABEL_165:
 
   else
   {
-    v134 = v133;
+    v134 = depthDataDeliveryEnabled2;
   }
 
   v135 = 0;
@@ -1404,7 +1404,7 @@ LABEL_165:
     v135 = v136;
   }
 
-  v137 = [v116 isStereoFusionSupported];
+  isStereoFusionSupported = [requiredFormat3 isStereoFusionSupported];
   v138 = v134 ^ 1;
   v750 = [objc_msgSend(v692 "irisSinkConfiguration")];
   if ([v688 previewDepthFilterRenderingEnabled])
@@ -1417,9 +1417,9 @@ LABEL_165:
     v139 = 0;
   }
 
-  [v741 setStillImageSupportedHighResolutionFlavorsByPortType:v755];
+  [v741 setStillImageSupportedHighResolutionFlavorsByPortType:dictionary14];
   [v741 setStillImageEnhancedResByMaintainingSensorResolutionSupported:{objc_msgSend(v760, "stillImageEnhancedResByMaintainingSensorResolutionSupported")}];
-  [v741 setStereoFusionEnabled:v137 & v138];
+  [v741 setStereoFusionEnabled:isStereoFusionSupported & v138];
   [v741 setBravoConstituentPhotoDeliveryEnabled:v750];
   [v741 setDepthDataDeliveryEnabled:v134];
   [v741 setShallowDepthOfFieldEffectEnabled:v139];
@@ -1434,7 +1434,7 @@ LABEL_165:
   [v741 setRedEyeReductionEnabled:{objc_msgSend(v760, "redEyeReductionVersion") > 0}];
   if (v728)
   {
-    v141 = [objc_msgSend(v760 "actionCameraCompanionFormat")];
+    sensorDimensions2 = [objc_msgSend(v760 "actionCameraCompanionFormat")];
     [v760 maxVisibleSensorRect];
     v143 = v142;
     v145 = v144;
@@ -1457,21 +1457,21 @@ LABEL_165:
     v157 = v163;
     v159 = v164;
     v161 = v165;
-    v141 = [v760 sensorDimensions];
+    sensorDimensions2 = [v760 sensorDimensions];
   }
 
-  [v741 setSensorRegionOfInterestForCameraControls:v141 forSensorDimensions:{v155, v157, v159, v161}];
+  [v741 setSensorRegionOfInterestForCameraControls:sensorDimensions2 forSensorDimensions:{v155, v157, v159, v161}];
   [v741 setWideAsStatisticsPrimaryPreferred:{objc_msgSend(v760, "isWideAsStatisticsPrimaryEnabled")}];
   [v741 setAwbStatisticsAveragingEnabled:{objc_msgSend(v760, "isAWBStatisticsAveragingEnabled")}];
   [v741 setSmartCameraEnabled:{objc_msgSend(v717, "smartCameraEnabled")}];
   [v741 setFullBinSIFROnSecondaryCameraAllowed:{objc_msgSend(v760, "fullBinSIFROnSecondaryCameraAllowed")}];
-  v166 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary15 = [MEMORY[0x1E695DF90] dictionary];
   v824 = 0u;
   v825 = 0u;
   v826 = 0u;
   v827 = 0u;
-  v167 = [v741 captureStreams];
-  v168 = [v167 countByEnumeratingWithState:&v824 objects:v823 count:16];
+  captureStreams2 = [v741 captureStreams];
+  v168 = [captureStreams2 countByEnumeratingWithState:&v824 objects:v823 count:16];
   if (v168)
   {
     v169 = v168;
@@ -1482,7 +1482,7 @@ LABEL_165:
       {
         if (*v825 != v170)
         {
-          objc_enumerationMutation(v167);
+          objc_enumerationMutation(captureStreams2);
         }
 
         v172 = *(*(&v824 + 1) + 8 * m);
@@ -1490,17 +1490,17 @@ LABEL_165:
         v87 = 0x1E696A000uLL;
         v174 = MEMORY[0x1E696AD98];
         [v173 sensorOrientation];
-        [v166 setObject:objc_msgSend(v174 forKeyedSubscript:{"numberWithFloat:"), objc_msgSend(v172, "portType")}];
+        [dictionary15 setObject:objc_msgSend(v174 forKeyedSubscript:{"numberWithFloat:"), objc_msgSend(v172, "portType")}];
       }
 
-      v169 = [v167 countByEnumeratingWithState:&v824 objects:v823 count:16];
+      v169 = [captureStreams2 countByEnumeratingWithState:&v824 objects:v823 count:16];
     }
 
     while (v169);
   }
 
   v175 = v741;
-  [v741 setSensorOrientationByPortType:v166];
+  [v741 setSensorOrientationByPortType:dictionary15];
   [v741 setAttachesUprightExifOrientationMetadataToStreamingFrames:0];
   [v741 setStereoVideoCaptureEnabled:v731 & 1];
   if (v731)
@@ -1515,9 +1515,9 @@ LABEL_165:
   v177 = v719;
   if (([v741 manualCinematicFramingEnabled] & 1) != 0 || objc_msgSend(v741, "isCMIOZoomStreamPropertySupported"))
   {
-    v178 = [v741 zoomCommandHandler];
+    zoomCommandHandler = [v741 zoomCommandHandler];
     LODWORD(v179) = 1.0;
-    [v178 setRequestedZoomFactor:v179];
+    [zoomCommandHandler setRequestedZoomFactor:v179];
   }
 
   [v741 setCinematicFramingControlMode:{objc_msgSend(v717, "cinematicFramingControlMode")}];
@@ -1538,21 +1538,21 @@ LABEL_165:
   {
     [v717 normalizedNonDestructiveCropSize];
     DictionaryRepresentation = CGSizeCreateDictionaryRepresentation(v846);
-    v181 = [v717 source];
+    source2 = [v717 source];
     v182 = *(*(CMBaseObjectGetVTable() + 8) + 56);
     if (v182)
     {
-      v182(v181, @"NonDestructiveCropSize", DictionaryRepresentation);
+      v182(source2, @"NonDestructiveCropSize", DictionaryRepresentation);
     }
 
     CFRelease(DictionaryRepresentation);
     v175 = v741;
   }
 
-  v183 = [v717 source];
-  if (v183)
+  source3 = [v717 source];
+  if (source3)
   {
-    v184 = v183;
+    v184 = source3;
     if (([v717 hasSetVideoZoomFactorOnCaptureSource] & 1) == 0)
     {
       v185 = *(v87 + 3480);
@@ -1598,8 +1598,8 @@ LABEL_165:
       goto LABEL_285;
     }
 
-    v187 = [v717 requiredMaxFrameRate];
-    v189 = FigCaptureFrameRateAsData(v187, v188);
+    requiredMaxFrameRate = [v717 requiredMaxFrameRate];
+    v189 = FigCaptureFrameRateAsData(requiredMaxFrameRate, v188);
     v840 = FigVideoCaptureSourceSetSessionProperty(v184, v741, @"ActiveMaxFrameRate_FigCaptureSessionOnly", v189);
     if (v840)
     {
@@ -1607,8 +1607,8 @@ LABEL_165:
       goto LABEL_285;
     }
 
-    v190 = [v717 requiredMinFrameRate];
-    v192 = FigCaptureFrameRateAsData(v190, v191);
+    requiredMinFrameRate = [v717 requiredMinFrameRate];
+    v192 = FigCaptureFrameRateAsData(requiredMinFrameRate, v191);
     v840 = FigVideoCaptureSourceSetSessionProperty(v184, v741, @"ActiveMinFrameRate_FigCaptureSessionOnly", v192);
     if (v840)
     {
@@ -1625,10 +1625,10 @@ LABEL_165:
     }
 
     v194 = *(v87 + 3480);
-    v195 = [v717 faceDrivenAEAFMode];
+    faceDrivenAEAFMode = [v717 faceDrivenAEAFMode];
     v196 = v194;
     v175 = v741;
-    v840 = FigVideoCaptureSourceSetSessionProperty(v184, v741, @"FaceDrivenAEAFMode", [v196 numberWithInt:v195]);
+    v840 = FigVideoCaptureSourceSetSessionProperty(v184, v741, @"FaceDrivenAEAFMode", [v196 numberWithInt:faceDrivenAEAFMode]);
     if (v840)
     {
       [FigCaptureCameraSourcePipeline _buildMultiStreamCameraSourcePipeline:graph:renderDelegate:fastModeSwitch:rtscProcessorsBySourceDeviceType:inferenceScheduler:];
@@ -1658,15 +1658,15 @@ LABEL_165:
   [v175 setDigitalFlashMetadataEnabled:(v704 | v199) & 1];
   if (v199)
   {
-    v200 = [v760 digitalFlashDetectedObjectTypes];
+    digitalFlashDetectedObjectTypes = [v760 digitalFlashDetectedObjectTypes];
   }
 
   else
   {
-    v200 = 0;
+    digitalFlashDetectedObjectTypes = 0;
   }
 
-  [v175 setDigitalFlashDetectedObjectTypes:v200];
+  [v175 setDigitalFlashDetectedObjectTypes:digitalFlashDetectedObjectTypes];
   [v175 setMomentCaptureVideoRecordingSupported:{objc_msgSend(objc_msgSend(v692, "irisSinkConfiguration"), "momentCaptureMovieRecordingEnabled")}];
   v201 = v175;
   v202 = [objc_msgSend(+[FigCaptureSourceBackingsProvider sharedCaptureSourceBackingsProvider](FigCaptureSourceBackingsProvider "sharedCaptureSourceBackingsProvider")];
@@ -1676,8 +1676,8 @@ LABEL_165:
   v821 = 0u;
   v820 = 0u;
   v819 = 0u;
-  v204 = [v201 captureStreams];
-  v205 = [v204 countByEnumeratingWithState:&v819 objects:type count:16];
+  captureStreams3 = [v201 captureStreams];
+  v205 = [captureStreams3 countByEnumeratingWithState:&v819 objects:type count:16];
   if (v205)
   {
     v206 = v205;
@@ -1688,13 +1688,13 @@ LABEL_165:
       {
         if (*v820 != v207)
         {
-          objc_enumerationMutation(v204);
+          objc_enumerationMutation(captureStreams3);
         }
 
         [*(*(&v819 + 1) + 8 * n) setVariableFrameRateVideoEnabled:v203];
       }
 
-      v206 = [v204 countByEnumeratingWithState:&v819 objects:type count:16];
+      v206 = [captureStreams3 countByEnumeratingWithState:&v819 objects:type count:16];
     }
 
     while (v206);
@@ -1752,17 +1752,17 @@ LABEL_165:
   {
     v216 = v741;
     [v741 setTemporalNoiseReductionBand0Disabled:{objc_msgSend(v760, "temporalNoiseReductionBand0Disabled")}];
-    v217 = [v760 temporalNoiseReductionRawEnabled];
+    temporalNoiseReductionRawEnabled = [v760 temporalNoiseReductionRawEnabled];
   }
 
   else
   {
     v216 = v741;
     [v741 setTemporalNoiseReductionBand0Disabled:0];
-    v217 = 0;
+    temporalNoiseReductionRawEnabled = 0;
   }
 
-  [v216 setTemporalNoiseReductionRawEnabled:v217];
+  [v216 setTemporalNoiseReductionRawEnabled:temporalNoiseReductionRawEnabled];
   [v216 setTemporalNoiseReductionStrengthHighEnabled:v711 & 1];
   [v216 setDepthFormatDimensions:{objc_msgSend(objc_msgSend(v717, "depthDataFormat"), "dimensions")}];
   [v216 setDepthPixelFormat:objc_msgSend(objc_msgSend(v717, "depthDataFormat"), "format")];
@@ -1849,17 +1849,17 @@ LABEL_285:
   v814 = 0u;
   v813 = 0u;
   v812 = 0u;
-  v627 = [*(v718 + 456) captureStreams];
-  v648 = [v627 countByEnumeratingWithState:&v812 objects:v811 count:16];
+  captureStreams4 = [*(v718 + 456) captureStreams];
+  v648 = [captureStreams4 countByEnumeratingWithState:&v812 objects:v811 count:16];
   if (!v648)
   {
     v620 = 0;
-    v605 = 0;
+    depthOutput = 0;
     goto LABEL_503;
   }
 
   v620 = 0;
-  v605 = 0;
+  depthOutput = 0;
   v662 = *v813;
   v643 = *off_1E798A0E8;
   v599 = (v658 != 0) | v646;
@@ -1869,7 +1869,7 @@ LABEL_285:
   v695 = *off_1E798ACB8;
   v626 = v664 & 1;
   v684 = *off_1E798ACB0;
-  v625 = v666 & 1;
+  v625 = sushiRawSupported & 1;
   v642 = *off_1E798ACD0;
   v611 = *off_1E798ACC8;
   v600 = *off_1E798B220;
@@ -1889,44 +1889,44 @@ LABEL_285:
       if (*v813 != v662)
       {
         v227 = v226;
-        objc_enumerationMutation(v627);
+        objc_enumerationMutation(captureStreams4);
         v226 = v227;
       }
 
       v691 = v226;
       v228 = *(*(&v812 + 1) + 8 * v226);
-      v229 = [v228 portType];
-      v230 = [v176 sourceDeviceType];
-      if (v230 == 12 || v230 == 6) && ([v229 isEqualToString:v643])
+      portType = [v228 portType];
+      sourceDeviceType = [v176 sourceDeviceType];
+      if (sourceDeviceType == 12 || sourceDeviceType == 6) && ([portType isEqualToString:v643])
       {
         v620 = v228;
         goto LABEL_473;
       }
 
-      v705 = v229;
-      v231 = BWUtilitiesUnderlyingDeviceTypeFromPortType(v229, [v176 sourceDeviceType]);
-      v232 = [v176 sourceDeviceType];
-      if (v232 == 6 || v232 == 12 || [v176 sourceDeviceType] == 13)
+      v705 = portType;
+      sourceDeviceType3 = BWUtilitiesUnderlyingDeviceTypeFromPortType(portType, [v176 sourceDeviceType]);
+      sourceDeviceType2 = [v176 sourceDeviceType];
+      if (sourceDeviceType2 == 6 || sourceDeviceType2 == 12 || [v176 sourceDeviceType] == 13)
       {
-        v231 = [v176 sourceDeviceType];
+        sourceDeviceType3 = [v176 sourceDeviceType];
       }
 
       if ([v176 sourceDeviceType] == 14)
       {
-        v231 = [v176 sourceDeviceType];
+        sourceDeviceType3 = [v176 sourceDeviceType];
       }
 
       v699 = v228;
       if ([v176 sourceDeviceType] - 17 <= 3)
       {
-        v231 = [v176 sourceDeviceType];
+        sourceDeviceType3 = [v176 sourceDeviceType];
       }
 
       v233 = FigCaptureConnectionConfigurationsFilterWithBlock(v696, &__block_literal_global_69);
       v234 = FigCaptureUnderlyingDeviceTypesFromConnectionConfigurations(v233);
       v235 = FigCaptureUnderlyingDeviceTypesFromConnectionConfigurations(v693);
-      v703 = v231;
-      if ([v234 containsObject:{objc_msgSend(*(v87 + 3480), "numberWithInt:", v231)}])
+      v703 = sourceDeviceType3;
+      if ([v234 containsObject:{objc_msgSend(*(v87 + 3480), "numberWithInt:", sourceDeviceType3)}])
       {
         v236 = 1;
 LABEL_311:
@@ -1936,7 +1936,7 @@ LABEL_311:
         goto LABEL_312;
       }
 
-      v237 = [v235 containsObject:{objc_msgSend(*(v87 + 3480), "numberWithInt:", v231)}];
+      v237 = [v235 containsObject:{objc_msgSend(*(v87 + 3480), "numberWithInt:", sourceDeviceType3)}];
       if (v689 == 3)
       {
         v236 = 1;
@@ -1983,48 +1983,48 @@ LABEL_312:
 
       LODWORD(v241) = v242;
       [v699 setStreamingFrameRateForZoomPIPOverlay:v241];
-      v245 = [v176 sourceDeviceType];
+      sourceDeviceType4 = [v176 sourceDeviceType];
       *&v841 = MEMORY[0x1E69E9820];
       *(&v841 + 1) = 3221225472;
       v842 = __csp_filterConnectionConfigurationsForSourceDeviceTypes_block_invoke;
       v843 = &__block_descriptor_40_e60_B24__0__FigCaptureConnectionConfiguration_8__NSDictionary_16l;
-      v844 = v231;
-      v845 = v245;
+      v844 = sourceDeviceType3;
+      v845 = sourceDeviceType4;
       v675 = [v693 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", &v841)}];
-      v246 = [v176 sourceDeviceType];
-      if ([v238 underlyingDeviceType] != v231 && objc_msgSend(v238, "underlyingDeviceType") != v246)
+      sourceDeviceType5 = [v176 sourceDeviceType];
+      if ([v238 underlyingDeviceType] != sourceDeviceType3 && objc_msgSend(v238, "underlyingDeviceType") != sourceDeviceType5)
       {
         v238 = 0;
       }
 
       v687 = v238;
-      v247 = [v176 sourceDeviceType];
+      sourceDeviceType6 = [v176 sourceDeviceType];
       *&v841 = MEMORY[0x1E69E9820];
       *(&v841 + 1) = 3221225472;
       v842 = __csp_filterConnectionConfigurationsForSourceDeviceTypes_block_invoke;
       v843 = &__block_descriptor_40_e60_B24__0__FigCaptureConnectionConfiguration_8__NSDictionary_16l;
-      v844 = v231;
-      v845 = v247;
+      v844 = sourceDeviceType3;
+      v845 = sourceDeviceType6;
       v673 = [v696 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", &v841)}];
       if (v708)
       {
-        v671 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(*(v708 + 232), v231);
+        v671 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(*(v708 + 232), sourceDeviceType3);
         v248 = *(v708 + 240);
       }
 
       else
       {
-        v671 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(0, v231);
+        v671 = FigCaptureConnectionConfigurationWithUnderlyingDeviceType(0, sourceDeviceType3);
         v248 = 0;
       }
 
-      v249 = [v176 sourceDeviceType];
+      sourceDeviceType7 = [v176 sourceDeviceType];
       *&v841 = MEMORY[0x1E69E9820];
       *(&v841 + 1) = 3221225472;
       v842 = __csp_filterConnectionConfigurationsForSourceDeviceTypes_block_invoke;
       v843 = &__block_descriptor_40_e60_B24__0__FigCaptureConnectionConfiguration_8__NSDictionary_16l;
-      v844 = v231;
-      v845 = v249;
+      v844 = sourceDeviceType3;
+      v845 = sourceDeviceType7;
       v712 = [v248 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", &v841)}];
       if (v708)
       {
@@ -2036,13 +2036,13 @@ LABEL_312:
         v250 = 0;
       }
 
-      v251 = [v176 sourceDeviceType];
+      sourceDeviceType8 = [v176 sourceDeviceType];
       *&v841 = MEMORY[0x1E69E9820];
       *(&v841 + 1) = 3221225472;
       v842 = __csp_filterConnectionConfigurationsForSourceDeviceTypes_block_invoke;
       v843 = &__block_descriptor_40_e60_B24__0__FigCaptureConnectionConfiguration_8__NSDictionary_16l;
-      v844 = v231;
-      v845 = v251;
+      v844 = sourceDeviceType3;
+      v845 = sourceDeviceType8;
       v715 = [v250 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", &v841)}];
       v252 = [[BWMultiStreamCameraSourceNode alloc] initWithCaptureDevice:*(v718 + 456) captureStream:v699];
       if (!v252)
@@ -2203,7 +2203,7 @@ LABEL_359:
         v264 = 0;
         v761 = 0;
         v756 = 0;
-        v729 = 0;
+        faceTrackingMaxFaces = 0;
         v742 = 0;
         v751 = 0;
         objb = 0;
@@ -2223,7 +2223,7 @@ LABEL_359:
 
             v270 = *(*(&v807 + 1) + 8 * ii);
             FigCaptureAddDetectedObjectTypesFromMetadataIdentifiersToSet([v270 metadataIdentifiers], v261);
-            v271 = [v270 attentionDetectionEnabled];
+            attentionDetectionEnabled = [v270 attentionDetectionEnabled];
             v272 = FigCaptureMetadataObjectConfigurationRequiresEyeReliefStatus(v270);
             if (FigCaptureMetadataObjectConfigurationRequiresFaceTracking(v270))
             {
@@ -2235,9 +2235,9 @@ LABEL_359:
               BoolAttribute = 0;
             }
 
-            if (v729 <= [v270 faceTrackingMaxFaces])
+            if (faceTrackingMaxFaces <= [v270 faceTrackingMaxFaces])
             {
-              v729 = [v270 faceTrackingMaxFaces];
+              faceTrackingMaxFaces = [v270 faceTrackingMaxFaces];
             }
 
             [v270 faceTrackingNetworkFailureThresholdMultiplier];
@@ -2271,9 +2271,9 @@ LABEL_359:
             }
 
             v280 = FigCaptureMetadataObjectConfigurationRequiresFaceIDReadiness(v270);
-            v281 = [v270 periocularForFaceIDReadinessEnabled];
-            v282 = [v270 attentionForFaceIDReadinessRequired];
-            v283 = [v270 faceOcclusionDetectionEnabled];
+            periocularForFaceIDReadinessEnabled = [v270 periocularForFaceIDReadinessEnabled];
+            attentionForFaceIDReadinessRequired = [v270 attentionForFaceIDReadinessRequired];
+            faceOcclusionDetectionEnabled = [v270 faceOcclusionDetectionEnabled];
             v284 = FigCaptureMetadataObjectConfigurationRequiresMotionToWake(v270);
             [v270 motionToWakeTargetFrameRate];
             if (v266 <= v285)
@@ -2282,13 +2282,13 @@ LABEL_359:
               v266 = v286;
             }
 
-            objb |= v271;
+            objb |= attentionDetectionEnabled;
             v751 |= v272;
             v742 = BoolAttribute | v742 & 1;
             v756 |= v280;
-            v761 |= v281;
-            v264 = v732 | v282;
-            v263 = v735 | v283;
+            v761 |= periocularForFaceIDReadinessEnabled;
+            v264 = v732 | attentionForFaceIDReadinessRequired;
+            v263 = v735 | faceOcclusionDetectionEnabled;
             v262 = v737 | v284;
             v261 = v724;
           }
@@ -2315,7 +2315,7 @@ LABEL_359:
         LOBYTE(v264) = 0;
         v761 = 0;
         v756 = 0;
-        v729 = 0;
+        faceTrackingMaxFaces = 0;
         v742 = 0;
         v751 = 0;
         objb = 0;
@@ -2353,10 +2353,10 @@ LABEL_359:
         while (v288);
       }
 
-      v292 = [v697 digitalFlashDetectedObjectTypes];
-      if ([v292 count] && objc_msgSend(objc_msgSend(v687, "irisSinkConfiguration"), "digitalFlashCaptureEnabled"))
+      digitalFlashDetectedObjectTypes2 = [v697 digitalFlashDetectedObjectTypes];
+      if ([digitalFlashDetectedObjectTypes2 count] && objc_msgSend(objc_msgSend(v687, "irisSinkConfiguration"), "digitalFlashCaptureEnabled"))
       {
-        [v261 addObjectsFromArray:v292];
+        [v261 addObjectsFromArray:digitalFlashDetectedObjectTypes2];
       }
 
       v293 = v699;
@@ -2396,8 +2396,8 @@ LABEL_359:
         }
       }
 
-      v294 = [v176 sourceDeviceType];
-      if (((v294 - 2) < 0xD || (v294 - 17) <= 3) && [v176 sourceDeviceType] - 17 >= 4)
+      sourceDeviceType9 = [v176 sourceDeviceType];
+      if (((sourceDeviceType9 - 2) < 0xD || (sourceDeviceType9 - 17) <= 3) && [v176 sourceDeviceType] - 17 >= 4)
       {
         [v261 addObject:v695];
       }
@@ -2411,10 +2411,10 @@ LABEL_359:
           v797[0] = v601;
           v797[1] = v600;
           v297 = [MEMORY[0x1E695DEC8] arrayWithObjects:v797 count:2];
-          v298 = [v296 requestedBufferAttachmentsTrie];
+          requestedBufferAttachmentsTrie = [v296 requestedBufferAttachmentsTrie];
           v299 = v297;
           v293 = v699;
-          v300 = [v298 getSubTrie:v299];
+          v300 = [requestedBufferAttachmentsTrie getSubTrie:v299];
           if (v300)
           {
             v301 = v300;
@@ -2564,7 +2564,7 @@ LABEL_359:
       BYTE1(v586) = v653 & 1;
       LOBYTE(v586) = v652 & 1;
       v176 = v717;
-      v817 = csp_configureMultiStreamCameraNode(v707, v717, v651, v675, v687, v673, v637, v709, v268, v265, v308, v267, v266, v309, v649, v646 & 1, v661, v727 & 1, v700, v656, v634, v631, v722 & 1, v647, v632, v659 & 1, v630, &v841, &v828, v663, v636, v680[0], v307, v679 & 1, v668 & 1, v716 & 1, v713 & 1, v645[1], v645[0], v629[1], v629[0], v625, v626, v671, BYTE4(v665) & 1, v665 & 1, v729, v657 & 1, v685, v669 & 1, v724, objb & 1, v751 & 1, v742, v756 & 1, v761 & 1, v264 & 1, v263 & 1, v738 & 1, BYTE4(v655) & 1, v654 & 1, v655 & 1, BYTE4(v653) & 1);
+      v817 = csp_configureMultiStreamCameraNode(v707, v717, v651, v675, v687, v673, v637, v709, v268, v265, v308, v267, v266, v309, v649, v646 & 1, v661, v727 & 1, v700, v656, v634, hasFlash, v722 & 1, v647, v632, v659 & 1, enabled, &v841, &v828, v663, previewDepthFilterRenderingEnabled, v680[0], v307, v679 & 1, v668 & 1, v716 & 1, v713 & 1, v645[1], v645[0], v629[1], v629[0], v625, v626, v671, BYTE4(v665) & 1, v665 & 1, faceTrackingMaxFaces, v657 & 1, v685, v669 & 1, v724, objb & 1, v751 & 1, v742, v756 & 1, v761 & 1, v264 & 1, v263 & 1, v738 & 1, BYTE4(v655) & 1, v654 & 1, v655 & 1, BYTE4(v653) & 1);
       if (v817)
       {
         FigDebugAssert3();
@@ -2586,134 +2586,134 @@ LABEL_359:
       [objc_msgSend(v719 "memoryAnalyticsPayload")];
       LODWORD(v310) = [v717 videoStabilizationStrength];
       v311 = [objc_msgSend(v719 "memoryAnalyticsPayload")];
-      v312 = v717;
+      memoryAnalyticsPayload = v717;
       if (v310 <= v311)
       {
-        v312 = [v719 memoryAnalyticsPayload];
+        memoryAnalyticsPayload = [v719 memoryAnalyticsPayload];
       }
 
       [objc_msgSend(v719 "memoryAnalyticsPayload")];
-      v313 = v703;
+      sourceDeviceType10 = v703;
       if (v660)
       {
-        v313 = [v717 sourceDeviceType];
+        sourceDeviceType10 = [v717 sourceDeviceType];
       }
 
       v314 = v707;
       if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v707 configuration] previewOutputEnabled])
       {
-        v315 = [(BWMultiStreamCameraSourceNode *)v707 previewOutput];
+        previewOutput = [(BWMultiStreamCameraSourceNode *)v707 previewOutput];
         v314 = v707;
-        [v618 setObject:v315 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v313)}];
+        [dictionary setObject:previewOutput forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", sourceDeviceType10)}];
       }
 
       if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v314 configuration] videoCaptureOutputEnabled])
       {
-        v316 = [(BWMultiStreamCameraSourceNode *)v314 videoCaptureOutput];
+        videoCaptureOutput = [(BWMultiStreamCameraSourceNode *)v314 videoCaptureOutput];
         v314 = v707;
-        [v617 setObject:v316 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v313)}];
+        [dictionary2 setObject:videoCaptureOutput forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", sourceDeviceType10)}];
       }
 
       if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v314 configuration] stillImageOutputEnabled])
       {
-        [v619 setObject:-[BWMultiStreamCameraSourceNode stillImageOutput](v314 forKeyedSubscript:{"stillImageOutput"), v705}];
+        [dictionary3 setObject:-[BWMultiStreamCameraSourceNode stillImageOutput](v314 forKeyedSubscript:{"stillImageOutput"), v705}];
       }
 
       if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v314 configuration] sensorRawStillImageOutputEnabled])
       {
-        [v612 setObject:-[BWMultiStreamCameraSourceNode stillImageSensorRawOutput](v314 forKeyedSubscript:{"stillImageSensorRawOutput"), v705}];
+        [dictionary4 setObject:-[BWMultiStreamCameraSourceNode stillImageSensorRawOutput](v314 forKeyedSubscript:{"stillImageSensorRawOutput"), v705}];
       }
 
       v317 = v314;
       if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v314 configuration] depthOutputEnabled])
       {
-        v605 = [(BWMultiStreamCameraSourceNode *)v314 depthOutput];
+        depthOutput = [(BWMultiStreamCameraSourceNode *)v314 depthOutput];
       }
 
       if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v314 configuration] lightSourceMaskOutputEnabled])
       {
-        v318 = [(BWMultiStreamCameraSourceNode *)v314 lightSourceMaskOutput];
-        v319 = [MEMORY[0x1E696AD98] numberWithInt:v313];
-        v320 = v318;
+        lightSourceMaskOutput = [(BWMultiStreamCameraSourceNode *)v314 lightSourceMaskOutput];
+        v319 = [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType10];
+        v320 = lightSourceMaskOutput;
         v317 = v707;
-        [v615 setObject:v320 forKeyedSubscript:v319];
+        [dictionary6 setObject:v320 forKeyedSubscript:v319];
       }
 
       if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v317 configuration] keypointDescriptorDataOutputEnabled])
       {
-        v321 = [(BWMultiStreamCameraSourceNode *)v317 keypointDescriptorDataOutput];
-        v322 = [MEMORY[0x1E696AD98] numberWithInt:v313];
-        v323 = v321;
+        keypointDescriptorDataOutput = [(BWMultiStreamCameraSourceNode *)v317 keypointDescriptorDataOutput];
+        v322 = [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType10];
+        v323 = keypointDescriptorDataOutput;
         v317 = v707;
-        [v614 setObject:v323 forKeyedSubscript:v322];
+        [dictionary7 setObject:v323 forKeyedSubscript:v322];
       }
 
       if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v317 configuration] semanticMasksOutputEnabled])
       {
-        v324 = [(BWMultiStreamCameraSourceNode *)v317 semanticMasksOutput];
-        v325 = [MEMORY[0x1E696AD98] numberWithInt:v313];
-        v326 = v324;
+        semanticMasksOutput = [(BWMultiStreamCameraSourceNode *)v317 semanticMasksOutput];
+        v325 = [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType10];
+        v326 = semanticMasksOutput;
         v317 = v707;
-        [v616 setObject:v326 forKeyedSubscript:v325];
+        [dictionary8 setObject:v326 forKeyedSubscript:v325];
       }
 
       if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v317 configuration] detectedObjectsOutputEnabled])
       {
         v327 = [(NSDictionary *)[(BWMultiStreamCameraSourceNode *)v317 metadataOutputsByCategory] objectForKeyedSubscript:&unk_1F2244908];
-        v328 = [MEMORY[0x1E696AD98] numberWithInt:v313];
+        v328 = [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType10];
         v329 = v327;
         v317 = v707;
-        [v613 setObject:v329 forKeyedSubscript:v328];
+        [dictionary5 setObject:v329 forKeyedSubscript:v328];
       }
 
       if ([(BWSecureMetadataOutputConfiguration *)[(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v317 configuration] secureMetadataOutputConfiguration] objectDetectionEnabled])
       {
         v330 = [(NSDictionary *)[(BWMultiStreamCameraSourceNode *)v317 metadataOutputsByCategory] objectForKeyedSubscript:&unk_1F2244770];
-        v331 = [MEMORY[0x1E696AD98] numberWithInt:v313];
+        v331 = [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType10];
         v332 = v330;
         v317 = v707;
-        [v610 setObject:v332 forKeyedSubscript:v331];
-        [*(v718 + 392) setObject:v610 forKeyedSubscript:&unk_1F2244770];
+        [dictionary9 setObject:v332 forKeyedSubscript:v331];
+        [*(v718 + 392) setObject:dictionary9 forKeyedSubscript:&unk_1F2244770];
       }
 
       if ([(BWSecureMetadataOutputConfiguration *)[(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v317 configuration] secureMetadataOutputConfiguration] eyeReliefStatusDetectionEnabled])
       {
         v333 = [(NSDictionary *)[(BWMultiStreamCameraSourceNode *)v317 metadataOutputsByCategory] objectForKeyedSubscript:&unk_1F2244788];
-        v334 = [MEMORY[0x1E696AD98] numberWithInt:v313];
+        v334 = [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType10];
         v335 = v333;
         v317 = v707;
-        [v609 setObject:v335 forKeyedSubscript:v334];
-        [*(v718 + 392) setObject:v609 forKeyedSubscript:&unk_1F2244788];
+        [dictionary10 setObject:v335 forKeyedSubscript:v334];
+        [*(v718 + 392) setObject:dictionary10 forKeyedSubscript:&unk_1F2244788];
       }
 
       if ([(BWSecureMetadataOutputConfiguration *)[(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v317 configuration] secureMetadataOutputConfiguration] faceTrackingEnabled])
       {
         v336 = [(NSDictionary *)[(BWMultiStreamCameraSourceNode *)v317 metadataOutputsByCategory] objectForKeyedSubscript:&unk_1F22447B8];
-        v337 = [MEMORY[0x1E696AD98] numberWithInt:v313];
+        v337 = [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType10];
         v338 = v336;
         v317 = v707;
-        [v608 setObject:v338 forKeyedSubscript:v337];
-        [*(v718 + 392) setObject:v608 forKeyedSubscript:&unk_1F22447B8];
+        [dictionary11 setObject:v338 forKeyedSubscript:v337];
+        [*(v718 + 392) setObject:dictionary11 forKeyedSubscript:&unk_1F22447B8];
       }
 
       if ([(BWSecureMetadataOutputConfiguration *)[(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v317 configuration] secureMetadataOutputConfiguration] faceIDReadinessEnabled])
       {
         v339 = [(NSDictionary *)[(BWMultiStreamCameraSourceNode *)v317 metadataOutputsByCategory] objectForKeyedSubscript:&unk_1F2244920];
-        v340 = [MEMORY[0x1E696AD98] numberWithInt:v313];
+        v340 = [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType10];
         v341 = v339;
         v317 = v707;
-        [v607 setObject:v341 forKeyedSubscript:v340];
-        [*(v718 + 392) setObject:v607 forKeyedSubscript:&unk_1F2244920];
+        [dictionary12 setObject:v341 forKeyedSubscript:v340];
+        [*(v718 + 392) setObject:dictionary12 forKeyedSubscript:&unk_1F2244920];
       }
 
       if ([(BWSecureMetadataOutputConfiguration *)[(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v317 configuration] secureMetadataOutputConfiguration] motionToWakeEnabled])
       {
         v342 = [(NSDictionary *)[(BWMultiStreamCameraSourceNode *)v317 metadataOutputsByCategory] objectForKeyedSubscript:&unk_1F2244830];
-        v343 = [MEMORY[0x1E696AD98] numberWithInt:v313];
+        v343 = [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType10];
         v344 = v342;
         v317 = v707;
-        [v606 setObject:v344 forKeyedSubscript:v343];
-        [*(v718 + 392) setObject:v606 forKeyedSubscript:&unk_1F2244830];
+        [dictionary13 setObject:v344 forKeyedSubscript:v343];
+        [*(v718 + 392) setObject:dictionary13 forKeyedSubscript:&unk_1F2244830];
       }
 
       *(v718 + 512) |= [(BWMultiStreamCameraSourceNode *)v317 hardwareDepthFilteringEnabled];
@@ -2722,7 +2722,7 @@ LABEL_473:
     }
 
     while (v691 + 1 != v648);
-    v346 = [v627 countByEnumeratingWithState:&v812 objects:v811 count:16];
+    v346 = [captureStreams4 countByEnumeratingWithState:&v812 objects:v811 count:16];
     v648 = v346;
     v225 = &selRef__waitForPreviewGenerationGroupToComplete;
   }
@@ -2753,9 +2753,9 @@ LABEL_503:
   -[BWNode setName:](v349, "setName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Infrared Camera", BWCaptureDevicePositionToString(objc_msgSend(*(v718 + 456), "position"))]);
   [*(v718 + 64) addObject:v350];
   LODWORD(v841) = 0;
-  v351 = [v717 source];
+  source4 = [v717 source];
   v352 = *off_1E798A0E8;
-  v353 = FigVideoCaptureSourceCopyUnderlyingCaptureSourceForPortType(v351, *off_1E798A0E8, &v841);
+  v353 = FigVideoCaptureSourceCopyUnderlyingCaptureSourceForPortType(source4, *off_1E798A0E8, &v841);
   if (v841)
   {
     [FigCaptureCameraSourcePipeline _buildMultiStreamCameraSourcePipeline:graph:renderDelegate:fastModeSwitch:rtscProcessorsBySourceDeviceType:inferenceScheduler:];
@@ -2764,7 +2764,7 @@ LABEL_503:
 
   else
   {
-    v354 = FigVideoCaptureSourceCopyUnderlyingSourceFormatForFormatAndPortType(v351, [v717 requiredFormat], v352, &v841);
+    v354 = FigVideoCaptureSourceCopyUnderlyingSourceFormatForFormatAndPortType(source4, [v717 requiredFormat], v352, &v841);
     v355 = v354;
     if (!v841 && v354)
     {
@@ -2772,10 +2772,10 @@ LABEL_503:
       [(FigCaptureSourceConfiguration *)v356 setRequiredFormat:v355];
       [v717 maxFrameRateClientOverride];
       [(FigCaptureSourceConfiguration *)v356 setMaxFrameRateClientOverride:?];
-      v357 = [v717 requiredMinFrameRate];
-      [(FigCaptureSourceConfiguration *)v356 setRequiredMinFrameRate:v357, v358];
-      v359 = [v717 requiredMaxFrameRate];
-      [(FigCaptureSourceConfiguration *)v356 setRequiredMaxFrameRate:v359, v360];
+      requiredMinFrameRate2 = [v717 requiredMinFrameRate];
+      [(FigCaptureSourceConfiguration *)v356 setRequiredMinFrameRate:requiredMinFrameRate2, v358];
+      requiredMaxFrameRate2 = [v717 requiredMaxFrameRate];
+      [(FigCaptureSourceConfiguration *)v356 setRequiredMaxFrameRate:requiredMaxFrameRate2, v360];
       -[FigCaptureSourceConfiguration setDepthDataFormat:](v356, "setDepthDataFormat:", [v717 depthDataFormat]);
       -[FigCaptureSourceConfiguration setDepthDataDeliveryEnabled:](v356, "setDepthDataDeliveryEnabled:", [v717 depthDataDeliveryEnabled]);
       -[FigCaptureSourceConfiguration setCinematicVideoCaptureEnabled:](v356, "setCinematicVideoCaptureEnabled:", [v717 isCinematicVideoCaptureEnabled]);
@@ -2828,7 +2828,7 @@ LABEL_514:
   v842 = *(MEMORY[0x1E6960C70] + 16);
   BYTE2(v586) = 0;
   LOWORD(v586) = 0;
-  v817 = csp_configureMultiStreamCameraNode(v350, v356, v361, 0, v692, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, MEMORY[0x1E6960C70], &v841, v689, v636, v680[0], v362, 0, 1, v363 & 1, v364 & 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, v365 & 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  v817 = csp_configureMultiStreamCameraNode(v350, v356, v361, 0, v692, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, MEMORY[0x1E6960C70], &v841, v689, previewDepthFilterRenderingEnabled, v680[0], v362, 0, 1, v363 & 1, v364 & 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, v365 & 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
   if (v817)
   {
@@ -2849,17 +2849,17 @@ LABEL_514:
   *(v718 + 96) = v350;
   if ([(BWMultiStreamCameraSourceNodeConfiguration *)[(BWMultiStreamCameraSourceNode *)v350 configuration] stillImageOutputEnabled])
   {
-    [v619 setObject:-[BWMultiStreamCameraSourceNode stillImageOutput](v350 forKeyedSubscript:{"stillImageOutput"), v352}];
+    [dictionary3 setObject:-[BWMultiStreamCameraSourceNode stillImageOutput](v350 forKeyedSubscript:{"stillImageOutput"), v352}];
   }
 
   if (v708 && *(v708 + 292) == 1)
   {
-    v605 = [(BWMultiStreamCameraSourceNode *)v350 depthOutput];
+    depthOutput = [(BWMultiStreamCameraSourceNode *)v350 depthOutput];
     v348 = &OBJC_IVAR___BWAutoSuggestTracker__ObjectAreaIn;
     goto LABEL_542;
   }
 
-  v817 = -[FigCaptureCameraSourcePipeline _addDepthFromInfraredSynchronizer:previewOutputsBySourceDeviceType:pipelineConfiguration:graph:sourceDeviceType:](v718, v617, v618, v708, v719, [v717 sourceDeviceType]);
+  v817 = -[FigCaptureCameraSourcePipeline _addDepthFromInfraredSynchronizer:previewOutputsBySourceDeviceType:pipelineConfiguration:graph:sourceDeviceType:](v718, dictionary2, dictionary, v708, v719, [v717 sourceDeviceType]);
   v348 = &OBJC_IVAR___BWAutoSuggestTracker__ObjectAreaIn;
   if (v817)
   {
@@ -2868,7 +2868,7 @@ LABEL_514:
   }
 
 LABEL_542:
-  v372 = [v717 source];
+  source5 = [v717 source];
   v752 = *(v347 + 64);
   v373 = *(v347 + v348[631]);
   v823[0] = 0;
@@ -2880,7 +2880,7 @@ LABEL_542:
   }
 
   v739 = v373;
-  *type = v374(v372, @"AttributesDictionary", v598, v823);
+  *type = v374(source5, @"AttributesDictionary", v598, v823);
   if (*type)
   {
 LABEL_544:
@@ -2924,10 +2924,10 @@ LABEL_545:
         }
 
         v416 = *(*(&v828 + 1) + 8 * kk);
-        v417 = [v416 portType];
+        portType2 = [v416 portType];
         if ([objc_msgSend(v416 "configuration")])
         {
-          v418 = [objc_msgSend(v762 objectForKeyedSubscript:{v417), "objectForKeyedSubscript:", 0x1F21A0610}];
+          v418 = [objc_msgSend(v762 objectForKeyedSubscript:{portType2), "objectForKeyedSubscript:", 0x1F21A0610}];
           if (!v418)
           {
             goto LABEL_545;
@@ -2936,10 +2936,10 @@ LABEL_545:
           v419 = v418;
           v420 = MEMORY[0x1E696AD98];
           [v416 geometricDistortionCorrectionStrengthOnStreamingOutputs];
-          [v757 setObject:objc_msgSend(v419 forKeyedSubscript:{"objectForKeyedSubscript:", objc_msgSend(objc_msgSend(v420, "numberWithLong:", llroundf(v421 * 100.0)), "stringValue")), v417}];
+          [v757 setObject:objc_msgSend(v419 forKeyedSubscript:{"objectForKeyedSubscript:", objc_msgSend(objc_msgSend(v420, "numberWithLong:", llroundf(v421 * 100.0)), "stringValue")), portType2}];
         }
 
-        v422 = FigVideoCaptureSourceCopyUnderlyingSourceFormatForFormatAndPortType(v372, v697, v417, type);
+        v422 = FigVideoCaptureSourceCopyUnderlyingSourceFormatForFormatAndPortType(source5, v697, portType2, type);
         if (*type)
         {
           [FigCaptureCameraSourcePipeline _buildMultiStreamCameraSourcePipeline:graph:renderDelegate:fastModeSwitch:rtscProcessorsBySourceDeviceType:inferenceScheduler:];
@@ -2952,33 +2952,33 @@ LABEL_545:
           goto LABEL_545;
         }
 
-        v423 = [v422 sensorCropDimensions];
-        if (!v423)
+        sensorCropDimensions2 = [v422 sensorCropDimensions];
+        if (!sensorCropDimensions2)
         {
-          v423 = [v422 sensorDimensions];
+          sensorCropDimensions2 = [v422 sensorDimensions];
         }
 
-        v424 = [v422 horizontalSensorBinningFactor];
+        horizontalSensorBinningFactor2 = [v422 horizontalSensorBinningFactor];
         [objc_msgSend(v416 "configuration")];
         v426 = v425;
         [objc_msgSend(v416 "configuration")];
         v428 = v427;
-        v429 = [v416 configuration];
+        configuration = [v416 configuration];
         if (v426 <= v428)
         {
-          [v429 visOverscan];
+          [configuration visOverscan];
         }
 
         else
         {
-          [v429 sensorOverscan];
+          [configuration sensorOverscan];
         }
 
         v431 = v430;
-        v432 = (v424 * v423) / (v431 + 1.0);
+        v432 = (horizontalSensorBinningFactor2 * sensorCropDimensions2) / (v431 + 1.0);
         [objc_msgSend(v416 "configuration")];
         *&v434 = v432 / (v433 + 1.0);
-        [v381 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v434), v417}];
+        [v381 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v434), portType2}];
       }
 
       v413 = [v752 countByEnumeratingWithState:&v828 objects:&v841 count:16];
@@ -3092,8 +3092,8 @@ LABEL_546:
     v378 = v593;
     if (*(v708 + 24) == 1)
     {
-      v379 = [objc_msgSend(v697 "actionCameraCompanionFormat")];
-      v380 = [v697 actionCameraCompanionFormat];
+      sensorDimensions3 = [objc_msgSend(v697 "actionCameraCompanionFormat")];
+      actionCameraCompanionFormat = [v697 actionCameraCompanionFormat];
       goto LABEL_646;
     }
   }
@@ -3105,19 +3105,19 @@ LABEL_546:
     v378 = v593;
   }
 
-  v379 = [v377 sensorDimensions];
-  v435 = [v377 preGDCSensorCropDimensions];
-  if (v435 < 1)
+  sensorDimensions3 = [v377 sensorDimensions];
+  preGDCSensorCropDimensions = [v377 preGDCSensorCropDimensions];
+  if (preGDCSensorCropDimensions < 1)
   {
-    v380 = v377;
+    actionCameraCompanionFormat = v377;
     goto LABEL_646;
   }
 
-  v380 = v377;
-  if (SHIDWORD(v435) <= 0)
+  actionCameraCompanionFormat = v377;
+  if (SHIDWORD(preGDCSensorCropDimensions) <= 0)
   {
 LABEL_646:
-    v435 = [v380 sensorCropDimensions];
+    preGDCSensorCropDimensions = [actionCameraCompanionFormat sensorCropDimensions];
   }
 
   v437 = *MEMORY[0x1E695F060];
@@ -3130,27 +3130,27 @@ LABEL_646:
   if (v438)
   {
     v439 = v438;
-    v440 = v435 > 0;
-    v441 = SHIDWORD(v435) > 0;
+    v440 = preGDCSensorCropDimensions > 0;
+    v441 = SHIDWORD(preGDCSensorCropDimensions) > 0;
     v442 = !v440 || !v441;
     if (v440 && v441)
     {
-      v443 = HIDWORD(v435);
+      v443 = HIDWORD(preGDCSensorCropDimensions);
     }
 
     else
     {
-      v443 = HIDWORD(v379);
+      v443 = HIDWORD(sensorDimensions3);
     }
 
     if (v442)
     {
-      v444 = v379;
+      v444 = sensorDimensions3;
     }
 
     else
     {
-      v444 = v435;
+      v444 = preGDCSensorCropDimensions;
     }
 
     v445 = *v829;
@@ -3203,8 +3203,8 @@ LABEL_646:
 
   v459 = v437;
   v460 = v436;
-  v461 = [v697 sourceCropAspectRatio];
-  if (v461 < 1)
+  sourceCropAspectRatio = [v697 sourceCropAspectRatio];
+  if (sourceCropAspectRatio < 1)
   {
     v462 = v719;
   }
@@ -3212,27 +3212,27 @@ LABEL_646:
   else
   {
     v462 = v719;
-    if (SHIDWORD(v461) >= 1)
+    if (SHIDWORD(sourceCropAspectRatio) >= 1)
     {
-      v463 = FigCaptureFitAspectInsideDimensions(v459 | (v460 << 32), 0x200000002, v461 / HIDWORD(v461));
+      v463 = FigCaptureFitAspectInsideDimensions(v459 | (v460 << 32), 0x200000002, sourceCropAspectRatio / HIDWORD(sourceCropAspectRatio));
       v460 = HIDWORD(v463);
       LODWORD(v459) = v463;
     }
   }
 
   v464 = 0.0;
-  if (v379 <= v459 && SHIDWORD(v379) <= v460)
+  if (sensorDimensions3 <= v459 && SHIDWORD(sensorDimensions3) <= v460)
   {
-    v460 = HIDWORD(v379);
-    LODWORD(v459) = v379;
+    v460 = HIDWORD(sensorDimensions3);
+    LODWORD(v459) = sensorDimensions3;
     v467 = 0.0;
   }
 
   else
   {
     [v697 sensorCenterOffset];
-    v467 = v466 + ((v379 - v459) / 2);
-    v464 = v468 + ((HIDWORD(v379) - v460) / 2);
+    v467 = v466 + ((sensorDimensions3 - v459) / 2);
+    v464 = v468 + ((HIDWORD(sensorDimensions3) - v460) / 2);
   }
 
   v469 = v459;
@@ -3273,17 +3273,17 @@ LABEL_646:
           v480 = *(*(&v785 + 1) + 8 * i1);
           if (v476 < 1 || v477 < 1)
           {
-            v486 = [v480 ultraHighResSensorRawStillImageOutputDimensions];
-            v476 = v486;
-            v477 = HIDWORD(v486);
+            ultraHighResSensorRawStillImageOutputDimensions = [v480 ultraHighResSensorRawStillImageOutputDimensions];
+            v476 = ultraHighResSensorRawStillImageOutputDimensions;
+            v477 = HIDWORD(ultraHighResSensorRawStillImageOutputDimensions);
           }
 
           else
           {
-            v481 = [v480 ultraHighResSensorRawStillImageOutputDimensions];
-            if (v476 <= v481)
+            ultraHighResSensorRawStillImageOutputDimensions2 = [v480 ultraHighResSensorRawStillImageOutputDimensions];
+            if (v476 <= ultraHighResSensorRawStillImageOutputDimensions2)
             {
-              v482 = v481;
+              v482 = ultraHighResSensorRawStillImageOutputDimensions2;
             }
 
             else
@@ -3291,9 +3291,9 @@ LABEL_646:
               v482 = v476;
             }
 
-            if (v477 <= HIDWORD(v481))
+            if (v477 <= HIDWORD(ultraHighResSensorRawStillImageOutputDimensions2))
             {
-              v483 = HIDWORD(v481);
+              v483 = HIDWORD(ultraHighResSensorRawStillImageOutputDimensions2);
             }
 
             else
@@ -3301,7 +3301,7 @@ LABEL_646:
               v483 = v477;
             }
 
-            if ((v476 | (v477 << 32)) == v481 || v481 < 1 || SHIDWORD(v481) < 1)
+            if ((v476 | (v477 << 32)) == ultraHighResSensorRawStillImageOutputDimensions2 || ultraHighResSensorRawStillImageOutputDimensions2 < 1 || SHIDWORD(ultraHighResSensorRawStillImageOutputDimensions2) < 1)
             {
               v477 = v477;
             }
@@ -3333,7 +3333,7 @@ LABEL_709:
     v471 = v708;
   }
 
-  v817 = [FigCaptureCameraSourcePipeline _buildSemanticMasksOutputNetwork:v470 pipelineConfiguration:v616 graph:?];
+  v817 = [FigCaptureCameraSourcePipeline _buildSemanticMasksOutputNetwork:v470 pipelineConfiguration:dictionary8 graph:?];
   if (v817)
   {
     [FigCaptureCameraSourcePipeline _buildMultiStreamCameraSourcePipeline:graph:renderDelegate:fastModeSwitch:rtscProcessorsBySourceDeviceType:inferenceScheduler:];
@@ -3342,7 +3342,7 @@ LABEL_709:
   else
   {
     LODWORD(v540) = v378;
-    [(FigCaptureCameraSourcePipeline *)v470 _buildVideoCaptureOutputNetwork:v617 previewOutputsBySourceDeviceType:v618 stillImageOutputsByPortType:v619 lightSourceMaskOutputsBySourceDeviceType:v615 keypointDescriptorDataOutputsBySourceDeviceType:v614 pipelineConfiguration:v471 graph:v462 videoCaptureDimensions:v537 numberOfSecondaryFramesToSkip:v540 rtscProcessorsBySourceDeviceType:a6 inferenceScheduler:a7, v547, v550, v553, v556, v559, v562, v565, v568, v571, v574, v577, v580, v583, v586];
+    [(FigCaptureCameraSourcePipeline *)v470 _buildVideoCaptureOutputNetwork:dictionary2 previewOutputsBySourceDeviceType:dictionary stillImageOutputsByPortType:dictionary3 lightSourceMaskOutputsBySourceDeviceType:dictionary6 keypointDescriptorDataOutputsBySourceDeviceType:dictionary7 pipelineConfiguration:v471 graph:v462 videoCaptureDimensions:v537 numberOfSecondaryFramesToSkip:v540 rtscProcessorsBySourceDeviceType:switch inferenceScheduler:type, v547, v550, v553, v556, v559, v562, v565, v568, v571, v574, v577, v580, v583, v586];
     v817 = v488;
     if (v488)
     {
@@ -3351,7 +3351,7 @@ LABEL_709:
 
     else
     {
-      v817 = [FigCaptureCameraSourcePipeline _buildPreviewOutputNetwork:v470 videoCaptureOutputsBySourceDeviceType:v618 pipelineConfiguration:v487 graph:v471 numberOfSecondaryFramesToSkip:?];
+      v817 = [FigCaptureCameraSourcePipeline _buildPreviewOutputNetwork:v470 videoCaptureOutputsBySourceDeviceType:dictionary pipelineConfiguration:v487 graph:v471 numberOfSecondaryFramesToSkip:?];
       if (v817)
       {
         [FigCaptureCameraSourcePipeline _buildMultiStreamCameraSourcePipeline:graph:renderDelegate:fastModeSwitch:rtscProcessorsBySourceDeviceType:inferenceScheduler:];
@@ -3459,27 +3459,27 @@ LABEL_709:
 
           else
           {
-            *(v490 + 408) = v605;
-            [*(v490 + 72) setRenderDelegate:a4];
+            *(v490 + 408) = depthOutput;
+            [*(v490 + 72) setRenderDelegate:graph];
             v503 = [objc_msgSend(*(v490 + 72) "configuration")];
             v504 = *(v490 + 72);
             if (v503)
             {
-              v505 = [v504 videoCaptureOutput];
+              videoCaptureOutput2 = [v504 videoCaptureOutput];
               goto LABEL_757;
             }
 
             if ([objc_msgSend(v504 "configuration")])
             {
-              v505 = [*(v490 + 72) previewOutput];
+              videoCaptureOutput2 = [*(v490 + 72) previewOutput];
               goto LABEL_757;
             }
 
-            v506 = [v619 count];
+            v506 = [dictionary3 count];
             v507 = *(v490 + 72);
             if (v506)
             {
-              v505 = [v507 stillImageOutput];
+              videoCaptureOutput2 = [v507 stillImageOutput];
               goto LABEL_757;
             }
 
@@ -3487,7 +3487,7 @@ LABEL_709:
             v509 = *(v490 + 72);
             if (v508)
             {
-              v510 = [v509 metadataOutputsByCategory];
+              metadataOutputsByCategory = [v509 metadataOutputsByCategory];
               v511 = &unk_1F2244908;
               goto LABEL_756;
             }
@@ -3496,7 +3496,7 @@ LABEL_709:
             v513 = *(v490 + 72);
             if (v512)
             {
-              v505 = [v513 pointCloudOutput];
+              videoCaptureOutput2 = [v513 pointCloudOutput];
               goto LABEL_757;
             }
 
@@ -3504,12 +3504,12 @@ LABEL_709:
             v515 = *(v490 + 72);
             if (v514)
             {
-              v510 = [v515 metadataOutputsByCategory];
+              metadataOutputsByCategory = [v515 metadataOutputsByCategory];
               v511 = &unk_1F2244770;
 LABEL_756:
-              v505 = [v510 objectForKeyedSubscript:v511];
+              videoCaptureOutput2 = [metadataOutputsByCategory objectForKeyedSubscript:v511];
 LABEL_757:
-              *(v490 + 112) = v505;
+              *(v490 + 112) = videoCaptureOutput2;
             }
 
             else
@@ -3518,7 +3518,7 @@ LABEL_757:
               v517 = *(v490 + 72);
               if (v516)
               {
-                v510 = [v517 metadataOutputsByCategory];
+                metadataOutputsByCategory = [v517 metadataOutputsByCategory];
                 v511 = &unk_1F22447B8;
                 goto LABEL_756;
               }
@@ -3527,7 +3527,7 @@ LABEL_757:
               v519 = *(v490 + 72);
               if (v518)
               {
-                v510 = [v519 metadataOutputsByCategory];
+                metadataOutputsByCategory = [v519 metadataOutputsByCategory];
                 v511 = &unk_1F2244788;
                 goto LABEL_756;
               }
@@ -3536,21 +3536,21 @@ LABEL_757:
               v521 = *(v490 + 72);
               if (v520)
               {
-                v510 = [v521 metadataOutputsByCategory];
+                metadataOutputsByCategory = [v521 metadataOutputsByCategory];
                 v511 = &unk_1F2244830;
                 goto LABEL_756;
               }
 
               if ([objc_msgSend(objc_msgSend(v521 "configuration")])
               {
-                v510 = [*(v490 + 72) metadataOutputsByCategory];
+                metadataOutputsByCategory = [*(v490 + 72) metadataOutputsByCategory];
                 v511 = &unk_1F2244920;
                 goto LABEL_756;
               }
             }
 
-            *(v490 + 176) = v619;
-            *(v490 + 184) = v612;
+            *(v490 + 176) = dictionary3;
+            *(v490 + 184) = dictionary4;
             *(v490 + 508) = v689;
             if (v708)
             {
@@ -3668,10 +3668,10 @@ LABEL_609:
   return [v3 stringWithFormat:@"<%@: %p> captureDevice:%@ captureSource:%@", NSStringFromClass(v4), self, self->_captureDevice, self->_captureSource];
 }
 
-- (uint64_t)_getDeviceOrientationCorrectionEnabledForVideoCaptureConnectionConfigurations:(uint64_t)a1
+- (uint64_t)_getDeviceOrientationCorrectionEnabledForVideoCaptureConnectionConfigurations:(uint64_t)configurations
 {
   result = 0;
-  if (a1)
+  if (configurations)
   {
     if (a2)
     {
@@ -3721,12 +3721,12 @@ LABEL_609:
   return result;
 }
 
-- (id)initWithConfiguration:(void *)a3 captureDevice:(void *)a4 graph:(uint64_t)a5 name:(uint64_t)a6 renderDelegate:(uint64_t)a7 ispFastSwitchEnabled:(uint64_t)a8 rtscProcessorsBySourceDeviceType:(uint64_t)a9 inferenceScheduler:(int *)a10 error:
+- (id)initWithConfiguration:(void *)configuration captureDevice:(void *)device graph:(uint64_t)graph name:(uint64_t)name renderDelegate:(uint64_t)delegate ispFastSwitchEnabled:(uint64_t)enabled rtscProcessorsBySourceDeviceType:(uint64_t)type inferenceScheduler:(int *)self0 error:
 {
-  v10 = a1;
-  if (!a1)
+  selfCopy = self;
+  if (!self)
   {
-    return v10;
+    return selfCopy;
   }
 
   v34 = 0;
@@ -3740,7 +3740,7 @@ LABEL_609:
     v17 = 0;
   }
 
-  v18 = [v17 source];
+  source = [v17 source];
   v19 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (!v19)
   {
@@ -3750,7 +3750,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v20 = v19(v18, @"AttributesDictionary", *MEMORY[0x1E695E480], &v34);
+  v20 = v19(source, @"AttributesDictionary", *MEMORY[0x1E695E480], &v34);
   if (v20)
   {
     v29 = v20;
@@ -3767,14 +3767,14 @@ LABEL_23:
     v21 = 0;
   }
 
-  v33.receiver = v10;
+  v33.receiver = selfCopy;
   v33.super_class = FigCaptureCameraSourcePipeline;
-  v10 = objc_msgSendSuper2(&v33, sel_initWithGraph_name_sourceID_, a4, a5, [v21 sourceID]);
-  if (!v10)
+  selfCopy = objc_msgSendSuper2(&v33, sel_initWithGraph_name_sourceID_, device, graph, [v21 sourceID]);
+  if (!selfCopy)
   {
 LABEL_21:
 
-    return v10;
+    return selfCopy;
   }
 
   if (a2)
@@ -3793,11 +3793,11 @@ LABEL_21:
     goto LABEL_25;
   }
 
-  *(v10 + 7) = a2;
-  *(v10 + 8) = objc_alloc_init(MEMORY[0x1E695DF70]);
-  *(v10 + 11) = [objc_msgSend(v34 objectForKeyedSubscript:{@"DeviceType", "intValue"}];
-  *(v10 + 12) = [objc_msgSend(v34 objectForKeyedSubscript:{@"Position", "intValue"}];
-  *(v10 + 57) = a3;
+  *(selfCopy + 7) = a2;
+  *(selfCopy + 8) = objc_alloc_init(MEMORY[0x1E695DF70]);
+  *(selfCopy + 11) = [objc_msgSend(v34 objectForKeyedSubscript:{@"DeviceType", "intValue"}];
+  *(selfCopy + 12) = [objc_msgSend(v34 objectForKeyedSubscript:{@"Position", "intValue"}];
+  *(selfCopy + 57) = configuration;
   if (a2)
   {
     v23 = *(a2 + 176);
@@ -3808,51 +3808,51 @@ LABEL_21:
     v23 = 0;
   }
 
-  v24 = [v23 source];
-  if (v24)
+  source2 = [v23 source];
+  if (source2)
   {
-    v24 = CFRetain(v24);
+    source2 = CFRetain(source2);
   }
 
-  *(v10 + 58) = v24;
+  *(selfCopy + 58) = source2;
   if (a2)
   {
-    *(v10 + 59) = [*(a2 + 176) requiredFormat];
+    *(selfCopy + 59) = [*(a2 + 176) requiredFormat];
     v25 = *(a2 + 176);
   }
 
   else
   {
-    v31 = [0 requiredFormat];
+    requiredFormat = [0 requiredFormat];
     v25 = OUTLINED_FUNCTION_110_2();
-    *(v10 + 59) = v32;
+    *(selfCopy + 59) = v32;
   }
 
-  *(v10 + 60) = [v25 depthDataFormat];
-  *(v10 + 62) = [a4 memoryPool];
+  *(selfCopy + 60) = [v25 depthDataFormat];
+  *(selfCopy + 62) = [device memoryPool];
   if (a2)
   {
-    *(v10 + 504) = *(a2 + 136) != 0.0;
-    *(v10 + 513) = *(a2 + 266);
+    *(selfCopy + 504) = *(a2 + 136) != 0.0;
+    *(selfCopy + 513) = *(a2 + 266);
     v26 = *(a2 + 176);
   }
 
   else
   {
     v26 = 0;
-    *(v10 + 504) = 0;
-    *(v10 + 513) = 0;
+    *(selfCopy + 504) = 0;
+    *(selfCopy + 513) = 0;
   }
 
   [v26 maxFrameRateClientOverride];
-  *(v10 + 129) = v27;
-  *(v10 + 71) = objc_alloc_init(MEMORY[0x1E695DF90]);
-  *(v10 + 72) = objc_alloc_init(MEMORY[0x1E695DF90]);
-  *(v10 + 49) = objc_alloc_init(MEMORY[0x1E695DF90]);
-  *(v10 + 41) = [objc_msgSend(v34 objectForKeyedSubscript:{0x1F21833F0), "BOOLValue"}];
-  *(v10 + 65) = objc_alloc_init(MEMORY[0x1E695DF90]);
-  *(v10 + 55) = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v28 = [(FigCaptureCameraSourcePipeline *)v10 _buildMultiStreamCameraSourcePipeline:a2 graph:a4 renderDelegate:a6 fastModeSwitch:0 rtscProcessorsBySourceDeviceType:a8 inferenceScheduler:a9];
+  *(selfCopy + 129) = v27;
+  *(selfCopy + 71) = objc_alloc_init(MEMORY[0x1E695DF90]);
+  *(selfCopy + 72) = objc_alloc_init(MEMORY[0x1E695DF90]);
+  *(selfCopy + 49) = objc_alloc_init(MEMORY[0x1E695DF90]);
+  *(selfCopy + 41) = [objc_msgSend(v34 objectForKeyedSubscript:{0x1F21833F0), "BOOLValue"}];
+  *(selfCopy + 65) = objc_alloc_init(MEMORY[0x1E695DF90]);
+  *(selfCopy + 55) = objc_alloc_init(MEMORY[0x1E695DF90]);
+  v28 = [(FigCaptureCameraSourcePipeline *)selfCopy _buildMultiStreamCameraSourcePipeline:a2 graph:device renderDelegate:name fastModeSwitch:0 rtscProcessorsBySourceDeviceType:enabled inferenceScheduler:type];
   if (!v28)
   {
     goto LABEL_21;
@@ -3864,9 +3864,9 @@ LABEL_24:
   FigDebugAssert3();
 LABEL_25:
 
-  if (a10)
+  if (scheduler)
   {
-    *a10 = v29;
+    *scheduler = v29;
   }
 
   return 0;
@@ -3904,15 +3904,15 @@ LABEL_25:
   return result;
 }
 
-- (uint64_t)metadataOutputsByCategoryForSourceDeviceType:(uint64_t)a1
+- (uint64_t)metadataOutputsByCategoryForSourceDeviceType:(uint64_t)type
 {
-  if (!a1)
+  if (!type)
   {
     return 0;
   }
 
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = [*(a1 + 392) allKeys];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  allKeys = [*(type + 392) allKeys];
   OUTLINED_FUNCTION_43();
   v7 = [v6 countByEnumeratingWithState:? objects:? count:?];
   if (v7)
@@ -3927,10 +3927,10 @@ LABEL_25:
         OUTLINED_FUNCTION_4_10();
         if (v11 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        [*(a1 + 392) objectForKeyedSubscript:*(v17 + 8 * v10)];
+        [*(type + 392) objectForKeyedSubscript:*(v17 + 8 * v10)];
         [MEMORY[0x1E696AD98] numberWithInt:a2];
         [OUTLINED_FUNCTION_36() objectForKeyedSubscript:?];
         [OUTLINED_FUNCTION_8() setObject:? forKeyedSubscript:?];
@@ -3945,43 +3945,43 @@ LABEL_25:
     while (v8);
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (void)metadataCategoriesForConnectionConfiguration:(uint64_t)a1
+- (void)metadataCategoriesForConnectionConfiguration:(uint64_t)configuration
 {
-  if (!a1)
+  if (!configuration)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (FigCaptureMetadataObjectConfigurationRequiresObjectDetection(a2))
   {
-    [v3 addObject:&unk_1F2244770];
+    [array addObject:&unk_1F2244770];
   }
 
   if (FigCaptureMetadataObjectConfigurationRequiresEyeReliefStatus(a2))
   {
-    [v3 addObject:&unk_1F2244788];
+    [array addObject:&unk_1F2244788];
   }
 
   if (FigCaptureMetadataObjectConfigurationRequiresFaceTracking(a2))
   {
-    [v3 addObject:&unk_1F22447B8];
+    [array addObject:&unk_1F22447B8];
   }
 
   if (FigCaptureMetadataObjectConfigurationRequiresFaceIDReadiness(a2))
   {
-    [v3 addObject:&unk_1F2244920];
+    [array addObject:&unk_1F2244920];
   }
 
   if (FigCaptureMetadataObjectConfigurationRequiresMotionToWake(a2))
   {
-    [v3 addObject:&unk_1F2244830];
+    [array addObject:&unk_1F2244830];
   }
 
-  return v3;
+  return array;
 }
 
 - (uint64_t)visionDataOutputForSourceDeviceType:(uint64_t)result
@@ -4050,19 +4050,19 @@ LABEL_25:
 {
   if (result)
   {
-    v1 = [*(result + 72) configuration];
+    configuration = [*(result + 72) configuration];
 
-    return [v1 preferredPreviewDimensions];
+    return [configuration preferredPreviewDimensions];
   }
 
   return result;
 }
 
-- (uint64_t)videoCaptureOutputTransformForSourceDeviceType:(uint64_t)a1
+- (uint64_t)videoCaptureOutputTransformForSourceDeviceType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    OUTLINED_FUNCTION_141_0(a1, a2);
+    OUTLINED_FUNCTION_141_0(type, a2);
     if ([objc_msgSend(OUTLINED_FUNCTION_7() "objectForKeyedSubscript:"count"")])
     {
       [*(v2 + 3480) numberWithInt:a2];
@@ -4072,10 +4072,10 @@ LABEL_25:
         v6 = v5;
         while (1)
         {
-          v7 = [v6 formatRequirements];
-          if ([v7 width])
+          formatRequirements = [v6 formatRequirements];
+          if ([formatRequirements width])
           {
-            if ([v7 height])
+            if ([formatRequirements height])
             {
               break;
             }
@@ -4092,27 +4092,27 @@ LABEL_25:
       else
       {
 LABEL_8:
-        v7 = 0;
+        formatRequirements = 0;
       }
     }
 
     else
     {
-      v7 = [objc_msgSend(*(a1 + 72) "videoCaptureOutput")];
+      formatRequirements = [objc_msgSend(*(type + 72) "videoCaptureOutput")];
     }
 
-    [v7 width];
-    [v7 height];
+    [formatRequirements width];
+    [formatRequirements height];
   }
 
   return OUTLINED_FUNCTION_3_19();
 }
 
-- (uint64_t)previewOutputTransformForSourceDeviceType:(uint64_t)a1
+- (uint64_t)previewOutputTransformForSourceDeviceType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
-    OUTLINED_FUNCTION_141_0(a1, a2);
+    OUTLINED_FUNCTION_141_0(type, a2);
     if ([objc_msgSend(OUTLINED_FUNCTION_7() "objectForKeyedSubscript:"count"")])
     {
       [*(v2 + 3480) numberWithInt:a2];
@@ -4122,10 +4122,10 @@ LABEL_8:
         v6 = v5;
         while (1)
         {
-          v7 = [v6 formatRequirements];
-          if ([v7 width])
+          formatRequirements = [v6 formatRequirements];
+          if ([formatRequirements width])
           {
-            if ([v7 height])
+            if ([formatRequirements height])
             {
               break;
             }
@@ -4142,17 +4142,17 @@ LABEL_8:
       else
       {
 LABEL_8:
-        v7 = 0;
+        formatRequirements = 0;
       }
     }
 
     else
     {
-      v7 = [objc_msgSend(*(a1 + 72) "previewOutput")];
+      formatRequirements = [objc_msgSend(*(type + 72) "previewOutput")];
     }
 
-    [v7 width];
-    [v7 height];
+    [formatRequirements width];
+    [formatRequirements height];
   }
 
   return OUTLINED_FUNCTION_3_19();
@@ -4172,25 +4172,25 @@ LABEL_8:
 {
   if (result)
   {
-    v1 = [*(result + 72) stillImageOutput];
+    stillImageOutput = [*(result + 72) stillImageOutput];
 
-    return [v1 videoFormat];
+    return [stillImageOutput videoFormat];
   }
 
   return result;
 }
 
-- (void)nextVideoCaptureOutputForSourceDeviceType:(uint64_t)a3
+- (void)nextVideoCaptureOutputForSourceDeviceType:(uint64_t)type
 {
-  if (a1)
+  if (self)
   {
-    [(FigCaptureCameraSourcePipeline *)a1 nextVideoCaptureOutputForSourceDeviceType:a2 sharesBuffersWithOtherConnections:0, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28];
+    [(FigCaptureCameraSourcePipeline *)self nextVideoCaptureOutputForSourceDeviceType:a2 sharesBuffersWithOtherConnections:0, a4, a5, a6, a7, a8, a9, a10, a11, a12, a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25, a26, a27, a28];
   }
 }
 
-- (void)nextVideoCaptureOutputForSourceDeviceType:(uint64_t)a3 sharesBuffersWithOtherConnections:(uint64_t)a4
+- (void)nextVideoCaptureOutputForSourceDeviceType:(uint64_t)type sharesBuffersWithOtherConnections:(uint64_t)connections
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_91();
     v30 = v29;
@@ -4302,14 +4302,14 @@ LABEL_24:
   }
 }
 
-- (void)nextPreviewOutputForSourceDeviceType:(char)a3 intendedForVideoDataSinkPipeline:
+- (void)nextPreviewOutputForSourceDeviceType:(char)type intendedForVideoDataSinkPipeline:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  OUTLINED_FUNCTION_124_3(a1, a2, 292);
+  OUTLINED_FUNCTION_124_3(self, a2, 292);
   [MEMORY[0x1E696AD98] numberWithInt:v7];
   if (![OUTLINED_FUNCTION_37_0() objectForKeyedSubscript:?] || (objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", a2), objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_37_0(), "objectForKeyedSubscript:"), "count") <= v3))
   {
@@ -4321,9 +4321,9 @@ LABEL_24:
   [MEMORY[0x1E696AD98] numberWithInt:a2];
   v8 = [objc_msgSend(OUTLINED_FUNCTION_28() "objectForKeyedSubscript:{"objectAtIndexedSubscript:", v3}")];
   v9 = v8;
-  if ((a3 & 1) == 0)
+  if ((type & 1) == 0)
   {
-    v10 = *(a1 + 56);
+    v10 = *(self + 56);
     if (v10)
     {
       v11 = *(v10 + 176);
@@ -4342,18 +4342,18 @@ LABEL_24:
       }
     }
 
-    v12 = [v11 requiredMinFrameRate];
+    requiredMinFrameRate = [v11 requiredMinFrameRate];
     v14 = v13;
-    v15 = [v11 requiredMaxFrameRate];
-    if (FigCaptureFrameRateEqual(v12, v14, v15, v16))
+    requiredMaxFrameRate = [v11 requiredMaxFrameRate];
+    if (FigCaptureFrameRateEqual(requiredMinFrameRate, v14, requiredMaxFrameRate, v16))
     {
       v17 = BWGetMaximumDisplayFrequency();
       v18 = [objc_msgSend(v11 "requiredFormat")];
       if (v18 >= 1 && v18 <= v17)
       {
-        v21 = [OUTLINED_FUNCTION_18_0() requiredMaxFrameRate];
-        v23 = FigCaptureFrameRateAsInt(v21, v22);
-        v17 = v23 / ((v12 + v23 - 1) / v12);
+        requiredMaxFrameRate2 = [OUTLINED_FUNCTION_18_0() requiredMaxFrameRate];
+        v23 = FigCaptureFrameRateAsInt(requiredMaxFrameRate2, v22);
+        v17 = v23 / ((requiredMinFrameRate + v23 - 1) / requiredMinFrameRate);
       }
 
       *&v19 = v17;
@@ -4369,8 +4369,8 @@ LABEL_24:
   if (result)
   {
     v4 = OUTLINED_FUNCTION_36_13();
-    v6 = [*(v5 + 568) allValues];
-    result = OUTLINED_FUNCTION_134_2(v6, v7);
+    allValues = [*(v5 + 568) allValues];
+    result = OUTLINED_FUNCTION_134_2(allValues, v7);
     if (result)
     {
       OUTLINED_FUNCTION_39_12();
@@ -4416,8 +4416,8 @@ LABEL_24:
   if (result)
   {
     v2 = OUTLINED_FUNCTION_72_3();
-    v4 = [*(v3 + 568) allValues];
-    result = [v4 countByEnumeratingWithState:v16 objects:v15 count:16];
+    allValues = [*(v3 + 568) allValues];
+    result = [allValues countByEnumeratingWithState:v16 objects:v15 count:16];
     if (result)
     {
       OUTLINED_FUNCTION_74_4();
@@ -4429,14 +4429,14 @@ LABEL_24:
           OUTLINED_FUNCTION_76_3();
           if (!v6)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allValues);
           }
 
-          v7 = [*(v17 + 8 * v5++) loadInferenceNetwork];
+          loadInferenceNetwork = [*(v17 + 8 * v5++) loadInferenceNetwork];
         }
 
         while (v1 != v5);
-        result = OUTLINED_FUNCTION_57(v7, v8, v9, v10, v11, v12, v13, v14, v15[0]);
+        result = OUTLINED_FUNCTION_57(loadInferenceNetwork, v8, v9, v10, v11, v12, v13, v14, v15[0]);
         v1 = result;
       }
 
@@ -4459,7 +4459,7 @@ LABEL_24:
   return result;
 }
 
-- (uint64_t)setMetadataObjectConnectionConfiguration:(uint64_t)a3 forSessionID:
+- (uint64_t)setMetadataObjectConnectionConfiguration:(uint64_t)configuration forSessionID:
 {
   if (result)
   {
@@ -4471,7 +4471,7 @@ LABEL_24:
       *(v5 + 448) = v6;
     }
 
-    return [v6 setObject:a2 forKeyedSubscript:a3];
+    return [v6 setObject:a2 forKeyedSubscript:configuration];
   }
 
   return result;
@@ -4487,7 +4487,7 @@ LABEL_24:
   return result;
 }
 
-- (void)addMetadataOutputNetworksForSessionID:(uint64_t)a3 graph:(uint64_t)a4
+- (void)addMetadataOutputNetworksForSessionID:(uint64_t)d graph:(uint64_t)graph
 {
   OUTLINED_FUNCTION_91();
   v46 = v30;
@@ -4514,27 +4514,27 @@ LABEL_24:
           }
 
           v40 = *(a28 + 8 * i);
-          v41 = [v32[55] objectForKeyedSubscript:v40];
-          if (!v41)
+          dictionary = [v32[55] objectForKeyedSubscript:v40];
+          if (!dictionary)
           {
-            v41 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary = [MEMORY[0x1E695DF90] dictionary];
           }
 
-          if (![v41 objectForKeyedSubscript:v31])
+          if (![dictionary objectForKeyedSubscript:v31])
           {
             [MEMORY[0x1E695DF90] dictionary];
             [OUTLINED_FUNCTION_15() setObject:? forKeyedSubscript:?];
           }
 
-          if (![objc_msgSend(v41 objectForKeyedSubscript:{v31), "objectForKeyedSubscript:", v35}])
+          if (![objc_msgSend(dictionary objectForKeyedSubscript:{v31), "objectForKeyedSubscript:", v35}])
           {
             v42 = v34;
             v43 = [(FigCaptureCameraSourcePipeline *)v32 createOutputNetworkForOutput:v40 withFanOutCount:0 graph:v46 sessionID:v31];
-            v44 = [v41 objectForKeyedSubscript:v31];
+            v44 = [dictionary objectForKeyedSubscript:v31];
             v45 = v43;
             v34 = v42;
             [v44 setObject:v45 forKeyedSubscript:v35];
-            [v32[55] setObject:v41 forKeyedSubscript:v40];
+            [v32[55] setObject:dictionary forKeyedSubscript:v40];
           }
         }
 
@@ -4549,22 +4549,22 @@ LABEL_24:
   OUTLINED_FUNCTION_90_3();
 }
 
-- (BWNodeOutput)createOutputNetworkForOutput:(uint64_t)a3 withFanOutCount:(void *)a4 graph:(uint64_t)a5 sessionID:
+- (BWNodeOutput)createOutputNetworkForOutput:(uint64_t)output withFanOutCount:(void *)count graph:(uint64_t)graph sessionID:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v18 = 0;
   v10 = objc_alloc_init(BWNodeOutput);
-  if (![a1[65] objectForKeyedSubscript:a2])
+  if (![self[65] objectForKeyedSubscript:a2])
   {
-    v11 = [[BWFanOutNode alloc] initWithFanOutCount:a3 mediaType:1835365473];
-    [a1[65] setObject:v11 forKeyedSubscript:a2];
+    v11 = [[BWFanOutNode alloc] initWithFanOutCount:output mediaType:1835365473];
+    [self[65] setObject:v11 forKeyedSubscript:a2];
     BWMetadataCategoryToString([a2 intValue]);
     [OUTLINED_FUNCTION_15() setName:?];
-    [a1 addNode:v11 error:&v18];
+    [self addNode:v11 error:&v18];
     if (v18)
     {
       OUTLINED_FUNCTION_0();
@@ -4572,24 +4572,24 @@ LABEL_24:
       return v10;
     }
 
-    [objc_msgSend(a1[9] "metadataOutputsByCategory")];
-    v12 = [(BWNode *)v11 input];
-    OUTLINED_FUNCTION_93_1(a4, v13, v14, v12);
+    [objc_msgSend(self[9] "metadataOutputsByCategory")];
+    input = [(BWNode *)v11 input];
+    OUTLINED_FUNCTION_93_1(count, v13, v14, input);
   }
 
-  v15 = [a1[65] objectForKeyedSubscript:a2];
-  if (a3)
+  v15 = [self[65] objectForKeyedSubscript:a2];
+  if (output)
   {
-    v16 = [v15 output];
+    output = [v15 output];
   }
 
   else
   {
-    v16 = [v15 addExtendedOutput];
+    output = [v15 addExtendedOutput];
   }
 
-  v10 = v16;
-  [(BWNodeOutput *)v16 setName:a5];
+  v10 = output;
+  [(BWNodeOutput *)output setName:graph];
   return v10;
 }
 
@@ -4613,15 +4613,15 @@ LABEL_24:
   return result;
 }
 
-- (double)trueVideoCaptureAdditionalZoomFactorForPhotoGraphVideoZoomFactor:(uint64_t)a1
+- (double)trueVideoCaptureAdditionalZoomFactorForPhotoGraphVideoZoomFactor:(uint64_t)factor
 {
-  if (!a1)
+  if (!factor)
   {
     return 0.0;
   }
 
-  v4 = *(a1 + 48);
-  v5 = *(a1 + 44);
+  v4 = *(factor + 48);
+  v5 = *(factor + 44);
   objc_opt_self();
   if (v4 == 1)
   {
@@ -4642,10 +4642,10 @@ LABEL_24:
     result = 1.0;
   }
 
-  v7 = *(a1 + 48);
+  v7 = *(factor + 48);
   if (v7 == 2)
   {
-    if (*(a1 + 44) == 7)
+    if (*(factor + 44) == 7)
     {
       return result * 1.02;
     }
@@ -4662,9 +4662,9 @@ LABEL_24:
 - (float)trueVideoTransitionPreviousPhotoGraphZoomFactor
 {
   result = 0.0;
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 56);
+    v2 = *(self + 56);
     if (v2)
     {
       return *(v2 + 340);
@@ -4678,9 +4678,9 @@ LABEL_24:
 {
   if (result)
   {
-    v1 = [*(result + 568) allValues];
+    allValues = [*(result + 568) allValues];
 
-    return [v1 firstObject];
+    return [allValues firstObject];
   }
 
   return result;
@@ -4707,11 +4707,11 @@ LABEL_24:
             objc_enumerationMutation(v3);
           }
 
-          v13 = [*(v23 + 8 * v11++) startIncrementalPrefetchingOfSourcePoolsIfNecessary];
+          startIncrementalPrefetchingOfSourcePoolsIfNecessary = [*(v23 + 8 * v11++) startIncrementalPrefetchingOfSourcePoolsIfNecessary];
         }
 
         while (v1 != v11);
-        result = OUTLINED_FUNCTION_57(v13, v14, v15, v16, v17, v18, v19, v20, v22);
+        result = OUTLINED_FUNCTION_57(startIncrementalPrefetchingOfSourcePoolsIfNecessary, v14, v15, v16, v17, v18, v19, v20, v22);
         v1 = result;
       }
 
@@ -4769,7 +4769,7 @@ LABEL_9:
   return result;
 }
 
-- (void)prepareForStillImageCaptureWithStillImageOutputRetainedBufferCountOverride:(uint64_t)a3 infraRedStillImageOutputRetainedBufferCountOverride:(uint64_t)a4 clientBracketCount:(uint64_t)a5 enableSushiRawAttachmentOption:(uint64_t)a6
+- (void)prepareForStillImageCaptureWithStillImageOutputRetainedBufferCountOverride:(uint64_t)override infraRedStillImageOutputRetainedBufferCountOverride:(uint64_t)countOverride clientBracketCount:(uint64_t)count enableSushiRawAttachmentOption:(uint64_t)option
 {
   OUTLINED_FUNCTION_81_3();
   if (v34)
@@ -4875,8 +4875,8 @@ LABEL_15:
     goto LABEL_25;
   }
 
-  v13 = [v10 sourceDeviceType];
-  if (v13 > 0x14 || ((1 << v13) & 0x1E7FFC) == 0 || [v10 sourceDeviceType] == 10 && FigCapturePlatformIdentifier() < 10)
+  sourceDeviceType = [v10 sourceDeviceType];
+  if (sourceDeviceType > 0x14 || ((1 << sourceDeviceType) & 0x1E7FFC) == 0 || [v10 sourceDeviceType] == 10 && FigCapturePlatformIdentifier() < 10)
   {
     goto LABEL_25;
   }
@@ -4914,20 +4914,20 @@ LABEL_16:
 LABEL_18:
   if (![OUTLINED_FUNCTION_16_24() synchronizedStreamsGroup] || (!v8 ? (v16 = 0) : (v16 = *(v8 + 147)), ((v16 ^ objc_msgSend(OUTLINED_FUNCTION_16_24(), "midFrameSynchronizationEnabled")) & 1) == 0 && ((v17 = objc_msgSend(objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_16_24(), "synchronizedStreamsGroup"), "syncGroup"), "synchronizationMaster"), v18 = OUTLINED_FUNCTION_16_24(), !v8) ? (v19 = 0) : (v19 = *(v8 + 147)), v17 == objc_msgSend(objc_msgSend(v18, "synchronizationPrimaryForMidFrameSynchronizationEnabled:", v19 & 1), "stream"))))
   {
-    v168 = [v10 bravoShiftMitigationEnabled];
-    v20 = [v10 cinematicFramingEnabled];
-    v21 = [v10 deskCamEnabled];
-    v22 = 1;
-    if ((v20 & 1) == 0 && (v21 & 1) == 0)
+    bravoShiftMitigationEnabled = [v10 bravoShiftMitigationEnabled];
+    cinematicFramingEnabled = [v10 cinematicFramingEnabled];
+    deskCamEnabled = [v10 deskCamEnabled];
+    manualCinematicFramingEnabled = 1;
+    if ((cinematicFramingEnabled & 1) == 0 && (deskCamEnabled & 1) == 0)
     {
-      v22 = [v10 manualCinematicFramingEnabled];
+      manualCinematicFramingEnabled = [v10 manualCinematicFramingEnabled];
     }
 
     v169 = [v10 cinematicFramingEnabled] ? objc_msgSend(objc_msgSend(v10, "requiredFormat"), "isSmartCropSupported") : 0;
     v148 = v9;
     v133 = v6;
-    v23 = [v10 requiredFormat];
-    v171 = v22;
+    requiredFormat = [v10 requiredFormat];
+    v171 = manualCinematicFramingEnabled;
     if (v8)
     {
       v24 = *(v8 + 200);
@@ -4941,7 +4941,7 @@ LABEL_18:
     }
 
     shouldApplyCropFromVideoDataOutput = csp_shouldApplyCropFromVideoDataOutput(v8);
-    v27 = csp_videoCaptureDimensionsFromConnectionConfigurations(v23, v174, v11, v24, v25, v171, shouldApplyCropFromVideoDataOutput, [v10 outputAspectRatio], v169);
+    v27 = csp_videoCaptureDimensionsFromConnectionConfigurations(requiredFormat, v174, v11, v24, v25, v171, shouldApplyCropFromVideoDataOutput, [v10 outputAspectRatio], v169);
     csp_shouldUseFESCompanionIndex(v10, v11, v27, v28, v29, v30, v31, v32, v114, v116, v118, v120, v122, v124, v126, v128, v5, v7, v133, v136, v139, v142, obj, v148, v151, v153, v155, v159, v162, v164);
     v172 = v33;
     csp_shouldUseDepthCompanionIndex(v10, v11, v27, v34, v35, v36, v37, v38, v115, v117, v119, v121, v123, v125, v127, v129, v130, v131, v134, v137, v140, v143, objb, v149, v152, v154, v156, v160);
@@ -4967,7 +4967,7 @@ LABEL_18:
     if (v44 == [OUTLINED_FUNCTION_16_24() bravoConstituentPhotoDeliveryEnabled])
     {
       v45 = [objc_msgSend(OUTLINED_FUNCTION_16_24() "captureStreams")];
-      v46 = [OUTLINED_FUNCTION_16_24() isBravoVariant];
+      isBravoVariant = [OUTLINED_FUNCTION_16_24() isBravoVariant];
       if (v8)
       {
         v47 = *(v8 + 143);
@@ -4979,7 +4979,7 @@ LABEL_18:
         OUTLINED_FUNCTION_130_1();
       }
 
-      if ((v46 & (v47 | v12 & v48)) != 0)
+      if ((isBravoVariant & (v47 | v12 & v48)) != 0)
       {
         v49 = 2;
       }
@@ -5027,12 +5027,12 @@ LABEL_18:
 
           if ([OUTLINED_FUNCTION_16_24() overCaptureEnabled])
           {
-            v53 = 1;
+            allocateResourcesCompatibleWithOverCapture = 1;
           }
 
           else
           {
-            v53 = [OUTLINED_FUNCTION_16_24() allocateResourcesCompatibleWithOverCapture];
+            allocateResourcesCompatibleWithOverCapture = [OUTLINED_FUNCTION_16_24() allocateResourcesCompatibleWithOverCapture];
           }
 
           if (v8)
@@ -5050,7 +5050,7 @@ LABEL_18:
             v52 = *(v8 + 140);
           }
 
-          if (v53 == v52)
+          if (allocateResourcesCompatibleWithOverCapture == v52)
           {
             v55 = ([OUTLINED_FUNCTION_16_24() digitalFlashEnabled] & 1) != 0 ? 1 : objc_msgSend(OUTLINED_FUNCTION_16_24(), "digitalFlashMetadataEnabled");
             v56 = v8 && (*(v8 + 141) & 1) != 0 ? 1 : [objc_msgSend(v174 "irisSinkConfiguration")];
@@ -5064,7 +5064,7 @@ LABEL_18:
                   goto LABEL_25;
                 }
 
-                v58 = [OUTLINED_FUNCTION_16_24() timeOfFlightProjectorMode];
+                timeOfFlightProjectorMode = [OUTLINED_FUNCTION_16_24() timeOfFlightProjectorMode];
                 v59 = *(v8 + 256);
               }
 
@@ -5075,15 +5075,15 @@ LABEL_18:
                   goto LABEL_25;
                 }
 
-                v58 = [*(v150 + 456) timeOfFlightProjectorMode];
+                timeOfFlightProjectorMode = [*(v150 + 456) timeOfFlightProjectorMode];
                 v59 = 0;
                 v41 = v135;
               }
 
-              if (v58 == csp_projectorModeFromPointCloudDataConnectionConfigurations(v59))
+              if (timeOfFlightProjectorMode == csp_projectorModeFromPointCloudDataConnectionConfigurations(v59))
               {
-                v60 = [v10 lockedFrameRate];
-                IsValidRational = FigCaptureFrameRateIsValidRational(v60, v61);
+                lockedFrameRate = [v10 lockedFrameRate];
+                IsValidRational = FigCaptureFrameRateIsValidRational(lockedFrameRate, v61);
                 if (!IsValidRational)
                 {
                   v63 = !IsValidRational;
@@ -5091,17 +5091,17 @@ LABEL_18:
                   v64 = [objc_msgSend(OUTLINED_FUNCTION_16_24() "captureStream")];
                   if ((OUTLINED_FUNCTION_95_5(v64, v65) & v63 & 1) == 0)
                   {
-                    v66 = [v10 externalSyncFrameRate];
-                    if (!FigCaptureFrameRateIsValidRational(v66, v67))
+                    externalSyncFrameRate = [v10 externalSyncFrameRate];
+                    if (!FigCaptureFrameRateIsValidRational(externalSyncFrameRate, v67))
                     {
                       [v10 externalSyncFrameRate];
                       v68 = [objc_msgSend(OUTLINED_FUNCTION_16_24() "captureStream")];
                       if ((OUTLINED_FUNCTION_95_5(v68, v69) & v63 & 1) == 0)
                       {
-                        v70 = [OUTLINED_FUNCTION_16_24() temporalNoiseReductionBand0Disabled];
+                        temporalNoiseReductionBand0Disabled = [OUTLINED_FUNCTION_16_24() temporalNoiseReductionBand0Disabled];
                         v71 = [objc_msgSend(v10 "requiredFormat")];
-                        v72 = [OUTLINED_FUNCTION_16_24() temporalNoiseReductionRawEnabled];
-                        v73 = v72 ^ [objc_msgSend(v10 "requiredFormat")];
+                        temporalNoiseReductionRawEnabled = [OUTLINED_FUNCTION_16_24() temporalNoiseReductionRawEnabled];
+                        v73 = temporalNoiseReductionRawEnabled ^ [objc_msgSend(v10 "requiredFormat")];
                         if (v8)
                         {
                           v165 = *(v8 + 133);
@@ -5116,8 +5116,8 @@ LABEL_18:
                           v165 = 0;
                         }
 
-                        v74 = v73 | v70 ^ v71;
-                        v141 = [MEMORY[0x1E695DF90] dictionary];
+                        v74 = v73 | temporalNoiseReductionBand0Disabled ^ v71;
+                        dictionary = [MEMORY[0x1E695DF90] dictionary];
                         OUTLINED_FUNCTION_73_2();
                         OUTLINED_FUNCTION_117_2();
                         obja = v75;
@@ -5171,8 +5171,8 @@ LABEL_91:
                               v93 = 0;
                             }
 
-                            v94 = [v10 sensorHDREnabled];
-                            v95 = [v10 highlightRecoveryEnabled];
+                            sensorHDREnabled = [v10 sensorHDREnabled];
+                            highlightRecoveryEnabled = [v10 highlightRecoveryEnabled];
                             [v10 geometricDistortionCorrectionEnabled];
                             if (v8)
                             {
@@ -5184,13 +5184,13 @@ LABEL_91:
                               v96 = 0;
                             }
 
-                            v97 = csp_formatIndex(v85, v172, v167, 0, shouldUseActionCameraCompanionIndex, shouldUseFullBinSIFRCompanionIndex, v92 & 1, v93 & 1, v168, v94, v95, v96, 0, 0, 0, 0, 0, 0);
+                            v97 = csp_formatIndex(v85, v172, v167, 0, shouldUseActionCameraCompanionIndex, shouldUseFullBinSIFRCompanionIndex, v92 & 1, v93 & 1, bravoShiftMitigationEnabled, sensorHDREnabled, highlightRecoveryEnabled, v96, 0, 0, 0, 0, 0, 0);
                             if ([objc_msgSend(v79 "captureStream")] && objc_msgSend(v85, "isFastSwitchingConfigurationRequired") && objc_msgSend(objc_msgSend(v79, "configuration"), "fastSwitchingNondisruptiveFormatIndices"))
                             {
                               if (v97 != [objc_msgSend(v79 "configuration")])
                               {
                                 [objc_msgSend(v79 "captureStream")];
-                                v98 = [v94 objectAtIndexedSubscript:{objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_45_1(), "configuration"), "formatIndex")}];
+                                v98 = [sensorHDREnabled objectAtIndexedSubscript:{objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_45_1(), "configuration"), "formatIndex")}];
                                 [v98 objectForKeyedSubscript:v138];
                                 [MEMORY[0x1E696AD98] numberWithInt:v97];
                                 if (![OUTLINED_FUNCTION_24_1() containsObject:?])
@@ -5212,7 +5212,7 @@ LABEL_91:
 
                                 v144 = v100;
                                 [MEMORY[0x1E696AD98] numberWithInt:v97];
-                                [v141 setObject:v99 forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_45_1(), "portType")}];
+                                [dictionary setObject:v99 forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_45_1(), "portType")}];
                               }
                             }
 
@@ -5373,9 +5373,9 @@ LABEL_155:
                           }
 
                           *v132 = v74 & 1;
-                          if ([v141 count])
+                          if ([dictionary count])
                           {
-                            v113 = v141;
+                            v113 = dictionary;
                           }
 
                           else
@@ -5407,7 +5407,7 @@ LABEL_25:
   if (v1)
   {
     OUTLINED_FUNCTION_54();
-    v50 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v2 = v0 ? *(v0 + 176) : 0;
     OUTLINED_FUNCTION_71_2();
     OUTLINED_FUNCTION_118_2();
@@ -5523,7 +5523,7 @@ LABEL_25:
 
                     if (v32)
                     {
-                      CGRectIfPresent = [v50 setObject:v28 forKeyedSubscript:{objc_msgSend(v51, "portType", *&v55)}];
+                      CGRectIfPresent = [dictionary setObject:v28 forKeyedSubscript:{objc_msgSend(v51, "portType", *&v55)}];
                     }
                   }
                 }
@@ -5557,8 +5557,8 @@ LABEL_25:
   if (result)
   {
     v4 = OUTLINED_FUNCTION_36_13();
-    v6 = [*(v5 + 456) captureStreams];
-    result = OUTLINED_FUNCTION_134_2(v6, v7);
+    captureStreams = [*(v5 + 456) captureStreams];
+    result = OUTLINED_FUNCTION_134_2(captureStreams, v7);
     if (result)
     {
       OUTLINED_FUNCTION_39_12();
@@ -5632,14 +5632,14 @@ LABEL_25:
   return result;
 }
 
-- (void)setCinematicFramingControlsWhileRunning:(float)a3 panningAngleX:(float)a4 panningAngleY:(float)a5 videoZoomFactor:(double)a6 manualFramingDefaultZoomFactor:
+- (void)setCinematicFramingControlsWhileRunning:(float)running panningAngleX:(float)x panningAngleY:(float)y videoZoomFactor:(double)factor manualFramingDefaultZoomFactor:
 {
-  if (a1)
+  if (self)
   {
     v10 = a2;
     v68[0] = 0;
-    [*(a1 + 456) setCinematicFramingEnabled:a2];
-    if ([*(a1 + 472) isCinematicFramingProvidedBySource])
+    [*(self + 456) setCinematicFramingEnabled:a2];
+    if ([*(self + 472) isCinematicFramingProvidedBySource])
     {
 LABEL_22:
 
@@ -5648,8 +5648,8 @@ LABEL_22:
 
     [OUTLINED_FUNCTION_46_11() setManualCinematicFramingEnabled:v10 ^ 1u];
     [objc_msgSend(OUTLINED_FUNCTION_46_11() "manualCinematicFramingDelegate")];
-    v12 = *(a1 + 464);
-    *&v13 = a5;
+    v12 = *(self + 464);
+    *&v13 = y;
     v14 = [MEMORY[0x1E696AD98] numberWithFloat:v13];
     v15 = *(*(CMBaseObjectGetVTable() + 8) + 56);
     if (v15)
@@ -5658,15 +5658,15 @@ LABEL_22:
     }
 
     [objc_msgSend(OUTLINED_FUNCTION_46_11() "manualCinematicFramingDelegate")];
-    CenterStageFramingMode = csp_getCenterStageFramingMode(*(a1 + 464));
+    CenterStageFramingMode = csp_getCenterStageFramingMode(*(self + 464));
     [objc_msgSend(OUTLINED_FUNCTION_46_11() "subjectSelectionDelegate")];
-    CinematicFramingFieldOfViewRestrictedToWide = csp_getCinematicFramingFieldOfViewRestrictedToWide(*(a1 + 464));
-    csp_getCenterStageRectOfInterest(*(a1 + 464));
+    CinematicFramingFieldOfViewRestrictedToWide = csp_getCinematicFramingFieldOfViewRestrictedToWide(*(self + 464));
+    csp_getCenterStageRectOfInterest(*(self + 464));
     v19 = v18;
     v21 = v20;
     v23 = v22;
     v25 = v24;
-    v26 = *(a1 + 464);
+    v26 = *(self + 464);
     v27 = *(*(CMBaseObjectGetVTable() + 8) + 48);
     v50 = v21;
     v51 = v23;
@@ -5674,30 +5674,30 @@ LABEL_22:
     if (v27 && (v27(v26, @"AttributesDictionary", *MEMORY[0x1E695E480], v68), v68[0]))
     {
       v28 = v25;
-      v29 = a6;
-      v30 = a5;
+      factorCopy2 = factor;
+      yCopy2 = y;
       v31 = [v68[0] objectForKeyedSubscript:@"CinematicFramingVirtualCameraConfiguration"];
       v32 = v31;
       if (v31)
       {
-        v33 = a3;
-        v34 = a4;
+        runningCopy3 = running;
+        xCopy3 = x;
         v48 = [objc_msgSend(v31 objectForKeyedSubscript:{@"FishEyeEffectEnabled", "BOOLValue"}];
         v35 = 0;
         goto LABEL_11;
       }
 
-      v33 = a3;
-      v34 = a4;
+      runningCopy3 = running;
+      xCopy3 = x;
     }
 
     else
     {
       v28 = v25;
-      v29 = a6;
-      v30 = a5;
-      v33 = a3;
-      v34 = a4;
+      factorCopy2 = factor;
+      yCopy2 = y;
+      runningCopy3 = running;
+      xCopy3 = x;
       v32 = 0;
     }
 
@@ -5731,12 +5731,12 @@ LABEL_18:
         v46 = OUTLINED_FUNCTION_46_11();
         if (v10)
         {
-          v47 = [v46 manualCinematicFramingDelegate];
+          manualCinematicFramingDelegate = [v46 manualCinematicFramingDelegate];
         }
 
         else
         {
-          v47 = [v46 centerStageDelegate];
+          manualCinematicFramingDelegate = [v46 centerStageDelegate];
         }
 
         v52[0] = v10;
@@ -5749,15 +5749,15 @@ LABEL_18:
         v57 = v51;
         v58 = v28;
         v59 = CenterStageFramingMode;
-        v60 = v30;
-        v61 = v33;
-        v62 = v34;
-        v63 = v29;
+        v60 = yCopy2;
+        v61 = runningCopy3;
+        v62 = xCopy3;
+        v63 = factorCopy2;
         v64 = v40;
         v65 = v39;
         v66 = v44;
         v67 = 0;
-        [v47 setCinematicFramingControls:v52];
+        [manualCinematicFramingDelegate setCinematicFramingControls:v52];
         goto LABEL_22;
       }
     }
@@ -5772,14 +5772,14 @@ LABEL_18:
     }
 
     [objc_msgSend(v32 objectForKeyedSubscript:{@"ManualFramingDefaultZoomFactor", "floatValue"}];
-    v29 = v45;
+    factorCopy2 = v45;
     goto LABEL_18;
   }
 }
 
-- (void)setBackgroundBlurNodePropertiesWhileRunning:(uint64_t)a1 studioLightingEnabled:reactionEffectsEnabled:backgroundReplacementEnabled:
+- (void)setBackgroundBlurNodePropertiesWhileRunning:(uint64_t)running studioLightingEnabled:reactionEffectsEnabled:backgroundReplacementEnabled:
 {
-  if (a1)
+  if (running)
   {
     OUTLINED_FUNCTION_60();
     v2 = v1;
@@ -5832,8 +5832,8 @@ LABEL_18:
           [v19 setEffectBypassed:v45 ^ 1u];
           [v19 setActiveBlurEffect:v44];
           memset(v56, 0, 64);
-          v50 = [OUTLINED_FUNCTION_25_13() captureStreams];
-          v20 = [v50 countByEnumeratingWithState:v56 objects:v55 count:16];
+          captureStreams = [OUTLINED_FUNCTION_25_13() captureStreams];
+          v20 = [captureStreams countByEnumeratingWithState:v56 objects:v55 count:16];
           if (v20)
           {
             v21 = v20;
@@ -5846,7 +5846,7 @@ LABEL_18:
                 OUTLINED_FUNCTION_10_18();
                 if (!v23)
                 {
-                  objc_enumerationMutation(v50);
+                  objc_enumerationMutation(captureStreams);
                 }
 
                 v24 = *(*(&v56[0] + 1) + 8 * v22);
@@ -5879,15 +5879,15 @@ LABEL_18:
                   }
 
                   PIDFromAuditToken = FigCaptureGetPIDFromAuditToken(v51);
-                  v27 = [OUTLINED_FUNCTION_25_13() applicationID];
+                  applicationID = [OUTLINED_FUNCTION_25_13() applicationID];
                   v28 = *(v10 + 44);
-                  v29 = [v24 portType];
-                  v30 = [MEMORY[0x1E695DF00] date];
+                  portType = [v24 portType];
+                  date = [MEMORY[0x1E695DF00] date];
                   [v24 averageFrameRate];
                   v32 = v31;
                   [v24 continuityCameraIsWired];
-                  v33 = [OUTLINED_FUNCTION_84_4() isDeskCamActive];
-                  FigCaptureLogCameraStreamingPowerEvent(PIDFromAuditToken, v27, v28, 1, v29, v30, &OBJC_IVAR___BWAutoSuggestTracker__ObjectAreaIn, v33, v32, &v52);
+                  isDeskCamActive = [OUTLINED_FUNCTION_84_4() isDeskCamActive];
+                  FigCaptureLogCameraStreamingPowerEvent(PIDFromAuditToken, applicationID, v28, 1, portType, date, &OBJC_IVAR___BWAutoSuggestTracker__ObjectAreaIn, isDeskCamActive, v32, &v52);
                   v21 = v49;
                 }
 
@@ -5895,7 +5895,7 @@ LABEL_18:
               }
 
               while (v21 != v22);
-              v21 = [v50 countByEnumeratingWithState:v56 objects:v55 count:16];
+              v21 = [captureStreams countByEnumeratingWithState:v56 objects:v55 count:16];
             }
 
             while (v21);
@@ -5916,9 +5916,9 @@ LABEL_18:
   }
 }
 
-- (void)setStreamsSuspendedBySourceDeviceType:(uint64_t)a1
+- (void)setStreamsSuspendedBySourceDeviceType:(uint64_t)type
 {
-  if (a1)
+  if (type)
   {
     OUTLINED_FUNCTION_84();
     OUTLINED_FUNCTION_80();
@@ -5948,28 +5948,28 @@ LABEL_18:
           }
 
           v5 = *(*(&v34 + 1) + 8 * i);
-          v6 = [v5 portType];
-          v7 = [v6 isEqualToString:v28];
+          portType = [v5 portType];
+          v7 = [portType isEqualToString:v28];
           v9 = &unk_1F2248A18;
           if ((v7 & 1) == 0)
           {
-            v7 = [v6 isEqualToString:v24];
+            v7 = [portType isEqualToString:v24];
             v9 = &unk_1F2248A30;
             if ((v7 & 1) == 0)
             {
-              v7 = [v6 isEqualToString:v27];
+              v7 = [portType isEqualToString:v27];
               v9 = &unk_1F2248A48;
               if ((v7 & 1) == 0)
               {
-                v7 = [v6 isEqualToString:v23];
+                v7 = [portType isEqualToString:v23];
                 v9 = &unk_1F2248A60;
                 if ((v7 & 1) == 0)
                 {
-                  v7 = [v6 isEqualToString:v22];
+                  v7 = [portType isEqualToString:v22];
                   v9 = &unk_1F2248A78;
                   if ((v7 & 1) == 0)
                   {
-                    v7 = [v6 isEqualToString:v21];
+                    v7 = [portType isEqualToString:v21];
                     v9 = &unk_1F2248A90;
                     if (!v7)
                     {
@@ -5997,12 +5997,12 @@ LABEL_18:
                   objc_enumerationMutation(v9);
                 }
 
-                v15 = [*(*(&v32[0] + 1) + 8 * j) intValue];
-                [MEMORY[0x1E696AD98] numberWithInt:v15];
+                intValue = [*(*(&v32[0] + 1) + 8 * j) intValue];
+                [MEMORY[0x1E696AD98] numberWithInt:intValue];
                 v16 = [OUTLINED_FUNCTION_17() objectForKeyedSubscript:?];
                 if (v16)
                 {
-                  [MEMORY[0x1E696AD98] numberWithInt:v15];
+                  [MEMORY[0x1E696AD98] numberWithInt:intValue];
                   v16 = [objc_msgSend(OUTLINED_FUNCTION_17() "objectForKeyedSubscript:"BOOLValue"")];
                   v12 &= v16;
                 }
@@ -6019,16 +6019,16 @@ LABEL_18:
             v12 = 1;
           }
 
-          v18 = [v5 captureStream];
-          if ([v18 suspendingSupported])
+          captureStream = [v5 captureStream];
+          if ([captureStream suspendingSupported])
           {
-            [v18 setSuspended:v12 & 1];
+            [captureStream setSuspended:v12 & 1];
           }
 
           v19 = [objc_msgSend(v1 objectForKeyedSubscript:{&unk_1F2244818), "BOOLValue"}];
           if ((([objc_msgSend(*(v26 + 456) "applicationID")] & 1) != 0 || objc_msgSend(objc_msgSend(*(v26 + 456), "applicationID"), "isEqualToString:", 0x1F2185250)) && objc_msgSend(objc_msgSend(v5, "portType"), "isEqualToString:", v27) && *(v26 + 544))
           {
-            [v18 setDeskCamActive:v19 ^ 1];
+            [captureStream setDeskCamActive:v19 ^ 1];
           }
 
           v20 = *(v26 + 544);
@@ -6108,7 +6108,7 @@ LABEL_18:
   return result;
 }
 
-- (uint64_t)setPreviewShift:(double)a3 previewScaleFactor:(double)a4 forPortType:(float)a5 previewShiftAtBaseZoom:(double)a6
+- (uint64_t)setPreviewShift:(double)shift previewScaleFactor:(double)factor forPortType:(float)type previewShiftAtBaseZoom:(double)zoom
 {
   if (result)
   {
@@ -6142,8 +6142,8 @@ LABEL_18:
         }
       }
 
-      *&v33 = a5;
-      return [v7 setPreviewShift:a3 previewScaleFactor:a4 previewShiftAtBaseZoom:{v33, a6, a7}];
+      *&v33 = type;
+      return [v7 setPreviewShift:shift previewScaleFactor:factor previewShiftAtBaseZoom:{v33, zoom, a7}];
     }
   }
 
@@ -6164,16 +6164,16 @@ LABEL_18:
   return result;
 }
 
-- (id)_addDepthFromInfraredSynchronizer:(void *)a3 previewOutputsBySourceDeviceType:(uint64_t)a4 pipelineConfiguration:(uint64_t)a5 graph:(uint64_t)a6 sourceDeviceType:
+- (id)_addDepthFromInfraredSynchronizer:(void *)synchronizer previewOutputsBySourceDeviceType:(uint64_t)type pipelineConfiguration:(uint64_t)configuration graph:(uint64_t)graph sourceDeviceType:
 {
   if (result)
   {
     v10 = result;
     v54[0] = 0;
-    if (a4)
+    if (type)
     {
-      v11 = *(a4 + 192);
-      v12 = *(a4 + 200);
+      v11 = *(type + 192);
+      v12 = *(type + 200);
     }
 
     else
@@ -6182,10 +6182,10 @@ LABEL_18:
       v11 = 0;
     }
 
-    v52 = [v11 previewDepthFilterRenderingEnabled];
-    [MEMORY[0x1E696AD98] numberWithInt:a6];
+    previewDepthFilterRenderingEnabled = [v11 previewDepthFilterRenderingEnabled];
+    [MEMORY[0x1E696AD98] numberWithInt:graph];
     v13 = [OUTLINED_FUNCTION_28() objectForKeyedSubscript:?];
-    [MEMORY[0x1E696AD98] numberWithInt:a6];
+    [MEMORY[0x1E696AD98] numberWithInt:graph];
     v14 = [OUTLINED_FUNCTION_4() objectForKeyedSubscript:?];
     if (v13 | v14)
     {
@@ -6196,7 +6196,7 @@ LABEL_18:
       v58 = 0u;
       if (OUTLINED_FUNCTION_136_1(v14, v15, v16, v17, v18, v19, v20, v21, v44, v46, v48, v50))
       {
-        v51 = a5;
+        configurationCopy = configuration;
         while (1)
         {
           OUTLINED_FUNCTION_21_20();
@@ -6206,15 +6206,15 @@ LABEL_18:
           }
 
           v23 = **(&v55 + 1);
-          v24 = [**(&v55 + 1) sinkConfiguration];
+          sinkConfiguration = [**(&v55 + 1) sinkConfiguration];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v24 sinkType] == 11)
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [sinkConfiguration sinkType] == 11)
           {
             break;
           }
 
           OUTLINED_FUNCTION_131_2();
-          if (v34 && !OUTLINED_FUNCTION_136_1(v25, v26, v27, v28, v29, v30, v31, v32, v45, v47, v49, v51))
+          if (v34 && !OUTLINED_FUNCTION_136_1(v25, v26, v27, v28, v29, v30, v31, v32, v45, v47, v49, configurationCopy))
           {
             v33 = 1;
             goto LABEL_22;
@@ -6256,20 +6256,20 @@ LABEL_22:
       v53.super_class = FigCaptureCameraSourcePipeline;
       if (objc_msgSendSuper2(&v53, sel_addNode_error_, v36, v54) & 1) != 0 && ([v36 imageInput], (objc_msgSend(OUTLINED_FUNCTION_67_5(), "connectOutput:toInput:pipelineStage:", v35)) && (objc_msgSend(v10[12], "depthOutput"), objc_msgSend(v36, "depthInput"), v37 = OUTLINED_FUNCTION_67_5(), (OUTLINED_FUNCTION_77_4(v37, v38, v39, v40)))
       {
-        [v36 setDiscardsDegradedDepthBuffers:v52 ^ 1u];
-        v41 = [v36 output];
-        v42 = [MEMORY[0x1E696AD98] numberWithInt:a6];
+        [v36 setDiscardsDegradedDepthBuffers:previewDepthFilterRenderingEnabled ^ 1u];
+        output = [v36 output];
+        v42 = [MEMORY[0x1E696AD98] numberWithInt:graph];
         if (v35 == v22)
         {
-          v43 = a3;
+          synchronizerCopy = synchronizer;
         }
 
         else
         {
-          v43 = a2;
+          synchronizerCopy = a2;
         }
 
-        [v43 setObject:v41 forKeyedSubscript:v42];
+        [synchronizerCopy setObject:output forKeyedSubscript:v42];
       }
 
       else
@@ -6289,9 +6289,9 @@ LABEL_22:
   return result;
 }
 
-- (uint64_t)_buildSemanticMasksOutputNetwork:(uint64_t)a1 pipelineConfiguration:(void *)a2 graph:
+- (uint64_t)_buildSemanticMasksOutputNetwork:(uint64_t)network pipelineConfiguration:(void *)configuration graph:
 {
-  if (!a1)
+  if (!network)
   {
     return 0;
   }
@@ -6306,13 +6306,13 @@ LABEL_22:
 
   else
   {
-    *(a1 + 432) = [a2 copy];
+    *(network + 432) = [configuration copy];
   }
 
   return v5;
 }
 
-- (void)_buildVideoCaptureOutputNetwork:(uint64_t)a3 previewOutputsBySourceDeviceType:(uint64_t)a4 stillImageOutputsByPortType:(uint64_t)a5 lightSourceMaskOutputsBySourceDeviceType:(uint64_t)a6 keypointDescriptorDataOutputsBySourceDeviceType:(uint64_t)a7 pipelineConfiguration:(uint64_t)a8 graph:(uint64_t)a9 videoCaptureDimensions:(uint64_t)a10 numberOfSecondaryFramesToSkip:(uint64_t)a11 rtscProcessorsBySourceDeviceType:(uint64_t)a12 inferenceScheduler:(uint64_t)a13
+- (void)_buildVideoCaptureOutputNetwork:(uint64_t)network previewOutputsBySourceDeviceType:(uint64_t)type stillImageOutputsByPortType:(uint64_t)portType lightSourceMaskOutputsBySourceDeviceType:(uint64_t)deviceType keypointDescriptorDataOutputsBySourceDeviceType:(uint64_t)sourceDeviceType pipelineConfiguration:(uint64_t)configuration graph:(uint64_t)graph videoCaptureDimensions:(uint64_t)self0 numberOfSecondaryFramesToSkip:(uint64_t)self1 rtscProcessorsBySourceDeviceType:(uint64_t)self2 inferenceScheduler:(uint64_t)self3
 {
   OUTLINED_FUNCTION_60();
   v551 = v30;
@@ -6345,11 +6345,11 @@ LABEL_22:
     v565 = 0;
   }
 
-  v40 = [MEMORY[0x1E695DF70] array];
-  v41 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if (v39)
   {
-    [v40 addObjectsFromArray:v39];
+    [array addObjectsFromArray:v39];
   }
 
   OUTLINED_FUNCTION_91_4();
@@ -6365,7 +6365,7 @@ LABEL_22:
       v43 = 0;
     }
 
-    v44 = v40;
+    v44 = array;
   }
 
   else
@@ -6380,7 +6380,7 @@ LABEL_22:
       v43 = 0;
     }
 
-    v44 = v41;
+    v44 = array2;
   }
 
   [v44 addObjectsFromArray:v43];
@@ -6398,12 +6398,12 @@ LABEL_22:
       v46 = 0;
     }
 
-    [v40 addObject:v46];
+    [array addObject:v46];
     v45 = v773;
   }
 
   v760 = v35;
-  v684 = v41;
+  v684 = array2;
   v691 = v38;
   v537 = v36;
   if (v45)
@@ -6475,7 +6475,7 @@ LABEL_31:
 LABEL_32:
   v68 = OUTLINED_FUNCTION_1_18(v64, v65, &v845, v844);
   v768 = v37;
-  v753 = v40;
+  v753 = array;
   if (v68)
   {
     v69 = v68;
@@ -6494,9 +6494,9 @@ LABEL_32:
         }
 
         v71 = *(*(&v845 + 1) + 8 * v70);
-        [v40 removeObject:v71];
-        v72 = [v71 underlyingDeviceType];
-        v73 = [MEMORY[0x1E696AD98] numberWithInt:v72];
+        [array removeObject:v71];
+        underlyingDeviceType = [v71 underlyingDeviceType];
+        v73 = [MEMORY[0x1E696AD98] numberWithInt:underlyingDeviceType];
         [OUTLINED_FUNCTION_108_1(v73 v74];
         if (v773)
         {
@@ -6508,7 +6508,7 @@ LABEL_32:
           v81 = 0;
         }
 
-        v82 = [FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v81 v72)];
+        v82 = [FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v81 underlyingDeviceType)];
         if (v82)
         {
           v843[0] = v708;
@@ -6532,7 +6532,7 @@ LABEL_32:
         {
           if (*(v773 + 320) == 1)
           {
-            [MEMORY[0x1E696AD98] numberWithInt:v72];
+            [MEMORY[0x1E696AD98] numberWithInt:underlyingDeviceType];
             v37 = v768;
             if ([OUTLINED_FUNCTION_24_1() objectForKey:?])
             {
@@ -6551,8 +6551,8 @@ LABEL_32:
           goto LABEL_69;
         }
 
-        v89 = [(BWNode *)v88 input];
-        v97 = OUTLINED_FUNCTION_66_4(v89, v90, v91, v92, v93, v94, v95, v96, v461, v471, v479, v487, v495, v502, v509, v517, v524, v531, v538, v545, v552, v559, v566, v573, v580, v587, v595, v603, v610, v617, v623, v630, v636, v643, v649, v656, v663, v670, v678, v685, v692, objb, v708, v716, v723, v731, v738, v746, v754, v761);
+        input = [(BWNode *)v88 input];
+        v97 = OUTLINED_FUNCTION_66_4(input, v90, v91, v92, v93, v94, v95, v96, v461, v471, v479, v487, v495, v502, v509, v517, v524, v531, v538, v545, v552, v559, v566, v573, v580, v587, v595, v603, v610, v617, v623, v630, v636, v643, v649, v656, v663, v670, v678, v685, v692, objb, v708, v716, v723, v731, v738, v746, v754, v761);
         if ((OUTLINED_FUNCTION_77_4(v97, v98, v99, v100) & 1) == 0)
         {
           goto LABEL_69;
@@ -6569,12 +6569,12 @@ LABEL_32:
           v101 = 0;
         }
 
-        [v771 setObject:v82 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v72)}];
+        [v771 setObject:v82 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", underlyingDeviceType)}];
         v102 = [(NSArray *)[(BWNode *)v88 outputs] objectAtIndexedSubscript:v101];
-        [MEMORY[0x1E696AD98] numberWithInt:v72];
+        [MEMORY[0x1E696AD98] numberWithInt:underlyingDeviceType];
         [OUTLINED_FUNCTION_67_5() setObject:v102 forKeyedSubscript:?];
         ++v70;
-        v40 = v753;
+        array = v753;
       }
 
       while (v69 != v70);
@@ -6630,7 +6630,7 @@ LABEL_62:
   objc = v106;
   if (![objc_msgSend(v691 "requiredFormat")])
   {
-    v108 = 0;
+    cinematicFramingEnabled = 0;
     if (![*(v37 + 456) smartFramingEnabled])
     {
       goto LABEL_91;
@@ -6639,25 +6639,25 @@ LABEL_62:
     goto LABEL_76;
   }
 
-  v108 = [v691 cinematicFramingEnabled];
+  cinematicFramingEnabled = [v691 cinematicFramingEnabled];
   if ([*(v37 + 456) smartFramingEnabled])
   {
 LABEL_76:
-    if (([*(v37 + 456) smartFramingRequiresSceneMonitoring] & 1) == 0 && (v108 & 1) == 0)
+    if (([*(v37 + 456) smartFramingRequiresSceneMonitoring] & 1) == 0 && (cinematicFramingEnabled & 1) == 0)
     {
-      v108 = 0;
+      cinematicFramingEnabled = 0;
       goto LABEL_91;
     }
 
     goto LABEL_78;
   }
 
-  if (!v108)
+  if (!cinematicFramingEnabled)
   {
     goto LABEL_91;
   }
 
-  v108 = 1;
+  cinematicFramingEnabled = 1;
 LABEL_78:
   if ([v106 count] != 1)
   {
@@ -6783,7 +6783,7 @@ LABEL_91:
     [v162 setName:@"Overscan prediction"];
     v835.receiver = v152;
     v835.super_class = FigCaptureCameraSourcePipeline;
-    if ((objc_msgSendSuper2(&v835, sel_addNode_error_, v162, &v850) & 1) == 0 || (v163 = [v162 input], v171 = OUTLINED_FUNCTION_66_4(v163, v164, v165, v166, v167, v168, v169, v170, v462, v472, v480, v488, v496, v503, v510, v518, v525, v532, v539, v546, v553, v560, v567, v574, v581, v589, v597, v604, v611, *(&v611 + 1), v624[0], v624[1], v637, *(&v637 + 1), v650, v657, v664, v671, v679, v686, v693, objd, v709, v717, v724, v732, v739, v747, v755, v762), v106 = objd, (OUTLINED_FUNCTION_100_3(v171, v172, v173, v174) & 1) == 0))
+    if ((objc_msgSendSuper2(&v835, sel_addNode_error_, v162, &v850) & 1) == 0 || (v163 = [v162 input], v171 = OUTLINED_FUNCTION_66_4(v163, v164, v165, v166, v167, v168, v169, v170, v462, v472, v480, v488, v496, v503, v510, v518, v525, v532, v539, v546, v553, v560, v567, v574, allKeys, v589, v597, v604, v611, *(&v611 + 1), v624[0], v624[1], v637, *(&v637 + 1), v650, v657, v664, v671, v679, v686, v693, objd, v709, v717, v724, v732, allKeys3, v747, allKeys2, v762), v106 = objd, (OUTLINED_FUNCTION_100_3(v171, v172, v173, v174) & 1) == 0))
     {
       OUTLINED_FUNCTION_0_64();
       goto LABEL_70;
@@ -6800,13 +6800,13 @@ LABEL_91:
     csp_cinematicVideoEnabled(v773);
     v176 = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_58_10() "requiredFormat")];
     v177 = csp_portraitPhotoModeEnabled(v773);
-    v178 = [OUTLINED_FUNCTION_123_2(456 v462];
-    v179 = FigCaptureClientApplicationIDIsCameraOrDerivative(v178);
+    v462 = [OUTLINED_FUNCTION_123_2(456 v462];
+    v179 = FigCaptureClientApplicationIDIsCameraOrDerivative(v462);
     v180 = &unk_1F2244770;
     if (([objc_msgSend(v106 "allKeys")] & 1) != 0 || (v180 = objc_msgSend(objc_msgSend(v106, "allKeys"), "firstObject")) != 0)
     {
       LODWORD(v724) = v133;
-      LODWORD(v709) = v108;
+      LODWORD(v709) = cinematicFramingEnabled;
       v181 = [v106 objectForKeyedSubscript:v180];
       v182 = -[BWDockKitNode initWithIsRunningForContinuityCapture:cinematicVideoEnabled:captureDevice:]([BWDockKitNode alloc], "initWithIsRunningForContinuityCapture:cinematicVideoEnabled:captureDevice:", [v762 isRunningForContinuityCapture], v773, *(v769 + 456));
       v834.receiver = v769;
@@ -6839,16 +6839,16 @@ LABEL_91:
       [OUTLINED_FUNCTION_36() setClientApplicationID:?];
       *(v769 + 104) = v182;
       v125 = v693;
-      v40 = v755;
+      array = allKeys2;
     }
   }
 
-  LODWORD(v532) = v133 | v739;
+  LODWORD(v532) = v133 | allKeys3;
   v184 = &OBJC_IVAR___BWAutoSuggestTracker__ObjectAreaIn;
   if (([objc_msgSend(v125 "requiredFormat")] & 1) == 0)
   {
     v185 = ([v125 cinematicFramingEnabled] & 1) != 0 ? 0 : objc_msgSend(v125, "manualCinematicFramingEnabled") ^ 1;
-    if (((v108 | v185) & 1) == 0)
+    if (((cinematicFramingEnabled | v185) & 1) == 0)
     {
       HIDWORD(v525) = [v125 deskCamEnabled];
       if (!HIDWORD(v525))
@@ -6878,7 +6878,7 @@ LABEL_91:
 
         [v106 setObject:objc_msgSend(objc_msgSend(v188 forKeyedSubscript:{"outputs"), "objectAtIndexedSubscript:", 0), &unk_1F22447A0}];
 LABEL_125:
-        v193 = [OUTLINED_FUNCTION_46_11() cameraInfoByPortType];
+        cameraInfoByPortType = [OUTLINED_FUNCTION_46_11() cameraInfoByPortType];
         v194 = BYTE4(v525) ^ 1;
         if (v188)
         {
@@ -6887,13 +6887,13 @@ LABEL_125:
 
         if (v194)
         {
-          v195 = v193;
+          v195 = cameraInfoByPortType;
           v511 = v188;
           v196 = objc_alloc(MEMORY[0x1E695DF90]);
           [OUTLINED_FUNCTION_49_8() count];
           *(v769 + 144) = [OUTLINED_FUNCTION_17() initWithCapacity:?];
-          v672 = v195;
-          v851[0] = [FigCaptureCameraSourcePipeline _insertSubjectSelectionAndCinematicFramingNodesOnOutputsBySourceDeviceType:v769 connectionConfigurations:v106 pipelineConfiguration:v40 cameraInfoByPortType:v773 graph:v195 stillImageCaptureEnabled:v762 stillImageOutputsByPortType:v686 & ((v532 | HIDWORD(v532)) ^ 1)];
+          cameraInfoByPortType2 = v195;
+          v851[0] = [FigCaptureCameraSourcePipeline _insertSubjectSelectionAndCinematicFramingNodesOnOutputsBySourceDeviceType:v769 connectionConfigurations:v106 pipelineConfiguration:array cameraInfoByPortType:v773 graph:v195 stillImageCaptureEnabled:v762 stillImageOutputsByPortType:v686 & ((v532 | HIDWORD(v532)) ^ 1)];
           if (v851[0])
           {
             OUTLINED_FUNCTION_3_60();
@@ -6914,18 +6914,18 @@ LABEL_432:
     }
   }
 
-  v672 = [OUTLINED_FUNCTION_46_11() cameraInfoByPortType];
+  cameraInfoByPortType2 = [OUTLINED_FUNCTION_46_11() cameraInfoByPortType];
   v511 = 0;
   HIDWORD(v525) = 0;
 LABEL_129:
-  if ((v108 & 1) != 0 || v773 && *(v773 + 353) == 1)
+  if ((cinematicFramingEnabled & 1) != 0 || v773 && *(v773 + 353) == 1)
   {
     v197 = objc_alloc(MEMORY[0x1E695DF90]);
     [OUTLINED_FUNCTION_49_8() count];
     *(v769 + 152) = [OUTLINED_FUNCTION_17() initWithCapacity:?];
     if (FigCapturePlatformSupportsUniversalLossyCompression())
     {
-      v198 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v755, [v125 sourceDeviceType]);
+      v198 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(allKeys2, [v125 sourceDeviceType]);
       LODWORD(v664) = csp_maxLossyCompressionLevelForConnectionConfigurations(v198, v773);
     }
 
@@ -6938,8 +6938,8 @@ LABEL_129:
     v832 = 0u;
     v829 = 0u;
     v830 = 0u;
-    v581 = [v106 allKeys];
-    v199 = [v581 countByEnumeratingWithState:&v829 objects:v828 count:16];
+    allKeys = [v106 allKeys];
+    v199 = [allKeys countByEnumeratingWithState:&v829 objects:v828 count:16];
     if (v199)
     {
       v200 = v199;
@@ -6956,7 +6956,7 @@ LABEL_129:
         {
           if (*v830 != v657)
           {
-            objc_enumerationMutation(v581);
+            objc_enumerationMutation(allKeys);
           }
 
           v202 = *(*(&v829 + 1) + 8 * v201);
@@ -6987,7 +6987,7 @@ LABEL_129:
           v710 = v207;
           if ((v210 & 1) != 0 || ((v826 = 0u, v827 = 0u, v824 = 0u, v825 = 0u, !v773) ? (v211 = 0) : (v211 = *(v773 + 240)), (v212 = OUTLINED_FUNCTION_1_18(IsExtensionDeviceType, v204, &v824, v823)) == 0))
           {
-            v220 = 0;
+            metadataIdentifiers = 0;
           }
 
           else
@@ -7005,17 +7005,17 @@ LABEL_129:
 
                 v216 = *(*(&v824 + 1) + 8 * i);
                 v217 = [objc_msgSend(v216 "sourceConfiguration")];
-                v218 = [v202 intValue];
-                if (v217 == v218)
+                intValue = [v202 intValue];
+                if (v217 == intValue)
                 {
-                  v220 = [v216 metadataIdentifiers];
+                  metadataIdentifiers = [v216 metadataIdentifiers];
                   v125 = v693;
                   goto LABEL_158;
                 }
               }
 
-              v213 = OUTLINED_FUNCTION_1_18(v218, v219, &v824, v823);
-              v220 = 0;
+              v213 = OUTLINED_FUNCTION_1_18(intValue, v219, &v824, v823);
+              metadataIdentifiers = 0;
               v125 = v693;
               if (v213)
               {
@@ -7032,10 +7032,10 @@ LABEL_158:
           v223 = [objc_msgSend(v125 "requiredFormat")];
           v224 = [objc_msgSend(v125 "requiredFormat")];
           v184 = &OBJC_IVAR___BWAutoSuggestTracker__ObjectAreaIn;
-          v473 = v220;
+          v473 = metadataIdentifiers;
           v481 = *(v769 + 456);
           LOBYTE(v462) = v686;
-          v225 = [(BWSmartCropNode *)v222 initWithOutputDimensions:v221 cameraInfoByPortType:v672 horizontalSensorBinningFactor:v223 verticalSensorBinningFactor:v224 maxLossyCompressionLevel:v664 cameraExtrinsicMatrix:v210 processingMode:*v740 stillCaptureEnabled:*&v725 objectMetadataIdentifiers:*&v710 captureDevice:?];
+          v225 = [(BWSmartCropNode *)v222 initWithOutputDimensions:v221 cameraInfoByPortType:cameraInfoByPortType2 horizontalSensorBinningFactor:v223 verticalSensorBinningFactor:v224 maxLossyCompressionLevel:v664 cameraExtrinsicMatrix:v210 processingMode:*v740 stillCaptureEnabled:*&v725 objectMetadataIdentifiers:*&v710 captureDevice:?];
           if (!v225)
           {
             v457 = -12786;
@@ -7076,8 +7076,8 @@ LABEL_392:
           }
 
           [objd objectForKeyedSubscript:v202];
-          v228 = [(BWNode *)v226 input];
-          v236 = OUTLINED_FUNCTION_66_4(v228, v229, v230, v231, v232, v233, v234, v235, v462, v473, v481, v488, v496, v503, v511, v518, v525, v532, v539, v546, v553, v560, v567, v574, v581, v589, v597, v604, v611, *(&v611 + 1), v624[0], v624[1], v637, *(&v637 + 1), v650, v657, v664, v672, v679, v686, v693, objd, v710, *(&v710 + 1), v725, *(&v725 + 1), v740[0], v740[1], v755, v762);
+          input2 = [(BWNode *)v226 input];
+          v236 = OUTLINED_FUNCTION_66_4(input2, v229, v230, v231, v232, v233, v234, v235, v462, v473, v481, v488, v496, v503, v511, v518, v525, v532, v539, v546, v553, v560, v567, v574, allKeys, v589, v597, v604, v611, *(&v611 + 1), v624[0], v624[1], v637, *(&v637 + 1), v650, v657, v664, cameraInfoByPortType2, v679, v686, v693, objd, v710, *(&v710 + 1), v725, *(&v725 + 1), v740[0], v740[1], allKeys2, v762);
           if ((OUTLINED_FUNCTION_100_3(v236, v237, v238, v239) & 1) == 0)
           {
             goto LABEL_398;
@@ -7095,7 +7095,7 @@ LABEL_392:
         }
 
         while (v201 != v200);
-        v240 = [v581 countByEnumeratingWithState:&v829 objects:v828 count:16];
+        v240 = [allKeys countByEnumeratingWithState:&v829 objects:v828 count:16];
         v200 = v240;
       }
 
@@ -7134,10 +7134,10 @@ LABEL_392:
 
           v246 = *(*(&v818 + 1) + 8 * v245);
           v247 = [OUTLINED_FUNCTION_86() objectForKeyedSubscript:?];
-          v248 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v755, [v246 intValue]);
+          v248 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(allKeys2, [v246 intValue]);
           v679 = v245;
           v709 = v247;
-          v739 = v246;
+          allKeys3 = v246;
           if (FigCapturePlatformSupportsUniversalLossyCompression())
           {
             LODWORD(v724) = csp_maxLossyCompressionLevelForConnectionConfigurations(v248, v773);
@@ -7149,25 +7149,25 @@ LABEL_392:
           }
 
           v249 = [(FigCaptureCameraSourcePipeline *)v242 _getDeviceOrientationCorrectionEnabledForVideoCaptureConnectionConfigurations:v248];
-          v250 = [v693 backgroundBlurEnabled];
+          backgroundBlurEnabled = [v693 backgroundBlurEnabled];
           if ([v693 studioLightingEnabled])
           {
-            v250 |= 2uLL;
+            backgroundBlurEnabled |= 2uLL;
           }
 
           if ([v693 reactionEffectsEnabled])
           {
-            v250 |= 0x10uLL;
+            backgroundBlurEnabled |= 0x10uLL;
           }
 
           if ([v693 backgroundReplacementEnabled])
           {
-            v251 = v250 | 0x40;
+            v251 = backgroundBlurEnabled | 0x40;
           }
 
           else
           {
-            v251 = v250;
+            v251 = backgroundBlurEnabled;
           }
 
           v252 = v838;
@@ -7221,10 +7221,10 @@ LABEL_392:
           }
 
           v260 = v256 | v255 | v254 | v252;
-          v261 = [v739 intValue];
+          intValue2 = [allKeys3 intValue];
           v242 = v769;
           v472 = *(v769 + 456);
-          HIDWORD(v462) = v261;
+          HIDWORD(v462) = intValue2;
           LOBYTE(v462) = v249;
           v262 = [BWBackgroundBlurNode initWithStillImageCaptureEnabled:v259 maxLossyCompressionLevel:"initWithStillImageCaptureEnabled:maxLossyCompressionLevel:fastSwitchEnabled:availableEffects:activeEffect:isHighQualitySupported:upstreamDeviceOrientationCorrectionEnabled:deviceType:captureDevice:" fastSwitchEnabled:v184 availableEffects:v724 activeEffect:v260 & 1 isHighQualitySupported:v257 upstreamDeviceOrientationCorrectionEnabled:v251 deviceType:v258 captureDevice:?];
           [*(v769 + 456) setPortraitEffectPropertiesDelegate:v262];
@@ -7250,8 +7250,8 @@ LABEL_392:
             goto LABEL_392;
           }
 
-          [*(v769 + 160) setObject:v262 forKeyedSubscript:v739];
-          [objd setObject:-[BWBackgroundBlurNode videoOutput](v262 forKeyedSubscript:{"videoOutput"), v739}];
+          [*(v769 + 160) setObject:v262 forKeyedSubscript:allKeys3];
+          [objd setObject:-[BWBackgroundBlurNode videoOutput](v262 forKeyedSubscript:{"videoOutput"), allKeys3}];
           v125 = v693;
           if (v184)
           {
@@ -7290,10 +7290,10 @@ LABEL_392:
 
             if (v269)
             {
-              v270 = [(BWBackgroundBlurNode *)v262 effectBypassed];
+              effectBypassed = [(BWBackgroundBlurNode *)v262 effectBypassed];
               v809 = v611;
               v271 = @"NO";
-              if (v270)
+              if (effectBypassed)
               {
                 v271 = @"YES";
               }
@@ -7335,7 +7335,7 @@ LABEL_392:
 
     [MEMORY[0x1E696AD98] numberWithInt:v272];
     [OUTLINED_FUNCTION_7() objectForKeyedSubscript:?];
-    v273 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v755, v272);
+    v273 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(allKeys2, v272);
     if (FigCapturePlatformSupportsUniversalLossyCompression())
     {
       v274 = csp_maxLossyCompressionLevelForConnectionConfigurations(v273, v773);
@@ -7347,10 +7347,10 @@ LABEL_392:
     }
 
     v813[0] = 0;
-    v275 = [v125 source];
-    FigCaptureSourceCopyProperty(v275, @"OverheadCameraMode", *MEMORY[0x1E695E480], v813);
+    source = [v125 source];
+    FigCaptureSourceCopyProperty(source, @"OverheadCameraMode", *MEMORY[0x1E695E480], v813);
     v276 = v813[0];
-    v277 = [v813[0] intValue];
+    intValue3 = [v813[0] intValue];
     v278 = v125;
     v279 = *off_1E798A0D0;
     [BWDeskCamNode alloc];
@@ -7359,7 +7359,7 @@ LABEL_392:
     [objc_msgSend(v278 "requiredFormat")];
     LOBYTE(v496) = 0;
     v490 = v242[57];
-    LODWORD(v480) = v277;
+    LODWORD(v480) = intValue3;
     LODWORD(v464) = v274;
     v280 = OUTLINED_FUNCTION_86();
     v282 = v281;
@@ -7407,8 +7407,8 @@ LABEL_237:
 
   if (!v773)
   {
-    v344 = [MEMORY[0x1E695DF90] dictionary];
-    v351 = v344;
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    v351 = dictionary;
     goto LABEL_273;
   }
 
@@ -7424,8 +7424,8 @@ LABEL_237:
   v805 = 0u;
   v806 = 0u;
   v807 = 0u;
-  v755 = [v771 allKeys];
-  v292 = [v755 countByEnumeratingWithState:&v804 objects:v803 count:16];
+  allKeys2 = [v771 allKeys];
+  v292 = [allKeys2 countByEnumeratingWithState:&v804 objects:v803 count:16];
   if (!v292)
   {
     goto LABEL_257;
@@ -7439,7 +7439,7 @@ LABEL_237:
     {
       if (*v805 != v294)
       {
-        objc_enumerationMutation(v755);
+        objc_enumerationMutation(allKeys2);
       }
 
       v296 = [v771 objectForKeyedSubscript:*(*(&v804 + 1) + 8 * j)];
@@ -7455,8 +7455,8 @@ LABEL_400:
 
       [*(v769 + 120) addObject:v297];
       -[BWSynchronizerNode setSourceClock:](v297, "setSourceClock:", [*(v769 + 72) clock]);
-      v298 = [v693 lockedFrameRate];
-      if (FigCaptureFrameRateIsValidRational(v298, v299))
+      lockedFrameRate = [v693 lockedFrameRate];
+      if (FigCaptureFrameRateIsValidRational(lockedFrameRate, v299))
       {
         CMTimeMake(&v801, [v693 lockedFrameRate] >> 32, objc_msgSend(v693, "lockedFrameRate"));
         *v813 = *&v801.value;
@@ -7465,9 +7465,9 @@ LABEL_400:
 
       else
       {
-        v301 = [v693 externalSyncFrameRate];
+        externalSyncFrameRate = [v693 externalSyncFrameRate];
         v184 = v184 & 0xFFFFFFFF00000000 | v302;
-        if (!FigCaptureFrameRateIsValidRational(v301, v184))
+        if (!FigCaptureFrameRateIsValidRational(externalSyncFrameRate, v184))
         {
           goto LABEL_254;
         }
@@ -7480,17 +7480,17 @@ LABEL_400:
       v813[2] = epoch;
       [(BWSynchronizerNode *)v297 setQuantizationFrameDuration:v813];
 LABEL_254:
-      v303 = [(BWNode *)v297 input];
-      if (([OUTLINED_FUNCTION_66_4(v303 v304] & 1) == 0)
+      input3 = [(BWNode *)v297 input];
+      if (([OUTLINED_FUNCTION_66_4(input3 v304] & 1) == 0)
       {
         goto LABEL_400;
       }
 
-      v311 = [(BWNode *)v297 output];
-      [OUTLINED_FUNCTION_108_1(v311 v312];
+      output = [(BWNode *)v297 output];
+      [OUTLINED_FUNCTION_108_1(output v312];
     }
 
-    v293 = [v755 countByEnumeratingWithState:&v804 objects:v803 count:16];
+    v293 = [allKeys2 countByEnumeratingWithState:&v804 objects:v803 count:16];
   }
 
   while (v293);
@@ -7504,22 +7504,22 @@ LABEL_257:
   v799 = 0u;
   v796 = 0u;
   v797 = 0u;
-  v739 = [v771 allKeys];
-  v319 = [v739 countByEnumeratingWithState:&v796 objects:v795 count:16];
+  allKeys3 = [v771 allKeys];
+  v319 = [allKeys3 countByEnumeratingWithState:&v796 objects:v795 count:16];
   if (!v319)
   {
     goto LABEL_271;
   }
 
   v320 = v319;
-  v755 = *v797;
+  allKeys2 = *v797;
   do
   {
     for (k = 0; k != v320; ++k)
     {
-      if (*v797 != v755)
+      if (*v797 != allKeys2)
       {
-        objc_enumerationMutation(v739);
+        objc_enumerationMutation(allKeys3);
       }
 
       v322 = [v771 objectForKeyedSubscript:*(*(&v796 + 1) + 8 * k)];
@@ -7558,29 +7558,29 @@ LABEL_399:
         goto LABEL_400;
       }
 
-      v328 = [(BWNode *)v326 input];
-      if (([OUTLINED_FUNCTION_66_4(v328 v329] & 1) == 0)
+      input4 = [(BWNode *)v326 input];
+      if (([OUTLINED_FUNCTION_66_4(input4 v329] & 1) == 0)
       {
         goto LABEL_400;
       }
 
-      v336 = [(BWNode *)v326 output];
-      [OUTLINED_FUNCTION_108_1(v336 v337];
+      output2 = [(BWNode *)v326 output];
+      [OUTLINED_FUNCTION_108_1(output2 v337];
     }
 
-    v320 = [v739 countByEnumeratingWithState:&v796 objects:v795 count:16];
+    v320 = [allKeys3 countByEnumeratingWithState:&v796 objects:v795 count:16];
   }
 
   while (v320);
 LABEL_271:
-  v344 = [MEMORY[0x1E695DF90] dictionary];
-  v351 = v344;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v351 = dictionary;
   if (*(v773 + 32) == 3)
   {
     v793 = [v771 objectForKeyedSubscript:&unk_1F22447A0];
     [MEMORY[0x1E695DEC8] arrayWithObjects:&v793 count:1];
     [OUTLINED_FUNCTION_15() setObject:? forKeyedSubscript:?];
-    v344 = [v771 setObject:objc_msgSend(v771 forKeyedSubscript:{"objectForKeyedSubscript:", &unk_1F2244770), &unk_1F22447D0}];
+    dictionary = [v771 setObject:objc_msgSend(v771 forKeyedSubscript:{"objectForKeyedSubscript:", &unk_1F2244770), &unk_1F22447D0}];
   }
 
 LABEL_273:
@@ -7589,8 +7589,8 @@ LABEL_273:
   if (HIDWORD(v518))
   {
     [FigCaptureCameraSourcePipeline _insertSmartStyleMetadataSynchronizerNodeOnOutputsBySourceDeviceType:pipelineConfiguration:graph:];
-    v851[0] = v344;
-    if (v344)
+    v851[0] = dictionary;
+    if (dictionary)
     {
       OUTLINED_FUNCTION_3_60();
       goto LABEL_70;
@@ -7601,7 +7601,7 @@ LABEL_273:
   v792 = 0u;
   v789 = 0u;
   v790 = 0u;
-  v690 = OUTLINED_FUNCTION_139(v344, v345, v346, v352, v347, v348, v349, v350, v464, v472, v480, v488, v496, v503, v511, v518, v525, v532, v539, v546, v553, v560, v567, v574, v581, v589, v597, v604, v611, *(&v611 + 1), v624[0], v624[1], v637, *(&v637 + 1), v650, v657, v664, v672, v679, v686, v693, objd, v709, v717, v724, v732, v739, v747, v755, v762, v769, v771);
+  v690 = OUTLINED_FUNCTION_139(dictionary, v345, v346, v352, v347, v348, v349, v350, v464, v472, v480, v488, v496, v503, v511, v518, v525, v532, v539, v546, v553, v560, v567, v574, allKeys, v589, v597, v604, v611, *(&v611 + 1), v624[0], v624[1], v637, *(&v637 + 1), v650, v657, v664, cameraInfoByPortType2, v679, v686, v693, objd, v709, v717, v724, v732, allKeys3, v747, allKeys2, v762, v769, v771);
   if (!v690)
   {
     goto LABEL_382;
@@ -7622,7 +7622,7 @@ LABEL_273:
 
       v744 = v354;
       v355 = *(*(&v789 + 1) + 8 * v354);
-      v356 = [v355 intValue];
+      intValue4 = [v355 intValue];
       v357 = [v772 objectForKeyedSubscript:v355];
       if (v773)
       {
@@ -7634,7 +7634,7 @@ LABEL_273:
         v358 = 0;
       }
 
-      v359 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v358, v356);
+      v359 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v358, intValue4);
       v360 = [v359 count];
       if (v773)
       {
@@ -7647,14 +7647,14 @@ LABEL_273:
       }
 
       FigCaptureUnderlyingDeviceTypesFromConnectionConfigurations(v361);
-      v362 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       [v557 objectForKeyedSubscript:v355];
       [OUTLINED_FUNCTION_36() setObject:? forKeyedSubscript:?];
       [v550 objectForKeyedSubscript:v355];
       [OUTLINED_FUNCTION_36() setObject:? forKeyedSubscript:?];
       OUTLINED_FUNCTION_91_4();
       v759 = v355;
-      if (v42 && ([MEMORY[0x1E696AD98] numberWithInt:v356], objc_msgSend(OUTLINED_FUNCTION_4(), "containsObject:")) && (csp_cinematicVideoEnabled(v773) & 1) == 0)
+      if (v42 && ([MEMORY[0x1E696AD98] numberWithInt:intValue4], objc_msgSend(OUTLINED_FUNCTION_4(), "containsObject:")) && (csp_cinematicVideoEnabled(v773) & 1) == 0)
       {
         v364 = v773;
         if (v773)
@@ -7687,7 +7687,7 @@ LABEL_288:
 
       v366 = v364;
       FigCaptureUnderlyingDeviceTypesFromConnectionConfigurations(v365);
-      [MEMORY[0x1E696AD98] numberWithInt:v356];
+      [MEMORY[0x1E696AD98] numberWithInt:intValue4];
       v367 = [OUTLINED_FUNCTION_4() containsObject:?];
       if (v366)
       {
@@ -7701,7 +7701,7 @@ LABEL_288:
 
       v369 = (v360 - v367);
       FigCaptureUnderlyingDeviceTypesFromConnectionConfigurations(v368);
-      [MEMORY[0x1E696AD98] numberWithInt:v356];
+      [MEMORY[0x1E696AD98] numberWithInt:intValue4];
       v370 = v369;
       v371 = v759;
       if ([OUTLINED_FUNCTION_4() containsObject:?])
@@ -7730,7 +7730,7 @@ LABEL_288:
           v788[0] = v357;
           v372 = [MEMORY[0x1E695DEC8] arrayWithObjects:v788 count:1];
           OUTLINED_FUNCTION_135_2(v372, v373, v374, v375, v376, v377, v378, v379, v468, v477, v485, v493, v500, v507, v515, v522, v529, v536, v543, v550, v557, v564, v571, v578, v585, v593, v601, v608, v615, v621, v628, v634, v641, v647, v654, v661, v668, v676, v683, v690, v697, objh, v714, v721, v729);
-          LODWORD(v370) = [v362 count] != 0;
+          LODWORD(v370) = [dictionary2 count] != 0;
         }
       }
 
@@ -7743,7 +7743,7 @@ LABEL_288:
 
         else
         {
-          if ([v362 count])
+          if ([dictionary2 count])
           {
             if ((v363 & 1) == 0)
             {
@@ -7793,8 +7793,8 @@ LABEL_288:
             goto LABEL_408;
           }
 
-          v391 = [(BWNode *)v380 input];
-          if (([OUTLINED_FUNCTION_66_4(v391 v392] & 1) == 0)
+          input5 = [(BWNode *)v380 input];
+          if (([OUTLINED_FUNCTION_66_4(input5 v392] & 1) == 0)
           {
             goto LABEL_408;
           }
@@ -7858,13 +7858,13 @@ LABEL_288:
       }
 
 LABEL_338:
-      v403 = [v362 count];
+      v403 = [dictionary2 count];
       if (v403)
       {
         LODWORD(v714) = v370;
-        if (v356 <= 9 && ((1 << v356) & 0x310) != 0)
+        if (intValue4 <= 9 && ((1 << intValue4) & 0x310) != 0)
         {
-          v411 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary3 = [MEMORY[0x1E695DF90] dictionary];
           v782 = 0u;
           v783 = 0u;
           v784 = 0u;
@@ -7885,25 +7885,25 @@ LABEL_338:
                 }
 
                 v417 = *(*(&v782 + 1) + 8 * m);
-                BWUnderlyingDeviceTypesForCompositeDeviceType(v356);
-                [MEMORY[0x1E696AD98] numberWithInt:{BWUtilitiesUnderlyingDeviceTypeFromPortType(objc_msgSend(v417, "portType"), v356)}];
+                BWUnderlyingDeviceTypesForCompositeDeviceType(intValue4);
+                [MEMORY[0x1E696AD98] numberWithInt:{BWUtilitiesUnderlyingDeviceTypeFromPortType(objc_msgSend(v417, "portType"), intValue4)}];
                 if ([OUTLINED_FUNCTION_7() containsObject:?])
                 {
-                  v418 = [MEMORY[0x1E695DF70] array];
+                  array3 = [MEMORY[0x1E695DF70] array];
                   if ([objc_msgSend(v417 "configuration")])
                   {
-                    [v418 addObject:v601];
+                    [array3 addObject:v601];
                   }
 
                   if ([objc_msgSend(v417 "configuration")])
                   {
-                    [v418 addObject:v593];
+                    [array3 addObject:v593];
                   }
 
-                  if ([v418 count])
+                  if ([array3 count])
                   {
                     [v417 portType];
-                    [OUTLINED_FUNCTION_1_15() setObject:v418 forKeyedSubscript:?];
+                    [OUTLINED_FUNCTION_1_15() setObject:array3 forKeyedSubscript:?];
                   }
                 }
               }
@@ -7917,7 +7917,7 @@ LABEL_338:
           v353 = v770;
           v351 = v729;
           v371 = v759;
-          if (![objc_msgSend(v411 "allKeys")])
+          if (![objc_msgSend(dictionary3 "allKeys")])
           {
             OUTLINED_FUNCTION_0_64();
             goto LABEL_397;
@@ -7925,10 +7925,10 @@ LABEL_338:
         }
 
         v419 = [BWMetadataSynchronizerNode alloc];
-        [v362 allKeys];
+        [dictionary2 allKeys];
         v420 = [OUTLINED_FUNCTION_4() initWithMetadataInputs:? propagateSampleBufferAttachmentKeys:? propagateSampleBufferMetadataDictKeys:? syncMetadataByPortType:? syncOnlyIfMetadataEnabledForKeys:?];
         v421 = MEMORY[0x1E696AEC0];
-        v469 = [v353 name];
+        name = [v353 name];
         [v421 stringWithFormat:@"%@ Metadata Synchronizer"];
         [OUTLINED_FUNCTION_17() setName:?];
         v781.receiver = v353;
@@ -7951,7 +7951,7 @@ LABEL_338:
         v780 = 0u;
         v777 = 0u;
         v778 = 0u;
-        if (OUTLINED_FUNCTION_137_1(v426, v427, v428, v429, v430, v431, v432, v433, v469, v477, v485, v493, v500, v507, v515, v522, v529, v536, v543, v550, v557, v564, v571, v578, v585, v593, v601, v608, v615, v621, v628, v634, v641, v647, v654, v661, v668, v676, v683, v690, v697, objh, v714, v721, v729, v736, v744, v751, v759, v766, v770, v772, v773, v774.receiver, v774.super_class, v775, v776))
+        if (OUTLINED_FUNCTION_137_1(v426, v427, v428, v429, v430, v431, v432, v433, name, v477, v485, v493, v500, v507, v515, v522, v529, v536, v543, v550, v557, v564, v571, v578, v585, v593, v601, v608, v615, v621, v628, v634, v641, v647, v654, v661, v668, v676, v683, v690, v697, objh, v714, v721, v729, v736, v744, v751, v759, v766, v770, v772, v773, v774.receiver, v774.super_class, output3, v776))
         {
           LODWORD(v434) = 1;
 LABEL_360:
@@ -7961,10 +7961,10 @@ LABEL_360:
             OUTLINED_FUNCTION_21_20();
             if (!v42)
             {
-              objc_enumerationMutation(v362);
+              objc_enumerationMutation(dictionary2);
             }
 
-            [v362 objectForKeyedSubscript:**(&v777 + 1)];
+            [dictionary2 objectForKeyedSubscript:**(&v777 + 1)];
             [objc_msgSend(v420 "inputs")];
             v435 = OUTLINED_FUNCTION_126_2();
             if (!OUTLINED_FUNCTION_93_1(v435, v436, v437, v438))
@@ -7976,7 +7976,7 @@ LABEL_360:
             OUTLINED_FUNCTION_51_11();
             if (v42)
             {
-              if (OUTLINED_FUNCTION_137_1(v439, v440, v441, v442, v443, v444, v445, v446, v468, v477, v485, v493, v500, v507, v515, v522, v529, v536, v543, v550, v557, v564, v571, v578, v585, v593, v601, v608, v615, v621, v628, v634, v641, v647, v654, v661, v668, v676, v683, v690, v697, objh, v714, v721, v729, v736, v744, v751, v759, v766, v770, v772, v773, v774.receiver, v774.super_class, v775, v776))
+              if (OUTLINED_FUNCTION_137_1(v439, v440, v441, v442, v443, v444, v445, v446, v468, v477, v485, v493, v500, v507, v515, v522, v529, v536, v543, v550, v557, v564, v571, v578, v585, v593, v601, v608, v615, v621, v628, v634, v641, v647, v654, v661, v668, v676, v683, v690, v697, objh, v714, v721, v729, v736, v744, v751, v759, v766, v770, v772, v773, v774.receiver, v774.super_class, output3, v776))
               {
                 goto LABEL_360;
               }
@@ -7993,8 +7993,8 @@ LABEL_408:
 LABEL_367:
         if (v714 == 1)
         {
-          v775 = [v420 output];
-          v447 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v775 count:1];
+          output3 = [v420 output];
+          outputs = [MEMORY[0x1E695DEC8] arrayWithObjects:&output3 count:1];
           v448 = v759;
         }
 
@@ -8018,10 +8018,10 @@ LABEL_367:
             goto LABEL_408;
           }
 
-          v447 = [(BWNode *)v449 outputs];
+          outputs = [(BWNode *)v449 outputs];
         }
 
-        [v351 setObject:v447 forKeyedSubscript:v448];
+        [v351 setObject:outputs forKeyedSubscript:v448];
         if ([v557 objectForKeyedSubscript:v448])
         {
           v454 = *(v353 + 416);
@@ -8084,14 +8084,14 @@ LABEL_74:
   OUTLINED_FUNCTION_128_0();
 }
 
-- (uint64_t)_buildPreviewOutputNetwork:(uint64_t)a3 videoCaptureOutputsBySourceDeviceType:(uint64_t)a4 pipelineConfiguration:graph:numberOfSecondaryFramesToSkip:
+- (uint64_t)_buildPreviewOutputNetwork:(uint64_t)network videoCaptureOutputsBySourceDeviceType:(uint64_t)type pipelineConfiguration:graph:numberOfSecondaryFramesToSkip:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  if (!a4)
+  if (!type)
   {
     OUTLINED_FUNCTION_113_2();
     [FigCaptureCameraSourcePipeline _insertCrossOverAndOverCaptureNodesOnOutputsBySourceDeviceType:connectionConfigurations:pipelineConfiguration:graph:outputNetworkType:numberOfSecondaryFramesToSkip:];
@@ -8113,7 +8113,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  if (*(a4 + 320) == 1 && *(a4 + 32) != 3)
+  if (*(type + 320) == 1 && *(type + 32) != 3)
   {
     OUTLINED_FUNCTION_113_2();
     [FigCaptureCameraSourcePipeline _insertSmartStyleLearningNodeOnOutputsBySourceDeviceType:ifAllowedByAdditionalPreviewConnectionConfigurations:semanticMasksOutputsBySourceDeviceType:pipelineConfiguration:graph:];
@@ -8146,7 +8146,7 @@ LABEL_14:
     OUTLINED_FUNCTION_54();
     if ((csp_cinematicVideoEnabled(v5) & 1) == 0)
     {
-      v6 = [MEMORY[0x1E695DF70] array];
+      array = [MEMORY[0x1E695DF70] array];
       if (v4)
       {
         v7 = *(v4 + 240);
@@ -8176,7 +8176,7 @@ LABEL_14:
             v12 = *(8 * i);
             if ((FigCaptureMetadataObjectConfigurationRequiresObjectDetection(v12) & 1) != 0 || FigCaptureMetadataObjectConfigurationRequiresEyeReliefStatus(v12))
             {
-              [v6 addObject:v12];
+              [array addObject:v12];
             }
           }
 
@@ -8197,7 +8197,7 @@ LABEL_14:
         v13 = 0;
       }
 
-      [v6 addObjectsFromArray:v13];
+      [array addObjectsFromArray:v13];
       OUTLINED_FUNCTION_3_19();
       [FigCaptureCameraSourcePipeline _insertCrossOverAndOverCaptureNodesOnOutputsBySourceDeviceType:connectionConfigurations:pipelineConfiguration:graph:outputNetworkType:numberOfSecondaryFramesToSkip:];
       if (v14)
@@ -8219,20 +8219,20 @@ LABEL_4:
   OUTLINED_FUNCTION_80_3();
 }
 
-- (id)_buildPointCloudOutputNetworkWithPipelineConfiguration:(id *)result graph:(uint64_t)a2
+- (id)_buildPointCloudOutputNetworkWithPipelineConfiguration:(id *)result graph:(uint64_t)graph
 {
   if (result)
   {
     v3 = result;
     v13 = 0;
-    if (a2)
+    if (graph)
     {
-      if (![*(a2 + 256) count])
+      if (![*(graph + 256) count])
       {
         goto LABEL_10;
       }
 
-      v4 = *(a2 + 256);
+      v4 = *(graph + 256);
     }
 
     else
@@ -8246,7 +8246,7 @@ LABEL_4:
     }
 
     v5 = [v4 count];
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     if (v5 < 2)
     {
       [v3[9] pointCloudOutput];
@@ -8279,7 +8279,7 @@ LABEL_10:
       [OUTLINED_FUNCTION_8() addObjectsFromArray:?];
     }
 
-    v3[47] = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:v6];
+    v3[47] = [objc_alloc(MEMORY[0x1E695DEC8]) initWithArray:array];
     goto LABEL_10;
   }
 
@@ -8348,16 +8348,16 @@ LABEL_7:
   return result;
 }
 
-- (uint64_t)_addCrossOverNodeToGraph:(int)a3 outputNetworkType:(void *)a4 inputs:(uint64_t)a5 mediaType:(uint64_t)a6 name:(_DWORD *)a7 outErr:
+- (uint64_t)_addCrossOverNodeToGraph:(int)graph outputNetworkType:(void *)type inputs:(uint64_t)inputs mediaType:(uint64_t)mediaType name:(_DWORD *)name outErr:
 {
   if (result)
   {
-    v11 = -[BWCrossoverNode initWithMediaType:numberOfInputs:]([BWCrossoverNode alloc], "initWithMediaType:numberOfInputs:", a5, [a4 count]);
-    [(BWNode *)v11 setName:a6];
+    v11 = -[BWCrossoverNode initWithMediaType:numberOfInputs:]([BWCrossoverNode alloc], "initWithMediaType:numberOfInputs:", inputs, [type count]);
+    [(BWNode *)v11 setName:mediaType];
     v12 = OUTLINED_FUNCTION_111_2();
     if (objc_msgSendSuper2(v12, v13, v11))
     {
-      if (a3 == 2)
+      if (graph == 2)
       {
         [BWPipelineStage pipelineStageWithName:@"com.apple.coremedia.capture.detectedObjects" priority:14];
       }
@@ -8377,7 +8377,7 @@ LABEL_7:
             OUTLINED_FUNCTION_32_10();
             if (!v22)
             {
-              objc_enumerationMutation(a4);
+              objc_enumerationMutation(type);
             }
 
             v23 = *(v28 + 8 * i);
@@ -8410,14 +8410,14 @@ LABEL_15:
       FigDebugAssert3();
     }
 
-    *a7 = 0;
+    *name = 0;
     return [(BWNode *)v11 output];
   }
 
   return result;
 }
 
-- (uint64_t)_stereoVideoAddSlaveFrameSynchronizerNode:(uint64_t)a3 input1:(uint64_t)a4 input2:(uint64_t)a5 mediaType:(uint64_t)a6 name:(_DWORD *)a7 outErr:
+- (uint64_t)_stereoVideoAddSlaveFrameSynchronizerNode:(uint64_t)node input1:(uint64_t)input1 input2:(uint64_t)input2 mediaType:(uint64_t)type name:(_DWORD *)name outErr:
 {
   if (result)
   {
@@ -8428,13 +8428,13 @@ LABEL_15:
     LOBYTE(v19) = 1;
     v12 = [BWSlaveFrameSynchronizerNode initWithDepthEnabled:"initWithDepthEnabled:numberOfInputs:syncSlaveForMasterPortTypes:separateDepthComponentsEnabled:preLTMThumbnailEnabledInputs:postColorProcessingThumbnailEnabledInputs:weightSegmentMapEnabledInputs:differentInputFormatsSupported:bufferSize:numberOfSlaveFramesToSkip:startEmittingMasterFramesBeforeSlaveStreamStarts:" numberOfInputs:0 syncSlaveForMasterPortTypes:2 separateDepthComponentsEnabled:0 preLTMThumbnailEnabledInputs:0 postColorProcessingThumbnailEnabledInputs:0 weightSegmentMapEnabledInputs:0 differentInputFormatsSupported:0 bufferSize:v19 numberOfSlaveFramesToSkip:? startEmittingMasterFramesBeforeSlaveStreamStarts:?];
     v13 = v12;
-    if (a3 && a4)
+    if (node && input1)
     {
-      [(BWNode *)v12 setName:a6];
+      [(BWNode *)v12 setName:type];
       if ([v11 addNode:v13 error:&v20])
       {
         [(NSArray *)[(BWNode *)v13 inputs] objectAtIndexedSubscript:0];
-        if ([OUTLINED_FUNCTION_6_44() connectOutput:a3 toInput:? pipelineStage:?])
+        if ([OUTLINED_FUNCTION_6_44() connectOutput:node toInput:? pipelineStage:?])
         {
           [(NSArray *)[(BWNode *)v13 inputs] objectAtIndexedSubscript:1];
           v14 = OUTLINED_FUNCTION_6_44();
@@ -8459,7 +8459,7 @@ LABEL_7:
     {
       [v20 code];
       result = OUTLINED_FUNCTION_110_2();
-      *a7 = v18;
+      *name = v18;
     }
 
     else
@@ -8471,9 +8471,9 @@ LABEL_7:
   return result;
 }
 
-- (void)_addFunnelNodeToGraph:(uint64_t)a3 inputs:(uint64_t)a4 mediaType:(uint64_t)a5 name:(uint64_t)a6 outErr:(uint64_t)a7
+- (void)_addFunnelNodeToGraph:(uint64_t)graph inputs:(uint64_t)inputs mediaType:(uint64_t)type name:(uint64_t)name outErr:(uint64_t)err
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_81_3();
     v30 = v29;
@@ -8539,20 +8539,20 @@ LABEL_5:
   }
 }
 
-- (uint64_t)_addOverCaptureSourcePipelineToGraph:(void *)a3 upstreamVideoCaptureOutputsBySourceDeviceType:(unsigned int)a4 depthEnabled:(uint64_t)a5 depthFilterRenderingEnabled:(unsigned int)a6 preLTMThumbnailEnabled:(unsigned int)a7 postColorProcessingThumbnailEnabled:(char)a8 weightSegmentMapEnabled:(char)a9 forPreview:(unsigned int)a10 maxLossyCompressionLevel:(int)a11 numberOfSecondaryFramesToSkip:(_DWORD *)a12 outErr:
+- (uint64_t)_addOverCaptureSourcePipelineToGraph:(void *)graph upstreamVideoCaptureOutputsBySourceDeviceType:(unsigned int)type depthEnabled:(uint64_t)enabled depthFilterRenderingEnabled:(unsigned int)renderingEnabled preLTMThumbnailEnabled:(unsigned int)thumbnailEnabled postColorProcessingThumbnailEnabled:(char)processingThumbnailEnabled weightSegmentMapEnabled:(char)mapEnabled forPreview:(unsigned int)self0 maxLossyCompressionLevel:(int)self1 numberOfSecondaryFramesToSkip:(_DWORD *)self2 outErr:
 {
   v72 = result;
   if (result)
   {
     v80[0] = 0;
     v16 = @"Video Capture Synchronizer";
-    if (a9)
+    if (mapEnabled)
     {
       v16 = @"Preview Synchronizer";
     }
 
     v69 = v16;
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     memset(v79, 0, sizeof(v79));
     v18 = [&unk_1F2248AA8 countByEnumeratingWithState:v79 objects:v78 count:16];
     if (v18)
@@ -8569,7 +8569,7 @@ LABEL_5:
             objc_enumerationMutation(&unk_1F2248AA8);
           }
 
-          v21 = [a3 objectForKeyedSubscript:*(*(&v79[0] + 1) + 8 * i)];
+          v21 = [graph objectForKeyedSubscript:*(*(&v79[0] + 1) + 8 * i)];
           if (v21)
           {
             v21 = [OUTLINED_FUNCTION_7() addObject:?];
@@ -8582,33 +8582,33 @@ LABEL_5:
       while (v19);
     }
 
-    v23 = a12;
-    if ([v17 count] <= 1)
+    skipCopy2 = skip;
+    if ([array count] <= 1)
     {
       v65 = v66;
       LODWORD(v64) = 0;
       FigDebugAssert3();
-      v63 = FigSignalErrorAtGM();
+      code = FigSignalErrorAtGM();
       v47 = 0;
-      if (v63)
+      if (code)
       {
 LABEL_43:
-        *v23 = v63;
+        *skipCopy2 = code;
         return [v47 output];
       }
 
 LABEL_41:
       if (v80[0])
       {
-        v63 = [v80[0] code];
+        code = [v80[0] code];
       }
 
       goto LABEL_43;
     }
 
-    v67 = a6;
-    v68 = a7;
-    if (!a4 || (a9 & 1) != 0 || ((v24 = *(v72 + 72), [objc_msgSend(v24 "configuration")], v26 = v25 + 1.0, objc_msgSend(objc_msgSend(v24, "configuration"), "sensorOverscan"), v28 = v26 * (v27 + 1.0), objc_msgSend(objc_msgSend(v24, "configuration"), "overscanForShiftMitigation"), v30 = v29 + 1.0, objc_msgSend(objc_msgSend(v24, "configuration"), "sensorOverscan"), v32 = v30 * (v31 + 1.0), v33 = objc_msgSend(objc_msgSend(v24, "configuration"), "videoCaptureDimensions"), v34 = HIDWORD(v33), v35 = v28 * v33, v12 = FigCaptureRoundFloatToMultipleOf(2, v35), v36 = v32 * v34, v37 = FigCaptureRoundFloatToMultipleOf(2, v36), v38 = objc_msgSend(objc_msgSend(v24, "videoCaptureOutput"), "formatRequirements"), v39 = objc_msgSend(v38, "width"), v40 = objc_msgSend(v38, "height"), v12 == v39) ? (v41 = v37 == v40) : (v41 = 0), v41 || !objc_msgSend(v17, "count")))
+    renderingEnabledCopy = renderingEnabled;
+    thumbnailEnabledCopy = thumbnailEnabled;
+    if (!type || (mapEnabled & 1) != 0 || ((v24 = *(v72 + 72), [objc_msgSend(v24 "configuration")], v26 = v25 + 1.0, objc_msgSend(objc_msgSend(v24, "configuration"), "sensorOverscan"), v28 = v26 * (v27 + 1.0), objc_msgSend(objc_msgSend(v24, "configuration"), "overscanForShiftMitigation"), v30 = v29 + 1.0, objc_msgSend(objc_msgSend(v24, "configuration"), "sensorOverscan"), v32 = v30 * (v31 + 1.0), v33 = objc_msgSend(objc_msgSend(v24, "configuration"), "videoCaptureDimensions"), v34 = HIDWORD(v33), v35 = v28 * v33, v12 = FigCaptureRoundFloatToMultipleOf(2, v35), v36 = v32 * v34, v37 = FigCaptureRoundFloatToMultipleOf(2, v36), v38 = objc_msgSend(objc_msgSend(v24, "videoCaptureOutput"), "formatRequirements"), v39 = objc_msgSend(v38, "width"), v40 = objc_msgSend(v38, "height"), v12 == v39) ? (v41 = v37 == v40) : (v41 = 0), v41 || !objc_msgSend(array, "count")))
     {
 LABEL_25:
       if (*(v72 + 560) == 1)
@@ -8623,9 +8623,9 @@ LABEL_25:
       }
 
       v46 = [BWSlaveFrameSynchronizerNode alloc];
-      HIDWORD(v64) = a11;
-      LOBYTE(v64) = a8;
-      v47 = [v12 initWithDepthEnabled:a4 numberOfInputs:objc_msgSend(OUTLINED_FUNCTION_111() syncSlaveForMasterPortTypes:"count") separateDepthComponentsEnabled:v45 preLTMThumbnailEnabled:0 postColorProcessingThumbnailEnabled:v67 weightSegmentMapEnabled:v68 numberOfSecondaryFramesToSkip:v64];
+      HIDWORD(v64) = level;
+      LOBYTE(v64) = processingThumbnailEnabled;
+      v47 = [v12 initWithDepthEnabled:type numberOfInputs:objc_msgSend(OUTLINED_FUNCTION_111() syncSlaveForMasterPortTypes:"count") separateDepthComponentsEnabled:v45 preLTMThumbnailEnabled:0 postColorProcessingThumbnailEnabled:renderingEnabledCopy weightSegmentMapEnabled:thumbnailEnabledCopy numberOfSecondaryFramesToSkip:v64];
       [v47 setName:v69];
       v75.receiver = v72;
       v75.super_class = FigCaptureCameraSourcePipeline;
@@ -8639,10 +8639,10 @@ LABEL_25:
 LABEL_37:
 
           v62 = v47;
-          v63 = 0;
+          code = 0;
           *(v72 + 128) = v62;
 LABEL_40:
-          v23 = a12;
+          skipCopy2 = skip;
           goto LABEL_41;
         }
 
@@ -8655,7 +8655,7 @@ LABEL_31:
         {
           if (*v74 != v55)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(array);
           }
 
           v57 = *(v73 + 8 * v56);
@@ -8690,7 +8690,7 @@ LABEL_31:
       v12 = v12;
       while (1)
       {
-        v43 = [v17 objectAtIndexedSubscript:v42];
+        v43 = [array objectAtIndexedSubscript:v42];
         v44 = objc_alloc_init(BWPixelTransferNode);
         v77.receiver = v72;
         v77.super_class = FigCaptureCameraSourcePipeline;
@@ -8702,7 +8702,7 @@ LABEL_31:
         [(BWPixelTransferNode *)v44 setOutputWidth:v12];
         [(BWPixelTransferNode *)v44 setOutputHeight:v37];
         [(BWPixelTransferNode *)v44 setUpdatesSampleBufferMetadataForIrisVIS:1];
-        [(BWPixelTransferNode *)v44 setMaxLossyCompressionLevel:a10];
+        [(BWPixelTransferNode *)v44 setMaxLossyCompressionLevel:preview];
         [(BWNode *)v44 input];
         if (([OUTLINED_FUNCTION_24_0() connectOutput:v43 toInput:? pipelineStage:?] & 1) == 0)
         {
@@ -8711,7 +8711,7 @@ LABEL_31:
 
         [(BWNode *)v44 output];
         [OUTLINED_FUNCTION_7() setObject:? atIndexedSubscript:?];
-        if ([v17 count] <= ++v42)
+        if ([array count] <= ++v42)
         {
           goto LABEL_25;
         }
@@ -8722,16 +8722,16 @@ LABEL_31:
       v47 = 0;
     }
 
-    v63 = 0;
+    code = 0;
     goto LABEL_40;
   }
 
   return result;
 }
 
-- (void)_connectSubjectSelectionNode:(uint64_t)a1 videoOutputsBySourceDeviceType:sourceDeviceTypes:portTypes:graph:
+- (void)_connectSubjectSelectionNode:(uint64_t)node videoOutputsBySourceDeviceType:sourceDeviceTypes:portTypes:graph:
 {
-  if (a1)
+  if (node)
   {
     OUTLINED_FUNCTION_84();
     v2 = v1;
@@ -8746,7 +8746,7 @@ LABEL_31:
         v11 = [objc_msgSend(v8 "videoCaptureInputsByPortType")];
         if (v11 == [objc_msgSend(v6 "allKeys")])
         {
-          v12 = [v6 allKeys];
+          allKeys = [v6 allKeys];
           OUTLINED_FUNCTION_117_2();
           v14 = [v13 countByEnumeratingWithState:? objects:? count:?];
           if (v14)
@@ -8760,7 +8760,7 @@ LABEL_7:
               OUTLINED_FUNCTION_23_14();
               if (v18 != v16)
               {
-                objc_enumerationMutation(v12);
+                objc_enumerationMutation(allKeys);
               }
 
               if (![v2 connectOutput:objc_msgSend(v6 toInput:"objectForKeyedSubscript:" pipelineStage:{*(v37 + 8 * v17)), objc_msgSend(objc_msgSend(v8, "videoCaptureInputsByPortType"), "objectForKeyedSubscript:", BWUtilitiesGetPortTypeForUnderlyingDeviceType(objc_msgSend(*(v37 + 8 * v17), "intValue"), v4)), 0}])
@@ -8790,7 +8790,7 @@ LABEL_13:
               v23 = [objc_msgSend(v8 "videoCaptureOutputsByPortType")];
               if (v23 == [objc_msgSend(v6 "allKeys")])
               {
-                v24 = [v6 allKeys];
+                allKeys2 = [v6 allKeys];
                 OUTLINED_FUNCTION_17_20();
                 v26 = [v25 countByEnumeratingWithState:? objects:? count:?];
                 if (v26)
@@ -8804,7 +8804,7 @@ LABEL_13:
                       OUTLINED_FUNCTION_29_11();
                       if (v30 != v28)
                       {
-                        objc_enumerationMutation(v24);
+                        objc_enumerationMutation(allKeys2);
                       }
 
                       [objc_msgSend(v8 "videoCaptureOutputsByPortType")];
@@ -8834,7 +8834,7 @@ LABEL_13:
   }
 }
 
-- (uint64_t)_connectCinematicFramingNode:(void *)a3 videoOutputsBySourceDeviceType:(void *)a4 sourceDeviceTypes:(void *)a5 portTypes:(void *)a6 graph:(void *)a7 cameraConfiguration:stillImageCaptureEnabled:stillImageOutputsByPortType:
+- (uint64_t)_connectCinematicFramingNode:(void *)node videoOutputsBySourceDeviceType:(void *)type sourceDeviceTypes:(void *)types portTypes:(void *)portTypes graph:(void *)graph cameraConfiguration:stillImageCaptureEnabled:stillImageOutputsByPortType:
 {
   if (result)
   {
@@ -8851,18 +8851,18 @@ LABEL_13:
       }
 
       v15 = [objc_msgSend(a2 "videoCaptureInputsByPortType")];
-      if (v15 != [objc_msgSend(a3 "allKeys")])
+      if (v15 != [objc_msgSend(node "allKeys")])
       {
         return 4294954514;
       }
 
       v26 = v12;
-      v27 = a7;
+      graphCopy = graph;
       v33 = 0u;
       v34 = 0u;
       v31 = 0u;
       v32 = 0u;
-      obj = [a3 allKeys];
+      obj = [node allKeys];
       v16 = [obj countByEnumeratingWithState:&v31 objects:v30 count:16];
       if (v16)
       {
@@ -8878,17 +8878,17 @@ LABEL_13:
             }
 
             v20 = *(*(&v31 + 1) + 8 * i);
-            PortTypeForUnderlyingDeviceType = BWUtilitiesGetPortTypeForUnderlyingDeviceType([v20 intValue], a5);
-            [a3 objectForKeyedSubscript:v20];
+            PortTypeForUnderlyingDeviceType = BWUtilitiesGetPortTypeForUnderlyingDeviceType([v20 intValue], types);
+            [node objectForKeyedSubscript:v20];
             v22 = [objc_msgSend(a2 "videoCaptureInputsByPortType")];
-            if (!OUTLINED_FUNCTION_146(a6, v23, v24, v22))
+            if (!OUTLINED_FUNCTION_146(portTypes, v23, v24, v22))
             {
               return 4294954516;
             }
 
-            if ([a4 count] >= 2)
+            if ([type count] >= 2)
             {
-              [a3 setObject:0 forKeyedSubscript:v20];
+              [node setObject:0 forKeyedSubscript:v20];
             }
           }
 
@@ -8904,13 +8904,13 @@ LABEL_13:
 
       if ([a2 videoCaptureOutput])
       {
-        v25 = [a2 videoCaptureOutput];
-        [v27 sourceDeviceType];
-        [a3 setObject:v25 forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_8(), "numberWithInt:")}];
+        videoCaptureOutput = [a2 videoCaptureOutput];
+        [graphCopy sourceDeviceType];
+        [node setObject:videoCaptureOutput forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_8(), "numberWithInt:")}];
         [*(v26 + 456) applicationID];
         [OUTLINED_FUNCTION_28() setClientApplicationID:?];
-        [a2 setCinematicFramingControlMode:{objc_msgSend(v27, "cinematicFramingControlMode")}];
-        [v27 sourceDeviceType];
+        [a2 setCinematicFramingControlMode:{objc_msgSend(graphCopy, "cinematicFramingControlMode")}];
+        [graphCopy sourceDeviceType];
         [OUTLINED_FUNCTION_8() numberWithInt:?];
         [OUTLINED_FUNCTION_40_9() setObject:a2 forKeyedSubscript:?];
       }
@@ -8932,14 +8932,14 @@ LABEL_13:
   return result;
 }
 
-- (uint64_t)_insertSubjectSelectionAndCinematicFramingNodesOnOutputsBySourceDeviceType:(uint64_t)a1 connectionConfigurations:(void *)a2 pipelineConfiguration:(void *)a3 cameraInfoByPortType:(uint64_t)a4 graph:(uint64_t)a5 stillImageCaptureEnabled:(void *)a6 stillImageOutputsByPortType:(unsigned int)a7
+- (uint64_t)_insertSubjectSelectionAndCinematicFramingNodesOnOutputsBySourceDeviceType:(uint64_t)type connectionConfigurations:(void *)configurations pipelineConfiguration:(void *)configuration cameraInfoByPortType:(uint64_t)portType graph:(uint64_t)graph stillImageCaptureEnabled:(void *)enabled stillImageOutputsByPortType:(unsigned int)byPortType
 {
-  if (a1)
+  if (type)
   {
-    v7 = a4;
-    if (a4)
+    portTypeCopy = portType;
+    if (portType)
     {
-      v9 = *(a4 + 176);
+      v9 = *(portType + 176);
     }
 
     else
@@ -8953,7 +8953,7 @@ LABEL_13:
     v12[39] = v11;
     v12[40] = v11;
     v12[41] = v11;
-    v13 = *(a1 + 64);
+    v13 = *(type + 64);
     v16 = OUTLINED_FUNCTION_52(v14, v15, v126, v125);
     if (v16)
     {
@@ -8979,16 +8979,16 @@ LABEL_13:
     }
 
     v22 = [v10 count];
-    if (v22 != [objc_msgSend(a2 "allKeys")])
+    if (v22 != [objc_msgSend(configurations "allKeys")])
     {
       return 4294954510;
     }
 
-    v23 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(a3, [v9 sourceDeviceType]);
-    v101 = [(FigCaptureCameraSourcePipeline *)a1 _getDeviceOrientationCorrectionEnabledForVideoCaptureConnectionConfigurations:v23];
+    v23 = FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(configuration, [v9 sourceDeviceType]);
+    v101 = [(FigCaptureCameraSourcePipeline *)type _getDeviceOrientationCorrectionEnabledForVideoCaptureConnectionConfigurations:v23];
     if (FigCapturePlatformSupportsUniversalLossyCompression())
     {
-      v93 = csp_maxLossyCompressionLevelForConnectionConfigurations(v23, v7);
+      v93 = csp_maxLossyCompressionLevelForConnectionConfigurations(v23, portTypeCopy);
     }
 
     else
@@ -9001,9 +9001,9 @@ LABEL_13:
     v27[29] = v26;
     v27[26] = v26;
     v27[27] = v26;
-    if (v7)
+    if (portTypeCopy)
     {
-      v7 = *(v7 + 240);
+      portTypeCopy = *(portTypeCopy + 240);
     }
 
     if (OUTLINED_FUNCTION_1_18(v24, v25, v123, v122))
@@ -9013,7 +9013,7 @@ LABEL_13:
         OUTLINED_FUNCTION_10_18();
         if (!v19)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(portTypeCopy);
         }
 
         v28 = *v124;
@@ -9030,18 +9030,18 @@ LABEL_13:
         }
       }
 
-      v92 = [v28 metadataIdentifiers];
+      metadataIdentifiers = [v28 metadataIdentifiers];
     }
 
     else
     {
 LABEL_24:
-      v92 = 0;
+      metadataIdentifiers = 0;
     }
 
     CenterStageFramingMode = csp_getCenterStageFramingMode([v9 source]);
-    v32 = a1;
-    if ([objc_msgSend(*(a1 + 456) "captureStreams")] != 1)
+    typeCopy3 = type;
+    if ([objc_msgSend(*(type + 456) "captureStreams")] != 1)
     {
       OUTLINED_FUNCTION_0();
       FigDebugAssert3();
@@ -9065,7 +9065,7 @@ LABEL_24:
     v35[17] = v34;
     v35[14] = v34;
     v35[15] = v34;
-    obj = [a2 allKeys];
+    obj = [configurations allKeys];
     v36 = [obj countByEnumeratingWithState:v120 objects:v119 count:16];
     if (v36)
     {
@@ -9090,7 +9090,7 @@ LABEL_24:
           HIDWORD(v83) = CenterStageFramingMode;
           BYTE1(v83) = v98;
           LOBYTE(v83) = v99 != 0;
-          v42 = [BWSubjectSelectionNode initWithOutputDimensions:v39 cameraInfoByPortType:"initWithOutputDimensions:cameraInfoByPortType:horizontalSensorBinningFactor:verticalSensorBinningFactor:deviceOrientationCorrectionEnabled:portTypes:cameraHasDistortionCoefficients:cameraHasCalibrationValidMaxRadius:centerStageFramingMode:gazeSelectionEnabled:" horizontalSensorBinningFactor:v40 verticalSensorBinningFactor:a5 deviceOrientationCorrectionEnabled:v41 portTypes:v32 cameraHasDistortionCoefficients:v101 cameraHasCalibrationValidMaxRadius:v10 centerStageFramingMode:v83 gazeSelectionEnabled:v84];
+          v42 = [BWSubjectSelectionNode initWithOutputDimensions:v39 cameraInfoByPortType:"initWithOutputDimensions:cameraInfoByPortType:horizontalSensorBinningFactor:verticalSensorBinningFactor:deviceOrientationCorrectionEnabled:portTypes:cameraHasDistortionCoefficients:cameraHasCalibrationValidMaxRadius:centerStageFramingMode:gazeSelectionEnabled:" horizontalSensorBinningFactor:v40 verticalSensorBinningFactor:graph deviceOrientationCorrectionEnabled:v41 portTypes:typeCopy3 cameraHasDistortionCoefficients:v101 cameraHasCalibrationValidMaxRadius:v10 centerStageFramingMode:v83 gazeSelectionEnabled:v84];
           if (!v42)
           {
             OUTLINED_FUNCTION_0();
@@ -9099,8 +9099,8 @@ LABEL_24:
           }
 
           v43 = v42;
-          v32 = a1;
-          [FigCaptureCameraSourcePipeline _connectSubjectSelectionNode:a1 videoOutputsBySourceDeviceType:? sourceDeviceTypes:? portTypes:? graph:?];
+          typeCopy3 = type;
+          [FigCaptureCameraSourcePipeline _connectSubjectSelectionNode:type videoOutputsBySourceDeviceType:? sourceDeviceTypes:? portTypes:? graph:?];
           if (v44)
           {
             v81 = v44;
@@ -9152,7 +9152,7 @@ LABEL_66:
     v53 = v52;
     v55 = v54;
     v57 = v56;
-    v90 = [v9 cinematicFramingEnabled];
+    cinematicFramingEnabled = [v9 cinematicFramingEnabled];
     [v9 manualFramingPanningAngleX];
     v59 = v58;
     [v9 manualFramingPanningAngleY];
@@ -9176,13 +9176,13 @@ LABEL_66:
       v68 = 0;
     }
 
-    v89 = [v68 BOOLValue];
+    bOOLValue = [v68 BOOLValue];
     *&v69 = OUTLINED_FUNCTION_106_2();
     *v70 = v69;
     v70[1] = v69;
     v70[2] = v69;
     v70[3] = v69;
-    [a2 allKeys];
+    [configurations allKeys];
     OUTLINED_FUNCTION_122();
     v87 = v71;
     obja = [v71 countByEnumeratingWithState:? objects:? count:?];
@@ -9204,7 +9204,7 @@ LABEL_49:
         v75 = [objc_msgSend(v9 "requiredFormat")];
         v76 = [objc_msgSend(v9 "requiredFormat")];
         v77 = [objc_msgSend(v9 "requiredFormat")];
-        LOBYTE(cf[0]) = v90;
+        LOBYTE(cf[0]) = cinematicFramingEnabled;
         BYTE1(cf[0]) = 1;
         BYTE2(cf[0]) = CinematicFramingFieldOfViewRestrictedToWide;
         *(cf + 3) = v115;
@@ -9221,25 +9221,25 @@ LABEL_49:
         v111 = 0;
         v112 = 0;
         LOBYTE(v86) = 0;
-        BYTE2(v85) = v89;
+        BYTE2(v85) = bOOLValue;
         BYTE1(v85) = v98;
         LOBYTE(v85) = v99 != 0;
         LODWORD(v84) = v93;
-        v78 = [BWCinematicFramingNode initWithOutputDimensions:v74 cameraInfoByPortType:"initWithOutputDimensions:cameraInfoByPortType:horizontalSensorBinningFactor:verticalSensorBinningFactor:deviceOrientationCorrectionEnabled:stillImageCaptureEnabled:objectMetadataIdentifiers:maxLossyCompressionLevel:portTypes:cinematicFramingControls:cameraHasDistortionCoefficients:cameraHasCalibrationValidMaxRadius:centerStageMetadataDeliveryEnabled:pipelineType:downStreamRequires10BitPixelFormat:" horizontalSensorBinningFactor:v75 verticalSensorBinningFactor:a5 deviceOrientationCorrectionEnabled:v76 stillImageCaptureEnabled:v77 objectMetadataIdentifiers:v101 maxLossyCompressionLevel:a7 portTypes:v92 cinematicFramingControls:v84 cameraHasDistortionCoefficients:v10 cameraHasCalibrationValidMaxRadius:cf centerStageMetadataDeliveryEnabled:v85 pipelineType:0 downStreamRequires10BitPixelFormat:v86];
+        v78 = [BWCinematicFramingNode initWithOutputDimensions:v74 cameraInfoByPortType:"initWithOutputDimensions:cameraInfoByPortType:horizontalSensorBinningFactor:verticalSensorBinningFactor:deviceOrientationCorrectionEnabled:stillImageCaptureEnabled:objectMetadataIdentifiers:maxLossyCompressionLevel:portTypes:cinematicFramingControls:cameraHasDistortionCoefficients:cameraHasCalibrationValidMaxRadius:centerStageMetadataDeliveryEnabled:pipelineType:downStreamRequires10BitPixelFormat:" horizontalSensorBinningFactor:v75 verticalSensorBinningFactor:graph deviceOrientationCorrectionEnabled:v76 stillImageCaptureEnabled:v77 objectMetadataIdentifiers:v101 maxLossyCompressionLevel:byPortType portTypes:metadataIdentifiers cinematicFramingControls:v84 cameraHasDistortionCoefficients:v10 cameraHasCalibrationValidMaxRadius:cf centerStageMetadataDeliveryEnabled:v85 pipelineType:0 downStreamRequires10BitPixelFormat:v86];
         if (!v78)
         {
           return 4294954510;
         }
 
         v79 = v78;
-        v32 = a1;
-        [*(a1 + 456) setManualCinematicFramingDelegate:v78];
-        if (a7)
+        typeCopy3 = type;
+        [*(type + 456) setManualCinematicFramingDelegate:v78];
+        if (byPortType)
         {
-          *(a1 + 536) = v79;
+          *(type + 536) = v79;
         }
 
-        v80 = [FigCaptureCameraSourcePipeline _connectCinematicFramingNode:a1 videoOutputsBySourceDeviceType:v79 sourceDeviceTypes:a2 portTypes:v73 graph:v10 cameraConfiguration:a6 stillImageCaptureEnabled:v9 stillImageOutputsByPortType:?];
+        v80 = [FigCaptureCameraSourcePipeline _connectCinematicFramingNode:type videoOutputsBySourceDeviceType:v79 sourceDeviceTypes:configurations portTypes:v73 graph:v10 cameraConfiguration:enabled stillImageCaptureEnabled:v9 stillImageOutputsByPortType:?];
         if (v80)
         {
           v81 = v80;
@@ -9263,7 +9263,7 @@ LABEL_49:
 
     v79 = 0;
 LABEL_60:
-    [*(v32 + 456) setCenterStageDelegate:v79];
+    [*(typeCopy3 + 456) setCenterStageDelegate:v79];
   }
 
   return 0;
@@ -9301,7 +9301,7 @@ LABEL_60:
     v11 = 0;
   }
 
-  v58 = [v11 sourceDeviceType];
+  sourceDeviceType = [v11 sourceDeviceType];
   v12 = [FigCaptureUnderlyingDeviceTypesFromConnectionConfigurations(v10) mutableCopy];
   if (v9)
   {
@@ -9331,7 +9331,7 @@ LABEL_60:
   {
     [v60 count];
     v19 = OUTLINED_FUNCTION_45_1();
-    [FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v19 v58)];
+    [FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v19 sourceDeviceType)];
     OUTLINED_FUNCTION_130_1();
     if (v0 >= 2)
     {
@@ -9427,9 +9427,9 @@ LABEL_24:
         }
 
         v54 = [(FigCaptureCameraSourcePipeline *)v62 _addOverCaptureSourcePipelineToGraph:v61 upstreamVideoCaptureOutputsBySourceDeviceType:v60 depthEnabled:v49 depthFilterRenderingEnabled:0 preLTMThumbnailEnabled:v51 & 1 postColorProcessingThumbnailEnabled:v52 & 1 weightSegmentMapEnabled:v53 & 1 forPreview:v59 == 0 maxLossyCompressionLevel:v50 numberOfSecondaryFramesToSkip:v8 outErr:v69];
-        [MEMORY[0x1E696AD98] numberWithInt:v58];
+        [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType];
         [OUTLINED_FUNCTION_1_15() setObject:v54 forKeyedSubscript:?];
-        v55 = [v60 allKeys];
+        allKeys = [v60 allKeys];
         OUTLINED_FUNCTION_122();
         if ([v56 countByEnumeratingWithState:? objects:? count:?])
         {
@@ -9438,11 +9438,11 @@ LABEL_24:
             OUTLINED_FUNCTION_21_20();
             if (!v42)
             {
-              objc_enumerationMutation(v55);
+              objc_enumerationMutation(allKeys);
             }
 
             v57 = MEMORY[0];
-            if ([MEMORY[0] intValue] != v58)
+            if ([MEMORY[0] intValue] != sourceDeviceType)
             {
               [v60 setObject:0 forKeyedSubscript:v57];
             }
@@ -9451,7 +9451,7 @@ LABEL_24:
             if (v42)
             {
               OUTLINED_FUNCTION_122();
-              if (![v55 countByEnumeratingWithState:? objects:? count:?])
+              if (![allKeys countByEnumeratingWithState:? objects:? count:?])
               {
                 break;
               }
@@ -9462,7 +9462,7 @@ LABEL_24:
 
       else
       {
-        v40 = [v60 allKeys];
+        allKeys2 = [v60 allKeys];
         OUTLINED_FUNCTION_59_7();
         if ([v41 countByEnumeratingWithState:? objects:? count:?])
         {
@@ -9471,7 +9471,7 @@ LABEL_24:
             OUTLINED_FUNCTION_21_20();
             if (!v42)
             {
-              objc_enumerationMutation(v40);
+              objc_enumerationMutation(allKeys2);
             }
 
             v43 = *v64;
@@ -9496,7 +9496,7 @@ LABEL_24:
       goto LABEL_63;
     }
 
-    v26 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     obj = [v60 allKeys];
     v27 = [obj countByEnumeratingWithState:v67 objects:v66 count:16];
     if (v27)
@@ -9560,7 +9560,7 @@ LABEL_24:
       v39 = off_1E7998360[v59];
     }
 
-    [v60 setObject:-[FigCaptureCameraSourcePipeline _addCrossOverNodeToGraph:outputNetworkType:inputs:mediaType:name:outErr:](v62 forKeyedSubscript:{v61, v59, v26, 1986618469, v39, v69), objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", v58)}];
+    [v60 setObject:-[FigCaptureCameraSourcePipeline _addCrossOverNodeToGraph:outputNetworkType:inputs:mediaType:name:outErr:](v62 forKeyedSubscript:{v61, v59, array, 1986618469, v39, v69), objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", sourceDeviceType)}];
     if (!v69[0])
     {
       goto LABEL_63;
@@ -9573,7 +9573,7 @@ LABEL_24:
   if (!v59 || v59 == 2)
   {
     v48 = [v60 objectForKeyedSubscript:&unk_1F2244770];
-    [MEMORY[0x1E696AD98] numberWithInt:v58];
+    [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType];
     [OUTLINED_FUNCTION_1_15() setObject:v48 forKeyedSubscript:?];
   }
 
@@ -9620,7 +9620,7 @@ LABEL_66:
     v9 = v0;
     v69 = v4;
     v76 = 0;
-    v68 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (v6)
     {
       v10 = *(v6 + 176);
@@ -9640,9 +9640,9 @@ LABEL_66:
 
     else
     {
-      v12 = [v10 manualCinematicFramingEnabled];
+      manualCinematicFramingEnabled = [v10 manualCinematicFramingEnabled];
       v11 = 2;
-      if (!v12)
+      if (!manualCinematicFramingEnabled)
       {
         v11 = 3;
       }
@@ -9791,7 +9791,7 @@ LABEL_54:
               goto LABEL_55;
             }
 
-            [v68 setObject:v38 forKeyedSubscript:v34];
+            [dictionary setObject:v38 forKeyedSubscript:v34];
             if ([v9[72] objectForKeyedSubscript:v34])
             {
               v46 = [BWFanOutNode alloc];
@@ -9805,8 +9805,8 @@ LABEL_54:
               }
 
               [(BWNode *)v38 output];
-              v49 = [OUTLINED_FUNCTION_49_8() input];
-              if ((OUTLINED_FUNCTION_77_4(v69, v50, v51, v49) & 1) == 0)
+              input = [OUTLINED_FUNCTION_49_8() input];
+              if ((OUTLINED_FUNCTION_77_4(v69, v50, v51, input) & 1) == 0)
               {
                 goto LABEL_54;
               }
@@ -9842,7 +9842,7 @@ LABEL_54:
       while (v60);
     }
 
-    [v9[71] addEntriesFromDictionary:v68];
+    [v9[71] addEntriesFromDictionary:dictionary];
 LABEL_55:
     if (v76)
     {
@@ -9883,7 +9883,7 @@ LABEL_55:
       v12 = 0;
     }
 
-    v13 = [v12 sourceDeviceType];
+    sourceDeviceType = [v12 sourceDeviceType];
     v14 = [FigCaptureUnderlyingDeviceTypesFromConnectionConfigurations(v10) mutableCopy];
     if (![v93[57] isBravoVariant])
     {
@@ -9891,12 +9891,12 @@ LABEL_55:
     }
 
     v15 = [v11 count];
-    v16 = [FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v10 v13)];
+    v16 = [FigCaptureConnectionConfigurationsFilterWithUnderlyingDeviceType(v10 sourceDeviceType)];
     if (v15 >= 2 && v16)
     {
       v84 = v8;
-      LODWORD(v86) = v13;
-      v17 = [MEMORY[0x1E695DF70] array];
+      LODWORD(v86) = sourceDeviceType;
+      array = [MEMORY[0x1E695DF70] array];
       obj = [v11 allKeys];
       v18 = [obj countByEnumeratingWithState:v115 objects:v114 count:16];
       if (v18)
@@ -9950,7 +9950,7 @@ LABEL_55:
       }
 
       v39 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ Metadata Funnel", v84];
-      [(FigCaptureCameraSourcePipeline *)v93 _addFunnelNodeToGraph:v91 inputs:v17 mediaType:HIDWORD(v92) name:v39 outErr:v117, v40, v41, v80, v81, v82, v84, v85, v86, obj, v91, v92, v93, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104];
+      [(FigCaptureCameraSourcePipeline *)v93 _addFunnelNodeToGraph:v91 inputs:array mediaType:HIDWORD(v92) name:v39 outErr:v117, v40, v41, v80, v81, v82, v84, v85, v86, obj, v91, v92, v93, v94, v95, v96, v97, v98, v99, v100, v101, v102, v103, v104];
       v43 = v42;
       [MEMORY[0x1E696AD98] numberWithInt:v87];
       [OUTLINED_FUNCTION_1_15() setObject:v43 forKeyedSubscript:?];
@@ -10003,7 +10003,7 @@ LABEL_47:
               [(NSArray *)[(BWNode *)v49 outputs] objectAtIndexedSubscript:0];
               [OUTLINED_FUNCTION_17() setObject:? forKeyedSubscript:?];
               v58 = [(NSArray *)[(BWNode *)v49 outputs] objectAtIndexedSubscript:1];
-              [MEMORY[0x1E696AD98] numberWithInt:v13];
+              [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType];
               v59 = OUTLINED_FUNCTION_1_15();
               v61 = v58;
             }
@@ -10011,7 +10011,7 @@ LABEL_47:
             else
             {
               v62 = [v11 objectForKeyedSubscript:v48];
-              [MEMORY[0x1E696AD98] numberWithInt:v13];
+              [MEMORY[0x1E696AD98] numberWithInt:sourceDeviceType];
               [OUTLINED_FUNCTION_1_15() setObject:v62 forKeyedSubscript:?];
               v59 = OUTLINED_FUNCTION_4_3();
               v60 = v48;
@@ -10036,7 +10036,7 @@ LABEL_47:
     else
     {
 LABEL_36:
-      v69 = [v11 allKeys];
+      allKeys = [v11 allKeys];
       OUTLINED_FUNCTION_59_7();
       v71 = [v70 countByEnumeratingWithState:? objects:? count:?];
       if (v71)
@@ -10049,7 +10049,7 @@ LABEL_36:
           {
             if (*v106 != v73)
             {
-              objc_enumerationMutation(v69);
+              objc_enumerationMutation(allKeys);
             }
 
             if (([v14 containsObject:*(v105 + 8 * j)] & 1) == 0)
@@ -10087,7 +10087,7 @@ LABEL_50:
     v5 = v1;
     v6 = v0;
     v42[0] = 0;
-    v34 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (v4 && *(v4 + 321) == 1)
     {
       v7 = [objc_msgSend(*(v4 + 216) "irisSinkConfiguration")];
@@ -10143,7 +10143,7 @@ LABEL_50:
             [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
             v21 = [OUTLINED_FUNCTION_129() initWithArraysOfMetadataInputs:v20 propagateSampleBufferAttachmentKeys:? propagateSampleBufferMetadataDictKeys:? syncMetadataByPortType:? syncOnlyIfMetadataEnabledForKeys:?];
             [v21 setName:@"SmartStyle AttachedMedia Synchronizer"];
-            [v34 setObject:v21 forKeyedSubscript:v15];
+            [dictionary setObject:v21 forKeyedSubscript:v15];
             v36.receiver = v6;
             v36.super_class = FigCaptureCameraSourcePipeline;
             if ((objc_msgSendSuper2(&v36, sel_addNode_error_, v21, v42) & 1) == 0 || ([v5 objectForKeyedSubscript:v15], v22 = objc_msgSend(objc_msgSend(v21, "inputs"), "objectAtIndexedSubscript:", 0), (OUTLINED_FUNCTION_146(v32, v23, v24, v22) & 1) == 0))
@@ -10172,7 +10172,7 @@ LABEL_50:
       }
     }
 
-    [v6[72] addEntriesFromDictionary:v34];
+    [v6[72] addEntriesFromDictionary:dictionary];
 LABEL_18:
     if (v42[0])
     {
@@ -10197,7 +10197,7 @@ LABEL_18:
     if ([v0 count])
     {
       v36 = v2;
-      v42 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       memset(v55, 0, 64);
       obj = [v6 allKeys];
       v43 = [obj countByEnumeratingWithState:v55 objects:v54 count:16];
@@ -10217,9 +10217,9 @@ LABEL_18:
             }
 
             v10 = *(v55[1] + 8 * i);
-            v45 = [MEMORY[0x1E695DF70] array];
-            v46 = [MEMORY[0x1E695DF70] array];
-            v11 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
+            array2 = [MEMORY[0x1E695DF70] array];
+            array3 = [MEMORY[0x1E695DF70] array];
             v50 = 0u;
             v51 = 0u;
             v52 = 0u;
@@ -10252,17 +10252,17 @@ LABEL_18:
                 {
                   if ([v19 videoDataSinkConfiguration])
                   {
-                    [v11 setObject:v19 atIndexedSubscript:v14++];
+                    [array3 setObject:v19 atIndexedSubscript:v14++];
                   }
 
                   else if ([objc_msgSend(v19 "sinkConfiguration")] == 14)
                   {
-                    [v46 setObject:v19 atIndexedSubscript:v15++];
+                    [array2 setObject:v19 atIndexedSubscript:v15++];
                   }
 
                   else
                   {
-                    [v45 setObject:v19 atIndexedSubscript:v16++];
+                    [array setObject:v19 atIndexedSubscript:v16++];
                   }
                 }
               }
@@ -10279,14 +10279,14 @@ LABEL_18:
             {
 LABEL_27:
               v48 = [v6 objectForKeyedSubscript:v10];
-              v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
+              outputs = [MEMORY[0x1E695DEC8] arrayWithObjects:&v48 count:1];
             }
 
             else
             {
-              v23 = [MEMORY[0x1E695DF70] arrayWithArray:v45];
-              [v23 addObjectsFromArray:v11];
-              [v23 addObjectsFromArray:v46];
+              v23 = [MEMORY[0x1E695DF70] arrayWithArray:array];
+              [v23 addObjectsFromArray:array3];
+              [v23 addObjectsFromArray:array2];
               v24 = [[BWFanOutNode alloc] initWithFanOutCount:(v14 + v20) mediaType:1986618469];
               [(BWNode *)v24 setName:@"Preview Output Splitter"];
               FigCaptureNameSplitterNodeOutputsCorrespondingToConnections([(BWNode *)v24 outputs], v23);
@@ -10299,10 +10299,10 @@ LABEL_27:
                 goto LABEL_35;
               }
 
-              v22 = [(BWNode *)v24 outputs];
+              outputs = [(BWNode *)v24 outputs];
             }
 
-            v28 = [v42 setObject:v22 forKeyedSubscript:v10];
+            v28 = [dictionary setObject:outputs forKeyedSubscript:v10];
           }
 
           v43 = OUTLINED_FUNCTION_147(v28, v29, v55, v54, v30, v31, v32, v33, v34, v35, v36, v37, v38, sel_addNode_error_, obj);
@@ -10315,7 +10315,7 @@ LABEL_27:
         }
       }
 
-      v38[21] = [v42 copy];
+      v38[21] = [dictionary copy];
 LABEL_35:
       if (v56[0])
       {
@@ -10436,7 +10436,7 @@ LABEL_35:
   OUTLINED_FUNCTION_81();
 }
 
-- (uint64_t)liveReconfigureForOutputDimensions:(uint64_t)a3 aspectRatio:
+- (uint64_t)liveReconfigureForOutputDimensions:(uint64_t)dimensions aspectRatio:
 {
   if (result)
   {
@@ -10461,7 +10461,7 @@ LABEL_35:
             objc_enumerationMutation(v7);
           }
 
-          v13 = [*(*(&v70 + 1) + 8 * v12++) setAspectRatio:a3];
+          v13 = [*(*(&v70 + 1) + 8 * v12++) setAspectRatio:dimensions];
         }
 
         while (v10 != v12);
@@ -10516,9 +10516,9 @@ LABEL_35:
 
 - (uint64_t)hardwareDepthFilteringEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 512));
+    return OUTLINED_FUNCTION_5_27(*(self + 512));
   }
 
   else
@@ -10529,9 +10529,9 @@ LABEL_35:
 
 - (uint64_t)preLTMThumbnailEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 585));
+    return OUTLINED_FUNCTION_5_27(*(self + 585));
   }
 
   else
@@ -10542,9 +10542,9 @@ LABEL_35:
 
 - (uint64_t)postColorProcessingThumbnailEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 586));
+    return OUTLINED_FUNCTION_5_27(*(self + 586));
   }
 
   else
@@ -10555,9 +10555,9 @@ LABEL_35:
 
 - (uint64_t)weightSegmentMapEnabled
 {
-  if (a1)
+  if (self)
   {
-    return OUTLINED_FUNCTION_5_27(*(a1 + 587));
+    return OUTLINED_FUNCTION_5_27(*(self + 587));
   }
 
   else

@@ -1,14 +1,14 @@
 @interface ManagedOnboardingModalityIdentifier
-- (ManagedOnboardingModalityIdentifier)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedOnboardingModalityIdentifier)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedOnboardingModalityIdentifier
 
-- (ManagedOnboardingModalityIdentifier)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedOnboardingModalityIdentifier)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedOnboardingModalityIdentifier();
-  return [(ManagedOnboardingModalityIdentifier *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedOnboardingModalityIdentifier *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

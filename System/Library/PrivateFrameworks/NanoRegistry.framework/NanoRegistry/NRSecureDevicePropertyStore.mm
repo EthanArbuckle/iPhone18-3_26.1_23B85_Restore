@@ -3,15 +3,15 @@
 + (id)enclosedClassTypes;
 - (BOOL)dirty;
 - (NRSecureDevicePropertyStore)init;
-- (NRSecureDevicePropertyStore)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NRSecureDevicePropertyStore)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)storeSecureProperty:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)forceImportSecureProperties:(id)a3;
-- (void)forceWriteSecurePropertyID:(id)a3 withValue:(id)a4;
-- (void)removeSecureProperty:(id)a3;
+- (id)storeSecureProperty:(id)property;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
+- (void)encodeWithCoder:(id)coder;
+- (void)forceImportSecureProperties:(id)properties;
+- (void)forceWriteSecurePropertyID:(id)d withValue:(id)value;
+- (void)removeSecureProperty:(id)property;
 @end
 
 @implementation NRSecureDevicePropertyStore
@@ -23,13 +23,13 @@
   v2 = [(NRSecureDevicePropertyStore *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     IDToProperty = v2->_IDToProperty;
-    v2->_IDToProperty = v3;
+    v2->_IDToProperty = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     propertyToID = v2->_propertyToID;
-    v2->_propertyToID = v5;
+    v2->_propertyToID = dictionary2;
 
     v7 = dispatch_queue_create("com.apple.nanoregistry.nrsecuredevicepropertystore.dirtyqueue", 0);
     dirtyQueue = v2->_dirtyQueue;
@@ -49,15 +49,15 @@
   return v3;
 }
 
-- (id)storeSecureProperty:(id)a3
+- (id)storeSecureProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_propertyToID objectForKeyedSubscript:v4];
+  propertyCopy = property;
+  v5 = [(NSMutableDictionary *)self->_propertyToID objectForKeyedSubscript:propertyCopy];
   if (!v5)
   {
     v5 = objc_opt_new();
-    [(NSMutableDictionary *)self->_IDToProperty setObject:v4 forKeyedSubscript:v5];
-    [(NSMutableDictionary *)self->_propertyToID setObject:v5 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_IDToProperty setObject:propertyCopy forKeyedSubscript:v5];
+    [(NSMutableDictionary *)self->_propertyToID setObject:v5 forKeyedSubscript:propertyCopy];
     dirtyQueue = self->_dirtyQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -70,13 +70,13 @@
   return v5;
 }
 
-- (void)removeSecureProperty:(id)a3
+- (void)removeSecureProperty:(id)property
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_IDToProperty objectForKeyedSubscript:v4];
+  propertyCopy = property;
+  v5 = [(NSMutableDictionary *)self->_IDToProperty objectForKeyedSubscript:propertyCopy];
   if (v5)
   {
-    [(NSMutableDictionary *)self->_IDToProperty removeObjectForKey:v4];
+    [(NSMutableDictionary *)self->_IDToProperty removeObjectForKey:propertyCopy];
     [(NSMutableDictionary *)self->_propertyToID removeObjectForKey:v5];
     dirtyQueue = self->_dirtyQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -88,9 +88,9 @@
   }
 }
 
-- (void)forceWriteSecurePropertyID:(id)a3 withValue:(id)a4
+- (void)forceWriteSecurePropertyID:(id)d withValue:(id)value
 {
-  [(NSMutableDictionary *)self->_IDToProperty setObject:a4 forKeyedSubscript:a3];
+  [(NSMutableDictionary *)self->_IDToProperty setObject:value forKeyedSubscript:d];
   dirtyQueue = self->_dirtyQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -100,17 +100,17 @@
   dispatch_async(dirtyQueue, block);
 }
 
-- (void)forceImportSecureProperties:(id)a3
+- (void)forceImportSecureProperties:(id)properties
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  propertiesCopy = properties;
+  if ([propertiesCopy count])
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v4;
+    v5 = propertiesCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -168,10 +168,10 @@
   return v3;
 }
 
-- (NRSecureDevicePropertyStore)initWithCoder:(id)a3
+- (NRSecureDevicePropertyStore)initWithCoder:(id)coder
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NRSecureDevicePropertyStore *)self init];
   if (v5)
   {
@@ -182,7 +182,7 @@
     v8 = [v6 setWithArray:v7];
     v9 = +[NRMutableDeviceProperty enclosedClassTypes];
     v10 = [v8 setByAddingObjectsFromSet:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"properties"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"properties"];
     IDToProperty = v5->_IDToProperty;
     v5->_IDToProperty = v11;
 
@@ -222,9 +222,9 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_IDToProperty forKey:@"properties"];
+  [coder encodeObject:self->_IDToProperty forKey:@"properties"];
   dirtyQueue = self->_dirtyQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -236,8 +236,8 @@
 
 + (id)classTypes
 {
-  v2 = [a1 enclosedClassTypes];
-  v3 = [v2 setByAddingObject:objc_opt_class()];
+  enclosedClassTypes = [self enclosedClassTypes];
+  v3 = [enclosedClassTypes setByAddingObject:objc_opt_class()];
 
   return v3;
 }
@@ -303,22 +303,22 @@
   return v8;
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v8 = [(NSMutableDictionary *)self->_IDToProperty copy];
-  v9 = [v8 countByEnumeratingWithState:a3 objects:a4 count:a5];
+  v9 = [v8 countByEnumeratingWithState:state objects:objects count:count];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[NRSecureDevicePropertyStore allocWithZone:](NRSecureDevicePropertyStore init];
-  v6 = [(NSMutableDictionary *)self->_IDToProperty mutableCopyWithZone:a3];
+  v6 = [(NSMutableDictionary *)self->_IDToProperty mutableCopyWithZone:zone];
   IDToProperty = v5->_IDToProperty;
   v5->_IDToProperty = v6;
 
-  v8 = [(NSMutableDictionary *)self->_propertyToID mutableCopyWithZone:a3];
+  v8 = [(NSMutableDictionary *)self->_propertyToID mutableCopyWithZone:zone];
   propertyToID = v5->_propertyToID;
   v5->_propertyToID = v8;
 

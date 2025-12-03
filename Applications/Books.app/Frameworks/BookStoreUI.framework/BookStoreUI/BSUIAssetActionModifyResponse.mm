@@ -1,11 +1,11 @@
 @interface BSUIAssetActionModifyResponse
 - (BSUIAssetActionModifyResponse)init;
-- (BSUIAssetActionModifyResponse)initWithCollectionTitle:(id)a3 assetID:(id)a4 assetContentType:(int64_t)a5;
+- (BSUIAssetActionModifyResponse)initWithCollectionTitle:(id)title assetID:(id)d assetContentType:(int64_t)type;
 @end
 
 @implementation BSUIAssetActionModifyResponse
 
-- (BSUIAssetActionModifyResponse)initWithCollectionTitle:(id)a3 assetID:(id)a4 assetContentType:(int64_t)a5
+- (BSUIAssetActionModifyResponse)initWithCollectionTitle:(id)title assetID:(id)d assetContentType:(int64_t)type
 {
   ObjectType = swift_getObjectType();
   v8 = sub_2C58C8();
@@ -17,7 +17,7 @@
   v13 = (self + OBJC_IVAR___BSUIAssetActionModifyResponse_assetID);
   *v13 = v11;
   v13[1] = v14;
-  *(self + OBJC_IVAR___BSUIAssetActionModifyResponse_assetContentType) = a5;
+  *(self + OBJC_IVAR___BSUIAssetActionModifyResponse_assetContentType) = type;
   v16.receiver = self;
   v16.super_class = ObjectType;
   return [(BSUIAssetActionModifyResponse *)&v16 init];

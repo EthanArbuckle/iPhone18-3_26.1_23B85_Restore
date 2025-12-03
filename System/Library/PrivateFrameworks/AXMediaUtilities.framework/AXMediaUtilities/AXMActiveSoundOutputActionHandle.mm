@@ -1,9 +1,9 @@
 @interface AXMActiveSoundOutputActionHandle
 - (float)pitch;
 - (float)rate;
-- (void)setPitch:(float)a3;
-- (void)setQuantizedRate:(int64_t)a3;
-- (void)setRate:(float)a3;
+- (void)setPitch:(float)pitch;
+- (void)setQuantizedRate:(int64_t)rate;
+- (void)setRate:(float)rate;
 - (void)stop;
 @end
 
@@ -11,46 +11,46 @@
 
 - (void)stop
 {
-  v2 = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
-  [v2 stop];
+  handleProvider = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
+  [handleProvider stop];
 }
 
 - (float)pitch
 {
-  v2 = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
-  [v2 pitch];
+  handleProvider = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
+  [handleProvider pitch];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setPitch:(float)a3
+- (void)setPitch:(float)pitch
 {
-  v5 = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
-  *&v4 = a3;
-  [v5 setPitch:v4];
+  handleProvider = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
+  *&v4 = pitch;
+  [handleProvider setPitch:v4];
 }
 
 - (float)rate
 {
-  v2 = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
-  [v2 rate];
+  handleProvider = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
+  [handleProvider rate];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
-  v5 = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
-  *&v4 = a3;
-  [v5 setRate:v4];
+  handleProvider = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
+  *&v4 = rate;
+  [handleProvider setRate:v4];
 }
 
-- (void)setQuantizedRate:(int64_t)a3
+- (void)setQuantizedRate:(int64_t)rate
 {
-  v4 = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
-  [v4 setQuantizedRate:a3];
+  handleProvider = [(AXMActiveSoundOutputActionHandle *)self handleProvider];
+  [handleProvider setQuantizedRate:rate];
 }
 
 @end

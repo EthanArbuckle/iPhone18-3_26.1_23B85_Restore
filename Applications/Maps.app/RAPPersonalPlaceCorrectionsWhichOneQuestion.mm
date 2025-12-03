@@ -2,32 +2,32 @@
 - (BOOL)_isRecursivelyComplete;
 - (NSString)localizedDescription;
 - (NSString)localizedTitle;
-- (RAPPersonalPlaceCorrectionsWhichOneQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 shortcutType:(int64_t)a5;
+- (RAPPersonalPlaceCorrectionsWhichOneQuestion)initWithReport:(id)report parentQuestion:(id)question shortcutType:(int64_t)type;
 - (int)userAction;
 - (int64_t)questionCategory;
-- (void)_createQuestionsFromShortcuts:(id)a3;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)refreshMainMenuItemsWithCallback:(id)a3;
+- (void)_createQuestionsFromShortcuts:(id)shortcuts;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)refreshMainMenuItemsWithCallback:(id)callback;
 @end
 
 @implementation RAPPersonalPlaceCorrectionsWhichOneQuestion
 
 - (BOOL)_isRecursivelyComplete
 {
-  v3 = [(RAPMenuQuestion *)self selectedMenuItem];
-  if ([v3 isComplete])
+  selectedMenuItem = [(RAPMenuQuestion *)self selectedMenuItem];
+  if ([selectedMenuItem isComplete])
   {
     v6.receiver = self;
     v6.super_class = RAPPersonalPlaceCorrectionsWhichOneQuestion;
-    v4 = [(RAPMenuQuestion *)&v6 _isRecursivelyComplete];
+    _isRecursivelyComplete = [(RAPMenuQuestion *)&v6 _isRecursivelyComplete];
   }
 
   else
   {
-    v4 = 0;
+    _isRecursivelyComplete = 0;
   }
 
-  return v4;
+  return _isRecursivelyComplete;
 }
 
 - (int)userAction
@@ -122,39 +122,39 @@ LABEL_9:
   return v5;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v10 = a3;
-  v4 = [v10 commonContext];
+  parametersCopy = parameters;
+  commonContext = [parametersCopy commonContext];
 
-  if (!v4)
+  if (!commonContext)
   {
     v5 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v10 setCommonContext:v5];
+    [parametersCopy setCommonContext:v5];
   }
 
-  v6 = [(RAPMenuQuestion *)self mainMenuItems];
-  v7 = [v6 count];
+  mainMenuItems = [(RAPMenuQuestion *)self mainMenuItems];
+  v7 = [mainMenuItems count];
 
   if (v7)
   {
-    v8 = [v10 commonContext];
-    [v8 addUserPath:49];
+    commonContext2 = [parametersCopy commonContext];
+    [commonContext2 addUserPath:49];
   }
 
-  v9 = [(RAPMenuQuestion *)self selectedMenuItem];
-  [v9 _fillSubmissionParameters:v10];
+  selectedMenuItem = [(RAPMenuQuestion *)self selectedMenuItem];
+  [selectedMenuItem _fillSubmissionParameters:parametersCopy];
 }
 
-- (void)refreshMainMenuItemsWithCallback:(id)a3
+- (void)refreshMainMenuItemsWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   if (!self->_isRefreshing)
   {
     self->_isRefreshing = 1;
     shortcutType = self->_shortcutType;
     v6 = MapsSuggestionsResourceDepotForMapsProcess();
-    v7 = [v6 oneFavorites];
+    oneFavorites = [v6 oneFavorites];
 
     objc_initWeak(&location, self);
     v8[0] = _NSConcreteStackBlock;
@@ -163,23 +163,23 @@ LABEL_9:
     v8[3] = &unk_10163C080;
     v10[1] = shortcutType;
     objc_copyWeak(v10, &location);
-    v9 = v4;
-    [v7 loadAllShortcutsWithHandler:v8];
+    v9 = callbackCopy;
+    [oneFavorites loadAllShortcutsWithHandler:v8];
 
     objc_destroyWeak(v10);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_createQuestionsFromShortcuts:(id)a3
+- (void)_createQuestionsFromShortcuts:(id)shortcuts
 {
-  v4 = a3;
+  shortcutsCopy = shortcuts;
   v5 = objc_alloc_init(NSMutableArray);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = v4;
+  v6 = shortcutsCopy;
   v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
@@ -197,8 +197,8 @@ LABEL_9:
 
         v11 = *(*(&v17 + 1) + 8 * v10);
         v12 = [RAPPersonalPlaceSelectionQuestion alloc];
-        v13 = [(RAPQuestion *)self report];
-        v14 = [(RAPPersonalPlaceSelectionQuestion *)v12 initWithReport:v13 parentQuestion:self shortcut:v11];
+        report = [(RAPQuestion *)self report];
+        v14 = [(RAPPersonalPlaceSelectionQuestion *)v12 initWithReport:report parentQuestion:self shortcut:v11];
 
         [v5 addObject:v14];
         v10 = v10 + 1;
@@ -216,12 +216,12 @@ LABEL_9:
   self->super._mainMenuItems = v15;
 }
 
-- (RAPPersonalPlaceCorrectionsWhichOneQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 shortcutType:(int64_t)a5
+- (RAPPersonalPlaceCorrectionsWhichOneQuestion)initWithReport:(id)report parentQuestion:(id)question shortcutType:(int64_t)type
 {
-  v8 = a3;
+  reportCopy = report;
   v16.receiver = self;
   v16.super_class = RAPPersonalPlaceCorrectionsWhichOneQuestion;
-  v9 = [(RAPQuestion *)&v16 initWithReport:v8 parentQuestion:a4];
+  v9 = [(RAPQuestion *)&v16 initWithReport:reportCopy parentQuestion:question];
   v10 = v9;
   if (!v9)
   {
@@ -229,18 +229,18 @@ LABEL_9:
   }
 
   v9->_isRefreshing = 0;
-  v9->_shortcutType = a5;
-  if (a5 <= 2)
+  v9->_shortcutType = type;
+  if (type <= 2)
   {
-    if (a5 >= 2)
+    if (type >= 2)
     {
-      if (a5 == 2)
+      if (type == 2)
       {
-        mainMenuItems = [v8 _context];
-        v12 = [mainMenuItems homeShortcuts];
+        mainMenuItems = [reportCopy _context];
+        homeShortcuts = [mainMenuItems homeShortcuts];
 LABEL_12:
-        v14 = v12;
-        [(RAPPersonalPlaceCorrectionsWhichOneQuestion *)v10 _createQuestionsFromShortcuts:v12];
+        v14 = homeShortcuts;
+        [(RAPPersonalPlaceCorrectionsWhichOneQuestion *)v10 _createQuestionsFromShortcuts:homeShortcuts];
 
         goto LABEL_13;
       }
@@ -257,15 +257,15 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  switch(a5)
+  switch(type)
   {
     case 3:
-      mainMenuItems = [v8 _context];
-      v12 = [mainMenuItems workShortcuts];
+      mainMenuItems = [reportCopy _context];
+      homeShortcuts = [mainMenuItems workShortcuts];
       goto LABEL_12;
     case 5:
-      mainMenuItems = [v8 _context];
-      v12 = [mainMenuItems schoolShortcuts];
+      mainMenuItems = [reportCopy _context];
+      homeShortcuts = [mainMenuItems schoolShortcuts];
       goto LABEL_12;
     case 6:
       goto LABEL_9;

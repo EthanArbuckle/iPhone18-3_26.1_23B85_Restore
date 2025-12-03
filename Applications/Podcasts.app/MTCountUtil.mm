@@ -1,19 +1,19 @@
 @interface MTCountUtil
-+ (id)stringForEpisodeCount:(int64_t)a3 titleCase:(BOOL)a4;
-+ (id)stringForNewEpisodeCount:(int64_t)a3 titleCase:(BOOL)a4;
-+ (id)stringForUnplayedEpisodeCount:(int64_t)a3 titleCase:(BOOL)a4;
++ (id)stringForEpisodeCount:(int64_t)count titleCase:(BOOL)case;
++ (id)stringForNewEpisodeCount:(int64_t)count titleCase:(BOOL)case;
++ (id)stringForUnplayedEpisodeCount:(int64_t)count titleCase:(BOOL)case;
 @end
 
 @implementation MTCountUtil
 
-+ (id)stringForEpisodeCount:(int64_t)a3 titleCase:(BOOL)a4
++ (id)stringForEpisodeCount:(int64_t)count titleCase:(BOOL)case
 {
-  v4 = a4;
+  caseCopy = case;
   v6 = +[NSBundle mainBundle];
   v7 = v6;
-  if (a3 == 1)
+  if (count == 1)
   {
-    if (v4)
+    if (caseCopy)
     {
       v8 = @"1 Episode";
     }
@@ -26,9 +26,9 @@
 
   else
   {
-    if (a3)
+    if (count)
     {
-      if (v4)
+      if (caseCopy)
       {
         v9 = @"%@ Episodes";
       }
@@ -40,7 +40,7 @@
 
       v10 = [v6 localizedStringForKey:v9 value:&stru_1004F3018 table:0];
 
-      v11 = [NSNumber numberWithInteger:a3];
+      v11 = [NSNumber numberWithInteger:count];
       v12 = IMAccessibilityLocalizedNumber();
       v13 = [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, v12];
 
@@ -48,7 +48,7 @@
       goto LABEL_14;
     }
 
-    if (v4)
+    if (caseCopy)
     {
       v8 = @"0 Episodes";
     }
@@ -65,14 +65,14 @@ LABEL_14:
   return v13;
 }
 
-+ (id)stringForNewEpisodeCount:(int64_t)a3 titleCase:(BOOL)a4
++ (id)stringForNewEpisodeCount:(int64_t)count titleCase:(BOOL)case
 {
-  v4 = a4;
+  caseCopy = case;
   v6 = +[NSBundle mainBundle];
   v7 = v6;
-  if (a3 == 1)
+  if (count == 1)
   {
-    if (v4)
+    if (caseCopy)
     {
       v8 = @"1 New Episode";
     }
@@ -85,9 +85,9 @@ LABEL_14:
 
   else
   {
-    if (a3)
+    if (count)
     {
-      if (v4)
+      if (caseCopy)
       {
         v9 = @"%@ New Episodes";
       }
@@ -99,7 +99,7 @@ LABEL_14:
 
       v10 = [v6 localizedStringForKey:v9 value:&stru_1004F3018 table:0];
 
-      v11 = [NSNumber numberWithInteger:a3];
+      v11 = [NSNumber numberWithInteger:count];
       v12 = IMAccessibilityLocalizedNumber();
       v13 = [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, v12];
 
@@ -107,7 +107,7 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    if (v4)
+    if (caseCopy)
     {
       v8 = @"0 New Episodes";
     }
@@ -124,14 +124,14 @@ LABEL_14:
   return v13;
 }
 
-+ (id)stringForUnplayedEpisodeCount:(int64_t)a3 titleCase:(BOOL)a4
++ (id)stringForUnplayedEpisodeCount:(int64_t)count titleCase:(BOOL)case
 {
-  v4 = a4;
+  caseCopy = case;
   v6 = +[NSBundle mainBundle];
   v7 = v6;
-  if (a3 == 1)
+  if (count == 1)
   {
-    if (v4)
+    if (caseCopy)
     {
       v8 = @"1 Unplayed Episode";
     }
@@ -144,9 +144,9 @@ LABEL_14:
 
   else
   {
-    if (a3)
+    if (count)
     {
-      if (v4)
+      if (caseCopy)
       {
         v9 = @"%@ Unplayed Episodes";
       }
@@ -158,7 +158,7 @@ LABEL_14:
 
       v10 = [v6 localizedStringForKey:v9 value:&stru_1004F3018 table:0];
 
-      v11 = [NSNumber numberWithInteger:a3];
+      v11 = [NSNumber numberWithInteger:count];
       v12 = IMAccessibilityLocalizedNumber();
       v13 = [NSString stringWithValidatedFormat:v10 validFormatSpecifiers:@"%@" error:0, v12];
 
@@ -166,7 +166,7 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    if (v4)
+    if (caseCopy)
     {
       v8 = @"0 Unplayed Episodes";
     }

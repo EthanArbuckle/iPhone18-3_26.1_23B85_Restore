@@ -1,71 +1,71 @@
 @interface CloudSyncStatusInputSignal
 - (_TtC14HealthPlatform26CloudSyncStatusInputSignal)init;
-- (void)cloudSyncObserver:(id)a3 syncCompletedForRequest:(id)a4;
-- (void)cloudSyncObserver:(id)a3 syncDidStartWithProgress:(id)a4;
-- (void)cloudSyncObserver:(id)a3 syncFailedForRequest:(id)a4 error:(id)a5;
-- (void)cloudSyncObserver:(id)a3 syncFailedWithError:(id)a4;
-- (void)cloudSyncObserver:(id)a3 syncStartedForRequest:(id)a4 withProgress:(id)a5;
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4;
-- (void)cloudSyncObserverSyncCompleted:(id)a3;
+- (void)cloudSyncObserver:(id)observer syncCompletedForRequest:(id)request;
+- (void)cloudSyncObserver:(id)observer syncDidStartWithProgress:(id)progress;
+- (void)cloudSyncObserver:(id)observer syncFailedForRequest:(id)request error:(id)error;
+- (void)cloudSyncObserver:(id)observer syncFailedWithError:(id)error;
+- (void)cloudSyncObserver:(id)observer syncStartedForRequest:(id)request withProgress:(id)progress;
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status;
+- (void)cloudSyncObserverSyncCompleted:(id)completed;
 @end
 
 @implementation CloudSyncStatusInputSignal
 
-- (void)cloudSyncObserver:(id)a3 syncDidStartWithProgress:(id)a4
+- (void)cloudSyncObserver:(id)observer syncDidStartWithProgress:(id)progress
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22853D7C0(v7);
+  observerCopy = observer;
+  progressCopy = progress;
+  selfCopy = self;
+  sub_22853D7C0(progressCopy);
 }
 
-- (void)cloudSyncObserver:(id)a3 syncFailedWithError:(id)a4
+- (void)cloudSyncObserver:(id)observer syncFailedWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_22853DA50(a4);
+  observerCopy = observer;
+  selfCopy = self;
+  errorCopy = error;
+  sub_22853DA50(error);
 }
 
-- (void)cloudSyncObserverSyncCompleted:(id)a3
+- (void)cloudSyncObserverSyncCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = self;
+  completedCopy = completed;
+  selfCopy = self;
   _s14HealthPlatform26CloudSyncStatusInputSignalC05cloudd8ObserverD9CompletedyySo07HKClouddI0CF_0();
 }
 
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22853DF48(v7);
+  updatedCopy = updated;
+  statusCopy = status;
+  selfCopy = self;
+  sub_22853DF48(statusCopy);
 }
 
-- (void)cloudSyncObserver:(id)a3 syncStartedForRequest:(id)a4 withProgress:(id)a5
+- (void)cloudSyncObserver:(id)observer syncStartedForRequest:(id)request withProgress:(id)progress
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_22853E140(v9, v10);
+  observerCopy = observer;
+  requestCopy = request;
+  progressCopy = progress;
+  selfCopy = self;
+  sub_22853E140(requestCopy, progressCopy);
 }
 
-- (void)cloudSyncObserver:(id)a3 syncFailedForRequest:(id)a4 error:(id)a5
+- (void)cloudSyncObserver:(id)observer syncFailedForRequest:(id)request error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_22853E454(v9, a5);
+  observerCopy = observer;
+  requestCopy = request;
+  selfCopy = self;
+  errorCopy = error;
+  sub_22853E454(requestCopy, error);
 }
 
-- (void)cloudSyncObserver:(id)a3 syncCompletedForRequest:(id)a4
+- (void)cloudSyncObserver:(id)observer syncCompletedForRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_22853E7AC(v7);
+  observerCopy = observer;
+  requestCopy = request;
+  selfCopy = self;
+  sub_22853E7AC(requestCopy);
 }
 
 - (_TtC14HealthPlatform26CloudSyncStatusInputSignal)init

@@ -1,19 +1,19 @@
 @interface BCSContactData
-- (BCSContactData)initWithCoder:(id)a3;
-- (BCSContactData)initWithContact:(id)a3;
+- (BCSContactData)initWithCoder:(id)coder;
+- (BCSContactData)initWithContact:(id)contact;
 @end
 
 @implementation BCSContactData
 
-- (BCSContactData)initWithContact:(id)a3
+- (BCSContactData)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v10.receiver = self;
   v10.super_class = BCSContactData;
   v5 = [(BCSContactData *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [contactCopy copy];
     contact = v5->_contact;
     v5->_contact = v6;
 
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (BCSContactData)initWithCoder:(id)a3
+- (BCSContactData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 _bcs_strictlyDecodeObjectOfClass:getCNContactClass() forKey:@"contact"];
+  coderCopy = coder;
+  v5 = [coderCopy _bcs_strictlyDecodeObjectOfClass:getCNContactClass() forKey:@"contact"];
 
   v6 = [(BCSContactData *)self initWithContact:v5];
   return v6;

@@ -1,12 +1,12 @@
 @interface WBSFileVaultRecoveryKeyListenerProxy
 - (WBSFileVaultRecoveryKeyListenerProxy)init;
 - (id)_reconnectIfNecessary;
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3;
-- (void)_setUpConnection:(id)a3;
-- (void)deleteRecoveryKeyForVolumeID:(id)a3 serialNumber:(id)a4 completion:(id)a5;
-- (void)recoveryKeyForVolumeID:(id)a3 serialNumber:(id)a4 completion:(id)a5;
-- (void)recoveryKeysForSerialNumber:(id)a3 completion:(id)a4;
-- (void)saveRecoveryKeyWithRequest:(id)a3 completion:(id)a4;
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler;
+- (void)_setUpConnection:(id)connection;
+- (void)deleteRecoveryKeyForVolumeID:(id)d serialNumber:(id)number completion:(id)completion;
+- (void)recoveryKeyForVolumeID:(id)d serialNumber:(id)number completion:(id)completion;
+- (void)recoveryKeysForSerialNumber:(id)number completion:(id)completion;
+- (void)saveRecoveryKeyWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation WBSFileVaultRecoveryKeyListenerProxy
@@ -29,12 +29,12 @@
   return v2;
 }
 
-- (void)_setUpConnection:(id)a3
+- (void)_setUpConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v5 = WBSFileVaultRecoveryKeyListenerInterface();
-  [v4 setRemoteObjectInterface:v5];
+  [connectionCopy setRemoteObjectInterface:v5];
 
   v8 = MEMORY[0x1E69E9820];
   v9 = 3221225472;
@@ -42,13 +42,13 @@
   v11 = &unk_1E7CF15E8;
   objc_copyWeak(&v12, &location);
   v6 = _Block_copy(&v8);
-  [v4 setInvalidationHandler:{v6, v8, v9, v10, v11}];
-  [v4 setInterruptionHandler:v6];
+  [connectionCopy setInvalidationHandler:{v6, v8, v9, v10, v11}];
+  [connectionCopy setInterruptionHandler:v6];
   v7 = WBSFileVaultRecoveryKeyListenerInterface();
-  [v4 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v4 setExportedObject:self];
-  [v4 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -89,17 +89,17 @@ void __57__WBSFileVaultRecoveryKeyListenerProxy__setUpConnection___block_invoke(
   return v6;
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(id)a3
+- (id)_remoteObjectProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(WBSFileVaultRecoveryKeyListenerProxy *)self _reconnectIfNecessary];
+  handlerCopy = handler;
+  _reconnectIfNecessary = [(WBSFileVaultRecoveryKeyListenerProxy *)self _reconnectIfNecessary];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__WBSFileVaultRecoveryKeyListenerProxy__remoteObjectProxyWithErrorHandler___block_invoke;
   v13[3] = &unk_1E7CF2CC0;
-  v6 = v4;
+  v6 = handlerCopy;
   v14 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v13];
+  v7 = [_reconnectIfNecessary remoteObjectProxyWithErrorHandler:v13];
   v8 = v7;
   if (v7)
   {
@@ -133,10 +133,10 @@ void __75__WBSFileVaultRecoveryKeyListenerProxy__remoteObjectProxyWithErrorHandl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)saveRecoveryKeyWithRequest:(id)a3 completion:(id)a4
+- (void)saveRecoveryKeyWithRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = _os_activity_create(&dword_1B8447000, "FileVaultRecoveryKey/SaveRecoveryKey", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -148,13 +148,13 @@ void __75__WBSFileVaultRecoveryKeyListenerProxy__remoteObjectProxyWithErrorHandl
   v10 = v9;
   v15 = v10;
   v17 = a2;
-  v11 = v8;
+  v11 = completionCopy;
   v16 = v11;
   v12 = [(WBSFileVaultRecoveryKeyListenerProxy *)self _remoteObjectProxyWithErrorHandler:v14];
   v13 = v12;
   if (v12)
   {
-    [v12 saveRecoveryKeyWithRequest:v7 completion:v11];
+    [v12 saveRecoveryKeyWithRequest:requestCopy completion:v11];
   }
 
   os_activity_scope_leave(&state);
@@ -185,11 +185,11 @@ void __78__WBSFileVaultRecoveryKeyListenerProxy_saveRecoveryKeyWithRequest_compl
   }
 }
 
-- (void)recoveryKeyForVolumeID:(id)a3 serialNumber:(id)a4 completion:(id)a5
+- (void)recoveryKeyForVolumeID:(id)d serialNumber:(id)number completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  numberCopy = number;
+  completionCopy = completion;
   v12 = _os_activity_create(&dword_1B8447000, "FileVaultRecoveryKey/GetRecoveryKey", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -201,13 +201,13 @@ void __78__WBSFileVaultRecoveryKeyListenerProxy_saveRecoveryKeyWithRequest_compl
   v13 = v12;
   v18 = v13;
   v20 = a2;
-  v14 = v11;
+  v14 = completionCopy;
   v19 = v14;
   v15 = [(WBSFileVaultRecoveryKeyListenerProxy *)self _remoteObjectProxyWithErrorHandler:v17];
   v16 = v15;
   if (v15)
   {
-    [v15 recoveryKeyForVolumeID:v9 serialNumber:v10 completion:v14];
+    [v15 recoveryKeyForVolumeID:dCopy serialNumber:numberCopy completion:v14];
   }
 
   os_activity_scope_leave(&state);
@@ -238,10 +238,10 @@ void __87__WBSFileVaultRecoveryKeyListenerProxy_recoveryKeyForVolumeID_serialNum
   }
 }
 
-- (void)recoveryKeysForSerialNumber:(id)a3 completion:(id)a4
+- (void)recoveryKeysForSerialNumber:(id)number completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  numberCopy = number;
+  completionCopy = completion;
   v9 = _os_activity_create(&dword_1B8447000, "FileVaultRecoveryKey/GetRecoveryKeys", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -253,13 +253,13 @@ void __87__WBSFileVaultRecoveryKeyListenerProxy_recoveryKeyForVolumeID_serialNum
   v10 = v9;
   v15 = v10;
   v17 = a2;
-  v11 = v8;
+  v11 = completionCopy;
   v16 = v11;
   v12 = [(WBSFileVaultRecoveryKeyListenerProxy *)self _remoteObjectProxyWithErrorHandler:v14];
   v13 = v12;
   if (v12)
   {
-    [v12 recoveryKeysForSerialNumber:v7 completion:v11];
+    [v12 recoveryKeysForSerialNumber:numberCopy completion:v11];
   }
 
   os_activity_scope_leave(&state);
@@ -290,11 +290,11 @@ void __79__WBSFileVaultRecoveryKeyListenerProxy_recoveryKeysForSerialNumber_comp
   }
 }
 
-- (void)deleteRecoveryKeyForVolumeID:(id)a3 serialNumber:(id)a4 completion:(id)a5
+- (void)deleteRecoveryKeyForVolumeID:(id)d serialNumber:(id)number completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  numberCopy = number;
+  completionCopy = completion;
   v12 = _os_activity_create(&dword_1B8447000, "FileVaultRecoveryKey/DeleteRecoveryKey", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -306,13 +306,13 @@ void __79__WBSFileVaultRecoveryKeyListenerProxy_recoveryKeysForSerialNumber_comp
   v13 = v12;
   v18 = v13;
   v20 = a2;
-  v14 = v11;
+  v14 = completionCopy;
   v19 = v14;
   v15 = [(WBSFileVaultRecoveryKeyListenerProxy *)self _remoteObjectProxyWithErrorHandler:v17];
   v16 = v15;
   if (v15)
   {
-    [v15 deleteRecoveryKeyForVolumeID:v9 serialNumber:v10 completion:v14];
+    [v15 deleteRecoveryKeyForVolumeID:dCopy serialNumber:numberCopy completion:v14];
   }
 
   os_activity_scope_leave(&state);

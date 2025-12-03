@@ -1,12 +1,12 @@
 @interface CKOperationConfiguration
-- (void)setCPLDiscretionary:(BOOL)a3;
+- (void)setCPLDiscretionary:(BOOL)discretionary;
 @end
 
 @implementation CKOperationConfiguration
 
-- (void)setCPLDiscretionary:(BOOL)a3
+- (void)setCPLDiscretionary:(BOOL)discretionary
 {
-  if (a3)
+  if (discretionary)
   {
     [(CKOperationConfiguration *)self setDiscretionaryNetworkBehavior:2];
   }

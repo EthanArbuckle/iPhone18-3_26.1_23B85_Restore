@@ -1,21 +1,21 @@
 @interface PTGlobalRenderingMetadataVersion1
-- (BOOL)applyToRenderState:(id)a3 error:(id *)a4;
-- (BOOL)matchesRenderState:(id)a3;
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4;
+- (BOOL)applyToRenderState:(id)state error:(id *)error;
+- (BOOL)matchesRenderState:(id)state;
+- (BOOL)writeToData:(id)data withOptions:(id)options;
 - (CGRect)sensorCropRect;
-- (PTGlobalRenderingMetadataVersion1)initWithData:(id)a3;
-- (PTGlobalRenderingMetadataVersion1)initWithMinorVersion:(unsigned int)a3;
-- (__n128)setExtrinsicsMatrix:(__n128)a3;
-- (void)applyToRenderRequest:(id)a3;
+- (PTGlobalRenderingMetadataVersion1)initWithData:(id)data;
+- (PTGlobalRenderingMetadataVersion1)initWithMinorVersion:(unsigned int)version;
+- (__n128)setExtrinsicsMatrix:(__n128)matrix;
+- (void)applyToRenderRequest:(id)request;
 @end
 
 @implementation PTGlobalRenderingMetadataVersion1
 
-- (PTGlobalRenderingMetadataVersion1)initWithMinorVersion:(unsigned int)a3
+- (PTGlobalRenderingMetadataVersion1)initWithMinorVersion:(unsigned int)version
 {
   v7.receiver = self;
   v7.super_class = PTGlobalRenderingMetadataVersion1;
-  v3 = [(PTGlobalRenderingMetadata *)&v7 initWithMajorVersion:1 minorVersion:*&a3];
+  v3 = [(PTGlobalRenderingMetadata *)&v7 initWithMajorVersion:1 minorVersion:*&version];
   v4 = v3;
   if (v3)
   {
@@ -29,22 +29,22 @@
   return v4;
 }
 
-- (BOOL)writeToData:(id)a3 withOptions:(id)a4
+- (BOOL)writeToData:(id)data withOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PTGlobalRenderingMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7];
-  if ([v6 length] < v8 || -[PTGlobalRenderingMetadata majorVersion](self, "majorVersion") != 1)
+  dataCopy = data;
+  optionsCopy = options;
+  v8 = [(PTGlobalRenderingMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy];
+  if ([dataCopy length] < v8 || -[PTGlobalRenderingMetadata majorVersion](self, "majorVersion") != 1)
   {
     goto LABEL_14;
   }
 
-  v9 = [v6 mutableBytes];
-  *v9 = bswap32([(PTGlobalRenderingMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7]);
-  v9[1] = 1684956530;
-  v9[2] = bswap32([(PTGlobalRenderingMetadata *)self majorVersion]);
-  v9[3] = bswap32([(PTGlobalRenderingMetadata *)self minorVersion]);
-  v29 = v9 + 4;
+  mutableBytes = [dataCopy mutableBytes];
+  *mutableBytes = bswap32([(PTGlobalRenderingMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy]);
+  mutableBytes[1] = 1684956530;
+  mutableBytes[2] = bswap32([(PTGlobalRenderingMetadata *)self majorVersion]);
+  mutableBytes[3] = bswap32([(PTGlobalRenderingMetadata *)self minorVersion]);
+  v29 = mutableBytes + 4;
   *&v10 = self->_defaultAperture;
   [PTParameterPairSerialization appendFloatParameter:1 value:&v29 toOutput:v10];
   *&v11 = self->_minAperture;
@@ -104,8 +104,8 @@
   }
 
   v25 = v29;
-  v26 = v25 - [v6 bytes];
-  if (v26 == [(PTGlobalRenderingMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:v7])
+  v26 = v25 - [dataCopy bytes];
+  if (v26 == [(PTGlobalRenderingMetadataVersion1 *)self sizeOfSerializedObjectWithOptions:optionsCopy])
   {
     v27 = 1;
   }
@@ -119,14 +119,14 @@ LABEL_14:
   return v27;
 }
 
-- (BOOL)matchesRenderState:(id)a3
+- (BOOL)matchesRenderState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   sourceColorBitDepth = self->_sourceColorBitDepth;
-  if (sourceColorBitDepth == [v4 sourceColorBitDepth] && (renderingVersion = self->_renderingVersion, objc_msgSend(v4, "renderingVersion") == renderingVersion) && (noiseScaleFactor = self->_noiseScaleFactor, objc_msgSend(v4, "noiseScaleFactor"), LODWORD(v9) = v8, *&v10 = noiseScaleFactor, -[PTGlobalRenderingMetadataVersion1 nanAwareEqual:with:](self, "nanAwareEqual:with:", v10, v9)))
+  if (sourceColorBitDepth == [stateCopy sourceColorBitDepth] && (renderingVersion = self->_renderingVersion, objc_msgSend(stateCopy, "renderingVersion") == renderingVersion) && (noiseScaleFactor = self->_noiseScaleFactor, objc_msgSend(stateCopy, "noiseScaleFactor"), LODWORD(v9) = v8, *&v10 = noiseScaleFactor, -[PTGlobalRenderingMetadataVersion1 nanAwareEqual:with:](self, "nanAwareEqual:with:", v10, v9)))
   {
     hwModelID = self->_hwModelID;
-    v12 = hwModelID == [v4 hwModelID];
+    v12 = hwModelID == [stateCopy hwModelID];
   }
 
   else
@@ -137,13 +137,13 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)applyToRenderState:(id)a3 error:(id *)a4
+- (BOOL)applyToRenderState:(id)state error:(id *)error
 {
-  v6 = a3;
-  if (a4 && ![PTRenderPipeline isRenderVersionSupported:self->_renderingVersion])
+  stateCopy = state;
+  if (error && ![PTRenderPipeline isRenderVersionSupported:self->_renderingVersion])
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.Portrait.RenderingMetadata" code:2 userInfo:0];
-    *a4 = v7 = 0;
+    *error = v7 = 0;
   }
 
   else
@@ -151,13 +151,13 @@ LABEL_14:
     v7 = 1;
   }
 
-  v8 = [(PTGlobalRenderingMetadataVersion1 *)self matchesRenderState:v6];
-  [v6 setSourceColorBitDepth:self->_sourceColorBitDepth];
-  [v6 setRenderingVersion:self->_renderingVersion];
+  v8 = [(PTGlobalRenderingMetadataVersion1 *)self matchesRenderState:stateCopy];
+  [stateCopy setSourceColorBitDepth:self->_sourceColorBitDepth];
+  [stateCopy setRenderingVersion:self->_renderingVersion];
   *&v9 = self->_noiseScaleFactor;
-  [v6 setNoiseScaleFactor:v9];
-  [v6 setHwModelID:self->_hwModelID];
-  [v6 prepareForRendering:!v8];
+  [stateCopy setNoiseScaleFactor:v9];
+  [stateCopy setHwModelID:self->_hwModelID];
+  [stateCopy prepareForRendering:!v8];
   if (!self->_readSuccessAll)
   {
     v10 = _PTLogSystem();
@@ -172,20 +172,20 @@ LABEL_14:
   return v7;
 }
 
-- (void)applyToRenderRequest:(id)a3
+- (void)applyToRenderRequest:(id)request
 {
   focalLength35mm = self->_focalLength35mm;
-  v5 = a3;
+  requestCopy = request;
   *&v6 = focalLength35mm;
-  [v5 setFocalLenIn35mmFilm:v6];
-  [v5 setConversionGain:self->_conversionGain];
-  [v5 setReadNoise_1x:self->_readNoise1x];
-  [v5 setReadNoise_8x:self->_readNoise8x];
-  [v5 setTotalSensorCropRectSize:{self->_sensorCropRect.size.width, self->_sensorCropRect.size.height}];
-  [v5 setVisCropFactor:*self->_visCropFactor];
+  [requestCopy setFocalLenIn35mmFilm:v6];
+  [requestCopy setConversionGain:self->_conversionGain];
+  [requestCopy setReadNoise_1x:self->_readNoise1x];
+  [requestCopy setReadNoise_8x:self->_readNoise8x];
+  [requestCopy setTotalSensorCropRectSize:{self->_sensorCropRect.size.width, self->_sensorCropRect.size.height}];
+  [requestCopy setVisCropFactor:*self->_visCropFactor];
   *&v7 = self->_networkBias;
-  [v5 setNetworkBias:v7];
-  [v5 setSensorID:self->_sensorID];
+  [requestCopy setNetworkBias:v7];
+  [requestCopy setSensorID:self->_sensorID];
 
   if (!self->_readSuccessAll)
   {
@@ -210,22 +210,22 @@ LABEL_14:
   return result;
 }
 
-- (__n128)setExtrinsicsMatrix:(__n128)a3
+- (__n128)setExtrinsicsMatrix:(__n128)matrix
 {
   result[9] = a2;
-  result[10] = a3;
+  result[10] = matrix;
   result[11] = a4;
   result[12] = a5;
   return result;
 }
 
-- (PTGlobalRenderingMetadataVersion1)initWithData:(id)a3
+- (PTGlobalRenderingMetadataVersion1)initWithData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 bytes];
-  v6 = bswap32(v5[3]);
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v6 = bswap32(bytes[3]);
   v7 = [(PTGlobalRenderingMetadataVersion1 *)self initWithMinorVersion:v6];
-  if (v7 && (v8 = bswap32(*v5), [v4 length] == v8) && (v8 & 7) == 0 && -[PTGlobalRenderingMetadata majorVersion](v7, "majorVersion") == 1 && -[PTGlobalRenderingMetadata majorVersion](v7, "majorVersion") == bswap32(v5[2]))
+  if (v7 && (v8 = bswap32(*bytes), [dataCopy length] == v8) && (v8 & 7) == 0 && -[PTGlobalRenderingMetadata majorVersion](v7, "majorVersion") == 1 && -[PTGlobalRenderingMetadata majorVersion](v7, "majorVersion") == bswap32(bytes[2]))
   {
     v9 = (v8 + 0x7FFFFFFF0) >> 3;
     v300 = 0;
@@ -254,17 +254,17 @@ LABEL_14:
     v7->_rawSensorSize.height = v96;
     v104 = [OUTLINED_FUNCTION_0_2(v96 v97];
     v7->_sensorCropRect.origin.x = v105;
-    v113 = [OUTLINED_FUNCTION_0_2(v104 v106];
+    v106 = [OUTLINED_FUNCTION_0_2(v104 v106];
     v7->_sensorCropRect.origin.y = v114;
-    v122 = [OUTLINED_FUNCTION_0_2(v113 v115];
+    v115 = [OUTLINED_FUNCTION_0_2(v106 v115];
     v7->_sensorCropRect.size.width = v123;
-    v131 = [OUTLINED_FUNCTION_0_2(v122 v124];
+    v124 = [OUTLINED_FUNCTION_0_2(v115 v124];
     v132 = 0;
     v7->_sensorCropRect.size.height = v133;
-    OUTLINED_FUNCTION_0_1(v131, v134, v135, v136, v137, v138, v139, v140, v230, v252, v275, v294, v300);
+    OUTLINED_FUNCTION_0_1(v124, v134, v135, v136, v137, v138, v139, v140, v230, v252, v275, v294, v300);
     do
     {
-      [PTParameterPairSerialization getFloatParameter:v132 | 0x10u fromPairs:v5 + 4 numPairs:v9 didFindValue:&v300];
+      [PTParameterPairSerialization getFloatParameter:v132 | 0x10u fromPairs:bytes + 4 numPairs:v9 didFindValue:&v300];
       LOBYTE(v142) = v132 % 3u;
       if (((v132 % 3u) & 0xFE) != 0)
       {
@@ -284,23 +284,23 @@ LABEL_14:
     while (v132 != 12);
     v143 = [OUTLINED_FUNCTION_3_1() getFloatParameter:28 fromPairs:? numPairs:? didFindValue:?];
     *v7->_visCropFactor = v144;
-    v152 = [OUTLINED_FUNCTION_0_2(v143 v145];
+    v145 = [OUTLINED_FUNCTION_0_2(v143 v145];
     *&v7->_visCropFactor[4] = v153;
-    v161 = [OUTLINED_FUNCTION_0_2(v152 v154];
-    v7->_sensorID = v161;
-    v169 = [OUTLINED_FUNCTION_0_2(v161 v162];
-    v7->_renderingVersion = v169;
-    OUTLINED_FUNCTION_0_1(v169, v170, v171, v172, v173, v174, v175, v176, v234, v256, v278, v297, v300);
+    v154 = [OUTLINED_FUNCTION_0_2(v145 v154];
+    v7->_sensorID = v154;
+    v162 = [OUTLINED_FUNCTION_0_2(v154 v162];
+    v7->_renderingVersion = v162;
+    OUTLINED_FUNCTION_0_1(v162, v170, v171, v172, v173, v174, v175, v176, v234, v256, v278, v297, v300);
     v177 = *v257;
     if (*v257 > 3u && (v178 = [OUTLINED_FUNCTION_3_1() getUIntParameter:32 fromPairs:? numPairs:? didFindValue:?], v7->_sourceColorBitDepth = v178, OUTLINED_FUNCTION_0_1(v178, v179, v180, v181, v182, v183, v184, v185, v235, *v257, *&v257[4], v257[6], v300), v177 > 5))
     {
       v189 = [OUTLINED_FUNCTION_3_1() getFloatParameter:33 fromPairs:? numPairs:? didFindValue:?];
       v7->_networkBias = v190;
-      v198 = [OUTLINED_FUNCTION_0_2(v189 v191];
+      v191 = [OUTLINED_FUNCTION_0_2(v189 v191];
       v7->_noiseScaleFactor = v199;
-      v207 = [OUTLINED_FUNCTION_0_2(v198 v200];
-      v7->_hwModelID = v207;
-      OUTLINED_FUNCTION_0_1(v207, v208, v209, v210, v211, v212, v213, v214, v238, v260, v280, v299, v300);
+      v200 = [OUTLINED_FUNCTION_0_2(v191 v200];
+      v7->_hwModelID = v200;
+      OUTLINED_FUNCTION_0_1(v200, v208, v209, v210, v211, v212, v213, v214, v238, v260, v280, v299, v300);
     }
 
     else

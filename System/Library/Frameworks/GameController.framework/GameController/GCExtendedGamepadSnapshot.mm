@@ -24,48 +24,48 @@
     v6 = self->snapshotData;
     self->snapshotData = v5;
 
-    v7 = [(GCExtendedGamepad *)self dpad];
-    [(GCPhysicalInputProfile *)self setDpad:v7 x:v22.dpadX y:v22.dpadY];
+    dpad = [(GCExtendedGamepad *)self dpad];
+    [(GCPhysicalInputProfile *)self setDpad:dpad x:v22.dpadX y:v22.dpadY];
 
-    v8 = [(GCExtendedGamepad *)self buttonA];
-    [(GCPhysicalInputProfile *)self setButton:v8 value:v22.buttonA];
+    buttonA = [(GCExtendedGamepad *)self buttonA];
+    [(GCPhysicalInputProfile *)self setButton:buttonA value:v22.buttonA];
 
-    v9 = [(GCExtendedGamepad *)self buttonB];
-    [(GCPhysicalInputProfile *)self setButton:v9 value:v22.buttonB];
+    buttonB = [(GCExtendedGamepad *)self buttonB];
+    [(GCPhysicalInputProfile *)self setButton:buttonB value:v22.buttonB];
 
-    v10 = [(GCExtendedGamepad *)self buttonX];
-    [(GCPhysicalInputProfile *)self setButton:v10 value:v22.buttonX];
+    buttonX = [(GCExtendedGamepad *)self buttonX];
+    [(GCPhysicalInputProfile *)self setButton:buttonX value:v22.buttonX];
 
-    v11 = [(GCExtendedGamepad *)self buttonY];
-    [(GCPhysicalInputProfile *)self setButton:v11 value:v22.buttonY];
+    buttonY = [(GCExtendedGamepad *)self buttonY];
+    [(GCPhysicalInputProfile *)self setButton:buttonY value:v22.buttonY];
 
-    v12 = [(GCExtendedGamepad *)self leftThumbstick];
-    [(GCPhysicalInputProfile *)self setDpad:v12 x:v22.leftThumbstickX y:v22.leftThumbstickY];
+    leftThumbstick = [(GCExtendedGamepad *)self leftThumbstick];
+    [(GCPhysicalInputProfile *)self setDpad:leftThumbstick x:v22.leftThumbstickX y:v22.leftThumbstickY];
 
-    v13 = [(GCExtendedGamepad *)self rightThumbstick];
-    [(GCPhysicalInputProfile *)self setDpad:v13 x:v22.rightThumbstickX y:v22.rightThumbstickY];
+    rightThumbstick = [(GCExtendedGamepad *)self rightThumbstick];
+    [(GCPhysicalInputProfile *)self setDpad:rightThumbstick x:v22.rightThumbstickX y:v22.rightThumbstickY];
 
-    v14 = [(GCExtendedGamepad *)self leftShoulder];
-    [(GCPhysicalInputProfile *)self setButton:v14 value:v22.leftShoulder];
+    leftShoulder = [(GCExtendedGamepad *)self leftShoulder];
+    [(GCPhysicalInputProfile *)self setButton:leftShoulder value:v22.leftShoulder];
 
-    v15 = [(GCExtendedGamepad *)self rightShoulder];
-    [(GCPhysicalInputProfile *)self setButton:v15 value:v22.rightShoulder];
+    rightShoulder = [(GCExtendedGamepad *)self rightShoulder];
+    [(GCPhysicalInputProfile *)self setButton:rightShoulder value:v22.rightShoulder];
 
-    v16 = [(GCExtendedGamepad *)self leftTrigger];
-    [(GCPhysicalInputProfile *)self setButton:v16 value:v22.leftTrigger];
+    leftTrigger = [(GCExtendedGamepad *)self leftTrigger];
+    [(GCPhysicalInputProfile *)self setButton:leftTrigger value:v22.leftTrigger];
 
-    v17 = [(GCExtendedGamepad *)self rightTrigger];
-    [(GCPhysicalInputProfile *)self setButton:v17 value:v22.rightTrigger];
+    rightTrigger = [(GCExtendedGamepad *)self rightTrigger];
+    [(GCPhysicalInputProfile *)self setButton:rightTrigger value:v22.rightTrigger];
 
     if (v22.version >= 0x101u && v22.supportsClickableThumbsticks)
     {
-      v18 = [(GCExtendedGamepad *)self rightThumbstickButton];
+      rightThumbstickButton = [(GCExtendedGamepad *)self rightThumbstickButton];
       LOBYTE(v19) = v22.rightThumbstickButton;
-      [(GCPhysicalInputProfile *)self setButton:v18 value:v19];
+      [(GCPhysicalInputProfile *)self setButton:rightThumbstickButton value:v19];
 
-      v20 = [(GCExtendedGamepad *)self leftThumbstickButton];
+      leftThumbstickButton = [(GCExtendedGamepad *)self leftThumbstickButton];
       LOBYTE(v21) = v22.leftThumbstickButton;
-      [(GCPhysicalInputProfile *)self setButton:v20 value:v21];
+      [(GCPhysicalInputProfile *)self setButton:leftThumbstickButton value:v21];
     }
   }
 }
@@ -132,7 +132,7 @@
       }
 
 LABEL_13:
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_14;
     }
   }
@@ -189,10 +189,10 @@ LABEL_5:
     __destructor_8_s0_s48_s56_s64(&snapshotData[i]);
   }
 
-  v12 = self;
+  selfCopy = self;
 LABEL_14:
 
-  return v12;
+  return selfCopy;
 }
 
 @end

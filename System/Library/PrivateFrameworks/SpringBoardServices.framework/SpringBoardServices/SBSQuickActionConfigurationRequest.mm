@@ -1,20 +1,20 @@
 @interface SBSQuickActionConfigurationRequest
-- (SBSQuickActionConfigurationRequest)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_requestQuickActionControlWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5 quickActionCategory:(unint64_t)a6 type:(unint64_t)a7 location:(int64_t)a8;
-- (void)encodeWithCoder:(id)a3;
+- (SBSQuickActionConfigurationRequest)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_requestQuickActionControlWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind quickActionCategory:(unint64_t)category type:(unint64_t)type location:(int64_t)location;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSQuickActionConfigurationRequest
 
-- (void)_requestQuickActionControlWithExtensionBundleIdentifier:(id)a3 containerBundleIdentifier:(id)a4 kind:(id)a5 quickActionCategory:(unint64_t)a6 type:(unint64_t)a7 location:(int64_t)a8
+- (void)_requestQuickActionControlWithExtensionBundleIdentifier:(id)identifier containerBundleIdentifier:(id)bundleIdentifier kind:(id)kind quickActionCategory:(unint64_t)category type:(unint64_t)type location:(int64_t)location
 {
-  v19 = a3;
-  v14 = a4;
-  v15 = a5;
-  if (a8)
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  kindCopy = kind;
+  if (location)
   {
-    if (a8 != 1)
+    if (location != 1)
     {
       goto LABEL_6;
     }
@@ -27,33 +27,33 @@
     v16 = 8;
   }
 
-  v17 = [[SBSQuickActionControlRequest alloc] initWithExtensionBundleIdentifier:v19 containerBundleIdentifier:v14 kind:v15 quickActionCategory:a6 type:a7 location:a8];
+  v17 = [[SBSQuickActionControlRequest alloc] initWithExtensionBundleIdentifier:identifierCopy containerBundleIdentifier:bundleIdentifierCopy kind:kindCopy quickActionCategory:category type:type location:location];
   v18 = *(&self->super.isa + v16);
   *(&self->super.isa + v16) = v17;
 
 LABEL_6:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   objc_storeStrong(v4 + 1, self->_leadingQuickActionControlRequest);
   objc_storeStrong(v4 + 2, self->_trailingQuickActionControlRequest);
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   leadingQuickActionControlRequest = self->_leadingQuickActionControlRequest;
-  v5 = a3;
-  [v5 encodeObject:leadingQuickActionControlRequest forKey:@"kSBSQuickActionConfigurationLeadingControlRequest"];
-  [v5 encodeObject:self->_trailingQuickActionControlRequest forKey:@"kSBSQuickActionConfigurationTrailingControlRequest"];
+  coderCopy = coder;
+  [coderCopy encodeObject:leadingQuickActionControlRequest forKey:@"kSBSQuickActionConfigurationLeadingControlRequest"];
+  [coderCopy encodeObject:self->_trailingQuickActionControlRequest forKey:@"kSBSQuickActionConfigurationTrailingControlRequest"];
 }
 
-- (SBSQuickActionConfigurationRequest)initWithCoder:(id)a3
+- (SBSQuickActionConfigurationRequest)initWithCoder:(id)coder
 {
   v15[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SBSQuickActionConfigurationRequest;
   v5 = [(SBSQuickActionConfigurationRequest *)&v14 init];
@@ -68,11 +68,11 @@ LABEL_6:
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:5];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kSBSQuickActionConfigurationLeadingControlRequest"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kSBSQuickActionConfigurationLeadingControlRequest"];
     leadingQuickActionControlRequest = v5->_leadingQuickActionControlRequest;
     v5->_leadingQuickActionControlRequest = v9;
 
-    v11 = [v4 decodeObjectOfClasses:v8 forKey:@"kSBSQuickActionConfigurationTrailingControlRequest"];
+    v11 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kSBSQuickActionConfigurationTrailingControlRequest"];
     trailingQuickActionControlRequest = v5->_trailingQuickActionControlRequest;
     v5->_trailingQuickActionControlRequest = v11;
   }

@@ -1,22 +1,22 @@
 @interface PXSplitViewController
 + (void)initialize;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isSidebarVisible;
-- (PXSplitViewController)initWithSidebarViewController:(id)a3 contentViewController:(id)a4;
+- (PXSplitViewController)initWithSidebarViewController:(id)controller contentViewController:(id)viewController;
 - (UIViewController)contentViewController;
 - (id)preferredFocusEnvironments;
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
-- (int64_t)_splitViewController:(id)a3 overrideProposedPermission:(int64_t)a4 forInteractivePresentationGesture:(id)a5 inView:(id)a6;
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4;
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4;
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space;
+- (int64_t)_splitViewController:(id)controller overrideProposedPermission:(int64_t)permission forInteractivePresentationGesture:(id)gesture inView:(id)view;
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode;
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column;
 - (void)dismissPrimaryColumnIfOverlay;
-- (void)registerChangeObserver:(id)a3;
-- (void)requestFocusUpdateWithPreferredFocusEnvironment:(id)a3;
-- (void)setWantsSidebarHidden:(BOOL)a3;
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4;
+- (void)registerChangeObserver:(id)observer;
+- (void)requestFocusUpdateWithPreferredFocusEnvironment:(id)environment;
+- (void)setWantsSidebarHidden:(BOOL)hidden;
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode;
 - (void)toggleSidebarVisibilityAnimated;
-- (void)unregisterChangeObserver:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)unregisterChangeObserver:(id)observer;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PXSplitViewController
@@ -24,23 +24,23 @@
 + (void)initialize
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1 && (MEMORY[0x1A590D320]() & 1) == 0)
+  if (objc_opt_class() == self && (MEMORY[0x1A590D320]() & 1) == 0)
   {
-    v2 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v4 = @"sidebarHiddenOnLaunch1";
     v5[0] = MEMORY[0x1E695E118];
     v3 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
-    [v2 registerDefaults:v3];
+    [standardUserDefaults registerDefaults:v3];
   }
 }
 
-- (int64_t)_splitViewController:(id)a3 overrideProposedPermission:(int64_t)a4 forInteractivePresentationGesture:(id)a5 inView:(id)a6
+- (int64_t)_splitViewController:(id)controller overrideProposedPermission:(int64_t)permission forInteractivePresentationGesture:(id)gesture inView:(id)view
 {
-  v7 = a6;
-  [a5 locationInView:v7];
-  LODWORD(a5) = [v7 px_areAllScrollViewsContainingPoint:objc_msgSend(v7 scrolledAtEdge:{"px_leadingEdge"), v8, v9}];
+  viewCopy = view;
+  [gesture locationInView:viewCopy];
+  LODWORD(gesture) = [viewCopy px_areAllScrollViewsContainingPoint:objc_msgSend(viewCopy scrolledAtEdge:{"px_leadingEdge"), v8, v9}];
 
-  if (a5)
+  if (gesture)
   {
     return 0;
   }
@@ -51,33 +51,33 @@
   }
 }
 
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a4;
-  v9 = [v7 array];
+  spaceCopy = space;
+  array = [v7 array];
   v10 = [(PXSplitViewController *)self viewControllerForColumn:0];
-  v11 = [v10 px_diagnosticsItemProvidersForPoint:v8 inCoordinateSpace:{x, y}];
-  [v9 addObjectsFromArray:v11];
+  v11 = [v10 px_diagnosticsItemProvidersForPoint:spaceCopy inCoordinateSpace:{x, y}];
+  [array addObjectsFromArray:v11];
 
   v12 = [(PXSplitViewController *)self viewControllerForColumn:2];
-  v13 = [v12 px_diagnosticsItemProvidersForPoint:v8 inCoordinateSpace:{x, y}];
+  v13 = [v12 px_diagnosticsItemProvidersForPoint:spaceCopy inCoordinateSpace:{x, y}];
 
-  [v9 addObjectsFromArray:v13];
+  [array addObjectsFromArray:v13];
 
-  return v9;
+  return array;
 }
 
-- (int64_t)splitViewController:(id)a3 displayModeForExpandingToProposedDisplayMode:(int64_t)a4
+- (int64_t)splitViewController:(id)controller displayModeForExpandingToProposedDisplayMode:(int64_t)mode
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSHashTable *)self->_changeObservers allObjects:a3];
+  v6 = [(NSHashTable *)self->_changeObservers allObjects:controller];
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -109,17 +109,17 @@
     while (v8);
   }
 
-  return a4;
+  return mode;
 }
 
-- (int64_t)splitViewController:(id)a3 topColumnForCollapsingToProposedTopColumn:(int64_t)a4
+- (int64_t)splitViewController:(id)controller topColumnForCollapsingToProposedTopColumn:(int64_t)column
 {
   v18 = *MEMORY[0x1E69E9840];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(NSHashTable *)self->_changeObservers allObjects:a3];
+  v6 = [(NSHashTable *)self->_changeObservers allObjects:controller];
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -151,14 +151,14 @@
     while (v8);
   }
 
-  return a4;
+  return column;
 }
 
-- (void)splitViewController:(id)a3 willChangeToDisplayMode:(int64_t)a4
+- (void)splitViewController:(id)controller willChangeToDisplayMode:(int64_t)mode
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 != 3 && !self->_inViewWillTransitionToSize)
+  controllerCopy = controller;
+  if (mode != 3 && !self->_inViewWillTransitionToSize)
   {
     v7 = dispatch_time(0, 0);
     block[0] = MEMORY[0x1E69E9820];
@@ -166,15 +166,15 @@
     block[2] = __69__PXSplitViewController_splitViewController_willChangeToDisplayMode___block_invoke;
     block[3] = &unk_1E77498A0;
     block[4] = self;
-    block[5] = a4;
+    block[5] = mode;
     dispatch_after(v7, MEMORY[0x1E69E96A0], block);
   }
 
-  v8 = [MEMORY[0x1E695E000] standardUserDefaults];
-  [v8 setBool:a4 == 1 forKey:@"sidebarHiddenOnLaunch1"];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  [standardUserDefaults setBool:mode == 1 forKey:@"sidebarHiddenOnLaunch1"];
 
-  v9 = PXIsSidebarVisibleWithDisplayMode(a4);
-  v10 = [(NSHashTable *)self->_changeObservers allObjects];
+  v9 = PXIsSidebarVisibleWithDisplayMode(mode);
+  allObjects = [(NSHashTable *)self->_changeObservers allObjects];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__PXSplitViewController_splitViewController_willChangeToDisplayMode___block_invoke_2;
@@ -186,7 +186,7 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v12 = v10;
+  v12 = allObjects;
   v13 = [v12 countByEnumeratingWithState:&v23 objects:v30 count:16];
   if (v13)
   {
@@ -273,19 +273,19 @@ void __69__PXSplitViewController_splitViewController_willChangeToDisplayMode___b
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   self->_inViewWillTransitionToSize = 1;
   v5.receiver = self;
   v5.super_class = PXSplitViewController;
-  [(PXSplitViewController *)&v5 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(PXSplitViewController *)&v5 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
   self->_inViewWillTransitionToSize = 0;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  if (sel_toggleSidebar_ == a3 && ([(PXSplitViewController *)self presentedViewController], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  senderCopy = sender;
+  if (sel_toggleSidebar_ == action && ([(PXSplitViewController *)self presentedViewController], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
     v7 = 0;
   }
@@ -294,7 +294,7 @@ void __69__PXSplitViewController_splitViewController_willChangeToDisplayMode___b
   {
     v10.receiver = self;
     v10.super_class = PXSplitViewController;
-    v7 = [(PXSplitViewController *)&v10 canPerformAction:a3 withSender:v6];
+    v7 = [(PXSplitViewController *)&v10 canPerformAction:action withSender:senderCopy];
   }
 
   return v7;
@@ -306,7 +306,7 @@ void __69__PXSplitViewController_splitViewController_willChangeToDisplayMode___b
   if (self->_preferredFocusEnvironmentForNextRequest)
   {
     v7[0] = self->_preferredFocusEnvironmentForNextRequest;
-    v3 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
+    preferredFocusEnvironments = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
     preferredFocusEnvironmentForNextRequest = self->_preferredFocusEnvironmentForNextRequest;
     self->_preferredFocusEnvironmentForNextRequest = 0;
   }
@@ -315,16 +315,16 @@ void __69__PXSplitViewController_splitViewController_willChangeToDisplayMode___b
   {
     v6.receiver = self;
     v6.super_class = PXSplitViewController;
-    v3 = [(PXSplitViewController *)&v6 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(PXSplitViewController *)&v6 preferredFocusEnvironments];
   }
 
-  return v3;
+  return preferredFocusEnvironments;
 }
 
-- (void)requestFocusUpdateWithPreferredFocusEnvironment:(id)a3
+- (void)requestFocusUpdateWithPreferredFocusEnvironment:(id)environment
 {
-  objc_storeStrong(&self->_preferredFocusEnvironmentForNextRequest, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_preferredFocusEnvironmentForNextRequest, environment);
+  environmentCopy = environment;
   v6 = [MEMORY[0x1E69DCA38] focusSystemForEnvironment:self];
 
   [v6 requestFocusUpdateToEnvironment:self];
@@ -354,12 +354,12 @@ void __69__PXSplitViewController_splitViewController_willChangeToDisplayMode___b
   }
 }
 
-- (void)setWantsSidebarHidden:(BOOL)a3
+- (void)setWantsSidebarHidden:(BOOL)hidden
 {
-  if (self->_wantsSidebarHidden != a3)
+  if (self->_wantsSidebarHidden != hidden)
   {
-    self->_wantsSidebarHidden = a3;
-    if (a3)
+    self->_wantsSidebarHidden = hidden;
+    if (hidden)
     {
       self->_originalPreferredDisplayMode = [(PXSplitViewController *)self preferredDisplayMode];
       originalPreferredDisplayMode = 1;
@@ -376,42 +376,42 @@ void __69__PXSplitViewController_splitViewController_willChangeToDisplayMode___b
 
 - (BOOL)isSidebarVisible
 {
-  v2 = [(PXSplitViewController *)self displayMode];
+  displayMode = [(PXSplitViewController *)self displayMode];
 
-  return PXIsSidebarVisibleWithDisplayMode(v2);
+  return PXIsSidebarVisibleWithDisplayMode(displayMode);
 }
 
-- (void)unregisterChangeObserver:(id)a3
+- (void)unregisterChangeObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXSplitViewController.m" lineNumber:96 description:{@"%s must be called on the main thread", "-[PXSplitViewController unregisterChangeObserver:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSplitViewController.m" lineNumber:96 description:{@"%s must be called on the main thread", "-[PXSplitViewController unregisterChangeObserver:]"}];
   }
 
-  [(NSHashTable *)self->_changeObservers removeObject:v6];
+  [(NSHashTable *)self->_changeObservers removeObject:observerCopy];
 }
 
-- (void)registerChangeObserver:(id)a3
+- (void)registerChangeObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PXSplitViewController.m" lineNumber:89 description:{@"%s must be called on the main thread", "-[PXSplitViewController registerChangeObserver:]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSplitViewController.m" lineNumber:89 description:{@"%s must be called on the main thread", "-[PXSplitViewController registerChangeObserver:]"}];
   }
 
-  if (![(NSHashTable *)self->_changeObservers containsObject:v6])
+  if (![(NSHashTable *)self->_changeObservers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_changeObservers addObject:v6];
+    [(NSHashTable *)self->_changeObservers addObject:observerCopy];
   }
 }
 
 - (UIViewController)contentViewController
 {
-  v3 = [(PXSplitViewController *)self traitCollection];
-  if ([v3 horizontalSizeClass] == 1)
+  traitCollection = [(PXSplitViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     v4 = 3;
   }
@@ -424,26 +424,26 @@ void __69__PXSplitViewController_splitViewController_willChangeToDisplayMode___b
   return [(PXSplitViewController *)self viewControllerForColumn:v4];
 }
 
-- (PXSplitViewController)initWithSidebarViewController:(id)a3 contentViewController:(id)a4
+- (PXSplitViewController)initWithSidebarViewController:(id)controller contentViewController:(id)viewController
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v16.receiver = self;
   v16.super_class = PXSplitViewController;
   v9 = [(PXSplitViewController *)&v16 initWithStyle:1];
   v10 = v9;
   if (v9)
   {
-    [(PXSplitViewController *)v9 setViewController:v7 forColumn:0];
-    [(PXSplitViewController *)v10 setViewController:v8 forColumn:2];
-    [(PXSplitViewController *)v10 setViewController:v8 forColumn:3];
-    objc_storeStrong(&v10->_sidebarViewController, a3);
-    v11 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(PXSplitViewController *)v9 setViewController:controllerCopy forColumn:0];
+    [(PXSplitViewController *)v10 setViewController:viewControllerCopy forColumn:2];
+    [(PXSplitViewController *)v10 setViewController:viewControllerCopy forColumn:3];
+    objc_storeStrong(&v10->_sidebarViewController, controller);
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     changeObservers = v10->_changeObservers;
-    v10->_changeObservers = v11;
+    v10->_changeObservers = weakObjectsHashTable;
 
-    v13 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v14 = [v13 BOOLForKey:@"sidebarHiddenOnLaunch1"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v14 = [standardUserDefaults BOOLForKey:@"sidebarHiddenOnLaunch1"];
 
     if (v14)
     {

@@ -1,16 +1,16 @@
 @interface MFComposeStyleSelectorButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (int64_t)_accessibilityScannerActivateBehavior;
 @end
 
 @implementation MFComposeStyleSelectorButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFComposeStyleSelectorButton" hasInstanceMethod:@"styleType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"MFComposeFontSelectorButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFComposeStyleSelectorButton" hasInstanceMethod:@"styleType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"MFComposeFontSelectorButton"];
 }
 
 - (int64_t)_accessibilityScannerActivateBehavior
@@ -33,7 +33,7 @@
   {
     v6.receiver = self;
     v6.super_class = MFComposeStyleSelectorButtonAccessibility;
-    v3 = [(MFComposeStyleSelectorButtonAccessibility *)&v6 accessibilityLabel];
+    accessibilityLabel = [(MFComposeStyleSelectorButtonAccessibility *)&v6 accessibilityLabel];
   }
 
   else
@@ -85,15 +85,15 @@
       case 15:
         v4 = @"text.style.button.justify.right";
 LABEL_20:
-        v3 = accessibilityLocalizedString(v4);
+        accessibilityLabel = accessibilityLocalizedString(v4);
         break;
       default:
-        v3 = 0;
+        accessibilityLabel = 0;
         break;
     }
   }
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

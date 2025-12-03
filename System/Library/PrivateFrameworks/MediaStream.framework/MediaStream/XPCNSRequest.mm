@@ -1,16 +1,16 @@
 @interface XPCNSRequest
-- (XPCNSRequest)initWithXPCRequest:(id)a3;
-- (void)sendReply:(id)a3;
+- (XPCNSRequest)initWithXPCRequest:(id)request;
+- (void)sendReply:(id)reply;
 @end
 
 @implementation XPCNSRequest
 
-- (void)sendReply:(id)a3
+- (void)sendReply:(id)reply
 {
   request = self->_request;
-  v5 = a3;
-  v6 = [(XPCRequest *)request reply];
-  inserted = _insertMessage(v6, v5, 0, 0, 0);
+  replyCopy = reply;
+  reply = [(XPCRequest *)request reply];
+  inserted = _insertMessage(reply, replyCopy, 0, 0, 0);
 
   if (inserted)
   {
@@ -25,20 +25,20 @@
   }
 }
 
-- (XPCNSRequest)initWithXPCRequest:(id)a3
+- (XPCNSRequest)initWithXPCRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v23.receiver = self;
   v23.super_class = XPCNSRequest;
   v6 = [(XPCNSRequest *)&v23 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
-    v8 = [v5 message];
+    objc_storeStrong(&v6->_request, request);
+    message = [requestCopy message];
     v21 = 0;
     v22 = 0;
-    v9 = _unpack(v8, &v22, &v21);
+    v9 = _unpack(message, &v22, &v21);
     v10 = v22;
     v11 = v22;
     v12 = v21;

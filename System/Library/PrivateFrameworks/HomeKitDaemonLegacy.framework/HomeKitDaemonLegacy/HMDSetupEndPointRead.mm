@@ -2,44 +2,44 @@
 - (BOOL)_parseFromTLVData;
 - (BOOL)_parseFromTLVDataOnFailure;
 - (BOOL)_parseFromTLVDataOnSuccess;
-- (HMDSetupEndPointRead)initWithCoder:(id)a3;
-- (HMDSetupEndPointRead)initWithSessionIdentifier:(id)a3 address:(id)a4 videoSrtpParameters:(id)a5 audioSrtpParameters:(id)a6 responseStatus:(unint64_t)a7 videoSSRC:(id)a8 audioSSRC:(id)a9;
+- (HMDSetupEndPointRead)initWithCoder:(id)coder;
+- (HMDSetupEndPointRead)initWithSessionIdentifier:(id)identifier address:(id)address videoSrtpParameters:(id)parameters audioSrtpParameters:(id)srtpParameters responseStatus:(unint64_t)status videoSSRC:(id)c audioSSRC:(id)rC;
 - (id)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDSetupEndPointRead
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = HMDSetupEndPointRead;
-  v4 = a3;
-  [(HMDSetupEndPointWrite *)&v7 encodeWithCoder:v4];
-  [v4 encodeInt32:-[HMDSetupEndPointRead responseStatus](self forKey:{"responseStatus", v7.receiver, v7.super_class), @"kSetupEndPointRead__Status"}];
-  v5 = [(HMDSetupEndPointRead *)self videoSSRC];
-  [v4 encodeObject:v5 forKey:@"kSetupEndPointRead__VideoSSRC"];
+  coderCopy = coder;
+  [(HMDSetupEndPointWrite *)&v7 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt32:-[HMDSetupEndPointRead responseStatus](self forKey:{"responseStatus", v7.receiver, v7.super_class), @"kSetupEndPointRead__Status"}];
+  videoSSRC = [(HMDSetupEndPointRead *)self videoSSRC];
+  [coderCopy encodeObject:videoSSRC forKey:@"kSetupEndPointRead__VideoSSRC"];
 
-  v6 = [(HMDSetupEndPointRead *)self audioSSRC];
-  [v4 encodeObject:v6 forKey:@"kSetupEndPointRead__AudioSSRC"];
+  audioSSRC = [(HMDSetupEndPointRead *)self audioSSRC];
+  [coderCopy encodeObject:audioSSRC forKey:@"kSetupEndPointRead__AudioSSRC"];
 }
 
-- (HMDSetupEndPointRead)initWithCoder:(id)a3
+- (HMDSetupEndPointRead)initWithCoder:(id)coder
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HMDSetupEndPointRead;
-  v5 = [(HMDSetupEndPointWrite *)&v18 initWithCoder:v4];
+  v5 = [(HMDSetupEndPointWrite *)&v18 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_responseStatus = [v4 decodeInt32ForKey:@"kSetupEndPointRead__Status"];
+    v5->_responseStatus = [coderCopy decodeInt32ForKey:@"kSetupEndPointRead__Status"];
     v6 = MEMORY[0x277CBEB98];
     v20[0] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kSetupEndPointRead__VideoSSRC"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kSetupEndPointRead__VideoSSRC"];
     videoSSRC = v5->_videoSSRC;
     v5->_videoSSRC = v9;
 
@@ -47,7 +47,7 @@
     v19 = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"kSetupEndPointRead__AudioSSRC"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"kSetupEndPointRead__AudioSSRC"];
     audioSSRC = v5->_audioSSRC;
     v5->_audioSSRC = v14;
   }
@@ -56,21 +56,21 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
   v11.receiver = self;
   v11.super_class = HMDSetupEndPointRead;
-  v6 = a4;
-  v7 = a3;
-  [(HMDSetupEndPointWrite *)&v11 description:v7 indent:v6];
-  v8 = [(HMDSetupEndPointRead *)self videoSSRC];
-  [v7 appendFormat:@"\n %@ videoSSRC = %@ ", v6, v8, v11.receiver, v11.super_class];
+  indentCopy = indent;
+  descriptionCopy = description;
+  [(HMDSetupEndPointWrite *)&v11 description:descriptionCopy indent:indentCopy];
+  videoSSRC = [(HMDSetupEndPointRead *)self videoSSRC];
+  [descriptionCopy appendFormat:@"\n %@ videoSSRC = %@ ", indentCopy, videoSSRC, v11.receiver, v11.super_class];
 
-  v9 = [(HMDSetupEndPointRead *)self audioSSRC];
-  [v7 appendFormat:@"\n %@ audioSSRC = %@ ", v6, v9];
+  audioSSRC = [(HMDSetupEndPointRead *)self audioSSRC];
+  [descriptionCopy appendFormat:@"\n %@ audioSSRC = %@ ", indentCopy, audioSSRC];
 
   v10 = HMDStreamControlPointResponseStatusAsString([(HMDSetupEndPointRead *)self responseStatus]);
-  [v7 appendFormat:@"\n %@ responseStatus = %@ ", v6, v10];
+  [descriptionCopy appendFormat:@"\n %@ responseStatus = %@ ", indentCopy, v10];
 }
 
 - (BOOL)_parseFromTLVDataOnFailure
@@ -92,13 +92,13 @@
 
   if (v6 && (v14.receiver = self, v14.super_class = HMDSetupEndPointRead, [(HMDSetupEndPointWrite *)&v14 _parseFromTLVDataOnSuccess]))
   {
-    v7 = [v3 field];
+    field = [v3 field];
     videoSSRC = self->_videoSSRC;
-    self->_videoSSRC = v7;
+    self->_videoSSRC = field;
 
-    v9 = [v4 field];
+    field2 = [v4 field];
     audioSSRC = self->_audioSSRC;
-    self->_audioSSRC = v9;
+    self->_audioSSRC = field2;
 
     v11 = 1;
   }
@@ -124,20 +124,20 @@
 
   if (v6)
   {
-    v7 = [v4 field];
-    self->_responseStatus = [v7 unsignedIntegerValue];
+    field = [v4 field];
+    self->_responseStatus = [field unsignedIntegerValue];
 
     if (self->_responseStatus)
     {
-      v8 = [(HMDSetupEndPointRead *)self _parseFromTLVDataOnFailure];
+      _parseFromTLVDataOnFailure = [(HMDSetupEndPointRead *)self _parseFromTLVDataOnFailure];
     }
 
     else
     {
-      v8 = [(HMDSetupEndPointRead *)self _parseFromTLVDataOnSuccess];
+      _parseFromTLVDataOnFailure = [(HMDSetupEndPointRead *)self _parseFromTLVDataOnSuccess];
     }
 
-    v9 = v8;
+    v9 = _parseFromTLVDataOnFailure;
   }
 
   else
@@ -153,40 +153,40 @@
 {
   v12.receiver = self;
   v12.super_class = HMDSetupEndPointRead;
-  v3 = [(HMDSetupEndPointWrite *)&v12 tlvData];
-  v4 = [v3 mutableCopy];
+  tlvData = [(HMDSetupEndPointWrite *)&v12 tlvData];
+  v4 = [tlvData mutableCopy];
 
-  v5 = [MEMORY[0x277CFEC80] creator];
+  creator = [MEMORY[0x277CFEC80] creator];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMDSetupEndPointRead responseStatus](self, "responseStatus")}];
-  [v5 addTLV:2 number:v6];
+  [creator addTLV:2 number:v6];
 
-  v7 = [(HMDSetupEndPointRead *)self videoSSRC];
-  [v5 addTLV:6 length:4 number:v7];
+  videoSSRC = [(HMDSetupEndPointRead *)self videoSSRC];
+  [creator addTLV:6 length:4 number:videoSSRC];
 
-  v8 = [(HMDSetupEndPointRead *)self audioSSRC];
-  [v5 addTLV:7 length:4 number:v8];
+  audioSSRC = [(HMDSetupEndPointRead *)self audioSSRC];
+  [creator addTLV:7 length:4 number:audioSSRC];
 
-  v9 = [v5 serialize];
-  [v4 appendData:v9];
+  serialize = [creator serialize];
+  [v4 appendData:serialize];
 
   v10 = [v4 copy];
 
   return v10;
 }
 
-- (HMDSetupEndPointRead)initWithSessionIdentifier:(id)a3 address:(id)a4 videoSrtpParameters:(id)a5 audioSrtpParameters:(id)a6 responseStatus:(unint64_t)a7 videoSSRC:(id)a8 audioSSRC:(id)a9
+- (HMDSetupEndPointRead)initWithSessionIdentifier:(id)identifier address:(id)address videoSrtpParameters:(id)parameters audioSrtpParameters:(id)srtpParameters responseStatus:(unint64_t)status videoSSRC:(id)c audioSSRC:(id)rC
 {
-  v16 = a8;
-  v17 = a9;
+  cCopy = c;
+  rCCopy = rC;
   v21.receiver = self;
   v21.super_class = HMDSetupEndPointRead;
-  v18 = [(HMDSetupEndPointWrite *)&v21 initWithSessionIdentifier:a3 address:a4 videoSrtpParameters:a5 audioSrtpParameters:a6];
+  v18 = [(HMDSetupEndPointWrite *)&v21 initWithSessionIdentifier:identifier address:address videoSrtpParameters:parameters audioSrtpParameters:srtpParameters];
   v19 = v18;
   if (v18)
   {
-    v18->_responseStatus = a7;
-    objc_storeStrong(&v18->_videoSSRC, a8);
-    objc_storeStrong(&v19->_audioSSRC, a9);
+    v18->_responseStatus = status;
+    objc_storeStrong(&v18->_videoSSRC, c);
+    objc_storeStrong(&v19->_audioSSRC, rC);
   }
 
   return v19;

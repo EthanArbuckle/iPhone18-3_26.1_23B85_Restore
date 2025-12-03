@@ -2,18 +2,18 @@
 + (BOOL)predictsDisparity;
 + (CGSize)povcDimensions;
 + (id)defaults;
-- (ADVisualDepthPipeline)initWithMetalCommandQueue:(id)a3 dimensions:(CGSize)a4 format:(unsigned int)a5;
+- (ADVisualDepthPipeline)initWithMetalCommandQueue:(id)queue dimensions:(CGSize)dimensions format:(unsigned int)format;
 - (void)dealloc;
 @end
 
 @implementation ADVisualDepthPipeline
 
-- (ADVisualDepthPipeline)initWithMetalCommandQueue:(id)a3 dimensions:(CGSize)a4 format:(unsigned int)a5
+- (ADVisualDepthPipeline)initWithMetalCommandQueue:(id)queue dimensions:(CGSize)dimensions format:(unsigned int)format
 {
-  height = a4.height;
-  width = a4.width;
+  height = dimensions.height;
+  width = dimensions.width;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  queueCopy = queue;
   v16 = 335680168;
   v17 = 0u;
   v18 = 0u;
@@ -23,7 +23,7 @@
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
-      v20 = v8;
+      v20 = queueCopy;
       v21 = 2048;
       v22 = width;
       v23 = 2048;
@@ -38,7 +38,7 @@ LABEL_6:
   else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 134218496;
-    v20 = v8;
+    v20 = queueCopy;
     v21 = 2048;
     v22 = width;
     v23 = 2048;

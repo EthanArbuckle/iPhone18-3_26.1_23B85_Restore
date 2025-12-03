@@ -1,9 +1,9 @@
 @interface AKExpiringCache
 - (AKExpiringCache)init;
-- (id)objectForKey:(id)a3;
-- (void)flushCacheForced:(BOOL)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4 expiresIn:(double)a5;
+- (id)objectForKey:(id)key;
+- (void)flushCacheForced:(BOOL)forced;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forKey:(id)key expiresIn:(double)in;
 @end
 
 @implementation AKExpiringCache
@@ -30,19 +30,19 @@
   return v5;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4 = v14;
+  objc_storeStrong(location, key);
+  v4 = selfCopy;
   v6 = _NSConcreteStackBlock;
   v7 = -1073741824;
   v8 = 0;
   v9 = sub_100059DC8;
   v10 = &unk_1003205E8;
-  v11 = _objc_retain(v14);
+  v11 = _objc_retain(selfCopy);
   v12 = _objc_retain(location[0]);
   v5 = sub_100059D18(&v4->_lock, &v6);
   objc_storeStrong(&v12, 0);
@@ -52,19 +52,19 @@
   return v5;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
+  objc_storeStrong(location, key);
+  v3 = selfCopy;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_10005A00C;
   v8 = &unk_10031F078;
-  v9 = _objc_retain(v12);
+  v9 = _objc_retain(selfCopy);
   v10 = _objc_retain(location[0]);
   sub_100059FA8(&v3->_lock, &v4);
   objc_storeStrong(&v10, 0);
@@ -72,37 +72,37 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 expiresIn:(double)a5
+- (void)setObject:(id)object forKey:(id)key expiresIn:(double)in
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v25 = 0;
-  objc_storeStrong(&v25, a4);
-  v24 = a5;
+  objc_storeStrong(&v25, key);
+  inCopy = in;
   v8 = [_AKExpiringCacheValue alloc];
   v7 = location[0];
-  v9 = [NSDate dateWithTimeIntervalSinceNow:a5];
+  v9 = [NSDate dateWithTimeIntervalSinceNow:in];
   v23 = [(_AKExpiringCacheValue *)v8 initWithObject:v7 expiryDate:?];
   _objc_release(v9);
-  v10 = v27;
+  v10 = selfCopy;
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
   v18 = sub_10005A31C;
   v19 = &unk_10031F050;
-  v20 = _objc_retain(v27);
+  v20 = _objc_retain(selfCopy);
   v21 = _objc_retain(v23);
   v22 = _objc_retain(v25);
   sub_100059FA8(&v10->_lock, &v15);
-  when = dispatch_time(0, (v24 * 1000000000.0));
+  when = dispatch_time(0, (inCopy * 1000000000.0));
   queue = dispatch_get_global_queue(21, 0);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10005A360;
   v13[3] = &unk_10031F8B0;
-  v14 = _objc_retain(v27);
+  v14 = _objc_retain(selfCopy);
   dispatch_after(when, queue, v13);
   _objc_release(queue);
   objc_storeStrong(&v14, 0);
@@ -114,11 +114,11 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)flushCacheForced:(BOOL)a3
+- (void)flushCacheForced:(BOOL)forced
 {
-  v30 = self;
+  selfCopy = self;
   v29 = a2;
-  v28 = a3;
+  forcedCopy = forced;
   v21 = _NSConcreteStackBlock;
   v22 = -1073741824;
   v23 = 0;
@@ -143,18 +143,18 @@
       }
 
       v20 = *(__b[1] + 8 * v6);
-      p_lock = &v30->_lock;
+      p_lock = &selfCopy->_lock;
       v11 = _NSConcreteStackBlock;
       v12 = -1073741824;
       v13 = 0;
       v14 = sub_10005A710;
       v15 = &unk_100320638;
-      v16 = _objc_retain(v30);
+      v16 = _objc_retain(selfCopy);
       v17 = _objc_retain(v20);
       location = sub_100059D18(p_lock, &v11);
-      if (v28 || ([location isExpired] & 1) != 0)
+      if (forcedCopy || ([location isExpired] & 1) != 0)
       {
-        [(AKExpiringCache *)v30 removeObjectForKey:v20];
+        [(AKExpiringCache *)selfCopy removeObjectForKey:v20];
       }
 
       objc_storeStrong(&location, 0);

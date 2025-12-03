@@ -14,24 +14,24 @@
 
   v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v7 setDateFormat:@"YYYY-MM-dd h:mm:ss a"];
-  v8 = [(MNTraceNavigationEventRow *)self date];
-  v9 = [v7 stringFromDate:v8];
+  date = [(MNTraceNavigationEventRow *)self date];
+  v9 = [v7 stringFromDate:date];
 
   [v3 addObject:v9];
-  v10 = [(MNTraceNavigationEventRow *)self eventName];
+  eventName = [(MNTraceNavigationEventRow *)self eventName];
 
-  if (v10)
+  if (eventName)
   {
-    v11 = [(MNTraceNavigationEventRow *)self eventName];
-    [v3 addObject:v11];
+    eventName2 = [(MNTraceNavigationEventRow *)self eventName];
+    [v3 addObject:eventName2];
   }
 
-  v12 = [(MNTraceNavigationEventRow *)self eventDescription];
+  eventDescription = [(MNTraceNavigationEventRow *)self eventDescription];
 
-  if (v12)
+  if (eventDescription)
   {
-    v13 = [(MNTraceNavigationEventRow *)self eventDescription];
-    [v3 addObject:v13];
+    eventDescription2 = [(MNTraceNavigationEventRow *)self eventDescription];
+    [v3 addObject:eventDescription2];
   }
 
   v14 = [v3 componentsJoinedByString:@" | "];

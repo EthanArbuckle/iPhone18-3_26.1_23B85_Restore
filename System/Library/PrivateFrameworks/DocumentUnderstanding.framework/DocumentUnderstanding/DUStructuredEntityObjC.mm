@@ -3,23 +3,23 @@
 - (DUDebugInfoObjC)responseDebugInfo;
 - (DUDisplayInfoObjC)displayInfo;
 - (DUStructuredEntityObjC)init;
-- (void)setAddressComponents:(id)a3;
-- (void)setCalendarEvent:(id)a3;
-- (void)setDisplayInfo:(id)a3;
-- (void)setEmail:(id)a3;
-- (void)setHomeAutomationID:(id)a3;
-- (void)setPhoneNumber:(id)a3;
-- (void)setResponseDebugInfo:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setType:(id)a3;
-- (void)setUrl:(id)a3;
+- (void)setAddressComponents:(id)components;
+- (void)setCalendarEvent:(id)event;
+- (void)setDisplayInfo:(id)info;
+- (void)setEmail:(id)email;
+- (void)setHomeAutomationID:(id)d;
+- (void)setPhoneNumber:(id)number;
+- (void)setResponseDebugInfo:(id)info;
+- (void)setTitle:(id)title;
+- (void)setType:(id)type;
+- (void)setUrl:(id)url;
 @end
 
 @implementation DUStructuredEntityObjC
 
-- (void)setResponseDebugInfo:(id)a3
+- (void)setResponseDebugInfo:(id)info
 {
-  v9 = objc_msgSend_debugInfoForObjCDebugInfo_(DUObjCCompatibilityUtils, a2, a3, v3, v4);
+  v9 = objc_msgSend_debugInfoForObjCDebugInfo_(DUObjCCompatibilityUtils, a2, info, v3, v4);
   objc_msgSend_setResponseDebugInfo_(self->_underlying, v6, v9, v7, v8);
 }
 
@@ -31,9 +31,9 @@
   return v9;
 }
 
-- (void)setDisplayInfo:(id)a3
+- (void)setDisplayInfo:(id)info
 {
-  v9 = objc_msgSend_displayInfoForObjC_(DUObjCCompatibilityUtils, a2, a3, v3, v4);
+  v9 = objc_msgSend_displayInfoForObjC_(DUObjCCompatibilityUtils, a2, info, v3, v4);
   objc_msgSend_setDisplayInfo_(self->_underlying, v6, v9, v7, v8);
 }
 
@@ -45,15 +45,15 @@
   return v9;
 }
 
-- (void)setHomeAutomationID:(id)a3
+- (void)setHomeAutomationID:(id)d
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(d, a2, d, v3, v4);
   objc_msgSend_setHomeAutomationID_(self->_underlying, v6, v9, v7, v8);
 }
 
-- (void)setCalendarEvent:(id)a3
+- (void)setCalendarEvent:(id)event
 {
-  v9 = objc_msgSend_calendarEventForObjCCalendarEvent_(DUObjCCompatibilityUtils, a2, a3, v3, v4);
+  v9 = objc_msgSend_calendarEventForObjCCalendarEvent_(DUObjCCompatibilityUtils, a2, event, v3, v4);
   objc_msgSend_setCalendarEvent_(self->_underlying, v6, v9, v7, v8);
 }
 
@@ -65,39 +65,39 @@
   return v9;
 }
 
-- (void)setAddressComponents:(id)a3
+- (void)setAddressComponents:(id)components
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(components, a2, components, v3, v4);
   objc_msgSend_setAddressComponents_(self->_underlying, v6, v9, v7, v8);
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(url, a2, url, v3, v4);
   objc_msgSend_setUrl_(self->_underlying, v6, v9, v7, v8);
 }
 
-- (void)setEmail:(id)a3
+- (void)setEmail:(id)email
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(email, a2, email, v3, v4);
   objc_msgSend_setEmail_(self->_underlying, v6, v9, v7, v8);
 }
 
-- (void)setPhoneNumber:(id)a3
+- (void)setPhoneNumber:(id)number
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(number, a2, number, v3, v4);
   objc_msgSend_setPhoneNumber_(self->_underlying, v6, v9, v7, v8);
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(type, a2, type, v3, v4);
   objc_msgSend_setType_(self->_underlying, v6, v9, v7, v8);
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v9 = objc_msgSend_copy(a3, a2, a3, v3, v4);
+  v9 = objc_msgSend_copy(title, a2, title, v3, v4);
   objc_msgSend_setTitle_(self->_underlying, v6, v9, v7, v8);
 }
 

@@ -1,7 +1,7 @@
 @interface AssetActivityItemsConfiguration
 - (NSArray)itemProvidersForActivityItemsConfiguration;
 - (_TtC7Journal31AssetActivityItemsConfiguration)init;
-- (id)activityItemsConfigurationMetadataForItemAtIndex:(int64_t)a3 key:(id)a4;
+- (id)activityItemsConfigurationMetadataForItemAtIndex:(int64_t)index key:(id)key;
 @end
 
 @implementation AssetActivityItemsConfiguration
@@ -15,7 +15,7 @@
 
 - (NSArray)itemProvidersForActivityItemsConfiguration
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001F42FC();
 
   sub_1000065A8(0, &unk_100AD8660);
@@ -24,11 +24,11 @@
   return v3.super.isa;
 }
 
-- (id)activityItemsConfigurationMetadataForItemAtIndex:(int64_t)a3 key:(id)a4
+- (id)activityItemsConfigurationMetadataForItemAtIndex:(int64_t)index key:(id)key
 {
-  v6 = a4;
-  v7 = self;
-  sub_1001F43E8(a3, v15);
+  keyCopy = key;
+  selfCopy = self;
+  sub_1001F43E8(index, v15);
 
   v8 = v16;
   if (v16)

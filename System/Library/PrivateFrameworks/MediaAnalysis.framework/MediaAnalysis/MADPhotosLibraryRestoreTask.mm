@@ -1,29 +1,29 @@
 @interface MADPhotosLibraryRestoreTask
-+ (id)taskWithPhotoLibrary:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
++ (id)taskWithPhotoLibrary:(id)library progressHandler:(id)handler completionHandler:(id)completionHandler cancelBlock:(id)block;
 - (BOOL)isCancelled;
-- (MADPhotosLibraryRestoreTask)initWithPhotoLibrary:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
-- (int)performRestoreForTask:(unint64_t)a3;
+- (MADPhotosLibraryRestoreTask)initWithPhotoLibrary:(id)library progressHandler:(id)handler completionHandler:(id)completionHandler cancelBlock:(id)block;
+- (int)performRestoreForTask:(unint64_t)task;
 - (int)run;
 @end
 
 @implementation MADPhotosLibraryRestoreTask
 
-- (MADPhotosLibraryRestoreTask)initWithPhotoLibrary:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (MADPhotosLibraryRestoreTask)initWithPhotoLibrary:(id)library progressHandler:(id)handler completionHandler:(id)completionHandler cancelBlock:(id)block
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  libraryCopy = library;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
   v27.receiver = self;
   v27.super_class = MADPhotosLibraryRestoreTask;
   v15 = [(MADPhotosLibraryRestoreTask *)&v27 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_photoLibrary, a3);
-    if (v12)
+    objc_storeStrong(&v15->_photoLibrary, library);
+    if (handlerCopy)
     {
-      v17 = v12;
+      v17 = handlerCopy;
     }
 
     else
@@ -35,9 +35,9 @@
     progressHandler = v16->_progressHandler;
     v16->_progressHandler = v18;
 
-    if (v13)
+    if (completionHandlerCopy)
     {
-      v20 = v13;
+      v20 = completionHandlerCopy;
     }
 
     else
@@ -49,9 +49,9 @@
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v21;
 
-    if (v14)
+    if (blockCopy)
     {
-      v23 = v14;
+      v23 = blockCopy;
     }
 
     else
@@ -67,13 +67,13 @@
   return v16;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3 progressHandler:(id)a4 completionHandler:(id)a5 cancelBlock:(id)a6
++ (id)taskWithPhotoLibrary:(id)library progressHandler:(id)handler completionHandler:(id)completionHandler cancelBlock:(id)block
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [[a1 alloc] initWithPhotoLibrary:v10 progressHandler:v11 completionHandler:v12 cancelBlock:v13];
+  libraryCopy = library;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  blockCopy = block;
+  v14 = [[self alloc] initWithPhotoLibrary:libraryCopy progressHandler:handlerCopy completionHandler:completionHandlerCopy cancelBlock:blockCopy];
 
   return v14;
 }
@@ -93,14 +93,14 @@
   return v3 & 1;
 }
 
-- (int)performRestoreForTask:(unint64_t)a3
+- (int)performRestoreForTask:(unint64_t)task
 {
   v5 = VCPTaskIDDescription();
   v6 = +[NSFileManager defaultManager];
   if (![(MADPhotosLibraryRestoreTask *)self isCancelled])
   {
-    v9 = [(PHPhotoLibrary *)self->_photoLibrary mad_restoreStatusFilepath];
-    if (!v9)
+    mad_restoreStatusFilepath = [(PHPhotoLibrary *)self->_photoLibrary mad_restoreStatusFilepath];
+    if (!mad_restoreStatusFilepath)
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -117,8 +117,8 @@
       goto LABEL_66;
     }
 
-    v48 = [NSURL fileURLWithPath:v9 isDirectory:0];
-    v10 = MADLastAnalysisRestoreTimestampKeyForTask(a3);
+    v48 = [NSURL fileURLWithPath:mad_restoreStatusFilepath isDirectory:0];
+    v10 = MADLastAnalysisRestoreTimestampKeyForTask(task);
     if (!v10)
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -136,7 +136,7 @@
       goto LABEL_65;
     }
 
-    v47 = MADAnalysisRestoreAttemptsKeyForTask(a3);
+    v47 = MADAnalysisRestoreAttemptsKeyForTask(task);
     if (!v47)
     {
       if (MediaAnalysisLogLevel() >= 3)
@@ -154,7 +154,7 @@
       goto LABEL_64;
     }
 
-    if ([v6 fileExistsAtPath:v9])
+    if ([v6 fileExistsAtPath:mad_restoreStatusFilepath])
     {
       v54 = 0;
       v46 = [NSDictionary dictionaryWithContentsOfURL:v48 error:&v54];
@@ -249,8 +249,8 @@ LABEL_66:
 
     if ((_os_feature_enabled_impl() & 1) != 0 || _os_feature_enabled_impl())
     {
-      v19 = [(PHPhotoLibrary *)self->_photoLibrary vcp_mediaAnalysisCoreDataBackupFilepath];
-      if (([v6 fileExistsAtPath:v19] & 1) == 0)
+      vcp_mediaAnalysisCoreDataBackupFilepath = [(PHPhotoLibrary *)self->_photoLibrary vcp_mediaAnalysisCoreDataBackupFilepath];
+      if (([v6 fileExistsAtPath:vcp_mediaAnalysisCoreDataBackupFilepath] & 1) == 0)
       {
         if (MediaAnalysisLogLevel() >= 5)
         {
@@ -263,18 +263,18 @@ LABEL_66:
           }
         }
 
-        v21 = [(PHPhotoLibrary *)self->_photoLibrary vcp_mediaAnalysisBackupFilepath];
+        vcp_mediaAnalysisBackupFilepath = [(PHPhotoLibrary *)self->_photoLibrary vcp_mediaAnalysisBackupFilepath];
 
-        v19 = v21;
+        vcp_mediaAnalysisCoreDataBackupFilepath = vcp_mediaAnalysisBackupFilepath;
       }
     }
 
     else
     {
-      v19 = [(PHPhotoLibrary *)self->_photoLibrary vcp_mediaAnalysisBackupFilepath];
+      vcp_mediaAnalysisCoreDataBackupFilepath = [(PHPhotoLibrary *)self->_photoLibrary vcp_mediaAnalysisBackupFilepath];
     }
 
-    if ([v6 fileExistsAtPath:v19])
+    if ([v6 fileExistsAtPath:vcp_mediaAnalysisCoreDataBackupFilepath])
     {
       v22 = [v46 objectForKeyedSubscript:v47];
       v23 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v22 unsignedIntValue] + 1);
@@ -298,7 +298,7 @@ LABEL_66:
         }
 
         photoLibrary = self->_photoLibrary;
-        if (a3 == 1)
+        if (task == 1)
         {
           v51[0] = _NSConcreteStackBlock;
           v51[1] = 3221225472;
@@ -318,7 +318,7 @@ LABEL_66:
         v50[2] = sub_10005A2D8;
         v50[3] = &unk_100283000;
         v50[4] = self;
-        v36 = [MADPhotosRestoreAnalysisTask taskWithPhotoLibrary:photoLibrary forTaskID:a3 progressHandler:progressHandler completionHandler:completionHandler andCancelBlock:v50];
+        v36 = [MADPhotosRestoreAnalysisTask taskWithPhotoLibrary:photoLibrary forTaskID:task progressHandler:progressHandler completionHandler:completionHandler andCancelBlock:v50];
         v37 = [v36 run] == -128;
 
         if (!v37)
@@ -445,26 +445,26 @@ LABEL_67:
     v3 = VCPLogToOSLogType[5];
     if (os_log_type_enabled(&_os_log_default, v3))
     {
-      v4 = [objc_opt_class() taskName];
-      v5 = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
+      taskName = [objc_opt_class() taskName];
+      photoLibraryURL = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
       *buf = 138412546;
-      v28 = v4;
+      v28 = taskName;
       v29 = 2112;
-      v30 = v5;
+      v30 = photoLibraryURL;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v3, "[%@] Attempting restore for library %@", buf, 0x16u);
     }
   }
 
   v6 = +[NSFileManager defaultManager];
-  v7 = [(PHPhotoLibrary *)self->_photoLibrary mad_restoreDirectory];
-  if (([v6 fileExistsAtPath:v7] & 1) == 0)
+  mad_restoreDirectory = [(PHPhotoLibrary *)self->_photoLibrary mad_restoreDirectory];
+  if (([v6 fileExistsAtPath:mad_restoreDirectory] & 1) == 0)
   {
     v25 = NSFilePosixPermissions;
     v26 = &off_100294500;
     v8 = [NSDictionary dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v23 = 0;
-    v9 = [v6 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:v8 error:&v23];
-    v10 = v23;
+    v9 = [v6 createDirectoryAtPath:mad_restoreDirectory withIntermediateDirectories:1 attributes:v8 error:&v23];
+    allowedRestoreTasks = v23;
 
     if ((v9 & 1) == 0)
     {
@@ -474,7 +474,7 @@ LABEL_67:
         if (os_log_type_enabled(&_os_log_default, v17))
         {
           *buf = 138412290;
-          v28 = v10;
+          v28 = allowedRestoreTasks;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v17, "Failed to create restore directory (%@); restore failed", buf, 0xCu);
         }
       }
@@ -487,8 +487,8 @@ LABEL_67:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [objc_opt_class() allowedRestoreTasks];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+  allowedRestoreTasks = [objc_opt_class() allowedRestoreTasks];
+  v11 = [allowedRestoreTasks countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v11)
   {
     v12 = *v20;
@@ -498,7 +498,7 @@ LABEL_67:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(allowedRestoreTasks);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
@@ -512,7 +512,7 @@ LABEL_67:
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+      v11 = [allowedRestoreTasks countByEnumeratingWithState:&v19 objects:v24 count:16];
       if (v11)
       {
         continue;

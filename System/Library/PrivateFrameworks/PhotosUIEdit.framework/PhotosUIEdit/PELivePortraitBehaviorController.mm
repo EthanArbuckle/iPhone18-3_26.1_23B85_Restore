@@ -1,9 +1,9 @@
 @interface PELivePortraitBehaviorController
 - (BOOL)hasLivePortrait;
-- (PELivePortraitBehaviorController)initWithAsset:(id)a3 delegate:(id)a4 hasDepth:(BOOL)a5 hasLive:(BOOL)a6;
+- (PELivePortraitBehaviorController)initWithAsset:(id)asset delegate:(id)delegate hasDepth:(BOOL)depth hasLive:(BOOL)live;
 - (PELivePortraitBehaviorDelegate)delegate;
-- (id)confirmationWarningStringForAction:(unint64_t)a3 compositionController:(id)a4;
-- (void)applySideEffectsForAction:(unint64_t)a3 compositionController:(id)a4;
+- (id)confirmationWarningStringForAction:(unint64_t)action compositionController:(id)controller;
+- (void)applySideEffectsForAction:(unint64_t)action compositionController:(id)controller;
 @end
 
 @implementation PELivePortraitBehaviorController
@@ -17,25 +17,25 @@
 
 - (BOOL)hasLivePortrait
 {
-  v3 = [(PELivePortraitBehaviorController *)self hasDepth];
-  if (v3)
+  hasDepth = [(PELivePortraitBehaviorController *)self hasDepth];
+  if (hasDepth)
   {
 
-    LOBYTE(v3) = [(PELivePortraitBehaviorController *)self hasLive];
+    LOBYTE(hasDepth) = [(PELivePortraitBehaviorController *)self hasLive];
   }
 
-  return v3;
+  return hasDepth;
 }
 
-- (id)confirmationWarningStringForAction:(unint64_t)a3 compositionController:(id)a4
+- (id)confirmationWarningStringForAction:(unint64_t)action compositionController:(id)controller
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [v6 copy];
-  [(PELivePortraitBehaviorController *)self applySideEffectsForAction:a3 compositionController:v7];
-  v8 = [v6 composition];
+  controllerCopy = controller;
+  v7 = [controllerCopy copy];
+  [(PELivePortraitBehaviorController *)self applySideEffectsForAction:action compositionController:v7];
+  composition = [controllerCopy composition];
 
-  v9 = [v7 differingAdjustmentsWithComposition:v8];
+  v9 = [v7 differingAdjustmentsWithComposition:composition];
 
   if ([v9 containsObject:*MEMORY[0x277D3AA68]])
   {
@@ -54,30 +54,30 @@
   return v12;
 }
 
-- (void)applySideEffectsForAction:(unint64_t)a3 compositionController:(id)a4
+- (void)applySideEffectsForAction:(unint64_t)action compositionController:(id)controller
 {
-  v6 = a4;
-  v7 = [(PELivePortraitBehaviorController *)self delegate];
-  if (v7)
+  controllerCopy = controller;
+  delegate = [(PELivePortraitBehaviorController *)self delegate];
+  if (delegate)
   {
-    v8 = [v6 depthAdjustmentController];
-    v37 = v8;
-    if (v8)
+    depthAdjustmentController = [controllerCopy depthAdjustmentController];
+    v37 = depthAdjustmentController;
+    if (depthAdjustmentController)
     {
-      v31 = [v8 enabled];
+      enabled = [depthAdjustmentController enabled];
     }
 
     else
     {
-      v31 = 0;
+      enabled = 0;
     }
 
-    v9 = [v6 livePhotoKeyFrameAdjustmentController];
-    v10 = [v6 autoLoopAdjustmentController];
-    v36 = v10;
-    if (v10)
+    livePhotoKeyFrameAdjustmentController = [controllerCopy livePhotoKeyFrameAdjustmentController];
+    autoLoopAdjustmentController = [controllerCopy autoLoopAdjustmentController];
+    v36 = autoLoopAdjustmentController;
+    if (autoLoopAdjustmentController)
     {
-      v11 = [v10 flavor];
+      flavor = [autoLoopAdjustmentController flavor];
       v12 = PIAutoLoopFlavorFromString();
 
       v13 = v12 != 0;
@@ -97,14 +97,14 @@
       v15 = 0;
     }
 
-    v16 = [v7 isLivePhotoVideoEnabled];
-    v17 = [v6 portraitAdjustmentController];
-    v18 = [v17 enabled];
-    v35 = v17;
-    if (v18)
+    isLivePhotoVideoEnabled = [delegate isLivePhotoVideoEnabled];
+    portraitAdjustmentController = [controllerCopy portraitAdjustmentController];
+    enabled2 = [portraitAdjustmentController enabled];
+    v35 = portraitAdjustmentController;
+    if (enabled2)
     {
-      v19 = [v17 kind];
-      v20 = [MEMORY[0x277D3A938] isPortraitStageEffect:v19];
+      kind = [portraitAdjustmentController kind];
+      v20 = [MEMORY[0x277D3A938] isPortraitStageEffect:kind];
     }
 
     else
@@ -112,22 +112,22 @@
       v20 = 0;
     }
 
-    v34 = [v6 inpaintAdjustmentController];
-    v32 = [v34 operationCount];
-    v33 = [v6 retouchAdjustmentController];
-    v21 = [v33 retouchStrokeCount];
-    v22 = v21;
-    if (a3 <= 3)
+    inpaintAdjustmentController = [controllerCopy inpaintAdjustmentController];
+    operationCount = [inpaintAdjustmentController operationCount];
+    retouchAdjustmentController = [controllerCopy retouchAdjustmentController];
+    retouchStrokeCount = [retouchAdjustmentController retouchStrokeCount];
+    v22 = retouchStrokeCount;
+    if (action <= 3)
     {
-      if (a3 - 2 < 2)
+      if (action - 2 < 2)
       {
         goto LABEL_27;
       }
 
-      if (!a3)
+      if (!action)
       {
         v23 = v30;
-        if (!v9)
+        if (!livePhotoKeyFrameAdjustmentController)
         {
           goto LABEL_39;
         }
@@ -135,12 +135,12 @@
         goto LABEL_28;
       }
 
-      if (a3 == 1)
+      if (action == 1)
       {
-        if ((v16 & v18) == 1)
+        if ((isLivePhotoVideoEnabled & enabled2) == 1)
         {
           v23 = [(PELivePortraitBehaviorController *)self changingPortraitLightingDisablesLive]| v20;
-          if (!v9)
+          if (!livePhotoKeyFrameAdjustmentController)
           {
 LABEL_39:
             v29 = 0;
@@ -153,15 +153,15 @@ LABEL_39:
           }
 
 LABEL_28:
-          v26 = [v6 trimAdjustmentController];
-          if (v26)
+          trimAdjustmentController = [controllerCopy trimAdjustmentController];
+          if (trimAdjustmentController)
           {
             memset(&v40, 0, sizeof(v40));
-            v27 = [(PELivePortraitBehaviorController *)self delegate];
-            v28 = v27;
-            if (v27)
+            delegate2 = [(PELivePortraitBehaviorController *)self delegate];
+            v28 = delegate2;
+            if (delegate2)
             {
-              [v27 unadjustedStillImageTime];
+              [delegate2 unadjustedStillImageTime];
             }
 
             else
@@ -169,23 +169,23 @@ LABEL_28:
               memset(&v40, 0, sizeof(v40));
             }
 
-            [v26 startTime];
+            [trimAdjustmentController startTime];
             time1 = v40;
-            if (CMTimeCompare(&time1, &time2) < 0 || ([v26 endTime], time1 = v40, CMTimeCompare(&time1, &time2) >= 1))
+            if (CMTimeCompare(&time1, &time2) < 0 || ([trimAdjustmentController endTime], time1 = v40, CMTimeCompare(&time1, &time2) >= 1))
             {
-              [v6 removeAdjustmentWithKey:*MEMORY[0x277D3ABD0]];
+              [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3ABD0]];
             }
           }
 
-          [v6 removeAdjustmentWithKey:*MEMORY[0x277D3AA78]];
-          v29 = (v32 | v22) != 0;
+          [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AA78]];
+          v29 = (operationCount | v22) != 0;
 
           if (!v15)
           {
 LABEL_47:
             if (v23)
             {
-              [v7 setLivePhotoVideoEnabled:0];
+              [delegate setLivePhotoVideoEnabled:0];
             }
 
             if (!v29)
@@ -194,23 +194,23 @@ LABEL_47:
             }
 
 LABEL_50:
-            [v6 removeAdjustmentWithKey:*MEMORY[0x277D3AA68]];
-            [v6 removeAdjustmentWithKey:@"inpaintMasks"];
-            [v6 removeAdjustmentWithKey:*MEMORY[0x277D3AAC0]];
+            [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AA68]];
+            [controllerCopy removeAdjustmentWithKey:@"inpaintMasks"];
+            [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AAC0]];
             goto LABEL_51;
           }
 
 LABEL_46:
-          [v6 removeAdjustmentWithKey:*MEMORY[0x277D3A9D0]];
-          [v6 removeAdjustmentWithKey:*MEMORY[0x277D3AAC0]];
-          [v6 removeAdjustmentWithKey:*MEMORY[0x277D3AAB8]];
-          [v6 removeAdjustmentWithKey:*MEMORY[0x277D3AA60]];
+          [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3A9D0]];
+          [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AAC0]];
+          [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AAB8]];
+          [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AA60]];
           goto LABEL_47;
         }
 
 LABEL_27:
         v23 = 0;
-        if (!v9)
+        if (!livePhotoKeyFrameAdjustmentController)
         {
           goto LABEL_39;
         }
@@ -223,16 +223,16 @@ LABEL_51:
       goto LABEL_52;
     }
 
-    if (a3 - 5 >= 2)
+    if (action - 5 >= 2)
     {
-      if (a3 != 4)
+      if (action != 4)
       {
         goto LABEL_51;
       }
 
-      if ((v18 & 1) == 0)
+      if ((enabled2 & 1) == 0)
       {
-        if (!(v32 | v21))
+        if (!(operationCount | retouchStrokeCount))
         {
           goto LABEL_51;
         }
@@ -240,7 +240,7 @@ LABEL_51:
         goto LABEL_50;
       }
 
-      v24 = (v32 | v21) != 0;
+      v24 = (operationCount | retouchStrokeCount) != 0;
       if (([(PELivePortraitBehaviorController *)self changingPortraitLightingDisablesLive]| v20))
       {
         goto LABEL_36;
@@ -249,22 +249,22 @@ LABEL_51:
 
     else
     {
-      v24 = (v32 | v21) != 0;
-      if (v31)
+      v24 = (operationCount | retouchStrokeCount) != 0;
+      if (enabled)
       {
-        [v6 modifyAdjustmentWithKey:*MEMORY[0x277D3AA20] modificationBlock:&__block_literal_global_1807];
-        v25 = [v6 portraitAdjustmentController];
+        [controllerCopy modifyAdjustmentWithKey:*MEMORY[0x277D3AA20] modificationBlock:&__block_literal_global_1807];
+        portraitAdjustmentController2 = [controllerCopy portraitAdjustmentController];
 
-        if (v25)
+        if (portraitAdjustmentController2)
         {
-          [v6 modifyAdjustmentWithKey:*MEMORY[0x277D3AA90] modificationBlock:&__block_literal_global_35];
-          if ((v18 & 1) == 0)
+          [controllerCopy modifyAdjustmentWithKey:*MEMORY[0x277D3AA90] modificationBlock:&__block_literal_global_35];
+          if ((enabled2 & 1) == 0)
           {
             goto LABEL_25;
           }
 
 LABEL_36:
-          [v6 removeAdjustmentWithKey:*MEMORY[0x277D3AA90]];
+          [controllerCopy removeAdjustmentWithKey:*MEMORY[0x277D3AA90]];
           if (!v24)
           {
             goto LABEL_51;
@@ -274,7 +274,7 @@ LABEL_36:
         }
       }
 
-      if (v18)
+      if (enabled2)
       {
         goto LABEL_36;
       }
@@ -293,20 +293,20 @@ LABEL_25:
 LABEL_52:
 }
 
-- (PELivePortraitBehaviorController)initWithAsset:(id)a3 delegate:(id)a4 hasDepth:(BOOL)a5 hasLive:(BOOL)a6
+- (PELivePortraitBehaviorController)initWithAsset:(id)asset delegate:(id)delegate hasDepth:(BOOL)depth hasLive:(BOOL)live
 {
-  v11 = a3;
-  v12 = a4;
+  assetCopy = asset;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = PELivePortraitBehaviorController;
   v13 = [(PELivePortraitBehaviorController *)&v17 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_asset, a3);
-    objc_storeWeak(&v14->_delegate, v12);
-    v14->_hasDepth = a5;
-    v14->_hasLive = a6;
+    objc_storeStrong(&v13->_asset, asset);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    v14->_hasDepth = depth;
+    v14->_hasLive = live;
     v15 = v14;
   }
 

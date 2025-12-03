@@ -29,39 +29,39 @@
   _Block_object_dispose(&v7, 8);
   if (objc_opt_isKindOfClass())
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 - (id)musicKit_commandStatus_error
 {
-  v1 = [a1 _musicKit_self_commandStatus];
-  v2 = [v1 error];
+  _musicKit_self_commandStatus = [self _musicKit_self_commandStatus];
+  error = [_musicKit_self_commandStatus error];
 
-  return v2;
+  return error;
 }
 
 - (id)musicKit_commandStatus_dialog
 {
-  v1 = [a1 _musicKit_self_commandStatus];
-  v2 = [v1 dialog];
+  _musicKit_self_commandStatus = [self _musicKit_self_commandStatus];
+  dialog = [_musicKit_self_commandStatus dialog];
 
-  return v2;
+  return dialog;
 }
 
 - (uint64_t)musicKit_commandStatus_type
 {
-  v1 = [a1 _musicKit_self_commandStatus];
-  v2 = [v1 type];
+  _musicKit_self_commandStatus = [self _musicKit_self_commandStatus];
+  type = [_musicKit_self_commandStatus type];
 
-  if (v2 == 999)
+  if (type == 999)
   {
     v3 = 999;
   }
@@ -71,12 +71,12 @@
     v3 = 0;
   }
 
-  if (v2 == 3)
+  if (type == 3)
   {
     v3 = 3;
   }
 
-  if (v2 == 2)
+  if (type == 2)
   {
     v4 = 2;
   }
@@ -86,12 +86,12 @@
     v4 = 0;
   }
 
-  if (v2 == 1)
+  if (type == 1)
   {
     v4 = 1;
   }
 
-  if (v2 <= 2)
+  if (type <= 2)
   {
     return v4;
   }

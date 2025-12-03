@@ -1,8 +1,8 @@
 @interface TIHardwareKeyboardModifierRemapDetailController
 - (id)newSpecifiers;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation TIHardwareKeyboardModifierRemapDetailController
@@ -13,9 +13,9 @@
   v4 = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   if (!v4)
   {
-    v5 = [(TIHardwareKeyboardModifierRemapDetailController *)self newSpecifiers];
+    newSpecifiers = [(TIHardwareKeyboardModifierRemapDetailController *)self newSpecifiers];
     v6 = *&self->PSListController_opaque[v3];
-    *&self->PSListController_opaque[v3] = v5;
+    *&self->PSListController_opaque[v3] = newSpecifiers;
 
     v4 = *&self->PSListController_opaque[v3];
   }
@@ -26,19 +26,19 @@
 - (id)newSpecifiers
 {
   v31 = objc_alloc_init(NSMutableArray);
-  v3 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
-  v4 = [v3 currentKeyboard];
+  parentController = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
+  currentKeyboard = [parentController currentKeyboard];
 
-  v5 = self;
-  v6 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
+  selfCopy = self;
+  specifier = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
   v7 = PSIDKey;
-  v8 = [v6 propertyForKey:PSIDKey];
+  v8 = [specifier propertyForKey:PSIDKey];
 
   v9 = [v8 isEqualToString:@"Function"];
   v10 = v9;
   if (v9)
   {
-    v11 = sub_E880(v4);
+    v11 = sub_E880(currentKeyboard);
   }
 
   else
@@ -47,13 +47,13 @@
   }
 
   v30 = v8;
-  v29 = sub_C49C(v8, v4, @" key", 0);
-  v12 = [v29 string];
+  v29 = sub_C49C(v8, currentKeyboard, @" key", 0);
+  string = [v29 string];
   v13 = [NSBundle bundleForClass:objc_opt_class()];
   v14 = [v13 localizedStringForKey:@"CHOOSE_KEY_ACTION" value:&stru_49C80 table:@"Keyboard"];
 
-  v28 = v12;
-  v15 = [v14 stringByReplacingOccurrencesOfString:@"%@" withString:v12];
+  v28 = string;
+  v15 = [v14 stringByReplacingOccurrencesOfString:@"%@" withString:string];
 
   v27 = v15;
   v16 = [PSSpecifier groupSpecifierWithName:v15];
@@ -84,7 +84,7 @@
         v23 = v22;
         if (((v10 & 1) != 0 || ([v22 isEqualToString:@"Function"] & 1) == 0) && (!v11 || (objc_msgSend(v23, "isEqualToString:", @"Globe") & 1) == 0))
         {
-          v24 = [PSSpecifier preferenceSpecifierNamed:0 target:v5 set:0 get:0 detail:0 cell:3 edit:0];
+          v24 = [PSSpecifier preferenceSpecifierNamed:0 target:selfCopy set:0 get:0 detail:0 cell:3 edit:0];
           [v24 setProperty:v23 forKey:v7];
           [v31 addObject:v24];
         }
@@ -102,40 +102,40 @@
   return v31;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v50.receiver = self;
   v50.super_class = TIHardwareKeyboardModifierRemapDetailController;
-  v7 = a3;
-  v8 = [(TIHardwareKeyboardModifierRemapDetailController *)&v50 tableView:v7 cellForRowAtIndexPath:v6];
-  v9 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifierAtIndexPath:v6];
+  viewCopy = view;
+  v8 = [(TIHardwareKeyboardModifierRemapDetailController *)&v50 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
+  v9 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifierAtIndexPath:pathCopy];
   v10 = PSIDKey;
   v49 = v9;
   v11 = [v9 propertyForKey:PSIDKey];
-  v12 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
-  v13 = sub_C49C(v11, [v12 currentKeyboard], 0, 1);
+  parentController = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
+  v13 = sub_C49C(v11, [parentController currentKeyboard], 0, 1);
 
   v14 = +[UIListContentConfiguration cellConfiguration];
   v48 = v13;
   [v14 setAttributedText:v13];
   [v8 setContentConfiguration:v14];
-  v15 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
-  v16 = [v15 propertyForKey:v10];
+  specifier = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
+  v16 = [specifier propertyForKey:v10];
 
-  v17 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
+  parentController2 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
   v47 = v16;
-  v18 = [v17 valueForRemappingKey:v16];
+  v18 = [parentController2 valueForRemappingKey:v16];
 
   [v8 setChecked:{objc_msgSend(v11, "isEqualToString:", v18)}];
-  v19 = [v7 window];
-  v20 = [v19 screen];
-  [v20 scale];
+  window = [viewCopy window];
+  screen = [window screen];
+  [screen scale];
   v22 = v21;
 
   v23 = fmax(v22, 1.0);
   v24 = +[UIColor clearColor];
-  [v7 setSeparatorColor:v24];
+  [viewCopy setSeparatorColor:v24];
 
   v25 = [v8 viewWithTag:10086];
   [v8 bounds];
@@ -155,9 +155,9 @@
   }
 
   v35 = 1.0 / v23;
-  v36 = [v6 row];
-  v37 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifiers];
-  v38 = [v37 count] - 3;
+  v36 = [pathCopy row];
+  specifiers = [(TIHardwareKeyboardModifierRemapDetailController *)self specifiers];
+  v38 = [specifiers count] - 3;
 
   if (v36 == v38)
   {
@@ -167,9 +167,9 @@
 
   else
   {
-    v39 = [v6 row];
-    v40 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifiers];
-    v41 = [v40 count] - 2;
+    v39 = [pathCopy row];
+    specifiers2 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifiers];
+    v41 = [specifiers2 count] - 2;
 
     if (v39 >= v41)
     {
@@ -191,21 +191,21 @@
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v13 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifierAtIndexPath:v6];
-  v8 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
+  pathCopy = path;
+  viewCopy = view;
+  v13 = [(TIHardwareKeyboardModifierRemapDetailController *)self specifierAtIndexPath:pathCopy];
+  specifier = [(TIHardwareKeyboardModifierRemapDetailController *)self specifier];
   v9 = PSIDKey;
-  v10 = [v8 propertyForKey:PSIDKey];
+  v10 = [specifier propertyForKey:PSIDKey];
 
   v11 = [v13 propertyForKey:v9];
-  v12 = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
-  [v12 setRemappingFromKey:v10 toValue:v11];
+  parentController = [(TIHardwareKeyboardModifierRemapDetailController *)self parentController];
+  [parentController setRemappingFromKey:v10 toValue:v11];
 
   [(TIHardwareKeyboardModifierRemapDetailController *)self reloadSpecifiers];
-  [v7 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
 @end

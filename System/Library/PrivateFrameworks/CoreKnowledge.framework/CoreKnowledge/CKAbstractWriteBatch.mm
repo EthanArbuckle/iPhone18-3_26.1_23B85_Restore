@@ -1,14 +1,14 @@
 @interface CKAbstractWriteBatch
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation CKAbstractWriteBatch
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  if (a3)
+  if (object)
   {
-    v5 = a4;
+    keyCopy = key;
 
     swift_unknownObjectRetain();
     sub_1C86F929C();
@@ -18,7 +18,7 @@
   else
   {
     memset(v7, 0, sizeof(v7));
-    v6 = a4;
+    keyCopy2 = key;
   }
 
   sub_1C86F8EFC();

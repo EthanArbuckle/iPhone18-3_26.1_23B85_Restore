@@ -1,28 +1,28 @@
 @interface CNDataMapperConfiguration
-- (CNDataMapperConfiguration)initWithContactStoreConfiguration:(id)a3;
+- (CNDataMapperConfiguration)initWithContactStoreConfiguration:(id)configuration;
 - (id)description;
 @end
 
 @implementation CNDataMapperConfiguration
 
-- (CNDataMapperConfiguration)initWithContactStoreConfiguration:(id)a3
+- (CNDataMapperConfiguration)initWithContactStoreConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = CNDataMapperConfiguration;
   v5 = [(CNDataMapperConfiguration *)&v11 init];
   if (v5)
   {
-    v6 = [v4 environment];
-    [(CNDataMapperConfiguration *)v5 setEnvironment:v6];
+    environment = [configurationCopy environment];
+    [(CNDataMapperConfiguration *)v5 setEnvironment:environment];
 
-    v7 = [v4 managedConfiguration];
-    [(CNDataMapperConfiguration *)v5 setManagedConfiguration:v7];
+    managedConfiguration = [configurationCopy managedConfiguration];
+    [(CNDataMapperConfiguration *)v5 setManagedConfiguration:managedConfiguration];
 
-    v8 = [v4 assumedIdentity];
-    [(CNDataMapperConfiguration *)v5 setAssumedIdentity:v8];
+    assumedIdentity = [configurationCopy assumedIdentity];
+    [(CNDataMapperConfiguration *)v5 setAssumedIdentity:assumedIdentity];
 
-    -[CNDataMapperConfiguration setIsContactProvider:](v5, "setIsContactProvider:", [v4 isContactProvider]);
+    -[CNDataMapperConfiguration setIsContactProvider:](v5, "setIsContactProvider:", [configurationCopy isContactProvider]);
     v9 = v5;
   }
 
@@ -39,9 +39,9 @@
   v8 = [v3 appendObject:self->_authorizationContext withName:@"authorizationContext"];
   v9 = [v3 appendName:@"isContactProvider" BOOLValue:self->_isContactProvider];
   v10 = [v3 appendObject:self->_contactProviderManager withName:@"contactProviderManager"];
-  v11 = [v3 build];
+  build = [v3 build];
 
-  return v11;
+  return build;
 }
 
 @end

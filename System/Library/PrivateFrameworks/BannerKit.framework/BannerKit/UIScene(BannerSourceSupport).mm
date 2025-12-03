@@ -6,10 +6,10 @@
 
 - (id)bn_presentableUniqueIdentifier
 {
-  v1 = [a1 _FBSScene];
-  v2 = [v1 bn_presentableUniqueIdentifier];
+  _FBSScene = [self _FBSScene];
+  bn_presentableUniqueIdentifier = [_FBSScene bn_presentableUniqueIdentifier];
 
-  return v2;
+  return bn_presentableUniqueIdentifier;
 }
 
 @end

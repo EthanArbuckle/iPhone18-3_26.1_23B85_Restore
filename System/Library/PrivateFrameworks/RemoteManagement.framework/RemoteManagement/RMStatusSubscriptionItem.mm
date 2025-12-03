@@ -7,10 +7,10 @@
 
 - (void)prepareForDeletion
 {
-  v3 = [(RMStatusSubscriptionItem *)self managedObjectContext];
+  managedObjectContext = [(RMStatusSubscriptionItem *)self managedObjectContext];
   v4 = [NSSet setWithObject:self];
-  v5 = [(RMStatusSubscriptionItem *)self subscribedStatusKeyPaths];
-  v6 = [v5 copy];
+  subscribedStatusKeyPaths = [(RMStatusSubscriptionItem *)self subscribedStatusKeyPaths];
+  v6 = [subscribedStatusKeyPaths copy];
 
   v18 = 0u;
   v19 = 0u;
@@ -32,12 +32,12 @@
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 statusSubscriptionItems];
-        v14 = [v13 isEqualToSet:v4];
+        statusSubscriptionItems = [v12 statusSubscriptionItems];
+        v14 = [statusSubscriptionItems isEqualToSet:v4];
 
         if (v14)
         {
-          [v3 deleteObject:v12];
+          [managedObjectContext deleteObject:v12];
         }
 
         [v12 removeStatusSubscriptionItemsObject:self];
@@ -57,15 +57,15 @@
 - (id)reportDetails
 {
   v3 = objc_opt_new();
-  v4 = [(RMStatusSubscriptionItem *)self keyPath];
-  [v3 setObject:v4 forKeyedSubscript:@"keyPath"];
+  keyPath = [(RMStatusSubscriptionItem *)self keyPath];
+  [v3 setObject:keyPath forKeyedSubscript:@"keyPath"];
 
-  v5 = [(RMStatusSubscriptionItem *)self predicate];
-  v6 = [v5 predicateFormat];
-  [v3 setObject:v6 forKeyedSubscript:@"predicate"];
+  predicate = [(RMStatusSubscriptionItem *)self predicate];
+  predicateFormat = [predicate predicateFormat];
+  [v3 setObject:predicateFormat forKeyedSubscript:@"predicate"];
 
-  v7 = [(RMStatusSubscriptionItem *)self properties];
-  [v3 setObject:v7 forKeyedSubscript:@"properties"];
+  properties = [(RMStatusSubscriptionItem *)self properties];
+  [v3 setObject:properties forKeyedSubscript:@"properties"];
 
   return v3;
 }

@@ -1,11 +1,11 @@
 @interface MCTargetDeviceResolver
-+ (id)stringForWatchAvailability:(unint64_t)a3;
++ (id)stringForWatchAvailability:(unint64_t)availability;
 + (unint64_t)watchAvailability;
-+ (void)_showPromptForHomePodAndWatchWithCompletionBlock:(id)a3;
-+ (void)_showPromptForHomePodWithCompletionBlock:(id)a3;
-+ (void)_showPromptForThisDeviceAndOtherDevicesWithCompletionBlock:(id)a3;
-+ (void)_showPromptForWatchWithCompletionBlock:(id)a3;
-+ (void)showResolutionPromptWithWatchOption:(BOOL)a3 homePodOption:(BOOL)a4 completionBlock:(id)a5;
++ (void)_showPromptForHomePodAndWatchWithCompletionBlock:(id)block;
++ (void)_showPromptForHomePodWithCompletionBlock:(id)block;
++ (void)_showPromptForThisDeviceAndOtherDevicesWithCompletionBlock:(id)block;
++ (void)_showPromptForWatchWithCompletionBlock:(id)block;
++ (void)showResolutionPromptWithWatchOption:(BOOL)option homePodOption:(BOOL)podOption completionBlock:(id)block;
 @end
 
 @implementation MCTargetDeviceResolver
@@ -15,9 +15,9 @@
   v2 = +[NRPairedDeviceRegistry sharedInstance];
   v3 = +[NRPairedDeviceRegistry activePairedDeviceSelectorBlock];
   v4 = [v2 getAllDevicesWithArchivedAltAccountDevicesMatching:v3];
-  v5 = [v4 firstObject];
+  firstObject = [v4 firstObject];
 
-  if (v5)
+  if (firstObject)
   {
     v6 = 0;
   }
@@ -49,9 +49,9 @@
           }
 
           v15 = [*(*(&v18 + 1) + 8 * v14) valueForProperty:{v13, v18}];
-          v16 = [v15 BOOLValue];
+          bOOLValue = [v15 BOOLValue];
 
-          if (v16)
+          if (bOOLValue)
           {
 
             v6 = 1;
@@ -88,38 +88,38 @@ LABEL_15:
   return v6;
 }
 
-+ (void)showResolutionPromptWithWatchOption:(BOOL)a3 homePodOption:(BOOL)a4 completionBlock:(id)a5
++ (void)showResolutionPromptWithWatchOption:(BOOL)option homePodOption:(BOOL)podOption completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v8 = a5;
-  v9 = [a1 watchAvailability];
-  v10 = [a1 isHomePodAvailable];
+  podOptionCopy = podOption;
+  optionCopy = option;
+  blockCopy = block;
+  watchAvailability = [self watchAvailability];
+  isHomePodAvailable = [self isHomePodAvailable];
   v11 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [MCTargetDeviceResolver stringForWatchAvailability:v9];
+    v13 = [MCTargetDeviceResolver stringForWatchAvailability:watchAvailability];
     v17[0] = 67240962;
-    v17[1] = v6;
+    v17[1] = optionCopy;
     v18 = 2114;
     v19 = v13;
     v20 = 1026;
-    v21 = v5;
+    v21 = podOptionCopy;
     v22 = 1026;
-    v23 = v10;
+    v23 = isHomePodAvailable;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "TargetDeviceResolver state: Watch Valid? %{public}d | Watch State? %{public}@ | HomePod Valid? %{public}d | HomePod Available? %{public}d", v17, 0x1Eu);
   }
 
-  if (v9 >= 2)
+  if (watchAvailability >= 2)
   {
-    v6 = 0;
+    optionCopy = 0;
   }
 
-  v14 = v10 & v5;
+  v14 = isHomePodAvailable & podOptionCopy;
   v15 = _MCLogObjects[0];
   v16 = os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT);
-  if (v6 && v14)
+  if (optionCopy && v14)
   {
     if (v16)
     {
@@ -127,7 +127,7 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "TargetDeviceResolver displaying prompt for iPhone, Watch, and HomePod", v17, 2u);
     }
 
-    [a1 _showPromptForThisDeviceAndOtherDevicesWithCompletionBlock:v8];
+    [self _showPromptForThisDeviceAndOtherDevicesWithCompletionBlock:blockCopy];
   }
 
   else if (v14)
@@ -138,10 +138,10 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "TargetDeviceResolver displaying prompt for iPhone and HomePod", v17, 2u);
     }
 
-    [a1 _showPromptForHomePodWithCompletionBlock:v8];
+    [self _showPromptForHomePodWithCompletionBlock:blockCopy];
   }
 
-  else if (v6)
+  else if (optionCopy)
   {
     if (v16)
     {
@@ -149,7 +149,7 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "TargetDeviceResolver displaying prompt for iPhone and Watch", v17, 2u);
     }
 
-    [a1 _showPromptForWatchWithCompletionBlock:v8];
+    [self _showPromptForWatchWithCompletionBlock:blockCopy];
   }
 
   else
@@ -160,13 +160,13 @@ LABEL_15:
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "TargetDeviceResolver skipping prompt because only this device is available", v17, 2u);
     }
 
-    v8[2](v8, +[MCProfile thisDeviceType]);
+    blockCopy[2](blockCopy, +[MCProfile thisDeviceType]);
   }
 }
 
-+ (void)_showPromptForThisDeviceAndOtherDevicesWithCompletionBlock:(id)a3
++ (void)_showPromptForThisDeviceAndOtherDevicesWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[MCUserNotificationManager sharedManager];
   v6 = MCLocalizedString();
   v7 = MCLocalizedString();
@@ -177,57 +177,57 @@ LABEL_15:
   v13[1] = 3221225472;
   v13[2] = sub_10001F5B0;
   v13[3] = &unk_10011C1E8;
-  v14 = v4;
-  v15 = a1;
-  v11 = v4;
+  v14 = blockCopy;
+  selfCopy = self;
+  v11 = blockCopy;
   BYTE2(v12) = 1;
   LOWORD(v12) = 0;
   [v5 displayUserNotificationWithIdentifier:0 title:v6 message:v7 defaultButtonText:v8 alternateButtonText:v9 otherButtonText:v10 textfieldPlaceholder:0.0 displayOnLockScreen:0 dismissOnLock:v12 displayInAppWhitelistModes:0 dismissAfterTimeInterval:v13 assertion:? completionBlock:?];
 }
 
-+ (void)_showPromptForHomePodAndWatchWithCompletionBlock:(id)a3
++ (void)_showPromptForHomePodAndWatchWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[MCUserNotificationManager sharedManager];
   v6 = MCLocalizedString();
   v7 = MCLocalizedString();
   v8 = MCLocalizedString();
-  v9 = [a1 _homepodText];
+  _homepodText = [self _homepodText];
   v10 = MCLocalizedString();
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001F7C8;
   v13[3] = &unk_10011C210;
-  v14 = v4;
-  v11 = v4;
+  v14 = blockCopy;
+  v11 = blockCopy;
   BYTE2(v12) = 1;
   LOWORD(v12) = 0;
-  [v5 displayUserNotificationWithIdentifier:0 title:v6 message:v7 defaultButtonText:v8 alternateButtonText:v9 otherButtonText:v10 textfieldPlaceholder:0.0 displayOnLockScreen:0 dismissOnLock:v12 displayInAppWhitelistModes:0 dismissAfterTimeInterval:v13 assertion:? completionBlock:?];
+  [v5 displayUserNotificationWithIdentifier:0 title:v6 message:v7 defaultButtonText:v8 alternateButtonText:_homepodText otherButtonText:v10 textfieldPlaceholder:0.0 displayOnLockScreen:0 dismissOnLock:v12 displayInAppWhitelistModes:0 dismissAfterTimeInterval:v13 assertion:? completionBlock:?];
 }
 
-+ (void)_showPromptForHomePodWithCompletionBlock:(id)a3
++ (void)_showPromptForHomePodWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[MCUserNotificationManager sharedManager];
   v6 = MCLocalizedString();
   v7 = MCLocalizedString();
   v8 = MCLocalizedString();
   v9 = MCLocalizedStringByDevice();
-  v10 = [a1 _homepodText];
+  _homepodText = [self _homepodText];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10001F964;
   v13[3] = &unk_10011C210;
-  v14 = v4;
-  v11 = v4;
+  v14 = blockCopy;
+  v11 = blockCopy;
   BYTE2(v12) = 1;
   LOWORD(v12) = 0;
-  [v5 displayUserNotificationWithIdentifier:0 title:v6 message:v7 defaultButtonText:v8 alternateButtonText:v9 otherButtonText:v10 textfieldPlaceholder:0.0 displayOnLockScreen:0 dismissOnLock:v12 displayInAppWhitelistModes:0 dismissAfterTimeInterval:v13 assertion:? completionBlock:?];
+  [v5 displayUserNotificationWithIdentifier:0 title:v6 message:v7 defaultButtonText:v8 alternateButtonText:v9 otherButtonText:_homepodText textfieldPlaceholder:0.0 displayOnLockScreen:0 dismissOnLock:v12 displayInAppWhitelistModes:0 dismissAfterTimeInterval:v13 assertion:? completionBlock:?];
 }
 
-+ (void)_showPromptForWatchWithCompletionBlock:(id)a3
++ (void)_showPromptForWatchWithCompletionBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[MCUserNotificationManager sharedManager];
   v5 = MCLocalizedString();
   v6 = MCLocalizedString();
@@ -238,23 +238,23 @@ LABEL_15:
   v12[1] = 3221225472;
   v12[2] = sub_10001FB60;
   v12[3] = &unk_10011C210;
-  v13 = v3;
-  v10 = v3;
+  v13 = blockCopy;
+  v10 = blockCopy;
   BYTE2(v11) = 1;
   LOWORD(v11) = 0;
   [v4 displayUserNotificationWithIdentifier:0 title:v5 message:v6 defaultButtonText:v7 alternateButtonText:v8 otherButtonText:v9 textfieldPlaceholder:0.0 displayOnLockScreen:0 dismissOnLock:v11 displayInAppWhitelistModes:0 dismissAfterTimeInterval:v12 assertion:? completionBlock:?];
 }
 
-+ (id)stringForWatchAvailability:(unint64_t)a3
++ (id)stringForWatchAvailability:(unint64_t)availability
 {
-  if (a3 > 3)
+  if (availability > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_10011C230[a3];
+    return off_10011C230[availability];
   }
 }
 

@@ -1,15 +1,15 @@
 @interface SCLPhoneSettingsViewController
 - (NRDevice)device;
-- (id)viewModelForSettings:(id)a3;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)beginObservingViewModel:(id)a3;
+- (id)viewModelForSettings:(id)settings;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)beginObservingViewModel:(id)model;
 - (void)dealloc;
-- (void)endObservingViewModel:(id)a3;
+- (void)endObservingViewModel:(id)model;
 - (void)loadSchoolModeIfNeeded;
 - (void)loadSpecifierSource;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)scheduleDidChange;
-- (void)setSpecifier:(id)a3;
+- (void)setSpecifier:(id)specifier;
 - (void)updateSchedule;
 @end
 
@@ -17,21 +17,21 @@
 
 - (void)dealloc
 {
-  v3 = [(SCLPhoneSettingsViewController *)self viewModel];
-  [(SCLPhoneSettingsViewController *)self endObservingViewModel:v3];
+  viewModel = [(SCLPhoneSettingsViewController *)self viewModel];
+  [(SCLPhoneSettingsViewController *)self endObservingViewModel:viewModel];
 
   v4.receiver = self;
   v4.super_class = SCLPhoneSettingsViewController;
   [(SCLListViewController *)&v4 dealloc];
 }
 
-- (void)setSpecifier:(id)a3
+- (void)setSpecifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = SCLPhoneSettingsViewController;
-  v4 = a3;
-  [(SCLPhoneSettingsViewController *)&v7 setSpecifier:v4];
-  v5 = [v4 propertyForKey:{@"COSAssociatedDevice", v7.receiver, v7.super_class}];
+  specifierCopy = specifier;
+  [(SCLPhoneSettingsViewController *)&v7 setSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:{@"COSAssociatedDevice", v7.receiver, v7.super_class}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -54,12 +54,12 @@
   device = self->_device;
   if (!device)
   {
-    v4 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v5 = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
-    v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-    v7 = [v6 firstObject];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    activePairedDeviceSelectorBlock = [MEMORY[0x277D2BCF8] activePairedDeviceSelectorBlock];
+    v6 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:activePairedDeviceSelectorBlock];
+    firstObject = [v6 firstObject];
     v8 = self->_device;
-    self->_device = v7;
+    self->_device = firstObject;
 
     device = self->_device;
   }
@@ -72,22 +72,22 @@
   v22 = *MEMORY[0x277D85DE8];
   if (!self->_schoolMode)
   {
-    v3 = [(SCLPhoneSettingsViewController *)self device];
-    v4 = [v3 valueForProperty:*MEMORY[0x277D2BB28]];
-    v5 = [v4 BOOLValue];
+    device = [(SCLPhoneSettingsViewController *)self device];
+    v4 = [device valueForProperty:*MEMORY[0x277D2BB28]];
+    bOOLValue = [v4 BOOLValue];
 
-    if ((v5 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      v6 = [MEMORY[0x277D2BCF8] sharedInstance];
-      v7 = [v6 getAllDevicesWithArchivedAltAccountDevicesMatching:&__block_literal_global_1];
+      mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+      v7 = [mEMORY[0x277D2BCF8] getAllDevicesWithArchivedAltAccountDevicesMatching:&__block_literal_global_1];
 
       v8 = scl_framework_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
       {
-        v14 = [(SCLPhoneSettingsViewController *)self specifier];
-        v15 = [v14 propertyForKey:@"COSAssociatedDevice"];
+        specifier = [(SCLPhoneSettingsViewController *)self specifier];
+        v15 = [specifier propertyForKey:@"COSAssociatedDevice"];
         v16 = 138412802;
-        v17 = v3;
+        v17 = device;
         v18 = 2112;
         v19 = v15;
         v20 = 2112;
@@ -96,12 +96,12 @@
       }
     }
 
-    v9 = [v3 pairingID];
-    if (v9)
+    pairingID = [device pairingID];
+    if (pairingID)
     {
       v10 = objc_alloc_init(MEMORY[0x277D4B770]);
       [v10 setIdentifier:@"SchoolTimeSettings"];
-      [v10 setPairingID:v9];
+      [v10 setPairingID:pairingID];
       [v10 setLoadsSynchronously:1];
       v11 = [objc_alloc(MEMORY[0x277D4B768]) initWithConfiguration:v10];
       schoolMode = self->_schoolMode;
@@ -118,15 +118,15 @@
 {
   v20[2] = *MEMORY[0x277D85DE8];
   [(SCLPhoneSettingsViewController *)self loadSchoolModeIfNeeded];
-  v3 = [(SCLPhoneSettingsViewController *)self schoolMode];
+  schoolMode = [(SCLPhoneSettingsViewController *)self schoolMode];
 
-  if (v3)
+  if (schoolMode)
   {
-    v4 = [(SCLPhoneSettingsViewController *)self schoolMode];
-    v5 = [v4 scheduleSettings];
+    schoolMode2 = [(SCLPhoneSettingsViewController *)self schoolMode];
+    scheduleSettings = [schoolMode2 scheduleSettings];
 
-    [(SCLPhoneSettingsViewController *)self setScheduleSettings:v5];
-    v6 = [(SCLPhoneSettingsViewController *)self viewModelForSettings:v5];
+    [(SCLPhoneSettingsViewController *)self setScheduleSettings:scheduleSettings];
+    v6 = [(SCLPhoneSettingsViewController *)self viewModelForSettings:scheduleSettings];
     [(SCLPhoneSettingsViewController *)self setViewModel:v6];
     [(SCLPhoneSettingsViewController *)self beginObservingViewModel:v6];
     v7 = [[SCLSpecifierDataSource alloc] initWithListController:self viewModel:v6];
@@ -142,20 +142,20 @@
     [(SCLSpecifierDataSource *)v7 setChildDataSources:v10];
 
     [(SCLListViewController *)self setSpecifierSource:v7];
-    v11 = [(SCLPhoneSettingsViewController *)self schoolMode];
+    schoolMode3 = [(SCLPhoneSettingsViewController *)self schoolMode];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __53__SCLPhoneSettingsViewController_loadSpecifierSource__block_invoke;
     v17[3] = &unk_279B6F258;
     v18 = v6;
     v12 = v6;
-    [v11 fetchRecentUnlockHistoryItemsWithCompletion:v17];
+    [schoolMode3 fetchRecentUnlockHistoryItemsWithCompletion:v17];
   }
 
   else
   {
-    v5 = objc_alloc_init(SCLSettingsViewModel);
-    v7 = [[SCLSpecifierDataSource alloc] initWithListController:self viewModel:v5];
+    scheduleSettings = objc_alloc_init(SCLSettingsViewModel);
+    v7 = [[SCLSpecifierDataSource alloc] initWithListController:self viewModel:scheduleSettings];
     [(SCLSpecifierDataSource *)v7 setActive:1];
     v8 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"SCHOOLTIME_UNAVAILABLE_GROUP"];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -222,41 +222,41 @@ uint64_t __53__SCLPhoneSettingsViewController_loadSpecifierSource__block_invoke_
   return SCLLogHistoryViewed();
 }
 
-- (id)viewModelForSettings:(id)a3
+- (id)viewModelForSettings:(id)settings
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  settingsCopy = settings;
   v4 = objc_alloc_init(SCLSettingsViewModel);
-  -[SCLSettingsViewModel setEnabled:](v4, "setEnabled:", [v3 isEnabled]);
-  v5 = [v3 schedule];
+  -[SCLSettingsViewModel setEnabled:](v4, "setEnabled:", [settingsCopy isEnabled]);
+  schedule = [settingsCopy schedule];
 
-  v6 = [v5 scheduledDays];
-  v7 = [v5 uniformTimeIntervals];
-  v8 = v7;
-  if (!v6)
+  scheduledDays = [schedule scheduledDays];
+  uniformTimeIntervals = [schedule uniformTimeIntervals];
+  v8 = uniformTimeIntervals;
+  if (!scheduledDays)
   {
     v13 = +[SCLTimeIntervalModel defaultTimeInterval];
     v29[0] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:1];
 
-    v15 = [MEMORY[0x277CBEA80] currentCalendar];
-    v16 = [v15 SCL_nonWeekendDays];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    sCL_nonWeekendDays = [currentCalendar SCL_nonWeekendDays];
 
     [(SCLSettingsViewModel *)v4 setScheduleType:2];
-    [(SCLSettingsViewModel *)v4 setRepeatSchedule:v16];
+    [(SCLSettingsViewModel *)v4 setRepeatSchedule:sCL_nonWeekendDays];
     [(SCLSettingsViewModel *)v4 setTimeIntervals:v14];
-    v17 = [objc_alloc(MEMORY[0x277D4B738]) initWithTimeIntervals:v14 repeatSchedule:v16];
+    v17 = [objc_alloc(MEMORY[0x277D4B738]) initWithTimeIntervals:v14 repeatSchedule:sCL_nonWeekendDays];
     [(SCLSettingsViewModel *)v4 setCustomSchedule:v17];
 
     goto LABEL_12;
   }
 
-  if (![v7 count])
+  if (![uniformTimeIntervals count])
   {
     [(SCLSettingsViewModel *)v4 setScheduleType:3];
     v18 = objc_alloc(MEMORY[0x277D4B738]);
-    v19 = [v5 recurrences];
-    v20 = [v18 initWithRecurrences:v19];
+    recurrences = [schedule recurrences];
+    v20 = [v18 initWithRecurrences:recurrences];
     [(SCLSettingsViewModel *)v4 setCustomSchedule:v20];
 
     v21 = +[SCLTimeIntervalModel defaultTimeInterval];
@@ -267,10 +267,10 @@ uint64_t __53__SCLPhoneSettingsViewController_loadSpecifierSource__block_invoke_
     goto LABEL_12;
   }
 
-  v9 = [MEMORY[0x277CBEA80] currentCalendar];
-  v10 = [v9 SCL_nonWeekendDays];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  sCL_nonWeekendDays2 = [currentCalendar2 SCL_nonWeekendDays];
 
-  if (v6 == 127)
+  if (scheduledDays == 127)
   {
     [(SCLSettingsViewModel *)v4 setScheduleType:1];
     v11 = v4;
@@ -279,7 +279,7 @@ uint64_t __53__SCLPhoneSettingsViewController_loadSpecifierSource__block_invoke_
 
   else
   {
-    if (v6 != v10)
+    if (scheduledDays != sCL_nonWeekendDays2)
     {
       [(SCLSettingsViewModel *)v4 setScheduleType:3];
       goto LABEL_11;
@@ -287,14 +287,14 @@ uint64_t __53__SCLPhoneSettingsViewController_loadSpecifierSource__block_invoke_
 
     [(SCLSettingsViewModel *)v4 setScheduleType:2];
     v11 = v4;
-    v12 = v6;
+    v12 = scheduledDays;
   }
 
   [(SCLSettingsViewModel *)v11 setRepeatSchedule:v12];
 LABEL_11:
   v23 = objc_alloc(MEMORY[0x277D4B738]);
-  v24 = [v5 recurrences];
-  v25 = [v23 initWithRecurrences:v24];
+  recurrences2 = [schedule recurrences];
+  v25 = [v23 initWithRecurrences:recurrences2];
   [(SCLSettingsViewModel *)v4 setCustomSchedule:v25];
 
   [(SCLSettingsViewModel *)v4 setTimeIntervals:v8];
@@ -305,39 +305,39 @@ LABEL_12:
   return v4;
 }
 
-- (void)beginObservingViewModel:(id)a3
+- (void)beginObservingViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   [(SCLPhoneSettingsViewController *)self setObservingViewModel:1];
-  [v4 addObserver:self forKeyPath:@"enabled" options:3 context:kScheduleContext];
-  [v4 addObserver:self forKeyPath:@"scheduleType" options:3 context:kScheduleContext];
-  [v4 addObserver:self forKeyPath:@"customSchedule" options:3 context:kScheduleContext];
-  [v4 addObserver:self forKeyPath:@"repeatSchedule" options:3 context:kScheduleContext];
-  [v4 addObserver:self forKeyPath:@"timeIntervals" options:3 context:kScheduleContext];
+  [modelCopy addObserver:self forKeyPath:@"enabled" options:3 context:kScheduleContext];
+  [modelCopy addObserver:self forKeyPath:@"scheduleType" options:3 context:kScheduleContext];
+  [modelCopy addObserver:self forKeyPath:@"customSchedule" options:3 context:kScheduleContext];
+  [modelCopy addObserver:self forKeyPath:@"repeatSchedule" options:3 context:kScheduleContext];
+  [modelCopy addObserver:self forKeyPath:@"timeIntervals" options:3 context:kScheduleContext];
 }
 
-- (void)endObservingViewModel:(id)a3
+- (void)endObservingViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if ([(SCLPhoneSettingsViewController *)self isObservingViewModel])
   {
     [(SCLPhoneSettingsViewController *)self setObservingViewModel:0];
-    [v4 removeObserver:self forKeyPath:@"enabled" context:kScheduleContext];
-    [v4 removeObserver:self forKeyPath:@"scheduleType" context:kScheduleContext];
-    [v4 removeObserver:self forKeyPath:@"customSchedule" context:kScheduleContext];
-    [v4 removeObserver:self forKeyPath:@"repeatSchedule" context:kScheduleContext];
-    [v4 removeObserver:self forKeyPath:@"timeIntervals" context:kScheduleContext];
+    [modelCopy removeObserver:self forKeyPath:@"enabled" context:kScheduleContext];
+    [modelCopy removeObserver:self forKeyPath:@"scheduleType" context:kScheduleContext];
+    [modelCopy removeObserver:self forKeyPath:@"customSchedule" context:kScheduleContext];
+    [modelCopy removeObserver:self forKeyPath:@"repeatSchedule" context:kScheduleContext];
+    [modelCopy removeObserver:self forKeyPath:@"timeIntervals" context:kScheduleContext];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (kScheduleContext == a6)
+  if (kScheduleContext == context)
   {
     v11 = *MEMORY[0x277CCA2F0];
-    v12 = a5;
-    v14 = [v12 objectForKeyedSubscript:v11];
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA300]];
+    changeCopy = change;
+    v14 = [changeCopy objectForKeyedSubscript:v11];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA300]];
 
     if (([v14 isEqual:v13] & 1) == 0)
     {
@@ -349,14 +349,14 @@ LABEL_12:
   {
     v15.receiver = self;
     v15.super_class = SCLPhoneSettingsViewController;
-    v10 = a5;
-    [(SCLListViewController *)&v15 observeValueForKeyPath:a3 ofObject:a4 change:v10 context:a6];
+    changeCopy2 = change;
+    [(SCLListViewController *)&v15 observeValueForKeyPath:path ofObject:object change:changeCopy2 context:context];
   }
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v4 = a3;
+  activeCopy = active;
   v5 = _os_activity_create(&dword_26486D000, "ApplicationDidBecomeActive", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -368,8 +368,8 @@ LABEL_12:
     _os_log_impl(&dword_26486D000, v6, OS_LOG_TYPE_DEFAULT, "ApplicationDidBecomeActive", v8, 2u);
   }
 
-  v7 = [(SCLPhoneSettingsViewController *)self schoolMode];
-  [v7 noteSignificantUserInteraction];
+  schoolMode = [(SCLPhoneSettingsViewController *)self schoolMode];
+  [schoolMode noteSignificantUserInteraction];
 
   os_activity_scope_leave(&state);
 }
@@ -397,11 +397,11 @@ LABEL_12:
   }
 
   v4 = MEMORY[0x277D4B730];
-  v5 = [(SCLPhoneSettingsViewController *)self viewModel];
-  v6 = [v4 scheduleSettingsWithViewModel:v5];
+  viewModel = [(SCLPhoneSettingsViewController *)self viewModel];
+  v6 = [v4 scheduleSettingsWithViewModel:viewModel];
 
-  v7 = [(SCLPhoneSettingsViewController *)self scheduleSettings];
-  v8 = [v7 isEqual:v6];
+  scheduleSettings = [(SCLPhoneSettingsViewController *)self scheduleSettings];
+  v8 = [scheduleSettings isEqual:v6];
 
   if ((v8 & 1) == 0)
   {
@@ -418,25 +418,25 @@ LABEL_12:
     *(&buf + 1) = &buf;
     v18 = 0x2020000000;
     v19 = *MEMORY[0x277D767B0];
-    v10 = [MEMORY[0x277D75128] sharedApplication];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __48__SCLPhoneSettingsViewController_updateSchedule__block_invoke;
     v16[3] = &unk_279B6F280;
     v16[4] = &buf;
-    v11 = [v10 beginBackgroundTaskWithName:@"Commit Schooltime Schedule" expirationHandler:v16];
+    v11 = [mEMORY[0x277D75128] beginBackgroundTaskWithName:@"Commit Schooltime Schedule" expirationHandler:v16];
     *(*(&buf + 1) + 24) = v11;
 
-    v12 = [(SCLPhoneSettingsViewController *)self schoolMode];
+    schoolMode = [(SCLPhoneSettingsViewController *)self schoolMode];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __48__SCLPhoneSettingsViewController_updateSchedule__block_invoke_67;
     v15[3] = &unk_279B6F2A8;
     v15[4] = &buf;
-    [v12 applyScheduleSettings:v6 completion:v15];
+    [schoolMode applyScheduleSettings:v6 completion:v15];
 
-    v13 = [(SCLPhoneSettingsViewController *)self viewModel];
-    SCLLogViewModelCommit(v13, v6);
+    viewModel2 = [(SCLPhoneSettingsViewController *)self viewModel];
+    SCLLogViewModelCommit(viewModel2, v6);
 
     _Block_object_dispose(&buf, 8);
   }

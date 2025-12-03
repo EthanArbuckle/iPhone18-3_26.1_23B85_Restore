@@ -1,31 +1,31 @@
 @interface GTErrorReportService
 - (GTErrorReportService)init;
-- (unint64_t)registerObserver:(id)a3;
-- (void)fetchRejectedConnections:(id)a3;
-- (void)reportRejectedConnection:(id)a3;
+- (unint64_t)registerObserver:(id)observer;
+- (void)fetchRejectedConnections:(id)connections;
+- (void)reportRejectedConnection:(id)connection;
 @end
 
 @implementation GTErrorReportService
 
-- (unint64_t)registerObserver:(id)a3
+- (unint64_t)registerObserver:(id)observer
 {
   observers = self->_observers;
-  v5 = a3;
-  v6 = [(GTObservableService *)observers registerObserver:v5];
+  observerCopy = observer;
+  v6 = [(GTObservableService *)observers registerObserver:observerCopy];
   v7 = [(NSMutableArray *)self->_rejectedConnections copy];
-  [v5 notifyRejectedConnections:v7];
+  [observerCopy notifyRejectedConnections:v7];
 
   return v6;
 }
 
-- (void)reportRejectedConnection:(id)a3
+- (void)reportRejectedConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = objc_opt_new();
   v6 = +[NSDate date];
   [v5 setTimestamp:v6];
 
-  LODWORD(v6) = xpc_connection_get_pid(v4);
+  LODWORD(v6) = xpc_connection_get_pid(connectionCopy);
   [v5 setPid:v6];
   if (proc_name([v5 pid], buffer, 0x200u))
   {
@@ -33,9 +33,9 @@
     [v5 setName:v7];
   }
 
-  v8 = [v5 name];
+  name = [v5 name];
 
-  if (!v8)
+  if (!name)
   {
     [v5 setName:@"???"];
   }
@@ -65,12 +65,12 @@
   [(GTObservableService *)observers notifyAll:v15];
 }
 
-- (void)fetchRejectedConnections:(id)a3
+- (void)fetchRejectedConnections:(id)connections
 {
   rejectedConnections = self->_rejectedConnections;
-  v5 = a3;
+  connectionsCopy = connections;
   v6 = [(NSMutableArray *)rejectedConnections copy];
-  (*(a3 + 2))(v5, v6, 0);
+  (*(connections + 2))(connectionsCopy, v6, 0);
 }
 
 - (GTErrorReportService)init

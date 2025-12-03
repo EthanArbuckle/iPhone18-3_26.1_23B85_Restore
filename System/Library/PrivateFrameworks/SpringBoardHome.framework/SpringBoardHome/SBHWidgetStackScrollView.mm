@@ -1,20 +1,20 @@
 @interface SBHWidgetStackScrollView
-- (void)setContentOffset:(CGPoint)a3;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation SBHWidgetStackScrollView
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  if ((*&a3.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&a3.y & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  y = offset.y;
+  x = offset.x;
+  if ((*&offset.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&offset.y & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
-    v9 = self;
-    v6 = &v9;
+    selfCopy = self;
+    v6 = &selfCopy;
 LABEL_8:
     v6[1] = SBHWidgetStackScrollView;
-    objc_msgSendSuper2(v6, sel_setContentOffset_, x, y, v8);
+    objc_msgSendSuper2(v6, sel_setContentOffset_, x, y, selfCopy2);
     return;
   }
 
@@ -26,8 +26,8 @@ LABEL_8:
 
   if (os_variant_has_internal_ui())
   {
-    v8 = self;
-    v6 = &v8;
+    selfCopy2 = self;
+    v6 = &selfCopy2;
     goto LABEL_8;
   }
 }

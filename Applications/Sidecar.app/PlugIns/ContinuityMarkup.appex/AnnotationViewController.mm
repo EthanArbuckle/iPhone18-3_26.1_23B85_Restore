@@ -1,8 +1,8 @@
 @interface AnnotationViewController
 - (UINavigationItem)navigationItem;
-- (void)done:(id)a3;
-- (void)sidecarController:(id)a3 sendOPACKObject:(id)a4;
-- (void)sidecarControllerCancelled:(id)a3;
+- (void)done:(id)done;
+- (void)sidecarController:(id)controller sendOPACKObject:(id)object;
+- (void)sidecarControllerCancelled:(id)cancelled;
 - (void)viewDidLoad;
 @end
 
@@ -17,15 +17,15 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100001774();
 }
 
-- (void)done:(id)a3
+- (void)done:(id)done
 {
-  if (a3)
+  if (done)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1000060B8();
     swift_unknownObjectRelease();
@@ -34,7 +34,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_100002C3C();
@@ -42,11 +42,11 @@
   sub_100004650(v6);
 }
 
-- (void)sidecarController:(id)a3 sendOPACKObject:(id)a4
+- (void)sidecarController:(id)controller sendOPACKObject:(id)object
 {
-  v5 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v6 = self;
+  selfCopy = self;
   sub_1000060B8();
   v7 = swift_unknownObjectRelease();
   sub_1000039A4(v7, v8);
@@ -54,10 +54,10 @@
   sub_10000431C(v8);
 }
 
-- (void)sidecarControllerCancelled:(id)a3
+- (void)sidecarControllerCancelled:(id)cancelled
 {
-  v4 = a3;
-  v5 = self;
+  cancelledCopy = cancelled;
+  selfCopy = self;
   sub_100003B34();
 }
 

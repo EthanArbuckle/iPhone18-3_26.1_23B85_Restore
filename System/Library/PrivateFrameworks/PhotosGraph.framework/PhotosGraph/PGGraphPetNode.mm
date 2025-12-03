@@ -3,13 +3,13 @@
 + (MARelation)momentOfPet;
 + (id)filter;
 + (id)ownerOfPet;
-+ (id)stringFromPetSpecies:(unint64_t)a3;
-+ (signed)detectionTypeFromPetSpecies:(unint64_t)a3;
-- (BOOL)hasProperties:(id)a3;
++ (id)stringFromPetSpecies:(unint64_t)species;
++ (signed)detectionTypeFromPetSpecies:(unint64_t)species;
+- (BOOL)hasProperties:(id)properties;
 - (NSString)description;
 - (NSString)featureIdentifier;
-- (PGGraphPetNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5;
-- (PGGraphPetNode)initWithLocalIdentifier:(id)a3 petSpecies:(unint64_t)a4 name:(id)a5 isFavorite:(BOOL)a6;
+- (PGGraphPetNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties;
+- (PGGraphPetNode)initWithLocalIdentifier:(id)identifier petSpecies:(unint64_t)species name:(id)name isFavorite:(BOOL)favorite;
 - (PGGraphPetNodeCollection)collection;
 - (id)ownerNodes;
 - (id)propertyDictionary;
@@ -21,21 +21,21 @@
 - (id)stringDescription
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(PGGraphPetNode *)self name];
-  if (![(__CFString *)v3 length])
+  name = [(PGGraphPetNode *)self name];
+  if (![(__CFString *)name length])
   {
-    v6 = [(PGGraphPetNode *)self localIdentifier];
+    localIdentifier = [(PGGraphPetNode *)self localIdentifier];
 
-    if ([(__CFString *)v6 length])
+    if ([(__CFString *)localIdentifier length])
     {
-      if ([(__CFString *)v6 length]< 9)
+      if ([(__CFString *)localIdentifier length]< 9)
       {
-        v3 = v6;
+        name = localIdentifier;
       }
 
       else
       {
-        v3 = [(__CFString *)v6 substringToIndex:8];
+        name = [(__CFString *)localIdentifier substringToIndex:8];
       }
     }
 
@@ -43,22 +43,22 @@
     {
 
       v7 = +[PGLogging sharedLogging];
-      v8 = [v7 loggingConnection];
+      loggingConnection = [v7 loggingConnection];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
       {
         v9 = 138412290;
-        v10 = self;
-        _os_log_error_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_ERROR, "No identifiers for petNode %@", &v9, 0xCu);
+        selfCopy = self;
+        _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "No identifiers for petNode %@", &v9, 0xCu);
       }
 
-      v3 = @"unknown";
+      name = @"unknown";
     }
   }
 
   v4 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return name;
 }
 
 - (NSString)featureIdentifier
@@ -139,11 +139,11 @@
   return v6;
 }
 
-- (BOOL)hasProperties:(id)a3
+- (BOOL)hasProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (propertiesCopy && [propertiesCopy count])
   {
     v6 = [v5 objectForKeyedSubscript:@"name"];
     v7 = v6;
@@ -194,44 +194,44 @@ LABEL_13:
   return v11;
 }
 
-- (PGGraphPetNode)initWithLabel:(id)a3 domain:(unsigned __int16)a4 properties:(id)a5
+- (PGGraphPetNode)initWithLabel:(id)label domain:(unsigned __int16)domain properties:(id)properties
 {
-  v6 = a5;
-  v7 = [v6 objectForKeyedSubscript:@"localIdentifier"];
-  v8 = [v6 objectForKeyedSubscript:@"anml"];
-  v9 = [v8 unsignedIntegerValue];
+  propertiesCopy = properties;
+  v7 = [propertiesCopy objectForKeyedSubscript:@"localIdentifier"];
+  v8 = [propertiesCopy objectForKeyedSubscript:@"anml"];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
-  v10 = [v6 objectForKeyedSubscript:@"name"];
-  v11 = [v6 objectForKeyedSubscript:@"favorite"];
+  v10 = [propertiesCopy objectForKeyedSubscript:@"name"];
+  v11 = [propertiesCopy objectForKeyedSubscript:@"favorite"];
 
-  v12 = [v11 BOOLValue];
-  v13 = [(PGGraphPetNode *)self initWithLocalIdentifier:v7 petSpecies:v9 name:v10 isFavorite:v12];
+  bOOLValue = [v11 BOOLValue];
+  v13 = [(PGGraphPetNode *)self initWithLocalIdentifier:v7 petSpecies:unsignedIntegerValue name:v10 isFavorite:bOOLValue];
 
   return v13;
 }
 
-- (PGGraphPetNode)initWithLocalIdentifier:(id)a3 petSpecies:(unint64_t)a4 name:(id)a5 isFavorite:(BOOL)a6
+- (PGGraphPetNode)initWithLocalIdentifier:(id)identifier petSpecies:(unint64_t)species name:(id)name isFavorite:(BOOL)favorite
 {
-  v11 = a3;
-  v12 = a5;
+  identifierCopy = identifier;
+  nameCopy = name;
   v16.receiver = self;
   v16.super_class = PGGraphPetNode;
   v13 = [(PGGraphNode *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_localIdentifier, a3);
-    v14->_petSpecies = a4;
-    objc_storeStrong(&v14->_name, a5);
-    v14->_isFavorite = a6;
+    objc_storeStrong(&v13->_localIdentifier, identifier);
+    v14->_petSpecies = species;
+    objc_storeStrong(&v14->_name, name);
+    v14->_isFavorite = favorite;
   }
 
   return v14;
 }
 
-+ (signed)detectionTypeFromPetSpecies:(unint64_t)a3
++ (signed)detectionTypeFromPetSpecies:(unint64_t)species
 {
-  if (a3 == 1)
+  if (species == 1)
   {
     v3 = 4;
   }
@@ -241,7 +241,7 @@ LABEL_13:
     v3 = 2;
   }
 
-  if (a3 == 2)
+  if (species == 2)
   {
     return 3;
   }
@@ -252,15 +252,15 @@ LABEL_13:
   }
 }
 
-+ (id)stringFromPetSpecies:(unint64_t)a3
++ (id)stringFromPetSpecies:(unint64_t)species
 {
   v3 = @"Pet";
-  if (a3 == 1)
+  if (species == 1)
   {
     v3 = @"Cat";
   }
 
-  if (a3 == 2)
+  if (species == 2)
   {
     return @"Dog";
   }
@@ -274,17 +274,17 @@ LABEL_13:
 + (id)ownerOfPet
 {
   v2 = +[PGGraphIsOwnerOfPetEdge filter];
-  v3 = [v2 inRelation];
+  inRelation = [v2 inRelation];
 
-  return v3;
+  return inRelation;
 }
 
 + (MARelation)momentOfPet
 {
   v2 = +[PGGraphPetPresentEdge filter];
-  v3 = [v2 outRelation];
+  outRelation = [v2 outRelation];
 
-  return v3;
+  return outRelation;
 }
 
 + (MANodeFilter)filterNameNotEmpty

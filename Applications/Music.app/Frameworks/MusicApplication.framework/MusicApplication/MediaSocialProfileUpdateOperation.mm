@@ -1,25 +1,25 @@
 @interface MediaSocialProfileUpdateOperation
 - (_TtC16MusicApplication33MediaSocialProfileUpdateOperation)init;
 - (void)execute;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 @end
 
 @implementation MediaSocialProfileUpdateOperation
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy = self;
   sub_135F20();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v5 = *&self->MPAsyncOperation_opaque[OBJC_IVAR____TtC16MusicApplication33MediaSocialProfileUpdateOperation_responseHandler];
   if (!v5)
   {
-    v9 = self;
-    v10 = a3;
-    if (a3)
+    selfCopy = self;
+    errorCopy = error;
+    if (error)
     {
       goto LABEL_3;
     }
@@ -29,10 +29,10 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v6 = self;
-  v7 = a3;
-  v5(a3);
-  if (!a3)
+  selfCopy2 = self;
+  errorCopy2 = error;
+  v5(error);
+  if (!error)
   {
     goto LABEL_5;
   }

@@ -1,30 +1,30 @@
 @interface BTMediaPlayerView
-- (void)startMovieLoopWithPath:(id)a3;
-- (void)startMovieLoopWithPath:(id)a3 assetType:(int)a4 adjustmentsURL:(id)a5;
+- (void)startMovieLoopWithPath:(id)path;
+- (void)startMovieLoopWithPath:(id)path assetType:(int)type adjustmentsURL:(id)l;
 - (void)stop;
 @end
 
 @implementation BTMediaPlayerView
 
-- (void)startMovieLoopWithPath:(id)a3
+- (void)startMovieLoopWithPath:(id)path
 {
-  v11 = a3;
+  pathCopy = path;
   v4 = self->_avPlayer;
   if (!v4)
   {
-    v5 = [MEMORY[0x277CB83F8] sharedInstance];
-    [v5 setCategory:*MEMORY[0x277CB8020] withOptions:1 error:0];
+    mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+    [mEMORY[0x277CB83F8] setCategory:*MEMORY[0x277CB8020] withOptions:1 error:0];
 
     v4 = objc_alloc_init(MEMORY[0x277CE65F8]);
     [(AVQueuePlayer *)v4 setAllowsExternalPlayback:0];
     [(AVQueuePlayer *)v4 setPreventsDisplaySleepDuringVideoPlayback:0];
     [(AVQueuePlayer *)v4 _setDisallowsAutoPauseOnRouteRemovalIfNoAudio:1];
     objc_storeStrong(&self->_avPlayer, v4);
-    v6 = [(BTMediaPlayerView *)self layer];
-    [v6 setPlayer:v4];
+    layer = [(BTMediaPlayerView *)self layer];
+    [layer setPlayer:v4];
   }
 
-  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:v11 isDirectory:0];
+  v7 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy isDirectory:0];
   v8 = [MEMORY[0x277CE65B0] playerItemWithURL:v7];
   v9 = [MEMORY[0x277CE65E0] playerLooperWithPlayer:v4 templateItem:v8];
   avLooper = self->_avLooper;
@@ -33,23 +33,23 @@
   [(AVQueuePlayer *)self->_avPlayer play];
 }
 
-- (void)startMovieLoopWithPath:(id)a3 assetType:(int)a4 adjustmentsURL:(id)a5
+- (void)startMovieLoopWithPath:(id)path assetType:(int)type adjustmentsURL:(id)l
 {
-  v8 = a3;
-  v9 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:a5 error:0];
+  pathCopy = path;
+  v9 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfURL:l error:0];
   if (!v9)
   {
     goto LABEL_15;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
     v10 = MEMORY[0x277D54D10];
   }
 
   else
   {
-    if (a4 != 2)
+    if (type != 2)
     {
       v12 = 0;
       goto LABEL_8;
@@ -103,19 +103,19 @@ LABEL_8:
 
   if ([v19 count])
   {
-    v26 = [(BTMediaPlayerView *)self layer];
-    [v26 setFilters:v19];
+    layer = [(BTMediaPlayerView *)self layer];
+    [layer setFilters:v19];
   }
 
 LABEL_15:
-  [(BTMediaPlayerView *)self startMovieLoopWithPath:v8];
+  [(BTMediaPlayerView *)self startMovieLoopWithPath:pathCopy];
 }
 
 - (void)stop
 {
   [(AVQueuePlayer *)self->_avPlayer pause];
-  v3 = [(BTMediaPlayerView *)self layer];
-  [v3 setPlayer:0];
+  layer = [(BTMediaPlayerView *)self layer];
+  [layer setPlayer:0];
 
   [(AVQueuePlayer *)self->_avPlayer removeAllItems];
   avPlayer = self->_avPlayer;

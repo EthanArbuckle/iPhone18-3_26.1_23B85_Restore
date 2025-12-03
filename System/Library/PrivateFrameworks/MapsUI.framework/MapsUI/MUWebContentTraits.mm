@@ -9,13 +9,13 @@
   v14[2] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E696AF60]);
   v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[MUWebContentTraits isVibrant](self, "isVibrant")}];
-  v5 = [v4 stringValue];
-  v6 = [v3 initWithName:@"isVibrant" value:v5];
+  stringValue = [v4 stringValue];
+  v6 = [v3 initWithName:@"isVibrant" value:stringValue];
 
   v7 = objc_alloc(MEMORY[0x1E696AF60]);
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[MUWebContentTraits isNativelyDrawingPlatter](self, "isNativelyDrawingPlatter")}];
-  v9 = [v8 stringValue];
-  v10 = [v7 initWithName:@"hasPlatter" value:v9];
+  stringValue2 = [v8 stringValue];
+  v10 = [v7 initWithName:@"hasPlatter" value:stringValue2];
 
   v14[0] = v6;
   v14[1] = v10;

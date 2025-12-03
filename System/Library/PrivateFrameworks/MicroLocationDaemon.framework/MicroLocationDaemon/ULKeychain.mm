@@ -1,10 +1,10 @@
 @interface ULKeychain
-+ (BOOL)removeKey:(id)a3;
++ (BOOL)removeKey:(id)key;
 @end
 
 @implementation ULKeychain
 
-+ (BOOL)removeKey:(id)a3
++ (BOOL)removeKey:(id)key
 {
   v3 = sub_259212840();
   v5 = _s19MicroLocationDaemon10ULKeychainC9removeKeyySbSSFZ_0(v3, v4);

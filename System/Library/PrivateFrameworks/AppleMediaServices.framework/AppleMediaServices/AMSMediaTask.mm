@@ -3,7 +3,7 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-- (AMSMediaTask)initWithType:(int64_t)a3 clientIdentifier:(id)a4 clientVersion:(id)a5 bag:(id)a6;
+- (AMSMediaTask)initWithType:(int64_t)type clientIdentifier:(id)identifier clientVersion:(id)version bag:(id)bag;
 - (id)perform;
 @end
 
@@ -164,21 +164,21 @@ id __23__AMSMediaTask_perform__block_invoke_57(uint64_t a1, void *a2)
   return v18;
 }
 
-- (AMSMediaTask)initWithType:(int64_t)a3 clientIdentifier:(id)a4 clientVersion:(id)a5 bag:(id)a6
+- (AMSMediaTask)initWithType:(int64_t)type clientIdentifier:(id)identifier clientVersion:(id)version bag:(id)bag
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  versionCopy = version;
+  bagCopy = bag;
   v19.receiver = self;
   v19.super_class = AMSMediaTask;
   v14 = [(AMSTask *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_clientIdentifier, a4);
-    objc_storeStrong(&v15->_clientVersion, a5);
-    objc_storeStrong(&v15->_bag, a6);
+    v14->_type = type;
+    objc_storeStrong(&v14->_clientIdentifier, identifier);
+    objc_storeStrong(&v15->_clientVersion, version);
+    objc_storeStrong(&v15->_bag, bag);
     v15->_environment = 0;
     v16 = AMSGenerateLogCorrelationKey();
     logKey = v15->_logKey;
@@ -203,9 +203,9 @@ id __23__AMSMediaTask_perform__block_invoke_2(uint64_t a1, void *a2)
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

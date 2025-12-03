@@ -1,10 +1,10 @@
 @interface CNMeCardSharedProfileCell
-- (CNMeCardSharedProfileCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNMeCardSharedProfileCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CNMeCardSharedProfileCellContentView)meCardSharedProfileContentView;
 - (id)variableConstraints;
 - (void)performDefaultAction;
-- (void)setLabelTextAttributes:(id)a3;
-- (void)setMeContact:(id)a3;
+- (void)setLabelTextAttributes:(id)attributes;
+- (void)setMeContact:(id)contact;
 - (void)setUpView;
 - (void)updateConstraints;
 - (void)updateViews;
@@ -15,10 +15,10 @@
 - (void)performDefaultAction
 {
   objc_opt_class();
-  v3 = [(CNContactCell *)self cardGroupItem];
+  cardGroupItem = [(CNContactCell *)self cardGroupItem];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = cardGroupItem;
   }
 
   else
@@ -28,55 +28,55 @@
 
   v5 = v4;
 
-  v6 = [v5 sharedProfileSettingsAction];
-  [v6 setSharedProfileSettingsActionDelegate:self];
+  sharedProfileSettingsAction = [v5 sharedProfileSettingsAction];
+  [sharedProfileSettingsAction setSharedProfileSettingsActionDelegate:self];
 
-  v7 = [v5 sharedProfileSettingsAction];
+  sharedProfileSettingsAction2 = [v5 sharedProfileSettingsAction];
 
-  [v7 performActionWithSender:self];
+  [sharedProfileSettingsAction2 performActionWithSender:self];
 }
 
-- (void)setLabelTextAttributes:(id)a3
+- (void)setLabelTextAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
-  [v5 setLabelTextAttributes:v4];
+  attributesCopy = attributes;
+  meCardSharedProfileContentView = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+  [meCardSharedProfileContentView setLabelTextAttributes:attributesCopy];
 }
 
 - (id)variableConstraints
 {
   v30[4] = *MEMORY[0x1E69E9840];
-  v3 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+  meCardSharedProfileContentView = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
 
-  if (v3)
+  if (meCardSharedProfileContentView)
   {
-    v28 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
-    v26 = [v28 leadingAnchor];
-    v27 = [(CNMeCardSharedProfileCell *)self contentView];
-    v25 = [v27 layoutMarginsGuide];
-    v24 = [v25 leadingAnchor];
-    v23 = [v26 constraintEqualToAnchor:v24];
+    meCardSharedProfileContentView2 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+    leadingAnchor = [meCardSharedProfileContentView2 leadingAnchor];
+    contentView = [(CNMeCardSharedProfileCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v30[0] = v23;
-    v22 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
-    v20 = [v22 trailingAnchor];
-    v21 = [(CNMeCardSharedProfileCell *)self contentView];
-    v19 = [v21 layoutMarginsGuide];
-    v18 = [v19 trailingAnchor];
-    v17 = [v20 constraintEqualToAnchor:v18];
+    meCardSharedProfileContentView3 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+    trailingAnchor = [meCardSharedProfileContentView3 trailingAnchor];
+    contentView2 = [(CNMeCardSharedProfileCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v17 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30[1] = v17;
-    v16 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
-    v15 = [v16 topAnchor];
-    v4 = [(CNMeCardSharedProfileCell *)self contentView];
-    v5 = [v4 layoutMarginsGuide];
-    v6 = [v5 topAnchor];
-    v7 = [v15 constraintEqualToAnchor:v6];
+    meCardSharedProfileContentView4 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+    topAnchor = [meCardSharedProfileContentView4 topAnchor];
+    contentView3 = [(CNMeCardSharedProfileCell *)self contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v7 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[2] = v7;
-    v8 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
-    v9 = [v8 bottomAnchor];
-    v10 = [(CNMeCardSharedProfileCell *)self contentView];
-    v11 = [v10 layoutMarginsGuide];
-    v12 = [v11 bottomAnchor];
-    v13 = [v9 constraintEqualToAnchor:v12];
+    meCardSharedProfileContentView5 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+    bottomAnchor = [meCardSharedProfileContentView5 bottomAnchor];
+    contentView4 = [(CNMeCardSharedProfileCell *)self contentView];
+    layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v30[3] = v13;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:4];
   }
@@ -94,15 +94,15 @@
   v4.receiver = self;
   v4.super_class = CNMeCardSharedProfileCell;
   [(CNContactCell *)&v4 updateConstraints];
-  v3 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
-  [v3 updateConstraints];
+  meCardSharedProfileContentView = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+  [meCardSharedProfileContentView updateConstraints];
 }
 
-- (void)setMeContact:(id)a3
+- (void)setMeContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
-  [v5 setMeContact:v4];
+  contactCopy = contact;
+  meCardSharedProfileContentView = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+  [meCardSharedProfileContentView setMeContact:contactCopy];
 }
 
 - (CNMeCardSharedProfileCellContentView)meCardSharedProfileContentView
@@ -123,32 +123,32 @@
 
 - (void)updateViews
 {
-  v2 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
-  [v2 updateView];
+  meCardSharedProfileContentView = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+  [meCardSharedProfileContentView updateView];
 }
 
 - (void)setUpView
 {
-  v3 = [(CNMeCardSharedProfileCell *)self contentView];
-  v4 = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
-  [v3 addSubview:v4];
+  contentView = [(CNMeCardSharedProfileCell *)self contentView];
+  meCardSharedProfileContentView = [(CNMeCardSharedProfileCell *)self meCardSharedProfileContentView];
+  [contentView addSubview:meCardSharedProfileContentView];
 
   [(CNMeCardSharedProfileCell *)self setAccessoryType:1];
   v5 = +[CNUIColorRepository contactCardDisclosureAccessoryTintColor];
   [(CNMeCardSharedProfileCell *)self _setAccessoryTintColor:v5];
 }
 
-- (CNMeCardSharedProfileCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNMeCardSharedProfileCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v9.receiver = self;
   v9.super_class = CNMeCardSharedProfileCell;
-  v4 = [(CNLabeledCell *)&v9 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNLabeledCell *)&v9 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
     [(CNMeCardSharedProfileCell *)v4 setUpView];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v5 selector:sel_nicknameStoreDidChange name:*MEMORY[0x1E695CBE8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_nicknameStoreDidChange name:*MEMORY[0x1E695CBE8] object:0];
 
     v7 = v5;
   }

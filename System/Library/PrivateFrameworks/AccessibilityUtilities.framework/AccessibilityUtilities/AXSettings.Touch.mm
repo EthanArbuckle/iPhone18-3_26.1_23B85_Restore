@@ -1,22 +1,22 @@
 @interface AXSettings.Touch
 - (BOOL)preferActionSliderAlternative;
-- (void)setPreferActionSliderAlternative:(BOOL)a3;
+- (void)setPreferActionSliderAlternative:(BOOL)alternative;
 @end
 
 @implementation AXSettings.Touch
 
 - (BOOL)preferActionSliderAlternative
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AXSettings.Touch.preferActionSliderAlternative.getter();
 
   return v3 & 1;
 }
 
-- (void)setPreferActionSliderAlternative:(BOOL)a3
+- (void)setPreferActionSliderAlternative:(BOOL)alternative
 {
-  v4 = self;
-  AXSettings.Touch.preferActionSliderAlternative.setter(a3);
+  selfCopy = self;
+  AXSettings.Touch.preferActionSliderAlternative.setter(alternative);
 }
 
 @end

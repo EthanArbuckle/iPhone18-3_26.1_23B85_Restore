@@ -1,15 +1,15 @@
 @interface CHChannelDecibel
-- (CHChannelDecibel)initWithOZChannel:(OZChannelBase *)a3 freeWhenDone:(BOOL)a4;
+- (CHChannelDecibel)initWithOZChannel:(OZChannelBase *)channel freeWhenDone:(BOOL)done;
 - (OZChannelDecibel)ozChannel;
 @end
 
 @implementation CHChannelDecibel
 
-- (CHChannelDecibel)initWithOZChannel:(OZChannelBase *)a3 freeWhenDone:(BOOL)a4
+- (CHChannelDecibel)initWithOZChannel:(OZChannelBase *)channel freeWhenDone:(BOOL)done
 {
   v7.receiver = self;
   v7.super_class = CHChannelDecibel;
-  v4 = [(CHChannelBase *)&v7 initWithOZChannel:a3 freeWhenDone:a4];
+  v4 = [(CHChannelBase *)&v7 initWithOZChannel:channel freeWhenDone:done];
   v5 = v4;
   if (v4)
   {

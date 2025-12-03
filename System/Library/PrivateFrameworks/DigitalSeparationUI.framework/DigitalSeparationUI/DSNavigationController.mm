@@ -1,6 +1,6 @@
 @interface DSNavigationController
 + (void)initialize;
-- (BOOL)isDetailControllerClass:(Class)a3;
+- (BOOL)isDetailControllerClass:(Class)class;
 - (BOOL)isInFamiliarLocation;
 - (BOOL)requiresAuthForEntry;
 - (BOOL)shouldFinishFlow;
@@ -9,59 +9,59 @@
 - (NSString)entryMethod;
 - (id)deepLinkForCurrentFlowAndPane;
 - (id)flowTypeForAnalytics;
-- (id)initStartingWithBlockingPanes:(id)a3;
+- (id)initStartingWithBlockingPanes:(id)panes;
 - (id)initStartingWithDeviceAccess;
 - (id)initStartingWithEmergencyReset;
 - (id)initStartingWithMangeSharing;
-- (id)initStartingWithURL:(id)a3;
-- (id)paneBeforePane:(id)a3;
-- (id)paneInstanceForType:(Class)a3;
+- (id)initStartingWithURL:(id)l;
+- (id)paneBeforePane:(id)pane;
+- (id)paneInstanceForType:(Class)type;
 - (void)_pushWelcomeControllerAsTopView;
 - (void)_setupRatchetObserver;
 - (void)authToReturnToSafetyCheck;
 - (void)cancel;
 - (void)dealloc;
 - (void)destroyConnectedWindowScene;
-- (void)didEnterBackground:(id)a3;
+- (void)didEnterBackground:(id)background;
 - (void)displayNetworkError;
 - (void)exitFlowForRatchetWait;
 - (void)finishFlow;
 - (void)goToCustomizeSharing;
 - (void)hideNetworkError;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)popToPreviousPane:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)popToPreviousPane:(id)pane;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 - (void)pushNextPane;
-- (void)pushPaneAfterPaneType:(Class)a3;
-- (void)pushPaneType:(Class)a3 loadRemoteUI:(BOOL)a4;
-- (void)pushPaneWithController:(id)a3 paneType:(Class)a4 shouldShow:(BOOL)a5;
+- (void)pushPaneAfterPaneType:(Class)type;
+- (void)pushPaneType:(Class)type loadRemoteUI:(BOOL)i;
+- (void)pushPaneWithController:(id)controller paneType:(Class)type shouldShow:(BOOL)show;
 - (void)quickExit;
-- (void)ratchetStateDidChange:(id)a3;
+- (void)ratchetStateDidChange:(id)change;
 - (void)resetRemoteUI;
 - (void)rightNavButtonTapped;
-- (void)sendSummaryAnalyticsWithEventName:(id)a3;
-- (void)sendSummaryAnalyticsWithQuickExit:(BOOL)a3 finalScreen:(BOOL)a4;
+- (void)sendSummaryAnalyticsWithEventName:(id)name;
+- (void)sendSummaryAnalyticsWithQuickExit:(BOOL)exit finalScreen:(BOOL)screen;
 - (void)setNavigationOrderAndChapters;
-- (void)setupCancelButtonWithController:(id)a3;
-- (void)setupChapterIndicatorWithController:(id)a3;
+- (void)setupCancelButtonWithController:(id)controller;
+- (void)setupChapterIndicatorWithController:(id)controller;
 - (void)setupConnectionError;
-- (void)setupQuickExitButtonWithController:(id)a3;
-- (void)startFlowWithType:(int64_t)a3;
-- (void)startWithPanes:(id)a3;
-- (void)startWithURL:(id)a3;
-- (void)updateCurrentChapterWithPaneType:(Class)a3;
+- (void)setupQuickExitButtonWithController:(id)controller;
+- (void)startFlowWithType:(int64_t)type;
+- (void)startWithPanes:(id)panes;
+- (void)startWithURL:(id)l;
+- (void)updateCurrentChapterWithPaneType:(Class)type;
 - (void)updateDaemonModelForCurrentPane;
-- (void)updateReachabilityState:(id)a3;
+- (void)updateReachabilityState:(id)state;
 - (void)viewDidLoad;
-- (void)willEnterForeground:(id)a3;
-- (void)willResignActive:(id)a3;
+- (void)willEnterForeground:(id)foreground;
+- (void)willResignActive:(id)active;
 @end
 
 @implementation DSNavigationController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.DigitalSeparation", "DSNavigationController");
     v3 = DSLog_15;
@@ -88,9 +88,9 @@
     v4 = objc_alloc_init(DSNavigationManager);
     [v2 setNavigationManager:v4];
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v6 = *(v2 + 205);
-    *(v2 + 205) = v5;
+    *(v2 + 205) = dictionary;
 
     v7 = [MEMORY[0x277CBEB58] set];
     v8 = *(v2 + 206);
@@ -114,8 +114,8 @@
 
     [v2 setCurrentChapterForAnalytics:1];
     [v2 setDelegate:v2];
-    v17 = [v2 presentationController];
-    [v17 setDelegate:v2];
+    presentationController = [v2 presentationController];
+    [presentationController setDelegate:v2];
 
     v18 = objc_alloc_init(MEMORY[0x277CD4790]);
     v19 = *(v2 + 187);
@@ -136,27 +136,27 @@
     *(v2 + 201) = v22;
 
     objc_initWeak(buf, v2);
-    v24 = [v2 pathMonitor];
+    pathMonitor = [v2 pathMonitor];
     update_handler[0] = MEMORY[0x277D85DD0];
     update_handler[1] = 3221225472;
     update_handler[2] = __30__DSNavigationController_init__block_invoke;
     update_handler[3] = &unk_278F75D58;
     objc_copyWeak(&v32, buf);
-    nw_path_monitor_set_update_handler(v24, update_handler);
+    nw_path_monitor_set_update_handler(pathMonitor, update_handler);
 
-    v25 = [v2 pathMonitor];
-    v26 = [v2 workQueue];
-    nw_path_monitor_set_queue(v25, v26);
+    pathMonitor2 = [v2 pathMonitor];
+    workQueue = [v2 workQueue];
+    nw_path_monitor_set_queue(pathMonitor2, workQueue);
 
     nw_path_monitor_start(*(v2 + 201));
-    v27 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v27 addObserver:v2 selector:sel_willEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_willEnterForeground_ name:*MEMORY[0x277D76758] object:0];
 
-    v28 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v28 addObserver:v2 selector:sel_didEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_didEnterBackground_ name:*MEMORY[0x277D76660] object:0];
 
-    v29 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v29 addObserver:v2 selector:sel_willResignActive_ name:*MEMORY[0x277D76768] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_willResignActive_ name:*MEMORY[0x277D76768] object:0];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(buf);
@@ -174,29 +174,29 @@ void __30__DSNavigationController_init__block_invoke(uint64_t a1, void *a2)
 
 - (void)setNavigationOrderAndChapters
 {
-  v3 = [(DSNavigationController *)self navigationManager];
-  v4 = [v3 navigationOrderForFlowType:{-[DSNavigationController currentFlowType](self, "currentFlowType")}];
+  navigationManager = [(DSNavigationController *)self navigationManager];
+  v4 = [navigationManager navigationOrderForFlowType:{-[DSNavigationController currentFlowType](self, "currentFlowType")}];
   [(DSNavigationController *)self setNavigationOrder:v4];
 
-  v6 = [(DSNavigationController *)self navigationManager];
-  v5 = [v6 navigationChaptersForFlowType:{-[DSNavigationController currentFlowType](self, "currentFlowType")}];
+  navigationManager2 = [(DSNavigationController *)self navigationManager];
+  v5 = [navigationManager2 navigationChaptersForFlowType:{-[DSNavigationController currentFlowType](self, "currentFlowType")}];
   [(DSNavigationController *)self setNavigationChapters:v5];
 }
 
-- (void)updateReachabilityState:(id)a3
+- (void)updateReachabilityState:(id)state
 {
-  v4 = a3;
-  v5 = [(DSNavigationController *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  stateCopy = state;
+  workQueue = [(DSNavigationController *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  LODWORD(v5) = nw_path_get_status(v4);
-  [(DSNavigationController *)self setIsReachable:(v5 & 0xFFFFFFFD) == 1];
+  LODWORD(workQueue) = nw_path_get_status(stateCopy);
+  [(DSNavigationController *)self setIsReachable:(workQueue & 0xFFFFFFFD) == 1];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__DSNavigationController_updateReachabilityState___block_invoke;
   v6[3] = &unk_278F75D80;
   v6[4] = self;
-  v7 = (v5 & 0xFFFFFFFD) == 1;
+  v7 = (workQueue & 0xFFFFFFFD) == 1;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -262,48 +262,48 @@ uint64_t __50__DSNavigationController_updateReachabilityState___block_invoke(uin
   v3 = v2;
   if (v2)
   {
-    v4 = [(DSNavigationController *)v2 navigationBar];
-    [v4 setHidden:1];
+    navigationBar = [(DSNavigationController *)v2 navigationBar];
+    [navigationBar setHidden:1];
 
-    v5 = [(DSNavigationController *)v3 navigationItem];
-    [v5 setHidesBackButton:1];
+    navigationItem = [(DSNavigationController *)v3 navigationItem];
+    [navigationItem setHidesBackButton:1];
 
     [(DSNavigationController *)v3 setCurrentFlowType:2];
     [(DSNavigationController *)v3 setNavigationOrderAndChapters];
-    v6 = [(DSNavigationController *)v3 navigationOrder];
-    -[DSNavigationController setStartingPaneType:](v3, "setStartingPaneType:", [v6 firstObject]);
+    navigationOrder = [(DSNavigationController *)v3 navigationOrder];
+    -[DSNavigationController setStartingPaneType:](v3, "setStartingPaneType:", [navigationOrder firstObject]);
   }
 
   return v3;
 }
 
-- (id)initStartingWithBlockingPanes:(id)a3
+- (id)initStartingWithBlockingPanes:(id)panes
 {
-  v4 = a3;
+  panesCopy = panes;
   v5 = [(DSNavigationController *)self init];
   if (v5)
   {
-    v6 = [v4 firstObject];
+    firstObject = [panesCopy firstObject];
     [(DSNavigationController *)v5 setStartingPaneType:objc_opt_class()];
 
     [(DSNavigationController *)v5 setCurrentFlowType:3];
     [(DSNavigationController *)v5 setNavigationOrderAndChapters];
-    [(DSNavigationController *)v5 startWithPanes:v4];
+    [(DSNavigationController *)v5 startWithPanes:panesCopy];
   }
 
   return v5;
 }
 
-- (void)startWithPanes:(id)a3
+- (void)startWithPanes:(id)panes
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  panesCopy = panes;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = panesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -322,7 +322,7 @@ uint64_t __50__DSNavigationController_updateReachabilityState___block_invoke(uin
         v11 = *(*(&v15 + 1) + 8 * v10);
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        [v5 setValue:v11 forKey:{v13, v15}];
+        [dictionary setValue:v11 forKey:{v13, v15}];
 
         ++v10;
       }
@@ -334,14 +334,14 @@ uint64_t __50__DSNavigationController_updateReachabilityState___block_invoke(uin
     while (v8);
   }
 
-  [(DSNavigationController *)self setCachedPanes:v5];
+  [(DSNavigationController *)self setCachedPanes:dictionary];
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)initStartingWithURL:(id)a3
+- (id)initStartingWithURL:(id)l
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = [(DSNavigationController *)self init];
   v6 = v5;
   if (!v5)
@@ -349,12 +349,12 @@ uint64_t __50__DSNavigationController_updateReachabilityState___block_invoke(uin
     goto LABEL_4;
   }
 
-  v7 = [(DSNavigationController *)v5 navigationManager];
-  v8 = [v7 shouldIngestURL:v4];
+  navigationManager = [(DSNavigationController *)v5 navigationManager];
+  v8 = [navigationManager shouldIngestURL:lCopy];
 
   if (v8)
   {
-    [(DSNavigationController *)v6 startWithURL:v4];
+    [(DSNavigationController *)v6 startWithURL:lCopy];
 LABEL_4:
     v9 = v6;
     goto LABEL_8;
@@ -364,7 +364,7 @@ LABEL_4:
   if (os_log_type_enabled(DSLog_15, OS_LOG_TYPE_INFO))
   {
     v13 = 138412290;
-    v14 = v4;
+    v14 = lCopy;
     _os_log_impl(&dword_248C7E000, v10, OS_LOG_TYPE_INFO, "Safety Check will not act on URL path %@, staying on landing page", &v13, 0xCu);
   }
 
@@ -375,12 +375,12 @@ LABEL_8:
   return v9;
 }
 
-- (void)startWithURL:(id)a3
+- (void)startWithURL:(id)l
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DSNavigationController *)self navigationManager];
-  v6 = [v5 navigationForURL:v4];
+  lCopy = l;
+  navigationManager = [(DSNavigationController *)self navigationManager];
+  v6 = [navigationManager navigationForURL:lCopy];
 
   v7 = DSLog_15;
   if (os_log_type_enabled(DSLog_15, OS_LOG_TYPE_INFO))
@@ -391,15 +391,15 @@ LABEL_8:
   }
 
   [(DSNavigationController *)self setDeepLink:v6];
-  v8 = [v6 navigationOrder];
-  -[DSNavigationController setStartingPaneType:](self, "setStartingPaneType:", [v8 firstObject]);
+  navigationOrder = [v6 navigationOrder];
+  -[DSNavigationController setStartingPaneType:](self, "setStartingPaneType:", [navigationOrder firstObject]);
 
   -[DSNavigationController setCurrentFlowType:](self, "setCurrentFlowType:", [v6 flowType]);
-  v9 = [v6 navigationOrder];
-  [(DSNavigationController *)self setNavigationOrder:v9];
+  navigationOrder2 = [v6 navigationOrder];
+  [(DSNavigationController *)self setNavigationOrder:navigationOrder2];
 
-  v10 = [v6 navigationChapters];
-  [(DSNavigationController *)self setNavigationChapters:v10];
+  navigationChapters = [v6 navigationChapters];
+  [(DSNavigationController *)self setNavigationChapters:navigationChapters];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -414,14 +414,14 @@ LABEL_8:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277D76768] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76768] object:0];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76648] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x277D76648] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 removeObserver:self name:*MEMORY[0x277D76758] object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x277D76758] object:0];
 
   v6.receiver = self;
   v6.super_class = DSNavigationController;
@@ -513,36 +513,36 @@ void __46__DSNavigationController_setupConnectionError__block_invoke_2()
 
 - (void)displayNetworkError
 {
-  v3 = [(DSNavigationController *)self connectionErrorNavigation];
-  [(DSNavigationController *)self presentViewController:v3 animated:1 completion:0];
+  connectionErrorNavigation = [(DSNavigationController *)self connectionErrorNavigation];
+  [(DSNavigationController *)self presentViewController:connectionErrorNavigation animated:1 completion:0];
 
   self->_isShowingNetworkError = 1;
 }
 
 - (void)hideNetworkError
 {
-  v3 = [(DSNavigationController *)self networkErrorController];
-  [(DSNavigationController *)self dismissViewControllerAnimated:v3 != 0 completion:0];
+  networkErrorController = [(DSNavigationController *)self networkErrorController];
+  [(DSNavigationController *)self dismissViewControllerAnimated:networkErrorController != 0 completion:0];
 
   self->_isShowingNetworkError = 0;
 }
 
 - (void)goToCustomizeSharing
 {
-  v3 = [(DSNavigationController *)self presentingViewController];
+  presentingViewController = [(DSNavigationController *)self presentingViewController];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __46__DSNavigationController_goToCustomizeSharing__block_invoke;
   v5[3] = &unk_278F75408;
   v5[4] = self;
-  [v3 dismissViewControllerAnimated:1 completion:v5];
+  [presentingViewController dismissViewControllerAnimated:1 completion:v5];
 
   [(DSNavigationController *)self setStartingPaneType:objc_opt_class()];
   [(DSNavigationController *)self setCurrentFlowType:1];
   [(DSNavigationController *)self setNavigationOrderAndChapters];
   [(DSNavigationController *)self pushPaneType:[(DSNavigationController *)self startingPaneType]];
-  v4 = [(DSNavigationController *)self presentingViewController];
-  [v4 presentViewController:self animated:1 completion:0];
+  presentingViewController2 = [(DSNavigationController *)self presentingViewController];
+  [presentingViewController2 presentViewController:self animated:1 completion:0];
 }
 
 - (void)pushNextPane
@@ -553,65 +553,65 @@ void __46__DSNavigationController_setupConnectionError__block_invoke_2()
     [(DSNavigationController *)self finishFlow];
   }
 
-  v3 = [(DSNavigationController *)self topViewControllerType];
+  topViewControllerType = [(DSNavigationController *)self topViewControllerType];
 
-  [(DSNavigationController *)self pushPaneAfterPaneType:v3];
+  [(DSNavigationController *)self pushPaneAfterPaneType:topViewControllerType];
 }
 
 - (BOOL)shouldFinishFlow
 {
-  v3 = [(DSNavigationController *)self topViewControllerType];
-  v4 = [(DSNavigationController *)self navigationOrder];
-  LOBYTE(v3) = v3 == [v4 lastObject];
+  topViewControllerType = [(DSNavigationController *)self topViewControllerType];
+  navigationOrder = [(DSNavigationController *)self navigationOrder];
+  LOBYTE(topViewControllerType) = topViewControllerType == [navigationOrder lastObject];
 
-  return v3;
+  return topViewControllerType;
 }
 
 - (void)finishFlow
 {
   [(DSNavigationController *)self sendSummaryAnalyticsWithQuickExit:0 finalScreen:1];
-  v3 = [(DSNavigationController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(DSNavigationController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)exitFlowForRatchetWait
 {
-  v2 = [(DSNavigationController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(DSNavigationController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)paneBeforePane:(id)a3
+- (id)paneBeforePane:(id)pane
 {
-  v4 = a3;
-  v5 = [(DSNavigationController *)self viewControllers];
-  v6 = [v5 indexOfObject:v4];
+  paneCopy = pane;
+  viewControllers = [(DSNavigationController *)self viewControllers];
+  v6 = [viewControllers indexOfObject:paneCopy];
 
-  if (v6 - 1 >= [v5 count])
+  if (v6 - 1 >= [viewControllers count])
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = [v5 objectAtIndex:v6 - 1];
+    v7 = [viewControllers objectAtIndex:v6 - 1];
   }
 
   return v7;
 }
 
-- (void)popToPreviousPane:(id)a3
+- (void)popToPreviousPane:(id)pane
 {
-  v4 = a3;
+  paneCopy = pane;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v5 = [(DSNavigationController *)self paneBeforePane:v4];
+  v5 = [(DSNavigationController *)self paneBeforePane:paneCopy];
   v6 = v5;
   if (v5)
   {
     v7 = v5;
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v7 buttonTray];
-      [v8 showButtonsAvailable];
+      buttonTray = [v7 buttonTray];
+      [buttonTray showButtonsAvailable];
     }
 
     if ((objc_opt_respondsToSelector() & 1) != 0 && ![(DSNavigationController *)self isDetailControllerClass:objc_opt_class()])
@@ -636,7 +636,7 @@ void __46__DSNavigationController_setupConnectionError__block_invoke_2()
         v12[2] = __44__DSNavigationController_popToPreviousPane___block_invoke;
         v12[3] = &unk_278F75DF0;
         v13 = v7;
-        v14 = self;
+        selfCopy = self;
         v15 = v13;
         [v15 shouldShowWithCompletion:v12];
 
@@ -691,22 +691,22 @@ id __44__DSNavigationController_popToPreviousPane___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)pushPaneAfterPaneType:(Class)a3
+- (void)pushPaneAfterPaneType:(Class)type
 {
-  v5 = [(DSNavigationController *)self navigationOrder];
-  v6 = [v5 indexOfObject:a3];
+  navigationOrder = [(DSNavigationController *)self navigationOrder];
+  v6 = [navigationOrder indexOfObject:type];
   v7 = v6 + 1;
   v8 = v6 == -1;
 
   if (!v8)
   {
-    v9 = [(DSNavigationController *)self navigationOrder];
-    v10 = [v9 count];
+    navigationOrder2 = [(DSNavigationController *)self navigationOrder];
+    v10 = [navigationOrder2 count];
 
     if (v7 < v10)
     {
-      v11 = [(DSNavigationController *)self navigationOrder];
-      v12 = [v11 objectAtIndex:v7];
+      navigationOrder3 = [(DSNavigationController *)self navigationOrder];
+      v12 = [navigationOrder3 objectAtIndex:v7];
 
       if (v12)
       {
@@ -717,18 +717,18 @@ id __44__DSNavigationController_popToPreviousPane___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)pushPaneType:(Class)a3 loadRemoteUI:(BOOL)a4
+- (void)pushPaneType:(Class)type loadRemoteUI:(BOOL)i
 {
-  v4 = a4;
-  if (objc_opt_class() != a3 || !v4)
+  iCopy = i;
+  if (objc_opt_class() != type || !iCopy)
   {
-    v8 = [(DSNavigationController *)self navigationManager];
-    v9 = [v8 panesRequiringNetwork];
-    if ([v9 containsObject:a3])
+    navigationManager = [(DSNavigationController *)self navigationManager];
+    panesRequiringNetwork = [navigationManager panesRequiringNetwork];
+    if ([panesRequiringNetwork containsObject:type])
     {
-      v10 = [(DSNavigationController *)self isNetworkReachable];
+      isNetworkReachable = [(DSNavigationController *)self isNetworkReachable];
 
-      if (!v10)
+      if (!isNetworkReachable)
       {
         goto LABEL_14;
       }
@@ -738,34 +738,34 @@ id __44__DSNavigationController_popToPreviousPane___block_invoke_2(uint64_t a1)
     {
     }
 
-    v21 = [(DSNavigationController *)self paneInstanceForType:a3];
+    v21 = [(DSNavigationController *)self paneInstanceForType:type];
     [v21 setDelegate:self];
     if (objc_opt_respondsToSelector())
     {
-      v22 = [v21 shouldShow];
-      v23 = self;
+      shouldShow = [v21 shouldShow];
+      selfCopy3 = self;
       v24 = v21;
-      v25 = a3;
+      typeCopy2 = type;
     }
 
     else
     {
       if (objc_opt_respondsToSelector())
       {
-        v26 = [(DSNavigationController *)self topViewController];
+        topViewController = [(DSNavigationController *)self topViewController];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v28 = [(DSNavigationController *)self topViewController];
-          v29 = [v28 buttonTray];
-          [v29 showButtonsBusy];
+          topViewController2 = [(DSNavigationController *)self topViewController];
+          buttonTray = [topViewController2 buttonTray];
+          [buttonTray showButtonsBusy];
         }
 
         else
         {
-          v28 = 0;
+          topViewController2 = 0;
         }
 
         objc_initWeak(&location, self);
@@ -774,10 +774,10 @@ id __44__DSNavigationController_popToPreviousPane___block_invoke_2(uint64_t a1)
         v34[2] = __52__DSNavigationController_pushPaneType_loadRemoteUI___block_invoke;
         v34[3] = &unk_278F75E40;
         objc_copyWeak(v38, &location);
-        v33 = v28;
+        v33 = topViewController2;
         v35 = v33;
-        v36 = self;
-        v38[1] = a3;
+        selfCopy2 = self;
+        v38[1] = type;
         v37 = v21;
         [v37 shouldShowWithCompletion:v34];
 
@@ -787,13 +787,13 @@ id __44__DSNavigationController_popToPreviousPane___block_invoke_2(uint64_t a1)
         goto LABEL_34;
       }
 
-      v23 = self;
+      selfCopy3 = self;
       v24 = v21;
-      v25 = a3;
-      v22 = 1;
+      typeCopy2 = type;
+      shouldShow = 1;
     }
 
-    [(DSNavigationController *)v23 pushPaneWithController:v24 paneType:v25 shouldShow:v22];
+    [(DSNavigationController *)selfCopy3 pushPaneWithController:v24 paneType:typeCopy2 shouldShow:shouldShow];
 LABEL_34:
 
     return;
@@ -804,14 +804,14 @@ LABEL_34:
     if (_os_feature_enabled_impl())
     {
       [(DSNavigationController *)self _pushWelcomeControllerAsTopView];
-      v11 = [(DSNavigationController *)self deepLink];
-      if (v11 && (v12 = v11, -[DSNavigationController deepLink](self, "deepLink"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 navigationType], v13, v12, v14 == 2))
+      deepLink = [(DSNavigationController *)self deepLink];
+      if (deepLink && (v12 = deepLink, -[DSNavigationController deepLink](self, "deepLink"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 navigationType], v13, v12, v14 == 2))
       {
         v15 = [DSRemoteUILoader alloc];
-        v16 = [(DSNavigationController *)self topViewController];
-        v17 = [(DSNavigationController *)self deepLink];
-        v18 = [v17 remoteUIURL];
-        v19 = [(DSRemoteUILoader *)v15 initWithPresenter:v16 delegate:self URL:v18];
+        topViewController3 = [(DSNavigationController *)self topViewController];
+        deepLink2 = [(DSNavigationController *)self deepLink];
+        remoteUIURL = [deepLink2 remoteUIURL];
+        v19 = [(DSRemoteUILoader *)v15 initWithPresenter:topViewController3 delegate:self URL:remoteUIURL];
         remoteUILoader = self->_remoteUILoader;
         self->_remoteUILoader = v19;
       }
@@ -819,9 +819,9 @@ LABEL_34:
       else
       {
         v30 = [DSRemoteUILoader alloc];
-        v16 = [(DSNavigationController *)self topViewController];
-        v31 = [(DSRemoteUILoader *)v30 initWithPresenter:v16 delegate:self];
-        v17 = self->_remoteUILoader;
+        topViewController3 = [(DSNavigationController *)self topViewController];
+        v31 = [(DSRemoteUILoader *)v30 initWithPresenter:topViewController3 delegate:self];
+        deepLink2 = self->_remoteUILoader;
         self->_remoteUILoader = v31;
       }
 
@@ -833,7 +833,7 @@ LABEL_34:
     else
     {
 
-      [(DSNavigationController *)self pushPaneAfterPaneType:a3];
+      [(DSNavigationController *)self pushPaneAfterPaneType:type];
     }
 
     return;
@@ -922,13 +922,13 @@ LABEL_7:
   return result;
 }
 
-- (void)pushPaneWithController:(id)a3 paneType:(Class)a4 shouldShow:(BOOL)a5
+- (void)pushPaneWithController:(id)controller paneType:(Class)type shouldShow:(BOOL)show
 {
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  controllerCopy = controller;
+  v9 = controllerCopy;
+  if (show)
   {
-    if ([v8 conformsToProtocol:&unk_285BCA3F8])
+    if ([controllerCopy conformsToProtocol:&unk_285BCA3F8])
     {
       if ([(DSNavigationController *)self isStandardFlow]|| [(DSNavigationController *)self currentFlowType]== 3)
       {
@@ -941,17 +941,17 @@ LABEL_7:
 
   else
   {
-    [(DSNavigationController *)self pushPaneAfterPaneType:a4];
+    [(DSNavigationController *)self pushPaneAfterPaneType:type];
   }
 }
 
 - (Class)topViewControllerType
 {
-  v3 = [(DSNavigationController *)self topViewController];
+  topViewController = [(DSNavigationController *)self topViewController];
   v4 = objc_opt_class();
 
-  v5 = [(DSNavigationController *)self navigationOrder];
-  v6 = [v5 containsObject:v4];
+  navigationOrder = [(DSNavigationController *)self navigationOrder];
+  v6 = [navigationOrder containsObject:v4];
 
   if (v6)
   {
@@ -960,18 +960,18 @@ LABEL_7:
 
   else
   {
-    v8 = [(DSNavigationController *)self navigationManager];
-    v7 = [v8 topViewControllerForUnorderedClass:v4];
+    navigationManager = [(DSNavigationController *)self navigationManager];
+    v7 = [navigationManager topViewControllerForUnorderedClass:v4];
   }
 
   return v7;
 }
 
-- (id)paneInstanceForType:(Class)a3
+- (id)paneInstanceForType:(Class)type
 {
-  v4 = [(DSNavigationController *)self cachedPanes];
-  v5 = NSStringFromClass(a3);
-  v6 = [v4 objectForKeyedSubscript:v5];
+  cachedPanes = [(DSNavigationController *)self cachedPanes];
+  v5 = NSStringFromClass(type);
+  v6 = [cachedPanes objectForKeyedSubscript:v5];
 
   if (v6)
   {
@@ -980,7 +980,7 @@ LABEL_7:
 
   else
   {
-    v7 = objc_alloc_init(a3);
+    v7 = objc_alloc_init(type);
   }
 
   v8 = v7;
@@ -988,10 +988,10 @@ LABEL_7:
   return v8;
 }
 
-- (void)startFlowWithType:(int64_t)a3
+- (void)startFlowWithType:(int64_t)type
 {
-  v5 = [(DSNavigationController *)self topViewControllerType];
-  if (v5 == objc_opt_class())
+  topViewControllerType = [(DSNavigationController *)self topViewControllerType];
+  if (topViewControllerType == objc_opt_class())
   {
 
     [(DSNavigationController *)self goToCustomizeSharing];
@@ -999,7 +999,7 @@ LABEL_7:
 
   else
   {
-    [(DSNavigationController *)self setCurrentFlowType:a3];
+    [(DSNavigationController *)self setCurrentFlowType:type];
 
     [(DSNavigationController *)self pushNextPane];
   }
@@ -1028,87 +1028,87 @@ void __68__DSNavigationController_presentViewController_animated_completion___bl
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v10 = a4;
+  viewControllerCopy = viewController;
   if ([(DSNavigationController *)self currentFlowType]!= 2)
   {
-    v6 = [v10 navigationItem];
-    v7 = [v6 rightBarButtonItem];
+    navigationItem = [viewControllerCopy navigationItem];
+    rightBarButtonItem = [navigationItem rightBarButtonItem];
 
-    if (!v7)
+    if (!rightBarButtonItem)
     {
-      [(DSNavigationController *)self setupQuickExitButtonWithController:v10];
+      [(DSNavigationController *)self setupQuickExitButtonWithController:viewControllerCopy];
     }
 
     v8 = objc_opt_class();
     if (v8 == objc_opt_class() || (v9 = objc_opt_class(), v9 == objc_opt_class()))
     {
-      [(DSNavigationController *)self setupCancelButtonWithController:v10];
+      [(DSNavigationController *)self setupCancelButtonWithController:viewControllerCopy];
     }
 
     [(DSNavigationController *)self updateCurrentChapterWithPaneType:[(DSNavigationController *)self topViewControllerType]];
-    [(DSNavigationController *)self setupChapterIndicatorWithController:v10];
+    [(DSNavigationController *)self setupChapterIndicatorWithController:viewControllerCopy];
   }
 }
 
-- (void)setupQuickExitButtonWithController:(id)a3
+- (void)setupQuickExitButtonWithController:(id)controller
 {
   v4 = MEMORY[0x277D751E0];
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [v4 alloc];
   v9 = DSUILocStringForKey(@"QUICK_EXIT");
   v7 = [v6 initWithTitle:v9 style:0 target:self action:sel_quickExit];
-  v8 = [v5 navigationItem];
+  navigationItem = [controllerCopy navigationItem];
 
-  [v8 setRightBarButtonItem:v7];
+  [navigationItem setRightBarButtonItem:v7];
 }
 
-- (void)setupCancelButtonWithController:(id)a3
+- (void)setupCancelButtonWithController:(id)controller
 {
   v4 = MEMORY[0x277D751E0];
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [v4 alloc];
   v9 = DSUILocStringForKey(@"CANCEL");
   v7 = [v6 initWithTitle:v9 style:0 target:self action:sel_finishFlow];
-  v8 = [v5 navigationItem];
+  navigationItem = [controllerCopy navigationItem];
 
-  [v8 setLeftBarButtonItem:v7];
+  [navigationItem setLeftBarButtonItem:v7];
 }
 
-- (void)updateCurrentChapterWithPaneType:(Class)a3
+- (void)updateCurrentChapterWithPaneType:(Class)type
 {
-  v5 = [(DSNavigationController *)self navigationChapters];
-  v6 = NSStringFromClass(a3);
-  v8 = [v5 valueForKey:v6];
+  navigationChapters = [(DSNavigationController *)self navigationChapters];
+  v6 = NSStringFromClass(type);
+  v8 = [navigationChapters valueForKey:v6];
 
   if (v8)
   {
-    v7 = [v8 integerValue];
+    integerValue = [v8 integerValue];
   }
 
   else
   {
-    v7 = 0;
+    integerValue = 0;
   }
 
-  [(DSNavigationController *)self setCurrentChapter:v7];
+  [(DSNavigationController *)self setCurrentChapter:integerValue];
   if ([(DSNavigationController *)self currentChapter])
   {
     [(DSNavigationController *)self setCurrentChapterForAnalytics:[(DSNavigationController *)self currentChapter]];
   }
 }
 
-- (void)setupChapterIndicatorWithController:(id)a3
+- (void)setupChapterIndicatorWithController:(id)controller
 {
-  v10 = a3;
-  v4 = [v10 navigationItem];
-  [v4 setBackButtonDisplayMode:1];
+  controllerCopy = controller;
+  navigationItem = [controllerCopy navigationItem];
+  [navigationItem setBackButtonDisplayMode:1];
 
-  v5 = [(DSNavigationController *)self currentChapter];
-  v6 = [v10 navigationItem];
-  v7 = v6;
-  switch(v5)
+  currentChapter = [(DSNavigationController *)self currentChapter];
+  navigationItem2 = [controllerCopy navigationItem];
+  v7 = navigationItem2;
+  switch(currentChapter)
   {
     case 3:
       v8 = @"CHAPTER_THREE";
@@ -1125,22 +1125,22 @@ LABEL_7:
       goto LABEL_9;
   }
 
-  [v6 setTitle:0];
+  [navigationItem2 setTitle:0];
 LABEL_9:
 }
 
 - (void)quickExit
 {
-  v4 = [(DSNavigationController *)self visibleViewController];
+  visibleViewController = [(DSNavigationController *)self visibleViewController];
   if (objc_opt_respondsToSelector())
   {
-    [v4 performSelector:sel_postAnalytics];
+    [visibleViewController performSelector:sel_postAnalytics];
   }
 
   if ([(DSNavigationController *)self currentFlowType]== 3)
   {
-    v3 = [(DSNavigationController *)self presentingViewController];
-    [v3 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(DSNavigationController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
     [(DSNavigationController *)self setCachedPanes:0];
   }
@@ -1155,14 +1155,14 @@ LABEL_9:
 - (void)destroyConnectedWindowScene
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 connectedScenes];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  connectedScenes = [mEMORY[0x277D75128] connectedScenes];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v4;
+  v5 = connectedScenes;
   v6 = [v5 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (!v6)
   {
@@ -1189,9 +1189,9 @@ LABEL_3:
       goto LABEL_9;
     }
 
-    v11 = v10;
-    v12 = [v11 windows];
-    v13 = [v12 count];
+    windowScene = v10;
+    windows = [windowScene windows];
+    v13 = [windows count];
 
     if (v13)
     {
@@ -1211,24 +1211,24 @@ LABEL_9:
     }
   }
 
-  if (v11)
+  if (windowScene)
   {
     goto LABEL_14;
   }
 
 LABEL_13:
-  v14 = [(DSNavigationController *)self view];
-  v15 = [v14 window];
-  v11 = [v15 windowScene];
+  view = [(DSNavigationController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v11)
+  if (windowScene)
   {
 LABEL_14:
-    v16 = [v11 _FBSScene];
+    _FBSScene = [windowScene _FBSScene];
     v17 = objc_alloc(MEMORY[0x277D75400]);
     v18 = [v17 initWithPreferredAnimationType:1 callbackQueue:MEMORY[0x277D85CD0] completion:&__block_literal_global_483];
     v19 = [MEMORY[0x277CBEB98] setWithObject:v18];
-    [v16 sendActions:v19];
+    [_FBSScene sendActions:v19];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1264,10 +1264,10 @@ void __53__DSNavigationController_destroyConnectedWindowScene__block_invoke(uint
   }
 }
 
-- (void)willEnterForeground:(id)a3
+- (void)willEnterForeground:(id)foreground
 {
-  v4 = [(DSNavigationController *)self deepLink];
-  if (v4 && (v5 = v4, [(DSNavigationController *)self obfuscationWindow], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
+  deepLink = [(DSNavigationController *)self deepLink];
+  if (deepLink && (v5 = deepLink, [(DSNavigationController *)self obfuscationWindow], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
   {
     v7 = DSLog_15;
     if (!os_log_type_enabled(DSLog_15, OS_LOG_TYPE_DEFAULT))
@@ -1283,13 +1283,13 @@ void __53__DSNavigationController_destroyConnectedWindowScene__block_invoke(uint
   {
     if ([(DSNavigationController *)self currentFlowType]!= 3)
     {
-      v9 = [MEMORY[0x277CD47B0] sharedInstance];
+      mEMORY[0x277CD47B0] = [MEMORY[0x277CD47B0] sharedInstance];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __46__DSNavigationController_willEnterForeground___block_invoke;
       v10[3] = &unk_278F75E88;
       v10[4] = self;
-      [v9 stateWithCompletion:v10];
+      [mEMORY[0x277CD47B0] stateWithCompletion:v10];
 
       return;
     }
@@ -1350,7 +1350,7 @@ void __46__DSNavigationController_willEnterForeground___block_invoke_2(uint64_t 
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_248C7E000, a2, OS_LOG_TYPE_ERROR, "Cannot evaluate authentication policy for Safety Check, policy error %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }
@@ -1461,7 +1461,7 @@ void __51__DSNavigationController_authToReturnToSafetyCheck__block_invoke_2(uint
   }
 }
 
-- (void)didEnterBackground:(id)a3
+- (void)didEnterBackground:(id)background
 {
   if (!self->_obfuscationWindow)
   {
@@ -1470,54 +1470,54 @@ void __51__DSNavigationController_authToReturnToSafetyCheck__block_invoke_2(uint
       [(DSNavigationController *)self quickExit];
     }
 
-    v7 = [(DSNavigationController *)self view];
-    v4 = [v7 window];
-    v5 = [DSObfuscationWindow showDSObfuscationWindowForApplicationWindow:v4];
+    view = [(DSNavigationController *)self view];
+    window = [view window];
+    v5 = [DSObfuscationWindow showDSObfuscationWindowForApplicationWindow:window];
     obfuscationWindow = self->_obfuscationWindow;
     self->_obfuscationWindow = v5;
   }
 }
 
-- (void)willResignActive:(id)a3
+- (void)willResignActive:(id)active
 {
   if (+[DSFeatureFlags isWifiSyncRemindersEnabled])
   {
     [(DSNavigationController *)self updateDaemonModelForCurrentPane];
-    v4 = [(DSNavigationController *)self daemonProxy];
-    [v4 sendAggregatedSignals];
+    daemonProxy = [(DSNavigationController *)self daemonProxy];
+    [daemonProxy sendAggregatedSignals];
   }
 }
 
 - (void)cancel
 {
   [(DSNavigationController *)self sendSummaryAnalyticsWithQuickExit:0 finalScreen:0];
-  v3 = [(DSNavigationController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(DSNavigationController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 
   [(DSNavigationController *)self setCachedPanes:0];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   if ([(DSNavigationController *)self currentFlowType]!= 3)
   {
-    v4 = [(DSNavigationController *)self shouldFinishFlow];
+    shouldFinishFlow = [(DSNavigationController *)self shouldFinishFlow];
 
-    [(DSNavigationController *)self sendSummaryAnalyticsWithQuickExit:0 finalScreen:v4];
+    [(DSNavigationController *)self sendSummaryAnalyticsWithQuickExit:0 finalScreen:shouldFinishFlow];
   }
 }
 
-- (void)sendSummaryAnalyticsWithQuickExit:(BOOL)a3 finalScreen:(BOOL)a4
+- (void)sendSummaryAnalyticsWithQuickExit:(BOOL)exit finalScreen:(BOOL)screen
 {
   v6 = MEMORY[0x277D85DD0];
-  LOBYTE(v8) = a4;
-  BYTE1(v8) = a3;
+  LOBYTE(v8) = screen;
+  BYTE1(v8) = exit;
   AnalyticsSendEventLazy();
   if ([DSFeatureFlags isWifiSyncRemindersEnabled:v6])
   {
     [(DSNavigationController *)self updateDaemonModelForCurrentPane];
-    v5 = [(DSNavigationController *)self daemonProxy];
-    [v5 sendAggregatedSignals];
+    daemonProxy = [(DSNavigationController *)self daemonProxy];
+    [daemonProxy sendAggregatedSignals];
   }
 }
 
@@ -1569,9 +1569,9 @@ id __72__DSNavigationController_sendSummaryAnalyticsWithQuickExit_finalScreen___
   return v15;
 }
 
-- (void)sendSummaryAnalyticsWithEventName:(id)a3
+- (void)sendSummaryAnalyticsWithEventName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   if ([(DSNavigationController *)self deepLinkPaneType])
   {
     [(DSNavigationController *)self deepLinkPaneType];
@@ -1618,16 +1618,16 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
 
 - (void)resetRemoteUI
 {
-  v3 = [(DSNavigationController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(DSNavigationController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (v4)
   {
     v5 = 0;
     for (i = 1; ; ++i)
     {
-      v7 = [(DSNavigationController *)self viewControllers];
-      v15 = [v7 objectAtIndexedSubscript:v5];
+      viewControllers2 = [(DSNavigationController *)self viewControllers];
+      v15 = [viewControllers2 objectAtIndexedSubscript:v5];
 
       v8 = [(DSNavigationController *)self currentFlowType]? off_278F748C0 : off_278F74840;
       v9 = *v8;
@@ -1638,8 +1638,8 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
         break;
       }
 
-      v11 = [(DSNavigationController *)self viewControllers];
-      v12 = [v11 count];
+      viewControllers3 = [(DSNavigationController *)self viewControllers];
+      v12 = [viewControllers3 count];
 
       if (v12 <= v5)
       {
@@ -1647,44 +1647,44 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
       }
     }
 
-    v13 = [(DSNavigationController *)self viewControllers];
-    v14 = [v13 subarrayWithRange:{0, i}];
+    viewControllers4 = [(DSNavigationController *)self viewControllers];
+    v14 = [viewControllers4 subarrayWithRange:{0, i}];
     [(OBNavigationController *)self setViewControllers:v14];
   }
 }
 
 - (id)deepLinkForCurrentFlowAndPane
 {
-  v3 = [(DSNavigationController *)self navigationManager];
-  v4 = [v3 deepLinkToPane:-[DSNavigationController topViewControllerType](self inFlow:{"topViewControllerType"), -[DSNavigationController currentFlowType](self, "currentFlowType")}];
+  navigationManager = [(DSNavigationController *)self navigationManager];
+  v4 = [navigationManager deepLinkToPane:-[DSNavigationController topViewControllerType](self inFlow:{"topViewControllerType"), -[DSNavigationController currentFlowType](self, "currentFlowType")}];
 
   [(DSNavigationController *)self setDeepLinkPaneType:[(DSNavigationController *)self topViewControllerType]];
 
   return v4;
 }
 
-- (BOOL)isDetailControllerClass:(Class)a3
+- (BOOL)isDetailControllerClass:(Class)class
 {
-  v4 = [(DSNavigationController *)self navigationManager];
-  v5 = [v4 detailControllerPanes];
-  LOBYTE(a3) = [v5 containsObject:a3];
+  navigationManager = [(DSNavigationController *)self navigationManager];
+  detailControllerPanes = [navigationManager detailControllerPanes];
+  LOBYTE(class) = [detailControllerPanes containsObject:class];
 
-  return a3;
+  return class;
 }
 
 - (void)_pushWelcomeControllerAsTopView
 {
-  v3 = [(DSNavigationController *)self topViewController];
-  if (!v3)
+  topViewController = [(DSNavigationController *)self topViewController];
+  if (!topViewController)
   {
     if (![MEMORY[0x277D054D8] shouldShowBioRatchetFlow])
     {
       return;
     }
 
-    v4 = [(DSNavigationController *)self currentFlowType];
+    currentFlowType = [(DSNavigationController *)self currentFlowType];
     v5 = off_278F74848;
-    if (v4)
+    if (currentFlowType)
     {
       v5 = off_278F74950;
     }
@@ -1692,7 +1692,7 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
     v6 = *v5;
     v7 = [(DSNavigationController *)self paneInstanceForType:objc_opt_class()];
     [(OBNavigationController *)self pushViewController:v7 animated:1];
-    v3 = v7;
+    topViewController = v7;
   }
 }
 
@@ -1729,9 +1729,9 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
   return v10;
 }
 
-- (void)ratchetStateDidChange:(id)a3
+- (void)ratchetStateDidChange:(id)change
 {
-  if ([a3 rawValue] == 1)
+  if ([change rawValue] == 1)
   {
 
     [(DSNavigationController *)self sendSummaryAnalyticsWithEventName:@"com.apple.DigitalSeparation.RatchetStarted"];
@@ -1740,22 +1740,22 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
 
 - (void)_setupRatchetObserver
 {
-  v3 = [MEMORY[0x277CD47B0] sharedInstance];
-  [v3 addObserver:self];
+  mEMORY[0x277CD47B0] = [MEMORY[0x277CD47B0] sharedInstance];
+  [mEMORY[0x277CD47B0] addObserver:self];
 }
 
 - (void)updateDaemonModelForCurrentPane
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(DSNavigationController *)self topViewControllerType];
-  if (v3 == objc_opt_class())
+  topViewControllerType = [(DSNavigationController *)self topViewControllerType];
+  if (topViewControllerType == objc_opt_class())
   {
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v4 = [(DSNavigationController *)self unpairedComputers];
-    v5 = [v4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+    unpairedComputers = [(DSNavigationController *)self unpairedComputers];
+    v5 = [unpairedComputers countByEnumeratingWithState:&v29 objects:v34 count:16];
     v6 = MEMORY[0x277D48DD8];
     if (v5)
     {
@@ -1770,21 +1770,21 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
         {
           if (*v30 != v8)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(unpairedComputers);
           }
 
           v12 = *(*(&v29 + 1) + 8 * v11);
-          v13 = [(DSNavigationController *)self daemonProxy];
-          [v13 removeSignalWithIdentifier:v12 sharingType:v9 signalType:v10];
+          daemonProxy = [(DSNavigationController *)self daemonProxy];
+          [daemonProxy removeSignalWithIdentifier:v12 sharingType:v9 signalType:v10];
 
-          v14 = [(DSNavigationController *)self reviewedComputers];
-          [v14 removeObject:v12];
+          reviewedComputers = [(DSNavigationController *)self reviewedComputers];
+          [reviewedComputers removeObject:v12];
 
           ++v11;
         }
 
         while (v7 != v11);
-        v7 = [v4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+        v7 = [unpairedComputers countByEnumeratingWithState:&v29 objects:v34 count:16];
       }
 
       while (v7);
@@ -1794,8 +1794,8 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = [(DSNavigationController *)self reviewedComputers];
-    v16 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    reviewedComputers2 = [(DSNavigationController *)self reviewedComputers];
+    v16 = [reviewedComputers2 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (v16)
     {
       v17 = v16;
@@ -1809,18 +1809,18 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
         {
           if (*v26 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(reviewedComputers2);
           }
 
           v22 = *(*(&v25 + 1) + 8 * v21);
-          v23 = [(DSNavigationController *)self daemonProxy];
-          [v23 addSignalWithIdentifier:v22 sharingType:v19 signalType:v20];
+          daemonProxy2 = [(DSNavigationController *)self daemonProxy];
+          [daemonProxy2 addSignalWithIdentifier:v22 sharingType:v19 signalType:v20];
 
           ++v21;
         }
 
         while (v17 != v21);
-        v17 = [v15 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v17 = [reviewedComputers2 countByEnumeratingWithState:&v25 objects:v33 count:16];
       }
 
       while (v17);
@@ -1832,36 +1832,36 @@ id __60__DSNavigationController_sendSummaryAnalyticsWithEventName___block_invoke
 
 - (NSString)entryMethod
 {
-  v3 = [(DSNavigationController *)self deepLink];
-  if (v3)
+  deepLink = [(DSNavigationController *)self deepLink];
+  if (deepLink)
   {
-    v4 = [(DSNavigationController *)self deepLink];
-    v5 = [v4 entrypoint];
+    deepLink2 = [(DSNavigationController *)self deepLink];
+    entrypoint = [deepLink2 entrypoint];
   }
 
   else
   {
-    v5 = @"Default";
+    entrypoint = @"Default";
   }
 
-  return v5;
+  return entrypoint;
 }
 
 - (BOOL)requiresAuthForEntry
 {
-  v3 = [(DSNavigationController *)self deepLink];
-  if (v3)
+  deepLink = [(DSNavigationController *)self deepLink];
+  if (deepLink)
   {
-    v4 = [(DSNavigationController *)self deepLink];
-    v5 = [v4 flowRequiresAuth];
+    deepLink2 = [(DSNavigationController *)self deepLink];
+    flowRequiresAuth = [deepLink2 flowRequiresAuth];
   }
 
   else
   {
-    v5 = 1;
+    flowRequiresAuth = 1;
   }
 
-  return v5;
+  return flowRequiresAuth;
 }
 
 void __51__DSNavigationController_authToReturnToSafetyCheck__block_invoke_490_cold_1(uint64_t a1, NSObject *a2)

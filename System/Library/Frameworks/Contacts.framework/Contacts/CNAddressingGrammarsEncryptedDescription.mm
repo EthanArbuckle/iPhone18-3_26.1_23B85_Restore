@@ -1,22 +1,22 @@
 @interface CNAddressingGrammarsEncryptedDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
 - (id)equivalentLabelSets;
 - (id)standardLabels;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNAddressingGrammarsEncryptedDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 addressingGrammarsEncrypted];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  addressingGrammarsEncrypted = [contactCopy addressingGrammarsEncrypted];
+  if (!addressingGrammarsEncrypted)
   {
-    v4 = [v7 addressingGrammarsEncrypted];
-    if (!v4)
+    addressingGrammarsEncrypted2 = [otherCopy addressingGrammarsEncrypted];
+    if (!addressingGrammarsEncrypted2)
     {
       v11 = 1;
 LABEL_6:
@@ -25,11 +25,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 addressingGrammarsEncrypted];
-  v10 = [v7 addressingGrammarsEncrypted];
-  v11 = [v9 isEqual:v10];
+  addressingGrammarsEncrypted3 = [contactCopy addressingGrammarsEncrypted];
+  addressingGrammarsEncrypted4 = [otherCopy addressingGrammarsEncrypted];
+  v11 = [addressingGrammarsEncrypted3 isEqual:addressingGrammarsEncrypted4];
 
-  if (!v8)
+  if (!addressingGrammarsEncrypted)
   {
     goto LABEL_6;
   }
@@ -39,11 +39,11 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  contactCopy = contact;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
@@ -52,10 +52,10 @@ LABEL_7:
   {
   }
 
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:{@"_addressingGrammarsEncrypted", v12, v13}];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:{@"_addressingGrammarsEncrypted", v12, v13}];
   v10 = [v9 copy];
-  v11 = v6[19];
-  v6[19] = v10;
+  v11 = contactCopy[19];
+  contactCopy[19] = v10;
 }
 
 - (id)equivalentLabelSets
@@ -94,14 +94,14 @@ void __58__CNAddressingGrammarsEncryptedDescription_standardLabels__block_invoke
   standardLabels_cn_once_object_1 = MEMORY[0x1E695E0F0];
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A290];
+    *d = *MEMORY[0x1E698A290];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

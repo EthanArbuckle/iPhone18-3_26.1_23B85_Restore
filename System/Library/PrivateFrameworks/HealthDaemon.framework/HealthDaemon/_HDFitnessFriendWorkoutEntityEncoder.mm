@@ -1,7 +1,7 @@
 @interface _HDFitnessFriendWorkoutEntityEncoder
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6;
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5;
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3;
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error;
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row;
 - (id)orderedProperties;
 @end
 
@@ -29,19 +29,19 @@
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:16];
   v9.receiver = self;
   v9.super_class = _HDFitnessFriendWorkoutEntityEncoder;
-  v4 = [(HDEntityEncoder *)&v9 superclassEncoder];
-  v5 = [v4 orderedProperties];
-  v6 = [v3 arrayByAddingObjectsFromArray:v5];
+  superclassEncoder = [(HDEntityEncoder *)&v9 superclassEncoder];
+  orderedProperties = [superclassEncoder orderedProperties];
+  v6 = [v3 arrayByAddingObjectsFromArray:orderedProperties];
 
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-- (id)codableRepresentationForPersistentID:(int64_t)a3 row:(HDSQLiteRow *)a4 error:(id *)a5
+- (id)codableRepresentationForPersistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v8 = [(HDEntityEncoder *)self superclassEncoder];
-  v9 = [v8 codableRepresentationForPersistentID:a3 row:a4 error:a5];
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v9 = [superclassEncoder codableRepresentationForPersistentID:d row:row error:error];
 
   if (v9)
   {
@@ -59,7 +59,7 @@
     HDSQLiteColumnWithNameAsDouble();
     [(HDCodableFitnessFriendWorkout *)v10 setTotalDistanceInCanonicalUnit:?];
     [(HDCodableFitnessFriendWorkout *)v10 setType:HDSQLiteColumnWithNameAsInt64()];
-    [(HDCodableFitnessFriendWorkout *)v10 setAmm:HDEntityActivityModeModeForRowAndColumnName(a4)];
+    [(HDCodableFitnessFriendWorkout *)v10 setAmm:HDEntityActivityModeModeForRowAndColumnName(row)];
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       [(HDCodableFitnessFriendWorkout *)v10 setGoalType:HDSQLiteColumnWithNameAsInt64()];
@@ -105,101 +105,101 @@
   return v10;
 }
 
-- (id)createBareObjectWithRow:(HDSQLiteRow *)a3
+- (id)createBareObjectWithRow:(HDSQLiteRow *)row
 {
-  v3 = [objc_alloc(MEMORY[0x277CCDDD0]) _init];
+  _init = [objc_alloc(MEMORY[0x277CCDDD0]) _init];
 
-  return v3;
+  return _init;
 }
 
-- (BOOL)applyPropertiesToObject:(id)a3 persistentID:(int64_t)a4 row:(HDSQLiteRow *)a5 error:(id *)a6
+- (BOOL)applyPropertiesToObject:(id)object persistentID:(int64_t)d row:(HDSQLiteRow *)row error:(id *)error
 {
-  v10 = a3;
-  v11 = [(HDEntityEncoder *)self superclassEncoder];
-  v12 = [v11 applyPropertiesToObject:v10 persistentID:a4 row:a5 error:a6];
+  objectCopy = object;
+  superclassEncoder = [(HDEntityEncoder *)self superclassEncoder];
+  v12 = [superclassEncoder applyPropertiesToObject:objectCopy persistentID:d row:row error:error];
 
   if (v12)
   {
     v13 = HDSQLiteColumnWithNameAsUUID();
-    [v10 setFriendUUID:v13];
+    [objectCopy setFriendUUID:v13];
 
     HDSQLiteColumnWithNameAsDouble();
-    [v10 setDuration:?];
+    [objectCopy setDuration:?];
     v14 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v14) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v14) & 1) == 0)
     {
-      v15 = MEMORY[0x22AAC6C50](a5, v14);
+      v15 = MEMORY[0x22AAC6C50](row, v14);
       v16 = MEMORY[0x277CCD7E8];
       v17 = _HKWorkoutCanonicalEnergyBurnedUnit();
       v18 = [v16 quantityWithUnit:v17 doubleValue:v15];
 
-      [v10 setTotalEnergyBurned:v18];
+      [objectCopy setTotalEnergyBurned:v18];
     }
 
     v19 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v19) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v19) & 1) == 0)
     {
-      v20 = MEMORY[0x22AAC6C50](a5, v19);
+      v20 = MEMORY[0x22AAC6C50](row, v19);
       v21 = MEMORY[0x277CCD7E8];
       v22 = _HKWorkoutCanonicalEnergyBurnedUnit();
       v23 = [v21 quantityWithUnit:v22 doubleValue:v20];
 
-      [v10 setTotalBasalEnergyBurned:v23];
+      [objectCopy setTotalBasalEnergyBurned:v23];
     }
 
     v24 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v24) & 1) == 0)
+    if ((MEMORY[0x22AAC6CD0](row, v24) & 1) == 0)
     {
-      v25 = MEMORY[0x22AAC6C50](a5, v24);
+      v25 = MEMORY[0x22AAC6C50](row, v24);
       v26 = MEMORY[0x277CCD7E8];
       v27 = _HKWorkoutCanonicalDistanceUnit();
       v28 = [v26 quantityWithUnit:v27 doubleValue:v25];
 
-      [v10 setTotalDistance:v28];
+      [objectCopy setTotalDistance:v28];
     }
 
-    [v10 setWorkoutActivityType:HDSQLiteColumnWithNameAsInt64()];
-    [v10 setAmm:HDEntityActivityModeModeForRowAndColumnName(a5)];
+    [objectCopy setWorkoutActivityType:HDSQLiteColumnWithNameAsInt64()];
+    [objectCopy setAmm:HDEntityActivityModeModeForRowAndColumnName(row)];
     v29 = HDSQLiteColumnWithNameAsInt64();
     v30 = HDSQLiteColumnWithName();
-    if ((MEMORY[0x22AAC6CD0](a5, v30) & 1) == 0 && _HKWorkoutGoalTypeIsValidForGoal())
+    if ((MEMORY[0x22AAC6CD0](row, v30) & 1) == 0 && _HKWorkoutGoalTypeIsValidForGoal())
     {
       v31 = MEMORY[0x277CCD7E8];
       v32 = _HKWorkoutCanonicalUnitForGoalType();
-      MEMORY[0x22AAC6C50](a5, v30);
+      MEMORY[0x22AAC6C50](row, v30);
       v33 = [v31 quantityWithUnit:v32 doubleValue:?];
 
-      [v10 setGoal:v33];
-      [v10 setGoalType:v29];
+      [objectCopy setGoal:v33];
+      [objectCopy setGoalType:v29];
     }
 
     v34 = HDSQLiteColumnWithNameAsString();
-    [v10 setBundleID:v34];
+    [objectCopy setBundleID:v34];
 
-    [v10 setIsWatchWorkout:HDSQLiteColumnWithNameAsInt64() != 0];
-    [v10 setIsIndoorWorkout:HDSQLiteColumnWithNameAsInt64() != 0];
+    [objectCopy setIsWatchWorkout:HDSQLiteColumnWithNameAsInt64() != 0];
+    [objectCopy setIsIndoorWorkout:HDSQLiteColumnWithNameAsInt64() != 0];
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       v35 = HDSQLiteColumnWithNameAsString();
-      [v10 setDeviceManufacturer:v35];
+      [objectCopy setDeviceManufacturer:v35];
     }
 
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       v36 = HDSQLiteColumnWithNameAsString();
-      [v10 setDeviceModel:v36];
+      [objectCopy setDeviceModel:v36];
     }
 
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       v37 = HDSQLiteColumnWithNameAsString();
-      [v10 setSeymourCatalogWorkoutIdentifier:v37];
+      [objectCopy setSeymourCatalogWorkoutIdentifier:v37];
     }
 
     if ((HDSQLiteColumnWithNameIsNull() & 1) == 0)
     {
       v38 = HDSQLiteColumnWithNameAsString();
-      [v10 setSeymourMediaType:v38];
+      [objectCopy setSeymourMediaType:v38];
     }
   }
 

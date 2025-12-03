@@ -1,7 +1,7 @@
 @interface EKPersistentLocation
 + (id)defaultPropertiesToLoad;
 + (id)relations;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)semanticIdentifier;
 @end
@@ -89,32 +89,32 @@ BOOL __33__EKPersistentLocation_relations__block_invoke_2(uint64_t a1, void *a2,
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(EKPersistentLocation);
-  v5 = [(EKPersistentLocation *)self title];
-  [(EKPersistentLocation *)v4 setTitle:v5];
+  title = [(EKPersistentLocation *)self title];
+  [(EKPersistentLocation *)v4 setTitle:title];
 
-  v6 = [(EKPersistentLocation *)self address];
-  [(EKPersistentLocation *)v4 setAddress:v6];
+  address = [(EKPersistentLocation *)self address];
+  [(EKPersistentLocation *)v4 setAddress:address];
 
-  v7 = [(EKPersistentLocation *)self latitude];
-  [(EKPersistentLocation *)v4 setLatitude:v7];
+  latitude = [(EKPersistentLocation *)self latitude];
+  [(EKPersistentLocation *)v4 setLatitude:latitude];
 
-  v8 = [(EKPersistentLocation *)self longitude];
-  [(EKPersistentLocation *)v4 setLongitude:v8];
+  longitude = [(EKPersistentLocation *)self longitude];
+  [(EKPersistentLocation *)v4 setLongitude:longitude];
 
-  v9 = [(EKPersistentLocation *)self contactLabel];
-  [(EKPersistentLocation *)v4 setContactLabel:v9];
+  contactLabel = [(EKPersistentLocation *)self contactLabel];
+  [(EKPersistentLocation *)v4 setContactLabel:contactLabel];
 
-  v10 = [(EKPersistentLocation *)self mapKitHandle];
-  [(EKPersistentLocation *)v4 setMapKitHandle:v10];
+  mapKitHandle = [(EKPersistentLocation *)self mapKitHandle];
+  [(EKPersistentLocation *)v4 setMapKitHandle:mapKitHandle];
 
-  v11 = [(EKPersistentLocation *)self radius];
-  [(EKPersistentLocation *)v4 setRadius:v11];
+  radius = [(EKPersistentLocation *)self radius];
+  [(EKPersistentLocation *)v4 setRadius:radius];
 
-  v12 = [(EKPersistentLocation *)self routing];
-  [(EKPersistentLocation *)v4 setRouting:v12];
+  routing = [(EKPersistentLocation *)self routing];
+  [(EKPersistentLocation *)v4 setRouting:routing];
 
   return v4;
 }
@@ -123,28 +123,28 @@ BOOL __33__EKPersistentLocation_relations__block_invoke_2(uint64_t a1, void *a2,
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(EKPersistentLocation *)self title];
-  v6 = [(EKPersistentLocation *)self address];
-  v7 = [(EKPersistentLocation *)self latitude];
-  v8 = [(EKPersistentLocation *)self longitude];
-  v9 = [(EKPersistentLocation *)self contactLabel];
-  v10 = [(EKPersistentLocation *)self radius];
-  v11 = [(EKPersistentLocation *)self routing];
-  v12 = [v3 stringWithFormat:@"%@ <%p> {title = %@ address = %@; lat = %@; long = %@; abID = %@; radius = %@, routing = %@}", v4, self, v5, v6, v7, v8, v9, v10, v11];;
+  title = [(EKPersistentLocation *)self title];
+  address = [(EKPersistentLocation *)self address];
+  latitude = [(EKPersistentLocation *)self latitude];
+  longitude = [(EKPersistentLocation *)self longitude];
+  contactLabel = [(EKPersistentLocation *)self contactLabel];
+  radius = [(EKPersistentLocation *)self radius];
+  routing = [(EKPersistentLocation *)self routing];
+  v12 = [v3 stringWithFormat:@"%@ <%p> {title = %@ address = %@; lat = %@; long = %@; abID = %@; radius = %@, routing = %@}", v4, self, title, address, latitude, longitude, contactLabel, radius, routing];;
 
   return v12;
 }
 
 - (id)semanticIdentifier
 {
-  v3 = [(EKPersistentLocation *)self title];
-  v4 = [(EKPersistentLocation *)self address];
-  v5 = [(EKPersistentLocation *)self mapKitHandle];
-  v6 = [(EKPersistentLocation *)self contactLabel];
-  v7 = [(EKPersistentLocation *)self latitude];
-  v8 = [(EKPersistentLocation *)self longitude];
-  v9 = [(EKPersistentLocation *)self radius];
-  v10 = [EKStructuredLocationSemanticIdentifierGenerator semanticIdentifierForLocationWithTitle:v3 address:v4 mapKitHandle:v5 contactLabel:v6 latitude:v7 longitude:v8 radius:v9];
+  title = [(EKPersistentLocation *)self title];
+  address = [(EKPersistentLocation *)self address];
+  mapKitHandle = [(EKPersistentLocation *)self mapKitHandle];
+  contactLabel = [(EKPersistentLocation *)self contactLabel];
+  latitude = [(EKPersistentLocation *)self latitude];
+  longitude = [(EKPersistentLocation *)self longitude];
+  radius = [(EKPersistentLocation *)self radius];
+  v10 = [EKStructuredLocationSemanticIdentifierGenerator semanticIdentifierForLocationWithTitle:title address:address mapKitHandle:mapKitHandle contactLabel:contactLabel latitude:latitude longitude:longitude radius:radius];
 
   return v10;
 }

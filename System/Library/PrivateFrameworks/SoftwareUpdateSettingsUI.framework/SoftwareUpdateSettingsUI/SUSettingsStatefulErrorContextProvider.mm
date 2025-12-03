@@ -1,89 +1,89 @@
 @interface SUSettingsStatefulErrorContextProvider
-- (BOOL)isError:(id)a3 intrinsicallyEquivalentToError:(id)a4 withStatefulDescriptor:(id)a5;
-- (BOOL)isError:(id)a3 intrinsicallyEquivalentToError:(id)a4 withStatefulDescriptor:(id)a5 download:(id)a6;
-- (BOOL)shouldEnableUpdateButtonForError:(id)a3 statefulDescriptor:(id)a4;
-- (BOOL)shouldEnableUpdateButtonForError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5;
-- (BOOL)shouldEnableUpdateButtonForNetworkError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5;
-- (BOOL)shouldIgnoreUpdateError:(id)a3 withStatefulDescriptor:(id)a4;
-- (BOOL)shouldIgnoreUpdateError:(id)a3 withStatefulDescriptor:(id)a4 download:(id)a5;
+- (BOOL)isError:(id)error intrinsicallyEquivalentToError:(id)toError withStatefulDescriptor:(id)descriptor;
+- (BOOL)isError:(id)error intrinsicallyEquivalentToError:(id)toError withStatefulDescriptor:(id)descriptor download:(id)download;
+- (BOOL)shouldEnableUpdateButtonForError:(id)error statefulDescriptor:(id)descriptor;
+- (BOOL)shouldEnableUpdateButtonForError:(id)error statefulDescriptor:(id)descriptor download:(id)download;
+- (BOOL)shouldEnableUpdateButtonForNetworkError:(id)error statefulDescriptor:(id)descriptor download:(id)download;
+- (BOOL)shouldIgnoreUpdateError:(id)error withStatefulDescriptor:(id)descriptor;
+- (BOOL)shouldIgnoreUpdateError:(id)error withStatefulDescriptor:(id)descriptor download:(id)download;
 - (SUSettingsStatefulUIManager)ownerManager;
-- (id)initForManager:(id)a3;
-- (id)localizedDescriptionForError:(id)a3 statefulDescriptor:(id)a4;
-- (id)localizedDescriptionForError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5;
-- (id)localizedDescriptionForNetworkError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5;
-- (id)localizedDescriptionForUnmetConstraintsError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5;
-- (id)localizedTitleForError:(id)a3 statefulDescriptor:(id)a4;
-- (id)localizedTitleForError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5;
-- (id)localizedTitleForUnmetConstraintsError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5;
+- (id)initForManager:(id)manager;
+- (id)localizedDescriptionForError:(id)error statefulDescriptor:(id)descriptor;
+- (id)localizedDescriptionForError:(id)error statefulDescriptor:(id)descriptor download:(id)download;
+- (id)localizedDescriptionForNetworkError:(id)error statefulDescriptor:(id)descriptor download:(id)download;
+- (id)localizedDescriptionForUnmetConstraintsError:(id)error statefulDescriptor:(id)descriptor download:(id)download;
+- (id)localizedTitleForError:(id)error statefulDescriptor:(id)descriptor;
+- (id)localizedTitleForError:(id)error statefulDescriptor:(id)descriptor download:(id)download;
+- (id)localizedTitleForUnmetConstraintsError:(id)error statefulDescriptor:(id)descriptor download:(id)download;
 @end
 
 @implementation SUSettingsStatefulErrorContextProvider
 
-- (id)initForManager:(id)a3
+- (id)initForManager:(id)manager
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, manager);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = SUSettingsStatefulErrorContextProvider;
   v8 = [(SUSettingsStatefulErrorContextProvider *)&v9 init];
-  v11 = v8;
-  objc_storeStrong(&v11, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    [(SUSettingsStatefulErrorContextProvider *)v11 setOwnerManager:location[0]];
+    [(SUSettingsStatefulErrorContextProvider *)selfCopy setOwnerManager:location[0]];
     v4 = [objc_alloc(MEMORY[0x277D64460]) initWithCategory:@"SUSettingsStatefulErrorContextProvider"];
-    log = v11->_log;
-    v11->_log = v4;
+    log = selfCopy->_log;
+    selfCopy->_log = v4;
     MEMORY[0x277D82BD8](log);
   }
 
-  v7 = MEMORY[0x277D82BE0](v11);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (BOOL)isError:(id)a3 intrinsicallyEquivalentToError:(id)a4 withStatefulDescriptor:(id)a5
+- (BOOL)isError:(id)error intrinsicallyEquivalentToError:(id)toError withStatefulDescriptor:(id)descriptor
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
+  objc_storeStrong(&v16, toError);
   v15 = 0;
-  objc_storeStrong(&v15, a5);
-  v11 = v18;
+  objc_storeStrong(&v15, descriptor);
+  v11 = selfCopy;
   v8 = location[0];
   v9 = v16;
   v10 = v15;
-  v13 = [(SUSettingsStatefulErrorContextProvider *)v18 ownerManager];
-  v12 = [(SUSettingsStatefulUIManager *)v13 currentDownload];
+  ownerManager = [(SUSettingsStatefulErrorContextProvider *)selfCopy ownerManager];
+  currentDownload = [(SUSettingsStatefulUIManager *)ownerManager currentDownload];
   v14 = [(SUSettingsStatefulErrorContextProvider *)v11 isError:v8 intrinsicallyEquivalentToError:v9 withStatefulDescriptor:v10 download:?];
-  MEMORY[0x277D82BD8](v12);
-  MEMORY[0x277D82BD8](v13);
+  MEMORY[0x277D82BD8](currentDownload);
+  MEMORY[0x277D82BD8](ownerManager);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(&v16, 0);
   objc_storeStrong(location, 0);
   return v14;
 }
 
-- (BOOL)isError:(id)a3 intrinsicallyEquivalentToError:(id)a4 withStatefulDescriptor:(id)a5 download:(id)a6
+- (BOOL)isError:(id)error intrinsicallyEquivalentToError:(id)toError withStatefulDescriptor:(id)descriptor download:(id)download
 {
-  v25 = self;
+  selfCopy = self;
   v24 = a2;
   *(&v23 + 1) = 0;
-  objc_storeStrong(&v23 + 1, a3);
+  objc_storeStrong(&v23 + 1, error);
   *&v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, toError);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, descriptor);
   v21 = 0;
-  objc_storeStrong(&v21, a6);
+  objc_storeStrong(&v21, download);
   if (v23 == 0)
   {
     v26 = 1;
@@ -92,17 +92,17 @@
 
   else
   {
-    v8 = [*(&v23 + 1) domain];
-    v9 = [v23 domain];
+    domain = [*(&v23 + 1) domain];
+    domain2 = [v23 domain];
     v10 = 1;
-    if ([v8 isEqualToString:?])
+    if ([domain isEqualToString:?])
     {
-      v7 = [*(&v23 + 1) code];
-      v10 = v7 != [v23 code];
+      code = [*(&v23 + 1) code];
+      v10 = code != [v23 code];
     }
 
-    MEMORY[0x277D82BD8](v9);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](domain2);
+    MEMORY[0x277D82BD8](domain);
     if (v10)
     {
       v26 = 0;
@@ -111,18 +111,18 @@
 
     else
     {
-      v19 = [(SUSettingsStatefulErrorContextProvider *)v25 shouldEnableUpdateButtonForError:*(&v23 + 1) statefulDescriptor:v22 download:v21];
-      v18 = [(SUSettingsStatefulErrorContextProvider *)v25 shouldEnableUpdateButtonForError:v23 statefulDescriptor:v22 download:v21];
+      v19 = [(SUSettingsStatefulErrorContextProvider *)selfCopy shouldEnableUpdateButtonForError:*(&v23 + 1) statefulDescriptor:v22 download:v21];
+      v18 = [(SUSettingsStatefulErrorContextProvider *)selfCopy shouldEnableUpdateButtonForError:v23 statefulDescriptor:v22 download:v21];
       if (v19 == v18)
       {
-        v17 = [(SUSettingsStatefulErrorContextProvider *)v25 localizedTitleForError:*(&v23 + 1) statefulDescriptor:v22 download:v21];
-        v16 = [(SUSettingsStatefulErrorContextProvider *)v25 localizedTitleForError:v23 statefulDescriptor:v22 download:v21];
+        v17 = [(SUSettingsStatefulErrorContextProvider *)selfCopy localizedTitleForError:*(&v23 + 1) statefulDescriptor:v22 download:v21];
+        v16 = [(SUSettingsStatefulErrorContextProvider *)selfCopy localizedTitleForError:v23 statefulDescriptor:v22 download:v21];
         if (v17 || v16)
         {
           if ([v17 isEqualToString:v16])
           {
-            v15 = [(SUSettingsStatefulErrorContextProvider *)v25 localizedDescriptionForError:*(&v23 + 1) statefulDescriptor:v22 download:v21];
-            v14 = [(SUSettingsStatefulErrorContextProvider *)v25 localizedDescriptionForError:v23 statefulDescriptor:v22 download:v21];
+            v15 = [(SUSettingsStatefulErrorContextProvider *)selfCopy localizedDescriptionForError:*(&v23 + 1) statefulDescriptor:v22 download:v21];
+            v14 = [(SUSettingsStatefulErrorContextProvider *)selfCopy localizedDescriptionForError:v23 statefulDescriptor:v22 download:v21];
             if (v15 || v14)
             {
               v26 = ([v15 isEqualToString:v14] & 1) != 0;
@@ -171,44 +171,44 @@
   return v26;
 }
 
-- (BOOL)shouldIgnoreUpdateError:(id)a3 withStatefulDescriptor:(id)a4
+- (BOOL)shouldIgnoreUpdateError:(id)error withStatefulDescriptor:(id)descriptor
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v8 = v14;
+  objc_storeStrong(&v12, descriptor);
+  v8 = selfCopy;
   v6 = location[0];
   v7 = v12;
-  v10 = [(SUSettingsStatefulErrorContextProvider *)v14 ownerManager];
-  v9 = [(SUSettingsStatefulUIManager *)v10 currentDownload];
+  ownerManager = [(SUSettingsStatefulErrorContextProvider *)selfCopy ownerManager];
+  currentDownload = [(SUSettingsStatefulUIManager *)ownerManager currentDownload];
   v11 = [(SUSettingsStatefulErrorContextProvider *)v8 shouldIgnoreUpdateError:v6 withStatefulDescriptor:v7 download:?];
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](currentDownload);
+  MEMORY[0x277D82BD8](ownerManager);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
   return v11;
 }
 
-- (BOOL)shouldIgnoreUpdateError:(id)a3 withStatefulDescriptor:(id)a4 download:(id)a5
+- (BOOL)shouldIgnoreUpdateError:(id)error withStatefulDescriptor:(id)descriptor download:(id)download
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v26 = 0;
-  objc_storeStrong(&v26, a4);
+  objc_storeStrong(&v26, descriptor);
   v25 = 0;
-  objc_storeStrong(&v25, a5);
-  v24 = [location[0] code];
-  v15 = [location[0] domain];
-  v16 = [v15 isEqualToString:*MEMORY[0x277D64910]];
-  MEMORY[0x277D82BD8](v15);
+  objc_storeStrong(&v25, download);
+  code = [location[0] code];
+  domain = [location[0] domain];
+  v16 = [domain isEqualToString:*MEMORY[0x277D64910]];
+  MEMORY[0x277D82BD8](domain);
   if (v16)
   {
-    if (v24 == 3 || v24 == 11 || v24 == 13)
+    if (code == 3 || code == 11 || code == 13)
     {
       v28 = 1;
       v23 = 1;
@@ -219,14 +219,14 @@
     v12 = 1;
     if (v26)
     {
-      v22 = [v26 descriptor];
+      descriptor = [v26 descriptor];
       v21 = 1;
-      v12 = v22 == 0;
+      v12 = descriptor == 0;
     }
 
     if (v21)
     {
-      MEMORY[0x277D82BD8](v22);
+      MEMORY[0x277D82BD8](descriptor);
     }
 
     if (v12)
@@ -240,10 +240,10 @@
     v11 = 1;
     if (v25)
     {
-      v20 = [v25 progress];
+      progress = [v25 progress];
       v19 = 1;
       v11 = 1;
-      if (v20)
+      if (progress)
       {
         v11 = [v26 currentState] != 2;
       }
@@ -251,7 +251,7 @@
 
     if (v19)
     {
-      MEMORY[0x277D82BD8](v20);
+      MEMORY[0x277D82BD8](progress);
     }
 
     if (v11)
@@ -261,19 +261,19 @@
       goto LABEL_41;
     }
 
-    v18 = [v25 progress];
-    v9 = [v18 phase];
+    progress2 = [v25 progress];
+    phase = [progress2 phase];
     v10 = 0;
-    if ([v9 isEqualToString:*MEMORY[0x277D64A00]])
+    if ([phase isEqualToString:*MEMORY[0x277D64A00]])
     {
-      [v18 percentComplete];
+      [progress2 percentComplete];
       v10 = v5 >= 1.0;
     }
 
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](phase);
     if (v10)
     {
-      switch(v24)
+      switch(code)
       {
         case 33:
         case 34:
@@ -285,18 +285,18 @@
           v28 = 1;
           v23 = 1;
 LABEL_40:
-          objc_storeStrong(&v18, 0);
+          objc_storeStrong(&progress2, 0);
           goto LABEL_41;
         case 6:
           v28 = 1;
           v23 = 1;
           goto LABEL_40;
         case 20:
-          v8 = [location[0] userInfo];
+          userInfo = [location[0] userInfo];
           v7 = getkSUInstallationConstraintsUnmetKey_2();
-          v17 = [v8 objectForKey:?];
+          v17 = [userInfo objectForKey:?];
           MEMORY[0x277D82BD8](v7);
-          MEMORY[0x277D82BD8](v8);
+          MEMORY[0x277D82BD8](userInfo);
           if (v17 && [v17 unsignedIntegerValue] == 4)
           {
             v28 = 1;
@@ -332,39 +332,39 @@ LABEL_41:
   return v28 & 1;
 }
 
-- (BOOL)shouldEnableUpdateButtonForError:(id)a3 statefulDescriptor:(id)a4
+- (BOOL)shouldEnableUpdateButtonForError:(id)error statefulDescriptor:(id)descriptor
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v8 = v14;
+  objc_storeStrong(&v12, descriptor);
+  v8 = selfCopy;
   v6 = location[0];
   v7 = v12;
-  v10 = [(SUSettingsStatefulErrorContextProvider *)v14 ownerManager];
-  v9 = [(SUSettingsStatefulUIManager *)v10 currentDownload];
+  ownerManager = [(SUSettingsStatefulErrorContextProvider *)selfCopy ownerManager];
+  currentDownload = [(SUSettingsStatefulUIManager *)ownerManager currentDownload];
   v11 = [(SUSettingsStatefulErrorContextProvider *)v8 shouldEnableUpdateButtonForError:v6 statefulDescriptor:v7 download:?];
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](currentDownload);
+  MEMORY[0x277D82BD8](ownerManager);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
   return v11;
 }
 
-- (BOOL)shouldEnableUpdateButtonForError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5
+- (BOOL)shouldEnableUpdateButtonForError:(id)error statefulDescriptor:(id)descriptor download:(id)download
 {
   v25 = *MEMORY[0x277D85DE8];
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v20 = 0;
-  objc_storeStrong(&v20, a4);
+  objc_storeStrong(&v20, descriptor);
   v19 = 0;
-  objc_storeStrong(&v19, a5);
-  if ([(SUSettingsStatefulErrorContextProvider *)v22 shouldIgnoreUpdateError:location[0] withStatefulDescriptor:v20 download:v19])
+  objc_storeStrong(&v19, download);
+  if ([(SUSettingsStatefulErrorContextProvider *)selfCopy shouldIgnoreUpdateError:location[0] withStatefulDescriptor:v20 download:v19])
   {
     v23 = 1;
     v18 = 1;
@@ -372,11 +372,11 @@ LABEL_41:
 
   else
   {
-    v11 = [location[0] domain];
+    domain = [location[0] domain];
     v10 = getSUErrorDomain_4();
-    v12 = [v11 isEqualToString:?];
+    v12 = [domain isEqualToString:?];
     MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
+    MEMORY[0x277D82BD8](domain);
     if (v12)
     {
       if (([location[0] code] - 33) > 1)
@@ -386,7 +386,7 @@ LABEL_41:
 
       else
       {
-        v23 = [(SUSettingsStatefulErrorContextProvider *)v22 shouldEnableUpdateButtonForNetworkError:location[0] statefulDescriptor:v20 download:v19];
+        v23 = [(SUSettingsStatefulErrorContextProvider *)selfCopy shouldEnableUpdateButtonForNetworkError:location[0] statefulDescriptor:v20 download:v19];
       }
 
       v18 = 1;
@@ -394,23 +394,23 @@ LABEL_41:
 
     else
     {
-      v9 = [(SUSettingsStatefulErrorContextProvider *)v22 log];
-      v17 = [(SUCoreLog *)v9 oslog];
+      v9 = [(SUSettingsStatefulErrorContextProvider *)selfCopy log];
+      oslog = [(SUCoreLog *)v9 oslog];
       MEMORY[0x277D82BD8](v9);
       v16 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        log = v17;
+        log = oslog;
         type = v16;
-        v8 = [v20 humanReadableUpdateName];
-        v15 = MEMORY[0x277D82BE0](v8);
+        humanReadableUpdateName = [v20 humanReadableUpdateName];
+        v15 = MEMORY[0x277D82BE0](humanReadableUpdateName);
         __os_log_helper_16_2_2_8_66_8_66(v24, v15, location[0]);
         _os_log_impl(&dword_26AC94000, log, type, "Receieved an unexpected non-SUS error for descriptor %{public}@. Not ignoring. Error: %{public}@", v24, 0x16u);
-        MEMORY[0x277D82BD8](v8);
+        MEMORY[0x277D82BD8](humanReadableUpdateName);
         objc_storeStrong(&v15, 0);
       }
 
-      objc_storeStrong(&v17, 0);
+      objc_storeStrong(&oslog, 0);
       v23 = 0;
       v18 = 1;
     }
@@ -423,40 +423,40 @@ LABEL_41:
   return v23 & 1;
 }
 
-- (id)localizedTitleForError:(id)a3 statefulDescriptor:(id)a4
+- (id)localizedTitleForError:(id)error statefulDescriptor:(id)descriptor
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v8 = v14;
+  objc_storeStrong(&v12, descriptor);
+  v8 = selfCopy;
   v6 = location[0];
   v7 = v12;
-  v10 = [(SUSettingsStatefulErrorContextProvider *)v14 ownerManager];
-  v9 = [(SUSettingsStatefulUIManager *)v10 currentDownload];
+  ownerManager = [(SUSettingsStatefulErrorContextProvider *)selfCopy ownerManager];
+  currentDownload = [(SUSettingsStatefulUIManager *)ownerManager currentDownload];
   v11 = [(SUSettingsStatefulErrorContextProvider *)v8 localizedTitleForError:v6 statefulDescriptor:v7 download:?];
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](currentDownload);
+  MEMORY[0x277D82BD8](ownerManager);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 
   return v11;
 }
 
-- (id)localizedTitleForError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5
+- (id)localizedTitleForError:(id)error statefulDescriptor:(id)descriptor download:(id)download
 {
   v45 = *MEMORY[0x277D85DE8];
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, descriptor);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
-  if ([(SUSettingsStatefulErrorContextProvider *)v42 shouldIgnoreUpdateError:location[0] withStatefulDescriptor:v40 download:v39])
+  objc_storeStrong(&v39, download);
+  if ([(SUSettingsStatefulErrorContextProvider *)selfCopy shouldIgnoreUpdateError:location[0] withStatefulDescriptor:v40 download:v39])
   {
     v43 = 0;
     v38 = 1;
@@ -464,15 +464,15 @@ LABEL_41:
   }
 
   v37 = 0;
-  v29 = [location[0] domain];
+  domain = [location[0] domain];
   v28 = getSUErrorDomain_4();
-  v30 = [v29 isEqualToString:?];
+  v30 = [domain isEqualToString:?];
   MEMORY[0x277D82BD8](v28);
-  MEMORY[0x277D82BD8](v29);
+  MEMORY[0x277D82BD8](domain);
   if (v30)
   {
-    v36 = [location[0] code];
-    if (v36 == 6)
+    code = [location[0] code];
+    if (code == 6)
     {
       v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v5 = [v27 localizedStringForKey:@"UPDATE_ERROR_TITLE_INSUFFICIENT_DISK_SPACE" value:&stru_287B79370 table:@"Software Update"];
@@ -484,9 +484,9 @@ LABEL_41:
 
     else
     {
-      if ((v36 - 7) > 2)
+      if ((code - 7) > 2)
       {
-        if (v36 == 17 || v36 == 19)
+        if (code == 17 || code == 19)
         {
 LABEL_21:
           v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -498,18 +498,18 @@ LABEL_21:
           goto LABEL_23;
         }
 
-        if (v36 == 20)
+        if (code == 20)
         {
-          v11 = [(SUSettingsStatefulErrorContextProvider *)v42 localizedTitleForUnmetConstraintsError:location[0] statefulDescriptor:v40 download:v39];
+          v11 = [(SUSettingsStatefulErrorContextProvider *)selfCopy localizedTitleForUnmetConstraintsError:location[0] statefulDescriptor:v40 download:v39];
           v12 = v37;
           v37 = v11;
           MEMORY[0x277D82BD8](v12);
           goto LABEL_23;
         }
 
-        if (v36 != 26)
+        if (code != 26)
         {
-          if (v36 == 31)
+          if (code == 31)
           {
             v25 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v9 = [v25 localizedStringForKey:@"UPDATE_ERROR_TITLE_DOWNLOAD_ERROR" value:&stru_287B79370 table:@"Software Update"];
@@ -520,15 +520,15 @@ LABEL_21:
             goto LABEL_23;
           }
 
-          if ((v36 - 33) > 1 && v36 != 57 && v36 != 83)
+          if ((code - 33) > 1 && code != 57 && code != 83)
           {
-            if (v36 == 104)
+            if (code == 104)
             {
               objc_storeStrong(&v37, @"Unable to Update");
               goto LABEL_23;
             }
 
-            if (v36 != 106)
+            if (code != 106)
             {
               goto LABEL_23;
             }
@@ -550,23 +550,23 @@ LABEL_21:
 LABEL_23:
   if (!v37)
   {
-    v23 = [(SUSettingsStatefulErrorContextProvider *)v42 log];
-    v35 = [(SUCoreLog *)v23 oslog];
+    v23 = [(SUSettingsStatefulErrorContextProvider *)selfCopy log];
+    oslog = [(SUCoreLog *)v23 oslog];
     MEMORY[0x277D82BD8](v23);
     v34 = 16;
-    if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      log = v35;
+      log = oslog;
       type = v34;
-      v22 = [v40 humanReadableUpdateName];
-      v33 = MEMORY[0x277D82BE0](v22);
+      humanReadableUpdateName = [v40 humanReadableUpdateName];
+      v33 = MEMORY[0x277D82BE0](humanReadableUpdateName);
       __os_log_helper_16_2_2_8_66_8_66(v44, v33, location[0]);
       _os_log_error_impl(&dword_26AC94000, log, type, "Couldn't map the error into a localizable title for %{public}@: %{public}@", v44, 0x16u);
-      MEMORY[0x277D82BD8](v22);
+      MEMORY[0x277D82BD8](humanReadableUpdateName);
       objc_storeStrong(&v33, 0);
     }
 
-    objc_storeStrong(&v35, 0);
+    objc_storeStrong(&oslog, 0);
     v19 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v15 = [v19 localizedStringForKey:@"UPDATE_ERROR_TITLE_GENERAL_ERROR" value:&stru_287B79370 table:@"Software Update"];
     v16 = v37;
@@ -588,40 +588,40 @@ LABEL_28:
   return v17;
 }
 
-- (id)localizedDescriptionForError:(id)a3 statefulDescriptor:(id)a4
+- (id)localizedDescriptionForError:(id)error statefulDescriptor:(id)descriptor
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v8 = v14;
+  objc_storeStrong(&v12, descriptor);
+  v8 = selfCopy;
   v6 = location[0];
   v7 = v12;
-  v10 = [(SUSettingsStatefulErrorContextProvider *)v14 ownerManager];
-  v9 = [(SUSettingsStatefulUIManager *)v10 currentDownload];
+  ownerManager = [(SUSettingsStatefulErrorContextProvider *)selfCopy ownerManager];
+  currentDownload = [(SUSettingsStatefulUIManager *)ownerManager currentDownload];
   v11 = [(SUSettingsStatefulErrorContextProvider *)v8 localizedDescriptionForError:v6 statefulDescriptor:v7 download:?];
-  MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](currentDownload);
+  MEMORY[0x277D82BD8](ownerManager);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 
   return v11;
 }
 
-- (id)localizedDescriptionForError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5
+- (id)localizedDescriptionForError:(id)error statefulDescriptor:(id)descriptor download:(id)download
 {
   v132 = *MEMORY[0x277D85DE8];
-  v129 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v127 = 0;
-  objc_storeStrong(&v127, a4);
+  objc_storeStrong(&v127, descriptor);
   v126 = 0;
-  objc_storeStrong(&v126, a5);
-  if ([(SUSettingsStatefulErrorContextProvider *)v129 shouldIgnoreUpdateError:location[0] withStatefulDescriptor:v127 download:v126])
+  objc_storeStrong(&v126, download);
+  if ([(SUSettingsStatefulErrorContextProvider *)selfCopy shouldIgnoreUpdateError:location[0] withStatefulDescriptor:v127 download:v126])
   {
     v130 = 0;
     v125 = 1;
@@ -630,30 +630,30 @@ LABEL_28:
   else
   {
     v124 = 0;
-    v65 = [location[0] domain];
+    domain = [location[0] domain];
     v64 = getSUErrorDomain_4();
-    v66 = [v65 isEqualToString:?];
+    v66 = [domain isEqualToString:?];
     MEMORY[0x277D82BD8](v64);
-    MEMORY[0x277D82BD8](v65);
+    MEMORY[0x277D82BD8](domain);
     if (v66)
     {
-      v123 = [location[0] code];
-      switch(v123)
+      code = [location[0] code];
+      switch(code)
       {
         case 6:
           v46 = MEMORY[0x277CCA8E8];
           v45 = MEMORY[0x277D64908];
-          v47 = [v127 descriptor];
+          descriptor = [v127 descriptor];
           v108 = [v46 stringFromByteCount:objc_msgSend(v45 countStyle:{"totalDiskSpaceForUpdate:"), 2}];
-          MEMORY[0x277D82BD8](v47);
+          MEMORY[0x277D82BD8](descriptor);
           v48 = MEMORY[0x277CCACA8];
-          v49 = [v127 descriptor];
+          descriptor2 = [v127 descriptor];
           v106 = 0;
           v104 = 0;
           v102 = 0;
           v100 = 0;
           v98 = 0;
-          if (v49 && (v107 = [v127 descriptor], v106 = 1, (objc_msgSend(v107, "isSplatOnly") & 1) != 0))
+          if (descriptor2 && (v107 = [v127 descriptor], v106 = 1, (objc_msgSend(v107, "isSplatOnly") & 1) != 0))
           {
             v105 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v104 = 1;
@@ -671,9 +671,9 @@ LABEL_28:
             v44 = v99;
           }
 
-          v19 = [v48 stringWithFormat:v44, v108];
+          v108 = [v48 stringWithFormat:v44, v108];
           v20 = v124;
-          v124 = v19;
+          v124 = v108;
           MEMORY[0x277D82BD8](v20);
           if (v98)
           {
@@ -700,20 +700,20 @@ LABEL_28:
             MEMORY[0x277D82BD8](v107);
           }
 
-          MEMORY[0x277D82BD8](v49);
+          MEMORY[0x277D82BD8](descriptor2);
           v125 = 2;
           objc_storeStrong(&v108, 0);
           break;
         case 7:
         case 26:
         case 57:
-          v63 = [v127 descriptor];
+          descriptor3 = [v127 descriptor];
           v121 = 0;
           v119 = 0;
           v117 = 0;
           v115 = 0;
           v113 = 0;
-          if (v63 && (v122 = [v127 descriptor], v121 = 1, (objc_msgSend(v122, "isSplatOnly") & 1) != 0))
+          if (descriptor3 && (v122 = [v127 descriptor], v121 = 1, (objc_msgSend(v122, "isSplatOnly") & 1) != 0))
           {
             v120 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v119 = 1;
@@ -756,7 +756,7 @@ LABEL_28:
             MEMORY[0x277D82BD8](v122);
           }
 
-          MEMORY[0x277D82BD8](v63);
+          MEMORY[0x277D82BD8](descriptor3);
           break;
         case 8:
           goto LABEL_21;
@@ -777,13 +777,13 @@ LABEL_28:
           else
           {
             v51 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-            v52 = [v127 descriptor];
+            descriptor4 = [v127 descriptor];
             v109 = 0;
-            if (v52)
+            if (descriptor4)
             {
-              v110 = [v127 descriptor];
+              descriptor5 = [v127 descriptor];
               v109 = 1;
-              [v110 isSplatOnly];
+              [descriptor5 isSplatOnly];
             }
 
             v50 = SFLocalizableWAPIStringKeyForKey();
@@ -794,16 +794,16 @@ LABEL_28:
             MEMORY[0x277D82BD8](v50);
             if (v109)
             {
-              MEMORY[0x277D82BD8](v110);
+              MEMORY[0x277D82BD8](descriptor5);
             }
 
-            MEMORY[0x277D82BD8](v52);
+            MEMORY[0x277D82BD8](descriptor4);
             MEMORY[0x277D82BD8](v51);
           }
 
           break;
         case 17:
-          v43 = [v127 descriptor];
+          descriptor6 = [v127 descriptor];
           v96 = 0;
           v94 = 0;
           v92 = 0;
@@ -811,7 +811,7 @@ LABEL_28:
           v88 = 0;
           v86 = 0;
           v84 = 0;
-          if (v43 && (v97 = [v127 descriptor], v96 = 1, (objc_msgSend(v97, "isSplatOnly") & 1) != 0))
+          if (descriptor6 && (v97 = [v127 descriptor], v96 = 1, (objc_msgSend(v97, "isSplatOnly") & 1) != 0))
           {
             v95 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v94 = 1;
@@ -868,17 +868,17 @@ LABEL_28:
             MEMORY[0x277D82BD8](v97);
           }
 
-          MEMORY[0x277D82BD8](v43);
+          MEMORY[0x277D82BD8](descriptor6);
           break;
         case 19:
           v41 = MEMORY[0x277CCACA8];
-          v42 = [v127 descriptor];
+          descriptor7 = [v127 descriptor];
           v82 = 0;
           v80 = 0;
           v78 = 0;
           v76 = 0;
           v74 = 0;
-          if (v42 && (v83 = [v127 descriptor], v82 = 1, (objc_msgSend(v83, "isSplatOnly") & 1) != 0))
+          if (descriptor7 && (v83 = [v127 descriptor], v82 = 1, (objc_msgSend(v83, "isSplatOnly") & 1) != 0))
           {
             v81 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v80 = 1;
@@ -896,12 +896,12 @@ LABEL_28:
             v40 = v75;
           }
 
-          v39 = [v127 humanReadableUpdateName];
-          v23 = [v41 stringWithFormat:v40, v39];
+          humanReadableUpdateName = [v127 humanReadableUpdateName];
+          v23 = [v41 stringWithFormat:v40, humanReadableUpdateName];
           v24 = v124;
           v124 = v23;
           MEMORY[0x277D82BD8](v24);
-          MEMORY[0x277D82BD8](v39);
+          MEMORY[0x277D82BD8](humanReadableUpdateName);
           if (v74)
           {
             MEMORY[0x277D82BD8](v75);
@@ -927,10 +927,10 @@ LABEL_28:
             MEMORY[0x277D82BD8](v83);
           }
 
-          MEMORY[0x277D82BD8](v42);
+          MEMORY[0x277D82BD8](descriptor7);
           break;
         case 20:
-          v21 = [(SUSettingsStatefulErrorContextProvider *)v129 localizedDescriptionForUnmetConstraintsError:location[0] statefulDescriptor:v127 download:v126];
+          v21 = [(SUSettingsStatefulErrorContextProvider *)selfCopy localizedDescriptionForUnmetConstraintsError:location[0] statefulDescriptor:v127 download:v126];
           v22 = v124;
           v124 = v21;
           MEMORY[0x277D82BD8](v22);
@@ -947,7 +947,7 @@ LABEL_28:
           break;
         case 33:
         case 34:
-          v5 = [(SUSettingsStatefulErrorContextProvider *)v129 localizedDescriptionForNetworkError:location[0] statefulDescriptor:v127 download:v126];
+          v5 = [(SUSettingsStatefulErrorContextProvider *)selfCopy localizedDescriptionForNetworkError:location[0] statefulDescriptor:v127 download:v126];
           v6 = v124;
           v124 = v5;
           MEMORY[0x277D82BD8](v6);
@@ -969,13 +969,13 @@ LABEL_21:
             else
             {
               v59 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-              v60 = [v127 descriptor];
+              descriptor8 = [v127 descriptor];
               v111 = 0;
-              if (v60)
+              if (descriptor8)
               {
-                v112 = [v127 descriptor];
+                descriptor9 = [v127 descriptor];
                 v111 = 1;
-                [v112 isSplatOnly];
+                [descriptor9 isSplatOnly];
               }
 
               v58 = SFLocalizableWAPIStringKeyForKey();
@@ -986,10 +986,10 @@ LABEL_21:
               MEMORY[0x277D82BD8](v58);
               if (v111)
               {
-                MEMORY[0x277D82BD8](v112);
+                MEMORY[0x277D82BD8](descriptor9);
               }
 
-              MEMORY[0x277D82BD8](v60);
+              MEMORY[0x277D82BD8](descriptor8);
               MEMORY[0x277D82BD8](v59);
             }
           }
@@ -1013,9 +1013,9 @@ LABEL_21:
 
     else
     {
-      v37 = [location[0] domain];
-      v38 = [v37 isEqualToString:@"com.apple.preferences.softwareupdate"];
-      MEMORY[0x277D82BD8](v37);
+      domain2 = [location[0] domain];
+      v38 = [domain2 isEqualToString:@"com.apple.preferences.softwareupdate"];
+      MEMORY[0x277D82BD8](domain2);
       if ((v38 & 1) != 0 && [location[0] code] == 1)
       {
         v36 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1029,7 +1029,7 @@ LABEL_21:
 
     if (location[0] && !v124)
     {
-      v35 = [(SUSettingsStatefulErrorContextProvider *)v129 log];
+      v35 = [(SUSettingsStatefulErrorContextProvider *)selfCopy log];
       oslog = [(SUCoreLog *)v35 oslog];
       MEMORY[0x277D82BD8](v35);
       type = OS_LOG_TYPE_ERROR;
@@ -1037,11 +1037,11 @@ LABEL_21:
       {
         log = oslog;
         v33 = type;
-        v34 = [v127 humanReadableUpdateName];
-        v71 = MEMORY[0x277D82BE0](v34);
+        humanReadableUpdateName2 = [v127 humanReadableUpdateName];
+        v71 = MEMORY[0x277D82BE0](humanReadableUpdateName2);
         __os_log_helper_16_2_2_8_66_8_66(v131, v71, location[0]);
         _os_log_error_impl(&dword_26AC94000, log, v33, "Couldn't map the error into a localizable title for %{public}@: %{public}@", v131, 0x16u);
-        MEMORY[0x277D82BD8](v34);
+        MEMORY[0x277D82BD8](humanReadableUpdateName2);
         objc_storeStrong(&v71, 0);
       }
 
@@ -1050,24 +1050,24 @@ LABEL_21:
     }
 
     v69 = 0;
-    v31 = 0;
+    sf_isInternalInstall = 0;
     if (location[0])
     {
-      v31 = 0;
+      sf_isInternalInstall = 0;
       if ([v124 isEqualToString:&stru_287B79370])
       {
-        v70 = [MEMORY[0x277D75418] currentDevice];
+        currentDevice = [MEMORY[0x277D75418] currentDevice];
         v69 = 1;
-        v31 = [v70 sf_isInternalInstall];
+        sf_isInternalInstall = [currentDevice sf_isInternalInstall];
       }
     }
 
     if (v69)
     {
-      MEMORY[0x277D82BD8](v70);
+      MEMORY[0x277D82BD8](currentDevice);
     }
 
-    if (v31)
+    if (sf_isInternalInstall)
     {
       v27 = [MEMORY[0x277CCACA8] stringWithFormat:@"[Internal Only] An unresolvable error has occurred, please file a radar. Error Code: %ld.", objc_msgSend(location[0], "code")];
       v28 = v124;
@@ -1089,17 +1089,17 @@ LABEL_21:
   return v29;
 }
 
-- (BOOL)shouldEnableUpdateButtonForNetworkError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5
+- (BOOL)shouldEnableUpdateButtonForNetworkError:(id)error statefulDescriptor:(id)descriptor download:(id)download
 {
   v35 = *MEMORY[0x277D85DE8];
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, descriptor);
   v28 = 0;
-  objc_storeStrong(&v28, a5);
+  objc_storeStrong(&v28, download);
   if ([v29 currentState] != 3)
   {
     goto LABEL_16;
@@ -1126,7 +1126,7 @@ LABEL_21:
     MEMORY[0x277D82BD8](v5);
     if (!v27)
     {
-      v8 = [(SUSettingsStatefulErrorContextProvider *)v31 log];
+      v8 = [(SUSettingsStatefulErrorContextProvider *)selfCopy log];
       oslog = [(SUCoreLog *)v8 oslog];
       MEMORY[0x277D82BD8](v8);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
@@ -1145,19 +1145,19 @@ LABEL_21:
 
   else
   {
-    v11 = [(SUSettingsStatefulErrorContextProvider *)v31 log];
-    v22 = [(SUCoreLog *)v11 oslog];
+    v11 = [(SUSettingsStatefulErrorContextProvider *)selfCopy log];
+    oslog = [(SUCoreLog *)v11 oslog];
     MEMORY[0x277D82BD8](v11);
     v21 = OS_LOG_TYPE_ERROR;
-    if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       v10 = [v25 description];
       __os_log_helper_16_2_1_8_64(v34, v10);
-      _os_log_error_impl(&dword_26AC94000, v22, v21, "Failed to get preferred CTXPCServiceSubscriptionContext. %@", v34, 0xCu);
+      _os_log_error_impl(&dword_26AC94000, oslog, v21, "Failed to get preferred CTXPCServiceSubscriptionContext. %@", v34, 0xCu);
       MEMORY[0x277D82BD8](v10);
     }
 
-    objc_storeStrong(&v22, 0);
+    objc_storeStrong(&oslog, 0);
   }
 
   if ([v27 isEqualToString:*MEMORY[0x277CC3E70]] & 1) != 0 && (PSIsDataRoamingEnabled())
@@ -1188,21 +1188,21 @@ LABEL_16:
   return v32 & 1;
 }
 
-- (id)localizedTitleForUnmetConstraintsError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5
+- (id)localizedTitleForUnmetConstraintsError:(id)error statefulDescriptor:(id)descriptor download:(id)download
 {
-  v39 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v37 = 0;
-  objc_storeStrong(&v37, a4);
+  objc_storeStrong(&v37, descriptor);
   v36 = 0;
-  objc_storeStrong(&v36, a5);
+  objc_storeStrong(&v36, download);
   v33 = 0;
   v31 = 0;
   if (v37 && (v34 = [v37 descriptor], v33 = 1, v34))
   {
-    v32 = [v37 descriptor];
+    descriptor = [v37 descriptor];
     v31 = 1;
     SURequiredBatteryLevelForInstallation();
     v24 = v5;
@@ -1216,7 +1216,7 @@ LABEL_16:
 
   if (v31)
   {
-    MEMORY[0x277D82BD8](v32);
+    MEMORY[0x277D82BD8](descriptor);
   }
 
   if (v33)
@@ -1225,24 +1225,24 @@ LABEL_16:
   }
 
   v35 = v24;
-  v19 = [location[0] userInfo];
+  userInfo = [location[0] userInfo];
   v18 = getkSUInstallationConstraintsUnmetKey_2();
-  v17 = [v19 objectForKey:?];
-  v20 = [v17 unsignedIntegerValue];
+  v17 = [userInfo objectForKey:?];
+  unsignedIntegerValue = [v17 unsignedIntegerValue];
   MEMORY[0x277D82BD8](v17);
   MEMORY[0x277D82BD8](v18);
-  MEMORY[0x277D82BD8](v19);
-  v30 = v20;
-  v21 = [(SUSettingsStatefulErrorContextProvider *)v39 ownerManager];
-  v22 = [(SUSettingsStatefulUIManager *)v21 options];
+  MEMORY[0x277D82BD8](userInfo);
+  v30 = unsignedIntegerValue;
+  ownerManager = [(SUSettingsStatefulErrorContextProvider *)selfCopy ownerManager];
+  options = [(SUSettingsStatefulUIManager *)ownerManager options];
   v23 = 0;
-  if (![(SUSettingsStatefulUIOptions *)v22 clientIsBuddy])
+  if (![(SUSettingsStatefulUIOptions *)options clientIsBuddy])
   {
     v23 = (v30 & 4) != 0;
   }
 
-  MEMORY[0x277D82BD8](v22);
-  MEMORY[0x277D82BD8](v21);
+  MEMORY[0x277D82BD8](options);
+  MEMORY[0x277D82BD8](ownerManager);
   if (v23)
   {
     v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1286,18 +1286,18 @@ LABEL_16:
   return v8;
 }
 
-- (id)localizedDescriptionForNetworkError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5
+- (id)localizedDescriptionForNetworkError:(id)error statefulDescriptor:(id)descriptor download:(id)download
 {
   v52 = *MEMORY[0x277D85DE8];
-  v48 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v46 = 0;
-  objc_storeStrong(&v46, a4);
+  objc_storeStrong(&v46, descriptor);
   v45 = 0;
-  objc_storeStrong(&v45, a5);
-  v44 = [location[0] code];
+  objc_storeStrong(&v45, download);
+  code = [location[0] code];
   if ([v46 currentState] != 3)
   {
     goto LABEL_34;
@@ -1324,18 +1324,18 @@ LABEL_16:
     MEMORY[0x277D82BD8](v5);
     if (!v43)
     {
-      v14 = [(SUSettingsStatefulErrorContextProvider *)v48 log];
-      v34 = [(SUCoreLog *)v14 oslog];
+      v14 = [(SUSettingsStatefulErrorContextProvider *)selfCopy log];
+      oslog = [(SUCoreLog *)v14 oslog];
       MEMORY[0x277D82BD8](v14);
-      if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
         v13 = [v36 description];
         __os_log_helper_16_2_1_8_66(v50, v13);
-        _os_log_error_impl(&dword_26AC94000, v34, OS_LOG_TYPE_ERROR, "Failed to copyRegistrationStatus from CoreTelephony. Error: %{public}@", v50, 0xCu);
+        _os_log_error_impl(&dword_26AC94000, oslog, OS_LOG_TYPE_ERROR, "Failed to copyRegistrationStatus from CoreTelephony. Error: %{public}@", v50, 0xCu);
         MEMORY[0x277D82BD8](v13);
       }
 
-      objc_storeStrong(&v34, 0);
+      objc_storeStrong(&oslog, 0);
     }
 
     objc_storeStrong(&v36, 0);
@@ -1343,19 +1343,19 @@ LABEL_16:
 
   else
   {
-    v17 = [(SUSettingsStatefulErrorContextProvider *)v48 log];
-    v38 = [(SUCoreLog *)v17 oslog];
+    v17 = [(SUSettingsStatefulErrorContextProvider *)selfCopy log];
+    oslog2 = [(SUCoreLog *)v17 oslog];
     MEMORY[0x277D82BD8](v17);
     v37 = OS_LOG_TYPE_ERROR;
-    if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
       v16 = [v41 description];
       __os_log_helper_16_2_1_8_66(v51, v16);
-      _os_log_error_impl(&dword_26AC94000, v38, v37, "Failed to get preferred CTXPCServiceSubscriptionContext. error: %{public}@", v51, 0xCu);
+      _os_log_error_impl(&dword_26AC94000, oslog2, v37, "Failed to get preferred CTXPCServiceSubscriptionContext. error: %{public}@", v51, 0xCu);
       MEMORY[0x277D82BD8](v16);
     }
 
-    objc_storeStrong(&v38, 0);
+    objc_storeStrong(&oslog2, 0);
   }
 
   if ([v43 isEqualToString:*MEMORY[0x277CC3E70]])
@@ -1379,15 +1379,15 @@ LABEL_16:
     v33 = 1;
   }
 
-  else if (v44 == 33)
+  else if (code == 33)
   {
-    v9 = [v46 descriptor];
+    descriptor = [v46 descriptor];
     v31 = 0;
     v29 = 0;
     v27 = 0;
     v25 = 0;
     v23 = 0;
-    if (v9 && (v32 = [v46 descriptor], v31 = 1, (objc_msgSend(v32, "isSplatOnly") & 1) != 0))
+    if (descriptor && (v32 = [v46 descriptor], v31 = 1, (objc_msgSend(v32, "isSplatOnly") & 1) != 0))
     {
       v30 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v29 = 1;
@@ -1431,7 +1431,7 @@ LABEL_16:
       MEMORY[0x277D82BD8](v32);
     }
 
-    MEMORY[0x277D82BD8](v9);
+    MEMORY[0x277D82BD8](descriptor);
     v33 = 1;
   }
 
@@ -1459,38 +1459,38 @@ LABEL_34:
   return v7;
 }
 
-- (id)localizedDescriptionForUnmetConstraintsError:(id)a3 statefulDescriptor:(id)a4 download:(id)a5
+- (id)localizedDescriptionForUnmetConstraintsError:(id)error statefulDescriptor:(id)descriptor download:(id)download
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v251 = 0;
-  objc_storeStrong(&v251, a4);
+  objc_storeStrong(&v251, descriptor);
   v250 = 0;
-  objc_storeStrong(&v250, a5);
-  v57 = [v251 descriptor];
+  objc_storeStrong(&v250, download);
+  descriptor = [v251 descriptor];
   SURequiredBatteryLevelForInstallation();
   v58 = v5;
-  MEMORY[0x277D82BD8](v57);
+  MEMORY[0x277D82BD8](descriptor);
   v6 = 100.0 * v58;
   v7 = floorf(v6) / 100.0;
   v249 = v7;
   v59 = MEMORY[0x277CCA8E8];
-  v60 = [v251 descriptor];
-  v248 = [v59 stringFromByteCount:objc_msgSend(v60 countStyle:{"installationSize"), 2}];
-  MEMORY[0x277D82BD8](v60);
-  v63 = [location[0] userInfo];
+  descriptor2 = [v251 descriptor];
+  v248 = [v59 stringFromByteCount:objc_msgSend(descriptor2 countStyle:{"installationSize"), 2}];
+  MEMORY[0x277D82BD8](descriptor2);
+  userInfo = [location[0] userInfo];
   v62 = getkSUInstallationConstraintsUnmetKey_2();
-  v61 = [v63 objectForKey:?];
-  v64 = [v61 unsignedIntegerValue];
+  v61 = [userInfo objectForKey:?];
+  unsignedIntegerValue = [v61 unsignedIntegerValue];
   MEMORY[0x277D82BD8](v61);
   MEMORY[0x277D82BD8](v62);
-  MEMORY[0x277D82BD8](v63);
-  v247 = v64;
-  if ((v64 & 8) != 0)
+  MEMORY[0x277D82BD8](userInfo);
+  v247 = unsignedIntegerValue;
+  if ((unsignedIntegerValue & 8) != 0)
   {
-    v54 = [v251 descriptor];
+    descriptor3 = [v251 descriptor];
     v245 = 0;
     v243 = 0;
     v241 = 0;
@@ -1498,7 +1498,7 @@ LABEL_34:
     v237 = 0;
     v235 = 0;
     v233 = 0;
-    if (v54 && (v246 = [v251 descriptor], v245 = 1, (objc_msgSend(v246, "isSplatOnly") & 1) != 0))
+    if (descriptor3 && (v246 = [v251 descriptor], v245 = 1, (objc_msgSend(v246, "isSplatOnly") & 1) != 0))
     {
       v244 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v243 = 1;
@@ -1520,7 +1520,7 @@ LABEL_34:
       v9 = MEMORY[0x277D82BE0](v234);
     }
 
-    v253 = v9;
+    v248 = v9;
     if (v233)
     {
       MEMORY[0x277D82BD8](v234);
@@ -1556,7 +1556,7 @@ LABEL_34:
       MEMORY[0x277D82BD8](v246);
     }
 
-    MEMORY[0x277D82BD8](v54);
+    MEMORY[0x277D82BD8](descriptor3);
     v232 = 1;
   }
 
@@ -1576,13 +1576,13 @@ LABEL_34:
     if ((v247 & v231) == v231)
     {
       v50 = MEMORY[0x277CCACA8];
-      v51 = [v251 descriptor];
+      descriptor4 = [v251 descriptor];
       v223 = 0;
       v221 = 0;
       v219 = 0;
       v217 = 0;
       v215 = 0;
-      if (v51 && (v224 = [v251 descriptor], v223 = 1, (objc_msgSend(v224, "isSplatOnly") & 1) != 0))
+      if (descriptor4 && (v224 = [v251 descriptor], v223 = 1, (objc_msgSend(v224, "isSplatOnly") & 1) != 0))
       {
         v222 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v221 = 1;
@@ -1600,7 +1600,7 @@ LABEL_34:
         v49 = v216;
       }
 
-      v253 = [v50 stringWithFormat:v49, v227, v248];
+      v248 = [v50 stringWithFormat:v49, v227, v248];
       if (v215)
       {
         MEMORY[0x277D82BD8](v216);
@@ -1626,20 +1626,20 @@ LABEL_34:
         MEMORY[0x277D82BD8](v224);
       }
 
-      MEMORY[0x277D82BD8](v51);
+      MEMORY[0x277D82BD8](descriptor4);
       v232 = 1;
     }
 
     else if ((v247 & v228) == v228)
     {
       v47 = MEMORY[0x277CCACA8];
-      v48 = [v251 descriptor];
+      descriptor5 = [v251 descriptor];
       v213 = 0;
       v211 = 0;
       v209 = 0;
       v207 = 0;
       v205 = 0;
-      if (v48 && (v214 = [v251 descriptor], v213 = 1, (objc_msgSend(v214, "isSplatOnly") & 1) != 0))
+      if (descriptor5 && (v214 = [v251 descriptor], v213 = 1, (objc_msgSend(v214, "isSplatOnly") & 1) != 0))
       {
         v212 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v211 = 1;
@@ -1657,7 +1657,7 @@ LABEL_34:
         v46 = v206;
       }
 
-      v253 = [v47 stringWithFormat:v46, v248];
+      v248 = [v47 stringWithFormat:v46, v248];
       if (v205)
       {
         MEMORY[0x277D82BD8](v206);
@@ -1683,20 +1683,20 @@ LABEL_34:
         MEMORY[0x277D82BD8](v214);
       }
 
-      MEMORY[0x277D82BD8](v48);
+      MEMORY[0x277D82BD8](descriptor5);
       v232 = 1;
     }
 
     else if ((v247 & v230) == v230)
     {
       v44 = MEMORY[0x277CCACA8];
-      v45 = [v251 descriptor];
+      descriptor6 = [v251 descriptor];
       v203 = 0;
       v201 = 0;
       v199 = 0;
       v197 = 0;
       v195 = 0;
-      if (v45 && (v204 = [v251 descriptor], v203 = 1, (objc_msgSend(v204, "isSplatOnly") & 1) != 0))
+      if (descriptor6 && (v204 = [v251 descriptor], v203 = 1, (objc_msgSend(v204, "isSplatOnly") & 1) != 0))
       {
         v202 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v201 = 1;
@@ -1714,7 +1714,7 @@ LABEL_34:
         v43 = v196;
       }
 
-      v253 = [v44 stringWithFormat:v43, v227];
+      v248 = [v44 stringWithFormat:v43, v227];
       if (v195)
       {
         MEMORY[0x277D82BD8](v196);
@@ -1740,20 +1740,20 @@ LABEL_34:
         MEMORY[0x277D82BD8](v204);
       }
 
-      MEMORY[0x277D82BD8](v45);
+      MEMORY[0x277D82BD8](descriptor6);
       v232 = 1;
     }
 
     else if ((v247 & v229) == v229)
     {
       v41 = MEMORY[0x277CCACA8];
-      v42 = [v251 descriptor];
+      descriptor7 = [v251 descriptor];
       v193 = 0;
       v191 = 0;
       v189 = 0;
       v187 = 0;
       v185 = 0;
-      if (v42 && (v194 = [v251 descriptor], v193 = 1, (objc_msgSend(v194, "isSplatOnly") & 1) != 0))
+      if (descriptor7 && (v194 = [v251 descriptor], v193 = 1, (objc_msgSend(v194, "isSplatOnly") & 1) != 0))
       {
         v192 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v191 = 1;
@@ -1771,7 +1771,7 @@ LABEL_34:
         v40 = v186;
       }
 
-      v253 = [v41 stringWithFormat:v40, v227, v248];
+      v248 = [v41 stringWithFormat:v40, v227, v248];
       if (v185)
       {
         MEMORY[0x277D82BD8](v186);
@@ -1797,7 +1797,7 @@ LABEL_34:
         MEMORY[0x277D82BD8](v194);
       }
 
-      MEMORY[0x277D82BD8](v42);
+      MEMORY[0x277D82BD8](descriptor7);
       v232 = 1;
     }
 
@@ -1806,13 +1806,13 @@ LABEL_34:
       if ((v247 & 1) != 0 && (v225 & 1) != 0 && (v226 & 1) == 0)
       {
         v35 = MEMORY[0x277CCACA8];
-        v36 = [v251 descriptor];
+        descriptor8 = [v251 descriptor];
         v173 = 0;
         v171 = 0;
         v169 = 0;
         v167 = 0;
         v165 = 0;
-        if (v36 && (v174 = [v251 descriptor], v173 = 1, (objc_msgSend(v174, "isSplatOnly") & 1) != 0))
+        if (descriptor8 && (v174 = [v251 descriptor], v173 = 1, (objc_msgSend(v174, "isSplatOnly") & 1) != 0))
         {
           v172 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v171 = 1;
@@ -1830,7 +1830,7 @@ LABEL_34:
           v34 = v166;
         }
 
-        v253 = [v35 stringWithFormat:v34, v227];
+        v248 = [v35 stringWithFormat:v34, v227];
         if (v165)
         {
           MEMORY[0x277D82BD8](v166);
@@ -1856,20 +1856,20 @@ LABEL_34:
           MEMORY[0x277D82BD8](v174);
         }
 
-        MEMORY[0x277D82BD8](v36);
+        MEMORY[0x277D82BD8](descriptor8);
         v232 = 1;
       }
 
       else if (v247 & 1) != 0 && (v225 & 1) != 0 && (v226)
       {
         v32 = MEMORY[0x277CCACA8];
-        v33 = [v251 descriptor];
+        descriptor9 = [v251 descriptor];
         v163 = 0;
         v161 = 0;
         v159 = 0;
         v157 = 0;
         v155 = 0;
-        if (v33 && (v164 = [v251 descriptor], v163 = 1, (objc_msgSend(v164, "isSplatOnly") & 1) != 0))
+        if (descriptor9 && (v164 = [v251 descriptor], v163 = 1, (objc_msgSend(v164, "isSplatOnly") & 1) != 0))
         {
           v162 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v161 = 1;
@@ -1887,7 +1887,7 @@ LABEL_34:
           v31 = v156;
         }
 
-        v253 = [v32 stringWithFormat:v31, v227];
+        v248 = [v32 stringWithFormat:v31, v227];
         if (v155)
         {
           MEMORY[0x277D82BD8](v156);
@@ -1913,20 +1913,20 @@ LABEL_34:
           MEMORY[0x277D82BD8](v164);
         }
 
-        MEMORY[0x277D82BD8](v33);
+        MEMORY[0x277D82BD8](descriptor9);
         v232 = 1;
       }
 
       else if ((v247 & 4) != 0)
       {
         v29 = MEMORY[0x277CCACA8];
-        v30 = [v251 descriptor];
+        descriptor10 = [v251 descriptor];
         v153 = 0;
         v151 = 0;
         v149 = 0;
         v147 = 0;
         v145 = 0;
-        if (v30 && (v154 = [v251 descriptor], v153 = 1, (objc_msgSend(v154, "isSplatOnly") & 1) != 0))
+        if (descriptor10 && (v154 = [v251 descriptor], v153 = 1, (objc_msgSend(v154, "isSplatOnly") & 1) != 0))
         {
           v152 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v151 = 1;
@@ -1944,7 +1944,7 @@ LABEL_34:
           v28 = v146;
         }
 
-        v253 = [v29 stringWithFormat:v28, v248];
+        v248 = [v29 stringWithFormat:v28, v248];
         if (v145)
         {
           MEMORY[0x277D82BD8](v146);
@@ -1970,19 +1970,19 @@ LABEL_34:
           MEMORY[0x277D82BD8](v154);
         }
 
-        MEMORY[0x277D82BD8](v30);
+        MEMORY[0x277D82BD8](descriptor10);
         v232 = 1;
       }
 
       else if ((v247 & 2) != 0)
       {
-        v27 = [v251 descriptor];
+        descriptor11 = [v251 descriptor];
         v143 = 0;
         v141 = 0;
         v139 = 0;
         v137 = 0;
         v135 = 0;
-        if (v27 && (v144 = [v251 descriptor], v143 = 1, (objc_msgSend(v144, "isSplatOnly") & 1) != 0))
+        if (descriptor11 && (v144 = [v251 descriptor], v143 = 1, (objc_msgSend(v144, "isSplatOnly") & 1) != 0))
         {
           v142 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v141 = 1;
@@ -2000,7 +2000,7 @@ LABEL_34:
           v10 = MEMORY[0x277D82BE0](v136);
         }
 
-        v253 = v10;
+        v248 = v10;
         if (v135)
         {
           MEMORY[0x277D82BD8](v136);
@@ -2026,19 +2026,19 @@ LABEL_34:
           MEMORY[0x277D82BD8](v144);
         }
 
-        MEMORY[0x277D82BD8](v27);
+        MEMORY[0x277D82BD8](descriptor11);
         v232 = 1;
       }
 
       else if ((v247 & 0x80) != 0)
       {
-        v26 = [v251 descriptor];
+        descriptor12 = [v251 descriptor];
         v133 = 0;
         v131 = 0;
         v129 = 0;
         v127 = 0;
         v125 = 0;
-        if (v26 && (v134 = [v251 descriptor], v133 = 1, (objc_msgSend(v134, "isSplatOnly") & 1) != 0))
+        if (descriptor12 && (v134 = [v251 descriptor], v133 = 1, (objc_msgSend(v134, "isSplatOnly") & 1) != 0))
         {
           v132 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v131 = 1;
@@ -2056,7 +2056,7 @@ LABEL_34:
           v11 = MEMORY[0x277D82BE0](v126);
         }
 
-        v253 = v11;
+        v248 = v11;
         if (v125)
         {
           MEMORY[0x277D82BD8](v126);
@@ -2082,19 +2082,19 @@ LABEL_34:
           MEMORY[0x277D82BD8](v134);
         }
 
-        MEMORY[0x277D82BD8](v26);
+        MEMORY[0x277D82BD8](descriptor12);
         v232 = 1;
       }
 
       else if ((v247 & 0x100) != 0)
       {
-        v25 = [v251 descriptor];
+        descriptor13 = [v251 descriptor];
         v123 = 0;
         v121 = 0;
         v119 = 0;
         v117 = 0;
         v115 = 0;
-        if (v25 && (v124 = [v251 descriptor], v123 = 1, (objc_msgSend(v124, "isSplatOnly") & 1) != 0))
+        if (descriptor13 && (v124 = [v251 descriptor], v123 = 1, (objc_msgSend(v124, "isSplatOnly") & 1) != 0))
         {
           v122 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v121 = 1;
@@ -2112,7 +2112,7 @@ LABEL_34:
           v12 = MEMORY[0x277D82BE0](v116);
         }
 
-        v253 = v12;
+        v248 = v12;
         if (v115)
         {
           MEMORY[0x277D82BD8](v116);
@@ -2138,19 +2138,19 @@ LABEL_34:
           MEMORY[0x277D82BD8](v124);
         }
 
-        MEMORY[0x277D82BD8](v25);
+        MEMORY[0x277D82BD8](descriptor13);
         v232 = 1;
       }
 
       else if ((v247 & 0x40) != 0)
       {
-        v24 = [v251 descriptor];
+        descriptor14 = [v251 descriptor];
         v113 = 0;
         v111 = 0;
         v109 = 0;
         v107 = 0;
         v105 = 0;
-        if (v24 && (v114 = [v251 descriptor], v113 = 1, (objc_msgSend(v114, "isSplatOnly") & 1) != 0))
+        if (descriptor14 && (v114 = [v251 descriptor], v113 = 1, (objc_msgSend(v114, "isSplatOnly") & 1) != 0))
         {
           v112 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v111 = 1;
@@ -2168,7 +2168,7 @@ LABEL_34:
           v13 = MEMORY[0x277D82BE0](v106);
         }
 
-        v253 = v13;
+        v248 = v13;
         if (v105)
         {
           MEMORY[0x277D82BD8](v106);
@@ -2194,19 +2194,19 @@ LABEL_34:
           MEMORY[0x277D82BD8](v114);
         }
 
-        MEMORY[0x277D82BD8](v24);
+        MEMORY[0x277D82BD8](descriptor14);
         v232 = 1;
       }
 
       else if ((v247 & 0x200) != 0)
       {
-        v23 = [v251 descriptor];
+        descriptor15 = [v251 descriptor];
         v103 = 0;
         v101 = 0;
         v99 = 0;
         v97 = 0;
         v95 = 0;
-        if (v23 && (v104 = [v251 descriptor], v103 = 1, (objc_msgSend(v104, "isSplatOnly") & 1) != 0))
+        if (descriptor15 && (v104 = [v251 descriptor], v103 = 1, (objc_msgSend(v104, "isSplatOnly") & 1) != 0))
         {
           v102 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v101 = 1;
@@ -2224,7 +2224,7 @@ LABEL_34:
           v14 = MEMORY[0x277D82BE0](v96);
         }
 
-        v253 = v14;
+        v248 = v14;
         if (v95)
         {
           MEMORY[0x277D82BD8](v96);
@@ -2250,19 +2250,19 @@ LABEL_34:
           MEMORY[0x277D82BD8](v104);
         }
 
-        MEMORY[0x277D82BD8](v23);
+        MEMORY[0x277D82BD8](descriptor15);
         v232 = 1;
       }
 
       else if ((v247 & 0x400) != 0)
       {
-        v22 = [v251 descriptor];
+        descriptor16 = [v251 descriptor];
         v93 = 0;
         v91 = 0;
         v89 = 0;
         v87 = 0;
         v85 = 0;
-        if (v22 && (v94 = [v251 descriptor], v93 = 1, (objc_msgSend(v94, "isSplatOnly") & 1) != 0))
+        if (descriptor16 && (v94 = [v251 descriptor], v93 = 1, (objc_msgSend(v94, "isSplatOnly") & 1) != 0))
         {
           v92 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v91 = 1;
@@ -2280,7 +2280,7 @@ LABEL_34:
           v15 = MEMORY[0x277D82BE0](v86);
         }
 
-        v253 = v15;
+        v248 = v15;
         if (v85)
         {
           MEMORY[0x277D82BD8](v86);
@@ -2306,19 +2306,19 @@ LABEL_34:
           MEMORY[0x277D82BD8](v94);
         }
 
-        MEMORY[0x277D82BD8](v22);
+        MEMORY[0x277D82BD8](descriptor16);
         v232 = 1;
       }
 
       else if ((v247 & 0x800) != 0)
       {
-        v21 = [v251 descriptor];
+        descriptor17 = [v251 descriptor];
         v83 = 0;
         v81 = 0;
         v79 = 0;
         v77 = 0;
         v75 = 0;
-        if (v21 && (v84 = [v251 descriptor], v83 = 1, (objc_msgSend(v84, "isSplatOnly") & 1) != 0))
+        if (descriptor17 && (v84 = [v251 descriptor], v83 = 1, (objc_msgSend(v84, "isSplatOnly") & 1) != 0))
         {
           v82 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v81 = 1;
@@ -2336,7 +2336,7 @@ LABEL_34:
           v16 = MEMORY[0x277D82BE0](v76);
         }
 
-        v253 = v16;
+        v248 = v16;
         if (v75)
         {
           MEMORY[0x277D82BD8](v76);
@@ -2362,19 +2362,19 @@ LABEL_34:
           MEMORY[0x277D82BD8](v84);
         }
 
-        MEMORY[0x277D82BD8](v21);
+        MEMORY[0x277D82BD8](descriptor17);
         v232 = 1;
       }
 
       else if ((v247 & 0x1000) != 0)
       {
-        v20 = [v251 descriptor];
+        descriptor18 = [v251 descriptor];
         v73 = 0;
         v71 = 0;
         v69 = 0;
         v67 = 0;
         v65 = 0;
-        if (v20 && (v74 = [v251 descriptor], v73 = 1, (objc_msgSend(v74, "isSplatOnly") & 1) != 0))
+        if (descriptor18 && (v74 = [v251 descriptor], v73 = 1, (objc_msgSend(v74, "isSplatOnly") & 1) != 0))
         {
           v72 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v71 = 1;
@@ -2392,7 +2392,7 @@ LABEL_34:
           v17 = MEMORY[0x277D82BE0](v66);
         }
 
-        v253 = v17;
+        v248 = v17;
         if (v65)
         {
           MEMORY[0x277D82BD8](v66);
@@ -2418,13 +2418,13 @@ LABEL_34:
           MEMORY[0x277D82BD8](v74);
         }
 
-        MEMORY[0x277D82BD8](v20);
+        MEMORY[0x277D82BD8](descriptor18);
         v232 = 1;
       }
 
       else
       {
-        v253 = 0;
+        v248 = 0;
         v232 = 1;
       }
     }
@@ -2432,13 +2432,13 @@ LABEL_34:
     else
     {
       v38 = MEMORY[0x277CCACA8];
-      v39 = [v251 descriptor];
+      descriptor19 = [v251 descriptor];
       v183 = 0;
       v181 = 0;
       v179 = 0;
       v177 = 0;
       v175 = 0;
-      if (v39 && (v184 = [v251 descriptor], v183 = 1, (objc_msgSend(v184, "isSplatOnly") & 1) != 0))
+      if (descriptor19 && (v184 = [v251 descriptor], v183 = 1, (objc_msgSend(v184, "isSplatOnly") & 1) != 0))
       {
         v182 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v181 = 1;
@@ -2456,7 +2456,7 @@ LABEL_34:
         v37 = v176;
       }
 
-      v253 = [v38 stringWithFormat:v37, v227];
+      v248 = [v38 stringWithFormat:v37, v227];
       if (v175)
       {
         MEMORY[0x277D82BD8](v176);
@@ -2482,7 +2482,7 @@ LABEL_34:
         MEMORY[0x277D82BD8](v184);
       }
 
-      MEMORY[0x277D82BD8](v39);
+      MEMORY[0x277D82BD8](descriptor19);
       v232 = 1;
     }
 
@@ -2493,7 +2493,7 @@ LABEL_34:
   objc_storeStrong(&v250, 0);
   objc_storeStrong(&v251, 0);
   objc_storeStrong(location, 0);
-  v18 = v253;
+  v18 = v248;
 
   return v18;
 }

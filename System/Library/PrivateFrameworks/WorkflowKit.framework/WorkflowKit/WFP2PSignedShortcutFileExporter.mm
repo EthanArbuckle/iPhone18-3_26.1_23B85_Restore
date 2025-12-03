@@ -1,29 +1,29 @@
 @interface WFP2PSignedShortcutFileExporter
-- (void)exportWorkflowWithCompletion:(id)a3;
+- (void)exportWorkflowWithCompletion:(id)completion;
 @end
 
 @implementation WFP2PSignedShortcutFileExporter
 
-- (void)exportWorkflowWithCompletion:(id)a3
+- (void)exportWorkflowWithCompletion:(id)completion
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(WFShortcutExporter *)self workflowRecord];
-  v6 = [v5 fileRepresentation];
+  completionCopy = completion;
+  workflowRecord = [(WFShortcutExporter *)self workflowRecord];
+  fileRepresentation = [workflowRecord fileRepresentation];
 
-  v7 = [(WFShortcutExporter *)self workflowRecord];
-  v8 = [v7 name];
-  [v6 setName:v8];
+  workflowRecord2 = [(WFShortcutExporter *)self workflowRecord];
+  name = [workflowRecord2 name];
+  [fileRepresentation setName:name];
 
   v40 = 0;
-  v9 = [v6 fileDataWithError:&v40];
+  v9 = [fileRepresentation fileDataWithError:&v40];
   v10 = v40;
   if (v9)
   {
     v11 = [WFShortcutPackageFile alloc];
-    v12 = [(WFShortcutExporter *)self workflowRecord];
-    v13 = [v12 name];
-    v14 = [(WFShortcutPackageFile *)v11 initWithShortcutData:v9 shortcutName:v13];
+    workflowRecord3 = [(WFShortcutExporter *)self workflowRecord];
+    name2 = [workflowRecord3 name];
+    v14 = [(WFShortcutPackageFile *)v11 initWithShortcutData:v9 shortcutName:name2];
 
     v15 = objc_alloc_init(MEMORY[0x1E69CDE10]);
     v39 = v10;
@@ -40,8 +40,8 @@
       if (v18)
       {
         [(WFP2PSignedShortcutFileExporter *)self setSignedShortcutFile:v18];
-        v20 = [v18 fileURL];
-        v4[2](v4, v20, 0);
+        fileURL = [v18 fileURL];
+        completionCopy[2](completionCopy, fileURL, 0);
       }
 
       else
@@ -56,7 +56,7 @@
           _os_log_impl(&dword_1CA256000, v34, OS_LOG_TYPE_ERROR, "%s Failed to generate a signed shortcut with user's Apple Account: %@", buf, 0x16u);
         }
 
-        (v4)[2](v4, 0, v19);
+        (completionCopy)[2](completionCopy, 0, v19);
         v18 = 0;
       }
 
@@ -107,7 +107,7 @@
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v42 forKeys:v41 count:7];
       v33 = [v25 errorWithDomain:@"WFWorkflowErrorDomain" code:4 userInfo:v32];
 
-      (v4)[2](v4, 0, v33);
+      (completionCopy)[2](completionCopy, 0, v33);
       v16 = 0;
       v15 = v36;
     }
@@ -117,7 +117,7 @@
 
   else
   {
-    (v4)[2](v4, 0, v10);
+    (completionCopy)[2](completionCopy, 0, v10);
   }
 
   v35 = *MEMORY[0x1E69E9840];

@@ -1,19 +1,19 @@
 @interface GTDeviceCapabilities
-- (id)deviceCompatibilityCapabilitiesWithHeapDescriptors:(id)a3;
+- (id)deviceCompatibilityCapabilitiesWithHeapDescriptors:(id)descriptors;
 @end
 
 @implementation GTDeviceCapabilities
 
-- (id)deviceCompatibilityCapabilitiesWithHeapDescriptors:(id)a3
+- (id)deviceCompatibilityCapabilitiesWithHeapDescriptors:(id)descriptors
 {
   v51[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptorsCopy = descriptors;
   apr_initialize();
   newpool = 0;
   apr_pool_create_ex(&newpool, 0, 0, 0);
   v45 = 0;
   v46 = 0;
-  v4 = [v3 objectForKeyedSubscript:@"heap-texture-info"];
+  v4 = [descriptorsCopy objectForKeyedSubscript:@"heap-texture-info"];
   v5 = v4;
   v44 = 0;
   if (v4)
@@ -24,7 +24,7 @@
 
   v42 = 0;
   v43 = 0;
-  v7 = [v3 objectForKeyedSubscript:@"heap-acceleration-structure-info"];
+  v7 = [descriptorsCopy objectForKeyedSubscript:@"heap-acceleration-structure-info"];
   v8 = v7;
   v41 = 0;
   if (v7)
@@ -33,7 +33,7 @@
     v43 = v9;
   }
 
-  v32 = v3;
+  v32 = descriptorsCopy;
   v10 = MTLCreateSystemDefaultDevice();
   v30 = v8;
   v31 = v5;
@@ -77,8 +77,8 @@
         v18 = GTCapabilitiesRuntime_heapTextureInfoCompatible(&v45, v16, v15);
         v19 = GTCapabilitiesRuntime_heapAccelerationStructureInfoCompatible(&v42, v16, v15);
         v48[0] = @"device-name";
-        v20 = [v15 name];
-        v49[0] = v20;
+        name = [v15 name];
+        v49[0] = name;
         v49[1] = v17;
         v48[1] = @"capabilities-runtime";
         v48[2] = @"heap-texture-compatibility";

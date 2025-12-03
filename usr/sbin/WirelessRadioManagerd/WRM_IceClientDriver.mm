@@ -1,23 +1,23 @@
 @interface WRM_IceClientDriver
 - (WRM_IceClientDriver)init;
 - (id).cxx_construct;
-- (void)IBICallPsBandwidthEstimationIndHandle:(char *)a3 size:(unsigned int)a4;
-- (void)IBICallPsWrmSdmLocationDBFetchInfoIndCbHandle:(char *)a3 size:(unsigned int)a4;
-- (void)IBICallPsWrmSdmLocationDBInfoRegIndCbHandle:(char *)a3 size:(unsigned int)a4;
-- (void)IBINetRadioSignalIndCbHandle:(char *)a3 size:(unsigned int)a4;
+- (void)IBICallPsBandwidthEstimationIndHandle:(char *)handle size:(unsigned int)size;
+- (void)IBICallPsWrmSdmLocationDBFetchInfoIndCbHandle:(char *)handle size:(unsigned int)size;
+- (void)IBICallPsWrmSdmLocationDBInfoRegIndCbHandle:(char *)handle size:(unsigned int)size;
+- (void)IBINetRadioSignalIndCbHandle:(char *)handle size:(unsigned int)size;
 - (void)clientStarted;
-- (void)notifyAVStatus:(int64_t)a3 :(unsigned __int8)a4 :(unsigned __int16)a5;
-- (void)notifyBBCallState:(int64_t)a3 :(unsigned __int8)a4 :(unsigned __int8)a5 :(unsigned __int8)a6 :(unsigned __int8)a7;
-- (void)notifyBBLockState:(int64_t)a3 :(unsigned __int8)a4;
-- (void)notifyFTDupelicationState:(int64_t)a3 :(unsigned __int8)a4;
-- (void)notifyStreamingEBHState:(int64_t)a3 :(unsigned __int8)a4;
-- (void)querySdmLocationDBInfoReg:(int64_t)a3;
-- (void)sendWrmSdmLocationDbInfo:(int64_t)a3 dbAvailable:(BOOL)a4 mcc:(unsigned int)a5 mnc:(unsigned int)a6 cellId:(unint64_t)a7;
-- (void)setBBSAState:(int64_t)a3 :(BOOL)a4 :(unsigned __int8)a5;
+- (void)notifyAVStatus:(int64_t)status :(unsigned __int8)a4 :(unsigned __int16)a5;
+- (void)notifyBBCallState:(int64_t)state :(unsigned __int8)a4 :(unsigned __int8)a5 :(unsigned __int8)a6 :(unsigned __int8)a7;
+- (void)notifyBBLockState:(int64_t)state :(unsigned __int8)a4;
+- (void)notifyFTDupelicationState:(int64_t)state :(unsigned __int8)a4;
+- (void)notifyStreamingEBHState:(int64_t)state :(unsigned __int8)a4;
+- (void)querySdmLocationDBInfoReg:(int64_t)reg;
+- (void)sendWrmSdmLocationDbInfo:(int64_t)info dbAvailable:(BOOL)available mcc:(unsigned int)mcc mnc:(unsigned int)mnc cellId:(unint64_t)id;
+- (void)setBBSAState:(int64_t)state :(BOOL)a4 :(unsigned __int8)a5;
 - (void)setHandlerLocationDbInfo;
-- (void)setWrmSdmLocationDbPushOneEntryForCellType:(int64_t)a3 cellType:(int)a4 anchorCellBandwidth:(unsigned int)a5 mmWavePresent:(BOOL)a6 downlinkThroughput:(unsigned int)a7 sampleCount:(unsigned int)a8 deploymentCount:(unsigned int)a9;
-- (void)startBandwidthEstimation:(int64_t)a3;
-- (void)stopBandwidthEstimation:(int64_t)a3;
+- (void)setWrmSdmLocationDbPushOneEntryForCellType:(int64_t)type cellType:(int)cellType anchorCellBandwidth:(unsigned int)bandwidth mmWavePresent:(BOOL)present downlinkThroughput:(unsigned int)throughput sampleCount:(unsigned int)count deploymentCount:(unsigned int)deploymentCount;
+- (void)startBandwidthEstimation:(int64_t)estimation;
+- (void)stopBandwidthEstimation:(int64_t)estimation;
 @end
 
 @implementation WRM_IceClientDriver
@@ -93,21 +93,21 @@
   self->mClientStarted = 1;
 }
 
-- (void)startBandwidthEstimation:(int64_t)a3
+- (void)startBandwidthEstimation:(int64_t)estimation
 {
   AriSdk::ARI_IBICallPsStartBandwidthEstimationReq_SDK::ARI_IBICallPsStartBandwidthEstimationReq_SDK(v5);
-  v4 = sub_100087E60(a3);
+  v4 = sub_100087E60(estimation);
   sub_10001B2B0();
 }
 
-- (void)stopBandwidthEstimation:(int64_t)a3
+- (void)stopBandwidthEstimation:(int64_t)estimation
 {
   AriSdk::ARI_IBICallPsStopBandwidthEstimationReq_SDK::ARI_IBICallPsStopBandwidthEstimationReq_SDK(v5);
-  v4 = sub_100087E60(a3);
+  v4 = sub_100087E60(estimation);
   sub_10001B2B0();
 }
 
-- (void)notifyBBLockState:(int64_t)a3 :(unsigned __int8)a4
+- (void)notifyBBLockState:(int64_t)state :(unsigned __int8)a4
 {
   v4 = a4;
   AriSdk::ARI_IBICallPsWrmSdmInfoReq_V2_SDK::ARI_IBICallPsWrmSdmInfoReq_V2_SDK(v6);
@@ -115,7 +115,7 @@
   sub_10001B2B0();
 }
 
-- (void)notifyBBCallState:(int64_t)a3 :(unsigned __int8)a4 :(unsigned __int8)a5 :(unsigned __int8)a6 :(unsigned __int8)a7
+- (void)notifyBBCallState:(int64_t)state :(unsigned __int8)a4 :(unsigned __int8)a5 :(unsigned __int8)a6 :(unsigned __int8)a7
 {
   AriSdk::ARI_IBICallPsWrmSdmInfoReq_V2_SDK::ARI_IBICallPsWrmSdmInfoReq_V2_SDK(v9);
   v7 = 0;
@@ -123,7 +123,7 @@
   sub_10001BA2C();
 }
 
-- (void)notifyAVStatus:(int64_t)a3 :(unsigned __int8)a4 :(unsigned __int16)a5
+- (void)notifyAVStatus:(int64_t)status :(unsigned __int8)a4 :(unsigned __int16)a5
 {
   AriSdk::ARI_IBICallPsWrmSdmInfoReq_V2_SDK::ARI_IBICallPsWrmSdmInfoReq_V2_SDK(v7);
   v5 = 0;
@@ -131,7 +131,7 @@
   sub_10005E688();
 }
 
-- (void)notifyFTDupelicationState:(int64_t)a3 :(unsigned __int8)a4
+- (void)notifyFTDupelicationState:(int64_t)state :(unsigned __int8)a4
 {
   v4 = a4;
   AriSdk::ARI_IBICallPsWrmSdmInfoReq_V2_SDK::ARI_IBICallPsWrmSdmInfoReq_V2_SDK(v6);
@@ -139,7 +139,7 @@
   sub_10001B2B0();
 }
 
-- (void)notifyStreamingEBHState:(int64_t)a3 :(unsigned __int8)a4
+- (void)notifyStreamingEBHState:(int64_t)state :(unsigned __int8)a4
 {
   v4 = a4;
   AriSdk::ARI_IBICallPsWrmSdmInfoReq_V2_SDK::ARI_IBICallPsWrmSdmInfoReq_V2_SDK(v6);
@@ -147,20 +147,20 @@
   sub_10001B2B0();
 }
 
-- (void)setBBSAState:(int64_t)a3 :(BOOL)a4 :(unsigned __int8)a5
+- (void)setBBSAState:(int64_t)state :(BOOL)a4 :(unsigned __int8)a5
 {
-  if (*(&self->mLocationDbInfo.sadcCellInfoList.__cap_ + a3 + 7) != a4)
+  if (*(&self->mLocationDbInfo.sadcCellInfoList.__cap_ + state + 7) != a4)
   {
-    *(&self->mLocationDbInfo.sadcCellInfoList.__cap_ + a3 + 7) = a4;
+    *(&self->mLocationDbInfo.sadcCellInfoList.__cap_ + state + 7) = a4;
     AriSdk::ARI_IBICallPsWrmSAInfoReq_SDK::ARI_IBICallPsWrmSAInfoReq_SDK(v7);
-    v6 = sub_100087E60(a3);
+    v6 = sub_100087E60(state);
     sub_10001B2B0();
   }
 }
 
-- (void)IBINetRadioSignalIndCbHandle:(char *)a3 size:(unsigned int)a4
+- (void)IBINetRadioSignalIndCbHandle:(char *)handle size:(unsigned int)size
 {
-  AriSdk::ARI_IBINetRadioSignalIndCb_SDK::ARI_IBINetRadioSignalIndCb_SDK(v15, a3, a4);
+  AriSdk::ARI_IBINetRadioSignalIndCb_SDK::ARI_IBINetRadioSignalIndCb_SDK(v15, handle, size);
   if (ice::isARIResponseValid(v15, 0x25820000, v4))
   {
     v5 = AriSdk::ARI_IBINetRadioSignalIndCb_SDK::unpack(v15);
@@ -236,9 +236,9 @@
   AriSdk::ARI_IBINetRadioSignalIndCb_SDK::~ARI_IBINetRadioSignalIndCb_SDK(v15);
 }
 
-- (void)IBICallPsBandwidthEstimationIndHandle:(char *)a3 size:(unsigned int)a4
+- (void)IBICallPsBandwidthEstimationIndHandle:(char *)handle size:(unsigned int)size
 {
-  AriSdk::ARI_IBICallPsBandwidthEstimationInd_SDK::ARI_IBICallPsBandwidthEstimationInd_SDK(v56, a3, a4);
+  AriSdk::ARI_IBICallPsBandwidthEstimationInd_SDK::ARI_IBICallPsBandwidthEstimationInd_SDK(v56, handle, size);
   if ((ice::isARIResponseValid(v56, 0xD908000, v5) & 1) == 0)
   {
     [WCM_Logging logLevel:22 message:@"ICE ERROR: Invalid IBICallPsBandwidthEstimationInd received"];
@@ -405,7 +405,7 @@ LABEL_25:
     v49 = v62[12];
     v47 = *(v62 + 2);
     [WCM_Logging logLevel:22 message:@"ICE IBICallPsBandwidthEstimationInd connected_state_summary_t6.max_ue_rank=%u, max_network_mimo_layer=%u, max_scheduled_mimo_layer=%u, max_dl_modulation=%u, max_ul_modulation=%u, total_dl_mimo_layers=%u, total_num_cc=%u, aggregated_dl_bw=%umHz, aggregated_ul_bw=%umHz, nr5g_neighbor_cell=%u, rsrp=%ddBm, log_sinr_10xDb=%u", *v62, v37, v62[2], *(v62 + 1), v47, v49, v48, v38, *(v62 + 5), v39, *(v62 + 7), v62[32]];
-    v53 = [v7 getWRMCellOutrankWifiBWThreshold];
+    getWRMCellOutrankWifiBWThreshold = [v7 getWRMCellOutrankWifiBWThreshold];
     v51 = v20;
     switch(v39)
     {
@@ -440,14 +440,14 @@ LABEL_25:
     if ((v19 | v43) == 1)
     {
       [WCM_Logging logLevel:22 message:@"Calling updateConnectedStateSummary"];
-      [v54 updateConnectedStateSummary:sub_1000524EC(*v57) neighberNRCell:v42 highrateIndicator:v38 >= v53];
+      [v54 updateConnectedStateSummary:sub_1000524EC(*v57) neighberNRCell:v42 highrateIndicator:v38 >= getWRMCellOutrankWifiBWThreshold];
       [v55 evaluateWiFiVersusCell];
     }
 
     if ((v19 | v40 | v41) == 1)
     {
       [WCM_Logging logLevel:22 message:@"Calling updateHighRateLikely"];
-      [v54 updateHighRateLikely:sub_1000524EC(*v57) highrateIndicator:v38 >= v53];
+      [v54 updateHighRateLikely:sub_1000524EC(*v57) highrateIndicator:v38 >= getWRMCellOutrankWifiBWThreshold];
     }
 
     v45 = +[WRM_BWEvalManager WRM_BWEvalManagerSingleton];
@@ -475,9 +475,9 @@ LABEL_50:
   AriSdk::ARI_IBICallPsBandwidthEstimationInd_SDK::~ARI_IBICallPsBandwidthEstimationInd_SDK(v56);
 }
 
-- (void)IBICallPsWrmSdmLocationDBFetchInfoIndCbHandle:(char *)a3 size:(unsigned int)a4
+- (void)IBICallPsWrmSdmLocationDBFetchInfoIndCbHandle:(char *)handle size:(unsigned int)size
 {
-  AriSdk::ARI_IBICallPsWrmSdmLocationDBFetchInfoIndCb_SDK::ARI_IBICallPsWrmSdmLocationDBFetchInfoIndCb_SDK(v11, a3, a4);
+  AriSdk::ARI_IBICallPsWrmSdmLocationDBFetchInfoIndCb_SDK::ARI_IBICallPsWrmSdmLocationDBFetchInfoIndCb_SDK(v11, handle, size);
   if (ice::isARIResponseValid(v11, 0xDA58000, v4))
   {
     [WCM_Logging logLevel:22 message:@"ICE IBICallPsWrmSdmLocationDBFetchInfoIndCb received"];
@@ -507,9 +507,9 @@ LABEL_50:
   AriSdk::ARI_IBICallPsWrmSdmLocationDBFetchInfoIndCb_SDK::~ARI_IBICallPsWrmSdmLocationDBFetchInfoIndCb_SDK(v11);
 }
 
-- (void)IBICallPsWrmSdmLocationDBInfoRegIndCbHandle:(char *)a3 size:(unsigned int)a4
+- (void)IBICallPsWrmSdmLocationDBInfoRegIndCbHandle:(char *)handle size:(unsigned int)size
 {
-  AriSdk::ARI_IBICallPsWrmSdmLocationDBInfoRegIndCb_SDK::ARI_IBICallPsWrmSdmLocationDBInfoRegIndCb_SDK(v9, a3, a4);
+  AriSdk::ARI_IBICallPsWrmSdmLocationDBInfoRegIndCb_SDK::ARI_IBICallPsWrmSdmLocationDBInfoRegIndCb_SDK(v9, handle, size);
   if (ice::isARIResponseValid(v9, 0xDA50000, v4))
   {
     [WCM_Logging logLevel:22 message:@"ICE IBICallPsWrmSdmLocationDBInfoRegIndCb received"];
@@ -571,44 +571,44 @@ LABEL_50:
   }
 }
 
-- (void)querySdmLocationDBInfoReg:(int64_t)a3
+- (void)querySdmLocationDBInfoReg:(int64_t)reg
 {
   AriSdk::ARI_IBICallPsWrmSdmLocationDBInfoRegReq_SDK::ARI_IBICallPsWrmSdmLocationDBInfoRegReq_SDK(v5);
-  v4 = sub_100087E60(a3);
+  v4 = sub_100087E60(reg);
   sub_10001B2B0();
 }
 
-- (void)setWrmSdmLocationDbPushOneEntryForCellType:(int64_t)a3 cellType:(int)a4 anchorCellBandwidth:(unsigned int)a5 mmWavePresent:(BOOL)a6 downlinkThroughput:(unsigned int)a7 sampleCount:(unsigned int)a8 deploymentCount:(unsigned int)a9
+- (void)setWrmSdmLocationDbPushOneEntryForCellType:(int64_t)type cellType:(int)cellType anchorCellBandwidth:(unsigned int)bandwidth mmWavePresent:(BOOL)present downlinkThroughput:(unsigned int)throughput sampleCount:(unsigned int)count deploymentCount:(unsigned int)deploymentCount
 {
   v16 = sub_10005FF98(&self->mQueue.fObj.fObj);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005FFA0;
   block[3] = &unk_10023EF48;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a5;
-  v23 = a6;
-  v22 = a4;
+  throughputCopy = throughput;
+  countCopy = count;
+  deploymentCountCopy = deploymentCount;
+  bandwidthCopy = bandwidth;
+  presentCopy = present;
+  cellTypeCopy = cellType;
   block[4] = self;
-  block[5] = a3;
+  block[5] = type;
   dispatch_async(v16, block);
 }
 
-- (void)sendWrmSdmLocationDbInfo:(int64_t)a3 dbAvailable:(BOOL)a4 mcc:(unsigned int)a5 mnc:(unsigned int)a6 cellId:(unint64_t)a7
+- (void)sendWrmSdmLocationDbInfo:(int64_t)info dbAvailable:(BOOL)available mcc:(unsigned int)mcc mnc:(unsigned int)mnc cellId:(unint64_t)id
 {
   v13 = sub_10005FF98(&self->mQueue.fObj.fObj);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000604CC;
   block[3] = &unk_10023EFA0;
-  v17 = a4;
-  v15 = a5;
-  v16 = a6;
+  availableCopy = available;
+  mccCopy = mcc;
+  mncCopy = mnc;
   block[4] = self;
-  block[5] = a7;
-  block[6] = a3;
+  block[5] = id;
+  block[6] = info;
   dispatch_async(v13, block);
 }
 

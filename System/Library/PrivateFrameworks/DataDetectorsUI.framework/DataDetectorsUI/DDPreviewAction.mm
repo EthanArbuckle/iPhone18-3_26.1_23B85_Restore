@@ -1,5 +1,5 @@
 @interface DDPreviewAction
-+ (id)previewActionForURL:(id)a3 result:(__DDResult *)a4 context:(id)a5;
++ (id)previewActionForURL:(id)l result:(__DDResult *)result context:(id)context;
 - (CGSize)suggestedContentSize;
 - (id)expandViewController;
 - (id)menuActions;
@@ -20,14 +20,14 @@
   [(DDAction *)&v4 dealloc];
 }
 
-+ (id)previewActionForURL:(id)a3 result:(__DDResult *)a4 context:(id)a5
++ (id)previewActionForURL:(id)l result:(__DDResult *)result context:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (v7 | a4)
+  lCopy = l;
+  contextCopy = context;
+  v9 = contextCopy;
+  if (lCopy | result)
   {
-    if (!a4)
+    if (!result)
     {
       goto LABEL_35;
     }
@@ -53,7 +53,7 @@ LABEL_33:
         v21 = Category;
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
-          [DDPreviewAction previewActionForURL:a4 result:v7 context:v21];
+          [DDPreviewAction previewActionForURL:result result:lCopy context:v21];
         }
 
         goto LABEL_35;
@@ -68,62 +68,62 @@ LABEL_33:
         {
           v14 = DDPersonAction;
 LABEL_54:
-          v15 = [[v14 alloc] initWithURL:v7 result:a4 context:v9];
+          v15 = [[v14 alloc] initWithURL:lCopy result:result context:v9];
           goto LABEL_55;
         }
 
         goto LABEL_33;
       }
 
-      if ([DDNewsPreviewAction handlesUrl:v7 result:a4])
+      if ([DDNewsPreviewAction handlesUrl:lCopy result:result])
       {
         goto LABEL_36;
       }
 
-      if ([DDURLPreviewAction handlesUrl:v7 result:a4])
+      if ([DDURLPreviewAction handlesUrl:lCopy result:result])
       {
         goto LABEL_38;
       }
 
-      if ([DDChatBotAction handlesUrl:v7 result:a4])
+      if ([DDChatBotAction handlesUrl:lCopy result:result])
       {
         goto LABEL_48;
       }
 
-      if ([DDPersonAction handlesUrl:v7 result:a4])
+      if ([DDPersonAction handlesUrl:lCopy result:result])
       {
         goto LABEL_50;
       }
 
 LABEL_35:
-      if ([DDNewsPreviewAction handlesUrl:v7 result:a4])
+      if ([DDNewsPreviewAction handlesUrl:lCopy result:result])
       {
 LABEL_36:
         v14 = DDNewsPreviewAction;
         goto LABEL_54;
       }
 
-      if ([DDURLPreviewAction handlesUrl:v7 result:a4])
+      if ([DDURLPreviewAction handlesUrl:lCopy result:result])
       {
 LABEL_38:
         v14 = DDURLPreviewAction;
         goto LABEL_54;
       }
 
-      if ([DDMapAction handlesUrl:v7 result:a4])
+      if ([DDMapAction handlesUrl:lCopy result:result])
       {
         v14 = DDMapAction;
         goto LABEL_54;
       }
 
-      if ([DDChatBotAction handlesUrl:v7 result:a4])
+      if ([DDChatBotAction handlesUrl:lCopy result:result])
       {
 LABEL_48:
         v14 = DDChatBotAction;
         goto LABEL_54;
       }
 
-      if ([DDPersonAction handlesUrl:v7 result:a4])
+      if ([DDPersonAction handlesUrl:lCopy result:result])
       {
 LABEL_50:
         v14 = DDPersonAction;
@@ -161,13 +161,13 @@ LABEL_51:
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
-      [DDPreviewAction previewActionForURL:v7 result:? context:?];
+      [DDPreviewAction previewActionForURL:lCopy result:? context:?];
     }
 
     goto LABEL_35;
   }
 
-  v10 = [v8 objectForKeyedSubscript:@"Contact"];
+  v10 = [contextCopy objectForKeyedSubscript:@"Contact"];
   v11 = v10;
   if (v10)
   {
@@ -216,9 +216,9 @@ LABEL_55:
 
   else
   {
-    v5 = [(DDPreviewAction *)self createViewController];
+    createViewController = [(DDPreviewAction *)self createViewController];
     v6 = self->super._viewController;
-    self->super._viewController = v5;
+    self->super._viewController = createViewController;
 
     viewController = self->super._viewController;
   }
@@ -234,26 +234,26 @@ LABEL_55:
   }
 
   isDeviceLocked = dd_isDeviceLocked();
-  v3 = [(DDPreviewAction *)self viewController];
+  viewController = [(DDPreviewAction *)self viewController];
   if (!isDeviceLocked)
   {
 LABEL_3:
 
-    return v3;
+    return viewController;
   }
 
-  v6 = v3;
-  if (([v3 _canShowWhileLocked] & 1) == 0)
+  v6 = viewController;
+  if (([viewController _canShowWhileLocked] & 1) == 0)
   {
 
 LABEL_2:
-    v3 = 0;
+    viewController = 0;
     goto LABEL_3;
   }
 
-  v3 = v6;
+  viewController = v6;
 
-  return v3;
+  return viewController;
 }
 
 - (id)expandViewController

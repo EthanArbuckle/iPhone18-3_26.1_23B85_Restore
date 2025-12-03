@@ -1,23 +1,23 @@
 @interface HKUserDomainConceptStore
 + (id)clientInterface;
 + (id)serverInterface;
-- (BOOL)_synchronouslyObserveUserDomainConceptChanges:(id *)a3;
+- (BOOL)_synchronouslyObserveUserDomainConceptChanges:(id *)changes;
 - (HKUserDomainConceptStore)init;
-- (HKUserDomainConceptStore)initWithHealthStore:(id)a3;
+- (HKUserDomainConceptStore)initWithHealthStore:(id)store;
 - (HKUserDomainConceptStoreDelegate)delegate;
 - (id)exportedInterface;
 - (id)remoteInterface;
-- (void)_clientQueue_notifyForChangesToUserDomainConcepts:(id)a3 changeType:(int64_t)a4;
-- (void)_createAndStoreUserDomainConceptBackedByOntologyConceptWithIdentifier:(id)a3 supplementaryProperties:(id)a4 userDomainConceptTypeIdentifier:(id)a5 completion:(id)a6;
+- (void)_clientQueue_notifyForChangesToUserDomainConcepts:(id)concepts changeType:(int64_t)type;
+- (void)_createAndStoreUserDomainConceptBackedByOntologyConceptWithIdentifier:(id)identifier supplementaryProperties:(id)properties userDomainConceptTypeIdentifier:(id)typeIdentifier completion:(id)completion;
 - (void)_handleAutomaticProxyReconnection;
-- (void)_observeUserDomainConceptChanges:(BOOL)a3 completion:(id)a4;
-- (void)_storeUserDomainConcepts:(id)a3 method:(int64_t)a4 completion:(id)a5;
-- (void)client_notifyForChangesToUserDomainConcepts:(id)a3 changeType:(int64_t)a4;
-- (void)deleteUserDomainConcept:(id)a3 completion:(id)a4;
-- (void)deleteUserDomainConcepts:(id)a3 completion:(id)a4;
-- (void)saveOrUpdateUserDomainConcept:(id)a3 completion:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)setDelegate:(id)a3 completion:(id)a4;
+- (void)_observeUserDomainConceptChanges:(BOOL)changes completion:(id)completion;
+- (void)_storeUserDomainConcepts:(id)concepts method:(int64_t)method completion:(id)completion;
+- (void)client_notifyForChangesToUserDomainConcepts:(id)concepts changeType:(int64_t)type;
+- (void)deleteUserDomainConcept:(id)concept completion:(id)completion;
+- (void)deleteUserDomainConcepts:(id)concepts completion:(id)completion;
+- (void)saveOrUpdateUserDomainConcept:(id)concept completion:(id)completion;
+- (void)setDelegate:(id)delegate;
+- (void)setDelegate:(id)delegate completion:(id)completion;
 @end
 
 @implementation HKUserDomainConceptStore
@@ -32,19 +32,19 @@
   return 0;
 }
 
-- (HKUserDomainConceptStore)initWithHealthStore:(id)a3
+- (HKUserDomainConceptStore)initWithHealthStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v17.receiver = self;
   v17.super_class = HKUserDomainConceptStore;
   v5 = [(HKUserDomainConceptStore *)&v17 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     identifier = v5->_identifier;
-    v5->_identifier = v6;
+    v5->_identifier = uUID;
 
-    v8 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:v4 taskIdentifier:@"HKUserDomainConceptStoreServerIdentifier" exportedObject:v5 taskUUID:v5->_identifier];
+    v8 = [[HKTaskServerProxyProvider alloc] initWithHealthStore:storeCopy taskIdentifier:@"HKUserDomainConceptStoreServerIdentifier" exportedObject:v5 taskUUID:v5->_identifier];
     proxyProvider = v5->_proxyProvider;
     v5->_proxyProvider = v8;
 
@@ -70,61 +70,61 @@ void __48__HKUserDomainConceptStore_initWithHealthStore___block_invoke(uint64_t 
   [WeakRetained _handleAutomaticProxyReconnection];
 }
 
-- (void)saveOrUpdateUserDomainConcept:(id)a3 completion:(id)a4
+- (void)saveOrUpdateUserDomainConcept:(id)concept completion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  conceptCopy = concept;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
+  completionCopy = completion;
+  conceptCopy2 = concept;
+  v9 = [v6 arrayWithObjects:&conceptCopy count:1];
 
-  [(HKUserDomainConceptStore *)self saveOrUpdateUserDomainConcepts:v9 completion:v7, v11, v12];
+  [(HKUserDomainConceptStore *)self saveOrUpdateUserDomainConcepts:v9 completion:completionCopy, conceptCopy, v12];
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteUserDomainConcept:(id)a3 completion:(id)a4
+- (void)deleteUserDomainConcept:(id)concept completion:(id)completion
 {
   v12 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  conceptCopy = concept;
   v6 = MEMORY[0x1E695DEC8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 arrayWithObjects:&v11 count:1];
+  completionCopy = completion;
+  conceptCopy2 = concept;
+  v9 = [v6 arrayWithObjects:&conceptCopy count:1];
 
-  [(HKUserDomainConceptStore *)self _storeUserDomainConcepts:v9 method:3 completion:v7, v11, v12];
+  [(HKUserDomainConceptStore *)self _storeUserDomainConcepts:v9 method:3 completion:completionCopy, conceptCopy, v12];
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteUserDomainConcepts:(id)a3 completion:(id)a4
+- (void)deleteUserDomainConcepts:(id)concepts completion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  conceptsCopy = concepts;
+  completionCopy = completion;
   _HKInitializeLogging();
   v8 = HKLogHealthOntology();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v6;
+    v13 = conceptsCopy;
     _os_log_impl(&dword_19197B000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: deleteUserDomainConcepts: %{public}@", &v10, 0x16u);
   }
 
-  [(HKUserDomainConceptStore *)self _storeUserDomainConcepts:v6 method:3 completion:v7];
+  [(HKUserDomainConceptStore *)self _storeUserDomainConcepts:conceptsCopy method:3 completion:completionCopy];
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __40__HKUserDomainConceptStore_setDelegate___block_invoke;
   v6[3] = &unk_1E7376A00;
-  v7 = v4;
-  v5 = v4;
+  v7 = delegateCopy;
+  v5 = delegateCopy;
   [(HKUserDomainConceptStore *)self setDelegate:v5 completion:v6];
 }
 
@@ -162,10 +162,10 @@ void __40__HKUserDomainConceptStore_setDelegate___block_invoke(uint64_t a1, char
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3 completion:(id)a4
+- (void)setDelegate:(id)delegate completion:(id)completion
 {
-  v6 = a4;
-  obj = a3;
+  completionCopy = completion;
+  obj = delegate;
   os_unfair_lock_lock(&self->_lock);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = (obj == 0) ^ (WeakRetained != 0);
@@ -175,12 +175,12 @@ void __40__HKUserDomainConceptStore_setDelegate___block_invoke(uint64_t a1, char
   os_unfair_lock_unlock(&self->_lock);
   if (v8)
   {
-    v6[2](v6, 1, 0);
+    completionCopy[2](completionCopy, 1, 0);
   }
 
   else
   {
-    [(HKUserDomainConceptStore *)self _observeUserDomainConceptChanges:obj != 0 completion:v6];
+    [(HKUserDomainConceptStore *)self _observeUserDomainConceptChanges:obj != 0 completion:completionCopy];
   }
 }
 
@@ -198,19 +198,19 @@ void __40__HKUserDomainConceptStore_setDelegate___block_invoke(uint64_t a1, char
   return [v2 serverInterface];
 }
 
-- (void)client_notifyForChangesToUserDomainConcepts:(id)a3 changeType:(int64_t)a4
+- (void)client_notifyForChangesToUserDomainConcepts:(id)concepts changeType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueue];
+  conceptsCopy = concepts;
+  clientQueue = [(HKProxyProvider *)self->_proxyProvider clientQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__HKUserDomainConceptStore_client_notifyForChangesToUserDomainConcepts_changeType___block_invoke;
   block[3] = &unk_1E73767D0;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = conceptsCopy;
+  typeCopy = type;
+  v8 = conceptsCopy;
+  dispatch_sync(clientQueue, block);
 }
 
 + (id)serverInterface
@@ -234,25 +234,25 @@ void __40__HKUserDomainConceptStore_setDelegate___block_invoke(uint64_t a1, char
 {
   v8 = *MEMORY[0x1E69E9840];
   v4 = 138543618;
-  v5 = a1;
+  selfCopy = self;
   v6 = 2114;
   v7 = a2;
   _os_log_error_impl(&dword_19197B000, log, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to resume observation on server reconnection: %{public}@", &v4, 0x16u);
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_storeUserDomainConcepts:(id)a3 method:(int64_t)a4 completion:(id)a5
+- (void)_storeUserDomainConcepts:(id)concepts method:(int64_t)method completion:(id)completion
 {
-  v8 = a3;
-  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a5];
+  conceptsCopy = concepts;
+  v9 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __71__HKUserDomainConceptStore__storeUserDomainConcepts_method_completion___block_invoke;
   v15[3] = &unk_1E737ADA8;
   v15[4] = self;
-  v16 = v8;
-  v18 = a4;
+  v16 = conceptsCopy;
+  methodCopy = method;
   v17 = v9;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -260,7 +260,7 @@ void __40__HKUserDomainConceptStore_setDelegate___block_invoke(uint64_t a1, char
   v13[3] = &unk_1E7376960;
   v14 = v17;
   v11 = v17;
-  v12 = v8;
+  v12 = conceptsCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v15 errorHandler:v13];
 }
 
@@ -295,15 +295,15 @@ void __71__HKUserDomainConceptStore__storeUserDomainConcepts_method_completion__
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_observeUserDomainConceptChanges:(BOOL)a3 completion:(id)a4
+- (void)_observeUserDomainConceptChanges:(BOOL)changes completion:(id)completion
 {
-  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  v6 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__HKUserDomainConceptStore__observeUserDomainConceptChanges_completion___block_invoke;
   v11[3] = &unk_1E737ADD0;
-  v13 = a3;
+  changesCopy = changes;
   v12 = v6;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -314,7 +314,7 @@ void __71__HKUserDomainConceptStore__storeUserDomainConcepts_method_completion__
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v11 errorHandler:v9];
 }
 
-- (BOOL)_synchronouslyObserveUserDomainConceptChanges:(id *)a3
+- (BOOL)_synchronouslyObserveUserDomainConceptChanges:(id *)changes
 {
   v18 = 0;
   v19 = &v18;
@@ -343,10 +343,10 @@ void __71__HKUserDomainConceptStore__storeUserDomainConcepts_method_completion__
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (changes)
     {
       v7 = v5;
-      *a3 = v6;
+      *changes = v6;
     }
 
     else
@@ -372,14 +372,14 @@ uint64_t __74__HKUserDomainConceptStore__synchronouslyObserveUserDomainConceptCh
   return [a2 remote_observeUserDomainConceptChanges:1 completion:v3];
 }
 
-- (void)_clientQueue_notifyForChangesToUserDomainConcepts:(id)a3 changeType:(int64_t)a4
+- (void)_clientQueue_notifyForChangesToUserDomainConcepts:(id)concepts changeType:(int64_t)type
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueue];
-  dispatch_assert_queue_V2(v7);
+  conceptsCopy = concepts;
+  clientQueue = [(HKProxyProvider *)self->_proxyProvider clientQueue];
+  dispatch_assert_queue_V2(clientQueue);
 
-  v8 = [(HKUserDomainConceptStore *)self delegate];
+  delegate = [(HKUserDomainConceptStore *)self delegate];
   _HKInitializeLogging();
   v9 = HKLogHealthOntology();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
@@ -389,10 +389,10 @@ uint64_t __74__HKUserDomainConceptStore__synchronouslyObserveUserDomainConceptCh
     v11 = HKLogHealthOntology();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [v6 count];
-      v13 = HKStringFromUserDomainConceptStoreChangeType(a4);
+      v12 = [conceptsCopy count];
+      v13 = HKStringFromUserDomainConceptStoreChangeType(type);
       v15 = 138543874;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = v12;
       v19 = 2112;
@@ -401,49 +401,49 @@ uint64_t __74__HKUserDomainConceptStore__synchronouslyObserveUserDomainConceptCh
     }
   }
 
-  switch(a4)
+  switch(type)
   {
     case 3:
-      [v8 userDomainConceptStore:self didDeleteUserDomainConcepts:v6];
+      [delegate userDomainConceptStore:self didDeleteUserDomainConcepts:conceptsCopy];
       break;
     case 2:
-      [v8 userDomainConceptStore:self didUpdateUserDomainConcepts:v6];
+      [delegate userDomainConceptStore:self didUpdateUserDomainConcepts:conceptsCopy];
       break;
     case 1:
-      [v8 userDomainConceptStore:self didAddUserDomainConcepts:v6];
+      [delegate userDomainConceptStore:self didAddUserDomainConcepts:conceptsCopy];
       break;
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createAndStoreUserDomainConceptBackedByOntologyConceptWithIdentifier:(id)a3 supplementaryProperties:(id)a4 userDomainConceptTypeIdentifier:(id)a5 completion:(id)a6
+- (void)_createAndStoreUserDomainConceptBackedByOntologyConceptWithIdentifier:(id)identifier supplementaryProperties:(id)properties userDomainConceptTypeIdentifier:(id)typeIdentifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:v13];
+  identifierCopy = identifier;
+  propertiesCopy = properties;
+  typeIdentifierCopy = typeIdentifier;
+  completionCopy = completion;
+  v14 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completionCopy];
   proxyProvider = self->_proxyProvider;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __165__HKUserDomainConceptStore__createAndStoreUserDomainConceptBackedByOntologyConceptWithIdentifier_supplementaryProperties_userDomainConceptTypeIdentifier_completion___block_invoke;
   v23[3] = &unk_1E737AE20;
   v23[4] = self;
-  v24 = v10;
-  v25 = v11;
-  v26 = v12;
-  v27 = v13;
+  v24 = identifierCopy;
+  v25 = propertiesCopy;
+  v26 = typeIdentifierCopy;
+  v27 = completionCopy;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __165__HKUserDomainConceptStore__createAndStoreUserDomainConceptBackedByOntologyConceptWithIdentifier_supplementaryProperties_userDomainConceptTypeIdentifier_completion___block_invoke_80;
   v21[3] = &unk_1E7376960;
   v22 = v14;
   v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  v20 = v10;
+  v17 = completionCopy;
+  v18 = typeIdentifierCopy;
+  v19 = propertiesCopy;
+  v20 = identifierCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v23 errorHandler:v21];
 }
 

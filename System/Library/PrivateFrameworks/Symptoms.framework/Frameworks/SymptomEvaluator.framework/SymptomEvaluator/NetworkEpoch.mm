@@ -1,42 +1,42 @@
 @interface NetworkEpoch
-+ (BOOL)parsePrimaryKey:(id)a3 majorID:(id *)a4 minorID:(id *)a5;
-+ (BOOL)parsePrimaryKeyStr:(const char *)a3 majorIDLengthInBytes:(int *)a4 minorIDLengthInBytes:(int *)a5;
-+ (BOOL)pruneDataOlderThan:(id)a3 exceptFor:(id)a4 inWorkspace:(id)a5;
-+ (id)getNetworkSignatureForAddressFamily:(int)a3 interfaceName:(id)a4 identifier:(id)a5;
-+ (id)snapshotsIn:(id)a3 olderThan:(id)a4;
-+ (void)resetDataFor:(id)a3 exceptFor:(id)a4 inWorkspace:(id)a5;
-+ (void)resetDataForSSIDs:(id)a3 exceptFor:(id)a4 inWorkspace:(id)a5;
-- (BOOL)_isLiveRoutePerfinScope:(id)a3 forTime:(id)a4;
-- (BOOL)countDownStop:(id)a3 eventTimeStamp:(id)a4;
-- (BOOL)createCountDown:(id)a3 atTime:(id)a4 nextTick:(unint64_t)a5 ticksTotal:(unint64_t)a6 onQueue:(id)a7 withIterationBlock:(id)a8 completionBlock:(id)a9;
-- (BOOL)hasCountDownActive:(id)a3;
++ (BOOL)parsePrimaryKey:(id)key majorID:(id *)d minorID:(id *)iD;
++ (BOOL)parsePrimaryKeyStr:(const char *)str majorIDLengthInBytes:(int *)bytes minorIDLengthInBytes:(int *)inBytes;
++ (BOOL)pruneDataOlderThan:(id)than exceptFor:(id)for inWorkspace:(id)workspace;
++ (id)getNetworkSignatureForAddressFamily:(int)family interfaceName:(id)name identifier:(id)identifier;
++ (id)snapshotsIn:(id)in olderThan:(id)than;
++ (void)resetDataFor:(id)for exceptFor:(id)exceptFor inWorkspace:(id)workspace;
++ (void)resetDataForSSIDs:(id)ds exceptFor:(id)for inWorkspace:(id)workspace;
+- (BOOL)_isLiveRoutePerfinScope:(id)scope forTime:(id)time;
+- (BOOL)countDownStop:(id)stop eventTimeStamp:(id)stamp;
+- (BOOL)createCountDown:(id)down atTime:(id)time nextTick:(unint64_t)tick ticksTotal:(unint64_t)total onQueue:(id)queue withIterationBlock:(id)block completionBlock:(id)completionBlock;
+- (BOOL)hasCountDownActive:(id)active;
 - (BOOL)hasTypicalShortStay;
-- (BOOL)matchesLOI:(int64_t)a3;
+- (BOOL)matchesLOI:(int64_t)i;
 - (SFLiveRoutePerf)currentLiveRoutePerf;
 - (SFNetworkAttachment)durable;
 - (id)_createCellSignature;
 - (id)_init;
-- (id)_initWithPrimaryKey:(id)a3 interfaceName:(id)a4 isCell:(BOOL)a5 maxBars:(int)a6 roamingEvent:(BOOL)a7 roamingAttrs:(int64_t)a8 supportsIPv4:(BOOL)a9 supportsIPv6:(BOOL)a10 inWorkspace:(id)a11 andQueue:(id)a12;
+- (id)_initWithPrimaryKey:(id)key interfaceName:(id)name isCell:(BOOL)cell maxBars:(int)bars roamingEvent:(BOOL)event roamingAttrs:(int64_t)attrs supportsIPv4:(BOOL)pv4 supportsIPv6:(BOOL)self0 inWorkspace:(id)self1 andQueue:(id)self2;
 - (id)_networkAttachmentDurableState;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)establishPartials:(id)a3 withFlag:(BOOL)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)establishPartials:(id)partials withFlag:(BOOL)flag;
 - (id)mapLOIToString;
-- (int)compareToSnapshot:(id)a3;
-- (int64_t)RTLocationOfInterestTypeForExtended:(int64_t)a3;
+- (int)compareToSnapshot:(id)snapshot;
+- (int64_t)RTLocationOfInterestTypeForExtended:(int64_t)extended;
 - (int64_t)getMatchingRTLocationOfInterestType;
-- (void)_retrieveLOIAttrsOnQueue:(id)a3 roamingEvent:(BOOL)a4 roamingAttrs:(int64_t)a5 reply:(id)a6;
+- (void)_retrieveLOIAttrsOnQueue:(id)queue roamingEvent:(BOOL)event roamingAttrs:(int64_t)attrs reply:(id)reply;
 - (void)dealloc;
-- (void)refreshLOIOnQueue:(id)a3 reply:(id)a4;
+- (void)refreshLOIOnQueue:(id)queue reply:(id)reply;
 - (void)reportAdminDisable;
 - (void)reportCaptivityRedirect;
 - (void)reportCertError;
 - (void)reportDataStall;
 - (void)retire;
-- (void)setDefRoute4:(__NStatSource *)a3;
-- (void)setDefRoute6:(__NStatSource *)a3;
-- (void)setLoi:(int64_t)a3;
+- (void)setDefRoute4:(__NStatSource *)route4;
+- (void)setDefRoute6:(__NStatSource *)route6;
+- (void)setLoi:(int64_t)loi;
 - (void)unloadDurableState;
-- (void)updateMetrics:(id)a3 source:(__NStatSource *)a4 wasProgress:(id)a5;
+- (void)updateMetrics:(id)metrics source:(__NStatSource *)source wasProgress:(id)progress;
 @end
 
 @implementation NetworkEpoch
@@ -46,9 +46,9 @@
   durable = self->_durable;
   if (!durable)
   {
-    v4 = [(NetworkEpoch *)self _networkAttachmentDurableState];
+    _networkAttachmentDurableState = [(NetworkEpoch *)self _networkAttachmentDurableState];
     v5 = self->_durable;
-    self->_durable = v4;
+    self->_durable = _networkAttachmentDurableState;
 
     durable = self->_durable;
   }
@@ -81,11 +81,11 @@
 - (SFLiveRoutePerf)currentLiveRoutePerf
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   if (self->currentLiveRoutePerfObjectID)
   {
-    v4 = [(AnalyticsWorkspace *)self->workspace mainObjectContext];
-    v5 = [v4 objectWithID:self->currentLiveRoutePerfObjectID];
+    mainObjectContext = [(AnalyticsWorkspace *)self->workspace mainObjectContext];
+    v5 = [mainObjectContext objectWithID:self->currentLiveRoutePerfObjectID];
 
     if ([v5 isFault])
     {
@@ -95,7 +95,7 @@
     else
     {
       v6 = v5;
-      if ([(NetworkEpoch *)self _isLiveRoutePerfinScope:v6 forTime:v3])
+      if ([(NetworkEpoch *)self _isLiveRoutePerfinScope:v6 forTime:date])
       {
         goto LABEL_26;
       }
@@ -106,12 +106,12 @@
     {
       currentLiveRoutePerfObjectID = self->currentLiveRoutePerfObjectID;
       v9 = v7;
-      v10 = [(NSManagedObjectID *)currentLiveRoutePerfObjectID URIRepresentation];
+      uRIRepresentation = [(NSManagedObjectID *)currentLiveRoutePerfObjectID URIRepresentation];
       durable = self->_durable;
       *buf = 134218498;
-      v43 = self;
+      selfCopy2 = self;
       v44 = 2112;
-      v45 = v10;
+      v45 = uRIRepresentation;
       v46 = 2048;
       v47 = durable;
       _os_log_impl(&dword_23255B000, v9, OS_LOG_TYPE_DEFAULT, "%p failure to fetch %@, recovering, durable: %p", buf, 0x20u);
@@ -127,10 +127,10 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v12 = [(NetworkEpoch *)self durable];
-  v13 = [v12 hasDefaultRoute];
+  durable = [(NetworkEpoch *)self durable];
+  hasDefaultRoute = [durable hasDefaultRoute];
 
-  v14 = [v13 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  v14 = [hasDefaultRoute countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v14)
   {
     v15 = v14;
@@ -141,11 +141,11 @@
       {
         if (*v38 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(hasDefaultRoute);
         }
 
         v18 = *(*(&v37 + 1) + 8 * i);
-        if ([(NetworkEpoch *)self _isLiveRoutePerfinScope:v18 forTime:v3])
+        if ([(NetworkEpoch *)self _isLiveRoutePerfinScope:v18 forTime:date])
         {
           v19 = v18;
 
@@ -154,7 +154,7 @@
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v15 = [hasDefaultRoute countByEnumeratingWithState:&v37 objects:v41 count:16];
       if (v15)
       {
         continue;
@@ -169,15 +169,15 @@ LABEL_19:
   if (!v6)
   {
     naspace = self->naspace;
-    v21 = [MEMORY[0x277D6B5A0] entityName];
-    v6 = [(NetworkAttachmentAnalytics *)naspace createEntityForEntityName:v21];
+    entityName = [MEMORY[0x277D6B5A0] entityName];
+    v6 = [(NetworkAttachmentAnalytics *)naspace createEntityForEntityName:entityName];
 
     [v6 setEpochs:0.0];
-    v22 = [(NetworkEpoch *)self durable];
-    v23 = [v22 kind];
-    [v6 setKind:{objc_msgSend(v23, "shortValue")}];
+    durable2 = [(NetworkEpoch *)self durable];
+    kind = [durable2 kind];
+    [v6 setKind:{objc_msgSend(kind, "shortValue")}];
 
-    v24 = [DateRounder roundToDayResolutionOnly:v3];
+    v24 = [DateRounder roundToDayResolutionOnly:date];
     [v6 setTimeStamp:v24];
 
     [v6 setRttMin:1.79769313e308];
@@ -186,32 +186,32 @@ LABEL_19:
     {
       identifier = self->identifier;
       *buf = 134218243;
-      v43 = self;
+      selfCopy2 = self;
       v44 = 2113;
       v45 = identifier;
       _os_log_impl(&dword_23255B000, v25, OS_LOG_TYPE_INFO, "%p creating a new lrp for %{private}@", buf, 0x16u);
     }
 
-    v27 = [(NetworkEpoch *)self durable];
-    [v27 addHasDefaultRouteObject:v6];
+    durable3 = [(NetworkEpoch *)self durable];
+    [durable3 addHasDefaultRouteObject:v6];
 
-    v28 = [(NetworkEpoch *)self durable];
-    v29 = [v28 hasDefaultRoute];
-    v30 = [v29 count];
+    durable4 = [(NetworkEpoch *)self durable];
+    hasDefaultRoute2 = [durable4 hasDefaultRoute];
+    v30 = [hasDefaultRoute2 count];
 
     if (v30 == 1)
     {
-      v31 = [v6 timeStamp];
-      v32 = [(NetworkEpoch *)self durable];
-      [v32 setFirstTimeStamp:v31];
+      timeStamp = [v6 timeStamp];
+      durable5 = [(NetworkEpoch *)self durable];
+      [durable5 setFirstTimeStamp:timeStamp];
     }
 
     [(AnalyticsWorkspace *)self->workspace save];
   }
 
-  v33 = [v6 objectID];
+  objectID = [v6 objectID];
   v34 = self->currentLiveRoutePerfObjectID;
-  self->currentLiveRoutePerfObjectID = v33;
+  self->currentLiveRoutePerfObjectID = objectID;
 
   v6 = v6;
 LABEL_26:
@@ -221,14 +221,14 @@ LABEL_26:
   return v6;
 }
 
-- (id)_initWithPrimaryKey:(id)a3 interfaceName:(id)a4 isCell:(BOOL)a5 maxBars:(int)a6 roamingEvent:(BOOL)a7 roamingAttrs:(int64_t)a8 supportsIPv4:(BOOL)a9 supportsIPv6:(BOOL)a10 inWorkspace:(id)a11 andQueue:(id)a12
+- (id)_initWithPrimaryKey:(id)key interfaceName:(id)name isCell:(BOOL)cell maxBars:(int)bars roamingEvent:(BOOL)event roamingAttrs:(int64_t)attrs supportsIPv4:(BOOL)pv4 supportsIPv6:(BOOL)self0 inWorkspace:(id)self1 andQueue:(id)self2
 {
-  v68 = a7;
+  eventCopy = event;
   v79 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v69 = a4;
-  v18 = a11;
-  v19 = a12;
+  keyCopy = key;
+  nameCopy = name;
+  workspaceCopy = workspace;
+  queueCopy = queue;
   v72.receiver = self;
   v72.super_class = NetworkEpoch;
   v20 = [(NetworkEpoch *)&v72 init];
@@ -239,9 +239,9 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (v17)
+  if (keyCopy)
   {
-    v21 = [objc_alloc(MEMORY[0x277D6B538]) initWithWorkspace:v18 withCache:0];
+    v21 = [objc_alloc(MEMORY[0x277D6B538]) initWithWorkspace:workspaceCopy withCache:0];
     naspace = v20->naspace;
     v20->naspace = v21;
 
@@ -272,16 +272,16 @@ LABEL_30:
             if (v20->_hasGW)
             {
               v20->_active = 1;
-              v31 = [MEMORY[0x277CBEAA8] date];
+              date = [MEMORY[0x277CBEAA8] date];
               createdAt = v20->createdAt;
-              v20->createdAt = v31;
+              v20->createdAt = date;
 
-              objc_storeStrong(&v20->identifier, a3);
-              objc_storeStrong(&v20->_interfaceName, a4);
-              v20->_oncell = a5;
-              v20->fromRoamingEvent = v68;
-              objc_storeStrong(&v20->workspace, a11);
-              v20->_bars = a6;
+              objc_storeStrong(&v20->identifier, key);
+              objc_storeStrong(&v20->_interfaceName, name);
+              v20->_oncell = cell;
+              v20->fromRoamingEvent = eventCopy;
+              objc_storeStrong(&v20->workspace, workspace);
+              v20->_bars = bars;
               v33 = objc_alloc_init(StopWatch);
               overall = v20->_overall;
               v20->_overall = v33;
@@ -299,11 +299,11 @@ LABEL_30:
               fatal = v20->_fatal;
               v20->_fatal = v39;
 
-              v20->_supportsIPv4 = a9;
-              v20->_supportsIPv6 = a10;
-              v41 = [(NetworkEpoch *)v20 _networkAttachmentDurableState];
+              v20->_supportsIPv4 = pv4;
+              v20->_supportsIPv6 = pv6;
+              _networkAttachmentDurableState = [(NetworkEpoch *)v20 _networkAttachmentDurableState];
               durable = v20->_durable;
-              v20->_durable = v41;
+              v20->_durable = _networkAttachmentDurableState;
 
               if (v20->_durable)
               {
@@ -317,10 +317,10 @@ LABEL_30:
                   {
                     v45 = v20->_durable;
                     v46 = v44;
-                    v47 = [(SFNetworkAttachment *)v45 isHotSpot];
+                    isHotSpot = [(SFNetworkAttachment *)v45 isHotSpot];
                     v48 = "NO";
                     identifier = v20->identifier;
-                    if (v47)
+                    if (isHotSpot)
                     {
                       v48 = "YES";
                     }
@@ -332,8 +332,8 @@ LABEL_30:
                     _os_log_impl(&dword_23255B000, v46, OS_LOG_TYPE_INFO, "Set hotspot %s for: %{private}@", buf, 0x16u);
                   }
 
-                  v50 = [(SFNetworkAttachment *)v20->_durable netSignature];
-                  if (!v50 || (v51 = v50, [(SFNetworkAttachment *)v20->_durable netSignature], v52 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v52, v51, (isKindOfClass & 1) != 0))
+                  netSignature = [(SFNetworkAttachment *)v20->_durable netSignature];
+                  if (!netSignature || (v51 = netSignature, [(SFNetworkAttachment *)v20->_durable netSignature], v52 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v52, v51, (isKindOfClass & 1) != 0))
                   {
                     if (v20->_supportsIPv4)
                     {
@@ -352,8 +352,8 @@ LABEL_30:
                     }
                   }
 
-                  v57 = [(SFNetworkAttachment *)v20->_durable netSignatureV6];
-                  if (!v57 || (v58 = v57, [(SFNetworkAttachment *)v20->_durable netSignatureV6], v59 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v60 = objc_opt_isKindOfClass(), v59, v58, (v60 & 1) != 0))
+                  netSignatureV6 = [(SFNetworkAttachment *)v20->_durable netSignatureV6];
+                  if (!netSignatureV6 || (v58 = netSignatureV6, [(SFNetworkAttachment *)v20->_durable netSignatureV6], v59 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v60 = objc_opt_isKindOfClass(), v59, v58, (v60 & 1) != 0))
                   {
                     if (v20->_supportsIPv6)
                     {
@@ -380,7 +380,7 @@ LABEL_30:
                 v70[3] = &unk_27898E068;
                 v63 = v20;
                 v71 = v63;
-                [(NetworkEpoch *)v63 _retrieveLOIAttrsOnQueue:v19 roamingEvent:v68 roamingAttrs:a8 reply:v70];
+                [(NetworkEpoch *)v63 _retrieveLOIAttrsOnQueue:queueCopy roamingEvent:eventCopy roamingAttrs:attrs reply:v70];
                 v63->_seqno = ++epoch_count;
                 v64 = netepochsLogHandle;
                 if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -388,7 +388,7 @@ LABEL_30:
                   *buf = 134218499;
                   v74 = v63;
                   v75 = 2113;
-                  v76 = v17;
+                  v76 = keyCopy;
                   v77 = 1024;
                   v78 = epoch_count;
                   _os_log_impl(&dword_23255B000, v64, OS_LOG_TYPE_DEFAULT, "%p created epoch for %{private}@, total epochs=%d", buf, 0x1Cu);
@@ -451,17 +451,17 @@ uint64_t __138__NetworkEpoch__initWithPrimaryKey_interfaceName_isCell_maxBars_ro
   return result;
 }
 
-- (void)refreshLOIOnQueue:(id)a3 reply:(id)a4
+- (void)refreshLOIOnQueue:(id)queue reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__NetworkEpoch_refreshLOIOnQueue_reply___block_invoke;
   v8[3] = &unk_27898E090;
   v8[4] = self;
-  v9 = v6;
-  v7 = v6;
-  [(NetworkEpoch *)self _retrieveLOIAttrsOnQueue:a3 roamingEvent:0 roamingAttrs:259 reply:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [(NetworkEpoch *)self _retrieveLOIAttrsOnQueue:queue roamingEvent:0 roamingAttrs:259 reply:v8];
 }
 
 uint64_t __40__NetworkEpoch_refreshLOIOnQueue_reply___block_invoke(uint64_t a1, uint64_t a2)
@@ -483,26 +483,26 @@ uint64_t __40__NetworkEpoch_refreshLOIOnQueue_reply___block_invoke(uint64_t a1, 
   return result;
 }
 
-- (void)_retrieveLOIAttrsOnQueue:(id)a3 roamingEvent:(BOOL)a4 roamingAttrs:(int64_t)a5 reply:(id)a6
+- (void)_retrieveLOIAttrsOnQueue:(id)queue roamingEvent:(BOOL)event roamingAttrs:(int64_t)attrs reply:(id)reply
 {
   v61 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a6;
-  v12 = [(SFNetworkAttachment *)self->_durable attrs];
-  v13 = [v12 integerValue];
+  queueCopy = queue;
+  replyCopy = reply;
+  attrs = [(SFNetworkAttachment *)self->_durable attrs];
+  integerValue = [attrs integerValue];
 
-  if ((v13 - 262) > 0xFFFFFFFFFFFFFFFDLL)
+  if ((integerValue - 262) > 0xFFFFFFFFFFFFFFFDLL)
   {
-    [(NetworkEpoch *)self setLoi:v13];
-    if (v10 && v11)
+    [(NetworkEpoch *)self setLoi:integerValue];
+    if (queueCopy && replyCopy)
     {
       v43[0] = MEMORY[0x277D85DD0];
       v43[1] = 3221225472;
       v43[2] = __73__NetworkEpoch__retrieveLOIAttrsOnQueue_roamingEvent_roamingAttrs_reply___block_invoke_2;
       v43[3] = &unk_27898B678;
       v43[4] = self;
-      v44 = v11;
-      dispatch_async(v10, v43);
+      v44 = replyCopy;
+      dispatch_async(queueCopy, v43);
     }
 
     v18 = netepochsLogHandle;
@@ -514,7 +514,7 @@ uint64_t __40__NetworkEpoch_refreshLOIOnQueue_reply___block_invoke(uint64_t a1, 
       *buf = 138478083;
       v58 = identifier;
       v59 = 2048;
-      v60 = v21;
+      attrsCopy = v21;
       _os_log_impl(&dword_23255B000, v20, OS_LOG_TYPE_DEFAULT, "LOI: epoch with primary key = %{private}@ inherits persisted value (loi=%ld)", buf, 0x16u);
     }
 
@@ -522,7 +522,7 @@ uint64_t __40__NetworkEpoch_refreshLOIOnQueue_reply___block_invoke(uint64_t a1, 
   }
 
   oncell = self->_oncell;
-  if (!a4)
+  if (!event)
   {
     if (!self->_oncell)
     {
@@ -534,7 +534,7 @@ LABEL_27:
         *buf = 138478083;
         v58 = v34;
         v59 = 2048;
-        v60 = v13;
+        attrsCopy = integerValue;
         _os_log_impl(&dword_23255B000, v33, OS_LOG_TYPE_DEFAULT, "LOI: slow path for epoch w/ primary key = %{private}@, old LOI = %ld", buf, 0x16u);
       }
 
@@ -544,8 +544,8 @@ LABEL_27:
       v45[2] = __73__NetworkEpoch__retrieveLOIAttrsOnQueue_roamingEvent_roamingAttrs_reply___block_invoke_21;
       v45[3] = &unk_27898E0B8;
       v45[4] = self;
-      v47 = v11;
-      v46 = v10;
+      v47 = replyCopy;
+      v46 = queueCopy;
       [v35 fetchCurrentLocationLOIOnQueue:v46 desiredAccuracy:v45 reply:1000.0];
 
       v17 = v47;
@@ -553,7 +553,7 @@ LABEL_27:
     }
 
 LABEL_15:
-    v42 = v10;
+    v42 = queueCopy;
     +[NetworkAnalyticsEngine concurrentEpochs];
     v50 = 0u;
     v51 = 0u;
@@ -576,9 +576,9 @@ LABEL_15:
           v27 = *(*(&v50 + 1) + 8 * i);
           if (([v27 oncell] & 1) == 0)
           {
-            v28 = [v27 durable];
-            v29 = [v28 attrs];
-            v30 = [v29 integerValue];
+            durable = [v27 durable];
+            attrs2 = [durable attrs];
+            integerValue2 = [attrs2 integerValue];
 
             v31 = netepochsLogHandle;
             if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -587,13 +587,13 @@ LABEL_15:
               *buf = 138478083;
               v58 = v32;
               v59 = 2048;
-              v60 = v30;
+              attrsCopy = integerValue2;
               _os_log_impl(&dword_23255B000, v31, OS_LOG_TYPE_DEFAULT, "LOI: Cell, found LOI from concurrent epoch with primary key = %{private}@, LOI = %ld", buf, 0x16u);
             }
 
-            if ((v30 & 0xFFFFFFFFFFFFFFFELL) == 0x104)
+            if ((integerValue2 & 0xFFFFFFFFFFFFFFFELL) == 0x104)
             {
-              [(NetworkEpoch *)self setLoi:v30];
+              [(NetworkEpoch *)self setLoi:integerValue2];
 
               v36 = netepochsLogHandle;
               if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -604,12 +604,12 @@ LABEL_15:
                 *buf = 138478083;
                 v58 = v37;
                 v59 = 2048;
-                v60 = v39;
+                attrsCopy = v39;
                 _os_log_impl(&dword_23255B000, v38, OS_LOG_TYPE_DEFAULT, "LOI: Cell, adopted LOI from concurrent epoch with primary key = %{private}@, LOI = %ld", buf, 0x16u);
               }
 
-              v11 = v41;
-              v10 = v42;
+              replyCopy = v41;
+              queueCopy = v42;
               if (v42 && v41)
               {
                 v48[0] = MEMORY[0x277D85DD0];
@@ -636,8 +636,8 @@ LABEL_15:
       }
     }
 
-    v11 = v41;
-    v10 = v42;
+    replyCopy = v41;
+    queueCopy = v42;
     goto LABEL_27;
   }
 
@@ -653,20 +653,20 @@ LABEL_15:
     *buf = 138478083;
     v58 = v16;
     v59 = 2048;
-    v60 = a5;
+    attrsCopy = attrs;
     _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEFAULT, "LOI: WiFi roaming, setting LOI from retired epoch for NA with primary key = %{private}@, old LOI = %ld", buf, 0x16u);
   }
 
-  [(NetworkEpoch *)self setLoi:a5];
-  if (v10 && v11)
+  [(NetworkEpoch *)self setLoi:attrs];
+  if (queueCopy && replyCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__NetworkEpoch__retrieveLOIAttrsOnQueue_roamingEvent_roamingAttrs_reply___block_invoke;
     block[3] = &unk_27898B678;
     block[4] = self;
-    v55 = v11;
-    dispatch_async(v10, block);
+    v55 = replyCopy;
+    dispatch_async(queueCopy, block);
     v17 = v55;
 LABEL_30:
   }
@@ -907,9 +907,9 @@ uint64_t __73__NetworkEpoch__retrieveLOIAttrsOnQueue_roamingEvent_roamingAttrs_r
   if (v2)
   {
     v2->isSnapshot = 1;
-    v4 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     createdAt = v3->createdAt;
-    v3->createdAt = v4;
+    v3->createdAt = date;
 
     v3->_seqno = ++epoch_count;
   }
@@ -943,7 +943,7 @@ uint64_t __73__NetworkEpoch__retrieveLOIAttrsOnQueue_roamingEvent_roamingAttrs_r
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v10 = self;
+    selfCopy = self;
     v11 = 1024;
     v12 = epoch_count;
     _os_log_impl(&dword_23255B000, v6, OS_LOG_TYPE_DEFAULT, "%p collecting epoch, total epochs=%u", buf, 0x12u);
@@ -955,18 +955,18 @@ uint64_t __73__NetworkEpoch__retrieveLOIAttrsOnQueue_roamingEvent_roamingAttrs_r
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setLoi:(int64_t)a3
+- (void)setLoi:(int64_t)loi
 {
   v24 = *MEMORY[0x277D85DE8];
   loi = self->_loi;
-  self->_loi = a3;
+  self->_loi = loi;
   if (self->_oncell)
   {
-    v5 = [(SFNetworkAttachment *)self->_durable netSignature];
-    if (v5)
+    netSignature = [(SFNetworkAttachment *)self->_durable netSignature];
+    if (netSignature)
     {
-      v6 = v5;
-      v7 = [(SFNetworkAttachment *)self->_durable netSignature];
+      v6 = netSignature;
+      netSignature2 = [(SFNetworkAttachment *)self->_durable netSignature];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -983,26 +983,26 @@ uint64_t __73__NetworkEpoch__retrieveLOIAttrsOnQueue_roamingEvent_roamingAttrs_r
       }
     }
 
-    v9 = [(NetworkEpoch *)self _createCellSignature];
-    v10 = [(NetworkEpoch *)self durable];
-    [v10 setNetSignature:v9];
+    _createCellSignature = [(NetworkEpoch *)self _createCellSignature];
+    durable = [(NetworkEpoch *)self durable];
+    [durable setNetSignature:_createCellSignature];
 
-    v11 = [(NetworkEpoch *)self durable];
-    v12 = [v11 netSignature];
-    v13 = [(NetworkEpoch *)self durable];
-    [v13 setNetSignatureV6:v12];
+    durable2 = [(NetworkEpoch *)self durable];
+    netSignature3 = [durable2 netSignature];
+    durable3 = [(NetworkEpoch *)self durable];
+    [durable3 setNetSignatureV6:netSignature3];
 
     v14 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
     {
       identifier = self->identifier;
       v16 = v14;
-      v17 = [(NetworkEpoch *)self durable];
-      v18 = [v17 netSignature];
+      durable4 = [(NetworkEpoch *)self durable];
+      netSignature4 = [durable4 netSignature];
       v20 = 138478083;
       v21 = identifier;
       v22 = 2112;
-      v23 = v18;
+      v23 = netSignature4;
       _os_log_impl(&dword_23255B000, v16, OS_LOG_TYPE_INFO, "Set both IPv4 and IPv6 signature for: %{private}@, sig: %@", &v20, 0x16u);
     }
   }
@@ -1021,8 +1021,8 @@ LABEL_8:
   if (v4)
   {
     v6 = MEMORY[0x277CCACA8];
-    v7 = [(NetworkEpoch *)self mapLOIToString];
-    v8 = [v6 stringWithFormat:@"%@-%@", v5, v7];
+    mapLOIToString = [(NetworkEpoch *)self mapLOIToString];
+    v8 = [v6 stringWithFormat:@"%@-%@", v5, mapLOIToString];
 
     v9 = [NetworkAnalyticsEngine hashPrimaryKey:v8];
     if ([v9 isEqualToString:@"HASH-FAILED"])
@@ -1068,39 +1068,39 @@ LABEL_8:
   return v13;
 }
 
-- (void)setDefRoute4:(__NStatSource *)a3
+- (void)setDefRoute4:(__NStatSource *)route4
 {
-  self->_defRoute4 = a3;
-  if (a3)
+  self->_defRoute4 = route4;
+  if (route4)
   {
-    MEMORY[0x238386EB0](a3, a2);
+    MEMORY[0x238386EB0](route4, a2);
 
     JUMPOUT(0x238386EA0);
   }
 }
 
-- (void)setDefRoute6:(__NStatSource *)a3
+- (void)setDefRoute6:(__NStatSource *)route6
 {
-  self->_defRoute6 = a3;
-  if (a3)
+  self->_defRoute6 = route6;
+  if (route6)
   {
-    MEMORY[0x238386EB0](a3, a2);
+    MEMORY[0x238386EB0](route6, a2);
 
     JUMPOUT(0x238386EA0);
   }
 }
 
-- (BOOL)createCountDown:(id)a3 atTime:(id)a4 nextTick:(unint64_t)a5 ticksTotal:(unint64_t)a6 onQueue:(id)a7 withIterationBlock:(id)a8 completionBlock:(id)a9
+- (BOOL)createCountDown:(id)down atTime:(id)time nextTick:(unint64_t)tick ticksTotal:(unint64_t)total onQueue:(id)queue withIterationBlock:(id)block completionBlock:(id)completionBlock
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  downCopy = down;
+  timeCopy = time;
+  queueCopy = queue;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
   LOBYTE(v20) = 0;
-  if (v15 && self->_active)
+  if (downCopy && self->_active)
   {
-    v21 = [(NSMutableDictionary *)self->tickers objectForKeyedSubscript:v15];
+    v21 = [(NSMutableDictionary *)self->tickers objectForKeyedSubscript:downCopy];
 
     if (v21)
     {
@@ -1114,9 +1114,9 @@ LABEL_8:
       v20 = v22 != 0;
       if (v22)
       {
-        [(CountDown *)v22 goOffNext:a5 fromTime:v16 forEpoch:self timesTotal:a6 onQueue:v17 withIterationBlock:v18 completionBlock:v19];
-        [(NSMutableDictionary *)self->tickers setObject:v23 forKeyedSubscript:v15];
-        [(NetworkEpoch *)self setLastCountedDown:v16];
+        [(CountDown *)v22 goOffNext:tick fromTime:timeCopy forEpoch:self timesTotal:total onQueue:queueCopy withIterationBlock:blockCopy completionBlock:completionBlockCopy];
+        [(NSMutableDictionary *)self->tickers setObject:v23 forKeyedSubscript:downCopy];
+        [(NetworkEpoch *)self setLastCountedDown:timeCopy];
       }
     }
   }
@@ -1124,19 +1124,19 @@ LABEL_8:
   return v20;
 }
 
-- (BOOL)countDownStop:(id)a3 eventTimeStamp:(id)a4
+- (BOOL)countDownStop:(id)stop eventTimeStamp:(id)stamp
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->tickers objectForKeyedSubscript:v6];
+  stopCopy = stop;
+  stampCopy = stamp;
+  v8 = [(NSMutableDictionary *)self->tickers objectForKeyedSubscript:stopCopy];
   v9 = v8;
   if (v8)
   {
-    if (v7)
+    if (stampCopy)
     {
-      v10 = [v8 startTime];
-      [v7 timeIntervalSinceDate:v10];
+      startTime = [v8 startTime];
+      [stampCopy timeIntervalSinceDate:startTime];
       v12 = v11;
 
       v13 = netepochsLogHandle;
@@ -1146,13 +1146,13 @@ LABEL_8:
         if (v14)
         {
           v15 = v13;
-          v16 = [(NetworkEpoch *)self interfaceName];
-          v17 = [v9 startTime];
-          [v7 timeIntervalSinceDate:v17];
+          interfaceName = [(NetworkEpoch *)self interfaceName];
+          startTime2 = [v9 startTime];
+          [stampCopy timeIntervalSinceDate:startTime2];
           v27 = 138412802;
-          v28 = v16;
+          v28 = interfaceName;
           v29 = 2112;
-          v30 = v6;
+          v30 = stopCopy;
           v31 = 2048;
           v32 = v18;
           _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEFAULT, "no stop on %@ for %@ because the event timeStamp doesn't qualify: %f", &v27, 0x20u);
@@ -1167,13 +1167,13 @@ LABEL_8:
       if (v14)
       {
         v21 = v13;
-        v22 = [(NetworkEpoch *)self interfaceName];
-        v23 = [v9 startTime];
-        [v7 timeIntervalSinceDate:v23];
+        interfaceName2 = [(NetworkEpoch *)self interfaceName];
+        startTime3 = [v9 startTime];
+        [stampCopy timeIntervalSinceDate:startTime3];
         v27 = 138412802;
-        v28 = v22;
+        v28 = interfaceName2;
         v29 = 2112;
-        v30 = v6;
+        v30 = stopCopy;
         v31 = 2048;
         v32 = v24;
         _os_log_impl(&dword_23255B000, v21, OS_LOG_TYPE_DEFAULT, "stop on %@ for %@ because the event timeStamp qualify: %f", &v27, 0x20u);
@@ -1181,7 +1181,7 @@ LABEL_8:
     }
 
     [v9 stop];
-    [(NSMutableDictionary *)self->tickers removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->tickers removeObjectForKey:stopCopy];
     v20 = 1;
     goto LABEL_13;
   }
@@ -1190,11 +1190,11 @@ LABEL_8:
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
   {
     v15 = v19;
-    v16 = [(NetworkEpoch *)self interfaceName];
+    interfaceName = [(NetworkEpoch *)self interfaceName];
     v27 = 138412546;
-    v28 = v16;
+    v28 = interfaceName;
     v29 = 2112;
-    v30 = v6;
+    v30 = stopCopy;
     _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_INFO, "no stop on %@ for %@ because the ticker was not found", &v27, 0x16u);
     goto LABEL_8;
   }
@@ -1207,9 +1207,9 @@ LABEL_13:
   return v20;
 }
 
-- (BOOL)hasCountDownActive:(id)a3
+- (BOOL)hasCountDownActive:(id)active
 {
-  v3 = [(NSMutableDictionary *)self->tickers objectForKeyedSubscript:a3];
+  v3 = [(NSMutableDictionary *)self->tickers objectForKeyedSubscript:active];
   v4 = v3 != 0;
 
   return v4;
@@ -1218,19 +1218,19 @@ LABEL_13:
 - (BOOL)hasTypicalShortStay
 {
   v24 = *MEMORY[0x277D85DE8];
-  v2 = [(NetworkEpoch *)self durable];
-  v3 = v2;
-  if (!v2)
+  durable = [(NetworkEpoch *)self durable];
+  v3 = durable;
+  if (!durable)
   {
     goto LABEL_9;
   }
 
-  v4 = [v2 overallStayMean];
-  [v4 doubleValue];
+  overallStayMean = [durable overallStayMean];
+  [overallStayMean doubleValue];
   v6 = v5;
 
-  v7 = [v3 overallStayVar];
-  [v7 doubleValue];
+  overallStayVar = [v3 overallStayVar];
+  [overallStayVar doubleValue];
   v9 = v8;
 
   v10 = v6 > 0.0 && v6 < 120.0;
@@ -1240,9 +1240,9 @@ LABEL_13:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v14 = v13;
-      v15 = [v3 identifier];
+      identifier = [v3 identifier];
       v18 = 138412802;
-      v19 = v15;
+      v19 = identifier;
       v20 = 2048;
       v21 = v6;
       v22 = 2048;
@@ -1263,11 +1263,11 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)_isLiveRoutePerfinScope:(id)a3 forTime:(id)a4
+- (BOOL)_isLiveRoutePerfinScope:(id)scope forTime:(id)time
 {
-  v5 = a4;
-  v6 = [a3 timeStamp];
-  [v6 timeIntervalSinceDate:v5];
+  timeCopy = time;
+  timeStamp = [scope timeStamp];
+  [timeStamp timeIntervalSinceDate:timeCopy];
   v8 = v7;
 
   v9 = v8;
@@ -1279,39 +1279,39 @@ LABEL_9:
   return v9 < 0x93A80;
 }
 
-- (id)establishPartials:(id)a3 withFlag:(BOOL)a4
+- (id)establishPartials:(id)partials withFlag:(BOOL)flag
 {
-  v4 = a4;
-  v6 = a3;
+  flagCopy = flag;
+  partialsCopy = partials;
   naspace = self->naspace;
-  v8 = [MEMORY[0x277D6B5A0] entityName];
-  v9 = [(NetworkAttachmentAnalytics *)naspace createTemporaryEntityForEntityName:v8];
+  entityName = [MEMORY[0x277D6B5A0] entityName];
+  v9 = [(NetworkAttachmentAnalytics *)naspace createTemporaryEntityForEntityName:entityName];
 
-  v10 = [MEMORY[0x277CBEAA8] date];
-  [v9 setTimeStamp:v10];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v9 setTimeStamp:date];
 
   v11 = self->naspace;
-  v12 = [MEMORY[0x277D6B5A8] entityName];
-  v13 = [(NetworkAttachmentAnalytics *)v11 createTemporaryEntityForEntityName:v12];
+  entityName2 = [MEMORY[0x277D6B5A8] entityName];
+  v13 = [(NetworkAttachmentAnalytics *)v11 createTemporaryEntityForEntityName:entityName2];
 
-  v14 = [(NetworkEpoch *)self durable];
-  v15 = [v14 identifier];
-  [v13 setIdentifier:v15];
+  durable = [(NetworkEpoch *)self durable];
+  identifier = [durable identifier];
+  [v13 setIdentifier:identifier];
 
   [v9 setHasNetworkAttachment:v13];
   v16 = 1.79769313e308;
-  if (self->fromRoamingEvent && !v4)
+  if (self->fromRoamingEvent && !flagCopy)
   {
-    [v9 setConnSuccesses:{objc_msgSend(v6, "connectSuccesses", 1.79769313e308)}];
-    [v9 setConnAttempts:{objc_msgSend(v6, "connectAttempts")}];
-    [v9 setPacketsIn:{objc_msgSend(v6, "rxPackets")}];
-    [v9 setPacketsOut:{objc_msgSend(v6, "txPackets")}];
-    [v9 setBytesIn:{objc_msgSend(v6, "rxBytes")}];
-    [v9 setBytesOut:{objc_msgSend(v6, "txBytes")}];
-    [v9 setRxDupeBytes:{objc_msgSend(v6, "rxDuplicateBytes")}];
-    [v9 setRxOOOBytes:{objc_msgSend(v6, "rxOutOfOrderBytes")}];
-    [v9 setReTxBytes:{objc_msgSend(v6, "txRetransmittedBytes")}];
-    [v6 rttMinimum];
+    [v9 setConnSuccesses:{objc_msgSend(partialsCopy, "connectSuccesses", 1.79769313e308)}];
+    [v9 setConnAttempts:{objc_msgSend(partialsCopy, "connectAttempts")}];
+    [v9 setPacketsIn:{objc_msgSend(partialsCopy, "rxPackets")}];
+    [v9 setPacketsOut:{objc_msgSend(partialsCopy, "txPackets")}];
+    [v9 setBytesIn:{objc_msgSend(partialsCopy, "rxBytes")}];
+    [v9 setBytesOut:{objc_msgSend(partialsCopy, "txBytes")}];
+    [v9 setRxDupeBytes:{objc_msgSend(partialsCopy, "rxDuplicateBytes")}];
+    [v9 setRxOOOBytes:{objc_msgSend(partialsCopy, "rxOutOfOrderBytes")}];
+    [v9 setReTxBytes:{objc_msgSend(partialsCopy, "txRetransmittedBytes")}];
+    [partialsCopy rttMinimum];
     if (v16 == 0.0)
     {
       v16 = 1.79769313e308;
@@ -1319,9 +1319,9 @@ LABEL_9:
   }
 
   [v9 setRttMin:v16];
-  if (v4)
+  if (flagCopy)
   {
-    [v6 rttAverage];
+    [partialsCopy rttAverage];
     if (v17 != 0.0)
     {
       v18 = netepochsLogHandle;
@@ -1331,9 +1331,9 @@ LABEL_9:
         _os_log_impl(&dword_23255B000, v18, OS_LOG_TYPE_DEFAULT, "Initializing rtt avg and rtt var", v22, 2u);
       }
 
-      [v6 rttAverage];
+      [partialsCopy rttAverage];
       self->_initialRttAvg = v19;
-      [v6 rttVariation];
+      [partialsCopy rttVariation];
       self->_initialRttVar = v20;
     }
   }
@@ -1341,20 +1341,20 @@ LABEL_9:
   return v9;
 }
 
-- (void)updateMetrics:(id)a3 source:(__NStatSource *)a4 wasProgress:(id)a5
+- (void)updateMetrics:(id)metrics source:(__NStatSource *)source wasProgress:(id)progress
 {
   v118 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if ([(NetworkEpoch *)self defRoute4]== a4 && !self->_partial4)
+  metricsCopy = metrics;
+  progressCopy = progress;
+  if ([(NetworkEpoch *)self defRoute4]== source && !self->_partial4)
   {
     v87 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v88 = v87;
-      v89 = [(NetworkEpoch *)self oncell];
+      oncell = [(NetworkEpoch *)self oncell];
       v90 = "wifi";
-      if (v89)
+      if (oncell)
       {
         v90 = "cell";
       }
@@ -1364,7 +1364,7 @@ LABEL_9:
       _os_log_impl(&dword_23255B000, v88, OS_LOG_TYPE_DEFAULT, "Establishing a partial for IPv4 on %s", v111, 0xCu);
     }
 
-    v91 = [(NetworkEpoch *)self establishPartials:v8 withFlag:0];
+    v91 = [(NetworkEpoch *)self establishPartials:metricsCopy withFlag:0];
     partial4 = self->_partial4;
     self->_partial4 = v91;
 
@@ -1380,9 +1380,9 @@ LABEL_9:
     }
 
     v94 = v93;
-    v95 = [(NetworkEpoch *)self oncell];
+    oncell2 = [(NetworkEpoch *)self oncell];
     v96 = "wifi";
-    if (v95)
+    if (oncell2)
     {
       v96 = "cell";
     }
@@ -1392,15 +1392,15 @@ LABEL_9:
     goto LABEL_82;
   }
 
-  if ([(NetworkEpoch *)self defRoute6]== a4 && !self->_partial6)
+  if ([(NetworkEpoch *)self defRoute6]== source && !self->_partial6)
   {
     v97 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v98 = v97;
-      v99 = [(NetworkEpoch *)self oncell];
+      oncell3 = [(NetworkEpoch *)self oncell];
       v100 = "wifi";
-      if (v99)
+      if (oncell3)
       {
         v100 = "cell";
       }
@@ -1410,7 +1410,7 @@ LABEL_9:
       _os_log_impl(&dword_23255B000, v98, OS_LOG_TYPE_DEFAULT, "Establishing a partial for IPv6 on %s", v111, 0xCu);
     }
 
-    v101 = [(NetworkEpoch *)self establishPartials:v8 withFlag:0];
+    v101 = [(NetworkEpoch *)self establishPartials:metricsCopy withFlag:0];
     partial6 = self->_partial6;
     self->_partial6 = v101;
 
@@ -1423,24 +1423,24 @@ LABEL_9:
     if (!os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
 LABEL_83:
-      v106 = [(NetworkEpoch *)self establishPartials:v8 withFlag:1, *v111];
+      v106 = [(NetworkEpoch *)self establishPartials:metricsCopy withFlag:1, *v111];
       partial = self->_partial;
       self->_partial = v106;
 
 LABEL_84:
-      v108 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
       lastBytesPartialUpdate = self->lastBytesPartialUpdate;
-      self->lastBytesPartialUpdate = v108;
+      self->lastBytesPartialUpdate = date;
 
 LABEL_85:
-      (*(v9 + 2))(v9, 0, 0);
+      (*(progressCopy + 2))(progressCopy, 0, 0);
       goto LABEL_86;
     }
 
     v94 = v103;
-    v104 = [(NetworkEpoch *)self oncell];
+    oncell4 = [(NetworkEpoch *)self oncell];
     v105 = "wifi";
-    if (v104)
+    if (oncell4)
     {
       v105 = "cell";
     }
@@ -1453,7 +1453,7 @@ LABEL_82:
     goto LABEL_83;
   }
 
-  if ([(NetworkEpoch *)self defRoute4]== a4)
+  if ([(NetworkEpoch *)self defRoute4]== source)
   {
     v11 = @"IPv4";
     v12 = 216;
@@ -1461,7 +1461,7 @@ LABEL_82:
 
   else
   {
-    if ([(NetworkEpoch *)self defRoute6]!= a4)
+    if ([(NetworkEpoch *)self defRoute6]!= source)
     {
       v10 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
@@ -1480,12 +1480,12 @@ LABEL_82:
   v13 = *(&self->super.isa + v12);
   if (self->_initialRttAvg == 0.0)
   {
-    [v8 rttAverage];
+    [metricsCopy rttAverage];
     if (v14 != 0.0)
     {
-      [v8 rttAverage];
+      [metricsCopy rttAverage];
       self->_initialRttAvg = v15;
-      [v8 rttVariation];
+      [metricsCopy rttVariation];
       self->_initialRttVar = v16;
     }
   }
@@ -1503,129 +1503,129 @@ LABEL_82:
     _os_log_impl(&dword_23255B000, v17, OS_LOG_TYPE_INFO, "comparing new %@ counts against partial, epoch: %@, active: %d", v111, 0x1Cu);
   }
 
-  v19 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  v20 = [v8 connectSuccesses];
+  currentLiveRoutePerf = [(NetworkEpoch *)self currentLiveRoutePerf];
+  connectSuccesses = [metricsCopy connectSuccesses];
   [v13 connSuccesses];
-  v22 = v20 - v21;
-  if (v20 - v21 > 0.0)
+  v22 = connectSuccesses - v21;
+  if (connectSuccesses - v21 > 0.0)
   {
-    [v19 connSuccesses];
-    [v19 setConnSuccesses:v22 + v23];
-    [v13 setConnSuccesses:v20];
+    [currentLiveRoutePerf connSuccesses];
+    [currentLiveRoutePerf setConnSuccesses:v22 + v23];
+    [v13 setConnSuccesses:connectSuccesses];
     [(SFLiveRoutePerf *)self->_partial connSuccesses];
     [(SFLiveRoutePerf *)self->_partial setConnSuccesses:v22 + v24];
   }
 
-  v25 = [v8 connectAttempts];
+  connectAttempts = [metricsCopy connectAttempts];
   [v13 connAttempts];
-  v27 = v25 - v26;
-  if (v25 - v26 > 0.0)
+  v27 = connectAttempts - v26;
+  if (connectAttempts - v26 > 0.0)
   {
-    [v19 connAttempts];
-    [v19 setConnAttempts:v27 + v28];
-    [v13 setConnAttempts:v25];
+    [currentLiveRoutePerf connAttempts];
+    [currentLiveRoutePerf setConnAttempts:v27 + v28];
+    [v13 setConnAttempts:connectAttempts];
     [(SFLiveRoutePerf *)self->_partial connAttempts];
     [(SFLiveRoutePerf *)self->_partial setConnAttempts:v27 + v29];
   }
 
-  v30 = [v8 rxPackets];
+  rxPackets = [metricsCopy rxPackets];
   [v13 packetsIn];
-  v32 = v30 - v31;
-  if (v30 - v31 > 0.0)
+  v32 = rxPackets - v31;
+  if (rxPackets - v31 > 0.0)
   {
-    [v19 packetsIn];
-    [v19 setPacketsIn:v32 + v33];
-    [v13 setPacketsIn:v30];
+    [currentLiveRoutePerf packetsIn];
+    [currentLiveRoutePerf setPacketsIn:v32 + v33];
+    [v13 setPacketsIn:rxPackets];
     [(SFLiveRoutePerf *)self->_partial packetsIn];
     [(SFLiveRoutePerf *)self->_partial setPacketsIn:v32 + v34];
   }
 
-  v35 = [v8 txPackets];
+  txPackets = [metricsCopy txPackets];
   [v13 packetsOut];
-  v37 = v35 - v36;
-  if (v35 - v36 > 0.0)
+  v37 = txPackets - v36;
+  if (txPackets - v36 > 0.0)
   {
-    [v19 packetsOut];
-    [v19 setPacketsOut:v37 + v38];
-    [v13 setPacketsOut:v35];
+    [currentLiveRoutePerf packetsOut];
+    [currentLiveRoutePerf setPacketsOut:v37 + v38];
+    [v13 setPacketsOut:txPackets];
     [(SFLiveRoutePerf *)self->_partial packetsOut];
     [(SFLiveRoutePerf *)self->_partial setPacketsOut:v37 + v39];
   }
 
-  v40 = [v8 rxBytes];
+  rxBytes = [metricsCopy rxBytes];
   [v13 bytesIn];
-  v42 = v40 - v41;
-  if (v40 - v41 > 0.0)
+  v42 = rxBytes - v41;
+  if (rxBytes - v41 > 0.0)
   {
-    [v19 bytesIn];
-    [v19 setBytesIn:v42 + v43];
-    [v13 setBytesIn:v40];
+    [currentLiveRoutePerf bytesIn];
+    [currentLiveRoutePerf setBytesIn:v42 + v43];
+    [v13 setBytesIn:rxBytes];
     [(SFLiveRoutePerf *)self->_partial bytesIn];
     [(SFLiveRoutePerf *)self->_partial setBytesIn:v42 + v44];
   }
 
-  v45 = [v8 txBytes];
+  txBytes = [metricsCopy txBytes];
   [v13 bytesOut];
-  v47 = v45 - v46;
-  if (v45 - v46 > 0.0)
+  v47 = txBytes - v46;
+  if (txBytes - v46 > 0.0)
   {
-    [v19 bytesOut];
-    [v19 setBytesOut:v47 + v48];
-    [v13 setBytesOut:v45];
+    [currentLiveRoutePerf bytesOut];
+    [currentLiveRoutePerf setBytesOut:v47 + v48];
+    [v13 setBytesOut:txBytes];
     [(SFLiveRoutePerf *)self->_partial bytesOut];
     [(SFLiveRoutePerf *)self->_partial setBytesOut:v47 + v49];
   }
 
-  v50 = [v8 rxDuplicateBytes];
+  rxDuplicateBytes = [metricsCopy rxDuplicateBytes];
   [v13 rxDupeBytes];
-  v52 = v50 - v51;
-  if (v50 - v51 > 0.0)
+  v52 = rxDuplicateBytes - v51;
+  if (rxDuplicateBytes - v51 > 0.0)
   {
-    [v19 rxDupeBytes];
-    [v19 setRxDupeBytes:v52 + v53];
-    [v13 setRxDupeBytes:v50];
+    [currentLiveRoutePerf rxDupeBytes];
+    [currentLiveRoutePerf setRxDupeBytes:v52 + v53];
+    [v13 setRxDupeBytes:rxDuplicateBytes];
     [(SFLiveRoutePerf *)self->_partial rxDupeBytes];
     [(SFLiveRoutePerf *)self->_partial setRxDupeBytes:v52 + v54];
   }
 
-  v55 = [v8 rxOutOfOrderBytes];
+  rxOutOfOrderBytes = [metricsCopy rxOutOfOrderBytes];
   [v13 rxOOOBytes];
-  v57 = v55 - v56;
-  if (v55 - v56 > 0.0)
+  v57 = rxOutOfOrderBytes - v56;
+  if (rxOutOfOrderBytes - v56 > 0.0)
   {
-    [v19 rxOOOBytes];
-    [v19 setRxOOOBytes:v57 + v58];
-    [v13 setRxOOOBytes:v55];
+    [currentLiveRoutePerf rxOOOBytes];
+    [currentLiveRoutePerf setRxOOOBytes:v57 + v58];
+    [v13 setRxOOOBytes:rxOutOfOrderBytes];
     [(SFLiveRoutePerf *)self->_partial rxOOOBytes];
     [(SFLiveRoutePerf *)self->_partial setRxOOOBytes:v57 + v59];
   }
 
-  v60 = [v8 txRetransmittedBytes];
+  txRetransmittedBytes = [metricsCopy txRetransmittedBytes];
   [v13 reTxBytes];
-  v62 = v60 - v61;
-  if (v60 - v61 > 0.0)
+  v62 = txRetransmittedBytes - v61;
+  if (txRetransmittedBytes - v61 > 0.0)
   {
-    [v19 reTxBytes];
-    [v19 setReTxBytes:v62 + v63];
-    [v13 setReTxBytes:v60];
+    [currentLiveRoutePerf reTxBytes];
+    [currentLiveRoutePerf setReTxBytes:v62 + v63];
+    [v13 setReTxBytes:txRetransmittedBytes];
     [(SFLiveRoutePerf *)self->_partial reTxBytes];
     [(SFLiveRoutePerf *)self->_partial setReTxBytes:v62 + v64];
   }
 
-  [v8 rttMinimum];
+  [metricsCopy rttMinimum];
   if (v65 != 0.0)
   {
     v66 = v65;
     [v13 rttMin];
     if (v66 < v67)
     {
-      [v19 rttMin];
+      [currentLiveRoutePerf rttMin];
       if (v68 >= v66)
       {
         v68 = v66;
       }
 
-      [v19 setRttMin:v68];
+      [currentLiveRoutePerf setRttMin:v68];
       [v13 setRttMin:v66];
       [(SFLiveRoutePerf *)self->_partial rttMin];
       if (v69 >= v66)
@@ -1637,25 +1637,25 @@ LABEL_82:
     }
   }
 
-  [v8 rttAverage];
+  [metricsCopy rttAverage];
   [v13 setRttAvg:?];
   [v13 rttAvg];
   [(SFLiveRoutePerf *)self->_partial setRttAvg:?];
-  [v8 rttVariation];
+  [metricsCopy rttVariation];
   [v13 setRttVar:?];
   [v13 rttVar];
   [(SFLiveRoutePerf *)self->_partial setRttVar:?];
   if (!self->_active)
   {
-    if ([(NetworkEpoch *)self defRoute4]== a4)
+    if ([(NetworkEpoch *)self defRoute4]== source)
     {
       v70 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
       {
         v71 = v70;
-        v72 = [(NetworkEpoch *)self defRoute4];
+        defRoute4 = [(NetworkEpoch *)self defRoute4];
         *v111 = 134217984;
-        *&v111[4] = v72;
+        *&v111[4] = defRoute4;
         _os_log_impl(&dword_23255B000, v71, OS_LOG_TYPE_INFO, "forcefully removing defroute4: %p", v111, 0xCu);
       }
 
@@ -1664,15 +1664,15 @@ LABEL_82:
       [(NetworkEpoch *)self setDefRoute4:0];
     }
 
-    if ([(NetworkEpoch *)self defRoute6]== a4)
+    if ([(NetworkEpoch *)self defRoute6]== source)
     {
       v73 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_INFO))
       {
         v74 = v73;
-        v75 = [(NetworkEpoch *)self defRoute6];
+        defRoute6 = [(NetworkEpoch *)self defRoute6];
         *v111 = 134217984;
-        *&v111[4] = v75;
+        *&v111[4] = defRoute6;
         _os_log_impl(&dword_23255B000, v74, OS_LOG_TYPE_INFO, "forcefully removing defroute6: %p", v111, 0xCu);
       }
 
@@ -1687,9 +1687,9 @@ LABEL_82:
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v77 = v76;
-        v78 = [(NetworkEpoch *)self primaryKey];
+        primaryKey = [(NetworkEpoch *)self primaryKey];
         *v111 = 138477827;
-        *&v111[4] = v78;
+        *&v111[4] = primaryKey;
         _os_log_impl(&dword_23255B000, v77, OS_LOG_TYPE_DEFAULT, "persisting data for %{private}@", v111, 0xCu);
       }
 
@@ -1701,21 +1701,21 @@ LABEL_82:
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v80 = v79;
-    v81 = [(NetworkEpoch *)self interfaceName];
-    v82 = [(NetworkEpoch *)self primaryKey];
-    v83 = v82;
+    interfaceName = [(NetworkEpoch *)self interfaceName];
+    primaryKey2 = [(NetworkEpoch *)self primaryKey];
+    v83 = primaryKey2;
     v84 = "below";
     *v111 = 138413315;
     *&v111[4] = v11;
     *&v111[12] = 2112;
-    *&v111[14] = v81;
+    *&v111[14] = interfaceName;
     if (v42 > 10240.0)
     {
       v84 = "above";
     }
 
     v112 = 2113;
-    v113 = v82;
+    v113 = primaryKey2;
     v114 = 2048;
     v115 = v42;
     v116 = 2080;
@@ -1723,12 +1723,12 @@ LABEL_82:
     _os_log_impl(&dword_23255B000, v80, OS_LOG_TYPE_DEFAULT, "%@ progress on %@ for %{private}@: deltaBytesIn: %llu is %s threshold", v111, 0x34u);
   }
 
-  (*(v9 + 2))(v9, v42 > 10240.0, self->lastBytesPartialUpdate);
+  (*(progressCopy + 2))(progressCopy, v42 > 10240.0, self->lastBytesPartialUpdate);
   if (v42 != 0.0)
   {
-    v85 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
     v86 = self->lastBytesPartialUpdate;
-    self->lastBytesPartialUpdate = v85;
+    self->lastBytesPartialUpdate = date2;
   }
 
 LABEL_86:
@@ -1737,75 +1737,75 @@ LABEL_86:
 
 - (void)reportDataStall
 {
-  v3 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  [v3 dataStalls];
+  currentLiveRoutePerf = [(NetworkEpoch *)self currentLiveRoutePerf];
+  [currentLiveRoutePerf dataStalls];
   v5 = v4 + 1.0;
-  v6 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  [v6 setDataStalls:v5];
+  currentLiveRoutePerf2 = [(NetworkEpoch *)self currentLiveRoutePerf];
+  [currentLiveRoutePerf2 setDataStalls:v5];
 
-  v10 = [(NetworkEpoch *)self partial];
-  [v10 dataStalls];
+  partial = [(NetworkEpoch *)self partial];
+  [partial dataStalls];
   v8 = v7 + 1.0;
-  v9 = [(NetworkEpoch *)self partial];
-  [v9 setDataStalls:v8];
+  partial2 = [(NetworkEpoch *)self partial];
+  [partial2 setDataStalls:v8];
 }
 
 - (void)reportCaptivityRedirect
 {
-  v3 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  [v3 captivityRedirects];
+  currentLiveRoutePerf = [(NetworkEpoch *)self currentLiveRoutePerf];
+  [currentLiveRoutePerf captivityRedirects];
   v5 = v4 + 1.0;
-  v6 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  [v6 setCaptivityRedirects:v5];
+  currentLiveRoutePerf2 = [(NetworkEpoch *)self currentLiveRoutePerf];
+  [currentLiveRoutePerf2 setCaptivityRedirects:v5];
 
-  v10 = [(NetworkEpoch *)self partial];
-  [v10 captivityRedirects];
+  partial = [(NetworkEpoch *)self partial];
+  [partial captivityRedirects];
   v8 = v7 + 1.0;
-  v9 = [(NetworkEpoch *)self partial];
-  [v9 setCaptivityRedirects:v8];
+  partial2 = [(NetworkEpoch *)self partial];
+  [partial2 setCaptivityRedirects:v8];
 }
 
 - (void)reportCertError
 {
-  v3 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  [v3 certErrors];
+  currentLiveRoutePerf = [(NetworkEpoch *)self currentLiveRoutePerf];
+  [currentLiveRoutePerf certErrors];
   v5 = v4 + 1.0;
-  v6 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  [v6 setCertErrors:v5];
+  currentLiveRoutePerf2 = [(NetworkEpoch *)self currentLiveRoutePerf];
+  [currentLiveRoutePerf2 setCertErrors:v5];
 
-  v10 = [(NetworkEpoch *)self partial];
-  [v10 certErrors];
+  partial = [(NetworkEpoch *)self partial];
+  [partial certErrors];
   v8 = v7 + 1.0;
-  v9 = [(NetworkEpoch *)self partial];
-  [v9 setCertErrors:v8];
+  partial2 = [(NetworkEpoch *)self partial];
+  [partial2 setCertErrors:v8];
 }
 
 - (void)reportAdminDisable
 {
-  v3 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  [v3 adminDisables];
+  currentLiveRoutePerf = [(NetworkEpoch *)self currentLiveRoutePerf];
+  [currentLiveRoutePerf adminDisables];
   v5 = v4 + 1.0;
-  v6 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  [v6 setAdminDisables:v5];
+  currentLiveRoutePerf2 = [(NetworkEpoch *)self currentLiveRoutePerf];
+  [currentLiveRoutePerf2 setAdminDisables:v5];
 
-  v10 = [(NetworkEpoch *)self partial];
-  [v10 adminDisables];
+  partial = [(NetworkEpoch *)self partial];
+  [partial adminDisables];
   v8 = v7 + 1.0;
-  v9 = [(NetworkEpoch *)self partial];
-  [v9 setAdminDisables:v8];
+  partial2 = [(NetworkEpoch *)self partial];
+  [partial2 setAdminDisables:v8];
 }
 
 - (void)retire
 {
   v101[1] = *MEMORY[0x277D85DE8];
   self->_active = 0;
-  v3 = [(NetworkEpoch *)self currentLiveRoutePerf];
-  [v3 epochs];
+  currentLiveRoutePerf = [(NetworkEpoch *)self currentLiveRoutePerf];
+  [currentLiveRoutePerf epochs];
   v5 = v4;
-  [v3 overallStay];
+  [currentLiveRoutePerf overallStay];
   v7 = v6;
-  v8 = [(NetworkEpoch *)self overall];
-  [v8 stop];
+  overall = [(NetworkEpoch *)self overall];
+  [overall stop];
   v10 = v9;
 
   v11 = v7 / v5;
@@ -1815,56 +1815,56 @@ LABEL_86:
   }
 
   v12 = v10 - v11;
-  [v3 setOverallStay:v7 + v10];
-  [v3 setEpochs:v5 + 1.0];
-  [v3 overallStay];
+  [currentLiveRoutePerf setOverallStay:v7 + v10];
+  [currentLiveRoutePerf setEpochs:v5 + 1.0];
+  [currentLiveRoutePerf overallStay];
   v14 = v13;
-  [v3 epochs];
+  [currentLiveRoutePerf epochs];
   v16 = v14 / v15;
-  [v3 overallStayM2];
-  [v3 setOverallStayM2:v17 + v12 * (v10 - v16)];
-  [v3 lqmTransitionCount];
+  [currentLiveRoutePerf overallStayM2];
+  [currentLiveRoutePerf setOverallStayM2:v17 + v12 * (v10 - v16)];
+  [currentLiveRoutePerf lqmTransitionCount];
   v19 = v18;
   [(NetworkEpoch *)self lqmTransitions];
-  [v3 setLqmTransitionCount:v19 + v20];
-  v21 = [(NetworkEpoch *)self lowLqm];
-  [v21 stop];
+  [currentLiveRoutePerf setLqmTransitionCount:v19 + v20];
+  lowLqm = [(NetworkEpoch *)self lowLqm];
+  [lowLqm stop];
   v23 = v22;
 
-  [v3 lowLqmStay];
-  [v3 setLowLqmStay:v23 + v24];
-  v25 = [(NetworkEpoch *)self lowq];
-  [v25 stop];
+  [currentLiveRoutePerf lowLqmStay];
+  [currentLiveRoutePerf setLowLqmStay:v23 + v24];
+  lowq = [(NetworkEpoch *)self lowq];
+  [lowq stop];
   v27 = v26;
 
-  [v3 lowqStay];
-  [v3 setLowqStay:v27 + v28];
-  v29 = [(NetworkEpoch *)self fatal];
-  [v29 stop];
+  [currentLiveRoutePerf lowqStay];
+  [currentLiveRoutePerf setLowqStay:v27 + v28];
+  fatal = [(NetworkEpoch *)self fatal];
+  [fatal stop];
   v31 = v30;
 
-  [v3 faultyStay];
-  [v3 setFaultyStay:v31 + v32];
-  v33 = [MEMORY[0x277CBEAA8] date];
-  v34 = [DateRounder roundToDayResolutionOnly:v33];
-  [v3 setTimeStamp:v34];
+  [currentLiveRoutePerf faultyStay];
+  [currentLiveRoutePerf setFaultyStay:v31 + v32];
+  date = [MEMORY[0x277CBEAA8] date];
+  v34 = [DateRounder roundToDayResolutionOnly:date];
+  [currentLiveRoutePerf setTimeStamp:v34];
 
   [(NetworkEpoch *)self topDownlRate];
   v36 = v35;
-  [v3 topDownloadRate];
+  [currentLiveRoutePerf topDownloadRate];
   if (v36 > v37)
   {
     [(NetworkEpoch *)self topDownlRate];
-    [v3 setTopDownloadRate:?];
+    [currentLiveRoutePerf setTopDownloadRate:?];
   }
 
-  v38 = [v3 timeStamp];
-  v39 = [(NetworkEpoch *)self durable];
-  [v39 setTimeStamp:v38];
+  timeStamp = [currentLiveRoutePerf timeStamp];
+  durable = [(NetworkEpoch *)self durable];
+  [durable setTimeStamp:timeStamp];
 
   v40 = [MEMORY[0x277CCABB0] numberWithInteger:{-[NetworkEpoch loi](self, "loi")}];
-  v41 = [(NetworkEpoch *)self durable];
-  [v41 setAttrs:v40];
+  durable2 = [(NetworkEpoch *)self durable];
+  [durable2 setAttrs:v40];
 
   [(NSMutableDictionary *)self->tickers enumerateKeysAndObjectsUsingBlock:&__block_literal_global_27];
   [(NSMutableDictionary *)self->tickers removeAllObjects];
@@ -1897,32 +1897,32 @@ LABEL_86:
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v48 = v47;
-    v49 = [(NetworkEpoch *)self interfaceName];
-    v50 = [(NetworkEpoch *)self primaryKey];
+    interfaceName = [(NetworkEpoch *)self interfaceName];
+    primaryKey = [(NetworkEpoch *)self primaryKey];
     v51 = epoch_count;
-    [v3 lqmTransitionCount];
+    [currentLiveRoutePerf lqmTransitionCount];
     v53 = v52;
-    [v3 lowLqmStay];
+    [currentLiveRoutePerf lowLqmStay];
     v55 = v54;
-    [v3 lowqStay];
+    [currentLiveRoutePerf lowqStay];
     v57 = v56;
-    [v3 dataStalls];
+    [currentLiveRoutePerf dataStalls];
     v59 = v58;
-    [v3 captivityRedirects];
+    [currentLiveRoutePerf captivityRedirects];
     v61 = v60;
-    [v3 certErrors];
+    [currentLiveRoutePerf certErrors];
     v63 = v62;
-    [v3 adminDisables];
+    [currentLiveRoutePerf adminDisables];
     v65 = v64;
-    v66 = [(NetworkEpoch *)self defRoute4];
-    v67 = [(NetworkEpoch *)self defRoute6];
+    defRoute4 = [(NetworkEpoch *)self defRoute4];
+    defRoute6 = [(NetworkEpoch *)self defRoute6];
     v68 = [(NetworkEpoch *)self loi];
     *buf = 134221571;
-    v72 = self;
+    selfCopy = self;
     v73 = 2112;
-    v74 = v49;
+    v74 = interfaceName;
     v75 = 2113;
-    v76 = v50;
+    v76 = primaryKey;
     v77 = 2048;
     v78 = v10;
     v79 = 1024;
@@ -1942,9 +1942,9 @@ LABEL_86:
     v93 = 2048;
     v94 = v65;
     v95 = 2048;
-    v96 = v66;
+    v96 = defRoute4;
     v97 = 2048;
-    v98 = v67;
+    v98 = defRoute6;
     v99 = 2048;
     v100 = v68;
     _os_log_impl(&dword_23255B000, v48, OS_LOG_TYPE_DEFAULT, "%p retired epoch on %@ for %{private}@: stay time accrued = %f, total epochs = %d, LQM transitions = %f, low LQM stay = %f, low RSSI stay = %f, data stalls: %f, captRedirects: %f, certErrors: %f, adminDisables: %f, defroutes %p %p, loi: %ld", buf, 0x94u);
@@ -1956,7 +1956,7 @@ LABEL_86:
 - (id)_networkAttachmentDurableState
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = self->identifier;
   v48 = 0;
   v49 = &v48;
@@ -1967,8 +1967,8 @@ LABEL_86:
   if ([(NetworkEpoch *)self oncell])
   {
     v5 = [NetworkStateRelay getStateRelayFor:5];
-    v6 = [v5 radioTechnology];
-    if (v6 == 11 && nrNetworkAttachmentLastCreationTime != 0)
+    radioTechnology = [v5 radioTechnology];
+    if (radioTechnology == 11 && nrNetworkAttachmentLastCreationTime != 0)
     {
       [nrNetworkAttachmentLastCreationTime timeIntervalSinceNow];
       if (v8 > -2.0)
@@ -1976,8 +1976,8 @@ LABEL_86:
 
         if (collapsedNRNetworkAttachmentID)
         {
-          v9 = [(AnalyticsWorkspace *)self->workspace mainObjectContext];
-          v10 = [v9 objectWithID:collapsedNRNetworkAttachmentID];
+          mainObjectContext = [(AnalyticsWorkspace *)self->workspace mainObjectContext];
+          v10 = [mainObjectContext objectWithID:collapsedNRNetworkAttachmentID];
           v11 = v49[5];
           v49[5] = v10;
         }
@@ -1986,7 +1986,7 @@ LABEL_86:
       }
     }
 
-    v12 = v6 != 11;
+    v12 = radioTechnology != 11;
   }
 
   else
@@ -2012,7 +2012,7 @@ LABEL_86:
   if (v49[5])
   {
 LABEL_14:
-    v15 = [DateRounder roundToDayResolutionOnly:v3, v42, v43, v44, v45];
+    v15 = [DateRounder roundToDayResolutionOnly:date, v42, v43, v44, v45];
     [v49[5] setTimeStamp:v15];
 
     goto LABEL_15;
@@ -2026,11 +2026,11 @@ LABEL_14:
   if (v21)
   {
     [v21 setIdentifier:v14];
-    v22 = [DateRounder roundToDayResolutionOnly:v3];
+    v22 = [DateRounder roundToDayResolutionOnly:date];
     [v49[5] setFirstTimeStamp:v22];
 
-    v23 = [v49[5] firstTimeStamp];
-    [v49[5] setTimeStamp:v23];
+    firstTimeStamp = [v49[5] firstTimeStamp];
+    [v49[5] setTimeStamp:firstTimeStamp];
 
     v24 = MEMORY[0x277CCABB0];
     if ([(NetworkEpoch *)self oncell])
@@ -2060,7 +2060,7 @@ LABEL_14:
 
       identifier = self->identifier;
       *buf = 134218243;
-      v55 = self;
+      selfCopy4 = self;
       v56 = 2113;
       v57 = identifier;
       v30 = "%p created new entry for %{private}@";
@@ -2068,16 +2068,16 @@ LABEL_14:
 
     else
     {
-      v33 = [MEMORY[0x277CBEAA8] date];
+      date2 = [MEMORY[0x277CBEAA8] date];
       v34 = nrNetworkAttachmentLastCreationTime;
-      nrNetworkAttachmentLastCreationTime = v33;
+      nrNetworkAttachmentLastCreationTime = date2;
 
       if ([(__CFString *)v14 isEqualToString:@"CollapsedNR"])
       {
         [(AnalyticsWorkspace *)self->workspace save];
-        v35 = [v49[5] objectID];
+        objectID = [v49[5] objectID];
         v36 = collapsedNRNetworkAttachmentID;
-        collapsedNRNetworkAttachmentID = v35;
+        collapsedNRNetworkAttachmentID = objectID;
 
         v37 = netepochsLogHandle;
         if (!os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -2087,7 +2087,7 @@ LABEL_14:
 
         v38 = self->identifier;
         *buf = 134218499;
-        v55 = self;
+        selfCopy4 = self;
         v56 = 2113;
         v57 = v38;
         v58 = 2112;
@@ -2106,7 +2106,7 @@ LABEL_14:
 
       v41 = self->identifier;
       *buf = 134218243;
-      v55 = self;
+      selfCopy4 = self;
       v56 = 2113;
       v57 = v41;
       v30 = "%p created new entry for NR %{private}@";
@@ -2122,11 +2122,11 @@ LABEL_34:
   v31 = netepochsLogHandle;
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
-    v32 = [(NSString *)self->identifier UTF8String];
+    uTF8String = [(NSString *)self->identifier UTF8String];
     *buf = 134218243;
-    v55 = self;
+    selfCopy4 = self;
     v56 = 2081;
-    v57 = v32;
+    v57 = uTF8String;
     _os_log_impl(&dword_23255B000, v31, OS_LOG_TYPE_ERROR, "%p couldn't create a new entry of %{private}s", buf, 0x16u);
   }
 
@@ -2160,7 +2160,7 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
   {
     identifier = self->identifier;
     v7 = 134218243;
-    v8 = self;
+    selfCopy = self;
     v9 = 2113;
     v10 = identifier;
     _os_log_impl(&dword_23255B000, v3, OS_LOG_TYPE_DEFAULT, "%p unloaded durable state for %{private}@", &v7, 0x16u);
@@ -2172,7 +2172,7 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v23 = *MEMORY[0x277D85DE8];
   v4 = [[NetworkEpoch allocWithZone:?]];
@@ -2183,17 +2183,17 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
 
   [(NetworkEpoch *)self topDownlRate];
   v4[31] = v7;
-  v8 = [(NetworkEpoch *)self fatal];
-  *(v4 + 98) = [v8 isRunning];
+  fatal = [(NetworkEpoch *)self fatal];
+  *(v4 + 98) = [fatal isRunning];
 
-  v9 = [(NetworkEpoch *)self lowLqm];
-  *(v4 + 96) = [v9 isRunning];
+  lowLqm = [(NetworkEpoch *)self lowLqm];
+  *(v4 + 96) = [lowLqm isRunning];
 
-  v10 = [(NetworkEpoch *)self lowq];
-  *(v4 + 97) = [v10 isRunning];
+  lowq = [(NetworkEpoch *)self lowq];
+  *(v4 + 97) = [lowq isRunning];
 
-  v11 = [(NetworkEpoch *)self durable];
-  *(v4 + 99) = [v11 isKnownGood];
+  durable = [(NetworkEpoch *)self durable];
+  *(v4 + 99) = [durable isKnownGood];
 
   *(v4 + 101) = [(NetworkEpoch *)self oncell];
   v12 = netepochsLogHandle;
@@ -2214,10 +2214,10 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
   return v4;
 }
 
-- (int)compareToSnapshot:(id)a3
+- (int)compareToSnapshot:(id)snapshot
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = +[WiFiTriggerHandler getNetScoreInfo];
   v6 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -2229,14 +2229,14 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
 
   v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyTriggerNetScore];
   v8 = [v5 objectForKeyedSubscript:v7];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
 
-  v10 = v4[11];
+  v10 = snapshotCopy[11];
   v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyTriggerNetScore];
   v12 = [v10 objectForKeyedSubscript:v11];
-  v13 = [v12 intValue];
+  intValue2 = [v12 intValue];
 
-  if (v9 <= v13)
+  if (intValue <= intValue2)
   {
     v15 = 0;
   }
@@ -2247,16 +2247,16 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
     {
       v37 = 67109376;
-      *v38 = v9;
+      *v38 = intValue;
       *&v38[4] = 1024;
-      *&v38[6] = v13;
+      *&v38[6] = intValue2;
       _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_DEFAULT, "relative comparison, netscore improved, %d vs %d", &v37, 0xEu);
     }
 
     v15 = 1;
   }
 
-  if (v9 >= 51 && v13 <= 50)
+  if (intValue >= 51 && intValue2 <= 50)
   {
     v16 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -2268,14 +2268,14 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
     ++v15;
   }
 
-  v17 = [(NetworkEpoch *)self lowLqm];
-  if ([v17 isRunning])
+  lowLqm = [(NetworkEpoch *)self lowLqm];
+  if ([lowLqm isRunning])
   {
   }
 
   else
   {
-    v18 = *(v4 + 96);
+    v18 = *(snapshotCopy + 96);
 
     if (v18 == 1)
     {
@@ -2290,14 +2290,14 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
     }
   }
 
-  v20 = [(NetworkEpoch *)self lowq];
-  if ([v20 isRunning])
+  lowq = [(NetworkEpoch *)self lowq];
+  if ([lowq isRunning])
   {
   }
 
   else
   {
-    v21 = *(v4 + 97);
+    v21 = *(snapshotCopy + 97);
 
     if (v21 == 1)
     {
@@ -2312,7 +2312,7 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
     }
   }
 
-  if (*(v4 + 98) == 1)
+  if (*(snapshotCopy + 98) == 1)
   {
     v23 = netepochsLogHandle;
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -2325,17 +2325,17 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
   }
 
   [(NetworkEpoch *)self topDownlRate];
-  if (v24 != 0.0 && *(v4 + 31) != 0.0)
+  if (v24 != 0.0 && *(snapshotCopy + 31) != 0.0)
   {
     [(NetworkEpoch *)self topDownlRate];
-    if (v25 > *(v4 + 31))
+    if (v25 > *(snapshotCopy + 31))
     {
       v26 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
       {
         v27 = v26;
         [(NetworkEpoch *)self topDownlRate];
-        v28 = v4[31];
+        v28 = snapshotCopy[31];
         v37 = 134218240;
         *v38 = v29;
         *&v38[8] = 2048;
@@ -2347,10 +2347,10 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
     }
   }
 
-  v30 = [(NetworkEpoch *)self durable];
-  if ([v30 isKnownGood])
+  durable = [(NetworkEpoch *)self durable];
+  if ([durable isKnownGood])
   {
-    v31 = *(v4 + 99);
+    v31 = *(snapshotCopy + 99);
 
     if ((v31 & 1) == 0)
     {
@@ -2393,11 +2393,11 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
   return v34;
 }
 
-- (BOOL)matchesLOI:(int64_t)a3
+- (BOOL)matchesLOI:(int64_t)i
 {
-  if (a3)
+  if (i)
   {
-    if (a3 != 1)
+    if (i != 1)
     {
       return 0;
     }
@@ -2410,31 +2410,31 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
     v3 = 260;
   }
 
-  v4 = [(NetworkEpoch *)self durable];
-  v5 = [v4 attrs];
-  v6 = [v5 integerValue] == v3;
+  durable = [(NetworkEpoch *)self durable];
+  attrs = [durable attrs];
+  v6 = [attrs integerValue] == v3;
 
   return v6;
 }
 
 - (int64_t)getMatchingRTLocationOfInterestType
 {
-  v3 = [(NetworkEpoch *)self durable];
-  v4 = [v3 attrs];
-  v5 = -[NetworkEpoch RTLocationOfInterestTypeForExtended:](self, "RTLocationOfInterestTypeForExtended:", [v4 integerValue]);
+  durable = [(NetworkEpoch *)self durable];
+  attrs = [durable attrs];
+  v5 = -[NetworkEpoch RTLocationOfInterestTypeForExtended:](self, "RTLocationOfInterestTypeForExtended:", [attrs integerValue]);
 
   return v5;
 }
 
-- (int64_t)RTLocationOfInterestTypeForExtended:(int64_t)a3
+- (int64_t)RTLocationOfInterestTypeForExtended:(int64_t)extended
 {
   v3 = 1;
-  if (a3 != 261)
+  if (extended != 261)
   {
     v3 = -1;
   }
 
-  if (a3 == 260)
+  if (extended == 260)
   {
     return 0;
   }
@@ -2445,42 +2445,42 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
   }
 }
 
-+ (id)snapshotsIn:(id)a3 olderThan:(id)a4
++ (id)snapshotsIn:(id)in olderThan:(id)than
 {
   v5 = MEMORY[0x277CCAC30];
-  v6 = a3;
-  v7 = [v5 predicateWithFormat:@"createdAt < %@", a4];
-  v8 = [v6 filteredArrayUsingPredicate:v7];
+  inCopy = in;
+  than = [v5 predicateWithFormat:@"createdAt < %@", than];
+  v8 = [inCopy filteredArrayUsingPredicate:than];
 
   return v8;
 }
 
-+ (BOOL)pruneDataOlderThan:(id)a3 exceptFor:(id)a4 inWorkspace:(id)a5
++ (BOOL)pruneDataOlderThan:(id)than exceptFor:(id)for inWorkspace:(id)workspace
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  thanCopy = than;
+  forCopy = for;
+  workspaceCopy = workspace;
   v10 = MEMORY[0x277CCAC30];
-  v11 = [MEMORY[0x277CBEAA8] distantPast];
-  v12 = [v10 predicateWithFormat:@"%K >= %@ AND %K < %@", @"timeStamp", v11, @"timeStamp", v7];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  thanCopy = [v10 predicateWithFormat:@"%K >= %@ AND %K < %@", @"timeStamp", distantPast, @"timeStamp", thanCopy];
 
-  if (v8 && [v8 count])
+  if (forCopy && [forCopy count])
   {
-    v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"identifier", v8];
+    forCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"identifier", forCopy];
     v14 = MEMORY[0x277CCA920];
-    v31[0] = v12;
-    v31[1] = v13;
+    v31[0] = thanCopy;
+    v31[1] = forCopy;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
     v16 = [v14 andPredicateWithSubpredicates:v15];
   }
 
   else
   {
-    v16 = v12;
+    v16 = thanCopy;
   }
 
-  v17 = [objc_alloc(MEMORY[0x277D6B538]) initWithWorkspace:v9 withCache:0];
+  v17 = [objc_alloc(MEMORY[0x277D6B538]) initWithWorkspace:workspaceCopy withCache:0];
   v18 = [v17 removeEntitiesMatching:v16];
   v19 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
@@ -2488,21 +2488,21 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
     *buf = 134218499;
     v26 = v18;
     v27 = 2112;
-    v28 = v7;
+    v28 = thanCopy;
     v29 = 2113;
-    v30 = v8;
+    v30 = forCopy;
     _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "Removed %ld NetworkAttachment entries with timestamp before %@, except %{private}@", buf, 0x20u);
   }
 
-  v20 = [objc_alloc(MEMORY[0x277D6B540]) initWithWorkspace:v9 entityName:@"LiveRoutePerf" withCache:0];
-  v21 = [v20 removeEntitiesMatching:v12];
+  v20 = [objc_alloc(MEMORY[0x277D6B540]) initWithWorkspace:workspaceCopy entityName:@"LiveRoutePerf" withCache:0];
+  v21 = [v20 removeEntitiesMatching:thanCopy];
   v22 = netepochsLogHandle;
   if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
     v26 = v21;
     v27 = 2112;
-    v28 = v7;
+    v28 = thanCopy;
     _os_log_impl(&dword_23255B000, v22, OS_LOG_TYPE_DEFAULT, "Removed %ld LiveRoutePerf entries with timestamp before %@", buf, 0x16u);
   }
 
@@ -2510,18 +2510,18 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
   return (v18 | v21) != 0;
 }
 
-+ (void)resetDataFor:(id)a3 exceptFor:(id)a4 inWorkspace:(id)a5
++ (void)resetDataFor:(id)for exceptFor:(id)exceptFor inWorkspace:(id)workspace
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  forCopy = for;
+  exceptForCopy = exceptFor;
   v9 = MEMORY[0x277D6B538];
-  v10 = a5;
-  v11 = [[v9 alloc] initWithWorkspace:v10 withCache:0];
+  workspaceCopy = workspace;
+  v11 = [[v9 alloc] initWithWorkspace:workspaceCopy withCache:0];
 
-  if (v7 && [v7 count])
+  if (forCopy && [forCopy count])
   {
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"identifier", v7];
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"identifier", forCopy];
   }
 
   else
@@ -2529,9 +2529,9 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
     [MEMORY[0x277CCAC30] predicateWithFormat:@"TRUEPREDICATE", v21, v23];
   }
   v12 = ;
-  if (v8 && [v8 count])
+  if (exceptForCopy && [exceptForCopy count])
   {
-    [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"identifier", v8];
+    [MEMORY[0x277CCAC30] predicateWithFormat:@"NOT (%K IN %@)", @"identifier", exceptForCopy];
   }
 
   else
@@ -2560,29 +2560,29 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
     *buf = 134218499;
     v26 = v18;
     v27 = 2113;
-    v28 = v7;
+    v28 = forCopy;
     v29 = 2113;
-    v30 = v8;
+    v30 = exceptForCopy;
     _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEFAULT, "Removed %ld NetworkAttachment entries with identifier matching %{private}@ except %{private}@", buf, 0x20u);
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)resetDataForSSIDs:(id)a3 exceptFor:(id)a4 inWorkspace:(id)a5
++ (void)resetDataForSSIDs:(id)ds exceptFor:(id)for inWorkspace:(id)workspace
 {
   v66 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v47 = a5;
-  v9 = [objc_alloc(MEMORY[0x277D6B538]) initWithWorkspace:v47 withCache:0];
-  v10 = [MEMORY[0x277CBEB18] array];
-  v49 = [MEMORY[0x277CBEB18] array];
+  dsCopy = ds;
+  forCopy = for;
+  workspaceCopy = workspace;
+  v9 = [objc_alloc(MEMORY[0x277D6B538]) initWithWorkspace:workspaceCopy withCache:0];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v58 = 0u;
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
-  v11 = v7;
+  v11 = dsCopy;
   v12 = [v11 countByEnumeratingWithState:&v58 objects:v65 count:16];
   if (v12)
   {
@@ -2604,7 +2604,7 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
 
         if ([v14 count])
         {
-          [v10 addObjectsFromArray:v14];
+          [array addObjectsFromArray:v14];
         }
 
         ++v16;
@@ -2630,7 +2630,7 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v10;
+  obj = array;
   v18 = [obj countByEnumeratingWithState:&v54 objects:v64 count:16];
   if (!v18)
   {
@@ -2652,10 +2652,10 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
       }
 
       v23 = *(*(&v54 + 1) + 8 * v22);
-      if (v8)
+      if (forCopy)
       {
-        v24 = [*(*(&v54 + 1) + 8 * v22) identifier];
-        v25 = [v8 member:v24];
+        identifier = [*(*(&v54 + 1) + 8 * v22) identifier];
+        v25 = [forCopy member:identifier];
 
         if (v25)
         {
@@ -2665,22 +2665,22 @@ void __46__NetworkEpoch__networkAttachmentDurableState__block_invoke(uint64_t a1
             goto LABEL_30;
           }
 
-          v27 = v26;
-          v28 = [v23 identifier];
+          kind = v26;
+          identifier2 = [v23 identifier];
           *buf = 138477827;
-          v63 = v28;
-          _os_log_impl(&dword_23255B000, v27, OS_LOG_TYPE_DEFAULT, "Resetting entries for NetworkAttachment entries must skip %{private}@", buf, 0xCu);
+          v63 = identifier2;
+          _os_log_impl(&dword_23255B000, kind, OS_LOG_TYPE_DEFAULT, "Resetting entries for NetworkAttachment entries must skip %{private}@", buf, 0xCu);
 
           goto LABEL_28;
         }
       }
 
-      v27 = [v23 kind];
-      if ([v27 intValue]== 1)
+      kind = [v23 kind];
+      if ([kind intValue]== 1)
       {
-        v29 = [v23 identifier];
+        identifier3 = [v23 identifier];
         v53 = 0;
-        v30 = [a1 parsePrimaryKey:v29 majorID:&v53 minorID:0];
+        v30 = [self parsePrimaryKey:identifier3 majorID:&v53 minorID:0];
         v31 = v53;
         v20 = v31;
         if (v30)
@@ -2704,7 +2704,7 @@ LABEL_28:
 
         if (v33)
         {
-          [v49 addObject:v23];
+          [array2 addObject:v23];
         }
       }
 
@@ -2728,7 +2728,7 @@ LABEL_37:
 
   v35 = v48;
   v36 = v50;
-  if ([v49 count])
+  if ([array2 count])
   {
     v37 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %d", @"kind", 1];
     v38 = [v48 countEntitiesMatching:v37];
@@ -2740,7 +2740,7 @@ LABEL_37:
       _os_log_impl(&dword_23255B000, v39, OS_LOG_TYPE_DEFAULT, "Resetting entries for NetworkAttachment entries for SSIDs:%{private}@", buf, 0xCu);
     }
 
-    [v48 removeEntities:v49];
+    [v48 removeEntities:array2];
     if (![v48 countEntitiesMatching:v37] && v38 >= 0x15)
     {
       v40 = netepochsLogHandle;
@@ -2756,8 +2756,8 @@ LABEL_37:
       {
         v42 = *MEMORY[0x277D6B020];
         v43 = *MEMORY[0x277D6B220];
-        v44 = [&unk_2847EFB00 stringValue];
-        v45 = [v41 signatureWithDomain:v42 type:v43 subType:@"All Wi-Fi NAs Deleted" subtypeContext:0 detectedProcess:@"symptomsd" triggerThresholdValues:v44];
+        stringValue = [&unk_2847EFB00 stringValue];
+        v45 = [v41 signatureWithDomain:v42 type:v43 subType:@"All Wi-Fi NAs Deleted" subtypeContext:0 detectedProcess:@"symptomsd" triggerThresholdValues:stringValue];
 
         v36 = v50;
         v35 = v48;
@@ -2784,54 +2784,54 @@ void __56__NetworkEpoch_resetDataForSSIDs_exceptFor_inWorkspace___block_invoke(u
   v4 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)parsePrimaryKey:(id)a3 majorID:(id *)a4 minorID:(id *)a5
++ (BOOL)parsePrimaryKey:(id)key majorID:(id *)d minorID:(id *)iD
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 UTF8String];
+  keyCopy = key;
+  uTF8String = [keyCopy UTF8String];
   v18 = 0;
-  v9 = [NetworkEpoch parsePrimaryKeyStr:v8 majorIDLengthInBytes:&v18 + 4 minorIDLengthInBytes:&v18];
+  v9 = [NetworkEpoch parsePrimaryKeyStr:uTF8String majorIDLengthInBytes:&v18 + 4 minorIDLengthInBytes:&v18];
   if (v9)
   {
-    if (a4)
+    if (d)
     {
       if (HIDWORD(v18))
       {
         v10 = objc_alloc(MEMORY[0x277CCACA8]);
-        v11 = [v10 initWithBytes:v8 length:SHIDWORD(v18) encoding:4];
-        *a4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v11];
+        v11 = [v10 initWithBytes:uTF8String length:SHIDWORD(v18) encoding:4];
+        *d = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v11];
       }
 
       else
       {
-        *a4 = &stru_2847966D8;
+        *d = &stru_2847966D8;
         v12 = netepochsLogHandle;
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138477827;
-          v20 = v7;
+          v20 = keyCopy;
           _os_log_impl(&dword_23255B000, v12, OS_LOG_TYPE_DEFAULT, "primaryKey (%{private}@) has no Major ID", buf, 0xCu);
         }
       }
     }
 
-    if (a5)
+    if (iD)
     {
       if (v18)
       {
         v13 = objc_alloc(MEMORY[0x277CCACA8]);
-        v14 = [v13 initWithBytes:v8 + SHIDWORD(v18) + 1 length:v18 encoding:4];
-        *a5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v14];
+        v14 = [v13 initWithBytes:uTF8String + SHIDWORD(v18) + 1 length:v18 encoding:4];
+        *iD = [objc_alloc(MEMORY[0x277CCACA8]) initWithString:v14];
       }
 
       else
       {
-        *a5 = &stru_2847966D8;
+        *iD = &stru_2847966D8;
         v15 = netepochsLogHandle;
         if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138477827;
-          v20 = v7;
+          v20 = keyCopy;
           _os_log_impl(&dword_23255B000, v15, OS_LOG_TYPE_DEFAULT, "primaryKey (%{private}@) has no Minor ID", buf, 0xCu);
         }
       }
@@ -2842,9 +2842,9 @@ void __56__NetworkEpoch_resetDataForSSIDs_exceptFor_inWorkspace___block_invoke(u
   return v9;
 }
 
-+ (BOOL)parsePrimaryKeyStr:(const char *)a3 majorIDLengthInBytes:(int *)a4 minorIDLengthInBytes:(int *)a5
++ (BOOL)parsePrimaryKeyStr:(const char *)str majorIDLengthInBytes:(int *)bytes minorIDLengthInBytes:(int *)inBytes
 {
-  if (!a3)
+  if (!str)
   {
     v9 = netepochsLogHandle;
     v10 = os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR);
@@ -2863,8 +2863,8 @@ LABEL_9:
     return v10;
   }
 
-  v8 = strlen(a3);
-  if (v8 < 3 || a3[v8 - 1] == 45)
+  v8 = strlen(str);
+  if (v8 < 3 || str[v8 - 1] == 45)
   {
     v9 = netepochsLogHandle;
     v10 = os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR);
@@ -2880,7 +2880,7 @@ LABEL_9:
   }
 
   v13 = 0;
-  while (a3[--v8] != 45)
+  while (str[--v8] != 45)
   {
     ++v13;
     if (v8 <= 1)
@@ -2889,30 +2889,30 @@ LABEL_9:
     }
   }
 
-  if (a4)
+  if (bytes)
   {
-    *a4 = v8;
+    *bytes = v8;
   }
 
-  if (a5)
+  if (inBytes)
   {
-    *a5 = v13;
+    *inBytes = v13;
   }
 
   LOBYTE(v10) = 1;
   return v10;
 }
 
-+ (id)getNetworkSignatureForAddressFamily:(int)a3 interfaceName:(id)a4 identifier:(id)a5
++ (id)getNetworkSignatureForAddressFamily:(int)family interfaceName:(id)name identifier:(id)identifier
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  if (a3 == 2 || a3 == 30)
+  nameCopy = name;
+  identifierCopy = identifier;
+  if (family == 2 || family == 30)
   {
     v19 = 0;
     v9 = @"IPv6";
-    if (a3 == 2)
+    if (family == 2)
     {
       v9 = @"IPv4";
     }
@@ -2922,15 +2922,15 @@ LABEL_9:
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
-    if (ifnet_get_signature([v7 UTF8String], a3, v26, &v19))
+    if (ifnet_get_signature([nameCopy UTF8String], family, v26, &v19))
     {
       v11 = netepochsLogHandle;
       if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
       {
         v12 = &stru_2847966D8;
-        if (v8)
+        if (identifierCopy)
         {
-          v12 = v8;
+          v12 = identifierCopy;
         }
 
         *buf = 138412547;
@@ -2951,9 +2951,9 @@ LABEL_9:
       {
         v16 = &stru_2847966D8;
         *buf = 138412803;
-        if (v8)
+        if (identifierCopy)
         {
-          v16 = v8;
+          v16 = identifierCopy;
         }
 
         v21 = v10;
@@ -2972,7 +2972,7 @@ LABEL_9:
     if (os_log_type_enabled(netepochsLogHandle, OS_LOG_TYPE_ERROR))
     {
       *v26 = 67109120;
-      *&v26[4] = a3;
+      *&v26[4] = family;
       _os_log_impl(&dword_23255B000, v14, OS_LOG_TYPE_ERROR, "Cannot get network signature for unknown address family %d", v26, 8u);
     }
 

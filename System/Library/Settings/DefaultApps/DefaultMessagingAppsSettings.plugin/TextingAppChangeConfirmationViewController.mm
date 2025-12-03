@@ -1,12 +1,12 @@
 @interface TextingAppChangeConfirmationViewController
-- (_TtC28DefaultMessagingAppsSettings42TextingAppChangeConfirmationViewController)initWithCoder:(id)a3;
-- (_TtC28DefaultMessagingAppsSettings42TextingAppChangeConfirmationViewController)initWithRootViewController:(id)a3;
+- (_TtC28DefaultMessagingAppsSettings42TextingAppChangeConfirmationViewController)initWithCoder:(id)coder;
+- (_TtC28DefaultMessagingAppsSettings42TextingAppChangeConfirmationViewController)initWithRootViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation TextingAppChangeConfirmationViewController
 
-- (_TtC28DefaultMessagingAppsSettings42TextingAppChangeConfirmationViewController)initWithCoder:(id)a3
+- (_TtC28DefaultMessagingAppsSettings42TextingAppChangeConfirmationViewController)initWithCoder:(id)coder
 {
   sub_1497C();
   sub_1496C();
@@ -35,14 +35,14 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for TextingAppChangeConfirmationViewController();
-  v3 = self;
+  selfCopy = self;
   [(TextingAppChangeConfirmationViewController *)&v4 viewDidLoad];
   sub_7110();
   sub_73C4();
   sub_7AD8();
 }
 
-- (_TtC28DefaultMessagingAppsSettings42TextingAppChangeConfirmationViewController)initWithRootViewController:(id)a3
+- (_TtC28DefaultMessagingAppsSettings42TextingAppChangeConfirmationViewController)initWithRootViewController:(id)controller
 {
   sub_1497C();
   sub_1496C();

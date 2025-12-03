@@ -1,21 +1,21 @@
 @interface FMDFMIPNanoIDSListener
-- (FMDFMIPNanoIDSListener)initWithManager:(id)a3;
-- (id)_v5SignedResponseForRequestBody:(id)a3 activationLockRequestUUID:(id)a4;
+- (FMDFMIPNanoIDSListener)initWithManager:(id)manager;
+- (id)_v5SignedResponseForRequestBody:(id)body activationLockRequestUUID:(id)d;
 - (void)_registerIDSHandlers;
 @end
 
 @implementation FMDFMIPNanoIDSListener
 
-- (FMDFMIPNanoIDSListener)initWithManager:(id)a3
+- (FMDFMIPNanoIDSListener)initWithManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = FMDFMIPNanoIDSListener;
   v6 = [(FMDFMIPNanoIDSListener *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_idsManager, a3);
+    objc_storeStrong(&v6->_idsManager, manager);
     [(FMDFMIPNanoIDSListener *)v7 _registerIDSHandlers];
     [(FMNanoIDSManager *)v7->_idsManager start];
   }
@@ -25,68 +25,68 @@
 
 - (void)_registerIDSHandlers
 {
-  v3 = [(FMDFMIPNanoIDSListener *)self idsManager];
+  idsManager = [(FMDFMIPNanoIDSListener *)self idsManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001683B8;
   v7[3] = &unk_1002CF310;
   v7[4] = self;
-  [v3 handleRequestsOfType:1 withHandler:v7];
+  [idsManager handleRequestsOfType:1 withHandler:v7];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001685C8;
   v6[3] = &unk_1002CF310;
   v6[4] = self;
-  [v3 handleRequestsOfType:3 withHandler:v6];
+  [idsManager handleRequestsOfType:3 withHandler:v6];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001687A4;
   v5[3] = &unk_1002CF310;
   v5[4] = self;
-  [v3 handleRequestsOfType:7 withHandler:v5];
+  [idsManager handleRequestsOfType:7 withHandler:v5];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100168980;
   v4[3] = &unk_1002CF310;
   v4[4] = self;
-  [v3 handleRequestsOfType:9 withHandler:v4];
-  [v3 handleRequestsOfType:5 withHandler:&stru_1002CF350];
+  [idsManager handleRequestsOfType:9 withHandler:v4];
+  [idsManager handleRequestsOfType:5 withHandler:&stru_1002CF350];
 }
 
-- (id)_v5SignedResponseForRequestBody:(id)a3 activationLockRequestUUID:(id)a4
+- (id)_v5SignedResponseForRequestBody:(id)body activationLockRequestUUID:(id)d
 {
-  v55 = a3;
-  v56 = a4;
-  v59 = [v55 mutableCopy];
+  bodyCopy = body;
+  dCopy = d;
+  v59 = [bodyCopy mutableCopy];
   v5 = +[NSMutableDictionary dictionary];
   v6 = +[NSDate date];
   [v6 timeIntervalSince1970];
   v57 = [NSString stringWithFormat:@"%ld", v7];
 
   v8 = +[FMSystemInfo sharedInstance];
-  v9 = [v8 serialNumber];
-  [v5 fm_safelyMapKey:@"serialNumber" toObject:v9];
+  serialNumber = [v8 serialNumber];
+  [v5 fm_safelyMapKey:@"serialNumber" toObject:serialNumber];
 
-  v10 = [v8 imei];
-  [v5 fm_safelyMapKey:@"imei" toObject:v10];
+  imei = [v8 imei];
+  [v5 fm_safelyMapKey:@"imei" toObject:imei];
 
-  v11 = [v8 meid];
-  [v5 fm_safelyMapKey:@"meid" toObject:v11];
+  meid = [v8 meid];
+  [v5 fm_safelyMapKey:@"meid" toObject:meid];
 
-  v12 = [v8 ecid];
-  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [v12 longLongValue]);
+  ecid = [v8 ecid];
+  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [ecid longLongValue]);
   [v5 fm_safelyMapKey:@"ecid" toObject:v13];
 
   v14 = +[FMDSystemConfig sharedInstance];
-  v15 = [v14 chipId];
-  v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [v15 longLongValue]);
+  chipId = [v14 chipId];
+  v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"0x%llx", [chipId longLongValue]);
   [v5 fm_safelyMapKey:@"chipId" toObject:v16];
 
-  v17 = [v8 wifiMacAddress];
-  [v5 fm_safelyMapKey:@"wifiMac" toObject:v17];
+  wifiMacAddress = [v8 wifiMacAddress];
+  [v5 fm_safelyMapKey:@"wifiMac" toObject:wifiMacAddress];
 
-  v18 = [v8 btMacAddress];
-  [v5 fm_safelyMapKey:@"btMac" toObject:v18];
+  btMacAddress = [v8 btMacAddress];
+  [v5 fm_safelyMapKey:@"btMac" toObject:btMacAddress];
 
   [v5 fm_safelyMapKey:@"timeStampMillis" toObject:v57];
   v19 = +[FMDAbsintheV3SigningInterface sharedInterface];
@@ -95,8 +95,8 @@
   v58 = v79;
   [v5 fm_safelyMapKey:@"ifcReceipt" toObject:v20];
 
-  v21 = [v58 fm_commaSeparatedString];
-  [v5 fm_safelyMapKey:@"collectionError" toObject:v21];
+  fm_commaSeparatedString = [v58 fm_commaSeparatedString];
+  [v5 fm_safelyMapKey:@"collectionError" toObject:fm_commaSeparatedString];
 
   v22 = +[FMSystemInfo sharedInstance];
   LODWORD(v20) = [v22 isInternalBuild];
@@ -108,11 +108,11 @@
   }
 
   v24 = +[NSMutableDictionary dictionary];
-  v25 = [v8 productType];
-  [v24 fm_safelyMapKey:@"productType" toObject:v25];
+  productType = [v8 productType];
+  [v24 fm_safelyMapKey:@"productType" toObject:productType];
 
-  v26 = [v8 deviceUDID];
-  [v24 fm_safelyMapKey:@"udid" toObject:v26];
+  deviceUDID = [v8 deviceUDID];
+  [v24 fm_safelyMapKey:@"udid" toObject:deviceUDID];
 
   v27 = +[FMDSystemConfig sharedInstance];
   v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v27 alCapability]);
@@ -150,7 +150,7 @@
     v53 = [NSData dataWithBytes:md length:32];
     v35 = +[FMDAbsintheV3SigningInterface sharedInterface];
     v77 = 0;
-    v54 = [v35 signatureForData:v53 requestUUID:v56 mode:0 error:&v77];
+    v54 = [v35 signatureForData:v53 requestUUID:dCopy mode:0 error:&v77];
     v50 = v77;
 
     if ([v54 count] == 2)
@@ -165,10 +165,10 @@
       v38 = sub_100002880();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
       {
-        v51 = [(FMDNanoSupportProtoSignedDataV5 *)v29 signedData];
-        v39 = [v51 length];
-        v40 = [(FMDNanoSupportProtoSignedDataV5 *)v29 skAuth];
-        v41 = [v40 length];
+        signedData = [(FMDNanoSupportProtoSignedDataV5 *)v29 signedData];
+        v39 = [signedData length];
+        skAuth = [(FMDNanoSupportProtoSignedDataV5 *)v29 skAuth];
+        v41 = [skAuth length];
         *buf = 134218240;
         *&buf[4] = v39;
         *&buf[12] = 2048;
@@ -225,8 +225,8 @@
     v46 = v66[5];
     if (v46)
     {
-      v47 = [v46 domain];
-      v48 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@|%ld", v47, [v66[5] code], v50);
+      domain = [v46 domain];
+      v48 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@|%ld", domain, [v66[5] code], v50);
       [(FMDNanoSupportProtoSignedDataV5 *)v29 setBaaError:v48];
     }
 

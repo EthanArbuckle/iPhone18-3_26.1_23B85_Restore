@@ -1,15 +1,15 @@
 @interface _FindingAdvertiser
 + (id)sharedInstance;
-- (id)_configureAdvertiserForType:(int)a3 toPeer:(id)a4 withAdvertisement:(id)a5;
-- (id)_configureNearbyActionNoWakeAdvertiserWithPeer:(id)a3 advertisement:(id)a4;
-- (id)_configureSpatialInteractionAdvertiserWithPeer:(id)a3 advertisement:(id)a4;
+- (id)_configureAdvertiserForType:(int)type toPeer:(id)peer withAdvertisement:(id)advertisement;
+- (id)_configureNearbyActionNoWakeAdvertiserWithPeer:(id)peer advertisement:(id)advertisement;
+- (id)_configureSpatialInteractionAdvertiserWithPeer:(id)peer advertisement:(id)advertisement;
 - (id)_initInternal;
 - (id)printableState;
-- (id)startAdvertisingAsFinder:(BOOL)a3 toPeer:(id)a4 withAdvertisement:(id)a5;
-- (id)stopAdvertisingAsFinder:(BOOL)a3 toPeer:(id)a4;
-- (unint64_t)_peerIndexReferenceForAdvertisementType:(int)a3 outPeers:(id *)a4 outAdvertisements:(id *)a5;
+- (id)startAdvertisingAsFinder:(BOOL)finder toPeer:(id)peer withAdvertisement:(id)advertisement;
+- (id)stopAdvertisingAsFinder:(BOOL)finder toPeer:(id)peer;
+- (unint64_t)_peerIndexReferenceForAdvertisementType:(int)type outPeers:(id *)peers outAdvertisements:(id *)advertisements;
 - (void)_cbAdvertisingAddressChanged;
-- (void)_resetAdvertiserForType:(int)a3;
+- (void)_resetAdvertiserForType:(int)type;
 - (void)_resetNearbyActionNoWakeAdvertiser;
 - (void)_resetSpatialInteractionAdvertiser;
 - (void)_roundRobinTimerHandler;
@@ -32,18 +32,18 @@
   return v3;
 }
 
-- (id)startAdvertisingAsFinder:(BOOL)a3 toPeer:(id)a4 withAdvertisement:(id)a5
+- (id)startAdvertisingAsFinder:(BOOL)finder toPeer:(id)peer withAdvertisement:(id)advertisement
 {
-  v8 = a4;
-  v9 = a5;
-  if (!v8)
+  peerCopy = peer;
+  advertisementCopy = advertisement;
+  if (!peerCopy)
   {
     v15 = "token";
     v16 = 126;
     goto LABEL_8;
   }
 
-  if (!v9)
+  if (!advertisementCopy)
   {
     v15 = "advertisement";
     v16 = 127;
@@ -62,13 +62,13 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_1003735F0;
   block[3] = &unk_1009A83B8;
-  v21 = a3;
+  finderCopy = finder;
   block[4] = self;
-  v18 = v8;
-  v19 = v9;
+  v18 = peerCopy;
+  v19 = advertisementCopy;
   v20 = &v22;
-  v11 = v9;
-  v12 = v8;
+  v11 = advertisementCopy;
+  v12 = peerCopy;
   dispatch_sync(selfQueue, block);
   v13 = v23[5];
 
@@ -77,10 +77,10 @@ LABEL_8:
   return v13;
 }
 
-- (id)stopAdvertisingAsFinder:(BOOL)a3 toPeer:(id)a4
+- (id)stopAdvertisingAsFinder:(BOOL)finder toPeer:(id)peer
 {
-  v6 = a4;
-  if (!v6)
+  peerCopy = peer;
+  if (!peerCopy)
   {
     sub_1004C5120();
   }
@@ -96,11 +96,11 @@ LABEL_8:
   v11[1] = 3221225472;
   v11[2] = sub_1003738D4;
   v11[3] = &unk_1009A83E0;
-  v14 = a3;
+  finderCopy = finder;
   v11[4] = self;
-  v12 = v6;
+  v12 = peerCopy;
   v13 = &v15;
-  v8 = v6;
+  v8 = peerCopy;
   dispatch_sync(selfQueue, v11);
   v9 = v16[5];
 
@@ -177,22 +177,22 @@ LABEL_8:
   return v2;
 }
 
-- (unint64_t)_peerIndexReferenceForAdvertisementType:(int)a3 outPeers:(id *)a4 outAdvertisements:(id *)a5
+- (unint64_t)_peerIndexReferenceForAdvertisementType:(int)type outPeers:(id *)peers outAdvertisements:(id *)advertisements
 {
-  if (a3 == 19)
+  if (type == 19)
   {
-    *a4 = self->_spatialInteractionPeers;
-    *a5 = self->_spatialInteractionAdvertisements;
-    v8 = [*a4 count];
-    if (v8 != [*a5 count])
+    *peers = self->_spatialInteractionPeers;
+    *advertisements = self->_spatialInteractionAdvertisements;
+    v8 = [*peers count];
+    if (v8 != [*advertisements count])
     {
       sub_1004C51A4();
     }
 
-    if ([*a4 count])
+    if ([*peers count])
     {
       spatialInteractionCurrentPeerIndex = self->_spatialInteractionCurrentPeerIndex;
-      if (spatialInteractionCurrentPeerIndex >= [*a4 count])
+      if (spatialInteractionCurrentPeerIndex >= [*peers count])
       {
         sub_1004C51D0();
       }
@@ -203,18 +203,18 @@ LABEL_8:
 
   else
   {
-    *a4 = self->_nearbyActionNoWakePeers;
-    *a5 = self->_nearbyActionNoWakeAdvertisements;
-    v11 = [*a4 count];
-    if (v11 != [*a5 count])
+    *peers = self->_nearbyActionNoWakePeers;
+    *advertisements = self->_nearbyActionNoWakeAdvertisements;
+    v11 = [*peers count];
+    if (v11 != [*advertisements count])
     {
       sub_1004C514C();
     }
 
-    if ([*a4 count])
+    if ([*peers count])
     {
       nearbyActionNoWakeCurrentPeerIndex = self->_nearbyActionNoWakeCurrentPeerIndex;
-      if (nearbyActionNoWakeCurrentPeerIndex >= [*a4 count])
+      if (nearbyActionNoWakeCurrentPeerIndex >= [*peers count])
       {
         sub_1004C5178();
       }
@@ -226,23 +226,23 @@ LABEL_8:
   return (self + v10);
 }
 
-- (id)_configureAdvertiserForType:(int)a3 toPeer:(id)a4 withAdvertisement:(id)a5
+- (id)_configureAdvertiserForType:(int)type toPeer:(id)peer withAdvertisement:(id)advertisement
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 == 26)
+  peerCopy = peer;
+  advertisementCopy = advertisement;
+  if (type == 26)
   {
-    v11 = [(_FindingAdvertiser *)self _configureNearbyActionNoWakeAdvertiserWithPeer:v9 advertisement:v10];
+    v11 = [(_FindingAdvertiser *)self _configureNearbyActionNoWakeAdvertiserWithPeer:peerCopy advertisement:advertisementCopy];
   }
 
   else
   {
-    if (a3 != 19)
+    if (type != 19)
     {
       goto LABEL_6;
     }
 
-    v11 = [(_FindingAdvertiser *)self _configureSpatialInteractionAdvertiserWithPeer:v9 advertisement:v10];
+    v11 = [(_FindingAdvertiser *)self _configureSpatialInteractionAdvertiserWithPeer:peerCopy advertisement:advertisementCopy];
   }
 
   v5 = v11;
@@ -251,32 +251,32 @@ LABEL_6:
   return v5;
 }
 
-- (void)_resetAdvertiserForType:(int)a3
+- (void)_resetAdvertiserForType:(int)type
 {
-  if (a3 == 26)
+  if (type == 26)
   {
     [(_FindingAdvertiser *)self _resetNearbyActionNoWakeAdvertiser];
   }
 
-  else if (a3 == 19)
+  else if (type == 19)
   {
     [(_FindingAdvertiser *)self _resetSpatialInteractionAdvertiser];
   }
 }
 
-- (id)_configureNearbyActionNoWakeAdvertiserWithPeer:(id)a3 advertisement:(id)a4
+- (id)_configureNearbyActionNoWakeAdvertiserWithPeer:(id)peer advertisement:(id)advertisement
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  advertisementCopy = advertisement;
   dispatch_assert_queue_V2(self->_selfQueue);
-  if (!v6)
+  if (!peerCopy)
   {
     v31 = "peerToken";
     v32 = 389;
     goto LABEL_39;
   }
 
-  if (!v7)
+  if (!advertisementCopy)
   {
     v31 = "advertisement";
     v32 = 390;
@@ -341,9 +341,9 @@ LABEL_23:
     goto LABEL_34;
   }
 
-  v9 = [(CBAdvertiser *)nearbyActionNoWakeAdvertiser advertisingAddressDataConnectable];
-  v10 = v9;
-  if (!v9 || [v9 length] <= 5)
+  advertisingAddressDataConnectable = [(CBAdvertiser *)nearbyActionNoWakeAdvertiser advertisingAddressDataConnectable];
+  v10 = advertisingAddressDataConnectable;
+  if (!advertisingAddressDataConnectable || [advertisingAddressDataConnectable length] <= 5)
   {
     WORD2(location[0]) = 0;
     LODWORD(location[0]) = 0;
@@ -352,7 +352,7 @@ LABEL_23:
     v10 = v11;
   }
 
-  v12 = sub_100374F1C(v6, v10);
+  v12 = sub_100374F1C(peerCopy, v10);
   if (!v12)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
@@ -369,22 +369,22 @@ LABEL_23:
     [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser setNearbyActionNoWakeType:1];
   }
 
-  v13 = [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser nearbyActionNoWakeAuthTagData];
-  v14 = [v12 isEqualToData:v13];
+  nearbyActionNoWakeAuthTagData = [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser nearbyActionNoWakeAuthTagData];
+  v14 = [v12 isEqualToData:nearbyActionNoWakeAuthTagData];
 
   if ((v14 & 1) == 0)
   {
     [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser setNearbyActionNoWakeAuthTagData:v12];
   }
 
-  v15 = [v7 payload];
-  if (v15 || ([(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser nearbyActionNoWakeConfigData], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  payload = [advertisementCopy payload];
+  if (payload || ([(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser nearbyActionNoWakeConfigData], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v16 = [v7 payload];
-    v17 = [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser nearbyActionNoWakeConfigData];
-    v18 = [v16 isEqualToData:v17];
+    payload2 = [advertisementCopy payload];
+    nearbyActionNoWakeConfigData = [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser nearbyActionNoWakeConfigData];
+    v18 = [payload2 isEqualToData:nearbyActionNoWakeConfigData];
 
-    if (v15)
+    if (payload)
     {
 
       if (!v18)
@@ -400,17 +400,17 @@ LABEL_23:
       {
 LABEL_29:
         [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser setNearbyActionNWPrecisionFindingStatus:0];
-        v27 = [v7 payload];
-        [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser setNearbyActionNoWakeConfigData:v27];
+        payload3 = [advertisementCopy payload];
+        [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser setNearbyActionNoWakeConfigData:payload3];
 
-        -[CBAdvertiser setNearbyActionNWPrecisionFindingStatus:](self->_nearbyActionNoWakeAdvertiser, "setNearbyActionNWPrecisionFindingStatus:", -[CBAdvertiser nearbyActionNWPrecisionFindingStatus](self->_nearbyActionNoWakeAdvertiser, "nearbyActionNWPrecisionFindingStatus") | [v7 statusFlags]);
+        -[CBAdvertiser setNearbyActionNWPrecisionFindingStatus:](self->_nearbyActionNoWakeAdvertiser, "setNearbyActionNWPrecisionFindingStatus:", -[CBAdvertiser nearbyActionNWPrecisionFindingStatus](self->_nearbyActionNoWakeAdvertiser, "nearbyActionNWPrecisionFindingStatus") | [advertisementCopy statusFlags]);
         goto LABEL_30;
       }
     }
   }
 
-  v26 = [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser nearbyActionNWPrecisionFindingStatus];
-  if (v26 != [v7 statusFlags])
+  nearbyActionNWPrecisionFindingStatus = [(CBAdvertiser *)self->_nearbyActionNoWakeAdvertiser nearbyActionNWPrecisionFindingStatus];
+  if (nearbyActionNWPrecisionFindingStatus != [advertisementCopy statusFlags])
   {
     goto LABEL_29;
   }
@@ -433,19 +433,19 @@ LABEL_34:
   return v25;
 }
 
-- (id)_configureSpatialInteractionAdvertiserWithPeer:(id)a3 advertisement:(id)a4
+- (id)_configureSpatialInteractionAdvertiserWithPeer:(id)peer advertisement:(id)advertisement
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  advertisementCopy = advertisement;
   dispatch_assert_queue_V2(self->_selfQueue);
-  if (!v6)
+  if (!peerCopy)
   {
     v45 = "peerToken";
     v46 = 486;
     goto LABEL_36;
   }
 
-  if (!v7)
+  if (!advertisementCopy)
   {
     v45 = "advertisement";
     v46 = 487;
@@ -453,36 +453,36 @@ LABEL_36:
     __assert_rtn("[_FindingAdvertiser _configureSpatialInteractionAdvertiserWithPeer:advertisement:]", "NIServerFindingDiscovery.mm", v46, v45);
   }
 
-  v8 = [v6 getIRK];
-  if (v8)
+  getIRK = [peerCopy getIRK];
+  if (getIRK)
   {
-    v9 = [v6 getSessionIdentifier];
-    if (v9)
+    getSessionIdentifier = [peerCopy getSessionIdentifier];
+    if (getSessionIdentifier)
     {
       v51 = 0;
       v50 = 0;
-      v10 = [v7 payload];
+      payload = [advertisementCopy payload];
 
-      if (v10)
+      if (payload)
       {
         for (i = 0; ; ++i)
         {
-          v12 = [v7 payload];
-          v13 = [v12 length];
+          payload2 = [advertisementCopy payload];
+          v13 = [payload2 length];
 
           if (v13 <= i)
           {
             break;
           }
 
-          v14 = [v7 payload];
-          *(&v50 + i) = *([v14 bytes] + i);
+          payload3 = [advertisementCopy payload];
+          *(&v50 + i) = *([payload3 bytes] + i);
         }
       }
 
-      v15 = [v7 statusFlags];
+      statusFlags = [advertisementCopy statusFlags];
       v16 = +[NIServerSpatialInteractionPayloadAggregator sharedInstance];
-      [v16 setFindingStatus:v15];
+      [v16 setFindingStatus:statusFlags];
 
       v17 = v50;
       v18 = +[NIServerSpatialInteractionPayloadAggregator sharedInstance];
@@ -499,28 +499,28 @@ LABEL_36:
       [v22 commitChange];
 
       v23 = +[NIServerSpatialInteractionPayloadAggregator sharedInstance];
-      v24 = [v23 aggregatedUWBData];
+      aggregatedUWBData = [v23 aggregatedUWBData];
 
       spatialInteractionAdvertiser = self->_spatialInteractionAdvertiser;
       if (spatialInteractionAdvertiser)
       {
-        v26 = [(CBSpatialInteractionSession *)spatialInteractionAdvertiser clientIrkData];
-        if ([v26 isEqualToData:v8])
+        clientIrkData = [(CBSpatialInteractionSession *)spatialInteractionAdvertiser clientIrkData];
+        if ([clientIrkData isEqualToData:getIRK])
         {
-          v27 = [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser clientIdentifierData];
-          v28 = [v27 isEqual:v9];
+          clientIdentifierData = [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser clientIdentifierData];
+          v28 = [clientIdentifierData isEqual:getSessionIdentifier];
 
           if (v28)
           {
             if (self->_activatedSpatialInteraction)
             {
-              v29 = [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser uwbConfigData];
-              v30 = [v24 isEqualToData:v29];
+              uwbConfigData = [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser uwbConfigData];
+              v30 = [aggregatedUWBData isEqualToData:uwbConfigData];
 
               if ((v30 & 1) == 0)
               {
                 [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setControlFlags:[(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser controlFlags]| 8];
-                [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setUwbConfigData:v24];
+                [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setUwbConfigData:aggregatedUWBData];
                 [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setControlFlags:[(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser controlFlags]& 0xFFFFFFF7];
               }
 
@@ -572,12 +572,12 @@ LABEL_27:
 
       [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setDispatchQueue:self->_selfQueue];
       [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setLabel:@"nearbydFinding"];
-      [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setClientIrkData:v8];
-      [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setClientIdentifierData:v9];
+      [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setClientIrkData:getIRK];
+      [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setClientIdentifierData:getSessionIdentifier];
       [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setControlFlags:4115];
       [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setEnableEPAForLEAdvertisement:1];
       [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setAdvertiseRate:50];
-      [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setUwbConfigData:v24];
+      [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setUwbConfigData:aggregatedUWBData];
       self->_activatedSpatialInteraction = 0;
       objc_initWeak(location, self);
       v40 = qword_1009F9820;
@@ -622,8 +622,8 @@ LABEL_27:
 
     v55 = NSLocalizedFailureReasonErrorKey;
     v56 = @"Discovery token doesn't contain valid IRK";
-    v9 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
-    v36 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v9];
+    getSessionIdentifier = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
+    v36 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:getSessionIdentifier];
   }
 
 LABEL_28:
@@ -824,21 +824,21 @@ LABEL_28:
   if (self->_spatialInteractionAdvertiser)
   {
     v3 = +[NIServerSpatialInteractionPayloadAggregator sharedInstance];
-    v4 = [v3 aggregatedUWBData];
+    aggregatedUWBData = [v3 aggregatedUWBData];
 
-    v5 = [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser uwbConfigData];
-    v6 = [v5 isEqualToData:v4];
+    uwbConfigData = [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser uwbConfigData];
+    v6 = [uwbConfigData isEqualToData:aggregatedUWBData];
 
     if ((v6 & 1) == 0)
     {
       if (([(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser controlFlags]& 8) != 0)
       {
-        [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setUwbConfigData:v4];
+        [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setUwbConfigData:aggregatedUWBData];
         v8 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           v9 = 138412290;
-          v10 = v4;
+          v10 = aggregatedUWBData;
           _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#find-disc,SpatialInteraction: payload did change: %@. Advertiser updated, but not currently advertising", &v9, 0xCu);
         }
       }
@@ -846,12 +846,12 @@ LABEL_28:
       else
       {
         [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setControlFlags:[(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser controlFlags]| 8];
-        [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setUwbConfigData:v4];
+        [(CBSpatialInteractionSession *)self->_spatialInteractionAdvertiser setUwbConfigData:aggregatedUWBData];
         v7 = qword_1009F9820;
         if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
         {
           v9 = 138412290;
-          v10 = v4;
+          v10 = aggregatedUWBData;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#find-disc,SpatialInteraction: payload did change: %@. Advertiser updated, and control flags toggled for it to take effect", &v9, 0xCu);
         }
 

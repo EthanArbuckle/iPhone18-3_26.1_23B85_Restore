@@ -3,7 +3,7 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)points;
 - (CLLocationCoordinate2D)coordinate;
 - (_TtCV15_MapKit_SwiftUI11MapPolyline12CocoaWrapper)init;
-- (id)locationsAtPointIndexes:(id)a3;
+- (id)locationsAtPointIndexes:(id)indexes;
 @end
 
 @implementation MapPolyline.CocoaWrapper
@@ -33,7 +33,7 @@
   return [v2 points];
 }
 
-- (id)locationsAtPointIndexes:(id)a3
+- (id)locationsAtPointIndexes:(id)indexes
 {
   v4 = sub_213D9036C();
   v5 = *(v4 - 8);
@@ -42,20 +42,20 @@
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_213D9035C();
   v9 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtCV15_MapKit_SwiftUI11MapPolyline12CocoaWrapper_wrapped);
-  v10 = self;
+  selfCopy = self;
   v11 = sub_213D9034C();
-  v12 = [v9 locationsAtPointIndexes_];
+  locationsAtPointIndexes_ = [v9 locationsAtPointIndexes_];
 
-  if (!v12)
+  if (!locationsAtPointIndexes_)
   {
     sub_213CE2B34(0, &unk_27C8EB188, 0x277CCABB0);
     sub_213D919FC();
-    v12 = sub_213D919EC();
+    locationsAtPointIndexes_ = sub_213D919EC();
   }
 
   (*(v5 + 8))(v8, v4);
 
-  return v12;
+  return locationsAtPointIndexes_;
 }
 
 - (_TtCV15_MapKit_SwiftUI11MapPolyline12CocoaWrapper)init

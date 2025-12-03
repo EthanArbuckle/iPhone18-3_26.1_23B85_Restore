@@ -1,27 +1,27 @@
 @interface ICSUnfoldingStream
 - (BOOL)eos;
-- (ICSUnfoldingStream)initWithInputStream:(id)a3;
+- (ICSUnfoldingStream)initWithInputStream:(id)stream;
 - (char)read;
 @end
 
 @implementation ICSUnfoldingStream
 
-- (ICSUnfoldingStream)initWithInputStream:(id)a3
+- (ICSUnfoldingStream)initWithInputStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v10.receiver = self;
   v10.super_class = ICSUnfoldingStream;
   v6 = [(ICSUnfoldingStream *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!streamCopy)
     {
       v8 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v6->_underStream, a3);
+    objc_storeStrong(&v6->_underStream, stream);
     [(ICSUnfoldingStream *)v7 _readTwo];
   }
 
@@ -48,9 +48,9 @@ LABEL_6:
         goto LABEL_16;
       }
 
-      v4 = [(ICSInputByteStream *)self->_underStream read];
-      v5 = v4;
-      if (v4 == 32 || v4 == 9)
+      read = [(ICSInputByteStream *)self->_underStream read];
+      v5 = read;
+      if (read == 32 || read == 9)
       {
         [(ICSUnfoldingStream *)self _readTwo];
       }
@@ -58,7 +58,7 @@ LABEL_6:
       else
       {
         self->_char1 = 10;
-        self->_char2 = v4;
+        self->_char2 = read;
       }
 
       if (v5 != 9 && v5 != 32)

@@ -2,16 +2,16 @@
 - (BOOL)_isFullscreen;
 - (BOOL)_isTextEffectsWindowNotificationOwner;
 - (CGRect)actualSceneBounds;
-- (CGRect)actualSceneBoundsForLandscape:(BOOL)a3;
+- (CGRect)actualSceneBoundsForLandscape:(BOOL)landscape;
 - (void)_sceneBoundsDidChange;
 - (void)adjustTextEffectsWindowSizeIfNecessary;
 @end
 
 @implementation UITextEffectsWindowHosted
 
-- (CGRect)actualSceneBoundsForLandscape:(BOOL)a3
+- (CGRect)actualSceneBoundsForLandscape:(BOOL)landscape
 {
-  v3 = a3;
+  landscapeCopy = landscape;
   [(UITextEffectsWindow *)self hostedViewSize];
   v7 = v6;
   v8 = v5;
@@ -19,7 +19,7 @@
   {
     v12.receiver = self;
     v12.super_class = UITextEffectsWindowHosted;
-    [(UITextEffectsWindow *)&v12 actualSceneBoundsForLandscape:v3];
+    [(UITextEffectsWindow *)&v12 actualSceneBoundsForLandscape:landscapeCopy];
   }
 
   else
@@ -74,8 +74,8 @@
 
   else
   {
-    v8 = [(UIWindow *)self screen];
-    [v8 _boundsForInterfaceOrientation:{-[UIView _keyboardOrientation](self, "_keyboardOrientation")}];
+    screen = [(UIWindow *)self screen];
+    [screen _boundsForInterfaceOrientation:{-[UIView _keyboardOrientation](self, "_keyboardOrientation")}];
     v11 = v6 == v10 && v5 == v9;
   }
 
@@ -85,11 +85,11 @@
 - (void)adjustTextEffectsWindowSizeIfNecessary
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 visualModeManager];
-  v5 = [v4 windowingModeEnabled];
+  visualModeManager = [v3 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
   [(UITextEffectsWindow *)self hostedViewSize];
-  if ((*(MEMORY[0x1E695F060] + 8) != v7 || *MEMORY[0x1E695F060] != v6) && v5 != 0)
+  if ((*(MEMORY[0x1E695F060] + 8) != v7 || *MEMORY[0x1E695F060] != v6) && windowingModeEnabled != 0)
   {
     [(UITextEffectsWindow *)self hostedViewSize];
     v11 = v10;
@@ -107,8 +107,8 @@
 - (void)_sceneBoundsDidChange
 {
   v3 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v4 = [v3 visualModeManager];
-  v5 = [v4 windowingModeEnabled];
+  visualModeManager = [v3 visualModeManager];
+  windowingModeEnabled = [visualModeManager windowingModeEnabled];
 
   [(UITextEffectsWindow *)self _sceneBounds];
   v7 = v6;
@@ -126,7 +126,7 @@
     v11 = 0;
   }
 
-  if ((v11 | v5))
+  if ((v11 | windowingModeEnabled))
   {
 LABEL_5:
     v9 = 0.0;
@@ -151,21 +151,21 @@ LABEL_5:
   v21 = 0u;
   v20 = 64;
   [(UIView *)self _notifyGeometryObserversWithChangeInfo:?];
-  v13 = [(UITextEffectsWindow *)self rootViewController];
-  v14 = [v13 conformsToProtocol:&unk_1F0037730];
+  rootViewController = [(UITextEffectsWindow *)self rootViewController];
+  v14 = [rootViewController conformsToProtocol:&unk_1F0037730];
 
   if (v14)
   {
-    v15 = [(UITextEffectsWindow *)self rootViewController];
-    [v15 hostAppSceneBoundsChanged];
+    rootViewController2 = [(UITextEffectsWindow *)self rootViewController];
+    [rootViewController2 hostAppSceneBoundsChanged];
   }
 
   [(UITextEffectsWindow *)self updateEditingOverlayContainer];
   v16 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v17 = [v16 visualModeManager];
-  v18 = [v17 windowingModeEnabled];
+  visualModeManager2 = [v16 visualModeManager];
+  windowingModeEnabled2 = [visualModeManager2 windowingModeEnabled];
 
-  if (v18)
+  if (windowingModeEnabled2)
   {
     v19.receiver = self;
     v19.super_class = UITextEffectsWindowHosted;
@@ -175,19 +175,19 @@ LABEL_5:
 
 - (BOOL)_isTextEffectsWindowNotificationOwner
 {
-  v3 = [(UIWindow *)self windowScene];
-  v4 = [UITextEffectsHostingInfo hostingInfoForWindowScene:v3];
-  v5 = [v4 useHostedInstance];
+  windowScene = [(UIWindow *)self windowScene];
+  v4 = [UITextEffectsHostingInfo hostingInfoForWindowScene:windowScene];
+  useHostedInstance = [v4 useHostedInstance];
 
-  if (v5 & 1) != 0 || ([UIApp _isSpringBoard])
+  if (useHostedInstance & 1) != 0 || ([UIApp _isSpringBoard])
   {
     return 1;
   }
 
-  v7 = [(UIWindow *)self windowScene];
-  v8 = [v7 _isKeyWindowScene];
+  windowScene2 = [(UIWindow *)self windowScene];
+  _isKeyWindowScene = [windowScene2 _isKeyWindowScene];
 
-  return v8;
+  return _isKeyWindowScene;
 }
 
 @end

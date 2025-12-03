@@ -1,36 +1,36 @@
 @interface NWSAlgosScoreCSVReader
-- (double)doubleAtRow:(id)a3 col:(id)a4 defaultValue:(double)a5;
-- (double)doubleAtRow:(id)a3 colIndex:(int64_t)a4 defaultValue:(double)a5;
-- (id)atRow:(id)a3 col:(id)a4;
-- (id)atRowIndex:(int64_t)a3 col:(id)a4;
-- (id)fixStrings:(id)a3;
-- (id)parseFile:(id)a3 header:(BOOL)a4;
-- (id)stripAndQuoteString:(id)a3;
-- (int64_t)intAtRow:(id)a3 col:(id)a4 defaultValue:(int64_t)a5;
-- (int64_t)intAtRow:(id)a3 colIndex:(int64_t)a4 defaultValue:(int64_t)a5;
-- (void)debugPrint:(int)a3;
-- (void)sortOnColumnIndex:(int64_t)a3 ascending:(BOOL)a4;
+- (double)doubleAtRow:(id)row col:(id)col defaultValue:(double)value;
+- (double)doubleAtRow:(id)row colIndex:(int64_t)index defaultValue:(double)value;
+- (id)atRow:(id)row col:(id)col;
+- (id)atRowIndex:(int64_t)index col:(id)col;
+- (id)fixStrings:(id)strings;
+- (id)parseFile:(id)file header:(BOOL)header;
+- (id)stripAndQuoteString:(id)string;
+- (int64_t)intAtRow:(id)row col:(id)col defaultValue:(int64_t)value;
+- (int64_t)intAtRow:(id)row colIndex:(int64_t)index defaultValue:(int64_t)value;
+- (void)debugPrint:(int)print;
+- (void)sortOnColumnIndex:(int64_t)index ascending:(BOOL)ascending;
 @end
 
 @implementation NWSAlgosScoreCSVReader
 
-- (id)stripAndQuoteString:(id)a3
+- (id)stripAndQuoteString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = &stru_286D2DF20;
-  if (([v3 isEqualToString:&stru_286D2DF20] & 1) == 0)
+  if (([stringCopy isEqualToString:&stru_286D2DF20] & 1) == 0)
   {
     v11 = 0;
     v5 = [MEMORY[0x277CCAC68] regularExpressionWithPattern:@"\\S+|.*" options:1 error:&v11];
     v4 = 0;
     if (!v11)
     {
-      v6 = [v5 firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+      v6 = [v5 firstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 range];
-        v4 = [v3 substringWithRange:{v8, v9}];
+        range = [v6 range];
+        v4 = [stringCopy substringWithRange:{range, v9}];
       }
 
       else
@@ -43,16 +43,16 @@
   return v4;
 }
 
-- (id)fixStrings:(id)a3
+- (id)fixStrings:(id)strings
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  stringsCopy = strings;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = stringsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -68,7 +68,7 @@
         }
 
         v11 = [(NWSAlgosScoreCSVReader *)self stripAndQuoteString:*(*(&v14 + 1) + 8 * i), v14];
-        [v5 addObject:v11];
+        [array addObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -79,17 +79,17 @@
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)parseFile:(id)a3 header:(BOOL)a4
+- (id)parseFile:(id)file header:(BOOL)header
 {
-  v4 = a4;
+  headerCopy = header;
   v45 = *MEMORY[0x277D85DE8];
   v42 = 0;
-  v6 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:a3 encoding:4 error:&v42];
+  v6 = [MEMORY[0x277CCACA8] stringWithContentsOfFile:file encoding:4 error:&v42];
   v7 = v42;
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (!v7)
   {
     v27 = v6;
@@ -103,10 +103,10 @@
     {
       v10 = *v39;
       v11 = 1;
-      v32 = self;
-      v31 = v4;
+      selfCopy = self;
+      v31 = headerCopy;
       v29 = v9;
-      v30 = v8;
+      v30 = array;
       v28 = *v39;
       do
       {
@@ -120,9 +120,9 @@
           v13 = *(*(&v38 + 1) + 8 * i);
           if (([v13 isEqualToString:&stru_286D2DF20] & 1) == 0)
           {
-            if ((v11 & v4) == 1)
+            if ((v11 & headerCopy) == 1)
             {
-              v14 = [MEMORY[0x277CBEB38] dictionary];
+              dictionary = [MEMORY[0x277CBEB38] dictionary];
               v34 = 0u;
               v35 = 0u;
               v36 = 0u;
@@ -147,7 +147,7 @@
 
                     v22 = *(*(&v34 + 1) + 8 * j);
                     v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v19];
-                    [v14 setObject:v23 forKey:v22];
+                    [dictionary setObject:v23 forKey:v22];
 
                     ++v19;
                   }
@@ -158,19 +158,19 @@
                 while (v18);
               }
 
-              self = v32;
-              [(NWSAlgosScoreCSVReader *)v32 setHeadings:v14];
-              v4 = v31;
+              self = selfCopy;
+              [(NWSAlgosScoreCSVReader *)selfCopy setHeadings:dictionary];
+              headerCopy = v31;
               v9 = v29;
-              v8 = v30;
+              array = v30;
               v10 = v28;
             }
 
             else
             {
-              v14 = [v13 componentsSeparatedByString:{@", "}];
-              v24 = [(NWSAlgosScoreCSVReader *)self fixStrings:v14];
-              [v8 addObject:v24];
+              dictionary = [v13 componentsSeparatedByString:{@", "}];
+              v24 = [(NWSAlgosScoreCSVReader *)self fixStrings:dictionary];
+              [array addObject:v24];
             }
 
             v11 = 0;
@@ -183,7 +183,7 @@
       while (v33);
     }
 
-    [(NWSAlgosScoreCSVReader *)self setRows:v8];
+    [(NWSAlgosScoreCSVReader *)self setRows:array];
 
     v6 = v27;
     v7 = 0;
@@ -194,16 +194,16 @@
   return v7;
 }
 
-- (id)atRow:(id)a3 col:(id)a4
+- (id)atRow:(id)row col:(id)col
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NWSAlgosScoreCSVReader *)self headings];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  rowCopy = row;
+  colCopy = col;
+  headings = [(NWSAlgosScoreCSVReader *)self headings];
+  v9 = [headings objectForKeyedSubscript:colCopy];
 
   if (v9)
   {
-    v10 = [v6 objectAtIndexedSubscript:{objc_msgSend(v9, "integerValue")}];
+    v10 = [rowCopy objectAtIndexedSubscript:{objc_msgSend(v9, "integerValue")}];
   }
 
   else
@@ -214,82 +214,82 @@
   return v10;
 }
 
-- (id)atRowIndex:(int64_t)a3 col:(id)a4
+- (id)atRowIndex:(int64_t)index col:(id)col
 {
-  v6 = a4;
-  v7 = [(NWSAlgosScoreCSVReader *)self headings];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  colCopy = col;
+  headings = [(NWSAlgosScoreCSVReader *)self headings];
+  v8 = [headings objectForKeyedSubscript:colCopy];
 
-  v9 = [v8 integerValue];
-  v10 = [(NWSAlgosScoreCSVReader *)self rows];
-  v11 = [v10 objectAtIndexedSubscript:a3];
-  v12 = [v11 objectAtIndexedSubscript:v9];
+  integerValue = [v8 integerValue];
+  rows = [(NWSAlgosScoreCSVReader *)self rows];
+  v11 = [rows objectAtIndexedSubscript:index];
+  v12 = [v11 objectAtIndexedSubscript:integerValue];
 
   return v12;
 }
 
-- (double)doubleAtRow:(id)a3 col:(id)a4 defaultValue:(double)a5
+- (double)doubleAtRow:(id)row col:(id)col defaultValue:(double)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NWSAlgosScoreCSVReader *)self atRow:v8 col:v9];
+  rowCopy = row;
+  colCopy = col;
+  v10 = [(NWSAlgosScoreCSVReader *)self atRow:rowCopy col:colCopy];
   if (([v10 isEqualToString:&stru_286D2DF20] & 1) == 0)
   {
     [v10 doubleValue];
-    a5 = v11;
+    value = v11;
   }
 
-  return a5;
+  return value;
 }
 
-- (double)doubleAtRow:(id)a3 colIndex:(int64_t)a4 defaultValue:(double)a5
+- (double)doubleAtRow:(id)row colIndex:(int64_t)index defaultValue:(double)value
 {
-  v7 = a3;
-  v8 = [v7 objectAtIndexedSubscript:a4];
+  rowCopy = row;
+  v8 = [rowCopy objectAtIndexedSubscript:index];
   if (([v8 isEqualToString:&stru_286D2DF20] & 1) == 0)
   {
     [v8 doubleValue];
-    a5 = v9;
+    value = v9;
   }
 
-  return a5;
+  return value;
 }
 
-- (int64_t)intAtRow:(id)a3 col:(id)a4 defaultValue:(int64_t)a5
+- (int64_t)intAtRow:(id)row col:(id)col defaultValue:(int64_t)value
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(NWSAlgosScoreCSVReader *)self atRow:v8 col:v9];
+  rowCopy = row;
+  colCopy = col;
+  v10 = [(NWSAlgosScoreCSVReader *)self atRow:rowCopy col:colCopy];
   if (([v10 isEqualToString:&stru_286D2DF20] & 1) == 0)
   {
-    a5 = [v10 longLongValue];
+    value = [v10 longLongValue];
   }
 
-  return a5;
+  return value;
 }
 
-- (int64_t)intAtRow:(id)a3 colIndex:(int64_t)a4 defaultValue:(int64_t)a5
+- (int64_t)intAtRow:(id)row colIndex:(int64_t)index defaultValue:(int64_t)value
 {
-  v7 = a3;
-  v8 = [v7 objectAtIndexedSubscript:a4];
+  rowCopy = row;
+  v8 = [rowCopy objectAtIndexedSubscript:index];
   if (([v8 isEqualToString:&stru_286D2DF20] & 1) == 0)
   {
-    a5 = [v8 longLongValue];
+    value = [v8 longLongValue];
   }
 
-  return a5;
+  return value;
 }
 
-- (void)sortOnColumnIndex:(int64_t)a3 ascending:(BOOL)a4
+- (void)sortOnColumnIndex:(int64_t)index ascending:(BOOL)ascending
 {
-  v6 = [(NWSAlgosScoreCSVReader *)self rows];
+  rows = [(NWSAlgosScoreCSVReader *)self rows];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__NWSAlgosScoreCSVReader_sortOnColumnIndex_ascending___block_invoke;
   v7[3] = &__block_descriptor_41_e11_q24__0_8_16l;
-  v8 = a4;
-  v7[4] = a3;
-  [v6 sortUsingComparator:v7];
+  ascendingCopy = ascending;
+  v7[4] = index;
+  [rows sortUsingComparator:v7];
 }
 
 BOOL __54__NWSAlgosScoreCSVReader_sortOnColumnIndex_ascending___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -313,15 +313,15 @@ BOOL __54__NWSAlgosScoreCSVReader_sortOnColumnIndex_ascending___block_invoke(uin
   }
 }
 
-- (void)debugPrint:(int)a3
+- (void)debugPrint:(int)print
 {
   v56 = *MEMORY[0x277D85DE8];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v3 = [(NWSAlgosScoreCSVReader *)self headings];
-  v4 = [v3 countByEnumeratingWithState:&v49 objects:v55 count:16];
+  headings = [(NWSAlgosScoreCSVReader *)self headings];
+  v4 = [headings countByEnumeratingWithState:&v49 objects:v55 count:16];
   if (v4)
   {
     v5 = v4;
@@ -332,7 +332,7 @@ BOOL __54__NWSAlgosScoreCSVReader_sortOnColumnIndex_ascending___block_invoke(uin
       {
         if (*v50 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(headings);
         }
 
         v8 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"%-15s", objc_msgSend(*(*(&v49 + 1) + 8 * i), "cStringUsingEncoding:", 4)];
@@ -345,7 +345,7 @@ BOOL __54__NWSAlgosScoreCSVReader_sortOnColumnIndex_ascending___block_invoke(uin
         __nws_log_run_with_lock(v47);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v49 objects:v55 count:16];
+      v5 = [headings countByEnumeratingWithState:&v49 objects:v55 count:16];
     }
 
     while (v5);
@@ -366,13 +366,13 @@ BOOL __54__NWSAlgosScoreCSVReader_sortOnColumnIndex_ascending___block_invoke(uin
   v42 = 0u;
   obj = [(NWSAlgosScoreCSVReader *)self rows];
   v27 = [obj countByEnumeratingWithState:&v41 objects:v54 count:16];
-  v12 = a3;
+  printCopy = print;
   if (v27)
   {
     v26 = *v42;
 LABEL_10:
     v13 = 0;
-    v28 = v12 & ~(v12 >> 31);
+    v28 = printCopy & ~(printCopy >> 31);
     while (1)
     {
       if (*v42 != v26)
@@ -385,7 +385,7 @@ LABEL_10:
         break;
       }
 
-      v32 = v12;
+      v32 = printCopy;
       v30 = v13;
       v14 = *(*(&v41 + 1) + 8 * v13);
       v39 = 0u;
@@ -423,7 +423,7 @@ LABEL_10:
         while (v17);
       }
 
-      v12 = v32 - 1;
+      printCopy = v32 - 1;
 
       v22 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"\n"];
       v33[0] = MEMORY[0x277D85DD0];

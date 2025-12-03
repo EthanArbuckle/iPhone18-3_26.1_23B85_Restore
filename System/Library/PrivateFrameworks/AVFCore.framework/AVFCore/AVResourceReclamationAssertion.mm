@@ -1,19 +1,19 @@
 @interface AVResourceReclamationAssertion
-- (AVResourceReclamationAssertion)initWithDetails:(id)a3;
+- (AVResourceReclamationAssertion)initWithDetails:(id)details;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation AVResourceReclamationAssertion
 
-- (AVResourceReclamationAssertion)initWithDetails:(id)a3
+- (AVResourceReclamationAssertion)initWithDetails:(id)details
 {
   v6.receiver = self;
   v6.super_class = AVResourceReclamationAssertion;
   v4 = [(AVResourceReclamationAssertion *)&v6 init];
   if (v4)
   {
-    v4->_details = [a3 copy];
+    v4->_details = [details copy];
   }
 
   return v4;

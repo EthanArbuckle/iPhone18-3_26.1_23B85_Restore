@@ -1,6 +1,6 @@
 @interface MPUAnimationFactory
 - (MPUAnimationFactory)init;
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4;
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path;
 @end
 
 @implementation MPUAnimationFactory
@@ -20,19 +20,19 @@
   return v3;
 }
 
-- (id)_basicAnimationForView:(id)a3 withKeyPath:(id)a4
+- (id)_basicAnimationForView:(id)view withKeyPath:(id)path
 {
-  v5 = a4;
-  v6 = [(MPUAnimationFactory *)self allowedKeyPaths];
-  v7 = v6;
-  if (v6 && ![v6 containsObject:v5])
+  pathCopy = path;
+  allowedKeyPaths = [(MPUAnimationFactory *)self allowedKeyPaths];
+  v7 = allowedKeyPaths;
+  if (allowedKeyPaths && ![allowedKeyPaths containsObject:pathCopy])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:v5];
+    v8 = [MEMORY[0x277CD9E10] animationWithKeyPath:pathCopy];
     [v8 setTimeOffset:self->_timeOffset];
     [v8 setFillMode:self->_fillMode];
     [v8 setRemovedOnCompletion:self->_removedOnCompletion];

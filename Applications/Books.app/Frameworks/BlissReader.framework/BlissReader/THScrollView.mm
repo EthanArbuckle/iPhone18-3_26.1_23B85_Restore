@@ -1,10 +1,10 @@
 @interface THScrollView
 - (BOOL)isAncestorScrollViewDragging;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)parentScrollView;
 - (void)dealloc;
-- (void)setContentOffset:(CGPoint)a3;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation THScrollView
@@ -32,13 +32,13 @@
   [(THScrollView *)&v3 dealloc];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v44.receiver = self;
   v44.super_class = THScrollView;
-  v7 = [(THScrollView *)&v44 hitTest:a4 withEvent:?];
+  v7 = [(THScrollView *)&v44 hitTest:event withEvent:?];
   if ([(THScrollView *)self preventChildInducedBounce])
   {
     v8 = v7;
@@ -46,13 +46,13 @@
     {
       while (1)
       {
-        v9 = [v8 superview];
-        if (!v9)
+        superview = [v8 superview];
+        if (!superview)
         {
           return v7;
         }
 
-        v8 = v9;
+        v8 = superview;
         objc_opt_class();
         v10 = TSUDynamicCast();
         [(THScrollView *)self frame];
@@ -88,7 +88,7 @@ LABEL_11:
           if (v10 == self || ![(THScrollView *)v10 isScrollEnabled])
           {
 LABEL_22:
-            v19 = self;
+            selfCopy3 = self;
             v20 = 1;
           }
 
@@ -108,8 +108,8 @@ LABEL_22:
               v43 = 0u;
               v40 = 0u;
               v41 = 0u;
-              v25 = [v23 deadTouchRectsForPan];
-              v26 = [v25 countByEnumeratingWithState:&v40 objects:v45 count:16];
+              deadTouchRectsForPan = [v23 deadTouchRectsForPan];
+              v26 = [deadTouchRectsForPan countByEnumeratingWithState:&v40 objects:v45 count:16];
               if (v26)
               {
                 v27 = v26;
@@ -120,7 +120,7 @@ LABEL_22:
                   {
                     if (*v41 != v28)
                     {
-                      objc_enumerationMutation(v25);
+                      objc_enumerationMutation(deadTouchRectsForPan);
                     }
 
                     [*(*(&v40 + 1) + 8 * i) CGRectValue];
@@ -142,7 +142,7 @@ LABEL_22:
                     }
                   }
 
-                  v27 = [v25 countByEnumeratingWithState:&v40 objects:v45 count:16];
+                  v27 = [deadTouchRectsForPan countByEnumeratingWithState:&v40 objects:v45 count:16];
                   if (v27)
                   {
                     continue;
@@ -162,18 +162,18 @@ LABEL_22:
                 v20 = 0;
               }
 
-              v19 = self;
+              selfCopy3 = self;
             }
 
             else
             {
 LABEL_13:
-              v19 = self;
+              selfCopy3 = self;
               v20 = 0;
             }
           }
 
-          [(THScrollView *)v19 setScrollEnabled:v20];
+          [(THScrollView *)selfCopy3 setScrollEnabled:v20];
           return v7;
         }
       }
@@ -182,17 +182,17 @@ LABEL_13:
 
   if (!-[THScrollView handleNaturally](self, "handleNaturally") && [-[THScrollView parentScrollView](self "parentScrollView")])
   {
-    v21 = [(THScrollView *)self pageCount]> 2 || [(THScrollView *)self disableParentScrollOnFirstOrLastPage];
-    [(THScrollView *)self setBounces:v21];
+    disableParentScrollOnFirstOrLastPage = [(THScrollView *)self pageCount]> 2 || [(THScrollView *)self disableParentScrollOnFirstOrLastPage];
+    [(THScrollView *)self setBounces:disableParentScrollOnFirstOrLastPage];
   }
 
   return v7;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   if (self->mPreventBounceAnimation && [(THScrollView *)self isPagingEnabled]&& [(THScrollView *)self isDecelerating]&& ([(THScrollView *)self isTracking]& 1) == 0)
   {
     [(THScrollView *)self contentOffset];
@@ -244,34 +244,34 @@ LABEL_13:
 
 - (id)parentScrollView
 {
-  v2 = [(THScrollView *)self superview];
-  if (!v2)
+  superview = [(THScrollView *)self superview];
+  if (!superview)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = superview;
   do
   {
     objc_opt_class();
     v4 = TSUDynamicCast();
-    v5 = [v3 superview];
-    if (!v5)
+    superview2 = [v3 superview];
+    if (!superview2)
     {
       break;
     }
 
-    v3 = v5;
+    v3 = superview2;
   }
 
   while (!v4);
   return v4;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(THScrollView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -326,7 +326,7 @@ LABEL_13:
 
         v28 = *(*(&v30 + 1) + 8 * i);
         [v28 convertPoint:self fromView:{x, y}];
-        v22 |= [v28 pointInside:a4 withEvent:?];
+        v22 |= [v28 pointInside:event withEvent:?];
       }
 
       v25 = [v23 countByEnumeratingWithState:&v30 objects:v34 count:16];

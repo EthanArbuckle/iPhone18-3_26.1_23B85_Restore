@@ -1,17 +1,17 @@
 @interface CAFlipBookFrame
 - (CGRect)rawSurfaceFrame;
-- (id)_initWithPresentationTime:(unint64_t)a3 frameId:(unint64_t)a4 generation:(unsigned int)a5 apl:(float)a6 aplDimming:(float)a7 memoryUsage:(unint64_t)a8 inverted:(BOOL)a9 userInfo:(id)a10;
+- (id)_initWithPresentationTime:(unint64_t)time frameId:(unint64_t)id generation:(unsigned int)generation apl:(float)apl aplDimming:(float)dimming memoryUsage:(unint64_t)usage inverted:(BOOL)inverted userInfo:(id)self0;
 - (void)dealloc;
-- (void)setRawSurface:(__IOSurface *)a3;
-- (void)setSurface:(__IOSurface *)a3;
+- (void)setRawSurface:(__IOSurface *)surface;
+- (void)setSurface:(__IOSurface *)surface;
 @end
 
 @implementation CAFlipBookFrame
 
-- (void)setSurface:(__IOSurface *)a3
+- (void)setSurface:(__IOSurface *)surface
 {
   surface = self->_surface;
-  if (surface != a3)
+  if (surface != surface)
   {
     if (surface)
     {
@@ -19,9 +19,9 @@
     }
 
     self->_surface = 0;
-    if (a3)
+    if (surface)
     {
-      self->_surface = CFRetain(a3);
+      self->_surface = CFRetain(surface);
     }
   }
 }
@@ -39,10 +39,10 @@
   return result;
 }
 
-- (void)setRawSurface:(__IOSurface *)a3
+- (void)setRawSurface:(__IOSurface *)surface
 {
   rawSurface = self->_rawSurface;
-  if (rawSurface != a3)
+  if (rawSurface != surface)
   {
     if (rawSurface)
     {
@@ -50,9 +50,9 @@
     }
 
     self->_rawSurface = 0;
-    if (a3)
+    if (surface)
     {
-      self->_rawSurface = CFRetain(a3);
+      self->_rawSurface = CFRetain(surface);
     }
   }
 }
@@ -80,7 +80,7 @@
   [(CAFlipBookFrame *)&v5 dealloc];
 }
 
-- (id)_initWithPresentationTime:(unint64_t)a3 frameId:(unint64_t)a4 generation:(unsigned int)a5 apl:(float)a6 aplDimming:(float)a7 memoryUsage:(unint64_t)a8 inverted:(BOOL)a9 userInfo:(id)a10
+- (id)_initWithPresentationTime:(unint64_t)time frameId:(unint64_t)id generation:(unsigned int)generation apl:(float)apl aplDimming:(float)dimming memoryUsage:(unint64_t)usage inverted:(BOOL)inverted userInfo:(id)self0
 {
   v23 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -89,19 +89,19 @@
   v19 = v18;
   if (v18)
   {
-    *(v18 + 1) = a3;
-    *(v18 + 2) = a4;
-    *(v18 + 6) = a5;
-    *(v18 + 7) = a6;
-    *(v18 + 8) = a7;
-    *(v18 + 5) = a8;
+    *(v18 + 1) = time;
+    *(v18 + 2) = id;
+    *(v18 + 6) = generation;
+    *(v18 + 7) = apl;
+    *(v18 + 8) = dimming;
+    *(v18 + 5) = usage;
     *(v18 + 6) = 0;
     v20 = *(MEMORY[0x1E695F050] + 16);
     *(v18 + 56) = *MEMORY[0x1E695F050];
     *(v18 + 72) = v20;
     *(v18 + 11) = 0;
-    v18[104] = a9;
-    *(v18 + 12) = a10;
+    v18[104] = inverted;
+    *(v18 + 12) = info;
   }
 
   return v19;

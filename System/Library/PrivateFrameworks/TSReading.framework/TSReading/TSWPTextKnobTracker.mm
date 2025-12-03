@@ -1,34 +1,34 @@
 @interface TSWPTextKnobTracker
-+ (const)p_lineFragmentForCharIndex:(unint64_t)a3 knobTag:(unint64_t)a4 selectionType:(int)a5 rep:(id)a6;
++ (const)p_lineFragmentForCharIndex:(unint64_t)index knobTag:(unint64_t)tag selectionType:(int)type rep:(id)rep;
 - (BOOL)p_isMagnifyingVerticalText;
-- (BOOL)p_newHeadCharIndex:(unint64_t)a3 isPastTailCharIndex:(unint64_t)a4 rep:(id)a5;
-- (BOOL)p_newTailCharIndex:(unint64_t)a3 isPastHeadCharIndex:(unint64_t)a4 rep:(id)a5;
-- (TSWPTextKnobTracker)initWithRep:(id)a3 knob:(id)a4;
-- (_NSRange)adjustSelectionRange:(_NSRange)a3 forStorage:(id)a4;
+- (BOOL)p_newHeadCharIndex:(unint64_t)index isPastTailCharIndex:(unint64_t)charIndex rep:(id)rep;
+- (BOOL)p_newTailCharIndex:(unint64_t)index isPastHeadCharIndex:(unint64_t)charIndex rep:(id)rep;
+- (TSWPTextKnobTracker)initWithRep:(id)rep knob:(id)knob;
+- (_NSRange)adjustSelectionRange:(_NSRange)range forStorage:(id)storage;
 - (double)unscaledStartAutoscrollThreshold;
 - (id)icc;
 - (id)p_rangedMagnifier;
-- (unint64_t)p_charIndexForKnob:(unint64_t)a3 selection:(id)a4;
+- (unint64_t)p_charIndexForKnob:(unint64_t)knob selection:(id)selection;
 - (void)dealloc;
 - (void)endMovingKnob;
-- (void)moveKnobToCanvasPosition:(CGPoint)a3;
+- (void)moveKnobToCanvasPosition:(CGPoint)position;
 - (void)p_cleanupWhenDone;
 - (void)p_fixUpWordSelection;
-- (void)p_magnifyWithTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6 delayed:(BOOL)a7;
-- (void)p_setSelectionFromPoint:(CGPoint)a3;
+- (void)p_magnifyWithTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated delayed:(BOOL)delayed;
+- (void)p_setSelectionFromPoint:(CGPoint)point;
 - (void)p_startMagnifying;
-- (void)p_stopMagnifyingWithAnimation:(BOOL)a3;
-- (void)updateAfterAutoscroll:(id)a3;
-- (void)updateAfterAutoscroll:(id)a3 atPoint:(CGPoint)a4;
+- (void)p_stopMagnifyingWithAnimation:(BOOL)animation;
+- (void)updateAfterAutoscroll:(id)autoscroll;
+- (void)updateAfterAutoscroll:(id)autoscroll atPoint:(CGPoint)point;
 @end
 
 @implementation TSWPTextKnobTracker
 
-- (TSWPTextKnobTracker)initWithRep:(id)a3 knob:(id)a4
+- (TSWPTextKnobTracker)initWithRep:(id)rep knob:(id)knob
 {
   v31.receiver = self;
   v31.super_class = TSWPTextKnobTracker;
-  v5 = [(TSDKnobTracker *)&v31 initWithRep:a3 knob:?];
+  v5 = [(TSDKnobTracker *)&v31 initWithRep:rep knob:?];
   if (v5)
   {
     objc_opt_class();
@@ -37,43 +37,43 @@
     [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] setKnobTracking:1];
     [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] setKnobTag:[[(TSDKnobTracker *)v5 knob] tag]];
     v6 = [(TSDKnobTracker *)v5 rep];
-    [a4 position];
+    [knob position];
     [(TSDRep *)v6 convertNaturalPointToUnscaledCanvas:?];
     [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] setKnobTrackingDragPoint:v7, v8];
     v5->_multiTap = [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] knobTrackingTapCount]> 1;
-    v9 = [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] selection];
-    v5->_rangeAtStart.location = [(TSWPSelection *)v9 range];
+    selection = [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] selection];
+    v5->_rangeAtStart.location = [(TSWPSelection *)selection range];
     v5->_rangeAtStart.length = v10;
-    if ([(TSWPSelection *)v9 type]!= 7)
+    if ([(TSWPSelection *)selection type]!= 7)
     {
-      v9 = [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] logicalToVisualSelection:v9];
-      [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] setSelection:v9];
+      selection = [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] logicalToVisualSelection:selection];
+      [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] setSelection:selection];
     }
 
-    v5->_selectionType = [(TSWPSelection *)v9 type];
-    v11 = [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] calculateVisualRunsFromSelection:v9 updateControllerSelection:1];
-    v12 = [v11 headChar];
-    v13 = [v11 tailChar];
-    if (v13 >= v12)
+    v5->_selectionType = [(TSWPSelection *)selection type];
+    v11 = [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] calculateVisualRunsFromSelection:selection updateControllerSelection:1];
+    headChar = [v11 headChar];
+    tailChar = [v11 tailChar];
+    if (tailChar >= headChar)
     {
-      v14 = v12;
-    }
-
-    else
-    {
-      v14 = v13;
-    }
-
-    v15 = [v11 headChar];
-    v16 = [v11 tailChar];
-    if (v15 <= v16)
-    {
-      v17 = v16;
+      v14 = headChar;
     }
 
     else
     {
-      v17 = v15;
+      v14 = tailChar;
+    }
+
+    headChar2 = [v11 headChar];
+    tailChar2 = [v11 tailChar];
+    if (headChar2 <= tailChar2)
+    {
+      v17 = tailChar2;
+    }
+
+    else
+    {
+      v17 = headChar2;
     }
 
     if (v14 <= v17 + 1)
@@ -107,15 +107,15 @@
       v21 = [(TSDKnobTracker *)v5 rep];
       if ([[(TSDKnobTracker *)v5 knob] tag]== 10)
       {
-        v22 = [v11 start];
+        start = [v11 start];
       }
 
       else
       {
-        v22 = [v11 end];
+        start = [v11 end];
       }
 
-      v23 = [(TSDRep *)v21 repForCharIndex:v22 isStart:[[(TSDKnobTracker *)v5 knob] tag]== 11];
+      v23 = [(TSDRep *)v21 repForCharIndex:start isStart:[[(TSDKnobTracker *)v5 knob] tag]== 11];
       if ([(TSDKnobTracker *)v5 rep]!= v23)
       {
         [v23 invalidateKnobs];
@@ -128,7 +128,7 @@
     if ([(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] interactiveCanvasController])
     {
       v24 = [(TSDKnobTracker *)v5 rep];
-      if (a4)
+      if (knob)
       {
         v25 = v24 == 0;
       }
@@ -142,11 +142,11 @@
       if ((v26 & 1) == 0)
       {
         v27 = [(TSDKnobTracker *)v5 rep];
-        v28 = [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] interactiveCanvasController];
+        interactiveCanvasController = [(TSWPEditingController *)[(TSWPTextKnobTracker *)v5 editingController] interactiveCanvasController];
         v29 = [(TSDKnobTracker *)v5 rep];
-        [a4 position];
+        [knob position];
         [(TSDRep *)v29 convertNaturalPointToUnscaledCanvas:?];
-        [(TSDInteractiveCanvasController *)v28 convertUnscaledToBoundsPoint:?];
+        [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:?];
         [TSWPTextKnobTracker p_magnifyWithTarget:v5 magnificationPoint:"p_magnifyWithTarget:magnificationPoint:offset:animated:delayed:" offset:v27 animated:1 delayed:1];
       }
     }
@@ -159,9 +159,9 @@
 {
   if (self->_textMagnifierTimer)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextKnobTracker dealloc]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextKnobTracker.mm"), 126, @"_textMagnifierTimer retains us, so it should be gone by our -dealloc"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextKnobTracker.mm"), 126, @"_textMagnifierTimer retains us, so it should be gone by our -dealloc"}];
   }
 
   [(TSWPTextKnobTracker *)self p_cleanupWhenDone];
@@ -173,7 +173,7 @@
   [(TSDKnobTracker *)&v5 dealloc];
 }
 
-- (void)moveKnobToCanvasPosition:(CGPoint)a3
+- (void)moveKnobToCanvasPosition:(CGPoint)position
 {
   if (self->_ignoreNextCall)
   {
@@ -182,8 +182,8 @@
 
   else
   {
-    y = a3.y;
-    x = a3.x;
+    y = position.y;
+    x = position.x;
     self->_knobMoved = 1;
     [(TSWPTextKnobTracker *)self p_setSelectionFromPoint:?];
     [(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] setKnobTrackingDragPoint:x, y];
@@ -223,9 +223,9 @@
 
 - (BOOL)p_isMagnifyingVerticalText
 {
-  v3 = [(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] selection];
+  selection = [(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] selection];
   v4 = [[(TSDKnobTracker *)self knob] tag];
-  v5 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:[(TSWPTextKnobTracker *)self p_charIndexForKnob:v4 selection:v3] knobTag:v4 selectionType:self->_selectionType rep:[(TSDKnobTracker *)self rep]];
+  v5 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:[(TSWPTextKnobTracker *)self p_charIndexForKnob:v4 selection:selection] knobTag:v4 selectionType:self->_selectionType rep:[(TSDKnobTracker *)self rep]];
   if (v5)
   {
     LODWORD(v5) = (v5[25] >> 5) & 1;
@@ -234,16 +234,16 @@
   return v5;
 }
 
-+ (const)p_lineFragmentForCharIndex:(unint64_t)a3 knobTag:(unint64_t)a4 selectionType:(int)a5 rep:(id)a6
++ (const)p_lineFragmentForCharIndex:(unint64_t)index knobTag:(unint64_t)tag selectionType:(int)type rep:(id)rep
 {
-  v6 = *&a5;
+  v6 = *&type;
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [a6 columns];
-  result = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  columns = [rep columns];
+  result = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (result)
   {
     v11 = result;
@@ -254,10 +254,10 @@ LABEL_3:
     {
       if (*v15 != v12)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(columns);
       }
 
-      result = [*(*(&v14 + 1) + 8 * v13) lineFragmentForCharIndex:a3 knobTag:a4 selectionType:v6];
+      result = [*(*(&v14 + 1) + 8 * v13) lineFragmentForCharIndex:index knobTag:tag selectionType:v6];
       if (result)
       {
         break;
@@ -265,7 +265,7 @@ LABEL_3:
 
       if (v11 == ++v13)
       {
-        result = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        result = [columns countByEnumeratingWithState:&v14 objects:v18 count:16];
         v11 = result;
         if (result)
         {
@@ -282,9 +282,9 @@ LABEL_3:
 
 - (id)p_rangedMagnifier
 {
-  v2 = [(TSWPTextKnobTracker *)self p_isMagnifyingVerticalText];
+  p_isMagnifyingVerticalText = [(TSWPTextKnobTracker *)self p_isMagnifyingVerticalText];
   v3 = off_279D45790;
-  if (!v2)
+  if (!p_isMagnifyingVerticalText)
   {
     v3 = off_279D45778;
   }
@@ -299,34 +299,34 @@ LABEL_3:
   textMagnifierTimer = self->_textMagnifierTimer;
   if (!textMagnifierTimer)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPTextKnobTracker p_startMagnifying]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextKnobTracker.mm"), 261, @"invalid nil value for '%s'", "_textMagnifierTimer"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPTextKnobTracker.mm"), 261, @"invalid nil value for '%s'", "_textMagnifierTimer"}];
     textMagnifierTimer = self->_textMagnifierTimer;
   }
 
-  v6 = [(NSTimer *)textMagnifierTimer userInfo];
-  v7 = [(TSWPTextKnobTracker *)self p_rangedMagnifier];
-  self->_magnifier = v7;
-  v8 = [v6 target];
-  [v6 magnificationPoint];
+  userInfo = [(NSTimer *)textMagnifierTimer userInfo];
+  p_rangedMagnifier = [(TSWPTextKnobTracker *)self p_rangedMagnifier];
+  self->_magnifier = p_rangedMagnifier;
+  target = [userInfo target];
+  [userInfo magnificationPoint];
   v10 = v9;
   v12 = v11;
-  [v6 offset];
-  -[TSWPTextMagnifierRanged beginMagnifyingTarget:magnificationPoint:offset:animated:](v7, "beginMagnifyingTarget:magnificationPoint:offset:animated:", v8, [v6 animated], v10, v12, v13, v14);
+  [userInfo offset];
+  -[TSWPTextMagnifierRanged beginMagnifyingTarget:magnificationPoint:offset:animated:](p_rangedMagnifier, "beginMagnifyingTarget:magnificationPoint:offset:animated:", target, [userInfo animated], v10, v12, v13, v14);
   self->_didShowMagnifier = 1;
 
   self->_textMagnifierTimer = 0;
 }
 
-- (void)p_magnifyWithTarget:(id)a3 magnificationPoint:(CGPoint)a4 offset:(CGPoint)a5 animated:(BOOL)a6 delayed:(BOOL)a7
+- (void)p_magnifyWithTarget:(id)target magnificationPoint:(CGPoint)point offset:(CGPoint)offset animated:(BOOL)animated delayed:(BOOL)delayed
 {
-  v7 = a7;
-  v8 = a6;
-  y = a5.y;
-  x = a5.x;
-  v11 = a4.y;
-  v12 = a4.x;
+  delayedCopy = delayed;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
+  v11 = point.y;
+  v12 = point.x;
   textMagnifierTimer = self->_textMagnifierTimer;
   if (textMagnifierTimer)
   {
@@ -335,16 +335,16 @@ LABEL_3:
     self->_textMagnifierTimer = 0;
   }
 
-  if (v7)
+  if (delayedCopy)
   {
     v20 = objc_alloc_init(TSWPBeginMagnificationUserInfo);
-    [(TSWPBeginMagnificationUserInfo *)v20 setTarget:a3];
+    [(TSWPBeginMagnificationUserInfo *)v20 setTarget:target];
     [(TSWPBeginMagnificationUserInfo *)v20 setMagnificationPoint:v12, v11];
     [(TSWPBeginMagnificationUserInfo *)v20 setOffset:x, y];
-    [(TSWPBeginMagnificationUserInfo *)v20 setAnimated:v8];
+    [(TSWPBeginMagnificationUserInfo *)v20 setAnimated:animatedCopy];
     self->_textMagnifierTimer = [MEMORY[0x277CBEBB8] timerWithTimeInterval:self target:sel_p_startMagnifying selector:v20 userInfo:0 repeats:0.25];
-    v16 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v16 addTimer:self->_textMagnifierTimer forMode:*MEMORY[0x277CBE640]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop addTimer:self->_textMagnifierTimer forMode:*MEMORY[0x277CBE640]];
   }
 
   else
@@ -352,7 +352,7 @@ LABEL_3:
     magnifier = self->_magnifier;
     if (magnifier)
     {
-      [(TSWPTextMagnifierRanged *)magnifier setTarget:a3];
+      [(TSWPTextMagnifierRanged *)magnifier setTarget:target];
       [(TSWPTextMagnifierRanged *)self->_magnifier setMagnificationPoint:v12, v11];
       v18 = self->_magnifier;
 
@@ -361,17 +361,17 @@ LABEL_3:
 
     else
     {
-      v19 = [(TSWPTextKnobTracker *)self p_rangedMagnifier];
-      self->_magnifier = v19;
-      [(TSWPTextMagnifierRanged *)v19 beginMagnifyingTarget:a3 magnificationPoint:v8 offset:v12 animated:v11, x, y];
+      p_rangedMagnifier = [(TSWPTextKnobTracker *)self p_rangedMagnifier];
+      self->_magnifier = p_rangedMagnifier;
+      [(TSWPTextMagnifierRanged *)p_rangedMagnifier beginMagnifyingTarget:target magnificationPoint:animatedCopy offset:v12 animated:v11, x, y];
       self->_didShowMagnifier = 1;
     }
   }
 }
 
-- (void)p_stopMagnifyingWithAnimation:(BOOL)a3
+- (void)p_stopMagnifyingWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   textMagnifierTimer = self->_textMagnifierTimer;
   if (textMagnifierTimer)
   {
@@ -383,18 +383,18 @@ LABEL_3:
   magnifier = self->_magnifier;
   if (magnifier)
   {
-    [(TSWPTextMagnifierRanged *)magnifier stopMagnifying:v3];
+    [(TSWPTextMagnifierRanged *)magnifier stopMagnifying:animationCopy];
     self->_magnifier = 0;
   }
 }
 
-- (void)p_setSelectionFromPoint:(CGPoint)a3
+- (void)p_setSelectionFromPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(TSWPTextKnobTracker *)self editingController];
-  v7 = [(TSWPEditingController *)v6 storage];
-  v8 = [(TSWPInteractiveCanvasController *)[(TSWPEditingController *)v6 interactiveCanvasController] closestRepToPoint:v7 forStorage:x, y];
+  y = point.y;
+  x = point.x;
+  editingController = [(TSWPTextKnobTracker *)self editingController];
+  storage = [(TSWPEditingController *)editingController storage];
+  v8 = [(TSWPInteractiveCanvasController *)[(TSWPEditingController *)editingController interactiveCanvasController] closestRepToPoint:storage forStorage:x, y];
   if (v8)
   {
     v9 = v8;
@@ -402,9 +402,9 @@ LABEL_3:
     v11 = v10;
     v13 = v12;
     v14 = [objc_msgSend(objc_msgSend(v9 "columns")];
-    v15 = [(TSWPEditingController *)self->_editingController isInParagraphMode];
-    v16 = v15;
-    if (!self->_multiTap && !v15)
+    isInParagraphMode = [(TSWPEditingController *)self->_editingController isInParagraphMode];
+    v16 = isInParagraphMode;
+    if (!self->_multiTap && !isInParagraphMode)
     {
       [v9 knobOffsetForKnob:-[TSDKnobTracker knob](self paragraphMode:{"knob"), 0}];
       v18 = v17;
@@ -438,10 +438,10 @@ LABEL_3:
     }
 
     v101 = v14;
-    v23 = [(TSWPEditingController *)v6 selection];
-    [(TSWPSelection *)v23 range];
+    selection = [(TSWPEditingController *)editingController selection];
+    [(TSWPSelection *)selection range];
     v24 = [[(TSDKnobTracker *)self knob] tag];
-    v25 = [v9 charIndexForPointWithPinning:v24 == 10 isTail:-[TSWPSelection type](v23 selectionType:{"type"), v11, v13}];
+    v25 = [v9 charIndexForPointWithPinning:v24 == 10 isTail:-[TSWPSelection type](selection selectionType:{"type"), v11, v13}];
     if (v25 != 0x7FFFFFFFFFFFFFFFLL)
     {
       tailCharAtStart = v25;
@@ -482,7 +482,7 @@ LABEL_26:
 
           else
           {
-            [(TSWPEditingController *)v6 setKnobTag:v27];
+            [(TSWPEditingController *)editingController setKnobTag:v27];
             [(TSDRep *)[(TSDKnobTracker *)self rep] invalidateKnobs];
             [v9 invalidateKnobs];
             v31 = [v9 knobForTag:v27];
@@ -523,9 +523,9 @@ LABEL_36:
         {
           v100 = &self->_rangeAtStart;
 LABEL_32:
-          v32 = [(TSWPTextKnobTracker *)self p_newHeadCharIndex:tailCharAtStart isPastTailCharIndex:self->_tailCharAtStart rep:v9, p_length];
-          v33 = v32;
-          if (v32)
+          p_length = [(TSWPTextKnobTracker *)self p_newHeadCharIndex:tailCharAtStart isPastTailCharIndex:self->_tailCharAtStart rep:v9, p_length];
+          v33 = p_length;
+          if (p_length)
           {
             if (self->_selectionType == 7)
             {
@@ -534,7 +534,7 @@ LABEL_32:
 
             else
             {
-              tailCharAtStart = [(TSWPStorage *)v7 previousCharacterIndex:v30];
+              tailCharAtStart = [(TSWPStorage *)storage previousCharacterIndex:v30];
             }
           }
 
@@ -561,7 +561,7 @@ LABEL_32:
               v45 = tailCharAtStart;
             }
 
-            v46 = [(TSWPStorage *)v7 nextCharacterIndex:v45];
+            v46 = [(TSWPStorage *)storage nextCharacterIndex:v45];
             if (v44 <= v46)
             {
               v47 = v46;
@@ -595,7 +595,7 @@ LABEL_32:
           goto LABEL_73;
         }
 
-        v54 = [(TSWPStorage *)[(TSWPEditingController *)v6 storage] previousCharacterIndex:self->_rangeAtStart.length + p_rangeAtStart->location];
+        v54 = [(TSWPStorage *)[(TSWPEditingController *)editingController storage] previousCharacterIndex:self->_rangeAtStart.length + p_rangeAtStart->location];
       }
 
       else
@@ -605,7 +605,7 @@ LABEL_32:
           goto LABEL_36;
         }
 
-        v54 = [(TSWPStorage *)[(TSWPEditingController *)v6 storage] nextCharacterIndex:p_rangeAtStart->location];
+        v54 = [(TSWPStorage *)[(TSWPEditingController *)editingController storage] nextCharacterIndex:p_rangeAtStart->location];
       }
 
       if (v54 != 0x7FFFFFFFFFFFFFFFLL)
@@ -665,9 +665,9 @@ LABEL_31:
       }
 
 LABEL_37:
-      v34 = [(TSWPTextKnobTracker *)self p_newTailCharIndex:tailCharAtStart isPastHeadCharIndex:self->_headCharAtStart rep:v9, p_length];
-      v33 = v34;
-      if (v34)
+      p_length2 = [(TSWPTextKnobTracker *)self p_newTailCharIndex:tailCharAtStart isPastHeadCharIndex:self->_headCharAtStart rep:v9, p_length];
+      v33 = p_length2;
+      if (p_length2)
       {
         if (self->_selectionType == 7)
         {
@@ -676,7 +676,7 @@ LABEL_37:
 
         else
         {
-          tailCharAtStart = [(TSWPStorage *)v7 nextCharacterIndex:v100->location];
+          tailCharAtStart = [(TSWPStorage *)storage nextCharacterIndex:v100->location];
         }
       }
 
@@ -703,7 +703,7 @@ LABEL_37:
           v37 = self->_headCharAtStart;
         }
 
-        v38 = [(TSWPStorage *)v7 nextCharacterIndex:v37];
+        v38 = [(TSWPStorage *)storage nextCharacterIndex:v37];
         v39 = 0;
         if (v36 <= v38)
         {
@@ -737,7 +737,7 @@ LABEL_37:
       }
 
 LABEL_73:
-      if (![(TSWPEditingController *)v6 isParagraphModeWithSelection:[TSWPSelection onStorage:"selectionWithRange:" selectionWithRange:length], v7])
+      if (![(TSWPEditingController *)editingController isParagraphModeWithSelection:[TSWPSelection onStorage:"selectionWithRange:" selectionWithRange:length], storage])
       {
 LABEL_120:
         if (self->_multiTap)
@@ -751,11 +751,11 @@ LABEL_120:
           length = v72.length;
         }
 
-        [(TSWPTextKnobTracker *)self adjustSelectionRange:tailCharAtStart forStorage:length, v7];
-        [(TSWPStorage *)v7 selectionRangeForCharIndex:[(TSWPSelection *)v23 range]];
+        [(TSWPTextKnobTracker *)self adjustSelectionRange:tailCharAtStart forStorage:length, storage];
+        [(TSWPStorage *)storage selectionRangeForCharIndex:[(TSWPSelection *)selection range]];
         v73 = NSIntersectionRangeInclusive();
         v75 = v74;
-        if ([(TSWPSelection *)v23 range]!= v73 || v76 != v75)
+        if ([(TSWPSelection *)selection range]!= v73 || v76 != v75)
         {
           v77 = [[TSWPSelection alloc] initWithType:7 range:v73 styleInsertionBehavior:v75 caretAffinity:0, 0];
           if (v102 == 10)
@@ -768,27 +768,27 @@ LABEL_120:
             v78 = 848;
           }
 
-          [(TSWPEditingController *)v6 setSelection:v77 withFlags:v78];
-          [(TSWPEditingController *)v6 calculateVisualRunsFromSelection:[(TSWPEditingController *)v6 selection] updateControllerSelection:1];
-          v79 = [(TSWPEditingController *)v6 selection];
+          [(TSWPEditingController *)editingController setSelection:v77 withFlags:v78];
+          [(TSWPEditingController *)editingController calculateVisualRunsFromSelection:[(TSWPEditingController *)editingController selection] updateControllerSelection:1];
+          selection2 = [(TSWPEditingController *)editingController selection];
 
           if (v39)
           {
-            v80 = [(TSWPSelection *)v79 start];
+            start = [(TSWPSelection *)selection2 start];
           }
 
           else
           {
-            v80 = [(TSWPSelection *)v79 end];
+            start = [(TSWPSelection *)selection2 end];
           }
 
-          v81 = [v9 repForCharIndex:v80 isStart:v39];
+          v81 = [v9 repForCharIndex:start isStart:v39];
           if (v81)
           {
             v82 = v81;
             if ([(TSDKnobTracker *)self rep]!= v81)
             {
-              [(TSWPEditingController *)v6 setKnobTag:v102];
+              [(TSWPEditingController *)editingController setKnobTag:v102];
               [(TSDRep *)[(TSDKnobTracker *)self rep] invalidateKnobs];
               [(TSDRep *)v82 invalidateKnobs];
               [(TSDKnobTracker *)self setRep:v82];
@@ -796,7 +796,7 @@ LABEL_120:
             }
           }
 
-          [(TSDRep *)[(TSDKnobTracker *)self rep] knobCenterForSelection:v79 knob:[(TSDKnobTracker *)self knob]];
+          [(TSDRep *)[(TSDKnobTracker *)self rep] knobCenterForSelection:selection2 knob:[(TSDKnobTracker *)self knob]];
           [[(TSDKnobTracker *)self knob] setPosition:v83, v84];
           [[(TSDKnobTracker *)self knob] position];
           v87 = v86 == *(MEMORY[0x277CBF398] + 8) && v85 == *MEMORY[0x277CBF398];
@@ -806,13 +806,13 @@ LABEL_120:
             [(TSWPTextKnobTracker *)self p_stopMagnifyingWithAnimation:1];
           }
 
-          else if ([(TSWPEditingController *)v6 interactiveCanvasController]&& [(TSDKnobTracker *)self rep]&& [(TSDKnobTracker *)self knob])
+          else if ([(TSWPEditingController *)editingController interactiveCanvasController]&& [(TSDKnobTracker *)self rep]&& [(TSDKnobTracker *)self knob])
           {
-            v88 = [(TSWPEditingController *)v6 interactiveCanvasController];
+            interactiveCanvasController = [(TSWPEditingController *)editingController interactiveCanvasController];
             v89 = [(TSDKnobTracker *)self rep];
             [[(TSDKnobTracker *)self knob] position];
             [(TSDRep *)v89 convertNaturalPointToUnscaledCanvas:?];
-            [(TSDInteractiveCanvasController *)v88 convertUnscaledToBoundsPoint:?];
+            [(TSDInteractiveCanvasController *)interactiveCanvasController convertUnscaledToBoundsPoint:?];
             v91 = v90;
             v93 = v92;
             v94 = [(TSDKnobTracker *)self rep];
@@ -890,7 +890,7 @@ LABEL_104:
         if (v102 != 10)
         {
 LABEL_119:
-          tailCharAtStart = [(TSWPStorage *)v7 textRangeForParagraphsInCharRange:tailCharAtStart, length];
+          tailCharAtStart = [(TSWPStorage *)storage textRangeForParagraphsInCharRange:tailCharAtStart, length];
           length = v71;
           goto LABEL_120;
         }
@@ -952,27 +952,27 @@ LABEL_113:
   }
 }
 
-- (BOOL)p_newHeadCharIndex:(unint64_t)a3 isPastTailCharIndex:(unint64_t)a4 rep:(id)a5
+- (BOOL)p_newHeadCharIndex:(unint64_t)index isPastTailCharIndex:(unint64_t)charIndex rep:(id)rep
 {
-  v9 = [(TSWPEditingController *)self->_editingController isInParagraphMode];
-  v10 = a3 >= a4;
-  if (self->_selectionType == 7 && !v9)
+  isInParagraphMode = [(TSWPEditingController *)self->_editingController isInParagraphMode];
+  v10 = index >= charIndex;
+  if (self->_selectionType == 7 && !isInParagraphMode)
   {
-    v11 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:a3 knobTag:11 selectionType:7 rep:a5];
-    v13 = [a5 range];
+    v11 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:index knobTag:11 selectionType:7 rep:rep];
+    range = [rep range];
     v14 = 0;
-    v15 = a4 >= v13;
-    v16 = a4 - v13;
+    v15 = charIndex >= range;
+    v16 = charIndex - range;
     if (v15 && v16 < v12)
     {
-      v14 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:a4 knobTag:11 selectionType:self->_selectionType rep:a5];
+      v14 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:charIndex knobTag:11 selectionType:self->_selectionType rep:rep];
     }
 
     if (v11 && v11 == v14)
     {
-      v17 = [(TSWPStorage *)[(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] storage] isWritingDirectionRightToLeftForParagraphAtCharIndex:a3];
-      v18 = TSWPLineFragment::visualIndexForCharIndex(v11, a3);
-      v19 = TSWPLineFragment::visualIndexForCharIndex(v11, a4);
+      v17 = [(TSWPStorage *)[(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] storage] isWritingDirectionRightToLeftForParagraphAtCharIndex:index];
+      v18 = TSWPLineFragment::visualIndexForCharIndex(v11, index);
+      v19 = TSWPLineFragment::visualIndexForCharIndex(v11, charIndex);
       if (v17)
       {
         return v18 < v19;
@@ -988,27 +988,27 @@ LABEL_113:
   return v10;
 }
 
-- (BOOL)p_newTailCharIndex:(unint64_t)a3 isPastHeadCharIndex:(unint64_t)a4 rep:(id)a5
+- (BOOL)p_newTailCharIndex:(unint64_t)index isPastHeadCharIndex:(unint64_t)charIndex rep:(id)rep
 {
-  v9 = [(TSWPEditingController *)self->_editingController isInParagraphMode];
-  v10 = a3 <= a4;
-  if (self->_selectionType == 7 && !v9)
+  isInParagraphMode = [(TSWPEditingController *)self->_editingController isInParagraphMode];
+  v10 = index <= charIndex;
+  if (self->_selectionType == 7 && !isInParagraphMode)
   {
-    v11 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:a3 knobTag:11 selectionType:7 rep:a5];
-    v13 = [a5 range];
+    v11 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:index knobTag:11 selectionType:7 rep:rep];
+    range = [rep range];
     v14 = 0;
-    v15 = a4 >= v13;
-    v16 = a4 - v13;
+    v15 = charIndex >= range;
+    v16 = charIndex - range;
     if (v15 && v16 < v12)
     {
-      v14 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:a4 knobTag:11 selectionType:self->_selectionType rep:a5];
+      v14 = [TSWPTextKnobTracker p_lineFragmentForCharIndex:charIndex knobTag:11 selectionType:self->_selectionType rep:rep];
     }
 
     if (v11 && v11 == v14)
     {
-      v17 = [(TSWPStorage *)[(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] storage] isWritingDirectionRightToLeftForParagraphAtCharIndex:a3];
-      v18 = TSWPLineFragment::visualIndexForCharIndex(v11, a3);
-      v19 = TSWPLineFragment::visualIndexForCharIndex(v11, a4);
+      v17 = [(TSWPStorage *)[(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] storage] isWritingDirectionRightToLeftForParagraphAtCharIndex:index];
+      v18 = TSWPLineFragment::visualIndexForCharIndex(v11, index);
+      v19 = TSWPLineFragment::visualIndexForCharIndex(v11, charIndex);
       if (v17)
       {
         return v18 > v19;
@@ -1028,34 +1028,34 @@ LABEL_113:
 {
   if (![(TSWPTextKnobTracker *)self fixupWordSelection]|| [(TSWPTextMagnifierRanged *)self->_magnifier terminalPointPlacedCarefully])
   {
-    v3 = [(TSWPTextKnobTracker *)self editingController];
+    editingController = [(TSWPTextKnobTracker *)self editingController];
 
-    [(TSWPEditingController *)v3 revertLastSelectionChangeIfElapsedTimeIsUnderPinFidgetThreshold];
+    [(TSWPEditingController *)editingController revertLastSelectionChangeIfElapsedTimeIsUnderPinFidgetThreshold];
     return;
   }
 
   [(TSWPTextMagnifierRanged *)self->_magnifier horizontalMovement];
   v5 = v4;
   v6 = [[(TSDKnobTracker *)self knob] tag];
-  v7 = [(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] selection];
-  v8 = v7;
+  selection = [(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] selection];
+  v8 = selection;
   if (v5 < 0.0)
   {
     if (v6 == 11)
     {
-      v9 = [(TSWPSelection *)v7 start];
-      if (v9 == 0x7FFFFFFFFFFFFFFFLL)
+      start = [(TSWPSelection *)selection start];
+      if (start == 0x7FFFFFFFFFFFFFFFLL)
       {
         return;
       }
 
-      v10 = v9;
+      v10 = start;
       location = [(TSWPSelection *)v8 range];
       length = v12;
       goto LABEL_26;
     }
 
-    v14 = [(TSWPSelection *)v7 end];
+    start2 = [(TSWPSelection *)selection end];
     goto LABEL_14;
   }
 
@@ -1066,14 +1066,14 @@ LABEL_113:
 
   if (v6 == 11)
   {
-    v14 = [(TSWPSelection *)v7 start];
+    start2 = [(TSWPSelection *)selection start];
 LABEL_14:
-    v10 = v14;
+    v10 = start2;
     v15 = 0;
     goto LABEL_23;
   }
 
-  v10 = [(TSWPSelection *)v7 end];
+  v10 = [(TSWPSelection *)selection end];
   v16 = [(TSDKnobTracker *)self rep];
   if (v16 && (v17 = -[TSDRep columnForCharIndex:](v16, "columnForCharIndex:", v10)) != 0 && (v18 = [v17 lineFragmentForCharIndex:v10 knobTag:10 selectionType:{-[TSWPSelection type](v8, "type")}]) != 0)
   {
@@ -1099,10 +1099,10 @@ LABEL_23:
   length = v19;
   if (!v15)
   {
-    v23 = [(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] storage];
+    storage = [(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] storage];
     if (v6 != 11)
     {
-      v25 = [(TSWPStorage *)v23 nextWordFromIndex:v10 forward:0];
+      v25 = [(TSWPStorage *)storage nextWordFromIndex:v10 forward:0];
       if (v25 != 0x7FFFFFFFFFFFFFFFLL && v25 + v26 > location)
       {
         length = length - v10 + v25 + v26;
@@ -1118,7 +1118,7 @@ LABEL_23:
       goto LABEL_27;
     }
 
-    v24 = [(TSWPStorage *)v23 nextWordFromIndex:v10 forward:1];
+    v24 = [(TSWPStorage *)storage nextWordFromIndex:v10 forward:1];
     if (v24 < location + length)
     {
       location += v24 - v10;
@@ -1146,50 +1146,50 @@ LABEL_28:
   [(TSWPEditingController *)[(TSWPTextKnobTracker *)self editingController] setSelection:v27 withFlags:772];
 }
 
-- (unint64_t)p_charIndexForKnob:(unint64_t)a3 selection:(id)a4
+- (unint64_t)p_charIndexForKnob:(unint64_t)knob selection:(id)selection
 {
-  if ([a4 type] == 7)
+  if ([selection type] == 7)
   {
-    if (a3 == 11)
+    if (knob == 11)
     {
 
-      return [a4 headChar];
+      return [selection headChar];
     }
 
     else
     {
 
-      return [a4 tailChar];
+      return [selection tailChar];
     }
   }
 
-  else if (a3 == 11)
+  else if (knob == 11)
   {
 
-    return [a4 start];
+    return [selection start];
   }
 
   else
   {
 
-    return [a4 end];
+    return [selection end];
   }
 }
 
-- (_NSRange)adjustSelectionRange:(_NSRange)a3 forStorage:(id)a4
+- (_NSRange)adjustSelectionRange:(_NSRange)range forStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   result.length = length;
   result.location = location;
   return result;
 }
 
-- (void)updateAfterAutoscroll:(id)a3 atPoint:(CGPoint)a4
+- (void)updateAfterAutoscroll:(id)autoscroll atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  -[TSWPTextMagnifierRanged setAutoscrollDirections:](self->_magnifier, "setAutoscrollDirections:", [a3 directions]);
+  y = point.y;
+  x = point.x;
+  -[TSWPTextMagnifierRanged setAutoscrollDirections:](self->_magnifier, "setAutoscrollDirections:", [autoscroll directions]);
   v7 = [(TSWPTextKnobTracker *)self icc];
   [objc_msgSend(objc_msgSend(-[TSWPTextKnobTracker icc](self "icc")];
   [v7 convertBoundsToUnscaledPoint:?];
@@ -1203,24 +1203,24 @@ LABEL_28:
 
 - (id)icc
 {
-  v2 = [(TSWPTextKnobTracker *)self editingController];
+  editingController = [(TSWPTextKnobTracker *)self editingController];
 
-  return [(TSWPEditingController *)v2 interactiveCanvasController];
+  return [(TSWPEditingController *)editingController interactiveCanvasController];
 }
 
-- (void)updateAfterAutoscroll:(id)a3
+- (void)updateAfterAutoscroll:(id)autoscroll
 {
   magnifier = self->_magnifier;
-  v4 = [a3 directions];
+  directions = [autoscroll directions];
 
-  [(TSWPTextMagnifierRanged *)magnifier setAutoscrollDirections:v4];
+  [(TSWPTextMagnifierRanged *)magnifier setAutoscrollDirections:directions];
 }
 
 - (double)unscaledStartAutoscrollThreshold
 {
-  v2 = [(TSWPEditingController *)self->_editingController isInParagraphMode];
+  isInParagraphMode = [(TSWPEditingController *)self->_editingController isInParagraphMode];
   result = 40.0;
-  if (!v2)
+  if (!isInParagraphMode)
   {
     return 25.0;
   }

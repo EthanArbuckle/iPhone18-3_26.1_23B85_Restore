@@ -1,10 +1,10 @@
 @interface ATXNotificationDigestRankerClient
 - (ATXNotificationDigestRankerClient)init;
-- (void)appsSortedByNotificationsReceivedInPreviousNumDays:(unint64_t)a3 reply:(id)a4;
+- (void)appsSortedByNotificationsReceivedInPreviousNumDays:(unint64_t)days reply:(id)reply;
 - (void)dealloc;
-- (void)generateDigestForAppGroupedNotificationStacks:(id)a3 maxGlobalMarqueeGroups:(unint64_t)a4 maxAppMarqueeGroups:(unint64_t)a5 reply:(id)a6;
-- (void)generateDigestForNotificationStacks:(id)a3 reply:(id)a4;
-- (void)numberOfActiveNotificationsWithCompletionHandler:(id)a3;
+- (void)generateDigestForAppGroupedNotificationStacks:(id)stacks maxGlobalMarqueeGroups:(unint64_t)groups maxAppMarqueeGroups:(unint64_t)marqueeGroups reply:(id)reply;
+- (void)generateDigestForNotificationStacks:(id)stacks reply:(id)reply;
+- (void)numberOfActiveNotificationsWithCompletionHandler:(id)handler;
 @end
 
 @implementation ATXNotificationDigestRankerClient
@@ -91,12 +91,12 @@ void __41__ATXNotificationDigestRankerClient_init__block_invoke_76()
   [(ATXNotificationDigestRankerClient *)&v3 dealloc];
 }
 
-- (void)generateDigestForAppGroupedNotificationStacks:(id)a3 maxGlobalMarqueeGroups:(unint64_t)a4 maxAppMarqueeGroups:(unint64_t)a5 reply:(id)a6
+- (void)generateDigestForAppGroupedNotificationStacks:(id)stacks maxGlobalMarqueeGroups:(unint64_t)groups maxAppMarqueeGroups:(unint64_t)marqueeGroups reply:(id)reply
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
-  if (!v12)
+  stacksCopy = stacks;
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v16 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -129,7 +129,7 @@ void __41__ATXNotificationDigestRankerClient_init__block_invoke_76()
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v20 = [v23 initWithDomain:v24 code:1 userInfo:v25];
 
-    v12[2](v12, 0, v20);
+    replyCopy[2](replyCopy, 0, v20);
 LABEL_10:
 
     goto LABEL_11;
@@ -142,10 +142,10 @@ LABEL_10:
   v26[3] = &unk_1E80C1100;
   v26[4] = self;
   v28 = a2;
-  v14 = v12;
+  v14 = replyCopy;
   v27 = v14;
   v15 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v26];
-  [v15 generateDigestForAppGroupedNotificationStacks:v11 maxGlobalMarqueeGroups:a4 maxAppMarqueeGroups:a5 reply:v14];
+  [v15 generateDigestForAppGroupedNotificationStacks:stacksCopy maxGlobalMarqueeGroups:groups maxAppMarqueeGroups:marqueeGroups reply:v14];
 
 LABEL_11:
 }
@@ -162,12 +162,12 @@ void __132__ATXNotificationDigestRankerClient_generateDigestForAppGroupedNotific
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)generateDigestForNotificationStacks:(id)a3 reply:(id)a4
+- (void)generateDigestForNotificationStacks:(id)stacks reply:(id)reply
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  stacksCopy = stacks;
+  replyCopy = reply;
+  if (!replyCopy)
   {
     v12 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -200,7 +200,7 @@ void __132__ATXNotificationDigestRankerClient_generateDigestForAppGroupedNotific
     v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
     v16 = [v19 initWithDomain:v20 code:1 userInfo:v21];
 
-    v8[2](v8, 0, v16);
+    replyCopy[2](replyCopy, 0, v16);
 LABEL_10:
 
     goto LABEL_11;
@@ -213,10 +213,10 @@ LABEL_10:
   v22[3] = &unk_1E80C1100;
   v22[4] = self;
   v24 = a2;
-  v10 = v8;
+  v10 = replyCopy;
   v23 = v10;
   v11 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v22];
-  [v11 generateDigestForNotificationStacks:v7 reply:v10];
+  [v11 generateDigestForNotificationStacks:stacksCopy reply:v10];
 
 LABEL_11:
 }
@@ -233,11 +233,11 @@ void __79__ATXNotificationDigestRankerClient_generateDigestForNotificationStacks
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)appsSortedByNotificationsReceivedInPreviousNumDays:(unint64_t)a3 reply:(id)a4
+- (void)appsSortedByNotificationsReceivedInPreviousNumDays:(unint64_t)days reply:(id)reply
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  if (v7)
+  replyCopy = reply;
+  if (replyCopy)
   {
     v8 = [MEMORY[0x1E69C5D20] hasTrueBooleanEntitlement:@"com.apple.proactive.NotificationDigest.xpc" logHandle:0];
     v9 = __atxlog_handle_notification_management();
@@ -256,7 +256,7 @@ void __79__ATXNotificationDigestRankerClient_generateDigestForNotificationStacks
       v26[3] = &unk_1E80C1100;
       v26[4] = self;
       v28 = a2;
-      v12 = v7;
+      v12 = replyCopy;
       v27 = v12;
       v13 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v26];
       v24[0] = MEMORY[0x1E69E9820];
@@ -264,7 +264,7 @@ void __79__ATXNotificationDigestRankerClient_generateDigestForNotificationStacks
       v24[2] = __94__ATXNotificationDigestRankerClient_appsSortedByNotificationsReceivedInPreviousNumDays_reply___block_invoke_95;
       v24[3] = &unk_1E80C5478;
       v25 = v12;
-      [v13 appsSortedByNotificationsReceivedInPreviousNumDays:a3 reply:v24];
+      [v13 appsSortedByNotificationsReceivedInPreviousNumDays:days reply:v24];
     }
 
     else
@@ -281,7 +281,7 @@ void __79__ATXNotificationDigestRankerClient_generateDigestForNotificationStacks
       v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
       v23 = [v20 initWithDomain:v21 code:1 userInfo:v22];
 
-      (*(v7 + 2))(v7, 0, 0, 0, v23);
+      (*(replyCopy + 2))(replyCopy, 0, 0, 0, v23);
     }
   }
 
@@ -314,18 +314,18 @@ void __94__ATXNotificationDigestRankerClient_appsSortedByNotificationsReceivedIn
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)numberOfActiveNotificationsWithCompletionHandler:(id)a3
+- (void)numberOfActiveNotificationsWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   xpcConnection = self->_xpcConnection;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __86__ATXNotificationDigestRankerClient_numberOfActiveNotificationsWithCompletionHandler___block_invoke;
   v9[3] = &unk_1E80C1100;
-  v10 = v5;
+  v10 = handlerCopy;
   v11 = a2;
   v9[4] = self;
-  v7 = v5;
+  v7 = handlerCopy;
   v8 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v9];
   [v8 numberOfActiveNotificationsWithCompletionHandler:v7];
 }

@@ -1,25 +1,25 @@
 @interface SecureAsset
-- (BOOL)containsCategoryWithCategory:(id)a3;
-- (BOOL)containsKeyWithKey:(id)a3 category:(id)a4;
-- (BOOL)getBoolWithKey:(id)a3 category:(id)a4 defaultValue:(BOOL)a5;
+- (BOOL)containsCategoryWithCategory:(id)category;
+- (BOOL)containsKeyWithKey:(id)key category:(id)category;
+- (BOOL)getBoolWithKey:(id)key category:(id)category defaultValue:(BOOL)value;
 - (SecureAsset)init;
-- (SecureAsset)initWithResourcePath:(id)a3 assetFileName:(id)a4 assetVersion:(id)a5 assetHash:(id)a6;
-- (float)getFloatWithKey:(id)a3 category:(id)a4 defaultValue:(float)a5;
+- (SecureAsset)initWithResourcePath:(id)path assetFileName:(id)name assetVersion:(id)version assetHash:(id)hash;
+- (float)getFloatWithKey:(id)key category:(id)category defaultValue:(float)value;
 - (id)assetPath;
-- (id)getConfigDataWithFileName:(id)a3 prefix:(id)a4;
-- (id)getDataWithFileName:(id)a3;
-- (id)getDictionaryArrayWithKey:(id)a3 category:(id)a4;
-- (id)getDictionaryWithKey:(id)a3 category:(id)a4;
-- (id)getMemoryIndexWithKey:(id)a3 category:(id)a4;
-- (id)getStringArrayWithKey:(id)a3 category:(id)a4;
-- (id)getStringWithCategory:(id)a3;
-- (id)getStringWithKey:(id)a3 category:(id)a4;
-- (id)getStringWithKey:(id)a3 category:(id)a4 defaultValue:(id)a5;
+- (id)getConfigDataWithFileName:(id)name prefix:(id)prefix;
+- (id)getDataWithFileName:(id)name;
+- (id)getDictionaryArrayWithKey:(id)key category:(id)category;
+- (id)getDictionaryWithKey:(id)key category:(id)category;
+- (id)getMemoryIndexWithKey:(id)key category:(id)category;
+- (id)getStringArrayWithKey:(id)key category:(id)category;
+- (id)getStringWithCategory:(id)category;
+- (id)getStringWithKey:(id)key category:(id)category;
+- (id)getStringWithKey:(id)key category:(id)category defaultValue:(id)value;
 @end
 
 @implementation SecureAsset
 
-- (SecureAsset)initWithResourcePath:(id)a3 assetFileName:(id)a4 assetVersion:(id)a5 assetHash:(id)a6
+- (SecureAsset)initWithResourcePath:(id)path assetFileName:(id)name assetVersion:(id)version assetHash:(id)hash
 {
   v8 = sub_247994C14();
   v9 = *(*(v8 - 8) + 64);
@@ -28,10 +28,10 @@
   sub_247994BC4();
   v12 = sub_247994E84();
   v14 = v13;
-  if (!a5)
+  if (!version)
   {
     v16 = 0;
-    if (a6)
+    if (hash)
     {
       goto LABEL_3;
     }
@@ -39,12 +39,12 @@
 LABEL_5:
     v17 = 0;
     v19 = 0;
-    return SecureAsset.init(resourcePath:assetFileName:assetVersion:assetHash:)(v11, v12, v14, a5, v16, v17, v19);
+    return SecureAsset.init(resourcePath:assetFileName:assetVersion:assetHash:)(v11, v12, v14, version, v16, v17, v19);
   }
 
-  a5 = sub_247994E84();
+  version = sub_247994E84();
   v16 = v15;
-  if (!a6)
+  if (!hash)
   {
     goto LABEL_5;
   }
@@ -52,12 +52,12 @@ LABEL_5:
 LABEL_3:
   v17 = sub_247994E84();
   v19 = v18;
-  return SecureAsset.init(resourcePath:assetFileName:assetVersion:assetHash:)(v11, v12, v14, a5, v16, v17, v19);
+  return SecureAsset.init(resourcePath:assetFileName:assetVersion:assetHash:)(v11, v12, v14, version, v16, v17, v19);
 }
 
 - (id)assetPath
 {
-  v2 = self;
+  selfCopy = self;
   SecureAsset.assetPath()();
 
   v3 = sub_247994E74();
@@ -65,13 +65,13 @@ LABEL_3:
   return v3;
 }
 
-- (BOOL)containsKeyWithKey:(id)a3 category:(id)a4
+- (BOOL)containsKeyWithKey:(id)key category:(id)category
 {
   v5 = sub_247994E84();
   v7 = v6;
   v8 = sub_247994E84();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;
@@ -81,11 +81,11 @@ LABEL_3:
   return v8 & 1;
 }
 
-- (BOOL)containsCategoryWithCategory:(id)a3
+- (BOOL)containsCategoryWithCategory:(id)category
 {
   v4 = sub_247994E84();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   LOBYTE(v4) = SecureAsset.containsCategory(category:)(v8);
@@ -93,29 +93,29 @@ LABEL_3:
   return v4 & 1;
 }
 
-- (float)getFloatWithKey:(id)a3 category:(id)a4 defaultValue:(float)a5
+- (float)getFloatWithKey:(id)key category:(id)category defaultValue:(float)value
 {
   v7 = sub_247994E84();
   v9 = v8;
   v10 = sub_247994E84();
   v12 = v11;
-  v13 = self;
+  selfCopy = self;
   v14._countAndFlagsBits = v7;
   v14._object = v9;
   v15._countAndFlagsBits = v10;
   v15._object = v12;
-  v16 = SecureAsset.getFloat(key:category:defaultValue:)(v14, v15, a5);
+  v16 = SecureAsset.getFloat(key:category:defaultValue:)(v14, v15, value);
 
   return v16;
 }
 
-- (id)getStringWithKey:(id)a3 category:(id)a4
+- (id)getStringWithKey:(id)key category:(id)category
 {
   v5 = sub_247994E84();
   v7 = v6;
   v8 = sub_247994E84();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;
@@ -135,15 +135,15 @@ LABEL_3:
   return v15;
 }
 
-- (id)getStringWithKey:(id)a3 category:(id)a4 defaultValue:(id)a5
+- (id)getStringWithKey:(id)key category:(id)category defaultValue:(id)value
 {
   sub_247994E84();
   sub_247994E84();
   sub_247994E84();
-  v6 = self;
+  selfCopy = self;
   v7 = sub_247994E74();
   v8 = sub_247994E74();
-  v9 = [(SecureAsset *)v6 getStringWithKey:v7 category:v8];
+  v9 = [(SecureAsset *)selfCopy getStringWithKey:v7 category:v8];
 
   if (v9)
   {
@@ -159,11 +159,11 @@ LABEL_3:
   return v10;
 }
 
-- (id)getStringWithCategory:(id)a3
+- (id)getStringWithCategory:(id)category
 {
   v4 = sub_247994E84();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   object = SecureAsset.getString(category:)(v8).value._object;
@@ -181,29 +181,29 @@ LABEL_3:
   return v10;
 }
 
-- (BOOL)getBoolWithKey:(id)a3 category:(id)a4 defaultValue:(BOOL)a5
+- (BOOL)getBoolWithKey:(id)key category:(id)category defaultValue:(BOOL)value
 {
   v7 = sub_247994E84();
   v9 = v8;
   v10 = sub_247994E84();
   v12 = v11;
-  v13 = self;
+  selfCopy = self;
   v14._countAndFlagsBits = v7;
   v14._object = v9;
   v15._countAndFlagsBits = v10;
   v15._object = v12;
-  v16 = SecureAsset.getBool(key:category:defaultValue:)(v14, v15, a5);
+  v16 = SecureAsset.getBool(key:category:defaultValue:)(v14, v15, value);
 
   return v16;
 }
 
-- (id)getStringArrayWithKey:(id)a3 category:(id)a4
+- (id)getStringArrayWithKey:(id)key category:(id)category
 {
   v5 = sub_247994E84();
   v7 = v6;
   v8 = sub_247994E84();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;
@@ -223,13 +223,13 @@ LABEL_3:
   return v15;
 }
 
-- (id)getDictionaryArrayWithKey:(id)a3 category:(id)a4
+- (id)getDictionaryArrayWithKey:(id)key category:(id)category
 {
   v5 = sub_247994E84();
   v7 = v6;
   v8 = sub_247994E84();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;
@@ -250,13 +250,13 @@ LABEL_3:
   return v15;
 }
 
-- (id)getDictionaryWithKey:(id)a3 category:(id)a4
+- (id)getDictionaryWithKey:(id)key category:(id)category
 {
   v5 = sub_247994E84();
   v7 = v6;
   v8 = sub_247994E84();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;
@@ -276,16 +276,16 @@ LABEL_3:
   return v15;
 }
 
-- (id)getDataWithFileName:(id)a3
+- (id)getDataWithFileName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_247994E84();
     v7 = v6;
     v8 = *(self + OBJC_IVAR___SecureAsset_assetLoader);
-    v9 = self;
+    selfCopy = self;
 
-    v10 = [(SecureAsset *)v9 resourcePath];
+    resourcePath = [(SecureAsset *)selfCopy resourcePath];
     v11 = sub_247994E84();
     v13 = v12;
 
@@ -313,14 +313,14 @@ LABEL_3:
   return v17;
 }
 
-- (id)getConfigDataWithFileName:(id)a3 prefix:(id)a4
+- (id)getConfigDataWithFileName:(id)name prefix:(id)prefix
 {
   v6 = sub_247994E84();
   v8 = v7;
-  if (a4)
+  if (prefix)
   {
     v9 = sub_247994E84();
-    a4 = v10;
+    prefix = v10;
   }
 
   else
@@ -328,8 +328,8 @@ LABEL_3:
     v9 = 0;
   }
 
-  v11 = self;
-  v12 = SecureAsset.getConfigData(fileName:prefix:)(v6, v8, v9, a4);
+  selfCopy = self;
+  v12 = SecureAsset.getConfigData(fileName:prefix:)(v6, v8, v9, prefix);
   v14 = v13;
 
   if (v14 >> 60 == 15)
@@ -347,13 +347,13 @@ LABEL_3:
   return v15;
 }
 
-- (id)getMemoryIndexWithKey:(id)a3 category:(id)a4
+- (id)getMemoryIndexWithKey:(id)key category:(id)category
 {
   v5 = sub_247994E84();
   v7 = v6;
   v8 = sub_247994E84();
   v10 = v9;
-  v11 = self;
+  selfCopy = self;
   v12._countAndFlagsBits = v5;
   v12._object = v7;
   v13._countAndFlagsBits = v8;

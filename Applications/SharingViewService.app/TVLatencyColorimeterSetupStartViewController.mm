@@ -1,10 +1,10 @@
 @interface TVLatencyColorimeterSetupStartViewController
 - (void)_handleContinueButton;
 - (void)_handleDismissButton;
-- (void)handleDeviceSetupNotification:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleDeviceSetupNotification:(id)notification;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVLatencyColorimeterSetupStartViewController
@@ -16,8 +16,8 @@
     LogPrintF();
   }
 
-  v3 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-  [v3 dismiss:5];
+  mainController = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+  [mainController dismiss:5];
 }
 
 - (void)_handleContinueButton
@@ -27,59 +27,59 @@
     LogPrintF();
   }
 
-  v3 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-  v4 = [v3 testFlags];
+  mainController = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+  testFlags = [mainController testFlags];
 
-  if (v4)
+  if (testFlags)
   {
-    v11 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-    [v11 showPreparingUI];
+    mainController2 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+    [mainController2 showPreparingUI];
   }
 
   else
   {
-    v11 = objc_alloc_init(SFDevice);
-    v5 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-    v6 = [v5 deviceIdentifier];
-    [v11 setIdentifier:v6];
+    mainController2 = objc_alloc_init(SFDevice);
+    mainController3 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+    deviceIdentifier = [mainController3 deviceIdentifier];
+    [mainController2 setIdentifier:deviceIdentifier];
 
-    v7 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-    v8 = [v7 userInfo];
-    [v11 setOsVersion:CFDictionaryGetInt64Ranged()];
+    mainController4 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+    userInfo = [mainController4 userInfo];
+    [mainController2 setOsVersion:CFDictionaryGetInt64Ranged()];
 
-    v9 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-    [v9 _sessionStart:v11];
+    mainController5 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+    [mainController5 _sessionStart:mainController2];
 
-    v10 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-    [v10 showPreparingUI];
+    mainController6 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+    [mainController6 showPreparingUI];
   }
 }
 
-- (void)handleDeviceSetupNotification:(id)a3
+- (void)handleDeviceSetupNotification:(id)notification
 {
-  v16 = a3;
-  v4 = [v16 name];
-  v5 = [v16 userInfo];
+  notificationCopy = notification;
+  name = [notificationCopy name];
+  userInfo = [notificationCopy userInfo];
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     v6 = &stru_100195CA8;
-    if (v5)
+    if (userInfo)
     {
-      v6 = v5;
+      v6 = userInfo;
     }
 
-    v14 = v4;
+    v14 = name;
     v15 = v6;
     LogPrintF();
   }
 
-  v7 = [v16 name];
-  v8 = [v7 isEqual:@"com.apple.sharing.DeviceSetup"];
+  name2 = [notificationCopy name];
+  v8 = [name2 isEqual:@"com.apple.sharing.DeviceSetup"];
 
   if (v8 && !CFDictionaryGetInt64())
   {
-    v9 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-    v10 = [v9 userInfo];
+    mainController = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+    userInfo2 = [mainController userInfo];
     CFStringGetTypeID();
     v11 = CFDictionaryGetTypedValue();
 
@@ -92,15 +92,15 @@
         LogPrintF();
       }
 
-      v13 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-      [v13 dismiss:16];
+      mainController2 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+      [mainController2 dismiss:16];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -108,14 +108,14 @@
 
   v6.receiver = self;
   v6.super_class = TVLatencyColorimeterSetupStartViewController;
-  [(TVLatencyColorimeterSetupStartViewController *)&v6 viewDidDisappear:v3];
+  [(TVLatencyColorimeterSetupStartViewController *)&v6 viewDidDisappear:disappearCopy];
   v5 = +[NSDistributedNotificationCenter defaultCenter];
   [v5 removeObserver:self name:@"com.apple.sharing.DeviceSetup" object:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -123,10 +123,10 @@
 
   v8.receiver = self;
   v8.super_class = TVLatencyColorimeterSetupStartViewController;
-  [(TVLatencyColorimeterSetupStartViewController *)&v8 viewWillAppear:v3];
-  v5 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-  v6 = [v5 _remoteViewControllerProxy];
-  [v6 setStatusBarHidden:1 withDuration:0.0];
+  [(TVLatencyColorimeterSetupStartViewController *)&v8 viewWillAppear:appearCopy];
+  mainController = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+  _remoteViewControllerProxy = [mainController _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:1 withDuration:0.0];
 
   v7 = +[NSDistributedNotificationCenter defaultCenter];
   [v7 addObserver:self selector:"handleDeviceSetupNotification:" name:@"com.apple.sharing.DeviceSetup" object:0 suspensionBehavior:4];
@@ -172,30 +172,30 @@
 
   [v14 setContentMode:1];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v15 = [(TVLatencyColorimeterSetupStartViewController *)self contentView];
-  [v15 addSubview:v14];
+  contentView = [(TVLatencyColorimeterSetupStartViewController *)self contentView];
+  [contentView addSubview:v14];
 
-  v16 = [(TVLatencyColorimeterSetupStartViewController *)self contentView];
-  v17 = [v16 mainContentGuide];
+  contentView2 = [(TVLatencyColorimeterSetupStartViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v32 = [v14 topAnchor];
-  v31 = [v17 topAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  topAnchor = [v14 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v41[0] = v30;
-  v29 = [v14 bottomAnchor];
-  v28 = [v17 bottomAnchor];
-  v27 = [v29 constraintLessThanOrEqualToAnchor:v28];
+  bottomAnchor = [v14 bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v27 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v41[1] = v27;
-  v26 = [v14 leadingAnchor];
-  v18 = [v17 leadingAnchor];
-  v19 = [v26 constraintEqualToAnchor:v18];
+  leadingAnchor = [v14 leadingAnchor];
+  leadingAnchor2 = [mainContentGuide leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v41[2] = v19;
-  v20 = [v14 trailingAnchor];
-  v21 = [v17 trailingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  trailingAnchor = [v14 trailingAnchor];
+  trailingAnchor2 = [mainContentGuide trailingAnchor];
+  v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v41[3] = v22;
-  v23 = [v14 heightAnchor];
-  v24 = [v23 constraintEqualToConstant:150.0];
+  heightAnchor = [v14 heightAnchor];
+  v24 = [heightAnchor constraintEqualToConstant:150.0];
   v41[4] = v24;
   v25 = [NSArray arrayWithObjects:v41 count:5];
   [NSLayoutConstraint activateConstraints:v25];

@@ -1,25 +1,25 @@
 @interface HDKeyValueDomainManager
-- (HDKeyValueDomainManager)initWithProfile:(id)a3;
+- (HDKeyValueDomainManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (id)_observerKeyForDomain:(id)a3;
-- (void)_notifyObserversFor:(id)a3;
-- (void)batchNotificationForDomain:(id)a3 category:(int64_t)a4 forTransaction:(id)a5;
-- (void)startObservationForDomain:(id)a3;
-- (void)stopObservationForDomain:(id)a3;
+- (id)_observerKeyForDomain:(id)domain;
+- (void)_notifyObserversFor:(id)for;
+- (void)batchNotificationForDomain:(id)domain category:(int64_t)category forTransaction:(id)transaction;
+- (void)startObservationForDomain:(id)domain;
+- (void)stopObservationForDomain:(id)domain;
 @end
 
 @implementation HDKeyValueDomainManager
 
-- (HDKeyValueDomainManager)initWithProfile:(id)a3
+- (HDKeyValueDomainManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v12.receiver = self;
   v12.super_class = HDKeyValueDomainManager;
   v5 = [(HDKeyValueDomainManager *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
+    objc_storeWeak(&v5->_profile, profileCopy);
     v7 = objc_alloc_init(MEMORY[0x277CCDE48]);
     observers = v6->_observers;
     v6->_observers = v7;
@@ -35,50 +35,50 @@
   return v6;
 }
 
-- (id)_observerKeyForDomain:(id)a3
+- (id)_observerKeyForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [v4 domainName];
-  v6 = [v4 category];
+  domainCopy = domain;
+  domainName = [domainCopy domainName];
+  category = [domainCopy category];
 
-  v7 = [(HDKeyValueDomainManager *)self _observerKeyForDomainName:v5 category:v6];
+  v7 = [(HDKeyValueDomainManager *)self _observerKeyForDomainName:domainName category:category];
 
   return v7;
 }
 
-- (void)startObservationForDomain:(id)a3
+- (void)startObservationForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(HDKeyValueDomainManager *)self _observerKeyForDomain:v4];
-  [(_HKWeakObserversMap *)self->_observers addObserver:v4 forKey:v5];
+  domainCopy = domain;
+  v5 = [(HDKeyValueDomainManager *)self _observerKeyForDomain:domainCopy];
+  [(_HKWeakObserversMap *)self->_observers addObserver:domainCopy forKey:v5];
 }
 
-- (void)stopObservationForDomain:(id)a3
+- (void)stopObservationForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(HDKeyValueDomainManager *)self _observerKeyForDomain:v4];
-  [(_HKWeakObserversMap *)self->_observers removeObserver:v4 forKey:v5];
+  domainCopy = domain;
+  v5 = [(HDKeyValueDomainManager *)self _observerKeyForDomain:domainCopy];
+  [(_HKWeakObserversMap *)self->_observers removeObserver:domainCopy forKey:v5];
 }
 
-- (void)_notifyObserversFor:(id)a3
+- (void)_notifyObserversFor:(id)for
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __47__HDKeyValueDomainManager__notifyObserversFor___block_invoke;
   v3[3] = &unk_27861D2F8;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [for enumerateObjectsUsingBlock:v3];
 }
 
-- (void)batchNotificationForDomain:(id)a3 category:(int64_t)a4 forTransaction:(id)a5
+- (void)batchNotificationForDomain:(id)domain category:(int64_t)category forTransaction:(id)transaction
 {
-  v8 = a5;
+  transactionCopy = transaction;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__HDKeyValueDomainManager_batchNotificationForDomain_category_forTransaction___block_invoke;
   aBlock[3] = &unk_278613968;
   aBlock[4] = self;
-  v9 = a3;
+  domainCopy = domain;
   v10 = _Block_copy(aBlock);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -86,14 +86,14 @@
   v13[3] = &unk_2786138D0;
   v13[4] = self;
   v11 = _Block_copy(v13);
-  v12 = [(HDKeyValueDomainManager *)self _observerKeyForDomainName:v9 category:a4];
+  v12 = [(HDKeyValueDomainManager *)self _observerKeyForDomainName:domainCopy category:category];
 
   os_unfair_lock_lock(&self->_pendingNotificationLock);
   [(NSMutableSet *)self->_pendingNotificationKeys addObject:v12];
   if (!self->_hasAddedTransactionOnCommitBlock)
   {
     self->_hasAddedTransactionOnCommitBlock = 1;
-    [v8 onCommit:v10 orRollback:v11];
+    [transactionCopy onCommit:v10 orRollback:v11];
   }
 
   os_unfair_lock_unlock(&self->_pendingNotificationLock);

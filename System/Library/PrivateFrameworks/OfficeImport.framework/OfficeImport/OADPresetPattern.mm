@@ -1,14 +1,14 @@
 @interface OADPresetPattern
 + (id)defaultProperties;
-+ (id)nameForPresetPatternType:(int)a3;
-+ (id)namedBitmapDataForPresetPatternType:(int)a3;
++ (id)nameForPresetPatternType:(int)type;
++ (id)namedBitmapDataForPresetPatternType:(int)type;
 - (BOOL)isAnythingOverridden;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADPresetPattern)initWithDefaults;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)type;
 - (unint64_t)hash;
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3;
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values;
 @end
 
 @implementation OADPresetPattern
@@ -29,11 +29,11 @@
 {
   v5.receiver = self;
   v5.super_class = OADPresetPattern;
-  v2 = [(OADProperties *)&v5 initWithDefaults];
-  v3 = v2;
-  if (v2)
+  initWithDefaults = [(OADProperties *)&v5 initWithDefaults];
+  v3 = initWithDefaults;
+  if (initWithDefaults)
   {
-    [(OADPresetPattern *)v2 setType:1];
+    [(OADPresetPattern *)initWithDefaults setType:1];
   }
 
   return v3;
@@ -56,9 +56,9 @@
   return [(OADPattern *)&v4 hash]^ v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (LOBYTE(self->mType) == 1)
   {
@@ -90,16 +90,16 @@ void __37__OADPresetPattern_defaultProperties__block_invoke()
   return [(OADProperties *)&v4 isAnythingOverridden]|| [(OADPresetPattern *)self isTypeOverridden];
 }
 
-- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)a3
+- (void)fixPropertiesForChangingParentPreservingEffectiveValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   v7.receiver = self;
   v7.super_class = OADPresetPattern;
-  [(OADProperties *)&v7 fixPropertiesForChangingParentPreservingEffectiveValues:v4];
-  if ((self->mType & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != v4))
+  [(OADProperties *)&v7 fixPropertiesForChangingParentPreservingEffectiveValues:valuesCopy];
+  if ((self->mType & 1) != 0 || ([(OADProperties *)self parent], v5 = objc_claimAutoreleasedReturnValue(), v5, v5 != valuesCopy))
   {
-    v6 = [(OADPresetPattern *)self type];
-    if (v6 == [v4 type])
+    type = [(OADPresetPattern *)self type];
+    if (type == [valuesCopy type])
     {
       LOBYTE(self->mType) = 0;
     }
@@ -111,14 +111,14 @@ void __37__OADPresetPattern_defaultProperties__block_invoke()
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = OADPresetPattern;
-  if ([(OADPattern *)&v8 isEqual:v4])
+  if ([(OADPattern *)&v8 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (LOBYTE(self->mType) == *(v5 + 24))
     {
       if (LOBYTE(self->mType))
@@ -146,22 +146,22 @@ void __37__OADPresetPattern_defaultProperties__block_invoke()
   return v6;
 }
 
-+ (id)nameForPresetPatternType:(int)a3
++ (id)nameForPresetPatternType:(int)type
 {
-  if ((a3 - 1) > 0x35)
+  if ((type - 1) > 0x35)
   {
     return 0;
   }
 
   else
   {
-    return off_2799C7CF0[a3 - 1];
+    return off_2799C7CF0[type - 1];
   }
 }
 
-+ (id)namedBitmapDataForPresetPatternType:(int)a3
++ (id)namedBitmapDataForPresetPatternType:(int)type
 {
-  v3 = [a1 nameForPresetPatternType:*&a3];
+  v3 = [self nameForPresetPatternType:*&type];
   if (v3)
   {
     v4 = [OCPattern blackAndWhiteImageDataWithPatternName:v3];

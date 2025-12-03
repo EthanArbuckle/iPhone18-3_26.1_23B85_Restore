@@ -1,19 +1,19 @@
 @interface CSFTensorProperties
-+ (id)propertyWithShape:(id)a3 dataType:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)propertyWithShape:(id)shape dataType:(unint64_t)type;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation CSFTensorProperties
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 shape];
-  v6 = [(CSFTensorProperties *)self shape];
-  v7 = [v5 isEqualToArray:v6];
+  equalCopy = equal;
+  shape = [equalCopy shape];
+  shape2 = [(CSFTensorProperties *)self shape];
+  v7 = [shape isEqualToArray:shape2];
 
-  v8 = [v4 dataType];
-  if (v8 == [(CSFTensorProperties *)self dataType])
+  dataType = [equalCopy dataType];
+  if (dataType == [(CSFTensorProperties *)self dataType])
   {
     v9 = v7;
   }
@@ -26,12 +26,12 @@
   return v9;
 }
 
-+ (id)propertyWithShape:(id)a3 dataType:(unint64_t)a4
++ (id)propertyWithShape:(id)shape dataType:(unint64_t)type
 {
-  v5 = a3;
+  shapeCopy = shape;
   v6 = objc_alloc_init(CSFTensorProperties);
-  [(CSFTensorProperties *)v6 setShape:v5];
-  [(CSFTensorProperties *)v6 setDataType:a4];
+  [(CSFTensorProperties *)v6 setShape:shapeCopy];
+  [(CSFTensorProperties *)v6 setDataType:type];
 
   return v6;
 }

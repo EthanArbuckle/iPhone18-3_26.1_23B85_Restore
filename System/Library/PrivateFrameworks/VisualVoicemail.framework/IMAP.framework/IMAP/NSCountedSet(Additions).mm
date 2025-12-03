@@ -7,13 +7,13 @@
 - (id)mf_debugDescription
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v4)
   {
     v5 = v4;
@@ -24,17 +24,17 @@
       {
         if (*v18 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
         v9 = MEMORY[0x277CCACA8];
-        v10 = [v3 countForObject:v8];
+        v10 = [selfCopy countForObject:v8];
         v11 = [v9 stringWithFormat:@"\t%@ : %lu", v8, v10, v17];
         [v2 vf_insertObject:v11 usingComparator:&__block_literal_global_20 allowDuplicates:1];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v5);

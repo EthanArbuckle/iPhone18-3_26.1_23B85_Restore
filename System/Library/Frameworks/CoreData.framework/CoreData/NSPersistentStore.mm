@@ -1,14 +1,14 @@
 @interface NSPersistentStore
-+ (BOOL)_destroyPersistentStoreAtURL:(id)a3 options:(id)a4 error:(id *)a5;
-+ (BOOL)_rekeyPersistentStoreAtURL:(id)a3 options:(id)a4 withKey:(id)a5 error:(id *)a6;
-+ (BOOL)_replacePersistentStoreAtURL:(id)a3 destinationOptions:(id)a4 withPersistentStoreFromURL:(id)a5 sourceOptions:(id)a6 error:(id *)a7;
-+ (BOOL)doURLStuff:(id)a3 createdStubFile:(BOOL *)a4 readOnly:(BOOL *)a5 error:(id *)a6 options:(id)a7;
++ (BOOL)_destroyPersistentStoreAtURL:(id)l options:(id)options error:(id *)error;
++ (BOOL)_rekeyPersistentStoreAtURL:(id)l options:(id)options withKey:(id)key error:(id *)error;
++ (BOOL)_replacePersistentStoreAtURL:(id)l destinationOptions:(id)options withPersistentStoreFromURL:(id)rL sourceOptions:(id)sourceOptions error:(id *)error;
++ (BOOL)doURLStuff:(id)stuff createdStubFile:(BOOL *)file readOnly:(BOOL *)only error:(id *)error options:(id)options;
 + (BOOL)setMetadata:(NSDictionary *)metadata forPersistentStoreWithURL:(NSURL *)url error:(NSError *)error;
 + (NSDictionary)metadataForPersistentStoreWithURL:(NSURL *)url error:(NSError *)error;
 - (BOOL)_isPersistentStoreAlive;
-- (BOOL)_unload:(id *)a3;
+- (BOOL)_unload:(id *)_unload;
 - (BOOL)isCloudKitEnabled;
-- (BOOL)load:(id *)a3;
+- (BOOL)load:(id *)load;
 - (NSCoreDataCoreSpotlightDelegate)coreSpotlightExporter;
 - (NSDictionary)metadata;
 - (NSPersistentStore)init;
@@ -19,26 +19,26 @@
 - (NSString)type;
 - (_BYTE)_updateMetadata;
 - (__CFSet)_entitiesForConfiguration;
-- (id)_allOrderKeysForDestination:(id)a3 inRelationship:(id)a4 error:(id *)a5;
+- (id)_allOrderKeysForDestination:(id)destination inRelationship:(id)relationship error:(id *)error;
 - (id)_rawMetadata__;
-- (id)_updatedMetadataWithSeed:(id)a3 includeVersioning:(BOOL)a4;
+- (id)_updatedMetadataWithSeed:(id)seed includeVersioning:(BOOL)versioning;
 - (id)currentQueryGeneration;
 - (id)description;
-- (id)executeRequest:(id)a3 withContext:(id)a4 error:(id *)a5;
+- (id)executeRequest:(id)request withContext:(id)context error:(id *)error;
 - (id)mirroringDelegate;
-- (id)newValueForRelationship:(id)a3 forObjectWithID:(id)a4 withContext:(id)a5 error:(id *)a6;
-- (id)newValuesForObjectWithID:(id)a3 withContext:(id)a4 error:(id *)a5;
-- (id)objectIDFactoryForEntity:(id)a3;
-- (id)obtainPermanentIDsForObjects:(id)a3 error:(id *)a4;
-- (id)reopenQueryGenerationWithIdentifier:(id)a3 error:(id *)a4;
+- (id)newValueForRelationship:(id)relationship forObjectWithID:(id)d withContext:(id)context error:(id *)error;
+- (id)newValuesForObjectWithID:(id)d withContext:(id)context error:(id *)error;
+- (id)objectIDFactoryForEntity:(id)entity;
+- (id)obtainPermanentIDsForObjects:(id)objects error:(id *)error;
+- (id)reopenQueryGenerationWithIdentifier:(id)identifier error:(id *)error;
 - (void)_didLoadMetadata;
-- (void)_mapsSyncDidUnregisterObjectsWithIDs_112229675:(id)a3;
+- (void)_mapsSyncDidUnregisterObjectsWithIDs_112229675:(id)ds_112229675;
 - (void)_preflightCrossCheck;
 - (void)dealloc;
-- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)a3;
-- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)a3 generation:(id)a4;
-- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)a3;
-- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)a3 generation:(id)a4;
+- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)ds;
+- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)ds generation:(id)generation;
+- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)ds;
+- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)ds generation:(id)generation;
 - (void)setIdentifier:(NSString *)identifier;
 - (void)setMetadata:(NSDictionary *)metadata;
 - (void)setURL:(NSURL *)URL;
@@ -82,9 +82,9 @@
       v6 = objc_alloc(MEMORY[0x1E696ABC0]);
       v7 = *MEMORY[0x1E696A798];
       v8 = MEMORY[0x1E695DF20];
-      v9 = [(NSURL *)v3 path];
+      path = [(NSURL *)v3 path];
       v10 = *MEMORY[0x1E696A368];
-      v11 = [v6 initWithDomain:v7 code:v5 userInfo:{objc_msgSend(v8, "dictionaryWithObject:forKey:", v9, *MEMORY[0x1E696A368])}];
+      v11 = [v6 initWithDomain:v7 code:v5 userInfo:{objc_msgSend(v8, "dictionaryWithObject:forKey:", path, *MEMORY[0x1E696A368])}];
       v12 = objc_autoreleasePoolPush();
       if (!_NSCoreDataIsOSLogEnabled(1))
       {
@@ -148,8 +148,8 @@ LABEL_19:
         v19 = *MEMORY[0x1E696A250];
         v20 = [v18 initWithDomain:*MEMORY[0x1E696A250] code:v16 userInfo:v11];
         v21 = MEMORY[0x1E695DF20];
-        v22 = [(NSURL *)v3 path];
-        v23 = [v21 dictionaryWithObjectsAndKeys:{v20, v17, v22, v10, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObject:", self), @"NSAffectedStoresErrorKey", 0}];
+        path2 = [(NSURL *)v3 path];
+        v23 = [v21 dictionaryWithObjectsAndKeys:{v20, v17, path2, v10, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObject:", self), @"NSAffectedStoresErrorKey", 0}];
         v24 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:v19 code:134030 userInfo:v23];
         v25 = +[_NSCoreDataException exceptionWithName:code:reason:userInfo:](_NSCoreDataException, *MEMORY[0x1E695D930], 134030, @"Could not write to file.", [MEMORY[0x1E695DF20] dictionaryWithObject:v24 forKey:@"NSCoreDataPrimaryError"]);
         objc_exception_throw(v25);
@@ -269,14 +269,14 @@ LABEL_16:
 
 - (BOOL)isCloudKitEnabled
 {
-  v2 = [(NSPersistentStore *)self mirroringDelegate];
-  if (v2)
+  mirroringDelegate = [(NSPersistentStore *)self mirroringDelegate];
+  if (mirroringDelegate)
   {
     objc_opt_class();
-    LOBYTE(v2) = objc_opt_isKindOfClass();
+    LOBYTE(mirroringDelegate) = objc_opt_isKindOfClass();
   }
 
-  return v2 & 1;
+  return mirroringDelegate & 1;
 }
 
 - (id)mirroringDelegate
@@ -391,12 +391,12 @@ LABEL_27:
     while (v8);
   }
 
-  v11 = [(NSPersistentStore *)self ancillaryModels];
+  ancillaryModels = [(NSPersistentStore *)self ancillaryModels];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  v12 = [ancillaryModels countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v12)
   {
     v13 = v12;
@@ -408,10 +408,10 @@ LABEL_27:
       {
         if (*v30 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(ancillaryModels);
         }
 
-        v16 = [v11 objectForKey:*(*(&v29 + 1) + 8 * v15)];
+        v16 = [ancillaryModels objectForKey:*(*(&v29 + 1) + 8 * v15)];
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
@@ -445,7 +445,7 @@ LABEL_27:
       }
 
       while (v15 != v13);
-      v13 = [v11 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v13 = [ancillaryModels countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v13);
@@ -508,7 +508,7 @@ LABEL_28:
 
 + (BOOL)setMetadata:(NSDictionary *)metadata forPersistentStoreWithURL:(NSURL *)url error:(NSError *)error
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     return [NSPersistentStoreCoordinator _setMetadata:0 forPersistentStoreOfType:url URL:0 options:error error:?];
@@ -633,8 +633,8 @@ LABEL_28:
 
 - (void)setMetadata:(NSDictionary *)metadata
 {
-  v5 = [(NSPersistentStore *)self _rawMetadata];
-  if (v5 != metadata && ([(NSDictionary *)metadata isEqual:v5]& 1) == 0)
+  _rawMetadata = [(NSPersistentStore *)self _rawMetadata];
+  if (_rawMetadata != metadata && ([(NSDictionary *)metadata isEqual:_rawMetadata]& 1) == 0)
   {
 
     [(NSPersistentStore *)self _setMetadataDirty:1];
@@ -675,25 +675,25 @@ LABEL_28:
   return 0;
 }
 
-+ (BOOL)_replacePersistentStoreAtURL:(id)a3 destinationOptions:(id)a4 withPersistentStoreFromURL:(id)a5 sourceOptions:(id)a6 error:(id *)a7
++ (BOOL)_replacePersistentStoreAtURL:(id)l destinationOptions:(id)options withPersistentStoreFromURL:(id)rL sourceOptions:(id)sourceOptions error:(id *)error
 {
-  if (!a5)
+  if (!rL)
   {
     return 0;
   }
 
-  v11 = [a5 isFileURL];
+  isFileURL = [rL isFileURL];
   v12 = 0;
-  if (a3 && v11)
+  if (l && isFileURL)
   {
-    if (![a3 isFileURL])
+    if (![l isFileURL])
     {
       return 0;
     }
 
-    v13 = [objc_msgSend(a3 "path")];
-    v14 = [objc_msgSend(a5 "path")];
-    v15 = [a6 objectForKey:@"NSPersistentStoreUnlinkDestroyOption"];
+    v13 = [objc_msgSend(l "path")];
+    v14 = [objc_msgSend(rL "path")];
+    v15 = [sourceOptions objectForKey:@"NSPersistentStoreUnlinkDestroyOption"];
     if (v15 && [v15 BOOLValue])
     {
       rename(v14, v13, v16);
@@ -708,15 +708,15 @@ LABEL_28:
         return 1;
       }
 
-      if (a7)
+      if (error)
       {
         v26 = MEMORY[0x1E696ABC0];
         v27 = *MEMORY[0x1E696A798];
         v28 = MEMORY[0x1E695DF20];
-        v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:{objc_msgSend(a5, "path"), objc_msgSend(a3, "path"), 0}];
+        v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:{objc_msgSend(rL, "path"), objc_msgSend(l, "path"), 0}];
         v30 = [v26 errorWithDomain:v27 code:v18 userInfo:{objc_msgSend(v28, "dictionaryWithObjectsAndKeys:", v29, *MEMORY[0x1E696A368], 0)}];
         v12 = 0;
-        *a7 = v30;
+        *error = v30;
         return v12;
       }
 
@@ -726,15 +726,15 @@ LABEL_28:
     v19 = copyfile_state_alloc();
     if (copyfile(v14, v13, v19, 0xFu) && (v20 = *__error(), v20 != 2))
     {
-      if (a7)
+      if (error)
       {
         v21 = MEMORY[0x1E696ABC0];
         v22 = *MEMORY[0x1E696A798];
         v23 = MEMORY[0x1E695DF20];
-        v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:{objc_msgSend(a5, "path"), objc_msgSend(a3, "path"), 0}];
+        v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:{objc_msgSend(rL, "path"), objc_msgSend(l, "path"), 0}];
         v25 = [v21 errorWithDomain:v22 code:v20 userInfo:{objc_msgSend(v23, "dictionaryWithObjectsAndKeys:", v24, *MEMORY[0x1E696A368], 0)}];
         v12 = 0;
-        *a7 = v25;
+        *error = v25;
       }
 
       else
@@ -754,58 +754,58 @@ LABEL_28:
   return v12;
 }
 
-+ (BOOL)_destroyPersistentStoreAtURL:(id)a3 options:(id)a4 error:(id *)a5
++ (BOOL)_destroyPersistentStoreAtURL:(id)l options:(id)options error:(id *)error
 {
-  if (a3)
+  if (l)
   {
-    v7 = [a3 isFileURL];
-    if (v7)
+    isFileURL = [l isFileURL];
+    if (isFileURL)
     {
-      if (unlink([objc_msgSend(a3 "path")]) && (v8 = *__error(), v8 != 2))
+      if (unlink([objc_msgSend(l "path")]) && (v8 = *__error(), v8 != 2))
       {
-        if (a5)
+        if (error)
         {
           v9 = MEMORY[0x1E696ABC0];
           v10 = *MEMORY[0x1E696A798];
           v11 = MEMORY[0x1E695DF20];
-          v12 = [a3 path];
-          v13 = [v9 errorWithDomain:v10 code:v8 userInfo:{objc_msgSend(v11, "dictionaryWithObjectsAndKeys:", v12, *MEMORY[0x1E696A368], 0)}];
-          LOBYTE(v7) = 0;
-          *a5 = v13;
+          path = [l path];
+          v13 = [v9 errorWithDomain:v10 code:v8 userInfo:{objc_msgSend(v11, "dictionaryWithObjectsAndKeys:", path, *MEMORY[0x1E696A368], 0)}];
+          LOBYTE(isFileURL) = 0;
+          *error = v13;
         }
 
         else
         {
-          LOBYTE(v7) = 0;
+          LOBYTE(isFileURL) = 0;
         }
       }
 
       else
       {
-        LOBYTE(v7) = 1;
+        LOBYTE(isFileURL) = 1;
       }
     }
   }
 
   else
   {
-    LOBYTE(v7) = 0;
+    LOBYTE(isFileURL) = 0;
   }
 
-  return v7;
+  return isFileURL;
 }
 
-+ (BOOL)_rekeyPersistentStoreAtURL:(id)a3 options:(id)a4 withKey:(id)a5 error:(id *)a6
++ (BOOL)_rekeyPersistentStoreAtURL:(id)l options:(id)options withKey:(id)key error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjectsAndKeys:", @"Store does not support encryption", a4, a5, *MEMORY[0x1E696A578], 0)}];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjectsAndKeys:", @"Store does not support encryption", options, key, *MEMORY[0x1E696A578], 0)}];
   }
 
   return 0;
 }
 
-- (id)objectIDFactoryForEntity:(id)a3
+- (id)objectIDFactoryForEntity:(id)entity
 {
   if (!self->_oidFactories)
   {
@@ -818,7 +818,7 @@ LABEL_28:
     objc_exception_throw(v12);
   }
 
-  v5 = _PFModelMapSlotForEntity(self->_modelMap, a3);
+  v5 = _PFModelMapSlotForEntity(self->_modelMap, entity);
   if (v5 < 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"objectIDFactoryForEntity invoked before model was finalized" userInfo:0]);
@@ -828,7 +828,7 @@ LABEL_28:
   v7 = atomic_load(&self->_oidFactories[v5]);
   if (!v7)
   {
-    v8 = [(objc_class *)[(NSPersistentStore *)self _objectIDClass] classWithStore:self andEntity:a3];
+    v8 = [(objc_class *)[(NSPersistentStore *)self _objectIDClass] classWithStore:self andEntity:entity];
     v7 = v8;
     v9 = 0;
     atomic_compare_exchange_strong(&self->_oidFactories[v6], &v9, v8);
@@ -845,16 +845,16 @@ LABEL_28:
 
     else
     {
-      [a3 _addFactoryToRetainList:v8];
+      [entity _addFactoryToRetainList:v8];
     }
   }
 
   return v7;
 }
 
-- (BOOL)load:(id *)a3
+- (BOOL)load:(id *)load
 {
-  v4 = [(NSPersistentStore *)self identifier];
+  identifier = [(NSPersistentStore *)self identifier];
   oidFactories = self->_oidFactories;
   if (oidFactories)
   {
@@ -865,7 +865,7 @@ LABEL_28:
       do
       {
         v8 = atomic_load(&self->_oidFactories[v7]);
-        [v8 setObjectStoreIdentifier:v4];
+        [v8 setObjectStoreIdentifier:identifier];
         v9 = atomic_load(&self->_oidFactories[++v7]);
       }
 
@@ -876,16 +876,16 @@ LABEL_28:
   temporaryIDClass = self->_temporaryIDClass;
   if (temporaryIDClass)
   {
-    [temporaryIDClass setObjectStoreIdentifier:v4];
+    [temporaryIDClass setObjectStoreIdentifier:identifier];
   }
 
   return 1;
 }
 
-- (BOOL)_unload:(id *)a3
+- (BOOL)_unload:(id *)_unload
 {
   v5 = atomic_load(&self->_cleanOnRemove);
-  v6 = [(NSURL *)self->_url path];
+  path = [(NSURL *)self->_url path];
   if ((v5 & 1) == 0)
   {
     goto LABEL_7;
@@ -897,15 +897,15 @@ LABEL_28:
     goto LABEL_9;
   }
 
-  v7 = v6;
+  v7 = path;
   if ([objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")])
   {
     result = [objc_msgSend(MEMORY[0x1E696AC08] "defaultManager")];
-    if (a3 && !result)
+    if (_unload && !result)
     {
       v9 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjectsAndKeys:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unable to unload store file because file at path '%@' could not be removed", v7), @"reason", 0)}];
       result = 0;
-      *a3 = v9;
+      *_unload = v9;
     }
   }
 
@@ -920,31 +920,31 @@ LABEL_9:
   return result;
 }
 
-+ (BOOL)doURLStuff:(id)a3 createdStubFile:(BOOL *)a4 readOnly:(BOOL *)a5 error:(id *)a6 options:(id)a7
++ (BOOL)doURLStuff:(id)stuff createdStubFile:(BOOL *)file readOnly:(BOOL *)only error:(id *)error options:(id)options
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (!a3 || ![a3 isFileURL])
+  if (!stuff || ![stuff isFileURL])
   {
     goto LABEL_49;
   }
 
-  v12 = [a3 path];
-  v13 = [v12 fileSystemRepresentation];
-  v14 = [a7 valueForKey:@"NSReadOnlyPersistentStoreOption"];
+  path = [stuff path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
+  v14 = [options valueForKey:@"NSReadOnlyPersistentStoreOption"];
   v15 = v14;
   if (v14)
   {
-    v16 = [v14 BOOLValue];
+    bOOLValue = [v14 BOOLValue];
     v17 = [v15 BOOLValue] ^ 1;
   }
 
   else
   {
-    v16 = 0;
+    bOOLValue = 0;
     v17 = 0;
   }
 
-  v18 = [a7 valueForKey:@"NSPersistentStoreFileProtectionKey"];
+  v18 = [options valueForKey:@"NSPersistentStoreFileProtectionKey"];
   if (v18)
   {
     if ([*MEMORY[0x1E696A3A8] isEqualToString:v18])
@@ -1017,7 +1017,7 @@ LABEL_22:
   }
 
 LABEL_23:
-  if (access(v13, 4))
+  if (access(fileSystemRepresentation, 4))
   {
     v22 = *__error();
     if (v22 <= 12)
@@ -1026,12 +1026,12 @@ LABEL_23:
       {
         if (v22 == 2)
         {
-          if (v16)
+          if (bOOLValue)
           {
-            if (a6)
+            if (error)
             {
               v23 = 0;
-              *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:260 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Attempt to open missing file read only; code = %d", 2), @"reason"}];
+              *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:260 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Attempt to open missing file read only; code = %d", 2), @"reason"}];
               goto LABEL_50;
             }
 
@@ -1040,20 +1040,20 @@ LABEL_56:
             goto LABEL_50;
           }
 
-          v33 = _PFCeateStubFileAtPath(v13, v18);
+          v33 = _PFCeateStubFileAtPath(fileSystemRepresentation, v18);
           if ((v33 & 0x80000000) == 0)
           {
             close(v33);
             v23 = 1;
-            *a4 = 1;
+            *file = 1;
             goto LABEL_50;
           }
 
-          if (!a6)
+          if (!error)
           {
 LABEL_74:
-            [_PFRoutines _logFileAccessDebugInformation:v13 checkSandboxAccess:"file-write-create"];
-            +[_PFRoutines _logDirectoryAccessDebugInformation:checkSandboxAccess:](_PFRoutines, [v12 stringByDeletingLastPathComponent], "file-write-create");
+            [_PFRoutines _logFileAccessDebugInformation:fileSystemRepresentation checkSandboxAccess:"file-write-create"];
+            +[_PFRoutines _logDirectoryAccessDebugInformation:checkSandboxAccess:](_PFRoutines, [path stringByDeletingLastPathComponent], "file-write-create");
             goto LABEL_56;
           }
 
@@ -1074,7 +1074,7 @@ LABEL_69:
                 v42 = v36;
                 v43 = 512;
 LABEL_73:
-                *a6 = [v41 errorWithDomain:v42 code:v43 userInfo:v40];
+                *error = [v41 errorWithDomain:v42 code:v43 userInfo:v40];
                 goto LABEL_74;
               }
 
@@ -1115,12 +1115,12 @@ LABEL_67:
         goto LABEL_43;
       }
 
-      if (a6)
+      if (error)
       {
-        *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:256 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Failure to access file: %d", 1), @"reason"}];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:256 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Failure to access file: %d", 1), @"reason"}];
       }
 
-      [_PFRoutines _logFileAccessDebugInformation:v13 checkSandboxAccess:"file-read-data"];
+      [_PFRoutines _logFileAccessDebugInformation:fileSystemRepresentation checkSandboxAccess:"file-read-data"];
 LABEL_49:
       v23 = 1;
       goto LABEL_50;
@@ -1128,13 +1128,13 @@ LABEL_49:
 
     if (v22 == 20)
     {
-      if (a6)
+      if (error)
       {
         v29 = MEMORY[0x1E696ABC0];
         v30 = *MEMORY[0x1E696A250];
         v31 = MEMORY[0x1E695DF20];
-        v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Component of path %@ is not a directory", v12];
-        *a6 = [v29 errorWithDomain:v30 code:258 userInfo:{objc_msgSend(v31, "dictionaryWithObjectsAndKeys:", v32, @"reason", v12, *MEMORY[0x1E696A368], 0)}];
+        v32 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Component of path %@ is not a directory", path];
+        *error = [v29 errorWithDomain:v30 code:258 userInfo:{objc_msgSend(v31, "dictionaryWithObjectsAndKeys:", v32, @"reason", path, *MEMORY[0x1E696A368], 0)}];
       }
 
       v25 = "file-write-create";
@@ -1145,26 +1145,26 @@ LABEL_49:
       if (v22 != 13)
       {
 LABEL_43:
-        if (a6)
+        if (error)
         {
-          *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:256 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unknown failure to access file: %d", v22), @"reason"}];
+          *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:256 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"Unknown failure to access file: %d", v22), @"reason"}];
         }
 
-        v26 = v13;
+        v26 = fileSystemRepresentation;
         v25 = 0;
         goto LABEL_55;
       }
 
-      if (a6)
+      if (error)
       {
-        *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:257 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"No access to file; code = %d", 13), @"reason"}];
+        *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:257 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"No access to file; code = %d", 13), @"reason"}];
       }
 
       v25 = "file-read-data";
     }
 
 LABEL_54:
-    v26 = v13;
+    v26 = fileSystemRepresentation;
 LABEL_55:
     [_PFRoutines _logFileAccessDebugInformation:v26 checkSandboxAccess:v25];
     goto LABEL_56;
@@ -1173,16 +1173,16 @@ LABEL_55:
   if (v17)
   {
     v23 = 1;
-    if (!access(v13, 2))
+    if (!access(fileSystemRepresentation, 2))
     {
       goto LABEL_50;
     }
 
     v24 = *__error();
-    *a5 = 1;
-    if (a6)
+    *only = 1;
+    if (error)
     {
-      *a6 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:513 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"No write permissions to file: %d", v24), @"reason"}];
+      *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:513 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObject:forKey:", objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"No write permissions to file: %d", v24), @"reason"}];
     }
 
     v25 = "file-write-data";
@@ -1195,10 +1195,10 @@ LABEL_55:
   }
 
   v23 = 1;
-  if (access(v13, 2))
+  if (access(fileSystemRepresentation, 2))
   {
-    *a5 = 1;
-    [_PFRoutines _logFileAccessDebugInformation:v13 checkSandboxAccess:"file-write-data"];
+    *only = 1;
+    [_PFRoutines _logFileAccessDebugInformation:fileSystemRepresentation checkSandboxAccess:"file-write-data"];
   }
 
 LABEL_50:
@@ -1206,96 +1206,96 @@ LABEL_50:
   return v23;
 }
 
-- (id)executeRequest:(id)a3 withContext:(id)a4 error:(id *)a5
+- (id)executeRequest:(id)request withContext:(id)context error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)newValuesForObjectWithID:(id)a3 withContext:(id)a4 error:(id *)a5
+- (id)newValuesForObjectWithID:(id)d withContext:(id)context error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)newValueForRelationship:(id)a3 forObjectWithID:(id)a4 withContext:(id)a5 error:(id *)a6
+- (id)newValueForRelationship:(id)relationship forObjectWithID:(id)d withContext:(id)context error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)a3
+- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)ds
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)a3 generation:(id)a4
+- (void)managedObjectContextDidRegisterObjectsWithIDs:(id)ds generation:(id)generation
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)a3
+- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)ds
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)_mapsSyncDidUnregisterObjectsWithIDs_112229675:(id)a3
+- (void)_mapsSyncDidUnregisterObjectsWithIDs_112229675:(id)ds_112229675
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)a3 generation:(id)a4
+- (void)managedObjectContextDidUnregisterObjectsWithIDs:(id)ds generation:(id)generation
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (id)obtainPermanentIDsForObjects:(id)a3 error:(id *)a4
+- (id)obtainPermanentIDsForObjects:(id)objects error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();
   return 0;
 }
 
-- (id)_updatedMetadataWithSeed:(id)a3 includeVersioning:(BOOL)a4
+- (id)_updatedMetadataWithSeed:(id)seed includeVersioning:(BOOL)versioning
 {
-  v4 = a4;
-  v7 = [a3 mutableCopy];
+  versioningCopy = versioning;
+  v7 = [seed mutableCopy];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:5];
   }
 
-  v8 = [(NSPersistentStore *)self type];
-  if (v8 || (v8 = [a3 objectForKey:@"NSStoreType"]) != 0)
+  type = [(NSPersistentStore *)self type];
+  if (type || (type = [seed objectForKey:@"NSStoreType"]) != 0)
   {
-    [v7 setObject:v8 forKey:@"NSStoreType"];
+    [v7 setObject:type forKey:@"NSStoreType"];
   }
 
-  v9 = [a3 objectForKey:@"NSStoreUUID"];
-  if (!v9)
+  identifier = [seed objectForKey:@"NSStoreUUID"];
+  if (!identifier)
   {
-    v9 = [(NSPersistentStore *)self identifier];
-    if (!v9)
+    identifier = [(NSPersistentStore *)self identifier];
+    if (!identifier)
     {
-      v9 = +[_PFRoutines _getUUID];
+      identifier = +[_PFRoutines _getUUID];
     }
   }
 
-  [v7 setObject:v9 forKey:@"NSStoreUUID"];
-  if (v4)
+  [v7 setObject:identifier forKey:@"NSStoreUUID"];
+  if (versioningCopy)
   {
     PFBundleVersion = +[_PFRoutines _getPFBundleVersionNumber];
     [v7 setObject:PFBundleVersion forKey:0x1EF3FD408];
@@ -1307,16 +1307,16 @@ LABEL_50:
 
     v12 = [(NSString *)[(NSPersistentStore *)self type] isEqualToString:@"SQLite"]|| [(NSString *)[(NSPersistentStore *)self type] isEqualToString:@"Binary"];
     v13 = v12 | [(NSString *)[(NSPersistentStore *)self type] isEqualToString:@"NSXPCStore"];
-    v14 = [(NSPersistentStore *)self _persistentStoreCoordinator];
-    if (v14)
+    _persistentStoreCoordinator = [(NSPersistentStore *)self _persistentStoreCoordinator];
+    if (_persistentStoreCoordinator)
     {
-      v15 = [v14 managedObjectModel];
-      v16 = [v15 entityVersionHashesByName];
+      managedObjectModel = [_persistentStoreCoordinator managedObjectModel];
+      entityVersionHashesByName = [managedObjectModel entityVersionHashesByName];
       [v7 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithInt:", 3), 0x1EF3FD3E8}];
-      [v7 setObject:v16 forKey:@"NSStoreModelVersionHashes"];
-      if (v15)
+      [v7 setObject:entityVersionHashesByName forKey:@"NSStoreModelVersionHashes"];
+      if (managedObjectModel)
       {
-        v17 = [objc_msgSend(v15 "versionIdentifiers")];
+        v17 = [objc_msgSend(managedObjectModel "versionIdentifiers")];
       }
 
       else
@@ -1327,10 +1327,10 @@ LABEL_50:
       [v7 setObject:v17 forKey:@"NSStoreModelVersionIdentifiers"];
       if (v13)
       {
-        [v7 setObject:-[NSManagedObjectModel _entityVersionHashesDigestFrom:](v15 forKey:{v16), 0x1EF3FCE28}];
+        [v7 setObject:-[NSManagedObjectModel _entityVersionHashesDigestFrom:](managedObjectModel forKey:{entityVersionHashesByName), 0x1EF3FCE28}];
       }
 
-      v18 = [v15 versionChecksum];
+      versionChecksum = [managedObjectModel versionChecksum];
       v19 = @"NSStoreModelVersionChecksumKey";
       v20 = v7;
       goto LABEL_22;
@@ -1382,11 +1382,11 @@ LABEL_50:
       v27 = [(NSDictionary *)[(NSPersistentStore *)self metadata] objectForKey:@"NSStoreModelVersionIdentifiers"];
       if (v27)
       {
-        v18 = v27;
+        versionChecksum = v27;
         v20 = v7;
         v19 = @"NSStoreModelVersionIdentifiers";
 LABEL_22:
-        [v20 setObject:v18 forKey:v19];
+        [v20 setObject:versionChecksum forKey:v19];
       }
     }
   }
@@ -1411,9 +1411,9 @@ LABEL_22:
   return v4;
 }
 
-- (id)reopenQueryGenerationWithIdentifier:(id)a3 error:(id *)a4
+- (id)reopenQueryGenerationWithIdentifier:(id)identifier error:(id *)error
 {
-  if (![_NSQueryGenerationToken identifierIsForNonGenerationalStore:a3])
+  if (![_NSQueryGenerationToken identifierIsForNonGenerationalStore:identifier])
   {
     return 0;
   }
@@ -1421,11 +1421,11 @@ LABEL_22:
   return [(NSPersistentStore *)self currentQueryGeneration];
 }
 
-- (id)_allOrderKeysForDestination:(id)a3 inRelationship:(id)a4 error:(id *)a5
+- (id)_allOrderKeysForDestination:(id)destination inRelationship:(id)relationship error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:&unk_1EF435350];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:134060 userInfo:&unk_1EF435350];
   }
 
   return 0;

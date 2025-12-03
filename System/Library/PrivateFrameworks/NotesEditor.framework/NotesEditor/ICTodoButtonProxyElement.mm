@@ -3,7 +3,7 @@
 - (CGRect)accessibilityFrame;
 - (ICEditingTextView)textView;
 - (ICTodoButton)todoButton;
-- (ICTodoButtonProxyElement)initWithTodoButton:(id)a3 inTextRange:(_NSRange)a4 textView:(id)a5;
+- (ICTodoButtonProxyElement)initWithTodoButton:(id)button inTextRange:(_NSRange)range textView:(id)view;
 - (_NSRange)textRange;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -11,22 +11,22 @@
 
 @implementation ICTodoButtonProxyElement
 
-- (ICTodoButtonProxyElement)initWithTodoButton:(id)a3 inTextRange:(_NSRange)a4 textView:(id)a5
+- (ICTodoButtonProxyElement)initWithTodoButton:(id)button inTextRange:(_NSRange)range textView:(id)view
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
+  length = range.length;
+  location = range.location;
+  buttonCopy = button;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = ICTodoButtonProxyElement;
-  v11 = [(ICTodoButtonProxyElement *)&v14 initWithAccessibilityContainer:v10];
+  v11 = [(ICTodoButtonProxyElement *)&v14 initWithAccessibilityContainer:viewCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_todoButton, v9);
+    objc_storeWeak(&v11->_todoButton, buttonCopy);
     v12->_textRange.location = location;
     v12->_textRange.length = length;
-    objc_storeWeak(&v12->_textView, v10);
+    objc_storeWeak(&v12->_textView, viewCopy);
   }
 
   return v12;
@@ -34,19 +34,19 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 localizedStringForKey:@"checklist button" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v3 = [mainBundle localizedStringForKey:@"checklist button" value:&stru_282757698 table:0];
 
   return v3;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(ICTodoButtonProxyElement *)self todoButton];
-  v3 = [v2 isDone];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = v4;
-  if (v3)
+  todoButton = [(ICTodoButtonProxyElement *)self todoButton];
+  isDone = [todoButton isDone];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = mainBundle;
+  if (isDone)
   {
     v6 = @"completed";
   }
@@ -56,15 +56,15 @@
     v6 = @"incomplete";
   }
 
-  v7 = [v4 localizedStringForKey:v6 value:&stru_282757698 table:0];
+  v7 = [mainBundle localizedStringForKey:v6 value:&stru_282757698 table:0];
 
   return v7;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(ICTodoButtonProxyElement *)self todoButton];
-  [v2 accessibilityFrame];
+  todoButton = [(ICTodoButtonProxyElement *)self todoButton];
+  [todoButton accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -83,20 +83,20 @@
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(ICTodoButtonProxyElement *)self textView];
-  v4 = [v3 editorController];
-  v5 = [v4 note];
-  v6 = [v5 isDeletedOrInTrash];
+  textView = [(ICTodoButtonProxyElement *)self textView];
+  editorController = [textView editorController];
+  note = [editorController note];
+  isDeletedOrInTrash = [note isDeletedOrInTrash];
 
-  if (!v6)
+  if (!isDeletedOrInTrash)
   {
     return 0;
   }
 
-  v7 = [(ICTodoButtonProxyElement *)self todoButton];
-  v8 = [v7 accessibilityActivate];
+  todoButton = [(ICTodoButtonProxyElement *)self todoButton];
+  accessibilityActivate = [todoButton accessibilityActivate];
 
-  return v8;
+  return accessibilityActivate;
 }
 
 - (ICTodoButton)todoButton

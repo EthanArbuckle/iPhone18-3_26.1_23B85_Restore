@@ -1,17 +1,17 @@
 @interface PXGGradientTextureProvider
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)_requestTextureForGradient:(id)a3 targetSize:(CGSize)a4 requestID:(int)a5;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)_requestTextureForGradient:(id)gradient targetSize:(CGSize)size requestID:(int)d;
 @end
 
 @implementation PXGGradientTextureProvider
 
-- (void)_requestTextureForGradient:(id)a3 targetSize:(CGSize)a4 requestID:(int)a5
+- (void)_requestTextureForGradient:(id)gradient targetSize:(CGSize)size requestID:(int)d
 {
-  v5 = *&a5;
-  height = a4.height;
-  width = a4.width;
+  v5 = *&d;
+  height = size.height;
+  width = size.width;
   v20[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  gradientCopy = gradient;
   if ([(PXGTextureProvider *)self isRequestActive:v5])
   {
     if (PXPixelSizeAreaIsZero())
@@ -22,7 +22,7 @@
     else
     {
       v10 = objc_alloc(MEMORY[0x277D3CE08]);
-      v20[0] = v9;
+      v20[0] = gradientCopy;
       v11 = [MEMORY[0x277CCAE60] valueWithCGSize:{width, height}];
       v20[1] = v11;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
@@ -32,7 +32,7 @@
       v16[1] = 3221225472;
       v16[2] = __78__PXGGradientTextureProvider__requestTextureForGradient_targetSize_requestID___block_invoke;
       v16[3] = &unk_2782A9828;
-      v17 = v9;
+      v17 = gradientCopy;
       v18 = width;
       v19 = height;
       v14[0] = MEMORY[0x277D85DD0];
@@ -109,26 +109,26 @@ void __78__PXGGradientTextureProvider__requestTextureForGradient_targetSize_requ
   CGColorSpaceRelease(DeviceRGB);
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  v12 = a7;
+  layoutCopy = layout;
   v33.receiver = self;
   v33.super_class = PXGGradientTextureProvider;
-  v26 = a6;
-  v13 = [(PXGTextureProvider *)&v33 requestTexturesForSpritesInRange:a3 geometries:a4 styles:a5 infos:a6 inLayout:v12];
+  infosCopy = infos;
+  v13 = [(PXGTextureProvider *)&v33 requestTexturesForSpritesInRange:range geometries:geometries styles:styles infos:infos inLayout:layoutCopy];
   v24 = v14;
   v25 = v13;
-  v15 = [v12 contentSource];
-  v16 = HIDWORD(*&a3);
-  if (HIDWORD(*&a3))
+  contentSource = [layoutCopy contentSource];
+  v16 = HIDWORD(*&range);
+  if (HIDWORD(*&range))
   {
     v17 = v25;
     do
     {
-      v18 = *(&v26->var3 + 5 * a3.location);
-      v19 = [v15 gradientForSpriteAtIndex:a3 inLayout:v12];
+      v18 = *(&infosCopy->var3 + 5 * range.location);
+      v19 = [contentSource gradientForSpriteAtIndex:range inLayout:layoutCopy];
       objc_initWeak(&location, self);
-      v20 = [(PXGTextureProvider *)self requestQueue];
+      requestQueue = [(PXGTextureProvider *)self requestQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __96__PXGGradientTextureProvider_requestTexturesForSpritesInRange_geometries_styles_infos_inLayout___block_invoke;
@@ -138,12 +138,12 @@ void __78__PXGGradientTextureProvider__requestTextureForGradient_targetSize_requ
       v30 = vcvtq_f64_f32(v18);
       v31 = v17;
       v21 = v19;
-      dispatch_async(v20, block);
+      dispatch_async(requestQueue, block);
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(&location);
       ++v17;
-      a3 = (a3.location + 1);
+      range = (range.location + 1);
       --v16;
     }
 

@@ -1,53 +1,53 @@
 @interface PTSettings
-+ (id)emptyArchiveForSettingsClassName:(id)a3;
-+ (id)settingsFromArchiveDictionary:(id)a3;
-+ (void)_applyArchiveValue:(id)a3 forKeyPath:(id)a4 toArchive:(id)a5;
-- (BOOL)_applyArchiveValue:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)_applyArchiveValue:(id)a3 forLeafKey:(id)a4 error:(id *)a5;
-- (BOOL)_getChild:(id *)a3 create:(BOOL)a4 leafKey:(id *)a5 forKeyPath:(id)a6 error:(id *)a7;
++ (id)emptyArchiveForSettingsClassName:(id)name;
++ (id)settingsFromArchiveDictionary:(id)dictionary;
++ (void)_applyArchiveValue:(id)value forKeyPath:(id)path toArchive:(id)archive;
+- (BOOL)_applyArchiveValue:(id)value forKeyPath:(id)path error:(id *)error;
+- (BOOL)_applyArchiveValue:(id)value forLeafKey:(id)key error:(id *)error;
+- (BOOL)_getChild:(id *)child create:(BOOL)create leafKey:(id *)key forKeyPath:(id)path error:(id *)error;
 - (PTSettings)initWithDefaultValues;
 - (id)_allChildAndLeafKeys;
-- (id)_archiveValueForKeyPath:(id)a3;
-- (id)_archiveValueForLeafKey:(id)a3;
-- (id)_createChildForKey:(id)a3;
-- (id)_ensureChildForKey:(id)a3;
-- (id)_initWithArchiveDictionary:(id)a3;
-- (id)_initWithClassStructure:(id)a3;
-- (id)_keyForChild:(id)a3;
+- (id)_archiveValueForKeyPath:(id)path;
+- (id)_archiveValueForLeafKey:(id)key;
+- (id)_createChildForKey:(id)key;
+- (id)_ensureChildForKey:(id)key;
+- (id)_initWithArchiveDictionary:(id)dictionary;
+- (id)_initWithClassStructure:(id)structure;
+- (id)_keyForChild:(id)child;
 - (id)archiveDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)module;
-- (void)_applyArchiveDictionary:(id)a3;
+- (void)_applyArchiveDictionary:(id)dictionary;
 - (void)_createChildren;
 - (void)_createChildrenAndOutlets;
 - (void)_createOutlets;
-- (void)_enumerateChildrenWithBlock:(id)a3;
-- (void)_enumerateLeafValuesWithBlock:(id)a3;
-- (void)_enumerateOutletsWithBlock:(id)a3;
-- (void)_safeSetValue:(id)a3 forLeafKey:(id)a4;
+- (void)_enumerateChildrenWithBlock:(id)block;
+- (void)_enumerateLeafValuesWithBlock:(id)block;
+- (void)_enumerateOutletsWithBlock:(id)block;
+- (void)_safeSetValue:(id)value forLeafKey:(id)key;
 - (void)_sendDidRestoreDefaults;
-- (void)_sendKeyChanged:(id)a3;
-- (void)_sendKeyPathChanged:(id)a3;
+- (void)_sendKeyChanged:(id)changed;
+- (void)_sendKeyPathChanged:(id)changed;
 - (void)_sendWillRestoreDefaults;
-- (void)_setObservationEnabled:(BOOL)a3;
+- (void)_setObservationEnabled:(BOOL)enabled;
 - (void)_startObservingChildren;
 - (void)_startObservingProperties;
 - (void)_startOrStopObservingPropertiesAndChildren;
 - (void)_stopObservingChildren;
 - (void)_stopObservingProperties;
 - (void)_validateChildren;
-- (void)addKeyObserver:(id)a3;
-- (void)addKeyPathObserver:(id)a3;
-- (void)applyArchiveValue:(id)a3 forKey:(id)a4;
-- (void)applySettings:(id)a3;
+- (void)addKeyObserver:(id)observer;
+- (void)addKeyPathObserver:(id)observer;
+- (void)applyArchiveValue:(id)value forKey:(id)key;
+- (void)applySettings:(id)settings;
 - (void)dealloc;
-- (void)invalidateValueForKey:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeKeyObserver:(id)a3;
-- (void)removeKeyPathObserver:(id)a3;
+- (void)invalidateValueForKey:(id)key;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeKeyObserver:(id)observer;
+- (void)removeKeyPathObserver:(id)observer;
 - (void)restoreDefaultValues;
-- (void)restoreFromArchiveDictionary:(id)a3;
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4;
+- (void)restoreFromArchiveDictionary:(id)dictionary;
+- (void)settings:(id)settings changedValueForKeyPath:(id)path;
 @end
 
 @implementation PTSettings
@@ -60,8 +60,8 @@
   if (v2)
   {
     IsAppleInternal = PTInstallIsAppleInternal();
-    v4 = [(PTSettings *)v2 suppressesIntrospectionOnCustomerInstalls];
-    if (!v4 || IsAppleInternal != 0)
+    suppressesIntrospectionOnCustomerInstalls = [(PTSettings *)v2 suppressesIntrospectionOnCustomerInstalls];
+    if (!suppressesIntrospectionOnCustomerInstalls || IsAppleInternal != 0)
     {
       v6 = objc_opt_class();
       v7 = [PTSettingsClassStructure structureForSettingsClass:v6];
@@ -69,7 +69,7 @@
       v2->__classStructure = v7;
     }
 
-    if (v4)
+    if (suppressesIntrospectionOnCustomerInstalls)
     {
       [(PTSettings *)v2 createChildren];
     }
@@ -83,7 +83,7 @@
     {
       [(PTSettings *)v2 _createOutlets];
       [(PTSettings *)v2 setDefaultValues];
-      if (v4)
+      if (suppressesIntrospectionOnCustomerInstalls)
       {
         [(PTSettings *)v2 _validateChildren];
       }
@@ -105,8 +105,8 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+  v4 = [childKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -118,7 +118,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childKeys);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
@@ -129,7 +129,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [childKeys countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -160,8 +160,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(PTSettingsClassStructure *)self->__classStructure outletKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  outletKeys = [(PTSettingsClassStructure *)self->__classStructure outletKeys];
+  v4 = [outletKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -173,18 +173,18 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(outletKeys);
         }
 
         v8 = *(*(&v10 + 1) + 8 * v7);
-        v9 = [[PTOutlet alloc] _init];
-        [(PTSettings *)self setValue:v9 forKey:v8];
+        _init = [[PTOutlet alloc] _init];
+        [(PTSettings *)self setValue:_init forKey:v8];
 
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [outletKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -203,11 +203,11 @@
     goto LABEL_17;
   }
 
-  v3 = [(PTSettings *)self _hasObservers];
-  v4 = v3;
+  _hasObservers = [(PTSettings *)self _hasObservers];
+  v4 = _hasObservers;
   if (self->__observationEnabled)
   {
-    v5 = [(PTSettings *)self _hasKeyPathObservers];
+    _hasKeyPathObservers = [(PTSettings *)self _hasKeyPathObservers];
     if (!v4)
     {
       goto LABEL_4;
@@ -217,7 +217,7 @@ LABEL_10:
     if (!self->__isObservingProperties)
     {
       [(PTSettings *)self _startObservingProperties];
-      if (!v5)
+      if (!_hasKeyPathObservers)
       {
         goto LABEL_17;
       }
@@ -226,7 +226,7 @@ LABEL_10:
     }
 
 LABEL_11:
-    if (!v5)
+    if (!_hasKeyPathObservers)
     {
       goto LABEL_17;
     }
@@ -234,8 +234,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v5 = 0;
-  if (v3)
+  _hasKeyPathObservers = 0;
+  if (_hasObservers)
   {
     goto LABEL_10;
   }
@@ -247,7 +247,7 @@ LABEL_4:
   }
 
   [(PTSettings *)self _stopObservingProperties];
-  if (!v5)
+  if (!_hasKeyPathObservers)
   {
 LABEL_17:
     if (self->__isObservingChildren)
@@ -267,16 +267,16 @@ LABEL_12:
   }
 }
 
-- (id)_initWithClassStructure:(id)a3
+- (id)_initWithClassStructure:(id)structure
 {
-  v5 = a3;
+  structureCopy = structure;
   v9.receiver = self;
   v9.super_class = PTSettings;
   v6 = [(PTSettings *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->__classStructure, a3);
+    objc_storeStrong(&v6->__classStructure, structure);
   }
 
   return v7;
@@ -296,8 +296,8 @@ LABEL_12:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+  v4 = [childKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -308,7 +308,7 @@ LABEL_12:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childKeys);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -320,36 +320,36 @@ LABEL_12:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [childKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_initWithArchiveDictionary:(id)a3
+- (id)_initWithArchiveDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(PTSettings *)self initWithDefaultValues];
-  v6 = v5;
-  if (v5)
+  dictionaryCopy = dictionary;
+  initWithDefaultValues = [(PTSettings *)self initWithDefaultValues];
+  v6 = initWithDefaultValues;
+  if (initWithDefaultValues)
   {
-    [(PTSettings *)v5 _applyArchiveDictionary:v4];
+    [(PTSettings *)initWithDefaultValues _applyArchiveDictionary:dictionaryCopy];
   }
 
   return v6;
 }
 
-- (void)_applyArchiveDictionary:(id)a3
+- (void)_applyArchiveDictionary:(id)dictionary
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v6)
   {
     v8 = v6;
@@ -362,13 +362,13 @@ LABEL_12:
       {
         if (*v23 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v4 objectForKey:{v11, v21}];
-        v13 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-        v14 = [v13 containsObject:v11];
+        v12 = [dictionaryCopy objectForKey:{v11, v21}];
+        childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+        v14 = [childKeys containsObject:v11];
 
         if (v14)
         {
@@ -398,8 +398,8 @@ LABEL_12:
 
         else
         {
-          v16 = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
-          v17 = [v16 containsObject:v11];
+          leafKeys = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
+          v17 = [leafKeys containsObject:v11];
 
           if (v17)
           {
@@ -408,24 +408,24 @@ LABEL_12:
         }
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 applySettings:self];
   return v4;
 }
 
-+ (id)settingsFromArchiveDictionary:(id)a3
++ (id)settingsFromArchiveDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"_internal_class"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"_internal_class"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -449,17 +449,17 @@ LABEL_12:
     v8 = 0;
   }
 
-  if ([(objc_class *)v8 isSubclassOfClass:a1])
+  if ([(objc_class *)v8 isSubclassOfClass:self])
   {
-    v9 = v8;
+    selfCopy = v8;
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  v10 = [[v9 alloc] _initWithArchiveDictionary:v4];
+  v10 = [[selfCopy alloc] _initWithArchiveDictionary:dictionaryCopy];
 
   return v10;
 }
@@ -467,16 +467,16 @@ LABEL_12:
 - (id)archiveDictionary
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(PTSettingsClassStructure *)self->__classStructure settingsClassName];
-  [v3 setObject:v4 forKey:@"_internal_class"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  settingsClassName = [(PTSettingsClassStructure *)self->__classStructure settingsClassName];
+  [dictionary setObject:settingsClassName forKey:@"_internal_class"];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(PTSettings *)self _allChildAndLeafKeys];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  _allChildAndLeafKeys = [(PTSettings *)self _allChildAndLeafKeys];
+  v6 = [_allChildAndLeafKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v6)
   {
     v8 = v6;
@@ -489,19 +489,19 @@ LABEL_12:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(_allChildAndLeafKeys);
         }
 
         v11 = *(*(&v19 + 1) + 8 * i);
-        v12 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-        v13 = [v12 containsObject:v11];
+        childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+        v13 = [childKeys containsObject:v11];
 
         if (v13)
         {
           v14 = [(PTSettings *)self valueForKey:v11];
-          v15 = [v14 archiveDictionary];
+          archiveDictionary = [v14 archiveDictionary];
 
-          if (!v15)
+          if (!archiveDictionary)
           {
             goto LABEL_15;
           }
@@ -509,16 +509,16 @@ LABEL_12:
 
         else
         {
-          v15 = [(PTSettings *)self archiveValueForKey:v11];
-          if (!v15)
+          archiveDictionary = [(PTSettings *)self archiveValueForKey:v11];
+          if (!archiveDictionary)
           {
             goto LABEL_15;
           }
         }
 
-        if (PTObjectIsRecursivelyPlistable(v15))
+        if (PTObjectIsRecursivelyPlistable(archiveDictionary))
         {
-          [v3 setObject:v15 forKey:v11];
+          [dictionary setObject:archiveDictionary forKey:v11];
         }
 
         else
@@ -529,7 +529,7 @@ LABEL_12:
             *buf = v18;
             v24 = v11;
             v25 = 2112;
-            v26 = v15;
+            v26 = archiveDictionary;
             _os_log_impl(&dword_21E61D000, v16, OS_LOG_TYPE_DEFAULT, "PTSettings cannot use archive value for property %@ as it contains non-plist types: %@", buf, 0x16u);
           }
         }
@@ -537,41 +537,41 @@ LABEL_12:
 LABEL_15:
       }
 
-      v8 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v8 = [_allChildAndLeafKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v8);
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (void)restoreDefaultValues
 {
   [(PTSettings *)self _sendWillRestoreDefaults];
-  v3 = [objc_alloc(objc_opt_class()) initWithDefaultValues];
-  [(PTSettings *)self applySettings:v3];
+  initWithDefaultValues = [objc_alloc(objc_opt_class()) initWithDefaultValues];
+  [(PTSettings *)self applySettings:initWithDefaultValues];
   [(PTSettings *)self _sendDidRestoreDefaults];
 }
 
-- (void)restoreFromArchiveDictionary:(id)a3
+- (void)restoreFromArchiveDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [objc_opt_class() settingsFromArchiveDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [objc_opt_class() settingsFromArchiveDictionary:dictionaryCopy];
 
   [(PTSettings *)self applySettings:v5];
 }
 
-- (void)applySettings:(id)a3
+- (void)applySettings:(id)settings
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  settingsCopy = settings;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-  v6 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+  childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+  v6 = [childKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
     v7 = v6;
@@ -582,16 +582,16 @@ LABEL_15:
       {
         if (*v25 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childKeys);
         }
 
         v10 = *(*(&v24 + 1) + 8 * i);
-        v11 = [v4 valueForKey:v10];
+        v11 = [settingsCopy valueForKey:v10];
         v12 = [(PTSettings *)self _ensureChildForKey:v10];
         [v12 applySettings:v11];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v24 objects:v29 count:16];
+      v7 = [childKeys countByEnumeratingWithState:&v24 objects:v29 count:16];
     }
 
     while (v7);
@@ -601,8 +601,8 @@ LABEL_15:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v13 = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
-  v14 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+  leafKeys = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
+  v14 = [leafKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v14)
   {
     v15 = v14;
@@ -613,27 +613,27 @@ LABEL_15:
       {
         if (*v21 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(leafKeys);
         }
 
         v18 = *(*(&v20 + 1) + 8 * j);
-        v19 = [v4 valueForKey:v18];
+        v19 = [settingsCopy valueForKey:v18];
         [(PTSettings *)self _safeSetValue:v19 forLeafKey:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v20 objects:v28 count:16];
+      v15 = [leafKeys countByEnumeratingWithState:&v20 objects:v28 count:16];
     }
 
     while (v15);
   }
 }
 
-- (void)_safeSetValue:(id)a3 forLeafKey:(id)a4
+- (void)_safeSetValue:(id)value forLeafKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(PTSettingsClassStructure *)self->__classStructure leafClassForKey:v6];
-  v8 = [(PTSettingsClassStructure *)self->__classStructure leafStructNameForKey:v6];
+  valueCopy = value;
+  keyCopy = key;
+  v7 = [(PTSettingsClassStructure *)self->__classStructure leafClassForKey:keyCopy];
+  v8 = [(PTSettingsClassStructure *)self->__classStructure leafStructNameForKey:keyCopy];
   v9 = v8;
   if (!v7)
   {
@@ -641,7 +641,7 @@ LABEL_15:
     goto LABEL_5;
   }
 
-  if (v10)
+  if (valueCopy)
   {
 LABEL_5:
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -650,13 +650,13 @@ LABEL_5:
     }
   }
 
-  [(PTSettings *)self setValue:v10 forKey:v6];
+  [(PTSettings *)self setValue:valueCopy forKey:keyCopy];
 LABEL_7:
 }
 
-- (void)addKeyObserver:(id)a3
+- (void)addKeyObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   if (PTInstallIsAppleInternal())
   {
     keyObservers = self->__keyObservers;
@@ -669,24 +669,24 @@ LABEL_7:
       keyObservers = self->__keyObservers;
     }
 
-    [(NSHashTable *)keyObservers addObject:v7];
+    [(NSHashTable *)keyObservers addObject:observerCopy];
     [(PTSettings *)self _startOrStopObservingPropertiesAndChildren];
   }
 }
 
-- (void)removeKeyObserver:(id)a3
+- (void)removeKeyObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (PTInstallIsAppleInternal())
   {
-    [(NSHashTable *)self->__keyObservers removeObject:v4];
+    [(NSHashTable *)self->__keyObservers removeObject:observerCopy];
     [(PTSettings *)self _startOrStopObservingPropertiesAndChildren];
   }
 }
 
-- (void)addKeyPathObserver:(id)a3
+- (void)addKeyPathObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   if (PTInstallIsAppleInternal())
   {
     keyPathObservers = self->__keyPathObservers;
@@ -699,49 +699,49 @@ LABEL_7:
       keyPathObservers = self->__keyPathObservers;
     }
 
-    [(NSHashTable *)keyPathObservers addObject:v7];
+    [(NSHashTable *)keyPathObservers addObject:observerCopy];
     [(PTSettings *)self _startOrStopObservingPropertiesAndChildren];
   }
 }
 
-- (void)removeKeyPathObserver:(id)a3
+- (void)removeKeyPathObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if (PTInstallIsAppleInternal())
   {
-    [(NSHashTable *)self->__keyPathObservers removeObject:v4];
+    [(NSHashTable *)self->__keyPathObservers removeObject:observerCopy];
     [(PTSettings *)self _startOrStopObservingPropertiesAndChildren];
   }
 }
 
-- (void)invalidateValueForKey:(id)a3
+- (void)invalidateValueForKey:(id)key
 {
-  v4 = a3;
-  [(PTSettings *)self _sendKeyChanged:v4];
-  [(PTSettings *)self _sendKeyPathChanged:v4];
+  keyCopy = key;
+  [(PTSettings *)self _sendKeyChanged:keyCopy];
+  [(PTSettings *)self _sendKeyPathChanged:keyCopy];
 }
 
 - (id)module
 {
-  v2 = [objc_opt_class() settingsControllerModule];
-  v3 = [v2 copy];
+  settingsControllerModule = [objc_opt_class() settingsControllerModule];
+  v3 = [settingsControllerModule copy];
 
   return v3;
 }
 
-- (id)_createChildForKey:(id)a3
+- (id)_createChildForKey:(id)key
 {
-  v3 = [objc_alloc(-[PTSettingsClassStructure childClassForKey:](self->__classStructure childClassForKey:{a3)), "initWithDefaultValues"}];
+  v3 = [objc_alloc(-[PTSettingsClassStructure childClassForKey:](self->__classStructure childClassForKey:{key)), "initWithDefaultValues"}];
 
   return v3;
 }
 
-- (void)applyArchiveValue:(id)a3 forKey:(id)a4
+- (void)applyArchiveValue:(id)value forKey:(id)key
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  keyCopy = key;
   v12 = 0;
-  v7 = [(PTSettings *)self _applyArchiveValue:a3 forLeafKey:v6 error:&v12];
+  v7 = [(PTSettings *)self _applyArchiveValue:value forLeafKey:keyCopy error:&v12];
   v8 = v12;
   if (!v7)
   {
@@ -752,7 +752,7 @@ LABEL_7:
       *buf = 138412802;
       v14 = v10;
       v15 = 2112;
-      v16 = v6;
+      v16 = keyCopy;
       v17 = 2112;
       v18 = v8;
       v11 = v10;
@@ -761,18 +761,18 @@ LABEL_7:
   }
 }
 
-- (void)_setObservationEnabled:(BOOL)a3
+- (void)_setObservationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v15 = *MEMORY[0x277D85DE8];
-  if (PTInstallIsAppleInternal() && self->__observationEnabled != v3)
+  if (PTInstallIsAppleInternal() && self->__observationEnabled != enabledCopy)
   {
     v5 = PTLogObjectForTopic(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = objc_opt_class();
       v7 = @"disabling";
-      if (v3)
+      if (enabledCopy)
       {
         v7 = @"enabling";
       }
@@ -785,12 +785,12 @@ LABEL_7:
       _os_log_impl(&dword_21E61D000, v5, OS_LOG_TYPE_DEFAULT, "%@: %@ observation", buf, 0x16u);
     }
 
-    self->__observationEnabled = v3;
+    self->__observationEnabled = enabledCopy;
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __37__PTSettings__setObservationEnabled___block_invoke;
     v9[3] = &__block_descriptor_33_e33_v24__0__NSString_8__PTSettings_16l;
-    v10 = v3;
+    v10 = enabledCopy;
     [(PTSettings *)self _enumerateChildrenWithBlock:v9];
     [(PTSettings *)self _startOrStopObservingPropertiesAndChildren];
   }
@@ -804,8 +804,8 @@ LABEL_7:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PTSettings *)self _allChildAndLeafKeys];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _allChildAndLeafKeys = [(PTSettings *)self _allChildAndLeafKeys];
+  v4 = [_allChildAndLeafKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -817,14 +817,14 @@ LABEL_7:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allChildAndLeafKeys);
         }
 
         [(PTSettings *)self addObserver:self forKeyPath:*(*(&v8 + 1) + 8 * v7++) options:3 context:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_allChildAndLeafKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -839,8 +839,8 @@ LABEL_7:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(PTSettings *)self _allChildAndLeafKeys];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  _allChildAndLeafKeys = [(PTSettings *)self _allChildAndLeafKeys];
+  v4 = [_allChildAndLeafKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -852,14 +852,14 @@ LABEL_7:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allChildAndLeafKeys);
         }
 
         [(PTSettings *)self removeObserver:self forKeyPath:*(*(&v8 + 1) + 8 * v7++) context:0];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [_allChildAndLeafKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -874,8 +874,8 @@ LABEL_7:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+  v4 = [childKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -887,7 +887,7 @@ LABEL_7:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childKeys);
         }
 
         v8 = [(PTSettings *)self valueForKey:*(*(&v9 + 1) + 8 * v7)];
@@ -897,7 +897,7 @@ LABEL_7:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [childKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -912,8 +912,8 @@ LABEL_7:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+  v4 = [childKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -925,7 +925,7 @@ LABEL_7:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(childKeys);
         }
 
         v8 = [(PTSettings *)self valueForKey:*(*(&v9 + 1) + 8 * v7)];
@@ -935,7 +935,7 @@ LABEL_7:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [childKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -944,32 +944,32 @@ LABEL_7:
 
 - (id)_allChildAndLeafKeys
 {
-  v3 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-  v4 = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
-  v5 = [v3 setByAddingObjectsFromSet:v4];
+  childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+  leafKeys = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
+  v5 = [childKeys setByAddingObjectsFromSet:leafKeys];
 
   return v5;
 }
 
-- (BOOL)_applyArchiveValue:(id)a3 forLeafKey:(id)a4 error:(id *)a5
+- (BOOL)_applyArchiveValue:(id)value forLeafKey:(id)key error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
-  v11 = [v10 containsObject:v9];
+  valueCopy = value;
+  keyCopy = key;
+  leafKeys = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
+  v11 = [leafKeys containsObject:keyCopy];
 
   if (v11)
   {
-    v12 = [(PTSettingsClassStructure *)self->__classStructure leafClassForKey:v9];
-    v13 = [(PTSettingsClassStructure *)self->__classStructure leafStructNameForKey:v9];
+    v12 = [(PTSettingsClassStructure *)self->__classStructure leafClassForKey:keyCopy];
+    v13 = [(PTSettingsClassStructure *)self->__classStructure leafStructNameForKey:keyCopy];
     v14 = v13;
     if (v12)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_opt_class() _supportsArchivingCustomClass:v12])
       {
-        v15 = [objc_opt_class() _objectOfCustomClass:v12 fromArchiveDictionary:v8];
-        [(PTSettings *)self setValue:v15 forKey:v9];
+        v15 = [objc_opt_class() _objectOfCustomClass:v12 fromArchiveDictionary:valueCopy];
+        [(PTSettings *)self setValue:v15 forKey:keyCopy];
 
 LABEL_22:
         v16 = 1;
@@ -978,7 +978,7 @@ LABEL_22:
 
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
           v17 = MEMORY[0x277CCACA8];
           v18 = objc_opt_class();
@@ -986,7 +986,7 @@ LABEL_22:
 LABEL_18:
           [v17 stringWithFormat:@"don't know how to convert %@ to %@", v18, v22];
 LABEL_19:
-          *a5 = v16 = 0;
+          *error = v16 = 0;
 LABEL_29:
 
           goto LABEL_30;
@@ -1003,22 +1003,22 @@ LABEL_29:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 && [objc_opt_class() _supportsArchivingStructType:v14])
         {
-          v19 = [objc_opt_class() _valueOfStructType:v14 fromArchiveDictionary:v8];
+          v19 = [objc_opt_class() _valueOfStructType:v14 fromArchiveDictionary:valueCopy];
           v16 = v19 != 0;
           if (v19)
           {
-            [(PTSettings *)self setValue:v19 forKey:v9];
+            [(PTSettings *)self setValue:v19 forKey:keyCopy];
           }
 
-          else if (a5)
+          else if (error)
           {
-            *a5 = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to create struct %@ from %@", v14, v8];
+            *error = [MEMORY[0x277CCACA8] stringWithFormat:@"failed to create struct %@ from %@", v14, valueCopy];
           }
 
           goto LABEL_29;
         }
 
-        if (a5)
+        if (error)
         {
           v17 = MEMORY[0x277CCACA8];
           v18 = objc_opt_class();
@@ -1034,7 +1034,7 @@ LABEL_25:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a5)
+        if (error)
         {
           [MEMORY[0x277CCACA8] stringWithFormat:@"don't know how to convert %@ to scalar", objc_opt_class(), v21];
           goto LABEL_19;
@@ -1044,14 +1044,14 @@ LABEL_25:
       }
     }
 
-    [(PTSettings *)self setValue:v8 forKey:v9];
+    [(PTSettings *)self setValue:valueCopy forKey:keyCopy];
     goto LABEL_22;
   }
 
   v16 = 0;
-  if (a5)
+  if (error)
   {
-    *a5 = @"no such leaf key";
+    *error = @"no such leaf key";
   }
 
 LABEL_30:
@@ -1059,17 +1059,17 @@ LABEL_30:
   return v16;
 }
 
-- (id)_archiveValueForLeafKey:(id)a3
+- (id)_archiveValueForLeafKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
-  v6 = [v5 containsObject:v4];
+  keyCopy = key;
+  leafKeys = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
+  v6 = [leafKeys containsObject:keyCopy];
 
   if (v6)
   {
-    v7 = [(PTSettings *)self valueForKey:v4];
-    v8 = [(PTSettingsClassStructure *)self->__classStructure leafClassForKey:v4];
-    v9 = [(PTSettingsClassStructure *)self->__classStructure leafStructNameForKey:v4];
+    v7 = [(PTSettings *)self valueForKey:keyCopy];
+    v8 = [(PTSettingsClassStructure *)self->__classStructure leafClassForKey:keyCopy];
+    v9 = [(PTSettingsClassStructure *)self->__classStructure leafStructNameForKey:keyCopy];
     if (v8 && [objc_opt_class() _supportsArchivingCustomClass:v8])
     {
       v10 = [objc_opt_class() _archiveDictionaryForObject:v7 ofCustomClass:v8];
@@ -1096,18 +1096,18 @@ LABEL_30:
   return v11;
 }
 
-- (void)_enumerateLeafValuesWithBlock:(id)a3
+- (void)_enumerateLeafValuesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
+  blockCopy = block;
+  leafKeys = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__PTSettings__enumerateLeafValuesWithBlock___block_invoke;
   v7[3] = &unk_27835F020;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [leafKeys enumerateObjectsUsingBlock:v7];
 }
 
 void __44__PTSettings__enumerateLeafValuesWithBlock___block_invoke(uint64_t a1, void *a2)
@@ -1122,18 +1122,18 @@ void __44__PTSettings__enumerateLeafValuesWithBlock___block_invoke(uint64_t a1, 
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_enumerateChildrenWithBlock:(id)a3
+- (void)_enumerateChildrenWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+  blockCopy = block;
+  childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__PTSettings__enumerateChildrenWithBlock___block_invoke;
   v7[3] = &unk_27835F020;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [childKeys enumerateObjectsUsingBlock:v7];
 }
 
 void __42__PTSettings__enumerateChildrenWithBlock___block_invoke(uint64_t a1, void *a2)
@@ -1144,18 +1144,18 @@ void __42__PTSettings__enumerateChildrenWithBlock___block_invoke(uint64_t a1, vo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_enumerateOutletsWithBlock:(id)a3
+- (void)_enumerateOutletsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(PTSettingsClassStructure *)self->__classStructure outletKeys];
+  blockCopy = block;
+  outletKeys = [(PTSettingsClassStructure *)self->__classStructure outletKeys];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__PTSettings__enumerateOutletsWithBlock___block_invoke;
   v7[3] = &unk_27835F020;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [outletKeys enumerateObjectsUsingBlock:v7];
 }
 
 void __41__PTSettings__enumerateOutletsWithBlock___block_invoke(uint64_t a1, void *a2)
@@ -1166,37 +1166,37 @@ void __41__PTSettings__enumerateOutletsWithBlock___block_invoke(uint64_t a1, voi
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_ensureChildForKey:(id)a3
+- (id)_ensureChildForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(PTSettings *)self valueForKey:v4];
+  keyCopy = key;
+  v5 = [(PTSettings *)self valueForKey:keyCopy];
   if (!v5)
   {
-    v5 = [(PTSettings *)self _createChildForKey:v4];
-    [(PTSettings *)self setValue:v5 forKey:v4];
+    v5 = [(PTSettings *)self _createChildForKey:keyCopy];
+    [(PTSettings *)self setValue:v5 forKey:keyCopy];
   }
 
   return v5;
 }
 
-- (BOOL)_getChild:(id *)a3 create:(BOOL)a4 leafKey:(id *)a5 forKeyPath:(id)a6 error:(id *)a7
+- (BOOL)_getChild:(id *)child create:(BOOL)create leafKey:(id *)key forKeyPath:(id)path error:(id *)error
 {
-  v9 = a4;
-  v12 = a6;
-  v13 = [v12 rangeOfString:@"."];
+  createCopy = create;
+  pathCopy = path;
+  v13 = [pathCopy rangeOfString:@"."];
   if (v14)
   {
     v15 = v13;
     v16 = v14;
-    v28 = a3;
-    v17 = a5;
-    v18 = [v12 substringToIndex:v13];
-    v19 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-    v20 = [v19 containsObject:v18];
+    childCopy = child;
+    keyCopy = key;
+    v18 = [pathCopy substringToIndex:v13];
+    childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+    v20 = [childKeys containsObject:v18];
 
     if (v20)
     {
-      if (v9)
+      if (createCopy)
       {
         [(PTSettings *)self _ensureChildForKey:v18];
       }
@@ -1206,32 +1206,32 @@ void __41__PTSettings__enumerateOutletsWithBlock___block_invoke(uint64_t a1, voi
         [(PTSettings *)self valueForKey:v18];
       }
       v25 = ;
-      v26 = [v12 substringFromIndex:v15 + v16];
-      LOBYTE(v9) = [v25 _getChild:v28 create:v9 leafKey:v17 forKeyPath:v26 error:a7];
+      v26 = [pathCopy substringFromIndex:v15 + v16];
+      LOBYTE(createCopy) = [v25 _getChild:childCopy create:createCopy leafKey:keyCopy forKeyPath:v26 error:error];
 
       goto LABEL_18;
     }
 
-    if (!a7)
+    if (!error)
     {
-      LOBYTE(v9) = 0;
+      LOBYTE(createCopy) = 0;
       goto LABEL_18;
     }
 
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ has no child for key '%@'", objc_opt_class(), v18];
-    LOBYTE(v9) = 0;
+    LOBYTE(createCopy) = 0;
 LABEL_14:
-    *a7 = v24;
+    *error = v24;
     goto LABEL_18;
   }
 
-  v18 = v12;
-  v21 = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
-  LODWORD(v9) = [v21 containsObject:v18];
+  v18 = pathCopy;
+  leafKeys = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
+  LODWORD(createCopy) = [leafKeys containsObject:v18];
 
-  if (!v9)
+  if (!createCopy)
   {
-    if (!a7)
+    if (!error)
     {
       goto LABEL_18;
     }
@@ -1240,59 +1240,59 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a3)
+  if (child)
   {
-    v22 = self;
-    *a3 = self;
+    selfCopy = self;
+    *child = self;
   }
 
-  if (a5)
+  if (key)
   {
     v23 = v18;
-    *a5 = v18;
+    *key = v18;
   }
 
 LABEL_18:
 
-  return v9;
+  return createCopy;
 }
 
-- (BOOL)_applyArchiveValue:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)_applyArchiveValue:(id)value forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  pathCopy = path;
   v26 = 0;
   v27 = 0;
   v25 = 0;
-  v10 = [(PTSettings *)self _getChild:&v27 create:1 leafKey:&v26 forKeyPath:v9 error:&v25];
+  v10 = [(PTSettings *)self _getChild:&v27 create:1 leafKey:&v26 forKeyPath:pathCopy error:&v25];
   v11 = v27;
   v12 = v26;
   v13 = v25;
   v14 = v13;
   if (!v10)
   {
-    if (!a5)
+    if (!error)
     {
       v17 = 0;
       v16 = v13;
       goto LABEL_14;
     }
 
-    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ can't apply value for keyPath '%@' (%@)", objc_opt_class(), v9, v13];
+    v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ can't apply value for keyPath '%@' (%@)", objc_opt_class(), pathCopy, v13];
     v16 = v14;
 LABEL_13:
     v17 = 0;
-    *a5 = v18;
+    *error = v18;
     goto LABEL_14;
   }
 
   v24 = v13;
-  v15 = [(PTSettings *)v11 _applyArchiveValue:v8 forLeafKey:v12 error:&v24];
+  v15 = [(PTSettings *)v11 _applyArchiveValue:valueCopy forLeafKey:v12 error:&v24];
   v16 = v24;
 
   if (!v15)
   {
-    if (!a5)
+    if (!error)
     {
       v17 = 0;
       goto LABEL_14;
@@ -1302,12 +1302,12 @@ LABEL_13:
     v20 = objc_opt_class();
     if (v11 == self)
     {
-      [v19 stringWithFormat:@"%@ can't apply value for key '%@' (%@)", v20, v9, v16, v22, v23];
+      [v19 stringWithFormat:@"%@ can't apply value for key '%@' (%@)", v20, pathCopy, v16, v22, v23];
     }
 
     else
     {
-      [v19 stringWithFormat:@"%@ can't apply value for keyPath '%@' because %@ can't apply value for key '%@' (%@)", v20, v9, objc_opt_class(), v12, v16];
+      [v19 stringWithFormat:@"%@ can't apply value for keyPath '%@' because %@ can't apply value for key '%@' (%@)", v20, pathCopy, objc_opt_class(), v12, v16];
     }
     v18 = ;
     goto LABEL_13;
@@ -1319,11 +1319,11 @@ LABEL_14:
   return v17;
 }
 
-- (id)_archiveValueForKeyPath:(id)a3
+- (id)_archiveValueForKeyPath:(id)path
 {
   v8 = 0;
   v9 = 0;
-  v3 = [(PTSettings *)self _getChild:&v9 create:0 leafKey:&v8 forKeyPath:a3 error:0];
+  v3 = [(PTSettings *)self _getChild:&v9 create:0 leafKey:&v8 forKeyPath:path error:0];
   v4 = v9;
   v5 = v8;
   v6 = 0;
@@ -1335,26 +1335,26 @@ LABEL_14:
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v16 = a3;
+  pathCopy = path;
   v8 = *MEMORY[0x277CCA300];
-  v9 = a5;
-  v10 = [v9 objectForKey:v8];
-  v11 = [v9 objectForKey:*MEMORY[0x277CCA2F0]];
+  changeCopy = change;
+  v10 = [changeCopy objectForKey:v8];
+  v11 = [changeCopy objectForKey:*MEMORY[0x277CCA2F0]];
 
   if (v10 != v11)
   {
-    v12 = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
-    v13 = [v12 containsObject:v16];
+    leafKeys = [(PTSettingsClassStructure *)self->__classStructure leafKeys];
+    v13 = [leafKeys containsObject:pathCopy];
 
-    v14 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-    v15 = [v14 containsObject:v16];
+    childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+    v15 = [childKeys containsObject:pathCopy];
 
     if (v13 && ([v10 isEqual:v11] & 1) == 0)
     {
-      [(PTSettings *)self _sendKeyChanged:v16];
-      [(PTSettings *)self _sendKeyPathChanged:v16];
+      [(PTSettings *)self _sendKeyChanged:pathCopy];
+      [(PTSettings *)self _sendKeyPathChanged:pathCopy];
     }
 
     if (v15 && self->__isObservingChildren)
@@ -1374,27 +1374,27 @@ LABEL_14:
   }
 }
 
-- (void)settings:(id)a3 changedValueForKeyPath:(id)a4
+- (void)settings:(id)settings changedValueForKeyPath:(id)path
 {
-  v8 = a4;
-  v6 = [(PTSettings *)self _keyForChild:a3];
+  pathCopy = path;
+  v6 = [(PTSettings *)self _keyForChild:settings];
   if (v6)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v6, v8];
-    [(PTSettings *)self _sendKeyPathChanged:v7];
+    pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v6, pathCopy];
+    [(PTSettings *)self _sendKeyPathChanged:pathCopy];
   }
 }
 
-- (id)_keyForChild:(id)a3
+- (id)_keyForChild:(id)child
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  childCopy = child;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(PTSettingsClassStructure *)self->__classStructure childKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  childKeys = [(PTSettingsClassStructure *)self->__classStructure childKeys];
+  v6 = [childKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1405,20 +1405,20 @@ LABEL_14:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(childKeys);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
         v11 = [(PTSettings *)self valueForKey:v10];
 
-        if (v11 == v4)
+        if (v11 == childCopy)
         {
           v12 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [childKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -1434,10 +1434,10 @@ LABEL_11:
   return v12;
 }
 
-- (void)_sendKeyChanged:(id)a3
+- (void)_sendKeyChanged:(id)changed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1458,7 +1458,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) settings:self changedValueForKey:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) settings:self changedValueForKey:{changedCopy, v10}];
       }
 
       while (v7 != v9);
@@ -1469,10 +1469,10 @@ LABEL_11:
   }
 }
 
-- (void)_sendKeyPathChanged:(id)a3
+- (void)_sendKeyPathChanged:(id)changed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -1493,7 +1493,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) settings:self changedValueForKeyPath:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) settings:self changedValueForKeyPath:{changedCopy, v10}];
       }
 
       while (v7 != v9);
@@ -1516,48 +1516,48 @@ LABEL_11:
   [WeakRetained settingsDidRestoreDefaults:self];
 }
 
-+ (id)emptyArchiveForSettingsClassName:(id)a3
++ (id)emptyArchiveForSettingsClassName:(id)name
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
-  v5 = [v3 dictionary];
-  [v5 setObject:v4 forKey:@"_internal_class"];
+  nameCopy = name;
+  dictionary = [v3 dictionary];
+  [dictionary setObject:nameCopy forKey:@"_internal_class"];
 
-  return v5;
+  return dictionary;
 }
 
-+ (void)_applyArchiveValue:(id)a3 forKeyPath:(id)a4 toArchive:(id)a5
++ (void)_applyArchiveValue:(id)value forKeyPath:(id)path toArchive:(id)archive
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7 && (PTObjectIsRecursivelyPlistable(v7) & 1) == 0)
+  valueCopy = value;
+  pathCopy = path;
+  archiveCopy = archive;
+  if (valueCopy && (PTObjectIsRecursivelyPlistable(valueCopy) & 1) == 0)
   {
     v10 = PTLogObjectForTopic(0);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412546;
-      v21 = v8;
+      v21 = pathCopy;
       v22 = 2112;
-      v23 = v7;
+      v23 = valueCopy;
       _os_log_impl(&dword_21E61D000, v10, OS_LOG_TYPE_DEFAULT, "PTSettings cannot use archive value for keyPath '%@' as it contains non-plist types: %@", &v20, 0x16u);
     }
   }
 
   else
   {
-    v10 = [v8 componentsSeparatedByString:@"."];
+    v10 = [pathCopy componentsSeparatedByString:@"."];
     v11 = [v10 count];
     if (v11)
     {
       v12 = v11;
-      v13 = v9;
+      v13 = archiveCopy;
       v14 = v13;
       v15 = v12 - 1;
       if (v12 == 1)
       {
-        v18 = v13;
+        dictionary = v13;
       }
 
       else
@@ -1566,22 +1566,22 @@ LABEL_11:
         do
         {
           v17 = [v10 objectAtIndexedSubscript:v16];
-          v18 = [v14 objectForKeyedSubscript:v17];
-          if (!v18)
+          dictionary = [v14 objectForKeyedSubscript:v17];
+          if (!dictionary)
           {
-            v18 = [MEMORY[0x277CBEB38] dictionary];
-            [v14 setObject:v18 forKeyedSubscript:v17];
+            dictionary = [MEMORY[0x277CBEB38] dictionary];
+            [v14 setObject:dictionary forKeyedSubscript:v17];
           }
 
           ++v16;
-          v14 = v18;
+          v14 = dictionary;
         }
 
         while (v15 != v16);
       }
 
-      v19 = [v10 lastObject];
-      [v18 setObject:v7 forKeyedSubscript:v19];
+      lastObject = [v10 lastObject];
+      [dictionary setObject:valueCopy forKeyedSubscript:lastObject];
     }
   }
 }

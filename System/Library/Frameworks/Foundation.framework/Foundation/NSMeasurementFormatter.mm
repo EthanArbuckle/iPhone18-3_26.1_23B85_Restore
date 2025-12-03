@@ -1,8 +1,8 @@
 @interface NSMeasurementFormatter
 - (NSMeasurementFormatter)init;
-- (NSMeasurementFormatter)initWithCoder:(id)a3;
+- (NSMeasurementFormatter)initWithCoder:(id)coder;
 - (NSString)stringFromMeasurement:(NSMeasurement *)measurement;
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 - (void)dealloc;
 - (void)setUnitOptions:(NSMeasurementFormatterUnitOptions)unitOptions;
 @end
@@ -58,28 +58,28 @@
   return result;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (!a3 || (objc_opt_isKindOfClass() & 1) == 0)
+  if (!value || (objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
   formatter = self->_formatter;
 
-  return [formatter stringForObjectValue:a3];
+  return [formatter stringForObjectValue:value];
 }
 
-- (NSMeasurementFormatter)initWithCoder:(id)a3
+- (NSMeasurementFormatter)initWithCoder:(id)coder
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSMeasurementFormatter cannot be decoded by non-keyed archivers" userInfo:0]);
   }
 
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NS.unitFormatter"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NS.unitFormatter"];
   if (v5)
   {
     v6 = v5;
@@ -97,7 +97,7 @@
 
     v10 = @"NSLocalizedDescription";
     v11[0] = @"Formatter has been corrupted!";
-    [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1))}];
+    [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", @"NSCocoaErrorDomain", 4864, objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v11, &v10, 1))}];
     return 0;
   }
 

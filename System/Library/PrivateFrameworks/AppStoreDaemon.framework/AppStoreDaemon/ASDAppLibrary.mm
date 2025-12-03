@@ -1,18 +1,18 @@
 @interface ASDAppLibrary
 + (id)interface;
 + (id)sharedInstance;
-+ (int64_t)launchApp:(id)a3;
-+ (int64_t)launchApp:(id)a3 onPairedDevice:(id)a4;
-+ (int64_t)launchMessagesExtensionForApp:(id)a3;
-+ (unsigned)openableStatusForExecutableAtPath:(id)a3;
-+ (void)launchApp:(id)a3 onPairedDevice:(id)a4 withResultHandler:(id)a5;
-+ (void)launchApp:(id)a3 withResultHandler:(id)a4;
-+ (void)launchMessagesExtensionForApp:(id)a3 withResultHandler:(id)a4;
-+ (void)lookupBundleIDsForDeletableSystemAppsForWatchWithItemIDs:(id)a3 withResultHandler:(id)a4;
-+ (void)lookupBundleIDsForDeletableSystemAppsWithItemIDs:(id)a3 withResultHandler:(id)a4;
-+ (void)lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:(id)a3 withResultHandler:(id)a4;
-+ (void)lookupItemIDsForDeletableSystemAppsWithBundleIDs:(id)a3 withResultHandler:(id)a4;
-+ (void)uninstallApp:(id)a3 requestUserConfirmation:(BOOL)a4 withResultHandler:(id)a5;
++ (int64_t)launchApp:(id)app;
++ (int64_t)launchApp:(id)app onPairedDevice:(id)device;
++ (int64_t)launchMessagesExtensionForApp:(id)app;
++ (unsigned)openableStatusForExecutableAtPath:(id)path;
++ (void)launchApp:(id)app onPairedDevice:(id)device withResultHandler:(id)handler;
++ (void)launchApp:(id)app withResultHandler:(id)handler;
++ (void)launchMessagesExtensionForApp:(id)app withResultHandler:(id)handler;
++ (void)lookupBundleIDsForDeletableSystemAppsForWatchWithItemIDs:(id)ds withResultHandler:(id)handler;
++ (void)lookupBundleIDsForDeletableSystemAppsWithItemIDs:(id)ds withResultHandler:(id)handler;
++ (void)lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:(id)ds withResultHandler:(id)handler;
++ (void)lookupItemIDsForDeletableSystemAppsWithBundleIDs:(id)ds withResultHandler:(id)handler;
++ (void)uninstallApp:(id)app requestUserConfirmation:(BOOL)confirmation withResultHandler:(id)handler;
 - (ASDAppLibrary)init;
 @end
 
@@ -50,7 +50,7 @@
   block[1] = 3221225472;
   block[2] = __31__ASDAppLibrary_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1ED90D488 != -1)
   {
     dispatch_once(&qword_1ED90D488, block);
@@ -88,10 +88,10 @@ uint64_t __31__ASDAppLibrary_sharedInstance__block_invoke(uint64_t a1)
   return self;
 }
 
-+ (int64_t)launchApp:(id)a3
++ (int64_t)launchApp:(id)app
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  appCopy = app;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -119,7 +119,7 @@ uint64_t __31__ASDAppLibrary_sharedInstance__block_invoke(uint64_t a1)
   v15[2] = __27__ASDAppLibrary_launchApp___block_invoke_2;
   v15[3] = &unk_1E7CDBBA8;
   v15[4] = &v18;
-  [v7 launchApp:v3 withReplyHandler:v15];
+  [v7 launchApp:appCopy withReplyHandler:v15];
 
   v8 = v19[3];
   if (v8 == 2)
@@ -132,7 +132,7 @@ uint64_t __31__ASDAppLibrary_sharedInstance__block_invoke(uint64_t a1)
       *buf = 138543874;
       v29 = v12;
       v30 = 2114;
-      v31 = v3;
+      v31 = appCopy;
       v32 = 2114;
       v33 = v13;
       v14 = v12;
@@ -149,11 +149,11 @@ uint64_t __31__ASDAppLibrary_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-+ (int64_t)launchApp:(id)a3 onPairedDevice:(id)a4
++ (int64_t)launchApp:(id)app onPairedDevice:(id)device
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  appCopy = app;
+  deviceCopy = device;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -176,13 +176,13 @@ uint64_t __31__ASDAppLibrary_sharedInstance__block_invoke(uint64_t a1)
   v20[3] = &unk_1E7CDBB80;
   v20[4] = &v26;
   v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v20];
-  v11 = [v6 pairingID];
+  pairingID = [deviceCopy pairingID];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __42__ASDAppLibrary_launchApp_onPairedDevice___block_invoke_2;
   v19[3] = &unk_1E7CDBBA8;
   v19[4] = &v22;
-  [v10 launchApp:v5 onPairedDevice:v11 withReplyHandler:v19];
+  [v10 launchApp:appCopy onPairedDevice:pairingID withReplyHandler:v19];
 
   v12 = v23[3];
   if (v12 == 2)
@@ -195,9 +195,9 @@ uint64_t __31__ASDAppLibrary_sharedInstance__block_invoke(uint64_t a1)
       *buf = 138544130;
       v33 = v16;
       v34 = 2114;
-      v35 = v5;
+      v35 = appCopy;
       v36 = 2114;
-      v37 = v6;
+      v37 = deviceCopy;
       v38 = 2114;
       v39 = v17;
       v18 = v16;
@@ -214,20 +214,20 @@ uint64_t __31__ASDAppLibrary_sharedInstance__block_invoke(uint64_t a1)
   return v12;
 }
 
-+ (void)launchApp:(id)a3 withResultHandler:(id)a4
++ (void)launchApp:(id)app withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __45__ASDAppLibrary_launchApp_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDBC48;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v12 = appCopy;
+  v9 = handlerCopy;
+  v10 = appCopy;
   [v8 getLibraryServiceWithCompletionHandler:v11];
 }
 
@@ -338,23 +338,23 @@ void __45__ASDAppLibrary_launchApp_withResultHandler___block_invoke_4(uint64_t a
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)launchApp:(id)a3 onPairedDevice:(id)a4 withResultHandler:(id)a5
++ (void)launchApp:(id)app onPairedDevice:(id)device withResultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  appCopy = app;
+  deviceCopy = device;
+  handlerCopy = handler;
   v11 = +[ASDServiceBroker defaultBroker];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__ASDAppLibrary_launchApp_onPairedDevice_withResultHandler___block_invoke;
   v15[3] = &unk_1E7CDBCC0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = a1;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = appCopy;
+  v17 = deviceCopy;
+  v18 = handlerCopy;
+  selfCopy = self;
+  v12 = handlerCopy;
+  v13 = deviceCopy;
+  v14 = appCopy;
   [v11 getLibraryServiceWithCompletionHandler:v15];
 }
 
@@ -487,10 +487,10 @@ void __60__ASDAppLibrary_launchApp_onPairedDevice_withResultHandler___block_invo
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (int64_t)launchMessagesExtensionForApp:(id)a3
++ (int64_t)launchMessagesExtensionForApp:(id)app
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  appCopy = app;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -518,7 +518,7 @@ void __60__ASDAppLibrary_launchApp_onPairedDevice_withResultHandler___block_invo
   v15[2] = __47__ASDAppLibrary_launchMessagesExtensionForApp___block_invoke_2;
   v15[3] = &unk_1E7CDBBA8;
   v15[4] = &v18;
-  [v7 launchApp:v3 extensionType:1 withReplyHandler:v15];
+  [v7 launchApp:appCopy extensionType:1 withReplyHandler:v15];
 
   if (v23[5])
   {
@@ -530,7 +530,7 @@ void __60__ASDAppLibrary_launchApp_onPairedDevice_withResultHandler___block_invo
       *buf = 138543874;
       v29 = v12;
       v30 = 2114;
-      v31 = v3;
+      v31 = appCopy;
       v32 = 2114;
       v33 = v13;
       v14 = v12;
@@ -547,20 +547,20 @@ void __60__ASDAppLibrary_launchApp_onPairedDevice_withResultHandler___block_invo
   return v9;
 }
 
-+ (void)launchMessagesExtensionForApp:(id)a3 withResultHandler:(id)a4
++ (void)launchMessagesExtensionForApp:(id)app withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  appCopy = app;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __65__ASDAppLibrary_launchMessagesExtensionForApp_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDBC48;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v12 = appCopy;
+  v9 = handlerCopy;
+  v10 = appCopy;
   [v8 getLibraryServiceWithCompletionHandler:v11];
 }
 
@@ -671,20 +671,20 @@ void __65__ASDAppLibrary_launchMessagesExtensionForApp_withResultHandler___block
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)lookupBundleIDsForDeletableSystemAppsWithItemIDs:(id)a3 withResultHandler:(id)a4
++ (void)lookupBundleIDsForDeletableSystemAppsWithItemIDs:(id)ds withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__ASDAppLibrary_lookupBundleIDsForDeletableSystemAppsWithItemIDs_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDBC48;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v12 = dsCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   [v8 getLibraryServiceWithCompletionHandler:v11];
 }
 
@@ -801,20 +801,20 @@ void __84__ASDAppLibrary_lookupBundleIDsForDeletableSystemAppsWithItemIDs_withRe
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)lookupItemIDsForDeletableSystemAppsWithBundleIDs:(id)a3 withResultHandler:(id)a4
++ (void)lookupItemIDsForDeletableSystemAppsWithBundleIDs:(id)ds withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__ASDAppLibrary_lookupItemIDsForDeletableSystemAppsWithBundleIDs_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDBC48;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v12 = dsCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   [v8 getLibraryServiceWithCompletionHandler:v11];
 }
 
@@ -931,20 +931,20 @@ void __84__ASDAppLibrary_lookupItemIDsForDeletableSystemAppsWithBundleIDs_withRe
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)lookupBundleIDsForDeletableSystemAppsForWatchWithItemIDs:(id)a3 withResultHandler:(id)a4
++ (void)lookupBundleIDsForDeletableSystemAppsForWatchWithItemIDs:(id)ds withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __92__ASDAppLibrary_lookupBundleIDsForDeletableSystemAppsForWatchWithItemIDs_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDBC48;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v12 = dsCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   [v8 getLibraryServiceWithCompletionHandler:v11];
 }
 
@@ -1061,20 +1061,20 @@ void __92__ASDAppLibrary_lookupBundleIDsForDeletableSystemAppsForWatchWithItemID
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:(id)a3 withResultHandler:(id)a4
++ (void)lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs:(id)ds withResultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  handlerCopy = handler;
   v8 = +[ASDServiceBroker defaultBroker];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __92__ASDAppLibrary_lookupItemIDsForDeletableSystemAppsForWatchWithBundleIDs_withResultHandler___block_invoke;
   v11[3] = &unk_1E7CDBC48;
-  v13 = v7;
-  v14 = a1;
-  v12 = v6;
-  v9 = v7;
-  v10 = v6;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v12 = dsCopy;
+  v9 = handlerCopy;
+  v10 = dsCopy;
   [v8 getLibraryServiceWithCompletionHandler:v11];
 }
 
@@ -1191,10 +1191,10 @@ void __92__ASDAppLibrary_lookupItemIDsForDeletableSystemAppsForWatchWithBundleID
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (unsigned)openableStatusForExecutableAtPath:(id)a3
++ (unsigned)openableStatusForExecutableAtPath:(id)path
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -1225,7 +1225,7 @@ void __92__ASDAppLibrary_lookupItemIDsForDeletableSystemAppsForWatchWithBundleID
     v13[3] = &unk_1E7CDBD10;
     v13[4] = &v22;
     v13[5] = &v16;
-    [v7 openableStatusForExecutableAtPath:v3 withReplyHandler:v13];
+    [v7 openableStatusForExecutableAtPath:pathCopy withReplyHandler:v13];
   }
 
   LODWORD(v8) = *(v23 + 24);
@@ -1234,10 +1234,10 @@ void __92__ASDAppLibrary_lookupItemIDsForDeletableSystemAppsForWatchWithBundleID
     v8 = ASDLogHandleForCategory(13);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v3 lastPathComponent];
+      lastPathComponent = [pathCopy lastPathComponent];
       v12 = v17[5];
       *buf = 138543618;
-      v27 = v11;
+      v27 = lastPathComponent;
       v28 = 2114;
       v29 = v12;
       _os_log_error_impl(&dword_1B8220000, v8, OS_LOG_TYPE_ERROR, "[Library] Status for %{public}@ unknown: %{public}@", buf, 0x16u);
@@ -1253,21 +1253,21 @@ void __92__ASDAppLibrary_lookupItemIDsForDeletableSystemAppsForWatchWithBundleID
   return v8;
 }
 
-+ (void)uninstallApp:(id)a3 requestUserConfirmation:(BOOL)a4 withResultHandler:(id)a5
++ (void)uninstallApp:(id)app requestUserConfirmation:(BOOL)confirmation withResultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  appCopy = app;
+  handlerCopy = handler;
   v10 = +[ASDServiceBroker defaultBroker];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__ASDAppLibrary_uninstallApp_requestUserConfirmation_withResultHandler___block_invoke;
   v13[3] = &unk_1E7CDBD38;
-  v15 = v9;
-  v16 = a1;
-  v14 = v8;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
+  v15 = handlerCopy;
+  selfCopy = self;
+  v14 = appCopy;
+  confirmationCopy = confirmation;
+  v11 = handlerCopy;
+  v12 = appCopy;
   [v10 getLibraryServiceWithCompletionHandler:v13];
 }
 

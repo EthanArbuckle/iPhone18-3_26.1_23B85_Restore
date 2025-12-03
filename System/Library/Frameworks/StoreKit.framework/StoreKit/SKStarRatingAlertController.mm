@@ -1,9 +1,9 @@
 @interface SKStarRatingAlertController
 + (id)starRatingAlertController;
-- (SKStarRatingAlertController)initWithNibName:(id)a3 bundle:(id)a4;
+- (SKStarRatingAlertController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_updateButtonState;
 - (void)dealloc;
-- (void)setupActionsWithBundle:(id)a3;
+- (void)setupActionsWithBundle:(id)bundle;
 @end
 
 @implementation SKStarRatingAlertController
@@ -12,16 +12,16 @@
 {
   v3 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"RATING_ALERT_TITLE" value:&stru_1F29BCE20 table:0];
-  v5 = [a1 alertControllerWithTitle:v4 message:0 preferredStyle:1];
+  v5 = [self alertControllerWithTitle:v4 message:0 preferredStyle:1];
 
   return v5;
 }
 
-- (SKStarRatingAlertController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKStarRatingAlertController)initWithNibName:(id)name bundle:(id)bundle
 {
   v22.receiver = self;
   v22.super_class = SKStarRatingAlertController;
-  v4 = [(SKStarRatingAlertController *)&v22 initWithNibName:a3 bundle:a4];
+  v4 = [(SKStarRatingAlertController *)&v22 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
@@ -46,13 +46,13 @@
     v15 = v14;
     v17 = v16;
     v18 = [objc_alloc(MEMORY[0x1E69DD258]) initWithNibName:0 bundle:0];
-    v19 = [v18 view];
-    [v19 setFrame:{0.0, 0.0, v15, v17 + 20.0}];
+    view = [v18 view];
+    [view setFrame:{0.0, 0.0, v15, v17 + 20.0}];
 
     [v18 setPreferredContentSize:{v15, v17 + 20.0}];
     [(SKStarRatingControl *)v4->_ratingControl setFrame:0.0, 0.0, v15, v17];
-    v20 = [v18 view];
-    [v20 addSubview:v4->_ratingControl];
+    view2 = [v18 view];
+    [view2 addSubview:v4->_ratingControl];
 
     [(SKStarRatingAlertController *)v4 setContentViewController:v18];
     [(SKStarRatingAlertController *)v4 setupActionsWithBundle:v5];
@@ -61,11 +61,11 @@
   return v4;
 }
 
-- (void)setupActionsWithBundle:(id)a3
+- (void)setupActionsWithBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 localizedStringForKey:@"CANCEL" value:&stru_1F29BCE20 table:0];
-  v6 = [v4 localizedStringForKey:@"SUBMIT" value:&stru_1F29BCE20 table:0];
+  bundleCopy = bundle;
+  v5 = [bundleCopy localizedStringForKey:@"CANCEL" value:&stru_1F29BCE20 table:0];
+  v6 = [bundleCopy localizedStringForKey:@"SUBMIT" value:&stru_1F29BCE20 table:0];
   objc_initWeak(&location, self);
   v7 = MEMORY[0x1E69DC648];
   v14[0] = MEMORY[0x1E69E9820];

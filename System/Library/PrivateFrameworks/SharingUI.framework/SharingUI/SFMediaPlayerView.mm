@@ -1,24 +1,24 @@
 @interface SFMediaPlayerView
-- (void)addMovieItem:(id)a3;
+- (void)addMovieItem:(id)item;
 - (void)breakFirstEnqueuedLoop;
 - (void)dealloc;
-- (void)dequeueNonPlayingItemsFromMediaItem:(id)a3;
-- (void)enqueueItemsFromMediaItem:(id)a3 afterItem:(id)a4;
-- (void)handleBoundaryTimeObserverForMediaItem:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)dequeueNonPlayingItemsFromMediaItem:(id)item;
+- (void)enqueueItemsFromMediaItem:(id)item afterItem:(id)afterItem;
+- (void)handleBoundaryTimeObserverForMediaItem:(id)item;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)pause;
 - (void)play;
-- (void)playerItemDidReachEnd:(id)a3;
+- (void)playerItemDidReachEnd:(id)end;
 - (void)removeAllQueuedItems;
-- (void)removeMovieItem:(id)a3;
-- (void)setPausesAfterEachItem:(BOOL)a3;
-- (void)setUpTimeRangeNotificationsForItem:(id)a3;
+- (void)removeMovieItem:(id)item;
+- (void)setPausesAfterEachItem:(BOOL)item;
+- (void)setUpTimeRangeNotificationsForItem:(id)item;
 - (void)speedUpRemainderOfCurrentItem;
-- (void)startMovieLoopWithPath:(id)a3;
-- (void)startMovieLoopWithPath:(id)a3 assetType:(int)a4 adjustmentsURL:(id)a5;
+- (void)startMovieLoopWithPath:(id)path;
+- (void)startMovieLoopWithPath:(id)path assetType:(int)type adjustmentsURL:(id)l;
 - (void)stop;
 - (void)stopSpeedUpTimer;
-- (void)updateViewForAssetType:(int)a3 adjustmentsURL:(id)a4;
+- (void)updateViewForAssetType:(int)type adjustmentsURL:(id)l;
 @end
 
 @implementation SFMediaPlayerView
@@ -41,27 +41,27 @@
   [(SFMediaPlayerView *)&v4 dealloc];
 }
 
-- (void)startMovieLoopWithPath:(id)a3
+- (void)startMovieLoopWithPath:(id)path
 {
-  v11 = a3;
+  pathCopy = path;
   v4 = self->_avQueuePlayer;
   if (!v4)
   {
-    v5 = [MEMORY[0x1E6958460] sharedInstance];
-    [v5 setCategory:*MEMORY[0x1E6958038] withOptions:1 error:0];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+    [mEMORY[0x1E6958460] setCategory:*MEMORY[0x1E6958038] withOptions:1 error:0];
 
     v4 = objc_alloc_init(MEMORY[0x1E6988100]);
     [(AVQueuePlayer *)v4 setAllowsExternalPlayback:0];
     [(AVQueuePlayer *)v4 setPreventsDisplaySleepDuringVideoPlayback:0];
     [(AVQueuePlayer *)v4 _setDisallowsAutoPauseOnRouteRemovalIfNoAudio:1];
     objc_storeStrong(&self->_avQueuePlayer, v4);
-    v6 = [(SFMediaPlayerView *)self layer];
-    [v6 setPlayer:v4];
+    layer = [(SFMediaPlayerView *)self layer];
+    [layer setPlayer:v4];
 
     [(SFMediaPlayerView *)self setPausesAfterEachItem:[(SFMediaPlayerView *)self pausesAfterEachItem]];
   }
 
-  v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:v11 isDirectory:0];
+  v7 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
   v8 = [MEMORY[0x1E69880B0] playerItemWithURL:v7];
   v9 = [MEMORY[0x1E69880E8] playerLooperWithPlayer:v4 templateItem:v8];
   avLooper = self->_avLooper;
@@ -70,19 +70,19 @@
   [(SFMediaPlayerView *)self play];
 }
 
-- (void)updateViewForAssetType:(int)a3 adjustmentsURL:(id)a4
+- (void)updateViewForAssetType:(int)type adjustmentsURL:(id)l
 {
-  v6 = SFAdjustmentFiltersForAssetTypeAndURL(a3, a4);
-  v5 = [(SFMediaPlayerView *)self layer];
-  [v5 setFilters:v6];
+  v6 = SFAdjustmentFiltersForAssetTypeAndURL(type, l);
+  layer = [(SFMediaPlayerView *)self layer];
+  [layer setFilters:v6];
 }
 
-- (void)startMovieLoopWithPath:(id)a3 assetType:(int)a4 adjustmentsURL:(id)a5
+- (void)startMovieLoopWithPath:(id)path assetType:(int)type adjustmentsURL:(id)l
 {
-  v6 = *&a4;
-  v8 = a3;
-  [(SFMediaPlayerView *)self updateViewForAssetType:v6 adjustmentsURL:a5];
-  [(SFMediaPlayerView *)self startMovieLoopWithPath:v8];
+  v6 = *&type;
+  pathCopy = path;
+  [(SFMediaPlayerView *)self updateViewForAssetType:v6 adjustmentsURL:l];
+  [(SFMediaPlayerView *)self startMovieLoopWithPath:pathCopy];
 }
 
 - (void)stop
@@ -97,8 +97,8 @@
   }
 
   [(SFMediaPlayerView *)self _pause];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v15 = 0u;
   v16 = 0u;
@@ -175,15 +175,15 @@
   [(SFMediaPlayerView *)self _pause];
 }
 
-- (void)setPausesAfterEachItem:(BOOL)a3
+- (void)setPausesAfterEachItem:(BOOL)item
 {
-  v3 = a3;
+  itemCopy = item;
   v11 = *MEMORY[0x1E69E9840];
   v5 = framework_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = "no";
-    if (v3)
+    if (itemCopy)
     {
       v6 = "yes";
     }
@@ -195,14 +195,14 @@
     _os_log_impl(&dword_1B9E4B000, v5, OS_LOG_TYPE_DEFAULT, "%s %s", &v7, 0x16u);
   }
 
-  self->_pausesAfterEachItem = v3;
-  [(AVQueuePlayer *)self->_avQueuePlayer setActionAtItemEnd:v3];
+  self->_pausesAfterEachItem = itemCopy;
+  [(AVQueuePlayer *)self->_avQueuePlayer setActionAtItemEnd:itemCopy];
 }
 
-- (void)addMovieItem:(id)a3
+- (void)addMovieItem:(id)item
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   mediaItems = self->_mediaItems;
   if (!mediaItems)
   {
@@ -213,25 +213,25 @@
     mediaItems = self->_mediaItems;
   }
 
-  [(NSMutableArray *)mediaItems addObject:v4];
+  [(NSMutableArray *)mediaItems addObject:itemCopy];
   v8 = MEMORY[0x1E69880B0];
-  v9 = [v4 url];
+  v9 = [itemCopy url];
   v10 = [v8 playerItemWithURL:v9];
 
-  [v4 setPlayerItem:v10];
+  [itemCopy setPlayerItem:v10];
   v11 = self->_avQueuePlayer;
   if (!v11)
   {
-    v12 = [MEMORY[0x1E6958460] sharedInstance];
-    [v12 setCategory:*MEMORY[0x1E6958038] withOptions:1 error:0];
+    mEMORY[0x1E6958460] = [MEMORY[0x1E6958460] sharedInstance];
+    [mEMORY[0x1E6958460] setCategory:*MEMORY[0x1E6958038] withOptions:1 error:0];
 
     v11 = objc_alloc_init(MEMORY[0x1E6988100]);
     [(AVQueuePlayer *)v11 setAllowsExternalPlayback:0];
     [(AVQueuePlayer *)v11 setPreventsDisplaySleepDuringVideoPlayback:0];
     [(AVQueuePlayer *)v11 _setDisallowsAutoPauseOnRouteRemovalIfNoAudio:1];
     objc_storeStrong(&self->_avQueuePlayer, v11);
-    v13 = [(SFMediaPlayerView *)self layer];
-    [v13 setPlayer:v11];
+    layer = [(SFMediaPlayerView *)self layer];
+    [layer setPlayer:v11];
 
     [(SFMediaPlayerView *)self setPausesAfterEachItem:[(SFMediaPlayerView *)self pausesAfterEachItem]];
     [(AVQueuePlayer *)self->_avQueuePlayer addObserver:self forKeyPath:@"currentItem" options:3 context:SFMediaPlayerViewObserverContext];
@@ -244,11 +244,11 @@
     v15 = 136315394;
     v16 = "[SFMediaPlayerView addMovieItem:]";
     v17 = 2112;
-    v18 = v4;
+    v18 = itemCopy;
     _os_log_impl(&dword_1B9E4B000, v14, OS_LOG_TYPE_DEFAULT, "%s %@", &v15, 0x16u);
   }
 
-  [(SFMediaPlayerView *)self enqueueItemsFromMediaItem:v4 afterItem:0];
+  [(SFMediaPlayerView *)self enqueueItemsFromMediaItem:itemCopy afterItem:0];
 }
 
 - (void)removeAllQueuedItems
@@ -286,31 +286,31 @@
   }
 }
 
-- (void)removeMovieItem:(id)a3
+- (void)removeMovieItem:(id)item
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = framework_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315394;
     v10 = "[SFMediaPlayerView removeMovieItem:]";
     v11 = 2112;
-    v12 = v4;
+    v12 = itemCopy;
     _os_log_impl(&dword_1B9E4B000, v5, OS_LOG_TYPE_DEFAULT, "%s %@", &v9, 0x16u);
   }
 
-  v6 = [v4 observerToken];
+  observerToken = [itemCopy observerToken];
 
-  if (v6)
+  if (observerToken)
   {
     avQueuePlayer = self->_avQueuePlayer;
-    v8 = [v4 observerToken];
-    [(AVQueuePlayer *)avQueuePlayer removeTimeObserver:v8];
+    observerToken2 = [itemCopy observerToken];
+    [(AVQueuePlayer *)avQueuePlayer removeTimeObserver:observerToken2];
   }
 
-  [v4 invalidate];
-  [(NSMutableArray *)self->_mediaItems removeObject:v4];
+  [itemCopy invalidate];
+  [(NSMutableArray *)self->_mediaItems removeObject:itemCopy];
 }
 
 - (void)breakFirstEnqueuedLoop
@@ -370,8 +370,8 @@ LABEL_13:
 - (void)speedUpRemainderOfCurrentItem
 {
   [(SFMediaPlayerView *)self stopSpeedUpTimer];
-  v3 = [(AVQueuePlayer *)self->_avQueuePlayer currentItem];
-  if (v3)
+  currentItem = [(AVQueuePlayer *)self->_avQueuePlayer currentItem];
+  if (currentItem)
   {
     v4 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, MEMORY[0x1E69E96A0]);
     speedUpTimer = self->_speedUpTimer;
@@ -386,7 +386,7 @@ LABEL_13:
     handler[2] = __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke;
     handler[3] = &unk_1E7EE3C68;
     handler[4] = self;
-    handler[5] = v3;
+    handler[5] = currentItem;
     handler[6] = 200;
     v10 = xmmword_1B9EDE990;
     v11 = 100;
@@ -524,11 +524,11 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
   }
 }
 
-- (void)enqueueItemsFromMediaItem:(id)a3 afterItem:(id)a4
+- (void)enqueueItemsFromMediaItem:(id)item afterItem:(id)afterItem
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemCopy = item;
+  afterItemCopy = afterItem;
   v8 = framework_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -537,13 +537,13 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
     _os_log_impl(&dword_1B9E4B000, v8, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v9 = v7;
+  v9 = afterItemCopy;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v20 = v6;
-  obj = [v6 playerItems];
+  v20 = itemCopy;
+  obj = [itemCopy playerItems];
   v10 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
   v21 = v9;
   if (v10)
@@ -561,8 +561,8 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        v15 = [(AVQueuePlayer *)self->_avQueuePlayer items];
-        v16 = [v15 containsObject:v14];
+        items = [(AVQueuePlayer *)self->_avQueuePlayer items];
+        v16 = [items containsObject:v14];
 
         if ((v16 & 1) == 0)
         {
@@ -586,8 +586,8 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
           }
 
           [(AVQueuePlayer *)self->_avQueuePlayer insertItem:v14 afterItem:v9];
-          v18 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v18 addObserver:self selector:sel_playerItemDidReachEnd_ name:v22 object:v14];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter addObserver:self selector:sel_playerItemDidReachEnd_ name:v22 object:v14];
 
           v19 = v14;
           v9 = v19;
@@ -601,10 +601,10 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
   }
 }
 
-- (void)dequeueNonPlayingItemsFromMediaItem:(id)a3
+- (void)dequeueNonPlayingItemsFromMediaItem:(id)item
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   v5 = framework_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -613,14 +613,14 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
     _os_log_impl(&dword_1B9E4B000, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = [(AVQueuePlayer *)self->_avQueuePlayer currentItem];
+  currentItem = [(AVQueuePlayer *)self->_avQueuePlayer currentItem];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v18 = v4;
-  v7 = [v4 playerItems];
-  v8 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  v18 = itemCopy;
+  playerItems = [itemCopy playerItems];
+  v8 = [playerItems countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v8)
   {
     v9 = v8;
@@ -631,11 +631,11 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(playerItems);
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = v6;
+        v13 = currentItem;
         v14 = v12;
         v15 = v14;
         if (v13 == v14)
@@ -644,7 +644,7 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
           continue;
         }
 
-        if ((v6 != 0) != (v14 == 0))
+        if ((currentItem != 0) != (v14 == 0))
         {
           v16 = [v13 isEqual:v14];
 
@@ -671,28 +671,28 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
         [(AVQueuePlayer *)self->_avQueuePlayer removeItem:v15];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v9 = [playerItems countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (SFMediaPlayerViewObserverContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (SFMediaPlayerViewObserverContext == context)
   {
-    v13 = v10;
+    v13 = pathCopy;
     if (v13 == @"currentItem" || (v14 = v13) != 0 && (v15 = [(__CFString *)v13 isEqual:@"currentItem"], v14, v15))
     {
-      v30 = v11;
-      v31 = v10;
-      v16 = [v12 objectForKey:*MEMORY[0x1E696A500]];
-      v17 = [v12 objectForKey:*MEMORY[0x1E696A4F0]];
+      v30 = objectCopy;
+      v31 = pathCopy;
+      v16 = [changeCopy objectForKey:*MEMORY[0x1E696A500]];
+      v17 = [changeCopy objectForKey:*MEMORY[0x1E696A4F0]];
       v18 = framework_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -727,17 +727,17 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
             }
 
             v24 = *(*(&v34 + 1) + 8 * i);
-            v25 = [v24 playerItems];
-            v26 = [v25 containsObject:v17];
+            playerItems = [v24 playerItems];
+            v26 = [playerItems containsObject:v17];
 
             if (v26)
             {
-              v27 = [v24 startedHandler];
+              startedHandler = [v24 startedHandler];
 
-              if (v27)
+              if (startedHandler)
               {
-                v28 = [v24 startedHandler];
-                v28[2]();
+                startedHandler2 = [v24 startedHandler];
+                startedHandler2[2]();
               }
 
               [(SFMediaPlayerView *)self setUpTimeRangeNotificationsForItem:v24];
@@ -761,8 +761,8 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
         while (v21);
       }
 
-      v11 = v30;
-      v10 = v31;
+      objectCopy = v30;
+      pathCopy = v31;
     }
   }
 
@@ -770,16 +770,16 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
   {
     v38.receiver = self;
     v38.super_class = SFMediaPlayerView;
-    [(SFMediaPlayerView *)&v38 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SFMediaPlayerView *)&v38 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)setUpTimeRangeNotificationsForItem:(id)a3
+- (void)setUpTimeRangeNotificationsForItem:(id)item
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 playbackNotificationTimeRanges];
-  v6 = [v5 count];
+  itemCopy = item;
+  playbackNotificationTimeRanges = [itemCopy playbackNotificationTimeRanges];
+  v6 = [playbackNotificationTimeRanges count];
 
   if (v6)
   {
@@ -788,8 +788,8 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v8 = [v4 playbackNotificationTimeRanges];
-    v9 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    playbackNotificationTimeRanges2 = [itemCopy playbackNotificationTimeRanges];
+    v9 = [playbackNotificationTimeRanges2 countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v9)
     {
       v10 = *v33;
@@ -799,7 +799,7 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
         {
           if (*v33 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(playbackNotificationTimeRanges2);
           }
 
           v12 = *(*(&v32 + 1) + 8 * i);
@@ -821,19 +821,19 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
           [v7 addObject:v15];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v32 objects:v37 count:16];
+        v9 = [playbackNotificationTimeRanges2 countByEnumeratingWithState:&v32 objects:v37 count:16];
       }
 
       while (v9);
     }
 
-    v16 = [v4 observerToken];
+    observerToken = [itemCopy observerToken];
 
-    if (v16)
+    if (observerToken)
     {
       avQueuePlayer = self->_avQueuePlayer;
-      v18 = [v4 observerToken];
-      [(AVQueuePlayer *)avQueuePlayer removeTimeObserver:v18];
+      observerToken2 = [itemCopy observerToken];
+      [(AVQueuePlayer *)avQueuePlayer removeTimeObserver:observerToken2];
     }
 
     v19 = framework_log();
@@ -843,14 +843,14 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
       LODWORD(buf.start.value) = 136315650;
       *(&buf.start.value + 4) = "[SFMediaPlayerView setUpTimeRangeNotificationsForItem:]";
       LOWORD(buf.start.flags) = 2112;
-      *(&buf.start.flags + 2) = v4;
+      *(&buf.start.flags + 2) = itemCopy;
       HIWORD(buf.start.epoch) = 2112;
       buf.duration.value = v20;
       _os_log_impl(&dword_1B9E4B000, v19, OS_LOG_TYPE_DEFAULT, "%s mediaItem: %@, times: %@", &buf, 0x20u);
     }
 
     objc_initWeak(&buf, self);
-    objc_initWeak(&range, v4);
+    objc_initWeak(&range, itemCopy);
     v21 = self->_avQueuePlayer;
     v22 = MEMORY[0x1E69E96A0];
     v24 = MEMORY[0x1E69E9820];
@@ -860,7 +860,7 @@ void __50__SFMediaPlayerView_speedUpRemainderOfCurrentItem__block_invoke(uint64_
     objc_copyWeak(&v28, &buf);
     objc_copyWeak(&v29, &range);
     v23 = [(AVQueuePlayer *)v21 addBoundaryTimeObserverForTimes:v7 queue:MEMORY[0x1E69E96A0] usingBlock:&v24];
-    [v4 setObserverToken:{v23, v24, v25, v26, v27}];
+    [itemCopy setObserverToken:{v23, v24, v25, v26, v27}];
 
     objc_destroyWeak(&v29);
     objc_destroyWeak(&v28);
@@ -876,10 +876,10 @@ void __56__SFMediaPlayerView_setUpTimeRangeNotificationsForItem___block_invoke(u
   [WeakRetained handleBoundaryTimeObserverForMediaItem:v2];
 }
 
-- (void)handleBoundaryTimeObserverForMediaItem:(id)a3
+- (void)handleBoundaryTimeObserverForMediaItem:(id)item
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   memset(&v21, 0, sizeof(v21));
   avQueuePlayer = self->_avQueuePlayer;
   if (avQueuePlayer)
@@ -889,16 +889,16 @@ void __56__SFMediaPlayerView_setUpTimeRangeNotificationsForItem___block_invoke(u
 
   memset(&v20, 0, sizeof(v20));
   CMTimeMake(&v20, 1, 10);
-  v6 = [v4 playbackNotificationTimeRanges];
-  v7 = [v6 count];
+  playbackNotificationTimeRanges = [itemCopy playbackNotificationTimeRanges];
+  v7 = [playbackNotificationTimeRanges count];
 
   if (v7)
   {
     v8 = 0;
     while (1)
     {
-      v9 = [v4 playbackNotificationTimeRanges];
-      v10 = [v9 objectAtIndexedSubscript:v8];
+      playbackNotificationTimeRanges2 = [itemCopy playbackNotificationTimeRanges];
+      v10 = [playbackNotificationTimeRanges2 objectAtIndexedSubscript:v8];
 
       memset(&v19, 0, sizeof(v19));
       if (v10)
@@ -944,7 +944,7 @@ void __56__SFMediaPlayerView_setUpTimeRangeNotificationsForItem___block_invoke(u
             LODWORD(time1.start.value) = 136315650;
             *(&time1.start.value + 4) = "[SFMediaPlayerView handleBoundaryTimeObserverForMediaItem:]";
             LOWORD(time1.start.flags) = 2112;
-            *(&time1.start.flags + 2) = v4;
+            *(&time1.start.flags + 2) = itemCopy;
             HIWORD(time1.start.epoch) = 2048;
             time1.duration.value = v8;
             _os_log_impl(&dword_1B9E4B000, v13, OS_LOG_TYPE_DEFAULT, "%s mediaItem: %@, triggering timeRangeHandler with end of range %ld", &time1, 0x20u);
@@ -955,8 +955,8 @@ void __56__SFMediaPlayerView_setUpTimeRangeNotificationsForItem___block_invoke(u
       }
 
       ++v8;
-      v11 = [v4 playbackNotificationTimeRanges];
-      v12 = [v11 count];
+      playbackNotificationTimeRanges3 = [itemCopy playbackNotificationTimeRanges];
+      v12 = [playbackNotificationTimeRanges3 count];
 
       if (v8 >= v12)
       {
@@ -970,7 +970,7 @@ void __56__SFMediaPlayerView_setUpTimeRangeNotificationsForItem___block_invoke(u
       LODWORD(time1.start.value) = 136315650;
       *(&time1.start.value + 4) = "[SFMediaPlayerView handleBoundaryTimeObserverForMediaItem:]";
       LOWORD(time1.start.flags) = 2112;
-      *(&time1.start.flags + 2) = v4;
+      *(&time1.start.flags + 2) = itemCopy;
       HIWORD(time1.start.epoch) = 2048;
       time1.duration.value = v8;
       _os_log_impl(&dword_1B9E4B000, v13, OS_LOG_TYPE_DEFAULT, "%s mediaItem: %@, triggering timeRangeHandler with start of range %ld", &time1, 0x20u);
@@ -978,19 +978,19 @@ void __56__SFMediaPlayerView_setUpTimeRangeNotificationsForItem___block_invoke(u
 
 LABEL_18:
 
-    v14 = [v4 timeRangeHandler];
-    v14[2]();
+    timeRangeHandler = [itemCopy timeRangeHandler];
+    timeRangeHandler[2]();
   }
 
 LABEL_19:
 }
 
-- (void)playerItemDidReachEnd:(id)a3
+- (void)playerItemDidReachEnd:(id)end
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  endCopy = end;
   [(SFMediaPlayerView *)self stopSpeedUpTimer];
-  v5 = [v4 object];
+  object = [endCopy object];
 
   v6 = framework_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -998,7 +998,7 @@ LABEL_19:
     *buf = 136315394;
     v11 = "[SFMediaPlayerView playerItemDidReachEnd:]";
     v12 = 2112;
-    v13 = v5;
+    v13 = object;
     _os_log_impl(&dword_1B9E4B000, v6, OS_LOG_TYPE_DEFAULT, "%s playerItem: %@", buf, 0x16u);
   }
 
@@ -1007,8 +1007,8 @@ LABEL_19:
   v8[2] = __43__SFMediaPlayerView_playerItemDidReachEnd___block_invoke;
   v8[3] = &unk_1E7EE3748;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = object;
+  v7 = object;
   dispatch_async(MEMORY[0x1E69E96A0], v8);
 }
 

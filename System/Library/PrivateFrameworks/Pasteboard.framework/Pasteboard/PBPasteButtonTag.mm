@@ -1,47 +1,47 @@
 @interface PBPasteButtonTag
-+ (id)systemInputAssistantPasteButtonTagWithSite:(int64_t)a3;
-+ (id)undoInteractionHUDIconPasteButtonTagWithMinWidth:(double)a3;
-+ (id)undoInteractionHUDTextPasteButtonTagWithMinWidth:(double)a3;
-- (CGColor)baseForegroundColorForStyle:(id)a3;
-- (PBPasteButtonTag)initWithCoder:(id)a3;
++ (id)systemInputAssistantPasteButtonTagWithSite:(int64_t)site;
++ (id)undoInteractionHUDIconPasteButtonTagWithMinWidth:(double)width;
++ (id)undoInteractionHUDTextPasteButtonTagWithMinWidth:(double)width;
+- (CGColor)baseForegroundColorForStyle:(id)style;
+- (PBPasteButtonTag)initWithCoder:(id)coder;
 @end
 
 @implementation PBPasteButtonTag
 
-+ (id)systemInputAssistantPasteButtonTagWithSite:(int64_t)a3
++ (id)systemInputAssistantPasteButtonTagWithSite:(int64_t)site
 {
-  v3 = [[PBSystemInputAssistantPasteButtonTag alloc] initWithSite:a3];
+  v3 = [[PBSystemInputAssistantPasteButtonTag alloc] initWithSite:site];
 
   return v3;
 }
 
-+ (id)undoInteractionHUDIconPasteButtonTagWithMinWidth:(double)a3
++ (id)undoInteractionHUDIconPasteButtonTagWithMinWidth:(double)width
 {
-  v3 = [[PBUndoInteractionHUDIconPasteButtonTag alloc] initWithMinWidth:a3];
+  v3 = [[PBUndoInteractionHUDIconPasteButtonTag alloc] initWithMinWidth:width];
 
   return v3;
 }
 
-+ (id)undoInteractionHUDTextPasteButtonTagWithMinWidth:(double)a3
++ (id)undoInteractionHUDTextPasteButtonTagWithMinWidth:(double)width
 {
-  v3 = [[PBUndoInteractionHUDTextPasteButtonTag alloc] initWithMinWidth:a3];
+  v3 = [[PBUndoInteractionHUDTextPasteButtonTag alloc] initWithMinWidth:width];
 
   return v3;
 }
 
-- (PBPasteButtonTag)initWithCoder:(id)a3
+- (PBPasteButtonTag)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = PBPasteButtonTag;
   return [(PBPasteButtonTag *)&v4 init];
 }
 
-- (CGColor)baseForegroundColorForStyle:(id)a3
+- (CGColor)baseForegroundColorForStyle:(id)style
 {
-  v3 = [a3 userInterfaceStyle];
-  if (v3)
+  userInterfaceStyle = [style userInterfaceStyle];
+  if (userInterfaceStyle)
   {
-    if (v3 != 1)
+    if (userInterfaceStyle != 1)
     {
       return 0;
     }

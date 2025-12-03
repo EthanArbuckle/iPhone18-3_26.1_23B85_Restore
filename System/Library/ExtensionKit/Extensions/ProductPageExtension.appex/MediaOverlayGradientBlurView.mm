@@ -1,5 +1,5 @@
 @interface MediaOverlayGradientBlurView
-- (_TtC20ProductPageExtension28MediaOverlayGradientBlurView)initWithFrame:(CGRect)a3;
+- (_TtC20ProductPageExtension28MediaOverlayGradientBlurView)initWithFrame:(CGRect)frame;
 - (void)_dynamicUserInterfaceTraitDidChange;
 - (void)layoutSubviews;
 @end
@@ -8,7 +8,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_10046D44C();
 }
 
@@ -25,7 +25,7 @@
   sub_10046D22C();
 }
 
-- (_TtC20ProductPageExtension28MediaOverlayGradientBlurView)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension28MediaOverlayGradientBlurView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

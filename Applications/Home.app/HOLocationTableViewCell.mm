@@ -1,20 +1,20 @@
 @interface HOLocationTableViewCell
-- (HOLocationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (HOLocationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (NSString)titleText;
 - (void)prepareForReuse;
-- (void)setDisabled:(BOOL)a3;
-- (void)setShowLocationIcon:(BOOL)a3;
-- (void)setTitleText:(id)a3;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setShowLocationIcon:(BOOL)icon;
+- (void)setTitleText:(id)text;
 - (void)updateConstraints;
 @end
 
 @implementation HOLocationTableViewCell
 
-- (HOLocationTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (HOLocationTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v25.receiver = self;
   v25.super_class = HOLocationTableViewCell;
-  v4 = [(HOLocationTableViewCell *)&v25 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(HOLocationTableViewCell *)&v25 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = [[UILabel alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -25,30 +25,30 @@
     v7 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
     [(UILabel *)v4->_titleLabel setFont:v7];
 
-    v8 = [(HOLocationTableViewCell *)v4 contentView];
-    [v8 addSubview:v4->_titleLabel];
+    contentView = [(HOLocationTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_titleLabel];
 
     v4->_disabled = 0;
     v9 = +[NSMutableArray array];
-    v10 = [(HOLocationTableViewCell *)v4 contentView];
-    v11 = [v10 heightAnchor];
-    v12 = [v11 constraintGreaterThanOrEqualToConstant:44.0];
+    contentView2 = [(HOLocationTableViewCell *)v4 contentView];
+    heightAnchor = [contentView2 heightAnchor];
+    v12 = [heightAnchor constraintGreaterThanOrEqualToConstant:44.0];
 
     LODWORD(v13) = 1144750080;
     [v12 setPriority:v13];
     [v9 addObject:v12];
-    v14 = [(UILabel *)v4->_titleLabel centerYAnchor];
-    v15 = [(HOLocationTableViewCell *)v4 contentView];
-    v16 = [v15 layoutMarginsGuide];
-    v17 = [v16 centerYAnchor];
-    v18 = [v14 constraintEqualToAnchor:v17];
+    centerYAnchor = [(UILabel *)v4->_titleLabel centerYAnchor];
+    contentView3 = [(HOLocationTableViewCell *)v4 contentView];
+    layoutMarginsGuide = [contentView3 layoutMarginsGuide];
+    centerYAnchor2 = [layoutMarginsGuide centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v9 addObject:v18];
 
-    v19 = [(UILabel *)v4->_titleLabel heightAnchor];
-    v20 = [(HOLocationTableViewCell *)v4 contentView];
-    v21 = [v20 layoutMarginsGuide];
-    v22 = [v21 heightAnchor];
-    v23 = [v19 constraintLessThanOrEqualToAnchor:v22];
+    heightAnchor2 = [(UILabel *)v4->_titleLabel heightAnchor];
+    contentView4 = [(HOLocationTableViewCell *)v4 contentView];
+    layoutMarginsGuide2 = [contentView4 layoutMarginsGuide];
+    heightAnchor3 = [layoutMarginsGuide2 heightAnchor];
+    v23 = [heightAnchor2 constraintLessThanOrEqualToAnchor:heightAnchor3];
     [v9 addObject:v23];
 
     [NSLayoutConstraint activateConstraints:v9];
@@ -69,23 +69,23 @@
 
 - (NSString)titleText
 {
-  v2 = [(HOLocationTableViewCell *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(HOLocationTableViewCell *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v4 = a3;
-  v5 = [(HOLocationTableViewCell *)self titleLabel];
-  [v5 setText:v4];
+  textCopy = text;
+  titleLabel = [(HOLocationTableViewCell *)self titleLabel];
+  [titleLabel setText:textCopy];
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  self->_disabled = a3;
-  if (a3)
+  self->_disabled = disabled;
+  if (disabled)
   {
     +[UIColor systemGrayColor];
   }
@@ -95,16 +95,16 @@
     +[UIColor labelColor];
   }
   v5 = ;
-  v4 = [(HOLocationTableViewCell *)self titleLabel];
-  [v4 setTextColor:v5];
+  titleLabel = [(HOLocationTableViewCell *)self titleLabel];
+  [titleLabel setTextColor:v5];
 }
 
-- (void)setShowLocationIcon:(BOOL)a3
+- (void)setShowLocationIcon:(BOOL)icon
 {
-  v3 = a3;
-  v5 = [(HOLocationTableViewCell *)self locationIcon];
-  v6 = v5;
-  if (v3)
+  iconCopy = icon;
+  locationIcon = [(HOLocationTableViewCell *)self locationIcon];
+  v6 = locationIcon;
+  if (iconCopy)
   {
 
     if (!v6)
@@ -115,35 +115,35 @@
       [(HOLocationTableViewCell *)self setLocationIcon:v9];
 
       v10 = +[UIColor systemLightGrayColor];
-      v11 = [(HOLocationTableViewCell *)self locationIcon];
-      [v11 setTintColor:v10];
+      locationIcon2 = [(HOLocationTableViewCell *)self locationIcon];
+      [locationIcon2 setTintColor:v10];
 
-      v12 = [(HOLocationTableViewCell *)self locationIcon];
-      [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+      locationIcon3 = [(HOLocationTableViewCell *)self locationIcon];
+      [locationIcon3 setTranslatesAutoresizingMaskIntoConstraints:0];
     }
 
-    v13 = [(HOLocationTableViewCell *)self contentView];
-    v14 = [(HOLocationTableViewCell *)self locationIcon];
-    [v13 addSubview:v14];
+    contentView = [(HOLocationTableViewCell *)self contentView];
+    locationIcon4 = [(HOLocationTableViewCell *)self locationIcon];
+    [contentView addSubview:locationIcon4];
 
     v28 = +[NSMutableArray array];
-    v15 = [(HOLocationTableViewCell *)self locationIcon];
-    v16 = [v15 widthAnchor];
-    v17 = [v16 constraintEqualToConstant:20.0];
+    locationIcon5 = [(HOLocationTableViewCell *)self locationIcon];
+    widthAnchor = [locationIcon5 widthAnchor];
+    v17 = [widthAnchor constraintEqualToConstant:20.0];
     [v28 addObject:v17];
 
-    v18 = [(HOLocationTableViewCell *)self locationIcon];
-    v19 = [v18 heightAnchor];
-    v20 = [(HOLocationTableViewCell *)self locationIcon];
-    v21 = [v20 widthAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21];
+    locationIcon6 = [(HOLocationTableViewCell *)self locationIcon];
+    heightAnchor = [locationIcon6 heightAnchor];
+    locationIcon7 = [(HOLocationTableViewCell *)self locationIcon];
+    widthAnchor2 = [locationIcon7 widthAnchor];
+    v22 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
     [v28 addObject:v22];
 
-    v23 = [(HOLocationTableViewCell *)self locationIcon];
-    v24 = [v23 centerYAnchor];
-    v25 = [(HOLocationTableViewCell *)self contentView];
-    v26 = [v25 centerYAnchor];
-    v27 = [v24 constraintEqualToAnchor:v26];
+    locationIcon8 = [(HOLocationTableViewCell *)self locationIcon];
+    centerYAnchor = [locationIcon8 centerYAnchor];
+    contentView2 = [(HOLocationTableViewCell *)self contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v28 addObject:v27];
 
     [NSLayoutConstraint activateConstraints:v28];
@@ -152,7 +152,7 @@
 
   else
   {
-    [v5 removeFromSuperview];
+    [locationIcon removeFromSuperview];
 
     [(HOLocationTableViewCell *)self setNeedsUpdateConstraints];
   }
@@ -161,57 +161,57 @@
 - (void)updateConstraints
 {
   v3 = +[NSMutableArray array];
-  v4 = [(HOLocationTableViewCell *)self horizontalConstraints];
-  [NSLayoutConstraint deactivateConstraints:v4];
+  horizontalConstraints = [(HOLocationTableViewCell *)self horizontalConstraints];
+  [NSLayoutConstraint deactivateConstraints:horizontalConstraints];
 
-  v5 = [(HOLocationTableViewCell *)self titleLabel];
-  v6 = [v5 leadingAnchor];
-  v7 = [(HOLocationTableViewCell *)self contentView];
-  v8 = [v7 layoutMarginsGuide];
-  v9 = [v8 leadingAnchor];
-  v10 = [v6 constraintEqualToAnchor:v9];
+  titleLabel = [(HOLocationTableViewCell *)self titleLabel];
+  leadingAnchor = [titleLabel leadingAnchor];
+  contentView = [(HOLocationTableViewCell *)self contentView];
+  layoutMarginsGuide = [contentView layoutMarginsGuide];
+  leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+  v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v3 addObject:v10];
 
-  v11 = [(HOLocationTableViewCell *)self locationIcon];
-  if (!v11)
+  locationIcon = [(HOLocationTableViewCell *)self locationIcon];
+  if (!locationIcon)
   {
     goto LABEL_4;
   }
 
-  v12 = v11;
-  v13 = [(HOLocationTableViewCell *)self locationIcon];
-  v14 = [(HOLocationTableViewCell *)self contentView];
-  v15 = [v13 isDescendantOfView:v14];
+  v12 = locationIcon;
+  locationIcon2 = [(HOLocationTableViewCell *)self locationIcon];
+  contentView2 = [(HOLocationTableViewCell *)self contentView];
+  v15 = [locationIcon2 isDescendantOfView:contentView2];
 
   if (v15)
   {
-    v16 = [(HOLocationTableViewCell *)self locationIcon];
-    v17 = [v16 leadingAnchor];
-    v18 = [(HOLocationTableViewCell *)self titleLabel];
-    v19 = [v18 trailingAnchor];
-    v20 = [v17 constraintEqualToAnchor:v19 constant:20.0];
+    locationIcon3 = [(HOLocationTableViewCell *)self locationIcon];
+    leadingAnchor3 = [locationIcon3 leadingAnchor];
+    titleLabel2 = [(HOLocationTableViewCell *)self titleLabel];
+    trailingAnchor = [titleLabel2 trailingAnchor];
+    v20 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:20.0];
     [v3 addObject:v20];
 
-    v21 = [(HOLocationTableViewCell *)self locationIcon];
+    locationIcon4 = [(HOLocationTableViewCell *)self locationIcon];
   }
 
   else
   {
 LABEL_4:
-    v21 = [(HOLocationTableViewCell *)self titleLabel];
+    locationIcon4 = [(HOLocationTableViewCell *)self titleLabel];
   }
 
-  v22 = v21;
-  v23 = [v21 trailingAnchor];
-  v24 = [(HOLocationTableViewCell *)self contentView];
-  v25 = [v24 layoutMarginsGuide];
-  v26 = [v25 trailingAnchor];
-  v27 = [v23 constraintEqualToAnchor:v26];
+  v22 = locationIcon4;
+  trailingAnchor2 = [locationIcon4 trailingAnchor];
+  contentView3 = [(HOLocationTableViewCell *)self contentView];
+  layoutMarginsGuide2 = [contentView3 layoutMarginsGuide];
+  trailingAnchor3 = [layoutMarginsGuide2 trailingAnchor];
+  v27 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
   [v3 addObject:v27];
 
   [(HOLocationTableViewCell *)self setHorizontalConstraints:v3];
-  v28 = [(HOLocationTableViewCell *)self horizontalConstraints];
-  [NSLayoutConstraint activateConstraints:v28];
+  horizontalConstraints2 = [(HOLocationTableViewCell *)self horizontalConstraints];
+  [NSLayoutConstraint activateConstraints:horizontalConstraints2];
 
   v29.receiver = self;
   v29.super_class = HOLocationTableViewCell;

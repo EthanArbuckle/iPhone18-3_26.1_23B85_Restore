@@ -22,19 +22,19 @@
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v4 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v6 &= 2u;
   }
@@ -57,16 +57,16 @@
 
   if (v9)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v53, v52, *v53, *&v53[16], v54}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v9 encoding:{4, v53, v52, *v53, *&v53[16], v54}];
     free(v9);
-    SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, v7);
+    SSFileLog(v4, @"%@", v10, v11, v12, v13, v14, v15, oSLogObject);
 LABEL_13:
   }
 
   if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
   {
-    v16 = [v3 integerValue];
-    if (v16 != [v2 integerValue])
+    integerValue = [v3 integerValue];
+    if (integerValue != [v2 integerValue])
     {
       CFPreferencesSetAppValue(@"com.apple.storeservices.itfe", 0, @"com.apple.itunesstored");
       CFPreferencesAppSynchronize(@"com.apple.storeservices.itfe");
@@ -76,19 +76,19 @@ LABEL_13:
         v17 = +[SSLogConfig sharedConfig];
       }
 
-      v18 = [v17 shouldLog];
+      shouldLog2 = [v17 shouldLog];
       if ([v17 shouldLogToDisk])
       {
-        v19 = v18 | 2;
+        v19 = shouldLog2 | 2;
       }
 
       else
       {
-        v19 = v18;
+        v19 = shouldLog2;
       }
 
-      v20 = [v17 OSLogObject];
-      if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [v17 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v19 &= 2u;
       }
@@ -107,15 +107,15 @@ LABEL_13:
         {
 LABEL_28:
 
-          v30 = [MEMORY[0x1E69ADFB8] sharedConnection];
-          [v30 removeProfileWithIdentifier:@"com.apple.storeservices-itfe"];
+          mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+          [mEMORY[0x1E69ADFB8] removeProfileWithIdentifier:@"com.apple.storeservices-itfe"];
 
           goto LABEL_29;
         }
 
-        v20 = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, v53, v52}];
+        oSLogObject2 = [MEMORY[0x1E696AEC0] stringWithCString:v23 encoding:{4, v53, v52}];
         free(v23);
-        SSFileLog(v17, @"%@", v24, v25, v26, v27, v28, v29, v20);
+        SSFileLog(v17, @"%@", v24, v25, v26, v27, v28, v29, oSLogObject2);
       }
 
       goto LABEL_28;
@@ -129,10 +129,10 @@ LABEL_29:
   }
 
   v31 = +[SSDevice currentDevice];
-  v32 = [v31 productVersion];
+  productVersion = [v31 productVersion];
 
   v33 = CFPreferencesCopyAppValue(@"performedMigration11", @"com.apple.storeservices.itfe");
-  if (SSIsInternalBuild() && [v32 isEqualToString:@"11.0"] && !v33)
+  if (SSIsInternalBuild() && [productVersion isEqualToString:@"11.0"] && !v33)
   {
     v34 = CFPreferencesCopyAppValue(@"features", @"com.apple.storeservices.itfe");
     objc_opt_class();
@@ -158,19 +158,19 @@ LABEL_29:
       v38 = +[SSLogConfig sharedConfig];
     }
 
-    v39 = [v38 shouldLog];
+    shouldLog3 = [v38 shouldLog];
     if ([v38 shouldLogToDisk])
     {
-      v40 = v39 | 2;
+      v40 = shouldLog3 | 2;
     }
 
     else
     {
-      v40 = v39;
+      v40 = shouldLog3;
     }
 
-    v41 = [v38 OSLogObject];
-    if (!os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [v38 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v40 &= 2u;
     }
@@ -191,9 +191,9 @@ LABEL_48:
         goto LABEL_49;
       }
 
-      v41 = [MEMORY[0x1E696AEC0] stringWithCString:v44 encoding:{4, v53, v52}];
+      oSLogObject3 = [MEMORY[0x1E696AEC0] stringWithCString:v44 encoding:{4, v53, v52}];
       free(v44);
-      SSFileLog(v38, @"%@", v45, v46, v47, v48, v49, v50, v41);
+      SSFileLog(v38, @"%@", v45, v46, v47, v48, v49, v50, oSLogObject3);
     }
 
     goto LABEL_48;

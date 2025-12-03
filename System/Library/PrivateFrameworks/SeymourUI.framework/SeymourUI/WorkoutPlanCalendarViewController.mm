@@ -1,15 +1,15 @@
 @interface WorkoutPlanCalendarViewController
-- (_TtC9SeymourUI33WorkoutPlanCalendarViewController)initWithCoder:(id)a3;
-- (_TtC9SeymourUI33WorkoutPlanCalendarViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)_collectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (_TtC9SeymourUI33WorkoutPlanCalendarViewController)initWithCoder:(id)coder;
+- (_TtC9SeymourUI33WorkoutPlanCalendarViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)_collectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation WorkoutPlanCalendarViewController
 
-- (_TtC9SeymourUI33WorkoutPlanCalendarViewController)initWithCoder:(id)a3
+- (_TtC9SeymourUI33WorkoutPlanCalendarViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI33WorkoutPlanCalendarViewController_dataSource) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI33WorkoutPlanCalendarViewController_isApplyingSnapshot) = 0;
@@ -21,47 +21,47 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_20B81FEE4();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_20B820AAC(a4, width, height);
+  selfCopy = self;
+  sub_20B820AAC(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (_TtC9SeymourUI33WorkoutPlanCalendarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC9SeymourUI33WorkoutPlanCalendarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_20C133244();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_20C1331E4();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_20B821B94();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)_collectionView:(id)a3 orthogonalScrollViewDidScroll:(id)a4 section:(int64_t)a5
+- (void)_collectionView:(id)view orthogonalScrollViewDidScroll:(id)scroll section:(int64_t)section
 {
-  v9 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v10 = self;
-  sub_20B821110(a3, a4, a5);
+  selfCopy = self;
+  sub_20B821110(view, scroll, section);
 
   swift_unknownObjectRelease();
 }

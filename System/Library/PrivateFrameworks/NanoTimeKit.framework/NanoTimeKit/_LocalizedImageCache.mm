@@ -16,8 +16,8 @@
     cache = v2->_cache;
     v2->_cache = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel__localeChanged name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__localeChanged name:*MEMORY[0x277CBE620] object:0];
   }
 
   return v2;
@@ -25,8 +25,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 
   v4.receiver = self;
   v4.super_class = _LocalizedImageCache;

@@ -1,34 +1,34 @@
 @interface OITSUCustomFormat
-- (BOOL)p_isEqual:(id)a3 matchingFullName:(BOOL)a4;
+- (BOOL)p_isEqual:(id)equal matchingFullName:(BOOL)name;
 - (NSString)currencyCode;
 - (NSString)formatNameStem;
 - (NSString)formatNameTag;
-- (OITSUCustomFormat)customFormatWithNewName:(id)a3;
-- (OITSUCustomFormat)initWithName:(id)a3 formatType:(int)a4 data:(id)a5 conditionList:(id)a6;
-- (id)conditionalFormatAtIndex:(unint64_t)a3;
-- (id)conditionalFormatDataForKey:(unint64_t)a3;
-- (id)conditionalFormatDataForValue:(double)a3 outKey:(unint64_t *)a4;
+- (OITSUCustomFormat)customFormatWithNewName:(id)name;
+- (OITSUCustomFormat)initWithName:(id)name formatType:(int)type data:(id)data conditionList:(id)list;
+- (id)conditionalFormatAtIndex:(unint64_t)index;
+- (id)conditionalFormatDataForKey:(unint64_t)key;
+- (id)conditionalFormatDataForValue:(double)value outKey:(unint64_t *)key;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)conditionCount;
 - (unint64_t)hash;
-- (void)p_addConditionOfType:(int)a3 value:(double)a4 data:(id)a5;
+- (void)p_addConditionOfType:(int)type value:(double)value data:(id)data;
 - (void)p_makeFormatNameStemAndTag;
 @end
 
 @implementation OITSUCustomFormat
 
-- (OITSUCustomFormat)initWithName:(id)a3 formatType:(int)a4 data:(id)a5 conditionList:(id)a6
+- (OITSUCustomFormat)initWithName:(id)name formatType:(int)type data:(id)data conditionList:(id)list
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  dataCopy = data;
+  listCopy = list;
   v25.receiver = self;
   v25.super_class = OITSUCustomFormat;
   v13 = [(OITSUCustomFormat *)&v25 init];
   if (v13)
   {
-    if ((a4 - 270) >= 3)
+    if ((type - 270) >= 3)
     {
       v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUCustomFormat initWithName:formatType:data:conditionList:]"];
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUCustomFormat.m"];
@@ -37,7 +37,7 @@
       +[OITSUAssertionHandler logBacktraceThrottled];
     }
 
-    if (!v11)
+    if (!dataCopy)
     {
       v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUCustomFormat initWithName:formatType:data:conditionList:]"];
       v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUCustomFormat.m"];
@@ -46,19 +46,19 @@
       +[OITSUAssertionHandler logBacktraceThrottled];
     }
 
-    v18 = [v10 copy];
+    v18 = [nameCopy copy];
     formatName = v13->_formatName;
     v13->_formatName = v18;
 
-    v13->_formatType = a4;
-    v20 = [v11 copy];
+    v13->_formatType = type;
+    v20 = [dataCopy copy];
     defaultFormatData = v13->_defaultFormatData;
     v13->_defaultFormatData = v20;
 
     [(OITSUCustomFormatData *)v13->_defaultFormatData setIsConditional:0];
-    if (v12)
+    if (listCopy)
     {
-      if (a4 != 270)
+      if (type != 270)
       {
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUCustomFormat initWithName:formatType:data:conditionList:]"];
         v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUCustomFormat.m"];
@@ -67,28 +67,28 @@
         +[OITSUAssertionHandler logBacktraceThrottled];
       }
 
-      objc_storeStrong(&v13->_conditionList, a6);
+      objc_storeStrong(&v13->_conditionList, list);
     }
   }
 
   return v13;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = [OITSUMutableCustomFormat allocWithZone:a3];
-  v5 = [(OITSUCustomFormat *)self formatName];
-  v6 = [(OITSUCustomFormat *)self formatType];
-  v7 = [(OITSUCustomFormat *)self defaultFormatData];
-  v8 = [(OITSUCustomFormat *)v4 initWithName:v5 formatType:v6 data:v7];
+  v4 = [OITSUMutableCustomFormat allocWithZone:zone];
+  formatName = [(OITSUCustomFormat *)self formatName];
+  formatType = [(OITSUCustomFormat *)self formatType];
+  defaultFormatData = [(OITSUCustomFormat *)self defaultFormatData];
+  v8 = [(OITSUCustomFormat *)v4 initWithName:formatName formatType:formatType data:defaultFormatData];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(OITSUCustomFormat *)self conditionList];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  conditionList = [(OITSUCustomFormat *)self conditionList];
+  v10 = [conditionList countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -99,18 +99,18 @@
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(conditionList);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 conditionType];
+        conditionType = [v14 conditionType];
         [v14 conditionValue];
         v17 = v16;
-        v18 = [v14 data];
-        [(OITSUCustomFormat *)v8 p_addConditionOfType:v15 value:v18 data:v17];
+        data = [v14 data];
+        [(OITSUCustomFormat *)v8 p_addConditionOfType:conditionType value:data data:v17];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [conditionList countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
@@ -119,21 +119,21 @@
   return v8;
 }
 
-- (OITSUCustomFormat)customFormatWithNewName:(id)a3
+- (OITSUCustomFormat)customFormatWithNewName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = [OITSUCustomFormat alloc];
-  v6 = [(OITSUCustomFormat *)self formatType];
-  v7 = [(OITSUCustomFormat *)self defaultFormatData];
-  v8 = [(OITSUCustomFormat *)v5 initWithName:v4 formatType:v6 data:v7];
+  formatType = [(OITSUCustomFormat *)self formatType];
+  defaultFormatData = [(OITSUCustomFormat *)self defaultFormatData];
+  v8 = [(OITSUCustomFormat *)v5 initWithName:nameCopy formatType:formatType data:defaultFormatData];
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [(OITSUCustomFormat *)self conditionList];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  conditionList = [(OITSUCustomFormat *)self conditionList];
+  v10 = [conditionList countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -144,18 +144,18 @@
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(conditionList);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v14 conditionType];
+        conditionType = [v14 conditionType];
         [v14 conditionValue];
         v17 = v16;
-        v18 = [v14 data];
-        [(OITSUCustomFormat *)v8 p_addConditionOfType:v15 value:v18 data:v17];
+        data = [v14 data];
+        [(OITSUCustomFormat *)v8 p_addConditionOfType:conditionType value:data data:v17];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [conditionList countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
@@ -166,16 +166,16 @@
 
 - (unint64_t)conditionCount
 {
-  v2 = [(OITSUCustomFormat *)self conditionList];
-  v3 = [v2 count];
+  conditionList = [(OITSUCustomFormat *)self conditionList];
+  v3 = [conditionList count];
 
   return v3;
 }
 
-- (void)p_addConditionOfType:(int)a3 value:(double)a4 data:(id)a5
+- (void)p_addConditionOfType:(int)type value:(double)value data:(id)data
 {
-  v6 = *&a3;
-  v8 = a5;
+  v6 = *&type;
+  dataCopy = data;
   if ([(OITSUCustomFormat *)self formatType]!= 270)
   {
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUCustomFormat p_addConditionOfType:value:data:]"];
@@ -185,7 +185,7 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  if (!v8)
+  if (!dataCopy)
   {
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUCustomFormat p_addConditionOfType:value:data:]"];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUCustomFormat.m"];
@@ -194,50 +194,50 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v13 = [(OITSUCustomFormat *)self conditionList];
+  conditionList = [(OITSUCustomFormat *)self conditionList];
 
-  if (!v13)
+  if (!conditionList)
   {
     v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:10];
     conditionList = self->_conditionList;
     self->_conditionList = v14;
   }
 
-  v17 = [[OITSUCustomFormatCondition alloc] initWithType:v6 value:v8 data:a4];
+  v17 = [[OITSUCustomFormatCondition alloc] initWithType:v6 value:dataCopy data:value];
 
-  v16 = [(OITSUCustomFormat *)self conditionList];
-  [v16 addObject:v17];
+  conditionList2 = [(OITSUCustomFormat *)self conditionList];
+  [conditionList2 addObject:v17];
 }
 
 - (unint64_t)hash
 {
-  v3 = [(OITSUCustomFormat *)self defaultFormatData];
-  v4 = [v3 formatString];
-  v5 = [v4 hash];
-  v6 = [(OITSUCustomFormat *)self formatType];
+  defaultFormatData = [(OITSUCustomFormat *)self defaultFormatData];
+  formatString = [defaultFormatData formatString];
+  v5 = [formatString hash];
+  formatType = [(OITSUCustomFormat *)self formatType];
 
-  return v5 ^ v6;
+  return v5 ^ formatType;
 }
 
 - (void)p_makeFormatNameStemAndTag
 {
-  v3 = [(OITSUCustomFormat *)self formatName];
+  formatName = [(OITSUCustomFormat *)self formatName];
 
-  if (v3)
+  if (formatName)
   {
-    v4 = [(OITSUCustomFormat *)self formatName];
+    formatName2 = [(OITSUCustomFormat *)self formatName];
     v5 = +[OITSULocale currentLocale];
-    v6 = [v5 locale];
+    locale = [v5 locale];
     v13 = 0;
-    TSUNumberFormatterExtractBaseStemFromString(v4, v6, &v13);
+    TSUNumberFormatterExtractBaseStemFromString(formatName2, locale, &v13);
     v7 = v13;
 
     formatNameStem = self->_formatNameStem;
     self->_formatNameStem = v7;
     v9 = v7;
 
-    v10 = [(OITSUCustomFormat *)self formatName];
-    v11 = [v10 substringFromIndex:{-[NSString length](v9, "length")}];
+    formatName3 = [(OITSUCustomFormat *)self formatName];
+    v11 = [formatName3 substringFromIndex:{-[NSString length](v9, "length")}];
     formatNameTag = self->_formatNameTag;
     self->_formatNameTag = v11;
   }
@@ -267,40 +267,40 @@
   return formatNameTag;
 }
 
-- (BOOL)p_isEqual:(id)a3 matchingFullName:(BOOL)a4
+- (BOOL)p_isEqual:(id)equal matchingFullName:(BOOL)name
 {
-  v4 = a4;
-  v6 = a3;
-  if (self != v6)
+  nameCopy = name;
+  equalCopy = equal;
+  if (self != equalCopy)
   {
     v7 = objc_opt_class();
-    v8 = TSUDynamicCast(v7, v6);
+    v8 = TSUDynamicCast(v7, equalCopy);
     if (!v8)
     {
       goto LABEL_20;
     }
 
-    v9 = [(OITSUCustomFormat *)self formatType];
-    if (v9 != [v8 formatType])
+    formatType = [(OITSUCustomFormat *)self formatType];
+    if (formatType != [v8 formatType])
     {
       goto LABEL_20;
     }
 
-    v10 = [(OITSUCustomFormat *)self conditionList];
-    v11 = [v10 count];
-    v12 = [v8 conditionList];
-    v13 = [v12 count];
+    conditionList = [(OITSUCustomFormat *)self conditionList];
+    v11 = [conditionList count];
+    conditionList2 = [v8 conditionList];
+    v13 = [conditionList2 count];
 
     if (v11 != v13)
     {
       goto LABEL_20;
     }
 
-    if (v4)
+    if (nameCopy)
     {
-      v14 = [v8 formatName];
-      v15 = [(OITSUCustomFormat *)self formatName];
-      v16 = [v14 isEqualToString:v15];
+      formatName = [v8 formatName];
+      formatName2 = [(OITSUCustomFormat *)self formatName];
+      v16 = [formatName isEqualToString:formatName2];
 
       if ((v16 & 1) == 0)
       {
@@ -310,9 +310,9 @@
 
     else
     {
-      v18 = [(OITSUCustomFormat *)self formatNameStem];
-      v19 = [v8 formatNameStem];
-      v20 = [v18 isEqual:v19];
+      formatNameStem = [(OITSUCustomFormat *)self formatNameStem];
+      formatNameStem2 = [v8 formatNameStem];
+      v20 = [formatNameStem isEqual:formatNameStem2];
 
       if (!v20)
       {
@@ -320,14 +320,14 @@
       }
     }
 
-    v21 = [(OITSUCustomFormat *)self defaultFormatData];
-    v22 = [v8 defaultFormatData];
-    v23 = [v21 isEqual:v22];
+    defaultFormatData = [(OITSUCustomFormat *)self defaultFormatData];
+    defaultFormatData2 = [v8 defaultFormatData];
+    v23 = [defaultFormatData isEqual:defaultFormatData2];
 
     if (v23)
     {
-      v24 = [(OITSUCustomFormat *)self conditionList];
-      v25 = [v24 count];
+      conditionList3 = [(OITSUCustomFormat *)self conditionList];
+      v25 = [conditionList3 count];
 
       if (!v25)
       {
@@ -338,11 +338,11 @@
       v26 = 0;
       while (1)
       {
-        v27 = [(OITSUCustomFormat *)self conditionList];
-        v28 = [v27 objectAtIndex:v26];
+        conditionList4 = [(OITSUCustomFormat *)self conditionList];
+        v28 = [conditionList4 objectAtIndex:v26];
 
-        v29 = [v8 conditionList];
-        v30 = [v29 objectAtIndex:v26];
+        conditionList5 = [v8 conditionList];
+        v30 = [conditionList5 objectAtIndex:v26];
 
         if (v28)
         {
@@ -376,8 +376,8 @@ LABEL_15:
         if (v17)
         {
           ++v26;
-          v31 = [(OITSUCustomFormat *)self conditionList];
-          v32 = [v31 count];
+          conditionList6 = [(OITSUCustomFormat *)self conditionList];
+          v32 = [conditionList6 count];
 
           if (v26 < v32)
           {
@@ -402,14 +402,14 @@ LABEL_22:
   return v17;
 }
 
-- (id)conditionalFormatDataForValue:(double)a3 outKey:(unint64_t *)a4
+- (id)conditionalFormatDataForValue:(double)value outKey:(unint64_t *)key
 {
   if ([(OITSUCustomFormat *)self formatType]!= 270 || (v7 = [(OITSUCustomFormat *)self conditionCount]) == 0)
   {
 LABEL_24:
-    v15 = [(OITSUCustomFormat *)self defaultFormatData];
+    defaultFormatData = [(OITSUCustomFormat *)self defaultFormatData];
     v18 = 0;
-    if (!a4)
+    if (!key)
     {
       goto LABEL_26;
     }
@@ -421,17 +421,17 @@ LABEL_24:
   v9 = 0;
   while (1)
   {
-    v10 = [(OITSUCustomFormat *)self conditionList];
-    v11 = [v10 objectAtIndexedSubscript:v9];
+    conditionList = [(OITSUCustomFormat *)self conditionList];
+    v11 = [conditionList objectAtIndexedSubscript:v9];
 
     [v11 conditionValue];
     v13 = v12;
-    v14 = [v11 conditionType];
-    if (v14 <= 1)
+    conditionType = [v11 conditionType];
+    if (conditionType <= 1)
     {
-      if (v14)
+      if (conditionType)
       {
-        if (v14 != 1)
+        if (conditionType != 1)
         {
 LABEL_21:
           v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[OITSUCustomFormat conditionalFormatDataForValue:outKey:]"];
@@ -444,13 +444,13 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        if (v13 <= a3)
+        if (v13 <= value)
         {
           goto LABEL_22;
         }
       }
 
-      else if (vabdd_f64(a3, v13) >= 1.0e-14)
+      else if (vabdd_f64(value, v13) >= 1.0e-14)
       {
         goto LABEL_22;
       }
@@ -458,24 +458,24 @@ LABEL_22:
 
     else
     {
-      switch(v14)
+      switch(conditionType)
       {
         case 2:
-          if (v13 < a3)
+          if (v13 < value)
           {
             goto LABEL_22;
           }
 
           break;
         case 3:
-          if (v13 >= a3)
+          if (v13 >= value)
           {
             goto LABEL_22;
           }
 
           break;
         case 4:
-          if (v13 > a3)
+          if (v13 > value)
           {
             goto LABEL_22;
           }
@@ -486,9 +486,9 @@ LABEL_22:
       }
     }
 
-    v15 = [v11 data];
+    defaultFormatData = [v11 data];
 
-    if (v15)
+    if (defaultFormatData)
     {
       break;
     }
@@ -501,48 +501,48 @@ LABEL_23:
   }
 
   v18 = v9 + 1;
-  if (a4)
+  if (key)
   {
 LABEL_25:
-    *a4 = v18;
+    *key = v18;
   }
 
 LABEL_26:
 
-  return v15;
+  return defaultFormatData;
 }
 
-- (id)conditionalFormatAtIndex:(unint64_t)a3
+- (id)conditionalFormatAtIndex:(unint64_t)index
 {
-  v4 = [(OITSUCustomFormat *)self conditionList];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  conditionList = [(OITSUCustomFormat *)self conditionList];
+  v5 = [conditionList objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (id)conditionalFormatDataForKey:(unint64_t)a3
+- (id)conditionalFormatDataForKey:(unint64_t)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = [(OITSUCustomFormat *)self conditionList];
-    v5 = [v4 objectAtIndexedSubscript:a3 - 1];
-    v6 = [v5 data];
+    conditionList = [(OITSUCustomFormat *)self conditionList];
+    v5 = [conditionList objectAtIndexedSubscript:key - 1];
+    data = [v5 data];
   }
 
   else
   {
-    v6 = [(OITSUCustomFormat *)self defaultFormatData];
+    data = [(OITSUCustomFormat *)self defaultFormatData];
   }
 
-  return v6;
+  return data;
 }
 
 - (NSString)currencyCode
 {
   if (!self->_currencyCodeComputed)
   {
-    v3 = [(OITSUCustomFormat *)self defaultFormatData];
-    v4 = [v3 currencyCodeIndex];
+    defaultFormatData = [(OITSUCustomFormat *)self defaultFormatData];
+    currencyCodeIndex = [defaultFormatData currencyCodeIndex];
 
     if ([(OITSUCustomFormat *)self conditionCount])
     {
@@ -551,20 +551,20 @@ LABEL_26:
       while (1)
       {
         v7 = [(OITSUCustomFormat *)self conditionalFormatAtIndex:v5];
-        v8 = [v7 data];
-        v9 = [v8 currencyCodeIndex];
+        data = [v7 data];
+        currencyCodeIndex2 = [data currencyCodeIndex];
 
-        if (v4)
+        if (currencyCodeIndex)
         {
-          if (v9 && v9 != v4)
+          if (currencyCodeIndex2 && currencyCodeIndex2 != currencyCodeIndex)
           {
             break;
           }
         }
 
-        if (v9 == v6)
+        if (currencyCodeIndex2 == v6)
         {
-          v10 = v9;
+          v10 = currencyCodeIndex2;
         }
 
         else
@@ -584,7 +584,7 @@ LABEL_26:
 
         else
         {
-          v11 = v9;
+          v11 = currencyCodeIndex2;
         }
 
         if (!v5)
@@ -592,10 +592,10 @@ LABEL_26:
           v10 = 0;
         }
 
-        if (!v4)
+        if (!currencyCodeIndex)
         {
           v6 = v11;
-          v4 = v10;
+          currencyCodeIndex = v10;
         }
 
         if (++v5 >= [(OITSUCustomFormat *)self conditionCount])
@@ -604,11 +604,11 @@ LABEL_26:
         }
       }
 
-      v4 = 0;
+      currencyCodeIndex = 0;
     }
 
 LABEL_22:
-    v12 = TSUCurrencyCodeForIndex(v4);
+    v12 = TSUCurrencyCodeForIndex(currencyCodeIndex);
     currencyCode = self->_currencyCode;
     self->_currencyCode = v12;
 
@@ -623,10 +623,10 @@ LABEL_22:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(OITSUCustomFormat *)self formatName];
-  v5 = [(OITSUCustomFormat *)self defaultFormatData];
-  v6 = [v5 formatString];
-  v7 = [v3 stringWithFormat:@"TSUCustomFormat:%@, %@", v4, v6];
+  formatName = [(OITSUCustomFormat *)self formatName];
+  defaultFormatData = [(OITSUCustomFormat *)self defaultFormatData];
+  formatString = [defaultFormatData formatString];
+  v7 = [v3 stringWithFormat:@"TSUCustomFormat:%@, %@", formatName, formatString];
 
   return v7;
 }

@@ -1,18 +1,18 @@
 @interface SFBannerBackgroundView
-- (SFBannerBackgroundView)initWithEffect:(id)a3;
+- (SFBannerBackgroundView)initWithEffect:(id)effect;
 - (void)_updateStyle;
 - (void)_updateVibrancy;
-- (void)setBannerStyle:(int64_t)a3;
+- (void)setBannerStyle:(int64_t)style;
 @end
 
 @implementation SFBannerBackgroundView
 
-- (SFBannerBackgroundView)initWithEffect:(id)a3
+- (SFBannerBackgroundView)initWithEffect:(id)effect
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9.receiver = self;
   v9.super_class = SFBannerBackgroundView;
-  v3 = [(SFBannerBackgroundView *)&v9 initWithEffect:a3];
+  v3 = [(SFBannerBackgroundView *)&v9 initWithEffect:effect];
   v4 = v3;
   if (v3)
   {
@@ -27,13 +27,13 @@
   return v4;
 }
 
-- (void)setBannerStyle:(int64_t)a3
+- (void)setBannerStyle:(int64_t)style
 {
-  if (self->_bannerStyle != a3)
+  if (self->_bannerStyle != style)
   {
     v5[5] = v3;
     v5[6] = v4;
-    self->_bannerStyle = a3;
+    self->_bannerStyle = style;
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __41__SFBannerBackgroundView_setBannerStyle___block_invoke;
@@ -69,13 +69,13 @@ LABEL_6:
 
 - (void)_updateVibrancy
 {
-  v3 = [(SFBannerBackgroundView *)self traitCollection];
-  v4 = [v3 sf_usesVibrantAppearance];
+  traitCollection = [(SFBannerBackgroundView *)self traitCollection];
+  sf_usesVibrantAppearance = [traitCollection sf_usesVibrantAppearance];
 
-  if (v4)
+  if (sf_usesVibrantAppearance)
   {
-    v5 = [(SFBannerBackgroundView *)self contentView];
-    [v5 setBackgroundColor:0];
+    contentView = [(SFBannerBackgroundView *)self contentView];
+    [contentView setBackgroundColor:0];
 
     bannerStyle = self->_bannerStyle;
     v7 = 10;
@@ -104,7 +104,7 @@ LABEL_6:
     v9 = self->_bannerStyle;
     if (v9 == 1)
     {
-      v10 = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
+      tertiarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] tertiarySystemGroupedBackgroundColor];
     }
 
     else
@@ -114,12 +114,12 @@ LABEL_6:
         return;
       }
 
-      v10 = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
+      tertiarySystemGroupedBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemGroupedBackgroundColor];
     }
 
-    v12 = v10;
-    v11 = [(SFBannerBackgroundView *)self contentView];
-    [v11 setBackgroundColor:v12];
+    v12 = tertiarySystemGroupedBackgroundColor;
+    contentView2 = [(SFBannerBackgroundView *)self contentView];
+    [contentView2 setBackgroundColor:v12];
   }
 }
 

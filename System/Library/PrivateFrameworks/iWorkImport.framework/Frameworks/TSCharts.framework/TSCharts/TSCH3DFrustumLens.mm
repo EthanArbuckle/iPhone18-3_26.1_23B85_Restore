@@ -1,7 +1,7 @@
 @interface TSCH3DFrustumLens
-- (id)frustumRectAtDistance:(float)a3;
+- (id)frustumRectAtDistance:(float)distance;
 - (tmat4x4<float>)matrix;
-- (void)calculateCullingPlanes:(void *)a3;
+- (void)calculateCullingPlanes:(void *)planes;
 @end
 
 @implementation TSCH3DFrustumLens
@@ -28,16 +28,16 @@
   return self;
 }
 
-- (id)frustumRectAtDistance:(float)a3
+- (id)frustumRectAtDistance:(float)distance
 {
-  v5 = a3 / self->super.super._near;
+  v5 = distance / self->super.super._near;
   *&v6 = v5 * self->super._left;
   *&v3 = v5 * self->super._right;
   *&v4 = v5 * self->super._bottom;
   return MEMORY[0x2821F9670](TSCH3DFrustumRect, sel_rectWithLeft_right_bottom_top_, v6, v3, v4);
 }
 
-- (void)calculateCullingPlanes:(void *)a3
+- (void)calculateCullingPlanes:(void *)planes
 {
   v151.receiver = self;
   v151.super_class = TSCH3DFrustumLens;
@@ -91,7 +91,7 @@
   v144 = v93;
   v145 = -v97;
   sub_2761B4B70(v148, v149, &v143, v146);
-  sub_2761B3F30(a3, v146);
+  sub_2761B3F30(planes, v146);
   objc_msgSend_right(v22, v98, v99, v100, v101);
   v103 = LODWORD(v102);
   objc_msgSend_top(v22, v104, v102, v105, v106);
@@ -101,7 +101,7 @@
   v144 = v108;
   v145 = -v112;
   sub_2761B4B70(v147, v148, &v143, v146);
-  sub_2761B3F30(a3, v146);
+  sub_2761B3F30(planes, v146);
   objc_msgSend_right(v22, v113, v114, v115, v116);
   v118 = LODWORD(v117);
   objc_msgSend_bottom(v22, v119, v117, v120, v121);
@@ -111,7 +111,7 @@
   v144 = v123;
   v145 = -v127;
   sub_2761B4B70(v150, v147, &v143, v146);
-  sub_2761B3F30(a3, v146);
+  sub_2761B3F30(planes, v146);
   objc_msgSend_left(v22, v128, v129, v130, v131);
   v133 = LODWORD(v132);
   objc_msgSend_bottom(v22, v134, v132, v135, v136);
@@ -121,7 +121,7 @@
   v144 = v138;
   v145 = -v142;
   sub_2761B4B70(v149, v150, &v143, v146);
-  sub_2761B3F30(a3, v146);
+  sub_2761B3F30(planes, v146);
 }
 
 @end

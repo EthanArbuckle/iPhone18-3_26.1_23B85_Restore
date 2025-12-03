@@ -1,19 +1,19 @@
 @interface RemoteUIManager
 + (id)sharedInstance;
 - (RemoteUIManager)init;
-- (RemoteUIManager)initWithConfig:(id)a3;
-- (void)anonymousListenerForHostedController:(int64_t)a3 mechanism:(id)a4 reply:(id)a5;
-- (void)checkHasPendingUIRequestsForRemoteUI:(id)a3 completion:(id)a4;
-- (void)connectRemoteUI:(id)a3 requestID:(id)a4 reply:(id)a5;
-- (void)connectionToViewServiceInvalidatedForIdentifier:(id)a3 reply:(id)a4;
-- (void)didReceiveExpectedError:(id)a3;
-- (void)didReceiveUnexpectedError:(id)a3;
-- (void)didSuccessfullyFinishForRequestIdentifier:(id)a3;
+- (RemoteUIManager)initWithConfig:(id)config;
+- (void)anonymousListenerForHostedController:(int64_t)controller mechanism:(id)mechanism reply:(id)reply;
+- (void)checkHasPendingUIRequestsForRemoteUI:(id)i completion:(id)completion;
+- (void)connectRemoteUI:(id)i requestID:(id)d reply:(id)reply;
+- (void)connectionToViewServiceInvalidatedForIdentifier:(id)identifier reply:(id)reply;
+- (void)didReceiveExpectedError:(id)error;
+- (void)didReceiveUnexpectedError:(id)error;
+- (void)didSuccessfullyFinishForRequestIdentifier:(id)identifier;
 - (void)disconnectRemoteUI;
-- (void)dismissRemoteUI:(id)a3 uiMechanism:(id)a4 uiDisappeared:(BOOL)a5 shouldIdle:(BOOL)a6 reply:(id)a7;
-- (void)prepareForHostedController:(int64_t)a3 mechanism:(id)a4 reply:(id)a5;
-- (void)setEndpointProvider:(id)a3;
-- (void)showUIWithParams:(id)a3 reply:(id)a4;
+- (void)dismissRemoteUI:(id)i uiMechanism:(id)mechanism uiDisappeared:(BOOL)disappeared shouldIdle:(BOOL)idle reply:(id)reply;
+- (void)prepareForHostedController:(int64_t)controller mechanism:(id)mechanism reply:(id)reply;
+- (void)setEndpointProvider:(id)provider;
+- (void)showUIWithParams:(id)params reply:(id)reply;
 @end
 
 @implementation RemoteUIManager
@@ -26,22 +26,22 @@
   return v4;
 }
 
-- (RemoteUIManager)initWithConfig:(id)a3
+- (RemoteUIManager)initWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   v12.receiver = self;
   v12.super_class = RemoteUIManager;
   v5 = [(RemoteUIManager *)&v12 init];
   if (v5)
   {
-    v6 = [v4 queue];
+    queue = [configCopy queue];
     queue = v5->_queue;
-    v5->_queue = v6;
+    v5->_queue = queue;
 
-    v8 = [v4 activator];
-    [v8 setDelegate:v5];
+    activator = [configCopy activator];
+    [activator setDelegate:v5];
 
-    v9 = [[_RemoteUIManager alloc] initWithConfig:v4];
+    v9 = [[_RemoteUIManager alloc] initWithConfig:configCopy];
     responder = v5->_responder;
     v5->_responder = v9;
   }
@@ -68,11 +68,11 @@ uint64_t __33__RemoteUIManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)connectRemoteUI:(id)a3 requestID:(id)a4 reply:(id)a5
+- (void)connectRemoteUI:(id)i requestID:(id)d reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  iCopy = i;
+  dCopy = d;
+  replyCopy = reply;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -80,12 +80,12 @@ uint64_t __33__RemoteUIManager_sharedInstance__block_invoke()
   block[2] = __51__RemoteUIManager_connectRemoteUI_requestID_reply___block_invoke;
   block[3] = &unk_278A626C8;
   objc_copyWeak(&v19, &location);
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = iCopy;
+  v17 = dCopy;
+  v18 = replyCopy;
+  v12 = replyCopy;
+  v13 = dCopy;
+  v14 = iCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v19);
@@ -118,10 +118,10 @@ void __37__RemoteUIManager_disconnectRemoteUI__block_invoke(uint64_t a1)
   [WeakRetained disconnectRemoteUI];
 }
 
-- (void)checkHasPendingUIRequestsForRemoteUI:(id)a3 completion:(id)a4
+- (void)checkHasPendingUIRequestsForRemoteUI:(id)i completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  completionCopy = completion;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -129,10 +129,10 @@ void __37__RemoteUIManager_disconnectRemoteUI__block_invoke(uint64_t a1)
   v11[2] = __67__RemoteUIManager_checkHasPendingUIRequestsForRemoteUI_completion___block_invoke;
   v11[3] = &unk_278A62718;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = iCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = iCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -145,10 +145,10 @@ void __67__RemoteUIManager_checkHasPendingUIRequestsForRemoteUI_completion___blo
   [WeakRetained checkHasPendingUIRequestsForRemoteUI:*(a1 + 32) completion:*(a1 + 40)];
 }
 
-- (void)connectionToViewServiceInvalidatedForIdentifier:(id)a3 reply:(id)a4
+- (void)connectionToViewServiceInvalidatedForIdentifier:(id)identifier reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -156,10 +156,10 @@ void __67__RemoteUIManager_checkHasPendingUIRequestsForRemoteUI_completion___blo
   v11[2] = __73__RemoteUIManager_connectionToViewServiceInvalidatedForIdentifier_reply___block_invoke;
   v11[3] = &unk_278A62718;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -172,11 +172,11 @@ void __73__RemoteUIManager_connectionToViewServiceInvalidatedForIdentifier_reply
   [WeakRetained connectionToViewServiceInvalidatedForIdentifier:*(a1 + 32) reply:*(a1 + 40)];
 }
 
-- (void)dismissRemoteUI:(id)a3 uiMechanism:(id)a4 uiDisappeared:(BOOL)a5 shouldIdle:(BOOL)a6 reply:(id)a7
+- (void)dismissRemoteUI:(id)i uiMechanism:(id)mechanism uiDisappeared:(BOOL)disappeared shouldIdle:(BOOL)idle reply:(id)reply
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  iCopy = i;
+  mechanismCopy = mechanism;
+  replyCopy = reply;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   v19[0] = MEMORY[0x277D85DD0];
@@ -184,14 +184,14 @@ void __73__RemoteUIManager_connectionToViewServiceInvalidatedForIdentifier_reply
   v19[2] = __78__RemoteUIManager_dismissRemoteUI_uiMechanism_uiDisappeared_shouldIdle_reply___block_invoke;
   v19[3] = &unk_278A62740;
   objc_copyWeak(&v23, &location);
-  v20 = v12;
-  v21 = v13;
-  v24 = a5;
-  v25 = a6;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  v20 = iCopy;
+  v21 = mechanismCopy;
+  disappearedCopy = disappeared;
+  idleCopy = idle;
+  v22 = replyCopy;
+  v16 = replyCopy;
+  v17 = mechanismCopy;
+  v18 = iCopy;
   dispatch_async(queue, v19);
 
   objc_destroyWeak(&v23);
@@ -204,10 +204,10 @@ void __78__RemoteUIManager_dismissRemoteUI_uiMechanism_uiDisappeared_shouldIdle_
   [WeakRetained dismissRemoteUI:*(a1 + 32) uiMechanism:*(a1 + 40) uiDisappeared:*(a1 + 64) shouldIdle:*(a1 + 65) reply:*(a1 + 48)];
 }
 
-- (void)anonymousListenerForHostedController:(int64_t)a3 mechanism:(id)a4 reply:(id)a5
+- (void)anonymousListenerForHostedController:(int64_t)controller mechanism:(id)mechanism reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  mechanismCopy = mechanism;
+  replyCopy = reply;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -215,11 +215,11 @@ void __78__RemoteUIManager_dismissRemoteUI_uiMechanism_uiDisappeared_shouldIdle_
   block[2] = __72__RemoteUIManager_anonymousListenerForHostedController_mechanism_reply___block_invoke;
   block[3] = &unk_278A62768;
   objc_copyWeak(v16, &location);
-  v16[1] = a3;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v16[1] = controller;
+  v14 = mechanismCopy;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = mechanismCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v16);
@@ -232,10 +232,10 @@ void __72__RemoteUIManager_anonymousListenerForHostedController_mechanism_reply_
   [WeakRetained anonymousListenerForHostedController:*(a1 + 56) mechanism:*(a1 + 32) reply:*(a1 + 40)];
 }
 
-- (void)prepareForHostedController:(int64_t)a3 mechanism:(id)a4 reply:(id)a5
+- (void)prepareForHostedController:(int64_t)controller mechanism:(id)mechanism reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
+  mechanismCopy = mechanism;
+  replyCopy = reply;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -243,11 +243,11 @@ void __72__RemoteUIManager_anonymousListenerForHostedController_mechanism_reply_
   block[2] = __62__RemoteUIManager_prepareForHostedController_mechanism_reply___block_invoke;
   block[3] = &unk_278A62768;
   objc_copyWeak(v16, &location);
-  v16[1] = a3;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
+  v16[1] = controller;
+  v14 = mechanismCopy;
+  v15 = replyCopy;
+  v11 = replyCopy;
+  v12 = mechanismCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(v16);
@@ -260,10 +260,10 @@ void __62__RemoteUIManager_prepareForHostedController_mechanism_reply___block_in
   [WeakRetained prepareForHostedController:*(a1 + 56) mechanism:*(a1 + 32) reply:*(a1 + 40)];
 }
 
-- (void)showUIWithParams:(id)a3 reply:(id)a4
+- (void)showUIWithParams:(id)params reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  replyCopy = reply;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -271,10 +271,10 @@ void __62__RemoteUIManager_prepareForHostedController_mechanism_reply___block_in
   v11[2] = __42__RemoteUIManager_showUIWithParams_reply___block_invoke;
   v11[3] = &unk_278A62718;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = paramsCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = paramsCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -287,9 +287,9 @@ void __42__RemoteUIManager_showUIWithParams_reply___block_invoke(uint64_t a1)
   [WeakRetained showUIWithParams:*(a1 + 32) reply:*(a1 + 40)];
 }
 
-- (void)setEndpointProvider:(id)a3
+- (void)setEndpointProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -297,8 +297,8 @@ void __42__RemoteUIManager_showUIWithParams_reply___block_invoke(uint64_t a1)
   block[2] = __39__RemoteUIManager_setEndpointProvider___block_invoke;
   block[3] = &unk_278A62790;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = providerCopy;
+  v6 = providerCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -311,9 +311,9 @@ void __39__RemoteUIManager_setEndpointProvider___block_invoke(uint64_t a1)
   [WeakRetained setEndpointProvider:*(a1 + 32)];
 }
 
-- (void)didReceiveExpectedError:(id)a3
+- (void)didReceiveExpectedError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -321,8 +321,8 @@ void __39__RemoteUIManager_setEndpointProvider___block_invoke(uint64_t a1)
   block[2] = __43__RemoteUIManager_didReceiveExpectedError___block_invoke;
   block[3] = &unk_278A62790;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -335,9 +335,9 @@ void __43__RemoteUIManager_didReceiveExpectedError___block_invoke(uint64_t a1)
   [WeakRetained didReceiveExpectedError:*(a1 + 32)];
 }
 
-- (void)didReceiveUnexpectedError:(id)a3
+- (void)didReceiveUnexpectedError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -345,8 +345,8 @@ void __43__RemoteUIManager_didReceiveExpectedError___block_invoke(uint64_t a1)
   block[2] = __45__RemoteUIManager_didReceiveUnexpectedError___block_invoke;
   block[3] = &unk_278A62790;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
@@ -359,9 +359,9 @@ void __45__RemoteUIManager_didReceiveUnexpectedError___block_invoke(uint64_t a1)
   [WeakRetained didReceiveUnexpectedError:*(a1 + 32)];
 }
 
-- (void)didSuccessfullyFinishForRequestIdentifier:(id)a3
+- (void)didSuccessfullyFinishForRequestIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   objc_initWeak(&location, self->_responder);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -369,8 +369,8 @@ void __45__RemoteUIManager_didReceiveUnexpectedError___block_invoke(uint64_t a1)
   block[2] = __61__RemoteUIManager_didSuccessfullyFinishForRequestIdentifier___block_invoke;
   block[3] = &unk_278A62790;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = identifierCopy;
+  v6 = identifierCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);

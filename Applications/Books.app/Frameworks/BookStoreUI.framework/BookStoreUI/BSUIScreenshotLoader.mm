@@ -1,15 +1,15 @@
 @interface BSUIScreenshotLoader
-- (BSUIScreenshotLoader)initWithScreenshots:(id)a3;
+- (BSUIScreenshotLoader)initWithScreenshots:(id)screenshots;
 - (BSUIScreenshotLoaderDelegate)delegate;
-- (id)imageForScreenshot:(id)a3;
+- (id)imageForScreenshot:(id)screenshot;
 - (void)startLoading;
 @end
 
 @implementation BSUIScreenshotLoader
 
-- (BSUIScreenshotLoader)initWithScreenshots:(id)a3
+- (BSUIScreenshotLoader)initWithScreenshots:(id)screenshots
 {
-  v4 = a3;
+  screenshotsCopy = screenshots;
   v22.receiver = self;
   v22.super_class = BSUIScreenshotLoader;
   v5 = [(BSUIScreenshotLoader *)&v22 init];
@@ -24,7 +24,7 @@
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v9 = v4;
+    v9 = screenshotsCopy;
     v10 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v10)
     {
@@ -66,19 +66,19 @@
   objc_initWeak(&location, self);
   for (i = 0; ; ++i)
   {
-    v4 = [(BSUIScreenshotLoader *)self screenshotURLs];
-    v5 = [v4 count];
+    screenshotURLs = [(BSUIScreenshotLoader *)self screenshotURLs];
+    v5 = [screenshotURLs count];
 
     if (i >= v5)
     {
       break;
     }
 
-    v6 = [(BSUIScreenshotLoader *)self screenshotURLs];
-    v7 = [v6 objectAtIndexedSubscript:i];
+    screenshotURLs2 = [(BSUIScreenshotLoader *)self screenshotURLs];
+    v7 = [screenshotURLs2 objectAtIndexedSubscript:i];
 
-    v8 = [(BSUIScreenshotLoader *)self delegate];
-    [v8 screenshotLoader:self willLoadImageAtIndex:i fromURL:v7];
+    delegate = [(BSUIScreenshotLoader *)self delegate];
+    [delegate screenshotLoader:self willLoadImageAtIndex:i fromURL:v7];
 
     v9 = +[NSURLSession sharedSession];
     v12[0] = _NSConcreteStackBlock;
@@ -98,13 +98,13 @@
   objc_destroyWeak(&location);
 }
 
-- (id)imageForScreenshot:(id)a3
+- (id)imageForScreenshot:(id)screenshot
 {
-  v4 = a3;
-  v5 = [(BSUIScreenshotLoader *)self screenshotsCache];
-  v6 = [v4 url];
+  screenshotCopy = screenshot;
+  screenshotsCache = [(BSUIScreenshotLoader *)self screenshotsCache];
+  v6 = [screenshotCopy url];
 
-  v7 = [v5 objectForKey:v6];
+  v7 = [screenshotsCache objectForKey:v6];
 
   return v7;
 }

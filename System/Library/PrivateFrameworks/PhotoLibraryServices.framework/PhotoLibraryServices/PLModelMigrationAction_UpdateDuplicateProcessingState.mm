@@ -1,43 +1,43 @@
 @interface PLModelMigrationAction_UpdateDuplicateProcessingState
-- (PLModelMigrationAction_UpdateDuplicateProcessingState)updateDuplicateProcessingStateWithProcessingState:(unsigned __int16)a3 pendingParentUnitCount:(int64_t)a4 assetProcessingStateMap:(id)a5 context:(id)a6 request:(id)a7 error:(id *)a8;
+- (PLModelMigrationAction_UpdateDuplicateProcessingState)updateDuplicateProcessingStateWithProcessingState:(unsigned __int16)state pendingParentUnitCount:(int64_t)count assetProcessingStateMap:(id)map context:(id)context request:(id)request error:(id *)error;
 - (id)fetchRequestForAnimated;
 - (id)fetchRequestForAudioVideo;
 - (id)fetchRequestForDocument;
 - (id)fetchRequestForExposureScore;
 - (id)fetchRequestForScreenshot;
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (int64_t)processAssetStateMap:(id)a3 pendingParentUnitCount:(int64_t)a4 context:(id)a5 error:(id *)a6;
-- (int64_t)updateSceneClassificationDuplicateProcessingStateWithProcessingState:(unsigned __int16)a3 pendingParentUnitCount:(int64_t)a4 assetProcessingStateMap:(id)a5 context:(id)a6 request:(id)a7 error:(id *)a8;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
+- (int64_t)processAssetStateMap:(id)map pendingParentUnitCount:(int64_t)count context:(id)context error:(id *)error;
+- (int64_t)updateSceneClassificationDuplicateProcessingStateWithProcessingState:(unsigned __int16)state pendingParentUnitCount:(int64_t)count assetProcessingStateMap:(id)map context:(id)context request:(id)request error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_UpdateDuplicateProcessingState
 
-- (PLModelMigrationAction_UpdateDuplicateProcessingState)updateDuplicateProcessingStateWithProcessingState:(unsigned __int16)a3 pendingParentUnitCount:(int64_t)a4 assetProcessingStateMap:(id)a5 context:(id)a6 request:(id)a7 error:(id *)a8
+- (PLModelMigrationAction_UpdateDuplicateProcessingState)updateDuplicateProcessingStateWithProcessingState:(unsigned __int16)state pendingParentUnitCount:(int64_t)count assetProcessingStateMap:(id)map context:(id)context request:(id)request error:(id *)error
 {
-  v12 = a3;
+  stateCopy = state;
   v78 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  mapCopy = map;
+  contextCopy = context;
+  requestCopy = request;
   v40 = 0;
-  v17 = [v15 executeFetchRequest:v16 error:&v40];
+  v17 = [contextCopy executeFetchRequest:requestCopy error:&v40];
   v18 = v40;
   if ([v17 count])
   {
     context = objc_autoreleasePoolPush();
-    v19 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v17 count], a4);
+    v19 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v17 count], count);
     v20 = [MEMORY[0x1E695DFD8] setWithArray:v17];
-    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v12];
-    [v14 setObject:v20 forKeyedSubscript:v21];
+    v21 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:stateCopy];
+    [mapCopy setObject:v20 forKeyedSubscript:v21];
 
     v22 = PLMigrationGetLog();
     LODWORD(v20) = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
 
     if (v20)
     {
-      v23 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v23)
+      if (logger)
       {
         v38 = v18;
         v76 = 0u;
@@ -81,7 +81,7 @@
         v43 = 2050;
         v44 = v27;
         v45 = 1024;
-        v46 = v12;
+        v46 = stateCopy;
         LODWORD(v37) = 28;
         v28 = _os_log_send_and_compose_impl();
 
@@ -109,7 +109,7 @@
           *&buf[12] = 2050;
           *&buf[14] = v35;
           *&buf[22] = 1024;
-          *&buf[24] = v12;
+          *&buf[24] = stateCopy;
           _os_log_impl(&dword_19BF1F000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: Found %{public}td assets for duplicate processing state: %u", buf, 0x1Cu);
         }
       }
@@ -128,10 +128,10 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (a8)
+  if (error)
   {
     v30 = v18;
-    *a8 = v18;
+    *error = v18;
   }
 
   v31 = 3;
@@ -140,25 +140,25 @@ LABEL_16:
   return v31;
 }
 
-- (int64_t)updateSceneClassificationDuplicateProcessingStateWithProcessingState:(unsigned __int16)a3 pendingParentUnitCount:(int64_t)a4 assetProcessingStateMap:(id)a5 context:(id)a6 request:(id)a7 error:(id *)a8
+- (int64_t)updateSceneClassificationDuplicateProcessingStateWithProcessingState:(unsigned __int16)state pendingParentUnitCount:(int64_t)count assetProcessingStateMap:(id)map context:(id)context request:(id)request error:(id *)error
 {
-  v12 = a3;
+  stateCopy = state;
   v96 = *MEMORY[0x1E69E9840];
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  mapCopy = map;
+  contextCopy = context;
+  requestCopy = request;
   v57 = 0;
-  v17 = [v15 executeFetchRequest:v16 error:&v57];
+  v17 = [contextCopy executeFetchRequest:requestCopy error:&v57];
   v18 = v57;
   if ([v17 count])
   {
     v50 = v18;
-    v51 = v16;
-    v52 = v15;
-    v47 = v14;
+    v51 = requestCopy;
+    v52 = contextCopy;
+    v47 = mapCopy;
     context = objc_autoreleasePoolPush();
-    v46 = self;
-    v48 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v17 count], a4);
+    selfCopy = self;
+    v48 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](self, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v17 count], count);
     v19 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     v53 = 0u;
     v54 = 0u;
@@ -179,13 +179,13 @@ LABEL_16:
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v53 + 1) + 8 * i) assetAttributes];
-          v26 = [v25 asset];
-          v27 = [v26 objectID];
+          assetAttributes = [*(*(&v53 + 1) + 8 * i) assetAttributes];
+          asset = [assetAttributes asset];
+          objectID = [asset objectID];
 
-          if (v27)
+          if (objectID)
           {
-            [v19 addObject:v27];
+            [v19 addObject:objectID];
           }
         }
 
@@ -195,8 +195,8 @@ LABEL_16:
       while (v22);
     }
 
-    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v12];
-    v14 = v47;
+    v28 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:stateCopy];
+    mapCopy = v47;
     [v47 setObject:v19 forKeyedSubscript:v28];
 
     v29 = PLMigrationGetLog();
@@ -204,9 +204,9 @@ LABEL_16:
 
     if (v30)
     {
-      v31 = [(PLModelMigrationActionCore *)v46 logger];
+      logger = [(PLModelMigrationActionCore *)selfCopy logger];
 
-      if (v31)
+      if (logger)
       {
         v93 = 0u;
         v94 = 0u;
@@ -249,11 +249,11 @@ LABEL_16:
         v60 = 2050;
         v61 = v35;
         v62 = 1024;
-        v63 = v12;
+        v63 = stateCopy;
         LODWORD(v45) = 28;
         v36 = _os_log_send_and_compose_impl();
 
-        v37 = [(PLModelMigrationActionCore *)v46 logger:&v58];
+        v37 = [(PLModelMigrationActionCore *)selfCopy logger:&v58];
         [v37 logWithMessage:v36 fromCodeLocation:"PLModelMigrationActions_16000.m" type:{1351, 0}];
 
         if (v36 != buf)
@@ -275,7 +275,7 @@ LABEL_16:
           *&buf[12] = 2050;
           *&buf[14] = v43;
           *&buf[22] = 1024;
-          *&buf[24] = v12;
+          *&buf[24] = stateCopy;
           _os_log_impl(&dword_19BF1F000, v40, OS_LOG_TYPE_DEFAULT, "%{public}@: Found %{public}td assets for duplicate processing state: %u", buf, 0x1Cu);
         }
       }
@@ -285,8 +285,8 @@ LABEL_16:
 
     objc_autoreleasePoolPop(context);
     v38 = 1;
-    v16 = v51;
-    v15 = v52;
+    requestCopy = v51;
+    contextCopy = v52;
     v18 = v50;
   }
 
@@ -297,10 +297,10 @@ LABEL_16:
 
   else
   {
-    if (a8)
+    if (error)
     {
       v39 = v18;
-      *a8 = v18;
+      *error = v18;
     }
 
     v38 = 3;
@@ -309,11 +309,11 @@ LABEL_16:
   return v38;
 }
 
-- (int64_t)processAssetStateMap:(id)a3 pendingParentUnitCount:(int64_t)a4 context:(id)a5 error:(id *)a6
+- (int64_t)processAssetStateMap:(id)map pendingParentUnitCount:(int64_t)count context:(id)context error:(id *)error
 {
   v129 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v69 = a5;
+  mapCopy = map;
+  contextCopy = context;
   v88 = 0;
   v89 = &v88;
   v90 = 0x2020000000;
@@ -325,12 +325,12 @@ LABEL_16:
   v86 = __Block_byref_object_dispose__23793;
   v87 = 0;
   v64 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v67 = self;
+  selfCopy = self;
   v80 = 0u;
   v81 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = v8;
+  obj = mapCopy;
   v9 = [obj countByEnumeratingWithState:&v78 objects:v128 count:16];
   if (v9)
   {
@@ -360,23 +360,23 @@ LABEL_16:
         [v14 setFetchBatchSize:100];
         v17 = v83 + 5;
         v77 = v83[5];
-        v18 = [v69 executeFetchRequest:v14 error:&v77];
+        v18 = [contextCopy executeFetchRequest:v14 error:&v77];
         objc_storeStrong(v17, v77);
         if ([v18 count])
         {
-          v19 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](v67, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v18 count], a4);
+          v19 = -[PLModelMigrationActionCore cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:](selfCopy, "cancellableDiscreteProgressWithTotalUnitCount:pendingParentUnitCount:", [v18 count], count);
           v71[0] = MEMORY[0x1E69E9820];
           v71[1] = 3221225472;
           v71[2] = __115__PLModelMigrationAction_UpdateDuplicateProcessingState_processAssetStateMap_pendingParentUnitCount_context_error___block_invoke;
           v71[3] = &unk_1E7569CD0;
           v71[4] = v11;
           v72 = v64;
-          v73 = v67;
+          v73 = selfCopy;
           v75 = &v82;
           v76 = &v88;
           v20 = v19;
           v74 = v20;
-          v21 = [v69 enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v71];
+          v21 = [contextCopy enumerateWithIncrementalSaveUsingObjects:v18 withBlock:v71];
           v22 = v21;
           v23 = v89[3];
           if (v23 != 2 && v21)
@@ -393,8 +393,8 @@ LABEL_16:
 
             if (v25)
             {
-              v26 = [(PLModelMigrationActionCore *)v67 logger];
-              v27 = v26 == 0;
+              logger = [(PLModelMigrationActionCore *)selfCopy logger];
+              v27 = logger == 0;
 
               if (v27)
               {
@@ -457,7 +457,7 @@ LABEL_16:
                 LODWORD(v61) = 22;
                 v32 = _os_log_send_and_compose_impl();
 
-                v33 = [(PLModelMigrationActionCore *)v67 logger:&v92];
+                v33 = [(PLModelMigrationActionCore *)selfCopy logger:&v92];
                 [v33 logWithMessage:v32 fromCodeLocation:"PLModelMigrationActions_16000.m" type:{1316, 0}];
 
                 if (v32 != buf)
@@ -479,8 +479,8 @@ LABEL_17:
 
             if (v35)
             {
-              v36 = [(PLModelMigrationActionCore *)v67 logger];
-              v37 = v36 == 0;
+              logger2 = [(PLModelMigrationActionCore *)selfCopy logger];
+              v37 = logger2 == 0;
 
               if (v37)
               {
@@ -543,7 +543,7 @@ LABEL_17:
                 LODWORD(v61) = 22;
                 v42 = _os_log_send_and_compose_impl();
 
-                v43 = [(PLModelMigrationActionCore *)v67 logger:&v92];
+                v43 = [(PLModelMigrationActionCore *)selfCopy logger:&v92];
                 [v43 logWithMessage:v42 fromCodeLocation:"PLModelMigrationActions_16000.m" type:{1318, 16}];
 
                 if (v42 != buf)
@@ -602,17 +602,17 @@ LABEL_35:
     [v53 setFetchBatchSize:100];
     v55 = v83 + 5;
     v70 = v83[5];
-    v56 = [PLModelMigrationActionUtility removeFromDuplicatesWithAction:v67 managedObjectContext:v69 fetchRequest:v53 requiresLibraryReprocessing:1 error:&v70];
+    v56 = [PLModelMigrationActionUtility removeFromDuplicatesWithAction:selfCopy managedObjectContext:contextCopy fetchRequest:v53 requiresLibraryReprocessing:1 error:&v70];
     objc_storeStrong(v55, v70);
     v89[3] = v56;
   }
 
   v57 = v89[3];
   v58 = v83[5];
-  if (v57 != 1 && a6)
+  if (v57 != 1 && error)
   {
     v58 = v58;
-    *a6 = v58;
+    *error = v58;
   }
 
   v59 = v89[3];
@@ -631,8 +631,8 @@ LABEL_35:
   v5 = [PLSceneClassification PLJunkSceneClassificationIDForLabel:@"hier_text_document"];
   v6 = [v4 predicateWithFormat:@"%K == %@", @"sceneIdentifier", v5];
   v13[0] = v6;
-  v7 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %lf", @"confidence", 0x3FE2E147AE147AE1];
-  v13[1] = v7;
+  0x3FE2E147AE147AE1 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K >= %lf", @"confidence", 0x3FE2E147AE147AE1];
+  v13[1] = 0x3FE2E147AE147AE1;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
   v9 = [v3 andPredicateWithSubpredicates:v8];
   [v2 setPredicate:v9];
@@ -704,16 +704,16 @@ LABEL_35:
   return v2;
 }
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(PLModelMigrationActionCore *)self progress];
-  v8 = [v7 totalUnitCount] / 7;
+  contextCopy = context;
+  progress = [(PLModelMigrationActionCore *)self progress];
+  v8 = [progress totalUnitCount] / 7;
 
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v10 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForAudioVideo];
+  fetchRequestForAudioVideo = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForAudioVideo];
   v30 = 0;
-  v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateDuplicateProcessingStateWithProcessingState:2 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:v6 request:v10 error:&v30];
+  v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateDuplicateProcessingStateWithProcessingState:2 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:contextCopy request:fetchRequestForAudioVideo error:&v30];
   v12 = v30;
 
   if (v11 != 1)
@@ -721,9 +721,9 @@ LABEL_35:
     goto LABEL_9;
   }
 
-  v13 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForScreenshot];
+  fetchRequestForScreenshot = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForScreenshot];
   v29 = v12;
-  v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateDuplicateProcessingStateWithProcessingState:4 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:v6 request:v13 error:&v29];
+  v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateDuplicateProcessingStateWithProcessingState:4 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:contextCopy request:fetchRequestForScreenshot error:&v29];
   v14 = v29;
 
   if (v11 != 1)
@@ -731,9 +731,9 @@ LABEL_35:
     goto LABEL_8;
   }
 
-  v15 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForAnimated];
+  fetchRequestForAnimated = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForAnimated];
   v28 = v14;
-  v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateDuplicateProcessingStateWithProcessingState:8 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:v6 request:v15 error:&v28];
+  v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateDuplicateProcessingStateWithProcessingState:8 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:contextCopy request:fetchRequestForAnimated error:&v28];
   v12 = v28;
 
   if (v11 != 1)
@@ -741,16 +741,16 @@ LABEL_35:
     goto LABEL_9;
   }
 
-  v16 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForExposureScore];
+  fetchRequestForExposureScore = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForExposureScore];
   v27 = v12;
-  v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateDuplicateProcessingStateWithProcessingState:32 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:v6 request:v16 error:&v27];
+  v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateDuplicateProcessingStateWithProcessingState:32 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:contextCopy request:fetchRequestForExposureScore error:&v27];
   v14 = v27;
 
   if (v11 == 1)
   {
-    v17 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForDocument];
+    fetchRequestForDocument = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self fetchRequestForDocument];
     v26 = v14;
-    v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateSceneClassificationDuplicateProcessingStateWithProcessingState:16 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:v6 request:v17 error:&v26];
+    v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self updateSceneClassificationDuplicateProcessingStateWithProcessingState:16 pendingParentUnitCount:v8 assetProcessingStateMap:v9 context:contextCopy request:fetchRequestForDocument error:&v26];
     v12 = v26;
 
     if (v11 == 1)
@@ -759,7 +759,7 @@ LABEL_35:
       {
         v18 = objc_autoreleasePoolPush();
         v25 = v12;
-        v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self processAssetStateMap:v9 pendingParentUnitCount:v8 context:v6 error:&v25];
+        v11 = [(PLModelMigrationAction_UpdateDuplicateProcessingState *)self processAssetStateMap:v9 pendingParentUnitCount:v8 context:contextCopy error:&v25];
         v19 = v25;
 
         objc_autoreleasePoolPop(v18);
@@ -783,10 +783,10 @@ LABEL_9:
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v20 = v12;
   v21 = v20;
-  if (v11 != 1 && a4 != 0)
+  if (v11 != 1 && error != 0)
   {
     v23 = v20;
-    *a4 = v21;
+    *error = v21;
   }
 
   return v11;

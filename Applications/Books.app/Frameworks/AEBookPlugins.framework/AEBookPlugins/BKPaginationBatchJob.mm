@@ -1,7 +1,7 @@
 @interface BKPaginationBatchJob
 - (BKPaginationBatchJob)init;
 - (CGSize)pageSize;
-- (void)copyState:(id)a3;
+- (void)copyState:(id)state;
 @end
 
 @implementation BKPaginationBatchJob
@@ -20,29 +20,29 @@
   return v2;
 }
 
-- (void)copyState:(id)a3
+- (void)copyState:(id)state
 {
   v10.receiver = self;
   v10.super_class = BKPaginationBatchJob;
-  v4 = a3;
-  [(BKPaginationJob *)&v10 copyState:v4];
-  v5 = [v4 bookDatabaseKey];
-  [(BKPaginationBatchJob *)self setBookDatabaseKey:v5];
+  stateCopy = state;
+  [(BKPaginationJob *)&v10 copyState:stateCopy];
+  bookDatabaseKey = [stateCopy bookDatabaseKey];
+  [(BKPaginationBatchJob *)self setBookDatabaseKey:bookDatabaseKey];
 
-  v6 = [v4 lookupKey];
-  [(BKPaginationBatchJob *)self setLookupKey:v6];
+  lookupKey = [stateCopy lookupKey];
+  [(BKPaginationBatchJob *)self setLookupKey:lookupKey];
 
-  v7 = [v4 style];
-  [(BKPaginationBatchJob *)self setStyle:v7];
+  style = [stateCopy style];
+  [(BKPaginationBatchJob *)self setStyle:style];
 
-  [v4 pageSize];
+  [stateCopy pageSize];
   [(BKPaginationBatchJob *)self setPageSize:?];
-  v8 = [v4 historyEntities];
-  [(BKPaginationBatchJob *)self setHistoryEntities:v8];
+  historyEntities = [stateCopy historyEntities];
+  [(BKPaginationBatchJob *)self setHistoryEntities:historyEntities];
 
-  v9 = [v4 configuration];
+  configuration = [stateCopy configuration];
 
-  [(BKPaginationBatchJob *)self setConfiguration:v9];
+  [(BKPaginationBatchJob *)self setConfiguration:configuration];
 }
 
 - (CGSize)pageSize

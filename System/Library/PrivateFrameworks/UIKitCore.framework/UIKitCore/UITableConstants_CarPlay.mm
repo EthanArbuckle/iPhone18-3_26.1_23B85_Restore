@@ -1,48 +1,48 @@
 @interface UITableConstants_CarPlay
 + (id)sharedConstants;
-- ($7FDC96647900ED4FDF8E2F8A586A6BB4)contentPropertiesForSidebarElementWithTraitCollection:(SEL)a3 state:(id)a4 isHeader:(id)a5 cellStyle:(BOOL)a6 sidebarStyle:(int64_t)a7;
-- (BOOL)shouldUppercaseHeaderFooterTextForTableStyle:(int64_t)a3 isHeader:(BOOL)a4;
-- (CGRect)defaultDeleteMinusRectForCell:(id)a3 inTableView:(id)a4;
-- (CGSize)defaultEditControlSizeForCell:(id)a3 inTableView:(id)a4;
-- (CGSize)defaultReorderControlSizeForCell:(id)a3 withAccessoryBaseColor:(id)a4;
+- ($7FDC96647900ED4FDF8E2F8A586A6BB4)contentPropertiesForSidebarElementWithTraitCollection:(SEL)collection state:(id)state isHeader:(id)header cellStyle:(BOOL)style sidebarStyle:(int64_t)sidebarStyle;
+- (BOOL)shouldUppercaseHeaderFooterTextForTableStyle:(int64_t)style isHeader:(BOOL)header;
+- (CGRect)defaultDeleteMinusRectForCell:(id)cell inTableView:(id)view;
+- (CGSize)defaultEditControlSizeForCell:(id)cell inTableView:(id)view;
+- (CGSize)defaultReorderControlSizeForCell:(id)cell withAccessoryBaseColor:(id)color;
 - (UIEdgeInsets)_defaultLayoutMargins;
-- (UIEdgeInsets)defaultCellLayoutMarginsForTableStyle:(int64_t)a3 cellStyle:(int64_t)a4 isSidebarStyle:(BOOL)a5 textLabelFont:(id)a6 rawLayoutMargins:(UIEdgeInsets)a7;
-- (UIEdgeInsets)defaultHeaderFooterLayoutMarginsForTableViewStyle:(int64_t)a3 isHeader:(BOOL)a4 isFirstSection:(BOOL)a5;
-- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)a3 inTableView:(id)a4;
-- (UIEdgeInsets)headerFooterOffsetFromContentInsetForTableView:(id)a3;
+- (UIEdgeInsets)defaultCellLayoutMarginsForTableStyle:(int64_t)style cellStyle:(int64_t)cellStyle isSidebarStyle:(BOOL)sidebarStyle textLabelFont:(id)font rawLayoutMargins:(UIEdgeInsets)margins;
+- (UIEdgeInsets)defaultHeaderFooterLayoutMarginsForTableViewStyle:(int64_t)style isHeader:(BOOL)header isFirstSection:(BOOL)section;
+- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)cell inTableView:(id)view;
+- (UIEdgeInsets)headerFooterOffsetFromContentInsetForTableView:(id)view;
 - (UIEdgeInsets)reorderControlHoverEffectInsets;
-- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5;
-- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)a3 cellConfigurationState:(int64_t)a4 traitCollection:(id)a5 floating:(id)a6;
-- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5;
-- (_UITableConstantsBackgroundProperties)defaultSidebarHeaderBackgroundPropertiesWithState:(SEL)a3 traitCollection:(id)a4;
-- (double)_defaultPlainHeaderFooterHeightForTableViewStyle:(int64_t)a3;
-- (double)defaultCellCornerRadiusForTableViewStyle:(int64_t)a3 isSidebarStyle:(BOOL)a4 isSwipedCell:(BOOL)a5 isHeaderFooter:(BOOL)a6 traitCollection:(id)a7;
-- (double)defaultDetailTextLabelFontSizeForCellStyle:(int64_t)a3;
-- (double)defaultLeadingCellMarginWidthForTableView:(id)a3;
-- (double)defaultPlainFirstSectionHeaderHeightForTableView:(id)a3;
-- (double)defaultSectionFooterHeightForTableView:(id)a3;
-- (double)defaultSectionFooterHeightForTableViewStyle:(int64_t)a3 screen:(id)a4;
-- (double)defaultTextLabelFontSizeForCellStyle:(int64_t)a3;
-- (double)interspaceBetweenInnerAccessoryIdentifier:(id)a3 outerAccessoryIdentifier:(id)a4 forCell:(id)a5 trailingAccessoryGroup:(BOOL)a6;
-- (double)minimumContentViewHeightForFont:(id)a3 traitCollection:(id)a4 isSidebarStyle:(BOOL)a5;
-- (id)_defaultAccessoryColorFocused:(BOOL)a3;
-- (id)_imageWithName:(id)a3 accessoryBaseColor:(id)a4;
-- (id)defaultAccessoryTintColorForAccessorySystemType:(int64_t)a3 header:(BOOL)a4 sidebarStyle:(int64_t)a5 cellConfigurationState:(id)a6 traitCollection:(id)a7 inheritedTintColor:(id)a8;
-- (id)defaultDeleteImageWithTintColor:(id)a3 backgroundColor:(id)a4;
-- (id)defaultDetailTextColorForCellStyle:(int64_t)a3 traitCollection:(id)a4 state:(id)a5;
-- (id)defaultDetailTextFontForCellStyle:(int64_t)a3;
-- (id)defaultFocusedDetailTextColorForCell:(id)a3 inTableView:(id)a4;
-- (id)defaultFocusedDisclosureImageForCell:(id)a3 inTableView:(id)a4;
-- (id)defaultFocusedTextColorForCell:(id)a3 inTableView:(id)a4;
-- (id)defaultFooterFontForTableViewStyle:(int64_t)a3;
-- (id)defaultFooterTextColorForTableViewStyle:(int64_t)a3 focused:(BOOL)a4;
-- (id)defaultHeaderFontForTableViewStyle:(int64_t)a3;
-- (id)defaultHeaderTextColorForTableViewStyle:(int64_t)a3 focused:(BOOL)a4;
-- (id)defaultInsertImageWithTintColor:(id)a3 backgroundColor:(id)a4;
-- (id)defaultMultiSelectNotSelectedImageForCellStyle:(int64_t)a3 traitCollection:(id)a4 accessoryBaseColor:(id)a5;
-- (id)defaultMultiSelectSelectedImageForCellStyle:(int64_t)a3 traitCollection:(id)a4 checkmarkColor:(id)a5 backgroundColor:(id)a6;
-- (id)defaultReorderControlImageForTraitCollection:(id)a3 withAccessoryBaseColor:(id)a4 isTracking:(BOOL)a5;
-- (id)defaultTextLabelFontForCellStyle:(int64_t)a3;
+- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection;
+- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)style cellConfigurationState:(int64_t)state traitCollection:(id)collection floating:(id)floating;
+- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection;
+- (_UITableConstantsBackgroundProperties)defaultSidebarHeaderBackgroundPropertiesWithState:(SEL)state traitCollection:(id)collection;
+- (double)_defaultPlainHeaderFooterHeightForTableViewStyle:(int64_t)style;
+- (double)defaultCellCornerRadiusForTableViewStyle:(int64_t)style isSidebarStyle:(BOOL)sidebarStyle isSwipedCell:(BOOL)cell isHeaderFooter:(BOOL)footer traitCollection:(id)collection;
+- (double)defaultDetailTextLabelFontSizeForCellStyle:(int64_t)style;
+- (double)defaultLeadingCellMarginWidthForTableView:(id)view;
+- (double)defaultPlainFirstSectionHeaderHeightForTableView:(id)view;
+- (double)defaultSectionFooterHeightForTableView:(id)view;
+- (double)defaultSectionFooterHeightForTableViewStyle:(int64_t)style screen:(id)screen;
+- (double)defaultTextLabelFontSizeForCellStyle:(int64_t)style;
+- (double)interspaceBetweenInnerAccessoryIdentifier:(id)identifier outerAccessoryIdentifier:(id)accessoryIdentifier forCell:(id)cell trailingAccessoryGroup:(BOOL)group;
+- (double)minimumContentViewHeightForFont:(id)font traitCollection:(id)collection isSidebarStyle:(BOOL)style;
+- (id)_defaultAccessoryColorFocused:(BOOL)focused;
+- (id)_imageWithName:(id)name accessoryBaseColor:(id)color;
+- (id)defaultAccessoryTintColorForAccessorySystemType:(int64_t)type header:(BOOL)header sidebarStyle:(int64_t)style cellConfigurationState:(id)state traitCollection:(id)collection inheritedTintColor:(id)color;
+- (id)defaultDeleteImageWithTintColor:(id)color backgroundColor:(id)backgroundColor;
+- (id)defaultDetailTextColorForCellStyle:(int64_t)style traitCollection:(id)collection state:(id)state;
+- (id)defaultDetailTextFontForCellStyle:(int64_t)style;
+- (id)defaultFocusedDetailTextColorForCell:(id)cell inTableView:(id)view;
+- (id)defaultFocusedDisclosureImageForCell:(id)cell inTableView:(id)view;
+- (id)defaultFocusedTextColorForCell:(id)cell inTableView:(id)view;
+- (id)defaultFooterFontForTableViewStyle:(int64_t)style;
+- (id)defaultFooterTextColorForTableViewStyle:(int64_t)style focused:(BOOL)focused;
+- (id)defaultHeaderFontForTableViewStyle:(int64_t)style;
+- (id)defaultHeaderTextColorForTableViewStyle:(int64_t)style focused:(BOOL)focused;
+- (id)defaultInsertImageWithTintColor:(id)color backgroundColor:(id)backgroundColor;
+- (id)defaultMultiSelectNotSelectedImageForCellStyle:(int64_t)style traitCollection:(id)collection accessoryBaseColor:(id)color;
+- (id)defaultMultiSelectSelectedImageForCellStyle:(int64_t)style traitCollection:(id)collection checkmarkColor:(id)color backgroundColor:(id)backgroundColor;
+- (id)defaultReorderControlImageForTraitCollection:(id)collection withAccessoryBaseColor:(id)color isTracking:(BOOL)tracking;
+- (id)defaultTextLabelFontForCellStyle:(int64_t)style;
 @end
 
 @implementation UITableConstants_CarPlay
@@ -52,7 +52,7 @@
   v3 = sharedConstants___sharedConstants;
   if (!sharedConstants___sharedConstants)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = sharedConstants___sharedConstants;
     sharedConstants___sharedConstants = v4;
 
@@ -62,9 +62,9 @@
   return v3;
 }
 
-- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5
+- (_UITableConstantsBackgroundProperties)defaultCellBackgroundPropertiesForTableViewStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection
 {
-  v16 = a5;
+  collectionCopy = collection;
   v10 = a6;
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
@@ -75,15 +75,15 @@
   *&retstr->var12 = 0u;
   *&retstr->var13.leading = 0u;
   retstr->var13.trailing = 0.0;
-  [(UITableConstants_CarPlay *)self defaultCellCornerRadiusForTableViewStyle:a4 isSidebarStyle:0 isHeaderFooter:0 traitCollection:v10, __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(retstr, &_UITableConstantsBackgroundPropertiesDefault).n128_f64[0]];
+  [(UITableConstants_CarPlay *)self defaultCellCornerRadiusForTableViewStyle:state isSidebarStyle:0 isHeaderFooter:0 traitCollection:v10, __copy_constructor_8_8_t0w8_s8_s16_s24_t32w41_s80_t88w48(retstr, &_UITableConstantsBackgroundPropertiesDefault).n128_f64[0]];
   retstr->var12 = v11;
-  if (([v16 isFocused] & 1) != 0 || (objc_msgSend(v16, "isSelected") & 1) != 0 || objc_msgSend(v16, "isHighlighted"))
+  if (([collectionCopy isFocused] & 1) != 0 || (objc_msgSend(collectionCopy, "isSelected") & 1) != 0 || objc_msgSend(collectionCopy, "isHighlighted"))
   {
     retstr->var0 = 1;
     goto LABEL_5;
   }
 
-  if (a4)
+  if (state)
   {
     if (_UISolariumEnabled())
     {
@@ -127,7 +127,7 @@ LABEL_5:
   return result;
 }
 
-- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)a3 state:(int64_t)a4 traitCollection:(id)a5
+- (_UITableConstantsBackgroundProperties)defaultSidebarCellBackgroundPropertiesForStyle:(SEL)style state:(int64_t)state traitCollection:(id)collection
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -153,7 +153,7 @@ LABEL_5:
   return result;
 }
 
-- (_UITableConstantsBackgroundProperties)defaultSidebarHeaderBackgroundPropertiesWithState:(SEL)a3 traitCollection:(id)a4
+- (_UITableConstantsBackgroundProperties)defaultSidebarHeaderBackgroundPropertiesWithState:(SEL)state traitCollection:(id)collection
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -179,13 +179,13 @@ LABEL_5:
   return result;
 }
 
-- (double)defaultSectionFooterHeightForTableViewStyle:(int64_t)a3 screen:(id)a4
+- (double)defaultSectionFooterHeightForTableViewStyle:(int64_t)style screen:(id)screen
 {
-  v6 = a4;
-  if (!v6)
+  screenCopy = screen;
+  if (!screenCopy)
   {
-    v6 = [objc_opt_self() mainScreen];
-    if (a3)
+    screenCopy = [objc_opt_self() mainScreen];
+    if (style)
     {
       goto LABEL_3;
     }
@@ -196,7 +196,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!style)
   {
     goto LABEL_5;
   }
@@ -204,34 +204,34 @@ LABEL_5:
 LABEL_3:
   v7 = 17.5;
 LABEL_6:
-  [v6 scale];
+  [screenCopy scale];
   v10 = UIPixelBoundaryOffset(0, v7, v9);
 
   return v10;
 }
 
-- (double)defaultSectionFooterHeightForTableView:(id)a3
+- (double)defaultSectionFooterHeightForTableView:(id)view
 {
-  v5 = [a3 _tableStyle];
-  v6 = [a3 _scrollView];
-  v7 = [v6 window];
-  v8 = [v7 screen];
-  [(UITableConstants_CarPlay *)self defaultSectionHeaderHeightForTableViewStyle:v5 screen:v8];
+  _tableStyle = [view _tableStyle];
+  _scrollView = [view _scrollView];
+  window = [_scrollView window];
+  screen = [window screen];
+  [(UITableConstants_CarPlay *)self defaultSectionHeaderHeightForTableViewStyle:_tableStyle screen:screen];
   v10 = v9;
 
   return v10;
 }
 
-- (double)minimumContentViewHeightForFont:(id)a3 traitCollection:(id)a4 isSidebarStyle:(BOOL)a5
+- (double)minimumContentViewHeightForFont:(id)font traitCollection:(id)collection isSidebarStyle:(BOOL)style
 {
-  v6 = a3;
-  v7 = [a4 preferredContentSizeCategory];
-  v8 = _UIContentSizeCategoryMin(v7, @"UICTContentSizeCategoryXXXL");
+  fontCopy = font;
+  preferredContentSizeCategory = [collection preferredContentSizeCategory];
+  v8 = _UIContentSizeCategoryMin(preferredContentSizeCategory, @"UICTContentSizeCategoryXXXL");
 
   v9 = [UITraitCollection traitCollectionWithPreferredContentSizeCategory:v8];
-  v10 = [v6 _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v9];
+  v10 = [fontCopy _fontAdjustedForContentSizeCategoryCompatibleWithTraitCollection:v9];
 
-  [v6 _bodyLeading];
+  [fontCopy _bodyLeading];
   v12 = v11;
 
   v13 = v12 + v12;
@@ -245,7 +245,7 @@ LABEL_6:
   return v13;
 }
 
-- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)a3 inTableView:(id)a4
+- (UIEdgeInsets)defaultLayoutMarginsForCell:(id)cell inTableView:(id)view
 {
   if (dyld_program_sdk_at_least())
   {
@@ -255,13 +255,13 @@ LABEL_6:
 
   else
   {
-    v8 = -[UITableConstants_CarPlay defaultTextLabelFontForCellStyle:](self, "defaultTextLabelFontForCellStyle:", [a3 _cellStyle]);
+    v8 = -[UITableConstants_CarPlay defaultTextLabelFontForCellStyle:](self, "defaultTextLabelFontForCellStyle:", [cell _cellStyle]);
   }
 
-  v9 = [a4 _tableStyle];
-  v10 = [a3 _cellStyle];
-  [a3 _rawLayoutMargins];
-  [(UITableConstants_CarPlay *)self defaultCellLayoutMarginsForTableStyle:v9 cellStyle:v10 isSidebarStyle:0 textLabelFont:v8 rawLayoutMargins:?];
+  _tableStyle = [view _tableStyle];
+  _cellStyle = [cell _cellStyle];
+  [cell _rawLayoutMargins];
+  [(UITableConstants_CarPlay *)self defaultCellLayoutMarginsForTableStyle:_tableStyle cellStyle:_cellStyle isSidebarStyle:0 textLabelFont:v8 rawLayoutMargins:?];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -278,15 +278,15 @@ LABEL_6:
   return result;
 }
 
-- (UIEdgeInsets)defaultCellLayoutMarginsForTableStyle:(int64_t)a3 cellStyle:(int64_t)a4 isSidebarStyle:(BOOL)a5 textLabelFont:(id)a6 rawLayoutMargins:(UIEdgeInsets)a7
+- (UIEdgeInsets)defaultCellLayoutMarginsForTableStyle:(int64_t)style cellStyle:(int64_t)cellStyle isSidebarStyle:(BOOL)sidebarStyle textLabelFont:(id)font rawLayoutMargins:(UIEdgeInsets)margins
 {
-  right = a7.right;
-  left = a7.left;
-  v9 = a6;
+  right = margins.right;
+  left = margins.left;
+  fontCopy = font;
   v10 = 6.0;
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    [v9 lineHeight];
+    [fontCopy lineHeight];
     v10 = ceil(v11 * 0.5);
   }
 
@@ -301,10 +301,10 @@ LABEL_6:
   return result;
 }
 
-- (UIEdgeInsets)defaultHeaderFooterLayoutMarginsForTableViewStyle:(int64_t)a3 isHeader:(BOOL)a4 isFirstSection:(BOOL)a5
+- (UIEdgeInsets)defaultHeaderFooterLayoutMarginsForTableViewStyle:(int64_t)style isHeader:(BOOL)header isFirstSection:(BOOL)section
 {
   v5 = 8.0;
-  if (!a3)
+  if (!style)
   {
     v5 = 4.0;
   }
@@ -319,7 +319,7 @@ LABEL_6:
   return result;
 }
 
-- (UIEdgeInsets)headerFooterOffsetFromContentInsetForTableView:(id)a3
+- (UIEdgeInsets)headerFooterOffsetFromContentInsetForTableView:(id)view
 {
   v3 = 0.0;
   v4 = -1.0;
@@ -332,14 +332,14 @@ LABEL_6:
   return result;
 }
 
-- (double)defaultCellCornerRadiusForTableViewStyle:(int64_t)a3 isSidebarStyle:(BOOL)a4 isSwipedCell:(BOOL)a5 isHeaderFooter:(BOOL)a6 traitCollection:(id)a7
+- (double)defaultCellCornerRadiusForTableViewStyle:(int64_t)style isSidebarStyle:(BOOL)sidebarStyle isSwipedCell:(BOOL)cell isHeaderFooter:(BOOL)footer traitCollection:(id)collection
 {
-  v9 = a7;
+  collectionCopy = collection;
   v10 = 0.0;
-  if (!a6)
+  if (!footer)
   {
     v11 = _UISolariumEnabled();
-    v12 = (a3 - 1) < 2 || a3 == 16;
+    v12 = (style - 1) < 2 || style == 16;
     v13 = 14.0;
     if (v12)
     {
@@ -355,27 +355,27 @@ LABEL_6:
   return v10;
 }
 
-- (double)interspaceBetweenInnerAccessoryIdentifier:(id)a3 outerAccessoryIdentifier:(id)a4 forCell:(id)a5 trailingAccessoryGroup:(BOOL)a6
+- (double)interspaceBetweenInnerAccessoryIdentifier:(id)identifier outerAccessoryIdentifier:(id)accessoryIdentifier forCell:(id)cell trailingAccessoryGroup:(BOOL)group
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = a5;
+  groupCopy = group;
+  accessoryIdentifierCopy = accessoryIdentifier;
+  cellCopy = cell;
   v12 = 0.0;
-  if (([a3 isEqualToString:0x1EFB34170] & 1) == 0 && (objc_msgSend(v10, "isEqualToString:", 0x1EFB34170) & 1) == 0)
+  if (([identifier isEqualToString:0x1EFB34170] & 1) == 0 && (objc_msgSend(accessoryIdentifierCopy, "isEqualToString:", 0x1EFB34170) & 1) == 0)
   {
-    if (a3)
+    if (identifier)
     {
       v12 = 12.0;
-      if (!v10)
+      if (!accessoryIdentifierCopy)
       {
-        [v11 _minimumCellAccessoryMargin];
+        [cellCopy _minimumCellAccessoryMargin];
         v14 = v13;
-        [v11 directionalLayoutMargins];
+        [cellCopy directionalLayoutMargins];
         v12 = fmax(v14, v15);
       }
     }
 
-    else if ((_UITableViewCellUsesLayoutMarginBasedContentPadding() & 1) == 0 && v6)
+    else if ((_UITableViewCellUsesLayoutMarginBasedContentPadding() & 1) == 0 && groupCopy)
     {
       [(UITableConstants_CarPlay *)self defaultContentAccessoryPadding];
       v12 = v16;
@@ -417,7 +417,7 @@ LABEL_6:
   return result;
 }
 
-- (double)defaultLeadingCellMarginWidthForTableView:(id)a3
+- (double)defaultLeadingCellMarginWidthForTableView:(id)view
 {
   if (_UISolariumEnabled())
   {
@@ -429,28 +429,28 @@ LABEL_6:
     v4 = 12.0;
   }
 
-  v5 = [a3 _scrollView];
-  [v5 directionalLayoutMargins];
+  _scrollView = [view _scrollView];
+  [_scrollView directionalLayoutMargins];
   v7 = fmax(v4, v6);
 
   return v7;
 }
 
-- (double)_defaultPlainHeaderFooterHeightForTableViewStyle:(int64_t)a3
+- (double)_defaultPlainHeaderFooterHeightForTableViewStyle:(int64_t)style
 {
-  v3 = [(UITableConstants_CarPlay *)self defaultHeaderFontForTableViewStyle:a3];
+  v3 = [(UITableConstants_CarPlay *)self defaultHeaderFontForTableViewStyle:style];
   [v3 _scaledValueForValue:28.0];
   v5 = v4;
 
   return v5;
 }
 
-- (BOOL)shouldUppercaseHeaderFooterTextForTableStyle:(int64_t)a3 isHeader:(BOOL)a4
+- (BOOL)shouldUppercaseHeaderFooterTextForTableStyle:(int64_t)style isHeader:(BOOL)header
 {
-  v4 = a4;
+  headerCopy = header;
   v6 = _UISolariumEnabled();
-  v8 = a3 == 16 || (a3 - 1) < 2;
-  if (!v4)
+  v8 = style == 16 || (style - 1) < 2;
+  if (!headerCopy)
   {
     v8 = 0;
   }
@@ -458,18 +458,18 @@ LABEL_6:
   return (v6 & 1) == 0 && v8;
 }
 
-- (double)defaultPlainFirstSectionHeaderHeightForTableView:(id)a3
+- (double)defaultPlainFirstSectionHeaderHeightForTableView:(id)view
 {
-  v4 = [a3 _tableStyle];
+  _tableStyle = [view _tableStyle];
 
-  [(UITableConstants_CarPlay *)self _defaultPlainHeaderFooterHeightForTableViewStyle:v4];
+  [(UITableConstants_CarPlay *)self _defaultPlainHeaderFooterHeightForTableViewStyle:_tableStyle];
   return result;
 }
 
-- ($7FDC96647900ED4FDF8E2F8A586A6BB4)contentPropertiesForSidebarElementWithTraitCollection:(SEL)a3 state:(id)a4 isHeader:(id)a5 cellStyle:(BOOL)a6 sidebarStyle:(int64_t)a7
+- ($7FDC96647900ED4FDF8E2F8A586A6BB4)contentPropertiesForSidebarElementWithTraitCollection:(SEL)collection state:(id)state isHeader:(id)header cellStyle:(BOOL)style sidebarStyle:(int64_t)sidebarStyle
 {
-  v22 = a4;
-  v12 = a5;
+  stateCopy = state;
+  headerCopy = header;
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
   *&retstr->var4 = 0u;
@@ -477,11 +477,11 @@ LABEL_6:
   *&retstr->var8 = 0u;
   *&retstr->var10 = 0u;
   retstr->var12 = 0;
-  v13 = [(UITableConstants_CarPlay *)self defaultTextLabelFontForCellStyle:a7, __copy_constructor_8_8_s0_s8_s16_s24_s32_s40_t48w56(retstr, &_UITableConstantsContentPropertiesDefault).n128_f64[0]];
+  v13 = [(UITableConstants_CarPlay *)self defaultTextLabelFontForCellStyle:sidebarStyle, __copy_constructor_8_8_s0_s8_s16_s24_s32_s40_t48w56(retstr, &_UITableConstantsContentPropertiesDefault).n128_f64[0]];
   var0 = retstr->var0;
   retstr->var0 = v13;
 
-  v15 = [(UITableConstants_CarPlay *)self defaultDetailTextFontForCellStyle:a7];
+  v15 = [(UITableConstants_CarPlay *)self defaultDetailTextFontForCellStyle:sidebarStyle];
   var1 = retstr->var1;
   retstr->var1 = v15;
 
@@ -493,7 +493,7 @@ LABEL_6:
   var3 = retstr->var3;
   retstr->var3 = v19;
 
-  if ([v12 isHighlighted])
+  if ([headerCopy isHighlighted])
   {
     *&retstr->var7 = vdupq_n_s64(7uLL);
     retstr->var9 = 7;
@@ -502,7 +502,7 @@ LABEL_6:
   return result;
 }
 
-- (id)defaultFocusedTextColorForCell:(id)a3 inTableView:(id)a4
+- (id)defaultFocusedTextColorForCell:(id)cell inTableView:(id)view
 {
   if (_UISolariumEnabled())
   {
@@ -518,7 +518,7 @@ LABEL_6:
   return v4;
 }
 
-- (id)defaultTextLabelFontForCellStyle:(int64_t)a3
+- (id)defaultTextLabelFontForCellStyle:(int64_t)style
 {
   if (_UISolariumEnabled())
   {
@@ -534,14 +534,14 @@ LABEL_6:
   return v3;
 }
 
-- (double)defaultTextLabelFontSizeForCellStyle:(int64_t)a3
+- (double)defaultTextLabelFontSizeForCellStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     return 17.0;
   }
 
-  if (a3 == 2)
+  if (style == 2)
   {
     return 14.0;
   }
@@ -556,7 +556,7 @@ LABEL_6:
   return result;
 }
 
-- (id)defaultDetailTextColorForCellStyle:(int64_t)a3 traitCollection:(id)a4 state:(id)a5
+- (id)defaultDetailTextColorForCellStyle:(int64_t)style traitCollection:(id)collection state:(id)state
 {
   if (_UISolariumEnabled())
   {
@@ -572,7 +572,7 @@ LABEL_6:
   return v5;
 }
 
-- (id)defaultFocusedDetailTextColorForCell:(id)a3 inTableView:(id)a4
+- (id)defaultFocusedDetailTextColorForCell:(id)cell inTableView:(id)view
 {
   if (_UISolariumEnabled())
   {
@@ -588,7 +588,7 @@ LABEL_6:
   return v4;
 }
 
-- (id)defaultDetailTextFontForCellStyle:(int64_t)a3
+- (id)defaultDetailTextFontForCellStyle:(int64_t)style
 {
   if (_UISolariumEnabled())
   {
@@ -604,16 +604,16 @@ LABEL_6:
   return v3;
 }
 
-- (double)defaultDetailTextLabelFontSizeForCellStyle:(int64_t)a3
+- (double)defaultDetailTextLabelFontSizeForCellStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
-    if (a3 == 1)
+    if (style == 1)
     {
       return 17.0;
     }
 
-    if (a3 == 3)
+    if (style == 3)
     {
       return 12.0;
     }
@@ -628,22 +628,22 @@ LABEL_6:
     }
   }
 
-  [(UITableConstants_CarPlay *)self defaultTextLabelFontSizeForCellStyle:a3];
+  [(UITableConstants_CarPlay *)self defaultTextLabelFontSizeForCellStyle:style];
   return result;
 }
 
-- (id)defaultHeaderFontForTableViewStyle:(int64_t)a3
+- (id)defaultHeaderFontForTableViewStyle:(int64_t)style
 {
   v3 = +[UIScreen _carScreen];
-  v4 = [v3 traitCollection];
-  v5 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleEmphasizedTitle3" compatibleWithTraitCollection:v4];
+  traitCollection = [v3 traitCollection];
+  v5 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleEmphasizedTitle3" compatibleWithTraitCollection:traitCollection];
 
   return v5;
 }
 
-- (id)defaultFooterFontForTableViewStyle:(int64_t)a3
+- (id)defaultFooterFontForTableViewStyle:(int64_t)style
 {
-  if (a3)
+  if (style)
   {
     v3 = UIFontTextStyleShortFootnote;
   }
@@ -656,11 +656,11 @@ LABEL_6:
   return [off_1E70ECC18 preferredFontForTextStyle:*v3];
 }
 
-- (id)defaultHeaderTextColorForTableViewStyle:(int64_t)a3 focused:(BOOL)a4
+- (id)defaultHeaderTextColorForTableViewStyle:(int64_t)style focused:(BOOL)focused
 {
-  if (a3)
+  if (style)
   {
-    [UIColor _groupTableHeaderFooterTextColor:a3];
+    [UIColor _groupTableHeaderFooterTextColor:style];
   }
 
   else
@@ -672,11 +672,11 @@ LABEL_6:
   return v4;
 }
 
-- (id)defaultFooterTextColorForTableViewStyle:(int64_t)a3 focused:(BOOL)a4
+- (id)defaultFooterTextColorForTableViewStyle:(int64_t)style focused:(BOOL)focused
 {
-  if (a3)
+  if (style)
   {
-    [UIColor _groupTableHeaderFooterTextColor:a3];
+    [UIColor _groupTableHeaderFooterTextColor:style];
   }
 
   else
@@ -688,16 +688,16 @@ LABEL_6:
   return v4;
 }
 
-- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)a3 cellConfigurationState:(int64_t)a4 traitCollection:(id)a5 floating:(id)a6
+- (_UITableConstantsBackgroundProperties)defaultHeaderFooterBackgroundPropertiesForTableViewStyle:(SEL)style cellConfigurationState:(int64_t)state traitCollection:(id)collection floating:(id)floating
 {
   if (a7)
   {
-    [UIColor tablePlainHeaderFooterFloatingBackgroundColor:a4];
+    [UIColor tablePlainHeaderFooterFloatingBackgroundColor:state];
   }
 
   else
   {
-    [UIColor tablePlainHeaderFooterBackgroundColor:a4];
+    [UIColor tablePlainHeaderFooterBackgroundColor:state];
   }
   result = ;
   retstr->var13.trailing = 0.0;
@@ -713,9 +713,9 @@ LABEL_6:
   return result;
 }
 
-- (id)_defaultAccessoryColorFocused:(BOOL)a3
+- (id)_defaultAccessoryColorFocused:(BOOL)focused
 {
-  if (a3)
+  if (focused)
   {
     +[UIColor _carSystemFocusSecondaryColor];
   }
@@ -729,16 +729,16 @@ LABEL_6:
   return v3;
 }
 
-- (id)_imageWithName:(id)a3 accessoryBaseColor:(id)a4
+- (id)_imageWithName:(id)name accessoryBaseColor:(id)color
 {
-  v5 = a4;
-  v6 = a3;
+  colorCopy = color;
+  nameCopy = name;
   v7 = [UIImageSymbolConfiguration configurationWithTextStyle:@"UICTFontTextStyleEmphasizedCallout" scale:1];
-  v8 = [UIImage systemImageNamed:v6 withConfiguration:v7];
+  v8 = [UIImage systemImageNamed:nameCopy withConfiguration:v7];
 
-  if (v5)
+  if (colorCopy)
   {
-    v9 = [v8 imageWithTintColor:v5 renderingMode:1];
+    v9 = [v8 imageWithTintColor:colorCopy renderingMode:1];
 
     v8 = v9;
   }
@@ -746,18 +746,18 @@ LABEL_6:
   return v8;
 }
 
-- (id)defaultFocusedDisclosureImageForCell:(id)a3 inTableView:(id)a4
+- (id)defaultFocusedDisclosureImageForCell:(id)cell inTableView:(id)view
 {
-  v5 = [a4 _accessoryBaseColor];
-  v6 = [(UITableConstants_CarPlay *)self _imageWithName:@"chevron.forward" accessoryBaseColor:v5];
+  _accessoryBaseColor = [view _accessoryBaseColor];
+  v6 = [(UITableConstants_CarPlay *)self _imageWithName:@"chevron.forward" accessoryBaseColor:_accessoryBaseColor];
 
   return v6;
 }
 
-- (CGSize)defaultEditControlSizeForCell:(id)a3 inTableView:(id)a4
+- (CGSize)defaultEditControlSizeForCell:(id)cell inTableView:(id)view
 {
-  v4 = [(UITableConstants_CarPlay *)self defaultDeleteImageForCell:a3, a4];
-  [v4 size];
+  view = [(UITableConstants_CarPlay *)self defaultDeleteImageForCell:cell, view];
+  [view size];
   v6 = v5;
   v8 = v7;
 
@@ -768,7 +768,7 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)defaultDeleteMinusRectForCell:(id)a3 inTableView:(id)a4
+- (CGRect)defaultDeleteMinusRectForCell:(id)cell inTableView:(id)view
 {
   v4 = 8.0;
   v5 = 12.0;
@@ -781,31 +781,31 @@ LABEL_6:
   return result;
 }
 
-- (id)defaultDeleteImageWithTintColor:(id)a3 backgroundColor:(id)a4
+- (id)defaultDeleteImageWithTintColor:(id)color backgroundColor:(id)backgroundColor
 {
-  v4 = [UIImageSymbolConfiguration configurationPreferringMulticolor:a3];
+  v4 = [UIImageSymbolConfiguration configurationPreferringMulticolor:color];
   v5 = [UIImage systemImageNamed:@"minus.circle.fill" withConfiguration:v4];
 
   return v5;
 }
 
-- (id)defaultInsertImageWithTintColor:(id)a3 backgroundColor:(id)a4
+- (id)defaultInsertImageWithTintColor:(id)color backgroundColor:(id)backgroundColor
 {
-  v4 = [UIImageSymbolConfiguration configurationPreferringMulticolor:a3];
+  v4 = [UIImageSymbolConfiguration configurationPreferringMulticolor:color];
   v5 = [UIImage systemImageNamed:@"plus.circle.fill" withConfiguration:v4];
 
   return v5;
 }
 
-- (id)defaultMultiSelectNotSelectedImageForCellStyle:(int64_t)a3 traitCollection:(id)a4 accessoryBaseColor:(id)a5
+- (id)defaultMultiSelectNotSelectedImageForCellStyle:(int64_t)style traitCollection:(id)collection accessoryBaseColor:(id)color
 {
-  v7 = a5;
-  v8 = [(UITableConstants_CarPlay *)self defaultTextLabelFontForCellStyle:a3];
+  colorCopy = color;
+  v8 = [(UITableConstants_CarPlay *)self defaultTextLabelFontForCellStyle:style];
   v9 = [UIImageSymbolConfiguration configurationWithFont:v8 scale:3];
   v10 = [UIImage systemImageNamed:@"circle" withConfiguration:v9];
-  if (v7)
+  if (colorCopy)
   {
-    v11 = v7;
+    v11 = colorCopy;
   }
 
   else
@@ -819,17 +819,17 @@ LABEL_6:
   return v13;
 }
 
-- (id)defaultMultiSelectSelectedImageForCellStyle:(int64_t)a3 traitCollection:(id)a4 checkmarkColor:(id)a5 backgroundColor:(id)a6
+- (id)defaultMultiSelectSelectedImageForCellStyle:(int64_t)style traitCollection:(id)collection checkmarkColor:(id)color backgroundColor:(id)backgroundColor
 {
-  v8 = a5;
-  v9 = [(UITableConstants_CarPlay *)self defaultTextLabelFontForCellStyle:a3];
+  colorCopy = color;
+  v9 = [(UITableConstants_CarPlay *)self defaultTextLabelFontForCellStyle:style];
   v10 = [UIImageSymbolConfiguration configurationWithFont:v9 scale:3];
   v11 = +[UIImage checkmarkImage];
   v12 = [v11 imageWithConfiguration:v10];
 
-  if (v8)
+  if (colorCopy)
   {
-    v13 = [v12 imageWithTintColor:v8 renderingMode:1];
+    v13 = [v12 imageWithTintColor:colorCopy renderingMode:1];
 
     v12 = v13;
   }
@@ -837,10 +837,10 @@ LABEL_6:
   return v12;
 }
 
-- (CGSize)defaultReorderControlSizeForCell:(id)a3 withAccessoryBaseColor:(id)a4
+- (CGSize)defaultReorderControlSizeForCell:(id)cell withAccessoryBaseColor:(id)color
 {
-  v5 = [a3 traitCollection];
-  v6 = [(UITableConstants_CarPlay *)self defaultReorderControlImageForTraitCollection:v5 withAccessoryBaseColor:0 isTracking:0];
+  traitCollection = [cell traitCollection];
+  v6 = [(UITableConstants_CarPlay *)self defaultReorderControlImageForTraitCollection:traitCollection withAccessoryBaseColor:0 isTracking:0];
   [v6 size];
   v8 = v7;
   v10 = v9;
@@ -852,15 +852,15 @@ LABEL_6:
   return result;
 }
 
-- (id)defaultReorderControlImageForTraitCollection:(id)a3 withAccessoryBaseColor:(id)a4 isTracking:(BOOL)a5
+- (id)defaultReorderControlImageForTraitCollection:(id)collection withAccessoryBaseColor:(id)color isTracking:(BOOL)tracking
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  collectionCopy = collection;
+  colorCopy = color;
+  if (colorCopy)
   {
     v8 = _UIImageWithName(@"UITableGrabber.png");
     [v8 size];
-    v9 = [UIImage _tintedImageForSize:v7 withTint:0 effectsImage:v8 maskImage:0 style:?];
+    v9 = [UIImage _tintedImageForSize:colorCopy withTint:0 effectsImage:v8 maskImage:0 style:?];
   }
 
   else
@@ -886,24 +886,24 @@ LABEL_6:
   return v9;
 }
 
-- (id)defaultAccessoryTintColorForAccessorySystemType:(int64_t)a3 header:(BOOL)a4 sidebarStyle:(int64_t)a5 cellConfigurationState:(id)a6 traitCollection:(id)a7 inheritedTintColor:(id)a8
+- (id)defaultAccessoryTintColorForAccessorySystemType:(int64_t)type header:(BOOL)header sidebarStyle:(int64_t)style cellConfigurationState:(id)state traitCollection:(id)collection inheritedTintColor:(id)color
 {
-  v13 = a6;
-  v14 = a7;
-  v15 = a8;
+  stateCopy = state;
+  collectionCopy = collection;
+  colorCopy = color;
   v16 = 0;
-  if (a3 <= 5)
+  if (type <= 5)
   {
-    if ((a3 - 1) < 5)
+    if ((type - 1) < 5)
     {
       goto LABEL_16;
     }
 
-    if (a3)
+    if (type)
     {
 LABEL_10:
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"UITableConstants_CarPlay.m" lineNumber:727 description:{@"Invalid _UICellAccessorySystemType value: %ld", a3}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"UITableConstants_CarPlay.m" lineNumber:727 description:{@"Invalid _UICellAccessorySystemType value: %ld", type}];
 
 LABEL_13:
       v16 = 0;
@@ -920,9 +920,9 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  if (a3 <= 7)
+  if (type <= 7)
   {
-    if (a3 != 6)
+    if (type != 6)
     {
       v17 = +[UIColor secondaryLabelColor];
       goto LABEL_15;
@@ -931,9 +931,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  if (a3 != 8)
+  if (type != 8)
   {
-    if (a3 == 9)
+    if (type == 9)
     {
       goto LABEL_16;
     }

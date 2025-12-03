@@ -1,30 +1,30 @@
 @interface REMAlarmTimeIntervalTrigger
-- (BOOL)isEqual:(id)a3;
-- (REMAlarmTimeIntervalTrigger)initWithCoder:(id)a3;
-- (REMAlarmTimeIntervalTrigger)initWithObjectID:(id)a3 timeInterval:(double)a4;
-- (REMAlarmTimeIntervalTrigger)initWithTimeInterval:(double)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMAlarmTimeIntervalTrigger)initWithCoder:(id)coder;
+- (REMAlarmTimeIntervalTrigger)initWithObjectID:(id)d timeInterval:(double)interval;
+- (REMAlarmTimeIntervalTrigger)initWithTimeInterval:(double)interval;
 - (id)_deepCopy;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMAlarmTimeIntervalTrigger
 
-- (REMAlarmTimeIntervalTrigger)initWithObjectID:(id)a3 timeInterval:(double)a4
+- (REMAlarmTimeIntervalTrigger)initWithObjectID:(id)d timeInterval:(double)interval
 {
   v8.receiver = self;
   v8.super_class = REMAlarmTimeIntervalTrigger;
-  v5 = [(REMAlarmTrigger *)&v8 initWithObjectID:a3];
+  v5 = [(REMAlarmTrigger *)&v8 initWithObjectID:d];
   v6 = v5;
   if (v5)
   {
-    [(REMAlarmTimeIntervalTrigger *)v5 setTimeInterval:a4];
+    [(REMAlarmTimeIntervalTrigger *)v5 setTimeInterval:interval];
   }
 
   return v6;
 }
 
-- (REMAlarmTimeIntervalTrigger)initWithTimeInterval:(double)a3
+- (REMAlarmTimeIntervalTrigger)initWithTimeInterval:(double)interval
 {
   v7.receiver = self;
   v7.super_class = REMAlarmTimeIntervalTrigger;
@@ -32,21 +32,21 @@
   v5 = v4;
   if (v4)
   {
-    [(REMAlarmTimeIntervalTrigger *)v4 setTimeInterval:a3];
+    [(REMAlarmTimeIntervalTrigger *)v4 setTimeInterval:interval];
   }
 
   return v5;
 }
 
-- (REMAlarmTimeIntervalTrigger)initWithCoder:(id)a3
+- (REMAlarmTimeIntervalTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = REMAlarmTimeIntervalTrigger;
-  v5 = [(REMAlarmTrigger *)&v7 initWithCoder:v4];
+  v5 = [(REMAlarmTrigger *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"timeInterval"];
+    [coderCopy decodeDoubleForKey:@"timeInterval"];
     [(REMAlarmTimeIntervalTrigger *)v5 setTimeInterval:?];
   }
 
@@ -62,13 +62,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     [(REMAlarmTimeIntervalTrigger *)self timeInterval];
     v7 = v6;
     [v5 timeInterval];
@@ -97,14 +97,14 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = REMAlarmTimeIntervalTrigger;
-  v4 = a3;
-  [(REMAlarmTrigger *)&v5 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(REMAlarmTrigger *)&v5 encodeWithCoder:coderCopy];
   [(REMAlarmTimeIntervalTrigger *)self timeInterval:v5.receiver];
-  [v4 encodeDouble:@"timeInterval" forKey:?];
+  [coderCopy encodeDouble:@"timeInterval" forKey:?];
 }
 
 @end

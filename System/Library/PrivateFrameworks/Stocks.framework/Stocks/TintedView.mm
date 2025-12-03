@@ -1,7 +1,7 @@
 @interface TintedView
 - (TintedView)init;
-- (void)drawRect:(CGRect)a3;
-- (void)setImage:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setImage:(id)image;
 @end
 
 @implementation TintedView
@@ -13,17 +13,17 @@
   v2 = [(TintedView *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75348] clearColor];
-    [(TintedView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(TintedView *)v2 setBackgroundColor:clearColor];
 
-    v4 = [(TintedView *)v2 layer];
-    [v4 setNeedsDisplayOnBoundsChange:0];
+    layer = [(TintedView *)v2 layer];
+    [layer setNeedsDisplayOnBoundsChange:0];
   }
 
   return v2;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (self->_image)
   {
@@ -48,12 +48,12 @@
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     v6 = *MEMORY[0x277CBF348];
     v7 = *(MEMORY[0x277CBF348] + 8);
     [(UIImage *)self->_image size];

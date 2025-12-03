@@ -1,25 +1,25 @@
 @interface MobileSafariWindowAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_iosAccessibilityAttributeValue:(int64_t)value;
 @end
 
 @implementation MobileSafariWindowAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MobileSafariWindow" hasInstanceMethod:@"safariWindowDelegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BrowserControllerDefaultUIDelegate" conformsToProtocol:@"MobileSafariWindowDelegate"];
-  [v3 validateClass:@"BrowserControllerDefaultUIDelegate" hasInstanceVariable:@"_browserController" withType:"BrowserController"];
-  [v3 validateClass:@"BrowserController" hasInstanceVariable:@"_tabController" withType:"TabController"];
-  [v3 validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"TabDocumentView"];
-  [v3 validateClass:@"TabDocument" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MobileSafariWindow" hasInstanceMethod:@"safariWindowDelegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BrowserControllerDefaultUIDelegate" conformsToProtocol:@"MobileSafariWindowDelegate"];
+  [validationsCopy validateClass:@"BrowserControllerDefaultUIDelegate" hasInstanceVariable:@"_browserController" withType:"BrowserController"];
+  [validationsCopy validateClass:@"BrowserController" hasInstanceVariable:@"_tabController" withType:"TabController"];
+  [validationsCopy validateClass:@"TabController" hasInstanceMethod:@"activeTabDocument" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"TabDocumentView"];
+  [validationsCopy validateClass:@"TabDocument" hasInstanceMethod:@"view" withFullSignature:{"@", 0}];
 }
 
-- (id)_iosAccessibilityAttributeValue:(int64_t)a3
+- (id)_iosAccessibilityAttributeValue:(int64_t)value
 {
-  if (a3 == 5074)
+  if (value == 5074)
   {
     v3 = [(MobileSafariWindowAccessibility *)self safeValueForKeyPath:@"safariWindowDelegate._browserController"];
     v4 = v3;

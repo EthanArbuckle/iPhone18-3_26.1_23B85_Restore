@@ -1,12 +1,12 @@
 @interface AXPXSimpleIndexPathHolder
-- (AXPXSimpleIndexPathHolder)initWithIndexPath:(PXSimpleIndexPath *)a3;
+- (AXPXSimpleIndexPathHolder)initWithIndexPath:(PXSimpleIndexPath *)path;
 - (PXSimpleIndexPath)indexPath;
-- (void)setIndexPath:(PXSimpleIndexPath *)a3;
+- (void)setIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation AXPXSimpleIndexPathHolder
 
-- (AXPXSimpleIndexPathHolder)initWithIndexPath:(PXSimpleIndexPath *)a3
+- (AXPXSimpleIndexPathHolder)initWithIndexPath:(PXSimpleIndexPath *)path
 {
   v9.receiver = self;
   v9.super_class = AXPXSimpleIndexPathHolder;
@@ -14,8 +14,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *&a3->item;
-    v8[0] = *&a3->dataSourceIdentifier;
+    v6 = *&path->item;
+    v8[0] = *&path->dataSourceIdentifier;
     v8[1] = v6;
     [(AXPXSimpleIndexPathHolder *)v4 setIndexPath:v8];
   }
@@ -31,10 +31,10 @@
   return self;
 }
 
-- (void)setIndexPath:(PXSimpleIndexPath *)a3
+- (void)setIndexPath:(PXSimpleIndexPath *)path
 {
-  v3 = *&a3->dataSourceIdentifier;
-  *&self->_indexPath.item = *&a3->item;
+  v3 = *&path->dataSourceIdentifier;
+  *&self->_indexPath.item = *&path->item;
   *&self->_indexPath.dataSourceIdentifier = v3;
 }
 

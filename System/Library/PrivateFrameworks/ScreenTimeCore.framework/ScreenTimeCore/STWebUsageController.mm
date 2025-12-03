@@ -1,17 +1,17 @@
 @interface STWebUsageController
 - (STWebUsageController)init;
-- (void)_asynchronousProxyWithHandler:(id)a3;
+- (void)_asynchronousProxyWithHandler:(id)handler;
 - (void)dealloc;
-- (void)deleteAllWebHistoryForApplication:(id)a3 completionHandler:(id)a4;
-- (void)deleteAllWebHistoryForApplication:(id)a3 profileIdentifier:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryDuringInterval:(id)a3 application:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryDuringInterval:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)deleteWebHistoryForDomain:(id)a3 application:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryForDomain:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)deleteWebHistoryForURL:(id)a3 application:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryForURL:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
-- (void)deleteWebHistoryForURLs:(id)a3 application:(id)a4 completionHandler:(id)a5;
-- (void)deleteWebHistoryForURLs:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6;
+- (void)deleteAllWebHistoryForApplication:(id)application completionHandler:(id)handler;
+- (void)deleteAllWebHistoryForApplication:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval application:(id)application completionHandler:(id)handler;
+- (void)deleteWebHistoryDuringInterval:(id)interval application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteWebHistoryForDomain:(id)domain application:(id)application completionHandler:(id)handler;
+- (void)deleteWebHistoryForDomain:(id)domain application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l application:(id)application completionHandler:(id)handler;
+- (void)deleteWebHistoryForURL:(id)l application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)deleteWebHistoryForURLs:(id)ls application:(id)application completionHandler:(id)handler;
+- (void)deleteWebHistoryForURLs:(id)ls application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler;
 @end
 
 @implementation STWebUsageController
@@ -41,22 +41,22 @@
   [(STWebUsageController *)&v3 dealloc];
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 application:(id)a4 completionHandler:(id)a5
+- (void)deleteWebHistoryForURL:(id)l application:(id)application completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  applicationCopy = application;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __77__STWebUsageController_deleteWebHistoryForURL_application_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE80A0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = lCopy;
+  v16 = applicationCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = applicationCopy;
+  v13 = lCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v14];
 }
 
@@ -99,22 +99,22 @@ uint64_t __77__STWebUsageController_deleteWebHistoryForURL_application_completio
   return result;
 }
 
-- (void)deleteWebHistoryForURLs:(id)a3 application:(id)a4 completionHandler:(id)a5
+- (void)deleteWebHistoryForURLs:(id)ls application:(id)application completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lsCopy = ls;
+  applicationCopy = application;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __78__STWebUsageController_deleteWebHistoryForURLs_application_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE80A0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = lsCopy;
+  v16 = applicationCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = applicationCopy;
+  v13 = lsCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v14];
 }
 
@@ -157,22 +157,22 @@ uint64_t __78__STWebUsageController_deleteWebHistoryForURLs_application_completi
   return result;
 }
 
-- (void)deleteWebHistoryForDomain:(id)a3 application:(id)a4 completionHandler:(id)a5
+- (void)deleteWebHistoryForDomain:(id)domain application:(id)application completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  domainCopy = domain;
+  applicationCopy = application;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __80__STWebUsageController_deleteWebHistoryForDomain_application_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE80A0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = domainCopy;
+  v16 = applicationCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = applicationCopy;
+  v13 = domainCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v14];
 }
 
@@ -215,22 +215,22 @@ uint64_t __80__STWebUsageController_deleteWebHistoryForDomain_application_comple
   return result;
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 application:(id)a4 completionHandler:(id)a5
+- (void)deleteWebHistoryDuringInterval:(id)interval application:(id)application completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intervalCopy = interval;
+  applicationCopy = application;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __85__STWebUsageController_deleteWebHistoryDuringInterval_application_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE80A0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = intervalCopy;
+  v16 = applicationCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = applicationCopy;
+  v13 = intervalCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v14];
 }
 
@@ -273,19 +273,19 @@ uint64_t __85__STWebUsageController_deleteWebHistoryDuringInterval_application_c
   return result;
 }
 
-- (void)deleteAllWebHistoryForApplication:(id)a3 completionHandler:(id)a4
+- (void)deleteAllWebHistoryForApplication:(id)application completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __76__STWebUsageController_deleteAllWebHistoryForApplication_completionHandler___block_invoke;
   v10[3] = &unk_1E7CE80C8;
-  v11 = v6;
-  v12 = self;
-  v13 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = applicationCopy;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = applicationCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v10];
 }
 
@@ -327,25 +327,25 @@ uint64_t __76__STWebUsageController_deleteAllWebHistoryForApplication_completion
   return result;
 }
 
-- (void)deleteWebHistoryForURL:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)deleteWebHistoryForURL:(id)l application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __95__STWebUsageController_deleteWebHistoryForURL_application_profileIdentifier_completionHandler___block_invoke;
   v18[3] = &unk_1E7CE80F0;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = self;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = lCopy;
+  v20 = applicationCopy;
+  v21 = identifierCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  v16 = applicationCopy;
+  v17 = lCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v18];
 }
 
@@ -389,25 +389,25 @@ uint64_t __95__STWebUsageController_deleteWebHistoryForURL_application_profileId
   return result;
 }
 
-- (void)deleteWebHistoryForURLs:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)deleteWebHistoryForURLs:(id)ls application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lsCopy = ls;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __96__STWebUsageController_deleteWebHistoryForURLs_application_profileIdentifier_completionHandler___block_invoke;
   v18[3] = &unk_1E7CE80F0;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = self;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = lsCopy;
+  v20 = applicationCopy;
+  v21 = identifierCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  v16 = applicationCopy;
+  v17 = lsCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v18];
 }
 
@@ -451,25 +451,25 @@ uint64_t __96__STWebUsageController_deleteWebHistoryForURLs_application_profileI
   return result;
 }
 
-- (void)deleteWebHistoryForDomain:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)deleteWebHistoryForDomain:(id)domain application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  domainCopy = domain;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __98__STWebUsageController_deleteWebHistoryForDomain_application_profileIdentifier_completionHandler___block_invoke;
   v18[3] = &unk_1E7CE80F0;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = self;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = domainCopy;
+  v20 = applicationCopy;
+  v21 = identifierCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  v16 = applicationCopy;
+  v17 = domainCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v18];
 }
 
@@ -513,25 +513,25 @@ uint64_t __98__STWebUsageController_deleteWebHistoryForDomain_application_profil
   return result;
 }
 
-- (void)deleteWebHistoryDuringInterval:(id)a3 application:(id)a4 profileIdentifier:(id)a5 completionHandler:(id)a6
+- (void)deleteWebHistoryDuringInterval:(id)interval application:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  intervalCopy = interval;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __103__STWebUsageController_deleteWebHistoryDuringInterval_application_profileIdentifier_completionHandler___block_invoke;
   v18[3] = &unk_1E7CE80F0;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  v22 = self;
-  v23 = v13;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  v19 = intervalCopy;
+  v20 = applicationCopy;
+  v21 = identifierCopy;
+  selfCopy = self;
+  v23 = handlerCopy;
+  v14 = handlerCopy;
+  v15 = identifierCopy;
+  v16 = applicationCopy;
+  v17 = intervalCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v18];
 }
 
@@ -575,22 +575,22 @@ uint64_t __103__STWebUsageController_deleteWebHistoryDuringInterval_application_
   return result;
 }
 
-- (void)deleteAllWebHistoryForApplication:(id)a3 profileIdentifier:(id)a4 completionHandler:(id)a5
+- (void)deleteAllWebHistoryForApplication:(id)application profileIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __94__STWebUsageController_deleteAllWebHistoryForApplication_profileIdentifier_completionHandler___block_invoke;
   v14[3] = &unk_1E7CE80A0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = v10;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v15 = applicationCopy;
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
+  v12 = identifierCopy;
+  v13 = applicationCopy;
   [(STWebUsageController *)self _asynchronousProxyWithHandler:v14];
 }
 
@@ -633,17 +633,17 @@ uint64_t __94__STWebUsageController_deleteAllWebHistoryForApplication_profileIde
   return result;
 }
 
-- (void)_asynchronousProxyWithHandler:(id)a3
+- (void)_asynchronousProxyWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(STWebUsageController *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(STWebUsageController *)self xpcConnection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__STWebUsageController__asynchronousProxyWithHandler___block_invoke;
   v8[3] = &unk_1E7CE6CE8;
-  v9 = v4;
-  v6 = v4;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v8];
+  v9 = handlerCopy;
+  v6 = handlerCopy;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v8];
   v6[2](v6, v7, 0);
 }
 

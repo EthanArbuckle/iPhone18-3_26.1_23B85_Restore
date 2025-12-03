@@ -1,68 +1,68 @@
 @interface _SFPBRFMapAnnotation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBRFMapAnnotation)initWithDictionary:(id)a3;
-- (_SFPBRFMapAnnotation)initWithFacade:(id)a3;
-- (_SFPBRFMapAnnotation)initWithJSON:(id)a3;
+- (_SFPBRFMapAnnotation)initWithDictionary:(id)dictionary;
+- (_SFPBRFMapAnnotation)initWithFacade:(id)facade;
+- (_SFPBRFMapAnnotation)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBRFMapAnnotation
 
-- (_SFPBRFMapAnnotation)initWithFacade:(id)a3
+- (_SFPBRFMapAnnotation)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBRFMapAnnotation *)self init];
   if (v5)
   {
-    v6 = [v4 coordinate];
+    coordinate = [facadeCopy coordinate];
 
-    if (v6)
+    if (coordinate)
     {
       v7 = [_SFPBLatLng alloc];
-      v8 = [v4 coordinate];
-      v9 = [(_SFPBLatLng *)v7 initWithFacade:v8];
+      coordinate2 = [facadeCopy coordinate];
+      v9 = [(_SFPBLatLng *)v7 initWithFacade:coordinate2];
       [(_SFPBRFMapAnnotation *)v5 setCoordinate:v9];
     }
 
-    v10 = [v4 content];
+    content = [facadeCopy content];
 
-    if (v10)
+    if (content)
     {
       v11 = [_SFPBRFVisualProperty alloc];
-      v12 = [v4 content];
-      v13 = [(_SFPBRFVisualProperty *)v11 initWithFacade:v12];
+      content2 = [facadeCopy content];
+      v13 = [(_SFPBRFVisualProperty *)v11 initWithFacade:content2];
       [(_SFPBRFMapAnnotation *)v5 setContent:v13];
     }
 
-    v14 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v14)
+    if (title)
     {
-      v15 = [v4 title];
-      [(_SFPBRFMapAnnotation *)v5 setTitle:v15];
+      title2 = [facadeCopy title];
+      [(_SFPBRFMapAnnotation *)v5 setTitle:title2];
     }
 
-    v16 = [v4 anchor];
+    anchor = [facadeCopy anchor];
 
-    if (v16)
+    if (anchor)
     {
       v17 = [_SFPBRFMapPoint alloc];
-      v18 = [v4 anchor];
-      v19 = [(_SFPBRFMapPoint *)v17 initWithFacade:v18];
+      anchor2 = [facadeCopy anchor];
+      v19 = [(_SFPBRFMapPoint *)v17 initWithFacade:anchor2];
       [(_SFPBRFMapAnnotation *)v5 setAnchor:v19];
     }
 
-    v20 = [v4 label];
+    label = [facadeCopy label];
 
-    if (v20)
+    if (label)
     {
       v21 = [_SFPBRFTextProperty alloc];
-      v22 = [v4 label];
-      v23 = [(_SFPBRFTextProperty *)v21 initWithFacade:v22];
+      label2 = [facadeCopy label];
+      v23 = [(_SFPBRFTextProperty *)v21 initWithFacade:label2];
       [(_SFPBRFMapAnnotation *)v5 setLabel:v23];
     }
 
@@ -72,15 +72,15 @@
   return v5;
 }
 
-- (_SFPBRFMapAnnotation)initWithDictionary:(id)a3
+- (_SFPBRFMapAnnotation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = _SFPBRFMapAnnotation;
   v5 = [(_SFPBRFMapAnnotation *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"coordinate"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"coordinate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
       [(_SFPBRFMapAnnotation *)v5 setCoordinate:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"content"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"content"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,7 +96,7 @@
       [(_SFPBRFMapAnnotation *)v5 setContent:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"title"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -104,7 +104,7 @@
       [(_SFPBRFMapAnnotation *)v5 setTitle:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"anchor"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"anchor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -112,7 +112,7 @@
       [(_SFPBRFMapAnnotation *)v5 setAnchor:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"label"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -126,30 +126,30 @@
   return v5;
 }
 
-- (_SFPBRFMapAnnotation)initWithJSON:(id)a3
+- (_SFPBRFMapAnnotation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBRFMapAnnotation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBRFMapAnnotation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBRFMapAnnotation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -162,79 +162,79 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_anchor)
   {
-    v4 = [(_SFPBRFMapAnnotation *)self anchor];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    anchor = [(_SFPBRFMapAnnotation *)self anchor];
+    dictionaryRepresentation = [anchor dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"anchor"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"anchor"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"anchor"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"anchor"];
     }
   }
 
   if (self->_content)
   {
-    v7 = [(_SFPBRFMapAnnotation *)self content];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    content = [(_SFPBRFMapAnnotation *)self content];
+    dictionaryRepresentation2 = [content dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"content"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"content"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"content"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"content"];
     }
   }
 
   if (self->_coordinate)
   {
-    v10 = [(_SFPBRFMapAnnotation *)self coordinate];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    coordinate = [(_SFPBRFMapAnnotation *)self coordinate];
+    dictionaryRepresentation3 = [coordinate dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"coordinate"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"coordinate"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"coordinate"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"coordinate"];
     }
   }
 
   if (self->_label)
   {
-    v13 = [(_SFPBRFMapAnnotation *)self label];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    label = [(_SFPBRFMapAnnotation *)self label];
+    dictionaryRepresentation4 = [label dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"label"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"label"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"label"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"label"];
     }
   }
 
   if (self->_title)
   {
-    v16 = [(_SFPBRFMapAnnotation *)self title];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"title"];
+    title = [(_SFPBRFMapAnnotation *)self title];
+    v17 = [title copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"title"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -246,28 +246,28 @@
   return v6 ^ [(_SFPBRFTextProperty *)self->_label hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = [(_SFPBRFMapAnnotation *)self coordinate];
-  v6 = [v4 coordinate];
-  if ((v5 != 0) == (v6 == 0))
+  coordinate = [(_SFPBRFMapAnnotation *)self coordinate];
+  coordinate2 = [equalCopy coordinate];
+  if ((coordinate != 0) == (coordinate2 == 0))
   {
     goto LABEL_26;
   }
 
-  v7 = [(_SFPBRFMapAnnotation *)self coordinate];
-  if (v7)
+  coordinate3 = [(_SFPBRFMapAnnotation *)self coordinate];
+  if (coordinate3)
   {
-    v8 = v7;
-    v9 = [(_SFPBRFMapAnnotation *)self coordinate];
-    v10 = [v4 coordinate];
-    v11 = [v9 isEqual:v10];
+    v8 = coordinate3;
+    coordinate4 = [(_SFPBRFMapAnnotation *)self coordinate];
+    coordinate5 = [equalCopy coordinate];
+    v11 = [coordinate4 isEqual:coordinate5];
 
     if (!v11)
     {
@@ -279,20 +279,20 @@
   {
   }
 
-  v5 = [(_SFPBRFMapAnnotation *)self content];
-  v6 = [v4 content];
-  if ((v5 != 0) == (v6 == 0))
+  coordinate = [(_SFPBRFMapAnnotation *)self content];
+  coordinate2 = [equalCopy content];
+  if ((coordinate != 0) == (coordinate2 == 0))
   {
     goto LABEL_26;
   }
 
-  v12 = [(_SFPBRFMapAnnotation *)self content];
-  if (v12)
+  content = [(_SFPBRFMapAnnotation *)self content];
+  if (content)
   {
-    v13 = v12;
-    v14 = [(_SFPBRFMapAnnotation *)self content];
-    v15 = [v4 content];
-    v16 = [v14 isEqual:v15];
+    v13 = content;
+    content2 = [(_SFPBRFMapAnnotation *)self content];
+    content3 = [equalCopy content];
+    v16 = [content2 isEqual:content3];
 
     if (!v16)
     {
@@ -304,20 +304,20 @@
   {
   }
 
-  v5 = [(_SFPBRFMapAnnotation *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  coordinate = [(_SFPBRFMapAnnotation *)self title];
+  coordinate2 = [equalCopy title];
+  if ((coordinate != 0) == (coordinate2 == 0))
   {
     goto LABEL_26;
   }
 
-  v17 = [(_SFPBRFMapAnnotation *)self title];
-  if (v17)
+  title = [(_SFPBRFMapAnnotation *)self title];
+  if (title)
   {
-    v18 = v17;
-    v19 = [(_SFPBRFMapAnnotation *)self title];
-    v20 = [v4 title];
-    v21 = [v19 isEqual:v20];
+    v18 = title;
+    title2 = [(_SFPBRFMapAnnotation *)self title];
+    title3 = [equalCopy title];
+    v21 = [title2 isEqual:title3];
 
     if (!v21)
     {
@@ -329,20 +329,20 @@
   {
   }
 
-  v5 = [(_SFPBRFMapAnnotation *)self anchor];
-  v6 = [v4 anchor];
-  if ((v5 != 0) == (v6 == 0))
+  coordinate = [(_SFPBRFMapAnnotation *)self anchor];
+  coordinate2 = [equalCopy anchor];
+  if ((coordinate != 0) == (coordinate2 == 0))
   {
     goto LABEL_26;
   }
 
-  v22 = [(_SFPBRFMapAnnotation *)self anchor];
-  if (v22)
+  anchor = [(_SFPBRFMapAnnotation *)self anchor];
+  if (anchor)
   {
-    v23 = v22;
-    v24 = [(_SFPBRFMapAnnotation *)self anchor];
-    v25 = [v4 anchor];
-    v26 = [v24 isEqual:v25];
+    v23 = anchor;
+    anchor2 = [(_SFPBRFMapAnnotation *)self anchor];
+    anchor3 = [equalCopy anchor];
+    v26 = [anchor2 isEqual:anchor3];
 
     if (!v26)
     {
@@ -354,12 +354,12 @@
   {
   }
 
-  v5 = [(_SFPBRFMapAnnotation *)self label];
-  v6 = [v4 label];
-  if ((v5 != 0) != (v6 == 0))
+  coordinate = [(_SFPBRFMapAnnotation *)self label];
+  coordinate2 = [equalCopy label];
+  if ((coordinate != 0) != (coordinate2 == 0))
   {
-    v27 = [(_SFPBRFMapAnnotation *)self label];
-    if (!v27)
+    label = [(_SFPBRFMapAnnotation *)self label];
+    if (!label)
     {
 
 LABEL_30:
@@ -367,10 +367,10 @@ LABEL_30:
       goto LABEL_28;
     }
 
-    v28 = v27;
-    v29 = [(_SFPBRFMapAnnotation *)self label];
-    v30 = [v4 label];
-    v31 = [v29 isEqual:v30];
+    v28 = label;
+    label2 = [(_SFPBRFMapAnnotation *)self label];
+    label3 = [equalCopy label];
+    v31 = [label2 isEqual:label3];
 
     if (v31)
     {
@@ -390,43 +390,43 @@ LABEL_28:
   return v32;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(_SFPBRFMapAnnotation *)self coordinate];
-  if (v4)
+  toCopy = to;
+  coordinate = [(_SFPBRFMapAnnotation *)self coordinate];
+  if (coordinate)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBRFMapAnnotation *)self content];
-  if (v5)
+  content = [(_SFPBRFMapAnnotation *)self content];
+  if (content)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBRFMapAnnotation *)self title];
-  if (v6)
+  title = [(_SFPBRFMapAnnotation *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(_SFPBRFMapAnnotation *)self anchor];
-  if (v7)
+  anchor = [(_SFPBRFMapAnnotation *)self anchor];
+  if (anchor)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(_SFPBRFMapAnnotation *)self label];
-  if (v8)
+  label = [(_SFPBRFMapAnnotation *)self label];
+  if (label)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 

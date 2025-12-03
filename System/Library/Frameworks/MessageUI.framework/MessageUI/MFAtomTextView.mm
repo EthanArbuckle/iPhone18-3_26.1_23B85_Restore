@@ -1,24 +1,24 @@
 @interface MFAtomTextView
 - (BOOL)_hasContent;
-- (BOOL)_showViewWithMode:(int64_t)a3 alwaysDefinition:(BOOL)a4;
+- (BOOL)_showViewWithMode:(int64_t)mode alwaysDefinition:(BOOL)definition;
 - (BOOL)_showsClearButton;
 - (BOOL)_showsLeadingView;
 - (BOOL)_showsTrailingView;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (CGPoint)_firstGlyphBaselineLeftPointWithLayoutManager:(id)a3;
-- (CGRect)_rectForBounds:(CGRect)a3 sizingView:(id)a4 isLeft:(BOOL)a5;
-- (CGRect)_usedRectWithLayoutManager:(id)a3 textContainer:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (CGPoint)_firstGlyphBaselineLeftPointWithLayoutManager:(id)manager;
+- (CGRect)_rectForBounds:(CGRect)bounds sizingView:(id)view isLeft:(BOOL)left;
+- (CGRect)_usedRectWithLayoutManager:(id)manager textContainer:(id)container;
 - (CGRect)_visibleAtomsRect;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)clearButtonFrameForBounds:(CGRect)a3;
-- (CGRect)firstRectForRange:(id)a3;
-- (CGRect)leadingViewFrameForBounds:(CGRect)a3;
-- (CGRect)placeholderFrameForBounds:(CGRect)a3;
-- (CGRect)trailingViewFrameForBounds:(CGRect)a3;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)clearButtonFrameForBounds:(CGRect)bounds;
+- (CGRect)firstRectForRange:(id)range;
+- (CGRect)leadingViewFrameForBounds:(CGRect)bounds;
+- (CGRect)placeholderFrameForBounds:(CGRect)bounds;
+- (CGRect)trailingViewFrameForBounds:(CGRect)bounds;
 - (CGSize)_clearButtonSize;
-- (MFAtomTextView)initWithFrame:(CGRect)a3;
+- (MFAtomTextView)initWithFrame:(CGRect)frame;
 - (MFAtomTextViewDelegate)delegate;
 - (NSArray)representedObjects;
 - (NSArray)selectedRepresentedObjects;
@@ -28,103 +28,103 @@
 - (NSDirectionalEdgeInsets)textInsets;
 - (NSDirectionalEdgeInsets)trailingViewInsets;
 - (UIButton)clearButton;
-- (UIEdgeInsets)_edgeInsetsForDirectionalInsets:(NSDirectionalEdgeInsets)a3;
+- (UIEdgeInsets)_edgeInsetsForDirectionalInsets:(NSDirectionalEdgeInsets)insets;
 - (UIEdgeInsets)edgeInsets;
 - (UILabel)placeholderLabel;
-- (_NSRange)_characterRangeForAtomView:(id)a3;
+- (_NSRange)_characterRangeForAtomView:(id)view;
 - (_NSRange)selectionRange;
-- (id)_atomLayoutViewForRepresentedObject:(id)a3;
-- (id)_attachmentAtCharacterIndex:(unint64_t)a3;
-- (id)_baseAttributedStringWithRepresentedObject:(id)a3;
-- (id)_clearButtonImageForState:(unint64_t)a3;
-- (id)_representedObjectsFromPasteboard:(id)a3;
-- (id)_representedObjectsInRange:(_NSRange)a3 ranges:(id *)a4;
+- (id)_atomLayoutViewForRepresentedObject:(id)object;
+- (id)_attachmentAtCharacterIndex:(unint64_t)index;
+- (id)_baseAttributedStringWithRepresentedObject:(id)object;
+- (id)_clearButtonImageForState:(unint64_t)state;
+- (id)_representedObjectsFromPasteboard:(id)pasteboard;
+- (id)_representedObjectsInRange:(_NSRange)range ranges:(id *)ranges;
 - (id)_supportedPasteboardTypes;
-- (id)baseAttributesWithRepresentedObject:(id)a3;
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4;
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4;
-- (id)currentEditingString:(_NSRange *)a3;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)baseAttributesWithRepresentedObject:(id)object;
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction;
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range;
+- (id)currentEditingString:(_NSRange *)string;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)keyCommands;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)paragraphStyle;
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5;
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4;
-- (id)positionFromPosition:(id)a3 toBoundary:(int64_t)a4 inDirection:(int64_t)a5;
-- (id)positionWithinRange:(id)a3 atCharacterOffset:(int64_t)a4;
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4;
-- (id)rangeEnclosingPosition:(id)a3 withGranularity:(int64_t)a4 inDirection:(int64_t)a5;
-- (id)selectionRectsForRange:(id)a3;
-- (id)textInRange:(id)a3;
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset;
+- (id)positionFromPosition:(id)position offset:(int64_t)offset;
+- (id)positionFromPosition:(id)position toBoundary:(int64_t)boundary inDirection:(int64_t)direction;
+- (id)positionWithinRange:(id)range atCharacterOffset:(int64_t)offset;
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction;
+- (id)rangeEnclosingPosition:(id)position withGranularity:(int64_t)granularity inDirection:(int64_t)direction;
+- (id)selectionRectsForRange:(id)range;
+- (id)textInRange:(id)range;
 - (id)textInputTraits;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
 - (id)viewForLastBaselineLayout;
-- (void)_clearButtonTapped:(id)a3;
+- (void)_clearButtonTapped:(id)tapped;
 - (void)_createBaselineLayoutStrutIfNecessary;
-- (void)_deleteCharactersInStorage:(id)a3 ranges:(id)a4 rangeToAdjust:(_NSRange *)a5;
-- (void)_insertRepresentedObjects:(id)a3 atCharacterRange:(_NSRange)a4;
+- (void)_deleteCharactersInStorage:(id)storage ranges:(id)ranges rangeToAdjust:(_NSRange *)adjust;
+- (void)_insertRepresentedObjects:(id)objects atCharacterRange:(_NSRange)range;
 - (void)_layoutButtons;
 - (void)_layoutPlaceholder;
-- (void)_removeRepresentedObjectsInCharacterRange:(_NSRange)a3;
+- (void)_removeRepresentedObjectsInCharacterRange:(_NSRange)range;
 - (void)_scrollToSelectionIfNeeded;
-- (void)_setDrawsDebugBaselines:(BOOL)a3;
-- (void)_setEnabled:(BOOL)a3 animated:(BOOL)a4;
-- (void)_storeRepresentedObjects:(id)a3 onPasteboard:(id)a4;
-- (void)_tapRecognized:(id)a3;
-- (void)_textStorageDidProcessEditing:(id)a3;
-- (void)_updateAtomMasksInRect:(CGRect)a3;
-- (void)_updateBaselineConstraintIfNecessaryUsingTextViewFrame:(CGRect)a3;
-- (void)addRepresentedObject:(id)a3;
+- (void)_setDrawsDebugBaselines:(BOOL)baselines;
+- (void)_setEnabled:(BOOL)enabled animated:(BOOL)animated;
+- (void)_storeRepresentedObjects:(id)objects onPasteboard:(id)pasteboard;
+- (void)_tapRecognized:(id)recognized;
+- (void)_textStorageDidProcessEditing:(id)editing;
+- (void)_updateAtomMasksInRect:(CGRect)rect;
+- (void)_updateBaselineConstraintIfNecessaryUsingTextViewFrame:(CGRect)frame;
+- (void)addRepresentedObject:(id)object;
 - (void)dealloc;
-- (void)escKeyPressed:(id)a3;
-- (void)insertRepresentedObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5;
+- (void)escKeyPressed:(id)pressed;
+- (void)insertRepresentedObject:(id)object atIndex:(unint64_t)index;
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end;
 - (void)layoutSubviews;
-- (void)removeRepresentedObject:(id)a3;
-- (void)removeRepresentedObjectAtIndex:(unint64_t)a3;
-- (void)removeRepresentedObjects:(id)a3;
-- (void)removeRepresentedObjectsAtIndexes:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setClearButtonInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setDelegate:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setLeadingViewInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setPlaceholder:(id)a3;
-- (void)setPlaceholderColor:(id)a3;
-- (void)setPlaceholderInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setRepresentedObjects:(id)a3;
-- (void)setTextColor:(id)a3;
-- (void)setTextInsets:(NSDirectionalEdgeInsets)a3;
-- (void)setTrailingViewInsets:(NSDirectionalEdgeInsets)a3;
-- (void)takeTraitsFrom:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)removeRepresentedObject:(id)object;
+- (void)removeRepresentedObjectAtIndex:(unint64_t)index;
+- (void)removeRepresentedObjects:(id)objects;
+- (void)removeRepresentedObjectsAtIndexes:(id)indexes;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setClearButtonInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setDelegate:(id)delegate;
+- (void)setFont:(id)font;
+- (void)setLeadingViewInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setPlaceholder:(id)placeholder;
+- (void)setPlaceholderColor:(id)color;
+- (void)setPlaceholderInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setRepresentedObjects:(id)objects;
+- (void)setTextColor:(id)color;
+- (void)setTextInsets:(NSDirectionalEdgeInsets)insets;
+- (void)setTrailingViewInsets:(NSDirectionalEdgeInsets)insets;
+- (void)takeTraitsFrom:(id)from;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)textViewDidEndEditing:(id)editing;
 @end
 
 @implementation MFAtomTextView
 
-- (MFAtomTextView)initWithFrame:(CGRect)a3
+- (MFAtomTextView)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = MFAtomTextView;
-  v3 = [(MFAtomTextView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFAtomTextView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(MFAtomTextView *)v3 _setHostsLayoutEngine:1];
-    v5 = [objc_opt_class() defaultFont];
+    defaultFont = [objc_opt_class() defaultFont];
     font = v4->_font;
-    v4->_font = v5;
+    v4->_font = defaultFont;
 
-    v7 = [objc_opt_class() defaultTextColor];
+    defaultTextColor = [objc_opt_class() defaultTextColor];
     textColor = v4->_textColor;
-    v4->_textColor = v7;
+    v4->_textColor = defaultTextColor;
 
-    v9 = [objc_opt_class() defaultPlaceholderColor];
+    defaultPlaceholderColor = [objc_opt_class() defaultPlaceholderColor];
     placeholderColor = v4->_placeholderColor;
-    v4->_placeholderColor = v9;
+    v4->_placeholderColor = defaultPlaceholderColor;
 
     v11 = objc_alloc([objc_opt_class() _backgroundViewClass]);
     v12 = *MEMORY[0x1E695F058];
@@ -150,25 +150,25 @@
 
     [(_MFAtomFieldEditor *)v4->_textView setAutoresizingMask:0];
     [(_MFAtomFieldEditor *)v4->_textView setBackgroundColor:0];
-    v22 = [(MFAtomTextView *)v4 font];
-    [(_MFAtomFieldEditor *)v4->_textView setFont:v22];
+    font = [(MFAtomTextView *)v4 font];
+    [(_MFAtomFieldEditor *)v4->_textView setFont:font];
 
     [(_MFAtomFieldEditor *)v4->_textView setScrollEnabled:0];
     [(_MFAtomFieldEditor *)v4->_textView setScrollsToTop:0];
     [(_MFAtomFieldEditor *)v4->_textView setTextAlignment:4];
-    v23 = [(MFAtomTextView *)v4 baseAttributes];
-    [(_MFAtomFieldEditor *)v4->_textView setTypingAttributes:v23];
+    baseAttributes = [(MFAtomTextView *)v4 baseAttributes];
+    [(_MFAtomFieldEditor *)v4->_textView setTypingAttributes:baseAttributes];
 
-    v24 = [(_MFAtomFieldEditor *)v4->_textView layoutManager];
-    [v24 setAllowsNonContiguousLayout:1];
+    layoutManager = [(_MFAtomFieldEditor *)v4->_textView layoutManager];
+    [layoutManager setAllowsNonContiguousLayout:1];
 
     [(_MFAtomFieldEditor *)v4->_textView setDelegate:v4];
-    v25 = [(_MFAtomFieldEditor *)v4->_textView layoutManager];
-    [v25 setDelegate:v4];
+    layoutManager2 = [(_MFAtomFieldEditor *)v4->_textView layoutManager];
+    [layoutManager2 setDelegate:v4];
 
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    v27 = [(_MFAtomFieldEditor *)v4->_textView textStorage];
-    [v26 addObserver:v4 selector:sel__textStorageDidProcessEditing_ name:*MEMORY[0x1E69DB738] object:v27];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    textStorage = [(_MFAtomFieldEditor *)v4->_textView textStorage];
+    [defaultCenter addObserver:v4 selector:sel__textStorageDidProcessEditing_ name:*MEMORY[0x1E69DB738] object:textStorage];
 
     if (v4->_background)
     {
@@ -193,23 +193,23 @@
   objc_storeWeak(&self->_delegate, 0);
   [(UIScrollView *)self->_scrollView setDelegate:0];
   [(_MFAtomFieldEditor *)self->_textView setDelegate:0];
-  v3 = [(_MFAtomFieldEditor *)self->_textView layoutManager];
-  [v3 setDelegate:0];
+  layoutManager = [(_MFAtomFieldEditor *)self->_textView layoutManager];
+  [layoutManager setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = MFAtomTextView;
   [(MFAtomTextView *)&v4 dealloc];
 }
 
-- (void)_setDrawsDebugBaselines:(BOOL)a3
+- (void)_setDrawsDebugBaselines:(BOOL)baselines
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_drawsDebugBaselines != a3)
+  if (self->_drawsDebugBaselines != baselines)
   {
-    v3 = a3;
-    self->_drawsDebugBaselines = a3;
+    baselinesCopy = baselines;
+    self->_drawsDebugBaselines = baselines;
     [(_MFAtomFieldEditor *)self->_textView _setDrawsDebugBaselines:?];
-    [(UILabel *)self->_placeholderLabel _setDrawsDebugBaselines:v3];
+    [(UILabel *)self->_placeholderLabel _setDrawsDebugBaselines:baselinesCopy];
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
@@ -229,11 +229,11 @@
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v10 + 1) + 8 * v8) viewForLastBaselineLayout];
+          viewForLastBaselineLayout = [*(*(&v10 + 1) + 8 * v8) viewForLastBaselineLayout];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v9 _setDrawsDebugBaselines:v3];
+            [viewForLastBaselineLayout _setDrawsDebugBaselines:baselinesCopy];
           }
 
           ++v8;
@@ -250,9 +250,9 @@
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -308,18 +308,18 @@
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  if (!v4)
+  fontCopy = font;
+  if (!fontCopy)
   {
-    v4 = [objc_opt_class() defaultFont];
+    fontCopy = [objc_opt_class() defaultFont];
   }
 
-  obj = v4;
-  if (self->_font != v4)
+  obj = fontCopy;
+  if (self->_font != fontCopy)
   {
-    objc_storeStrong(&self->_font, v4);
+    objc_storeStrong(&self->_font, fontCopy);
     [(_MFAtomFieldEditor *)self->_textView setFont:obj];
     [(UILabel *)self->_placeholderLabel setFont:obj];
     [(_MFAtomTextViewBaselineLayoutStrut *)self->_baselineLayoutLabel setFont:obj];
@@ -327,23 +327,23 @@
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = [objc_opt_class() defaultTextColor];
+    colorCopy = [objc_opt_class() defaultTextColor];
   }
 
-  if (self->_textColor != v4)
+  if (self->_textColor != colorCopy)
   {
-    objc_storeStrong(&self->_textColor, v4);
+    objc_storeStrong(&self->_textColor, colorCopy);
     v6 = MEMORY[0x1E69E9820];
     v7 = 3221225472;
     v8 = __31__MFAtomTextView_setTextColor___block_invoke;
     v9 = &unk_1E806C520;
-    v10 = self;
-    v11 = v4;
+    selfCopy = self;
+    v11 = colorCopy;
     v5 = _Block_copy(&v6);
     if ([MEMORY[0x1E69DD250] areAnimationsEnabled])
     {
@@ -364,17 +364,17 @@ void __31__MFAtomTextView_setTextColor___block_invoke(uint64_t a1)
   [*(*(a1 + 32) + 488) setTypingAttributes:?];
 }
 
-- (void)_setEnabled:(BOOL)a3 animated:(BOOL)a4
+- (void)_setEnabled:(BOOL)enabled animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = MFAtomTextView;
   [(MFAtomTextView *)&v16 setEnabled:?];
-  [(_UITextFieldRoundedRectBackgroundViewNeue *)self->_background setEnabled:v5 animated:v4];
-  v7 = [(MFAtomTextView *)self clearButton];
-  [v7 setEnabled:v5];
+  [(_UITextFieldRoundedRectBackgroundViewNeue *)self->_background setEnabled:enabledCopy animated:animatedCopy];
+  clearButton = [(MFAtomTextView *)self clearButton];
+  [clearButton setEnabled:enabledCopy];
 
   v14 = 0u;
   v15 = 0u;
@@ -395,7 +395,7 @@ void __31__MFAtomTextView_setTextColor___block_invoke(uint64_t a1)
           objc_enumerationMutation(v8);
         }
 
-        [*(*(&v12 + 1) + 8 * v11++) setEnabled:v5 animated:{v4, v12}];
+        [*(*(&v12 + 1) + 8 * v11++) setEnabled:enabledCopy animated:{animatedCopy, v12}];
       }
 
       while (v9 != v11);
@@ -427,26 +427,26 @@ void __32__MFAtomTextView_paragraphStyle__block_invoke()
   paragraphStyle_sParagraphStyle = v0;
 }
 
-- (id)baseAttributesWithRepresentedObject:(id)a3
+- (id)baseAttributesWithRepresentedObject:(id)object
 {
   v17[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v16[0] = *MEMORY[0x1E69DB648];
-  v5 = [(MFAtomTextView *)self font];
-  v17[0] = v5;
+  font = [(MFAtomTextView *)self font];
+  v17[0] = font;
   v16[1] = *MEMORY[0x1E69DB650];
-  v6 = [(MFAtomTextView *)self textColor];
-  v17[1] = v6;
+  textColor = [(MFAtomTextView *)self textColor];
+  v17[1] = textColor;
   v7 = *MEMORY[0x1E69DB688];
   v16[2] = *MEMORY[0x1E69DB688];
-  v8 = [(MFAtomTextView *)self paragraphStyle];
-  v17[2] = v8;
+  paragraphStyle = [(MFAtomTextView *)self paragraphStyle];
+  v17[2] = paragraphStyle;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
 
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  if (objectCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v11 = [(MFAtomTextView *)self _atomLayoutViewForRepresentedObject:v4];
-    v12 = [_MFAtomAttachment attachmentWithAtomLayoutView:v11 representedObject:v4];
+    v11 = [(MFAtomTextView *)self _atomLayoutViewForRepresentedObject:objectCopy];
+    v12 = [_MFAtomAttachment attachmentWithAtomLayoutView:v11 representedObject:objectCopy];
     v10 = [v9 mutableCopy];
     [v10 setObject:v12 forKeyedSubscript:*MEMORY[0x1E69DB5F8]];
     if (objc_opt_respondsToSelector())
@@ -467,14 +467,14 @@ void __32__MFAtomTextView_paragraphStyle__block_invoke()
   return v10;
 }
 
-- (id)_baseAttributedStringWithRepresentedObject:(id)a3
+- (id)_baseAttributedStringWithRepresentedObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MFAtomTextView *)self baseAttributesWithRepresentedObject:v4];
+  objectCopy = object;
+  v5 = [(MFAtomTextView *)self baseAttributesWithRepresentedObject:objectCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v4 attributes:v5];
+    v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:objectCopy attributes:v5];
   }
 
   else
@@ -490,19 +490,19 @@ void __32__MFAtomTextView_paragraphStyle__block_invoke()
 
 - (BOOL)_hasContent
 {
-  v2 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  v3 = [v2 length] != 0;
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  v3 = [textStorage length] != 0;
 
   return v3;
 }
 
-- (id)_representedObjectsInRange:(_NSRange)a3 ranges:(id *)a4
+- (id)_representedObjectsInRange:(_NSRange)range ranges:(id *)ranges
 {
-  length = a3.length;
-  location = a3.location;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [MEMORY[0x1E695DF70] array];
-  v10 = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  length = range.length;
+  location = range.location;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
   v32[0] = 0;
   v32[1] = v32;
   v32[2] = 0x3010000000;
@@ -513,11 +513,11 @@ void __32__MFAtomTextView_paragraphStyle__block_invoke()
   aBlock[2] = __52__MFAtomTextView__representedObjectsInRange_ranges___block_invoke;
   aBlock[3] = &unk_1E806C748;
   v31 = v32;
-  v11 = v8;
+  v11 = array;
   v28 = v11;
-  v12 = v10;
+  v12 = textStorage;
   v29 = v12;
-  v13 = v9;
+  v13 = array2;
   v30 = v13;
   v14 = _Block_copy(aBlock);
   v22[0] = MEMORY[0x1E69E9820];
@@ -533,10 +533,10 @@ void __32__MFAtomTextView_paragraphStyle__block_invoke()
   v26 = v32;
   [v12 enumerateAttributesInRange:location options:length usingBlock:{0, v22}];
   v15[2](v15);
-  if (a4)
+  if (ranges)
   {
     v18 = v17;
-    *a4 = v17;
+    *ranges = v17;
   }
 
   v19 = v24;
@@ -607,19 +607,19 @@ void __52__MFAtomTextView__representedObjectsInRange_ranges___block_invoke_2(voi
   }
 }
 
-- (id)currentEditingString:(_NSRange *)a3
+- (id)currentEditingString:(_NSRange *)string
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (string)
   {
-    *a3 = xmmword_1BE985670;
+    *string = xmmword_1BE985670;
   }
 
-  v5 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  v6 = [(_MFAtomFieldEditor *)self->_textView selectedRange];
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  selectedRange = [(_MFAtomFieldEditor *)self->_textView selectedRange];
   v8 = v7;
   v33 = 0;
-  v9 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [v5 length], &v33);
+  v9 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [textStorage length], &v33);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
@@ -629,9 +629,9 @@ void __52__MFAtomTextView__representedObjectsInRange_ranges___block_invoke_2(voi
   if (v11)
   {
     v27 = v9;
-    v28 = v5;
+    v28 = textStorage;
     v12 = 0;
-    v13 = v6 + v8;
+    v13 = selectedRange + v8;
     v14 = *v30;
 LABEL_5:
     v15 = 0;
@@ -644,11 +644,11 @@ LABEL_5:
         objc_enumerationMutation(v10);
       }
 
-      v17 = [*(*(&v29 + 1) + 8 * v15) rangeValue];
-      v19 = v17;
+      rangeValue = [*(*(&v29 + 1) + 8 * v15) rangeValue];
+      v19 = rangeValue;
       v20 = v18;
-      v21 = v13 - v17 < v18 && v13 >= v17;
-      if (v21 || v13 == v17 + v18)
+      v21 = v13 - rangeValue < v18 && v13 >= rangeValue;
+      if (v21 || v13 == rangeValue + v18)
       {
         break;
       }
@@ -664,13 +664,13 @@ LABEL_5:
 
         v23 = 0;
         v9 = v27;
-        v5 = v28;
+        textStorage = v28;
         goto LABEL_22;
       }
     }
 
     v9 = v27;
-    v5 = v28;
+    textStorage = v28;
     v24 = [v27 objectAtIndexedSubscript:v16];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -681,10 +681,10 @@ LABEL_5:
     }
 
     v23 = [v27 objectAtIndexedSubscript:v16];
-    if (a3)
+    if (string)
     {
-      a3->location = v19;
-      a3->length = v20;
+      string->location = v19;
+      string->length = v20;
     }
   }
 
@@ -701,65 +701,65 @@ LABEL_22:
 
 - (NSArray)representedObjects
 {
-  v3 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  v4 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [v3 length], 0);
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  v4 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [textStorage length], 0);
 
   return v4;
 }
 
 - (NSArray)selectedRepresentedObjects
 {
-  v4 = [(_MFAtomFieldEditor *)self->_textView selectedRange];
+  selectedRange = [(_MFAtomFieldEditor *)self->_textView selectedRange];
 
-  return [(MFAtomTextView *)self _representedObjectsInRange:v4 ranges:v3, 0];
+  return [(MFAtomTextView *)self _representedObjectsInRange:selectedRange ranges:v3, 0];
 }
 
-- (void)insertRepresentedObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertRepresentedObject:(id)object atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  [v7 beginEditing];
+  objectCopy = object;
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  [textStorage beginEditing];
   v14 = 0;
-  v8 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [v7 length], &v14);
+  v8 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [textStorage length], &v14);
   v9 = v14;
 
   if (v8)
   {
-    v10 = [v9 objectAtIndexedSubscript:a4];
-    v11 = [v10 rangeValue];
+    v10 = [v9 objectAtIndexedSubscript:index];
+    rangeValue = [v10 rangeValue];
 
-    v12 = [(MFAtomTextView *)self _baseAttributedStringWithRepresentedObject:v6];
-    [v7 insertAttributedString:v12 atIndex:v11];
+    v12 = [(MFAtomTextView *)self _baseAttributedStringWithRepresentedObject:objectCopy];
+    [textStorage insertAttributedString:v12 atIndex:rangeValue];
     v8 = [v12 length];
   }
 
   else
   {
-    v11 = 0x7FFFFFFFFFFFFFFFLL;
+    rangeValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [v7 endEditing];
+  [textStorage endEditing];
   if (v8)
   {
-    v13 = [(_MFAtomFieldEditor *)self->_textView layoutManager];
-    [v13 invalidateLayoutForCharacterRange:v11 actualCharacterRange:{v8, 0}];
+    layoutManager = [(_MFAtomFieldEditor *)self->_textView layoutManager];
+    [layoutManager invalidateLayoutForCharacterRange:rangeValue actualCharacterRange:{v8, 0}];
   }
 
   [(MFAtomTextView *)self setNeedsLayout];
   [(MFAtomTextView *)self sendActionsForControlEvents:0x20000];
-  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:&v8[v11], 0];
+  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:&v8[rangeValue], 0];
 }
 
-- (void)_deleteCharactersInStorage:(id)a3 ranges:(id)a4 rangeToAdjust:(_NSRange *)a5
+- (void)_deleteCharactersInStorage:(id)storage ranges:(id)ranges rangeToAdjust:(_NSRange *)adjust
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  storageCopy = storage;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [a4 reverseObjectEnumerator];
-  v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  reverseObjectEnumerator = [ranges reverseObjectEnumerator];
+  v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v9)
   {
     v10 = *v20;
@@ -770,27 +770,27 @@ LABEL_22:
       {
         if (*v20 != v10)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(reverseObjectEnumerator);
         }
 
-        v12 = [*(*(&v19 + 1) + 8 * v11) rangeValue];
+        rangeValue = [*(*(&v19 + 1) + 8 * v11) rangeValue];
         v14 = v13;
-        [v7 deleteCharactersInRange:{v12, v13}];
-        location = a5->location;
-        length = a5->length;
-        if (v12 < length + a5->location)
+        [storageCopy deleteCharactersInRange:{rangeValue, v13}];
+        location = adjust->location;
+        length = adjust->length;
+        if (rangeValue < length + adjust->location)
         {
-          if (location >= v12 + v14)
+          if (location >= rangeValue + v14)
           {
-            a5->location = location - v14;
+            adjust->location = location - v14;
           }
 
           else
           {
-            if (v12 <= location)
+            if (rangeValue <= location)
             {
-              v18 = location - (v12 + v14) + length;
-              a5->location = v12;
+              v18 = location - (rangeValue + v14) + length;
+              adjust->location = rangeValue;
             }
 
             else
@@ -803,7 +803,7 @@ LABEL_22:
               }
             }
 
-            a5->length = v18;
+            adjust->length = v18;
           }
         }
 
@@ -811,93 +811,93 @@ LABEL_22:
       }
 
       while (v9 != v11);
-      v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)removeRepresentedObjectsAtIndexes:(id)a3
+- (void)removeRepresentedObjectsAtIndexes:(id)indexes
 {
-  v4 = a3;
-  v5 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  [v5 beginEditing];
-  v11 = [(_MFAtomFieldEditor *)self->_textView selectedRange];
+  indexesCopy = indexes;
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  [textStorage beginEditing];
+  selectedRange = [(_MFAtomFieldEditor *)self->_textView selectedRange];
   v12 = v6;
   v10 = 0;
-  v7 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [v5 length], &v10);
+  v7 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [textStorage length], &v10);
   v8 = v10;
 
   if (v7)
   {
-    v9 = [v8 objectsAtIndexes:v4];
-    [(MFAtomTextView *)self _deleteCharactersInStorage:v5 ranges:v9 rangeToAdjust:&v11];
+    v9 = [v8 objectsAtIndexes:indexesCopy];
+    [(MFAtomTextView *)self _deleteCharactersInStorage:textStorage ranges:v9 rangeToAdjust:&selectedRange];
   }
 
-  [v5 endEditing];
+  [textStorage endEditing];
   [(MFAtomTextView *)self setNeedsLayout];
   [(MFAtomTextView *)self sendActionsForControlEvents:0x20000];
-  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:v11, v12];
+  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:selectedRange, v12];
 }
 
-- (void)removeRepresentedObjects:(id)a3
+- (void)removeRepresentedObjects:(id)objects
 {
-  v4 = a3;
-  v5 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  [v5 beginEditing];
-  v18 = [(_MFAtomFieldEditor *)self->_textView selectedRange];
+  objectsCopy = objects;
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  [textStorage beginEditing];
+  selectedRange = [(_MFAtomFieldEditor *)self->_textView selectedRange];
   v19 = v6;
   v17 = 0;
-  v7 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [v5 length], &v17);
+  v7 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [textStorage length], &v17);
   v8 = v17;
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __43__MFAtomTextView_removeRepresentedObjects___block_invoke;
   v15 = &unk_1E806C798;
-  v9 = v4;
+  v9 = objectsCopy;
   v16 = v9;
   v10 = [v7 indexesOfObjectsPassingTest:&v12];
   v11 = [v8 objectsAtIndexes:{v10, v12, v13, v14, v15}];
-  [(MFAtomTextView *)self _deleteCharactersInStorage:v5 ranges:v11 rangeToAdjust:&v18];
+  [(MFAtomTextView *)self _deleteCharactersInStorage:textStorage ranges:v11 rangeToAdjust:&selectedRange];
 
-  [v5 endEditing];
+  [textStorage endEditing];
   [(MFAtomTextView *)self setNeedsLayout];
   [(MFAtomTextView *)self sendActionsForControlEvents:0x20000];
-  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:v18, v19];
+  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:selectedRange, v19];
 }
 
-- (void)removeRepresentedObjectAtIndex:(unint64_t)a3
+- (void)removeRepresentedObjectAtIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:a3];
+  v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:index];
   [(MFAtomTextView *)self removeRepresentedObjectsAtIndexes:?];
 }
 
-- (void)removeRepresentedObject:(id)a3
+- (void)removeRepresentedObject:(id)object
 {
   v7[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  objectCopy = object;
+  v5 = objectCopy;
+  if (objectCopy)
   {
-    v7[0] = v4;
+    v7[0] = objectCopy;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
     [(MFAtomTextView *)self removeRepresentedObjects:v6];
   }
 }
 
-- (void)setRepresentedObjects:(id)a3
+- (void)setRepresentedObjects:(id)objects
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  [v5 beginEditing];
-  [v5 deleteCharactersInRange:{0, objc_msgSend(v5, "length")}];
+  objectsCopy = objects;
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  [textStorage beginEditing];
+  [textStorage deleteCharactersInRange:{0, objc_msgSend(textStorage, "length")}];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -913,7 +913,7 @@ LABEL_22:
         }
 
         v10 = [(MFAtomTextView *)self _baseAttributedStringWithRepresentedObject:*(*(&v12 + 1) + 8 * v9), v12];
-        [v5 appendAttributedString:v10];
+        [textStorage appendAttributedString:v10];
 
         ++v9;
       }
@@ -925,48 +925,48 @@ LABEL_22:
     while (v7);
   }
 
-  [v5 endEditing];
-  v11 = [(_MFAtomFieldEditor *)self->_textView layoutManager];
-  [v11 invalidateLayoutForCharacterRange:0 actualCharacterRange:{objc_msgSend(v5, "length"), 0}];
+  [textStorage endEditing];
+  layoutManager = [(_MFAtomFieldEditor *)self->_textView layoutManager];
+  [layoutManager invalidateLayoutForCharacterRange:0 actualCharacterRange:{objc_msgSend(textStorage, "length"), 0}];
 
   [(MFAtomTextView *)self setNeedsLayout];
   [(MFAtomTextView *)self sendActionsForControlEvents:0x20000];
-  -[_MFAtomFieldEditor setSelectedRange:](self->_textView, "setSelectedRange:", [v5 length], 0);
+  -[_MFAtomFieldEditor setSelectedRange:](self->_textView, "setSelectedRange:", [textStorage length], 0);
 }
 
-- (void)addRepresentedObject:(id)a3
+- (void)addRepresentedObject:(id)object
 {
-  v9 = a3;
-  v4 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  [v4 beginEditing];
-  v5 = [(MFAtomTextView *)self _baseAttributedStringWithRepresentedObject:v9];
-  v6 = [v4 length];
+  objectCopy = object;
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  [textStorage beginEditing];
+  v5 = [(MFAtomTextView *)self _baseAttributedStringWithRepresentedObject:objectCopy];
+  v6 = [textStorage length];
   v7 = [v5 length];
-  [v4 appendAttributedString:v5];
-  [v4 endEditing];
+  [textStorage appendAttributedString:v5];
+  [textStorage endEditing];
   if (v7)
   {
-    v8 = [(_MFAtomFieldEditor *)self->_textView layoutManager];
-    [v8 invalidateLayoutForCharacterRange:v6 actualCharacterRange:{v7, 0}];
+    layoutManager = [(_MFAtomFieldEditor *)self->_textView layoutManager];
+    [layoutManager invalidateLayoutForCharacterRange:v6 actualCharacterRange:{v7, 0}];
   }
 
   [(MFAtomTextView *)self setNeedsLayout];
   [(MFAtomTextView *)self sendActionsForControlEvents:0x20000];
-  -[_MFAtomFieldEditor setSelectedRange:](self->_textView, "setSelectedRange:", [v4 length], 0);
+  -[_MFAtomFieldEditor setSelectedRange:](self->_textView, "setSelectedRange:", [textStorage length], 0);
 }
 
-- (id)_atomLayoutViewForRepresentedObject:(id)a3
+- (id)_atomLayoutViewForRepresentedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained atomTextView:self atomViewForRepresentedObject:v4];
+  v6 = [WeakRetained atomTextView:self atomViewForRepresentedObject:objectCopy];
 
   [v6 setEnabled:{-[MFAtomTextView isEnabled](self, "isEnabled")}];
-  v7 = [v6 viewForLastBaselineLayout];
+  viewForLastBaselineLayout = [v6 viewForLastBaselineLayout];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v7 _setDrawsDebugBaselines:{-[MFAtomTextView _drawsDebugBaselines](self, "_drawsDebugBaselines")}];
+    [viewForLastBaselineLayout _setDrawsDebugBaselines:{-[MFAtomTextView _drawsDebugBaselines](self, "_drawsDebugBaselines")}];
   }
 
   v8 = [_MFAtomLayoutView layoutViewWithDelegateView:v6];
@@ -1004,17 +1004,17 @@ LABEL_22:
   return v6;
 }
 
-- (id)_representedObjectsFromPasteboard:(id)a3
+- (id)_representedObjectsFromPasteboard:(id)pasteboard
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ((*&self->_flags & 4) == 0 || (WeakRetained = objc_loadWeakRetained(&self->_delegate), [WeakRetained atomTextView:self representedObjectsFromPasteboard:v4], v6 = objc_claimAutoreleasedReturnValue(), WeakRetained, !v6))
+  pasteboardCopy = pasteboard;
+  if ((*&self->_flags & 4) == 0 || (WeakRetained = objc_loadWeakRetained(&self->_delegate), [WeakRetained atomTextView:self representedObjectsFromPasteboard:pasteboardCopy], v6 = objc_claimAutoreleasedReturnValue(), WeakRetained, !v6))
   {
-    v7 = [v4 string];
-    v8 = v7;
-    if (v7)
+    string = [pasteboardCopy string];
+    v8 = string;
+    if (string)
     {
-      v10[0] = v7;
+      v10[0] = string;
       v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
     }
 
@@ -1027,19 +1027,19 @@ LABEL_22:
   return v6;
 }
 
-- (void)_storeRepresentedObjects:(id)a3 onPasteboard:(id)a4
+- (void)_storeRepresentedObjects:(id)objects onPasteboard:(id)pasteboard
 {
   v22 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v15 = a4;
-  if ((*&self->_flags & 8) == 0 || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v7 = [WeakRetained atomTextView:self storeRepresentedObjects:v16 onPasteboard:v15], WeakRetained, (v7 & 1) == 0))
+  objectsCopy = objects;
+  pasteboardCopy = pasteboard;
+  if ((*&self->_flags & 8) == 0 || (WeakRetained = objc_loadWeakRetained(&self->_delegate), v7 = [WeakRetained atomTextView:self storeRepresentedObjects:objectsCopy onPasteboard:pasteboardCopy], WeakRetained, (v7 & 1) == 0))
   {
-    v8 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v9 = v16;
+    v9 = objectsCopy;
     v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
@@ -1058,7 +1058,7 @@ LABEL_22:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if ([v8 length])
+            if ([string length])
             {
               v14 = @" ";
             }
@@ -1068,7 +1068,7 @@ LABEL_22:
               v14 = &stru_1F3CF3758;
             }
 
-            [v8 appendFormat:@"%@%@", v14, v13];
+            [string appendFormat:@"%@%@", v14, v13];
           }
 
           ++v12;
@@ -1081,34 +1081,34 @@ LABEL_22:
       while (v10);
     }
 
-    [v15 setString:v8];
+    [pasteboardCopy setString:string];
   }
 }
 
-- (void)_insertRepresentedObjects:(id)a3 atCharacterRange:(_NSRange)a4
+- (void)_insertRepresentedObjects:(id)objects atCharacterRange:(_NSRange)range
 {
   v52[1] = *MEMORY[0x1E69E9840];
-  v49 = a4;
-  v37 = a3;
-  v4 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  v38 = v4;
-  [v4 beginEditing];
-  if (v49.length)
+  rangeCopy = range;
+  objectsCopy = objects;
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  v38 = textStorage;
+  [textStorage beginEditing];
+  if (rangeCopy.length)
   {
-    v5 = [MEMORY[0x1E696B098] valueWithRange:v49.location];
+    v5 = [MEMORY[0x1E696B098] valueWithRange:rangeCopy.location];
     v52[0] = v5;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:1];
-    [(MFAtomTextView *)self _deleteCharactersInStorage:v4 ranges:v6 rangeToAdjust:&v49];
+    [(MFAtomTextView *)self _deleteCharactersInStorage:textStorage ranges:v6 rangeToAdjust:&rangeCopy];
   }
 
-  v7 = [v37 firstObject];
+  firstObject = [objectsCopy firstObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if ((isKindOfClass & 1) == 0)
   {
     v48 = 0;
-    v9 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [v4 length], &v48);
+    v9 = -[MFAtomTextView _representedObjectsInRange:ranges:](self, "_representedObjectsInRange:ranges:", 0, [textStorage length], &v48);
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
@@ -1131,8 +1131,8 @@ LABEL_22:
             objc_enumerationMutation(v10);
           }
 
-          v16 = [*(*(&v44 + 1) + 8 * v14) rangeValue];
-          if (v49.location >= v16 && v49.location - v16 < v17)
+          rangeValue = [*(*(&v44 + 1) + 8 * v14) rangeValue];
+          if (rangeCopy.location >= rangeValue && rangeCopy.location - rangeValue < v17)
           {
             v11 = [v9 objectAtIndexedSubscript:v15];
             goto LABEL_18;
@@ -1161,13 +1161,13 @@ LABEL_18:
     if (objc_opt_isKindOfClass())
     {
       v19 = [v10 objectAtIndexedSubscript:v15];
-      v20 = [v19 rangeValue];
+      rangeValue2 = [v19 rangeValue];
       v22 = v21;
 
-      if (v49.location != v20)
+      if (rangeCopy.location != rangeValue2)
       {
-        v49.location = v20 + v22;
-        v49.length = 0;
+        rangeCopy.location = rangeValue2 + v22;
+        rangeCopy.length = 0;
       }
     }
   }
@@ -1176,7 +1176,7 @@ LABEL_18:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v23 = v37;
+  v23 = objectsCopy;
   v24 = [v23 countByEnumeratingWithState:&v40 objects:v50 count:16];
   length = 0;
   if (v24)
@@ -1193,8 +1193,8 @@ LABEL_18:
         }
 
         v29 = [(MFAtomTextView *)self _baseAttributedStringWithRepresentedObject:*(*(&v40 + 1) + 8 * i)];
-        [v38 insertAttributedString:v29 atIndex:v49.location];
-        location = v49.location;
+        [v38 insertAttributedString:v29 atIndex:rangeCopy.location];
+        location = rangeCopy.location;
         v31 = [v29 length];
         v32 = v31;
         if (v27 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1214,8 +1214,8 @@ LABEL_18:
           length = v33.length;
         }
 
-        v49.location = v32 + location;
-        v49.length = 0;
+        rangeCopy.location = v32 + location;
+        rangeCopy.length = 0;
       }
 
       v24 = [v23 countByEnumeratingWithState:&v40 objects:v50 count:16];
@@ -1235,45 +1235,45 @@ LABEL_18:
   [v38 endEditing];
   if (!v34)
   {
-    v36 = [(_MFAtomFieldEditor *)self->_textView layoutManager];
-    [v36 invalidateLayoutForCharacterRange:v27 actualCharacterRange:{length, 0}];
+    layoutManager = [(_MFAtomFieldEditor *)self->_textView layoutManager];
+    [layoutManager invalidateLayoutForCharacterRange:v27 actualCharacterRange:{length, 0}];
 
     v35 = v38;
   }
 
   [(MFAtomTextView *)self setNeedsLayout];
   [(MFAtomTextView *)self sendActionsForControlEvents:0x20000];
-  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:v49.location, v49.length];
+  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:rangeCopy.location, rangeCopy.length];
 }
 
-- (void)_removeRepresentedObjectsInCharacterRange:(_NSRange)a3
+- (void)_removeRepresentedObjectsInCharacterRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  [v6 beginEditing];
-  v10 = [(_MFAtomFieldEditor *)self->_textView selectedRange];
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  [textStorage beginEditing];
+  selectedRange = [(_MFAtomFieldEditor *)self->_textView selectedRange];
   v11 = v7;
   v8 = [MEMORY[0x1E696B098] valueWithRange:{location, length}];
   v12[0] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  [(MFAtomTextView *)self _deleteCharactersInStorage:v6 ranges:v9 rangeToAdjust:&v10];
+  [(MFAtomTextView *)self _deleteCharactersInStorage:textStorage ranges:v9 rangeToAdjust:&selectedRange];
 
-  [v6 endEditing];
+  [textStorage endEditing];
   [(MFAtomTextView *)self setNeedsLayout];
   [(MFAtomTextView *)self sendActionsForControlEvents:0x20000];
-  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:v10, v11];
+  [(_MFAtomFieldEditor *)self->_textView setSelectedRange:selectedRange, v11];
 }
 
-- (UIEdgeInsets)_edgeInsetsForDirectionalInsets:(NSDirectionalEdgeInsets)a3
+- (UIEdgeInsets)_edgeInsetsForDirectionalInsets:(NSDirectionalEdgeInsets)insets
 {
-  trailing = a3.trailing;
-  bottom = a3.bottom;
-  leading = a3.leading;
-  top = a3.top;
-  v7 = [(MFAtomTextView *)self _shouldReverseLayoutDirection];
-  if (v7)
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  _shouldReverseLayoutDirection = [(MFAtomTextView *)self _shouldReverseLayoutDirection];
+  if (_shouldReverseLayoutDirection)
   {
     v8 = trailing;
   }
@@ -1283,7 +1283,7 @@ LABEL_18:
     v8 = leading;
   }
 
-  if (v7)
+  if (_shouldReverseLayoutDirection)
   {
     v9 = leading;
   }
@@ -1320,14 +1320,14 @@ LABEL_18:
   return result;
 }
 
-- (id)_clearButtonImageForState:(unint64_t)a3
+- (id)_clearButtonImageForState:(unint64_t)state
 {
   v6 = [MEMORY[0x1E69DCAB8] kitImageNamed:@"UITextFieldClearButton"];
-  v7 = [(MFAtomTextView *)self tintColor];
-  if (!v7 || ([MEMORY[0x1E69DC888] systemBlueColor], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "isEqual:", v3)))
+  tintColor = [(MFAtomTextView *)self tintColor];
+  if (!tintColor || ([MEMORY[0x1E69DC888] systemBlueColor], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(tintColor, "isEqual:", v3)))
   {
     v8 = [MEMORY[0x1E69DC888] colorWithRed:0.047 green:0.455 blue:0.867 alpha:1.0];
-    if (!v7)
+    if (!tintColor)
     {
       goto LABEL_6;
     }
@@ -1335,18 +1335,18 @@ LABEL_18:
 
   else
   {
-    v8 = v7;
+    v8 = tintColor;
   }
 
 LABEL_6:
-  if (a3 == 1)
+  if (state == 1)
   {
     v9 = v8;
   }
 
   else
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
     }
@@ -1407,12 +1407,12 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)clearButtonFrameForBounds:(CGRect)a3
+- (CGRect)clearButtonFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = MEMORY[0x1E695F058];
   rect = *(MEMORY[0x1E695F058] + 8);
   [(MFAtomTextView *)self _clearButtonSize];
@@ -1476,19 +1476,19 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)_rectForBounds:(CGRect)a3 sizingView:(id)a4 isLeft:(BOOL)a5
+- (CGRect)_rectForBounds:(CGRect)bounds sizingView:(id)view isLeft:(BOOL)left
 {
-  v5 = a5;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  leftCopy = left;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v10 = MEMORY[0x1E695F058];
   v11 = *(MEMORY[0x1E695F058] + 8);
-  [a4 systemLayoutSizeFittingSize:{a3.size.width, a3.size.height}];
+  [view systemLayoutSizeFittingSize:{bounds.size.width, bounds.size.height}];
   v13 = v12;
   v15 = v14;
-  if (v5)
+  if (leftCopy)
   {
     v25.origin.x = x;
     v25.origin.y = y;
@@ -1538,15 +1538,15 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)leadingViewFrameForBounds:(CGRect)a3
+- (CGRect)leadingViewFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(MFAtomTextView *)self _shouldReverseLayoutDirection];
-  v9 = [(MFAtomTextView *)self leadingView];
-  [(MFAtomTextView *)self _rectForBounds:v9 sizingView:v8 ^ 1u isLeft:x, y, width, height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _shouldReverseLayoutDirection = [(MFAtomTextView *)self _shouldReverseLayoutDirection];
+  leadingView = [(MFAtomTextView *)self leadingView];
+  [(MFAtomTextView *)self _rectForBounds:leadingView sizingView:_shouldReverseLayoutDirection ^ 1u isLeft:x, y, width, height];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -1567,14 +1567,14 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)trailingViewFrameForBounds:(CGRect)a3
+- (CGRect)trailingViewFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(MFAtomTextView *)self trailingView];
-  [(MFAtomTextView *)self _rectForBounds:v8 sizingView:[(MFAtomTextView *)self _shouldReverseLayoutDirection] isLeft:x, y, width, height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  trailingView = [(MFAtomTextView *)self trailingView];
+  [(MFAtomTextView *)self _rectForBounds:trailingView sizingView:[(MFAtomTextView *)self _shouldReverseLayoutDirection] isLeft:x, y, width, height];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1595,18 +1595,18 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_showViewWithMode:(int64_t)a3 alwaysDefinition:(BOOL)a4
+- (BOOL)_showViewWithMode:(int64_t)mode alwaysDefinition:(BOOL)definition
 {
-  v7 = [(MFAtomTextView *)self isFirstResponder];
-  v8 = v7 & [(MFAtomTextView *)self _hasContent];
+  isFirstResponder = [(MFAtomTextView *)self isFirstResponder];
+  v8 = isFirstResponder & [(MFAtomTextView *)self _hasContent];
   v9 = !v8;
-  v10 = a3 == 3 && a4;
-  if (a3 != 2)
+  v10 = mode == 3 && definition;
+  if (mode != 2)
   {
     v9 = v10;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     return v8;
   }
@@ -1619,16 +1619,16 @@ LABEL_6:
 
 - (BOOL)_showsClearButton
 {
-  v3 = [(MFAtomTextView *)self clearButtonMode];
-  v4 = [(MFAtomTextView *)self _hasContent];
+  clearButtonMode = [(MFAtomTextView *)self clearButtonMode];
+  _hasContent = [(MFAtomTextView *)self _hasContent];
 
-  return [(MFAtomTextView *)self _showViewWithMode:v3 alwaysDefinition:v4];
+  return [(MFAtomTextView *)self _showViewWithMode:clearButtonMode alwaysDefinition:_hasContent];
 }
 
 - (BOOL)_showsLeadingView
 {
-  v3 = [(MFAtomTextView *)self leadingView];
-  if (v3)
+  leadingView = [(MFAtomTextView *)self leadingView];
+  if (leadingView)
   {
     v4 = [(MFAtomTextView *)self _showViewWithMode:[(MFAtomTextView *)self leadingViewMode] alwaysDefinition:1];
   }
@@ -1643,8 +1643,8 @@ LABEL_6:
 
 - (BOOL)_showsTrailingView
 {
-  v3 = [(MFAtomTextView *)self trailingView];
-  v4 = v3 && ![(MFAtomTextView *)self _showsClearButton]&& [(MFAtomTextView *)self _showViewWithMode:[(MFAtomTextView *)self trailingViewMode] alwaysDefinition:1];
+  trailingView = [(MFAtomTextView *)self trailingView];
+  v4 = trailingView && ![(MFAtomTextView *)self _showsClearButton]&& [(MFAtomTextView *)self _showViewWithMode:[(MFAtomTextView *)self trailingViewMode] alwaysDefinition:1];
 
   return v4;
 }
@@ -1658,10 +1658,10 @@ LABEL_6:
   v10 = v9;
   if ([(MFAtomTextView *)self _showsClearButton])
   {
-    v14 = [(MFAtomTextView *)self clearButton];
+    clearButton = [(MFAtomTextView *)self clearButton];
     [(MFAtomTextView *)self clearButtonFrameForBounds:v4, v6, v8, v10];
-    [v14 setFrame:?];
-    [(MFAtomTextView *)self addSubview:v14];
+    [clearButton setFrame:?];
+    [(MFAtomTextView *)self addSubview:clearButton];
   }
 
   else
@@ -1675,10 +1675,10 @@ LABEL_6:
 
   if ([(MFAtomTextView *)self _showsLeadingView])
   {
-    v15 = [(MFAtomTextView *)self leadingView];
+    leadingView = [(MFAtomTextView *)self leadingView];
     [(MFAtomTextView *)self leadingViewFrameForBounds:v4, v6, v8, v10];
-    [v15 setFrame:?];
-    [(MFAtomTextView *)self addSubview:v15];
+    [leadingView setFrame:?];
+    [(MFAtomTextView *)self addSubview:leadingView];
   }
 
   else
@@ -1692,10 +1692,10 @@ LABEL_6:
 
   if ([(MFAtomTextView *)self _showsTrailingView])
   {
-    v16 = [(MFAtomTextView *)self trailingView];
+    trailingView = [(MFAtomTextView *)self trailingView];
     [(MFAtomTextView *)self trailingViewFrameForBounds:v4, v6, v8, v10];
-    [v16 setFrame:?];
-    [(MFAtomTextView *)self addSubview:v16];
+    [trailingView setFrame:?];
+    [(MFAtomTextView *)self addSubview:trailingView];
   }
 
   else
@@ -1709,25 +1709,25 @@ LABEL_6:
   }
 }
 
-- (void)setPlaceholderColor:(id)a3
+- (void)setPlaceholderColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
-    v4 = [objc_opt_class() defaultPlaceholderColor];
+    colorCopy = [objc_opt_class() defaultPlaceholderColor];
   }
 
-  if (self->_placeholderColor != v4)
+  if (self->_placeholderColor != colorCopy)
   {
-    objc_storeStrong(&self->_placeholderColor, v4);
+    objc_storeStrong(&self->_placeholderColor, colorCopy);
     if (self->_placeholderLabel)
     {
       v6 = MEMORY[0x1E69E9820];
       v7 = 3221225472;
       v8 = __38__MFAtomTextView_setPlaceholderColor___block_invoke;
       v9 = &unk_1E806C520;
-      v10 = self;
-      v11 = v4;
+      selfCopy = self;
+      v11 = colorCopy;
       v5 = _Block_copy(&v6);
       if ([MEMORY[0x1E69DD250] areAnimationsEnabled])
       {
@@ -1753,14 +1753,14 @@ LABEL_6:
     self->_placeholderLabel = v5;
 
     [(UILabel *)self->_placeholderLabel _setDrawsDebugBaselines:[(MFAtomTextView *)self _drawsDebugBaselines]];
-    v7 = [(MFAtomTextView *)self font];
-    [(UILabel *)self->_placeholderLabel setFont:v7];
+    font = [(MFAtomTextView *)self font];
+    [(UILabel *)self->_placeholderLabel setFont:font];
 
-    v8 = [(MFAtomTextView *)self placeholderColor];
-    [(UILabel *)self->_placeholderLabel setTextColor:v8];
+    placeholderColor = [(MFAtomTextView *)self placeholderColor];
+    [(UILabel *)self->_placeholderLabel setTextColor:placeholderColor];
 
-    v9 = [(MFAtomTextView *)self placeholder];
-    [(UILabel *)self->_placeholderLabel setText:v9];
+    placeholder = [(MFAtomTextView *)self placeholder];
+    [(UILabel *)self->_placeholderLabel setText:placeholder];
 
     placeholderLabel = self->_placeholderLabel;
   }
@@ -1768,12 +1768,12 @@ LABEL_6:
   return placeholderLabel;
 }
 
-- (void)setPlaceholder:(id)a3
+- (void)setPlaceholder:(id)placeholder
 {
-  v6 = a3;
-  if (self->_placeholder != v6)
+  placeholderCopy = placeholder;
+  if (self->_placeholder != placeholderCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)placeholderCopy copy];
     placeholder = self->_placeholder;
     self->_placeholder = v4;
 
@@ -1782,13 +1782,13 @@ LABEL_6:
   }
 }
 
-- (CGRect)placeholderFrameForBounds:(CGRect)a3
+- (CGRect)placeholderFrameForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(UILabel *)self->_placeholderLabel sizeThatFits:a3.size.width, a3.size.height];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  [(UILabel *)self->_placeholderLabel sizeThatFits:bounds.size.width, bounds.size.height];
   [(UIView *)self mf_currentScreenScale];
   v37 = v8;
   UIRectCenteredYInRectScale();
@@ -1796,12 +1796,12 @@ LABEL_6:
   v12 = v11;
   v14 = v13;
   v38 = v15;
-  v16 = [(MFAtomTextView *)self _shouldReverseLayoutDirection];
-  v17 = [(MFAtomTextView *)self _showsLeadingView];
-  v18 = [(MFAtomTextView *)self _showsTrailingView];
-  v19 = [(MFAtomTextView *)self _showsClearButton];
-  v20 = v18 || v19;
-  if ((v16 & 1) == 0 && v17)
+  _shouldReverseLayoutDirection = [(MFAtomTextView *)self _shouldReverseLayoutDirection];
+  _showsLeadingView = [(MFAtomTextView *)self _showsLeadingView];
+  _showsTrailingView = [(MFAtomTextView *)self _showsTrailingView];
+  _showsClearButton = [(MFAtomTextView *)self _showsClearButton];
+  v20 = _showsTrailingView || _showsClearButton;
+  if ((_shouldReverseLayoutDirection & 1) == 0 && _showsLeadingView)
   {
     [(MFAtomTextView *)self leadingViewFrameForBounds:x, y, width, height];
     v22 = v21 + 16.0;
@@ -1814,14 +1814,14 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if ((v16 & 1) == 0)
+  if ((_shouldReverseLayoutDirection & 1) == 0)
   {
     v23 = v14 + -8.0;
     v22 = 8.0;
     if (v20)
     {
 LABEL_10:
-      if (v19)
+      if (_showsClearButton)
       {
         [(MFAtomTextView *)self clearButtonFrameForBounds:x, y, width, height];
       }
@@ -1839,7 +1839,7 @@ LABEL_10:
 
   if (v20)
   {
-    if (v19)
+    if (_showsClearButton)
     {
       [(MFAtomTextView *)self clearButtonFrameForBounds:x, y, width, height];
     }
@@ -1851,7 +1851,7 @@ LABEL_10:
 
     v22 = v24 + 16.0;
     v23 = v14 - (v24 + 16.0);
-    if (!v17)
+    if (!_showsLeadingView)
     {
       goto LABEL_18;
     }
@@ -1861,7 +1861,7 @@ LABEL_10:
 
   v23 = v14 + -8.0;
   v22 = 8.0;
-  if (!v17)
+  if (!_showsLeadingView)
   {
 LABEL_18:
     v26 = v23 + -8.0;
@@ -1892,11 +1892,11 @@ LABEL_19:
 {
   if ([(MFAtomTextView *)self _showsPlaceholder])
   {
-    v4 = [(MFAtomTextView *)self placeholderLabel];
+    placeholderLabel = [(MFAtomTextView *)self placeholderLabel];
     [(MFAtomTextView *)self bounds];
     [(MFAtomTextView *)self placeholderFrameForBounds:?];
-    [v4 setFrame:?];
-    [(MFAtomTextView *)self addSubview:v4];
+    [placeholderLabel setFrame:?];
+    [(MFAtomTextView *)self addSubview:placeholderLabel];
   }
 
   else
@@ -1924,7 +1924,7 @@ LABEL_19:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(MFAtomTextView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(MFAtomTextView *)self _shouldReverseLayoutDirection];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __28__MFAtomTextView_edgeInsets__block_invoke;
@@ -1938,9 +1938,9 @@ LABEL_19:
   if ([(MFAtomTextView *)self _showsClearButton])
   {
     [(MFAtomTextView *)self clearButtonFrameForBounds:v5, v7, v9, v11];
-    v13[2](v13, v12);
+    v13[2](v13, _shouldReverseLayoutDirection);
     v14 = 7;
-    if (v12)
+    if (_shouldReverseLayoutDirection)
     {
       v14 = 5;
     }
@@ -1951,13 +1951,13 @@ LABEL_19:
   if ([(MFAtomTextView *)self _showsLeadingView])
   {
     [(MFAtomTextView *)self leadingViewFrameForBounds:v5, v7, v9, v11];
-    v13[2](v13, v12 ^ 1);
+    v13[2](v13, _shouldReverseLayoutDirection ^ 1);
   }
 
   if ([(MFAtomTextView *)self _showsTrailingView])
   {
     [(MFAtomTextView *)self trailingViewFrameForBounds:v5, v7, v9, v11];
-    v13[2](v13, v12);
+    v13[2](v13, _shouldReverseLayoutDirection);
   }
 
   [(MFAtomTextView *)self textInsets];
@@ -2074,80 +2074,80 @@ double __28__MFAtomTextView_edgeInsets__block_invoke(uint64_t a1, int a2, CGFloa
   [(MFAtomTextView *)self _scrollToSelectionIfNeeded];
 }
 
-- (void)setTextInsets:(NSDirectionalEdgeInsets)a3
+- (void)setTextInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_textInsets.top, v3), vceqq_f64(*&self->_textInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_textInsets = a3;
+    self->_textInsets = insets;
     [(MFAtomTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setPlaceholderInsets:(NSDirectionalEdgeInsets)a3
+- (void)setPlaceholderInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_placeholderInsets.top, v3), vceqq_f64(*&self->_placeholderInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_placeholderInsets = a3;
+    self->_placeholderInsets = insets;
     [(MFAtomTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setLeadingViewInsets:(NSDirectionalEdgeInsets)a3
+- (void)setLeadingViewInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_leadingViewInsets.top, v3), vceqq_f64(*&self->_leadingViewInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_leadingViewInsets = a3;
+    self->_leadingViewInsets = insets;
     [(MFAtomTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setTrailingViewInsets:(NSDirectionalEdgeInsets)a3
+- (void)setTrailingViewInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_trailingViewInsets.top, v3), vceqq_f64(*&self->_trailingViewInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_trailingViewInsets = a3;
+    self->_trailingViewInsets = insets;
     [(MFAtomTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setClearButtonInsets:(NSDirectionalEdgeInsets)a3
+- (void)setClearButtonInsets:(NSDirectionalEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.leading;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_clearButtonInsets.top, v3), vceqq_f64(*&self->_clearButtonInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_clearButtonInsets = a3;
+    self->_clearButtonInsets = insets;
     [(MFAtomTextView *)self setNeedsLayout];
   }
 }
 
-- (CGPoint)_firstGlyphBaselineLeftPointWithLayoutManager:(id)a3
+- (CGPoint)_firstGlyphBaselineLeftPointWithLayoutManager:(id)manager
 {
-  v4 = a3;
-  v5 = [v4 textStorage];
-  v6 = [v5 length];
+  managerCopy = manager;
+  textStorage = [managerCopy textStorage];
+  v6 = [textStorage length];
   if (!v6)
   {
     v7 = [(MFAtomTextView *)self _baseAttributedStringWithRepresentedObject:@"X"];
-    [v5 appendAttributedString:v7];
+    [textStorage appendAttributedString:v7];
   }
 
   v33 = 0;
@@ -2170,7 +2170,7 @@ double __28__MFAtomTextView_edgeInsets__block_invoke(uint64_t a1, int a2, CGFloa
   v26[3] = &unk_1E806C7E8;
   v26[4] = &v27;
   v26[5] = &v33;
-  [v4 enumerateLineFragmentsForGlyphRange:0 usingBlock:{1, v26}];
+  [managerCopy enumerateLineFragmentsForGlyphRange:0 usingBlock:{1, v26}];
   v20 = 0;
   v21 = &v20;
   v22 = 0x4010000000;
@@ -2185,8 +2185,8 @@ double __28__MFAtomTextView_edgeInsets__block_invoke(uint64_t a1, int a2, CGFloa
   v19[2] = __64__MFAtomTextView__firstGlyphBaselineLeftPointWithLayoutManager___block_invoke_2;
   v19[3] = &unk_1E806C810;
   v19[4] = &v20;
-  [v4 enumerateEnclosingRectsForGlyphRange:0 withinSelectedGlyphRange:1 inTextContainer:0x7FFFFFFFFFFFFFFFLL usingBlock:{0, v10, v19}];
-  [v4 baselineOffsetForGlyphAtIndex:0];
+  [managerCopy enumerateEnclosingRectsForGlyphRange:0 withinSelectedGlyphRange:1 inTextContainer:0x7FFFFFFFFFFFFFFFLL usingBlock:{0, v10, v19}];
+  [managerCopy baselineOffsetForGlyphAtIndex:0];
   v12 = v11;
   MinX = CGRectGetMinX(v21[1]);
   v14 = v28[5];
@@ -2194,7 +2194,7 @@ double __28__MFAtomTextView_edgeInsets__block_invoke(uint64_t a1, int a2, CGFloa
   v16 = v15;
   if (!v6)
   {
-    [v5 deleteCharactersInRange:{0, objc_msgSend(v5, "length")}];
+    [textStorage deleteCharactersInRange:{0, objc_msgSend(textStorage, "length")}];
   }
 
   _Block_object_dispose(&v20, 8);
@@ -2239,8 +2239,8 @@ uint64_t __64__MFAtomTextView__firstGlyphBaselineLeftPointWithLayoutManager___bl
     baselineLayoutLabel = self->_baselineLayoutLabel;
     self->_baselineLayoutLabel = v4;
 
-    v6 = [(MFAtomTextView *)self font];
-    [(_MFAtomTextViewBaselineLayoutStrut *)self->_baselineLayoutLabel setFont:v6];
+    font = [(MFAtomTextView *)self font];
+    [(_MFAtomTextViewBaselineLayoutStrut *)self->_baselineLayoutLabel setFont:font];
 
     [(_MFAtomTextViewBaselineLayoutStrut *)self->_baselineLayoutLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_MFAtomTextViewBaselineLayoutStrut *)self->_baselineLayoutLabel setHidden:1];
@@ -2254,9 +2254,9 @@ uint64_t __64__MFAtomTextView__firstGlyphBaselineLeftPointWithLayoutManager___bl
     v11 = [v9 constraintsWithVisualFormat:@"H:|[_baselineLayoutLabel(0)]" options:0 metrics:0 views:v10];
     [v9 activateConstraints:v11];
 
-    v12 = [(_MFAtomTextViewBaselineLayoutStrut *)self->_baselineLayoutLabel topAnchor];
-    v13 = [(MFAtomTextView *)self topAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    topAnchor = [(_MFAtomTextViewBaselineLayoutStrut *)self->_baselineLayoutLabel topAnchor];
+    topAnchor2 = [(MFAtomTextView *)self topAnchor];
+    v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
     baselineLayoutConstraint = self->_baselineLayoutConstraint;
     self->_baselineLayoutConstraint = v14;
 
@@ -2266,29 +2266,29 @@ uint64_t __64__MFAtomTextView__firstGlyphBaselineLeftPointWithLayoutManager___bl
   }
 }
 
-- (void)_updateBaselineConstraintIfNecessaryUsingTextViewFrame:(CGRect)a3
+- (void)_updateBaselineConstraintIfNecessaryUsingTextViewFrame:(CGRect)frame
 {
   if (self->_baselineLayoutConstraint)
   {
     baselineLayoutLabel = self->_baselineLayoutLabel;
     if (baselineLayoutLabel)
     {
-      height = a3.size.height;
-      width = a3.size.width;
-      y = a3.origin.y;
-      x = a3.origin.x;
+      height = frame.size.height;
+      width = frame.size.width;
+      y = frame.origin.y;
+      x = frame.origin.x;
       [(_MFAtomTextViewBaselineLayoutStrut *)baselineLayoutLabel frame];
       v10 = v9;
       v12 = v11;
       [(_MFAtomTextViewBaselineLayoutStrut *)self->_baselineLayoutLabel intrinsicContentSize];
       [(_MFAtomTextViewBaselineLayoutStrut *)self->_baselineLayoutLabel setFrame:v10, v12, v13, v14];
-      v15 = [(_MFAtomFieldEditor *)self->_textView layoutManager];
-      [(MFAtomTextView *)self _firstGlyphBaselineLeftPointWithLayoutManager:v15];
+      layoutManager = [(_MFAtomFieldEditor *)self->_textView layoutManager];
+      [(MFAtomTextView *)self _firstGlyphBaselineLeftPointWithLayoutManager:layoutManager];
 
       UIRoundToViewScale();
       v17 = v16;
-      v18 = [(_MFAtomFieldEditor *)self->_textView superview];
-      [(MFAtomTextView *)self convertRect:v18 fromView:x, y, width, height];
+      superview = [(_MFAtomFieldEditor *)self->_textView superview];
+      [(MFAtomTextView *)self convertRect:superview fromView:x, y, width, height];
       v20 = v19;
       v22 = v21;
       v24 = v23;
@@ -2316,10 +2316,10 @@ uint64_t __64__MFAtomTextView__firstGlyphBaselineLeftPointWithLayoutManager___bl
   return baselineLayoutLabel;
 }
 
-- (id)_attachmentAtCharacterIndex:(unint64_t)a3
+- (id)_attachmentAtCharacterIndex:(unint64_t)index
 {
-  v4 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-  v5 = [v4 attribute:*MEMORY[0x1E69DB5F8] atIndex:a3 effectiveRange:0];
+  textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+  v5 = [textStorage attribute:*MEMORY[0x1E69DB5F8] atIndex:index effectiveRange:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2335,26 +2335,26 @@ uint64_t __64__MFAtomTextView__firstGlyphBaselineLeftPointWithLayoutManager___bl
   return v6;
 }
 
-- (_NSRange)_characterRangeForAtomView:(id)a3
+- (_NSRange)_characterRangeForAtomView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3010000000;
   v18 = "";
   v19 = xmmword_1BE985670;
-  if (v4)
+  if (viewCopy)
   {
-    v5 = [(_MFAtomFieldEditor *)self->_textView textStorage];
-    v6 = [v5 length];
+    textStorage = [(_MFAtomFieldEditor *)self->_textView textStorage];
+    v6 = [textStorage length];
     v7 = *MEMORY[0x1E69DB5F8];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __45__MFAtomTextView__characterRangeForAtomView___block_invoke;
     v12[3] = &unk_1E806C838;
-    v13 = v4;
+    v13 = viewCopy;
     v14 = &v15;
-    [v5 enumerateAttribute:v7 inRange:0 options:v6 usingBlock:{0, v12}];
+    [textStorage enumerateAttribute:v7 inRange:0 options:v6 usingBlock:{0, v12}];
 
     v9 = v16[4];
     v8 = v16[5];
@@ -2394,12 +2394,12 @@ void __45__MFAtomTextView__characterRangeForAtomView___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_updateAtomMasksInRect:(CGRect)a3
+- (void)_updateAtomMasksInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v22 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
@@ -2442,13 +2442,13 @@ void __45__MFAtomTextView__characterRangeForAtomView___block_invoke(uint64_t a1,
   }
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 state] == 3)
+  recognizedCopy = recognized;
+  if ([recognizedCopy state] == 3)
   {
-    [v4 locationInView:self];
+    [recognizedCopy locationInView:self];
     v6 = v5;
     v8 = v7;
     if (![(MFAtomTextView *)self isFirstResponder])
@@ -2475,9 +2475,9 @@ void __45__MFAtomTextView__characterRangeForAtomView___block_invoke(uint64_t a1,
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 delegateView];
-          [v14 bounds];
-          [(MFAtomTextView *)self convertRect:v14 fromView:?];
+          delegateView = [v13 delegateView];
+          [delegateView bounds];
+          [(MFAtomTextView *)self convertRect:delegateView fromView:?];
           v23.x = v6;
           v23.y = v8;
           if (CGRectContainsPoint(v24, v23))
@@ -2506,27 +2506,27 @@ LABEL_16:
   }
 }
 
-- (void)_clearButtonTapped:(id)a3
+- (void)_clearButtonTapped:(id)tapped
 {
   [(MFAtomTextView *)self setRepresentedObjects:0];
 
   [(MFAtomTextView *)self becomeFirstResponder];
 }
 
-- (void)escKeyPressed:(id)a3
+- (void)escKeyPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   if ([(MFAtomTextView *)self _showsClearButton])
   {
-    [(MFAtomTextView *)self _clearButtonTapped:v4];
+    [(MFAtomTextView *)self _clearButtonTapped:pressedCopy];
   }
 }
 
-- (CGRect)_usedRectWithLayoutManager:(id)a3 textContainer:(id)a4
+- (CGRect)_usedRectWithLayoutManager:(id)manager textContainer:(id)container
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 usedRectForTextContainer:v7];
+  managerCopy = manager;
+  containerCopy = container;
+  [managerCopy usedRectForTextContainer:containerCopy];
   v9 = v8;
   v11 = v10;
   [(_MFAtomFieldEditor *)self->_textView textContainerInset];
@@ -2551,17 +2551,17 @@ LABEL_16:
   return result;
 }
 
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end
 {
-  v5 = a5;
+  endCopy = end;
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (v5 && (*&self->_flags & 0x20) == 0)
+  managerCopy = manager;
+  containerCopy = container;
+  if (endCopy && (*&self->_flags & 0x20) == 0)
   {
     v10 = [MEMORY[0x1E695DFA8] setWithArray:self->_atomViews];
-    v29 = [v8 textStorage];
-    v11 = [v29 length];
+    textStorage = [managerCopy textStorage];
+    v11 = [textStorage length];
     v12 = *MEMORY[0x1E69DB5F8];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
@@ -2569,17 +2569,17 @@ LABEL_16:
     v34[3] = &unk_1E806C860;
     v13 = v10;
     v35 = v13;
-    v36 = self;
-    v14 = v8;
+    selfCopy = self;
+    v14 = managerCopy;
     v37 = v14;
-    v15 = v9;
+    v15 = containerCopy;
     v38 = v15;
-    [v29 enumerateAttribute:v12 inRange:0 options:v11 usingBlock:{0, v34}];
+    [textStorage enumerateAttribute:v12 inRange:0 options:v11 usingBlock:{0, v34}];
     if ([v13 count])
     {
       atomViews = self->_atomViews;
-      v17 = [v13 allObjects];
-      [(NSMutableArray *)atomViews removeObjectsInArray:v17];
+      allObjects = [v13 allObjects];
+      [(NSMutableArray *)atomViews removeObjectsInArray:allObjects];
 
       v32 = 0u;
       v33 = 0u;
@@ -2666,9 +2666,9 @@ void __72__MFAtomTextView_layoutManager_didCompleteLayoutForTextContainer_atEnd_
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  if (self->_scrollView == a3)
+  if (self->_scrollView == scroll)
   {
     [(MFAtomTextView *)self _visibleAtomsRect];
 
@@ -2681,39 +2681,39 @@ void __72__MFAtomTextView_layoutManager_didCompleteLayoutForTextContainer_atEnd_
   if ((*&self->_flags & 0x40) != 0)
   {
     textView = self->_textView;
-    v4 = [(_MFAtomFieldEditor *)textView selectedRange];
-    [(_MFAtomFieldEditor *)textView _rectForScrollToVisible:v4, v5];
+    selectedRange = [(_MFAtomFieldEditor *)textView selectedRange];
+    [(_MFAtomFieldEditor *)textView _rectForScrollToVisible:selectedRange, v5];
     [(_MFAtomFieldEditor *)self->_textView scrollRectToVisible:1 animated:?];
     *&self->_flags &= ~0x40u;
   }
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v5 = a3;
-  v4 = [v5 textStorage];
-  [v5 setSelectedRange:{objc_msgSend(v4, "length"), 0}];
+  editingCopy = editing;
+  textStorage = [editingCopy textStorage];
+  [editingCopy setSelectedRange:{objc_msgSend(textStorage, "length"), 0}];
 
   [(MFAtomTextView *)self sendActionsForControlEvents:0x40000];
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a3;
-  v10 = a5;
-  if (([v10 isEqualToString:@"\n"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"\t"))
+  length = range.length;
+  location = range.location;
+  viewCopy = view;
+  textCopy = text;
+  if (([textCopy isEqualToString:@"\n"] & 1) != 0 || objc_msgSend(textCopy, "isEqualToString:", @"\t"))
   {
-    v11 = [v9 textStorage];
-    [v9 setSelectedRange:{objc_msgSend(v11, "length"), 0}];
+    textStorage = [viewCopy textStorage];
+    [viewCopy setSelectedRange:{objc_msgSend(textStorage, "length"), 0}];
 
     [(MFAtomTextView *)self sendActionsForControlEvents:0x80000];
     v12 = 0;
     goto LABEL_4;
   }
 
-  v14 = [v10 isEqualToString:&stru_1F3CF3758];
+  v14 = [textCopy isEqualToString:&stru_1F3CF3758];
   if (length == 1)
   {
     v15 = v14;
@@ -2727,11 +2727,11 @@ void __72__MFAtomTextView_layoutManager_didCompleteLayoutForTextContainer_atEnd_
   if (v15 == 1)
   {
     v16 = [(MFAtomTextView *)self _attachmentAtCharacterIndex:location];
-    v17 = [v16 atomView];
+    atomView = [v16 atomView];
 
-    if (v17 && ![v17 selectionStyle])
+    if (atomView && ![atomView selectionStyle])
     {
-      [v9 setSelectedRange:{location, length}];
+      [viewCopy setSelectedRange:{location, length}];
 LABEL_19:
       v12 = 0;
       goto LABEL_20;
@@ -2743,22 +2743,22 @@ LABEL_19:
   v12 = 1;
   if ((*&self->_flags & 0x10) != 0 && length == 1)
   {
-    v17 = [(MFAtomTextView *)self _attachmentAtCharacterIndex:location];
-    v18 = [v17 atomView];
-    if (![v18 selectionStyle])
+    atomView = [(MFAtomTextView *)self _attachmentAtCharacterIndex:location];
+    v17AtomView = [atomView atomView];
+    if (![v17AtomView selectionStyle])
     {
 
       goto LABEL_20;
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v20 = [v17 representedObject];
-    v21 = [WeakRetained _atomTextView:self shouldReplaceRepresentedObject:v20 replacementText:v10];
+    representedObject = [atomView representedObject];
+    v21 = [WeakRetained _atomTextView:self shouldReplaceRepresentedObject:representedObject replacementText:textCopy];
 
     if ((v21 & 1) == 0)
     {
-      [v9 setSelectedRange:{location + 1, 0}];
-      [v9 insertText:v10];
+      [viewCopy setSelectedRange:{location + 1, 0}];
+      [viewCopy insertText:textCopy];
       goto LABEL_19;
     }
 
@@ -2772,21 +2772,21 @@ LABEL_4:
   return v12;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
   [(MFAtomTextView *)self setNeedsLayout];
 
   [(MFAtomTextView *)self sendActionsForControlEvents:0x20000];
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v18 = [v4 textStorage];
-  v5 = [v4 layoutManager];
-  v6 = [v4 selectedRange];
+  selectionCopy = selection;
+  textStorage = [selectionCopy textStorage];
+  layoutManager = [selectionCopy layoutManager];
+  selectedRange = [selectionCopy selectedRange];
   v8 = v7;
-  v9 = [v5 glyphRangeForCharacterRange:0 actualCharacterRange:{objc_msgSend(v18, "length"), 0}];
+  v9 = [layoutManager glyphRangeForCharacterRange:0 actualCharacterRange:{objc_msgSend(textStorage, "length"), 0}];
   v11 = v10;
   v26 = 0;
   v27 = &v26;
@@ -2798,13 +2798,13 @@ LABEL_4:
   v19[1] = 3221225472;
   v19[2] = __45__MFAtomTextView_textViewDidChangeSelection___block_invoke;
   v19[3] = &unk_1E806C8B0;
-  v12 = v5;
+  v12 = layoutManager;
   v20 = v12;
-  v13 = v18;
+  v13 = textStorage;
   v21 = v13;
-  v24 = v6;
+  v24 = selectedRange;
   v25 = v8;
-  v14 = v4;
+  v14 = selectionCopy;
   v22 = v14;
   v23 = &v26;
   [v12 enumerateLineFragmentsForGlyphRange:v9 usingBlock:{v11, v19}];
@@ -2818,7 +2818,7 @@ LABEL_4:
 
   else
   {
-    [(_MFAtomFieldEditor *)self->_textView _rectForScrollToVisible:v6, v8];
+    [(_MFAtomFieldEditor *)self->_textView _rectForScrollToVisible:selectedRange, v8];
   }
 
   [(_MFAtomFieldEditor *)self->_textView scrollRectToVisible:1 animated:?];
@@ -2924,7 +2924,7 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
   }
 }
 
-- (void)_textStorageDidProcessEditing:(id)a3
+- (void)_textStorageDidProcessEditing:(id)editing
 {
   if ([(_MFAtomFieldEditor *)self->_textView isSelectable])
   {
@@ -2937,29 +2937,29 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
 
 - (_NSRange)selectionRange
 {
-  v2 = [(_MFAtomFieldEditor *)self->_textView selectionRange];
+  selectionRange = [(_MFAtomFieldEditor *)self->_textView selectionRange];
   result.length = v3;
-  result.location = v2;
+  result.location = selectionRange;
   return result;
 }
 
-- (id)rangeEnclosingPosition:(id)a3 withGranularity:(int64_t)a4 inDirection:(int64_t)a5
+- (id)rangeEnclosingPosition:(id)position withGranularity:(int64_t)granularity inDirection:(int64_t)direction
 {
-  v5 = [(_MFAtomFieldEditor *)self->_textView rangeEnclosingPosition:a3 withGranularity:a4 inDirection:a5];
+  v5 = [(_MFAtomFieldEditor *)self->_textView rangeEnclosingPosition:position withGranularity:granularity inDirection:direction];
 
   return v5;
 }
 
-- (id)positionFromPosition:(id)a3 toBoundary:(int64_t)a4 inDirection:(int64_t)a5
+- (id)positionFromPosition:(id)position toBoundary:(int64_t)boundary inDirection:(int64_t)direction
 {
-  v5 = [(_MFAtomFieldEditor *)self->_textView positionFromPosition:a3 toBoundary:a4 inDirection:a5];
+  v5 = [(_MFAtomFieldEditor *)self->_textView positionFromPosition:position toBoundary:boundary inDirection:direction];
 
   return v5;
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
-  [(_MFAtomFieldEditor *)self->_textView firstRectForRange:a3];
+  [(_MFAtomFieldEditor *)self->_textView firstRectForRange:range];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2967,9 +2967,9 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  [(_MFAtomFieldEditor *)self->_textView caretRectForPosition:a3];
+  [(_MFAtomFieldEditor *)self->_textView caretRectForPosition:position];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -2977,65 +2977,65 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v3 = [(_MFAtomFieldEditor *)self->_textView selectionRectsForRange:a3];
+  v3 = [(_MFAtomFieldEditor *)self->_textView selectionRectsForRange:range];
 
   return v3;
 }
 
-- (id)textInRange:(id)a3
+- (id)textInRange:(id)range
 {
-  v3 = [(_MFAtomFieldEditor *)self->_textView textInRange:a3];
+  v3 = [(_MFAtomFieldEditor *)self->_textView textInRange:range];
 
   return v3;
 }
 
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction
 {
-  v4 = [(_MFAtomFieldEditor *)self->_textView characterRangeByExtendingPosition:a3 inDirection:a4];
+  v4 = [(_MFAtomFieldEditor *)self->_textView characterRangeByExtendingPosition:position inDirection:direction];
 
   return v4;
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
-  v4 = [(_MFAtomFieldEditor *)self->_textView textRangeFromPosition:a3 toPosition:a4];
+  v4 = [(_MFAtomFieldEditor *)self->_textView textRangeFromPosition:position toPosition:toPosition];
 
   return v4;
 }
 
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4
+- (id)positionFromPosition:(id)position offset:(int64_t)offset
 {
-  v4 = [(_MFAtomFieldEditor *)self->_textView positionFromPosition:a3 offset:a4];
+  v4 = [(_MFAtomFieldEditor *)self->_textView positionFromPosition:position offset:offset];
 
   return v4;
 }
 
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset
 {
-  v5 = [(_MFAtomFieldEditor *)self->_textView positionFromPosition:a3 inDirection:a4 offset:a5];
+  v5 = [(_MFAtomFieldEditor *)self->_textView positionFromPosition:position inDirection:direction offset:offset];
 
   return v5;
 }
 
-- (id)positionWithinRange:(id)a3 atCharacterOffset:(int64_t)a4
+- (id)positionWithinRange:(id)range atCharacterOffset:(int64_t)offset
 {
-  v4 = [(_MFAtomFieldEditor *)self->_textView positionWithinRange:a3 atCharacterOffset:a4];
+  v4 = [(_MFAtomFieldEditor *)self->_textView positionWithinRange:range atCharacterOffset:offset];
 
   return v4;
 }
 
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction
 {
-  v4 = [(_MFAtomFieldEditor *)self->_textView positionWithinRange:a3 farthestInDirection:a4];
+  v4 = [(_MFAtomFieldEditor *)self->_textView positionWithinRange:range farthestInDirection:direction];
 
   return v4;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range
 {
-  v4 = [(_MFAtomFieldEditor *)self->_textView closestPositionToPoint:a4 withinRange:a3.x, a3.y];
+  v4 = [(_MFAtomFieldEditor *)self->_textView closestPositionToPoint:range withinRange:point.x, point.y];
 
   return v4;
 }
@@ -3055,38 +3055,38 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
   return textInputTraits;
 }
 
-- (void)takeTraitsFrom:(id)a3
+- (void)takeTraitsFrom:(id)from
 {
-  v5 = a3;
-  v4 = [(MFAtomTextView *)self textInputTraits];
-  [v4 takeTraitsFrom:v5];
+  fromCopy = from;
+  textInputTraits = [(MFAtomTextView *)self textInputTraits];
+  [textInputTraits takeTraitsFrom:fromCopy];
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  if ([objc_opt_class() instancesRespondToSelector:a3])
+  if ([objc_opt_class() instancesRespondToSelector:selector])
   {
-    v5 = [(MFAtomTextView *)self textInputTraits];
+    textInputTraits = [(MFAtomTextView *)self textInputTraits];
   }
 
-  else if ([objc_opt_class() instancesRespondToSelector:a3])
+  else if ([objc_opt_class() instancesRespondToSelector:selector])
   {
-    v5 = self->_textView;
+    textInputTraits = self->_textView;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = MFAtomTextView;
-    v5 = [(MFAtomTextView *)&v7 forwardingTargetForSelector:a3];
+    textInputTraits = [(MFAtomTextView *)&v7 forwardingTargetForSelector:selector];
   }
 
-  return v5;
+  return textInputTraits;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
-  v4 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+  v4 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
   v5 = v4;
   if (v4)
   {
@@ -3095,7 +3095,7 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
 
   else
   {
-    v7 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+    v7 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
     v8 = v7;
     if (v7)
     {
@@ -3104,7 +3104,7 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
 
     else
     {
-      v9 = [objc_opt_class() instanceMethodSignatureForSelector:a3];
+      v9 = [objc_opt_class() instanceMethodSignatureForSelector:selector];
     }
 
     v6 = v9;
@@ -3113,7 +3113,7 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = MFAtomTextView;
@@ -3124,7 +3124,7 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
 
   else
   {
-    v5 = [(MFAtomTextView *)self textInputTraits];
+    textInputTraits = [(MFAtomTextView *)self textInputTraits];
     if (objc_opt_respondsToSelector())
     {
       v4 = 1;
@@ -3157,27 +3157,27 @@ void __45__MFAtomTextView_textViewDidChangeSelection___block_invoke_2(void *a1, 
   return v2;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = sel__clearButtonTapped_ == a3 || sel_escKeyPressed_ == a3 && [(MFAtomTextView *)self _showsClearButton]|| [(_MFAtomFieldEditor *)self->_textView canPerformAction:a3 withSender:v6];
+  senderCopy = sender;
+  v7 = sel__clearButtonTapped_ == action || sel_escKeyPressed_ == action && [(MFAtomTextView *)self _showsClearButton]|| [(_MFAtomFieldEditor *)self->_textView canPerformAction:action withSender:senderCopy];
 
   return v7;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = MFAtomTextView;
-  v5 = [(MFAtomTextView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(MFAtomTextView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self || v5 == self->_textView)
   {
-    v7 = [(UIButton *)self->_clearButton superview];
-    if (v7 != self)
+    superview = [(UIButton *)self->_clearButton superview];
+    if (superview != self)
     {
-      v8 = [(UIView *)self->_leadingView superview];
-      if (v8 != self)
+      superview2 = [(UIView *)self->_leadingView superview];
+      if (superview2 != self)
       {
         [(UIView *)self->_trailingView superview];
       }

@@ -1,7 +1,7 @@
 @interface AppDelegate
 - (AppDelegate)init;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation AppDelegate
@@ -21,22 +21,22 @@
   return v2;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = [(AppDelegate *)self sceneManager:a3];
+  v5 = [(AppDelegate *)self sceneManager:application];
   [v5 createInitialAppScene];
 
-  v6 = [(AppDelegate *)self sceneManager];
-  [v6 createInputUIScene];
+  sceneManager = [(AppDelegate *)self sceneManager];
+  [sceneManager createInputUIScene];
 
   v7 = [_UIKeyboardArbiterHost launchAdvisorWithOmniscientDelegate:0 sceneDelegate:self];
   BKSHIDServicesSetHIDUILockedState();
   return 1;
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
+  sessionCopy = session;
   v6 = sub_100012608();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -45,11 +45,11 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}s: (#function): (connectingSceneSession)", &v10, 0xCu);
   }
 
-  v7 = [v5 role];
+  role = [sessionCopy role];
 
-  if ([v7 isEqualToString:UIWindowSceneSessionRoleApplication])
+  if ([role isEqualToString:UIWindowSceneSessionRoleApplication])
   {
-    v8 = [[UISceneConfiguration alloc] initWithName:@"dre-main-view" sessionRole:v7];
+    v8 = [[UISceneConfiguration alloc] initWithName:@"dre-main-view" sessionRole:role];
     [v8 setSceneClass:objc_opt_class()];
     [v8 setDelegateClass:objc_opt_class()];
   }

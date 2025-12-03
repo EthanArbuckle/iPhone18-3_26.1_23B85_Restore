@@ -1,24 +1,24 @@
 @interface DBApplicationController
 + (id)sharedInstance;
-- (BOOL)preflightRequiredForApplication:(id)a3;
+- (BOOL)preflightRequiredForApplication:(id)application;
 - (DBApplicationController)init;
 - (NSArray)allApplications;
 - (NSArray)allPlaceholders;
-- (id)_lock_applicationWithBundleIdentifier:(id)a3;
-- (id)applicationWithBundleIdentifier:(id)a3;
-- (void)_didAddApplications:(id)a3;
-- (void)_didAddPlaceholders:(id)a3;
-- (void)_didCancelPlaceholders:(id)a3;
-- (void)_didRemoveApplications:(id)a3;
-- (void)_didReplaceApplications:(id)a3;
-- (void)_loadApplicationWithInfo:(id)a3;
-- (void)_loadApplications:(id)a3 removeApplications:(id)a4;
-- (void)_removeApplicationWithBundleIdentifier:(id)a3;
+- (id)_lock_applicationWithBundleIdentifier:(id)identifier;
+- (id)applicationWithBundleIdentifier:(id)identifier;
+- (void)_didAddApplications:(id)applications;
+- (void)_didAddPlaceholders:(id)placeholders;
+- (void)_didCancelPlaceholders:(id)placeholders;
+- (void)_didRemoveApplications:(id)applications;
+- (void)_didReplaceApplications:(id)applications;
+- (void)_loadApplicationWithInfo:(id)info;
+- (void)_loadApplications:(id)applications removeApplications:(id)removeApplications;
+- (void)_removeApplicationWithBundleIdentifier:(id)identifier;
 - (void)_updateApplications;
-- (void)_updatePolicyForApplication:(id)a3 withRelatedAssetPunchThroughs:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)appProtectionCoordinator:(id)a3 didUpdateBundleIdentifiers:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)_updatePolicyForApplication:(id)application withRelatedAssetPunchThroughs:(id)throughs;
+- (void)addObserver:(id)observer;
+- (void)appProtectionCoordinator:(id)coordinator didUpdateBundleIdentifiers:(id)identifiers;
+- (void)removeObserver:(id)observer;
 - (void)sessionDidConnect;
 @end
 
@@ -39,12 +39,12 @@
 - (NSArray)allApplications
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(DBApplicationController *)self applicationsByBundleIdentifier];
-  v4 = [v3 allValues];
+  applicationsByBundleIdentifier = [(DBApplicationController *)self applicationsByBundleIdentifier];
+  allValues = [applicationsByBundleIdentifier allValues];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return allValues;
 }
 
 uint64_t __41__DBApplicationController_sharedInstance__block_invoke()
@@ -135,8 +135,8 @@ uint64_t __41__DBApplicationController_sharedInstance__block_invoke()
     v71 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v31 = [(FBSApplicationLibrary *)v3->_appLibrary allPlaceholders];
-    v32 = [v31 countByEnumeratingWithState:&v68 objects:v76 count:16];
+    allPlaceholders = [(FBSApplicationLibrary *)v3->_appLibrary allPlaceholders];
+    v32 = [allPlaceholders countByEnumeratingWithState:&v68 objects:v76 count:16];
     if (v32)
     {
       v33 = *v69;
@@ -146,16 +146,16 @@ uint64_t __41__DBApplicationController_sharedInstance__block_invoke()
         {
           if (*v69 != v33)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(allPlaceholders);
           }
 
           v35 = *(*(&v68 + 1) + 8 * i);
           v36 = v3->_placeholdersByBundleIdentifier;
-          v37 = [v35 bundleIdentifier];
-          [(NSMutableDictionary *)v36 setObject:v35 forKey:v37];
+          bundleIdentifier = [v35 bundleIdentifier];
+          [(NSMutableDictionary *)v36 setObject:v35 forKey:bundleIdentifier];
         }
 
-        v32 = [v31 countByEnumeratingWithState:&v68 objects:v76 count:16];
+        v32 = [allPlaceholders countByEnumeratingWithState:&v68 objects:v76 count:16];
       }
 
       while (v32);
@@ -168,8 +168,8 @@ uint64_t __41__DBApplicationController_sharedInstance__block_invoke()
       _os_log_impl(&dword_248146000, v38, OS_LOG_TYPE_DEFAULT, "[DBApplicationController] Loading initial applications", buf, 2u);
     }
 
-    v39 = [(FBSApplicationLibrary *)v3->_appLibrary allInstalledApplications];
-    [(DBApplicationController *)v3 _loadApplications:v39 removeApplications:0];
+    allInstalledApplications = [(FBSApplicationLibrary *)v3->_appLibrary allInstalledApplications];
+    [(DBApplicationController *)v3 _loadApplications:allInstalledApplications removeApplications:0];
 
     objc_initWeak(buf, v3);
     v40 = v3->_appLibrary;
@@ -417,21 +417,21 @@ void __31__DBApplicationController_init__block_invoke_10(uint64_t a1)
 - (NSArray)allPlaceholders
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(DBApplicationController *)self placeholdersByBundleIdentifier];
-  v4 = [v3 allValues];
+  placeholdersByBundleIdentifier = [(DBApplicationController *)self placeholdersByBundleIdentifier];
+  allValues = [placeholdersByBundleIdentifier allValues];
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return allValues;
 }
 
-- (id)applicationWithBundleIdentifier:(id)a3
+- (id)applicationWithBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(DBApplicationController *)self _lock_applicationWithBundleIdentifier:v4];
+    v5 = [(DBApplicationController *)self _lock_applicationWithBundleIdentifier:identifierCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
@@ -444,31 +444,31 @@ void __31__DBApplicationController_init__block_invoke_10(uint64_t a1)
   return v5;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBApplicationController *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBApplicationController *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBApplicationController *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBApplicationController *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
-- (BOOL)preflightRequiredForApplication:(id)a3
+- (BOOL)preflightRequiredForApplication:(id)application
 {
-  v4 = a3;
-  v5 = [v4 info];
-  v6 = [v5 applicationIdentity];
-  if (v6)
+  applicationCopy = application;
+  info = [applicationCopy info];
+  applicationIdentity = [info applicationIdentity];
+  if (applicationIdentity)
   {
-    v7 = [(DBApplicationController *)self preflightManager];
-    v8 = [v4 info];
-    v9 = [v8 applicationIdentity];
-    v10 = [v7 requiresPreflightForApplication:v9];
+    preflightManager = [(DBApplicationController *)self preflightManager];
+    info2 = [applicationCopy info];
+    applicationIdentity2 = [info2 applicationIdentity];
+    v10 = [preflightManager requiresPreflightForApplication:applicationIdentity2];
   }
 
   else
@@ -481,8 +481,8 @@ void __31__DBApplicationController_init__block_invoke_10(uint64_t a1)
 
 - (void)sessionDidConnect
 {
-  v3 = [(DBApplicationController *)self _appPolicyEvaluator];
-  [v3 updateGeoSupported];
+  _appPolicyEvaluator = [(DBApplicationController *)self _appPolicyEvaluator];
+  [_appPolicyEvaluator updateGeoSupported];
 
   [(DBApplicationController *)self _updateApplications];
 }
@@ -513,24 +513,24 @@ void __31__DBApplicationController_init__block_invoke_10(uint64_t a1)
 
         v7 = *(*(&v24 + 1) + 8 * i);
         v8 = +[_TtC9DashBoard14DBAssetLibrary shared];
-        v9 = [v7 bundleIdentifier];
-        v10 = [v8 verifiedPunchThroughsWithBundleIdentifier:v9];
+        bundleIdentifier = [v7 bundleIdentifier];
+        v10 = [v8 verifiedPunchThroughsWithBundleIdentifier:bundleIdentifier];
 
-        v11 = [v7 appPolicy];
-        LOBYTE(v9) = [v11 isSessionDependentPolicy];
+        appPolicy = [v7 appPolicy];
+        LOBYTE(bundleIdentifier) = [appPolicy isSessionDependentPolicy];
 
-        if ((v9 & 1) != 0 || v10)
+        if ((bundleIdentifier & 1) != 0 || v10)
         {
-          v12 = [v7 appPolicy];
-          v13 = [v12 isCarPlaySupported];
+          appPolicy2 = [v7 appPolicy];
+          isCarPlaySupported = [appPolicy2 isCarPlaySupported];
 
           [(DBApplicationController *)self _updatePolicyForApplication:v7 withRelatedAssetPunchThroughs:v10];
-          v14 = [v7 appPolicy];
-          v15 = [v14 isCarPlaySupported];
+          appPolicy3 = [v7 appPolicy];
+          isCarPlaySupported2 = [appPolicy3 isCarPlaySupported];
 
-          if (v13 != v15)
+          if (isCarPlaySupported != isCarPlaySupported2)
           {
-            if (v13)
+            if (isCarPlaySupported)
             {
               v16 = v21;
             }
@@ -553,44 +553,44 @@ void __31__DBApplicationController_init__block_invoke_10(uint64_t a1)
 
   if ([v22 count] || objc_msgSend(v21, "count"))
   {
-    v17 = [(DBApplicationController *)self observers];
+    observers = [(DBApplicationController *)self observers];
     v18 = [v22 copy];
     v19 = [MEMORY[0x277CBEB98] set];
     v20 = [v21 copy];
-    [v17 applicationController:self addedApplications:v18 updatedApplications:v19 removedApplications:v20];
+    [observers applicationController:self addedApplications:v18 updatedApplications:v19 removedApplications:v20];
   }
 }
 
-- (void)appProtectionCoordinator:(id)a3 didUpdateBundleIdentifiers:(id)a4
+- (void)appProtectionCoordinator:(id)coordinator didUpdateBundleIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  identifiersCopy = identifiers;
   v8 = DBLogForCategory(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v23 = v7;
+    v23 = identifiersCopy;
     _os_log_impl(&dword_248146000, v8, OS_LOG_TYPE_DEFAULT, "[DBApplicationController] Protected apps did update: %{public}@", buf, 0xCu);
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CF8A28]);
   [(DBApplicationController *)self setAppPolicyEvaluator:v9];
 
-  v10 = [(DBApplicationController *)self appPolicyEvaluator];
-  [v10 setWantsGeoSupported];
+  appPolicyEvaluator = [(DBApplicationController *)self appPolicyEvaluator];
+  [appPolicyEvaluator setWantsGeoSupported];
 
-  v11 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v7, "count")}];
+  v11 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __79__DBApplicationController_appProtectionCoordinator_didUpdateBundleIdentifiers___block_invoke;
   v19[3] = &unk_278F03370;
   v19[4] = self;
-  v20 = v6;
+  v20 = coordinatorCopy;
   v12 = v11;
   v21 = v12;
-  v13 = v6;
-  [v7 enumerateObjectsUsingBlock:v19];
+  v13 = coordinatorCopy;
+  [identifiersCopy enumerateObjectsUsingBlock:v19];
   v14 = DBLogForCategory(1uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -599,11 +599,11 @@ void __31__DBApplicationController_init__block_invoke_10(uint64_t a1)
     _os_log_impl(&dword_248146000, v14, OS_LOG_TYPE_DEFAULT, "[DBApplicationController] Updated apps: %{public}@", buf, 0xCu);
   }
 
-  v15 = [(DBApplicationController *)self observers];
+  observers = [(DBApplicationController *)self observers];
   v16 = [MEMORY[0x277CBEB98] set];
   v17 = [v12 copy];
   v18 = [MEMORY[0x277CBEB98] set];
-  [v15 applicationController:self addedApplications:v16 updatedApplications:v17 removedApplications:v18];
+  [observers applicationController:self addedApplications:v16 updatedApplications:v17 removedApplications:v18];
 }
 
 void __79__DBApplicationController_appProtectionCoordinator_didUpdateBundleIdentifiers___block_invoke(id *a1, void *a2)
@@ -629,25 +629,25 @@ void __79__DBApplicationController_appProtectionCoordinator_didUpdateBundleIdent
   }
 }
 
-- (void)_updatePolicyForApplication:(id)a3 withRelatedAssetPunchThroughs:(id)a4
+- (void)_updatePolicyForApplication:(id)application withRelatedAssetPunchThroughs:(id)throughs
 {
-  v12 = a4;
-  v6 = a3;
-  v7 = [v6 info];
-  v8 = [v7 carPlayDeclaration];
+  throughsCopy = throughs;
+  applicationCopy = application;
+  info = [applicationCopy info];
+  carPlayDeclaration = [info carPlayDeclaration];
 
-  if (v8)
+  if (carPlayDeclaration)
   {
-    v9 = [(DBApplicationController *)self appPolicyEvaluator];
-    v10 = v9;
-    if (v12)
+    appPolicyEvaluator = [(DBApplicationController *)self appPolicyEvaluator];
+    v10 = appPolicyEvaluator;
+    if (throughsCopy)
     {
-      [v9 effectivePolicyForAppDeclaration:v8 withVerifiedPunchThroughs:?];
+      [appPolicyEvaluator effectivePolicyForAppDeclaration:carPlayDeclaration withVerifiedPunchThroughs:?];
     }
 
     else
     {
-      [v9 effectivePolicyForAppDeclaration:v8];
+      [appPolicyEvaluator effectivePolicyForAppDeclaration:carPlayDeclaration];
     }
     v11 = ;
   }
@@ -658,26 +658,26 @@ void __79__DBApplicationController_appProtectionCoordinator_didUpdateBundleIdent
   }
 
   os_unfair_lock_lock(&self->_lock);
-  [v6 setAppPolicy:v11];
+  [applicationCopy setAppPolicy:v11];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_loadApplications:(id)a3 removeApplications:(id)a4
+- (void)_loadApplications:(id)applications removeApplications:(id)removeApplications
 {
-  v6 = a3;
+  applicationsCopy = applications;
   v7 = MEMORY[0x277CBEB58];
-  v8 = a4;
-  v9 = [v7 setWithArray:v6];
-  v10 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v6, "count")}];
-  v11 = [MEMORY[0x277CBEB58] setWithArray:v8];
+  removeApplicationsCopy = removeApplications;
+  v9 = [v7 setWithArray:applicationsCopy];
+  v10 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(applicationsCopy, "count")}];
+  v11 = [MEMORY[0x277CBEB58] setWithArray:removeApplicationsCopy];
 
-  v12 = [(DBApplicationController *)self dashBoardAppInfo];
+  dashBoardAppInfo = [(DBApplicationController *)self dashBoardAppInfo];
 
-  if (v12)
+  if (dashBoardAppInfo)
   {
-    v13 = [(DBApplicationController *)self dashBoardAppInfo];
-    [v9 removeObject:v13];
+    dashBoardAppInfo2 = [(DBApplicationController *)self dashBoardAppInfo];
+    [v9 removeObject:dashBoardAppInfo2];
   }
 
   v23[0] = MEMORY[0x277D85DD0];
@@ -689,7 +689,7 @@ void __79__DBApplicationController_appProtectionCoordinator_didUpdateBundleIdent
   v25 = v10;
   v14 = v10;
   v15 = v9;
-  [v6 enumerateObjectsUsingBlock:v23];
+  [applicationsCopy enumerateObjectsUsingBlock:v23];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __64__DBApplicationController__loadApplications_removeApplications___block_invoke_2;
@@ -704,11 +704,11 @@ void __79__DBApplicationController_appProtectionCoordinator_didUpdateBundleIdent
   v21[3] = &unk_278F033C0;
   v21[4] = self;
   [v16 enumerateObjectsUsingBlock:v21];
-  v17 = [(DBApplicationController *)self observers];
+  observers = [(DBApplicationController *)self observers];
   v18 = [v15 copy];
   v19 = [v14 copy];
   v20 = [v11 copy];
-  [v17 applicationController:self addedApplications:v18 updatedApplications:v19 removedApplications:v20];
+  [observers applicationController:self addedApplications:v18 updatedApplications:v19 removedApplications:v20];
 }
 
 void __64__DBApplicationController__loadApplications_removeApplications___block_invoke(id *a1, void *a2)
@@ -748,64 +748,64 @@ void __64__DBApplicationController__loadApplications_removeApplications___block_
   [v2 _removeApplicationWithBundleIdentifier:v3];
 }
 
-- (void)_loadApplicationWithInfo:(id)a3
+- (void)_loadApplicationWithInfo:(id)info
 {
-  v4 = a3;
-  v11 = [v4 bundleIdentifier];
+  infoCopy = info;
+  bundleIdentifier = [infoCopy bundleIdentifier];
   v5 = [(DBApplicationController *)self applicationWithBundleIdentifier:?];
   if (v5)
   {
-    [(DBApplicationController *)self _removeApplicationWithBundleIdentifier:v11];
+    [(DBApplicationController *)self _removeApplicationWithBundleIdentifier:bundleIdentifier];
   }
 
-  v6 = [[DBApplication alloc] initWithApplicationInfo:v4];
+  v6 = [[DBApplication alloc] initWithApplicationInfo:infoCopy];
 
   [(DBApplicationController *)self _updatePolicyForApplication:v6 withRelatedAssetPunchThroughs:0];
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(DBApplicationController *)self placeholdersByBundleIdentifier];
-  v8 = [v7 objectForKeyedSubscript:v11];
+  placeholdersByBundleIdentifier = [(DBApplicationController *)self placeholdersByBundleIdentifier];
+  v8 = [placeholdersByBundleIdentifier objectForKeyedSubscript:bundleIdentifier];
 
   [(DBApplication *)v6 setPlaceholder:v8];
-  v9 = [(DBApplicationController *)self appProtectionCoordinator];
-  -[DBApplication setLockedOrHidden:](v6, "setLockedOrHidden:", [v9 applicationBundleIdentifierIsLockedOrHidden:v11]);
+  appProtectionCoordinator = [(DBApplicationController *)self appProtectionCoordinator];
+  -[DBApplication setLockedOrHidden:](v6, "setLockedOrHidden:", [appProtectionCoordinator applicationBundleIdentifierIsLockedOrHidden:bundleIdentifier]);
 
-  v10 = [(DBApplicationController *)self applicationsByBundleIdentifier];
-  [v10 setObject:v6 forKeyedSubscript:v11];
+  applicationsByBundleIdentifier = [(DBApplicationController *)self applicationsByBundleIdentifier];
+  [applicationsByBundleIdentifier setObject:v6 forKeyedSubscript:bundleIdentifier];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_removeApplicationWithBundleIdentifier:(id)a3
+- (void)_removeApplicationWithBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(DBApplicationController *)self applicationsByBundleIdentifier];
-    [v5 setObject:0 forKeyedSubscript:v4];
+    applicationsByBundleIdentifier = [(DBApplicationController *)self applicationsByBundleIdentifier];
+    [applicationsByBundleIdentifier setObject:0 forKeyedSubscript:identifierCopy];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (id)_lock_applicationWithBundleIdentifier:(id)a3
+- (id)_lock_applicationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(DBApplicationController *)self applicationsByBundleIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  applicationsByBundleIdentifier = [(DBApplicationController *)self applicationsByBundleIdentifier];
+  v6 = [applicationsByBundleIdentifier objectForKeyedSubscript:identifierCopy];
 
   return v6;
 }
 
-- (void)_didAddPlaceholders:(id)a3
+- (void)_didAddPlaceholders:(id)placeholders
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placeholdersCopy = placeholders;
   v5 = DBLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = [v4 count];
+    v8 = [placeholdersCopy count];
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "[DBApplicationController] Added %ld placeholders", buf, 0xCu);
   }
 
@@ -815,7 +815,7 @@ void __64__DBApplicationController__loadApplications_removeApplications___block_
   v6[2] = __47__DBApplicationController__didAddPlaceholders___block_invoke;
   v6[3] = &unk_278F033E8;
   v6[4] = self;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [placeholdersCopy enumerateObjectsUsingBlock:v6];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -847,15 +847,15 @@ void __47__DBApplicationController__didAddPlaceholders___block_invoke(uint64_t a
   }
 }
 
-- (void)_didCancelPlaceholders:(id)a3
+- (void)_didCancelPlaceholders:(id)placeholders
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placeholdersCopy = placeholders;
   v5 = DBLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = [v4 count];
+    v8 = [placeholdersCopy count];
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "[DBApplicationController] Canceled %ld placeholders", buf, 0xCu);
   }
 
@@ -865,7 +865,7 @@ void __47__DBApplicationController__didAddPlaceholders___block_invoke(uint64_t a
   v6[2] = __50__DBApplicationController__didCancelPlaceholders___block_invoke;
   v6[3] = &unk_278F033E8;
   v6[4] = self;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [placeholdersCopy enumerateObjectsUsingBlock:v6];
   os_unfair_lock_unlock(&self->_lock);
 }
 
@@ -897,15 +897,15 @@ void __50__DBApplicationController__didCancelPlaceholders___block_invoke(uint64_
   }
 }
 
-- (void)_didAddApplications:(id)a3
+- (void)_didAddApplications:(id)applications
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationsCopy = applications;
   v5 = DBLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = [v4 count];
+    v8 = [applicationsCopy count];
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "[DBApplicationController] Added %ld applications", buf, 0xCu);
   }
 
@@ -915,9 +915,9 @@ void __50__DBApplicationController__didCancelPlaceholders___block_invoke(uint64_
   v6[2] = __47__DBApplicationController__didAddApplications___block_invoke;
   v6[3] = &unk_278F03410;
   v6[4] = self;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [applicationsCopy enumerateObjectsUsingBlock:v6];
   os_unfair_lock_unlock(&self->_lock);
-  [(DBApplicationController *)self _loadApplications:v4 removeApplications:0];
+  [(DBApplicationController *)self _loadApplications:applicationsCopy removeApplications:0];
 }
 
 void __47__DBApplicationController__didAddApplications___block_invoke(uint64_t a1, void *a2)
@@ -946,20 +946,20 @@ void __47__DBApplicationController__didAddApplications___block_invoke(uint64_t a
   }
 }
 
-- (void)_didReplaceApplications:(id)a3
+- (void)_didReplaceApplications:(id)applications
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationsCopy = applications;
   v5 = DBLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v10 = [v4 count];
+    v10 = [applicationsCopy count];
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "[DBApplicationController] Replaced %ld applications", buf, 0xCu);
   }
 
-  v6 = [v4 objectEnumerator];
-  v7 = [v6 allObjects];
+  objectEnumerator = [applicationsCopy objectEnumerator];
+  allObjects = [objectEnumerator allObjects];
 
   os_unfair_lock_lock(&self->_lock);
   v8[0] = MEMORY[0x277D85DD0];
@@ -967,9 +967,9 @@ void __47__DBApplicationController__didAddApplications___block_invoke(uint64_t a
   v8[2] = __51__DBApplicationController__didReplaceApplications___block_invoke;
   v8[3] = &unk_278F03410;
   v8[4] = self;
-  [v7 enumerateObjectsUsingBlock:v8];
+  [allObjects enumerateObjectsUsingBlock:v8];
   os_unfair_lock_unlock(&self->_lock);
-  [(DBApplicationController *)self _loadApplications:v7 removeApplications:0];
+  [(DBApplicationController *)self _loadApplications:allObjects removeApplications:0];
 }
 
 void __51__DBApplicationController__didReplaceApplications___block_invoke(uint64_t a1, void *a2)
@@ -998,30 +998,30 @@ void __51__DBApplicationController__didReplaceApplications___block_invoke(uint64
   }
 }
 
-- (void)_didRemoveApplications:(id)a3
+- (void)_didRemoveApplications:(id)applications
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  applicationsCopy = applications;
   v5 = DBLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v15 = [v4 count];
+    v15 = [applicationsCopy count];
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "[DBApplicationController] Removed %ld applications", buf, 0xCu);
   }
 
-  v6 = [v4 mutableCopy];
+  v6 = [applicationsCopy mutableCopy];
   os_unfair_lock_lock(&self->_lock);
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __50__DBApplicationController__didRemoveApplications___block_invoke;
   v11 = &unk_278F03438;
-  v12 = self;
+  selfCopy = self;
   v13 = v6;
   v7 = v6;
-  [v4 enumerateObjectsUsingBlock:&v8];
+  [applicationsCopy enumerateObjectsUsingBlock:&v8];
   os_unfair_lock_unlock(&self->_lock);
-  [(DBApplicationController *)self _loadApplications:0 removeApplications:v7, v8, v9, v10, v11, v12];
+  [(DBApplicationController *)self _loadApplications:0 removeApplications:v7, v8, v9, v10, v11, selfCopy];
 }
 
 void __50__DBApplicationController__didRemoveApplications___block_invoke(uint64_t a1, void *a2)

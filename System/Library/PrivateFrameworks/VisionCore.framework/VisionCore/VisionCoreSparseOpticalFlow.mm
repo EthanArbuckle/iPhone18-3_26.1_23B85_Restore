@@ -1,46 +1,46 @@
 @interface VisionCoreSparseOpticalFlow
-+ (BOOL)_point:(CGPoint)a3 inQuad:(id)a4;
-+ (BOOL)_updateSession:(id)a3 referenceFrame:(__CVBuffer *)a4 error:(id *)a5;
-+ (BOOL)_validateBuffer:(__CVBuffer *)a3;
-+ (VisionCoreHomography)_estimateTransformSrcPts:(SEL)a3 DstPts:(void *)a4 ransacReprojErrorThreshold:(void *)a5;
-+ (id)computeHomographiesForQuadrilaterals:(id)a3 inFrame:(__CVBuffer *)a4 session:(id)a5 options:(id)a6 error:(id *)a7;
-+ (id)destinationKptsForTransform:(VisionCoreHomography *)a3;
-+ (id)quadsConformHomographySrcQuads:(id)a3 destQuads:(id)a4 reprojError:(float)a5;
-+ (id)sourceKptsForTransform:(VisionCoreHomography *)a3;
-+ (id)sparseOpticalFlowResultsFromHomography:(VisionCoreHomography *)a3;
-+ (id)updateSparseOpticalFlowResults:(id)a3 homography:(VisionCoreHomography *)a4;
-+ (unint64_t)_mtlPixelFormatForBuffer:(__CVBuffer *)a3;
-+ (vector<VisionCoreHomography,)_runSparseOpticalFlowOnFrame:(id)a2 shouldRunCorr:(SEL)a3 forSession:(__CVBuffer *)a4 error:(BOOL)a5 groups:(id)a6 options:(id *)a7;
-+ (vector<int,)getInlierCountsPerQuad:()vector<int inliers:(std:(SEL)a3 :(void *)a4 allocator<int>> *)result;
-+ (void)_gatherKeyPtsFromQuadsForSession:(id)a3 minGridFrequency:(int)a4;
-+ (void)recursiveRansacSrcPts:(void *)a3 DstPts:(void *)a4 QuadsMatchingKptsCount:(void *)a5 resultingHomographies:(void *)a6 groups:(void *)a7 inlierRatio:(float)a8 ransacReprojErrorThreshold:(float)a9;
++ (BOOL)_point:(CGPoint)_point inQuad:(id)quad;
++ (BOOL)_updateSession:(id)session referenceFrame:(__CVBuffer *)frame error:(id *)error;
++ (BOOL)_validateBuffer:(__CVBuffer *)buffer;
++ (VisionCoreHomography)_estimateTransformSrcPts:(SEL)pts DstPts:(void *)dstPts ransacReprojErrorThreshold:(void *)threshold;
++ (id)computeHomographiesForQuadrilaterals:(id)quadrilaterals inFrame:(__CVBuffer *)frame session:(id)session options:(id)options error:(id *)error;
++ (id)destinationKptsForTransform:(VisionCoreHomography *)transform;
++ (id)quadsConformHomographySrcQuads:(id)quads destQuads:(id)destQuads reprojError:(float)error;
++ (id)sourceKptsForTransform:(VisionCoreHomography *)transform;
++ (id)sparseOpticalFlowResultsFromHomography:(VisionCoreHomography *)homography;
++ (id)updateSparseOpticalFlowResults:(id)results homography:(VisionCoreHomography *)homography;
++ (unint64_t)_mtlPixelFormatForBuffer:(__CVBuffer *)buffer;
++ (vector<VisionCoreHomography,)_runSparseOpticalFlowOnFrame:(id)frame shouldRunCorr:(SEL)corr forSession:(__CVBuffer *)session error:(BOOL)error groups:(id)groups options:(id *)options;
++ (vector<int,)getInlierCountsPerQuad:()vector<int inliers:(std:(SEL)inliers :(void *)a4 allocator<int>> *)result;
++ (void)_gatherKeyPtsFromQuadsForSession:(id)session minGridFrequency:(int)frequency;
++ (void)recursiveRansacSrcPts:(void *)pts DstPts:(void *)dstPts QuadsMatchingKptsCount:(void *)count resultingHomographies:(void *)homographies groups:(void *)groups inlierRatio:(float)ratio ransacReprojErrorThreshold:(float)threshold;
 @end
 
 @implementation VisionCoreSparseOpticalFlow
 
-+ (id)sparseOpticalFlowResultsFromHomography:(VisionCoreHomography *)a3
++ (id)sparseOpticalFlowResultsFromHomography:(VisionCoreHomography *)homography
 {
   v4 = [VisionCoreSparseOpticalFlowResult alloc];
   [MEMORY[0x1E696AFB0] UUID];
   objc_claimAutoreleasedReturnValue();
-  VisionCoreHomography::VisionCoreHomography(&v6, a3);
+  VisionCoreHomography::VisionCoreHomography(&v6, homography);
 }
 
-+ (id)updateSparseOpticalFlowResults:(id)a3 homography:(VisionCoreHomography *)a4
++ (id)updateSparseOpticalFlowResults:(id)results homography:(VisionCoreHomography *)homography
 {
-  v5 = a3;
+  resultsCopy = results;
   v6 = [VisionCoreSparseOpticalFlowResult alloc];
   [MEMORY[0x1E696AFB0] UUID];
   objc_claimAutoreleasedReturnValue();
-  VisionCoreHomography::VisionCoreHomography(&v8, a4);
+  VisionCoreHomography::VisionCoreHomography(&v8, homography);
 }
 
-+ (id)destinationKptsForTransform:(VisionCoreHomography *)a3
++ (id)destinationKptsForTransform:(VisionCoreHomography *)transform
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  VisionCoreHomography::CalculateReprojectionError(&v12, a3);
+  VisionCoreHomography::CalculateReprojectionError(&v12, transform);
   v5 = v12;
-  if (a3->var1.var2 < 1)
+  if (transform->var1.var2 < 1)
   {
     if (!v12)
     {
@@ -54,24 +54,24 @@
     do
     {
       v7 = [VisionCoreSparseOpticalFlowResultPoint alloc];
-      if (a3->var3.var1 <= v6)
+      if (transform->var3.var1 <= v6)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = (*(a3->var3.var0 + ((v6 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> v6) & 1;
+        v9 = (*(transform->var3.var0 + ((v6 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> v6) & 1;
       }
 
       LODWORD(v8) = v5[v6];
-      v10 = [(VisionCoreSparseOpticalFlowResultPoint *)v7 initWithX:v9 Y:a3->var1.var0[v6] inlier:a3->var1.var1[v6] reprojError:v8];
+      v10 = [(VisionCoreSparseOpticalFlowResultPoint *)v7 initWithX:v9 Y:transform->var1.var0[v6] inlier:transform->var1.var1[v6] reprojError:v8];
       [v4 addObject:v10];
 
       ++v6;
     }
 
-    while (v6 < a3->var1.var2);
+    while (v6 < transform->var1.var2);
   }
 
   operator delete(v5);
@@ -80,12 +80,12 @@ LABEL_10:
   return v4;
 }
 
-+ (id)sourceKptsForTransform:(VisionCoreHomography *)a3
++ (id)sourceKptsForTransform:(VisionCoreHomography *)transform
 {
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  VisionCoreHomography::CalculateReprojectionError(&v12, a3);
+  VisionCoreHomography::CalculateReprojectionError(&v12, transform);
   v5 = v12;
-  if (a3->var0.var2 < 1)
+  if (transform->var0.var2 < 1)
   {
     if (!v12)
     {
@@ -99,24 +99,24 @@ LABEL_10:
     do
     {
       v7 = [VisionCoreSparseOpticalFlowResultPoint alloc];
-      if (a3->var3.var1 <= v6)
+      if (transform->var3.var1 <= v6)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = (*(a3->var3.var0 + ((v6 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> v6) & 1;
+        v9 = (*(transform->var3.var0 + ((v6 >> 3) & 0x1FFFFFFFFFFFFFF8)) >> v6) & 1;
       }
 
       LODWORD(v8) = v5[v6];
-      v10 = [(VisionCoreSparseOpticalFlowResultPoint *)v7 initWithX:v9 Y:a3->var0.var0[v6] inlier:a3->var0.var1[v6] reprojError:v8];
+      v10 = [(VisionCoreSparseOpticalFlowResultPoint *)v7 initWithX:v9 Y:transform->var0.var0[v6] inlier:transform->var0.var1[v6] reprojError:v8];
       [v4 addObject:v10];
 
       ++v6;
     }
 
-    while (v6 < a3->var0.var2);
+    while (v6 < transform->var0.var2);
   }
 
   operator delete(v5);
@@ -125,33 +125,33 @@ LABEL_10:
   return v4;
 }
 
-+ (id)computeHomographiesForQuadrilaterals:(id)a3 inFrame:(__CVBuffer *)a4 session:(id)a5 options:(id)a6 error:(id *)a7
++ (id)computeHomographiesForQuadrilaterals:(id)quadrilaterals inFrame:(__CVBuffer *)frame session:(id)session options:(id)options error:(id *)error
 {
   v92 = *MEMORY[0x1E69E9840];
-  v76 = a3;
-  v11 = a5;
-  v74 = a6;
-  v78 = a1;
-  if ([a1 _validateBuffer:a4])
+  quadrilateralsCopy = quadrilaterals;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  if ([self _validateBuffer:frame])
   {
-    v12 = [v74 objectForKeyedSubscript:@"VisionCoreOption_MinKptsFreqForQuads"];
+    v12 = [optionsCopy objectForKeyedSubscript:@"VisionCoreOption_MinKptsFreqForQuads"];
     v72 = v12;
     if (v12)
     {
-      v13 = [v12 intValue];
+      intValue = [v12 intValue];
     }
 
     else
     {
-      v13 = 4;
+      intValue = 4;
     }
 
-    v77 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v76, "count")}];
-    Width = CVPixelBufferGetWidth(a4);
-    v73 = a4;
-    Height = CVPixelBufferGetHeight(a4);
+    v77 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(quadrilateralsCopy, "count")}];
+    Width = CVPixelBufferGetWidth(frame);
+    frameCopy = frame;
+    Height = CVPixelBufferGetHeight(frame);
     v15 = objc_alloc(MEMORY[0x1E695DF70]);
-    v16 = [v76 count];
+    v16 = [quadrilateralsCopy count];
     if (v16 <= 1)
     {
       v17 = 1;
@@ -163,12 +163,12 @@ LABEL_10:
     }
 
     v18 = [v15 initWithCapacity:v17];
-    v80 = v13;
+    v80 = intValue;
     v89 = 0u;
     v90 = 0u;
     v87 = 0u;
     v88 = 0u;
-    v19 = v76;
+    v19 = quadrilateralsCopy;
     v20 = [v19 countByEnumeratingWithState:&v87 objects:v91 count:16];
     if (v20)
     {
@@ -196,8 +196,8 @@ LABEL_10:
           [v23 bottomLeft];
           v38 = v37;
           v40 = v39;
-          v41 = [v23 UUID];
-          v42 = -[VisionCoreSparseOpticalFlowQuad initWithTopLeft:topRight:bottomRight:bottomLeft:indentifier:homographyGroupID:](v24, "initWithTopLeft:topRight:bottomRight:bottomLeft:indentifier:homographyGroupID:", v41, [v23 homographyGroupID], v26, v28, v30, v32, v34, v36, v38, v40);
+          uUID = [v23 UUID];
+          v42 = -[VisionCoreSparseOpticalFlowQuad initWithTopLeft:topRight:bottomRight:bottomLeft:indentifier:homographyGroupID:](v24, "initWithTopLeft:topRight:bottomRight:bottomLeft:indentifier:homographyGroupID:", uUID, [v23 homographyGroupID], v26, v28, v30, v32, v34, v36, v38, v40);
 
           [v18 addObject:v42];
         }
@@ -211,15 +211,15 @@ LABEL_10:
     if (![v19 count])
     {
       v43 = [VisionCoreSparseOpticalFlowQuad alloc];
-      v44 = [MEMORY[0x1E696AFB0] UUID];
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
       v45 = vcvts_n_f32_u64(Width, 2uLL);
       v46 = vcvts_n_f32_u64(Height, 2uLL);
-      v47 = [(VisionCoreSparseOpticalFlowQuad *)v43 initWithTopLeft:v44 topRight:v45 bottomRight:(Height * 0.75) bottomLeft:(Width * 0.75) indentifier:(Height * 0.75), (Width * 0.75), v46, v45, v46];
+      v47 = [(VisionCoreSparseOpticalFlowQuad *)v43 initWithTopLeft:uUID2 topRight:v45 bottomRight:(Height * 0.75) bottomLeft:(Width * 0.75) indentifier:(Height * 0.75), (Width * 0.75), v46, v45, v46];
 
       [v18 addObject:v47];
     }
 
-    [v11 setTrackedQuads:v18];
+    [sessionCopy setTrackedQuads:v18];
     v48 = _VisionCoreSignpostLog();
     if (os_signpost_enabled(v48))
     {
@@ -227,7 +227,7 @@ LABEL_10:
       _os_signpost_emit_with_name_impl(&dword_1DECDA000, v48, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "VisionCoreSparseOpticalFlowKeypointsEvent", &unk_1DED1344A, buf, 2u);
     }
 
-    [v78 _gatherKeyPtsFromQuadsForSession:v11 minGridFrequency:v80];
+    [selfCopy _gatherKeyPtsFromQuadsForSession:sessionCopy minGridFrequency:v80];
     v49 = _VisionCoreSignpostLog();
     if (os_signpost_enabled(v49))
     {
@@ -235,30 +235,30 @@ LABEL_10:
       _os_signpost_emit_with_name_impl(&dword_1DECDA000, v49, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "VisionCoreSparseOpticalFlowKeypointsEvent", &unk_1DED1344A, buf, 2u);
     }
 
-    v50 = [v11 texture];
-    v51 = v50 == 0;
+    texture = [sessionCopy texture];
+    v51 = texture == 0;
 
-    if (v51 || (v52 = CVPixelBufferGetWidth([v11 prevFrame]), v53 = CVPixelBufferGetHeight(objc_msgSend(v11, "prevFrame")), v54 = Width, Width == v52) && (v54 = Height, Height == v53))
+    if (v51 || (v52 = CVPixelBufferGetWidth([sessionCopy prevFrame]), v53 = CVPixelBufferGetHeight(objc_msgSend(sessionCopy, "prevFrame")), v54 = Width, Width == v52) && (v54 = Height, Height == v53))
     {
-      v55 = [v11 quadPointCounts];
-      v56 = (v55[1] - *v55) >> 3;
+      quadPointCounts = [sessionCopy quadPointCounts];
+      v56 = (quadPointCounts[1] - *quadPointCounts) >> 3;
       *buf = -1;
       std::vector<int>::vector[abi:ne200100](&__p, v56);
       for (j = 0; ; ++j)
       {
-        v58 = [v11 trackedQuads];
-        v59 = [v58 count] > j;
+        trackedQuads = [sessionCopy trackedQuads];
+        v59 = [trackedQuads count] > j;
 
         if (!v59)
         {
           break;
         }
 
-        v60 = [v11 trackedQuads];
-        v61 = [v60 objectAtIndexedSubscript:j];
+        trackedQuads2 = [sessionCopy trackedQuads];
+        v61 = [trackedQuads2 objectAtIndexedSubscript:j];
 
-        v62 = [v61 homographyGroupID];
-        *(__p + j) = v62;
+        homographyGroupID = [v61 homographyGroupID];
+        *(__p + j) = homographyGroupID;
       }
 
       v63 = _VisionCoreSignpostLog();
@@ -268,8 +268,8 @@ LABEL_10:
         _os_signpost_emit_with_name_impl(&dword_1DECDA000, v63, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "VisionCoreSparseOpticalFlowEvent", &unk_1DED1344A, buf, 2u);
       }
 
-      v64 = [v11 allSrcPoints];
-      [v78 _runSparseOpticalFlowOnFrame:v73 shouldRunCorr:v64[1] - *v64 > 8uLL forSession:v11 error:a7 groups:&__p options:v74];
+      allSrcPoints = [sessionCopy allSrcPoints];
+      [selfCopy _runSparseOpticalFlowOnFrame:frameCopy shouldRunCorr:allSrcPoints[1] - *allSrcPoints > 8uLL forSession:sessionCopy error:error groups:&__p options:optionsCopy];
       v65 = _VisionCoreSignpostLog();
       if (os_signpost_enabled(v65))
       {
@@ -277,7 +277,7 @@ LABEL_10:
         _os_signpost_emit_with_name_impl(&dword_1DECDA000, v65, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "VisionCoreSparseOpticalFlowEvent", &unk_1DED1344A, buf, 2u);
       }
 
-      [v11 setFrameCountSinceLastGrouping:{objc_msgSend(v11, "frameCountSinceLastGrouping") + 1}];
+      [sessionCopy setFrameCountSinceLastGrouping:{objc_msgSend(sessionCopy, "frameCountSinceLastGrouping") + 1}];
       v66 = _VisionCoreSignpostLog();
       if (os_signpost_enabled(v66))
       {
@@ -285,8 +285,8 @@ LABEL_10:
         _os_signpost_emit_with_name_impl(&dword_1DECDA000, v66, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "VisionCoreSparseOpticalFlowPrepareResults", &unk_1DED1344A, buf, 2u);
       }
 
-      v71 = *a7;
-      if (!*a7)
+      v71 = *error;
+      if (!*error)
       {
         if (v86 == __p)
         {
@@ -322,11 +322,11 @@ LABEL_42:
         _os_signpost_emit_with_name_impl(&dword_1DECDA000, v69, OS_SIGNPOST_INTERVAL_END, 0xEEEEB0B5B2B2EEEELL, "VisionCoreSparseOpticalFlowPrepareResults", &unk_1DED1344A, buf, 2u);
       }
 
-      if ([v78 _updateSession:v11 referenceFrame:v73 error:a7])
+      if ([selfCopy _updateSession:sessionCopy referenceFrame:frameCopy error:error])
       {
         if (v71)
         {
-          [v11 setSceneHomography:{*MEMORY[0x1E69E9B10], *(MEMORY[0x1E69E9B10] + 16), *(MEMORY[0x1E69E9B10] + 32)}];
+          [sessionCopy setSceneHomography:{*MEMORY[0x1E69E9B10], *(MEMORY[0x1E69E9B10] + 16), *(MEMORY[0x1E69E9B10] + 32)}];
           v14 = MEMORY[0x1E695E0F8];
         }
 
@@ -338,7 +338,7 @@ LABEL_42:
 
       else
       {
-        [v11 setSceneHomography:{*MEMORY[0x1E69E9B10], *(MEMORY[0x1E69E9B10] + 16), *(MEMORY[0x1E69E9B10] + 32)}];
+        [sessionCopy setSceneHomography:{*MEMORY[0x1E69E9B10], *(MEMORY[0x1E69E9B10] + 16), *(MEMORY[0x1E69E9B10] + 32)}];
         v14 = 0;
       }
 
@@ -351,10 +351,10 @@ LABEL_42:
       }
     }
 
-    else if (a7)
+    else if (error)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForInternalErrorWithLocalizedDescription:{@"Frame buffer and reference frame dimensions do not match", v54}];
-      *a7 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -363,10 +363,10 @@ LABEL_42:
     }
   }
 
-  else if (a7)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] VisionCoreErrorForInternalErrorWithLocalizedDescription:{@"Invalid buffer - ensure IO surface backed, format is BGRA / RGBA / Luma, and even dimensions"}];
-    *a7 = v14 = 0;
+    *error = v14 = 0;
   }
 
   else
@@ -377,9 +377,9 @@ LABEL_42:
   return v14;
 }
 
-+ (unint64_t)_mtlPixelFormatForBuffer:(__CVBuffer *)a3
++ (unint64_t)_mtlPixelFormatForBuffer:(__CVBuffer *)buffer
 {
-  if (CVPixelBufferGetPixelFormatType(a3) == 1278226488)
+  if (CVPixelBufferGetPixelFormatType(buffer) == 1278226488)
   {
     return 10;
   }
@@ -390,12 +390,12 @@ LABEL_42:
   }
 }
 
-+ (BOOL)_validateBuffer:(__CVBuffer *)a3
++ (BOOL)_validateBuffer:(__CVBuffer *)buffer
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-  IOSurface = CVPixelBufferGetIOSurface(a3);
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  IOSurface = CVPixelBufferGetIOSurface(buffer);
   if (PixelFormatType != 1111970369 && PixelFormatType != 1380401729 && PixelFormatType != 1278226488)
   {
     return 0;
@@ -404,37 +404,37 @@ LABEL_42:
   return ((Width | Height) & 1) == 0 && IOSurface != 0;
 }
 
-+ (BOOL)_point:(CGPoint)a3 inQuad:(id)a4
++ (BOOL)_point:(CGPoint)_point inQuad:(id)quad
 {
-  y = a3.y;
-  x = a3.x;
-  [a4 boundingBox];
+  y = _point.y;
+  x = _point.x;
+  [quad boundingBox];
   v10 = x;
   v11 = y;
 
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-+ (vector<VisionCoreHomography,)_runSparseOpticalFlowOnFrame:(id)a2 shouldRunCorr:(SEL)a3 forSession:(__CVBuffer *)a4 error:(BOOL)a5 groups:(id)a6 options:(id *)a7
++ (vector<VisionCoreHomography,)_runSparseOpticalFlowOnFrame:(id)frame shouldRunCorr:(SEL)corr forSession:(__CVBuffer *)session error:(BOOL)error groups:(id)groups options:(id *)options
 {
   v13 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  groupsCopy = groups;
   a9;
-  [v10 quadPointCounts];
+  [groupsCopy quadPointCounts];
   VisionCoreHomography::VisionCoreHomography(&buf);
 }
 
-+ (BOOL)_updateSession:(id)a3 referenceFrame:(__CVBuffer *)a4 error:(id *)a5
++ (BOOL)_updateSession:(id)session referenceFrame:(__CVBuffer *)frame error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 mtlContext];
-  v8 = [v7 bindPixelBufferToMTL2DTexture:a4 pixelFormat:objc_msgSend(objc_opt_class() plane:"_mtlPixelFormatForBuffer:", a4), 0];
-  [v6 updateReferenceTexture:v8 frame:a4];
+  sessionCopy = session;
+  mtlContext = [sessionCopy mtlContext];
+  v8 = [mtlContext bindPixelBufferToMTL2DTexture:frame pixelFormat:objc_msgSend(objc_opt_class() plane:"_mtlPixelFormatForBuffer:", frame), 0];
+  [sessionCopy updateReferenceTexture:v8 frame:frame];
 
   return 1;
 }
 
-+ (vector<int,)getInlierCountsPerQuad:()vector<int inliers:(std:(SEL)a3 :(void *)a4 allocator<int>> *)result
++ (vector<int,)getInlierCountsPerQuad:()vector<int inliers:(std:(SEL)inliers :(void *)a4 allocator<int>> *)result
 {
   retstr->var0 = 0;
   retstr->var1 = 0;
@@ -548,11 +548,11 @@ LABEL_42:
   return result;
 }
 
-+ (void)recursiveRansacSrcPts:(void *)a3 DstPts:(void *)a4 QuadsMatchingKptsCount:(void *)a5 resultingHomographies:(void *)a6 groups:(void *)a7 inlierRatio:(float)a8 ransacReprojErrorThreshold:(float)a9
++ (void)recursiveRansacSrcPts:(void *)pts DstPts:(void *)dstPts QuadsMatchingKptsCount:(void *)count resultingHomographies:(void *)homographies groups:(void *)groups inlierRatio:(float)ratio ransacReprojErrorThreshold:(float)threshold
 {
-  if (*(a3 + 1) - *a3 < 8uLL || *(a7 + 1) == *a7 || **a7 >= 2)
+  if (*(pts + 1) - *pts < 8uLL || *(groups + 1) == *groups || **groups >= 2)
   {
-    if (*(a5 + 1) != *a5)
+    if (*(count + 1) != *count)
     {
       VisionCoreHomography::VisionCoreHomography(&v35);
     }
@@ -560,11 +560,11 @@ LABEL_42:
 
   else
   {
-    *&v12 = a9;
-    [a1 _estimateTransformSrcPts:a3 DstPts:a4 ransacReprojErrorThreshold:{a5, a6, v12}];
-    [a1 getInlierCountsPerQuad:a5 inliers:&v35.var3];
-    v14 = *a5;
-    v13 = *(a5 + 1);
+    *&v12 = threshold;
+    [self _estimateTransformSrcPts:pts DstPts:dstPts ransacReprojErrorThreshold:{count, homographies, v12}];
+    [self getInlierCountsPerQuad:count inliers:&v35.var3];
+    v14 = *count;
+    v13 = *(count + 1);
     memset(v32, 0, sizeof(v32));
     v15 = v13 - v14;
     if (v15)
@@ -575,15 +575,15 @@ LABEL_42:
     v16 = 0;
     v17 = v33;
     v18 = v34;
-    v19 = *a5;
+    v19 = *count;
     if (v33 != v34)
     {
       v20 = 0;
-      v21 = *a5;
+      v21 = *count;
       do
       {
         v22 = 1 << v20;
-        if ((*v17 / *v21) >= a8)
+        if ((*v17 / *v21) >= ratio)
         {
           v23 = *v16 & ~v22;
         }
@@ -611,7 +611,7 @@ LABEL_42:
       while (v17 != v18);
     }
 
-    v24 = *(a5 + 1);
+    v24 = *(count + 1);
     v25 = 0;
     if (v24 == v19)
     {
@@ -642,8 +642,8 @@ LABEL_42:
           *(4 * v28) = v26;
           v25 = 4 * v28 + 4;
           memcpy(0, 0, v27);
-          v19 = *a5;
-          v24 = *(a5 + 1);
+          v19 = *count;
+          v24 = *(count + 1);
         }
 
         ++v26;
@@ -679,15 +679,15 @@ LABEL_42:
   }
 }
 
-+ (id)quadsConformHomographySrcQuads:(id)a3 destQuads:(id)a4 reprojError:(float)a5
++ (id)quadsConformHomographySrcQuads:(id)quads destQuads:(id)destQuads reprojError:(float)error
 {
-  v6 = a3;
-  v7 = a4;
-  std::vector<CGPoint>::vector[abi:ne200100](v17, 4 * [v6 count]);
-  std::vector<CGPoint>::vector[abi:ne200100](v16, 4 * [v7 count]);
-  std::vector<half>::vector[abi:ne200100](v15, 8 * [v6 count]);
-  std::vector<half>::vector[abi:ne200100](v14, 8 * [v7 count]);
-  v8 = [v6 count];
+  quadsCopy = quads;
+  destQuadsCopy = destQuads;
+  std::vector<CGPoint>::vector[abi:ne200100](v17, 4 * [quadsCopy count]);
+  std::vector<CGPoint>::vector[abi:ne200100](v16, 4 * [destQuadsCopy count]);
+  std::vector<half>::vector[abi:ne200100](v15, 8 * [quadsCopy count]);
+  std::vector<half>::vector[abi:ne200100](v14, 8 * [destQuadsCopy count]);
+  v8 = [quadsCopy count];
   v11 = 0;
   v12 = 0;
   v13 = 0;
@@ -701,11 +701,11 @@ LABEL_42:
     std::vector<unsigned long>::__throw_length_error[abi:ne200100]();
   }
 
-  [v6 count];
+  [quadsCopy count];
   VisionCoreHomography::VisionCoreHomography(&v10);
 }
 
-+ (VisionCoreHomography)_estimateTransformSrcPts:(SEL)a3 DstPts:(void *)a4 ransacReprojErrorThreshold:(void *)a5
++ (VisionCoreHomography)_estimateTransformSrcPts:(SEL)pts DstPts:(void *)dstPts ransacReprojErrorThreshold:(void *)threshold
 {
   retstr->var0.var0 = 0;
   retstr->var0.var1 = 0;
@@ -719,20 +719,20 @@ LABEL_42:
   std::vector<float>::__init_with_size[abi:ne200100]<float const*,float const*>();
 }
 
-+ (void)_gatherKeyPtsFromQuadsForSession:(id)a3 minGridFrequency:(int)a4
++ (void)_gatherKeyPtsFromQuadsForSession:(id)session minGridFrequency:(int)frequency
 {
   v50 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v4 = [v37 allSrcPoints];
-  v5 = [v37 quadPointCounts];
-  v4[1] = *v4;
-  v5[1] = *v5;
+  sessionCopy = session;
+  allSrcPoints = [sessionCopy allSrcPoints];
+  quadPointCounts = [sessionCopy quadPointCounts];
+  allSrcPoints[1] = *allSrcPoints;
+  quadPointCounts[1] = *quadPointCounts;
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v6 = [v37 trackedQuads];
-  v7 = [v6 countByEnumeratingWithState:&v44 objects:v49 count:16];
+  trackedQuads = [sessionCopy trackedQuads];
+  v7 = [trackedQuads countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v7)
   {
     v8 = *v45;
@@ -743,7 +743,7 @@ LABEL_42:
       {
         if (*v45 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(trackedQuads);
         }
 
         v11 = *(*(&v44 + 1) + 8 * i);
@@ -753,7 +753,7 @@ LABEL_42:
         v9 = v9 + v13 * v14;
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v44 objects:v49 count:16];
+      v7 = [trackedQuads countByEnumeratingWithState:&v44 objects:v49 count:16];
     }
 
     while (v7);
@@ -768,8 +768,8 @@ LABEL_42:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v15 = [v37 trackedQuads];
-  v16 = [v15 countByEnumeratingWithState:&v40 objects:v48 count:16];
+  trackedQuads2 = [sessionCopy trackedQuads];
+  v16 = [trackedQuads2 countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v16)
   {
     v17 = *v41;
@@ -779,7 +779,7 @@ LABEL_42:
       {
         if (*v41 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(trackedQuads2);
         }
 
         v19 = *(*(&v40 + 1) + 8 * j);
@@ -791,7 +791,7 @@ LABEL_42:
           *&v22 = v21;
           v24 = v23;
           *&v22 = ((*&v22 * 256.0) * v24) / v9;
-          [v19 generateGridKeypointsWithMaxKeypoints:a4 minGridFrequency:v22];
+          [v19 generateGridKeypointsWithMaxKeypoints:frequency minGridFrequency:v22];
           v25 = *__p;
         }
 
@@ -801,14 +801,14 @@ LABEL_42:
           *__p = 0u;
         }
 
-        std::__copy_impl::operator()[abi:ne200100]<half *,half *,std::back_insert_iterator<std::vector<half>>>(v25, *(&v25 + 1), v4);
+        std::__copy_impl::operator()[abi:ne200100]<half *,half *,std::back_insert_iterator<std::vector<half>>>(v25, *(&v25 + 1), allSrcPoints);
         v26 = ((__p[1] - __p[0]) >> 1) >> 1;
-        v28 = v5[1];
-        v27 = v5[2];
+        v28 = quadPointCounts[1];
+        v27 = quadPointCounts[2];
         if (v28 >= v27)
         {
-          v30 = *v5;
-          v31 = v28 - *v5;
+          v30 = *quadPointCounts;
+          v31 = v28 - *quadPointCounts;
           v32 = v31 >> 3;
           v33 = (v31 >> 3) + 1;
           if (v33 >> 61)
@@ -840,10 +840,10 @@ LABEL_42:
           *(8 * v32) = v26;
           v29 = 8 * v32 + 8;
           memcpy(0, v30, v31);
-          v36 = *v5;
-          *v5 = 0;
-          v5[1] = v29;
-          v5[2] = 0;
+          v36 = *quadPointCounts;
+          *quadPointCounts = 0;
+          quadPointCounts[1] = v29;
+          quadPointCounts[2] = 0;
           if (v36)
           {
             operator delete(v36);
@@ -856,7 +856,7 @@ LABEL_42:
           v29 = (v28 + 1);
         }
 
-        v5[1] = v29;
+        quadPointCounts[1] = v29;
         if (__p[0])
         {
           __p[1] = __p[0];
@@ -864,7 +864,7 @@ LABEL_42:
         }
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v40 objects:v48 count:16];
+      v16 = [trackedQuads2 countByEnumeratingWithState:&v40 objects:v48 count:16];
     }
 
     while (v16);

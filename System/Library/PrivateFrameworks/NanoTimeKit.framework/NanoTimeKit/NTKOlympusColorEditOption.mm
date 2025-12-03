@@ -1,10 +1,10 @@
 @interface NTKOlympusColorEditOption
-+ (id)__orderedValuesForDevice:(id)a3;
-+ (id)_orderedValuesForDevice:(id)a3;
-+ (id)colorNameForColorValue:(unint64_t)a3;
-+ (id)colorNameForColorValue:(unint64_t)a3 collectionName:(id *)a4;
-+ (unint64_t)colorCodeForPigmentEditOption:(id)a3 forDevice:(id)a4;
-- (BOOL)optionExistsInDevice:(id)a3;
++ (id)__orderedValuesForDevice:(id)device;
++ (id)_orderedValuesForDevice:(id)device;
++ (id)colorNameForColorValue:(unint64_t)value;
++ (id)colorNameForColorValue:(unint64_t)value collectionName:(id *)name;
++ (unint64_t)colorCodeForPigmentEditOption:(id)option forDevice:(id)device;
+- (BOOL)optionExistsInDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 - (id)pigmentEditOption;
@@ -14,20 +14,20 @@
 
 - (id)localizedName
 {
-  v2 = [(NTKOlympusColorEditOption *)self pigmentEditOption];
-  v3 = [v2 localizedName];
+  pigmentEditOption = [(NTKOlympusColorEditOption *)self pigmentEditOption];
+  localizedName = [pigmentEditOption localizedName];
 
-  return v3;
+  return localizedName;
 }
 
-+ (id)_orderedValuesForDevice:(id)a3
++ (id)_orderedValuesForDevice:(id)device
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __53__NTKOlympusColorEditOption__orderedValuesForDevice___block_invoke;
   v5[3] = &__block_descriptor_40_e28___NSArray_16__0__CLKDevice_8l;
-  v5[4] = a1;
-  v3 = __53__NTKOlympusColorEditOption__orderedValuesForDevice___block_invoke(v5, a3);
+  v5[4] = self;
+  v3 = __53__NTKOlympusColorEditOption__orderedValuesForDevice___block_invoke(v5, device);
 
   return v3;
 }
@@ -61,10 +61,10 @@ id __53__NTKOlympusColorEditOption__orderedValuesForDevice___block_invoke(uint64
   return v8;
 }
 
-+ (id)__orderedValuesForDevice:(id)a3
++ (id)__orderedValuesForDevice:(id)device
 {
-  v3 = a3;
-  if ([v3 supportsPDRCapability:753405533])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:753405533])
   {
     v4 = _EnumValueRange(0x1AuLL, 0x1EuLL);
     v5 = [&unk_28418B698 arrayByAddingObjectsFromArray:v4];
@@ -75,7 +75,7 @@ id __53__NTKOlympusColorEditOption__orderedValuesForDevice___block_invoke(uint64
     v5 = &unk_28418B698;
   }
 
-  if ([v3 supportsPDRCapability:2919474315])
+  if ([deviceCopy supportsPDRCapability:2919474315])
   {
     v6 = _EnumValueRange(0x1FuLL, 0x27uLL);
     v7 = [v5 arrayByAddingObjectsFromArray:v6];
@@ -83,7 +83,7 @@ id __53__NTKOlympusColorEditOption__orderedValuesForDevice___block_invoke(uint64
     v5 = v7;
   }
 
-  if ([v3 supportsPDRCapability:3356802055])
+  if ([deviceCopy supportsPDRCapability:3356802055])
   {
     v8 = _EnumValueRange(0x28uLL, 0x30uLL);
     v9 = [v5 arrayByAddingObjectsFromArray:v8];
@@ -94,13 +94,13 @@ id __53__NTKOlympusColorEditOption__orderedValuesForDevice___block_invoke(uint64
   return v5;
 }
 
-- (BOOL)optionExistsInDevice:(id)a3
+- (BOOL)optionExistsInDevice:(id)device
 {
-  v4 = a3;
-  v5 = [v4 supportsPDRCapability:753405533];
-  if ((v5 & 1) != 0 || (___NTKNewToGraceEOlympusColors_block_invoke(v5, v4), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 containsIndex:{-[NTKValueEditOption _value](self, "_value")}], v6, (v7 & 1) == 0)) && ((v8 = objc_msgSend(v4, "supportsPDRCapability:", 2919474315), (v8) || (___NTKNewToHunterOlympusColors_block_invoke(v8, v4), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsIndex:", -[NTKValueEditOption _value](self, "_value")), v9, (v10 & 1) == 0)))
+  deviceCopy = device;
+  v5 = [deviceCopy supportsPDRCapability:753405533];
+  if ((v5 & 1) != 0 || (___NTKNewToGraceEOlympusColors_block_invoke(v5, deviceCopy), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 containsIndex:{-[NTKValueEditOption _value](self, "_value")}], v6, (v7 & 1) == 0)) && ((v8 = objc_msgSend(deviceCopy, "supportsPDRCapability:", 2919474315), (v8) || (___NTKNewToHunterOlympusColors_block_invoke(v8, deviceCopy), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "containsIndex:", -[NTKValueEditOption _value](self, "_value")), v9, (v10 & 1) == 0)))
   {
-    v12 = [v4 supportsPDRCapability:3356802055];
+    v12 = [deviceCopy supportsPDRCapability:3356802055];
     if (v12)
     {
       v11 = 1;
@@ -108,7 +108,7 @@ id __53__NTKOlympusColorEditOption__orderedValuesForDevice___block_invoke(uint64
 
     else
     {
-      v13 = ___NTKNewToHunterEOlympusColors_block_invoke(v12, v4);
+      v13 = ___NTKNewToHunterEOlympusColors_block_invoke(v12, deviceCopy);
       v14 = [v13 containsIndex:{-[NTKValueEditOption _value](self, "_value")}];
 
       v11 = v14 ^ 1;
@@ -191,17 +191,17 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
   return v4;
 }
 
-+ (id)colorNameForColorValue:(unint64_t)a3
++ (id)colorNameForColorValue:(unint64_t)value
 {
   v5 = 0;
-  v3 = [a1 colorNameForColorValue:a3 collectionName:&v5];
+  v3 = [self colorNameForColorValue:value collectionName:&v5];
 
   return v3;
 }
 
-+ (id)colorNameForColorValue:(unint64_t)a3 collectionName:(id *)a4
++ (id)colorNameForColorValue:(unint64_t)value collectionName:(id *)name
 {
-  switch(a3)
+  switch(value)
   {
     case 0uLL:
       v4 = @"anthracite";
@@ -211,7 +211,7 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v8 = @"anthracite";
       goto LABEL_50;
     case 2uLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"volt";
       break;
     case 3uLL:
@@ -221,7 +221,7 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v7 = 2;
       goto LABEL_47;
     case 5uLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"purePlatinum";
       break;
     case 6uLL:
@@ -231,7 +231,7 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v7 = 5;
       goto LABEL_47;
     case 8uLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"totalOrange";
       break;
     case 9uLL:
@@ -241,7 +241,7 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v7 = 8;
       goto LABEL_47;
     case 0xBuLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"auroraGreen";
       break;
     case 0xCuLL:
@@ -251,7 +251,7 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v7 = 11;
       goto LABEL_47;
     case 0xEuLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"celestialTeal";
       break;
     case 0xFuLL:
@@ -261,7 +261,7 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v7 = 14;
       goto LABEL_47;
     case 0x11uLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"royalPulse";
       break;
     case 0x12uLL:
@@ -271,7 +271,7 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v7 = 17;
       goto LABEL_47;
     case 0x14uLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"pinkBlast";
       break;
     case 0x15uLL:
@@ -281,7 +281,7 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v7 = 20;
       goto LABEL_47;
     case 0x17uLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"desertSand";
       break;
     case 0x18uLL:
@@ -291,7 +291,7 @@ void __57__NTKOlympusColorEditOption__valueToFaceBundleStringDict__block_invoke(
       v7 = 23;
       goto LABEL_47;
     case 0x1AuLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"midnightTurquoise";
       break;
     case 0x1BuLL:
@@ -312,7 +312,7 @@ LABEL_50:
       v5 = ntk_duotone(@"victory", v4, @"victory", v8);
       break;
     case 0x1FuLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"spruceAura";
       break;
     case 0x20uLL:
@@ -322,7 +322,7 @@ LABEL_50:
       v7 = 31;
       goto LABEL_47;
     case 0x22uLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"blueBlack";
       break;
     case 0x23uLL:
@@ -332,7 +332,7 @@ LABEL_50:
       v7 = 34;
       goto LABEL_47;
     case 0x25uLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"obsidianMist";
       break;
     case 0x26uLL:
@@ -342,7 +342,7 @@ LABEL_50:
       v7 = 37;
       goto LABEL_47;
     case 0x28uLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"hasta";
       break;
     case 0x29uLL:
@@ -352,7 +352,7 @@ LABEL_50:
       v7 = 40;
       goto LABEL_47;
     case 0x2BuLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"chlorineBlue";
       break;
     case 0x2CuLL:
@@ -362,20 +362,20 @@ LABEL_50:
       v7 = 43;
       goto LABEL_47;
     case 0x2EuLL:
-      *a4 = @"victory";
+      *name = @"victory";
       v5 = @"ironstone";
       break;
     case 0x2FuLL:
       v6 = 46;
 LABEL_52:
-      v9 = [a1 colorNameForColorValue:{v6, a4}];
+      v9 = [self colorNameForColorValue:{v6, name}];
       v11 = @"black";
       v10 = v9;
       goto LABEL_53;
     case 0x30uLL:
       v7 = 46;
 LABEL_47:
-      v9 = [a1 colorNameForColorValue:{v7, a4}];
+      v9 = [self colorNameForColorValue:{v7, name}];
       v10 = @"black";
       v11 = v9;
 LABEL_53:
@@ -390,12 +390,12 @@ LABEL_53:
   return v5;
 }
 
-+ (unint64_t)colorCodeForPigmentEditOption:(id)a3 forDevice:(id)a4
++ (unint64_t)colorCodeForPigmentEditOption:(id)option forDevice:(id)device
 {
-  v4 = [a1 legacyOptionWithPigmentEditOption:a3 forDevice:a4];
-  v5 = [v4 color];
+  v4 = [self legacyOptionWithPigmentEditOption:option forDevice:device];
+  color = [v4 color];
 
-  return v5;
+  return color;
 }
 
 @end

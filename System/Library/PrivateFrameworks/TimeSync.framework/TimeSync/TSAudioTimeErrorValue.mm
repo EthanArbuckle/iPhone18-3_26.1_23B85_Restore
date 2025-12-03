@@ -1,19 +1,19 @@
 @interface TSAudioTimeErrorValue
-- (TSAudioTimeErrorValue)initWithSampleTimestamp:(double)a3 andTimeError:(double)a4;
+- (TSAudioTimeErrorValue)initWithSampleTimestamp:(double)timestamp andTimeError:(double)error;
 - (id)description;
 @end
 
 @implementation TSAudioTimeErrorValue
 
-- (TSAudioTimeErrorValue)initWithSampleTimestamp:(double)a3 andTimeError:(double)a4
+- (TSAudioTimeErrorValue)initWithSampleTimestamp:(double)timestamp andTimeError:(double)error
 {
   v7.receiver = self;
   v7.super_class = TSAudioTimeErrorValue;
   result = [(TSAudioTimeErrorValue *)&v7 init];
   if (result)
   {
-    result->_sampleTimestamp = a3;
-    result->_timeError = a4;
+    result->_sampleTimestamp = timestamp;
+    result->_timeError = error;
   }
 
   return result;

@@ -1,61 +1,61 @@
 @interface __ASCLayoutProxy
-+ (CGRect)rectWithLayoutDirectionForRect:(CGRect)a3 inTraitEnvironment:(id)a4 relativeTo:(CGRect)a5;
-+ (CGRect)rectWithLayoutDirectionForRect:(CGRect)a3 layoutDirection:(int64_t)a4 relativeTo:(CGRect)a5;
-+ (CGSize)estimatedMediaContentSizeFor:(id)a3 screenshots:(id)a4 trailers:(id)a5 fitting:(CGSize)a6 in:(id)a7;
-+ (CGSize)lockupMediaPreferredMediaSizeWithFitting:(CGSize)a3 for:(id)a4 with:(id)a5 and:(id)a6 in:(id)a7;
-+ (CGSize)mediumLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4;
-+ (CGSize)mediumOfferButtonLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4;
-+ (CGSize)miniLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4;
++ (CGRect)rectWithLayoutDirectionForRect:(CGRect)rect inTraitEnvironment:(id)environment relativeTo:(CGRect)to;
++ (CGRect)rectWithLayoutDirectionForRect:(CGRect)rect layoutDirection:(int64_t)direction relativeTo:(CGRect)to;
++ (CGSize)estimatedMediaContentSizeFor:(id)for screenshots:(id)screenshots trailers:(id)trailers fitting:(CGSize)fitting in:(id)in;
++ (CGSize)lockupMediaPreferredMediaSizeWithFitting:(CGSize)fitting for:(id)for with:(id)with and:(id)and in:(id)in;
++ (CGSize)mediumLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection;
++ (CGSize)mediumOfferButtonLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection;
++ (CGSize)miniLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection;
 + (CGSize)miniProductPagePreferredArtworkSize;
-+ (CGSize)smallLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4;
-+ (CGSize)smallOfferButtonLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4;
-+ (UIEdgeInsets)layoutMarginsFor:(id)a3 existingLayoutMargins:(UIEdgeInsets)a4;
-+ (double)adTransparencyButtonScaledCapInset:(double)a3 in:(id)a4;
-+ (double)adTransparencyButtonTitlePointSizeProvider:(id)a3;
-+ (double)adTransparencyDeveloperNamePointSizeProvider:(id)a3;
-+ (double)containerViewRotationAngleFor:(id)a3 screenshots:(id)a4 trailers:(id)a5;
-+ (double)lockupHeadingPointSizeProvider:(id)a3;
-+ (double)lockupSubtitlePointSizeProvider:(id)a3;
-+ (double)lockupTitlePointSizeProvider:(id)a3;
-+ (double)offerButtonHeightForSize:(id)a3;
-+ (double)offerButtonRegularWidthForSize:(id)a3;
-+ (double)offerProgressDiameterForSize:(id)a3;
-+ (id)adLockupLayoutWithTraitCollection:(id)a3 artworkView:(id)a4 headingText:(id)a5 titleText:(id)a6 subtitleText:(id)a7 offerText:(id)a8 offerButton:(id)a9 starRatingView:(id)a10 ratingCountLabel:(id)a11 adTransparencyButton:(id)a12 editorsChoiceView:(id)a13 descriptionLabel:(id)a14;
-+ (id)artworkFrom:(id)a3 and:(id)a4;
-+ (id)lockupLayoutOfSize:(id)a3 traitCollection:(id)a4 artworkView:(id)a5 headingText:(id)a6 titleText:(id)a7 subtitleText:(id)a8 offerText:(id)a9 offerButton:(id)a10 badge:(id)a11;
-+ (id)lockupMediaLayoutFor:(id)a3 screenshots:(id)a4 trailers:(id)a5 containerView:(id)a6 mediaViews:(id)a7;
-+ (id)lockupMediaSizingLayoutFor:(id)a3 screenshots:(id)a4 trailers:(id)a5 containerView:(id)a6 mediaViews:(id)a7;
-+ (id)miniProductPageLayoutWithTraitCollection:(id)a3 iconArtwork:(id)a4 title:(id)a5 subtitle:(id)a6 metadata:(id)a7 description:(id)a8 screenshots:(id)a9;
-+ (id)offerDisclosureLayoutWithDisclosureIndicator:(id)a3;
-+ (id)offerEmptyLayoutWithImageView:(id)a3 titleView:(id)a4 subtitleView:(id)a5;
-+ (id)offerIconLayoutForSize:(id)a3 imageView:(id)a4 titleView:(id)a5 subtitleView:(id)a6 hasTrailingSubtitle:(BOOL)a7 shouldTopAlign:(BOOL)a8 topPadding:(double)a9 shouldTrailingAlign:(BOOL)a10;
-+ (id)offerTextLayoutForSize:(id)a3 titleBackgroundView:(id)a4 titleView:(id)a5 subtitleView:(id)a6 hasTrailingSubtitle:(BOOL)a7 shouldTopAlign:(BOOL)a8 topPadding:(double)a9 shouldExpandBackground:(BOOL)a10;
-+ (id)traitEnvironmentWithTraitCollection:(id)a3;
-+ (id)tvTextPillOverlayWithBackgroundView:(id)a3 textView:(id)a4;
-+ (int64_t)numberOfViewsInLockupMediaLayoutFor:(id)a3 with:(id)a4 and:(id)a5;
-- (CGSize)measuredSizeFittingSize:(CGSize)a3 inTraitEnvironment:(id)a4;
++ (CGSize)smallLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection;
++ (CGSize)smallOfferButtonLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection;
++ (UIEdgeInsets)layoutMarginsFor:(id)for existingLayoutMargins:(UIEdgeInsets)margins;
++ (double)adTransparencyButtonScaledCapInset:(double)inset in:(id)in;
++ (double)adTransparencyButtonTitlePointSizeProvider:(id)provider;
++ (double)adTransparencyDeveloperNamePointSizeProvider:(id)provider;
++ (double)containerViewRotationAngleFor:(id)for screenshots:(id)screenshots trailers:(id)trailers;
++ (double)lockupHeadingPointSizeProvider:(id)provider;
++ (double)lockupSubtitlePointSizeProvider:(id)provider;
++ (double)lockupTitlePointSizeProvider:(id)provider;
++ (double)offerButtonHeightForSize:(id)size;
++ (double)offerButtonRegularWidthForSize:(id)size;
++ (double)offerProgressDiameterForSize:(id)size;
++ (id)adLockupLayoutWithTraitCollection:(id)collection artworkView:(id)view headingText:(id)text titleText:(id)titleText subtitleText:(id)subtitleText offerText:(id)offerText offerButton:(id)button starRatingView:(id)self0 ratingCountLabel:(id)self1 adTransparencyButton:(id)self2 editorsChoiceView:(id)self3 descriptionLabel:(id)self4;
++ (id)artworkFrom:(id)from and:(id)and;
++ (id)lockupLayoutOfSize:(id)size traitCollection:(id)collection artworkView:(id)view headingText:(id)text titleText:(id)titleText subtitleText:(id)subtitleText offerText:(id)offerText offerButton:(id)self0 badge:(id)self1;
++ (id)lockupMediaLayoutFor:(id)for screenshots:(id)screenshots trailers:(id)trailers containerView:(id)view mediaViews:(id)views;
++ (id)lockupMediaSizingLayoutFor:(id)for screenshots:(id)screenshots trailers:(id)trailers containerView:(id)view mediaViews:(id)views;
++ (id)miniProductPageLayoutWithTraitCollection:(id)collection iconArtwork:(id)artwork title:(id)title subtitle:(id)subtitle metadata:(id)metadata description:(id)description screenshots:(id)screenshots;
++ (id)offerDisclosureLayoutWithDisclosureIndicator:(id)indicator;
++ (id)offerEmptyLayoutWithImageView:(id)view titleView:(id)titleView subtitleView:(id)subtitleView;
++ (id)offerIconLayoutForSize:(id)size imageView:(id)view titleView:(id)titleView subtitleView:(id)subtitleView hasTrailingSubtitle:(BOOL)subtitle shouldTopAlign:(BOOL)align topPadding:(double)padding shouldTrailingAlign:(BOOL)self0;
++ (id)offerTextLayoutForSize:(id)size titleBackgroundView:(id)view titleView:(id)titleView subtitleView:(id)subtitleView hasTrailingSubtitle:(BOOL)subtitle shouldTopAlign:(BOOL)align topPadding:(double)padding shouldExpandBackground:(BOOL)self0;
++ (id)traitEnvironmentWithTraitCollection:(id)collection;
++ (id)tvTextPillOverlayWithBackgroundView:(id)view textView:(id)textView;
++ (int64_t)numberOfViewsInLockupMediaLayoutFor:(id)for with:(id)with and:(id)and;
+- (CGSize)measuredSizeFittingSize:(CGSize)size inTraitEnvironment:(id)environment;
 - (NSString)description;
-- (UIEdgeInsets)alignmentInsetsInTraitEnvironment:(id)a3;
+- (UIEdgeInsets)alignmentInsetsInTraitEnvironment:(id)environment;
 - (__ASCLayoutProxy)init;
-- (void)placeChildrenRelativeToRect:(CGRect)a3 inTraitEnvironment:(id)a4;
+- (void)placeChildrenRelativeToRect:(CGRect)rect inTraitEnvironment:(id)environment;
 @end
 
 @implementation __ASCLayoutProxy
 
-+ (id)traitEnvironmentWithTraitCollection:(id)a3
++ (id)traitEnvironmentWithTraitCollection:(id)collection
 {
   v4 = objc_allocWithZone(sub_2157A91D0());
-  v5 = a3;
+  collectionCopy = collection;
   v6 = sub_2157A91C0();
 
   return v6;
 }
 
-+ (CGRect)rectWithLayoutDirectionForRect:(CGRect)a3 inTraitEnvironment:(id)a4 relativeTo:(CGRect)a5
++ (CGRect)rectWithLayoutDirectionForRect:(CGRect)rect inTraitEnvironment:(id)environment relativeTo:(CGRect)to
 {
   swift_unknownObjectRetain();
-  v6 = [a4 traitCollection];
-  [v6 layoutDirection];
+  traitCollection = [environment traitCollection];
+  [traitCollection layoutDirection];
 
   sub_2157A94F0();
   v8 = v7;
@@ -74,7 +74,7 @@
   return result;
 }
 
-+ (CGRect)rectWithLayoutDirectionForRect:(CGRect)a3 layoutDirection:(int64_t)a4 relativeTo:(CGRect)a5
++ (CGRect)rectWithLayoutDirectionForRect:(CGRect)rect layoutDirection:(int64_t)direction relativeTo:(CGRect)to
 {
   sub_2157A94F0();
   result.size.height = v8;
@@ -84,11 +84,11 @@
   return result;
 }
 
-- (CGSize)measuredSizeFittingSize:(CGSize)a3 inTraitEnvironment:(id)a4
+- (CGSize)measuredSizeFittingSize:(CGSize)size inTraitEnvironment:(id)environment
 {
   __swift_project_boxed_opaque_existential_1((&self->super.isa + OBJC_IVAR_____ASCLayoutProxy_base), *&self->base[OBJC_IVAR_____ASCLayoutProxy_base + 16]);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   sub_2157A8AD0();
   v7 = v6;
   v9 = v8;
@@ -101,11 +101,11 @@
   return result;
 }
 
-- (UIEdgeInsets)alignmentInsetsInTraitEnvironment:(id)a3
+- (UIEdgeInsets)alignmentInsetsInTraitEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  ASCLayoutProxy.alignmentInsets(in:)(a3);
+  selfCopy = self;
+  ASCLayoutProxy.alignmentInsets(in:)(environment);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -123,7 +123,7 @@
   return result;
 }
 
-- (void)placeChildrenRelativeToRect:(CGRect)a3 inTraitEnvironment:(id)a4
+- (void)placeChildrenRelativeToRect:(CGRect)rect inTraitEnvironment:(id)environment
 {
   v5 = sub_2157A8A50();
   v6 = *(v5 - 8);
@@ -131,7 +131,7 @@
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   __swift_project_boxed_opaque_existential_1((&self->super.isa + OBJC_IVAR_____ASCLayoutProxy_base), *&self->base[OBJC_IVAR_____ASCLayoutProxy_base + 16]);
   swift_unknownObjectRetain();
-  v9 = self;
+  selfCopy = self;
   sub_2157A9260();
   swift_unknownObjectRelease();
 
@@ -140,7 +140,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_2157A9550();
   MEMORY[0x216070240](0x756F79614C435341, 0xEF2879786F725074);
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA711D8);
@@ -159,76 +159,76 @@
   return result;
 }
 
-+ (id)adLockupLayoutWithTraitCollection:(id)a3 artworkView:(id)a4 headingText:(id)a5 titleText:(id)a6 subtitleText:(id)a7 offerText:(id)a8 offerButton:(id)a9 starRatingView:(id)a10 ratingCountLabel:(id)a11 adTransparencyButton:(id)a12 editorsChoiceView:(id)a13 descriptionLabel:(id)a14
++ (id)adLockupLayoutWithTraitCollection:(id)collection artworkView:(id)view headingText:(id)text titleText:(id)titleText subtitleText:(id)subtitleText offerText:(id)offerText offerButton:(id)button starRatingView:(id)self0 ratingCountLabel:(id)self1 adTransparencyButton:(id)self2 editorsChoiceView:(id)self3 descriptionLabel:(id)self4
 {
-  v33 = a3;
-  v19 = a4;
-  v32 = a5;
-  v20 = a6;
-  v21 = a7;
-  v31 = a8;
-  v22 = a9;
-  v30 = a10;
-  v29 = a11;
-  v28 = a12;
-  v27 = a13;
-  v23 = a14;
-  v24 = sub_215795794(v19, a5, v20, v21, a8, v22, a10, a11, a12, a13, v23);
+  collectionCopy = collection;
+  viewCopy = view;
+  textCopy = text;
+  titleTextCopy = titleText;
+  subtitleTextCopy = subtitleText;
+  offerTextCopy = offerText;
+  buttonCopy = button;
+  ratingViewCopy = ratingView;
+  labelCopy = label;
+  transparencyButtonCopy = transparencyButton;
+  choiceViewCopy = choiceView;
+  descriptionLabelCopy = descriptionLabel;
+  v24 = sub_215795794(viewCopy, text, titleTextCopy, subtitleTextCopy, offerText, buttonCopy, ratingView, label, transparencyButton, choiceView, descriptionLabelCopy);
 
   return v24;
 }
 
-+ (int64_t)numberOfViewsInLockupMediaLayoutFor:(id)a3 with:(id)a4 and:(id)a5
++ (int64_t)numberOfViewsInLockupMediaLayoutFor:(id)for with:(id)with and:(id)and
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _s18AppStoreComponents14ASCLayoutProxyC32numberOfViewsInLockupMediaLayout3for4with3andSiSo16ASCLockupContextaSg_So14ASCScreenshotsCSgSo11ASCTrailersCSgtFZ_0(a3, a4, a5);
+  forCopy = for;
+  withCopy = with;
+  andCopy = and;
+  v11 = _s18AppStoreComponents14ASCLayoutProxyC32numberOfViewsInLockupMediaLayout3for4with3andSiSo16ASCLockupContextaSg_So14ASCScreenshotsCSgSo11ASCTrailersCSgtFZ_0(for, with, and);
 
   return v11;
 }
 
-+ (id)lockupMediaSizingLayoutFor:(id)a3 screenshots:(id)a4 trailers:(id)a5 containerView:(id)a6 mediaViews:(id)a7
++ (id)lockupMediaSizingLayoutFor:(id)for screenshots:(id)screenshots trailers:(id)trailers containerView:(id)view mediaViews:(id)views
 {
   sub_215788D28(0, &qword_280D2B5B0);
   v11 = sub_2157A9440();
   swift_getObjCClassMetadata();
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = static ASCLayoutProxy.lockupMediaSizingLayout(for:screenshots:trailers:containerView:mediaViews:)(a3, a4, a5, v15, v11);
+  forCopy = for;
+  screenshotsCopy = screenshots;
+  trailersCopy = trailers;
+  viewCopy = view;
+  v16 = static ASCLayoutProxy.lockupMediaSizingLayout(for:screenshots:trailers:containerView:mediaViews:)(for, screenshots, trailers, viewCopy, v11);
 
   return v16;
 }
 
-+ (id)lockupMediaLayoutFor:(id)a3 screenshots:(id)a4 trailers:(id)a5 containerView:(id)a6 mediaViews:(id)a7
++ (id)lockupMediaLayoutFor:(id)for screenshots:(id)screenshots trailers:(id)trailers containerView:(id)view mediaViews:(id)views
 {
   sub_215788D28(0, &qword_280D2B5B0);
   v11 = sub_2157A9440();
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = _s18AppStoreComponents14ASCLayoutProxyC17lockupMediaLayout3for11screenshots8trailers13containerView10mediaViewsACSo16ASCLockupContextaSg_So14ASCScreenshotsCSgSo11ASCTrailersCSgSo6UIViewCSayATGtFZ_0(a3, a4, a5, v15, v11);
+  forCopy = for;
+  screenshotsCopy = screenshots;
+  trailersCopy = trailers;
+  viewCopy = view;
+  v16 = _s18AppStoreComponents14ASCLayoutProxyC17lockupMediaLayout3for11screenshots8trailers13containerView10mediaViewsACSo16ASCLockupContextaSg_So14ASCScreenshotsCSgSo11ASCTrailersCSgSo6UIViewCSayATGtFZ_0(for, screenshots, trailers, viewCopy, v11);
 
   return v16;
 }
 
-+ (CGSize)lockupMediaPreferredMediaSizeWithFitting:(CGSize)a3 for:(id)a4 with:(id)a5 and:(id)a6 in:(id)a7
++ (CGSize)lockupMediaPreferredMediaSizeWithFitting:(CGSize)fitting for:(id)for with:(id)with and:(id)and in:(id)in
 {
-  height = a3.height;
-  width = a3.width;
+  height = fitting.height;
+  width = fitting.width;
   v13 = type metadata accessor for LockupMediaLayout.Metrics(0);
   MEMORY[0x28223BE20](v13 - 8);
   v15 = &v24 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   swift_getObjCClassMetadata();
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  forCopy = for;
+  withCopy = with;
+  andCopy = and;
   swift_unknownObjectRetain();
-  sub_215793DD0(a4, a5, a6, v15);
-  v19 = sub_2157872A0(v15, a7, width, height);
+  sub_215793DD0(for, with, and, v15);
+  v19 = sub_2157872A0(v15, in, width, height);
   v21 = v20;
 
   swift_unknownObjectRelease();
@@ -240,11 +240,11 @@
   return result;
 }
 
-+ (id)artworkFrom:(id)a3 and:(id)a4
++ (id)artworkFrom:(id)from and:(id)and
 {
-  v6 = a3;
-  v7 = a4;
-  sub_215788950(a3, a4, 0, 1);
+  fromCopy = from;
+  andCopy = and;
+  sub_215788950(from, and, 0, 1);
 
   sub_215788D28(0, &qword_27CA71118);
   v8 = sub_2157A9430();
@@ -252,15 +252,15 @@
   return v8;
 }
 
-+ (CGSize)estimatedMediaContentSizeFor:(id)a3 screenshots:(id)a4 trailers:(id)a5 fitting:(CGSize)a6 in:(id)a7
++ (CGSize)estimatedMediaContentSizeFor:(id)for screenshots:(id)screenshots trailers:(id)trailers fitting:(CGSize)fitting in:(id)in
 {
-  height = a6.height;
-  width = a6.width;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
+  height = fitting.height;
+  width = fitting.width;
+  forCopy = for;
+  screenshotsCopy = screenshots;
+  trailersCopy = trailers;
   swift_unknownObjectRetain();
-  _s18AppStoreComponents14ASCLayoutProxyC25estimatedMediaContentSize3for11screenshots8trailers7fitting2inSo6CGSizeVSo16ASCLockupContextaSg_So14ASCScreenshotsCSgSo11ASCTrailersCSgAKSo18UITraitEnvironment_ptFZ_0(a3, a4, a5, a7, width, height);
+  _s18AppStoreComponents14ASCLayoutProxyC25estimatedMediaContentSize3for11screenshots8trailers7fitting2inSo6CGSizeVSo16ASCLockupContextaSg_So14ASCScreenshotsCSgSo11ASCTrailersCSgAKSo18UITraitEnvironment_ptFZ_0(for, screenshots, trailers, in, width, height);
   v17 = v16;
   v19 = v18;
 
@@ -272,22 +272,22 @@
   return result;
 }
 
-+ (double)containerViewRotationAngleFor:(id)a3 screenshots:(id)a4 trailers:(id)a5
++ (double)containerViewRotationAngleFor:(id)for screenshots:(id)screenshots trailers:(id)trailers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  _s18AppStoreComponents14ASCLayoutProxyC26containerViewRotationAngle3for11screenshots8trailers12CoreGraphics7CGFloatVSo16ASCLockupContextaSg_So14ASCScreenshotsCSgSo11ASCTrailersCSgtFZ_0(a3, a4, a5);
+  forCopy = for;
+  screenshotsCopy = screenshots;
+  trailersCopy = trailers;
+  _s18AppStoreComponents14ASCLayoutProxyC26containerViewRotationAngle3for11screenshots8trailers12CoreGraphics7CGFloatVSo16ASCLockupContextaSg_So14ASCScreenshotsCSgSo11ASCTrailersCSgtFZ_0(for, screenshots, trailers);
   v12 = v11;
 
   return v12;
 }
 
-+ (UIEdgeInsets)layoutMarginsFor:(id)a3 existingLayoutMargins:(UIEdgeInsets)a4
++ (UIEdgeInsets)layoutMarginsFor:(id)for existingLayoutMargins:(UIEdgeInsets)margins
 {
-  top = a4.top;
-  v6 = a3;
-  v7 = _s18AppStoreComponents14ASCLayoutProxyC13layoutMargins3for014existingLayoutG0So12UIEdgeInsetsVSo16ASCLockupContextaSg_AHtFZ_0(a3, top);
+  top = margins.top;
+  forCopy = for;
+  v7 = _s18AppStoreComponents14ASCLayoutProxyC13layoutMargins3for014existingLayoutG0So12UIEdgeInsetsVSo16ASCLockupContextaSg_AHtFZ_0(for, top);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -303,46 +303,46 @@
   return result;
 }
 
-+ (double)lockupTitlePointSizeProvider:(id)a3
++ (double)lockupTitlePointSizeProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = _s18AppStoreComponents14ASCLayoutProxyC28lockupTitlePointSizeProvidery12CoreGraphics7CGFloatVSo09UIContentI8CategoryaFZ_0();
 
   return v4;
 }
 
-+ (double)lockupSubtitlePointSizeProvider:(id)a3
++ (double)lockupSubtitlePointSizeProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = _s18AppStoreComponents14ASCLayoutProxyC31lockupSubtitlePointSizeProvidery12CoreGraphics7CGFloatVSo09UIContentI8CategoryaFZ_0();
 
   return v4;
 }
 
-+ (double)lockupHeadingPointSizeProvider:(id)a3
++ (double)lockupHeadingPointSizeProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = _s18AppStoreComponents14ASCLayoutProxyC30lockupHeadingPointSizeProvidery12CoreGraphics7CGFloatVSo09UIContentI8CategoryaFZ_0();
 
   return v4;
 }
 
-+ (double)adTransparencyButtonTitlePointSizeProvider:(id)a3
++ (double)adTransparencyButtonTitlePointSizeProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = _s18AppStoreComponents14ASCLayoutProxyC42adTransparencyButtonTitlePointSizeProvidery12CoreGraphics7CGFloatVSo09UIContentK8CategoryaFZ_0();
 
   return v4;
 }
 
-+ (double)adTransparencyButtonScaledCapInset:(double)a3 in:(id)a4
++ (double)adTransparencyButtonScaledCapInset:(double)inset in:(id)in
 {
   v5 = sub_2157A89D0();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = &v18[-1] - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = qword_27CA70FB0;
-  v10 = a4;
+  inCopy = in;
   if (v9 != -1)
   {
     swift_once();
@@ -364,19 +364,19 @@
   return v15;
 }
 
-+ (double)adTransparencyDeveloperNamePointSizeProvider:(id)a3
++ (double)adTransparencyDeveloperNamePointSizeProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = _s18AppStoreComponents14ASCLayoutProxyC44adTransparencyDeveloperNamePointSizeProvidery12CoreGraphics7CGFloatVSo09UIContentK8CategoryaFZ_0();
 
   return v4;
 }
 
-+ (CGSize)miniLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4
++ (CGSize)miniLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection
 {
-  width = a3.width;
-  v5 = a4;
-  v6 = _s18AppStoreComponents14ASCLayoutProxyC23miniLockupEstimatedSize7fitting14compatibleWithSo6CGSizeVAH_So17UITraitCollectionCtFZ_0(v5, width);
+  width = size.width;
+  collectionCopy = collection;
+  v6 = _s18AppStoreComponents14ASCLayoutProxyC23miniLockupEstimatedSize7fitting14compatibleWithSo6CGSizeVAH_So17UITraitCollectionCtFZ_0(collectionCopy, width);
   v8 = v7;
 
   v9 = v6;
@@ -386,11 +386,11 @@
   return result;
 }
 
-+ (CGSize)smallOfferButtonLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4
++ (CGSize)smallOfferButtonLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection
 {
-  width = a3.width;
-  v5 = a4;
-  v6 = _s18AppStoreComponents14ASCLayoutProxyC35smallOfferButtonLockupEstimatedSize7fitting14compatibleWithSo6CGSizeVAH_So17UITraitCollectionCtFZ_0(v5, width);
+  width = size.width;
+  collectionCopy = collection;
+  v6 = _s18AppStoreComponents14ASCLayoutProxyC35smallOfferButtonLockupEstimatedSize7fitting14compatibleWithSo6CGSizeVAH_So17UITraitCollectionCtFZ_0(collectionCopy, width);
   v8 = v7;
 
   v9 = v6;
@@ -400,11 +400,11 @@
   return result;
 }
 
-+ (CGSize)mediumOfferButtonLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4
++ (CGSize)mediumOfferButtonLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection
 {
-  width = a3.width;
-  v5 = a4;
-  v6 = _s18AppStoreComponents14ASCLayoutProxyC36mediumOfferButtonLockupEstimatedSize7fitting14compatibleWithSo6CGSizeVAH_So17UITraitCollectionCtFZ_0(v5, width);
+  width = size.width;
+  collectionCopy = collection;
+  v6 = _s18AppStoreComponents14ASCLayoutProxyC36mediumOfferButtonLockupEstimatedSize7fitting14compatibleWithSo6CGSizeVAH_So17UITraitCollectionCtFZ_0(collectionCopy, width);
   v8 = v7;
 
   v9 = v6;
@@ -414,10 +414,10 @@
   return result;
 }
 
-+ (CGSize)smallLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4
++ (CGSize)smallLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection
 {
   v4 = qword_280D2B588;
-  v5 = a4;
+  collectionCopy = collection;
   if (v4 != -1)
   {
     swift_once();
@@ -429,8 +429,8 @@
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CA71138);
   v8 = swift_allocObject();
   *(v8 + 16) = xmmword_2157B3B70;
-  *(v8 + 32) = v5;
-  v9 = v5;
+  *(v8 + 32) = collectionCopy;
+  v9 = collectionCopy;
   v10 = sub_2157A91E0();
   v11 = sub_21579BB5C(v7, v10);
   v13 = v12;
@@ -442,11 +442,11 @@
   return result;
 }
 
-+ (CGSize)mediumLockupEstimatedSizeFittingSize:(CGSize)a3 compatibleWithTraitCollection:(id)a4
++ (CGSize)mediumLockupEstimatedSizeFittingSize:(CGSize)size compatibleWithTraitCollection:(id)collection
 {
-  width = a3.width;
-  v5 = a4;
-  v6 = _s18AppStoreComponents14ASCLayoutProxyC25mediumLockupEstimatedSize7fitting14compatibleWithSo6CGSizeVAH_So17UITraitCollectionCtFZ_0(v5, width);
+  width = size.width;
+  collectionCopy = collection;
+  v6 = _s18AppStoreComponents14ASCLayoutProxyC25mediumLockupEstimatedSize7fitting14compatibleWithSo6CGSizeVAH_So17UITraitCollectionCtFZ_0(collectionCopy, width);
   v8 = v7;
 
   v9 = v6;
@@ -456,18 +456,18 @@
   return result;
 }
 
-+ (id)lockupLayoutOfSize:(id)a3 traitCollection:(id)a4 artworkView:(id)a5 headingText:(id)a6 titleText:(id)a7 subtitleText:(id)a8 offerText:(id)a9 offerButton:(id)a10 badge:(id)a11
++ (id)lockupLayoutOfSize:(id)size traitCollection:(id)collection artworkView:(id)view headingText:(id)text titleText:(id)titleText subtitleText:(id)subtitleText offerText:(id)offerText offerButton:(id)self0 badge:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v26 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = _s18AppStoreComponents14ASCLayoutProxyC12lockupLayout6ofSize15traitCollection11artworkView11headingText05titleO008subtitleO005offerO00R6Button5badgeACSo09ASCLockupmI0a_So07UITraitK0CSo6UIViewCSo7UILabelCSgA2uv2SSgtFZ_0(v16, v17, v18, a6, v19, v20, a9, v22);
+  sizeCopy = size;
+  collectionCopy = collection;
+  viewCopy = view;
+  textCopy = text;
+  titleTextCopy = titleText;
+  subtitleTextCopy = subtitleText;
+  offerTextCopy = offerText;
+  buttonCopy = button;
+  badgeCopy = badge;
+  v24 = _s18AppStoreComponents14ASCLayoutProxyC12lockupLayout6ofSize15traitCollection11artworkView11headingText05titleO008subtitleO005offerO00R6Button5badgeACSo09ASCLockupmI0a_So07UITraitK0CSo6UIViewCSo7UILabelCSgA2uv2SSgtFZ_0(sizeCopy, collectionCopy, viewCopy, text, titleTextCopy, subtitleTextCopy, offerText, buttonCopy);
 
   return v24;
 }
@@ -481,21 +481,21 @@
   return result;
 }
 
-+ (id)miniProductPageLayoutWithTraitCollection:(id)a3 iconArtwork:(id)a4 title:(id)a5 subtitle:(id)a6 metadata:(id)a7 description:(id)a8 screenshots:(id)a9
++ (id)miniProductPageLayoutWithTraitCollection:(id)collection iconArtwork:(id)artwork title:(id)title subtitle:(id)subtitle metadata:(id)metadata description:(id)description screenshots:(id)screenshots
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = sub_21579EF3C(v15, v16, v17, v18, v19, v20);
+  collectionCopy = collection;
+  artworkCopy = artwork;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  metadataCopy = metadata;
+  descriptionCopy = description;
+  screenshotsCopy = screenshots;
+  v21 = sub_21579EF3C(artworkCopy, titleCopy, subtitleCopy, metadataCopy, descriptionCopy, screenshotsCopy);
 
   return v21;
 }
 
-+ (double)offerButtonHeightForSize:(id)a3
++ (double)offerButtonHeightForSize:(id)size
 {
   v3 = sub_2157A93E0();
   v5 = v4;
@@ -507,7 +507,7 @@
   return v6;
 }
 
-+ (double)offerProgressDiameterForSize:(id)a3
++ (double)offerProgressDiameterForSize:(id)size
 {
   v3 = sub_2157A93E0();
   v5 = v4;
@@ -519,7 +519,7 @@
   return v6;
 }
 
-+ (double)offerButtonRegularWidthForSize:(id)a3
++ (double)offerButtonRegularWidthForSize:(id)size
 {
   v3 = sub_2157A93E0();
   v5 = v4;
@@ -531,50 +531,50 @@
   return v6;
 }
 
-+ (id)offerEmptyLayoutWithImageView:(id)a3 titleView:(id)a4 subtitleView:(id)a5
++ (id)offerEmptyLayoutWithImageView:(id)view titleView:(id)titleView subtitleView:(id)subtitleView
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = _s18AppStoreComponents14ASCLayoutProxyC16offerEmptyLayout9imageView05titleJ008subtitleJ0ACSo6UIViewC_AISgAJtFZ_0(v7, a4, a5);
+  viewCopy = view;
+  titleViewCopy = titleView;
+  subtitleViewCopy = subtitleView;
+  v10 = _s18AppStoreComponents14ASCLayoutProxyC16offerEmptyLayout9imageView05titleJ008subtitleJ0ACSo6UIViewC_AISgAJtFZ_0(viewCopy, titleView, subtitleView);
 
   return v10;
 }
 
-+ (id)offerIconLayoutForSize:(id)a3 imageView:(id)a4 titleView:(id)a5 subtitleView:(id)a6 hasTrailingSubtitle:(BOOL)a7 shouldTopAlign:(BOOL)a8 topPadding:(double)a9 shouldTrailingAlign:(BOOL)a10
++ (id)offerIconLayoutForSize:(id)size imageView:(id)view titleView:(id)titleView subtitleView:(id)subtitleView hasTrailingSubtitle:(BOOL)subtitle shouldTopAlign:(BOOL)align topPadding:(double)padding shouldTrailingAlign:(BOOL)self0
 {
   v15 = sub_2157A93E0();
   v17 = v16;
   swift_getObjCClassMetadata();
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = static ASCLayoutProxy.offerIconLayoutForSize(_:imageView:titleView:subtitleView:hasTrailingSubtitle:shouldTopAlign:topPadding:shouldTrailingAlign:)(v15, v17, v18, a5, a6, a7, a8, a10, a9);
+  viewCopy = view;
+  titleViewCopy = titleView;
+  subtitleViewCopy = subtitleView;
+  v21 = static ASCLayoutProxy.offerIconLayoutForSize(_:imageView:titleView:subtitleView:hasTrailingSubtitle:shouldTopAlign:topPadding:shouldTrailingAlign:)(v15, v17, viewCopy, titleView, subtitleView, subtitle, align, trailingAlign, padding);
 
   return v21;
 }
 
-+ (id)offerTextLayoutForSize:(id)a3 titleBackgroundView:(id)a4 titleView:(id)a5 subtitleView:(id)a6 hasTrailingSubtitle:(BOOL)a7 shouldTopAlign:(BOOL)a8 topPadding:(double)a9 shouldExpandBackground:(BOOL)a10
++ (id)offerTextLayoutForSize:(id)size titleBackgroundView:(id)view titleView:(id)titleView subtitleView:(id)subtitleView hasTrailingSubtitle:(BOOL)subtitle shouldTopAlign:(BOOL)align topPadding:(double)padding shouldExpandBackground:(BOOL)self0
 {
   v16 = sub_2157A93E0();
   v18 = v17;
   swift_getObjCClassMetadata();
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = static ASCLayoutProxy.offerTextLayoutForSize(_:titleBackgroundView:titleView:subtitleView:hasTrailingSubtitle:shouldTopAlign:topPadding:shouldExpandBackground:)(v16, v18, v19, v20, a6, a7, a8, a10, a9);
+  viewCopy = view;
+  titleViewCopy = titleView;
+  subtitleViewCopy = subtitleView;
+  v22 = static ASCLayoutProxy.offerTextLayoutForSize(_:titleBackgroundView:titleView:subtitleView:hasTrailingSubtitle:shouldTopAlign:topPadding:shouldExpandBackground:)(v16, v18, viewCopy, titleViewCopy, subtitleView, subtitle, align, background, padding);
 
   return v22;
 }
 
-+ (id)offerDisclosureLayoutWithDisclosureIndicator:(id)a3
++ (id)offerDisclosureLayoutWithDisclosureIndicator:(id)indicator
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   v11[3] = &type metadata for OfferDisclosureLayout;
   v11[4] = sub_2157A03E8();
   v11[0] = swift_allocObject();
   sub_215788D28(0, &qword_280D2B5B0);
-  v5 = a3;
+  indicatorCopy = indicator;
   sub_2157A8AE0();
   v10[3] = &type metadata for PlaceableLayoutProxy;
   v10[4] = sub_21579EB74();
@@ -592,11 +592,11 @@
   return v7;
 }
 
-+ (id)tvTextPillOverlayWithBackgroundView:(id)a3 textView:(id)a4
++ (id)tvTextPillOverlayWithBackgroundView:(id)view textView:(id)textView
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _s18AppStoreComponents14ASCLayoutProxyC17tvTextPillOverlay14backgroundView04textK0ACSo6UIViewC_AHtFZ_0(v5, v6);
+  viewCopy = view;
+  textViewCopy = textView;
+  v7 = _s18AppStoreComponents14ASCLayoutProxyC17tvTextPillOverlay14backgroundView04textK0ACSo6UIViewC_AHtFZ_0(viewCopy, textViewCopy);
 
   return v7;
 }

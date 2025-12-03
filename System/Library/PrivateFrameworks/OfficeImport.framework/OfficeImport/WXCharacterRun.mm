@@ -1,17 +1,17 @@
 @interface WXCharacterRun
-+ (BOOL)isSpecialCharacter:(unsigned __int16)a3;
-+ (id)fontForRun:(id)a3 fontType:(int)a4;
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4;
++ (BOOL)isSpecialCharacter:(unsigned __int16)character;
++ (id)fontForRun:(id)run fontType:(int)type;
++ (void)readFrom:(_xmlNode *)from to:(id)to;
 @end
 
 @implementation WXCharacterRun
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4
++ (void)readFrom:(_xmlNode *)from to:(id)to
 {
-  v7 = a4;
-  if (xmlStrEqual(a3->name, "t") || xmlStrEqual(a3->name, "instrText") || xmlStrEqual(a3->name, "delText"))
+  toCopy = to;
+  if (xmlStrEqual(from->name, "t") || xmlStrEqual(from->name, "instrText") || xmlStrEqual(from->name, "delText"))
   {
-    v5 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:a3];
+    v5 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:from];
     if (!v5)
     {
       goto LABEL_6;
@@ -20,17 +20,17 @@
     goto LABEL_5;
   }
 
-  if (xmlStrEqual(a3->name, "tab") || xmlStrEqual(a3->name, "ptab"))
+  if (xmlStrEqual(from->name, "tab") || xmlStrEqual(from->name, "ptab"))
   {
     v5 = @"\t";
 LABEL_5:
-    [WXCharacterRun readFromString:v5 source:a3 to:v7];
+    [WXCharacterRun readFromString:v5 source:from to:toCopy];
     goto LABEL_6;
   }
 
-  if (xmlStrEqual(a3->name, "br"))
+  if (xmlStrEqual(from->name, "br"))
   {
-    Prop = xmlGetProp(a3, "type");
+    Prop = xmlGetProp(from, "type");
     if (xmlStrEqual(Prop, "page"))
     {
       v5 = @"\f";
@@ -51,7 +51,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  if (xmlStrEqual(a3->name, "softHyphen"))
+  if (xmlStrEqual(from->name, "softHyphen"))
   {
     v5 = @"\x1F";
     goto LABEL_5;
@@ -61,55 +61,55 @@ LABEL_5:
 LABEL_6:
 }
 
-+ (id)fontForRun:(id)a3 fontType:(int)a4
++ (id)fontForRun:(id)run fontType:(int)type
 {
-  v4 = *&a4;
-  v5 = a3;
-  v6 = [v5 properties];
-  if ([v6 isFontOverriddenForFontType:v4])
+  v4 = *&type;
+  runCopy = run;
+  properties = [runCopy properties];
+  if ([properties isFontOverriddenForFontType:v4])
   {
-    v7 = [v6 fontForFontType:v4];
+    v7 = [properties fontForFontType:v4];
   }
 
   else
   {
-    v8 = [v5 paragraph];
-    v9 = [v8 properties];
-    if ([v9 isBaseStyleOverridden] && (objc_msgSend(v9, "baseStyle"), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+    paragraph = [runCopy paragraph];
+    properties2 = [paragraph properties];
+    if ([properties2 isBaseStyleOverridden] && (objc_msgSend(properties2, "baseStyle"), (v10 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       while (1)
       {
-        v11 = [v10 characterProperties];
+        characterProperties = [v10 characterProperties];
 
-        if ([v11 isFontOverriddenForFontType:v4])
+        if ([characterProperties isFontOverriddenForFontType:v4])
         {
           break;
         }
 
-        v12 = [v10 baseStyle];
+        baseStyle = [v10 baseStyle];
 
-        v10 = v12;
-        v6 = v11;
-        if (!v12)
+        v10 = baseStyle;
+        properties = characterProperties;
+        if (!baseStyle)
         {
           goto LABEL_9;
         }
       }
 
-      v7 = [v11 fontForFontType:v4];
+      v7 = [characterProperties fontForFontType:v4];
     }
 
     else
     {
-      v11 = v6;
+      characterProperties = properties;
 LABEL_9:
-      v13 = [v8 document];
-      v14 = [v13 styleSheet];
-      v15 = [v14 defaultCharacterProperties];
+      document = [paragraph document];
+      styleSheet = [document styleSheet];
+      defaultCharacterProperties = [styleSheet defaultCharacterProperties];
 
-      if ([v15 isFontOverriddenForFontType:v4])
+      if ([defaultCharacterProperties isFontOverriddenForFontType:v4])
       {
-        v7 = [v15 fontForFontType:v4];
+        v7 = [defaultCharacterProperties fontForFontType:v4];
       }
 
       else
@@ -117,24 +117,24 @@ LABEL_9:
         v7 = 0;
       }
 
-      v11 = v15;
+      characterProperties = defaultCharacterProperties;
     }
 
-    v6 = v11;
+    properties = characterProperties;
   }
 
   return v7;
 }
 
-+ (BOOL)isSpecialCharacter:(unsigned __int16)a3
++ (BOOL)isSpecialCharacter:(unsigned __int16)character
 {
-  if (a3 - 9) < 0x17 && ((0x40003Du >> (a3 - 9)))
+  if (character - 9) < 0x17 && ((0x40003Du >> (character - 9)))
   {
     return 1;
   }
 
-  v4 = (a3 - 14) < 0x12u || (a3 + 4064) < 0xE0u;
-  return a3 < 9u || v4;
+  v4 = (character - 14) < 0x12u || (character + 4064) < 0xE0u;
+  return character < 9u || v4;
 }
 
 @end

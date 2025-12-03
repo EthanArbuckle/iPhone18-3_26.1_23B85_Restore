@@ -1,20 +1,20 @@
 @interface ATXUserEducationSuggestionServerRequestHandler
-- (void)logUserEducationSuggestionFeedback:(id)a3;
+- (void)logUserEducationSuggestionFeedback:(id)feedback;
 @end
 
 @implementation ATXUserEducationSuggestionServerRequestHandler
 
-- (void)logUserEducationSuggestionFeedback:(id)a3
+- (void)logUserEducationSuggestionFeedback:(id)feedback
 {
-  v3 = a3;
+  feedbackCopy = feedback;
   v4 = __atxlog_handle_context_user_education_suggestions();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXUserEducationSuggestionServerRequestHandler *)v3 logUserEducationSuggestionFeedback:v4];
+    [(ATXUserEducationSuggestionServerRequestHandler *)feedbackCopy logUserEducationSuggestionFeedback:v4];
   }
 
-  v5 = [v3 suggestion];
-  [v5 logFeedback:v3];
+  suggestion = [feedbackCopy suggestion];
+  [suggestion logFeedback:feedbackCopy];
 }
 
 - (void)logUserEducationSuggestionFeedback:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

@@ -9,7 +9,7 @@
 
 + (id)defaultMetrics
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   HUDefaultSizeForIconSize();
   [v2 setIconSize:?];
   [v2 setContentInset:{8.0, 0.0, 8.0, 0.0}];
@@ -19,7 +19,7 @@
 
 + (id)compactMetrics
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   HUDefaultSizeForIconSize();
   [v2 setIconSize:?];
   [v2 setContentInset:{4.0, 0.0, 4.0, 0.0}];

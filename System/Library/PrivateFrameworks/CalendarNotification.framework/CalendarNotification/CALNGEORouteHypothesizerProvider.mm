@@ -1,6 +1,6 @@
 @interface CALNGEORouteHypothesizerProvider
 + (CALNGEORouteHypothesizerProvider)sharedInstance;
-- (id)hypothesizerForPlannedDestination:(id)a3;
+- (id)hypothesizerForPlannedDestination:(id)destination;
 @end
 
 @implementation CALNGEORouteHypothesizerProvider
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __50__CALNGEORouteHypothesizerProvider_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_5 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_5, block);
@@ -30,9 +30,9 @@ uint64_t __50__CALNGEORouteHypothesizerProvider_sharedInstance__block_invoke(uin
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)hypothesizerForPlannedDestination:(id)a3
+- (id)hypothesizerForPlannedDestination:(id)destination
 {
-  v3 = [MEMORY[0x277D0ECE8] hypothesizerForPlannedDestination:a3];
+  v3 = [MEMORY[0x277D0ECE8] hypothesizerForPlannedDestination:destination];
   v4 = [[CALNGEORouteHypothesizer alloc] initWithRouteHypothesizer:v3];
 
   return v4;

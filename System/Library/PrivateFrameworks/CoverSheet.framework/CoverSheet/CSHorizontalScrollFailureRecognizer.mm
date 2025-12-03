@@ -1,27 +1,27 @@
 @interface CSHorizontalScrollFailureRecognizer
-- (BOOL)_isOutOfBounds:(CGPoint)a3 forAngle:(double)a4;
-- (BOOL)_isOutOfBoundsVertically:(CGPoint)a3;
-- (BOOL)_recognizeForMultiTouchIfNecessary:(id)a3;
+- (BOOL)_isOutOfBounds:(CGPoint)bounds forAngle:(double)angle;
+- (BOOL)_isOutOfBoundsVertically:(CGPoint)vertically;
+- (BOOL)_recognizeForMultiTouchIfNecessary:(id)necessary;
 - (CGPoint)_averagePointFromTouches;
-- (CGPoint)_locationOfTouch:(id)a3 inView:(id)a4;
-- (CSHorizontalScrollFailureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (double)_computeEffectiveAngleFromMin:(double)a3 max:(double)a4;
-- (double)_maxAllowableVerticalOffsetForPoint:(CGPoint)a3;
-- (int64_t)_activeTouchCountForEvent:(id)a3;
+- (CGPoint)_locationOfTouch:(id)touch inView:(id)view;
+- (CSHorizontalScrollFailureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (double)_computeEffectiveAngleFromMin:(double)min max:(double)max;
+- (double)_maxAllowableVerticalOffsetForPoint:(CGPoint)point;
+- (int64_t)_activeTouchCountForEvent:(id)event;
 - (void)_averagePointFromTouches;
-- (void)_loadFromSettings:(id)a3;
-- (void)_setArmed:(BOOL)a3;
-- (void)_setDebugViewsColor:(id)a3;
-- (void)_setDebugViewsVisible:(BOOL)a3;
+- (void)_loadFromSettings:(id)settings;
+- (void)_setArmed:(BOOL)armed;
+- (void)_setDebugViewsColor:(id)color;
+- (void)_setDebugViewsVisible:(BOOL)visible;
 - (void)_updateEnabled;
 - (void)dealloc;
 - (void)reset;
-- (void)setEnabled:(BOOL)a3;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CSHorizontalScrollFailureRecognizer
@@ -29,7 +29,7 @@
 - (CGPoint)_averagePointFromTouches
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(CSHorizontalScrollFailureRecognizer *)self view];
+  view = [(CSHorizontalScrollFailureRecognizer *)self view];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -52,7 +52,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [(CSHorizontalScrollFailureRecognizer *)self _locationOfTouch:*(*(&v19 + 1) + 8 * i) inView:v3, v19];
+        [(CSHorizontalScrollFailureRecognizer *)self _locationOfTouch:*(*(&v19 + 1) + 8 * i) inView:view, v19];
         v10 = v10 + v12;
         v9 = v9 + v13;
       }
@@ -116,18 +116,18 @@
   [(CSHorizontalScrollFailureRecognizer *)&v3 dealloc];
 }
 
-- (CSHorizontalScrollFailureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (CSHorizontalScrollFailureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v11.receiver = self;
   v11.super_class = CSHorizontalScrollFailureRecognizer;
-  v4 = [(CSHorizontalScrollFailureRecognizer *)&v11 initWithTarget:a3 action:a4];
+  v4 = [(CSHorizontalScrollFailureRecognizer *)&v11 initWithTarget:target action:action];
   if (v4)
   {
     v5 = +[CSLockScreenDomain rootSettings];
-    v6 = [v5 horizontalScrollFailureRecognizerSettings];
+    horizontalScrollFailureRecognizerSettings = [v5 horizontalScrollFailureRecognizerSettings];
 
-    [v6 addKeyObserver:v4];
-    [(CSHorizontalScrollFailureRecognizer *)v4 _loadFromSettings:v6];
+    [horizontalScrollFailureRecognizerSettings addKeyObserver:v4];
+    [(CSHorizontalScrollFailureRecognizer *)v4 _loadFromSettings:horizontalScrollFailureRecognizerSettings];
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     touches = v4->_touches;
     v4->_touches = v7;
@@ -145,57 +145,57 @@
   return v4;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_externallyEnabled != a3)
+  if (self->_externallyEnabled != enabled)
   {
-    self->_externallyEnabled = a3;
+    self->_externallyEnabled = enabled;
     [(CSHorizontalScrollFailureRecognizer *)self _updateEnabled];
   }
 }
 
-- (void)_setArmed:(BOOL)a3
+- (void)_setArmed:(BOOL)armed
 {
-  if (self->_armed != a3)
+  if (self->_armed != armed)
   {
-    self->_armed = a3;
+    self->_armed = armed;
     [(CSHorizontalScrollFailureRecognizer *)self _updateEnabled];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   v8.receiver = self;
   v8.super_class = CSHorizontalScrollFailureRecognizer;
   [(CSHorizontalScrollFailureRecognizer *)&v8 setState:?];
-  if (a3 != 3)
+  if (state != 3)
   {
     triggeredEvent = self->_triggeredEvent;
     self->_triggeredEvent = 0;
 
-    if (a3)
+    if (state)
     {
-      if (a3 != 1)
+      if (state != 1)
       {
         return;
       }
 
-      v6 = [MEMORY[0x277D75348] greenColor];
+      greenColor = [MEMORY[0x277D75348] greenColor];
     }
 
     else
     {
-      v6 = [MEMORY[0x277D75348] yellowColor];
+      greenColor = [MEMORY[0x277D75348] yellowColor];
     }
 
-    v7 = v6;
-    [(CSHorizontalScrollFailureRecognizer *)self _setDebugViewsColor:v6];
+    v7 = greenColor;
+    [(CSHorizontalScrollFailureRecognizer *)self _setDebugViewsColor:greenColor];
   }
 }
 
-- (BOOL)_recognizeForMultiTouchIfNecessary:(id)a3
+- (BOOL)_recognizeForMultiTouchIfNecessary:(id)necessary
 {
-  v4 = [(CSHorizontalScrollFailureRecognizer *)self view];
+  view = [(CSHorizontalScrollFailureRecognizer *)self view];
   if ([(NSMutableSet *)self->_touches count]< 2 || [(CSHorizontalScrollFailureRecognizer *)self allowMultiTouch])
   {
     v5 = 0;
@@ -211,7 +211,7 @@
     v7 = SBLogDashBoardScrollGestures();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(CSHorizontalScrollFailureRecognizer *)&self->_touches _recognizeForMultiTouchIfNecessary:v4];
+      [(CSHorizontalScrollFailureRecognizer *)&self->_touches _recognizeForMultiTouchIfNecessary:view];
     }
 
     v5 = 1;
@@ -221,21 +221,21 @@
   return v5;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(CSHorizontalScrollFailureRecognizer *)self view];
+  eventCopy = event;
+  view = [(CSHorizontalScrollFailureRecognizer *)self view];
   touches = self->_touches;
-  v8 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:v5];
+  v8 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:eventCopy];
   [(NSMutableSet *)touches unionSet:v8];
 
   v9 = SBLogDashBoardScrollGestures();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:v5];
-    v15 = __stringsFromTouches(v14, v6);
-    v16 = __stringsFromTouches(self->_touches, v6);
+    v14 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:eventCopy];
+    v15 = __stringsFromTouches(v14, view);
+    v16 = __stringsFromTouches(self->_touches, view);
     v17 = 138412546;
     v18 = v15;
     v19 = 2112;
@@ -243,7 +243,7 @@
     _os_log_debug_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEBUG, "HorizontalScrollFailureRecognizer - touches BEGAN: touchesFromEvent: %@, knownTouches: %@", &v17, 0x16u);
   }
 
-  if (![(CSHorizontalScrollFailureRecognizer *)self _recognizeForMultiTouchIfNecessary:v5]&& !self->_tracking)
+  if (![(CSHorizontalScrollFailureRecognizer *)self _recognizeForMultiTouchIfNecessary:eventCopy]&& !self->_tracking)
   {
     [(CSHorizontalScrollFailureRecognizer *)self _averagePointFromTouches];
     self->_startingLocation.x = v10;
@@ -257,17 +257,17 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [(CSHorizontalScrollFailureRecognizer *)self view];
+  eventCopy = event;
+  view = [(CSHorizontalScrollFailureRecognizer *)self view];
   v7 = SBLogDashBoardScrollGestures();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:v5];
-    v10 = __stringsFromTouches(v9, v6);
-    v11 = __stringsFromTouches(self->_touches, v6);
+    v9 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:eventCopy];
+    v10 = __stringsFromTouches(v9, view);
+    v11 = __stringsFromTouches(self->_touches, view);
     v12 = 138412546;
     v13 = v10;
     v14 = 2112;
@@ -292,20 +292,20 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CSHorizontalScrollFailureRecognizer *)self view];
-  [(NSMutableSet *)self->_touches minusSet:v8];
+  eventCopy = event;
+  endedCopy = ended;
+  view = [(CSHorizontalScrollFailureRecognizer *)self view];
+  [(NSMutableSet *)self->_touches minusSet:endedCopy];
 
   v10 = SBLogDashBoardScrollGestures();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:v7];
-    v13 = __stringsFromTouches(v12, v9);
-    v14 = __stringsFromTouches(self->_touches, v9);
+    v12 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:eventCopy];
+    v13 = __stringsFromTouches(v12, view);
+    v14 = __stringsFromTouches(self->_touches, view);
     v15 = 138412546;
     v16 = v13;
     v17 = 2112;
@@ -317,7 +317,7 @@
   {
     if ([(CSHorizontalScrollFailureRecognizer *)self state])
     {
-      objc_storeStrong(&self->_triggeredEvent, a4);
+      objc_storeStrong(&self->_triggeredEvent, event);
       v11 = 3;
     }
 
@@ -330,20 +330,20 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSHorizontalScrollFailureRecognizer *)self view];
-  [(NSMutableSet *)self->_touches minusSet:v7];
+  eventCopy = event;
+  cancelledCopy = cancelled;
+  view = [(CSHorizontalScrollFailureRecognizer *)self view];
+  [(NSMutableSet *)self->_touches minusSet:cancelledCopy];
 
   v9 = SBLogDashBoardScrollGestures();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:v6];
-    v12 = __stringsFromTouches(v11, v8);
-    v13 = __stringsFromTouches(self->_touches, v8);
+    v11 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:eventCopy];
+    v12 = __stringsFromTouches(v11, view);
+    v13 = __stringsFromTouches(self->_touches, view);
     v14 = 138412546;
     v15 = v12;
     v16 = 2112;
@@ -367,32 +367,32 @@
   }
 }
 
-- (CGPoint)_locationOfTouch:(id)a3 inView:(id)a4
+- (CGPoint)_locationOfTouch:(id)touch inView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CSHorizontalScrollFailureRecognizer *)self view];
-  v9 = [v8 window];
-  v10 = [v9 screen];
-  [v7 locationInView:v8];
+  viewCopy = view;
+  touchCopy = touch;
+  view = [(CSHorizontalScrollFailureRecognizer *)self view];
+  window = [view window];
+  screen = [window screen];
+  [touchCopy locationInView:view];
   v12 = v11;
   v14 = v13;
 
-  [v9 convertPoint:v8 fromCoordinateSpace:{v12, v14}];
+  [window convertPoint:view fromCoordinateSpace:{v12, v14}];
   v16 = v15;
   v18 = v17;
-  v19 = [v10 coordinateSpace];
-  [v19 convertPoint:v9 fromCoordinateSpace:{v16, v18}];
+  coordinateSpace = [screen coordinateSpace];
+  [coordinateSpace convertPoint:window fromCoordinateSpace:{v16, v18}];
   v21 = v20;
   v23 = v22;
 
-  v24 = [v6 window];
-  v25 = [v10 coordinateSpace];
-  [v24 convertPoint:v25 fromCoordinateSpace:{v21, v23}];
+  window2 = [viewCopy window];
+  coordinateSpace2 = [screen coordinateSpace];
+  [window2 convertPoint:coordinateSpace2 fromCoordinateSpace:{v21, v23}];
   v27 = v26;
   v29 = v28;
 
-  [v6 convertPoint:v24 fromCoordinateSpace:{v27, v29}];
+  [viewCopy convertPoint:window2 fromCoordinateSpace:{v27, v29}];
   v31 = v30;
   v33 = v32;
 
@@ -403,28 +403,28 @@
   return result;
 }
 
-- (void)_loadFromSettings:(id)a3
+- (void)_loadFromSettings:(id)settings
 {
-  v4 = a3;
-  -[CSHorizontalScrollFailureRecognizer _setArmed:](self, "_setArmed:", [v4 enabled]);
-  -[CSHorizontalScrollFailureRecognizer setViewDebugArea:](self, "setViewDebugArea:", [v4 viewDebugArea]);
-  -[CSHorizontalScrollFailureRecognizer setMaxAllowableVerticalOffset:](self, "setMaxAllowableVerticalOffset:", [v4 maxAllowableVerticalOffset]);
-  [v4 topAngle];
+  settingsCopy = settings;
+  -[CSHorizontalScrollFailureRecognizer _setArmed:](self, "_setArmed:", [settingsCopy enabled]);
+  -[CSHorizontalScrollFailureRecognizer setViewDebugArea:](self, "setViewDebugArea:", [settingsCopy viewDebugArea]);
+  -[CSHorizontalScrollFailureRecognizer setMaxAllowableVerticalOffset:](self, "setMaxAllowableVerticalOffset:", [settingsCopy maxAllowableVerticalOffset]);
+  [settingsCopy topAngle];
   [(CSHorizontalScrollFailureRecognizer *)self setMaxAllowedTopAngle:?];
-  [v4 topAngle];
+  [settingsCopy topAngle];
   [(CSHorizontalScrollFailureRecognizer *)self setMinAllowedTopAngle:?];
-  [v4 bottomAngle];
+  [settingsCopy bottomAngle];
   [(CSHorizontalScrollFailureRecognizer *)self setMaxAllowedBottomAngle:?];
-  [v4 bottomAngle];
+  [settingsCopy bottomAngle];
   v6 = v5;
 
   [(CSHorizontalScrollFailureRecognizer *)self setMinAllowedBottomAngle:v6];
 }
 
-- (int64_t)_activeTouchCountForEvent:(id)a3
+- (int64_t)_activeTouchCountForEvent:(id)event
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:a3];
+  v3 = [(CSHorizontalScrollFailureRecognizer *)self _touchesFromEvent:event];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -464,29 +464,29 @@
   return v6;
 }
 
-- (double)_computeEffectiveAngleFromMin:(double)a3 max:(double)a4
+- (double)_computeEffectiveAngleFromMin:(double)min max:(double)max
 {
-  v7 = [(CSHorizontalScrollFailureRecognizer *)self view];
-  v8 = v7;
-  if (vabdd_f64(a4, a3) > 0.001)
+  view = [(CSHorizontalScrollFailureRecognizer *)self view];
+  v8 = view;
+  if (vabdd_f64(max, min) > 0.001)
   {
-    [v7 bounds];
-    a4 = self->_startingLocation.x * ((a4 - a3) / v9);
+    [view bounds];
+    max = self->_startingLocation.x * ((max - min) / v9);
   }
 
-  return a4;
+  return max;
 }
 
-- (BOOL)_isOutOfBoundsVertically:(CGPoint)a3
+- (BOOL)_isOutOfBoundsVertically:(CGPoint)vertically
 {
-  v3 = floor(vabdd_f64(a3.y, self->_startingLocation.y));
-  [(CSHorizontalScrollFailureRecognizer *)self _maxAllowableVerticalOffsetForPoint:a3.x];
+  v3 = floor(vabdd_f64(vertically.y, self->_startingLocation.y));
+  [(CSHorizontalScrollFailureRecognizer *)self _maxAllowableVerticalOffsetForPoint:vertically.x];
   return v3 > v4;
 }
 
-- (double)_maxAllowableVerticalOffsetForPoint:(CGPoint)a3
+- (double)_maxAllowableVerticalOffsetForPoint:(CGPoint)point
 {
-  y = a3.y;
+  y = point.y;
   if (__sb__runningInSpringBoard())
   {
     if (SBFEffectiveDeviceClass() != 2)
@@ -497,31 +497,31 @@
 
   else
   {
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v7 != 1)
+    if (userInterfaceIdiom != 1)
     {
       return self->_maxAllowableVerticalOffset;
     }
   }
 
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v10 = v9;
 
   v11 = fabs(y + v10 * -0.5);
   return self->_maxAllowableVerticalOffset / 3.0 + (1.0 - (v11 + v11) / v10) * ((self->_maxAllowableVerticalOffset + self->_maxAllowableVerticalOffset) / 3.0);
 }
 
-- (BOOL)_isOutOfBounds:(CGPoint)a3 forAngle:(double)a4
+- (BOOL)_isOutOfBounds:(CGPoint)bounds forAngle:(double)angle
 {
-  y = a3.y;
-  x = a3.x;
+  y = bounds.y;
+  x = bounds.x;
   v8 = [(CSHorizontalScrollFailureRecognizer *)self _isOutOfBoundsVertically:?];
   if (v8)
   {
-    v9 = fabs(tan(a4 * 0.0174532925)) * vabdd_f64(x, self->_startingLocation.x) + 0.0;
+    v9 = fabs(tan(angle * 0.0174532925)) * vabdd_f64(x, self->_startingLocation.x) + 0.0;
     v10 = floor(vabdd_f64(y, self->_startingLocation.y));
     [(CSHorizontalScrollFailureRecognizer *)self _maxAllowableVerticalOffsetForPoint:x, y];
     LOBYTE(v8) = v10 - v11 > v9;
@@ -530,9 +530,9 @@
   return v8;
 }
 
-- (void)_setDebugViewsVisible:(BOOL)a3
+- (void)_setDebugViewsVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v43 = *MEMORY[0x277D85DE8];
   v36 = 0u;
   v37 = 0u;
@@ -562,23 +562,23 @@
     while (v7);
   }
 
-  if (v3)
+  if (visibleCopy)
   {
-    v10 = [(CSHorizontalScrollFailureRecognizer *)self view];
+    view = [(CSHorizontalScrollFailureRecognizer *)self view];
     x = self->_startingLocation.x;
     y = self->_startingLocation.y;
     [(CSHorizontalScrollFailureRecognizer *)self _maxAllowableVerticalOffsetForPoint:x, y];
     v14 = v13;
     v15 = y - v13;
-    [v10 bounds];
+    [view bounds];
     v17 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, v15, v16, v14 + v14}];
-    v18 = [MEMORY[0x277D75348] yellowColor];
-    [v17 setBackgroundColor:v18];
+    yellowColor = [MEMORY[0x277D75348] yellowColor];
+    [v17 setBackgroundColor:yellowColor];
 
-    v19 = [[SBHorizontalScrollFailureTriangleView alloc] initWithStyle:0 recognizer:self forPoint:v10 withMaxVerticalOffset:1 inView:x pointingRight:y, v14];
-    v20 = [[SBHorizontalScrollFailureTriangleView alloc] initWithStyle:0 recognizer:self forPoint:v10 withMaxVerticalOffset:0 inView:x pointingRight:y, v14];
-    v21 = [[SBHorizontalScrollFailureTriangleView alloc] initWithStyle:1 recognizer:self forPoint:v10 withMaxVerticalOffset:1 inView:x pointingRight:y, v14];
-    v22 = [[SBHorizontalScrollFailureTriangleView alloc] initWithStyle:1 recognizer:self forPoint:v10 withMaxVerticalOffset:0 inView:x pointingRight:y, v14];
+    v19 = [[SBHorizontalScrollFailureTriangleView alloc] initWithStyle:0 recognizer:self forPoint:view withMaxVerticalOffset:1 inView:x pointingRight:y, v14];
+    v20 = [[SBHorizontalScrollFailureTriangleView alloc] initWithStyle:0 recognizer:self forPoint:view withMaxVerticalOffset:0 inView:x pointingRight:y, v14];
+    v21 = [[SBHorizontalScrollFailureTriangleView alloc] initWithStyle:1 recognizer:self forPoint:view withMaxVerticalOffset:1 inView:x pointingRight:y, v14];
+    v22 = [[SBHorizontalScrollFailureTriangleView alloc] initWithStyle:1 recognizer:self forPoint:view withMaxVerticalOffset:0 inView:x pointingRight:y, v14];
     v41[0] = v17;
     v41[1] = v20;
     v31 = v19;
@@ -610,7 +610,7 @@
 
           v30 = *(*(&v32 + 1) + 8 * j);
           [v30 setUserInteractionEnabled:0];
-          [v10 addSubview:v30];
+          [view addSubview:v30];
           [v30 setAlpha:0.5];
         }
 
@@ -622,10 +622,10 @@
   }
 }
 
-- (void)_setDebugViewsColor:(id)a3
+- (void)_setDebugViewsColor:(id)color
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  colorCopy = color;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -650,12 +650,12 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v10 setContentColor:v4];
+          [v10 setContentColor:colorCopy];
         }
 
         else
         {
-          [v10 setBackgroundColor:{v4, v11}];
+          [v10 setBackgroundColor:{colorCopy, v11}];
         }
 
         ++v9;
@@ -677,7 +677,7 @@
 
 - (void)_averagePointFromTouches
 {
-  v2 = NSStringFromCGPoint(*&a1);
+  v2 = NSStringFromCGPoint(*&self);
   OUTLINED_FUNCTION_0_3(&dword_21EB05000, v3, v4, "FAILURE RECOGNIZER - averagePointFromTouches: %@", v5, v6, v7, v8, 2u);
 }
 

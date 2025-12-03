@@ -1,31 +1,31 @@
 @interface WBBookmarkDatabaseSyncData
-+ (WBBookmarkDatabaseSyncData)databaseSyncDataWithContentsOfData:(id)a3;
-+ (id)databaseSyncDataInDatabase:(void *)a3 databaseAccessor:(id)a4;
++ (WBBookmarkDatabaseSyncData)databaseSyncDataWithContentsOfData:(id)data;
++ (id)databaseSyncDataInDatabase:(void *)database databaseAccessor:(id)accessor;
 - (NSDictionary)recordZoneIDsToHashGenerators;
 - (NSDictionary)recordZoneIDsToLastServerChangeTokens;
 - (WBBookmarkDatabaseSyncData)init;
-- (WBBookmarkDatabaseSyncData)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WBBookmarkDatabaseSyncData)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)nextChangeID;
 - (void)clearAllLastServerChangeTokens;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHashGenerator:(id)a3 forRecordZoneID:(id)a4;
-- (void)writeToDatabase:(void *)a3 databaseAccessor:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHashGenerator:(id)generator forRecordZoneID:(id)d;
+- (void)writeToDatabase:(void *)database databaseAccessor:(id)accessor;
 @end
 
 @implementation WBBookmarkDatabaseSyncData
 
-+ (WBBookmarkDatabaseSyncData)databaseSyncDataWithContentsOfData:(id)a3
++ (WBBookmarkDatabaseSyncData)databaseSyncDataWithContentsOfData:(id)data
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = WBS_LOG_CHANNEL_PREFIXCloudBookmarks();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(WBBookmarkDatabaseSyncData *)v4 databaseSyncDataWithContentsOfData:v3];
+    [(WBBookmarkDatabaseSyncData *)v4 databaseSyncDataWithContentsOfData:dataCopy];
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v3 error:0];
+  v5 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:dataCopy error:0];
   [v5 setClass:objc_opt_class() forClassName:@"CloudBookmarkDatabaseSyncData"];
   v6 = [v5 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
   [v5 finishDecoding];
@@ -40,10 +40,10 @@
   return v6;
 }
 
-+ (id)databaseSyncDataInDatabase:(void *)a3 databaseAccessor:(id)a4
++ (id)databaseSyncDataInDatabase:(void *)database databaseAccessor:(id)accessor
 {
-  v5 = [a4 copySyncDataWithDatabase:a3];
-  v6 = [a1 databaseSyncDataWithContentsOfData:v5];
+  v5 = [accessor copySyncDataWithDatabase:database];
+  v6 = [self databaseSyncDataWithContentsOfData:v5];
 
   return v6;
 }
@@ -55,9 +55,9 @@
   v2 = [(WBBookmarkDatabaseSyncData *)&v15 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     recordZoneIDsToLastServerChangeTokens = v2->_recordZoneIDsToLastServerChangeTokens;
-    v2->_recordZoneIDsToLastServerChangeTokens = v3;
+    v2->_recordZoneIDsToLastServerChangeTokens = dictionary;
 
     v5 = [MEMORY[0x277CBEB98] set];
     recordIDsToRefresh = v2->_recordIDsToRefresh;
@@ -67,9 +67,9 @@
     auxiliaryRecordIDsToDelete = v2->_auxiliaryRecordIDsToDelete;
     v2->_auxiliaryRecordIDsToDelete = v7;
 
-    v9 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     recordZoneIDsToHashGenerators = v2->_recordZoneIDsToHashGenerators;
-    v2->_recordZoneIDsToHashGenerators = v9;
+    v2->_recordZoneIDsToHashGenerators = dictionary2;
 
     v11 = [MEMORY[0x277CBEB98] set];
     idsOfRecordZonesToRefresh = v2->_idsOfRecordZonesToRefresh;
@@ -81,17 +81,17 @@
   return v2;
 }
 
-- (void)writeToDatabase:(void *)a3 databaseAccessor:(id)a4
+- (void)writeToDatabase:(void *)database databaseAccessor:(id)accessor
 {
-  v6 = a4;
-  v7 = [(WBBookmarkDatabaseSyncData *)self encodedDatabaseSyncData];
+  accessorCopy = accessor;
+  encodedDatabaseSyncData = [(WBBookmarkDatabaseSyncData *)self encodedDatabaseSyncData];
   v8 = WBS_LOG_CHANNEL_PREFIXCloudBookmarks();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [WBBookmarkDatabaseSyncData writeToDatabase:v8 databaseAccessor:v7];
+    [WBBookmarkDatabaseSyncData writeToDatabase:v8 databaseAccessor:encodedDatabaseSyncData];
   }
 
-  [v6 setSyncData:v7 database:a3];
+  [accessorCopy setSyncData:encodedDatabaseSyncData database:database];
 }
 
 - (NSDictionary)recordZoneIDsToLastServerChangeTokens
@@ -103,9 +103,9 @@
 
 - (void)clearAllLastServerChangeTokens
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   recordZoneIDsToLastServerChangeTokens = self->_recordZoneIDsToLastServerChangeTokens;
-  self->_recordZoneIDsToLastServerChangeTokens = v3;
+  self->_recordZoneIDsToLastServerChangeTokens = dictionary;
 
   v5 = [MEMORY[0x277CBEB98] set];
   recordIDsToRefresh = self->_recordIDsToRefresh;
@@ -124,40 +124,40 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (WBBookmarkDatabaseSyncData)initWithCoder:(id)a3
+- (WBBookmarkDatabaseSyncData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = WBBookmarkDatabaseSyncData;
   v5 = [(WBBookmarkDatabaseSyncData *)&v49 init];
   if (v5)
   {
-    v5->_lastChangeID = [v4 decodeInt64ForKey:@"LastChangeID"];
-    v5->_didNotSaveRecordsAfterMigration = [v4 decodeBoolForKey:@"DidNotSaveRecordsAfterMigration"];
-    v5->_minimumSyncAPIVersion = [v4 decodeIntegerForKey:@"MinimumAPIVersion"];
+    v5->_lastChangeID = [coderCopy decodeInt64ForKey:@"LastChangeID"];
+    v5->_didNotSaveRecordsAfterMigration = [coderCopy decodeBoolForKey:@"DidNotSaveRecordsAfterMigration"];
+    v5->_minimumSyncAPIVersion = [coderCopy decodeIntegerForKey:@"MinimumAPIVersion"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"RecordZoneIDsToLastServerChangeTokens"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"RecordZoneIDsToLastServerChangeTokens"];
     v11 = v10;
     if (v10)
     {
-      v12 = v10;
+      dictionary = v10;
     }
 
     else
     {
-      v12 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     recordZoneIDsToLastServerChangeTokens = v5->_recordZoneIDsToLastServerChangeTokens;
-    v5->_recordZoneIDsToLastServerChangeTokens = v12;
+    v5->_recordZoneIDsToLastServerChangeTokens = dictionary;
 
     v14 = MEMORY[0x277CBEB98];
     v15 = objc_opt_class();
     v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
-    v17 = [v4 decodeObjectOfClasses:v16 forKey:@"RecordIDsToRefresh"];
+    v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"RecordIDsToRefresh"];
     v18 = v17;
     if (v17)
     {
@@ -175,7 +175,7 @@
     v21 = MEMORY[0x277CBEB98];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"AuxiliaryRecordIDsToDelete"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"AuxiliaryRecordIDsToDelete"];
     v25 = v24;
     if (v24)
     {
@@ -190,11 +190,11 @@
     auxiliaryRecordIDsToDelete = v5->_auxiliaryRecordIDsToDelete;
     v5->_auxiliaryRecordIDsToDelete = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastPrivateDatabaseServerChangeToken"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastPrivateDatabaseServerChangeToken"];
     lastPrivateDatabaseServerChangeToken = v5->_lastPrivateDatabaseServerChangeToken;
     v5->_lastPrivateDatabaseServerChangeToken = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastSharedDatabaseServerChangeToken"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastSharedDatabaseServerChangeToken"];
     lastSharedDatabaseServerChangeToken = v5->_lastSharedDatabaseServerChangeToken;
     v5->_lastSharedDatabaseServerChangeToken = v30;
 
@@ -202,25 +202,25 @@
     v33 = objc_opt_class();
     v34 = objc_opt_class();
     v35 = [v32 setWithObjects:{v33, v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"RecordZoneIDsToHashGenerators"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"RecordZoneIDsToHashGenerators"];
     v37 = v36;
     if (v36)
     {
-      v38 = v36;
+      dictionary2 = v36;
     }
 
     else
     {
-      v38 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     }
 
     recordZoneIDsToHashGenerators = v5->_recordZoneIDsToHashGenerators;
-    v5->_recordZoneIDsToHashGenerators = v38;
+    v5->_recordZoneIDsToHashGenerators = dictionary2;
 
     v40 = MEMORY[0x277CBEB98];
     v41 = objc_opt_class();
     v42 = [v40 setWithObjects:{v41, objc_opt_class(), 0}];
-    v43 = [v4 decodeObjectOfClasses:v42 forKey:@"IDsOfRecordZonesToRefresh"];
+    v43 = [coderCopy decodeObjectOfClasses:v42 forKey:@"IDsOfRecordZonesToRefresh"];
     v44 = v43;
     if (v43)
     {
@@ -241,44 +241,44 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInt64:self->_lastChangeID forKey:@"LastChangeID"];
-  [v6 encodeInteger:self->_minimumSyncAPIVersion forKey:@"MinimumAPIVersion"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_lastChangeID forKey:@"LastChangeID"];
+  [coderCopy encodeInteger:self->_minimumSyncAPIVersion forKey:@"MinimumAPIVersion"];
   if (self->_didNotSaveRecordsAfterMigration)
   {
-    [v6 encodeBool:1 forKey:@"DidNotSaveRecordsAfterMigration"];
+    [coderCopy encodeBool:1 forKey:@"DidNotSaveRecordsAfterMigration"];
   }
 
   if ([(NSMutableDictionary *)self->_recordZoneIDsToLastServerChangeTokens count])
   {
-    [v6 encodeObject:self->_recordZoneIDsToLastServerChangeTokens forKey:@"RecordZoneIDsToLastServerChangeTokens"];
+    [coderCopy encodeObject:self->_recordZoneIDsToLastServerChangeTokens forKey:@"RecordZoneIDsToLastServerChangeTokens"];
   }
 
   if ([(NSSet *)self->_recordIDsToRefresh count])
   {
-    [v6 encodeObject:self->_recordIDsToRefresh forKey:@"RecordIDsToRefresh"];
+    [coderCopy encodeObject:self->_recordIDsToRefresh forKey:@"RecordIDsToRefresh"];
   }
 
   v4 = [(NSSet *)self->_auxiliaryRecordIDsToDelete count];
-  v5 = v6;
+  v5 = coderCopy;
   if (v4)
   {
-    [v6 encodeObject:self->_auxiliaryRecordIDsToDelete forKey:@"AuxiliaryRecordIDsToDelete"];
-    v5 = v6;
+    [coderCopy encodeObject:self->_auxiliaryRecordIDsToDelete forKey:@"AuxiliaryRecordIDsToDelete"];
+    v5 = coderCopy;
   }
 
   [v5 encodeObject:self->_lastPrivateDatabaseServerChangeToken forKey:@"LastPrivateDatabaseServerChangeToken"];
-  [v6 encodeObject:self->_lastSharedDatabaseServerChangeToken forKey:@"LastSharedDatabaseServerChangeToken"];
+  [coderCopy encodeObject:self->_lastSharedDatabaseServerChangeToken forKey:@"LastSharedDatabaseServerChangeToken"];
   if ([(NSMutableDictionary *)self->_recordZoneIDsToHashGenerators count])
   {
-    [v6 encodeObject:self->_recordZoneIDsToHashGenerators forKey:@"RecordZoneIDsToHashGenerators"];
+    [coderCopy encodeObject:self->_recordZoneIDsToHashGenerators forKey:@"RecordZoneIDsToHashGenerators"];
   }
 
   if ([(NSSet *)self->_idsOfRecordZonesToRefresh count])
   {
-    [v6 encodeObject:self->_idsOfRecordZonesToRefresh forKey:@"IDsOfRecordZonesToRefresh"];
+    [coderCopy encodeObject:self->_idsOfRecordZonesToRefresh forKey:@"IDsOfRecordZonesToRefresh"];
   }
 }
 
@@ -289,7 +289,7 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSMutableDictionary *)self->_recordZoneIDsToLastServerChangeTokens mutableCopy];
@@ -326,11 +326,11 @@
   return v2;
 }
 
-- (void)setHashGenerator:(id)a3 forRecordZoneID:(id)a4
+- (void)setHashGenerator:(id)generator forRecordZoneID:(id)d
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  [(NSMutableDictionary *)self->_recordZoneIDsToHashGenerators setObject:v7 forKeyedSubscript:v6];
+  dCopy = d;
+  v7 = [generator copy];
+  [(NSMutableDictionary *)self->_recordZoneIDsToHashGenerators setObject:v7 forKeyedSubscript:dCopy];
 }
 
 + (void)databaseSyncDataWithContentsOfData:(void *)a1 .cold.1(void *a1, void *a2)

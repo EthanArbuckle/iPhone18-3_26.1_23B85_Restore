@@ -1,8 +1,8 @@
 @interface CNContactHeaderEditView
 + (BOOL)useSwiftUIPosterAndAvatarEditor;
-+ (id)contactHeaderViewWithContact:(id)a3 shouldAllowTakePhotoAction:(BOOL)a4 showingNavBar:(BOOL)a5 monogramOnly:(BOOL)a6 isOutOfProcess:(BOOL)a7 delegate:(id)a8;
-+ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)a3 shouldAllowImageDrops:(BOOL)a4 monogramOnly:(BOOL)a5;
-+ (id)sizeAttributesShowingNavBar:(BOOL)a3;
++ (id)contactHeaderViewWithContact:(id)contact shouldAllowTakePhotoAction:(BOOL)action showingNavBar:(BOOL)bar monogramOnly:(BOOL)only isOutOfProcess:(BOOL)process delegate:(id)delegate;
++ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops monogramOnly:(BOOL)only;
++ (id)sizeAttributesShowingNavBar:(BOOL)bar;
 - (BOOL)_shouldShowPhoto;
 - (BOOL)hasPhoto;
 - (BOOL)hasWallpaper;
@@ -11,7 +11,7 @@
 - (BOOL)shouldUseStaticHeader;
 - (BOOL)wallpaperIsModified;
 - (CGSize)maxButtonSize;
-- (CNContactHeaderEditView)initWithContact:(id)a3 frame:(CGRect)a4 shouldAllowTakePhotoAction:(BOOL)a5 delegate:(id)a6 showingNavBar:(BOOL)a7 monogramOnly:(BOOL)a8 isOutOfProcess:(BOOL)a9;
+- (CNContactHeaderEditView)initWithContact:(id)contact frame:(CGRect)frame shouldAllowTakePhotoAction:(BOOL)action delegate:(id)delegate showingNavBar:(BOOL)bar monogramOnly:(BOOL)only isOutOfProcess:(BOOL)process;
 - (double)defaultMaxHeight;
 - (double)maxHeight;
 - (double)minHeight;
@@ -23,40 +23,40 @@
 - (double)staticHeaderPhotoTopMarginOffset;
 - (id)mutableContact;
 - (id)posterPlaceholderImage;
-- (void)_presentRemotePosterAndAvatarEditorWithMode:(int64_t)a3 isEditing:(BOOL)a4;
-- (void)avatarPosterEditorFromFlowManager:(id)a3 didUpdateContact:(id)a4 withVisualIdentity:(id)a5;
-- (void)avatarPosterEditorFromFlowManagerDidCancel:(id)a3;
+- (void)_presentRemotePosterAndAvatarEditorWithMode:(int64_t)mode isEditing:(BOOL)editing;
+- (void)avatarPosterEditorFromFlowManager:(id)manager didUpdateContact:(id)contact withVisualIdentity:(id)identity;
+- (void)avatarPosterEditorFromFlowManagerDidCancel:(id)cancel;
 - (void)calculateLabelSizesIfNeeded;
 - (void)didFinishUsing;
-- (void)didTapPhotoViewWhileEditing:(BOOL)a3;
+- (void)didTapPhotoViewWhileEditing:(BOOL)editing;
 - (void)discardPendingAvatarPosterEdits;
 - (void)editAvatar;
-- (void)editButtonTappedWhileEditing:(BOOL)a3;
+- (void)editButtonTappedWhileEditing:(BOOL)editing;
 - (void)editPoster;
 - (void)layoutSubviews;
 - (void)preWarmPosterAndAvatarEditor;
-- (void)presentAvatarPickerWithImageData:(id)a3;
-- (void)presentPosterAndAvatarEditorWithMode:(int64_t)a3 isEditing:(BOOL)a4;
-- (void)presentSwiftUIAvatarEditorWithPoster:(BOOL)a3 isEditing:(BOOL)a4;
-- (void)reloadDataPreservingChanges:(BOOL)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)presentAvatarPickerWithImageData:(id)data;
+- (void)presentPosterAndAvatarEditorWithMode:(int64_t)mode isEditing:(BOOL)editing;
+- (void)presentSwiftUIAvatarEditorWithPoster:(BOOL)poster isEditing:(BOOL)editing;
+- (void)reloadDataPreservingChanges:(BOOL)changes;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 - (void)saveContactPhoto;
-- (void)setAllowsEditPhoto:(BOOL)a3 preservingChanges:(BOOL)a4;
-- (void)setPresenterDelegate:(id)a3;
+- (void)setAllowsEditPhoto:(BOOL)photo preservingChanges:(BOOL)changes;
+- (void)setPresenterDelegate:(id)delegate;
 - (void)setUpEditButton;
 - (void)setUpPosterView;
 - (void)updateConstraints;
-- (void)updateContactWithEditedPropertyItem:(id)a3;
+- (void)updateContactWithEditedPropertyItem:(id)item;
 - (void)updateEditButtonTitle;
 - (void)updateFontSizes;
-- (void)updatePendingWallpaperContactWithEditedPropertyItem:(id)a3;
-- (void)updatePosterViewImageWithNewPosterConfiguration:(BOOL)a3;
+- (void)updatePendingWallpaperContactWithEditedPropertyItem:(id)item;
+- (void)updatePosterViewImageWithNewPosterConfiguration:(BOOL)configuration;
 - (void)updatePosterVisibility;
 - (void)updateSizeDependentAttributes;
-- (void)updateWithContacts:(id)a3;
-- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)a3;
+- (void)updateWithContacts:(id)contacts;
+- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)editing;
 @end
 
 @implementation CNContactHeaderEditView
@@ -70,19 +70,19 @@
   return result;
 }
 
-- (void)avatarPosterEditorFromFlowManagerDidCancel:(id)a3
+- (void)avatarPosterEditorFromFlowManagerDidCancel:(id)cancel
 {
   [(CNContactHeaderEditView *)self setFlowManager:0];
 
   [(CNContactHeaderEditView *)self discardPendingAvatarPosterEdits];
 }
 
-- (void)avatarPosterEditorFromFlowManager:(id)a3 didUpdateContact:(id)a4 withVisualIdentity:(id)a5
+- (void)avatarPosterEditorFromFlowManager:(id)manager didUpdateContact:(id)contact withVisualIdentity:(id)identity
 {
-  v6 = a4;
+  contactCopy = contact;
   [(CNContactHeaderEditView *)self updatePosterViewImageWithNewPosterConfiguration:1];
-  v7 = [(CNContactHeaderView *)self photoView];
-  [v7 updatePendingContactWithEditedContact:v6];
+  photoView = [(CNContactHeaderView *)self photoView];
+  [photoView updatePendingContactWithEditedContact:contactCopy];
 
   [(CNContactHeaderEditView *)self updatePosterVisibility];
 
@@ -92,27 +92,27 @@
 - (void)discardPendingAvatarPosterEdits
 {
   v3 = MEMORY[0x1E695CDB0];
-  v5 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-  v4 = [(CNContactHeaderEditView *)self mutableContact];
-  [v3 updateMutableContact:v5 withImageAndWallpaperPropertiesFromContact:v4];
+  editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+  mutableContact = [(CNContactHeaderEditView *)self mutableContact];
+  [v3 updateMutableContact:editingWallpaperContact withImageAndWallpaperPropertiesFromContact:mutableContact];
 }
 
-- (void)didTapPhotoViewWhileEditing:(BOOL)a3
+- (void)didTapPhotoViewWhileEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   if ([(CNContactHeaderEditView *)self allowsEditPhoto])
   {
-    v5 = [(CNContactHeaderEditView *)self shouldUseStaticHeader];
+    shouldUseStaticHeader = [(CNContactHeaderEditView *)self shouldUseStaticHeader];
     if ([objc_opt_class() useSwiftUIPosterAndAvatarEditor])
     {
 
-      [(CNContactHeaderEditView *)self presentSwiftUIAvatarEditorWithPoster:v5 isEditing:v3];
+      [(CNContactHeaderEditView *)self presentSwiftUIAvatarEditorWithPoster:shouldUseStaticHeader isEditing:editingCopy];
     }
 
-    else if (v5)
+    else if (shouldUseStaticHeader)
     {
 
-      [(CNContactHeaderEditView *)self presentPosterAndAvatarEditorWithMode:1 isEditing:v3];
+      [(CNContactHeaderEditView *)self presentPosterAndAvatarEditorWithMode:1 isEditing:editingCopy];
     }
 
     else
@@ -123,21 +123,21 @@
   }
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  errorCopy = error;
   v5 = CNUILogRemoteAlert();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    v6 = [v4 localizedDescription];
+    localizedDescription = [errorCopy localizedDescription];
     v7 = 138412290;
-    v8 = v6;
+    v8 = localizedDescription;
     _os_log_error_impl(&dword_199A75000, v5, OS_LOG_TYPE_ERROR, "Remote alert handle did invalidate: %@", &v7, 0xCu);
   }
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
   v3 = CNUILogRemoteAlert();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -147,7 +147,7 @@
   }
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
   v3 = CNUILogRemoteAlert();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -157,9 +157,9 @@
   }
 }
 
-- (void)_presentRemotePosterAndAvatarEditorWithMode:(int64_t)a3 isEditing:(BOOL)a4
+- (void)_presentRemotePosterAndAvatarEditorWithMode:(int64_t)mode isEditing:(BOOL)editing
 {
-  v4 = a4;
+  editingCopy = editing;
   v30 = *MEMORY[0x1E69E9840];
   v7 = [objc_alloc(MEMORY[0x1E69D42A0]) initWithServiceName:@"com.apple.ContactsUI.Carousel" viewControllerClassName:@"CNContactPhotoCarouselRemoteAlertViewController"];
   v8 = objc_alloc_init(MEMORY[0x1E69D4298]);
@@ -176,9 +176,9 @@
   [v8 setActions:v12];
 
   v13 = MEMORY[0x1E696ACC8];
-  v14 = [(CNContactHeaderEditView *)self editingWallpaperContact];
+  editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
   v24 = 0;
-  v15 = [v13 archivedDataWithRootObject:v14 requiringSecureCoding:1 error:&v24];
+  v15 = [v13 archivedDataWithRootObject:editingWallpaperContact requiringSecureCoding:1 error:&v24];
   v16 = v24;
 
   if (!(*(*MEMORY[0x1E6996540] + 16))())
@@ -189,30 +189,30 @@
     v17 = objc_alloc_init(MEMORY[0x1E69D4288]);
     [v17 setReason:@"EditButtonTapped"];
     v26[0] = @"mode";
-    v20 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v20 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
     v27[0] = v20;
     v27[1] = v15;
     v26[1] = @"contactData";
     v26[2] = @"isEditing";
-    v21 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+    v21 = [MEMORY[0x1E696AD98] numberWithBool:editingCopy];
     v27[2] = v21;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:v26 count:3];
     [v17 setUserInfo:v22];
 
-    v23 = [(CNContactHeaderEditView *)self remoteAlertHandle];
-    [v23 registerObserver:self];
+    remoteAlertHandle = [(CNContactHeaderEditView *)self remoteAlertHandle];
+    [remoteAlertHandle registerObserver:self];
 
-    v18 = [(CNContactHeaderEditView *)self remoteAlertHandle];
-    [v18 activateWithContext:v17];
+    remoteAlertHandle2 = [(CNContactHeaderEditView *)self remoteAlertHandle];
+    [remoteAlertHandle2 activateWithContext:v17];
     goto LABEL_5;
   }
 
   v17 = CNUILogRemoteAlert();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
-    v18 = [v16 localizedDescription];
+    remoteAlertHandle2 = [v16 localizedDescription];
     *buf = 138412290;
-    v29 = v18;
+    v29 = remoteAlertHandle2;
     _os_log_error_impl(&dword_199A75000, v17, OS_LOG_TYPE_ERROR, "Could not archive editing wallpaper contact: %@", buf, 0xCu);
 LABEL_5:
   }
@@ -280,41 +280,41 @@ uint64_t __81__CNContactHeaderEditView__presentRemotePosterAndAvatarEditorWithMo
 
 - (void)preWarmPosterAndAvatarEditor
 {
-  v3 = [(CNContactHeaderEditView *)self window];
-  v13 = [v3 windowScene];
+  window = [(CNContactHeaderEditView *)self window];
+  windowScene = [window windowScene];
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v5 & 0xFFFFFFFFFFFFFFFBLL) != 1 && v13 != 0)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1 && windowScene != 0)
   {
-    v7 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-    v8 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v9 = [v8 nicknameProvider];
-    v10 = [v9 nicknameAsContactForContact:v7];
+    editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    nicknameProvider = [currentEnvironment nicknameProvider];
+    v10 = [nicknameProvider nicknameAsContactForContact:editingWallpaperContact];
 
-    v11 = [[_TtC10ContactsUI37CNAvatarPosterPairCollectionPreWarmer alloc] initWithContact:v7 contactForSharedProfile:v10];
+    v11 = [[_TtC10ContactsUI37CNAvatarPosterPairCollectionPreWarmer alloc] initWithContact:editingWallpaperContact contactForSharedProfile:v10];
     [(CNContactHeaderEditView *)self setCarouselPreWarmer:v11];
 
-    v12 = [(CNContactHeaderEditView *)self carouselPreWarmer];
-    [v12 preWarmFirstPosterSnapshotIn:v13];
+    carouselPreWarmer = [(CNContactHeaderEditView *)self carouselPreWarmer];
+    [carouselPreWarmer preWarmFirstPosterSnapshotIn:windowScene];
   }
 }
 
-- (void)presentSwiftUIAvatarEditorWithPoster:(BOOL)a3 isEditing:(BOOL)a4
+- (void)presentSwiftUIAvatarEditorWithPoster:(BOOL)poster isEditing:(BOOL)editing
 {
   v5 = [CNUIVisualIdentityEditorViewController alloc];
-  v6 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-  v7 = [(CNUIVisualIdentityEditorViewController *)v5 initWithContact:v6];
+  editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+  v7 = [(CNUIVisualIdentityEditorViewController *)v5 initWithContact:editingWallpaperContact];
   [(CNContactHeaderEditView *)self setVisualIdentityEditor:v7];
 
-  v8 = [(CNContactHeaderEditView *)self visualIdentityEditor];
-  [v8 setDelegate:self];
+  visualIdentityEditor = [(CNContactHeaderEditView *)self visualIdentityEditor];
+  [visualIdentityEditor setDelegate:self];
 
-  v9 = [MEMORY[0x1E69DC938] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v11 = -2;
   }
@@ -324,49 +324,49 @@ uint64_t __81__CNContactHeaderEditView__presentRemotePosterAndAvatarEditorWithMo
     v11 = 5;
   }
 
-  v13 = [(CNContactHeaderView *)self presenterDelegate];
-  v12 = [(CNContactHeaderEditView *)self visualIdentityEditor];
-  [v13 sender:self presentViewController:v12 modalPresentationStyle:v11];
+  presenterDelegate = [(CNContactHeaderView *)self presenterDelegate];
+  visualIdentityEditor2 = [(CNContactHeaderEditView *)self visualIdentityEditor];
+  [presenterDelegate sender:self presentViewController:visualIdentityEditor2 modalPresentationStyle:v11];
 }
 
-- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)a3
+- (void)visualIdentityEditorViewControllerDidFinishEditing:(id)editing
 {
-  v4 = a3;
+  editingCopy = editing;
   [(CNContactHeaderEditView *)self updatePosterViewImageWithNewPosterConfiguration:1];
-  v5 = [(CNContactHeaderView *)self photoView];
-  v6 = [v4 contact];
-  [v5 updatePendingContactWithEditedContact:v6];
+  photoView = [(CNContactHeaderView *)self photoView];
+  contact = [editingCopy contact];
+  [photoView updatePendingContactWithEditedContact:contact];
 
   [(CNContactHeaderEditView *)self updatePosterVisibility];
-  v7 = [(CNContactHeaderView *)self presenterDelegate];
-  [v7 sender:self dismissViewController:v4];
+  presenterDelegate = [(CNContactHeaderView *)self presenterDelegate];
+  [presenterDelegate sender:self dismissViewController:editingCopy];
 }
 
-- (void)presentPosterAndAvatarEditorWithMode:(int64_t)a3 isEditing:(BOOL)a4
+- (void)presentPosterAndAvatarEditorWithMode:(int64_t)mode isEditing:(BOOL)editing
 {
-  v4 = a4;
+  editingCopy = editing;
   if (-[CNContactHeaderEditView isOutOfProcess](self, "isOutOfProcess") && ([MEMORY[0x1E69DC938] currentDevice], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "userInterfaceIdiom"), v7, (v8 & 0xFFFFFFFFFFFFFFFBLL) != 1))
   {
 
-    [(CNContactHeaderEditView *)self _presentRemotePosterAndAvatarEditorWithMode:a3 isEditing:v4];
+    [(CNContactHeaderEditView *)self _presentRemotePosterAndAvatarEditorWithMode:mode isEditing:editingCopy];
   }
 
   else
   {
     v9 = +[CNUIContactsEnvironment currentEnvironment];
-    v16 = [v9 inProcessContactStore];
+    inProcessContactStore = [v9 inProcessContactStore];
 
     v10 = [CNSNaPSetupFlowManager alloc];
-    v11 = [(CNContactHeaderView *)self presenterDelegate];
-    v12 = [(CNSNaPSetupFlowManager *)v10 initWithPresenterDelegate:v11 contactStore:v16 mode:a3];
+    presenterDelegate = [(CNContactHeaderView *)self presenterDelegate];
+    v12 = [(CNSNaPSetupFlowManager *)v10 initWithPresenterDelegate:presenterDelegate contactStore:inProcessContactStore mode:mode];
     [(CNContactHeaderEditView *)self setFlowManager:v12];
 
-    v13 = [(CNContactHeaderEditView *)self flowManager];
-    [v13 setDelegate:self];
+    flowManager = [(CNContactHeaderEditView *)self flowManager];
+    [flowManager setDelegate:self];
 
-    v14 = [(CNContactHeaderEditView *)self flowManager];
-    v15 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-    [v14 startContactCardFlowForContact:v15 isEditing:v4];
+    flowManager2 = [(CNContactHeaderEditView *)self flowManager];
+    editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+    [flowManager2 startContactCardFlowForContact:editingWallpaperContact isEditing:editingCopy];
   }
 }
 
@@ -390,24 +390,24 @@ uint64_t __81__CNContactHeaderEditView__presentRemotePosterAndAvatarEditorWithMo
 
 - (void)editAvatar
 {
-  v2 = [(CNContactHeaderView *)self photoView];
-  [v2 presentPhotoPicker];
+  photoView = [(CNContactHeaderView *)self photoView];
+  [photoView presentPhotoPicker];
 }
 
-- (void)editButtonTappedWhileEditing:(BOOL)a3
+- (void)editButtonTappedWhileEditing:(BOOL)editing
 {
-  v3 = a3;
-  v5 = [(CNContactHeaderEditView *)self shouldShowPoster]|| [(CNContactHeaderEditView *)self shouldUseStaticHeader];
+  editingCopy = editing;
+  shouldUseStaticHeader = [(CNContactHeaderEditView *)self shouldShowPoster]|| [(CNContactHeaderEditView *)self shouldUseStaticHeader];
   if ([objc_opt_class() useSwiftUIPosterAndAvatarEditor])
   {
 
-    [(CNContactHeaderEditView *)self presentSwiftUIAvatarEditorWithPoster:v5 isEditing:v3];
+    [(CNContactHeaderEditView *)self presentSwiftUIAvatarEditorWithPoster:shouldUseStaticHeader isEditing:editingCopy];
   }
 
-  else if (v5)
+  else if (shouldUseStaticHeader)
   {
 
-    [(CNContactHeaderEditView *)self presentPosterAndAvatarEditorWithMode:1 isEditing:v3];
+    [(CNContactHeaderEditView *)self presentPosterAndAvatarEditorWithMode:1 isEditing:editingCopy];
   }
 
   else
@@ -417,20 +417,20 @@ uint64_t __81__CNContactHeaderEditView__presentRemotePosterAndAvatarEditorWithMo
   }
 }
 
-- (void)updatePendingWallpaperContactWithEditedPropertyItem:(id)a3
+- (void)updatePendingWallpaperContactWithEditedPropertyItem:(id)item
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 property];
-  v6 = [v5 isEqualToString:*MEMORY[0x1E695C240]];
+  itemCopy = item;
+  property = [itemCopy property];
+  v6 = [property isEqualToString:*MEMORY[0x1E695C240]];
   v7 = MEMORY[0x1E695C330];
   if (v6)
   {
     goto LABEL_8;
   }
 
-  v8 = [v4 property];
-  if ([v8 isEqualToString:*MEMORY[0x1E695C230]])
+  property2 = [itemCopy property];
+  if ([property2 isEqualToString:*MEMORY[0x1E695C230]])
   {
 LABEL_7:
 
@@ -439,24 +439,24 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v9 = [v4 property];
-  if ([v9 isEqualToString:*MEMORY[0x1E695C208]])
+  property3 = [itemCopy property];
+  if ([property3 isEqualToString:*MEMORY[0x1E695C208]])
   {
 LABEL_6:
 
     goto LABEL_7;
   }
 
-  v10 = [v4 property];
+  property4 = [itemCopy property];
   v11 = *v7;
-  if ([v10 isEqualToString:*v7])
+  if ([property4 isEqualToString:*v7])
   {
 
     goto LABEL_6;
   }
 
-  v22 = [v4 property];
-  v23 = [v22 isEqualToString:*MEMORY[0x1E695C328]];
+  property5 = [itemCopy property];
+  v23 = [property5 isEqualToString:*MEMORY[0x1E695C328]];
 
   if ((v23 & 1) == 0)
   {
@@ -464,21 +464,21 @@ LABEL_6:
   }
 
 LABEL_9:
-  v12 = [v4 property];
-  if (([v12 isEqualToString:v11] & 1) == 0)
+  property6 = [itemCopy property];
+  if (([property6 isEqualToString:v11] & 1) == 0)
   {
 
 LABEL_13:
-    v18 = [v4 property];
-    if ([v18 isEqualToString:*MEMORY[0x1E695C208]])
+    property7 = [itemCopy property];
+    if ([property7 isEqualToString:*MEMORY[0x1E695C208]])
     {
-      v19 = [v4 labeledValue];
+      labeledValue = [itemCopy labeledValue];
 
-      if (v19)
+      if (labeledValue)
       {
-        v14 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-        v15 = [v4 labeledValue];
-        v24 = v15;
+        editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+        labeledValue2 = [itemCopy labeledValue];
+        v24 = labeledValue2;
         v16 = MEMORY[0x1E695DEC8];
         v17 = &v24;
         goto LABEL_16;
@@ -489,47 +489,47 @@ LABEL_13:
     {
     }
 
-    v14 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-    v15 = [v4 editingStringValue];
-    v20 = [v4 property];
-    [v14 setValue:v15 forKey:v20];
+    editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+    labeledValue2 = [itemCopy editingStringValue];
+    property8 = [itemCopy property];
+    [editingWallpaperContact setValue:labeledValue2 forKey:property8];
     goto LABEL_19;
   }
 
-  v13 = [v4 labeledValue];
+  labeledValue3 = [itemCopy labeledValue];
 
-  if (!v13)
+  if (!labeledValue3)
   {
     goto LABEL_13;
   }
 
-  v14 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-  v15 = [v4 labeledValue];
-  v25[0] = v15;
+  editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+  labeledValue2 = [itemCopy labeledValue];
+  v25[0] = labeledValue2;
   v16 = MEMORY[0x1E695DEC8];
   v17 = v25;
 LABEL_16:
-  v20 = [v16 arrayWithObjects:v17 count:1];
-  v21 = [v4 property];
-  [v14 setValue:v20 forKey:v21];
+  property8 = [v16 arrayWithObjects:v17 count:1];
+  property9 = [itemCopy property];
+  [editingWallpaperContact setValue:property8 forKey:property9];
 
 LABEL_19:
 LABEL_20:
 }
 
-- (void)updateContactWithEditedPropertyItem:(id)a3
+- (void)updateContactWithEditedPropertyItem:(id)item
 {
-  v4 = a3;
-  [(CNContactHeaderEditView *)self updatePendingWallpaperContactWithEditedPropertyItem:v4];
-  v5 = [(CNContactHeaderView *)self photoView];
-  [v5 updatePendingContactWithEditedPropertyItem:v4];
+  itemCopy = item;
+  [(CNContactHeaderEditView *)self updatePendingWallpaperContactWithEditedPropertyItem:itemCopy];
+  photoView = [(CNContactHeaderView *)self photoView];
+  [photoView updatePendingContactWithEditedPropertyItem:itemCopy];
 }
 
-- (void)presentAvatarPickerWithImageData:(id)a3
+- (void)presentAvatarPickerWithImageData:(id)data
 {
-  v4 = a3;
-  v5 = [(CNContactHeaderView *)self photoView];
-  [v5 presentPhotoPickerWithImageData:v4];
+  dataCopy = data;
+  photoView = [(CNContactHeaderView *)self photoView];
+  [photoView presentPhotoPickerWithImageData:dataCopy];
 }
 
 - (void)saveContactPhoto
@@ -537,9 +537,9 @@ LABEL_20:
   v30 = *MEMORY[0x1E69E9840];
   if ([objc_opt_class() useSwiftUIPosterAndAvatarEditor])
   {
-    v3 = [(CNContactHeaderEditView *)self visualIdentityEditor];
+    visualIdentityEditor = [(CNContactHeaderEditView *)self visualIdentityEditor];
 
-    if (v3)
+    if (visualIdentityEditor)
     {
       v4 = CNUILogContactCard();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -548,10 +548,10 @@ LABEL_20:
         _os_log_impl(&dword_199A75000, v4, OS_LOG_TYPE_DEFAULT, "[Likeness Update] Using edited contact from visual identity editor", &v26, 2u);
       }
 
-      v5 = [(CNContactHeaderEditView *)self visualIdentityEditor];
-      v6 = [v5 contact];
+      visualIdentityEditor2 = [(CNContactHeaderEditView *)self visualIdentityEditor];
+      contact = [visualIdentityEditor2 contact];
 
-      if (!v6)
+      if (!contact)
       {
         goto LABEL_18;
       }
@@ -562,7 +562,7 @@ LABEL_20:
 
   if (![(CNContactHeaderEditView *)self wallpaperIsModified])
   {
-    v6 = 0;
+    contact = 0;
     goto LABEL_18;
   }
 
@@ -573,8 +573,8 @@ LABEL_20:
     _os_log_impl(&dword_199A75000, v7, OS_LOG_TYPE_DEFAULT, "[Likeness Update] Using edited contact from legacy wallpaper editor", &v26, 2u);
   }
 
-  v6 = self->_editingWallpaperContact;
-  if (v6)
+  contact = self->_editingWallpaperContact;
+  if (contact)
   {
 LABEL_11:
     v8 = CNUILogContactCard();
@@ -584,21 +584,21 @@ LABEL_11:
       _os_log_impl(&dword_199A75000, v8, OS_LOG_TYPE_DEFAULT, "[Likeness Update] Contact wallpaper modified, will save edits", &v26, 2u);
     }
 
-    v9 = [(CNContactHeaderEditView *)self mutableContact];
-    [v9 setSharedPhotoDisplayPreference:2];
+    mutableContact = [(CNContactHeaderEditView *)self mutableContact];
+    [mutableContact setSharedPhotoDisplayPreference:2];
 
     v10 = MEMORY[0x1E695CDB0];
-    v11 = [(CNContactHeaderEditView *)self mutableContact];
-    [v10 updateMutableContact:v11 withWallpaperPropertiesFromContact:v6];
+    mutableContact2 = [(CNContactHeaderEditView *)self mutableContact];
+    [v10 updateMutableContact:mutableContact2 withWallpaperPropertiesFromContact:contact];
 
     v12 = CNUILogContactCard();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [(CNMutableContact *)v6 wallpaper];
-      v22 = [v21 posterArchiveData];
-      v23 = [v22 length];
-      v24 = [(CNMutableContact *)v6 watchWallpaperImageData];
-      v25 = [v24 length];
+      wallpaper = [(CNMutableContact *)contact wallpaper];
+      posterArchiveData = [wallpaper posterArchiveData];
+      v23 = [posterArchiveData length];
+      watchWallpaperImageData = [(CNMutableContact *)contact watchWallpaperImageData];
+      v25 = [watchWallpaperImageData length];
       v26 = 134218240;
       v27 = v23;
       v28 = 2048;
@@ -607,14 +607,14 @@ LABEL_11:
     }
 
     v13 = *MEMORY[0x1E6996540];
-    v14 = [(CNMutableContact *)v6 imageData];
-    LOBYTE(v13) = (*(v13 + 16))(v13, v14);
+    imageData = [(CNMutableContact *)contact imageData];
+    LOBYTE(v13) = (*(v13 + 16))(v13, imageData);
 
     if ((v13 & 1) == 0)
     {
       v15 = MEMORY[0x1E695CDB0];
-      v16 = [(CNContactHeaderEditView *)self mutableContact];
-      [v15 updateMutableContact:v16 withImagePropertiesFromContact:v6];
+      mutableContact3 = [(CNContactHeaderEditView *)self mutableContact];
+      [v15 updateMutableContact:mutableContact3 withImagePropertiesFromContact:contact];
 LABEL_22:
 
       goto LABEL_23;
@@ -622,10 +622,10 @@ LABEL_22:
   }
 
 LABEL_18:
-  v17 = [(CNContactHeaderView *)self photoView];
-  v18 = [v17 modified];
+  photoView = [(CNContactHeaderView *)self photoView];
+  modified = [photoView modified];
 
-  if (v18)
+  if (modified)
   {
     v19 = CNUILogContactCard();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -634,11 +634,11 @@ LABEL_18:
       _os_log_impl(&dword_199A75000, v19, OS_LOG_TYPE_DEFAULT, "[Likeness Update] Contact image modified, will save edits", &v26, 2u);
     }
 
-    v20 = [(CNContactHeaderView *)self photoView];
-    [v20 saveEdits];
+    photoView2 = [(CNContactHeaderView *)self photoView];
+    [photoView2 saveEdits];
 
-    v16 = [(CNContactHeaderEditView *)self mutableContact];
-    [v16 setSharedPhotoDisplayPreference:2];
+    mutableContact3 = [(CNContactHeaderEditView *)self mutableContact];
+    [mutableContact3 setSharedPhotoDisplayPreference:2];
     goto LABEL_22;
   }
 
@@ -648,11 +648,11 @@ LABEL_23:
 - (id)mutableContact
 {
   objc_opt_class();
-  v3 = [(CNContactHeaderView *)self contacts];
-  v4 = [v3 firstObject];
+  contacts = [(CNContactHeaderView *)self contacts];
+  firstObject = [contacts firstObject];
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = firstObject;
   }
 
   else
@@ -669,17 +669,17 @@ LABEL_23:
 {
   if ([(CNContactHeaderEditView *)self shouldUseStaticHeader])
   {
-    v5 = [(CNContactHeaderEditView *)self mutableContact];
-    v6 = [v5 wallpaper];
-    if (v6 || (-[CNContactHeaderEditView editingWallpaperContact](self, "editingWallpaperContact"), v2 = objc_claimAutoreleasedReturnValue(), [v2 wallpaper], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    mutableContact = [(CNContactHeaderEditView *)self mutableContact];
+    wallpaper = [mutableContact wallpaper];
+    if (wallpaper || (-[CNContactHeaderEditView editingWallpaperContact](self, "editingWallpaperContact"), v2 = objc_claimAutoreleasedReturnValue(), [v2 wallpaper], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v7 = [(CNContactHeaderEditView *)self mutableContact];
-      v8 = [v7 wallpaper];
-      v9 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-      v10 = [v9 wallpaper];
-      v11 = [v8 isEqual:v10] ^ 1;
+      mutableContact2 = [(CNContactHeaderEditView *)self mutableContact];
+      wallpaper2 = [mutableContact2 wallpaper];
+      editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+      wallpaper3 = [editingWallpaperContact wallpaper];
+      v11 = [wallpaper2 isEqual:wallpaper3] ^ 1;
 
-      if (v6)
+      if (wallpaper)
       {
 LABEL_9:
 
@@ -701,35 +701,35 @@ LABEL_9:
 
 - (BOOL)photoIsModified
 {
-  v2 = [(CNContactHeaderView *)self photoView];
-  v3 = [v2 modified];
+  photoView = [(CNContactHeaderView *)self photoView];
+  modified = [photoView modified];
 
-  return v3;
+  return modified;
 }
 
 - (BOOL)hasWallpaper
 {
-  v2 = [(CNMutableContact *)self->_editingWallpaperContact wallpaper];
-  v3 = v2 != 0;
+  wallpaper = [(CNMutableContact *)self->_editingWallpaperContact wallpaper];
+  v3 = wallpaper != 0;
 
   return v3;
 }
 
 - (BOOL)hasPhoto
 {
-  v2 = [(CNContactHeaderView *)self photoView];
-  v3 = [v2 hasPhoto];
+  photoView = [(CNContactHeaderView *)self photoView];
+  hasPhoto = [photoView hasPhoto];
 
-  return v3;
+  return hasPhoto;
 }
 
 - (void)updateEditButtonTitle
 {
   if ([(CNContactHeaderEditView *)self shouldShowPoster])
   {
-    v3 = [(CNContactHeaderEditView *)self hasWallpaper];
+    hasWallpaper = [(CNContactHeaderEditView *)self hasWallpaper];
     v4 = CNContactsUIBundle();
-    if (!v3)
+    if (!hasWallpaper)
     {
       v5 = @"WALLPAPER_ADD_LABEL";
       goto LABEL_7;
@@ -738,9 +738,9 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  v6 = [(CNContactHeaderEditView *)self hasPhoto];
+  hasPhoto = [(CNContactHeaderEditView *)self hasPhoto];
   v4 = CNContactsUIBundle();
-  if (v6)
+  if (hasPhoto)
   {
 LABEL_5:
     v5 = @"PHOTO_EDIT_LABEL";
@@ -751,21 +751,21 @@ LABEL_5:
 LABEL_7:
   v8 = [v4 localizedStringForKey:v5 value:&stru_1F0CE7398 table:@"Localized"];
 
-  v7 = [(CNContactHeaderEditView *)self editButton];
-  [v7 setTitle:v8 forState:0];
+  editButton = [(CNContactHeaderEditView *)self editButton];
+  [editButton setTitle:v8 forState:0];
 }
 
-- (void)updatePosterViewImageWithNewPosterConfiguration:(BOOL)a3
+- (void)updatePosterViewImageWithNewPosterConfiguration:(BOOL)configuration
 {
   v49 = *MEMORY[0x1E69E9840];
   if ([(CNContactHeaderEditView *)self shouldShowPoster])
   {
-    v5 = [(CNContactHeaderEditView *)self posterPlaceholderImage];
-    v6 = [(CNContactHeaderEditView *)self editingPosterView];
-    [v6 setImage:v5];
+    posterPlaceholderImage = [(CNContactHeaderEditView *)self posterPlaceholderImage];
+    editingPosterView = [(CNContactHeaderEditView *)self editingPosterView];
+    [editingPosterView setImage:posterPlaceholderImage];
 
-    v7 = [(CNMutableContact *)self->_editingWallpaperContact wallpaper];
-    v8 = [v7 posterArchiveData];
+    wallpaper = [(CNMutableContact *)self->_editingWallpaperContact wallpaper];
+    posterArchiveData = [wallpaper posterArchiveData];
     v9 = (*(*MEMORY[0x1E6996540] + 16))();
 
     if (v9)
@@ -773,23 +773,23 @@ LABEL_7:
       return;
     }
 
-    v10 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-    v11 = [v10 wallpaper];
-    v12 = [v11 contentIsSensitive];
+    editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+    wallpaper2 = [editingWallpaperContact wallpaper];
+    contentIsSensitive = [wallpaper2 contentIsSensitive];
 
-    v13 = [(CNContactHeaderEditView *)self sensitiveContentManager];
-    v14 = [v13 shouldShowUIForPosterWithSensitiveContent:v12 forContact:v10];
+    sensitiveContentManager = [(CNContactHeaderEditView *)self sensitiveContentManager];
+    v14 = [sensitiveContentManager shouldShowUIForPosterWithSensitiveContent:contentIsSensitive forContact:editingWallpaperContact];
 
-    v15 = [(CNContactHeaderEditView *)self editingPosterView];
-    [v15 setIsSensitiveContent:v14];
+    editingPosterView2 = [(CNContactHeaderEditView *)self editingPosterView];
+    [editingPosterView2 setIsSensitiveContent:v14];
 
     self->_needsPosterCarouselPreWarming = 1;
-    if (a3 || ([(CNContactHeaderEditView *)self cachedPosterConfiguration], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
+    if (configuration || ([(CNContactHeaderEditView *)self cachedPosterConfiguration], v16 = objc_claimAutoreleasedReturnValue(), v16, !v16))
     {
-      v17 = [(CNMutableContact *)self->_editingWallpaperContact wallpaper];
-      v18 = [v17 posterArchiveData];
+      wallpaper3 = [(CNMutableContact *)self->_editingWallpaperContact wallpaper];
+      posterArchiveData2 = [wallpaper3 posterArchiveData];
       v46 = 0;
-      v19 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:v18 error:&v46];
+      v19 = [CNPRSPosterArchiver unarchiveCNConfigurationFromData:posterArchiveData2 error:&v46];
       v20 = v46;
       cachedPosterConfiguration = self->_cachedPosterConfiguration;
       self->_cachedPosterConfiguration = v19;
@@ -799,32 +799,32 @@ LABEL_7:
         v22 = CNUILogPosters();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          v36 = [v20 localizedDescription];
+          localizedDescription = [v20 localizedDescription];
           *buf = 138412290;
-          v48 = v36;
+          v48 = localizedDescription;
           _os_log_error_impl(&dword_199A75000, v22, OS_LOG_TYPE_ERROR, "Unable to unarchive poster configuration from data, %@", buf, 0xCu);
         }
       }
     }
 
-    v23 = [(CNContactHeaderEditView *)self cachedPosterConfiguration];
-    if (!v23)
+    cachedPosterConfiguration = [(CNContactHeaderEditView *)self cachedPosterConfiguration];
+    if (!cachedPosterConfiguration)
     {
       goto LABEL_26;
     }
 
     v38 = [[CNPRUISIncomingCallPosterContext alloc] initWithContact:self->_editingWallpaperContact showName:0];
     v24 = [CNPRUISIncomingCallSnapshotDefinition contentsOnlySnapshotDefinitionWithContext:v38 attachmentIdentifiers:0];
-    v25 = [CNPRUISPosterSnapshotRequest requestForConfiguration:v23 definition:v24 interfaceOrientation:1];
+    v25 = [CNPRUISPosterSnapshotRequest requestForConfiguration:cachedPosterConfiguration definition:v24 interfaceOrientation:1];
     v26 = objc_alloc_init(CNPRUISPosterSnapshotController);
     v45 = 0;
     v27 = [(CNPRUISPosterSnapshotController *)v26 latestSnapshotBundleForRequest:v25 error:&v45];
     v37 = v45;
     if (v27)
     {
-      v28 = [v24 levelSets];
-      v29 = [v28 firstObject];
-      v30 = [v27 snapshotForLevelSet:v29];
+      levelSets = [v24 levelSets];
+      firstObject = [levelSets firstObject];
+      v30 = [v27 snapshotForLevelSet:firstObject];
 
       v31 = CNUILogPosters();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -835,7 +835,7 @@ LABEL_7:
 
       if (v30)
       {
-        v32 = [MEMORY[0x1E6996818] mainThreadScheduler];
+        mainThreadScheduler = [MEMORY[0x1E6996818] mainThreadScheduler];
         v43[0] = MEMORY[0x1E69E9820];
         v43[1] = 3221225472;
         v43[2] = __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfiguration___block_invoke;
@@ -843,7 +843,7 @@ LABEL_7:
         v43[4] = self;
         v44 = v30;
         v33 = v30;
-        [v32 performBlock:v43];
+        [mainThreadScheduler performBlock:v43];
 
 LABEL_25:
 LABEL_26:
@@ -883,8 +883,8 @@ LABEL_26:
     goto LABEL_25;
   }
 
-  v39 = [(CNContactHeaderEditView *)self editingPosterView];
-  [v39 setImage:0];
+  editingPosterView3 = [(CNContactHeaderEditView *)self editingPosterView];
+  [editingPosterView3 setImage:0];
 }
 
 void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfiguration___block_invoke(uint64_t a1)
@@ -946,29 +946,29 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
   [v2 setImage:v1];
 }
 
-- (void)setPresenterDelegate:(id)a3
+- (void)setPresenterDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = CNContactHeaderEditView;
-  v4 = a3;
-  [(CNContactHeaderView *)&v5 setPresenterDelegate:v4];
-  [(CNSNaPSetupFlowManager *)self->_flowManager setPresenterDelegate:v4, v5.receiver, v5.super_class];
+  delegateCopy = delegate;
+  [(CNContactHeaderView *)&v5 setPresenterDelegate:delegateCopy];
+  [(CNSNaPSetupFlowManager *)self->_flowManager setPresenterDelegate:delegateCopy, v5.receiver, v5.super_class];
 }
 
-- (void)updateWithContacts:(id)a3
+- (void)updateWithContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v10.receiver = self;
   v10.super_class = CNContactHeaderEditView;
-  [(CNContactHeaderView *)&v10 updateWithContacts:v4];
-  v5 = [v4 firstObject];
-  v6 = [(CNContactHeaderEditView *)self visualIdentityEditor];
-  [v6 setContact:v5];
+  [(CNContactHeaderView *)&v10 updateWithContacts:contactsCopy];
+  firstObject = [contactsCopy firstObject];
+  visualIdentityEditor = [(CNContactHeaderEditView *)self visualIdentityEditor];
+  [visualIdentityEditor setContact:firstObject];
 
-  if (-[CNContactHeaderEditView shouldUseStaticHeader](self, "shouldUseStaticHeader") && [v4 count] == 1)
+  if (-[CNContactHeaderEditView shouldUseStaticHeader](self, "shouldUseStaticHeader") && [contactsCopy count] == 1)
   {
-    v7 = [v4 firstObject];
-    v8 = [v7 mutableCopy];
+    firstObject2 = [contactsCopy firstObject];
+    v8 = [firstObject2 mutableCopy];
     editingWallpaperContact = self->_editingWallpaperContact;
     self->_editingWallpaperContact = v8;
 
@@ -987,14 +987,14 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
   {
     [(CNContactHeaderEditView *)self staticHeaderPhotoTopMargin];
     v4 = v3;
-    v5 = [(CNContactHeaderView *)self photoTopConstraint];
-    [v5 constant];
+    photoTopConstraint = [(CNContactHeaderView *)self photoTopConstraint];
+    [photoTopConstraint constant];
     v7 = v6;
 
     if (v7 != v4)
     {
-      v8 = [(CNContactHeaderView *)self photoTopConstraint];
-      [v8 setConstant:v4];
+      photoTopConstraint2 = [(CNContactHeaderView *)self photoTopConstraint];
+      [photoTopConstraint2 setConstant:v4];
     }
 
     if (self->_needsPosterCarouselPreWarming)
@@ -1025,14 +1025,14 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
       [(CNContactHeaderView *)self currentHeightPercentMaximized];
       v5 = v4;
       v6 = pow(v4, 3.0);
-      v7 = [(CNContactHeaderEditView *)self editButton];
-      [v7 setAlpha:v6];
+      editButton = [(CNContactHeaderEditView *)self editButton];
+      [editButton setAlpha:v6];
 
       [sCurrentTaglineFont _scaledValueForValue:16.0];
       v9 = [sCurrentTaglineFont fontWithSize:v5 * v8];
-      v10 = [(CNContactHeaderEditView *)self editButton];
-      v11 = [v10 titleLabel];
-      [v11 setFont:v9];
+      editButton2 = [(CNContactHeaderEditView *)self editButton];
+      titleLabel = [editButton2 titleLabel];
+      [titleLabel setFont:v9];
     }
   }
 }
@@ -1044,17 +1044,17 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
   {
     if ([(CNContactHeaderEditView *)self _shouldShowPhoto])
     {
-      v4 = [(CNContactHeaderEditView *)self shouldShowPoster];
-      v5 = [(CNContactHeaderView *)self sizeAttributes];
-      v6 = v5;
-      if (v4)
+      shouldShowPoster = [(CNContactHeaderEditView *)self shouldShowPoster];
+      sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+      v6 = sizeAttributes;
+      if (shouldShowPoster)
       {
-        [v5 photoMinHeight];
+        [sizeAttributes photoMinHeight];
       }
 
       else
       {
-        [v5 photoMaxHeight];
+        [sizeAttributes photoMaxHeight];
       }
 
       v3 = v7;
@@ -1062,8 +1062,8 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
 
     if ([(CNContactHeaderView *)self isPhotoLowQuality])
     {
-      v8 = [(CNContactHeaderView *)self sizeAttributes];
-      [v8 photoMaxHeightLowQuality];
+      sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+      [sizeAttributes2 photoMaxHeightLowQuality];
       v10 = v9;
 
       if (v3 >= v10)
@@ -1083,36 +1083,36 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
   v81.super_class = CNContactHeaderEditView;
   [(CNContactHeaderView *)&v81 updateConstraints];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(CNContactHeaderView *)self activatedConstraints];
-  v80 = [v3 arrayWithArray:v4];
+  activatedConstraints = [(CNContactHeaderView *)self activatedConstraints];
+  v80 = [v3 arrayWithArray:activatedConstraints];
 
   if (![(CNContactHeaderEditView *)self _shouldShowPhoto])
   {
-    v5 = [(CNContactHeaderView *)self photoTopConstraint];
-    [v80 removeObject:v5];
+    photoTopConstraint = [(CNContactHeaderView *)self photoTopConstraint];
+    [v80 removeObject:photoTopConstraint];
 
-    v6 = [(CNContactHeaderView *)self photoHeightConstraint];
-    [v6 setConstant:0.0];
+    photoHeightConstraint = [(CNContactHeaderView *)self photoHeightConstraint];
+    [photoHeightConstraint setConstant:0.0];
   }
 
   if ([(CNContactHeaderEditView *)self _shouldShowPhoto])
   {
-    v7 = [(CNContactHeaderView *)self photoView];
-    v8 = [v7 centerXAnchor];
-    v9 = [(CNContactHeaderEditView *)self centerXAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    photoView = [(CNContactHeaderView *)self photoView];
+    centerXAnchor = [photoView centerXAnchor];
+    centerXAnchor2 = [(CNContactHeaderEditView *)self centerXAnchor];
+    v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v80 addObject:v10];
   }
 
   v11 = 0x1E695D000;
   if ([(CNContactHeaderEditView *)self shouldShowPoster])
   {
-    v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v12 bounds];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen bounds];
     v14 = v13;
 
-    v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v15 bounds];
+    mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen2 bounds];
     v17 = v16;
 
     if (v14 / v17 >= v17 / v14)
@@ -1125,35 +1125,35 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
       v18 = v17 / v14;
     }
 
-    v77 = [(CNContactHeaderEditView *)self editingPosterView];
-    v75 = [v77 view];
-    v74 = [v75 topAnchor];
-    v19 = [(CNContactHeaderView *)self photoView];
-    v20 = [v19 bottomAnchor];
-    v21 = [v74 constraintEqualToAnchor:v20 constant:16.0];
+    editingPosterView = [(CNContactHeaderEditView *)self editingPosterView];
+    view = [editingPosterView view];
+    topAnchor = [view topAnchor];
+    photoView2 = [(CNContactHeaderView *)self photoView];
+    bottomAnchor = [photoView2 bottomAnchor];
+    v21 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:16.0];
     v86[0] = v21;
-    v22 = [(CNContactHeaderEditView *)self editingPosterView];
-    v23 = [v22 view];
-    v24 = [v23 centerXAnchor];
-    v25 = [(CNContactHeaderEditView *)self centerXAnchor];
-    v26 = [v24 constraintEqualToAnchor:v25];
+    editingPosterView2 = [(CNContactHeaderEditView *)self editingPosterView];
+    view2 = [editingPosterView2 view];
+    centerXAnchor3 = [view2 centerXAnchor];
+    centerXAnchor4 = [(CNContactHeaderEditView *)self centerXAnchor];
+    v26 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v86[1] = v26;
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:2];
     [v80 addObjectsFromArray:v27];
 
-    v78 = [(CNContactHeaderEditView *)self editingPosterView];
-    v76 = [v78 view];
-    v28 = [v76 heightAnchor];
-    v29 = [(CNContactHeaderView *)self sizeAttributes];
-    [v29 posterMaxHeight];
-    v30 = [v28 constraintEqualToConstant:?];
+    editingPosterView3 = [(CNContactHeaderEditView *)self editingPosterView];
+    view3 = [editingPosterView3 view];
+    heightAnchor = [view3 heightAnchor];
+    sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes posterMaxHeight];
+    v30 = [heightAnchor constraintEqualToConstant:?];
     v85[0] = v30;
     v31 = MEMORY[0x1E696ACD8];
-    v32 = [(CNContactHeaderEditView *)self editingPosterView];
-    v33 = [v32 view];
-    v34 = [(CNContactHeaderEditView *)self editingPosterView];
-    v35 = [v34 view];
-    v36 = [v31 constraintWithItem:v33 attribute:8 relatedBy:0 toItem:v35 attribute:7 multiplier:v18 constant:0.0];
+    editingPosterView4 = [(CNContactHeaderEditView *)self editingPosterView];
+    view4 = [editingPosterView4 view];
+    editingPosterView5 = [(CNContactHeaderEditView *)self editingPosterView];
+    view5 = [editingPosterView5 view];
+    v36 = [v31 constraintWithItem:view4 attribute:8 relatedBy:0 toItem:view5 attribute:7 multiplier:v18 constant:0.0];
     v85[1] = v36;
     v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v85 count:2];
     [v80 addObjectsFromArray:v37];
@@ -1165,44 +1165,44 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
   {
     [(CNContactHeaderEditView *)self staticHeaderPhotoTopMargin];
     v39 = v38;
-    v40 = [(CNContactHeaderView *)self photoTopConstraint];
-    [v40 setConstant:v39];
+    photoTopConstraint2 = [(CNContactHeaderView *)self photoTopConstraint];
+    [photoTopConstraint2 setConstant:v39];
 
-    v41 = [(CNContactHeaderView *)self photoTopConstraint];
+    photoTopConstraint3 = [(CNContactHeaderView *)self photoTopConstraint];
     LODWORD(v42) = 1148846080;
-    [v41 setPriority:v42];
+    [photoTopConstraint3 setPriority:v42];
 
     [(CNContactHeaderEditView *)self staticHeaderPhotoHeight];
     v44 = v43;
-    v45 = [(CNContactHeaderView *)self photoHeightConstraint];
-    [v45 setConstant:v44];
+    photoHeightConstraint2 = [(CNContactHeaderView *)self photoHeightConstraint];
+    [photoHeightConstraint2 setConstant:v44];
   }
 
   if ([(CNContactHeaderEditView *)self shouldShowPoster])
   {
-    v46 = [(CNContactHeaderEditView *)self editingPosterView];
-    v47 = [v46 view];
-    v79 = [v47 bottomAnchor];
+    editingPosterView6 = [(CNContactHeaderEditView *)self editingPosterView];
+    view6 = [editingPosterView6 view];
+    bottomAnchor2 = [view6 bottomAnchor];
   }
 
   else
   {
-    v46 = [(CNContactHeaderView *)self photoView];
-    v79 = [v46 bottomAnchor];
+    editingPosterView6 = [(CNContactHeaderView *)self photoView];
+    bottomAnchor2 = [editingPosterView6 bottomAnchor];
   }
 
-  v48 = [(CNContactHeaderEditView *)self shouldUseStaticHeader];
-  v49 = [(CNContactHeaderEditView *)self editButton];
-  v50 = [v49 leadingAnchor];
-  v51 = [(CNContactHeaderEditView *)self leadingAnchor];
-  if (v48)
+  shouldUseStaticHeader = [(CNContactHeaderEditView *)self shouldUseStaticHeader];
+  editButton = [(CNContactHeaderEditView *)self editButton];
+  leadingAnchor = [editButton leadingAnchor];
+  leadingAnchor2 = [(CNContactHeaderEditView *)self leadingAnchor];
+  if (shouldUseStaticHeader)
   {
-    v52 = [v50 constraintGreaterThanOrEqualToAnchor:v51];
+    v52 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v84[0] = v52;
-    v53 = [(CNContactHeaderEditView *)self editButton];
-    v54 = [v53 trailingAnchor];
-    v55 = [(CNContactHeaderEditView *)self trailingAnchor];
-    v56 = [v54 constraintLessThanOrEqualToAnchor:v55];
+    editButton2 = [(CNContactHeaderEditView *)self editButton];
+    trailingAnchor = [editButton2 trailingAnchor];
+    trailingAnchor2 = [(CNContactHeaderEditView *)self trailingAnchor];
+    v56 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v84[1] = v56;
     v57 = [*(v11 + 3784) arrayWithObjects:v84 count:2];
     [v80 addObjectsFromArray:v57];
@@ -1213,27 +1213,27 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
       goto LABEL_20;
     }
 
-    v49 = [(CNContactHeaderEditView *)self editButton];
-    v50 = [v49 heightAnchor];
-    v51 = [v50 constraintEqualToConstant:48.0];
-    v83[0] = v51;
-    v59 = [(CNContactHeaderEditView *)self editButton];
-    v60 = [v59 widthAnchor];
-    v61 = [v60 constraintGreaterThanOrEqualToConstant:88.0];
-    v83[1] = v61;
-    v62 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:2];
-    [v80 addObjectsFromArray:v62];
+    editButton = [(CNContactHeaderEditView *)self editButton];
+    leadingAnchor = [editButton heightAnchor];
+    leadingAnchor2 = [leadingAnchor constraintEqualToConstant:48.0];
+    v83[0] = leadingAnchor2;
+    editButton3 = [(CNContactHeaderEditView *)self editButton];
+    widthAnchor = [editButton3 widthAnchor];
+    trailingAnchor3 = [widthAnchor constraintGreaterThanOrEqualToConstant:88.0];
+    v83[1] = trailingAnchor3;
+    trailingAnchor4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:2];
+    [v80 addObjectsFromArray:trailingAnchor4];
     v58 = 12.0;
   }
 
   else
   {
-    v59 = [v50 constraintEqualToAnchor:v51];
-    v82[0] = v59;
-    v60 = [(CNContactHeaderEditView *)self editButton];
-    v61 = [v60 trailingAnchor];
-    v62 = [(CNContactHeaderEditView *)self trailingAnchor];
-    v63 = [v61 constraintEqualToAnchor:v62];
+    editButton3 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+    v82[0] = editButton3;
+    widthAnchor = [(CNContactHeaderEditView *)self editButton];
+    trailingAnchor3 = [widthAnchor trailingAnchor];
+    trailingAnchor4 = [(CNContactHeaderEditView *)self trailingAnchor];
+    v63 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v82[1] = v63;
     v64 = [*(v11 + 3784) arrayWithObjects:v82 count:2];
     [v80 addObjectsFromArray:v64];
@@ -1244,12 +1244,12 @@ void __75__CNContactHeaderEditView_updatePosterViewImageWithNewPosterConfigurati
 LABEL_20:
   if ([(CNContactHeaderEditView *)self _shouldShowPhoto])
   {
-    v65 = [(CNContactHeaderEditView *)self editButton];
-    v66 = [v65 centerXAnchor];
-    v67 = [(CNContactHeaderView *)self photoView];
-    v68 = [v67 centerXAnchor];
-    v69 = [v66 constraintEqualToAnchor:v68];
-    [v80 addObject:v69];
+    editButton4 = [(CNContactHeaderEditView *)self editButton];
+    centerXAnchor5 = [editButton4 centerXAnchor];
+    photoView3 = [(CNContactHeaderView *)self photoView];
+    centerXAnchor6 = [photoView3 centerXAnchor];
+    v68CenterXAnchor = [centerXAnchor5 constraintEqualToAnchor:centerXAnchor6];
+    [v80 addObject:v68CenterXAnchor];
 LABEL_24:
 
     goto LABEL_25;
@@ -1257,21 +1257,21 @@ LABEL_24:
 
   if ([(CNContactHeaderEditView *)self shouldShowPoster])
   {
-    v65 = [(CNContactHeaderEditView *)self editButton];
-    v66 = [v65 centerXAnchor];
-    v67 = [(CNContactHeaderEditView *)self editingPosterView];
-    v68 = [v67 view];
-    v69 = [v68 centerXAnchor];
-    v70 = [v66 constraintEqualToAnchor:v69];
+    editButton4 = [(CNContactHeaderEditView *)self editButton];
+    centerXAnchor5 = [editButton4 centerXAnchor];
+    photoView3 = [(CNContactHeaderEditView *)self editingPosterView];
+    centerXAnchor6 = [photoView3 view];
+    v68CenterXAnchor = [centerXAnchor6 centerXAnchor];
+    v70 = [centerXAnchor5 constraintEqualToAnchor:v68CenterXAnchor];
     [v80 addObject:v70];
 
     goto LABEL_24;
   }
 
 LABEL_25:
-  v71 = [(CNContactHeaderEditView *)self editButton];
-  v72 = [v71 topAnchor];
-  v73 = [v72 constraintEqualToAnchor:v79 constant:v58];
+  editButton5 = [(CNContactHeaderEditView *)self editButton];
+  topAnchor2 = [editButton5 topAnchor];
+  v73 = [topAnchor2 constraintEqualToAnchor:bottomAnchor2 constant:v58];
   [v80 addObject:v73];
 
   [MEMORY[0x1E696ACD8] activateConstraints:v80];
@@ -1280,9 +1280,9 @@ LABEL_25:
 
 - (BOOL)_shouldShowPhoto
 {
-  v3 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v4 = [v3 featureFlags];
-  if ([v4 isFeatureEnabled:29])
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if ([featureFlags isFeatureEnabled:29])
   {
     v5 = ![(CNContactHeaderEditView *)self shouldShowPoster];
   }
@@ -1297,20 +1297,20 @@ LABEL_25:
 
 - (void)updatePosterVisibility
 {
-  v3 = [(CNContactHeaderEditView *)self shouldShowPoster];
-  v4 = [(CNContactHeaderEditView *)self editingPosterView];
-  v5 = [v4 view];
-  v6 = [v5 isHidden];
+  shouldShowPoster = [(CNContactHeaderEditView *)self shouldShowPoster];
+  editingPosterView = [(CNContactHeaderEditView *)self editingPosterView];
+  view = [editingPosterView view];
+  isHidden = [view isHidden];
 
-  if (v3 == v6)
+  if (shouldShowPoster == isHidden)
   {
-    v7 = [(CNContactHeaderEditView *)self shouldShowPoster];
-    v8 = [(CNContactHeaderEditView *)self editingPosterView];
-    v9 = [v8 view];
-    [v9 setHidden:!v7];
+    shouldShowPoster2 = [(CNContactHeaderEditView *)self shouldShowPoster];
+    editingPosterView2 = [(CNContactHeaderEditView *)self editingPosterView];
+    view2 = [editingPosterView2 view];
+    [view2 setHidden:!shouldShowPoster2];
 
-    v10 = [(CNContactHeaderView *)self delegate];
-    [v10 headerViewDidChangeHeight:self];
+    delegate = [(CNContactHeaderView *)self delegate];
+    [delegate headerViewDidChangeHeight:self];
   }
 }
 
@@ -1319,8 +1319,8 @@ LABEL_25:
   v14.receiver = self;
   v14.super_class = CNContactHeaderEditView;
   [(CNContactHeaderView *)&v14 updateFontSizes];
-  v3 = [(CNContactHeaderView *)self photoView];
-  [v3 updateFontSizes];
+  photoView = [(CNContactHeaderView *)self photoView];
+  [photoView updateFontSizes];
 
   if ([(CNContactHeaderView *)self needsLabelSizeCalculation])
   {
@@ -1333,19 +1333,19 @@ LABEL_25:
 
       [sCurrentTaglineFont _scaledValueForValue:16.0];
       v6 = [sCurrentTaglineFont fontWithSize:?];
-      v7 = [(CNContactHeaderEditView *)self editButton];
-      v8 = [v7 titleLabel];
-      [v8 setFont:v6];
+      editButton = [(CNContactHeaderEditView *)self editButton];
+      titleLabel = [editButton titleLabel];
+      [titleLabel setFont:v6];
     }
 
-    v9 = [(CNContactHeaderEditView *)self editButton];
-    v10 = [v9 titleLabel];
+    editButton2 = [(CNContactHeaderEditView *)self editButton];
+    titleLabel2 = [editButton2 titleLabel];
     [(CNContactHeaderEditView *)self bounds];
-    [v10 sizeThatFits:{v11, v12}];
+    [titleLabel2 sizeThatFits:{v11, v12}];
     [(CNContactHeaderEditView *)self setMaxButtonSize:?];
 
-    v13 = [(CNContactHeaderView *)self delegate];
-    [v13 headerViewDidUpdateLabelSizes];
+    delegate = [(CNContactHeaderView *)self delegate];
+    [delegate headerViewDidUpdateLabelSizes];
   }
 }
 
@@ -1361,8 +1361,8 @@ LABEL_25:
 {
   [(CNContactHeaderEditView *)self staticHeaderPhotoTopMarginOffset];
   v4 = v3;
-  v5 = [(CNContactHeaderView *)self sizeAttributes];
-  [v5 photoMaxTopMargin];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes photoMaxTopMargin];
   v7 = v6;
 
   return v4 + v7;
@@ -1372,8 +1372,8 @@ LABEL_25:
 {
   [(CNContactHeaderEditView *)self staticHeaderPhotoTopMarginOffset];
   v4 = v3;
-  v5 = [(CNContactHeaderView *)self sizeAttributes];
-  [v5 photoMinTopMargin];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  [sizeAttributes photoMinTopMargin];
   v7 = v6;
 
   return v4 + v7;
@@ -1398,12 +1398,12 @@ LABEL_25:
 
 - (double)staticHeaderPhotoTopMarginOffset
 {
-  v3 = [(CNContactHeaderView *)self delegate];
-  [v3 navigationBarHeight];
+  delegate = [(CNContactHeaderView *)self delegate];
+  [delegate navigationBarHeight];
   v5 = v4;
 
-  v6 = [(CNContactHeaderView *)self delegate];
-  [v6 headerViewSafeAreaInsets];
+  delegate2 = [(CNContactHeaderView *)self delegate];
+  [delegate2 headerViewSafeAreaInsets];
   v8 = v7;
 
   return v5 + v8;
@@ -1421,30 +1421,30 @@ LABEL_25:
   v5 = v4;
   [(CNContactHeaderEditView *)self staticHeaderPhotoHeight];
   v7 = v5 + v6;
-  v8 = [(CNContactHeaderEditView *)self editButton];
-  v9 = [v8 isHidden];
+  editButton = [(CNContactHeaderEditView *)self editButton];
+  isHidden = [editButton isHidden];
 
-  if ((v9 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
     [(CNContactHeaderEditView *)self maxButtonSize];
     v7 = v7 + v10 + 12.0 + 16.0;
   }
 
-  v11 = [(CNContactHeaderEditView *)self shouldShowPoster];
-  v12 = [(CNContactHeaderView *)self sizeAttributes];
-  v13 = v12;
-  if (v11)
+  shouldShowPoster = [(CNContactHeaderEditView *)self shouldShowPoster];
+  sizeAttributes = [(CNContactHeaderView *)self sizeAttributes];
+  v13 = sizeAttributes;
+  if (shouldShowPoster)
   {
-    [v12 posterMaxHeight];
+    [sizeAttributes posterMaxHeight];
     v15 = v14 + 16.0;
-    v16 = [(CNContactHeaderView *)self sizeAttributes];
-    [v16 photoMinBottomMargin];
+    sizeAttributes2 = [(CNContactHeaderView *)self sizeAttributes];
+    [sizeAttributes2 photoMinBottomMargin];
     v18 = v15 + v17;
   }
 
   else
   {
-    [v12 photoMaxBottomMargin];
+    [sizeAttributes photoMaxBottomMargin];
     v18 = v19;
   }
 
@@ -1513,9 +1513,9 @@ LABEL_25:
 
 - (BOOL)shouldUseStaticHeader
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  v4 = [v3 isFeatureEnabled:28];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v4 = [featureFlags isFeatureEnabled:28];
 
   return v4;
 }
@@ -1529,14 +1529,14 @@ LABEL_25:
 
   else
   {
-    v5 = [(CNContactHeaderView *)self contacts];
-    if ([v5 count] == 1)
+    contacts = [(CNContactHeaderView *)self contacts];
+    if ([contacts count] == 1)
     {
       v6 = *MEMORY[0x1E6996540];
-      v7 = [(CNContactHeaderEditView *)self editingWallpaperContact];
-      v8 = [v7 wallpaper];
-      v9 = [v8 posterArchiveData];
-      v3 = (*(v6 + 16))(v6, v9) ^ 1;
+      editingWallpaperContact = [(CNContactHeaderEditView *)self editingWallpaperContact];
+      wallpaper = [editingWallpaperContact wallpaper];
+      posterArchiveData = [wallpaper posterArchiveData];
+      v3 = (*(v6 + 16))(v6, posterArchiveData) ^ 1;
     }
 
     else
@@ -1548,18 +1548,18 @@ LABEL_25:
   return v3;
 }
 
-- (void)setAllowsEditPhoto:(BOOL)a3 preservingChanges:(BOOL)a4
+- (void)setAllowsEditPhoto:(BOOL)photo preservingChanges:(BOOL)changes
 {
-  if (self->_allowsEditPhoto != a3)
+  if (self->_allowsEditPhoto != photo)
   {
-    v5 = a4;
-    v6 = a3;
-    self->_allowsEditPhoto = a3;
-    v8 = [(CNContactHeaderView *)self photoView];
-    [v8 setEditing:v6 preservingChanges:v5];
+    changesCopy = changes;
+    photoCopy = photo;
+    self->_allowsEditPhoto = photo;
+    photoView = [(CNContactHeaderView *)self photoView];
+    [photoView setEditing:photoCopy preservingChanges:changesCopy];
 
-    v9 = [(CNContactHeaderEditView *)self editButton];
-    [v9 setHidden:v6 ^ 1];
+    editButton = [(CNContactHeaderEditView *)self editButton];
+    [editButton setHidden:photoCopy ^ 1];
   }
 }
 
@@ -1574,16 +1574,16 @@ LABEL_25:
 
 - (id)posterPlaceholderImage
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
   v6 = v5;
 
   v11.width = v4;
   v11.height = v6;
   UIGraphicsBeginImageContextWithOptions(v11, 0, 0.0);
-  v7 = [MEMORY[0x1E69DC888] lightGrayColor];
-  [v7 setFill];
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  [lightGrayColor setFill];
 
   v12.origin.x = 0.0;
   v12.origin.y = 0.0;
@@ -1599,29 +1599,29 @@ LABEL_25:
 - (void)setUpPosterView
 {
   v3 = [_TtC10ContactsUI32CNHostingPosterSnapshotImageView alloc];
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v5 = [v4 featureFlags];
-  v13 = -[CNHostingPosterSnapshotImageView initWithIsEditContactView:](v3, "initWithIsEditContactView:", [v5 isFeatureEnabled:29]);
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v13 = -[CNHostingPosterSnapshotImageView initWithIsEditContactView:](v3, "initWithIsEditContactView:", [featureFlags isFeatureEnabled:29]);
 
   v6 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_editPoster];
-  v7 = [(CNHostingPosterSnapshotImageView *)v13 view];
-  [v7 addGestureRecognizer:v6];
+  view = [(CNHostingPosterSnapshotImageView *)v13 view];
+  [view addGestureRecognizer:v6];
 
-  v8 = [(CNHostingPosterSnapshotImageView *)v13 view];
-  [v8 setUserInteractionEnabled:1];
+  view2 = [(CNHostingPosterSnapshotImageView *)v13 view];
+  [view2 setUserInteractionEnabled:1];
 
-  v9 = [(CNHostingPosterSnapshotImageView *)v13 view];
-  [v9 setHidden:1];
+  view3 = [(CNHostingPosterSnapshotImageView *)v13 view];
+  [view3 setHidden:1];
 
   if (![(CNContactHeaderEditView *)self _shouldShowPhoto])
   {
-    v10 = [(CNHostingPosterSnapshotImageView *)v13 view];
-    v11 = [v10 layer];
-    [v11 setCornerRadius:31.0];
+    view4 = [(CNHostingPosterSnapshotImageView *)v13 view];
+    layer = [view4 layer];
+    [layer setCornerRadius:31.0];
   }
 
-  v12 = [(CNHostingPosterSnapshotImageView *)v13 view];
-  [(CNContactHeaderEditView *)self addSubview:v12];
+  view5 = [(CNHostingPosterSnapshotImageView *)v13 view];
+  [(CNContactHeaderEditView *)self addSubview:view5];
 
   [(CNContactHeaderEditView *)self setEditingPosterView:v13];
 }
@@ -1630,31 +1630,31 @@ LABEL_25:
 {
   if ([(CNContactHeaderEditView *)self shouldUseStaticHeader])
   {
-    v3 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-    [v3 setCornerStyle:4];
-    [v3 setContentInsets:{8.0, 24.0, 8.0, 24.0}];
-    v4 = [MEMORY[0x1E69DC888] labelColor];
-    [v3 setBaseForegroundColor:v4];
+    filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+    [filledButtonConfiguration setCornerStyle:4];
+    [filledButtonConfiguration setContentInsets:{8.0, 24.0, 8.0, 24.0}];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [filledButtonConfiguration setBaseForegroundColor:labelColor];
 
-    v5 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-    [v3 setBaseBackgroundColor:v5];
+    tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+    [filledButtonConfiguration setBaseBackgroundColor:tertiarySystemFillColor];
 
-    [v3 setTitleTextAttributesTransformer:&__block_literal_global_850];
-    v6 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v3 primaryAction:0];
+    [filledButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_850];
+    v6 = [MEMORY[0x1E69DC738] buttonWithConfiguration:filledButtonConfiguration primaryAction:0];
   }
 
   else
   {
     v6 = [MEMORY[0x1E69DC738] buttonWithType:1];
-    v7 = [(UIButton *)v6 titleLabel];
-    [v7 setNumberOfLines:3];
+    titleLabel = [(UIButton *)v6 titleLabel];
+    [titleLabel setNumberOfLines:3];
 
     v8 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD08]];
-    v9 = [(UIButton *)v6 titleLabel];
-    [v9 setFont:v8];
+    titleLabel2 = [(UIButton *)v6 titleLabel];
+    [titleLabel2 setFont:v8];
 
-    v10 = [(UIButton *)v6 titleLabel];
-    [v10 setAdjustsFontForContentSizeCategory:1];
+    titleLabel3 = [(UIButton *)v6 titleLabel];
+    [titleLabel3 setAdjustsFontForContentSizeCategory:1];
 
     [(UIButton *)v6 setPointerInteractionEnabled:1];
   }
@@ -1678,17 +1678,17 @@ id __42__CNContactHeaderEditView_setUpEditButton__block_invoke(uint64_t a1, void
   return v2;
 }
 
-- (void)reloadDataPreservingChanges:(BOOL)a3
+- (void)reloadDataPreservingChanges:(BOOL)changes
 {
   v7.receiver = self;
   v7.super_class = CNContactHeaderEditView;
   [(CNContactHeaderView *)&v7 reloadDataPreservingChanges:?];
   if ([(CNContactHeaderEditView *)self shouldUseStaticHeader])
   {
-    if (!a3)
+    if (!changes)
     {
-      v5 = [(CNContactHeaderEditView *)self mutableContact];
-      v6 = [v5 mutableCopy];
+      mutableContact = [(CNContactHeaderEditView *)self mutableContact];
+      v6 = [mutableContact mutableCopy];
       [(CNContactHeaderEditView *)self setEditingWallpaperContact:v6];
     }
 
@@ -1697,27 +1697,27 @@ id __42__CNContactHeaderEditView_setUpEditButton__block_invoke(uint64_t a1, void
   }
 }
 
-- (CNContactHeaderEditView)initWithContact:(id)a3 frame:(CGRect)a4 shouldAllowTakePhotoAction:(BOOL)a5 delegate:(id)a6 showingNavBar:(BOOL)a7 monogramOnly:(BOOL)a8 isOutOfProcess:(BOOL)a9
+- (CNContactHeaderEditView)initWithContact:(id)contact frame:(CGRect)frame shouldAllowTakePhotoAction:(BOOL)action delegate:(id)delegate showingNavBar:(BOOL)bar monogramOnly:(BOOL)only isOutOfProcess:(BOOL)process
 {
-  v10 = a8;
-  v11 = a7;
-  v13 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v19 = a3;
+  onlyCopy = only;
+  barCopy = bar;
+  actionCopy = action;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  contactCopy = contact;
   v29.receiver = self;
   v29.super_class = CNContactHeaderEditView;
-  v20 = [(CNContactHeaderView *)&v29 initWithContact:v19 frame:v13 shouldAllowTakePhotoAction:1 shouldAllowImageDrops:v11 showingNavBar:v10 monogramOnly:a6 delegate:x, y, width, height];
-  v21 = v20;
-  if (v20)
+  height = [(CNContactHeaderView *)&v29 initWithContact:contactCopy frame:actionCopy shouldAllowTakePhotoAction:1 shouldAllowImageDrops:barCopy showingNavBar:onlyCopy monogramOnly:delegate delegate:x, y, width, height];
+  v21 = height;
+  if (height)
   {
-    v22 = [(CNContactHeaderView *)v20 photoView];
-    [v22 setEditing:1];
+    photoView = [(CNContactHeaderView *)height photoView];
+    [photoView setEditing:1];
 
     v21->_allowsEditPhoto = 1;
-    v21->_isOutOfProcess = a9;
+    v21->_isOutOfProcess = process;
     v23 = +[CNSensitiveContentAnalysisManager defaultManager];
     sensitiveContentManager = v21->_sensitiveContentManager;
     v21->_sensitiveContentManager = v23;
@@ -1725,7 +1725,7 @@ id __42__CNContactHeaderEditView_setUpEditButton__block_invoke(uint64_t a1, void
     [(CNContactHeaderEditView *)v21 setUpEditButton];
     if ([(CNContactHeaderEditView *)v21 shouldUseStaticHeader])
     {
-      v25 = [v19 mutableCopy];
+      v25 = [contactCopy mutableCopy];
       editingWallpaperContact = v21->_editingWallpaperContact;
       v21->_editingWallpaperContact = v25;
 
@@ -1740,13 +1740,13 @@ id __42__CNContactHeaderEditView_setUpEditButton__block_invoke(uint64_t a1, void
 
 + (BOOL)useSwiftUIPosterAndAvatarEditor
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v3 = [v2 featureFlags];
-  if ([v3 isFeatureEnabled:6])
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  if ([featureFlags isFeatureEnabled:6])
   {
-    v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v5 = [v4 featureFlags];
-    v6 = [v5 isFeatureEnabled:7];
+    currentEnvironment2 = [MEMORY[0x1E69966E8] currentEnvironment];
+    featureFlags2 = [currentEnvironment2 featureFlags];
+    v6 = [featureFlags2 isFeatureEnabled:7];
   }
 
   else
@@ -1757,15 +1757,15 @@ id __42__CNContactHeaderEditView_setUpEditButton__block_invoke(uint64_t a1, void
   return v6;
 }
 
-+ (id)sizeAttributesShowingNavBar:(BOOL)a3
++ (id)sizeAttributesShowingNavBar:(BOOL)bar
 {
-  v4 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v5 = [v4 featureFlags];
-  v6 = [v5 isFeatureEnabled:28];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  featureFlags = [currentEnvironment featureFlags];
+  v6 = [featureFlags isFeatureEnabled:28];
 
   if (v6)
   {
-    if (a3)
+    if (bar)
     {
       +[CNContactHeaderViewSizeAttributes staticEditingAttributesWithNavBar];
     }
@@ -1776,7 +1776,7 @@ id __42__CNContactHeaderEditView_setUpEditButton__block_invoke(uint64_t a1, void
     }
   }
 
-  else if (a3)
+  else if (bar)
   {
     +[CNContactHeaderViewSizeAttributes editingAttributesWithNavBar];
   }
@@ -1790,51 +1790,51 @@ id __42__CNContactHeaderEditView_setUpEditButton__block_invoke(uint64_t a1, void
   return v7;
 }
 
-+ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)a3 shouldAllowImageDrops:(BOOL)a4 monogramOnly:(BOOL)a5
++ (id)makePhotoViewWithShouldAllowTakePhotoAction:(BOOL)action shouldAllowImageDrops:(BOOL)drops monogramOnly:(BOOL)only
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
+  onlyCopy = only;
+  dropsCopy = drops;
+  actionCopy = action;
   v8 = +[CNUIContactsEnvironment currentEnvironment];
   v9 = objc_alloc(MEMORY[0x1E6996BB0]);
-  v10 = [v8 inProcessContactStore];
-  v11 = [v8 defaultSchedulerProvider];
-  v12 = [v9 initWithContactStore:v10 schedulerProvider:v11];
+  inProcessContactStore = [v8 inProcessContactStore];
+  defaultSchedulerProvider = [v8 defaultSchedulerProvider];
+  v12 = [v9 initWithContactStore:inProcessContactStore schedulerProvider:defaultSchedulerProvider];
 
   [v12 setProhibitedSources:8];
-  if (v5)
+  if (onlyCopy)
   {
-    v13 = [v8 cachingMonogramRenderer];
+    cachingMonogramRenderer = [v8 cachingMonogramRenderer];
   }
 
   else
   {
     v14 = MEMORY[0x1E6996B90];
-    v15 = [v8 defaultSchedulerProvider];
-    v13 = [v14 rendererWithLikenessResolver:v12 schedulerProvider:v15];
+    defaultSchedulerProvider2 = [v8 defaultSchedulerProvider];
+    cachingMonogramRenderer = [v14 rendererWithLikenessResolver:v12 schedulerProvider:defaultSchedulerProvider2];
   }
 
   v16 = [CNContactPhotoView alloc];
-  v17 = [v8 inProcessContactStore];
-  v18 = [(CNContactPhotoView *)v16 initWithFrame:v7 shouldAllowTakePhotoAction:1 threeDTouchEnabled:v17 contactStore:v6 allowsImageDrops:v13 imageRenderer:1 allowStaleRendering:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+  inProcessContactStore2 = [v8 inProcessContactStore];
+  v18 = [(CNContactPhotoView *)v16 initWithFrame:actionCopy shouldAllowTakePhotoAction:1 threeDTouchEnabled:inProcessContactStore2 contactStore:dropsCopy allowsImageDrops:cachingMonogramRenderer imageRenderer:1 allowStaleRendering:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
 
   return v18;
 }
 
-+ (id)contactHeaderViewWithContact:(id)a3 shouldAllowTakePhotoAction:(BOOL)a4 showingNavBar:(BOOL)a5 monogramOnly:(BOOL)a6 isOutOfProcess:(BOOL)a7 delegate:(id)a8
++ (id)contactHeaderViewWithContact:(id)contact shouldAllowTakePhotoAction:(BOOL)action showingNavBar:(BOOL)bar monogramOnly:(BOOL)only isOutOfProcess:(BOOL)process delegate:(id)delegate
 {
-  v9 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v14 = a3;
-  v15 = a8;
-  v16 = [sEditingContactHeaderView delegate];
+  processCopy = process;
+  onlyCopy = only;
+  barCopy = bar;
+  actionCopy = action;
+  contactCopy = contact;
+  delegateCopy = delegate;
+  delegate = [sEditingContactHeaderView delegate];
 
-  if (v16)
+  if (delegate)
   {
-    v17 = [a1 alloc];
-    v18 = [v17 initWithContact:v14 frame:v12 shouldAllowTakePhotoAction:v15 delegate:v11 showingNavBar:v10 monogramOnly:v9 isOutOfProcess:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    v17 = [self alloc];
+    v18 = [v17 initWithContact:contactCopy frame:actionCopy shouldAllowTakePhotoAction:delegateCopy delegate:barCopy showingNavBar:onlyCopy monogramOnly:processCopy isOutOfProcess:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
 LABEL_3:
     v19 = v18;
     [v18 updateEditButtonTitle];
@@ -1843,8 +1843,8 @@ LABEL_3:
 
   if (!sEditingContactHeaderView)
   {
-    v21 = [a1 alloc];
-    v22 = [v21 initWithContact:v14 frame:v12 shouldAllowTakePhotoAction:v15 delegate:v11 showingNavBar:v10 monogramOnly:v9 isOutOfProcess:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+    v21 = [self alloc];
+    v22 = [v21 initWithContact:contactCopy frame:actionCopy shouldAllowTakePhotoAction:delegateCopy delegate:barCopy showingNavBar:onlyCopy monogramOnly:processCopy isOutOfProcess:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     v23 = sEditingContactHeaderView;
     sEditingContactHeaderView = v22;
 
@@ -1853,10 +1853,10 @@ LABEL_3:
   }
 
   v19 = sEditingContactHeaderView;
-  [v19 setDelegate:v15];
+  [v19 setDelegate:delegateCopy];
   [v19 prepareForReuse];
-  [v19 updateForShowingNavBar:v11];
-  [v19 updateWithNewContact:v14];
+  [v19 updateForShowingNavBar:barCopy];
+  [v19 updateWithNewContact:contactCopy];
 LABEL_6:
 
   return v19;

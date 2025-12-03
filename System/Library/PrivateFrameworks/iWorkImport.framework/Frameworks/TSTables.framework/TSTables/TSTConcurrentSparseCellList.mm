@@ -1,37 +1,37 @@
 @interface TSTConcurrentSparseCellList
-- (TSTConcurrentSparseCellList)initWithContext:(id)a3 viewCellRect:(TSUViewCellRect)a4 cellUIDRange:(TSKUIDStructTract *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)getCellAtUidOffset:(TSUColumnRowOffset)a3;
-- (id)getCellAtViewCellCoord:(TSUViewCellCoord)a3;
-- (void)addCell:(id)a3 atUidOffset:(TSUColumnRowOffset)a4;
-- (void)addCell:(id)a3 atViewCellCoord:(TSUViewCellCoord)a4;
-- (void)appendCellUIDRange:(TSKUIDStructTract *)a3;
-- (void)enumerateSeriallyByUidOffsetUsingBlock:(id)a3;
-- (void)p_accumulateBordersConcurrentlyUsingBlock:(id)a3 accumulateCellsConcurrentlyUsingBlock:(id)a4;
-- (void)p_enumerateRowsOfCellsConcurrentlyUsingBlock:(id)a3;
-- (void)p_invokeBlock:(id)a3;
-- (void)p_pruneCellsAtColumn:(unint64_t)a3 rowsSize:(unint64_t)a4 columnsSize:(unint64_t)a5;
-- (void)p_pruneCellsAtRow:(unint64_t)a3 rowsSize:(unint64_t)a4 columnsSize:(unint64_t)a5;
+- (TSTConcurrentSparseCellList)initWithContext:(id)context viewCellRect:(TSUViewCellRect)rect cellUIDRange:(TSKUIDStructTract *)range;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)getCellAtUidOffset:(TSUColumnRowOffset)offset;
+- (id)getCellAtViewCellCoord:(TSUViewCellCoord)coord;
+- (void)addCell:(id)cell atUidOffset:(TSUColumnRowOffset)offset;
+- (void)addCell:(id)cell atViewCellCoord:(TSUViewCellCoord)coord;
+- (void)appendCellUIDRange:(TSKUIDStructTract *)range;
+- (void)enumerateSeriallyByUidOffsetUsingBlock:(id)block;
+- (void)p_accumulateBordersConcurrentlyUsingBlock:(id)block accumulateCellsConcurrentlyUsingBlock:(id)usingBlock;
+- (void)p_enumerateRowsOfCellsConcurrentlyUsingBlock:(id)block;
+- (void)p_invokeBlock:(id)block;
+- (void)p_pruneCellsAtColumn:(unint64_t)column rowsSize:(unint64_t)size columnsSize:(unint64_t)columnsSize;
+- (void)p_pruneCellsAtRow:(unint64_t)row rowsSize:(unint64_t)size columnsSize:(unint64_t)columnsSize;
 @end
 
 @implementation TSTConcurrentSparseCellList
 
-- (TSTConcurrentSparseCellList)initWithContext:(id)a3 viewCellRect:(TSUViewCellRect)a4 cellUIDRange:(TSKUIDStructTract *)a5
+- (TSTConcurrentSparseCellList)initWithContext:(id)context viewCellRect:(TSUViewCellRect)rect cellUIDRange:(TSKUIDStructTract *)range
 {
-  size = a4._rect.size;
-  origin = a4._rect.origin;
-  v9 = a3;
+  size = rect._rect.size;
+  origin = rect._rect.origin;
+  contextCopy = context;
   v20 = 0;
   v21 = 0;
   v19 = 0;
-  sub_221086EBC(&v19, a5->_colIdList.__begin_, a5->_colIdList.__end_, a5->_colIdList.__end_ - a5->_colIdList.__begin_);
+  sub_221086EBC(&v19, range->_colIdList.__begin_, range->_colIdList.__end_, range->_colIdList.__end_ - range->_colIdList.__begin_);
   __p = 0;
   v23 = 0;
   v24 = 0;
-  sub_221086EBC(&__p, a5->_rowIdList.__begin_, a5->_rowIdList.__end_, a5->_rowIdList.__end_ - a5->_rowIdList.__begin_);
+  sub_221086EBC(&__p, range->_rowIdList.__begin_, range->_rowIdList.__end_, range->_rowIdList.__end_ - range->_rowIdList.__begin_);
   v18.receiver = self;
   v18.super_class = TSTConcurrentSparseCellList;
-  v14 = [(TSTConcurrentCellList *)&v18 initWithContext:v9 viewCellRect:origin cellUIDRange:size, &v19];
+  v14 = [(TSTConcurrentCellList *)&v18 initWithContext:contextCopy viewCellRect:origin cellUIDRange:size, &v19];
   if (__p)
   {
     v23 = __p;
@@ -54,11 +54,11 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSTConcurrentSparseCellList;
-  v4 = [(TSTConcurrentCellList *)&v12 copyWithZone:a3];
+  v4 = [(TSTConcurrentCellList *)&v12 copyWithZone:zone];
   v9 = objc_msgSend_mutableCopy(self->_validCells, v5, v6, v7, v8);
   v10 = v4[46];
   v4[46] = v9;
@@ -66,12 +66,12 @@
   return v4;
 }
 
-- (void)addCell:(id)a3 atViewCellCoord:(TSUViewCellCoord)a4
+- (void)addCell:(id)cell atViewCellCoord:(TSUViewCellCoord)coord
 {
-  v6 = a3;
+  cellCopy = cell;
   viewCellRect = self->super._viewCellRect;
   v22 = viewCellRect;
-  v10 = (a4._coord.row - v22.origin.row) * TSUCellRect::numColumns(&viewCellRect) + (((*&a4 & 0xFFFF00000000) - (*&v22.origin & 0xFFFF00000000)) >> 32);
+  v10 = (coord._coord.row - v22.origin.row) * TSUCellRect::numColumns(&viewCellRect) + (((*&coord & 0xFFFF00000000) - (*&v22.origin & 0xFFFF00000000)) >> 32);
   if (v10 >= (self->super._cellUIDRange._rowIdList.__end_ - self->super._cellUIDRange._rowIdList.__begin_) * (self->super._cellUIDRange._colIdList.__end_ - self->super._cellUIDRange._colIdList.__begin_) && v10 >= self->super._viewCellRect._rect.size.numberOfColumns * self->super._viewCellRect._rect.size.numberOfRows)
   {
     v11 = MEMORY[0x277D81150];
@@ -85,26 +85,26 @@
   objc_msgSend_addIndex_(self->_validCells, v7, v10, v8, v9, v22);
   v23.receiver = self;
   v23.super_class = TSTConcurrentSparseCellList;
-  [(TSTConcurrentCellList *)&v23 addCell:v6 atViewCellCoord:a4];
+  [(TSTConcurrentCellList *)&v23 addCell:cellCopy atViewCellCoord:coord];
 }
 
-- (void)addCell:(id)a3 atUidOffset:(TSUColumnRowOffset)a4
+- (void)addCell:(id)cell atUidOffset:(TSUColumnRowOffset)offset
 {
-  v6 = a3;
-  v7 = (self->super._cellUIDRange._colIdList.__end_ - self->super._cellUIDRange._colIdList.__begin_) * (*&a4 >> 32) + a4.var0;
+  cellCopy = cell;
+  v7 = (self->super._cellUIDRange._colIdList.__end_ - self->super._cellUIDRange._colIdList.__begin_) * (*&offset >> 32) + offset.var0;
   objc_msgSend_addIndex_(self->_validCells, v8, v7, v9, v10);
   v11.receiver = self;
   v11.super_class = TSTConcurrentSparseCellList;
-  [(TSTConcurrentCellList *)&v11 addCell:v6 atIndex:v7];
+  [(TSTConcurrentCellList *)&v11 addCell:cellCopy atIndex:v7];
 }
 
-- (id)getCellAtViewCellCoord:(TSUViewCellCoord)a3
+- (id)getCellAtViewCellCoord:(TSUViewCellCoord)coord
 {
   p_viewCellRect = &self->super._viewCellRect;
   viewCellRect = self->super._viewCellRect;
   v6 = *&viewCellRect.origin & 0xFFFF00000000;
-  v7 = a3._coord.row - viewCellRect.origin.row;
-  v11 = v7 * TSUCellRect::numColumns(&viewCellRect) + (((*&a3 & 0xFFFF00000000) - v6) >> 32);
+  v7 = coord._coord.row - viewCellRect.origin.row;
+  v11 = v7 * TSUCellRect::numColumns(&viewCellRect) + (((*&coord & 0xFFFF00000000) - v6) >> 32);
   if (v11 >= (self->super._cellUIDRange._rowIdList.__end_ - self->super._cellUIDRange._rowIdList.__begin_) * (self->super._cellUIDRange._colIdList.__end_ - self->super._cellUIDRange._colIdList.__begin_) && v11 >= p_viewCellRect->_rect.size.numberOfColumns * p_viewCellRect->_rect.size.numberOfRows)
   {
     v12 = MEMORY[0x277D81150];
@@ -117,14 +117,14 @@
 
   v25.receiver = self;
   v25.super_class = TSTConcurrentSparseCellList;
-  v23 = [(TSTConcurrentCellList *)&v25 getCellAtViewCellCoord:a3];
+  v23 = [(TSTConcurrentCellList *)&v25 getCellAtViewCellCoord:coord];
 
   return v23;
 }
 
-- (id)getCellAtUidOffset:(TSUColumnRowOffset)a3
+- (id)getCellAtUidOffset:(TSUColumnRowOffset)offset
 {
-  v3 = (self->super._cellUIDRange._colIdList.__end_ - self->super._cellUIDRange._colIdList.__begin_) * a3.var1 + a3.var0;
+  v3 = (self->super._cellUIDRange._colIdList.__end_ - self->super._cellUIDRange._colIdList.__begin_) * offset.var1 + offset.var0;
   v6.receiver = self;
   v6.super_class = TSTConcurrentSparseCellList;
   v4 = [(TSTConcurrentCellList *)&v6 getCellAtIndex:v3];
@@ -132,34 +132,34 @@
   return v4;
 }
 
-- (void)enumerateSeriallyByUidOffsetUsingBlock:(id)a3
+- (void)enumerateSeriallyByUidOffsetUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_22116B1C8;
   v7[3] = &unk_27845FEC8;
   v7[4] = self;
-  v8 = v4;
+  v8 = blockCopy;
   v6.receiver = self;
   v6.super_class = TSTConcurrentSparseCellList;
-  v5 = v4;
+  v5 = blockCopy;
   [(TSTConcurrentCellList *)&v6 enumerateSeriallyByIndexUsingBlock:v7];
 }
 
-- (void)appendCellUIDRange:(TSKUIDStructTract *)a3
+- (void)appendCellUIDRange:(TSKUIDStructTract *)range
 {
   p_cellUIDRange = &self->super._cellUIDRange;
   p_rowIdList = &self->super._cellUIDRange._rowIdList;
   if (self->super._cellUIDRange._rowIdList.__end_ == self->super._cellUIDRange._rowIdList.__begin_)
   {
-    if (p_cellUIDRange != a3)
+    if (p_cellUIDRange != range)
     {
-      sub_2210BD068(&self->super._cellUIDRange._colIdList.__begin_, a3->_colIdList.__begin_, a3->_colIdList.__end_, a3->_colIdList.__end_ - a3->_colIdList.__begin_);
-      sub_2210BD068(p_rowIdList, a3->_rowIdList.__begin_, a3->_rowIdList.__end_, a3->_rowIdList.__end_ - a3->_rowIdList.__begin_);
+      sub_2210BD068(&self->super._cellUIDRange._colIdList.__begin_, range->_colIdList.__begin_, range->_colIdList.__end_, range->_colIdList.__end_ - range->_colIdList.__begin_);
+      sub_2210BD068(p_rowIdList, range->_rowIdList.__begin_, range->_rowIdList.__end_, range->_rowIdList.__end_ - range->_rowIdList.__begin_);
     }
 
-    v28 = (a3->_rowIdList.__end_ - a3->_rowIdList.__begin_) * (a3->_colIdList.__end_ - a3->_colIdList.__begin_);
+    v28 = (range->_rowIdList.__end_ - range->_rowIdList.__begin_) * (range->_colIdList.__end_ - range->_colIdList.__begin_);
 
     sub_2211389A0(&self->super._cells.__begin_, v28);
   }
@@ -169,7 +169,7 @@
     begin = p_cellUIDRange->_colIdList.__begin_;
     end = self->super._cellUIDRange._colIdList.__end_;
     v11 = end - p_cellUIDRange->_colIdList.__begin_;
-    if (v11 != a3->_colIdList.__end_ - a3->_colIdList.__begin_)
+    if (v11 != range->_colIdList.__end_ - range->_colIdList.__begin_)
     {
       v12 = MEMORY[0x277D81150];
       v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], begin, "[TSTConcurrentSparseCellList appendCellUIDRange:]", v3, v4);
@@ -190,7 +190,7 @@
     __dst = 0;
     v35 = 0;
     sub_221086EBC(&v33, p_cellUIDRange->_rowIdList.__begin_, p_cellUIDRange->_rowIdList.__end_, p_cellUIDRange->_rowIdList.__end_ - p_cellUIDRange->_rowIdList.__begin_);
-    sub_2210F0C88(&v33, __dst, a3->_rowIdList.__begin_, a3->_rowIdList.__end_, a3->_rowIdList.__end_ - a3->_rowIdList.__begin_);
+    sub_2210F0C88(&v33, __dst, range->_rowIdList.__begin_, range->_rowIdList.__end_, range->_rowIdList.__end_ - range->_rowIdList.__begin_);
     sub_2210BBBE8(__p, &v36, &v33);
     v23 = p_cellUIDRange->_colIdList.__begin_;
     if (p_cellUIDRange->_colIdList.__begin_)
@@ -252,13 +252,13 @@
   }
 }
 
-- (void)p_invokeBlock:(id)a3
+- (void)p_invokeBlock:(id)block
 {
   v104[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v100 = v4;
+  blockCopy = block;
+  v100 = blockCopy;
   p_cellUIDRange = &self->super._cellUIDRange;
-  v95 = self;
+  selfCopy = self;
   p_baseRows = &self->super._baseRows;
   v9 = self->super._baseRows.__end_ - self->super._baseRows.__begin_;
   v10 = self->super._cellUIDRange._rowIdList.__end_ - self->super._cellUIDRange._rowIdList.__begin_;
@@ -271,42 +271,42 @@
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTConcurrentCellMap.mm", v16, v17);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v19, v14, v18, 1905, 0, "baseRows size:%lu needs to match row uids size:%lu", p_baseRows->__end_ - p_baseRows->__begin_, p_cellUIDRange->_rowIdList.__end_ - p_cellUIDRange->_rowIdList.__begin_);
 
-    v4 = objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
+    blockCopy = objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  p_baseColumns = &v95->super._baseColumns;
+  p_baseColumns = &selfCopy->super._baseColumns;
   v24 = p_cellUIDRange->_colIdList.__end_ - p_cellUIDRange->_colIdList.__begin_;
-  if (v24 != v95->super._baseColumns.__end_ - v95->super._baseColumns.__begin_)
+  if (v24 != selfCopy->super._baseColumns.__end_ - selfCopy->super._baseColumns.__begin_)
   {
     v25 = MEMORY[0x277D81150];
     v26 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSTConcurrentSparseCellList p_invokeBlock:]", v6, v7);
     v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v27, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTConcurrentCellMap.mm", v28, v29);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v25, v31, v26, v30, 1906, 0, "baseColumns size:%lu needs to match column uids size:%lu", p_baseColumns->__end_ - p_baseColumns->__begin_, p_cellUIDRange->_colIdList.__end_ - p_cellUIDRange->_colIdList.__begin_);
 
-    v4 = objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33, v34, v35);
+    blockCopy = objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v32, v33, v34, v35);
     v24 = p_cellUIDRange->_colIdList.__end_ - p_cellUIDRange->_colIdList.__begin_;
   }
 
-  p_cells = &v95->super._cells;
-  if ((p_cellUIDRange->_rowIdList.__end_ - p_cellUIDRange->_rowIdList.__begin_) * v24 != v95->super._cells.var0 - v95->super._cells.__begin_)
+  p_cells = &selfCopy->super._cells;
+  if ((p_cellUIDRange->_rowIdList.__end_ - p_cellUIDRange->_rowIdList.__begin_) * v24 != selfCopy->super._cells.var0 - selfCopy->super._cells.__begin_)
   {
     v36 = MEMORY[0x277D81150];
     v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TSTConcurrentSparseCellList p_invokeBlock:]", v6, v7);
     v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v38, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTConcurrentCellMap.mm", v39, v40);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v36, v42, v37, v41, 1907, 0, "cells size:%lu needs to match area range:%lu", p_cells->var0 - p_cells->__begin_, (p_cellUIDRange->_rowIdList.__end_ - p_cellUIDRange->_rowIdList.__begin_) * (p_cellUIDRange->_colIdList.__end_ - p_cellUIDRange->_colIdList.__begin_));
 
-    v4 = objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46);
+    blockCopy = objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v43, v44, v45, v46);
   }
 
   v90[1] = v90;
-  MEMORY[0x28223BE20](v4);
+  MEMORY[0x28223BE20](blockCopy);
   v94 = (v90 - v51);
   begin = p_baseRows->__begin_;
   if (p_baseRows->__end_ != p_baseRows->__begin_)
   {
     v53 = 0;
     v91 = v50 >> 1;
-    p_viewRows = &v95->super._viewRows;
+    p_viewRows = &selfCopy->super._viewRows;
     v97 = v100 + 16;
     do
     {
@@ -346,11 +346,11 @@
       v81 = v53 * v91;
       v104[0] = v53 * v91;
       v104[1] = v91;
-      Indexes_maxCount_inIndexRange = objc_msgSend_getIndexes_maxCount_inIndexRange_(v95->_validCells, v47, v94, v91, v104);
+      Indexes_maxCount_inIndexRange = objc_msgSend_getIndexes_maxCount_inIndexRange_(selfCopy->_validCells, v47, v94, v91, v104);
       if (Indexes_maxCount_inIndexRange)
       {
         v83 = v94;
-        p_viewColumns = &v95->super._viewColumns;
+        p_viewColumns = &selfCopy->super._viewColumns;
         do
         {
           v86 = *v83++;
@@ -383,16 +383,16 @@
   }
 }
 
-- (void)p_accumulateBordersConcurrentlyUsingBlock:(id)a3 accumulateCellsConcurrentlyUsingBlock:(id)a4
+- (void)p_accumulateBordersConcurrentlyUsingBlock:(id)block accumulateCellsConcurrentlyUsingBlock:(id)usingBlock
 {
-  v84 = a4;
-  v85 = a3;
+  usingBlockCopy = usingBlock;
+  blockCopy = block;
   v95[1] = *MEMORY[0x277D85DE8];
   v88 = 128;
   if (!self->super._tilesPerRow)
   {
     v6 = MEMORY[0x277D81150];
-    v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTConcurrentSparseCellList p_accumulateBordersConcurrentlyUsingBlock:accumulateCellsConcurrentlyUsingBlock:]", a4, v4);
+    v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTConcurrentSparseCellList p_accumulateBordersConcurrentlyUsingBlock:accumulateCellsConcurrentlyUsingBlock:]", usingBlock, v4);
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTConcurrentCellMap.mm", v9, v10);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v6, v12, v7, v11, 1945, 0, "invalid nil value for '%{public}s'", "_tilesPerRow");
 
@@ -403,14 +403,14 @@
   if (!self->super._rowInfosPerRow)
   {
     v17 = MEMORY[0x277D81150];
-    v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTConcurrentSparseCellList p_accumulateBordersConcurrentlyUsingBlock:accumulateCellsConcurrentlyUsingBlock:]", a4, v4);
+    v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSTConcurrentSparseCellList p_accumulateBordersConcurrentlyUsingBlock:accumulateCellsConcurrentlyUsingBlock:]", usingBlock, v4);
     v22 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v19, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/tables/TSTConcurrentCellMap.mm", v20, v21);
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v17, v23, v18, v22, 1946, 0, "invalid nil value for '%{public}s'", "_rowInfosPerRow");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
   }
 
-  v28 = objc_msgSend_count(*(&self->super.super.super.isa + v88), a2, a3, a4, v4);
+  v28 = objc_msgSend_count(*(&self->super.super.super.isa + v88), a2, block, usingBlock, v4);
   p_baseRows = &self->super._baseRows;
   if (v28 != self->super._baseRows.__end_ - self->super._baseRows.__begin_)
   {
@@ -447,8 +447,8 @@
   else
   {
     v66 = 0;
-    v82 = v85 + 16;
-    v81 = (v84 + 2);
+    v82 = blockCopy + 16;
+    v81 = (usingBlockCopy + 2);
     do
     {
       v90 = objc_msgSend_objectAtIndexedSubscript_(*(&self->super.super.super.isa + v88), v62, v66, v63, v64, v81, v82);
@@ -472,8 +472,8 @@
         }
 
         while (Indexes_maxCount_inIndexRange != v77);
-        (*(v85 + 2))(v92);
-        v84[2](v91);
+        (*(blockCopy + 2))(v92);
+        usingBlockCopy[2](v91);
         v80 = 0;
         do
         {
@@ -503,10 +503,10 @@
   }
 }
 
-- (void)p_enumerateRowsOfCellsConcurrentlyUsingBlock:(id)a3
+- (void)p_enumerateRowsOfCellsConcurrentlyUsingBlock:(id)block
 {
   v107[3] = *MEMORY[0x277D85DE8];
-  v92 = a3;
+  blockCopy = block;
   v97 = 136;
   rowInfosPerRow = self->super._rowInfosPerRow;
   if (!rowInfosPerRow)
@@ -556,9 +556,9 @@
   {
     v56 = 0;
     v95 = v53 >> 1;
-    v90[1] = v92 + 2;
+    v90[1] = blockCopy + 2;
     v93 = v90 - v54;
-    v94 = self;
+    selfCopy = self;
     while (1)
     {
       v57 = objc_msgSend_objectAtIndexedSubscript_(*(&self->super.super.super.isa + v97), v50, v56, v51, v52);
@@ -653,17 +653,17 @@
         v78 = 0;
         v82 = 0;
         v55 = v93;
-        self = v94;
+        self = selfCopy;
         v77 = v100;
       }
 
       else
       {
         v77 = v100;
-        v92[2](&v101);
+        blockCopy[2](&v101);
         v78 = v101;
         v55 = v93;
-        self = v94;
+        self = selfCopy;
         if (v101 == v102)
         {
           v82 = 0;
@@ -736,33 +736,33 @@ LABEL_37:
 LABEL_41:
 }
 
-- (void)p_pruneCellsAtRow:(unint64_t)a3 rowsSize:(unint64_t)a4 columnsSize:(unint64_t)a5
+- (void)p_pruneCellsAtRow:(unint64_t)row rowsSize:(unint64_t)size columnsSize:(unint64_t)columnsSize
 {
-  objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_validCells, a2, a5 + a5 * a3, -a5, a5);
+  objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_validCells, a2, columnsSize + columnsSize * row, -columnsSize, columnsSize);
   v9.receiver = self;
   v9.super_class = TSTConcurrentSparseCellList;
-  [(TSTConcurrentCellList *)&v9 p_pruneCellsAtRow:a3 rowsSize:a4 columnsSize:a5];
+  [(TSTConcurrentCellList *)&v9 p_pruneCellsAtRow:row rowsSize:size columnsSize:columnsSize];
 }
 
-- (void)p_pruneCellsAtColumn:(unint64_t)a3 rowsSize:(unint64_t)a4 columnsSize:(unint64_t)a5
+- (void)p_pruneCellsAtColumn:(unint64_t)column rowsSize:(unint64_t)size columnsSize:(unint64_t)columnsSize
 {
-  if (a4)
+  if (size)
   {
-    v9 = a3 + a5 * (a4 - 1) + 1;
-    v10 = a4;
+    v9 = column + columnsSize * (size - 1) + 1;
+    sizeCopy = size;
     do
     {
-      objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_validCells, a2, v9, -1, a5);
-      v9 -= a5;
-      --v10;
+      objc_msgSend_shiftIndexesStartingAtIndex_by_(self->_validCells, a2, v9, -1, columnsSize);
+      v9 -= columnsSize;
+      --sizeCopy;
     }
 
-    while (v10);
+    while (sizeCopy);
   }
 
   v11.receiver = self;
   v11.super_class = TSTConcurrentSparseCellList;
-  [(TSTConcurrentCellList *)&v11 p_pruneCellsAtColumn:a3 rowsSize:a4 columnsSize:a5];
+  [(TSTConcurrentCellList *)&v11 p_pruneCellsAtColumn:column rowsSize:size columnsSize:columnsSize];
 }
 
 @end

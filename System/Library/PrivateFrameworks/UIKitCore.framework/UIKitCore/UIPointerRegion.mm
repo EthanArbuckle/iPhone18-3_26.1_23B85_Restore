@@ -1,10 +1,10 @@
 @interface UIPointerRegion
 + (UIPointerRegion)regionWithRect:(CGRect)rect identifier:(id)identifier;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)rect;
 - (NSString)description;
 - (UIView)referenceView;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -22,12 +22,12 @@
   [(UIPointerRegion *)self rect];
   v11 = [v3 stringWithFormat:@"(%g %g %g %g)", v5, v7, v9, v10];;
   v12 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p rect = %@", objc_opt_class(), self, v11];;
-  v13 = [(UIPointerRegion *)self identifier];
+  identifier = [(UIPointerRegion *)self identifier];
 
-  if (v13)
+  if (identifier)
   {
-    v14 = [(UIPointerRegion *)self identifier];
-    [v12 appendFormat:@"; identifier = %@", v14];
+    identifier2 = [(UIPointerRegion *)self identifier];
+    [v12 appendFormat:@"; identifier = %@", identifier2];
   }
 
   v15 = [(UIPointerRegion *)self latchingAxes]- 1;
@@ -68,7 +68,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
   [(UIPointerRegion *)self rect];
@@ -76,21 +76,21 @@
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(UIPointerRegion *)self identifier];
-  v14 = [v4 regionWithRect:v13 identifier:{v6, v8, v10, v12}];
+  identifier = [(UIPointerRegion *)self identifier];
+  v14 = [v4 regionWithRect:identifier identifier:{v6, v8, v10, v12}];
 
-  v15 = [(UIPointerRegion *)self referenceView];
-  [v14 setReferenceView:v15];
+  referenceView = [(UIPointerRegion *)self referenceView];
+  [v14 setReferenceView:referenceView];
 
   [v14 setGenerationID:{-[UIPointerRegion generationID](self, "generationID")}];
   [v14 setLatchingAxes:{-[UIPointerRegion latchingAxes](self, "latchingAxes")}];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -100,11 +100,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(UIPointerRegion *)v5 identifier];
-      v7 = [(UIPointerRegion *)self identifier];
-      v8 = v6;
-      v9 = v7;
+      v5 = equalCopy;
+      identifier = [(UIPointerRegion *)v5 identifier];
+      identifier2 = [(UIPointerRegion *)self identifier];
+      v8 = identifier;
+      v9 = identifier2;
       v10 = v9;
       if (v8 == v9)
       {
@@ -113,8 +113,8 @@
       else
       {
         v11 = 0;
-        v12 = v9;
-        v13 = v8;
+        referenceView2 = v9;
+        referenceView = v8;
         if (!v8 || !v9)
         {
 LABEL_16:
@@ -133,12 +133,12 @@ LABEL_17:
         }
       }
 
-      v13 = [(UIPointerRegion *)v5 referenceView];
-      v12 = [(UIPointerRegion *)self referenceView];
-      if (v13 == v12 && ([(UIPointerRegion *)v5 rect], v16 = v15, v18 = v17, v20 = v19, v22 = v21, [(UIPointerRegion *)self rect], v31.origin.x = v23, v31.origin.y = v24, v31.size.width = v25, v31.size.height = v26, v30.origin.x = v16, v30.origin.y = v18, v30.size.width = v20, v30.size.height = v22, CGRectEqualToRect(v30, v31)) && (v27 = [(UIPointerRegion *)v5 generationID], v27 == [(UIPointerRegion *)self generationID]))
+      referenceView = [(UIPointerRegion *)v5 referenceView];
+      referenceView2 = [(UIPointerRegion *)self referenceView];
+      if (referenceView == referenceView2 && ([(UIPointerRegion *)v5 rect], v16 = v15, v18 = v17, v20 = v19, v22 = v21, [(UIPointerRegion *)self rect], v31.origin.x = v23, v31.origin.y = v24, v31.size.width = v25, v31.size.height = v26, v30.origin.x = v16, v30.origin.y = v18, v30.size.width = v20, v30.size.height = v22, CGRectEqualToRect(v30, v31)) && (v27 = [(UIPointerRegion *)v5 generationID], v27 == [(UIPointerRegion *)self generationID]))
       {
-        v28 = [(UIPointerRegion *)v5 latchingAxes];
-        v11 = v28 == [(UIPointerRegion *)self latchingAxes];
+        latchingAxes = [(UIPointerRegion *)v5 latchingAxes];
+        v11 = latchingAxes == [(UIPointerRegion *)self latchingAxes];
       }
 
       else
@@ -167,12 +167,12 @@ LABEL_18:
   v8 = v7;
   [(UIPointerRegion *)self rect];
   v10 = v6 ^ v8 ^ v9;
-  v11 = [(UIPointerRegion *)self identifier];
-  v12 = [v11 hash];
-  v13 = [(UIPointerRegion *)self referenceView];
-  v14 = [v13 hash];
-  v15 = [(UIPointerRegion *)self generationID];
-  v16 = v12 ^ v14 ^ v15 ^ [(UIPointerRegion *)self latchingAxes];
+  identifier = [(UIPointerRegion *)self identifier];
+  v12 = [identifier hash];
+  referenceView = [(UIPointerRegion *)self referenceView];
+  v14 = [referenceView hash];
+  generationID = [(UIPointerRegion *)self generationID];
+  v16 = v12 ^ v14 ^ generationID ^ [(UIPointerRegion *)self latchingAxes];
 
   return v16 ^ v10;
 }

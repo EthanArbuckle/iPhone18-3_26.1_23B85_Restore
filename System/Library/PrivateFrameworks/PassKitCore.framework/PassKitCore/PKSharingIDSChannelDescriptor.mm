@@ -1,69 +1,69 @@
 @interface PKSharingIDSChannelDescriptor
-+ (id)createWithDeviceIdentifier:(id)a3;
-+ (id)createWithRemoteAddress:(id)a3;
-+ (id)existingForSessionIdentifier:(id)a3;
-- (PKSharingIDSChannelDescriptor)initWithCoder:(id)a3;
-- (id)_initWithSessionIdentifier:(id)a3 deviceIdentifier:(id)a4 subtype:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
++ (id)createWithDeviceIdentifier:(id)identifier;
++ (id)createWithRemoteAddress:(id)address;
++ (id)existingForSessionIdentifier:(id)identifier;
+- (PKSharingIDSChannelDescriptor)initWithCoder:(id)coder;
+- (id)_initWithSessionIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier subtype:(unint64_t)subtype;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKSharingIDSChannelDescriptor
 
-- (id)_initWithSessionIdentifier:(id)a3 deviceIdentifier:(id)a4 subtype:(unint64_t)a5
+- (id)_initWithSessionIdentifier:(id)identifier deviceIdentifier:(id)deviceIdentifier subtype:(unint64_t)subtype
 {
-  v9 = a3;
-  v10 = a4;
+  identifierCopy = identifier;
+  deviceIdentifierCopy = deviceIdentifier;
   v14.receiver = self;
   v14.super_class = PKSharingIDSChannelDescriptor;
   v11 = [(PKSharingChannelDescriptor *)&v14 _initWithType:4];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(v11 + 4, a3);
-    objc_storeStrong(v12 + 3, a4);
-    v12[2] = a5;
+    objc_storeStrong(v11 + 4, identifier);
+    objc_storeStrong(v12 + 3, deviceIdentifier);
+    v12[2] = subtype;
   }
 
   return v12;
 }
 
-+ (id)createWithDeviceIdentifier:(id)a3
++ (id)createWithDeviceIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[PKSharingIDSChannelDescriptor alloc] _initWithSessionIdentifier:0 deviceIdentifier:v3 subtype:0];
+  identifierCopy = identifier;
+  v4 = [[PKSharingIDSChannelDescriptor alloc] _initWithSessionIdentifier:0 deviceIdentifier:identifierCopy subtype:0];
 
   return v4;
 }
 
-+ (id)existingForSessionIdentifier:(id)a3
++ (id)existingForSessionIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[PKSharingIDSChannelDescriptor alloc] _initWithSessionIdentifier:v3 deviceIdentifier:0 subtype:2];
+  identifierCopy = identifier;
+  v4 = [[PKSharingIDSChannelDescriptor alloc] _initWithSessionIdentifier:identifierCopy deviceIdentifier:0 subtype:2];
 
   return v4;
 }
 
-+ (id)createWithRemoteAddress:(id)a3
++ (id)createWithRemoteAddress:(id)address
 {
-  v3 = a3;
-  v4 = [[PKSharingIDSChannelDescriptor alloc] _initWithSessionIdentifier:0 deviceIdentifier:v3 subtype:1];
+  addressCopy = address;
+  v4 = [[PKSharingIDSChannelDescriptor alloc] _initWithSessionIdentifier:0 deviceIdentifier:addressCopy subtype:1];
 
   return v4;
 }
 
-- (PKSharingIDSChannelDescriptor)initWithCoder:(id)a3
+- (PKSharingIDSChannelDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKSharingIDSChannelDescriptor;
-  v5 = [(PKSharingChannelDescriptor *)&v11 initWithCoder:v4];
+  v5 = [(PKSharingChannelDescriptor *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionIdentifier"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v8;
   }
@@ -71,14 +71,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKSharingIDSChannelDescriptor;
-  v4 = a3;
-  [(PKSharingChannelDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_sessionIdentifier forKey:{@"sessionIdentifier", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_deviceIdentifier forKey:@"deviceIdentifier"];
+  coderCopy = coder;
+  [(PKSharingChannelDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_sessionIdentifier forKey:{@"sessionIdentifier", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_deviceIdentifier forKey:@"deviceIdentifier"];
 }
 
 @end

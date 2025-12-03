@@ -9,10 +9,10 @@
 - (double)overriddenTravelAdvisoryHypothesisAggressiveTravelTime;
 - (double)overriddenTravelAdvisoryHypothesisConservativeTravelTime;
 - (double)overriddenTravelAdvisoryHypothesisEstimatedTravelTime;
-- (void)setAvailabilityFreshnessWindow:(double)a3;
-- (void)setOverriddenTravelAdvisoryHypothesisAggressiveTravelTime:(double)a3;
-- (void)setOverriddenTravelAdvisoryHypothesisConservativeTravelTime:(double)a3;
-- (void)setOverriddenTravelAdvisoryHypothesisEstimatedTravelTime:(double)a3;
+- (void)setAvailabilityFreshnessWindow:(double)window;
+- (void)setOverriddenTravelAdvisoryHypothesisAggressiveTravelTime:(double)time;
+- (void)setOverriddenTravelAdvisoryHypothesisConservativeTravelTime:(double)time;
+- (void)setOverriddenTravelAdvisoryHypothesisEstimatedTravelTime:(double)time;
 @end
 
 @implementation EKDebugPreferences
@@ -88,11 +88,11 @@ uint64_t __28__EKDebugPreferences_shared__block_invoke()
   return v5;
 }
 
-- (void)setAvailabilityFreshnessWindow:(double)a3
+- (void)setAvailabilityFreshnessWindow:(double)window
 {
-  if (a3 >= 0.0)
+  if (window >= 0.0)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithDouble:window];
     [(CalPreferences *)self->_preferences setValueForPreference:@"availabilityFreshnessWindow" value:v4 notificationName:@"com.apple.eventkit.debug.preference.notification.availabilityFreshnessWindow"];
   }
 
@@ -128,11 +128,11 @@ uint64_t __28__EKDebugPreferences_shared__block_invoke()
   return v5;
 }
 
-- (void)setOverriddenTravelAdvisoryHypothesisConservativeTravelTime:(double)a3
+- (void)setOverriddenTravelAdvisoryHypothesisConservativeTravelTime:(double)time
 {
-  if (a3 >= 0.0)
+  if (time >= 0.0)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithDouble:time];
     [(CalPreferences *)self->_preferences setValueForPreference:@"overriddenTravelAdvisoryHypothesisConservativeTravelTime" value:v4 notificationName:@"com.apple.eventkit.debug.preference.notification.overriddenTravelAdvisoryHypothesisConservativeTravelTime"];
   }
 
@@ -160,11 +160,11 @@ uint64_t __28__EKDebugPreferences_shared__block_invoke()
   return v5;
 }
 
-- (void)setOverriddenTravelAdvisoryHypothesisEstimatedTravelTime:(double)a3
+- (void)setOverriddenTravelAdvisoryHypothesisEstimatedTravelTime:(double)time
 {
-  if (a3 >= 0.0)
+  if (time >= 0.0)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithDouble:time];
     [(CalPreferences *)self->_preferences setValueForPreference:@"overriddenTravelAdvisoryHypothesisEstimatedTravelTime" value:v4 notificationName:@"com.apple.eventkit.debug.preference.notification.overriddenTravelAdvisoryHypothesisEstimatedTravelTime"];
   }
 
@@ -192,11 +192,11 @@ uint64_t __28__EKDebugPreferences_shared__block_invoke()
   return v5;
 }
 
-- (void)setOverriddenTravelAdvisoryHypothesisAggressiveTravelTime:(double)a3
+- (void)setOverriddenTravelAdvisoryHypothesisAggressiveTravelTime:(double)time
 {
-  if (a3 >= 0.0)
+  if (time >= 0.0)
   {
-    v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithDouble:time];
     [(CalPreferences *)self->_preferences setValueForPreference:@"overriddenTravelAdvisoryHypothesisAggressiveTravelTime" value:v4 notificationName:@"com.apple.eventkit.debug.preference.notification.overriddenTravelAdvisoryHypothesisAggressiveTravelTime"];
   }
 

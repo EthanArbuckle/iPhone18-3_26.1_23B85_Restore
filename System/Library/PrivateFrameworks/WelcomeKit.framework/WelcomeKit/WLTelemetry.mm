@@ -1,18 +1,18 @@
 @interface WLTelemetry
 + (id)sharedInstance;
-- (id)_telemetryDictionaryForContentTypeDidComplete:(id)a3 downloadByteCount:(unint64_t)a4 importRecordCount:(unint64_t)a5 importFailedRecordCount:(unint64_t)a6 downloadDuration:(unint64_t)a7 importDuration:(unint64_t)a8 android:(id)a9 model:(id)a10 version:(id)a11;
-- (id)_telemetryDictionaryForPreparatoryDataDidComplete:(id)a3 contentType:(id)a4 duration:(double)a5 android:(id)a6 model:(id)a7 version:(id)a8;
-- (void)contentTypeDidComplete:(id)a3 downloadByteCount:(unint64_t)a4 importRecordCount:(unint64_t)a5 importFailedRecordCount:(unint64_t)a6 downloadDuration:(unint64_t)a7 importDuration:(unint64_t)a8 android:(id)a9 model:(id)a10 version:(id)a11;
+- (id)_telemetryDictionaryForContentTypeDidComplete:(id)complete downloadByteCount:(unint64_t)count importRecordCount:(unint64_t)recordCount importFailedRecordCount:(unint64_t)failedRecordCount downloadDuration:(unint64_t)duration importDuration:(unint64_t)importDuration android:(id)android model:(id)self0 version:(id)self1;
+- (id)_telemetryDictionaryForPreparatoryDataDidComplete:(id)complete contentType:(id)type duration:(double)duration android:(id)android model:(id)model version:(id)version;
+- (void)contentTypeDidComplete:(id)complete downloadByteCount:(unint64_t)count importRecordCount:(unint64_t)recordCount importFailedRecordCount:(unint64_t)failedRecordCount downloadDuration:(unint64_t)duration importDuration:(unint64_t)importDuration android:(id)android model:(id)self0 version:(id)self1;
 - (void)daemonDidGetInterrupted;
 - (void)deviceDidFailWithAuthenticationError;
 - (void)deviceDidFailWithTimeout;
-- (void)didLoadAndroidStore:(id)a3 selected:(BOOL)a4 canceled:(BOOL)a5 inAttempts:(unint64_t)a6;
-- (void)didResolveTimeEstimate:(unint64_t)a3 forDownloadTask:(id)a4 threshold:(unint64_t)a5 actualTime:(unint64_t)a6;
-- (void)importDidFailSilentlyForContentType:(id)a3;
-- (void)migratorDidFinish:(id)a3;
-- (void)photoLibraryDidFailWithExtension:(id)a3;
-- (void)preparatoryDataDidComplete:(id)a3 contentType:(id)a4 duration:(double)a5 android:(id)a6 model:(id)a7 version:(id)a8;
-- (void)send:(id)a3 payload:(id)a4;
+- (void)didLoadAndroidStore:(id)store selected:(BOOL)selected canceled:(BOOL)canceled inAttempts:(unint64_t)attempts;
+- (void)didResolveTimeEstimate:(unint64_t)estimate forDownloadTask:(id)task threshold:(unint64_t)threshold actualTime:(unint64_t)time;
+- (void)importDidFailSilentlyForContentType:(id)type;
+- (void)migratorDidFinish:(id)finish;
+- (void)photoLibraryDidFailWithExtension:(id)extension;
+- (void)preparatoryDataDidComplete:(id)complete contentType:(id)type duration:(double)duration android:(id)android model:(id)model version:(id)version;
+- (void)send:(id)send payload:(id)payload;
 - (void)wifiDidFail;
 @end
 
@@ -37,12 +37,12 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)send:(id)a3 payload:(id)a4
+- (void)send:(id)send payload:(id)payload
 {
-  v6 = a4;
-  v7 = a3;
-  _WLLog(v4, 2, @"WLTelemetry will send an event - %@ with payload %@.", v8, v9, v10, v11, v12, v7);
-  v13 = v6;
+  payloadCopy = payload;
+  sendCopy = send;
+  _WLLog(v4, 2, @"WLTelemetry will send an event - %@ with payload %@.", v8, v9, v10, v11, v12, sendCopy);
+  v13 = payloadCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -51,8 +51,8 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
   _WLLog(v7, 2, @"WLTelemetry got wifiDidFail event.", v2, v3, v4, v5, v6, v10);
   v11 = objc_alloc_init(WLPayload);
   [(WLPayload *)v11 setState:@"wifi_error"];
-  v9 = [(WLPayload *)v11 dictionary];
-  [(WLTelemetry *)self send:@"com.apple.welcomemat" payload:v9];
+  dictionary = [(WLPayload *)v11 dictionary];
+  [(WLTelemetry *)self send:@"com.apple.welcomemat" payload:dictionary];
 }
 
 - (void)deviceDidFailWithTimeout
@@ -60,8 +60,8 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
   _WLLog(v7, 2, @"WLTelemetry got deviceDidFailWithTimeout event.", v2, v3, v4, v5, v6, v10);
   v11 = objc_alloc_init(WLPayload);
   [(WLPayload *)v11 setState:@"device_discovery_error_timeout"];
-  v9 = [(WLPayload *)v11 dictionary];
-  [(WLTelemetry *)self send:@"com.apple.welcomemat" payload:v9];
+  dictionary = [(WLPayload *)v11 dictionary];
+  [(WLTelemetry *)self send:@"com.apple.welcomemat" payload:dictionary];
 }
 
 - (void)deviceDidFailWithAuthenticationError
@@ -69,40 +69,40 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
   _WLLog(v7, 2, @"WLTelemetry got deviceDidFailWithAuthenticationError event.", v2, v3, v4, v5, v6, v10);
   v11 = objc_alloc_init(WLPayload);
   [(WLPayload *)v11 setState:@"device_discovery_error_authentication_failed"];
-  v9 = [(WLPayload *)v11 dictionary];
-  [(WLTelemetry *)self send:@"com.apple.welcomemat" payload:v9];
+  dictionary = [(WLPayload *)v11 dictionary];
+  [(WLTelemetry *)self send:@"com.apple.welcomemat" payload:dictionary];
 }
 
-- (void)migratorDidFinish:(id)a3
+- (void)migratorDidFinish:(id)finish
 {
-  v5 = a3;
+  finishCopy = finish;
   _WLLog(v3, 2, @"WLTelemetry got migratorDidFinish event.", v6, v7, v8, v9, v10, v11);
-  v12 = [v5 dictionary];
+  dictionary = [finishCopy dictionary];
 
-  [(WLTelemetry *)self send:@"com.apple.welcomemat" payload:v12];
+  [(WLTelemetry *)self send:@"com.apple.welcomemat" payload:dictionary];
 }
 
-- (id)_telemetryDictionaryForPreparatoryDataDidComplete:(id)a3 contentType:(id)a4 duration:(double)a5 android:(id)a6 model:(id)a7 version:(id)a8
+- (id)_telemetryDictionaryForPreparatoryDataDidComplete:(id)complete contentType:(id)type duration:(double)duration android:(id)android model:(id)model version:(id)version
 {
   v28[6] = *MEMORY[0x277D85DE8];
   v27[0] = @"contentType";
   v27[1] = @"dataType";
-  v28[0] = a4;
-  v28[1] = a3;
+  v28[0] = type;
+  v28[1] = complete;
   v27[2] = @"durationInSeconds";
   v12 = MEMORY[0x277CCABB0];
-  v13 = a5;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a4;
-  v18 = a3;
-  v19 = [v12 numberWithInteger:v13];
+  durationCopy = duration;
+  versionCopy = version;
+  modelCopy = model;
+  androidCopy = android;
+  typeCopy = type;
+  completeCopy = complete;
+  v19 = [v12 numberWithInteger:durationCopy];
   v20 = v19;
   v21 = @"(unknown)";
-  if (v16)
+  if (androidCopy)
   {
-    v22 = v16;
+    v22 = androidCopy;
   }
 
   else
@@ -115,9 +115,9 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
   v27[3] = @"androidOSVersion";
   v27[4] = @"androidDeviceModel";
   v27[5] = @"androidClientVersion";
-  if (v15)
+  if (modelCopy)
   {
-    v23 = v15;
+    v23 = modelCopy;
   }
 
   else
@@ -125,9 +125,9 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
     v23 = @"(unknown)";
   }
 
-  if (v14)
+  if (versionCopy)
   {
-    v21 = v14;
+    v21 = versionCopy;
   }
 
   v28[4] = v23;
@@ -139,58 +139,58 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
   return v24;
 }
 
-- (void)preparatoryDataDidComplete:(id)a3 contentType:(id)a4 duration:(double)a5 android:(id)a6 model:(id)a7 version:(id)a8
+- (void)preparatoryDataDidComplete:(id)complete contentType:(id)type duration:(double)duration android:(id)android model:(id)model version:(id)version
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v29 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
-  _WLLog(v8, 2, @"Telemetry: preparatoryDataDidComplete %@ contentType %@ duration %@", v19, v20, v21, v22, v23, v14);
+  completeCopy = complete;
+  typeCopy = type;
+  androidCopy = android;
+  modelCopy = model;
+  versionCopy = version;
+  v29 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
+  _WLLog(v8, 2, @"Telemetry: preparatoryDataDidComplete %@ contentType %@ duration %@", v19, v20, v21, v22, v23, completeCopy);
 
-  v30 = v14;
-  v31 = v15;
-  v32 = v16;
-  v33 = v17;
-  v24 = v18;
-  v25 = v17;
-  v26 = v16;
-  v27 = v15;
-  v28 = v14;
+  v30 = completeCopy;
+  v31 = typeCopy;
+  v32 = androidCopy;
+  v33 = modelCopy;
+  v24 = versionCopy;
+  v25 = modelCopy;
+  v26 = androidCopy;
+  v27 = typeCopy;
+  v28 = completeCopy;
   AnalyticsSendEventLazy();
 }
 
-- (id)_telemetryDictionaryForContentTypeDidComplete:(id)a3 downloadByteCount:(unint64_t)a4 importRecordCount:(unint64_t)a5 importFailedRecordCount:(unint64_t)a6 downloadDuration:(unint64_t)a7 importDuration:(unint64_t)a8 android:(id)a9 model:(id)a10 version:(id)a11
+- (id)_telemetryDictionaryForContentTypeDidComplete:(id)complete downloadByteCount:(unint64_t)count importRecordCount:(unint64_t)recordCount importFailedRecordCount:(unint64_t)failedRecordCount downloadDuration:(unint64_t)duration importDuration:(unint64_t)importDuration android:(id)android model:(id)self0 version:(id)self1
 {
   v35[9] = *MEMORY[0x277D85DE8];
-  LODWORD(v11) = vcvtpd_u64_f64(vcvtd_n_f64_u64(a4, 0x14uLL));
-  v35[0] = a3;
+  LODWORD(v11) = vcvtpd_u64_f64(vcvtd_n_f64_u64(count, 0x14uLL));
+  v35[0] = complete;
   v34[0] = @"contentType";
   v34[1] = @"recordCount";
   v16 = MEMORY[0x277CCABB0];
-  v17 = a11;
-  v18 = a10;
-  v19 = a9;
-  v20 = a3;
-  v21 = [v16 numberWithUnsignedInteger:a5];
+  versionCopy = version;
+  modelCopy = model;
+  androidCopy = android;
+  completeCopy = complete;
+  v21 = [v16 numberWithUnsignedInteger:recordCount];
   v35[1] = v21;
   v34[2] = @"failedRecordCount";
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a6];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:failedRecordCount];
   v35[2] = v22;
   v34[3] = @"downloadSizeInMegabytes";
   v23 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v11];
   v35[3] = v23;
   v34[4] = @"downloadDurationInSeconds";
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a7];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:duration];
   v35[4] = v24;
   v34[5] = @"importDurationInSeconds";
-  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a8];
+  v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:importDuration];
   v26 = v25;
   v27 = @"(unknown)";
-  if (v19)
+  if (androidCopy)
   {
-    v28 = v19;
+    v28 = androidCopy;
   }
 
   else
@@ -203,9 +203,9 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
   v34[6] = @"androidOSVersion";
   v34[7] = @"androidDeviceModel";
   v34[8] = @"androidClientVersion";
-  if (v18)
+  if (modelCopy)
   {
-    v29 = v18;
+    v29 = modelCopy;
   }
 
   else
@@ -213,9 +213,9 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
     v29 = @"(unknown)";
   }
 
-  if (v17)
+  if (versionCopy)
   {
-    v27 = v17;
+    v27 = versionCopy;
   }
 
   v35[7] = v29;
@@ -227,27 +227,27 @@ uint64_t __29__WLTelemetry_sharedInstance__block_invoke()
   return v30;
 }
 
-- (void)contentTypeDidComplete:(id)a3 downloadByteCount:(unint64_t)a4 importRecordCount:(unint64_t)a5 importFailedRecordCount:(unint64_t)a6 downloadDuration:(unint64_t)a7 importDuration:(unint64_t)a8 android:(id)a9 model:(id)a10 version:(id)a11
+- (void)contentTypeDidComplete:(id)complete downloadByteCount:(unint64_t)count importRecordCount:(unint64_t)recordCount importFailedRecordCount:(unint64_t)failedRecordCount downloadDuration:(unint64_t)duration importDuration:(unint64_t)importDuration android:(id)android model:(id)self0 version:(id)self1
 {
-  v12 = a3;
-  v13 = a9;
-  v14 = a10;
-  v15 = a11;
-  _WLLog(v11, 2, @"Telemetry: contentTypeDidComplete %@", v16, v17, v18, v19, v20, v12);
-  v25 = v12;
-  v26 = v15;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
-  v24 = v12;
+  completeCopy = complete;
+  androidCopy = android;
+  modelCopy = model;
+  versionCopy = version;
+  _WLLog(v11, 2, @"Telemetry: contentTypeDidComplete %@", v16, v17, v18, v19, v20, completeCopy);
+  v25 = completeCopy;
+  v26 = versionCopy;
+  v21 = versionCopy;
+  v22 = modelCopy;
+  v23 = androidCopy;
+  v24 = completeCopy;
   AnalyticsSendEventLazy();
 }
 
-- (void)importDidFailSilentlyForContentType:(id)a3
+- (void)importDidFailSilentlyForContentType:(id)type
 {
-  v4 = a3;
-  _WLLog(v3, 2, @"Telemetry: recordImportDidFail contentType %@", v5, v6, v7, v8, v9, v4);
-  v10 = v4;
+  typeCopy = type;
+  _WLLog(v3, 2, @"Telemetry: recordImportDidFail contentType %@", v5, v6, v7, v8, v9, typeCopy);
+  v10 = typeCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -263,11 +263,11 @@ id __51__WLTelemetry_importDidFailSilentlyForContentType___block_invoke(uint64_t
   return v2;
 }
 
-- (void)didResolveTimeEstimate:(unint64_t)a3 forDownloadTask:(id)a4 threshold:(unint64_t)a5 actualTime:(unint64_t)a6
+- (void)didResolveTimeEstimate:(unint64_t)estimate forDownloadTask:(id)task threshold:(unint64_t)threshold actualTime:(unint64_t)time
 {
-  v7 = a4;
-  _WLLog(v6, 2, @"Telemetry: timeEstimateDidResolve task %@ estimate %lu threshold %lu actual time %lu", v8, v9, v10, v11, v12, v7);
-  v13 = v7;
+  taskCopy = task;
+  _WLLog(v6, 2, @"Telemetry: timeEstimateDidResolve task %@ estimate %lu threshold %lu actual time %lu", v8, v9, v10, v11, v12, taskCopy);
+  v13 = taskCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -320,12 +320,12 @@ id __59__WLTelemetry_didLookupAppsWithMatchedApps_mismatchedApps___block_invoke(
   return v4;
 }
 
-- (void)photoLibraryDidFailWithExtension:(id)a3
+- (void)photoLibraryDidFailWithExtension:(id)extension
 {
-  v4 = a3;
-  if (v4)
+  extensionCopy = extension;
+  if (extensionCopy)
   {
-    v10 = v4;
+    v10 = extensionCopy;
   }
 
   else
@@ -363,12 +363,12 @@ id __29__WLTelemetry_didLoadQRCode___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)didLoadAndroidStore:(id)a3 selected:(BOOL)a4 canceled:(BOOL)a5 inAttempts:(unint64_t)a6
+- (void)didLoadAndroidStore:(id)store selected:(BOOL)selected canceled:(BOOL)canceled inAttempts:(unint64_t)attempts
 {
-  v7 = a3;
-  if (v7)
+  storeCopy = store;
+  if (storeCopy)
   {
-    v13 = v7;
+    v13 = storeCopy;
   }
 
   else

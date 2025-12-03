@@ -1,21 +1,21 @@
 @interface AXUIActiveWindow
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 @end
 
 @implementation AXUIActiveWindow
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(AXUIActiveWindow *)self rootViewController];
-  v9 = [v8 view];
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
+  rootViewController = [(AXUIActiveWindow *)self rootViewController];
+  view = [rootViewController view];
 
-  [v9 convertPoint:self fromView:{x, y}];
-  v10 = [v9 hitTest:v7 withEvent:?];
+  [view convertPoint:self fromView:{x, y}];
+  v10 = [view hitTest:eventCopy withEvent:?];
 
-  if (v10 == v9)
+  if (v10 == view)
   {
     v11 = 0;
   }
@@ -24,7 +24,7 @@
   {
     v13.receiver = self;
     v13.super_class = AXUIActiveWindow;
-    v11 = [(AXUIActiveWindow *)&v13 pointInside:v7 withEvent:x, y];
+    v11 = [(AXUIActiveWindow *)&v13 pointInside:eventCopy withEvent:x, y];
   }
 
   return v11;

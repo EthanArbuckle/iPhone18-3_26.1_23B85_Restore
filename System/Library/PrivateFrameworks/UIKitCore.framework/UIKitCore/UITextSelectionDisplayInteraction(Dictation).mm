@@ -17,16 +17,16 @@
     aBlock[4] = self;
     v4 = _Block_copy(aBlock);
     v5 = [UIDictationDeleteButton alloc];
-    v6 = [(UITextSelectionDisplayInteraction *)self _cursorTintColor];
-    v7 = [(UIDictationDeleteButton *)v5 initWithFrame:v4 actionHandler:v6 tintColor:0.0, 0.0, 60.0, 45.0];
+    _cursorTintColor = [(UITextSelectionDisplayInteraction *)self _cursorTintColor];
+    v7 = [(UIDictationDeleteButton *)v5 initWithFrame:v4 actionHandler:_cursorTintColor tintColor:0.0, 0.0, 60.0, 45.0];
     v8 = self->__deleteButton;
     self->__deleteButton = v7;
 
-    v9 = [(UITextSelectionDisplayInteraction *)self view];
-    [v9 addSubview:self->__deleteButton];
+    view = [(UITextSelectionDisplayInteraction *)self view];
+    [view addSubview:self->__deleteButton];
 
-    v10 = [(UITextSelectionDisplayInteraction *)self view];
-    [v10 bringSubviewToFront:self->__deleteButton];
+    view2 = [(UITextSelectionDisplayInteraction *)self view];
+    [view2 bringSubviewToFront:self->__deleteButton];
 
     [(UIView *)self->__deleteButton setAlpha:0.0];
     deleteButton = self->__deleteButton;
@@ -44,10 +44,10 @@
     {
       if ([(UITextSelectionDisplayInteraction *)self _isDictationRunning])
       {
-        v5 = [(UITextSelectionDisplayInteraction *)self textInput];
-        v6 = [v5 hasText];
+        textInput = [(UITextSelectionDisplayInteraction *)self textInput];
+        hasText = [textInput hasText];
 
-        if (v6)
+        if (hasText)
         {
           deleteButton = self->__deleteButton;
           if (deleteButton && ![(UIView *)deleteButton isHidden])

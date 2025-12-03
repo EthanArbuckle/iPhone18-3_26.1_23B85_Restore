@@ -1,13 +1,13 @@
 @interface CarouselItemLockupCollectionView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore32CarouselItemLockupCollectionView)initWithCoder:(id)a3;
-- (_TtC8AppStore32CarouselItemLockupCollectionView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore32CarouselItemLockupCollectionView)initWithCoder:(id)coder;
+- (_TtC8AppStore32CarouselItemLockupCollectionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation CarouselItemLockupCollectionView
 
-- (_TtC8AppStore32CarouselItemLockupCollectionView)initWithCoder:(id)a3
+- (_TtC8AppStore32CarouselItemLockupCollectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8AppStore32CarouselItemLockupCollectionView_artworkViews) = _swiftEmptyArrayStorage;
   v4 = OBJC_IVAR____TtC8AppStore32CarouselItemLockupCollectionView____lazy_storage___artworkViewPool;
@@ -28,16 +28,16 @@
   sub_10059CCC0(v4);
   sub_10002A400(v4, v4[3]);
   LayoutMarginsAware<>.layoutFrame.getter();
-  v3 = [v2 traitCollection];
+  traitCollection = [v2 traitCollection];
   dispatch thunk of Placeable.place(at:with:)();
 
   sub_100007000(v4);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
-  v4 = [(CarouselItemLockupCollectionView *)v3 traitCollection];
+  selfCopy = self;
+  traitCollection = [(CarouselItemLockupCollectionView *)selfCopy traitCollection];
   sub_10059CCC0(v11);
   sub_10002A400(v11, v11[3]);
   dispatch thunk of Placeable.measure(toFit:with:)();
@@ -52,7 +52,7 @@
   return result;
 }
 
-- (_TtC8AppStore32CarouselItemLockupCollectionView)initWithFrame:(CGRect)a3
+- (_TtC8AppStore32CarouselItemLockupCollectionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

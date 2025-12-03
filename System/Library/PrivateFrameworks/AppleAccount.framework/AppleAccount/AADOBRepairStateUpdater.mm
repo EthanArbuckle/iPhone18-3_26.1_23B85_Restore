@@ -1,13 +1,13 @@
 @interface AADOBRepairStateUpdater
 - (AADOBRepairStateUpdater)init;
-- (void)updateDOBRepairStateWithSettings:(id)a3 completionHandler:(id)a4;
+- (void)updateDOBRepairStateWithSettings:(id)settings completionHandler:(id)handler;
 @end
 
 @implementation AADOBRepairStateUpdater
 
-- (void)updateDOBRepairStateWithSettings:(id)a3 completionHandler:(id)a4
+- (void)updateDOBRepairStateWithSettings:(id)settings completionHandler:(id)handler
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(handler);
   (*(v4 + 2))(v4, 0, 0);
 
   _Block_release(v4);

@@ -1,8 +1,8 @@
 @interface RefineSearchSession
-- (RefineSearchSession)initWithObjects:(id)a3 forType:(int)a4;
+- (RefineSearchSession)initWithObjects:(id)objects forType:(int)type;
 - (id)description;
-- (void)updateWithFilterView:(id)a3;
-- (void)updateWithSelection:(unint64_t)a3;
+- (void)updateWithFilterView:(id)view;
+- (void)updateWithSelection:(unint64_t)selection;
 @end
 
 @implementation RefineSearchSession
@@ -12,12 +12,12 @@
   listType = self->_listType;
   if (listType >= 3)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", listType];
+    listType = [NSString stringWithFormat:@"(unknown: %i)", listType];
   }
 
   else
   {
-    v4 = off_10162E470[listType];
+    listType = off_10162E470[listType];
   }
 
   v18 = 0u;
@@ -33,7 +33,7 @@
     do
     {
       v8 = 0;
-      v9 = v4;
+      v9 = listType;
       do
       {
         if (*v17 != v7)
@@ -42,7 +42,7 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * v8);
-        v11 = [v10 suggestionString];
+        suggestionString = [v10 suggestionString];
         if ([v10 initiallyVisible])
         {
           v12 = @"YES";
@@ -63,10 +63,10 @@
           v13 = @"NO";
         }
 
-        v4 = -[__CFString stringByAppendingFormat:](v9, "stringByAppendingFormat:", @"\nListSession %@ initVisible %@ eventVisible %@ tap %d", v11, v12, v13, [v10 tappingCount]);
+        listType = -[__CFString stringByAppendingFormat:](v9, "stringByAppendingFormat:", @"\nListSession %@ initVisible %@ eventVisible %@ tap %d", suggestionString, v12, v13, [v10 tappingCount]);
 
         v8 = v8 + 1;
-        v9 = v4;
+        v9 = listType;
       }
 
       while (v6 != v8);
@@ -76,17 +76,17 @@
     while (v6);
   }
 
-  return v4;
+  return listType;
 }
 
-- (void)updateWithFilterView:(id)a3
+- (void)updateWithFilterView:(id)view
 {
-  v4 = [a3 visibleSuggestions];
+  visibleSuggestions = [view visibleSuggestions];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [visibleSuggestions countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -97,7 +97,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleSuggestions);
         }
 
         v9 = [*(*(&v12 + 1) + 8 * i) tag];
@@ -117,7 +117,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [visibleSuggestions countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -126,19 +126,19 @@
   self->_resultsItemsInitialized = 1;
 }
 
-- (void)updateWithSelection:(unint64_t)a3
+- (void)updateWithSelection:(unint64_t)selection
 {
-  if ([(NSArray *)self->_items count]> a3)
+  if ([(NSArray *)self->_items count]> selection)
   {
-    v5 = [(NSArray *)self->_items objectAtIndexedSubscript:a3];
+    v5 = [(NSArray *)self->_items objectAtIndexedSubscript:selection];
     [v5 setTappingCount:{objc_msgSend(v5, "tappingCount") + 1}];
   }
 }
 
-- (RefineSearchSession)initWithObjects:(id)a3 forType:(int)a4
+- (RefineSearchSession)initWithObjects:(id)objects forType:(int)type
 {
-  v6 = a3;
-  if ([v6 count])
+  objectsCopy = objects;
+  if ([objectsCopy count])
   {
     v25.receiver = self;
     v25.super_class = RefineSearchSession;
@@ -147,13 +147,13 @@
     if (v7)
     {
       v7->_resultsItemsInitialized = 0;
-      v7->_listType = a4;
-      v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+      v7->_listType = type;
+      v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [objectsCopy count]);
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v10 = v6;
+      v10 = objectsCopy;
       v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v11)
       {
@@ -190,15 +190,15 @@
     }
 
     self = v8;
-    v19 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = 0;
+    selfCopy = 0;
   }
 
-  return v19;
+  return selfCopy;
 }
 
 @end

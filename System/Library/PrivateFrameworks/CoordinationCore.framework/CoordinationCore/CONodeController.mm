@@ -1,15 +1,15 @@
 @interface CONodeController
 - (BOOL)isLocalNodeController;
 - (CODiscoveryRecord)ipDiscoveryRecord;
-- (CONodeController)initWithDiscoveryRecord:(id)a3 executionContext:(id)a4;
+- (CONodeController)initWithDiscoveryRecord:(id)record executionContext:(id)context;
 - (CONodeControllerDelegate)delegate;
 - (COTransportProtocol)preferredTransport;
 - (NSString)description;
-- (id)_acceptResponseWithElectionInfo:(id)a3;
-- (id)_ballotResponseWithElectionInfo:(id)a3;
-- (id)_electionInfoByDiffingCurrentElectionInfo:(id)a3;
-- (id)_electionRequestWithElectionInfo:(id)a3;
-- (id)_voteRequestWithElectionInfo:(id)a3;
+- (id)_acceptResponseWithElectionInfo:(id)info;
+- (id)_ballotResponseWithElectionInfo:(id)info;
+- (id)_electionInfoByDiffingCurrentElectionInfo:(id)info;
+- (id)_electionRequestWithElectionInfo:(id)info;
+- (id)_voteRequestWithElectionInfo:(id)info;
 - (id)computePreferredTransport;
 - (id)electionSummaryDetails;
 - (id)nodeAfterReconciliation;
@@ -17,79 +17,79 @@
 - (id)remote;
 - (id)shortDescription;
 - (int64_t)_nodeControllerStateFromNodeState;
-- (void)_adjustNodeDiscoveryInformationUsingRecord:(id)a3;
-- (void)_createAndActivateTransportForRecord:(id)a3 withCompletionHandler:(id)a4;
-- (void)_handleAcceptResponse:(id)a3 fromTransport:(id)a4;
-- (void)_handleBallotResponse:(id)a3 fromTransport:(id)a4;
-- (void)_handleElectionRequest:(id)a3 fromTransport:(id)a4 callback:(id)a5;
-- (void)_handlePingError:(id)a3 fromTransport:(id)a4;
-- (void)_handleResponseToCoreRequest:(id)a3 response:(id)a4 error:(id)a5 usingTransport:(id)a6;
-- (void)_handleVoteRequest:(id)a3 fromTransport:(id)a4 callback:(id)a5;
-- (void)_handleWithdraw:(id)a3 fromTransport:(id)a4;
-- (void)_sendAcceptResponse:(id)a3 usingTransport:(id)a4 callback:(id)a5;
-- (void)_sendBallotResponse:(id)a3 usingTransport:(id)a4 callback:(id)a5;
-- (void)_sendElectionRequest:(id)a3 usingTransport:(id)a4;
-- (void)_sendPingUsingTransport:(id)a3;
-- (void)_sendProbeRequest:(id)a3 withState:(int64_t)a4 usingTransport:(id)a5;
-- (void)_sendVoteRequest:(id)a3 usingTransport:(id)a4;
-- (void)_updateDelegateWithBallotCommand:(id)a3 withCompletionHandler:(id)a4;
-- (void)_updateKnownDiscovery:(id)a3;
-- (void)_updateNodeState:(int64_t)a3 currentElectionInfo:(id)a4 incomingElectionInfo:(id)a5 reason:(int64_t)a6;
-- (void)activateWithCompletionHandler:(id)a3;
-- (void)addDiscoveryRecord:(id)a3;
+- (void)_adjustNodeDiscoveryInformationUsingRecord:(id)record;
+- (void)_createAndActivateTransportForRecord:(id)record withCompletionHandler:(id)handler;
+- (void)_handleAcceptResponse:(id)response fromTransport:(id)transport;
+- (void)_handleBallotResponse:(id)response fromTransport:(id)transport;
+- (void)_handleElectionRequest:(id)request fromTransport:(id)transport callback:(id)callback;
+- (void)_handlePingError:(id)error fromTransport:(id)transport;
+- (void)_handleResponseToCoreRequest:(id)request response:(id)response error:(id)error usingTransport:(id)transport;
+- (void)_handleVoteRequest:(id)request fromTransport:(id)transport callback:(id)callback;
+- (void)_handleWithdraw:(id)withdraw fromTransport:(id)transport;
+- (void)_sendAcceptResponse:(id)response usingTransport:(id)transport callback:(id)callback;
+- (void)_sendBallotResponse:(id)response usingTransport:(id)transport callback:(id)callback;
+- (void)_sendElectionRequest:(id)request usingTransport:(id)transport;
+- (void)_sendPingUsingTransport:(id)transport;
+- (void)_sendProbeRequest:(id)request withState:(int64_t)state usingTransport:(id)transport;
+- (void)_sendVoteRequest:(id)request usingTransport:(id)transport;
+- (void)_updateDelegateWithBallotCommand:(id)command withCompletionHandler:(id)handler;
+- (void)_updateKnownDiscovery:(id)discovery;
+- (void)_updateNodeState:(int64_t)state currentElectionInfo:(id)info incomingElectionInfo:(id)electionInfo reason:(int64_t)reason;
+- (void)activateWithCompletionHandler:(id)handler;
+- (void)addDiscoveryRecord:(id)record;
 - (void)didFireBackoffTimer;
-- (void)inquireForTransport:(id)a3;
-- (void)invalidateWithReason:(int64_t)a3;
+- (void)inquireForTransport:(id)transport;
+- (void)invalidateWithReason:(int64_t)reason;
 - (void)markInactive;
 - (void)reconcileNode;
-- (void)removeDiscoveryRecord:(id)a3;
-- (void)sendCommand:(id)a3 withCompletionHandler:(id)a4;
+- (void)removeDiscoveryRecord:(id)record;
+- (void)sendCommand:(id)command withCompletionHandler:(id)handler;
 - (void)sendPing;
-- (void)stopWithCompletionHandler:(id)a3;
-- (void)transport:(id)a3 didInvalidateWithError:(id)a4;
-- (void)transport:(id)a3 didReceiveCommand:(id)a4;
-- (void)transport:(id)a3 didReceiveError:(id)a4 forCommand:(id)a5;
-- (void)transport:(id)a3 didReceiveRequest:(id)a4 callback:(id)a5;
-- (void)transport:(id)a3 didReceiveUnhandledRequest:(id)a4;
-- (void)transport:(id)a3 didUpdateRemoteConstituent:(id)a4 to:(id)a5;
-- (void)transport:(id)a3 shouldUpdateRemoteConstituent:(id)a4 to:(id)a5 forCommand:(id)a6 completionHandler:(id)a7;
-- (void)transport:(id)a3 willUpdateRemoteConstituent:(id)a4 to:(id)a5;
-- (void)updateElectionInfo:(id)a3;
+- (void)stopWithCompletionHandler:(id)handler;
+- (void)transport:(id)transport didInvalidateWithError:(id)error;
+- (void)transport:(id)transport didReceiveCommand:(id)command;
+- (void)transport:(id)transport didReceiveError:(id)error forCommand:(id)command;
+- (void)transport:(id)transport didReceiveRequest:(id)request callback:(id)callback;
+- (void)transport:(id)transport didReceiveUnhandledRequest:(id)request;
+- (void)transport:(id)transport didUpdateRemoteConstituent:(id)constituent to:(id)to;
+- (void)transport:(id)transport shouldUpdateRemoteConstituent:(id)constituent to:(id)to forCommand:(id)command completionHandler:(id)handler;
+- (void)transport:(id)transport willUpdateRemoteConstituent:(id)constituent to:(id)to;
+- (void)updateElectionInfo:(id)info;
 @end
 
 @implementation CONodeController
 
-- (CONodeController)initWithDiscoveryRecord:(id)a3 executionContext:(id)a4
+- (CONodeController)initWithDiscoveryRecord:(id)record executionContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  recordCopy = record;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = CONodeController;
   v9 = [(CONodeController *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originalRecord, a3);
-    v11 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v9->_originalRecord, record);
+    array = [MEMORY[0x277CBEB18] array];
     records = v10->_records;
-    v10->_records = v11;
+    v10->_records = array;
 
-    v13 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     transports = v10->_transports;
-    v10->_transports = v13;
+    v10->_transports = array2;
 
-    objc_storeStrong(&v10->_executionContext, a4);
-    v15 = [[CONode alloc] initWithRecord:v7 executionContext:v8 delegate:v10];
+    objc_storeStrong(&v10->_executionContext, context);
+    v15 = [[CONode alloc] initWithRecord:recordCopy executionContext:contextCopy delegate:v10];
     node = v10->_node;
     v10->_node = v15;
 
-    v17 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sentElements = v10->_sentElements;
-    v10->_sentElements = v17;
+    v10->_sentElements = dictionary;
 
-    v19 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     knownDiscoveryRecords = v10->_knownDiscoveryRecords;
-    v10->_knownDiscoveryRecords = v19;
+    v10->_knownDiscoveryRecords = dictionary2;
   }
 
   return v10;
@@ -100,11 +100,11 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CONodeController *)self executionContext];
-  v7 = [v6 constituentForMe];
-  v8 = [(CONodeController *)self remote];
-  v9 = [(CONodeController *)self node];
-  v10 = [v3 stringWithFormat:@"<%@: %p, /\n, %@->%@/\n, State: %ld/\n, Records:%@, Transports: %@>", v5, self, v7, v8, objc_msgSend(v9, "state"), self->_records, self->_transports];
+  executionContext = [(CONodeController *)self executionContext];
+  constituentForMe = [executionContext constituentForMe];
+  remote = [(CONodeController *)self remote];
+  node = [(CONodeController *)self node];
+  v10 = [v3 stringWithFormat:@"<%@: %p, /\n, %@->%@/\n, State: %ld/\n, Records:%@, Transports: %@>", v5, self, constituentForMe, remote, objc_msgSend(node, "state"), self->_records, self->_transports];
 
   return v10;
 }
@@ -112,21 +112,21 @@
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(CONodeController *)self executionContext];
-  v5 = [v4 meshControllerDescription];
+  executionContext = [(CONodeController *)self executionContext];
+  meshControllerDescription = [executionContext meshControllerDescription];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [v3 stringWithFormat:@"[m:%@] <%@: %p>", v5, v7, self];
+  v8 = [v3 stringWithFormat:@"[m:%@] <%@: %p>", meshControllerDescription, v7, self];
 
   return v8;
 }
 
 - (id)remote
 {
-  v2 = [(CONodeController *)self node];
-  v3 = [v2 remote];
+  node = [(CONodeController *)self node];
+  remote = [node remote];
 
-  return v3;
+  return remote;
 }
 
 - (COTransportProtocol)preferredTransport
@@ -134,9 +134,9 @@
   preferredTransport = self->_preferredTransport;
   if (!preferredTransport)
   {
-    v4 = [(CONodeController *)self computePreferredTransport];
+    computePreferredTransport = [(CONodeController *)self computePreferredTransport];
     v5 = self->_preferredTransport;
-    self->_preferredTransport = v4;
+    self->_preferredTransport = computePreferredTransport;
 
     preferredTransport = self->_preferredTransport;
   }
@@ -160,8 +160,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(CONodeController *)self transports];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  transports = [(CONodeController *)self transports];
+  v3 = [transports countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v3)
   {
     v4 = v3;
@@ -173,7 +173,7 @@
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(transports);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -186,7 +186,7 @@
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v4 = [transports countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v4);
@@ -221,61 +221,61 @@
 
 - (id)electionSummaryDetails
 {
-  v3 = [(CONodeController *)self node];
-  v4 = [v3 remote];
+  node = [(CONodeController *)self node];
+  remote = [node remote];
 
-  v5 = [(CONodeController *)self preferredTransport];
-  v6 = [(CONodeController *)self node];
-  v7 = [v6 meConstituent];
-  v8 = [(CONodeController *)self node];
-  v9 = [v8 remote];
-  v10 = [v7 isEqual:v9];
+  preferredTransport = [(CONodeController *)self preferredTransport];
+  node2 = [(CONodeController *)self node];
+  meConstituent = [node2 meConstituent];
+  node3 = [(CONodeController *)self node];
+  remote2 = [node3 remote];
+  v10 = [meConstituent isEqual:remote2];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = v5;
-    v11 = [v26 client];
-    v12 = v11;
+    v26 = preferredTransport;
+    client = [v26 client];
+    v12 = client;
     if (v10)
     {
-      v13 = [v11 localDevice];
+      localDevice = [client localDevice];
 
-      v14 = @"SELF";
+      name = @"SELF";
     }
 
     else
     {
-      v13 = [v11 destinationDevice];
+      localDevice = [client destinationDevice];
 
-      v14 = [v13 name];
+      name = [localDevice name];
     }
 
-    v17 = [v13 identifier];
-    v18 = [(CONodeController *)self node];
-    v19 = [v18 connectionType];
+    identifier = [localDevice identifier];
+    node4 = [(CONodeController *)self node];
+    connectionType = [node4 connectionType];
 
-    if (v19 > 2)
+    if (connectionType > 2)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = off_278E191D0[v19];
+      v16 = off_278E191D0[connectionType];
     }
 
-    v20 = [(CONodeController *)self node];
-    v21 = [v20 discoveryType];
+    node5 = [(CONodeController *)self node];
+    discoveryType = [node5 discoveryType];
 
     v22 = 67;
-    if ((v21 & 2) == 0)
+    if ((discoveryType & 2) == 0)
     {
       v22 = 99;
     }
 
     v23 = 82;
-    if ((v21 & 1) == 0)
+    if ((discoveryType & 1) == 0)
     {
       v23 = 114;
     }
@@ -287,43 +287,43 @@
   {
     v15 = 0;
     v16 = 0;
-    v14 = 0;
-    v17 = 0;
+    name = 0;
+    identifier = 0;
   }
 
-  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"[COMeshController : %p] %@ [Name] - %@ [Rapport ID] - %@ [Conn] - %@ [Disc] - %@", self, v4, v14, v17, v16, v15];
+  v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"[COMeshController : %p] %@ [Name] - %@ [Rapport ID] - %@ [Conn] - %@ [Disc] - %@", self, remote, name, identifier, v16, v15];
 
   return v24;
 }
 
 - (id)nodeAfterReconciliation
 {
-  v3 = [(CONodeController *)self node];
-  v4 = [v3 HomeKitIdentifier];
+  node = [(CONodeController *)self node];
+  homeKitIdentifier = [node HomeKitIdentifier];
 
-  if (!v4)
+  if (!homeKitIdentifier)
   {
     [(CONodeController *)self reconcileNode];
   }
 
-  return v3;
+  return node;
 }
 
 - (void)reconcileNode
 {
-  v3 = [(CONodeController *)self node];
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(CONodeController *)v4 records];
-  v6 = [v5 copy];
+  node = [(CONodeController *)self node];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  records = [(CONodeController *)selfCopy records];
+  v6 = [records copy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __33__CONodeController_reconcileNode__block_invoke;
   v8[3] = &unk_278E18F70;
-  v9 = v3;
-  v7 = v3;
+  v9 = node;
+  v7 = node;
   [v6 enumerateObjectsUsingBlock:v8];
 }
 
@@ -342,45 +342,45 @@ uint64_t __33__CONodeController_reconcileNode__block_invoke(uint64_t a1, void *a
   return MEMORY[0x2821F96F8](v6, v7);
 }
 
-- (void)activateWithCompletionHandler:(id)a3
+- (void)activateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(CONodeController *)self executionContext];
-  [v5 assertDispatchQueue];
+  handlerCopy = handler;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v6 = [(CONodeController *)self preferredTransport];
+  preferredTransport = [(CONodeController *)self preferredTransport];
 
-  if (v6)
+  if (preferredTransport)
   {
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    v8 = [(CONodeController *)v7 records];
-    v9 = [(CONodeController *)v7 originalRecord];
-    [v8 addObject:v9];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    records = [(CONodeController *)selfCopy records];
+    originalRecord = [(CONodeController *)selfCopy originalRecord];
+    [records addObject:originalRecord];
 
-    objc_sync_exit(v7);
-    v10 = [(CONodeController *)v7 originalRecord];
+    objc_sync_exit(selfCopy);
+    originalRecord2 = [(CONodeController *)selfCopy originalRecord];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __50__CONodeController_activateWithCompletionHandler___block_invoke;
     v11[3] = &unk_278E18F98;
-    v12 = v4;
-    [(CONodeController *)v7 _createAndActivateTransportForRecord:v10 withCompletionHandler:v11];
+    v12 = handlerCopy;
+    [(CONodeController *)selfCopy _createAndActivateTransportForRecord:originalRecord2 withCompletionHandler:v11];
   }
 }
 
-- (void)_createAndActivateTransportForRecord:(id)a3 withCompletionHandler:(id)a4
+- (void)_createAndActivateTransportForRecord:(id)record withCompletionHandler:(id)handler
 {
   v56 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v6 = a4;
-  v7 = [(CONodeController *)self executionContext];
-  v8 = [v29 newTransportWithExecutionContext:v7];
+  recordCopy = record;
+  handlerCopy = handler;
+  executionContext = [(CONodeController *)self executionContext];
+  v8 = [recordCopy newTransportWithExecutionContext:executionContext];
 
   objc_initWeak(&location, v8);
   objc_opt_class();
@@ -402,31 +402,31 @@ uint64_t __33__CONodeController_reconcileNode__block_invoke(uint64_t a1, void *a
   v9 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(CONodeController *)self shortDescription];
+    shortDescription = [(CONodeController *)self shortDescription];
     *from = 138543874;
-    *&from[4] = v10;
+    *&from[4] = shortDescription;
     v52 = 2112;
     v53 = v8;
     v54 = 2112;
-    v55 = v29;
+    v55 = recordCopy;
     _os_log_impl(&dword_244378000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ created new transport %@ with record %@", from, 0x20u);
   }
 
   [v8 setDelegate:self];
-  v11 = [(CONodeController *)self transports];
-  [v11 addObject:v8];
+  transports = [(CONodeController *)self transports];
+  [transports addObject:v8];
 
-  v12 = [(CONodeController *)self computePreferredTransport];
+  computePreferredTransport = [(CONodeController *)self computePreferredTransport];
   preferredTransport = self->_preferredTransport;
-  self->_preferredTransport = v12;
+  self->_preferredTransport = computePreferredTransport;
 
   v14 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(CONodeController *)self shortDescription];
+    shortDescription2 = [(CONodeController *)self shortDescription];
     v16 = self->_preferredTransport;
     *from = 138543874;
-    *&from[4] = v15;
+    *&from[4] = shortDescription2;
     v52 = 2048;
     v53 = v8;
     v54 = 2048;
@@ -434,8 +434,8 @@ uint64_t __33__CONodeController_reconcileNode__block_invoke(uint64_t a1, void *a
     _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ recomputing preferred transport after addition of %p. Preferred transport = %p", from, 0x20u);
   }
 
-  v17 = [(CONodeController *)self originalRecord];
-  [(CONodeController *)self _adjustNodeDiscoveryInformationUsingRecord:v17];
+  originalRecord = [(CONodeController *)self originalRecord];
+  [(CONodeController *)self _adjustNodeDiscoveryInformationUsingRecord:originalRecord];
 
   objc_initWeak(from, self);
   v41[0] = MEMORY[0x277D85DD0];
@@ -446,11 +446,11 @@ uint64_t __33__CONodeController_reconcileNode__block_invoke(uint64_t a1, void *a
   objc_copyWeak(&v45, &location);
   v30 = v8;
   v42 = v30;
-  v28 = v6;
+  v28 = handlerCopy;
   v43 = v28;
   v18 = MEMORY[0x245D5FF10](v41);
-  v19 = [(CONodeController *)self acceptableCommands];
-  self->_expectedRegisteredCommandCount = [v19 count];
+  acceptableCommands = [(CONodeController *)self acceptableCommands];
+  self->_expectedRegisteredCommandCount = [acceptableCommands count];
 
   if (!self->_expectedRegisteredCommandCount)
   {
@@ -462,8 +462,8 @@ uint64_t __33__CONodeController_reconcileNode__block_invoke(uint64_t a1, void *a
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v20 = [(CONodeController *)self acceptableCommands];
-  v21 = [v20 countByEnumeratingWithState:&v37 objects:v50 count:16];
+  acceptableCommands2 = [(CONodeController *)self acceptableCommands];
+  v21 = [acceptableCommands2 countByEnumeratingWithState:&v37 objects:v50 count:16];
   if (!v21)
   {
     goto LABEL_20;
@@ -476,7 +476,7 @@ uint64_t __33__CONodeController_reconcileNode__block_invoke(uint64_t a1, void *a
     {
       if (*v38 != v22)
       {
-        objc_enumerationMutation(v20);
+        objc_enumerationMutation(acceptableCommands2);
       }
 
       v24 = *(*(&v37 + 1) + 8 * i);
@@ -516,7 +516,7 @@ uint64_t __33__CONodeController_reconcileNode__block_invoke(uint64_t a1, void *a
       objc_destroyWeak(v26);
     }
 
-    v21 = [v20 countByEnumeratingWithState:&v37 objects:v50 count:16];
+    v21 = [acceptableCommands2 countByEnumeratingWithState:&v37 objects:v50 count:16];
   }
 
   while (v21);
@@ -736,46 +736,46 @@ void __79__CONodeController__createAndActivateTransportForRecord_withCompletionH
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateWithReason:(int64_t)a3
+- (void)invalidateWithReason:(int64_t)reason
 {
-  v5 = [(CONodeController *)self executionContext];
-  [v5 assertDispatchQueue];
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v6 = self;
-  objc_sync_enter(v6);
-  records = v6->_records;
-  v6->_records = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  records = selfCopy->_records;
+  selfCopy->_records = 0;
 
-  objc_sync_exit(v6);
-  transports = v6->_transports;
-  v6->_transports = 0;
+  objc_sync_exit(selfCopy);
+  transports = selfCopy->_transports;
+  selfCopy->_transports = 0;
 
-  v12 = [(CONodeController *)v6 node];
-  v9 = [v12 lastElectionInfoSent];
-  v10 = [(CONodeController *)v6 node];
-  v11 = [v10 lastElectionInfoReceived];
-  [(CONodeController *)v6 _updateNodeState:4 currentElectionInfo:v9 incomingElectionInfo:v11 reason:a3];
+  node = [(CONodeController *)selfCopy node];
+  lastElectionInfoSent = [node lastElectionInfoSent];
+  node2 = [(CONodeController *)selfCopy node];
+  lastElectionInfoReceived = [node2 lastElectionInfoReceived];
+  [(CONodeController *)selfCopy _updateNodeState:4 currentElectionInfo:lastElectionInfoSent incomingElectionInfo:lastElectionInfoReceived reason:reason];
 }
 
-- (void)stopWithCompletionHandler:(id)a3
+- (void)stopWithCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CONodeController *)self executionContext];
-  [v5 assertDispatchQueue];
+  handlerCopy = handler;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v6 = [(CONodeController *)self node];
-  v7 = [v6 lastElectionInfoSent];
-  v8 = [(CONodeController *)self node];
-  v9 = [v8 lastElectionInfoReceived];
-  [(CONodeController *)self _updateNodeState:3 currentElectionInfo:v7 incomingElectionInfo:v9 reason:15];
+  node = [(CONodeController *)self node];
+  lastElectionInfoSent = [node lastElectionInfoSent];
+  node2 = [(CONodeController *)self node];
+  lastElectionInfoReceived = [node2 lastElectionInfoReceived];
+  [(CONodeController *)self _updateNodeState:3 currentElectionInfo:lastElectionInfoSent incomingElectionInfo:lastElectionInfoReceived reason:15];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = [(CONodeController *)self acceptableCommands];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+  acceptableCommands = [(CONodeController *)self acceptableCommands];
+  v11 = [acceptableCommands countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (!v11)
   {
     goto LABEL_13;
@@ -789,14 +789,14 @@ void __79__CONodeController__createAndActivateTransportForRecord_withCompletionH
     {
       if (*v29 != v12)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(acceptableCommands);
       }
 
       v14 = *(*(&v28 + 1) + 8 * v13);
       if ([v14 isSubclassOfClass:objc_opt_class()])
       {
-        v15 = [(CONodeController *)self preferredTransport];
-        [v15 deregisterRequestForClass:v14];
+        preferredTransport = [(CONodeController *)self preferredTransport];
+        [preferredTransport deregisterRequestForClass:v14];
       }
 
       else
@@ -806,8 +806,8 @@ void __79__CONodeController__createAndActivateTransportForRecord_withCompletionH
           goto LABEL_11;
         }
 
-        v15 = [(CONodeController *)self preferredTransport];
-        [v15 deregisterCommandForClass:v14];
+        preferredTransport = [(CONodeController *)self preferredTransport];
+        [preferredTransport deregisterCommandForClass:v14];
       }
 
 LABEL_11:
@@ -815,7 +815,7 @@ LABEL_11:
     }
 
     while (v11 != v13);
-    v11 = [v10 countByEnumeratingWithState:&v28 objects:v32 count:16];
+    v11 = [acceptableCommands countByEnumeratingWithState:&v28 objects:v32 count:16];
   }
 
   while (v11);
@@ -828,20 +828,20 @@ LABEL_13:
   v24[2] = __46__CONodeController_stopWithCompletionHandler___block_invoke;
   v24[3] = &unk_278E16290;
   objc_copyWeak(&v26, &location);
-  v17 = v4;
+  v17 = handlerCopy;
   v25 = v17;
   v18 = MEMORY[0x245D5FF10](v24);
-  v19 = [(CONodeController *)self preferredTransport];
+  preferredTransport2 = [(CONodeController *)self preferredTransport];
 
-  if (v19)
+  if (preferredTransport2)
   {
-    v20 = [(CONodeController *)self preferredTransport];
+    preferredTransport3 = [(CONodeController *)self preferredTransport];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __46__CONodeController_stopWithCompletionHandler___block_invoke_2;
     v22[3] = &unk_278E17038;
     v23 = v18;
-    [v20 sendCommand:v16 withCompletionHandler:v22];
+    [preferredTransport3 sendCommand:v16 withCompletionHandler:v22];
   }
 
   else
@@ -921,29 +921,29 @@ void __46__CONodeController_stopWithCompletionHandler___block_invoke(uint64_t a1
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addDiscoveryRecord:(id)a3
+- (void)addDiscoveryRecord:(id)record
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CONodeController *)self executionContext];
-  [v5 assertDispatchQueue];
+  recordCopy = record;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v6 = [(CONodeController *)self node];
-  [v6 discoveryRecordAdded:v4];
+  node = [(CONodeController *)self node];
+  [node discoveryRecordAdded:recordCopy];
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(CONodeController *)v7 records];
-  objc_sync_exit(v7);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  records = [(CONodeController *)selfCopy records];
+  objc_sync_exit(selfCopy);
 
-  if ([v4 conformsToProtocol:&unk_2857CCAF8])
+  if ([recordCopy conformsToProtocol:&unk_2857CCAF8])
   {
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v9 = v8;
-    v10 = [v9 countByEnumeratingWithState:&v31 objects:v42 count:16];
+    records3 = records;
+    v10 = [records3 countByEnumeratingWithState:&v31 objects:v42 count:16];
     if (v10)
     {
       v11 = *v32;
@@ -954,7 +954,7 @@ void __46__CONodeController_stopWithCompletionHandler___block_invoke(uint64_t a1
         {
           if (*v32 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(records3);
           }
 
           if ([*(*(&v31 + 1) + 8 * v12) conformsToProtocol:&unk_2857CCAF8])
@@ -967,7 +967,7 @@ void __46__CONodeController_stopWithCompletionHandler___block_invoke(uint64_t a1
         }
 
         while (v10 != v12);
-        v10 = [v9 countByEnumeratingWithState:&v31 objects:v42 count:16];
+        v10 = [records3 countByEnumeratingWithState:&v31 objects:v42 count:16];
         if (v10)
         {
           continue;
@@ -978,14 +978,14 @@ void __46__CONodeController_stopWithCompletionHandler___block_invoke(uint64_t a1
     }
   }
 
-  if ([v4 conformsToProtocol:&unk_2857CBE98])
+  if ([recordCopy conformsToProtocol:&unk_2857CBE98])
   {
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v9 = v8;
-    v13 = [v9 countByEnumeratingWithState:&v27 objects:v41 count:16];
+    records3 = records;
+    v13 = [records3 countByEnumeratingWithState:&v27 objects:v41 count:16];
     if (v13)
     {
       v14 = *v28;
@@ -996,7 +996,7 @@ void __46__CONodeController_stopWithCompletionHandler___block_invoke(uint64_t a1
         {
           if (*v28 != v14)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(records3);
           }
 
           if ([*(*(&v27 + 1) + 8 * v15) conformsToProtocol:&unk_2857CBE98])
@@ -1009,7 +1009,7 @@ void __46__CONodeController_stopWithCompletionHandler___block_invoke(uint64_t a1
         }
 
         while (v13 != v15);
-        v13 = [v9 countByEnumeratingWithState:&v27 objects:v41 count:16];
+        v13 = [records3 countByEnumeratingWithState:&v27 objects:v41 count:16];
         if (v13)
         {
           continue;
@@ -1020,37 +1020,37 @@ void __46__CONodeController_stopWithCompletionHandler___block_invoke(uint64_t a1
     }
   }
 
-  v16 = v7;
+  v16 = selfCopy;
   objc_sync_enter(v16);
-  v17 = [(CONodeController *)v16 records];
-  [v17 addObject:v4];
+  records2 = [(CONodeController *)v16 records];
+  [records2 addObject:recordCopy];
 
-  v9 = [(CONodeController *)v16 records];
+  records3 = [(CONodeController *)v16 records];
 
   objc_sync_exit(v16);
   v18 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [(CONodeController *)v16 shortDescription];
+    shortDescription = [(CONodeController *)v16 shortDescription];
     *buf = 138543874;
-    v36 = v19;
+    v36 = shortDescription;
     v37 = 2112;
-    v38 = v4;
+    v38 = recordCopy;
     v39 = 2112;
-    v40 = v9;
+    v40 = records3;
     _os_log_impl(&dword_244378000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Adding discovery record %@ to our list. New list = %@", buf, 0x20u);
   }
 
-  if ([v4 conformsToProtocol:&unk_2857CCAF8] && (-[CONodeController rapportTransport](v16, "rapportTransport"), v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
+  if ([recordCopy conformsToProtocol:&unk_2857CCAF8] && (-[CONodeController rapportTransport](v16, "rapportTransport"), v20 = objc_claimAutoreleasedReturnValue(), v20, v20))
   {
     v21 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(CONodeController *)v16 shortDescription];
+      shortDescription2 = [(CONodeController *)v16 shortDescription];
       *buf = 138543618;
-      v36 = v22;
+      v36 = shortDescription2;
       v37 = 2112;
-      v38 = v4;
+      v38 = recordCopy;
       _os_log_impl(&dword_244378000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ rapport transport already exists. Ignoring record %@.", buf, 0x16u);
     }
   }
@@ -1063,7 +1063,7 @@ void __46__CONodeController_stopWithCompletionHandler___block_invoke(uint64_t a1
     v24[2] = __39__CONodeController_addDiscoveryRecord___block_invoke;
     v24[3] = &unk_278E19038;
     objc_copyWeak(&v26, buf);
-    v25 = v4;
+    v25 = recordCopy;
     [(CONodeController *)v16 _createAndActivateTransportForRecord:v25 withCompletionHandler:v24];
 
     objc_destroyWeak(&v26);
@@ -1104,15 +1104,15 @@ void __39__CONodeController_addDiscoveryRecord___block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)removeDiscoveryRecord:(id)a3
+- (void)removeDiscoveryRecord:(id)record
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CONodeController *)self executionContext];
-  [v5 assertDispatchQueue];
+  recordCopy = record;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
   v6 = &selRef_state;
-  v7 = [v4 conformsToProtocol:&unk_2857CCAF8];
+  v7 = [recordCopy conformsToProtocol:&unk_2857CCAF8];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -1122,7 +1122,7 @@ void __39__CONodeController_addDiscoveryRecord___block_invoke(uint64_t a1, void 
   if (v8)
   {
     v9 = v8;
-    v25 = self;
+    selfCopy = self;
     v10 = *v29;
     while (2)
     {
@@ -1136,19 +1136,19 @@ void __39__CONodeController_addDiscoveryRecord___block_invoke(uint64_t a1, void 
         }
 
         v12 = *(*(&v28 + 1) + 8 * v11);
-        v13 = [v12 record];
-        if ((v7 & [v13 conformsToProtocol:v6[458]]) == 1)
+        record = [v12 record];
+        if ((v7 & [record conformsToProtocol:v6[458]]) == 1)
         {
-          [v4 IDSIdentifier];
+          [recordCopy IDSIdentifier];
           v14 = v10;
           v15 = v7;
-          v16 = v4;
+          v16 = recordCopy;
           v18 = v17 = v6;
-          v19 = [v13 IDSIdentifier];
-          v20 = [v18 isEqualToString:v19];
+          iDSIdentifier = [record IDSIdentifier];
+          v20 = [v18 isEqualToString:iDSIdentifier];
 
           v6 = v17;
-          v4 = v16;
+          recordCopy = v16;
           v7 = v15;
           v10 = v14;
           v9 = v26;
@@ -1158,7 +1158,7 @@ void __39__CONodeController_addDiscoveryRecord___block_invoke(uint64_t a1, void 
           }
         }
 
-        else if ([v4 isEqual:v13])
+        else if ([recordCopy isEqual:record])
         {
 LABEL_13:
           v21 = v12;
@@ -1181,7 +1181,7 @@ LABEL_13:
 
     v21 = 0;
 LABEL_14:
-    self = v25;
+    self = selfCopy;
   }
 
   else
@@ -1189,8 +1189,8 @@ LABEL_14:
     v21 = 0;
   }
 
-  v22 = [(CONodeController *)self node];
-  [v22 discoveryRecordRemoved:v4];
+  node = [(CONodeController *)self node];
+  [node discoveryRecordRemoved:recordCopy];
 
   v23 = [MEMORY[0x277CCA9B8] errorWithDomain:0x2857B6328 code:-5001 userInfo:0];
   [v21 invalidateWithError:v23];
@@ -1198,25 +1198,25 @@ LABEL_14:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendCommand:(id)a3 withCompletionHandler:(id)a4
+- (void)sendCommand:(id)command withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CONodeController *)self executionContext];
-  [v8 assertDispatchQueue];
+  commandCopy = command;
+  handlerCopy = handler;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
   objc_opt_class();
   objc_opt_class();
   objc_opt_class();
-  v9 = [(CONodeController *)self sentElements];
-  v10 = MEMORY[0x245D5FF10](v7);
-  [v9 setObject:v10 forKey:v6];
+  sentElements = [(CONodeController *)self sentElements];
+  v10 = MEMORY[0x245D5FF10](handlerCopy);
+  [sentElements setObject:v10 forKey:commandCopy];
 
   objc_initWeak(&location, self);
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_isKindOfClass())
   {
-    v11 = [(CONodeController *)self preferredTransport];
-    v12 = [v6 command];
+    preferredTransport = [(CONodeController *)self preferredTransport];
+    command = [commandCopy command];
     v13 = v17;
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -1224,14 +1224,14 @@ LABEL_14:
     v17[3] = &unk_278E19060;
     v14 = &v18;
     objc_copyWeak(&v18, &location);
-    v17[4] = v6;
-    [v11 sendRequest:v12 withResponseHandler:v17];
+    v17[4] = commandCopy;
+    [preferredTransport sendRequest:command withResponseHandler:v17];
   }
 
   else
   {
-    v11 = [(CONodeController *)self preferredTransport];
-    v12 = [v6 command];
+    preferredTransport = [(CONodeController *)self preferredTransport];
+    command = [commandCopy command];
     v13 = v15;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
@@ -1239,8 +1239,8 @@ LABEL_14:
     v15[3] = &unk_278E17450;
     v14 = &v16;
     objc_copyWeak(&v16, &location);
-    v15[4] = v6;
-    [v11 sendCommand:v12 withCompletionHandler:v15];
+    v15[4] = commandCopy;
+    [preferredTransport sendCommand:command withCompletionHandler:v15];
   }
 
   objc_destroyWeak(v14);
@@ -1359,11 +1359,11 @@ void __54__CONodeController_sendCommand_withCompletionHandler___block_invoke_133
 
 - (void)sendPing
 {
-  v3 = [(CONodeController *)self executionContext];
-  [v3 assertDispatchQueue];
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v4 = [(CONodeController *)self preferredTransport];
-  [(CONodeController *)self _sendPingUsingTransport:v4];
+  preferredTransport = [(CONodeController *)self preferredTransport];
+  [(CONodeController *)self _sendPingUsingTransport:preferredTransport];
 }
 
 - (void)markInactive
@@ -1372,17 +1372,17 @@ void __54__CONodeController_sendCommand_withCompletionHandler___block_invoke_133
   v3 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CONodeController *)self shortDescription];
+    shortDescription = [(CONodeController *)self shortDescription];
     v8 = 138543362;
-    v9 = v4;
+    v9 = shortDescription;
     _os_log_impl(&dword_244378000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ clearing remote constituent identifier to nil", &v8, 0xCu);
   }
 
-  v5 = [(CONodeController *)self node];
-  [v5 setRemote:0];
+  node = [(CONodeController *)self node];
+  [node setRemote:0];
 
-  v6 = [(CONodeController *)self preferredTransport];
-  [v6 setRemote:0];
+  preferredTransport = [(CONodeController *)self preferredTransport];
+  [preferredTransport setRemote:0];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -1390,20 +1390,20 @@ void __54__CONodeController_sendCommand_withCompletionHandler___block_invoke_133
 - (id)computePreferredTransport
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(CONodeController *)self executionContext];
-  [v3 assertDispatchQueue];
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v4 = [(CONodeController *)self transports];
-  v5 = [v4 count];
+  transports = [(CONodeController *)self transports];
+  firstObject = [transports count];
 
-  if (v5)
+  if (firstObject)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(CONodeController *)self transports];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    transports2 = [(CONodeController *)self transports];
+    v7 = [transports2 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1414,7 +1414,7 @@ LABEL_4:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(transports2);
         }
 
         v11 = *(*(&v15 + 1) + 8 * v10);
@@ -1426,7 +1426,7 @@ LABEL_4:
 
         if (v8 == ++v10)
         {
-          v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v8 = [transports2 countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v8)
           {
             goto LABEL_4;
@@ -1436,9 +1436,9 @@ LABEL_4:
         }
       }
 
-      v5 = v11;
+      firstObject = v11;
 
-      if (v5)
+      if (firstObject)
       {
         goto LABEL_13;
       }
@@ -1449,87 +1449,87 @@ LABEL_4:
 LABEL_10:
     }
 
-    v12 = [(CONodeController *)self transports];
-    v5 = [v12 firstObject];
+    transports3 = [(CONodeController *)self transports];
+    firstObject = [transports3 firstObject];
   }
 
 LABEL_13:
   v13 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return firstObject;
 }
 
-- (void)updateElectionInfo:(id)a3
+- (void)updateElectionInfo:(id)info
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CONodeController *)self executionContext];
-  [v5 assertDispatchQueue];
+  infoCopy = info;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v6 = [(CONodeController *)self executionContext];
-  v7 = [v6 leaderElectionConfigured];
+  executionContext2 = [(CONodeController *)self executionContext];
+  leaderElectionConfigured = [executionContext2 leaderElectionConfigured];
 
-  if (v7)
+  if (leaderElectionConfigured)
   {
-    v8 = [(CONodeController *)self node];
-    v9 = [v8 state];
+    node = [(CONodeController *)self node];
+    state = [node state];
 
-    if (self->_activated && (v9 - 5) <= 0xFFFFFFFFFFFFFFFDLL)
+    if (self->_activated && (state - 5) <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v10 = [(CONodeController *)self _nodeControllerStateFromNodeState];
-      if (v10 > 4)
+      _nodeControllerStateFromNodeState = [(CONodeController *)self _nodeControllerStateFromNodeState];
+      if (_nodeControllerStateFromNodeState > 4)
       {
-        if (v10 == 5)
+        if (_nodeControllerStateFromNodeState == 5)
         {
-          v22 = [(CONodeController *)self node];
-          v23 = [v22 state];
+          node2 = [(CONodeController *)self node];
+          state2 = [node2 state];
 
-          if (v23 == 5)
+          if (state2 == 5)
           {
-            v24 = [(CONodeController *)self node];
-            v25 = [v24 lastElectionInfoSent];
-            v26 = [v4 isEqual:v25];
+            node3 = [(CONodeController *)self node];
+            lastElectionInfoSent = [node3 lastElectionInfoSent];
+            v26 = [infoCopy isEqual:lastElectionInfoSent];
 
             if ((v26 & 1) == 0)
             {
-              v27 = [(CONodeController *)self node];
-              v11 = [v27 backoffResponse];
+              node4 = [(CONodeController *)self node];
+              backoffResponse = [node4 backoffResponse];
 
               v28 = COCoreLogForCategory(16);
               v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
-              if (v11)
+              if (backoffResponse)
               {
                 if (v29)
                 {
-                  v30 = [(CONodeController *)self shortDescription];
+                  shortDescription = [(CONodeController *)self shortDescription];
                   v33 = 138543618;
-                  v34 = v30;
+                  v34 = shortDescription;
                   v35 = 2048;
-                  v36 = [v4 generation];
+                  generation = [infoCopy generation];
                   _os_log_impl(&dword_244378000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ delayed BALLOT (%llu) response since our ballot or generation has changed", &v33, 0x16u);
                 }
 
-                v12 = [(CONodeController *)self _ballotResponseWithElectionInfo:v4];
-                (v11)[2](v11, v12, 0);
-                v31 = [(CONodeController *)self node];
-                [v31 setBackoffResponse:0];
+                preferredTransport = [(CONodeController *)self _ballotResponseWithElectionInfo:infoCopy];
+                (backoffResponse)[2](backoffResponse, preferredTransport, 0);
+                node5 = [(CONodeController *)self node];
+                [node5 setBackoffResponse:0];
               }
 
               else
               {
                 if (v29)
                 {
-                  v32 = [(CONodeController *)self shortDescription];
+                  shortDescription2 = [(CONodeController *)self shortDescription];
                   v33 = 138543618;
-                  v34 = v32;
+                  v34 = shortDescription2;
                   v35 = 2048;
-                  v36 = [v4 generation];
+                  generation = [infoCopy generation];
                   _os_log_impl(&dword_244378000, v28, OS_LOG_TYPE_DEFAULT, "%{public}@ our ballot or generation has changed. Issuing a new election with generation (%llu)", &v33, 0x16u);
                 }
 
-                v12 = [(CONodeController *)self _electionRequestWithElectionInfo:v4];
-                v31 = [(CONodeController *)self preferredTransport];
-                [(CONodeController *)self _sendElectionRequest:v12 usingTransport:v31];
+                preferredTransport = [(CONodeController *)self _electionRequestWithElectionInfo:infoCopy];
+                node5 = [(CONodeController *)self preferredTransport];
+                [(CONodeController *)self _sendElectionRequest:preferredTransport usingTransport:node5];
               }
 
               goto LABEL_16;
@@ -1537,28 +1537,28 @@ LABEL_13:
           }
         }
 
-        else if (v10 == 6)
+        else if (_nodeControllerStateFromNodeState == 6)
         {
-          v16 = [(CONodeController *)self node];
-          v17 = [v16 lastElectionInfoSent];
-          v18 = [v4 hasSameGenerationAndLeader:v17];
+          node6 = [(CONodeController *)self node];
+          lastElectionInfoSent2 = [node6 lastElectionInfoSent];
+          v18 = [infoCopy hasSameGenerationAndLeader:lastElectionInfoSent2];
 
           if ((v18 & 1) == 0)
           {
             v19 = COCoreLogForCategory(16);
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
             {
-              v20 = [(CONodeController *)self shortDescription];
+              shortDescription3 = [(CONodeController *)self shortDescription];
               v33 = 138543618;
-              v34 = v20;
+              v34 = shortDescription3;
               v35 = 2048;
-              v36 = [v4 generation];
+              generation = [infoCopy generation];
               _os_log_impl(&dword_244378000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@ starting ELECTION (%llu)", &v33, 0x16u);
             }
 
-            v11 = [(CONodeController *)self _electionRequestWithElectionInfo:v4];
-            v12 = [(CONodeController *)self preferredTransport];
-            [(CONodeController *)self _sendElectionRequest:v11 usingTransport:v12];
+            backoffResponse = [(CONodeController *)self _electionRequestWithElectionInfo:infoCopy];
+            preferredTransport = [(CONodeController *)self preferredTransport];
+            [(CONodeController *)self _sendElectionRequest:backoffResponse usingTransport:preferredTransport];
             goto LABEL_16;
           }
         }
@@ -1566,25 +1566,25 @@ LABEL_13:
 
       else
       {
-        if (!v10)
+        if (!_nodeControllerStateFromNodeState)
         {
-          v11 = [(CONodeController *)self _electionRequestWithElectionInfo:v4];
-          v12 = [(CONodeController *)self preferredTransport];
-          v13 = self;
-          v14 = v11;
+          backoffResponse = [(CONodeController *)self _electionRequestWithElectionInfo:infoCopy];
+          preferredTransport = [(CONodeController *)self preferredTransport];
+          selfCopy2 = self;
+          v14 = backoffResponse;
           v15 = 1;
           goto LABEL_15;
         }
 
-        if (v10 == 2)
+        if (_nodeControllerStateFromNodeState == 2)
         {
-          v11 = [(CONodeController *)self _electionRequestWithElectionInfo:v4];
-          v12 = [(CONodeController *)self preferredTransport];
-          v13 = self;
-          v14 = v11;
+          backoffResponse = [(CONodeController *)self _electionRequestWithElectionInfo:infoCopy];
+          preferredTransport = [(CONodeController *)self preferredTransport];
+          selfCopy2 = self;
+          v14 = backoffResponse;
           v15 = 2;
 LABEL_15:
-          [(CONodeController *)v13 _sendProbeRequest:v14 withState:v15 usingTransport:v12];
+          [(CONodeController *)selfCopy2 _sendProbeRequest:v14 withState:v15 usingTransport:preferredTransport];
 LABEL_16:
         }
       }
@@ -1594,25 +1594,25 @@ LABEL_16:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inquireForTransport:(id)a3
+- (void)inquireForTransport:(id)transport
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 record];
-  v6 = [v5 requiresInquiry];
+  transportCopy = transport;
+  record = [transportCopy record];
+  requiresInquiry = [record requiresInquiry];
 
   v7 = COCoreLogForCategory(16);
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  if (requiresInquiry)
   {
     if (v8)
     {
       *buf = 138543362;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ attempting to inquire", buf, 0xCu);
     }
 
-    v9 = -[_COMeshControllerPing initWithTimeout:listeningPort:]([_COMeshControllerPing alloc], "initWithTimeout:listeningPort:", [v4 listeningPort], 0.0);
+    v9 = -[_COMeshControllerPing initWithTimeout:listeningPort:]([_COMeshControllerPing alloc], "initWithTimeout:listeningPort:", [transportCopy listeningPort], 0.0);
     if ([(CONodeController *)self state]!= 6)
     {
       [(CONodeController *)self _updateNodeState:1 currentElectionInfo:0 incomingElectionInfo:0 reason:1];
@@ -1624,7 +1624,7 @@ LABEL_16:
     v12[2] = __40__CONodeController_inquireForTransport___block_invoke;
     v12[3] = &unk_278E19088;
     objc_copyWeak(&v13, buf);
-    [v4 sendRequest:v9 withResponseHandler:v12];
+    [transportCopy sendRequest:v9 withResponseHandler:v12];
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
   }
@@ -1633,11 +1633,11 @@ LABEL_16:
   {
     if (v8)
     {
-      v10 = [(CONodeController *)self shortDescription];
+      shortDescription = [(CONodeController *)self shortDescription];
       *buf = 138543618;
-      v15 = v10;
+      selfCopy = shortDescription;
       v16 = 2112;
-      v17 = v4;
+      v17 = transportCopy;
       _os_log_impl(&dword_244378000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ transport %@ does not require inquiry. Moving to processing", buf, 0x16u);
     }
 
@@ -1681,42 +1681,42 @@ void __40__CONodeController_inquireForTransport___block_invoke(uint64_t a1, uint
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendProbeRequest:(id)a3 withState:(int64_t)a4 usingTransport:(id)a5
+- (void)_sendProbeRequest:(id)request withState:(int64_t)state usingTransport:(id)transport
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  transportCopy = transport;
   if (self->_activated)
   {
-    v10 = [(CONodeController *)self node];
-    v11 = [v10 hasOutstandingProbe];
+    node = [(CONodeController *)self node];
+    hasOutstandingProbe = [node hasOutstandingProbe];
 
-    if ((v11 & 1) == 0)
+    if ((hasOutstandingProbe & 1) == 0)
     {
-      v12 = [MEMORY[0x277CBEB68] null];
-      [v9 isEqual:v12];
+      null = [MEMORY[0x277CBEB68] null];
+      [transportCopy isEqual:null];
 
       v13 = COCoreLogForCategory(16);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(CONodeController *)self shortDescription];
+        shortDescription = [(CONodeController *)self shortDescription];
         *buf = 138543618;
-        v25 = v14;
+        v25 = shortDescription;
         v26 = 2112;
-        v27 = v8;
+        v27 = requestCopy;
         _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ probing with election request %@", buf, 0x16u);
       }
 
-      v15 = [[COElectionInfo alloc] initWithCommand:v8];
-      v16 = [(CONodeController *)self node];
-      v17 = [v16 lastElectionInfoReceived];
-      [(CONodeController *)self _updateNodeState:a4 currentElectionInfo:v15 incomingElectionInfo:v17 reason:0];
+      v15 = [[COElectionInfo alloc] initWithCommand:requestCopy];
+      node2 = [(CONodeController *)self node];
+      lastElectionInfoReceived = [node2 lastElectionInfoReceived];
+      [(CONodeController *)self _updateNodeState:state currentElectionInfo:v15 incomingElectionInfo:lastElectionInfoReceived reason:0];
 
-      v18 = [(CONodeController *)self node];
-      [v18 setLastElectionInfoSent:v15];
+      node3 = [(CONodeController *)self node];
+      [node3 setLastElectionInfoSent:v15];
 
-      v19 = [(CONodeController *)self node];
-      [v19 setOutstandingProbe:1];
+      node4 = [(CONodeController *)self node];
+      [node4 setOutstandingProbe:1];
 
       objc_initWeak(buf, self);
       v21[0] = MEMORY[0x277D85DD0];
@@ -1724,8 +1724,8 @@ void __40__CONodeController_inquireForTransport___block_invoke(uint64_t a1, uint
       v21[2] = __63__CONodeController__sendProbeRequest_withState_usingTransport___block_invoke;
       v21[3] = &unk_278E19060;
       objc_copyWeak(&v23, buf);
-      v22 = v9;
-      [v22 sendRequest:v8 withResponseHandler:v21];
+      v22 = transportCopy;
+      [v22 sendRequest:requestCopy withResponseHandler:v21];
 
       objc_destroyWeak(&v23);
       objc_destroyWeak(buf);
@@ -1751,25 +1751,25 @@ void __63__CONodeController__sendProbeRequest_withState_usingTransport___block_i
   }
 }
 
-- (void)_sendElectionRequest:(id)a3 usingTransport:(id)a4
+- (void)_sendElectionRequest:(id)request usingTransport:(id)transport
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  transportCopy = transport;
   if (self->_activated)
   {
-    v8 = [(CONodeController *)self node];
-    v9 = [v8 hasOutstandingRequest];
+    node = [(CONodeController *)self node];
+    hasOutstandingRequest = [node hasOutstandingRequest];
 
-    if ((v9 & 1) == 0)
+    if ((hasOutstandingRequest & 1) == 0)
     {
-      v10 = [[COElectionInfo alloc] initWithCommand:v6];
-      v11 = [(CONodeController *)self node];
-      v12 = [v11 lastElectionInfoReceived];
-      [(CONodeController *)self _updateNodeState:6 currentElectionInfo:v10 incomingElectionInfo:v12 reason:10];
+      v10 = [[COElectionInfo alloc] initWithCommand:requestCopy];
+      node2 = [(CONodeController *)self node];
+      lastElectionInfoReceived = [node2 lastElectionInfoReceived];
+      [(CONodeController *)self _updateNodeState:6 currentElectionInfo:v10 incomingElectionInfo:lastElectionInfoReceived reason:10];
 
-      v13 = [[COElectionInfo alloc] initWithCommand:v6];
-      v14 = [(CONodeController *)self node];
-      [v14 setLastElectionInfoSent:v13];
+      v13 = [[COElectionInfo alloc] initWithCommand:requestCopy];
+      node3 = [(CONodeController *)self node];
+      [node3 setLastElectionInfoSent:v13];
 
       objc_initWeak(&location, self);
       v15[0] = MEMORY[0x277D85DD0];
@@ -1777,8 +1777,8 @@ void __63__CONodeController__sendProbeRequest_withState_usingTransport___block_i
       v15[2] = __56__CONodeController__sendElectionRequest_usingTransport___block_invoke;
       v15[3] = &unk_278E19060;
       objc_copyWeak(&v17, &location);
-      v16 = v7;
-      [v16 sendRequest:v6 withResponseHandler:v15];
+      v16 = transportCopy;
+      [v16 sendRequest:requestCopy withResponseHandler:v15];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
@@ -1799,21 +1799,21 @@ void __56__CONodeController__sendElectionRequest_usingTransport___block_invoke(u
   }
 }
 
-- (void)_sendPingUsingTransport:(id)a3
+- (void)_sendPingUsingTransport:(id)transport
 {
-  v4 = a3;
-  v5 = v4;
+  transportCopy = transport;
+  v5 = transportCopy;
   if (self->_activated)
   {
-    if ([v4 conformsToProtocol:&unk_2857CB1B0])
+    if ([transportCopy conformsToProtocol:&unk_2857CB1B0])
     {
-      v6 = [(CONodeController *)self node];
-      v7 = [v6 hasPendingPing];
+      node = [(CONodeController *)self node];
+      hasPendingPing = [node hasPendingPing];
 
-      if ((v7 & 1) == 0)
+      if ((hasPendingPing & 1) == 0)
       {
-        v8 = [(CONodeController *)self node];
-        [v8 setPendingPing:1];
+        node2 = [(CONodeController *)self node];
+        [node2 setPendingPing:1];
 
         objc_initWeak(&location, self);
         v10[0] = MEMORY[0x277D85DD0];
@@ -1856,44 +1856,44 @@ void __44__CONodeController__sendPingUsingTransport___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_sendBallotResponse:(id)a3 usingTransport:(id)a4 callback:(id)a5
+- (void)_sendBallotResponse:(id)response usingTransport:(id)transport callback:(id)callback
 {
   if (self->_activated)
   {
-    v8 = a5;
-    v9 = a3;
-    v14 = [[COElectionInfo alloc] initWithCommand:v9];
-    v10 = [(CONodeController *)self node];
-    v11 = [v10 lastElectionInfoReceived];
-    [(CONodeController *)self _updateNodeState:7 currentElectionInfo:v14 incomingElectionInfo:v11 reason:10];
+    callbackCopy = callback;
+    responseCopy = response;
+    v14 = [[COElectionInfo alloc] initWithCommand:responseCopy];
+    node = [(CONodeController *)self node];
+    lastElectionInfoReceived = [node lastElectionInfoReceived];
+    [(CONodeController *)self _updateNodeState:7 currentElectionInfo:v14 incomingElectionInfo:lastElectionInfoReceived reason:10];
 
-    v12 = [[COElectionInfo alloc] initWithCommand:v9];
-    v13 = [(CONodeController *)self node];
-    [v13 setLastElectionInfoSent:v12];
+    v12 = [[COElectionInfo alloc] initWithCommand:responseCopy];
+    node2 = [(CONodeController *)self node];
+    [node2 setLastElectionInfoSent:v12];
 
-    v8[2](v8, v9, 0);
+    callbackCopy[2](callbackCopy, responseCopy, 0);
   }
 }
 
-- (void)_sendVoteRequest:(id)a3 usingTransport:(id)a4
+- (void)_sendVoteRequest:(id)request usingTransport:(id)transport
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  transportCopy = transport;
   if (self->_activated)
   {
-    v8 = [(CONodeController *)self node];
-    v9 = [v8 hasOutstandingRequest];
+    node = [(CONodeController *)self node];
+    hasOutstandingRequest = [node hasOutstandingRequest];
 
-    if ((v9 & 1) == 0)
+    if ((hasOutstandingRequest & 1) == 0)
     {
-      v10 = [[COElectionInfo alloc] initWithCommand:v6];
-      v11 = [(CONodeController *)self node];
-      v12 = [v11 lastElectionInfoReceived];
-      [(CONodeController *)self _updateNodeState:8 currentElectionInfo:v10 incomingElectionInfo:v12 reason:10];
+      v10 = [[COElectionInfo alloc] initWithCommand:requestCopy];
+      node2 = [(CONodeController *)self node];
+      lastElectionInfoReceived = [node2 lastElectionInfoReceived];
+      [(CONodeController *)self _updateNodeState:8 currentElectionInfo:v10 incomingElectionInfo:lastElectionInfoReceived reason:10];
 
-      v13 = [[COElectionInfo alloc] initWithCommand:v6];
-      v14 = [(CONodeController *)self node];
-      [v14 setLastElectionInfoSent:v13];
+      v13 = [[COElectionInfo alloc] initWithCommand:requestCopy];
+      node3 = [(CONodeController *)self node];
+      [node3 setLastElectionInfoSent:v13];
 
       objc_initWeak(&location, self);
       v15[0] = MEMORY[0x277D85DD0];
@@ -1901,8 +1901,8 @@ void __44__CONodeController__sendPingUsingTransport___block_invoke(uint64_t a1, 
       v15[2] = __52__CONodeController__sendVoteRequest_usingTransport___block_invoke;
       v15[3] = &unk_278E19060;
       objc_copyWeak(&v17, &location);
-      v16 = v7;
-      [v16 sendRequest:v6 withResponseHandler:v15];
+      v16 = transportCopy;
+      [v16 sendRequest:requestCopy withResponseHandler:v15];
 
       objc_destroyWeak(&v17);
       objc_destroyWeak(&location);
@@ -1923,74 +1923,74 @@ void __52__CONodeController__sendVoteRequest_usingTransport___block_invoke(uint6
   }
 }
 
-- (void)_sendAcceptResponse:(id)a3 usingTransport:(id)a4 callback:(id)a5
+- (void)_sendAcceptResponse:(id)response usingTransport:(id)transport callback:(id)callback
 {
   if (self->_activated)
   {
-    v8 = a5;
-    v9 = a3;
-    v14 = [[COElectionInfo alloc] initWithCommand:v9];
-    v10 = [(CONodeController *)self node];
-    v11 = [v10 lastElectionInfoReceived];
-    [(CONodeController *)self _updateNodeState:9 currentElectionInfo:v14 incomingElectionInfo:v11 reason:10];
+    callbackCopy = callback;
+    responseCopy = response;
+    v14 = [[COElectionInfo alloc] initWithCommand:responseCopy];
+    node = [(CONodeController *)self node];
+    lastElectionInfoReceived = [node lastElectionInfoReceived];
+    [(CONodeController *)self _updateNodeState:9 currentElectionInfo:v14 incomingElectionInfo:lastElectionInfoReceived reason:10];
 
-    v12 = [[COElectionInfo alloc] initWithCommand:v9];
-    v13 = [(CONodeController *)self node];
-    [v13 setLastElectionInfoSent:v12];
+    v12 = [[COElectionInfo alloc] initWithCommand:responseCopy];
+    node2 = [(CONodeController *)self node];
+    [node2 setLastElectionInfoSent:v12];
 
-    v8[2](v8, v9, 0);
+    callbackCopy[2](callbackCopy, responseCopy, 0);
   }
 }
 
-- (void)_handleElectionRequest:(id)a3 fromTransport:(id)a4 callback:(id)a5
+- (void)_handleElectionRequest:(id)request fromTransport:(id)transport callback:(id)callback
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  transportCopy = transport;
+  callbackCopy = callback;
   if (self->_activated)
   {
-    v11 = [[COElectionInfo alloc] initWithCommand:v8];
-    v12 = [(CONodeController *)self node];
-    v30 = [v12 lastElectionInfoReceived];
+    v11 = [[COElectionInfo alloc] initWithCommand:requestCopy];
+    node = [(CONodeController *)self node];
+    lastElectionInfoReceived = [node lastElectionInfoReceived];
 
-    v13 = [(CONodeController *)self node];
-    [v13 setLastElectionInfoReceived:v11];
+    node2 = [(CONodeController *)self node];
+    [node2 setLastElectionInfoReceived:v11];
 
-    v14 = [v8 ballot];
-    [(CONodeController *)self _updateKnownDiscovery:v14];
+    ballot = [requestCopy ballot];
+    [(CONodeController *)self _updateKnownDiscovery:ballot];
 
-    v15 = [v9 remote];
-    v16 = [(COElectionInfo *)v11 generation];
-    v29 = [v8 variant];
-    v31 = [(COElectionInfo *)v11 ballot];
+    remote = [transportCopy remote];
+    generation = [(COElectionInfo *)v11 generation];
+    variant = [requestCopy variant];
+    ballot2 = [(COElectionInfo *)v11 ballot];
     v17 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(CONodeController *)self shortDescription];
-      v26 = [v15 software];
-      v25 = [v8 rapportTransactionID];
-      v28 = [v31 candidates];
-      v24 = [v28 count];
-      v18 = [v31 candidates];
-      v19 = [v18 firstObject];
+      shortDescription = [(CONodeController *)self shortDescription];
+      software = [remote software];
+      rapportTransactionID = [requestCopy rapportTransactionID];
+      candidates = [ballot2 candidates];
+      v24 = [candidates count];
+      candidates2 = [ballot2 candidates];
+      firstObject = [candidates2 firstObject];
 
       *buf = 138545154;
-      v40 = v27;
+      v40 = shortDescription;
       v41 = 2048;
-      v42 = v16;
+      v42 = generation;
       v43 = 1024;
-      v44 = v29;
+      v44 = variant;
       v45 = 2048;
-      v46 = v9;
+      v46 = transportCopy;
       v47 = 2114;
-      v48 = v26;
+      v48 = software;
       v49 = 2048;
-      v50 = v25;
+      v50 = rapportTransactionID;
       v51 = 2048;
       v52 = v24;
       v53 = 2114;
-      v54 = v19;
+      v54 = firstObject;
       _os_log_impl(&dword_244378000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ received ELECTION (%llu:%d) from %p (%{public}@) XID 0x%llX - (%lu, %{public}@)", buf, 0x4Eu);
     }
 
@@ -2002,13 +2002,13 @@ void __52__CONodeController__sendVoteRequest_usingTransport___block_invoke(uint6
     objc_copyWeak(&v38, buf);
     v20 = v11;
     v33 = v20;
-    v21 = v15;
+    v21 = remote;
     v34 = v21;
-    v22 = v30;
+    v22 = lastElectionInfoReceived;
     v35 = v22;
-    v36 = v9;
-    v37 = v10;
-    [(CONodeController *)self _updateDelegateWithBallotCommand:v8 withCompletionHandler:v32];
+    v36 = transportCopy;
+    v37 = callbackCopy;
+    [(CONodeController *)self _updateDelegateWithBallotCommand:requestCopy withCompletionHandler:v32];
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(buf);
@@ -2053,49 +2053,49 @@ void __66__CONodeController__handleElectionRequest_fromTransport_callback___bloc
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleBallotResponse:(id)a3 fromTransport:(id)a4
+- (void)_handleBallotResponse:(id)response fromTransport:(id)transport
 {
   v44 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  transportCopy = transport;
   if (self->_activated)
   {
-    v8 = [[COElectionInfo alloc] initWithCommand:v6];
-    v9 = [(CONodeController *)self node];
-    [v9 setLastElectionInfoReceived:v8];
+    v8 = [[COElectionInfo alloc] initWithCommand:responseCopy];
+    node = [(CONodeController *)self node];
+    [node setLastElectionInfoReceived:v8];
 
-    v10 = [v6 ballot];
-    [(CONodeController *)self _updateKnownDiscovery:v10];
+    ballot = [responseCopy ballot];
+    [(CONodeController *)self _updateKnownDiscovery:ballot];
 
-    v23 = [v7 remote];
-    v11 = [v6 variant];
+    remote = [transportCopy remote];
+    variant = [responseCopy variant];
     v12 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(CONodeController *)self shortDescription];
-      v20 = [(COElectionInfo *)v8 generation];
-      v21 = [v23 software];
-      v19 = [v6 rapportTransactionID];
-      v13 = [(COElectionInfo *)v8 ballot];
-      v14 = [v13 candidates];
-      v15 = [v14 count];
-      v16 = [(COElectionInfo *)v8 leader];
+      shortDescription = [(CONodeController *)self shortDescription];
+      generation = [(COElectionInfo *)v8 generation];
+      software = [remote software];
+      rapportTransactionID = [responseCopy rapportTransactionID];
+      ballot2 = [(COElectionInfo *)v8 ballot];
+      candidates = [ballot2 candidates];
+      v15 = [candidates count];
+      leader = [(COElectionInfo *)v8 leader];
       *buf = 138545154;
-      v29 = v22;
+      v29 = shortDescription;
       v30 = 2048;
-      v31 = v20;
+      v31 = generation;
       v32 = 1024;
-      v33 = v11;
+      v33 = variant;
       v34 = 2048;
-      v35 = v7;
+      v35 = transportCopy;
       v36 = 2114;
-      v37 = v21;
+      v37 = software;
       v38 = 2048;
-      v39 = v19;
+      v39 = rapportTransactionID;
       v40 = 2048;
       v41 = v15;
       v42 = 2114;
-      v43 = v16;
+      v43 = leader;
       _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ received BALLOT (%llu:%d) from %p (%{public}@) XID 0x%llX - (%lu, %{public}@)", buf, 0x4Eu);
     }
 
@@ -2107,8 +2107,8 @@ void __66__CONodeController__handleElectionRequest_fromTransport_callback___bloc
     objc_copyWeak(&v27, buf);
     v17 = v8;
     v25 = v17;
-    v26 = v7;
-    [(CONodeController *)self _updateDelegateWithBallotCommand:v6 withCompletionHandler:v24];
+    v26 = transportCopy;
+    [(CONodeController *)self _updateDelegateWithBallotCommand:responseCopy withCompletionHandler:v24];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(buf);
@@ -2165,52 +2165,52 @@ void __56__CONodeController__handleBallotResponse_fromTransport___block_invoke(u
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleVoteRequest:(id)a3 fromTransport:(id)a4 callback:(id)a5
+- (void)_handleVoteRequest:(id)request fromTransport:(id)transport callback:(id)callback
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  transportCopy = transport;
+  callbackCopy = callback;
   if (self->_activated)
   {
-    v11 = [[COElectionInfo alloc] initWithCommand:v8];
-    v12 = [(CONodeController *)self node];
-    [v12 setLastElectionInfoReceived:v11];
+    v11 = [[COElectionInfo alloc] initWithCommand:requestCopy];
+    node = [(CONodeController *)self node];
+    [node setLastElectionInfoReceived:v11];
 
-    v13 = [v8 ballot];
-    [(CONodeController *)self _updateKnownDiscovery:v13];
+    ballot = [requestCopy ballot];
+    [(CONodeController *)self _updateKnownDiscovery:ballot];
 
-    v26 = [v9 remote];
-    v25 = [(COElectionInfo *)v11 generation];
-    v24 = [v8 variant];
-    v27 = [(COElectionInfo *)v11 ballot];
+    remote = [transportCopy remote];
+    generation = [(COElectionInfo *)v11 generation];
+    variant = [requestCopy variant];
+    ballot2 = [(COElectionInfo *)v11 ballot];
     v14 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(CONodeController *)self shortDescription];
-      v22 = [v26 software];
-      v21 = [v8 rapportTransactionID];
-      v15 = [v27 candidates];
-      v16 = [v15 count];
-      v17 = [v27 candidates];
-      v18 = [v17 firstObject];
+      shortDescription = [(CONodeController *)self shortDescription];
+      software = [remote software];
+      rapportTransactionID = [requestCopy rapportTransactionID];
+      candidates = [ballot2 candidates];
+      v16 = [candidates count];
+      candidates2 = [ballot2 candidates];
+      firstObject = [candidates2 firstObject];
 
       *buf = 138545154;
-      v34 = v23;
+      v34 = shortDescription;
       v35 = 2048;
-      v36 = v25;
+      v36 = generation;
       v37 = 1024;
-      v38 = v24;
+      v38 = variant;
       v39 = 2048;
-      v40 = v9;
+      v40 = transportCopy;
       v41 = 2114;
-      v42 = v22;
+      v42 = software;
       v43 = 2048;
-      v44 = v21;
+      v44 = rapportTransactionID;
       v45 = 2048;
       v46 = v16;
       v47 = 2114;
-      v48 = v18;
+      v48 = firstObject;
       _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ received VOTE (%llu:%d) from %p (%{public}@) XID 0x%llX - (%lu, %{public}@)", buf, 0x4Eu);
     }
 
@@ -2222,9 +2222,9 @@ void __56__CONodeController__handleBallotResponse_fromTransport___block_invoke(u
     objc_copyWeak(&v32, buf);
     v19 = v11;
     v29 = v19;
-    v30 = v9;
-    v31 = v10;
-    [(CONodeController *)self _updateDelegateWithBallotCommand:v8 withCompletionHandler:v28];
+    v30 = transportCopy;
+    v31 = callbackCopy;
+    [(CONodeController *)self _updateDelegateWithBallotCommand:requestCopy withCompletionHandler:v28];
 
     objc_destroyWeak(&v32);
     objc_destroyWeak(buf);
@@ -2262,51 +2262,51 @@ void __62__CONodeController__handleVoteRequest_fromTransport_callback___block_in
   }
 }
 
-- (void)_handleAcceptResponse:(id)a3 fromTransport:(id)a4
+- (void)_handleAcceptResponse:(id)response fromTransport:(id)transport
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  transportCopy = transport;
   if (self->_activated)
   {
-    v8 = [[COElectionInfo alloc] initWithCommand:v6];
-    v9 = [(CONodeController *)self node];
-    [v9 setLastElectionInfoReceived:v8];
+    v8 = [[COElectionInfo alloc] initWithCommand:responseCopy];
+    node = [(CONodeController *)self node];
+    [node setLastElectionInfoReceived:v8];
 
-    v10 = [v6 ballot];
-    [(CONodeController *)self _updateKnownDiscovery:v10];
+    ballot = [responseCopy ballot];
+    [(CONodeController *)self _updateKnownDiscovery:ballot];
 
-    v23 = [v7 remote];
-    v22 = [(COElectionInfo *)v8 generation];
-    v21 = [v6 variant];
-    v24 = [(COElectionInfo *)v8 ballot];
+    remote = [transportCopy remote];
+    generation = [(COElectionInfo *)v8 generation];
+    variant = [responseCopy variant];
+    ballot2 = [(COElectionInfo *)v8 ballot];
     v11 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(CONodeController *)self shortDescription];
-      v19 = [v23 software];
-      v12 = [v6 rapportTransactionID];
-      v13 = [v24 candidates];
-      v14 = [v13 count];
-      v15 = [v24 candidates];
-      v16 = [v15 firstObject];
+      shortDescription = [(CONodeController *)self shortDescription];
+      software = [remote software];
+      rapportTransactionID = [responseCopy rapportTransactionID];
+      candidates = [ballot2 candidates];
+      v14 = [candidates count];
+      candidates2 = [ballot2 candidates];
+      firstObject = [candidates2 firstObject];
 
       *buf = 138545154;
-      v30 = v20;
+      v30 = shortDescription;
       v31 = 2048;
-      v32 = v22;
+      v32 = generation;
       v33 = 1024;
-      v34 = v21;
+      v34 = variant;
       v35 = 2048;
-      v36 = v7;
+      v36 = transportCopy;
       v37 = 2114;
-      v38 = v19;
+      v38 = software;
       v39 = 2048;
-      v40 = v12;
+      v40 = rapportTransactionID;
       v41 = 2048;
       v42 = v14;
       v43 = 2114;
-      v44 = v16;
+      v44 = firstObject;
       _os_log_impl(&dword_244378000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@ received ACCEPT (%llu:%d) from %p (%{public}@) XID 0x%llX - (%lu, %{public}@)", buf, 0x4Eu);
     }
 
@@ -2318,8 +2318,8 @@ void __62__CONodeController__handleVoteRequest_fromTransport_callback___block_in
     objc_copyWeak(&v28, buf);
     v17 = v8;
     v26 = v17;
-    v27 = v7;
-    [(CONodeController *)self _updateDelegateWithBallotCommand:v6 withCompletionHandler:v25];
+    v27 = transportCopy;
+    [(CONodeController *)self _updateDelegateWithBallotCommand:responseCopy withCompletionHandler:v25];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
@@ -2382,7 +2382,7 @@ void __56__CONodeController__handleAcceptResponse_fromTransport___block_invoke(u
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleWithdraw:(id)a3 fromTransport:(id)a4
+- (void)_handleWithdraw:(id)withdraw fromTransport:(id)transport
 {
   v14 = *MEMORY[0x277D85DE8];
   if (self->_activated)
@@ -2390,64 +2390,64 @@ void __56__CONodeController__handleAcceptResponse_fromTransport___block_invoke(u
     v5 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(CONodeController *)self shortDescription];
+      shortDescription = [(CONodeController *)self shortDescription];
       v12 = 138543362;
-      v13 = v6;
+      v13 = shortDescription;
       _os_log_impl(&dword_244378000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ received a withdraw command", &v12, 0xCu);
     }
 
-    v7 = [(CONodeController *)self node];
-    v8 = [v7 lastElectionInfoSent];
-    v9 = [(CONodeController *)self node];
-    v10 = [v9 lastElectionInfoReceived];
-    [(CONodeController *)self _updateNodeState:1 currentElectionInfo:v8 incomingElectionInfo:v10 reason:17];
+    node = [(CONodeController *)self node];
+    lastElectionInfoSent = [node lastElectionInfoSent];
+    node2 = [(CONodeController *)self node];
+    lastElectionInfoReceived = [node2 lastElectionInfoReceived];
+    [(CONodeController *)self _updateNodeState:1 currentElectionInfo:lastElectionInfoSent incomingElectionInfo:lastElectionInfoReceived reason:17];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleResponseToCoreRequest:(id)a3 response:(id)a4 error:(id)a5 usingTransport:(id)a6
+- (void)_handleResponseToCoreRequest:(id)request response:(id)response error:(id)error usingTransport:(id)transport
 {
   v40 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  responseCopy = response;
+  errorCopy = error;
+  transportCopy = transport;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
   objc_opt_class();
   v16 = objc_opt_isKindOfClass();
-  if (v12)
+  if (errorCopy)
   {
     if (isKindOfClass)
     {
-      [(CONodeController *)self _handlePingError:v12 fromTransport:v13];
+      [(CONodeController *)self _handlePingError:errorCopy fromTransport:transportCopy];
       goto LABEL_27;
     }
 
     v17 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v31 = [(CONodeController *)self shortDescription];
+      shortDescription = [(CONodeController *)self shortDescription];
       v32 = 138544130;
-      v33 = v31;
+      v33 = shortDescription;
       v34 = 2112;
-      v35 = v10;
+      v35 = requestCopy;
       v36 = 2112;
-      v37 = v12;
+      v37 = errorCopy;
       v38 = 2048;
-      v39 = v13;
+      v39 = transportCopy;
       _os_log_error_impl(&dword_244378000, v17, OS_LOG_TYPE_ERROR, "%{public}@ request %@ failed with error %@ on transport %p", &v32, 0x2Au);
     }
 
-    v18 = [(CONodeController *)self preferredTransport];
-    v19 = v18;
-    if (v18 == v13)
+    preferredTransport = [(CONodeController *)self preferredTransport];
+    v19 = preferredTransport;
+    if (preferredTransport == transportCopy)
     {
-      v20 = [(CONodeController *)self transports];
-      v21 = [v20 count];
+      transports = [(CONodeController *)self transports];
+      v21 = [transports count];
 
       if (v21 >= 2)
       {
@@ -2459,12 +2459,12 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v23 = [(CONodeController *)self shortDescription];
-        v24 = [(CONodeController *)self state];
+        shortDescription2 = [(CONodeController *)self shortDescription];
+        state = [(CONodeController *)self state];
         v32 = 138543618;
-        v33 = v23;
+        v33 = shortDescription2;
         v34 = 2048;
-        v35 = v24;
+        v35 = state;
         _os_log_impl(&dword_244378000, &v22->super, OS_LOG_TYPE_DEFAULT, "%{public}@ alternate transport available, remaining in state %ld", &v32, 0x16u);
 LABEL_25:
 
@@ -2476,18 +2476,18 @@ LABEL_25:
     {
     }
 
-    v22 = [[COElectionInfo alloc] initWithCommand:v10];
-    v23 = [[COElectionInfo alloc] initWithCommand:v11];
-    v25 = [v12 domain];
-    if ([v25 isEqualToString:*MEMORY[0x277D44250]])
+    v22 = [[COElectionInfo alloc] initWithCommand:requestCopy];
+    shortDescription2 = [[COElectionInfo alloc] initWithCommand:responseCopy];
+    domain = [errorCopy domain];
+    if ([domain isEqualToString:*MEMORY[0x277D44250]])
     {
-      v26 = [v12 code];
+      code = [errorCopy code];
 
-      if (v26 == -6714)
+      if (code == -6714)
       {
         v27 = 8;
 LABEL_24:
-        [(CONodeController *)self _updateNodeState:1 currentElectionInfo:v22 incomingElectionInfo:v23 reason:v27];
+        [(CONodeController *)self _updateNodeState:1 currentElectionInfo:v22 incomingElectionInfo:shortDescription2 reason:v27];
         goto LABEL_25;
       }
     }
@@ -2496,12 +2496,12 @@ LABEL_24:
     {
     }
 
-    v28 = [v12 domain];
-    if ([v28 isEqualToString:@"COMeshNodeErrorDomain"])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:@"COMeshNodeErrorDomain"])
     {
-      v29 = [v12 code];
+      code2 = [errorCopy code];
 
-      if (v29 == -4000)
+      if (code2 == -4000)
       {
         v27 = 7;
         goto LABEL_24;
@@ -2518,12 +2518,12 @@ LABEL_24:
 
   if (v15)
   {
-    [(CONodeController *)self _handleBallotResponse:v11 fromTransport:v13];
+    [(CONodeController *)self _handleBallotResponse:responseCopy fromTransport:transportCopy];
   }
 
   else if (v16)
   {
-    [(CONodeController *)self _handleAcceptResponse:v11 fromTransport:v13];
+    [(CONodeController *)self _handleAcceptResponse:responseCopy fromTransport:transportCopy];
   }
 
 LABEL_27:
@@ -2531,48 +2531,48 @@ LABEL_27:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handlePingError:(id)a3 fromTransport:(id)a4
+- (void)_handlePingError:(id)error fromTransport:(id)transport
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CONodeController *)self executionContext];
-  [v8 assertDispatchQueue];
+  errorCopy = error;
+  transportCopy = transport;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
   v9 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v27 = [(CONodeController *)self shortDescription];
+    shortDescription = [(CONodeController *)self shortDescription];
     v28 = 138543874;
-    v29 = v27;
+    v29 = shortDescription;
     v30 = 2112;
-    v31 = v6;
+    v31 = errorCopy;
     v32 = 2048;
-    v33 = v7;
+    v33 = transportCopy;
     _os_log_error_impl(&dword_244378000, v9, OS_LOG_TYPE_ERROR, "%{public}@ ping error %@ on transport %p", &v28, 0x20u);
   }
 
-  v10 = [v6 domain];
-  if ([v10 isEqualToString:*MEMORY[0x277D44250]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x277D44250]])
   {
-    if ([v6 code] == -6722)
+    if ([errorCopy code] == -6722)
     {
 
 LABEL_13:
       v24 = COCoreLogForCategory(16);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [(CONodeController *)self shortDescription];
+        shortDescription2 = [(CONodeController *)self shortDescription];
         v28 = 138543362;
-        v29 = v25;
+        v29 = shortDescription2;
         _os_log_impl(&dword_244378000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ Going dormant", &v28, 0xCu);
       }
 
-      v11 = [(CONodeController *)self node];
-      v15 = [v11 lastElectionInfoSent];
-      v16 = [(CONodeController *)self node];
-      v17 = [v16 lastElectionInfoReceived];
-      if ([v6 code] == -6722)
+      node = [(CONodeController *)self node];
+      lastElectionInfoSent = [node lastElectionInfoSent];
+      node2 = [(CONodeController *)self node];
+      lastElectionInfoReceived = [node2 lastElectionInfoReceived];
+      if ([errorCopy code] == -6722)
       {
         v22 = 11;
       }
@@ -2582,19 +2582,19 @@ LABEL_13:
         v22 = 12;
       }
 
-      v18 = self;
+      selfCopy2 = self;
       v19 = 2;
-      v20 = v15;
-      v21 = v17;
+      v20 = lastElectionInfoSent;
+      v21 = lastElectionInfoReceived;
 LABEL_19:
-      [(CONodeController *)v18 _updateNodeState:v19 currentElectionInfo:v20 incomingElectionInfo:v21 reason:v22];
+      [(CONodeController *)selfCopy2 _updateNodeState:v19 currentElectionInfo:v20 incomingElectionInfo:v21 reason:v22];
 
       goto LABEL_20;
     }
 
-    v23 = [v6 code];
+    code = [errorCopy code];
 
-    if (v23 == -6714)
+    if (code == -6714)
     {
       goto LABEL_13;
     }
@@ -2604,35 +2604,35 @@ LABEL_19:
   {
   }
 
-  v11 = [v6 domain];
-  if (![v11 isEqualToString:@"COMeshNodeErrorDomain"])
+  node = [errorCopy domain];
+  if (![node isEqualToString:@"COMeshNodeErrorDomain"])
   {
 LABEL_20:
 
     goto LABEL_21;
   }
 
-  v12 = [v6 code];
+  code2 = [errorCopy code];
 
-  if (v12 == -4000)
+  if (code2 == -4000)
   {
     v13 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(CONodeController *)self shortDescription];
+      shortDescription3 = [(CONodeController *)self shortDescription];
       v28 = 138543362;
-      v29 = v14;
+      v29 = shortDescription3;
       _os_log_impl(&dword_244378000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@ ping failed with a framing error. Marking node as discovered", &v28, 0xCu);
     }
 
-    v11 = [(CONodeController *)self node];
-    v15 = [v11 lastElectionInfoSent];
-    v16 = [(CONodeController *)self node];
-    v17 = [v16 lastElectionInfoReceived];
-    v18 = self;
+    node = [(CONodeController *)self node];
+    lastElectionInfoSent = [node lastElectionInfoSent];
+    node2 = [(CONodeController *)self node];
+    lastElectionInfoReceived = [node2 lastElectionInfoReceived];
+    selfCopy2 = self;
     v19 = 1;
-    v20 = v15;
-    v21 = v17;
+    v20 = lastElectionInfoSent;
+    v21 = lastElectionInfoReceived;
     v22 = 13;
     goto LABEL_19;
   }
@@ -2642,25 +2642,25 @@ LABEL_21:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateDelegateWithBallotCommand:(id)a3 withCompletionHandler:(id)a4
+- (void)_updateDelegateWithBallotCommand:(id)command withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CONodeController *)self delegate];
+  commandCopy = command;
+  handlerCopy = handler;
+  delegate = [(CONodeController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __75__CONodeController__updateDelegateWithBallotCommand_withCompletionHandler___block_invoke;
     v10[3] = &unk_278E19128;
-    v11 = v7;
-    [v8 nodeController:self didReceiveElectionCmd:v6 withCompletionHandler:v10];
+    v11 = handlerCopy;
+    [delegate nodeController:self didReceiveElectionCmd:commandCopy withCompletionHandler:v10];
   }
 
   else
   {
-    v9 = [[COElectionInfo alloc] initWithCommand:v6];
-    (*(v7 + 2))(v7, v9);
+    v9 = [[COElectionInfo alloc] initWithCommand:commandCopy];
+    (*(handlerCopy + 2))(handlerCopy, v9);
   }
 }
 
@@ -2699,115 +2699,115 @@ LABEL_21:
   return 6;
 }
 
-- (void)_updateNodeState:(int64_t)a3 currentElectionInfo:(id)a4 incomingElectionInfo:(id)a5 reason:(int64_t)a6
+- (void)_updateNodeState:(int64_t)state currentElectionInfo:(id)info incomingElectionInfo:(id)electionInfo reason:(int64_t)reason
 {
   v55 = *MEMORY[0x277D85DE8];
-  v46 = a4;
-  v9 = a5;
-  v10 = [(CONodeController *)self transports];
-  if ([v10 count] == 1)
+  infoCopy = info;
+  electionInfoCopy = electionInfo;
+  transports = [(CONodeController *)self transports];
+  if ([transports count] == 1)
   {
-    v11 = [v10 firstObject];
+    firstObject = [transports firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      a3 = 14;
+      state = 14;
     }
   }
 
-  v13 = [(CONodeController *)self _nodeControllerStateFromNodeState];
-  if (!-[CONodeController _isActiveState:](self, "_isActiveState:", a3) || v13 != 6 || ([v46 hasSameGenerationAndLeader:v9] & 1) == 0)
+  _nodeControllerStateFromNodeState = [(CONodeController *)self _nodeControllerStateFromNodeState];
+  if (!-[CONodeController _isActiveState:](self, "_isActiveState:", state) || _nodeControllerStateFromNodeState != 6 || ([infoCopy hasSameGenerationAndLeader:electionInfoCopy] & 1) == 0)
   {
-    v14 = [(CONodeController *)self node];
-    v15 = [v14 isInElectionState];
+    node = [(CONodeController *)self node];
+    isInElectionState = [node isInElectionState];
 
-    v16 = [(CONodeController *)self node];
-    [v16 setState:a3];
+    node2 = [(CONodeController *)self node];
+    [node2 setState:state];
 
-    v17 = [(CONodeController *)self node];
-    v18 = [v17 isInElectionState];
+    node3 = [(CONodeController *)self node];
+    isInElectionState2 = [node3 isInElectionState];
 
-    v19 = [(CONodeController *)self _nodeControllerStateFromNodeState];
-    if (v13 != v19)
+    _nodeControllerStateFromNodeState2 = [(CONodeController *)self _nodeControllerStateFromNodeState];
+    if (_nodeControllerStateFromNodeState != _nodeControllerStateFromNodeState2)
     {
       v20 = COCoreLogForCategory(16);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
       {
-        v44 = [(CONodeController *)self shortDescription];
+        shortDescription = [(CONodeController *)self shortDescription];
         *buf = 138543874;
-        v50 = v44;
+        v50 = shortDescription;
         v51 = 2048;
-        v52 = v13;
+        v52 = _nodeControllerStateFromNodeState;
         v53 = 2048;
-        v54 = v19;
+        v54 = _nodeControllerStateFromNodeState2;
         _os_log_debug_impl(&dword_244378000, v20, OS_LOG_TYPE_DEBUG, "%{public}@ moving from state %lu to state %lu", buf, 0x20u);
       }
     }
 
-    if (!(v18 & 1 | ((v15 & 1) == 0)))
+    if (!(isInElectionState2 & 1 | ((isInElectionState & 1) == 0)))
     {
-      v21 = [(CONodeController *)self node];
-      v22 = [v21 backoffBucket] == 0;
+      node4 = [(CONodeController *)self node];
+      v22 = [node4 backoffBucket] == 0;
 
       if (!v22)
       {
-        v23 = [(CONodeController *)self delegate];
+        delegate = [(CONodeController *)self delegate];
         if (objc_opt_respondsToSelector())
         {
-          [v23 backedOffNodeMovedOutOfElection:self];
+          [delegate backedOffNodeMovedOutOfElection:self];
         }
       }
     }
 
-    if (v18)
+    if (isInElectionState2)
     {
-      if (v15)
+      if (isInElectionState)
       {
         goto LABEL_21;
       }
 
-      v24 = [(CONodeController *)self node];
-      [v24 setTotalBackedOffTime:0];
+      node5 = [(CONodeController *)self node];
+      [node5 setTotalBackedOffTime:0];
 
-      v25 = [(CONodeController *)self knownDiscoveryRecords];
-      [v25 removeAllObjects];
+      knownDiscoveryRecords = [(CONodeController *)self knownDiscoveryRecords];
+      [knownDiscoveryRecords removeAllObjects];
     }
 
     else
     {
-      v26 = [(CONodeController *)self node];
-      [v26 setBackoffTimer:0];
+      node6 = [(CONodeController *)self node];
+      [node6 setBackoffTimer:0];
 
-      v27 = [(CONodeController *)self node];
-      [v27 setBackoffResponse:0];
+      node7 = [(CONodeController *)self node];
+      [node7 setBackoffResponse:0];
 
-      v25 = [(CONodeController *)self node];
-      [v25 setBackoffBucket:0];
+      knownDiscoveryRecords = [(CONodeController *)self node];
+      [knownDiscoveryRecords setBackoffBucket:0];
     }
 
 LABEL_21:
-    if (a3 == 5)
+    if (state == 5)
     {
-      v28 = [(CONodeController *)self node];
-      v29 = [v28 backoffTimer];
-      v30 = v29 == 0;
+      node8 = [(CONodeController *)self node];
+      backoffTimer = [node8 backoffTimer];
+      v30 = backoffTimer == 0;
 
       if (v30)
       {
         v31 = COCoreLogForCategory(16);
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [(CONodeController *)self shortDescription];
+          shortDescription2 = [(CONodeController *)self shortDescription];
           *buf = 138543362;
-          v50 = v32;
+          v50 = shortDescription2;
           _os_log_impl(&dword_244378000, v31, OS_LOG_TYPE_DEFAULT, "%{public}@ creating a backoff timer for bucket 0", buf, 0xCu);
         }
 
-        v33 = [(CONodeController *)self executionContext];
-        v34 = [v33 dispatchQueue];
-        v35 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v34);
+        executionContext = [(CONodeController *)self executionContext];
+        dispatchQueue = [executionContext dispatchQueue];
+        v35 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, dispatchQueue);
 
         if (v35)
         {
@@ -2820,11 +2820,11 @@ LABEL_21:
           handler[3] = &unk_278E15B10;
           objc_copyWeak(&v48, buf);
           dispatch_source_set_event_handler(v35, handler);
-          v37 = [(CONodeController *)self node];
-          [v37 setBackoffBucket:0];
+          node9 = [(CONodeController *)self node];
+          [node9 setBackoffBucket:0];
 
-          v38 = [(CONodeController *)self node];
-          [v38 setBackoffTimer:v35];
+          node10 = [(CONodeController *)self node];
+          [node10 setBackoffTimer:v35];
 
           objc_destroyWeak(&v48);
           objc_destroyWeak(buf);
@@ -2841,14 +2841,14 @@ LABEL_21:
       }
     }
 
-    if (v13 != v19)
+    if (_nodeControllerStateFromNodeState != _nodeControllerStateFromNodeState2)
     {
-      v40 = [(CONodeController *)self delegate];
+      delegate2 = [(CONodeController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        v41 = [(CONodeController *)self node];
-        v42 = [v41 lastElectionInfoSent];
-        [v40 nodeController:self didUpdateState:v13 to:v19 reason:a6 withLastSentElectionInfo:v42];
+        node11 = [(CONodeController *)self node];
+        lastElectionInfoSent = [node11 lastElectionInfoSent];
+        [delegate2 nodeController:self didUpdateState:_nodeControllerStateFromNodeState to:_nodeControllerStateFromNodeState2 reason:reason withLastSentElectionInfo:lastElectionInfoSent];
       }
     }
   }
@@ -2870,59 +2870,59 @@ void __85__CONodeController__updateNodeState_currentElectionInfo_incomingElectio
 - (void)didFireBackoffTimer
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(CONodeController *)self node];
-  v4 = [v3 backoffBucket];
+  node = [(CONodeController *)self node];
+  backoffBucket = [node backoffBucket];
 
-  v5 = [(CONodeController *)self node];
-  v6 = [v5 totalBackedOffTime];
+  node2 = [(CONodeController *)self node];
+  totalBackedOffTime = [node2 totalBackedOffTime];
 
-  v7 = CONodeStateBackoffSeries[v4];
-  v8 = [(CONodeController *)self node];
-  [v8 setTotalBackedOffTime:v7 + v6];
+  v7 = CONodeStateBackoffSeries[backoffBucket];
+  node3 = [(CONodeController *)self node];
+  [node3 setTotalBackedOffTime:v7 + totalBackedOffTime];
 
-  if (v4 <= 0xC)
+  if (backoffBucket <= 0xC)
   {
-    v9 = [(CONodeController *)self node];
-    [v9 setBackoffBucket:++v4];
+    node4 = [(CONodeController *)self node];
+    [node4 setBackoffBucket:++backoffBucket];
 
-    v7 = CONodeStateBackoffSeries[v4];
+    v7 = CONodeStateBackoffSeries[backoffBucket];
   }
 
   v10 = 1000000 * v7;
   v11 = dispatch_walltime(0, 1000000 * v7);
-  v12 = [(CONodeController *)self node];
-  v13 = [v12 backoffTimer];
-  dispatch_source_set_timer(v13, v11, v10, 0);
+  node5 = [(CONodeController *)self node];
+  backoffTimer = [node5 backoffTimer];
+  dispatch_source_set_timer(backoffTimer, v11, v10, 0);
 
   v14 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(CONodeController *)self shortDescription];
+    shortDescription = [(CONodeController *)self shortDescription];
     *buf = 138412546;
-    v31 = v15;
+    v31 = shortDescription;
     v32 = 2048;
-    v33 = v4;
+    v33 = backoffBucket;
     _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%@ back off (%ld) firing", buf, 0x16u);
   }
 
-  v16 = [(CONodeController *)self node];
-  v17 = [v16 backoffResponse];
+  node6 = [(CONodeController *)self node];
+  backoffResponse = [node6 backoffResponse];
 
-  v18 = [(CONodeController *)self node];
-  v19 = [v18 lastElectionInfoReceived];
-  if (v17)
+  node7 = [(CONodeController *)self node];
+  lastElectionInfoReceived = [node7 lastElectionInfoReceived];
+  if (backoffResponse)
   {
-    v20 = [(CONodeController *)self _electionRequestWithElectionInfo:v19];
+    v20 = [(CONodeController *)self _electionRequestWithElectionInfo:lastElectionInfoReceived];
 
     v21 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(CONodeController *)self shortDescription];
-      v23 = [v20 generation];
+      shortDescription2 = [(CONodeController *)self shortDescription];
+      generation = [v20 generation];
       *buf = 138543618;
-      v31 = v22;
+      v31 = shortDescription2;
       v32 = 2048;
-      v33 = v23;
+      v33 = generation;
       _os_log_impl(&dword_244378000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ delayed BALLOT (%llu) response", buf, 0x16u);
     }
 
@@ -2932,7 +2932,7 @@ void __85__CONodeController__updateNodeState_currentElectionInfo_incomingElectio
     v27[2] = __39__CONodeController_didFireBackoffTimer__block_invoke;
     v27[3] = &unk_278E19150;
     objc_copyWeak(&v29, buf);
-    v28 = v17;
+    v28 = backoffResponse;
     [(CONodeController *)self _updateDelegateWithBallotCommand:v20 withCompletionHandler:v27];
 
     objc_destroyWeak(&v29);
@@ -2941,7 +2941,7 @@ void __85__CONodeController__updateNodeState_currentElectionInfo_incomingElectio
 
   else
   {
-    v20 = [(CONodeController *)self _ballotResponseWithElectionInfo:v19];
+    v20 = [(CONodeController *)self _ballotResponseWithElectionInfo:lastElectionInfoReceived];
 
     objc_initWeak(buf, self);
     v25[0] = MEMORY[0x277D85DD0];
@@ -2994,96 +2994,96 @@ void __39__CONodeController_didFireBackoffTimer__block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (id)_electionRequestWithElectionInfo:(id)a3
+- (id)_electionRequestWithElectionInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CONodeController *)self preferredTransport];
+  infoCopy = info;
+  preferredTransport = [(CONodeController *)self preferredTransport];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 listeningPort];
+    listeningPort = [preferredTransport listeningPort];
   }
 
   else
   {
-    v6 = 0;
+    listeningPort = 0;
   }
 
-  v7 = [(CONodeController *)self _electionInfoByDiffingCurrentElectionInfo:v4];
+  v7 = [(CONodeController *)self _electionInfoByDiffingCurrentElectionInfo:infoCopy];
   v8 = [COMeshElectionRequest alloc];
-  v9 = [v7 ballot];
-  v10 = -[COMeshElectionRequest initWithBallot:generation:listeningPort:](v8, "initWithBallot:generation:listeningPort:", v9, [v7 generation], v6);
+  ballot = [v7 ballot];
+  v10 = -[COMeshElectionRequest initWithBallot:generation:listeningPort:](v8, "initWithBallot:generation:listeningPort:", ballot, [v7 generation], listeningPort);
 
   return v10;
 }
 
-- (id)_ballotResponseWithElectionInfo:(id)a3
+- (id)_ballotResponseWithElectionInfo:(id)info
 {
-  v3 = [(CONodeController *)self _electionInfoByDiffingCurrentElectionInfo:a3];
+  v3 = [(CONodeController *)self _electionInfoByDiffingCurrentElectionInfo:info];
   v4 = [COMeshBallotResponse alloc];
-  v5 = [v3 ballot];
-  v6 = -[COMeshBaseBallotResponse initWithBallot:generation:](v4, "initWithBallot:generation:", v5, [v3 generation]);
+  ballot = [v3 ballot];
+  v6 = -[COMeshBaseBallotResponse initWithBallot:generation:](v4, "initWithBallot:generation:", ballot, [v3 generation]);
 
   return v6;
 }
 
-- (id)_voteRequestWithElectionInfo:(id)a3
+- (id)_voteRequestWithElectionInfo:(id)info
 {
-  v3 = [(CONodeController *)self _electionInfoByDiffingCurrentElectionInfo:a3];
+  v3 = [(CONodeController *)self _electionInfoByDiffingCurrentElectionInfo:info];
   v4 = [COMeshVoteRequest alloc];
-  v5 = [v3 ballot];
-  v6 = -[COMeshBaseBallotRequest initWithBallot:generation:](v4, "initWithBallot:generation:", v5, [v3 generation]);
+  ballot = [v3 ballot];
+  v6 = -[COMeshBaseBallotRequest initWithBallot:generation:](v4, "initWithBallot:generation:", ballot, [v3 generation]);
 
   return v6;
 }
 
-- (id)_acceptResponseWithElectionInfo:(id)a3
+- (id)_acceptResponseWithElectionInfo:(id)info
 {
-  v3 = [(CONodeController *)self _electionInfoByDiffingCurrentElectionInfo:a3];
+  v3 = [(CONodeController *)self _electionInfoByDiffingCurrentElectionInfo:info];
   v4 = [COMeshAcceptResponse alloc];
-  v5 = [v3 ballot];
-  v6 = -[COMeshBaseBallotResponse initWithBallot:generation:](v4, "initWithBallot:generation:", v5, [v3 generation]);
+  ballot = [v3 ballot];
+  v6 = -[COMeshBaseBallotResponse initWithBallot:generation:](v4, "initWithBallot:generation:", ballot, [v3 generation]);
 
   return v6;
 }
 
-- (void)_updateKnownDiscovery:(id)a3
+- (void)_updateKnownDiscovery:(id)discovery
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CFD0B8] isIPDiscoveryDiffingEnabled];
-  v5 = v8;
-  if (v4)
+  discoveryCopy = discovery;
+  isIPDiscoveryDiffingEnabled = [MEMORY[0x277CFD0B8] isIPDiscoveryDiffingEnabled];
+  v5 = discoveryCopy;
+  if (isIPDiscoveryDiffingEnabled)
   {
-    v6 = [v8 discovery];
-    if (v6)
+    discovery = [discoveryCopy discovery];
+    if (discovery)
     {
-      v7 = [(CONodeController *)self knownDiscoveryRecords];
-      [v7 addEntriesFromDictionary:v6];
+      knownDiscoveryRecords = [(CONodeController *)self knownDiscoveryRecords];
+      [knownDiscoveryRecords addEntriesFromDictionary:discovery];
     }
 
-    v5 = v8;
+    v5 = discoveryCopy;
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](isIPDiscoveryDiffingEnabled, v5);
 }
 
-- (id)_electionInfoByDiffingCurrentElectionInfo:(id)a3
+- (id)_electionInfoByDiffingCurrentElectionInfo:(id)info
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   if ([MEMORY[0x277CFD0B8] isIPDiscoveryDiffingEnabled])
   {
-    v5 = [MEMORY[0x277CBEB38] dictionary];
-    v24 = v4;
-    v6 = [v4 ballot];
-    v7 = [v6 discovery];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v24 = infoCopy;
+    ballot = [infoCopy ballot];
+    discovery = [ballot discovery];
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = [v7 allKeys];
-    v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    allKeys = [discovery allKeys];
+    v9 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
       v10 = v9;
@@ -3094,35 +3094,35 @@ void __39__CONodeController_didFireBackoffTimer__block_invoke_2(uint64_t a1, voi
         {
           if (*v26 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allKeys);
           }
 
           v13 = *(*(&v25 + 1) + 8 * i);
-          v14 = [(CONodeController *)self knownDiscoveryRecords];
-          v15 = [v14 objectForKey:v13];
+          knownDiscoveryRecords = [(CONodeController *)self knownDiscoveryRecords];
+          v15 = [knownDiscoveryRecords objectForKey:v13];
 
-          v16 = [v7 objectForKey:v13];
+          v16 = [discovery objectForKey:v13];
           v17 = v16;
           if (!v15 || ([v16 isEqualToDiscoveryRecord:v15] & 1) == 0)
           {
-            [v5 setObject:v17 forKey:v13];
+            [dictionary setObject:v17 forKey:v13];
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v10 = [allKeys countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v10);
     }
 
-    v18 = [(CONodeController *)self knownDiscoveryRecords];
-    [v18 addEntriesFromDictionary:v5];
+    knownDiscoveryRecords2 = [(CONodeController *)self knownDiscoveryRecords];
+    [knownDiscoveryRecords2 addEntriesFromDictionary:dictionary];
 
-    v4 = v24;
-    v19 = [v24 ballot];
-    v20 = [v19 mutableCopy];
+    infoCopy = v24;
+    ballot2 = [v24 ballot];
+    v20 = [ballot2 mutableCopy];
 
-    [v20 setDiscovery:v5];
+    [v20 setDiscovery:dictionary];
     v21 = objc_alloc_init(COElectionInfo);
     -[COElectionInfo setGeneration:](v21, "setGeneration:", [v24 generation]);
     [(COElectionInfo *)v21 setBallot:v20];
@@ -3130,7 +3130,7 @@ void __39__CONodeController_didFireBackoffTimer__block_invoke_2(uint64_t a1, voi
 
   else
   {
-    v21 = v4;
+    v21 = infoCopy;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -3138,16 +3138,16 @@ void __39__CONodeController_didFireBackoffTimer__block_invoke_2(uint64_t a1, voi
   return v21;
 }
 
-- (void)_adjustNodeDiscoveryInformationUsingRecord:(id)a3
+- (void)_adjustNodeDiscoveryInformationUsingRecord:(id)record
 {
-  v10 = a3;
-  v4 = [(CONodeController *)self node];
-  v5 = [v4 discoveryType];
+  recordCopy = record;
+  node = [(CONodeController *)self node];
+  discoveryType = [node discoveryType];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 |= 2uLL;
+    discoveryType |= 2uLL;
   }
 
   else
@@ -3155,41 +3155,41 @@ void __39__CONodeController_didFireBackoffTimer__block_invoke_2(uint64_t a1, voi
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v5 |= 1uLL;
-      v6 = [(CONodeController *)self node];
-      v7 = [v6 connectionType];
+      discoveryType |= 1uLL;
+      node2 = [(CONodeController *)self node];
+      connectionType = [node2 connectionType];
 
-      if (!v7)
+      if (!connectionType)
       {
-        v8 = [(CONodeController *)self node];
-        [v8 setConnectionType:1];
+        node3 = [(CONodeController *)self node];
+        [node3 setConnectionType:1];
       }
     }
   }
 
-  v9 = [(CONodeController *)self node];
-  [v9 setDiscoveryType:v5];
+  node4 = [(CONodeController *)self node];
+  [node4 setDiscoveryType:discoveryType];
 }
 
-- (void)transport:(id)a3 didReceiveCommand:(id)a4
+- (void)transport:(id)transport didReceiveCommand:(id)command
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CONodeController *)self executionContext];
-  [v8 assertDispatchQueue];
+  transportCopy = transport;
+  commandCopy = command;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(CONodeController *)self _handleWithdraw:v7 fromTransport:v6];
+    [(CONodeController *)self _handleWithdraw:commandCopy fromTransport:transportCopy];
   }
 
   else
   {
-    v9 = [(CONodeController *)self delegate];
+    delegate = [(CONodeController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v9 nodeController:self didReceiveCommand:v7];
+      [delegate nodeController:self didReceiveCommand:commandCopy];
     }
 
     else
@@ -3203,36 +3203,36 @@ void __39__CONodeController_didFireBackoffTimer__block_invoke_2(uint64_t a1, voi
   }
 }
 
-- (void)transport:(id)a3 didReceiveRequest:(id)a4 callback:(id)a5
+- (void)transport:(id)transport didReceiveRequest:(id)request callback:(id)callback
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CONodeController *)self executionContext];
-  [v11 assertDispatchQueue];
+  transportCopy = transport;
+  requestCopy = request;
+  callbackCopy = callback;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
   if (![(CONodeController *)self handlersRegistered])
   {
-    v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D44250] code:-6714 userInfo:0];
+    delegate = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D44250] code:-6714 userInfo:0];
     v18 = COCoreLogForCategory(16);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
 LABEL_13:
 
-      v10[2](v10, 0, v17);
+      callbackCopy[2](callbackCopy, 0, delegate);
 LABEL_14:
 
       goto LABEL_15;
     }
 
-    v19 = [(CONodeController *)self shortDescription];
+    shortDescription = [(CONodeController *)self shortDescription];
     v25 = 138543874;
-    v26 = v19;
+    v26 = shortDescription;
     v27 = 2112;
-    v28 = v9;
+    v28 = requestCopy;
     v29 = 2112;
-    v30 = v17;
+    v30 = delegate;
     v20 = "%{public}@ acceptable commands not registered. Responding to %@ with error %@";
     v21 = v18;
     v22 = 32;
@@ -3244,22 +3244,22 @@ LABEL_24:
 
   if (!self->_activated)
   {
-    v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D44250] code:-6714 userInfo:0];
+    delegate = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D44250] code:-6714 userInfo:0];
     v18 = COCoreLogForCategory(16);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_13;
     }
 
-    v19 = [(CONodeController *)self shortDescription];
+    shortDescription = [(CONodeController *)self shortDescription];
     v25 = 138544130;
-    v26 = v19;
+    v26 = shortDescription;
     v27 = 2112;
-    v28 = v8;
+    v28 = transportCopy;
     v29 = 2112;
-    v30 = v9;
+    v30 = requestCopy;
     v31 = 2112;
-    v32 = v17;
+    v32 = delegate;
     v20 = "%{public}@ transport %@ has not finished activating. Responding to %@ with error %@";
     v21 = v18;
     v22 = 42;
@@ -3272,43 +3272,43 @@ LABEL_24:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CONodeController *)self _handleElectionRequest:v9 fromTransport:v8 callback:v10];
+      [(CONodeController *)self _handleElectionRequest:requestCopy fromTransport:transportCopy callback:callbackCopy];
       goto LABEL_15;
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(CONodeController *)self _handleVoteRequest:v9 fromTransport:v8 callback:v10];
+      [(CONodeController *)self _handleVoteRequest:requestCopy fromTransport:transportCopy callback:callbackCopy];
       goto LABEL_15;
     }
 
-    v17 = [(CONodeController *)self delegate];
+    delegate = [(CONodeController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v17 nodeController:self didReceiveRequest:v9 callback:v10];
+      [delegate nodeController:self didReceiveRequest:requestCopy callback:callbackCopy];
     }
 
     else
     {
       v24 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMeshNodeErrorDomain" code:-4001 userInfo:0];
-      v10[2](v10, 0, v24);
+      callbackCopy[2](callbackCopy, 0, v24);
     }
 
     goto LABEL_14;
   }
 
-  v12 = [(CONodeController *)self executionContext];
-  v13 = [v12 leaderElectionConfigured];
+  executionContext2 = [(CONodeController *)self executionContext];
+  leaderElectionConfigured = [executionContext2 leaderElectionConfigured];
 
-  if ((v13 & 1) == 0 && [(CONodeController *)self state]== 1)
+  if ((leaderElectionConfigured & 1) == 0 && [(CONodeController *)self state]== 1)
   {
     v14 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(CONodeController *)self shortDescription];
+      shortDescription2 = [(CONodeController *)self shortDescription];
       v25 = 138543362;
-      v26 = v15;
+      v26 = shortDescription2;
       _os_log_impl(&dword_244378000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@ discovered node with an incoming ping will move to processing", &v25, 0xCu);
     }
 
@@ -3316,24 +3316,24 @@ LABEL_24:
   }
 
   v16 = objc_alloc_init(COMeshResponse);
-  (v10)[2](v10, v16, 0);
+  (callbackCopy)[2](callbackCopy, v16, 0);
 
 LABEL_15:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transport:(id)a3 didReceiveError:(id)a4 forCommand:(id)a5
+- (void)transport:(id)transport didReceiveError:(id)error forCommand:(id)command
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(CONodeController *)self executionContext];
-  [v9 assertDispatchQueue];
+  errorCopy = error;
+  commandCopy = command;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v10 = [(CONodeController *)self delegate];
+  delegate = [(CONodeController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v10 nodeController:self didReceiveError:v7 forCommand:v8];
+    [delegate nodeController:self didReceiveError:errorCopy forCommand:commandCopy];
   }
 
   else
@@ -3341,13 +3341,13 @@ LABEL_15:
     v11 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v13 = [(CONodeController *)self shortDescription];
+      shortDescription = [(CONodeController *)self shortDescription];
       v14 = 138543874;
-      v15 = v13;
+      v15 = shortDescription;
       v16 = 2112;
-      v17 = v8;
+      v17 = commandCopy;
       v18 = 2112;
-      v19 = v7;
+      v19 = errorCopy;
       _os_log_error_impl(&dword_244378000, v11, OS_LOG_TYPE_ERROR, "%{public}@ failed to send a command %@ with error %@", &v14, 0x20u);
     }
   }
@@ -3355,90 +3355,90 @@ LABEL_15:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transport:(id)a3 didInvalidateWithError:(id)a4
+- (void)transport:(id)transport didInvalidateWithError:(id)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  transportCopy = transport;
+  errorCopy = error;
   v8 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     [CONodeController transport:? didInvalidateWithError:?];
   }
 
-  v9 = [(CONodeController *)self executionContext];
-  [v9 assertDispatchQueue];
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v10 = [v6 record];
+  record = [transportCopy record];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v12 = [(CONodeController *)self acceptableCommands];
-    self->_expectedRegisteredCommandCount = [v12 count];
+    acceptableCommands = [(CONodeController *)self acceptableCommands];
+    self->_expectedRegisteredCommandCount = [acceptableCommands count];
   }
 
   else
   {
-    v13 = self;
-    objc_sync_enter(v13);
-    v14 = [(CONodeController *)v13 records];
-    v15 = [v6 record];
-    [v14 removeObject:v15];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    records = [(CONodeController *)selfCopy records];
+    record2 = [transportCopy record];
+    [records removeObject:record2];
 
-    objc_sync_exit(v13);
-    v16 = [(CONodeController *)v13 transports];
-    [v16 removeObject:v6];
+    objc_sync_exit(selfCopy);
+    transports = [(CONodeController *)selfCopy transports];
+    [transports removeObject:transportCopy];
 
-    v12 = [(CONodeController *)v13 computePreferredTransport];
+    acceptableCommands = [(CONodeController *)selfCopy computePreferredTransport];
     v17 = COCoreLogForCategory(16);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(CONodeController *)v13 shortDescription];
+      shortDescription = [(CONodeController *)selfCopy shortDescription];
       v25 = 138543618;
-      v26 = v18;
+      v26 = shortDescription;
       v27 = 2112;
-      v28 = v12;
+      v28 = acceptableCommands;
       _os_log_impl(&dword_244378000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@ recomputing preferred transport %@", &v25, 0x16u);
     }
 
-    [(CONodeController *)v13 setPreferredTransport:v12];
-    v19 = [(CONodeController *)v13 delegate];
+    [(CONodeController *)selfCopy setPreferredTransport:acceptableCommands];
+    delegate = [(CONodeController *)selfCopy delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v19 nodeController:v13 didRemoveTransport:v6 withError:v7];
+      [delegate nodeController:selfCopy didRemoveTransport:transportCopy withError:errorCopy];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [(CONodeController *)v13 node];
-      v21 = [v20 lastElectionInfoSent];
-      v22 = [(CONodeController *)v13 node];
-      v23 = [v22 lastElectionInfoReceived];
-      [(CONodeController *)v13 _updateNodeState:14 currentElectionInfo:v21 incomingElectionInfo:v23 reason:21];
+      node = [(CONodeController *)selfCopy node];
+      lastElectionInfoSent = [node lastElectionInfoSent];
+      node2 = [(CONodeController *)selfCopy node];
+      lastElectionInfoReceived = [node2 lastElectionInfoReceived];
+      [(CONodeController *)selfCopy _updateNodeState:14 currentElectionInfo:lastElectionInfoSent incomingElectionInfo:lastElectionInfoReceived reason:21];
     }
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transport:(id)a3 shouldUpdateRemoteConstituent:(id)a4 to:(id)a5 forCommand:(id)a6 completionHandler:(id)a7
+- (void)transport:(id)transport shouldUpdateRemoteConstituent:(id)constituent to:(id)to forCommand:(id)command completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = a6;
-  v17 = [(CONodeController *)self executionContext];
-  [v17 assertDispatchQueue];
+  transportCopy = transport;
+  constituentCopy = constituent;
+  toCopy = to;
+  handlerCopy = handler;
+  commandCopy = command;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v18 = [(CONodeController *)self executionContext];
-  v19 = [v18 leaderElectionConfigured];
+  executionContext2 = [(CONodeController *)self executionContext];
+  leaderElectionConfigured = [executionContext2 leaderElectionConfigured];
 
-  if (v19)
+  if (leaderElectionConfigured)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -3448,35 +3448,35 @@ LABEL_15:
       v21 = COCoreLogForCategory(16);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v22 = [(CONodeController *)self shortDescription];
+        shortDescription = [(CONodeController *)self shortDescription];
         v30 = 138544130;
-        v31 = v22;
+        v31 = shortDescription;
         v32 = 2112;
-        v33 = v13;
+        v33 = constituentCopy;
         v34 = 2112;
-        v35 = v14;
+        v35 = toCopy;
         v36 = 2048;
-        v37 = v12;
+        v37 = transportCopy;
         _os_log_impl(&dword_244378000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ remote constituent will change from %@ to %@ on transport %p", &v30, 0x2Au);
       }
 
-      v23 = [(CONodeController *)self node];
-      [v23 setRemote:v14];
+      node = [(CONodeController *)self node];
+      [node setRemote:toCopy];
 
-      v24 = [(CONodeController *)self ipDiscoveryRecord];
-      if (v24)
+      ipDiscoveryRecord = [(CONodeController *)self ipDiscoveryRecord];
+      if (ipDiscoveryRecord)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = [v24 constituent];
-          if (([v25 isEqual:v14] & 1) == 0)
+          constituent = [ipDiscoveryRecord constituent];
+          if (([constituent isEqual:toCopy] & 1) == 0)
           {
-            v26 = [v24 mutableCopy];
-            [v26 rollConstituent:v14];
+            v26 = [ipDiscoveryRecord mutableCopy];
+            [v26 rollConstituent:toCopy];
             v27 = [[CODiscoveryRecord alloc] initWithDiscoveryRecord:v26];
             [(CONodeController *)self setIpDiscoveryRecord:v27];
-            [v12 setRecord:v27];
+            [transportCopy setRecord:v27];
           }
         }
       }
@@ -3492,71 +3492,71 @@ LABEL_13:
 
     if (isKindOfClass)
     {
-      v24 = COCoreLogForCategory(16);
-      if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+      ipDiscoveryRecord = COCoreLogForCategory(16);
+      if (os_log_type_enabled(ipDiscoveryRecord, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [(CONodeController *)self shortDescription];
+        shortDescription2 = [(CONodeController *)self shortDescription];
         v30 = 138544130;
-        v31 = v28;
+        v31 = shortDescription2;
         v32 = 2112;
-        v33 = v13;
+        v33 = constituentCopy;
         v34 = 2112;
-        v35 = v14;
+        v35 = toCopy;
         v36 = 2048;
-        v37 = v12;
-        _os_log_impl(&dword_244378000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ remote constituent will change from %@ to %@ on transport %p", &v30, 0x2Au);
+        v37 = transportCopy;
+        _os_log_impl(&dword_244378000, ipDiscoveryRecord, OS_LOG_TYPE_DEFAULT, "%{public}@ remote constituent will change from %@ to %@ on transport %p", &v30, 0x2Au);
       }
 
       goto LABEL_13;
     }
   }
 
-  v15[2](v15, isKindOfClass & 1);
+  handlerCopy[2](handlerCopy, isKindOfClass & 1);
 
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transport:(id)a3 willUpdateRemoteConstituent:(id)a4 to:(id)a5
+- (void)transport:(id)transport willUpdateRemoteConstituent:(id)constituent to:(id)to
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CONodeController *)self executionContext];
-  [v11 assertDispatchQueue];
+  transportCopy = transport;
+  constituentCopy = constituent;
+  toCopy = to;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
   v12 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(CONodeController *)self shortDescription];
+    shortDescription = [(CONodeController *)self shortDescription];
     v20 = 138544130;
-    v21 = v13;
+    v21 = shortDescription;
     v22 = 2112;
-    v23 = v9;
+    v23 = constituentCopy;
     v24 = 2112;
-    v25 = v10;
+    v25 = toCopy;
     v26 = 2048;
-    v27 = v8;
+    v27 = transportCopy;
     _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ remote constituent will change from %@ to %@ on transport %p", &v20, 0x2Au);
   }
 
-  v14 = [(CONodeController *)self node];
-  [v14 setRemote:v10];
+  node = [(CONodeController *)self node];
+  [node setRemote:toCopy];
 
-  v15 = [(CONodeController *)self ipDiscoveryRecord];
-  if (v15)
+  ipDiscoveryRecord = [(CONodeController *)self ipDiscoveryRecord];
+  if (ipDiscoveryRecord)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [v15 constituent];
-      if (([v16 isEqual:v10] & 1) == 0)
+      constituent = [ipDiscoveryRecord constituent];
+      if (([constituent isEqual:toCopy] & 1) == 0)
       {
-        v17 = [v15 mutableCopy];
-        [v17 rollConstituent:v10];
+        v17 = [ipDiscoveryRecord mutableCopy];
+        [v17 rollConstituent:toCopy];
         v18 = [[CODiscoveryRecord alloc] initWithDiscoveryRecord:v17];
         [(CONodeController *)self setIpDiscoveryRecord:v18];
-        [v8 setRecord:v18];
+        [transportCopy setRecord:v18];
       }
     }
   }
@@ -3564,54 +3564,54 @@ LABEL_13:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transport:(id)a3 didUpdateRemoteConstituent:(id)a4 to:(id)a5
+- (void)transport:(id)transport didUpdateRemoteConstituent:(id)constituent to:(id)to
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CONodeController *)self executionContext];
-  [v11 assertDispatchQueue];
+  transportCopy = transport;
+  constituentCopy = constituent;
+  toCopy = to;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
   v12 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [(CONodeController *)self shortDescription];
+    shortDescription = [(CONodeController *)self shortDescription];
     v16 = 138544130;
-    v17 = v13;
+    v17 = shortDescription;
     v18 = 2112;
-    v19 = v9;
+    v19 = constituentCopy;
     v20 = 2112;
-    v21 = v10;
+    v21 = toCopy;
     v22 = 2048;
-    v23 = v8;
+    v23 = transportCopy;
     _os_log_impl(&dword_244378000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@ remote constituent has changed from %@ to %@ on transport %p", &v16, 0x2Au);
   }
 
-  if (v9)
+  if (constituentCopy)
   {
-    v14 = [(CONodeController *)self delegate];
+    delegate = [(CONodeController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v14 nodeController:self didUpdateRemoteConstituent:v9 to:v10];
+      [delegate nodeController:self didUpdateRemoteConstituent:constituentCopy to:toCopy];
     }
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transport:(id)a3 didReceiveUnhandledRequest:(id)a4
+- (void)transport:(id)transport didReceiveUnhandledRequest:(id)request
 {
-  v5 = a4;
-  v6 = [(CONodeController *)self executionContext];
-  [v6 assertDispatchQueue];
+  requestCopy = request;
+  executionContext = [(CONodeController *)self executionContext];
+  [executionContext assertDispatchQueue];
 
-  v7 = [v5 request];
-  v8 = [(CONodeController *)self executionContext];
-  v9 = [v8 leaderElectionConfigured];
+  request = [requestCopy request];
+  executionContext2 = [(CONodeController *)self executionContext];
+  leaderElectionConfigured = [executionContext2 leaderElectionConfigured];
 
   v10 = off_278E150B8;
-  if (!v9)
+  if (!leaderElectionConfigured)
   {
     v10 = &off_278E150E0;
   }
@@ -3619,24 +3619,24 @@ LABEL_13:
   v11 = *v10;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v13 = [v7 conformsToProtocol:&unk_2857D4880] & isKindOfClass;
+  v13 = [request conformsToProtocol:&unk_2857D4880] & isKindOfClass;
   v14 = COCoreLogForCategory(16);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
   {
     [CONodeController transport:didReceiveUnhandledRequest:];
   }
 
-  v15 = [(CONodeController *)self delegate];
+  delegate = [(CONodeController *)self delegate];
   if (v13 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v15 nodeController:self didReceiveOnDemandNodeCreationRequest:v5];
+    [delegate nodeController:self didReceiveOnDemandNodeCreationRequest:requestCopy];
   }
 
   else
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"COMeshNodeErrorDomain" code:-4000 userInfo:0];
-    v17 = [v5 handler];
-    (v17)[2](v17, 0, 0, v16);
+    handler = [requestCopy handler];
+    (handler)[2](handler, 0, 0, v16);
   }
 }
 

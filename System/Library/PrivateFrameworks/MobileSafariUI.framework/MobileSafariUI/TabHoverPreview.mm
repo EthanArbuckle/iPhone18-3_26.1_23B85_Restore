@@ -1,52 +1,52 @@
 @interface TabHoverPreview
-- (TabHoverPreview)initWithTabBar:(id)a3;
+- (TabHoverPreview)initWithTabBar:(id)bar;
 - (UIView)tabBar;
-- (void)_setPositionalConstraintsActive:(BOOL)a3;
-- (void)_updateConstraintsWithItemView:(id)a3 forVerticalTabs:(BOOL)a4;
+- (void)_setPositionalConstraintsActive:(BOOL)active;
+- (void)_updateConstraintsWithItemView:(id)view forVerticalTabs:(BOOL)tabs;
 - (void)dismissPreview;
-- (void)setSecondaryTitleText:(id)a3;
-- (void)setSnapshotImage:(id)a3 metadata:(id)a4;
-- (void)setTitleText:(id)a3;
-- (void)showPreviewForItemView:(id)a3 forVerticalTabs:(BOOL)a4;
+- (void)setSecondaryTitleText:(id)text;
+- (void)setSnapshotImage:(id)image metadata:(id)metadata;
+- (void)setTitleText:(id)text;
+- (void)showPreviewForItemView:(id)view forVerticalTabs:(BOOL)tabs;
 @end
 
 @implementation TabHoverPreview
 
-- (TabHoverPreview)initWithTabBar:(id)a3
+- (TabHoverPreview)initWithTabBar:(id)bar
 {
   v111[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  barCopy = bar;
   v96.receiver = self;
   v96.super_class = TabHoverPreview;
   v5 = [(TabHoverPreview *)&v96 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_tabBar, v4);
+    objc_storeWeak(&v5->_tabBar, barCopy);
     [(TabHoverPreview *)v6 setUserInteractionEnabled:0];
     [(TabHoverPreview *)v6 setAlpha:0.0];
-    v7 = [(TabHoverPreview *)v6 layer];
-    [v7 setShadowRadius:8.0];
-    v94 = v7;
-    [v7 setShadowPathIsBounds:1];
-    v8 = [MEMORY[0x277D75348] blackColor];
-    [v7 setShadowColor:{objc_msgSend(v8, "CGColor")}];
+    layer = [(TabHoverPreview *)v6 layer];
+    [layer setShadowRadius:8.0];
+    v94 = layer;
+    [layer setShadowPathIsBounds:1];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [layer setShadowColor:{objc_msgSend(blackColor, "CGColor")}];
 
-    [v7 setShadowOffset:{0.0, 4.0}];
+    [layer setShadowOffset:{0.0, 4.0}];
     LODWORD(v9) = 1039516303;
-    [v7 setShadowOpacity:v9];
+    [layer setShadowOpacity:v9];
     v10 = objc_alloc_init(MEMORY[0x277D75D18]);
     [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v11 = [v10 layer];
-    [v11 setCornerRadius:10.0];
+    layer2 = [v10 layer];
+    [layer2 setCornerRadius:10.0];
 
     v12 = *MEMORY[0x277CDA138];
     [v10 layer];
-    v13 = v95 = v4;
+    v13 = v95 = barCopy;
     [v13 setCornerCurve:v12];
 
-    v14 = [v10 layer];
-    [v14 setMasksToBounds:1];
+    layer3 = [v10 layer];
+    [layer3 setMasksToBounds:1];
 
     [(TabHoverPreview *)v6 addSubview:v10];
     v93 = [MEMORY[0x277D75210] effectWithStyle:10];
@@ -69,8 +69,8 @@
     v21 = [MEMORY[0x277D74300] boldSystemFontOfSize:14.0];
     [(UILabel *)v6->_titleLabel setFont:v21];
 
-    v22 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v6->_titleLabel setTextColor:v22];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v6->_titleLabel setTextColor:labelColor];
 
     [(UILabel *)v6->_titleLabel setNumberOfLines:5];
     LODWORD(v23) = 1148846080;
@@ -83,8 +83,8 @@
     v26 = [MEMORY[0x277D74300] boldSystemFontOfSize:12.0];
     [(UILabel *)v6->_secondaryTitleLabel setFont:v26];
 
-    v27 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v6->_secondaryTitleLabel setTextColor:v27];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v6->_secondaryTitleLabel setTextColor:secondaryLabelColor];
 
     [(UILabel *)v6->_secondaryTitleLabel setNumberOfLines:2];
     LODWORD(v28) = 1148846080;
@@ -105,105 +105,105 @@
     v33 = v31;
     [v10 addSubview:v31];
     v75 = MEMORY[0x277CCAAD0];
-    v92 = [(TabHoverPreview *)v6 widthAnchor];
-    v91 = [v92 constraintEqualToConstant:240.0];
+    widthAnchor = [(TabHoverPreview *)v6 widthAnchor];
+    v91 = [widthAnchor constraintEqualToConstant:240.0];
     v97[0] = v91;
-    v90 = [v10 leadingAnchor];
-    v89 = [(TabHoverPreview *)v6 leadingAnchor];
-    v88 = [v90 constraintEqualToAnchor:v89];
+    leadingAnchor = [v10 leadingAnchor];
+    leadingAnchor2 = [(TabHoverPreview *)v6 leadingAnchor];
+    v88 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v97[1] = v88;
-    v87 = [v10 topAnchor];
-    v86 = [(TabHoverPreview *)v6 topAnchor];
-    v85 = [v87 constraintEqualToAnchor:v86];
+    topAnchor = [v10 topAnchor];
+    topAnchor2 = [(TabHoverPreview *)v6 topAnchor];
+    v85 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v97[2] = v85;
-    v84 = [v10 widthAnchor];
-    v83 = [(TabHoverPreview *)v6 widthAnchor];
-    v82 = [v84 constraintEqualToAnchor:v83];
+    widthAnchor2 = [v10 widthAnchor];
+    widthAnchor3 = [(TabHoverPreview *)v6 widthAnchor];
+    v82 = [widthAnchor2 constraintEqualToAnchor:widthAnchor3];
     v97[3] = v82;
-    v34 = [v10 heightAnchor];
-    v35 = [(TabHoverPreview *)v6 heightAnchor];
-    v36 = [v34 constraintEqualToAnchor:v35];
+    heightAnchor = [v10 heightAnchor];
+    heightAnchor2 = [(TabHoverPreview *)v6 heightAnchor];
+    v36 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
     heightConstraint = v6->_heightConstraint;
     v6->_heightConstraint = v36;
 
     v98 = v6->_heightConstraint;
     v80 = v98;
-    v79 = [v16 leadingAnchor];
-    v78 = [v10 leadingAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78];
+    leadingAnchor3 = [v16 leadingAnchor];
+    leadingAnchor4 = [v10 leadingAnchor];
+    v77 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v99 = v77;
-    v76 = [v16 topAnchor];
-    v74 = [v10 topAnchor];
-    v73 = [v76 constraintEqualToAnchor:v74];
+    topAnchor3 = [v16 topAnchor];
+    topAnchor4 = [v10 topAnchor];
+    v73 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v100 = v73;
     v81 = v16;
-    v72 = [v16 widthAnchor];
-    v71 = [v10 widthAnchor];
-    v70 = [v72 constraintEqualToAnchor:v71];
+    widthAnchor4 = [v16 widthAnchor];
+    widthAnchor5 = [v10 widthAnchor];
+    v70 = [widthAnchor4 constraintEqualToAnchor:widthAnchor5];
     v101 = v70;
-    v69 = [v16 heightAnchor];
-    v68 = [v10 heightAnchor];
-    v67 = [v69 constraintEqualToAnchor:v68];
+    heightAnchor3 = [v16 heightAnchor];
+    heightAnchor4 = [v10 heightAnchor];
+    v67 = [heightAnchor3 constraintEqualToAnchor:heightAnchor4];
     v102 = v67;
-    v66 = [(UIImageView *)v6->_snapshotView leadingAnchor];
-    v65 = [v10 leadingAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65];
+    leadingAnchor5 = [(UIImageView *)v6->_snapshotView leadingAnchor];
+    leadingAnchor6 = [v10 leadingAnchor];
+    v64 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v103 = v64;
-    v62 = [(UIImageView *)v6->_snapshotView topAnchor];
-    v61 = [v10 topAnchor];
-    v60 = [v62 constraintEqualToAnchor:v61];
+    topAnchor5 = [(UIImageView *)v6->_snapshotView topAnchor];
+    topAnchor6 = [v10 topAnchor];
+    v60 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
     v104 = v60;
-    v59 = [(UIImageView *)v6->_snapshotView widthAnchor];
-    v58 = [v10 widthAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58];
+    widthAnchor6 = [(UIImageView *)v6->_snapshotView widthAnchor];
+    widthAnchor7 = [v10 widthAnchor];
+    v57 = [widthAnchor6 constraintEqualToAnchor:widthAnchor7];
     v105 = v57;
-    v56 = [v33 leadingAnchor];
-    v55 = [v10 leadingAnchor];
-    v54 = [v56 constraintEqualToAnchor:v55];
+    leadingAnchor7 = [v33 leadingAnchor];
+    leadingAnchor8 = [v10 leadingAnchor];
+    v54 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
     v106 = v54;
-    v53 = [v33 topAnchor];
-    v52 = [(UIImageView *)v6->_snapshotView bottomAnchor];
-    v51 = [v53 constraintEqualToAnchor:v52];
+    topAnchor7 = [v33 topAnchor];
+    bottomAnchor = [(UIImageView *)v6->_snapshotView bottomAnchor];
+    v51 = [topAnchor7 constraintEqualToAnchor:bottomAnchor];
     v107 = v51;
     v38 = v33;
-    v50 = [v33 widthAnchor];
-    v49 = [v10 widthAnchor];
-    v39 = [v50 constraintEqualToAnchor:v49];
+    widthAnchor8 = [v33 widthAnchor];
+    widthAnchor9 = [v10 widthAnchor];
+    v39 = [widthAnchor8 constraintEqualToAnchor:widthAnchor9];
     v108 = v39;
     v63 = v33;
-    v40 = [v33 bottomAnchor];
-    v41 = [v10 bottomAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41];
+    bottomAnchor2 = [v33 bottomAnchor];
+    bottomAnchor3 = [v10 bottomAnchor];
+    v42 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
     v109 = v42;
-    v43 = [(UILabel *)v6->_secondaryTitleLabel bottomAnchor];
-    v44 = [v38 bottomAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44 constant:-12.0];
+    bottomAnchor4 = [(UILabel *)v6->_secondaryTitleLabel bottomAnchor];
+    bottomAnchor5 = [v38 bottomAnchor];
+    v45 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5 constant:-12.0];
     v110 = v45;
     v46 = [MEMORY[0x277CBEA60] arrayWithObjects:v97 count:17];
     [v75 activateConstraints:v46];
 
-    v4 = v95;
+    barCopy = v95;
     v47 = v6;
   }
 
   return v6;
 }
 
-- (void)setSnapshotImage:(id)a3 metadata:(id)a4
+- (void)setSnapshotImage:(id)image metadata:(id)metadata
 {
-  v56 = a3;
-  v6 = a4;
-  v7 = [(UIImageView *)self->_snapshotView image];
+  imageCopy = image;
+  metadataCopy = metadata;
+  image = [(UIImageView *)self->_snapshotView image];
 
-  if (v7 != v56)
+  if (image != imageCopy)
   {
-    [(UIImageView *)self->_snapshotView setImage:v56];
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 bounds];
+    [(UIImageView *)self->_snapshotView setImage:imageCopy];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v10 = v9;
     v12 = v11;
 
-    if (v56)
+    if (imageCopy)
     {
       v13 = fmin((v12 + -100.0) / v10, 1.0);
     }
@@ -214,10 +214,10 @@
     }
 
     [(NSLayoutConstraint *)self->_snapshotHeightWidthRatioConstraint setActive:0];
-    v14 = [(UIImageView *)self->_snapshotView heightAnchor];
-    v15 = [(UIImageView *)self->_snapshotView widthAnchor];
+    heightAnchor = [(UIImageView *)self->_snapshotView heightAnchor];
+    widthAnchor = [(UIImageView *)self->_snapshotView widthAnchor];
     v54 = v13;
-    v16 = [v14 constraintEqualToAnchor:v15 multiplier:v13];
+    v16 = [heightAnchor constraintEqualToAnchor:widthAnchor multiplier:v13];
     snapshotHeightWidthRatioConstraint = self->_snapshotHeightWidthRatioConstraint;
     self->_snapshotHeightWidthRatioConstraint = v16;
 
@@ -226,21 +226,21 @@
     v19 = *(MEMORY[0x277D768C8] + 8);
     v20 = *(MEMORY[0x277D768C8] + 16);
     v21 = *(MEMORY[0x277D768C8] + 24);
-    v22 = [MEMORY[0x277D759A0] mainScreen];
-    [v22 bounds];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 bounds];
     v24 = v23;
 
-    if (v6)
+    if (metadataCopy)
     {
-      [v6 windowSize];
+      [metadataCopy windowSize];
       if (v25 != 0.0)
       {
-        [v6 windowSize];
+        [metadataCopy windowSize];
         if (v26 > 100.0)
         {
-          [v6 windowSize];
+          [metadataCopy windowSize];
           v24 = v27;
-          [v6 horizontalObscuredInsets];
+          [metadataCopy horizontalObscuredInsets];
           v18 = v28;
           v19 = v29;
           v20 = v30;
@@ -249,9 +249,9 @@
       }
     }
 
-    [v56 size];
+    [imageCopy size];
     v33 = v24 / v32;
-    [v56 size];
+    [imageCopy size];
     v35 = v33 * v34;
     v36 = v19 + 0.0;
     v37 = v18 + 0.0;
@@ -312,45 +312,45 @@
     v68.size.width = v24;
     v68.size.height = v35;
     v52 = v51 / CGRectGetHeight(v68);
-    v53 = [(UIImageView *)self->_snapshotView layer];
-    [v53 setContentsRect:{v55, v48, v50, v52}];
+    layer = [(UIImageView *)self->_snapshotView layer];
+    [layer setContentsRect:{v55, v48, v50, v52}];
 
     [(TabHoverPreview *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_titleLabel text];
+  textCopy = text;
+  text = [(UILabel *)self->_titleLabel text];
   v5 = WBSIsEqual();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_titleLabel setText:v6];
+    [(UILabel *)self->_titleLabel setText:textCopy];
     [(TabHoverPreview *)self setNeedsLayout];
   }
 }
 
-- (void)setSecondaryTitleText:(id)a3
+- (void)setSecondaryTitleText:(id)text
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_secondaryTitleLabel text];
+  textCopy = text;
+  text = [(UILabel *)self->_secondaryTitleLabel text];
   v5 = WBSIsEqual();
 
   if ((v5 & 1) == 0)
   {
-    [(UILabel *)self->_secondaryTitleLabel setText:v6];
+    [(UILabel *)self->_secondaryTitleLabel setText:textCopy];
     [(TabHoverPreview *)self setNeedsLayout];
   }
 }
 
-- (void)showPreviewForItemView:(id)a3 forVerticalTabs:(BOOL)a4
+- (void)showPreviewForItemView:(id)view forVerticalTabs:(BOOL)tabs
 {
-  v4 = a4;
-  v6 = a3;
+  tabsCopy = tabs;
+  viewCopy = view;
   [(TabHoverPreview *)self setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(TabHoverPreview *)self _updateConstraintsWithItemView:v6 forVerticalTabs:v4];
+  [(TabHoverPreview *)self _updateConstraintsWithItemView:viewCopy forVerticalTabs:tabsCopy];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -360,32 +360,32 @@
   [MEMORY[0x277D75D18] animateWithDuration:v7 animations:0.25];
 }
 
-- (void)_updateConstraintsWithItemView:(id)a3 forVerticalTabs:(BOOL)a4
+- (void)_updateConstraintsWithItemView:(id)view forVerticalTabs:(BOOL)tabs
 {
-  v4 = a4;
+  tabsCopy = tabs;
   v43[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  viewCopy = view;
   [(TabHoverPreview *)self _setPositionalConstraintsActive:0];
-  if (v4)
+  if (tabsCopy)
   {
     WeakRetained = [(TabHoverPreview *)self leadingAnchor];
-    v8 = [v6 trailingAnchor];
-    v9 = [WeakRetained constraintEqualToAnchor:v8 constant:24.0];
+    trailingAnchor = [viewCopy trailingAnchor];
+    v9 = [WeakRetained constraintEqualToAnchor:trailingAnchor constant:24.0];
     v43[0] = v9;
-    v10 = [(TabHoverPreview *)self topAnchor];
-    v40 = [v6 topAnchor];
-    v41 = v10;
-    v11 = [v10 constraintEqualToAnchor:?];
+    topAnchor = [(TabHoverPreview *)self topAnchor];
+    topAnchor2 = [viewCopy topAnchor];
+    bottomAnchor3 = topAnchor;
+    v11 = [topAnchor constraintEqualToAnchor:?];
     LODWORD(v12) = 1144750080;
     v39 = v11;
-    v13 = [v11 sf_withPriority:v12];
-    v43[1] = v13;
-    v14 = [(TabHoverPreview *)self bottomAnchor];
-    v15 = [v6 window];
+    leadingAnchor3 = [v11 sf_withPriority:v12];
+    v43[1] = leadingAnchor3;
+    bottomAnchor = [(TabHoverPreview *)self bottomAnchor];
+    window = [viewCopy window];
 
-    v16 = [v15 bottomAnchor];
-    v17 = [v14 constraintLessThanOrEqualToAnchor:v16 constant:-5.0];
-    v43[2] = v17;
+    bottomAnchor2 = [window bottomAnchor];
+    trailingAnchor2 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-5.0];
+    v43[2] = trailingAnchor2;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:3];
     positionalConstraints = self->_positionalConstraints;
     self->_positionalConstraints = v18;
@@ -403,17 +403,17 @@
       v20 = 0.0;
     }
 
-    v21 = [MEMORY[0x277D49A08] isSolariumEnabled];
+    isSolariumEnabled = [MEMORY[0x277D49A08] isSolariumEnabled];
     v22 = 10.0;
-    if (!v21)
+    if (!isSolariumEnabled)
     {
       v22 = v20;
     }
 
     v38 = v22;
     WeakRetained = objc_loadWeakRetained(&self->_tabBar);
-    [v6 bounds];
-    [WeakRetained convertRect:v6 fromView:?];
+    [viewCopy bounds];
+    [WeakRetained convertRect:viewCopy fromView:?];
 
     [WeakRetained bounds];
     [(TabHoverPreview *)self _sf_usesLeftToRightLayout];
@@ -428,43 +428,43 @@
     v45.size.width = width;
     v45.size.height = height;
     v28 = fmax(MinX, CGRectGetMidX(v45) + -120.0);
-    v29 = [(TabHoverPreview *)self leadingAnchor];
-    v30 = [WeakRetained leadingAnchor];
-    v36 = [v29 constraintEqualToAnchor:v30 constant:v28];
+    leadingAnchor = [(TabHoverPreview *)self leadingAnchor];
+    leadingAnchor2 = [WeakRetained leadingAnchor];
+    v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v28];
 
-    v37 = [(TabHoverPreview *)self topAnchor];
-    v41 = [WeakRetained bottomAnchor];
-    v40 = [v37 constraintEqualToAnchor:self->_topInset constant:?];
-    v42[0] = v40;
+    topAnchor3 = [(TabHoverPreview *)self topAnchor];
+    bottomAnchor3 = [WeakRetained bottomAnchor];
+    topAnchor2 = [topAnchor3 constraintEqualToAnchor:self->_topInset constant:?];
+    v42[0] = topAnchor2;
     LODWORD(v31) = 1144750080;
     v39 = [v36 sf_withPriority:v31];
     v42[1] = v39;
-    v13 = [(TabHoverPreview *)self leadingAnchor];
-    v14 = [WeakRetained safeAreaLayoutGuide];
-    v15 = [v14 leadingAnchor];
-    v16 = [v13 constraintGreaterThanOrEqualToAnchor:v15 constant:v38];
-    v42[2] = v16;
-    v17 = [(TabHoverPreview *)self trailingAnchor];
+    leadingAnchor3 = [(TabHoverPreview *)self leadingAnchor];
+    bottomAnchor = [WeakRetained safeAreaLayoutGuide];
+    window = [bottomAnchor leadingAnchor];
+    bottomAnchor2 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:window constant:v38];
+    v42[2] = bottomAnchor2;
+    trailingAnchor2 = [(TabHoverPreview *)self trailingAnchor];
     positionalConstraints = [WeakRetained safeAreaLayoutGuide];
-    v32 = [positionalConstraints trailingAnchor];
-    v33 = [v17 constraintLessThanOrEqualToAnchor:v32 constant:-v38];
+    trailingAnchor3 = [positionalConstraints trailingAnchor];
+    v33 = [trailingAnchor2 constraintLessThanOrEqualToAnchor:trailingAnchor3 constant:-v38];
     v42[3] = v33;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:4];
     v35 = self->_positionalConstraints;
     self->_positionalConstraints = v34;
 
-    v9 = v37;
-    v8 = v36;
+    v9 = topAnchor3;
+    trailingAnchor = v36;
   }
 
   [(TabHoverPreview *)self _setPositionalConstraintsActive:1];
 }
 
-- (void)_setPositionalConstraintsActive:(BOOL)a3
+- (void)_setPositionalConstraintsActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   positionalConstraints = self->_positionalConstraints;
-  if (v3)
+  if (activeCopy)
   {
     [MEMORY[0x277CCAAD0] activateConstraints:positionalConstraints];
   }

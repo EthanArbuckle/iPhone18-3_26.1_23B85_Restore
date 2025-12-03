@@ -1,13 +1,13 @@
 @interface MessageWithSeparatedActionTileView
-- (void)didTapAction:(id)a3;
+- (void)didTapAction:(id)action;
 @end
 
 @implementation MessageWithSeparatedActionTileView
 
-- (void)didTapAction:(id)a3
+- (void)didTapAction:(id)action
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1BA4A7BF8();
   swift_unknownObjectRelease();
   sub_1BA1AD35C();

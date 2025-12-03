@@ -2,25 +2,25 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)timeRangeInComposition;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)timeRangeInContentToUse;
 - (NSString)description;
-- (RCCompositionFragment)initWithAVOutputURL:(id)a3 contentDuration:(double)a4 timeRangeInContentToUse:(id)a5 timeRangeInComposition:(id)a6 trackIndex:(unint64_t)a7;
-- (RCCompositionFragment)initWithDictionaryPListRepresentation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RCCompositionFragment)initWithAVOutputURL:(id)l contentDuration:(double)duration timeRangeInContentToUse:(id)use timeRangeInComposition:(id)composition trackIndex:(unint64_t)index;
+- (RCCompositionFragment)initWithDictionaryPListRepresentation:(id)representation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryPListRepresentation;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)fileSizeOfAssets;
 - (void)deleteFromFilesystem;
 @end
 
 @implementation RCCompositionFragment
 
-- (RCCompositionFragment)initWithAVOutputURL:(id)a3 contentDuration:(double)a4 timeRangeInContentToUse:(id)a5 timeRangeInComposition:(id)a6 trackIndex:(unint64_t)a7
+- (RCCompositionFragment)initWithAVOutputURL:(id)l contentDuration:(double)duration timeRangeInContentToUse:(id)use timeRangeInComposition:(id)composition trackIndex:(unint64_t)index
 {
-  var1 = a6.var1;
-  var0 = a6.var0;
-  v10 = a5.var1;
-  v11 = a5.var0;
-  v16 = a3;
-  if (a4 < 0.0)
+  var1 = composition.var1;
+  var0 = composition.var0;
+  v10 = use.var1;
+  v11 = use.var0;
+  lCopy = l;
+  if (duration < 0.0)
   {
     [RCCompositionFragment initWithAVOutputURL:a2 contentDuration:self timeRangeInContentToUse:? timeRangeInComposition:? trackIndex:?];
   }
@@ -36,13 +36,13 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_AVOutputURL, a3);
-    v18->_contentDuration = a4;
+    objc_storeStrong(&v17->_AVOutputURL, l);
+    v18->_contentDuration = duration;
     v18->_timeRangeInContentToUse.beginTime = v11;
     v18->_timeRangeInContentToUse.endTime = v10;
     v18->_timeRangeInComposition.beginTime = fmax(var0, 0.0);
     v18->_timeRangeInComposition.endTime = var1;
-    v18->_trackIndex = a7;
+    v18->_trackIndex = index;
   }
 
   return v18;
@@ -54,16 +54,16 @@
   v18.receiver = self;
   v18.super_class = RCCompositionFragment;
   v4 = [(RCCompositionFragment *)&v18 description];
-  v5 = [(NSURL *)self->_AVOutputURL path];
-  v6 = [(RCCompositionFragment *)self waveformURL];
-  v7 = [v6 path];
+  path = [(NSURL *)self->_AVOutputURL path];
+  waveformURL = [(RCCompositionFragment *)self waveformURL];
+  path2 = [waveformURL path];
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_contentDuration];
   [(RCCompositionFragment *)self timeRangeInContentToUse];
   v11 = NSStringFromRCTimeRange(v9, v10);
   [(RCCompositionFragment *)self timeRangeInComposition];
   v14 = NSStringFromRCTimeRange(v12, v13);
   v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_trackIndex];
-  v16 = [v3 stringWithFormat:@"%@ AVURL = %@ (waveformURL = %@), contentDuration = %@, timeRangeInContentToUse = %@, timeRangeInComposition = %@, trackIndex = %@", v4, v5, v7, v8, v11, v14, v15];
+  v16 = [v3 stringWithFormat:@"%@ AVURL = %@ (waveformURL = %@), contentDuration = %@, timeRangeInContentToUse = %@, timeRangeInComposition = %@, trackIndex = %@", v4, path, path2, v8, v11, v14, v15];
 
   return v16;
 }
@@ -77,40 +77,40 @@
     v8 = 136315394;
     v9 = "[RCCompositionFragment deleteFromFilesystem]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_272442000, v3, OS_LOG_TYPE_INFO, "%s -- deleting fragment assets %@", &v8, 0x16u);
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  [v4 removeItemAtURL:self->_AVOutputURL error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtURL:self->_AVOutputURL error:0];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(RCCompositionFragment *)self waveformURL];
-  [v5 removeItemAtURL:v6 error:0];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  waveformURL = [(RCCompositionFragment *)self waveformURL];
+  [defaultManager2 removeItemAtURL:waveformURL error:0];
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
 - (unint64_t)fileSizeOfAssets
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(NSURL *)self->_AVOutputURL path];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [(NSURL *)self->_AVOutputURL path];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   if (v5)
   {
-    v6 = [(NSURL *)self->_AVOutputURL path];
-    v7 = [v3 attributesOfItemAtPath:v6 error:0];
+    path2 = [(NSURL *)self->_AVOutputURL path];
+    v7 = [defaultManager attributesOfItemAtPath:path2 error:0];
     v8 = [v7 objectForKey:*MEMORY[0x277CCA1C0]];
-    v9 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
   }
 
   else
   {
-    v9 = 0;
+    longLongValue = 0;
   }
 
-  return v9;
+  return longLongValue;
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)timeRangeInContentToUse
@@ -131,45 +131,45 @@
   return result;
 }
 
-- (RCCompositionFragment)initWithDictionaryPListRepresentation:(id)a3
+- (RCCompositionFragment)initWithDictionaryPListRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v24.receiver = self;
   v24.super_class = RCCompositionFragment;
   v5 = [(RCCompositionFragment *)&v24 init];
   if (v5)
   {
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [v4 objectForKey:@"RCAVOutputURL"];
+    v7 = [representationCopy objectForKey:@"RCAVOutputURL"];
     v8 = [v6 URLWithString:v7];
     AVOutputURL = v5->_AVOutputURL;
     v5->_AVOutputURL = v8;
 
-    v10 = [(NSURL *)v5->_AVOutputURL rc_URLByFixingUpPersistentMediaRecordingsDirectory];
+    rc_URLByFixingUpPersistentMediaRecordingsDirectory = [(NSURL *)v5->_AVOutputURL rc_URLByFixingUpPersistentMediaRecordingsDirectory];
     v11 = v5->_AVOutputURL;
-    v5->_AVOutputURL = v10;
+    v5->_AVOutputURL = rc_URLByFixingUpPersistentMediaRecordingsDirectory;
 
-    v12 = [v4 objectForKey:@"RCContentDuration"];
+    v12 = [representationCopy objectForKey:@"RCContentDuration"];
     [v12 doubleValue];
     v5->_contentDuration = v13;
 
-    v14 = [v4 objectForKey:@"RCTimeRangeInContentToUse.beginTime"];
+    v14 = [representationCopy objectForKey:@"RCTimeRangeInContentToUse.beginTime"];
     [v14 doubleValue];
     v5->_timeRangeInContentToUse.beginTime = v15;
 
-    v16 = [v4 objectForKey:@"RCTimeRangeInContentToUse.endTime"];
+    v16 = [representationCopy objectForKey:@"RCTimeRangeInContentToUse.endTime"];
     [v16 doubleValue];
     v5->_timeRangeInContentToUse.endTime = v17;
 
-    v18 = [v4 objectForKey:@"RCTimeRangeInComposition.beginTime"];
+    v18 = [representationCopy objectForKey:@"RCTimeRangeInComposition.beginTime"];
     [v18 doubleValue];
     v5->_timeRangeInComposition.beginTime = v19;
 
-    v20 = [v4 objectForKey:@"RCTimeRangeInComposition.endTime"];
+    v20 = [representationCopy objectForKey:@"RCTimeRangeInComposition.endTime"];
     [v20 doubleValue];
     v5->_timeRangeInComposition.endTime = v21;
 
-    v22 = [v4 objectForKey:@"RCTrackIndex"];
+    v22 = [representationCopy objectForKey:@"RCTrackIndex"];
     v5->_trackIndex = [v22 unsignedIntegerValue];
   }
 
@@ -178,49 +178,49 @@
 
 - (id)dictionaryPListRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [(NSURL *)self->_AVOutputURL absoluteString];
-  [v3 setObject:v4 forKey:@"RCAVOutputURL"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  absoluteString = [(NSURL *)self->_AVOutputURL absoluteString];
+  [dictionary setObject:absoluteString forKey:@"RCAVOutputURL"];
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:self->_contentDuration];
-  [v3 setObject:v5 forKey:@"RCContentDuration"];
+  [dictionary setObject:v5 forKey:@"RCContentDuration"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeRangeInContentToUse.beginTime];
-  [v3 setObject:v6 forKey:@"RCTimeRangeInContentToUse.beginTime"];
+  [dictionary setObject:v6 forKey:@"RCTimeRangeInContentToUse.beginTime"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeRangeInContentToUse.endTime];
-  [v3 setObject:v7 forKey:@"RCTimeRangeInContentToUse.endTime"];
+  [dictionary setObject:v7 forKey:@"RCTimeRangeInContentToUse.endTime"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeRangeInComposition.beginTime];
-  [v3 setObject:v8 forKey:@"RCTimeRangeInComposition.beginTime"];
+  [dictionary setObject:v8 forKey:@"RCTimeRangeInComposition.beginTime"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timeRangeInComposition.endTime];
-  [v3 setObject:v9 forKey:@"RCTimeRangeInComposition.endTime"];
+  [dictionary setObject:v9 forKey:@"RCTimeRangeInComposition.endTime"];
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_trackIndex];
-  [v3 setObject:v10 forKey:@"RCTrackIndex"];
+  [dictionary setObject:v10 forKey:@"RCTrackIndex"];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RCCompositionFragment alloc];
-  v5 = [(RCCompositionFragment *)self AVOutputURL];
+  aVOutputURL = [(RCCompositionFragment *)self AVOutputURL];
   contentDuration = self->_contentDuration;
   [(RCCompositionFragment *)self timeRangeInComposition];
-  v9 = [(RCCompositionFragment *)v4 initWithAVOutputURL:v5 contentDuration:[(RCCompositionFragment *)self trackIndex] timeRangeInContentToUse:contentDuration timeRangeInComposition:self->_timeRangeInContentToUse.beginTime trackIndex:self->_timeRangeInContentToUse.endTime, v7, v8];
+  v9 = [(RCCompositionFragment *)v4 initWithAVOutputURL:aVOutputURL contentDuration:[(RCCompositionFragment *)self trackIndex] timeRangeInContentToUse:contentDuration timeRangeInComposition:self->_timeRangeInContentToUse.beginTime trackIndex:self->_timeRangeInContentToUse.endTime, v7, v8];
 
   return v9;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [RCMutableCompositionFragment alloc];
-  v5 = [(RCCompositionFragment *)self AVOutputURL];
+  aVOutputURL = [(RCCompositionFragment *)self AVOutputURL];
   contentDuration = self->_contentDuration;
   [(RCCompositionFragment *)self timeRangeInComposition];
-  v9 = [(RCCompositionFragment *)v4 initWithAVOutputURL:v5 contentDuration:[(RCCompositionFragment *)self trackIndex] timeRangeInContentToUse:contentDuration timeRangeInComposition:self->_timeRangeInContentToUse.beginTime trackIndex:self->_timeRangeInContentToUse.endTime, v7, v8];
+  v9 = [(RCCompositionFragment *)v4 initWithAVOutputURL:aVOutputURL contentDuration:[(RCCompositionFragment *)self trackIndex] timeRangeInContentToUse:contentDuration timeRangeInComposition:self->_timeRangeInContentToUse.beginTime trackIndex:self->_timeRangeInContentToUse.endTime, v7, v8];
 
   return v9;
 }

@@ -1,7 +1,7 @@
 @interface OADAlphaModFixEffect
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OADAlphaModFixEffect)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -28,23 +28,23 @@
   return [(OADBlipEffect *)&v4 hash]^ v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   LODWORD(v5) = *(&self->super.mType + 1);
   [v4 setAlpha:v5];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = *(&self->super.mType + 1), [v4 alpha], v5 == v6))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = *(&self->super.mType + 1), [equalCopy alpha], v5 == v6))
   {
     v9.receiver = self;
     v9.super_class = OADAlphaModFixEffect;
-    v7 = [(OADBlipEffect *)&v9 isEqual:v4];
+    v7 = [(OADBlipEffect *)&v9 isEqual:equalCopy];
   }
 
   else

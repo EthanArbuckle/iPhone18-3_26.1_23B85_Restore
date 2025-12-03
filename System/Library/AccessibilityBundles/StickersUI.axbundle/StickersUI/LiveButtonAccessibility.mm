@@ -15,9 +15,9 @@
 
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 image];
-  v5 = [v4 imageAsset];
-  v6 = [v5 safeStringForKey:@"assetName"];
+  image = [v3 image];
+  imageAsset = [image imageAsset];
+  v6 = [imageAsset safeStringForKey:@"assetName"];
 
   if ([v6 isEqualToString:@"livephoto.play"])
   {

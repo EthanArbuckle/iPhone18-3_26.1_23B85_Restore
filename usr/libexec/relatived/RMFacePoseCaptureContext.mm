@@ -1,13 +1,13 @@
 @interface RMFacePoseCaptureContext
-- (void)setDetectedFacesTimestamp:(id *)a3;
+- (void)setDetectedFacesTimestamp:(id *)timestamp;
 @end
 
 @implementation RMFacePoseCaptureContext
 
-- (void)setDetectedFacesTimestamp:(id *)a3
+- (void)setDetectedFacesTimestamp:(id *)timestamp
 {
-  v3 = *&a3->var0;
-  self->_detectedFacesTimestamp.epoch = a3->var3;
+  v3 = *&timestamp->var0;
+  self->_detectedFacesTimestamp.epoch = timestamp->var3;
   *&self->_detectedFacesTimestamp.value = v3;
 }
 

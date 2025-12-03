@@ -1,67 +1,67 @@
 @interface CAFUICollectionViewController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
-- (_TtC5CAFUI29CAFUICollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC5CAFUI29CAFUICollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
+- (_TtC5CAFUI29CAFUICollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC5CAFUI29CAFUICollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CAFUICollectionViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   CAFUICollectionViewController.viewDidLoad()();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for CAFUICollectionViewController();
   v4 = v6.receiver;
-  [(CAFUICollectionViewController *)&v6 viewWillDisappear:v3];
-  v5 = [v4 navigationItem];
-  [v5 setRightBarButtonItem_];
+  [(CAFUICollectionViewController *)&v6 viewWillDisappear:disappearCopy];
+  navigationItem = [v4 navigationItem];
+  [navigationItem setRightBarButtonItem_];
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   v5 = OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_items;
   swift_beginAccess();
   return (*(&self->super.super.super.super.isa + v5))[2];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
-  v12 = CAFUICollectionViewController.collectionView(_:cellForItemAt:)(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = CAFUICollectionViewController.collectionView(_:cellForItemAt:)(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
   MEMORY[0x28223BE20](v5);
   v8 = v17 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   v10 = IndexPath.row.getter();
   v11 = OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_items;
   result = swift_beginAccess();
@@ -72,7 +72,7 @@
 
   else
   {
-    v13 = *(&v9->super.super.super.super.isa + v11);
+    v13 = *(&selfCopy->super.super.super.super.isa + v11);
     if (v10 < *(v13 + 16))
     {
       outlined init with copy of CAFUIImageRepresentableItemProtocol(v13 + 40 * v10 + 32, v17);
@@ -91,21 +91,21 @@
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   specialized CAFUICollectionViewController.collectionView(_:didSelectItemAt:)();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
   if (*(&self->super.super.super._responderFlags + OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_minimumInteritemSpacing))
   {
@@ -132,18 +132,18 @@
   return result;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
   v7 = type metadata accessor for IndexPath();
   v8 = *(v7 - 8);
   MEMORY[0x28223BE20](v7);
   v10 = &v18 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a4;
-  v12 = self;
+  layoutCopy = layout;
+  selfCopy = self;
   specialized CAFUICollectionViewController.calculateItemSizeAndInterItemSpacing(layout:)();
-  v15 = (v12 + OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_itemSize);
-  if (*(&v12->super.super._overrideTransitioningDelegate + OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_itemSize))
+  v15 = (selfCopy + OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_itemSize);
+  if (*(&selfCopy->super.super._overrideTransitioningDelegate + OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_itemSize))
   {
     __break(1u);
   }
@@ -163,19 +163,19 @@
   return result;
 }
 
-- (double)collectionView:(id)a3 layout:(id)a4 minimumInteritemSpacingForSectionAtIndex:(int64_t)a5
+- (double)collectionView:(id)view layout:(id)layout minimumInteritemSpacingForSectionAtIndex:(int64_t)index
 {
-  v6 = a4;
-  v7 = self;
+  layoutCopy = layout;
+  selfCopy = self;
   specialized CAFUICollectionViewController.calculateItemSizeAndInterItemSpacing(layout:)();
-  if (*(&v7->super.super.super._responderFlags + OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_minimumInteritemSpacing))
+  if (*(&selfCopy->super.super.super._responderFlags + OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_minimumInteritemSpacing))
   {
     __break(1u);
   }
 
   else
   {
-    v9 = *(&v7->super.super.super.super.isa + OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_minimumInteritemSpacing);
+    v9 = *(&selfCopy->super.super.super.super.isa + OBJC_IVAR____TtC5CAFUI29CAFUICollectionViewController_minimumInteritemSpacing);
 
     return v9;
   }
@@ -183,14 +183,14 @@
   return result;
 }
 
-- (_TtC5CAFUI29CAFUICollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC5CAFUI29CAFUICollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC5CAFUI29CAFUICollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5CAFUI29CAFUICollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

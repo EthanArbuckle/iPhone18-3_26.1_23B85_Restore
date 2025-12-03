@@ -1,40 +1,40 @@
 @interface TPPaginationState
 - (BOOL)isInvalid;
 - (BOOL)isPaginationComplete;
-- (BOOL)isPaginationCompleteThroughDocumentPageIndex:(unint64_t)a3;
-- (BOOL)isPaginationCompleteUpToDocumentPageIndex:(unint64_t)a3;
+- (BOOL)isPaginationCompleteThroughDocumentPageIndex:(unint64_t)index;
+- (BOOL)isPaginationCompleteUpToDocumentPageIndex:(unint64_t)index;
 - (BOOL)onLastSection;
 - (NSArray)sectionHints;
 - (NSString)description;
 - (TPPageIndexPath)pageIndexPath;
 - (TPSection)section;
 - (TPSectionHint)sectionHint;
-- (_NSRange)footnoteRangeInBodyTextRange:(_NSRange)a3;
+- (_NSRange)footnoteRangeInBodyTextRange:(_NSRange)range;
 - (_NSRange)sectionCharRange;
 - (_TtC14PagesQuicklook17TPPaginationState)init;
 - (id)copyForCaching;
-- (id)copyWithZone:(void *)a3;
-- (id)pageHintForPageIndex:(unint64_t)a3;
-- (id)pageIndexPathForPageIndex:(unint64_t)a3;
+- (id)copyWithZone:(void *)zone;
+- (id)pageHintForPageIndex:(unint64_t)index;
+- (id)pageIndexPathForPageIndex:(unint64_t)index;
 - (unint64_t)bodyCharIndex;
 - (unint64_t)documentPageIndex;
 - (unint64_t)footnoteIndex;
 - (unint64_t)lastLaidOutDocumentPageIndex;
 - (unint64_t)lastLaidOutSectionIndex;
 - (unint64_t)pageHintCount;
-- (void)addSectionHint:(id)a3;
+- (void)addSectionHint:(id)hint;
 - (void)advancePageIndex;
 - (void)advanceSectionIndex;
-- (void)backUpToPageIndexPath:(id)a3 documentPageIndex:(unint64_t)a4;
+- (void)backUpToPageIndexPath:(id)path documentPageIndex:(unint64_t)index;
 - (void)bodyLayoutState;
 - (void)removeAllSectionHints;
 - (void)restartPaginationFromFirstPage;
-- (void)restartPaginationFromPageIndexPath:(id)a3 documentPageIndex:(unint64_t)a4;
-- (void)setBodyLayoutState:(void *)a3;
-- (void)setIsInvalid:(BOOL)a3;
-- (void)setPageIndexPath:(id)a3;
-- (void)setSectionHints:(id)a3;
-- (void)trimSectionHintsFromIndex:(unint64_t)a3;
+- (void)restartPaginationFromPageIndexPath:(id)path documentPageIndex:(unint64_t)index;
+- (void)setBodyLayoutState:(void *)state;
+- (void)setIsInvalid:(BOOL)invalid;
+- (void)setPageIndexPath:(id)path;
+- (void)setSectionHints:(id)hints;
+- (void)trimSectionHintsFromIndex:(unint64_t)index;
 @end
 
 @implementation TPPaginationState
@@ -46,11 +46,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsInvalid:(BOOL)a3
+- (void)setIsInvalid:(BOOL)invalid
 {
   v5 = OBJC_IVAR____TtC14PagesQuicklook17TPPaginationState_isInvalid;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = invalid;
 }
 
 - (TPPageIndexPath)pageIndexPath
@@ -60,12 +60,12 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setPageIndexPath:(id)a3
+- (void)setPageIndexPath:(id)path
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  pathCopy = path;
+  selfCopy = self;
   sub_2760384C4();
 }
 
@@ -90,11 +90,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setBodyLayoutState:(void *)a3
+- (void)setBodyLayoutState:(void *)state
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_2760384C4();
 }
 
@@ -122,19 +122,19 @@
   return v2;
 }
 
-- (void)setSectionHints:(id)a3
+- (void)setSectionHints:(id)hints
 {
   sub_27602FD90(0, &qword_280A40160);
   sub_276038554();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   sub_2760384C4();
 }
 
 - (unint64_t)pageHintCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TPPaginationState.pageHintCount.getter();
 
   return v3;
@@ -161,7 +161,7 @@
 
 - (TPSection)section
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TPPaginationState.section.getter();
 
   return v3;
@@ -169,7 +169,7 @@
 
 - (TPSectionHint)sectionHint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TPPaginationState.sectionHint.getter();
 
   return v3;
@@ -199,16 +199,16 @@
   v3 = OBJC_IVAR____TtC14PagesQuicklook17TPPaginationState__pageIndexPath;
   swift_beginAccess();
   v4 = *(&self->super.isa + v3);
-  v5 = self;
-  v6 = [v4 sectionIndex];
-  v7 = sub_275FF8F7C(*(&v5->super.isa + OBJC_IVAR____TtC14PagesQuicklook17TPPaginationState_bodyStorage));
+  selfCopy = self;
+  sectionIndex = [v4 sectionIndex];
+  v7 = sub_275FF8F7C(*(&selfCopy->super.isa + OBJC_IVAR____TtC14PagesQuicklook17TPPaginationState_bodyStorage));
 
-  return v7 < v6;
+  return v7 < sectionIndex;
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   TPPaginationState.description.getter();
 
   v3 = sub_276038504();
@@ -216,9 +216,9 @@
   return v3;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   TPPaginationState.copy(with:)(v6);
 
   sub_27602FD00(v6, v6[3]);
@@ -229,7 +229,7 @@
 
 - (id)copyForCaching
 {
-  v2 = self;
+  selfCopy = self;
   TPPaginationState.copyForCaching()(v5);
 
   sub_27602FD00(v5, v5[3]);
@@ -238,93 +238,93 @@
   return v3;
 }
 
-- (BOOL)isPaginationCompleteThroughDocumentPageIndex:(unint64_t)a3
+- (BOOL)isPaginationCompleteThroughDocumentPageIndex:(unint64_t)index
 {
   v5 = OBJC_IVAR____TtC14PagesQuicklook17TPPaginationState__documentPageIndex;
   swift_beginAccess();
-  return *(&self->super.isa + v5) > a3;
+  return *(&self->super.isa + v5) > index;
 }
 
-- (BOOL)isPaginationCompleteUpToDocumentPageIndex:(unint64_t)a3
+- (BOOL)isPaginationCompleteUpToDocumentPageIndex:(unint64_t)index
 {
   v5 = OBJC_IVAR____TtC14PagesQuicklook17TPPaginationState__documentPageIndex;
   swift_beginAccess();
-  return *(&self->super.isa + v5) >= a3;
+  return *(&self->super.isa + v5) >= index;
 }
 
-- (_NSRange)footnoteRangeInBodyTextRange:(_NSRange)a3
+- (_NSRange)footnoteRangeInBodyTextRange:(_NSRange)range
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC14PagesQuicklook17TPPaginationState_bodyStorage) footnoteRangeForTextRange_];
+  footnoteRangeForTextRange_ = [*(&self->super.isa + OBJC_IVAR____TtC14PagesQuicklook17TPPaginationState_bodyStorage) footnoteRangeForTextRange_];
   result.length = v4;
-  result.location = v3;
+  result.location = footnoteRangeForTextRange_;
   return result;
 }
 
-- (void)restartPaginationFromPageIndexPath:(id)a3 documentPageIndex:(unint64_t)a4
+- (void)restartPaginationFromPageIndexPath:(id)path documentPageIndex:(unint64_t)index
 {
-  v6 = a3;
+  pathCopy = path;
   v10._pageIndex = self;
   pageIndex = v10._pageIndex;
-  v10.super.isa = v6;
-  v10._sectionIndex = a4;
+  v10.super.isa = pathCopy;
+  v10._sectionIndex = index;
   TPPaginationState.restartPagination(fromPageIndexPath:documentPageIndex:)(v10, v7);
 }
 
 - (void)restartPaginationFromFirstPage
 {
   v3 = objc_allocWithZone(TPPageIndexPath);
-  v6 = self;
+  selfCopy = self;
   v8.super.isa = [v3 initWithSectionIndex:0 pageIndex:0];
   isa = v8.super.isa;
   v8._sectionIndex = 0;
   TPPaginationState.restartPagination(fromPageIndexPath:documentPageIndex:)(v8, v5);
 }
 
-- (void)backUpToPageIndexPath:(id)a3 documentPageIndex:(unint64_t)a4
+- (void)backUpToPageIndexPath:(id)path documentPageIndex:(unint64_t)index
 {
-  v6 = a3;
+  pathCopy = path;
   v10._pageIndex = self;
   pageIndex = v10._pageIndex;
-  v10.super.isa = v6;
-  v10._sectionIndex = a4;
+  v10.super.isa = pathCopy;
+  v10._sectionIndex = index;
   TPPaginationState.backUp(to:documentPageIndex:)(v10, v7);
 }
 
 - (void)advancePageIndex
 {
-  v2 = self;
+  selfCopy = self;
   TPPaginationState.advancePageIndex()();
 }
 
 - (void)advanceSectionIndex
 {
-  v2 = self;
+  selfCopy = self;
   TPPaginationState.advanceSectionIndex()();
 }
 
-- (id)pageIndexPathForPageIndex:(unint64_t)a3
+- (id)pageIndexPathForPageIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = TPPaginationState.pageIndexPath(forPageIndex:)(a3);
+  selfCopy = self;
+  v5 = TPPaginationState.pageIndexPath(forPageIndex:)(index);
 
   return v5;
 }
 
-- (id)pageHintForPageIndex:(unint64_t)a3
+- (id)pageHintForPageIndex:(unint64_t)index
 {
-  v4 = self;
-  TPPaginationState.pageHint(forPageIndex:)(v5, a3);
+  selfCopy = self;
+  TPPaginationState.pageHint(forPageIndex:)(v5, index);
   v7 = v6;
 
   return v7;
 }
 
-- (void)addSectionHint:(id)a3
+- (void)addSectionHint:(id)hint
 {
-  v4 = a3;
+  hintCopy = hint;
   v7._pageHints = self;
   pageHints = v7._pageHints;
-  v7.super.isa = v4;
+  v7.super.isa = hintCopy;
   TPPaginationState.addSectionHint(_:)(v7);
 }
 
@@ -332,14 +332,14 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   sub_2760384C4();
 }
 
-- (void)trimSectionHintsFromIndex:(unint64_t)a3
+- (void)trimSectionHintsFromIndex:(unint64_t)index
 {
-  v4 = self;
-  TPPaginationState.trimSectionHints(fromIndex:)(a3);
+  selfCopy = self;
+  TPPaginationState.trimSectionHints(fromIndex:)(index);
 }
 
 - (_TtC14PagesQuicklook17TPPaginationState)init

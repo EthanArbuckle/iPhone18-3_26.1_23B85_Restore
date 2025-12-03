@@ -1,17 +1,17 @@
 @interface _PSAutocompleteSearchUtilities
-+ (BOOL)searchString:(id)a3 containsOnlyCharactersInSet:(id)a4;
-+ (_NSRange)rangeForSearchTerm:(id)a3 inTarget:(id)a4 tokenizedByCharacterSet:(id)a5;
++ (BOOL)searchString:(id)string containsOnlyCharactersInSet:(id)set;
++ (_NSRange)rangeForSearchTerm:(id)term inTarget:(id)target tokenizedByCharacterSet:(id)set;
 + (id)emojiCharacterSet;
 @end
 
 @implementation _PSAutocompleteSearchUtilities
 
-+ (_NSRange)rangeForSearchTerm:(id)a3 inTarget:(id)a4 tokenizedByCharacterSet:(id)a5
++ (_NSRange)rangeForSearchTerm:(id)term inTarget:(id)target tokenizedByCharacterSet:(id)set
 {
   v37 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v7 = a4;
-  [v7 componentsSeparatedByCharactersInSet:a5];
+  termCopy = term;
+  targetCopy = target;
+  [targetCopy componentsSeparatedByCharactersInSet:set];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -34,19 +34,19 @@
         }
 
         v14 = *(*(&v32 + 1) + 8 * i);
-        v15 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-        v16 = [v14 stringByTrimmingCharactersInSet:v15];
+        whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+        v16 = [v14 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-        v17 = [v7 rangeOfString:v16];
+        v17 = [targetCopy rangeOfString:v16];
         if (v17 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v19 = v17;
-          if (v17 + v18 <= [v7 length])
+          if (v17 + v18 <= [targetCopy length])
           {
-            v20 = [v7 substringWithRange:{v19, objc_msgSend(v7, "length") - v19}];
-            v21 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
-            v22 = [v20 stringByTrimmingCharactersInSet:v21];
-            v23 = [v22 rangeOfString:v31 options:393];
+            v20 = [targetCopy substringWithRange:{v19, objc_msgSend(targetCopy, "length") - v19}];
+            whitespaceCharacterSet2 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+            v22 = [v20 stringByTrimmingCharactersInSet:whitespaceCharacterSet2];
+            v23 = [v22 rangeOfString:termCopy options:393];
             v30 = v24;
 
             if (v23 != 0x7FFFFFFFFFFFFFFFLL)
@@ -96,16 +96,16 @@ LABEL_14:
   return v2;
 }
 
-+ (BOOL)searchString:(id)a3 containsOnlyCharactersInSet:(id)a4
++ (BOOL)searchString:(id)string containsOnlyCharactersInSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length])
+  stringCopy = string;
+  setCopy = set;
+  if ([stringCopy length])
   {
     v7 = 0;
     do
     {
-      v8 = [v6 characterIsMember:{objc_msgSend(v5, "characterAtIndex:", v7)}];
+      v8 = [setCopy characterIsMember:{objc_msgSend(stringCopy, "characterAtIndex:", v7)}];
       if ((v8 & 1) == 0)
       {
         break;
@@ -114,7 +114,7 @@ LABEL_14:
       ++v7;
     }
 
-    while ([v5 length] > v7);
+    while ([stringCopy length] > v7);
   }
 
   else

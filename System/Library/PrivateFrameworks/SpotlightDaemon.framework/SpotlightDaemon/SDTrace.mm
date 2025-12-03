@@ -1,16 +1,16 @@
 @interface SDTrace
 + (void)initialize;
-- (SDTrace)initWithTitle:(id)a3;
+- (SDTrace)initWithTitle:(id)title;
 - (id)description;
 - (id)items;
-- (int64_t)addLabel:(id)a3 identifier:(int64_t)a4 duration:(double)a5 string:(id)a6 data:(id)a7;
+- (int64_t)addLabel:(id)label identifier:(int64_t)identifier duration:(double)duration string:(id)string data:(id)data;
 @end
 
 @implementation SDTrace
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v2 = dispatch_queue_create("trace queue", v4);
@@ -19,16 +19,16 @@
   }
 }
 
-- (SDTrace)initWithTitle:(id)a3
+- (SDTrace)initWithTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   v9.receiver = self;
   v9.super_class = SDTrace;
   v6 = [(SDTrace *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_title, a3);
+    objc_storeStrong(&v6->_title, title);
     v7->_current = -1;
     *v7->_items = 0u;
     *&v7->_items[2] = 0u;
@@ -51,11 +51,11 @@
   return v7;
 }
 
-- (int64_t)addLabel:(id)a3 identifier:(int64_t)a4 duration:(double)a5 string:(id)a6 data:(id)a7
+- (int64_t)addLabel:(id)label identifier:(int64_t)identifier duration:(double)duration string:(id)string data:(id)data
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  labelCopy = label;
+  stringCopy = string;
+  dataCopy = data;
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
@@ -66,15 +66,15 @@
   block[2] = __52__SDTrace_addLabel_identifier_duration_string_data___block_invoke;
   block[3] = &unk_278934388;
   v25 = &v28;
-  v26 = a4;
+  identifierCopy = identifier;
   block[4] = self;
-  v22 = v12;
-  v27 = a5;
-  v23 = v13;
-  v24 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  v22 = labelCopy;
+  durationCopy = duration;
+  v23 = stringCopy;
+  v24 = dataCopy;
+  v16 = dataCopy;
+  v17 = stringCopy;
+  v18 = labelCopy;
   dispatch_sync(v15, block);
   v19 = v29[3];
 
@@ -172,15 +172,15 @@ void __16__SDTrace_items__block_invoke(uint64_t a1)
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCAB68];
-  v4 = [(SDTrace *)self title];
-  v5 = [v3 stringWithFormat:@"Trace %@ (%d)\n", v4, -[SDTrace current](self, "current") + 1];
+  title = [(SDTrace *)self title];
+  v5 = [v3 stringWithFormat:@"Trace %@ (%d)\n", title, -[SDTrace current](self, "current") + 1];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(SDTrace *)self items];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items = [(SDTrace *)self items];
+  v7 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -191,14 +191,14 @@ void __16__SDTrace_items__block_invoke(uint64_t a1)
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(items);
         }
 
         v11 = [*(*(&v14 + 1) + 8 * i) description];
         [v5 appendFormat:@"%@\n", v11];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);

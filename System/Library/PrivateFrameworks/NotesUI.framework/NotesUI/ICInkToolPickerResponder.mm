@@ -7,11 +7,11 @@
 
 - (id)inputAssistantItem
 {
-  v2 = [(ICInkToolPickerResponder *)self delegate];
-  v3 = [v2 responderToMatch];
-  v4 = [v3 inputAssistantItem];
+  delegate = [(ICInkToolPickerResponder *)self delegate];
+  responderToMatch = [delegate responderToMatch];
+  inputAssistantItem = [responderToMatch inputAssistantItem];
 
-  return v4;
+  return inputAssistantItem;
 }
 
 - (ICInkToolPickerResponderDelegate)delegate

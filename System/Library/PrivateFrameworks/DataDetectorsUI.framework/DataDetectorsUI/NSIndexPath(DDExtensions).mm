@@ -7,17 +7,17 @@
 - (__CFString)dd_stringValue
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [a1 length];
+  v2 = [self length];
   if (v2)
   {
     if (v2 == 2)
     {
-      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu/%lu", objc_msgSend(a1, "indexAtPosition:", 0), objc_msgSend(a1, "indexAtPosition:", 1)];
+      v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu/%lu", objc_msgSend(self, "indexAtPosition:", 0), objc_msgSend(self, "indexAtPosition:", 1)];
     }
 
     else if (v2 == 1)
     {
-      v3 = [a1 indexAtPosition:0];
+      v3 = [self indexAtPosition:0];
       v14[32] = 0;
       v4 = 31;
       do
@@ -39,18 +39,18 @@
     else
     {
       v8 = [MEMORY[0x277CBEB18] arrayWithCapacity:v2];
-      if ([a1 length])
+      if ([self length])
       {
         v9 = 0;
         do
         {
-          v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(a1, "indexAtPosition:", v9)];
+          v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lu", objc_msgSend(self, "indexAtPosition:", v9)];
           [v8 addObject:v10];
 
           ++v9;
         }
 
-        while (v9 < [a1 length]);
+        while (v9 < [self length]);
       }
 
       v11 = [v8 componentsJoinedByString:@"/"];

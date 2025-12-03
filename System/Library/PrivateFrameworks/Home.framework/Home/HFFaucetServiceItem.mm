@@ -1,34 +1,34 @@
 @interface HFFaucetServiceItem
 - (BOOL)_shouldSubsumeValveInOverallActiveState;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (id)createControlItemsWithOptions:(id)a3;
-- (id)currentStateActionBuildersForHome:(id)a3;
-- (id)servicesToReadForCharacteristicType:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (id)createControlItemsWithOptions:(id)options;
+- (id)currentStateActionBuildersForHome:(id)home;
+- (id)servicesToReadForCharacteristicType:(id)type;
 @end
 
 @implementation HFFaucetServiceItem
 
 - (BOOL)_shouldSubsumeValveInOverallActiveState
 {
-  v2 = [(HFServiceItem *)self service];
-  v3 = [v2 hf_childServicesOfType:*MEMORY[0x277CD0F38]];
+  service = [(HFServiceItem *)self service];
+  v3 = [service hf_childServicesOfType:*MEMORY[0x277CD0F38]];
   v4 = [v3 count] < 2;
 
   return v4;
 }
 
-- (id)servicesToReadForCharacteristicType:(id)a3
+- (id)servicesToReadForCharacteristicType:(id)type
 {
   v11.receiver = self;
   v11.super_class = HFFaucetServiceItem;
-  v4 = a3;
-  v5 = [(HFServiceItem *)&v11 servicesToReadForCharacteristicType:v4];
-  v6 = [v4 isEqualToString:{*MEMORY[0x277CCF748], v11.receiver, v11.super_class}];
+  typeCopy = type;
+  v5 = [(HFServiceItem *)&v11 servicesToReadForCharacteristicType:typeCopy];
+  v6 = [typeCopy isEqualToString:{*MEMORY[0x277CCF748], v11.receiver, v11.super_class}];
 
   if (v6)
   {
-    v7 = [(HFServiceItem *)self service];
-    v8 = [v7 hf_childServicesOfType:*MEMORY[0x277CD0F38]];
+    service = [(HFServiceItem *)self service];
+    v8 = [service hf_childServicesOfType:*MEMORY[0x277CD0F38]];
     v9 = [v5 na_setByRemovingObjectsFromSet:v8];
 
     v5 = v9;
@@ -37,24 +37,24 @@
   return v5;
 }
 
-- (id)createControlItemsWithOptions:(id)a3
+- (id)createControlItemsWithOptions:(id)options
 {
   v38[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  optionsCopy = options;
   v6 = [v4 set];
-  v7 = [(HFServiceItem *)self service];
-  v8 = [v7 hf_childServices];
-  v9 = [v8 na_firstObjectPassingTest:&__block_literal_global_17];
+  service = [(HFServiceItem *)self service];
+  hf_childServices = [service hf_childServices];
+  v9 = [hf_childServices na_firstObjectPassingTest:&__block_literal_global_17];
 
   v10 = MEMORY[0x277CBEB58];
-  v11 = [(HFServiceItem *)self service];
-  v12 = [v10 setWithObject:v11];
+  service2 = [(HFServiceItem *)self service];
+  v12 = [v10 setWithObject:service2];
 
   [v12 na_safeAddObject:v9];
-  v13 = [(HFServiceItem *)self service];
+  service3 = [(HFServiceItem *)self service];
   v14 = *MEMORY[0x277CD0F38];
-  v15 = [v13 hf_childServicesOfType:*MEMORY[0x277CD0F38]];
+  v15 = [service3 hf_childServicesOfType:*MEMORY[0x277CD0F38]];
   [v12 unionSet:v15];
 
   if ([(HFFaucetServiceItem *)self _shouldSubsumeValveInOverallActiveState])
@@ -69,9 +69,9 @@
     v19 = [(HFChildServiceFilter *)v17 initWithChildServiceTypes:v18];
 
     v20 = [HFChildServiceControlItem alloc];
-    v21 = [(HFServiceItem *)self valueSource];
-    v22 = [(HFServiceItem *)self service];
-    v23 = [(HFChildServiceControlItem *)v20 initWithBaseValueSource:v21 parentService:v22 childServiceFilter:v19 displayResults:0];
+    valueSource = [(HFServiceItem *)self valueSource];
+    service4 = [(HFServiceItem *)self service];
+    v23 = [(HFChildServiceControlItem *)v20 initWithBaseValueSource:valueSource parentService:service4 childServiceFilter:v19 displayResults:0];
 
     [v6 na_safeAddObject:v23];
     v16 = 1;
@@ -80,7 +80,7 @@
   v24 = [(HFServiceItem *)self controlItemValueSourceForServices:v12];
   v25 = [HFFaucetActiveStateControlItem alloc];
   v37 = @"title";
-  v26 = HFItemOptionalLocalizedString(@"HFControlTitleFaucetActive", v5);
+  v26 = HFItemOptionalLocalizedString(@"HFControlTitleFaucetActive", optionsCopy);
   v38[0] = v26;
   v27 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v38 forKeys:&v37 count:1];
   v28 = [(HFFaucetActiveStateControlItem *)v25 initWithValueSource:v24 valveControlMode:v16 displayResults:v27];
@@ -88,7 +88,7 @@
 
   v29 = [HFHeaterCoolerThresholdControlItem alloc];
   v35 = @"title";
-  v30 = HFItemOptionalLocalizedString(@"HFControlTitleFaucetTemperature", v5);
+  v30 = HFItemOptionalLocalizedString(@"HFControlTitleFaucetTemperature", optionsCopy);
 
   v36 = v30;
   v31 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
@@ -108,12 +108,12 @@ uint64_t __53__HFFaucetServiceItem_createControlItemsWithOptions___block_invoke(
   return v3;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  optionsCopy = options;
   v6 = [v4 set];
-  v7 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v6 options:v5];
+  v7 = [(HFServiceItem *)self performStandardUpdateWithCharacteristicTypes:v6 options:optionsCopy];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -139,7 +139,7 @@ id __51__HFFaucetServiceItem__subclass_updateWithOptions___block_invoke(uint64_t
   return v7;
 }
 
-- (id)currentStateActionBuildersForHome:(id)a3
+- (id)currentStateActionBuildersForHome:(id)home
 {
   v3 = MEMORY[0x277D2C900];
   v4 = [MEMORY[0x277CBEB98] set];

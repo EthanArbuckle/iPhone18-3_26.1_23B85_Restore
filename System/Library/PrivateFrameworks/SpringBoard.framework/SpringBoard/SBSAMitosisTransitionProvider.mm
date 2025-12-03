@@ -1,24 +1,24 @@
 @interface SBSAMitosisTransitionProvider
-- (BOOL)canProceedWithContext:(id)a3 shouldRetry:(BOOL *)a4;
-- (double)delayForPhase:(int64_t)a3;
-- (double)milestoneForPhase:(int64_t)a3;
-- (id)_updatedBabyHeadstartPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)_updatedInitialUnanimatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)_updatedPrimaryLayoutPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
-- (id)nameForPhase:(int64_t)a3;
-- (id)updatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5;
+- (BOOL)canProceedWithContext:(id)context shouldRetry:(BOOL *)retry;
+- (double)delayForPhase:(int64_t)phase;
+- (double)milestoneForPhase:(int64_t)phase;
+- (id)_updatedBabyHeadstartPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)_updatedInitialUnanimatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)_updatedPrimaryLayoutPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
+- (id)nameForPhase:(int64_t)phase;
+- (id)updatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity;
 @end
 
 @implementation SBSAMitosisTransitionProvider
 
-- (id)nameForPhase:(int64_t)a3
+- (id)nameForPhase:(int64_t)phase
 {
   v7.receiver = self;
   v7.super_class = SBSAMitosisTransitionProvider;
   v4 = [(SBSASequencedBehaviorProvider *)&v7 nameForPhase:?];
-  if (a3 <= 5)
+  if (phase <= 5)
   {
-    v5 = off_2783BDBE0[a3];
+    v5 = off_2783BDBE0[phase];
 
     v4 = v5;
   }
@@ -26,19 +26,19 @@
   return v4;
 }
 
-- (BOOL)canProceedWithContext:(id)a3 shouldRetry:(BOOL *)a4
+- (BOOL)canProceedWithContext:(id)context shouldRetry:(BOOL *)retry
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(SBSASequencedBehaviorProvider *)self participatingElementIdentification];
-  if (v7)
+  contextCopy = context;
+  participatingElementIdentification = [(SBSASequencedBehaviorProvider *)self participatingElementIdentification];
+  if (participatingElementIdentification)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [v6 elementContexts];
-    v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    elementContexts = [contextCopy elementContexts];
+    v9 = [elementContexts countByEnumeratingWithState:&v22 objects:v26 count:16];
     v10 = v9 != 0;
     if (!v9)
     {
@@ -53,33 +53,33 @@
       {
         if (*v23 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(elementContexts);
         }
 
         v11 |= SAElementIdentityEqualToIdentity();
       }
 
-      v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [elementContexts countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v9);
 
     if (v11)
     {
-      v14 = [v6 preferences];
-      v15 = [v14 elementLayoutTransition];
-      v16 = [v15 initialElementContexts];
+      preferences = [contextCopy preferences];
+      elementLayoutTransition = [preferences elementLayoutTransition];
+      initialElementContexts = [elementLayoutTransition initialElementContexts];
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __67__SBSAMitosisTransitionProvider_canProceedWithContext_shouldRetry___block_invoke;
       v20[3] = &unk_2783AD700;
-      v21 = v7;
-      v17 = [v16 bs_firstObjectPassingTest:v20];
+      v21 = participatingElementIdentification;
+      v17 = [initialElementContexts bs_firstObjectPassingTest:v20];
 
       if (v17)
       {
-        v18 = [v6 preferences];
-        LODWORD(v9) = [v18 isCollisionImminent] ^ 1;
+        preferences2 = [contextCopy preferences];
+        LODWORD(v9) = [preferences2 isCollisionImminent] ^ 1;
       }
 
       else
@@ -87,10 +87,10 @@
         LOBYTE(v9) = 0;
       }
 
-      v8 = v21;
+      elementContexts = v21;
 LABEL_17:
 
-      if (!a4)
+      if (!retry)
       {
         goto LABEL_14;
       }
@@ -101,10 +101,10 @@ LABEL_17:
 
   v10 = 0;
   LOBYTE(v9) = 0;
-  if (a4)
+  if (retry)
   {
 LABEL_13:
-    *a4 = v10;
+    *retry = v10;
   }
 
 LABEL_14:
@@ -112,48 +112,48 @@ LABEL_14:
   return v9;
 }
 
-- (id)updatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)updatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(SBSASequencedBehaviorProvider *)self activePhase];
+  preferencesCopy = preferences;
+  contextCopy = context;
+  activePhase = [(SBSASequencedBehaviorProvider *)self activePhase];
   v12 = SBLogSystemAperturePreferencesStackMitosis();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
-  switch(v11)
+  switch(activePhase)
   {
     case 3:
       if (v13)
       {
-        [SBSAMitosisTransitionProvider updatedPreferencesFromPreferences:v10 context:? relevantPropertyIdentity:?];
+        [SBSAMitosisTransitionProvider updatedPreferencesFromPreferences:contextCopy context:? relevantPropertyIdentity:?];
       }
 
-      v14 = [(SBSAMitosisTransitionProvider *)self _updatedPrimaryLayoutPreferencesFromPreferences:v9 context:v10 relevantPropertyIdentity:a5];
+      v14 = [(SBSAMitosisTransitionProvider *)self _updatedPrimaryLayoutPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       break;
     case 2:
       if (v13)
       {
-        [SBSAMitosisTransitionProvider updatedPreferencesFromPreferences:v10 context:? relevantPropertyIdentity:?];
+        [SBSAMitosisTransitionProvider updatedPreferencesFromPreferences:contextCopy context:? relevantPropertyIdentity:?];
       }
 
-      v14 = [(SBSAMitosisTransitionProvider *)self _updatedBabyHeadstartPreferencesFromPreferences:v9 context:v10 relevantPropertyIdentity:a5];
+      v14 = [(SBSAMitosisTransitionProvider *)self _updatedBabyHeadstartPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       break;
     case 1:
       if (v13)
       {
-        [SBSAMitosisTransitionProvider updatedPreferencesFromPreferences:v10 context:? relevantPropertyIdentity:?];
+        [SBSAMitosisTransitionProvider updatedPreferencesFromPreferences:contextCopy context:? relevantPropertyIdentity:?];
       }
 
-      v14 = [(SBSAMitosisTransitionProvider *)self _updatedInitialUnanimatedPreferencesFromPreferences:v9 context:v10 relevantPropertyIdentity:a5];
+      v14 = [(SBSAMitosisTransitionProvider *)self _updatedInitialUnanimatedPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       break;
     default:
       if (v13)
       {
-        [SBSAMitosisTransitionProvider updatedPreferencesFromPreferences:v10 context:? relevantPropertyIdentity:?];
+        [SBSAMitosisTransitionProvider updatedPreferencesFromPreferences:contextCopy context:? relevantPropertyIdentity:?];
       }
 
       v19.receiver = self;
       v19.super_class = SBSAMitosisTransitionProvider;
-      v14 = [(SBSASequencedBehaviorProvider *)&v19 updatedPreferencesFromPreferences:v9 context:v10 relevantPropertyIdentity:a5];
+      v14 = [(SBSASequencedBehaviorProvider *)&v19 updatedPreferencesFromPreferences:preferencesCopy context:contextCopy relevantPropertyIdentity:identity];
       break;
   }
 
@@ -210,12 +210,12 @@ void __100__SBSAMitosisTransitionProvider_updatedPreferencesFromPreferences_cont
   [v5 setBlobEnabled:1];
 }
 
-- (double)milestoneForPhase:(int64_t)a3
+- (double)milestoneForPhase:(int64_t)phase
 {
   v5.receiver = self;
   v5.super_class = SBSAMitosisTransitionProvider;
   [(SBSASequencedBehaviorProvider *)&v5 milestoneForPhase:?];
-  if (a3 == 4)
+  if (phase == 4)
   {
     [&unk_28336F620 bs_CGFloatValue];
   }
@@ -223,32 +223,32 @@ void __100__SBSAMitosisTransitionProvider_updatedPreferencesFromPreferences_cont
   return result;
 }
 
-- (double)delayForPhase:(int64_t)a3
+- (double)delayForPhase:(int64_t)phase
 {
-  if (a3 != 3)
+  if (phase != 3)
   {
     return 0.0;
   }
 
-  v3 = [objc_opt_class() settings];
-  [v3 mitosisHeadstartDelay];
+  settings = [objc_opt_class() settings];
+  [settings mitosisHeadstartDelay];
   v5 = v4;
 
   return v5;
 }
 
-- (id)_updatedInitialUnanimatedPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedInitialUnanimatedPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
-  v8 = a4;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __118__SBSAMitosisTransitionProvider__updatedInitialUnanimatedPreferencesFromPreferences_context_relevantPropertyIdentity___block_invoke;
   v12[3] = &unk_2783AD750;
-  v13 = v8;
+  v13 = contextCopy;
   v14 = a2;
   v12[4] = self;
-  v9 = v8;
-  v10 = [a3 copyWithBlock:v12];
+  v9 = contextCopy;
+  v10 = [preferences copyWithBlock:v12];
 
   return v10;
 }
@@ -471,18 +471,18 @@ void __118__SBSAMitosisTransitionProvider__updatedInitialUnanimatedPreferencesFr
   [v7 setContentCenter:?];
 }
 
-- (id)_updatedBabyHeadstartPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedBabyHeadstartPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
-  v8 = a4;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __114__SBSAMitosisTransitionProvider__updatedBabyHeadstartPreferencesFromPreferences_context_relevantPropertyIdentity___block_invoke;
   v12[3] = &unk_2783AD750;
-  v13 = v8;
+  v13 = contextCopy;
   v14 = a2;
   v12[4] = self;
-  v9 = v8;
-  v10 = [a3 copyWithBlock:v12];
+  v9 = contextCopy;
+  v10 = [preferences copyWithBlock:v12];
 
   return v10;
 }
@@ -612,19 +612,19 @@ void __114__SBSAMitosisTransitionProvider__updatedBabyHeadstartPreferencesFromPr
   [v6 setCenter:?];
 }
 
-- (id)_updatedPrimaryLayoutPreferencesFromPreferences:(id)a3 context:(id)a4 relevantPropertyIdentity:(id *)a5
+- (id)_updatedPrimaryLayoutPreferencesFromPreferences:(id)preferences context:(id)context relevantPropertyIdentity:(id *)identity
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 containerViewDescriptions];
-  v10 = [v8 containerViewDescriptions];
+  preferencesCopy = preferences;
+  contextCopy = context;
+  containerViewDescriptions = [contextCopy containerViewDescriptions];
+  containerViewDescriptions2 = [contextCopy containerViewDescriptions];
 
-  v11 = [v9 objectAtIndex:{objc_msgSend(v10, "count") > 1}];
+  v11 = [containerViewDescriptions objectAtIndex:{objc_msgSend(containerViewDescriptions2, "count") > 1}];
 
-  v12 = [v11 interfaceElementIdentifier];
-  *a5 = [[SBSAInterfaceElementPropertyIdentity alloc] initWithAssociatedInterfaceElementIdentifier:v12 andProperty:@"bounds"];
+  interfaceElementIdentifier = [v11 interfaceElementIdentifier];
+  *identity = [[SBSAInterfaceElementPropertyIdentity alloc] initWithAssociatedInterfaceElementIdentifier:interfaceElementIdentifier andProperty:@"bounds"];
 
-  return v7;
+  return preferencesCopy;
 }
 
 - (void)updatedPreferencesFromPreferences:(void *)a1 context:relevantPropertyIdentity:.cold.1(void *a1)

@@ -1,19 +1,19 @@
 @interface _OTSVGParserDelegate
-- (_OTSVGParserDelegate)initWithUnitsPerEm:(unsigned int)a3;
+- (_OTSVGParserDelegate)initWithUnitsPerEm:(unsigned int)em;
 - (id).cxx_construct;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didEndMappingPrefix:(id)a4;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 didStartMappingPrefix:(id)a4 toURI:(id)a5;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didEndMappingPrefix:(id)prefix;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser didStartMappingPrefix:(id)prefix toURI:(id)i;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred;
 @end
 
 @implementation _OTSVGParserDelegate
 
-- (_OTSVGParserDelegate)initWithUnitsPerEm:(unsigned int)a3
+- (_OTSVGParserDelegate)initWithUnitsPerEm:(unsigned int)em
 {
-  v3 = *&a3;
+  v3 = *&em;
   v14.receiver = self;
   v14.super_class = _OTSVGParserDelegate;
   v4 = [(_OTSVGParserDelegate *)&v14 init];
@@ -50,14 +50,14 @@
   return v5;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v86 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  parserCopy = parser;
+  elementCopy = element;
+  iCopy = i;
+  nameCopy = name;
+  attributesCopy = attributes;
   if ([(_OTSVGParserDelegate *)self skipDepth])
   {
     [(_OTSVGParserDelegate *)self setSkipDepth:[(_OTSVGParserDelegate *)self skipDepth]+ 1];
@@ -65,7 +65,7 @@
   }
 
   memset(&__p, 170, sizeof(__p));
-  SVG::convertString(&__p, v14);
+  SVG::convertString(&__p, iCopy);
   v17 = HIBYTE(__p.__r_.__value_.__r.__words[2]);
   if ((SHIBYTE(__p.__r_.__value_.__r.__words[2]) & 0x80000000) == 0 || __p.__r_.__value_.__l.__size_ != 26 || (*__p.__r_.__value_.__l.__data_ == *"http://www.w3.org/2000/svg" ? (v18 = *(__p.__r_.__value_.__r.__words[0] + 8) == *"ww.w3.org/2000/svg") : (v18 = 0), v18 ? (v19 = *(__p.__r_.__value_.__r.__words[0] + 16) == *"g/2000/svg") : (v19 = 0), v19 ? (v20 = *(__p.__r_.__value_.__r.__words[0] + 24) == *"vg") : (v20 = 0), !v20))
   {
@@ -78,13 +78,13 @@
     goto LABEL_17;
   }
 
-  v63 = v15;
-  v64 = v14;
-  v65 = v12;
-  v66 = v13;
+  v63 = nameCopy;
+  v64 = iCopy;
+  v65 = parserCopy;
+  v66 = elementCopy;
   [(_OTSVGParserDelegate *)self namespaces];
-  v61 = v16;
-  v21 = v16;
+  v61 = attributesCopy;
+  v21 = attributesCopy;
   *v72 = 0u;
   *v73 = 0u;
   v74 = 0xAAAAAAAA3F800000;
@@ -350,10 +350,10 @@ LABEL_92:
     operator delete(v53);
   }
 
-  v13 = v66;
+  elementCopy = v66;
   v54 = [v66 isEqualToString:{@"svg", v61}];
   v55 = *[(_OTSVGParserDelegate *)self root];
-  v12 = v65;
+  parserCopy = v65;
   if (v54)
   {
     if (!v55)
@@ -366,9 +366,9 @@ LABEL_92:
     goto LABEL_97;
   }
 
-  v15 = v63;
-  v14 = v64;
-  v16 = v62;
+  nameCopy = v63;
+  iCopy = v64;
+  attributesCopy = v62;
   if (!v55)
   {
     goto LABEL_104;
@@ -495,12 +495,12 @@ LABEL_104:
     }
 
     [(_OTSVGParserDelegate *)self setSkipDepth:1];
-    v12 = v65;
-    v13 = v66;
+    parserCopy = v65;
+    elementCopy = v66;
 LABEL_97:
-    v15 = v63;
-    v14 = v64;
-    v16 = v62;
+    nameCopy = v63;
+    iCopy = v64;
+    attributesCopy = v62;
   }
 
   v58 = v73[0];
@@ -547,9 +547,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  if ([(_OTSVGParserDelegate *)self skipDepth:a3])
+  if ([(_OTSVGParserDelegate *)self skipDepth:parser])
   {
     v7 = [(_OTSVGParserDelegate *)self skipDepth]- 1;
 
@@ -562,13 +562,13 @@ LABEL_17:
   }
 }
 
-- (void)parser:(id)a3 didStartMappingPrefix:(id)a4 toURI:(id)a5
+- (void)parser:(id)parser didStartMappingPrefix:(id)prefix toURI:(id)i
 {
   p_namespaces = &self->namespaces;
-  v9 = a5;
-  v10 = a4;
-  v33 = a3;
-  SVG::convertString(__p, v10);
+  iCopy = i;
+  prefixCopy = prefix;
+  parserCopy = parser;
+  SVG::convertString(__p, prefixCopy);
   v35 = 0u;
   memset(v34, 0, sizeof(v34));
   if ((v37 & 0x80u) == 0)
@@ -668,7 +668,7 @@ LABEL_23:
     operator delete(__p[0]);
   }
 
-  SVG::convertString(&v38, v9);
+  SVG::convertString(&v38, iCopy);
   v22 = v20[7];
   v23 = v20[6];
   v24 = v22 - v23;
@@ -718,14 +718,14 @@ LABEL_23:
     *&v34[0] = *v23;
     v20[6] = v23 + 8;
     std::__split_buffer<SVG::Recorder::State *>::emplace_back<SVG::Recorder::State *&>(v20 + 5, v34);
-    v30 = v33;
+    v30 = parserCopy;
     v23 = v20[6];
     v27 = v20[9] + v20[10];
   }
 
   else
   {
-    v30 = v33;
+    v30 = parserCopy;
   }
 
   v31 = *&v23[8 * (v27 / 0xAA)] + 24 * (v27 % 0xAA);
@@ -734,12 +734,12 @@ LABEL_23:
   v20[10] = v20[10] + 1;
 }
 
-- (void)parser:(id)a3 didEndMappingPrefix:(id)a4
+- (void)parser:(id)parser didEndMappingPrefix:(id)prefix
 {
   p_namespaces = &self->namespaces;
-  v7 = a4;
-  v8 = a3;
-  SVG::convertString(&__p, v7);
+  prefixCopy = prefix;
+  parserCopy = parser;
+  SVG::convertString(&__p, prefixCopy);
   if ((v35[1] & 0x800000) == 0)
   {
     p_p = &__p;
@@ -963,23 +963,23 @@ LABEL_48:
   }
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v5 = a3;
+  parserCopy = parser;
   if (![(_OTSVGParserDelegate *)self errorOccurred])
   {
     [(_OTSVGParserDelegate *)self setErrorOccurred:1];
-    [v5 abortParsing];
+    [parserCopy abortParsing];
   }
 }
 
-- (void)parser:(id)a3 validationErrorOccurred:(id)a4
+- (void)parser:(id)parser validationErrorOccurred:(id)occurred
 {
-  v5 = a3;
+  parserCopy = parser;
   if (![(_OTSVGParserDelegate *)self errorOccurred])
   {
     [(_OTSVGParserDelegate *)self setErrorOccurred:1];
-    [v5 abortParsing];
+    [parserCopy abortParsing];
   }
 }
 

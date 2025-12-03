@@ -1,18 +1,18 @@
 @interface AMSBlinder
-+ (id)finalizeBlindedDataWithPrivateInput:(id)a3 timeStamp:(id)a4 adamId:(id)a5 publicInput:(id)a6 signatureType:(id)a7 serverData:(id)a8 error:(id *)a9;
++ (id)finalizeBlindedDataWithPrivateInput:(id)input timeStamp:(id)stamp adamId:(id)id publicInput:(id)publicInput signatureType:(id)type serverData:(id)data error:(id *)error;
 + (id)generateRandomPrivateInput;
 + (id)generateTimestamp;
-+ (id)makeBlindedDataWithPrivateInputData:(id)a3;
-+ (id)publicInputWithComponents:(id)a3 adamID:(id)a4 isRedownload:(BOOL)a5 priceType:(id)a6 timestamp:(id)a7;
-+ (id)unblindedInputWithPrivateInput:(id)a3;
-+ (void)removeCachedClientForPrivateInput:(id)a3;
++ (id)makeBlindedDataWithPrivateInputData:(id)data;
++ (id)publicInputWithComponents:(id)components adamID:(id)d isRedownload:(BOOL)redownload priceType:(id)type timestamp:(id)timestamp;
++ (id)unblindedInputWithPrivateInput:(id)input;
++ (void)removeCachedClientForPrivateInput:(id)input;
 @end
 
 @implementation AMSBlinder
 
-+ (void)removeCachedClientForPrivateInput:(id)a3
++ (void)removeCachedClientForPrivateInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   v4 = sub_192F95B7C();
   v6 = v5;
 
@@ -32,9 +32,9 @@
   return v5;
 }
 
-+ (id)makeBlindedDataWithPrivateInputData:(id)a3
++ (id)makeBlindedDataWithPrivateInputData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = sub_192F95B7C();
   v6 = v5;
 
@@ -46,14 +46,14 @@
   return v8;
 }
 
-+ (id)finalizeBlindedDataWithPrivateInput:(id)a3 timeStamp:(id)a4 adamId:(id)a5 publicInput:(id)a6 signatureType:(id)a7 serverData:(id)a8 error:(id *)a9
++ (id)finalizeBlindedDataWithPrivateInput:(id)input timeStamp:(id)stamp adamId:(id)id publicInput:(id)publicInput signatureType:(id)type serverData:(id)data error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  inputCopy = input;
+  stampCopy = stamp;
+  idCopy = id;
+  publicInputCopy = publicInput;
+  typeCopy = type;
+  dataCopy = data;
   v20 = sub_192F95B7C();
   v36 = v21;
 
@@ -79,9 +79,9 @@
   return v30;
 }
 
-+ (id)publicInputWithComponents:(id)a3 adamID:(id)a4 isRedownload:(BOOL)a5 priceType:(id)a6 timestamp:(id)a7
++ (id)publicInputWithComponents:(id)components adamID:(id)d isRedownload:(BOOL)redownload priceType:(id)type timestamp:(id)timestamp
 {
-  v7 = a5;
+  redownloadCopy = redownload;
   type metadata accessor for PublicInputComponent(0);
   v8 = sub_192F96B0C();
   v9 = sub_192F967CC();
@@ -91,7 +91,7 @@
   v15 = sub_192F967CC();
   v17 = v16;
   swift_getObjCClassMetadata();
-  v18 = static Blinder.publicInput(_:adamID:isRedownload:priceType:timestamp:)(v8, v9, v11, v7, v12, v14, v15, v17);
+  v18 = static Blinder.publicInput(_:adamID:isRedownload:priceType:timestamp:)(v8, v9, v11, redownloadCopy, v12, v14, v15, v17);
   v20 = v19;
 
   v21 = sub_192F95B5C();
@@ -117,9 +117,9 @@
   return v3;
 }
 
-+ (id)unblindedInputWithPrivateInput:(id)a3
++ (id)unblindedInputWithPrivateInput:(id)input
 {
-  v3 = a3;
+  inputCopy = input;
   v4 = sub_192F95B7C();
   v6 = v5;
 

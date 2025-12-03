@@ -1,18 +1,18 @@
 @interface PKAccountWebServiceInstallmentAuthorizationRequest
-- (PKAccountWebServiceInstallmentAuthorizationRequest)initWithCoder:(id)a3;
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (PKAccountWebServiceInstallmentAuthorizationRequest)initWithCoder:(id)coder;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 - (id)endpointComponents;
-- (id)manifestHashWithReferenceIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)manifestHashWithReferenceIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAccountWebServiceInstallmentAuthorizationRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  informationCopy = information;
+  if (!informationCopy)
   {
     v6 = PKLogFacilityTypeGetObject(0xFuLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -29,8 +29,8 @@
     goto LABEL_25;
   }
 
-  v5 = [(PKAccountWebServiceInstallmentAuthorizationRequest *)self baseURL];
-  if (!v5)
+  baseURL = [(PKAccountWebServiceInstallmentAuthorizationRequest *)self baseURL];
+  if (!baseURL)
   {
     v18 = PKLogFacilityTypeGetObject(0xFuLL);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
@@ -48,7 +48,7 @@
     goto LABEL_25;
   }
 
-  v6 = v5;
+  v6 = baseURL;
   if (!self->_accountIdentifier)
   {
     v21 = PKLogFacilityTypeGetObject(0xFuLL);
@@ -124,26 +124,26 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v7 = [(PKAccountWebServiceInstallmentAuthorizationRequest *)self endpointComponents];
-  v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:v7 queryParameters:0 appleAccountInformation:v4];
+  endpointComponents = [(PKAccountWebServiceInstallmentAuthorizationRequest *)self endpointComponents];
+  v8 = [(PKAccountWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:endpointComponents queryParameters:0 appleAccountInformation:informationCopy];
 
   [v8 setHTTPMethod:@"POST"];
   [v8 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v9 setObject:self->_bindToken forKeyedSubscript:@"bindToken"];
-  v10 = [(NSDecimalNumber *)self->_authorizationAmount stringValue];
-  [v9 setObject:v10 forKeyedSubscript:@"authorizationAmount"];
+  stringValue = [(NSDecimalNumber *)self->_authorizationAmount stringValue];
+  [v9 setObject:stringValue forKeyedSubscript:@"authorizationAmount"];
 
   [v9 setObject:self->_installmentGroupIdentifier forKeyedSubscript:@"installmentGroupIdentifier"];
   shippingAddress = self->_shippingAddress;
   if (shippingAddress)
   {
-    v12 = [(CNPostalAddress *)shippingAddress webServiceDictionaryRepresentation];
-    [v9 setObject:v12 forKeyedSubscript:@"shippingAddress"];
+    webServiceDictionaryRepresentation = [(CNPostalAddress *)shippingAddress webServiceDictionaryRepresentation];
+    [v9 setObject:webServiceDictionaryRepresentation forKeyedSubscript:@"shippingAddress"];
   }
 
-  v13 = [(NSData *)self->_publicKeyHash hexEncoding];
-  [v9 setObject:v13 forKeyedSubscript:@"publicKeyHash"];
+  hexEncoding = [(NSData *)self->_publicKeyHash hexEncoding];
+  [v9 setObject:hexEncoding forKeyedSubscript:@"publicKeyHash"];
 
   v14 = [objc_opt_class() _HTTPBodyWithDictionary:v9];
   [v8 setHTTPBody:v14];
@@ -167,9 +167,9 @@ LABEL_26:
   return v3;
 }
 
-- (id)manifestHashWithReferenceIdentifier:(id)a3
+- (id)manifestHashWithReferenceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
   if ([(NSString *)self->_bindToken length])
   {
@@ -179,8 +179,8 @@ LABEL_26:
   authorizationAmount = self->_authorizationAmount;
   if (authorizationAmount)
   {
-    v7 = [(NSDecimalNumber *)authorizationAmount stringValue];
-    [v5 appendString:v7];
+    stringValue = [(NSDecimalNumber *)authorizationAmount stringValue];
+    [v5 appendString:stringValue];
   }
 
   if ([(NSString *)self->_installmentGroupIdentifier length])
@@ -188,48 +188,48 @@ LABEL_26:
     [v5 appendString:self->_installmentGroupIdentifier];
   }
 
-  if ([v4 length])
+  if ([identifierCopy length])
   {
-    [v5 appendString:v4];
+    [v5 appendString:identifierCopy];
   }
 
   v8 = [v5 dataUsingEncoding:4];
-  v9 = [v8 SHA256Hash];
+  sHA256Hash = [v8 SHA256Hash];
 
-  return v9;
+  return sHA256Hash;
 }
 
-- (PKAccountWebServiceInstallmentAuthorizationRequest)initWithCoder:(id)a3
+- (PKAccountWebServiceInstallmentAuthorizationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKAccountWebServiceInstallmentAuthorizationRequest;
-  v5 = [(PKOverlayableWebServiceRequest *)&v19 initWithCoder:v4];
+  v5 = [(PKOverlayableWebServiceRequest *)&v19 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"baseURL"];
     [(PKAccountWebServiceInstallmentAuthorizationRequest *)v5 setBaseURL:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hashResponse"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hashResponse"];
     [(PKAccountWebServiceInstallmentAuthorizationRequest *)v5 setHashResponse:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountIdentifier"];
     accountIdentifier = v5->_accountIdentifier;
     v5->_accountIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bindToken"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bindToken"];
     bindToken = v5->_bindToken;
     v5->_bindToken = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"authorizationAmount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"authorizationAmount"];
     authorizationAmount = v5->_authorizationAmount;
     v5->_authorizationAmount = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentGroupIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentGroupIdentifier"];
     installmentGroupIdentifier = v5->_installmentGroupIdentifier;
     v5->_installmentGroupIdentifier = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingAddress"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingAddress"];
     shippingAddress = v5->_shippingAddress;
     v5->_shippingAddress = v16;
   }
@@ -237,23 +237,23 @@ LABEL_26:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKAccountWebServiceInstallmentAuthorizationRequest;
-  v4 = a3;
-  [(PKOverlayableWebServiceRequest *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKOverlayableWebServiceRequest *)&v7 encodeWithCoder:coderCopy];
   v5 = [(PKAccountWebServiceInstallmentAuthorizationRequest *)self baseURL:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"baseURL"];
+  [coderCopy encodeObject:v5 forKey:@"baseURL"];
 
-  v6 = [(PKAccountWebServiceInstallmentAuthorizationRequest *)self hashResponse];
-  [v4 encodeObject:v6 forKey:@"hashResponse"];
+  hashResponse = [(PKAccountWebServiceInstallmentAuthorizationRequest *)self hashResponse];
+  [coderCopy encodeObject:hashResponse forKey:@"hashResponse"];
 
-  [v4 encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
-  [v4 encodeObject:self->_bindToken forKey:@"bindToken"];
-  [v4 encodeObject:self->_authorizationAmount forKey:@"authorizationAmount"];
-  [v4 encodeObject:self->_installmentGroupIdentifier forKey:@"installmentGroupIdentifier"];
-  [v4 encodeObject:self->_shippingAddress forKey:@"shippingAddress"];
+  [coderCopy encodeObject:self->_accountIdentifier forKey:@"accountIdentifier"];
+  [coderCopy encodeObject:self->_bindToken forKey:@"bindToken"];
+  [coderCopy encodeObject:self->_authorizationAmount forKey:@"authorizationAmount"];
+  [coderCopy encodeObject:self->_installmentGroupIdentifier forKey:@"installmentGroupIdentifier"];
+  [coderCopy encodeObject:self->_shippingAddress forKey:@"shippingAddress"];
 }
 
 @end

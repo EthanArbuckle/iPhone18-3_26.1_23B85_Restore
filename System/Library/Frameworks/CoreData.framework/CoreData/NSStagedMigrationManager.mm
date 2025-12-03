@@ -1,7 +1,7 @@
 @interface NSStagedMigrationManager
-- (BOOL)_shouldAttemptStagedMigrationWithStoreModelVersionChecksum:(id)a3 coordinatorModelVersionChecksum:(id)a4 error:(id *)a5;
+- (BOOL)_shouldAttemptStagedMigrationWithStoreModelVersionChecksum:(id)checksum coordinatorModelVersionChecksum:(id)versionChecksum error:(id *)error;
 - (NSStagedMigrationManager)initWithMigrationStages:(NSArray *)stages;
-- (int64_t)_findCurrentMigrationStageFromModelChecksum:(id)a3;
+- (int64_t)_findCurrentMigrationStageFromModelChecksum:(id)checksum;
 - (void)dealloc;
 @end
 
@@ -21,7 +21,7 @@
     goto LABEL_68;
   }
 
-  v45 = self;
+  selfCopy = self;
   if (!self)
   {
     goto LABEL_65;
@@ -64,8 +64,8 @@ LABEL_5:
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v12 = [v11 versionChecksums];
-      v13 = [v12 countByEnumeratingWithState:&v52 objects:&v62 count:16];
+      versionChecksums = [v11 versionChecksums];
+      v13 = [versionChecksums countByEnumeratingWithState:&v52 objects:&v62 count:16];
       if (v13)
       {
         v14 = v13;
@@ -77,7 +77,7 @@ LABEL_5:
           {
             if (*v53 != v15)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(versionChecksums);
             }
 
             v17 = *(*(&v52 + 1) + 8 * i);
@@ -90,7 +90,7 @@ LABEL_5:
             [v6 setObject:v17 forKey:v17];
           }
 
-          v14 = [v12 countByEnumeratingWithState:&v52 objects:&v62 count:16];
+          v14 = [versionChecksums countByEnumeratingWithState:&v52 objects:&v62 count:16];
           v8 = v42;
           v9 = v43;
           if (v14)
@@ -209,7 +209,7 @@ LABEL_68:
     objc_exception_throw([v37 exceptionWithName:v38 reason:v39 userInfo:v40]);
   }
 
-  v50.receiver = v45;
+  v50.receiver = selfCopy;
   v50.super_class = NSStagedMigrationManager;
   v26 = [(NSStagedMigrationManager *)&v50 init];
   if (v26)
@@ -290,20 +290,20 @@ LABEL_68:
   return v26;
 }
 
-- (int64_t)_findCurrentMigrationStageFromModelChecksum:(id)a3
+- (int64_t)_findCurrentMigrationStageFromModelChecksum:(id)checksum
 {
   v28 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(NSStagedMigrationManager *)self stages];
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  stages = [(NSStagedMigrationManager *)self stages];
+  v6 = [(NSArray *)stages countByEnumeratingWithState:&v21 objects:v27 count:16];
   v8 = 0x7FFFFFFFFFFFFFFFLL;
   if (v6)
   {
     v9 = v6;
-    v20 = self;
+    selfCopy = self;
     v10 = *v22;
     *&v7 = 138412290;
     v19 = v7;
@@ -313,7 +313,7 @@ LABEL_68:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(stages);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
@@ -334,13 +334,13 @@ LABEL_68:
             if ([objc_msgSend(objc_msgSend(v12 "currentModel")])
             {
 LABEL_20:
-              v8 = [(NSArray *)[(NSStagedMigrationManager *)v20 stages] indexOfObject:v12];
+              v8 = [(NSArray *)[(NSStagedMigrationManager *)selfCopy stages] indexOfObject:v12];
               goto LABEL_21;
             }
 
             if ([objc_msgSend(objc_msgSend(v12 "nextModel")])
             {
-              v8 = [(NSArray *)[(NSStagedMigrationManager *)v20 stages] indexOfObject:v12]+ 1;
+              v8 = [(NSArray *)[(NSStagedMigrationManager *)selfCopy stages] indexOfObject:v12]+ 1;
               goto LABEL_21;
             }
           }
@@ -368,7 +368,7 @@ LABEL_20:
         }
       }
 
-      v9 = [(NSArray *)v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v9 = [(NSArray *)stages countByEnumeratingWithState:&v21 objects:v27 count:16];
       if (v9)
       {
         continue;
@@ -385,7 +385,7 @@ LABEL_21:
   return v8;
 }
 
-- (BOOL)_shouldAttemptStagedMigrationWithStoreModelVersionChecksum:(id)a3 coordinatorModelVersionChecksum:(id)a4 error:(id *)a5
+- (BOOL)_shouldAttemptStagedMigrationWithStoreModelVersionChecksum:(id)checksum coordinatorModelVersionChecksum:(id)versionChecksum error:(id *)error
 {
   v51 = *MEMORY[0x1E69E9840];
   v38 = 0u;
@@ -403,7 +403,7 @@ LABEL_21:
   }
 
   v10 = v9;
-  v34 = a5;
+  errorCopy = error;
   v11 = *v39;
   v12 = 0x7FFFFFFFFFFFFFFFLL;
   v35 = 0x7FFFFFFFFFFFFFFFLL;
@@ -448,7 +448,7 @@ LABEL_21:
             v35 = [(NSArray *)[(NSStagedMigrationManager *)self stages] indexOfObject:v15];
           }
 
-          if (([objc_msgSend(objc_msgSend(v15 "currentModel")] & 1) != 0 || objc_msgSend(objc_msgSend(objc_msgSend(v15, "nextModel"), "versionChecksum"), "isEqual:", a4))
+          if (([objc_msgSend(objc_msgSend(v15 "currentModel")] & 1) != 0 || objc_msgSend(objc_msgSend(objc_msgSend(v15, "nextModel"), "versionChecksum"), "isEqual:", versionChecksum))
           {
             v36 = [(NSArray *)[(NSStagedMigrationManager *)self stages] indexOfObject:v15];
           }
@@ -484,7 +484,7 @@ LABEL_21:
   v22 = v36;
   if (v36 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    a5 = v34;
+    error = errorCopy;
     v23 = v35;
 LABEL_26:
     v24 = *MEMORY[0x1E696A250];
@@ -498,7 +498,7 @@ LABEL_26:
 
   v25 = 0;
   v26 = 1;
-  a5 = v34;
+  error = errorCopy;
   v23 = v35;
 LABEL_28:
   if (v23 == 0x7FFFFFFFFFFFFFFFLL)
@@ -538,9 +538,9 @@ LABEL_36:
   }
 
 LABEL_37:
-  if (a5)
+  if (error)
   {
-    *a5 = v25;
+    *error = v25;
   }
 
   v32 = *MEMORY[0x1E69E9840];

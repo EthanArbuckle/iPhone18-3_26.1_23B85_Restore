@@ -1,52 +1,52 @@
 @interface MUPDFAnnotationAdaptorHelper
-+ (BOOL)_shouldUseAKAnnotation:(id)a3 toRepresentCGPDFAnnotation:(CGPDFAnnotation *)a4;
-+ (double)_pointSizeFromAppearanceTokens:(id)a3;
-+ (id)_colorFromAppearanceTokens:(id)a3;
-+ (id)_colorFromPDFArray:(CGPDFArray *)a3;
-+ (id)_fontNameFromAppearanceTokens:(id)a3;
-+ (id)_getColorFromAppearanceString:(CGPDFString *)a3;
-+ (id)_getFontFromAppearanceString:(CGPDFString *)a3 ofPDFPage:(CGPDFPage *)a4;
-+ (id)_tokenizeAppearanceString:(id)a3;
-+ (id)getFullFieldNameFromAnnotationDictionary:(CGPDFDictionary *)a3;
-+ (id)getRGBColorForKey:(const char *)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4;
-+ (id)getTextStringForKey:(const char *)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4;
-+ (id)newAKAnnotationFromCGPDFAnnotation:(CGPDFAnnotation *)a3;
-+ (void)addAKAnnotation:(id)a3 toAnnotationDictionary:(__CFDictionary *)a4;
-+ (void)addAppearanceStreamOfAnnotation:(id)a3 forPage:(CGPDFPage *)a4 toDictionary:(id)a5;
-+ (void)addBorderStyleOfAnnotation:(id)a3 toDictionary:(id)a4;
-+ (void)addBoundsOfAnnotation:(id)a3 forPage:(CGPDFPage *)a4 toDictionary:(id)a5;
-+ (void)addContentsStringOfAnnotation:(id)a3 toDictionary:(id)a4;
-+ (void)addDefaultAppearanceStreamOfAnnotation:(id)a3 toDictionary:(id)a4;
-+ (void)addFlagsOfAnnotation:(id)a3 toDictionary:(id)a4;
-+ (void)addModificationDateOfAnnotation:(id)a3 toDictionary:(id)a4;
-+ (void)addQuaddingOfAnnotation:(id)a3 toDictionary:(id)a4;
-+ (void)addRGBColor:(id)a3 forKey:(id)a4 toDictionary:(id)a5;
-+ (void)addString:(id)a3 toDictionary:(id)a4 forKey:(id)a5;
-+ (void)addTextOfAnnotation:(id)a3 toDictionary:(id)a4 forKey:(id)a5 canUsePlaceholder:(BOOL)a6;
-+ (void)migrateAKFilledAnnotationPropertiesTo:(id)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4 ofPDFPage:(CGPDFPage *)a5;
-+ (void)migrateAKRectangularShapeAnnotationPropertiesTo:(id)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4 ofPDFPage:(CGPDFPage *)a5;
-+ (void)migrateAKStrokedAnnotationPropertiesTo:(id)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4 ofPDFPage:(CGPDFPage *)a5;
-+ (void)migrateAKTextAnnotationPropertiesTo:(id)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4 ofPDFPage:(CGPDFPage *)a5;
-+ (void)migrateAppearanceStreamFromCGPDFAnnotationDict:(CGPDFDictionary *)a3 toAKAnnotation:(id)a4 compensatingForPageRotation:(unint64_t)a5;
-+ (void)readDefaultAppearanceStringFromPDFDictionary:(CGPDFDictionary *)a3 ofPage:(CGPDFPage *)a4 toDictionary:(id)a5;
-+ (void)readQuaddingFromPDFDictionary:(CGPDFDictionary *)a3 toDictionary:(id)a4;
++ (BOOL)_shouldUseAKAnnotation:(id)annotation toRepresentCGPDFAnnotation:(CGPDFAnnotation *)fAnnotation;
++ (double)_pointSizeFromAppearanceTokens:(id)tokens;
++ (id)_colorFromAppearanceTokens:(id)tokens;
++ (id)_colorFromPDFArray:(CGPDFArray *)array;
++ (id)_fontNameFromAppearanceTokens:(id)tokens;
++ (id)_getColorFromAppearanceString:(CGPDFString *)string;
++ (id)_getFontFromAppearanceString:(CGPDFString *)string ofPDFPage:(CGPDFPage *)page;
++ (id)_tokenizeAppearanceString:(id)string;
++ (id)getFullFieldNameFromAnnotationDictionary:(CGPDFDictionary *)dictionary;
++ (id)getRGBColorForKey:(const char *)key fromAnnotationDictionary:(CGPDFDictionary *)dictionary;
++ (id)getTextStringForKey:(const char *)key fromAnnotationDictionary:(CGPDFDictionary *)dictionary;
++ (id)newAKAnnotationFromCGPDFAnnotation:(CGPDFAnnotation *)annotation;
++ (void)addAKAnnotation:(id)annotation toAnnotationDictionary:(__CFDictionary *)dictionary;
++ (void)addAppearanceStreamOfAnnotation:(id)annotation forPage:(CGPDFPage *)page toDictionary:(id)dictionary;
++ (void)addBorderStyleOfAnnotation:(id)annotation toDictionary:(id)dictionary;
++ (void)addBoundsOfAnnotation:(id)annotation forPage:(CGPDFPage *)page toDictionary:(id)dictionary;
++ (void)addContentsStringOfAnnotation:(id)annotation toDictionary:(id)dictionary;
++ (void)addDefaultAppearanceStreamOfAnnotation:(id)annotation toDictionary:(id)dictionary;
++ (void)addFlagsOfAnnotation:(id)annotation toDictionary:(id)dictionary;
++ (void)addModificationDateOfAnnotation:(id)annotation toDictionary:(id)dictionary;
++ (void)addQuaddingOfAnnotation:(id)annotation toDictionary:(id)dictionary;
++ (void)addRGBColor:(id)color forKey:(id)key toDictionary:(id)dictionary;
++ (void)addString:(id)string toDictionary:(id)dictionary forKey:(id)key;
++ (void)addTextOfAnnotation:(id)annotation toDictionary:(id)dictionary forKey:(id)key canUsePlaceholder:(BOOL)placeholder;
++ (void)migrateAKFilledAnnotationPropertiesTo:(id)to fromAnnotationDictionary:(CGPDFDictionary *)dictionary ofPDFPage:(CGPDFPage *)page;
++ (void)migrateAKRectangularShapeAnnotationPropertiesTo:(id)to fromAnnotationDictionary:(CGPDFDictionary *)dictionary ofPDFPage:(CGPDFPage *)page;
++ (void)migrateAKStrokedAnnotationPropertiesTo:(id)to fromAnnotationDictionary:(CGPDFDictionary *)dictionary ofPDFPage:(CGPDFPage *)page;
++ (void)migrateAKTextAnnotationPropertiesTo:(id)to fromAnnotationDictionary:(CGPDFDictionary *)dictionary ofPDFPage:(CGPDFPage *)page;
++ (void)migrateAppearanceStreamFromCGPDFAnnotationDict:(CGPDFDictionary *)dict toAKAnnotation:(id)annotation compensatingForPageRotation:(unint64_t)rotation;
++ (void)readDefaultAppearanceStringFromPDFDictionary:(CGPDFDictionary *)dictionary ofPage:(CGPDFPage *)page toDictionary:(id)toDictionary;
++ (void)readQuaddingFromPDFDictionary:(CGPDFDictionary *)dictionary toDictionary:(id)toDictionary;
 @end
 
 @implementation MUPDFAnnotationAdaptorHelper
 
-+ (void)migrateAppearanceStreamFromCGPDFAnnotationDict:(CGPDFDictionary *)a3 toAKAnnotation:(id)a4 compensatingForPageRotation:(unint64_t)a5
++ (void)migrateAppearanceStreamFromCGPDFAnnotationDict:(CGPDFDictionary *)dict toAKAnnotation:(id)annotation compensatingForPageRotation:(unint64_t)rotation
 {
-  v6 = a4;
+  annotationCopy = annotation;
   v7 = _MUReadAppearanceStreams_cachedValue;
   if (_MUReadAppearanceStreams_cachedValue == -2)
   {
-    v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v9 = [v8 objectForKey:@"MUReadAppearanceStreams"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v9 = [standardUserDefaults objectForKey:@"MUReadAppearanceStreams"];
 
     if (v9)
     {
-      v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      _MUReadAppearanceStreams_cachedValue = [v10 BOOLForKey:@"MUReadAppearanceStreams"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      _MUReadAppearanceStreams_cachedValue = [standardUserDefaults2 BOOLForKey:@"MUReadAppearanceStreams"];
 
       if (_MUReadAppearanceStreams_cachedValue)
       {
@@ -73,13 +73,13 @@
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (a3)
+    if (dict)
     {
       if ((isKindOfClass & 1) == 0)
       {
         v35.a = 0.0;
         value.a = 0.0;
-        CGPDFDictionaryGetDictionary(a3, "AP", &value);
+        CGPDFDictionaryGetDictionary(dict, "AP", &value);
         if (*&value.a)
         {
           CGPDFDictionaryGetObject(*&value.a, "N", &v35);
@@ -113,12 +113,12 @@
                 v40.size.height = height;
                 if (CGRectGetWidth(v40) <= 0.0 || (v41.origin.x = x, v41.origin.y = y, v41.size.width = width, v41.size.height = height, CGRectGetHeight(v41) <= 0.0))
                 {
-                  [v6 setAppearanceOverride:&__block_literal_global_1];
+                  [annotationCopy setAppearanceOverride:&__block_literal_global_1];
                 }
 
                 else
                 {
-                  [v6 drawingBounds];
+                  [annotationCopy drawingBounds];
                   v20 = v42.origin.x;
                   v21 = v42.origin.y;
                   v22 = v42.size.width;
@@ -154,7 +154,7 @@
                   v29[3] = &unk_27986E8C8;
                   v30 = v27;
                   v28 = v27;
-                  [v6 setAppearanceOverride:v29];
+                  [annotationCopy setAppearanceOverride:v29];
                 }
               }
             }
@@ -185,71 +185,71 @@ void __122__MUPDFAnnotationAdaptorHelper_migrateAppearanceStreamFromCGPDFAnnotat
   CGContextRestoreGState(c);
 }
 
-+ (void)migrateAKStrokedAnnotationPropertiesTo:(id)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4 ofPDFPage:(CGPDFPage *)a5
++ (void)migrateAKStrokedAnnotationPropertiesTo:(id)to fromAnnotationDictionary:(CGPDFDictionary *)dictionary ofPDFPage:(CGPDFPage *)page
 {
-  v7 = a3;
+  toCopy = to;
   value = 0;
-  if (CGPDFDictionaryGetDictionary(a4, "BS", &value))
+  if (CGPDFDictionaryGetDictionary(dictionary, "BS", &value))
   {
     v10 = 0;
     v11 = 0.0;
     if (CGPDFDictionaryGetNumber(value, "W", &v11))
     {
-      [v7 setStrokeWidth:v11];
+      [toCopy setStrokeWidth:v11];
     }
 
     if (CGPDFDictionaryGetName(value, "S", &v10))
     {
       v8 = *v10 == 68 && v10[1] == 0;
-      [v7 setDashed:v8];
+      [toCopy setDashed:v8];
     }
   }
 
   v11 = 0.0;
-  if (CGPDFDictionaryGetArray(a4, "C", &v11))
+  if (CGPDFDictionaryGetArray(dictionary, "C", &v11))
   {
-    v9 = [a1 _colorFromPDFArray:*&v11];
-    [v7 setStrokeColor:v9];
+    v9 = [self _colorFromPDFArray:*&v11];
+    [toCopy setStrokeColor:v9];
   }
 }
 
-+ (void)migrateAKFilledAnnotationPropertiesTo:(id)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4 ofPDFPage:(CGPDFPage *)a5
++ (void)migrateAKFilledAnnotationPropertiesTo:(id)to fromAnnotationDictionary:(CGPDFDictionary *)dictionary ofPDFPage:(CGPDFPage *)page
 {
-  v7 = a3;
+  toCopy = to;
   value = 0;
-  if (CGPDFDictionaryGetArray(a4, "IC", &value))
+  if (CGPDFDictionaryGetArray(dictionary, "IC", &value))
   {
-    v8 = [a1 _colorFromPDFArray:value];
-    [v7 setFillColor:v8];
+    v8 = [self _colorFromPDFArray:value];
+    [toCopy setFillColor:v8];
   }
 }
 
-+ (void)migrateAKRectangularShapeAnnotationPropertiesTo:(id)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4 ofPDFPage:(CGPDFPage *)a5
++ (void)migrateAKRectangularShapeAnnotationPropertiesTo:(id)to fromAnnotationDictionary:(CGPDFDictionary *)dictionary ofPDFPage:(CGPDFPage *)page
 {
-  v5 = a3;
+  toCopy = to;
   if (CGPDFDictionaryGetRect())
   {
-    [v5 setRectangle:{0.0, 0.0, 0.0, 0.0}];
+    [toCopy setRectangle:{0.0, 0.0, 0.0, 0.0}];
   }
 }
 
-+ (void)migrateAKTextAnnotationPropertiesTo:(id)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4 ofPDFPage:(CGPDFPage *)a5
++ (void)migrateAKTextAnnotationPropertiesTo:(id)to fromAnnotationDictionary:(CGPDFDictionary *)dictionary ofPDFPage:(CGPDFPage *)page
 {
-  v8 = a3;
+  toCopy = to;
   value = 0;
-  if (CGPDFDictionaryGetName(a4, "Subtype", &value))
+  if (CGPDFDictionaryGetName(dictionary, "Subtype", &value))
   {
-    v9 = v8;
+    v9 = toCopy;
     if (!strcmp(value, "Widget"))
     {
       string = 0;
       dict = 0;
-      if (!CGPDFDictionaryGetDictionary(a4, "Parent", &dict))
+      if (!CGPDFDictionaryGetDictionary(dictionary, "Parent", &dict))
       {
         dict = 0;
       }
 
-      if (CGPDFDictionaryGetString(a4, "V", &string) || dict && CGPDFDictionaryGetString(dict, "V", &string))
+      if (CGPDFDictionaryGetString(dictionary, "V", &string) || dict && CGPDFDictionaryGetString(dict, "V", &string))
       {
         v10 = CGPDFStringCopyTextString(string);
       }
@@ -259,40 +259,40 @@ void __122__MUPDFAnnotationAdaptorHelper_migrateAppearanceStreamFromCGPDFAnnotat
         v10 = 0;
       }
 
-      if (CGPDFDictionaryGetString(a4, "DV", &string) || dict && CGPDFDictionaryGetString(dict, "DV", &string))
+      if (CGPDFDictionaryGetString(dictionary, "DV", &string) || dict && CGPDFDictionaryGetString(dict, "DV", &string))
       {
-        v11 = CGPDFStringCopyTextString(string);
-        if (v11)
+        dictionary2 = CGPDFStringCopyTextString(string);
+        if (dictionary2)
         {
-          [v9 setCustomPlaceholderText:v11];
+          [v9 setCustomPlaceholderText:dictionary2];
         }
       }
 
       else
       {
-        v11 = 0;
+        dictionary2 = 0;
       }
 
-      v13 = [MEMORY[0x277CBEB38] dictionary];
-      [a1 readDefaultAppearanceStringFromPDFDictionary:a4 ofPage:a5 toDictionary:v13];
-      [a1 readQuaddingFromPDFDictionary:a4 toDictionary:v13];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      [self readDefaultAppearanceStringFromPDFDictionary:dictionary ofPage:page toDictionary:dictionary];
+      [self readQuaddingFromPDFDictionary:dictionary toDictionary:dictionary];
       if ([v10 length])
       {
-        v14 = [MEMORY[0x277CEA718] newTextStorageOriginalFontSavvyWithString:v10 attributes:v13];
+        v14 = [MEMORY[0x277CEA718] newTextStorageOriginalFontSavvyWithString:v10 attributes:dictionary];
         [v9 setAnnotationText:v14];
       }
 
-      else if (![v11 length])
+      else if (![dictionary2 length])
       {
         [v9 setShouldUsePlaceholderText:0];
       }
 
-      [v9 setTypingAttributes:v13];
+      [v9 setTypingAttributes:dictionary];
     }
 
     else
     {
-      v10 = [a1 getTextStringForKey:"Contents" fromAnnotationDictionary:a4];
+      v10 = [self getTextStringForKey:"Contents" fromAnnotationDictionary:dictionary];
       if (![v10 length])
       {
         [v9 setShouldUsePlaceholderText:0];
@@ -301,14 +301,14 @@ LABEL_28:
         goto LABEL_29;
       }
 
-      v11 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
       if (!strcmp(value, "FreeText"))
       {
-        [a1 readDefaultAppearanceStringFromPDFDictionary:a4 ofPage:a5 toDictionary:v11];
-        [a1 readQuaddingFromPDFDictionary:a4 toDictionary:v11];
+        [self readDefaultAppearanceStringFromPDFDictionary:dictionary ofPage:page toDictionary:dictionary2];
+        [self readQuaddingFromPDFDictionary:dictionary toDictionary:dictionary2];
       }
 
-      v12 = [MEMORY[0x277CEA718] newTextStorageOriginalFontSavvyWithString:v10 attributes:v11];
+      v12 = [MEMORY[0x277CEA718] newTextStorageOriginalFontSavvyWithString:v10 attributes:dictionary2];
       [v9 setAnnotationText:v12];
     }
 
@@ -319,23 +319,23 @@ LABEL_28:
 LABEL_29:
 }
 
-+ (id)getRGBColorForKey:(const char *)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4
++ (id)getRGBColorForKey:(const char *)key fromAnnotationDictionary:(CGPDFDictionary *)dictionary
 {
   value = 0;
-  Array = CGPDFDictionaryGetArray(a4, a3, &value);
+  Array = CGPDFDictionaryGetArray(dictionary, key, &value);
   v6 = 0;
   if (Array)
   {
-    v6 = [a1 _colorFromPDFArray:value];
+    v6 = [self _colorFromPDFArray:value];
   }
 
   return v6;
 }
 
-+ (id)getTextStringForKey:(const char *)a3 fromAnnotationDictionary:(CGPDFDictionary *)a4
++ (id)getTextStringForKey:(const char *)key fromAnnotationDictionary:(CGPDFDictionary *)dictionary
 {
   value = 0;
-  String = CGPDFDictionaryGetString(a4, a3, &value);
+  String = CGPDFDictionaryGetString(dictionary, key, &value);
   v5 = 0;
   if (String)
   {
@@ -349,11 +349,11 @@ LABEL_29:
   return v5;
 }
 
-+ (id)getFullFieldNameFromAnnotationDictionary:(CGPDFDictionary *)a3
++ (id)getFullFieldNameFromAnnotationDictionary:(CGPDFDictionary *)dictionary
 {
   dict = 0;
   value = 0;
-  if (CGPDFDictionaryGetString(a3, "T", &value) && (v4 = CGPDFStringCopyTextString(value)) != 0)
+  if (CGPDFDictionaryGetString(dictionary, "T", &value) && (v4 = CGPDFStringCopyTextString(value)) != 0)
   {
     v5 = v4;
     MutableCopy = CFStringCreateMutableCopy(*MEMORY[0x277CBECE8], 0, v4);
@@ -365,7 +365,7 @@ LABEL_29:
     MutableCopy = 0;
   }
 
-  if (!CGPDFDictionaryGetDictionary(a3, "Parent", &dict))
+  if (!CGPDFDictionaryGetDictionary(dictionary, "Parent", &dict))
   {
     goto LABEL_23;
   }
@@ -448,39 +448,39 @@ LABEL_23:
   return v14;
 }
 
-+ (void)readDefaultAppearanceStringFromPDFDictionary:(CGPDFDictionary *)a3 ofPage:(CGPDFPage *)a4 toDictionary:(id)a5
++ (void)readDefaultAppearanceStringFromPDFDictionary:(CGPDFDictionary *)dictionary ofPage:(CGPDFPage *)page toDictionary:(id)toDictionary
 {
-  v8 = a5;
+  toDictionaryCopy = toDictionary;
   value = 0;
-  if (CGPDFDictionaryGetString(a3, "DA", &value))
+  if (CGPDFDictionaryGetString(dictionary, "DA", &value))
   {
-    v9 = [a1 _getFontFromAppearanceString:value ofPDFPage:a4];
+    v9 = [self _getFontFromAppearanceString:value ofPDFPage:page];
     if (v9)
     {
-      [v8 setObject:v9 forKey:*MEMORY[0x277D740A8]];
+      [toDictionaryCopy setObject:v9 forKey:*MEMORY[0x277D740A8]];
     }
 
-    v10 = [a1 _getColorFromAppearanceString:value];
+    v10 = [self _getColorFromAppearanceString:value];
     if (v10)
     {
-      [v8 setObject:v10 forKey:*MEMORY[0x277D740C0]];
+      [toDictionaryCopy setObject:v10 forKey:*MEMORY[0x277D740C0]];
     }
   }
 }
 
-+ (void)readQuaddingFromPDFDictionary:(CGPDFDictionary *)a3 toDictionary:(id)a4
++ (void)readQuaddingFromPDFDictionary:(CGPDFDictionary *)dictionary toDictionary:(id)toDictionary
 {
   v5 = *MEMORY[0x277D74118];
-  v6 = a4;
-  v7 = [v6 objectForKey:v5];
-  if (!v7)
+  toDictionaryCopy = toDictionary;
+  defaultParagraphStyle = [toDictionaryCopy objectForKey:v5];
+  if (!defaultParagraphStyle)
   {
-    v7 = [MEMORY[0x277D74248] defaultParagraphStyle];
+    defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
   }
 
-  v8 = [v7 mutableCopy];
+  v8 = [defaultParagraphStyle mutableCopy];
   value = 0;
-  Integer = CGPDFDictionaryGetInteger(a3, "Q", &value);
+  Integer = CGPDFDictionaryGetInteger(dictionary, "Q", &value);
   v10 = 0;
   if (Integer)
   {
@@ -496,22 +496,22 @@ LABEL_23:
   }
 
   [v8 setAlignment:v10];
-  [v6 setObject:v8 forKey:v5];
+  [toDictionaryCopy setObject:v8 forKey:v5];
 }
 
-+ (void)addBoundsOfAnnotation:(id)a3 forPage:(CGPDFPage *)a4 toDictionary:(id)a5
++ (void)addBoundsOfAnnotation:(id)annotation forPage:(CGPDFPage *)page toDictionary:(id)dictionary
 {
   v22[4] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  [a3 drawingBounds];
+  dictionaryCopy = dictionary;
+  [annotation drawingBounds];
   x = v23.origin.x;
   y = v23.origin.y;
   width = v23.size.width;
   height = v23.size.height;
   IsInfinite = CGRectIsInfinite(v23);
-  if (a4 && IsInfinite)
+  if (page && IsInfinite)
   {
-    BoxRect = CGPDFPageGetBoxRect(a4, kCGPDFMediaBox);
+    BoxRect = CGPDFPageGetBoxRect(page, kCGPDFMediaBox);
     x = BoxRect.origin.x;
     y = BoxRect.origin.y;
     width = BoxRect.size.width;
@@ -548,91 +548,91 @@ LABEL_23:
   v22[3] = v20;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:4];
 
-  [v7 setObject:v21 forKey:@"/Rect"];
+  [dictionaryCopy setObject:v21 forKey:@"/Rect"];
 }
 
-+ (void)addModificationDateOfAnnotation:(id)a3 toDictionary:(id)a4
++ (void)addModificationDateOfAnnotation:(id)annotation toDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a4;
-  v6 = [v4 date];
-  v7 = [MUPDFUtilities createPDFDateString:v6];
+  dictionaryCopy = dictionary;
+  date = [v4 date];
+  v7 = [MUPDFUtilities createPDFDateString:date];
 
-  [v5 setObject:v7 forKey:@"/M"];
+  [dictionaryCopy setObject:v7 forKey:@"/M"];
 }
 
-+ (void)addFlagsOfAnnotation:(id)a3 toDictionary:(id)a4
++ (void)addFlagsOfAnnotation:(id)annotation toDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CCABB0];
-  v5 = a4;
+  dictionaryCopy = dictionary;
   v6 = [v4 numberWithUnsignedInteger:4];
-  [v5 setValue:v6 forKey:@"/F"];
+  [dictionaryCopy setValue:v6 forKey:@"/F"];
 }
 
-+ (void)addContentsStringOfAnnotation:(id)a3 toDictionary:(id)a4
++ (void)addContentsStringOfAnnotation:(id)annotation toDictionary:(id)dictionary
 {
-  v11 = a3;
-  v6 = a4;
+  annotationCopy = annotation;
+  dictionaryCopy = dictionary;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [MEMORY[0x277CEA718] actualOrPlaceholderTextOfAnnotation:v11];
-    v8 = [v7 string];
+    v7 = [MEMORY[0x277CEA718] actualOrPlaceholderTextOfAnnotation:annotationCopy];
+    string = [v7 string];
   }
 
   else
   {
-    v8 = &stru_286962590;
+    string = &stru_286962590;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v11 childAnnotation];
-    if (v9)
+    childAnnotation = [annotationCopy childAnnotation];
+    if (childAnnotation)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v10 = [v9 contents];
+        contents = [childAnnotation contents];
 
-        v8 = v10;
+        string = contents;
       }
     }
   }
 
-  [a1 addString:v8 toDictionary:v6 forKey:@"/Contents"];
+  [self addString:string toDictionary:dictionaryCopy forKey:@"/Contents"];
 }
 
-+ (void)addTextOfAnnotation:(id)a3 toDictionary:(id)a4 forKey:(id)a5 canUsePlaceholder:(BOOL)a6
++ (void)addTextOfAnnotation:(id)annotation toDictionary:(id)dictionary forKey:(id)key canUsePlaceholder:(BOOL)placeholder
 {
-  if (a6)
+  if (placeholder)
   {
     v10 = MEMORY[0x277CEA718];
-    v11 = a5;
-    v12 = a4;
-    [v10 actualOrPlaceholderTextOfAnnotation:a3];
+    keyCopy = key;
+    dictionaryCopy = dictionary;
+    [v10 actualOrPlaceholderTextOfAnnotation:annotation];
   }
 
   else
   {
-    v13 = a5;
-    v14 = a4;
-    [a3 annotationText];
+    keyCopy2 = key;
+    dictionaryCopy2 = dictionary;
+    [annotation annotationText];
   }
   v15 = ;
-  v16 = [v15 string];
+  string = [v15 string];
 
-  [a1 addString:v16 toDictionary:a4 forKey:a5];
+  [self addString:string toDictionary:dictionary forKey:key];
 }
 
-+ (void)addString:(id)a3 toDictionary:(id)a4 forKey:(id)a5
++ (void)addString:(id)string toDictionary:(id)dictionary forKey:(id)key
 {
-  v10 = a3;
-  v7 = a4;
-  v8 = a5;
-  if ([v10 length])
+  stringCopy = string;
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  if ([stringCopy length])
   {
-    v9 = [v10 mutableCopy];
+    v9 = [stringCopy mutableCopy];
     [(__CFString *)v9 replaceOccurrencesOfString:@"/" withString:@"//" options:2 range:0, 1];
   }
 
@@ -641,56 +641,56 @@ LABEL_23:
     v9 = &stru_286962590;
   }
 
-  [v7 setValue:v9 forKey:v8];
+  [dictionaryCopy setValue:v9 forKey:keyCopy];
 }
 
-+ (void)addBorderStyleOfAnnotation:(id)a3 toDictionary:(id)a4
++ (void)addBorderStyleOfAnnotation:(id)annotation toDictionary:(id)dictionary
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 conformsToAKStrokedAnnotationProtocol])
+  annotationCopy = annotation;
+  dictionaryCopy = dictionary;
+  if ([annotationCopy conformsToAKStrokedAnnotationProtocol])
   {
-    v7 = v5;
+    v7 = annotationCopy;
     [v7 strokeWidth];
     v9 = v8;
     if (v8 != 1.0 || [v7 isDashed])
     {
-      v10 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       [v7 strokeWidth];
       if (v11 != 1.0)
       {
         v12 = [MEMORY[0x277CCABB0] numberWithDouble:v9];
-        [v10 setObject:v12 forKey:@"/W"];
+        [dictionary setObject:v12 forKey:@"/W"];
       }
 
       if ([v7 isDashed])
       {
-        [v10 setValue:@"/D" forKey:@"/S"];
+        [dictionary setValue:@"/D" forKey:@"/S"];
         v13 = [MEMORY[0x277CCABB0] numberWithDouble:v9 + 7.0];
         v16[0] = v13;
         v14 = [MEMORY[0x277CCABB0] numberWithDouble:v9 * 3.0 + 4.0];
         v16[1] = v14;
         v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
-        [v10 setValue:v15 forKey:@"/D"];
+        [dictionary setValue:v15 forKey:@"/D"];
       }
 
-      [v6 setValue:v10 forKey:@"/BS"];
+      [dictionaryCopy setValue:dictionary forKey:@"/BS"];
     }
   }
 }
 
-+ (void)addRGBColor:(id)a3 forKey:(id)a4 toDictionary:(id)a5
++ (void)addRGBColor:(id)color forKey:(id)key toDictionary:(id)dictionary
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  keyCopy = key;
+  dictionaryCopy = dictionary;
   v16 = 0.0;
   v17 = 0.0;
   v14 = 1.0;
   v15 = 0.0;
-  v9 = [a3 colorUsingSRGBColorSpace];
-  [v9 getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
+  colorUsingSRGBColorSpace = [color colorUsingSRGBColorSpace];
+  [colorUsingSRGBColorSpace getRed:&v17 green:&v16 blue:&v15 alpha:&v14];
   if (v14 >= 0.5)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:v17];
@@ -700,25 +700,25 @@ LABEL_23:
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
     v18[2] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:3];
-    [v8 setValue:v13 forKey:v7];
+    [dictionaryCopy setValue:v13 forKey:keyCopy];
   }
 }
 
-+ (void)addAppearanceStreamOfAnnotation:(id)a3 forPage:(CGPDFPage *)a4 toDictionary:(id)a5
++ (void)addAppearanceStreamOfAnnotation:(id)annotation forPage:(CGPDFPage *)page toDictionary:(id)dictionary
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
+  annotationCopy = annotation;
+  dictionaryCopy = dictionary;
   v9 = _MUWriteAppearanceStreams_cachedValue;
   if (_MUWriteAppearanceStreams_cachedValue == -2)
   {
-    v10 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v11 = [v10 objectForKey:@"MUWriteAppearanceStreams"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v11 = [standardUserDefaults objectForKey:@"MUWriteAppearanceStreams"];
 
     if (v11)
     {
-      v12 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      _MUWriteAppearanceStreams_cachedValue = [v12 BOOLForKey:@"MUWriteAppearanceStreams"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      _MUWriteAppearanceStreams_cachedValue = [standardUserDefaults2 BOOLForKey:@"MUWriteAppearanceStreams"];
 
       if (_MUWriteAppearanceStreams_cachedValue)
       {
@@ -751,19 +751,19 @@ LABEL_23:
       if (v16)
       {
         v17 = v16;
-        [v7 drawingBounds];
+        [annotationCopy drawingBounds];
         IsInfinite = CGRectIsInfinite(v22);
-        if (a4 && IsInfinite)
+        if (page && IsInfinite)
         {
-          CGPDFPageGetBoxRect(a4, kCGPDFMediaBox);
+          CGPDFPageGetBoxRect(page, kCGPDFMediaBox);
         }
 
         CGDisplayListSetBoundingBox();
-        [MEMORY[0x277CEA698] renderAnnotation:v7 inContext:v17];
+        [MEMORY[0x277CEA698] renderAnnotation:annotationCopy inContext:v17];
         v20 = @"/N";
         v21[0] = v15;
         v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-        [v8 setValue:v19 forKey:@"/AP"];
+        [dictionaryCopy setValue:v19 forKey:@"/AP"];
 
         CGContextRelease(v17);
       }
@@ -773,11 +773,11 @@ LABEL_23:
   }
 }
 
-+ (void)addDefaultAppearanceStreamOfAnnotation:(id)a3 toDictionary:(id)a4
++ (void)addDefaultAppearanceStreamOfAnnotation:(id)annotation toDictionary:(id)dictionary
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  annotationCopy = annotation;
+  dictionaryCopy = dictionary;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -806,7 +806,7 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [MEMORY[0x277CEA718] actualOrPlaceholderTextOfAnnotation:v5];
+  v7 = [MEMORY[0x277CEA718] actualOrPlaceholderTextOfAnnotation:annotationCopy];
   if (![v7 length])
   {
 
@@ -831,10 +831,10 @@ LABEL_7:
 
   if (v8)
   {
-    v9 = [v8 colorUsingSRGBColorSpace];
+    colorUsingSRGBColorSpace = [v8 colorUsingSRGBColorSpace];
 
-    [v9 getRed:&v31 green:&v31 + 8 blue:v32 alpha:&v32[1]];
-    v8 = v9;
+    [colorUsingSRGBColorSpace getRed:&v31 green:&v31 + 8 blue:v32 alpha:&v32[1]];
+    v8 = colorUsingSRGBColorSpace;
   }
 
 LABEL_8:
@@ -907,7 +907,7 @@ LABEL_8:
 
   v10 = v17;
   v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"//%@ %@ Tf %@", v26[5], v20[5], v17];
-  [v6 setValue:v11 forKey:@"/DA"];
+  [dictionaryCopy setValue:v11 forKey:@"/DA"];
 LABEL_25:
 
   _Block_object_dispose(&v19, 8);
@@ -940,48 +940,48 @@ void __84__MUPDFAnnotationAdaptorHelper_addDefaultAppearanceStreamOfAnnotation_t
   }
 }
 
-+ (void)addQuaddingOfAnnotation:(id)a3 toDictionary:(id)a4
++ (void)addQuaddingOfAnnotation:(id)annotation toDictionary:(id)dictionary
 {
-  v11 = a3;
-  v5 = a4;
-  if ([v11 conformsToAKTextAnnotationProtocol])
+  annotationCopy = annotation;
+  dictionaryCopy = dictionary;
+  if ([annotationCopy conformsToAKTextAnnotationProtocol])
   {
-    v6 = [MEMORY[0x277CEA718] actualOrPlaceholderTextOfAnnotation:v11];
+    v6 = [MEMORY[0x277CEA718] actualOrPlaceholderTextOfAnnotation:annotationCopy];
     if ([v6 length])
     {
       v7 = [v6 attribute:*MEMORY[0x277D74118] atIndex:0 effectiveRange:0];
-      v8 = [v7 alignment];
-      if (v8)
+      alignment = [v7 alignment];
+      if (alignment)
       {
-        if (v8 == 1)
+        if (alignment == 1)
         {
           v9 = 1;
         }
 
         else
         {
-          v9 = 2 * (v8 == 2);
+          v9 = 2 * (alignment == 2);
         }
 
         v10 = [MEMORY[0x277CCABB0] numberWithInt:v9];
-        [v5 setValue:v10 forKey:@"/Q"];
+        [dictionaryCopy setValue:v10 forKey:@"/Q"];
       }
     }
   }
 }
 
-+ (id)newAKAnnotationFromCGPDFAnnotation:(CGPDFAnnotation *)a3
++ (id)newAKAnnotationFromCGPDFAnnotation:(CGPDFAnnotation *)annotation
 {
   v5 = _MUReadEmbeddedAKAnnotation_cachedValue;
   if (_MUReadEmbeddedAKAnnotation_cachedValue == -2)
   {
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v7 = [v6 objectForKey:@"MUReadEmbeddedAKAnnotation"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v7 = [standardUserDefaults objectForKey:@"MUReadEmbeddedAKAnnotation"];
 
     if (v7)
     {
-      v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      _MUReadEmbeddedAKAnnotation_cachedValue = [v8 BOOLForKey:@"MUReadEmbeddedAKAnnotation"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      _MUReadEmbeddedAKAnnotation_cachedValue = [standardUserDefaults2 BOOLForKey:@"MUReadEmbeddedAKAnnotation"];
 
       if (_MUReadEmbeddedAKAnnotation_cachedValue)
       {
@@ -1019,7 +1019,7 @@ void __84__MUPDFAnnotationAdaptorHelper_addDefaultAppearanceStreamOfAnnotation_t
         CFRelease(v13);
 
         objc_autoreleasePoolPop(v11);
-        if (CGPDFDictionary && ([a1 _shouldUseAKAnnotation:CGPDFDictionary toRepresentCGPDFAnnotation:a3] & 1) == 0)
+        if (CGPDFDictionary && ([self _shouldUseAKAnnotation:CGPDFDictionary toRepresentCGPDFAnnotation:annotation] & 1) == 0)
         {
           goto LABEL_16;
         }
@@ -1046,19 +1046,19 @@ LABEL_20:
   return 0;
 }
 
-+ (void)addAKAnnotation:(id)a3 toAnnotationDictionary:(__CFDictionary *)a4
++ (void)addAKAnnotation:(id)annotation toAnnotationDictionary:(__CFDictionary *)dictionary
 {
-  v17 = a3;
+  annotationCopy = annotation;
   v5 = _MUWriteEmbeddedAKAnnotation_cachedValue;
   if (_MUWriteEmbeddedAKAnnotation_cachedValue == -2)
   {
-    v6 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-    v7 = [v6 objectForKey:@"MUWriteEmbeddedAKAnnotation"];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    v7 = [standardUserDefaults objectForKey:@"MUWriteEmbeddedAKAnnotation"];
 
     if (v7)
     {
-      v8 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-      _MUWriteEmbeddedAKAnnotation_cachedValue = [v8 BOOLForKey:@"MUWriteEmbeddedAKAnnotation"];
+      standardUserDefaults2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+      _MUWriteEmbeddedAKAnnotation_cachedValue = [standardUserDefaults2 BOOLForKey:@"MUWriteEmbeddedAKAnnotation"];
 
       if (_MUWriteEmbeddedAKAnnotation_cachedValue)
       {
@@ -1084,63 +1084,63 @@ LABEL_20:
   if (v5)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [v17 dataRepresentation];
-    v13 = v12;
-    if (v12)
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    dataRepresentation = [annotationCopy dataRepresentation];
+    v13 = dataRepresentation;
+    if (dataRepresentation)
     {
-      v14 = [v12 base64EncodedStringWithOptions:0];
-      [v11 setObject:v14 forKey:@"/AAPL:AKAnnotationObject"];
-      Copy = CFDictionaryCreateCopy(0, a4);
+      v14 = [dataRepresentation base64EncodedStringWithOptions:0];
+      [dictionary setObject:v14 forKey:@"/AAPL:AKAnnotationObject"];
+      Copy = CFDictionaryCreateCopy(0, dictionary);
       if (Copy)
       {
         v16 = Copy;
-        [v11 setObject:Copy forKey:@"/AAPL:AKPDFAnnotationDictionary"];
+        [dictionary setObject:Copy forKey:@"/AAPL:AKPDFAnnotationDictionary"];
       }
 
-      CFDictionarySetValue(a4, @"/AAPL:AKExtras", v11);
+      CFDictionarySetValue(dictionary, @"/AAPL:AKExtras", dictionary);
     }
 
     objc_autoreleasePoolPop(v10);
   }
 }
 
-+ (id)_colorFromPDFArray:(CGPDFArray *)a3
++ (id)_colorFromPDFArray:(CGPDFArray *)array
 {
   v14 = *MEMORY[0x277D85DE8];
   v12 = xmmword_258229BF8;
   *v13 = unk_258229C08;
-  Count = CGPDFArrayGetCount(a3);
+  Count = CGPDFArrayGetCount(array);
   switch(Count)
   {
     case 4uLL:
       v5 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF438]);
-      CGPDFArrayGetNumber(a3, 0, &v12);
-      CGPDFArrayGetNumber(a3, 1uLL, &v12 + 1);
-      CGPDFArrayGetNumber(a3, 2uLL, v13);
+      CGPDFArrayGetNumber(array, 0, &v12);
+      CGPDFArrayGetNumber(array, 1uLL, &v12 + 1);
+      CGPDFArrayGetNumber(array, 2uLL, v13);
       v6 = &v13[1];
-      v7 = a3;
+      arrayCopy3 = array;
       v8 = 3;
       break;
     case 3uLL:
       v5 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF4B8]);
-      CGPDFArrayGetNumber(a3, 0, &v12);
-      CGPDFArrayGetNumber(a3, 1uLL, &v12 + 1);
+      CGPDFArrayGetNumber(array, 0, &v12);
+      CGPDFArrayGetNumber(array, 1uLL, &v12 + 1);
       v6 = v13;
-      v7 = a3;
+      arrayCopy3 = array;
       v8 = 2;
       break;
     case 1uLL:
       v5 = CGColorSpaceCreateWithName(*MEMORY[0x277CBF448]);
       v6 = &v12;
-      v7 = a3;
+      arrayCopy3 = array;
       v8 = 0;
       break;
     default:
       goto LABEL_9;
   }
 
-  CGPDFArrayGetNumber(v7, v8, v6);
+  CGPDFArrayGetNumber(arrayCopy3, v8, v6);
   v9 = CGColorCreate(v5, &v12);
   CGColorSpaceRelease(v5);
   if (v9)
@@ -1157,9 +1157,9 @@ LABEL_10:
   return v10;
 }
 
-+ (id)_getFontFromAppearanceString:(CGPDFString *)a3 ofPDFPage:(CGPDFPage *)a4
++ (id)_getFontFromAppearanceString:(CGPDFString *)string ofPDFPage:(CGPDFPage *)page
 {
-  v6 = CGPDFStringCopyTextString(a3);
+  v6 = CGPDFStringCopyTextString(string);
   if (!v6)
   {
     v10 = 0;
@@ -1170,10 +1170,10 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v7 = [a1 _tokenizeAppearanceString:v6];
-  [a1 _pointSizeFromAppearanceTokens:v7];
+  v7 = [self _tokenizeAppearanceString:v6];
+  [self _pointSizeFromAppearanceTokens:v7];
   v9 = v8;
-  v10 = [a1 _fontNameFromAppearanceTokens:v7];
+  v10 = [self _fontNameFromAppearanceTokens:v7];
   if (!v10)
   {
     goto LABEL_34;
@@ -1182,7 +1182,7 @@ LABEL_35:
   value = 0;
   v29 = 0;
   dict = 0;
-  Document = CGPDFPageGetDocument(a4);
+  Document = CGPDFPageGetDocument(page);
   Catalog = CGPDFDocumentGetCatalog(Document);
   if (Catalog && CGPDFDictionaryGetDictionary(Catalog, "AcroForm", &value) && CGPDFDictionaryGetDictionary(value, "DR", &dict) && (v26 = 0, CGPDFDictionaryGetDictionary(dict, "Font", &v26)) && CGPDFDictionaryGetObject(v26, [v10 cStringUsingEncoding:1], &v29) && CGPDFFontCreateWithObject())
   {
@@ -1305,13 +1305,13 @@ LABEL_38:
   return v16;
 }
 
-+ (id)_getColorFromAppearanceString:(CGPDFString *)a3
++ (id)_getColorFromAppearanceString:(CGPDFString *)string
 {
-  v4 = CGPDFStringCopyTextString(a3);
+  v4 = CGPDFStringCopyTextString(string);
   if (v4)
   {
-    v5 = [a1 _tokenizeAppearanceString:v4];
-    v6 = [a1 _colorFromAppearanceTokens:v5];
+    v5 = [self _tokenizeAppearanceString:v4];
+    v6 = [self _colorFromAppearanceTokens:v5];
   }
 
   else
@@ -1323,17 +1323,17 @@ LABEL_38:
   return v6;
 }
 
-+ (id)_tokenizeAppearanceString:(id)a3
++ (id)_tokenizeAppearanceString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:5];
-  v5 = [v3 length];
+  v5 = [stringCopy length];
   v6 = 0;
   if (v5)
   {
     for (i = 0; i != v5; ++i)
     {
-      if ([v3 characterAtIndex:i] == 32)
+      if ([stringCopy characterAtIndex:i] == 32)
       {
         if (i == v6)
         {
@@ -1342,7 +1342,7 @@ LABEL_38:
 
         else
         {
-          v8 = [v3 substringWithRange:{v6, i - v6}];
+          v8 = [stringCopy substringWithRange:{v6, i - v6}];
           [v4 addObject:v8];
 
           v6 = i + 1;
@@ -1351,16 +1351,16 @@ LABEL_38:
     }
   }
 
-  v9 = [v3 substringWithRange:{v6, v5 - v6}];
+  v9 = [stringCopy substringWithRange:{v6, v5 - v6}];
   [v4 addObject:v9];
 
   return v4;
 }
 
-+ (double)_pointSizeFromAppearanceTokens:(id)a3
++ (double)_pointSizeFromAppearanceTokens:(id)tokens
 {
-  v3 = a3;
-  v4 = [v3 count];
+  tokensCopy = tokens;
+  v4 = [tokensCopy count];
   v5 = 0.0;
   if (v4)
   {
@@ -1370,7 +1370,7 @@ LABEL_38:
     {
       if (v7)
       {
-        v8 = [v3 objectAtIndex:v7];
+        v8 = [tokensCopy objectAtIndex:v7];
         v9 = [v8 isEqualToString:@"Tf"];
 
         if (v9)
@@ -1385,7 +1385,7 @@ LABEL_38:
       }
     }
 
-    v10 = [v3 objectAtIndex:v7 - 1];
+    v10 = [tokensCopy objectAtIndex:v7 - 1];
     [v10 floatValue];
     v5 = v11;
   }
@@ -1395,10 +1395,10 @@ LABEL_8:
   return v5;
 }
 
-+ (id)_fontNameFromAppearanceTokens:(id)a3
++ (id)_fontNameFromAppearanceTokens:(id)tokens
 {
-  v3 = a3;
-  v4 = [v3 count];
+  tokensCopy = tokens;
+  v4 = [tokensCopy count];
   if (v4)
   {
     v5 = 0;
@@ -1406,12 +1406,12 @@ LABEL_8:
     {
       if (v5 >= 2)
       {
-        v6 = [v3 objectAtIndex:v5];
+        v6 = [tokensCopy objectAtIndex:v5];
         v7 = [v6 isEqualToString:@"Tf"];
 
         if (v7)
         {
-          v8 = [v3 objectAtIndex:v5 - 2];
+          v8 = [tokensCopy objectAtIndex:v5 - 2];
           v9 = [v8 length];
 
           if (v9)
@@ -1428,7 +1428,7 @@ LABEL_8:
       }
     }
 
-    v10 = [v3 objectAtIndex:v5 - 2];
+    v10 = [tokensCopy objectAtIndex:v5 - 2];
     v4 = [v10 substringWithRange:{1, v9 - 1}];
   }
 
@@ -1437,10 +1437,10 @@ LABEL_9:
   return v4;
 }
 
-+ (id)_colorFromAppearanceTokens:(id)a3
++ (id)_colorFromAppearanceTokens:(id)tokens
 {
-  v3 = a3;
-  v4 = [v3 count];
+  tokensCopy = tokens;
+  v4 = [tokensCopy count];
   if (!v4)
   {
 LABEL_9:
@@ -1464,19 +1464,19 @@ LABEL_8:
     }
   }
 
-  v7 = [v3 objectAtIndex:v6];
+  v7 = [tokensCopy objectAtIndex:v6];
   v8 = [v7 isEqualToString:@"rg"];
 
   if (v8)
   {
     v13 = MEMORY[0x277D75348];
-    v14 = [v3 objectAtIndex:v6 - 3];
+    v14 = [tokensCopy objectAtIndex:v6 - 3];
     [v14 floatValue];
     v16 = v15;
-    v17 = [v3 objectAtIndex:v6 - 2];
+    v17 = [tokensCopy objectAtIndex:v6 - 2];
     [v17 floatValue];
     v19 = v18;
-    v20 = [v3 objectAtIndex:v6 - 1];
+    v20 = [tokensCopy objectAtIndex:v6 - 1];
     [v20 floatValue];
     v22 = [v13 akColorWithSRGBRed:v16 green:v19 blue:v21 alpha:1.0];
 
@@ -1484,7 +1484,7 @@ LABEL_8:
   }
 
 LABEL_7:
-  v9 = [v3 objectAtIndex:v6];
+  v9 = [tokensCopy objectAtIndex:v6];
   v10 = [v9 isEqualToString:@"g"];
 
   if (!v10)
@@ -1493,7 +1493,7 @@ LABEL_7:
   }
 
   v11 = MEMORY[0x277D75348];
-  v14 = [v3 objectAtIndex:v6 - 1];
+  v14 = [tokensCopy objectAtIndex:v6 - 1];
   [v14 floatValue];
   v22 = [v11 akColorWithWhite:v12 alpha:1.0];
 LABEL_11:
@@ -1503,9 +1503,9 @@ LABEL_12:
   return v22;
 }
 
-+ (BOOL)_shouldUseAKAnnotation:(id)a3 toRepresentCGPDFAnnotation:(CGPDFAnnotation *)a4
++ (BOOL)_shouldUseAKAnnotation:(id)annotation toRepresentCGPDFAnnotation:(CGPDFAnnotation *)fAnnotation
 {
-  v4 = a3;
+  annotationCopy = annotation;
   if (!CGPDFAnnotationIsVersioned())
   {
     CGPDFDictionary = CGPDFAnnotationGetCGPDFDictionary();
@@ -1544,13 +1544,13 @@ LABEL_7:
         v28 = v12;
         if (CGPDFDictionaryGetRect())
         {
-          [v4 drawingBounds];
+          [annotationCopy drawingBounds];
           v25 = v13;
-          [v4 drawingBounds];
+          [annotationCopy drawingBounds];
           v24 = v14;
-          [v4 drawingBounds];
+          [annotationCopy drawingBounds];
           v23 = v15;
-          [v4 drawingBounds];
+          [annotationCopy drawingBounds];
           v16.f64[0] = v25;
           v16.f64[1] = v24;
           v17.f64[1] = v23;
@@ -1567,7 +1567,7 @@ LABEL_7:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              if ((objc_opt_respondsToSelector() & 1) == 0 || ([v4 annotationText], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "string"), v8 = objc_claimAutoreleasedReturnValue(), v21, !v8))
+              if ((objc_opt_respondsToSelector() & 1) == 0 || ([annotationCopy annotationText], v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "string"), v8 = objc_claimAutoreleasedReturnValue(), v21, !v8))
               {
                 v8 = &stru_286962590;
               }

@@ -1,14 +1,14 @@
 @interface CDTVProviderGetAuthInfoResponse
-- (CDTVProviderGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDTVProviderGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDTVProviderGetAuthInfoResponse
 
-- (CDTVProviderGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDTVProviderGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = CDTVProviderGetAuthInfoResponse;
   v5 = [(CDTVProviderGetAuthInfoResponse *)&v18 init];
@@ -25,7 +25,7 @@
     v5->_deviceName = v8;
 
     v10 = objc_opt_self();
-    v11 = v4;
+    v11 = dictionaryCopy;
     v12 = [NSSet setWithObject:v10];
     v13 = sub_100017500(v11, @"tvProviderURL", v12);
 
@@ -62,9 +62,9 @@
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
   v4 = [v3 appendObject:self->_providerURL withName:@"providerURL"];
   [v3 appendString:self->_providerName withName:@"providerName"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface RAPAnalyticsManager
-+ (id)_requestParametersFromReport:(id)a3;
-+ (id)_valueFromReport:(id)a3;
-+ (int)_targetFromFeedbackType:(int)a3;
-+ (int)_targetFromReport:(id)a3;
-+ (void)_captureRAPUserAction:(int)a3 target:(int)a4 value:(id)a5 report:(id)a6 muid:(unint64_t)a7;
-+ (void)_captureRAPUserAction:(int)a3 target:(int)a4 value:(id)a5 report:(id)a6 requestParameters:(id)a7 duration:(id)a8 muid:(unint64_t)a9;
-+ (void)captureRAPCancelActionFromReport:(id)a3 forMuid:(unint64_t)a4;
-+ (void)captureRAPCancelSearchActionFromReport:(id)a3;
-+ (void)captureRAPRevealActionFromReport:(id)a3 forMuid:(unint64_t)a4;
-+ (void)captureRAPSendActionFromReport:(id)a3 forMuid:(unint64_t)a4;
++ (id)_requestParametersFromReport:(id)report;
++ (id)_valueFromReport:(id)report;
++ (int)_targetFromFeedbackType:(int)type;
++ (int)_targetFromReport:(id)report;
++ (void)_captureRAPUserAction:(int)action target:(int)target value:(id)value report:(id)report muid:(unint64_t)muid;
++ (void)_captureRAPUserAction:(int)action target:(int)target value:(id)value report:(id)report requestParameters:(id)parameters duration:(id)duration muid:(unint64_t)muid;
++ (void)captureRAPCancelActionFromReport:(id)report forMuid:(unint64_t)muid;
++ (void)captureRAPCancelSearchActionFromReport:(id)report;
++ (void)captureRAPRevealActionFromReport:(id)report forMuid:(unint64_t)muid;
++ (void)captureRAPSendActionFromReport:(id)report forMuid:(unint64_t)muid;
 @end
 
 @implementation RAPAnalyticsManager
 
-+ (id)_valueFromReport:(id)a3
++ (id)_valueFromReport:(id)report
 {
-  v3 = a3;
-  v4 = [v3 initialQuestion];
+  reportCopy = report;
+  initialQuestion = [reportCopy initialQuestion];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 initialQuestion];
-    v7 = [v6 questionType];
-    if ((v7 - 13) > 7)
+    initialQuestion2 = [reportCopy initialQuestion];
+    questionType = [initialQuestion2 questionType];
+    if ((questionType - 13) > 7)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = *(&off_101661CB0 + (v7 - 13));
+      v8 = *(&off_101661CB0 + (questionType - 13));
     }
   }
 
@@ -43,23 +43,23 @@
   return v8;
 }
 
-+ (int)_targetFromFeedbackType:(int)a3
++ (int)_targetFromFeedbackType:(int)type
 {
-  if ((a3 - 2) > 0x13)
+  if ((type - 2) > 0x13)
   {
     return 0;
   }
 
   else
   {
-    return dword_101216340[a3 - 2];
+    return dword_101216340[type - 2];
   }
 }
 
-+ (int)_targetFromReport:(id)a3
++ (int)_targetFromReport:(id)report
 {
-  v3 = a3;
-  v4 = [v3 initialQuestion];
+  reportCopy = report;
+  initialQuestion = [reportCopy initialQuestion];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -68,24 +68,24 @@
     goto LABEL_22;
   }
 
-  v6 = [v3 initialQuestion];
-  v7 = [v6 questionType];
+  initialQuestion2 = [reportCopy initialQuestion];
+  questionType = [initialQuestion2 questionType];
   v8 = 32;
-  if (v7 > 16)
+  if (questionType > 16)
   {
-    if (v7 > 23)
+    if (questionType > 23)
     {
-      if ((v7 - 24) < 4)
+      if ((questionType - 24) < 4)
       {
         goto LABEL_23;
       }
 
-      if (v7 == 28)
+      if (questionType == 28)
       {
         goto LABEL_5;
       }
 
-      if (v7 == 29)
+      if (questionType == 29)
       {
         v8 = 61;
         goto LABEL_23;
@@ -94,19 +94,19 @@
 
     else
     {
-      if ((v7 - 17) < 4)
+      if ((questionType - 17) < 4)
       {
         v8 = 63;
         goto LABEL_23;
       }
 
-      if ((v7 - 21) < 2)
+      if ((questionType - 21) < 2)
       {
         v8 = 43;
         goto LABEL_23;
       }
 
-      if (v7 == 23)
+      if (questionType == 23)
       {
         v8 = 34;
         goto LABEL_23;
@@ -116,14 +116,14 @@
     goto LABEL_21;
   }
 
-  if (v7 > 8)
+  if (questionType > 8)
   {
-    if ((v7 - 9) < 4)
+    if ((questionType - 9) < 4)
     {
       goto LABEL_23;
     }
 
-    if ((v7 - 13) < 4)
+    if ((questionType - 13) < 4)
     {
       v8 = 62;
       goto LABEL_23;
@@ -132,9 +132,9 @@
     goto LABEL_21;
   }
 
-  if ((v7 - 2) >= 7)
+  if ((questionType - 2) >= 7)
   {
-    if (v7 == 1)
+    if (questionType == 1)
     {
       goto LABEL_23;
     }
@@ -142,11 +142,11 @@
 LABEL_21:
 
 LABEL_22:
-    v6 = [RAPAnalyticsManager _requestParametersFromReport:v3];
-    v9 = [v6 submissionParameters];
-    v10 = [v9 type];
+    initialQuestion2 = [RAPAnalyticsManager _requestParametersFromReport:reportCopy];
+    submissionParameters = [initialQuestion2 submissionParameters];
+    type = [submissionParameters type];
 
-    v8 = [RAPAnalyticsManager _targetFromFeedbackType:v10];
+    v8 = [RAPAnalyticsManager _targetFromFeedbackType:type];
     goto LABEL_23;
   }
 
@@ -157,24 +157,24 @@ LABEL_23:
   return v8;
 }
 
-+ (id)_requestParametersFromReport:(id)a3
++ (id)_requestParametersFromReport:(id)report
 {
-  v3 = [a3 newFeedbackRequestParameters];
-  v4 = [v3 submissionParameters];
-  [v4 setFeedbackType];
+  newFeedbackRequestParameters = [report newFeedbackRequestParameters];
+  submissionParameters = [newFeedbackRequestParameters submissionParameters];
+  [submissionParameters setFeedbackType];
 
-  return v3;
+  return newFeedbackRequestParameters;
 }
 
-+ (void)_captureRAPUserAction:(int)a3 target:(int)a4 value:(id)a5 report:(id)a6 requestParameters:(id)a7 duration:(id)a8 muid:(unint64_t)a9
++ (void)_captureRAPUserAction:(int)action target:(int)target value:(id)value report:(id)report requestParameters:(id)parameters duration:(id)duration muid:(unint64_t)muid
 {
-  v12 = a7;
-  v24 = a8;
-  v23 = a5;
-  v13 = [a6 combinedUserPath];
-  if ([v13 nativePathsCount])
+  parametersCopy = parameters;
+  durationCopy = duration;
+  valueCopy = value;
+  combinedUserPath = [report combinedUserPath];
+  if ([combinedUserPath nativePathsCount])
   {
-    v22 = [v13 nativePathAtIndex:0];
+    v22 = [combinedUserPath nativePathAtIndex:0];
   }
 
   else
@@ -182,8 +182,8 @@ LABEL_23:
     v22 = 0;
   }
 
-  v14 = [v12 submissionParameters];
-  v15 = [v14 type];
+  submissionParameters = [parametersCopy submissionParameters];
+  type = [submissionParameters type];
 
   v16 = +[RAPWebBundleDownloadManager sharedInstance];
   v27 = 0;
@@ -191,44 +191,44 @@ LABEL_23:
 
   v18 = GEOConfigGetString();
   v19 = GEOConfigGetString();
-  v20 = [v13 webPaths];
-  v21 = [v17 version];
-  [GEOAPPortal captureRAPUserAction:a3 target:a4 value:v23 entryPoint:v22 feedbackType:v15 muid:a9 feedbackFieldOptionKeys:v20 rapServerManifestVersion:v21 duration:v24 rapABManifestVersion:v18 rapAPBranchId:v19];
+  webPaths = [combinedUserPath webPaths];
+  version = [v17 version];
+  [GEOAPPortal captureRAPUserAction:action target:target value:valueCopy entryPoint:v22 feedbackType:type muid:muid feedbackFieldOptionKeys:webPaths rapServerManifestVersion:version duration:durationCopy rapABManifestVersion:v18 rapAPBranchId:v19];
 }
 
-+ (void)_captureRAPUserAction:(int)a3 target:(int)a4 value:(id)a5 report:(id)a6 muid:(unint64_t)a7
++ (void)_captureRAPUserAction:(int)action target:(int)target value:(id)value report:(id)report muid:(unint64_t)muid
 {
-  v9 = *&a4;
-  v10 = *&a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = [RAPAnalyticsManager _requestParametersFromReport:v11];
-  [RAPAnalyticsManager _captureRAPUserAction:v10 target:v9 value:v12 report:v11 requestParameters:v13 duration:0 muid:a7];
+  v9 = *&target;
+  v10 = *&action;
+  reportCopy = report;
+  valueCopy = value;
+  v13 = [RAPAnalyticsManager _requestParametersFromReport:reportCopy];
+  [RAPAnalyticsManager _captureRAPUserAction:v10 target:v9 value:valueCopy report:reportCopy requestParameters:v13 duration:0 muid:muid];
 }
 
-+ (void)captureRAPSendActionFromReport:(id)a3 forMuid:(unint64_t)a4
++ (void)captureRAPSendActionFromReport:(id)report forMuid:(unint64_t)muid
 {
-  v20 = a3;
-  v5 = [RAPAnalyticsManager _targetFromReport:v20];
-  v6 = [RAPAnalyticsManager _requestParametersFromReport:v20];
-  v7 = [RAPAnalyticsManager _valueFromReport:v20];
+  reportCopy = report;
+  v5 = [RAPAnalyticsManager _targetFromReport:reportCopy];
+  v6 = [RAPAnalyticsManager _requestParametersFromReport:reportCopy];
+  v7 = [RAPAnalyticsManager _valueFromReport:reportCopy];
   if (v5 == 33)
   {
-    v8 = [v6 submissionParameters];
-    v9 = [v8 details];
-    v10 = [v9 curatedCollectionFeedback];
-    v11 = [v10 curatedCollectionCorrections];
+    submissionParameters = [v6 submissionParameters];
+    details = [submissionParameters details];
+    curatedCollectionFeedback = [details curatedCollectionFeedback];
+    curatedCollectionCorrections = [curatedCollectionFeedback curatedCollectionCorrections];
 
-    v12 = [v11 correctionTypeAsString:{objc_msgSend(v11, "correctionType")}];
+    v12 = [curatedCollectionCorrections correctionTypeAsString:{objc_msgSend(curatedCollectionCorrections, "correctionType")}];
 
     v7 = v12;
   }
 
-  v13 = [v20 creationDate];
-  [v13 timeIntervalSinceNow];
+  creationDate = [reportCopy creationDate];
+  [creationDate timeIntervalSinceNow];
   v15 = v14;
-  v16 = [v20 creationDate];
-  [v16 timeIntervalSinceNow];
+  creationDate2 = [reportCopy creationDate];
+  [creationDate2 timeIntervalSinceNow];
   if (v15 < 0.0)
   {
     v18 = -v17;
@@ -240,34 +240,34 @@ LABEL_23:
   }
 
   v19 = [NSNumber numberWithDouble:v18];
-  [RAPAnalyticsManager _captureRAPUserAction:10112 target:v5 value:v7 report:v20 requestParameters:v6 duration:v19 muid:a4];
+  [RAPAnalyticsManager _captureRAPUserAction:10112 target:v5 value:v7 report:reportCopy requestParameters:v6 duration:v19 muid:muid];
 }
 
-+ (void)captureRAPCancelSearchActionFromReport:(id)a3
++ (void)captureRAPCancelSearchActionFromReport:(id)report
 {
-  v3 = a3;
-  v4 = [RAPAnalyticsManager _targetFromReport:v3];
-  v6 = [RAPAnalyticsManager _valueFromReport:v3];
-  v5 = [RAPAnalyticsManager _requestParametersFromReport:v3];
-  [RAPAnalyticsManager _captureRAPUserAction:2003 target:v4 value:v6 report:v3 requestParameters:v5 duration:0 muid:0];
+  reportCopy = report;
+  v4 = [RAPAnalyticsManager _targetFromReport:reportCopy];
+  v6 = [RAPAnalyticsManager _valueFromReport:reportCopy];
+  v5 = [RAPAnalyticsManager _requestParametersFromReport:reportCopy];
+  [RAPAnalyticsManager _captureRAPUserAction:2003 target:v4 value:v6 report:reportCopy requestParameters:v5 duration:0 muid:0];
 }
 
-+ (void)captureRAPCancelActionFromReport:(id)a3 forMuid:(unint64_t)a4
++ (void)captureRAPCancelActionFromReport:(id)report forMuid:(unint64_t)muid
 {
-  v5 = a3;
-  v6 = [RAPAnalyticsManager _targetFromReport:v5];
-  v8 = [RAPAnalyticsManager _valueFromReport:v5];
-  v7 = [RAPAnalyticsManager _requestParametersFromReport:v5];
-  [RAPAnalyticsManager _captureRAPUserAction:10109 target:v6 value:v8 report:v5 requestParameters:v7 duration:0 muid:a4];
+  reportCopy = report;
+  v6 = [RAPAnalyticsManager _targetFromReport:reportCopy];
+  v8 = [RAPAnalyticsManager _valueFromReport:reportCopy];
+  v7 = [RAPAnalyticsManager _requestParametersFromReport:reportCopy];
+  [RAPAnalyticsManager _captureRAPUserAction:10109 target:v6 value:v8 report:reportCopy requestParameters:v7 duration:0 muid:muid];
 }
 
-+ (void)captureRAPRevealActionFromReport:(id)a3 forMuid:(unint64_t)a4
++ (void)captureRAPRevealActionFromReport:(id)report forMuid:(unint64_t)muid
 {
-  v9 = a3;
-  v5 = [RAPAnalyticsManager _targetFromReport:v9];
-  v6 = [RAPAnalyticsManager _valueFromReport:v9];
-  v7 = [RAPAnalyticsManager _requestParametersFromReport:v9];
-  [RAPAnalyticsManager _captureRAPUserAction:21 target:v5 value:v6 report:v9 requestParameters:v7 duration:0 muid:a4];
+  reportCopy = report;
+  v5 = [RAPAnalyticsManager _targetFromReport:reportCopy];
+  v6 = [RAPAnalyticsManager _valueFromReport:reportCopy];
+  v7 = [RAPAnalyticsManager _requestParametersFromReport:reportCopy];
+  [RAPAnalyticsManager _captureRAPUserAction:21 target:v5 value:v6 report:reportCopy requestParameters:v7 duration:0 muid:muid];
   if (v5 > 1000)
   {
     if (v5 > 1400)
@@ -2476,7 +2476,7 @@ LABEL_570:
   }
 
 LABEL_571:
-  [RAPAnalyticsManager _captureRAPUserAction:21 target:41 value:v8 report:v9 requestParameters:v7 duration:0 muid:a4];
+  [RAPAnalyticsManager _captureRAPUserAction:21 target:41 value:v8 report:reportCopy requestParameters:v7 duration:0 muid:muid];
 }
 
 @end

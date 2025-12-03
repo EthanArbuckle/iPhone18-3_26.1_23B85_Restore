@@ -22,8 +22,8 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v6 = [v3 stringByTrimmingCharactersInSet:v5];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v6 = [v3 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v10 = 0;
     v11 = [v6 length];

@@ -1,9 +1,9 @@
 @interface BKMutableMousePointerRegionArrangement
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_computeFrameForRegion:(id)a3 layoutDescriptor:(id)a4 accumulatedFrames:(id)a5;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_computeFrameForRegion:(id)region layoutDescriptor:(id)descriptor accumulatedFrames:(id)frames;
 - (void)_updateFrames;
-- (void)addPrimaryRegion:(id)a3;
-- (void)removeRegion:(id)a3;
+- (void)addPrimaryRegion:(id)region;
+- (void)removeRegion:(id)region;
 @end
 
 @implementation BKMutableMousePointerRegionArrangement
@@ -78,7 +78,7 @@
   {
     v27 = BSNSStringFromCGRect();
     *buf = 134218242;
-    v33 = self;
+    selfCopy = self;
     v34 = 2114;
     v35 = v27;
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "region arrangement %p bounds: %{public}@", buf, 0x16u);
@@ -88,37 +88,37 @@
   self->super._baseTranslation.y = -y;
 }
 
-- (void)_computeFrameForRegion:(id)a3 layoutDescriptor:(id)a4 accumulatedFrames:(id)a5
+- (void)_computeFrameForRegion:(id)region layoutDescriptor:(id)descriptor accumulatedFrames:(id)frames
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 objectForKey:v14];
+  regionCopy = region;
+  descriptorCopy = descriptor;
+  framesCopy = frames;
+  v10 = [framesCopy objectForKey:regionCopy];
   if (!v10)
   {
-    v11 = [v8 relativeRegion];
-    [v14 pointSize];
-    if (v11)
+    relativeRegion = [descriptorCopy relativeRegion];
+    [regionCopy pointSize];
+    if (relativeRegion)
     {
-      v12 = [(BKMousePointerRegionArrangement *)self _layoutDescriptorForRegion:v11];
-      [(BKMutableMousePointerRegionArrangement *)self _computeFrameForRegion:v11 layoutDescriptor:v12 accumulatedFrames:v9];
+      v12 = [(BKMousePointerRegionArrangement *)self _layoutDescriptorForRegion:relativeRegion];
+      [(BKMutableMousePointerRegionArrangement *)self _computeFrameForRegion:relativeRegion layoutDescriptor:v12 accumulatedFrames:framesCopy];
 
-      v13 = [v9 objectForKey:v11];
+      v13 = [framesCopy objectForKey:relativeRegion];
       BSRectFromValue();
 
-      [v8 edgePosition];
+      [descriptorCopy edgePosition];
       BSRectWithSize();
-      [v8 edge];
+      [descriptorCopy edge];
     }
 
     v10 = BSValueWithRect();
-    [v9 setObject:v10 forKey:v14];
+    [framesCopy setObject:v10 forKey:regionCopy];
   }
 }
 
-- (void)removeRegion:(id)a3
+- (void)removeRegion:(id)region
 {
-  [(NSMutableDictionary *)self->super._regionToLayoutDescriptor removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->super._regionToLayoutDescriptor removeObjectForKey:region];
   if (![(NSMutableDictionary *)self->super._regionToLayoutDescriptor count])
   {
     regionToLayoutDescriptor = self->super._regionToLayoutDescriptor;
@@ -128,9 +128,9 @@
   [(BKMutableMousePointerRegionArrangement *)self _updateFrames];
 }
 
-- (void)addPrimaryRegion:(id)a3
+- (void)addPrimaryRegion:(id)region
 {
-  v13 = a3;
+  regionCopy = region;
   if ([(NSMutableDictionary *)self->super._regionToLayoutDescriptor count])
   {
     v9 = [NSString stringWithFormat:@"Only one primary region may be added"];
@@ -144,7 +144,7 @@
       v16 = 2114;
       v17 = v12;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 2114;
       v21 = @"BKMousePointerRegionArrangement.m";
       v22 = 1024;
@@ -171,11 +171,11 @@
     regionToLayoutDescriptor = self->super._regionToLayoutDescriptor;
   }
 
-  [(NSMutableDictionary *)regionToLayoutDescriptor setObject:v5 forKey:v13];
+  [(NSMutableDictionary *)regionToLayoutDescriptor setObject:v5 forKey:regionCopy];
   [(BKMutableMousePointerRegionArrangement *)self _updateFrames];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BKMousePointerRegionArrangement alloc];
 

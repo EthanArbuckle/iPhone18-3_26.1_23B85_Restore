@@ -8,13 +8,13 @@
 {
   v16 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = a1;
-  v6 = v5;
-  v7 = v5;
+  selfCopy = self;
+  v6 = selfCopy;
+  v7 = selfCopy;
   if (v4)
   {
-    v7 = v5;
-    if (([v5 isEqualToString:v4] & 1) == 0)
+    v7 = selfCopy;
+    if (([selfCopy isEqualToString:v4] & 1) == 0)
     {
       if ([v6 isEqualToString:@"debug"])
       {

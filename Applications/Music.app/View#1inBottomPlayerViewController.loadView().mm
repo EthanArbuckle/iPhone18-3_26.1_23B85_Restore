@@ -6,7 +6,7 @@
 
 - (CGSize)sizeThatFits:
 {
-  v3 = self;
+  selfCopy = self;
   sub_1002B5680();
   v5 = v4;
   v7 = v6;

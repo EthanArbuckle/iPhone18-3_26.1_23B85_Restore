@@ -1,14 +1,14 @@
 @interface RoutingAppSuggestionProvider
 - (RoutingAppSuggestionProviderDelegate)delegate;
-- (id)sortedAppsWithIds:(id)a3 appStoreApps:(id)a4;
+- (id)sortedAppsWithIds:(id)ids appStoreApps:(id)apps;
 - (void)_removeInstalledAppsFromStoreSuggestions;
-- (void)_requestAppDataForIds:(id)a3;
+- (void)_requestAppDataForIds:(id)ids;
 - (void)_suggestFilteredStoreAppsIfReady;
 - (void)dealloc;
-- (void)requestSuggestionsForSource:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4;
+- (void)requestSuggestionsForSource:(CLLocationCoordinate2D)source destination:(CLLocationCoordinate2D)destination;
 - (void)reset;
-- (void)showNetworkActivityIndicator:(BOOL)a3;
-- (void)urlConnectionRequest:(id)a3 didReceiveResponse:(id)a4;
+- (void)showNetworkActivityIndicator:(BOOL)indicator;
+- (void)urlConnectionRequest:(id)request didReceiveResponse:(id)response;
 @end
 
 @implementation RoutingAppSuggestionProvider
@@ -20,15 +20,15 @@
   return WeakRetained;
 }
 
-- (void)urlConnectionRequest:(id)a3 didReceiveResponse:(id)a4
+- (void)urlConnectionRequest:(id)request didReceiveResponse:(id)response
 {
-  v5 = a4;
+  responseCopy = response;
   [(RoutingAppSuggestionProvider *)self showNetworkActivityIndicator:0];
-  v6 = [v5 bodyData];
-  if (v6)
+  bodyData = [responseCopy bodyData];
+  if (bodyData)
   {
     v34 = 0;
-    v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:&v34];
+    delegate2 = [NSJSONSerialization JSONObjectWithData:bodyData options:0 error:&v34];
     v8 = v34;
     v16 = v8;
     if (v8)
@@ -44,11 +44,11 @@
 
     else
     {
-      sub_100DA10F8(@"Store search response received: %@.", v9, v10, v11, v12, v13, v14, v15, v7);
+      sub_100DA10F8(@"Store search response received: %@.", v9, v10, v11, v12, v13, v14, v15, delegate2);
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v21 = [v7 objectForKeyedSubscript:@"results"];
+        v21 = [delegate2 objectForKeyedSubscript:@"results"];
         if (!v21)
         {
 LABEL_18:
@@ -56,8 +56,8 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v29 = v7;
-        v22 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v21, "count")}];
+        v29 = delegate2;
+        delegate = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v21, "count")}];
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
@@ -78,7 +78,7 @@ LABEL_18:
               }
 
               v27 = [*(*(&v30 + 1) + 8 * i) objectForKeyedSubscript:@"adamId"];
-              [v22 addObject:v27];
+              [delegate addObject:v27];
             }
 
             v24 = [v21 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -87,8 +87,8 @@ LABEL_18:
           while (v24);
         }
 
-        [(RoutingAppSuggestionProvider *)self _requestAppDataForIds:v22];
-        v7 = v29;
+        [(RoutingAppSuggestionProvider *)self _requestAppDataForIds:delegate];
+        delegate2 = v29;
 LABEL_17:
 
         goto LABEL_18;
@@ -104,8 +104,8 @@ LABEL_17:
     v28 = [NSDictionary dictionaryWithObjects:v17 forKeys:v18 count:v19];
     v21 = [NSError searchErrorWithUserInfo:v28];
 
-    v22 = [(RoutingAppSuggestionProvider *)self delegate];
-    [v22 routingAppSuggestionProvider:self didFailToSuggestStoreApps:v21];
+    delegate = [(RoutingAppSuggestionProvider *)self delegate];
+    [delegate routingAppSuggestionProvider:self didFailToSuggestStoreApps:v21];
     goto LABEL_17;
   }
 
@@ -114,8 +114,8 @@ LABEL_17:
   v20 = [NSDictionary dictionaryWithObjects:&v41 forKeys:&v40 count:1];
   v16 = [NSError searchErrorWithUserInfo:v20];
 
-  v7 = [(RoutingAppSuggestionProvider *)self delegate];
-  [v7 routingAppSuggestionProvider:self didFailToSuggestStoreApps:v16];
+  delegate2 = [(RoutingAppSuggestionProvider *)self delegate];
+  [delegate2 routingAppSuggestionProvider:self didFailToSuggestStoreApps:v16];
 LABEL_19:
 }
 
@@ -126,8 +126,8 @@ LABEL_19:
     self->_suggestedStoreApps = 1;
     [(RoutingAppSuggestionProvider *)self _removeInstalledAppsFromStoreSuggestions];
     sub_100DA10F8(@"Done loading store suggestions", v3, v4, v5, v6, v7, v8, v9, v10);
-    v11 = [(RoutingAppSuggestionProvider *)self delegate];
-    [v11 routingAppSuggestionProvider:self didSuggestStoreApps:self->_appStoreApps];
+    delegate = [(RoutingAppSuggestionProvider *)self delegate];
+    [delegate routingAppSuggestionProvider:self didSuggestStoreApps:self->_appStoreApps];
   }
 }
 
@@ -154,8 +154,8 @@ LABEL_19:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v20 + 1) + 8 * v8) bundleIdentifier];
-        [v3 addObject:v9];
+        bundleIdentifier = [*(*(&v20 + 1) + 8 * v8) bundleIdentifier];
+        [v3 addObject:bundleIdentifier];
 
         v8 = v8 + 1;
       }
@@ -174,16 +174,16 @@ LABEL_19:
   self->_appStoreApps = v18;
 }
 
-- (id)sortedAppsWithIds:(id)a3 appStoreApps:(id)a4
+- (id)sortedAppsWithIds:(id)ids appStoreApps:(id)apps
 {
-  v5 = a3;
-  v6 = a4;
+  idsCopy = ids;
+  appsCopy = apps;
   v7 = objc_alloc_init(NSMutableDictionary);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v6;
+  v8 = appsCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -199,8 +199,8 @@ LABEL_19:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        v15 = [v5 indexOfObject:v14];
+        identifier = [v13 identifier];
+        v15 = [idsCopy indexOfObject:identifier];
 
         if (v15 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -215,8 +215,8 @@ LABEL_19:
     while (v10);
   }
 
-  v17 = [v7 allKeys];
-  v18 = [v17 sortedArrayUsingComparator:&stru_1016385D0];
+  allKeys = [v7 allKeys];
+  v18 = [allKeys sortedArrayUsingComparator:&stru_1016385D0];
 
   v19 = +[NSNull null];
   v20 = [v7 objectsForKeys:v18 notFoundMarker:v19];
@@ -224,9 +224,9 @@ LABEL_19:
   return v20;
 }
 
-- (void)_requestAppDataForIds:(id)a3
+- (void)_requestAppDataForIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   [(RoutingAppSuggestionProvider *)self showNetworkActivityIndicator:1];
   v5 = +[MKAppleMediaServices sharedInstance];
   v6 = +[UIScreen mainScreen];
@@ -237,8 +237,8 @@ LABEL_19:
   v10[2] = sub_100B23FEC;
   v10[3] = &unk_10165FE18;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
+  v11 = idsCopy;
+  v9 = idsCopy;
   [v5 appleMediaServicesResultsWithIdentifiers:v9 artworkSize:2 screenScale:7 type:v10 source:62.0 completion:{62.0, v8}];
 }
 
@@ -250,27 +250,27 @@ LABEL_19:
   v3 = +[MCProfileConnection sharedConnection];
   if (![v3 isOnDeviceAppInstallationAllowed] || objc_msgSend(v3, "userMode") == 1 || (objc_msgSend(v3, "isEphemeralMultiUser") & 1) != 0)
   {
-    v4 = 1;
+    ams_isManagedAppleID = 1;
   }
 
   else
   {
     v5 = +[ACAccountStore ams_sharedAccountStore];
-    v6 = [v5 ams_activeiTunesAccount];
-    v4 = [v6 ams_isManagedAppleID];
+    ams_activeiTunesAccount = [v5 ams_activeiTunesAccount];
+    ams_isManagedAppleID = [ams_activeiTunesAccount ams_isManagedAppleID];
   }
 
-  self->_appInstallationDisallowed = v4;
+  self->_appInstallationDisallowed = ams_isManagedAppleID;
 }
 
-- (void)showNetworkActivityIndicator:(BOOL)a3
+- (void)showNetworkActivityIndicator:(BOOL)indicator
 {
-  if (a3)
+  if (indicator)
   {
     v7 = +[LoadingIndicatorController sharedController];
-    v4 = [(LoadingToken *)v7 beginShowingLoadingIndicator];
+    beginShowingLoadingIndicator = [(LoadingToken *)v7 beginShowingLoadingIndicator];
     networkActivity = self->_networkActivity;
-    self->_networkActivity = v4;
+    self->_networkActivity = beginShowingLoadingIndicator;
 
     v6 = v7;
   }
@@ -282,20 +282,20 @@ LABEL_19:
   }
 }
 
-- (void)requestSuggestionsForSource:(CLLocationCoordinate2D)a3 destination:(CLLocationCoordinate2D)a4
+- (void)requestSuggestionsForSource:(CLLocationCoordinate2D)source destination:(CLLocationCoordinate2D)destination
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v6 = a3.longitude;
-  v7 = a3.latitude;
+  longitude = destination.longitude;
+  latitude = destination.latitude;
+  v6 = source.longitude;
+  v7 = source.latitude;
   [(RoutingAppSuggestionProvider *)self reset];
   v9 = +[NSUserDefaults standardUserDefaults];
   v10 = [v9 BOOLForKey:@"__internal__FakeTransitResponse"];
 
   if (v10)
   {
-    v11 = [CFSTR(""375380948 304231811];
-    [(RoutingAppSuggestionProvider *)self _requestAppDataForIds:v11];
+    304231811 = [CFSTR(""375380948 304231811];
+    [(RoutingAppSuggestionProvider *)self _requestAppDataForIds:304231811];
 LABEL_5:
 
     goto LABEL_6;
@@ -303,11 +303,11 @@ LABEL_5:
 
   if (!self->_appInstallationDisallowed)
   {
-    v11 = [NSString stringWithFormat:@"%f, %f", *&v7, *&v6];
+    304231811 = [NSString stringWithFormat:@"%f, %f", *&v7, *&v6];
     v12 = [NSString stringWithFormat:@"%f, %f", *&latitude, *&longitude];
     v13 = objc_alloc_init(SSMutableURLRequestProperties);
     [v13 setURLBagKey:@"transit-apps-url"];
-    [v13 setValue:v11 forRequestParameter:@"loc1"];
+    [v13 setValue:304231811 forRequestParameter:@"loc1"];
     [v13 setValue:v12 forRequestParameter:@"loc2"];
     v14 = [[SSURLConnectionRequest alloc] initWithRequestProperties:v13];
     [v14 setDelegate:self];

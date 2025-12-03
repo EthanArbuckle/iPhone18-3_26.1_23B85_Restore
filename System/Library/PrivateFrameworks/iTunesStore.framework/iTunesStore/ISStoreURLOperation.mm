@@ -1,34 +1,34 @@
 @interface ISStoreURLOperation
-+ (BOOL)_operationWaitsForPurchases:(id)a3;
++ (BOOL)_operationWaitsForPurchases:(id)purchases;
 + (id)_authKitSession;
 + (id)_restrictionsHeaderValue;
-+ (id)_ssBag_copyExtraHeadersForURL:(id)a3 bag:(id)a4;
-+ (id)_ssBag_copyHeaderPatternsFromBag:(id)a3;
-+ (id)_storeFrontIdentifierForAccount:(id)a3;
-+ (id)itemPingOperationWithIdentifier:(unint64_t)a3 urlBagKey:(id)a4;
-+ (id)pingOperationWithUrl:(id)a3;
-+ (id)propertyListOperationWithURLBagKey:(id)a3;
-+ (void)_addAccountDSID:(id)a3 toRequest:(id)a4;
-+ (void)_addPrimaryiCloudDSIDToRequest:(id)a3;
-+ (void)_addiTunesStoreHeadersToRequest:(id)a3 withAccount:(id)a4 appendAuthKitHeaders:(BOOL)a5 appendStorefrontToURL:(BOOL)a6 clientBundleIdentifier:(id)a7 extraHeaders:(id)a8 storefrontSuffix:(id)a9;
-+ (void)_appendStorefront:(id)a3 toRequestURL:(id)a4;
-+ (void)_handleResponseHeaders:(id)a3 response:(id)a4 request:(id)a5 account:(id)a6 performsMachineDataActions:(BOOL)a7 shouldRetry:(BOOL *)a8;
-+ (void)_performMachineDataRequest:(id)a3 requestProperties:(id)a4 completion:(id)a5;
-+ (void)addITunesStoreHeadersToRequest:(id)a3 withAccountIdentifier:(id)a4;
-+ (void)handleITunesStoreResponseHeaders:(id)a3 request:(id)a4 withAccountIdentifier:(id)a5 shouldRetry:(BOOL *)a6;
-- (BOOL)_authenticateWithContext:(id)a3 error:(id *)a4;
-- (BOOL)_canSendTokenToURL:(id)a3;
-- (BOOL)_isErrorTokenError:(id)a3;
-- (BOOL)_performMachineDataRequest:(id)a3;
-- (BOOL)_processResponseData:(id)a3 error:(id *)a4;
-- (BOOL)_shouldRetryForAbsintheWithResponse:(id)a3;
-- (BOOL)_shouldRetryForTouchIDChallengeWithError:(id)a3;
-- (BOOL)_ssBag_shouldSendGUIDForURL:(id)a3 withBag:(id)a4;
++ (id)_ssBag_copyExtraHeadersForURL:(id)l bag:(id)bag;
++ (id)_ssBag_copyHeaderPatternsFromBag:(id)bag;
++ (id)_storeFrontIdentifierForAccount:(id)account;
++ (id)itemPingOperationWithIdentifier:(unint64_t)identifier urlBagKey:(id)key;
++ (id)pingOperationWithUrl:(id)url;
++ (id)propertyListOperationWithURLBagKey:(id)key;
++ (void)_addAccountDSID:(id)d toRequest:(id)request;
++ (void)_addPrimaryiCloudDSIDToRequest:(id)request;
++ (void)_addiTunesStoreHeadersToRequest:(id)request withAccount:(id)account appendAuthKitHeaders:(BOOL)headers appendStorefrontToURL:(BOOL)l clientBundleIdentifier:(id)identifier extraHeaders:(id)extraHeaders storefrontSuffix:(id)suffix;
++ (void)_appendStorefront:(id)storefront toRequestURL:(id)l;
++ (void)_handleResponseHeaders:(id)headers response:(id)response request:(id)request account:(id)account performsMachineDataActions:(BOOL)actions shouldRetry:(BOOL *)retry;
++ (void)_performMachineDataRequest:(id)request requestProperties:(id)properties completion:(id)completion;
++ (void)addITunesStoreHeadersToRequest:(id)request withAccountIdentifier:(id)identifier;
++ (void)handleITunesStoreResponseHeaders:(id)headers request:(id)request withAccountIdentifier:(id)identifier shouldRetry:(BOOL *)retry;
+- (BOOL)_authenticateWithContext:(id)context error:(id *)error;
+- (BOOL)_canSendTokenToURL:(id)l;
+- (BOOL)_isErrorTokenError:(id)error;
+- (BOOL)_performMachineDataRequest:(id)request;
+- (BOOL)_processResponseData:(id)data error:(id *)error;
+- (BOOL)_shouldRetryForAbsintheWithResponse:(id)response;
+- (BOOL)_shouldRetryForTouchIDChallengeWithError:(id)error;
+- (BOOL)_ssBag_shouldSendGUIDForURL:(id)l withBag:(id)bag;
 - (BOOL)canSendGUIDParameter;
-- (BOOL)handleRedirectFromDataProvider:(id)a3 error:(id *)a4;
+- (BOOL)handleRedirectFromDataProvider:(id)provider error:(id *)error;
 - (BOOL)ignorePreexistingSecureToken;
 - (BOOL)performsMachineDataActions;
-- (BOOL)shouldFollowRedirectWithRequest:(id)a3 returningError:(id *)a4;
+- (BOOL)shouldFollowRedirectWithRequest:(id)request returningError:(id *)error;
 - (BOOL)shouldSendXTokenHeader;
 - (ISBiometricSessionDelegate)biometricSessionDelegate;
 - (ISStoreURLOperation)init;
@@ -38,28 +38,28 @@
 - (id)_account;
 - (id)_buyParams;
 - (id)_copyAuthenticationContext;
-- (id)_copyAuthenticationContextForAttemptNumber:(int64_t)a3;
-- (id)_loadURLBagInterpreterWithRequest:(id)a3 requestProperties:(id)a4;
-- (id)_resolvedURLInBagContext:(id)a3 bagTrusted:(BOOL *)a4;
-- (id)_ssBag_copyGUIDPatternsFromBag:(id)a3;
-- (id)_ssBag_copyGUIDSchemesFromBag:(id)a3;
-- (id)_urlBagForContext:(id)a3;
+- (id)_copyAuthenticationContextForAttemptNumber:(int64_t)number;
+- (id)_loadURLBagInterpreterWithRequest:(id)request requestProperties:(id)properties;
+- (id)_resolvedURLInBagContext:(id)context bagTrusted:(BOOL *)trusted;
+- (id)_ssBag_copyGUIDPatternsFromBag:(id)bag;
+- (id)_ssBag_copyGUIDSchemesFromBag:(id)bag;
+- (id)_urlBagForContext:(id)context;
 - (id)authenticatedAccountDSID;
 - (id)logKey;
-- (id)newRequestWithURL:(id)a3;
-- (void)_addStandardQueryParametersForURL:(id)a3;
-- (void)_applyAnalyticsCookiesToRequest:(id)a3 withBag:(id)a4 oldBag:(id)a5;
+- (id)newRequestWithURL:(id)l;
+- (void)_addStandardQueryParametersForURL:(id)l;
+- (void)_applyAnalyticsCookiesToRequest:(id)request withBag:(id)bag oldBag:(id)oldBag;
 - (void)_continueTouchIDSession;
 - (void)_runURLOperation;
-- (void)_setStoreFrontIdentifier:(id)a3 isTransient:(BOOL)a4;
-- (void)_willSendRequest:(id)a3;
-- (void)handleResponse:(id)a3;
+- (void)_setStoreFrontIdentifier:(id)identifier isTransient:(BOOL)transient;
+- (void)_willSendRequest:(id)request;
+- (void)handleResponse:(id)response;
 - (void)run;
-- (void)setCanSendGUIDParameter:(BOOL)a3;
-- (void)setIgnorePreexistingSecureToken:(BOOL)a3;
-- (void)setPerformsMachineDataActions:(BOOL)a3;
-- (void)setSAPSession:(id)a3;
-- (void)setShouldSendXTokenHeader:(BOOL)a3;
+- (void)setCanSendGUIDParameter:(BOOL)parameter;
+- (void)setIgnorePreexistingSecureToken:(BOOL)token;
+- (void)setPerformsMachineDataActions:(BOOL)actions;
+- (void)setSAPSession:(id)session;
+- (void)setShouldSendXTokenHeader:(BOOL)header;
 @end
 
 @implementation ISStoreURLOperation
@@ -88,70 +88,70 @@
   return v3;
 }
 
-+ (void)addITunesStoreHeadersToRequest:(id)a3 withAccountIdentifier:(id)a4
++ (void)addITunesStoreHeadersToRequest:(id)request withAccountIdentifier:(id)identifier
 {
-  v14 = a3;
-  v6 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   v7 = [MEMORY[0x277D69C90] contextWithBagType:0];
-  v8 = [MEMORY[0x277D69A80] currentDevice];
-  v9 = [v8 userAgent];
-  [v7 setValue:v9 forHTTPHeaderField:*MEMORY[0x277D6A130]];
+  currentDevice = [MEMORY[0x277D69A80] currentDevice];
+  userAgent = [currentDevice userAgent];
+  [v7 setValue:userAgent forHTTPHeaderField:*MEMORY[0x277D6A130]];
 
   v10 = +[ISURLBagCache sharedCache];
   v11 = [v10 URLBagForContext:v7];
 
-  if (!v6)
+  if (!identifierCopy)
   {
-    v12 = [MEMORY[0x277D69A20] defaultStore];
-    v13 = [v12 activeAccount];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    activeAccount = [defaultStore activeAccount];
 
-    v6 = [v13 uniqueIdentifier];
+    identifierCopy = [activeAccount uniqueIdentifier];
   }
 
-  [a1 _addiTunesStoreHeadersToRequest:v14 withURLBag:v11 accountIdentifier:v6 appendAuthKitHeaders:1 appendStorefrontToURL:0 clientBundleIdentifier:0];
+  [self _addiTunesStoreHeadersToRequest:requestCopy withURLBag:v11 accountIdentifier:identifierCopy appendAuthKitHeaders:1 appendStorefrontToURL:0 clientBundleIdentifier:0];
 }
 
-+ (void)handleITunesStoreResponseHeaders:(id)a3 request:(id)a4 withAccountIdentifier:(id)a5 shouldRetry:(BOOL *)a6
++ (void)handleITunesStoreResponseHeaders:(id)headers request:(id)request withAccountIdentifier:(id)identifier shouldRetry:(BOOL *)retry
 {
   v9 = MEMORY[0x277D69A20];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v14 = [v9 defaultStore];
-  v13 = [v14 accountWithUniqueIdentifier:v10];
+  identifierCopy = identifier;
+  requestCopy = request;
+  headersCopy = headers;
+  defaultStore = [v9 defaultStore];
+  v13 = [defaultStore accountWithUniqueIdentifier:identifierCopy];
 
-  [ISStoreURLOperation _handleResponseHeaders:0 response:v12 request:v11 account:v13 performsMachineDataActions:1 shouldRetry:a6];
+  [ISStoreURLOperation _handleResponseHeaders:0 response:headersCopy request:requestCopy account:v13 performsMachineDataActions:1 shouldRetry:retry];
 }
 
-+ (id)itemPingOperationWithIdentifier:(unint64_t)a3 urlBagKey:(id)a4
++ (id)itemPingOperationWithIdentifier:(unint64_t)identifier urlBagKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = objc_alloc_init(objc_opt_class());
   [v6 setQueuePriority:-8];
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v8 = +[ISDevice sharedInstance];
-  v9 = [v8 guid];
+  guid = [v8 guid];
 
-  if (v9)
+  if (guid)
   {
-    [v7 setObject:v9 forKey:@"machine-id"];
+    [v7 setObject:guid forKey:@"machine-id"];
   }
 
-  v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", a3];
-  [v7 setObject:v10 forKey:@"songId"];
+  identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%llu", identifier];
+  [v7 setObject:identifier forKey:@"songId"];
 
   v11 = objc_alloc_init(MEMORY[0x277D69BD0]);
   [v11 setRequestParameters:v7];
-  [v11 setURLBagKey:v5];
+  [v11 setURLBagKey:keyCopy];
 
   [v6 setRequestProperties:v11];
 
   return v6;
 }
 
-+ (id)pingOperationWithUrl:(id)a3
++ (id)pingOperationWithUrl:(id)url
 {
-  v3 = a3;
+  urlCopy = url;
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setQueuePriority:-8];
   [v4 setUrlKnownToBeTrusted:1];
@@ -165,37 +165,37 @@
   if (objc_opt_isKindOfClass())
   {
     v10 = [MEMORY[0x277CBEBC0] URLWithString:v9];
-    v11 = [v3 host];
-    v12 = [v10 host];
-    v13 = [v11 isEqualToString:v12];
+    host = [urlCopy host];
+    host2 = [v10 host];
+    v13 = [host isEqualToString:host2];
 
     if (v13)
     {
-      v14 = [v3 path];
+      path = [urlCopy path];
       v29 = v10;
-      v15 = [v10 path];
+      path2 = [v10 path];
       v16 = MEMORY[0x277CBEBC0];
-      v17 = [v3 query];
-      v18 = [v16 copyDictionaryForQueryString:v17 unescapedValues:1];
+      query = [urlCopy query];
+      v18 = [v16 copyDictionaryForQueryString:query unescapedValues:1];
 
-      v30 = v14;
-      v19 = v14;
-      v20 = v15;
-      if ([v19 hasPrefix:v15])
+      v30 = path;
+      v19 = path;
+      v20 = path2;
+      if ([v19 hasPrefix:path2])
       {
         v21 = [v18 objectForKey:@"eventTime"];
 
         if (v21)
         {
-          v22 = [MEMORY[0x277CBEAA8] date];
-          [v22 timeIntervalSince1970];
+          date = [MEMORY[0x277CBEAA8] date];
+          [date timeIntervalSince1970];
           v24 = v23;
 
           v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%lld", (v24 * 1000.0)];
           [v18 setObject:v25 forKey:@"eventTime"];
-          v26 = [v3 urlBySettingQueryStringDictionary:v18];
+          v26 = [urlCopy urlBySettingQueryStringDictionary:v18];
 
-          v3 = v26;
+          urlCopy = v26;
         }
       }
 
@@ -203,7 +203,7 @@
     }
   }
 
-  v27 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:v3];
+  v27 = [objc_alloc(MEMORY[0x277D69BD0]) initWithURL:urlCopy];
   [v27 setAllowedRetryCount:0];
   [v27 setTimeoutInterval:20.0];
   [v4 setRequestProperties:v27];
@@ -211,15 +211,15 @@
   return v4;
 }
 
-+ (id)propertyListOperationWithURLBagKey:(id)a3
++ (id)propertyListOperationWithURLBagKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = +[(ISDataProvider *)ISProtocolDataProvider];
   [v4 setDataProvider:v5];
 
   v6 = objc_alloc_init(MEMORY[0x277D69BD0]);
-  [v6 setURLBagKey:v3];
+  [v6 setURLBagKey:keyCopy];
 
   [v4 setRequestProperties:v6];
 
@@ -236,23 +236,23 @@
 
 - (id)logKey
 {
-  v3 = [(ISURLOperation *)self authenticationContext];
-  v4 = [v3 logUUID];
+  authenticationContext = [(ISURLOperation *)self authenticationContext];
+  logUUID = [authenticationContext logUUID];
 
-  if (v4)
+  if (logUUID)
   {
-    v5 = [(ISURLOperation *)self authenticationContext];
-    v6 = [v5 logUUID];
+    authenticationContext2 = [(ISURLOperation *)self authenticationContext];
+    logUUID2 = [authenticationContext2 logUUID];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ISStoreURLOperation;
-    v6 = [(ISURLOperation *)&v8 logKey];
+    logUUID2 = [(ISURLOperation *)&v8 logKey];
   }
 
-  return v6;
+  return logUUID2;
 }
 
 - (BOOL)ignorePreexistingSecureToken
@@ -280,27 +280,27 @@
   return v3;
 }
 
-- (void)setCanSendGUIDParameter:(BOOL)a3
+- (void)setCanSendGUIDParameter:(BOOL)parameter
 {
   [(ISOperation *)self lock];
-  self->_canSendGUIDParameter = a3;
+  self->_canSendGUIDParameter = parameter;
 
   [(ISOperation *)self unlock];
 }
 
-- (void)setIgnorePreexistingSecureToken:(BOOL)a3
+- (void)setIgnorePreexistingSecureToken:(BOOL)token
 {
   [(ISOperation *)self lock];
-  self->_ignorePreexistingSecureToken = a3;
+  self->_ignorePreexistingSecureToken = token;
 
   [(ISOperation *)self unlock];
 }
 
-- (void)setPerformsMachineDataActions:(BOOL)a3
+- (void)setPerformsMachineDataActions:(BOOL)actions
 {
-  v3 = a3;
+  actionsCopy = actions;
   [(ISOperation *)self lock];
-  if (v3)
+  if (actionsCopy)
   {
     if (self->_machineDataStyle)
     {
@@ -321,22 +321,22 @@ LABEL_6:
   [(ISOperation *)self unlock];
 }
 
-- (void)setSAPSession:(id)a3
+- (void)setSAPSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   [(ISOperation *)self lock];
-  if (self->_sapSession != v5)
+  if (self->_sapSession != sessionCopy)
   {
-    objc_storeStrong(&self->_sapSession, a3);
+    objc_storeStrong(&self->_sapSession, session);
   }
 
   [(ISOperation *)self unlock];
 }
 
-- (void)setShouldSendXTokenHeader:(BOOL)a3
+- (void)setShouldSendXTokenHeader:(BOOL)header
 {
   [(ISOperation *)self lock];
-  self->_shouldSendXTokenHeader = a3;
+  self->_shouldSendXTokenHeader = header;
 
   [(ISOperation *)self unlock];
 }
@@ -352,15 +352,15 @@ LABEL_6:
 - (SSURLBagContext)URLBagContext
 {
   v3 = objc_alloc_init(MEMORY[0x277D69C90]);
-  v4 = [(ISURLOperation *)self _requestProperties];
-  [v3 setAllowsBootstrapCellularData:{objc_msgSend(v4, "allowsBootstrapCellularData")}];
-  [v3 setBagType:{objc_msgSend(v4, "URLBagType")}];
-  v5 = [v4 clientAuditTokenData];
-  [v3 setClientAuditTokenData:v5];
+  _requestProperties = [(ISURLOperation *)self _requestProperties];
+  [v3 setAllowsBootstrapCellularData:{objc_msgSend(_requestProperties, "allowsBootstrapCellularData")}];
+  [v3 setBagType:{objc_msgSend(_requestProperties, "URLBagType")}];
+  clientAuditTokenData = [_requestProperties clientAuditTokenData];
+  [v3 setClientAuditTokenData:clientAuditTokenData];
 
-  v6 = [v4 HTTPHeaders];
+  hTTPHeaders = [_requestProperties HTTPHeaders];
   v7 = *MEMORY[0x277D6A130];
-  v8 = [v6 objectForKey:*MEMORY[0x277D6A130]];
+  v8 = [hTTPHeaders objectForKey:*MEMORY[0x277D6A130]];
 
   if (v8)
   {
@@ -373,17 +373,17 @@ LABEL_6:
 
     if (!v9)
     {
-      v10 = [MEMORY[0x277D69A80] currentDevice];
-      v11 = [v10 userAgent];
-      [v3 setValue:v11 forHTTPHeaderField:v7];
+      currentDevice = [MEMORY[0x277D69A80] currentDevice];
+      userAgent = [currentDevice userAgent];
+      [v3 setValue:userAgent forHTTPHeaderField:v7];
     }
   }
 
   if ([(ISStoreURLOperation *)self needsAuthentication]|| [(ISStoreURLOperation *)self useUserSpecificURLBag])
   {
-    v12 = [(ISStoreURLOperation *)self _account];
-    v13 = [v12 uniqueIdentifier];
-    [v3 setUserIdentifier:v13];
+    _account = [(ISStoreURLOperation *)self _account];
+    uniqueIdentifier = [_account uniqueIdentifier];
+    [v3 setUserIdentifier:uniqueIdentifier];
   }
 
   return v3;
@@ -391,21 +391,21 @@ LABEL_6:
 
 - (id)authenticatedAccountDSID
 {
-  v3 = [(ISStoreURLOperation *)self authenticatedDSID];
-  v4 = v3;
-  if (v3)
+  authenticatedDSID = [(ISStoreURLOperation *)self authenticatedDSID];
+  v4 = authenticatedDSID;
+  if (authenticatedDSID)
   {
-    v5 = v3;
+    authenticatedAccountDSID = authenticatedDSID;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = ISStoreURLOperation;
-    v5 = [(ISOperation *)&v8 authenticatedAccountDSID];
+    authenticatedAccountDSID = [(ISOperation *)&v8 authenticatedAccountDSID];
   }
 
-  v6 = v5;
+  v6 = authenticatedAccountDSID;
 
   return v6;
 }
@@ -414,87 +414,87 @@ LABEL_6:
 {
   v14.receiver = self;
   v14.super_class = ISStoreURLOperation;
-  v3 = [(ISURLOperation *)&v14 _copyAuthenticationContext];
-  if (!v3)
+  _copyAuthenticationContext = [(ISURLOperation *)&v14 _copyAuthenticationContext];
+  if (!_copyAuthenticationContext)
   {
     v4 = objc_alloc(MEMORY[0x277D69BC8]);
-    v5 = [(ISStoreURLOperation *)self _account];
-    v3 = [v4 initWithAccount:v5];
+    _account = [(ISStoreURLOperation *)self _account];
+    _copyAuthenticationContext = [v4 initWithAccount:_account];
 
-    v6 = [(ISStoreURLOperation *)self logKey];
-    [v3 setLogUUID:v6];
+    logKey = [(ISStoreURLOperation *)self logKey];
+    [_copyAuthenticationContext setLogUUID:logKey];
 
-    [v3 setCanSetActiveAccount:0];
+    [_copyAuthenticationContext setCanSetActiveAccount:0];
   }
 
-  v7 = [(ISURLOperation *)self _requestProperties];
-  [v7 URLBagType];
-  [v3 setAccountScope:SSAccountScopeForURLBagType()];
-  [v3 setAllowsBootstrapCellularData:{objc_msgSend(v7, "allowsBootstrapCellularData")}];
-  v8 = [v7 clientIdentifier];
-  [v3 setClientIdentifierHeader:v8];
+  _requestProperties = [(ISURLOperation *)self _requestProperties];
+  [_requestProperties URLBagType];
+  [_copyAuthenticationContext setAccountScope:SSAccountScopeForURLBagType()];
+  [_copyAuthenticationContext setAllowsBootstrapCellularData:{objc_msgSend(_requestProperties, "allowsBootstrapCellularData")}];
+  clientIdentifier = [_requestProperties clientIdentifier];
+  [_copyAuthenticationContext setClientIdentifierHeader:clientIdentifier];
 
-  v9 = [v7 HTTPHeaders];
+  hTTPHeaders = [_requestProperties HTTPHeaders];
   v10 = *MEMORY[0x277D6A130];
-  v11 = [v9 objectForKey:*MEMORY[0x277D6A130]];
+  v11 = [hTTPHeaders objectForKey:*MEMORY[0x277D6A130]];
 
   if (v11)
   {
-    [v3 setValue:v11 forHTTPHeaderField:v10];
+    [_copyAuthenticationContext setValue:v11 forHTTPHeaderField:v10];
   }
 
-  v12 = [v7 userAgentComponents];
-  if (v12)
+  userAgentComponents = [_requestProperties userAgentComponents];
+  if (userAgentComponents)
   {
-    [v3 setUserAgentComponents:v12];
+    [_copyAuthenticationContext setUserAgentComponents:userAgentComponents];
   }
 
   [(ISOperation *)self lock];
   if (self->_ignorePreexistingSecureToken)
   {
-    [v3 setPersistsPasswordFallback:1];
+    [_copyAuthenticationContext setPersistsPasswordFallback:1];
   }
 
   [(ISOperation *)self unlock];
 
-  return v3;
+  return _copyAuthenticationContext;
 }
 
-- (BOOL)handleRedirectFromDataProvider:(id)a3 error:(id *)a4
+- (BOOL)handleRedirectFromDataProvider:(id)provider error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 authenticatedAccountDSID];
-  if (v7)
+  providerCopy = provider;
+  authenticatedAccountDSID = [providerCopy authenticatedAccountDSID];
+  if (authenticatedAccountDSID)
   {
-    [(ISStoreURLOperation *)self setAuthenticatedDSID:v7];
+    [(ISStoreURLOperation *)self setAuthenticatedDSID:authenticatedAccountDSID];
     [(ISStoreURLOperation *)self setNeedsAuthentication:1];
   }
 
-  v8 = [v6 redirectURL];
-  v9 = [v8 schemeSwizzledURL];
+  redirectURL = [providerCopy redirectURL];
+  schemeSwizzledURL = [redirectURL schemeSwizzledURL];
 
-  if ([(ISStoreURLOperation *)self needsAuthentication]&& ![(ISStoreURLOperation *)self _canSendTokenToURL:v9])
+  if ([(ISStoreURLOperation *)self needsAuthentication]&& ![(ISStoreURLOperation *)self _canSendTokenToURL:schemeSwizzledURL])
   {
-    v22 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v22)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v22 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v23 = [v22 shouldLog];
-    if ([v22 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v24 = v23 | 2;
+      v24 = shouldLog | 2;
     }
 
     else
     {
-      v24 = v23;
+      v24 = shouldLog;
     }
 
-    v25 = [v22 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v26 = v24;
     }
@@ -508,7 +508,7 @@ LABEL_6:
     {
       v27 = objc_opt_class();
       v35 = v27;
-      [(ISURLOperation *)self _sanitizedURLForURL:v9];
+      [(ISURLOperation *)self _sanitizedURLForURL:schemeSwizzledURL];
       v38 = 138412546;
       v39 = v27;
       v41 = v40 = 2112;
@@ -524,7 +524,7 @@ LABEL_30:
         goto LABEL_33;
       }
 
-      v25 = [MEMORY[0x277CCACA8] stringWithCString:v28 encoding:{4, &v38, v32}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v28 encoding:{4, &v38, v32}];
       free(v28);
       SSFileLog();
     }
@@ -532,40 +532,40 @@ LABEL_30:
     goto LABEL_30;
   }
 
-  v10 = [(ISStoreURLOperation *)self URLBagContext];
-  v11 = [(ISStoreURLOperation *)self _urlBagForContext:v10];
-  if ([v11 urlIsTrusted:v9])
+  uRLBagContext = [(ISStoreURLOperation *)self URLBagContext];
+  v11 = [(ISStoreURLOperation *)self _urlBagForContext:uRLBagContext];
+  if ([v11 urlIsTrusted:schemeSwizzledURL])
   {
 
     v36.receiver = self;
     v36.super_class = ISStoreURLOperation;
     v37 = 0;
-    v12 = [(ISURLOperation *)&v36 handleRedirectFromDataProvider:v6 error:&v37];
+    v12 = [(ISURLOperation *)&v36 handleRedirectFromDataProvider:providerCopy error:&v37];
     v13 = v37;
   }
 
   else
   {
-    v34 = v9;
-    v14 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v14)
+    v34 = schemeSwizzledURL;
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v14 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
-    if ([v14 shouldLogToDisk])
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog2 | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog2;
     }
 
-    v17 = [v14 OSLogObject];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
     {
       v18 = v16;
     }
@@ -601,30 +601,30 @@ LABEL_30:
     v13 = ISError(3, 0, 0);
 
     v12 = 0;
-    v9 = v34;
+    schemeSwizzledURL = v34;
   }
 
 LABEL_33:
-  if (a4 && !v12)
+  if (error && !v12)
   {
     v29 = v13;
-    *a4 = v13;
+    *error = v13;
   }
 
   v30 = *MEMORY[0x277D85DE8];
   return v12;
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = 0;
-    v5 = [(ISURLOperation *)self activeURLRequest];
-    v6 = [(ISStoreURLOperation *)self _account];
-    [ISStoreURLOperation _handleResponseHeaders:self response:v4 request:v5 account:v6 performsMachineDataActions:0 shouldRetry:&v8];
+    activeURLRequest = [(ISURLOperation *)self activeURLRequest];
+    _account = [(ISStoreURLOperation *)self _account];
+    [ISStoreURLOperation _handleResponseHeaders:self response:responseCopy request:activeURLRequest account:_account performsMachineDataActions:0 shouldRetry:&v8];
 
     if (v8 == 1)
     {
@@ -634,19 +634,19 @@ LABEL_33:
 
   v7.receiver = self;
   v7.super_class = ISStoreURLOperation;
-  [(ISURLOperation *)&v7 handleResponse:v4];
+  [(ISURLOperation *)&v7 handleResponse:responseCopy];
 }
 
-- (id)newRequestWithURL:(id)a3
+- (id)newRequestWithURL:(id)l
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   if ([(ISStoreURLOperation *)self shouldSuppressUserInfo])
   {
     [(ISURLOperation *)self _setUsesPrivateCookieStore:0];
     v61.receiver = self;
     v61.super_class = ISStoreURLOperation;
-    v5 = [(ISURLOperation *)&v61 newRequestWithURL:v4];
+    v5 = [(ISURLOperation *)&v61 newRequestWithURL:lCopy];
     [v5 setHTTPShouldHandleCookies:0];
   }
 
@@ -654,7 +654,7 @@ LABEL_33:
   {
     v60.receiver = self;
     v60.super_class = ISStoreURLOperation;
-    v5 = [(ISURLOperation *)&v60 newRequestWithURL:v4];
+    v5 = [(ISURLOperation *)&v60 newRequestWithURL:lCopy];
   }
 
   v6 = [v5 URL];
@@ -673,8 +673,8 @@ LABEL_33:
 
   else
   {
-    v8 = [(ISStoreURLOperation *)self URLBagContext];
-    v7 = [(ISStoreURLOperation *)self _urlBagForContext:v8];
+    uRLBagContext = [(ISStoreURLOperation *)self URLBagContext];
+    v7 = [(ISStoreURLOperation *)self _urlBagForContext:uRLBagContext];
   }
 
   v9 = 0;
@@ -682,8 +682,8 @@ LABEL_10:
   [(ISStoreURLOperation *)self _applyAnalyticsCookiesToRequest:v5 withBag:v9 oldBag:v7];
   if ([(ISStoreURLOperation *)self canSendGUIDParameter])
   {
-    v10 = [v5 HTTPMethod];
-    v11 = [v10 isEqualToString:@"POST"];
+    hTTPMethod = [v5 HTTPMethod];
+    v11 = [hTTPMethod isEqualToString:@"POST"];
 
     if ((v11 & 1) == 0)
     {
@@ -701,11 +701,11 @@ LABEL_10:
       }
 
       v12 = +[ISDevice sharedInstance];
-      v13 = [v12 guid];
+      guid = [v12 guid];
 
-      if (v13)
+      if (guid)
       {
-        v14 = [v6 URLByAppendingQueryParameter:@"guid" value:v13];
+        v14 = [v6 URLByAppendingQueryParameter:@"guid" value:guid];
 
         [v5 setURL:v14];
         v6 = v14;
@@ -714,53 +714,53 @@ LABEL_10:
   }
 
 LABEL_19:
-  v15 = [(ISStoreURLOperation *)self _account];
+  _account = [(ISStoreURLOperation *)self _account];
   v55 = v9;
   if (v9)
   {
     v16 = v7;
     v17 = v6;
-    if (v15)
+    if (_account)
     {
       v18 = objc_opt_class();
-      v19 = [(ISStoreURLOperation *)self shouldAppendAuthKitHeaders];
-      v20 = [(ISStoreURLOperation *)self shouldAppendStorefrontToURL];
-      v21 = [0 clientBundleIdentifier];
-      [v18 _addiTunesStoreHeadersToRequest:v5 withSSBag:v9 account:v15 appendAuthKitHeaders:v19 appendStorefrontToURL:v20 clientBundleIdentifier:v21];
+      shouldAppendAuthKitHeaders = [(ISStoreURLOperation *)self shouldAppendAuthKitHeaders];
+      shouldAppendStorefrontToURL = [(ISStoreURLOperation *)self shouldAppendStorefrontToURL];
+      clientBundleIdentifier = [0 clientBundleIdentifier];
+      [v18 _addiTunesStoreHeadersToRequest:v5 withSSBag:v9 account:_account appendAuthKitHeaders:shouldAppendAuthKitHeaders appendStorefrontToURL:shouldAppendStorefrontToURL clientBundleIdentifier:clientBundleIdentifier];
     }
 
     else
     {
-      v21 = [(ISURLOperation *)self _accountIdentifier];
+      clientBundleIdentifier = [(ISURLOperation *)self _accountIdentifier];
       v25 = objc_opt_class();
-      v26 = [(ISStoreURLOperation *)self shouldAppendAuthKitHeaders];
-      v27 = [(ISStoreURLOperation *)self shouldAppendStorefrontToURL];
-      v28 = [0 clientBundleIdentifier];
-      [v25 _addiTunesStoreHeadersToRequest:v5 withSSBag:v55 accountIdentifier:v21 appendAuthKitHeaders:v26 appendStorefrontToURL:v27 clientBundleIdentifier:v28];
+      shouldAppendAuthKitHeaders2 = [(ISStoreURLOperation *)self shouldAppendAuthKitHeaders];
+      shouldAppendStorefrontToURL2 = [(ISStoreURLOperation *)self shouldAppendStorefrontToURL];
+      clientBundleIdentifier2 = [0 clientBundleIdentifier];
+      [v25 _addiTunesStoreHeadersToRequest:v5 withSSBag:v55 accountIdentifier:clientBundleIdentifier appendAuthKitHeaders:shouldAppendAuthKitHeaders2 appendStorefrontToURL:shouldAppendStorefrontToURL2 clientBundleIdentifier:clientBundleIdentifier2];
     }
 
     v6 = v17;
     v7 = v16;
   }
 
-  else if (v15)
+  else if (_account)
   {
     v22 = objc_opt_class();
-    v23 = [(ISStoreURLOperation *)self shouldAppendAuthKitHeaders];
-    v24 = [(ISStoreURLOperation *)self shouldAppendStorefrontToURL];
-    v21 = [0 clientBundleIdentifier];
-    [v22 _addiTunesStoreHeadersToRequest:v5 withURLBag:v7 account:v15 appendAuthKitHeaders:v23 appendStorefrontToURL:v24 clientBundleIdentifier:v21];
+    shouldAppendAuthKitHeaders3 = [(ISStoreURLOperation *)self shouldAppendAuthKitHeaders];
+    shouldAppendStorefrontToURL3 = [(ISStoreURLOperation *)self shouldAppendStorefrontToURL];
+    clientBundleIdentifier = [0 clientBundleIdentifier];
+    [v22 _addiTunesStoreHeadersToRequest:v5 withURLBag:v7 account:_account appendAuthKitHeaders:shouldAppendAuthKitHeaders3 appendStorefrontToURL:shouldAppendStorefrontToURL3 clientBundleIdentifier:clientBundleIdentifier];
   }
 
   else
   {
-    v21 = [(ISURLOperation *)self _accountIdentifier];
+    clientBundleIdentifier = [(ISURLOperation *)self _accountIdentifier];
     v48 = objc_opt_class();
-    v49 = [(ISStoreURLOperation *)self shouldAppendAuthKitHeaders];
-    v50 = [(ISStoreURLOperation *)self shouldAppendStorefrontToURL];
+    shouldAppendAuthKitHeaders4 = [(ISStoreURLOperation *)self shouldAppendAuthKitHeaders];
+    shouldAppendStorefrontToURL4 = [(ISStoreURLOperation *)self shouldAppendStorefrontToURL];
     [0 clientBundleIdentifier];
     v52 = v51 = v6;
-    [v48 _addiTunesStoreHeadersToRequest:v5 withURLBag:v7 accountIdentifier:v21 appendAuthKitHeaders:v49 appendStorefrontToURL:v50 clientBundleIdentifier:v52];
+    [v48 _addiTunesStoreHeadersToRequest:v5 withURLBag:v7 accountIdentifier:clientBundleIdentifier appendAuthKitHeaders:shouldAppendAuthKitHeaders4 appendStorefrontToURL:shouldAppendStorefrontToURL4 clientBundleIdentifier:v52];
 
     v6 = v51;
   }
@@ -771,12 +771,12 @@ LABEL_19:
     [v5 setValue:0 forHTTPHeaderField:*MEMORY[0x277D6A128]];
   }
 
-  v29 = [(ISURLOperation *)self _requestProperties];
-  v30 = [v29 clientIdentifier];
+  _requestProperties = [(ISURLOperation *)self _requestProperties];
+  clientIdentifier = [_requestProperties clientIdentifier];
 
-  if (v30)
+  if (clientIdentifier)
   {
-    v31 = [v30 copy];
+    v31 = [clientIdentifier copy];
     [v5 setValue:v31 forHTTPHeaderField:*MEMORY[0x277D6A158]];
   }
 
@@ -785,8 +785,8 @@ LABEL_19:
     [(ISOperation *)self lock];
     if ([(ISStoreURLOperation *)self needsAuthentication])
     {
-      v32 = [(ISStoreURLOperation *)self authenticatedDSID];
-      v33 = v32 != 0;
+      authenticatedDSID = [(ISStoreURLOperation *)self authenticatedDSID];
+      v33 = authenticatedDSID != 0;
     }
 
     else
@@ -794,39 +794,39 @@ LABEL_19:
       v33 = 1;
     }
 
-    v34 = [(ISStoreURLOperation *)self biometricAuthenticationContext];
-    v35 = [v34 didFallbackToPassword];
+    biometricAuthenticationContext = [(ISStoreURLOperation *)self biometricAuthenticationContext];
+    didFallbackToPassword = [biometricAuthenticationContext didFallbackToPassword];
 
-    LODWORD(v34) = self->_ignorePreexistingSecureToken;
+    LODWORD(biometricAuthenticationContext) = self->_ignorePreexistingSecureToken;
     [(ISOperation *)self unlock];
-    if (v34 != 1 || (v35 & v33) != 0)
+    if (biometricAuthenticationContext != 1 || (didFallbackToPassword & v33) != 0)
     {
-      v36 = [v15 secureToken];
-      if ((SSIsDaemon() & 1) == 0 && !v36)
+      secureToken = [_account secureToken];
+      if ((SSIsDaemon() & 1) == 0 && !secureToken)
       {
-        v37 = [(ISURLOperation *)self _requestProperties];
-        v38 = [v37 URLBagKey];
-        v39 = [v38 isEqualToString:@"buyProduct"];
+        _requestProperties2 = [(ISURLOperation *)self _requestProperties];
+        uRLBagKey = [_requestProperties2 URLBagKey];
+        v39 = [uRLBagKey isEqualToString:@"buyProduct"];
 
         if (v39)
         {
-          v40 = [MEMORY[0x277D69A20] defaultStore];
-          v41 = [v40 accounts];
+          defaultStore = [MEMORY[0x277D69A20] defaultStore];
+          accounts = [defaultStore accounts];
 
           v58 = 0u;
           v59 = 0u;
           v56 = 0u;
           v57 = 0u;
-          v42 = v41;
-          v36 = [v42 countByEnumeratingWithState:&v56 objects:v62 count:16];
-          if (v36)
+          v42 = accounts;
+          secureToken = [v42 countByEnumeratingWithState:&v56 objects:v62 count:16];
+          if (secureToken)
           {
             v43 = v7;
             v44 = v6;
             v45 = *v57;
             while (2)
             {
-              for (i = 0; i != v36; i = i + 1)
+              for (i = 0; i != secureToken; i = i + 1)
               {
                 if (*v57 != v45)
                 {
@@ -834,15 +834,15 @@ LABEL_19:
                 }
 
                 v47 = *(*(&v56 + 1) + 8 * i);
-                if ([v15 isEqual:v47])
+                if ([_account isEqual:v47])
                 {
-                  v36 = [v47 secureToken];
+                  secureToken = [v47 secureToken];
                   goto LABEL_52;
                 }
               }
 
-              v36 = [v42 countByEnumeratingWithState:&v56 objects:v62 count:16];
-              if (v36)
+              secureToken = [v42 countByEnumeratingWithState:&v56 objects:v62 count:16];
+              if (secureToken)
               {
                 continue;
               }
@@ -858,11 +858,11 @@ LABEL_52:
 
         else
         {
-          v36 = 0;
+          secureToken = 0;
         }
       }
 
-      [v5 setValue:v36 forHTTPHeaderField:*MEMORY[0x277D6A1D8]];
+      [v5 setValue:secureToken forHTTPHeaderField:*MEMORY[0x277D6A1D8]];
     }
   }
 
@@ -870,34 +870,34 @@ LABEL_52:
   return v5;
 }
 
-- (BOOL)_processResponseData:(id)a3 error:(id *)a4
+- (BOOL)_processResponseData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [(ISStoreURLOperation *)self SAPSession];
-  if (!v7)
+  dataCopy = data;
+  sAPSession = [(ISStoreURLOperation *)self SAPSession];
+  if (!sAPSession)
   {
     v18 = 0;
     goto LABEL_8;
   }
 
-  v8 = [(ISURLOperation *)self activeURLRequest];
-  v9 = [(ISURLOperation *)self _requestProperties];
-  v10 = [(ISStoreURLOperation *)self _loadURLBagInterpreterWithRequest:v8 requestProperties:v9];
+  activeURLRequest = [(ISURLOperation *)self activeURLRequest];
+  _requestProperties = [(ISURLOperation *)self _requestProperties];
+  v10 = [(ISStoreURLOperation *)self _loadURLBagInterpreterWithRequest:activeURLRequest requestProperties:_requestProperties];
 
-  v11 = [(ISURLOperation *)self response];
-  v12 = [v11 URL];
+  response = [(ISURLOperation *)self response];
+  v12 = [response URL];
   v13 = [v10 mescalSignaturePolicyForResponseURL:v12];
 
   if (v13 && [v13 policyType])
   {
-    v14 = [v11 allHeaderFields];
-    v15 = ISDictionaryValueForCaseInsensitiveString(v14, *MEMORY[0x277D6A150]);
+    allHeaderFields = [response allHeaderFields];
+    v15 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, *MEMORY[0x277D6A150]);
 
     if (v15)
     {
       v16 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v15 options:0];
       v22 = 0;
-      v17 = [v7 verifyData:v6 withSignature:v16 error:&v22];
+      v17 = [sAPSession verifyData:dataCopy withSignature:v16 error:&v22];
       v18 = v22;
 
 LABEL_13:
@@ -906,7 +906,7 @@ LABEL_13:
 
     v19 = *MEMORY[0x277D6A110];
     v18 = SSError();
-    if (([v11 statusCode] - 400) > 0x257 || !-[ISURLOperation _loadsHTTPFailures](self, "_loadsHTTPFailures"))
+    if (([response statusCode] - 400) > 0x257 || !-[ISURLOperation _loadsHTTPFailures](self, "_loadsHTTPFailures"))
     {
       v17 = 0;
       goto LABEL_13;
@@ -921,11 +921,11 @@ LABEL_8:
   v17 = 1;
 LABEL_14:
 
-  if (a4 && (v17 & 1) == 0)
+  if (error && (v17 & 1) == 0)
   {
     v20 = v18;
     v17 = 0;
-    *a4 = v18;
+    *error = v18;
   }
 
 LABEL_17:
@@ -989,33 +989,33 @@ LABEL_17:
       goto LABEL_26;
     }
 
-    v7 = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
-    if (!v7)
+    sharedAccountsAuthenticationConfig = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
+    if (!sharedAccountsAuthenticationConfig)
     {
-      v7 = [*(v6 + 2872) sharedConfig];
+      sharedAccountsAuthenticationConfig = [*(v6 + 2872) sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
-    if ([v7 shouldLogToDisk])
+    shouldLog = [sharedAccountsAuthenticationConfig shouldLog];
+    if ([sharedAccountsAuthenticationConfig shouldLogToDisk])
     {
-      v8 |= 2u;
+      shouldLog |= 2u;
     }
 
-    v9 = [v7 OSLogObject];
-    if (!os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [sharedAccountsAuthenticationConfig OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v8 &= 2u;
+      shouldLog &= 2u;
     }
 
-    if (!v8)
+    if (!shouldLog)
     {
       goto LABEL_24;
     }
 
     v10 = objc_opt_class();
     v11 = v10;
-    v12 = [(ISURLOperation *)self requestProperties];
-    v13 = [v12 URL];
+    requestProperties = [(ISURLOperation *)self requestProperties];
+    v13 = [requestProperties URL];
     v136 = 138543618;
     v137 = v10;
     v138 = 2114;
@@ -1026,47 +1026,47 @@ LABEL_17:
 
     if (v14)
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, &v136, v112}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v14 encoding:{4, &v136, v112}];
       free(v14);
-      v109 = v9;
+      v109 = oSLogObject;
       SSFileLog();
 LABEL_24:
     }
 
 LABEL_26:
-    v15 = [(ISStoreURLOperation *)self _copyAuthenticationContextForAttemptNumber:v128, v109];
+    v109 = [(ISStoreURLOperation *)self _copyAuthenticationContextForAttemptNumber:v128, v109];
     if (v127)
     {
       v135 = 0;
-      v16 = [(ISStoreURLOperation *)self _authenticateWithContext:v15 error:&v135];
+      v16 = [(ISStoreURLOperation *)self _authenticateWithContext:v109 error:&v135];
       v17 = v135;
       if (!v16)
       {
-        v92 = [*(v6 + 2872) sharediTunesStoreConfig];
-        v93 = v92;
-        if (!v92)
+        sharediTunesStoreConfig = [*(v6 + 2872) sharediTunesStoreConfig];
+        sharedConfig = sharediTunesStoreConfig;
+        if (!sharediTunesStoreConfig)
         {
-          v93 = [*(v6 + 2872) sharedConfig];
+          sharedConfig = [*(v6 + 2872) sharedConfig];
         }
 
-        v94 = [v93 shouldLog];
-        if ([v93 shouldLogToDisk])
+        shouldLog2 = [sharedConfig shouldLog];
+        if ([sharedConfig shouldLogToDisk])
         {
-          v94 |= 2u;
+          shouldLog2 |= 2u;
         }
 
-        v95 = [v93 OSLogObject];
-        if (!os_log_type_enabled(v95, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [sharedConfig OSLogObject];
+        if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
-          v94 &= 2u;
+          shouldLog2 &= 2u;
         }
 
-        if (v94)
+        if (shouldLog2)
         {
           v96 = objc_opt_class();
           v97 = v96;
           [(ISURLOperation *)self _sanitizedDescriptionForObject:v17];
-          v99 = v98 = v15;
+          v99 = v98 = v109;
           v136 = 138412546;
           v137 = v96;
           v138 = 2112;
@@ -1074,7 +1074,7 @@ LABEL_26:
           LODWORD(v112) = 22;
           v100 = _os_log_send_and_compose_impl();
 
-          v15 = v98;
+          v109 = v98;
           if (!v100)
           {
 LABEL_151:
@@ -1085,7 +1085,7 @@ LABEL_163:
             goto LABEL_164;
           }
 
-          v95 = [MEMORY[0x277CCACA8] stringWithCString:v100 encoding:{4, &v136, v112}];
+          oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v100 encoding:{4, &v136, v112}];
           free(v100);
           SSFileLog();
         }
@@ -1099,7 +1099,7 @@ LABEL_163:
       v17 = 0;
     }
 
-    v133 = v15;
+    v133 = v109;
     if (![(ISStoreURLOperation *)self needsTermsAndConditionsAcceptance])
     {
       v25 = v17;
@@ -1107,31 +1107,31 @@ LABEL_163:
     }
 
     v18 = objc_alloc(NSClassFromString(&cfstr_Accepttermsand.isa));
-    v19 = [(ISStoreURLOperation *)self _account];
-    v20 = [v18 initWithAccount:v19];
+    _account = [(ISStoreURLOperation *)self _account];
+    v20 = [v18 initWithAccount:_account];
 
     if (!v20)
     {
-      v101 = [*(v6 + 2872) sharediTunesStoreConfig];
-      if (!v101)
+      sharediTunesStoreConfig2 = [*(v6 + 2872) sharediTunesStoreConfig];
+      if (!sharediTunesStoreConfig2)
       {
-        v101 = [*(v6 + 2872) sharedConfig];
+        sharediTunesStoreConfig2 = [*(v6 + 2872) sharedConfig];
       }
 
-      v102 = [v101 shouldLog];
-      if ([v101 shouldLogToDisk])
+      shouldLog3 = [sharediTunesStoreConfig2 shouldLog];
+      if ([sharediTunesStoreConfig2 shouldLogToDisk])
       {
-        v102 |= 2u;
+        shouldLog3 |= 2u;
       }
 
-      v103 = [v101 OSLogObject];
-      if (!os_log_type_enabled(v103, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [sharediTunesStoreConfig2 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
-        v102 &= 2u;
+        shouldLog3 &= 2u;
       }
 
-      v15 = v133;
-      if (v102)
+      v109 = v133;
+      if (shouldLog3)
       {
         v104 = objc_opt_class();
         v136 = 138412290;
@@ -1142,7 +1142,7 @@ LABEL_163:
 
         if (v106)
         {
-          v103 = [MEMORY[0x277CCACA8] stringWithCString:v106 encoding:{4, &v136, v112}];
+          oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v106 encoding:{4, &v136, v112}];
           free(v106);
           SSFileLog();
           goto LABEL_161;
@@ -1170,41 +1170,41 @@ LABEL_161:
       goto LABEL_40;
     }
 
-    v23 = [v20 isUserAccepted];
-    if (!v23)
+    isUserAccepted = [v20 isUserAccepted];
+    if (!isUserAccepted)
     {
       break;
     }
 
-    v24 = v23;
+    v24 = isUserAccepted;
     if (!v22)
     {
 
       v25 = 0;
-      v15 = v133;
+      v109 = v133;
       goto LABEL_51;
     }
 
 LABEL_40:
-    v27 = [*(v6 + 2872) sharediTunesStoreConfig];
-    if (!v27)
+    sharediTunesStoreConfig3 = [*(v6 + 2872) sharediTunesStoreConfig];
+    if (!sharediTunesStoreConfig3)
     {
-      v27 = [*(v6 + 2872) sharedConfig];
+      sharediTunesStoreConfig3 = [*(v6 + 2872) sharedConfig];
     }
 
-    v28 = [v27 shouldLog];
-    if ([v27 shouldLogToDisk])
+    shouldLog4 = [sharediTunesStoreConfig3 shouldLog];
+    if ([sharediTunesStoreConfig3 shouldLogToDisk])
     {
-      v28 |= 2u;
+      shouldLog4 |= 2u;
     }
 
-    v29 = [v27 OSLogObject];
-    if (!os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+    oSLogObject4 = [sharediTunesStoreConfig3 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_ERROR))
     {
-      v28 &= 2u;
+      shouldLog4 &= 2u;
     }
 
-    if (v28)
+    if (shouldLog4)
     {
       v30 = objc_opt_class();
       v31 = v30;
@@ -1223,9 +1223,9 @@ LABEL_40:
         goto LABEL_50;
       }
 
-      v29 = [MEMORY[0x277CCACA8] stringWithCString:v33 encoding:{4, &v136, v112}];
+      oSLogObject4 = [MEMORY[0x277CCACA8] stringWithCString:v33 encoding:{4, &v136, v112}];
       free(v33);
-      v110 = v29;
+      v110 = oSLogObject4;
       SSFileLog();
     }
 
@@ -1233,7 +1233,7 @@ LABEL_50:
     v25 = v22;
     [(ISOperation *)self setError:v22];
 
-    v15 = v133;
+    v109 = v133;
     if ((v24 & 1) == 0)
     {
       goto LABEL_164;
@@ -1241,15 +1241,15 @@ LABEL_50:
 
 LABEL_51:
     [(ISStoreURLOperation *)self _runURLOperation];
-    v34 = [(ISOperation *)self error];
-    v35 = [(ISURLOperation *)self response];
-    if (!v35 || ![(ISStoreURLOperation *)self machineDataStyle])
+    error = [(ISOperation *)self error];
+    response = [(ISURLOperation *)self response];
+    if (!response || ![(ISStoreURLOperation *)self machineDataStyle])
     {
       v39 = 0;
       goto LABEL_85;
     }
 
-    v36 = [objc_alloc(MEMORY[0x277D69B58]) initWithURLResponse:v35];
+    v36 = [objc_alloc(MEMORY[0x277D69B58]) initWithURLResponse:response];
     if (v36)
     {
       v125 = v25;
@@ -1258,8 +1258,8 @@ LABEL_51:
         goto LABEL_60;
       }
 
-      v37 = [v36 actionName];
-      v38 = [v37 isEqualToString:@"RP"];
+      actionName = [v36 actionName];
+      v38 = [actionName isEqualToString:@"RP"];
 
       if (v38)
       {
@@ -1271,38 +1271,38 @@ LABEL_51:
       if (v40 <= 0)
       {
 LABEL_69:
-        v130 = v35;
-        v41 = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
-        if (!v41)
+        v130 = response;
+        sharedAccountsAuthenticationConfig2 = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
+        if (!sharedAccountsAuthenticationConfig2)
         {
-          v41 = [MEMORY[0x277D69B38] sharedConfig];
+          sharedAccountsAuthenticationConfig2 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v48 = [v41 shouldLog];
-        if ([v41 shouldLogToDisk])
+        shouldLog5 = [sharedAccountsAuthenticationConfig2 shouldLog];
+        if ([sharedAccountsAuthenticationConfig2 shouldLogToDisk])
         {
-          v48 |= 2u;
+          shouldLog5 |= 2u;
         }
 
-        v43 = [v41 OSLogObject];
-        if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
+        oSLogObject5 = [sharedAccountsAuthenticationConfig2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
         {
-          v49 = v48;
+          v49 = shouldLog5;
         }
 
         else
         {
-          v49 = v48 & 2;
+          v49 = shouldLog5 & 2;
         }
 
         if (v49)
         {
           v50 = objc_opt_class();
           v122 = v50;
-          v116 = [(ISURLOperation *)self requestProperties];
-          v51 = [v116 URL];
-          v114 = [(ISStoreURLOperation *)self _account];
-          v52 = [v114 accountName];
+          requestProperties2 = [(ISURLOperation *)self requestProperties];
+          v51 = [requestProperties2 URL];
+          _account2 = [(ISStoreURLOperation *)self _account];
+          accountName = [_account2 accountName];
           v53 = SSHashIfNeeded();
           v136 = 138543874;
           v137 = v50;
@@ -1321,10 +1321,10 @@ LABEL_69:
           }
 
 LABEL_68:
-          v15 = v133;
-          v43 = [MEMORY[0x277CCACA8] stringWithCString:v47 encoding:{4, &v136, v112}];
+          v109 = v133;
+          oSLogObject5 = [MEMORY[0x277CCACA8] stringWithCString:v47 encoding:{4, &v136, v112}];
           free(v47);
-          v111 = v43;
+          v111 = oSLogObject5;
           SSFileLog();
         }
 
@@ -1333,37 +1333,37 @@ LABEL_68:
           v39 = 1;
         }
 
-        v35 = v130;
+        response = v130;
       }
 
       else
       {
 LABEL_60:
-        v41 = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
-        if (!v41)
+        sharedAccountsAuthenticationConfig2 = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
+        if (!sharedAccountsAuthenticationConfig2)
         {
-          v41 = [MEMORY[0x277D69B38] sharedConfig];
+          sharedAccountsAuthenticationConfig2 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v42 = [v41 shouldLog];
-        if ([v41 shouldLogToDisk])
+        shouldLog6 = [sharedAccountsAuthenticationConfig2 shouldLog];
+        if ([sharedAccountsAuthenticationConfig2 shouldLogToDisk])
         {
-          v42 |= 2u;
+          shouldLog6 |= 2u;
         }
 
-        v43 = [v41 OSLogObject];
-        if (!os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
+        oSLogObject5 = [sharedAccountsAuthenticationConfig2 OSLogObject];
+        if (!os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_ERROR))
         {
-          v42 &= 2u;
+          shouldLog6 &= 2u;
         }
 
-        if (v42)
+        if (shouldLog6)
         {
-          v130 = v35;
+          v130 = response;
           v44 = objc_opt_class();
           v121 = v44;
-          v45 = [(ISURLOperation *)self requestProperties];
-          v46 = [v45 URL];
+          requestProperties3 = [(ISURLOperation *)self requestProperties];
+          v46 = [requestProperties3 URL];
           v136 = 138543618;
           v137 = v44;
           v138 = 2114;
@@ -1379,9 +1379,9 @@ LABEL_60:
           }
 
 LABEL_78:
-          v15 = v133;
+          v109 = v133;
           v25 = v125;
-          v35 = v130;
+          response = v130;
 LABEL_83:
 
           v6 = 0x277D69000uLL;
@@ -1399,61 +1399,61 @@ LABEL_83:
 LABEL_84:
 
 LABEL_85:
-    v54 = [(ISStoreURLOperation *)self biometricAuthenticationContext];
-    v55 = [v54 challenge];
+    biometricAuthenticationContext = [(ISStoreURLOperation *)self biometricAuthenticationContext];
+    challenge = [biometricAuthenticationContext challenge];
 
-    if (v55)
+    if (challenge)
     {
-      v56 = [(ISStoreURLOperation *)self _shouldRetryForTouchIDChallengeWithError:v34];
-      if ((v39 | [(ISStoreURLOperation *)self _shouldRetryForAbsintheWithResponse:v35]))
+      v56 = [(ISStoreURLOperation *)self _shouldRetryForTouchIDChallengeWithError:error];
+      if ((v39 | [(ISStoreURLOperation *)self _shouldRetryForAbsintheWithResponse:response]))
       {
         goto LABEL_124;
       }
 
       if (v56)
       {
-        v131 = v35;
+        v131 = response;
         [(ISStoreURLOperation *)self _continueTouchIDSession];
         if ([(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext didBuyParamsChange])
         {
-          v57 = [(ISStoreURLOperation *)self biometricSessionDelegate];
+          biometricSessionDelegate = [(ISStoreURLOperation *)self biometricSessionDelegate];
           if (objc_opt_respondsToSelector())
           {
-            [v57 sender:self didFallbackToPassword:{-[SSBiometricAuthenticationContext didFallbackToPassword](self->_biometricAuthenticationContext, "didFallbackToPassword")}];
+            [biometricSessionDelegate sender:self didFallbackToPassword:{-[SSBiometricAuthenticationContext didFallbackToPassword](self->_biometricAuthenticationContext, "didFallbackToPassword")}];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            [v57 sender:self shouldContinueTouchIDSession:1];
+            [biometricSessionDelegate sender:self shouldContinueTouchIDSession:1];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            v58 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext challenge];
-            v123 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext signature];
-            v117 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext paymentTokenData];
-            v115 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext fpanID];
-            v113 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext isExtendedAction];
-            v59 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext isPayment];
+            challenge2 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext challenge];
+            signature = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext signature];
+            paymentTokenData = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext paymentTokenData];
+            fpanID = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext fpanID];
+            isExtendedAction = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext isExtendedAction];
+            isPayment = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext isPayment];
             v60 = objc_alloc_init(MEMORY[0x277CBEB38]);
-            v61 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext xAppleAMDHeader];
-            if (v61)
+            xAppleAMDHeader = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext xAppleAMDHeader];
+            if (xAppleAMDHeader)
             {
-              [v60 setObject:v61 forKeyedSubscript:v119];
+              [v60 setObject:xAppleAMDHeader forKeyedSubscript:v119];
             }
 
-            v62 = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext xAppleAMDMHeader];
-            if (v62)
+            xAppleAMDMHeader = [(SSBiometricAuthenticationContext *)self->_biometricAuthenticationContext xAppleAMDMHeader];
+            if (xAppleAMDMHeader)
             {
-              [v60 setObject:v62 forKeyedSubscript:v118];
+              [v60 setObject:xAppleAMDMHeader forKeyedSubscript:v118];
             }
 
-            LOBYTE(v109) = v59;
-            [v57 sender:self willSendChallenge:v58 andSignature:v123 andPaymentTokenData:v117 andFpanID:v115 isExtendedAction:v113 isPayment:v109 additionalHeaders:v60];
+            LOBYTE(v109) = isPayment;
+            [biometricSessionDelegate sender:self willSendChallenge:challenge2 andSignature:signature andPaymentTokenData:paymentTokenData andFpanID:fpanID isExtendedAction:isExtendedAction isPayment:v109 additionalHeaders:v60];
 
             v63 = 0;
 LABEL_133:
-            v35 = v131;
+            response = v131;
 LABEL_135:
 
             v6 = 0x277D69000;
@@ -1464,44 +1464,44 @@ LABEL_138:
 
           v63 = 0;
 LABEL_137:
-          v35 = v131;
+          response = v131;
           goto LABEL_138;
         }
 
 LABEL_123:
-        v35 = v131;
+        response = v131;
 LABEL_124:
-        v57 = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
-        if (!v57)
+        biometricSessionDelegate = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
+        if (!biometricSessionDelegate)
         {
-          v57 = [*(v6 + 2872) sharedConfig];
+          biometricSessionDelegate = [*(v6 + 2872) sharedConfig];
         }
 
-        v84 = [v57 shouldLog];
-        if ([v57 shouldLogToDisk])
+        shouldLog7 = [biometricSessionDelegate shouldLog];
+        if ([biometricSessionDelegate shouldLogToDisk])
         {
-          v84 |= 2u;
+          shouldLog7 |= 2u;
         }
 
-        v58 = [v57 OSLogObject];
-        if (!os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
+        challenge2 = [biometricSessionDelegate OSLogObject];
+        if (!os_log_type_enabled(challenge2, OS_LOG_TYPE_DEFAULT))
         {
-          v84 &= 2u;
+          shouldLog7 &= 2u;
         }
 
-        if (!v84)
+        if (!shouldLog7)
         {
           v63 = 1;
           goto LABEL_135;
         }
 
-        v131 = v35;
-        v85 = v34;
+        v131 = response;
+        v85 = error;
         v86 = v25;
         v87 = objc_opt_class();
         v88 = v87;
-        v89 = [(ISOperation *)self error];
-        v90 = [(ISURLOperation *)self _sanitizedDescriptionForObject:v89];
+        error2 = [(ISOperation *)self error];
+        v90 = [(ISURLOperation *)self _sanitizedDescriptionForObject:error2];
         v136 = 138543618;
         v137 = v87;
         v138 = 2112;
@@ -1512,71 +1512,71 @@ LABEL_124:
 
         if (v91)
         {
-          v58 = [MEMORY[0x277CCACA8] stringWithCString:v91 encoding:{4, &v136, v112}];
+          challenge2 = [MEMORY[0x277CCACA8] stringWithCString:v91 encoding:{4, &v136, v112}];
           free(v91);
-          v109 = v58;
+          v109 = challenge2;
           SSFileLog();
           v63 = 1;
           v25 = v86;
-          v34 = v85;
-          v15 = v133;
+          error = v85;
+          v109 = v133;
           goto LABEL_133;
         }
 
         v63 = 1;
         v6 = 0x277D69000;
         v25 = v86;
-        v34 = v85;
-        v15 = v133;
+        error = v85;
+        v109 = v133;
         goto LABEL_137;
       }
     }
 
-    else if ((v39 | [(ISStoreURLOperation *)self _shouldRetryForAbsintheWithResponse:v35]))
+    else if ((v39 | [(ISStoreURLOperation *)self _shouldRetryForAbsintheWithResponse:response]))
     {
       goto LABEL_124;
     }
 
-    if (-[ISOperation success](self, "success") || !-[ISStoreURLOperation _isErrorTokenError:](self, "_isErrorTokenError:", v34) || (-[ISURLOperation authenticationContext](self, "authenticationContext"), v64 = objc_claimAutoreleasedReturnValue(), v65 = [v64 promptStyle], v64, v65 == 1000))
+    if (-[ISOperation success](self, "success") || !-[ISStoreURLOperation _isErrorTokenError:](self, "_isErrorTokenError:", error) || (-[ISURLOperation authenticationContext](self, "authenticationContext"), v64 = objc_claimAutoreleasedReturnValue(), v65 = [v64 promptStyle], v64, v65 == 1000))
     {
       v63 = 0;
       goto LABEL_139;
     }
 
     v126 = v25;
-    v66 = [(ISStoreURLOperation *)self _account];
-    v67 = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
-    if (!v67)
+    _account3 = [(ISStoreURLOperation *)self _account];
+    sharedAccountsAuthenticationConfig3 = [*(v6 + 2872) sharedAccountsAuthenticationConfig];
+    if (!sharedAccountsAuthenticationConfig3)
     {
-      v67 = [*(v6 + 2872) sharedConfig];
+      sharedAccountsAuthenticationConfig3 = [*(v6 + 2872) sharedConfig];
     }
 
-    v131 = v35;
-    v68 = [v67 shouldLog];
-    if ([v67 shouldLogToDisk])
+    v131 = response;
+    shouldLog8 = [sharedAccountsAuthenticationConfig3 shouldLog];
+    if ([sharedAccountsAuthenticationConfig3 shouldLogToDisk])
     {
-      v68 |= 2u;
+      shouldLog8 |= 2u;
     }
 
-    v69 = [v67 OSLogObject];
-    if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+    oSLogObject6 = [sharedAccountsAuthenticationConfig3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
     {
-      v70 = v68;
+      v70 = shouldLog8;
     }
 
     else
     {
-      v70 = v68 & 2;
+      v70 = shouldLog8 & 2;
     }
 
-    v127 = v66;
+    v127 = _account3;
     if (v70)
     {
       v71 = objc_opt_class();
       v124 = v71;
-      v72 = [(ISURLOperation *)self requestProperties];
-      v73 = [v72 URL];
-      v74 = [v66 accountName];
+      requestProperties4 = [(ISURLOperation *)self requestProperties];
+      v73 = [requestProperties4 URL];
+      accountName2 = [_account3 accountName];
       v75 = SSHashIfNeeded();
       v136 = 138543874;
       v137 = v71;
@@ -1588,48 +1588,48 @@ LABEL_124:
       v109 = &v136;
       v76 = _os_log_send_and_compose_impl();
 
-      v66 = v127;
-      v15 = v133;
+      _account3 = v127;
+      v109 = v133;
 
       if (!v76)
       {
         goto LABEL_115;
       }
 
-      v69 = [MEMORY[0x277CCACA8] stringWithCString:v76 encoding:{4, &v136, v112}];
+      oSLogObject6 = [MEMORY[0x277CCACA8] stringWithCString:v76 encoding:{4, &v136, v112}];
       free(v76);
-      v109 = v69;
+      v109 = oSLogObject6;
       SSFileLog();
     }
 
 LABEL_115:
-    [v66 setAuthenticated:0];
-    [v66 setSecureToken:0];
-    v77 = [MEMORY[0x277D69A20] defaultStore];
-    [v77 saveAccount:v66 verifyCredentials:0 error:0];
+    [_account3 setAuthenticated:0];
+    [_account3 setSecureToken:0];
+    defaultStore = [MEMORY[0x277D69A20] defaultStore];
+    [defaultStore saveAccount:_account3 verifyCredentials:0 error:0];
 
     [(ISStoreURLOperation *)self setNeedsAuthentication:1];
-    v78 = [v34 userInfo];
-    v79 = [v78 objectForKey:v120];
+    userInfo = [error userInfo];
+    v79 = [userInfo objectForKey:v120];
 
     if (v79)
     {
       if (([v79 BOOLValue] & 1) == 0)
       {
-        v80 = [(ISURLOperation *)self authenticationContext];
-        v81 = [v80 promptStyle];
+        authenticationContext = [(ISURLOperation *)self authenticationContext];
+        promptStyle = [authenticationContext promptStyle];
 
-        if (v81 != 1)
+        if (promptStyle != 1)
         {
           [(ISStoreURLOperation *)self setIgnorePreexistingSecureToken:0];
         }
       }
     }
 
-    v82 = [(ISURLOperation *)self HTTPArchive];
+    hTTPArchive = [(ISURLOperation *)self HTTPArchive];
     v6 = 0x277D69000uLL;
-    v83 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-    [v82 writeToDiskWithLogConfig:v83 compressed:0 error:0];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+    [hTTPArchive writeToDiskWithLogConfig:mEMORY[0x277D69B38] compressed:0 error:0];
 
     LOBYTE(v127) = 1;
     v25 = v126;
@@ -1641,7 +1641,7 @@ LABEL_115:
 
     v63 = 0;
     ++v128;
-    v35 = v131;
+    response = v131;
 LABEL_139:
 
     objc_autoreleasePoolPop(v132);
@@ -1661,7 +1661,7 @@ LABEL_139:
   }
 
   v25 = v20;
-  v15 = v133;
+  v109 = v133;
 LABEL_164:
 
   objc_autoreleasePoolPop(v132);
@@ -1669,10 +1669,10 @@ LABEL_165:
   v108 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldFollowRedirectWithRequest:(id)a3 returningError:(id *)a4
+- (BOOL)shouldFollowRedirectWithRequest:(id)request returningError:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  requestCopy = request;
   if ([(ISStoreURLOperation *)self urlKnownToBeTrusted])
   {
     v7 = 1;
@@ -1680,32 +1680,32 @@ LABEL_165:
 
   else
   {
-    v8 = [(ISStoreURLOperation *)self URLBagContext];
-    v9 = [(ISOperation *)self loadedURLBagWithContext:v8 returningError:0];
-    v10 = [v6 URL];
+    uRLBagContext = [(ISStoreURLOperation *)self URLBagContext];
+    v9 = [(ISOperation *)self loadedURLBagWithContext:uRLBagContext returningError:0];
+    v10 = [requestCopy URL];
     v7 = [v9 urlIsTrusted:v10];
 
     if ((v7 & 1) == 0)
     {
-      v11 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-      if (!v11)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+      if (!mEMORY[0x277D69B38])
       {
-        v11 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v12 = [v11 shouldLog];
-      if ([v11 shouldLogToDisk])
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      if ([mEMORY[0x277D69B38] shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog;
       }
 
-      v14 = [v11 OSLogObject];
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v15 = v13;
       }
@@ -1717,14 +1717,14 @@ LABEL_165:
 
       if (v15)
       {
-        v24 = v8;
+        v24 = uRLBagContext;
         v16 = objc_opt_class();
         v23 = v16;
-        v17 = [v6 URL];
+        v17 = [requestCopy URL];
         [(ISURLOperation *)self _sanitizedURLForURL:v17];
         v25 = 138412546;
         v26 = v16;
-        v8 = v24;
+        uRLBagContext = v24;
         v28 = v27 = 2112;
         LODWORD(v22) = 22;
         v18 = _os_log_send_and_compose_impl();
@@ -1741,9 +1741,9 @@ LABEL_165:
       {
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = ISError(3, 0, 0);
+        *error = ISError(3, 0, 0);
       }
     }
   }
@@ -1752,11 +1752,11 @@ LABEL_165:
   return v7;
 }
 
-- (void)_willSendRequest:(id)a3
+- (void)_willSendRequest:(id)request
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ISURLOperation *)self _requestProperties];
+  requestCopy = request;
+  _requestProperties = [(ISURLOperation *)self _requestProperties];
   activeMachineDataStyle = self->_activeMachineDataStyle;
   if (activeMachineDataStyle == 3)
   {
@@ -1770,12 +1770,12 @@ LABEL_10:
   {
     if (activeMachineDataStyle == 1)
     {
-      v7 = [(ISStoreURLOperation *)self _account];
-      v8 = v7;
-      if (v7)
+      _account = [(ISStoreURLOperation *)self _account];
+      v8 = _account;
+      if (_account)
       {
-        v9 = [v7 uniqueIdentifier];
-        [v9 unsignedLongLongValue];
+        uniqueIdentifier = [_account uniqueIdentifier];
+        [uniqueIdentifier unsignedLongLongValue];
         SSVAnisetteAddHeadersToURLRequest();
       }
     }
@@ -1783,8 +1783,8 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v10 = [(ISStoreURLOperation *)self _loadURLBagInterpreterWithRequest:v4 requestProperties:v5];
-  v11 = [v4 URL];
+  v10 = [(ISStoreURLOperation *)self _loadURLBagInterpreterWithRequest:requestCopy requestProperties:_requestProperties];
+  v11 = [requestCopy URL];
   v12 = [v10 shouldSendAnonymousMachineIdentifierForURL:v11];
 
   if (v12)
@@ -1793,20 +1793,20 @@ LABEL_10:
   }
 
 LABEL_11:
-  v13 = [(ISStoreURLOperation *)self _absintheHeaders];
+  _absintheHeaders = [(ISStoreURLOperation *)self _absintheHeaders];
   v51[0] = MEMORY[0x277D85DD0];
   v51[1] = 3221225472;
   v51[2] = __40__ISStoreURLOperation__willSendRequest___block_invoke;
   v51[3] = &unk_27A670B38;
-  v14 = v4;
+  v14 = requestCopy;
   v52 = v14;
-  [v13 enumerateKeysAndObjectsUsingBlock:v51];
-  v15 = [(ISStoreURLOperation *)self SAPSession];
-  if (v15)
+  [_absintheHeaders enumerateKeysAndObjectsUsingBlock:v51];
+  sAPSession = [(ISStoreURLOperation *)self SAPSession];
+  if (sAPSession)
   {
     if (!v10)
     {
-      v10 = [(ISStoreURLOperation *)self _loadURLBagInterpreterWithRequest:v14 requestProperties:v5];
+      v10 = [(ISStoreURLOperation *)self _loadURLBagInterpreterWithRequest:v14 requestProperties:_requestProperties];
     }
 
     v16 = [v14 URL];
@@ -1815,8 +1815,8 @@ LABEL_11:
     if (v17 && [v17 policyType])
     {
       v18 = [v17 dataToSignWithURLRequest:v14];
-      v19 = [(ISStoreURLOperation *)self SAPSession];
-      v20 = [v19 signatureWithData:v18 error:0];
+      sAPSession2 = [(ISStoreURLOperation *)self SAPSession];
+      v20 = [sAPSession2 signatureWithData:v18 error:0];
 
       if (v20)
       {
@@ -1838,68 +1838,68 @@ LABEL_11:
 
   if ((SSIsDaemon() & 1) != 0 || ISBiometricsHasEntitlement(@"adi-client"))
   {
-    v22 = [(ISStoreURLOperation *)self biometricAuthenticationContext];
-    v23 = [(ISURLOperation *)self _accountIdentifier];
-    if (v23)
+    biometricAuthenticationContext = [(ISStoreURLOperation *)self biometricAuthenticationContext];
+    _accountIdentifier = [(ISURLOperation *)self _accountIdentifier];
+    if (_accountIdentifier)
     {
-      v24 = [v22 signature];
-      v25 = v24 != 0;
+      signature = [biometricAuthenticationContext signature];
+      v25 = signature != 0;
 
-      ISBiometricsAddHeadersForTouchIDRequestToURLRequest(v14, v23, v25, [v22 isExtendedAction], 0);
-      if ([v22 shouldSendFallbackHeader])
+      ISBiometricsAddHeadersForTouchIDRequestToURLRequest(v14, _accountIdentifier, v25, [biometricAuthenticationContext isExtendedAction], 0);
+      if ([biometricAuthenticationContext shouldSendFallbackHeader])
       {
         [v14 setValue:@"FB" forHTTPHeaderField:*MEMORY[0x277D6A198]];
       }
 
       else
       {
-        v30 = [v22 signature];
+        signature2 = [biometricAuthenticationContext signature];
 
-        if (v30)
+        if (signature2)
         {
-          v43 = v15;
-          v47 = v5;
-          v46 = [v22 challenge];
-          v45 = [v22 signature];
-          v49 = [v22 paymentTokenData];
-          v48 = [v22 fpanID];
-          v42 = [v22 isExtendedAction];
-          v41 = [v22 isPayment];
-          v44 = [(ISStoreURLOperation *)self biometricSessionDelegate];
+          v43 = sAPSession;
+          v47 = _requestProperties;
+          challenge = [biometricAuthenticationContext challenge];
+          signature3 = [biometricAuthenticationContext signature];
+          paymentTokenData = [biometricAuthenticationContext paymentTokenData];
+          fpanID = [biometricAuthenticationContext fpanID];
+          isExtendedAction = [biometricAuthenticationContext isExtendedAction];
+          isPayment = [biometricAuthenticationContext isPayment];
+          biometricSessionDelegate = [(ISStoreURLOperation *)self biometricSessionDelegate];
           v31 = objc_alloc_init(MEMORY[0x277CBEB38]);
-          v32 = [v14 allHTTPHeaderFields];
+          allHTTPHeaderFields = [v14 allHTTPHeaderFields];
           v33 = *MEMORY[0x277D6A138];
-          v34 = [v32 objectForKeyedSubscript:*MEMORY[0x277D6A138]];
+          v34 = [allHTTPHeaderFields objectForKeyedSubscript:*MEMORY[0x277D6A138]];
 
           if (v34)
           {
-            [v22 setXAppleAMDHeader:v34];
+            [biometricAuthenticationContext setXAppleAMDHeader:v34];
             [v31 setObject:v34 forKeyedSubscript:v33];
           }
 
           v50 = v31;
-          v35 = [v14 allHTTPHeaderFields];
+          allHTTPHeaderFields2 = [v14 allHTTPHeaderFields];
           v36 = *MEMORY[0x277D6A140];
-          v37 = [v35 objectForKeyedSubscript:*MEMORY[0x277D6A140]];
+          v37 = [allHTTPHeaderFields2 objectForKeyedSubscript:*MEMORY[0x277D6A140]];
 
           if (v37)
           {
-            [v22 setXAppleAMDMHeader:v37];
+            [biometricAuthenticationContext setXAppleAMDMHeader:v37];
             [v50 setObject:v37 forKeyedSubscript:v36];
           }
 
           if (objc_opt_respondsToSelector())
           {
-            LOBYTE(v39) = v41;
-            [v44 sender:self willSendChallenge:v46 andSignature:v45 andPaymentTokenData:v49 andFpanID:v48 isExtendedAction:v42 isPayment:v39 additionalHeaders:v50];
+            LOBYTE(v39) = isPayment;
+            [biometricSessionDelegate sender:self willSendChallenge:challenge andSignature:signature3 andPaymentTokenData:paymentTokenData andFpanID:fpanID isExtendedAction:isExtendedAction isPayment:v39 additionalHeaders:v50];
           }
 
-          ISBiometricsAddHeadersForTouchIDSignatureToURLRequest(v14, v46, v45);
-          [v22 setChallenge:0];
-          [v22 setSignature:0];
+          ISBiometricsAddHeadersForTouchIDSignatureToURLRequest(v14, challenge, signature3);
+          [biometricAuthenticationContext setChallenge:0];
+          [biometricAuthenticationContext setSignature:0];
 
-          v5 = v47;
-          v15 = v43;
+          _requestProperties = v47;
+          sAPSession = v43;
         }
       }
     }
@@ -1907,25 +1907,25 @@ LABEL_11:
     goto LABEL_46;
   }
 
-  v22 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v22)
+  biometricAuthenticationContext = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!biometricAuthenticationContext)
   {
-    v22 = [MEMORY[0x277D69B38] sharedConfig];
+    biometricAuthenticationContext = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v26 = [v22 shouldLog];
-  if ([v22 shouldLogToDisk])
+  shouldLog = [biometricAuthenticationContext shouldLog];
+  if ([biometricAuthenticationContext shouldLogToDisk])
   {
-    v26 |= 2u;
+    shouldLog |= 2u;
   }
 
-  v23 = [v22 OSLogObject];
-  if (!os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
+  _accountIdentifier = [biometricAuthenticationContext OSLogObject];
+  if (!os_log_type_enabled(_accountIdentifier, OS_LOG_TYPE_DEBUG))
   {
-    v26 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v26)
+  if (!shouldLog)
   {
     goto LABEL_46;
   }
@@ -1939,7 +1939,7 @@ LABEL_11:
 
   if (v29)
   {
-    v23 = [MEMORY[0x277CCACA8] stringWithCString:v29 encoding:{4, &v53, v40}];
+    _accountIdentifier = [MEMORY[0x277CCACA8] stringWithCString:v29 encoding:{4, &v53, v40}];
     free(v29);
     SSFileLog();
 LABEL_46:
@@ -1948,9 +1948,9 @@ LABEL_46:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_ssBag_copyGUIDSchemesFromBag:(id)a3
+- (id)_ssBag_copyGUIDSchemesFromBag:(id)bag
 {
-  v3 = [a3 dictionaryForKey:@"guid-urls" error:0];
+  v3 = [bag dictionaryForKey:@"guid-urls" error:0];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1991,13 +1991,13 @@ LABEL_9:
   return v7;
 }
 
-- (id)_ssBag_copyGUIDPatternsFromBag:(id)a3
+- (id)_ssBag_copyGUIDPatternsFromBag:(id)bag
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  bagCopy = bag;
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v21 = 0;
-  v5 = [v3 dictionaryForKey:@"guid-urls" error:&v21];
+  v5 = [bagCopy dictionaryForKey:@"guid-urls" error:&v21];
   v6 = v21;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || v6)
@@ -2056,11 +2056,11 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)_ssBag_shouldSendGUIDForURL:(id)a3 withBag:(id)a4
+- (BOOL)_ssBag_shouldSendGUIDForURL:(id)l withBag:(id)bag
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  bagCopy = bag;
   if (SSDebugAlwaysSendGUID())
   {
     v8 = 1;
@@ -2068,17 +2068,17 @@ LABEL_9:
 
   else
   {
-    v9 = [(ISStoreURLOperation *)self _ssBag_copyGUIDPatternsFromBag:v7];
-    v10 = [(ISStoreURLOperation *)self _ssBag_copyGUIDSchemesFromBag:v7];
-    v11 = [v6 scheme];
-    v12 = [v10 containsObject:v11];
+    v9 = [(ISStoreURLOperation *)self _ssBag_copyGUIDPatternsFromBag:bagCopy];
+    v10 = [(ISStoreURLOperation *)self _ssBag_copyGUIDSchemesFromBag:bagCopy];
+    scheme = [lCopy scheme];
+    v12 = [v10 containsObject:scheme];
 
     if (v12)
     {
       if ([v9 count])
       {
-        v13 = [v6 absoluteString];
-        v14 = [v13 length];
+        absoluteString = [lCopy absoluteString];
+        v14 = [absoluteString length];
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
@@ -2099,7 +2099,7 @@ LABEL_9:
                 objc_enumerationMutation(v15);
               }
 
-              if ([*(*(&v23 + 1) + 8 * i) rangeOfFirstMatchInString:v13 options:0 range:{0, v14}] != 0x7FFFFFFFFFFFFFFFLL)
+              if ([*(*(&v23 + 1) + 8 * i) rangeOfFirstMatchInString:absoluteString options:0 range:{0, v14}] != 0x7FFFFFFFFFFFFFFFLL)
               {
                 v8 = 1;
                 goto LABEL_16;
@@ -2142,12 +2142,12 @@ LABEL_16:
   return v8;
 }
 
-+ (id)_ssBag_copyHeaderPatternsFromBag:(id)a3
++ (id)_ssBag_copyHeaderPatternsFromBag:(id)bag
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  bagCopy = bag;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [v3 arrayForKey:@"send-content-restrictions-header" error:0];
+  v5 = [bagCopy arrayForKey:@"send-content-restrictions-header" error:0];
   if ([v5 count])
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2202,16 +2202,16 @@ LABEL_16:
   return v4;
 }
 
-+ (id)_ssBag_copyExtraHeadersForURL:(id)a3 bag:(id)a4
++ (id)_ssBag_copyExtraHeadersForURL:(id)l bag:(id)bag
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [a1 _ssBag_copyHeaderPatternsFromBag:a4];
+  lCopy = l;
+  v7 = [self _ssBag_copyHeaderPatternsFromBag:bag];
   if (v7)
   {
-    v21 = v6;
-    v8 = [v6 absoluteString];
-    v9 = [v8 length];
+    v21 = lCopy;
+    absoluteString = [lCopy absoluteString];
+    v9 = [absoluteString length];
     v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v29 = 0u;
     v30 = 0u;
@@ -2252,7 +2252,7 @@ LABEL_16:
                   objc_enumerationMutation(v14);
                 }
 
-                if ([*(*(&v25 + 1) + 8 * j) rangeOfFirstMatchInString:v8 options:0 range:{0, v9}] != 0x7FFFFFFFFFFFFFFFLL)
+                if ([*(*(&v25 + 1) + 8 * j) rangeOfFirstMatchInString:absoluteString options:0 range:{0, v9}] != 0x7FFFFFFFFFFFFFFFLL)
                 {
                   [v22 addObject:v12];
                   goto LABEL_17;
@@ -2278,7 +2278,7 @@ LABEL_17:
       while (v24);
     }
 
-    v6 = v21;
+    lCopy = v21;
   }
 
   else
@@ -2291,19 +2291,19 @@ LABEL_17:
   return v22;
 }
 
-- (void)_setStoreFrontIdentifier:(id)a3 isTransient:(BOOL)a4
+- (void)_setStoreFrontIdentifier:(id)identifier isTransient:(BOOL)transient
 {
   v5 = MEMORY[0x277D69A80];
-  v6 = a3;
-  v8 = [v5 currentDevice];
-  v7 = [(ISStoreURLOperation *)self _account];
-  [v8 setStoreFrontIdentifier:v6 account:v7];
+  identifierCopy = identifier;
+  currentDevice = [v5 currentDevice];
+  _account = [(ISStoreURLOperation *)self _account];
+  [currentDevice setStoreFrontIdentifier:identifierCopy account:_account];
 }
 
 - (id)_absintheHeaders
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = [(ISStoreURLOperation *)self logKey];
+  logKey = [(ISStoreURLOperation *)self logKey];
   v4 = AMSSetLogKey();
 
   v5 = [(ISStoreURLOperation *)self bag];
@@ -2317,18 +2317,18 @@ LABEL_17:
 
   else
   {
-    v9 = [(ISStoreURLOperation *)self URLBagContext];
-    v7 = [(ISStoreURLOperation *)self _urlBagForContext:v9];
+    uRLBagContext = [(ISStoreURLOperation *)self URLBagContext];
+    v7 = [(ISStoreURLOperation *)self _urlBagForContext:uRLBagContext];
 
     v8 = [[ISAMSBagShim alloc] initWithURLBag:v7];
   }
 
   v10 = v8;
 
-  v11 = [(ISStoreURLOperation *)self _buyParams];
-  if (v11)
+  _buyParams = [(ISStoreURLOperation *)self _buyParams];
+  if (_buyParams)
   {
-    v12 = [objc_alloc(MEMORY[0x277CEE438]) initWithString:v11];
+    v12 = [objc_alloc(MEMORY[0x277CEE438]) initWithString:_buyParams];
   }
 
   else
@@ -2337,33 +2337,33 @@ LABEL_17:
   }
 
   v13 = MEMORY[0x277CEE3C8];
-  v14 = [(ISURLOperation *)self activeURLRequest];
-  v15 = [v13 headersForRequest:v14 buyParams:v12 bag:v10];
+  activeURLRequest = [(ISURLOperation *)self activeURLRequest];
+  v15 = [v13 headersForRequest:activeURLRequest buyParams:v12 bag:v10];
   v28 = 0;
   v16 = [v15 resultWithError:&v28];
   v17 = v28;
 
   if (v17)
   {
-    v18 = [MEMORY[0x277D69B38] sharedConfig];
-    if (!v18)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v18 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v19 = [v18 shouldLog];
-    if ([v18 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v20 = v19 | 2;
+      v20 = shouldLog | 2;
     }
 
     else
     {
-      v20 = v19;
+      v20 = shouldLog;
     }
 
-    v21 = [v18 OSLogObject];
-    if (!os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v20 &= 2u;
     }
@@ -2388,7 +2388,7 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v21 = [MEMORY[0x277CCACA8] stringWithCString:v24 encoding:{4, &v29, v27}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v24 encoding:{4, &v29, v27}];
       free(v24);
       SSFileLog();
     }
@@ -2403,59 +2403,59 @@ LABEL_20:
   return v16;
 }
 
-+ (void)_addAccountDSID:(id)a3 toRequest:(id)a4
++ (void)_addAccountDSID:(id)d toRequest:(id)request
 {
-  v11 = a3;
-  v5 = a4;
+  dCopy = d;
+  requestCopy = request;
   v6 = *MEMORY[0x277D6A160];
-  v7 = [v5 valueForHTTPHeaderField:*MEMORY[0x277D6A160]];
+  v7 = [requestCopy valueForHTTPHeaderField:*MEMORY[0x277D6A160]];
 
   if (!v7)
   {
-    v8 = [v11 uniqueIdentifier];
-    v9 = v8;
-    if (v8 && [v8 unsignedLongLongValue])
+    uniqueIdentifier = [dCopy uniqueIdentifier];
+    v9 = uniqueIdentifier;
+    if (uniqueIdentifier && [uniqueIdentifier unsignedLongLongValue])
     {
-      v10 = [v9 stringValue];
-      [v5 setValue:v10 forHTTPHeaderField:v6];
+      stringValue = [v9 stringValue];
+      [requestCopy setValue:stringValue forHTTPHeaderField:v6];
     }
   }
 }
 
-+ (void)_addiTunesStoreHeadersToRequest:(id)a3 withAccount:(id)a4 appendAuthKitHeaders:(BOOL)a5 appendStorefrontToURL:(BOOL)a6 clientBundleIdentifier:(id)a7 extraHeaders:(id)a8 storefrontSuffix:(id)a9
++ (void)_addiTunesStoreHeadersToRequest:(id)request withAccount:(id)account appendAuthKitHeaders:(BOOL)headers appendStorefrontToURL:(BOOL)l clientBundleIdentifier:(id)identifier extraHeaders:(id)extraHeaders storefrontSuffix:(id)suffix
 {
-  v11 = a6;
-  v98 = a5;
+  lCopy = l;
+  headersCopy = headers;
   v128 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v102 = a7;
-  v97 = a8;
-  v103 = a9;
-  [a1 _addAccountDSID:v15 toRequest:v14];
-  [a1 _addPrimaryiCloudDSIDToRequest:v14];
-  v104 = v15;
-  v16 = [ISStoreURLOperation _storeFrontIdentifierForAccount:v15];
+  requestCopy = request;
+  accountCopy = account;
+  identifierCopy = identifier;
+  extraHeadersCopy = extraHeaders;
+  suffixCopy = suffix;
+  [self _addAccountDSID:accountCopy toRequest:requestCopy];
+  [self _addPrimaryiCloudDSIDToRequest:requestCopy];
+  v104 = accountCopy;
+  v16 = [ISStoreURLOperation _storeFrontIdentifierForAccount:accountCopy];
   v17 = 0x277D69000uLL;
-  v18 = [MEMORY[0x277D69B38] sharedAccountsStorefrontConfig];
-  if (!v18)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsStorefrontConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v18 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v19 = [v18 shouldLog];
-  if ([v18 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v20 = v19 | 2;
+    v20 = shouldLog | 2;
   }
 
   else
   {
-    v20 = v19;
+    v20 = shouldLog;
   }
 
-  v21 = [v18 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEBUG))
   {
     v22 = v20;
   }
@@ -2469,11 +2469,11 @@ LABEL_20:
   {
     v23 = objc_opt_class();
     v95 = v23;
-    [v14 URL];
-    v24 = v99 = v11;
+    [requestCopy URL];
+    v24 = v99 = lCopy;
     SSHashIfNeeded();
     v26 = v25 = v16;
-    v27 = [v104 hashedDescription];
+    hashedDescription = [v104 hashedDescription];
     v120 = 138544130;
     v121 = v23;
     v122 = 2114;
@@ -2481,7 +2481,7 @@ LABEL_20:
     v124 = 2114;
     v125 = v26;
     v126 = 2114;
-    v127 = v27;
+    v127 = hashedDescription;
     LODWORD(v94) = 42;
     v93 = &v120;
     v28 = _os_log_send_and_compose_impl();
@@ -2489,7 +2489,7 @@ LABEL_20:
     v16 = v25;
     v17 = 0x277D69000;
 
-    v11 = v99;
+    lCopy = v99;
     if (v28)
     {
       v29 = [MEMORY[0x277CCACA8] stringWithCString:v28 encoding:{4, &v120, v94}];
@@ -2507,30 +2507,30 @@ LABEL_20:
   if (objc_opt_isKindOfClass())
   {
     v30 = *MEMORY[0x277D6A190];
-    v31 = [v14 valueForHTTPHeaderField:*MEMORY[0x277D6A190]];
+    v31 = [requestCopy valueForHTTPHeaderField:*MEMORY[0x277D6A190]];
     if (!v31)
     {
-      if ([v103 length])
+      if ([suffixCopy length])
       {
-        v41 = v103;
+        v41 = suffixCopy;
       }
 
       else
       {
-        v42 = v102;
-        if (!v102)
+        v42 = identifierCopy;
+        if (!identifierCopy)
         {
-          v43 = [MEMORY[0x277CCA8D8] mainBundle];
-          v44 = [v43 bundleIdentifier];
+          mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+          bundleIdentifier = [mainBundle bundleIdentifier];
 
-          v42 = v44;
+          v42 = bundleIdentifier;
         }
 
-        v102 = v42;
+        identifierCopy = v42;
         v41 = [ISLoadURLBagOperation storeFrontHeaderSuffixForBundleIdentifier:v93];
       }
 
-      v103 = v41;
+      suffixCopy = v41;
       if ([v41 length])
       {
         v45 = [v16 stringByAppendingString:v41];
@@ -2540,31 +2540,31 @@ LABEL_20:
 
       v40 = v16;
       v16 = [v16 copy];
-      [v14 setValue:v16 forHTTPHeaderField:v30];
+      [requestCopy setValue:v16 forHTTPHeaderField:v30];
       goto LABEL_35;
     }
 
-    v32 = [*(v17 + 2872) sharedAccountsStorefrontConfig];
-    if (!v32)
+    sharedAccountsStorefrontConfig = [*(v17 + 2872) sharedAccountsStorefrontConfig];
+    if (!sharedAccountsStorefrontConfig)
     {
-      v32 = [*(v17 + 2872) sharedConfig];
+      sharedAccountsStorefrontConfig = [*(v17 + 2872) sharedConfig];
     }
 
-    v33 = [v32 shouldLog];
-    if ([v32 shouldLogToDisk])
+    shouldLog2 = [sharedAccountsStorefrontConfig shouldLog];
+    if ([sharedAccountsStorefrontConfig shouldLogToDisk])
     {
-      v33 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v34 = [v32 OSLogObject];
-    if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
+    oSLogObject2 = [sharedAccountsStorefrontConfig OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEBUG))
     {
-      v35 = v33;
+      v35 = shouldLog2;
     }
 
     else
     {
-      v35 = v33 & 2;
+      v35 = shouldLog2 & 2;
     }
 
     if (v35)
@@ -2572,7 +2572,7 @@ LABEL_20:
       v36 = objc_opt_class();
       v100 = v36;
       SSHashIfNeeded();
-      v38 = v37 = v11;
+      v38 = v37 = lCopy;
       v120 = 138543618;
       v121 = v36;
       v122 = 2114;
@@ -2581,7 +2581,7 @@ LABEL_20:
       v93 = &v120;
       v39 = _os_log_send_and_compose_impl();
 
-      v11 = v37;
+      lCopy = v37;
       if (!v39)
       {
 LABEL_26:
@@ -2594,9 +2594,9 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v34 = [MEMORY[0x277CCACA8] stringWithCString:v39 encoding:{4, &v120, v94}];
+      oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v39 encoding:{4, &v120, v94}];
       free(v39);
-      v93 = v34;
+      v93 = oSLogObject2;
       SSFileLog();
     }
 
@@ -2604,32 +2604,32 @@ LABEL_35:
   }
 
 LABEL_36:
-  if (!v11)
+  if (!lCopy)
   {
     goto LABEL_49;
   }
 
-  v46 = [*(v17 + 2872) sharedAccountsStorefrontConfig];
-  if (!v46)
+  sharedAccountsStorefrontConfig2 = [*(v17 + 2872) sharedAccountsStorefrontConfig];
+  if (!sharedAccountsStorefrontConfig2)
   {
-    v46 = [*(v17 + 2872) sharedConfig];
+    sharedAccountsStorefrontConfig2 = [*(v17 + 2872) sharedConfig];
   }
 
-  v47 = [v46 shouldLog];
-  if ([v46 shouldLogToDisk])
+  shouldLog3 = [sharedAccountsStorefrontConfig2 shouldLog];
+  if ([sharedAccountsStorefrontConfig2 shouldLogToDisk])
   {
-    v47 |= 2u;
+    shouldLog3 |= 2u;
   }
 
-  v48 = [v46 OSLogObject];
-  if (os_log_type_enabled(v48, OS_LOG_TYPE_DEBUG))
+  oSLogObject3 = [sharedAccountsStorefrontConfig2 OSLogObject];
+  if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEBUG))
   {
-    v49 = v47;
+    v49 = shouldLog3;
   }
 
   else
   {
-    v49 = v47 & 2;
+    v49 = shouldLog3 & 2;
   }
 
   if (!v49)
@@ -2647,70 +2647,70 @@ LABEL_36:
 
   if (v52)
   {
-    v48 = [MEMORY[0x277CCACA8] stringWithCString:v52 encoding:{4, &v120, v94}];
+    oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v52 encoding:{4, &v120, v94}];
     free(v52);
-    v93 = v48;
+    v93 = oSLogObject3;
     SSFileLog();
 LABEL_47:
   }
 
-  [a1 _appendStorefront:v16 toRequestURL:v14];
+  [self _appendStorefront:v16 toRequestURL:requestCopy];
 LABEL_49:
   v53 = +[ISClient currentClient];
-  v54 = [v53 partnerHeader];
+  partnerHeader = [v53 partnerHeader];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v55 = [v54 copy];
-    [v14 setValue:v55 forHTTPHeaderField:@"X-Apple-Partner"];
+    v55 = [partnerHeader copy];
+    [requestCopy setValue:v55 forHTTPHeaderField:@"X-Apple-Partner"];
   }
 
   v56 = +[ISNetworkObserver sharedInstance];
-  v57 = [v56 connectionTypeHeader];
+  connectionTypeHeader = [v56 connectionTypeHeader];
 
-  if ([v57 length])
+  if ([connectionTypeHeader length])
   {
-    v58 = [v57 copy];
-    [v14 setValue:v58 forHTTPHeaderField:@"X-Apple-Connection-Type"];
+    v58 = [connectionTypeHeader copy];
+    [requestCopy setValue:v58 forHTTPHeaderField:@"X-Apple-Connection-Type"];
   }
 
   if (SSIsAppStoreDaemon())
   {
-    v59 = v57;
+    softwareLibraryIdentifier = connectionTypeHeader;
   }
 
   else
   {
-    v60 = [MEMORY[0x277D69A80] currentDevice];
-    v59 = [v60 softwareLibraryIdentifier];
+    currentDevice = [MEMORY[0x277D69A80] currentDevice];
+    softwareLibraryIdentifier = [currentDevice softwareLibraryIdentifier];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v61 = [v59 copy];
-      [v14 setValue:v61 forHTTPHeaderField:*MEMORY[0x277D6A188]];
+      v61 = [softwareLibraryIdentifier copy];
+      [requestCopy setValue:v61 forHTTPHeaderField:*MEMORY[0x277D6A188]];
     }
   }
 
-  v62 = [v53 appleClientApplication];
+  appleClientApplication = [v53 appleClientApplication];
 
-  if (v62)
+  if (appleClientApplication)
   {
-    v63 = [v62 copy];
-    [v14 setValue:v63 forHTTPHeaderField:*MEMORY[0x277D6A158]];
+    v63 = [appleClientApplication copy];
+    [requestCopy setValue:v63 forHTTPHeaderField:*MEMORY[0x277D6A158]];
   }
 
-  v64 = [v53 appleClientVersions];
+  appleClientVersions = [v53 appleClientVersions];
 
-  if ([v64 length])
+  if ([appleClientVersions length])
   {
-    v65 = [v64 copy];
-    [v14 setValue:v65 forHTTPHeaderField:@"X-Apple-Client-Versions"];
+    v65 = [appleClientVersions copy];
+    [requestCopy setValue:v65 forHTTPHeaderField:@"X-Apple-Client-Versions"];
   }
 
   v101 = v16;
   v96 = v53;
-  v66 = [v53 clientProvidedHeaders];
+  clientProvidedHeaders = [v53 clientProvidedHeaders];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -2719,8 +2719,8 @@ LABEL_49:
     v116 = 0u;
     v113 = 0u;
     v114 = 0u;
-    v67 = [v66 allKeys];
-    v68 = [v67 countByEnumeratingWithState:&v113 objects:v119 count:16];
+    allKeys = [clientProvidedHeaders allKeys];
+    v68 = [allKeys countByEnumeratingWithState:&v113 objects:v119 count:16];
     if (v68)
     {
       v69 = v68;
@@ -2731,16 +2731,16 @@ LABEL_49:
         {
           if (*v114 != v70)
           {
-            objc_enumerationMutation(v67);
+            objc_enumerationMutation(allKeys);
           }
 
           v72 = *(*(&v113 + 1) + 8 * i);
-          v73 = [v66 objectForKeyedSubscript:v72];
+          v73 = [clientProvidedHeaders objectForKeyedSubscript:v72];
           v74 = [v73 copy];
-          [v14 setValue:v74 forHTTPHeaderField:v72];
+          [requestCopy setValue:v74 forHTTPHeaderField:v72];
         }
 
-        v69 = [v67 countByEnumeratingWithState:&v113 objects:v119 count:16];
+        v69 = [allKeys countByEnumeratingWithState:&v113 objects:v119 count:16];
       }
 
       while (v69);
@@ -2751,7 +2751,7 @@ LABEL_49:
   v112 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v75 = v97;
+  v75 = extraHeadersCopy;
   v76 = [v75 countByEnumeratingWithState:&v109 objects:v118 count:16];
   if (v76)
   {
@@ -2768,11 +2768,11 @@ LABEL_49:
 
         if ([*(*(&v109 + 1) + 8 * j) isEqualToString:@"X-Apple-Restrictions"])
         {
-          v80 = [a1 _restrictionsHeaderValue];
-          if ([v80 length])
+          _restrictionsHeaderValue = [self _restrictionsHeaderValue];
+          if ([_restrictionsHeaderValue length])
           {
-            v81 = [v80 copy];
-            [v14 setValue:v81 forHTTPHeaderField:@"X-Apple-Restrictions"];
+            v81 = [_restrictionsHeaderValue copy];
+            [requestCopy setValue:v81 forHTTPHeaderField:@"X-Apple-Restrictions"];
           }
         }
       }
@@ -2783,10 +2783,10 @@ LABEL_49:
     while (v77);
   }
 
-  if (v98)
+  if (headersCopy)
   {
     v82 = +[ISStoreURLOperation _authKitSession];
-    v83 = [v82 appleIDHeadersForRequest:v14];
+    v83 = [v82 appleIDHeadersForRequest:requestCopy];
 
     v107 = 0u;
     v108 = 0u;
@@ -2810,7 +2810,7 @@ LABEL_49:
           v89 = *(*(&v105 + 1) + 8 * k);
           v90 = [v84 objectForKeyedSubscript:v89];
           v91 = [v90 copy];
-          [v14 setValue:v91 forHTTPHeaderField:v89];
+          [requestCopy setValue:v91 forHTTPHeaderField:v89];
         }
 
         v86 = [v84 countByEnumeratingWithState:&v105 objects:v117 count:16];
@@ -2823,25 +2823,25 @@ LABEL_49:
   v92 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)_addPrimaryiCloudDSIDToRequest:(id)a3
++ (void)_addPrimaryiCloudDSIDToRequest:(id)request
 {
-  v7 = a3;
-  v3 = [MEMORY[0x277D69CB0] sharedAccountStore];
-  v4 = [v3 primaryAppleAccount];
+  requestCopy = request;
+  mEMORY[0x277D69CB0] = [MEMORY[0x277D69CB0] sharedAccountStore];
+  primaryAppleAccount = [mEMORY[0x277D69CB0] primaryAppleAccount];
 
-  v5 = [v4 aa_personID];
-  if ([v5 length])
+  aa_personID = [primaryAppleAccount aa_personID];
+  if ([aa_personID length])
   {
-    v6 = [v5 copy];
-    [v7 setValue:v6 forHTTPHeaderField:*MEMORY[0x277D6A128]];
+    v6 = [aa_personID copy];
+    [requestCopy setValue:v6 forHTTPHeaderField:*MEMORY[0x277D6A128]];
   }
 }
 
-+ (void)_appendStorefront:(id)a3 toRequestURL:(id)a4
++ (void)_appendStorefront:(id)storefront toRequestURL:(id)l
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v5 URL];
+  storefrontCopy = storefront;
+  lCopy = l;
+  v6 = [lCopy URL];
   if ([v6 _ss_hasQueryParameter:@"storefront"])
   {
     v7 = [v6 _ss_URLByRemovingQueryParameter:@"storefront"];
@@ -2849,39 +2849,39 @@ LABEL_49:
     v6 = v7;
   }
 
-  if ([v9 length])
+  if ([storefrontCopy length])
   {
-    v8 = [v6 URLByAppendingQueryParameter:@"storefront" value:v9];
+    v8 = [v6 URLByAppendingQueryParameter:@"storefront" value:storefrontCopy];
 
     v6 = v8;
   }
 
-  [v5 setURL:v6];
+  [lCopy setURL:v6];
 }
 
-- (void)_applyAnalyticsCookiesToRequest:(id)a3 withBag:(id)a4 oldBag:(id)a5
+- (void)_applyAnalyticsCookiesToRequest:(id)request withBag:(id)bag oldBag:(id)oldBag
 {
   v84 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  requestCopy = request;
+  bagCopy = bag;
+  oldBagCopy = oldBag;
+  v11 = oldBagCopy;
+  if (bagCopy)
   {
     v12 = *MEMORY[0x277D6A4F8];
     v76 = 0;
-    v13 = [v9 dictionaryForKey:v12 error:&v76];
+    v13 = [bagCopy dictionaryForKey:v12 error:&v76];
     v14 = v76;
     v75 = v14;
-    v15 = [v9 arrayForKey:@"clientIDDomains" error:&v75];
+    v15 = [bagCopy arrayForKey:@"clientIDDomains" error:&v75];
     v16 = v75;
   }
 
   else
   {
-    if (v10)
+    if (oldBagCopy)
     {
-      v17 = [v10 valueForKey:*MEMORY[0x277D6A4F8]];
+      v17 = [oldBagCopy valueForKey:*MEMORY[0x277D6A4F8]];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -2938,21 +2938,21 @@ LABEL_49:
       {
         v62 = v13;
         v69 = v11;
-        v60 = v9;
-        v40 = [(ISURLOperation *)self _requestProperties];
-        [v40 URLBagType];
+        v60 = bagCopy;
+        _requestProperties = [(ISURLOperation *)self _requestProperties];
+        [_requestProperties URLBagType];
         v41 = SSAccountScopeForURLBagType();
 
-        v42 = [MEMORY[0x277D69CB8] sharedStorage];
-        v43 = [(ISURLOperation *)self _accountIdentifier];
-        v44 = [v42 cookieHeadersForURL:v64 userIdentifier:v43 scope:v41];
+        mEMORY[0x277D69CB8] = [MEMORY[0x277D69CB8] sharedStorage];
+        _accountIdentifier = [(ISURLOperation *)self _accountIdentifier];
+        v44 = [mEMORY[0x277D69CB8] cookieHeadersForURL:v64 userIdentifier:_accountIdentifier scope:v41];
 
         v73 = 0u;
         v74 = 0u;
         v71 = 0u;
         v72 = 0u;
-        v21 = v44;
-        v45 = [v21 countByEnumeratingWithState:&v71 objects:v77 count:16];
+        mEMORY[0x277D69B38] = v44;
+        v45 = [mEMORY[0x277D69B38] countByEnumeratingWithState:&v71 objects:v77 count:16];
         if (v45)
         {
           v46 = v45;
@@ -2963,16 +2963,16 @@ LABEL_49:
             {
               if (*v72 != v47)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(mEMORY[0x277D69B38]);
               }
 
               v49 = *(*(&v71 + 1) + 8 * i);
-              v50 = [v49 lowercaseString];
-              v51 = [v50 isEqualToString:@"cookie"];
+              lowercaseString = [v49 lowercaseString];
+              v51 = [lowercaseString isEqualToString:@"cookie"];
 
               if (v51)
               {
-                v52 = [v8 valueForHTTPHeaderField:v49];
+                v52 = [requestCopy valueForHTTPHeaderField:v49];
                 v53 = [v52 mutableCopy];
                 v54 = v53;
                 if (v53)
@@ -2992,47 +2992,47 @@ LABEL_49:
                   [v56 appendString:@"; "];
                 }
 
-                v57 = [v21 objectForKeyedSubscript:v49];
+                v57 = [mEMORY[0x277D69B38] objectForKeyedSubscript:v49];
                 [v56 appendString:v57];
 
-                [v8 setValue:v56 forHTTPHeaderField:v49];
+                [requestCopy setValue:v56 forHTTPHeaderField:v49];
               }
             }
 
-            v46 = [v21 countByEnumeratingWithState:&v71 objects:v77 count:16];
+            v46 = [mEMORY[0x277D69B38] countByEnumeratingWithState:&v71 objects:v77 count:16];
           }
 
           while (v46);
         }
 
-        v9 = v60;
+        bagCopy = v60;
         v13 = v62;
         v15 = v65;
         v11 = v69;
         goto LABEL_59;
       }
 
-      v21 = [MEMORY[0x277D69B38] sharedConfig];
-      if (!v21)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
+      if (!mEMORY[0x277D69B38])
       {
-        v21 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v22 = [v21 shouldLog];
-      if ([v21 shouldLogToDisk])
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      if ([mEMORY[0x277D69B38] shouldLogToDisk])
       {
-        v22 |= 2u;
+        shouldLog |= 2u;
       }
 
-      v23 = [v21 OSLogObject];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = v22;
+        v24 = shouldLog;
       }
 
       else
       {
-        v24 = v22 & 2;
+        v24 = shouldLog & 2;
       }
 
       if (v24)
@@ -3041,11 +3041,11 @@ LABEL_49:
         v67 = v11;
         v25 = objc_opt_class();
         v26 = v25;
-        v27 = [(ISStoreURLOperation *)self logKey];
+        logKey = [(ISStoreURLOperation *)self logKey];
         v78 = 138543874;
         v79 = v25;
         v80 = 2114;
-        v81 = v27;
+        v81 = logKey;
         v82 = 2114;
         v83 = v16;
         LODWORD(v59) = 32;
@@ -3059,7 +3059,7 @@ LABEL_49:
           goto LABEL_59;
         }
 
-        v23 = [MEMORY[0x277CCACA8] stringWithCString:v28 encoding:{4, &v78, v59}];
+        oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v28 encoding:{4, &v78, v59}];
         free(v28);
         SSFileLog();
         v11 = v67;
@@ -3076,28 +3076,28 @@ LABEL_59:
   }
 
   v68 = v11;
-  v29 = [MEMORY[0x277D69B38] sharedConfig];
-  if (!v29)
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
+  if (!mEMORY[0x277D69B38]2)
   {
-    v29 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v30 = [v29 shouldLog];
-  if ([v29 shouldLogToDisk])
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
   {
-    v30 |= 2u;
+    shouldLog2 |= 2u;
   }
 
-  v31 = v29;
-  v21 = [v29 OSLogObject];
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  v31 = mEMORY[0x277D69B38]2;
+  mEMORY[0x277D69B38] = [mEMORY[0x277D69B38]2 OSLogObject];
+  if (os_log_type_enabled(mEMORY[0x277D69B38], OS_LOG_TYPE_DEFAULT))
   {
-    v32 = v30;
+    v32 = shouldLog2;
   }
 
   else
   {
-    v32 = v30 & 2;
+    v32 = shouldLog2 & 2;
   }
 
   if (!v32)
@@ -3113,17 +3113,17 @@ LABEL_59:
   v33 = v13;
   v34 = objc_opt_class();
   v35 = v34;
-  v36 = [(ISStoreURLOperation *)self logKey];
+  logKey2 = [(ISStoreURLOperation *)self logKey];
   v78 = 138543618;
   v79 = v34;
   v80 = 2114;
-  v81 = v36;
+  v81 = logKey2;
   LODWORD(v59) = 22;
   v37 = _os_log_send_and_compose_impl();
 
   if (v37)
   {
-    v21 = [MEMORY[0x277CCACA8] stringWithCString:v37 encoding:{4, &v78, v59}];
+    mEMORY[0x277D69B38] = [MEMORY[0x277CCACA8] stringWithCString:v37 encoding:{4, &v78, v59}];
     free(v37);
     v38 = v31;
     SSFileLog();
@@ -3165,8 +3165,8 @@ LABEL_61:
 
     else
     {
-      v7 = [v5 integerValue];
-      v4 = v7 != *MEMORY[0x277D6A580];
+      integerValue = [v5 integerValue];
+      v4 = integerValue != *MEMORY[0x277D6A580];
     }
 
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"apps=%ld", objc_msgSend(v6, "longValue")];
@@ -3184,8 +3184,8 @@ LABEL_61:
 
     else
     {
-      v10 = [v9 integerValue];
-      v4 = v10 != *MEMORY[0x277D6A580];
+      integerValue2 = [v9 integerValue];
+      v4 = integerValue2 != *MEMORY[0x277D6A580];
     }
 
     v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"movies=%ld", objc_msgSend(v9, "longValue")];
@@ -3203,16 +3203,16 @@ LABEL_61:
 
     else
     {
-      v13 = [v12 integerValue];
-      v4 = v13 != *MEMORY[0x277D6A580];
+      integerValue3 = [v12 integerValue];
+      v4 = integerValue3 != *MEMORY[0x277D6A580];
     }
 
     v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"tv=%ld", objc_msgSend(v12, "longValue")];
     [v2 addObject:v14];
   }
 
-  v15 = [MEMORY[0x277D262A0] sharedConnection];
-  v16 = [v15 effectiveRestrictedBoolValueForSetting:*MEMORY[0x277D25E90]];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v16 = [mEMORY[0x277D262A0] effectiveRestrictedBoolValueForSetting:*MEMORY[0x277D25E90]];
 
   if (v16 == 2)
   {
@@ -3225,8 +3225,8 @@ LABEL_61:
   }
 
   [v2 addObject:v17];
-  v18 = [MEMORY[0x277D262A0] sharedConnection];
-  v19 = [v18 effectiveRestrictedBoolValueForSetting:*MEMORY[0x277D25F38]];
+  mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+  v19 = [mEMORY[0x277D262A0]2 effectiveRestrictedBoolValueForSetting:*MEMORY[0x277D25F38]];
 
   if (v19 == 2)
   {
@@ -3250,26 +3250,26 @@ LABEL_24:
 
 - (id)_account
 {
-  v3 = [MEMORY[0x277D69A20] defaultStore];
-  v4 = [(ISURLOperation *)self _accountIdentifier];
-  v5 = [(ISURLOperation *)self _requestProperties];
-  [v5 URLBagType];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  _accountIdentifier = [(ISURLOperation *)self _accountIdentifier];
+  _requestProperties = [(ISURLOperation *)self _requestProperties];
+  [_requestProperties URLBagType];
   v6 = SSAccountScopeForURLBagType();
 
   if (v6 == 1)
   {
-    if (v4 || ([v3 activeSandboxAccount], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "uniqueIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), v7, v4))
+    if (_accountIdentifier || ([defaultStore activeSandboxAccount], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "uniqueIdentifier"), _accountIdentifier = objc_claimAutoreleasedReturnValue(), v7, _accountIdentifier))
     {
-      v8 = [v3 accountWithUniqueIdentifier:v4 scope:1];
+      v8 = [defaultStore accountWithUniqueIdentifier:_accountIdentifier scope:1];
 LABEL_8:
       v10 = v8;
       goto LABEL_9;
     }
   }
 
-  else if (v4 || ([v3 activeAccount], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "uniqueIdentifier"), v4 = objc_claimAutoreleasedReturnValue(), v9, v4))
+  else if (_accountIdentifier || ([defaultStore activeAccount], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "uniqueIdentifier"), _accountIdentifier = objc_claimAutoreleasedReturnValue(), v9, _accountIdentifier))
   {
-    v8 = [v3 accountWithUniqueIdentifier:v4];
+    v8 = [defaultStore accountWithUniqueIdentifier:_accountIdentifier];
     goto LABEL_8;
   }
 
@@ -3279,25 +3279,25 @@ LABEL_9:
   return v10;
 }
 
-- (void)_addStandardQueryParametersForURL:(id)a3
+- (void)_addStandardQueryParametersForURL:(id)l
 {
   v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(ISURLOperation *)self _requestProperties];
-  v5 = [v4 requestParameters];
+  _requestProperties = [(ISURLOperation *)self _requestProperties];
+  requestParameters = [_requestProperties requestParameters];
   if (SSDebugShouldSendCacheBuster())
   {
-    v6 = [v5 objectForKey:@"buster"];
+    v6 = [requestParameters objectForKey:@"buster"];
 
     if (!v6)
     {
-      v7 = [MEMORY[0x277CCAD78] UUID];
-      v8 = v7;
-      if (v7)
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      v8 = uUID;
+      if (uUID)
       {
-        v9 = [v7 UUIDString];
-        if (v9)
+        uUIDString = [uUID UUIDString];
+        if (uUIDString)
         {
-          [v11 setObject:v9 forKey:@"buster"];
+          [v11 setObject:uUIDString forKey:@"buster"];
         }
       }
     }
@@ -3305,14 +3305,14 @@ LABEL_9:
 
   if ([v11 count])
   {
-    v10 = [v5 mutableCopy];
+    v10 = [requestParameters mutableCopy];
     if (!v10)
     {
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
     [v10 addEntriesFromDictionary:v11];
-    [v4 setRequestParameters:v10];
+    [_requestProperties setRequestParameters:v10];
   }
 }
 
@@ -3335,10 +3335,10 @@ uint64_t __38__ISStoreURLOperation__authKitSession__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_authenticateWithContext:(id)a3 error:(id *)a4
+- (BOOL)_authenticateWithContext:(id)context error:(id *)error
 {
   v72 = *MEMORY[0x277D85DE8];
-  v40 = a3;
+  contextCopy = context;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -3353,42 +3353,42 @@ uint64_t __38__ISStoreURLOperation__authKitSession__block_invoke()
   v53 = &v52;
   v54 = 0x2020000000;
   v55 = 1;
-  v6 = [(ISOperation *)self delegate];
+  delegate = [(ISOperation *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v7 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v7)
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v7 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v8 = [v7 shouldLog];
-    v9 = [v7 shouldLogToDisk];
-    v10 = [v7 OSLogObject];
-    v11 = v10;
-    if (v9)
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    shouldLogToDisk = [mEMORY[0x277D69B38] shouldLogToDisk];
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    v11 = oSLogObject;
+    if (shouldLogToDisk)
     {
-      v8 |= 2u;
+      shouldLog |= 2u;
     }
 
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = v8;
+      v12 = shouldLog;
     }
 
     else
     {
-      v12 = v8 & 2;
+      v12 = shouldLog & 2;
     }
 
     if (v12)
     {
       v13 = objc_opt_class();
-      v4 = [(ISStoreURLOperation *)self logKey];
+      logKey = [(ISStoreURLOperation *)self logKey];
       v66 = 138543618;
       v67 = v13;
       v68 = 2114;
-      v69 = v4;
+      v69 = logKey;
       LODWORD(v37) = 22;
       v36 = &v66;
       v14 = _os_log_send_and_compose_impl();
@@ -3408,7 +3408,7 @@ LABEL_13:
         v51 = &v52;
         v16 = v15;
         v48 = v16;
-        [v6 operation:self shouldAuthenticateWithContext:v40 responseHandler:v47];
+        [delegate operation:self shouldAuthenticateWithContext:contextCopy responseHandler:v47];
         dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
 
         goto LABEL_14;
@@ -3435,29 +3435,29 @@ LABEL_14:
     goto LABEL_33;
   }
 
-  v17 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
-  if (!v17)
+  mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedAccountsAuthenticationConfig];
+  if (!mEMORY[0x277D69B38]2)
   {
-    v17 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v18 = [v17 shouldLog];
-  v19 = [v17 shouldLogToDisk];
-  v20 = [v17 OSLogObject];
-  v21 = v20;
-  if (v19)
+  shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+  shouldLogToDisk2 = [mEMORY[0x277D69B38]2 shouldLogToDisk];
+  oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+  v21 = oSLogObject2;
+  if (shouldLogToDisk2)
   {
-    v18 |= 2u;
+    shouldLog2 |= 2u;
   }
 
-  if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
   {
-    v22 = v18;
+    v22 = shouldLog2;
   }
 
   else
   {
-    v22 = v18 & 2;
+    v22 = shouldLog2 & 2;
   }
 
   if (!v22)
@@ -3466,22 +3466,22 @@ LABEL_14:
   }
 
   v38 = objc_opt_class();
-  v23 = [(ISStoreURLOperation *)self logKey];
-  v24 = [(ISURLOperation *)self requestProperties];
-  v25 = [v24 URL];
-  v26 = v25;
+  logKey2 = [(ISStoreURLOperation *)self logKey];
+  requestProperties = [(ISURLOperation *)self requestProperties];
+  v25 = [requestProperties URL];
+  uRLBagKey = v25;
   if (!v25)
   {
-    v4 = [(ISURLOperation *)self requestProperties];
-    v26 = [v4 URLBagKey];
+    logKey = [(ISURLOperation *)self requestProperties];
+    uRLBagKey = [logKey URLBagKey];
   }
 
   v66 = 138543874;
   v67 = v38;
   v68 = 2114;
-  v69 = v23;
+  v69 = logKey2;
   v70 = 2114;
-  v71 = v26;
+  v71 = uRLBagKey;
   LODWORD(v37) = 32;
   v36 = &v66;
   v27 = _os_log_send_and_compose_impl();
@@ -3502,7 +3502,7 @@ LABEL_29:
   v28 = v57[5];
   v45 = 0;
   obj = v28;
-  v30 = [(ISOperation *)self copyAccountID:&obj credentialSource:0 byAuthenticatingWithContext:v40 returningError:&v45];
+  v30 = [(ISOperation *)self copyAccountID:&obj credentialSource:0 byAuthenticatingWithContext:contextCopy returningError:&v45];
   objc_storeStrong(v29, obj);
   v31 = v45;
   *(v63 + 24) = v30;
@@ -3519,18 +3519,18 @@ LABEL_33:
     v41[1] = 3221225472;
     v41[2] = __54__ISStoreURLOperation__authenticateWithContext_error___block_invoke_177;
     v41[3] = &unk_27A670AC8;
-    v42 = v6;
-    v43 = self;
+    v42 = delegate;
+    selfCopy = self;
     v44 = &v56;
     [(ISOperation *)self delegateDispatch:v41];
   }
 
 LABEL_35:
   v32 = *(v63 + 24);
-  if (a4 && (v63[3] & 1) == 0)
+  if (error && (v63[3] & 1) == 0)
   {
     v33 = v31;
-    *a4 = v31;
+    *error = v31;
     v32 = *(v63 + 24);
   }
 
@@ -3772,19 +3772,19 @@ LABEL_49:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_canSendTokenToURL:(id)a3
+- (BOOL)_canSendTokenToURL:(id)l
 {
-  v3 = [a3 scheme];
-  v4 = [v3 isEqualToString:@"https"];
+  scheme = [l scheme];
+  v4 = [scheme isEqualToString:@"https"];
 
   return v4;
 }
 
 - (id)_buyParams
 {
-  v2 = [(ISURLOperation *)self authenticationContext];
-  v3 = [v2 signupRequestParameters];
-  v4 = [v3 objectForKey:@"product"];
+  authenticationContext = [(ISURLOperation *)self authenticationContext];
+  signupRequestParameters = [authenticationContext signupRequestParameters];
+  v4 = [signupRequestParameters objectForKey:@"product"];
 
   return v4;
 }
@@ -3792,23 +3792,23 @@ LABEL_49:
 - (void)_continueTouchIDSession
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(ISURLOperation *)self dataProvider];
-  v4 = [v3 output];
-  v5 = [v4 objectForKey:@"dialog"];
+  dataProvider = [(ISURLOperation *)self dataProvider];
+  output = [dataProvider output];
+  v5 = [output objectForKey:@"dialog"];
 
   if (v5)
   {
-    v6 = [[ISDialog alloc] initWithDialogDictionary:v5];
+    biometricSessionDelegate = [[ISDialog alloc] initWithDialogDictionary:v5];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v7 = [(ISDialog *)v6 buttons];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    buttons = [(ISDialog *)biometricSessionDelegate buttons];
+    v8 = [buttons countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
-      v15 = self;
+      selfCopy = self;
       v10 = *v17;
       while (2)
       {
@@ -3816,27 +3816,27 @@ LABEL_49:
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(buttons);
           }
 
-          v12 = [*(*(&v16 + 1) + 8 * i) dictionary];
-          v13 = [v12 objectForKey:@"tidContinue"];
+          dictionary = [*(*(&v16 + 1) + 8 * i) dictionary];
+          v13 = [dictionary objectForKey:@"tidContinue"];
 
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && [v13 BOOLValue])
           {
 
-            v6 = [(ISStoreURLOperation *)v15 biometricSessionDelegate];
+            biometricSessionDelegate = [(ISStoreURLOperation *)selfCopy biometricSessionDelegate];
             if (objc_opt_respondsToSelector())
             {
-              [(ISDialog *)v6 sender:v15 shouldContinueTouchIDSession:1];
+              [(ISDialog *)biometricSessionDelegate sender:selfCopy shouldContinueTouchIDSession:1];
             }
 
             goto LABEL_14;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v9 = [buttons countByEnumeratingWithState:&v16 objects:v20 count:16];
         if (v9)
         {
           continue;
@@ -3852,58 +3852,58 @@ LABEL_14:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_copyAuthenticationContextForAttemptNumber:(int64_t)a3
+- (id)_copyAuthenticationContextForAttemptNumber:(int64_t)number
 {
-  v5 = [(ISStoreURLOperation *)self _copyAuthenticationContext];
-  v6 = v5;
-  if (a3 >= 1)
+  _copyAuthenticationContext = [(ISStoreURLOperation *)self _copyAuthenticationContext];
+  v6 = _copyAuthenticationContext;
+  if (number >= 1)
   {
-    [v5 setPromptStyle:1];
+    [_copyAuthenticationContext setPromptStyle:1];
   }
 
-  v7 = [(ISURLOperation *)self response];
+  response = [(ISURLOperation *)self response];
 
-  if (v7)
+  if (response)
   {
     v8 = MEMORY[0x277D69A20];
-    v9 = [(ISURLOperation *)self response];
-    [v6 setAllowsSilentAuthentication:{objc_msgSend(v8, "URLResponseAllowsSilentAuthentication:", v9)}];
+    response2 = [(ISURLOperation *)self response];
+    [v6 setAllowsSilentAuthentication:{objc_msgSend(v8, "URLResponseAllowsSilentAuthentication:", response2)}];
   }
 
   return v6;
 }
 
-- (BOOL)_isErrorTokenError:(id)a3
+- (BOOL)_isErrorTokenError:(id)error
 {
-  v3 = a3;
-  if (ISErrorIsEqual(v3, @"SSErrorDomain", 18) & 1) != 0 || (v4 = *MEMORY[0x277D6A5A8], (ISErrorIsEqual(v3, *MEMORY[0x277D6A5A8], 1001)) || (ISErrorIsEqual(v3, v4, 1003))
+  errorCopy = error;
+  if (ISErrorIsEqual(errorCopy, @"SSErrorDomain", 18) & 1) != 0 || (v4 = *MEMORY[0x277D6A5A8], (ISErrorIsEqual(errorCopy, *MEMORY[0x277D6A5A8], 1001)) || (ISErrorIsEqual(errorCopy, v4, 1003))
   {
     IsEqual = 1;
   }
 
   else
   {
-    IsEqual = ISErrorIsEqual(v3, v4, 1004);
+    IsEqual = ISErrorIsEqual(errorCopy, v4, 1004);
   }
 
   return IsEqual;
 }
 
-- (id)_loadURLBagInterpreterWithRequest:(id)a3 requestProperties:(id)a4
+- (id)_loadURLBagInterpreterWithRequest:(id)request requestProperties:(id)properties
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ISStoreURLOperation *)self SAPSession];
-  if ([v8 useSharedBagInterpreter])
+  requestCopy = request;
+  propertiesCopy = properties;
+  sAPSession = [(ISStoreURLOperation *)self SAPSession];
+  if ([sAPSession useSharedBagInterpreter])
   {
-    v9 = [(ISStoreURLOperation *)self SAPSession];
-    v10 = [v9 urlBagInterpreter];
+    sAPSession2 = [(ISStoreURLOperation *)self SAPSession];
+    urlBagInterpreter = [sAPSession2 urlBagInterpreter];
 
-    if (v10)
+    if (urlBagInterpreter)
     {
-      v11 = [(ISStoreURLOperation *)self SAPSession];
-      v12 = [v11 urlBagInterpreter];
+      sAPSession3 = [(ISStoreURLOperation *)self SAPSession];
+      urlBagInterpreter2 = [sAPSession3 urlBagInterpreter];
 
       goto LABEL_15;
     }
@@ -3913,8 +3913,8 @@ LABEL_14:
   {
   }
 
-  v13 = [MEMORY[0x277D69C90] contextWithBagType:{objc_msgSend(v7, "URLBagType")}];
-  [v13 setAllowsBootstrapCellularData:{objc_msgSend(v7, "allowsBootstrapCellularData")}];
+  v13 = [MEMORY[0x277D69C90] contextWithBagType:{objc_msgSend(propertiesCopy, "URLBagType")}];
+  [v13 setAllowsBootstrapCellularData:{objc_msgSend(propertiesCopy, "allowsBootstrapCellularData")}];
   v14 = 1;
   [v13 setAllowsExpiredBags:1];
   v27 = *MEMORY[0x277D6A130];
@@ -3924,7 +3924,7 @@ LABEL_14:
   {
     v16 = v14;
     v17 = *v15;
-    v18 = [v6 valueForHTTPHeaderField:*v15];
+    v18 = [requestCopy valueForHTTPHeaderField:*v15];
     if (v18)
     {
       [v13 setValue:v18 forHTTPHeaderField:v17];
@@ -3935,14 +3935,14 @@ LABEL_14:
   }
 
   while ((v16 & 1) != 0);
-  v19 = [(ISURLOperation *)self _accountIdentifier];
-  v20 = [(ISOperation *)self loadedURLBagWithContext:v13 accountDSID:v19 returningError:0];
+  _accountIdentifier = [(ISURLOperation *)self _accountIdentifier];
+  v20 = [(ISOperation *)self loadedURLBagWithContext:v13 accountDSID:_accountIdentifier returningError:0];
 
   if (v20)
   {
     v21 = objc_alloc(MEMORY[0x277D69D28]);
-    v22 = [v20 URLBagDictionary];
-    v23 = [v21 initWithURLBagDictionary:v22];
+    uRLBagDictionary = [v20 URLBagDictionary];
+    v23 = [v21 initWithURLBagDictionary:uRLBagDictionary];
   }
 
   else
@@ -3950,7 +3950,7 @@ LABEL_14:
     v23 = 0;
   }
 
-  v12 = v23;
+  urlBagInterpreter2 = v23;
 
   for (i = 1; i != -1; --i)
   {
@@ -3959,23 +3959,23 @@ LABEL_14:
 LABEL_15:
   v25 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return urlBagInterpreter2;
 }
 
-- (BOOL)_performMachineDataRequest:(id)a3
+- (BOOL)_performMachineDataRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  v5 = [(ISStoreURLOperation *)self _account];
-  v6 = [v5 uniqueIdentifier];
-  [v4 setAccountIdentifier:v6];
+  _account = [(ISStoreURLOperation *)self _account];
+  uniqueIdentifier = [_account uniqueIdentifier];
+  [requestCopy setAccountIdentifier:uniqueIdentifier];
 
-  [v4 setWaitsForPurchaseOperations:{+[ISStoreURLOperation _operationWaitsForPurchases:](ISStoreURLOperation, "_operationWaitsForPurchases:", self)}];
+  [requestCopy setWaitsForPurchaseOperations:{+[ISStoreURLOperation _operationWaitsForPurchases:](ISStoreURLOperation, "_operationWaitsForPurchases:", self)}];
   v7 = dispatch_semaphore_create(0);
-  v8 = [(ISURLOperation *)self _requestProperties];
+  _requestProperties = [(ISURLOperation *)self _requestProperties];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __50__ISStoreURLOperation__performMachineDataRequest___block_invoke;
@@ -3983,16 +3983,16 @@ LABEL_15:
   v19 = &v20;
   v9 = v7;
   v18 = v9;
-  [ISStoreURLOperation _performMachineDataRequest:v4 requestProperties:v8 completion:&v14];
+  [ISStoreURLOperation _performMachineDataRequest:requestCopy requestProperties:_requestProperties completion:&v14];
 
   dispatch_semaphore_wait(v9, 0xFFFFFFFFFFFFFFFFLL);
   if (*(v21 + 24) == 1)
   {
     [(ISOperation *)self lock:v14];
-    v10 = [v4 protocolVersion];
-    if (v10)
+    protocolVersion = [requestCopy protocolVersion];
+    if (protocolVersion)
     {
-      if (v10 != 1)
+      if (protocolVersion != 1)
       {
 LABEL_8:
         [(ISOperation *)self unlock];
@@ -4019,16 +4019,16 @@ LABEL_9:
   return v12 & 1;
 }
 
-- (id)_resolvedURLInBagContext:(id)a3 bagTrusted:(BOOL *)a4
+- (id)_resolvedURLInBagContext:(id)context bagTrusted:(BOOL *)trusted
 {
-  v6 = a3;
-  v7 = [[ISLoadURLBagOperation alloc] initWithBagContext:v6];
+  contextCopy = context;
+  v7 = [[ISLoadURLBagOperation alloc] initWithBagContext:contextCopy];
   if (![(ISOperation *)self runSubOperation:v7 returningError:0])
   {
     v13 = 0;
-    v9 = 0;
+    uRLBag = 0;
     v10 = 0;
-    if (!a4)
+    if (!trusted)
     {
       goto LABEL_14;
     }
@@ -4036,24 +4036,24 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v8 = [(ISURLOperation *)self _requestProperties];
-  v9 = [(ISLoadURLBagOperation *)v7 URLBag];
-  v10 = [v8 URL];
+  _requestProperties = [(ISURLOperation *)self _requestProperties];
+  uRLBag = [(ISLoadURLBagOperation *)v7 URLBag];
+  v10 = [_requestProperties URL];
   if (!v10)
   {
-    v11 = [v8 URLBagURLBlock];
-    v12 = v11;
-    if (v11)
+    uRLBagURLBlock = [_requestProperties URLBagURLBlock];
+    v12 = uRLBagURLBlock;
+    if (uRLBagURLBlock)
     {
-      v10 = (*(v11 + 16))(v11, v6);
+      v10 = (*(uRLBagURLBlock + 16))(uRLBagURLBlock, contextCopy);
     }
 
     else
     {
-      v14 = [v8 URLBagKey];
-      if (v14)
+      uRLBagKey = [_requestProperties URLBagKey];
+      if (uRLBagKey)
       {
-        v10 = [v9 urlForKey:v14];
+        v10 = [uRLBag urlForKey:uRLBagKey];
       }
 
       else
@@ -4063,12 +4063,12 @@ LABEL_9:
     }
   }
 
-  v13 = [v9 urlIsTrusted:v10];
+  v13 = [uRLBag urlIsTrusted:v10];
 
-  if (a4)
+  if (trusted)
   {
 LABEL_13:
-    *a4 = v13;
+    *trusted = v13;
   }
 
 LABEL_14:
@@ -4080,15 +4080,15 @@ LABEL_14:
 - (void)_runURLOperation
 {
   v97 = *MEMORY[0x277D85DE8];
-  v3 = [(ISStoreURLOperation *)self URLBagContext];
-  v4 = [(ISStoreURLOperation *)self urlKnownToBeTrusted];
+  uRLBagContext = [(ISStoreURLOperation *)self URLBagContext];
+  urlKnownToBeTrusted = [(ISStoreURLOperation *)self urlKnownToBeTrusted];
   v89 = 0;
   if (![(ISStoreURLOperation *)self needsURLBag])
   {
-    v24 = [(ISURLOperation *)self _requestProperties];
-    v13 = [v24 URL];
+    _requestProperties = [(ISURLOperation *)self _requestProperties];
+    v13 = [_requestProperties URL];
 
-    if (v4)
+    if (urlKnownToBeTrusted)
     {
       goto LABEL_40;
     }
@@ -4097,14 +4097,14 @@ LABEL_14:
 
     if (v25)
     {
-      v11 = [(ISStoreURLOperation *)self bag];
-      v26 = [v11 URLIsTrusted:v13];
+      mEMORY[0x277D69B38] = [(ISStoreURLOperation *)self bag];
+      v26 = [mEMORY[0x277D69B38] URLIsTrusted:v13];
     }
 
     else
     {
-      v11 = [(ISOperation *)self loadedURLBagWithContext:v3 returningError:0];
-      v26 = [v11 urlIsTrusted:v13];
+      mEMORY[0x277D69B38] = [(ISOperation *)self loadedURLBagWithContext:uRLBagContext returningError:0];
+      v26 = [mEMORY[0x277D69B38] urlIsTrusted:v13];
     }
 
     v89 = v26;
@@ -4115,7 +4115,7 @@ LABEL_14:
   if (!v5)
   {
 LABEL_24:
-    v13 = [(ISStoreURLOperation *)self _resolvedURLInBagContext:v3 bagTrusted:&v89];
+    v13 = [(ISStoreURLOperation *)self _resolvedURLInBagContext:uRLBagContext bagTrusted:&v89];
     v27 = [(ISStoreURLOperation *)self bag];
 
     if (!v27)
@@ -4123,26 +4123,26 @@ LABEL_24:
       goto LABEL_40;
     }
 
-    v85 = v4;
-    v11 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v11)
+    v85 = urlKnownToBeTrusted;
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38])
     {
-      v11 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v28 = [v11 shouldLog];
-    if ([v11 shouldLogToDisk])
+    shouldLog = [mEMORY[0x277D69B38] shouldLog];
+    if ([mEMORY[0x277D69B38] shouldLogToDisk])
     {
-      v29 = v28 | 2;
+      v29 = shouldLog | 2;
     }
 
     else
     {
-      v29 = v28;
+      v29 = shouldLog;
     }
 
-    v30 = [v11 OSLogObject];
-    if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v31 = v29;
     }
@@ -4157,28 +4157,28 @@ LABEL_24:
       v32 = objc_opt_class();
       v33 = v32;
       [(ISURLOperation *)self requestProperties];
-      v35 = v34 = v3;
-      v36 = [v35 URLBagKey];
+      v35 = v34 = uRLBagContext;
+      uRLBagKey = [v35 URLBagKey];
       v91 = 138412802;
       v92 = v32;
       v93 = 2112;
-      v94 = v36;
+      v94 = uRLBagKey;
       v95 = 2112;
       v96 = v13;
       LODWORD(v83) = 32;
       v82 = &v91;
       v37 = _os_log_send_and_compose_impl();
 
-      v3 = v34;
-      v4 = v85;
+      uRLBagContext = v34;
+      urlKnownToBeTrusted = v85;
       if (!v37)
       {
         goto LABEL_39;
       }
 
-      v30 = [MEMORY[0x277CCACA8] stringWithCString:v37 encoding:{4, &v91, v83}];
+      oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v37 encoding:{4, &v91, v83}];
       free(v37);
-      v82 = v30;
+      v82 = oSLogObject;
       SSFileLog();
     }
 
@@ -4193,48 +4193,48 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v8 = [(ISURLOperation *)self requestProperties];
-  v9 = [v8 URLBagURLBlock];
+  requestProperties = [(ISURLOperation *)self requestProperties];
+  uRLBagURLBlock = [requestProperties URLBagURLBlock];
 
-  if (v9)
+  if (uRLBagURLBlock)
   {
     goto LABEL_24;
   }
 
-  v10 = [(ISURLOperation *)self requestProperties];
-  v11 = [v10 URLBagKey];
+  requestProperties2 = [(ISURLOperation *)self requestProperties];
+  mEMORY[0x277D69B38] = [requestProperties2 URLBagKey];
 
-  if (v11)
+  if (mEMORY[0x277D69B38])
   {
     v12 = [(ISStoreURLOperation *)self bag];
     v88 = 0;
-    v13 = [v12 URLForKey:v11 error:&v88];
-    v14 = v88;
+    v13 = [v12 URLForKey:mEMORY[0x277D69B38] error:&v88];
+    requestProperties3 = v88;
 
-    if (!v14)
+    if (!requestProperties3)
     {
       goto LABEL_87;
     }
 
-    v15 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v15)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v15 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
-    if ([v15 shouldLogToDisk])
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog2 | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog2;
     }
 
-    v18 = [v15 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v19 = v17;
     }
@@ -4250,14 +4250,14 @@ LABEL_24:
       v91 = 138412546;
       v92 = v20;
       v93 = 2114;
-      v94 = v11;
-      v21 = v3;
+      v94 = mEMORY[0x277D69B38];
+      v21 = uRLBagContext;
       v22 = v20;
       LODWORD(v83) = 22;
       v82 = &v91;
       v23 = _os_log_send_and_compose_impl();
 
-      v3 = v21;
+      uRLBagContext = v21;
       if (!v23)
       {
 LABEL_19:
@@ -4265,41 +4265,41 @@ LABEL_19:
         goto LABEL_87;
       }
 
-      v18 = [MEMORY[0x277CCACA8] stringWithCString:v23 encoding:{4, &v91, v83}];
+      oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v23 encoding:{4, &v91, v83}];
       free(v23);
-      v82 = v18;
+      v82 = oSLogObject2;
       SSFileLog();
     }
 
     goto LABEL_19;
   }
 
-  v14 = [(ISURLOperation *)self requestProperties];
-  v13 = [v14 URL];
+  requestProperties3 = [(ISURLOperation *)self requestProperties];
+  v13 = [requestProperties3 URL];
 LABEL_87:
 
   if (v13)
   {
-    v71 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v71)
+    mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]3)
     {
-      v71 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v86 = v11;
-    v72 = [v71 shouldLog];
-    if ([v71 shouldLogToDisk])
+    v86 = mEMORY[0x277D69B38];
+    shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+    if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
     {
-      v73 = v72 | 2;
+      v73 = shouldLog3 | 2;
     }
 
     else
     {
-      v73 = v72;
+      v73 = shouldLog3;
     }
 
-    v74 = [v71 OSLogObject];
-    if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [mEMORY[0x277D69B38]3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
       v75 = v73;
     }
@@ -4311,14 +4311,14 @@ LABEL_87:
 
     if (v75)
     {
-      v76 = v3;
+      v76 = uRLBagContext;
       v77 = objc_opt_class();
       v84 = v77;
-      v78 = [(ISURLOperation *)self _requestProperties];
-      v79 = [v78 URL];
+      _requestProperties2 = [(ISURLOperation *)self _requestProperties];
+      v79 = [_requestProperties2 URL];
       v91 = 138412802;
       v92 = v77;
-      v3 = v76;
+      uRLBagContext = v76;
       v93 = 2112;
       v94 = v86;
       v95 = 2112;
@@ -4334,13 +4334,13 @@ LABEL_100:
         v81 = [(ISStoreURLOperation *)self bag];
         v89 = [v81 URLIsTrusted:v13];
 
-        v11 = v86;
+        mEMORY[0x277D69B38] = v86;
         goto LABEL_39;
       }
 
-      v74 = [MEMORY[0x277CCACA8] stringWithCString:v80 encoding:{4, &v91, v83}];
+      oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v80 encoding:{4, &v91, v83}];
       free(v80);
-      v82 = v74;
+      v82 = oSLogObject3;
       SSFileLog();
     }
 
@@ -4352,12 +4352,12 @@ LABEL_39:
 LABEL_40:
   if (v13)
   {
-    v38 = [(ISURLOperation *)self _requestProperties];
-    v39 = [v38 URL];
+    _requestProperties3 = [(ISURLOperation *)self _requestProperties];
+    v39 = [_requestProperties3 URL];
 
     if (v39)
     {
-      if (v4)
+      if (urlKnownToBeTrusted)
       {
         goto LABEL_58;
       }
@@ -4367,45 +4367,45 @@ LABEL_40:
     {
       v90 = v13;
       v48 = [MEMORY[0x277CBEA60] arrayWithObjects:&v90 count:1];
-      [v38 setURLs:v48];
+      [_requestProperties3 setURLs:v48];
 
-      if (v4)
+      if (urlKnownToBeTrusted)
       {
 LABEL_58:
         if (![(ISStoreURLOperation *)self needsAuthentication]|| [(ISStoreURLOperation *)self _canSendTokenToURL:v13])
         {
           [(ISStoreURLOperation *)self _addStandardQueryParametersForURL:v13];
-          v49 = [(ISURLOperation *)self dataProvider];
-          [v49 setBagContext:v3];
+          dataProvider = [(ISURLOperation *)self dataProvider];
+          [dataProvider setBagContext:uRLBagContext];
 
-          [v38 setITunesStoreRequest:1];
+          [_requestProperties3 setITunesStoreRequest:1];
           v87.receiver = self;
           v87.super_class = ISStoreURLOperation;
           [(ISURLOperation *)&v87 run];
           goto LABEL_85;
         }
 
-        v60 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v60)
+        mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38]4)
         {
-          v60 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v61 = [v60 shouldLog];
-        if ([v60 shouldLogToDisk])
+        shouldLog4 = [mEMORY[0x277D69B38]4 shouldLog];
+        if ([mEMORY[0x277D69B38]4 shouldLogToDisk])
         {
-          v61 |= 2u;
+          shouldLog4 |= 2u;
         }
 
-        v62 = [v60 OSLogObject];
-        if (os_log_type_enabled(v62, OS_LOG_TYPE_DEFAULT))
+        oSLogObject4 = [mEMORY[0x277D69B38]4 OSLogObject];
+        if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
         {
-          v63 = v61;
+          v63 = shouldLog4;
         }
 
         else
         {
-          v63 = v61 & 2;
+          v63 = shouldLog4 & 2;
         }
 
         if (v63)
@@ -4431,7 +4431,7 @@ LABEL_84:
             goto LABEL_85;
           }
 
-          v62 = [MEMORY[0x277CCACA8] stringWithCString:v67 encoding:{4, &v91, v83}];
+          oSLogObject4 = [MEMORY[0x277CCACA8] stringWithCString:v67 encoding:{4, &v91, v83}];
           free(v67);
           SSFileLog();
         }
@@ -4449,27 +4449,27 @@ LABEL_84:
     v51 = SSError();
     [(ISOperation *)self setError:v51];
 
-    v52 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v52)
+    mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]5)
     {
-      v52 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v53 = [v52 shouldLog];
-    if ([v52 shouldLogToDisk])
+    shouldLog5 = [mEMORY[0x277D69B38]5 shouldLog];
+    if ([mEMORY[0x277D69B38]5 shouldLogToDisk])
     {
-      v53 |= 2u;
+      shouldLog5 |= 2u;
     }
 
-    v54 = [v52 OSLogObject];
-    if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
+    oSLogObject5 = [mEMORY[0x277D69B38]5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
     {
-      v55 = v53;
+      v55 = shouldLog5;
     }
 
     else
     {
-      v55 = v53 & 2;
+      v55 = shouldLog5 & 2;
     }
 
     if (v55)
@@ -4491,7 +4491,7 @@ LABEL_72:
         goto LABEL_85;
       }
 
-      v54 = [MEMORY[0x277CCACA8] stringWithCString:v59 encoding:{4, &v91, v83}];
+      oSLogObject5 = [MEMORY[0x277CCACA8] stringWithCString:v59 encoding:{4, &v91, v83}];
       free(v59);
       SSFileLog();
     }
@@ -4499,27 +4499,27 @@ LABEL_72:
     goto LABEL_72;
   }
 
-  v40 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  if (!v40)
+  mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  if (!mEMORY[0x277D69B38]6)
   {
-    v40 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v41 = [v40 shouldLog];
-  if ([v40 shouldLogToDisk])
+  shouldLog6 = [mEMORY[0x277D69B38]6 shouldLog];
+  if ([mEMORY[0x277D69B38]6 shouldLogToDisk])
   {
-    v41 |= 2u;
+    shouldLog6 |= 2u;
   }
 
-  v42 = [v40 OSLogObject];
-  if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
+  oSLogObject6 = [mEMORY[0x277D69B38]6 OSLogObject];
+  if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_ERROR))
   {
-    v43 = v41;
+    v43 = shouldLog6;
   }
 
   else
   {
-    v43 = v41 & 2;
+    v43 = shouldLog6 & 2;
   }
 
   if (!v43)
@@ -4536,24 +4536,24 @@ LABEL_72:
 
   if (v46)
   {
-    v42 = [MEMORY[0x277CCACA8] stringWithCString:v46 encoding:{4, &v91, v83}];
+    oSLogObject6 = [MEMORY[0x277CCACA8] stringWithCString:v46 encoding:{4, &v91, v83}];
     free(v46);
     SSFileLog();
 LABEL_54:
   }
 
   v47 = *MEMORY[0x277D6A110];
-  v38 = SSError();
-  [(ISOperation *)self setError:v38];
+  _requestProperties3 = SSError();
+  [(ISOperation *)self setError:_requestProperties3];
 LABEL_85:
 
   v70 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldRetryForAbsintheWithResponse:(id)a3
+- (BOOL)_shouldRetryForAbsintheWithResponse:(id)response
 {
-  v4 = a3;
-  v5 = [(ISStoreURLOperation *)self logKey];
+  responseCopy = response;
+  logKey = [(ISStoreURLOperation *)self logKey];
   v6 = AMSSetLogKey();
 
   v7 = [(ISStoreURLOperation *)self bag];
@@ -4567,149 +4567,149 @@ LABEL_85:
 
   else
   {
-    v11 = [(ISStoreURLOperation *)self URLBagContext];
-    v9 = [(ISStoreURLOperation *)self _urlBagForContext:v11];
+    uRLBagContext = [(ISStoreURLOperation *)self URLBagContext];
+    v9 = [(ISStoreURLOperation *)self _urlBagForContext:uRLBagContext];
 
     v10 = [[ISAMSBagShim alloc] initWithURLBag:v9];
   }
 
   v12 = v10;
 
-  v13 = [MEMORY[0x277CEE3C8] handleResponse:v4 bag:v12];
+  v13 = [MEMORY[0x277CEE3C8] handleResponse:responseCopy bag:v12];
 
   v14 = [v13 actionType] == 2;
   return v14;
 }
 
-- (BOOL)_shouldRetryForTouchIDChallengeWithError:(id)a3
+- (BOOL)_shouldRetryForTouchIDChallengeWithError:(id)error
 {
-  v4 = a3;
-  v5 = [v4 domain];
-  if (![v5 isEqualToString:*MEMORY[0x277D6A110]])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:*MEMORY[0x277D6A110]])
   {
 
     goto LABEL_12;
   }
 
-  v6 = [v4 code];
+  code = [errorCopy code];
 
-  if (v6 != 22)
+  if (code != 22)
   {
     goto LABEL_12;
   }
 
-  v7 = [v4 userInfo];
-  v8 = [v7 objectForKey:*MEMORY[0x277D6A100]];
+  userInfo = [errorCopy userInfo];
+  v8 = [userInfo objectForKey:*MEMORY[0x277D6A100]];
 
   if (!v8)
   {
     goto LABEL_13;
   }
 
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
-  if (v9 != 2074)
+  if (integerValue != 2074)
   {
 LABEL_12:
     LOBYTE(v8) = 0;
     goto LABEL_13;
   }
 
-  v10 = [(ISURLOperation *)self dataProvider];
-  v11 = [v10 biometricAuthenticationContext];
-  LODWORD(v8) = [v11 didAuthenticate];
-  if (v8 && [v11 didFallbackToPassword])
+  dataProvider = [(ISURLOperation *)self dataProvider];
+  biometricAuthenticationContext = [dataProvider biometricAuthenticationContext];
+  LODWORD(v8) = [biometricAuthenticationContext didAuthenticate];
+  if (v8 && [biometricAuthenticationContext didFallbackToPassword])
   {
-    v12 = [v11 accountIdentifier];
-    [(ISStoreURLOperation *)self setAuthenticatedDSID:v12];
-    v13 = [(ISOperation *)self delegate];
+    accountIdentifier = [biometricAuthenticationContext accountIdentifier];
+    [(ISStoreURLOperation *)self setAuthenticatedDSID:accountIdentifier];
+    delegate = [(ISOperation *)self delegate];
     if (objc_opt_respondsToSelector())
     {
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __64__ISStoreURLOperation__shouldRetryForTouchIDChallengeWithError___block_invoke;
       v15[3] = &unk_27A670890;
-      v16 = v13;
-      v17 = self;
-      v18 = v12;
+      v16 = delegate;
+      selfCopy = self;
+      v18 = accountIdentifier;
       [(ISOperation *)self delegateDispatch:v15];
     }
 
-    [v11 setChallenge:0];
-    [v11 setSignature:0];
+    [biometricAuthenticationContext setChallenge:0];
+    [biometricAuthenticationContext setSignature:0];
   }
 
-  [(ISStoreURLOperation *)self setBiometricAuthenticationContext:v11];
+  [(ISStoreURLOperation *)self setBiometricAuthenticationContext:biometricAuthenticationContext];
 
 LABEL_13:
   return v8;
 }
 
-- (id)_urlBagForContext:(id)a3
+- (id)_urlBagForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = +[ISURLBagCache sharedCache];
-  v6 = [v5 URLBagForContext:v4];
+  uRLBag = [v5 URLBagForContext:contextCopy];
 
-  if (!v6)
+  if (!uRLBag)
   {
     if ([(ISStoreURLOperation *)self isURLBagRequest])
     {
-      v6 = 0;
+      uRLBag = 0;
     }
 
     else
     {
-      v7 = [[ISLoadURLBagOperation alloc] initWithBagContext:v4];
-      v6 = 0;
+      v7 = [[ISLoadURLBagOperation alloc] initWithBagContext:contextCopy];
+      uRLBag = 0;
       if ([(ISOperation *)self runSubOperation:v7 returningError:0])
       {
-        v6 = [(ISLoadURLBagOperation *)v7 URLBag];
+        uRLBag = [(ISLoadURLBagOperation *)v7 URLBag];
       }
     }
   }
 
-  return v6;
+  return uRLBag;
 }
 
-+ (void)_handleResponseHeaders:(id)a3 response:(id)a4 request:(id)a5 account:(id)a6 performsMachineDataActions:(BOOL)a7 shouldRetry:(BOOL *)a8
++ (void)_handleResponseHeaders:(id)headers response:(id)response request:(id)request account:(id)account performsMachineDataActions:(BOOL)actions shouldRetry:(BOOL *)retry
 {
-  v9 = a7;
+  actionsCopy = actions;
   v138 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v126 = a6;
-  v127 = v14;
-  v16 = [v14 allHeaderFields];
-  v17 = ISDictionaryValueForCaseInsensitiveString(v16, *MEMORY[0x277D6A1D0]);
+  headersCopy = headers;
+  responseCopy = response;
+  requestCopy = request;
+  accountCopy = account;
+  v127 = responseCopy;
+  allHeaderFields = [responseCopy allHeaderFields];
+  v17 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, *MEMORY[0x277D6A1D0]);
   v18 = 0x277CCA000;
-  v124 = v13;
-  v125 = v16;
+  v124 = headersCopy;
+  v125 = allHeaderFields;
   if (v17)
   {
-    v19 = [v13 delegate];
-    if ((objc_opt_respondsToSelector() & 1) == 0 || [v19 operation:v13 shouldSetStoreFrontID:v17])
+    delegate = [headersCopy delegate];
+    if ((objc_opt_respondsToSelector() & 1) == 0 || [delegate operation:headersCopy shouldSetStoreFrontID:v17])
     {
-      v20 = [MEMORY[0x277D69B38] sharedAccountsConfig];
-      if (!v20)
+      mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsConfig];
+      if (!mEMORY[0x277D69B38])
       {
-        v20 = [MEMORY[0x277D69B38] sharedConfig];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
       }
 
-      v21 = [v20 shouldLog];
-      if ([v20 shouldLogToDisk])
+      shouldLog = [mEMORY[0x277D69B38] shouldLog];
+      if ([mEMORY[0x277D69B38] shouldLogToDisk])
       {
-        v22 = v21 | 2;
+        v22 = shouldLog | 2;
       }
 
       else
       {
-        v22 = v21;
+        v22 = shouldLog;
       }
 
-      v23 = [v20 OSLogObject];
-      if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v24 = v22;
       }
@@ -4721,20 +4721,20 @@ LABEL_13:
 
       if (v24)
       {
-        v120 = v19;
-        v25 = a8;
+        v120 = delegate;
+        retryCopy = retry;
         v26 = objc_opt_class();
         v121 = v26;
         [v127 URL];
-        v27 = v123 = v15;
-        v28 = [v126 accountName];
+        v27 = v123 = requestCopy;
+        accountName = [accountCopy accountName];
         SSHashIfNeeded();
-        v29 = v122 = v9;
+        v29 = v122 = actionsCopy;
         v30 = SSHashIfNeeded();
         v130 = 138544130;
         v131 = v26;
-        a8 = v25;
-        v19 = v120;
+        retry = retryCopy;
+        delegate = v120;
         v132 = 2114;
         v133 = v27;
         v134 = 2114;
@@ -4745,8 +4745,8 @@ LABEL_13:
         v117 = &v130;
         v31 = _os_log_send_and_compose_impl();
 
-        v9 = v122;
-        v15 = v123;
+        actionsCopy = v122;
+        requestCopy = v123;
 
         v18 = 0x277CCA000uLL;
         if (v31)
@@ -4764,15 +4764,15 @@ LABEL_13:
         v18 = 0x277CCA000;
       }
 
-      v33 = [MEMORY[0x277D69A80] currentDevice];
-      [v33 setStoreFrontIdentifier:v17 forRequest:v15 response:v127 account:v126];
+      currentDevice = [MEMORY[0x277D69A80] currentDevice];
+      [currentDevice setStoreFrontIdentifier:v17 forRequest:requestCopy response:v127 account:accountCopy];
 
-      v13 = v124;
-      v16 = v125;
+      headersCopy = v124;
+      allHeaderFields = v125;
     }
   }
 
-  v34 = ISDictionaryValueForCaseInsensitiveString(v16, @"X-Apple-Partner");
+  v34 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, @"X-Apple-Partner");
 
   if (v34)
   {
@@ -4780,7 +4780,7 @@ LABEL_13:
     [v35 setPartnerHeader:v34];
   }
 
-  if (v9)
+  if (actionsCopy)
   {
     v36 = [objc_alloc(MEMORY[0x277D69B58]) initWithURLResponse:v127];
     if (!v36)
@@ -4790,33 +4790,33 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v37 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v37)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v37 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v38 = [v37 shouldLog];
-    if ([v37 shouldLogToDisk])
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v38 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v39 = [v37 OSLogObject];
-    if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
-      v40 = v38;
+      v40 = shouldLog2;
     }
 
     else
     {
-      v40 = v38 & 2;
+      v40 = shouldLog2 & 2;
     }
 
     if (v40)
     {
-      v41 = v15;
-      if (v13)
+      v41 = requestCopy;
+      if (headersCopy)
       {
         v42 = objc_opt_class();
       }
@@ -4826,42 +4826,42 @@ LABEL_37:
         v42 = @"ISStoreURLOperation";
       }
 
-      v43 = [v36 actionName];
+      actionName = [v36 actionName];
       v130 = 138412546;
       v131 = v42;
       v132 = 2112;
-      v133 = v43;
+      v133 = actionName;
       LODWORD(v119) = 22;
       v117 = &v130;
       v44 = _os_log_send_and_compose_impl();
 
-      v15 = v41;
+      requestCopy = v41;
       if (!v44)
       {
         goto LABEL_36;
       }
 
-      v39 = [MEMORY[0x277CCACA8] stringWithCString:v44 encoding:{4, &v130, v119}];
+      oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v44 encoding:{4, &v130, v119}];
       free(v44);
-      v117 = v39;
+      v117 = oSLogObject2;
       SSFileLog();
     }
 
 LABEL_36:
-    v45 = [v126 uniqueIdentifier];
-    [v36 setAccountIdentifier:v45];
+    uniqueIdentifier = [accountCopy uniqueIdentifier];
+    [v36 setAccountIdentifier:uniqueIdentifier];
 
-    [v36 setWaitsForPurchaseOperations:{+[ISStoreURLOperation _operationWaitsForPurchases:](ISStoreURLOperation, "_operationWaitsForPurchases:", v13)}];
-    v46 = [v13 _requestProperties];
-    [ISStoreURLOperation _performMachineDataRequest:v36 requestProperties:v46 completion:0];
+    [v36 setWaitsForPurchaseOperations:{+[ISStoreURLOperation _operationWaitsForPurchases:](ISStoreURLOperation, "_operationWaitsForPurchases:", headersCopy)}];
+    _requestProperties = [headersCopy _requestProperties];
+    [ISStoreURLOperation _performMachineDataRequest:v36 requestProperties:_requestProperties completion:0];
 
-    v16 = v125;
+    allHeaderFields = v125;
     v18 = 0x277CCA000uLL;
     goto LABEL_37;
   }
 
 LABEL_38:
-  v47 = ISDictionaryValueForCaseInsensitiveString(v16, *MEMORY[0x277D6A198]);
+  v47 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, *MEMORY[0x277D6A198]);
 
   v48 = *(v18 + 3240);
   objc_opt_class();
@@ -4878,27 +4878,27 @@ LABEL_38:
       goto LABEL_84;
     }
 
-    v59 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-    if (!v59)
+    mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+    if (!mEMORY[0x277D69B38]3)
     {
-      v59 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v60 = [v59 shouldLog];
-    if ([v59 shouldLogToDisk])
+    shouldLog3 = [mEMORY[0x277D69B38]3 shouldLog];
+    if ([mEMORY[0x277D69B38]3 shouldLogToDisk])
     {
-      v60 |= 2u;
+      shouldLog3 |= 2u;
     }
 
-    v61 = [v59 OSLogObject];
-    if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+    oSLogObject3 = [mEMORY[0x277D69B38]3 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
     {
-      v62 = v60;
+      v62 = shouldLog3;
     }
 
     else
     {
-      v62 = v60 & 2;
+      v62 = shouldLog3 & 2;
     }
 
     if (v62)
@@ -4915,72 +4915,72 @@ LABEL_38:
       {
 LABEL_63:
 
-        v52 = objc_opt_new();
-        [v52 setPromptUser:1];
-        v66 = [v13 _buyParams];
+        mEMORY[0x277D69B38]5 = objc_opt_new();
+        [mEMORY[0x277D69B38]5 setPromptUser:1];
+        _buyParams = [headersCopy _buyParams];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v67 = v15;
-          v68 = [MEMORY[0x277CBEBC0] copyDictionaryForQueryString:v66 unescapedValues:1];
+          v67 = requestCopy;
+          v68 = [MEMORY[0x277CBEBC0] copyDictionaryForQueryString:_buyParams unescapedValues:1];
           v69 = [v68 objectForKey:@"mtTopic"];
           if (v69)
           {
-            [v52 setTopicName:v69];
+            [mEMORY[0x277D69B38]5 setTopicName:v69];
           }
 
-          v15 = v67;
+          requestCopy = v67;
         }
 
-        v70 = [v13 authenticationContext];
-        v71 = [v70 HTTPHeaders];
-        v54 = [v71 objectForKey:*MEMORY[0x277D6A130]];
+        authenticationContext = [headersCopy authenticationContext];
+        hTTPHeaders = [authenticationContext HTTPHeaders];
+        oSLogObject5 = [hTTPHeaders objectForKey:*MEMORY[0x277D6A130]];
 
         v18 = 0x277CCA000uLL;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v52 setUserAgent:v54];
+          [mEMORY[0x277D69B38]5 setUserAgent:oSLogObject5];
         }
 
-        [v13 runSubOperation:v52 returningError:0];
+        [headersCopy runSubOperation:mEMORY[0x277D69B38]5 returningError:0];
         goto LABEL_82;
       }
 
-      v61 = [MEMORY[0x277CCACA8] stringWithCString:v65 encoding:{4, &v130, v119}];
+      oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v65 encoding:{4, &v130, v119}];
       free(v65);
-      v118 = v61;
+      v118 = oSLogObject3;
       SSFileLog();
     }
 
     goto LABEL_63;
   }
 
-  v50 = [v13 shouldCancelBiometricTokenUpdate];
-  v51 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-  v52 = v51;
-  if ((v50 & 1) == 0)
+  shouldCancelBiometricTokenUpdate = [headersCopy shouldCancelBiometricTokenUpdate];
+  mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+  mEMORY[0x277D69B38]5 = mEMORY[0x277D69B38]4;
+  if ((shouldCancelBiometricTokenUpdate & 1) == 0)
   {
-    if (!v51)
+    if (!mEMORY[0x277D69B38]4)
     {
-      v52 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v72 = [v52 shouldLog];
-    if ([v52 shouldLogToDisk])
+    shouldLog4 = [mEMORY[0x277D69B38]5 shouldLog];
+    if ([mEMORY[0x277D69B38]5 shouldLogToDisk])
     {
-      v72 |= 2u;
+      shouldLog4 |= 2u;
     }
 
-    v73 = [v52 OSLogObject];
-    if (os_log_type_enabled(v73, OS_LOG_TYPE_DEFAULT))
+    oSLogObject4 = [mEMORY[0x277D69B38]5 OSLogObject];
+    if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
     {
-      v74 = v72;
+      v74 = shouldLog4;
     }
 
     else
     {
-      v74 = v72 & 2;
+      v74 = shouldLog4 & 2;
     }
 
     if (v74)
@@ -4997,44 +4997,44 @@ LABEL_63:
       {
 LABEL_81:
 
-        v52 = [v13 authenticatedAccountDSID];
-        v54 = [[ISBiometricUpdateTouchIDSettingsOperation alloc] initWithAccountIdentifier:v52];
+        mEMORY[0x277D69B38]5 = [headersCopy authenticatedAccountDSID];
+        oSLogObject5 = [[ISBiometricUpdateTouchIDSettingsOperation alloc] initWithAccountIdentifier:mEMORY[0x277D69B38]5];
         v78 = +[ISOperationQueue mainQueue];
-        [v78 addOperation:v54];
+        [v78 addOperation:oSLogObject5];
 
         v18 = 0x277CCA000uLL;
         goto LABEL_82;
       }
 
-      v73 = [MEMORY[0x277CCACA8] stringWithCString:v77 encoding:{4, &v130, v119}];
+      oSLogObject4 = [MEMORY[0x277CCACA8] stringWithCString:v77 encoding:{4, &v130, v119}];
       free(v77);
-      v117 = v73;
+      v117 = oSLogObject4;
       SSFileLog();
     }
 
     goto LABEL_81;
   }
 
-  if (!v51)
+  if (!mEMORY[0x277D69B38]4)
   {
-    v52 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]5 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v53 = [v52 shouldLog];
-  if ([v52 shouldLogToDisk])
+  shouldLog5 = [mEMORY[0x277D69B38]5 shouldLog];
+  if ([mEMORY[0x277D69B38]5 shouldLogToDisk])
   {
-    v53 |= 2u;
+    shouldLog5 |= 2u;
   }
 
-  v54 = [v52 OSLogObject];
-  if (os_log_type_enabled(&v54->super.super.super, OS_LOG_TYPE_DEFAULT))
+  oSLogObject5 = [mEMORY[0x277D69B38]5 OSLogObject];
+  if (os_log_type_enabled(&oSLogObject5->super.super.super, OS_LOG_TYPE_DEFAULT))
   {
-    v55 = v53;
+    v55 = shouldLog5;
   }
 
   else
   {
-    v55 = v53 & 2;
+    v55 = shouldLog5 & 2;
   }
 
   if (!v55)
@@ -5052,16 +5052,16 @@ LABEL_81:
 
   if (v58)
   {
-    v54 = [*(v18 + 3240) stringWithCString:v58 encoding:{4, &v130, v119}];
+    oSLogObject5 = [*(v18 + 3240) stringWithCString:v58 encoding:{4, &v130, v119}];
     free(v58);
-    v117 = v54;
+    v117 = oSLogObject5;
     SSFileLog();
 LABEL_82:
   }
 
-  v16 = v125;
+  allHeaderFields = v125;
 LABEL_84:
-  v79 = ISDictionaryValueForCaseInsensitiveString(v16, *MEMORY[0x277D6A1A0]);
+  v79 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, *MEMORY[0x277D6A1A0]);
 
   v80 = *(v18 + 3240);
   objc_opt_class();
@@ -5070,36 +5070,36 @@ LABEL_84:
     goto LABEL_95;
   }
 
-  v81 = [v13 _account];
-  v82 = [v81 accountName];
+  _account = [headersCopy _account];
+  accountName2 = [_account accountName];
 
-  v83 = [v13 biometricAuthenticationContext];
-  v84 = [v13 authenticationContext];
-  v85 = [v84 requiredUniqueIdentifier];
-  [v83 setAccountIdentifier:v85];
+  biometricAuthenticationContext = [headersCopy biometricAuthenticationContext];
+  authenticationContext2 = [headersCopy authenticationContext];
+  requiredUniqueIdentifier = [authenticationContext2 requiredUniqueIdentifier];
+  [biometricAuthenticationContext setAccountIdentifier:requiredUniqueIdentifier];
 
-  [v83 setAccountName:v82];
-  [v83 setChallenge:v79];
-  [v83 setSignature:0];
-  v86 = ISDictionaryValueForCaseInsensitiveString(v16, *MEMORY[0x277D6A1B0]);
+  [biometricAuthenticationContext setAccountName:accountName2];
+  [biometricAuthenticationContext setChallenge:v79];
+  [biometricAuthenticationContext setSignature:0];
+  v86 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, *MEMORY[0x277D6A1B0]);
   v87 = *(v18 + 3240);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v88 = v15;
-    v89 = [v86 uppercaseString];
-    if ([v89 isEqualToString:@"EXT"])
+    v88 = requestCopy;
+    uppercaseString = [v86 uppercaseString];
+    if ([uppercaseString isEqualToString:@"EXT"])
     {
 LABEL_87:
-      [v83 setIsExtendedAction:{1, v117}];
+      [biometricAuthenticationContext setIsExtendedAction:{1, v117}];
     }
   }
 
   else
   {
     v91 = v18;
-    v88 = v15;
-    v90 = ISDictionaryValueForCaseInsensitiveString(v16, *MEMORY[0x277D6A1C8]);
+    v88 = requestCopy;
+    v90 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, *MEMORY[0x277D6A1C8]);
 
     v92 = *(v91 + 3240);
     objc_opt_class();
@@ -5108,9 +5108,9 @@ LABEL_87:
       goto LABEL_92;
     }
 
-    v89 = [v90 uppercaseString];
+    uppercaseString = [v90 uppercaseString];
     v86 = v90;
-    if ([v89 isEqualToString:@"PK"])
+    if ([uppercaseString isEqualToString:@"PK"])
     {
       goto LABEL_87;
     }
@@ -5118,21 +5118,21 @@ LABEL_87:
 
   v90 = v86;
 LABEL_92:
-  [v13 setBiometricAuthenticationContext:{v83, v117}];
+  [headersCopy setBiometricAuthenticationContext:{biometricAuthenticationContext, v117}];
   v93 = ISError(22, 0, 0);
   v94 = *MEMORY[0x277D6A100];
   v95 = SSErrorBySettingUserInfoValue();
 
-  [v13 setError:v95];
-  v96 = [v13 dataProvider];
+  [headersCopy setError:v95];
+  dataProvider = [headersCopy dataProvider];
   if (objc_opt_respondsToSelector())
   {
-    v97 = [v13 biometricAuthenticationContext];
-    [v96 setBiometricAuthenticationContext:v97];
+    biometricAuthenticationContext2 = [headersCopy biometricAuthenticationContext];
+    [dataProvider setBiometricAuthenticationContext:biometricAuthenticationContext2];
   }
 
-  v15 = v88;
-  v16 = v125;
+  requestCopy = v88;
+  allHeaderFields = v125;
 LABEL_95:
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -5146,35 +5146,35 @@ LABEL_95:
   }
 
   v99 = +[ISStoreURLOperation _authKitSession];
-  [v99 handleResponse:v98 forRequest:v15 shouldRetry:a8];
+  [v99 handleResponse:v98 forRequest:requestCopy shouldRetry:retry];
 
   v100 = *MEMORY[0x277D6A148];
-  v101 = ISDictionaryValueForCaseInsensitiveString(v16, *MEMORY[0x277D6A148]);
+  v101 = ISDictionaryValueForCaseInsensitiveString(allHeaderFields, *MEMORY[0x277D6A148]);
 
-  if (a8 && !*a8 && (objc_opt_respondsToSelector() & 1) != 0)
+  if (retry && !*retry && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v102 = [v101 integerValue];
-    v103 = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
-    if (!v103)
+    integerValue = [v101 integerValue];
+    mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharedStoreServicesConfig];
+    if (!mEMORY[0x277D69B38]6)
     {
-      v103 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]6 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v104 = [v103 shouldLog];
-    if ([v103 shouldLogToDisk])
+    shouldLog6 = [mEMORY[0x277D69B38]6 shouldLog];
+    if ([mEMORY[0x277D69B38]6 shouldLogToDisk])
     {
-      v104 |= 2u;
+      shouldLog6 |= 2u;
     }
 
-    v105 = [v103 OSLogObject];
-    if (os_log_type_enabled(v105, OS_LOG_TYPE_DEFAULT))
+    oSLogObject6 = [mEMORY[0x277D69B38]6 OSLogObject];
+    if (os_log_type_enabled(oSLogObject6, OS_LOG_TYPE_DEFAULT))
     {
-      v106 = v104;
+      v106 = shouldLog6;
     }
 
     else
     {
-      v106 = v104 & 2;
+      v106 = shouldLog6 & 2;
     }
 
     if (v106)
@@ -5183,7 +5183,7 @@ LABEL_95:
       v130 = 138543618;
       v131 = v107;
       v132 = 2048;
-      v133 = v102;
+      v133 = integerValue;
       v108 = v107;
       LODWORD(v119) = 22;
       v109 = _os_log_send_and_compose_impl();
@@ -5193,29 +5193,29 @@ LABEL_95:
         goto LABEL_111;
       }
 
-      v105 = [MEMORY[0x277CCACA8] stringWithCString:v109 encoding:{4, &v130, v119}];
+      oSLogObject6 = [MEMORY[0x277CCACA8] stringWithCString:v109 encoding:{4, &v130, v119}];
       free(v109);
       SSFileLog();
     }
 
 LABEL_111:
-    v110 = v102 == 1001;
-    v16 = v125;
+    v110 = integerValue == 1001;
+    allHeaderFields = v125;
     if (v110)
     {
-      v111 = [v124 _requestProperties];
-      [v111 setShouldDisableReversePush:1];
+      _requestProperties2 = [v124 _requestProperties];
+      [_requestProperties2 setShouldDisableReversePush:1];
       v112 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", 1];
-      [v111 setValue:v112 forHTTPHeaderField:v100];
+      [_requestProperties2 setValue:v112 forHTTPHeaderField:v100];
       [v124 _activeURLRequest];
-      v114 = v113 = v15;
+      v114 = v113 = requestCopy;
       v115 = [v114 mutableCopy];
 
-      v15 = v113;
+      requestCopy = v113;
       [v115 setValue:v112 forHTTPHeaderField:v100];
-      v16 = v125;
+      allHeaderFields = v125;
       [v124 _setActiveURLRequest:v115];
-      *a8 = 1;
+      *retry = 1;
     }
   }
 
@@ -5283,61 +5283,61 @@ LABEL_15:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)_operationWaitsForPurchases:(id)a3
++ (BOOL)_operationWaitsForPurchases:(id)purchases
 {
-  if (!a3)
+  if (!purchases)
   {
     return 1;
   }
 
-  v3 = [a3 parentOperation];
-  if (!v3)
+  parentOperation = [purchases parentOperation];
+  if (!parentOperation)
   {
     return 1;
   }
 
-  v4 = v3;
+  v4 = parentOperation;
   do
   {
-    v5 = [v4 uniqueKey];
-    v6 = [v5 isEqualToString:@"com.apple.itunesstored.PurchaseOperation"];
+    uniqueKey = [v4 uniqueKey];
+    v6 = [uniqueKey isEqualToString:@"com.apple.itunesstored.PurchaseOperation"];
 
     if (v6)
     {
       break;
     }
 
-    v7 = [v4 parentOperation];
+    parentOperation2 = [v4 parentOperation];
 
-    v4 = v7;
+    v4 = parentOperation2;
   }
 
-  while (v7);
+  while (parentOperation2);
   v8 = v6 ^ 1;
 
   return v8;
 }
 
-+ (void)_performMachineDataRequest:(id)a3 requestProperties:(id)a4 completion:(id)a5
++ (void)_performMachineDataRequest:(id)request requestProperties:(id)properties completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v7 setAllowsBootstrapCellularData:{objc_msgSend(v8, "allowsBootstrapCellularData")}];
+  requestCopy = request;
+  propertiesCopy = properties;
+  completionCopy = completion;
+  [requestCopy setAllowsBootstrapCellularData:{objc_msgSend(propertiesCopy, "allowsBootstrapCellularData")}];
   if (SSIsDaemon())
   {
-    v10 = [objc_alloc(NSClassFromString(&cfstr_Ismachinedataa.isa)) initWithMachineDataRequest:v7];
-    v11 = [v8 HTTPHeaders];
-    v12 = [v11 objectForKey:*MEMORY[0x277D6A130]];
+    v10 = [objc_alloc(NSClassFromString(&cfstr_Ismachinedataa.isa)) initWithMachineDataRequest:requestCopy];
+    hTTPHeaders = [propertiesCopy HTTPHeaders];
+    v12 = [hTTPHeaders objectForKey:*MEMORY[0x277D6A130]];
     [v10 setUserAgent:v12];
 
-    if (v9)
+    if (completionCopy)
     {
       v14 = MEMORY[0x277D85DD0];
       v15 = 3221225472;
       v16 = __79__ISStoreURLOperation__performMachineDataRequest_requestProperties_completion___block_invoke_2;
       v17 = &unk_27A670BD8;
-      v18 = v9;
+      v18 = completionCopy;
       [v10 setResultBlock:&v14];
     }
 
@@ -5351,8 +5351,8 @@ LABEL_15:
     v19[1] = 3221225472;
     v19[2] = __79__ISStoreURLOperation__performMachineDataRequest_requestProperties_completion___block_invoke;
     v19[3] = &unk_27A670BB0;
-    v20 = v9;
-    [v7 startWithCompletionBlock:v19];
+    v20 = completionCopy;
+    [requestCopy startWithCompletionBlock:v19];
     v10 = v20;
   }
 }
@@ -5368,30 +5368,30 @@ uint64_t __79__ISStoreURLOperation__performMachineDataRequest_requestProperties_
   return result;
 }
 
-+ (id)_storeFrontIdentifierForAccount:(id)a3
++ (id)_storeFrontIdentifierForAccount:(id)account
 {
   v57 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  accountCopy = account;
   v50 = SSGenerateLogCorrelationString();
-  v4 = [MEMORY[0x277D69B38] sharedAccountsStorefrontConfig];
-  if (!v4)
+  mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedAccountsStorefrontConfig];
+  if (!mEMORY[0x277D69B38])
   {
-    v4 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
-  if ([v4 shouldLogToDisk])
+  shouldLog = [mEMORY[0x277D69B38] shouldLog];
+  if ([mEMORY[0x277D69B38] shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
-  v7 = [v4 OSLogObject];
-  if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+  oSLogObject = [mEMORY[0x277D69B38] OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v6 &= 2u;
   }
@@ -5400,9 +5400,9 @@ uint64_t __79__ISStoreURLOperation__performMachineDataRequest_requestProperties_
   {
     v8 = objc_opt_class();
     v9 = v8;
-    v10 = [v3 accountName];
+    accountName = [accountCopy accountName];
     SSHashIfNeeded();
-    v12 = v11 = v3;
+    v12 = v11 = accountCopy;
     v51 = 138543874;
     v52 = v8;
     v53 = 2114;
@@ -5413,41 +5413,41 @@ uint64_t __79__ISStoreURLOperation__performMachineDataRequest_requestProperties_
     v48 = &v51;
     v13 = _os_log_send_and_compose_impl();
 
-    v3 = v11;
+    accountCopy = v11;
     if (!v13)
     {
       goto LABEL_12;
     }
 
-    v7 = [MEMORY[0x277CCACA8] stringWithCString:v13 encoding:{4, &v51, v49}];
+    oSLogObject = [MEMORY[0x277CCACA8] stringWithCString:v13 encoding:{4, &v51, v49}];
     free(v13);
-    v48 = v7;
+    v48 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_12:
-  v14 = [v3 storeFrontIdentifier];
-  if ([v14 length])
+  storeFrontIdentifier = [accountCopy storeFrontIdentifier];
+  if ([storeFrontIdentifier length])
   {
-    v15 = [MEMORY[0x277D69B38] sharedAccountsStorefrontConfig];
-    if (!v15)
+    mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedAccountsStorefrontConfig];
+    if (!mEMORY[0x277D69B38]2)
     {
-      v15 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]2 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
-    if ([v15 shouldLogToDisk])
+    shouldLog2 = [mEMORY[0x277D69B38]2 shouldLog];
+    if ([mEMORY[0x277D69B38]2 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog2 | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog2;
     }
 
-    v18 = [v15 OSLogObject];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [mEMORY[0x277D69B38]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
       v19 = v17;
     }
@@ -5475,11 +5475,11 @@ LABEL_12:
       {
 LABEL_25:
 
-        v24 = v14;
+        v24 = storeFrontIdentifier;
         goto LABEL_54;
       }
 
-      v18 = [MEMORY[0x277CCACA8] stringWithCString:v23 encoding:{4, &v51, v49}];
+      oSLogObject2 = [MEMORY[0x277CCACA8] stringWithCString:v23 encoding:{4, &v51, v49}];
       free(v23);
       SSFileLog();
     }
@@ -5487,32 +5487,32 @@ LABEL_25:
     goto LABEL_25;
   }
 
-  v25 = [MEMORY[0x277D69A80] currentDevice];
-  v26 = [v25 storeFrontIdentifier];
+  currentDevice = [MEMORY[0x277D69A80] currentDevice];
+  storeFrontIdentifier2 = [currentDevice storeFrontIdentifier];
 
-  v27 = [v26 length];
-  v28 = [MEMORY[0x277D69B38] sharedAccountsStorefrontConfig];
-  v29 = v28;
+  v27 = [storeFrontIdentifier2 length];
+  mEMORY[0x277D69B38]3 = [MEMORY[0x277D69B38] sharedAccountsStorefrontConfig];
+  mEMORY[0x277D69B38]4 = mEMORY[0x277D69B38]3;
   if (!v27)
   {
-    if (!v28)
+    if (!mEMORY[0x277D69B38]3)
     {
-      v29 = [MEMORY[0x277D69B38] sharedConfig];
+      mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharedConfig];
     }
 
-    v39 = [v29 shouldLog];
-    if ([v29 shouldLogToDisk])
+    shouldLog3 = [mEMORY[0x277D69B38]4 shouldLog];
+    if ([mEMORY[0x277D69B38]4 shouldLogToDisk])
     {
-      v40 = v39 | 2;
+      v40 = shouldLog3 | 2;
     }
 
     else
     {
-      v40 = v39;
+      v40 = shouldLog3;
     }
 
-    v41 = [v29 OSLogObject];
-    if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
+    oSLogObject3 = [mEMORY[0x277D69B38]4 OSLogObject];
+    if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
     {
       v42 = v40;
     }
@@ -5541,7 +5541,7 @@ LABEL_52:
         goto LABEL_53;
       }
 
-      v41 = [MEMORY[0x277CCACA8] stringWithCString:v45 encoding:{4, &v51, v49}];
+      oSLogObject3 = [MEMORY[0x277CCACA8] stringWithCString:v45 encoding:{4, &v51, v49}];
       free(v45);
       SSFileLog();
     }
@@ -5549,24 +5549,24 @@ LABEL_52:
     goto LABEL_52;
   }
 
-  if (!v28)
+  if (!mEMORY[0x277D69B38]3)
   {
-    v29 = [MEMORY[0x277D69B38] sharedConfig];
+    mEMORY[0x277D69B38]4 = [MEMORY[0x277D69B38] sharedConfig];
   }
 
-  v30 = [v29 shouldLog];
-  if ([v29 shouldLogToDisk])
+  shouldLog4 = [mEMORY[0x277D69B38]4 shouldLog];
+  if ([mEMORY[0x277D69B38]4 shouldLogToDisk])
   {
-    v31 = v30 | 2;
+    v31 = shouldLog4 | 2;
   }
 
   else
   {
-    v31 = v30;
+    v31 = shouldLog4;
   }
 
-  v32 = [v29 OSLogObject];
-  if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
+  oSLogObject4 = [mEMORY[0x277D69B38]4 OSLogObject];
+  if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_INFO))
   {
     v33 = v31;
   }
@@ -5584,7 +5584,7 @@ LABEL_52:
   v34 = objc_opt_class();
   v35 = v34;
   SSHashIfNeeded();
-  v37 = v36 = v3;
+  v37 = v36 = accountCopy;
   v51 = 138543874;
   v52 = v34;
   v53 = 2114;
@@ -5594,16 +5594,16 @@ LABEL_52:
   LODWORD(v49) = 32;
   v38 = _os_log_send_and_compose_impl();
 
-  v3 = v36;
+  accountCopy = v36;
   if (v38)
   {
-    v32 = [MEMORY[0x277CCACA8] stringWithCString:v38 encoding:{4, &v51, v49}];
+    oSLogObject4 = [MEMORY[0x277CCACA8] stringWithCString:v38 encoding:{4, &v51, v49}];
     free(v38);
     SSFileLog();
 LABEL_38:
   }
 
-  v24 = v26;
+  v24 = storeFrontIdentifier2;
 LABEL_53:
 
 LABEL_54:

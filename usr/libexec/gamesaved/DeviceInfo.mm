@@ -1,21 +1,21 @@
 @interface DeviceInfo
 - (DeviceInfo)init;
-- (DeviceInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (DeviceInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DeviceInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_10000FF7C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_10000FF7C(coderCopy);
 }
 
-- (DeviceInfo)initWithCoder:(id)a3
+- (DeviceInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_100010F58();
 
   return v4;

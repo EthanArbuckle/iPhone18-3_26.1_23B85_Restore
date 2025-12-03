@@ -3,9 +3,9 @@
 + (id)noCommandError;
 + (id)noPropertyError;
 + (id)unrecognizedCommandError;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEngagementRequest:(id)a3;
-- (PKEngagementRequest)initWithDictionary:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEngagementRequest:(id)request;
+- (PKEngagementRequest)initWithDictionary:(id)dictionary error:(id *)error;
 - (id)description;
 - (unint64_t)propertySource;
 @end
@@ -60,15 +60,15 @@
   return v4;
 }
 
-- (PKEngagementRequest)initWithDictionary:(id)a3 error:(id *)a4
+- (PKEngagementRequest)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = PKEngagementRequest;
   v7 = [(PKEngagementRequest *)&v22 init];
   if (v7)
   {
-    v8 = [v6 PKDictionaryForKey:@"request"];
+    v8 = [dictionaryCopy PKDictionaryForKey:@"request"];
     v9 = v8;
     if (v8 && [v8 count])
     {
@@ -115,12 +115,12 @@
         v20 = +[PKEngagementRequest noCommandError];
       }
 
-      *a4 = v20;
+      *error = v20;
     }
 
     else
     {
-      *a4 = +[PKEngagementRequest malformedRequest];
+      *error = +[PKEngagementRequest malformedRequest];
     }
 
     v19 = 0;
@@ -179,28 +179,28 @@ LABEL_17:
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKEngagementRequest *)self isEqualToEngagementRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKEngagementRequest *)self isEqualToEngagementRequest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToEngagementRequest:(id)a3
+- (BOOL)isEqualToEngagementRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   command = self->_command;
-  v6 = v4[1];
+  v6 = requestCopy[1];
   if (command)
   {
     v7 = v6 == 0;
@@ -225,7 +225,7 @@ LABEL_17:
   }
 
   propertyName = self->_propertyName;
-  v9 = v4[2];
+  v9 = requestCopy[2];
   if (!propertyName || !v9)
   {
     if (propertyName == v9)
@@ -245,7 +245,7 @@ LABEL_16:
 
 LABEL_12:
   parameters = self->_parameters;
-  v11 = v4[3];
+  v11 = requestCopy[3];
   if (parameters && v11)
   {
     v12 = [(NSDictionary *)parameters isEqual:?];

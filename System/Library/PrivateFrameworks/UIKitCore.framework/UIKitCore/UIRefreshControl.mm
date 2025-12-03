@@ -1,34 +1,34 @@
 @interface UIRefreshControl
-+ (Class)_contentViewClassForStyle:(int64_t)a3;
++ (Class)_contentViewClassForStyle:(int64_t)style;
 + (id)_defaultColor;
-+ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)a3;
-- (BOOL)_canTransitionFromState:(int64_t)a3 toState:(int64_t)a4;
-- (CGPoint)_originForContentOffset:(CGPoint)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)behavior;
+- (BOOL)_canTransitionFromState:(int64_t)state toState:(int64_t)toState;
+- (CGPoint)_originForContentOffset:(CGPoint)offset;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)_appliedInsets;
-- (UIRefreshControl)initWithCoder:(id)a3;
-- (UIRefreshControl)initWithFrame:(CGRect)a3;
-- (UIRefreshControl)initWithStyle:(int64_t)a3;
+- (UIRefreshControl)initWithCoder:(id)coder;
+- (UIRefreshControl)initWithFrame:(CGRect)frame;
+- (UIRefreshControl)initWithStyle:(int64_t)style;
 - (double)_scrollViewHeight;
-- (double)_stiffnessForVelocity:(double)a3;
-- (double)_visibleHeightForContentOffset:(CGPoint)a3 origin:(CGPoint)a4;
+- (double)_stiffnessForVelocity:(double)velocity;
+- (double)_visibleHeightForContentOffset:(CGPoint)offset origin:(CGPoint)origin;
 - (double)revealedFraction;
 - (id)_attributedTitle;
 - (id)_contentView;
 - (id)_tintColor;
 - (id)description;
 - (int64_t)_recomputeNewState;
-- (void)_addInsetHeight:(double)a3;
+- (void)_addInsetHeight:(double)height;
 - (void)_addInsets;
-- (void)_endRefreshingAnimated:(BOOL)a3;
-- (void)_populateArchivedSubviews:(id)a3;
-- (void)_removeInsetHeight:(double)a3;
+- (void)_endRefreshingAnimated:(BOOL)animated;
+- (void)_populateArchivedSubviews:(id)subviews;
+- (void)_removeInsetHeight:(double)height;
 - (void)_removeInsets;
 - (void)_resizeToFitContents;
-- (void)_setAttributedTitle:(id)a3;
-- (void)_setRefreshControlState:(int64_t)a3 notify:(BOOL)a4;
-- (void)_setTintColor:(id)a3;
-- (void)_setVisibleHeight:(double)a3;
+- (void)_setAttributedTitle:(id)title;
+- (void)_setRefreshControlState:(int64_t)state notify:(BOOL)notify;
+- (void)_setTintColor:(id)color;
+- (void)_setVisibleHeight:(double)height;
 - (void)_update;
 - (void)_updateConcealingMask;
 - (void)_updateHiddenStateIfNeeded;
@@ -36,10 +36,10 @@
 - (void)beginRefreshing;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBackgroundColor:(id)color;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
 - (void)sizeToFit;
 @end
 
@@ -47,24 +47,24 @@
 
 - (void)didMoveToSuperview
 {
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     if (!self->_host)
     {
-      v4 = [(UIView *)self _containingScrollView];
-      if (v4)
+      _containingScrollView = [(UIView *)self _containingScrollView];
+      if (_containingScrollView)
       {
-        v5 = [[_UIScrollViewRefreshControlHost alloc] initWithScrollView:v4];
+        v5 = [[_UIScrollViewRefreshControlHost alloc] initWithScrollView:_containingScrollView];
         host = self->_host;
         self->_host = v5;
 
         [(UIRefreshControl *)self sizeToFit];
         [(UIView *)self frame];
         self->_refreshControlHeight = v7;
-        v8 = [(UIRefreshControl *)self _contentView];
-        [v8 refreshControlInvalidatedSnappingHeight];
+        _contentView = [(UIRefreshControl *)self _contentView];
+        [_contentView refreshControlInvalidatedSnappingHeight];
       }
 
       if (!self->_host)
@@ -98,8 +98,8 @@
     [(UIView *)self insertSubview:self->_contentView atIndex:0];
     [(UIRefreshControl *)self setRefreshControlState:0];
     v7 = self->_contentView;
-    v8 = [objc_opt_class() _defaultColor];
-    [(_UIRefreshControlContentView *)v7 setTintColor:v8];
+    _defaultColor = [objc_opt_class() _defaultColor];
+    [(_UIRefreshControlContentView *)v7 setTintColor:_defaultColor];
 
     contentView = self->_contentView;
   }
@@ -113,16 +113,16 @@
   {
     [(UIView *)self frame];
     v4 = v3;
-    v5 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    [v5 contentOffset];
+    scrollView = [(_UIRefreshControlHosting *)self->_host scrollView];
+    [scrollView contentOffset];
     v7 = v6;
     v9 = v8;
 
     [(UIRefreshControl *)self _originForContentOffset:v7, v9];
     v11 = v10;
     v13 = v12;
-    v14 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    [v14 bounds];
+    scrollView2 = [(_UIRefreshControlHosting *)self->_host scrollView];
+    [scrollView2 bounds];
     v16 = v15;
 
     if ([(_UIRefreshControlHosting *)self->_host refreshControlInsetsAffectScrollViewRubberBanding])
@@ -142,8 +142,8 @@
 
   if (self->_style == 2)
   {
-    v19 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    [v19 _verticalVelocity];
+    scrollView3 = [(_UIRefreshControlHosting *)self->_host scrollView];
+    [scrollView3 _verticalVelocity];
     v21 = v20;
 
     [(UIRefreshControl *)self _stiffnessForVelocity:v21];
@@ -159,9 +159,9 @@
 
 - (void)_updateConcealingMask
 {
-  v3 = [(UIView *)self backgroundColor];
+  backgroundColor = [(UIView *)self backgroundColor];
 
-  if (!v3)
+  if (!backgroundColor)
   {
     [(UIView *)self->_contentView setHidden:0];
     if (![(UIView *)self->_contentView clipsToBounds])
@@ -216,8 +216,8 @@ LABEL_6:
 {
   if (self->_host)
   {
-    v3 = [(UIRefreshControl *)self _contentView];
-    [v3 sizeToFit];
+    _contentView = [(UIRefreshControl *)self _contentView];
+    [_contentView sizeToFit];
   }
 
   v4.receiver = self;
@@ -258,37 +258,37 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   host = self->_host;
   if (host)
   {
-    v4 = [(_UIRefreshControlHosting *)host scrollView];
-    [v4 bounds];
+    scrollView = [(_UIRefreshControlHosting *)host scrollView];
+    [scrollView bounds];
     v6 = v5;
 
     v7 = round(v6 * 0.5);
     self->_snappingHeight = v7;
-    v8 = [(UIRefreshControl *)self _contentView];
-    [v8 maximumSnappingHeight];
+    _contentView = [(UIRefreshControl *)self _contentView];
+    [_contentView maximumSnappingHeight];
     v10 = v9;
 
     if (v7 > v10)
     {
-      v11 = [(UIRefreshControl *)self _contentView];
-      [v11 maximumSnappingHeight];
+      _contentView2 = [(UIRefreshControl *)self _contentView];
+      [_contentView2 maximumSnappingHeight];
       self->_snappingHeight = v12;
     }
 
     snappingHeight = self->_snappingHeight;
-    v14 = [(UIRefreshControl *)self _contentView];
-    [v14 minimumSnappingHeight];
+    _contentView3 = [(UIRefreshControl *)self _contentView];
+    [_contentView3 minimumSnappingHeight];
     v16 = v15;
 
     if (snappingHeight < v16)
     {
-      v17 = [(UIRefreshControl *)self _contentView];
-      [v17 minimumSnappingHeight];
+      _contentView4 = [(UIRefreshControl *)self _contentView];
+      [_contentView4 minimumSnappingHeight];
       self->_snappingHeight = v18;
     }
 
-    v19 = [(UIRefreshControl *)self _contentView];
-    [v19 refreshControlInvalidatedSnappingHeight];
+    _contentView5 = [(UIRefreshControl *)self _contentView];
+    [_contentView5 refreshControlInvalidatedSnappingHeight];
 
     [(UIView *)self setNeedsLayout];
   }
@@ -296,8 +296,8 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
 
 - (double)_scrollViewHeight
 {
-  v2 = [(_UIRefreshControlHosting *)self->_host scrollView];
-  [v2 bounds];
+  scrollView = [(_UIRefreshControlHosting *)self->_host scrollView];
+  [scrollView bounds];
   v4 = v3;
 
   return v4;
@@ -311,11 +311,11 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   [(UIView *)&v3 dealloc];
 }
 
-+ (Class)_contentViewClassForStyle:(int64_t)a3
++ (Class)_contentViewClassForStyle:(int64_t)style
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFDLL) != 0 && a3 != 1)
+  if ((style & 0xFFFFFFFFFFFFFFFDLL) != 0 && style != 1)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unknown UIRefreshControlStyle: %ld", a3}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Unknown UIRefreshControlStyle: %ld", style}];
     v3 = 0;
   }
 
@@ -327,15 +327,15 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   return v3;
 }
 
-- (UIRefreshControl)initWithCoder:(id)a3
+- (UIRefreshControl)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = UIRefreshControl;
-  v5 = [(UIControl *)&v11 initWithCoder:v4];
+  v5 = [(UIControl *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"UIRefreshControlStyle"];
+    v6 = [coderCopy decodeIntegerForKey:@"UIRefreshControlStyle"];
     v7 = 2;
     if (v6)
     {
@@ -343,15 +343,15 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
     }
 
     v5->_style = v7;
-    if ([v4 containsValueForKey:@"UITintColor"])
+    if ([coderCopy containsValueForKey:@"UITintColor"])
     {
-      v8 = [v4 decodeObjectForKey:@"UITintColor"];
+      v8 = [coderCopy decodeObjectForKey:@"UITintColor"];
       [(UIRefreshControl *)v5 _setTintColor:v8];
     }
 
-    if ([v4 containsValueForKey:@"UIAttributedTitle"])
+    if ([coderCopy containsValueForKey:@"UIAttributedTitle"])
     {
-      v9 = [v4 decodeObjectForKey:@"UIAttributedTitle"];
+      v9 = [coderCopy decodeObjectForKey:@"UIAttributedTitle"];
       [(UIRefreshControl *)v5 _setAttributedTitle:v9];
     }
 
@@ -361,48 +361,48 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = UIRefreshControl;
-  [(UIControl *)&v9 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_style forKey:@"UIRefreshControlStyle"];
+  [(UIControl *)&v9 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_style forKey:@"UIRefreshControlStyle"];
   if (self->_contentView)
   {
-    v5 = [(UIRefreshControl *)self _tintColor];
+    _tintColor = [(UIRefreshControl *)self _tintColor];
 
-    if (v5)
+    if (_tintColor)
     {
-      v6 = [(UIRefreshControl *)self _tintColor];
-      [v4 encodeObject:v6 forKey:@"UITintColor"];
+      _tintColor2 = [(UIRefreshControl *)self _tintColor];
+      [coderCopy encodeObject:_tintColor2 forKey:@"UITintColor"];
     }
 
-    v7 = [(UIRefreshControl *)self _attributedTitle];
+    _attributedTitle = [(UIRefreshControl *)self _attributedTitle];
 
-    if (v7)
+    if (_attributedTitle)
     {
-      v8 = [(UIRefreshControl *)self _attributedTitle];
-      [v4 encodeObject:v8 forKey:@"UIAttributedTitle"];
+      _attributedTitle2 = [(UIRefreshControl *)self _attributedTitle];
+      [coderCopy encodeObject:_attributedTitle2 forKey:@"UIAttributedTitle"];
     }
   }
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5.receiver = self;
   v5.super_class = UIRefreshControl;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
   if (self->_contentView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 }
 
-- (UIRefreshControl)initWithStyle:(int64_t)a3
+- (UIRefreshControl)initWithStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     v4 = 60.0;
   }
@@ -418,19 +418,19 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   v6 = v5;
   if (v5)
   {
-    v5->_style = a3;
+    v5->_style = style;
     [(UIView *)v5 setAutoresizingMask:2];
   }
 
   return v6;
 }
 
-- (UIRefreshControl)initWithFrame:(CGRect)a3
+- (UIRefreshControl)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(UIRefreshControl *)self initWithStyle:2];
   v8 = v7;
   if (v7)
@@ -478,21 +478,21 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   return fmin(fmax(self->_visibleHeight / *(&self->super.super.super.super.isa + OBJC_IVAR___UIRefreshControl__style[v4]), 0.0), 1.0);
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (self->_host)
   {
-    v7 = [(UIRefreshControl *)self _contentView:a3.origin.x];
+    v7 = [(UIRefreshControl *)self _contentView:frame.origin.x];
     [v7 frame];
     height = v8;
   }
 
   else
   {
-    height = a3.size.height;
+    height = frame.size.height;
   }
 
   [(UIView *)self frame];
@@ -508,21 +508,21 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (self->_host)
   {
-    v7 = [(UIRefreshControl *)self _contentView:a3.origin.x];
+    v7 = [(UIRefreshControl *)self _contentView:bounds.origin.x];
     [v7 bounds];
     height = v8;
   }
 
   else
   {
-    height = a3.size.height;
+    height = bounds.size.height;
   }
 
   [(UIView *)self bounds];
@@ -538,11 +538,11 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   if (self->_host)
   {
-    v3 = [(UIRefreshControl *)self _contentView:a3.width];
+    v3 = [(UIRefreshControl *)self _contentView:fits.width];
     [v3 frame];
     v5 = v4;
     v7 = v6;
@@ -552,7 +552,7 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   {
     v12.receiver = self;
     v12.super_class = UIRefreshControl;
-    [(UIView *)&v12 sizeThatFits:a3.width, a3.height];
+    [(UIView *)&v12 sizeThatFits:fits.width, fits.height];
     v5 = v8;
     v7 = v9;
   }
@@ -564,50 +564,50 @@ void __33__UIRefreshControl__defaultColor__block_invoke()
   return result;
 }
 
-- (void)_setTintColor:(id)a3
+- (void)_setTintColor:(id)color
 {
-  v4 = a3;
-  if (!v4)
+  colorCopy = color;
+  if (!colorCopy)
   {
     if (!self->_contentView)
     {
       return;
     }
 
-    v4 = [objc_opt_class() _defaultColor];
+    colorCopy = [objc_opt_class() _defaultColor];
   }
 
-  v6 = v4;
-  v5 = [(UIRefreshControl *)self _contentView];
-  [v5 setTintColor:v6];
+  v6 = colorCopy;
+  _contentView = [(UIRefreshControl *)self _contentView];
+  [_contentView setTintColor:v6];
 }
 
 - (id)_tintColor
 {
   if (self->_contentView)
   {
-    v2 = [(UIRefreshControl *)self _contentView];
-    v3 = [v2 tintColor];
+    _contentView = [(UIRefreshControl *)self _contentView];
+    tintColor = [_contentView tintColor];
 
-    v4 = [objc_opt_class() _defaultColor];
+    _defaultColor = [objc_opt_class() _defaultColor];
 
-    if (v3 != v4)
+    if (tintColor != _defaultColor)
     {
       goto LABEL_5;
     }
   }
 
-  v3 = 0;
+  tintColor = 0;
 LABEL_5:
 
-  return v3;
+  return tintColor;
 }
 
-- (void)_setAttributedTitle:(id)a3
+- (void)_setAttributedTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(UIRefreshControl *)self _contentView];
-  [v5 setAttributedTitle:v4];
+  titleCopy = title;
+  _contentView = [(UIRefreshControl *)self _contentView];
+  [_contentView setAttributedTitle:titleCopy];
 
   [(UIRefreshControl *)self _resizeToFitContents];
 }
@@ -616,16 +616,16 @@ LABEL_5:
 {
   if (self->_contentView)
   {
-    v2 = [(UIRefreshControl *)self _contentView];
-    v3 = [v2 attributedTitle];
+    _contentView = [(UIRefreshControl *)self _contentView];
+    attributedTitle = [_contentView attributedTitle];
   }
 
   else
   {
-    v3 = 0;
+    attributedTitle = 0;
   }
 
-  return v3;
+  return attributedTitle;
 }
 
 - (void)_resizeToFitContents
@@ -651,8 +651,8 @@ LABEL_5:
 {
   [(UIRefreshControl *)self revealedFraction];
   v5 = v4;
-  v6 = [(UIRefreshControl *)self _contentView];
-  [v6 _heightAtWhichNoneOfTheInterfaceElementsAreVisibleEvenIfTheControlIsStillPartiallyOnScreen];
+  _contentView = [(UIRefreshControl *)self _contentView];
+  [_contentView _heightAtWhichNoneOfTheInterfaceElementsAreVisibleEvenIfTheControlIsStillPartiallyOnScreen];
   v8 = v7;
 
   refreshControlState = self->_refreshControlState;
@@ -666,10 +666,10 @@ LABEL_5:
           return 0;
         }
 
-        v16 = [(_UIRefreshControlHosting *)self->_host scrollView];
-        v17 = [v16 isTracking];
+        scrollView = [(_UIRefreshControlHosting *)self->_host scrollView];
+        isTracking = [scrollView isTracking];
 
-        v14 = (v17 & (v5 <= 0.75)) == 0;
+        v14 = (isTracking & (v5 <= 0.75)) == 0;
         v15 = 4;
         break;
       case 5:
@@ -689,10 +689,10 @@ LABEL_5:
           return 0;
         }
 
-        v12 = [(_UIRefreshControlHosting *)self->_host scrollView];
-        v13 = [v12 isTracking];
+        scrollView2 = [(_UIRefreshControlHosting *)self->_host scrollView];
+        isTracking2 = [scrollView2 isTracking];
 
-        v14 = (v13 & (v5 <= 0.75)) == 0;
+        v14 = (isTracking2 & (v5 <= 0.75)) == 0;
         v15 = 6;
         break;
       default:
@@ -716,13 +716,13 @@ LABEL_5:
     {
       if (v5 > 0.0)
       {
-        v19 = [(_UIRefreshControlHosting *)self->_host scrollView];
-        if ([v19 _isBouncing])
+        scrollView3 = [(_UIRefreshControlHosting *)self->_host scrollView];
+        if ([scrollView3 _isBouncing])
         {
-          v20 = [(_UIRefreshControlHosting *)self->_host scrollView];
-          v21 = [v20 isDecelerating];
+          scrollView4 = [(_UIRefreshControlHosting *)self->_host scrollView];
+          isDecelerating = [scrollView4 isDecelerating];
 
-          if (v21)
+          if (isDecelerating)
           {
             return 6;
           }
@@ -740,10 +740,10 @@ LABEL_5:
 
       if (v5 >= 1.0)
       {
-        v23 = [(_UIRefreshControlHosting *)self->_host scrollView];
-        v24 = [v23 isTracking];
+        scrollView5 = [(_UIRefreshControlHosting *)self->_host scrollView];
+        isTracking3 = [scrollView5 isTracking];
 
-        if ((v24 & 1) == 0)
+        if ((isTracking3 & 1) == 0)
         {
           return 1;
         }
@@ -756,10 +756,10 @@ LABEL_5:
     {
       if (v5 >= 1.0)
       {
-        v10 = [(_UIRefreshControlHosting *)self->_host scrollView];
-        v11 = [v10 isTracking];
+        scrollView6 = [(_UIRefreshControlHosting *)self->_host scrollView];
+        isTracking4 = [scrollView6 isTracking];
 
-        if (v11)
+        if (isTracking4)
         {
           return 2;
         }
@@ -769,18 +769,18 @@ LABEL_5:
     }
 
 LABEL_18:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"UIRefreshControl.m" lineNumber:398 description:{@"Unknown UIRefreshControlState: %ld", self->_refreshControlState}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIRefreshControl.m" lineNumber:398 description:{@"Unknown UIRefreshControlState: %ld", self->_refreshControlState}];
   }
 
   return refreshControlState;
 }
 
-- (void)_setVisibleHeight:(double)a3
+- (void)_setVisibleHeight:(double)height
 {
-  if (self->_visibleHeight != a3)
+  if (self->_visibleHeight != height)
   {
-    self->_visibleHeight = a3;
+    self->_visibleHeight = height;
     [(UIRefreshControl *)self setRefreshControlState:[(UIRefreshControl *)self _recomputeNewState]];
     [(UIView *)self setNeedsLayout];
     [(UIRefreshControl *)self _updateHiddenStateIfNeeded];
@@ -802,15 +802,15 @@ LABEL_18:
   return result;
 }
 
-- (CGPoint)_originForContentOffset:(CGPoint)a3
+- (CGPoint)_originForContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   v6 = 0.0;
   if (self->_style != 2)
   {
-    v7 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    [v7 _effectiveContentInset];
+    scrollView = [(_UIRefreshControlHosting *)self->_host scrollView];
+    [scrollView _effectiveContentInset];
     v6 = -v8;
   }
 
@@ -829,8 +829,8 @@ LABEL_18:
 
   if (style == 2)
   {
-    v13 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    [v13 _effectiveContentInset];
+    scrollView2 = [(_UIRefreshControlHosting *)self->_host scrollView];
+    [scrollView2 _effectiveContentInset];
     y = y + v14 - self->_additionalTopInset;
   }
 
@@ -841,18 +841,18 @@ LABEL_18:
   return result;
 }
 
-- (double)_visibleHeightForContentOffset:(CGPoint)a3 origin:(CGPoint)a4
+- (double)_visibleHeightForContentOffset:(CGPoint)offset origin:(CGPoint)origin
 {
-  y = a4.y;
-  v5 = a3.y;
-  [(UIRefreshControl *)self _refreshControlHeight:a3.x];
+  y = origin.y;
+  v5 = offset.y;
+  [(UIRefreshControl *)self _refreshControlHeight:offset.x];
   v8 = v7;
   v9 = y + v7;
   result = 0.0;
   if (v9 > v5)
   {
-    v11 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    [v11 _effectiveContentInset];
+    scrollView = [(_UIRefreshControlHosting *)self->_host scrollView];
+    [scrollView _effectiveContentInset];
     v13 = v12;
     v14 = -v12;
 
@@ -872,9 +872,9 @@ LABEL_18:
   return result;
 }
 
-- (double)_stiffnessForVelocity:(double)a3
+- (double)_stiffnessForVelocity:(double)velocity
 {
-  v3 = fabs(a3) * 48.3333333;
+  v3 = fabs(velocity) * 48.3333333;
   result = 150.0;
   if (v3 <= 150.0)
   {
@@ -902,29 +902,29 @@ LABEL_18:
   [(UIRefreshControl *)self _removeInsetHeight:?];
 }
 
-- (void)_addInsetHeight:(double)a3
+- (void)_addInsetHeight:(double)height
 {
-  if (a3 > 0.0 && !self->_insetsApplied)
+  if (height > 0.0 && !self->_insetsApplied)
   {
     if (self->_host)
     {
-      self->_appliedInsets.top = self->_appliedInsets.top + a3;
+      self->_appliedInsets.top = self->_appliedInsets.top + height;
       self->_insetsApplied = 1;
       self->_adjustingInsets = 1;
-      self->_additionalTopInset = a3;
+      self->_additionalTopInset = height;
       [(_UIRefreshControlHosting *)self->_host incrementInsetHeight:?];
       self->_adjustingInsets = 0;
     }
   }
 }
 
-- (void)_removeInsetHeight:(double)a3
+- (void)_removeInsetHeight:(double)height
 {
-  if (a3 > 0.0 && self->_insetsApplied)
+  if (height > 0.0 && self->_insetsApplied)
   {
     if (self->_host)
     {
-      self->_appliedInsets.top = self->_appliedInsets.top - a3;
+      self->_appliedInsets.top = self->_appliedInsets.top - height;
       self->_adjustingInsets = 1;
       [(_UIRefreshControlHosting *)self->_host decrementInsetHeight:?];
       self->_additionalTopInset = 0.0;
@@ -936,25 +936,25 @@ LABEL_18:
 
 - (void)beginRefreshing
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3 || (UIRefreshControlReceivedOffscreenBeginRefreshing(self), (dyld_program_sdk_at_least() & 1) == 0))
+  if (window || (UIRefreshControlReceivedOffscreenBeginRefreshing(self), (dyld_program_sdk_at_least() & 1) == 0))
   {
 
     [(UIRefreshControl *)self _setRefreshControlState:3 notify:0];
   }
 }
 
-- (void)_endRefreshingAnimated:(BOOL)a3
+- (void)_endRefreshingAnimated:(BOOL)animated
 {
-  if (a3)
+  if (animated)
   {
-    v5 = [(_UIRefreshControlHosting *)self->_host refreshControlInsetsAffectScrollViewRubberBanding];
+    refreshControlInsetsAffectScrollViewRubberBanding = [(_UIRefreshControlHosting *)self->_host refreshControlInsetsAffectScrollViewRubberBanding];
   }
 
   else
   {
-    v5 = 1;
+    refreshControlInsetsAffectScrollViewRubberBanding = 1;
   }
 
   [(UIRefreshControl *)self _update];
@@ -966,8 +966,8 @@ LABEL_18:
 
   else
   {
-    v3 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    v7 = [v3 isTracking] & v5;
+    scrollView = [(_UIRefreshControlHosting *)self->_host scrollView];
+    v7 = [scrollView isTracking] & refreshControlInsetsAffectScrollViewRubberBanding;
 
     if (v7)
     {
@@ -986,67 +986,67 @@ LABEL_18:
   }
 
   [(UIRefreshControl *)self _setRefreshControlState:v8 notify:0];
-  v9 = [(UIRefreshControl *)self refreshControlState];
-  if ((v9 | 4) == 4)
+  refreshControlState = [(UIRefreshControl *)self refreshControlState];
+  if ((refreshControlState | 4) == 4)
   {
-    v3 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    if ([v3 _isBouncing])
+    scrollView = [(_UIRefreshControlHosting *)self->_host scrollView];
+    if ([scrollView _isBouncing])
     {
-      v10 = 0;
+      refreshControlInsetsAffectScrollViewRubberBanding2 = 0;
     }
 
     else
     {
-      v10 = [(_UIRefreshControlHosting *)self->_host refreshControlInsetsAffectScrollViewRubberBanding];
+      refreshControlInsetsAffectScrollViewRubberBanding2 = [(_UIRefreshControlHosting *)self->_host refreshControlInsetsAffectScrollViewRubberBanding];
     }
   }
 
   else
   {
-    v10 = 0;
+    refreshControlInsetsAffectScrollViewRubberBanding2 = 0;
   }
 
-  if ((v9 | 4) == 4)
+  if ((refreshControlState | 4) == 4)
   {
   }
 
-  if (v10)
+  if (refreshControlInsetsAffectScrollViewRubberBanding2)
   {
-    v11 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    [v11 contentOffset];
+    scrollView2 = [(_UIRefreshControlHosting *)self->_host scrollView];
+    [scrollView2 contentOffset];
     v13 = v12;
     v15 = v14;
 
     v16 = v15 + self->_visibleHeight;
-    v17 = [(_UIRefreshControlHosting *)self->_host scrollView];
-    [v17 _setAbsoluteContentOffset:v9 == 4 animated:{v13, v16}];
+    scrollView3 = [(_UIRefreshControlHosting *)self->_host scrollView];
+    [scrollView3 _setAbsoluteContentOffset:refreshControlState == 4 animated:{v13, v16}];
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = UIRefreshControl;
-  [(UIView *)&v4 setBackgroundColor:a3];
+  [(UIView *)&v4 setBackgroundColor:color];
   [(UIRefreshControl *)self _updateConcealingMask];
 }
 
-- (BOOL)_canTransitionFromState:(int64_t)a3 toState:(int64_t)a4
+- (BOOL)_canTransitionFromState:(int64_t)state toState:(int64_t)toState
 {
-  result = a4 == 3;
-  if (a3 != 3 && a4 == 3)
+  result = toState == 3;
+  if (state != 3 && toState == 3)
   {
     return 1;
   }
 
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    switch(a3)
+    switch(state)
     {
       case 0:
-        return a4 == 1 || a4 == 6;
+        return toState == 1 || toState == 6;
       case 1:
-        v5 = a4 >= 3;
+        v5 = toState >= 3;
         return !v5;
       case 2:
         return result;
@@ -1055,81 +1055,81 @@ LABEL_18:
     return 0;
   }
 
-  if (a3 > 4)
+  if (state > 4)
   {
-    if (a3 == 5)
+    if (state == 5)
     {
-      return a4 == 0;
+      return toState == 0;
     }
 
-    if (a3 == 6)
+    if (state == 6)
     {
 LABEL_14:
-      v5 = a4 >= 2;
+      v5 = toState >= 2;
       return !v5;
     }
 
     return 0;
   }
 
-  if (a3 != 3)
+  if (state != 3)
   {
     goto LABEL_14;
   }
 
-  return !a4 || (a4 & 0xFFFFFFFFFFFFFFFELL) == 4;
+  return !toState || (toState & 0xFFFFFFFFFFFFFFFELL) == 4;
 }
 
-- (void)_setRefreshControlState:(int64_t)a3 notify:(BOOL)a4
+- (void)_setRefreshControlState:(int64_t)state notify:(BOOL)notify
 {
-  v4 = a4;
-  if (a3 >= 7)
+  notifyCopy = notify;
+  if (state >= 7)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"UIRefreshControl.m" lineNumber:790 description:{@"Illegal state: %ld", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIRefreshControl.m" lineNumber:790 description:{@"Illegal state: %ld", state}];
   }
 
-  if ([(UIRefreshControl *)self _canTransitionFromState:self->_refreshControlState toState:a3])
+  if ([(UIRefreshControl *)self _canTransitionFromState:self->_refreshControlState toState:state])
   {
     refreshControlState = self->_refreshControlState;
-    if ((a3 - 4) <= 0xFFFFFFFFFFFFFFFDLL)
+    if ((state - 4) <= 0xFFFFFFFFFFFFFFFDLL)
     {
       [(UIRefreshControl *)self _removeInsets];
     }
 
-    v8 = [(UIRefreshControl *)self _contentView];
-    [v8 willTransitionFromState:refreshControlState toState:a3];
+    _contentView = [(UIRefreshControl *)self _contentView];
+    [_contentView willTransitionFromState:refreshControlState toState:state];
 
-    self->_refreshControlState = a3;
-    v9 = [(UIRefreshControl *)self _contentView];
-    [v9 didTransitionFromState:refreshControlState toState:a3];
+    self->_refreshControlState = state;
+    _contentView2 = [(UIRefreshControl *)self _contentView];
+    [_contentView2 didTransitionFromState:refreshControlState toState:state];
 
-    if (self->_refreshControlState == a3)
+    if (self->_refreshControlState == state)
     {
-      if (a3 == 3)
+      if (state == 3)
       {
         [(UIRefreshControl *)self _addInsets];
-        if (v4)
+        if (notifyCopy)
         {
           [(UIControl *)self sendActionsForControlEvents:4096];
         }
       }
 
-      else if (a3 == 2)
+      else if (state == 2)
       {
         [(UIRefreshControl *)self _addInsets];
       }
 
-      [(_UIRefreshControlHosting *)self->_host refreshControl:self didChangeToState:a3 fromState:refreshControlState];
+      [(_UIRefreshControlHosting *)self->_host refreshControl:self didChangeToState:state fromState:refreshControlState];
 
       [(UIView *)self setNeedsLayout];
     }
   }
 }
 
-+ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)a3
++ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)behavior
 {
-  if (a3)
+  if (behavior)
   {
     v3 = 8;
   }

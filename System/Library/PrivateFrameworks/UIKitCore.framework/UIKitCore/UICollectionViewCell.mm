@@ -1,29 +1,29 @@
 @interface UICollectionViewCell
 + (BOOL)_subclassOverridesContentViewClass;
-+ (id)_createDefaultContentViewWithFrame:(CGRect)a3;
++ (id)_createDefaultContentViewWithFrame:(CGRect)frame;
 - (BOOL)_allowsHorizontalFocusMovement;
 - (BOOL)_appliesLayoutAttributesMaskingToBackgroundConfiguration;
 - (BOOL)_appliesLayoutAttributesMaskingToReusableView;
 - (BOOL)_backgroundFillIsCustomized;
 - (BOOL)_backgroundIsVerticallyInset;
 - (BOOL)_descendantsShouldHighlight;
-- (BOOL)_forwardsSystemLayoutFittingSizeToContentView:(id)a3;
-- (BOOL)_gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)_forwardsSystemLayoutFittingSizeToContentView:(id)view;
+- (BOOL)_gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)_hasCustomSelectionAction;
-- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)a3;
-- (BOOL)_shouldSaveOpaqueStateForView:(id)a3;
+- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)engine;
+- (BOOL)_shouldSaveOpaqueStateForView:(id)view;
 - (BOOL)_usingBackgroundConfigurationOrDefaultBackgroundConfiguration;
 - (BOOL)canBecomeFocused;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)isFocused;
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4;
-- (CGSize)_contentTargetSizeForTargetSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5 forUseWithSizeThatFits:(BOOL)a6;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration;
+- (CGSize)_contentTargetSizeForTargetSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority forUseWithSizeThatFits:(BOOL)fits;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (UIBackgroundConfiguration)backgroundConfiguration;
 - (UICellConfigurationState)_configurationState;
-- (UICollectionViewCell)initWithCoder:(id)a3;
-- (UICollectionViewCell)initWithFrame:(CGRect)a3;
+- (UICollectionViewCell)initWithCoder:(id)coder;
+- (UICollectionViewCell)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)_contentViewInset;
 - (UIView)contentView;
 - (id)_backgroundViewConfiguration;
@@ -35,93 +35,93 @@
 - (id)_effectiveDefaultBackgroundConfiguration;
 - (id)_effectivePopupMenuButton;
 - (id)_encodableSubviews;
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4;
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context;
 - (id)_selectionSegueTemplate;
-- (id)_stateForUpdatingBackgroundConfigurationWithState:(id)a3;
+- (id)_stateForUpdatingBackgroundConfigurationWithState:(id)state;
 - (id)contentConfiguration;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
 - (int64_t)_systemDefaultFocusGroupPriority;
 - (int64_t)focusItemDeferralMode;
 - (unint64_t)_effectiveMaskedCornersForSystemBackgroundView;
 - (unint64_t)_maskedCornersForSystemBackgroundView;
 - (unint64_t)_viewConfigurationState;
-- (void)_applyBackgroundViewConfiguration:(id)a3 withState:(id)a4;
-- (void)_applyContentViewConfiguration:(id)a3 withState:(id)a4 usingSPI:(BOOL)a5;
-- (void)_clearChangeHandlersForOldContentView:(id)a3;
-- (void)_configureFocusedFloatingContentView:(id)a3;
-- (void)_didUpdateFocusInContext:(id)a3;
+- (void)_applyBackgroundViewConfiguration:(id)configuration withState:(id)state;
+- (void)_applyContentViewConfiguration:(id)configuration withState:(id)state usingSPI:(BOOL)i;
+- (void)_clearChangeHandlersForOldContentView:(id)view;
+- (void)_configureFocusedFloatingContentView:(id)view;
+- (void)_didUpdateFocusInContext:(id)context;
 - (void)_executeConfigurationUpdate;
 - (void)_forcePopulateNormalStateConfiguration;
-- (void)_handleMenuGesture:(id)a3;
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_handleMenuGesture:(id)gesture;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 - (void)_layoutContentView;
-- (void)_layoutFocusedFloatingContentView:(id)a3;
+- (void)_layoutFocusedFloatingContentView:(id)view;
 - (void)_layoutSystemBackgroundView;
-- (void)_monitoredView:(id)a3 didMoveFromSuperview:(id)a4 toSuperview:(id)a5;
-- (void)_monitoredView:(id)a3 willMoveFromSuperview:(id)a4 toSuperview:(id)a5;
-- (void)_notifyIsDisplaying:(BOOL)a3;
-- (void)_performAction:(SEL)a3 sender:(id)a4;
-- (void)_performConfigurationStateModifications:(id)a3;
+- (void)_monitoredView:(id)view didMoveFromSuperview:(id)superview toSuperview:(id)toSuperview;
+- (void)_monitoredView:(id)view willMoveFromSuperview:(id)superview toSuperview:(id)toSuperview;
+- (void)_notifyIsDisplaying:(BOOL)displaying;
+- (void)_performAction:(SEL)action sender:(id)sender;
+- (void)_performConfigurationStateModifications:(id)modifications;
 - (void)_performConfigurationStateUpdate;
 - (void)_performCustomSelectionAction;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_prepareForConfigurationStateUpdate;
 - (void)_resetBackgroundViewConfiguration;
 - (void)_resetBackgroundViewsAndColor;
 - (void)_restoreCurrentDragAppearanceIfNeeded;
-- (void)_setAllowsStateUpdatesWhenEvaluatingBackgroundAppearance:(BOOL)a3;
-- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)a3;
-- (void)_setBackgroundViewConfiguration:(id)a3;
-- (void)_setBackgroundViewConfigurationProvider:(id)a3;
-- (void)_setContentView:(id)a3 addToHierarchy:(BOOL)a4;
-- (void)_setContentViewConfigurationProvider:(id)a3;
-- (void)_setContextMenuGroupLocation:(int64_t)a3;
-- (void)_setDragAppearance:(unint64_t)a3;
-- (void)_setDropState:(int64_t)a3;
-- (void)_setHighlighted:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setLayoutAttributes:(id)a3;
-- (void)_setOpaque:(BOOL)a3 forSubview:(id)a4;
-- (void)_setPopupMenuButton:(id)a3;
-- (void)_setReordering:(BOOL)a3;
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4 isUserInitiated:(BOOL)a5;
-- (void)_setSelectionSegueTemplate:(id)a3;
-- (void)_setSwiped:(BOOL)a3;
-- (void)_setTypeSelectState:(int64_t)a3;
-- (void)_setUsesAnyPlainListStyle:(BOOL)a3;
-- (void)_setupChangeHandlersForNewContentView:(id)a3;
+- (void)_setAllowsStateUpdatesWhenEvaluatingBackgroundAppearance:(BOOL)appearance;
+- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)enabled;
+- (void)_setBackgroundViewConfiguration:(id)configuration;
+- (void)_setBackgroundViewConfigurationProvider:(id)provider;
+- (void)_setContentView:(id)view addToHierarchy:(BOOL)hierarchy;
+- (void)_setContentViewConfigurationProvider:(id)provider;
+- (void)_setContextMenuGroupLocation:(int64_t)location;
+- (void)_setDragAppearance:(unint64_t)appearance;
+- (void)_setDropState:(int64_t)state;
+- (void)_setHighlighted:(BOOL)highlighted animated:(BOOL)animated;
+- (void)_setLayoutAttributes:(id)attributes;
+- (void)_setOpaque:(BOOL)opaque forSubview:(id)subview;
+- (void)_setPopupMenuButton:(id)button;
+- (void)_setReordering:(BOOL)reordering;
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated isUserInitiated:(BOOL)initiated;
+- (void)_setSelectionSegueTemplate:(id)template;
+- (void)_setSwiped:(BOOL)swiped;
+- (void)_setTypeSelectState:(int64_t)state;
+- (void)_setUsesAnyPlainListStyle:(BOOL)style;
+- (void)_setupChangeHandlersForNewContentView:(id)view;
 - (void)_setupHighlightingSupport;
 - (void)_teardownHighlightingSupportIfReady;
 - (void)_updateBackgroundView;
-- (void)_updateBackgroundViewConfigurationForState:(id)a3;
+- (void)_updateBackgroundViewConfigurationForState:(id)state;
 - (void)_updateConfigurationWithObservationTracking;
-- (void)_updateContentViewConfigurationForState:(id)a3;
+- (void)_updateContentViewConfigurationForState:(id)state;
 - (void)_updateDefaultBackgroundAppearance;
-- (void)_updateFocusedFloatingContentControlStateInContext:(id)a3 withAnimationCoordinator:(id)a4 animated:(BOOL)a5;
+- (void)_updateFocusedFloatingContentControlStateInContext:(id)context withAnimationCoordinator:(id)coordinator animated:(BOOL)animated;
 - (void)_updateHighlightColorsForAnimationHalfwayPoint;
-- (void)_updateHighlightColorsForView:(id)a3 highlight:(BOOL)a4;
+- (void)_updateHighlightColorsForView:(id)view highlight:(BOOL)highlight;
 - (void)_updatePopupMenuButtonFromContentView;
 - (void)_updateProperties;
-- (void)_updateUserInterfaceRenderingModeUsingAttributes:(id)a3;
-- (void)_willUpdateFocusInContext:(id)a3;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (void)_updateUserInterfaceRenderingModeUsingAttributes:(id)attributes;
+- (void)_willUpdateFocusInContext:(id)context;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)encodeWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)setAutomaticallyUpdatesBackgroundConfiguration:(BOOL)automaticallyUpdatesBackgroundConfiguration;
 - (void)setAutomaticallyUpdatesContentConfiguration:(BOOL)automaticallyUpdatesContentConfiguration;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 - (void)setBackgroundConfiguration:(UIBackgroundConfiguration *)backgroundConfiguration;
 - (void)setBackgroundView:(UIView *)backgroundView;
 - (void)setConfigurationUpdateHandler:(UICollectionViewCellConfigurationUpdateHandler)configurationUpdateHandler;
-- (void)setEditing:(BOOL)a3;
+- (void)setEditing:(BOOL)editing;
 - (void)setHighlighted:(BOOL)highlighted;
 - (void)setNeedsUpdateConfiguration;
 - (void)setSelected:(BOOL)selected;
 - (void)setSelectedBackgroundView:(UIView *)selectedBackgroundView;
-- (void)setSemanticContentAttribute:(int64_t)a3;
-- (void)setUserInteractionEnabled:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setSemanticContentAttribute:(int64_t)attribute;
+- (void)setUserInteractionEnabled:(BOOL)enabled;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation UICollectionViewCell
@@ -150,8 +150,8 @@
     {
       if ((*&collectionCellFlags & 0x4000) == 0)
       {
-        v4 = [(UICollectionViewCell *)self _defaultBackgroundView];
-        [(UICollectionViewCell *)self setBackgroundView:v4];
+        _defaultBackgroundView = [(UICollectionViewCell *)self _defaultBackgroundView];
+        [(UICollectionViewCell *)self setBackgroundView:_defaultBackgroundView];
 
         collectionCellFlags = (*&self->_collectionCellFlags & 0xFFFFBFFF);
         self->_collectionCellFlags = collectionCellFlags;
@@ -159,8 +159,8 @@
 
       if ((*&collectionCellFlags & 0x8000) == 0)
       {
-        v5 = [(UICollectionViewCell *)self _defaultSelectedBackgroundView];
-        [(UICollectionViewCell *)self setSelectedBackgroundView:v5];
+        _defaultSelectedBackgroundView = [(UICollectionViewCell *)self _defaultSelectedBackgroundView];
+        [(UICollectionViewCell *)self setSelectedBackgroundView:_defaultSelectedBackgroundView];
 
         *&self->_collectionCellFlags &= ~0x8000u;
       }
@@ -168,14 +168,14 @@
 
     else
     {
-      v6 = [(UICollectionViewCell *)self _effectiveDefaultBackgroundConfiguration];
+      _effectiveDefaultBackgroundConfiguration = [(UICollectionViewCell *)self _effectiveDefaultBackgroundConfiguration];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __58__UICollectionViewCell__updateDefaultBackgroundAppearance__block_invoke;
       v8[3] = &unk_1E70F35B8;
       v8[4] = self;
-      v9 = v6;
-      v7 = v6;
+      v9 = _effectiveDefaultBackgroundConfiguration;
+      v7 = _effectiveDefaultBackgroundConfiguration;
       [UIView _performSystemAppearanceModifications:v8];
       *&self->_collectionCellFlags &= ~0x20000u;
     }
@@ -187,33 +187,33 @@
   if (self->_contentView && (objc_opt_respondsToSelector() & 1) != 0 && ([(UIView *)self->_contentView _containerBackgroundView], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v4 = v3;
-    v5 = +[UIBackgroundConfiguration clearConfiguration];
-    [v5 setCustomView:v4];
+    _defaultBackgroundConfiguration = +[UIBackgroundConfiguration clearConfiguration];
+    [_defaultBackgroundConfiguration setCustomView:v4];
   }
 
   else
   {
-    v5 = [(UICollectionViewCell *)self _defaultBackgroundConfiguration];
+    _defaultBackgroundConfiguration = [(UICollectionViewCell *)self _defaultBackgroundConfiguration];
   }
 
-  return v5;
+  return _defaultBackgroundConfiguration;
 }
 
 - (void)_updatePopupMenuButtonFromContentView
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(UIView *)self->_contentView _popupMenuButton];
-    [(UICollectionViewCell *)self _setPopupMenuButton:v3];
+    _popupMenuButton = [(UIView *)self->_contentView _popupMenuButton];
+    [(UICollectionViewCell *)self _setPopupMenuButton:_popupMenuButton];
   }
 }
 
 - (unint64_t)_maskedCornersForSystemBackgroundView
 {
-  v2 = [(UICollectionReusableView *)self _layoutAttributes];
-  if (v2)
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+  if (_layoutAttributes)
   {
-    v3 = v2[72];
+    v3 = _layoutAttributes[72];
     if ((v3 & 0x10) != 0)
     {
       v4 = (v3 >> 5) & 0xF;
@@ -253,8 +253,8 @@
     return (*&self->_collectionCellFlags & 0xE0) != 0;
   }
 
-  v4 = [(UIView *)self traitCollection];
-  v2 = [v4 userInterfaceIdiom] != 6 || (*&self->_collectionCellFlags & 0xE0) != 0;
+  traitCollection = [(UIView *)self traitCollection];
+  v2 = [traitCollection userInterfaceIdiom] != 6 || (*&self->_collectionCellFlags & 0xE0) != 0;
 
   return v2;
 }
@@ -266,7 +266,7 @@
     dispatch_once(&qword_1ED4964E8, &__block_literal_global_119);
   }
 
-  v3 = [a1 methodForSelector:sel__contentViewClass];
+  v3 = [self methodForSelector:sel__contentViewClass];
   if (v3)
   {
     v4 = v3 == qword_1ED4964E0;
@@ -290,16 +290,16 @@
 
 - (void)_updateConfigurationWithObservationTracking
 {
-  v2 = self;
+  selfCopy = self;
   sub_188C78D28();
 }
 
 - (unint64_t)_viewConfigurationState
 {
-  v2 = [(UICollectionViewCell *)self configurationState];
-  v3 = [v2 _viewConfigurationState];
+  configurationState = [(UICollectionViewCell *)self configurationState];
+  _viewConfigurationState = [configurationState _viewConfigurationState];
 
-  return v3;
+  return _viewConfigurationState;
 }
 
 uint64_t __58__UICollectionViewCell__subclassOverridesContentViewClass__block_invoke()
@@ -311,23 +311,23 @@ uint64_t __58__UICollectionViewCell__subclassOverridesContentViewClass__block_in
 
 - (void)_executeConfigurationUpdate
 {
-  if (a1)
+  if (self)
   {
-    v2 = _UISetCurrentFallbackEnvironment(a1);
-    v3 = [a1 configurationState];
+    v2 = _UISetCurrentFallbackEnvironment(self);
+    configurationState = [self configurationState];
     memset(__src, 0, sizeof(__src));
-    _UIBeginTrackingTraitUsage(a1, 0, __src);
-    [a1 _updateBackgroundViewConfigurationForState:v3];
-    [a1 _updateContentViewConfigurationForState:v3];
-    [a1 _updateConfigurationUsingState:v3];
-    [a1 _updateViewConfigurationsWithState:{objc_msgSend(a1, "_viewConfigurationState")}];
-    [a1 updateConfigurationUsingState:v3];
-    [a1 _bridgedUpdateConfigurationUsingState:v3];
-    v4 = [a1 configurationUpdateHandler];
-    v5 = v4;
-    if (v4)
+    _UIBeginTrackingTraitUsage(self, 0, __src);
+    [self _updateBackgroundViewConfigurationForState:configurationState];
+    [self _updateContentViewConfigurationForState:configurationState];
+    [self _updateConfigurationUsingState:configurationState];
+    [self _updateViewConfigurationsWithState:{objc_msgSend(self, "_viewConfigurationState")}];
+    [self updateConfigurationUsingState:configurationState];
+    [self _bridgedUpdateConfigurationUsingState:configurationState];
+    configurationUpdateHandler = [self configurationUpdateHandler];
+    v5 = configurationUpdateHandler;
+    if (configurationUpdateHandler)
     {
-      (*(v4 + 16))(v4, a1, v3);
+      (*(configurationUpdateHandler + 16))(configurationUpdateHandler, self, configurationState);
     }
 
     memcpy(v12, __src, sizeof(v12));
@@ -337,16 +337,16 @@ uint64_t __58__UICollectionViewCell__subclassOverridesContentViewClass__block_in
     v7 = __dst[22] & ~*&__src[11];
     v8 = *&__src[11] & ~__dst[22];
     v9 = __dst[22] & *&__src[11];
-    v10 = [a1 methodForSelector:sel_updateConfigurationUsingState_];
+    v10 = [self methodForSelector:sel_updateConfigurationUsingState_];
     *&v12[0] = v7;
     *(&v12[0] + 1) = v8;
     *&v12[1] = v9;
-    [(UIView *)a1 _recordTraitUsage:v12 trackedStateDiff:v10 insideMethod:sel_setNeedsUpdateConfiguration withInvalidationAction:?];
+    [(UIView *)self _recordTraitUsage:v12 trackedStateDiff:v10 insideMethod:sel_setNeedsUpdateConfiguration withInvalidationAction:?];
     v11 = _UITraitUsageTrackingResultDestroy(__dst);
-    a1[148] &= ~0x800000u;
+    self[148] &= ~0x800000u;
     if (+[UIView _isInAnimationBlockWithAnimationsEnabled])
     {
-      [a1 _layoutSystemBackgroundView];
+      [self _layoutSystemBackgroundView];
     }
 
     _UIRestorePreviousFallbackEnvironment(v2);
@@ -375,8 +375,8 @@ uint64_t __58__UICollectionViewCell__subclassOverridesContentViewClass__block_in
 - (UICellConfigurationState)_configurationState
 {
   v3 = [UICellConfigurationState alloc];
-  v4 = [(UIView *)self traitCollection];
-  v5 = [(UIViewConfigurationState *)v3 initWithTraitCollection:v4];
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = [(UIViewConfigurationState *)v3 initWithTraitCollection:traitCollection];
 
   [(UIViewConfigurationState *)v5 setDisabled:[(UIView *)self isUserInteractionEnabled]^ 1];
   [(UIViewConfigurationState *)v5 setHighlighted:[(UICollectionViewCell *)self isHighlighted]];
@@ -386,11 +386,11 @@ uint64_t __58__UICollectionViewCell__subclassOverridesContentViewClass__block_in
   [(UICellConfigurationState *)v5 setSwiped:[(UICollectionViewCell *)self _isSwiped]];
   [(UICellConfigurationState *)v5 setReordering:[(UICollectionViewCell *)self _isReordering]];
   [(UICellConfigurationState *)v5 _setTypeSelectState:[(UICollectionViewCell *)self _typeSelectState]];
-  v6 = [(UICollectionReusableView *)self _layoutAttributes];
-  v7 = v6;
-  if (v6)
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+  v7 = _layoutAttributes;
+  if (_layoutAttributes)
   {
-    [(UIViewConfigurationState *)v5 setPinned:(*(v6 + 288) >> 15) & 1];
+    [(UIViewConfigurationState *)v5 setPinned:(*(_layoutAttributes + 288) >> 15) & 1];
     [(UIViewConfigurationState *)v5 _setContextMenuGroupLocation:[(UICollectionViewCell *)self _contextMenuGroupLocation]];
     [(UICellConfigurationState *)v5 _setUsesAnyPlainListStyle:[(UICollectionViewCell *)self _usesAnyPlainListStyle]];
     v8 = v7[38] > 1uLL;
@@ -418,29 +418,29 @@ uint64_t __58__UICollectionViewCell__subclassOverridesContentViewClass__block_in
 
 - (unint64_t)_effectiveMaskedCornersForSystemBackgroundView
 {
-  v3 = [(UICollectionReusableView *)self _layoutAttributes];
-  v4 = [(UICollectionViewLayoutAttributes *)v3 _existingListAttributes];
-  v5 = v4;
-  if (v4 && (*(v4 + 8) & 2) != 0)
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)_layoutAttributes _existingListAttributes];
+  v5 = _existingListAttributes;
+  if (_existingListAttributes && (*(_existingListAttributes + 8) & 2) != 0)
   {
-    v6 = *(v4 + 24);
+    _maskedCornersForSystemBackgroundView = *(_existingListAttributes + 24);
   }
 
   else
   {
-    v6 = [(UICollectionViewCell *)self _maskedCornersForSystemBackgroundView];
+    _maskedCornersForSystemBackgroundView = [(UICollectionViewCell *)self _maskedCornersForSystemBackgroundView];
   }
 
-  if (v3)
+  if (_layoutAttributes)
   {
-    v7 = *(v3 + 288);
+    v7 = *(_layoutAttributes + 288);
     if ((v7 & 0x10) != 0)
     {
-      v6 |= (v7 >> 5) & 0xF;
+      _maskedCornersForSystemBackgroundView |= (v7 >> 5) & 0xF;
     }
   }
 
-  return v6;
+  return _maskedCornersForSystemBackgroundView;
 }
 
 - (void)_restoreCurrentDragAppearanceIfNeeded
@@ -549,8 +549,8 @@ uint64_t __58__UICollectionViewCell__subclassOverridesContentViewClass__block_in
   if ((*&collectionCellFlags & 0x4000000) != 0)
   {
     self->_collectionCellFlags = (*&collectionCellFlags & 0xFBFFFFFF);
-    v4 = [(UIView *)self _focusSystemSceneComponent];
-    [v4 _requestFocusEffectUpdateToEnvironment:self];
+    _focusSystemSceneComponent = [(UIView *)self _focusSystemSceneComponent];
+    [_focusSystemSceneComponent _requestFocusEffectUpdateToEnvironment:self];
   }
 }
 
@@ -657,24 +657,24 @@ uint64_t __57__UICollectionViewCell__resetBackgroundViewConfiguration__block_inv
 {
   if ((*(&self->_collectionCellFlags + 1) & 0x10) != 0 && !self->_viewForContentConfiguration)
   {
-    v4 = [(UIView *)self->_contentView configuration];
+    configuration = [(UIView *)self->_contentView configuration];
   }
 
   else
   {
-    v4 = 0;
+    configuration = 0;
   }
 
-  return v4;
+  return configuration;
 }
 
 - (UIBackgroundConfiguration)backgroundConfiguration
 {
-  v2 = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
+  configuration = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = configuration;
   }
 
   else
@@ -708,8 +708,8 @@ uint64_t __57__UICollectionViewCell__resetBackgroundViewConfiguration__block_inv
 
   else
   {
-    v3 = [(UIView *)self layer];
-    [v3 removeAllAnimations];
+    layer = [(UIView *)self layer];
+    [layer removeAllAnimations];
   }
 
   lastNormalBackgroundViewConfiguration = self->_lastNormalBackgroundViewConfiguration;
@@ -742,8 +742,8 @@ uint64_t __57__UICollectionViewCell__resetBackgroundViewConfiguration__block_inv
     v3 = 0.0;
   }
 
-  v4 = [(UICollectionViewCell *)self _descendantsShouldHighlight];
-  if (v4)
+  _descendantsShouldHighlight = [(UICollectionViewCell *)self _descendantsShouldHighlight];
+  if (_descendantsShouldHighlight)
   {
     [(UICollectionViewCell *)self _setupHighlightingSupport];
   }
@@ -752,8 +752,8 @@ uint64_t __57__UICollectionViewCell__resetBackgroundViewConfiguration__block_inv
   if (selectedBackgroundView)
   {
     [(UIView *)selectedBackgroundView setAlpha:v3];
-    v6 = [(UICollectionReusableView *)self _collectionView];
-    [v6 _cellBackgroundChangedForSelectionOrHighlight:self];
+    _collectionView = [(UICollectionReusableView *)self _collectionView];
+    [_collectionView _cellBackgroundChangedForSelectionOrHighlight:self];
   }
 
   if (+[UIView _isInAnimationBlock])
@@ -768,7 +768,7 @@ uint64_t __57__UICollectionViewCell__resetBackgroundViewConfiguration__block_inv
 
   else
   {
-    [(UICollectionViewCell *)self _updateHighlightColorsForView:self highlight:v4];
+    [(UICollectionViewCell *)self _updateHighlightColorsForView:self highlight:_descendantsShouldHighlight];
     *&self->_collectionCellFlags &= ~0x200000u;
   }
 }
@@ -777,19 +777,19 @@ uint64_t __57__UICollectionViewCell__resetBackgroundViewConfiguration__block_inv
 {
   if ((*&self->_collectionCellFlags & 2) != 0)
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(_highlightDescendantsWhenSelected) = 1;
   }
 
   else
   {
-    v3 = [(UICollectionViewCell *)self _highlightDescendantsWhenSelected];
-    if (v3)
+    _highlightDescendantsWhenSelected = [(UICollectionViewCell *)self _highlightDescendantsWhenSelected];
+    if (_highlightDescendantsWhenSelected)
     {
-      LOBYTE(v3) = *&self->_collectionCellFlags & 1;
+      LOBYTE(_highlightDescendantsWhenSelected) = *&self->_collectionCellFlags & 1;
     }
   }
 
-  return v3;
+  return _highlightDescendantsWhenSelected;
 }
 
 - (void)_setupHighlightingSupport
@@ -808,11 +808,11 @@ uint64_t __57__UICollectionViewCell__resetBackgroundViewConfiguration__block_inv
 
 - (BOOL)_backgroundFillIsCustomized
 {
-  v2 = self;
+  selfCopy = self;
   selectedBackgroundView = self->_selectedBackgroundView;
   if (!selectedBackgroundView)
   {
-    if (![(UICollectionViewCell *)v2 isHighlighted]&& ![(UICollectionViewCell *)v2 isSelected]&& ![(UICollectionViewCell *)v2 isFocused])
+    if (![(UICollectionViewCell *)selfCopy isHighlighted]&& ![(UICollectionViewCell *)selfCopy isSelected]&& ![(UICollectionViewCell *)selfCopy isFocused])
     {
       goto LABEL_3;
     }
@@ -821,36 +821,36 @@ uint64_t __57__UICollectionViewCell__resetBackgroundViewConfiguration__block_inv
     v11[1] = 3221225472;
     v11[2] = __51__UICollectionViewCell__backgroundFillIsCustomized__block_invoke;
     v11[3] = &unk_1E70F3590;
-    v11[4] = v2;
+    v11[4] = selfCopy;
     [UIView performWithoutAnimation:v11];
-    v4 = [(_UISystemBackgroundView *)v2->_systemBackgroundView configuration];
-    v5 = v4;
-    if (v4 && [v4 _hasBackgroundFill])
+    configuration = [(_UISystemBackgroundView *)selfCopy->_systemBackgroundView configuration];
+    v5 = configuration;
+    if (configuration && [configuration _hasBackgroundFill])
     {
-      lastNormalBackgroundViewConfiguration = v2->_lastNormalBackgroundViewConfiguration;
+      lastNormalBackgroundViewConfiguration = selfCopy->_lastNormalBackgroundViewConfiguration;
       if (!lastNormalBackgroundViewConfiguration)
       {
-        if ((*(&v2->_collectionCellFlags + 3) & 3) != 0)
+        if ((*(&selfCopy->_collectionCellFlags + 3) & 3) != 0)
         {
-          [(UICollectionViewCell *)v2 _forcePopulateNormalStateConfiguration];
-          v10 = [(_UISystemBackgroundView *)v2->_systemBackgroundView configuration];
+          [(UICollectionViewCell *)selfCopy _forcePopulateNormalStateConfiguration];
+          configuration2 = [(_UISystemBackgroundView *)selfCopy->_systemBackgroundView configuration];
 
-          if (!v10)
+          if (!configuration2)
           {
-            LOBYTE(v2) = 0;
+            LOBYTE(selfCopy) = 0;
             v5 = 0;
             goto LABEL_13;
           }
 
-          if (![v10 _hasBackgroundFill])
+          if (![configuration2 _hasBackgroundFill])
           {
-            LOBYTE(v2) = 0;
-            v5 = v10;
+            LOBYTE(selfCopy) = 0;
+            v5 = configuration2;
             goto LABEL_13;
           }
 
-          lastNormalBackgroundViewConfiguration = v2->_lastNormalBackgroundViewConfiguration;
-          v5 = v10;
+          lastNormalBackgroundViewConfiguration = selfCopy->_lastNormalBackgroundViewConfiguration;
+          v5 = configuration2;
         }
 
         else
@@ -859,30 +859,30 @@ uint64_t __57__UICollectionViewCell__resetBackgroundViewConfiguration__block_inv
         }
       }
 
-      v7 = [(UIView *)v2 tintColor];
-      LODWORD(v2) = [v5 _backgroundFillIsEqual:lastNormalBackgroundViewConfiguration withTintColor:v7] ^ 1;
+      tintColor = [(UIView *)selfCopy tintColor];
+      LODWORD(selfCopy) = [v5 _backgroundFillIsEqual:lastNormalBackgroundViewConfiguration withTintColor:tintColor] ^ 1;
     }
 
     else
     {
-      LOBYTE(v2) = 0;
+      LOBYTE(selfCopy) = 0;
     }
 
 LABEL_13:
 
-    return v2;
+    return selfCopy;
   }
 
   if (![(UIView *)selectedBackgroundView isHidden])
   {
-    [(UIView *)v2->_selectedBackgroundView alpha];
-    LOBYTE(v2) = v8 > 0.0;
-    return v2;
+    [(UIView *)selfCopy->_selectedBackgroundView alpha];
+    LOBYTE(selfCopy) = v8 > 0.0;
+    return selfCopy;
   }
 
 LABEL_3:
-  LOBYTE(v2) = 0;
-  return v2;
+  LOBYTE(selfCopy) = 0;
+  return selfCopy;
 }
 
 - (BOOL)_backgroundIsVerticallyInset
@@ -907,38 +907,38 @@ LABEL_3:
 
 - (BOOL)canBecomeFocused
 {
-  v3 = [(UICollectionReusableView *)self _layoutAttributes];
-  v4 = [(UICollectionReusableView *)self _isStyledAsHeaderOrFooterFromLayoutAttributes:v3];
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+  v4 = [(UICollectionReusableView *)self _isStyledAsHeaderOrFooterFromLayoutAttributes:_layoutAttributes];
 
   if (v4)
   {
     v4 = ![(UICollectionReusableView *)self _isFocusableWhenStyledAsHeader];
   }
 
-  v5 = [(UICollectionViewCell *)self _existingContentView];
-  v6 = v5;
-  if (v5)
+  _existingContentView = [(UICollectionViewCell *)self _existingContentView];
+  v6 = _existingContentView;
+  if (_existingContentView)
   {
     if (objc_opt_respondsToSelector())
     {
-      LODWORD(v5) = [v6 _preventFocus];
+      LODWORD(_existingContentView) = [v6 _preventFocus];
     }
 
     else
     {
-      LODWORD(v5) = 0;
+      LODWORD(_existingContentView) = 0;
     }
   }
 
-  if ((v4 | v5))
+  if ((v4 | _existingContentView))
   {
     v7 = 0;
   }
 
   else
   {
-    v8 = [(UICollectionReusableView *)self _collectionView];
-    v7 = [v8 _cellCanBecomeFocused:self];
+    _collectionView = [(UICollectionReusableView *)self _collectionView];
+    v7 = [_collectionView _cellCanBecomeFocused:self];
   }
 
   return v7;
@@ -946,8 +946,8 @@ LABEL_3:
 
 - (id)_effectivePopupMenuButton
 {
-  v3 = [(UIView *)self traitCollection];
-  if ([v3 userInterfaceIdiom] == 5)
+  traitCollection = [(UIView *)self traitCollection];
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
     popupMenuButton = 0;
   }
@@ -964,8 +964,8 @@ LABEL_3:
 
 - (BOOL)_hasCustomSelectionAction
 {
-  v2 = [(UICollectionViewCell *)self _effectivePopupMenuButton];
-  v3 = v2 != 0;
+  _effectivePopupMenuButton = [(UICollectionViewCell *)self _effectivePopupMenuButton];
+  v3 = _effectivePopupMenuButton != 0;
 
   return v3;
 }
@@ -977,9 +977,9 @@ LABEL_3:
   return v2;
 }
 
-+ (id)_createDefaultContentViewWithFrame:(CGRect)a3
++ (id)_createDefaultContentViewWithFrame:(CGRect)frame
 {
-  v3 = [objc_alloc(objc_msgSend(a1 "_contentViewClass"))];
+  v3 = [objc_alloc(objc_msgSend(self "_contentViewClass"))];
   if (dyld_program_sdk_at_least())
   {
     [v3 _setHostsLayoutEngine:1];
@@ -988,11 +988,11 @@ LABEL_3:
   return v3;
 }
 
-- (UICollectionViewCell)initWithFrame:(CGRect)a3
+- (UICollectionViewCell)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = UICollectionViewCell;
-  v3 = [(UICollectionReusableView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     if (!dyld_program_sdk_at_least() || [objc_opt_class() _subclassOverridesContentViewClass])
@@ -1011,22 +1011,22 @@ LABEL_3:
   return v3;
 }
 
-- (UICollectionViewCell)initWithCoder:(id)a3
+- (UICollectionViewCell)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = UICollectionViewCell;
-  v5 = [(UICollectionReusableView *)&v21 initWithCoder:v4];
+  v5 = [(UICollectionReusableView *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UIContentConfigurationIdentifier"];
+    v6 = [coderCopy decodeObjectForKey:@"UIContentConfigurationIdentifier"];
     v5->_collectionCellFlags = (*&v5->_collectionCellFlags & 0xFFFFEFFF | ((v6 != 0) << 12));
 
-    v7 = [v4 decodeObjectForKey:@"UIContentConfigurationView"];
+    v7 = [coderCopy decodeObjectForKey:@"UIContentConfigurationView"];
     viewForContentConfiguration = v5->_viewForContentConfiguration;
     v5->_viewForContentConfiguration = v7;
 
-    v9 = [v4 decodeObjectForKey:@"UIContentView"];
+    v9 = [coderCopy decodeObjectForKey:@"UIContentView"];
     contentView = v5->_contentView;
     v5->_contentView = v9;
 
@@ -1043,7 +1043,7 @@ LABEL_3:
       [(UICollectionViewCell *)v5 setContentView:v12];
     }
 
-    v13 = [v4 decodeObjectForKey:@"UISystemBackgroundView"];
+    v13 = [coderCopy decodeObjectForKey:@"UISystemBackgroundView"];
     systemBackgroundView = v5->_systemBackgroundView;
     v5->_systemBackgroundView = v13;
 
@@ -1055,11 +1055,11 @@ LABEL_3:
 
     else
     {
-      v16 = [v4 decodeObjectForKey:@"UIBackgroundView"];
+      v16 = [coderCopy decodeObjectForKey:@"UIBackgroundView"];
       backgroundView = v5->_backgroundView;
       v5->_backgroundView = v16;
 
-      v18 = [v4 decodeObjectForKey:@"UISelectedBackgroundView"];
+      v18 = [coderCopy decodeObjectForKey:@"UISelectedBackgroundView"];
       selectedBackgroundView = v5->_selectedBackgroundView;
       v5->_selectedBackgroundView = v18;
     }
@@ -1070,63 +1070,63 @@ LABEL_3:
   return v5;
 }
 
-- (void)_applyContentViewConfiguration:(id)a3 withState:(id)a4 usingSPI:(BOOL)a5
+- (void)_applyContentViewConfiguration:(id)configuration withState:(id)state usingSPI:(BOOL)i
 {
-  v5 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
+  iCopy = i;
+  configurationCopy = configuration;
+  stateCopy = state;
+  configurationState = stateCopy;
   collectionCellFlags = self->_collectionCellFlags;
-  if (v9)
+  if (configurationCopy)
   {
     if ((*&collectionCellFlags & 0x80000) != 0 && !self->_contentViewConfigurationProvider)
     {
-      if (!v10)
+      if (!stateCopy)
       {
-        v11 = [(UICollectionViewCell *)self configurationState];
+        configurationState = [(UICollectionViewCell *)self configurationState];
       }
 
-      v35 = v11;
-      if (v5)
+      v35 = configurationState;
+      if (iCopy)
       {
-        v19 = [(UICollectionViewCell *)self _viewConfigurationState];
-        v20 = [(UIView *)self traitCollection];
-        v13 = [v9 updatedConfigurationForState:v19 traitCollection:v20];
+        _viewConfigurationState = [(UICollectionViewCell *)self _viewConfigurationState];
+        traitCollection = [(UIView *)self traitCollection];
+        v13 = [configurationCopy updatedConfigurationForState:_viewConfigurationState traitCollection:traitCollection];
       }
 
       else
       {
-        v13 = [v9 updatedConfigurationForState:v11];
+        v13 = [configurationCopy updatedConfigurationForState:configurationState];
       }
 
       if (!v13)
       {
-        v32 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v32 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1093 description:{@"Updated configuration was nil for configuration: %@", v9}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1093 description:{@"Updated configuration was nil for configuration: %@", configurationCopy}];
       }
 
-      v11 = v35;
+      configurationState = v35;
     }
 
     else
     {
-      v13 = v9;
+      v13 = configurationCopy;
     }
 
-    v34 = v11;
+    v34 = configurationState;
     if ((*&collectionCellFlags & 0x1000) == 0)
     {
       *&self->_collectionCellFlags |= 0x1000u;
-      if (!v5)
+      if (!iCopy)
       {
 LABEL_43:
-        v27 = [v13 makeContentView];
-        objc_storeStrong(&self->_viewForContentConfiguration, v27);
+        makeContentView = [v13 makeContentView];
+        objc_storeStrong(&self->_viewForContentConfiguration, makeContentView);
         if (objc_opt_respondsToSelector())
         {
-          v29 = [(_UIContentViewInternal *)self->_viewForContentConfiguration _wrappedContentView];
+          _wrappedContentView = [(_UIContentViewInternal *)self->_viewForContentConfiguration _wrappedContentView];
 
-          v27 = v29;
+          makeContentView = _wrappedContentView;
         }
 
         goto LABEL_45;
@@ -1151,9 +1151,9 @@ LABEL_43:
     else
     {
       v33 = a2;
-      v18 = [v16 configuration];
+      configuration = [v16 configuration];
 
-      v16 = v18;
+      v16 = configuration;
       if (v16)
       {
         if (objc_opt_respondsToSelector())
@@ -1202,35 +1202,35 @@ LABEL_43:
     *&self->_collectionCellFlags |= 0x1000u;
     if (!v17)
     {
-      if (!v5)
+      if (!iCopy)
       {
-        v28 = [(_UIContentViewInternal *)self->_viewForContentConfiguration configuration];
-        UIContentConfigurationAlertForReplacedContentView(@"cell", self, v28, v15, @"Use separate registrations or reuse identifiers for different types of cells to avoid this.");
+        configuration2 = [(_UIContentViewInternal *)self->_viewForContentConfiguration configuration];
+        UIContentConfigurationAlertForReplacedContentView(@"cell", self, configuration2, v15, @"Use separate registrations or reuse identifiers for different types of cells to avoid this.");
 
         goto LABEL_43;
       }
 
 LABEL_39:
-      v27 = [v13 createContentView];
+      makeContentView = [v13 createContentView];
 LABEL_45:
-      if (!v27)
+      if (!makeContentView)
       {
-        v30 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v30 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1127 description:{@"Content configuration returned a nil content view: %@", v13}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1127 description:{@"Content configuration returned a nil content view: %@", v13}];
       }
 
-      if (([v27 translatesAutoresizingMaskIntoConstraints] & 1) == 0)
+      if (([makeContentView translatesAutoresizingMaskIntoConstraints] & 1) == 0)
       {
-        v31 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v31 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1128 description:{@"The content view returned from the content configuration must have translatesAutoresizingMaskIntoConstraints enabled: %@", v27}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1128 description:{@"The content view returned from the content configuration must have translatesAutoresizingMaskIntoConstraints enabled: %@", makeContentView}];
       }
 
-      [(UICollectionViewCell *)self setContentView:v27];
+      [(UICollectionViewCell *)self setContentView:makeContentView];
 
       goto LABEL_50;
     }
 
-    if (v5)
+    if (iCopy)
     {
       contentView = self->_contentView;
     }
@@ -1252,7 +1252,7 @@ LABEL_45:
       goto LABEL_51;
     }
 
-    v34 = v10;
+    v34 = stateCopy;
     [(UICollectionViewCell *)self setContentView:0];
     v13 = self->_viewForContentConfiguration;
     self->_viewForContentConfiguration = 0;
@@ -1260,7 +1260,7 @@ LABEL_45:
 
 LABEL_50:
 
-  v11 = v34;
+  configurationState = v34;
 LABEL_51:
 }
 
@@ -1297,16 +1297,16 @@ LABEL_51:
   *p_collectionCellFlags = (*&collectionCellFlags & 0xFFF7FFFF);
 }
 
-- (void)_setContentViewConfigurationProvider:(id)a3
+- (void)_setContentViewConfigurationProvider:(id)provider
 {
-  if (self->_contentViewConfigurationProvider != a3)
+  if (self->_contentViewConfigurationProvider != provider)
   {
-    if (a3)
+    if (provider)
     {
       *&self->_collectionCellFlags &= ~0x80000u;
     }
 
-    v4 = [a3 copy];
+    v4 = [provider copy];
     contentViewConfigurationProvider = self->_contentViewConfigurationProvider;
     self->_contentViewConfigurationProvider = v4;
 
@@ -1321,82 +1321,82 @@ LABEL_51:
   return v2;
 }
 
-- (void)_updateContentViewConfigurationForState:(id)a3
+- (void)_updateContentViewConfigurationForState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   contentViewConfigurationProvider = self->_contentViewConfigurationProvider;
   if (contentViewConfigurationProvider)
   {
-    v11 = v4;
-    v6 = contentViewConfigurationProvider[2](contentViewConfigurationProvider, [(UICollectionViewCell *)self _viewConfigurationState]);
-    [(UICollectionViewCell *)self _setContentViewConfiguration:v6];
+    v11 = stateCopy;
+    contentConfiguration = contentViewConfigurationProvider[2](contentViewConfigurationProvider, [(UICollectionViewCell *)self _viewConfigurationState]);
+    [(UICollectionViewCell *)self _setContentViewConfiguration:contentConfiguration];
 LABEL_3:
 
-    v4 = v11;
+    stateCopy = v11;
     goto LABEL_4;
   }
 
   if ((*(&self->_collectionCellFlags + 2) & 8) != 0)
   {
-    v11 = v4;
+    v11 = stateCopy;
     if (self->_viewForContentConfiguration)
     {
-      v6 = [(UICollectionViewCell *)self contentConfiguration];
-      if (!v6)
+      contentConfiguration = [(UICollectionViewCell *)self contentConfiguration];
+      if (!contentConfiguration)
       {
         goto LABEL_3;
       }
 
-      v7 = self;
-      v8 = v6;
+      selfCopy2 = self;
+      v8 = contentConfiguration;
       v9 = v11;
       v10 = 0;
     }
 
     else
     {
-      v6 = [(UICollectionViewCell *)self _contentViewConfiguration];
-      if (!v6)
+      contentConfiguration = [(UICollectionViewCell *)self _contentViewConfiguration];
+      if (!contentConfiguration)
       {
         goto LABEL_3;
       }
 
-      v7 = self;
-      v8 = v6;
+      selfCopy2 = self;
+      v8 = contentConfiguration;
       v9 = v11;
       v10 = 1;
     }
 
-    [(UICollectionViewCell *)v7 _applyContentViewConfiguration:v8 withState:v9 usingSPI:v10];
+    [(UICollectionViewCell *)selfCopy2 _applyContentViewConfiguration:v8 withState:v9 usingSPI:v10];
     goto LABEL_3;
   }
 
 LABEL_4:
 }
 
-- (void)_clearChangeHandlersForOldContentView:(id)a3
+- (void)_clearChangeHandlersForOldContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    [v4 _setPopupMenuButtonDidChangeHandler:0];
+    [viewCopy _setPopupMenuButtonDidChangeHandler:0];
     [(UICollectionViewCell *)self _setPopupMenuButton:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 _setContainerBackgroundViewDidChangeHandler:0];
+    [viewCopy _setContainerBackgroundViewDidChangeHandler:0];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 _containerViewIsHiddenForReuse:0];
+    [viewCopy _containerViewIsHiddenForReuse:0];
   }
 }
 
-- (void)_setupChangeHandlersForNewContentView:(id)a3
+- (void)_setupChangeHandlersForNewContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
     objc_initWeak(&location, self);
@@ -1405,7 +1405,7 @@ LABEL_4:
     v7[2] = __62__UICollectionViewCell__setupChangeHandlersForNewContentView___block_invoke;
     v7[3] = &unk_1E70F5A28;
     objc_copyWeak(&v8, &location);
-    [v4 _setPopupMenuButtonDidChangeHandler:v7];
+    [viewCopy _setPopupMenuButtonDidChangeHandler:v7];
     [(UICollectionViewCell *)self _updatePopupMenuButtonFromContentView];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -1419,7 +1419,7 @@ LABEL_4:
     v5[2] = __62__UICollectionViewCell__setupChangeHandlersForNewContentView___block_invoke_2;
     v5[3] = &unk_1E70F5A28;
     objc_copyWeak(&v6, &location);
-    [v4 _setContainerBackgroundViewDidChangeHandler:v5];
+    [viewCopy _setContainerBackgroundViewDidChangeHandler:v5];
     if ([(UICollectionViewCell *)self _usingBackgroundConfigurationOrDefaultBackgroundConfiguration])
     {
       [(UICollectionViewCell *)self _updateDefaultBackgroundAppearance];
@@ -1431,7 +1431,7 @@ LABEL_4:
 
   if (objc_opt_respondsToSelector())
   {
-    [v4 _containerViewIsHiddenForReuse:(*&self->super._reusableViewFlags & 0x400) == 0];
+    [viewCopy _containerViewIsHiddenForReuse:(*&self->super._reusableViewFlags & 0x400) == 0];
   }
 }
 
@@ -1447,13 +1447,13 @@ void __62__UICollectionViewCell__setupChangeHandlersForNewContentView___block_in
   [WeakRetained _updateDefaultBackgroundAppearance];
 }
 
-- (void)_setContentView:(id)a3 addToHierarchy:(BOOL)a4
+- (void)_setContentView:(id)view addToHierarchy:(BOOL)hierarchy
 {
-  v4 = a4;
-  v14 = a3;
-  if (self->_contentView != v14)
+  hierarchyCopy = hierarchy;
+  viewCopy = view;
+  if (self->_contentView != viewCopy)
   {
-    if (v4)
+    if (hierarchyCopy)
     {
       [(UICollectionViewCell *)self _clearChangeHandlersForOldContentView:?];
       [(UIView *)self->_contentView _setInvalidatesIntrinsicContentSizeForSubviewAutoLayoutChanges:0];
@@ -1462,34 +1462,34 @@ void __62__UICollectionViewCell__setupChangeHandlersForNewContentView___block_in
       self->_menuGesture = 0;
     }
 
-    objc_storeStrong(&self->_contentView, a3);
-    [(UIView *)v14 setSemanticContentAttribute:[(UIView *)self semanticContentAttribute]];
-    if (v14 && v4)
+    objc_storeStrong(&self->_contentView, view);
+    [(UIView *)viewCopy setSemanticContentAttribute:[(UIView *)self semanticContentAttribute]];
+    if (viewCopy && hierarchyCopy)
     {
       if ((dyld_program_sdk_at_least() & 1) == 0)
       {
         [(UIView *)self bounds];
-        [(UIView *)v14 setFrame:?];
-        [(UIView *)v14 setAutoresizingMask:18];
+        [(UIView *)viewCopy setFrame:?];
+        [(UIView *)viewCopy setAutoresizingMask:18];
       }
 
-      v8 = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
-      v9 = v8;
-      if (v8)
+      contentView = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
+      v9 = contentView;
+      if (contentView)
       {
-        v10 = v8;
+        selfCopy = contentView;
       }
 
       else
       {
-        v10 = self;
+        selfCopy = self;
       }
 
-      v11 = v10;
+      v11 = selfCopy;
 
-      [(UIView *)v11 addSubview:v14];
-      [(UIView *)v14 _setInvalidatesIntrinsicContentSizeForSubviewAutoLayoutChanges:*&self->super._reusableViewFlags >> 15];
-      [(UICollectionViewCell *)self _setupChangeHandlersForNewContentView:v14];
+      [(UIView *)v11 addSubview:viewCopy];
+      [(UIView *)viewCopy _setInvalidatesIntrinsicContentSizeForSubviewAutoLayoutChanges:*&self->super._reusableViewFlags >> 15];
+      [(UICollectionViewCell *)self _setupChangeHandlersForNewContentView:viewCopy];
       if ([objc_opt_class() _wantsLegacyMenuGesture])
       {
         v12 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:sel__handleMenuGesture_];
@@ -1498,76 +1498,76 @@ void __62__UICollectionViewCell__setupChangeHandlersForNewContentView___block_in
 
         [(UIGestureRecognizer *)self->_menuGesture setDelegate:self];
         [(UILongPressGestureRecognizer *)self->_menuGesture setMinimumPressDuration:0.5];
-        [(UIView *)v14 addGestureRecognizer:self->_menuGesture];
+        [(UIView *)viewCopy addGestureRecognizer:self->_menuGesture];
       }
     }
   }
 }
 
-- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)a3
+- (void)_setAutomaticIntrinsicContentSizeInvalidationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5.receiver = self;
   v5.super_class = UICollectionViewCell;
   [(UICollectionReusableView *)&v5 _setAutomaticIntrinsicContentSizeInvalidationEnabled:?];
-  [(UIView *)self->_contentView _setInvalidatesIntrinsicContentSizeForSubviewAutoLayoutChanges:v3];
+  [(UIView *)self->_contentView _setInvalidatesIntrinsicContentSizeForSubviewAutoLayoutChanges:enabledCopy];
 }
 
 - (id)_encodableSubviews
 {
-  v3 = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
-  v4 = [v3 subviews];
-  v5 = v4;
-  if (v4)
+  contentView = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
+  subviews = [contentView subviews];
+  v5 = subviews;
+  if (subviews)
   {
-    v6 = v4;
+    subviews2 = subviews;
   }
 
   else
   {
-    v6 = [(UIView *)self subviews];
+    subviews2 = [(UIView *)self subviews];
   }
 
-  v7 = v6;
+  v7 = subviews2;
 
   return v7;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
-  v4 = a3;
+  subviewsCopy = subviews;
   v5.receiver = self;
   v5.super_class = UICollectionViewCell;
-  [(UIView *)&v5 _populateArchivedSubviews:v4];
+  [(UIView *)&v5 _populateArchivedSubviews:subviewsCopy];
   if (self->_systemBackgroundView)
   {
-    [v4 removeObject:?];
+    [subviewsCopy removeObject:?];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = UICollectionViewCell;
-  [(UICollectionReusableView *)&v12 encodeWithCoder:v4];
-  [v4 encodeObject:self->_systemBackgroundView forKey:@"UISystemBackgroundView"];
+  [(UICollectionReusableView *)&v12 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_systemBackgroundView forKey:@"UISystemBackgroundView"];
   if ((*(&self->_collectionCellFlags + 1) & 0x10) != 0)
   {
-    v5 = [(UICollectionViewCell *)self contentConfiguration];
-    if (v5)
+    contentConfiguration = [(UICollectionViewCell *)self contentConfiguration];
+    if (contentConfiguration)
     {
-      v6 = v5;
+      _contentViewConfiguration = contentConfiguration;
     }
 
     else
     {
-      v6 = [(UICollectionViewCell *)self _contentViewConfiguration];
-      if (!v6)
+      _contentViewConfiguration = [(UICollectionViewCell *)self _contentViewConfiguration];
+      if (!_contentViewConfiguration)
       {
         v8 = 0;
 LABEL_9:
-        [v4 encodeObject:v8 forKey:@"UIContentConfigurationIdentifier"];
+        [coderCopy encodeObject:v8 forKey:@"UIContentConfigurationIdentifier"];
 
         goto LABEL_10;
       }
@@ -1575,7 +1575,7 @@ LABEL_9:
 
     if (objc_opt_respondsToSelector())
     {
-      [v6 _wrappedConfigurationIdentifier];
+      [_contentViewConfiguration _wrappedConfigurationIdentifier];
     }
 
     else
@@ -1589,51 +1589,51 @@ LABEL_9:
   }
 
 LABEL_10:
-  [v4 encodeObject:self->_viewForContentConfiguration forKey:@"UIContentConfigurationView"];
+  [coderCopy encodeObject:self->_viewForContentConfiguration forKey:@"UIContentConfigurationView"];
   contentView = self->_contentView;
   if (contentView)
   {
-    [v4 encodeObject:contentView forKey:@"UIContentView"];
+    [coderCopy encodeObject:contentView forKey:@"UIContentView"];
   }
 
   backgroundView = self->_backgroundView;
   if (backgroundView)
   {
-    [v4 encodeObject:backgroundView forKey:@"UIBackgroundView"];
+    [coderCopy encodeObject:backgroundView forKey:@"UIBackgroundView"];
   }
 
   selectedBackgroundView = self->_selectedBackgroundView;
   if (selectedBackgroundView)
   {
-    [v4 encodeObject:selectedBackgroundView forKey:@"UISelectedBackgroundView"];
+    [coderCopy encodeObject:selectedBackgroundView forKey:@"UISelectedBackgroundView"];
   }
 }
 
-- (void)_notifyIsDisplaying:(BOOL)a3
+- (void)_notifyIsDisplaying:(BOOL)displaying
 {
-  v3 = a3;
+  displayingCopy = displaying;
   reusableViewFlags = self->super._reusableViewFlags;
   v6.receiver = self;
   v6.super_class = UICollectionViewCell;
   [(UICollectionReusableView *)&v6 _notifyIsDisplaying:?];
-  if ((((reusableViewFlags & 0x400) == 0) ^ v3) & 1) == 0 && (objc_opt_respondsToSelector())
+  if ((((reusableViewFlags & 0x400) == 0) ^ displayingCopy) & 1) == 0 && (objc_opt_respondsToSelector())
   {
-    [(UIView *)self->_contentView _containerViewIsHiddenForReuse:!v3];
+    [(UIView *)self->_contentView _containerViewIsHiddenForReuse:!displayingCopy];
   }
 }
 
-- (void)_updateHighlightColorsForView:(id)a3 highlight:(BOOL)a4
+- (void)_updateHighlightColorsForView:(id)view highlight:(BOOL)highlight
 {
-  if (a4)
+  if (highlight)
   {
-    v6 = a3;
+    viewCopy = view;
     [(UICollectionViewCell *)self _setupHighlightingSupport];
-    [self->_highlightingSupport highlightView:v6];
+    [self->_highlightingSupport highlightView:viewCopy];
   }
 
   else
   {
-    [self->_highlightingSupport applyState:1 toView:a3];
+    [self->_highlightingSupport applyState:1 toView:view];
   }
 
   [(UICollectionViewCell *)self _teardownHighlightingSupportIfReady];
@@ -1642,39 +1642,39 @@ LABEL_10:
 - (void)_updateHighlightColorsForAnimationHalfwayPoint
 {
   *&self->_collectionCellFlags &= ~0x200000u;
-  v3 = [(UICollectionViewCell *)self _descendantsShouldHighlight];
+  _descendantsShouldHighlight = [(UICollectionViewCell *)self _descendantsShouldHighlight];
 
-  [(UICollectionViewCell *)self _updateHighlightColorsForView:self highlight:v3];
+  [(UICollectionViewCell *)self _updateHighlightColorsForView:self highlight:_descendantsShouldHighlight];
 }
 
-- (void)_setOpaque:(BOOL)a3 forSubview:(id)a4
+- (void)_setOpaque:(BOOL)opaque forSubview:(id)subview
 {
-  v4 = a3;
+  opaqueCopy = opaque;
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  subviewCopy = subview;
   highlightingSupport = self->_highlightingSupport;
-  if (v4)
+  if (opaqueCopy)
   {
-    [highlightingSupport applyState:255 toView:v6];
+    [highlightingSupport applyState:255 toView:subviewCopy];
   }
 
   else
   {
-    [highlightingSupport applyState:1 toView:v6];
-    [(UIView *)v6 setOpaque:0];
+    [highlightingSupport applyState:1 toView:subviewCopy];
+    [(UIView *)subviewCopy setOpaque:0];
     v8 = +[UIColor clearColor];
-    [(UIView *)v6 setBackgroundColor:v8];
+    [(UIView *)subviewCopy setBackgroundColor:v8];
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 && self->_selectedBackgroundView != v6 && self->_systemBackgroundView != v6)
+  if ((objc_opt_isKindOfClass() & 1) == 0 && self->_selectedBackgroundView != subviewCopy && self->_systemBackgroundView != subviewCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [(UIView *)v6 subviews];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    subviews = [(UIView *)subviewCopy subviews];
+    v10 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1685,13 +1685,13 @@ LABEL_10:
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subviews);
           }
 
-          [(UICollectionViewCell *)self _setOpaque:v4 forSubview:*(*(&v14 + 1) + 8 * i)];
+          [(UICollectionViewCell *)self _setOpaque:opaqueCopy forSubview:*(*(&v14 + 1) + 8 * i)];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v11);
@@ -1699,68 +1699,68 @@ LABEL_10:
   }
 }
 
-- (void)_monitoredView:(id)a3 willMoveFromSuperview:(id)a4 toSuperview:(id)a5
+- (void)_monitoredView:(id)view willMoveFromSuperview:(id)superview toSuperview:(id)toSuperview
 {
-  v7 = a5;
-  if ([(UIView *)self containsView:a4]&& ![(UIView *)self containsView:v7])
+  toSuperviewCopy = toSuperview;
+  if ([(UIView *)self containsView:superview]&& ![(UIView *)self containsView:toSuperviewCopy])
   {
     [self->_highlightingSupport applyState:255 toView:self];
   }
 }
 
-- (void)_monitoredView:(id)a3 didMoveFromSuperview:(id)a4 toSuperview:(id)a5
+- (void)_monitoredView:(id)view didMoveFromSuperview:(id)superview toSuperview:(id)toSuperview
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  viewCopy = view;
+  superviewCopy = superview;
+  toSuperviewCopy = toSuperview;
+  v10 = toSuperviewCopy;
   while (v10 != self && v10)
   {
     objc_opt_class();
-    v11 = (objc_opt_isKindOfClass() & 1) != 0 || self->_selectedBackgroundView == v13 || self->_systemBackgroundView == v13;
-    v12 = [(UIView *)v10 superview];
+    v11 = (objc_opt_isKindOfClass() & 1) != 0 || self->_selectedBackgroundView == viewCopy || self->_systemBackgroundView == viewCopy;
+    superview = [(UIView *)v10 superview];
 
-    v10 = v12;
+    v10 = superview;
     if (v11)
     {
       goto LABEL_14;
     }
   }
 
-  if (![(UIView *)self containsView:v8]&& [(UIView *)self containsView:v9])
+  if (![(UIView *)self containsView:superviewCopy]&& [(UIView *)self containsView:toSuperviewCopy])
   {
-    [self->_highlightingSupport cacheState:255 forView:v13];
-    [(UICollectionViewCell *)self _updateHighlightColorsForView:v13 highlight:(*&self->_collectionCellFlags >> 1) & 1];
-    [(UICollectionViewCell *)self _setOpaque:0 forSubview:v13];
+    [self->_highlightingSupport cacheState:255 forView:viewCopy];
+    [(UICollectionViewCell *)self _updateHighlightColorsForView:viewCopy highlight:(*&self->_collectionCellFlags >> 1) & 1];
+    [(UICollectionViewCell *)self _setOpaque:0 forSubview:viewCopy];
   }
 
-  v12 = v10;
+  superview = v10;
 LABEL_14:
 }
 
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4 isUserInitiated:(BOOL)a5
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated isUserInitiated:(BOOL)initiated
 {
-  v5 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  selectedCopy = selected;
   if ((_UIInternalPreferenceUsesDefault_0(&_UIInternalPreference_CollectionViewCellContextMenuSuppressesSelectionState, @"CollectionViewCellContextMenuSuppressesSelectionState") & 1) != 0 || byte_1ED48AAE4)
   {
     if ((*&self->_collectionCellFlags & 0xE0) != 0)
     {
-      v6 = 0;
+      selectedCopy = 0;
     }
 
     else
     {
-      v6 = v6;
+      selectedCopy = selectedCopy;
     }
 
-    if (v5)
+    if (animatedCopy)
     {
       goto LABEL_4;
     }
   }
 
-  else if (v5)
+  else if (animatedCopy)
   {
 LABEL_4:
     v8 = dyld_program_sdk_at_least() == 0;
@@ -1779,12 +1779,12 @@ LABEL_4:
     }
 
     v10[4] = self;
-    v11 = v6;
+    v11 = selectedCopy;
     [(UIView *)0.3 _animateCollectionTableAnimationWithDuration:UIView delay:v9 options:v10 animations:0 completion:?];
     return;
   }
 
-  [(UICollectionViewCell *)self setSelected:v6];
+  [(UICollectionViewCell *)self setSelected:selectedCopy];
 }
 
 - (void)setSelected:(BOOL)selected
@@ -1821,8 +1821,8 @@ LABEL_6:
   [(UICollectionViewCell *)self _updateFocusedFloatingContentControlStateAnimated:+[UIView _isInAnimationBlock]];
   if ([(UICollectionViewCell *)self isFocused])
   {
-    v7 = [(UIView *)self _focusBehavior];
-    v8 = [UIFocusRingManager focusRingAvailableInBehavior:v7];
+    _focusBehavior = [(UIView *)self _focusBehavior];
+    v8 = [UIFocusRingManager focusRingAvailableInBehavior:_focusBehavior];
 
     if (v8)
     {
@@ -1832,25 +1832,25 @@ LABEL_6:
   }
 }
 
-- (void)_setContextMenuGroupLocation:(int64_t)a3
+- (void)_setContextMenuGroupLocation:(int64_t)location
 {
-  if (*&self->_collectionCellFlags >> 5 != a3)
+  if (*&self->_collectionCellFlags >> 5 != location)
   {
-    v3 = a3;
+    locationCopy = location;
     [(UICollectionViewCell *)self _prepareForConfigurationStateUpdate];
-    self->_collectionCellFlags = (*&self->_collectionCellFlags & 0xFFFFFF1F | (32 * (v3 & 7)));
+    self->_collectionCellFlags = (*&self->_collectionCellFlags & 0xFFFFFF1F | (32 * (locationCopy & 7)));
 
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)_setUsesAnyPlainListStyle:(BOOL)a3
+- (void)_setUsesAnyPlainListStyle:(BOOL)style
 {
-  if (((((*(&self->_collectionCellFlags + 1) & 1) == 0) ^ a3) & 1) == 0)
+  if (((((*(&self->_collectionCellFlags + 1) & 1) == 0) ^ style) & 1) == 0)
   {
-    v3 = a3;
+    styleCopy = style;
     [(UICollectionViewCell *)self _prepareForConfigurationStateUpdate];
-    if (v3)
+    if (styleCopy)
     {
       v5 = 256;
     }
@@ -1866,25 +1866,25 @@ LABEL_6:
   }
 }
 
-- (void)_setTypeSelectState:(int64_t)a3
+- (void)_setTypeSelectState:(int64_t)state
 {
-  if (((self->_collectionCellFlags >> 9) & 3) != a3)
+  if (((self->_collectionCellFlags >> 9) & 3) != state)
   {
-    v3 = a3;
+    stateCopy = state;
     [(UICollectionViewCell *)self _prepareForConfigurationStateUpdate];
-    self->_collectionCellFlags = (*&self->_collectionCellFlags & 0xFFFFF9FF | ((v3 & 3) << 9));
+    self->_collectionCellFlags = (*&self->_collectionCellFlags & 0xFFFFF9FF | ((stateCopy & 3) << 9));
 
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)_setSwiped:(BOOL)a3
+- (void)_setSwiped:(BOOL)swiped
 {
-  if (((((*&self->_collectionCellFlags & 8) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_collectionCellFlags & 8) == 0) ^ swiped) & 1) == 0)
   {
-    v3 = a3;
+    swipedCopy = swiped;
     [(UICollectionViewCell *)self _prepareForConfigurationStateUpdate];
-    if (v3)
+    if (swipedCopy)
     {
       v5 = 67108872;
     }
@@ -1900,13 +1900,13 @@ LABEL_6:
   }
 }
 
-- (void)_setReordering:(BOOL)a3
+- (void)_setReordering:(BOOL)reordering
 {
-  if (((((*&self->_collectionCellFlags & 0x10) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_collectionCellFlags & 0x10) == 0) ^ reordering) & 1) == 0)
   {
-    v3 = a3;
+    reorderingCopy = reordering;
     [(UICollectionViewCell *)self _prepareForConfigurationStateUpdate];
-    if (v3)
+    if (reorderingCopy)
     {
       v5 = 16;
     }
@@ -1922,33 +1922,33 @@ LABEL_6:
   }
 }
 
-- (void)_setDropState:(int64_t)a3
+- (void)_setDropState:(int64_t)state
 {
-  if (self->__dropState != a3)
+  if (self->__dropState != state)
   {
     [(UICollectionViewCell *)self _prepareForConfigurationStateUpdate];
-    self->__dropState = a3;
+    self->__dropState = state;
 
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)_setDragAppearance:(unint64_t)a3
+- (void)_setDragAppearance:(unint64_t)appearance
 {
-  if (self->_dragAppearance | a3)
+  if (self->_dragAppearance | appearance)
   {
-    self->_dragAppearance = a3;
+    self->_dragAppearance = appearance;
     [(UICollectionViewLayoutAttributes *)self->super._layoutAttributes alpha];
     v6 = fmin(v5, 0.5);
     v7 = 2;
-    if (a3 != 2)
+    if (appearance != 2)
     {
-      v7 = a3 == 1;
+      v7 = appearance == 1;
       v6 = v5;
     }
 
-    v8 = a3 == 3;
-    if (a3 == 3)
+    v8 = appearance == 3;
+    if (appearance == 3)
     {
       v9 = 2;
     }
@@ -1989,22 +1989,22 @@ LABEL_6:
   }
 }
 
-- (void)_setLayoutAttributes:(id)a3
+- (void)_setLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(UICollectionReusableView *)self _layoutAttributes];
-  v6 = v5;
-  if (v5)
+  attributesCopy = attributes;
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+  v6 = _layoutAttributes;
+  if (_layoutAttributes)
   {
-    v7 = *(v5 + 289) >> 7;
-    if (v4)
+    v7 = *(_layoutAttributes + 289) >> 7;
+    if (attributesCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_30:
     v8 = 0;
-    if (v5)
+    if (_layoutAttributes)
     {
       goto LABEL_4;
     }
@@ -2013,17 +2013,17 @@ LABEL_30:
   }
 
   v7 = 0;
-  if (!v4)
+  if (!attributesCopy)
   {
     goto LABEL_30;
   }
 
 LABEL_3:
-  v8 = *(v4 + 289) >> 7;
-  if (v5)
+  v8 = *(attributesCopy + 289) >> 7;
+  if (_layoutAttributes)
   {
 LABEL_4:
-    v9 = *(v5 + 304) > 1uLL;
+    v9 = *(_layoutAttributes + 304) > 1uLL;
     goto LABEL_5;
   }
 
@@ -2031,9 +2031,9 @@ LABEL_31:
   v9 = 0;
 LABEL_5:
   v10 = v7 ^ v8;
-  if (v4)
+  if (attributesCopy)
   {
-    v11 = v4[38] > 1;
+    v11 = attributesCopy[38] > 1;
   }
 
   else
@@ -2047,11 +2047,11 @@ LABEL_5:
     [(UICollectionViewCell *)self _prepareForConfigurationStateUpdate];
   }
 
-  v13 = [(UICollectionViewLayoutAttributes *)v6 _existingListAttributes];
-  v14 = v13;
-  if (v13)
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)v6 _existingListAttributes];
+  v14 = _existingListAttributes;
+  if (_existingListAttributes)
   {
-    v15 = _UIListEnvironmentFromListStyle(*(v13 + 16));
+    v15 = _UIListEnvironmentFromListStyle(*(_existingListAttributes + 16));
   }
 
   else
@@ -2061,19 +2061,19 @@ LABEL_5:
 
   v24.receiver = self;
   v24.super_class = UICollectionViewCell;
-  [(UICollectionReusableView *)&v24 _setLayoutAttributes:v4];
+  [(UICollectionReusableView *)&v24 _setLayoutAttributes:attributesCopy];
   [(UICollectionViewCell *)self _restoreCurrentDragAppearanceIfNeeded];
-  [(UICollectionViewCell *)self _updateUserInterfaceRenderingModeUsingAttributes:v4];
+  [(UICollectionViewCell *)self _updateUserInterfaceRenderingModeUsingAttributes:attributesCopy];
   if (v12)
   {
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
 
-  v16 = [(UICollectionViewLayoutAttributes *)v4 _existingListAttributes];
-  v17 = v16;
-  if (v16)
+  _existingListAttributes2 = [(UICollectionViewLayoutAttributes *)attributesCopy _existingListAttributes];
+  v17 = _existingListAttributes2;
+  if (_existingListAttributes2)
   {
-    [(UICollectionViewCell *)self _setUsesAnyPlainListStyle:(*(v16 + 16) < 5uLL) & (0x19u >> *(v16 + 16))];
+    [(UICollectionViewCell *)self _setUsesAnyPlainListStyle:(*(_existingListAttributes2 + 16) < 5uLL) & (0x19u >> *(_existingListAttributes2 + 16))];
     v18 = _UIListEnvironmentFromListStyle(v17[2]);
   }
 
@@ -2104,10 +2104,10 @@ LABEL_5:
     }
   }
 
-  v21 = [(UICollectionViewCell *)self _effectiveMaskedCornersForSystemBackgroundView];
-  v22 = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
-  v23 = v22;
-  if (v22 && [v22 __maskedCorners] != v21)
+  _effectiveMaskedCornersForSystemBackgroundView = [(UICollectionViewCell *)self _effectiveMaskedCornersForSystemBackgroundView];
+  configuration = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
+  v23 = configuration;
+  if (configuration && [configuration __maskedCorners] != _effectiveMaskedCornersForSystemBackgroundView)
   {
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
@@ -2123,26 +2123,26 @@ LABEL_25:
   }
 }
 
-- (void)_updateUserInterfaceRenderingModeUsingAttributes:(id)a3
+- (void)_updateUserInterfaceRenderingModeUsingAttributes:(id)attributes
 {
-  v8 = a3;
+  attributesCopy = attributes;
   v4 = _UIMaterialPresentationsEnabled();
-  v5 = v8;
+  v5 = attributesCopy;
   if ((v4 & 1) == 0)
   {
-    v6 = [(UICollectionViewLayoutAttributes *)v8 _existingListAttributes];
-    if (!v6)
+    _existingListAttributes = [(UICollectionViewLayoutAttributes *)attributesCopy _existingListAttributes];
+    if (!_existingListAttributes)
     {
       goto LABEL_6;
     }
 
     v7 = 0;
-    if (!v8 || v6[2] != 2)
+    if (!attributesCopy || _existingListAttributes[2] != 2)
     {
       goto LABEL_8;
     }
 
-    if (*(v8 + 288))
+    if (*(attributesCopy + 288))
     {
       v7 = [(UICollectionReusableView *)self _isStyledAsHeaderOrFooterFromLayoutAttributes:?]^ 1;
     }
@@ -2156,23 +2156,23 @@ LABEL_6:
 LABEL_8:
     [(UIView *)self _setOverrideUserInterfaceRenderingMode:v7];
 
-    v5 = v8;
+    v5 = attributesCopy;
   }
 }
 
-- (void)setUserInteractionEnabled:(BOOL)a3
+- (void)setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(UIView *)self isUserInteractionEnabled];
-  if (v5 != v3)
+  enabledCopy = enabled;
+  isUserInteractionEnabled = [(UIView *)self isUserInteractionEnabled];
+  if (isUserInteractionEnabled != enabledCopy)
   {
     [(UICollectionViewCell *)self _prepareForConfigurationStateUpdate];
   }
 
   v6.receiver = self;
   v6.super_class = UICollectionViewCell;
-  [(UIView *)&v6 setUserInteractionEnabled:v3];
-  if (v5 != [(UIView *)self isUserInteractionEnabled])
+  [(UIView *)&v6 setUserInteractionEnabled:enabledCopy];
+  if (isUserInteractionEnabled != [(UIView *)self isUserInteractionEnabled])
   {
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
@@ -2180,63 +2180,63 @@ LABEL_8:
 
 - (void)_performCustomSelectionAction
 {
-  v2 = [(UICollectionViewCell *)self _effectivePopupMenuButton];
-  if (v2)
+  _effectivePopupMenuButton = [(UICollectionViewCell *)self _effectivePopupMenuButton];
+  if (_effectivePopupMenuButton)
   {
-    v3 = v2;
-    [v2 performPrimaryAction];
-    v2 = v3;
+    v3 = _effectivePopupMenuButton;
+    [_effectivePopupMenuButton performPrimaryAction];
+    _effectivePopupMenuButton = v3;
   }
 }
 
-- (void)_setPopupMenuButton:(id)a3
+- (void)_setPopupMenuButton:(id)button
 {
-  v6 = a3;
-  if (self->__popupMenuButton != v6)
+  buttonCopy = button;
+  if (self->__popupMenuButton != buttonCopy)
   {
-    v13 = v6;
-    if (v6)
+    v13 = buttonCopy;
+    if (buttonCopy)
     {
-      v7 = [(UIButton *)v6 menu];
+      menu = [(UIButton *)buttonCopy menu];
 
-      if (!v7)
+      if (!menu)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v10 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1926 description:{@"Popup menu button must be configured with a menu: %@", v13}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1926 description:{@"Popup menu button must be configured with a menu: %@", v13}];
       }
 
       if (![(UIControl *)v13 showsMenuAsPrimaryAction])
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v11 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1927 description:{@"Popup menu button must have showsMenuAsPrimaryAction enabled: %@", v13}];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1927 description:{@"Popup menu button must have showsMenuAsPrimaryAction enabled: %@", v13}];
       }
 
       if (![(UIButton *)v13 changesSelectionAsPrimaryAction])
       {
-        v12 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v12 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1928 description:{@"Popup menu button must have changesSelectionAsPrimaryAction enabled: %@", v13}];
+        currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler3 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:1928 description:{@"Popup menu button must have changesSelectionAsPrimaryAction enabled: %@", v13}];
       }
     }
 
     [(UIButton *)self->__popupMenuButton _setWantsAccessibilityUnderline:1];
     [(UIView *)self->__popupMenuButton setUserInteractionEnabled:1];
-    objc_storeStrong(&self->__popupMenuButton, a3);
+    objc_storeStrong(&self->__popupMenuButton, button);
     [(UIButton *)self->__popupMenuButton _setWantsAccessibilityUnderline:0];
-    v8 = [(UIView *)self traitCollection];
-    v9 = [v8 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    v6 = v13;
-    if (v9 != 5)
+    buttonCopy = v13;
+    if (userInterfaceIdiom != 5)
     {
       [(UIView *)v13 setUserInteractionEnabled:0];
-      v6 = v13;
+      buttonCopy = v13;
     }
   }
 }
 
-- (void)_setHighlighted:(BOOL)a3 animated:(BOOL)a4
+- (void)_setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     v6 = dyld_program_sdk_at_least() == 0;
     v8[0] = MEMORY[0x1E69E9820];
@@ -2254,7 +2254,7 @@ LABEL_8:
     }
 
     v8[4] = self;
-    v9 = a3;
+    highlightedCopy = highlighted;
     [(UIView *)0.3 _animateCollectionTableAnimationWithDuration:UIView delay:v7 options:v8 animations:0 completion:?];
   }
 
@@ -2268,7 +2268,7 @@ LABEL_8:
 - (void)setHighlighted:(BOOL)highlighted
 {
   v3 = highlighted;
-  v5 = [(UICollectionViewCell *)self _highlightDescendantsWhenSelected];
+  _highlightDescendantsWhenSelected = [(UICollectionViewCell *)self _highlightDescendantsWhenSelected];
   collectionCellFlags = self->_collectionCellFlags;
   v7 = *&collectionCellFlags & 1;
   if (v3)
@@ -2277,7 +2277,7 @@ LABEL_8:
   }
 
   v8 = v7 != ((*&collectionCellFlags & 3) != 0);
-  if (v5)
+  if (_highlightDescendantsWhenSelected)
   {
     v9 = v8;
   }
@@ -2314,11 +2314,11 @@ LABEL_8:
   [(UICollectionViewCell *)self _updateFocusedFloatingContentControlStateAnimated:v11];
 }
 
-- (void)_performConfigurationStateModifications:(id)a3
+- (void)_performConfigurationStateModifications:(id)modifications
 {
   collectionCellFlags = self->_collectionCellFlags;
   self->_collectionCellFlags = (*&collectionCellFlags | 0x8000000);
-  (*(a3 + 2))(a3, a2);
+  (*(modifications + 2))(modifications, a2);
   self->_collectionCellFlags = (*&self->_collectionCellFlags & 0xF7FFFFFF | (((*&collectionCellFlags >> 27) & 1) << 27));
 }
 
@@ -2345,11 +2345,11 @@ LABEL_8:
   [UICollectionViewCell _applyBackgroundViewConfiguration:"_applyBackgroundViewConfiguration:withState:" withState:?];
 }
 
-- (void)_setBackgroundViewConfiguration:(id)a3
+- (void)_setBackgroundViewConfiguration:(id)configuration
 {
   collectionCellFlags = self->_collectionCellFlags;
   v4 = (*&collectionCellFlags >> 17) & 1;
-  if (a3)
+  if (configuration)
   {
     v4 = 1;
   }
@@ -2368,28 +2368,28 @@ LABEL_8:
   [UICollectionViewCell _applyBackgroundViewConfiguration:"_applyBackgroundViewConfiguration:withState:" withState:?];
 }
 
-- (void)_applyBackgroundViewConfiguration:(id)a3 withState:(id)a4
+- (void)_applyBackgroundViewConfiguration:(id)configuration withState:(id)state
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  configurationCopy = configuration;
+  stateCopy = state;
+  v9 = stateCopy;
   systemBackgroundView = self->_systemBackgroundView;
   v11 = systemBackgroundView != 0;
-  if (v7)
+  if (configurationCopy)
   {
     if ((*(&self->_collectionCellFlags + 2) & 4) != 0 && !self->_backgroundViewConfigurationProvider)
     {
-      if (!v8)
+      if (!stateCopy)
       {
-        v33 = [(UICollectionViewCell *)self configurationState];
-        v9 = [(UICollectionViewCell *)self _stateForUpdatingBackgroundConfigurationWithState:v33];
+        configurationState = [(UICollectionViewCell *)self configurationState];
+        v9 = [(UICollectionViewCell *)self _stateForUpdatingBackgroundConfigurationWithState:configurationState];
       }
 
-      v36 = [v7 _updatedConfigurationForState:v9];
+      v36 = [configurationCopy _updatedConfigurationForState:v9];
       if (!v36)
       {
-        v34 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v34 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:2068 description:{@"Updated configuration was nil for configuration: %@", v7}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:2068 description:{@"Updated configuration was nil for configuration: %@", configurationCopy}];
       }
 
       v12 = v36;
@@ -2397,15 +2397,15 @@ LABEL_8:
 
     else
     {
-      v12 = v7;
+      v12 = configurationCopy;
     }
 
     v35 = v12;
     if (systemBackgroundView)
     {
-      v13 = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
-      v14 = [(UIView *)self tintColor];
-      v11 = [v35 _backgroundFillIsEqual:v13 withTintColor:v14] ^ 1;
+      configuration = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
+      tintColor = [(UIView *)self tintColor];
+      v11 = [v35 _backgroundFillIsEqual:configuration withTintColor:tintColor] ^ 1;
     }
 
     else
@@ -2420,34 +2420,34 @@ LABEL_8:
   }
 
   [v35 __setMaskedCorners:{-[UICollectionViewCell _effectiveMaskedCornersForSystemBackgroundView](self, "_effectiveMaskedCornersForSystemBackgroundView")}];
-  if (v7)
+  if (configurationCopy)
   {
     if (![(UICollectionViewCell *)self _appliesLayoutAttributesMaskingToBackgroundConfiguration])
     {
       goto LABEL_19;
     }
 
-    v15 = [(UICollectionReusableView *)self _layoutAttributes];
-    v16 = v15;
-    if (v15)
+    _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+    v16 = _layoutAttributes;
+    if (_layoutAttributes)
     {
-      if ((*(v15 + 288) & 0x10) != 0)
+      if ((*(_layoutAttributes + 288) & 0x10) != 0)
       {
-        v17 = [(UICollectionReusableView *)self _layoutAttributes];
-        if (v17)
+        _layoutAttributes2 = [(UICollectionReusableView *)self _layoutAttributes];
+        if (_layoutAttributes2)
         {
-          v18 = v17[39];
+          v18 = _layoutAttributes2[39];
 
           if (v18 <= 0.0)
           {
             goto LABEL_19;
           }
 
-          v19 = [(UICollectionReusableView *)self _layoutAttributes];
-          v16 = v19;
-          if (v19)
+          _layoutAttributes3 = [(UICollectionReusableView *)self _layoutAttributes];
+          v16 = _layoutAttributes3;
+          if (_layoutAttributes3)
           {
-            v20 = *(v19 + 312);
+            v20 = *(_layoutAttributes3 + 312);
           }
 
           else
@@ -2470,19 +2470,19 @@ LABEL_19:
     else
     {
       [(UICollectionViewCell *)self _resetBackgroundViewsAndColor];
-      v22 = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
-      v23 = v22;
-      if (v22)
+      contentView = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
+      v23 = contentView;
+      if (contentView)
       {
-        v24 = v22;
+        selfCopy = contentView;
       }
 
       else
       {
-        v24 = self;
+        selfCopy = self;
       }
 
-      v25 = v24;
+      v25 = selfCopy;
 
       v26 = [[_UISystemBackgroundView alloc] initWithConfiguration:v35 containerView:v25];
       v27 = self->_systemBackgroundView;
@@ -2512,13 +2512,13 @@ LABEL_19:
 LABEL_32:
   if (v11)
   {
-    v30 = [(UICollectionReusableView *)self _collectionView];
-    [v30 _cellBackgroundChangedForSelectionOrHighlight:self];
+    _collectionView = [(UICollectionReusableView *)self _collectionView];
+    [_collectionView _cellBackgroundChangedForSelectionOrHighlight:self];
   }
 
-  v31 = v7 | systemBackgroundView;
-  v32 = [(UICollectionReusableView *)self _layoutAttributes];
-  [(UICollectionReusableView *)self _updateMaskingUsingAttributes:v32];
+  v31 = configurationCopy | systemBackgroundView;
+  _layoutAttributes4 = [(UICollectionReusableView *)self _layoutAttributes];
+  [(UICollectionReusableView *)self _updateMaskingUsingAttributes:_layoutAttributes4];
 
   if (v31)
   {
@@ -2578,9 +2578,9 @@ LABEL_8:
   return [v5 _performConfigurationStateUpdate];
 }
 
-- (void)_setAllowsStateUpdatesWhenEvaluatingBackgroundAppearance:(BOOL)a3
+- (void)_setAllowsStateUpdatesWhenEvaluatingBackgroundAppearance:(BOOL)appearance
 {
-  if (a3)
+  if (appearance)
   {
     v3 = 0x1000000;
   }
@@ -2595,11 +2595,11 @@ LABEL_8:
 
 - (id)_backgroundViewConfiguration
 {
-  v2 = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
+  configuration = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = configuration;
   }
 
   else
@@ -2645,11 +2645,11 @@ LABEL_8:
   *p_collectionCellFlags = (*&collectionCellFlags & 0xFFFBFFFF);
 }
 
-- (void)_setBackgroundViewConfigurationProvider:(id)a3
+- (void)_setBackgroundViewConfigurationProvider:(id)provider
 {
   collectionCellFlags = self->_collectionCellFlags;
   v4 = HIWORD(*&collectionCellFlags) & 1;
-  if (a3)
+  if (provider)
   {
     v4 = 1;
   }
@@ -2666,15 +2666,15 @@ LABEL_8:
 
   v6 = v5 | *&collectionCellFlags & 0xFFFEFFFF;
   self->_collectionCellFlags = v6;
-  if (self->_backgroundViewConfigurationProvider != a3)
+  if (self->_backgroundViewConfigurationProvider != provider)
   {
-    if (a3)
+    if (provider)
     {
       self->_collectionCellFlags = (v6 & 0xFFFBFFFF);
     }
 
-    v8 = a3;
-    v9 = [v8 copy];
+    providerCopy = provider;
+    v9 = [providerCopy copy];
     backgroundViewConfigurationProvider = self->_backgroundViewConfigurationProvider;
     self->_backgroundViewConfigurationProvider = v9;
 
@@ -2689,31 +2689,31 @@ LABEL_8:
   return v2;
 }
 
-- (id)_stateForUpdatingBackgroundConfigurationWithState:(id)a3
+- (id)_stateForUpdatingBackgroundConfigurationWithState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   if ([(UICollectionViewCell *)self _removesHighlightedAndSelectedStatesForBackground])
   {
-    v5 = [v4 copy];
+    v5 = [stateCopy copy];
 
     [v5 setHighlighted:0];
     [v5 setSelected:0];
-    v4 = v5;
+    stateCopy = v5;
   }
 
-  return v4;
+  return stateCopy;
 }
 
-- (void)_updateBackgroundViewConfigurationForState:(id)a3
+- (void)_updateBackgroundViewConfigurationForState:(id)state
 {
-  v4 = [(UICollectionViewCell *)self _stateForUpdatingBackgroundConfigurationWithState:a3];
+  v4 = [(UICollectionViewCell *)self _stateForUpdatingBackgroundConfigurationWithState:state];
   backgroundViewConfigurationProvider = self->_backgroundViewConfigurationProvider;
   if (backgroundViewConfigurationProvider)
   {
     v7 = v4;
-    v6 = backgroundViewConfigurationProvider[2](backgroundViewConfigurationProvider, [(UICollectionViewCell *)self _viewConfigurationState]);
+    configuration = backgroundViewConfigurationProvider[2](backgroundViewConfigurationProvider, [(UICollectionViewCell *)self _viewConfigurationState]);
 LABEL_3:
-    [(UICollectionViewCell *)self _applyBackgroundViewConfiguration:v6 withState:v7];
+    [(UICollectionViewCell *)self _applyBackgroundViewConfiguration:configuration withState:v7];
 LABEL_4:
 
     v4 = v7;
@@ -2723,8 +2723,8 @@ LABEL_4:
   if ((*(&self->_collectionCellFlags + 2) & 4) != 0)
   {
     v7 = v4;
-    v6 = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
-    if (!v6)
+    configuration = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
+    if (!configuration)
     {
       goto LABEL_4;
     }
@@ -2747,11 +2747,11 @@ LABEL_5:
   }
 }
 
-- (void)_layoutFocusedFloatingContentView:(id)a3
+- (void)_layoutFocusedFloatingContentView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(UIView *)self bounds];
-  [v4 setFrame:?];
+  [viewCopy setFrame:?];
 }
 
 - (void)setSelectedBackgroundView:(UIView *)selectedBackgroundView
@@ -2792,19 +2792,19 @@ LABEL_5:
     v15[4] = self;
     [UIView performWithoutAnimation:v15];
     [(UIView *)self->_selectedBackgroundView setAutoresizingMask:18];
-    v10 = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
-    v11 = v10;
-    if (v10)
+    contentView = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
+    v11 = contentView;
+    if (contentView)
     {
-      v12 = v10;
+      selfCopy = contentView;
     }
 
     else
     {
-      v12 = self;
+      selfCopy = self;
     }
 
-    v13 = v12;
+    v13 = selfCopy;
 
     v14 = self->_selectedBackgroundView;
     if (self->_backgroundView)
@@ -2873,19 +2873,19 @@ uint64_t __50__UICollectionViewCell_setSelectedBackgroundView___block_invoke(uin
     v14[4] = self;
     [UIView performWithoutAnimation:v14];
     [(UIView *)self->_backgroundView setAutoresizingMask:18];
-    v10 = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
-    v11 = v10;
-    if (v10)
+    contentView = [(_UIFloatingContentView *)self->_focusedFloatingContentView contentView];
+    v11 = contentView;
+    if (contentView)
     {
-      v12 = v10;
+      selfCopy = contentView;
     }
 
     else
     {
-      v12 = self;
+      selfCopy = self;
     }
 
-    v13 = v12;
+    v13 = selfCopy;
 
     [(UIView *)v13 insertSubview:v6 atIndex:0];
   }
@@ -2899,17 +2899,17 @@ uint64_t __42__UICollectionViewCell_setBackgroundView___block_invoke(uint64_t a1
   return [v2 setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = a3;
-  if (v4)
+  colorCopy = color;
+  if (colorCopy)
   {
     [(UICollectionViewCell *)self _resetBackgroundViewConfiguration];
   }
 
   collectionCellFlags = self->_collectionCellFlags;
   v6 = (*&collectionCellFlags >> 13) & 1;
-  if (v4)
+  if (colorCopy)
   {
     v6 = 1;
   }
@@ -2927,35 +2927,35 @@ uint64_t __42__UICollectionViewCell_setBackgroundView___block_invoke(uint64_t a1
   self->_collectionCellFlags = (v7 | *&collectionCellFlags & 0xFFFFDFFF);
   v8.receiver = self;
   v8.super_class = UICollectionViewCell;
-  [(UIView *)&v8 setBackgroundColor:v4];
+  [(UIView *)&v8 setBackgroundColor:colorCopy];
 }
 
-- (BOOL)_shouldSaveOpaqueStateForView:(id)a3
+- (BOOL)_shouldSaveOpaqueStateForView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) == 0 && self->_backgroundView != v4 && self->_selectedBackgroundView != v4;
+  v5 = (objc_opt_isKindOfClass() & 1) == 0 && self->_backgroundView != viewCopy && self->_selectedBackgroundView != viewCopy;
 
   return v5;
 }
 
-- (BOOL)_gestureRecognizerShouldBegin:(id)a3
+- (BOOL)_gestureRecognizerShouldBegin:(id)begin
 {
-  if (self->_menuGesture != a3)
+  if (self->_menuGesture != begin)
   {
     return 1;
   }
 
-  v4 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->super._collectionView);
-  LOBYTE(v4) = [WeakRetained _shouldShowMenuForCell:v4];
+  LOBYTE(selfCopy) = [WeakRetained _shouldShowMenuForCell:selfCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)_handleMenuGesture:(id)a3
+- (void)_handleMenuGesture:(id)gesture
 {
-  if ([a3 state] == 1)
+  if ([gesture state] == 1)
   {
     if (!self->__editMenuInteraction)
     {
@@ -2969,8 +2969,8 @@ uint64_t __42__UICollectionViewCell_setBackgroundView___block_invoke(uint64_t a1
     [(UIView *)self center];
     v7 = v6;
     v9 = v8;
-    v10 = [(UIView *)self superview];
-    [(UIView *)self convertPoint:v10 fromView:v7, v9];
+    superview = [(UIView *)self superview];
+    [(UIView *)self convertPoint:superview fromView:v7, v9];
     v12 = v11;
     v14 = v13;
 
@@ -2980,20 +2980,20 @@ uint64_t __42__UICollectionViewCell_setBackgroundView___block_invoke(uint64_t a1
   }
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v7 = a5;
-  if (self->__editMenuInteraction == a3)
+  actionsCopy = actions;
+  if (self->__editMenuInteraction == interaction)
   {
     v9 = _UIMenuForUIMenuControllerMenuItems();
     if (v9)
     {
-      v10 = [v7 arrayByAddingObject:v9];
+      v10 = [actionsCopy arrayByAddingObject:v9];
 
-      v7 = v10;
+      actionsCopy = v10;
     }
 
-    v8 = [UIMenu menuWithChildren:v7];
+    v8 = [UIMenu menuWithChildren:actionsCopy];
   }
 
   else
@@ -3004,9 +3004,9 @@ uint64_t __42__UICollectionViewCell_setBackgroundView___block_invoke(uint64_t a1
   return v8;
 }
 
-- (CGRect)editMenuInteraction:(id)a3 targetRectForConfiguration:(id)a4
+- (CGRect)editMenuInteraction:(id)interaction targetRectForConfiguration:(id)configuration
 {
-  if (self->__editMenuInteraction == a3)
+  if (self->__editMenuInteraction == interaction)
   {
     [(UIView *)self bounds:v4];
   }
@@ -3026,21 +3026,21 @@ uint64_t __42__UICollectionViewCell_setBackgroundView___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)editMenuInteraction:(id)a3 willPresentMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willPresentMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  if (self->__editMenuInteraction == a3)
+  if (self->__editMenuInteraction == interaction)
   {
-    [(UICollectionViewCell *)self _setSelected:1 animated:0, a5];
+    [(UICollectionViewCell *)self _setSelected:1 animated:0, animator];
     *&self->_collectionCellFlags |= 0x100000u;
   }
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (self->__editMenuInteraction == v8)
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  if (self->__editMenuInteraction == interactionCopy)
   {
     collectionCellFlags = self->_collectionCellFlags;
     if ((*&collectionCellFlags & 0x100000) != 0)
@@ -3060,8 +3060,8 @@ uint64_t __42__UICollectionViewCell_setBackgroundView___block_invoke(uint64_t a1
     v14[1] = 3221225472;
     v14[2] = __85__UICollectionViewCell_editMenuInteraction_willDismissMenuForConfiguration_animator___block_invoke;
     v14[3] = &unk_1E70F3590;
-    v15 = v8;
-    [v10 addCompletion:v14];
+    v15 = interactionCopy;
+    [animatorCopy addCompletion:v14];
   }
 }
 
@@ -3071,13 +3071,13 @@ void __85__UICollectionViewCell_editMenuInteraction_willDismissMenuForConfigurat
   [v2 removeInteraction:*(a1 + 32)];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   if (!dyld_program_sdk_at_least())
   {
     WeakRetained = objc_loadWeakRetained(&self->super._collectionView);
-    if (![WeakRetained _canPerformAction:a3 forCell:self sender:v6])
+    if (![WeakRetained _canPerformAction:action forCell:self sender:senderCopy])
     {
       v11 = 0;
       goto LABEL_15;
@@ -3091,62 +3091,62 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (sel_cut_ == a3 || sel_copy_ == a3 || sel_paste_ == a3)
+  if (sel_cut_ == action || sel_copy_ == action || sel_paste_ == action)
   {
     WeakRetained = objc_loadWeakRetained(&self->super._collectionView);
-    v10 = [WeakRetained _canPerformAction:a3 forCell:self sender:v6];
+    v10 = [WeakRetained _canPerformAction:action forCell:self sender:senderCopy];
     goto LABEL_13;
   }
 
   v13.receiver = self;
   v13.super_class = UICollectionViewCell;
-  v11 = [(UIView *)&v13 canPerformAction:a3 withSender:v6];
+  v11 = [(UIView *)&v13 canPerformAction:action withSender:senderCopy];
 LABEL_16:
 
   return v11 & 1;
 }
 
-- (void)_performAction:(SEL)a3 sender:(id)a4
+- (void)_performAction:(SEL)action sender:(id)sender
 {
-  v6 = a4;
+  senderCopy = sender;
   WeakRetained = objc_loadWeakRetained(&self->super._collectionView);
-  [WeakRetained _performAction:a3 forCell:self sender:v6];
+  [WeakRetained _performAction:action forCell:self sender:senderCopy];
 }
 
-- (void)_setSelectionSegueTemplate:(id)a3
+- (void)_setSelectionSegueTemplate:(id)template
 {
-  v5 = a3;
-  if (self->_selectionSegueTemplate != v5)
+  templateCopy = template;
+  if (self->_selectionSegueTemplate != templateCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectionSegueTemplate, a3);
-    v5 = v6;
+    v6 = templateCopy;
+    objc_storeStrong(&self->_selectionSegueTemplate, template);
+    templateCopy = v6;
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = UICollectionViewCell;
-  [(UIView *)&v4 traitCollectionDidChange:a3];
+  [(UIView *)&v4 traitCollectionDidChange:change];
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
     [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)setSemanticContentAttribute:(int64_t)a3
+- (void)setSemanticContentAttribute:(int64_t)attribute
 {
   v5.receiver = self;
   v5.super_class = UICollectionViewCell;
   [(UIView *)&v5 setSemanticContentAttribute:?];
-  [(UIView *)self->_contentView setSemanticContentAttribute:a3];
+  [(UIView *)self->_contentView setSemanticContentAttribute:attribute];
 }
 
-- (BOOL)_forwardsSystemLayoutFittingSizeToContentView:(id)a3
+- (BOOL)_forwardsSystemLayoutFittingSizeToContentView:(id)view
 {
-  v4 = a3;
-  if (((*(&self->_collectionCellFlags + 2) & 0x40) != 0 || (dyld_program_sdk_at_least() & 1) == 0) && (contentView = self->_contentView, contentView == v4))
+  viewCopy = view;
+  if (((*(&self->_collectionCellFlags + 2) & 0x40) != 0 || (dyld_program_sdk_at_least() & 1) == 0) && (contentView = self->_contentView, contentView == viewCopy))
   {
     IsGuardingForEngine = [(UIView *)contentView _wantsAutolayoutOrIsGuardingForEngineHosting];
   }
@@ -3159,10 +3159,10 @@ LABEL_16:
   return IsGuardingForEngine;
 }
 
-- (CGSize)_contentTargetSizeForTargetSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5 forUseWithSizeThatFits:(BOOL)a6
+- (CGSize)_contentTargetSizeForTargetSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority forUseWithSizeThatFits:(BOOL)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v35 = *MEMORY[0x1E69E9840];
   [(UICollectionViewCell *)self _contentViewInset];
   v14 = v13;
@@ -3174,7 +3174,7 @@ LABEL_16:
   {
     v19 = v11;
     v17 = 0.0;
-    if (a4 >= 1000.0)
+    if (priority >= 1000.0)
     {
       v20 = v12;
       v21 = *(__UILogGetCategoryCachedImpl("CollectionView", &qword_1ED4964F0) + 8);
@@ -3187,7 +3187,7 @@ LABEL_16:
         v31 = 2048;
         v32 = width;
         v33 = 2112;
-        v34 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v21, OS_LOG_TYPE_ERROR, "The cell's content view insets (left: %g, right: %g) exceed the cell's target width of %g with required fitting priority. Cell: %@", buf, 0x2Au);
       }
     }
@@ -3196,7 +3196,7 @@ LABEL_16:
   if (v18 < 0.0)
   {
     v18 = 0.0;
-    if (a5 >= 1000.0)
+    if (fittingPriority >= 1000.0)
     {
       v22 = *(__UILogGetCategoryCachedImpl("CollectionView", &qword_1ED4964F8) + 8);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -3208,14 +3208,14 @@ LABEL_16:
         v31 = 2048;
         v32 = v25;
         v33 = 2112;
-        v34 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_ERROR, "The cell's content view insets (top: %g, bottom: %g) exceed the cell's target height of %g with required fitting priority. Cell: %@", buf, 0x2Au);
       }
     }
   }
 
   v23 = 1.79769313e308;
-  if (a5 < 1000.0 && a6)
+  if (fittingPriority < 1000.0 && fits)
   {
     v24 = 1.79769313e308;
   }
@@ -3225,7 +3225,7 @@ LABEL_16:
     v24 = v18;
   }
 
-  if (a4 >= 1000.0 || !a6)
+  if (priority >= 1000.0 || !fits)
   {
     v23 = v17;
   }
@@ -3235,10 +3235,10 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v66 = *MEMORY[0x1E69E9840];
   v63[0] = MEMORY[0x1E69E9820];
   v63[1] = 3221225472;
@@ -3263,12 +3263,12 @@ LABEL_16:
     v28 = contentView;
     if (([(UIView *)v28 _wantsAutolayoutOrIsGuardingForEngineHosting]& 1) != 0)
     {
-      v29 = 1;
+      requiresConstraintBasedLayout = 1;
     }
 
     else
     {
-      v29 = [objc_opt_class() requiresConstraintBasedLayout];
+      requiresConstraintBasedLayout = [objc_opt_class() requiresConstraintBasedLayout];
     }
 
     if (([(UIView *)self->_contentView _wantsAutolayoutOrIsGuardingForEngineHosting]& 1) != 0)
@@ -3283,37 +3283,37 @@ LABEL_16:
 
     if (v28 != self || (v32 & 1) != 0)
     {
-      if (!v29)
+      if (!requiresConstraintBasedLayout)
       {
         goto LABEL_47;
       }
     }
 
-    else if (!v29 || [(UIView *)self->_contentView translatesAutoresizingMaskIntoConstraints]&& (![(UIView *)self needsUpdateConstraints]|| dyld_program_sdk_at_least() && [(UIView *)self->_contentView _hostsLayoutEngine]))
+    else if (!requiresConstraintBasedLayout || [(UIView *)self->_contentView translatesAutoresizingMaskIntoConstraints]&& (![(UIView *)self needsUpdateConstraints]|| dyld_program_sdk_at_least() && [(UIView *)self->_contentView _hostsLayoutEngine]))
     {
       has_internal_diagnostics = os_variant_has_internal_diagnostics();
-      v34 = [(UIView *)self->_contentView translatesAutoresizingMaskIntoConstraints];
+      translatesAutoresizingMaskIntoConstraints = [(UIView *)self->_contentView translatesAutoresizingMaskIntoConstraints];
       if (has_internal_diagnostics)
       {
-        if (!v34)
+        if (!translatesAutoresizingMaskIntoConstraints)
         {
           v57 = __UIFaultDebugAssertLog();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_FAULT))
           {
             *buf = 138412290;
-            v65 = self;
+            selfCopy2 = self;
             _os_log_fault_impl(&dword_188A29000, v57, OS_LOG_TYPE_FAULT, "contentView of collectionViewCell has translatesAutoresizingMaskIntoConstraints false and is missing constraints to the cell, which will cause substandard performance in cell autosizing. Please leave the contentView's translatesAutoresizingMaskIntoConstraints true or else provide constraints between the contentView and the cell. %@", buf, 0xCu);
           }
         }
       }
 
-      else if (!v34)
+      else if (!translatesAutoresizingMaskIntoConstraints)
       {
         v58 = *(__UILogGetCategoryCachedImpl("Assert", &qword_1ED496500) + 8);
         if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v65 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_188A29000, v58, OS_LOG_TYPE_ERROR, "contentView of collectionViewCell has translatesAutoresizingMaskIntoConstraints false and is missing constraints to the cell, which will cause substandard performance in cell autosizing. Please leave the contentView's translatesAutoresizingMaskIntoConstraints true or else provide constraints between the contentView and the cell. %@", buf, 0xCu);
         }
       }
@@ -3348,10 +3348,10 @@ LABEL_16:
         v38 = width;
         if (v28 == self->_contentView)
         {
-          *&v36 = a4;
-          *&v37 = a5;
+          *&v36 = priority;
+          *&v37 = fittingPriority;
           [(UICollectionViewCell *)self _contentTargetSizeForTargetSize:0 withHorizontalFittingPriority:width verticalFittingPriority:height forUseWithSizeThatFits:v36, v37];
-          if (v39 == 0.0 && a5 == 50.0)
+          if (v39 == 0.0 && fittingPriority == 50.0)
           {
             v41 = buf;
           }
@@ -3385,7 +3385,7 @@ LABEL_63:
         }
       }
 
-      if (a5 == 50.0 && height == 0.0)
+      if (fittingPriority == 50.0 && height == 0.0)
       {
         v49 = buf;
       }
@@ -3395,8 +3395,8 @@ LABEL_63:
         v49 = 0;
       }
 
-      *&v36 = a4;
-      *&v37 = a5;
+      *&v36 = priority;
+      *&v37 = fittingPriority;
       [(UIView *)v28 _systemLayoutSizeFittingSize:v49 withHorizontalFittingPriority:v38 verticalFittingPriority:height hasIntentionallyCollapsedHeight:v36, v37];
       v24 = v50;
       v25 = v51;
@@ -3406,8 +3406,8 @@ LABEL_63:
 LABEL_47:
     v61.receiver = self;
     v61.super_class = UICollectionViewCell;
-    *&v30 = a4;
-    *&v31 = a5;
+    *&v30 = priority;
+    *&v31 = fittingPriority;
     [(UIView *)&v61 systemLayoutSizeFittingSize:width withHorizontalFittingPriority:height verticalFittingPriority:v30, v31];
     v24 = v44;
     v25 = v45;
@@ -3424,17 +3424,17 @@ LABEL_48:
   v20 = v19;
   v22 = v21;
   v23 = self->_contentView;
-  if (a4 != 1000.0 && v20 > 2777777.0 || a5 != 1000.0 && v22 > 2777777.0)
+  if (priority != 1000.0 && v20 > 2777777.0 || fittingPriority != 1000.0 && v22 > 2777777.0)
   {
-    v54 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v55 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _UIContentViewAssertValidFittingSize(UIView * _Nonnull __strong, CGSize, UILayoutPriority, UILayoutPriority)"}];
     v67.width = v20;
     v67.height = v22;
     v56 = NSStringFromCGSize(v67);
-    [v54 handleFailureInFunction:v55 file:@"_UIContentViewShared.h" lineNumber:73 description:{@"Content view returned an invalid size %@ from -systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority: which is not allowed. If you have implemented a custom content view, you need to add constraints inside it so that its size is not ambiguous, or you need to manually compute and return a valid size. Content view: %@", v56, v23}];
+    [currentHandler handleFailureInFunction:v55 file:@"_UIContentViewShared.h" lineNumber:73 description:{@"Content view returned an invalid size %@ from -systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority: which is not allowed. If you have implemented a custom content view, you need to add constraints inside it so that its size is not ambiguous, or you need to manually compute and return a valid size. Content view: %@", v56, v23}];
   }
 
-  if (a4 >= 1000.0)
+  if (priority >= 1000.0)
   {
     v24 = v59;
   }
@@ -3444,7 +3444,7 @@ LABEL_48:
     v24 = v20 - (-v16 - v13);
   }
 
-  if (a5 >= 1000.0)
+  if (fittingPriority >= 1000.0)
   {
     v25 = height;
   }
@@ -3483,10 +3483,10 @@ void __106__UICollectionViewCell_systemLayoutSizeFittingSize_withHorizontalFitti
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __37__UICollectionViewCell_sizeThatFits___block_invoke;
@@ -3546,27 +3546,27 @@ void __106__UICollectionViewCell_systemLayoutSizeFittingSize_withHorizontalFitti
   return result;
 }
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
   v6.receiver = self;
   v6.super_class = UICollectionViewCell;
-  v4 = a3;
-  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:v4];
+  viewCopy = view;
+  [(UIView *)&v6 _intrinsicContentSizeInvalidatedForChildView:viewCopy];
   contentView = self->_contentView;
 
-  if (contentView == v4)
+  if (contentView == viewCopy)
   {
     [(UICollectionReusableView *)self invalidateIntrinsicContentSize:v6.receiver];
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (((((*&self->_collectionCellFlags & 4) == 0) ^ a3) & 1) == 0)
+  if (((((*&self->_collectionCellFlags & 4) == 0) ^ editing) & 1) == 0)
   {
-    v3 = a3;
+    editingCopy = editing;
     [(UICollectionViewCell *)self _prepareForConfigurationStateUpdate];
-    if (v3)
+    if (editingCopy)
     {
       v5 = 4;
     }
@@ -3582,22 +3582,22 @@ void __106__UICollectionViewCell_systemLayoutSizeFittingSize_withHorizontalFitti
   }
 }
 
-- (void)_configureFocusedFloatingContentView:(id)a3
+- (void)_configureFocusedFloatingContentView:(id)view
 {
-  v3 = a3;
-  [v3 setBackgroundColor:0 forState:0];
-  [v3 setBackgroundColor:0 forState:8];
-  [v3 setBackgroundColor:0 forState:1];
-  [v3 setBackgroundColor:0 forState:4];
-  [v3 setFocusedSizeIncrease:70.0];
-  [v3 setContentMotionRotation:0.2 translation:{0.2, 12.0, 12.0}];
+  viewCopy = view;
+  [viewCopy setBackgroundColor:0 forState:0];
+  [viewCopy setBackgroundColor:0 forState:8];
+  [viewCopy setBackgroundColor:0 forState:1];
+  [viewCopy setBackgroundColor:0 forState:4];
+  [viewCopy setFocusedSizeIncrease:70.0];
+  [viewCopy setContentMotionRotation:0.2 translation:{0.2, 12.0, 12.0}];
 }
 
-- (void)_updateFocusedFloatingContentControlStateInContext:(id)a3 withAnimationCoordinator:(id)a4 animated:(BOOL)a5
+- (void)_updateFocusedFloatingContentControlStateInContext:(id)context withAnimationCoordinator:(id)coordinator animated:(BOOL)animated
 {
-  v5 = a5;
-  v15 = a3;
-  v8 = a4;
+  animatedCopy = animated;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
   if ([(UICollectionViewCell *)self _canFocusProgrammatically])
   {
     [(UICollectionViewCell *)self _ensureFocusedFloatingContentView];
@@ -3605,18 +3605,18 @@ void __106__UICollectionViewCell_systemLayoutSizeFittingSize_withHorizontalFitti
 
   if (self->_focusedFloatingContentView)
   {
-    if (v15)
+    if (contextCopy)
     {
-      v9 = [v15 nextFocusedView];
-      v10 = v9 == self;
+      nextFocusedView = [contextCopy nextFocusedView];
+      isFocused = nextFocusedView == self;
     }
 
     else
     {
-      v10 = [(UICollectionViewCell *)self isFocused];
+      isFocused = [(UICollectionViewCell *)self isFocused];
     }
 
-    if (v10)
+    if (isFocused)
     {
       v11 = 8;
     }
@@ -3631,30 +3631,30 @@ void __106__UICollectionViewCell_systemLayoutSizeFittingSize_withHorizontalFitti
       v11 |= 4uLL;
     }
 
-    v12 = [(UICollectionViewCell *)self isHighlighted];
+    isHighlighted = [(UICollectionViewCell *)self isHighlighted];
     focusedFloatingContentView = self->_focusedFloatingContentView;
-    v14 = v11 | v12;
-    if (v8)
+    v14 = v11 | isHighlighted;
+    if (coordinatorCopy)
     {
-      [(_UIFloatingContentView *)focusedFloatingContentView setControlState:v14 withAnimationCoordinator:v8];
+      [(_UIFloatingContentView *)focusedFloatingContentView setControlState:v14 withAnimationCoordinator:coordinatorCopy];
     }
 
     else
     {
-      [(_UIFloatingContentView *)focusedFloatingContentView setControlState:v14 animated:v5];
+      [(_UIFloatingContentView *)focusedFloatingContentView setControlState:v14 animated:animatedCopy];
     }
   }
 }
 
-- (void)_willUpdateFocusInContext:(id)a3
+- (void)_willUpdateFocusInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v8.receiver = self;
   v8.super_class = UICollectionViewCell;
-  [(UIView *)&v8 _willUpdateFocusInContext:v4];
-  v5 = [v4 previouslyFocusedView];
-  v6 = v5;
-  if (v5 == self)
+  [(UIView *)&v8 _willUpdateFocusInContext:contextCopy];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  v6 = previouslyFocusedView;
+  if (previouslyFocusedView == self)
   {
 
 LABEL_5:
@@ -3662,9 +3662,9 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v7 = [v4 nextFocusedView];
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  if (v7 == self)
+  if (nextFocusedView == self)
   {
     goto LABEL_5;
   }
@@ -3672,40 +3672,40 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)_didUpdateFocusInContext:(id)a3
+- (void)_didUpdateFocusInContext:(id)context
 {
-  v5 = a3;
-  v6 = [v5 nextFocusedView];
+  contextCopy = context;
+  nextFocusedView = [contextCopy nextFocusedView];
 
-  if (v6 == self)
+  if (nextFocusedView == self)
   {
     [(UICollectionViewCell *)self _ensureFocusedFloatingContentView];
     if (self->_focusedFloatingContentView)
     {
-      v7 = [(UIView *)self superview];
-      [v7 bringSubviewToFront:self];
+      superview = [(UIView *)self superview];
+      [superview bringSubviewToFront:self];
     }
   }
 
-  v8 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:v5];
+  v8 = [_UIFocusAnimationCoordinatorManager animationCoordinatorForContext:contextCopy];
   if (!v8)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:3274 description:@"Received call to _didUpdateFocusInContext: outside of a focus update."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UICollectionViewCell.m" lineNumber:3274 description:@"Received call to _didUpdateFocusInContext: outside of a focus update."];
   }
 
-  [(UICollectionViewCell *)self _updateFocusedFloatingContentControlStateInContext:v5 withAnimationCoordinator:v8 animated:1];
-  v9 = [v5 previouslyFocusedView];
-  v10 = v9;
-  if (v9 == self)
+  [(UICollectionViewCell *)self _updateFocusedFloatingContentControlStateInContext:contextCopy withAnimationCoordinator:v8 animated:1];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  v10 = previouslyFocusedView;
+  if (previouslyFocusedView == self)
   {
   }
 
   else
   {
-    v11 = [v5 nextFocusedView];
+    nextFocusedView2 = [contextCopy nextFocusedView];
 
-    if (v11 != self)
+    if (nextFocusedView2 != self)
     {
       goto LABEL_11;
     }
@@ -3713,25 +3713,25 @@ LABEL_6:
 
   [(UICollectionViewCell *)self setNeedsUpdateConfiguration];
 LABEL_11:
-  v12 = [v5 previouslyFocusedView];
+  previouslyFocusedView2 = [contextCopy previouslyFocusedView];
 
-  if (v12 == self)
+  if (previouslyFocusedView2 == self)
   {
-    v13 = [(UICollectionReusableView *)self _collectionView];
-    [v13 _cellDidBecomeUnfocused:self];
+    _collectionView = [(UICollectionReusableView *)self _collectionView];
+    [_collectionView _cellDidBecomeUnfocused:self];
   }
 
-  v14 = [v5 nextFocusedView];
+  nextFocusedView3 = [contextCopy nextFocusedView];
 
-  if (v14 == self)
+  if (nextFocusedView3 == self)
   {
-    v15 = [(UICollectionReusableView *)self _collectionView];
-    [v15 _cellDidBecomeFocused:self];
+    _collectionView2 = [(UICollectionReusableView *)self _collectionView];
+    [_collectionView2 _cellDidBecomeFocused:self];
   }
 
   v17.receiver = self;
   v17.super_class = UICollectionViewCell;
-  [(UIView *)&v17 _didUpdateFocusInContext:v5];
+  [(UIView *)&v17 _didUpdateFocusInContext:contextCopy];
 }
 
 - (int64_t)_systemDefaultFocusGroupPriority
@@ -3747,21 +3747,21 @@ LABEL_11:
   }
 }
 
-- (id)_preferredConfigurationForFocusAnimation:(int64_t)a3 inContext:(id)a4
+- (id)_preferredConfigurationForFocusAnimation:(int64_t)animation inContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   [(UICollectionViewCell *)self _ensureFocusedFloatingContentView];
   focusedFloatingContentView = self->_focusedFloatingContentView;
   if (focusedFloatingContentView)
   {
-    v8 = [(_UIFloatingContentView *)focusedFloatingContentView _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    v8 = [(_UIFloatingContentView *)focusedFloatingContentView _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = UICollectionViewCell;
-    v8 = [(UIView *)&v11 _preferredConfigurationForFocusAnimation:a3 inContext:v6];
+    v8 = [(UIView *)&v11 _preferredConfigurationForFocusAnimation:animation inContext:contextCopy];
   }
 
   v9 = v8;
@@ -3771,24 +3771,24 @@ LABEL_11:
 
 - (BOOL)_allowsHorizontalFocusMovement
 {
-  v2 = [(UICollectionReusableView *)self _layoutAttributes];
-  v3 = [(UICollectionViewLayoutAttributes *)v2 _existingListAttributes];
-  v4 = v3 == 0;
+  _layoutAttributes = [(UICollectionReusableView *)self _layoutAttributes];
+  _existingListAttributes = [(UICollectionViewLayoutAttributes *)_layoutAttributes _existingListAttributes];
+  v4 = _existingListAttributes == 0;
 
   return v4;
 }
 
-- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)a3
+- (BOOL)_shouldForwardMovementToFocusEngine:(int64_t)engine
 {
-  v5 = [(UICollectionViewCell *)self _allowsHorizontalFocusMovement];
-  if (a3 != 1 || v5)
+  _allowsHorizontalFocusMovement = [(UICollectionViewCell *)self _allowsHorizontalFocusMovement];
+  if (engine != 1 || _allowsHorizontalFocusMovement)
   {
     v7.receiver = self;
     v7.super_class = UICollectionViewCell;
-    LOBYTE(v5) = [(UIResponder *)&v7 _shouldForwardMovementToFocusEngine:a3];
+    LOBYTE(_allowsHorizontalFocusMovement) = [(UIResponder *)&v7 _shouldForwardMovementToFocusEngine:engine];
   }
 
-  return v5;
+  return _allowsHorizontalFocusMovement;
 }
 
 - (id)_defaultFocusOutline
@@ -3801,11 +3801,11 @@ LABEL_11:
 
   else
   {
-    v5 = [(UIView *)self layer];
-    [v5 cornerRadius];
-    v6 = [v5 maskedCorners];
+    layer = [(UIView *)self layer];
+    [layer cornerRadius];
+    maskedCorners = [layer maskedCorners];
     [(UIView *)self bounds];
-    v4 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:" byRoundingCorners:v6 & 0xF cornerRadii:?];
+    v4 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:byRoundingCorners:cornerRadii:" byRoundingCorners:maskedCorners & 0xF cornerRadii:?];
   }
 
   return v4;
@@ -3825,28 +3825,28 @@ LABEL_11:
   }
 
   [(UICollectionViewCell *)self _performConfigurationStateUpdate];
-  v4 = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
-  if (([v4 isTintBackgroundColor] & 1) == 0)
+  configuration = [(_UISystemBackgroundView *)self->_systemBackgroundView configuration];
+  if (([configuration isTintBackgroundColor] & 1) == 0)
   {
-    v5 = [(UIView *)self traitCollection];
-    v6 = [v5 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v6 > 5 || ((1 << v6) & 0x23) == 0 || ![(UICollectionViewCell *)self _backgroundFillIsCustomized])
+    if (userInterfaceIdiom > 5 || ((1 << userInterfaceIdiom) & 0x23) == 0 || ![(UICollectionViewCell *)self _backgroundFillIsCustomized])
     {
 
 LABEL_10:
-      v7 = [(UICollectionReusableView *)self _collectionView];
-      v8 = [v7 _effectiveDefaultAllowsFocus];
+      _collectionView = [(UICollectionReusableView *)self _collectionView];
+      _effectiveDefaultAllowsFocus = [_collectionView _effectiveDefaultAllowsFocus];
 
       v9 = off_1E70E9948;
-      if (!v8)
+      if (!_effectiveDefaultAllowsFocus)
       {
         v9 = off_1E70EB810;
       }
 
       v10 = *v9;
-      v4 = [(UICollectionViewCell *)self _defaultFocusOutline];
-      v3 = [(__objc2_class *)v10 effectWithPath:v4];
+      configuration = [(UICollectionViewCell *)self _defaultFocusOutline];
+      v3 = [(__objc2_class *)v10 effectWithPath:configuration];
       goto LABEL_13;
     }
   }
@@ -3861,8 +3861,8 @@ LABEL_14:
 
 - (int64_t)focusItemDeferralMode
 {
-  v3 = [(UICollectionReusableView *)self _collectionView];
-  v4 = [v3 _cellFocusItemDeferral:self];
+  _collectionView = [(UICollectionReusableView *)self _collectionView];
+  v4 = [_collectionView _cellFocusItemDeferral:self];
 
   return v4;
 }

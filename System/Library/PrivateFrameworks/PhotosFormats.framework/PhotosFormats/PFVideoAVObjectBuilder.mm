@@ -1,31 +1,31 @@
 @interface PFVideoAVObjectBuilder
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertToOriginalTimeFromScaledTime:(SEL)a3 forExport:(id *)a4;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertToScaledTimeFromOriginalTime:(SEL)a3 forExport:(id *)a4;
-- ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampInRangeForExport:(SEL)a3;
-- ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampOutRangeForExport:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertToOriginalTimeFromScaledTime:(SEL)time forExport:(id *)export;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertToScaledTimeFromOriginalTime:(SEL)time forExport:(id *)export;
+- ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampInRangeForExport:(SEL)export;
+- ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampOutRangeForExport:(SEL)export;
 - ($E33AF59C8D263E738CA17719EFF006B3)timeRange;
-- (PFVideoAVObjectBuilder)initWithAsset:(id)a3 audioMix:(id)a4 videoComposition:(id)a5;
-- (PFVideoAVObjectBuilder)initWithVideoAsset:(id)a3 videoAdjustments:(id)a4;
-- (id)_getOrCreateTimeRangeMapperForExport:(BOOL)a3;
-- (id)_trimAssetIfNecessary:(id)a3 error:(id *)a4;
+- (PFVideoAVObjectBuilder)initWithAsset:(id)asset audioMix:(id)mix videoComposition:(id)composition;
+- (PFVideoAVObjectBuilder)initWithVideoAsset:(id)asset videoAdjustments:(id)adjustments;
+- (id)_getOrCreateTimeRangeMapperForExport:(BOOL)export;
+- (id)_trimAssetIfNecessary:(id)necessary error:(id *)error;
 - (id)description;
-- (void)_synchronouslyLoadSlowMotionPropertiesFromAsset:(id)a3;
-- (void)requestAVAssetForExport:(BOOL)a3 withResultHandler:(id)a4;
-- (void)requestAsynchronousAVAssetWithResultHandler:(id)a3;
-- (void)requestAsynchronousExportSessionWithExportPreset:(id)a3 resultHandler:(id)a4;
-- (void)requestAsynchronousPlayerItemWithResultHandler:(id)a3;
-- (void)requestExportSessionWithExportPreset:(id)a3 resultHandler:(id)a4;
-- (void)requestPlayerItemWithResultHandler:(id)a3;
-- (void)setTimeRange:(id *)a3;
+- (void)_synchronouslyLoadSlowMotionPropertiesFromAsset:(id)asset;
+- (void)requestAVAssetForExport:(BOOL)export withResultHandler:(id)handler;
+- (void)requestAsynchronousAVAssetWithResultHandler:(id)handler;
+- (void)requestAsynchronousExportSessionWithExportPreset:(id)preset resultHandler:(id)handler;
+- (void)requestAsynchronousPlayerItemWithResultHandler:(id)handler;
+- (void)requestExportSessionWithExportPreset:(id)preset resultHandler:(id)handler;
+- (void)requestPlayerItemWithResultHandler:(id)handler;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation PFVideoAVObjectBuilder
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_timeRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_timeRange.start.epoch = *&range->var0.var3;
   *&self->_timeRange.duration.timescale = v4;
   *&self->_timeRange.start.value = v3;
 }
@@ -39,37 +39,37 @@
   return self;
 }
 
-- (id)_trimAssetIfNecessary:(id)a3 error:(id *)a4
+- (id)_trimAssetIfNecessary:(id)necessary error:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
+  necessaryCopy = necessary;
+  v7 = necessaryCopy;
   if ((self->_timeRange.start.flags & 1) == 0 || (self->_timeRange.duration.flags & 1) == 0 || self->_timeRange.duration.epoch || self->_timeRange.duration.value < 0)
   {
-    v8 = v6;
+    v8 = necessaryCopy;
   }
 
   else
   {
-    v10 = [MEMORY[0x1E6988048] composition];
+    composition = [MEMORY[0x1E6988048] composition];
     v11 = *&self->_timeRange.start.epoch;
     v31 = *&self->_timeRange.start.value;
     v32 = v11;
     v33 = *&self->_timeRange.duration.timescale;
     v24 = *MEMORY[0x1E6960CC0];
     *&v25 = *(MEMORY[0x1E6960CC0] + 16);
-    if ([PFMediaUtilities insertTimeRange:&v31 ofAsset:v7 atTime:&v24 intoMutableComposition:v10 error:a4])
+    if ([PFMediaUtilities insertTimeRange:&v31 ofAsset:v7 atTime:&v24 intoMutableComposition:composition error:error])
     {
       v32 = 0u;
       v33 = 0u;
       v31 = 0u;
       v12 = *MEMORY[0x1E6987608];
       v13 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:v7];
-      v14 = [v13 firstObject];
-      v15 = v14;
-      if (v14)
+      firstObject = [v13 firstObject];
+      v15 = firstObject;
+      if (firstObject)
       {
-        [v14 preferredTransform];
+        [firstObject preferredTransform];
       }
 
       else
@@ -83,8 +83,8 @@
       v30 = 0u;
       v27 = 0u;
       v28 = 0u;
-      v16 = [v10 tracks];
-      v17 = [v16 countByEnumeratingWithState:&v27 objects:v34 count:16];
+      tracks = [composition tracks];
+      v17 = [tracks countByEnumeratingWithState:&v27 objects:v34 count:16];
       if (v17)
       {
         v18 = v17;
@@ -95,12 +95,12 @@
           {
             if (*v28 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(tracks);
             }
 
             v21 = *(*(&v27 + 1) + 8 * i);
-            v22 = [v21 mediaType];
-            v23 = [v22 isEqualToString:v12];
+            mediaType = [v21 mediaType];
+            v23 = [mediaType isEqualToString:v12];
 
             if (v23)
             {
@@ -111,13 +111,13 @@
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v27 objects:v34 count:16];
+          v18 = [tracks countByEnumeratingWithState:&v27 objects:v34 count:16];
         }
 
         while (v18);
       }
 
-      v8 = v10;
+      v8 = composition;
     }
 
     else
@@ -129,11 +129,11 @@
   return v8;
 }
 
-- (void)_synchronouslyLoadSlowMotionPropertiesFromAsset:(id)a3
+- (void)_synchronouslyLoadSlowMotionPropertiesFromAsset:(id)asset
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
     v5 = dispatch_group_create();
     dispatch_group_enter(v5);
@@ -144,7 +144,7 @@
     v8[3] = &unk_1E7B66D20;
     v9 = v5;
     v7 = v5;
-    [v4 loadValuesAsynchronouslyForKeys:v6 completionHandler:v8];
+    [assetCopy loadValuesAsynchronouslyForKeys:v6 completionHandler:v8];
 
     dispatch_group_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -152,29 +152,29 @@
   else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v11 = self;
+    selfCopy = self;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@ was asked to load slo-mo properties from a nil AVAsset.", buf, 0xCu);
   }
 }
 
-- (void)requestAVAssetForExport:(BOOL)a3 withResultHandler:(id)a4
+- (void)requestAVAssetForExport:(BOOL)export withResultHandler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  exportCopy = export;
+  handlerCopy = handler;
   finalAsset = self->__finalAsset;
   if (finalAsset)
   {
     v8 = finalAsset;
     v9 = self->__finalAudioMix;
     v10 = self->__finalVideoComposition;
-    if (v6)
+    if (handlerCopy)
     {
 LABEL_3:
       v18 = 0;
       v11 = [(PFVideoAVObjectBuilder *)self _trimAssetIfNecessary:v8 error:&v18];
       v12 = v18;
 
-      v6[2](v6, v11, v9, v10, v12);
+      handlerCopy[2](handlerCopy, v11, v9, v10, v12);
       v8 = v11;
     }
   }
@@ -199,19 +199,19 @@ LABEL_3:
 
     v19 = 0;
     LODWORD(v17) = v15;
-    v8 = [PFSlowMotionUtilities assetFromVideoAsset:videoAsset slowMotionRate:v20 slowMotionTimeRange:v4 forExport:&v19 outAudioMix:0 outTimeRangeMapper:v17];
+    v8 = [PFSlowMotionUtilities assetFromVideoAsset:videoAsset slowMotionRate:v20 slowMotionTimeRange:exportCopy forExport:&v19 outAudioMix:0 outTimeRangeMapper:v17];
     v9 = v19;
     v10 = 0;
-    if (v6)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
   }
 }
 
-- (void)requestAsynchronousAVAssetWithResultHandler:(id)a3
+- (void)requestAsynchronousAVAssetWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_videoAsset;
   v6 = +[PFSlowMotionUtilities slowMotionSourceAssetPropertyKeys];
   v8[0] = MEMORY[0x1E69E9820];
@@ -219,15 +219,15 @@ LABEL_3:
   v8[2] = __70__PFVideoAVObjectBuilder_requestAsynchronousAVAssetWithResultHandler___block_invoke;
   v8[3] = &unk_1E7B668D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(AVAsset *)v5 loadValuesAsynchronouslyForKeys:v6 completionHandler:v8];
 }
 
-- (void)requestAsynchronousExportSessionWithExportPreset:(id)a3 resultHandler:(id)a4
+- (void)requestAsynchronousExportSessionWithExportPreset:(id)preset resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  presetCopy = preset;
+  handlerCopy = handler;
   v8 = self->_videoAsset;
   v9 = +[PFSlowMotionUtilities slowMotionSourceAssetPropertyKeys];
   v12[0] = MEMORY[0x1E69E9820];
@@ -235,27 +235,27 @@ LABEL_3:
   v12[2] = __89__PFVideoAVObjectBuilder_requestAsynchronousExportSessionWithExportPreset_resultHandler___block_invoke;
   v12[3] = &unk_1E7B661F0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = presetCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = presetCopy;
   [(AVAsset *)v8 loadValuesAsynchronouslyForKeys:v9 completionHandler:v12];
 }
 
-- (void)requestExportSessionWithExportPreset:(id)a3 resultHandler:(id)a4
+- (void)requestExportSessionWithExportPreset:(id)preset resultHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  presetCopy = preset;
+  handlerCopy = handler;
   finalAsset = self->__finalAsset;
   if (finalAsset)
   {
-    v9 = [MEMORY[0x1E6987E60] exportSessionWithAsset:finalAsset presetName:v6];
+    v9 = [MEMORY[0x1E6987E60] exportSessionWithAsset:finalAsset presetName:presetCopy];
     [v9 setAudioMix:self->__finalAudioMix];
     [v9 setVideoComposition:self->__finalVideoComposition];
-    if (v7)
+    if (handlerCopy)
     {
 LABEL_3:
-      v7[2](v7, v9, 0);
+      handlerCopy[2](handlerCopy, v9, 0);
     }
   }
 
@@ -289,19 +289,19 @@ LABEL_3:
 
     if (v18)
     {
-      v20 = [PFSlowMotionUtilities exportPresetForAsset:v18 preferredPreset:v6];
+      v20 = [PFSlowMotionUtilities exportPresetForAsset:v18 preferredPreset:presetCopy];
 
       v9 = [MEMORY[0x1E6987E60] exportSessionWithAsset:v18 presetName:v20];
       [v9 setAudioMix:v16];
       if (isKindOfClass)
       {
-        v21 = [(AVAsset *)self->_videoAsset metadata];
-        [v9 setMetadata:v21];
+        metadata = [(AVAsset *)self->_videoAsset metadata];
+        [v9 setMetadata:metadata];
 
         [PFSlowMotionUtilities configureExportSession:v9 forcePreciseConversion:0];
       }
 
-      v6 = v20;
+      presetCopy = v20;
     }
 
     else
@@ -309,16 +309,16 @@ LABEL_3:
       v9 = 0;
     }
 
-    if (v7)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
   }
 }
 
-- (void)requestAsynchronousPlayerItemWithResultHandler:(id)a3
+- (void)requestAsynchronousPlayerItemWithResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_videoAsset;
   v6 = +[PFSlowMotionUtilities slowMotionSourceAssetPropertyKeys];
   v8[0] = MEMORY[0x1E69E9820];
@@ -326,25 +326,25 @@ LABEL_3:
   v8[2] = __73__PFVideoAVObjectBuilder_requestAsynchronousPlayerItemWithResultHandler___block_invoke;
   v8[3] = &unk_1E7B668D0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   [(AVAsset *)v5 loadValuesAsynchronouslyForKeys:v6 completionHandler:v8];
 }
 
-- (void)requestPlayerItemWithResultHandler:(id)a3
+- (void)requestPlayerItemWithResultHandler:(id)handler
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   if (self->__finalAsset)
   {
     v5 = [MEMORY[0x1E69880B0] playerItemWithAsset:?];
     [v5 setAudioMix:self->__finalAudioMix];
     [v5 setVideoComposition:self->__finalVideoComposition];
     v6 = 0;
-    if (v4)
+    if (handlerCopy)
     {
 LABEL_3:
-      v4[2](v4, v5, v6);
+      handlerCopy[2](handlerCopy, v5, v6);
     }
   }
 
@@ -408,17 +408,17 @@ LABEL_3:
                 }
 
                 v21 = *(*(&v30 + 1) + 8 * i);
-                v22 = [v21 name];
-                v23 = [v22 isEqualToString:@"pbl"];
+                name = [v21 name];
+                v23 = [name isEqualToString:@"pbl"];
 
                 if (v23)
                 {
-                  v24 = [v21 value];
-                  v25 = [v24 intValue];
+                  value = [v21 value];
+                  intValue = [value intValue];
 
-                  if (v25 >= 1)
+                  if (intValue >= 1)
                   {
-                    [v5 setPreferredForwardBufferDuration:v25];
+                    [v5 setPreferredForwardBufferDuration:intValue];
                   }
 
                   goto LABEL_24;
@@ -448,7 +448,7 @@ LABEL_24:
       v5 = 0;
     }
 
-    if (v4)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -477,37 +477,37 @@ LABEL_24:
   return v4;
 }
 
-- (PFVideoAVObjectBuilder)initWithAsset:(id)a3 audioMix:(id)a4 videoComposition:(id)a5
+- (PFVideoAVObjectBuilder)initWithAsset:(id)asset audioMix:(id)mix videoComposition:(id)composition
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  assetCopy = asset;
+  mixCopy = mix;
+  compositionCopy = composition;
   v15.receiver = self;
   v15.super_class = PFVideoAVObjectBuilder;
   v12 = [(PFVideoAVObjectBuilder *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->__finalAsset, a3);
-    objc_storeStrong(&v13->__finalAudioMix, a4);
-    objc_storeStrong(&v13->__finalVideoComposition, a5);
+    objc_storeStrong(&v12->__finalAsset, asset);
+    objc_storeStrong(&v13->__finalAudioMix, mix);
+    objc_storeStrong(&v13->__finalVideoComposition, composition);
   }
 
   return v13;
 }
 
-- (PFVideoAVObjectBuilder)initWithVideoAsset:(id)a3 videoAdjustments:(id)a4
+- (PFVideoAVObjectBuilder)initWithVideoAsset:(id)asset videoAdjustments:(id)adjustments
 {
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  adjustmentsCopy = adjustments;
   v14.receiver = self;
   v14.super_class = PFVideoAVObjectBuilder;
   v9 = [(PFVideoAVObjectBuilder *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_videoAsset, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_videoAsset, asset);
+    v11 = [adjustmentsCopy copy];
     videoAdjustments = v10->_videoAdjustments;
     v10->_videoAdjustments = v11;
   }
@@ -515,13 +515,13 @@ LABEL_24:
   return v10;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertToOriginalTimeFromScaledTime:(SEL)a3 forExport:(id *)a4
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertToOriginalTimeFromScaledTime:(SEL)time forExport:(id *)export
 {
-  *retstr = *a4;
+  *retstr = *export;
   v7 = [(PFVideoAVObjectBuilder *)self _getOrCreateTimeRangeMapperForExport:a5];
   if (v7)
   {
-    v11 = *a4;
+    v11 = *export;
     Seconds = CMTimeGetSeconds(&v11);
     *&Seconds = Seconds;
     [v7 originalTimeForScaledTime:Seconds];
@@ -531,13 +531,13 @@ LABEL_24:
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertToScaledTimeFromOriginalTime:(SEL)a3 forExport:(id *)a4
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertToScaledTimeFromOriginalTime:(SEL)time forExport:(id *)export
 {
-  *retstr = *a4;
+  *retstr = *export;
   v7 = [(PFVideoAVObjectBuilder *)self _getOrCreateTimeRangeMapperForExport:a5];
   if (v7)
   {
-    v11 = *a4;
+    v11 = *export;
     Seconds = CMTimeGetSeconds(&v11);
     *&Seconds = Seconds;
     [v7 scaledTimeForOriginalTime:Seconds];
@@ -547,7 +547,7 @@ LABEL_24:
   return result;
 }
 
-- ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampOutRangeForExport:(SEL)a3
+- ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampOutRangeForExport:(SEL)export
 {
   v13 = 0;
   v14 = &v13;
@@ -596,7 +596,7 @@ double __70__PFVideoAVObjectBuilder_SlowMotion__slowMotionRampOutRangeForExport_
   return result;
 }
 
-- ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampInRangeForExport:(SEL)a3
+- ($E33AF59C8D263E738CA17719EFF006B3)slowMotionRampInRangeForExport:(SEL)export
 {
   v13 = 0;
   v14 = &v13;
@@ -645,10 +645,10 @@ double __69__PFVideoAVObjectBuilder_SlowMotion__slowMotionRampInRangeForExport__
   return result;
 }
 
-- (id)_getOrCreateTimeRangeMapperForExport:(BOOL)a3
+- (id)_getOrCreateTimeRangeMapperForExport:(BOOL)export
 {
-  v3 = a3;
-  if (a3)
+  exportCopy = export;
+  if (export)
   {
     v5 = 32;
   }
@@ -690,7 +690,7 @@ double __69__PFVideoAVObjectBuilder_SlowMotion__slowMotionRampInRangeForExport__
     }
 
     LODWORD(v9) = v11;
-    v6 = [PFSlowMotionUtilities timeRangeMapperForSourceDuration:&v14 slowMotionRate:v3 slowMotionTimeRange:Seconds forExport:v9];
+    v6 = [PFSlowMotionUtilities timeRangeMapperForSourceDuration:&v14 slowMotionRate:exportCopy slowMotionTimeRange:Seconds forExport:v9];
     objc_storeStrong((&self->super.isa + v5), v6);
   }
 

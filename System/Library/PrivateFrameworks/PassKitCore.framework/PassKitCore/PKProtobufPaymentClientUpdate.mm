@@ -1,23 +1,23 @@
 @interface PKProtobufPaymentClientUpdate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMultiTokenContexts:(id)a3;
-- (void)addPaymentSummaryItems:(id)a3;
-- (void)addShippingMethods:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMultiTokenContexts:(id)contexts;
+- (void)addPaymentSummaryItems:(id)items;
+- (void)addShippingMethods:(id)methods;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PKProtobufPaymentClientUpdate
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 2;
   }
@@ -30,58 +30,58 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addPaymentSummaryItems:(id)a3
+- (void)addPaymentSummaryItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   paymentSummaryItems = self->_paymentSummaryItems;
-  v8 = v4;
+  v8 = itemsCopy;
   if (!paymentSummaryItems)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_paymentSummaryItems;
     self->_paymentSummaryItems = v6;
 
-    v4 = v8;
+    itemsCopy = v8;
     paymentSummaryItems = self->_paymentSummaryItems;
   }
 
-  [(NSMutableArray *)paymentSummaryItems addObject:v4];
+  [(NSMutableArray *)paymentSummaryItems addObject:itemsCopy];
 }
 
-- (void)addShippingMethods:(id)a3
+- (void)addShippingMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   shippingMethods = self->_shippingMethods;
-  v8 = v4;
+  v8 = methodsCopy;
   if (!shippingMethods)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_shippingMethods;
     self->_shippingMethods = v6;
 
-    v4 = v8;
+    methodsCopy = v8;
     shippingMethods = self->_shippingMethods;
   }
 
-  [(NSMutableArray *)shippingMethods addObject:v4];
+  [(NSMutableArray *)shippingMethods addObject:methodsCopy];
 }
 
-- (void)addMultiTokenContexts:(id)a3
+- (void)addMultiTokenContexts:(id)contexts
 {
-  v4 = a3;
+  contextsCopy = contexts;
   multiTokenContexts = self->_multiTokenContexts;
-  v8 = v4;
+  v8 = contextsCopy;
   if (!multiTokenContexts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_multiTokenContexts;
     self->_multiTokenContexts = v6;
 
-    v4 = v8;
+    contextsCopy = v8;
     multiTokenContexts = self->_multiTokenContexts;
   }
 
-  [(NSMutableArray *)multiTokenContexts addObject:v4];
+  [(NSMutableArray *)multiTokenContexts addObject:contextsCopy];
 }
 
 - (id)description
@@ -90,8 +90,8 @@
   v8.receiver = self;
   v8.super_class = PKProtobufPaymentClientUpdate;
   v4 = [(PKProtobufPaymentClientUpdate *)&v8 description];
-  v5 = [(PKProtobufPaymentClientUpdate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PKProtobufPaymentClientUpdate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -99,12 +99,12 @@
 - (id)dictionaryRepresentation
 {
   v54 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   remotePaymentRequestIdentifier = self->_remotePaymentRequestIdentifier;
   if (remotePaymentRequestIdentifier)
   {
-    [v3 setObject:remotePaymentRequestIdentifier forKey:@"remotePaymentRequestIdentifier"];
+    [dictionary setObject:remotePaymentRequestIdentifier forKey:@"remotePaymentRequestIdentifier"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -135,8 +135,8 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation = [*(*(&v47 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v47 objects:v53 count:16];
@@ -170,8 +170,8 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v43 + 1) + 8 * j) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v43 + 1) + 8 * j) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v43 objects:v52 count:16];
@@ -192,8 +192,8 @@
   availableShippingMethods = self->_availableShippingMethods;
   if (availableShippingMethods)
   {
-    v23 = [(PKProtobufShippingMethods *)availableShippingMethods dictionaryRepresentation];
-    [v4 setObject:v23 forKey:@"availableShippingMethods"];
+    dictionaryRepresentation3 = [(PKProtobufShippingMethods *)availableShippingMethods dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"availableShippingMethods"];
   }
 
   if (*&self->_has)
@@ -224,8 +224,8 @@
             objc_enumerationMutation(v26);
           }
 
-          v31 = [*(*(&v39 + 1) + 8 * k) dictionaryRepresentation];
-          [v25 addObject:v31];
+          dictionaryRepresentation4 = [*(*(&v39 + 1) + 8 * k) dictionaryRepresentation];
+          [v25 addObject:dictionaryRepresentation4];
         }
 
         v28 = [(NSMutableArray *)v26 countByEnumeratingWithState:&v39 objects:v51 count:16];
@@ -240,31 +240,31 @@
   recurringPaymentRequest = self->_recurringPaymentRequest;
   if (recurringPaymentRequest)
   {
-    v33 = [(PKProtobufRecurringPaymentRequest *)recurringPaymentRequest dictionaryRepresentation];
-    [v4 setObject:v33 forKey:@"recurringPaymentRequest"];
+    dictionaryRepresentation5 = [(PKProtobufRecurringPaymentRequest *)recurringPaymentRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"recurringPaymentRequest"];
   }
 
   automaticReloadPaymentRequest = self->_automaticReloadPaymentRequest;
   if (automaticReloadPaymentRequest)
   {
-    v35 = [(PKProtobufAutomaticReloadPaymentRequest *)automaticReloadPaymentRequest dictionaryRepresentation];
-    [v4 setObject:v35 forKey:@"automaticReloadPaymentRequest"];
+    dictionaryRepresentation6 = [(PKProtobufAutomaticReloadPaymentRequest *)automaticReloadPaymentRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"automaticReloadPaymentRequest"];
   }
 
   deferredPaymentRequest = self->_deferredPaymentRequest;
   if (deferredPaymentRequest)
   {
-    v37 = [(PKProtobufDeferredPaymentRequest *)deferredPaymentRequest dictionaryRepresentation];
-    [v4 setObject:v37 forKey:@"deferredPaymentRequest"];
+    dictionaryRepresentation7 = [(PKProtobufDeferredPaymentRequest *)deferredPaymentRequest dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation7 forKey:@"deferredPaymentRequest"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_remotePaymentRequestIdentifier)
   {
     PBDataWriterWriteStringField();
@@ -399,29 +399,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v18 = v4;
+  toCopy = to;
+  v18 = toCopy;
   if (self->_remotePaymentRequestIdentifier)
   {
-    [v4 setRemotePaymentRequestIdentifier:?];
-    v4 = v18;
+    [toCopy setRemotePaymentRequestIdentifier:?];
+    toCopy = v18;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 22) = self->_status;
-    *(v4 + 92) |= 2u;
+    *(toCopy + 22) = self->_status;
+    *(toCopy + 92) |= 2u;
   }
 
   if ([(PKProtobufPaymentClientUpdate *)self paymentSummaryItemsCount])
   {
     [v18 clearPaymentSummaryItems];
-    v5 = [(PKProtobufPaymentClientUpdate *)self paymentSummaryItemsCount];
-    if (v5)
+    paymentSummaryItemsCount = [(PKProtobufPaymentClientUpdate *)self paymentSummaryItemsCount];
+    if (paymentSummaryItemsCount)
     {
-      v6 = v5;
+      v6 = paymentSummaryItemsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(PKProtobufPaymentClientUpdate *)self paymentSummaryItemsAtIndex:i];
@@ -433,10 +433,10 @@
   if ([(PKProtobufPaymentClientUpdate *)self shippingMethodsCount])
   {
     [v18 clearShippingMethods];
-    v9 = [(PKProtobufPaymentClientUpdate *)self shippingMethodsCount];
-    if (v9)
+    shippingMethodsCount = [(PKProtobufPaymentClientUpdate *)self shippingMethodsCount];
+    if (shippingMethodsCount)
     {
-      v10 = v9;
+      v10 = shippingMethodsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(PKProtobufPaymentClientUpdate *)self shippingMethodsAtIndex:j];
@@ -464,10 +464,10 @@
   if ([(PKProtobufPaymentClientUpdate *)self multiTokenContextsCount])
   {
     [v18 clearMultiTokenContexts];
-    v13 = [(PKProtobufPaymentClientUpdate *)self multiTokenContextsCount];
-    if (v13)
+    multiTokenContextsCount = [(PKProtobufPaymentClientUpdate *)self multiTokenContextsCount];
+    if (multiTokenContextsCount)
     {
-      v14 = v13;
+      v14 = multiTokenContextsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(PKProtobufPaymentClientUpdate *)self multiTokenContextsAtIndex:k];
@@ -495,11 +495,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v52 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_remotePaymentRequestIdentifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_remotePaymentRequestIdentifier copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
@@ -528,7 +528,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v45 + 1) + 8 * i) copyWithZone:a3];
+        v13 = [*(*(&v45 + 1) + 8 * i) copyWithZone:zone];
         [v5 addPaymentSummaryItems:v13];
       }
 
@@ -557,7 +557,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v41 + 1) + 8 * j) copyWithZone:a3];
+        v19 = [*(*(&v41 + 1) + 8 * j) copyWithZone:zone];
         [v5 addShippingMethods:v19];
       }
 
@@ -567,11 +567,11 @@
     while (v16);
   }
 
-  v20 = [(NSString *)self->_selectedAID copyWithZone:a3];
+  v20 = [(NSString *)self->_selectedAID copyWithZone:zone];
   v21 = *(v5 + 64);
   *(v5 + 64) = v20;
 
-  v22 = [(PKProtobufShippingMethods *)self->_availableShippingMethods copyWithZone:a3];
+  v22 = [(PKProtobufShippingMethods *)self->_availableShippingMethods copyWithZone:zone];
   v23 = *(v5 + 16);
   *(v5 + 16) = v22;
 
@@ -600,7 +600,7 @@
           objc_enumerationMutation(v24);
         }
 
-        v29 = [*(*(&v37 + 1) + 8 * k) copyWithZone:{a3, v37}];
+        v29 = [*(*(&v37 + 1) + 8 * k) copyWithZone:{zone, v37}];
         [v5 addMultiTokenContexts:v29];
       }
 
@@ -610,31 +610,31 @@
     while (v26);
   }
 
-  v30 = [(PKProtobufRecurringPaymentRequest *)self->_recurringPaymentRequest copyWithZone:a3];
+  v30 = [(PKProtobufRecurringPaymentRequest *)self->_recurringPaymentRequest copyWithZone:zone];
   v31 = *(v5 + 48);
   *(v5 + 48) = v30;
 
-  v32 = [(PKProtobufAutomaticReloadPaymentRequest *)self->_automaticReloadPaymentRequest copyWithZone:a3];
+  v32 = [(PKProtobufAutomaticReloadPaymentRequest *)self->_automaticReloadPaymentRequest copyWithZone:zone];
   v33 = *(v5 + 8);
   *(v5 + 8) = v32;
 
-  v34 = [(PKProtobufDeferredPaymentRequest *)self->_deferredPaymentRequest copyWithZone:a3];
+  v34 = [(PKProtobufDeferredPaymentRequest *)self->_deferredPaymentRequest copyWithZone:zone];
   v35 = *(v5 + 24);
   *(v5 + 24) = v34;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_30;
   }
 
   remotePaymentRequestIdentifier = self->_remotePaymentRequestIdentifier;
-  if (remotePaymentRequestIdentifier | *(v4 + 7))
+  if (remotePaymentRequestIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)remotePaymentRequestIdentifier isEqual:?])
     {
@@ -644,13 +644,13 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 92) & 2) == 0 || self->_status != *(v4 + 22))
+    if ((*(equalCopy + 92) & 2) == 0 || self->_status != *(equalCopy + 22))
     {
       goto LABEL_30;
     }
   }
 
-  else if ((*(v4 + 92) & 2) != 0)
+  else if ((*(equalCopy + 92) & 2) != 0)
   {
 LABEL_30:
     v14 = 0;
@@ -658,13 +658,13 @@ LABEL_30:
   }
 
   paymentSummaryItems = self->_paymentSummaryItems;
-  if (paymentSummaryItems | *(v4 + 5) && ![(NSMutableArray *)paymentSummaryItems isEqual:?])
+  if (paymentSummaryItems | *(equalCopy + 5) && ![(NSMutableArray *)paymentSummaryItems isEqual:?])
   {
     goto LABEL_30;
   }
 
   shippingMethods = self->_shippingMethods;
-  if (shippingMethods | *(v4 + 10))
+  if (shippingMethods | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)shippingMethods isEqual:?])
     {
@@ -673,7 +673,7 @@ LABEL_30:
   }
 
   selectedAID = self->_selectedAID;
-  if (selectedAID | *(v4 + 8))
+  if (selectedAID | *(equalCopy + 8))
   {
     if (![(NSString *)selectedAID isEqual:?])
     {
@@ -682,7 +682,7 @@ LABEL_30:
   }
 
   availableShippingMethods = self->_availableShippingMethods;
-  if (availableShippingMethods | *(v4 + 2))
+  if (availableShippingMethods | *(equalCopy + 2))
   {
     if (![(PKProtobufShippingMethods *)availableShippingMethods isEqual:?])
     {
@@ -692,25 +692,25 @@ LABEL_30:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 92) & 1) == 0 || self->_selectedPaymentType != *(v4 + 18))
+    if ((*(equalCopy + 92) & 1) == 0 || self->_selectedPaymentType != *(equalCopy + 18))
     {
       goto LABEL_30;
     }
   }
 
-  else if (*(v4 + 92))
+  else if (*(equalCopy + 92))
   {
     goto LABEL_30;
   }
 
   multiTokenContexts = self->_multiTokenContexts;
-  if (multiTokenContexts | *(v4 + 4) && ![(NSMutableArray *)multiTokenContexts isEqual:?])
+  if (multiTokenContexts | *(equalCopy + 4) && ![(NSMutableArray *)multiTokenContexts isEqual:?])
   {
     goto LABEL_30;
   }
 
   recurringPaymentRequest = self->_recurringPaymentRequest;
-  if (recurringPaymentRequest | *(v4 + 6))
+  if (recurringPaymentRequest | *(equalCopy + 6))
   {
     if (![(PKProtobufRecurringPaymentRequest *)recurringPaymentRequest isEqual:?])
     {
@@ -719,7 +719,7 @@ LABEL_30:
   }
 
   automaticReloadPaymentRequest = self->_automaticReloadPaymentRequest;
-  if (automaticReloadPaymentRequest | *(v4 + 1))
+  if (automaticReloadPaymentRequest | *(equalCopy + 1))
   {
     if (![(PKProtobufAutomaticReloadPaymentRequest *)automaticReloadPaymentRequest isEqual:?])
     {
@@ -728,7 +728,7 @@ LABEL_30:
   }
 
   deferredPaymentRequest = self->_deferredPaymentRequest;
-  if (deferredPaymentRequest | *(v4 + 3))
+  if (deferredPaymentRequest | *(equalCopy + 3))
   {
     v14 = [(PKProtobufDeferredPaymentRequest *)deferredPaymentRequest isEqual:?];
   }
@@ -777,18 +777,18 @@ LABEL_31:
   return v10 ^ v13 ^ [(PKProtobufDeferredPaymentRequest *)self->_deferredPaymentRequest hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 7))
+  fromCopy = from;
+  if (*(fromCopy + 7))
   {
     [(PKProtobufPaymentClientUpdate *)self setRemotePaymentRequestIdentifier:?];
   }
 
-  if ((*(v4 + 92) & 2) != 0)
+  if ((*(fromCopy + 92) & 2) != 0)
   {
-    self->_status = *(v4 + 22);
+    self->_status = *(fromCopy + 22);
     *&self->_has |= 2u;
   }
 
@@ -796,7 +796,7 @@ LABEL_31:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v5 = *(v4 + 5);
+  v5 = *(fromCopy + 5);
   v6 = [v5 countByEnumeratingWithState:&v36 objects:v42 count:16];
   if (v6)
   {
@@ -824,7 +824,7 @@ LABEL_31:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = *(v4 + 10);
+  v10 = *(fromCopy + 10);
   v11 = [v10 countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v11)
   {
@@ -848,13 +848,13 @@ LABEL_31:
     while (v12);
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(PKProtobufPaymentClientUpdate *)self setSelectedAID:?];
   }
 
   availableShippingMethods = self->_availableShippingMethods;
-  v16 = *(v4 + 2);
+  v16 = *(fromCopy + 2);
   if (availableShippingMethods)
   {
     if (v16)
@@ -868,9 +868,9 @@ LABEL_31:
     [(PKProtobufPaymentClientUpdate *)self setAvailableShippingMethods:?];
   }
 
-  if (*(v4 + 92))
+  if (*(fromCopy + 92))
   {
-    self->_selectedPaymentType = *(v4 + 18);
+    self->_selectedPaymentType = *(fromCopy + 18);
     *&self->_has |= 1u;
   }
 
@@ -878,7 +878,7 @@ LABEL_31:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v17 = *(v4 + 4);
+  v17 = *(fromCopy + 4);
   v18 = [v17 countByEnumeratingWithState:&v28 objects:v40 count:16];
   if (v18)
   {
@@ -903,7 +903,7 @@ LABEL_31:
   }
 
   recurringPaymentRequest = self->_recurringPaymentRequest;
-  v23 = *(v4 + 6);
+  v23 = *(fromCopy + 6);
   if (recurringPaymentRequest)
   {
     if (v23)
@@ -918,7 +918,7 @@ LABEL_31:
   }
 
   automaticReloadPaymentRequest = self->_automaticReloadPaymentRequest;
-  v25 = *(v4 + 1);
+  v25 = *(fromCopy + 1);
   if (automaticReloadPaymentRequest)
   {
     if (v25)
@@ -933,7 +933,7 @@ LABEL_31:
   }
 
   deferredPaymentRequest = self->_deferredPaymentRequest;
-  v27 = *(v4 + 3);
+  v27 = *(fromCopy + 3);
   if (deferredPaymentRequest)
   {
     if (v27)

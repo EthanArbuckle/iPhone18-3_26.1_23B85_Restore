@@ -1,14 +1,14 @@
 @interface BLSBacklightSceneUpdateBacklightRampResponse
-- (BLSBacklightSceneUpdateBacklightRampResponse)initWithRampDuration:(double)a3;
+- (BLSBacklightSceneUpdateBacklightRampResponse)initWithRampDuration:(double)duration;
 - (double)rampDuration;
 @end
 
 @implementation BLSBacklightSceneUpdateBacklightRampResponse
 
-- (BLSBacklightSceneUpdateBacklightRampResponse)initWithRampDuration:(double)a3
+- (BLSBacklightSceneUpdateBacklightRampResponse)initWithRampDuration:(double)duration
 {
   v5 = objc_alloc_init(MEMORY[0x277CF0C80]);
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:duration];
   [v5 setObject:v6 forSetting:0];
 
   v9.receiver = self;
@@ -20,8 +20,8 @@
 
 - (double)rampDuration
 {
-  v2 = [(BLSBacklightSceneUpdateBacklightRampResponse *)self info];
-  v3 = [v2 objectForSetting:0];
+  info = [(BLSBacklightSceneUpdateBacklightRampResponse *)self info];
+  v3 = [info objectForSetting:0];
   [v3 doubleValue];
   v5 = v4;
 

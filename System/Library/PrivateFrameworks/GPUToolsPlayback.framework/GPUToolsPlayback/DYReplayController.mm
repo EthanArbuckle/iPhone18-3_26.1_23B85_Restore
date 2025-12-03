@@ -1,8 +1,8 @@
 @interface DYReplayController
-- (BOOL)_loadArchives:(id)a3 error:(id *)a4;
+- (BOOL)_loadArchives:(id)archives error:(id *)error;
 - (BOOL)informReady;
-- (BOOL)initializeTransportWith:(id)a3;
-- (BOOL)playbackArchive:(id)a3;
+- (BOOL)initializeTransportWith:(id)with;
+- (BOOL)playbackArchive:(id)archive;
 - (DYReplayController)init;
 - (id)_playbackCurrentArchiveAndExperiments;
 - (id)_popMessage;
@@ -10,10 +10,10 @@
 - (void)_deleteAllArchives;
 - (void)_endPlayback;
 - (void)_messageLoop;
-- (void)_playbackArchiveWithExperiment:(id)a3 passingFuture:(id)a4 resolvingFuture:(BOOL)a5;
-- (void)_processMessage:(id)a3;
-- (void)_pushMessage:(id)a3;
-- (void)_recursivePlaybackWithFuture:(id)a3 usingExperiment:(id)a4 withToplevelFuture:(id)a5;
+- (void)_playbackArchiveWithExperiment:(id)experiment passingFuture:(id)future resolvingFuture:(BOOL)resolvingFuture;
+- (void)_processMessage:(id)message;
+- (void)_pushMessage:(id)message;
+- (void)_recursivePlaybackWithFuture:(id)future usingExperiment:(id)experiment withToplevelFuture:(id)toplevelFuture;
 - (void)dealloc;
 @end
 
@@ -70,9 +70,9 @@
 
 - (void)dealloc
 {
-  v3 = [(DYReplayController *)self origSourceMessageHandler];
-  v4 = [(DYReplayController *)self source];
-  [v4 setMessageHandler:v3];
+  origSourceMessageHandler = [(DYReplayController *)self origSourceMessageHandler];
+  source = [(DYReplayController *)self source];
+  [source setMessageHandler:origSourceMessageHandler];
 
   [(DYReplayController *)self setQueue:0];
   v5.receiver = self;
@@ -80,22 +80,22 @@
   [(DYReplayController *)&v5 dealloc];
 }
 
-- (BOOL)initializeTransportWith:(id)a3
+- (BOOL)initializeTransportWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v5 = DYGetGlobalClientTransport();
   [(DYReplayController *)self setTransport:v5];
 
-  v6 = [(DYReplayController *)self transport];
+  transport = [(DYReplayController *)self transport];
 
-  if (v6 && (DYGetGlobalTransportSource(), v7 = objc_claimAutoreleasedReturnValue(), [(DYReplayController *)self setSource:v7], v7, [(DYReplayController *)self source], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
+  if (transport && (DYGetGlobalTransportSource(), v7 = objc_claimAutoreleasedReturnValue(), [(DYReplayController *)self setSource:v7], v7, [(DYReplayController *)self source], v8 = objc_claimAutoreleasedReturnValue(), v8, v8))
   {
-    v9 = [(DYReplayController *)self source];
-    [v9 suspend];
+    source = [(DYReplayController *)self source];
+    [source suspend];
 
-    v10 = [(DYReplayController *)self source];
-    v11 = [v10 messageHandler];
-    v12 = [v11 copy];
+    source2 = [(DYReplayController *)self source];
+    messageHandler = [source2 messageHandler];
+    v12 = [messageHandler copy];
     [(DYReplayController *)self setOrigSourceMessageHandler:v12];
 
     objc_initWeak(&location, self);
@@ -104,8 +104,8 @@
     v13 = [(DYReplayController *)self source:v18];
     [v13 setMessageHandler:&v18];
 
-    v14 = [(DYReplayController *)self source];
-    [v14 resume];
+    source3 = [(DYReplayController *)self source];
+    [source3 resume];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -147,9 +147,9 @@ void __46__DYReplayController_initializeTransportWith___block_invoke(uint64_t a1
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
   v11 = [v6 messageWithKind:4096 attributes:v10];
 
-  v12 = [(DYReplayController *)self transport];
+  transport = [(DYReplayController *)self transport];
   v18 = 0;
-  v13 = [v12 send:v11 error:&v18];
+  v13 = [transport send:v11 error:&v18];
   v14 = v18;
 
   if ((v13 & 1) == 0)
@@ -162,38 +162,38 @@ void __46__DYReplayController_initializeTransportWith___block_invoke(uint64_t a1
   return v13;
 }
 
-- (BOOL)playbackArchive:(id)a3
+- (BOOL)playbackArchive:(id)archive
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEA60] arrayWithObject:v4];
+  archiveCopy = archive;
+  v5 = [MEMORY[0x277CBEA60] arrayWithObject:archiveCopy];
   v18 = 0;
   v6 = [(DYReplayController *)self _loadArchives:v5 error:&v18];
   v7 = v18;
 
   if (v6)
   {
-    v8 = [(DYReplayController *)self archiveStack];
-    v9 = [(DYReplayController *)self _replayerControllerSupportForCaptureStore:v8];
+    archiveStack = [(DYReplayController *)self archiveStack];
+    v9 = [(DYReplayController *)self _replayerControllerSupportForCaptureStore:archiveStack];
     [(DYReplayController *)self setReplayControllerSupport:v9];
 
-    v10 = [(DYReplayController *)self replayControllerSupport];
-    v11 = [(DYReplayController *)self archiveStack];
-    v12 = [v10 createArchivePlaybackEngineWithCaptureStore:v11];
+    replayControllerSupport = [(DYReplayController *)self replayControllerSupport];
+    archiveStack2 = [(DYReplayController *)self archiveStack];
+    v12 = [replayControllerSupport createArchivePlaybackEngineWithCaptureStore:archiveStack2];
     [(DYReplayController *)self setPlaybackEngine:v12];
 
     [(DYReplayController *)self _displayPlaybackEngine];
-    v13 = [(DYReplayController *)self playbackEngine];
-    v14 = [v13 playback];
+    playbackEngine = [(DYReplayController *)self playbackEngine];
+    playback = [playbackEngine playback];
 
-    v15 = [(DYReplayController *)self queue];
+    queue = [(DYReplayController *)self queue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __38__DYReplayController_playbackArchive___block_invoke;
     v17[3] = &unk_27930F730;
     v17[4] = self;
-    [v14 notifyOnQueue:v15 handler:v17];
+    [playback notifyOnQueue:queue handler:v17];
 
-    [v14 waitUntilResolved];
+    [playback waitUntilResolved];
   }
 
   return v6;
@@ -239,17 +239,17 @@ uint64_t __33__DYReplayController__popMessage__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_pushMessage:(id)a3
+- (void)_pushMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   messageLock = self->_messageLock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__DYReplayController__pushMessage___block_invoke;
   v7[3] = &unk_27930FA00;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = messageCopy;
+  selfCopy = self;
+  v6 = messageCopy;
   dispatch_async(messageLock, v7);
 }
 
@@ -316,24 +316,24 @@ LABEL_9:
 
 - (void)_messageLoop
 {
-  v3 = [(DYReplayController *)self _popMessage];
-  if (v3 || [(DYReplayControllerQueue *)self->_profileBlockQueue count]|| [(DYReplayControllerQueue *)self->_profileBlockBackgroundQueue count])
+  _popMessage = [(DYReplayController *)self _popMessage];
+  if (_popMessage || [(DYReplayControllerQueue *)self->_profileBlockQueue count]|| [(DYReplayControllerQueue *)self->_profileBlockBackgroundQueue count])
   {
     p_profileBlockQueue = &self->_profileBlockQueue;
     p_profileBlockBackgroundQueue = &self->_profileBlockBackgroundQueue;
-    v6 = 0xFFFFFFFFLL;
+    targetFunctionIndex = 0xFFFFFFFFLL;
     while (1)
     {
-      if (v3)
+      if (_popMessage)
       {
-        if (v6 != -1)
+        if (targetFunctionIndex != -1)
         {
-          v7 = [(DYReplayController *)self playbackEngine];
-          [v7 playbackToFunction:v6 withLoops:0];
+          playbackEngine = [(DYReplayController *)self playbackEngine];
+          [playbackEngine playbackToFunction:targetFunctionIndex withLoops:0];
         }
 
-        [(DYReplayController *)self _processMessage:v3];
-        v6 = 0xFFFFFFFFLL;
+        [(DYReplayController *)self _processMessage:_popMessage];
+        targetFunctionIndex = 0xFFFFFFFFLL;
       }
 
       else
@@ -349,33 +349,33 @@ LABEL_9:
         }
 
         v9 = *v8;
-        v10 = [(DYReplayControllerQueue *)v9 front];
+        front = [(DYReplayControllerQueue *)v9 front];
         [(DYReplayControllerQueue *)v9 dequeBlock];
-        if (v6 == -1)
+        if (targetFunctionIndex == -1)
         {
-          v11 = [(DYReplayController *)self playbackEngine];
-          v6 = [v11 targetFunctionIndex];
+          playbackEngine2 = [(DYReplayController *)self playbackEngine];
+          targetFunctionIndex = [playbackEngine2 targetFunctionIndex];
         }
 
-        v10[2](v10);
-        if (![(DYReplayControllerQueue *)*p_profileBlockQueue count]&& ![(DYReplayControllerQueue *)*p_profileBlockBackgroundQueue count]&& v6 != -1)
+        front[2](front);
+        if (![(DYReplayControllerQueue *)*p_profileBlockQueue count]&& ![(DYReplayControllerQueue *)*p_profileBlockBackgroundQueue count]&& targetFunctionIndex != -1)
         {
-          v12 = [(DYReplayController *)self playbackEngine];
-          [v12 playbackToFunction:v6 withLoops:0];
+          playbackEngine3 = [(DYReplayController *)self playbackEngine];
+          [playbackEngine3 playbackToFunction:targetFunctionIndex withLoops:0];
 
-          v6 = 0xFFFFFFFFLL;
+          targetFunctionIndex = 0xFFFFFFFFLL;
         }
       }
 
-      v13 = [(DYReplayController *)self _popMessage];
+      _popMessage2 = [(DYReplayController *)self _popMessage];
 
-      v3 = v13;
-      if (!v13)
+      _popMessage = _popMessage2;
+      if (!_popMessage2)
       {
-        v3 = 0;
+        _popMessage = 0;
         if (![(DYReplayControllerQueue *)*p_profileBlockQueue count])
         {
-          v3 = 0;
+          _popMessage = 0;
           if (![(DYReplayControllerQueue *)*p_profileBlockBackgroundQueue count])
           {
             break;
@@ -386,24 +386,24 @@ LABEL_9:
   }
 }
 
-- (void)_processMessage:(id)a3
+- (void)_processMessage:(id)message
 {
   v177 = *MEMORY[0x277D85DE8];
-  v156 = a3;
-  v4 = [v156 kind];
-  if (v4 > 4097)
+  messageCopy = message;
+  kind = [messageCopy kind];
+  if (kind > 4097)
   {
-    v155 = self;
-    switch(v4)
+    selfCopy = self;
+    switch(kind)
     {
       case 4098:
-        if (![(DYReplayController *)self _handleArchiveLoadingForPlaybackRequest:v156 replyKind:4100])
+        if (![(DYReplayController *)self _handleArchiveLoadingForPlaybackRequest:messageCopy replyKind:4100])
         {
           goto LABEL_54;
         }
 
-        [(DYReplayController *)self setReplayMessage:v156];
-        v5 = [v156 attributeForKey:*MEMORY[0x277D0B028]];
+        [(DYReplayController *)self setReplayMessage:messageCopy];
+        v5 = [messageCopy attributeForKey:*MEMORY[0x277D0B028]];
         obj = v5;
         if (v5)
         {
@@ -428,17 +428,17 @@ LABEL_9:
         }
 
         v137 = *MEMORY[0x277D0B488];
-        v138 = [v156 attributeForKey:*MEMORY[0x277D0B488]];
+        v138 = [messageCopy attributeForKey:*MEMORY[0x277D0B488]];
         v139 = *MEMORY[0x277D0B480];
-        v140 = [v156 attributeForKey:*MEMORY[0x277D0B480]];
+        v140 = [messageCopy attributeForKey:*MEMORY[0x277D0B480]];
         v160 = v140;
         if (v138)
         {
           v141 = objc_opt_new();
           [(DYReplayController *)self setProfileInfo:v141];
 
-          v142 = [(DYReplayController *)self profileInfo];
-          [v142 setObject:v138 forKey:v137];
+          profileInfo = [(DYReplayController *)self profileInfo];
+          [profileInfo setObject:v138 forKey:v137];
         }
 
         else
@@ -451,38 +451,38 @@ LABEL_9:
           v143 = objc_opt_new();
           [(DYReplayController *)self setProfileInfo:v143];
 
-          v142 = [(DYReplayController *)self profileInfo];
-          [v142 setObject:v160 forKey:v139];
+          profileInfo = [(DYReplayController *)self profileInfo];
+          [profileInfo setObject:v160 forKey:v139];
         }
 
 LABEL_63:
-        v144 = [(DYReplayController *)self _playbackCurrentArchiveAndExperiments];
-        [v144 waitUntilResolved];
-        v145 = [(DYReplayController *)self profileInfo];
-        v146 = v145 == 0;
+        _playbackCurrentArchiveAndExperiments = [(DYReplayController *)self _playbackCurrentArchiveAndExperiments];
+        [_playbackCurrentArchiveAndExperiments waitUntilResolved];
+        profileInfo2 = [(DYReplayController *)self profileInfo];
+        v146 = profileInfo2 == 0;
 
         if (v146)
         {
-          v149 = [(DYReplayController *)self transport];
+          transport = [(DYReplayController *)self transport];
           v154 = MEMORY[0x277D0AFE0];
-          v151 = [MEMORY[0x277CCABB0] numberWithBool:1];
-          v152 = [v154 messageWithKind:4100 objectPayload:v151];
-          v153 = [(DYReplayController *)self replayMessage];
-          [v149 send:v152 inReplyTo:v153 error:0];
+          transport2 = [MEMORY[0x277CCABB0] numberWithBool:1];
+          v152 = [v154 messageWithKind:4100 objectPayload:transport2];
+          replayMessage = [(DYReplayController *)self replayMessage];
+          [transport send:v152 inReplyTo:replayMessage error:0];
         }
 
         else
         {
           v147 = MEMORY[0x277CCAAB0];
-          v148 = [v144 result];
+          result = [_playbackCurrentArchiveAndExperiments result];
           v169 = v11;
-          v149 = [v147 archivedDataWithRootObject:v148 requiringSecureCoding:1 error:&v169];
+          transport = [v147 archivedDataWithRootObject:result requiringSecureCoding:1 error:&v169];
           v150 = v169;
 
-          v151 = [(DYReplayController *)self transport];
-          v152 = [MEMORY[0x277D0AFE0] messageWithKind:4100 objectPayload:v149];
-          v153 = [(DYReplayController *)self replayMessage];
-          [v151 send:v152 inReplyTo:v153 error:0];
+          transport2 = [(DYReplayController *)self transport];
+          v152 = [MEMORY[0x277D0AFE0] messageWithKind:4100 objectPayload:transport];
+          replayMessage = [(DYReplayController *)self replayMessage];
+          [transport2 send:v152 inReplyTo:replayMessage error:0];
           v11 = v150;
         }
 
@@ -504,24 +504,24 @@ LABEL_63:
         goto LABEL_49;
       case 4102:
         [(DYReplayController *)self _deleteAllArchives];
-        v22 = [(DYReplayController *)self transport];
-        v23 = [MEMORY[0x277D0AFE0] messageWithKind:4102];
-        [v22 send:v23 inReplyTo:v156 error:0];
+        transport3 = [(DYReplayController *)self transport];
+        playbackEngine3 = [MEMORY[0x277D0AFE0] messageWithKind:4102];
+        [transport3 send:playbackEngine3 inReplyTo:messageCopy error:0];
         goto LABEL_52;
       case 4103:
-        if (![(DYReplayController *)self _handleArchiveLoadingForPlaybackRequest:v156 replyKind:4105])
+        if (![(DYReplayController *)self _handleArchiveLoadingForPlaybackRequest:messageCopy replyKind:4105])
         {
           goto LABEL_54;
         }
 
-        v109 = [(DYReplayController *)self transport];
+        transport4 = [(DYReplayController *)self transport];
         v110 = MEMORY[0x277D0AFE0];
         v111 = [MEMORY[0x277CCABB0] numberWithBool:1];
         v112 = [v110 messageWithKind:4105 objectPayload:v111];
-        [v109 send:v112 inReplyTo:v156 error:0];
+        [transport4 send:v112 inReplyTo:messageCopy error:0];
 
         [(DYReplayController *)self _beginDebugArchive];
-        v82 = v156;
+        v82 = messageCopy;
 LABEL_45:
         [(DYReplayController *)self setReplayMessage:v82];
         goto LABEL_54;
@@ -530,161 +530,161 @@ LABEL_45:
         v82 = 0;
         goto LABEL_45;
       case 4106:
-        v92 = [(DYReplayController *)self replayControllerSupport];
-        v93 = [(DYReplayController *)self playbackEngine];
-        v94 = [v92 isDebugPlaybackEngine:v93];
+        replayControllerSupport = [(DYReplayController *)self replayControllerSupport];
+        playbackEngine = [(DYReplayController *)self playbackEngine];
+        v94 = [replayControllerSupport isDebugPlaybackEngine:playbackEngine];
 
         if (v94)
         {
-          v95 = [(DYReplayController *)self transport];
+          transport5 = [(DYReplayController *)self transport];
           v96 = MEMORY[0x277D0AFE0];
           v97 = [MEMORY[0x277CCABB0] numberWithBool:1];
           v98 = [v96 messageWithKind:4105 objectPayload:v97];
-          [v95 send:v98 inReplyTo:v156 error:0];
+          [transport5 send:v98 inReplyTo:messageCopy error:0];
 
-          v99 = [v156 objectPayload];
-          v100 = [v99 unsignedLongLongValue];
+          objectPayload = [messageCopy objectPayload];
+          unsignedLongLongValue = [objectPayload unsignedLongLongValue];
 
-          v22 = [(DYReplayController *)self playbackEngine];
-          [v22 playbackToFunction:v100 subCommandIndex:HIDWORD(v100) withLoops:0];
+          transport3 = [(DYReplayController *)self playbackEngine];
+          [transport3 playbackToFunction:unsignedLongLongValue subCommandIndex:HIDWORD(unsignedLongLongValue) withLoops:0];
           goto LABEL_53;
         }
 
-        v22 = [(DYReplayController *)self transport];
+        transport3 = [(DYReplayController *)self transport];
         v127 = MEMORY[0x277D0AFE0];
-        v23 = [MEMORY[0x277CCABB0] numberWithBool:0];
-        v71 = [v127 messageWithKind:4105 objectPayload:v23];
-        [v22 send:v71 inReplyTo:v156 error:0];
+        playbackEngine3 = [MEMORY[0x277CCABB0] numberWithBool:0];
+        v71 = [v127 messageWithKind:4105 objectPayload:playbackEngine3];
+        [transport3 send:v71 inReplyTo:messageCopy error:0];
         goto LABEL_51;
       case 4107:
-        v113 = [(DYReplayController *)self transport];
+        transport6 = [(DYReplayController *)self transport];
         v114 = MEMORY[0x277D0AFE0];
         v115 = [MEMORY[0x277CCABB0] numberWithBool:1];
         v116 = [v114 messageWithKind:4105 objectPayload:v115];
-        [v113 send:v116 inReplyTo:v156 error:0];
+        [transport6 send:v116 inReplyTo:messageCopy error:0];
 
-        v117 = [(DYReplayController *)self replayControllerSupport];
-        v118 = [v156 objectPayload];
-        v119 = [v118 BOOLValue];
-        v120 = [(DYReplayController *)self playbackEngine];
-        [v117 enableDebugWireframePresent:v119 playbackEngine:v120];
+        replayControllerSupport2 = [(DYReplayController *)self replayControllerSupport];
+        objectPayload2 = [messageCopy objectPayload];
+        bOOLValue = [objectPayload2 BOOLValue];
+        playbackEngine2 = [(DYReplayController *)self playbackEngine];
+        [replayControllerSupport2 enableDebugWireframePresent:bOOLValue playbackEngine:playbackEngine2];
 
-        v22 = [(DYReplayController *)self playbackEngine];
-        v23 = [(DYReplayController *)self playbackEngine];
-        [v22 playbackToFunction:objc_msgSend(v23 withLoops:{"targetFunctionIndex"), 0}];
+        transport3 = [(DYReplayController *)self playbackEngine];
+        playbackEngine3 = [(DYReplayController *)self playbackEngine];
+        [transport3 playbackToFunction:objc_msgSend(playbackEngine3 withLoops:{"targetFunctionIndex"), 0}];
         goto LABEL_52;
       case 4108:
-        v101 = [(DYReplayController *)self transport];
+        transport7 = [(DYReplayController *)self transport];
         v102 = MEMORY[0x277D0AFE0];
         v103 = [MEMORY[0x277CCABB0] numberWithBool:1];
         v104 = [v102 messageWithKind:4105 objectPayload:v103];
-        [v101 send:v104 inReplyTo:v156 error:0];
+        [transport7 send:v104 inReplyTo:messageCopy error:0];
 
-        v105 = [(DYReplayController *)self replayControllerSupport];
-        v106 = [v156 objectPayload];
-        v107 = [v106 BOOLValue];
-        v108 = [(DYReplayController *)self playbackEngine];
-        [v105 enableDebugDrawCallPresent:v107 playbackEngine:v108];
+        replayControllerSupport3 = [(DYReplayController *)self replayControllerSupport];
+        objectPayload3 = [messageCopy objectPayload];
+        bOOLValue2 = [objectPayload3 BOOLValue];
+        playbackEngine4 = [(DYReplayController *)self playbackEngine];
+        [replayControllerSupport3 enableDebugDrawCallPresent:bOOLValue2 playbackEngine:playbackEngine4];
 
-        v22 = [(DYReplayController *)self playbackEngine];
-        v23 = [(DYReplayController *)self playbackEngine];
-        [v22 playbackToFunction:objc_msgSend(v23 withLoops:{"targetFunctionIndex"), 0}];
+        transport3 = [(DYReplayController *)self playbackEngine];
+        playbackEngine3 = [(DYReplayController *)self playbackEngine];
+        [transport3 playbackToFunction:objc_msgSend(playbackEngine3 withLoops:{"targetFunctionIndex"), 0}];
         goto LABEL_52;
       case 4109:
-        v44 = [(DYReplayController *)self transport];
+        transport8 = [(DYReplayController *)self transport];
         v45 = MEMORY[0x277D0AFE0];
         v46 = [MEMORY[0x277CCABB0] numberWithBool:1];
         v47 = [v45 messageWithKind:4105 objectPayload:v46];
-        [v44 send:v47 inReplyTo:v156 error:0];
+        [transport8 send:v47 inReplyTo:messageCopy error:0];
 
-        v48 = [(DYReplayController *)self replayControllerSupport];
-        v49 = [v156 objectPayload];
-        [v49 floatValue];
+        replayControllerSupport4 = [(DYReplayController *)self replayControllerSupport];
+        objectPayload4 = [messageCopy objectPayload];
+        [objectPayload4 floatValue];
         v51 = v50;
-        v52 = [(DYReplayController *)self playbackEngine];
+        playbackEngine5 = [(DYReplayController *)self playbackEngine];
         LODWORD(v53) = v51;
-        [v48 setDebugWireframeLineWidth:v52 playbackEngine:v53];
+        [replayControllerSupport4 setDebugWireframeLineWidth:playbackEngine5 playbackEngine:v53];
 
-        v22 = [(DYReplayController *)self playbackEngine];
-        v23 = [(DYReplayController *)self playbackEngine];
-        [v22 playbackToFunction:objc_msgSend(v23 withLoops:{"targetFunctionIndex"), 0}];
+        transport3 = [(DYReplayController *)self playbackEngine];
+        playbackEngine3 = [(DYReplayController *)self playbackEngine];
+        [transport3 playbackToFunction:objc_msgSend(playbackEngine3 withLoops:{"targetFunctionIndex"), 0}];
         goto LABEL_52;
       case 4110:
-        v61 = [(DYReplayController *)self transport];
+        transport9 = [(DYReplayController *)self transport];
         v62 = MEMORY[0x277D0AFE0];
         v63 = [MEMORY[0x277CCABB0] numberWithBool:1];
         v64 = [v62 messageWithKind:4105 objectPayload:v63];
-        [v61 send:v64 inReplyTo:v156 error:0];
+        [transport9 send:v64 inReplyTo:messageCopy error:0];
 
-        v65 = [(DYReplayController *)self replayControllerSupport];
-        v66 = [v156 objectPayload];
-        v67 = [v66 unsignedIntValue];
-        v68 = [(DYReplayController *)self playbackEngine];
-        [v65 setWireframeLineColor:v67 playbackEngine:v68];
+        replayControllerSupport5 = [(DYReplayController *)self replayControllerSupport];
+        objectPayload5 = [messageCopy objectPayload];
+        unsignedIntValue = [objectPayload5 unsignedIntValue];
+        playbackEngine6 = [(DYReplayController *)self playbackEngine];
+        [replayControllerSupport5 setWireframeLineColor:unsignedIntValue playbackEngine:playbackEngine6];
 
-        v22 = [(DYReplayController *)self playbackEngine];
-        v23 = [(DYReplayController *)self playbackEngine];
-        [v22 playbackToFunction:objc_msgSend(v23 withLoops:{"targetFunctionIndex"), 0}];
+        transport3 = [(DYReplayController *)self playbackEngine];
+        playbackEngine3 = [(DYReplayController *)self playbackEngine];
+        [transport3 playbackToFunction:objc_msgSend(playbackEngine3 withLoops:{"targetFunctionIndex"), 0}];
         goto LABEL_52;
       case 4111:
-        v54 = [(DYReplayController *)self transport];
+        transport10 = [(DYReplayController *)self transport];
         v55 = MEMORY[0x277D0AFE0];
         v56 = [MEMORY[0x277CCABB0] numberWithBool:1];
         v57 = [v55 messageWithKind:4105 objectPayload:v56];
-        [v54 send:v57 inReplyTo:v156 error:0];
+        [transport10 send:v57 inReplyTo:messageCopy error:0];
 
-        v58 = [(DYReplayController *)self replayControllerSupport];
-        v59 = [v156 objectPayload];
-        v60 = [(DYReplayController *)self playbackEngine];
-        [v58 disableDebugFunctions:v59 playbackEngine:v60];
+        replayControllerSupport6 = [(DYReplayController *)self replayControllerSupport];
+        objectPayload6 = [messageCopy objectPayload];
+        playbackEngine7 = [(DYReplayController *)self playbackEngine];
+        [replayControllerSupport6 disableDebugFunctions:objectPayload6 playbackEngine:playbackEngine7];
 
-        v22 = [(DYReplayController *)self playbackEngine];
-        v23 = [(DYReplayController *)self playbackEngine];
-        [v22 playbackToFunction:objc_msgSend(v23 withLoops:{"targetFunctionIndex"), 0}];
+        transport3 = [(DYReplayController *)self playbackEngine];
+        playbackEngine3 = [(DYReplayController *)self playbackEngine];
+        [transport3 playbackToFunction:objc_msgSend(playbackEngine3 withLoops:{"targetFunctionIndex"), 0}];
         goto LABEL_52;
       case 4112:
-        v83 = [(DYReplayController *)self transport];
+        transport11 = [(DYReplayController *)self transport];
         v84 = MEMORY[0x277D0AFE0];
         v85 = [MEMORY[0x277CCABB0] numberWithBool:1];
         v86 = [v84 messageWithKind:4105 objectPayload:v85];
-        [v83 send:v86 inReplyTo:v156 error:0];
+        [transport11 send:v86 inReplyTo:messageCopy error:0];
 
-        v87 = [(DYReplayController *)self replayControllerSupport];
-        v88 = [v156 objectPayload];
-        v89 = [(DYReplayController *)self playbackEngine];
-        [v87 enableDebugFunctions:v88 playbackEngine:v89];
+        replayControllerSupport7 = [(DYReplayController *)self replayControllerSupport];
+        objectPayload7 = [messageCopy objectPayload];
+        playbackEngine8 = [(DYReplayController *)self playbackEngine];
+        [replayControllerSupport7 enableDebugFunctions:objectPayload7 playbackEngine:playbackEngine8];
 
-        v22 = [(DYReplayController *)self playbackEngine];
-        v23 = [(DYReplayController *)self playbackEngine];
-        [v22 playbackToFunction:objc_msgSend(v23 withLoops:{"targetFunctionIndex"), 0}];
+        transport3 = [(DYReplayController *)self playbackEngine];
+        playbackEngine3 = [(DYReplayController *)self playbackEngine];
+        [transport3 playbackToFunction:objc_msgSend(playbackEngine3 withLoops:{"targetFunctionIndex"), 0}];
         goto LABEL_52;
       case 4114:
-        v69 = [(DYReplayController *)self replayMessage];
+        replayMessage2 = [(DYReplayController *)self replayMessage];
 
-        if (!v69)
+        if (!replayMessage2)
         {
-          v129 = [v156 plistPayload];
+          plistPayload = [messageCopy plistPayload];
           v175 = 0;
-          v130 = [(DYReplayController *)self _loadArchives:v129 error:&v175];
+          v130 = [(DYReplayController *)self _loadArchives:plistPayload error:&v175];
           v131 = v175;
 
-          v132 = [(DYReplayController *)self transport];
+          transport12 = [(DYReplayController *)self transport];
           v133 = MEMORY[0x277D0AFE0];
           v134 = DYDictionaryFromError();
           v135 = [MEMORY[0x277CCABB0] numberWithBool:v130];
           v136 = [v133 messageWithKind:4114 attributes:v134 objectPayload:v135];
-          [v132 send:v136 inReplyTo:v156 error:0];
+          [transport12 send:v136 inReplyTo:messageCopy error:0];
 
           goto LABEL_54;
         }
 
-        v22 = [MEMORY[0x277D0AFC0] errorWithDomain:*MEMORY[0x277D0AFB8] code:2048 userInfo:0];
-        v23 = [(DYReplayController *)self transport];
+        transport3 = [MEMORY[0x277D0AFC0] errorWithDomain:*MEMORY[0x277D0AFB8] code:2048 userInfo:0];
+        playbackEngine3 = [(DYReplayController *)self transport];
         v70 = MEMORY[0x277D0AFE0];
         v71 = DYDictionaryFromError();
         v72 = [MEMORY[0x277CCABB0] numberWithBool:0];
         v73 = [v70 messageWithKind:4100 attributes:v71 objectPayload:v72];
-        [v23 send:v73 inReplyTo:v156 error:0];
+        [playbackEngine3 send:v73 inReplyTo:messageCopy error:0];
 
 LABEL_51:
 LABEL_52:
@@ -692,14 +692,14 @@ LABEL_52:
         break;
       case 4115:
         v159 = objc_opt_new();
-        v26 = [(DYReplayController *)self archiveStack];
-        v27 = [v26 allObjects];
+        archiveStack = [(DYReplayController *)self archiveStack];
+        allObjects = [archiveStack allObjects];
 
         v173 = 0u;
         v174 = 0u;
         v171 = 0u;
         v172 = 0u;
-        obja = v27;
+        obja = allObjects;
         v28 = [obja countByEnumeratingWithState:&v171 objects:v176 count:16];
         if (v28)
         {
@@ -722,9 +722,9 @@ LABEL_52:
               }
 
               v34 = objc_alloc(MEMORY[0x277CBEAC0]);
-              v35 = [v32 path];
-              v36 = [v35 lastPathComponent];
-              v37 = [v34 initWithObjectsAndKeys:{v36, @"filename", v33, @"uuid", 0}];
+              path = [v32 path];
+              lastPathComponent = [path lastPathComponent];
+              v37 = [v34 initWithObjectsAndKeys:{lastPathComponent, @"filename", v33, @"uuid", 0}];
 
               [v159 addObject:v37];
             }
@@ -735,106 +735,106 @@ LABEL_52:
           while (v28);
         }
 
-        v38 = [(DYReplayController *)v155 transport];
+        transport13 = [(DYReplayController *)selfCopy transport];
         v39 = [MEMORY[0x277D0AFE0] messageWithKind:4115 attributes:0 plistPayload:v159];
-        [v38 send:v39 inReplyTo:v156 error:0];
+        [transport13 send:v39 inReplyTo:messageCopy error:0];
 
         goto LABEL_54;
       case 4116:
         v90 = MEMORY[0x277D0AFE0];
-        v91 = [(DYReplayController *)self _archiveDirectory];
-        v22 = [v90 messageWithKind:4116 attributes:0 stringPayload:v91];
+        _archiveDirectory = [(DYReplayController *)self _archiveDirectory];
+        transport3 = [v90 messageWithKind:4116 attributes:0 stringPayload:_archiveDirectory];
 
-        v23 = [(DYReplayController *)self transport];
-        [v23 send:v22 inReplyTo:v156 error:0];
+        playbackEngine3 = [(DYReplayController *)self transport];
+        [playbackEngine3 send:transport3 inReplyTo:messageCopy error:0];
         goto LABEL_52;
       case 4119:
-        v42 = [(DYReplayController *)self replayControllerSupport];
-        v43 = [(DYReplayController *)self playbackEngine];
+        replayControllerSupport8 = [(DYReplayController *)self replayControllerSupport];
+        playbackEngine9 = [(DYReplayController *)self playbackEngine];
         v167[0] = MEMORY[0x277D85DD0];
         v167[1] = 3221225472;
         v167[2] = __38__DYReplayController__processMessage___block_invoke;
         v167[3] = &unk_27930FA28;
         v167[4] = self;
-        v168 = v156;
-        [v42 generateThumbnailsWithPlaybackEngine:v43 forMessage:v168 onReady:v167];
+        v168 = messageCopy;
+        [replayControllerSupport8 generateThumbnailsWithPlaybackEngine:playbackEngine9 forMessage:v168 onReady:v167];
 
         goto LABEL_54;
       case 4120:
-        v40 = [(DYReplayController *)self replayControllerSupport];
-        v41 = [(DYReplayController *)self playbackEngine];
+        replayControllerSupport9 = [(DYReplayController *)self replayControllerSupport];
+        playbackEngine10 = [(DYReplayController *)self playbackEngine];
         v163[0] = MEMORY[0x277D85DD0];
         v163[1] = 3221225472;
         v163[2] = __38__DYReplayController__processMessage___block_invoke_3;
         v163[3] = &unk_27930FA28;
         v163[4] = self;
-        v164 = v156;
-        [v40 generateDependencyGraphThumbnailsWithPlaybackEngine:v41 forMessage:v164 onReady:v163];
+        v164 = messageCopy;
+        [replayControllerSupport9 generateDependencyGraphThumbnailsWithPlaybackEngine:playbackEngine10 forMessage:v164 onReady:v163];
 
         goto LABEL_54;
       case 4121:
         goto LABEL_11;
       case 4122:
-        v74 = [(DYReplayController *)self transport];
+        transport14 = [(DYReplayController *)self transport];
         v75 = MEMORY[0x277D0AFE0];
         v76 = [MEMORY[0x277CCABB0] numberWithBool:1];
         v77 = [v75 messageWithKind:4105 objectPayload:v76];
-        [v74 send:v77 inReplyTo:v156 error:0];
+        [transport14 send:v77 inReplyTo:messageCopy error:0];
 
-        v78 = [(DYReplayController *)self replayControllerSupport];
-        v79 = [v156 objectPayload];
-        v80 = [v79 BOOLValue];
-        v81 = [(DYReplayController *)self playbackEngine];
-        [v78 enableDebugOutlinePresent:v80 playbackEngine:v81];
+        replayControllerSupport10 = [(DYReplayController *)self replayControllerSupport];
+        objectPayload8 = [messageCopy objectPayload];
+        bOOLValue3 = [objectPayload8 BOOLValue];
+        playbackEngine11 = [(DYReplayController *)self playbackEngine];
+        [replayControllerSupport10 enableDebugOutlinePresent:bOOLValue3 playbackEngine:playbackEngine11];
 
-        v22 = [(DYReplayController *)self playbackEngine];
-        v23 = [(DYReplayController *)self playbackEngine];
-        [v22 playbackToFunction:objc_msgSend(v23 withLoops:{"targetFunctionIndex"), 0}];
+        transport3 = [(DYReplayController *)self playbackEngine];
+        playbackEngine3 = [(DYReplayController *)self playbackEngine];
+        [transport3 playbackToFunction:objc_msgSend(playbackEngine3 withLoops:{"targetFunctionIndex"), 0}];
         goto LABEL_52;
       case 4126:
-        v24 = [(DYReplayController *)self replayControllerSupport];
-        v25 = [(DYReplayController *)self playbackEngine];
+        replayControllerSupport11 = [(DYReplayController *)self replayControllerSupport];
+        playbackEngine12 = [(DYReplayController *)self playbackEngine];
         v161[0] = MEMORY[0x277D85DD0];
         v161[1] = 3221225472;
         v161[2] = __38__DYReplayController__processMessage___block_invoke_4;
         v161[3] = &unk_27930FA28;
         v161[4] = self;
-        v162 = v156;
-        [v24 generatePixelHistoryWithPlaybackEngine:v25 forMessage:v162 onReady:v161];
+        v162 = messageCopy;
+        [replayControllerSupport11 generatePixelHistoryWithPlaybackEngine:playbackEngine12 forMessage:v162 onReady:v161];
 
         goto LABEL_54;
       default:
-        if (v4 != 4611)
+        if (kind != 4611)
         {
           goto LABEL_49;
         }
 
-        v22 = [(DYReplayController *)self transport];
-        v23 = [MEMORY[0x277D0AFE0] messageWithKind:4611];
-        [v22 send:v23 inReplyTo:v156 error:0];
+        transport3 = [(DYReplayController *)self transport];
+        playbackEngine3 = [MEMORY[0x277D0AFE0] messageWithKind:4611];
+        [transport3 send:playbackEngine3 inReplyTo:messageCopy error:0];
         goto LABEL_52;
     }
 
     goto LABEL_53;
   }
 
-  if (v4 == 1026)
+  if (kind == 1026)
   {
 LABEL_11:
-    v15 = [v156 attributes];
-    v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D0B4B8]];
-    v17 = [v16 unsignedLongLongValue];
+    attributes = [messageCopy attributes];
+    v16 = [attributes objectForKeyedSubscript:*MEMORY[0x277D0B4B8]];
+    unsignedLongLongValue2 = [v16 unsignedLongLongValue];
 
-    if (v17 != -1)
+    if (unsignedLongLongValue2 != -1)
     {
-      v18 = [(DYReplayController *)self playbackEngine];
-      v19 = HIDWORD(v17);
-      if ([v18 currentFunctionIndex] == v17)
+      playbackEngine13 = [(DYReplayController *)self playbackEngine];
+      v19 = HIDWORD(unsignedLongLongValue2);
+      if ([playbackEngine13 currentFunctionIndex] == unsignedLongLongValue2)
       {
-        v20 = [(DYReplayController *)self playbackEngine];
-        v21 = [v20 targetSubCommandIndex];
+        playbackEngine14 = [(DYReplayController *)self playbackEngine];
+        targetSubCommandIndex = [playbackEngine14 targetSubCommandIndex];
 
-        if (v21 == HIDWORD(v17))
+        if (targetSubCommandIndex == HIDWORD(unsignedLongLongValue2))
         {
           goto LABEL_49;
         }
@@ -844,41 +844,41 @@ LABEL_11:
       {
       }
 
-      v121 = [(DYReplayController *)self playbackEngine];
-      [v121 setTargetFunctionIndex:v17];
+      playbackEngine15 = [(DYReplayController *)self playbackEngine];
+      [playbackEngine15 setTargetFunctionIndex:unsignedLongLongValue2];
 
-      v122 = [(DYReplayController *)self playbackEngine];
-      [v122 setTargetSubCommandIndex:v19];
+      playbackEngine16 = [(DYReplayController *)self playbackEngine];
+      [playbackEngine16 setTargetSubCommandIndex:v19];
 
-      v123 = [(DYReplayController *)self playbackEngine];
-      v124 = [(DYReplayController *)self playbackEngine];
-      v125 = [v124 targetFunctionIndex];
-      v126 = [(DYReplayController *)self playbackEngine];
-      [v123 playbackToFunction:v125 subCommandIndex:objc_msgSend(v126 withLoops:{"targetSubCommandIndex"), 0}];
+      playbackEngine17 = [(DYReplayController *)self playbackEngine];
+      playbackEngine18 = [(DYReplayController *)self playbackEngine];
+      targetFunctionIndex = [playbackEngine18 targetFunctionIndex];
+      playbackEngine19 = [(DYReplayController *)self playbackEngine];
+      [playbackEngine17 playbackToFunction:targetFunctionIndex subCommandIndex:objc_msgSend(playbackEngine19 withLoops:{"targetSubCommandIndex"), 0}];
     }
 
 LABEL_49:
-    v22 = [(DYReplayController *)self origSourceMessageHandler];
-    (v22)[2](v22, v156);
+    transport3 = [(DYReplayController *)self origSourceMessageHandler];
+    (transport3)[2](transport3, messageCopy);
 LABEL_53:
 
     goto LABEL_54;
   }
 
-  if (v4 != 1030)
+  if (kind != 1030)
   {
     goto LABEL_49;
   }
 
-  v13 = [(DYReplayController *)self replayControllerSupport];
-  v14 = [(DYReplayController *)self playbackEngine];
+  replayControllerSupport12 = [(DYReplayController *)self replayControllerSupport];
+  playbackEngine20 = [(DYReplayController *)self playbackEngine];
   v165[0] = MEMORY[0x277D85DD0];
   v165[1] = 3221225472;
   v165[2] = __38__DYReplayController__processMessage___block_invoke_2;
   v165[3] = &unk_27930FA28;
   v165[4] = self;
-  v166 = v156;
-  [v13 generateShaderDebuggerTraceForMessage:v166 playbackEngine:v14 onReady:v165];
+  v166 = messageCopy;
+  [replayControllerSupport12 generateShaderDebuggerTraceForMessage:v166 playbackEngine:playbackEngine20 onReady:v165];
 
 LABEL_54:
   v128 = *MEMORY[0x277D85DE8];
@@ -912,27 +912,27 @@ void __38__DYReplayController__processMessage___block_invoke_4(uint64_t a1, uint
   [v3 send:v4 inReplyTo:*(a1 + 40) error:0];
 }
 
-- (BOOL)_loadArchives:(id)a3 error:(id *)a4
+- (BOOL)_loadArchives:(id)archives error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  archivesCopy = archives;
+  if (!archivesCopy)
   {
     __assert_rtn("[DYReplayController _loadArchives:error:]", ", 0, "filenames"");
   }
 
-  v7 = [(DYReplayController *)self archiveStack];
-  [v7 close];
+  archiveStack = [(DYReplayController *)self archiveStack];
+  [archiveStack close];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v6;
+  obj = archivesCopy;
   v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v8)
   {
-    v21 = v6;
+    v21 = archivesCopy;
     v9 = *v24;
     while (2)
     {
@@ -951,13 +951,13 @@ void __38__DYReplayController__processMessage___block_invoke_4(uint64_t a1, uint
 
         else
         {
-          v13 = [(DYReplayController *)self _archiveDirectory];
-          v12 = [v13 stringByAppendingPathComponent:v11];
+          _archiveDirectory = [(DYReplayController *)self _archiveDirectory];
+          v12 = [_archiveDirectory stringByAppendingPathComponent:v11];
         }
 
         v14 = objc_alloc(MEMORY[0x277D0AF48]);
         v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:v12];
-        v16 = [v14 initWithURL:v15 options:0 error:a4];
+        v16 = [v14 initWithURL:v15 options:0 error:error];
 
         if (!v16)
         {
@@ -966,8 +966,8 @@ void __38__DYReplayController__processMessage___block_invoke_4(uint64_t a1, uint
           goto LABEL_15;
         }
 
-        v17 = [(DYReplayController *)self archiveStack];
-        [v17 push:v16];
+        archiveStack2 = [(DYReplayController *)self archiveStack];
+        [archiveStack2 push:v16];
       }
 
       v8 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
@@ -990,18 +990,18 @@ LABEL_15:
 - (void)_deleteAllArchives
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(DYReplayController *)self replayMessage];
+  replayMessage = [(DYReplayController *)self replayMessage];
 
-  if (!v3)
+  if (!replayMessage)
   {
-    v4 = [(DYReplayController *)self archiveStack];
-    [v4 close];
+    archiveStack = [(DYReplayController *)self archiveStack];
+    [archiveStack close];
   }
 
   v5 = objc_opt_new();
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [(DYReplayController *)self _archiveDirectory];
-  v8 = [v6 fileURLWithPath:v7];
+  _archiveDirectory = [(DYReplayController *)self _archiveDirectory];
+  v8 = [v6 fileURLWithPath:_archiveDirectory];
 
   [v5 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:MEMORY[0x277CBEBF8] options:0 error:0];
   v19 = 0u;
@@ -1022,8 +1022,8 @@ LABEL_15:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 pathExtension];
-        v15 = [v14 caseInsensitiveCompare:@"gputrace"] == 0;
+        pathExtension = [v13 pathExtension];
+        v15 = [pathExtension caseInsensitiveCompare:@"gputrace"] == 0;
 
         if (v15)
         {
@@ -1042,65 +1042,65 @@ LABEL_15:
 
 - (void)_endPlayback
 {
-  v3 = [(DYReplayController *)self replayControllerSupport];
-  [v3 endPlayback];
+  replayControllerSupport = [(DYReplayController *)self replayControllerSupport];
+  [replayControllerSupport endPlayback];
 
   [(DYReplayController *)self setPlaybackEngine:0];
 }
 
 - (id)_playbackCurrentArchiveAndExperiments
 {
-  v3 = [(DYReplayController *)self archiveStack];
-  if ([v3 empty])
+  archiveStack = [(DYReplayController *)self archiveStack];
+  if ([archiveStack empty])
   {
     __assert_rtn("[DYReplayController _playbackCurrentArchiveAndExperiments]", ", 0, "![self.archiveStack empty]"");
   }
 
-  v4 = [MEMORY[0x277D0AFC8] future];
-  v5 = [(DYReplayController *)self experiments];
+  future = [MEMORY[0x277D0AFC8] future];
+  experiments = [(DYReplayController *)self experiments];
 
-  if (v5)
+  if (experiments)
   {
-    [(DYReplayController *)self _recursivePlaybackWithFuture:0 usingExperiment:0 withToplevelFuture:v4];
+    [(DYReplayController *)self _recursivePlaybackWithFuture:0 usingExperiment:0 withToplevelFuture:future];
   }
 
   else
   {
-    [(DYReplayController *)self _playbackArchiveWithExperiment:0 passingFuture:v4 resolvingFuture:1];
+    [(DYReplayController *)self _playbackArchiveWithExperiment:0 passingFuture:future resolvingFuture:1];
   }
 
-  return v4;
+  return future;
 }
 
-- (void)_recursivePlaybackWithFuture:(id)a3 usingExperiment:(id)a4 withToplevelFuture:(id)a5
+- (void)_recursivePlaybackWithFuture:(id)future usingExperiment:(id)experiment withToplevelFuture:(id)toplevelFuture
 {
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  futureCopy = future;
+  experimentCopy = experiment;
+  toplevelFutureCopy = toplevelFuture;
+  if (experimentCopy)
   {
-    v10 = [(DYReplayController *)self experiments];
-    [v10 removeObjectAtIndex:0];
+    experiments = [(DYReplayController *)self experiments];
+    [experiments removeObjectAtIndex:0];
   }
 
-  v11 = [(DYReplayController *)self experiments];
-  if ([v11 count])
+  experiments2 = [(DYReplayController *)self experiments];
+  if ([experiments2 count])
   {
-    v12 = [(DYReplayController *)self experiments];
-    v13 = [v12 objectAtIndex:0];
+    experiments3 = [(DYReplayController *)self experiments];
+    v13 = [experiments3 objectAtIndex:0];
 
     v14 = v13;
   }
 
   else
   {
-    v12 = v8;
+    experiments3 = experimentCopy;
     v14 = 0;
   }
 
-  if (v17)
+  if (futureCopy)
   {
-    v15 = [v17 BOOLResult];
+    bOOLResult = [futureCopy BOOLResult];
     if (!v14)
     {
       goto LABEL_12;
@@ -1109,32 +1109,32 @@ LABEL_15:
 
   else
   {
-    v15 = 1;
+    bOOLResult = 1;
     if (!v14)
     {
       goto LABEL_12;
     }
   }
 
-  if (v15)
+  if (bOOLResult)
   {
-    [(DYReplayController *)self _playbackArchiveWithExperiment:v14 passingFuture:v9 resolvingFuture:0];
+    [(DYReplayController *)self _playbackArchiveWithExperiment:v14 passingFuture:toplevelFutureCopy resolvingFuture:0];
     goto LABEL_13;
   }
 
 LABEL_12:
   v16 = [MEMORY[0x277CCABB0] numberWithBool:1];
-  [v9 setResult:v16];
+  [toplevelFutureCopy setResult:v16];
 
 LABEL_13:
 }
 
-- (void)_playbackArchiveWithExperiment:(id)a3 passingFuture:(id)a4 resolvingFuture:(BOOL)a5
+- (void)_playbackArchiveWithExperiment:(id)experiment passingFuture:(id)future resolvingFuture:(BOOL)resolvingFuture
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(DYReplayController *)self archiveStack];
-  if ([v10 empty])
+  experimentCopy = experiment;
+  futureCopy = future;
+  archiveStack = [(DYReplayController *)self archiveStack];
+  if ([archiveStack empty])
   {
     __assert_rtn("[DYReplayController _playbackArchiveWithExperiment:passingFuture:resolvingFuture:]", ", 0, "![self.archiveStack empty]"");
   }
@@ -1144,18 +1144,18 @@ LABEL_13:
   block[2] = __83__DYReplayController__playbackArchiveWithExperiment_passingFuture_resolvingFuture___block_invoke;
   block[3] = &unk_27930FA00;
   block[4] = self;
-  v11 = v8;
+  v11 = experimentCopy;
   v30 = v11;
   dispatch_sync(MEMORY[0x277D85CD0], block);
-  v12 = [(DYReplayController *)self replayControllerSupport];
-  v13 = [(DYReplayController *)self playbackEngine];
-  v14 = [v12 experimentResultsGeneratorForPlaybackEngine:v13];
+  replayControllerSupport = [(DYReplayController *)self replayControllerSupport];
+  playbackEngine = [(DYReplayController *)self playbackEngine];
+  v14 = [replayControllerSupport experimentResultsGeneratorForPlaybackEngine:playbackEngine];
 
   [v14 begin];
-  v15 = [(DYReplayController *)self playbackEngine];
-  v16 = [v15 playback];
+  playbackEngine2 = [(DYReplayController *)self playbackEngine];
+  playback = [playbackEngine2 playback];
 
-  v17 = [(DYReplayController *)self queue];
+  queue = [(DYReplayController *)self queue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __83__DYReplayController__playbackArchiveWithExperiment_passingFuture_resolvingFuture___block_invoke_2;
@@ -1164,13 +1164,13 @@ LABEL_13:
   v23 = v18;
   v19 = v11;
   v24 = v19;
-  v25 = self;
-  v28 = a5;
-  v20 = v9;
+  selfCopy = self;
+  resolvingFutureCopy = resolvingFuture;
+  v20 = futureCopy;
   v26 = v20;
-  v21 = v16;
+  v21 = playback;
   v27 = v21;
-  [v21 notifyOnQueue:v17 handler:v22];
+  [v21 notifyOnQueue:queue handler:v22];
 }
 
 uint64_t __83__DYReplayController__playbackArchiveWithExperiment_passingFuture_resolvingFuture___block_invoke(uint64_t a1)
@@ -1235,8 +1235,8 @@ uint64_t __83__DYReplayController__playbackArchiveWithExperiment_passingFuture_r
 
 - (void)_beginDebugArchive
 {
-  v3 = [(DYReplayController *)self archiveStack];
-  if ([v3 empty])
+  archiveStack = [(DYReplayController *)self archiveStack];
+  if ([archiveStack empty])
   {
     __assert_rtn("[DYReplayController _beginDebugArchive]", ", 0, "![self.archiveStack empty]"");
   }

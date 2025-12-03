@@ -1,32 +1,32 @@
 @interface PasswordSharingDoneViewController
-- (_TtC18SharingViewService33PasswordSharingDoneViewController)initWithContentView:(id)a3;
+- (_TtC18SharingViewService33PasswordSharingDoneViewController)initWithContentView:(id)view;
 - (void)configureUIElementsDefault;
 - (void)configureUIElementsForHotspot;
-- (void)handleDismissButton:(id)a3;
-- (void)handleReportBugButton:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)handleDismissButton:(id)button;
+- (void)handleReportBugButton:(id)button;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PasswordSharingDoneViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100028118();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100028848(a3);
+  selfCopy = self;
+  sub_100028848(appear);
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE938 <= 30 && (dword_1001BE938 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -34,10 +34,10 @@
 
   v5.receiver = self;
   v5.super_class = PasswordSharingDoneViewController;
-  [(PasswordSharingDoneViewController *)&v5 viewDidDisappear:v3];
+  [(PasswordSharingDoneViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (_TtC18SharingViewService33PasswordSharingDoneViewController)initWithContentView:(id)a3
+- (_TtC18SharingViewService33PasswordSharingDoneViewController)initWithContentView:(id)view
 {
   *&self->presenter[OBJC_IVAR____TtC18SharingViewService33PasswordSharingDoneViewController_presenter] = 0;
   swift_unknownObjectWeakInit();
@@ -53,14 +53,14 @@
   *(v5 + 12) = 0;
   v8.receiver = self;
   v8.super_class = done;
-  return [(PasswordSharingDoneViewController *)&v8 initWithContentView:a3];
+  return [(PasswordSharingDoneViewController *)&v8 initWithContentView:view];
 }
 
-- (void)handleReportBugButton:(id)a3
+- (void)handleReportBugButton:(id)button
 {
-  v4 = [self->super._mainController hotspot];
+  hotspot = [self->super._mainController hotspot];
   v5 = @"WiFi";
-  if (v4)
+  if (hotspot)
   {
     v5 = @"Hotspot";
   }
@@ -127,9 +127,9 @@
   }
 }
 
-- (void)handleDismissButton:(id)a3
+- (void)handleDismissButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BE938 <= 30 && (dword_1001BE938 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -271,8 +271,8 @@
 
   if (IsAppleInternalBuild() && *(&self->_status + 1) > 0.0)
   {
-    v27 = [*(&self->_imageView + 1) text];
-    v28 = [v27 stringByAppendingFormat:@" (internal: Duration = %f)", *(&self->_status + 1)];
+    text = [*(&self->_imageView + 1) text];
+    v28 = [text stringByAppendingFormat:@" (internal: Duration = %f)", *(&self->_status + 1)];
     [*(&self->_imageView + 1) setText:v28];
   }
 
@@ -281,9 +281,9 @@
   [v29 setHidden:1];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE938 <= 30 && (dword_1001BE938 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -291,7 +291,7 @@
 
   v6.receiver = self;
   v6.super_class = PasswordSharingDoneViewController;
-  [(SVSBaseViewController *)&v6 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v6 viewWillAppear:appearCopy];
   if ([self->super._mainController hotspot])
   {
     [(PasswordSharingDoneViewController *)self configureUIElementsForHotspot];
@@ -302,8 +302,8 @@
     [(PasswordSharingDoneViewController *)self configureUIElementsDefault];
   }
 
-  v5 = [(SVSBaseViewController *)self containerView];
-  [v5 setSwipeDismissible:1];
+  containerView = [(SVSBaseViewController *)self containerView];
+  [containerView setSwipeDismissible:1];
 }
 
 @end

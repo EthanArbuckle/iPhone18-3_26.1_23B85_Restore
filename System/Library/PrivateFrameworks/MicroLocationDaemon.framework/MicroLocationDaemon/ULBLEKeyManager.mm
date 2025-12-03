@@ -1,30 +1,30 @@
 @interface ULBLEKeyManager
 - (NSArray)oobKeys;
 - (NSArray)sameAccountBleIdentities;
-- (ULBLEKeyManager)initWithDelegate:(ULBLEKeyManagerDelegate *)a3 environment:(id)a4 andDbStore:(ULDatabaseStoreInterface *)a5;
+- (ULBLEKeyManager)initWithDelegate:(ULBLEKeyManagerDelegate *)delegate environment:(id)environment andDbStore:(ULDatabaseStoreInterface *)store;
 - (id).cxx_construct;
-- (void)_handleULRapportMonitorEventIdentities:(id)a3;
+- (void)_handleULRapportMonitorEventIdentities:(id)identities;
 - (void)backupSameAccountBleIdentities;
 - (void)loadSameAccountBleIdentitiesFromDb;
-- (void)onBleIdentityItem:(const void *)a3;
+- (void)onBleIdentityItem:(const void *)item;
 - (void)startMonitoringEvents;
 - (void)stopMonitoringEvents;
 @end
 
 @implementation ULBLEKeyManager
 
-- (ULBLEKeyManager)initWithDelegate:(ULBLEKeyManagerDelegate *)a3 environment:(id)a4 andDbStore:(ULDatabaseStoreInterface *)a5
+- (ULBLEKeyManager)initWithDelegate:(ULBLEKeyManagerDelegate *)delegate environment:(id)environment andDbStore:(ULDatabaseStoreInterface *)store
 {
-  v8 = a4;
+  environmentCopy = environment;
   v13.receiver = self;
   v13.super_class = ULBLEKeyManager;
   v9 = [(ULBLEKeyManager *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    [(ULBLEKeyManager *)v9 setEnvironment:v8];
-    [(ULBLEKeyManager *)v10 setDbStore:a5];
-    [(ULBLEKeyManager *)v10 setDelegate:a3];
+    [(ULBLEKeyManager *)v9 setEnvironment:environmentCopy];
+    [(ULBLEKeyManager *)v10 setDbStore:store];
+    [(ULBLEKeyManager *)v10 setDelegate:delegate];
     v11 = [MEMORY[0x277CBEB58] set];
     [(ULBLEKeyManager *)v10 setOobKeysInternal:v11];
   }
@@ -35,9 +35,9 @@
 - (void)startMonitoringEvents
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(ULBLEKeyManager *)self environment];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  environment = [(ULBLEKeyManager *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -54,18 +54,18 @@
   }
 
   objc_initWeak(&buf, self);
-  v6 = [(ULBLEKeyManager *)self environment];
-  v7 = [v6 rapportMonitor];
+  environment2 = [(ULBLEKeyManager *)self environment];
+  rapportMonitor = [environment2 rapportMonitor];
   v8 = +[(ULEvent *)ULRapportMonitorEventIdentities];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __40__ULBLEKeyManager_startMonitoringEvents__block_invoke;
   v11[3] = &unk_2798D4460;
   objc_copyWeak(&v12, &buf);
-  [v7 addObserver:self eventName:v8 handler:v11];
+  [rapportMonitor addObserver:self eventName:v8 handler:v11];
 
-  v9 = [(ULBLEKeyManager *)self bleIdentityBridge];
-  [v9 startMonitoring];
+  bleIdentityBridge = [(ULBLEKeyManager *)self bleIdentityBridge];
+  [bleIdentityBridge startMonitoring];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&buf);
@@ -86,9 +86,9 @@ void __40__ULBLEKeyManager_startMonitoringEvents__block_invoke(uint64_t a1, void
 - (void)stopMonitoringEvents
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(ULBLEKeyManager *)self environment];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  environment = [(ULBLEKeyManager *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -105,12 +105,12 @@ void __40__ULBLEKeyManager_startMonitoringEvents__block_invoke(uint64_t a1, void
     _os_log_impl(&dword_258FE9000, v5, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:BleKeyManager, stop monitoring}", v10, 0x12u);
   }
 
-  v6 = [(ULBLEKeyManager *)self environment];
-  v7 = [v6 rapportMonitor];
-  [v7 removeObserver:self];
+  environment2 = [(ULBLEKeyManager *)self environment];
+  rapportMonitor = [environment2 rapportMonitor];
+  [rapportMonitor removeObserver:self];
 
-  v8 = [(ULBLEKeyManager *)self bleIdentityBridge];
-  [v8 stopMonitoring];
+  bleIdentityBridge = [(ULBLEKeyManager *)self bleIdentityBridge];
+  [bleIdentityBridge stopMonitoring];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -118,9 +118,9 @@ void __40__ULBLEKeyManager_startMonitoringEvents__block_invoke(uint64_t a1, void
 - (void)backupSameAccountBleIdentities
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(ULBLEKeyManager *)self environment];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  environment = [(ULBLEKeyManager *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
   v13 = 0;
   v14 = 0;
@@ -226,33 +226,33 @@ void __40__ULBLEKeyManager_startMonitoringEvents__block_invoke(uint64_t a1, void
 - (void)loadSameAccountBleIdentitiesFromDb
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(ULBLEKeyManager *)self environment];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  environment = [(ULBLEKeyManager *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = cl::chrono::CFAbsoluteTimeClock::now();
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v7 = +[ULDefaultsSingleton shared];
-  v8 = [v7 defaultsDictionary];
+  defaultsDictionary = [v7 defaultsDictionary];
 
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULNumberDaysToUseBtIdentities"];
-  v10 = [v8 objectForKey:v9];
+  v10 = [defaultsDictionary objectForKey:v9];
   if (v10 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v11 = [v10 intValue];
+    intValue = [v10 intValue];
   }
 
   else
   {
-    v11 = [&unk_286A71F70 intValue];
+    intValue = [&unk_286A71F70 intValue];
   }
 
-  v12 = v11;
+  v12 = intValue;
 
-  CLMicroLocationTimeUtils::getTimeDeltaDaysAgo(v6, ~v12);
+  CLMicroLocationTimeUtils::getTimeDeltaDaysAgo(date, ~v12);
   v14 = v13;
-  v15 = [(ULBLEKeyManager *)self dbStore];
-  v16 = (*(v15->var0 + 4))(v15);
+  dbStore = [(ULBLEKeyManager *)self dbStore];
+  v16 = (*(dbStore->var0 + 4))(dbStore);
   v17 = v16;
   if (v16)
   {
@@ -343,39 +343,39 @@ LABEL_23:
 
 - (NSArray)sameAccountBleIdentities
 {
-  v3 = [(ULBLEKeyManager *)self environment];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  environment = [(ULBLEKeyManager *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   if (self->sameAccountBleIdentitiesInternal.__table_.__first_node_.__next_)
   {
     operator new();
   }
 
-  v6 = [v5 copy];
+  v6 = [array copy];
 
   return v6;
 }
 
 - (NSArray)oobKeys
 {
-  v3 = [(ULBLEKeyManager *)self environment];
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  environment = [(ULBLEKeyManager *)self environment];
+  queue = [environment queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [(ULBLEKeyManager *)self oobKeysInternal];
-  v6 = [v5 allObjects];
+  oobKeysInternal = [(ULBLEKeyManager *)self oobKeysInternal];
+  allObjects = [oobKeysInternal allObjects];
 
-  return v6;
+  return allObjects;
 }
 
-- (void)_handleULRapportMonitorEventIdentities:(id)a3
+- (void)_handleULRapportMonitorEventIdentities:(id)identities
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identitiesCopy = identities;
   objc_opt_class();
-  v5 = v4;
+  v5 = identitiesCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -396,15 +396,15 @@ LABEL_23:
   v8 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v7 identities];
+    identities = [v7 identities];
     *buf = 138412290;
-    v18 = v9;
+    v18 = identities;
     _os_log_impl(&dword_258FE9000, v8, OS_LOG_TYPE_DEBUG, "_handleULRapportMonitorEventIdentities: identities: %@", buf, 0xCu);
   }
 
   objc_initWeak(buf, self);
-  v10 = [(ULBLEKeyManager *)self environment];
-  v11 = [v10 queue];
+  environment = [(ULBLEKeyManager *)self environment];
+  queue = [environment queue];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __58__ULBLEKeyManager__handleULRapportMonitorEventIdentities___block_invoke;
@@ -412,7 +412,7 @@ LABEL_23:
   objc_copyWeak(&v16, buf);
   v15 = v7;
   v12 = v7;
-  dispatch_async(v11, v14);
+  dispatch_async(queue, v14);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -503,16 +503,16 @@ void __58__ULBLEKeyManager__handleULRapportMonitorEventIdentities___block_invoke
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onBleIdentityItem:(const void *)a3
+- (void)onBleIdentityItem:(const void *)item
 {
   v25 = *MEMORY[0x277D85DE8];
-  v17 = *a3;
-  std::__optional_copy_base<std::string,false>::__optional_copy_base[abi:ne200100](&v18, a3 + 1);
-  std::__optional_copy_base<std::string,false>::__optional_copy_base[abi:ne200100](&v20, a3 + 3);
-  std::__optional_copy_base<std::string,false>::__optional_copy_base[abi:ne200100](&v22, a3 + 5);
-  v24 = *(a3 + 14);
-  v5 = [(ULBLEKeyManager *)self environment];
-  v6 = [v5 queue];
+  v17 = *item;
+  std::__optional_copy_base<std::string,false>::__optional_copy_base[abi:ne200100](&v18, item + 1);
+  std::__optional_copy_base<std::string,false>::__optional_copy_base[abi:ne200100](&v20, item + 3);
+  std::__optional_copy_base<std::string,false>::__optional_copy_base[abi:ne200100](&v22, item + 5);
+  v24 = *(item + 14);
+  environment = [(ULBLEKeyManager *)self environment];
+  queue = [environment queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3321888768;
   v8[2] = __37__ULBLEKeyManager_onBleIdentityItem___block_invoke;
@@ -523,7 +523,7 @@ void __58__ULBLEKeyManager__handleULRapportMonitorEventIdentities___block_invoke
   std::__optional_copy_base<std::string,false>::__optional_copy_base[abi:ne200100](&v12, &v20);
   std::__optional_copy_base<std::string,false>::__optional_copy_base[abi:ne200100](&__p, &v22);
   v16 = v24;
-  dispatch_async(v6, v8);
+  dispatch_async(queue, v8);
 
   if (v15 == 1 && SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
   {

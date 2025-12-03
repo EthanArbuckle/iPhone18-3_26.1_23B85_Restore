@@ -11,27 +11,27 @@
   v9.super_class = BEAppearanceViewControllerAccessibility;
   [(BEAppearanceViewControllerAccessibility *)&v9 viewDidLoad];
   v3 = AEAXLocString(@"brightness");
-  v4 = [(BEAppearanceViewControllerAccessibility *)self _imaxBrightnessSlider];
-  [v4 setAccessibilityLabel:v3];
+  _imaxBrightnessSlider = [(BEAppearanceViewControllerAccessibility *)self _imaxBrightnessSlider];
+  [_imaxBrightnessSlider setAccessibilityLabel:v3];
 
   v5 = AEAXLocString(@"decrease.font.size");
-  v6 = [(BEAppearanceViewControllerAccessibility *)self _imaxSizeSmallerButton];
-  [v6 setAccessibilityLabel:v5];
+  _imaxSizeSmallerButton = [(BEAppearanceViewControllerAccessibility *)self _imaxSizeSmallerButton];
+  [_imaxSizeSmallerButton setAccessibilityLabel:v5];
 
   v7 = AEAXLocString(@"increase.font.size");
-  v8 = [(BEAppearanceViewControllerAccessibility *)self _imaxSizeLargerButton];
-  [v8 setAccessibilityLabel:v7];
+  _imaxSizeLargerButton = [(BEAppearanceViewControllerAccessibility *)self _imaxSizeLargerButton];
+  [_imaxSizeLargerButton setAccessibilityLabel:v7];
 }
 
 - (id)brightnessSlider
 {
   v5.receiver = self;
   v5.super_class = BEAppearanceViewControllerAccessibility;
-  v2 = [(BEAppearanceViewControllerAccessibility *)&v5 brightnessSlider];
+  brightnessSlider = [(BEAppearanceViewControllerAccessibility *)&v5 brightnessSlider];
   v3 = AEAXLocString(@"brightness.slider");
-  [v2 setAccessibilityLabel:v3];
+  [brightnessSlider setAccessibilityLabel:v3];
 
-  return v2;
+  return brightnessSlider;
 }
 
 @end

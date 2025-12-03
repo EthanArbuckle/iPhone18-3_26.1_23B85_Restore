@@ -1,6 +1,6 @@
 @interface TimeDurationPicker
-- (_TtC13SleepHealthUI18TimeDurationPicker)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI18TimeDurationPicker)initWithFrame:(CGRect)a3;
+- (_TtC13SleepHealthUI18TimeDurationPicker)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI18TimeDurationPicker)initWithFrame:(CGRect)frame;
 - (id)accessibilityDurationLabel;
 - (void)decrease;
 - (void)increase;
@@ -8,7 +8,7 @@
 
 @implementation TimeDurationPicker
 
-- (_TtC13SleepHealthUI18TimeDurationPicker)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI18TimeDurationPicker)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -18,7 +18,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   sub_269D73304();
 }
 
@@ -45,7 +45,7 @@
     else
     {
       *(&self->super.super.super.isa + OBJC_IVAR____TtC13SleepHealthUI18TimeDurationPicker_selectedIndex) = v5;
-      v6 = self;
+      selfCopy = self;
       sub_269D7258C();
     }
   }
@@ -65,7 +65,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269D72D3C();
 }
 
@@ -84,7 +84,7 @@
   return v3;
 }
 
-- (_TtC13SleepHealthUI18TimeDurationPicker)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI18TimeDurationPicker)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

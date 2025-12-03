@@ -1,16 +1,16 @@
 @interface _INPBSearchCallHistoryIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBSearchCallHistoryIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSearchCallHistoryIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCallRecords:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCallRecords:(id)a3;
-- (void)setDateCreated:(id)a3;
-- (void)setStatus:(id)a3;
-- (void)setTargetContact:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCallRecords:(id)records;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCallRecords:(id)records;
+- (void)setDateCreated:(id)created;
+- (void)setStatus:(id)status;
+- (void)setTargetContact:(id)contact;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSearchCallHistoryIntentResponse
@@ -18,10 +18,10 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_callRecords count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -41,8 +41,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -51,33 +51,33 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"callRecords"];
+    [dictionary setObject:array forKeyedSubscript:@"callRecords"];
   }
 
   if (self->_dateCreated)
   {
-    v11 = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"dateCreated"];
+    dateCreated = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
+    v12 = [dateCreated copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"dateCreated"];
   }
 
   if (self->_status)
   {
-    v13 = [(_INPBSearchCallHistoryIntentResponse *)self status];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"status"];
+    status = [(_INPBSearchCallHistoryIntentResponse *)self status];
+    v14 = [status copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"status"];
   }
 
   if (self->_targetContact)
   {
-    v15 = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"targetContact"];
+    targetContact = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
+    v16 = [targetContact copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"targetContact"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -88,28 +88,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_targetContact hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(_INPBSearchCallHistoryIntentResponse *)self callRecords];
-  v6 = [v4 callRecords];
-  if ((v5 != 0) == (v6 == 0))
+  callRecords = [(_INPBSearchCallHistoryIntentResponse *)self callRecords];
+  callRecords2 = [equalCopy callRecords];
+  if ((callRecords != 0) == (callRecords2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(_INPBSearchCallHistoryIntentResponse *)self callRecords];
-  if (v7)
+  callRecords3 = [(_INPBSearchCallHistoryIntentResponse *)self callRecords];
+  if (callRecords3)
   {
-    v8 = v7;
-    v9 = [(_INPBSearchCallHistoryIntentResponse *)self callRecords];
-    v10 = [v4 callRecords];
-    v11 = [v9 isEqual:v10];
+    v8 = callRecords3;
+    callRecords4 = [(_INPBSearchCallHistoryIntentResponse *)self callRecords];
+    callRecords5 = [equalCopy callRecords];
+    v11 = [callRecords4 isEqual:callRecords5];
 
     if (!v11)
     {
@@ -121,20 +121,20 @@
   {
   }
 
-  v5 = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
-  v6 = [v4 dateCreated];
-  if ((v5 != 0) == (v6 == 0))
+  callRecords = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
+  callRecords2 = [equalCopy dateCreated];
+  if ((callRecords != 0) == (callRecords2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
-  if (v12)
+  dateCreated = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
+  if (dateCreated)
   {
-    v13 = v12;
-    v14 = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
-    v15 = [v4 dateCreated];
-    v16 = [v14 isEqual:v15];
+    v13 = dateCreated;
+    dateCreated2 = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
+    dateCreated3 = [equalCopy dateCreated];
+    v16 = [dateCreated2 isEqual:dateCreated3];
 
     if (!v16)
     {
@@ -146,20 +146,20 @@
   {
   }
 
-  v5 = [(_INPBSearchCallHistoryIntentResponse *)self status];
-  v6 = [v4 status];
-  if ((v5 != 0) == (v6 == 0))
+  callRecords = [(_INPBSearchCallHistoryIntentResponse *)self status];
+  callRecords2 = [equalCopy status];
+  if ((callRecords != 0) == (callRecords2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(_INPBSearchCallHistoryIntentResponse *)self status];
-  if (v17)
+  status = [(_INPBSearchCallHistoryIntentResponse *)self status];
+  if (status)
   {
-    v18 = v17;
-    v19 = [(_INPBSearchCallHistoryIntentResponse *)self status];
-    v20 = [v4 status];
-    v21 = [v19 isEqual:v20];
+    v18 = status;
+    status2 = [(_INPBSearchCallHistoryIntentResponse *)self status];
+    status3 = [equalCopy status];
+    v21 = [status2 isEqual:status3];
 
     if (!v21)
     {
@@ -171,12 +171,12 @@
   {
   }
 
-  v5 = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
-  v6 = [v4 targetContact];
-  if ((v5 != 0) != (v6 == 0))
+  callRecords = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
+  callRecords2 = [equalCopy targetContact];
+  if ((callRecords != 0) != (callRecords2 == 0))
   {
-    v22 = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
-    if (!v22)
+    targetContact = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
+    if (!targetContact)
     {
 
 LABEL_25:
@@ -184,10 +184,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
-    v25 = [v4 targetContact];
-    v26 = [v24 isEqual:v25];
+    v23 = targetContact;
+    targetContact2 = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
+    targetContact3 = [equalCopy targetContact];
+    v26 = [targetContact2 isEqual:targetContact3];
 
     if (v26)
     {
@@ -207,52 +207,52 @@ LABEL_23:
   return v27;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSearchCallHistoryIntentResponse allocWithZone:](_INPBSearchCallHistoryIntentResponse init];
-  v6 = [(NSArray *)self->_callRecords copyWithZone:a3];
+  v6 = [(NSArray *)self->_callRecords copyWithZone:zone];
   [(_INPBSearchCallHistoryIntentResponse *)v5 setCallRecords:v6];
 
-  v7 = [(NSString *)self->_dateCreated copyWithZone:a3];
+  v7 = [(NSString *)self->_dateCreated copyWithZone:zone];
   [(_INPBSearchCallHistoryIntentResponse *)v5 setDateCreated:v7];
 
-  v8 = [(NSString *)self->_status copyWithZone:a3];
+  v8 = [(NSString *)self->_status copyWithZone:zone];
   [(_INPBSearchCallHistoryIntentResponse *)v5 setStatus:v8];
 
-  v9 = [(NSString *)self->_targetContact copyWithZone:a3];
+  v9 = [(NSString *)self->_targetContact copyWithZone:zone];
   [(_INPBSearchCallHistoryIntentResponse *)v5 setTargetContact:v9];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSearchCallHistoryIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBSearchCallHistoryIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSearchCallHistoryIntentResponse)initWithCoder:(id)a3
+- (_INPBSearchCallHistoryIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSearchCallHistoryIntentResponse *)self initWithData:v6];
+    self = [(_INPBSearchCallHistoryIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -285,25 +285,25 @@ LABEL_23:
     while (v7);
   }
 
-  v11 = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
+  dateCreated = [(_INPBSearchCallHistoryIntentResponse *)self dateCreated];
 
-  if (v11)
+  if (dateCreated)
   {
     dateCreated = self->_dateCreated;
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_INPBSearchCallHistoryIntentResponse *)self status];
+  status = [(_INPBSearchCallHistoryIntentResponse *)self status];
 
-  if (v13)
+  if (status)
   {
     status = self->_status;
     PBDataWriterWriteStringField();
   }
 
-  v15 = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
+  targetContact = [(_INPBSearchCallHistoryIntentResponse *)self targetContact];
 
-  if (v15)
+  if (targetContact)
   {
     targetContact = self->_targetContact;
     PBDataWriterWriteStringField();
@@ -312,54 +312,54 @@ LABEL_23:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTargetContact:(id)a3
+- (void)setTargetContact:(id)contact
 {
-  v4 = [a3 copy];
+  v4 = [contact copy];
   targetContact = self->_targetContact;
   self->_targetContact = v4;
 
   MEMORY[0x1EEE66BB8](v4, targetContact);
 }
 
-- (void)setStatus:(id)a3
+- (void)setStatus:(id)status
 {
-  v4 = [a3 copy];
+  v4 = [status copy];
   status = self->_status;
   self->_status = v4;
 
   MEMORY[0x1EEE66BB8](v4, status);
 }
 
-- (void)setDateCreated:(id)a3
+- (void)setDateCreated:(id)created
 {
-  v4 = [a3 copy];
+  v4 = [created copy];
   dateCreated = self->_dateCreated;
   self->_dateCreated = v4;
 
   MEMORY[0x1EEE66BB8](v4, dateCreated);
 }
 
-- (void)addCallRecords:(id)a3
+- (void)addCallRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   callRecords = self->_callRecords;
-  v8 = v4;
+  v8 = recordsCopy;
   if (!callRecords)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_callRecords;
-    self->_callRecords = v6;
+    self->_callRecords = array;
 
-    v4 = v8;
+    recordsCopy = v8;
     callRecords = self->_callRecords;
   }
 
-  [(NSArray *)callRecords addObject:v4];
+  [(NSArray *)callRecords addObject:recordsCopy];
 }
 
-- (void)setCallRecords:(id)a3
+- (void)setCallRecords:(id)records
 {
-  v4 = [a3 mutableCopy];
+  v4 = [records mutableCopy];
   callRecords = self->_callRecords;
   self->_callRecords = v4;
 

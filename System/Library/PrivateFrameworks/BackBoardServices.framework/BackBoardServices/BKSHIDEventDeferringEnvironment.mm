@@ -1,17 +1,17 @@
 @interface BKSHIDEventDeferringEnvironment
-+ (id)environmentWithIdentifier:(id)a3;
++ (id)environmentWithIdentifier:(id)identifier;
 + (id)keyboardFocusEnvironment;
 + (id)protobufSchema;
 + (id)systemEnvironment;
 - (BKSHIDEventDeferringEnvironment)init;
-- (BKSHIDEventDeferringEnvironment)initWithBSXPCCoder:(id)a3;
-- (BKSHIDEventDeferringEnvironment)initWithCoder:(id)a3;
-- (BKSHIDEventDeferringEnvironment)initWithXPCDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BKSHIDEventDeferringEnvironment)initWithBSXPCCoder:(id)coder;
+- (BKSHIDEventDeferringEnvironment)initWithCoder:(id)coder;
+- (BKSHIDEventDeferringEnvironment)initWithXPCDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (id)_uniqueEnvironmentForIdentifier;
 - (id)initForProtobufDecoding;
-- (void)_initWithIdentifier:(void *)a1;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (void)_initWithIdentifier:(void *)identifier;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation BKSHIDEventDeferringEnvironment
@@ -30,28 +30,28 @@
 
 - (id)_uniqueEnvironmentForIdentifier
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if ([a1[1] isEqual:@"system"])
+    selfCopy = self;
+    if ([self[1] isEqual:@"system"])
     {
-      a1 = +[BKSHIDEventDeferringEnvironment systemEnvironment];
+      self = +[BKSHIDEventDeferringEnvironment systemEnvironment];
     }
 
-    else if ([v2[1] isEqual:@"keyboardFocus"])
+    else if ([selfCopy[1] isEqual:@"keyboardFocus"])
     {
-      a1 = +[BKSHIDEventDeferringEnvironment keyboardFocusEnvironment];
+      self = +[BKSHIDEventDeferringEnvironment keyboardFocusEnvironment];
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 + (id)systemEnvironment
@@ -79,7 +79,7 @@ uint64_t __59__BKSHIDEventDeferringEnvironment_keyboardFocusEnvironment__block_i
   block[1] = 3221225472;
   block[2] = __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken != -1)
   {
     dispatch_once(&protobufSchema_onceToken, block);
@@ -104,10 +104,10 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -117,7 +117,7 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
     v5 = objc_opt_class();
     if (v5 == objc_opt_class())
     {
-      v6 = [(NSString *)self->_identifier isEqual:v4->_identifier];
+      v6 = [(NSString *)self->_identifier isEqual:equalCopy->_identifier];
     }
 
     else
@@ -129,13 +129,13 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
   return v6;
 }
 
-- (BKSHIDEventDeferringEnvironment)initWithBSXPCCoder:(id)a3
+- (BKSHIDEventDeferringEnvironment)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = BKSHIDEventDeferringEnvironment;
   v5 = [(BKSHIDEventDeferringEnvironment *)&v10 init];
-  if (!v5 || ([v4 decodeStringForKey:@"ident"], v6 = objc_claimAutoreleasedReturnValue(), identifier = v5->_identifier, v5->_identifier = v6, identifier, -[BKSHIDEventDeferringEnvironment _uniqueEnvironmentForIdentifier](&v5->super.isa), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v5 || ([coderCopy decodeStringForKey:@"ident"], v6 = objc_claimAutoreleasedReturnValue(), identifier = v5->_identifier, v5->_identifier = v6, identifier, -[BKSHIDEventDeferringEnvironment _uniqueEnvironmentForIdentifier](&v5->super.isa), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v8 = v5;
   }
@@ -143,11 +143,11 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
   return v8;
 }
 
-- (BKSHIDEventDeferringEnvironment)initWithXPCDictionary:(id)a3
+- (BKSHIDEventDeferringEnvironment)initWithXPCDictionary:(id)dictionary
 {
   v12.receiver = self;
   v12.super_class = BKSHIDEventDeferringEnvironment;
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = [(BKSHIDEventDeferringEnvironment *)&v12 init];
   [@"ident" UTF8String];
   v5 = BSDeserializeStringFromXPCDictionaryWithKey();
@@ -155,11 +155,11 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
   identifier = v4->_identifier;
   v4->_identifier = v5;
 
-  v7 = [(BKSHIDEventDeferringEnvironment *)&v4->super.isa _uniqueEnvironmentForIdentifier];
-  v8 = v7;
-  if (v7)
+  _uniqueEnvironmentForIdentifier = [(BKSHIDEventDeferringEnvironment *)&v4->super.isa _uniqueEnvironmentForIdentifier];
+  v8 = _uniqueEnvironmentForIdentifier;
+  if (_uniqueEnvironmentForIdentifier)
   {
-    v9 = v7;
+    v9 = _uniqueEnvironmentForIdentifier;
   }
 
   else
@@ -172,21 +172,21 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
   return v10;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   identifier = self->_identifier;
-  v4 = a3;
+  dictionaryCopy = dictionary;
   [@"ident" UTF8String];
   BSSerializeStringToXPCDictionaryWithKey();
 }
 
-- (BKSHIDEventDeferringEnvironment)initWithCoder:(id)a3
+- (BKSHIDEventDeferringEnvironment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = BKSHIDEventDeferringEnvironment;
   v5 = [(BKSHIDEventDeferringEnvironment *)&v10 init];
-  if (!v5 || ([v4 decodeObjectOfClass:objc_opt_class() forKey:@"ident"], v6 = objc_claimAutoreleasedReturnValue(), identifier = v5->_identifier, v5->_identifier = v6, identifier, -[BKSHIDEventDeferringEnvironment _uniqueEnvironmentForIdentifier](&v5->super.isa), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!v5 || ([coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ident"], v6 = objc_claimAutoreleasedReturnValue(), identifier = v5->_identifier, v5->_identifier = v6, identifier, -[BKSHIDEventDeferringEnvironment _uniqueEnvironmentForIdentifier](&v5->super.isa), (v8 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v8 = v5;
   }
@@ -207,7 +207,7 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeferringEnvironment.m";
     v17 = 1024;
@@ -223,11 +223,11 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
   return result;
 }
 
-+ (id)environmentWithIdentifier:(id)a3
++ (id)environmentWithIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 isEqualToString:@"system"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"system"])
   {
     v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"use +systemEnvironment"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -240,7 +240,7 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
       v19 = 2114;
       v20 = v12;
       v21 = 2048;
-      v22 = a1;
+      selfCopy2 = self;
       v23 = 2114;
       v24 = @"BKSHIDEventDeferringEnvironment.m";
       v25 = 1024;
@@ -256,7 +256,7 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
     JUMPOUT(0x186357574);
   }
 
-  if ([v5 isEqualToString:@"keyboardFocus"])
+  if ([identifierCopy isEqualToString:@"keyboardFocus"])
   {
     v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"use +keyboardFocusEnvironment"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -269,7 +269,7 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
       v19 = 2114;
       v20 = v16;
       v21 = 2048;
-      v22 = a1;
+      selfCopy2 = self;
       v23 = 2114;
       v24 = @"BKSHIDEventDeferringEnvironment.m";
       v25 = 1024;
@@ -285,18 +285,18 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
     JUMPOUT(0x186357660);
   }
 
-  v6 = [[BKSHIDEventDeferringEnvironment alloc] _initWithIdentifier:v5];
+  v6 = [[BKSHIDEventDeferringEnvironment alloc] _initWithIdentifier:identifierCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 
   return v6;
 }
 
-- (void)_initWithIdentifier:(void *)a1
+- (void)_initWithIdentifier:(void *)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
     v4 = objc_opt_class();
     if (v4 != objc_opt_class())
@@ -312,7 +312,7 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
         v16 = 2114;
         v17 = v12;
         v18 = 2048;
-        v19 = a1;
+        identifierCopy = identifier;
         v20 = 2114;
         v21 = @"BKSHIDEventDeferringEnvironment.m";
         v22 = 1024;
@@ -328,19 +328,19 @@ uint64_t __49__BKSHIDEventDeferringEnvironment_protobufSchema__block_invoke(uint
       JUMPOUT(0x186357818);
     }
 
-    v13.receiver = a1;
+    v13.receiver = identifier;
     v13.super_class = BKSHIDEventDeferringEnvironment;
-    a1 = objc_msgSendSuper2(&v13, sel_init);
-    if (a1)
+    identifier = objc_msgSendSuper2(&v13, sel_init);
+    if (identifier)
     {
       v5 = [v3 copy];
-      v6 = a1[1];
-      a1[1] = v5;
+      v6 = identifier[1];
+      identifier[1] = v5;
     }
   }
 
   v7 = *MEMORY[0x1E69E9840];
-  return a1;
+  return identifier;
 }
 
 uint64_t __52__BKSHIDEventDeferringEnvironment_systemEnvironment__block_invoke()

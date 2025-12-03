@@ -1,24 +1,24 @@
 @interface HMDSContext
 + (id)logCategory;
-- (HMDSContext)initWithHomeManager:(id)a3;
+- (HMDSContext)initWithHomeManager:(id)manager;
 - (NSArray)homes;
-- (id)cancelInvitation:(id)a3;
+- (id)cancelInvitation:(id)invitation;
 - (id)refreshData;
-- (id)removeSimpleLabelAccessCode:(id)a3 fromHome:(id)a4;
-- (id)removeUser:(id)a3 fromHome:(id)a4;
-- (id)simpleLabelAccessCodesForHome:(id)a3;
+- (id)removeSimpleLabelAccessCode:(id)code fromHome:(id)home;
+- (id)removeUser:(id)user fromHome:(id)home;
+- (id)simpleLabelAccessCodesForHome:(id)home;
 - (unint64_t)dataSyncState;
 - (unint64_t)status;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 @end
 
 @implementation HMDSContext
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
+  homesCopy = homes;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -29,37 +29,37 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDSContext *)v6 didUpdateHomesFuture];
-  [v9 finishWithNoResult];
+  didUpdateHomesFuture = [(HMDSContext *)selfCopy didUpdateHomesFuture];
+  [didUpdateHomesFuture finishWithNoResult];
 }
 
-- (id)cancelInvitation:(id)a3
+- (id)cancelInvitation:(id)invitation
 {
-  v3 = a3;
+  invitationCopy = invitation;
   v4 = objc_alloc_init(NAFuture);
-  v5 = [v4 errorOnlyCompletionHandlerAdapter];
-  [v3 cancelInviteWithCompletionHandler:v5];
+  errorOnlyCompletionHandlerAdapter = [v4 errorOnlyCompletionHandlerAdapter];
+  [invitationCopy cancelInviteWithCompletionHandler:errorOnlyCompletionHandlerAdapter];
 
   return v4;
 }
 
-- (id)removeUser:(id)a3 fromHome:(id)a4
+- (id)removeUser:(id)user fromHome:(id)home
 {
-  v5 = a4;
-  v6 = a3;
+  homeCopy = home;
+  userCopy = user;
   v7 = objc_alloc_init(NAFuture);
-  v8 = [v7 errorOnlyCompletionHandlerAdapter];
-  [v5 removeUserWithoutConfirmation:v6 completionHandler:v8];
+  errorOnlyCompletionHandlerAdapter = [v7 errorOnlyCompletionHandlerAdapter];
+  [homeCopy removeUserWithoutConfirmation:userCopy completionHandler:errorOnlyCompletionHandlerAdapter];
 
   return v7;
 }
 
-- (id)removeSimpleLabelAccessCode:(id)a3 fromHome:(id)a4
+- (id)removeSimpleLabelAccessCode:(id)code fromHome:(id)home
 {
-  v6 = a4;
-  v7 = a3;
+  homeCopy = home;
+  codeCopy = code;
   v8 = objc_alloc_init(NAFuture);
-  v9 = [v6 createAccessCodeManager];
+  createAccessCodeManager = [homeCopy createAccessCodeManager];
 
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -68,7 +68,7 @@
   v14[4] = self;
   v10 = v8;
   v15 = v10;
-  [v9 removeSimpleLabelAccessCode:v7 completion:v14];
+  [createAccessCodeManager removeSimpleLabelAccessCode:codeCopy completion:v14];
 
   v11 = v15;
   v12 = v10;
@@ -76,11 +76,11 @@
   return v10;
 }
 
-- (id)simpleLabelAccessCodesForHome:(id)a3
+- (id)simpleLabelAccessCodesForHome:(id)home
 {
-  v3 = a3;
+  homeCopy = home;
   v4 = objc_alloc_init(NAFuture);
-  v5 = [v3 createAccessCodeManager];
+  createAccessCodeManager = [homeCopy createAccessCodeManager];
 
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
@@ -88,7 +88,7 @@
   v8[3] = &unk_C6A8;
   v6 = v4;
   v9 = v6;
-  [v5 fetchHomeAccessCodesWithCompletion:v8];
+  [createAccessCodeManager fetchHomeAccessCodesWithCompletion:v8];
 
   return v6;
 }
@@ -96,48 +96,48 @@
 - (id)refreshData
 {
   v3 = objc_alloc_init(NAFuture);
-  v4 = [(HMDSContext *)self homeManager];
+  homeManager = [(HMDSContext *)self homeManager];
   v5 = [NSDate dateWithTimeIntervalSinceNow:5.0];
-  v6 = [v3 errorOnlyCompletionHandlerAdapter];
-  v7 = [v4 _refreshBeforeDate:v5 completionHandler:v6];
+  errorOnlyCompletionHandlerAdapter = [v3 errorOnlyCompletionHandlerAdapter];
+  v7 = [homeManager _refreshBeforeDate:v5 completionHandler:errorOnlyCompletionHandlerAdapter];
 
   return v3;
 }
 
 - (unint64_t)dataSyncState
 {
-  v2 = [(HMDSContext *)self homeManager];
-  v3 = [v2 dataSyncState];
+  homeManager = [(HMDSContext *)self homeManager];
+  dataSyncState = [homeManager dataSyncState];
 
-  return v3;
+  return dataSyncState;
 }
 
 - (unint64_t)status
 {
-  v2 = [(HMDSContext *)self homeManager];
-  v3 = [v2 status];
+  homeManager = [(HMDSContext *)self homeManager];
+  status = [homeManager status];
 
-  return v3;
+  return status;
 }
 
 - (NSArray)homes
 {
-  v2 = [(HMDSContext *)self homeManager];
-  v3 = [v2 homes];
+  homeManager = [(HMDSContext *)self homeManager];
+  homes = [homeManager homes];
 
-  return v3;
+  return homes;
 }
 
-- (HMDSContext)initWithHomeManager:(id)a3
+- (HMDSContext)initWithHomeManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = HMDSContext;
   v6 = [(HMDSContext *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_homeManager, a3);
+    objc_storeStrong(&v6->_homeManager, manager);
     [(HMHomeManager *)v7->_homeManager setDelegate:v7];
     v8 = objc_alloc_init(NAFuture);
     didUpdateHomesFuture = v7->_didUpdateHomesFuture;

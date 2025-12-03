@@ -1,24 +1,24 @@
 @interface PRPosterFocusConfiguration
-+ (id)decodeObjectWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFocusConfiguration:(id)a3;
++ (id)decodeObjectWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFocusConfiguration:(id)configuration;
 - (NSString)description;
-- (PRPosterFocusConfiguration)initWithActivityIdentifier:(id)a3 activityUUID:(id)a4;
-- (PRPosterFocusConfiguration)initWithBSXPCCoder:(id)a3;
-- (PRPosterFocusConfiguration)initWithCoder:(id)a3;
+- (PRPosterFocusConfiguration)initWithActivityIdentifier:(id)identifier activityUUID:(id)d;
+- (PRPosterFocusConfiguration)initWithBSXPCCoder:(id)coder;
+- (PRPosterFocusConfiguration)initWithCoder:(id)coder;
 - (id)encodeJSON;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PRPosterFocusConfiguration
 
-- (PRPosterFocusConfiguration)initWithActivityIdentifier:(id)a3 activityUUID:(id)a4
+- (PRPosterFocusConfiguration)initWithActivityIdentifier:(id)identifier activityUUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  identifierCopy = identifier;
+  dCopy = d;
+  v9 = identifierCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v9)
   {
@@ -30,7 +30,7 @@
     [PRPosterFocusConfiguration initWithActivityIdentifier:a2 activityUUID:?];
   }
 
-  v10 = v8;
+  v10 = dCopy;
   NSClassFromString(&cfstr_Nsuuid.isa);
   if (!v10)
   {
@@ -59,33 +59,33 @@
   return v11;
 }
 
-- (PRPosterFocusConfiguration)initWithCoder:(id)a3
+- (PRPosterFocusConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"activityIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"activityIdentifier"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"activityUUID"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"activityUUID"];
 
   v9 = [(PRPosterFocusConfiguration *)self initWithActivityIdentifier:v6 activityUUID:v8];
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterFocusConfiguration *)self activityIdentifier];
-  [v4 encodeObject:v5 forKey:@"activityIdentifier"];
+  coderCopy = coder;
+  activityIdentifier = [(PRPosterFocusConfiguration *)self activityIdentifier];
+  [coderCopy encodeObject:activityIdentifier forKey:@"activityIdentifier"];
 
-  v6 = [(PRPosterFocusConfiguration *)self activityUUID];
-  [v4 encodeObject:v6 forKey:@"activityUUID"];
+  activityUUID = [(PRPosterFocusConfiguration *)self activityUUID];
+  [coderCopy encodeObject:activityUUID forKey:@"activityUUID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -93,29 +93,29 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PRPosterFocusConfiguration *)self isEqualToFocusConfiguration:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(PRPosterFocusConfiguration *)self isEqualToFocusConfiguration:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToFocusConfiguration:(id)a3
+- (BOOL)isEqualToFocusConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy == self)
   {
     v10 = 1;
   }
 
-  else if (v4)
+  else if (configurationCopy)
   {
-    v6 = [(PRPosterFocusConfiguration *)self activityIdentifier];
-    v7 = [(PRPosterFocusConfiguration *)v5 activityIdentifier];
+    activityIdentifier = [(PRPosterFocusConfiguration *)self activityIdentifier];
+    activityIdentifier2 = [(PRPosterFocusConfiguration *)v5 activityIdentifier];
     if (BSEqualObjects())
     {
-      v8 = [(PRPosterFocusConfiguration *)self activityUUID];
-      v9 = [(PRPosterFocusConfiguration *)v5 activityUUID];
+      activityUUID = [(PRPosterFocusConfiguration *)self activityUUID];
+      activityUUID2 = [(PRPosterFocusConfiguration *)v5 activityUUID];
       v10 = BSEqualObjects();
     }
 
@@ -135,12 +135,12 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PRPosterFocusConfiguration *)self activityIdentifier];
-  v4 = [(PRPosterFocusConfiguration *)self activityUUID];
-  v5 = [MEMORY[0x1E698E6B8] builder];
-  v6 = [v5 appendString:v3];
-  v7 = [v5 appendObject:v4];
-  v8 = [v5 hash];
+  activityIdentifier = [(PRPosterFocusConfiguration *)self activityIdentifier];
+  activityUUID = [(PRPosterFocusConfiguration *)self activityUUID];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v6 = [builder appendString:activityIdentifier];
+  v7 = [builder appendObject:activityUUID];
+  v8 = [builder hash];
 
   return v8;
 }
@@ -148,55 +148,55 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PRPosterFocusConfiguration *)self activityUUID];
-  v5 = [v3 appendObject:v4 withName:@"activityUUID"];
+  activityUUID = [(PRPosterFocusConfiguration *)self activityUUID];
+  v5 = [v3 appendObject:activityUUID withName:@"activityUUID"];
 
-  v6 = [(PRPosterFocusConfiguration *)self activityIdentifier];
-  v7 = [v3 appendObject:v6 withName:@"activityIdentifier"];
+  activityIdentifier = [(PRPosterFocusConfiguration *)self activityIdentifier];
+  v7 = [v3 appendObject:activityIdentifier withName:@"activityIdentifier"];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (PRPosterFocusConfiguration)initWithBSXPCCoder:(id)a3
+- (PRPosterFocusConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"activityIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"activityIdentifier"];
 
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"activityUUID"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"activityUUID"];
 
   v9 = [(PRPosterFocusConfiguration *)self initWithActivityIdentifier:v6 activityUUID:v8];
   return v9;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRPosterFocusConfiguration *)self activityIdentifier];
-  [v4 encodeObject:v5 forKey:@"activityIdentifier"];
+  coderCopy = coder;
+  activityIdentifier = [(PRPosterFocusConfiguration *)self activityIdentifier];
+  [coderCopy encodeObject:activityIdentifier forKey:@"activityIdentifier"];
 
-  v6 = [(PRPosterFocusConfiguration *)self activityUUID];
-  [v4 encodeObject:v6 forKey:@"activityUUID"];
+  activityUUID = [(PRPosterFocusConfiguration *)self activityUUID];
+  [coderCopy encodeObject:activityUUID forKey:@"activityUUID"];
 }
 
 - (id)encodeJSON
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(PRPosterFocusConfiguration *)self activityIdentifier];
-  [v3 bs_setSafeObject:v4 forKey:@"activityIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  activityIdentifier = [(PRPosterFocusConfiguration *)self activityIdentifier];
+  [dictionary bs_setSafeObject:activityIdentifier forKey:@"activityIdentifier"];
 
-  v5 = [(PRPosterFocusConfiguration *)self activityUUID];
-  v6 = [v5 UUIDString];
-  [v3 bs_setSafeObject:v6 forKey:@"activityUUID"];
+  activityUUID = [(PRPosterFocusConfiguration *)self activityUUID];
+  uUIDString = [activityUUID UUIDString];
+  [dictionary bs_setSafeObject:uUIDString forKey:@"activityUUID"];
 
-  v7 = [(PRPosterFocusConfiguration *)self attributeType];
-  [v3 bs_setSafeObject:v7 forKey:@"attributeType"];
+  attributeType = [(PRPosterFocusConfiguration *)self attributeType];
+  [dictionary bs_setSafeObject:attributeType forKey:@"attributeType"];
 
   v12 = 0;
-  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v3 options:0 error:&v12];
+  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionary options:0 error:&v12];
   v9 = v12;
   if (v9)
   {
@@ -210,10 +210,10 @@
   return v8;
 }
 
-+ (id)decodeObjectWithJSON:(id)a3
++ (id)decodeObjectWithJSON:(id)n
 {
   v12 = 0;
-  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v12];
+  v3 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v12];
   v4 = v12;
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && !v4)
   {

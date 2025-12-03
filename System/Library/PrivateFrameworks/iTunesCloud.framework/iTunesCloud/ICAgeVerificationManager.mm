@@ -1,15 +1,15 @@
 @interface ICAgeVerificationManager
 + (ICAgeVerificationManager)defaultManager;
-- (BOOL)_bagHasValidKeys:(id)a3;
+- (BOOL)_bagHasValidKeys:(id)keys;
 - (ICAgeVerificationState)ageVerificationState;
 - (id)_init;
-- (id)ageVerificationStateForUserIdentity:(id)a3;
+- (id)ageVerificationStateForUserIdentity:(id)identity;
 - (void)_registerForNotifications;
-- (void)_runAgeVerificationForUserIdentity:(id)a3 completion:(id)a4;
-- (void)_updateAgeVerificationStateAndSendNotification:(BOOL)a3 completion:(id)a4;
-- (void)_updateAgeVerificationStateForUserIdentity:(id)a3 sendNotification:(BOOL)a4 completion:(id)a5;
-- (void)_userIdentityStoreDidChange:(id)a3;
-- (void)getAgeVerificationStateWithCompletion:(id)a3;
+- (void)_runAgeVerificationForUserIdentity:(id)identity completion:(id)completion;
+- (void)_updateAgeVerificationStateAndSendNotification:(BOOL)notification completion:(id)completion;
+- (void)_updateAgeVerificationStateForUserIdentity:(id)identity sendNotification:(BOOL)notification completion:(id)completion;
+- (void)_userIdentityStoreDidChange:(id)change;
+- (void)getAgeVerificationStateWithCompletion:(id)completion;
 @end
 
 @implementation ICAgeVerificationManager
@@ -61,9 +61,9 @@ uint64_t __42__ICAgeVerificationManager_defaultManager__block_invoke()
     [(ICAgeVerificationManager *)v3 _updateAgeVerificationStateAndSendNotification:1 completion:0];
     [(ICAgeVerificationManager *)v3 _registerForNotifications];
     v8 = +[ICDeviceInfo currentDeviceInfo];
-    v9 = [v8 isInternalBuild];
+    isInternalBuild = [v8 isInternalBuild];
 
-    if (v9)
+    if (isInternalBuild)
     {
       if (([MEMORY[0x1E69B1418] hasEntitlement:@"apple" inGroup:@"keychain-access-groups"] & 1) == 0)
       {
@@ -82,30 +82,30 @@ uint64_t __42__ICAgeVerificationManager_defaultManager__block_invoke()
 
 - (void)_registerForNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__userIdentityStoreDidChange_ name:@"ICUserIdentityStoreDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__userIdentityStoreDidChange_ name:@"ICUserIdentityStoreDidChangeNotification" object:0];
 }
 
-- (BOOL)_bagHasValidKeys:(id)a3
+- (BOOL)_bagHasValidKeys:(id)keys
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v4 numberForBagKey:@"isExplicitContentAgeVerificationRequired"];
+  v6 = [keysCopy numberForBagKey:@"isExplicitContentAgeVerificationRequired"];
 
   if (!v6)
   {
     [v5 addObject:@"isExplicitContentAgeVerificationRequired"];
   }
 
-  v7 = [v4 stringForBagKey:@"ExplicitContentBadgeTreatment"];
+  v7 = [keysCopy stringForBagKey:@"ExplicitContentBadgeTreatment"];
 
   if (!v7)
   {
     [v5 addObject:@"ExplicitContentBadgeTreatment"];
   }
 
-  v8 = [v4 urlForBagKey:@"korAgeVerificationUrl"];
+  v8 = [keysCopy urlForBagKey:@"korAgeVerificationUrl"];
 
   if (!v8)
   {
@@ -120,7 +120,7 @@ uint64_t __42__ICAgeVerificationManager_defaultManager__block_invoke()
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134218242;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
       v16 = v10;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "ICAgeVerificationManager %p - Bag key(s) missing for age verification: %{public}@ - Age Verification not required.", &v13, 0x16u);
@@ -130,14 +130,14 @@ uint64_t __42__ICAgeVerificationManager_defaultManager__block_invoke()
   return v9 == 0;
 }
 
-- (void)_runAgeVerificationForUserIdentity:(id)a3 completion:(id)a4
+- (void)_runAgeVerificationForUserIdentity:(id)identity completion:(id)completion
 {
   v37[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  completionCopy = completion;
   v9 = +[ICUserIdentityStore defaultIdentityStore];
   v29 = 0;
-  v10 = [v9 getPropertiesForUserIdentity:v7 error:&v29];
+  v10 = [v9 getPropertiesForUserIdentity:identityCopy error:&v29];
   v11 = v29;
 
   if (v11)
@@ -146,8 +146,8 @@ uint64_t __42__ICAgeVerificationManager_defaultManager__block_invoke()
     v36[0] = *MEMORY[0x1E696AA08];
     v36[1] = v12;
     v37[0] = v11;
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error retrieving properties for account %@ during age verification - Age Verification not required.", v7];
-    v37[1] = v13;
+    identityCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Error retrieving properties for account %@ during age verification - Age Verification not required.", identityCopy];
+    v37[1] = identityCopy;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
 
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7400 userInfo:v14];
@@ -155,16 +155,16 @@ uint64_t __42__ICAgeVerificationManager_defaultManager__block_invoke()
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218498;
-      v31 = self;
+      selfCopy = self;
       v32 = 2114;
-      v33 = v7;
+      v33 = identityCopy;
       v34 = 2114;
       v35 = v11;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "ICAgeVerificationManager %p - Error retrieving properties for account %{public}@ during age verification: %{public}@ - Age Verification not required.", buf, 0x20u);
     }
 
-    v17 = [ICAgeVerificationState ageVerificationStateNotRequiredForUserIdentity:v7 withError:v15];
-    v8[2](v8, v17);
+    v17 = [ICAgeVerificationState ageVerificationStateNotRequiredForUserIdentity:identityCopy withError:v15];
+    completionCopy[2](completionCopy, v17);
   }
 
   else
@@ -174,7 +174,7 @@ uint64_t __42__ICAgeVerificationManager_defaultManager__block_invoke()
     v27[1] = 3221225472;
     v27[2] = __74__ICAgeVerificationManager__runAgeVerificationForUserIdentity_completion___block_invoke;
     v27[3] = &unk_1E7BF91F0;
-    v19 = v7;
+    v19 = identityCopy;
     v28 = v19;
     v20 = [(ICStoreRequestContext *)v18 initWithBlock:v27];
     v21 = +[ICURLBagProvider sharedBagProvider];
@@ -183,7 +183,7 @@ uint64_t __42__ICAgeVerificationManager_defaultManager__block_invoke()
     v22[2] = __74__ICAgeVerificationManager__runAgeVerificationForUserIdentity_completion___block_invoke_2;
     v22[3] = &unk_1E7BF3900;
     v22[4] = self;
-    v25 = v8;
+    v25 = completionCopy;
     v23 = v19;
     v26 = a2;
     v24 = v10;
@@ -413,20 +413,20 @@ LABEL_42:
 LABEL_43:
 }
 
-- (void)_updateAgeVerificationStateForUserIdentity:(id)a3 sendNotification:(BOOL)a4 completion:(id)a5
+- (void)_updateAgeVerificationStateForUserIdentity:(id)identity sendNotification:(BOOL)notification completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identityCopy = identity;
+  completionCopy = completion;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __99__ICAgeVerificationManager__updateAgeVerificationStateForUserIdentity_sendNotification_completion___block_invoke;
   v12[3] = &unk_1E7BF38D8;
   v12[4] = self;
-  v13 = v8;
-  v15 = a4;
-  v14 = v9;
-  v10 = v9;
-  v11 = v8;
+  v13 = identityCopy;
+  notificationCopy = notification;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = identityCopy;
   [(ICAgeVerificationManager *)self _runAgeVerificationForUserIdentity:v11 completion:v12];
 }
 
@@ -503,47 +503,47 @@ uint64_t __99__ICAgeVerificationManager__updateAgeVerificationStateForUserIdenti
   return result;
 }
 
-- (void)_updateAgeVerificationStateAndSendNotification:(BOOL)a3 completion:(id)a4
+- (void)_updateAgeVerificationStateAndSendNotification:(BOOL)notification completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  completionCopy = completion;
   v7 = +[ICUserIdentity activeAccount];
-  [(ICAgeVerificationManager *)self _updateAgeVerificationStateForUserIdentity:v7 sendNotification:v4 completion:v6];
+  [(ICAgeVerificationManager *)self _updateAgeVerificationStateForUserIdentity:v7 sendNotification:notificationCopy completion:completionCopy];
 }
 
-- (void)_userIdentityStoreDidChange:(id)a3
+- (void)_userIdentityStoreDidChange:(id)change
 {
   v7 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "AgeVerification");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "ICAgeVerificationManager %p - Received ICUserIdentityStoreDidChangeNotification - Refreshing state for active user", &v5, 0xCu);
   }
 
   [(ICAgeVerificationManager *)self _updateAgeVerificationStateAndSendNotification:1 completion:0];
 }
 
-- (id)ageVerificationStateForUserIdentity:(id)a3
+- (id)ageVerificationStateForUserIdentity:(id)identity
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[ICUserIdentityStore defaultIdentityStore];
-  v6 = [v5 DSIDForUserIdentity:v4 outError:0];
-  v7 = [v6 stringValue];
-  v8 = v7;
+  v6 = [v5 DSIDForUserIdentity:identityCopy outError:0];
+  stringValue = [v6 stringValue];
+  v8 = stringValue;
   v9 = @"NoDSID";
-  if (v7)
+  if (stringValue)
   {
-    v9 = v7;
+    v9 = stringValue;
   }
 
   v10 = v9;
 
   os_unfair_lock_lock(&self->_lock);
-  v11 = [(ICAgeVerificationManager *)self ageVerificationStateInternal];
-  v12 = [v11 objectForKeyedSubscript:v10];
+  ageVerificationStateInternal = [(ICAgeVerificationManager *)self ageVerificationStateInternal];
+  v12 = [ageVerificationStateInternal objectForKeyedSubscript:v10];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v12)
@@ -552,7 +552,7 @@ uint64_t __99__ICAgeVerificationManager__updateAgeVerificationStateForUserIdenti
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       v16 = 134218242;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
       v19 = v12;
       _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_INFO, "ICAgeVerificationManager %p - ageVerificationStateForUserIdentity - Retrieving state [In-memory cache] - State=%@", &v16, 0x16u);
@@ -566,23 +566,23 @@ uint64_t __99__ICAgeVerificationManager__updateAgeVerificationStateForUserIdenti
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v16 = 134218242;
-      v17 = self;
+      selfCopy2 = self;
       v18 = 2112;
       v19 = v12;
       _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_INFO, "ICAgeVerificationManager %p - ageVerificationStateForUserIdentity - Retrieving state [Disk cache] - Kicking off refresh - State=%@", &v16, 0x16u);
     }
 
-    [(ICAgeVerificationManager *)self _updateAgeVerificationStateForUserIdentity:v4 sendNotification:1 completion:0];
+    [(ICAgeVerificationManager *)self _updateAgeVerificationStateForUserIdentity:identityCopy sendNotification:1 completion:0];
   }
 
   return v12;
 }
 
-- (void)getAgeVerificationStateWithCompletion:(id)a3
+- (void)getAgeVerificationStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[ICUserIdentity activeAccount];
-  [(ICAgeVerificationManager *)self getAgeVerificationStateForUserIdentity:v5 completion:v4];
+  [(ICAgeVerificationManager *)self getAgeVerificationStateForUserIdentity:v5 completion:completionCopy];
 }
 
 @end

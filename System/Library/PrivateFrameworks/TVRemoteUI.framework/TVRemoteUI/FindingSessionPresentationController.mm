@@ -1,14 +1,14 @@
 @interface FindingSessionPresentationController
 - (_TtC10TVRemoteUI36FindingSessionPresentationController)init;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation FindingSessionPresentationController
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   specialized FindingSessionPresentationController.presentationControllerDidDismiss(_:)();
 }
 

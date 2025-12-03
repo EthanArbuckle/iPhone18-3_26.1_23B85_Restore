@@ -1,7 +1,7 @@
 @interface _MPMediaLibraryArtworkDataSourceCacheKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)representationSize;
-- (_MPMediaLibraryArtworkDataSourceCacheKey)initWithArtworkCatalog:(id)a3 representativeSize:(CGSize)a4;
+- (_MPMediaLibraryArtworkDataSourceCacheKey)initWithArtworkCatalog:(id)catalog representativeSize:(CGSize)size;
 - (unint64_t)hash;
 @end
 
@@ -18,8 +18,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(_MPMediaLibraryArtworkDataSourceCacheKey *)self catalogIdentifier];
-  v4 = [v3 hash];
+  catalogIdentifier = [(_MPMediaLibraryArtworkDataSourceCacheKey *)self catalogIdentifier];
+  v4 = [catalogIdentifier hash];
   [(_MPMediaLibraryArtworkDataSourceCacheKey *)self representationSize];
   v6 = v4 ^ v5;
   [(_MPMediaLibraryArtworkDataSourceCacheKey *)self representationSize];
@@ -28,16 +28,16 @@
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 catalogIdentifier];
-    v7 = [(_MPMediaLibraryArtworkDataSourceCacheKey *)self catalogIdentifier];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    catalogIdentifier = [v5 catalogIdentifier];
+    catalogIdentifier2 = [(_MPMediaLibraryArtworkDataSourceCacheKey *)self catalogIdentifier];
+    v8 = [catalogIdentifier isEqual:catalogIdentifier2];
 
     [v5 representationSize];
     v10 = v9;
@@ -65,19 +65,19 @@
   return v16;
 }
 
-- (_MPMediaLibraryArtworkDataSourceCacheKey)initWithArtworkCatalog:(id)a3 representativeSize:(CGSize)a4
+- (_MPMediaLibraryArtworkDataSourceCacheKey)initWithArtworkCatalog:(id)catalog representativeSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  catalogCopy = catalog;
   v12.receiver = self;
   v12.super_class = _MPMediaLibraryArtworkDataSourceCacheKey;
   v8 = [(_MPMediaLibraryArtworkDataSourceCacheKey *)&v12 init];
   if (v8)
   {
-    v9 = [v7 visualIdenticalityIdentifier];
+    visualIdenticalityIdentifier = [catalogCopy visualIdenticalityIdentifier];
     catalogIdentifier = v8->_catalogIdentifier;
-    v8->_catalogIdentifier = v9;
+    v8->_catalogIdentifier = visualIdenticalityIdentifier;
 
     v8->_representationSize.width = width;
     v8->_representationSize.height = height;

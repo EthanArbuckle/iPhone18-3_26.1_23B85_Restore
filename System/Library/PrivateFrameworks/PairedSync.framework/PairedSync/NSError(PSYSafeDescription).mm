@@ -13,7 +13,7 @@
 
   if (_IsInternalInstall___internalInstall == 1)
   {
-    v2 = [a1 description];
+    v2 = [self description];
   }
 
   else
@@ -21,9 +21,9 @@
     v3 = MEMORY[0x277CCACA8];
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
-    v6 = [a1 code];
-    v7 = [a1 domain];
-    v2 = [v3 stringWithFormat:@"class=%@ code=%lld domain=%@", v5, v6, v7];
+    code = [self code];
+    domain = [self domain];
+    v2 = [v3 stringWithFormat:@"class=%@ code=%lld domain=%@", v5, code, domain];
   }
 
   return v2;

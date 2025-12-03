@@ -1,54 +1,54 @@
 @interface HMCharacteristicEvent
-+ (id)createWithDictionary:(id)a3 home:(id)a4;
-- (BOOL)mergeFromNewObject:(id)a3;
++ (id)createWithDictionary:(id)dictionary home:(id)home;
+- (BOOL)mergeFromNewObject:(id)object;
 - (HMCharacteristic)characteristic;
 - (HMCharacteristicEvent)initWithCharacteristic:(HMCharacteristic *)characteristic triggerValue:(id)triggerValue;
-- (HMCharacteristicEvent)initWithCoder:(id)a3;
-- (HMCharacteristicEvent)initWithDict:(id)a3 characteristic:(id)a4 triggerValue:(id)a5;
+- (HMCharacteristicEvent)initWithCoder:(id)coder;
+- (HMCharacteristicEvent)initWithDict:(id)dict characteristic:(id)characteristic triggerValue:(id)value;
 - (id)_serializeForAdd;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)triggerValue;
-- (void)_updateFromDictionary:(id)a3;
-- (void)setCharacteristic:(id)a3;
-- (void)setTriggerValue:(id)a3;
+- (void)_updateFromDictionary:(id)dictionary;
+- (void)setCharacteristic:(id)characteristic;
+- (void)setTriggerValue:(id)value;
 - (void)updateTriggerValue:(id)triggerValue completionHandler:(void *)completion;
 @end
 
 @implementation HMCharacteristicEvent
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [HMMutableCharacteristicEvent alloc];
-  v5 = [(HMCharacteristicEvent *)self characteristic];
-  v6 = [(HMCharacteristicEvent *)self triggerValue];
-  v7 = [(HMCharacteristicEvent *)v4 initWithCharacteristic:v5 triggerValue:v6];
+  characteristic = [(HMCharacteristicEvent *)self characteristic];
+  triggerValue = [(HMCharacteristicEvent *)self triggerValue];
+  v7 = [(HMCharacteristicEvent *)v4 initWithCharacteristic:characteristic triggerValue:triggerValue];
 
   return v7;
 }
 
-+ (id)createWithDictionary:(id)a3 home:(id)a4
++ (id)createWithDictionary:(id)dictionary home:(id)home
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"kCharacteristicValue"];
-  v9 = [v6 hmf_UUIDForKey:@"kAccessoryUUID"];
-  v10 = [v6 hmf_numberForKey:@"kServiceInstanceID"];
-  v11 = [v6 hmf_numberForKey:@"kCharacteristicInstanceID"];
+  dictionaryCopy = dictionary;
+  homeCopy = home;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"kCharacteristicValue"];
+  v9 = [dictionaryCopy hmf_UUIDForKey:@"kAccessoryUUID"];
+  v10 = [dictionaryCopy hmf_numberForKey:@"kServiceInstanceID"];
+  v11 = [dictionaryCopy hmf_numberForKey:@"kCharacteristicInstanceID"];
   v12 = v11;
   if (v9 && v10 && v11)
   {
-    v13 = [v7 _findCharacteristic:v11 forService:v10 accessoryUUID:v9];
+    v13 = [homeCopy _findCharacteristic:v11 forService:v10 accessoryUUID:v9];
     if (v13)
     {
-      v14 = [[HMCharacteristicEvent alloc] initWithDict:v6 characteristic:v13 triggerValue:v8];
+      v14 = [[HMCharacteristicEvent alloc] initWithDict:dictionaryCopy characteristic:v13 triggerValue:v8];
     }
 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = a1;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
@@ -77,7 +77,7 @@
   else
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = a1;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -98,34 +98,34 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [HMCharacteristicEvent alloc];
-  v5 = [(HMCharacteristicEvent *)self characteristic];
-  v6 = [(HMCharacteristicEvent *)self triggerValue];
-  v7 = [(HMCharacteristicEvent *)v4 initWithCharacteristic:v5 triggerValue:v6];
+  characteristic = [(HMCharacteristicEvent *)self characteristic];
+  triggerValue = [(HMCharacteristicEvent *)self triggerValue];
+  v7 = [(HMCharacteristicEvent *)v4 initWithCharacteristic:characteristic triggerValue:triggerValue];
 
   return v7;
 }
 
-- (BOOL)mergeFromNewObject:(id)a3
+- (BOOL)mergeFromNewObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v12.receiver = self;
   v12.super_class = HMCharacteristicEvent;
-  v5 = [(HMEvent *)&v12 mergeFromNewObject:v4];
+  v5 = [(HMEvent *)&v12 mergeFromNewObject:objectCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v4;
-    v7 = [(HMCharacteristicEvent *)self triggerValue];
-    v8 = [v6 triggerValue];
+    v6 = objectCopy;
+    triggerValue = [(HMCharacteristicEvent *)self triggerValue];
+    triggerValue2 = [v6 triggerValue];
     v9 = HMFEqualObjects();
 
     if ((v9 & 1) == 0)
     {
-      v10 = [v6 triggerValue];
-      [(HMCharacteristicEvent *)self setTriggerValue:v10];
+      triggerValue3 = [v6 triggerValue];
+      [(HMCharacteristicEvent *)self setTriggerValue:triggerValue3];
 
       v5 = 1;
     }
@@ -134,23 +134,23 @@
   return v5;
 }
 
-- (HMCharacteristicEvent)initWithCoder:(id)a3
+- (HMCharacteristicEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HMCharacteristicEvent;
-  v5 = [(HMEvent *)&v13 initWithCoder:v4];
+  v5 = [(HMEvent *)&v13 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_3;
   }
 
   v6 = allowedCharValueTypes();
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"characteristicValue"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"characteristicValue"];
   triggerValue = v5->_triggerValue;
   v5->_triggerValue = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"characteristic"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"characteristic"];
   characteristic = v5->_characteristic;
   v5->_characteristic = v9;
 
@@ -168,49 +168,49 @@ LABEL_3:
   return v11;
 }
 
-- (void)_updateFromDictionary:(id)a3
+- (void)_updateFromDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = HMCharacteristicEvent;
-  v4 = a3;
-  [(HMEvent *)&v6 _updateFromDictionary:v4];
-  v5 = [v4 objectForKeyedSubscript:{@"kCharacteristicValue", v6.receiver, v6.super_class}];
+  dictionaryCopy = dictionary;
+  [(HMEvent *)&v6 _updateFromDictionary:dictionaryCopy];
+  v5 = [dictionaryCopy objectForKeyedSubscript:{@"kCharacteristicValue", v6.receiver, v6.super_class}];
 
   [(HMCharacteristicEvent *)self setTriggerValue:v5];
 }
 
 - (id)_serializeForAdd
 {
-  v3 = [(HMCharacteristicEvent *)self characteristic];
-  v4 = [v3 service];
+  characteristic = [(HMCharacteristicEvent *)self characteristic];
+  service = [characteristic service];
 
-  v5 = [v4 accessory];
-  v6 = v5;
+  accessory = [service accessory];
+  v6 = accessory;
   v7 = 0;
-  if (v4 && v5)
+  if (service && accessory)
   {
     v18.receiver = self;
     v18.super_class = HMCharacteristicEvent;
-    v8 = [(HMEvent *)&v18 _serializeForAdd];
-    v9 = [v8 mutableCopy];
+    _serializeForAdd = [(HMEvent *)&v18 _serializeForAdd];
+    v9 = [_serializeForAdd mutableCopy];
 
-    v10 = [v4 targetAccessoryUUID];
-    v11 = [v10 UUIDString];
-    [v9 setObject:v11 forKeyedSubscript:@"kAccessoryUUID"];
+    targetAccessoryUUID = [service targetAccessoryUUID];
+    uUIDString = [targetAccessoryUUID UUIDString];
+    [v9 setObject:uUIDString forKeyedSubscript:@"kAccessoryUUID"];
 
-    v12 = [v4 instanceID];
-    [v9 setObject:v12 forKeyedSubscript:@"kServiceInstanceID"];
+    instanceID = [service instanceID];
+    [v9 setObject:instanceID forKeyedSubscript:@"kServiceInstanceID"];
 
-    v13 = [(HMCharacteristicEvent *)self characteristic];
-    v14 = [v13 instanceID];
-    [v9 setObject:v14 forKeyedSubscript:@"kCharacteristicInstanceID"];
+    characteristic2 = [(HMCharacteristicEvent *)self characteristic];
+    instanceID2 = [characteristic2 instanceID];
+    [v9 setObject:instanceID2 forKeyedSubscript:@"kCharacteristicInstanceID"];
 
-    v15 = [(HMCharacteristicEvent *)self triggerValue];
+    triggerValue = [(HMCharacteristicEvent *)self triggerValue];
 
-    if (v15)
+    if (triggerValue)
     {
-      v16 = [(HMCharacteristicEvent *)self triggerValue];
-      [v9 setObject:v16 forKeyedSubscript:@"kCharacteristicValue"];
+      triggerValue2 = [(HMCharacteristicEvent *)self triggerValue];
+      [v9 setObject:triggerValue2 forKeyedSubscript:@"kCharacteristicValue"];
     }
 
     v7 = [v9 copy];
@@ -224,12 +224,12 @@ LABEL_3:
   v39 = *MEMORY[0x1E69E9840];
   v6 = triggerValue;
   v7 = completion;
-  v8 = [(HMEvent *)self context];
+  context = [(HMEvent *)self context];
   if (!v7)
   {
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMCharacteristicEvent updateTriggerValue:completionHandler:]", @"completion"];
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -246,28 +246,28 @@ LABEL_3:
     objc_exception_throw(v32);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [(HMEvent *)self eventTrigger];
-    v11 = v10;
-    if (!v10 || ([v10 home], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
+    eventTrigger = [(HMEvent *)self eventTrigger];
+    v11 = eventTrigger;
+    if (!eventTrigger || ([eventTrigger home], v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
     {
-      v19 = [v9 delegateCaller];
+      delegateCaller = [v9 delegateCaller];
       v20 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-      [v19 callCompletion:v7 error:v20];
+      [delegateCaller callCompletion:v7 error:v20];
 
 LABEL_10:
       goto LABEL_18;
     }
 
-    v13 = [(HMCharacteristicEvent *)self triggerValue];
+    triggerValue = [(HMCharacteristicEvent *)self triggerValue];
     v14 = HMFEqualObjects();
 
     if (v14)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = self;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
@@ -280,8 +280,8 @@ LABEL_10:
       }
 
       objc_autoreleasePoolPop(v15);
-      v19 = [v9 delegateCaller];
-      [v19 callCompletion:v7 error:0];
+      delegateCaller = [v9 delegateCaller];
+      [delegateCaller callCompletion:v7 error:0];
       goto LABEL_10;
     }
 
@@ -303,7 +303,7 @@ LABEL_10:
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy3 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -325,12 +325,12 @@ LABEL_18:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTriggerValue:(id)a3
+- (void)setTriggerValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   os_unfair_lock_lock_with_options();
   triggerValue = self->_triggerValue;
-  self->_triggerValue = v4;
+  self->_triggerValue = valueCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -344,12 +344,12 @@ LABEL_18:
   return v3;
 }
 
-- (void)setCharacteristic:(id)a3
+- (void)setCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   os_unfair_lock_lock_with_options();
   characteristic = self->_characteristic;
-  self->_characteristic = v4;
+  self->_characteristic = characteristicCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -378,8 +378,8 @@ LABEL_18:
   }
 
   v8 = v7;
-  v9 = [(HMCharacteristic *)v6 properties];
-  v10 = [v9 containsObject:@"HMCharacteristicPropertySupportsEventNotification"];
+  properties = [(HMCharacteristic *)v6 properties];
+  v10 = [properties containsObject:@"HMCharacteristicPropertySupportsEventNotification"];
 
   if ((v10 & 1) == 0)
   {
@@ -396,8 +396,8 @@ LABEL_6:
   }
 
   v23 = @"kEventUUIDKey";
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v24[0] = v11;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v24[0] = uUID;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:&v23 count:1];
   v13 = [(HMCharacteristicEvent *)self initWithDict:v12 characteristic:v6 triggerValue:v8];
 
@@ -405,18 +405,18 @@ LABEL_6:
   return v13;
 }
 
-- (HMCharacteristicEvent)initWithDict:(id)a3 characteristic:(id)a4 triggerValue:(id)a5
+- (HMCharacteristicEvent)initWithDict:(id)dict characteristic:(id)characteristic triggerValue:(id)value
 {
-  v9 = a4;
-  v10 = a5;
+  characteristicCopy = characteristic;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = HMCharacteristicEvent;
-  v11 = [(HMEvent *)&v16 initWithDict:a3];
+  v11 = [(HMEvent *)&v16 initWithDict:dict];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_characteristic, a4);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_characteristic, characteristic);
+    v13 = [valueCopy copy];
     triggerValue = v12->_triggerValue;
     v12->_triggerValue = v13;
   }

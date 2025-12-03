@@ -1,6 +1,6 @@
 @interface CPParagraphListItem
 - (CPParagraphListItem)init;
-- (void)addParagraph:(id)a3;
+- (void)addParagraph:(id)paragraph;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
@@ -8,27 +8,27 @@
 
 @implementation CPParagraphListItem
 
-- (void)addParagraph:(id)a3
+- (void)addParagraph:(id)paragraph
 {
-  CFArrayAppendValue(self->paragraphs, a3);
-  v5 = [a3 listItem];
-  if (v5)
+  CFArrayAppendValue(self->paragraphs, paragraph);
+  listItem = [paragraph listItem];
+  if (listItem)
   {
-    v6 = v5;
-    if (v5 != self)
+    v6 = listItem;
+    if (listItem != self)
     {
       do
       {
-        v7 = [v6 list];
-        v8 = [v7 parentItem];
-        if (v8 == v6)
+        list = [v6 list];
+        parentItem = [list parentItem];
+        if (parentItem == v6)
         {
           v9 = 0;
         }
 
         else
         {
-          v9 = v8;
+          v9 = parentItem;
         }
 
         if (v9)
@@ -41,14 +41,14 @@
           v10 = 1;
         }
 
-        v6 = v8;
+        v6 = parentItem;
       }
 
       while (!v10);
       if (!v9)
       {
 
-        [v7 setParentItem:self];
+        [list setParentItem:self];
       }
     }
   }
@@ -56,7 +56,7 @@
   else
   {
 
-    [a3 setListItem:self];
+    [paragraph setListItem:self];
   }
 }
 

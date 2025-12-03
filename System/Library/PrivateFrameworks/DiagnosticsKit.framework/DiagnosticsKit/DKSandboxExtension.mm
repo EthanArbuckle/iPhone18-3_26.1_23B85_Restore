@@ -1,21 +1,21 @@
 @interface DKSandboxExtension
-+ (BOOL)releaseSandboxExtensionWithHandle:(id)a3 error:(id *)a4;
-+ (id)consumeSandboxExtensionWithToken:(id)a3 error:(id *)a4;
-+ (id)consumeSandboxExtensionsWithTokens:(id)a3;
-+ (id)issueSandboxExtensionForFile:(id)a3 toAuditToken:(id *)a4 error:(id *)a5;
-+ (id)issueSandboxExtensionsForFiles:(id)a3 toAuditToken:(id *)a4;
-+ (void)releaseSandboxExtensionsWithHandles:(id)a3;
++ (BOOL)releaseSandboxExtensionWithHandle:(id)handle error:(id *)error;
++ (id)consumeSandboxExtensionWithToken:(id)token error:(id *)error;
++ (id)consumeSandboxExtensionsWithTokens:(id)tokens;
++ (id)issueSandboxExtensionForFile:(id)file toAuditToken:(id *)token error:(id *)error;
++ (id)issueSandboxExtensionsForFiles:(id)files toAuditToken:(id *)token;
++ (void)releaseSandboxExtensionsWithHandles:(id)handles;
 @end
 
 @implementation DKSandboxExtension
 
-+ (id)issueSandboxExtensionForFile:(id)a3 toAuditToken:(id *)a4 error:(id *)a5
++ (id)issueSandboxExtensionForFile:(id)file toAuditToken:(id *)token error:(id *)error
 {
   v7 = *MEMORY[0x277D861C0];
-  v8 = [a3 path];
-  [v8 UTF8String];
+  path = [file path];
+  [path UTF8String];
   v9 = *MEMORY[0x277D861E8];
-  v15 = *a4;
+  v15 = *token;
   v10 = sandbox_extension_issue_file_to_process();
 
   if (v10)
@@ -23,12 +23,12 @@
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:{v10, *v15.var0, *&v15.var0[4]}];
   }
 
-  else if (a5)
+  else if (error)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.DiagnosticsKit.SandboxExtensionError" code:*__error() userInfo:{0, *v15.var0, *&v15.var0[4]}];
     v13 = v12;
     v11 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
   else
@@ -39,16 +39,16 @@
   return v11;
 }
 
-+ (id)issueSandboxExtensionsForFiles:(id)a3 toAuditToken:(id *)a4
++ (id)issueSandboxExtensionsForFiles:(id)files toAuditToken:(id *)token
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB18] array];
+  filesCopy = files;
+  array = [MEMORY[0x277CBEB18] array];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v7 = v5;
+  v7 = filesCopy;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v8)
   {
@@ -68,8 +68,8 @@
 
         v13 = *(*(&v25 + 1) + 8 * v12);
         v24 = 0;
-        v14 = *&a4->var0[4];
-        *buf = *a4->var0;
+        v14 = *&token->var0[4];
+        *buf = *token->var0;
         *&buf[16] = v14;
         v15 = [DKSandboxExtension issueSandboxExtensionForFile:v13 toAuditToken:buf error:&v24, v23];
         v16 = v24;
@@ -79,22 +79,22 @@
         {
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = [v13 path];
+            path = [v13 path];
             *buf = 138412290;
-            *&buf[4] = v19;
+            *&buf[4] = path;
             _os_log_impl(&dword_248B9D000, v18, OS_LOG_TYPE_DEFAULT, "[Sandbox] Issued sandbox extension for file: %@", buf, 0xCu);
           }
 
-          [v6 addObject:v15];
+          [array addObject:v15];
         }
 
         else
         {
           if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
           {
-            v20 = [v13 path];
+            path2 = [v13 path];
             *buf = v23;
-            *&buf[4] = v20;
+            *&buf[4] = path2;
             *&buf[12] = 2112;
             *&buf[14] = v16;
             _os_log_error_impl(&dword_248B9D000, v18, OS_LOG_TYPE_ERROR, "[Sandbox] Error issuing sandbox extension for file: %@ \n%@", buf, 0x16u);
@@ -113,21 +113,21 @@
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-+ (id)consumeSandboxExtensionWithToken:(id)a3 error:(id *)a4
++ (id)consumeSandboxExtensionWithToken:(id)token error:(id *)error
 {
-  [a3 UTF8String];
+  [token UTF8String];
   v5 = sandbox_extension_consume();
   if (v5 == -1)
   {
-    if (a4)
+    if (error)
     {
       v7 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.DiagnosticsKit.SandboxExtensionError" code:*__error() userInfo:0];
       v8 = v7;
       v6 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -144,16 +144,16 @@
   return v6;
 }
 
-+ (id)consumeSandboxExtensionsWithTokens:(id)a3
++ (id)consumeSandboxExtensionsWithTokens:(id)tokens
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  tokensCopy = tokens;
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = v3;
+  v5 = tokensCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v28 count:16];
   if (v6)
   {
@@ -186,7 +186,7 @@
             _os_log_impl(&dword_248B9D000, v15, OS_LOG_TYPE_DEFAULT, "[Sandbox] Consumed sandbox extension, handle: %@", buf, 0xCu);
           }
 
-          [v4 addObject:v12];
+          [array addObject:v12];
         }
 
         else
@@ -213,31 +213,31 @@
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
-+ (BOOL)releaseSandboxExtensionWithHandle:(id)a3 error:(id *)a4
++ (BOOL)releaseSandboxExtensionWithHandle:(id)handle error:(id *)error
 {
-  [a3 longLongValue];
+  [handle longLongValue];
   v5 = sandbox_extension_release();
   v6 = v5;
-  if (a4 && v5)
+  if (error && v5)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.DiagnosticsKit.SandboxExtensionError" code:*__error() userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.DiagnosticsKit.SandboxExtensionError" code:*__error() userInfo:0];
   }
 
   return v6 == 0;
 }
 
-+ (void)releaseSandboxExtensionsWithHandles:(id)a3
++ (void)releaseSandboxExtensionsWithHandles:(id)handles
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  handlesCopy = handles;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  v4 = [handlesCopy countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v4)
   {
     v6 = v4;
@@ -251,7 +251,7 @@
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(handlesCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
@@ -283,7 +283,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v6 = [handlesCopy countByEnumeratingWithState:&v17 objects:v25 count:16];
     }
 
     while (v6);

@@ -14,39 +14,39 @@
   [(SBFTodayGestureSettings *)self setSideSpringFriction:24.0];
   [(SBFTodayGestureSettings *)self setInteractiveSideSpringTension:1754.6];
   [(SBFTodayGestureSettings *)self setInteractiveSideSpringFriction:72.0];
-  v3 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
-  [v3 setDefaultValues];
+  overlayPositionSettings = [(SBFTodayGestureSettings *)self overlayPositionSettings];
+  [overlayPositionSettings setDefaultValues];
 
-  v4 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
-  [v4 setDampingRatio:1.0];
+  overlayPositionSettings2 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
+  [overlayPositionSettings2 setDampingRatio:1.0];
 
-  v5 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
-  [v5 setResponse:0.3];
+  overlayPositionSettings3 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
+  [overlayPositionSettings3 setResponse:0.3];
 
-  v6 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
-  [v6 setRetargetImpulse:0.018];
+  overlayPositionSettings4 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
+  [overlayPositionSettings4 setRetargetImpulse:0.018];
 
-  v7 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
-  [v7 setTrackingDampingRatio:1.0];
+  overlayPositionSettings5 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
+  [overlayPositionSettings5 setTrackingDampingRatio:1.0];
 
-  v8 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
-  [v8 setTrackingResponse:0.0];
+  overlayPositionSettings6 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
+  [overlayPositionSettings6 setTrackingResponse:0.0];
 
-  v9 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
+  overlayPositionSettings7 = [(SBFTodayGestureSettings *)self overlayPositionSettings];
   v15 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v9 setFrameRateRange:1114122 highFrameRateReason:{*&v15.minimum, *&v15.maximum, *&v15.preferred}];
+  [overlayPositionSettings7 setFrameRateRange:1114122 highFrameRateReason:{*&v15.minimum, *&v15.maximum, *&v15.preferred}];
 
-  v10 = [(SBFTodayGestureSettings *)self overlayBackdropSettings];
-  [v10 setDefaultValues];
+  overlayBackdropSettings = [(SBFTodayGestureSettings *)self overlayBackdropSettings];
+  [overlayBackdropSettings setDefaultValues];
 
-  v11 = [(SBFTodayGestureSettings *)self overlayBackdropSettings];
-  [v11 setDampingRatio:1.0];
+  overlayBackdropSettings2 = [(SBFTodayGestureSettings *)self overlayBackdropSettings];
+  [overlayBackdropSettings2 setDampingRatio:1.0];
 
-  v12 = [(SBFTodayGestureSettings *)self overlayBackdropSettings];
-  [v12 setResponse:0.3];
+  overlayBackdropSettings3 = [(SBFTodayGestureSettings *)self overlayBackdropSettings];
+  [overlayBackdropSettings3 setResponse:0.3];
 
-  v13 = [(SBFTodayGestureSettings *)self overlayBackdropSettings];
-  [v13 setRetargetImpulse:0.018];
+  overlayBackdropSettings4 = [(SBFTodayGestureSettings *)self overlayBackdropSettings];
+  [overlayBackdropSettings4 setRetargetImpulse:0.018];
 
   [(SBFTodayGestureSettings *)self setScaleAnimationSettingsWithGestureVelocity:1];
   [(SBFTodayGestureSettings *)self setMinimumVelocity:1000.0];
@@ -115,8 +115,8 @@
 
   v21 = MEMORY[0x1E69C6630];
   v22 = MEMORY[0x1E69C65E0];
-  v23 = [MEMORY[0x1E69C6648] action];
-  v24 = [v22 rowWithTitle:@"Restore Defaults" action:v23];
+  action = [MEMORY[0x1E69C6648] action];
+  v24 = [v22 rowWithTitle:@"Restore Defaults" action:action];
   v45 = v24;
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
   v26 = [v21 sectionWithRows:v25];

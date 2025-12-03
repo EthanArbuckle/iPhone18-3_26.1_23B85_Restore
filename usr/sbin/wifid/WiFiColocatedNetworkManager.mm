@@ -1,7 +1,7 @@
 @interface WiFiColocatedNetworkManager
 - (WiFiColocatedNetworkManager)init;
-- (WiFiColocatedNetworkManager)initWithNetwork:(id)a3 colocatedNetworks:(id)a4;
-- (id)_reduceNumberOfCandidatesTo:(unint64_t)a3 on:(unsigned int)a4;
+- (WiFiColocatedNetworkManager)initWithNetwork:(id)network colocatedNetworks:(id)networks;
+- (id)_reduceNumberOfCandidatesTo:(unint64_t)to on:(unsigned int)on;
 - (id)retrieveNextCandidate;
 - (void)_reduceNetworks;
 @end
@@ -17,26 +17,26 @@
 - (id)retrieveNextCandidate
 {
   v3 = [[NSMutableArray alloc] initWithArray:self->_colocatedNetworks];
-  v4 = [(NSArray *)v3 lastObject];
+  lastObject = [(NSArray *)v3 lastObject];
   [(NSArray *)v3 removeLastObject];
   colocatedNetworks = self->_colocatedNetworks;
   self->_colocatedNetworks = v3;
 
-  return v4;
+  return lastObject;
 }
 
-- (id)_reduceNumberOfCandidatesTo:(unint64_t)a3 on:(unsigned int)a4
+- (id)_reduceNumberOfCandidatesTo:(unint64_t)to on:(unsigned int)on
 {
-  v6 = [(CWFScanResult *)self->_joinedNetwork channel];
-  v7 = [v6 band];
+  channel = [(CWFScanResult *)self->_joinedNetwork channel];
+  band = [channel band];
 
-  if (v7 == 3 || (_os_feature_enabled_impl() & 1) != 0)
+  if (band == 3 || (_os_feature_enabled_impl() & 1) != 0)
   {
     v8 = objc_alloc_init(NSMutableArray);
-    v9 = [(CWFScanResult *)self->_joinedNetwork channel];
-    v10 = [v9 band];
+    channel2 = [(CWFScanResult *)self->_joinedNetwork channel];
+    band2 = [channel2 band];
 
-    if (v10 != a4)
+    if (band2 != on)
     {
       v26 = 0u;
       v27 = 0u;
@@ -59,13 +59,13 @@
 
             v16 = *(*(&v24 + 1) + 8 * i);
             v17 = objc_autoreleasePoolPush();
-            v18 = [v16 channel];
-            v19 = [v18 band];
+            channel3 = [v16 channel];
+            band3 = [channel3 band];
 
-            if (v19 == a4)
+            if (band3 == on)
             {
               [v8 addObject:v16];
-              if ([v8 count]== a3)
+              if ([v8 count]== to)
               {
                 objc_autoreleasePoolPop(v17);
                 goto LABEL_15;
@@ -116,10 +116,10 @@ LABEL_15:
   v15 = [(WiFiColocatedNetworkManager *)self _reduceNumberOfCandidatesTo:1 on:1];
   v3 = [(WiFiColocatedNetworkManager *)self _reduceNumberOfCandidatesTo:1 on:2];
   v4 = [(WiFiColocatedNetworkManager *)self _reduceNumberOfCandidatesTo:1 on:3];
-  v5 = [(CWFScanResult *)self->_joinedNetwork channel];
-  v6 = [v5 is2GHz];
+  channel = [(CWFScanResult *)self->_joinedNetwork channel];
+  is2GHz = [channel is2GHz];
 
-  if (v6)
+  if (is2GHz)
   {
     if (v3)
     {
@@ -136,10 +136,10 @@ LABEL_7:
     goto LABEL_11;
   }
 
-  v8 = [(CWFScanResult *)self->_joinedNetwork channel];
-  v9 = [v8 is5GHz];
+  channel2 = [(CWFScanResult *)self->_joinedNetwork channel];
+  is5GHz = [channel2 is5GHz];
 
-  if (v9)
+  if (is5GHz)
   {
     v7 = v15;
     if (v15)
@@ -165,10 +165,10 @@ LABEL_11:
   self->_colocatedNetworks = v13;
 }
 
-- (WiFiColocatedNetworkManager)initWithNetwork:(id)a3 colocatedNetworks:(id)a4
+- (WiFiColocatedNetworkManager)initWithNetwork:(id)network colocatedNetworks:(id)networks
 {
-  v6 = a3;
-  v7 = a4;
+  networkCopy = network;
+  networksCopy = networks;
   v8 = objc_autoreleasePoolPush();
   v13.receiver = self;
   v13.super_class = WiFiColocatedNetworkManager;
@@ -176,8 +176,8 @@ LABEL_11:
   v10 = v9;
   if (v9)
   {
-    [(WiFiColocatedNetworkManager *)v9 setColocatedNetworks:v7];
-    [(WiFiColocatedNetworkManager *)v10 setJoinedNetwork:v6];
+    [(WiFiColocatedNetworkManager *)v9 setColocatedNetworks:networksCopy];
+    [(WiFiColocatedNetworkManager *)v10 setJoinedNetwork:networkCopy];
     [(WiFiColocatedNetworkManager *)v10 _reduceNetworks];
   }
 

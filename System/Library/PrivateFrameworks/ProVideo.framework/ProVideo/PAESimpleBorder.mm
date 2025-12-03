@@ -1,20 +1,20 @@
 @interface PAESimpleBorder
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAESimpleBorder)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAESimpleBorder)initWithAPIManager:(id)manager;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAESimpleBorder
 
-- (PAESimpleBorder)initWithAPIManager:(id)a3
+- (PAESimpleBorder)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAESimpleBorder;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -34,18 +34,18 @@
   return [v2 dictionaryWithObjectsAndKeys:{v3, @"PositionIndependent", v4, @"MayRemapTime", v5, @"SupportsLargeRenderScale", v6, @"SupportsHeliumRendering", objc_msgSend(MEMORY[0x277CCABB0], "numberWithUnsignedInteger:", 3), @"AutoColorProcessingSupport", 0}];
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v19 = 0.0;
-  [v10 getFloatValue:&v19 fromParm:1 atFxTime:a6->var0.var1];
+  [v10 getFloatValue:&v19 fromParm:1 atFxTime:info->var0.var1];
   v18 = 0;
-  [v10 getIntValue:&v18 fromParm:3 atFxTime:a6->var0.var1];
-  var3 = a6->var3;
-  var4 = a6->var4;
-  var8 = a5->var8;
-  v14 = a5->var0 / var3 * var8;
-  v15 = a5->var1 / var4;
+  [v10 getIntValue:&v18 fromParm:3 atFxTime:info->var0.var1];
+  var3 = info->var3;
+  var4 = info->var4;
+  var8 = input->var8;
+  v14 = input->var0 / var3 * var8;
+  v15 = input->var1 / var4;
   if (v18 == 2)
   {
     v16 = v19 + v19;
@@ -60,8 +60,8 @@ LABEL_5:
     v15 = v15 + v16;
   }
 
-  *a3 = vcvtpd_s64_f64(var3 * (v14 / var8));
-  *a4 = vcvtpd_s64_f64(var4 * v15);
+  *width = vcvtpd_s64_f64(var3 * (v14 / var8));
+  *height = vcvtpd_s64_f64(var4 * v15);
   return 1;
 }
 
@@ -82,7 +82,7 @@ LABEL_5:
   return v3 != 0;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   if (!v9)
@@ -94,18 +94,18 @@ LABEL_5:
   v23 = 0.0;
   memset(v22, 0, sizeof(v22));
   v21 = 0;
-  [(PAESharedDefaultBase *)self getPixelTransformForImage:a3];
-  [v10 getFloatValue:&v23 fromParm:1 atFxTime:a5->var0.var1];
-  [v10 getRedValue:v22 greenValue:v22 + 8 blueValue:&v22[1] alphaValue:&v22[1] + 8 fromParm:2 atFxTime:a5->var0.var1];
+  [(PAESharedDefaultBase *)self getPixelTransformForImage:output];
+  [v10 getFloatValue:&v23 fromParm:1 atFxTime:info->var0.var1];
+  [v10 getRedValue:v22 greenValue:v22 + 8 blueValue:&v22[1] alphaValue:&v22[1] + 8 fromParm:2 atFxTime:info->var0.var1];
   v11.f64[0] = *(v22 + 1);
   *&v22[0] = vmuld_lane_f64(*v22, v22[1], 1);
   v11.f64[1] = *(&v22[1] + 1);
   *(v22 + 8) = vmulq_f64(v11, vextq_s8(v22[1], v22[1], 8uLL));
-  [v10 getIntValue:&v21 fromParm:3 atFxTime:a5->var0.var1];
-  v12 = [a4 imageType];
-  if ([(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1])
+  [v10 getIntValue:&v21 fromParm:3 atFxTime:info->var0.var1];
+  imageType = [input imageType];
+  if ([(PAESharedDefaultBase *)self getRenderMode:info->var0.var1])
   {
-    v13 = v12 == 3;
+    v13 = imageType == 3;
   }
 
   else
@@ -116,9 +116,9 @@ LABEL_5:
   v14 = v13;
   if (v13)
   {
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -126,12 +126,12 @@ LABEL_5:
       v19 = 0;
     }
 
-    [(PAESharedDefaultBase *)self getImageBoundary:a4];
+    [(PAESharedDefaultBase *)self getImageBoundary:input];
     v18[0] = vcvtq_f64_f32(v17[0]);
     v18[1] = vcvtq_f64_f32(v17[1]);
     *&v15 = v23;
     fxSimpleBorder(v18, v20, v21, v17, v15, v15);
-    [a3 setHeliumRef:v17];
+    [output setHeliumRef:v17];
     if (v17[0])
     {
       (*(**v17 + 24))(*v17);
@@ -146,15 +146,15 @@ LABEL_5:
   return v14;
 }
 
-- (BOOL)frameSetup:(id *)a3 inputInfo:(id *)a4 hardware:(BOOL *)a5 software:(BOOL *)a6
+- (BOOL)frameSetup:(id *)setup inputInfo:(id *)info hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a6 = 1;
-  *a5 = 0;
-  v6 = *&a3->var2;
-  v8[0] = *&a3->var0.var0;
+  *software = 1;
+  *hardware = 0;
+  v6 = *&setup->var2;
+  v8[0] = *&setup->var0.var0;
   v8[1] = v6;
-  v8[2] = *&a3->var4;
-  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:a5 software:a6];
+  v8[2] = *&setup->var4;
+  [(PAESharedDefaultBase *)self overrideFrameSetupForRenderMode:v8 hardware:hardware software:software];
   return 1;
 }
 

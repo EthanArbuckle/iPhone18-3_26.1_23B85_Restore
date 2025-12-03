@@ -1,10 +1,10 @@
 @interface GKMultiplayerPickerNoFriendsCell
 + (NSString)reuseIdentifier;
-+ (double)itemHeightFitting:(CGSize)a3 inTraitEnvironment:(id)a4;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
++ (double)itemHeightFitting:(CGSize)fitting inTraitEnvironment:(id)environment;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (id)addFriendsHandler;
 - (void)layoutSubviews;
-- (void)setAddFriendsHandler:(id)a3;
+- (void)setAddFriendsHandler:(id)handler;
 @end
 
 @implementation GKMultiplayerPickerNoFriendsCell
@@ -39,9 +39,9 @@
   return v4;
 }
 
-- (void)setAddFriendsHandler:(id)a3
+- (void)setAddFriendsHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -54,14 +54,14 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   GKMultiplayerPickerNoFriendsCell.addFriendsHandler.setter(v4, v5);
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   GKMultiplayerPickerNoFriendsCell.measurements(fitting:in:)();
   v7 = v6;
   v9 = v8;
@@ -80,17 +80,17 @@
   return result;
 }
 
-+ (double)itemHeightFitting:(CGSize)a3 inTraitEnvironment:(id)a4
++ (double)itemHeightFitting:(CGSize)fitting inTraitEnvironment:(id)environment
 {
   swift_unknownObjectRetain();
-  v5 = static GKMultiplayerPickerNoFriendsCell.itemHeight(fitting:in:)(a4);
+  v5 = static GKMultiplayerPickerNoFriendsCell.itemHeight(fitting:in:)(environment);
   swift_unknownObjectRelease();
   return v5;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKMultiplayerPickerNoFriendsCell.layoutSubviews()();
 }
 

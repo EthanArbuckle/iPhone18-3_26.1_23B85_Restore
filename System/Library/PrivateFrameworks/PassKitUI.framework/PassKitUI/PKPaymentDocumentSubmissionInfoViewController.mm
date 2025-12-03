@@ -1,33 +1,33 @@
 @interface PKPaymentDocumentSubmissionInfoViewController
-- (PKPaymentDocumentSubmissionInfoViewController)initWithController:(id)a3 context:(int64_t)a4 featureIdentifier:(unint64_t)a5;
+- (PKPaymentDocumentSubmissionInfoViewController)initWithController:(id)controller context:(int64_t)context featureIdentifier:(unint64_t)identifier;
 - (unint64_t)onPresentationRemoveViewControllersAfterMarker;
-- (void)_reportViewDidAppear:(BOOL)a3;
-- (void)_setupSecondaryButtonWithTitle:(id)a3;
-- (void)captureController:(id)a3 didChangeStateTo:(int64_t)a4;
-- (void)captureController:(id)a3 showLoading:(BOOL)a4;
+- (void)_reportViewDidAppear:(BOOL)appear;
+- (void)_setupSecondaryButtonWithTitle:(id)title;
+- (void)captureController:(id)controller didChangeStateTo:(int64_t)to;
+- (void)captureController:(id)controller showLoading:(BOOL)loading;
 - (void)didSelectSetupLater;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)updateUIWithState:(int64_t)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)updateUIWithState:(int64_t)state;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentDocumentSubmissionInfoViewController
 
-- (PKPaymentDocumentSubmissionInfoViewController)initWithController:(id)a3 context:(int64_t)a4 featureIdentifier:(unint64_t)a5
+- (PKPaymentDocumentSubmissionInfoViewController)initWithController:(id)controller context:(int64_t)context featureIdentifier:(unint64_t)identifier
 {
-  v9 = a3;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = PKPaymentDocumentSubmissionInfoViewController;
-  v10 = [(PKExplanationViewController *)&v13 initWithContext:a4];
+  v10 = [(PKExplanationViewController *)&v13 initWithContext:context];
   v11 = v10;
   if (v10)
   {
-    v10->_featureIdentifier = a5;
-    objc_storeStrong(&v10->_controller, a3);
-    v11->_context = a4;
+    v10->_featureIdentifier = identifier;
+    objc_storeStrong(&v10->_controller, controller);
+    v11->_context = context;
     v11->_currentState = [(PKPaymentDocumentSubmissionController *)v11->_controller state];
     v11->_currentSide = [(PKPaymentDocumentSubmissionController *)v11->_controller side];
   }
@@ -40,44 +40,44 @@
   v4.receiver = self;
   v4.super_class = PKPaymentDocumentSubmissionInfoViewController;
   [(PKExplanationViewController *)&v4 viewDidLoad];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  [v3 setDelegate:self];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  [explanationView setDelegate:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentDocumentSubmissionInfoViewController;
-  [(PKPaymentDocumentSubmissionInfoViewController *)&v4 viewWillAppear:a3];
+  [(PKPaymentDocumentSubmissionInfoViewController *)&v4 viewWillAppear:appear];
   [(PKPaymentDocumentSubmissionController *)self->_controller setState:self->_currentState];
   [(PKPaymentDocumentSubmissionController *)self->_controller setSide:self->_currentSide];
   [(PKPaymentDocumentSubmissionController *)self->_controller setDelegate:self];
   [(PKPaymentDocumentSubmissionInfoViewController *)self updateUIWithState:self->_currentState];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentDocumentSubmissionInfoViewController;
-  [(PKPaymentDocumentSubmissionInfoViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentDocumentSubmissionInfoViewController *)&v4 viewDidAppear:appear];
   [(PKPaymentDocumentSubmissionInfoViewController *)self _reportViewDidAppear:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentDocumentSubmissionInfoViewController;
-  [(PKPaymentDocumentSubmissionInfoViewController *)&v4 viewDidDisappear:a3];
+  [(PKPaymentDocumentSubmissionInfoViewController *)&v4 viewDidDisappear:disappear];
   [(PKPaymentDocumentSubmissionInfoViewController *)self _reportViewDidAppear:0];
 }
 
-- (void)_reportViewDidAppear:(BOOL)a3
+- (void)_reportViewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = v5;
   v6 = MEMORY[0x1E69BA818];
-  if (!v3)
+  if (!appearCopy)
   {
     v6 = MEMORY[0x1E69BA820];
   }
@@ -86,66 +86,66 @@
   [(PKPaymentDocumentSubmissionController *)self->_controller reportAnalyticsEvent:v7 pageTag:*MEMORY[0x1E69BA1C0]];
 }
 
-- (void)_setupSecondaryButtonWithTitle:(id)a3
+- (void)_setupSecondaryButtonWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(PKExplanationViewController *)self explanationView];
-  v6 = [v5 dockView];
-  v7 = [v6 footerView];
-  v9 = [v7 secondaryActionButton];
+  titleCopy = title;
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
+  secondaryActionButton = [footerView secondaryActionButton];
 
-  [v9 setTitle:v4 forState:0];
-  v8 = [v9 titleLabel];
-  [v8 setNumberOfLines:0];
+  [secondaryActionButton setTitle:titleCopy forState:0];
+  titleLabel = [secondaryActionButton titleLabel];
+  [titleLabel setNumberOfLines:0];
 
-  [v9 addTarget:self action:sel_didSelectSetupLater forControlEvents:64];
+  [secondaryActionButton addTarget:self action:sel_didSelectSetupLater forControlEvents:64];
 }
 
-- (void)updateUIWithState:(int64_t)a3
+- (void)updateUIWithState:(int64_t)state
 {
-  v5 = [(PKExplanationViewController *)self explanationView];
-  v6 = [v5 dockView];
-  v7 = [v6 primaryButton];
-  v8 = [v6 footerView];
-  v9 = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationItem];
-  [v5 setImage:0];
-  [v5 setShowPrivacyView:0];
-  [v6 setButtonExplanationText:0];
-  v10 = [(PKPaymentDocumentSubmissionController *)self->_controller preferredLanguage];
-  if (a3 <= 5)
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  primaryButton = [dockView primaryButton];
+  footerView = [dockView footerView];
+  navigationItem = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationItem];
+  [explanationView setImage:0];
+  [explanationView setShowPrivacyView:0];
+  [dockView setButtonExplanationText:0];
+  preferredLanguage = [(PKPaymentDocumentSubmissionController *)self->_controller preferredLanguage];
+  if (state <= 5)
   {
-    if (a3 > 2)
+    if (state > 2)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
-        if (a3 == 4)
+        if (state == 4)
         {
           goto LABEL_23;
         }
 
         v11 = PKLocalizedApplyFeatureString();
-        [v5 setTitleText:v11];
+        [explanationView setTitleText:v11];
 
-        [v5 setBodyText:0];
-        [v5 setShowSpinner:1];
-        [v9 setRightBarButtonItem:0];
+        [explanationView setBodyText:0];
+        [explanationView setShowSpinner:1];
+        [navigationItem setRightBarButtonItem:0];
         v12 = PKUIImageNamed(@"PhotoID");
-        [v5 setImage:v12];
+        [explanationView setImage:v12];
 
-        [v7 setHidden:1];
-        [v8 setSecondaryActionButton:0];
+        [primaryButton setHidden:1];
+        [footerView setSecondaryActionButton:0];
         [(PKExplanationViewController *)self setShowCancelButton:0];
-        v13 = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationItem];
-        [v13 setHidesBackButton:1];
+        navigationItem2 = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationItem];
+        [navigationItem2 setHidesBackButton:1];
 
         goto LABEL_51;
       }
 
-      v68 = v6;
-      v43 = [(PKPaymentDocumentSubmissionController *)self->_controller side];
+      v68 = dockView;
+      side = [(PKPaymentDocumentSubmissionController *)self->_controller side];
       controller = self->_controller;
-      v74 = v9;
-      if (v43)
+      v74 = navigationItem;
+      if (side)
       {
         [(PKPaymentDocumentSubmissionController *)controller backID];
       }
@@ -156,10 +156,10 @@
       }
       v45 = ;
       v50 = PKLocalizedApplyFeatureString();
-      [v5 setTitleText:v50];
+      [explanationView setTitleText:v50];
 
       v51 = PKLocalizedApplyFeatureString();
-      [v5 setBodyText:v51];
+      [explanationView setBodyText:v51];
 
       v52 = v45;
       [v52 size];
@@ -186,15 +186,15 @@
         }
       }
 
-      [v5 setImage:v53];
+      [explanationView setImage:v53];
       if (PKUIGetMinScreenWidthType() >= 5)
       {
-        [v5 setTopMargin:30.0];
+        [explanationView setTopMargin:30.0];
       }
 
-      [v7 setHidden:0];
+      [primaryButton setHidden:0];
       v60 = PKLocalizedApplyFeatureString();
-      [v7 setTitle:v60 forState:0];
+      [primaryButton setTitle:v60 forState:0];
 
       v61 = PKLocalizedApplyFeatureString();
       [(PKPaymentDocumentSubmissionInfoViewController *)self _setupSecondaryButtonWithTitle:v61];
@@ -224,24 +224,24 @@
         [(PKExplanationViewController *)self setShowCancelButton:featureIdentifier == 1];
       }
 
-      v9 = v74;
+      navigationItem = v74;
 LABEL_48:
-      v6 = v68;
+      dockView = v68;
       goto LABEL_51;
     }
 
-    if (!a3)
+    if (!state)
     {
-      v72 = v9;
+      v72 = navigationItem;
       v29 = PKLocalizedApplyFeatureString();
-      [v5 setTitleText:v29];
+      [explanationView setTitleText:v29];
 
       v30 = PKLocalizedApplyFeatureString();
-      [v5 setBodyText:v30];
+      [explanationView setBodyText:v30];
 
-      [v7 setHidden:0];
+      [primaryButton setHidden:0];
       v31 = PKLocalizedApplyFeatureString();
-      [v7 setTitle:v31 forState:0];
+      [primaryButton setTitle:v31 forState:0];
 
       v32 = self->_featureIdentifier;
       if (v32 != 3)
@@ -249,76 +249,76 @@ LABEL_48:
         if (v32 == 2)
         {
           [(PKPaymentDocumentSubmissionInfoViewController *)self _setupSecondaryButtonWithTitle:0];
-          [v5 setShowPrivacyView:0];
+          [explanationView setShowPrivacyView:0];
           v33 = PKLocalizedApplyFeatureString();
-          [v6 setButtonExplanationText:v33];
+          [dockView setButtonExplanationText:v33];
 
-          v34 = [v6 buttonExplanationTextView];
-          [v34 setTextAlignment:0];
+          buttonExplanationTextView = [dockView buttonExplanationTextView];
+          [buttonExplanationTextView setTextAlignment:0];
         }
 
         else
         {
-          [v6 setButtonExplanationText:0];
-          [v5 setShowPrivacyView:1];
+          [dockView setButtonExplanationText:0];
+          [explanationView setShowPrivacyView:1];
         }
       }
 
-      [v8 setSecondaryActionButton:0];
+      [footerView setSecondaryActionButton:0];
       v66 = PKUIImageNamed(@"PhotoID");
-      [v5 setImage:v66];
+      [explanationView setImage:v66];
 
       [(PKExplanationViewController *)self setShowCancelButton:1];
-      v67 = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationItem];
-      [v67 setHidesBackButton:1];
+      navigationItem3 = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationItem];
+      [navigationItem3 setHidesBackButton:1];
 
       [(PKExplanationViewController *)self showNavigationBarSpinner:0];
-      v9 = v72;
+      navigationItem = v72;
       goto LABEL_51;
     }
 
-    if (a3 != 1)
+    if (state != 1)
     {
       goto LABEL_33;
     }
 
     PKLocalizedApplyFeatureString();
-    v69 = v8;
-    v25 = v24 = v9;
-    [v5 setTitleText:v25];
+    v69 = footerView;
+    v25 = v24 = navigationItem;
+    [explanationView setTitleText:v25];
 
     v26 = PKLocalizedApplyFeatureString();
-    [v5 setBodyText:v26];
+    [explanationView setBodyText:v26];
 
-    [v7 setHidden:0];
+    [primaryButton setHidden:0];
     v27 = PKLocalizedApplyFeatureString();
-    [v7 setTitle:v27 forState:0];
+    [primaryButton setTitle:v27 forState:0];
 
     v28 = PKLocalizedApplyFeatureString();
     [(PKPaymentDocumentSubmissionInfoViewController *)self _setupSecondaryButtonWithTitle:v28];
 
-    v9 = v24;
-    v8 = v69;
+    navigationItem = v24;
+    footerView = v69;
     goto LABEL_32;
   }
 
-  if (a3 > 8)
+  if (state > 8)
   {
-    if (a3 != 9)
+    if (state != 9)
     {
-      if (a3 == 10)
+      if (state == 10)
       {
 LABEL_23:
-        v73 = v9;
+        v73 = navigationItem;
         v39 = PKLocalizedApplyFeatureString();
-        [v5 setTitleText:v39];
+        [explanationView setTitleText:v39];
 
         v40 = PKLocalizedApplyFeatureString();
-        [v5 setBodyText:v40];
+        [explanationView setBodyText:v40];
 
-        [v7 setHidden:0];
+        [primaryButton setHidden:0];
         v41 = PKLocalizedApplyFeatureString();
-        [v7 setTitle:v41 forState:0];
+        [primaryButton setTitle:v41 forState:0];
 
         if (self->_featureIdentifier == 1)
         {
@@ -328,14 +328,14 @@ LABEL_23:
 
         else
         {
-          [v8 setSecondaryActionButton:0];
+          [footerView setSecondaryActionButton:0];
         }
 
-        v9 = v73;
+        navigationItem = v73;
         goto LABEL_32;
       }
 
-      if (a3 == 11)
+      if (state == 11)
       {
         goto LABEL_13;
       }
@@ -346,19 +346,19 @@ LABEL_33:
     }
 
     PKLocalizedApplyFeatureString();
-    v70 = v8;
-    v47 = v46 = v9;
-    [v5 setTitleText:v47];
+    v70 = footerView;
+    v47 = v46 = navigationItem;
+    [explanationView setTitleText:v47];
 
     v48 = PKLocalizedApplyFeatureString();
-    [v5 setBodyText:v48];
+    [explanationView setBodyText:v48];
 
-    [v7 setHidden:0];
+    [primaryButton setHidden:0];
     v49 = PKLocalizedApplyFeatureString();
-    [v7 setTitle:v49 forState:0];
+    [primaryButton setTitle:v49 forState:0];
 
-    v9 = v46;
-    v8 = v70;
+    navigationItem = v46;
+    footerView = v70;
     [v70 setSecondaryActionButton:0];
 LABEL_32:
     [(PKExplanationViewController *)self setShowCancelButton:0];
@@ -366,34 +366,34 @@ LABEL_32:
     goto LABEL_51;
   }
 
-  if (a3 == 6)
+  if (state == 6)
   {
 LABEL_13:
-    v68 = v6;
+    v68 = dockView;
     v14 = PKLocalizedApplyFeatureString();
-    [v5 setTitleText:v14];
+    [explanationView setTitleText:v14];
 
     v15 = PKLocalizedApplyFeatureString();
-    [v5 setBodyText:v15];
+    [explanationView setBodyText:v15];
 
-    [v5 showCheckmark:0 animated:0];
-    [v5 setShowSpinner:0];
-    v71 = v9;
-    [v9 setRightBarButtonItem:0];
+    [explanationView showCheckmark:0 animated:0];
+    [explanationView setShowSpinner:0];
+    v71 = navigationItem;
+    [navigationItem setRightBarButtonItem:0];
     v16 = PKUIImageNamed(@"PhotoID");
-    [v5 setImage:v16];
+    [explanationView setImage:v16];
 
-    [v7 setHidden:0];
+    [primaryButton setHidden:0];
     v17 = PKLocalizedApplyFeatureString();
-    v18 = v10;
-    v19 = v7;
-    [v7 setTitle:v17 forState:0];
+    v18 = preferredLanguage;
+    v19 = primaryButton;
+    [primaryButton setTitle:v17 forState:0];
 
-    [v8 setSecondaryActionButton:0];
+    [footerView setSecondaryActionButton:0];
     v20 = self->_featureIdentifier;
     if (v20 == 1)
     {
-      v21 = v8;
+      v21 = footerView;
       v22 = v18;
       v23 = PKLocalizedApplyFeatureString();
       [(PKPaymentDocumentSubmissionInfoViewController *)self _setupSecondaryButtonWithTitle:v23];
@@ -402,39 +402,39 @@ LABEL_13:
     else
     {
       v22 = v18;
-      v21 = v8;
-      [v8 setSecondaryActionButton:0];
+      v21 = footerView;
+      [footerView setSecondaryActionButton:0];
     }
 
     [(PKExplanationViewController *)self setShowCancelButton:v20 == 1];
     [(PKExplanationViewController *)self showNavigationBarSpinner:0];
-    v9 = v71;
-    v8 = v21;
-    v7 = v19;
-    v10 = v22;
+    navigationItem = v71;
+    footerView = v21;
+    primaryButton = v19;
+    preferredLanguage = v22;
     goto LABEL_48;
   }
 
-  if (a3 != 7)
+  if (state != 7)
   {
     goto LABEL_23;
   }
 
   v35 = PKLocalizedApplyFeatureString();
-  [v5 setTitleText:v35];
+  [explanationView setTitleText:v35];
 
-  [v5 setBodyText:0];
-  [v5 showCheckmark:1 animated:0];
-  [v5 setShowSpinner:0];
-  [v9 setRightBarButtonItem:0];
+  [explanationView setBodyText:0];
+  [explanationView showCheckmark:1 animated:0];
+  [explanationView setShowSpinner:0];
+  [navigationItem setRightBarButtonItem:0];
   v36 = PKUIImageNamed(@"PhotoID");
-  [v5 setImage:v36];
+  [explanationView setImage:v36];
 
-  [v7 setHidden:1];
-  [v8 setSecondaryActionButton:0];
+  [primaryButton setHidden:1];
+  [footerView setSecondaryActionButton:0];
   [(PKExplanationViewController *)self setShowCancelButton:0];
-  v37 = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationItem];
-  [v37 setHidesBackButton:1];
+  navigationItem4 = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationItem];
+  [navigationItem4 setHidesBackButton:1];
 
   v38 = dispatch_time(0, 2000000000);
   block[0] = MEMORY[0x1E69E9820];
@@ -444,9 +444,9 @@ LABEL_13:
   block[4] = self;
   dispatch_after(v38, MEMORY[0x1E69E96A0], block);
 LABEL_51:
-  self->_currentState = a3;
+  self->_currentState = state;
   self->_currentSide = [(PKPaymentDocumentSubmissionController *)self->_controller side];
-  PKPaymentSetupApplyContextAppearance(self->_context, v5);
+  PKPaymentSetupApplyContextAppearance(self->_context, explanationView);
 }
 
 void __67__PKPaymentDocumentSubmissionInfoViewController_updateUIWithState___block_invoke(uint64_t a1)
@@ -510,7 +510,7 @@ uint64_t __67__PKPaymentDocumentSubmissionInfoViewController_updateUIWithState__
   return result;
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v8[1] = *MEMORY[0x1E69E9840];
   controller = self->_controller;
@@ -630,44 +630,44 @@ LABEL_14:
   }
 }
 
-- (void)captureController:(id)a3 showLoading:(BOOL)a4
+- (void)captureController:(id)controller showLoading:(BOOL)loading
 {
-  v4 = a4;
-  [(PKExplanationViewController *)self showNavigationBarSpinner:a4];
-  v7 = [(PKExplanationViewController *)self explanationView];
-  v6 = [v7 dockView];
-  [v6 setButtonsEnabled:!v4];
+  loadingCopy = loading;
+  [(PKExplanationViewController *)self showNavigationBarSpinner:loading];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:!loadingCopy];
 }
 
-- (void)captureController:(id)a3 didChangeStateTo:(int64_t)a4
+- (void)captureController:(id)controller didChangeStateTo:(int64_t)to
 {
   currentState = self->_currentState;
   if (currentState == 11 || currentState == 6)
   {
-    if (a4 == 5)
+    if (to == 5)
     {
 LABEL_7:
 
-      [(PKPaymentDocumentSubmissionInfoViewController *)self updateUIWithState:a4];
+      [(PKPaymentDocumentSubmissionInfoViewController *)self updateUIWithState:to];
       return;
     }
   }
 
-  else if (currentState == 5 && a4 <= 0xB && ((1 << a4) & 0x8C0) != 0)
+  else if (currentState == 5 && to <= 0xB && ((1 << to) & 0x8C0) != 0)
   {
     goto LABEL_7;
   }
 
-  v11 = [(PKPaymentDocumentSubmissionController *)self->_controller nextViewController];
-  if (v11)
+  nextViewController = [(PKPaymentDocumentSubmissionController *)self->_controller nextViewController];
+  if (nextViewController)
   {
-    v10 = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationController];
-    [v10 pk_presentPaymentSetupViewController:v11 animated:1 completion:0];
+    navigationController = [(PKPaymentDocumentSubmissionInfoViewController *)self navigationController];
+    [navigationController pk_presentPaymentSetupViewController:nextViewController animated:1 completion:0];
   }
 
   else
   {
-    [(PKPaymentDocumentSubmissionInfoViewController *)self updateUIWithState:a4];
+    [(PKPaymentDocumentSubmissionInfoViewController *)self updateUIWithState:to];
   }
 }
 

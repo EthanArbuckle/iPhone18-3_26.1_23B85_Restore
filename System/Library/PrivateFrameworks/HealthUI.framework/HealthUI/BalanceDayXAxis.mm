@@ -1,11 +1,11 @@
 @interface BalanceDayXAxis
-- (_TtC8HealthUI15BalanceDayXAxis)initWithCurrentCalendar:(id)a3 axisStyle:(id)a4;
-- (_TtC8HealthUI15BalanceDayXAxis)initWithCurrentCalendar:(id)a3 axisStyle:(id)a4 categoryTitles:(id)a5;
+- (_TtC8HealthUI15BalanceDayXAxis)initWithCurrentCalendar:(id)calendar axisStyle:(id)style;
+- (_TtC8HealthUI15BalanceDayXAxis)initWithCurrentCalendar:(id)calendar axisStyle:(id)style categoryTitles:(id)titles;
 @end
 
 @implementation BalanceDayXAxis
 
-- (_TtC8HealthUI15BalanceDayXAxis)initWithCurrentCalendar:(id)a3 axisStyle:(id)a4 categoryTitles:(id)a5
+- (_TtC8HealthUI15BalanceDayXAxis)initWithCurrentCalendar:(id)calendar axisStyle:(id)style categoryTitles:(id)titles
 {
   v5 = sub_1C3D1E3C4();
   MEMORY[0x1EEE9AC00](v5 - 8);
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtC8HealthUI15BalanceDayXAxis)initWithCurrentCalendar:(id)a3 axisStyle:(id)a4
+- (_TtC8HealthUI15BalanceDayXAxis)initWithCurrentCalendar:(id)calendar axisStyle:(id)style
 {
   v4 = sub_1C3D1E3C4();
   MEMORY[0x1EEE9AC00](v4 - 8);

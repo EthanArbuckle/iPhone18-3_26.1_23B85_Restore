@@ -1,45 +1,45 @@
 @interface PKNumericSuggestionsEnterValueAlgorithm
-- (BOOL)_amountIsValid:(id)a3;
-- (BOOL)_lastInputExistsInGeneratedSuggestions:(id)a3 withLastInput:(id)a4;
-- (BOOL)_possibleAmountIsValidWithDefaultValue:(id)a3 amount:(id)a4;
-- (BOOL)_useMaximumAmountSuggestionWithAmount:(id)a3;
-- (PKNumericSuggestionsEnterValueAlgorithm)initWithLastInput:(id)a3;
+- (BOOL)_amountIsValid:(id)valid;
+- (BOOL)_lastInputExistsInGeneratedSuggestions:(id)suggestions withLastInput:(id)input;
+- (BOOL)_possibleAmountIsValidWithDefaultValue:(id)value amount:(id)amount;
+- (BOOL)_useMaximumAmountSuggestionWithAmount:(id)amount;
+- (PKNumericSuggestionsEnterValueAlgorithm)initWithLastInput:(id)input;
 - (id)_generateDefaultSuggestions;
 - (id)_generateValuesToDefaults;
 - (id)_maxAmountSuggestion;
-- (id)_possibleValueForAmount:(id)a3;
+- (id)_possibleValueForAmount:(id)amount;
 - (id)_useMaxAmountSuggestion;
-- (id)suggestionsWithAmount:(id)a3;
+- (id)suggestionsWithAmount:(id)amount;
 - (void)_generateCalculatedSuggestions;
-- (void)setCardBalance:(id)a3;
-- (void)setDecimalPrecision:(int64_t)a3;
-- (void)setDefaultValues:(id)a3;
-- (void)setMaxBalance:(id)a3;
-- (void)setMaxLoadAmount:(id)a3;
-- (void)setMinBalance:(id)a3;
-- (void)setMinLoadAmount:(id)a3;
-- (void)setPowerOfTenFactor:(unint64_t)a3;
-- (void)setUseBuiltInDefaults:(BOOL)a3;
+- (void)setCardBalance:(id)balance;
+- (void)setDecimalPrecision:(int64_t)precision;
+- (void)setDefaultValues:(id)values;
+- (void)setMaxBalance:(id)balance;
+- (void)setMaxLoadAmount:(id)amount;
+- (void)setMinBalance:(id)balance;
+- (void)setMinLoadAmount:(id)amount;
+- (void)setPowerOfTenFactor:(unint64_t)factor;
+- (void)setUseBuiltInDefaults:(BOOL)defaults;
 @end
 
 @implementation PKNumericSuggestionsEnterValueAlgorithm
 
-- (PKNumericSuggestionsEnterValueAlgorithm)initWithLastInput:(id)a3
+- (PKNumericSuggestionsEnterValueAlgorithm)initWithLastInput:(id)input
 {
-  v5 = a3;
+  inputCopy = input;
   v13.receiver = self;
   v13.super_class = PKNumericSuggestionsEnterValueAlgorithm;
   v6 = [(PKNumericSuggestionsEnterValueAlgorithm *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lastInput, a3);
+    objc_storeStrong(&v6->_lastInput, input);
     v7->_decimalPrecision = 0;
     v7->_powerOfTenFactor = 1;
     v7->_hasValidDefaultSuggestions = 0;
-    v8 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
     cardBalance = v7->_cardBalance;
-    v7->_cardBalance = v8;
+    v7->_cardBalance = zero;
 
     v10 = [MEMORY[0x1E696AB98] decimalNumberHandlerWithRoundingMode:0 scale:SLOWORD(v7->_decimalPrecision) raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
     roundingBehavior = v7->_roundingBehavior;
@@ -51,18 +51,18 @@
   return v7;
 }
 
-- (BOOL)_lastInputExistsInGeneratedSuggestions:(id)a3 withLastInput:(id)a4
+- (BOOL)_lastInputExistsInGeneratedSuggestions:(id)suggestions withLastInput:(id)input
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(PKNumericSuggestionLastInput *)self->_lastInput value];
-  v7 = [PKNumericSuggestion suggestionWithValue:v6 currencyCode:self->_currencyCode];
+  suggestionsCopy = suggestions;
+  value = [(PKNumericSuggestionLastInput *)self->_lastInput value];
+  v7 = [PKNumericSuggestion suggestionWithValue:value currencyCode:self->_currencyCode];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v8 = v5;
+  v8 = suggestionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v9)
   {
@@ -98,46 +98,46 @@ LABEL_11:
   return v9;
 }
 
-- (id)suggestionsWithAmount:(id)a3
+- (id)suggestionsWithAmount:(id)amount
 {
   v57 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (!v4 || ([MEMORY[0x1E696AB90] notANumber], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v4, "isEqualToNumber:", v6), v6, v7))
+  amountCopy = amount;
+  array = [MEMORY[0x1E695DF70] array];
+  if (!amountCopy || ([MEMORY[0x1E696AB90] notANumber], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(amountCopy, "isEqualToNumber:", v6), v6, v7))
   {
-    v8 = [MEMORY[0x1E696AB90] zero];
+    zero = [MEMORY[0x1E696AB90] zero];
 
-    v4 = v8;
+    amountCopy = zero;
   }
 
-  v9 = [MEMORY[0x1E696AB90] zero];
-  v10 = [v4 isEqualToNumber:v9];
+  zero2 = [MEMORY[0x1E696AB90] zero];
+  v10 = [amountCopy isEqualToNumber:zero2];
 
   if (v10)
   {
-    [v5 addObjectsFromArray:self->_defaultSuggestions];
+    [array addObjectsFromArray:self->_defaultSuggestions];
     lastInput = self->_lastInput;
     if (lastInput)
     {
-      v12 = [(PKNumericSuggestionLastInput *)lastInput value];
-      if (v12 || [(PKNumericSuggestionLastInput *)self->_lastInput wentToMax])
+      value = [(PKNumericSuggestionLastInput *)lastInput value];
+      if (value || [(PKNumericSuggestionLastInput *)self->_lastInput wentToMax])
       {
-        v13 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _lastInputExistsInGeneratedSuggestions:v5 withLastInput:self->_lastInput];
+        v13 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _lastInputExistsInGeneratedSuggestions:array withLastInput:self->_lastInput];
 
         if (!v13)
         {
-          [v5 removeLastObject];
-          v14 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _maxAmountSuggestion];
-          if ([(PKNumericSuggestionLastInput *)self->_lastInput wentToMax]&& self->_maxBalance && v14)
+          [array removeLastObject];
+          _maxAmountSuggestion = [(PKNumericSuggestionsEnterValueAlgorithm *)self _maxAmountSuggestion];
+          if ([(PKNumericSuggestionLastInput *)self->_lastInput wentToMax]&& self->_maxBalance && _maxAmountSuggestion)
           {
-            [v5 addObject:v14];
+            [array addObject:_maxAmountSuggestion];
           }
 
           else
           {
-            v33 = [(PKNumericSuggestionLastInput *)self->_lastInput value];
-            v34 = [PKNumericSuggestion suggestionWithValue:v33 currencyCode:self->_currencyCode];
-            [v5 addObject:v34];
+            value2 = [(PKNumericSuggestionLastInput *)self->_lastInput value];
+            v34 = [PKNumericSuggestion suggestionWithValue:value2 currencyCode:self->_currencyCode];
+            [array addObject:v34];
           }
         }
       }
@@ -148,14 +148,14 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (![(PKNumericSuggestionsEnterValueAlgorithm *)self _useMaximumAmountSuggestionWithAmount:v4])
+  if (![(PKNumericSuggestionsEnterValueAlgorithm *)self _useMaximumAmountSuggestionWithAmount:amountCopy])
   {
-    v16 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _possibleValueForAmount:v4];
-    v17 = [v16 isEqual:v4];
+    v16 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _possibleValueForAmount:amountCopy];
+    v17 = [v16 isEqual:amountCopy];
     if ((v17 & 1) == 0)
     {
       v18 = [PKNumericSuggestion suggestionWithValue:v16 currencyCode:self->_currencyCode];
-      [v5 addObject:v18];
+      [array addObject:v18];
     }
 
     defaultSuggestions = self->_defaultSuggestions;
@@ -163,20 +163,20 @@ LABEL_33:
     v49[1] = 3221225472;
     v49[2] = __65__PKNumericSuggestionsEnterValueAlgorithm_suggestionsWithAmount___block_invoke;
     v49[3] = &unk_1E79CDAE0;
-    v20 = v4;
+    v20 = amountCopy;
     v50 = v20;
     v21 = v16;
     v51 = v21;
-    v52 = self;
+    selfCopy = self;
     v22 = [(NSArray *)defaultSuggestions pk_objectsPassingTest:v49];
-    [v5 addObjectsFromArray:v22];
+    [array addObjectsFromArray:v22];
 
-    if ([v5 count] >= 4)
+    if ([array count] >= 4)
     {
-      v23 = [v5 subarrayWithRange:{0, 3}];
+      v23 = [array subarrayWithRange:{0, 3}];
       v24 = [v23 mutableCopy];
 
-      v5 = v24;
+      array = v24;
     }
 
     valuesToDefaults = self->_valuesToDefaults;
@@ -187,20 +187,20 @@ LABEL_33:
     v46 = v20;
     v26 = v21;
     v47 = v26;
-    v48 = self;
+    selfCopy2 = self;
     v27 = [(NSArray *)valuesToDefaults pk_objectsPassingTest:&v42];
     if ([v27 count])
     {
-      if ([v5 count] == 3)
+      if ([array count] == 3)
       {
-        [v5 removeLastObject];
+        [array removeLastObject];
       }
 
-      v28 = [v27 firstObject];
-      [v5 addObject:v28];
+      firstObject = [v27 firstObject];
+      [array addObject:firstObject];
     }
 
-    if ([v5 count] <= 2)
+    if ([array count] <= 2)
     {
       v29 = [(NSArray *)self->_defaultSuggestions count];
       if ((v29 - 1) >= 0)
@@ -209,15 +209,15 @@ LABEL_33:
         v31 = v17 ^ 1u;
         do
         {
-          if ([v5 count] > 2)
+          if ([array count] > 2)
           {
             break;
           }
 
           v32 = [(NSArray *)self->_defaultSuggestions objectAtIndex:--v30];
-          if (([v5 containsObject:v32] & 1) == 0)
+          if (([array containsObject:v32] & 1) == 0)
           {
-            [v5 insertObject:v32 atIndex:v31];
+            [array insertObject:v32 atIndex:v31];
           }
         }
 
@@ -230,17 +230,17 @@ LABEL_33:
 
   v15 = 1;
 LABEL_34:
-  v35 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _useMaxAmountSuggestion];
-  v36 = v35;
-  if (v15 && v35)
+  _useMaxAmountSuggestion = [(PKNumericSuggestionsEnterValueAlgorithm *)self _useMaxAmountSuggestion];
+  v36 = _useMaxAmountSuggestion;
+  if (v15 && _useMaxAmountSuggestion)
   {
-    [v5 removeAllObjects];
-    [v5 addObject:v36];
+    [array removeAllObjects];
+    [array addObject:v36];
   }
 
-  else if ([v5 count] < 4)
+  else if ([array count] < 4)
   {
-    if ([v5 count] <= 2)
+    if ([array count] <= 2)
     {
       v40 = PKLogFacilityTypeGetObject(0);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -248,12 +248,12 @@ LABEL_34:
         *buf = 67109378;
         v54 = 3;
         v55 = 2112;
-        v56 = v5;
+        v56 = array;
         _os_log_impl(&dword_1AD337000, v40, OS_LOG_TYPE_DEFAULT, "Something went wrong with the suggestions. There should be %d suggestions. But the suggestions were actually %@", buf, 0x12u);
       }
 
-      [v5 removeAllObjects];
-      [v5 addObjectsFromArray:self->_defaultSuggestions];
+      [array removeAllObjects];
+      [array addObjectsFromArray:self->_defaultSuggestions];
     }
   }
 
@@ -265,17 +265,17 @@ LABEL_34:
       *buf = 67109378;
       v54 = 3;
       v55 = 2112;
-      v56 = v5;
+      v56 = array;
       _os_log_impl(&dword_1AD337000, v37, OS_LOG_TYPE_DEFAULT, "Something went wrong with the suggestions. There should be %d suggestions. But the suggestions were actually %@", buf, 0x12u);
     }
 
-    v38 = [v5 subarrayWithRange:{0, 3}];
+    v38 = [array subarrayWithRange:{0, 3}];
     v39 = [v38 mutableCopy];
 
-    v5 = v39;
+    array = v39;
   }
 
-  return v5;
+  return array;
 }
 
 uint64_t __65__PKNumericSuggestionsEnterValueAlgorithm_suggestionsWithAmount___block_invoke(void *a1, void *a2)
@@ -334,11 +334,11 @@ uint64_t __65__PKNumericSuggestionsEnterValueAlgorithm_suggestionsWithAmount___b
   return v5;
 }
 
-- (void)setDefaultValues:(id)a3
+- (void)setDefaultValues:(id)values
 {
-  if (self->_defaultValues != a3)
+  if (self->_defaultValues != values)
   {
-    v4 = [a3 copy];
+    v4 = [values copy];
     defaultValues = self->_defaultValues;
     self->_defaultValues = v4;
 
@@ -346,23 +346,23 @@ uint64_t __65__PKNumericSuggestionsEnterValueAlgorithm_suggestionsWithAmount___b
   }
 }
 
-- (void)setPowerOfTenFactor:(unint64_t)a3
+- (void)setPowerOfTenFactor:(unint64_t)factor
 {
-  if (self->_powerOfTenFactor != a3)
+  if (self->_powerOfTenFactor != factor)
   {
-    self->_powerOfTenFactor = fmax(a3, 1.0);
+    self->_powerOfTenFactor = fmax(factor, 1.0);
     [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateCalculatedSuggestions];
   }
 }
 
-- (void)setMinBalance:(id)a3
+- (void)setMinBalance:(id)balance
 {
-  v4 = a3;
-  if (self->_minBalance != v4)
+  balanceCopy = balance;
+  if (self->_minBalance != balanceCopy)
   {
-    v9 = v4;
-    v5 = [MEMORY[0x1E696AB90] notANumber];
-    v6 = [(NSDecimalNumber *)v9 isEqualToNumber:v5];
+    v9 = balanceCopy;
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    v6 = [(NSDecimalNumber *)v9 isEqualToNumber:notANumber];
 
     if (v6)
     {
@@ -378,25 +378,25 @@ uint64_t __65__PKNumericSuggestionsEnterValueAlgorithm_suggestionsWithAmount___b
     self->_minBalance = v7;
 
     [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateCalculatedSuggestions];
-    v4 = v9;
+    balanceCopy = v9;
   }
 }
 
-- (void)setMaxBalance:(id)a3
+- (void)setMaxBalance:(id)balance
 {
-  v4 = a3;
-  if (self->_maxBalance != v4)
+  balanceCopy = balance;
+  if (self->_maxBalance != balanceCopy)
   {
-    v10 = v4;
-    v5 = [MEMORY[0x1E696AB90] notANumber];
-    if ([(NSDecimalNumber *)v10 isEqualToNumber:v5])
+    v10 = balanceCopy;
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    if ([(NSDecimalNumber *)v10 isEqualToNumber:notANumber])
     {
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AB90] zero];
-      v7 = [(NSDecimalNumber *)v10 isEqualToNumber:v6];
+      zero = [MEMORY[0x1E696AB90] zero];
+      v7 = [(NSDecimalNumber *)v10 isEqualToNumber:zero];
 
       if ((v7 & 1) == 0)
       {
@@ -411,25 +411,25 @@ LABEL_7:
     self->_maxBalance = v8;
 
     [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateCalculatedSuggestions];
-    v4 = v10;
+    balanceCopy = v10;
   }
 }
 
-- (void)setMinLoadAmount:(id)a3
+- (void)setMinLoadAmount:(id)amount
 {
-  v4 = a3;
-  if (self->_minLoadAmount != v4)
+  amountCopy = amount;
+  if (self->_minLoadAmount != amountCopy)
   {
-    v10 = v4;
-    v5 = [MEMORY[0x1E696AB90] notANumber];
-    if ([(NSDecimalNumber *)v10 isEqualToNumber:v5])
+    v10 = amountCopy;
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    if ([(NSDecimalNumber *)v10 isEqualToNumber:notANumber])
     {
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AB90] zero];
-      v7 = [(NSDecimalNumber *)v10 isEqualToNumber:v6];
+      zero = [MEMORY[0x1E696AB90] zero];
+      v7 = [(NSDecimalNumber *)v10 isEqualToNumber:zero];
 
       if ((v7 & 1) == 0)
       {
@@ -444,25 +444,25 @@ LABEL_7:
     self->_minLoadAmount = v8;
 
     [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateCalculatedSuggestions];
-    v4 = v10;
+    amountCopy = v10;
   }
 }
 
-- (void)setMaxLoadAmount:(id)a3
+- (void)setMaxLoadAmount:(id)amount
 {
-  v4 = a3;
-  if (self->_maxLoadAmount != v4)
+  amountCopy = amount;
+  if (self->_maxLoadAmount != amountCopy)
   {
-    v10 = v4;
-    v5 = [MEMORY[0x1E696AB90] notANumber];
-    if ([(NSDecimalNumber *)v10 isEqualToNumber:v5])
+    v10 = amountCopy;
+    notANumber = [MEMORY[0x1E696AB90] notANumber];
+    if ([(NSDecimalNumber *)v10 isEqualToNumber:notANumber])
     {
     }
 
     else
     {
-      v6 = [MEMORY[0x1E696AB90] zero];
-      v7 = [(NSDecimalNumber *)v10 isEqualToNumber:v6];
+      zero = [MEMORY[0x1E696AB90] zero];
+      v7 = [(NSDecimalNumber *)v10 isEqualToNumber:zero];
 
       if ((v7 & 1) == 0)
       {
@@ -477,16 +477,16 @@ LABEL_7:
     self->_maxLoadAmount = v8;
 
     [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateCalculatedSuggestions];
-    v4 = v10;
+    amountCopy = v10;
   }
 }
 
-- (void)setDecimalPrecision:(int64_t)a3
+- (void)setDecimalPrecision:(int64_t)precision
 {
-  if (self->_decimalPrecision != a3)
+  if (self->_decimalPrecision != precision)
   {
-    self->_decimalPrecision = a3;
-    v5 = [MEMORY[0x1E696AB98] decimalNumberHandlerWithRoundingMode:0 scale:a3 raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
+    self->_decimalPrecision = precision;
+    v5 = [MEMORY[0x1E696AB98] decimalNumberHandlerWithRoundingMode:0 scale:precision raiseOnExactness:0 raiseOnOverflow:0 raiseOnUnderflow:0 raiseOnDivideByZero:0];
     roundingBehavior = self->_roundingBehavior;
     self->_roundingBehavior = v5;
 
@@ -494,11 +494,11 @@ LABEL_7:
   }
 }
 
-- (void)setCardBalance:(id)a3
+- (void)setCardBalance:(id)balance
 {
-  if (self->_cardBalance != a3)
+  if (self->_cardBalance != balance)
   {
-    v4 = [a3 copy];
+    v4 = [balance copy];
     cardBalance = self->_cardBalance;
     self->_cardBalance = v4;
 
@@ -506,26 +506,26 @@ LABEL_7:
   }
 }
 
-- (void)setUseBuiltInDefaults:(BOOL)a3
+- (void)setUseBuiltInDefaults:(BOOL)defaults
 {
-  if (self->_useBuiltInDefaults != a3)
+  if (self->_useBuiltInDefaults != defaults)
   {
-    self->_useBuiltInDefaults = a3;
+    self->_useBuiltInDefaults = defaults;
     [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateCalculatedSuggestions];
   }
 }
 
-- (BOOL)_amountIsValid:(id)a3
+- (BOOL)_amountIsValid:(id)valid
 {
-  v4 = a3;
-  if (!v4 || ([MEMORY[0x1E696AB90] notANumber], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v4, "isEqualToNumber:", v5), v5, (v6 & 1) != 0) || self->_minLoadAmount && objc_msgSend(v4, "compare:") == -1 || self->_maxLoadAmount && objc_msgSend(v4, "compare:") == 1)
+  validCopy = valid;
+  if (!validCopy || ([MEMORY[0x1E696AB90] notANumber], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(validCopy, "isEqualToNumber:", v5), v5, (v6 & 1) != 0) || self->_minLoadAmount && objc_msgSend(validCopy, "compare:") == -1 || self->_maxLoadAmount && objc_msgSend(validCopy, "compare:") == 1)
   {
     v7 = 0;
   }
 
   else
   {
-    v9 = [(NSDecimalNumber *)self->_cardBalance decimalNumberByAdding:v4];
+    v9 = [(NSDecimalNumber *)self->_cardBalance decimalNumberByAdding:validCopy];
     v10 = v9;
     v7 = (!self->_minBalance || [v9 compare:?] != -1) && (!self->_maxBalance || objc_msgSend(v10, "compare:") != 1);
   }
@@ -533,18 +533,18 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)_useMaximumAmountSuggestionWithAmount:(id)a3
+- (BOOL)_useMaximumAmountSuggestionWithAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   maxLoadAmount = self->_maxLoadAmount;
-  if (maxLoadAmount && [(NSDecimalNumber *)maxLoadAmount compare:v4]== NSOrderedAscending)
+  if (maxLoadAmount && [(NSDecimalNumber *)maxLoadAmount compare:amountCopy]== NSOrderedAscending)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = [(NSDecimalNumber *)self->_cardBalance decimalNumberByAdding:v4];
+    v6 = [(NSDecimalNumber *)self->_cardBalance decimalNumberByAdding:amountCopy];
     maxBalance = self->_maxBalance;
     v8 = maxBalance && [(NSDecimalNumber *)maxBalance compare:v6]== NSOrderedAscending;
   }
@@ -552,21 +552,21 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)_possibleAmountIsValidWithDefaultValue:(id)a3 amount:(id)a4
+- (BOOL)_possibleAmountIsValidWithDefaultValue:(id)value amount:(id)amount
 {
-  v6 = a3;
-  v7 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _possibleValueForAmount:a4];
-  v8 = [v7 compare:v6];
+  valueCopy = value;
+  v7 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _possibleValueForAmount:amount];
+  v8 = [v7 compare:valueCopy];
 
   return (v8 + 1) < 2;
 }
 
-- (id)_possibleValueForAmount:(id)a3
+- (id)_possibleValueForAmount:(id)amount
 {
-  v4 = a3;
+  amountCopy = amount;
   powerOfTenFactor = self->_powerOfTenFactor;
-  v6 = [v4 stringValue];
-  if ((powerOfTenFactor - [v6 length] + 1) < 0)
+  stringValue = [amountCopy stringValue];
+  if ((powerOfTenFactor - [stringValue length] + 1) < 0)
   {
     v9 = 0;
   }
@@ -574,24 +574,24 @@ LABEL_7:
   else
   {
     v7 = self->_powerOfTenFactor;
-    v8 = [v4 stringValue];
-    v9 = v7 - [v8 length] + 1;
+    stringValue2 = [amountCopy stringValue];
+    v9 = v7 - [stringValue2 length] + 1;
   }
 
-  v10 = [v4 decimalNumberByMultiplyingByPowerOf10:v9 withBehavior:self->_roundingBehavior];
+  v10 = [amountCopy decimalNumberByMultiplyingByPowerOf10:v9 withBehavior:self->_roundingBehavior];
 
   return v10;
 }
 
 - (void)_generateCalculatedSuggestions
 {
-  v3 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateDefaultSuggestions];
+  _generateDefaultSuggestions = [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateDefaultSuggestions];
   defaultSuggestions = self->_defaultSuggestions;
-  self->_defaultSuggestions = v3;
+  self->_defaultSuggestions = _generateDefaultSuggestions;
 
-  v5 = [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateValuesToDefaults];
+  _generateValuesToDefaults = [(PKNumericSuggestionsEnterValueAlgorithm *)self _generateValuesToDefaults];
   valuesToDefaults = self->_valuesToDefaults;
-  self->_valuesToDefaults = v5;
+  self->_valuesToDefaults = _generateValuesToDefaults;
 }
 
 - (id)_useMaxAmountSuggestion
@@ -637,11 +637,11 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v6 = [MEMORY[0x1E696AB90] zero];
-  if ([v4 compare:v6])
+  zero = [MEMORY[0x1E696AB90] zero];
+  if ([v4 compare:zero])
   {
-    v7 = [MEMORY[0x1E696AB90] zero];
-    v8 = [v4 compare:v7];
+    zero2 = [MEMORY[0x1E696AB90] zero];
+    v8 = [v4 compare:zero2];
 
     if (v8 == 1)
     {
@@ -695,11 +695,11 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  v6 = [MEMORY[0x1E696AB90] zero];
-  if ([v4 compare:v6])
+  zero = [MEMORY[0x1E696AB90] zero];
+  if ([v4 compare:zero])
   {
-    v7 = [MEMORY[0x1E696AB90] zero];
-    v8 = [v4 compare:v7];
+    zero2 = [MEMORY[0x1E696AB90] zero];
+    v8 = [v4 compare:zero2];
 
     if (v8 == 1)
     {
@@ -726,7 +726,7 @@ LABEL_14:
 - (id)_generateDefaultSuggestions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -747,13 +747,13 @@ LABEL_14:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [MEMORY[0x1E696AB90] zero];
-        v11 = [v9 compare:v10];
+        zero = [MEMORY[0x1E696AB90] zero];
+        v11 = [v9 compare:zero];
 
         if (v11 == 1)
         {
           v12 = [PKNumericSuggestion suggestionWithValue:v9 currencyCode:self->_currencyCode];
-          [v3 addObject:v12];
+          [array addObject:v12];
         }
       }
 
@@ -763,9 +763,9 @@ LABEL_14:
     while (v6);
   }
 
-  v13 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v3];
-  v14 = [v13 array];
-  v15 = [v14 mutableCopy];
+  v13 = [MEMORY[0x1E695DFB8] orderedSetWithArray:array];
+  array2 = [v13 array];
+  v15 = [array2 mutableCopy];
 
   self->_hasValidDefaultSuggestions = [v15 count] == 3;
   [v15 sortUsingComparator:&__block_literal_global_51];
@@ -787,7 +787,7 @@ uint64_t __70__PKNumericSuggestionsEnterValueAlgorithm__generateDefaultSuggestio
 - (id)_generateValuesToDefaults
 {
   v24 = *MEMORY[0x1E69E9840];
-  v18 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -807,28 +807,28 @@ uint64_t __70__PKNumericSuggestionsEnterValueAlgorithm__generateDefaultSuggestio
           objc_enumerationMutation(v3);
         }
 
-        v8 = [*(*(&v19 + 1) + 8 * i) value];
+        value = [*(*(&v19 + 1) + 8 * i) value];
         cardBalance = self->_cardBalance;
-        v10 = v8;
+        v10 = value;
         if (cardBalance)
         {
-          v11 = [MEMORY[0x1E696AB90] notANumber];
-          v12 = [(NSDecimalNumber *)cardBalance isEqualToNumber:v11];
+          notANumber = [MEMORY[0x1E696AB90] notANumber];
+          v12 = [(NSDecimalNumber *)cardBalance isEqualToNumber:notANumber];
 
-          v10 = v8;
+          v10 = value;
           if ((v12 & 1) == 0)
           {
-            v10 = [v8 decimalNumberBySubtracting:self->_cardBalance];
+            v10 = [value decimalNumberBySubtracting:self->_cardBalance];
           }
         }
 
-        v13 = [MEMORY[0x1E696AB90] zero];
-        v14 = [v10 compare:v13];
+        zero = [MEMORY[0x1E696AB90] zero];
+        v14 = [v10 compare:zero];
 
-        if (v14 == 1 && ([v10 isEqualToNumber:v8] & 1) == 0 && -[PKNumericSuggestionsEnterValueAlgorithm _amountIsValid:](self, "_amountIsValid:", v10))
+        if (v14 == 1 && ([v10 isEqualToNumber:value] & 1) == 0 && -[PKNumericSuggestionsEnterValueAlgorithm _amountIsValid:](self, "_amountIsValid:", v10))
         {
           v15 = [PKNumericSuggestion suggestionWithValue:v10 currencyCode:self->_currencyCode];
-          [v18 addObject:v15];
+          [array addObject:v15];
         }
       }
 
@@ -838,7 +838,7 @@ uint64_t __70__PKNumericSuggestionsEnterValueAlgorithm__generateDefaultSuggestio
     while (v5);
   }
 
-  v16 = [v18 copy];
+  v16 = [array copy];
 
   return v16;
 }

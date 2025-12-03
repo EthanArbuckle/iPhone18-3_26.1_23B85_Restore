@@ -1,7 +1,7 @@
 @interface AKSymmetricKeyController
 - (AKSymmetricKeyController)init;
-- (AKSymmetricKeyController)initWithDaemonXPCEndpoint:(id)a3;
-- (void)registerForSymmetricKeyWithContext:(id)a3 completion:(id)a4;
+- (AKSymmetricKeyController)initWithDaemonXPCEndpoint:(id)endpoint;
+- (void)registerForSymmetricKeyWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKSymmetricKeyController
@@ -15,49 +15,49 @@
   return v3;
 }
 
-- (AKSymmetricKeyController)initWithDaemonXPCEndpoint:(id)a3
+- (AKSymmetricKeyController)initWithDaemonXPCEndpoint:(id)endpoint
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, endpoint);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = AKSymmetricKeyController;
-  v11 = [(AKSymmetricKeyController *)&v9 init];
-  objc_storeStrong(&v11, v11);
-  if (v11)
+  selfCopy = [(AKSymmetricKeyController *)&v9 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [AKSymmetricKeyDaemonConnection alloc];
     v5 = [(AKSymmetricKeyDaemonConnection *)v4 initWithListenerEndpoint:location[0]];
-    daemonConnection = v11->_daemonConnection;
-    v11->_daemonConnection = v5;
+    daemonConnection = selfCopy->_daemonConnection;
+    selfCopy->_daemonConnection = v5;
     MEMORY[0x1E69E5920](daemonConnection);
   }
 
-  v8 = MEMORY[0x1E69E5928](v11);
+  v8 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v8;
 }
 
-- (void)registerForSymmetricKeyWithContext:(id)a3 completion:(id)a4
+- (void)registerForSymmetricKeyWithContext:(id)context completion:(id)completion
 {
   v59 = *MEMORY[0x1E69E9840];
-  v56 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v54 = 0;
-  objc_storeStrong(&v54, a4);
+  objc_storeStrong(&v54, completion);
   v48[0] = 0;
   v48[1] = v48;
   v49 = 838860800;
   v50 = 48;
   v51 = __Block_byref_object_copy__2;
   v52 = __Block_byref_object_dispose__2;
-  v53 = MEMORY[0x1E69E5928](v56);
+  v53 = MEMORY[0x1E69E5928](selfCopy);
   v46 = _os_activity_create(&dword_193225000, "symmetrickey-authkit/registeration", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   v47 = v46;
   state.opaque[0] = 0;
@@ -101,7 +101,7 @@
   v34[1] = v48;
   v34[0] = MEMORY[0x1E69E5928](v54);
   v36 = MEMORY[0x193B165F0](&v29);
-  daemonConnection = v56->_daemonConnection;
+  daemonConnection = selfCopy->_daemonConnection;
   v22 = MEMORY[0x1E69E9820];
   v23 = -1073741824;
   v24 = 0;

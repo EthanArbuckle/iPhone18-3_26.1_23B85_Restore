@@ -1,6 +1,6 @@
 @interface HMDHomeMediaSettingsModel
-+ (id)defaultModelForHomeUUID:(id)a3;
-+ (id)modelIDForHomeUUID:(id)a3;
++ (id)defaultModelForHomeUUID:(id)d;
++ (id)modelIDForHomeUUID:(id)d;
 + (id)modelNamespace;
 + (id)properties;
 @end
@@ -38,12 +38,12 @@ void __39__HMDHomeMediaSettingsModel_properties__block_invoke()
   v5 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultModelForHomeUUID:(id)a3
++ (id)defaultModelForHomeUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [HMDHomeMediaSettingsModel alloc];
-  v6 = [a1 modelIDForHomeUUID:v4];
-  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:v4];
+  v6 = [self modelIDForHomeUUID:dCopy];
+  v7 = [(HMDBackingStoreModelObject *)v5 initWithObjectChangeType:1 uuid:v6 parentUUID:dCopy];
 
   [(HMDHomeMediaSettingsModel *)v7 setMinimumMediaUserPrivilege:&unk_286628510];
   [(HMDHomeMediaSettingsModel *)v7 setMediaPeerToPeerEnabled:MEMORY[0x277CBEC28]];
@@ -52,12 +52,12 @@ void __39__HMDHomeMediaSettingsModel_properties__block_invoke()
   return v7;
 }
 
-+ (id)modelIDForHomeUUID:(id)a3
++ (id)modelIDForHomeUUID:(id)d
 {
   v3 = MEMORY[0x277CBEB28];
-  v4 = a3;
+  dCopy = d;
   v5 = [v3 dataWithLength:16];
-  [v4 getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
+  [dCopy getUUIDBytes:{objc_msgSend(v5, "mutableBytes")}];
 
   v6 = objc_alloc(MEMORY[0x277CCAD78]);
   v7 = +[HMDHomeMediaSettingsModel modelNamespace];

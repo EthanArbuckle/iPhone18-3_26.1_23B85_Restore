@@ -1,32 +1,32 @@
 @interface EQKitHVSpace
-- (BOOL)isEqual:(id)a3;
-- (EQKitHVSpace)initWithWidth:(double)a3 height:(double)a4 depth:(double)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (EQKitHVSpace)initWithWidth:(double)width height:(double)height depth:(double)depth;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation EQKitHVSpace
 
-- (EQKitHVSpace)initWithWidth:(double)a3 height:(double)a4 depth:(double)a5
+- (EQKitHVSpace)initWithWidth:(double)width height:(double)height depth:(double)depth
 {
   v9.receiver = self;
   v9.super_class = EQKitHVSpace;
   result = [(EQKitHVSpace *)&v9 init];
   if (result)
   {
-    result->mWidth = a3;
-    result->mHeight = a4;
-    result->mDepth = a5;
+    result->mWidth = width;
+    result->mHeight = height;
+    result->mDepth = depth;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v8 = objc_msgSend_allocWithZone_(v5, v6, a3, v7);
+  v8 = objc_msgSend_allocWithZone_(v5, v6, zone, v7);
   objc_msgSend_width(self, v9, v10, v11);
   v13 = v12;
   objc_msgSend_height(self, v14, v15, v16);
@@ -36,36 +36,36 @@
   return objc_msgSend_initWithWidth_height_depth_(v8, v22, v23, v24, v13, v18, v25);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(isMemberOfClass) = 1;
     return isMemberOfClass;
   }
 
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_8;
   }
 
   v5 = objc_opt_class();
-  isMemberOfClass = objc_msgSend_isMemberOfClass_(a3, v6, v5, v7);
+  isMemberOfClass = objc_msgSend_isMemberOfClass_(equal, v6, v5, v7);
   if (isMemberOfClass)
   {
     objc_msgSend_width(self, v9, v10, v11);
     v13 = v12;
-    objc_msgSend_width(a3, v14, v15, v16);
+    objc_msgSend_width(equal, v14, v15, v16);
     if (v13 == v20)
     {
       objc_msgSend_height(self, v17, v18, v19);
       v22 = v21;
-      objc_msgSend_height(a3, v23, v24, v25);
+      objc_msgSend_height(equal, v23, v24, v25);
       if (v22 == v29)
       {
         objc_msgSend_depth(self, v26, v27, v28);
         v31 = v30;
-        objc_msgSend_depth(a3, v32, v33, v34);
+        objc_msgSend_depth(equal, v32, v33, v34);
         LOBYTE(isMemberOfClass) = v31 == v35;
         return isMemberOfClass;
       }

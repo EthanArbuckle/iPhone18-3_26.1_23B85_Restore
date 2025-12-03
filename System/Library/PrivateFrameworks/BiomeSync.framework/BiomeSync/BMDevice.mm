@@ -1,8 +1,8 @@
 @interface BMDevice
-- (BMDevice)initWithCoder:(id)a3;
-- (BMDevice)initWithDeviceIdentifier:(id)a3 idsDeviceIdentifier:(id)a4 name:(id)a5 model:(id)a6 platform:(int64_t)a7;
+- (BMDevice)initWithCoder:(id)coder;
+- (BMDevice)initWithDeviceIdentifier:(id)identifier idsDeviceIdentifier:(id)deviceIdentifier name:(id)name model:(id)model platform:(int64_t)platform;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMDevice
@@ -19,73 +19,73 @@
   return v7;
 }
 
-- (BMDevice)initWithDeviceIdentifier:(id)a3 idsDeviceIdentifier:(id)a4 name:(id)a5 model:(id)a6 platform:(int64_t)a7
+- (BMDevice)initWithDeviceIdentifier:(id)identifier idsDeviceIdentifier:(id)deviceIdentifier name:(id)name model:(id)model platform:(int64_t)platform
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  identifierCopy = identifier;
+  deviceIdentifierCopy = deviceIdentifier;
+  nameCopy = name;
+  modelCopy = model;
   v20.receiver = self;
   v20.super_class = BMDevice;
   v17 = [(BMDevice *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_deviceIdentifier, a3);
-    objc_storeStrong(&v18->_idsDeviceIdentifier, a4);
-    objc_storeStrong(&v18->_name, a5);
-    objc_storeStrong(&v18->_model, a6);
-    v18->_platform = a7;
+    objc_storeStrong(&v17->_deviceIdentifier, identifier);
+    objc_storeStrong(&v18->_idsDeviceIdentifier, deviceIdentifier);
+    objc_storeStrong(&v18->_name, name);
+    objc_storeStrong(&v18->_model, model);
+    v18->_platform = platform;
   }
 
   return v18;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(BMDevice *)self deviceIdentifier];
-  [v8 encodeObject:v4 forKey:@"deviceIdentifier"];
+  coderCopy = coder;
+  deviceIdentifier = [(BMDevice *)self deviceIdentifier];
+  [coderCopy encodeObject:deviceIdentifier forKey:@"deviceIdentifier"];
 
-  v5 = [(BMDevice *)self idsDeviceIdentifier];
-  [v8 encodeObject:v5 forKey:@"idsDeviceIdentifier"];
+  idsDeviceIdentifier = [(BMDevice *)self idsDeviceIdentifier];
+  [coderCopy encodeObject:idsDeviceIdentifier forKey:@"idsDeviceIdentifier"];
 
-  v6 = [(BMDevice *)self name];
-  [v8 encodeObject:v6 forKey:@"name"];
+  name = [(BMDevice *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v7 = [(BMDevice *)self model];
-  [v8 encodeObject:v7 forKey:@"model"];
+  model = [(BMDevice *)self model];
+  [coderCopy encodeObject:model forKey:@"model"];
 
-  [v8 encodeInteger:-[BMDevice platform](self forKey:{"platform"), @"platform"}];
+  [coderCopy encodeInteger:-[BMDevice platform](self forKey:{"platform"), @"platform"}];
 }
 
-- (BMDevice)initWithCoder:(id)a3
+- (BMDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceIdentifier"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"idsDeviceIdentifier"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
     if (v8)
     {
-      self = -[BMDevice initWithDeviceIdentifier:idsDeviceIdentifier:name:model:platform:](self, "initWithDeviceIdentifier:idsDeviceIdentifier:name:model:platform:", v5, v6, v7, v8, [v4 decodeIntegerForKey:@"platform"]);
-      v9 = self;
+      self = -[BMDevice initWithDeviceIdentifier:idsDeviceIdentifier:name:model:platform:](self, "initWithDeviceIdentifier:idsDeviceIdentifier:name:model:platform:", v5, v6, v7, v8, [coderCopy decodeIntegerForKey:@"platform"]);
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

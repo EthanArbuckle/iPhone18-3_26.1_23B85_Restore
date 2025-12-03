@@ -2,86 +2,86 @@
 - (BOOL)_isGainMapSupported;
 - (BOOL)_isMetadataConsistentWithFirstFrame;
 - (BOOL)_isSemanticStylesSupported;
-- (BOOL)sanityCheckHomographyForBracketIndex:(int)a3;
-- (BOOL)shouldDownsampleRWPPInputWithPixelFormat:(unsigned int)a3 processingType:(unsigned int)a4;
-- (CGRect)_downscaleRoiForRegistration:(CGRect)a3;
+- (BOOL)sanityCheckHomographyForBracketIndex:(int)index;
+- (BOOL)shouldDownsampleRWPPInputWithPixelFormat:(unsigned int)format processingType:(unsigned int)type;
+- (CGRect)_downscaleRoiForRegistration:(CGRect)registration;
 - (NRFProcessorDelegate)delegate;
-- (NRFProcessorV2)initWithCommandQueue:(id)a3;
-- (id)getProcessingTypeKey:(frameProperties_t *)a3;
-- (id)newMTLBufferWithLength:(unint64_t)a3;
-- (int)_appendFrames:(opaqueCMSampleBuffer *)a3 cfp:(frameProperties_t *)a4;
-- (int)_computeBlurryFrameWeight:(int)a3;
-- (int)_computeCornersStrengthWithBracketIndex:(unsigned int)a3 totalCornerStrength:(float *)a4;
+- (NRFProcessorV2)initWithCommandQueue:(id)queue;
+- (id)getProcessingTypeKey:(frameProperties_t *)key;
+- (id)newMTLBufferWithLength:(unint64_t)length;
+- (int)_appendFrames:(opaqueCMSampleBuffer *)frames cfp:(frameProperties_t *)cfp;
+- (int)_computeBlurryFrameWeight:(int)weight;
+- (int)_computeCornersStrengthWithBracketIndex:(unsigned int)index totalCornerStrength:(float *)strength;
 - (int)_computeReferenceFrameIndex;
 - (int)_deepFusion;
 - (int)_doDeepFusionSytheticRefererenceAndProxy;
-- (int)_downsampleImageForRegistration:(__CVBuffer *)a3 outputImage:(__CVBuffer *)a4;
-- (int)_getSharpestBracket:(int)a3 normGyroScores:(float *)a4 normCornerScores:(float *)a5 normFocusScores:(float *)a6 normBlinkScores:(float *)a7 useLongWeights:(unsigned __int8)a8 sharpFrameIndex:(int *)a9;
+- (int)_downsampleImageForRegistration:(__CVBuffer *)registration outputImage:(__CVBuffer *)image;
+- (int)_getSharpestBracket:(int)bracket normGyroScores:(float *)scores normCornerScores:(float *)cornerScores normFocusScores:(float *)focusScores normBlinkScores:(float *)blinkScores useLongWeights:(unsigned __int8)weights sharpFrameIndex:(int *)index;
 - (int)_lowLightGreenGhostPerFrameProcessing;
 - (int)_lowLightMotionDetection;
-- (int)_nrfFuseImages:(BOOL)a3;
-- (int)_perFrameProcessing:(id)a3 input:(opaqueCMSampleBuffer *)a4 cfp:(frameProperties_t *)a5;
+- (int)_nrfFuseImages:(BOOL)images;
+- (int)_perFrameProcessing:(id)processing input:(opaqueCMSampleBuffer *)input cfp:(frameProperties_t *)cfp;
 - (int)_perFrameProcessingComputeReferenceFrameIndexIfReady;
-- (int)_populateDeepFusionMetadata:(id)a3;
+- (int)_populateDeepFusionMetadata:(id)metadata;
 - (int)_setupFusionConfig;
-- (int)addFrame:(opaqueCMSampleBuffer *)a3;
-- (int)allocateResources:(id *)a3;
-- (int)determineWorkingBufferRequirementsWithOptions:(id)a3 memoryAllocationInfo:(id *)a4;
-- (int)determineWorkingBufferRequirementsWithOptions:(id)a3 nrfConfig:(id)a4 memoryAllocationInfo:(id *)a5;
+- (int)addFrame:(opaqueCMSampleBuffer *)frame;
+- (int)allocateResources:(id *)resources;
+- (int)determineWorkingBufferRequirementsWithOptions:(id)options memoryAllocationInfo:(id *)info;
+- (int)determineWorkingBufferRequirementsWithOptions:(id)options nrfConfig:(id)config memoryAllocationInfo:(id *)info;
 - (int)fusionMode;
-- (int)getOptions:(id)a3;
-- (int)initFrameProperties:(frameProperties_t *)a3 metadata:(id)a4 pixelBuffer:(__CVBuffer *)a5;
+- (int)getOptions:(id)options;
+- (int)initFrameProperties:(frameProperties_t *)properties metadata:(id)metadata pixelBuffer:(__CVBuffer *)buffer;
 - (int)prewarm;
 - (int)process;
 - (int)purgeResources;
 - (int)resetInternalState;
 - (int)resetState;
-- (int)setupWithOptions:(id)a3;
+- (int)setupWithOptions:(id)options;
 - (int)updateEV0ReferenceFrameIfNecessary;
-- (int)verifyIOSurfaceCompression:(__IOSurface *)a3;
+- (int)verifyIOSurfaceCompression:(__IOSurface *)compression;
 - (void)_deepFusionResetWarpTransforms;
 - (void)_prepareOutputMetadata;
-- (void)addToSidecar:(id)a3 forKey:(id)a4;
+- (void)addToSidecar:(id)sidecar forKey:(id)key;
 - (void)dealloc;
 - (void)injectReferenceIfNeeded;
 - (void)releaseStoredReference;
-- (void)setFusionMode:(int)a3;
-- (void)setLinearOutputMetadata:(id)a3;
-- (void)setOutput:(id)a3;
-- (void)setProgressiveBatchSize:(int)a3;
-- (void)setReferenceFrameIndex:(int)a3;
-- (void)setSharedMetalBuffer:(id)a3;
-- (void)setSharedRegWarpBuffer:(id)a3;
+- (void)setFusionMode:(int)mode;
+- (void)setLinearOutputMetadata:(id)metadata;
+- (void)setOutput:(id)output;
+- (void)setProgressiveBatchSize:(int)size;
+- (void)setReferenceFrameIndex:(int)index;
+- (void)setSharedMetalBuffer:(id)buffer;
+- (void)setSharedRegWarpBuffer:(id)buffer;
 - (void)storeReferenceIfNeeded;
 @end
 
 @implementation NRFProcessorV2
 
-- (void)setProgressiveBatchSize:(int)a3
+- (void)setProgressiveBatchSize:(int)size
 {
-  if (a3 <= 2)
+  if (size <= 2)
   {
-    v3 = 2;
+    sizeCopy = 2;
   }
 
   else
   {
-    v3 = a3;
+    sizeCopy = size;
   }
 
-  if (v3 >= 4)
+  if (sizeCopy >= 4)
   {
-    v3 = 4;
+    sizeCopy = 4;
   }
 
-  self->_batchCount = v3;
+  self->_batchCount = sizeCopy;
 }
 
-- (void)setOutput:(id)a3
+- (void)setOutput:(id)output
 {
   p_fusionOptions = &self->_fusionOptions;
-  v40 = a3;
-  objc_storeStrong(&self->_delegate, a3);
+  outputCopy = output;
+  objc_storeStrong(&self->_delegate, output);
   v6 = *(p_fusionOptions + 8);
   *(p_fusionOptions + 8) = 0;
 
@@ -94,13 +94,13 @@
   v12 = objc_msgSend_allocator(*p_fusionOptions, v9, v10, v11);
   objc_msgSend_purgeResources_(v12, v13, 0, v14);
 
-  v17 = v40;
-  if (v40)
+  v17 = outputCopy;
+  if (outputCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      objc_storeStrong(p_fusionOptions + 8, a3);
+      objc_storeStrong(p_fusionOptions + 8, output);
       v21 = objc_msgSend_pixelBuffer(*(p_fusionOptions + 8), v18, v19, v20);
       IOSurface = CVPixelBufferGetIOSurface(v21);
       v26 = objc_msgSend_device(*p_fusionOptions, v23, v24, v25);
@@ -113,18 +113,18 @@
     {
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
-      v17 = v40;
+      v17 = outputCopy;
       if ((isKindOfClass & 1) == 0)
       {
         goto LABEL_7;
       }
 
-      v32 = v40;
+      v32 = outputCopy;
       v26 = *(p_fusionOptions + 9);
       *(p_fusionOptions + 9) = v32;
     }
 
-    v17 = v40;
+    v17 = outputCopy;
   }
 
 LABEL_7:
@@ -133,7 +133,7 @@ LABEL_7:
   objc_msgSend_setExecutionStatus_(*p_fusionOptions, v38, v37, v39);
 }
 
-- (BOOL)shouldDownsampleRWPPInputWithPixelFormat:(unsigned int)a3 processingType:(unsigned int)a4
+- (BOOL)shouldDownsampleRWPPInputWithPixelFormat:(unsigned int)format processingType:(unsigned int)type
 {
   if (!*&self->_registrationPipelineRWPPConfig.numThreads && !self->_regWarpM2M)
   {
@@ -141,12 +141,12 @@ LABEL_7:
   }
 
   result = 0;
-  if (a4 && a4 != 7)
+  if (type && type != 7)
   {
     result = 0;
-    if (a3 <= 1751527983)
+    if (format <= 1751527983)
     {
-      if (a3 == 645424688 || a3 == 762865200)
+      if (format == 645424688 || format == 762865200)
       {
         return 1;
       }
@@ -156,9 +156,9 @@ LABEL_7:
 
     else
     {
-      if (a3 <= 2019963439)
+      if (format <= 2019963439)
       {
-        if (a3 != 1751527984)
+        if (format != 1751527984)
         {
           v5 = 1885745712;
           goto LABEL_15;
@@ -167,7 +167,7 @@ LABEL_7:
         return 1;
       }
 
-      if (a3 == 2088265264)
+      if (format == 2088265264)
       {
         return 1;
       }
@@ -176,7 +176,7 @@ LABEL_7:
     }
 
 LABEL_15:
-    if (a3 != v5)
+    if (format != v5)
     {
       return result;
     }
@@ -187,13 +187,13 @@ LABEL_15:
   return result;
 }
 
-- (int)initFrameProperties:(frameProperties_t *)a3 metadata:(id)a4 pixelBuffer:(__CVBuffer *)a5
+- (int)initFrameProperties:(frameProperties_t *)properties metadata:(id)metadata pixelBuffer:(__CVBuffer *)buffer
 {
   p_referenceFrameCandidatesCount = &self->_referenceFrameCandidatesCount;
-  v9 = a4;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a5);
-  WidthOfPlane = CVPixelBufferGetWidthOfPlane(a5, 0);
-  HeightOfPlane = CVPixelBufferGetHeightOfPlane(a5, 0);
+  metadataCopy = metadata;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(buffer);
+  WidthOfPlane = CVPixelBufferGetWidthOfPlane(buffer, 0);
+  HeightOfPlane = CVPixelBufferGetHeightOfPlane(buffer, 0);
   v13 = *p_referenceFrameCandidatesCount;
   v14 = p_referenceFrameCandidatesCount[4];
   if (v14)
@@ -207,7 +207,7 @@ LABEL_15:
   }
 
   v16 = !v15;
-  v17 = sub_29582075C(v9, a3, WidthOfPlane, HeightOfPlane, v16);
+  v17 = sub_29582075C(metadataCopy, properties, WidthOfPlane, HeightOfPlane, v16);
   if (v17)
   {
     v68 = v17;
@@ -216,10 +216,10 @@ LABEL_15:
   }
 
   v18 = 0;
-  v19 = &a3->meta.ltmCurves.ccmLut.ccmV1.lutsData[2044];
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].BB.mid = xmmword_2958D59C0;
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].RB.shadows = xmmword_2958D59D0;
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].GG.highlights = 0x3F80000000000000;
+  v19 = &properties->meta.ltmCurves.ccmLut.ccmV1.lutsData[2044];
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].BB.mid = xmmword_2958D59C0;
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].RB.shadows = xmmword_2958D59D0;
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].GG.highlights = 0x3F80000000000000;
   v84 = xmmword_2958D59E0;
   v85 = xmmword_2958D59F0;
   v87 = 0u;
@@ -236,44 +236,44 @@ LABEL_15:
   v90.columns[0] = v87;
   v90.columns[1] = v88;
   v90.columns[2] = v89;
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].RG.mid = v87;
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].GG.shadows = v90.columns[1];
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].BR.highlights = v90.columns[2];
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].RG.mid = v87;
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].GG.shadows = v90.columns[1];
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[0].BR.highlights = v90.columns[2];
   v90.columns[3] = xmmword_2958D5A40;
   v91 = __invert_f4(v90);
-  *&a3[1].meta.ROI.size.height = v91.columns[0];
-  *&a3[1].meta.ltmCurves.ltmLut.version = v91.columns[1];
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.rightPadding = v91.columns[2];
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BR.shadows = 1.0 / *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BR.highlights;
-  p_mid = &a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid;
+  *&properties[1].meta.ROI.size.height = v91.columns[0];
+  *&properties[1].meta.ltmCurves.ltmLut.version = v91.columns[1];
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.rightPadding = v91.columns[2];
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BR.shadows = 1.0 / *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BR.highlights;
+  p_mid = &properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid;
   v21 = MEMORY[0x29EDCA928];
   v82 = *(MEMORY[0x29EDCA928] + 16);
   v83 = *MEMORY[0x29EDCA928];
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid = *MEMORY[0x29EDCA928];
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GR.shadows = v82;
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].RR.mid = *MEMORY[0x29EDCA928];
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GR.shadows = v82;
   v81 = v21[2];
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GB.highlights = v81;
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BR.highlights = 1065353216;
-  *&a3[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BG.mid = 65792;
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[1].GB.highlights = v81;
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BR.highlights = 1065353216;
+  *&properties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[2].BG.mid = 65792;
   v22 = *MEMORY[0x29EDC0740];
-  v25 = objc_msgSend_objectForKeyedSubscript_(v9, v23, *MEMORY[0x29EDC0740], v24);
+  v25 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v23, *MEMORY[0x29EDC0740], v24);
   if (v25)
   {
     v28 = v25;
     v80 = v22;
-    v29 = &a3[1].meta.ltmCurves.ltmLut.bytes[80];
-    v30 = a3;
+    v29 = &properties[1].meta.ltmCurves.ltmLut.bytes[80];
+    propertiesCopy = properties;
     v31 = p_referenceFrameCandidatesCount;
-    v34 = objc_msgSend_objectForKeyedSubscript_(v9, v26, *MEMORY[0x29EDC0460], v27);
+    v34 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v26, *MEMORY[0x29EDC0460], v27);
     if (v34)
     {
       v78 = v13;
-      v79 = self;
+      selfCopy = self;
       v35 = *MEMORY[0x29EDC03F8];
-      v36 = objc_msgSend_objectForKeyedSubscript_(v9, v32, *MEMORY[0x29EDC03F8], v33);
+      v36 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v32, *MEMORY[0x29EDC03F8], v33);
 
       p_referenceFrameCandidatesCount = v31;
-      a3 = v30;
+      properties = propertiesCopy;
       p_mid = v29;
       v22 = v80;
       if (PixelFormatType != 1751527984)
@@ -281,15 +281,15 @@ LABEL_15:
         if (v36)
         {
           *&v19[50].BB.highlights = 2;
-          v39 = objc_msgSend_objectForKeyedSubscript_(v9, v37, v35, v38);
+          v39 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v37, v35, v38);
           v43 = objc_msgSend_intValue(v39, v40, v41, v42);
 
-          v46 = objc_msgSend_objectForKeyedSubscript_(v9, v44, v80, v45);
+          v46 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v44, v80, v45);
           v50 = objc_msgSend_intValue(v46, v47, v48, v49);
 
           if (v50 > 1)
           {
-            v51 = v79;
+            v51 = selfCopy;
             v52 = v78;
             if (v50 == 2)
             {
@@ -339,7 +339,7 @@ LABEL_15:
 
           else
           {
-            v51 = v79;
+            v51 = selfCopy;
             v52 = v78;
             if (!v50)
             {
@@ -414,10 +414,10 @@ LABEL_43:
                 goto LABEL_50;
               }
 
-              size = a3->meta.faces[0].rect.size;
-              *p_mid = a3->meta.faces[0].rect.origin;
+              size = properties->meta.faces[0].rect.size;
+              *p_mid = properties->meta.faces[0].rect.origin;
               p_mid[1] = size;
-              p_mid[2] = *&a3->meta.faces[0].confidence;
+              p_mid[2] = *&properties->meta.faces[0].confidence;
               goto LABEL_46;
             }
           }
@@ -463,15 +463,15 @@ LABEL_21:
       *&v19[51].BG.highlights = v93.columns[2];
       *&v19[54].BR.shadows = 1.0 / *&v19[54].BR.highlights;
       *&v19[55].RG.shadows = -1;
-      v93.columns[1] = a3->meta.faces[0].rect.size;
-      *p_mid = a3->meta.faces[0].rect.origin;
+      v93.columns[1] = properties->meta.faces[0].rect.size;
+      *p_mid = properties->meta.faces[0].rect.origin;
       p_mid[1] = v93.columns[1];
-      p_mid[2] = *&a3->meta.faces[0].confidence;
+      p_mid[2] = *&properties->meta.faces[0].confidence;
       goto LABEL_46;
     }
 
     p_referenceFrameCandidatesCount = v31;
-    a3 = v30;
+    properties = propertiesCopy;
     p_mid = v29;
     v22 = v80;
     if (PixelFormatType == 1751527984)
@@ -520,7 +520,7 @@ LABEL_25:
   p_mid[2] = v81;
   *&v19[54].BR.highlights = 1065353216;
   *&v19[54].BG.mid = 65792;
-  v60 = objc_msgSend_objectForKeyedSubscript_(v9, v58, v22, v59);
+  v60 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v58, v22, v59);
 
   if (!v60)
   {
@@ -530,7 +530,7 @@ LABEL_31:
     goto LABEL_46;
   }
 
-  v63 = objc_msgSend_objectForKeyedSubscript_(v9, v61, v22, v62);
+  v63 = objc_msgSend_objectForKeyedSubscript_(metadataCopy, v61, v22, v62);
   v67 = objc_msgSend_intValue(v63, v64, v65, v66);
 
   if (v67 == 2)
@@ -648,7 +648,7 @@ LABEL_50:
   return objc_msgSend__process_(self, v5, 1, v6);
 }
 
-- (id)getProcessingTypeKey:(frameProperties_t *)a3
+- (id)getProcessingTypeKey:(frameProperties_t *)key
 {
   v4 = 0;
   output = self->_output;
@@ -661,7 +661,7 @@ LABEL_50:
         goto LABEL_18;
       }
 
-      if (LODWORD(a3[1].meta.ROI.origin.y))
+      if (LODWORD(key[1].meta.ROI.origin.y))
       {
         v6 = off_29EDDC288;
       }
@@ -706,7 +706,7 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v7 = objc_msgSend_progressiveBracketingParameters(self, a2, a3, v3);
+  v7 = objc_msgSend_progressiveBracketingParameters(self, a2, key, v3);
   v11 = objc_msgSend_mode(v7, v8, v9, v10);
   v12 = off_29EDDC298;
   if (v11 != 1)
@@ -721,7 +721,7 @@ LABEL_18:
   return v4;
 }
 
-- (int)verifyIOSurfaceCompression:(__IOSurface *)a3
+- (int)verifyIOSurfaceCompression:(__IOSurface *)compression
 {
   if (IOSurfaceGetCompressionTypeOfPlane() != 4 || SHIDWORD(self->_nrfFusionOutput->_pixelBuffer) >= IOSurfaceGetCompressionFootprintOfPlane())
   {
@@ -732,11 +732,11 @@ LABEL_18:
   return -1;
 }
 
-- (int)addFrame:(opaqueCMSampleBuffer *)a3
+- (int)addFrame:(opaqueCMSampleBuffer *)frame
 {
   v5 = &self->_referenceFrameIndex + 2;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-  v7 = CMGetAttachment(a3, *MEMORY[0x29EDBFF98], 0);
+  ImageBuffer = CMSampleBufferGetImageBuffer(frame);
+  v7 = CMGetAttachment(frame, *MEMORY[0x29EDBFF98], 0);
   v10 = objc_msgSend_objectForKeyedSubscript_(v7, v8, *MEMORY[0x29EDC06E0], v9);
   v13 = objc_msgSend_objectForKeyedSubscript_(v7, v11, *MEMORY[0x29EDC0630], v12);
   v16 = objc_msgSend_objectForKeyedSubscript_(*(v5 + 94), v14, v10, v15);
@@ -753,7 +753,7 @@ LABEL_18:
     goto LABEL_75;
   }
 
-  if (!a3)
+  if (!frame)
   {
     sub_2958B42C0(&v226);
     v27 = 0;
@@ -795,7 +795,7 @@ LABEL_100:
   }
 
   objc_msgSend_injectReferenceIfNeeded(self, v31, v32, v33);
-  CMSampleBufferGetPresentationTimeStamp(&v226, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v226, frame);
   objc_msgSend_StartKTraceEventForAddFrame_timestamp_(self, v34, v27, &v226);
   if (self->_aggregateErr)
   {
@@ -1138,7 +1138,7 @@ LABEL_34:
 
 LABEL_58:
   denoiseFusePipeline = self->_denoiseFusePipeline;
-  v186 = CMSampleBufferGetImageBuffer(a3);
+  v186 = CMSampleBufferGetImageBuffer(frame);
   v188 = objc_msgSend_fillPaddedAreaInFrame_cfp_(denoiseFusePipeline, v187, v186, v27);
   if (v188)
   {
@@ -1154,7 +1154,7 @@ LABEL_58:
     if (BYTE4(nrfFusionOutput->_gainMapOutputMetadata) & 1) != 0 || (BYTE4(nrfFusionOutput->_inferenceInputPixelBuffer))
     {
       v191 = self->_denoiseFusePipeline;
-      v192 = CMSampleBufferGetImageBuffer(a3);
+      v192 = CMSampleBufferGetImageBuffer(frame);
       LODWORD(v193) = self->_nrfFusionOutput->_gainMapOutputMetadata;
       v195 = objc_msgSend_applyGlobalDistortionCorrectionInplaceWithPixelBuffer_amount_gdcPlist_cscParams_(v191, v194, v192, *&self->_saveInputFramesToDisk, v27 + 223952, v193);
       if (!v195)
@@ -1180,7 +1180,7 @@ LABEL_102:
   }
 
 LABEL_64:
-  appended = objc_msgSend__appendFrames_cfp_(self, v189, a3, v27, v211, v212);
+  appended = objc_msgSend__appendFrames_cfp_(self, v189, frame, v27, v211, v212);
   value = appended;
   if (!self->_aggregateErr && appended)
   {
@@ -1196,7 +1196,7 @@ LABEL_86:
   }
 
   ++self->_nInputBrackets;
-  v201 = objc_msgSend__perFrameProcessing_input_cfp_(self, v200, self->_regWarpInput, a3, v27);
+  v201 = objc_msgSend__perFrameProcessing_input_cfp_(self, v200, self->_regWarpInput, frame, v27);
   value = v201;
   if (!self->_aggregateErr && v201)
   {
@@ -1225,7 +1225,7 @@ LABEL_74:
   }
 
 LABEL_75:
-  CMSampleBufferGetPresentationTimeStamp(&v226, a3);
+  CMSampleBufferGetPresentationTimeStamp(&v226, frame);
   objc_msgSend_EndKTraceEventForAddFrame_timestamp_(self, v204, v27, &v226);
   free(v27);
   if (dword_2A18C2398)
@@ -1331,26 +1331,26 @@ LABEL_75:
   return result;
 }
 
-- (int)_appendFrames:(opaqueCMSampleBuffer *)a3 cfp:(frameProperties_t *)a4
+- (int)_appendFrames:(opaqueCMSampleBuffer *)frames cfp:(frameProperties_t *)cfp
 {
   p_referenceFrameCandidatesCount = &self->_referenceFrameCandidatesCount;
   p_preBracketFrameIndex = &self->_preBracketFrameIndex;
   if (LODWORD(self->_output) == 2 && !*p_referenceFrameCandidatesCount)
   {
-    objc_msgSend_waitForIdle(*&self->_fusionOptions, a2, a3, a4);
+    objc_msgSend_waitForIdle(*&self->_fusionOptions, a2, frames, cfp);
   }
 
-  if (a4->meta.isPreBracketedFrame)
+  if (cfp->meta.isPreBracketedFrame)
   {
     *p_preBracketFrameIndex = *p_referenceFrameCandidatesCount;
-    memcpy(&self->_prebracketedProperties, a4, 0x36BE0uLL);
+    memcpy(&self->_prebracketedProperties, cfp, 0x36BE0uLL);
     return 0;
   }
 
   else
   {
     v10 = *p_referenceFrameCandidatesCount;
-    if (a4->meta.isEVMFrame)
+    if (cfp->meta.isEVMFrame)
     {
       p_preBracketFrameIndex[4] = v10;
     }
@@ -1372,9 +1372,9 @@ LABEL_75:
 
     else
     {
-      if (a3)
+      if (frames)
       {
-        v12 = CFRetain(a3);
+        v12 = CFRetain(frames);
         v10 = *p_referenceFrameCandidatesCount;
       }
 
@@ -1384,7 +1384,7 @@ LABEL_75:
       }
 
       self->_bracketSampleBuffers[v10] = v12;
-      memcpy(self->_bracketProperties + 224224 * v10, a4, 0x36BE0uLL);
+      memcpy(self->_bracketProperties + 224224 * v10, cfp, 0x36BE0uLL);
       updated = 0;
       ++*p_referenceFrameCandidatesCount;
       v16 = p_referenceFrameCandidatesCount[4];
@@ -1405,12 +1405,12 @@ LABEL_75:
   return updated;
 }
 
-- (int)_perFrameProcessing:(id)a3 input:(opaqueCMSampleBuffer *)a4 cfp:(frameProperties_t *)a5
+- (int)_perFrameProcessing:(id)processing input:(opaqueCMSampleBuffer *)input cfp:(frameProperties_t *)cfp
 {
-  v8 = a3;
-  ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+  processingCopy = processing;
+  ImageBuffer = CMSampleBufferGetImageBuffer(input);
   PixelFormatType = CVPixelBufferGetPixelFormatType(ImageBuffer);
-  v196 = CMGetAttachment(a4, *MEMORY[0x29EDBFF98], 0);
+  v196 = CMGetAttachment(input, *MEMORY[0x29EDBFF98], 0);
   if (!v196)
   {
     sub_2958B4F74(v197);
@@ -1433,7 +1433,7 @@ LABEL_75:
     goto LABEL_191;
   }
 
-  if (a5->meta.isPreBracketedFrame)
+  if (cfp->meta.isPreBracketedFrame)
   {
     fixed = 0;
     goto LABEL_8;
@@ -1471,7 +1471,7 @@ LABEL_101:
         {
           v191 = shouldDownsampleRWPPInputWithPixelFormat_processingType;
           v185 = PixelFormatType;
-          v28 = v8;
+          v28 = processingCopy;
           regWarpM2M = self->_regWarpM2M;
           v30 = ImageBuffer;
           regWarpHelper = self->_regWarpHelper;
@@ -1482,12 +1482,12 @@ LABEL_101:
           if (!self->_aggregateErr && fixed)
           {
             self->_aggregateErr = 1;
-            v8 = v28;
+            processingCopy = v28;
           }
 
           else
           {
-            v8 = v28;
+            processingCopy = v28;
             if (!fixed)
             {
               objc_msgSend_waitForSchedule(*&self->_fusionOptions, v34, v35, v36);
@@ -1557,15 +1557,15 @@ LABEL_24:
 
       v192 = v24;
       v186 = PixelFormatType;
-      v189 = v8;
+      v189 = processingCopy;
       v38 = objc_msgSend_inferenceInputPixelBuffer(self->_deepFusionOutput, v21, v22, v23);
-      y_low = LODWORD(a5[1].meta.ROI.origin.y);
+      y_low = LODWORD(cfp[1].meta.ROI.origin.y);
       referenceFrameIndex = self->_referenceFrameIndex;
       v41 = ImageBuffer;
       cntBracketSampleBuffers = self->_cntBracketSampleBuffers;
       v43 = self->_referenceFrameCandidatesCount;
       v183 = v41;
-      fixed = objc_msgSend_addFrame_cfp_processingType_batchCount_(self->_denoiseFusePipeline, v44, v41, a5, LODWORD(self->_output), self->_maximumNumberOfReferenceFrameCandidatesToHoldForProcessing);
+      fixed = objc_msgSend_addFrame_cfp_processingType_batchCount_(self->_denoiseFusePipeline, v44, v41, cfp, LODWORD(self->_output), self->_maximumNumberOfReferenceFrameCandidatesToHoldForProcessing);
       v46 = self->_aggregateErr;
       if (!v46 && fixed)
       {
@@ -1576,14 +1576,14 @@ LABEL_24:
       {
         if (!v38 || (referenceFrameIndex & 1) != 0 || !y_low || v43 - 1 != cntBracketSampleBuffers || (v47 = objc_msgSend_inferenceInputPixelBuffer(self->_deepFusionOutput, v21, v45, v23), v48 = self->_cntBracketSampleBuffers, v52 = objc_msgSend_pixelBuffer(self->_deepFusionOutput, v49, v50, v51), WidthOfPlane = CVPixelBufferGetWidthOfPlane(v52, 0), v57 = objc_msgSend_pixelBuffer(self->_deepFusionOutput, v54, v55, v56), HeightOfPlane = CVPixelBufferGetHeightOfPlane(v57, 0), (v60 = objc_msgSend__processInferenceImage_sourceFrameType_sourceFrameIndex_ltcFrameIndex_gtcFrameIndex_originalWidth_originalHeight_(self, v59, v47, 0, v48, v48, v48, WidthOfPlane, HeightOfPlane)) == 0))
         {
-          v8 = v189;
+          processingCopy = v189;
           ImageBuffer = v183;
           LODWORD(PixelFormatType) = v186;
           v24 = v192;
-          if (*(v189[5] + 56) == 1 && a5->meta.isEVMFrame)
+          if (*(v189[5] + 56) == 1 && cfp->meta.isEVMFrame)
           {
             denoiseFusePipeline = self->_denoiseFusePipeline;
-            v62 = CMSampleBufferGetImageBuffer(a4);
+            v62 = CMSampleBufferGetImageBuffer(input);
             fixed = objc_msgSend_baseLayer_(denoiseFusePipeline, v63, v62, v64);
             v65 = self->_aggregateErr;
             if (!v65 && fixed)
@@ -1607,7 +1607,7 @@ LABEL_186:
         fixed = v60;
         sub_2958B4880();
 LABEL_116:
-        v8 = v189;
+        processingCopy = v189;
         goto LABEL_8;
       }
 
@@ -1619,7 +1619,7 @@ LABEL_44:
     v193 = v24;
     v187 = PixelFormatType;
     v66 = objc_msgSend_objectForKeyedSubscript_(v196, v21, *MEMORY[0x29EDC0630], v23);
-    if (objc_msgSend_defringingEnabled(v8[12], v67, v68, v69))
+    if (objc_msgSend_defringingEnabled(processingCopy[12], v67, v68, v69))
     {
       v72 = objc_msgSend_isEqualToString_(v66, v70, *MEMORY[0x29EDBFF48], v71) ^ 1;
     }
@@ -1650,7 +1650,7 @@ LABEL_60:
     }
 
     v179 = v72;
-    v190 = v8;
+    v190 = processingCopy;
     WeakRetained = objc_loadWeakRetained(&self->_progressiveBracketingParameters);
     v84 = objc_msgSend_inferenceInputPixelBuffer(self->_deepFusionOutput, v81, v82, v83);
     v181 = WeakRetained;
@@ -1679,7 +1679,7 @@ LABEL_60:
       v93 = MEMORY[0x29C253310](v92);
       if (v84)
       {
-        v94 = objc_msgSend_addFrame_cfp_processingType_batchCount_(self->_denoiseFusePipeline, v89, ImageBuffer, a5, LODWORD(self->_output), self->_maximumNumberOfReferenceFrameCandidatesToHoldForProcessing);
+        v94 = objc_msgSend_addFrame_cfp_processingType_batchCount_(self->_denoiseFusePipeline, v89, ImageBuffer, cfp, LODWORD(self->_output), self->_maximumNumberOfReferenceFrameCandidatesToHoldForProcessing);
         if (v94)
         {
           fixed = v94;
@@ -1723,7 +1723,7 @@ LABEL_60:
 
 LABEL_194:
         v140 = 0;
-        v8 = v190;
+        processingCopy = v190;
         ImageBuffer = v184;
 LABEL_97:
 
@@ -1747,8 +1747,8 @@ LABEL_91:
     v131 = self->_denoiseFusePipeline;
     v132 = objc_msgSend_pixelBuffer(self->_deepFusionOutput, v89, v90, v91);
     v136 = objc_msgSend_linearOutputPixelBuffer(self->_deepFusionOutput, v133, v134, v135);
-    v137 = CMSampleBufferGetImageBuffer(a4);
-    fixed = objc_msgSend_denoiseSingleImage_linearOutput_input_cfp_nrfPlist_style_inferenceProvider_defringeEnabled_colorCubeFixType_(v131, v138, v132, v136, v137, a5, v190, self->_tuningParameters, v93, v179);
+    v137 = CMSampleBufferGetImageBuffer(input);
+    fixed = objc_msgSend_denoiseSingleImage_linearOutput_input_cfp_nrfPlist_style_inferenceProvider_defringeEnabled_colorCubeFixType_(v131, v138, v132, v136, v137, cfp, v190, self->_tuningParameters, v93, v179);
     v139 = self->_aggregateErr;
     if (!v139 && fixed)
     {
@@ -1767,7 +1767,7 @@ LABEL_91:
         if ((v88 & 1) == 0)
         {
 
-          v8 = v190;
+          processingCopy = v190;
           v24 = v193;
           goto LABEL_128;
         }
@@ -1782,12 +1782,12 @@ LABEL_91:
     {
       v140 = 0;
 LABEL_96:
-      v8 = v190;
+      processingCopy = v190;
       goto LABEL_97;
     }
 
 LABEL_196:
-    v8 = v190;
+    processingCopy = v190;
 
     goto LABEL_8;
   }
@@ -1795,7 +1795,7 @@ LABEL_196:
   if (output != 2)
   {
     v73 = v24;
-    fixed = objc_msgSend_addFrame_cfp_processingType_batchCount_(self->_denoiseFusePipeline, v21, ImageBuffer, a5, 3, self->_maximumNumberOfReferenceFrameCandidatesToHoldForProcessing);
+    fixed = objc_msgSend_addFrame_cfp_processingType_batchCount_(self->_denoiseFusePipeline, v21, ImageBuffer, cfp, 3, self->_maximumNumberOfReferenceFrameCandidatesToHoldForProcessing);
     v74 = self->_aggregateErr;
     if (!v74 && fixed)
     {
@@ -1836,7 +1836,7 @@ LABEL_113:
     goto LABEL_8;
   }
 
-  fixed = objc_msgSend_addFrame_cfp_processingType_batchCount_(self->_denoiseFusePipeline, v119, v115, a5, LODWORD(self->_output), self->_maximumNumberOfReferenceFrameCandidatesToHoldForProcessing);
+  fixed = objc_msgSend_addFrame_cfp_processingType_batchCount_(self->_denoiseFusePipeline, v119, v115, cfp, LODWORD(self->_output), self->_maximumNumberOfReferenceFrameCandidatesToHoldForProcessing);
   v122 = self->_aggregateErr;
   if (!v122 && fixed)
   {
@@ -2059,9 +2059,9 @@ LABEL_180:
       v165 = 0;
     }
 
-    if (v8)
+    if (processingCopy)
     {
-      v167 = v8[3];
+      v167 = processingCopy[3];
       if (v167)
       {
         if (!((v167[24] != 2) | v165 & 1))
@@ -2189,9 +2189,9 @@ LABEL_8:
   [(NRFProcessorV2 *)&v15 dealloc];
 }
 
-- (NRFProcessorV2)initWithCommandQueue:(id)a3
+- (NRFProcessorV2)initWithCommandQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   FigNote_AllowInternalDefaultLogs();
   fig_note_initialize_category_with_default_work_cf();
   fig_note_initialize_category_with_default_work_cf();
@@ -2222,13 +2222,13 @@ LABEL_8:
     if (v31[0])
     {
       free(v31[0]);
-      if (!v5)
+      if (!queueCopy)
       {
         goto LABEL_8;
       }
     }
 
-    else if (!v5)
+    else if (!queueCopy)
     {
 LABEL_8:
       objc_msgSend_resetState(v9, v6, v7, v8);
@@ -2263,7 +2263,7 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    objc_storeStrong(&v9->_cameraInfoByPortType, a3);
+    objc_storeStrong(&v9->_cameraInfoByPortType, queue);
     goto LABEL_8;
   }
 
@@ -2499,12 +2499,12 @@ LABEL_7:
   }
 }
 
-- (int)setupWithOptions:(id)a3
+- (int)setupWithOptions:(id)options
 {
   p_cameraInfoByPortType = &self->_cameraInfoByPortType;
   p_regWarpInput = &self->_regWarpInput;
-  v6 = a3;
-  v256 = objc_msgSend_objectForKeyedSubscript_(v6, v7, *MEMORY[0x29EDC0838], v8);
+  optionsCopy = options;
+  v256 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v7, *MEMORY[0x29EDC0838], v8);
   v9 = MEMORY[0x29EDB9F48];
   v10 = objc_opt_class();
   v13 = objc_msgSend_bundleForClass_(v9, v11, v10, v12);
@@ -2533,7 +2533,7 @@ LABEL_129:
   p_regWarpInput[2] = v23;
 
   v25 = [NRFConfig alloc];
-  v28 = objc_msgSend_initWithDefaults_(v25, v26, v6, v27);
+  v28 = objc_msgSend_initWithDefaults_(v25, v26, optionsCopy, v27);
   v29 = p_regWarpInput[18];
   p_regWarpInput[18] = v28;
 
@@ -2586,7 +2586,7 @@ LABEL_129:
   v44 = v268[4];
   v268[4] = v43;
 
-  v47 = objc_msgSend_objectForKeyedSubscript_(v6, v45, *MEMORY[0x29EDC0298], v46);
+  v47 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v45, *MEMORY[0x29EDC0298], v46);
   Options = objc_msgSend_getOptions_(self, v48, v47, v49);
 
   if (Options)
@@ -2596,7 +2596,7 @@ LABEL_129:
     goto LABEL_135;
   }
 
-  v53 = objc_msgSend_objectForKeyedSubscript_(v6, v51, *MEMORY[0x29EDC0288], v52);
+  v53 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v51, *MEMORY[0x29EDC0288], v52);
   v252 = v53;
   if (v53)
   {
@@ -2625,7 +2625,7 @@ LABEL_129:
   }
 
   v254 = v30;
-  v255 = v6;
+  v255 = optionsCopy;
   *(p_regWarpInput[18] + 72) = 0;
   v341 = 0u;
   v342 = 0u;
@@ -2662,7 +2662,7 @@ LABEL_129:
   *(p_regWarpInput[18] + 79) = 0;
   v269 = p_regWarpInput;
   *(p_regWarpInput[18] + 101) = 0;
-  v257 = self;
+  selfCopy = self;
   objc_msgSend_applyOverrides(self, v76, v77, v78);
   v263 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   v262 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
@@ -2826,8 +2826,8 @@ LABEL_129:
   }
 
   v147 = v269;
-  v6 = v255;
-  v148 = v257;
+  optionsCopy = v255;
+  v148 = selfCopy;
   v150 = v262;
   v149 = v263;
   if (*(v269[18] + 96) == 4)
@@ -2996,14 +2996,14 @@ LABEL_129:
       {
         v147 = v269;
         *(v269[18] + 96) |= 1u;
-        v6 = v255;
-        v148 = v257;
+        optionsCopy = v255;
+        v148 = selfCopy;
       }
 
       else
       {
-        v6 = v255;
-        v148 = v257;
+        optionsCopy = v255;
+        v148 = selfCopy;
         v147 = v269;
       }
 
@@ -3092,7 +3092,7 @@ LABEL_141:
     goto LABEL_134;
   }
 
-  v231 = objc_msgSend_determineWorkingBufferRequirementsWithOptions_nrfConfig_memoryAllocationInfo_(v148, v230, v6, v147[18], v148 + 16);
+  v231 = objc_msgSend_determineWorkingBufferRequirementsWithOptions_nrfConfig_memoryAllocationInfo_(v148, v230, optionsCopy, v147[18], v148 + 16);
   if (v231)
   {
     sub_2958B548C(v231, v350);
@@ -3141,7 +3141,7 @@ LABEL_134:
         v244 = *(*(&v273 + 1) + 8 * kk);
         v245 = objc_msgSend_intValue(v244, v238, v239, v240);
         v248 = objc_msgSend_objectForKeyedSubscript_(v235, v246, v244, v247);
-        v250 = objc_msgSend_prepareToProcess_prepareDescriptor_(v257, v249, v245, v248);
+        v250 = objc_msgSend_prepareToProcess_prepareDescriptor_(selfCopy, v249, v245, v248);
         if (v250)
         {
           Options = v250;
@@ -3161,7 +3161,7 @@ LABEL_134:
 
     Options = 0;
 LABEL_125:
-    v6 = v255;
+    optionsCopy = v255;
   }
 
   else
@@ -3173,10 +3173,10 @@ LABEL_135:
   return Options;
 }
 
-- (int)getOptions:(id)a3
+- (int)getOptions:(id)options
 {
-  v4 = a3;
-  if (!v4)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
     goto LABEL_21;
   }
@@ -3193,7 +3193,7 @@ LABEL_135:
 
   p_regWarpInput = &self->_regWarpInput;
   v8 = *(self->_regWarpInput + 1);
-  v11 = objc_msgSend_objectForKeyedSubscript_(v4, v9, @"Common", v10);
+  v11 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, @"Common", v10);
   v14 = objc_msgSend_objectForKeyedSubscript_(v11, v12, @"NRFParameters", v13);
   LODWORD(v8) = objc_msgSend_readPlist_(v8, v15, v14, v16);
 
@@ -3203,7 +3203,7 @@ LABEL_135:
     goto LABEL_21;
   }
 
-  v19 = objc_msgSend_objectForKeyedSubscript_(v4, v17, @"DefaultSensorIDs", v18);
+  v19 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v17, @"DefaultSensorIDs", v18);
   if (!v19)
   {
 LABEL_21:
@@ -3230,7 +3230,7 @@ LABEL_21:
         }
 
         v25 = *(*(&v68 + 1) + 8 * i);
-        v26 = objc_msgSend_objectForKeyedSubscript_(v4, v22, v25, v23);
+        v26 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v22, v25, v23);
         v65 = v25;
         v29 = objc_msgSend_objectForKeyedSubscript_(v21, v27, v25, v28);
         v33 = objc_msgSend_allKeys(v26, v30, v31, v32);
@@ -3256,12 +3256,12 @@ LABEL_21:
           v50 = [VideoDefringingTuningParameters alloc];
           v64 = v26;
           v53 = v21;
-          v54 = v4;
+          v54 = optionsCopy;
           v55 = objc_msgSend_initWithTuningParameters_(v50, v51, v49, v52);
           objc_msgSend_selectParametersForTuningMode_(v55, v56, 0, v57);
           objc_msgSend_setObject_forKeyedSubscript_(p_tuningParamsPlist[2], v58, v55, v65);
 
-          v4 = v54;
+          optionsCopy = v54;
           v21 = v53;
           v26 = v64;
         }
@@ -3279,10 +3279,10 @@ LABEL_22:
   return v59;
 }
 
-- (int)determineWorkingBufferRequirementsWithOptions:(id)a3 memoryAllocationInfo:(id *)a4
+- (int)determineWorkingBufferRequirementsWithOptions:(id)options memoryAllocationInfo:(id *)info
 {
-  v6 = a3;
-  if (!v6)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
     sub_2958B5D14();
 LABEL_9:
@@ -3290,14 +3290,14 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!a4)
+  if (!info)
   {
     sub_2958B5CB4();
     goto LABEL_9;
   }
 
   v7 = [NRFConfig alloc];
-  v10 = objc_msgSend_initWithDefaults_(v7, v8, v6, v9);
+  v10 = objc_msgSend_initWithDefaults_(v7, v8, optionsCopy, v9);
   if (!v10)
   {
     sub_2958B5C54();
@@ -3305,18 +3305,18 @@ LABEL_9:
   }
 
   v12 = v10;
-  v13 = objc_msgSend_determineWorkingBufferRequirementsWithOptions_nrfConfig_memoryAllocationInfo_(self, v11, v6, v10, a4);
+  v13 = objc_msgSend_determineWorkingBufferRequirementsWithOptions_nrfConfig_memoryAllocationInfo_(self, v11, optionsCopy, v10, info);
 
 LABEL_5:
   return v13;
 }
 
-- (int)determineWorkingBufferRequirementsWithOptions:(id)a3 nrfConfig:(id)a4 memoryAllocationInfo:(id *)a5
+- (int)determineWorkingBufferRequirementsWithOptions:(id)options nrfConfig:(id)config memoryAllocationInfo:(id *)info
 {
-  v7 = a3;
-  v8 = a4;
-  v11 = v8;
-  if (!v7)
+  optionsCopy = options;
+  configCopy = config;
+  v11 = configCopy;
+  if (!optionsCopy)
   {
     sub_2958B61DC(&v54);
 LABEL_46:
@@ -3324,27 +3324,27 @@ LABEL_46:
     goto LABEL_41;
   }
 
-  if (!v8)
+  if (!configCopy)
   {
     sub_2958B6140(&v54);
     goto LABEL_46;
   }
 
-  if (!a5)
+  if (!info)
   {
     sub_2958B60A4(&v54);
     goto LABEL_46;
   }
 
-  v12 = objc_msgSend_objectForKeyedSubscript_(v7, v9, *MEMORY[0x29EDC0838], v10);
+  v12 = objc_msgSend_objectForKeyedSubscript_(optionsCopy, v9, *MEMORY[0x29EDC0838], v10);
   if (!v12)
   {
     sub_2958B6008(&v54);
     goto LABEL_46;
   }
 
-  v44 = a5;
-  v45 = v7;
+  infoCopy = info;
+  v45 = optionsCopy;
   v48 = v11;
   v58 = 0u;
   v59 = 0u;
@@ -3479,29 +3479,29 @@ LABEL_38:
     while (v41);
   }
 
-  v44->var0 = v23;
-  v44->var1 = v17;
-  v44->var2 = v20;
-  v44->var3 = v21;
-  v44->var4 = v22;
-  v44->var5 = v18;
-  v44->var6 = v19;
+  infoCopy->var0 = v23;
+  infoCopy->var1 = v17;
+  infoCopy->var2 = v20;
+  infoCopy->var3 = v21;
+  infoCopy->var4 = v22;
+  infoCopy->var5 = v18;
+  infoCopy->var6 = v19;
 
   v42 = 0;
 LABEL_40:
-  v7 = v45;
+  optionsCopy = v45;
   v11 = v48;
 LABEL_41:
 
   return v42;
 }
 
-- (id)newMTLBufferWithLength:(unint64_t)a3
+- (id)newMTLBufferWithLength:(unint64_t)length
 {
   v5 = &self->_anon_147fb8[72];
   if (BYTE1(self->_nrfFusionOutput->_metadata) == 1)
   {
-    v6 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x29EDBA070], a2, a3, v3, *MEMORY[0x29EDBB128]);
+    v6 = objc_msgSend_numberWithUnsignedLong_(MEMORY[0x29EDBA070], a2, length, v3, *MEMORY[0x29EDBB128]);
     v7 = *MEMORY[0x29EDBB140];
     v25[0] = v6;
     v25[1] = &unk_2A1CC40F0;
@@ -3541,8 +3541,8 @@ LABEL_41:
     }
   }
 
-  v21 = objc_msgSend_device(*(v5 + 438), a2, a3, v3);
-  v20 = objc_msgSend_newBufferWithLength_options_(v21, v22, a3, 0);
+  v21 = objc_msgSend_device(*(v5 + 438), a2, length, v3);
+  v20 = objc_msgSend_newBufferWithLength_options_(v21, v22, length, 0);
 
   if (!v20)
   {
@@ -3552,9 +3552,9 @@ LABEL_41:
   return v20;
 }
 
-- (int)allocateResources:(id *)a3
+- (int)allocateResources:(id *)resources
 {
-  if (a3)
+  if (resources)
   {
     v6 = &self->_anon_147fb8[72];
     regWarpHelper = self->_regWarpHelper;
@@ -3573,14 +3573,14 @@ LABEL_41:
       Width = 0;
     }
 
-    v9 = Width >= a3->var5 && regWarpHelper >= a3->var6;
+    v9 = Width >= resources->var5 && regWarpHelper >= resources->var6;
     if (v9 || (CVPixelBufferRelease(*(v6 + 428)), PixelBufferWithWiringAssertion = CreatePixelBufferWithWiringAssertion(), (*(v6 + 428) = PixelBufferWithWiringAssertion) != 0))
     {
-      v14 = objc_msgSend_length(self->_sharedRegWarpBuffer, a2, a3, v3);
+      v14 = objc_msgSend_length(self->_sharedRegWarpBuffer, a2, resources, v3);
       result = 0;
       if (!self->_usingExternalSharedRegWarpBuffer)
       {
-        var1 = a3->var1;
+        var1 = resources->var1;
         if (var1 > v14)
         {
           v17 = MEMORY[0x29EDB9270];
@@ -3657,28 +3657,28 @@ LABEL_41:
   }
 }
 
-- (void)setFusionMode:(int)a3
+- (void)setFusionMode:(int)mode
 {
   denoiseFusePipeline = self->_denoiseFusePipeline;
-  if (a3 == 1)
+  if (mode == 1)
   {
     objc_msgSend_setFusionReferenceFrame_(denoiseFusePipeline, a2, 1, v3);
   }
 
   else
   {
-    objc_msgSend_setFusionReferenceFrame_(denoiseFusePipeline, a2, 2 * (a3 == 2), v3);
+    objc_msgSend_setFusionReferenceFrame_(denoiseFusePipeline, a2, 2 * (mode == 2), v3);
   }
 }
 
-- (void)setReferenceFrameIndex:(int)a3
+- (void)setReferenceFrameIndex:(int)index
 {
   if (*MEMORY[0x29EDB9270] == 1)
   {
     kdebug_trace();
   }
 
-  self->_cntBracketSampleBuffers = a3;
+  self->_cntBracketSampleBuffers = index;
   v8 = objc_msgSend__registerImages_(self, a2, 0, v3);
   aggregateErr = self->_aggregateErr;
   if (aggregateErr)
@@ -3829,20 +3829,20 @@ LABEL_15:
   return 0;
 }
 
-- (void)addToSidecar:(id)a3 forKey:(id)a4
+- (void)addToSidecar:(id)sidecar forKey:(id)key
 {
-  v14 = a3;
-  v6 = a4;
+  sidecarCopy = sidecar;
+  keyCopy = key;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_msgSend_objectForKeyedSubscript_(self->_nrfConfig, v7, v6, v8), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_msgSend_objectForKeyedSubscript_(self->_nrfConfig, v7, keyCopy, v8), v9 = objc_claimAutoreleasedReturnValue(), v9, v9))
   {
-    v11 = objc_msgSend_objectForKeyedSubscript_(self->_nrfConfig, v7, v6, v10);
-    objc_msgSend_addEntriesFromDictionary_(v11, v12, v14, v13);
+    v11 = objc_msgSend_objectForKeyedSubscript_(self->_nrfConfig, v7, keyCopy, v10);
+    objc_msgSend_addEntriesFromDictionary_(v11, v12, sidecarCopy, v13);
   }
 
   else
   {
-    objc_msgSend_setObject_forKeyedSubscript_(self->_nrfConfig, v7, v14, v6);
+    objc_msgSend_setObject_forKeyedSubscript_(self->_nrfConfig, v7, sidecarCopy, keyCopy);
   }
 }
 
@@ -3950,14 +3950,14 @@ LABEL_11:
   return v27;
 }
 
-- (void)setLinearOutputMetadata:(id)a3
+- (void)setLinearOutputMetadata:(id)metadata
 {
-  v4 = a3;
-  if (v4)
+  metadataCopy = metadata;
+  if (metadataCopy)
   {
     v5 = self->_bracketProperties + 224224 * *&self->_anon_14893c[1004];
     v6 = (self->_bracketProperties + 224224 * *&self->_anon_14893c[1012]);
-    v41 = v4;
+    v41 = metadataCopy;
     v7 = sub_295820670((v5 + 16), (v6 + 8), 2);
     v8 = *(v5 + 14);
     v9 = *(v5 + 10);
@@ -4955,7 +4955,7 @@ LABEL_79:
   return 0;
 }
 
-- (int)_downsampleImageForRegistration:(__CVBuffer *)a3 outputImage:(__CVBuffer *)a4
+- (int)_downsampleImageForRegistration:(__CVBuffer *)registration outputImage:(__CVBuffer *)image
 {
   v7 = MEMORY[0x29EDB9270];
   if (*MEMORY[0x29EDB9270] == 1)
@@ -4963,7 +4963,7 @@ LABEL_79:
     kdebug_trace();
   }
 
-  if (!a3)
+  if (!registration)
   {
     sub_2958B805C();
 LABEL_13:
@@ -4971,15 +4971,15 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (!a4)
+  if (!image)
   {
     sub_2958B7FFC();
     goto LABEL_13;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  if (CVPixelBufferGetPixelFormatType(a3) == 1751527984)
+  Width = CVPixelBufferGetWidth(registration);
+  Height = CVPixelBufferGetHeight(registration);
+  if (CVPixelBufferGetPixelFormatType(registration) == 1751527984)
   {
     sub_2958B7FAC(&v13);
     v11 = v13;
@@ -4987,7 +4987,7 @@ LABEL_13:
 
   else
   {
-    v11 = objc_msgSend_transform_srcRect_dst_dstRect_rotate_sync_m2m_(*&self->_registrationPipelineRWPPConfig.numThreads, v10, a3, a4, 1, 1, 0.0, 0.0, Width, Height, 0.0, 0.0, (Width >> 1), (Height >> 1));
+    v11 = objc_msgSend_transform_srcRect_dst_dstRect_rotate_sync_m2m_(*&self->_registrationPipelineRWPPConfig.numThreads, v10, registration, image, 1, 1, 0.0, 0.0, Width, Height, 0.0, 0.0, (Width >> 1), (Height >> 1));
     if (v11)
     {
       sub_2958B7F4C();
@@ -5003,14 +5003,14 @@ LABEL_8:
   return v11;
 }
 
-- (CGRect)_downscaleRoiForRegistration:(CGRect)a3
+- (CGRect)_downscaleRoiForRegistration:(CGRect)registration
 {
-  v3 = llround(a3.origin.x);
-  v4 = llround(a3.origin.y);
+  v3 = llround(registration.origin.x);
+  v4 = llround(registration.origin.y);
   v5 = (((v3 & 1) + v3) / 2);
   v6 = (((v4 & 1) + v4) / 2);
-  v7 = ((vcvtmd_s64_f64(a3.size.width) - (v3 & 1)) >> 1);
-  v8 = ((vcvtmd_s64_f64(a3.size.height) - (v4 & 1)) >> 1);
+  v7 = ((vcvtmd_s64_f64(registration.size.width) - (v3 & 1)) >> 1);
+  v8 = ((vcvtmd_s64_f64(registration.size.height) - (v4 & 1)) >> 1);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -5018,7 +5018,7 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)sanityCheckHomographyForBracketIndex:(int)a3
+- (BOOL)sanityCheckHomographyForBracketIndex:(int)index
 {
   v34 = 0u;
   v35 = 0u;
@@ -5029,7 +5029,7 @@ LABEL_8:
   {
     v8 = v5;
     v9 = *v33;
-    v10 = (&self->_bracketProperties[1].meta.exposureParams.conversion_gain + 56056 * a3);
+    v10 = (&self->_bracketProperties[1].meta.exposureParams.conversion_gain + 56056 * index);
     while (2)
     {
       for (i = 0; i != v8; ++i)
@@ -5071,10 +5071,10 @@ LABEL_8:
   return 1;
 }
 
-- (int)_populateDeepFusionMetadata:(id)a3
+- (int)_populateDeepFusionMetadata:(id)metadata
 {
   p_cntBracketSampleBuffers = &self->_cntBracketSampleBuffers;
-  v5 = a3;
+  metadataCopy = metadata;
   v6 = *p_cntBracketSampleBuffers;
   if ((v6 & 0x80000000) != 0 || v6 >= p_cntBracketSampleBuffers[2])
   {
@@ -5092,7 +5092,7 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  objc_msgSend_setObject_forKeyedSubscript_(v5, v9, v10, @"ReferenceMetadata");
+  objc_msgSend_setObject_forKeyedSubscript_(metadataCopy, v9, v10, @"ReferenceMetadata");
   v11 = p_cntBracketSampleBuffers[2];
   if (v11 < 1)
   {
@@ -5128,7 +5128,7 @@ LABEL_18:
     if (v16)
     {
       v18 = v16;
-      objc_msgSend_setObject_forKeyedSubscript_(v5, v17, v16, @"SifrMetadata");
+      objc_msgSend_setObject_forKeyedSubscript_(metadataCopy, v17, v16, @"SifrMetadata");
 
       goto LABEL_14;
     }
@@ -5148,7 +5148,7 @@ LABEL_14:
   v20 = CMGetAttachment(bracketSampleBuffers[v14], v8, 0);
   if (v20)
   {
-    objc_msgSend_setObject_forKeyedSubscript_(v5, v19, v20, @"LongMetadata");
+    objc_msgSend_setObject_forKeyedSubscript_(metadataCopy, v19, v20, @"LongMetadata");
     v21 = 0;
   }
 
@@ -6005,22 +6005,22 @@ LABEL_9:
   return v17;
 }
 
-- (int)_computeCornersStrengthWithBracketIndex:(unsigned int)a3 totalCornerStrength:(float *)a4
+- (int)_computeCornersStrengthWithBracketIndex:(unsigned int)index totalCornerStrength:(float *)strength
 {
   p_referenceFrameCandidatesCount = &self->_referenceFrameCandidatesCount;
-  if (self->_referenceFrameCandidatesCount <= a3)
+  if (self->_referenceFrameCandidatesCount <= index)
   {
     sub_2958B9BD0(&v34);
     return v34;
   }
 
-  if (!a4)
+  if (!strength)
   {
     sub_2958B9D90(&v34);
     return v34;
   }
 
-  ImageBuffer = CMSampleBufferGetImageBuffer(self->_bracketSampleBuffers[a3]);
+  ImageBuffer = CMSampleBufferGetImageBuffer(self->_bracketSampleBuffers[index]);
   if (!ImageBuffer)
   {
     sub_2958B9D40(&v34);
@@ -6028,14 +6028,14 @@ LABEL_9:
   }
 
   v9 = ImageBuffer;
-  v10 = *(&self->_bracketProperties[0].meta.ROI.size + 14014 * a3);
+  v10 = *(&self->_bracketProperties[0].meta.ROI.size + 14014 * index);
   p_curRegWarpTempIndex = &self->_curRegWarpTempIndex;
-  v32 = *(&self->_bracketProperties[0].meta.ROI.origin + 14014 * a3);
+  v32 = *(&self->_bracketProperties[0].meta.ROI.origin + 14014 * index);
   v33 = v10;
   PixelFormatType = CVPixelBufferGetPixelFormatType(ImageBuffer);
   if (objc_msgSend_shouldDownsampleRWPPInputWithPixelFormat_processingType_(self, v13, PixelFormatType, p_referenceFrameCandidatesCount[4]))
   {
-    if (*p_curRegWarpTempIndex != a3)
+    if (*p_curRegWarpTempIndex != index)
     {
       if (PixelFormatType == 1751527984 || *&self->_registrationPipelineRWPPConfig.numThreads == 0)
       {
@@ -6064,7 +6064,7 @@ LABEL_9:
         }
       }
 
-      *p_curRegWarpTempIndex = a3;
+      *p_curRegWarpTempIndex = index;
     }
 
     v9 = self->_regWarpHelper;
@@ -6075,7 +6075,7 @@ LABEL_9:
     *(&v33 + 1) = v30;
   }
 
-  v22 = objc_msgSend_calculateTotalCornerStrength_regionOfInterest_mapping_outTotalCornerStrength_(self->_metal, v14, v9, &v32, 0, a4);
+  v22 = objc_msgSend_calculateTotalCornerStrength_regionOfInterest_mapping_outTotalCornerStrength_(self->_metal, v14, v9, &v32, 0, strength);
   if (v22)
   {
     sub_2958B9CE0();
@@ -6084,39 +6084,39 @@ LABEL_9:
   return v22;
 }
 
-- (int)_getSharpestBracket:(int)a3 normGyroScores:(float *)a4 normCornerScores:(float *)a5 normFocusScores:(float *)a6 normBlinkScores:(float *)a7 useLongWeights:(unsigned __int8)a8 sharpFrameIndex:(int *)a9
+- (int)_getSharpestBracket:(int)bracket normGyroScores:(float *)scores normCornerScores:(float *)cornerScores normFocusScores:(float *)focusScores normBlinkScores:(float *)blinkScores useLongWeights:(unsigned __int8)weights sharpFrameIndex:(int *)index
 {
-  if (!a9)
+  if (!index)
   {
     sub_2958BA188(&v21);
     return v21;
   }
 
-  if (!a4)
+  if (!scores)
   {
     sub_2958BA0EC(&v21);
     return v21;
   }
 
-  if (!a5)
+  if (!cornerScores)
   {
     sub_2958BA050(&v21);
     return v21;
   }
 
-  if (!a6)
+  if (!focusScores)
   {
     sub_2958B9FB4(&v21);
     return v21;
   }
 
-  if (!a7)
+  if (!blinkScores)
   {
     sub_2958B9F18(&v21);
     return v21;
   }
 
-  if (a3 >= 4)
+  if (bracket >= 4)
   {
     sub_2958B9E7C(&v21);
     return v21;
@@ -6129,11 +6129,11 @@ LABEL_9:
     return v21;
   }
 
-  if (a3 >= 1)
+  if (bracket >= 1)
   {
     v10 = 0;
     v11 = &OBJC_IVAR___FrameSelectionPlist_referenceSelectionRegressionWeightLongFrame;
-    if (!a8)
+    if (!weights)
     {
       v11 = &OBJC_IVAR___FrameSelectionPlist_referenceSelectionRegressionWeightShortFrame;
     }
@@ -6146,39 +6146,39 @@ LABEL_9:
     v17 = 3.4028e38;
     do
     {
-      v18 = v13 + v14 * a4[v10] + v15 * a5[v10] + v16 * a6[v10];
+      v18 = v13 + v14 * scores[v10] + v15 * cornerScores[v10] + v16 * focusScores[v10];
       v19 = *(*(self->_regWarpInput + 10) + 184);
       if (v19 && *(v19 + 8))
       {
-        v18 = (*(v19 + 72) * (1.0 - a7[v10])) + v18 * (1.0 - *(v19 + 72));
+        v18 = (*(v19 + 72) * (1.0 - blinkScores[v10])) + v18 * (1.0 - *(v19 + 72));
       }
 
       if (!v10 || v17 > v18)
       {
-        *a9 = v10;
+        *index = v10;
         v17 = v18;
       }
 
       ++v10;
     }
 
-    while (a3 != v10);
+    while (bracket != v10);
   }
 
   return 0;
 }
 
-- (int)_computeBlurryFrameWeight:(int)a3
+- (int)_computeBlurryFrameWeight:(int)weight
 {
   p_maxFocusScore = &self->_maxFocusScore;
-  v4 = self + 224224 * a3;
+  v4 = self + 224224 * weight;
   *(v4 + 112154) = 1065353216;
   if (LODWORD(self->_output) != 2)
   {
     return 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   regWarpInput = self->_regWarpInput;
   v7 = *(regWarpInput + 10);
   if (v7)
@@ -6200,10 +6200,10 @@ LABEL_9:
           v11 = (v7 + *v10);
           do
           {
-            _X8 = &v5->_bracketProperties[4].meta.ltmCurves.ltmLut.ccmV1.lutsData[27].GG.mid;
+            _X8 = &selfCopy->_bracketProperties[4].meta.ltmCurves.ltmLut.ccmV1.lutsData[27].GG.mid;
             __asm { PRFM            #0, [X8] }
 
-            if ((v5->_bracketProperties[1].meta.ltmCurves.ltmLut.bytes[236] & 1) == 0)
+            if ((selfCopy->_bracketProperties[1].meta.ltmCurves.ltmLut.bytes[236] & 1) == 0)
             {
               if (cntBracketSampleBuffers)
               {
@@ -6213,8 +6213,8 @@ LABEL_9:
                 v21 = 0.5;
                 if (v19 < v20)
                 {
-                  v22 = *&v5->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].GR.highlights / p_maxFocusScore[1];
-                  v23 = exp(*v11 + v11[1] * *&v5->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].GB.shadows + v11[2] * (*&v5->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].BR.mid / *p_maxFocusScore) + v11[4] * *&v5->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].RB.mid + v11[3] * v22);
+                  v22 = *&selfCopy->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].GR.highlights / p_maxFocusScore[1];
+                  v23 = exp(*v11 + v11[1] * *&selfCopy->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].GB.shadows + v11[2] * (*&selfCopy->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].BR.mid / *p_maxFocusScore) + v11[4] * *&selfCopy->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].RB.mid + v11[3] * v22);
                   *&v23 = v23 / (v23 + 1.0);
                   v24 = (*&v23 - v19) / (v20 - v19);
                   v25 = v24;
@@ -6243,13 +6243,13 @@ LABEL_9:
                   v21 = 1.0 - v28;
                 }
 
-                *&v5->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].BG.highlights = v21;
+                *&selfCopy->_bracketProperties[1].meta.ltmCurves.ltmLut.ccmV1.lutsData[3].BG.highlights = v21;
               }
 
-              v5->_bracketProperties[1].meta.ltmCurves.ltmLut.bytes[236] = 1;
+              selfCopy->_bracketProperties[1].meta.ltmCurves.ltmLut.bytes[236] = 1;
             }
 
-            v5 = (v5 + 224224);
+            selfCopy = (selfCopy + 224224);
             --cntBracketSampleBuffers;
             --referenceFrameCandidatesCount;
           }
@@ -6265,25 +6265,25 @@ LABEL_9:
   return FigSignalErrorAtGM();
 }
 
-- (void)setSharedMetalBuffer:(id)a3
+- (void)setSharedMetalBuffer:(id)buffer
 {
-  v4 = a3;
+  bufferCopy = buffer;
   objc_msgSend_releaseResources(self->_denoiseFusePipeline, v5, v6, v7);
   sharedMetalBuffer = self->_sharedMetalBuffer;
-  self->_sharedMetalBuffer = v4;
+  self->_sharedMetalBuffer = bufferCopy;
 
   self->_usingExternalSharedMetalBuffer = 1;
 }
 
-- (void)setSharedRegWarpBuffer:(id)a3
+- (void)setSharedRegWarpBuffer:(id)buffer
 {
-  v5 = a3;
-  if (self->_sharedRegWarpBuffer != v5)
+  bufferCopy = buffer;
+  if (self->_sharedRegWarpBuffer != bufferCopy)
   {
-    v9 = v5;
+    v9 = bufferCopy;
     objc_msgSend_releaseResources(self->_metal, v6, v7, v8);
-    objc_storeStrong(&self->_sharedRegWarpBuffer, a3);
-    v5 = v9;
+    objc_storeStrong(&self->_sharedRegWarpBuffer, buffer);
+    bufferCopy = v9;
     self->_usingExternalSharedRegWarpBuffer = 1;
     self->_regwarpHasBeenSetup = 0;
   }
@@ -6296,9 +6296,9 @@ LABEL_9:
   return WeakRetained;
 }
 
-- (int)_nrfFuseImages:(BOOL)a3
+- (int)_nrfFuseImages:(BOOL)images
 {
-  v3 = a3;
+  imagesCopy = images;
   v5 = &self->_referenceFrameIndex + 1;
   v6 = &self->_anon_14893c[1004];
   WeakRetained = objc_loadWeakRetained(&self->_progressiveBracketingParameters);
@@ -6333,8 +6333,8 @@ LABEL_9:
   }
 
   v147 = v18;
-  v151 = v3;
-  if (!v12 || !v3 || v8 == 2)
+  v151 = imagesCopy;
+  if (!v12 || !imagesCopy || v8 == 2)
   {
     goto LABEL_13;
   }
@@ -6430,7 +6430,7 @@ LABEL_75:
       v154[3] = &unk_29EDDC3D0;
       v155 = v53;
       v156 = v153;
-      v157 = self;
+      selfCopy = self;
       objc_msgSend_addCompletedHandler_(v67, v68, v154, v69);
       objc_msgSend_commit(v67, v70, v71, v72);
     }

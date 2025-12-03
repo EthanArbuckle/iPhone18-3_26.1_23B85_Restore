@@ -1,17 +1,17 @@
 @interface PLModelMigrationAction_ResetSocialGroup
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ResetSocialGroup
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = [(PLModelMigrationActionCore *)self cancellableDiscreteProgressWithTotalUnitCount:1 pendingParentUnitCount:1];
   [v7 becomeCurrentWithPendingUnitCount:1];
   v33 = 0;
-  v8 = [PLSocialGroup resetAllInContext:v6 error:&v33];
+  v8 = [PLSocialGroup resetAllInContext:contextCopy error:&v33];
 
   v9 = v33;
   v10 = PLMigrationGetLog();
@@ -22,9 +22,9 @@
 
     if (v12)
     {
-      v13 = [(PLModelMigrationActionCore *)self logger];
+      logger = [(PLModelMigrationActionCore *)self logger];
 
-      if (v13)
+      if (logger)
       {
         v67 = 0u;
         v68 = 0u;
@@ -94,9 +94,9 @@
 
     if (v17)
     {
-      v18 = [(PLModelMigrationActionCore *)self logger];
+      logger2 = [(PLModelMigrationActionCore *)self logger];
 
-      if (v18)
+      if (logger2)
       {
         v67 = 0u;
         v68 = 0u;
@@ -167,9 +167,9 @@
 
     [v7 resignCurrent];
     v30 = v9;
-    if (a4)
+    if (error)
     {
-      *a4 = v30;
+      *error = v30;
     }
 
     v26 = 3;

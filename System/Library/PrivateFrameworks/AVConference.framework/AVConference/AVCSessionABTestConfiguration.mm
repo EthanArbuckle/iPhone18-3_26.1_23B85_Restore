@@ -1,6 +1,6 @@
 @interface AVCSessionABTestConfiguration
-+ (id)createWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)createWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionary;
 @end
@@ -55,23 +55,23 @@
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:v4 count:3];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setOneToOneAuthenticationTagEnabled:{-[AVCSessionABTestConfiguration isOneToOneAuthenticationTagEnabled](self, "isOneToOneAuthenticationTagEnabled")}];
   [v4 setGftTLEEnabled:{-[AVCSessionABTestConfiguration isGftTLEEnabled](self, "isGftTLEEnabled")}];
   [v4 setP2pEncryptionEnabled:{-[AVCSessionABTestConfiguration isP2PEncryptionEnabled](self, "isP2PEncryptionEnabled")}];
   return v4;
 }
 
-+ (id)createWithDictionary:(id)a3
++ (id)createWithDictionary:(id)dictionary
 {
   v4 = objc_alloc_init(AVCSessionABTestConfiguration);
-  if (a3)
+  if (dictionary)
   {
-    -[AVCSessionABTestConfiguration setOneToOneAuthenticationTagEnabled:](v4, "setOneToOneAuthenticationTagEnabled:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionABTestOneOnOneAuthtagEnabled", "BOOLValue"}]);
-    -[AVCSessionABTestConfiguration setGftTLEEnabled:](v4, "setGftTLEEnabled:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionABTestGftTLEEnabled", "BOOLValue"}]);
-    -[AVCSessionABTestConfiguration setP2pEncryptionEnabled:](v4, "setP2pEncryptionEnabled:", [objc_msgSend(a3 objectForKeyedSubscript:{@"vcSessionABTestP2PEncryptionEnabled", "BOOLValue"}]);
+    -[AVCSessionABTestConfiguration setOneToOneAuthenticationTagEnabled:](v4, "setOneToOneAuthenticationTagEnabled:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionABTestOneOnOneAuthtagEnabled", "BOOLValue"}]);
+    -[AVCSessionABTestConfiguration setGftTLEEnabled:](v4, "setGftTLEEnabled:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionABTestGftTLEEnabled", "BOOLValue"}]);
+    -[AVCSessionABTestConfiguration setP2pEncryptionEnabled:](v4, "setP2pEncryptionEnabled:", [objc_msgSend(dictionary objectForKeyedSubscript:{@"vcSessionABTestP2PEncryptionEnabled", "BOOLValue"}]);
   }
 
   return v4;

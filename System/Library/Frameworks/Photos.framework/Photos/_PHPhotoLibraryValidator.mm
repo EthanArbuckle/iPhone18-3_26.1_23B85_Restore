@@ -1,6 +1,6 @@
 @interface _PHPhotoLibraryValidator
 - (PLPhotoLibrary)photoLibrary;
-- (_PHPhotoLibraryValidator)initWithPhotoLibrary:(id)a3;
+- (_PHPhotoLibraryValidator)initWithPhotoLibrary:(id)library;
 @end
 
 @implementation _PHPhotoLibraryValidator
@@ -12,14 +12,14 @@
   return WeakRetained;
 }
 
-- (_PHPhotoLibraryValidator)initWithPhotoLibrary:(id)a3
+- (_PHPhotoLibraryValidator)initWithPhotoLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = [(_PHPhotoLibraryValidator *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_photoLibrary, v4);
+    objc_storeWeak(&v5->_photoLibrary, libraryCopy);
   }
 
   return v6;

@@ -1,13 +1,13 @@
 @interface INAirportGate
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
 - (INAirportGate)initWithAirport:(INAirport *)airport terminal:(NSString *)terminal gate:(NSString *)gate;
-- (INAirportGate)initWithCoder:(id)a3;
+- (INAirportGate)initWithCoder:(id)coder;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INAirportGate
@@ -17,31 +17,31 @@
   v13[3] = *MEMORY[0x1E69E9840];
   v12[0] = @"airport";
   airport = self->_airport;
-  v4 = airport;
+  null = airport;
   if (!airport)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v4;
+  v13[0] = null;
   v12[1] = @"terminal";
   terminal = self->_terminal;
-  v6 = terminal;
+  null2 = terminal;
   if (!terminal)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v6;
+  v13[1] = null2;
   v12[2] = @"gate";
   gate = self->_gate;
-  v8 = gate;
+  null3 = gate;
   if (!gate)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
   if (gate)
   {
@@ -79,68 +79,68 @@ LABEL_10:
   return v9;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INAirportGate;
   v6 = [(INAirportGate *)&v11 description];
-  v7 = [(INAirportGate *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INAirportGate *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_airport];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"airport"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_airport];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"airport"];
 
-  v9 = [v6 encodeObject:self->_terminal];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"terminal"];
+  v9 = [encoderCopy encodeObject:self->_terminal];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"terminal"];
 
-  v10 = [v6 encodeObject:self->_gate];
+  v10 = [encoderCopy encodeObject:self->_gate];
 
-  [v7 if_setObjectIfNonNil:v10 forKey:@"gate"];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"gate"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   airport = self->_airport;
-  v5 = a3;
-  [v5 encodeObject:airport forKey:@"airport"];
-  [v5 encodeObject:self->_terminal forKey:@"terminal"];
-  [v5 encodeObject:self->_gate forKey:@"gate"];
+  coderCopy = coder;
+  [coderCopy encodeObject:airport forKey:@"airport"];
+  [coderCopy encodeObject:self->_terminal forKey:@"terminal"];
+  [coderCopy encodeObject:self->_gate forKey:@"gate"];
 }
 
-- (INAirportGate)initWithCoder:(id)a3
+- (INAirportGate)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"airport"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"airport"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"terminal"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"terminal"];
 
   v10 = MEMORY[0x1E695DFD8];
   v11 = objc_opt_class();
   v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"gate"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"gate"];
 
   v14 = [(INAirportGate *)self initWithAirport:v5 terminal:v9 gate:v13];
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -150,7 +150,7 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       airport = self->_airport;
       v9 = 0;
       if (airport == v5->_airport || [(INAirport *)airport isEqual:?])
@@ -209,20 +209,20 @@ LABEL_10:
   return v11;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"airport"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"airport"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
-    v12 = [v8 objectForKeyedSubscript:@"terminal"];
-    v13 = [v8 objectForKeyedSubscript:@"gate"];
-    v14 = [[a1 alloc] initWithAirport:v11 terminal:v12 gate:v13];
+    v12 = [fromCopy objectForKeyedSubscript:@"terminal"];
+    v13 = [fromCopy objectForKeyedSubscript:@"gate"];
+    v14 = [[self alloc] initWithAirport:v11 terminal:v12 gate:v13];
   }
 
   else

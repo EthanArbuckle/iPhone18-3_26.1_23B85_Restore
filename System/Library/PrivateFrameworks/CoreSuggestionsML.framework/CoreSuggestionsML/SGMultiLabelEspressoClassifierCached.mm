@@ -1,7 +1,7 @@
 @interface SGMultiLabelEspressoClassifierCached
-+ (id)classifierWithEspressoModelFile:(id)a3;
-- (SGMultiLabelEspressoClassifierCached)initWithEspressoModelFile:(id)a3;
-- (id)predict:(id)a3;
++ (id)classifierWithEspressoModelFile:(id)file;
+- (SGMultiLabelEspressoClassifierCached)initWithEspressoModelFile:(id)file;
+- (id)predict:(id)predict;
 - (unint64_t)outputDimension;
 @end
 
@@ -15,36 +15,36 @@
   return v4;
 }
 
-- (id)predict:(id)a3
+- (id)predict:(id)predict
 {
-  v4 = a3;
+  predictCopy = predict;
   v5 = +[SGMultiLabelEspressoClassifierCache sharedInstance];
-  v6 = [v5 predict:v4 withFile:self->_espressoModelFile];
+  v6 = [v5 predict:predictCopy withFile:self->_espressoModelFile];
 
   return v6;
 }
 
-- (SGMultiLabelEspressoClassifierCached)initWithEspressoModelFile:(id)a3
+- (SGMultiLabelEspressoClassifierCached)initWithEspressoModelFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v9.receiver = self;
   v9.super_class = SGMultiLabelEspressoClassifierCached;
   v6 = [(SGMultiLabelEspressoClassifierCached *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_espressoModelFile, a3);
+    objc_storeStrong(&v6->_espressoModelFile, file);
   }
 
   return v7;
 }
 
-+ (id)classifierWithEspressoModelFile:(id)a3
++ (id)classifierWithEspressoModelFile:(id)file
 {
-  v4 = a3;
-  if ([v4 length] && (+[SGMultiLabelEspressoClassifierCache sharedInstance](SGMultiLabelEspressoClassifierCache, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "setCachedEspressoClassifierWithFile:", v4), v5, v6))
+  fileCopy = file;
+  if ([fileCopy length] && (+[SGMultiLabelEspressoClassifierCache sharedInstance](SGMultiLabelEspressoClassifierCache, "sharedInstance"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "setCachedEspressoClassifierWithFile:", fileCopy), v5, v6))
   {
-    v7 = [[a1 alloc] initWithEspressoModelFile:v4];
+    v7 = [[self alloc] initWithEspressoModelFile:fileCopy];
   }
 
   else

@@ -1,6 +1,6 @@
 @interface ICMentionsFilterTypeSelection
 - (NSString)currentUserID;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)emptySummary;
 - (id)emptySummaryTitle;
 - (id)shortEmptySummary;
@@ -10,9 +10,9 @@
 
 - (NSString)currentUserID
 {
-  v3 = [(ICFilterTypeSelection *)self accountObjectID];
+  accountObjectID = [(ICFilterTypeSelection *)self accountObjectID];
 
-  if (v3)
+  if (accountObjectID)
   {
     v8 = 0;
     v9 = &v8;
@@ -20,14 +20,14 @@
     v11 = __Block_byref_object_copy__62;
     v12 = __Block_byref_object_dispose__62;
     v13 = 0;
-    v4 = [(ICParticipantsFilterTypeSelection *)self managedObjectContext];
+    managedObjectContext = [(ICParticipantsFilterTypeSelection *)self managedObjectContext];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __46__ICMentionsFilterTypeSelection_currentUserID__block_invoke;
     v7[3] = &unk_278194D68;
     v7[4] = self;
     v7[5] = &v8;
-    [v4 performBlockAndWait:v7];
+    [managedObjectContext performBlockAndWait:v7];
 
     v5 = v9[5];
     _Block_object_dispose(&v8, 8);
@@ -55,17 +55,17 @@ void __46__ICMentionsFilterTypeSelection_currentUserID__block_invoke(uint64_t a1
   *(v6 + 40) = v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [ICMentionsFilterTypeSelection allocWithZone:?];
-  v6 = [(ICParticipantsFilterTypeSelection *)self managedObjectContext];
-  v7 = [(ICFilterTypeSelection *)self accountObjectID];
-  v8 = [(ICParticipantsFilterTypeSelection *)v5 initWithManagedObjectContext:v6 accountObjectID:v7];
+  managedObjectContext = [(ICParticipantsFilterTypeSelection *)self managedObjectContext];
+  accountObjectID = [(ICFilterTypeSelection *)self accountObjectID];
+  v8 = [(ICParticipantsFilterTypeSelection *)v5 initWithManagedObjectContext:managedObjectContext accountObjectID:accountObjectID];
 
   [(ICParticipantsFilterTypeSelection *)v8 setSelectionType:[(ICParticipantsFilterTypeSelection *)self selectionType]];
   [(ICParticipantsFilterTypeSelection *)v8 setJoinOperator:[(ICParticipantsFilterTypeSelection *)self joinOperator]];
-  v9 = [(ICParticipantsFilterTypeSelection *)self participantUserIDs];
-  v10 = [v9 copyWithZone:a3];
+  participantUserIDs = [(ICParticipantsFilterTypeSelection *)self participantUserIDs];
+  v10 = [participantUserIDs copyWithZone:zone];
   [(ICParticipantsFilterTypeSelection *)v8 setParticipantUserIDs:v10];
 
   return v8;

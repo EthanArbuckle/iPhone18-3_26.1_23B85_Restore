@@ -1,43 +1,43 @@
 @interface KTIDSSessionHandler
-+ (int64_t)compareLocalSessionID:(id)a3 remoteSessionID:(id)a4;
-- (BOOL)deleteSessionByID:(id)a3;
-- (KTIDSSessionHandler)initWithTransport:(id)a3 transparencyd:(id)a4 peerName:(id)a5;
++ (int64_t)compareLocalSessionID:(id)d remoteSessionID:(id)iD;
+- (BOOL)deleteSessionByID:(id)d;
+- (KTIDSSessionHandler)initWithTransport:(id)transport transparencyd:(id)transparencyd peerName:(id)name;
 - (KTIDSSessionTransport)transport;
-- (id)findSessionByHandle:(id)a3;
-- (id)findSessionByID:(id)a3;
+- (id)findSessionByHandle:(id)handle;
+- (id)findSessionByID:(id)d;
 - (id)listSessions;
-- (id)mapMailbox:(id)a3;
-- (id)setupMailbox:(id)a3 publicInfo:(id)a4;
-- (void)addMailbox:(id)a3;
-- (void)dumpState:(id)a3;
-- (void)haveContact:(id)a3 complete:(id)a4;
-- (void)ktAnnounce:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)ktCommit:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)ktConfirm:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)ktRevealA:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)ktSelected:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)ktSetupB:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)ktTTR:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)ktTeardown:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)negotiatedSessionID:(id)a3 forMailbox:(id)a4;
-- (void)removeAddressLookup:(id)a3;
-- (void)removeMailbox:(id)a3;
-- (void)removeSessionIDLookup:(id)a3;
-- (void)resetSession:(id)a3;
-- (void)runIfHaveContact:(id)a3 complete:(id)a4;
-- (void)sasTTR:(id)a3 toHandle:(id)a4 pushToken:(id)a5;
+- (id)mapMailbox:(id)mailbox;
+- (id)setupMailbox:(id)mailbox publicInfo:(id)info;
+- (void)addMailbox:(id)mailbox;
+- (void)dumpState:(id)state;
+- (void)haveContact:(id)contact complete:(id)complete;
+- (void)ktAnnounce:(id)announce service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)ktCommit:(id)commit service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)ktConfirm:(id)confirm service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)ktRevealA:(id)a service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)ktSelected:(id)selected service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)ktSetupB:(id)b service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)ktTTR:(id)r service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)ktTeardown:(id)teardown service:(id)service account:(id)account fromID:(id)d context:(id)context;
+- (void)negotiatedSessionID:(id)d forMailbox:(id)mailbox;
+- (void)removeAddressLookup:(id)lookup;
+- (void)removeMailbox:(id)mailbox;
+- (void)removeSessionIDLookup:(id)lookup;
+- (void)resetSession:(id)session;
+- (void)runIfHaveContact:(id)contact complete:(id)complete;
+- (void)sasTTR:(id)r toHandle:(id)handle pushToken:(id)token;
 - (void)setupTransport;
-- (void)startMessageDelegate:(id)a3 onQueue:(id)a4;
-- (void)tearDown:(id)a3 toID:(id)a4 fromID:(id)a5;
+- (void)startMessageDelegate:(id)delegate onQueue:(id)queue;
+- (void)tearDown:(id)down toID:(id)d fromID:(id)iD;
 @end
 
 @implementation KTIDSSessionHandler
 
-- (KTIDSSessionHandler)initWithTransport:(id)a3 transparencyd:(id)a4 peerName:(id)a5
+- (KTIDSSessionHandler)initWithTransport:(id)transport transparencyd:(id)transparencyd peerName:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transportCopy = transport;
+  transparencydCopy = transparencyd;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = KTIDSSessionHandler;
   v11 = [(KTIDSSessionHandler *)&v24 init];
@@ -46,8 +46,8 @@
     goto LABEL_9;
   }
 
-  v12 = v8;
-  if (v8)
+  v12 = transportCopy;
+  if (transportCopy)
   {
     goto LABEL_4;
   }
@@ -56,16 +56,16 @@
   v14 = [v13 initWithService:off_1000AD370];
   [(KTIDSSessionHandler *)v11 setService:v14];
 
-  v15 = [(KTIDSSessionHandler *)v11 service];
+  service = [(KTIDSSessionHandler *)v11 service];
 
   v12 = v11;
-  if (v15)
+  if (service)
   {
 LABEL_4:
     [(KTIDSSessionHandler *)v11 setTransport:v12];
-    if (v9)
+    if (transparencydCopy)
     {
-      v16 = v9;
+      v16 = transparencydCopy;
     }
 
     else
@@ -80,17 +80,17 @@ LABEL_4:
     v18 = +[NSMutableDictionary dictionary];
     [(KTIDSSessionHandler *)v11 setIdsHandleLookup:v18];
 
-    if (v10)
+    if (nameCopy)
     {
-      v19 = [NSString stringWithFormat:@"KTIDSSessionHandler-%{mask.hash}@", v10];
+      nameCopy = [NSString stringWithFormat:@"KTIDSSessionHandler-%{mask.hash}@", nameCopy];
     }
 
     else
     {
-      v19 = @"KTIDSSessionHandler";
+      nameCopy = @"KTIDSSessionHandler";
     }
 
-    v21 = os_log_create("com.apple.Transparency", [(__CFString *)v19 UTF8String]);
+    v21 = os_log_create("com.apple.Transparency", [(__CFString *)nameCopy UTF8String]);
     [(KTIDSSessionHandler *)v11 setOslog:v21];
 
     v22 = dispatch_queue_create("KTIDSSessionHandler", 0);
@@ -111,91 +111,91 @@ LABEL_9:
 
 - (void)setupTransport
 {
-  v3 = [(KTIDSSessionHandler *)self transport];
-  [v3 setMessagedAction:"ktAnnounce:service:account:fromID:context:" forIncomingRequestsOfType:0];
+  transport = [(KTIDSSessionHandler *)self transport];
+  [transport setMessagedAction:"ktAnnounce:service:account:fromID:context:" forIncomingRequestsOfType:0];
 
-  v4 = [(KTIDSSessionHandler *)self transport];
-  [v4 setMessagedAction:"ktCommit:service:account:fromID:context:" forIncomingRequestsOfType:1];
+  transport2 = [(KTIDSSessionHandler *)self transport];
+  [transport2 setMessagedAction:"ktCommit:service:account:fromID:context:" forIncomingRequestsOfType:1];
 
-  v5 = [(KTIDSSessionHandler *)self transport];
-  [v5 setMessagedAction:"ktSetupB:service:account:fromID:context:" forIncomingRequestsOfType:4];
+  transport3 = [(KTIDSSessionHandler *)self transport];
+  [transport3 setMessagedAction:"ktSetupB:service:account:fromID:context:" forIncomingRequestsOfType:4];
 
-  v6 = [(KTIDSSessionHandler *)self transport];
-  [v6 setMessagedAction:"ktRevealA:service:account:fromID:context:" forIncomingRequestsOfType:5];
+  transport4 = [(KTIDSSessionHandler *)self transport];
+  [transport4 setMessagedAction:"ktRevealA:service:account:fromID:context:" forIncomingRequestsOfType:5];
 
-  v7 = [(KTIDSSessionHandler *)self transport];
-  [v7 setMessagedAction:"ktConfirm:service:account:fromID:context:" forIncomingRequestsOfType:6];
+  transport5 = [(KTIDSSessionHandler *)self transport];
+  [transport5 setMessagedAction:"ktConfirm:service:account:fromID:context:" forIncomingRequestsOfType:6];
 
-  v8 = [(KTIDSSessionHandler *)self transport];
-  [v8 setMessagedAction:"ktTeardown:service:account:fromID:context:" forIncomingRequestsOfType:3];
+  transport6 = [(KTIDSSessionHandler *)self transport];
+  [transport6 setMessagedAction:"ktTeardown:service:account:fromID:context:" forIncomingRequestsOfType:3];
 
-  v9 = [(KTIDSSessionHandler *)self transport];
-  [v9 setMessagedAction:"ktSelected:service:account:fromID:context:" forIncomingRequestsOfType:2];
+  transport7 = [(KTIDSSessionHandler *)self transport];
+  [transport7 setMessagedAction:"ktSelected:service:account:fromID:context:" forIncomingRequestsOfType:2];
 
-  v10 = [(KTIDSSessionHandler *)self transport];
-  [v10 setMessagedAction:"ktTTR:service:account:fromID:context:" forIncomingRequestsOfType:7];
+  transport8 = [(KTIDSSessionHandler *)self transport];
+  [transport8 setMessagedAction:"ktTTR:service:account:fromID:context:" forIncomingRequestsOfType:7];
 
-  v12 = [(KTIDSSessionHandler *)self transport];
-  v11 = [(KTIDSSessionHandler *)self queue];
-  [v12 startMessageDelegate:self onQueue:v11];
+  transport9 = [(KTIDSSessionHandler *)self transport];
+  queue = [(KTIDSSessionHandler *)self queue];
+  [transport9 startMessageDelegate:self onQueue:queue];
 }
 
-- (void)startMessageDelegate:(id)a3 onQueue:(id)a4
+- (void)startMessageDelegate:(id)delegate onQueue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KTIDSSessionHandler *)self service];
-  [v8 addDelegate:v7 withDelegateProperties:0 queue:v6];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  service = [(KTIDSSessionHandler *)self service];
+  [service addDelegate:delegateCopy withDelegateProperties:0 queue:queueCopy];
 }
 
-- (void)sasTTR:(id)a3 toHandle:(id)a4 pushToken:(id)a5
+- (void)sasTTR:(id)r toHandle:(id)handle pushToken:(id)token
 {
-  v10 = a3;
-  v8 = a4;
-  if (a5)
+  rCopy = r;
+  handleCopy = handle;
+  if (token)
   {
-    v9 = [NSString stringWithFormat:@"token:%@/%@", a5, v8];
+    handleCopy = [NSString stringWithFormat:@"token:%@/%@", token, handleCopy];
 
-    v8 = v9;
+    handleCopy = handleCopy;
   }
 
-  [(KTIDSSessionHandler *)self sendMessage:7 data:v10 toID:v8 sourceID:0];
+  [(KTIDSSessionHandler *)self sendMessage:7 data:rCopy toID:handleCopy sourceID:0];
 }
 
-- (id)mapMailbox:(id)a3
+- (id)mapMailbox:(id)mailbox
 {
-  if (a3)
+  if (mailbox)
   {
-    v4 = [a3 mapMailbox];
+    mapMailbox = [mailbox mapMailbox];
   }
 
   else
   {
-    v4 = 0;
+    mapMailbox = 0;
   }
 
-  return v4;
+  return mapMailbox;
 }
 
-- (id)findSessionByHandle:(id)a3
+- (id)findSessionByHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = sub_100006818;
   v16 = sub_100006828;
   v17 = 0;
-  v5 = [(KTIDSSessionHandler *)self queue];
+  queue = [(KTIDSSessionHandler *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100006830;
   block[3] = &unk_100094F58;
-  v10 = v4;
+  v10 = handleCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = handleCopy;
+  dispatch_sync(queue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -203,10 +203,10 @@ LABEL_9:
   return v7;
 }
 
-- (id)findSessionByID:(id)a3
+- (id)findSessionByID:(id)d
 {
-  v4 = a3;
-  v5 = +[NSData kt_dataWithHexString:](NSData, "kt_dataWithHexString:", [v4 UTF8String]);
+  dCopy = d;
+  v5 = +[NSData kt_dataWithHexString:](NSData, "kt_dataWithHexString:", [dCopy UTF8String]);
   if (v5)
   {
     v13 = 0;
@@ -215,7 +215,7 @@ LABEL_9:
     v16 = sub_100006818;
     v17 = sub_100006828;
     v18 = 0;
-    v6 = [(KTIDSSessionHandler *)self queue];
+    queue = [(KTIDSSessionHandler *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100006A6C;
@@ -223,7 +223,7 @@ LABEL_9:
     v12 = &v13;
     block[4] = self;
     v11 = v5;
-    dispatch_sync(v6, block);
+    dispatch_sync(queue, block);
 
     v7 = v14[5];
     _Block_object_dispose(&v13, 8);
@@ -231,8 +231,8 @@ LABEL_9:
 
   else
   {
-    v8 = [(KTIDSSessionHandler *)self oslog];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    oslog = [(KTIDSSessionHandler *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
       sub_10006D79C();
     }
@@ -246,7 +246,7 @@ LABEL_9:
 - (id)listSessions
 {
   v3 = +[NSMutableArray array];
-  v4 = [(KTIDSSessionHandler *)self queue];
+  queue = [(KTIDSSessionHandler *)self queue];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100006BCC;
@@ -254,7 +254,7 @@ LABEL_9:
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  dispatch_sync(v4, v9);
+  dispatch_sync(queue, v9);
 
   v6 = v10;
   v7 = v5;
@@ -262,26 +262,26 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)deleteSessionByID:(id)a3
+- (BOOL)deleteSessionByID:(id)d
 {
-  v4 = a3;
-  v5 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  dCopy = d;
+  oslog = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v4;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "deleting sessionID: [%{public}@]", &buf, 0xCu);
+    *(&buf + 4) = dCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "deleting sessionID: [%{public}@]", &buf, 0xCu);
   }
 
-  v6 = v4;
-  v7 = +[NSData kt_dataWithHexString:](NSData, "kt_dataWithHexString:", [v4 UTF8String]);
+  v6 = dCopy;
+  v7 = +[NSData kt_dataWithHexString:](NSData, "kt_dataWithHexString:", [dCopy UTF8String]);
   if (v7)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
     v16 = 0x2020000000;
     v17 = 0;
-    v8 = [(KTIDSSessionHandler *)self queue];
+    queue = [(KTIDSSessionHandler *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100006EEC;
@@ -289,7 +289,7 @@ LABEL_9:
     block[4] = self;
     v13 = v7;
     p_buf = &buf;
-    dispatch_sync(v8, block);
+    dispatch_sync(queue, block);
 
     v9 = *(*(&buf + 1) + 24);
     _Block_object_dispose(&buf, 8);
@@ -297,8 +297,8 @@ LABEL_9:
 
   else
   {
-    v10 = [(KTIDSSessionHandler *)self oslog];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oslog2 = [(KTIDSSessionHandler *)self oslog];
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
       sub_10006D828();
     }
@@ -309,28 +309,28 @@ LABEL_9:
   return v9 & 1;
 }
 
-- (id)setupMailbox:(id)a3 publicInfo:(id)a4
+- (id)setupMailbox:(id)mailbox publicInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  mailboxCopy = mailbox;
+  infoCopy = info;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = sub_100006818;
   v22 = sub_100006828;
   v23 = 0;
-  v8 = [(KTIDSSessionHandler *)self queue];
+  queue = [(KTIDSSessionHandler *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100007400;
   v13[3] = &unk_100094FD0;
-  v14 = v6;
-  v15 = self;
-  v16 = v7;
+  v14 = mailboxCopy;
+  selfCopy = self;
+  v16 = infoCopy;
   v17 = &v18;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = infoCopy;
+  v10 = mailboxCopy;
+  dispatch_sync(queue, v13);
 
   v11 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -338,152 +338,152 @@ LABEL_9:
   return v11;
 }
 
-- (void)resetSession:(id)a3
+- (void)resetSession:(id)session
 {
-  v4 = a3;
-  [(KTIDSSessionHandler *)self removeSessionIDLookup:v4];
-  [v4 reset];
+  sessionCopy = session;
+  [(KTIDSSessionHandler *)self removeSessionIDLookup:sessionCopy];
+  [sessionCopy reset];
 }
 
-- (void)tearDown:(id)a3 toID:(id)a4 fromID:(id)a5
+- (void)tearDown:(id)down toID:(id)d fromID:(id)iD
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  iDCopy = iD;
+  dCopy = d;
+  downCopy = down;
   v12 = objc_alloc_init(_TtC21transparencyStaticKey12GSASTeardown);
-  [(GSASTeardown *)v12 setSessionId:v10];
+  [(GSASTeardown *)v12 setSessionId:downCopy];
 
-  v11 = [(GSASTeardown *)v12 data];
-  [(KTIDSSessionHandler *)self sendMessage:3 data:v11 toID:v9 sourceID:v8];
+  data = [(GSASTeardown *)v12 data];
+  [(KTIDSSessionHandler *)self sendMessage:3 data:data toID:dCopy sourceID:iDCopy];
 }
 
-- (void)ktAnnounce:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)ktAnnounce:(id)announce service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a6;
-  v10 = a3;
-  v11 = [(KTIDSSessionHandler *)self queue];
-  dispatch_assert_queue_V2(v11);
+  dCopy = d;
+  announceCopy = announce;
+  queue = [(KTIDSSessionHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = IDSCopyAddressDestinationForDestination();
   [(KTIDSSessionHandler *)self dumpState:@"SASAnnounce"];
-  v13 = [(KTIDSSessionHandler *)self idsHandleLookup];
-  v14 = [v13 objectForKeyedSubscript:v12];
+  idsHandleLookup = [(KTIDSSessionHandler *)self idsHandleLookup];
+  v14 = [idsHandleLookup objectForKeyedSubscript:v12];
 
   if (v14)
   {
-    v15 = [(SKMailbox *)v14 destinationIDSID];
-    if (v15 && (v16 = v15, -[SKMailbox destinationIDSID](v14, "destinationIDSID"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqual:v9], v17, v16, (v18 & 1) == 0))
+    destinationIDSID = [(SKMailbox *)v14 destinationIDSID];
+    if (destinationIDSID && (v16 = destinationIDSID, -[SKMailbox destinationIDSID](v14, "destinationIDSID"), v17 = objc_claimAutoreleasedReturnValue(), v18 = [v17 isEqual:dCopy], v17, v16, (v18 & 1) == 0))
     {
       [(KTIDSSessionHandler *)self resetSession:v14];
     }
 
     else
     {
-      v19 = [(SKMailbox *)v14 destinationIDSID];
+      destinationIDSID2 = [(SKMailbox *)v14 destinationIDSID];
 
-      if (v19)
+      if (destinationIDSID2)
       {
         goto LABEL_11;
       }
     }
 
-    [(SKMailbox *)v14 setDestinationIDSID:v9];
+    [(SKMailbox *)v14 setDestinationIDSID:dCopy];
   }
 
   else
   {
-    v20 = [(KTIDSSessionHandler *)self oslog];
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+    oslog = [(KTIDSSessionHandler *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 141558274;
       v28 = 1752392040;
       v29 = 2112;
-      v30 = v9;
-      _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "ktAnnounce: new session: %{mask.hash}@", &v27, 0x16u);
+      v30 = dCopy;
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "ktAnnounce: new session: %{mask.hash}@", &v27, 0x16u);
     }
 
     v21 = [SKMailbox alloc];
-    v22 = [(KTIDSSessionHandler *)self oslog];
-    v14 = [(SKMailbox *)v21 initWithLogging:v22 publicInfo:0 peerIDSID:v12 session:self];
+    oslog2 = [(KTIDSSessionHandler *)self oslog];
+    v14 = [(SKMailbox *)v21 initWithLogging:oslog2 publicInfo:0 peerIDSID:v12 session:self];
 
-    [(SKMailbox *)v14 setDestinationIDSID:v9];
+    [(SKMailbox *)v14 setDestinationIDSID:dCopy];
     v23 = [[KTStaticKeyPeer alloc] initWithPeer:v12];
     [(SKMailbox *)v14 setPeer:v23];
-    v24 = [(KTIDSSessionHandler *)self idsHandleLookup];
-    [v24 setObject:v14 forKeyedSubscript:v12];
+    idsHandleLookup2 = [(KTIDSSessionHandler *)self idsHandleLookup];
+    [idsHandleLookup2 setObject:v14 forKeyedSubscript:v12];
   }
 
 LABEL_11:
-  v25 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+  oslog3 = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
   {
     v27 = 141558274;
     v28 = 1752392040;
     v29 = 2112;
-    v30 = v9;
-    _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "ktAnnounce: %{mask.hash}@", &v27, 0x16u);
+    v30 = dCopy;
+    _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "ktAnnounce: %{mask.hash}@", &v27, 0x16u);
   }
 
-  v26 = [v10 data];
+  data = [announceCopy data];
 
-  [(SKMailbox *)v14 recvAnnounce:v26];
+  [(SKMailbox *)v14 recvAnnounce:data];
 }
 
-- (void)ktSelected:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)ktSelected:(id)selected service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v10 = a6;
-  v11 = a7;
-  v12 = a3;
-  v13 = [(KTIDSSessionHandler *)self queue];
-  dispatch_assert_queue_V2(v13);
+  dCopy = d;
+  contextCopy = context;
+  selectedCopy = selected;
+  queue = [(KTIDSSessionHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v14 = [_TtC21transparencyStaticKey12GSASSelected alloc];
-  v15 = [v12 data];
+  data = [selectedCopy data];
 
-  v16 = [(GSASSelected *)v14 initWithData:v15 error:0];
-  v17 = [(GSASSelected *)v16 sessionId];
-  v18 = [v17 length];
+  v16 = [(GSASSelected *)v14 initWithData:data error:0];
+  sessionId = [(GSASSelected *)v16 sessionId];
+  v18 = [sessionId length];
 
   if (v18)
   {
-    v19 = [(KTIDSSessionHandler *)self oslog];
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oslog = [(KTIDSSessionHandler *)self oslog];
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [(GSASSelected *)v16 sessionId];
-      v21 = [v20 kt_hexString];
+      sessionId2 = [(GSASSelected *)v16 sessionId];
+      kt_hexString = [sessionId2 kt_hexString];
       *buf = 141558530;
       v34 = 1752392040;
       v35 = 2112;
-      v36 = v10;
+      v36 = dCopy;
       v37 = 2114;
-      v38 = v21;
-      _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "ktSelected: session: %{mask.hash}@ - %{public}@", buf, 0x20u);
+      v38 = kt_hexString;
+      _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "ktSelected: session: %{mask.hash}@ - %{public}@", buf, 0x20u);
     }
 
     v22 = IDSCopyAddressDestinationForDestination();
-    v23 = [(KTIDSSessionHandler *)self idsHandleLookup];
-    v24 = [v23 objectForKeyedSubscript:v22];
+    idsHandleLookup = [(KTIDSSessionHandler *)self idsHandleLookup];
+    v24 = [idsHandleLookup objectForKeyedSubscript:v22];
 
     if (!v24)
     {
-      v25 = [(KTIDSSessionHandler *)self oslog];
-      if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+      oslog2 = [(KTIDSSessionHandler *)self oslog];
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = [v11 toID];
+        toID = [contextCopy toID];
         *buf = 141558786;
         v34 = 1752392040;
         v35 = 2112;
-        v36 = v10;
+        v36 = dCopy;
         v37 = 2160;
         v38 = 1752392040;
         v39 = 2112;
-        v40 = v26;
-        _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "ktSelected: teardown %{mask.hash}@ %{mask.hash}@", buf, 0x2Au);
+        v40 = toID;
+        _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "ktSelected: teardown %{mask.hash}@ %{mask.hash}@", buf, 0x2Au);
       }
 
-      v27 = [(GSASSelected *)v16 sessionId];
-      v28 = [v11 toID];
-      [(KTIDSSessionHandler *)self tearDown:v27 toID:v10 fromID:v28];
+      sessionId3 = [(GSASSelected *)v16 sessionId];
+      toID2 = [contextCopy toID];
+      [(KTIDSSessionHandler *)self tearDown:sessionId3 toID:dCopy fromID:toID2];
     }
 
     v30[0] = _NSConcreteStackBlock;
@@ -497,23 +497,23 @@ LABEL_11:
   }
 }
 
-- (void)ktCommit:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)ktCommit:(id)commit service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(KTIDSSessionHandler *)self queue];
-  dispatch_assert_queue_V2(v11);
+  commitCopy = commit;
+  dCopy = d;
+  queue = [(KTIDSSessionHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = IDSCopyAddressDestinationForDestination();
   [(KTIDSSessionHandler *)self dumpState:@"ktCommit"];
-  v13 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oslog = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 141558274;
     v22 = 1752392040;
     v23 = 2112;
-    v24 = v10;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ktCommit: %{mask.hash}@", buf, 0x16u);
+    v24 = dCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "ktCommit: %{mask.hash}@", buf, 0x16u);
   }
 
   v17[0] = _NSConcreteStackBlock;
@@ -522,52 +522,52 @@ LABEL_11:
   v17[3] = &unk_100094FF8;
   v17[4] = self;
   v18 = v12;
-  v19 = v10;
-  v20 = v9;
-  v14 = v9;
-  v15 = v10;
+  v19 = dCopy;
+  v20 = commitCopy;
+  v14 = commitCopy;
+  v15 = dCopy;
   v16 = v12;
   [(KTIDSSessionHandler *)self runIfHaveContact:v16 complete:v17];
 }
 
-- (void)runIfHaveContact:(id)a3 complete:(id)a4
+- (void)runIfHaveContact:(id)contact complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(KTIDSSessionHandler *)self transparencyd];
+  contactCopy = contact;
+  completeCopy = complete;
+  transparencyd = [(KTIDSSessionHandler *)self transparencyd];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100008524;
   v11[3] = &unk_100095020;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 haveContact:v10 complete:v11];
+  v12 = contactCopy;
+  v13 = completeCopy;
+  v9 = completeCopy;
+  v10 = contactCopy;
+  [transparencyd haveContact:v10 complete:v11];
 }
 
-- (void)ktSetupB:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)ktSetupB:(id)b service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(KTIDSSessionHandler *)self queue];
-  dispatch_assert_queue_V2(v11);
+  bCopy = b;
+  dCopy = d;
+  queue = [(KTIDSSessionHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = IDSCopyAddressDestinationForDestination();
   [(KTIDSSessionHandler *)self dumpState:@"ktSetupB"];
-  v13 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oslog = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 141558274;
     v21 = 1752392040;
     v22 = 2112;
-    v23 = v10;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ktSetupB: %{mask.hash}@", buf, 0x16u);
+    v23 = dCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "ktSetupB: %{mask.hash}@", buf, 0x16u);
   }
 
-  v14 = [(KTIDSSessionHandler *)self idsHandleLookup];
-  v15 = [v14 objectForKeyedSubscript:v12];
+  idsHandleLookup = [(KTIDSSessionHandler *)self idsHandleLookup];
+  v15 = [idsHandleLookup objectForKeyedSubscript:v12];
 
   if (v15)
   {
@@ -576,55 +576,55 @@ LABEL_11:
     v17[2] = sub_100008850;
     v17[3] = &unk_100094F80;
     v18 = v15;
-    v19 = v9;
+    v19 = bCopy;
     [(KTIDSSessionHandler *)self runIfHaveContact:v12 complete:v17];
 
-    v16 = v18;
+    oslog2 = v18;
   }
 
   else
   {
-    v16 = [(KTIDSSessionHandler *)self oslog];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    oslog2 = [(KTIDSSessionHandler *)self oslog];
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 141558274;
       v21 = 1752392040;
       v22 = 2112;
-      v23 = v10;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "mb not found for %{mask.hash}@", buf, 0x16u);
+      v23 = dCopy;
+      _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "mb not found for %{mask.hash}@", buf, 0x16u);
     }
   }
 }
 
-- (void)ktRevealA:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)ktRevealA:(id)a service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(KTIDSSessionHandler *)self queue];
-  dispatch_assert_queue_V2(v11);
+  aCopy = a;
+  dCopy = d;
+  queue = [(KTIDSSessionHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+  oslog = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     *buf = 138543362;
-    v22 = v10;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "ktRevealA %{public}@", buf, 0xCu);
+    v22 = dCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_INFO, "ktRevealA %{public}@", buf, 0xCu);
   }
 
   [(KTIDSSessionHandler *)self dumpState:@"ktRevealA"];
   v13 = IDSCopyAddressDestinationForDestination();
-  v14 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oslog2 = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 141558274;
     v22 = 1752392040;
     v23 = 2112;
-    v24 = v10;
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "ktRevealA: %{mask.hash}@", buf, 0x16u);
+    v24 = dCopy;
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "ktRevealA: %{mask.hash}@", buf, 0x16u);
   }
 
-  v15 = [(KTIDSSessionHandler *)self idsHandleLookup];
-  v16 = [v15 objectForKeyedSubscript:v13];
+  idsHandleLookup = [(KTIDSSessionHandler *)self idsHandleLookup];
+  v16 = [idsHandleLookup objectForKeyedSubscript:v13];
 
   if (v16)
   {
@@ -633,53 +633,53 @@ LABEL_11:
     v18[2] = sub_100008AE4;
     v18[3] = &unk_100094F80;
     v19 = v16;
-    v20 = v9;
+    v20 = aCopy;
     [(KTIDSSessionHandler *)self runIfHaveContact:v13 complete:v18];
 
-    v17 = v19;
+    oslog3 = v19;
   }
 
   else
   {
-    v17 = [(KTIDSSessionHandler *)self oslog];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oslog3 = [(KTIDSSessionHandler *)self oslog];
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
     {
       sub_10006DAC4();
     }
   }
 }
 
-- (void)ktConfirm:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)ktConfirm:(id)confirm service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(KTIDSSessionHandler *)self queue];
-  dispatch_assert_queue_V2(v11);
+  confirmCopy = confirm;
+  dCopy = d;
+  queue = [(KTIDSSessionHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v12 = IDSCopyAddressDestinationForDestination();
-  v13 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  oslog = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 141558274;
     v22 = 1752392040;
     v23 = 2112;
     v24 = v12;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "ktConfirm %{mask.hash}@", buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "ktConfirm %{mask.hash}@", buf, 0x16u);
   }
 
   [(KTIDSSessionHandler *)self dumpState:@"ktConfirm"];
-  v14 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+  oslog2 = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 141558274;
     v22 = 1752392040;
     v23 = 2112;
-    v24 = v10;
-    _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "ktConfirm: %{mask.hash}@", buf, 0x16u);
+    v24 = dCopy;
+    _os_log_impl(&_mh_execute_header, oslog2, OS_LOG_TYPE_DEFAULT, "ktConfirm: %{mask.hash}@", buf, 0x16u);
   }
 
-  v15 = [(KTIDSSessionHandler *)self idsHandleLookup];
-  v16 = [v15 objectForKeyedSubscript:v12];
+  idsHandleLookup = [(KTIDSSessionHandler *)self idsHandleLookup];
+  v16 = [idsHandleLookup objectForKeyedSubscript:v12];
 
   if (v16)
   {
@@ -688,53 +688,53 @@ LABEL_11:
     v18[2] = sub_100008D88;
     v18[3] = &unk_100094F80;
     v19 = v16;
-    v20 = v9;
+    v20 = confirmCopy;
     [(KTIDSSessionHandler *)self runIfHaveContact:v12 complete:v18];
 
-    v17 = v19;
+    oslog3 = v19;
   }
 
   else
   {
-    v17 = [(KTIDSSessionHandler *)self oslog];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    oslog3 = [(KTIDSSessionHandler *)self oslog];
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
     {
       sub_10006DAC4();
     }
   }
 }
 
-- (void)ktTeardown:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)ktTeardown:(id)teardown service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = [(KTIDSSessionHandler *)self queue];
-  dispatch_assert_queue_V2(v11);
+  teardownCopy = teardown;
+  dCopy = d;
+  queue = [(KTIDSSessionHandler *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  oslog = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 141558274;
     v28 = 1752392040;
     v29 = 2112;
-    v30 = v10;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "ktTeardown %{mask.hash}@", buf, 0x16u);
+    v30 = dCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "ktTeardown %{mask.hash}@", buf, 0x16u);
   }
 
   v13 = IDSCopyAddressDestinationForDestination();
-  v14 = [(KTIDSSessionHandler *)self idsHandleLookup];
-  v15 = [v14 objectForKeyedSubscript:v13];
+  idsHandleLookup = [(KTIDSSessionHandler *)self idsHandleLookup];
+  v15 = [idsHandleLookup objectForKeyedSubscript:v13];
 
   if (v15)
   {
     v16 = [_TtC21transparencyStaticKey12GSASTeardown alloc];
-    v17 = [v9 data];
-    v18 = [(GSASTeardown *)v16 initWithData:v17 error:0];
+    data = [teardownCopy data];
+    oslog4 = [(GSASTeardown *)v16 initWithData:data error:0];
 
-    if (!v18 || ([v18 sessionId], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
+    if (!oslog4 || ([oslog4 sessionId], v19 = objc_claimAutoreleasedReturnValue(), v19, !v19))
     {
-      v22 = [(KTIDSSessionHandler *)self oslog];
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      oslog2 = [(KTIDSSessionHandler *)self oslog];
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
       {
         sub_10006DC20();
       }
@@ -742,46 +742,46 @@ LABEL_11:
       goto LABEL_18;
     }
 
-    v20 = [v15 peerSessionID];
-    v21 = [v18 sessionId];
-    if ([v20 isEqual:v21])
+    peerSessionID = [v15 peerSessionID];
+    sessionId = [oslog4 sessionId];
+    if ([peerSessionID isEqual:sessionId])
     {
     }
 
     else
     {
-      v23 = [v15 localSessionID];
-      v24 = [v18 sessionId];
-      v26 = [v23 isEqual:v24];
+      localSessionID = [v15 localSessionID];
+      sessionId2 = [oslog4 sessionId];
+      v26 = [localSessionID isEqual:sessionId2];
 
       if (!v26)
       {
-        v22 = [(KTIDSSessionHandler *)self oslog];
-        if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+        oslog2 = [(KTIDSSessionHandler *)self oslog];
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
         {
-          sub_10006DB00(v18, v15, v22);
+          sub_10006DB00(oslog4, v15, oslog2);
         }
 
         goto LABEL_18;
       }
     }
 
-    v25 = [(KTIDSSessionHandler *)self oslog];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
+    oslog3 = [(KTIDSSessionHandler *)self oslog];
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "ktTeardown: session match, tearing down", buf, 2u);
+      _os_log_impl(&_mh_execute_header, oslog3, OS_LOG_TYPE_DEFAULT, "ktTeardown: session match, tearing down", buf, 2u);
     }
 
-    v22 = [v9 data];
-    [v15 recvTeardown:v22];
+    oslog2 = [teardownCopy data];
+    [v15 recvTeardown:oslog2];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  v18 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+  oslog4 = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog4, OS_LOG_TYPE_ERROR))
   {
     sub_10006DC90();
   }
@@ -789,18 +789,18 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)ktTTR:(id)a3 service:(id)a4 account:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)ktTTR:(id)r service:(id)service account:(id)account fromID:(id)d context:(id)context
 {
-  v9 = a3;
-  v10 = a6;
+  rCopy = r;
+  dCopy = d;
   if (_os_feature_enabled_impl())
   {
     if ((+[TransparencyAnalytics hasInternalDiagnostics]& 1) != 0)
     {
-      v11 = IDSCopyAddressDestinationForDestination();
-      v12 = [v9 data];
+      oslog2 = IDSCopyAddressDestinationForDestination();
+      data = [rCopy data];
       v20 = 0;
-      v13 = [_TtC21transparencyStaticKey21SASValidateTTRMessage validateWithMessage:v12 error:&v20];
+      v13 = [_TtC21transparencyStaticKey21SASValidateTTRMessage validateWithMessage:data error:&v20];
       v14 = v20;
 
       if (v13)
@@ -811,7 +811,7 @@ LABEL_19:
         v17[3] = &unk_100095070;
         v17[4] = self;
         v18 = v13;
-        v19 = v11;
+        v19 = oslog2;
         v16[0] = _NSConcreteStackBlock;
         v16[1] = 3221225472;
         v16[2] = sub_10000945C;
@@ -822,8 +822,8 @@ LABEL_19:
 
       else
       {
-        v15 = [(KTIDSSessionHandler *)self oslog];
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        oslog = [(KTIDSSessionHandler *)self oslog];
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
           sub_10006DD78();
         }
@@ -832,8 +832,8 @@ LABEL_19:
 
     else
     {
-      v11 = [(KTIDSSessionHandler *)self oslog];
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      oslog2 = [(KTIDSSessionHandler *)self oslog];
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
       {
         sub_10006DD3C();
       }
@@ -842,32 +842,32 @@ LABEL_19:
 
   else
   {
-    v11 = [(KTIDSSessionHandler *)self oslog];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oslog2 = [(KTIDSSessionHandler *)self oslog];
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
     {
       sub_10006DD00();
     }
   }
 }
 
-+ (int64_t)compareLocalSessionID:(id)a3 remoteSessionID:(id)a4
++ (int64_t)compareLocalSessionID:(id)d remoteSessionID:(id)iD
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqual:v6])
+  dCopy = d;
+  iDCopy = iD;
+  if ([dCopy isEqual:iDCopy])
   {
     v7 = 2;
   }
 
   else
   {
-    v8 = [v5 length];
-    if (v8 <= [v6 length])
+    v8 = [dCopy length];
+    if (v8 <= [iDCopy length])
     {
-      v9 = [v5 length];
-      if (v9 >= [v6 length])
+      v9 = [dCopy length];
+      if (v9 >= [iDCopy length])
       {
-        v7 = memcmp([v5 bytes], objc_msgSend(v6, "bytes"), objc_msgSend(v6, "length")) >> 31;
+        v7 = memcmp([dCopy bytes], objc_msgSend(iDCopy, "bytes"), objc_msgSend(iDCopy, "length")) >> 31;
       }
 
       else
@@ -885,19 +885,19 @@ LABEL_19:
   return v7;
 }
 
-- (void)addMailbox:(id)a3
+- (void)addMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(KTIDSSessionHandler *)self sessionIDLookup];
-  v6 = [v4 handleID];
-  [v5 setObject:v4 forKeyedSubscript:v6];
+  mailboxCopy = mailbox;
+  sessionIDLookup = [(KTIDSSessionHandler *)self sessionIDLookup];
+  handleID = [mailboxCopy handleID];
+  [sessionIDLookup setObject:mailboxCopy forKeyedSubscript:handleID];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v4 peerHandles];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  peerHandles = [mailboxCopy peerHandles];
+  v8 = [peerHandles countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -909,36 +909,36 @@ LABEL_19:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(peerHandles);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v11);
-        v13 = [(KTIDSSessionHandler *)self idsHandleLookup];
-        [v13 setObject:v4 forKeyedSubscript:v12];
+        idsHandleLookup = [(KTIDSSessionHandler *)self idsHandleLookup];
+        [idsHandleLookup setObject:mailboxCopy forKeyedSubscript:v12];
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [peerHandles countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)removeAddressLookup:(id)a3
+- (void)removeAddressLookup:(id)lookup
 {
-  v4 = a3;
-  if (([v4 deletedHandles] & 1) == 0)
+  lookupCopy = lookup;
+  if (([lookupCopy deletedHandles] & 1) == 0)
   {
-    [v4 setDeletedHandles:1];
+    [lookupCopy setDeletedHandles:1];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 peerHandles];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    peerHandles = [lookupCopy peerHandles];
+    v6 = [peerHandles countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -950,18 +950,18 @@ LABEL_19:
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(peerHandles);
           }
 
           v10 = *(*(&v12 + 1) + 8 * v9);
-          v11 = [(KTIDSSessionHandler *)self idsHandleLookup];
-          [v11 setObject:0 forKeyedSubscript:v10];
+          idsHandleLookup = [(KTIDSSessionHandler *)self idsHandleLookup];
+          [idsHandleLookup setObject:0 forKeyedSubscript:v10];
 
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [peerHandles countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -969,82 +969,82 @@ LABEL_19:
   }
 }
 
-- (void)removeSessionIDLookup:(id)a3
+- (void)removeSessionIDLookup:(id)lookup
 {
-  v4 = a3;
-  v6 = [(KTIDSSessionHandler *)self sessionIDLookup];
-  v5 = [v4 handleID];
+  lookupCopy = lookup;
+  sessionIDLookup = [(KTIDSSessionHandler *)self sessionIDLookup];
+  handleID = [lookupCopy handleID];
 
-  [v6 setObject:0 forKeyedSubscript:v5];
+  [sessionIDLookup setObject:0 forKeyedSubscript:handleID];
 }
 
-- (void)removeMailbox:(id)a3
+- (void)removeMailbox:(id)mailbox
 {
-  v4 = a3;
-  v5 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  mailboxCopy = mailbox;
+  oslog = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 negotiatedSessionID];
-    v7 = [v6 kt_hexString];
-    v8 = [v4 localSessionID];
-    v9 = [v8 kt_hexString];
+    negotiatedSessionID = [mailboxCopy negotiatedSessionID];
+    kt_hexString = [negotiatedSessionID kt_hexString];
+    localSessionID = [mailboxCopy localSessionID];
+    kt_hexString2 = [localSessionID kt_hexString];
     v10 = 138543618;
-    v11 = v7;
+    v11 = kt_hexString;
     v12 = 2114;
-    v13 = v9;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "removing session %{public}@, local-session %{public}@", &v10, 0x16u);
+    v13 = kt_hexString2;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "removing session %{public}@, local-session %{public}@", &v10, 0x16u);
   }
 
-  [(KTIDSSessionHandler *)self removeAddressLookup:v4];
-  [(KTIDSSessionHandler *)self removeSessionIDLookup:v4];
-  [v4 sendTeardown];
+  [(KTIDSSessionHandler *)self removeAddressLookup:mailboxCopy];
+  [(KTIDSSessionHandler *)self removeSessionIDLookup:mailboxCopy];
+  [mailboxCopy sendTeardown];
 }
 
-- (void)dumpState:(id)a3
+- (void)dumpState:(id)state
 {
-  v4 = a3;
-  v5 = [(KTIDSSessionHandler *)self oslog];
-  if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+  stateCopy = state;
+  oslog = [(KTIDSSessionHandler *)self oslog];
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v9 = v4;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "session handler-lookup state: %{public}@", buf, 0xCu);
+    v9 = stateCopy;
+    _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "session handler-lookup state: %{public}@", buf, 0xCu);
   }
 
-  v6 = [(KTIDSSessionHandler *)self idsHandleLookup];
+  idsHandleLookup = [(KTIDSSessionHandler *)self idsHandleLookup];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100009B18;
   v7[3] = &unk_100095098;
   v7[4] = self;
-  [v6 enumerateKeysAndObjectsUsingBlock:v7];
+  [idsHandleLookup enumerateKeysAndObjectsUsingBlock:v7];
 }
 
-- (void)negotiatedSessionID:(id)a3 forMailbox:(id)a4
+- (void)negotiatedSessionID:(id)d forMailbox:(id)mailbox
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(KTIDSSessionHandler *)self sessionIDLookup];
-  [v8 setObject:v6 forKeyedSubscript:v7];
+  mailboxCopy = mailbox;
+  dCopy = d;
+  sessionIDLookup = [(KTIDSSessionHandler *)self sessionIDLookup];
+  [sessionIDLookup setObject:mailboxCopy forKeyedSubscript:dCopy];
 }
 
-- (void)haveContact:(id)a3 complete:(id)a4
+- (void)haveContact:(id)contact complete:(id)complete
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100009DBC;
   v9[3] = &unk_1000950C0;
-  v10 = self;
-  v11 = a3;
-  v12 = a4;
+  selfCopy = self;
+  contactCopy = contact;
+  completeCopy = complete;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100009F58;
   v7[3] = &unk_1000950E8;
-  v7[4] = v10;
-  v8 = v12;
-  v5 = v12;
-  v6 = v11;
+  v7[4] = selfCopy;
+  v8 = completeCopy;
+  v5 = completeCopy;
+  v6 = contactCopy;
   [TransparencyXPCConnection invokeIDSSupportWithBlock:v9 errorHandler:v7];
 }
 

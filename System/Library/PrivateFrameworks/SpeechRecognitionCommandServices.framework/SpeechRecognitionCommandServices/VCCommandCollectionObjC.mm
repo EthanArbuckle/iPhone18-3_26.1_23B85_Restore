@@ -11,10 +11,10 @@
 {
   if (qword_280400548 != -1)
   {
-    a1 = swift_once();
+    self = swift_once();
   }
 
-  type metadata accessor for VCCommandCollectionObjC(a1);
+  type metadata accessor for VCCommandCollectionObjC(self);
   v2 = sub_26B542C14();
 
   return v2;

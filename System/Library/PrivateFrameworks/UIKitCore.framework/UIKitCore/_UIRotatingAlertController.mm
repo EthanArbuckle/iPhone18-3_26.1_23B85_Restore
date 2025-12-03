@@ -1,16 +1,16 @@
 @interface _UIRotatingAlertController
-- (BOOL)_shouldAbortAdaptationFromTraitCollection:(id)a3 toTraitCollection:(id)a4 withTransitionCoordinator:(id)a5;
+- (BOOL)_shouldAbortAdaptationFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection withTransitionCoordinator:(id)coordinator;
 - (BOOL)presentSheet;
-- (BOOL)presentSheetFromRect:(CGRect)a3;
+- (BOOL)presentSheetFromRect:(CGRect)rect;
 - (_UIRotatingAlertController)init;
 - (_UIRotatingAlertControllerDelegate)rotatingSheetDelegate;
-- (void)_presentingViewControllerDidChange:(id)a3;
-- (void)_presentingViewControllerWillChange:(id)a3;
+- (void)_presentingViewControllerDidChange:(id)change;
+- (void)_presentingViewControllerWillChange:(id)change;
 - (void)_updateSheetPositionAfterRotation;
 - (void)dealloc;
-- (void)didRotate:(id)a3;
+- (void)didRotate:(id)rotate;
 - (void)doneWithSheet;
-- (void)willRotate:(id)a3;
+- (void)willRotate:(id)rotate;
 @end
 
 @implementation _UIRotatingAlertController
@@ -24,9 +24,9 @@
   if (v2)
   {
     v2->_arrowDirections = 15;
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel_willRotate_ name:@"UIWindowWillRotateNotification" object:0];
-    [v4 addObserver:v3 selector:sel_didRotate_ name:@"UIWindowDidRotateNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_willRotate_ name:@"UIWindowWillRotateNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel_didRotate_ name:@"UIWindowDidRotateNotification" object:0];
     v5 = v3;
   }
 
@@ -36,11 +36,11 @@
 - (void)dealloc
 {
   v6[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIWindowWillRotateNotification";
   v6[1] = @"UIWindowDidRotateNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:2];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = _UIRotatingAlertController;
@@ -59,12 +59,12 @@
   return [(_UIRotatingAlertController *)self presentSheetFromRect:v5, v7, v9, v11];
 }
 
-- (BOOL)presentSheetFromRect:(CGRect)a3
+- (BOOL)presentSheetFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   WeakRetained = objc_loadWeakRetained(&self->_rotatingSheetDelegate);
   v9 = [WeakRetained hostViewForSheet:self];
 
@@ -78,13 +78,13 @@
 
     v11 = presentedViewControllerWhileRotating;
     [(UIAlertController *)v11 setModalPresentationStyle:7];
-    v12 = [(UIViewController *)v11 popoverPresentationController];
-    [v12 setSourceView:v9];
-    [v12 setSourceRect:{x, y, width, height}];
-    [v12 setPermittedArrowDirections:self->_arrowDirections];
+    popoverPresentationController = [(UIViewController *)v11 popoverPresentationController];
+    [popoverPresentationController setSourceView:v9];
+    [popoverPresentationController setSourceRect:{x, y, width, height}];
+    [popoverPresentationController setPermittedArrowDirections:self->_arrowDirections];
     if (self->_popoverPresentationControllerDelegateWhileRotating)
     {
-      [v12 setDelegate:?];
+      [popoverPresentationController setDelegate:?];
     }
 
     objc_opt_class();
@@ -97,9 +97,9 @@
     {
       v14 = [UIViewController _viewControllerForFullScreenPresentationFromView:v9];
       [v14 presentViewController:v11 animated:1 completion:0];
-      v15 = [v14 presentedViewController];
+      presentedViewController = [v14 presentedViewController];
 
-      if (v11 != v15)
+      if (v11 != presentedViewController)
       {
         v13 = 0;
 LABEL_12:
@@ -131,105 +131,105 @@ LABEL_13:
   [v5 cancelPreviousPerformRequestsWithTarget:self selector:sel__didRotateAndLayout object:0];
 }
 
-- (void)_presentingViewControllerWillChange:(id)a3
+- (void)_presentingViewControllerWillChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = _UIRotatingAlertController;
-  [(UIViewController *)&v8 _presentingViewControllerWillChange:v4];
-  v5 = [(_UIRotatingAlertController *)self rotatingSheetDelegate];
+  [(UIViewController *)&v8 _presentingViewControllerWillChange:changeCopy];
+  rotatingSheetDelegate = [(_UIRotatingAlertController *)self rotatingSheetDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_UIRotatingAlertController *)self rotatingSheetDelegate];
-    [v7 sheet:self presentingViewControllerWillChange:v4];
+    rotatingSheetDelegate2 = [(_UIRotatingAlertController *)self rotatingSheetDelegate];
+    [rotatingSheetDelegate2 sheet:self presentingViewControllerWillChange:changeCopy];
   }
 }
 
-- (void)_presentingViewControllerDidChange:(id)a3
+- (void)_presentingViewControllerDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = _UIRotatingAlertController;
-  [(UIViewController *)&v8 _presentingViewControllerDidChange:v4];
-  v5 = [(_UIRotatingAlertController *)self rotatingSheetDelegate];
+  [(UIViewController *)&v8 _presentingViewControllerDidChange:changeCopy];
+  rotatingSheetDelegate = [(_UIRotatingAlertController *)self rotatingSheetDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(_UIRotatingAlertController *)self rotatingSheetDelegate];
-    [v7 sheet:self presentingViewControllerDidChange:v4];
+    rotatingSheetDelegate2 = [(_UIRotatingAlertController *)self rotatingSheetDelegate];
+    [rotatingSheetDelegate2 sheet:self presentingViewControllerDidChange:changeCopy];
   }
 }
 
-- (BOOL)_shouldAbortAdaptationFromTraitCollection:(id)a3 toTraitCollection:(id)a4 withTransitionCoordinator:(id)a5
+- (BOOL)_shouldAbortAdaptationFromTraitCollection:(id)collection toTraitCollection:(id)traitCollection withTransitionCoordinator:(id)coordinator
 {
-  if (!a5)
+  if (!coordinator)
   {
     return 0;
   }
 
-  [a5 targetTransform];
+  [coordinator targetTransform];
   return !CGAffineTransformIsIdentity(&v6);
 }
 
-- (void)willRotate:(id)a3
+- (void)willRotate:(id)rotate
 {
-  v4 = [a3 object];
+  object = [rotate object];
   WeakRetained = objc_loadWeakRetained(&self->_rotatingSheetDelegate);
   v6 = [WeakRetained hostViewForSheet:self];
 
-  v7 = [(UIViewController *)self _existingView];
-  v8 = [v7 window];
-  if (!v8)
+  _existingView = [(UIViewController *)self _existingView];
+  window = [_existingView window];
+  if (!window)
   {
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v9 = v8;
-  v10 = [v6 window];
+  v9 = window;
+  window2 = [v6 window];
 
-  if (v10 == v4)
+  if (window2 == object)
   {
-    v7 = [UIViewController _viewControllerForFullScreenPresentationFromView:v6];
-    v11 = [v7 presentedViewController];
-    v12 = [v11 presentationController];
-    v13 = [v12 presentationStyle];
+    _existingView = [UIViewController _viewControllerForFullScreenPresentationFromView:v6];
+    presentedViewController = [_existingView presentedViewController];
+    presentationController = [presentedViewController presentationController];
+    presentationStyle = [presentationController presentationStyle];
 
-    if (v13 == 7 && !self->_isRotating)
+    if (presentationStyle == 7 && !self->_isRotating)
     {
       self->_isRotating = 1;
       self->_readyToPresentAfterRotation = 0;
-      v14 = [(UIViewController *)self presentingViewController];
+      presentingViewController = [(UIViewController *)self presentingViewController];
 
-      if (v14)
+      if (presentingViewController)
       {
-        v15 = [(UIViewController *)self presentedViewController];
+        presentedViewController2 = [(UIViewController *)self presentedViewController];
       }
 
       else
       {
-        v15 = v11;
+        presentedViewController2 = presentedViewController;
       }
 
       presentedViewControllerWhileRotating = self->_presentedViewControllerWhileRotating;
-      self->_presentedViewControllerWhileRotating = v15;
-      v17 = v15;
+      self->_presentedViewControllerWhileRotating = presentedViewController2;
+      v17 = presentedViewController2;
 
-      v18 = [v11 popoverPresentationController];
-      v19 = [v18 delegate];
+      popoverPresentationController = [presentedViewController popoverPresentationController];
+      delegate = [popoverPresentationController delegate];
       popoverPresentationControllerDelegateWhileRotating = self->_popoverPresentationControllerDelegateWhileRotating;
-      self->_popoverPresentationControllerDelegateWhileRotating = v19;
+      self->_popoverPresentationControllerDelegateWhileRotating = delegate;
 
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __41___UIRotatingAlertController_willRotate___block_invoke;
       v21[3] = &unk_1E70F3590;
       v21[4] = self;
-      [v7 dismissViewControllerAnimated:0 completion:v21];
+      [_existingView dismissViewControllerAnimated:0 completion:v21];
     }
 
     goto LABEL_10;
@@ -247,16 +247,16 @@ LABEL_11:
   }
 
   v26 = presentedViewControllerWhileRotating;
-  v4 = [(UIViewController *)v26 presentingViewController];
-  if (v4)
+  presentingViewController = [(UIViewController *)v26 presentingViewController];
+  if (presentingViewController)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(UIViewController *)self presentingViewController];
-    v5 = v6 != 0;
+    presentingViewController2 = [(UIViewController *)self presentingViewController];
+    v5 = presentingViewController2 != 0;
   }
 
   if (self->_isRotating && !v5 && self->_readyToPresentAfterRotation)
@@ -269,12 +269,12 @@ LABEL_11:
     v13 = v12;
     v15 = v14;
 
-    v16 = [(UIViewController *)self->_presentedViewControllerWhileRotating isModalInPresentation];
+    isModalInPresentation = [(UIViewController *)self->_presentedViewControllerWhileRotating isModalInPresentation];
     v28.origin.x = v9;
     v28.origin.y = v11;
     v28.size.width = v13;
     v28.size.height = v15;
-    if (!CGRectIsEmpty(v28) || v16)
+    if (!CGRectIsEmpty(v28) || isModalInPresentation)
     {
       v18 = objc_loadWeakRetained(&self->_rotatingSheetDelegate);
       v19 = [v18 hostViewForSheet:self];
@@ -295,7 +295,7 @@ LABEL_11:
       v31.size.height = height;
       if (CGRectIsEmpty(v31))
       {
-        if (v16)
+        if (isModalInPresentation)
         {
           [(_UIRotatingAlertController *)self presentSheet];
         }
@@ -315,15 +315,15 @@ LABEL_11:
   }
 }
 
-- (void)didRotate:(id)a3
+- (void)didRotate:(id)rotate
 {
-  v7 = [a3 object];
+  object = [rotate object];
   WeakRetained = objc_loadWeakRetained(&self->_rotatingSheetDelegate);
   v5 = [WeakRetained hostViewForSheet:self];
 
-  v6 = [v5 window];
+  window = [v5 window];
 
-  if (v6 == v7)
+  if (window == object)
   {
     [(_UIRotatingAlertController *)self performSelector:sel__didRotateAndLayout withObject:0 afterDelay:0.0];
   }

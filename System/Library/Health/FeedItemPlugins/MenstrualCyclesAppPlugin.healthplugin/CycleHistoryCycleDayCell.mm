@@ -1,6 +1,6 @@
 @interface CycleHistoryCycleDayCell
 + (Class)layerClass;
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 @end
 
 @implementation CycleHistoryCycleDayCell
@@ -12,13 +12,13 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v6.receiver = self;
   v6.super_class = swift_getObjectType();
-  v4 = a3;
+  attributesCopy = attributes;
   v5 = v6.receiver;
-  [(CycleHistoryCycleDayCell *)&v6 applyLayoutAttributes:v4];
+  [(CycleHistoryCycleDayCell *)&v6 applyLayoutAttributes:attributesCopy];
   sub_29E028E4C();
 }
 

@@ -4,50 +4,50 @@
 - (BOOL)_hasPersonalRequestsDevice;
 - (BOOL)_hasResidentDevice;
 - (BOOL)_hasTVViewingProfilesDevice;
-- (BOOL)_isEditingAllowedForUser:(id)a3;
+- (BOOL)_isEditingAllowedForUser:(id)user;
 - (BOOL)_isPersonalRequestsEnabledForUser;
-- (BOOL)_isRemoteAccessAllowedForUser:(id)a3;
+- (BOOL)_isRemoteAccessAllowedForUser:(id)user;
 - (BOOL)_isTVViewingProfilesEnabledForUser;
-- (BOOL)_isUserOwner:(id)a3;
-- (BOOL)_isVoiceIDEnabled:(id)a3;
+- (BOOL)_isUserOwner:(id)owner;
+- (BOOL)_isVoiceIDEnabled:(id)enabled;
 - (BOOL)isUserBeingEditedTheDeviceUser;
 - (HMUser)userBeingEdited;
-- (HUEditUserItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUEditUserItemManager)initWithHome:(id)a3 userItem:(id)a4 delegate:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_createAccessLevelSectionUsing:(id)a3;
-- (id)_createAccessorySectionUsing:(id)a3;
-- (id)_createAllowEditingSectionUsing:(id)a3;
-- (id)_createAllowedAccessoriesSectionUsing:(id)a3;
-- (id)_createAppleTVProfileSectionUsing:(id)a3;
-- (id)_createLocalAccessSectionUsing:(id)a3;
-- (id)_createPendingAccessoriesSectionUsing:(id)a3;
-- (id)_createRemoveUserLeaveHomeSectionUsing:(id)a3;
+- (HUEditUserItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUEditUserItemManager)initWithHome:(id)home userItem:(id)item delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_createAccessLevelSectionUsing:(id)using;
+- (id)_createAccessorySectionUsing:(id)using;
+- (id)_createAllowEditingSectionUsing:(id)using;
+- (id)_createAllowedAccessoriesSectionUsing:(id)using;
+- (id)_createAppleTVProfileSectionUsing:(id)using;
+- (id)_createLocalAccessSectionUsing:(id)using;
+- (id)_createPendingAccessoriesSectionUsing:(id)using;
+- (id)_createRemoveUserLeaveHomeSectionUsing:(id)using;
 - (id)_homeFuture;
-- (id)_itemsToHideInSet:(id)a3;
-- (id)reuseIdentifierForFooterViewInSection:(unint64_t)a3;
+- (id)_itemsToHideInSet:(id)set;
+- (id)reuseIdentifierForFooterViewInSection:(unint64_t)section;
 - (void)_registerForExternalUpdates;
 - (void)_unregisterForExternalUpdates;
-- (void)_updateSiriSectionFooterForSection:(id)a3;
+- (void)_updateSiriSectionFooterForSection:(id)section;
 @end
 
 @implementation HUEditUserItemManager
 
-- (HUEditUserItemManager)initWithHome:(id)a3 userItem:(id)a4 delegate:(id)a5
+- (HUEditUserItemManager)initWithHome:(id)home userItem:(id)item delegate:(id)delegate
 {
   v21[12] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  homeCopy = home;
   v19.receiver = self;
   v19.super_class = HUEditUserItemManager;
-  v9 = [(HFItemManager *)&v19 initWithDelegate:a5 sourceItem:a4];
+  v9 = [(HFItemManager *)&v19 initWithDelegate:delegate sourceItem:item];
   if (v9)
   {
     v10 = +[HULocationDeviceManager sharedInstance];
     locationDeviceManager = v9->_locationDeviceManager;
     v9->_locationDeviceManager = v10;
 
-    [(HUEditUserItemManager *)v9 setHomeForUser:v8];
+    [(HUEditUserItemManager *)v9 setHomeForUser:homeCopy];
     v21[0] = *MEMORY[0x277D139E8];
     v12 = v21[0];
     v21[1] = @"HUEditUserItemManager_PersonalRequestsSectionIdentifier";
@@ -86,26 +86,26 @@
   return v9;
 }
 
-- (HUEditUserItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUEditUserItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithHome_userItem_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUEditUserItemManager.m" lineNumber:159 description:{@"%s is unavailable; use %@ instead", "-[HUEditUserItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUEditUserItemManager.m" lineNumber:159 description:{@"%s is unavailable; use %@ instead", "-[HUEditUserItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
 - (HMUser)userBeingEdited
 {
-  v2 = [(HFItemManager *)self sourceItem];
-  v3 = [v2 user];
+  sourceItem = [(HFItemManager *)self sourceItem];
+  user = [sourceItem user];
 
-  return v3;
+  return user;
 }
 
-- (id)reuseIdentifierForFooterViewInSection:(unint64_t)a3
+- (id)reuseIdentifierForFooterViewInSection:(unint64_t)section
 {
-  v4 = [(HFItemManager *)self displayedSectionIdentifierForSectionIndex:a3];
+  v4 = [(HFItemManager *)self displayedSectionIdentifierForSectionIndex:section];
   if ([v4 isEqualToString:@"HUEditUserItemManager_AccessSectionIdentifier"] && !-[HUEditUserItemManager _hasResidentDevice](self, "_hasResidentDevice"))
   {
     v5 = @"HUAboutResidentDeviceFooterViewReuseIdentifier";
@@ -129,10 +129,10 @@ LABEL_7:
 
 - (BOOL)isUserBeingEditedTheDeviceUser
 {
-  v3 = [(HUEditUserItemManager *)self userBeingEdited];
-  v4 = [(HFItemManager *)self home];
-  v5 = [v4 currentUser];
-  v6 = [v3 isEqual:v5];
+  userBeingEdited = [(HUEditUserItemManager *)self userBeingEdited];
+  home = [(HFItemManager *)self home];
+  currentUser = [home currentUser];
+  v6 = [userBeingEdited isEqual:currentUser];
 
   return v6;
 }
@@ -140,63 +140,63 @@ LABEL_7:
 - (id)_homeFuture
 {
   v2 = MEMORY[0x277D2C900];
-  v3 = [(HUEditUserItemManager *)self homeForUser];
-  v4 = [v2 futureWithResult:v3];
+  homeForUser = [(HUEditUserItemManager *)self homeForUser];
+  v4 = [v2 futureWithResult:homeForUser];
 
   return v4;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v170 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   objc_initWeak(&location, self);
   v5 = HFLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     v96 = objc_opt_class();
     v97 = NSStringFromClass(v96);
-    v124 = [(HFItemManager *)self home];
-    v120 = [v124 currentUser];
-    v113 = [v120 hf_prettyDescription];
-    v118 = [(HFItemManager *)self home];
-    v116 = [v118 currentUser];
-    v111 = [v116 name];
-    v110 = [(HUEditUserItemManager *)self userBeingEdited];
-    v98 = [(HUEditUserItemManager *)self userBeingEdited];
-    v99 = [v98 name];
-    v100 = [(HUEditUserItemManager *)self userBeingEdited];
-    v101 = [(HUEditUserItemManager *)self _isUserOwner:v100];
-    v102 = [(HUEditUserItemManager *)self userBeingEdited];
-    v103 = [(HUEditUserItemManager *)self _isEditingAllowedForUser:v102];
-    v104 = [(HUEditUserItemManager *)self _canModifyUserBeingEditedPermissions];
+    home = [(HFItemManager *)self home];
+    currentUser = [home currentUser];
+    hf_prettyDescription = [currentUser hf_prettyDescription];
+    home2 = [(HFItemManager *)self home];
+    currentUser2 = [home2 currentUser];
+    name = [currentUser2 name];
+    userBeingEdited = [(HUEditUserItemManager *)self userBeingEdited];
+    userBeingEdited2 = [(HUEditUserItemManager *)self userBeingEdited];
+    name2 = [userBeingEdited2 name];
+    userBeingEdited3 = [(HUEditUserItemManager *)self userBeingEdited];
+    v101 = [(HUEditUserItemManager *)self _isUserOwner:userBeingEdited3];
+    userBeingEdited4 = [(HUEditUserItemManager *)self userBeingEdited];
+    v103 = [(HUEditUserItemManager *)self _isEditingAllowedForUser:userBeingEdited4];
+    _canModifyUserBeingEditedPermissions = [(HUEditUserItemManager *)self _canModifyUserBeingEditedPermissions];
     *buf = 138414082;
-    v155 = v97;
+    selfCopy2 = v97;
     v156 = 2112;
-    v157 = v113;
+    v157 = hf_prettyDescription;
     v158 = 2112;
-    v159 = v111;
+    v159 = name;
     v160 = 2112;
-    v161 = v110;
+    v161 = userBeingEdited;
     v162 = 2112;
-    v163 = v99;
+    v163 = name2;
     v164 = 1024;
     v165 = v101;
     v166 = 1024;
     v167 = v103;
     v168 = 1024;
-    v169 = v104;
+    v169 = _canModifyUserBeingEditedPermissions;
     _os_log_debug_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEBUG, "%@ Info:\n\tCurrent User: %@/%@\n\tUser Being Edited: %@/%@\n\tUBE is Owner: %{BOOL}d\n\tUBE is Admin: %{BOOL}d\n\tCU Can Modify User Permissions for UBE: %{BOOL}d", buf, 0x46u);
   }
 
-  v6 = [(HFItemManager *)self home];
-  v7 = [(HUEditUserItemManager *)self userBeingEdited];
-  v8 = [v6 hf_userIsRestrictedGuest:v7];
+  home3 = [(HFItemManager *)self home];
+  userBeingEdited5 = [(HUEditUserItemManager *)self userBeingEdited];
+  v8 = [home3 hf_userIsRestrictedGuest:userBeingEdited5];
 
   v9 = [HURestrictedGuestScheduleItem alloc];
-  v10 = [(HUEditUserItemManager *)self homeForUser];
-  v11 = [(HUEditUserItemManager *)self userBeingEdited];
-  v12 = [(HURestrictedGuestScheduleItem *)v9 initWithHome:v10 user:v11];
+  homeForUser = [(HUEditUserItemManager *)self homeForUser];
+  userBeingEdited6 = [(HUEditUserItemManager *)self userBeingEdited];
+  v12 = [(HURestrictedGuestScheduleItem *)v9 initWithHome:homeForUser user:userBeingEdited6];
   [(HUEditUserItemManager *)self setHomeScheduleItem:v12];
 
   v13 = [HUInstructionsItem alloc];
@@ -216,29 +216,29 @@ LABEL_7:
 
   LOBYTE(v12) = [(HUEditUserItemManager *)self _hasResidentDevice];
   v18 = [_HUUserAccessItem alloc];
-  v19 = [(HUEditUserItemManager *)self userBeingEdited];
+  userBeingEdited7 = [(HUEditUserItemManager *)self userBeingEdited];
   v143[0] = MEMORY[0x277D85DD0];
   v143[1] = 3221225472;
   v143[2] = __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_2;
   v143[3] = &unk_277DB8E98;
   objc_copyWeak(&v144, &location);
   v145 = v8 & 1 | ((v12 & 1) == 0);
-  v20 = [(_HUUserAccessItem *)v18 initWithUser:v19 resultsBlock:v143];
+  v20 = [(_HUUserAccessItem *)v18 initWithUser:userBeingEdited7 resultsBlock:v143];
   [(HUEditUserItemManager *)self setAllowEditingItem:v20];
 
   v21 = [_HUUserAccessItem alloc];
-  v22 = [(HUEditUserItemManager *)self userBeingEdited];
+  userBeingEdited8 = [(HUEditUserItemManager *)self userBeingEdited];
   v141[0] = MEMORY[0x277D85DD0];
   v141[1] = 3221225472;
   v141[2] = __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_3;
   v141[3] = &unk_277DB7448;
   objc_copyWeak(&v142, &location);
-  v23 = [(_HUUserAccessItem *)v21 initWithUser:v22 resultsBlock:v141];
+  v23 = [(_HUUserAccessItem *)v21 initWithUser:userBeingEdited8 resultsBlock:v141];
   [(HUEditUserItemManager *)self setCamerasItem:v23];
 
-  v24 = [(HUEditUserItemManager *)self homeForUser];
-  v25 = [v24 accessories];
-  v26 = [v25 na_any:&__block_literal_global_28];
+  homeForUser2 = [(HUEditUserItemManager *)self homeForUser];
+  accessories = [homeForUser2 accessories];
+  v26 = [accessories na_any:&__block_literal_global_28];
 
   if (!v26)
   {
@@ -246,22 +246,22 @@ LABEL_7:
     goto LABEL_15;
   }
 
-  v27 = [(HFItemManager *)self home];
-  v28 = [v27 hasOnboardedForAccessCode];
-  if ((v28 & 1) != 0 || (-[HFItemManager home](self, "home"), v26 = objc_claimAutoreleasedReturnValue(), [v26 hasOnboardedForWalletKey]))
+  home4 = [(HFItemManager *)self home];
+  hasOnboardedForAccessCode = [home4 hasOnboardedForAccessCode];
+  if ((hasOnboardedForAccessCode & 1) != 0 || (-[HFItemManager home](self, "home"), v26 = objc_claimAutoreleasedReturnValue(), [v26 hasOnboardedForWalletKey]))
   {
     if ([(HUEditUserItemManager *)self isUserBeingEditedTheDeviceUser])
     {
-      v29 = 1;
+      hf_currentUserIsAdministrator = 1;
     }
 
     else
     {
-      v31 = [(HFItemManager *)self home];
-      v29 = [v31 hf_currentUserIsAdministrator];
+      home5 = [(HFItemManager *)self home];
+      hf_currentUserIsAdministrator = [home5 hf_currentUserIsAdministrator];
     }
 
-    if (v28)
+    if (hasOnboardedForAccessCode)
     {
       goto LABEL_14;
     }
@@ -269,11 +269,11 @@ LABEL_7:
 
   else
   {
-    v29 = 0;
+    hf_currentUserIsAdministrator = 0;
   }
 
 LABEL_14:
-  v30 = v29 ^ 1;
+  v30 = hf_currentUserIsAdministrator ^ 1;
 LABEL_15:
   v32 = objc_alloc(MEMORY[0x277D14B38]);
   v152[0] = *MEMORY[0x277D13F60];
@@ -296,15 +296,15 @@ LABEL_15:
   [(HUEditUserItemManager *)self setLocksItem:v39];
 
   v40 = objc_alloc(MEMORY[0x277D14290]);
-  v41 = [(HFItemManager *)self home];
-  v123 = [v40 initWithHome:v41];
+  home6 = [(HFItemManager *)self home];
+  v123 = [v40 initWithHome:home6];
 
   v138[0] = MEMORY[0x277D85DD0];
   v138[1] = 3221225472;
   v138[2] = __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_5;
   v138[3] = &unk_277DB8EE8;
   objc_copyWeak(&v140, &location);
-  v112 = v4;
+  v112 = homeCopy;
   v139 = v112;
   [v123 setFilter:v138];
   v42 = objc_alloc(MEMORY[0x277D14C38]);
@@ -317,21 +317,21 @@ LABEL_15:
   [(HUEditUserItemManager *)self setAllowedAccessoryCategoryItemProvider:v43];
 
   v44 = [_HUUserAccessItem alloc];
-  v45 = [(HUEditUserItemManager *)self userBeingEdited];
+  userBeingEdited9 = [(HUEditUserItemManager *)self userBeingEdited];
   v134[0] = MEMORY[0x277D85DD0];
   v134[1] = 3221225472;
   v134[2] = __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_10;
   v134[3] = &unk_277DB8F60;
   objc_copyWeak(v135, &location);
   v135[1] = a2;
-  v46 = [(_HUUserAccessItem *)v44 initWithUser:v45 resultsBlock:v134];
+  v46 = [(_HUUserAccessItem *)v44 initWithUser:userBeingEdited9 resultsBlock:v134];
   [(HUEditUserItemManager *)self setPersonalRequestsItem:v46];
 
   if ([(HUEditUserItemManager *)self _hasTVViewingProfilesDevice])
   {
-    v47 = [(HFItemManager *)self home];
-    v48 = [(HUEditUserItemManager *)self userBeingEdited];
-    if ([v47 hf_canShowTvViewingInfoForUser:v48])
+    home7 = [(HFItemManager *)self home];
+    userBeingEdited10 = [(HUEditUserItemManager *)self userBeingEdited];
+    if ([home7 hf_canShowTvViewingInfoForUser:userBeingEdited10])
     {
       if ([(HUEditUserItemManager *)self isUserBeingEditedTheDeviceUser])
       {
@@ -340,9 +340,9 @@ LABEL_15:
 
       else
       {
-        v50 = [(HFItemManager *)self home];
-        v51 = [v50 currentUser];
-        v49 = [(HUEditUserItemManager *)self _isUserOwner:v51];
+        home8 = [(HFItemManager *)self home];
+        currentUser3 = [home8 currentUser];
+        v49 = [(HUEditUserItemManager *)self _isUserOwner:currentUser3];
       }
     }
 
@@ -357,7 +357,7 @@ LABEL_15:
     v49 = 0;
   }
 
-  v52 = [(HUEditUserItemManager *)self isUserBeingEditedTheDeviceUser];
+  isUserBeingEditedTheDeviceUser = [(HUEditUserItemManager *)self isUserBeingEditedTheDeviceUser];
   v53 = HFLogForCategory();
   if (os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG))
   {
@@ -371,12 +371,12 @@ LABEL_15:
 
     v108 = @"disabled";
     *buf = 138413058;
-    v155 = self;
+    selfCopy2 = self;
     v159 = v107;
     v156 = 2112;
     v157 = v105;
     v158 = 2112;
-    if (v52)
+    if (isUserBeingEditedTheDeviceUser)
     {
       v108 = @"not disabled";
     }
@@ -387,76 +387,76 @@ LABEL_15:
   }
 
   v54 = [_HUUserAccessItem alloc];
-  v55 = [(HUEditUserItemManager *)self userBeingEdited];
+  userBeingEdited11 = [(HUEditUserItemManager *)self userBeingEdited];
   v130[0] = MEMORY[0x277D85DD0];
   v130[1] = 3221225472;
   v130[2] = __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_106;
   v130[3] = &unk_277DB8B98;
   objc_copyWeak(&v131, &location);
   v132 = v49;
-  v133 = !v52;
-  v56 = [(_HUUserAccessItem *)v54 initWithUser:v55 resultsBlock:v130];
+  v133 = !isUserBeingEditedTheDeviceUser;
+  v56 = [(_HUUserAccessItem *)v54 initWithUser:userBeingEdited11 resultsBlock:v130];
   [(HUEditUserItemManager *)self setTvViewingProfilesItem:v56];
 
   v57 = [_HUUserAccessItem alloc];
-  v58 = [(HUEditUserItemManager *)self userBeingEdited];
+  userBeingEdited12 = [(HUEditUserItemManager *)self userBeingEdited];
   v128[0] = MEMORY[0x277D85DD0];
   v128[1] = 3221225472;
   v128[2] = __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_2_110;
   v128[3] = &unk_277DB7448;
   objc_copyWeak(&v129, &location);
-  v59 = [(_HUUserAccessItem *)v57 initWithUser:v58 resultsBlock:v128];
+  v59 = [(_HUUserAccessItem *)v57 initWithUser:userBeingEdited12 resultsBlock:v128];
   [(HUEditUserItemManager *)self setRemoveItem:v59];
 
   v60 = [_HUUserAccessItem alloc];
-  v61 = [(HUEditUserItemManager *)self userBeingEdited];
+  userBeingEdited13 = [(HUEditUserItemManager *)self userBeingEdited];
   v126[0] = MEMORY[0x277D85DD0];
   v126[1] = 3221225472;
   v126[2] = __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_3_120;
   v126[3] = &unk_277DB7448;
   objc_copyWeak(&v127, &location);
-  v62 = [(_HUUserAccessItem *)v60 initWithUser:v61 resultsBlock:v126];
+  v62 = [(_HUUserAccessItem *)v60 initWithUser:userBeingEdited13 resultsBlock:v126];
   [(HUEditUserItemManager *)self setPendingAccessoriesItem:v62];
 
   if (-[HUEditUserItemManager isUserBeingEditedTheDeviceUser](self, "isUserBeingEditedTheDeviceUser") || (-[HFItemManager home](self, "home"), v63 = objc_claimAutoreleasedReturnValue(), [v63 currentUser], v64 = objc_claimAutoreleasedReturnValue(), v65 = -[HUEditUserItemManager _isUserOwner:](self, "_isUserOwner:", v64), v64, v63, v65))
   {
-    v66 = [(HFItemManager *)self sourceItem];
-    v67 = [v66 hasValidSettings];
+    sourceItem = [(HFItemManager *)self sourceItem];
+    hasValidSettings = [sourceItem hasValidSettings];
 
-    if (v67)
+    if (hasValidSettings)
     {
       v68 = [HUAccessorySettingsItemModule alloc];
-      v69 = [(HFItemManager *)self sourceItem];
+      sourceItem2 = [(HFItemManager *)self sourceItem];
       v150 = *MEMORY[0x277D14258];
       v151 = MEMORY[0x277CBEC38];
       v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v151 forKeys:&v150 count:1];
-      v71 = [(HUAccessorySettingsItemModule *)v68 initWithItemUpdater:self homeKitSettingsVendor:v69 usageOptions:v70];
+      v71 = [(HUAccessorySettingsItemModule *)v68 initWithItemUpdater:self homeKitSettingsVendor:sourceItem2 usageOptions:v70];
       [(HUEditUserItemManager *)self setUserSettingsItemModule:v71];
     }
 
     else
     {
-      v69 = HFLogForCategory();
-      if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
+      sourceItem2 = HFLogForCategory();
+      if (os_log_type_enabled(sourceItem2, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315138;
-        v155 = "[HUEditUserItemManager _buildItemProvidersForHome:]";
-        _os_log_error_impl(&dword_20CEB6000, v69, OS_LOG_TYPE_ERROR, "(%s) CAN'T ACCESS USER BASED SETTINGS: The user's settings can't be accessed because hasValidSettings == NO", buf, 0xCu);
+        selfCopy2 = "[HUEditUserItemManager _buildItemProvidersForHome:]";
+        _os_log_error_impl(&dword_20CEB6000, sourceItem2, OS_LOG_TYPE_ERROR, "(%s) CAN'T ACCESS USER BASED SETTINGS: The user's settings can't be accessed because hasValidSettings == NO", buf, 0xCu);
       }
     }
   }
 
   else
   {
-    v69 = HFLogForCategory();
-    if (os_log_type_enabled(v69, OS_LOG_TYPE_DEBUG))
+    sourceItem2 = HFLogForCategory();
+    if (os_log_type_enabled(sourceItem2, OS_LOG_TYPE_DEBUG))
     {
       v109 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v155 = self;
+      selfCopy2 = self;
       v156 = 2112;
       v157 = v109;
-      _os_log_debug_impl(&dword_20CEB6000, v69, OS_LOG_TYPE_DEBUG, "%@:%@  Not Displaying HMSettings based controls because current user is not permitted", buf, 0x16u);
+      _os_log_debug_impl(&dword_20CEB6000, sourceItem2, OS_LOG_TYPE_DEBUG, "%@:%@  Not Displaying HMSettings based controls because current user is not permitted", buf, 0x16u);
     }
   }
 
@@ -472,34 +472,34 @@ LABEL_15:
   if ([(HUEditUserItemManager *)self shouldShowMediaServicesSection])
   {
     v74 = [HUMediaServiceSettingsItemModule alloc];
-    v75 = [(HFItemManager *)self home];
-    v76 = [(HUMediaServiceSettingsItemModule *)v74 initWithItemUpdater:self home:v75];
+    home9 = [(HFItemManager *)self home];
+    v76 = [(HUMediaServiceSettingsItemModule *)v74 initWithItemUpdater:self home:home9];
     [(HUEditUserItemManager *)self setMediaServiceItemModule:v76];
   }
 
   v114 = objc_alloc(MEMORY[0x277CBEB58]);
   aSelectora = [(HUEditUserItemManager *)self homeScheduleItem];
   v149[0] = aSelectora;
-  v119 = [(HUEditUserItemManager *)self localAccessItem];
-  v149[1] = v119;
-  v117 = [(HUEditUserItemManager *)self remoteAccessItem];
-  v149[2] = v117;
-  v77 = [(HUEditUserItemManager *)self allowEditingItem];
-  v149[3] = v77;
-  v78 = [(HUEditUserItemManager *)self camerasItem];
-  v149[4] = v78;
-  v79 = [(HUEditUserItemManager *)self locksItem];
-  v149[5] = v79;
-  v80 = [(HUEditUserItemManager *)self personalRequestsItem];
-  v149[6] = v80;
-  v81 = [(HUEditUserItemManager *)self tvViewingProfilesItem];
-  v149[7] = v81;
-  v82 = [(HUEditUserItemManager *)self updateListeningHistoryItem];
-  v149[8] = v82;
-  v83 = [(HUEditUserItemManager *)self removeItem];
-  v149[9] = v83;
-  v84 = [(HUEditUserItemManager *)self pendingAccessoriesItem];
-  v149[10] = v84;
+  localAccessItem = [(HUEditUserItemManager *)self localAccessItem];
+  v149[1] = localAccessItem;
+  remoteAccessItem = [(HUEditUserItemManager *)self remoteAccessItem];
+  v149[2] = remoteAccessItem;
+  allowEditingItem = [(HUEditUserItemManager *)self allowEditingItem];
+  v149[3] = allowEditingItem;
+  camerasItem = [(HUEditUserItemManager *)self camerasItem];
+  v149[4] = camerasItem;
+  locksItem = [(HUEditUserItemManager *)self locksItem];
+  v149[5] = locksItem;
+  personalRequestsItem = [(HUEditUserItemManager *)self personalRequestsItem];
+  v149[6] = personalRequestsItem;
+  tvViewingProfilesItem = [(HUEditUserItemManager *)self tvViewingProfilesItem];
+  v149[7] = tvViewingProfilesItem;
+  updateListeningHistoryItem = [(HUEditUserItemManager *)self updateListeningHistoryItem];
+  v149[8] = updateListeningHistoryItem;
+  removeItem = [(HUEditUserItemManager *)self removeItem];
+  v149[9] = removeItem;
+  pendingAccessoriesItem = [(HUEditUserItemManager *)self pendingAccessoriesItem];
+  v149[10] = pendingAccessoriesItem;
   v85 = [MEMORY[0x277CBEA60] arrayWithObjects:v149 count:11];
   v115 = [v114 initWithArray:v85];
 
@@ -507,18 +507,18 @@ LABEL_15:
   v87 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v115];
   v88 = [v86 setWithObject:v87];
 
-  v89 = [(HUEditUserItemManager *)self allowedAccessoryCategoryItemProvider];
-  [v88 na_safeAddObject:v89];
+  allowedAccessoryCategoryItemProvider = [(HUEditUserItemManager *)self allowedAccessoryCategoryItemProvider];
+  [v88 na_safeAddObject:allowedAccessoryCategoryItemProvider];
 
-  v90 = [(HUEditUserItemManager *)self userSettingsItemModule];
-  v91 = [v90 itemProviders];
-  [v88 unionSet:v91];
+  userSettingsItemModule = [(HUEditUserItemManager *)self userSettingsItemModule];
+  itemProviders = [userSettingsItemModule itemProviders];
+  [v88 unionSet:itemProviders];
 
-  v92 = [(HUEditUserItemManager *)self mediaServiceItemModule];
-  v93 = [v92 itemProviders];
-  [v88 unionSet:v93];
+  mediaServiceItemModule = [(HUEditUserItemManager *)self mediaServiceItemModule];
+  itemProviders2 = [mediaServiceItemModule itemProviders];
+  [v88 unionSet:itemProviders2];
 
-  v94 = [v88 allObjects];
+  allObjects = [v88 allObjects];
 
   objc_destroyWeak(&v127);
   objc_destroyWeak(&v129);
@@ -531,7 +531,7 @@ LABEL_15:
   objc_destroyWeak(&v144);
   objc_destroyWeak(&location);
 
-  return v94;
+  return allObjects;
 }
 
 id __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1)
@@ -1028,29 +1028,29 @@ id __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_122(uin
   return v15;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(HUEditUserItemManager *)self _createLocalAccessSectionUsing:v5];
+  v7 = [(HUEditUserItemManager *)self _createLocalAccessSectionUsing:itemsCopy];
   if (v7)
   {
     [v6 addObject:v7];
   }
 
-  v8 = [(HUEditUserItemManager *)self _createAllowEditingSectionUsing:v5];
+  v8 = [(HUEditUserItemManager *)self _createAllowEditingSectionUsing:itemsCopy];
   if (v8)
   {
     [v6 addObject:v8];
   }
 
-  v9 = [(HUEditUserItemManager *)self _createAccessLevelSectionUsing:v5];
+  v9 = [(HUEditUserItemManager *)self _createAccessLevelSectionUsing:itemsCopy];
   if (v9)
   {
     [v6 addObject:v9];
   }
 
-  v10 = [(HUEditUserItemManager *)self _createAccessorySectionUsing:v5];
+  v10 = [(HUEditUserItemManager *)self _createAccessorySectionUsing:itemsCopy];
   if (v10)
   {
     [v6 addObject:v10];
@@ -1058,7 +1058,7 @@ id __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_122(uin
 
   v33 = v8;
   v34 = v7;
-  v11 = [(HUEditUserItemManager *)self _createAllowedAccessoriesSectionUsing:v5];
+  v11 = [(HUEditUserItemManager *)self _createAllowedAccessoriesSectionUsing:itemsCopy];
   if (v11)
   {
     [v6 addObject:v11];
@@ -1066,23 +1066,23 @@ id __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_122(uin
 
   v31 = v11;
   v32 = v9;
-  v12 = [(HUEditUserItemManager *)self userSettingsItemModule];
-  v13 = [v12 buildSectionsWithDisplayedItems:v5];
+  userSettingsItemModule = [(HUEditUserItemManager *)self userSettingsItemModule];
+  v13 = [userSettingsItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
-  LOBYTE(v12) = [(HUEditUserItemManager *)self _isVoiceIDEnabled:v13];
+  LOBYTE(userSettingsItemModule) = [(HUEditUserItemManager *)self _isVoiceIDEnabled:v13];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __58__HUEditUserItemManager__buildSectionsWithDisplayedItems___block_invoke;
   aBlock[3] = &unk_277DB8F88;
   aBlock[4] = self;
-  v14 = v5;
-  v41 = v12;
+  v14 = itemsCopy;
+  v41 = userSettingsItemModule;
   v39 = v14;
   v40 = a2;
   v15 = _Block_copy(aBlock);
-  v16 = [(HUEditUserItemManager *)self homeForUser];
-  v17 = [v16 accessories];
-  v18 = [v17 na_any:&__block_literal_global_162];
+  homeForUser = [(HUEditUserItemManager *)self homeForUser];
+  accessories = [homeForUser accessories];
+  v18 = [accessories na_any:&__block_literal_global_162];
 
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
@@ -1104,8 +1104,8 @@ id __52__HUEditUserItemManager__buildItemProvidersForHome___block_invoke_122(uin
   }
 
   v23 = v10;
-  v24 = [(HUEditUserItemManager *)self mediaServiceItemModule];
-  v25 = [v24 buildSectionsWithDisplayedItems:v14];
+  mediaServiceItemModule = [(HUEditUserItemManager *)self mediaServiceItemModule];
+  v25 = [mediaServiceItemModule buildSectionsWithDisplayedItems:v14];
 
   [v6 addObjectsFromArray:v25];
   v26 = [(HUEditUserItemManager *)self _createPendingAccessoriesSectionUsing:v14];
@@ -1613,48 +1613,48 @@ uint64_t __58__HUEditUserItemManager__buildSectionsWithDisplayedItems___block_in
   return v16;
 }
 
-- (id)_createAllowEditingSectionUsing:(id)a3
+- (id)_createAllowEditingSectionUsing:(id)using
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  usingCopy = using;
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
-  v6 = [(HUEditUserItemManager *)self homeScheduleItem];
-  v7 = [(HUEditUserItemManager *)self remoteAccessItem];
-  v30[1] = v7;
-  v8 = [(HUEditUserItemManager *)self allowEditingItem];
-  v30[2] = v8;
+  homeScheduleItem = [(HUEditUserItemManager *)self homeScheduleItem];
+  remoteAccessItem = [(HUEditUserItemManager *)self remoteAccessItem];
+  v30[1] = remoteAccessItem;
+  allowEditingItem = [(HUEditUserItemManager *)self allowEditingItem];
+  v30[2] = allowEditingItem;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:3];
   v10 = [v5 initWithArray:v9];
-  v11 = [v4 intersectsSet:v10];
+  v11 = [usingCopy intersectsSet:v10];
 
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v13 = [(HUEditUserItemManager *)self remoteAccessItem];
-    v14 = [v4 containsObject:v13];
+    remoteAccessItem2 = [(HUEditUserItemManager *)self remoteAccessItem];
+    v14 = [usingCopy containsObject:remoteAccessItem2];
 
     if (v14)
     {
-      v15 = [(HUEditUserItemManager *)self remoteAccessItem];
-      [v12 addObject:v15];
+      remoteAccessItem3 = [(HUEditUserItemManager *)self remoteAccessItem];
+      [v12 addObject:remoteAccessItem3];
     }
 
-    v16 = [(HUEditUserItemManager *)self homeScheduleItem];
-    v17 = [v4 containsObject:v16];
+    homeScheduleItem2 = [(HUEditUserItemManager *)self homeScheduleItem];
+    v17 = [usingCopy containsObject:homeScheduleItem2];
 
     if (v17)
     {
-      v18 = [(HUEditUserItemManager *)self homeScheduleItem];
-      [v12 addObject:v18];
+      homeScheduleItem3 = [(HUEditUserItemManager *)self homeScheduleItem];
+      [v12 addObject:homeScheduleItem3];
     }
 
-    v19 = [(HUEditUserItemManager *)self allowEditingItem];
-    v20 = [v4 containsObject:v19];
+    allowEditingItem2 = [(HUEditUserItemManager *)self allowEditingItem];
+    v20 = [usingCopy containsObject:allowEditingItem2];
 
     if (v20)
     {
-      v21 = [(HUEditUserItemManager *)self allowEditingItem];
-      [v12 addObject:v21];
+      allowEditingItem3 = [(HUEditUserItemManager *)self allowEditingItem];
+      [v12 addObject:allowEditingItem3];
     }
 
     if ([v12 count])
@@ -1663,8 +1663,8 @@ uint64_t __58__HUEditUserItemManager__buildSectionsWithDisplayedItems___block_in
       [v22 setItems:v12];
       v23 = _HULocalizedStringWithDefaultValue(@"HUAllowAccessSectionTitle", @"HUAllowAccessSectionTitle", 1);
       v24 = _HULocalizedStringWithDefaultValue(@"HUUsersAllowEditingFooter", @"HUUsersAllowEditingFooter", 1);
-      v25 = [(HUEditUserItemManager *)self homeScheduleItem];
-      v26 = [v4 containsObject:v25];
+      homeScheduleItem4 = [(HUEditUserItemManager *)self homeScheduleItem];
+      v26 = [usingCopy containsObject:homeScheduleItem4];
 
       if (v26)
       {
@@ -1694,22 +1694,22 @@ uint64_t __58__HUEditUserItemManager__buildSectionsWithDisplayedItems___block_in
   return v22;
 }
 
-- (id)_createLocalAccessSectionUsing:(id)a3
+- (id)_createLocalAccessSectionUsing:(id)using
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  usingCopy = using;
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
-  v6 = [(HUEditUserItemManager *)self localAccessItem];
-  v14[0] = v6;
+  localAccessItem = [(HUEditUserItemManager *)self localAccessItem];
+  v14[0] = localAccessItem;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   v8 = [v5 initWithArray:v7];
-  if (([v4 intersectsSet:v8] & 1) == 0)
+  if (([usingCopy intersectsSet:v8] & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v9 = [(HUEditUserItemManager *)self localAccessItem];
-  if (![v4 containsObject:v9])
+  localAccessItem2 = [(HUEditUserItemManager *)self localAccessItem];
+  if (![usingCopy containsObject:localAccessItem2])
   {
 
 LABEL_6:
@@ -1717,17 +1717,17 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v10 = [(HUEditUserItemManager *)self _hasResidentDevice];
+  _hasResidentDevice = [(HUEditUserItemManager *)self _hasResidentDevice];
 
-  if (v10)
+  if (_hasResidentDevice)
   {
     v11 = 0;
     goto LABEL_8;
   }
 
   v11 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditUserItemManager_AccessSectionIdentifier"];
-  v6 = [(HUEditUserItemManager *)self localAccessItem];
-  v13 = v6;
+  localAccessItem = [(HUEditUserItemManager *)self localAccessItem];
+  v13 = localAccessItem;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
   [v11 setItems:v7];
 LABEL_7:
@@ -1737,30 +1737,30 @@ LABEL_8:
   return v11;
 }
 
-- (id)_createAccessLevelSectionUsing:(id)a3
+- (id)_createAccessLevelSectionUsing:(id)using
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  usingCopy = using;
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
-  v6 = [(HUEditUserItemManager *)self camerasItem];
-  v14[0] = v6;
+  camerasItem = [(HUEditUserItemManager *)self camerasItem];
+  v14[0] = camerasItem;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
   v8 = [v5 initWithArray:v7];
-  if (([v4 intersectsSet:v8] & 1) == 0)
+  if (([usingCopy intersectsSet:v8] & 1) == 0)
   {
 
     v11 = 0;
     goto LABEL_5;
   }
 
-  v9 = [(HUEditUserItemManager *)self camerasItem];
-  v10 = [v4 containsObject:v9];
+  camerasItem2 = [(HUEditUserItemManager *)self camerasItem];
+  v10 = [usingCopy containsObject:camerasItem2];
 
   if (v10)
   {
     v11 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditUserItemManager_AccessLevelSectionIdentifier"];
-    v6 = [(HUEditUserItemManager *)self camerasItem];
-    v13 = v6;
+    camerasItem = [(HUEditUserItemManager *)self camerasItem];
+    v13 = camerasItem;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
     [v11 setItems:v7];
 LABEL_5:
@@ -1774,18 +1774,18 @@ LABEL_7:
   return v11;
 }
 
-- (id)_createAccessorySectionUsing:(id)a3
+- (id)_createAccessorySectionUsing:(id)using
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUEditUserItemManager *)self locksItem];
-  v6 = [v4 containsObject:v5];
+  usingCopy = using;
+  locksItem = [(HUEditUserItemManager *)self locksItem];
+  v6 = [usingCopy containsObject:locksItem];
 
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditUserItemManager_AccessoriesSectionIdentifier"];
-    v8 = [(HUEditUserItemManager *)self locksItem];
-    v11[0] = v8;
+    locksItem2 = [(HUEditUserItemManager *)self locksItem];
+    v11[0] = locksItem2;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     [v7 setItems:v9];
   }
@@ -1798,21 +1798,21 @@ LABEL_7:
   return v7;
 }
 
-- (id)_createAllowedAccessoriesSectionUsing:(id)a3
+- (id)_createAllowedAccessoriesSectionUsing:(id)using
 {
-  v4 = a3;
-  v5 = [(HUEditUserItemManager *)self allowedAccessoryCategoryItemProvider];
-  v6 = [v5 items];
-  v7 = [v4 intersectsSet:v6];
+  usingCopy = using;
+  allowedAccessoryCategoryItemProvider = [(HUEditUserItemManager *)self allowedAccessoryCategoryItemProvider];
+  items = [allowedAccessoryCategoryItemProvider items];
+  v7 = [usingCopy intersectsSet:items];
 
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditUserItemManager_AccessoriesSectionIdentifier"];
-    v9 = [(HUEditUserItemManager *)self allowedAccessoryCategoryItemProvider];
-    v10 = [v9 items];
-    v11 = [v10 allObjects];
-    v12 = [MEMORY[0x277D14778] defaultItemComparator];
-    v13 = [v11 sortedArrayUsingComparator:v12];
+    allowedAccessoryCategoryItemProvider2 = [(HUEditUserItemManager *)self allowedAccessoryCategoryItemProvider];
+    items2 = [allowedAccessoryCategoryItemProvider2 items];
+    allObjects = [items2 allObjects];
+    defaultItemComparator = [MEMORY[0x277D14778] defaultItemComparator];
+    v13 = [allObjects sortedArrayUsingComparator:defaultItemComparator];
     [v8 setItems:v13];
   }
 
@@ -1824,15 +1824,15 @@ LABEL_7:
   return v8;
 }
 
-- (id)_createAppleTVProfileSectionUsing:(id)a3
+- (id)_createAppleTVProfileSectionUsing:(id)using
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (-[HUEditUserItemManager _hasTVViewingProfilesDevice](self, "_hasTVViewingProfilesDevice") && (-[HUEditUserItemManager tvViewingProfilesItem](self, "tvViewingProfilesItem"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 containsObject:v5], v5, v6))
+  usingCopy = using;
+  if (-[HUEditUserItemManager _hasTVViewingProfilesDevice](self, "_hasTVViewingProfilesDevice") && (-[HUEditUserItemManager tvViewingProfilesItem](self, "tvViewingProfilesItem"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [usingCopy containsObject:v5], v5, v6))
   {
     v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditUserItemManager_TVViewingProfilesSectionIdentifier"];
-    v8 = [(HUEditUserItemManager *)self tvViewingProfilesItem];
-    v11[0] = v8;
+    tvViewingProfilesItem = [(HUEditUserItemManager *)self tvViewingProfilesItem];
+    v11[0] = tvViewingProfilesItem;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     [v7 setItems:v9];
   }
@@ -1845,12 +1845,12 @@ LABEL_7:
   return v7;
 }
 
-- (id)_createPendingAccessoriesSectionUsing:(id)a3
+- (id)_createPendingAccessoriesSectionUsing:(id)using
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUEditUserItemManager *)self pendingAccessoriesItem];
-  v6 = [v4 containsObject:v5];
+  usingCopy = using;
+  pendingAccessoriesItem = [(HUEditUserItemManager *)self pendingAccessoriesItem];
+  v6 = [usingCopy containsObject:pendingAccessoriesItem];
 
   if (v6)
   {
@@ -1861,8 +1861,8 @@ LABEL_7:
     v9 = _HULocalizedStringWithDefaultValue(@"HUUsersPendingAccessoriesFooter", @"HUUsersPendingAccessoriesFooter", 1);
     [v7 setFooterTitle:v9];
 
-    v10 = [(HUEditUserItemManager *)self pendingAccessoriesItem];
-    v13[0] = v10;
+    pendingAccessoriesItem2 = [(HUEditUserItemManager *)self pendingAccessoriesItem];
+    v13[0] = pendingAccessoriesItem2;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
     [v7 setItems:v11];
   }
@@ -1875,18 +1875,18 @@ LABEL_7:
   return v7;
 }
 
-- (id)_createRemoveUserLeaveHomeSectionUsing:(id)a3
+- (id)_createRemoveUserLeaveHomeSectionUsing:(id)using
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HUEditUserItemManager *)self removeItem];
-  v6 = [v4 containsObject:v5];
+  usingCopy = using;
+  removeItem = [(HUEditUserItemManager *)self removeItem];
+  v6 = [usingCopy containsObject:removeItem];
 
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUEditUserItemManager_ButtonSectionIdentifier"];
-    v8 = [(HUEditUserItemManager *)self removeItem];
-    v11[0] = v8;
+    removeItem2 = [(HUEditUserItemManager *)self removeItem];
+    v11[0] = removeItem2;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     [v7 setItems:v9];
   }
@@ -1899,12 +1899,12 @@ LABEL_7:
   return v7;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v15.receiver = self;
   v15.super_class = HUEditUserItemManager;
-  v5 = a3;
-  v6 = [(HFItemManager *)&v15 _itemsToHideInSet:v5];
+  setCopy = set;
+  v6 = [(HFItemManager *)&v15 _itemsToHideInSet:setCopy];
   v7 = [v6 mutableCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
@@ -1915,7 +1915,7 @@ LABEL_7:
   v14 = a2;
   v8 = v7;
   v13 = v8;
-  [v5 enumerateObjectsUsingBlock:v12];
+  [setCopy enumerateObjectsUsingBlock:v12];
 
   v9 = v13;
   v10 = v8;
@@ -2027,8 +2027,8 @@ LABEL_16:
   v4.receiver = self;
   v4.super_class = HUEditUserItemManager;
   [(HFItemManager *)&v4 _registerForExternalUpdates];
-  v3 = [(HUEditUserItemManager *)self mediaServiceItemModule];
-  [v3 registerForExternalUpdates];
+  mediaServiceItemModule = [(HUEditUserItemManager *)self mediaServiceItemModule];
+  [mediaServiceItemModule registerForExternalUpdates];
 }
 
 - (void)_unregisterForExternalUpdates
@@ -2036,93 +2036,93 @@ LABEL_16:
   v4.receiver = self;
   v4.super_class = HUEditUserItemManager;
   [(HFItemManager *)&v4 _unregisterForExternalUpdates];
-  v3 = [(HUEditUserItemManager *)self mediaServiceItemModule];
-  [v3 unregisterForExternalUpdates];
+  mediaServiceItemModule = [(HUEditUserItemManager *)self mediaServiceItemModule];
+  [mediaServiceItemModule unregisterForExternalUpdates];
 }
 
-- (BOOL)_isRemoteAccessAllowedForUser:(id)a3
+- (BOOL)_isRemoteAccessAllowedForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  userCopy = user;
+  home = [(HFItemManager *)self home];
+  v6 = [home homeAccessControlForUser:userCopy];
 
-  LOBYTE(v4) = [v6 isRemoteAccessAllowed];
-  return v4;
+  LOBYTE(userCopy) = [v6 isRemoteAccessAllowed];
+  return userCopy;
 }
 
-- (BOOL)_isEditingAllowedForUser:(id)a3
+- (BOOL)_isEditingAllowedForUser:(id)user
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  userCopy = user;
+  home = [(HFItemManager *)self home];
+  v6 = [home homeAccessControlForUser:userCopy];
 
-  LOBYTE(v4) = [v6 isAdministrator];
-  return v4;
+  LOBYTE(userCopy) = [v6 isAdministrator];
+  return userCopy;
 }
 
-- (BOOL)_isUserOwner:(id)a3
+- (BOOL)_isUserOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [(HFItemManager *)self home];
-  v6 = [v5 homeAccessControlForUser:v4];
+  ownerCopy = owner;
+  home = [(HFItemManager *)self home];
+  v6 = [home homeAccessControlForUser:ownerCopy];
 
-  LOBYTE(v4) = [v6 isOwner];
-  return v4;
+  LOBYTE(ownerCopy) = [v6 isOwner];
+  return ownerCopy;
 }
 
 - (BOOL)_hasResidentDevice
 {
-  v3 = [(HFItemManager *)self home];
-  if ([v3 hf_supportsRemoteAccessRestrictions])
+  home = [(HFItemManager *)self home];
+  if ([home hf_supportsRemoteAccessRestrictions])
   {
-    v4 = 1;
+    hf_supportsPerUserRemoteAccess = 1;
   }
 
   else
   {
-    v5 = [(HFItemManager *)self home];
-    v4 = [v5 hf_supportsPerUserRemoteAccess];
+    home2 = [(HFItemManager *)self home];
+    hf_supportsPerUserRemoteAccess = [home2 hf_supportsPerUserRemoteAccess];
   }
 
-  return v4;
+  return hf_supportsPerUserRemoteAccess;
 }
 
 - (BOOL)_hasPersonalRequestsDevice
 {
-  v2 = [(HFItemManager *)self home];
-  v3 = [v2 hf_mediaAccessories];
-  v4 = [v3 na_any:&__block_literal_global_199];
+  home = [(HFItemManager *)self home];
+  hf_mediaAccessories = [home hf_mediaAccessories];
+  v4 = [hf_mediaAccessories na_any:&__block_literal_global_199];
 
   return v4;
 }
 
 - (BOOL)_hasTVViewingProfilesDevice
 {
-  v2 = [(HFItemManager *)self home];
-  v3 = [v2 hf_tvViewingProfilesAccessories];
-  v4 = [v3 count] != 0;
+  home = [(HFItemManager *)self home];
+  hf_tvViewingProfilesAccessories = [home hf_tvViewingProfilesAccessories];
+  v4 = [hf_tvViewingProfilesAccessories count] != 0;
 
   return v4;
 }
 
 - (BOOL)_hasPendingAccessories
 {
-  v2 = [(HUEditUserItemManager *)self userBeingEdited];
-  v3 = [v2 pendingAccessoryInvitations];
+  userBeingEdited = [(HUEditUserItemManager *)self userBeingEdited];
+  pendingAccessoryInvitations = [userBeingEdited pendingAccessoryInvitations];
 
-  LOBYTE(v2) = [v3 na_any:&__block_literal_global_203];
-  return v2;
+  LOBYTE(userBeingEdited) = [pendingAccessoryInvitations na_any:&__block_literal_global_203];
+  return userBeingEdited;
 }
 
 - (BOOL)_canModifyUserBeingEditedPermissions
 {
-  v3 = [(HFItemManager *)self home];
-  v4 = [v3 currentUser];
-  if ([(HUEditUserItemManager *)self _isUserOwner:v4])
+  home = [(HFItemManager *)self home];
+  currentUser = [home currentUser];
+  if ([(HUEditUserItemManager *)self _isUserOwner:currentUser])
   {
-    v5 = [(HUEditUserItemManager *)self isUserBeingEditedTheDeviceUser];
+    isUserBeingEditedTheDeviceUser = [(HUEditUserItemManager *)self isUserBeingEditedTheDeviceUser];
 
-    if (!v5)
+    if (!isUserBeingEditedTheDeviceUser)
     {
       LOBYTE(v6) = 1;
       return v6;
@@ -2133,12 +2133,12 @@ LABEL_16:
   {
   }
 
-  v7 = [(HFItemManager *)self home];
-  v8 = [v7 currentUser];
-  if ([(HUEditUserItemManager *)self _isEditingAllowedForUser:v8])
+  home2 = [(HFItemManager *)self home];
+  currentUser2 = [home2 currentUser];
+  if ([(HUEditUserItemManager *)self _isEditingAllowedForUser:currentUser2])
   {
-    v9 = [(HUEditUserItemManager *)self userBeingEdited];
-    v6 = ![(HUEditUserItemManager *)self _isEditingAllowedForUser:v9];
+    userBeingEdited = [(HUEditUserItemManager *)self userBeingEdited];
+    v6 = ![(HUEditUserItemManager *)self _isEditingAllowedForUser:userBeingEdited];
   }
 
   else
@@ -2151,45 +2151,45 @@ LABEL_16:
 
 - (BOOL)_isPersonalRequestsEnabledForUser
 {
-  v3 = [(HFItemManager *)self home];
-  v4 = [v3 currentUser];
-  v5 = [(HUEditUserItemManager *)self _isUserOwner:v4];
+  home = [(HFItemManager *)self home];
+  currentUser = [home currentUser];
+  v5 = [(HUEditUserItemManager *)self _isUserOwner:currentUser];
 
-  v6 = [(HUEditUserItemManager *)self userBeingEdited];
-  v7 = [(HFItemManager *)self home];
-  v8 = [v6 assistantAccessControlForHome:v7];
+  userBeingEdited = [(HUEditUserItemManager *)self userBeingEdited];
+  home2 = [(HFItemManager *)self home];
+  v8 = [userBeingEdited assistantAccessControlForHome:home2];
 
-  v9 = [(HUEditUserItemManager *)self supportedMULanguageCodes];
-  LOBYTE(v6) = [v8 hf_effectivelyEnabledForSupportedVoiceRecognitionLanguages:v9 currentUserIsOwner:v5];
+  supportedMULanguageCodes = [(HUEditUserItemManager *)self supportedMULanguageCodes];
+  LOBYTE(userBeingEdited) = [v8 hf_effectivelyEnabledForSupportedVoiceRecognitionLanguages:supportedMULanguageCodes currentUserIsOwner:v5];
 
-  return v6;
+  return userBeingEdited;
 }
 
 - (BOOL)_isTVViewingProfilesEnabledForUser
 {
-  v3 = [(HUEditUserItemManager *)self userBeingEdited];
-  v4 = [(HFItemManager *)self home];
-  v5 = [v3 mediaContentProfileAccessControlForHome:v4];
+  userBeingEdited = [(HUEditUserItemManager *)self userBeingEdited];
+  home = [(HFItemManager *)self home];
+  v5 = [userBeingEdited mediaContentProfileAccessControlForHome:home];
 
-  v6 = [v5 accessories];
-  LOBYTE(v3) = [v6 count] != 0;
+  accessories = [v5 accessories];
+  LOBYTE(userBeingEdited) = [accessories count] != 0;
 
-  return v3;
+  return userBeingEdited;
 }
 
-- (BOOL)_isVoiceIDEnabled:(id)a3
+- (BOOL)_isVoiceIDEnabled:(id)enabled
 {
   v37 = *MEMORY[0x277D85DE8];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = a3;
+  obj = enabled;
   v3 = [obj countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    bOOLValue = 0;
     v6 = *v32;
     v7 = *MEMORY[0x277D139E8];
     v8 = *MEMORY[0x277D139B8];
@@ -2207,8 +2207,8 @@ LABEL_16:
         }
 
         v10 = *(*(&v31 + 1) + 8 * v9);
-        v11 = [v10 identifier];
-        v12 = [v11 isEqualToString:v7];
+        identifier = [v10 identifier];
+        v12 = [identifier isEqualToString:v7];
 
         if (v12)
         {
@@ -2216,8 +2216,8 @@ LABEL_16:
           v30 = 0u;
           v27 = 0u;
           v28 = 0u;
-          v13 = [v10 items];
-          v14 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          items = [v10 items];
+          v14 = [items countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v14)
           {
             v15 = v14;
@@ -2228,21 +2228,21 @@ LABEL_16:
               {
                 if (*v28 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(items);
                 }
 
                 v18 = *(*(&v27 + 1) + 8 * i);
-                v19 = [v18 settingKeyPath];
-                v20 = [v19 isEqualToString:v8];
+                settingKeyPath = [v18 settingKeyPath];
+                v20 = [settingKeyPath isEqualToString:v8];
 
                 if (v20)
                 {
-                  v21 = [v18 value];
-                  v5 = [v21 BOOLValue];
+                  value = [v18 value];
+                  bOOLValue = [value BOOLValue];
                 }
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v15 = [items countByEnumeratingWithState:&v27 objects:v35 count:16];
             }
 
             while (v15);
@@ -2265,20 +2265,20 @@ LABEL_16:
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5 & 1;
+  return bOOLValue & 1;
 }
 
-- (void)_updateSiriSectionFooterForSection:(id)a3
+- (void)_updateSiriSectionFooterForSection:(id)section
 {
-  v4 = a3;
+  sectionCopy = section;
   v5 = _HULocalizedStringWithDefaultValue(@"HUSiriSectionFooter_RecognizeMyVoice", @"HUSiriSectionFooter_RecognizeMyVoice", 1);
   v6 = objc_alloc(MEMORY[0x277D14C98]);
-  v7 = [(HFItemManager *)self home];
-  v8 = [(HUEditUserItemManager *)self userBeingEdited];
-  v9 = [v6 initWithHome:v7 user:v8 nameStyle:0];
+  home = [(HFItemManager *)self home];
+  userBeingEdited = [(HUEditUserItemManager *)self userBeingEdited];
+  v9 = [v6 initWithHome:home user:userBeingEdited nameStyle:0];
 
   if ([v9 isIdentifyVoiceEnabled])
   {
@@ -2290,16 +2290,16 @@ LABEL_16:
     v23 = _HULocalizedStringWithDefaultValue(@"HUSiriSectionFooter_PersonalContent_UnknownDevice", @"HUSiriSectionFooter_PersonalContent_UnknownDevice", 1);
     if ([(HUEditUserItemManager *)self isUserBeingEditedTheDeviceUser])
     {
-      v10 = [(HUEditUserItemManager *)self locationDeviceManager];
-      v11 = [v10 activeLocationDeviceFuture];
+      locationDeviceManager = [(HUEditUserItemManager *)self locationDeviceManager];
+      activeLocationDeviceFuture = [locationDeviceManager activeLocationDeviceFuture];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __60__HUEditUserItemManager__updateSiriSectionFooterForSection___block_invoke;
       v14[3] = &unk_277DB9068;
       v17 = &v18;
-      v15 = v4;
+      v15 = sectionCopy;
       v16 = v5;
-      v12 = [v11 addCompletionBlock:v14];
+      v12 = [activeLocationDeviceFuture addCompletionBlock:v14];
 
       v13 = v15;
     }
@@ -2307,7 +2307,7 @@ LABEL_16:
     else
     {
       v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v5, v19[5]];
-      [v4 setFooterTitle:v13];
+      [sectionCopy setFooterTitle:v13];
     }
 
     _Block_object_dispose(&v18, 8);
@@ -2315,7 +2315,7 @@ LABEL_16:
 
   else
   {
-    [v4 setFooterTitle:v5];
+    [sectionCopy setFooterTitle:v5];
   }
 }
 

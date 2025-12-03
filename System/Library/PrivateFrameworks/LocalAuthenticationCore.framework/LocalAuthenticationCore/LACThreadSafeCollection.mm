@@ -1,12 +1,12 @@
 @interface LACThreadSafeCollection
 + (id)strongObjectsCollection;
 + (id)weakObjectsCollection;
-- (LACThreadSafeCollection)initWithWeakObjects:(BOOL)a3;
+- (LACThreadSafeCollection)initWithWeakObjects:(BOOL)objects;
 - (int64_t)count;
-- (void)_synchronizedObjects:(id)a3;
-- (void)append:(id)a3;
-- (void)forEach:(id)a3;
-- (void)remove:(id)a3;
+- (void)_synchronizedObjects:(id)objects;
+- (void)append:(id)append;
+- (void)forEach:(id)each;
+- (void)remove:(id)remove;
 @end
 
 @implementation LACThreadSafeCollection
@@ -25,7 +25,7 @@
   return v2;
 }
 
-- (LACThreadSafeCollection)initWithWeakObjects:(BOOL)a3
+- (LACThreadSafeCollection)initWithWeakObjects:(BOOL)objects
 {
   v9.receiver = self;
   v9.super_class = LACThreadSafeCollection;
@@ -33,19 +33,19 @@
   v5 = v4;
   if (v4)
   {
-    v4->_weakObjects = a3;
-    if (a3)
+    v4->_weakObjects = objects;
+    if (objects)
     {
-      v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     }
 
     else
     {
-      v6 = objc_alloc_init(MEMORY[0x1E696AC70]);
+      weakObjectsHashTable = objc_alloc_init(MEMORY[0x1E696AC70]);
     }
 
     objects = v5->_objects;
-    v5->_objects = v6;
+    v5->_objects = weakObjectsHashTable;
 
     v5->_objectsLock._os_unfair_lock_opaque = 0;
   }
@@ -53,27 +53,27 @@
   return v5;
 }
 
-- (void)append:(id)a3
+- (void)append:(id)append
 {
-  v4 = a3;
+  appendCopy = append;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__LACThreadSafeCollection_append___block_invoke;
   v6[3] = &unk_1E7A96EE8;
-  v7 = v4;
-  v5 = v4;
+  v7 = appendCopy;
+  v5 = appendCopy;
   [(LACThreadSafeCollection *)self _synchronizedObjects:v6];
 }
 
-- (void)remove:(id)a3
+- (void)remove:(id)remove
 {
-  v4 = a3;
+  removeCopy = remove;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __34__LACThreadSafeCollection_remove___block_invoke;
   v6[3] = &unk_1E7A96EE8;
-  v7 = v4;
-  v5 = v4;
+  v7 = removeCopy;
+  v5 = removeCopy;
   [(LACThreadSafeCollection *)self _synchronizedObjects:v6];
 }
 
@@ -141,10 +141,10 @@ void __32__LACThreadSafeCollection_count__block_invoke(uint64_t a1, void *a2)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)forEach:(id)a3
+- (void)forEach:(id)each
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eachCopy = each;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -176,7 +176,7 @@ void __32__LACThreadSafeCollection_count__block_invoke(uint64_t a1, void *a2)
           objc_enumerationMutation(v5);
         }
 
-        v4[2](v4, *(*(&v10 + 1) + 8 * v8++));
+        eachCopy[2](eachCopy, *(*(&v10 + 1) + 8 * v8++));
       }
 
       while (v6 != v8);
@@ -200,11 +200,11 @@ uint64_t __35__LACThreadSafeCollection_forEach___block_invoke(uint64_t a1, void 
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)_synchronizedObjects:(id)a3
+- (void)_synchronizedObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   os_unfair_lock_lock(&self->_objectsLock);
-  v4[2](v4, self->_objects);
+  objectsCopy[2](objectsCopy, self->_objects);
 
   os_unfair_lock_unlock(&self->_objectsLock);
 }

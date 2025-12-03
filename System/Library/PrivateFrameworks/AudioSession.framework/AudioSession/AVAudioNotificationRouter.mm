@@ -1,50 +1,50 @@
 @interface AVAudioNotificationRouter
-- (AVAudioNotificationRouter)initWithNotificationCenter:(opaqueCMNotificationCenter *)a3 sessionCollectionProvider:(ISessionCollectionProvider *)a4 sessionNotificationHandler:(void *)a5;
-- (BOOL)updateDelegate:(unint64_t)a3 notificationFilter:(id)a4 error:(id *)a5;
+- (AVAudioNotificationRouter)initWithNotificationCenter:(opaqueCMNotificationCenter *)center sessionCollectionProvider:(ISessionCollectionProvider *)provider sessionNotificationHandler:(void *)handler;
+- (BOOL)updateDelegate:(unint64_t)delegate notificationFilter:(id)filter error:(id *)error;
 - (id).cxx_construct;
-- (int)internal_publishInterruptions:(id)a3;
-- (unint64_t)addNotificationDelegate:(id)a3 error:(id *)a4;
-- (void)handleCMNotification:(id)a3 object:(const void *)a4 payload:(void *)a5;
-- (void)internal_UpdateNotificationCenterSubscriptions:(void *)a3;
-- (void)internal_findSessionsMatchingAudioSessionID:(unsigned int)a3 outMatches:(void *)a4;
-- (void)internal_findSessionsMatchingMXSessionID:(unint64_t)a3 outMatches:(void *)a4;
-- (void)internal_findSessionsMatchingObject:(const void *)a3 outMatches:(void *)a4;
-- (void)internal_publishPropertyNotifications:(id)a3;
-- (void)removeNotificationDelegate:(unint64_t)a3;
+- (int)internal_publishInterruptions:(id)interruptions;
+- (unint64_t)addNotificationDelegate:(id)delegate error:(id *)error;
+- (void)handleCMNotification:(id)notification object:(const void *)object payload:(void *)payload;
+- (void)internal_UpdateNotificationCenterSubscriptions:(void *)subscriptions;
+- (void)internal_findSessionsMatchingAudioSessionID:(unsigned int)d outMatches:(void *)matches;
+- (void)internal_findSessionsMatchingMXSessionID:(unint64_t)d outMatches:(void *)matches;
+- (void)internal_findSessionsMatchingObject:(const void *)object outMatches:(void *)matches;
+- (void)internal_publishPropertyNotifications:(id)notifications;
+- (void)removeNotificationDelegate:(unint64_t)delegate;
 @end
 
 @implementation AVAudioNotificationRouter
 
-- (AVAudioNotificationRouter)initWithNotificationCenter:(opaqueCMNotificationCenter *)a3 sessionCollectionProvider:(ISessionCollectionProvider *)a4 sessionNotificationHandler:(void *)a5
+- (AVAudioNotificationRouter)initWithNotificationCenter:(opaqueCMNotificationCenter *)center sessionCollectionProvider:(ISessionCollectionProvider *)provider sessionNotificationHandler:(void *)handler
 {
   v11.receiver = self;
   v11.super_class = AVAudioNotificationRouter;
   v8 = [(AVAudioNotificationRouter *)&v11 init];
   if (v8)
   {
-    if (a3)
+    if (center)
     {
-      CFRetain(a3);
+      CFRetain(center);
     }
 
     mCFObject = v8->_notificationCenter.mCFObject;
-    v8->_notificationCenter.mCFObject = a3;
+    v8->_notificationCenter.mCFObject = center;
     if (mCFObject)
     {
       CFRelease(mCFObject);
     }
 
-    v8->_sessionCollectionProvider = a4;
-    v8->_sessionNotificationHandler = a5;
+    v8->_sessionCollectionProvider = provider;
+    v8->_sessionNotificationHandler = handler;
   }
 
   return v8;
 }
 
-- (void)internal_UpdateNotificationCenterSubscriptions:(void *)a3
+- (void)internal_UpdateNotificationCenterSubscriptions:(void *)subscriptions
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = avas::NotificationDelegateCollection::GetCombinedPropertyNotificationsOfInterest(*(a3 + 1));
+  v4 = avas::NotificationDelegateCollection::GetCombinedPropertyNotificationsOfInterest(*(subscriptions + 1));
   if ([(NSSet *)self->_propertyNotificationsOfInterest count])
   {
     v5 = [MEMORY[0x1E695DFA8] setWithSet:self->_propertyNotificationsOfInterest];
@@ -130,7 +130,7 @@
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)internal_findSessionsMatchingMXSessionID:(unint64_t)a3 outMatches:(void *)a4
+- (void)internal_findSessionsMatchingMXSessionID:(unint64_t)d outMatches:(void *)matches
 {
   (*(self->_sessionCollectionProvider->var0 + 2))(&v21);
   avas::server::SessionCollection::SessionPresentingIterator::SessionPresentingIterator(v15, *v22, (v22 + 1), v22[3], (v22 + 4));
@@ -166,7 +166,7 @@
       atomic_fetch_add_explicit(&v18->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    if ((*(*v10 + 56))(v10, a3))
+    if ((*(*v10 + 56))(v10, d))
     {
       if ((*(*v10 + 104))(v10))
       {
@@ -180,7 +180,7 @@
       }
 
       LODWORD(v11[0]) = v8;
-      std::__hash_table<avas::MatchedSession,avas::MatchedSessionHash,avas::MatchedSessionEqual,std::allocator<avas::MatchedSession>>::__emplace_unique_key_args<avas::MatchedSession,avas::MatchedSession>(a4, v11);
+      std::__hash_table<avas::MatchedSession,avas::MatchedSessionHash,avas::MatchedSessionEqual,std::allocator<avas::MatchedSession>>::__emplace_unique_key_args<avas::MatchedSession,avas::MatchedSession>(matches, v11);
     }
 
     if (v9)
@@ -212,7 +212,7 @@
   }
 }
 
-- (void)internal_findSessionsMatchingAudioSessionID:(unsigned int)a3 outMatches:(void *)a4
+- (void)internal_findSessionsMatchingAudioSessionID:(unsigned int)d outMatches:(void *)matches
 {
   (*(self->_sessionCollectionProvider->var0 + 2))(&v25);
   avas::server::SessionCollection::SessionPresentingIterator::SessionPresentingIterator(v19, *v26, (v26 + 1), v26[3], (v26 + 4));
@@ -249,7 +249,7 @@
     }
 
     avas::server::SessionCollection::SessionPresentingIterator::GetAudioSessionInfo(v19, &v13);
-    if (v8 == a3 || v13 && (*(*v13 + 16))(v13) == a3)
+    if (v8 == d || v13 && (*(*v13 + 16))(v13) == d)
     {
       if (v10 && (*(*v10 + 104))(v10))
       {
@@ -263,7 +263,7 @@
       }
 
       v11 = v8;
-      std::__hash_table<avas::MatchedSession,avas::MatchedSessionHash,avas::MatchedSessionEqual,std::allocator<avas::MatchedSession>>::__emplace_unique_key_args<avas::MatchedSession,avas::MatchedSession>(a4, &v11);
+      std::__hash_table<avas::MatchedSession,avas::MatchedSessionHash,avas::MatchedSessionEqual,std::allocator<avas::MatchedSession>>::__emplace_unique_key_args<avas::MatchedSession,avas::MatchedSession>(matches, &v11);
     }
 
     if (v14)
@@ -300,7 +300,7 @@
   }
 }
 
-- (void)internal_findSessionsMatchingObject:(const void *)a3 outMatches:(void *)a4
+- (void)internal_findSessionsMatchingObject:(const void *)object outMatches:(void *)matches
 {
   v31 = *MEMORY[0x1E69E9840];
   (*(self->_sessionCollectionProvider->var0 + 2))(&lock);
@@ -337,7 +337,7 @@
       atomic_fetch_add_explicit(&v20->__shared_owners_, 1uLL, memory_order_relaxed);
     }
 
-    if ((*(*v10 + 48))(v10, a3))
+    if ((*(*v10 + 48))(v10, object))
     {
       if ((*(*v10 + 104))(v10))
       {
@@ -351,7 +351,7 @@
       }
 
       v15 = v8;
-      std::__hash_table<avas::MatchedSession,avas::MatchedSessionHash,avas::MatchedSessionEqual,std::allocator<avas::MatchedSession>>::__emplace_unique_key_args<avas::MatchedSession,avas::MatchedSession>(a4, &v15);
+      std::__hash_table<avas::MatchedSession,avas::MatchedSessionHash,avas::MatchedSessionEqual,std::allocator<avas::MatchedSession>>::__emplace_unique_key_args<avas::MatchedSession,avas::MatchedSession>(matches, &v15);
       if (v16)
       {
         avas::server::SessionCollection::SessionPresentingIterator::GetAudioSessionInfo(v17, &v13);
@@ -359,7 +359,7 @@
         {
           *buf = (*(*v13 + 16))(v13);
           *&buf[4] = 0;
-          std::__hash_table<avas::MatchedSession,avas::MatchedSessionHash,avas::MatchedSessionEqual,std::allocator<avas::MatchedSession>>::__emplace_unique_key_args<avas::MatchedSession,avas::MatchedSession>(a4, buf);
+          std::__hash_table<avas::MatchedSession,avas::MatchedSessionHash,avas::MatchedSessionEqual,std::allocator<avas::MatchedSession>>::__emplace_unique_key_args<avas::MatchedSession,avas::MatchedSession>(matches, buf);
         }
 
         else
@@ -415,11 +415,11 @@
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)internal_publishPropertyNotifications:(id)a3
+- (void)internal_publishPropertyNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   os_unfair_lock_lock(&self->_delegates.mMutex.m_lock);
-  avas::NotificationDelegateCollection::GetDelegatesForNotifications(&self->_delegates.mObject, v4, v9);
+  avas::NotificationDelegateCollection::GetDelegatesForNotifications(&self->_delegates.mObject, notificationsCopy, v9);
   os_unfair_lock_unlock(&self->_delegates.mMutex.m_lock);
   v5 = v9[0];
   v6 = v9[1];
@@ -436,10 +436,10 @@
   std::vector<std::pair<objc_object  {objcproto39AVAudioNotificationCenterServerDelegate}* {__strong},NSArray * {__strong}>>::__destroy_vector::operator()[abi:ne200100](&v10);
 }
 
-- (int)internal_publishInterruptions:(id)a3
+- (int)internal_publishInterruptions:(id)interruptions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  interruptionsCopy = interruptions;
   os_unfair_lock_lock(&self->_delegates.mMutex.m_lock);
   avas::NotificationDelegateCollection::GetDelegatesForInterruptions(&self->_delegates.mObject, &v14);
   os_unfair_lock_unlock(&self->_delegates.mMutex.m_lock);
@@ -456,7 +456,7 @@
     do
     {
       v8 = *v5;
-      v9 = [v8 handleInterruptionNotifications:v4];
+      v9 = [v8 handleInterruptionNotifications:interruptionsCopy];
       v10 = v9;
       if (v9)
       {
@@ -490,13 +490,13 @@
   return v7;
 }
 
-- (void)handleCMNotification:(id)a3 object:(const void *)a4 payload:(void *)a5
+- (void)handleCMNotification:(id)notification object:(const void *)object payload:(void *)payload
 {
-  v9 = a3;
+  notificationCopy = notification;
   v17 = 0u;
   v18 = 0u;
   v19 = 1065353216;
-  [(AVAudioNotificationRouter *)self internal_findSessionsMatchingObject:a4 outMatches:&v17];
+  [(AVAudioNotificationRouter *)self internal_findSessionsMatchingObject:object outMatches:&v17];
   if (*(&v18 + 1))
   {
     v10 = objc_opt_new();
@@ -516,7 +516,7 @@
         v15 = 0;
       }
 
-      v16 = [(AVAudioPropertyNotificationInternal *)v12 initWithPropertyName:v9 sourceSessionID:v13 nodeSessionID:v15 propertyData:a5];
+      v16 = [(AVAudioPropertyNotificationInternal *)v12 initWithPropertyName:notificationCopy sourceSessionID:v13 nodeSessionID:v15 propertyData:payload];
       [v10 addObject:v16];
 
       if (v14)
@@ -530,54 +530,54 @@
   std::__hash_table<avas::MatchedSession,avas::MatchedSessionHash,avas::MatchedSessionEqual,std::allocator<avas::MatchedSession>>::~__hash_table(&v17);
 }
 
-- (unint64_t)addNotificationDelegate:(id)a3 error:(id *)a4
+- (unint64_t)addNotificationDelegate:(id)delegate error:(id *)error
 {
-  v6 = a3;
-  if (a4)
+  delegateCopy = delegate;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   os_unfair_lock_lock(&self->_delegates.mMutex.m_lock);
-  v7 = avas::NotificationDelegateCollection::AddDelegate(&self->_delegates.mObject._delegates.__table_.__bucket_list_.__ptr_, v6);
+  v7 = avas::NotificationDelegateCollection::AddDelegate(&self->_delegates.mObject._delegates.__table_.__bucket_list_.__ptr_, delegateCopy);
   os_unfair_lock_unlock(&self->_delegates.mMutex.m_lock);
 
   return v7;
 }
 
-- (void)removeNotificationDelegate:(unint64_t)a3
+- (void)removeNotificationDelegate:(unint64_t)delegate
 {
   os_unfair_lock_lock(&self->_delegates.mMutex.m_lock);
-  v5 = a3;
-  std::__hash_table<std::__hash_value_type<unsigned long long,avas::NotificationDelegateCollection::NotificationDelegates>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,avas::NotificationDelegateCollection::NotificationDelegates>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,avas::NotificationDelegateCollection::NotificationDelegates>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,avas::NotificationDelegateCollection::NotificationDelegates>>>::__erase_unique<unsigned long long>(&self->_delegates.mObject._delegates.__table_.__bucket_list_.__ptr_, &v5);
+  delegateCopy = delegate;
+  std::__hash_table<std::__hash_value_type<unsigned long long,avas::NotificationDelegateCollection::NotificationDelegates>,std::__unordered_map_hasher<unsigned long long,std::__hash_value_type<unsigned long long,avas::NotificationDelegateCollection::NotificationDelegates>,std::hash<unsigned long long>,std::equal_to<unsigned long long>,true>,std::__unordered_map_equal<unsigned long long,std::__hash_value_type<unsigned long long,avas::NotificationDelegateCollection::NotificationDelegates>,std::equal_to<unsigned long long>,std::hash<unsigned long long>,true>,std::allocator<std::__hash_value_type<unsigned long long,avas::NotificationDelegateCollection::NotificationDelegates>>>::__erase_unique<unsigned long long>(&self->_delegates.mObject._delegates.__table_.__bucket_list_.__ptr_, &delegateCopy);
   os_unfair_lock_unlock(&self->_delegates.mMutex.m_lock);
 }
 
-- (BOOL)updateDelegate:(unint64_t)a3 notificationFilter:(id)a4 error:(id *)a5
+- (BOOL)updateDelegate:(unint64_t)delegate notificationFilter:(id)filter error:(id *)error
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  filterCopy = filter;
   os_unfair_lock_lock(&self->_delegates.mMutex.m_lock);
   lock[0] = &self->_delegates.mMutex.m_lock;
   lock[1] = &self->_delegates.mObject;
-  updated = avas::NotificationDelegateCollection::UpdateDelegateFilter(&self->_delegates.mObject, a3, v8);
+  updated = avas::NotificationDelegateCollection::UpdateDelegateFilter(&self->_delegates.mObject, delegate, filterCopy);
   if (updated)
   {
     [(AVAudioNotificationRouter *)self internal_UpdateNotificationCenterSubscriptions:lock];
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
   }
 
-  else if (a5)
+  else if (error)
   {
     v10 = MEMORY[0x1E696ABC0];
     v16 = *MEMORY[0x1E696A578];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid notification delegate: 0x%llx", a3];
-    v17[0] = v11;
+    delegate = [MEMORY[0x1E696AEC0] stringWithFormat:@"invalid notification delegate: 0x%llx", delegate];
+    v17[0] = delegate;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-    *a5 = [v10 errorWithDomain:@"AVAudioSession Error" code:-50 userInfo:v12];
+    *error = [v10 errorWithDomain:@"AVAudioSession Error" code:-50 userInfo:v12];
   }
 
   if (lock[0])

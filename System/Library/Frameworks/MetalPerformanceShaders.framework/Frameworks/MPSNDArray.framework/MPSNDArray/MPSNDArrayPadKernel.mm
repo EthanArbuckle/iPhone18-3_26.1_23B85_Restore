@@ -1,70 +1,70 @@
 @interface MPSNDArrayPadKernel
-- (MPSNDArrayPadKernel)initWithCoder:(id)a3 device:(id)a4;
-- (MPSNDArrayPadKernel)initWithDevice:(id)a3 edgeMode:(unint64_t)a4 constantValue:(id)a5 paddingSize:(MPSNDArrayPaddingSize *)a6;
+- (MPSNDArrayPadKernel)initWithCoder:(id)coder device:(id)device;
+- (MPSNDArrayPadKernel)initWithDevice:(id)device edgeMode:(unint64_t)mode constantValue:(id)value paddingSize:(MPSNDArrayPaddingSize *)size;
 - (MPSNDArrayPaddingSize)paddingSize;
 - (__n64)dimensionsNotToBeBroadcast;
 - (double)dimensionsToBeRetained;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSNDArrayPadKernel
 
-- (MPSNDArrayPadKernel)initWithDevice:(id)a3 edgeMode:(unint64_t)a4 constantValue:(id)a5 paddingSize:(MPSNDArrayPaddingSize *)a6
+- (MPSNDArrayPadKernel)initWithDevice:(id)device edgeMode:(unint64_t)mode constantValue:(id)value paddingSize:(MPSNDArrayPaddingSize *)size
 {
   v23.receiver = self;
   v23.super_class = MPSNDArrayPadKernel;
-  v9 = [(MPSNDArrayUnaryKernel *)&v23 initWithDevice:a3];
+  v9 = [(MPSNDArrayUnaryKernel *)&v23 initWithDevice:device];
   v9->super.super._encode = EncodePad;
   v9->super.super.super._encodeData = v9;
-  v9->_edgeMode = a4;
-  v11 = *&a6->paddingSize[12][0];
-  v10 = *&a6->paddingSize[13][0];
-  v12 = *&a6->paddingSize[15][0];
-  *&v9->_paddingSize.paddingSize[14][0] = *&a6->paddingSize[14][0];
+  v9->_edgeMode = mode;
+  v11 = *&size->paddingSize[12][0];
+  v10 = *&size->paddingSize[13][0];
+  v12 = *&size->paddingSize[15][0];
+  *&v9->_paddingSize.paddingSize[14][0] = *&size->paddingSize[14][0];
   *&v9->_paddingSize.paddingSize[15][0] = v12;
   *&v9->_paddingSize.paddingSize[12][0] = v11;
   *&v9->_paddingSize.paddingSize[13][0] = v10;
-  v14 = *&a6->paddingSize[8][0];
-  v13 = *&a6->paddingSize[9][0];
-  v15 = *&a6->paddingSize[11][0];
-  *&v9->_paddingSize.paddingSize[10][0] = *&a6->paddingSize[10][0];
+  v14 = *&size->paddingSize[8][0];
+  v13 = *&size->paddingSize[9][0];
+  v15 = *&size->paddingSize[11][0];
+  *&v9->_paddingSize.paddingSize[10][0] = *&size->paddingSize[10][0];
   *&v9->_paddingSize.paddingSize[11][0] = v15;
   *&v9->_paddingSize.paddingSize[8][0] = v14;
   *&v9->_paddingSize.paddingSize[9][0] = v13;
-  v17 = *&a6->paddingSize[4][0];
-  v16 = *&a6->paddingSize[5][0];
-  v18 = *&a6->paddingSize[7][0];
-  *&v9->_paddingSize.paddingSize[6][0] = *&a6->paddingSize[6][0];
+  v17 = *&size->paddingSize[4][0];
+  v16 = *&size->paddingSize[5][0];
+  v18 = *&size->paddingSize[7][0];
+  *&v9->_paddingSize.paddingSize[6][0] = *&size->paddingSize[6][0];
   *&v9->_paddingSize.paddingSize[7][0] = v18;
   *&v9->_paddingSize.paddingSize[4][0] = v17;
   *&v9->_paddingSize.paddingSize[5][0] = v16;
-  v19 = *&a6->paddingSize[0][0];
-  v20 = *&a6->paddingSize[1][0];
-  v21 = *&a6->paddingSize[3][0];
-  *&v9->_paddingSize.paddingSize[2][0] = *&a6->paddingSize[2][0];
+  v19 = *&size->paddingSize[0][0];
+  v20 = *&size->paddingSize[1][0];
+  v21 = *&size->paddingSize[3][0];
+  *&v9->_paddingSize.paddingSize[2][0] = *&size->paddingSize[2][0];
   *&v9->_paddingSize.paddingSize[3][0] = v21;
   *&v9->_paddingSize.paddingSize[0][0] = v19;
   *&v9->_paddingSize.paddingSize[1][0] = v20;
-  v9->_constantValue = a5;
+  v9->_constantValue = value;
   v9->_constantValueImagPart = 0.0;
   return v9;
 }
 
-- (id)destinationArrayDescriptorForSourceArrays:(id)a3 sourceState:(id)a4
+- (id)destinationArrayDescriptorForSourceArrays:(id)arrays sourceState:(id)state
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = [a3 objectAtIndexedSubscript:{0, a4}];
+  v6 = [arrays objectAtIndexedSubscript:{0, state}];
   v7 = *(v6 + *MEMORY[0x277CD73F0]);
-  v8 = [a3 objectAtIndexedSubscript:0];
+  v8 = [arrays objectAtIndexedSubscript:0];
   v9 = (v8 + *MEMORY[0x277CD7410]);
   v19 = v9[2];
   v20 = v9[3];
   v17 = *v9;
   v18 = v9[1];
-  v10 = [a3 objectAtIndexedSubscript:0];
+  v10 = [arrays objectAtIndexedSubscript:0];
   v11 = *MEMORY[0x277CD73D8];
   memset(v23, 0, sizeof(v23));
   if (v7)
@@ -87,18 +87,18 @@
     while (v7 != v12);
   }
 
-  result = [MEMORY[0x277CD7268] descriptorWithDataType:objc_msgSend(objc_msgSend(a3 dimensionCount:"objectAtIndexedSubscript:" dimensionSizes:{0), "dataType"), v7, v23}];
+  result = [MEMORY[0x277CD7268] descriptorWithDataType:objc_msgSend(objc_msgSend(arrays dimensionCount:"objectAtIndexedSubscript:" dimensionSizes:{0), "dataType"), v7, v23}];
   v16 = *MEMORY[0x277D85DE8];
   return result;
 }
 
 - (double)dimensionsToBeRetained
 {
-  v1 = a1 + 86;
-  if (a1[116])
+  v1 = self + 86;
+  if (self[116])
   {
     v2 = 0;
-    if (a1[114])
+    if (self[114])
     {
       goto LABEL_3;
     }
@@ -106,12 +106,12 @@
 
   else
   {
-    v2 = a1[117] == 0;
-    if (a1[114])
+    v2 = self[117] == 0;
+    if (self[114])
     {
 LABEL_3:
       v3 = 0;
-      if (a1[112])
+      if (self[112])
       {
         goto LABEL_4;
       }
@@ -120,12 +120,12 @@ LABEL_3:
     }
   }
 
-  v3 = a1[115] == 0;
-  if (a1[112])
+  v3 = self[115] == 0;
+  if (self[112])
   {
 LABEL_4:
     v4 = 0;
-    if (a1[110])
+    if (self[110])
     {
       goto LABEL_5;
     }
@@ -134,12 +134,12 @@ LABEL_4:
   }
 
 LABEL_20:
-  v4 = a1[113] == 0;
-  if (a1[110])
+  v4 = self[113] == 0;
+  if (self[110])
   {
 LABEL_5:
     v5 = 0;
-    if (a1[108])
+    if (self[108])
     {
       goto LABEL_6;
     }
@@ -148,12 +148,12 @@ LABEL_5:
   }
 
 LABEL_21:
-  v5 = a1[111] == 0;
-  if (a1[108])
+  v5 = self[111] == 0;
+  if (self[108])
   {
 LABEL_6:
     v6 = 0;
-    if (a1[106])
+    if (self[106])
     {
       goto LABEL_7;
     }
@@ -162,12 +162,12 @@ LABEL_6:
   }
 
 LABEL_22:
-  v6 = a1[109] == 0;
-  if (a1[106])
+  v6 = self[109] == 0;
+  if (self[106])
   {
 LABEL_7:
     v7 = 0;
-    if (a1[104])
+    if (self[104])
     {
       goto LABEL_8;
     }
@@ -176,12 +176,12 @@ LABEL_7:
   }
 
 LABEL_23:
-  v7 = a1[107] == 0;
-  if (a1[104])
+  v7 = self[107] == 0;
+  if (self[104])
   {
 LABEL_8:
     v8 = 0;
-    if (a1[102])
+    if (self[102])
     {
       goto LABEL_9;
     }
@@ -190,12 +190,12 @@ LABEL_8:
   }
 
 LABEL_24:
-  v8 = a1[105] == 0;
-  if (a1[102])
+  v8 = self[105] == 0;
+  if (self[102])
   {
 LABEL_9:
     v9 = 0;
-    if (a1[100])
+    if (self[100])
     {
       goto LABEL_10;
     }
@@ -204,12 +204,12 @@ LABEL_9:
   }
 
 LABEL_25:
-  v9 = a1[103] == 0;
-  if (a1[100])
+  v9 = self[103] == 0;
+  if (self[100])
   {
 LABEL_10:
     v10 = 0;
-    if (a1[98])
+    if (self[98])
     {
       goto LABEL_11;
     }
@@ -218,8 +218,8 @@ LABEL_10:
   }
 
 LABEL_26:
-  v10 = a1[101] == 0;
-  if (a1[98])
+  v10 = self[101] == 0;
+  if (self[98])
   {
 LABEL_11:
     v11 = 0;
@@ -232,7 +232,7 @@ LABEL_11:
   }
 
 LABEL_27:
-  v11 = a1[99] == 0;
+  v11 = self[99] == 0;
   if (v1[10])
   {
 LABEL_12:
@@ -351,11 +351,11 @@ LABEL_34:
 
 - (__n64)dimensionsNotToBeBroadcast
 {
-  v1 = a1 + 86;
-  if (a1[86])
+  v1 = self + 86;
+  if (self[86])
   {
     v2 = 0;
-    if (a1[88])
+    if (self[88])
     {
       goto LABEL_3;
     }
@@ -363,12 +363,12 @@ LABEL_34:
 
   else
   {
-    v2 = a1[87] == 0;
-    if (a1[88])
+    v2 = self[87] == 0;
+    if (self[88])
     {
 LABEL_3:
       v3 = 0;
-      if (a1[90])
+      if (self[90])
       {
         goto LABEL_4;
       }
@@ -377,12 +377,12 @@ LABEL_3:
     }
   }
 
-  v3 = a1[89] == 0;
-  if (a1[90])
+  v3 = self[89] == 0;
+  if (self[90])
   {
 LABEL_4:
     v4 = 0;
-    if (a1[92])
+    if (self[92])
     {
       goto LABEL_5;
     }
@@ -391,12 +391,12 @@ LABEL_4:
   }
 
 LABEL_20:
-  v4 = a1[91] == 0;
-  if (a1[92])
+  v4 = self[91] == 0;
+  if (self[92])
   {
 LABEL_5:
     v5 = 0;
-    if (a1[94])
+    if (self[94])
     {
       goto LABEL_6;
     }
@@ -405,12 +405,12 @@ LABEL_5:
   }
 
 LABEL_21:
-  v5 = a1[93] == 0;
-  if (a1[94])
+  v5 = self[93] == 0;
+  if (self[94])
   {
 LABEL_6:
     v6 = 0;
-    if (a1[96])
+    if (self[96])
     {
       goto LABEL_7;
     }
@@ -419,12 +419,12 @@ LABEL_6:
   }
 
 LABEL_22:
-  v6 = a1[95] == 0;
-  if (a1[96])
+  v6 = self[95] == 0;
+  if (self[96])
   {
 LABEL_7:
     v7 = 0;
-    if (a1[98])
+    if (self[98])
     {
       goto LABEL_8;
     }
@@ -433,12 +433,12 @@ LABEL_7:
   }
 
 LABEL_23:
-  v7 = a1[97] == 0;
-  if (a1[98])
+  v7 = self[97] == 0;
+  if (self[98])
   {
 LABEL_8:
     v8 = 0;
-    if (a1[100])
+    if (self[100])
     {
       goto LABEL_9;
     }
@@ -447,12 +447,12 @@ LABEL_8:
   }
 
 LABEL_24:
-  v8 = a1[99] == 0;
-  if (a1[100])
+  v8 = self[99] == 0;
+  if (self[100])
   {
 LABEL_9:
     v9 = 0;
-    if (a1[102])
+    if (self[102])
     {
       goto LABEL_10;
     }
@@ -461,11 +461,11 @@ LABEL_9:
   }
 
 LABEL_25:
-  v9 = a1[101] == 0;
-  if (a1[102])
+  v9 = self[101] == 0;
+  if (self[102])
   {
 LABEL_10:
-    if (a1[104])
+    if (self[104])
     {
       goto LABEL_11;
     }
@@ -474,11 +474,11 @@ LABEL_10:
   }
 
 LABEL_26:
-  v10 = a1[103] == 0;
-  if (a1[104])
+  v10 = self[103] == 0;
+  if (self[104])
   {
 LABEL_11:
-    if (a1[106])
+    if (self[106])
     {
       goto LABEL_12;
     }
@@ -487,7 +487,7 @@ LABEL_11:
   }
 
 LABEL_27:
-  v11 = a1[105] == 0;
+  v11 = self[105] == 0;
   if (v1[20])
   {
 LABEL_12:
@@ -572,11 +572,11 @@ LABEL_34:
   return result;
 }
 
-- (MPSNDArrayPadKernel)initWithCoder:(id)a3 device:(id)a4
+- (MPSNDArrayPadKernel)initWithCoder:(id)coder device:(id)device
 {
   v11.receiver = self;
   v11.super_class = MPSNDArrayPadKernel;
-  v5 = [(MPSNDArrayUnaryKernel *)&v11 initWithCoder:a3 device:a4];
+  v5 = [(MPSNDArrayUnaryKernel *)&v11 initWithCoder:coder device:device];
   v6 = v5;
   if (v5)
   {
@@ -587,15 +587,15 @@ LABEL_34:
     v9 = &v6->_paddingSize.paddingSize[0][1];
     do
     {
-      *(v9 - 1) = [a3 decodeIntegerForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v8, 0)}];
-      *v9 = [a3 decodeIntegerForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v8, 1)}];
+      *(v9 - 1) = [coder decodeIntegerForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v8, 0)}];
+      *v9 = [coder decodeIntegerForKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v8, 1)}];
       v9 += 2;
       ++v8;
     }
 
     while (v8 != 16);
-    v6->_edgeMode = [a3 decodeIntegerForKey:@"MPSNDArrayPad.edgeMode"];
-    v6->_constantValue = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"MPSNDArrayPad.constantValue"];
+    v6->_edgeMode = [coder decodeIntegerForKey:@"MPSNDArrayPad.edgeMode"];
+    v6->_constantValue = [coder decodeObjectOfClass:objc_opt_class() forKey:@"MPSNDArrayPad.constantValue"];
     v6->_constantValueImagPart = 0.0;
     objc_autoreleasePoolPop(v7);
   }
@@ -603,7 +603,7 @@ LABEL_34:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v10.receiver = self;
@@ -614,25 +614,25 @@ LABEL_34:
   v7 = &self->_paddingSize.paddingSize[0][1];
   do
   {
-    [a3 encodeInteger:*(v7 - 1) forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v6, 0)}];
+    [coder encodeInteger:*(v7 - 1) forKey:{objc_msgSend(MEMORY[0x277CCACA8], "stringWithFormat:", @"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v6, 0)}];
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@[%u][%u]", @"MPSNDArrayPad.paddingSize", v6, 1];
     v9 = *v7;
     v7 += 2;
-    [a3 encodeInteger:v9 forKey:v8];
+    [coder encodeInteger:v9 forKey:v8];
     ++v6;
   }
 
   while (v6 != 16);
-  [a3 encodeInteger:self->_edgeMode forKey:@"MPSNDArrayPad.edgeMode"];
-  [a3 encodeObject:self->_constantValue forKey:@"MPSNDArrayPad.constantValue"];
+  [coder encodeInteger:self->_edgeMode forKey:@"MPSNDArrayPad.edgeMode"];
+  [coder encodeObject:self->_constantValue forKey:@"MPSNDArrayPad.constantValue"];
   objc_autoreleasePoolPop(v5);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v20.receiver = self;
   v20.super_class = MPSNDArrayPadKernel;
-  result = [(MPSNDArrayMultiaryKernel *)&v20 copyWithZone:a3 device:a4];
+  result = [(MPSNDArrayMultiaryKernel *)&v20 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 83) = self->_edgeMode;

@@ -1,7 +1,7 @@
 @interface SpringBoardUIServicesBackedSceneInteractor
 - (_TtC16ScreenSharingKit42SpringBoardUIServicesBackedSceneInteractor)init;
-- (void)continuitySession:(id)a3 didUpdateContinuitySessionStep:(unint64_t)a4 reasons:(id)a5;
-- (void)continuitySession:(id)a3 didUpdateCurrentInterfaceOrientation:(int64_t)a4 supportedInterfaceOrientations:(unint64_t)a5;
+- (void)continuitySession:(id)session didUpdateContinuitySessionStep:(unint64_t)step reasons:(id)reasons;
+- (void)continuitySession:(id)session didUpdateCurrentInterfaceOrientation:(int64_t)orientation supportedInterfaceOrientations:(unint64_t)orientations;
 @end
 
 @implementation SpringBoardUIServicesBackedSceneInteractor
@@ -13,19 +13,19 @@
   return result;
 }
 
-- (void)continuitySession:(id)a3 didUpdateContinuitySessionStep:(unint64_t)a4 reasons:(id)a5
+- (void)continuitySession:(id)session didUpdateContinuitySessionStep:(unint64_t)step reasons:(id)reasons
 {
   v8 = sub_264B41414();
-  v9 = a3;
-  v10 = self;
-  sub_264A8047C(v9, a4, v8);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_264A8047C(sessionCopy, step, v8);
 }
 
-- (void)continuitySession:(id)a3 didUpdateCurrentInterfaceOrientation:(int64_t)a4 supportedInterfaceOrientations:(unint64_t)a5
+- (void)continuitySession:(id)session didUpdateCurrentInterfaceOrientation:(int64_t)orientation supportedInterfaceOrientations:(unint64_t)orientations
 {
-  v8 = a3;
-  v9 = self;
-  sub_264A80CBC(v8, a4, a5);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_264A80CBC(sessionCopy, orientation, orientations);
 }
 
 @end

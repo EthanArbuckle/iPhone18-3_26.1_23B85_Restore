@@ -8,19 +8,19 @@
 
 - (__CFString)br_currentPersonaID
 {
-  v1 = [a1 currentPersona];
-  v2 = v1;
-  if (v1)
+  currentPersona = [self currentPersona];
+  v2 = currentPersona;
+  if (currentPersona)
   {
-    v3 = [v1 br_personaID];
+    br_personaID = [currentPersona br_personaID];
   }
 
   else
   {
-    v3 = @"__defaultPersonaID__";
+    br_personaID = @"__defaultPersonaID__";
   }
 
-  return v3;
+  return br_personaID;
 }
 
 + (uint64_t)br_isInSyncBubble
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = __47__UMUserManager_BRAdditions__br_isInSyncBubble__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (br_isInSyncBubble_onceToken != -1)
   {
     dispatch_once(&br_isInSyncBubble_onceToken, block);
@@ -40,11 +40,11 @@
 
 + (BOOL)_isInSyncBubble
 {
-  v0 = [MEMORY[0x1E69DF068] sharedManager];
-  if ([v0 isSharedIPad])
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  if ([mEMORY[0x1E69DF068] isSharedIPad])
   {
-    v1 = [v0 currentUser];
-    v2 = [v1 uid];
+    currentUser = [mEMORY[0x1E69DF068] currentUser];
+    v2 = [currentUser uid];
     v3 = v2 != geteuid();
   }
 

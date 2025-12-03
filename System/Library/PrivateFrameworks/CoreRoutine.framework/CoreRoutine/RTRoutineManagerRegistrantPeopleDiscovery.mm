@@ -1,15 +1,15 @@
 @interface RTRoutineManagerRegistrantPeopleDiscovery
-- (RTRoutineManagerRegistrantPeopleDiscovery)initWithConfigurationIdentifier:(id)a3;
-- (id)startMonitoringForPeopleDiscovery:(id)a3;
+- (RTRoutineManagerRegistrantPeopleDiscovery)initWithConfigurationIdentifier:(id)identifier;
+- (id)startMonitoringForPeopleDiscovery:(id)discovery;
 - (id)stopMonitoringForPeopleDiscovery;
-- (void)onDensityUpdate:(id)a3 error:(id)a4;
+- (void)onDensityUpdate:(id)update error:(id)error;
 @end
 
 @implementation RTRoutineManagerRegistrantPeopleDiscovery
 
-- (RTRoutineManagerRegistrantPeopleDiscovery)initWithConfigurationIdentifier:(id)a3
+- (RTRoutineManagerRegistrantPeopleDiscovery)initWithConfigurationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = RTRoutineManagerRegistrantPeopleDiscovery;
   v5 = [(RTRoutineManagerRegistrantPeopleDiscovery *)&v11 init];
@@ -19,7 +19,7 @@
     densityHandler = v5->_densityHandler;
     v5->_densityHandler = 0;
 
-    v8 = [v4 copy];
+    v8 = [identifierCopy copy];
     configurationIdentifier = v6->_configurationIdentifier;
     v6->_configurationIdentifier = v8;
   }
@@ -27,32 +27,32 @@
   return v6;
 }
 
-- (id)startMonitoringForPeopleDiscovery:(id)a3
+- (id)startMonitoringForPeopleDiscovery:(id)discovery
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  discoveryCopy = discovery;
+  v6 = discoveryCopy;
+  if (discoveryCopy)
   {
-    v7 = [v5 densityCallbackConfiguration];
+    densityCallbackConfiguration = [discoveryCopy densityCallbackConfiguration];
 
-    if (!v7)
+    if (!densityCallbackConfiguration)
     {
 LABEL_5:
-      objc_storeStrong(&self->_configuration, a3);
+      objc_storeStrong(&self->_configuration, discovery);
       v12 = 0;
       self->_registered = 1;
       goto LABEL_8;
     }
 
-    v8 = [v6 densityCallbackConfiguration];
-    v9 = [v8 densityUpdateHandler];
+    densityCallbackConfiguration2 = [v6 densityCallbackConfiguration];
+    densityUpdateHandler = [densityCallbackConfiguration2 densityUpdateHandler];
 
-    if (v9)
+    if (densityUpdateHandler)
     {
-      v10 = [v8 densityUpdateHandler];
+      densityUpdateHandler2 = [densityCallbackConfiguration2 densityUpdateHandler];
       densityHandler = self->_densityHandler;
-      self->_densityHandler = v10;
+      self->_densityHandler = densityUpdateHandler2;
 
       goto LABEL_5;
     }
@@ -92,11 +92,11 @@ LABEL_8:
   return 0;
 }
 
-- (void)onDensityUpdate:(id)a3 error:(id)a4
+- (void)onDensityUpdate:(id)update error:(id)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  updateCopy = update;
+  errorCopy = error;
   v9 = self->_configuration;
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
   {
@@ -122,9 +122,9 @@ LABEL_8:
       v20 = 2112;
       v21 = v13;
       v22 = 2048;
-      v23 = [v7 count];
+      v23 = [updateCopy count];
       v24 = 2112;
-      v25 = v8;
+      v25 = errorCopy;
       _os_log_impl(&dword_1BF1C4000, v10, OS_LOG_TYPE_INFO, "%@, registered, %@, monitoredConfig, %@, densityBundles count, %lu, error, %@", &v16, 0x34u);
     }
   }
@@ -134,7 +134,7 @@ LABEL_8:
     densityHandler = self->_densityHandler;
     if (densityHandler)
     {
-      densityHandler[2](densityHandler, v7, v8);
+      densityHandler[2](densityHandler, updateCopy, errorCopy);
     }
   }
 

@@ -1,19 +1,19 @@
 @interface SKUIPassbookLoader
 - (NSOperationQueue)operationQueue;
-- (SKUIPassbookLoader)initWithClientContext:(id)a3;
+- (SKUIPassbookLoader)initWithClientContext:(id)context;
 - (SKUIPassbookLoaderDelegate)delegate;
-- (void)_didLoadWithPass:(id)a3 error:(id)a4;
-- (void)_loadPassWithURL:(id)a3;
+- (void)_didLoadWithPass:(id)pass error:(id)error;
+- (void)_loadPassWithURL:(id)l;
 - (void)_sendDidFinishIfFinished;
-- (void)addPassesViewControllerDidFinish:(id)a3;
-- (void)loadPassWithURL:(id)a3;
+- (void)addPassesViewControllerDidFinish:(id)finish;
+- (void)loadPassWithURL:(id)l;
 @end
 
 @implementation SKUIPassbookLoader
 
-- (SKUIPassbookLoader)initWithClientContext:(id)a3
+- (SKUIPassbookLoader)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIPassbookLoader initWithClientContext:];
@@ -25,22 +25,22 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
   }
 
   return v7;
 }
 
-- (void)loadPassWithURL:(id)a3
+- (void)loadPassWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   ++self->_loadCount;
-  v5 = [MEMORY[0x277D69A20] defaultStore];
-  v6 = [v5 activeAccount];
+  defaultStore = [MEMORY[0x277D69A20] defaultStore];
+  activeAccount = [defaultStore activeAccount];
 
-  if (v6)
+  if (activeAccount)
   {
-    [(SKUIPassbookLoader *)self _loadPassWithURL:v4];
+    [(SKUIPassbookLoader *)self _loadPassWithURL:lCopy];
   }
 
   else
@@ -67,7 +67,7 @@
     v11[2] = __38__SKUIPassbookLoader_loadPassWithURL___block_invoke;
     v11[3] = &unk_2781FB068;
     objc_copyWeak(&v13, &location);
-    v12 = v4;
+    v12 = lCopy;
     [v10 startWithAuthenticateResponseBlock:v11];
 
     objc_destroyWeak(&v13);
@@ -122,34 +122,34 @@ void __38__SKUIPassbookLoader_loadPassWithURL___block_invoke_2(uint64_t a1)
   return operationQueue;
 }
 
-- (void)addPassesViewControllerDidFinish:(id)a3
+- (void)addPassesViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
-  v11 = objc_getAssociatedObject(v4, "com.apple.StoreKitUI.SKUIPassbookLoader.pass");
+  finishCopy = finish;
+  v11 = objc_getAssociatedObject(finishCopy, "com.apple.StoreKitUI.SKUIPassbookLoader.pass");
   if (v11)
   {
     v5 = SKUIPassKitCoreFramework();
     v6 = objc_alloc_init(SKUIWeakLinkedClassForString(&cfstr_Pkpasslibrary.isa, v5));
     if ([v6 containsPass:v11])
     {
-      v7 = [MEMORY[0x277D69A20] defaultStore];
-      v8 = [v7 activeAccount];
-      v9 = [v11 serialNumber];
-      [v8 setITunesPassSerialNumber:v9];
+      defaultStore = [MEMORY[0x277D69A20] defaultStore];
+      activeAccount = [defaultStore activeAccount];
+      serialNumber = [v11 serialNumber];
+      [activeAccount setITunesPassSerialNumber:serialNumber];
 
-      v10 = [v7 addAccount:v8];
+      v10 = [defaultStore addAccount:activeAccount];
     }
   }
 
-  [v4 setDelegate:0];
-  [v4 dismissViewControllerAnimated:1 completion:0];
+  [finishCopy setDelegate:0];
+  [finishCopy dismissViewControllerAnimated:1 completion:0];
 
   [(SKUIPassbookLoader *)self _sendDidFinishIfFinished];
 }
 
-- (void)_didLoadWithPass:(id)a3 error:(id)a4
+- (void)_didLoadWithPass:(id)pass error:(id)error
 {
-  value = a3;
+  value = pass;
   if (value)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -175,10 +175,10 @@ void __38__SKUIPassbookLoader_loadPassWithURL___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_loadPassWithURL:(id)a3
+- (void)_loadPassWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SKUIClientContext *)self->_clientContext newLoadStoreURLOperationWithURL:v4];
+  lCopy = l;
+  v5 = [(SKUIClientContext *)self->_clientContext newLoadStoreURLOperationWithURL:lCopy];
   v6 = +[(SSVURLDataConsumer *)SKUIPassbookPassDataConsumer];
   [v5 setDataConsumer:v6];
 

@@ -1,11 +1,11 @@
 @interface TUDiagnosticExtension
 - (_TtC21TUDiagnosticExtension21TUDiagnosticExtension)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation TUDiagnosticExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   sub_100000CF0(&_swiftEmptyArrayStorage);
   v3.super.isa = sub_100001188().super.isa;

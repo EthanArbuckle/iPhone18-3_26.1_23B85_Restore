@@ -1,8 +1,8 @@
 @interface HMDCameraRecordingAnalysisNodeMetrics
-- (BOOL)_isDeviceB620InOdeonConfiguration:(id)a3;
-- (HMDCameraRecordingAnalysisNodeMetrics)initWithResidentDevice:(id)a3 cameraProfile:(id)a4 pendingDecisionsByCameraUUID:(id)a5 metrics:(id)a6;
+- (BOOL)_isDeviceB620InOdeonConfiguration:(id)configuration;
+- (HMDCameraRecordingAnalysisNodeMetrics)initWithResidentDevice:(id)device cameraProfile:(id)profile pendingDecisionsByCameraUUID:(id)d metrics:(id)metrics;
 - (id)attributeDescriptions;
-- (unint64_t)_estimatedJobSlotsForResidentDevice:(id)a3 systemResourceUsageLevel:(int64_t)a4;
+- (unint64_t)_estimatedJobSlotsForResidentDevice:(id)device systemResourceUsageLevel:(int64_t)level;
 @end
 
 @implementation HMDCameraRecordingAnalysisNodeMetrics
@@ -11,12 +11,12 @@
 {
   v36[10] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v35 = [(HMDCameraRecordingAnalysisNodeMetrics *)self maxNumberOfAnalyzers];
-  v34 = [v3 initWithName:@"Max Number Of Analyzers" value:v35];
+  maxNumberOfAnalyzers = [(HMDCameraRecordingAnalysisNodeMetrics *)self maxNumberOfAnalyzers];
+  v34 = [v3 initWithName:@"Max Number Of Analyzers" value:maxNumberOfAnalyzers];
   v36[0] = v34;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v33 = [(HMDCameraRecordingAnalysisNodeMetrics *)self maxAnalysisFPS];
-  v32 = [v4 initWithName:@"Max Analysis FPS" value:v33];
+  maxAnalysisFPS = [(HMDCameraRecordingAnalysisNodeMetrics *)self maxAnalysisFPS];
+  v32 = [v4 initWithName:@"Max Analysis FPS" value:maxAnalysisFPS];
   v36[1] = v32;
   v5 = objc_alloc(MEMORY[0x277D0F778]);
   v31 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDCameraRecordingAnalysisNodeMetrics remainingNumberOfAnalyzers](self, "remainingNumberOfAnalyzers")}];
@@ -57,48 +57,48 @@
   return v22;
 }
 
-- (unint64_t)_estimatedJobSlotsForResidentDevice:(id)a3 systemResourceUsageLevel:(int64_t)a4
+- (unint64_t)_estimatedJobSlotsForResidentDevice:(id)device systemResourceUsageLevel:(int64_t)level
 {
-  v5 = [a3 productType];
+  productType = [device productType];
   result = 2;
-  if (v5 <= 4)
+  if (productType <= 4)
   {
-    if ((v5 - 1) >= 2)
+    if ((productType - 1) >= 2)
     {
-      if (v5 == 3)
+      if (productType == 3)
       {
         return 5;
       }
 
-      if (v5 != 4)
+      if (productType != 4)
       {
         return result;
       }
     }
 
-    if (a4 >= 4)
+    if (level >= 4)
     {
       return 5;
     }
 
     v7 = &unk_22A5874D0;
-    return v7[a4];
+    return v7[level];
   }
 
-  if (v5 > 7)
+  if (productType > 7)
   {
-    if (v5 == 8)
+    if (productType == 8)
     {
-      if (a4 >= 4)
+      if (level >= 4)
       {
         return 5;
       }
 
       v7 = &unk_22A5874B0;
-      return v7[a4];
+      return v7[level];
     }
 
-    if (v5 != 11)
+    if (productType != 11)
     {
       return result;
     }
@@ -106,19 +106,19 @@
     goto LABEL_13;
   }
 
-  if ((v5 - 6) < 2)
+  if ((productType - 6) < 2)
   {
 LABEL_13:
-    if (a4 >= 4)
+    if (level >= 4)
     {
       return 5;
     }
 
     v7 = &unk_22A587490;
-    return v7[a4];
+    return v7[level];
   }
 
-  if (v5 == 5)
+  if (productType == 5)
   {
     return 5;
   }
@@ -126,19 +126,19 @@ LABEL_13:
   return result;
 }
 
-- (BOOL)_isDeviceB620InOdeonConfiguration:(id)a3
+- (BOOL)_isDeviceB620InOdeonConfiguration:(id)configuration
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v26 = [v3 home];
-  v4 = [v26 appleMediaAccessories];
+  configurationCopy = configuration;
+  home = [configurationCopy home];
+  appleMediaAccessories = [home appleMediaAccessories];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __75__HMDCameraRecordingAnalysisNodeMetrics__isDeviceB620InOdeonConfiguration___block_invoke;
   v31[3] = &unk_278688F28;
-  v5 = v3;
+  v5 = configurationCopy;
   v32 = v5;
-  v6 = [v4 na_firstObjectPassingTest:v31];
+  v6 = [appleMediaAccessories na_firstObjectPassingTest:v31];
   if (v6)
   {
     v23 = v5;
@@ -146,13 +146,13 @@ LABEL_13:
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v4;
+    obj = appleMediaAccessories;
     v7 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v7)
     {
       v8 = v7;
       v25 = *v28;
-      v22 = v4;
+      v22 = appleMediaAccessories;
       while (2)
       {
         for (i = 0; i != v8; ++i)
@@ -162,25 +162,25 @@ LABEL_13:
             objc_enumerationMutation(obj);
           }
 
-          v10 = [*(*(&v27 + 1) + 8 * i) audioDestinationControllerData];
-          v11 = [v10 destinationIdentifier];
-          v12 = [v11 UUIDString];
+          audioDestinationControllerData = [*(*(&v27 + 1) + 8 * i) audioDestinationControllerData];
+          destinationIdentifier = [audioDestinationControllerData destinationIdentifier];
+          uUIDString = [destinationIdentifier UUIDString];
 
-          v13 = [v6 audioDestination];
-          v14 = [v13 identifier];
-          if ([v12 isEqualToString:v14])
+          audioDestination = [v6 audioDestination];
+          identifier = [audioDestination identifier];
+          if ([uUIDString isEqualToString:identifier])
           {
 
 LABEL_15:
             v19 = 1;
-            v4 = v22;
+            appleMediaAccessories = v22;
             goto LABEL_16;
           }
 
-          v15 = [v26 mediaSystemForAppleMediaAccessory:v6];
-          v16 = [v15 audioDestination];
-          v17 = [v16 identifier];
-          v18 = [v12 isEqualToString:v17];
+          v15 = [home mediaSystemForAppleMediaAccessory:v6];
+          audioDestination2 = [v15 audioDestination];
+          identifier2 = [audioDestination2 identifier];
+          v18 = [uUIDString isEqualToString:identifier2];
 
           if (v18)
           {
@@ -190,7 +190,7 @@ LABEL_15:
 
         v8 = [obj countByEnumeratingWithState:&v27 objects:v33 count:16];
         v19 = 0;
-        v4 = v22;
+        appleMediaAccessories = v22;
         if (v8)
         {
           continue;
@@ -239,27 +239,27 @@ uint64_t __75__HMDCameraRecordingAnalysisNodeMetrics__isDeviceB620InOdeonConfigu
   return v8;
 }
 
-- (HMDCameraRecordingAnalysisNodeMetrics)initWithResidentDevice:(id)a3 cameraProfile:(id)a4 pendingDecisionsByCameraUUID:(id)a5 metrics:(id)a6
+- (HMDCameraRecordingAnalysisNodeMetrics)initWithResidentDevice:(id)device cameraProfile:(id)profile pendingDecisionsByCameraUUID:(id)d metrics:(id)metrics
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v10)
+  deviceCopy = device;
+  profileCopy = profile;
+  dCopy = d;
+  metricsCopy = metrics;
+  if (!deviceCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_19;
   }
 
-  if (!v11)
+  if (!profileCopy)
   {
 LABEL_19:
     _HMFPreconditionFailure();
     goto LABEL_20;
   }
 
-  v14 = v13;
-  if (!v13)
+  v14 = metricsCopy;
+  if (!metricsCopy)
   {
 LABEL_20:
     v48 = _HMFPreconditionFailure();
@@ -273,13 +273,13 @@ LABEL_20:
   if (v15)
   {
     v16 = [v14 hmf_dictionaryForKey:@"recordingSessionSummaries"];
-    v17 = [v11 uniqueIdentifier];
-    v18 = [v17 UUIDString];
-    v19 = [v16 objectForKeyedSubscript:v18];
+    uniqueIdentifier = [profileCopy uniqueIdentifier];
+    uUIDString = [uniqueIdentifier UUIDString];
+    v19 = [v16 objectForKeyedSubscript:uUIDString];
     v58 = v19 != 0;
 
     v20 = [v14 hmf_numberForKey:@"numberOfActiveRecordingSessions"];
-    v62 = [v20 unsignedIntValue];
+    unsignedIntValue = [v20 unsignedIntValue];
 
     v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v63[0] = MEMORY[0x277D85DD0];
@@ -290,10 +290,10 @@ LABEL_20:
     v64 = v57;
     v22 = v21;
     v65 = v22;
-    [v12 na_each:v63];
-    v23 = [v11 uniqueIdentifier];
-    v24 = [v23 UUIDString];
-    v25 = [v22 objectForKeyedSubscript:v24];
+    [dCopy na_each:v63];
+    uniqueIdentifier2 = [profileCopy uniqueIdentifier];
+    uUIDString2 = [uniqueIdentifier2 UUIDString];
+    v25 = [v22 objectForKeyedSubscript:uUIDString2];
     v54 = v25 != 0;
 
     v56 = v22;
@@ -302,12 +302,12 @@ LABEL_20:
     v27 = v26;
     if (v26)
     {
-      v60 = [v26 integerValue];
+      integerValue = [v26 integerValue];
     }
 
     else
     {
-      v60 = 0;
+      integerValue = 0;
     }
 
     v28 = [v14 hmf_numberForKey:@"numberOfFullJobSlots"];
@@ -315,64 +315,64 @@ LABEL_20:
 
     if (v29)
     {
-      v30 = [(HMDCameraRecordingAnalysisNodeMetrics *)v15 _estimatedJobSlotsForResidentDevice:v10 systemResourceUsageLevel:v60];
+      v30 = [(HMDCameraRecordingAnalysisNodeMetrics *)v15 _estimatedJobSlotsForResidentDevice:deviceCopy systemResourceUsageLevel:integerValue];
       v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v30];
 
       v28 = v31;
     }
 
-    v32 = [(NSNumber *)v28 integerValue];
+    integerValue2 = [(NSNumber *)v28 integerValue];
     if (v19)
     {
-      v33 = v32 - v62 - v61 + 1;
+      v33 = integerValue2 - unsignedIntValue - v61 + 1;
     }
 
     else
     {
-      v33 = v32 - v62 - v61;
+      v33 = integerValue2 - unsignedIntValue - v61;
     }
 
     v34 = [v14 hmf_numberForKey:@"maximumAnalysisFPS"];
     v35 = v34;
     v36 = 1;
-    v59 = v12;
+    v59 = dCopy;
     v55 = v27;
     v53 = v33;
-    if (v60 != 3 && v33 >= 1)
+    if (integerValue != 3 && v33 >= 1)
     {
       [(NSNumber *)v34 doubleValue];
       v36 = v37 < 0.5;
     }
 
     LODWORD(v50) = v36;
-    v52 = [(HMDCameraRecordingAnalysisNodeMetrics *)v15 _isDeviceB620InOdeonConfiguration:v10, v50];
+    v52 = [(HMDCameraRecordingAnalysisNodeMetrics *)v15 _isDeviceB620InOdeonConfiguration:deviceCopy, v50];
     v38 = [v14 objectForKeyedSubscript:@"readyToRecordByCameraUUIDString"];
-    [v11 uniqueIdentifier];
-    v40 = v39 = v10;
+    [profileCopy uniqueIdentifier];
+    v40 = v39 = deviceCopy;
     [v40 UUIDString];
-    v42 = v41 = v11;
+    v42 = v41 = profileCopy;
     v43 = [v38 objectForKeyedSubscript:v42];
 
     maxNumberOfAnalyzers = v15->_maxNumberOfAnalyzers;
     v15->_maxNumberOfAnalyzers = v28;
     v45 = v28;
 
-    v10 = v39;
+    deviceCopy = v39;
     maxAnalysisFPS = v15->_maxAnalysisFPS;
     v15->_maxAnalysisFPS = v35;
 
-    v11 = v41;
+    profileCopy = v41;
     v15->_remainingNumberOfAnalyzers = v53;
     v15->_activeSessionWithCamera = v58;
     v15->_pendingSessionWithCamera = v54;
-    v15->_systemResourceUsageLevel = v60;
-    v15->_numberOfActiveRecordingSessions = v62;
+    v15->_systemResourceUsageLevel = integerValue;
+    v15->_numberOfActiveRecordingSessions = unsignedIntValue;
     v15->_numberOfPendingRecordingSessions = v61;
     v15->_resourceConstrained = v51;
     v15->_b620InOdeon = v52;
     v15->_readyToRecord = [v43 BOOLValue];
 
-    v12 = v59;
+    dCopy = v59;
   }
 
   return v15;

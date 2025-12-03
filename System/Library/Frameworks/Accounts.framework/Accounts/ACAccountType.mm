@@ -1,12 +1,12 @@
 @interface ACAccountType
 + (NSSet)allIdentifiers;
 - (ACAccountStore)accountStore;
-- (ACAccountType)initWithCoder:(id)a3;
-- (ACAccountType)initWithIdentifier:(id)a3 description:(id)a4;
-- (ACAccountType)initWithManagedAccountType:(id)a3;
-- (ACAccountType)initWithManagedAccountType:(id)a3 accountStore:(id)a4;
+- (ACAccountType)initWithCoder:(id)coder;
+- (ACAccountType)initWithIdentifier:(id)identifier description:(id)description;
+- (ACAccountType)initWithManagedAccountType:(id)type;
+- (ACAccountType)initWithManagedAccountType:(id)type accountStore:(id)store;
 - (BOOL)accessGranted;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSSet)accessKeys;
 - (NSSet)supportedDataclasses;
 - (NSSet)syncableDataclasses;
@@ -14,50 +14,50 @@
 - (NSString)fullDescription;
 - (id)_encodeProtobuf;
 - (id)_encodeProtobufData;
-- (id)_initWithProtobuf:(id)a3;
-- (id)_initWithProtobufData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_initWithProtobuf:(id)protobuf;
+- (id)_initWithProtobufData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)credentialProtectionPolicy;
 - (int)supportsAuthentication;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccountTypeDescription:(id)a3;
-- (void)setCredentialProtectionPolicy:(id)a3;
-- (void)setCredentialType:(id)a3;
-- (void)setIdentifier:(id)a3;
-- (void)setSupportedDataclasses:(id)a3;
-- (void)setSupportsAuthentication:(int)a3;
-- (void)setSyncableDataclasses:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccountTypeDescription:(id)description;
+- (void)setCredentialProtectionPolicy:(id)policy;
+- (void)setCredentialType:(id)type;
+- (void)setIdentifier:(id)identifier;
+- (void)setSupportedDataclasses:(id)dataclasses;
+- (void)setSupportsAuthentication:(int)authentication;
+- (void)setSyncableDataclasses:(id)dataclasses;
 @end
 
 @implementation ACAccountType
 
 - (id)credentialProtectionPolicy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  credentialProtectionPolicy = v2->_credentialProtectionPolicy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  credentialProtectionPolicy = selfCopy->_credentialProtectionPolicy;
   if (!credentialProtectionPolicy)
   {
     v4 = [*MEMORY[0x1E697ABE0] copy];
-    v5 = v2->_credentialProtectionPolicy;
-    v2->_credentialProtectionPolicy = v4;
+    v5 = selfCopy->_credentialProtectionPolicy;
+    selfCopy->_credentialProtectionPolicy = v4;
 
-    credentialProtectionPolicy = v2->_credentialProtectionPolicy;
+    credentialProtectionPolicy = selfCopy->_credentialProtectionPolicy;
   }
 
   v6 = credentialProtectionPolicy;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (int)supportsAuthentication
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  supportsAuthentication = v2->_supportsAuthentication;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  supportsAuthentication = selfCopy->_supportsAuthentication;
+  objc_sync_exit(selfCopy);
 
   return supportsAuthentication;
 }
@@ -65,9 +65,9 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ACAccountType *)self accountTypeDescription];
-  v5 = [(ACAccountType *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ (%@)", v4, v5];
+  accountTypeDescription = [(ACAccountType *)self accountTypeDescription];
+  identifier = [(ACAccountType *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ (%@)", accountTypeDescription, identifier];
 
   return v6;
 }
@@ -151,20 +151,20 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (ACAccountType)initWithIdentifier:(id)a3 description:(id)a4
+- (ACAccountType)initWithIdentifier:(id)identifier description:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  descriptionCopy = description;
   v14.receiver = self;
   v14.super_class = ACAccountType;
   v8 = [(ACAccountType *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    v11 = [v7 copy];
+    v11 = [descriptionCopy copy];
     accountTypeDescription = v8->_accountTypeDescription;
     v8->_accountTypeDescription = v11;
   }
@@ -172,63 +172,63 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
   return v8;
 }
 
-- (ACAccountType)initWithManagedAccountType:(id)a3 accountStore:(id)a4
+- (ACAccountType)initWithManagedAccountType:(id)type accountStore:(id)store
 {
-  v6 = a4;
-  v7 = [(ACAccountType *)self initWithManagedAccountType:a3];
+  storeCopy = store;
+  v7 = [(ACAccountType *)self initWithManagedAccountType:type];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_accountStore, v6);
+    objc_storeWeak(&v7->_accountStore, storeCopy);
   }
 
   return v8;
 }
 
-- (ACAccountType)initWithManagedAccountType:(id)a3
+- (ACAccountType)initWithManagedAccountType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v25.receiver = self;
   v25.super_class = ACAccountType;
   v5 = [(ACAccountType *)&v25 init];
   if (v5)
   {
-    v6 = [v4 accountTypeDescription];
+    accountTypeDescription = [typeCopy accountTypeDescription];
     accountTypeDescription = v5->_accountTypeDescription;
-    v5->_accountTypeDescription = v6;
+    v5->_accountTypeDescription = accountTypeDescription;
 
-    v8 = [v4 identifier];
+    identifier = [typeCopy identifier];
     identifier = v5->_identifier;
-    v5->_identifier = v8;
+    v5->_identifier = identifier;
 
-    v10 = [v4 objectID];
-    v11 = [v10 URIRepresentation];
+    objectID = [typeCopy objectID];
+    uRIRepresentation = [objectID URIRepresentation];
     objectID = v5->_objectID;
-    v5->_objectID = v11;
+    v5->_objectID = uRIRepresentation;
 
-    v13 = [v4 visibility];
-    v5->_visibility = [v13 intValue];
+    visibility = [typeCopy visibility];
+    v5->_visibility = [visibility intValue];
 
-    v14 = [v4 credentialType];
+    credentialType = [typeCopy credentialType];
     credentialType = v5->_credentialType;
-    v5->_credentialType = v14;
+    v5->_credentialType = credentialType;
 
-    v16 = [v4 credentialProtectionPolicy];
+    credentialProtectionPolicy = [typeCopy credentialProtectionPolicy];
     credentialProtectionPolicy = v5->_credentialProtectionPolicy;
-    v5->_credentialProtectionPolicy = v16;
+    v5->_credentialProtectionPolicy = credentialProtectionPolicy;
 
-    v18 = [v4 supportsAuthentication];
-    v5->_supportsAuthentication = [v18 BOOLValue];
+    supportsAuthentication = [typeCopy supportsAuthentication];
+    v5->_supportsAuthentication = [supportsAuthentication BOOLValue];
 
-    v19 = [v4 supportsMultipleAccounts];
-    v5->_supportsMultipleAccounts = [v19 BOOLValue];
+    supportsMultipleAccounts = [typeCopy supportsMultipleAccounts];
+    v5->_supportsMultipleAccounts = [supportsMultipleAccounts BOOLValue];
 
-    v20 = [v4 owningBundleID];
+    owningBundleID = [typeCopy owningBundleID];
     owningBundleID = v5->_owningBundleID;
-    v5->_owningBundleID = v20;
+    v5->_owningBundleID = owningBundleID;
 
-    v22 = [v4 obsolete];
-    v5->_obsolete = [v22 BOOLValue];
+    obsolete = [typeCopy obsolete];
+    v5->_obsolete = [obsolete BOOLValue];
 
     v23 = v5;
   }
@@ -236,81 +236,81 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
   return v5;
 }
 
-- (ACAccountType)initWithCoder:(id)a3
+- (ACAccountType)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v49.receiver = self;
   v49.super_class = ACAccountType;
   v5 = [(ACAccountType *)&v49 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountTypeDescription"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountTypeDescription"];
     v7 = [v6 copy];
     accountTypeDescription = v5->_accountTypeDescription;
     v5->_accountTypeDescription = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     v10 = [v9 copy];
     identifier = v5->_identifier;
     v5->_identifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
     v13 = [v12 copy];
     objectID = v5->_objectID;
     v5->_objectID = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"visibility"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"visibility"];
     v5->_visibility = [v15 intValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialType"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialType"];
     v17 = [v16 copy];
     credentialType = v5->_credentialType;
     v5->_credentialType = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"credentialProtectionPolicy"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"credentialProtectionPolicy"];
     v20 = [v19 copy];
     credentialProtectionPolicy = v5->_credentialProtectionPolicy;
     v5->_credentialProtectionPolicy = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsAuthentication"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsAuthentication"];
     v5->_supportsAuthentication = [v22 BOOLValue];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"supportsMultipleAccounts"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"supportsMultipleAccounts"];
     v5->_supportsMultipleAccounts = [v23 BOOLValue];
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"owningBundleID"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"owningBundleID"];
     v25 = [v24 copy];
     owningBundleID = v5->_owningBundleID;
     v5->_owningBundleID = v25;
 
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"obsolete"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"obsolete"];
     v5->_obsolete = [v27 BOOLValue];
 
     v28 = MEMORY[0x1E695DFD8];
     v29 = objc_opt_class();
     v30 = [v28 setWithObjects:{v29, objc_opt_class(), 0}];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"syncableDataclasses"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"syncableDataclasses"];
     syncableDataclasses = v5->_syncableDataclasses;
     v5->_syncableDataclasses = v31;
 
     v33 = MEMORY[0x1E695DFD8];
     v34 = objc_opt_class();
     v35 = [v33 setWithObjects:{v34, objc_opt_class(), 0}];
-    v36 = [v4 decodeObjectOfClasses:v35 forKey:@"supportedDataclasses"];
+    v36 = [coderCopy decodeObjectOfClasses:v35 forKey:@"supportedDataclasses"];
     supportedDataclasses = v5->_supportedDataclasses;
     v5->_supportedDataclasses = v36;
 
     v38 = MEMORY[0x1E695DFD8];
     v39 = objc_opt_class();
     v40 = [v38 setWithObjects:{v39, objc_opt_class(), 0}];
-    v41 = [v4 decodeObjectOfClasses:v40 forKey:@"syncableEnumDataclasses"];
+    v41 = [coderCopy decodeObjectOfClasses:v40 forKey:@"syncableEnumDataclasses"];
     syncableEnumDataclasses = v5->_syncableEnumDataclasses;
     v5->_syncableEnumDataclasses = v41;
 
     v43 = MEMORY[0x1E695DFD8];
     v44 = objc_opt_class();
     v45 = [v43 setWithObjects:{v44, objc_opt_class(), 0}];
-    v46 = [v4 decodeObjectOfClasses:v45 forKey:@"supportedEnumDataclasses"];
+    v46 = [coderCopy decodeObjectOfClasses:v45 forKey:@"supportedEnumDataclasses"];
     supportedEnumDataclasses = v5->_supportedEnumDataclasses;
     v5->_supportedEnumDataclasses = v46;
   }
@@ -318,95 +318,95 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v13 = a3;
-  v4 = [(ACAccountType *)self identifier];
-  [v13 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(ACAccountType *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v5 = [(ACAccountType *)self accountTypeDescription];
-  [v13 encodeObject:v5 forKey:@"accountTypeDescription"];
+  accountTypeDescription = [(ACAccountType *)self accountTypeDescription];
+  [coderCopy encodeObject:accountTypeDescription forKey:@"accountTypeDescription"];
 
-  v6 = [(ACAccountType *)self objectID];
-  [v13 encodeObject:v6 forKey:@"objectID"];
+  objectID = [(ACAccountType *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[ACAccountType visibility](self, "visibility")}];
-  [v13 encodeObject:v7 forKey:@"visibility"];
+  [coderCopy encodeObject:v7 forKey:@"visibility"];
 
-  [v13 encodeObject:self->_credentialType forKey:@"credentialType"];
-  v8 = [(ACAccountType *)self credentialProtectionPolicy];
-  [v13 encodeObject:v8 forKey:@"credentialProtectionPolicy"];
+  [coderCopy encodeObject:self->_credentialType forKey:@"credentialType"];
+  credentialProtectionPolicy = [(ACAccountType *)self credentialProtectionPolicy];
+  [coderCopy encodeObject:credentialProtectionPolicy forKey:@"credentialProtectionPolicy"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[ACAccountType supportsAuthentication](self, "supportsAuthentication") != 0}];
-  [v13 encodeObject:v9 forKey:@"supportsAuthentication"];
+  [coderCopy encodeObject:v9 forKey:@"supportsAuthentication"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ACAccountType supportsMultipleAccounts](self, "supportsMultipleAccounts")}];
-  [v13 encodeObject:v10 forKey:@"supportsMultipleAccounts"];
+  [coderCopy encodeObject:v10 forKey:@"supportsMultipleAccounts"];
 
-  v11 = [(ACAccountType *)self owningBundleID];
-  [v13 encodeObject:v11 forKey:@"owningBundleID"];
+  owningBundleID = [(ACAccountType *)self owningBundleID];
+  [coderCopy encodeObject:owningBundleID forKey:@"owningBundleID"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[ACAccountType isObsolete](self, "isObsolete")}];
-  [v13 encodeObject:v12 forKey:@"obsolete"];
+  [coderCopy encodeObject:v12 forKey:@"obsolete"];
 
-  [v13 encodeObject:self->_syncableDataclasses forKey:@"syncableDataclasses"];
-  [v13 encodeObject:self->_supportedDataclasses forKey:@"supportedDataclasses"];
-  [v13 encodeObject:self->_syncableEnumDataclasses forKey:@"syncableEnumDataclasses"];
-  [v13 encodeObject:self->_supportedEnumDataclasses forKey:@"supportedEnumDataclasses"];
+  [coderCopy encodeObject:self->_syncableDataclasses forKey:@"syncableDataclasses"];
+  [coderCopy encodeObject:self->_supportedDataclasses forKey:@"supportedDataclasses"];
+  [coderCopy encodeObject:self->_syncableEnumDataclasses forKey:@"syncableEnumDataclasses"];
+  [coderCopy encodeObject:self->_supportedEnumDataclasses forKey:@"supportedEnumDataclasses"];
 }
 
-- (id)_initWithProtobuf:(id)a3
+- (id)_initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v5 = [(ACAccountType *)self init];
   if (v5)
   {
-    v6 = v4;
-    v7 = [v6 accountTypeDescription];
-    v8 = [v7 copy];
+    v6 = protobufCopy;
+    accountTypeDescription = [v6 accountTypeDescription];
+    v8 = [accountTypeDescription copy];
     accountTypeDescription = v5->_accountTypeDescription;
     v5->_accountTypeDescription = v8;
 
-    v10 = [v6 identifier];
-    v11 = [v10 copy];
+    identifier = [v6 identifier];
+    v11 = [identifier copy];
     identifier = v5->_identifier;
     v5->_identifier = v11;
 
-    v13 = [v6 objectID];
-    v14 = [v13 url];
+    objectID = [v6 objectID];
+    v14 = [objectID url];
     v15 = [v14 copy];
     objectID = v5->_objectID;
     v5->_objectID = v15;
 
     v5->_visibility = [v6 visibility];
-    v17 = [v6 credentialType];
-    v18 = [v17 copy];
+    credentialType = [v6 credentialType];
+    v18 = [credentialType copy];
     credentialType = v5->_credentialType;
     v5->_credentialType = v18;
 
-    v20 = [v6 credentialProtectionPolicy];
-    v21 = [v20 copy];
+    credentialProtectionPolicy = [v6 credentialProtectionPolicy];
+    v21 = [credentialProtectionPolicy copy];
     credentialProtectionPolicy = v5->_credentialProtectionPolicy;
     v5->_credentialProtectionPolicy = v21;
 
     v5->_supportsAuthentication = [v6 supportsAuthentication];
     v5->_supportsMultipleAccounts = [v6 supportsMultipleAccounts];
-    v23 = [v6 owningBundleID];
-    v24 = [v23 copy];
+    owningBundleID = [v6 owningBundleID];
+    v24 = [owningBundleID copy];
     owningBundleID = v5->_owningBundleID;
     v5->_owningBundleID = v24;
 
     v5->_obsolete = [v6 obsolete];
     v26 = MEMORY[0x1E695DFD8];
-    v27 = [v6 syncableEnumDataclasses];
-    v28 = [v26 setWithArray:v27];
+    syncableEnumDataclasses = [v6 syncableEnumDataclasses];
+    v28 = [v26 setWithArray:syncableEnumDataclasses];
     syncableEnumDataclasses = v5->_syncableEnumDataclasses;
     v5->_syncableEnumDataclasses = v28;
 
     v30 = MEMORY[0x1E695DFD8];
-    v31 = [v6 supportedEnumDataclasses];
+    supportedEnumDataclasses = [v6 supportedEnumDataclasses];
 
-    v32 = [v30 setWithArray:v31];
+    v32 = [v30 setWithArray:supportedEnumDataclasses];
     supportedEnumDataclasses = v5->_supportedEnumDataclasses;
     v5->_supportedEnumDataclasses = v32;
 
@@ -416,35 +416,35 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
   return v5;
 }
 
-- (id)_initWithProtobufData:(id)a3
+- (id)_initWithProtobufData:(id)data
 {
-  v5 = a3;
-  if (![v5 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     [(ACAccountType *)a2 _initWithProtobufData:?];
   }
 
-  if ([v5 length])
+  if ([dataCopy length])
   {
-    v6 = [[ACProtobufAccountType alloc] initWithData:v5];
+    v6 = [[ACProtobufAccountType alloc] initWithData:dataCopy];
     if (v6)
     {
       self = [(ACAccountType *)self _initWithProtobuf:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)_encodeProtobuf
@@ -462,12 +462,12 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
   [v3 setSupportsMultipleAccounts:self->_supportsMultipleAccounts];
   [v3 setOwningBundleID:self->_owningBundleID];
   [v3 setObsolete:self->_obsolete];
-  v5 = [(NSSet *)self->_syncableDataclasses allObjects];
-  v6 = [v5 mutableCopy];
+  allObjects = [(NSSet *)self->_syncableDataclasses allObjects];
+  v6 = [allObjects mutableCopy];
   [v3 setSyncableEnumDataclasses:v6];
 
-  v7 = [(NSSet *)self->_supportedEnumDataclasses allObjects];
-  v8 = [v7 mutableCopy];
+  allObjects2 = [(NSSet *)self->_supportedEnumDataclasses allObjects];
+  v8 = [allObjects2 mutableCopy];
   [v3 setSupportedEnumDataclasses:v8];
 
   return v3;
@@ -475,18 +475,18 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
 
 - (id)_encodeProtobufData
 {
-  v2 = [(ACAccountType *)self _encodeProtobuf];
-  v3 = [v2 data];
+  _encodeProtobuf = [(ACAccountType *)self _encodeProtobuf];
+  data = [_encodeProtobuf data];
 
-  return v3;
+  return data;
 }
 
 - (NSString)fullDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(ACAccountType *)self identifier];
-  v5 = [(ACAccountType *)self accountTypeDescription];
-  v6 = [(ACAccountType *)self objectID];
+  identifier = [(ACAccountType *)self identifier];
+  accountTypeDescription = [(ACAccountType *)self accountTypeDescription];
+  objectID = [(ACAccountType *)self objectID];
   if ([(ACAccountType *)self supportsAuthentication])
   {
     v7 = @"YES";
@@ -517,56 +517,56 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
     v9 = @"NO";
   }
 
-  v10 = [(ACAccountType *)self owningBundleID];
-  v11 = [(ACAccountType *)self supportedDataclasses];
-  v12 = [(ACAccountType *)self syncableDataclasses];
-  v13 = [v3 stringWithFormat:@"identifier: %@\ndescription: %@\nobjectID: %@\nsupportsAuthentication %@\nsupportsMultipleAccounts %@\nobsolete %@\nowningBundleID %@\nsupportedDataclasses %@\nsyncableDataclasses %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  owningBundleID = [(ACAccountType *)self owningBundleID];
+  supportedDataclasses = [(ACAccountType *)self supportedDataclasses];
+  syncableDataclasses = [(ACAccountType *)self syncableDataclasses];
+  v13 = [v3 stringWithFormat:@"identifier: %@\ndescription: %@\nobjectID: %@\nsupportsAuthentication %@\nsupportsMultipleAccounts %@\nobsolete %@\nowningBundleID %@\nsupportedDataclasses %@\nsyncableDataclasses %@", identifier, accountTypeDescription, objectID, v7, v8, v9, owningBundleID, supportedDataclasses, syncableDataclasses];
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountTypeDescription copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountTypeDescription copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
-  v10 = [(NSURL *)self->_objectID copyWithZone:a3];
+  v10 = [(NSURL *)self->_objectID copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
   *(v5 + 40) = self->_visibility;
-  v12 = [(NSString *)self->_credentialType copyWithZone:a3];
+  v12 = [(NSString *)self->_credentialType copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
-  v14 = [(NSString *)self->_credentialProtectionPolicy copyWithZone:a3];
+  v14 = [(NSString *)self->_credentialProtectionPolicy copyWithZone:zone];
   v15 = *(v5 + 48);
   *(v5 + 48) = v14;
 
   *(v5 + 64) = self->_supportsAuthentication;
   *(v5 + 68) = self->_supportsMultipleAccounts;
-  v16 = [(NSSet *)self->_supportedDataclasses copyWithZone:a3];
+  v16 = [(NSSet *)self->_supportedDataclasses copyWithZone:zone];
   v17 = *(v5 + 72);
   *(v5 + 72) = v16;
 
-  v18 = [(NSSet *)self->_syncableDataclasses copyWithZone:a3];
+  v18 = [(NSSet *)self->_syncableDataclasses copyWithZone:zone];
   v19 = *(v5 + 80);
   *(v5 + 80) = v18;
 
-  v20 = [(NSSet *)self->_accessKeys copyWithZone:a3];
+  v20 = [(NSSet *)self->_accessKeys copyWithZone:zone];
   v21 = *(v5 + 104);
   *(v5 + 104) = v20;
 
   WeakRetained = objc_loadWeakRetained(&self->_accountStore);
   objc_storeWeak((v5 + 56), WeakRetained);
 
-  v23 = [(NSString *)self->_owningBundleID copyWithZone:a3];
+  v23 = [(NSString *)self->_owningBundleID copyWithZone:zone];
   v24 = *(v5 + 112);
   *(v5 + 112) = v23;
 
@@ -576,149 +576,149 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
 
 - (NSSet)supportedDataclasses
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  supportedDataclasses = v2->_supportedDataclasses;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  supportedDataclasses = selfCopy->_supportedDataclasses;
   if (!supportedDataclasses)
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_accountStore);
-    v5 = [WeakRetained supportedDataclassesForAccountType:v2];
-    v6 = v2->_supportedDataclasses;
-    v2->_supportedDataclasses = v5;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_accountStore);
+    v5 = [WeakRetained supportedDataclassesForAccountType:selfCopy];
+    v6 = selfCopy->_supportedDataclasses;
+    selfCopy->_supportedDataclasses = v5;
 
-    supportedDataclasses = v2->_supportedDataclasses;
+    supportedDataclasses = selfCopy->_supportedDataclasses;
   }
 
   v7 = supportedDataclasses;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setSupportedDataclasses:(id)a3
+- (void)setSupportedDataclasses:(id)dataclasses
 {
-  v4 = a3;
+  dataclassesCopy = dataclasses;
   obj = self;
   objc_sync_enter(obj);
   supportedDataclasses = obj->_supportedDataclasses;
-  obj->_supportedDataclasses = v4;
+  obj->_supportedDataclasses = dataclassesCopy;
 
   objc_sync_exit(obj);
 }
 
 - (NSSet)syncableDataclasses
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  syncableDataclasses = v2->_syncableDataclasses;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  syncableDataclasses = selfCopy->_syncableDataclasses;
   if (!syncableDataclasses)
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_accountStore);
-    v5 = [WeakRetained syncableDataclassesForAccountType:v2];
-    v6 = v2->_syncableDataclasses;
-    v2->_syncableDataclasses = v5;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_accountStore);
+    v5 = [WeakRetained syncableDataclassesForAccountType:selfCopy];
+    v6 = selfCopy->_syncableDataclasses;
+    selfCopy->_syncableDataclasses = v5;
 
-    syncableDataclasses = v2->_syncableDataclasses;
+    syncableDataclasses = selfCopy->_syncableDataclasses;
   }
 
   v7 = syncableDataclasses;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)setSyncableDataclasses:(id)a3
+- (void)setSyncableDataclasses:(id)dataclasses
 {
-  v4 = a3;
+  dataclassesCopy = dataclasses;
   obj = self;
   objc_sync_enter(obj);
   syncableDataclasses = obj->_syncableDataclasses;
-  obj->_syncableDataclasses = v4;
+  obj->_syncableDataclasses = dataclassesCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->_identifier;
   self->_identifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setAccountTypeDescription:(id)a3
+- (void)setAccountTypeDescription:(id)description
 {
-  v4 = [a3 copy];
+  v4 = [description copy];
   accountTypeDescription = self->_accountTypeDescription;
   self->_accountTypeDescription = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCredentialType:(id)a3
+- (void)setCredentialType:(id)type
 {
-  v4 = [a3 copy];
+  v4 = [type copy];
   credentialType = self->_credentialType;
   self->_credentialType = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCredentialProtectionPolicy:(id)a3
+- (void)setCredentialProtectionPolicy:(id)policy
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [v7 copy];
-  credentialProtectionPolicy = v4->_credentialProtectionPolicy;
-  v4->_credentialProtectionPolicy = v5;
+  policyCopy = policy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [policyCopy copy];
+  credentialProtectionPolicy = selfCopy->_credentialProtectionPolicy;
+  selfCopy->_credentialProtectionPolicy = v5;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (BOOL)accessGranted
 {
-  v2 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->_accountStore);
-  LOBYTE(v2) = [WeakRetained permissionForAccountType:v2];
+  LOBYTE(selfCopy) = [WeakRetained permissionForAccountType:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setSupportsAuthentication:(int)a3
+- (void)setSupportsAuthentication:(int)authentication
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_supportsAuthentication = a3;
+  obj->_supportsAuthentication = authentication;
   objc_sync_exit(obj);
 }
 
 - (NSSet)accessKeys
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  accessKeys = v2->_accessKeys;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accessKeys = selfCopy->_accessKeys;
   if (!accessKeys)
   {
-    WeakRetained = objc_loadWeakRetained(&v2->_accountStore);
-    v5 = [WeakRetained accessKeysForAccountType:v2];
-    v6 = v2->_accessKeys;
-    v2->_accessKeys = v5;
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_accountStore);
+    v5 = [WeakRetained accessKeysForAccountType:selfCopy];
+    v6 = selfCopy->_accessKeys;
+    selfCopy->_accessKeys = v5;
 
-    accessKeys = v2->_accessKeys;
+    accessKeys = selfCopy->_accessKeys;
   }
 
   v7 = accessKeys;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -729,8 +729,8 @@ void __31__ACAccountType_allIdentifiers__block_invoke()
     if ([v5 isEqual:objc_opt_class()])
     {
       identifier = self->_identifier;
-      v7 = [(ACAccountType *)v4 identifier];
-      v8 = [(NSString *)identifier isEqualToString:v7];
+      identifier = [(ACAccountType *)equalCopy identifier];
+      v8 = [(NSString *)identifier isEqualToString:identifier];
     }
 
     else

@@ -2,10 +2,10 @@
 + (_TtC10seserviced16SEKeySyncManager)singleton;
 + (void)kickOff;
 - (NSString)ptcViewName;
-- (id)getAvailableTLKForViewName:(id)a3 secureElement:(id)a4;
-- (id)haveAvailableTLKForEncryptedData:(id)a3 secureElement:(id)a4 error:(id *)a5;
-- (void)onAlarm:(id)a3;
-- (void)onDarwinNotification:(id)a3;
+- (id)getAvailableTLKForViewName:(id)name secureElement:(id)element;
+- (id)haveAvailableTLKForEncryptedData:(id)data secureElement:(id)element error:(id *)error;
+- (void)onAlarm:(id)alarm;
+- (void)onDarwinNotification:(id)notification;
 @end
 
 @implementation SEKeySyncManager
@@ -46,7 +46,7 @@
   sub_1001F9BE8(0, 0, v5, &unk_10040C600, v8);
 }
 
-- (void)onDarwinNotification:(id)a3
+- (void)onDarwinNotification:(id)notification
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;
@@ -54,13 +54,13 @@
   sub_10016051C(v3, v5);
 }
 
-- (id)getAvailableTLKForViewName:(id)a3 secureElement:(id)a4
+- (id)getAvailableTLKForViewName:(id)name secureElement:(id)element
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
-  v8 = a4;
+  elementCopy = element;
 
-  v9 = sub_100160BDC(v5, v7, v8);
+  v9 = sub_100160BDC(v5, v7, elementCopy);
   v11 = v10;
 
   if (v11 >> 60 == 15)
@@ -78,15 +78,15 @@
   return v12;
 }
 
-- (id)haveAvailableTLKForEncryptedData:(id)a3 secureElement:(id)a4 error:(id *)a5
+- (id)haveAvailableTLKForEncryptedData:(id)data secureElement:(id)element error:(id *)error
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  elementCopy = element;
 
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
-  sub_1001625A8(v8, v10, v7);
+  sub_1001625A8(v8, v10, elementCopy);
   v12 = v11;
 
   sub_10006A178(v8, v10);
@@ -94,7 +94,7 @@
   return v12;
 }
 
-- (void)onAlarm:(id)a3
+- (void)onAlarm:(id)alarm
 {
   v4 = sub_100068FC4(&qword_100504250, &qword_10040D610);
   v5 = *(*(v4 - 8) + 64);

@@ -1,22 +1,22 @@
 @interface _MTLDynamicLibrary
-+ (unsigned)dynamicLibraryTypeAtURL:(id)a3 device:(id)a4 error:(id *)a5;
-+ (void)dynamicLibraryTypeAtURL:(void *)a1 device:(unint64_t *)a2 error:;
-- (_MTLDynamicLibrary)initWithLibrary:(id)a3 binaryData:(id)a4 device:(id)a5 error:(id *)a6;
-- (_MTLDynamicLibrary)initWithURL:(id)a3 device:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (id)formattedDescription:(unint64_t)a3;
++ (unsigned)dynamicLibraryTypeAtURL:(id)l device:(id)device error:(id *)error;
++ (void)dynamicLibraryTypeAtURL:(void *)l device:(unint64_t *)device error:;
+- (_MTLDynamicLibrary)initWithLibrary:(id)library binaryData:(id)data device:(id)device error:(id *)error;
+- (_MTLDynamicLibrary)initWithURL:(id)l device:(id)device options:(unint64_t)options error:(id *)error;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
-- (void)setDebugInstrumentationData:(id)a3;
+- (void)setDebugInstrumentationData:(id)data;
 @end
 
 @implementation _MTLDynamicLibrary
 
-- (void)setDebugInstrumentationData:(id)a3
+- (void)setDebugInstrumentationData:(id)data
 {
   container = self->_container;
   debugInstrumentationData = container->_debugInstrumentationData;
   if (!debugInstrumentationData)
   {
-    atomic_compare_exchange_strong(&container->_debugInstrumentationData, &debugInstrumentationData, a3);
+    atomic_compare_exchange_strong(&container->_debugInstrumentationData, &debugInstrumentationData, data);
     if (!debugInstrumentationData)
     {
       v5 = self->_container->_debugInstrumentationData;
@@ -24,11 +24,11 @@
   }
 }
 
-- (_MTLDynamicLibrary)initWithLibrary:(id)a3 binaryData:(id)a4 device:(id)a5 error:(id *)a6
+- (_MTLDynamicLibrary)initWithLibrary:(id)library binaryData:(id)data device:(id)device error:(id *)error
 {
-  if (a6)
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
   v13.receiver = self;
@@ -36,37 +36,37 @@
   v10 = [(_MTLObjectWithLabel *)&v13 init];
   if (v10)
   {
-    v11 = [a3 libraryData];
-    v10->_libraryPath = (*(*v11 + 352))(v11);
-    v10->_container = [[MTLDynamicLibraryContainer alloc] initWithLibrary:v11 binaryData:a4 device:a5 error:a6];
-    v10->_shaderValidationEnabled = [a3 shaderValidationEnabled];
+    libraryData = [library libraryData];
+    v10->_libraryPath = (*(*libraryData + 352))(libraryData);
+    v10->_container = [[MTLDynamicLibraryContainer alloc] initWithLibrary:libraryData binaryData:data device:device error:error];
+    v10->_shaderValidationEnabled = [library shaderValidationEnabled];
   }
 
   return v10;
 }
 
-- (_MTLDynamicLibrary)initWithURL:(id)a3 device:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (_MTLDynamicLibrary)initWithURL:(id)l device:(id)device options:(unint64_t)options error:(id *)error
 {
   v13.receiver = self;
   v13.super_class = _MTLDynamicLibrary;
   v10 = [(_MTLObjectWithLabel *)&v13 init];
   if (v10)
   {
-    if (a3)
+    if (l)
     {
-      v11 = [[MTLDynamicLibraryContainer alloc] initWithURL:a3 device:a4 options:a5 error:a6];
+      v11 = [[MTLDynamicLibraryContainer alloc] initWithURL:l device:device options:options error:error];
       v10->_container = v11;
       if (v11)
       {
-        v10->_libraryPath = [objc_msgSend(a3 "standardizedURL")];
-        v10->_shaderValidationEnabled = (a5 & 2) != 0;
+        v10->_libraryPath = [objc_msgSend(l "standardizedURL")];
+        v10->_shaderValidationEnabled = (options & 2) != 0;
         return v10;
       }
     }
 
-    else if (a6)
+    else if (error)
     {
-      *a6 = newErrorWithMessage(&cfstr_UrlForDynamicL.isa, MTLDynamicLibraryErrorInvalidFile);
+      *error = newErrorWithMessage(&cfstr_UrlForDynamicL.isa, MTLDynamicLibraryErrorInvalidFile);
     }
 
     return 0;
@@ -75,19 +75,19 @@
   return v10;
 }
 
-+ (unsigned)dynamicLibraryTypeAtURL:(id)a3 device:(id)a4 error:(id *)a5
++ (unsigned)dynamicLibraryTypeAtURL:(id)l device:(id)device error:(id *)error
 {
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v8 = objc_autoreleasePoolPush();
   v9 = objc_opt_new();
-  v10 = [(MTLLoader *)v9 loadFileWithURL:a3 error:a5 errorDomain:&cfstr_Mtldynamiclibr.isa invalidFileErrorCode:1];
+  v10 = [(MTLLoader *)v9 loadFileWithURL:l error:error errorDomain:&cfstr_Mtldynamiclibr.isa invalidFileErrorCode:1];
   v66 = 0;
   v65 = 0;
-  v11 = [MTLLoader sliceIDForDevice:a4 legacyDriverVersion:&v66 airntDriverVersion:&v65];
+  v11 = [MTLLoader sliceIDForDevice:device legacyDriverVersion:&v66 airntDriverVersion:&v65];
   v64 = v11;
   v12 = [MTLLoader sliceIDForAIR:?];
   v13 = 0;
@@ -107,11 +107,11 @@
   }
 
   v15 = v12;
-  v16 = [(MTLLoadedFile *)v10 contents];
-  if ([(NSData *)v16 length]>= 0x58)
+  contents = [(MTLLoadedFile *)v10 contents];
+  if ([(NSData *)contents length]>= 0x58)
   {
-    v17 = [(NSData *)v16 bytes];
-    if (*v17 == 1112298573 && (*(v17 + 10) & 0x7F) != 2)
+    bytes = [(NSData *)contents bytes];
+    if (*bytes == 1112298573 && (*(bytes + 10) & 0x7F) != 2)
     {
       [(MTLLoader *)v9 releaseLoadedFile:v10];
 
@@ -166,9 +166,9 @@
   v32[1] = 3221225472;
   v32[2] = __59___MTLDynamicLibrary_dynamicLibraryTypeAtURL_device_error___block_invoke_2;
   v32[3] = &unk_1E6EEA990;
-  v32[4] = v16;
-  v18 = [MTLLoader deserializeUniversalBinaryHeaderWithHandler:v33 reader:v32 bytes:[(NSData *)v16 length]];
-  if (*(v61 + 24) == 1 && (v19 = isVendorSliceCompatible(&v64, v16, v53[3], a4), *(v61 + 24) = v19, (v19 & 1) != 0) || (v20 = [a4 getMostCompatibleArchitecture:v43[5]], !objc_msgSend(v20, "cpuType")))
+  v32[4] = contents;
+  v18 = [MTLLoader deserializeUniversalBinaryHeaderWithHandler:v33 reader:v32 bytes:[(NSData *)contents length]];
+  if (*(v61 + 24) == 1 && (v19 = isVendorSliceCompatible(&v64, contents, v53[3], device), *(v61 + 24) = v19, (v19 & 1) != 0) || (v20 = [device getMostCompatibleArchitecture:v43[5]], !objc_msgSend(v20, "cpuType")))
   {
     v25 = 0;
   }
@@ -176,8 +176,8 @@
   else
   {
     v21 = v35;
-    v22 = [v20 cpuType];
-    v31 = [v20 cpuSubtype] | (v22 << 32);
+    cpuType = [v20 cpuType];
+    v31 = [v20 cpuSubtype] | (cpuType << 32);
     v23 = std::unordered_map<unsigned long long,+[_MTLDynamicLibrary dynamicLibraryTypeAtURL:device:error:]::archSliceId>::operator[](v21 + 6, &v31);
     v24 = v23[1];
     v53[3] = *v23;
@@ -225,12 +225,12 @@ LABEL_21:
   v30[3] = &unk_1E6EEB168;
   v30[5] = &v56;
   v30[6] = &v52;
-  v30[4] = v16;
+  v30[4] = contents;
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __59___MTLDynamicLibrary_dynamicLibraryTypeAtURL_device_error___block_invoke_4;
   v29[3] = &unk_1E6EEB0F0;
-  v29[4] = v16;
+  v29[4] = contents;
   v29[5] = &v52;
   if (![MTLLoader deserializeMachOWrapperWithType:v30 payloadHandler:v29 reader:?])
   {
@@ -256,9 +256,9 @@ LABEL_27:
   _Block_object_dispose(&v60, 8);
 LABEL_28:
 
-  if (a5 && *a5)
+  if (error && *error)
   {
-    v27 = *a5;
+    v27 = *error;
   }
 
 LABEL_31:
@@ -266,10 +266,10 @@ LABEL_31:
   return v13;
 }
 
-+ (void)dynamicLibraryTypeAtURL:(void *)a1 device:(unint64_t *)a2 error:
++ (void)dynamicLibraryTypeAtURL:(void *)l device:(unint64_t *)device error:
 {
-  v2 = *a2;
-  v3 = a1[1];
+  v2 = *device;
+  v3 = l[1];
   if (!*&v3)
   {
     goto LABEL_18;
@@ -279,7 +279,7 @@ LABEL_31:
   v4.i16[0] = vaddlv_u8(v4);
   if (v4.u32[0] > 1uLL)
   {
-    v5 = *a2;
+    v5 = *device;
     if (v2 >= *&v3)
     {
       v5 = v2 % *&v3;
@@ -291,7 +291,7 @@ LABEL_31:
     v5 = (*&v3 - 1) & v2;
   }
 
-  v6 = *(*a1 + 8 * v5);
+  v6 = *(*l + 8 * v5);
   if (!v6 || (v7 = *v6) == 0)
   {
 LABEL_18:
@@ -347,11 +347,11 @@ LABEL_17:
   [(_MTLObjectWithLabel *)&v3 dealloc];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v16[9] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
-  v5 = [(_MTLObjectWithLabel *)self retainedLabel];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
+  retainedLabel = [(_MTLObjectWithLabel *)self retainedLabel];
   v6 = MEMORY[0x1E696AEC0];
   v15.receiver = self;
   v15.super_class = _MTLDynamicLibrary;
@@ -359,9 +359,9 @@ LABEL_17:
   v16[0] = v4;
   v16[1] = @"label =";
   v8 = @"<none>";
-  if (v5)
+  if (retainedLabel)
   {
-    v9 = v5;
+    v9 = retainedLabel;
   }
 
   else

@@ -15,9 +15,9 @@
 
 - (id)descriptionError
 {
-  v2 = [(CKKSZoneChangeFetchDependencyOperation *)self owner];
-  v3 = [v2 lastCKFetchError];
-  v4 = [NSError errorWithDomain:@"CKKSResultOperationDescriptionError" code:2 description:@"Fetch failed" underlying:v3];
+  owner = [(CKKSZoneChangeFetchDependencyOperation *)self owner];
+  lastCKFetchError = [owner lastCKFetchError];
+  v4 = [NSError errorWithDomain:@"CKKSResultOperationDescriptionError" code:2 description:@"Fetch failed" underlying:lastCKFetchError];
 
   return v4;
 }

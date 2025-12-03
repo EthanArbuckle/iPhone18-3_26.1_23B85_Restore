@@ -13,8 +13,8 @@
   v3 = [(PKPerformActionViewControllerAccessibility *)self safeValueForKey:@"navigationItem"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 leftBarButtonItem];
-  [v5 _setAccessibilityIsNotFirstElement:0];
+  leftBarButtonItem = [v4 leftBarButtonItem];
+  [leftBarButtonItem _setAccessibilityIsNotFirstElement:0];
 }
 
 @end

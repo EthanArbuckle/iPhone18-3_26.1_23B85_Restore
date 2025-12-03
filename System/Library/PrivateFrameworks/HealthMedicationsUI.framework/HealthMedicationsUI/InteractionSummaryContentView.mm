@@ -1,30 +1,30 @@
 @interface InteractionSummaryContentView
-- (_TtC19HealthMedicationsUI29InteractionSummaryContentView)initWithCoder:(id)a3;
-- (_TtC19HealthMedicationsUI29InteractionSummaryContentView)initWithFrame:(CGRect)a3;
+- (_TtC19HealthMedicationsUI29InteractionSummaryContentView)initWithCoder:(id)coder;
+- (_TtC19HealthMedicationsUI29InteractionSummaryContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation InteractionSummaryContentView
 
-- (_TtC19HealthMedicationsUI29InteractionSummaryContentView)initWithFrame:(CGRect)a3
+- (_TtC19HealthMedicationsUI29InteractionSummaryContentView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI29InteractionSummaryContentView____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI29InteractionSummaryContentView_viewModel) = 0;
   v10.receiver = self;
   v10.super_class = type metadata accessor for InteractionSummaryContentView();
-  v7 = [(InteractionSummaryContentView *)&v10 initWithFrame:x, y, width, height];
-  [(InteractionSummaryContentView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  height = [(InteractionSummaryContentView *)&v10 initWithFrame:x, y, width, height];
+  [(InteractionSummaryContentView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
   v8 = sub_22834D614();
-  [(InteractionSummaryContentView *)v7 addSubview:v8];
+  [(InteractionSummaryContentView *)height addSubview:v8];
 
   sub_22834DB00();
-  return v7;
+  return height;
 }
 
-- (_TtC19HealthMedicationsUI29InteractionSummaryContentView)initWithCoder:(id)a3
+- (_TtC19HealthMedicationsUI29InteractionSummaryContentView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI29InteractionSummaryContentView____lazy_storage___titleLabel) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC19HealthMedicationsUI29InteractionSummaryContentView_viewModel) = 0;

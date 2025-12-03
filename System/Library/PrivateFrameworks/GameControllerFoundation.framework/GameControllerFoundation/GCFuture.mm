@@ -1,150 +1,150 @@
 @interface GCFuture
 + (id)alloc;
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)cancelledFuture;
-+ (id)futureOnQueue:(id)a3 withBlock:(id)a4;
-+ (id)futureWithBlock:(id)a3;
-+ (id)futureWithError:(id)a3;
-+ (id)futureWithLabel:(id)a3 block:(id)a4;
-+ (id)futureWithLabel:(id)a3 onQueue:(id)a4 block:(id)a5;
-+ (id)futureWithOptions:(unsigned int)a3 block:(id)a4;
-+ (id)futureWithResult:(id)a3;
-- (BOOL)_setState:(int64_t)a3 result:(id)a4 error:(id)a5;
++ (id)futureOnQueue:(id)queue withBlock:(id)block;
++ (id)futureWithBlock:(id)block;
++ (id)futureWithError:(id)error;
++ (id)futureWithLabel:(id)label block:(id)block;
++ (id)futureWithLabel:(id)label onQueue:(id)queue block:(id)block;
++ (id)futureWithOptions:(unsigned int)options block:(id)block;
++ (id)futureWithResult:(id)result;
+- (BOOL)_setState:(int64_t)state result:(id)result error:(id)error;
 - (GCFuture)init;
-- (GCFuture)initWithError:(id)a3;
-- (GCFuture)initWithResult:(id)a3;
+- (GCFuture)initWithError:(id)error;
+- (GCFuture)initWithResult:(id)result;
 - (id)_init;
-- (id)_thenRequiringState:(int64_t)a3 onQueue:(id)a4 withOptions:(unsigned int)a5 qosClass:(unsigned int)a6 relativePriority:(int)a7 label:(id)a8 block:(id)a9;
-- (id)_thenSynchronouslyRequiringState:(int64_t)a3 onQueue:(id)a4 withOptions:(unsigned int)a5 qosClass:(unsigned int)a6 relativePriority:(int)a7 label:(id)a8 block:(id)a9;
+- (id)_thenRequiringState:(int64_t)state onQueue:(id)queue withOptions:(unsigned int)options qosClass:(unsigned int)class relativePriority:(int)priority label:(id)label block:(id)block;
+- (id)_thenSynchronouslyRequiringState:(int64_t)state onQueue:(id)queue withOptions:(unsigned int)options qosClass:(unsigned int)class relativePriority:(int)priority label:(id)label block:(id)block;
 - (id)debugDescription;
 - (id)description;
 - (id)error;
 - (id)initCancelled;
-- (id)initOnQueue:(id)a3 withBlock:(id)a4;
-- (id)initOnQueue:(id)a3 withOptions:(unsigned int)a4 block:(id)a5;
+- (id)initOnQueue:(id)queue withBlock:(id)block;
+- (id)initOnQueue:(id)queue withOptions:(unsigned int)options block:(id)block;
 - (id)result;
 - (id)resultIfFinished;
-- (id)thenOnQueue:(id)a3 with:(id)a4;
-- (id)thenOnQueue:(id)a3 withResult:(id)a4;
-- (id)thenSynchronouslyOnQueue:(id)a3 with:(id)a4;
-- (id)thenSynchronouslyWith:(id)a3;
-- (id)thenSynchronouslyWithResult:(id)a3;
-- (id)thenWith:(id)a3;
-- (id)thenWithResult:(id)a3;
-- (int64_t)waitForResult:(id *)a3 error:(id *)a4;
-- (void)_observeFinishOnQueue:(id)a3 withOptions:(unsigned int)a4 qosClass:(unsigned int)a5 relativePriority:(int)a6 block:(id)a7;
+- (id)thenOnQueue:(id)queue with:(id)with;
+- (id)thenOnQueue:(id)queue withResult:(id)result;
+- (id)thenSynchronouslyOnQueue:(id)queue with:(id)with;
+- (id)thenSynchronouslyWith:(id)with;
+- (id)thenSynchronouslyWithResult:(id)result;
+- (id)thenWith:(id)with;
+- (id)thenWithResult:(id)result;
+- (int64_t)waitForResult:(id *)result error:(id *)error;
+- (void)_observeFinishOnQueue:(id)queue withOptions:(unsigned int)options qosClass:(unsigned int)class relativePriority:(int)priority block:(id)block;
 - (void)dealloc;
-- (void)failWithError:(void *)a1;
-- (void)observeCancellation:(id)a3;
-- (void)observeFailure:(id)a3;
-- (void)observeSuccess:(id)a3;
-- (void)observeSuccessOnQueue:(id)a3 withBlock:(id)a4;
-- (void)succeedWithResult:(void *)a1;
+- (void)failWithError:(void *)error;
+- (void)observeCancellation:(id)cancellation;
+- (void)observeFailure:(id)failure;
+- (void)observeSuccess:(id)success;
+- (void)observeSuccessOnQueue:(id)queue withBlock:(id)block;
+- (void)succeedWithResult:(void *)result;
 @end
 
 @implementation GCFuture
 
-+ (id)futureWithBlock:(id)a3
++ (id)futureWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (__creatorFrameKey(void)::onceToken != -1)
   {
     +[GCFuture futureWithBlock:];
   }
 
   pthread_setspecific(__creatorFrameKey(void)::key, v3);
-  v5 = [[_GCAsyncFuture alloc] _initOnQueue:0 withOptions:v4 block:?];
+  v5 = [[_GCAsyncFuture alloc] _initOnQueue:0 withOptions:blockCopy block:?];
 
   return v5;
 }
 
-+ (id)futureWithOptions:(unsigned int)a3 block:(id)a4
++ (id)futureWithOptions:(unsigned int)options block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  blockCopy = block;
   if (__creatorFrameKey(void)::onceToken != -1)
   {
     +[GCFuture futureWithBlock:];
   }
 
   pthread_setspecific(__creatorFrameKey(void)::key, v4);
-  v7 = [[_GCAsyncFuture alloc] _initOnQueue:v5 withOptions:v6 block:?];
+  v7 = [[_GCAsyncFuture alloc] _initOnQueue:optionsCopy withOptions:blockCopy block:?];
 
   return v7;
 }
 
-+ (id)futureWithLabel:(id)a3 block:(id)a4
++ (id)futureWithLabel:(id)label block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  blockCopy = block;
   if (__creatorFrameKey(void)::onceToken != -1)
   {
     +[GCFuture futureWithBlock:];
   }
 
   pthread_setspecific(__creatorFrameKey(void)::key, v4);
-  v8 = [[_GCAsyncFuture alloc] _initOnQueue:0 withOptions:v7 block:?];
-  [v8 setLabel:v6];
+  v8 = [[_GCAsyncFuture alloc] _initOnQueue:0 withOptions:blockCopy block:?];
+  [v8 setLabel:labelCopy];
 
   return v8;
 }
 
-+ (id)futureWithLabel:(id)a3 onQueue:(id)a4 block:(id)a5
++ (id)futureWithLabel:(id)label onQueue:(id)queue block:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  labelCopy = label;
+  queueCopy = queue;
+  blockCopy = block;
   if (__creatorFrameKey(void)::onceToken != -1)
   {
     +[GCFuture futureWithBlock:];
   }
 
   pthread_setspecific(__creatorFrameKey(void)::key, v5);
-  v11 = [[_GCAsyncFuture alloc] _initOnQueue:v9 withOptions:0 block:v10];
-  [v11 setLabel:v8];
+  v11 = [[_GCAsyncFuture alloc] _initOnQueue:queueCopy withOptions:0 block:blockCopy];
+  [v11 setLabel:labelCopy];
 
   return v11;
 }
 
-+ (id)futureOnQueue:(id)a3 withBlock:(id)a4
++ (id)futureOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   if (__creatorFrameKey(void)::onceToken != -1)
   {
     +[GCFuture futureWithBlock:];
   }
 
   pthread_setspecific(__creatorFrameKey(void)::key, v4);
-  v8 = [(GCFuture *)[_GCAsyncFuture alloc] initOnQueue:v6 withBlock:v7];
+  v8 = [(GCFuture *)[_GCAsyncFuture alloc] initOnQueue:queueCopy withBlock:blockCopy];
 
   return v8;
 }
 
-+ (id)futureWithError:(id)a3
++ (id)futureWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if (__creatorFrameKey(void)::onceToken != -1)
   {
     +[GCFuture futureWithBlock:];
   }
 
   pthread_setspecific(__creatorFrameKey(void)::key, v3);
-  v5 = [(GCFuture *)[_GCStaticFuture alloc] initWithError:v4];
+  v5 = [(GCFuture *)[_GCStaticFuture alloc] initWithError:errorCopy];
 
   return v5;
 }
 
-+ (id)futureWithResult:(id)a3
++ (id)futureWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   if (__creatorFrameKey(void)::onceToken != -1)
   {
     +[GCFuture futureWithBlock:];
   }
 
   pthread_setspecific(__creatorFrameKey(void)::key, v3);
-  v5 = [(GCFuture *)[_GCStaticFuture alloc] initWithResult:v4];
+  v5 = [(GCFuture *)[_GCStaticFuture alloc] initWithResult:resultCopy];
 
   return v5;
 }
@@ -168,9 +168,9 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (__creatorFrameKey(void)::onceToken != -1)
     {
@@ -184,15 +184,15 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___GCFuture;
-    return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+    return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
   }
 }
 
 + (id)alloc
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     if (__creatorFrameKey(void)::onceToken != -1)
     {
@@ -206,7 +206,7 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
 
   else
   {
-    v5.receiver = a1;
+    v5.receiver = self;
     v5.super_class = &OBJC_METACLASS___GCFuture;
     return objc_msgSendSuper2(&v5, sel_allocWithZone_, 0);
   }
@@ -219,18 +219,18 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
   return 0;
 }
 
-- (GCFuture)initWithResult:(id)a3
+- (GCFuture)initWithResult:(id)result
 {
-  v4 = a3;
-  v5 = [[_GCStaticFuture alloc] _initWithResult:v4];
+  resultCopy = result;
+  v5 = [[_GCStaticFuture alloc] _initWithResult:resultCopy];
 
   return v5;
 }
 
-- (GCFuture)initWithError:(id)a3
+- (GCFuture)initWithError:(id)error
 {
-  v4 = a3;
-  v5 = [[_GCStaticFuture alloc] _initWithError:v4];
+  errorCopy = error;
+  v5 = [[_GCStaticFuture alloc] _initWithError:errorCopy];
 
   return v5;
 }
@@ -242,21 +242,21 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
   return inited;
 }
 
-- (id)initOnQueue:(id)a3 withOptions:(unsigned int)a4 block:(id)a5
+- (id)initOnQueue:(id)queue withOptions:(unsigned int)options block:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [[_GCAsyncFuture alloc] _initOnQueue:v8 withOptions:v6 block:v9];
+  optionsCopy = options;
+  queueCopy = queue;
+  blockCopy = block;
+  v10 = [[_GCAsyncFuture alloc] _initOnQueue:queueCopy withOptions:optionsCopy block:blockCopy];
 
   return v10;
 }
 
-- (id)initOnQueue:(id)a3 withBlock:(id)a4
+- (id)initOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[_GCAsyncFuture alloc] _initOnQueue:v6 withOptions:0 block:v7];
+  queueCopy = queue;
+  blockCopy = block;
+  v8 = [[_GCAsyncFuture alloc] _initOnQueue:queueCopy withOptions:0 block:blockCopy];
 
   return v8;
 }
@@ -266,9 +266,9 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
   state = self->_state;
   if (state >= 3 && state != 254)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v6 = [(GCFuture *)self debugDescription];
-    [v5 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:580 description:{@"Future deallocated without finishing: %@", v6}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:580 description:{@"Future deallocated without finishing: %@", v6}];
   }
 
   v7.receiver = self;
@@ -278,7 +278,7 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
 
 - (id)debugDescription
 {
-  v3 = [(GCFuture *)self label];
+  label = [(GCFuture *)self label];
   if ((self->_state + 2) > 4u)
   {
     v4 = 0;
@@ -289,55 +289,55 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
     v4 = off_1E84152D8[(self->_state + 2)];
   }
 
-  v5 = [(GCFuture *)self _creatorFrame];
+  _creatorFrame = [(GCFuture *)self _creatorFrame];
   v6 = objc_alloc(MEMORY[0x1E696AD60]);
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   v9 = [v6 initWithFormat:@"<%@ %p", v8, self];
 
-  if (v3)
+  if (label)
   {
-    [v9 appendFormat:@" '%@'", v3];
+    [v9 appendFormat:@" '%@'", label];
   }
 
-  if (v5)
+  if (_creatorFrame)
   {
-    if (dladdr(v5, &v15))
+    if (dladdr(_creatorFrame, &v15))
     {
       if (v15.dli_fname)
       {
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:?];
         v11 = [v10 componentsSeparatedByString:@"/"];
-        v12 = [v11 lastObject];
+        lastObject = [v11 lastObject];
       }
 
       else
       {
-        v12 = 0;
+        lastObject = 0;
       }
 
       if (v15.dli_sname)
       {
-        [v9 appendFormat:@" @0x%lx %@+%zu %s+%zu", v5, v12, v5 - v15.dli_fbase, v15.dli_sname, v5 - v15.dli_saddr];
+        [v9 appendFormat:@" @0x%lx %@+%zu %s+%zu", _creatorFrame, lastObject, _creatorFrame - v15.dli_fbase, v15.dli_sname, _creatorFrame - v15.dli_saddr];
       }
 
       else
       {
-        [v9 appendFormat:@" @0x%lx %@+%zu", v5, v12, v5 - v15.dli_fbase];
+        [v9 appendFormat:@" @0x%lx %@+%zu", _creatorFrame, lastObject, _creatorFrame - v15.dli_fbase];
       }
     }
 
     else
     {
-      [v9 appendFormat:@" @0x%lx", v5];
+      [v9 appendFormat:@" @0x%lx", _creatorFrame];
     }
   }
 
   [v9 appendFormat:@" [%@]", v4];
   if (self->_state == 1)
   {
-    v13 = [*&self->_flags localizedDescription];
-    [v9 appendFormat:@": '%@'", v13];
+    localizedDescription = [*&self->_flags localizedDescription];
+    [v9 appendFormat:@": '%@'", localizedDescription];
   }
 
   [v9 appendString:@">"];
@@ -347,13 +347,13 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
 
 - (id)description
 {
-  v3 = [(GCFuture *)self label];
-  v4 = [(GCFuture *)self _creatorFrame];
-  v5 = v4;
+  label = [(GCFuture *)self label];
+  _creatorFrame = [(GCFuture *)self _creatorFrame];
+  v5 = _creatorFrame;
   state = self->_state;
-  if (v4)
+  if (_creatorFrame)
   {
-    v7 = v3 == 0;
+    v7 = label == 0;
   }
 
   else
@@ -371,11 +371,11 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
       {
         v14 = objc_opt_class();
         v11 = NSStringFromClass(v14);
-        v12 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [succeeded]>", v11, v3, v5];
+        v12 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [succeeded]>", v11, label, v5];
         goto LABEL_47;
       }
 
-      if (v4)
+      if (_creatorFrame)
       {
         v21 = objc_opt_class();
         v11 = NSStringFromClass(v21);
@@ -385,9 +385,9 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
 
       v27 = objc_opt_class();
       v11 = NSStringFromClass(v27);
-      if (v3)
+      if (label)
       {
-        [v9 stringWithFormat:@"<%@ '%@' [succeeded]>", v11, v3];
+        [v9 stringWithFormat:@"<%@ '%@' [succeeded]>", v11, label];
       }
 
       else
@@ -402,13 +402,13 @@ uint64_t __27__GCFuture_cancelledFuture__block_invoke()
       {
         v10 = objc_opt_class();
         v11 = NSStringFromClass(v10);
-        v12 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [pending]>", v11, v3, v5];
+        v12 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [pending]>", v11, label, v5];
 LABEL_47:
         v33 = v12;
         goto LABEL_48;
       }
 
-      if (v4)
+      if (_creatorFrame)
       {
         v22 = objc_opt_class();
         v11 = NSStringFromClass(v22);
@@ -418,9 +418,9 @@ LABEL_47:
 
       v28 = objc_opt_class();
       v11 = NSStringFromClass(v28);
-      if (v3)
+      if (label)
       {
-        [v9 stringWithFormat:@"<%@ '%@' [pending]>", v11, v3];
+        [v9 stringWithFormat:@"<%@ '%@' [pending]>", v11, label];
       }
 
       else
@@ -435,11 +435,11 @@ LABEL_47:
       {
         v15 = objc_opt_class();
         v11 = NSStringFromClass(v15);
-        v12 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [running]>", v11, v3, v5];
+        v12 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [running]>", v11, label, v5];
         goto LABEL_47;
       }
 
-      if (v4)
+      if (_creatorFrame)
       {
         v23 = objc_opt_class();
         v11 = NSStringFromClass(v23);
@@ -449,9 +449,9 @@ LABEL_47:
 
       v29 = objc_opt_class();
       v11 = NSStringFromClass(v29);
-      if (v3)
+      if (label)
       {
-        [v9 stringWithFormat:@"<%@ '%@' [running]>", v11, v3];
+        [v9 stringWithFormat:@"<%@ '%@' [running]>", v11, label];
       }
 
       else
@@ -469,11 +469,11 @@ LABEL_47:
     {
       v13 = objc_opt_class();
       v11 = NSStringFromClass(v13);
-      v12 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [cancelled]>", v11, v3, v5];
+      v12 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [cancelled]>", v11, label, v5];
       goto LABEL_47;
     }
 
-    if (v4)
+    if (_creatorFrame)
     {
       v24 = objc_opt_class();
       v11 = NSStringFromClass(v24);
@@ -483,9 +483,9 @@ LABEL_47:
 
     v30 = objc_opt_class();
     v11 = NSStringFromClass(v30);
-    if (v3)
+    if (label)
     {
-      [v9 stringWithFormat:@"<%@ '%@' [cancelled]>", v11, v3];
+      [v9 stringWithFormat:@"<%@ '%@' [cancelled]>", v11, label];
     }
 
     else
@@ -501,37 +501,37 @@ LABEL_47:
   {
     v16 = objc_opt_class();
     v11 = NSStringFromClass(v16);
-    v17 = [*&self->_flags domain];
-    v18 = [*&self->_flags code];
-    v19 = [*&self->_flags localizedDescription];
-    v20 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [failed]: %@/%zu '%@'>", v11, v3, v5, v17, v18, v19];
+    domain = [*&self->_flags domain];
+    code = [*&self->_flags code];
+    localizedDescription = [*&self->_flags localizedDescription];
+    v20 = [v9 stringWithFormat:@"<%@ '%@' @0x%lx [failed]: %@/%zu '%@'>", v11, label, v5, domain, code, localizedDescription];
   }
 
-  else if (v4)
+  else if (_creatorFrame)
   {
     v25 = objc_opt_class();
     v11 = NSStringFromClass(v25);
-    v17 = [*&self->_flags domain];
-    v26 = [*&self->_flags code];
-    v19 = [*&self->_flags localizedDescription];
-    v20 = [v9 stringWithFormat:@"<%@ @0x%lx [failed]: %@/%zu '%@'>", v11, v5, v17, v26, v19];
+    domain = [*&self->_flags domain];
+    code2 = [*&self->_flags code];
+    localizedDescription = [*&self->_flags localizedDescription];
+    v20 = [v9 stringWithFormat:@"<%@ @0x%lx [failed]: %@/%zu '%@'>", v11, v5, domain, code2, localizedDescription];
   }
 
   else
   {
     v31 = objc_opt_class();
     v11 = NSStringFromClass(v31);
-    v17 = [*&self->_flags domain];
-    v32 = [*&self->_flags code];
-    v19 = [*&self->_flags localizedDescription];
-    if (v3)
+    domain = [*&self->_flags domain];
+    code3 = [*&self->_flags code];
+    localizedDescription = [*&self->_flags localizedDescription];
+    if (label)
     {
-      [v9 stringWithFormat:@"<%@ '%@' [failed]: %@/%zu '%@'>", v11, v3, v17, v32, v19];
+      [v9 stringWithFormat:@"<%@ '%@' [failed]: %@/%zu '%@'>", v11, label, domain, code3, localizedDescription];
     }
 
     else
     {
-      [v9 stringWithFormat:@"<%@ [failed]: %@/%zu '%@'>", v11, v17, v32, v19];
+      [v9 stringWithFormat:@"<%@ [failed]: %@/%zu '%@'>", v11, domain, code3, localizedDescription];
     }
     v20 = ;
   }
@@ -543,59 +543,59 @@ LABEL_48:
   return v33;
 }
 
-- (BOOL)_setState:(int64_t)a3 result:(id)a4 error:(id)a5
+- (BOOL)_setState:(int64_t)state result:(id)result error:(id)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (a3 < 0)
+  resultCopy = result;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (state < 0)
   {
-    if (a3 == -2)
+    if (state == -2)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:704 description:{@"Attempted to transition to the pending state.\n%@", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:704 description:{@"Attempted to transition to the pending state.\n%@", self}];
       goto LABEL_19;
     }
 
-    if (a3 == -1)
+    if (state == -1)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:708 description:{@"Attempted to transition to the running state.\n%@", self}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:708 description:{@"Attempted to transition to the running state.\n%@", self}];
       goto LABEL_19;
     }
 
     goto LABEL_18;
   }
 
-  if (!a3)
+  if (!state)
   {
     atomic_store(1u, &self->_state + 3);
-    if (v10)
+    if (errorCopy)
     {
-      v18 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v18 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:713 description:{@"Attempted to transition to the cancelled state, but provided an error (%@).\n%@", v11, self}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:713 description:{@"Attempted to transition to the cancelled state, but provided an error (%@).\n%@", v11, self}];
 
-      if (!v9)
+      if (!resultCopy)
       {
         goto LABEL_20;
       }
     }
 
-    else if (!v9)
+    else if (!resultCopy)
     {
       goto LABEL_20;
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:714 description:{@"Attempted to transition to the cancelled state, but provided a result (%@).\n%@", v9, self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:714 description:{@"Attempted to transition to the cancelled state, but provided a result (%@).\n%@", resultCopy, self}];
     goto LABEL_19;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
-    if (v10)
+    if (errorCopy)
     {
-      if (!v9)
+      if (!resultCopy)
       {
         goto LABEL_20;
       }
@@ -603,31 +603,31 @@ LABEL_48:
 
     else
     {
-      v19 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v19 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:718 description:{@"Attempted to transition to the failed state, but did not provide an error.\n%@", self}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:718 description:{@"Attempted to transition to the failed state, but did not provide an error.\n%@", self}];
 
-      if (!v9)
+      if (!resultCopy)
       {
         goto LABEL_20;
       }
     }
 
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:719 description:{@"Attempted to transition to the failed state, but provided a result (%@).\n%@", v9, self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:719 description:{@"Attempted to transition to the failed state, but provided a result (%@).\n%@", resultCopy, self}];
     goto LABEL_19;
   }
 
-  if (a3 != 2)
+  if (state != 2)
   {
 LABEL_18:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:728 description:{@"Attempted to transition to an invalid state (%ld).\n%@", a3, self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:728 description:{@"Attempted to transition to an invalid state (%ld).\n%@", state, self}];
     goto LABEL_19;
   }
 
-  if (!v10)
+  if (!errorCopy)
   {
-    if (v9)
+    if (resultCopy)
     {
       goto LABEL_20;
     }
@@ -635,14 +635,14 @@ LABEL_18:
     goto LABEL_7;
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:723 description:{@"Attempted to transition to the succeeded state, but provided an error (%@).\n%@", v9, self}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:723 description:{@"Attempted to transition to the succeeded state, but provided an error (%@).\n%@", resultCopy, self}];
 
-  if (!v9)
+  if (!resultCopy)
   {
 LABEL_7:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:724 description:{@"Attempted to transition to the succeeded state, but did not provide a result.\n%@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:724 description:{@"Attempted to transition to the succeeded state, but did not provide a result.\n%@", self}];
 LABEL_19:
   }
 
@@ -656,17 +656,17 @@ LABEL_20:
       if (state == 1)
       {
         os_unfair_lock_unlock(&self->_lock);
-        if (a3 == 2)
+        if (state == 2)
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:760 description:{@"Attempted to transition to the succeeded state from the failed state.\n%@", self}];
+          currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler5 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:760 description:{@"Attempted to transition to the succeeded state from the failed state.\n%@", self}];
           goto LABEL_46;
         }
 
-        if (a3 == 1)
+        if (state == 1)
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:761 description:{@"Attempted to transition to the failed state twice.\n%@", self}];
+          currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler5 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:761 description:{@"Attempted to transition to the failed state twice.\n%@", self}];
           goto LABEL_46;
         }
 
@@ -678,17 +678,17 @@ LABEL_35:
       if (state == 2)
       {
         os_unfair_lock_unlock(&self->_lock);
-        if (a3 == 2)
+        if (state == 2)
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:768 description:{@"Attempted to transition to the succeeded state twice.\n%@", self}];
+          currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler5 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:768 description:{@"Attempted to transition to the succeeded state twice.\n%@", self}];
           goto LABEL_46;
         }
 
-        if (a3 == 1)
+        if (state == 1)
         {
-          v14 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v14 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:769 description:{@"Attempted to transition to the failed state from the succeeded state.\n%@", self}];
+          currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler5 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:769 description:{@"Attempted to transition to the failed state from the succeeded state.\n%@", self}];
 LABEL_46:
 
           goto LABEL_35;
@@ -708,10 +708,10 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  self->_state = a3;
-  if (v9)
+  self->_state = state;
+  if (resultCopy)
   {
-    v15 = v9;
+    v15 = resultCopy;
   }
 
   else
@@ -728,39 +728,39 @@ LABEL_36:
   return v16;
 }
 
-- (void)succeedWithResult:(void *)a1
+- (void)succeedWithResult:(void *)result
 {
   v3 = a2;
-  if (a1)
+  if (result)
   {
-    [a1 _setState:2 result:v3 error:0];
+    [result _setState:2 result:v3 error:0];
   }
 }
 
-- (void)failWithError:(void *)a1
+- (void)failWithError:(void *)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    [a1 _setState:1 result:0 error:v3];
+    [error _setState:1 result:0 error:v3];
   }
 }
 
-- (void)_observeFinishOnQueue:(id)a3 withOptions:(unsigned int)a4 qosClass:(unsigned int)a5 relativePriority:(int)a6 block:(id)a7
+- (void)_observeFinishOnQueue:(id)queue withOptions:(unsigned int)options qosClass:(unsigned int)class relativePriority:(int)priority block:(id)block
 {
-  v10 = a4;
-  v13 = a3;
-  v14 = a7;
-  if (!v14)
+  optionsCopy = options;
+  queueCopy = queue;
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:796 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:796 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
   }
 
   if (![(GCFuture *)self _checkFinished:0])
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:797 description:{@"Subclass must implement %s", sel_getName(a2)}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:797 description:{@"Subclass must implement %s", sel_getName(a2)}];
   }
 
   state = self->_state;
@@ -788,29 +788,29 @@ LABEL_36:
   aBlock[1] = 3221225472;
   aBlock[2] = __78__GCFuture__observeFinishOnQueue_withOptions_qosClass_relativePriority_block___block_invoke;
   aBlock[3] = &unk_1E8415060;
-  v30 = v14;
+  v30 = blockCopy;
   v31 = state;
-  if ((v10 & 4) != 0)
+  if ((optionsCopy & 4) != 0)
   {
-    v18 = v10 & 2 | 0x24;
+    v18 = optionsCopy & 2 | 0x24;
   }
 
   else
   {
-    v18 = (v10 & 2);
+    v18 = (optionsCopy & 2);
   }
 
   v28 = v16;
   v29 = v17;
   v19 = v17;
   v20 = v16;
-  v21 = v14;
+  v21 = blockCopy;
   v22 = _Block_copy(aBlock);
-  if (v13)
+  if (queueCopy)
   {
-    if (a5 && v18)
+    if (class && v18)
     {
-      v23 = dispatch_block_create_with_qos_class(v18, a5, a6, v22);
+      v23 = dispatch_block_create_with_qos_class(v18, class, priority, v22);
     }
 
     else
@@ -818,7 +818,7 @@ LABEL_36:
       if (!v18)
       {
 LABEL_22:
-        dispatch_async(v13, v22);
+        dispatch_async(queueCopy, v22);
         goto LABEL_23;
       }
 
@@ -843,15 +843,15 @@ uint64_t __78__GCFuture__observeFinishOnQueue_withOptions_qosClass_relativePrior
   return __GCFUTURE_IS_CALLING_OUT_TO_AN_OBSERVER__(a1[6]);
 }
 
-- (void)observeSuccess:(id)a3
+- (void)observeSuccess:(id)success
 {
-  v4 = a3;
+  successCopy = success;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__GCFuture_observeSuccess___block_invoke;
   v6[3] = &unk_1E8415088;
-  v7 = v4;
-  v5 = v4;
+  v7 = successCopy;
+  v5 = successCopy;
   [(GCFuture *)self observeFinish:v6];
 }
 
@@ -864,16 +864,16 @@ void __27__GCFuture_observeSuccess___block_invoke(uint64_t a1, uint64_t a2, void
   }
 }
 
-- (void)observeSuccessOnQueue:(id)a3 withBlock:(id)a4
+- (void)observeSuccessOnQueue:(id)queue withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__GCFuture_observeSuccessOnQueue_withBlock___block_invoke;
   v8[3] = &unk_1E8415088;
-  v9 = v6;
-  v7 = v6;
-  [(GCFuture *)self observeFinishOnQueue:a3 withBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [(GCFuture *)self observeFinishOnQueue:queue withBlock:v8];
 }
 
 void __44__GCFuture_observeSuccessOnQueue_withBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -885,15 +885,15 @@ void __44__GCFuture_observeSuccessOnQueue_withBlock___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)observeFailure:(id)a3
+- (void)observeFailure:(id)failure
 {
-  v4 = a3;
+  failureCopy = failure;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__GCFuture_observeFailure___block_invoke;
   v6[3] = &unk_1E8415088;
-  v7 = v4;
-  v5 = v4;
+  v7 = failureCopy;
+  v5 = failureCopy;
   [(GCFuture *)self observeFinish:v6];
 }
 
@@ -906,15 +906,15 @@ void __27__GCFuture_observeFailure___block_invoke(uint64_t a1, uint64_t a2, uint
   }
 }
 
-- (void)observeCancellation:(id)a3
+- (void)observeCancellation:(id)cancellation
 {
-  v4 = a3;
+  cancellationCopy = cancellation;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__GCFuture_observeCancellation___block_invoke;
   v6[3] = &unk_1E8415088;
-  v7 = v4;
-  v5 = v4;
+  v7 = cancellationCopy;
+  v5 = cancellationCopy;
   [(GCFuture *)self observeFinish:v6];
 }
 
@@ -943,7 +943,7 @@ uint64_t __32__GCFuture_observeCancellation___block_invoke(uint64_t result, uint
   return v3;
 }
 
-- (int64_t)waitForResult:(id *)a3 error:(id *)a4
+- (int64_t)waitForResult:(id *)result error:(id *)error
 {
   [(GCFuture *)self _checkFinished:1];
   state = self->_state;
@@ -952,7 +952,7 @@ uint64_t __32__GCFuture_observeCancellation___block_invoke(uint64_t result, uint
     if (state != 1)
     {
       state = 2;
-      if (!a3)
+      if (!result)
       {
         return state;
       }
@@ -961,11 +961,11 @@ uint64_t __32__GCFuture_observeCancellation___block_invoke(uint64_t result, uint
     }
 
     state = 1;
-    a3 = a4;
-    if (a4)
+    result = error;
+    if (error)
     {
 LABEL_4:
-      *a3 = *&self->_flags;
+      *result = *&self->_flags;
     }
   }
 
@@ -1004,15 +1004,15 @@ LABEL_4:
   return v3;
 }
 
-- (id)_thenRequiringState:(int64_t)a3 onQueue:(id)a4 withOptions:(unsigned int)a5 qosClass:(unsigned int)a6 relativePriority:(int)a7 label:(id)a8 block:(id)a9
+- (id)_thenRequiringState:(int64_t)state onQueue:(id)queue withOptions:(unsigned int)options qosClass:(unsigned int)class relativePriority:(int)priority label:(id)label block:(id)block
 {
-  v16 = a4;
-  v17 = a8;
-  v18 = a9;
-  if (!v18)
+  queueCopy = queue;
+  labelCopy = label;
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:940 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:940 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
   }
 
   v19 = [_GCAsyncFuture alloc];
@@ -1021,13 +1021,13 @@ LABEL_4:
   v25[2] = __90__GCFuture__thenRequiringState_onQueue_withOptions_qosClass_relativePriority_label_block___block_invoke;
   v25[3] = &unk_1E8415100;
   v25[4] = self;
-  v20 = v16;
-  v30 = a5;
-  v31 = a6;
-  v32 = a7;
+  v20 = queueCopy;
+  optionsCopy = options;
+  classCopy = class;
+  priorityCopy = priority;
   v26 = v20;
-  v28 = a3;
-  v21 = v18;
+  stateCopy = state;
+  v21 = blockCopy;
   v27 = v21;
   v29 = a2;
   v22 = [(GCFuture *)v19 initOnQueue:0 withOptions:0 block:v25];
@@ -1120,15 +1120,15 @@ void __90__GCFuture__thenRequiringState_onQueue_withOptions_qosClass_relativePri
   [v8 _setState:a2 result:v9 error:v7];
 }
 
-- (id)_thenSynchronouslyRequiringState:(int64_t)a3 onQueue:(id)a4 withOptions:(unsigned int)a5 qosClass:(unsigned int)a6 relativePriority:(int)a7 label:(id)a8 block:(id)a9
+- (id)_thenSynchronouslyRequiringState:(int64_t)state onQueue:(id)queue withOptions:(unsigned int)options qosClass:(unsigned int)class relativePriority:(int)priority label:(id)label block:(id)block
 {
-  v16 = a4;
-  v17 = a8;
-  v18 = a9;
-  if (!v18)
+  queueCopy = queue;
+  labelCopy = label;
+  blockCopy = block;
+  if (!blockCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:988 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:988 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
   }
 
   v19 = [_GCAsyncFuture alloc];
@@ -1137,13 +1137,13 @@ void __90__GCFuture__thenRequiringState_onQueue_withOptions_qosClass_relativePri
   v25[2] = __103__GCFuture__thenSynchronouslyRequiringState_onQueue_withOptions_qosClass_relativePriority_label_block___block_invoke;
   v25[3] = &unk_1E8415150;
   v25[4] = self;
-  v20 = v16;
-  v29 = a5;
-  v30 = a6;
-  v31 = a7;
+  v20 = queueCopy;
+  optionsCopy = options;
+  classCopy = class;
+  priorityCopy = priority;
   v26 = v20;
-  v28 = a3;
-  v21 = v18;
+  stateCopy = state;
+  v21 = blockCopy;
   v27 = v21;
   v22 = [(GCFuture *)v19 initOnQueue:0 withOptions:0 block:v25];
 
@@ -1225,13 +1225,13 @@ void __103__GCFuture__thenSynchronouslyRequiringState_onQueue_withOptions_qosCla
   }
 }
 
-- (id)thenWith:(id)a3
+- (id)thenWith:(id)with
 {
-  v5 = a3;
-  if (!v5)
+  withCopy = with;
+  if (!withCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1039 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1039 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
   }
 
   v6 = [_GCAsyncFuture alloc];
@@ -1240,7 +1240,7 @@ void __103__GCFuture__thenSynchronouslyRequiringState_onQueue_withOptions_qosCla
   v11[2] = __21__GCFuture_thenWith___block_invoke;
   v11[3] = &unk_1E84151A0;
   v11[4] = self;
-  v7 = v5;
+  v7 = withCopy;
   v12 = v7;
   v13 = a2;
   v8 = [(_GCAsyncFuture *)v6 _initOnQueue:0 withOptions:v11 block:?];
@@ -1292,13 +1292,13 @@ void __21__GCFuture_thenWith___block_invoke_3(uint64_t a1, uint64_t a2, void *a3
   [v8 _setState:a2 result:v9 error:v7];
 }
 
-- (id)thenWithResult:(id)a3
+- (id)thenWithResult:(id)result
 {
-  v5 = a3;
-  if (!v5)
+  resultCopy = result;
+  if (!resultCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1057 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1057 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
   }
 
   v6 = [_GCAsyncFuture alloc];
@@ -1307,7 +1307,7 @@ void __21__GCFuture_thenWith___block_invoke_3(uint64_t a1, uint64_t a2, void *a3
   v11[2] = __27__GCFuture_thenWithResult___block_invoke;
   v11[3] = &unk_1E84151A0;
   v11[4] = self;
-  v7 = v5;
+  v7 = resultCopy;
   v12 = v7;
   v13 = a2;
   v8 = [(_GCAsyncFuture *)v6 _initOnQueue:0 withOptions:v11 block:?];
@@ -1374,14 +1374,14 @@ void __27__GCFuture_thenWithResult___block_invoke_3(uint64_t a1, uint64_t a2, vo
   [v8 _setState:a2 result:v9 error:v7];
 }
 
-- (id)thenOnQueue:(id)a3 with:(id)a4
+- (id)thenOnQueue:(id)queue with:(id)with
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  queueCopy = queue;
+  withCopy = with;
+  if (!withCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1088 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1088 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
   }
 
   v9 = [_GCAsyncFuture alloc];
@@ -1390,9 +1390,9 @@ void __27__GCFuture_thenWithResult___block_invoke_3(uint64_t a1, uint64_t a2, vo
   v15[2] = __29__GCFuture_thenOnQueue_with___block_invoke;
   v15[3] = &unk_1E84151C8;
   v15[4] = self;
-  v10 = v7;
+  v10 = queueCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = withCopy;
   v17 = v11;
   v18 = a2;
   v12 = [(_GCAsyncFuture *)v9 _initOnQueue:0 withOptions:v15 block:?];
@@ -1445,14 +1445,14 @@ void __29__GCFuture_thenOnQueue_with___block_invoke_3(uint64_t a1, uint64_t a2, 
   [v8 _setState:a2 result:v9 error:v7];
 }
 
-- (id)thenOnQueue:(id)a3 withResult:(id)a4
+- (id)thenOnQueue:(id)queue withResult:(id)result
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  queueCopy = queue;
+  resultCopy = result;
+  if (!resultCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1106 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"GCFuture.mm" lineNumber:1106 description:{@"Invalid parameter not satisfying: %s", "block != nil"}];
   }
 
   v9 = [_GCAsyncFuture alloc];
@@ -1461,9 +1461,9 @@ void __29__GCFuture_thenOnQueue_with___block_invoke_3(uint64_t a1, uint64_t a2, 
   v15[2] = __35__GCFuture_thenOnQueue_withResult___block_invoke;
   v15[3] = &unk_1E84151C8;
   v15[4] = self;
-  v10 = v7;
+  v10 = queueCopy;
   v16 = v10;
-  v11 = v8;
+  v11 = resultCopy;
   v17 = v11;
   v18 = a2;
   v12 = [(_GCAsyncFuture *)v9 _initOnQueue:0 withOptions:v15 block:?];
@@ -1531,29 +1531,29 @@ void __35__GCFuture_thenOnQueue_withResult___block_invoke_3(uint64_t a1, uint64_
   [v8 _setState:a2 result:v9 error:v7];
 }
 
-- (id)thenSynchronouslyOnQueue:(id)a3 with:(id)a4
+- (id)thenSynchronouslyOnQueue:(id)queue with:(id)with
 {
-  v4 = [(GCFuture *)self _thenSynchronouslyRequiringState:-128 onQueue:a3 withOptions:0 qosClass:0 relativePriority:0 label:0 block:a4];
+  v4 = [(GCFuture *)self _thenSynchronouslyRequiringState:-128 onQueue:queue withOptions:0 qosClass:0 relativePriority:0 label:0 block:with];
 
   return v4;
 }
 
-- (id)thenSynchronouslyWith:(id)a3
+- (id)thenSynchronouslyWith:(id)with
 {
-  v3 = [(GCFuture *)self _thenSynchronouslyRequiringState:-128 onQueue:0 withOptions:0 qosClass:0 relativePriority:0 label:0 block:a3];
+  v3 = [(GCFuture *)self _thenSynchronouslyRequiringState:-128 onQueue:0 withOptions:0 qosClass:0 relativePriority:0 label:0 block:with];
 
   return v3;
 }
 
-- (id)thenSynchronouslyWithResult:(id)a3
+- (id)thenSynchronouslyWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __40__GCFuture_thenSynchronouslyWithResult___block_invoke;
   v8[3] = &unk_1E84151F0;
-  v9 = v4;
-  v5 = v4;
+  v9 = resultCopy;
+  v5 = resultCopy;
   v6 = [(GCFuture *)self _thenSynchronouslyRequiringState:-128 onQueue:0 withOptions:0 qosClass:0 relativePriority:0 label:0 block:v8];
 
   return v6;

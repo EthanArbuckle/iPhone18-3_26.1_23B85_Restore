@@ -1,19 +1,19 @@
 @interface FCTagFilterUtilities
-+ (BOOL)filterTag:(id)a3 options:(int64_t)a4 context:(id)a5;
-+ (id)filterTags:(id)a3 options:(int64_t)a4 context:(id)a5;
++ (BOOL)filterTag:(id)tag options:(int64_t)options context:(id)context;
++ (id)filterTags:(id)tags options:(int64_t)options context:(id)context;
 @end
 
 @implementation FCTagFilterUtilities
 
-+ (BOOL)filterTag:(id)a3 options:(int64_t)a4 context:(id)a5
++ (BOOL)filterTag:(id)tag options:(int64_t)options context:(id)context
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  tagCopy = tag;
+  contextCopy = context;
   v9 = +[FCAppleAccount sharedAccount];
-  v10 = [v9 contentStoreFrontID];
+  contentStoreFrontID = [v9 contentStoreFrontID];
 
-  if ((a4 & 4) != 0 && !v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if ((options & 4) != 0 && !contentStoreFrontID && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "(filterOptions & FCTagFilterBlockedStorefronts) == 0 || contentStoreFrontID != nil"];
     *buf = 136315906;
@@ -26,11 +26,11 @@
     v36 = v12;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if ((a4 & 2) == 0)
+    if ((options & 2) == 0)
     {
 LABEL_5:
-      v11 = 0;
-      if ((a4 & 8) == 0)
+      isDeprecated = 0;
+      if ((options & 8) == 0)
       {
         goto LABEL_11;
       }
@@ -39,41 +39,41 @@ LABEL_5:
     }
   }
 
-  else if ((a4 & 2) == 0)
+  else if ((options & 2) == 0)
   {
     goto LABEL_5;
   }
 
-  v11 = [v7 isDeprecated];
-  if ((a4 & 8) == 0)
+  isDeprecated = [tagCopy isDeprecated];
+  if ((options & 8) == 0)
   {
     goto LABEL_11;
   }
 
 LABEL_9:
   v13 = +[FCRestrictions sharedInstance];
-  v14 = [v13 isExplicitContentAllowed];
+  isExplicitContentAllowed = [v13 isExplicitContentAllowed];
 
-  if (((v11 | v14) & 1) == 0)
+  if (((isDeprecated | isExplicitContentAllowed) & 1) == 0)
   {
-    v11 = [v7 isExplicitContent];
+    isDeprecated = [tagCopy isExplicitContent];
   }
 
 LABEL_11:
-  if ((a4 & 4) == 0)
+  if ((options & 4) == 0)
   {
     goto LABEL_24;
   }
 
-  v15 = [v7 blockedStorefrontIDs];
-  if ([v15 count])
+  blockedStorefrontIDs = [tagCopy blockedStorefrontIDs];
+  if ([blockedStorefrontIDs count])
   {
   }
 
   else
   {
-    v16 = [v7 allowedStorefrontIDs];
-    v17 = [v16 count];
+    allowedStorefrontIDs = [tagCopy allowedStorefrontIDs];
+    v17 = [allowedStorefrontIDs count];
 
     if (!v17)
     {
@@ -81,48 +81,48 @@ LABEL_11:
     }
   }
 
-  if (v11)
+  if (isDeprecated)
   {
     v18 = 1;
     goto LABEL_30;
   }
 
-  v19 = [v7 blockedStorefrontIDs];
-  if ([v19 containsObject:v10])
+  blockedStorefrontIDs2 = [tagCopy blockedStorefrontIDs];
+  if ([blockedStorefrontIDs2 containsObject:contentStoreFrontID])
   {
-    v11 = 1;
+    isDeprecated = 1;
   }
 
   else
   {
-    v20 = [v7 allowedStorefrontIDs];
-    if ([v20 count])
+    allowedStorefrontIDs2 = [tagCopy allowedStorefrontIDs];
+    if ([allowedStorefrontIDs2 count])
     {
-      v21 = [v7 allowedStorefrontIDs];
-      v11 = [v21 containsObject:v10] ^ 1;
+      allowedStorefrontIDs3 = [tagCopy allowedStorefrontIDs];
+      isDeprecated = [allowedStorefrontIDs3 containsObject:contentStoreFrontID] ^ 1;
     }
 
     else
     {
-      v11 = 0;
+      isDeprecated = 0;
     }
   }
 
 LABEL_24:
-  v22 = (a4 >> 4) & 1 | v11;
-  if ((a4 & 0x10) != 0 && (v11 & 1) == 0)
+  v22 = (options >> 4) & 1 | isDeprecated;
+  if ((options & 0x10) != 0 && (isDeprecated & 1) == 0)
   {
     v23 = +[FCRestrictions sharedInstance];
-    v22 = [v23 isNewsVersionAllowed:{objc_msgSend(v7, "minimumNewsVersion")}] ^ 1;
+    v22 = [v23 isNewsVersionAllowed:{objc_msgSend(tagCopy, "minimumNewsVersion")}] ^ 1;
   }
 
-  v18 = ((a4 & 0x20) != 0) | v22;
-  if ((a4 & 0x20) != 0 && (v22 & 1) == 0)
+  v18 = ((options & 0x20) != 0) | v22;
+  if ((options & 0x20) != 0 && (v22 & 1) == 0)
   {
-    v24 = [v8 subscriptionList];
-    v25 = [v24 mutedTagIDs];
-    v26 = [v7 identifier];
-    v18 = [v25 containsObject:v26];
+    subscriptionList = [contextCopy subscriptionList];
+    mutedTagIDs = [subscriptionList mutedTagIDs];
+    identifier = [tagCopy identifier];
+    v18 = [mutedTagIDs containsObject:identifier];
   }
 
 LABEL_30:
@@ -131,18 +131,18 @@ LABEL_30:
   return v18 & 1;
 }
 
-+ (id)filterTags:(id)a3 options:(int64_t)a4 context:(id)a5
++ (id)filterTags:(id)tags options:(int64_t)options context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__FCTagFilterUtilities_filterTags_options_context___block_invoke;
   v12[3] = &unk_1E7C44890;
-  v14 = a1;
-  v15 = a4;
-  v13 = v8;
-  v9 = v8;
-  v10 = [a3 fc_arrayOfObjectsFailingTest:v12];
+  selfCopy = self;
+  optionsCopy = options;
+  v13 = contextCopy;
+  v9 = contextCopy;
+  v10 = [tags fc_arrayOfObjectsFailingTest:v12];
 
   return v10;
 }

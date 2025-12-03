@@ -1,20 +1,20 @@
 @interface _MRAVModifyOutputContextRequestProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsOutputContextType:(id)a3;
+- (int)StringAsOutputContextType:(id)type;
 - (int)outputContextType;
 - (unint64_t)hash;
-- (void)addAddingOutputDeviceUID:(id)a3;
-- (void)addClusterAwareAddingOutputDeviceUID:(id)a3;
-- (void)addClusterAwareRemovingOutputDeviceUID:(id)a3;
-- (void)addClusterAwareSettingOutputDeviceUID:(id)a3;
-- (void)addRemovingOutputDeviceUID:(id)a3;
-- (void)addSettingOutputDeviceUID:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAddingOutputDeviceUID:(id)d;
+- (void)addClusterAwareAddingOutputDeviceUID:(id)d;
+- (void)addClusterAwareRemovingOutputDeviceUID:(id)d;
+- (void)addClusterAwareSettingOutputDeviceUID:(id)d;
+- (void)addRemovingOutputDeviceUID:(id)d;
+- (void)addSettingOutputDeviceUID:(id)d;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRAVModifyOutputContextRequestProtobuf
@@ -32,35 +32,35 @@
   }
 }
 
-- (int)StringAsOutputContextType:(id)a3
+- (int)StringAsOutputContextType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"SharedAudioPresentation"])
+  else if ([typeCopy isEqualToString:@"SharedAudioPresentation"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"SharedSystemAudio"])
+  else if ([typeCopy isEqualToString:@"SharedSystemAudio"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SharedSystemScreen"])
+  else if ([typeCopy isEqualToString:@"SharedSystemScreen"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"iTunesAudio"])
+  else if ([typeCopy isEqualToString:@"iTunesAudio"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Auxiliary"])
+  else if ([typeCopy isEqualToString:@"Auxiliary"])
   {
     v4 = 5;
   }
@@ -73,112 +73,112 @@
   return v4;
 }
 
-- (void)addAddingOutputDeviceUID:(id)a3
+- (void)addAddingOutputDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   addingOutputDeviceUIDs = self->_addingOutputDeviceUIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!addingOutputDeviceUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_addingOutputDeviceUIDs;
     self->_addingOutputDeviceUIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     addingOutputDeviceUIDs = self->_addingOutputDeviceUIDs;
   }
 
-  [(NSMutableArray *)addingOutputDeviceUIDs addObject:v4];
+  [(NSMutableArray *)addingOutputDeviceUIDs addObject:dCopy];
 }
 
-- (void)addRemovingOutputDeviceUID:(id)a3
+- (void)addRemovingOutputDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   removingOutputDeviceUIDs = self->_removingOutputDeviceUIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!removingOutputDeviceUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_removingOutputDeviceUIDs;
     self->_removingOutputDeviceUIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     removingOutputDeviceUIDs = self->_removingOutputDeviceUIDs;
   }
 
-  [(NSMutableArray *)removingOutputDeviceUIDs addObject:v4];
+  [(NSMutableArray *)removingOutputDeviceUIDs addObject:dCopy];
 }
 
-- (void)addSettingOutputDeviceUID:(id)a3
+- (void)addSettingOutputDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   settingOutputDeviceUIDs = self->_settingOutputDeviceUIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!settingOutputDeviceUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_settingOutputDeviceUIDs;
     self->_settingOutputDeviceUIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     settingOutputDeviceUIDs = self->_settingOutputDeviceUIDs;
   }
 
-  [(NSMutableArray *)settingOutputDeviceUIDs addObject:v4];
+  [(NSMutableArray *)settingOutputDeviceUIDs addObject:dCopy];
 }
 
-- (void)addClusterAwareAddingOutputDeviceUID:(id)a3
+- (void)addClusterAwareAddingOutputDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   clusterAwareAddingOutputDeviceUIDs = self->_clusterAwareAddingOutputDeviceUIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!clusterAwareAddingOutputDeviceUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_clusterAwareAddingOutputDeviceUIDs;
     self->_clusterAwareAddingOutputDeviceUIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     clusterAwareAddingOutputDeviceUIDs = self->_clusterAwareAddingOutputDeviceUIDs;
   }
 
-  [(NSMutableArray *)clusterAwareAddingOutputDeviceUIDs addObject:v4];
+  [(NSMutableArray *)clusterAwareAddingOutputDeviceUIDs addObject:dCopy];
 }
 
-- (void)addClusterAwareRemovingOutputDeviceUID:(id)a3
+- (void)addClusterAwareRemovingOutputDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   clusterAwareRemovingOutputDeviceUIDs = self->_clusterAwareRemovingOutputDeviceUIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!clusterAwareRemovingOutputDeviceUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_clusterAwareRemovingOutputDeviceUIDs;
     self->_clusterAwareRemovingOutputDeviceUIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     clusterAwareRemovingOutputDeviceUIDs = self->_clusterAwareRemovingOutputDeviceUIDs;
   }
 
-  [(NSMutableArray *)clusterAwareRemovingOutputDeviceUIDs addObject:v4];
+  [(NSMutableArray *)clusterAwareRemovingOutputDeviceUIDs addObject:dCopy];
 }
 
-- (void)addClusterAwareSettingOutputDeviceUID:(id)a3
+- (void)addClusterAwareSettingOutputDeviceUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   clusterAwareSettingOutputDeviceUIDs = self->_clusterAwareSettingOutputDeviceUIDs;
-  v8 = v4;
+  v8 = dCopy;
   if (!clusterAwareSettingOutputDeviceUIDs)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_clusterAwareSettingOutputDeviceUIDs;
     self->_clusterAwareSettingOutputDeviceUIDs = v6;
 
-    v4 = v8;
+    dCopy = v8;
     clusterAwareSettingOutputDeviceUIDs = self->_clusterAwareSettingOutputDeviceUIDs;
   }
 
-  [(NSMutableArray *)clusterAwareSettingOutputDeviceUIDs addObject:v4];
+  [(NSMutableArray *)clusterAwareSettingOutputDeviceUIDs addObject:dCopy];
 }
 
 - (id)description
@@ -187,15 +187,15 @@
   v8.receiver = self;
   v8.super_class = _MRAVModifyOutputContextRequestProtobuf;
   v4 = [(_MRAVModifyOutputContextRequestProtobuf *)&v8 description];
-  v5 = [(_MRAVModifyOutputContextRequestProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRAVModifyOutputContextRequestProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     outputContextType = self->_outputContextType;
@@ -209,59 +209,59 @@
       v5 = off_1E76A4E00[outputContextType];
     }
 
-    [v3 setObject:v5 forKey:@"outputContextType"];
+    [dictionary setObject:v5 forKey:@"outputContextType"];
   }
 
   addingOutputDeviceUIDs = self->_addingOutputDeviceUIDs;
   if (addingOutputDeviceUIDs)
   {
-    [v3 setObject:addingOutputDeviceUIDs forKey:@"addingOutputDeviceUID"];
+    [dictionary setObject:addingOutputDeviceUIDs forKey:@"addingOutputDeviceUID"];
   }
 
   removingOutputDeviceUIDs = self->_removingOutputDeviceUIDs;
   if (removingOutputDeviceUIDs)
   {
-    [v3 setObject:removingOutputDeviceUIDs forKey:@"removingOutputDeviceUID"];
+    [dictionary setObject:removingOutputDeviceUIDs forKey:@"removingOutputDeviceUID"];
   }
 
   settingOutputDeviceUIDs = self->_settingOutputDeviceUIDs;
   if (settingOutputDeviceUIDs)
   {
-    [v3 setObject:settingOutputDeviceUIDs forKey:@"settingOutputDeviceUID"];
+    [dictionary setObject:settingOutputDeviceUIDs forKey:@"settingOutputDeviceUID"];
   }
 
   clusterAwareAddingOutputDeviceUIDs = self->_clusterAwareAddingOutputDeviceUIDs;
   if (clusterAwareAddingOutputDeviceUIDs)
   {
-    [v3 setObject:clusterAwareAddingOutputDeviceUIDs forKey:@"clusterAwareAddingOutputDeviceUID"];
+    [dictionary setObject:clusterAwareAddingOutputDeviceUIDs forKey:@"clusterAwareAddingOutputDeviceUID"];
   }
 
   clusterAwareRemovingOutputDeviceUIDs = self->_clusterAwareRemovingOutputDeviceUIDs;
   if (clusterAwareRemovingOutputDeviceUIDs)
   {
-    [v3 setObject:clusterAwareRemovingOutputDeviceUIDs forKey:@"clusterAwareRemovingOutputDeviceUID"];
+    [dictionary setObject:clusterAwareRemovingOutputDeviceUIDs forKey:@"clusterAwareRemovingOutputDeviceUID"];
   }
 
   clusterAwareSettingOutputDeviceUIDs = self->_clusterAwareSettingOutputDeviceUIDs;
   if (clusterAwareSettingOutputDeviceUIDs)
   {
-    [v3 setObject:clusterAwareSettingOutputDeviceUIDs forKey:@"clusterAwareSettingOutputDeviceUID"];
+    [dictionary setObject:clusterAwareSettingOutputDeviceUIDs forKey:@"clusterAwareSettingOutputDeviceUID"];
   }
 
   request = self->_request;
   if (request)
   {
-    v13 = [(_MRGroupTopologyModificationRequestProtobuf *)request dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"request"];
+    dictionaryRepresentation = [(_MRGroupTopologyModificationRequestProtobuf *)request dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"request"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v73 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     outputContextType = self->_outputContextType;
@@ -468,23 +468,23 @@
   v42 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[10] = self->_outputContextType;
-    *(v4 + 72) |= 1u;
+    toCopy[10] = self->_outputContextType;
+    *(toCopy + 72) |= 1u;
   }
 
-  v29 = v4;
+  v29 = toCopy;
   if ([(_MRAVModifyOutputContextRequestProtobuf *)self addingOutputDeviceUIDsCount])
   {
     [v29 clearAddingOutputDeviceUIDs];
-    v5 = [(_MRAVModifyOutputContextRequestProtobuf *)self addingOutputDeviceUIDsCount];
-    if (v5)
+    addingOutputDeviceUIDsCount = [(_MRAVModifyOutputContextRequestProtobuf *)self addingOutputDeviceUIDsCount];
+    if (addingOutputDeviceUIDsCount)
     {
-      v6 = v5;
+      v6 = addingOutputDeviceUIDsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(_MRAVModifyOutputContextRequestProtobuf *)self addingOutputDeviceUIDAtIndex:i];
@@ -496,10 +496,10 @@
   if ([(_MRAVModifyOutputContextRequestProtobuf *)self removingOutputDeviceUIDsCount])
   {
     [v29 clearRemovingOutputDeviceUIDs];
-    v9 = [(_MRAVModifyOutputContextRequestProtobuf *)self removingOutputDeviceUIDsCount];
-    if (v9)
+    removingOutputDeviceUIDsCount = [(_MRAVModifyOutputContextRequestProtobuf *)self removingOutputDeviceUIDsCount];
+    if (removingOutputDeviceUIDsCount)
     {
-      v10 = v9;
+      v10 = removingOutputDeviceUIDsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(_MRAVModifyOutputContextRequestProtobuf *)self removingOutputDeviceUIDAtIndex:j];
@@ -511,10 +511,10 @@
   if ([(_MRAVModifyOutputContextRequestProtobuf *)self settingOutputDeviceUIDsCount])
   {
     [v29 clearSettingOutputDeviceUIDs];
-    v13 = [(_MRAVModifyOutputContextRequestProtobuf *)self settingOutputDeviceUIDsCount];
-    if (v13)
+    settingOutputDeviceUIDsCount = [(_MRAVModifyOutputContextRequestProtobuf *)self settingOutputDeviceUIDsCount];
+    if (settingOutputDeviceUIDsCount)
     {
-      v14 = v13;
+      v14 = settingOutputDeviceUIDsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(_MRAVModifyOutputContextRequestProtobuf *)self settingOutputDeviceUIDAtIndex:k];
@@ -526,10 +526,10 @@
   if ([(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareAddingOutputDeviceUIDsCount])
   {
     [v29 clearClusterAwareAddingOutputDeviceUIDs];
-    v17 = [(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareAddingOutputDeviceUIDsCount];
-    if (v17)
+    clusterAwareAddingOutputDeviceUIDsCount = [(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareAddingOutputDeviceUIDsCount];
+    if (clusterAwareAddingOutputDeviceUIDsCount)
     {
-      v18 = v17;
+      v18 = clusterAwareAddingOutputDeviceUIDsCount;
       for (m = 0; m != v18; ++m)
       {
         v20 = [(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareAddingOutputDeviceUIDAtIndex:m];
@@ -541,10 +541,10 @@
   if ([(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareRemovingOutputDeviceUIDsCount])
   {
     [v29 clearClusterAwareRemovingOutputDeviceUIDs];
-    v21 = [(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareRemovingOutputDeviceUIDsCount];
-    if (v21)
+    clusterAwareRemovingOutputDeviceUIDsCount = [(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareRemovingOutputDeviceUIDsCount];
+    if (clusterAwareRemovingOutputDeviceUIDsCount)
     {
-      v22 = v21;
+      v22 = clusterAwareRemovingOutputDeviceUIDsCount;
       for (n = 0; n != v22; ++n)
       {
         v24 = [(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareRemovingOutputDeviceUIDAtIndex:n];
@@ -556,10 +556,10 @@
   if ([(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareSettingOutputDeviceUIDsCount])
   {
     [v29 clearClusterAwareSettingOutputDeviceUIDs];
-    v25 = [(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareSettingOutputDeviceUIDsCount];
-    if (v25)
+    clusterAwareSettingOutputDeviceUIDsCount = [(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareSettingOutputDeviceUIDsCount];
+    if (clusterAwareSettingOutputDeviceUIDsCount)
     {
-      v26 = v25;
+      v26 = clusterAwareSettingOutputDeviceUIDsCount;
       for (ii = 0; ii != v26; ++ii)
       {
         v28 = [(_MRAVModifyOutputContextRequestProtobuf *)self clusterAwareSettingOutputDeviceUIDAtIndex:ii];
@@ -574,10 +574,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v77 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -605,7 +605,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v67 + 1) + 8 * v11) copyWithZone:a3];
+        v12 = [*(*(&v67 + 1) + 8 * v11) copyWithZone:zone];
         [v6 addAddingOutputDeviceUID:v12];
 
         ++v11;
@@ -638,7 +638,7 @@
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v63 + 1) + 8 * v17) copyWithZone:a3];
+        v18 = [*(*(&v63 + 1) + 8 * v17) copyWithZone:zone];
         [v6 addRemovingOutputDeviceUID:v18];
 
         ++v17;
@@ -671,7 +671,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v59 + 1) + 8 * v23) copyWithZone:a3];
+        v24 = [*(*(&v59 + 1) + 8 * v23) copyWithZone:zone];
         [v6 addSettingOutputDeviceUID:v24];
 
         ++v23;
@@ -704,7 +704,7 @@
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v55 + 1) + 8 * v29) copyWithZone:a3];
+        v30 = [*(*(&v55 + 1) + 8 * v29) copyWithZone:zone];
         [v6 addClusterAwareAddingOutputDeviceUID:v30];
 
         ++v29;
@@ -737,7 +737,7 @@
           objc_enumerationMutation(v31);
         }
 
-        v36 = [*(*(&v51 + 1) + 8 * v35) copyWithZone:a3];
+        v36 = [*(*(&v51 + 1) + 8 * v35) copyWithZone:zone];
         [v6 addClusterAwareRemovingOutputDeviceUID:v36];
 
         ++v35;
@@ -770,7 +770,7 @@
           objc_enumerationMutation(v37);
         }
 
-        v42 = [*(*(&v47 + 1) + 8 * v41) copyWithZone:{a3, v47}];
+        v42 = [*(*(&v47 + 1) + 8 * v41) copyWithZone:{zone, v47}];
         [v6 addClusterAwareSettingOutputDeviceUID:v42];
 
         ++v41;
@@ -783,7 +783,7 @@
     while (v39);
   }
 
-  v43 = [(_MRGroupTopologyModificationRequestProtobuf *)self->_request copyWithZone:a3];
+  v43 = [(_MRGroupTopologyModificationRequestProtobuf *)self->_request copyWithZone:zone];
   v44 = v6[7];
   v6[7] = v43;
 
@@ -791,24 +791,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
-  v5 = *(v4 + 72);
+  v5 = *(equalCopy + 72);
   if (*&self->_has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_outputContextType != *(v4 + 10))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_outputContextType != *(equalCopy + 10))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
 LABEL_21:
     v13 = 0;
@@ -816,13 +816,13 @@ LABEL_21:
   }
 
   addingOutputDeviceUIDs = self->_addingOutputDeviceUIDs;
-  if (addingOutputDeviceUIDs | *(v4 + 1) && ![(NSMutableArray *)addingOutputDeviceUIDs isEqual:?])
+  if (addingOutputDeviceUIDs | *(equalCopy + 1) && ![(NSMutableArray *)addingOutputDeviceUIDs isEqual:?])
   {
     goto LABEL_21;
   }
 
   removingOutputDeviceUIDs = self->_removingOutputDeviceUIDs;
-  if (removingOutputDeviceUIDs | *(v4 + 6))
+  if (removingOutputDeviceUIDs | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)removingOutputDeviceUIDs isEqual:?])
     {
@@ -831,7 +831,7 @@ LABEL_21:
   }
 
   settingOutputDeviceUIDs = self->_settingOutputDeviceUIDs;
-  if (settingOutputDeviceUIDs | *(v4 + 8))
+  if (settingOutputDeviceUIDs | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)settingOutputDeviceUIDs isEqual:?])
     {
@@ -840,7 +840,7 @@ LABEL_21:
   }
 
   clusterAwareAddingOutputDeviceUIDs = self->_clusterAwareAddingOutputDeviceUIDs;
-  if (clusterAwareAddingOutputDeviceUIDs | *(v4 + 2))
+  if (clusterAwareAddingOutputDeviceUIDs | *(equalCopy + 2))
   {
     if (![(NSMutableArray *)clusterAwareAddingOutputDeviceUIDs isEqual:?])
     {
@@ -849,7 +849,7 @@ LABEL_21:
   }
 
   clusterAwareRemovingOutputDeviceUIDs = self->_clusterAwareRemovingOutputDeviceUIDs;
-  if (clusterAwareRemovingOutputDeviceUIDs | *(v4 + 3))
+  if (clusterAwareRemovingOutputDeviceUIDs | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)clusterAwareRemovingOutputDeviceUIDs isEqual:?])
     {
@@ -858,7 +858,7 @@ LABEL_21:
   }
 
   clusterAwareSettingOutputDeviceUIDs = self->_clusterAwareSettingOutputDeviceUIDs;
-  if (clusterAwareSettingOutputDeviceUIDs | *(v4 + 4))
+  if (clusterAwareSettingOutputDeviceUIDs | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)clusterAwareSettingOutputDeviceUIDs isEqual:?])
     {
@@ -867,7 +867,7 @@ LABEL_21:
   }
 
   request = self->_request;
-  if (request | *(v4 + 7))
+  if (request | *(equalCopy + 7))
   {
     v13 = [(_MRGroupTopologyModificationRequestProtobuf *)request isEqual:?];
   }
@@ -903,14 +903,14 @@ LABEL_22:
   return v9 ^ [(_MRGroupTopologyModificationRequestProtobuf *)self->_request hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v69 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 72))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 72))
   {
-    self->_outputContextType = *(v4 + 10);
+    self->_outputContextType = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 
@@ -918,7 +918,7 @@ LABEL_22:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   v7 = [v6 countByEnumeratingWithState:&v59 objects:v68 count:16];
   if (v7)
   {

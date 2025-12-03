@@ -26,8 +26,8 @@
 {
   v10 = a3;
   v6 = a4;
-  v7 = [a1 userInfo];
-  v8 = [v7 mutableCopy];
+  userInfo = [self userInfo];
+  v8 = [userInfo mutableCopy];
 
   if (!v8)
   {
@@ -49,13 +49,13 @@
     }
   }
 
-  [a1 setUserInfo:v8];
+  [self setUserInfo:v8];
 }
 
 - (id)vs_subscriptionKeyPath
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"VSSubscriptionKeyPathUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"VSSubscriptionKeyPathUserInfoKey"];
 
   return v2;
 }
@@ -63,37 +63,37 @@
 - (void)vs_setSubscriptionKeyPath:()VSSubscriptionAdditions
 {
   v4 = [a3 copy];
-  [a1 vs_setUserInfoValue:v4 forKey:@"VSSubscriptionKeyPathUserInfoKey"];
+  [self vs_setUserInfoValue:v4 forKey:@"VSSubscriptionKeyPathUserInfoKey"];
 }
 
 - (uint64_t)vs_suitablePurposes
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"VSSubscriptionSuitablePurposesInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"VSSubscriptionSuitablePurposesInfoKey"];
 
   if (v2)
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 7;
+    integerValue = 7;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (void)vs_setSuitablePurposes:()VSSubscriptionAdditions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithInteger:?];
-  [a1 vs_setUserInfoValue:v2 forKey:@"VSSubscriptionSuitablePurposesInfoKey"];
+  [self vs_setUserInfoValue:v2 forKey:@"VSSubscriptionSuitablePurposesInfoKey"];
 }
 
 - (id)vs_propertyListKey
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"VSPropertyListKeyUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"VSPropertyListKeyUserInfoKey"];
 
   return v2;
 }
@@ -101,13 +101,13 @@
 - (void)vs_setPropertyListKey:()VSSubscriptionAdditions
 {
   v4 = [a3 copy];
-  [a1 vs_setUserInfoValue:v4 forKey:@"VSPropertyListKeyUserInfoKey"];
+  [self vs_setUserInfoValue:v4 forKey:@"VSPropertyListKeyUserInfoKey"];
 }
 
 - (id)vs_propertyListValueTransformerName
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"VSPropertyListValueTransformerUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"VSPropertyListValueTransformerUserInfoKey"];
 
   return v2;
 }
@@ -115,15 +115,15 @@
 - (void)vs_setPropertyListValueTransformerName:()VSSubscriptionAdditions
 {
   v4 = [a3 copy];
-  [a1 vs_setUserInfoValue:v4 forKey:@"VSPropertyListValueTransformerUserInfoKey"];
+  [self vs_setUserInfoValue:v4 forKey:@"VSPropertyListValueTransformerUserInfoKey"];
 }
 
 - (id)vs_propertyListValueTransformer
 {
-  v1 = [a1 vs_propertyListValueTransformerName];
-  if (v1)
+  vs_propertyListValueTransformerName = [self vs_propertyListValueTransformerName];
+  if (vs_propertyListValueTransformerName)
   {
-    v2 = [MEMORY[0x277CCAE68] valueTransformerForName:v1];
+    v2 = [MEMORY[0x277CCAE68] valueTransformerForName:vs_propertyListValueTransformerName];
   }
 
   else
@@ -136,8 +136,8 @@
 
 - (id)vs_JSONKey
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"VSJSONKeyUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"VSJSONKeyUserInfoKey"];
 
   return v2;
 }
@@ -145,30 +145,30 @@
 - (void)vs_setJSONKey:()VSSubscriptionAdditions
 {
   v4 = [a3 copy];
-  [a1 vs_setUserInfoValue:v4 forKey:@"VSJSONKeyUserInfoKey"];
+  [self vs_setUserInfoValue:v4 forKey:@"VSJSONKeyUserInfoKey"];
 }
 
 - (uint64_t)vs_isRequiredJSONValue
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"VSRequiredJSONValueUserInfoKey"];
-  v3 = [v2 BOOLValue];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"VSRequiredJSONValueUserInfoKey"];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)vs_setRequiredJSONValue:()VSSubscriptionAdditions
 {
   v2 = [MEMORY[0x277CCABB0] numberWithBool:?];
-  [a1 vs_setUserInfoValue:v2 forKey:@"VSRequiredJSONValueUserInfoKey"];
+  [self vs_setUserInfoValue:v2 forKey:@"VSRequiredJSONValueUserInfoKey"];
 }
 
 - (id)vs_expectedJSONValueClasses
 {
   v17 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v3 = [a1 userInfo];
-  v4 = [v3 objectForKey:@"VSExpectedJSONValueClassUserInfoKey"];
+  userInfo = [self userInfo];
+  v4 = [userInfo objectForKey:@"VSExpectedJSONValueClassUserInfoKey"];
 
   if ([v4 count])
   {
@@ -253,13 +253,13 @@
   }
 
   v13 = [v5 copy];
-  [a1 vs_setUserInfoValue:v13 forKey:@"VSExpectedJSONValueClassUserInfoKey"];
+  [self vs_setUserInfoValue:v13 forKey:@"VSExpectedJSONValueClassUserInfoKey"];
 }
 
 - (id)vs_JSONValueTransformerName
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKey:@"VSJSONValueTransformerUserInfoKey"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKey:@"VSJSONValueTransformerUserInfoKey"];
 
   return v2;
 }
@@ -267,15 +267,15 @@
 - (void)vs_setJSONValueTransformerName:()VSSubscriptionAdditions
 {
   v4 = [a3 copy];
-  [a1 vs_setUserInfoValue:v4 forKey:@"VSJSONValueTransformerUserInfoKey"];
+  [self vs_setUserInfoValue:v4 forKey:@"VSJSONValueTransformerUserInfoKey"];
 }
 
 - (id)vs_JSONValueTransformer
 {
-  v1 = [a1 vs_JSONValueTransformerName];
-  if (v1)
+  vs_JSONValueTransformerName = [self vs_JSONValueTransformerName];
+  if (vs_JSONValueTransformerName)
   {
-    v2 = [MEMORY[0x277CCAE68] valueTransformerForName:v1];
+    v2 = [MEMORY[0x277CCAE68] valueTransformerForName:vs_JSONValueTransformerName];
   }
 
   else

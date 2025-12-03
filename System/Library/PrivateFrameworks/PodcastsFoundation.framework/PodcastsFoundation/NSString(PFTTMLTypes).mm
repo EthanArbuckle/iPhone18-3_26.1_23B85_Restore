@@ -6,7 +6,7 @@
 
 - (double)intervalFromTimecode
 {
-  v1 = [a1 cStringUsingEncoding:4];
+  v1 = [self cStringUsingEncoding:4];
   v2 = 0;
   v3 = &v1[strlen(v1)];
   v4 = 0.0;

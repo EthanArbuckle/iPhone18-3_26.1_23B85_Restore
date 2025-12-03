@@ -1,6 +1,6 @@
 @interface MUCuratedGuidesSectionView
 - (MKPlaceCollectionsDelegate)collectionsDelegate;
-- (id)initCollectionsCarouselViewWithPlaceCollections:(id)a3 usingSyncCoordinator:(id)a4 withRoutingDelegate:(id)a5 withScrollViewDelegate:(id)a6 withAnalyticsDelegate:(id)a7 exploreGuides:(id)a8;
+- (id)initCollectionsCarouselViewWithPlaceCollections:(id)collections usingSyncCoordinator:(id)coordinator withRoutingDelegate:(id)delegate withScrollViewDelegate:(id)viewDelegate withAnalyticsDelegate:(id)analyticsDelegate exploreGuides:(id)guides;
 - (int64_t)carouselContext;
 - (void)_setupSubviews;
 - (void)displayCollectionsIfNeeded;
@@ -17,13 +17,13 @@
 
 - (void)displayCollectionsIfNeeded
 {
-  v3 = [(MUCuratedGuidesSectionView *)self carouselView];
-  v4 = [v3 isDisplayingCollections];
+  carouselView = [(MUCuratedGuidesSectionView *)self carouselView];
+  isDisplayingCollections = [carouselView isDisplayingCollections];
 
-  if ((v4 & 1) == 0)
+  if ((isDisplayingCollections & 1) == 0)
   {
-    v5 = [(MUCuratedGuidesSectionView *)self carouselView];
-    [v5 displayCollections];
+    carouselView2 = [(MUCuratedGuidesSectionView *)self carouselView];
+    [carouselView2 displayCollections];
   }
 }
 
@@ -59,24 +59,24 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initCollectionsCarouselViewWithPlaceCollections:(id)a3 usingSyncCoordinator:(id)a4 withRoutingDelegate:(id)a5 withScrollViewDelegate:(id)a6 withAnalyticsDelegate:(id)a7 exploreGuides:(id)a8
+- (id)initCollectionsCarouselViewWithPlaceCollections:(id)collections usingSyncCoordinator:(id)coordinator withRoutingDelegate:(id)delegate withScrollViewDelegate:(id)viewDelegate withAnalyticsDelegate:(id)analyticsDelegate exploreGuides:(id)guides
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  collectionsCopy = collections;
+  coordinatorCopy = coordinator;
+  delegateCopy = delegate;
+  viewDelegateCopy = viewDelegate;
+  analyticsDelegateCopy = analyticsDelegate;
+  guidesCopy = guides;
   v24.receiver = self;
   v24.super_class = MUCuratedGuidesSectionView;
   v20 = [(MUCuratedGuidesSectionView *)&v24 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v20)
   {
-    v21 = [objc_alloc(MEMORY[0x1E696F1B8]) initCollectionsCarouselViewWithContext:-[MUCuratedGuidesSectionView carouselContext](v20 withPlaceCollections:"carouselContext") usingSyncCoordinator:v14 withRoutingDelegate:v15 withScrollViewDelegate:v16 withAnalyticsDelegate:v17 exploreGuides:{v18, v19}];
+    v21 = [objc_alloc(MEMORY[0x1E696F1B8]) initCollectionsCarouselViewWithContext:-[MUCuratedGuidesSectionView carouselContext](v20 withPlaceCollections:"carouselContext") usingSyncCoordinator:collectionsCopy withRoutingDelegate:coordinatorCopy withScrollViewDelegate:delegateCopy withAnalyticsDelegate:viewDelegateCopy exploreGuides:{analyticsDelegateCopy, guidesCopy}];
     carouselView = v20->_carouselView;
     v20->_carouselView = v21;
 
-    v20->_isSingleCollection = [v14 count] == 1;
+    v20->_isSingleCollection = [collectionsCopy count] == 1;
     [(MUCuratedGuidesSectionView *)v20 _setupSubviews];
   }
 

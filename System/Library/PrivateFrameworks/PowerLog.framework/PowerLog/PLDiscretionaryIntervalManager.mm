@@ -1,15 +1,15 @@
 @interface PLDiscretionaryIntervalManager
 - (PLDiscretionaryEnergyMonitor)discretionaryEnergyMonitor;
-- (PLDiscretionaryIntervalManager)initWithEnergyMonitor:(id)a3 andMockData:(id)a4;
-- (id)coalesceIntervals:(id)a3;
+- (PLDiscretionaryIntervalManager)initWithEnergyMonitor:(id)monitor andMockData:(id)data;
+- (id)coalesceIntervals:(id)intervals;
 - (id)createOpenIntervalTimer;
 - (id)createPowerlogReportTimer;
 - (void)createOpenIntervalTimer;
 - (void)createPowerlogReportTimer;
 - (void)handleOpenIntervalTimer;
 - (void)handlePowerlogReportTimer;
-- (void)handleStartEvent:(id)a3 withInfo:(id)a4;
-- (void)handleStopEvent:(id)a3 withInfo:(id)a4;
+- (void)handleStartEvent:(id)event withInfo:(id)info;
+- (void)handleStopEvent:(id)event withInfo:(id)info;
 - (void)logActivityNameToInvolvedIdentifiers;
 - (void)logDiscretionaryIntervals;
 - (void)reportIntervalsToPowerlog;
@@ -17,11 +17,11 @@
 
 @implementation PLDiscretionaryIntervalManager
 
-- (PLDiscretionaryIntervalManager)initWithEnergyMonitor:(id)a3 andMockData:(id)a4
+- (PLDiscretionaryIntervalManager)initWithEnergyMonitor:(id)monitor andMockData:(id)data
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  monitorCopy = monitor;
+  dataCopy = data;
   v17.receiver = self;
   v17.super_class = PLDiscretionaryIntervalManager;
   v8 = [(PLDiscretionaryIntervalManager *)&v17 init];
@@ -31,24 +31,24 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v7;
+      v19 = dataCopy;
       _os_log_impl(&dword_1BACB7000, v9, OS_LOG_TYPE_DEFAULT, "Initializing DiscretionaryIntervalManager, with mockData=%@", buf, 0xCu);
     }
 
-    [(PLDiscretionaryIntervalManager *)v8 setMockData:v7];
+    [(PLDiscretionaryIntervalManager *)v8 setMockData:dataCopy];
     v10 = objc_opt_new();
     [(PLDiscretionaryIntervalManager *)v8 setIdentifierToDiscretionaryIntervals:v10];
 
     v11 = objc_opt_new();
     [(PLDiscretionaryIntervalManager *)v8 setActivityNameToInvolvedIdentifiers:v11];
 
-    [(PLDiscretionaryIntervalManager *)v8 setDiscretionaryEnergyMonitor:v6];
+    [(PLDiscretionaryIntervalManager *)v8 setDiscretionaryEnergyMonitor:monitorCopy];
     [(PLDiscretionaryIntervalManager *)v8 setQuickEnergyEnabled:1];
-    v12 = [(PLDiscretionaryIntervalManager *)v8 createOpenIntervalTimer];
-    [(PLDiscretionaryIntervalManager *)v8 setOpenIntervalTimer:v12];
+    createOpenIntervalTimer = [(PLDiscretionaryIntervalManager *)v8 createOpenIntervalTimer];
+    [(PLDiscretionaryIntervalManager *)v8 setOpenIntervalTimer:createOpenIntervalTimer];
 
-    v13 = [(PLDiscretionaryIntervalManager *)v8 createPowerlogReportTimer];
-    [(PLDiscretionaryIntervalManager *)v8 setPowerlogReportTimer:v13];
+    createPowerlogReportTimer = [(PLDiscretionaryIntervalManager *)v8 createPowerlogReportTimer];
+    [(PLDiscretionaryIntervalManager *)v8 setPowerlogReportTimer:createPowerlogReportTimer];
 
     v14 = PLLogDiscretionaryEnergyMonitor();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -62,25 +62,25 @@
   return v8;
 }
 
-- (void)handleStartEvent:(id)a3 withInfo:(id)a4
+- (void)handleStartEvent:(id)event withInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  infoCopy = info;
   v8 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [PLDiscretionaryIntervalManager handleStartEvent:withInfo:];
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"involvedIdentifiers"];
-  v10 = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
-  [v10 setObject:v9 forKeyedSubscript:v6];
+  v9 = [infoCopy objectForKeyedSubscript:@"involvedIdentifiers"];
+  activityNameToInvolvedIdentifiers = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
+  [activityNameToInvolvedIdentifiers setObject:v9 forKeyedSubscript:eventCopy];
 
-  v11 = [v7 objectForKeyedSubscript:@"involvedIdentifiers"];
-  v12 = [v7 objectForKeyedSubscript:@"requiresNetwork"];
-  LODWORD(v10) = [v12 BOOLValue];
+  v11 = [infoCopy objectForKeyedSubscript:@"involvedIdentifiers"];
+  v12 = [infoCopy objectForKeyedSubscript:@"requiresNetwork"];
+  LODWORD(activityNameToInvolvedIdentifiers) = [v12 BOOLValue];
 
-  if (v10)
+  if (activityNameToInvolvedIdentifiers)
   {
     v13 = [v11 mutableCopy];
 
@@ -93,8 +93,8 @@
   v16[2] = __60__PLDiscretionaryIntervalManager_handleStartEvent_withInfo___block_invoke;
   v16[3] = &unk_1E7F186B8;
   v16[4] = self;
-  v17 = v7;
-  v14 = v7;
+  v17 = infoCopy;
+  v14 = infoCopy;
   [v11 enumerateObjectsUsingBlock:v16];
   v15 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -151,39 +151,39 @@ void __60__PLDiscretionaryIntervalManager_handleStartEvent_withInfo___block_invo
   }
 }
 
-- (void)handleStopEvent:(id)a3 withInfo:(id)a4
+- (void)handleStopEvent:(id)event withInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  infoCopy = info;
   v8 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [PLDiscretionaryIntervalManager handleStopEvent:withInfo:];
   }
 
-  v9 = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  activityNameToInvolvedIdentifiers = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
+  v10 = [activityNameToInvolvedIdentifiers objectForKeyedSubscript:eventCopy];
 
   if (v10)
   {
-    v11 = [v7 mutableCopy];
+    v11 = [infoCopy mutableCopy];
     v12 = PLLogDiscretionaryEnergyMonitor();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       [PLDiscretionaryIntervalManager handleStopEvent:? withInfo:?];
     }
 
-    v13 = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
-    v14 = [v13 objectForKeyedSubscript:v6];
+    activityNameToInvolvedIdentifiers2 = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
+    v14 = [activityNameToInvolvedIdentifiers2 objectForKeyedSubscript:eventCopy];
     [v11 setObject:v14 forKeyedSubscript:@"involvedIdentifiers"];
 
     v15 = [v11 objectForKeyedSubscript:@"involvedIdentifiers"];
     v16 = [v15 mutableCopy];
 
-    v17 = [v7 objectForKeyedSubscript:@"requiresNetwork"];
-    v18 = [v17 BOOLValue];
+    v17 = [infoCopy objectForKeyedSubscript:@"requiresNetwork"];
+    bOOLValue = [v17 BOOLValue];
 
-    if (v18)
+    if (bOOLValue)
     {
       [v16 addObject:@"discretionaryNetworkTasks"];
     }
@@ -206,7 +206,7 @@ void __60__PLDiscretionaryIntervalManager_handleStartEvent_withInfo___block_invo
     v11 = PLLogDiscretionaryEnergyMonitor();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [PLDiscretionaryIntervalManager handleStopEvent:v6 withInfo:self];
+      [PLDiscretionaryIntervalManager handleStopEvent:eventCopy withInfo:self];
     }
   }
 }
@@ -427,22 +427,22 @@ void __59__PLDiscretionaryIntervalManager_reportIntervalsToPowerlog__block_invok
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (id)coalesceIntervals:(id)a3
+- (id)coalesceIntervals:(id)intervals
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  intervalsCopy = intervals;
   v4 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     [PLDiscretionaryIntervalManager coalesceIntervals:];
   }
 
-  v22 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v3;
+  v5 = intervalsCopy;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
@@ -474,7 +474,7 @@ void __59__PLDiscretionaryIntervalManager_reportIntervalsToPowerlog__block_invok
 
           if (v16 >= 5.0)
           {
-            [v22 addObject:v8];
+            [array addObject:v8];
             v18 = v11;
 
             v8 = v18;
@@ -500,7 +500,7 @@ void __59__PLDiscretionaryIntervalManager_reportIntervalsToPowerlog__block_invok
 
     if (v8)
     {
-      [v22 addObject:v8];
+      [array addObject:v8];
     }
   }
 
@@ -518,7 +518,7 @@ void __59__PLDiscretionaryIntervalManager_reportIntervalsToPowerlog__block_invok
 
   v20 = *MEMORY[0x1E69E9840];
 
-  return v22;
+  return array;
 }
 
 - (void)handleOpenIntervalTimer
@@ -645,14 +645,14 @@ uint64_t __59__PLDiscretionaryIntervalManager_handlePowerlogReportTimer__block_i
   v3 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
+    activityNameToInvolvedIdentifiers = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
     v7 = 134217984;
-    v8 = [v4 count];
+    v8 = [activityNameToInvolvedIdentifiers count];
     _os_log_impl(&dword_1BACB7000, v3, OS_LOG_TYPE_INFO, "Logging activityNameToInvolvedIdentifiers, count=%lu", &v7, 0xCu);
   }
 
-  v5 = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
-  [v5 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_372];
+  activityNameToInvolvedIdentifiers2 = [(PLDiscretionaryIntervalManager *)self activityNameToInvolvedIdentifiers];
+  [activityNameToInvolvedIdentifiers2 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_372];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -681,14 +681,14 @@ void __70__PLDiscretionaryIntervalManager_logActivityNameToInvolvedIdentifiers__
   v3 = PLLogDiscretionaryEnergyMonitor();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PLDiscretionaryIntervalManager *)self identifierToDiscretionaryIntervals];
+    identifierToDiscretionaryIntervals = [(PLDiscretionaryIntervalManager *)self identifierToDiscretionaryIntervals];
     v7 = 134217984;
-    v8 = [v4 count];
+    v8 = [identifierToDiscretionaryIntervals count];
     _os_log_impl(&dword_1BACB7000, v3, OS_LOG_TYPE_DEFAULT, "Logging identifierToDiscretionaryIntervals, count=%lu", &v7, 0xCu);
   }
 
-  v5 = [(PLDiscretionaryIntervalManager *)self identifierToDiscretionaryIntervals];
-  [v5 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_374];
+  identifierToDiscretionaryIntervals2 = [(PLDiscretionaryIntervalManager *)self identifierToDiscretionaryIntervals];
+  [identifierToDiscretionaryIntervals2 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_374];
 
   v6 = *MEMORY[0x1E69E9840];
 }

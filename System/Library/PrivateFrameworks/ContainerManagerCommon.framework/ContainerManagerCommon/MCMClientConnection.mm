@@ -1,21 +1,21 @@
 @interface MCMClientConnection
-+ (id)privilegedClientConnectionWithUserIdentity:(id)a3;
++ (id)privilegedClientConnectionWithUserIdentity:(id)identity;
 + (id)sharedClientConnection;
-- (BOOL)_containerURL:(id)a3 isValidForContainerClass:(unint64_t)a4;
+- (BOOL)_containerURL:(id)l isValidForContainerClass:(unint64_t)class;
 - (MCMClientConnection)init;
-- (MCMClientConnection)initWithContext:(id)a3;
+- (MCMClientConnection)initWithContext:(id)context;
 - (MCMCommandContext)context;
-- (id)_commandForResumedDeleteOperationsWithResultPromise:(id)a3;
+- (id)_commandForResumedDeleteOperationsWithResultPromise:(id)promise;
 - (id)clientBundleIdentifier;
-- (void)_cleanTransientContainersWithContainerConfig:(id)a3;
-- (void)_cleanTransientUserContainersWithContainerConfig:(id)a3;
+- (void)_cleanTransientContainersWithContainerConfig:(id)config;
+- (void)_cleanTransientUserContainersWithContainerConfig:(id)config;
 - (void)_cleanupOprhanedCodeSigningMappingData;
-- (void)_cleanupOrphanedDataForDirectories:(id)a3 containerClass:(unint64_t)a4 forUserIdentity:(id)a5;
+- (void)_cleanupOrphanedDataForDirectories:(id)directories containerClass:(unint64_t)class forUserIdentity:(id)identity;
 - (void)_regenerateContainerPaths;
 - (void)_resumeDeleteOperations;
-- (void)containerManagerCleanupWithCompletion:(id)a3;
+- (void)containerManagerCleanupWithCompletion:(id)completion;
 - (void)containerManagerSetup;
-- (void)rebootContainerManagerCleanupWithCompletion:(id)a3;
+- (void)rebootContainerManagerCleanupWithCompletion:(id)completion;
 - (void)rebootContainerManagerSetup;
 @end
 
@@ -29,26 +29,26 @@
   return result;
 }
 
-- (id)_commandForResumedDeleteOperationsWithResultPromise:(id)a3
+- (id)_commandForResumedDeleteOperationsWithResultPromise:(id)promise
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  promiseCopy = promise;
   v5 = objc_opt_new();
-  v6 = [(MCMClientConnection *)self context];
-  v7 = [v6 userIdentityCache];
-  v8 = [MCMDeleteManifest deleteManifestsForGlobalContainersWithUserIdentityCache:v7];
+  context = [(MCMClientConnection *)self context];
+  userIdentityCache = [context userIdentityCache];
+  v8 = [MCMDeleteManifest deleteManifestsForGlobalContainersWithUserIdentityCache:userIdentityCache];
   [v5 unionSet:v8];
 
-  v9 = [(MCMClientConnection *)self context];
-  v10 = [v9 userIdentityCache];
-  v11 = [MCMDeleteManifest deleteManifestsForUserContainersWithUserIdentityCache:v10];
+  context2 = [(MCMClientConnection *)self context];
+  userIdentityCache2 = [context2 userIdentityCache];
+  v11 = [MCMDeleteManifest deleteManifestsForUserContainersWithUserIdentityCache:userIdentityCache2];
   [v5 unionSet:v11];
 
   if ([v5 count])
   {
     v12 = [MCMCommandOperationDelete alloc];
-    v13 = [(MCMClientConnection *)self context];
-    v14 = [(MCMCommandOperationDelete *)v12 initWithManifests:v5 waitForDiskSpaceReclaim:0 removeAllCodeSignInfo:0 context:v13 resultPromise:v4];
+    context3 = [(MCMClientConnection *)self context];
+    v14 = [(MCMCommandOperationDelete *)v12 initWithManifests:v5 waitForDiskSpaceReclaim:0 removeAllCodeSignInfo:0 context:context3 resultPromise:promiseCopy];
   }
 
   else
@@ -70,16 +70,16 @@
   if (v4)
   {
     [v4 execute];
-    v6 = [(MCMResultPromise *)v3 result];
-    v7 = [v6 error];
+    result = [(MCMResultPromise *)v3 result];
+    error = [result error];
 
-    if (v7)
+    if (error)
     {
       v8 = container_log_handle_for_category();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         v10 = 138412290;
-        v11 = v7;
+        v11 = error;
         _os_log_error_impl(&dword_1DF2C3000, v8, OS_LOG_TYPE_ERROR, "Failed to destroy container(s) during resumed delete; error = %@", &v10, 0xCu);
       }
     }
@@ -98,14 +98,14 @@
     _os_log_debug_impl(&dword_1DF2C3000, v3, OS_LOG_TYPE_DEBUG, "Rolling system container directory UUIDs on disk", buf, 2u);
   }
 
-  v4 = [(MCMClientConnection *)self context];
-  v5 = [v4 classIterator];
+  context = [(MCMClientConnection *)self context];
+  classIterator = [context classIterator];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__MCMClientConnection__regenerateContainerPaths__block_invoke;
   v7[3] = &unk_1E86AFAA8;
   v7[4] = self;
-  [v5 selectAutorollingWithUserIdentityIterator:v7];
+  [classIterator selectAutorollingWithUserIdentityIterator:v7];
 
   v6 = *MEMORY[0x1E69E9840];
 }
@@ -236,10 +236,10 @@ uint64_t __48__MCMClientConnection__regenerateContainerPaths__block_invoke_2(uin
   return 1;
 }
 
-- (void)rebootContainerManagerCleanupWithCompletion:(id)a3
+- (void)rebootContainerManagerCleanupWithCompletion:(id)completion
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v44[0] = 0;
   v44[1] = v44;
   v44[2] = 0x3032000000;
@@ -271,10 +271,10 @@ uint64_t __48__MCMClientConnection__regenerateContainerPaths__block_invoke_2(uin
         _os_log_error_impl(&dword_1DF2C3000, v10, OS_LOG_TYPE_ERROR, "Sentencing legacy transient bundle directory [%@] to final deletion", buf, 0xCu);
       }
 
-      v11 = [(MCMClientConnection *)self context];
-      v12 = [v11 containerFactory];
+      context = [(MCMClientConnection *)self context];
+      containerFactory = [context containerFactory];
       v41 = 0;
-      v13 = [v12 deleteURL:v7 forUserIdentity:0 error:&v41];
+      v13 = [containerFactory deleteURL:v7 forUserIdentity:0 error:&v41];
       v14 = v41;
 
       if ((v13 & 1) == 0)
@@ -293,45 +293,45 @@ uint64_t __48__MCMClientConnection__regenerateContainerPaths__block_invoke_2(uin
   }
 
   v16 = containermanager_copy_global_configuration();
-  v17 = [v16 classIterator];
+  classIterator = [v16 classIterator];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __67__MCMClientConnection_rebootContainerManagerCleanupWithCompletion___block_invoke;
   v40[3] = &unk_1E86B01A0;
   v40[4] = self;
-  [v17 selectWithIterator:v40];
+  [classIterator selectWithIterator:v40];
 
   v18 = containermanager_copy_global_configuration();
-  LODWORD(v17) = [v18 dispositionForContainerClass:2] == 1;
+  LODWORD(classIterator) = [v18 dispositionForContainerClass:2] == 1;
 
-  if (v17)
+  if (classIterator)
   {
-    v19 = [(MCMClientConnection *)self context];
-    v20 = [v19 userIdentityCache];
+    context2 = [(MCMClientConnection *)self context];
+    userIdentityCache = [context2 userIdentityCache];
     v39[0] = MEMORY[0x1E69E9820];
     v39[1] = 3221225472;
     v39[2] = __67__MCMClientConnection_rebootContainerManagerCleanupWithCompletion___block_invoke_2;
     v39[3] = &unk_1E86AFA30;
     v39[4] = self;
     v39[5] = v42;
-    [v20 forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v39];
+    [userIdentityCache forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v39];
   }
 
-  v21 = [(MCMClientConnection *)self context];
-  v22 = [v21 userIdentityCache];
-  v23 = [v22 defaultUserIdentity];
+  context3 = [(MCMClientConnection *)self context];
+  userIdentityCache2 = [context3 userIdentityCache];
+  defaultUserIdentity = [userIdentityCache2 defaultUserIdentity];
 
-  v24 = [(MCMClientConnection *)self context];
-  v25 = [v24 classIterator];
+  context4 = [(MCMClientConnection *)self context];
+  classIterator2 = [context4 classIterator];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __67__MCMClientConnection_rebootContainerManagerCleanupWithCompletion___block_invoke_31;
   v35[3] = &unk_1E86AFA08;
-  v26 = v23;
-  v37 = self;
+  v26 = defaultUserIdentity;
+  selfCopy = self;
   v38 = v42;
   v36 = v26;
-  [v25 selectGlobalWithIterator:v35];
+  [classIterator2 selectGlobalWithIterator:v35];
 
   v27 = MCMSharedBackgroundQueue();
   block[0] = MEMORY[0x1E69E9820];
@@ -346,9 +346,9 @@ uint64_t __48__MCMClientConnection__regenerateContainerPaths__block_invoke_2(uin
   v31[1] = 3221225472;
   v31[2] = __67__MCMClientConnection_rebootContainerManagerCleanupWithCompletion___block_invoke_2_34;
   v31[3] = &unk_1E86AFA58;
-  v32 = v4;
+  v32 = completionCopy;
   v33 = v44;
-  v29 = v4;
+  v29 = completionCopy;
   dispatch_async(v28, v31);
 
   _Block_object_dispose(v42, 8);
@@ -578,14 +578,14 @@ uint64_t __67__MCMClientConnection_rebootContainerManagerCleanupWithCompletion__
   return [v2 _cleanupOrphanedDataForDirectories:v3 containerClass:v4 forUserIdentity:v5];
 }
 
-- (void)_cleanTransientContainersWithContainerConfig:(id)a3
+- (void)_cleanTransientContainersWithContainerConfig:(id)config
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 usesGlobalBundleUserIdentity] & 1) != 0 || objc_msgSend(v4, "usesGlobalSystemUserIdentity"))
+  configCopy = config;
+  if (([configCopy usesGlobalBundleUserIdentity] & 1) != 0 || objc_msgSend(configCopy, "usesGlobalSystemUserIdentity"))
   {
     v5 = +[MCMContainerClassTransientPath transientGlobalURL];
-    if ([v4 usesGlobalBundleUserIdentity])
+    if ([configCopy usesGlobalBundleUserIdentity])
     {
       v6 = +[MCMContainerClassTransientPath transientGlobalBundleURL];
 
@@ -594,10 +594,10 @@ uint64_t __67__MCMClientConnection_rebootContainerManagerCleanupWithCompletion__
 
     if (v5)
     {
-      v7 = [(MCMClientConnection *)self context];
-      v8 = [v7 containerFactory];
+      context = [(MCMClientConnection *)self context];
+      containerFactory = [context containerFactory];
       v13 = 0;
-      v9 = [v8 deleteURL:v5 forUserIdentity:0 error:&v13];
+      v9 = [containerFactory deleteURL:v5 forUserIdentity:0 error:&v13];
       v10 = v13;
 
       if ((v9 & 1) == 0)
@@ -617,26 +617,26 @@ uint64_t __67__MCMClientConnection_rebootContainerManagerCleanupWithCompletion__
 
   else
   {
-    [(MCMClientConnection *)self _cleanTransientUserContainersWithContainerConfig:v4];
+    [(MCMClientConnection *)self _cleanTransientUserContainersWithContainerConfig:configCopy];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_cleanTransientUserContainersWithContainerConfig:(id)a3
+- (void)_cleanTransientUserContainersWithContainerConfig:(id)config
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MCMClientConnection *)self context];
-  v6 = [v5 userIdentityCache];
+  configCopy = config;
+  context = [(MCMClientConnection *)self context];
+  userIdentityCache = [context userIdentityCache];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __72__MCMClientConnection__cleanTransientUserContainersWithContainerConfig___block_invoke;
   v9[3] = &unk_1E86AFF48;
-  v10 = v4;
-  v11 = self;
-  v7 = v4;
-  [v6 forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v9];
+  v10 = configCopy;
+  selfCopy = self;
+  v7 = configCopy;
+  [userIdentityCache forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v9];
 
   v8 = *MEMORY[0x1E69E9840];
 }
@@ -690,9 +690,9 @@ void __72__MCMClientConnection__cleanTransientUserContainersWithContainerConfig_
   {
     [(MCMClientConnection *)self _regenerateContainerPaths];
     v4 = +[MCMContainerMigrator sharedInstance];
-    v5 = [(MCMClientConnection *)self context];
+    context = [(MCMClientConnection *)self context];
     v20 = 0;
-    v6 = [v4 performSynchronousBuildUpgradeMigration:v3 context:v5 error:&v20];
+    v6 = [v4 performSynchronousBuildUpgradeMigration:v3 context:context error:&v20];
     v7 = v20;
 
     if ((v6 & 1) == 0)
@@ -732,8 +732,8 @@ void __72__MCMClientConnection__cleanTransientUserContainersWithContainerConfig_
     if (v19 > 0 || (multiuser_flags = 0, v14 = MEMORY[0x1E12D3930](), !host_get_multiuser_config_flags(v14, &multiuser_flags)) && (multiuser_flags & 0x80000000) != 0)
     {
       v15 = +[MCMGroupManager defaultManager];
-      v16 = [(MCMClientConnection *)self context];
-      [v15 reconcileGroupContainersForContainerClass:7 context:v16];
+      context2 = [(MCMClientConnection *)self context];
+      [v15 reconcileGroupContainersForContainerClass:7 context:context2];
     }
   }
 
@@ -760,24 +760,24 @@ void __72__MCMClientConnection__cleanTransientUserContainersWithContainerConfig_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_containerURL:(id)a3 isValidForContainerClass:(unint64_t)a4
+- (BOOL)_containerURL:(id)l isValidForContainerClass:(unint64_t)class
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  lCopy = l;
   v6 = objc_alloc(MEMORY[0x1E696AFB0]);
-  v7 = [v5 lastPathComponent];
-  v8 = [v6 initWithUUIDString:v7];
+  lastPathComponent = [lCopy lastPathComponent];
+  v8 = [v6 initWithUUIDString:lastPathComponent];
 
-  if (a4 == 12)
+  if (class == 12)
   {
     v9 = +[MCMEntitlementBypassList sharedBypassList];
-    v10 = [v5 lastPathComponent];
-    v11 = [v9 systemContainerIdIsWellknown:v10];
+    lastPathComponent2 = [lCopy lastPathComponent];
+    v11 = [v9 systemContainerIdIsWellknown:lastPathComponent2];
   }
 
   else
   {
-    if (a4 != 13)
+    if (class != 13)
     {
 LABEL_7:
       v13 = v8 != 0;
@@ -785,8 +785,8 @@ LABEL_7:
     }
 
     v9 = +[MCMEntitlementBypassList sharedBypassList];
-    v10 = [v5 lastPathComponent];
-    v11 = [v9 systemGroupContainerIdIsWellknown:v10];
+    lastPathComponent2 = [lCopy lastPathComponent];
+    v11 = [v9 systemGroupContainerIdIsWellknown:lastPathComponent2];
   }
 
   v12 = v11;
@@ -803,17 +803,17 @@ LABEL_8:
   return v13;
 }
 
-- (void)_cleanupOrphanedDataForDirectories:(id)a3 containerClass:(unint64_t)a4 forUserIdentity:(id)a5
+- (void)_cleanupOrphanedDataForDirectories:(id)directories containerClass:(unint64_t)class forUserIdentity:(id)identity
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v43 = a5;
-  obj = v8;
+  directoriesCopy = directories;
+  identityCopy = identity;
+  obj = directoriesCopy;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v51 objects:v50 count:16];
+  v9 = [directoriesCopy countByEnumeratingWithState:&v51 objects:v50 count:16];
   if (v9)
   {
     v11 = v9;
@@ -831,9 +831,9 @@ LABEL_8:
         }
 
         v15 = *(*(&v51 + 1) + 8 * i);
-        v16 = [(MCMClientConnection *)self _containerURL:v15 isValidForContainerClass:a4, v42];
-        v17 = [p_superclass + 409 defaultManager];
-        v18 = [v17 itemExistsAtURL:v15];
+        v16 = [(MCMClientConnection *)self _containerURL:v15 isValidForContainerClass:class, v42];
+        defaultManager = [p_superclass + 409 defaultManager];
+        v18 = [defaultManager itemExistsAtURL:v15];
 
         if (!v18)
         {
@@ -843,9 +843,9 @@ LABEL_8:
             goto LABEL_32;
           }
 
-          v26 = [v15 path];
+          path = [v15 path];
           *buf = 138412290;
-          v47 = v26;
+          v47 = path;
           _os_log_debug_impl(&dword_1DF2C3000, v19, OS_LOG_TYPE_DEBUG, "Ignoring deleted container path during cleanup: [%@]", buf, 0xCu);
 
 LABEL_28:
@@ -856,20 +856,20 @@ LABEL_28:
         if (v16)
         {
           v19 = [v15 URLByAppendingPathComponent:@".com.apple.mobile_container_manager.metadata.plist" isDirectory:0];
-          v20 = [p_superclass + 409 defaultManager];
-          v21 = [v20 itemDoesNotExistAtURL:v19];
+          defaultManager2 = [p_superclass + 409 defaultManager];
+          v21 = [defaultManager2 itemDoesNotExistAtURL:v19];
 
           if (!v21)
           {
             goto LABEL_32;
           }
 
-          if ((a4 & 0xFFFFFFFFFFFFFFFELL) == 0xC)
+          if ((class & 0xFFFFFFFFFFFFFFFELL) == 0xC)
           {
-            v22 = [v15 lastPathComponent];
+            lastPathComponent = [v15 lastPathComponent];
             v23 = +[MCMEntitlementBypassList sharedBypassList];
             v24 = v23;
-            v25 = a4 == 13 ? [v23 systemGroupContainerIdIsWellknown:v22] : objc_msgSend(v23, "systemContainerIdIsWellknown:", v22);
+            v25 = class == 13 ? [v23 systemGroupContainerIdIsWellknown:lastPathComponent] : objc_msgSend(v23, "systemContainerIdIsWellknown:", lastPathComponent);
             v27 = v25;
 
             if (v27)
@@ -881,17 +881,17 @@ LABEL_28:
           v28 = container_log_handle_for_category();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
           {
-            v40 = [v15 path];
+            path2 = [v15 path];
             *buf = 138412290;
-            v47 = v40;
+            v47 = path2;
             _os_log_error_impl(&dword_1DF2C3000, v28, OS_LOG_TYPE_ERROR, "Deleting orphaned data missing a metadata file at: %@", buf, 0xCu);
           }
         }
 
         v29 = containermanager_copy_global_configuration();
-        v30 = [v29 isInternalImage];
+        isInternalImage = [v29 isInternalImage];
 
-        if (v30)
+        if (isInternalImage)
         {
           v31 = container_log_handle_for_category();
           if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -918,10 +918,10 @@ LABEL_28:
           }
         }
 
-        v35 = [(MCMClientConnection *)self context];
-        v36 = [v35 containerFactory];
+        context = [(MCMClientConnection *)self context];
+        containerFactory = [context containerFactory];
         v45 = 0;
-        v37 = [v36 deleteURL:v15 forUserIdentity:v43 error:&v45];
+        v37 = [containerFactory deleteURL:v15 forUserIdentity:identityCopy error:&v45];
         v19 = v45;
 
         if (v37)
@@ -933,9 +933,9 @@ LABEL_28:
         p_superclass = (&OBJC_METACLASS___MCMCommandQuery + 8);
         if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
         {
-          v39 = [v15 path];
+          path3 = [v15 path];
           *buf = v42;
-          v47 = v39;
+          v47 = path3;
           v48 = 2112;
           v49 = v19;
           _os_log_error_impl(&dword_1DF2C3000, v38, OS_LOG_TYPE_ERROR, "Failed to delete [%@]; error = %@", buf, 0x16u);
@@ -955,10 +955,10 @@ LABEL_32:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)containerManagerCleanupWithCompletion:(id)a3
+- (void)containerManagerCleanupWithCompletion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
@@ -1000,8 +1000,8 @@ LABEL_32:
 
     else
     {
-      v14 = [v36[5] domain];
-      if ([v14 isEqualToString:*MEMORY[0x1E696A798]])
+      domain = [v36[5] domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A798]])
       {
         v15 = [v36[5] code] == 2;
 
@@ -1018,10 +1018,10 @@ LABEL_32:
       v13 = container_log_handle_for_category();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        v23 = [v8 path];
+        path = [v8 path];
         v24 = v36[5];
         *buf = 138412546;
-        v42 = v23;
+        v42 = path;
         v43 = 2112;
         v44 = v24;
         _os_log_error_impl(&dword_1DF2C3000, v13, OS_LOG_TYPE_ERROR, "Failed to get items at global staging URL: %@ : %@", buf, 0x16u);
@@ -1036,15 +1036,15 @@ LABEL_11:
 
   if (v17)
   {
-    v18 = [(MCMClientConnection *)self context];
-    v19 = [v18 userIdentityCache];
+    context = [(MCMClientConnection *)self context];
+    userIdentityCache = [context userIdentityCache];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __61__MCMClientConnection_containerManagerCleanupWithCompletion___block_invoke_2;
     v27[3] = &unk_1E86AF9B8;
     v29 = &v35;
     v28 = v5;
-    [v19 forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v27];
+    [userIdentityCache forEachAccessibleUserIdentitySynchronouslyExecuteBlock:v27];
   }
 
   v20 = MCMSharedBackgroundQueue();
@@ -1053,8 +1053,8 @@ LABEL_11:
   v25[2] = __61__MCMClientConnection_containerManagerCleanupWithCompletion___block_invoke_2_13;
   v25[3] = &unk_1E86B07F8;
   v25[4] = self;
-  v26 = v4;
-  v21 = v4;
+  v26 = completionCopy;
+  v21 = completionCopy;
   dispatch_async(v20, v25);
 
   _Block_object_dispose(&v35, 8);
@@ -1242,11 +1242,11 @@ uint64_t __61__MCMClientConnection_containerManagerCleanupWithCompletion___block
 
   if (v4 == 1)
   {
-    v5 = [(MCMClientConnection *)self context];
+    context = [(MCMClientConnection *)self context];
     v6 = containermanager_copy_global_configuration();
-    v7 = [v6 systemContainerMode];
+    systemContainerMode = [v6 systemContainerMode];
 
-    if (!v7)
+    if (!systemContainerMode)
     {
 LABEL_60:
 
@@ -1255,17 +1255,17 @@ LABEL_60:
 
     v8 = +[MCMFileManager defaultManager];
     v9 = containermanager_copy_global_configuration();
-    v10 = [v9 systemContainerMode];
+    systemContainerMode2 = [v9 systemContainerMode];
 
-    if (v10 == 1)
+    if (systemContainerMode2 == 1)
     {
       v11 = +[MCMUserIdentitySharedCache sharedInstance];
-      v12 = [v11 globalSystemUserIdentity];
+      globalSystemUserIdentity = [v11 globalSystemUserIdentity];
     }
 
     else
     {
-      if (v10 != 2)
+      if (systemContainerMode2 != 2)
       {
 LABEL_59:
 
@@ -1273,10 +1273,10 @@ LABEL_59:
       }
 
       v11 = +[MCMUserIdentitySharedCache sharedInstance];
-      v12 = [v11 userIdentityForCurrentContext];
+      globalSystemUserIdentity = [v11 userIdentityForCurrentContext];
     }
 
-    v13 = v12;
+    v13 = globalSystemUserIdentity;
 
     v14 = [MCMContainerClassBackupPath systemContainerBackupBaseDirectoryWithUserIdentity:v13];
     v15 = [MCMContainerClassBackupPath systemContainerBackupDirectoryWithUserIdentity:v13];
@@ -1308,9 +1308,9 @@ LABEL_54:
         v44 = container_log_handle_for_category();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
         {
-          v59 = [v14 path];
+          path = [v14 path];
           *v71 = 138412546;
-          v72 = v59;
+          v72 = path;
           v73 = 2112;
           v74 = v43;
           _os_log_error_impl(&dword_1DF2C3000, v44, OS_LOG_TYPE_ERROR, "Failed to remove system container base dir %@: %@", v71, 0x16u);
@@ -1431,7 +1431,7 @@ LABEL_69:
                     objc_enumerationMutation(v17);
                   }
 
-                  _moveSystemContainerIntoPlace(*(*(&v79 + 1) + 8 * i), 13, v5, v13);
+                  _moveSystemContainerIntoPlace(*(*(&v79 + 1) + 8 * i), 13, context, v13);
                 }
 
                 v56 = [v17 countByEnumeratingWithState:&v79 objects:v75 count:16];
@@ -1500,7 +1500,7 @@ LABEL_34:
                   objc_enumerationMutation(v18);
                 }
 
-                _moveSystemContainerIntoPlace(*(*(&v87 + 1) + 8 * j), 12, v5, v13);
+                _moveSystemContainerIntoPlace(*(*(&v87 + 1) + 8 * j), 12, context, v13);
               }
 
               v37 = [v18 countByEnumeratingWithState:&v87 objects:buf count:16];
@@ -1568,9 +1568,9 @@ LABEL_49:
   }
 
 LABEL_61:
-  v45 = [(MCMClientConnection *)self context];
+  context2 = [(MCMClientConnection *)self context];
   v65 = 0;
-  v46 = [MCMCommandReplaceContainer recoverFromReplaceOperationsWithContext:v45 error:&v65];
+  v46 = [MCMCommandReplaceContainer recoverFromReplaceOperationsWithContext:context2 error:&v65];
   v47 = v65;
 
   if (!v46)
@@ -1585,9 +1585,9 @@ LABEL_61:
   }
 
   v49 = containermanager_copy_global_configuration();
-  v50 = [v49 runmode];
+  runmode = [v49 runmode];
 
-  if (v50)
+  if (runmode)
   {
     v51 = +[MCMDataProtectionManager defaultManager];
     [v51 restartPendingDataProtectionOperations];
@@ -1599,27 +1599,27 @@ LABEL_61:
 - (id)clientBundleIdentifier
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = [(MCMClientConnection *)self context];
-  v3 = [v2 clientIdentity];
-  v4 = [v3 codeSignInfo];
-  v5 = [v4 identifier];
+  context = [(MCMClientConnection *)self context];
+  clientIdentity = [context clientIdentity];
+  codeSignInfo = [clientIdentity codeSignInfo];
+  identifier = [codeSignInfo identifier];
 
   v6 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return identifier;
 }
 
-- (MCMClientConnection)initWithContext:(id)a3
+- (MCMClientConnection)initWithContext:(id)context
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = MCMClientConnection;
   v6 = [(MCMClientConnection *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1635,8 +1635,8 @@ LABEL_61:
   if (v2)
   {
     v3 = +[MCMUserIdentitySharedCache sharedInstance];
-    v4 = [v3 defaultUserIdentity];
-    v5 = [MCMClientIdentity anonymousPrivilegedClientIdentityWithUserIdentity:v4];
+    defaultUserIdentity = [v3 defaultUserIdentity];
+    v5 = [MCMClientIdentity anonymousPrivilegedClientIdentityWithUserIdentity:defaultUserIdentity];
     v6 = [MCMContainerFactory alloc];
     v7 = [(MCMContainerFactory *)v6 initWithContainerCache:gContainerCache clientIdentity:v5 userIdentityCache:v3];
     v8 = [MCMCommandContext alloc];
@@ -1651,12 +1651,12 @@ LABEL_61:
   return v2;
 }
 
-+ (id)privilegedClientConnectionWithUserIdentity:(id)a3
++ (id)privilegedClientConnectionWithUserIdentity:(id)identity
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E69E9840];
 
-  return [a1 privilegedClientConnectionWithUserIdentity:a3 kernel:0];
+  return [self privilegedClientConnectionWithUserIdentity:identity kernel:0];
 }
 
 + (id)sharedClientConnection

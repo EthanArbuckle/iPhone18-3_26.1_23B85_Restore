@@ -1,37 +1,37 @@
 @interface FCPersonalizationWhitelist
-- (FCPersonalizationWhitelist)initWithCoder:(id)a3;
-- (FCPersonalizationWhitelist)initWithPBPersonalizationWhitelist:(id)a3;
+- (FCPersonalizationWhitelist)initWithCoder:(id)coder;
+- (FCPersonalizationWhitelist)initWithPBPersonalizationWhitelist:(id)whitelist;
 - (id)jsonEncodableObject;
 - (unint64_t)count;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationWhitelist
 
-- (FCPersonalizationWhitelist)initWithPBPersonalizationWhitelist:(id)a3
+- (FCPersonalizationWhitelist)initWithPBPersonalizationWhitelist:(id)whitelist
 {
-  v5 = a3;
+  whitelistCopy = whitelist;
   v19.receiver = self;
   v19.super_class = FCPersonalizationWhitelist;
   v6 = [(FCPersonalizationWhitelist *)&v19 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pbWhitelist, a3);
+    objc_storeStrong(&v6->_pbWhitelist, whitelist);
     v8 = MEMORY[0x1E695DF20];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __65__FCPersonalizationWhitelist_initWithPBPersonalizationWhitelist___block_invoke;
     v17[3] = &unk_1E7C36EC8;
-    v9 = v5;
+    v9 = whitelistCopy;
     v18 = v9;
     v10 = [v8 fc_dictionary:v17];
     whitelist = v7->_whitelist;
     v7->_whitelist = v10;
 
     v12 = MEMORY[0x1E695DFD8];
-    v13 = [v9 disabledPortraitTags];
-    v14 = [v12 setWithArray:v13];
+    disabledPortraitTags = [v9 disabledPortraitTags];
+    v14 = [v12 setWithArray:disabledPortraitTags];
     portraitDisabledTagIDs = v7->_portraitDisabledTagIDs;
     v7->_portraitDisabledTagIDs = v14;
   }
@@ -131,38 +131,38 @@ void __65__FCPersonalizationWhitelist_initWithPBPersonalizationWhitelist___block
 
 - (unint64_t)count
 {
-  v3 = [(FCPersonalizationWhitelist *)self defaultTags];
-  v4 = [v3 count];
-  v5 = [(FCPersonalizationWhitelist *)self optionalTags];
-  v6 = [v5 count];
+  defaultTags = [(FCPersonalizationWhitelist *)self defaultTags];
+  v4 = [defaultTags count];
+  optionalTags = [(FCPersonalizationWhitelist *)self optionalTags];
+  v6 = [optionalTags count];
 
   return v6 + v4;
 }
 
-- (FCPersonalizationWhitelist)initWithCoder:(id)a3
+- (FCPersonalizationWhitelist)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"whiteList"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"whiteList"];
 
   v6 = [(FCPersonalizationWhitelist *)self initWithPBPersonalizationWhitelist:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pbWhitelist = self->_pbWhitelist;
   if (pbWhitelist)
   {
-    [a3 encodeObject:pbWhitelist forKey:@"whiteList"];
+    [coder encodeObject:pbWhitelist forKey:@"whiteList"];
   }
 }
 
 - (id)jsonEncodableObject
 {
-  v2 = [(FCPersonalizationWhitelist *)self whitelist];
-  v3 = [v2 fc_jsonEncodableDictionary];
+  whitelist = [(FCPersonalizationWhitelist *)self whitelist];
+  fc_jsonEncodableDictionary = [whitelist fc_jsonEncodableDictionary];
 
-  return v3;
+  return fc_jsonEncodableDictionary;
 }
 
 @end

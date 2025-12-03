@@ -1,69 +1,69 @@
 @interface TPSCallWaitingResponse
 + (id)unarchivedObjectClasses;
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToResponse:(id)a3;
-- (TPSCallWaitingResponse)initWithCoder:(id)a3;
-- (TPSCallWaitingResponse)initWithSubscriptionContext:(id)a3 error:(id)a4;
-- (TPSCallWaitingResponse)initWithsubscriptionContext:(id)a3 error:(id)a4 enabled:(BOOL)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)unarchivedObjectFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToResponse:(id)response;
+- (TPSCallWaitingResponse)initWithCoder:(id)coder;
+- (TPSCallWaitingResponse)initWithSubscriptionContext:(id)context error:(id)error;
+- (TPSCallWaitingResponse)initWithsubscriptionContext:(id)context error:(id)error enabled:(BOOL)enabled;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TPSCallWaitingResponse
 
-- (TPSCallWaitingResponse)initWithSubscriptionContext:(id)a3 error:(id)a4
+- (TPSCallWaitingResponse)initWithSubscriptionContext:(id)context error:(id)error
 {
-  [(TPSCallWaitingResponse *)self doesNotRecognizeSelector:a2, a4];
+  [(TPSCallWaitingResponse *)self doesNotRecognizeSelector:a2, error];
 
   return 0;
 }
 
-- (TPSCallWaitingResponse)initWithsubscriptionContext:(id)a3 error:(id)a4 enabled:(BOOL)a5
+- (TPSCallWaitingResponse)initWithsubscriptionContext:(id)context error:(id)error enabled:(BOOL)enabled
 {
   v7.receiver = self;
   v7.super_class = TPSCallWaitingResponse;
-  result = [(TPSResponse *)&v7 initWithSubscriptionContext:a3 error:a4];
+  result = [(TPSResponse *)&v7 initWithSubscriptionContext:context error:error];
   if (result)
   {
-    result->_enabled = a5;
+    result->_enabled = enabled;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = TPSCallWaitingResponse;
-  result = [(TPSResponse *)&v5 copyWithZone:a3];
+  result = [(TPSResponse *)&v5 copyWithZone:zone];
   *(result + 24) = self->_enabled;
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = TPSCallWaitingResponse;
-  v4 = a3;
-  [(TPSResponse *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(TPSResponse *)&v7 encodeWithCoder:coderCopy];
   enabled = self->_enabled;
   v6 = NSStringFromSelector(sel_enabled);
-  [v4 encodeBool:enabled forKey:{v6, v7.receiver, v7.super_class}];
+  [coderCopy encodeBool:enabled forKey:{v6, v7.receiver, v7.super_class}];
 }
 
-- (TPSCallWaitingResponse)initWithCoder:(id)a3
+- (TPSCallWaitingResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = TPSCallWaitingResponse;
-  v5 = [(TPSResponse *)&v8 initWithCoder:v4];
+  v5 = [(TPSResponse *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = NSStringFromSelector(sel_enabled);
-    v5->_enabled = [v4 decodeBoolForKey:v6];
+    v5->_enabled = [coderCopy decodeBoolForKey:v6];
   }
 
   return v5;
@@ -74,13 +74,13 @@
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
   [v3 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v4 = NSStringFromSelector(sel_subscriptionContext);
-  v5 = [(TPSResponse *)self subscriptionContext];
-  [v3 appendFormat:@"%@=%@", v4, v5];
+  subscriptionContext = [(TPSResponse *)self subscriptionContext];
+  [v3 appendFormat:@"%@=%@", v4, subscriptionContext];
 
   [v3 appendFormat:@", "];
   v6 = NSStringFromSelector(sel_error);
-  v7 = [(TPSResponse *)self error];
-  [v3 appendFormat:@"%@=%@", v6, v7];
+  error = [(TPSResponse *)self error];
+  [v3 appendFormat:@"%@=%@", v6, error];
 
   [v3 appendFormat:@", "];
   v8 = NSStringFromSelector(sel_enabled);
@@ -101,10 +101,10 @@
   return v3 ^ [(TPSCallWaitingResponse *)self enabled];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -112,21 +112,21 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSCallWaitingResponse *)self isEqualToResponse:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TPSCallWaitingResponse *)self isEqualToResponse:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToResponse:(id)a3
+- (BOOL)isEqualToResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v8.receiver = self;
   v8.super_class = TPSCallWaitingResponse;
-  if ([(TPSResponse *)&v8 isEqualToResponse:v4])
+  if ([(TPSResponse *)&v8 isEqualToResponse:responseCopy])
   {
-    v5 = [(TPSCallWaitingResponse *)self enabled];
-    v6 = v5 ^ [v4 enabled] ^ 1;
+    enabled = [(TPSCallWaitingResponse *)self enabled];
+    v6 = enabled ^ [responseCopy enabled] ^ 1;
   }
 
   else
@@ -141,7 +141,7 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___TPSCallWaitingResponse;
   v4 = objc_msgSendSuper2(&v10, sel_unarchivedObjectClasses);
   v5 = [v3 initWithSet:v4];
@@ -156,12 +156,12 @@
   return v7;
 }
 
-+ (id)unarchivedObjectFromData:(id)a3 error:(id *)a4
++ (id)unarchivedObjectFromData:(id)data error:(id *)error
 {
   v6 = MEMORY[0x277CCAAC8];
-  v7 = a3;
-  v8 = [a1 unarchivedObjectClasses];
-  v9 = [v6 unarchivedObjectOfClasses:v8 fromData:v7 error:a4];
+  dataCopy = data;
+  unarchivedObjectClasses = [self unarchivedObjectClasses];
+  v9 = [v6 unarchivedObjectOfClasses:unarchivedObjectClasses fromData:dataCopy error:error];
 
   return v9;
 }

@@ -1,22 +1,22 @@
 @interface AXInvertColors_TV
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_TV
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VideosFeatureLoadingView"];
-  [v3 validateClass:@"VideosPlaybackViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VideosFeatureLoadingView"];
+  [validationsCopy validateClass:@"VideosPlaybackViewController" isKindOfClass:@"UIViewController"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"VideosFeatureLoadingViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"VideosPlaybackViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"VideosFeatureLoadingViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"VideosPlaybackViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

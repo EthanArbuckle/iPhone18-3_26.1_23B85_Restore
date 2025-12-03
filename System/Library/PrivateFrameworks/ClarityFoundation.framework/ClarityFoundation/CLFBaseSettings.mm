@@ -3,12 +3,12 @@
 + (void)deleteAllKeys;
 - (CLFBaseSettings)init;
 - (NSString)domainName;
-- (id)observeUpdatesForSelector:(SEL)a3 handler:(id)a4;
-- (id)preferenceKeyForSelector:(SEL)a3;
+- (id)observeUpdatesForSelector:(SEL)selector handler:(id)handler;
+- (id)preferenceKeyForSelector:(SEL)selector;
 - (uint64_t)preferenceKeysBySelectorName;
 - (void)_deleteAllKeys;
 - (void)deleteAllKeys;
-- (void)registerUpdateBlock:(id)a3 withListener:(id)a4;
+- (void)registerUpdateBlock:(id)block withListener:(id)listener;
 @end
 
 @implementation CLFBaseSettings
@@ -27,34 +27,34 @@
   v2 = [(AXBaseSettings *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     preferenceKeysBySelectorName = v2->_preferenceKeysBySelectorName;
-    v2->_preferenceKeysBySelectorName = v3;
+    v2->_preferenceKeysBySelectorName = dictionary;
   }
 
   return v2;
 }
 
-- (id)observeUpdatesForSelector:(SEL)a3 handler:(id)a4
+- (id)observeUpdatesForSelector:(SEL)selector handler:(id)handler
 {
-  v6 = a4;
-  v7 = [[_CLFSettingsObserver alloc] initWithSettings:self settingsSelector:a3];
-  [(AXBaseSettings *)self registerUpdateBlock:v6 forRetrieveSelector:a3 withListener:v7];
+  handlerCopy = handler;
+  v7 = [[_CLFSettingsObserver alloc] initWithSettings:self settingsSelector:selector];
+  [(AXBaseSettings *)self registerUpdateBlock:handlerCopy forRetrieveSelector:selector withListener:v7];
 
   return v7;
 }
 
-- (void)registerUpdateBlock:(id)a3 withListener:(id)a4
+- (void)registerUpdateBlock:(id)block withListener:(id)listener
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  listenerCopy = listener;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [objc_opt_class() allPreferenceSelectorsAsStrings];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allPreferenceSelectorsAsStrings = [objc_opt_class() allPreferenceSelectorsAsStrings];
+  v9 = [allPreferenceSelectorsAsStrings countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -66,14 +66,14 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allPreferenceSelectorsAsStrings);
         }
 
-        [(AXBaseSettings *)self registerUpdateBlock:v6 forRetrieveSelector:NSSelectorFromString(*(*(&v14 + 1) + 8 * v12++)) withListener:v7];
+        [(AXBaseSettings *)self registerUpdateBlock:blockCopy forRetrieveSelector:NSSelectorFromString(*(*(&v14 + 1) + 8 * v12++)) withListener:listenerCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allPreferenceSelectorsAsStrings countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -97,23 +97,23 @@
 
 + (void)deleteAllKeys
 {
-  v4 = [a1 domainName];
-  v2 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:v4];
+  domainName = [self domainName];
+  v2 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:domainName];
   v3 = v2;
   if (v2)
   {
-    [v2 removePersistentDomainForName:v4];
+    [v2 removePersistentDomainForName:domainName];
   }
 }
 
 - (void)_deleteAllKeys
 {
-  v4 = [(CLFBaseSettings *)self domainName];
-  v2 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:v4];
+  domainName = [(CLFBaseSettings *)self domainName];
+  v2 = [objc_alloc(MEMORY[0x1E695E000]) initWithSuiteName:domainName];
   v3 = v2;
   if (v2)
   {
-    [v2 removePersistentDomainForName:v4];
+    [v2 removePersistentDomainForName:domainName];
   }
 }
 
@@ -124,7 +124,7 @@
   return &stru_1F5C05698;
 }
 
-- (id)preferenceKeyForSelector:(SEL)a3
+- (id)preferenceKeyForSelector:(SEL)selector
 {
   if (self)
   {
@@ -137,7 +137,7 @@
   }
 
   v5 = preferenceKeysBySelectorName;
-  v6 = NSStringFromSelector(a3);
+  v6 = NSStringFromSelector(selector);
   v7 = [(NSMutableDictionary *)v5 objectForKeyedSubscript:v6];
 
   return v7;

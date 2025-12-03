@@ -1,87 +1,87 @@
 @interface REMSmartList
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isOriginOfExistingTemplate;
 - (BOOL)isPinned;
 - (BOOL)isUnsupported;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (REMAccountCapabilities)accountCapabilities;
-- (REMSmartList)initWithStore:(id)a3 account:(id)a4 parentList:(id)a5 storage:(id)a6;
-- (REMSmartList)initWithStore:(id)a3 storage:(id)a4;
+- (REMSmartList)initWithStore:(id)store account:(id)account parentList:(id)list storage:(id)storage;
+- (REMSmartList)initWithStore:(id)store storage:(id)storage;
 - (REMSmartListCustomContext)customContext;
 - (REMSmartListSectionContext)sectionContext;
 - (id)debugDescription;
 - (id)description;
 - (id)optionalObjectID;
-- (id)valueForUndefinedKey:(id)a3;
+- (id)valueForUndefinedKey:(id)key;
 - (unint64_t)hash;
 - (void)customContext;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 @end
 
 @implementation REMSmartList
 
-- (REMSmartList)initWithStore:(id)a3 storage:(id)a4
+- (REMSmartList)initWithStore:(id)store storage:(id)storage
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  storageCopy = storage;
   v12.receiver = self;
   v12.super_class = REMSmartList;
   v9 = [(REMSmartList *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_store, a3);
-    objc_storeStrong(&v10->_storage, a4);
-    -[REMSmartListStorage setStoreGenerationIfNeeded:](v10->_storage, "setStoreGenerationIfNeeded:", [v7 storeGeneration]);
+    objc_storeStrong(&v9->_store, store);
+    objc_storeStrong(&v10->_storage, storage);
+    -[REMSmartListStorage setStoreGenerationIfNeeded:](v10->_storage, "setStoreGenerationIfNeeded:", [storeCopy storeGeneration]);
   }
 
   return v10;
 }
 
-- (REMSmartList)initWithStore:(id)a3 account:(id)a4 parentList:(id)a5 storage:(id)a6
+- (REMSmartList)initWithStore:(id)store account:(id)account parentList:(id)list storage:(id)storage
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = [(REMSmartList *)self initWithStore:a3 storage:a6];
+  accountCopy = account;
+  listCopy = list;
+  v12 = [(REMSmartList *)self initWithStore:store storage:storage];
   account = v12->_account;
-  v12->_account = v10;
-  v14 = v10;
+  v12->_account = accountCopy;
+  v14 = accountCopy;
 
   parentList = v12->_parentList;
-  v12->_parentList = v11;
+  v12->_parentList = listCopy;
 
   return v12;
 }
 
 - (id)optionalObjectID
 {
-  v2 = [(REMSmartList *)self storage];
-  v3 = [v2 optionalObjectID];
+  storage = [(REMSmartList *)self storage];
+  optionalObjectID = [storage optionalObjectID];
 
-  return v3;
+  return optionalObjectID;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v5 = [(REMSmartList *)self store];
-  v6 = [v4 store];
-  v7 = v6;
-  if (v5 == v6)
+  store = [(REMSmartList *)self store];
+  store2 = [equalCopy store];
+  v7 = store2;
+  if (store == store2)
   {
   }
 
   else
   {
-    v8 = [(REMSmartList *)self store];
-    v9 = [v4 store];
-    v10 = [v8 isEqual:v9];
+    store3 = [(REMSmartList *)self store];
+    store4 = [equalCopy store];
+    v10 = [store3 isEqual:store4];
 
     if (!v10)
     {
@@ -89,18 +89,18 @@
     }
   }
 
-  v11 = [(REMSmartList *)self account];
-  v12 = [v4 account];
-  v13 = v12;
-  if (v11 == v12)
+  account = [(REMSmartList *)self account];
+  account2 = [equalCopy account];
+  v13 = account2;
+  if (account == account2)
   {
   }
 
   else
   {
-    v14 = [(REMSmartList *)self account];
-    v15 = [v4 account];
-    v16 = [v14 isEqual:v15];
+    account3 = [(REMSmartList *)self account];
+    account4 = [equalCopy account];
+    v16 = [account3 isEqual:account4];
 
     if (!v16)
     {
@@ -108,18 +108,18 @@
     }
   }
 
-  v17 = [(REMSmartList *)self parentList];
-  v18 = [v4 parentList];
-  v19 = v18;
-  if (v17 == v18)
+  parentList = [(REMSmartList *)self parentList];
+  parentList2 = [equalCopy parentList];
+  v19 = parentList2;
+  if (parentList == parentList2)
   {
   }
 
   else
   {
-    v20 = [(REMSmartList *)self parentList];
-    v21 = [v4 parentList];
-    v22 = [v20 isEqual:v21];
+    parentList3 = [(REMSmartList *)self parentList];
+    parentList4 = [equalCopy parentList];
+    v22 = [parentList3 isEqual:parentList4];
 
     if (!v22)
     {
@@ -129,18 +129,18 @@ LABEL_12:
     }
   }
 
-  v25 = [(REMSmartList *)self storage];
-  v26 = [v4 storage];
-  if (v25 == v26)
+  storage = [(REMSmartList *)self storage];
+  storage2 = [equalCopy storage];
+  if (storage == storage2)
   {
     v23 = 1;
   }
 
   else
   {
-    v27 = [(REMSmartList *)self storage];
-    v28 = [v4 storage];
-    v23 = [v27 isEqual:v28];
+    storage3 = [(REMSmartList *)self storage];
+    storage4 = [equalCopy storage];
+    v23 = [storage3 isEqual:storage4];
   }
 
 LABEL_13:
@@ -149,8 +149,8 @@ LABEL_13:
 
 - (unint64_t)hash
 {
-  v2 = [(REMSmartList *)self storage];
-  v3 = [v2 hash];
+  storage = [(REMSmartList *)self storage];
+  v3 = [storage hash];
 
   return v3;
 }
@@ -159,8 +159,8 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMSmartList *)self storage];
-  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v5];
+  storage = [(REMSmartList *)self storage];
+  v6 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, storage];
 
   return v6;
 }
@@ -169,23 +169,23 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMSmartList *)self storage];
-  v6 = [v5 debugDescription];
+  storage = [(REMSmartList *)self storage];
+  v6 = [storage debugDescription];
   v7 = [v3 stringWithFormat:@"<%@: %p %@>", v4, self, v6];
 
   return v7;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REMSmartList *)self storage];
-  v6 = [v5 valueForKey:v4];
+  keyCopy = key;
+  storage = [(REMSmartList *)self storage];
+  v6 = [storage valueForKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = REMSmartList;
@@ -196,71 +196,71 @@ LABEL_13:
 
   else
   {
-    v5 = [(REMSmartList *)self storage];
+    storage = [(REMSmartList *)self storage];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMSmartList *)self storage];
-  [v8 setValue:v7 forKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  storage = [(REMSmartList *)self storage];
+  [storage setValue:valueCopy forKey:keyCopy];
 }
 
 - (REMAccountCapabilities)accountCapabilities
 {
-  v2 = [(REMSmartList *)self storage];
-  v3 = [v2 accountCapabilities];
+  storage = [(REMSmartList *)self storage];
+  accountCapabilities = [storage accountCapabilities];
 
-  return v3;
+  return accountCapabilities;
 }
 
 - (BOOL)isPinned
 {
-  v2 = [(REMSmartList *)self pinnedDate];
-  v3 = v2 != 0;
+  pinnedDate = [(REMSmartList *)self pinnedDate];
+  v3 = pinnedDate != 0;
 
   return v3;
 }
 
 - (BOOL)isOriginOfExistingTemplate
 {
-  v2 = [(REMSmartList *)self mostRecentTargetTemplateIdentifier];
-  v3 = v2 != 0;
+  mostRecentTargetTemplateIdentifier = [(REMSmartList *)self mostRecentTargetTemplateIdentifier];
+  v3 = mostRecentTargetTemplateIdentifier != 0;
 
   return v3;
 }
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMSmartList *)self storage];
-  v3 = [v2 isUnsupported];
+  storage = [(REMSmartList *)self storage];
+  isUnsupported = [storage isUnsupported];
 
-  return v3;
+  return isUnsupported;
 }
 
 - (REMSmartListCustomContext)customContext
 {
-  v3 = [(REMSmartList *)self smartListType];
-  v4 = [v3 isEqualToString:@"com.apple.reminders.smartlist.custom"];
+  smartListType = [(REMSmartList *)self smartListType];
+  v4 = [smartListType isEqualToString:@"com.apple.reminders.smartlist.custom"];
 
   if (v4)
   {
-    v5 = [(REMSmartList *)self account];
+    account = [(REMSmartList *)self account];
 
-    if (!v5)
+    if (!account)
     {
       [REMSmartList customContext];
     }
 
     v6 = [REMSmartListCustomContext alloc];
-    v7 = [(REMSmartList *)self account];
-    v8 = [(REMSmartList *)self parentList];
-    v9 = [(REMSmartListCustomContext *)v6 initWithSmartList:self account:v7 parentList:v8];
+    account2 = [(REMSmartList *)self account];
+    parentList = [(REMSmartList *)self parentList];
+    v9 = [(REMSmartListCustomContext *)v6 initWithSmartList:self account:account2 parentList:parentList];
   }
 
   else
@@ -273,11 +273,11 @@ LABEL_13:
 
 - (REMSmartListSectionContext)sectionContext
 {
-  v3 = [(REMSmartList *)self account];
-  v4 = [v3 capabilities];
-  v5 = [v4 supportsSections];
+  account = [(REMSmartList *)self account];
+  capabilities = [account capabilities];
+  supportsSections = [capabilities supportsSections];
 
-  if (v5)
+  if (supportsSections)
   {
     v6 = [[REMSmartListSectionContext alloc] initWithSmartList:self];
   }

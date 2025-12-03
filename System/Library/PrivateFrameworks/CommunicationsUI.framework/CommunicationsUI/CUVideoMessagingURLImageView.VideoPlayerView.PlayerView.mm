@@ -1,5 +1,5 @@
 @interface CUVideoMessagingURLImageView.VideoPlayerView.PlayerView
-- (_TtCVV16CommunicationsUI28CUVideoMessagingURLImageView15VideoPlayerView10PlayerView)initWithFrame:(CGRect)a3;
+- (_TtCVV16CommunicationsUI28CUVideoMessagingURLImageView15VideoPlayerView10PlayerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -20,12 +20,12 @@
   }
 }
 
-- (_TtCVV16CommunicationsUI28CUVideoMessagingURLImageView15VideoPlayerView10PlayerView)initWithFrame:(CGRect)a3
+- (_TtCVV16CommunicationsUI28CUVideoMessagingURLImageView15VideoPlayerView10PlayerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCVV16CommunicationsUI28CUVideoMessagingURLImageView15VideoPlayerView10PlayerView_queuePlayer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCVV16CommunicationsUI28CUVideoMessagingURLImageView15VideoPlayerView10PlayerView_playerLayer) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCVV16CommunicationsUI28CUVideoMessagingURLImageView15VideoPlayerView10PlayerView_looper) = 0;

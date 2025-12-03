@@ -1,15 +1,15 @@
 @interface NTKVictoryLogoButton
-- (NTKVictoryLogoButton)initWithFrame:(CGRect)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (NTKVictoryLogoButton)initWithFrame:(CGRect)frame;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation NTKVictoryLogoButton
 
-- (NTKVictoryLogoButton)initWithFrame:(CGRect)a3
+- (NTKVictoryLogoButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NTKVictoryLogoButton;
-  v3 = [(NTKAdjustableTapTargetButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKAdjustableTapTargetButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -19,14 +19,14 @@
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v11.receiver = self;
   v11.super_class = NTKVictoryLogoButton;
   [(NTKVictoryLogoButton *)&v11 setHighlighted:?];
   v5 = MEMORY[0x277D75D18];
-  if (v3)
+  if (highlightedCopy)
   {
     v6 = v10;
     v10[0] = MEMORY[0x277D85DD0];

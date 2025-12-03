@@ -1,8 +1,8 @@
 @interface CSTCUPruner
 - (CSTCUIntendedInfoProviding)tcuIntendedInfoProvider;
 - (CSTCUPruner)init;
-- (id)processTCUPackage:(id)a3 requestId:(id)a4;
-- (void)processTRPCandidateInfo:(id)a3 requestId:(id)a4 withCompletion:(id)a5;
+- (id)processTCUPackage:(id)package requestId:(id)id;
+- (void)processTRPCandidateInfo:(id)info requestId:(id)id withCompletion:(id)completion;
 @end
 
 @implementation CSTCUPruner
@@ -14,10 +14,10 @@
   return WeakRetained;
 }
 
-- (id)processTCUPackage:(id)a3 requestId:(id)a4
+- (id)processTCUPackage:(id)package requestId:(id)id
 {
-  v6 = a3;
-  v7 = a4;
+  packageCopy = package;
+  idCopy = id;
   v8 = CSLogCategorySDSD;
   if (os_log_type_enabled(CSLogCategorySDSD, OS_LOG_TYPE_DEFAULT))
   {
@@ -26,15 +26,15 @@
     *buf = 136315650;
     v20 = "[CSTCUPruner processTCUPackage:requestId:]";
     v21 = 2112;
-    v22 = v6;
+    v22 = packageCopy;
     v23 = 2112;
     v24 = WeakRetained;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s tcuPackage:%@ _tcuIntendedInfoProvider:%@", buf, 0x20u);
   }
 
   v11 = objc_loadWeakRetained(&self->_tcuIntendedInfoProvider);
-  v12 = [v6 speechPackage];
-  v13 = [v11 constructTCUIntendedInfoForRequestId:v7 withResultCandidate:v12];
+  speechPackage = [packageCopy speechPackage];
+  v13 = [v11 constructTCUIntendedInfoForRequestId:idCopy withResultCandidate:speechPackage];
 
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
@@ -42,23 +42,23 @@
   v17[3] = &unk_10024E638;
   v18 = v13;
   v14 = v13;
-  v15 = [v6 mutatedCopyWithMutator:v17];
+  v15 = [packageCopy mutatedCopyWithMutator:v17];
 
   return v15;
 }
 
-- (void)processTRPCandidateInfo:(id)a3 requestId:(id)a4 withCompletion:(id)a5
+- (void)processTRPCandidateInfo:(id)info requestId:(id)id withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v25 = a5;
+  infoCopy = info;
+  idCopy = id;
+  completionCopy = completion;
   v10 = +[NSMutableArray array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v26 = v8;
-  obj = [v8 tcuList];
+  v26 = infoCopy;
+  obj = [infoCopy tcuList];
   v11 = [obj countByEnumeratingWithState:&v32 objects:v42 count:16];
   if (v11)
   {
@@ -89,8 +89,8 @@
         }
 
         v19 = objc_loadWeakRetained(&self->_tcuIntendedInfoProvider);
-        v20 = [v15 speechPackage];
-        v21 = [v19 constructTCUIntendedInfoForRequestId:v9 withResultCandidate:v20];
+        speechPackage = [v15 speechPackage];
+        v21 = [v19 constructTCUIntendedInfoForRequestId:idCopy withResultCandidate:speechPackage];
 
         if (v21)
         {
@@ -122,9 +122,9 @@
   v29 = v10;
   v23 = v10;
   v24 = [v26 mutatedCopyWithMutator:v28];
-  if (v25)
+  if (completionCopy)
   {
-    v25[2](v25, v24);
+    completionCopy[2](completionCopy, v24);
   }
 }
 

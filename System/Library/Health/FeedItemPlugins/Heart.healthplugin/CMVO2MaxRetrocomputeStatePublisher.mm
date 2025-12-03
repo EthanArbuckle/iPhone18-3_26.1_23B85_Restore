@@ -1,8 +1,8 @@
 @interface CMVO2MaxRetrocomputeStatePublisher
 - (_TtC5HeartP33_1983BB941A89CE37AE5E37B88EF7D39A34CMVO2MaxRetrocomputeStatePublisher)init;
 - (void)dealloc;
-- (void)vo2MaxRetrocomputeManager:(id)a3 didUpdateState:(id)a4;
-- (void)vo2MaxRetrocomputeManager:(id)a3 updateFailedWithError:(id)a4;
+- (void)vo2MaxRetrocomputeManager:(id)manager didUpdateState:(id)state;
+- (void)vo2MaxRetrocomputeManager:(id)manager updateFailedWithError:(id)error;
 @end
 
 @implementation CMVO2MaxRetrocomputeStatePublisher
@@ -11,27 +11,27 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC5HeartP33_1983BB941A89CE37AE5E37B88EF7D39A34CMVO2MaxRetrocomputeStatePublisher_manager);
-  v5 = self;
+  selfCopy = self;
   [v4 stopRetrocomputeStatusUpdates];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = ObjectType;
   [(CMVO2MaxRetrocomputeStatePublisher *)&v6 dealloc];
 }
 
-- (void)vo2MaxRetrocomputeManager:(id)a3 didUpdateState:(id)a4
+- (void)vo2MaxRetrocomputeManager:(id)manager didUpdateState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_29D84409C(v7);
+  managerCopy = manager;
+  stateCopy = state;
+  selfCopy = self;
+  sub_29D84409C(stateCopy);
 }
 
-- (void)vo2MaxRetrocomputeManager:(id)a3 updateFailedWithError:(id)a4
+- (void)vo2MaxRetrocomputeManager:(id)manager updateFailedWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_29D8442D4(v8);
+  managerCopy = manager;
+  errorCopy = error;
+  selfCopy = self;
+  sub_29D8442D4(errorCopy);
 }
 
 - (_TtC5HeartP33_1983BB941A89CE37AE5E37B88EF7D39A34CMVO2MaxRetrocomputeStatePublisher)init

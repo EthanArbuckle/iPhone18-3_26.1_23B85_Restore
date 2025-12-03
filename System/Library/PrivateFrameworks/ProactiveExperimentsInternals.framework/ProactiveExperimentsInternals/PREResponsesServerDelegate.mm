@@ -1,13 +1,13 @@
 @interface PREResponsesServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation PREResponsesServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v28 = a3;
-  v5 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v6 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2873439A0];
   v7 = objc_autoreleasePoolPush();
   v8 = objc_alloc(MEMORY[0x277CBEB98]);
@@ -51,7 +51,7 @@
   v29[3] = &unk_279ABC5D0;
   v30 = v24;
   v26 = v24;
-  LOBYTE(v22) = [PREXPCServerHelper shouldAcceptConnection:v5 serviceName:@"com.apple.proactive.experiments.responses" whitelistedServerInterface:v6 requestHandler:v26 validateConnection:v25 setupClientProxy:v29 interruptionHandler:&__block_literal_global invalidationHandler:&__block_literal_global_42];
+  LOBYTE(v22) = [PREXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.experiments.responses" whitelistedServerInterface:v6 requestHandler:v26 validateConnection:v25 setupClientProxy:v29 interruptionHandler:&__block_literal_global invalidationHandler:&__block_literal_global_42];
 
   return v22;
 }

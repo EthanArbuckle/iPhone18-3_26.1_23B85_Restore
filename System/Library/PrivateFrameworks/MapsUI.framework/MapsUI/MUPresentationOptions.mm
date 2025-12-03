@@ -1,8 +1,8 @@
 @interface MUPresentationOptions
-+ (MUPresentationOptions)optionsWithSender:(id)a3;
++ (MUPresentationOptions)optionsWithSender:(id)sender;
 - (CGRect)sourceRect;
 - (UIPopoverPresentationControllerSourceItem)sourceItem;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MUPresentationOptions
@@ -20,22 +20,22 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MUPresentationOptions);
-  v5 = [(MUPresentationOptions *)self presentingViewController];
-  [(MUPresentationOptions *)v4 setPresentingViewController:v5];
+  presentingViewController = [(MUPresentationOptions *)self presentingViewController];
+  [(MUPresentationOptions *)v4 setPresentingViewController:presentingViewController];
 
-  v6 = [(MUPresentationOptions *)self sourceView];
-  [(MUPresentationOptions *)v4 setSourceView:v6];
+  sourceView = [(MUPresentationOptions *)self sourceView];
+  [(MUPresentationOptions *)v4 setSourceView:sourceView];
 
   [(MUPresentationOptions *)self sourceRect];
   [(MUPresentationOptions *)v4 setSourceRect:?];
-  v7 = [(MUPresentationOptions *)self progressObserver];
-  [(MUPresentationOptions *)v4 setProgressObserver:v7];
+  progressObserver = [(MUPresentationOptions *)self progressObserver];
+  [(MUPresentationOptions *)v4 setProgressObserver:progressObserver];
 
-  v8 = [(MUPresentationOptions *)self sourceItem];
-  [(MUPresentationOptions *)v4 setSourceItem:v8];
+  sourceItem = [(MUPresentationOptions *)self sourceItem];
+  [(MUPresentationOptions *)v4 setSourceItem:sourceItem];
 
   return v4;
 }
@@ -51,14 +51,14 @@
   return sourceItem;
 }
 
-+ (MUPresentationOptions)optionsWithSender:(id)a3
++ (MUPresentationOptions)optionsWithSender:(id)sender
 {
-  v3 = a3;
+  senderCopy = sender;
   v4 = objc_alloc_init(MUPresentationOptions);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MUPresentationOptions *)v4 setSourceItem:v3];
+    [(MUPresentationOptions *)v4 setSourceItem:senderCopy];
 LABEL_5:
     v5 = v4;
     goto LABEL_9;
@@ -67,16 +67,16 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(MUPresentationOptions *)v4 setSourceView:v3];
+    [(MUPresentationOptions *)v4 setSourceView:senderCopy];
     goto LABEL_5;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v3;
-    v7 = [v6 view];
-    [(MUPresentationOptions *)v4 setSourceView:v7];
+    v6 = senderCopy;
+    view = [v6 view];
+    [(MUPresentationOptions *)v4 setSourceView:view];
 
     [(MUPresentationOptions *)v4 setPresentingViewController:v6];
   }

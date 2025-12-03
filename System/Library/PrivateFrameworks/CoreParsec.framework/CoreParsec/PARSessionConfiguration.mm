@@ -1,40 +1,40 @@
 @interface PARSessionConfiguration
 + (id)defaultSessionConfiguration;
-- (PARSessionConfiguration)initWithCoder:(id)a3;
-- (PARSessionConfiguration)initWithId:(id)a3 userAgent:(id)a4 factory:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (PARSessionConfiguration)initWithCoder:(id)coder;
+- (PARSessionConfiguration)initWithId:(id)id userAgent:(id)agent factory:(id)factory;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PARSessionConfiguration
 
-- (PARSessionConfiguration)initWithCoder:(id)a3
+- (PARSessionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_userAgent"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_userAgent"];
   v7 = [(PARSessionConfiguration *)self initWithId:v5 userAgent:v6];
 
-  v7->_dontPreloadImages = [v4 decodeBoolForKey:@"_dontPreloadImages"];
-  v7->_parsecEnabled = [v4 decodeBoolForKey:@"_parsecEnabled"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"experimentNamespaceId"];
+  v7->_dontPreloadImages = [coderCopy decodeBoolForKey:@"_dontPreloadImages"];
+  v7->_parsecEnabled = [coderCopy decodeBoolForKey:@"_parsecEnabled"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"experimentNamespaceId"];
   experimentNamespaceId = v7->_experimentNamespaceId;
   v7->_experimentNamespaceId = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"experimentId"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"experimentId"];
   experimentId = v7->_experimentId;
   v7->_experimentId = v10;
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"experimentTreatmentId"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"experimentTreatmentId"];
   experimentTreatmentId = v7->_experimentTreatmentId;
   v7->_experimentTreatmentId = v12;
 
-  v7->_experimentDeploymentId = [v4 decodeInt32ForKey:@"experimentDeploymentId"];
-  v7->_experimentVersion = [v4 decodeInt32ForKey:@"experimentVersion"];
+  v7->_experimentDeploymentId = [coderCopy decodeInt32ForKey:@"experimentDeploymentId"];
+  v7->_experimentVersion = [coderCopy decodeInt32ForKey:@"experimentVersion"];
   v14 = MEMORY[0x1E695DFD8];
   v15 = objc_opt_class();
   v16 = objc_opt_class();
   v17 = [v14 setWithObjects:{v15, v16, objc_opt_class(), 0}];
-  v18 = [v4 decodeObjectOfClasses:v17 forKey:@"_overrideFeatureFlags"];
+  v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"_overrideFeatureFlags"];
 
   overrideFeatureFlags = v7->_overrideFeatureFlags;
   v7->_overrideFeatureFlags = v18;
@@ -42,23 +42,23 @@
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"_identifier"];
-  [v5 encodeObject:self->_userAgent forKey:@"_userAgent"];
-  [v5 encodeBool:self->_dontPreloadImages forKey:@"_dontPreloadImages"];
-  [v5 encodeBool:self->_parsecEnabled forKey:@"_parsecEnabled"];
-  [v5 encodeObject:self->_experimentNamespaceId forKey:@"experimentNamespaceId"];
-  [v5 encodeObject:self->_experimentId forKey:@"experimentId"];
-  [v5 encodeObject:self->_experimentTreatmentId forKey:@"experimentTreatmentId"];
-  [v5 encodeInt32:self->_experimentDeploymentId forKey:@"experimentDeploymentId"];
-  [v5 encodeInt32:self->_experimentVersion forKey:@"experimentVersion"];
-  [v5 encodeObject:self->_overrideFeatureFlags forKey:@"_overrideFeatureFlags"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"_identifier"];
+  [coderCopy encodeObject:self->_userAgent forKey:@"_userAgent"];
+  [coderCopy encodeBool:self->_dontPreloadImages forKey:@"_dontPreloadImages"];
+  [coderCopy encodeBool:self->_parsecEnabled forKey:@"_parsecEnabled"];
+  [coderCopy encodeObject:self->_experimentNamespaceId forKey:@"experimentNamespaceId"];
+  [coderCopy encodeObject:self->_experimentId forKey:@"experimentId"];
+  [coderCopy encodeObject:self->_experimentTreatmentId forKey:@"experimentTreatmentId"];
+  [coderCopy encodeInt32:self->_experimentDeploymentId forKey:@"experimentDeploymentId"];
+  [coderCopy encodeInt32:self->_experimentVersion forKey:@"experimentVersion"];
+  [coderCopy encodeObject:self->_overrideFeatureFlags forKey:@"_overrideFeatureFlags"];
 }
 
-- (PARSessionConfiguration)initWithId:(id)a3 userAgent:(id)a4 factory:(id)a5
+- (PARSessionConfiguration)initWithId:(id)id userAgent:(id)agent factory:(id)factory
 {
   v5 = MEMORY[0x1EEE9AC00](self);
   v7 = v6;
@@ -103,16 +103,16 @@
       _os_log_error_impl(&dword_1B1064000, v32, OS_LOG_TYPE_ERROR, "error getting path for pid [%d] %s", buf, 0x12u);
     }
 
-    v19 = @"com.apple.parsec.defaultClient";
+    lastPathComponent = @"com.apple.parsec.defaultClient";
   }
 
   else
   {
     v18 = [MEMORY[0x1E696AEC0] stringWithUTF8String:buffer];
-    v19 = [v18 lastPathComponent];
+    lastPathComponent = [v18 lastPathComponent];
   }
 
-  v21 = v19;
+  v21 = lastPathComponent;
   if (([(__CFString *)v21 isEqualToString:@"searchd"]& 1) != 0 || ([(__CFString *)v21 isEqualToString:@"SpringBoard"]& 1) != 0 || ([(__CFString *)v21 isEqualToString:@"Spotlight Test"]& 1) != 0 || ([(__CFString *)v21 isEqualToString:@"Spotlight"]& 1) != 0 || ([(__CFString *)v21 isEqualToString:@"Spotlight2"]& 1) != 0 || [(__CFString *)v21 isEqualToString:@"Search"])
   {
     v22 = @"com.apple.spotlight";
@@ -150,8 +150,8 @@
       goto LABEL_19;
     }
 
-    v36 = [(__CFString *)v21 lowercaseString];
-    v37 = [v36 containsString:@"news"];
+    lowercaseString = [(__CFString *)v21 lowercaseString];
+    v37 = [lowercaseString containsString:@"news"];
 
     if (v37)
     {

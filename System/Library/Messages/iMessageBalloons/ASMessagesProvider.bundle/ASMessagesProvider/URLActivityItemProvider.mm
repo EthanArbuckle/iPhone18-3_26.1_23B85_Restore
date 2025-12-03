@@ -1,22 +1,22 @@
 @interface URLActivityItemProvider
-- (_TtC18ASMessagesProvider23URLActivityItemProvider)initWithPlaceholderItem:(id)a3;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
-- (id)activityViewControllerSubject:(id)a3;
+- (_TtC18ASMessagesProvider23URLActivityItemProvider)initWithPlaceholderItem:(id)item;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
+- (id)activityViewControllerSubject:(id)subject;
 - (id)item;
 @end
 
 @implementation URLActivityItemProvider
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  if (a4)
+  if (type)
   {
     v7 = *(&self->super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider23URLActivityItemProvider_excludedActivityTypes);
-    v8 = a3;
-    v9 = self;
-    v10 = a4;
-    if (sub_6672F8(v10, v7))
+    controllerCopy = controller;
+    selfCopy = self;
+    typeCopy = type;
+    if (sub_6672F8(typeCopy, v7))
     {
       v21 = 0u;
       v22 = 0u;
@@ -27,8 +27,8 @@
 
   else
   {
-    v11 = a3;
-    v12 = self;
+    controllerCopy2 = controller;
+    selfCopy2 = self;
   }
 
   *(&v22 + 1) = sub_7570A0();
@@ -59,7 +59,7 @@ LABEL_6:
 
 - (id)item
 {
-  v2 = self;
+  selfCopy = self;
   sub_5E2864(v5);
 
   sub_B170(v5, v5[3]);
@@ -69,7 +69,7 @@ LABEL_6:
   return v3;
 }
 
-- (_TtC18ASMessagesProvider23URLActivityItemProvider)initWithPlaceholderItem:(id)a3
+- (_TtC18ASMessagesProvider23URLActivityItemProvider)initWithPlaceholderItem:(id)item
 {
   swift_unknownObjectRetain();
   sub_76A510();
@@ -79,19 +79,19 @@ LABEL_6:
   return result;
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v6 = sub_5E2DB4();
 
   return v6;
 }
 
-- (id)activityViewControllerSubject:(id)a3
+- (id)activityViewControllerSubject:(id)subject
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  subjectCopy = subject;
   sub_5E3E50();
   v7 = v6;
 

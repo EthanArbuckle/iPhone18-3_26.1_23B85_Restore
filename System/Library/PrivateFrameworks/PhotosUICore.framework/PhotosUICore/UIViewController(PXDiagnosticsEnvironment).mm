@@ -8,7 +8,7 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if ([a1 isViewLoaded])
+  if ([self isViewLoaded])
   {
     PXPointIsNull();
   }

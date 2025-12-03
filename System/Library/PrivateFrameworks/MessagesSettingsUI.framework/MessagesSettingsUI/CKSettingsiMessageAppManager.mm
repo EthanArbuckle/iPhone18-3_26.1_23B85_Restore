@@ -6,10 +6,10 @@
 - (NSArray)deletableiMessageOnlyApps;
 - (NSArray)highMemoryPayloadProviderExtensions;
 - (NSArray)payloadProviderExtensions;
-- (id)_beginMonitoringExtensionPoint:(id)a3;
-- (id)_loadiMessageAppsSyncronouslyForExtensionPoint:(id)a3;
-- (id)appWithBundleID:(id)a3;
-- (id)extensionAttributesForExtensionPoint:(id)a3;
+- (id)_beginMonitoringExtensionPoint:(id)point;
+- (id)_loadiMessageAppsSyncronouslyForExtensionPoint:(id)point;
+- (id)appWithBundleID:(id)d;
+- (id)extensionAttributesForExtensionPoint:(id)point;
 - (void)_clearCacheForDerivableiMessageAppLists;
 - (void)_endMonitoringExtensionInstallation;
 - (void)_notifyForInstalledAppChange;
@@ -73,9 +73,9 @@
   alliMessageApps = self->_alliMessageApps;
   if (!alliMessageApps)
   {
-    v4 = [(CKSettingsiMessageAppManager *)self payloadProviderExtensions];
-    v5 = [(CKSettingsiMessageAppManager *)self highMemoryPayloadProviderExtensions];
-    v6 = [v4 arrayByAddingObjectsFromArray:v5];
+    payloadProviderExtensions = [(CKSettingsiMessageAppManager *)self payloadProviderExtensions];
+    highMemoryPayloadProviderExtensions = [(CKSettingsiMessageAppManager *)self highMemoryPayloadProviderExtensions];
+    v6 = [payloadProviderExtensions arrayByAddingObjectsFromArray:highMemoryPayloadProviderExtensions];
     v7 = self->_alliMessageApps;
     self->_alliMessageApps = v6;
 
@@ -92,12 +92,12 @@
   if (!deletableiMessageOnlyApps)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [(CKSettingsiMessageAppManager *)self alliMessageApps];
+    alliMessageApps = [(CKSettingsiMessageAppManager *)self alliMessageApps];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = [alliMessageApps countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -108,7 +108,7 @@
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(alliMessageApps);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
@@ -118,7 +118,7 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [alliMessageApps countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -153,12 +153,12 @@ uint64_t __57__CKSettingsiMessageAppManager_deletableiMessageOnlyApps__block_inv
   if (!deletableAppsWithiMessageApp)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v5 = [(CKSettingsiMessageAppManager *)self alliMessageApps];
+    alliMessageApps = [(CKSettingsiMessageAppManager *)self alliMessageApps];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v6 = [alliMessageApps countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -169,7 +169,7 @@ uint64_t __57__CKSettingsiMessageAppManager_deletableiMessageOnlyApps__block_inv
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(alliMessageApps);
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
@@ -179,7 +179,7 @@ uint64_t __57__CKSettingsiMessageAppManager_deletableiMessageOnlyApps__block_inv
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [alliMessageApps countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -207,10 +207,10 @@ uint64_t __60__CKSettingsiMessageAppManager_deletableAppsWithiMessageApp__block_
   return v7;
 }
 
-- (id)appWithBundleID:(id)a3
+- (id)appWithBundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   [(CKSettingsiMessageAppManager *)self alliMessageApps];
   v17 = 0u;
   v18 = 0u;
@@ -235,8 +235,8 @@ uint64_t __60__CKSettingsiMessageAppManager_deletableAppsWithiMessageApp__block_
       }
 
       v10 = *(*(&v17 + 1) + 8 * i);
-      v11 = [v10 extensionBundleID];
-      if ([v4 isEqualToString:v11])
+      extensionBundleID = [v10 extensionBundleID];
+      if ([dCopy isEqualToString:extensionBundleID])
       {
         v13 = v10;
 LABEL_14:
@@ -244,8 +244,8 @@ LABEL_14:
         goto LABEL_15;
       }
 
-      v12 = [v10 appBundleID];
-      if ([v4 isEqualToString:v12])
+      appBundleID = [v10 appBundleID];
+      if ([dCopy isEqualToString:appBundleID])
       {
         v14 = v10;
 
@@ -272,16 +272,16 @@ LABEL_15:
 
 - (BOOL)haveDeletableApps
 {
-  v3 = [(CKSettingsiMessageAppManager *)self deletableAppsWithiMessageApp];
-  if ([v3 count])
+  deletableAppsWithiMessageApp = [(CKSettingsiMessageAppManager *)self deletableAppsWithiMessageApp];
+  if ([deletableAppsWithiMessageApp count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CKSettingsiMessageAppManager *)self deletableiMessageOnlyApps];
-    v4 = [v5 count] != 0;
+    deletableiMessageOnlyApps = [(CKSettingsiMessageAppManager *)self deletableiMessageOnlyApps];
+    v4 = [deletableiMessageOnlyApps count] != 0;
   }
 
   return v4;
@@ -299,13 +299,13 @@ LABEL_15:
   self->_deletableAppsWithiMessageApp = 0;
 }
 
-- (id)extensionAttributesForExtensionPoint:(id)a3
+- (id)extensionAttributesForExtensionPoint:(id)point
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v8 = *MEMORY[0x277CCA0F8];
-  v9[0] = a3;
+  v9[0] = point;
   v3 = MEMORY[0x277CBEAC0];
-  v4 = a3;
+  pointCopy = point;
   v5 = [v3 dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -313,11 +313,11 @@ LABEL_15:
   return v5;
 }
 
-- (id)_loadiMessageAppsSyncronouslyForExtensionPoint:(id)a3
+- (id)_loadiMessageAppsSyncronouslyForExtensionPoint:(id)point
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(CKSettingsiMessageAppManager *)self extensionAttributesForExtensionPoint:v4];
+  pointCopy = point;
+  v5 = [(CKSettingsiMessageAppManager *)self extensionAttributesForExtensionPoint:pointCopy];
   v22 = 0;
   v17 = [MEMORY[0x277CCA9C8] extensionsWithMatchingAttributes:v5 error:&v22];
   v6 = v22;
@@ -329,7 +329,7 @@ LABEL_15:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v25 = v4;
+        v25 = pointCopy;
         _os_log_impl(&dword_258D24000, v7, OS_LOG_TYPE_INFO, "Error loading extension point: %@", buf, 0xCu);
       }
     }
@@ -379,10 +379,10 @@ LABEL_15:
   return v8;
 }
 
-- (id)_beginMonitoringExtensionPoint:(id)a3
+- (id)_beginMonitoringExtensionPoint:(id)point
 {
-  v4 = a3;
-  v5 = [(CKSettingsiMessageAppManager *)self extensionAttributesForExtensionPoint:v4];
+  pointCopy = point;
+  v5 = [(CKSettingsiMessageAppManager *)self extensionAttributesForExtensionPoint:pointCopy];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277CCA9C8];
   v10[0] = MEMORY[0x277D85DD0];
@@ -390,7 +390,7 @@ LABEL_15:
   v10[2] = __63__CKSettingsiMessageAppManager__beginMonitoringExtensionPoint___block_invoke;
   v10[3] = &unk_2798C4A10;
   objc_copyWeak(&v12, &location);
-  v7 = v4;
+  v7 = pointCopy;
   v11 = v7;
   v8 = [v6 beginMatchingExtensionsWithAttributes:v5 completion:v10];
 
@@ -502,8 +502,8 @@ LABEL_15:
 
 - (void)_notifyForInstalledAppChange
 {
-  v2 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v2 postNotificationName:@"CKSettingsiMessageAppManagerInstalledAppsDidChange" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"CKSettingsiMessageAppManagerInstalledAppsDidChange" object:0];
 }
 
 - (void)_endMonitoringExtensionInstallation

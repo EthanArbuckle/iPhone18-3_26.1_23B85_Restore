@@ -1,9 +1,9 @@
 @interface CKChatItem
-+ (id)chatItemWithIMChatItem:(id)a3 balloonMaxWidth:(double)a4;
-+ (id)chatItemWithIMChatItem:(id)a3 balloonMaxWidth:(double)a4 fullMaxWidth:(double)a5 transcriptTraitCollection:(id)a6 transcriptBackgroundLuminance:(double)a7 overlayLayout:(BOOL)a8;
-+ (id)chatItemWithNotification:(id)a3 balloonMaxWidth:(double)a4 fullMaxWidth:(double)a5;
-+ (void)unloadSizesOfChatItems:(id)a3;
-- (BOOL)_associatedChatItemIsReaction:(id)a3;
++ (id)chatItemWithIMChatItem:(id)item balloonMaxWidth:(double)width;
++ (id)chatItemWithIMChatItem:(id)item balloonMaxWidth:(double)width fullMaxWidth:(double)maxWidth transcriptTraitCollection:(id)collection transcriptBackgroundLuminance:(double)luminance overlayLayout:(BOOL)layout;
++ (id)chatItemWithNotification:(id)notification balloonMaxWidth:(double)width fullMaxWidth:(double)maxWidth;
++ (void)unloadSizesOfChatItems:(id)items;
+- (BOOL)_associatedChatItemIsReaction:(id)reaction;
 - (BOOL)canDelete;
 - (BOOL)canEditMessageText;
 - (BOOL)canRetract;
@@ -12,25 +12,25 @@
 - (BOOL)isCommSafetySensitiveNotViewable;
 - (BOOL)isCommSafetySensitiveViewable;
 - (BOOL)isEditedMessageHistory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFromMe;
 - (BOOL)isHighlighted;
 - (BOOL)itemIsFromMe;
 - (BOOL)itemIsReply;
 - (BOOL)itemIsReplyContextPreview;
 - (BOOL)itemIsReplyFromMe;
-- (BOOL)itemIsSameThreadAsOtherItem:(id)a3;
+- (BOOL)itemIsSameThreadAsOtherItem:(id)item;
 - (BOOL)itemIsThreadOriginator;
-- (BOOL)previousPhotoActionItemIsOccluded:(unint64_t)a3 allDatasourceItems:(id)a4;
-- (BOOL)previousReplyCount:(unint64_t)a3 allDatasourceItems:(id)a4 isOccludedForAssociatedSize:(CGSize)a5 outMaxY:(double *)a6;
-- (BOOL)previousStatusItemStatusOrientation:(id)a3 isOccludedByCurrentItem:(id)a4;
+- (BOOL)previousPhotoActionItemIsOccluded:(unint64_t)occluded allDatasourceItems:(id)items;
+- (BOOL)previousReplyCount:(unint64_t)count allDatasourceItems:(id)items isOccludedForAssociatedSize:(CGSize)size outMaxY:(double *)y;
+- (BOOL)previousStatusItemStatusOrientation:(id)orientation isOccludedByCurrentItem:(id)item;
 - (BOOL)supportsCommunicationSafety;
 - (BOOL)wantsMoreMenu;
 - (BOOL)wasDetonated;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CGSize)size;
-- (CKChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4;
-- (CKChatItem)initWithNotification:(id)a3 maxWidth:(double)a4;
+- (CKChatItem)initWithIMChatItem:(id)item maxWidth:(double)width;
+- (CKChatItem)initWithNotification:(id)notification maxWidth:(double)width;
 - (IMFileTransfer)commSafetyFileTransfer;
 - (NSAttributedString)alternateTranscriptText;
 - (NSAttributedString)transcriptDrawerText;
@@ -43,23 +43,23 @@
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)stickerReactionInsets;
 - (UIEdgeInsets)textAlignmentInsets;
-- (double)_additionalBottomPaddingForChatItem:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 prevChatItem:(id)a6 layoutEnvironment:(id)a7 sizeOverride:(CGSize)a8;
-- (double)_additionalTopPaddingForChatItem:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 prevChatItem:(id)a6 layoutEnvironment:(id)a7 sizeOverride:(CGSize)a8;
-- (id)layoutItemSpacingForReplyContextPreviewWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6;
-- (id)layoutItemSpacingForReplyItemWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
-- (id)layoutItemSpacingForReplyThreadOriginatorWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7;
-- (id)layoutItemWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5;
+- (double)_additionalBottomPaddingForChatItem:(id)item datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items prevChatItem:(id)chatItem layoutEnvironment:(id)environment sizeOverride:(CGSize)override;
+- (double)_additionalTopPaddingForChatItem:(id)item datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items prevChatItem:(id)chatItem layoutEnvironment:(id)environment sizeOverride:(CGSize)override;
+- (id)layoutItemSpacingForReplyContextPreviewWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems;
+- (id)layoutItemSpacingForReplyItemWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
+- (id)layoutItemSpacingForReplyThreadOriginatorWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override;
+- (id)layoutItemWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items;
 - (id)syndicationBehaviorString;
-- (int64_t)chatItemReplyLineContiguousTypeForChatStyle:(unsigned __int8)a3;
+- (int64_t)chatItemReplyLineContiguousTypeForChatStyle:(unsigned __int8)style;
 - (int64_t)syndicationBehavior;
 - (int64_t)syndicationType;
 - (unsigned)attachmentContiguousType;
 - (unsigned)contiguousType;
-- (void)setMaxWidth:(double)a3;
-- (void)setTranscriptTraitCollection:(id)a3;
+- (void)setMaxWidth:(double)width;
+- (void)setTranscriptTraitCollection:(id)collection;
 - (void)unloadTranscriptText;
-- (void)updateWithBalloonMaxWidth:(double)a3 fullMaxWidth:(double)a4 transcriptTraitCollection:(id)a5 transcriptBackgroundLuminance:(double)a6;
+- (void)updateWithBalloonMaxWidth:(double)width fullMaxWidth:(double)maxWidth transcriptTraitCollection:(id)collection transcriptBackgroundLuminance:(double)luminance;
 @end
 
 @implementation CKChatItem
@@ -75,14 +75,14 @@
   else
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 supportsContiguousAttachments];
+    supportsContiguousAttachments = [v4 supportsContiguousAttachments];
 
-    if (v5)
+    if (supportsContiguousAttachments)
     {
-      v6 = [(CKChatItem *)self IMChatItem];
-      v7 = [v6 attachmentContiguousType];
+      iMChatItem = [(CKChatItem *)self IMChatItem];
+      attachmentContiguousType = [iMChatItem attachmentContiguousType];
 
-      return v7;
+      return attachmentContiguousType;
     }
 
     else
@@ -94,16 +94,16 @@
 
 - (BOOL)isFromMe
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isFromMe];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isFromMe = [iMChatItem isFromMe];
 
-  return v3;
+  return isFromMe;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -111,7 +111,7 @@
   else
   {
     Class = object_getClass(self);
-    if (Class == object_getClass(v4))
+    if (Class == object_getClass(equalCopy))
     {
       v6 = IMTranscriptChatItemEqual();
     }
@@ -144,15 +144,15 @@
   v19.receiver = self;
   v19.super_class = CKChatItem;
   v16 = [(CKChatItem *)&v19 description];
-  v15 = [(CKChatItem *)self IMChatItem];
-  v17 = [(CKChatItem *)self IMChatItem];
-  v14 = [v17 contiguousType];
-  v3 = [(CKChatItem *)self IMChatItem];
-  v4 = [v3 attachmentContiguousType];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  iMChatItem2 = [(CKChatItem *)self IMChatItem];
+  contiguousType = [iMChatItem2 contiguousType];
+  iMChatItem3 = [(CKChatItem *)self IMChatItem];
+  attachmentContiguousType = [iMChatItem3 attachmentContiguousType];
   maxWidth = self->_maxWidth;
   v6 = NSStringFromCGSize(self->_size);
   v7 = NSStringFromUIEdgeInsets(self->_textAlignmentInsets);
-  v8 = [(CKChatItem *)self transcriptOrientation];
+  transcriptOrientation = [(CKChatItem *)self transcriptOrientation];
   if ([(CKChatItem *)self isHighlighted])
   {
     v9 = @"YES";
@@ -163,7 +163,7 @@
     v9 = @"NO";
   }
 
-  v10 = [(CKChatItem *)self syndicationBehaviorString];
+  syndicationBehaviorString = [(CKChatItem *)self syndicationBehaviorString];
   if ([(CKChatItem *)self wasDetonated])
   {
     v11 = @"YES";
@@ -174,17 +174,17 @@
     v11 = @"NO";
   }
 
-  v12 = [v18 stringWithFormat:@"[%@ [IMChatItem: %@], contiguousType:%d, attachmentContiguousType:%d, maxWidth:%f, size:%@, textAlignmentInsets:%@, transcriptOrientation: %d, isHighlighted: %@, syndicationBehavior: %@, wasDetonated: %@]", v16, v15, v14, v4, *&maxWidth, v6, v7, v8, v9, v10, v11];
+  v12 = [v18 stringWithFormat:@"[%@ [IMChatItem: %@], contiguousType:%d, attachmentContiguousType:%d, maxWidth:%f, size:%@, textAlignmentInsets:%@, transcriptOrientation: %d, isHighlighted: %@, syndicationBehavior: %@, wasDetonated: %@]", v16, iMChatItem, contiguousType, attachmentContiguousType, *&maxWidth, v6, v7, transcriptOrientation, v9, syndicationBehaviorString, v11];
 
   return v12;
 }
 
 - (NSString)layoutGroupIdentifier
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 layoutGroupIdentifier];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  layoutGroupIdentifier = [iMChatItem layoutGroupIdentifier];
 
-  return v3;
+  return layoutGroupIdentifier;
 }
 
 - (unsigned)contiguousType
@@ -197,10 +197,10 @@
 
   else
   {
-    v4 = [(CKChatItem *)self IMChatItem];
-    v5 = [v4 contiguousType];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    contiguousType = [iMChatItem contiguousType];
 
-    return v5;
+    return contiguousType;
   }
 }
 
@@ -208,8 +208,8 @@
 {
   if (!self->_transcriptText)
   {
-    v3 = [(CKChatItem *)self loadTranscriptText];
-    v4 = [v3 copy];
+    loadTranscriptText = [(CKChatItem *)self loadTranscriptText];
+    v4 = [loadTranscriptText copy];
     transcriptText = self->_transcriptText;
     self->_transcriptText = v4;
 
@@ -221,14 +221,14 @@
       [v6 appendAttributedString:v7];
 
       v25 = +[CKUIBehavior sharedBehaviors];
-      v8 = [v25 transcriptRegularFontAttributes];
+      transcriptRegularFontAttributes = [v25 transcriptRegularFontAttributes];
       v9 = +[CKUIBehavior sharedBehaviors];
-      v10 = [v9 transcriptEmphasizedFontAttributes];
+      transcriptEmphasizedFontAttributes = [v9 transcriptEmphasizedFontAttributes];
       v11 = CKFrameworkBundle();
       v12 = [v11 localizedStringForKey:@"INTERNAL_GUID_STATUS" value:&stru_1F04268F8 table:@"ChatKit"];
-      v13 = [(CKChatItem *)self IMChatItem];
-      v14 = [v13 guid];
-      v20 = CKAttributedFormatString(v8, v10, v12, v15, v16, v17, v18, v19, v14);
+      iMChatItem = [(CKChatItem *)self IMChatItem];
+      guid = [iMChatItem guid];
+      v20 = CKAttributedFormatString(transcriptRegularFontAttributes, transcriptEmphasizedFontAttributes, v12, v15, v16, v17, v18, v19, guid);
       [v6 appendAttributedString:v20];
 
       v21 = [v6 copy];
@@ -246,8 +246,8 @@
 {
   if (!self->_alternateTranscriptText && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [(CKChatItem *)self loadAlternateTranscriptText];
-    v4 = [v3 copy];
+    loadAlternateTranscriptText = [(CKChatItem *)self loadAlternateTranscriptText];
+    v4 = [loadAlternateTranscriptText copy];
     alternateTranscriptText = self->_alternateTranscriptText;
     self->_alternateTranscriptText = v4;
   }
@@ -283,8 +283,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v6 bounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen bounds];
         v8 = v7;
         v10 = v9;
 
@@ -304,9 +304,9 @@
           v12 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
           {
-            v13 = [MEMORY[0x1E696AF00] callStackSymbols];
+            callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
             v14 = 138412290;
-            v15 = v13;
+            v15 = callStackSymbols;
             _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "%@", &v14, 0xCu);
           }
         }
@@ -336,8 +336,8 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v5 bounds];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen bounds];
         v7 = v6;
         v9 = v8;
 
@@ -357,9 +357,9 @@
           v11 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
           {
-            v12 = [MEMORY[0x1E696AF00] callStackSymbols];
+            callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
             v19 = 138412290;
-            v20 = v12;
+            v20 = callStackSymbols;
             _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "%@", &v19, 0xCu);
           }
         }
@@ -384,18 +384,18 @@
   return result;
 }
 
-+ (void)unloadSizesOfChatItems:(id)a3
++ (void)unloadSizesOfChatItems:(id)items
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  itemsCopy = items;
   v4 = +[CKChatItemSizeCache sharedInstance];
-  [v4 invalidateCachedSizeForChatItems:v3 reason:@"chatitem_unloadsizes"];
+  [v4 invalidateCachedSizeForChatItems:itemsCopy reason:@"chatitem_unloadsizes"];
 
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -422,13 +422,13 @@
   }
 }
 
-- (void)setTranscriptTraitCollection:(id)a3
+- (void)setTranscriptTraitCollection:(id)collection
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(CKChatItem *)self transcriptTraitCollection];
-  objc_storeStrong(&self->_transcriptTraitCollection, a3);
-  if ([(CKChatItem *)self shouldUnloadTranscriptTextForChangeFromTraitCollection:v6 toTraitCollection:v5])
+  collectionCopy = collection;
+  transcriptTraitCollection = [(CKChatItem *)self transcriptTraitCollection];
+  objc_storeStrong(&self->_transcriptTraitCollection, collection);
+  if ([(CKChatItem *)self shouldUnloadTranscriptTextForChangeFromTraitCollection:transcriptTraitCollection toTraitCollection:collectionCopy])
   {
     [(CKChatItem *)self unloadTranscriptText];
     v8[0] = self;
@@ -462,8 +462,8 @@
   transcriptDrawerText = self->_transcriptDrawerText;
   if (!transcriptDrawerText)
   {
-    v4 = [(CKChatItem *)self loadTranscriptDrawerText];
-    v5 = [v4 copy];
+    loadTranscriptDrawerText = [(CKChatItem *)self loadTranscriptDrawerText];
+    v5 = [loadTranscriptDrawerText copy];
     v6 = self->_transcriptDrawerText;
     self->_transcriptDrawerText = v5;
 
@@ -475,15 +475,15 @@
 
 - (BOOL)wantsMoreMenu
 {
-  v3 = [(CKChatItem *)self IMChatItem];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(CKChatItem *)self IMChatItem];
-    v6 = [v5 scheduleState];
-    v7 = (v6 < 6) & (0x39u >> v6);
+    iMChatItem2 = [(CKChatItem *)self IMChatItem];
+    scheduleState = [iMChatItem2 scheduleState];
+    v7 = (scheduleState < 6) & (0x39u >> scheduleState);
   }
 
   else
@@ -496,31 +496,31 @@
 
 - (BOOL)canDelete
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 canDelete];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  canDelete = [iMChatItem canDelete];
 
-  return v3;
+  return canDelete;
 }
 
 - (BOOL)canRetract
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 canRetract];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  canRetract = [iMChatItem canRetract];
 
-  return v3;
+  return canRetract;
 }
 
 - (BOOL)canEditMessageText
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 canEditMessageText];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  canEditMessageText = [iMChatItem canEditMessageText];
 
   if (canEditMessageText_onceToken != -1)
   {
     [CKChatItem canEditMessageText];
   }
 
-  return (canEditMessageText_canAlwaysEditMessageText | v3) & 1;
+  return (canEditMessageText_canAlwaysEditMessageText | canEditMessageText) & 1;
 }
 
 void __32__CKChatItem_canEditMessageText__block_invoke()
@@ -542,10 +542,10 @@ void __32__CKChatItem_canEditMessageText__block_invoke()
 
 - (BOOL)isEditedMessageHistory
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isEditedMessageHistory];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isEditedMessageHistory = [iMChatItem isEditedMessageHistory];
 
-  return v3;
+  return isEditedMessageHistory;
 }
 
 - (UIEdgeInsets)stickerReactionInsets
@@ -563,35 +563,35 @@ void __32__CKChatItem_canEditMessageText__block_invoke()
 
 - (BOOL)supportsCommunicationSafety
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 supportsCommunicationSafety];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  supportsCommunicationSafety = [iMChatItem supportsCommunicationSafety];
 
-  return v3;
+  return supportsCommunicationSafety;
 }
 
 - (NSURL)commSafetyTransferLocalURL
 {
-  v2 = [(CKChatItem *)self commSafetyFileTransfer];
-  v3 = [v2 localURL];
+  commSafetyFileTransfer = [(CKChatItem *)self commSafetyFileTransfer];
+  localURL = [commSafetyFileTransfer localURL];
 
-  return v3;
+  return localURL;
 }
 
 - (NSString)commSafetyMessageGUID
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 guid];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  guid = [iMChatItem guid];
 
-  return v3;
+  return guid;
 }
 
 - (IMFileTransfer)commSafetyFileTransfer
 {
   if (-[CKChatItem supportsCommunicationSafety](self, "supportsCommunicationSafety") && (-[CKChatItem commSafetyTransferGUID](self, "commSafetyTransferGUID"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 length], v3, v4))
   {
-    v5 = [MEMORY[0x1E69A5B80] sharedInstance];
-    v6 = [(CKChatItem *)self commSafetyTransferGUID];
-    v7 = [v5 transferForGUID:v6];
+    mEMORY[0x1E69A5B80] = [MEMORY[0x1E69A5B80] sharedInstance];
+    commSafetyTransferGUID = [(CKChatItem *)self commSafetyTransferGUID];
+    v7 = [mEMORY[0x1E69A5B80] transferForGUID:commSafetyTransferGUID];
   }
 
   else
@@ -609,8 +609,8 @@ void __32__CKChatItem_canEditMessageText__block_invoke()
     return 0;
   }
 
-  v3 = [(CKChatItem *)self commSafetyFileTransfer];
-  v4 = [v3 commSafetySensitive] == 2;
+  commSafetyFileTransfer = [(CKChatItem *)self commSafetyFileTransfer];
+  v4 = [commSafetyFileTransfer commSafetySensitive] == 2;
 
   return v4;
 }
@@ -622,37 +622,37 @@ void __32__CKChatItem_canEditMessageText__block_invoke()
     return 0;
   }
 
-  v3 = [(CKChatItem *)self commSafetyFileTransfer];
-  v4 = [v3 commSafetySensitive] == 1;
+  commSafetyFileTransfer = [(CKChatItem *)self commSafetyFileTransfer];
+  v4 = [commSafetyFileTransfer commSafetySensitive] == 1;
 
   return v4;
 }
 
 - (BOOL)isCommSafetySensitive
 {
-  v3 = [(CKChatItem *)self supportsCommunicationSafety];
-  if (v3)
+  supportsCommunicationSafety = [(CKChatItem *)self supportsCommunicationSafety];
+  if (supportsCommunicationSafety)
   {
     if ([(CKChatItem *)self isCommSafetySensitiveViewable])
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(supportsCommunicationSafety) = 1;
     }
 
     else
     {
 
-      LOBYTE(v3) = [(CKChatItem *)self isCommSafetySensitiveNotViewable];
+      LOBYTE(supportsCommunicationSafety) = [(CKChatItem *)self isCommSafetySensitiveNotViewable];
     }
   }
 
-  return v3;
+  return supportsCommunicationSafety;
 }
 
-- (void)updateWithBalloonMaxWidth:(double)a3 fullMaxWidth:(double)a4 transcriptTraitCollection:(id)a5 transcriptBackgroundLuminance:(double)a6
+- (void)updateWithBalloonMaxWidth:(double)width fullMaxWidth:(double)maxWidth transcriptTraitCollection:(id)collection transcriptBackgroundLuminance:(double)luminance
 {
-  v10 = a5;
-  [(CKChatItem *)self setTranscriptTraitCollection:v10];
-  [objc_opt_class() resultingMaxWidthWithBalloonMaxWidth:v10 fullMaxWidth:a3 transcriptTraitCollection:a4 transcriptBackgroundLuminance:a6];
+  collectionCopy = collection;
+  [(CKChatItem *)self setTranscriptTraitCollection:collectionCopy];
+  [objc_opt_class() resultingMaxWidthWithBalloonMaxWidth:collectionCopy fullMaxWidth:width transcriptTraitCollection:maxWidth transcriptBackgroundLuminance:luminance];
   v12 = v11;
 
   [(CKChatItem *)self setMaxWidth:v12];
@@ -660,62 +660,62 @@ void __32__CKChatItem_canEditMessageText__block_invoke()
 
 - (BOOL)invalidateContiguousTypeOverride
 {
-  v3 = [(CKChatItem *)self useContiguousTypeOverride];
+  useContiguousTypeOverride = [(CKChatItem *)self useContiguousTypeOverride];
   [(CKChatItem *)self setUseContiguousTypeOverride:0];
-  v4 = [(CKChatItem *)self IMChatItem];
-  self->_contiguousTypeOverride = [v4 contiguousType];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  self->_contiguousTypeOverride = [iMChatItem contiguousType];
 
-  return v3;
+  return useContiguousTypeOverride;
 }
 
-- (void)setMaxWidth:(double)a3
+- (void)setMaxWidth:(double)width
 {
-  if (self->_maxWidth != a3)
+  if (self->_maxWidth != width)
   {
-    self->_maxWidth = a3;
+    self->_maxWidth = width;
     [(CKChatItem *)self unloadSize];
   }
 }
 
-- (CKChatItem)initWithIMChatItem:(id)a3 maxWidth:(double)a4
+- (CKChatItem)initWithIMChatItem:(id)item maxWidth:(double)width
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = CKChatItem;
   v8 = [(CKChatItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_imChatItem, a3);
-    v9->_maxWidth = a4;
+    objc_storeStrong(&v8->_imChatItem, item);
+    v9->_maxWidth = width;
   }
 
   return v9;
 }
 
-- (CKChatItem)initWithNotification:(id)a3 maxWidth:(double)a4
+- (CKChatItem)initWithNotification:(id)notification maxWidth:(double)width
 {
-  v7 = a3;
+  notificationCopy = notification;
   v11.receiver = self;
   v11.super_class = CKChatItem;
   v8 = [(CKChatItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_notification, a3);
-    v9->_maxWidth = a4;
+    objc_storeStrong(&v8->_notification, notification);
+    v9->_maxWidth = width;
   }
 
   return v9;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  if (a4)
+  if (insets)
   {
     v4 = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = v4;
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = v4;
   }
 
   v5 = *MEMORY[0x1E695F060];
@@ -727,93 +727,93 @@ void __32__CKChatItem_canEditMessageText__block_invoke()
 
 - (int64_t)syndicationBehavior
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 syndicationBehavior];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  syndicationBehavior = [iMChatItem syndicationBehavior];
 
-  return v3;
+  return syndicationBehavior;
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isHighlighted];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isHighlighted = [iMChatItem isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
 - (int64_t)syndicationType
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 syndicationType];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  syndicationType = [iMChatItem syndicationType];
 
-  return v3;
+  return syndicationType;
 }
 
 - (BOOL)wasDetonated
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 wasDetonated];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  wasDetonated = [iMChatItem wasDetonated];
 
-  return v3;
+  return wasDetonated;
 }
 
-+ (id)chatItemWithIMChatItem:(id)a3 balloonMaxWidth:(double)a4
++ (id)chatItemWithIMChatItem:(id)item balloonMaxWidth:(double)width
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_msgSend(v5 "__ck_chatItemClass"))];
+  itemCopy = item;
+  v6 = [objc_alloc(objc_msgSend(itemCopy "__ck_chatItemClass"))];
 
   return v6;
 }
 
-+ (id)chatItemWithIMChatItem:(id)a3 balloonMaxWidth:(double)a4 fullMaxWidth:(double)a5 transcriptTraitCollection:(id)a6 transcriptBackgroundLuminance:(double)a7 overlayLayout:(BOOL)a8
++ (id)chatItemWithIMChatItem:(id)item balloonMaxWidth:(double)width fullMaxWidth:(double)maxWidth transcriptTraitCollection:(id)collection transcriptBackgroundLuminance:(double)luminance overlayLayout:(BOOL)layout
 {
-  v8 = a8;
-  v13 = a6;
-  v14 = a3;
-  v15 = [v14 __ck_chatItemClass];
-  [v15 resultingMaxWidthWithBalloonMaxWidth:v13 fullMaxWidth:a4 transcriptTraitCollection:a5 transcriptBackgroundLuminance:a7];
-  v17 = [[v15 alloc] initWithIMChatItem:v14 maxWidth:v16];
+  layoutCopy = layout;
+  collectionCopy = collection;
+  itemCopy = item;
+  __ck_chatItemClass = [itemCopy __ck_chatItemClass];
+  [__ck_chatItemClass resultingMaxWidthWithBalloonMaxWidth:collectionCopy fullMaxWidth:width transcriptTraitCollection:maxWidth transcriptBackgroundLuminance:luminance];
+  v17 = [[__ck_chatItemClass alloc] initWithIMChatItem:itemCopy maxWidth:v16];
 
-  [v17 setTranscriptTraitCollection:v13];
-  [v17 setTranscriptBackgroundLuminance:a7];
-  [v17 setWantsOverlayLayout:v8];
-  [v17 setOriginalMaxWidth:a5];
+  [v17 setTranscriptTraitCollection:collectionCopy];
+  [v17 setTranscriptBackgroundLuminance:luminance];
+  [v17 setWantsOverlayLayout:layoutCopy];
+  [v17 setOriginalMaxWidth:maxWidth];
 
   return v17;
 }
 
-+ (id)chatItemWithNotification:(id)a3 balloonMaxWidth:(double)a4 fullMaxWidth:(double)a5
++ (id)chatItemWithNotification:(id)notification balloonMaxWidth:(double)width fullMaxWidth:(double)maxWidth
 {
-  v6 = a3;
-  v7 = [(CKChatItem *)[CKTextMessagePartChatItem alloc] initWithNotification:v6 maxWidth:a4];
+  notificationCopy = notification;
+  v7 = [(CKChatItem *)[CKTextMessagePartChatItem alloc] initWithNotification:notificationCopy maxWidth:width];
 
   return v7;
 }
 
-- (id)layoutItemWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5
+- (id)layoutItemWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items
 {
   v39 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  environmentCopy = environment;
+  itemsCopy = items;
   [(CKChatItem *)self size];
   v10 = v9;
   v12 = v11;
   [(CKChatItem *)self contentInsets];
   v14 = v13;
   v16 = v15;
-  [v7 marginInsets];
+  [environmentCopy marginInsets];
   v18 = v17;
   v20 = v19;
-  v21 = [v7 messageEditingContext];
-  v22 = v21;
+  messageEditingContext = [environmentCopy messageEditingContext];
+  v22 = messageEditingContext;
   v23 = v12 + v14 + v18 + v16 + v20;
-  if (v21)
+  if (messageEditingContext)
   {
-    v24 = [v21 editedMessageGuid];
-    v25 = [(CKChatItem *)self IMChatItem];
-    v26 = [v25 guid];
+    editedMessageGuid = [messageEditingContext editedMessageGuid];
+    iMChatItem = [(CKChatItem *)self IMChatItem];
+    guid = [iMChatItem guid];
 
-    if ([v26 isEqualToString:v24])
+    if ([guid isEqualToString:editedMessageGuid])
     {
       [v22 editedMessageHeight];
       v23 = v27;
@@ -840,7 +840,7 @@ void __32__CKChatItem_canEditMessageText__block_invoke()
         v35 = 2112;
         v36 = v29;
         v37 = 2112;
-        v38 = self;
+        selfCopy = self;
         _os_log_impl(&dword_19020E000, v28, OS_LOG_TYPE_INFO, "CKChatItem_Layout - %s chatItem has invalid height < _1PX, has %@: %@", &v33, 0x20u);
       }
     }
@@ -859,41 +859,41 @@ void __32__CKChatItem_canEditMessageText__block_invoke()
   return v31;
 }
 
-- (id)layoutItemSpacingWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
-  height = a7.height;
-  width = a7.width;
+  height = override.height;
+  width = override.width;
   v48 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  if (a4 < 1)
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
+  if (index < 1)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = [v14 objectAtIndex:a4 - 1];
+    v16 = [itemsCopy objectAtIndex:index - 1];
   }
 
   if ([(CKChatItem *)self layoutType]== 13)
   {
-    v17 = [(CKChatItem *)self layoutItemSpacingForReplyItemWithEnvironment:v13 datasourceItemIndex:a4 allDatasourceItems:v14 supplementryItems:v15 sizeOverride:width, height];
+    height = [(CKChatItem *)self layoutItemSpacingForReplyItemWithEnvironment:environmentCopy datasourceItemIndex:index allDatasourceItems:itemsCopy supplementryItems:supplementryItemsCopy sizeOverride:width, height];
 LABEL_29:
-    v27 = v17;
+    v27 = height;
     goto LABEL_30;
   }
 
   if ([(CKChatItem *)self layoutType]== 14)
   {
-    v17 = [(CKChatItem *)self layoutItemSpacingForReplyContextPreviewWithEnvironment:v13 datasourceItemIndex:a4 allDatasourceItems:v14 supplementryItems:v15];
+    height = [(CKChatItem *)self layoutItemSpacingForReplyContextPreviewWithEnvironment:environmentCopy datasourceItemIndex:index allDatasourceItems:itemsCopy supplementryItems:supplementryItemsCopy];
     goto LABEL_29;
   }
 
   if ([(CKChatItem *)self layoutType]== 15)
   {
-    v17 = [(CKChatItem *)self layoutItemSpacingForReplyThreadOriginatorWithEnvironment:v13 datasourceItemIndex:a4 allDatasourceItems:v14 supplementryItems:v15 sizeOverride:width, height];
+    height = [(CKChatItem *)self layoutItemSpacingForReplyThreadOriginatorWithEnvironment:environmentCopy datasourceItemIndex:index allDatasourceItems:itemsCopy supplementryItems:supplementryItemsCopy sizeOverride:width, height];
     goto LABEL_29;
   }
 
@@ -920,7 +920,7 @@ LABEL_29:
       case 5:
       case 6:
       case 16:
-        v28 = [CKChatItemLayoutUtilities prevMessageIsReplyForIndex:a4 - 1 allDatasourceItems:v14];
+        v28 = [CKChatItemLayoutUtilities prevMessageIsReplyForIndex:index - 1 allDatasourceItems:itemsCopy];
         v19 = +[CKUIBehavior sharedBehaviors];
         if (!v28)
         {
@@ -976,10 +976,10 @@ LABEL_27:
         break;
     }
 
-    [(CKChatItem *)self _additionalTopPaddingForChatItem:self datasourceItemIndex:a4 allDatasourceItems:v14 prevChatItem:v16 layoutEnvironment:v13 sizeOverride:width, height];
+    [(CKChatItem *)self _additionalTopPaddingForChatItem:self datasourceItemIndex:index allDatasourceItems:itemsCopy prevChatItem:v16 layoutEnvironment:environmentCopy sizeOverride:width, height];
     v30 = v29;
-    [(CKChatItem *)self _additionalBottomPaddingForChatItem:self datasourceItemIndex:a4 allDatasourceItems:v14 prevChatItem:v16 layoutEnvironment:v13 sizeOverride:width, height];
-    v17 = [CKChatItemLayoutUtilities transcriptVerticalEdgeSpacingForChatItem:self previousChatItem:v16 topSpacing:v18 + v30 bottomSpacing:v31];
+    [(CKChatItem *)self _additionalBottomPaddingForChatItem:self datasourceItemIndex:index allDatasourceItems:itemsCopy prevChatItem:v16 layoutEnvironment:environmentCopy sizeOverride:width, height];
+    height = [CKChatItemLayoutUtilities transcriptVerticalEdgeSpacingForChatItem:self previousChatItem:v16 topSpacing:v18 + v30 bottomSpacing:v31];
     goto LABEL_29;
   }
 
@@ -1007,20 +1007,20 @@ LABEL_30:
   return v27;
 }
 
-- (double)_additionalTopPaddingForChatItem:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 prevChatItem:(id)a6 layoutEnvironment:(id)a7 sizeOverride:(CGSize)a8
+- (double)_additionalTopPaddingForChatItem:(id)item datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items prevChatItem:(id)chatItem layoutEnvironment:(id)environment sizeOverride:(CGSize)override
 {
-  height = a8.height;
-  width = a8.width;
+  height = override.height;
+  width = override.width;
   v112 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v94 = a5;
-  v14 = a6;
+  itemCopy = item;
+  itemsCopy = items;
+  chatItemCopy = chatItem;
   v15 = 0.0;
   if ([(CKChatItem *)self layoutType]!= 19 && ([(CKChatItem *)self layoutType]!= 18 || [(CKChatItem *)self transcriptOrientation]))
   {
     if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
     {
-      [v13 size];
+      [itemCopy size];
       width = v17;
       height = v18;
     }
@@ -1032,12 +1032,12 @@ LABEL_30:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v13 visibleAssociatedMessageChatItemsIncludingTapbacks];
+      [itemCopy visibleAssociatedMessageChatItemsIncludingTapbacks];
     }
 
     else
     {
-      [v13 visibleAssociatedMessageChatItems];
+      [itemCopy visibleAssociatedMessageChatItems];
     }
 
     v109 = 0u;
@@ -1049,7 +1049,7 @@ LABEL_30:
     {
       v21 = 0;
       v22 = *v108;
-      v89 = a4 - 2;
+      v89 = index - 2;
       v90 = *(MEMORY[0x1E695F058] + 24);
       v91 = *(MEMORY[0x1E695F058] + 16);
       v93 = *v108;
@@ -1079,19 +1079,19 @@ LABEL_30:
             [v24 size];
             v31 = v30;
             v102 = 0;
-            [v14 size];
+            [chatItemCopy size];
             v33 = v32;
-            v97 = [v14 layoutType];
-            if (v97 == 7)
+            layoutType = [chatItemCopy layoutType];
+            if (layoutType == 7)
             {
-              v34 = [v14 transcriptOrientation];
+              transcriptOrientation = [chatItemCopy transcriptOrientation];
               v35 = +[CKUIBehavior sharedBehaviors];
               [v35 senderTranscriptInsets];
               v37 = v36;
               v38 = v29;
               v40 = v39;
 
-              if (v34)
+              if (transcriptOrientation)
               {
                 v41 = v40;
               }
@@ -1106,13 +1106,13 @@ LABEL_30:
             }
 
             v42 = width - (v31 - v27);
-            v92 = [v14 transcriptOrientation];
-            v43 = [v13 transcriptOrientation];
+            transcriptOrientation2 = [chatItemCopy transcriptOrientation];
+            transcriptOrientation3 = [itemCopy transcriptOrientation];
             [v24 size];
-            v44 = [(CKChatItem *)self previousReplyCount:a4 allDatasourceItems:v94 isOccludedForAssociatedSize:&v102 outMaxY:?];
-            v45 = [(CKChatItem *)self previousPhotoActionItemIsOccluded:a4 allDatasourceItems:v94];
-            v46 = [(CKChatItem *)self previousStatusItemStatusOrientation:v14 isOccludedByCurrentItem:v13];
-            if (v33 > v42 || (v14 ? (v47 = v92 == v43) : (v47 = 0), v47 ? (v48 = 0) : (v48 = 1), ((v48 | v45 | v46 | v44) & 1) != 0))
+            v44 = [(CKChatItem *)self previousReplyCount:index allDatasourceItems:itemsCopy isOccludedForAssociatedSize:&v102 outMaxY:?];
+            v45 = [(CKChatItem *)self previousPhotoActionItemIsOccluded:index allDatasourceItems:itemsCopy];
+            v46 = [(CKChatItem *)self previousStatusItemStatusOrientation:chatItemCopy isOccludedByCurrentItem:itemCopy];
+            if (v33 > v42 || (chatItemCopy ? (v47 = transcriptOrientation2 == transcriptOrientation3) : (v47 = 0), v47 ? (v48 = 0) : (v48 = 1), ((v48 | v45 | v46 | v44) & 1) != 0))
             {
               if (v45)
               {
@@ -1131,15 +1131,15 @@ LABEL_30:
               }
             }
 
-            v79 = [CKChatItemLayoutUtilities layoutTypeIsMessageBalloonForChatItem:v14];
+            v79 = [CKChatItemLayoutUtilities layoutTypeIsMessageBalloonForChatItem:chatItemCopy];
             v22 = v93;
-            if (v97 != 7 && a4 >= 2 && !v79)
+            if (layoutType != 7 && index >= 2 && !v79)
             {
-              v80 = [v94 objectAtIndexedSubscript:v89];
-              v81 = [v14 transcriptOrientation];
-              v82 = [v80 transcriptOrientation];
+              v80 = [itemsCopy objectAtIndexedSubscript:v89];
+              transcriptOrientation4 = [chatItemCopy transcriptOrientation];
+              transcriptOrientation5 = [v80 transcriptOrientation];
               [v80 size];
-              if (v81 == v82 && v83 > v42)
+              if (transcriptOrientation4 == transcriptOrientation5 && v83 > v42)
               {
                 v84 = +[CKUIBehavior sharedBehaviors];
                 [v84 mediumTranscriptSpace];
@@ -1164,9 +1164,9 @@ LABEL_30:
               [v51 stickerReactionTranscriptPaddingPercentage];
               v53 = v52;
 
-              v54 = [v13 itemIsFromMe];
-              [v13 stickerReactionInsets];
-              [CKAssociatedMessageChatItem locationForStickerReactionWithParentFrame:v21 reactionIndex:v54 parentIsFromMe:0.0 insets:0.0, width, height, v55, v56, v57, v58];
+              itemIsFromMe = [itemCopy itemIsFromMe];
+              [itemCopy stickerReactionInsets];
+              [CKAssociatedMessageChatItem locationForStickerReactionWithParentFrame:v21 reactionIndex:itemIsFromMe parentIsFromMe:0.0 insets:0.0, width, height, v55, v56, v57, v58];
               v60 = v59;
               v61 = width;
               v63 = v62;
@@ -1231,26 +1231,26 @@ LABEL_30:
   return v15;
 }
 
-- (double)_additionalBottomPaddingForChatItem:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 prevChatItem:(id)a6 layoutEnvironment:(id)a7 sizeOverride:(CGSize)a8
+- (double)_additionalBottomPaddingForChatItem:(id)item datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items prevChatItem:(id)chatItem layoutEnvironment:(id)environment sizeOverride:(CGSize)override
 {
-  height = a8.height;
-  width = a8.width;
+  height = override.height;
+  width = override.width;
   v60 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isExpressiveTextEnabled];
+  itemCopy = item;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (!v13)
+  if (!isExpressiveTextEnabled)
   {
-    [v11 size];
+    [itemCopy size];
     width = v17;
-    [v11 size];
+    [itemCopy size];
     goto LABEL_9;
   }
 
   if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
   {
-    [v11 size];
+    [itemCopy size];
     width = v16;
 LABEL_9:
     height = v15;
@@ -1264,8 +1264,8 @@ LABEL_9:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v21 = [v11 visibleAssociatedMessageChatItems];
-  v22 = [v21 countByEnumeratingWithState:&v55 objects:v59 count:16];
+  visibleAssociatedMessageChatItems = [itemCopy visibleAssociatedMessageChatItems];
+  v22 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v55 objects:v59 count:16];
   if (v22)
   {
     v23 = v22;
@@ -1280,7 +1280,7 @@ LABEL_9:
       {
         if (*v56 != v25)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(visibleAssociatedMessageChatItems);
         }
 
         v28 = *(*(&v55 + 1) + 8 * i);
@@ -1295,9 +1295,9 @@ LABEL_9:
           [v29 stickerReactionTranscriptPaddingPercentage];
           v54 = v30;
 
-          v31 = [v11 itemIsFromMe];
-          [v11 stickerReactionInsets];
-          [CKAssociatedMessageChatItem locationForStickerReactionWithParentFrame:v24 reactionIndex:v31 parentIsFromMe:0.0 insets:0.0, width, height, v32, v33, v34, v35];
+          itemIsFromMe = [itemCopy itemIsFromMe];
+          [itemCopy stickerReactionInsets];
+          [CKAssociatedMessageChatItem locationForStickerReactionWithParentFrame:v24 reactionIndex:itemIsFromMe parentIsFromMe:0.0 insets:0.0, width, height, v32, v33, v34, v35];
           v37 = v36;
           v38 = height;
           v39 = width;
@@ -1337,7 +1337,7 @@ LABEL_9:
         }
       }
 
-      v23 = [v21 countByEnumeratingWithState:&v55 objects:v59 count:16];
+      v23 = [visibleAssociatedMessageChatItems countByEnumeratingWithState:&v55 objects:v59 count:16];
     }
 
     while (v23);
@@ -1351,47 +1351,47 @@ LABEL_9:
   return v26;
 }
 
-- (BOOL)_associatedChatItemIsReaction:(id)a3
+- (BOOL)_associatedChatItemIsReaction:(id)reaction
 {
-  v3 = a3;
+  reactionCopy = reaction;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isReaction];
+    isReaction = [reactionCopy isReaction];
   }
 
   else
   {
-    v4 = 0;
+    isReaction = 0;
   }
 
-  return v4;
+  return isReaction;
 }
 
-- (id)layoutItemSpacingForReplyItemWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingForReplyItemWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
-  height = a7.height;
-  width = a7.width;
+  height = override.height;
+  width = override.width;
   v55 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
   if ([(CKChatItem *)self layoutType]== 13)
   {
-    if (a4 < 1)
+    if (index < 1)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = [v14 objectAtIndex:a4 - 1];
+      v16 = [itemsCopy objectAtIndex:index - 1];
     }
 
     if ([v16 itemIsReplyCount])
     {
-      v19 = [(CKChatItem *)self itemIsFromMe];
-      if (v19 != [v16 itemIsFromMe])
+      itemIsFromMe = [(CKChatItem *)self itemIsFromMe];
+      if (itemIsFromMe != [v16 itemIsFromMe])
       {
         goto LABEL_16;
       }
@@ -1412,9 +1412,9 @@ LABEL_9:
 
 LABEL_32:
 LABEL_33:
-        [(CKChatItem *)self _additionalTopPaddingForChatItem:self datasourceItemIndex:a4 allDatasourceItems:v14 prevChatItem:v16 layoutEnvironment:v13 sizeOverride:width, height];
+        [(CKChatItem *)self _additionalTopPaddingForChatItem:self datasourceItemIndex:index allDatasourceItems:itemsCopy prevChatItem:v16 layoutEnvironment:environmentCopy sizeOverride:width, height];
         v37 = v36;
-        [(CKChatItem *)self _additionalBottomPaddingForChatItem:self datasourceItemIndex:a4 allDatasourceItems:v14 prevChatItem:v16 layoutEnvironment:v13 sizeOverride:width, height];
+        [(CKChatItem *)self _additionalBottomPaddingForChatItem:self datasourceItemIndex:index allDatasourceItems:itemsCopy prevChatItem:v16 layoutEnvironment:environmentCopy sizeOverride:width, height];
         v18 = [CKChatItemLayoutUtilities transcriptVerticalEdgeSpacingForChatItem:self previousChatItem:v16 topSpacing:v32 + v37 bottomSpacing:v38];
 
         goto LABEL_34;
@@ -1425,21 +1425,21 @@ LABEL_30:
       goto LABEL_31;
     }
 
-    v20 = [v16 layoutType];
-    if (v20 > 6)
+    layoutType = [v16 layoutType];
+    if (layoutType > 6)
     {
-      if (v20 > 13)
+      if (layoutType > 13)
       {
-        if ((v20 - 14) >= 2)
+        if ((layoutType - 14) >= 2)
         {
           goto LABEL_38;
         }
 
-        v33 = [(CKChatItem *)self itemIsFromMe];
-        v34 = [v16 itemIsFromMe];
+        itemIsFromMe2 = [(CKChatItem *)self itemIsFromMe];
+        itemIsFromMe3 = [v16 itemIsFromMe];
         v35 = +[CKUIBehavior sharedBehaviors];
         v21 = v35;
-        if (((v33 ^ v34) & 1) == 0)
+        if (((itemIsFromMe2 ^ itemIsFromMe3) & 1) == 0)
         {
           [v35 selfReplyTranscriptSpace];
           goto LABEL_31;
@@ -1450,16 +1450,16 @@ LABEL_27:
         goto LABEL_31;
       }
 
-      if (v20 == 7)
+      if (layoutType == 7)
       {
         v21 = +[CKUIBehavior sharedBehaviors];
         [v21 extraSmallTranscriptSpace];
         goto LABEL_31;
       }
 
-      if (v20 != 8)
+      if (layoutType != 8)
       {
-        if (v20 == 13)
+        if (layoutType == 13)
         {
 LABEL_29:
           v21 = +[CKUIBehavior sharedBehaviors];
@@ -1479,7 +1479,7 @@ LABEL_38:
             *buf = 138413058;
             v48 = v46;
             v49 = 2112;
-            v50 = v44;
+            layoutType2 = v44;
             v51 = 2112;
             v52 = v45;
             v53 = 2112;
@@ -1496,9 +1496,9 @@ LABEL_38:
       }
     }
 
-    else if ((v20 - 2) >= 2)
+    else if ((layoutType - 2) >= 2)
     {
-      if ((v20 - 5) < 2)
+      if ((layoutType - 5) < 2)
       {
 LABEL_16:
         v21 = +[CKUIBehavior sharedBehaviors];
@@ -1508,7 +1508,7 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      if (v20 == 1)
+      if (layoutType == 1)
       {
         goto LABEL_29;
       }
@@ -1528,7 +1528,7 @@ LABEL_31:
       *buf = 136315394;
       v48 = "[CKChatItem(Layout) layoutItemSpacingForReplyItemWithEnvironment:datasourceItemIndex:allDatasourceItems:supplementryItems:sizeOverride:]";
       v49 = 2048;
-      v50 = [(CKChatItem *)self layoutType];
+      layoutType2 = [(CKChatItem *)self layoutType];
       _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "CKChatItem_Layout - %s asked to generate spacing for non-reply type %lu", buf, 0x16u);
     }
   }
@@ -1539,28 +1539,28 @@ LABEL_34:
   return v18;
 }
 
-- (id)layoutItemSpacingForReplyContextPreviewWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6
+- (id)layoutItemSpacingForReplyContextPreviewWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems
 {
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
   if ([(CKChatItem *)self layoutType]== 14)
   {
-    if (a4 < 1)
+    if (index < 1)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = [v11 objectAtIndex:a4 - 1];
+      v13 = [itemsCopy objectAtIndex:index - 1];
     }
 
-    v16 = [v13 layoutType];
-    if (v16 <= 0x10)
+    layoutType = [v13 layoutType];
+    if (layoutType <= 0x10)
     {
-      if (((1 << v16) & 0x1206A) != 0)
+      if (((1 << layoutType) & 0x1206A) != 0)
       {
         v17 = +[CKUIBehavior sharedBehaviors];
         [v17 extraLargeTranscriptSpace];
@@ -1573,14 +1573,14 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      if (((1 << v16) & 0x104) != 0)
+      if (((1 << layoutType) & 0x104) != 0)
       {
         v17 = +[CKUIBehavior sharedBehaviors];
         [v17 mediumTranscriptSpace];
         goto LABEL_17;
       }
 
-      if (v16 == 7)
+      if (layoutType == 7)
       {
         v17 = +[CKUIBehavior sharedBehaviors];
         [v17 extraSmallTranscriptSpace];
@@ -1600,7 +1600,7 @@ LABEL_18:
         v28 = 138413058;
         v29 = v22;
         v30 = 2112;
-        v31 = v23;
+        layoutType2 = v23;
         v32 = 2112;
         v33 = v24;
         v34 = 2112;
@@ -1624,7 +1624,7 @@ LABEL_18:
       v28 = 136315394;
       v29 = "[CKChatItem(Layout) layoutItemSpacingForReplyContextPreviewWithEnvironment:datasourceItemIndex:allDatasourceItems:supplementryItems:]";
       v30 = 2048;
-      v31 = [(CKChatItem *)self layoutType];
+      layoutType2 = [(CKChatItem *)self layoutType];
       _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "CKChatItem_Layout - %s asked to generate spacing for non-reply context preview type %lu", &v28, 0x16u);
     }
   }
@@ -1635,37 +1635,37 @@ LABEL_19:
   return v15;
 }
 
-- (id)layoutItemSpacingForReplyThreadOriginatorWithEnvironment:(id)a3 datasourceItemIndex:(int64_t)a4 allDatasourceItems:(id)a5 supplementryItems:(id)a6 sizeOverride:(CGSize)a7
+- (id)layoutItemSpacingForReplyThreadOriginatorWithEnvironment:(id)environment datasourceItemIndex:(int64_t)index allDatasourceItems:(id)items supplementryItems:(id)supplementryItems sizeOverride:(CGSize)override
 {
-  height = a7.height;
-  width = a7.width;
+  height = override.height;
+  width = override.width;
   v45 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
+  environmentCopy = environment;
+  itemsCopy = items;
+  supplementryItemsCopy = supplementryItems;
   if ([(CKChatItem *)self layoutType]== 15)
   {
-    if (a4 < 1)
+    if (index < 1)
     {
       v16 = 0;
     }
 
     else
     {
-      v16 = [v14 objectAtIndex:a4 - 1];
+      v16 = [itemsCopy objectAtIndex:index - 1];
     }
 
-    v19 = [v16 layoutType];
-    if (v19 > 6)
+    layoutType = [v16 layoutType];
+    if (layoutType > 6)
     {
-      if (v19 > 12)
+      if (layoutType > 12)
       {
-        if (v19 == 13)
+        if (layoutType == 13)
         {
           goto LABEL_23;
         }
 
-        if (v19 == 16)
+        if (layoutType == 16)
         {
           v22 = +[CKUIBehavior sharedBehaviors];
 LABEL_25:
@@ -1676,25 +1676,25 @@ LABEL_25:
         goto LABEL_34;
       }
 
-      if (v19 == 7)
+      if (layoutType == 7)
       {
         v22 = +[CKUIBehavior sharedBehaviors];
         [v22 extraSmallTranscriptSpace];
         goto LABEL_29;
       }
 
-      if (v19 != 8)
+      if (layoutType != 8)
       {
         goto LABEL_34;
       }
     }
 
-    else if ((v19 - 2) >= 2)
+    else if ((layoutType - 2) >= 2)
     {
-      if ((v19 - 5) < 2)
+      if ((layoutType - 5) < 2)
       {
-        v20 = [CKChatItemLayoutUtilities prevMessageIsReplyForIndex:a4 - 1 allDatasourceItems:v14];
-        v21 = [CKChatItemLayoutUtilities nextMessageIsReplyForIndex:a4 allDatasourceItems:v14];
+        v20 = [CKChatItemLayoutUtilities prevMessageIsReplyForIndex:index - 1 allDatasourceItems:itemsCopy];
+        v21 = [CKChatItemLayoutUtilities nextMessageIsReplyForIndex:index allDatasourceItems:itemsCopy];
         v22 = +[CKUIBehavior sharedBehaviors];
         if (v20 || v21)
         {
@@ -1704,12 +1704,12 @@ LABEL_25:
         goto LABEL_25;
       }
 
-      if (v19 == 1)
+      if (layoutType == 1)
       {
 LABEL_23:
         if ([(CKChatItem *)self itemIsSameThreadAsOtherItem:v16])
         {
-          v24 = [CKChatItemLayoutUtilities nextMessageIsReplyForIndex:a4 allDatasourceItems:v14];
+          v24 = [CKChatItemLayoutUtilities nextMessageIsReplyForIndex:index allDatasourceItems:itemsCopy];
           v22 = +[CKUIBehavior sharedBehaviors];
           if (!v24)
           {
@@ -1740,7 +1740,7 @@ LABEL_34:
           *buf = 138413058;
           v38 = v36;
           v39 = 2112;
-          v40 = v34;
+          layoutType2 = v34;
           v41 = 2112;
           v42 = v35;
           v43 = 2112;
@@ -1762,9 +1762,9 @@ LABEL_29:
     v25 = v23;
 
 LABEL_30:
-    [(CKChatItem *)self _additionalTopPaddingForChatItem:self datasourceItemIndex:a4 allDatasourceItems:v14 prevChatItem:v16 layoutEnvironment:v13 sizeOverride:width, height];
+    [(CKChatItem *)self _additionalTopPaddingForChatItem:self datasourceItemIndex:index allDatasourceItems:itemsCopy prevChatItem:v16 layoutEnvironment:environmentCopy sizeOverride:width, height];
     v27 = v26;
-    [(CKChatItem *)self _additionalBottomPaddingForChatItem:self datasourceItemIndex:a4 allDatasourceItems:v14 prevChatItem:v16 layoutEnvironment:v13 sizeOverride:width, height];
+    [(CKChatItem *)self _additionalBottomPaddingForChatItem:self datasourceItemIndex:index allDatasourceItems:itemsCopy prevChatItem:v16 layoutEnvironment:environmentCopy sizeOverride:width, height];
     v18 = [CKChatItemLayoutUtilities transcriptVerticalEdgeSpacingForChatItem:self previousChatItem:v16 topSpacing:v25 + v27 bottomSpacing:v28];
 
     goto LABEL_31;
@@ -1778,7 +1778,7 @@ LABEL_30:
       *buf = 136315394;
       v38 = "[CKChatItem(Layout) layoutItemSpacingForReplyThreadOriginatorWithEnvironment:datasourceItemIndex:allDatasourceItems:supplementryItems:sizeOverride:]";
       v39 = 2048;
-      v40 = [(CKChatItem *)self layoutType];
+      layoutType2 = [(CKChatItem *)self layoutType];
       _os_log_impl(&dword_19020E000, v17, OS_LOG_TYPE_INFO, "CKChatItem_Layout - %s asked to generate spacing for non-thread originator preview type %lu", buf, 0x16u);
     }
   }
@@ -1789,25 +1789,25 @@ LABEL_31:
   return v18;
 }
 
-- (BOOL)previousReplyCount:(unint64_t)a3 allDatasourceItems:(id)a4 isOccludedForAssociatedSize:(CGSize)a5 outMaxY:(double *)a6
+- (BOOL)previousReplyCount:(unint64_t)count allDatasourceItems:(id)items isOccludedForAssociatedSize:(CGSize)size outMaxY:(double *)y
 {
-  height = a5.height;
-  width = a5.width;
-  v10 = a4;
-  v11 = [(CKChatItem *)self itemIsReply];
+  height = size.height;
+  width = size.width;
+  itemsCopy = items;
+  itemIsReply = [(CKChatItem *)self itemIsReply];
   LOBYTE(self) = 0;
-  if (v11 && (a3 - 1) >= 1)
+  if (itemIsReply && (count - 1) >= 1)
   {
     while (1)
     {
-      v13 = [v10 objectAtIndex:--a3];
+      v13 = [itemsCopy objectAtIndex:--count];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         break;
       }
 
-      if (a3 <= 1)
+      if (count <= 1)
       {
         LOBYTE(self) = 0;
         goto LABEL_15;
@@ -1815,16 +1815,16 @@ LABEL_31:
     }
 
     v14 = v13;
-    v15 = [v14 replyCount];
+    replyCount = [v14 replyCount];
     [v14 size];
     v17 = v16;
     [v14 size];
     v19 = height <= v18 && width <= v17;
-    LODWORD(self) = v15 > 1 && v19;
+    LODWORD(self) = replyCount > 1 && v19;
     if (self == 1)
     {
       [v14 size];
-      *a6 = v20;
+      *y = v20;
     }
   }
 
@@ -1833,19 +1833,19 @@ LABEL_15:
   return self;
 }
 
-- (BOOL)previousStatusItemStatusOrientation:(id)a3 isOccludedByCurrentItem:(id)a4
+- (BOOL)previousStatusItemStatusOrientation:(id)orientation isOccludedByCurrentItem:(id)item
 {
-  v5 = a3;
-  v6 = a4;
+  orientationCopy = orientation;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
-    v8 = [v6 transcriptOrientation];
-    v9 = [v7 transcriptOrientation];
-    v10 = [v7 statusAlignment];
+    v7 = orientationCopy;
+    transcriptOrientation = [itemCopy transcriptOrientation];
+    transcriptOrientation2 = [v7 transcriptOrientation];
+    statusAlignment = [v7 statusAlignment];
 
-    v12 = v8 == v9 && v8 != v10;
+    v12 = transcriptOrientation == transcriptOrientation2 && transcriptOrientation != statusAlignment;
   }
 
   else
@@ -1856,9 +1856,9 @@ LABEL_15:
   return v12;
 }
 
-- (BOOL)previousPhotoActionItemIsOccluded:(unint64_t)a3 allDatasourceItems:(id)a4
+- (BOOL)previousPhotoActionItemIsOccluded:(unint64_t)occluded allDatasourceItems:(id)items
 {
-  v4 = self;
+  selfCopy = self;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1878,10 +1878,10 @@ LABEL_15:
 
 - (BOOL)itemIsFromMe
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 isFromMe];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  isFromMe = [iMChatItem isFromMe];
 
-  return v3;
+  return isFromMe;
 }
 
 - (BOOL)itemIsReplyFromMe
@@ -1909,36 +1909,36 @@ LABEL_15:
 
 - (BOOL)itemIsThreadOriginator
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 itemIsThreadOriginator];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  itemIsThreadOriginator = [iMChatItem itemIsThreadOriginator];
 
-  return v3;
+  return itemIsThreadOriginator;
 }
 
-- (BOOL)itemIsSameThreadAsOtherItem:(id)a3
+- (BOOL)itemIsSameThreadAsOtherItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKChatItem *)self IMChatItem];
-  v6 = [v5 threadIdentifier];
-  v7 = [v4 IMChatItem];
+  itemCopy = item;
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  threadIdentifier = [iMChatItem threadIdentifier];
+  iMChatItem2 = [itemCopy IMChatItem];
 
-  v8 = [v7 threadIdentifier];
-  v9 = [v6 isEqualToString:v8];
+  threadIdentifier2 = [iMChatItem2 threadIdentifier];
+  v9 = [threadIdentifier isEqualToString:threadIdentifier2];
 
   return v9;
 }
 
-- (int64_t)chatItemReplyLineContiguousTypeForChatStyle:(unsigned __int8)a3
+- (int64_t)chatItemReplyLineContiguousTypeForChatStyle:(unsigned __int8)style
 {
-  v3 = a3;
-  v4 = [(CKChatItem *)self contiguousType];
+  styleCopy = style;
+  contiguousType = [(CKChatItem *)self contiguousType];
   v5 = 1;
-  if (v4 == 1)
+  if (contiguousType == 1)
   {
-    v5 = v3 == 45;
+    v5 = styleCopy == 45;
   }
 
-  if (v4 == 2)
+  if (contiguousType == 2)
   {
     return 0;
   }

@@ -1,16 +1,16 @@
 @interface SSAppPurchaseHistoryTransaction
-- (SSAppPurchaseHistoryTransaction)initWithDatabase:(id)a3;
+- (SSAppPurchaseHistoryTransaction)initWithDatabase:(id)database;
 - (void)dealloc;
 @end
 
 @implementation SSAppPurchaseHistoryTransaction
 
-- (SSAppPurchaseHistoryTransaction)initWithDatabase:(id)a3
+- (SSAppPurchaseHistoryTransaction)initWithDatabase:(id)database
 {
   v4 = [(SSAppPurchaseHistoryTransaction *)self init];
   if (v4)
   {
-    v4->_database = a3;
+    v4->_database = database;
   }
 
   return v4;

@@ -1,8 +1,8 @@
 @interface STAccountStateMonitor
-- (STAccountStateMonitor)initWithDelegate:(id)a3;
+- (STAccountStateMonitor)initWithDelegate:(id)delegate;
 - (STAccountStateMonitorDelegate)delegate;
 - (void)dealloc;
-- (void)reloadAccountState:(BOOL)a3;
+- (void)reloadAccountState:(BOOL)state;
 @end
 
 @implementation STAccountStateMonitor
@@ -18,13 +18,13 @@
   [(STAccountStateMonitor *)&v4 dealloc];
 }
 
-- (STAccountStateMonitor)initWithDelegate:(id)a3
+- (STAccountStateMonitor)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v34.receiver = self;
   v34.super_class = STAccountStateMonitor;
   v5 = [(STAccountStateMonitor *)&v34 init];
-  objc_storeWeak(&v5->_delegate, v4);
+  objc_storeWeak(&v5->_delegate, delegateCopy);
   v6 = [[STDebouncer alloc] initWithMinCoalescenceInterval:1.0 maxCoalescenceInterval:5.0];
   [v6 setDelegate:v5];
   objc_storeStrong(&v5->_debouncer, v6);
@@ -79,14 +79,14 @@
   return v5;
 }
 
-- (void)reloadAccountState:(BOOL)a3
+- (void)reloadAccountState:(BOOL)state
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100005288;
   v3[3] = &unk_1001A2C10;
   v3[4] = self;
-  v4 = a3;
+  stateCopy = state;
   [STUserDescription currentUserWithCompletion:v3];
 }
 

@@ -8,38 +8,38 @@
 
 - (id)sb_secondaryText
 {
-  v2 = [a1 subtitle];
-  v3 = v2;
-  if (v2)
+  subtitle = [self subtitle];
+  v3 = subtitle;
+  if (subtitle)
   {
-    v4 = v2;
+    v4 = subtitle;
   }
 
   else
   {
-    v5 = [a1 state];
-    if (v5)
+    state = [self state];
+    if (state)
     {
-      [a1 onOption];
+      [self onOption];
     }
 
     else
     {
-      [a1 offOption];
+      [self offOption];
     }
     v6 = ;
-    v7 = [v6 value];
-    v8 = v7;
-    if (v7)
+    value = [v6 value];
+    v8 = value;
+    if (value)
     {
-      v4 = v7;
+      v4 = value;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CCA8D8] mainBundle];
-      v10 = v9;
-      if (v5)
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v10 = mainBundle;
+      if (state)
       {
         v11 = @"CONTROL_ON";
       }
@@ -49,7 +49,7 @@
         v11 = @"CONTROL_OFF";
       }
 
-      v4 = [v9 localizedStringForKey:v11 value:&stru_283094718 table:@"SpringBoard"];
+      v4 = [mainBundle localizedStringForKey:v11 value:&stru_283094718 table:@"SpringBoard"];
     }
   }
 
@@ -58,74 +58,74 @@
 
 - (id)sb_secondaryTextColor
 {
-  v2 = [a1 state];
-  v3 = [a1 onOption];
-  v4 = [v3 tint];
-  v5 = v4;
-  if (v4)
+  state = [self state];
+  onOption = [self onOption];
+  tint = [onOption tint];
+  v5 = tint;
+  if (tint)
   {
-    v6 = v4;
+    systemBlueColor = tint;
   }
 
   else
   {
-    v6 = [MEMORY[0x277D75348] systemBlueColor];
+    systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
   }
 
-  v7 = v6;
+  v7 = systemBlueColor;
 
-  if (v2)
+  if (state)
   {
-    v8 = v7;
+    sbui_inactiveColor = v7;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D75348] sbui_inactiveColor];
+    sbui_inactiveColor = [MEMORY[0x277D75348] sbui_inactiveColor];
   }
 
-  v9 = v8;
+  v9 = sbui_inactiveColor;
 
   return v9;
 }
 
 - (id)sb_actionHintTextWithType:()SBAdditions
 {
-  v5 = [a1 state];
-  if (v5)
+  state = [self state];
+  if (state)
   {
-    [a1 offOption];
+    [self offOption];
   }
 
   else
   {
-    [a1 onOption];
+    [self onOption];
   }
   v6 = ;
-  v7 = [v6 actionHint];
-  v8 = v7;
-  if (v7)
+  actionHint = [v6 actionHint];
+  v8 = actionHint;
+  if (actionHint)
   {
     *a3 = 1;
-    v9 = v7;
+    v9 = actionHint;
   }
 
   else
   {
-    v10 = [v6 value];
-    v11 = v10;
-    if (v10)
+    value = [v6 value];
+    v11 = value;
+    if (value)
     {
       *a3 = 0;
-      v9 = v10;
+      v9 = value;
     }
 
     else
     {
       *a3 = 1;
-      v12 = [MEMORY[0x277CCA8D8] mainBundle];
-      v13 = v12;
-      if (v5)
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v13 = mainBundle;
+      if (state)
       {
         v14 = @"TURN_OFF";
       }
@@ -135,7 +135,7 @@
         v14 = @"TURN_ON";
       }
 
-      v9 = [v12 localizedStringForKey:v14 value:&stru_283094718 table:@"SpringBoard"];
+      v9 = [mainBundle localizedStringForKey:v14 value:&stru_283094718 table:@"SpringBoard"];
     }
   }
 

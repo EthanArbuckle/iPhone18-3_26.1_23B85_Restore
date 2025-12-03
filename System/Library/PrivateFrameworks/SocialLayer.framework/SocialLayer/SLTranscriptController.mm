@@ -1,7 +1,7 @@
 @interface SLTranscriptController
 - (BOOL)deviceIsiPad;
 - (void)dealloc;
-- (void)presentTranscriptForMessageGUID:(id)a3 attachmentGUID:(id)a4 presentingViewController:(id)a5;
+- (void)presentTranscriptForMessageGUID:(id)d attachmentGUID:(id)iD presentingViewController:(id)controller;
 @end
 
 @implementation SLTranscriptController
@@ -26,22 +26,22 @@
 
 - (BOOL)deviceIsiPad
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom] == 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v3 = [currentDevice userInterfaceIdiom] == 1;
 
   return v3;
 }
 
-- (void)presentTranscriptForMessageGUID:(id)a3 attachmentGUID:(id)a4 presentingViewController:(id)a5
+- (void)presentTranscriptForMessageGUID:(id)d attachmentGUID:(id)iD presentingViewController:(id)controller
 {
   v46[3] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  controllerCopy = controller;
   if (sIsPresenting == 1)
   {
-    v11 = SLFrameworkLogHandle();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    dCopy = SLFrameworkLogHandle();
+    if (os_log_type_enabled(dCopy, OS_LOG_TYPE_DEBUG))
     {
       [SLTranscriptController presentTranscriptForMessageGUID:attachmentGUID:presentingViewController:];
     }
@@ -49,7 +49,7 @@
 
   else
   {
-    v12 = [MEMORY[0x277CCAE80] currentConnection];
+    currentConnection = [MEMORY[0x277CCAE80] currentConnection];
     HasPublicEntitlement = SLAppHasPublicEntitlement();
 
     sIsPresenting = 1;
@@ -57,7 +57,7 @@
     {
       v41 = 0;
       v21 = [MEMORY[0x277CCA9C8] extensionWithIdentifier:@"com.apple.MobileSMS.MessagesTranscriptExtension" error:&v41];
-      v11 = v41;
+      dCopy = v41;
       [(SLTranscriptController *)self setExtension:v21];
       if (v21)
       {
@@ -67,7 +67,7 @@
         v37[2] = __98__SLTranscriptController_presentTranscriptForMessageGUID_attachmentGUID_presentingViewController___block_invoke_27;
         v37[3] = &unk_278925C28;
         objc_copyWeak(&v39, &location);
-        v22 = v8;
+        v22 = dCopy;
         v38 = v22;
         [v21 setRequestInterruptionBlock:v37];
         v23 = objc_alloc_init(MEMORY[0x277CCA9D8]);
@@ -75,22 +75,22 @@
         {
           v24 = objc_alloc_init(MEMORY[0x277CBEB38]);
           [v24 setObject:v22 forKey:@"messageGUID"];
-          if (v9)
+          if (iDCopy)
           {
-            [v24 setObject:v9 forKey:@"attachmentGUID"];
+            [v24 setObject:iDCopy forKey:@"attachmentGUID"];
           }
 
           [v23 setUserInfo:v24];
         }
 
-        objc_initWeak(&from, v10);
+        objc_initWeak(&from, controllerCopy);
         objc_initWeak(&v35, v21);
         v33[0] = 0;
         v33[1] = v33;
         v33[2] = 0x3032000000;
         v33[3] = __Block_byref_object_copy_;
         v33[4] = __Block_byref_object_dispose_;
-        v34 = self;
+        selfCopy = self;
         v44 = v23;
         v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v44 count:1];
         v28[0] = MEMORY[0x277D85DD0];
@@ -128,9 +128,9 @@
 
     else
     {
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"messages://open?message-guid=%@&overlay=1", v8];
-      v14 = [MEMORY[0x277CBEBC0] URLWithString:v11];
-      v15 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"messages://open?message-guid=%@&overlay=1", dCopy];
+      v14 = [MEMORY[0x277CBEBC0] URLWithString:dCopy];
+      serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
       v16 = MEMORY[0x277D0AD60];
       v17 = *MEMORY[0x277D0AC40];
       v45[0] = *MEMORY[0x277D67120];
@@ -148,7 +148,7 @@
       v42[3] = &unk_278925BD8;
       v43 = v14;
       v20 = v14;
-      [v15 openApplication:@"com.apple.MobileSMS" withOptions:v19 completion:v42];
+      [serviceWithDefaultShellEndpoint openApplication:@"com.apple.MobileSMS" withOptions:v19 completion:v42];
     }
   }
 

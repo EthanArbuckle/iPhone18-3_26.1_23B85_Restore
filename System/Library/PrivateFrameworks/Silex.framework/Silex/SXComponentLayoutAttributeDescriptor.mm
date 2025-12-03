@@ -1,6 +1,6 @@
 @interface SXComponentLayoutAttributeDescriptor
-+ (SXComponentLayoutAttributeDescriptor)descriptorWithFromLayoutAttribute:(int)a3 toLayoutAttribute:(BOOL)a4 ignoreMargin:;
-- (id)initWithFromLayoutAttribute:(int)a3 toLayoutAttribute:(char)a4 ignoreMargin:;
++ (SXComponentLayoutAttributeDescriptor)descriptorWithFromLayoutAttribute:(int)attribute toLayoutAttribute:(BOOL)layoutAttribute ignoreMargin:;
+- (id)initWithFromLayoutAttribute:(int)attribute toLayoutAttribute:(char)layoutAttribute ignoreMargin:;
 - (uint64_t)fromLayoutAttribute;
 - (uint64_t)ignoreMargins;
 - (uint64_t)toLayoutAttribute;
@@ -8,7 +8,7 @@
 
 @implementation SXComponentLayoutAttributeDescriptor
 
-+ (SXComponentLayoutAttributeDescriptor)descriptorWithFromLayoutAttribute:(int)a3 toLayoutAttribute:(BOOL)a4 ignoreMargin:
++ (SXComponentLayoutAttributeDescriptor)descriptorWithFromLayoutAttribute:(int)attribute toLayoutAttribute:(BOOL)layoutAttribute ignoreMargin:
 {
   objc_opt_self();
   v7 = [SXComponentLayoutAttributeDescriptor alloc];
@@ -20,15 +20,15 @@
     if (v7)
     {
       v7->_fromLayoutAttribute = a2;
-      v7->_toLayoutAttribute = a3;
-      v7->_ignoreMargins = a4;
+      v7->_toLayoutAttribute = attribute;
+      v7->_ignoreMargins = layoutAttribute;
     }
   }
 
   return v7;
 }
 
-- (id)initWithFromLayoutAttribute:(int)a3 toLayoutAttribute:(char)a4 ignoreMargin:
+- (id)initWithFromLayoutAttribute:(int)attribute toLayoutAttribute:(char)layoutAttribute ignoreMargin:
 {
   if (result)
   {
@@ -38,8 +38,8 @@
     if (result)
     {
       *(result + 3) = a2;
-      *(result + 4) = a3;
-      *(result + 8) = a4;
+      *(result + 4) = attribute;
+      *(result + 8) = layoutAttribute;
     }
   }
 
@@ -68,9 +68,9 @@
 
 - (uint64_t)ignoreMargins
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else

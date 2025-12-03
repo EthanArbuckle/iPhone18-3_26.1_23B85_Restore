@@ -1,18 +1,18 @@
 @interface APUIAppSuggestionView
-- (void)_setAppWithBundleId:(id)a3 reason:(id)a4;
-- (void)_tapRecognized:(id)a3;
-- (void)layoutSuggestion:(id)a3;
+- (void)_setAppWithBundleId:(id)id reason:(id)reason;
+- (void)_tapRecognized:(id)recognized;
+- (void)layoutSuggestion:(id)suggestion;
 @end
 
 @implementation APUIAppSuggestionView
 
-- (void)layoutSuggestion:(id)a3
+- (void)layoutSuggestion:(id)suggestion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  suggestionCopy = suggestion;
+  if (suggestionCopy)
   {
-    [(APUISuggestionView *)self setSuggestion:v4];
+    [(APUISuggestionView *)self setSuggestion:suggestionCopy];
     [(APUISuggestionView *)self createViewsIfNeeded];
     v5 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__tapRecognized_];
     tapRecognizer = self->_tapRecognizer;
@@ -28,23 +28,23 @@
       _os_log_impl(&dword_240036000, v7, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: APUIAppSuggestionView: added gesture recognizer: %@", &v22, 0xCu);
     }
 
-    v9 = [v4 executableSpecification];
-    v10 = [v9 executableClassString];
+    executableSpecification = [suggestionCopy executableSpecification];
+    executableClassString = [executableSpecification executableClassString];
     v11 = objc_opt_class();
     v12 = NSStringFromClass(v11);
-    v13 = [v10 isEqualToString:v12];
+    v13 = [executableClassString isEqualToString:v12];
 
     if (v13)
     {
       v14 = objc_alloc(MEMORY[0x277CCACA8]);
-      v15 = [v4 executableSpecification];
-      v16 = [v15 executable];
-      v17 = [v14 initWithData:v16 encoding:4];
+      executableSpecification2 = [suggestionCopy executableSpecification];
+      executable = [executableSpecification2 executable];
+      v17 = [v14 initWithData:executable encoding:4];
 
-      v18 = [v4 uiSpecification];
-      v19 = [v18 reason];
+      uiSpecification = [suggestionCopy uiSpecification];
+      reason = [uiSpecification reason];
 
-      [(APUIAppSuggestionView *)self _setAppWithBundleId:v17 reason:v19];
+      [(APUIAppSuggestionView *)self _setAppWithBundleId:v17 reason:reason];
     }
 
     else
@@ -71,57 +71,57 @@
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setAppWithBundleId:(id)a3 reason:(id)a4
+- (void)_setAppWithBundleId:(id)id reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_appBundleId, a3);
-  v9 = [(APUISuggestionView *)self iconView];
-  [v9 setAppBundleIdentifier:v7];
+  idCopy = id;
+  reasonCopy = reason;
+  objc_storeStrong(&self->_appBundleId, id);
+  iconView = [(APUISuggestionView *)self iconView];
+  [iconView setAppBundleIdentifier:idCopy];
 
   v10 = MEMORY[0x277CCACA8];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v12 = [v11 localizedStringForKey:@"Open %@" value:&stru_285201410 table:0];
-  v13 = [MEMORY[0x277CEB3B8] localizedNameForBundle:v7];
+  v13 = [MEMORY[0x277CEB3B8] localizedNameForBundle:idCopy];
   v14 = [v10 localizedStringWithFormat:v12, v13];
 
-  v15 = [(APUISuggestionView *)self titleLabel];
-  [v15 setText:v14];
+  titleLabel = [(APUISuggestionView *)self titleLabel];
+  [titleLabel setText:v14];
 
-  if (![v8 length])
+  if (![reasonCopy length])
   {
     v16 = __atxlog_handle_ui();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_FAULT))
     {
-      [(APUIAppSuggestionView *)v7 _setAppWithBundleId:v8 reason:v16];
+      [(APUIAppSuggestionView *)idCopy _setAppWithBundleId:reasonCopy reason:v16];
     }
   }
 
-  v17 = [(APUISuggestionView *)self subtitleLabel];
-  [v17 setText:v8];
+  subtitleLabel = [(APUISuggestionView *)self subtitleLabel];
+  [subtitleLabel setText:reasonCopy];
 }
 
-- (void)_tapRecognized:(id)a3
+- (void)_tapRecognized:(id)recognized
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recognizedCopy = recognized;
   if ([(APUISuggestionView *)self canEngageSuggestion])
   {
     [(APUISuggestionView *)self setCanEngageSuggestion:0];
-    if ([v4 state] == 3)
+    if ([recognizedCopy state] == 3)
     {
-      v5 = [(APUISuggestionView *)self suggestion];
+      suggestion = [(APUISuggestionView *)self suggestion];
       v6 = __atxlog_handle_ui();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         appBundleId = self->_appBundleId;
         *buf = 138412290;
-        v15 = appBundleId;
+        state = appBundleId;
         _os_log_impl(&dword_240036000, v6, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: APUIAppSuggestionView: gesture recognizer ended; attempting to launch app: %@...", buf, 0xCu);
       }
 
-      v8 = [(APUISuggestionView *)self delegate];
-      [v8 view:self didTapSuggestion:v5];
+      delegate = [(APUISuggestionView *)self delegate];
+      [delegate view:self didTapSuggestion:suggestion];
 
       v9 = self->_appBundleId;
       v12[0] = MEMORY[0x277D85DD0];
@@ -129,8 +129,8 @@
       v12[2] = __40__APUIAppSuggestionView__tapRecognized___block_invoke;
       v12[3] = &unk_278C90DB0;
       v12[4] = self;
-      v13 = v5;
-      v10 = v5;
+      v13 = suggestion;
+      v10 = suggestion;
       [APUIAppIconDataSource openApplication:v9 completion:v12];
     }
 
@@ -140,7 +140,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v15 = [v4 state];
+        state = [recognizedCopy state];
         _os_log_impl(&dword_240036000, v10, OS_LOG_TYPE_DEFAULT, "SuggestionsWidget: APUIAppSuggestionView: gesture recognizer state: %ld", buf, 0xCu);
       }
     }

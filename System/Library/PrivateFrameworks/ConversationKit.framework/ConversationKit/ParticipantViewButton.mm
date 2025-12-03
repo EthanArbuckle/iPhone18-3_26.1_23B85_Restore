@@ -3,58 +3,58 @@
 - (BOOL)isHighlighted;
 - (BOOL)isSelected;
 - (void)layoutSubviews;
-- (void)setEnabled:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setSelected:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setSelected:(BOOL)selected;
 @end
 
 @implementation ParticipantViewButton
 
 - (BOOL)isSelected
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ParticipantViewButton.isSelected.getter();
 
   return v3 & 1;
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  v4 = self;
-  ParticipantViewButton.isSelected.setter(a3);
+  selfCopy = self;
+  ParticipantViewButton.isSelected.setter(selected);
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ParticipantViewButton.isHighlighted.getter();
 
   return v3 & 1;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  ParticipantViewButton.isHighlighted.setter(a3);
+  selfCopy = self;
+  ParticipantViewButton.isHighlighted.setter(highlighted);
 }
 
 - (BOOL)isEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ParticipantViewButton.isEnabled.getter();
 
   return v3 & 1;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v4 = self;
-  ParticipantViewButton.isEnabled.setter(a3);
+  selfCopy = self;
+  ParticipantViewButton.isEnabled.setter(enabled);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantViewButton.layoutSubviews()();
 }
 

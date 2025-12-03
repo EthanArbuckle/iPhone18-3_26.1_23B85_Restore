@@ -1,76 +1,76 @@
 @interface ADPearlColorInFieldCalibrationExecutor
-- (BOOL)normalizedDX:(__CVBuffer *)a3 toDepth:(__CVBuffer *)a4 withMultiplier:(double)a5 andOffset:(double)a6;
-- (__n128)setWmcamToMcamExtrinsics:(__n128)a3;
-- (id)initForEngineType:(unint64_t)a3;
-- (id)initForEngineType:(unint64_t)a3 andExecutorParameters:(id)a4;
+- (BOOL)normalizedDX:(__CVBuffer *)x toDepth:(__CVBuffer *)depth withMultiplier:(double)multiplier andOffset:(double)offset;
+- (__n128)setWmcamToMcamExtrinsics:(__n128)extrinsics;
+- (id)initForEngineType:(unint64_t)type;
+- (id)initForEngineType:(unint64_t)type andExecutorParameters:(id)parameters;
 - (int64_t)allocateIntermediateBuffers;
-- (int64_t)executePreprocessedInputsWithInterSessionData:(id)a3 outResult:(id)a4;
+- (int64_t)executePreprocessedInputsWithInterSessionData:(id)data outResult:(id)result;
 - (int64_t)prepare;
-- (uint64_t)preprocessInputColorFrame:(double)a3 pearlDepth:(double)a4 pearlPoses:(double)a5 pceCameraCalibration:(double)a6 pearlCameraCalibrationTransform:(double)a7 colorCameraCalibration:(double)a8 timestamp:(double)a9;
-- (uint64_t)preprocessInputColorFrame:(double)a3 pearlNormalizedDX:(double)a4 pearlPoses:(double)a5 disparityNormalizationMultiplier:(double)a6 disparityNormalizationOffset:(double)a7 pceCameraCalibration:(uint64_t)a8 pearlCameraCalibrationTransform:(uint64_t)a9 colorCameraCalibration:(__CVBuffer *)a10 timestamp:(void *)a11;
+- (uint64_t)preprocessInputColorFrame:(double)frame pearlDepth:(double)depth pearlPoses:(double)poses pceCameraCalibration:(double)calibration pearlCameraCalibrationTransform:(double)transform colorCameraCalibration:(double)cameraCalibration timestamp:(double)timestamp;
+- (uint64_t)preprocessInputColorFrame:(double)frame pearlNormalizedDX:(double)x pearlPoses:(double)poses disparityNormalizationMultiplier:(double)multiplier disparityNormalizationOffset:(double)offset pceCameraCalibration:(uint64_t)calibration pearlCameraCalibrationTransform:(uint64_t)transform colorCameraCalibration:(__CVBuffer *)self0 timestamp:(void *)self1;
 - (void)dealloc;
 - (void)deallocateEspressoBuffers;
-- (void)setColorCameraCalibration:(id)a3;
-- (void)setPearlCameraCalibration:(id)a3;
+- (void)setColorCameraCalibration:(id)calibration;
+- (void)setPearlCameraCalibration:(id)calibration;
 @end
 
 @implementation ADPearlColorInFieldCalibrationExecutor
 
-- (__n128)setWmcamToMcamExtrinsics:(__n128)a3
+- (__n128)setWmcamToMcamExtrinsics:(__n128)extrinsics
 {
   result[23] = a2;
-  result[24] = a3;
+  result[24] = extrinsics;
   result[25] = a4;
   result[26] = a5;
   return result;
 }
 
-- (int64_t)executePreprocessedInputsWithInterSessionData:(id)a3 outResult:(id)a4
+- (int64_t)executePreprocessedInputsWithInterSessionData:(id)data outResult:(id)result
 {
   v104 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  resultCopy = result;
   if (self->_preProcessInputColorFrameDone)
   {
-    v8 = [(ADExecutor *)self executorParameters];
-    v9 = [v8 logger];
-    v10 = [v6 persistenceData];
-    [v9 logDictionary:v10 name:"inputIntersessionData" timestamp:self->_lastColorTimestamp];
+    executorParameters = [(ADExecutor *)self executorParameters];
+    logger = [executorParameters logger];
+    persistenceData = [dataCopy persistenceData];
+    [logger logDictionary:persistenceData name:"inputIntersessionData" timestamp:self->_lastColorTimestamp];
 
     self->_preProcessInputColorFrameDone = 0;
-    [v7 setExecuted:0];
+    [resultCopy setExecuted:0];
     if (self->_isPrepared)
     {
       if (self->_backendEspressoRunner && self->_frontendEspressoRunner)
       {
-        if (v7)
+        if (resultCopy)
         {
-          v11 = [(ADExecutor *)self executorParameters];
-          v98 = [v11 stepsToExecute];
+          executorParameters2 = [(ADExecutor *)self executorParameters];
+          stepsToExecute = [executorParameters2 stepsToExecute];
 
-          v12 = [(ADExecutor *)self executorParameters];
-          v99 = [v12 timeProfiler];
+          executorParameters3 = [(ADExecutor *)self executorParameters];
+          timeProfiler = [executorParameters3 timeProfiler];
 
-          v96 = v98 - 1;
-          if (v98 < 1)
+          v96 = stepsToExecute - 1;
+          if (stepsToExecute < 1)
           {
-            v16 = -22977;
+            execute = -22977;
 LABEL_33:
 
             goto LABEL_34;
           }
 
           kdebug_trace();
-          [v99 startWithUTFString:"first network execution"];
+          [timeProfiler startWithUTFString:"first network execution"];
           [(ADExecutor *)self frameExecutionStart];
-          v13 = [(ADExecutor *)self executorParameters];
-          v14 = [v13 timeProfiler];
-          [v14 start:@"BackendProcess"];
+          executorParameters4 = [(ADExecutor *)self executorParameters];
+          timeProfiler2 = [executorParameters4 timeProfiler];
+          [timeProfiler2 start:@"BackendProcess"];
 
           v15 = +[ADTimeProfiler currentTimeUsec];
-          v16 = [(ADEspressoRunner *)self->_backendEspressoRunner execute];
+          execute = [(ADEspressoRunner *)self->_backendEspressoRunner execute];
           v17 = +[ADTimeProfiler currentTimeUsec];
-          if (v16)
+          if (execute)
           {
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
             {
@@ -82,47 +82,47 @@ LABEL_33:
           }
 
           v18 = v17;
-          v19 = [(ADExecutor *)self executorParameters];
-          v20 = [v19 timeProfiler];
-          [v20 stop:@"BackendProcess"];
+          executorParameters5 = [(ADExecutor *)self executorParameters];
+          timeProfiler3 = [executorParameters5 timeProfiler];
+          [timeProfiler3 stop:@"BackendProcess"];
 
-          v95 = [v6 inFieldCalibrationTelemetryData];
-          [v95 reportBackendRunTime:v18 - v15];
-          v21 = [(ADExecutor *)self executorParameters];
-          v22 = [v21 logger];
-          [v22 logRawBuffer:-[ADEspressoBufferHandle data](self->_featuresOutputEspressoBufferHandle size:"data") name:self->_backendSingleResultSize timestamp:{"featureVectorItr", self->_lastColorTimestamp}];
+          inFieldCalibrationTelemetryData = [dataCopy inFieldCalibrationTelemetryData];
+          [inFieldCalibrationTelemetryData reportBackendRunTime:v18 - v15];
+          executorParameters6 = [(ADExecutor *)self executorParameters];
+          logger2 = [executorParameters6 logger];
+          [logger2 logRawBuffer:-[ADEspressoBufferHandle data](self->_featuresOutputEspressoBufferHandle size:"data") name:self->_backendSingleResultSize timestamp:{"featureVectorItr", self->_lastColorTimestamp}];
 
           memcpy(self->_backendResultAggregated + self->_backendSingleResultSize * self->_backendResultAggregationCounter, [(ADEspressoBufferHandle *)self->_featuresOutputEspressoBufferHandle data], self->_backendSingleResultSize);
           LODWORD(v18) = self->_backendResultAggregationCounter + 1;
           self->_backendResultAggregationCounter = v18;
-          v23 = [(ADExecutor *)self executorParameters];
-          v24 = [v23 pipelineParameters];
-          LODWORD(v22) = [v24 featuresVectorAggregationSize];
+          executorParameters7 = [(ADExecutor *)self executorParameters];
+          pipelineParameters = [executorParameters7 pipelineParameters];
+          LODWORD(logger2) = [pipelineParameters featuresVectorAggregationSize];
 
-          if (v18 == v22)
+          if (v18 == logger2)
           {
-            v25 = [(ADExecutor *)self executorParameters];
-            v26 = [v25 timeProfiler];
-            [v26 start:@"FrontendProcess"];
+            executorParameters8 = [(ADExecutor *)self executorParameters];
+            timeProfiler4 = [executorParameters8 timeProfiler];
+            [timeProfiler4 start:@"FrontendProcess"];
 
             v97 = +[ADTimeProfiler currentTimeUsec];
             self->_backendResultAggregationCounter = 0;
-            [v99 stopWithUTFString:"first network execution"];
+            [timeProfiler stopWithUTFString:"first network execution"];
             kdebug_trace();
-            if (v98 == 1)
+            if (stepsToExecute == 1)
             {
               goto LABEL_31;
             }
 
             kdebug_trace();
-            [v99 startWithUTFString:"preprocess features"];
+            [timeProfiler startWithUTFString:"preprocess features"];
             pipeline = self->_pipeline;
             backendResultAggregated = self->_backendResultAggregated;
-            v29 = [(ADEspressoBufferHandle *)self->_frontendFeaturesInputEspressoBufferHandle data];
-            v30 = [(ADEspressoBufferHandle *)self->_featuresOutputEspressoBufferHandle dimensions];
-            v16 = [(ADPearlColorInFieldCalibrationPipeline *)pipeline processIntermediateResultsWithBackendFeaturesOutputVector:backendResultAggregated frontendEspressoFeaturesInput:v29 dimensions:v30];
+            data = [(ADEspressoBufferHandle *)self->_frontendFeaturesInputEspressoBufferHandle data];
+            dimensions = [(ADEspressoBufferHandle *)self->_featuresOutputEspressoBufferHandle dimensions];
+            execute = [(ADPearlColorInFieldCalibrationPipeline *)pipeline processIntermediateResultsWithBackendFeaturesOutputVector:backendResultAggregated frontendEspressoFeaturesInput:data dimensions:dimensions];
 
-            if (v16)
+            if (execute)
             {
               if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
@@ -139,17 +139,17 @@ LABEL_26:
               goto LABEL_32;
             }
 
-            [v99 stopWithUTFString:"preprocess features"];
+            [timeProfiler stopWithUTFString:"preprocess features"];
             kdebug_trace();
-            if (v98 < 3)
+            if (stepsToExecute < 3)
             {
               goto LABEL_31;
             }
 
             kdebug_trace();
-            [v99 startWithUTFString:"second network execution"];
-            v16 = [(ADEspressoRunner *)self->_frontendEspressoRunner execute];
-            if (v16)
+            [timeProfiler startWithUTFString:"second network execution"];
+            execute = [(ADEspressoRunner *)self->_frontendEspressoRunner execute];
+            if (execute)
             {
               if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
@@ -163,34 +163,34 @@ LABEL_26:
             }
 
             v35 = +[ADTimeProfiler currentTimeUsec];
-            v36 = [(ADExecutor *)self executorParameters];
-            v37 = [v36 timeProfiler];
-            [v37 stop:@"FrontendProcess"];
+            executorParameters9 = [(ADExecutor *)self executorParameters];
+            timeProfiler5 = [executorParameters9 timeProfiler];
+            [timeProfiler5 stop:@"FrontendProcess"];
 
-            [v95 reportFrontendRunTime:v35 - v97];
-            v38 = [(ADEspressoBufferHandle *)self->_frontendFeaturesInputEspressoBufferHandle dimensionsProduct];
+            [inFieldCalibrationTelemetryData reportFrontendRunTime:v35 - v97];
+            dimensionsProduct = [(ADEspressoBufferHandle *)self->_frontendFeaturesInputEspressoBufferHandle dimensionsProduct];
             frontendFeaturesInputElementSize = self->_frontendFeaturesInputElementSize;
-            v40 = [(ADExecutor *)self executorParameters];
-            v41 = [v40 logger];
-            [v41 logRawBuffer:-[ADEspressoBufferHandle data](self->_frontendFeaturesInputEspressoBufferHandle size:"data") name:frontendFeaturesInputElementSize * v38 timestamp:{"featureVectorAvg", self->_lastColorTimestamp}];
+            executorParameters10 = [(ADExecutor *)self executorParameters];
+            logger3 = [executorParameters10 logger];
+            [logger3 logRawBuffer:-[ADEspressoBufferHandle data](self->_frontendFeaturesInputEspressoBufferHandle size:"data") name:frontendFeaturesInputElementSize * dimensionsProduct timestamp:{"featureVectorAvg", self->_lastColorTimestamp}];
 
-            [v99 stopWithUTFString:"second network execution"];
+            [timeProfiler stopWithUTFString:"second network execution"];
             kdebug_trace();
-            if (v98 == 3)
+            if (stepsToExecute == 3)
             {
 LABEL_31:
-              v16 = -22977;
+              execute = -22977;
               goto LABEL_32;
             }
 
             kdebug_trace();
-            [v99 startWithUTFString:"postprocess rotation"];
-            v42 = [(ADExecutor *)self executorParameters];
-            v43 = [v42 timeProfiler];
-            [v43 start:@"PostProcess"];
+            [timeProfiler startWithUTFString:"postprocess rotation"];
+            executorParameters11 = [(ADExecutor *)self executorParameters];
+            timeProfiler6 = [executorParameters11 timeProfiler];
+            [timeProfiler6 start:@"PostProcess"];
 
-            v16 = [(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline postProcessFrontendOutputX:[(ADEspressoBufferHandle *)self->_frontendRotationXOutputEspressoBufferHandle data] frontendOutputY:[(ADEspressoBufferHandle *)self->_frontendRotationYOutputEspressoBufferHandle data] frontendOutputZ:[(ADEspressoBufferHandle *)self->_frontendRotationZOutputEspressoBufferHandle data] frontendOutputErrorX:[(ADEspressoBufferHandle *)self->_frontendErrorXOutputEspressoBufferHandle data] frontendOutputErrorY:[(ADEspressoBufferHandle *)self->_frontendErrorYOutputEspressoBufferHandle data] frontendOutputErrorZ:[(ADEspressoBufferHandle *)self->_frontendErrorZOutputEspressoBufferHandle data] interSessionData:v6 pearlColorInFieldCalibrationResult:v7];
-            if (v16)
+            execute = [(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline postProcessFrontendOutputX:[(ADEspressoBufferHandle *)self->_frontendRotationXOutputEspressoBufferHandle data] frontendOutputY:[(ADEspressoBufferHandle *)self->_frontendRotationYOutputEspressoBufferHandle data] frontendOutputZ:[(ADEspressoBufferHandle *)self->_frontendRotationZOutputEspressoBufferHandle data] frontendOutputErrorX:[(ADEspressoBufferHandle *)self->_frontendErrorXOutputEspressoBufferHandle data] frontendOutputErrorY:[(ADEspressoBufferHandle *)self->_frontendErrorYOutputEspressoBufferHandle data] frontendOutputErrorZ:[(ADEspressoBufferHandle *)self->_frontendErrorZOutputEspressoBufferHandle data] interSessionData:dataCopy pearlColorInFieldCalibrationResult:resultCopy];
+            if (execute)
             {
               if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
               {
@@ -203,27 +203,27 @@ LABEL_31:
               goto LABEL_26;
             }
 
-            v44 = [(ADExecutor *)self executorParameters];
-            v45 = [v44 timeProfiler];
-            [v45 stop:@"PostProcess"];
+            executorParameters12 = [(ADExecutor *)self executorParameters];
+            timeProfiler7 = [executorParameters12 timeProfiler];
+            [timeProfiler7 stop:@"PostProcess"];
 
-            v46 = [(ADExecutor *)self executorParameters];
-            v47 = [v46 logger];
-            v48 = [v7 dictionaryRepresentation];
-            [v47 logDictionary:v48 name:"internalUseResults" timestamp:self->_lastColorTimestamp];
+            executorParameters13 = [(ADExecutor *)self executorParameters];
+            logger4 = [executorParameters13 logger];
+            dictionaryRepresentation = [resultCopy dictionaryRepresentation];
+            [logger4 logDictionary:dictionaryRepresentation name:"internalUseResults" timestamp:self->_lastColorTimestamp];
 
-            v49 = [(ADExecutor *)self executorParameters];
-            v50 = [v49 logger];
-            [v7 pearlToColorExtrinsics];
-            [v50 logMatrix4x3:"depthToColorExtrinsics" name:? timestamp:?];
+            executorParameters14 = [(ADExecutor *)self executorParameters];
+            logger5 = [executorParameters14 logger];
+            [resultCopy pearlToColorExtrinsics];
+            [logger5 logMatrix4x3:"depthToColorExtrinsics" name:? timestamp:?];
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              [v7 preRelative2FactoryX];
+              [resultCopy preRelative2FactoryX];
               v52 = v51;
-              [v7 preRelative2FactoryY];
+              [resultCopy preRelative2FactoryY];
               v54 = v53;
-              [v7 preRelative2FactoryZ];
+              [resultCopy preRelative2FactoryZ];
               *buf = 134218496;
               *v101 = v52;
               *&v101[8] = 2048;
@@ -235,11 +235,11 @@ LABEL_31:
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              [v7 postRelative2FactoryX];
+              [resultCopy postRelative2FactoryX];
               v57 = v56;
-              [v7 postRelative2FactoryY];
+              [resultCopy postRelative2FactoryY];
               v59 = v58;
-              [v7 postRelative2FactoryZ];
+              [resultCopy postRelative2FactoryZ];
               *buf = 134218496;
               *v101 = v57;
               *&v101[8] = 2048;
@@ -251,11 +251,11 @@ LABEL_31:
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              [v7 deltaRotationX];
+              [resultCopy deltaRotationX];
               v62 = v61;
-              [v7 deltaRotationY];
+              [resultCopy deltaRotationY];
               v64 = v63;
-              [v7 deltaRotationZ];
+              [resultCopy deltaRotationZ];
               *buf = 134218496;
               *v101 = v62;
               *&v101[8] = 2048;
@@ -267,11 +267,11 @@ LABEL_31:
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              [v7 postRelative2PrevX];
+              [resultCopy postRelative2PrevX];
               v67 = v66;
-              [v7 postRelative2PrevY];
+              [resultCopy postRelative2PrevY];
               v69 = v68;
-              [v7 postRelative2PrevZ];
+              [resultCopy postRelative2PrevZ];
               *buf = 134218496;
               *v101 = v67;
               *&v101[8] = 2048;
@@ -283,11 +283,11 @@ LABEL_31:
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              [v7 absoluteRotationX];
+              [resultCopy absoluteRotationX];
               v72 = v71;
-              [v7 absoluteRotationY];
+              [resultCopy absoluteRotationY];
               v74 = v73;
-              [v7 absoluteRotationZ];
+              [resultCopy absoluteRotationZ];
               *buf = 134218496;
               *v101 = v72;
               *&v101[8] = 2048;
@@ -299,11 +299,11 @@ LABEL_31:
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              [v7 absoluteRotationPostISFX];
+              [resultCopy absoluteRotationPostISFX];
               v77 = v76;
-              [v7 absoluteRotationPostISFY];
+              [resultCopy absoluteRotationPostISFY];
               v79 = v78;
-              [v7 absoluteRotationPostISFZ];
+              [resultCopy absoluteRotationPostISFZ];
               *buf = 134218496;
               *v101 = v77;
               *&v101[8] = 2048;
@@ -315,11 +315,11 @@ LABEL_31:
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              [v7 factoryRotationX];
+              [resultCopy factoryRotationX];
               v82 = v81;
-              [v7 factoryRotationY];
+              [resultCopy factoryRotationY];
               v84 = v83;
-              [v7 factoryRotationZ];
+              [resultCopy factoryRotationZ];
               *buf = 134218496;
               *v101 = v82;
               *&v101[8] = 2048;
@@ -331,11 +331,11 @@ LABEL_31:
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              [v7 stdX];
+              [resultCopy stdX];
               v87 = v86;
-              [v7 stdY];
+              [resultCopy stdY];
               v89 = v88;
-              [v7 stdZ];
+              [resultCopy stdZ];
               *buf = 134218496;
               *v101 = v87;
               *&v101[8] = 2048;
@@ -347,25 +347,25 @@ LABEL_31:
 
             if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
             {
-              v91 = [v7 executed];
-              [v7 confidence];
+              executed = [resultCopy executed];
+              [resultCopy confidence];
               *buf = 67109376;
-              *v101 = v91;
+              *v101 = executed;
               *&v101[4] = 2048;
               *&v101[6] = v92;
               _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "ADPearlColorInFieldCalibration run executed: %d with std: %f]", buf, 0x12u);
             }
 
-            [v95 increaseRunTimesByOne];
-            [v95 updateLastExecutionTime:{+[ADTimeProfiler currentTimeUsec](ADTimeProfiler, "currentTimeUsec")}];
-            v93 = [(ADExecutor *)self executorParameters];
-            v94 = [v93 reportTelemetry];
+            [inFieldCalibrationTelemetryData increaseRunTimesByOne];
+            [inFieldCalibrationTelemetryData updateLastExecutionTime:{+[ADTimeProfiler currentTimeUsec](ADTimeProfiler, "currentTimeUsec")}];
+            executorParameters15 = [(ADExecutor *)self executorParameters];
+            reportTelemetry = [executorParameters15 reportTelemetry];
 
-            v96 = v98 - 4;
-            if (v94)
+            v96 = stepsToExecute - 4;
+            if (reportTelemetry)
             {
-              [(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline reportTelemetry:v7 withInterSessionData:v6];
-              [v95 reset];
+              [(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline reportTelemetry:resultCopy withInterSessionData:dataCopy];
+              [inFieldCalibrationTelemetryData reset];
             }
 
             v33 = "postprocess rotation";
@@ -374,16 +374,16 @@ LABEL_31:
           else
           {
 
-            v7 = 0;
+            resultCopy = 0;
             v33 = "first network execution";
           }
 
-          [v99 stopWithUTFString:v33];
+          [timeProfiler stopWithUTFString:v33];
           kdebug_trace();
           if (v96)
           {
             [(ADExecutor *)self frameExecutionEnd];
-            v16 = 0;
+            execute = 0;
             goto LABEL_32;
           }
 
@@ -396,8 +396,8 @@ LABEL_31:
           _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "must provide a pointer to ADPearlColorInFieldCalibrationResult", buf, 2u);
         }
 
-        v7 = 0;
-        v16 = -22953;
+        resultCopy = 0;
+        execute = -22953;
       }
 
       else
@@ -408,13 +408,13 @@ LABEL_31:
           _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "failed preparing executor", buf, 2u);
         }
 
-        v16 = -22960;
+        execute = -22960;
       }
     }
 
     else
     {
-      v16 = -22970;
+      execute = -22970;
     }
   }
 
@@ -426,15 +426,15 @@ LABEL_31:
       _os_log_error_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "running executeForPreprocesed before preProcessInputColorFrame called", buf, 2u);
     }
 
-    v16 = -22961;
+    execute = -22961;
   }
 
 LABEL_34:
 
-  return v16;
+  return execute;
 }
 
-- (uint64_t)preprocessInputColorFrame:(double)a3 pearlDepth:(double)a4 pearlPoses:(double)a5 pceCameraCalibration:(double)a6 pearlCameraCalibrationTransform:(double)a7 colorCameraCalibration:(double)a8 timestamp:(double)a9
+- (uint64_t)preprocessInputColorFrame:(double)frame pearlDepth:(double)depth pearlPoses:(double)poses pceCameraCalibration:(double)calibration pearlCameraCalibrationTransform:(double)transform colorCameraCalibration:(double)cameraCalibration timestamp:(double)timestamp
 {
   v53 = a13;
   v54 = a14;
@@ -442,37 +442,37 @@ LABEL_34:
   v57 = 0u;
   v58 = 0u;
   kdebug_trace();
-  *(a1 + 176) = 0;
-  *(a1 + 312) = a17;
-  v20 = [a1 executorParameters];
-  v21 = [v20 logger];
-  [v21 logMatrix4x4:"inputIrToDepthTransform" name:a6 timestamp:{a7, a8, a9, *(a1 + 312)}];
+  *(self + 176) = 0;
+  *(self + 312) = a17;
+  executorParameters = [self executorParameters];
+  logger = [executorParameters logger];
+  [logger logMatrix4x4:"inputIrToDepthTransform" name:calibration timestamp:{transform, cameraCalibration, timestamp, *(self + 312)}];
 
-  [a1 setColorCameraCalibration:v54];
-  [a1 setPearlCameraCalibration:v53];
-  v22 = [a1 executorParameters];
-  v23 = [v22 stepsToExecute];
+  [self setColorCameraCalibration:v54];
+  [self setPearlCameraCalibration:v53];
+  executorParameters2 = [self executorParameters];
+  stepsToExecute = [executorParameters2 stepsToExecute];
 
-  v24 = [a1 executorParameters];
-  v25 = [v24 timeProfiler];
+  executorParameters3 = [self executorParameters];
+  timeProfiler = [executorParameters3 timeProfiler];
 
-  if (v23 < 1)
+  if (stepsToExecute < 1)
   {
     goto LABEL_7;
   }
 
   kdebug_trace();
-  [v25 startWithUTFString:"preprocess pearl"];
-  [a1 frameExecutionStart];
-  v26 = [a1 executorParameters];
-  v27 = [v26 timeProfiler];
-  [v27 start:@"preprocessColor"];
+  [timeProfiler startWithUTFString:"preprocess pearl"];
+  [self frameExecutionStart];
+  executorParameters4 = [self executorParameters];
+  timeProfiler2 = [executorParameters4 timeProfiler];
+  [timeProfiler2 start:@"preprocessColor"];
 
-  v28 = [a1 executorParameters];
-  v29 = [v28 logger];
-  [v29 logPixelBuffer:a11 name:"inputColor" timestamp:*(a1 + 312)];
+  executorParameters5 = [self executorParameters];
+  logger2 = [executorParameters5 logger];
+  [logger2 logPixelBuffer:a11 name:"inputColor" timestamp:*(self + 312)];
 
-  v30 = [*(a1 + 336) preProcessColor:a11 processedColor:*(a1 + 184) referenceCameraCalibration:*(a1 + 168) colorCameraCalibration:*(a1 + 344)];
+  v30 = [*(self + 336) preProcessColor:a11 processedColor:*(self + 184) referenceCameraCalibration:*(self + 168) colorCameraCalibration:*(self + 344)];
   if (v30)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -488,17 +488,17 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  v33 = [a1 executorParameters];
-  v34 = [v33 logger];
-  [v34 logPixelBuffer:*(a1 + 184) name:"processedColor" timestamp:*(a1 + 312)];
+  executorParameters6 = [self executorParameters];
+  logger3 = [executorParameters6 logger];
+  [logger3 logPixelBuffer:*(self + 184) name:"processedColor" timestamp:*(self + 312)];
 
-  v35 = [a1 executorParameters];
-  v36 = [v35 timeProfiler];
-  [v36 stop:@"preprocessColor"];
+  executorParameters7 = [self executorParameters];
+  timeProfiler3 = [executorParameters7 timeProfiler];
+  [timeProfiler3 stop:@"preprocessColor"];
 
-  [v25 stopWithUTFString:"preprocess pearl"];
+  [timeProfiler stopWithUTFString:"preprocess pearl"];
   kdebug_trace();
-  if (v23 == 1)
+  if (stepsToExecute == 1)
   {
 LABEL_7:
     v30 = -22977;
@@ -506,33 +506,33 @@ LABEL_7:
   }
 
   kdebug_trace();
-  [v25 startWithUTFString:"preprocess color"];
-  v38 = [a1 executorParameters];
-  v39 = [v38 timeProfiler];
-  [v39 start:@"ProjectPearlPoints"];
+  [timeProfiler startWithUTFString:"preprocess color"];
+  executorParameters8 = [self executorParameters];
+  timeProfiler4 = [executorParameters8 timeProfiler];
+  [timeProfiler4 start:@"ProjectPearlPoints"];
 
-  v40 = [a1 executorParameters];
-  v41 = [v40 logger];
-  [v41 logPixelBuffer:a12 name:"inputPearl" timestamp:*(a1 + 312)];
+  executorParameters9 = [self executorParameters];
+  logger4 = [executorParameters9 logger];
+  [logger4 logPixelBuffer:a12 name:"inputPearl" timestamp:*(self + 312)];
 
-  [*(a1 + 336) setPearlToColorCurrentTransform:{a6, a7, a8, a9}];
-  v30 = [*(a1 + 336) preProcessPearl:a12 referenceCameraCalibration:*(a1 + 168) pearlCameraCalibration:*(a1 + 352) reprojectedPointsBuffer:*(a1 + 192) reprojectedPointsMaskBuffer:*(a1 + 200)];
-  v42 = [a1 executorParameters];
-  v43 = [v42 timeProfiler];
-  [v43 stop:@"ProjectPearlPoints"];
+  [*(self + 336) setPearlToColorCurrentTransform:{calibration, transform, cameraCalibration, timestamp}];
+  v30 = [*(self + 336) preProcessPearl:a12 referenceCameraCalibration:*(self + 168) pearlCameraCalibration:*(self + 352) reprojectedPointsBuffer:*(self + 192) reprojectedPointsMaskBuffer:*(self + 200)];
+  executorParameters10 = [self executorParameters];
+  timeProfiler5 = [executorParameters10 timeProfiler];
+  [timeProfiler5 stop:@"ProjectPearlPoints"];
 
   if (!v30)
   {
-    v44 = [a1 executorParameters];
-    v45 = [v44 logger];
-    [v45 logPixelBuffer:*(a1 + 192) name:"pearlProcessed" timestamp:*(a1 + 312)];
+    executorParameters11 = [self executorParameters];
+    logger5 = [executorParameters11 logger];
+    [logger5 logPixelBuffer:*(self + 192) name:"pearlProcessed" timestamp:*(self + 312)];
 
-    v46 = [a1 executorParameters];
-    v47 = [v46 logger];
-    [v47 logPixelBuffer:*(a1 + 200) name:"pearlMaskProcessed" timestamp:*(a1 + 312)];
+    executorParameters12 = [self executorParameters];
+    logger6 = [executorParameters12 logger];
+    [logger6 logPixelBuffer:*(self + 200) name:"pearlMaskProcessed" timestamp:*(self + 312)];
 
     v30 = 0;
-    *(a1 + 176) = 1;
+    *(self + 176) = 1;
     goto LABEL_8;
   }
 
@@ -550,12 +550,12 @@ LABEL_8:
   return v30;
 }
 
-- (uint64_t)preprocessInputColorFrame:(double)a3 pearlNormalizedDX:(double)a4 pearlPoses:(double)a5 disparityNormalizationMultiplier:(double)a6 disparityNormalizationOffset:(double)a7 pceCameraCalibration:(uint64_t)a8 pearlCameraCalibrationTransform:(uint64_t)a9 colorCameraCalibration:(__CVBuffer *)a10 timestamp:(void *)a11
+- (uint64_t)preprocessInputColorFrame:(double)frame pearlNormalizedDX:(double)x pearlPoses:(double)poses disparityNormalizationMultiplier:(double)multiplier disparityNormalizationOffset:(double)offset pceCameraCalibration:(uint64_t)calibration pearlCameraCalibrationTransform:(uint64_t)transform colorCameraCalibration:(__CVBuffer *)self0 timestamp:(void *)self1
 {
-  v29 = a11;
+  timestampCopy = timestamp;
   v30 = a12;
-  Width = CVPixelBufferGetWidth(a10);
-  Height = CVPixelBufferGetHeight(a10);
+  Width = CVPixelBufferGetWidth(cameraCalibration);
+  Height = CVPixelBufferGetHeight(cameraCalibration);
   pixelBufferOut = 0;
   BufferAttributes = getBufferAttributes();
   v34 = CVPixelBufferCreate(*MEMORY[0x277CBECE8], Width, Height, 0x31332E33u, BufferAttributes, &pixelBufferOut);
@@ -577,36 +577,36 @@ LABEL_8:
 
   else
   {
-    [a1 normalizedDX:a10 toDepth:pixelBufferOut withMultiplier:a6 andOffset:a7];
-    v37 = [a1 preprocessInputColorFrame:a9 pearlDepth:v35 pearlPoses:v29 pceCameraCalibration:v30 pearlCameraCalibrationTransform:a2 colorCameraCalibration:a3 timestamp:{a4, a5, a17, a19, a21, a23, a25}];
+    [self normalizedDX:cameraCalibration toDepth:pixelBufferOut withMultiplier:multiplier andOffset:offset];
+    v37 = [self preprocessInputColorFrame:transform pearlDepth:v35 pearlPoses:timestampCopy pceCameraCalibration:v30 pearlCameraCalibrationTransform:a2 colorCameraCalibration:frame timestamp:{x, poses, a17, a19, a21, a23, a25}];
     CVPixelBufferRelease(v35);
   }
 
   return v37;
 }
 
-- (BOOL)normalizedDX:(__CVBuffer *)a3 toDepth:(__CVBuffer *)a4 withMultiplier:(double)a5 andOffset:(double)a6
+- (BOOL)normalizedDX:(__CVBuffer *)x toDepth:(__CVBuffer *)depth withMultiplier:(double)multiplier andOffset:(double)offset
 {
-  Width = CVPixelBufferGetWidth(a3);
-  if (Width != CVPixelBufferGetWidth(a4))
+  Width = CVPixelBufferGetWidth(x);
+  if (Width != CVPixelBufferGetWidth(depth))
   {
     return 0;
   }
 
-  Height = CVPixelBufferGetHeight(a3);
-  if (Height != CVPixelBufferGetHeight(a4) || CVPixelBufferGetPixelFormatType(a3) != 825306677 || CVPixelBufferGetPixelFormatType(a4) != 825437747)
+  Height = CVPixelBufferGetHeight(x);
+  if (Height != CVPixelBufferGetHeight(depth) || CVPixelBufferGetPixelFormatType(x) != 825306677 || CVPixelBufferGetPixelFormatType(depth) != 825437747)
   {
     return 0;
   }
 
-  v12 = CVPixelBufferGetWidth(a3);
-  v13 = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a4);
-  v15 = CVPixelBufferGetBytesPerRow(a3);
-  CVPixelBufferLockBaseAddress(a3, 1uLL);
-  CVPixelBufferLockBaseAddress(a4, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(a3);
-  v17 = CVPixelBufferGetBaseAddress(a4);
+  v12 = CVPixelBufferGetWidth(x);
+  v13 = CVPixelBufferGetHeight(x);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(depth);
+  v15 = CVPixelBufferGetBytesPerRow(x);
+  CVPixelBufferLockBaseAddress(x, 1uLL);
+  CVPixelBufferLockBaseAddress(depth, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(x);
+  v17 = CVPixelBufferGetBaseAddress(depth);
   if (v13 && v12)
   {
     for (i = 0; i != v13; ++i)
@@ -622,7 +622,7 @@ LABEL_8:
 
         else
         {
-          v22 = vcvtd_n_s64_f64(1.0 / (a6 + v23 * a5) * 1000.0, 3uLL);
+          v22 = vcvtd_n_s64_f64(1.0 / (offset + v23 * multiplier) * 1000.0, 3uLL);
         }
 
         *v17++ = v22;
@@ -637,22 +637,22 @@ LABEL_8:
   }
 
   v19 = 1;
-  CVPixelBufferUnlockBaseAddress(a4, 1uLL);
-  CVPixelBufferUnlockBaseAddress(a3, 1uLL);
+  CVPixelBufferUnlockBaseAddress(depth, 1uLL);
+  CVPixelBufferUnlockBaseAddress(x, 1uLL);
   return v19;
 }
 
-- (void)setColorCameraCalibration:(id)a3
+- (void)setColorCameraCalibration:(id)calibration
 {
-  v15 = a3;
-  v4 = [(ADExecutor *)self executorParameters];
-  v5 = [v4 logger];
-  [v5 logCalibration:v15 name:"inputColorCalibration" timestamp:self->_lastColorTimestamp];
+  calibrationCopy = calibration;
+  executorParameters = [(ADExecutor *)self executorParameters];
+  logger = [executorParameters logger];
+  [logger logCalibration:calibrationCopy name:"inputColorCalibration" timestamp:self->_lastColorTimestamp];
 
   colorCameraCalibration = self->_colorCameraCalibration;
-  if (!colorCameraCalibration || ([(ADCameraCalibration *)colorCameraCalibration isEqual:v15]& 1) == 0)
+  if (!colorCameraCalibration || ([(ADCameraCalibration *)colorCameraCalibration isEqual:calibrationCopy]& 1) == 0)
   {
-    v7 = [v15 copy];
+    v7 = [calibrationCopy copy];
     v8 = self->_colorCameraCalibration;
     self->_colorCameraCalibration = v7;
 
@@ -663,23 +663,23 @@ LABEL_8:
     mcamPCameraCalibration = self->_mcamPCameraCalibration;
     self->_mcamPCameraCalibration = v11;
 
-    v13 = [(ADExecutor *)self executorParameters];
-    v14 = [v13 logger];
-    [v14 logCalibration:self->_mcamPCameraCalibration name:"referenceColorCameraCalibration" timestamp:self->_lastColorTimestamp];
+    executorParameters2 = [(ADExecutor *)self executorParameters];
+    logger2 = [executorParameters2 logger];
+    [logger2 logCalibration:self->_mcamPCameraCalibration name:"referenceColorCameraCalibration" timestamp:self->_lastColorTimestamp];
   }
 }
 
-- (void)setPearlCameraCalibration:(id)a3
+- (void)setPearlCameraCalibration:(id)calibration
 {
-  v9 = a3;
-  v4 = [(ADExecutor *)self executorParameters];
-  v5 = [v4 logger];
-  [v5 logCalibration:v9 name:"inputPearlCalibration" timestamp:self->_lastColorTimestamp];
+  calibrationCopy = calibration;
+  executorParameters = [(ADExecutor *)self executorParameters];
+  logger = [executorParameters logger];
+  [logger logCalibration:calibrationCopy name:"inputPearlCalibration" timestamp:self->_lastColorTimestamp];
 
   pearlCameraCalibration = self->_pearlCameraCalibration;
-  if (!pearlCameraCalibration || ([(ADCameraCalibration *)pearlCameraCalibration isEqual:v9]& 1) == 0)
+  if (!pearlCameraCalibration || ([(ADCameraCalibration *)pearlCameraCalibration isEqual:calibrationCopy]& 1) == 0)
   {
-    v7 = [v9 copy];
+    v7 = [calibrationCopy copy];
     v8 = self->_pearlCameraCalibration;
     self->_pearlCameraCalibration = v7;
 
@@ -689,8 +689,8 @@ LABEL_8:
 
 - (int64_t)prepare
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = 335680140;
   v23 = 0u;
   v24 = 0u;
@@ -701,29 +701,29 @@ LABEL_8:
     _os_log_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "pearl color infield calibration executor: preparing executor", v21, 2u);
   }
 
-  v3 = [(ADPearlColorInFieldCalibrationPipeline *)v2->_pipeline backendInferenceDescriptor];
+  backendInferenceDescriptor = [(ADPearlColorInFieldCalibrationPipeline *)selfCopy->_pipeline backendInferenceDescriptor];
   v4 = objc_alloc(MEMORY[0x277CED060]);
-  v5 = [v3 networkURL];
-  v6 = [v5 absoluteString];
-  engineType = v2->super._engineType;
-  v8 = [v3 configurationNameForLayout:{-[ADExecutor layout](v2, "layout")}];
-  v9 = [v4 initWithPath:v6 forEngine:engineType configurationName:v8];
-  backendEspressoRunner = v2->_backendEspressoRunner;
-  v2->_backendEspressoRunner = v9;
+  networkURL = [backendInferenceDescriptor networkURL];
+  absoluteString = [networkURL absoluteString];
+  engineType = selfCopy->super._engineType;
+  v8 = [backendInferenceDescriptor configurationNameForLayout:{-[ADExecutor layout](selfCopy, "layout")}];
+  v9 = [v4 initWithPath:absoluteString forEngine:engineType configurationName:v8];
+  backendEspressoRunner = selfCopy->_backendEspressoRunner;
+  selfCopy->_backendEspressoRunner = v9;
 
-  if (v2->_backendEspressoRunner)
+  if (selfCopy->_backendEspressoRunner)
   {
-    v11 = [(ADPearlColorInFieldCalibrationPipeline *)v2->_pipeline frontendInferenceDescriptor];
+    frontendInferenceDescriptor = [(ADPearlColorInFieldCalibrationPipeline *)selfCopy->_pipeline frontendInferenceDescriptor];
     v12 = objc_alloc(MEMORY[0x277CED060]);
-    v13 = [v11 networkURL];
-    v14 = [v13 absoluteString];
-    v15 = v2->super._engineType;
-    v16 = [v11 configurationNameForLayout:{-[ADExecutor layout](v2, "layout")}];
-    v17 = [v12 initWithPath:v14 forEngine:v15 configurationName:v16];
-    frontendEspressoRunner = v2->_frontendEspressoRunner;
-    v2->_frontendEspressoRunner = v17;
+    networkURL2 = [frontendInferenceDescriptor networkURL];
+    absoluteString2 = [networkURL2 absoluteString];
+    v15 = selfCopy->super._engineType;
+    v16 = [frontendInferenceDescriptor configurationNameForLayout:{-[ADExecutor layout](selfCopy, "layout")}];
+    v17 = [v12 initWithPath:absoluteString2 forEngine:v15 configurationName:v16];
+    frontendEspressoRunner = selfCopy->_frontendEspressoRunner;
+    selfCopy->_frontendEspressoRunner = v17;
 
-    if (v2->_frontendEspressoRunner)
+    if (selfCopy->_frontendEspressoRunner)
     {
       if (ADDebugUtilsADVerboseLogsEnabled == 1)
       {
@@ -740,8 +740,8 @@ LABEL_8:
         _os_log_debug_impl(&dword_2402F6000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "preparing pearl color in field calibration executor", v21, 2u);
       }
 
-      v19 = [(ADPearlColorInFieldCalibrationExecutor *)v2 allocateIntermediateBuffers];
-      if (v19)
+      allocateIntermediateBuffers = [(ADPearlColorInFieldCalibrationExecutor *)selfCopy allocateIntermediateBuffers];
+      if (allocateIntermediateBuffers)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -752,47 +752,47 @@ LABEL_8:
 
       else
       {
-        v2->_isPrepared = 1;
+        selfCopy->_isPrepared = 1;
       }
     }
 
     else
     {
-      v19 = -22960;
+      allocateIntermediateBuffers = -22960;
     }
   }
 
   else
   {
-    v19 = -22960;
+    allocateIntermediateBuffers = -22960;
   }
 
   kdebug_trace();
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v19;
+  return allocateIntermediateBuffers;
 }
 
 - (int64_t)allocateIntermediateBuffers
 {
   [(ADPearlColorInFieldCalibrationExecutor *)self deallocateEspressoBuffers];
-  v52 = [(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline backendInferenceDescriptor];
-  v3 = [(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline frontendInferenceDescriptor];
+  backendInferenceDescriptor = [(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline backendInferenceDescriptor];
+  frontendInferenceDescriptor = [(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline frontendInferenceDescriptor];
   backendEspressoRunner = self->_backendEspressoRunner;
-  v5 = [v52 colorInput];
-  self->_itmPreProcessedColor = [(ADEspressoRunner *)backendEspressoRunner createAndRegisterPixelBufferForDescriptor:v5];
+  colorInput = [backendInferenceDescriptor colorInput];
+  self->_itmPreProcessedColor = [(ADEspressoRunner *)backendEspressoRunner createAndRegisterPixelBufferForDescriptor:colorInput];
 
   v6 = self->_backendEspressoRunner;
-  v7 = [v52 pearlInput];
-  self->_itmPreProcessedPearl = [(ADEspressoRunner *)v6 createAndRegisterPixelBufferForDescriptor:v7];
+  pearlInput = [backendInferenceDescriptor pearlInput];
+  self->_itmPreProcessedPearl = [(ADEspressoRunner *)v6 createAndRegisterPixelBufferForDescriptor:pearlInput];
 
-  v8 = [v52 pearlMaskInput];
+  pearlMaskInput = [backendInferenceDescriptor pearlMaskInput];
 
-  if (v8)
+  if (pearlMaskInput)
   {
     v9 = self->_backendEspressoRunner;
-    v10 = [v52 pearlMaskInput];
-    self->_itmPreProcessedPearlMask = [(ADEspressoRunner *)v9 createAndRegisterPixelBufferForDescriptor:v10];
+    pearlMaskInput2 = [backendInferenceDescriptor pearlMaskInput];
+    self->_itmPreProcessedPearlMask = [(ADEspressoRunner *)v9 createAndRegisterPixelBufferForDescriptor:pearlMaskInput2];
   }
 
   v11 = [ADUtils getStandardNameForBufferOfType:@"itmPreProcessedColor" moduleName:@"RGBP"];
@@ -802,71 +802,71 @@ LABEL_8:
   v51 = v12;
   [ADUtils updatePixelBufferIOSurfaceLabel:v12 pixelBuffer:self->_itmPreProcessedPearl];
   v13 = self->_backendEspressoRunner;
-  v14 = [v52 featuresOutput];
-  v15 = [(ADEspressoRunner *)v13 registerDescriptor:v14];
+  featuresOutput = [backendInferenceDescriptor featuresOutput];
+  v15 = [(ADEspressoRunner *)v13 registerDescriptor:featuresOutput];
   featuresOutputEspressoBufferHandle = self->_featuresOutputEspressoBufferHandle;
   self->_featuresOutputEspressoBufferHandle = v15;
 
   frontendEspressoRunner = self->_frontendEspressoRunner;
-  v18 = [v3 featuresInput];
-  v19 = [(ADEspressoRunner *)frontendEspressoRunner registerDescriptor:v18];
+  featuresInput = [frontendInferenceDescriptor featuresInput];
+  v19 = [(ADEspressoRunner *)frontendEspressoRunner registerDescriptor:featuresInput];
   frontendFeaturesInputEspressoBufferHandle = self->_frontendFeaturesInputEspressoBufferHandle;
   self->_frontendFeaturesInputEspressoBufferHandle = v19;
 
   v21 = self->_frontendEspressoRunner;
-  v22 = [v3 rotationXOutput];
-  v23 = [(ADEspressoRunner *)v21 registerDescriptor:v22];
+  rotationXOutput = [frontendInferenceDescriptor rotationXOutput];
+  v23 = [(ADEspressoRunner *)v21 registerDescriptor:rotationXOutput];
   frontendRotationXOutputEspressoBufferHandle = self->_frontendRotationXOutputEspressoBufferHandle;
   self->_frontendRotationXOutputEspressoBufferHandle = v23;
 
   v25 = self->_frontendEspressoRunner;
-  v26 = [v3 rotationYOutput];
-  v27 = [(ADEspressoRunner *)v25 registerDescriptor:v26];
+  rotationYOutput = [frontendInferenceDescriptor rotationYOutput];
+  v27 = [(ADEspressoRunner *)v25 registerDescriptor:rotationYOutput];
   frontendRotationYOutputEspressoBufferHandle = self->_frontendRotationYOutputEspressoBufferHandle;
   self->_frontendRotationYOutputEspressoBufferHandle = v27;
 
-  v29 = [v3 rotationZOutput];
+  rotationZOutput = [frontendInferenceDescriptor rotationZOutput];
 
-  if (v29)
+  if (rotationZOutput)
   {
     v30 = self->_frontendEspressoRunner;
-    v31 = [v3 rotationZOutput];
-    v32 = [(ADEspressoRunner *)v30 registerDescriptor:v31];
+    rotationZOutput2 = [frontendInferenceDescriptor rotationZOutput];
+    v32 = [(ADEspressoRunner *)v30 registerDescriptor:rotationZOutput2];
     frontendRotationZOutputEspressoBufferHandle = self->_frontendRotationZOutputEspressoBufferHandle;
     self->_frontendRotationZOutputEspressoBufferHandle = v32;
   }
 
   v34 = self->_frontendEspressoRunner;
-  v35 = [v3 errorXOutput];
-  v36 = [(ADEspressoRunner *)v34 registerDescriptor:v35];
+  errorXOutput = [frontendInferenceDescriptor errorXOutput];
+  v36 = [(ADEspressoRunner *)v34 registerDescriptor:errorXOutput];
   frontendErrorXOutputEspressoBufferHandle = self->_frontendErrorXOutputEspressoBufferHandle;
   self->_frontendErrorXOutputEspressoBufferHandle = v36;
 
   v38 = self->_frontendEspressoRunner;
-  v39 = [v3 errorYOutput];
-  v40 = [(ADEspressoRunner *)v38 registerDescriptor:v39];
+  errorYOutput = [frontendInferenceDescriptor errorYOutput];
+  v40 = [(ADEspressoRunner *)v38 registerDescriptor:errorYOutput];
   frontendErrorYOutputEspressoBufferHandle = self->_frontendErrorYOutputEspressoBufferHandle;
   self->_frontendErrorYOutputEspressoBufferHandle = v40;
 
-  v42 = [v3 errorZOutput];
+  errorZOutput = [frontendInferenceDescriptor errorZOutput];
 
-  if (v42)
+  if (errorZOutput)
   {
     v43 = self->_frontendEspressoRunner;
-    v44 = [v3 errorZOutput];
-    v45 = [(ADEspressoRunner *)v43 registerDescriptor:v44];
+    errorZOutput2 = [frontendInferenceDescriptor errorZOutput];
+    v45 = [(ADEspressoRunner *)v43 registerDescriptor:errorZOutput2];
     frontendErrorZOutputEspressoBufferHandle = self->_frontendErrorZOutputEspressoBufferHandle;
     self->_frontendErrorZOutputEspressoBufferHandle = v45;
   }
 
   if (self->_itmPreProcessedColor && self->_itmPreProcessedPearl && self->_featuresOutputEspressoBufferHandle && self->_frontendFeaturesInputEspressoBufferHandle && self->_frontendRotationXOutputEspressoBufferHandle && self->_frontendRotationYOutputEspressoBufferHandle && self->_frontendErrorXOutputEspressoBufferHandle && self->_frontendErrorYOutputEspressoBufferHandle && (![(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline isPearlMaskExpected]|| self->_itmPreProcessedPearlMask) && (![(ADPearlColorInFieldCalibrationPipeline *)self->_pipeline isZused]|| self->_frontendRotationZOutputEspressoBufferHandle && self->_frontendErrorZOutputEspressoBufferHandle))
   {
-    v47 = [(ADEspressoBufferHandle *)self->_featuresOutputEspressoBufferHandle dimensionsProduct];
-    v48 = [(ADExecutor *)self executorParameters];
-    v49 = [v48 pipelineParameters];
-    [v49 featuresVectorAggregationSize];
+    dimensionsProduct = [(ADEspressoBufferHandle *)self->_featuresOutputEspressoBufferHandle dimensionsProduct];
+    executorParameters = [(ADExecutor *)self executorParameters];
+    pipelineParameters = [executorParameters pipelineParameters];
+    [pipelineParameters featuresVectorAggregationSize];
 
-    self->_backendSingleResultSize = self->_backendFeaturesOutputElementSize * v47;
+    self->_backendSingleResultSize = self->_backendFeaturesOutputElementSize * dimensionsProduct;
     operator new[]();
   }
 
@@ -898,19 +898,19 @@ LABEL_8:
   [(ADExecutor *)&v3 dealloc];
 }
 
-- (id)initForEngineType:(unint64_t)a3
+- (id)initForEngineType:(unint64_t)type
 {
   kdebug_trace();
   v5 = objc_alloc_init(ADPearlColorInFieldCalibrationExecutorParameters);
-  v6 = [(ADPearlColorInFieldCalibrationExecutor *)self initForEngineType:a3 andExecutorParameters:v5];
+  v6 = [(ADPearlColorInFieldCalibrationExecutor *)self initForEngineType:type andExecutorParameters:v5];
 
   kdebug_trace();
   return v6;
 }
 
-- (id)initForEngineType:(unint64_t)a3 andExecutorParameters:(id)a4
+- (id)initForEngineType:(unint64_t)type andExecutorParameters:(id)parameters
 {
-  v6 = a4;
+  parametersCopy = parameters;
   v42 = 335679636;
   v43 = 0u;
   v44 = 0u;
@@ -926,8 +926,8 @@ LABEL_8:
 
   v7->_isPrepared = 0;
   v9 = [ADPearlColorInFieldCalibrationPipeline alloc];
-  v10 = [v6 pipelineParameters];
-  v11 = [(ADPearlColorInFieldCalibrationPipeline *)v9 initWithParameters:v10 espressoEngine:a3];
+  pipelineParameters = [parametersCopy pipelineParameters];
+  v11 = [(ADPearlColorInFieldCalibrationPipeline *)v9 initWithParameters:pipelineParameters espressoEngine:type];
   pipeline = v8->_pipeline;
   v8->_pipeline = v11;
 
@@ -946,7 +946,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v8->super._engineType = a3;
+  v8->super._engineType = type;
   backendEspressoRunner = v8->_backendEspressoRunner;
   v8->_backendEspressoRunner = 0;
 
@@ -957,13 +957,13 @@ LABEL_18:
   v8->_mcamPCameraCalibration = 0;
 
   v16 = [ADPearlColorInFieldCalibrationExecutorParameters alloc];
-  v17 = [(ADPearlColorInFieldCalibrationPipeline *)v8->_pipeline pipelineParameters];
-  v18 = [(ADPearlColorInFieldCalibrationExecutorParameters *)v16 initWithPipelineParameters:v17];
+  pipelineParameters2 = [(ADPearlColorInFieldCalibrationPipeline *)v8->_pipeline pipelineParameters];
+  v18 = [(ADPearlColorInFieldCalibrationExecutorParameters *)v16 initWithPipelineParameters:pipelineParameters2];
   [(ADExecutor *)v8 setExecutorParameters:v18];
 
-  v19 = [(ADExecutor *)v8 executorParameters];
+  executorParameters = [(ADExecutor *)v8 executorParameters];
 
-  if (!v19)
+  if (!executorParameters)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
@@ -1003,10 +1003,10 @@ LABEL_18:
   frontendRotationZOutputEspressoBufferHandle = v8->_frontendRotationZOutputEspressoBufferHandle;
   v8->_frontendRotationZOutputEspressoBufferHandle = 0;
 
-  v28 = [(ADPearlColorInFieldCalibrationPipeline *)v8->_pipeline frontendInferenceDescriptor];
-  v29 = [v28 featuresInput];
-  v30 = [v29 imageDescriptor];
-  v8->_frontendFeaturesInputElementSize = PixelBufferUtils::pixelSizeForPixelFormat([v30 pixelFormat], 0);
+  frontendInferenceDescriptor = [(ADPearlColorInFieldCalibrationPipeline *)v8->_pipeline frontendInferenceDescriptor];
+  featuresInput = [frontendInferenceDescriptor featuresInput];
+  imageDescriptor = [featuresInput imageDescriptor];
+  v8->_frontendFeaturesInputElementSize = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor pixelFormat], 0);
 
   frontendFeaturesInputElementSize = v8->_frontendFeaturesInputElementSize;
   if (frontendFeaturesInputElementSize != 2 && frontendFeaturesInputElementSize != 4)
@@ -1022,10 +1022,10 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v32 = [(ADPearlColorInFieldCalibrationPipeline *)v8->_pipeline backendInferenceDescriptor];
-  v33 = [v32 featuresOutput];
-  v34 = [v33 imageDescriptor];
-  v8->_backendFeaturesOutputElementSize = PixelBufferUtils::pixelSizeForPixelFormat([v34 pixelFormat], 0);
+  backendInferenceDescriptor = [(ADPearlColorInFieldCalibrationPipeline *)v8->_pipeline backendInferenceDescriptor];
+  featuresOutput = [backendInferenceDescriptor featuresOutput];
+  imageDescriptor2 = [featuresOutput imageDescriptor];
+  v8->_backendFeaturesOutputElementSize = PixelBufferUtils::pixelSizeForPixelFormat([imageDescriptor2 pixelFormat], 0);
 
   backendFeaturesOutputElementSize = v8->_backendFeaturesOutputElementSize;
   if (backendFeaturesOutputElementSize != 2 && backendFeaturesOutputElementSize != 4)

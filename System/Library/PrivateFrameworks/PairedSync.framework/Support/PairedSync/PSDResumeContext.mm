@@ -1,11 +1,11 @@
 @interface PSDResumeContext
-+ (PSDResumeContext)contextWithURL:(id)a3;
++ (PSDResumeContext)contextWithURL:(id)l;
 + (id)defaultURL;
-- (BOOL)save:(id *)a3;
-- (PSDResumeContext)initWithCoder:(id)a3;
-- (PSDResumeContext)initWithURL:(id)a3;
+- (BOOL)save:(id *)save;
+- (PSDResumeContext)initWithCoder:(id)coder;
+- (PSDResumeContext)initWithURL:(id)l;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
 @end
 
@@ -14,21 +14,21 @@
 + (id)defaultURL
 {
   v2 = +[PSDFileManager defaultManager];
-  v3 = [v2 storageURL];
+  storageURL = [v2 storageURL];
 
-  v4 = [v3 URLByAppendingPathComponent:@"resumeContext.dat"];
+  v4 = [storageURL URLByAppendingPathComponent:@"resumeContext.dat"];
 
   return v4;
 }
 
-+ (PSDResumeContext)contextWithURL:(id)a3
++ (PSDResumeContext)contextWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v16 = objc_opt_class();
   v5 = [NSArray arrayWithObjects:&v16 count:1];
   v6 = [NSSet setWithArray:v5];
-  v7 = [v4 path];
-  v8 = [NSKeyedUnarchiver secureUnarchiveObjectOfClasses:v6 withFile:v7];
+  path = [lCopy path];
+  v8 = [NSKeyedUnarchiver secureUnarchiveObjectOfClasses:v6 withFile:path];
 
   v9 = psd_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -54,50 +54,50 @@
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v14 = 138543362;
-        v15 = v4;
+        v15 = lCopy;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "No resume context at %{public}@.  Creating a new one.", &v14, 0xCu);
       }
     }
 
-    v8 = [[a1 alloc] initWithURL:v4];
+    v8 = [[self alloc] initWithURL:lCopy];
   }
 
   return v8;
 }
 
-- (PSDResumeContext)initWithURL:(id)a3
+- (PSDResumeContext)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = PSDResumeContext;
   v5 = [(PSDResumeContext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     URL = v5->_URL;
     v5->_URL = v6;
 
     v8 = objc_alloc_init(NSFileManager);
-    v9 = [v4 URLByDeletingLastPathComponent];
-    [v8 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:0];
+    uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+    [v8 createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
   }
 
   return v5;
 }
 
-- (PSDResumeContext)initWithCoder:(id)a3
+- (PSDResumeContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PSDResumeContext;
   v5 = [(PSDResumeContext *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"URL"];
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"syncSession"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"syncSession"];
     syncSession = v5->_syncSession;
     v5->_syncSession = v8;
   }
@@ -105,12 +105,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   URL = self->_URL;
-  v5 = a3;
-  [v5 encodeObject:URL forKey:@"URL"];
-  [v5 encodeObject:self->_syncSession forKey:@"syncSession"];
+  coderCopy = coder;
+  [coderCopy encodeObject:URL forKey:@"URL"];
+  [coderCopy encodeObject:self->_syncSession forKey:@"syncSession"];
 }
 
 - (void)reset
@@ -122,21 +122,21 @@
   [(PSDResumeContext *)self setSyncSession:0];
 }
 
-- (BOOL)save:(id *)a3
+- (BOOL)save:(id *)save
 {
-  v3 = self;
-  v4 = [(NSURL *)self->_URL path];
-  LOBYTE(v3) = [NSKeyedArchiver secureArchiveRootObject:v3 toFile:v4 withOptions:268435457];
+  selfCopy = self;
+  path = [(NSURL *)self->_URL path];
+  LOBYTE(selfCopy) = [NSKeyedArchiver secureArchiveRootObject:selfCopy toFile:path withOptions:268435457];
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(NSURL *)self->_URL path];
-  v6 = [NSString stringWithFormat:@"<%@ %p URL=%@;\n\tsyncSession=%@>", v4, self, v5, self->_syncSession];;
+  path = [(NSURL *)self->_URL path];
+  v6 = [NSString stringWithFormat:@"<%@ %p URL=%@;\n\tsyncSession=%@>", v4, self, path, self->_syncSession];;
 
   return v6;
 }

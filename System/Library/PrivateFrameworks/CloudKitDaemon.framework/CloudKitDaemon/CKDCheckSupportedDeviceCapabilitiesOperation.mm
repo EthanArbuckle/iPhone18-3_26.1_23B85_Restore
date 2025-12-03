@@ -1,38 +1,38 @@
 @interface CKDCheckSupportedDeviceCapabilitiesOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDCheckSupportedDeviceCapabilitiesOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDCheckSupportedDeviceCapabilitiesOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
-- (void)_handleContinuation:(id)a3;
-- (void)_handleError:(id)a3 forZoneID:(id)a4 capabilitySet:(id)a5;
-- (void)_handleSupportedDeviceCapabilitiesCheckedForZoneID:(id)a3 capabilitySet:(id)a4 result:(id)a5 responseCode:(id)a6;
+- (void)_handleContinuation:(id)continuation;
+- (void)_handleError:(id)error forZoneID:(id)d capabilitySet:(id)set;
+- (void)_handleSupportedDeviceCapabilitiesCheckedForZoneID:(id)d capabilitySet:(id)set result:(id)result responseCode:(id)code;
 - (void)checkSupportedCapabilitiesWithServer;
 - (void)fetchServerConfigIfNecessary;
 - (void)invokeCompletionHandlers;
-- (void)reportClientValidationError:(id)a3;
+- (void)reportClientValidationError:(id)error;
 - (void)validateShareParticipants;
 - (void)validateSigningIdentities;
 @end
 
 @implementation CKDCheckSupportedDeviceCapabilitiesOperation
 
-- (CKDCheckSupportedDeviceCapabilitiesOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDCheckSupportedDeviceCapabilitiesOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v33.receiver = self;
   v33.super_class = CKDCheckSupportedDeviceCapabilitiesOperation;
-  v9 = [(CKDDatabaseOperation *)&v33 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v33 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_zoneIDs(v6, v7, v8);
+    v10 = objc_msgSend_zoneIDs(infoCopy, v7, v8);
     zoneIDs = v9->_zoneIDs;
     v9->_zoneIDs = v10;
 
-    v14 = objc_msgSend_desiredCapabilitySets(v6, v12, v13);
+    v14 = objc_msgSend_desiredCapabilitySets(infoCopy, v12, v13);
     desiredCapabilitySets = v9->_desiredCapabilitySets;
     v9->_desiredCapabilitySets = v14;
 
-    v18 = objc_msgSend_options(v6, v16, v17);
+    v18 = objc_msgSend_options(infoCopy, v16, v17);
     options = v9->_options;
     v9->_options = v18;
 
@@ -106,20 +106,20 @@ LABEL_14:
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 5)
+  if (state - 2 >= 5)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDCheckSupportedDeviceCapabilitiesOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_27854ADE8[a3 - 2];
+    v5 = off_27854ADE8[state - 2];
   }
 
   return v5;
@@ -200,7 +200,7 @@ LABEL_14:
         *location = 138543874;
         *&location[4] = v55;
         v79 = 2048;
-        v80 = self;
+        selfCopy2 = self;
         v81 = 2114;
         v82 = v58;
         _os_log_debug_impl(&dword_22506F000, v53, OS_LOG_TYPE_DEBUG, "Continuing check supported device capabilities operation <%{public}@: %p; %{public}@>", location, 0x20u);
@@ -231,7 +231,7 @@ LABEL_14:
         *location = 138543874;
         *&location[4] = v61;
         v79 = 2048;
-        v80 = self;
+        selfCopy2 = self;
         v81 = 2114;
         v82 = v64;
         _os_log_debug_impl(&dword_22506F000, v59, OS_LOG_TYPE_DEBUG, "Check supported device capabilities operation <%{public}@: %p; %{public}@> is starting", location, 0x20u);
@@ -307,46 +307,46 @@ LABEL_14:
   }
 }
 
-- (void)_handleContinuation:(id)a3
+- (void)_handleContinuation:(id)continuation
 {
-  v4 = a3;
+  continuationCopy = continuation;
   v8 = objc_msgSend_continuations(self, v5, v6);
-  objc_msgSend_addObject_(v8, v7, v4);
+  objc_msgSend_addObject_(v8, v7, continuationCopy);
 }
 
-- (void)_handleError:(id)a3 forZoneID:(id)a4 capabilitySet:(id)a5
+- (void)_handleError:(id)error forZoneID:(id)d capabilitySet:(id)set
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  setCopy = set;
+  dCopy = d;
+  errorCopy = error;
   v11 = [CKDDeviceCapabilityCheckPerRequestResult alloc];
-  v17 = objc_msgSend_initWithZoneID_capabilitySet_result_error_(v11, v12, v9, v8, 0, v10);
+  v17 = objc_msgSend_initWithZoneID_capabilitySet_result_error_(v11, v12, dCopy, setCopy, 0, errorCopy);
 
   v15 = objc_msgSend_results(self, v13, v14);
   objc_msgSend_addObject_(v15, v16, v17);
 }
 
-- (void)_handleSupportedDeviceCapabilitiesCheckedForZoneID:(id)a3 capabilitySet:(id)a4 result:(id)a5 responseCode:(id)a6
+- (void)_handleSupportedDeviceCapabilitiesCheckedForZoneID:(id)d capabilitySet:(id)set result:(id)result responseCode:(id)code
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  resultCopy = result;
+  setCopy = set;
+  dCopy = d;
   v12 = [CKDDeviceCapabilityCheckPerRequestResult alloc];
-  v18 = objc_msgSend_initWithZoneID_capabilitySet_result_error_(v12, v13, v11, v10, v9, 0);
+  v18 = objc_msgSend_initWithZoneID_capabilitySet_result_error_(v12, v13, dCopy, setCopy, resultCopy, 0);
 
   v16 = objc_msgSend_results(self, v14, v15);
   objc_msgSend_addObject_(v16, v17, v18);
 }
 
-- (void)reportClientValidationError:(id)a3
+- (void)reportClientValidationError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_225241910;
   v7[3] = &unk_2785487F8;
-  v8 = v4;
-  v5 = v4;
+  v8 = errorCopy;
+  v5 = errorCopy;
   objc_msgSend_updateCloudKitMetrics_(self, v6, v7);
 }
 
@@ -418,7 +418,7 @@ LABEL_14:
     v46 = sub_225241BD4;
     v47 = &unk_278548C48;
     v48 = v6;
-    v49 = self;
+    selfCopy = self;
     objc_msgSend_spawnAndRunOperationOfClass_operationInfo_operationConfigurationBlock_(self, v41, v40, v29, &v44);
   }
 
@@ -487,13 +487,13 @@ LABEL_14:
 
 - (void)invokeCompletionHandlers
 {
-  v3 = self;
+  selfCopy = self;
   v88 = *MEMORY[0x277D85DE8];
   v4 = objc_msgSend_stateTransitionGroup(self, a2, v2);
   dispatch_group_enter(v4);
 
   v5 = objc_alloc(MEMORY[0x277CBEB18]);
-  v8 = objc_msgSend_results(v3, v6, v7);
+  v8 = objc_msgSend_results(selfCopy, v6, v7);
   v11 = objc_msgSend_count(v8, v9, v10);
   v77 = objc_msgSend_initWithCapacity_(v5, v12, v11);
 
@@ -501,14 +501,14 @@ LABEL_14:
   v86 = 0u;
   v83 = 0u;
   v84 = 0u;
-  obj = objc_msgSend_results(v3, v13, v14);
+  obj = objc_msgSend_results(selfCopy, v13, v14);
   v16 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v15, &v83, v87, 16);
   if (v16)
   {
     v19 = v16;
     v20 = *v84;
     v75 = *v84;
-    v76 = v3;
+    v76 = selfCopy;
     do
     {
       v21 = 0;
@@ -522,11 +522,11 @@ LABEL_14:
 
         v22 = *(*(&v83 + 1) + 8 * v21);
         v23 = objc_msgSend_result(v22, v17, v18);
-        v26 = objc_msgSend_checkSupportedDeviceCapabilitiesProgressBlock(v3, v24, v25);
+        v26 = objc_msgSend_checkSupportedDeviceCapabilitiesProgressBlock(selfCopy, v24, v25);
 
         if (v26)
         {
-          v29 = objc_msgSend_checkSupportedDeviceCapabilitiesProgressBlock(v3, v27, v28);
+          v29 = objc_msgSend_checkSupportedDeviceCapabilitiesProgressBlock(selfCopy, v27, v28);
           v32 = objc_msgSend_zoneID(v22, v30, v31);
           v35 = objc_msgSend_capabilitySet(v22, v33, v34);
           v38 = objc_msgSend_error(v22, v36, v37);
@@ -578,7 +578,7 @@ LABEL_14:
           objc_msgSend_addObject_(v77, v66, v65);
 
           v20 = v75;
-          v3 = v76;
+          selfCopy = v76;
           v19 = v78;
         }
 
@@ -597,11 +597,11 @@ LABEL_14:
   v81[2] = sub_225242B5C;
   v81[3] = &unk_2785487F8;
   v82 = v77;
-  objc_msgSend_updateCloudKitMetrics_(v3, v67, v81);
+  objc_msgSend_updateCloudKitMetrics_(selfCopy, v67, v81);
   v68 = objc_autoreleasePoolPush();
-  objc_msgSend_setResults_(v3, v69, 0);
+  objc_msgSend_setResults_(selfCopy, v69, 0);
   objc_autoreleasePoolPop(v68);
-  v72 = objc_msgSend_stateTransitionGroup(v3, v70, v71);
+  v72 = objc_msgSend_stateTransitionGroup(selfCopy, v70, v71);
   dispatch_group_leave(v72);
 
   v73 = *MEMORY[0x277D85DE8];

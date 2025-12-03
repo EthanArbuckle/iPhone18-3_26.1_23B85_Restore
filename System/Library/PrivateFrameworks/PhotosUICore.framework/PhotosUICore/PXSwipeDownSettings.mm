@@ -103,10 +103,10 @@
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v62 count:16];
   v44 = [v43 sectionWithRows:v11];
 
-  v12 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v13 = MEMORY[0x1E69C6638];
   v61[0] = v44;
-  v61[1] = v12;
+  v61[1] = px_restoreDefaultsSection;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v61 count:2];
   v15 = [v13 moduleWithTitle:@"Swipe Down" contents:v14];
 

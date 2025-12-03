@@ -1,32 +1,32 @@
 @interface RCMPDetailScrubController
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
 - (BOOL)durationAllowsForDetailedScrubbing;
 - (RCMPDetailScrubController)init;
-- (RCMPDetailScrubController)initWithScrubbingControl:(id)a3;
+- (RCMPDetailScrubController)initWithScrubbingControl:(id)control;
 - (RCMPDetailScrubControllerDelegate)delegate;
 - (RCMPDetailedScrubbing)scrubbingControl;
 - (float)_minimumScale;
-- (float)_scaleForIdealValueForVerticalPosition:(double)a3;
-- (float)scaleForVerticalPosition:(double)a3;
+- (float)_scaleForIdealValueForVerticalPosition:(double)position;
+- (float)scaleForVerticalPosition:(double)position;
 - (void)_beginScrubbing;
-- (void)_calculateAndCommitLocation:(CGPoint)a3 force:(BOOL)a4;
-- (void)_commitValue:(float)a3;
+- (void)_calculateAndCommitLocation:(CGPoint)location force:(BOOL)force;
+- (void)_commitValue:(float)value;
 - (void)_endScrubbing;
 @end
 
 @implementation RCMPDetailScrubController
 
-- (RCMPDetailScrubController)initWithScrubbingControl:(id)a3
+- (RCMPDetailScrubController)initWithScrubbingControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v8.receiver = self;
   v8.super_class = RCMPDetailScrubController;
   v5 = [(RCMPDetailScrubController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_scrubbingControl, v4);
+    objc_storeWeak(&v5->_scrubbingControl, controlCopy);
     v6->_scrubbingVerticalRange = 220.0;
     v6->_detailedScrubbingEnabled = 1;
   }
@@ -41,12 +41,12 @@
   return 0;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   self->_didBeginTracking = 0;
-  v5 = a3;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_scrubbingControl);
-  [v5 locationInView:WeakRetained];
+  [touchCopy locationInView:WeakRetained];
   v8 = v7;
   v10 = v9;
 
@@ -84,11 +84,11 @@
   return 1;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = a3;
+  touchCopy = touch;
   WeakRetained = objc_loadWeakRetained(&self->_scrubbingControl);
-  [v5 locationInView:WeakRetained];
+  [touchCopy locationInView:WeakRetained];
   v8 = v7;
   v10 = v9;
 
@@ -145,11 +145,11 @@ LABEL_21:
   return 1;
 }
 
-- (void)_calculateAndCommitLocation:(CGPoint)a3 force:(BOOL)a4
+- (void)_calculateAndCommitLocation:(CGPoint)location force:(BOOL)force
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  forceCopy = force;
+  y = location.y;
+  x = location.x;
   v8 = 1.0;
   if (self->_detailedScrubbingEnabled && [(RCMPDetailScrubController *)self durationAllowsForDetailedScrubbing])
   {
@@ -217,7 +217,7 @@ LABEL_21:
     self->_needsCommit = 1;
   }
 
-  if (v4)
+  if (forceCopy)
   {
     v39 = objc_loadWeakRetained(&self->_scrubbingControl);
     [v39 minimumValue];
@@ -283,19 +283,19 @@ LABEL_26:
   return v4;
 }
 
-- (float)scaleForVerticalPosition:(double)a3
+- (float)scaleForVerticalPosition:(double)position
 {
   v5 = +[UIDevice currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
   scrubbingVerticalRange = self->_scrubbingVerticalRange;
-  v8 = vabdd_f64(a3, self->_beginLocationInView.y);
+  v8 = vabdd_f64(position, self->_beginLocationInView.y);
   if (scrubbingVerticalRange >= v8)
   {
     scrubbingVerticalRange = v8;
   }
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v9 = 20.0;
   }
@@ -358,10 +358,10 @@ LABEL_26:
   return v6;
 }
 
-- (float)_scaleForIdealValueForVerticalPosition:(double)a3
+- (float)_scaleForIdealValueForVerticalPosition:(double)position
 {
   scrubbingVerticalRange = self->_scrubbingVerticalRange;
-  v4 = vabdd_f64(a3, self->_beginLocationInView.y);
+  v4 = vabdd_f64(position, self->_beginLocationInView.y);
   if (scrubbingVerticalRange < v4)
   {
     v4 = self->_scrubbingVerticalRange;
@@ -431,7 +431,7 @@ LABEL_26:
   }
 }
 
-- (void)_commitValue:(float)a3
+- (void)_commitValue:(float)value
 {
   if (self->_needsCommit)
   {
@@ -441,7 +441,7 @@ LABEL_26:
     if (v6)
     {
       v7 = objc_loadWeakRetained(&self->_delegate);
-      v8 = self->_duration * a3;
+      v8 = self->_duration * value;
       *&v8 = v8;
       [v7 detailScrubController:self didChangeValue:v8];
 

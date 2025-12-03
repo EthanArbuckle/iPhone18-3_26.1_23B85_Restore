@@ -2,7 +2,7 @@
 - (MRDSystemGroupSession)init;
 - (NSString)identifier;
 - (void)dealloc;
-- (void)sendMessageData:(id)a3 toParticipants:(id)a4;
+- (void)sendMessageData:(id)data toParticipants:(id)participants;
 @end
 
 @implementation MRDSystemGroupSession
@@ -10,16 +10,16 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
   if (qword_100537DF8 != -1)
   {
     swift_once();
   }
 
-  [v5 postNotificationName:qword_1005385E8 object:0];
+  [defaultCenter postNotificationName:qword_1005385E8 object:0];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for SystemGroupSession();
   [(MRDSystemGroupSession *)&v6 dealloc];
 }
@@ -31,11 +31,11 @@
   return result;
 }
 
-- (void)sendMessageData:(id)a3 toParticipants:(id)a4
+- (void)sendMessageData:(id)data toParticipants:(id)participants
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  dataCopy = data;
+  participantsCopy = participants;
+  selfCopy = self;
   v9 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
 
@@ -69,7 +69,7 @@
   __chkstk_darwin(v3);
   v7 = &v12 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v8 = *(&self->super.isa + OBJC_IVAR___MRDSystemGroupSession_session);
-  v9 = self;
+  selfCopy = self;
   GroupSession.id.getter();
   UUID.uuidString.getter();
 

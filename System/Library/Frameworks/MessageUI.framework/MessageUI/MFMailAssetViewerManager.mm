@@ -1,12 +1,12 @@
 @interface MFMailAssetViewerManager
 + (id)log;
-- (MFMailAssetViewerManager)initWithDelegate:(id)a3;
+- (MFMailAssetViewerManager)initWithDelegate:(id)delegate;
 - (MFMailAssetViewerManagerDelegate)delegate;
-- (id)handlerForAttachmentContext:(id)a3;
-- (void)assetViewer:(id)a3 editCompletedWithURL:(id)a4;
-- (void)assetViewerEditCanceled:(id)a3;
-- (void)assetViewerSceneClosed:(id)a3;
-- (void)assetViewerSceneLaunched:(id)a3;
+- (id)handlerForAttachmentContext:(id)context;
+- (void)assetViewer:(id)viewer editCompletedWithURL:(id)l;
+- (void)assetViewerEditCanceled:(id)canceled;
+- (void)assetViewerSceneClosed:(id)closed;
+- (void)assetViewerSceneLaunched:(id)launched;
 @end
 
 @implementation MFMailAssetViewerManager
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __31__MFMailAssetViewerManager_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_3 != -1)
   {
     dispatch_once(&log_onceToken_3, block);
@@ -36,9 +36,9 @@ void __31__MFMailAssetViewerManager_log__block_invoke(uint64_t a1)
   log_log_3 = v1;
 }
 
-- (MFMailAssetViewerManager)initWithDelegate:(id)a3
+- (MFMailAssetViewerManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = MFMailAssetViewerManager;
   v5 = [(MFMailAssetViewerManager *)&v11 init];
@@ -50,25 +50,25 @@ void __31__MFMailAssetViewerManager_log__block_invoke(uint64_t a1)
     handlers = v5->_handlers;
     v5->_handlers = v8;
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v5;
 }
 
-- (id)handlerForAttachmentContext:(id)a3
+- (id)handlerForAttachmentContext:(id)context
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[MFMailAssetViewerHandler alloc] initWithAttachmentContext:v4 delegate:self];
-  v6 = [(MFMailAssetViewerManager *)self handlers];
+  contextCopy = context;
+  v5 = [[MFMailAssetViewerHandler alloc] initWithAttachmentContext:contextCopy delegate:self];
+  handlers = [(MFMailAssetViewerManager *)self handlers];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __56__MFMailAssetViewerManager_handlerForAttachmentContext___block_invoke;
   v10[3] = &unk_1E806E788;
   v7 = v5;
   v11 = v7;
-  [v6 performWhileLocked:v10];
+  [handlers performWhileLocked:v10];
 
   v8 = +[MFMailAssetViewerManager log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -81,56 +81,56 @@ void __31__MFMailAssetViewerManager_log__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)assetViewerSceneLaunched:(id)a3
+- (void)assetViewerSceneLaunched:(id)launched
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  launchedCopy = launched;
   v4 = +[MFMailAssetViewerManager log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = launchedCopy;
     _os_log_impl(&dword_1BE819000, v4, OS_LOG_TYPE_DEFAULT, "Asset Viewer scene launched for %@", &v5, 0xCu);
   }
 }
 
-- (void)assetViewerSceneClosed:(id)a3
+- (void)assetViewerSceneClosed:(id)closed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  closedCopy = closed;
   v5 = +[MFMailAssetViewerManager log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = closedCopy;
     _os_log_impl(&dword_1BE819000, v5, OS_LOG_TYPE_DEFAULT, "Asset Viewer scene closed for %@", buf, 0xCu);
   }
 
-  v6 = [(MFMailAssetViewerManager *)self handlers];
+  handlers = [(MFMailAssetViewerManager *)self handlers];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__MFMailAssetViewerManager_assetViewerSceneClosed___block_invoke;
   v9[3] = &unk_1E806E788;
-  v7 = v4;
+  v7 = closedCopy;
   v10 = v7;
-  [v6 performWhileLocked:v9];
+  [handlers performWhileLocked:v9];
 
-  v8 = [(MFMailAssetViewerManager *)self delegate];
-  [v8 assetViewerManager:self sceneClosedForHandler:v7];
+  delegate = [(MFMailAssetViewerManager *)self delegate];
+  [delegate assetViewerManager:self sceneClosedForHandler:v7];
 }
 
-- (void)assetViewer:(id)a3 editCompletedWithURL:(id)a4
+- (void)assetViewer:(id)viewer editCompletedWithURL:(id)l
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  viewerCopy = viewer;
+  lCopy = l;
   v8 = +[MFMailAssetViewerManager log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v6;
+    v16 = viewerCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = lCopy;
     _os_log_impl(&dword_1BE819000, v8, OS_LOG_TYPE_DEFAULT, "Asset Viewerscene edit completed %@ for %@", buf, 0x16u);
   }
 
@@ -139,12 +139,12 @@ void __31__MFMailAssetViewerManager_log__block_invoke(uint64_t a1)
   v12[2] = __61__MFMailAssetViewerManager_assetViewer_editCompletedWithURL___block_invoke;
   v12[3] = &unk_1E806CC80;
   v12[4] = self;
-  v9 = v6;
+  v9 = viewerCopy;
   v13 = v9;
-  v10 = v7;
+  v10 = lCopy;
   v14 = v10;
-  v11 = [MEMORY[0x1E699B978] mainThreadScheduler];
-  [v11 performBlock:v12];
+  mainThreadScheduler = [MEMORY[0x1E699B978] mainThreadScheduler];
+  [mainThreadScheduler performBlock:v12];
 }
 
 void __61__MFMailAssetViewerManager_assetViewer_editCompletedWithURL___block_invoke(uint64_t a1)
@@ -153,15 +153,15 @@ void __61__MFMailAssetViewerManager_assetViewer_editCompletedWithURL___block_inv
   [v2 assetViewerManager:*(a1 + 32) editCompletedForHandler:*(a1 + 40) URL:*(a1 + 48)];
 }
 
-- (void)assetViewerEditCanceled:(id)a3
+- (void)assetViewerEditCanceled:(id)canceled
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  canceledCopy = canceled;
   v4 = +[MFMailAssetViewerManager log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = canceledCopy;
     _os_log_impl(&dword_1BE819000, v4, OS_LOG_TYPE_DEFAULT, "Asset Viewer scene edit canceled %@", &v5, 0xCu);
   }
 }

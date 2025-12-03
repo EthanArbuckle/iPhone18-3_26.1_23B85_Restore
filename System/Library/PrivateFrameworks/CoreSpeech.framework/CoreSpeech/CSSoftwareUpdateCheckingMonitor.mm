@@ -3,33 +3,33 @@
 - (BOOL)_checkSoftwareUpdateCheckingState;
 - (CSSoftwareUpdateCheckingMonitor)init;
 - (unsigned)_softwareUpdateCheckingState;
-- (void)_didReceiveSoftwareUpdateCheckingStateChanged:(BOOL)a3;
-- (void)_didReceiveSoftwareUpdateCheckingStateChangedInQueue:(BOOL)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_didReceiveSoftwareUpdateCheckingStateChanged:(BOOL)changed;
+- (void)_didReceiveSoftwareUpdateCheckingStateChangedInQueue:(BOOL)queue;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSSoftwareUpdateCheckingMonitor
 
-- (void)_didReceiveSoftwareUpdateCheckingStateChanged:(BOOL)a3
+- (void)_didReceiveSoftwareUpdateCheckingStateChanged:(BOOL)changed
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100163D6C;
   v3[3] = &unk_1002537E8;
   v3[4] = self;
-  v4 = a3;
+  changedCopy = changed;
   [(CSSoftwareUpdateCheckingMonitor *)self enumerateObservers:v3];
 }
 
-- (void)_didReceiveSoftwareUpdateCheckingStateChangedInQueue:(BOOL)a3
+- (void)_didReceiveSoftwareUpdateCheckingStateChangedInQueue:(BOOL)queue
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100163DF0;
   v3[3] = &unk_1002537E8;
   v3[4] = self;
-  v4 = a3;
+  queueCopy = queue;
   [(CSSoftwareUpdateCheckingMonitor *)self enumerateObserversInQueue:v3];
 }
 
@@ -58,12 +58,12 @@
 
 - (BOOL)_checkSoftwareUpdateCheckingState
 {
-  v2 = [(CSSoftwareUpdateCheckingMonitor *)self _softwareUpdateCheckingState];
+  _softwareUpdateCheckingState = [(CSSoftwareUpdateCheckingMonitor *)self _softwareUpdateCheckingState];
   v3 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v4 = @"NO";
-    if (v2 == 1)
+    if (_softwareUpdateCheckingState == 1)
     {
       v4 = @"YES";
     }
@@ -75,7 +75,7 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s Software update checking running : %{public}@", &v6, 0x16u);
   }
 
-  return v2 == 1;
+  return _softwareUpdateCheckingState == 1;
 }
 
 - (void)_stopMonitoring
@@ -95,9 +95,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (self->_notifyToken == -1)
   {
     handler[0] = _NSConcreteStackBlock;
@@ -105,7 +105,7 @@
     handler[2] = sub_1001641BC;
     handler[3] = &unk_1002537C0;
     handler[4] = self;
-    notify_register_dispatch("com.apple.duetscheduler.restartCheckNotification", &self->_notifyToken, v4, handler);
+    notify_register_dispatch("com.apple.duetscheduler.restartCheckNotification", &self->_notifyToken, queueCopy, handler);
     v5 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {

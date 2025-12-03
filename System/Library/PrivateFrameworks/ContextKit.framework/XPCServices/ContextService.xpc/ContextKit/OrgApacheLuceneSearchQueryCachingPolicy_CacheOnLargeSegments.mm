@@ -1,31 +1,31 @@
 @interface OrgApacheLuceneSearchQueryCachingPolicy_CacheOnLargeSegments
 + (void)initialize;
-- (BOOL)shouldCacheWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneIndexLeafReaderContext:(id)a4;
+- (BOOL)shouldCacheWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneIndexLeafReaderContext:(id)context;
 @end
 
 @implementation OrgApacheLuceneSearchQueryCachingPolicy_CacheOnLargeSegments
 
-- (BOOL)shouldCacheWithOrgApacheLuceneSearchQuery:(id)a3 withOrgApacheLuceneIndexLeafReaderContext:(id)a4
+- (BOOL)shouldCacheWithOrgApacheLuceneSearchQuery:(id)query withOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
-  TopLevelContextWithOrgApacheLuceneIndexIndexReaderContext = OrgApacheLuceneIndexReaderUtil_getTopLevelContextWithOrgApacheLuceneIndexIndexReaderContext_(a4);
+  TopLevelContextWithOrgApacheLuceneIndexIndexReaderContext = OrgApacheLuceneIndexReaderUtil_getTopLevelContextWithOrgApacheLuceneIndexIndexReaderContext_(context);
   if (!TopLevelContextWithOrgApacheLuceneIndexIndexReaderContext)
   {
     goto LABEL_9;
   }
 
   v7 = TopLevelContextWithOrgApacheLuceneIndexIndexReaderContext;
-  v8 = [TopLevelContextWithOrgApacheLuceneIndexIndexReaderContext reader];
-  if (!v8)
+  reader = [TopLevelContextWithOrgApacheLuceneIndexIndexReaderContext reader];
+  if (!reader)
   {
     goto LABEL_9;
   }
 
-  if ([v8 maxDoc] < self->minIndexSize_)
+  if ([reader maxDoc] < self->minIndexSize_)
   {
     return 0;
   }
 
-  if (!a4 || (v10 = [a4 reader]) == 0 || (v11 = objc_msgSend(v10, "maxDoc"), (v12 = objc_msgSend(v7, "reader")) == 0))
+  if (!context || (v10 = [context reader]) == 0 || (v11 = objc_msgSend(v10, "maxDoc"), (v12 = objc_msgSend(v7, "reader")) == 0))
   {
 LABEL_9:
     JreThrowNullPointerException();
@@ -36,7 +36,7 @@ LABEL_9:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [OrgApacheLuceneSearchQueryCachingPolicy_CacheOnLargeSegments alloc];
     *&v2->minIndexSize_ = 0x3CF5C28F00002710;

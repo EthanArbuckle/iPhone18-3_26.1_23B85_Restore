@@ -1,45 +1,45 @@
 @interface WPHomeKit
-- ($2825F4736939C4A6D3AD43837233062D)homeKitScanTypeToCBDiscoveryScanRates:(int64_t)a3;
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)dutyCycleToScanningRates:(SEL)a3;
-- (WPHomeKit)initWithDelegate:(id)a3 queue:(id)a4;
+- ($2825F4736939C4A6D3AD43837233062D)homeKitScanTypeToCBDiscoveryScanRates:(int64_t)rates;
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)dutyCycleToScanningRates:(SEL)rates;
+- (WPHomeKit)initWithDelegate:(id)delegate queue:(id)queue;
 - (WPHomeKitDelegate)delegate;
-- (id)startCBDiscoveryScan:(id)a3 forType:(int64_t)a4;
-- (int64_t)homeKitTypeFromCBDiscoveryFlag:(unint64_t)a3;
-- (int64_t)homeKitTypeFromClientType:(unsigned __int8)a3;
-- (unint64_t)homeKitTypeToCBDiscoveryFlag:(int64_t)a3;
-- (unsigned)clientTypeFromHomeKitType:(int64_t)a3;
+- (id)startCBDiscoveryScan:(id)scan forType:(int64_t)type;
+- (int64_t)homeKitTypeFromCBDiscoveryFlag:(unint64_t)flag;
+- (int64_t)homeKitTypeFromClientType:(unsigned __int8)type;
+- (unint64_t)homeKitTypeToCBDiscoveryFlag:(int64_t)flag;
+- (unsigned)clientTypeFromHomeKitType:(int64_t)type;
 - (void)checkAllowDuplicate;
-- (void)deviceDiscovered:(id)a3;
-- (void)deviceLostHandler:(id)a3;
+- (void)deviceDiscovered:(id)discovered;
+- (void)deviceLostHandler:(id)handler;
 - (void)invalidate;
 - (void)invalidateWHBScanSession;
-- (void)setStartScanParametersfor:(id)a3 withValues:(id)a4 forType:(int64_t)a5;
-- (void)setStopScanParametersforType:(int64_t)a3;
-- (void)startScanningWithData:(id)a3 forType:(int64_t)a4;
-- (void)stateDidChange:(int64_t)a3;
-- (void)stopCBDiscoveryScan:(int64_t)a3;
-- (void)stopScanningForType:(int64_t)a3;
+- (void)setStartScanParametersfor:(id)parametersfor withValues:(id)values forType:(int64_t)type;
+- (void)setStopScanParametersforType:(int64_t)type;
+- (void)startScanningWithData:(id)data forType:(int64_t)type;
+- (void)stateDidChange:(int64_t)change;
+- (void)stopCBDiscoveryScan:(int64_t)scan;
+- (void)stopScanningForType:(int64_t)type;
 - (void)tearDownCBDiscovery;
 @end
 
 @implementation WPHomeKit
 
-- (WPHomeKit)initWithDelegate:(id)a3 queue:(id)a4
+- (WPHomeKit)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = WPHomeKit;
-  v7 = [(WPClient *)&v10 initWithQueue:a4 machName:0];
+  v7 = [(WPClient *)&v10 initWithQueue:queue machName:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   return v8;
 }
 
-- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)dutyCycleToScanningRates:(SEL)a3
+- ($9FE6E10C8CE45DBC9A88DFDEA39A390D)dutyCycleToScanningRates:(SEL)rates
 {
   retstr->var2 = 30;
   *&retstr->var0 = xmmword_27435CE60;
@@ -65,21 +65,21 @@ LABEL_8:
       return self;
   }
 
-  v7 = self;
-  v8 = [MEMORY[0x277CCA890] currentHandler];
-  [v8 handleFailureInMethod:a3 object:v7 file:@"WPHomeKit.m" lineNumber:86 description:@"Unknown duty cycle type"];
+  selfCopy = self;
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:rates object:selfCopy file:@"WPHomeKit.m" lineNumber:86 description:@"Unknown duty cycle type"];
 
   return self;
 }
 
-- (unsigned)clientTypeFromHomeKitType:(int64_t)a3
+- (unsigned)clientTypeFromHomeKitType:(int64_t)type
 {
-  if (!a3)
+  if (!type)
   {
     return 6;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v6 = [MEMORY[0x277CBEAD8] exceptionWithName:@"UnknownHomeKitType" reason:@"The HomeKit type isn't valid" userInfo:{0, v3, v4}];
     objc_exception_throw(v6);
@@ -88,18 +88,18 @@ LABEL_8:
   return 17;
 }
 
-- (int64_t)homeKitTypeFromClientType:(unsigned __int8)a3
+- (int64_t)homeKitTypeFromClientType:(unsigned __int8)type
 {
-  if (a3 == 6)
+  if (type == 6)
   {
     return 0;
   }
 
-  if (a3 != 17)
+  if (type != 17)
   {
     v4 = MEMORY[0x277CBEAD8];
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"The client type %ld isn't valid", a3];
-    v6 = [v4 exceptionWithName:@"UnknownClientType" reason:v5 userInfo:0];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"The client type %ld isn't valid", type];
+    v6 = [v4 exceptionWithName:@"UnknownClientType" reason:type userInfo:0];
 
     objc_exception_throw(v6);
   }
@@ -120,10 +120,10 @@ LABEL_8:
   [(WPClient *)&v3 invalidate];
 }
 
-- (void)startScanningWithData:(id)a3 forType:(int64_t)a4
+- (void)startScanningWithData:(id)data forType:(int64_t)type
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  dataCopy = data;
   if (WPLogInitOnce != -1)
   {
     [WPHomeKit startScanningWithData:forType:];
@@ -133,21 +133,21 @@ LABEL_8:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v7;
+    *&buf[4] = dataCopy;
     *&buf[12] = 2048;
-    *&buf[14] = a4;
+    *&buf[14] = type;
     _os_log_impl(&dword_274327000, v8, OS_LOG_TYPE_DEFAULT, "HomeKit startScanningWithData %@, type %ld", buf, 0x16u);
   }
 
-  v39 = a4;
-  v9 = [v7 objectForKeyedSubscript:@"WPHomeKitScanBlobData"];
-  v10 = [v7 objectForKeyedSubscript:@"WPHomeKitScanMaskData"];
-  v11 = [v7 objectForKeyedSubscript:@"WPHomeKitScanDutyCycle"];
-  v12 = [v7 objectForKeyedSubscript:@"WPHomeKitScanOptionRange"];
-  v13 = [v7 objectForKeyedSubscript:@"WPHomeKitScanOptionWHB"];
+  typeCopy = type;
+  v9 = [dataCopy objectForKeyedSubscript:@"WPHomeKitScanBlobData"];
+  v10 = [dataCopy objectForKeyedSubscript:@"WPHomeKitScanMaskData"];
+  v11 = [dataCopy objectForKeyedSubscript:@"WPHomeKitScanDutyCycle"];
+  v12 = [dataCopy objectForKeyedSubscript:@"WPHomeKitScanOptionRange"];
+  v13 = [dataCopy objectForKeyedSubscript:@"WPHomeKitScanOptionWHB"];
   if (v13)
   {
-    v14 = [v7 objectForKeyedSubscript:@"WPHomeKitScanOptionWHB"];
+    v14 = [dataCopy objectForKeyedSubscript:@"WPHomeKitScanOptionWHB"];
     v15 = [v14 BOOLValue] ^ 1;
   }
 
@@ -156,7 +156,7 @@ LABEL_8:
     v15 = 1;
   }
 
-  [v7 objectForKeyedSubscript:@"WPHomeKitScanOptionRetainDuplicates"];
+  [dataCopy objectForKeyedSubscript:@"WPHomeKitScanOptionRetainDuplicates"];
   v41 = v40 = v12;
   if (!v9 && v10)
   {
@@ -229,14 +229,14 @@ LABEL_17:
 
   if (![(WPHomeKit *)self isWHBSupported])
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:self file:@"WPHomeKit.m" lineNumber:185 description:@"WHB Scan is only allowed on tvOS"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WPHomeKit.m" lineNumber:185 description:@"WHB Scan is only allowed on tvOS"];
   }
 
   v28 = v40;
   if (_os_feature_enabled_impl())
   {
-    v36 = [(WPHomeKit *)self startCBDiscoveryScan:v7 forType:v39];
+    v36 = [(WPHomeKit *)self startCBDiscoveryScan:dataCopy forType:typeCopy];
 LABEL_42:
     v19 = 0;
     goto LABEL_43;
@@ -269,22 +269,22 @@ LABEL_27:
     *&buf[16] = v44;
     [v29 setScanningRates:buf];
     [v29 setAllowDuplicates:0];
-    [v29 setClientType:{-[WPHomeKit clientTypeFromHomeKitType:](self, "clientTypeFromHomeKitType:", v39)}];
+    [v29 setClientType:{-[WPHomeKit clientTypeFromHomeKitType:](self, "clientTypeFromHomeKitType:", typeCopy)}];
     [v29 setActiveScanning:{objc_msgSend(v11, "integerValue") == 2}];
     [v29 setBlobValue:v9];
     [v29 setMaskValue:v10];
     v28 = v40;
     if (v40)
     {
-      v30 = [v40 BOOLValue];
+      bOOLValue = [v40 BOOLValue];
     }
 
     else
     {
-      v30 = 0;
+      bOOLValue = 0;
     }
 
-    [v29 setRange:v30];
+    [v29 setRange:bOOLValue];
     if (v41)
     {
       if (_os_feature_enabled_impl())
@@ -328,13 +328,13 @@ LABEL_27:
     goto LABEL_42;
   }
 
-  v25 = [(WPHomeKit *)self delegate];
+  delegate = [(WPHomeKit *)self delegate];
   v26 = objc_opt_respondsToSelector();
 
   if (v26)
   {
-    v27 = [(WPHomeKit *)self delegate];
-    [v27 homeKit:self failedToStartScanningWithError:v19 forType:v39];
+    delegate2 = [(WPHomeKit *)self delegate];
+    [delegate2 homeKit:self failedToStartScanningWithError:v19 forType:typeCopy];
   }
 
   v28 = v40;
@@ -343,7 +343,7 @@ LABEL_43:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopScanningForType:(int64_t)a3
+- (void)stopScanningForType:(int64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
   if (WPLogInitOnce != -1)
@@ -355,11 +355,11 @@ LABEL_43:
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = a3;
+    typeCopy2 = type;
     _os_log_impl(&dword_274327000, v5, OS_LOG_TYPE_DEFAULT, "HomeKit stopScanning type %ld", buf, 0xCu);
   }
 
-  if (self->_homeKitCBDiscovery && [(WPHomeKit *)self discoveryFlagsContains:a3])
+  if (self->_homeKitCBDiscovery && [(WPHomeKit *)self discoveryFlagsContains:type])
   {
     if (WPLogInitOnce != -1)
     {
@@ -370,17 +370,17 @@ LABEL_43:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v12 = a3;
+      typeCopy2 = type;
       _os_log_impl(&dword_274327000, v6, OS_LOG_TYPE_DEFAULT, "HomeKit CBDiscovery stopScanning type %ld", buf, 0xCu);
     }
 
-    [(WPHomeKit *)self stopCBDiscoveryScan:a3];
+    [(WPHomeKit *)self stopCBDiscoveryScan:type];
   }
 
   else
   {
     v7 = objc_opt_new();
-    [v7 setClientType:{-[WPHomeKit clientTypeFromHomeKitType:](self, "clientTypeFromHomeKitType:", a3)}];
+    [v7 setClientType:{-[WPHomeKit clientTypeFromHomeKitType:](self, "clientTypeFromHomeKitType:", type)}];
     if (WPLogInitOnce != -1)
     {
       [WPHomeKit stopScanningForType:];
@@ -390,7 +390,7 @@ LABEL_43:
     if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v7;
+      typeCopy2 = v7;
       _os_log_impl(&dword_274327000, v8, OS_LOG_TYPE_DEFAULT, "HomeKit stop scan with %@", buf, 0xCu);
     }
 
@@ -402,21 +402,21 @@ LABEL_43:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stateDidChange:(int64_t)a3
+- (void)stateDidChange:(int64_t)change
 {
-  v5 = [(WPClient *)self state];
+  state = [(WPClient *)self state];
   v9.receiver = self;
   v9.super_class = WPHomeKit;
-  [(WPClient *)&v9 stateDidChange:a3];
-  if ([(WPClient *)self state]!= v5)
+  [(WPClient *)&v9 stateDidChange:change];
+  if ([(WPClient *)self state]!= state)
   {
-    v6 = [(WPHomeKit *)self delegate];
+    delegate = [(WPHomeKit *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(WPHomeKit *)self delegate];
-      [v8 homeKitDidUpdateState:self];
+      delegate2 = [(WPHomeKit *)self delegate];
+      [delegate2 homeKitDidUpdateState:self];
     }
   }
 }
@@ -445,35 +445,35 @@ void __32__WPHomeKit_checkAllowDuplicate__block_invoke(uint64_t a1, uint64_t a2)
   }
 }
 
-- (void)deviceDiscovered:(id)a3
+- (void)deviceDiscovered:(id)discovered
 {
-  v12 = a3;
-  v4 = [v12 objectForKeyedSubscript:@"kDevicePeripheralUUID"];
-  v5 = [v12 objectForKeyedSubscript:@"kDeviceAdvertisingPacket"];
-  v6 = [v12 objectForKeyedSubscript:@"kDeviceType"];
-  v7 = [v6 integerValue];
+  discoveredCopy = discovered;
+  v4 = [discoveredCopy objectForKeyedSubscript:@"kDevicePeripheralUUID"];
+  v5 = [discoveredCopy objectForKeyedSubscript:@"kDeviceAdvertisingPacket"];
+  v6 = [discoveredCopy objectForKeyedSubscript:@"kDeviceType"];
+  integerValue = [v6 integerValue];
 
-  v8 = [(WPHomeKit *)self delegate];
+  delegate = [(WPHomeKit *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [v12 objectForKeyedSubscript:@"kDeviceRSSI"];
-    v11 = [(WPHomeKit *)self delegate];
-    [v11 homeKit:self foundDevice:v4 withData:v5 RSSI:v10 type:{-[WPHomeKit homeKitTypeFromClientType:](self, "homeKitTypeFromClientType:", v7)}];
+    v10 = [discoveredCopy objectForKeyedSubscript:@"kDeviceRSSI"];
+    delegate2 = [(WPHomeKit *)self delegate];
+    [delegate2 homeKit:self foundDevice:v4 withData:v5 RSSI:v10 type:{-[WPHomeKit homeKitTypeFromClientType:](self, "homeKitTypeFromClientType:", integerValue)}];
   }
 }
 
-- (void)setStartScanParametersfor:(id)a3 withValues:(id)a4 forType:(int64_t)a5
+- (void)setStartScanParametersfor:(id)parametersfor withValues:(id)values forType:(int64_t)type
 {
-  v8 = a4;
-  v9 = a3;
-  v17 = [v8 objectForKeyedSubscript:@"WPHomeKitScanDutyCycle"];
-  v10 = [v8 objectForKeyedSubscript:@"WPHomeKitScanOptionRange"];
+  valuesCopy = values;
+  parametersforCopy = parametersfor;
+  v17 = [valuesCopy objectForKeyedSubscript:@"WPHomeKitScanDutyCycle"];
+  v10 = [valuesCopy objectForKeyedSubscript:@"WPHomeKitScanOptionRange"];
 
   v11 = -[WPHomeKit homeKitScanTypeToCBDiscoveryScanRates:](self, "homeKitScanTypeToCBDiscoveryScanRates:", [v17 integerValue]);
-  v12 = [v9 discoveryFlags];
-  v13 = [(WPHomeKit *)self homeKitTypeToCBDiscoveryFlag:a5]| v12;
+  discoveryFlags = [parametersforCopy discoveryFlags];
+  v13 = [(WPHomeKit *)self homeKitTypeToCBDiscoveryFlag:type]| discoveryFlags;
   v14 = 0x400002000000;
   if (!HIDWORD(*&v11))
   {
@@ -491,16 +491,16 @@ void __32__WPHomeKit_checkAllowDuplicate__block_invoke(uint64_t a1, uint64_t a2)
     v16 = v15;
   }
 
-  [v9 setDiscoveryFlags:v16];
-  [v9 setBleScanRate:v11];
-  [v9 setBleScanRateScreenOff:HIDWORD(*&v11)];
-  [v9 setBleRSSIThresholdHint:4294967206];
+  [parametersforCopy setDiscoveryFlags:v16];
+  [parametersforCopy setBleScanRate:v11];
+  [parametersforCopy setBleScanRateScreenOff:HIDWORD(*&v11)];
+  [parametersforCopy setBleRSSIThresholdHint:4294967206];
 }
 
-- (void)setStopScanParametersforType:(int64_t)a3
+- (void)setStopScanParametersforType:(int64_t)type
 {
-  v5 = [self->_homeKitCBDiscovery discoveryFlags];
-  v6 = v5 & ~[(WPHomeKit *)self homeKitTypeToCBDiscoveryFlag:a3];
+  discoveryFlags = [self->_homeKitCBDiscovery discoveryFlags];
+  v6 = discoveryFlags & ~[(WPHomeKit *)self homeKitTypeToCBDiscoveryFlag:type];
   if ([(WPHomeKit *)self isHomeKitScanActive:v6])
   {
     v7 = v6;
@@ -516,10 +516,10 @@ void __32__WPHomeKit_checkAllowDuplicate__block_invoke(uint64_t a1, uint64_t a2)
   [homeKitCBDiscovery setDiscoveryFlags:v7];
 }
 
-- (void)deviceLostHandler:(id)a3
+- (void)deviceLostHandler:(id)handler
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (WPLogInitOnce != -1)
   {
     [WPHomeKit deviceLostHandler:];
@@ -528,53 +528,53 @@ void __32__WPHomeKit_checkAllowDuplicate__block_invoke(uint64_t a1, uint64_t a2)
   v5 = WiProxLog;
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEBUG))
   {
-    [(WPHomeKit *)v4 deviceLostHandler:v5];
+    [(WPHomeKit *)handlerCopy deviceLostHandler:v5];
   }
 
   v6 = objc_alloc(MEMORY[0x277CCAD78]);
-  v7 = [v4 identifier];
-  v8 = [v6 initWithUUIDString:v7];
+  identifier = [handlerCopy identifier];
+  v8 = [v6 initWithUUIDString:identifier];
 
-  v9 = [v4 btAddressData];
+  btAddressData = [handlerCopy btAddressData];
   v19[0] = @"kDeviceStableIdentifier";
-  v10 = [v4 stableIdentifier];
-  v11 = v10;
+  stableIdentifier = [handlerCopy stableIdentifier];
+  v11 = stableIdentifier;
   v12 = &stru_2883572B8;
-  if (v10)
+  if (stableIdentifier)
   {
-    v12 = v10;
+    v12 = stableIdentifier;
   }
 
   v20[0] = v12;
   v19[1] = *MEMORY[0x277CBDCE0];
-  v13 = v9;
-  if (!v9)
+  data = btAddressData;
+  if (!btAddressData)
   {
-    v13 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
   }
 
-  v20[1] = v13;
+  v20[1] = data;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
-  if (!v9)
+  if (!btAddressData)
   {
   }
 
-  v15 = [(WPHomeKit *)self delegate];
+  delegate = [(WPHomeKit *)self delegate];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
-    v17 = [(WPHomeKit *)self delegate];
-    [v17 homeKit:self lostDevice:v8 withData:v14];
+    delegate2 = [(WPHomeKit *)self delegate];
+    [delegate2 homeKit:self lostDevice:v8 withData:v14];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)startCBDiscoveryScan:(id)a3 forType:(int64_t)a4
+- (id)startCBDiscoveryScan:(id)scan forType:(int64_t)type
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  scanCopy = scan;
   if (WPLogInitOnce != -1)
   {
     [WPHomeKit startCBDiscoveryScan:forType:];
@@ -584,24 +584,24 @@ void __32__WPHomeKit_checkAllowDuplicate__block_invoke(uint64_t a1, uint64_t a2)
   if (os_log_type_enabled(WiProxLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v6;
+    v27 = scanCopy;
     v28 = 2048;
-    v29 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_274327000, v7, OS_LOG_TYPE_DEFAULT, "HomeKit CBDiscovery startCBDiscoveryScan %@, type %ld", buf, 0x16u);
   }
 
   homeKitCBDiscovery = self->_homeKitCBDiscovery;
   if (homeKitCBDiscovery)
   {
-    [(WPHomeKit *)self setStartScanParametersfor:homeKitCBDiscovery withValues:v6 forType:a4];
-    v9 = [self->_homeKitCBDiscovery dispatchQueue];
+    [(WPHomeKit *)self setStartScanParametersfor:homeKitCBDiscovery withValues:scanCopy forType:type];
+    dispatchQueue = [self->_homeKitCBDiscovery dispatchQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __42__WPHomeKit_startCBDiscoveryScan_forType___block_invoke_250;
     block[3] = &unk_279ED73A8;
     block[4] = self;
-    block[5] = a4;
-    dispatch_async(v9, block);
+    block[5] = type;
+    dispatch_async(dispatchQueue, block);
 
     v10 = 0;
   }
@@ -609,11 +609,11 @@ void __32__WPHomeKit_checkAllowDuplicate__block_invoke(uint64_t a1, uint64_t a2)
   else
   {
     v11 = objc_alloc_init(MEMORY[0x277CBE030]);
-    v12 = [(WPClient *)self clientQueue];
-    v13 = v12;
-    if (v12)
+    clientQueue = [(WPClient *)self clientQueue];
+    v13 = clientQueue;
+    if (clientQueue)
     {
-      v14 = v12;
+      v14 = clientQueue;
     }
 
     else
@@ -622,7 +622,7 @@ void __32__WPHomeKit_checkAllowDuplicate__block_invoke(uint64_t a1, uint64_t a2)
     }
 
     [v11 setDispatchQueue:v14];
-    [(WPHomeKit *)self setStartScanParametersfor:v11 withValues:v6 forType:a4];
+    [(WPHomeKit *)self setStartScanParametersfor:v11 withValues:scanCopy forType:type];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __42__WPHomeKit_startCBDiscoveryScan_forType___block_invoke_239;
@@ -641,13 +641,13 @@ void __32__WPHomeKit_checkAllowDuplicate__block_invoke(uint64_t a1, uint64_t a2)
     v20[3] = &unk_279ED7380;
     v10 = v11;
     v21 = v10;
-    v22 = self;
-    v23 = a4;
+    selfCopy = self;
+    typeCopy2 = type;
     [v10 activateWithCompletion:v20];
     objc_storeStrong(&self->_homeKitCBDiscovery, v11);
   }
 
-  [(WPHomeKit *)self scanningStartedOfType:[(WPHomeKit *)self clientTypeFromHomeKitType:a4]];
+  [(WPHomeKit *)self scanningStartedOfType:[(WPHomeKit *)self clientTypeFromHomeKitType:type]];
   v15 = self->_homeKitCBDiscovery;
   v16 = v15;
 
@@ -766,10 +766,10 @@ void __42__WPHomeKit_startCBDiscoveryScan_forType___block_invoke_250(uint64_t a1
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopCBDiscoveryScan:(int64_t)a3
+- (void)stopCBDiscoveryScan:(int64_t)scan
 {
   [(WPHomeKit *)self setStopScanParametersforType:?];
-  v5 = [(WPHomeKit *)self clientTypeFromHomeKitType:a3];
+  v5 = [(WPHomeKit *)self clientTypeFromHomeKitType:scan];
 
   [(WPHomeKit *)self scanningStoppedOfType:v5];
 }
@@ -785,18 +785,18 @@ void __42__WPHomeKit_startCBDiscoveryScan_forType___block_invoke_250(uint64_t a1
   }
 }
 
-- (unint64_t)homeKitTypeToCBDiscoveryFlag:(int64_t)a3
+- (unint64_t)homeKitTypeToCBDiscoveryFlag:(int64_t)flag
 {
-  if (!a3)
+  if (!flag)
   {
     return 0x400000;
   }
 
-  if (a3 != 1)
+  if (flag != 1)
   {
     v4 = MEMORY[0x277CBEAD8];
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"The homeKit type %ld isn't valid. Cannot Convert to CBDiscoveryFlags", a3];
-    v6 = [v4 exceptionWithName:@"UnknownClientType" reason:v5 userInfo:0];
+    flag = [MEMORY[0x277CCACA8] stringWithFormat:@"The homeKit type %ld isn't valid. Cannot Convert to CBDiscoveryFlags", flag];
+    v6 = [v4 exceptionWithName:@"UnknownClientType" reason:flag userInfo:0];
 
     objc_exception_throw(v6);
   }
@@ -804,18 +804,18 @@ void __42__WPHomeKit_startCBDiscoveryScan_forType___block_invoke_250(uint64_t a1
   return 0x1000000;
 }
 
-- (int64_t)homeKitTypeFromCBDiscoveryFlag:(unint64_t)a3
+- (int64_t)homeKitTypeFromCBDiscoveryFlag:(unint64_t)flag
 {
-  if ((a3 & 0x400000) != 0)
+  if ((flag & 0x400000) != 0)
   {
     return 0;
   }
 
-  if ((a3 & 0x1000000) == 0)
+  if ((flag & 0x1000000) == 0)
   {
     v4 = MEMORY[0x277CBEAD8];
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"The CBDiscoveryFlag %llu isn't valid. Cannot Convert to homeKit type", a3];
-    v6 = [v4 exceptionWithName:@"UnknownClientType" reason:v5 userInfo:0];
+    flag = [MEMORY[0x277CCACA8] stringWithFormat:@"The CBDiscoveryFlag %llu isn't valid. Cannot Convert to homeKit type", flag];
+    v6 = [v4 exceptionWithName:@"UnknownClientType" reason:flag userInfo:0];
 
     objc_exception_throw(v6);
   }
@@ -823,11 +823,11 @@ void __42__WPHomeKit_startCBDiscoveryScan_forType___block_invoke_250(uint64_t a1
   return 1;
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)homeKitScanTypeToCBDiscoveryScanRates:(int64_t)a3
+- ($2825F4736939C4A6D3AD43837233062D)homeKitScanTypeToCBDiscoveryScanRates:(int64_t)rates
 {
-  if (a3)
+  if (rates)
   {
-    if (a3 == 1)
+    if (rates == 1)
     {
       v5 = _os_feature_enabled_impl();
       v3 = 0x1400000000;
@@ -843,7 +843,7 @@ void __42__WPHomeKit_startCBDiscoveryScan_forType___block_invoke_250(uint64_t a1
       }
     }
 
-    else if (a3 == 2)
+    else if (rates == 2)
     {
       v3 = 0x1400000000;
       v4 = 40;
@@ -851,8 +851,8 @@ void __42__WPHomeKit_startCBDiscoveryScan_forType___block_invoke_250(uint64_t a1
 
     else
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"WPHomeKit.m" lineNumber:514 description:@"Unknown duty cycle type"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"WPHomeKit.m" lineNumber:514 description:@"Unknown duty cycle type"];
 
       v4 = 0;
       v3 = 0x1400000000;

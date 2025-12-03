@@ -3,7 +3,7 @@
 - (NMSOutgoingRequest)init;
 - (NSString)description;
 - (id)CPObfuscatedDescriptionObject;
-- (void)setPbRequest:(id)a3;
+- (void)setPbRequest:(id)request;
 @end
 
 @implementation NMSOutgoingRequest
@@ -21,13 +21,13 @@
   return result;
 }
 
-- (void)setPbRequest:(id)a3
+- (void)setPbRequest:(id)request
 {
-  objc_storeStrong(&self->_pbRequest, a3);
-  v7 = a3;
-  v5 = [self->_pbRequest data];
+  objc_storeStrong(&self->_pbRequest, request);
+  requestCopy = request;
+  data = [self->_pbRequest data];
   data = self->_data;
-  self->_data = v5;
+  self->_data = data;
 }
 
 - (NSString)description
@@ -37,10 +37,10 @@
   v11.super_class = NMSOutgoingRequest;
   v4 = [(NMSOutgoingRequest *)&v11 description];
   v5 = NMSPriorityString([(NMSOutgoingRequest *)self priority]);
-  v6 = [(NMSOutgoingRequest *)self messageID];
-  v7 = [(NMSOutgoingRequest *)self idsIdentifier];
-  v8 = [(NMSOutgoingRequest *)self data];
-  v9 = [v3 initWithFormat:@"%@ {%@ priority, messageID=%hu, idsID=%@, data=%lu bytes}", v4, v5, v6, v7, objc_msgSend(v8, "length")];
+  messageID = [(NMSOutgoingRequest *)self messageID];
+  idsIdentifier = [(NMSOutgoingRequest *)self idsIdentifier];
+  data = [(NMSOutgoingRequest *)self data];
+  v9 = [v3 initWithFormat:@"%@ {%@ priority, messageID=%hu, idsID=%@, data=%lu bytes}", v4, v5, messageID, idsIdentifier, objc_msgSend(data, "length")];
 
   return v9;
 }
@@ -77,8 +77,8 @@
     [(NMSObfuscatableDescription *)v7 addDescription:@"Protobuf class" value:@"none"];
   }
 
-  v13 = [(NMSOutgoingRequest *)self idsIdentifier];
-  [(NMSObfuscatableDescription *)v7 addDescription:@"IDS ID" value:v13];
+  idsIdentifier = [(NMSOutgoingRequest *)self idsIdentifier];
+  [(NMSObfuscatableDescription *)v7 addDescription:@"IDS ID" value:idsIdentifier];
 
   v14 = [MEMORY[0x1E696AB70] localizedStringFromDateComponents:v3 unitsStyle:3];
   [(NMSObfuscatableDescription *)v7 addDescription:@"Send timeout" value:v14];
@@ -97,11 +97,11 @@
   }
 
   [(NMSObfuscatableDescription *)v7 addDescription:@"Should encrypt" value:v16];
-  v17 = [(NMSOutgoingRequest *)self data];
-  [(NMSObfuscatableDescription *)v7 addObfuscatedDescription:@"Data" value:v17];
+  data = [(NMSOutgoingRequest *)self data];
+  [(NMSObfuscatableDescription *)v7 addObfuscatedDescription:@"Data" value:data];
 
-  v18 = [(NMSOutgoingRequest *)self persistentUserInfo];
-  [(NMSObfuscatableDescription *)v7 addDescription:@"User info" value:v18];
+  persistentUserInfo = [(NMSOutgoingRequest *)self persistentUserInfo];
+  [(NMSObfuscatableDescription *)v7 addDescription:@"User info" value:persistentUserInfo];
 
   return v7;
 }

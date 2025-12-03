@@ -1,9 +1,9 @@
 @interface ANSTExclaveAlgorithmResult
 + (id)new;
 - (ANSTExclaveAlgorithmResult)init;
-- (ANSTExclaveAlgorithmResult)initWithAcResult:(id *)a3;
-- (id)_objectsOfCategory:(int)a3 fromAcResult:(id *)a4;
-- (id)detectedObjectsForCategory:(id)a3;
+- (ANSTExclaveAlgorithmResult)initWithAcResult:(id *)result;
+- (id)_objectsOfCategory:(int)category fromAcResult:(id *)result;
+- (id)detectedObjectsForCategory:(id)category;
 - (void)dealloc;
 @end
 
@@ -18,22 +18,22 @@
 
 + (id)new
 {
-  result = objc_msgSend_doesNotRecognizeSelector_(a1, a2, a2);
+  result = objc_msgSend_doesNotRecognizeSelector_(self, a2, a2);
   __break(1u);
   return result;
 }
 
-- (ANSTExclaveAlgorithmResult)initWithAcResult:(id *)a3
+- (ANSTExclaveAlgorithmResult)initWithAcResult:(id *)result
 {
   v8.receiver = self;
   v8.super_class = ANSTExclaveAlgorithmResult;
-  v4 = [(ANSTResult *)&v8 _init];
-  v5 = v4;
-  if (a3 && v4)
+  _init = [(ANSTResult *)&v8 _init];
+  v5 = _init;
+  if (result && _init)
   {
     v6 = malloc_type_malloc(0x8110uLL, 0x10000402F34CA73uLL);
     v5->_acResult = v6;
-    memcpy(v6, a3, sizeof($A8D24B83268BAEB1FAC85F8F830F736F));
+    memcpy(v6, result, sizeof($A8D24B83268BAEB1FAC85F8F830F736F));
   }
 
   return v5;
@@ -52,19 +52,19 @@
   [(ANSTExclaveAlgorithmResult *)&v4 dealloc];
 }
 
-- (id)detectedObjectsForCategory:(id)a3
+- (id)detectedObjectsForCategory:(id)category
 {
-  v4 = a3;
-  v6 = v4;
+  categoryCopy = category;
+  v6 = categoryCopy;
   acResult = self->_acResult;
   if (acResult)
   {
-    if (@"Face" == v4)
+    if (@"Face" == categoryCopy)
     {
       goto LABEL_5;
     }
 
-    if (objc_msgSend_isEqualToString_(v4, v5, @"Face"))
+    if (objc_msgSend_isEqualToString_(categoryCopy, v5, @"Face"))
     {
       acResult = self->_acResult;
 LABEL_5:
@@ -171,27 +171,27 @@ LABEL_40:
   return v25;
 }
 
-- (id)_objectsOfCategory:(int)a3 fromAcResult:(id *)a4
+- (id)_objectsOfCategory:(int)category fromAcResult:(id *)result
 {
   v8 = objc_opt_new();
-  var4 = a4->var4;
+  var4 = result->var4;
   if (var4)
   {
     v10 = 0;
-    var5 = a4->var5;
+    var5 = result->var5;
     do
     {
       v12 = *&var5->var3.var1;
       v19[0] = *&var5->var0;
       v19[1] = v12;
       v20 = *&var5->var5;
-      if (DWORD2(v19[0]) == a3)
+      if (DWORD2(v19[0]) == category)
       {
         v13 = [ANSTObject alloc];
         v15 = objc_msgSend_initWithAcObject_(v13, v14, v19);
         objc_msgSend_addObject_(v8, v16, v15, *&v19[0]);
 
-        var4 = a4->var4;
+        var4 = result->var4;
       }
 
       ++v10;

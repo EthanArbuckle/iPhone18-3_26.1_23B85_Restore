@@ -1,16 +1,16 @@
 @interface PXStoryMemoryFeedPlaceholderFactory
-- (id)_placeholderViewMessageForFeedWithViewModel:(id)a3;
-- (id)createPlaceholderViewForFeedWithViewModel:(id)a3;
-- (void)updatePlaceholderView:(id)a3 forFeedWithViewModel:(id)a4;
+- (id)_placeholderViewMessageForFeedWithViewModel:(id)model;
+- (id)createPlaceholderViewForFeedWithViewModel:(id)model;
+- (void)updatePlaceholderView:(id)view forFeedWithViewModel:(id)model;
 @end
 
 @implementation PXStoryMemoryFeedPlaceholderFactory
 
-- (id)_placeholderViewMessageForFeedWithViewModel:(id)a3
+- (id)_placeholderViewMessageForFeedWithViewModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = PXLocalizedStringFromTable(@"PXEmptyMemoriesMessage", @"PhotosUICore");
-  v5 = [v3 dataSourceManager];
+  dataSourceManager = [modelCopy dataSourceManager];
 
   if (!objc_opt_class() || (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -19,15 +19,15 @@ LABEL_10:
     PXAssertGetLog();
   }
 
-  v6 = v5;
+  v6 = dataSourceManager;
 
   if (!v6)
   {
     goto LABEL_10;
   }
 
-  v7 = [v6 photoLibrary];
-  v8 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v7];
+  photoLibrary = [v6 photoLibrary];
+  v8 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:photoLibrary];
   if ([v8 hasSharedLibraryOrPreview])
   {
     v9 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:v8];
@@ -44,11 +44,11 @@ LABEL_10:
   return v11;
 }
 
-- (void)updatePlaceholderView:(id)a3 forFeedWithViewModel:(id)a4
+- (void)updatePlaceholderView:(id)view forFeedWithViewModel:(id)model
 {
-  v6 = a3;
-  v7 = a4;
-  v12 = v6;
+  viewCopy = view;
+  modelCopy = model;
+  v12 = viewCopy;
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v8 = v12;
@@ -59,11 +59,11 @@ LABEL_10:
     }
 
     v9 = PXLocalizedStringFromTable(@"PXEmptyMemoriesTitle", @"PhotosUICore");
-    v10 = [(PXStoryMemoryFeedPlaceholderFactory *)self _placeholderViewMessageForFeedWithViewModel:v7];
-    v11 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
-    [v11 setText:v9];
-    [v11 setSecondaryText:v10];
-    [v8 setConfiguration:v11];
+    v10 = [(PXStoryMemoryFeedPlaceholderFactory *)self _placeholderViewMessageForFeedWithViewModel:modelCopy];
+    emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+    [emptyConfiguration setText:v9];
+    [emptyConfiguration setSecondaryText:v10];
+    [v8 setConfiguration:emptyConfiguration];
   }
 
   else
@@ -75,16 +75,16 @@ LABEL_10:
 LABEL_7:
 }
 
-- (id)createPlaceholderViewForFeedWithViewModel:(id)a3
+- (id)createPlaceholderViewForFeedWithViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v5 = PXLocalizedStringFromTable(@"PXEmptyMemoriesTitle", @"PhotosUICore");
-  v6 = [(PXStoryMemoryFeedPlaceholderFactory *)self _placeholderViewMessageForFeedWithViewModel:v4];
+  v6 = [(PXStoryMemoryFeedPlaceholderFactory *)self _placeholderViewMessageForFeedWithViewModel:modelCopy];
 
-  v7 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
-  [v7 setText:v5];
-  [v7 setSecondaryText:v6];
-  v8 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:v7];
+  emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+  [emptyConfiguration setText:v5];
+  [emptyConfiguration setSecondaryText:v6];
+  v8 = [objc_alloc(MEMORY[0x1E69DC8D0]) initWithConfiguration:emptyConfiguration];
 
   return v8;
 }

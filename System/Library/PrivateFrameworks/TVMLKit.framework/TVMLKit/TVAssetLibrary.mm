@@ -1,37 +1,37 @@
 @interface TVAssetLibrary
-+ (void)_initializeAssetLibraryWithCachePath:(id)a3 screensaverCache:(BOOL)a4 purgeCacheOnLoad:(BOOL)a5;
-+ (void)initializeAssetLibraryWithCachePath:(id)a3;
-+ (void)initializeAssetLibraryWithCachePath:(id)a3 purgeCacheOnLoad:(BOOL)a4;
++ (void)_initializeAssetLibraryWithCachePath:(id)path screensaverCache:(BOOL)cache purgeCacheOnLoad:(BOOL)load;
++ (void)initializeAssetLibraryWithCachePath:(id)path;
++ (void)initializeAssetLibraryWithCachePath:(id)path purgeCacheOnLoad:(BOOL)load;
 + (void)intializeScreensaverSharedAssetLibrary;
-- (TVAssetLibrary)initWithCachePath:(id)a3 screensaverCache:(BOOL)a4 purgeCacheOnLoad:(BOOL)a5;
-- (id)assetExpiryDateForKey:(id)a3 inGroupOfType:(int64_t)a4;
-- (id)assetForKey:(id)a3 inGroupOfType:(int64_t)a4;
-- (id)assetPathForKey:(id)a3 inGroupOfType:(int64_t)a4;
-- (id)assetPathsForGroupOfType:(int64_t)a3;
-- (id)cachePathForGroupOfType:(int64_t)a3;
-- (id)groupWithGroupType:(int64_t)a3;
-- (id)keyForAssetWithTags:(id)a3 inGroupOfType:(int64_t)a4;
-- (void)_setImageAsset:(id)a3 forKey:(id)a4 inGroupOfType:(int64_t)a5 expiryDate:(id)a6 overWrite:(BOOL)a7 tags:(id)a8;
-- (void)purgeAssetsInGroupOfType:(int64_t)a3;
-- (void)removeAssetForKey:(id)a3 inGroupOfType:(int64_t)a4;
-- (void)setImageAssetFromPath:(id)a3 forKey:(id)a4 inGroupOfType:(int64_t)a5 expiryDate:(id)a6 tags:(id)a7;
-- (void)unRegisterGroup:(int64_t)a3;
-- (void)updateAssetsInGroupOfType:(int64_t)a3;
+- (TVAssetLibrary)initWithCachePath:(id)path screensaverCache:(BOOL)cache purgeCacheOnLoad:(BOOL)load;
+- (id)assetExpiryDateForKey:(id)key inGroupOfType:(int64_t)type;
+- (id)assetForKey:(id)key inGroupOfType:(int64_t)type;
+- (id)assetPathForKey:(id)key inGroupOfType:(int64_t)type;
+- (id)assetPathsForGroupOfType:(int64_t)type;
+- (id)cachePathForGroupOfType:(int64_t)type;
+- (id)groupWithGroupType:(int64_t)type;
+- (id)keyForAssetWithTags:(id)tags inGroupOfType:(int64_t)type;
+- (void)_setImageAsset:(id)asset forKey:(id)key inGroupOfType:(int64_t)type expiryDate:(id)date overWrite:(BOOL)write tags:(id)tags;
+- (void)purgeAssetsInGroupOfType:(int64_t)type;
+- (void)removeAssetForKey:(id)key inGroupOfType:(int64_t)type;
+- (void)setImageAssetFromPath:(id)path forKey:(id)key inGroupOfType:(int64_t)type expiryDate:(id)date tags:(id)tags;
+- (void)unRegisterGroup:(int64_t)group;
+- (void)updateAssetsInGroupOfType:(int64_t)type;
 @end
 
 @implementation TVAssetLibrary
 
-+ (void)initializeAssetLibraryWithCachePath:(id)a3
++ (void)initializeAssetLibraryWithCachePath:(id)path
 {
-  v3 = a3;
-  [objc_opt_class() initializeAssetLibraryWithCachePath:v3 purgeCacheOnLoad:0];
+  pathCopy = path;
+  [objc_opt_class() initializeAssetLibraryWithCachePath:pathCopy purgeCacheOnLoad:0];
 }
 
-+ (void)initializeAssetLibraryWithCachePath:(id)a3 purgeCacheOnLoad:(BOOL)a4
++ (void)initializeAssetLibraryWithCachePath:(id)path purgeCacheOnLoad:(BOOL)load
 {
-  v4 = a4;
-  v5 = a3;
-  [objc_opt_class() _initializeAssetLibraryWithCachePath:v5 screensaverCache:0 purgeCacheOnLoad:v4];
+  loadCopy = load;
+  pathCopy = path;
+  [objc_opt_class() _initializeAssetLibraryWithCachePath:pathCopy screensaverCache:0 purgeCacheOnLoad:loadCopy];
 }
 
 + (void)intializeScreensaverSharedAssetLibrary
@@ -40,18 +40,18 @@
   [objc_opt_class() _initializeAssetLibraryWithCachePath:v2 screensaverCache:1 purgeCacheOnLoad:0];
 }
 
-+ (void)_initializeAssetLibraryWithCachePath:(id)a3 screensaverCache:(BOOL)a4 purgeCacheOnLoad:(BOOL)a5
++ (void)_initializeAssetLibraryWithCachePath:(id)path screensaverCache:(BOOL)cache purgeCacheOnLoad:(BOOL)load
 {
-  v7 = a3;
-  if ([v7 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __89__TVAssetLibrary__initializeAssetLibraryWithCachePath_screensaverCache_purgeCacheOnLoad___block_invoke;
     v8[3] = &unk_279D6E9A0;
-    v9 = v7;
-    v10 = a4;
-    v11 = a5;
+    v9 = pathCopy;
+    cacheCopy = cache;
+    loadCopy = load;
     if (_initializeAssetLibraryWithCachePath_screensaverCache_purgeCacheOnLoad__onceToken != -1)
     {
       dispatch_once(&_initializeAssetLibraryWithCachePath_screensaverCache_purgeCacheOnLoad__onceToken, v8);
@@ -68,11 +68,11 @@ uint64_t __89__TVAssetLibrary__initializeAssetLibraryWithCachePath_screensaverCa
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (TVAssetLibrary)initWithCachePath:(id)a3 screensaverCache:(BOOL)a4 purgeCacheOnLoad:(BOOL)a5
+- (TVAssetLibrary)initWithCachePath:(id)path screensaverCache:(BOOL)cache purgeCacheOnLoad:(BOOL)load
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  loadCopy = load;
+  cacheCopy = cache;
+  pathCopy = path;
   v28.receiver = self;
   v28.super_class = TVAssetLibrary;
   v9 = [(TVAssetLibrary *)&v28 init];
@@ -86,7 +86,7 @@ uint64_t __89__TVAssetLibrary__initializeAssetLibraryWithCachePath_screensaverCa
     assetAccessQueue = v9->assetAccessQueue;
     v9->assetAccessQueue = v12;
 
-    v14 = [v8 copy];
+    v14 = [pathCopy copy];
     cachePath = v9->_cachePath;
     v9->_cachePath = v14;
 
@@ -103,7 +103,7 @@ uint64_t __89__TVAssetLibrary__initializeAssetLibraryWithCachePath_screensaverCa
 
     else
     {
-      v19 = v5;
+      v19 = loadCopy;
     }
 
     v20 = [[_TVAssetGroup alloc] initWithGroupType:0 baseCachePath:v9->_cachePath folderName:@"SharedImageCache" maxCacheSize:512 purgeOnLoad:v19];
@@ -116,7 +116,7 @@ uint64_t __89__TVAssetLibrary__initializeAssetLibraryWithCachePath_screensaverCa
     [(TVAssetLibrary *)v9 registerGroup:v23];
     v24 = [[_TVAssetGroup alloc] initWithGroupType:5 baseCachePath:v9->_cachePath folderName:@"ARFileCache" maxCacheSize:256 purgeOnLoad:v19];
     [(TVAssetLibrary *)v9 registerGroup:v24];
-    if (v6)
+    if (cacheCopy)
     {
       v25 = [[_TVAssetGroup alloc] initWithGroupType:2 baseCachePath:v9->_cachePath folderName:@"ScreenSaverImages" maxCacheSize:250 purgeOnLoad:0];
       [(TVAssetLibrary *)v9 registerGroup:v25];
@@ -126,16 +126,16 @@ uint64_t __89__TVAssetLibrary__initializeAssetLibraryWithCachePath_screensaverCa
   return v9;
 }
 
-- (id)assetForKey:(id)a3 inGroupOfType:(int64_t)a4
+- (id)assetForKey:(id)key inGroupOfType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(TVAssetLibrary *)self groupWithGroupType:a4];
-  v8 = [v7 assetInfoForKey:v6 queue:self->assetAccessQueue];
+  keyCopy = key;
+  v7 = [(TVAssetLibrary *)self groupWithGroupType:type];
+  v8 = [v7 assetInfoForKey:keyCopy queue:self->assetAccessQueue];
   v9 = [v8 objectForKey:@"ATVAssetPath"];
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
-    v11 = [v10 fileExistsAtPath:v9];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v11 = [defaultManager fileExistsAtPath:v9];
 
     if (v11)
     {
@@ -145,7 +145,7 @@ LABEL_6:
       goto LABEL_9;
     }
 
-    [(TVAssetLibrary *)self removeAssetForKey:v6 inGroupOfType:a4];
+    [(TVAssetLibrary *)self removeAssetForKey:keyCopy inGroupOfType:type];
   }
 
   else
@@ -165,44 +165,44 @@ LABEL_9:
   return v14;
 }
 
-- (id)assetPathForKey:(id)a3 inGroupOfType:(int64_t)a4
+- (id)assetPathForKey:(id)key inGroupOfType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(TVAssetLibrary *)self groupWithGroupType:a4];
-  v8 = [v7 assetInfoForKey:v6 queue:self->assetAccessQueue];
+  keyCopy = key;
+  v7 = [(TVAssetLibrary *)self groupWithGroupType:type];
+  v8 = [v7 assetInfoForKey:keyCopy queue:self->assetAccessQueue];
 
   v9 = [v8 objectForKey:@"ATVAssetPath"];
 
   return v9;
 }
 
-- (id)assetExpiryDateForKey:(id)a3 inGroupOfType:(int64_t)a4
+- (id)assetExpiryDateForKey:(id)key inGroupOfType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(TVAssetLibrary *)self groupWithGroupType:a4];
-  v8 = [v7 assetInfoForKey:v6 queue:self->assetAccessQueue];
+  keyCopy = key;
+  v7 = [(TVAssetLibrary *)self groupWithGroupType:type];
+  v8 = [v7 assetInfoForKey:keyCopy queue:self->assetAccessQueue];
 
   v9 = [v8 objectForKey:@"ATVAssetExpiryDate"];
 
   return v9;
 }
 
-- (id)keyForAssetWithTags:(id)a3 inGroupOfType:(int64_t)a4
+- (id)keyForAssetWithTags:(id)tags inGroupOfType:(int64_t)type
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(TVAssetLibrary *)self groupWithGroupType:a4];
-  v8 = [v7 infoForAllAssetsWithTags:v6 queue:self->assetAccessQueue];
+  tagsCopy = tags;
+  v7 = [(TVAssetLibrary *)self groupWithGroupType:type];
+  v8 = [v7 infoForAllAssetsWithTags:tagsCopy queue:self->assetAccessQueue];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v8 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [v8 allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
-    v19 = v6;
+    v19 = tagsCopy;
     v12 = *v21;
     while (2)
     {
@@ -210,7 +210,7 @@ LABEL_9:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
@@ -225,7 +225,7 @@ LABEL_9:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v11)
       {
         continue;
@@ -236,7 +236,7 @@ LABEL_9:
 
     v17 = 0;
 LABEL_11:
-    v6 = v19;
+    tagsCopy = v19;
   }
 
   else
@@ -247,32 +247,32 @@ LABEL_11:
   return v17;
 }
 
-- (void)removeAssetForKey:(id)a3 inGroupOfType:(int64_t)a4
+- (void)removeAssetForKey:(id)key inGroupOfType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(TVAssetLibrary *)self groupWithGroupType:a4];
-  [v7 removeAssetInfoForKey:v6 queue:self->assetAccessQueue];
+  keyCopy = key;
+  v7 = [(TVAssetLibrary *)self groupWithGroupType:type];
+  [v7 removeAssetInfoForKey:keyCopy queue:self->assetAccessQueue];
 }
 
-- (void)setImageAssetFromPath:(id)a3 forKey:(id)a4 inGroupOfType:(int64_t)a5 expiryDate:(id)a6 tags:(id)a7
+- (void)setImageAssetFromPath:(id)path forKey:(id)key inGroupOfType:(int64_t)type expiryDate:(id)date tags:(id)tags
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if ([v13 length])
+  pathCopy = path;
+  keyCopy = key;
+  dateCopy = date;
+  tagsCopy = tags;
+  if ([keyCopy length])
   {
-    v16 = v13;
-    v17 = [(TVAssetLibrary *)self groupWithGroupType:a5];
-    v18 = [v17 cachePath];
-    v19 = [v18 stringByAppendingPathComponent:v16];
+    defaultCenter = keyCopy;
+    v17 = [(TVAssetLibrary *)self groupWithGroupType:type];
+    cachePath = [v17 cachePath];
+    v19 = [cachePath stringByAppendingPathComponent:defaultCenter];
 
     v37 = 0;
-    v20 = [MEMORY[0x277CCAA00] defaultManager];
-    v21 = [v20 fileExistsAtPath:v19 isDirectory:&v37];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v21 = [defaultManager fileExistsAtPath:v19 isDirectory:&v37];
 
-    if (!v21 && ([MEMORY[0x277CCAA00] defaultManager], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "moveItemAtPath:toPath:error:", v12, v19, 0), v22, objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "fileExistsAtPath:isDirectory:", v19, &v37), v23, !v24) || (v37 & 1) != 0 || (v36 = 0, objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "tv_onDiskSizeOfFileAtPath:status:", v19, &v36), v25, v36) || !v26)
+    if (!v21 && ([MEMORY[0x277CCAA00] defaultManager], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "moveItemAtPath:toPath:error:", pathCopy, v19, 0), v22, objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "fileExistsAtPath:isDirectory:", v19, &v37), v23, !v24) || (v37 & 1) != 0 || (v36 = 0, objc_msgSend(MEMORY[0x277CCAA00], "defaultManager"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v25, "tv_onDiskSizeOfFileAtPath:status:", v19, &v36), v25, v36) || !v26)
     {
       if (v37 != 1)
       {
@@ -280,7 +280,7 @@ LABEL_11:
         v31[1] = 3221225472;
         v31[2] = __77__TVAssetLibrary_setImageAssetFromPath_forKey_inGroupOfType_expiryDate_tags___block_invoke_2;
         v31[3] = &unk_279D6E7F8;
-        v32 = v16;
+        v32 = defaultCenter;
         dispatch_async(MEMORY[0x277D85CD0], v31);
         v27 = v32;
 LABEL_17:
@@ -296,26 +296,26 @@ LABEL_17:
     v28 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v26];
     [v27 setObject:v28 forKeyedSubscript:@"ATVAssetSize"];
 
-    v29 = [MEMORY[0x277CBEAA8] date];
-    [v27 setObject:v29 forKeyedSubscript:@"ATVAssetLastAccessedDate"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v27 setObject:date forKeyedSubscript:@"ATVAssetLastAccessedDate"];
 
-    if (v14)
+    if (dateCopy)
     {
-      [v27 setObject:v14 forKeyedSubscript:@"ATVAssetExpiryDate"];
+      [v27 setObject:dateCopy forKeyedSubscript:@"ATVAssetExpiryDate"];
     }
 
-    if (v15)
+    if (tagsCopy)
     {
-      [v27 setObject:v15 forKeyedSubscript:@"ATVAssetTags"];
+      [v27 setObject:tagsCopy forKeyedSubscript:@"ATVAssetTags"];
     }
 
-    [v17 setAssetInfo:v27 forKey:v16 queue:{self->assetAccessQueue, v12}];
+    [v17 setAssetInfo:v27 forKey:defaultCenter queue:{self->assetAccessQueue, pathCopy}];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__TVAssetLibrary_setImageAssetFromPath_forKey_inGroupOfType_expiryDate_tags___block_invoke;
     block[3] = &unk_279D6E2F8;
-    v34 = v16;
-    v35 = v12;
+    v34 = defaultCenter;
+    v35 = pathCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     goto LABEL_17;
@@ -327,12 +327,12 @@ LABEL_17:
     [TVAssetLibrary setImageAssetFromPath:v30 forKey:? inGroupOfType:? expiryDate:? tags:?];
   }
 
-  v16 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v38 = @"ATVAssetDidWriteNotificationErrorKey";
   v17 = [MEMORY[0x277CCA9B8] errorWithDomain:@"TVMLKitErrorDomain" code:6 userInfo:0];
   v39[0] = v17;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:&v38 count:1];
-  [v16 postNotificationName:@"ATVAssetDidWriteNotification" object:v13 userInfo:v19];
+  [defaultCenter postNotificationName:@"ATVAssetDidWriteNotification" object:keyCopy userInfo:v19];
 LABEL_18:
 }
 
@@ -360,43 +360,43 @@ void __77__TVAssetLibrary_setImageAssetFromPath_forKey_inGroupOfType_expiryDate_
   [v2 postNotificationName:@"ATVAssetDidWriteNotification" object:v3 userInfo:v5];
 }
 
-- (void)purgeAssetsInGroupOfType:(int64_t)a3
+- (void)purgeAssetsInGroupOfType:(int64_t)type
 {
-  v4 = [(TVAssetLibrary *)self groupWithGroupType:a3];
+  v4 = [(TVAssetLibrary *)self groupWithGroupType:type];
   [v4 removeAllAssetsWithQueue:self->assetAccessQueue];
 }
 
-- (void)updateAssetsInGroupOfType:(int64_t)a3
+- (void)updateAssetsInGroupOfType:(int64_t)type
 {
-  v3 = [(TVAssetLibrary *)self groupWithGroupType:a3];
+  v3 = [(TVAssetLibrary *)self groupWithGroupType:type];
   [v3 updateAssetsFromFiles];
 }
 
-- (id)assetPathsForGroupOfType:(int64_t)a3
+- (id)assetPathsForGroupOfType:(int64_t)type
 {
-  v4 = [(TVAssetLibrary *)self groupWithGroupType:a3];
+  v4 = [(TVAssetLibrary *)self groupWithGroupType:type];
   v5 = [v4 infoForAllAssetsWithQueue:self->assetAccessQueue];
-  v6 = [v5 allValues];
-  v7 = [v6 tv_arrayByMappingObjectsUsingBlock:&__block_literal_global_12];
+  allValues = [v5 allValues];
+  v7 = [allValues tv_arrayByMappingObjectsUsingBlock:&__block_literal_global_12];
 
   return v7;
 }
 
-- (id)cachePathForGroupOfType:(int64_t)a3
+- (id)cachePathForGroupOfType:(int64_t)type
 {
-  v3 = [(TVAssetLibrary *)self groupWithGroupType:a3];
-  v4 = [v3 cachePath];
+  v3 = [(TVAssetLibrary *)self groupWithGroupType:type];
+  cachePath = [v3 cachePath];
 
-  return v4;
+  return cachePath;
 }
 
-- (void)unRegisterGroup:(int64_t)a3
+- (void)unRegisterGroup:(int64_t)group
 {
-  v4 = [(TVAssetLibrary *)self groupWithGroupType:a3];
+  v4 = [(TVAssetLibrary *)self groupWithGroupType:group];
   [(NSMutableArray *)self->_registeredGroups removeObject:v4];
 }
 
-- (id)groupWithGroupType:(int64_t)a3
+- (id)groupWithGroupType:(int64_t)type
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -419,7 +419,7 @@ void __77__TVAssetLibrary_setImageAssetFromPath_forKey_inGroupOfType_expiryDate_
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 groupType] == a3)
+        if ([v9 groupType] == type)
         {
           v10 = v9;
           goto LABEL_11;
@@ -442,42 +442,42 @@ LABEL_11:
   return v10;
 }
 
-- (void)_setImageAsset:(id)a3 forKey:(id)a4 inGroupOfType:(int64_t)a5 expiryDate:(id)a6 overWrite:(BOOL)a7 tags:(id)a8
+- (void)_setImageAsset:(id)asset forKey:(id)key inGroupOfType:(int64_t)type expiryDate:(id)date overWrite:(BOOL)write tags:(id)tags
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  v18 = [(TVAssetLibrary *)self groupWithGroupType:a5];
+  assetCopy = asset;
+  keyCopy = key;
+  dateCopy = date;
+  tagsCopy = tags;
+  v18 = [(TVAssetLibrary *)self groupWithGroupType:type];
   v19 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-  [v19 setObject:v14 forKeyedSubscript:@"ATVAsset"];
-  v20 = [MEMORY[0x277CBEAA8] date];
-  [v19 setObject:v20 forKeyedSubscript:@"ATVAssetLastAccessedDate"];
+  [v19 setObject:assetCopy forKeyedSubscript:@"ATVAsset"];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v19 setObject:date forKeyedSubscript:@"ATVAssetLastAccessedDate"];
 
-  if (v16)
+  if (dateCopy)
   {
-    [v19 setObject:v16 forKeyedSubscript:@"ATVAssetExpiryDate"];
+    [v19 setObject:dateCopy forKeyedSubscript:@"ATVAssetExpiryDate"];
   }
 
-  [v18 setAssetInfo:v19 forKey:v15 queue:self->assetAccessQueue];
+  [v18 setAssetInfo:v19 forKey:keyCopy queue:self->assetAccessQueue];
   objc_initWeak(&location, self);
   assetWriteQueue = self->assetWriteQueue;
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __80__TVAssetLibrary__setImageAsset_forKey_inGroupOfType_expiryDate_overWrite_tags___block_invoke;
   v27[3] = &unk_279D6ED78;
-  v28 = v15;
+  v28 = keyCopy;
   v29 = v18;
-  v34 = a7;
-  v30 = v14;
-  v22 = v14;
+  writeCopy = write;
+  v30 = assetCopy;
+  v22 = assetCopy;
   v23 = v18;
-  v24 = v15;
+  v24 = keyCopy;
   objc_copyWeak(&v33, &location);
-  v31 = v16;
-  v32 = v17;
-  v25 = v17;
-  v26 = v16;
+  v31 = dateCopy;
+  v32 = tagsCopy;
+  v25 = tagsCopy;
+  v26 = dateCopy;
   dispatch_async(assetWriteQueue, v27);
 
   objc_destroyWeak(&v33);

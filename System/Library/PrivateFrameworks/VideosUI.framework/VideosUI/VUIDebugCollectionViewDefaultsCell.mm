@@ -1,17 +1,17 @@
 @interface VUIDebugCollectionViewDefaultsCell
-- (VUIDebugCollectionViewDefaultsCell)initWithFrame:(CGRect)a3;
-- (void)configureCellWithDefaults:(id)a3;
+- (VUIDebugCollectionViewDefaultsCell)initWithFrame:(CGRect)frame;
+- (void)configureCellWithDefaults:(id)defaults;
 - (void)layoutSubviews;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation VUIDebugCollectionViewDefaultsCell
 
-- (VUIDebugCollectionViewDefaultsCell)initWithFrame:(CGRect)a3
+- (VUIDebugCollectionViewDefaultsCell)initWithFrame:(CGRect)frame
 {
   v35.receiver = self;
   v35.super_class = VUIDebugCollectionViewDefaultsCell;
-  v3 = [(VUIDebugCollectionViewDefaultsCell *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(VUIDebugCollectionViewDefaultsCell *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(VUITextLayout);
@@ -20,8 +20,8 @@
     [(VUITextLayout *)v4 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v4 setTextStyle:3];
     [(VUITextLayout *)v4 setMaximumContentSizeCategory:3];
-    v5 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v4 setColor:v5];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v4 setColor:blackColor];
 
     titleLayout = v3->_titleLayout;
     v3->_titleLayout = v4;
@@ -31,8 +31,8 @@
     titleLabel = v3->_titleLabel;
     v3->_titleLabel = v8;
 
-    v10 = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
-    [v10 addSubview:v3->_titleLabel];
+    contentView = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
+    [contentView addSubview:v3->_titleLabel];
 
     v11 = objc_alloc_init(VUITextLayout);
     [(VUITextLayout *)v11 setNumberOfLines:1];
@@ -40,8 +40,8 @@
     [(VUITextLayout *)v11 setNumberOfLinesAXLarge:1];
     [(VUITextLayout *)v11 setTextStyle:13];
     [(VUITextLayout *)v11 setMaximumContentSizeCategory:3];
-    v12 = [MEMORY[0x1E69DC888] blackColor];
-    [(VUITextLayout *)v11 setColor:v12];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [(VUITextLayout *)v11 setColor:blackColor2];
 
     subtitleLayout = v3->_subtitleLayout;
     v3->_subtitleLayout = v11;
@@ -51,8 +51,8 @@
     subtitleLabel = v3->_subtitleLabel;
     v3->_subtitleLabel = v15;
 
-    v17 = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
-    [v17 addSubview:v3->_subtitleLabel];
+    contentView2 = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
+    [contentView2 addSubview:v3->_subtitleLabel];
 
     v18 = objc_alloc(MEMORY[0x1E69DCFD0]);
     v19 = *MEMORY[0x1E695F058];
@@ -65,8 +65,8 @@
 
     [(UISwitch *)v3->_defaultsSwitch sendActionsForControlEvents:64];
     [(UISwitch *)v3->_defaultsSwitch addTarget:v3 action:sel__defaultsSwitchPressed_ forControlEvents:64];
-    v25 = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
-    [v25 addSubview:v3->_defaultsSwitch];
+    contentView3 = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
+    [contentView3 addSubview:v3->_defaultsSwitch];
 
     v26 = [objc_alloc(MEMORY[0x1E69DD0B0]) initWithFrame:{v19, v20, v21, v22}];
     textField = v3->_textField;
@@ -79,15 +79,15 @@
     [(UITextField *)v3->_textField setAdjustsFontSizeToFitWidth:1];
     [(UITextField *)v3->_textField setBorderStyle:3];
     [(UITextField *)v3->_textField setDelegate:v3];
-    v28 = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
-    [v28 addSubview:v3->_textField];
+    contentView4 = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
+    [contentView4 addSubview:v3->_textField];
 
-    v29 = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
-    v30 = [MEMORY[0x1E69DC888] whiteColor];
-    [v29 setBackgroundColor:v30];
+    contentView5 = [(VUIDebugCollectionViewDefaultsCell *)v3 contentView];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [contentView5 setBackgroundColor:whiteColor];
 
-    v31 = [MEMORY[0x1E69DC888] systemLightGrayColor];
-    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:v31];
+    systemLightGrayColor = [MEMORY[0x1E69DC888] systemLightGrayColor];
+    [(VUIListCollectionViewCell *)v3 setHighlightedBackgroundColor:systemLightGrayColor];
 
     v32 = objc_alloc_init(VUISeparatorView);
     separatorView = v3->_separatorView;
@@ -99,43 +99,43 @@
   return v3;
 }
 
-- (void)configureCellWithDefaults:(id)a3
+- (void)configureCellWithDefaults:(id)defaults
 {
-  v4 = a3;
-  v5 = [(VUIDebugViewDefaults *)v4 title];
-  v6 = [(VUIDebugCollectionViewDefaultsCell *)self titleLayout];
-  v7 = [(VUIDebugCollectionViewDefaultsCell *)self titleLabel];
-  v8 = [VUILabel labelWithString:v5 textLayout:v6 existingLabel:v7];
+  defaultsCopy = defaults;
+  title = [(VUIDebugViewDefaults *)defaultsCopy title];
+  titleLayout = [(VUIDebugCollectionViewDefaultsCell *)self titleLayout];
+  titleLabel = [(VUIDebugCollectionViewDefaultsCell *)self titleLabel];
+  v8 = [VUILabel labelWithString:title textLayout:titleLayout existingLabel:titleLabel];
 
-  v9 = [(VUIDebugCollectionViewDefaultsCell *)self subtitleLabel];
-  v10 = [(VUIDebugViewDefaults *)v4 subtitle];
-  [v9 setHidden:{objc_msgSend(v10, "length") == 0}];
+  subtitleLabel = [(VUIDebugCollectionViewDefaultsCell *)self subtitleLabel];
+  subtitle = [(VUIDebugViewDefaults *)defaultsCopy subtitle];
+  [subtitleLabel setHidden:{objc_msgSend(subtitle, "length") == 0}];
 
-  v11 = [(VUIDebugViewDefaults *)v4 subtitle];
-  v12 = [v11 length];
+  subtitle2 = [(VUIDebugViewDefaults *)defaultsCopy subtitle];
+  v12 = [subtitle2 length];
 
   if (v12)
   {
-    v13 = [(VUIDebugViewDefaults *)v4 subtitle];
-    v14 = [(VUIDebugCollectionViewDefaultsCell *)self subtitleLayout];
-    v15 = [(VUIDebugCollectionViewDefaultsCell *)self subtitleLabel];
-    v16 = [VUILabel labelWithString:v13 textLayout:v14 existingLabel:v15];
+    subtitle3 = [(VUIDebugViewDefaults *)defaultsCopy subtitle];
+    subtitleLayout = [(VUIDebugCollectionViewDefaultsCell *)self subtitleLayout];
+    subtitleLabel2 = [(VUIDebugCollectionViewDefaultsCell *)self subtitleLabel];
+    v16 = [VUILabel labelWithString:subtitle3 textLayout:subtitleLayout existingLabel:subtitleLabel2];
   }
 
-  if ([(VUIDebugViewDefaults *)v4 integerValueType])
+  if ([(VUIDebugViewDefaults *)defaultsCopy integerValueType])
   {
     textField = self->_textField;
-    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", -[VUIDebugViewDefaults defaultIntegerValue](v4, "defaultIntegerValue")];
+    v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%ld", -[VUIDebugViewDefaults defaultIntegerValue](defaultsCopy, "defaultIntegerValue")];
     [(UITextField *)textField setText:v18];
   }
 
   else
   {
-    [(UISwitch *)self->_defaultsSwitch setOn:[(VUIDebugViewDefaults *)v4 defaultBoolValue] animated:0];
+    [(UISwitch *)self->_defaultsSwitch setOn:[(VUIDebugViewDefaults *)defaultsCopy defaultBoolValue] animated:0];
   }
 
   defaults = self->_defaults;
-  self->_defaults = v4;
+  self->_defaults = defaultsCopy;
 }
 
 - (void)layoutSubviews
@@ -271,12 +271,12 @@
   [(VUISeparatorView *)separatorView setFrame:0.0, v42, v43, 1.0];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = [a3 text];
+  text = [editing text];
   if (objc_opt_respondsToSelector())
   {
-    -[VUIDebugViewDefaults setDefaultIntegerValue:](self->_defaults, "setDefaultIntegerValue:", [v4 integerValue]);
+    -[VUIDebugViewDefaults setDefaultIntegerValue:](self->_defaults, "setDefaultIntegerValue:", [text integerValue]);
   }
 }
 

@@ -1,17 +1,17 @@
 @interface CPSOpenClipCardPresenter
-+ (id)responseForOpenClipAction:(BOOL)a3;
++ (id)responseForOpenClipAction:(BOOL)action;
 + (id)sharedPresenter;
 - (CPSOpenClipCardPresenter)init;
-- (void)_activateAlertHandleWithSettings:(id)a3 viewControllerClassName:(id)a4 repsonseHandler:(id)a5;
-- (void)_activateAlertHandleWithURL:(id)a3 completionHandler:(id)a4;
+- (void)_activateAlertHandleWithSettings:(id)settings viewControllerClassName:(id)name repsonseHandler:(id)handler;
+- (void)_activateAlertHandleWithURL:(id)l completionHandler:(id)handler;
 - (void)_invalidateSharingClient;
 - (void)_performStagedLocationConfirmationDisplayIfNeeded;
 - (void)_sharingClientDidInvalidate;
-- (void)_showCardWithOptions:(unint64_t)a3 activationHandler:(id)a4 completionHandler:(id)a5;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)showCardWithURL:(id)a3 completionHandler:(id)a4;
-- (void)showLocationConfirmationSheetWithRequest:(id)a3 completion:(id)a4;
+- (void)_showCardWithOptions:(unint64_t)options activationHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)showCardWithURL:(id)l completionHandler:(id)handler;
+- (void)showLocationConfirmationSheetWithRequest:(id)request completion:(id)completion;
 @end
 
 @implementation CPSOpenClipCardPresenter
@@ -52,35 +52,35 @@ uint64_t __43__CPSOpenClipCardPresenter_sharedPresenter__block_invoke()
   return v2;
 }
 
-- (void)showCardWithURL:(id)a3 completionHandler:(id)a4
+- (void)showCardWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __62__CPSOpenClipCardPresenter_showCardWithURL_completionHandler___block_invoke;
   v10[3] = &unk_278DCDCF8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = lCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
   [(CPSOpenClipCardPresenter *)self _showCardWithOptions:119 activationHandler:v10 completionHandler:v8];
 }
 
-- (void)showLocationConfirmationSheetWithRequest:(id)a3 completion:(id)a4
+- (void)showLocationConfirmationSheetWithRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __80__CPSOpenClipCardPresenter_showLocationConfirmationSheetWithRequest_completion___block_invoke;
   v15[3] = &unk_278DCDCF8;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
-  v8 = v7;
-  v9 = v6;
+  v16 = requestCopy;
+  v17 = completionCopy;
+  v8 = completionCopy;
+  v9 = requestCopy;
   v10 = MEMORY[0x245D3D5F0](v15);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -217,10 +217,10 @@ uint64_t __80__CPSOpenClipCardPresenter_showLocationConfirmationSheetWithRequest
   }
 }
 
-- (void)_showCardWithOptions:(unint64_t)a3 activationHandler:(id)a4 completionHandler:(id)a5
+- (void)_showCardWithOptions:(unint64_t)options activationHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v8 = a4;
-  v9 = a5;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
@@ -228,12 +228,12 @@ uint64_t __80__CPSOpenClipCardPresenter_showLocationConfirmationSheetWithRequest
   v13[2] = __85__CPSOpenClipCardPresenter__showCardWithOptions_activationHandler_completionHandler___block_invoke;
   v13[3] = &unk_278DCF0F0;
   v13[4] = self;
-  v14 = v9;
-  v11 = v9;
+  v14 = completionHandlerCopy;
+  v11 = completionHandlerCopy;
   objc_copyWeak(v16, &location);
-  v16[1] = a3;
-  v15 = v8;
-  v12 = v8;
+  v16[1] = options;
+  v15 = handlerCopy;
+  v12 = handlerCopy;
   dispatch_async(queue, v13);
 
   objc_destroyWeak(v16);
@@ -341,17 +341,17 @@ uint64_t __85__CPSOpenClipCardPresenter__showCardWithOptions_activationHandler_c
   }
 }
 
-- (void)_activateAlertHandleWithSettings:(id)a3 viewControllerClassName:(id)a4 repsonseHandler:(id)a5
+- (void)_activateAlertHandleWithSettings:(id)settings viewControllerClassName:(id)name repsonseHandler:(id)handler
 {
   queue = self->_queue;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  nameCopy = name;
+  settingsCopy = settings;
   dispatch_assert_queue_V2(queue);
-  v18 = [objc_alloc(MEMORY[0x277D66BD8]) initWithServiceName:@"com.apple.ClipViewService" viewControllerClassName:v10];
+  v18 = [objc_alloc(MEMORY[0x277D66BD8]) initWithServiceName:@"com.apple.ClipViewService" viewControllerClassName:nameCopy];
 
   v12 = objc_alloc_init(MEMORY[0x277D66BD0]);
-  v13 = [objc_alloc(MEMORY[0x277CF0B58]) initWithInfo:v11 timeout:self->_queue forResponseOnQueue:v9 withHandler:0.0];
+  v13 = [objc_alloc(MEMORY[0x277CF0B58]) initWithInfo:settingsCopy timeout:self->_queue forResponseOnQueue:handlerCopy withHandler:0.0];
 
   v14 = [MEMORY[0x277CBEB98] setWithObject:v13];
   [v12 setActions:v14];
@@ -365,20 +365,20 @@ uint64_t __85__CPSOpenClipCardPresenter__showCardWithOptions_activationHandler_c
   [(SBSRemoteAlertHandle *)self->_alertHandle activateWithContext:v17];
 }
 
-- (void)_activateAlertHandleWithURL:(id)a3 completionHandler:(id)a4
+- (void)_activateAlertHandleWithURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = MEMORY[0x277CF0C80];
-  v8 = a3;
+  lCopy = l;
   v9 = objc_alloc_init(v7);
-  [v9 setObject:v8 forSetting:0];
+  [v9 setObject:lCopy forSetting:0];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__CPSOpenClipCardPresenter__activateAlertHandleWithURL_completionHandler___block_invoke;
   v11[3] = &unk_278DCF050;
-  v12 = v6;
-  v10 = v6;
+  v12 = handlerCopy;
+  v10 = handlerCopy;
   [(CPSOpenClipCardPresenter *)self _activateAlertHandleWithSettings:v9 viewControllerClassName:@"CPSAlertViewController" repsonseHandler:v11];
 }
 
@@ -392,27 +392,27 @@ uint64_t __74__CPSOpenClipCardPresenter__activateAlertHandleWithURL_completionHa
   return v4();
 }
 
-+ (id)responseForOpenClipAction:(BOOL)a3
++ (id)responseForOpenClipAction:(BOOL)action
 {
-  v3 = a3;
+  actionCopy = action;
   v4 = objc_alloc_init(MEMORY[0x277CF0C80]);
-  [v4 setFlag:v3 forSetting:0];
+  [v4 setFlag:actionCopy forSetting:0];
   v5 = [MEMORY[0x277CF0B68] responseWithInfo:v4];
 
   return v5;
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__CPSOpenClipCardPresenter_remoteAlertHandleDidDeactivate___block_invoke;
   v7[3] = &unk_278DCDE58;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deactivateCopy;
+  selfCopy = self;
+  v6 = deactivateCopy;
   dispatch_async(queue, v7);
 }
 
@@ -424,17 +424,17 @@ uint64_t __59__CPSOpenClipCardPresenter_remoteAlertHandleDidDeactivate___block_i
   return [v2 _invalidateSharingClient];
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a3;
+  handleCopy = handle;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __69__CPSOpenClipCardPresenter_remoteAlertHandle_didInvalidateWithError___block_invoke;
   v8[3] = &unk_278DCDE58;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = handleCopy;
+  selfCopy = self;
+  v7 = handleCopy;
   dispatch_async(queue, v8);
 }
 

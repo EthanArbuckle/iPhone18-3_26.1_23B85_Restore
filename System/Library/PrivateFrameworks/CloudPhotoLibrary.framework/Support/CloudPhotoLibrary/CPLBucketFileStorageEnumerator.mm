@@ -1,21 +1,21 @@
 @interface CPLBucketFileStorageEnumerator
-- (CPLBucketFileStorageEnumerator)initWithDirectoryEnumerator:(id)a3;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (CPLBucketFileStorageEnumerator)initWithDirectoryEnumerator:(id)enumerator;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)dealloc;
 @end
 
 @implementation CPLBucketFileStorageEnumerator
 
-- (CPLBucketFileStorageEnumerator)initWithDirectoryEnumerator:(id)a3
+- (CPLBucketFileStorageEnumerator)initWithDirectoryEnumerator:(id)enumerator
 {
-  v5 = a3;
+  enumeratorCopy = enumerator;
   v9.receiver = self;
   v9.super_class = CPLBucketFileStorageEnumerator;
   v6 = [(CPLBucketFileStorageEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_enumerator, a3);
+    objc_storeStrong(&v6->_enumerator, enumerator);
   }
 
   return v7;
@@ -34,24 +34,24 @@
   [(CPLBucketFileStorageEnumerator *)&v4 dealloc];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   p_singleKeeper = &self->_singleKeeper;
   singleKeeper = self->_singleKeeper;
   self->_singleKeeper = 0;
 
   [*(p_singleKeeper - 1) removeAllObjects];
-  v30 = a5;
+  countCopy = count;
   location = p_singleKeeper;
-  v11 = [*(p_singleKeeper - 4) countByEnumeratingWithState:a3 objects:a4 count:a5];
+  v11 = [*(p_singleKeeper - 4) countByEnumeratingWithState:state objects:objects count:count];
   if (v11)
   {
     v12 = v11;
-    v29 = a4;
+    objectsCopy = objects;
     while (1)
     {
-      itemPtr = a4;
-      if (a3->var1 != a4)
+      itemPtr = objects;
+      if (state->var1 != objects)
       {
         itemPtr = self->_itemPtr;
         if (v12 > self->_sizeOfItemPtr)
@@ -77,9 +77,9 @@
       v17 = v12;
       do
       {
-        v18 = a3->var1[v15];
-        v19 = [v18 lastPathComponent];
-        v20 = [CPLResourceIdentity identityForStorageName:v19];
+        v18 = state->var1[v15];
+        lastPathComponent = [v18 lastPathComponent];
+        v20 = [CPLResourceIdentity identityForStorageName:lastPathComponent];
         v21 = v20;
         if (v20)
         {
@@ -134,8 +134,8 @@
         break;
       }
 
-      a4 = v29;
-      v12 = [(NSDirectoryEnumerator *)self->_enumerator countByEnumeratingWithState:a3 objects:v29 count:v30];
+      objects = objectsCopy;
+      v12 = [(NSDirectoryEnumerator *)self->_enumerator countByEnumeratingWithState:state objects:objectsCopy count:countCopy];
       if (!v12)
       {
         goto LABEL_25;
@@ -150,7 +150,7 @@ LABEL_25:
     v17 = 0;
   }
 
-  a3->var1 = itemPtr;
+  state->var1 = itemPtr;
   return v17;
 }
 

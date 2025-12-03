@@ -1,23 +1,23 @@
 @interface PSVR2FastPathKernelInputQueue
-- (PSVR2FastPathKernelInputQueue)initWithClient:(id)a3 options:(id)a4;
-- (id)getProperty:(id)a3;
-- (int)createReaderObject:(IUnknownVTbl *)a3;
-- (int)getDataAvailableNotification:(unsigned int *)a3;
-- (int)queryInterface:(id)a3 outInterface:(void *)a4;
+- (PSVR2FastPathKernelInputQueue)initWithClient:(id)client options:(id)options;
+- (id)getProperty:(id)property;
+- (int)createReaderObject:(IUnknownVTbl *)object;
+- (int)getDataAvailableNotification:(unsigned int *)notification;
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface;
 - (void)dealloc;
 @end
 
 @implementation PSVR2FastPathKernelInputQueue
 
-- (PSVR2FastPathKernelInputQueue)initWithClient:(id)a3 options:(id)a4
+- (PSVR2FastPathKernelInputQueue)initWithClient:(id)client options:(id)options
 {
   v24.receiver = self;
   v24.super_class = PSVR2FastPathKernelInputQueue;
   v6 = [(PSVR2FastPathKernelInputQueue *)&v24 init];
   *(v6 + 1) = IOGCFastPathInputQueueInterfacePrepareObjCVtbl();
   *(v6 + 2) = IOGCFastPathSampleContainerInterfacePrepareObjCVtbl();
-  *(v6 + 3) = a3;
-  [a4 objectForKey:@"QueueChannel"];
+  *(v6 + 3) = client;
+  [options objectForKey:@"QueueChannel"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -25,7 +25,7 @@
   }
 
   v23 = 0;
-  if (!a3)
+  if (!client)
   {
     *(v6 + 5) = 0;
 LABEL_40:
@@ -33,7 +33,7 @@ LABEL_40:
     return 0;
   }
 
-  v7 = *(a3 + 11);
+  v7 = *(client + 11);
   *(v6 + 5) = v7;
   if (!v7 || (*(v7 + 137) & 1) == 0)
   {
@@ -57,7 +57,7 @@ LABEL_40:
   v9 = *(v6 + 3);
   if (*(v9 + 56))
   {
-    v10 = [*(v9 + 56) createInputQueueWithOptions:a4 error:&v23];
+    v10 = [*(v9 + 56) createInputQueueWithOptions:options error:&v23];
     *(v6 + 8) = v10;
     if (!v10)
     {
@@ -119,15 +119,15 @@ LABEL_40:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [v12 unsignedLongLongValue];
+    unsignedLongLongValue = [v12 unsignedLongLongValue];
   }
 
   else
   {
-    v16 = 0;
+    unsignedLongLongValue = 0;
   }
 
-  *(v6 + 9) = v16;
+  *(v6 + 9) = unsignedLongLongValue;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -216,9 +216,9 @@ LABEL_27:
   [(PSVR2FastPathKernelInputQueue *)&v8 dealloc];
 }
 
-- (int)queryInterface:(id)a3 outInterface:(void *)a4
+- (int)queryInterface:(id)interface outInterface:(void *)outInterface
 {
-  v6 = CFUUIDCreateFromUUIDBytes(0, a3);
+  v6 = CFUUIDCreateFromUUIDBytes(0, interface);
   v7 = CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   if (CFEqual(v6, v7) || (v8 = CFUUIDGetConstantUUIDWithBytes(0, 0x19u, 0x43u, 0x1Bu, 0xCFu, 0xBBu, 0xEFu, 0x43u, 0x5Bu, 0x9Cu, 0x57u, 0xB3u, 0xF3u, 0x48u, 6u, 0x86u, 0x2Du), CFEqual(v6, v8)))
   {
@@ -237,7 +237,7 @@ LABEL_27:
     v9 = 16;
   }
 
-  *a4 = self + v9;
+  *outInterface = self + v9;
   CFRetain(self);
   v10 = 0;
 LABEL_5:
@@ -245,28 +245,28 @@ LABEL_5:
   return v10;
 }
 
-- (id)getProperty:(id)a3
+- (id)getProperty:(id)property
 {
-  v3 = a3;
-  if (![a3 isEqualToString:@"QueueID"])
+  propertyCopy = property;
+  if (![property isEqualToString:@"QueueID"])
   {
-    if (!v3)
+    if (!propertyCopy)
     {
-      return v3;
+      return propertyCopy;
     }
 
     v16 = 0;
     queueProxy = self->_queueProxy;
     if (queueProxy)
     {
-      v24 = v3;
+      v24 = propertyCopy;
       v8 = [(IOGCFastPathProxyQueue *)queueProxy getProperties:[NSArray dictionary:"arrayWithObjects:count:" arrayWithObjects:1 count:?], &v16];
       if (!v8)
       {
 LABEL_8:
-        v3 = [v16 objectForKeyedSubscript:{v3, v16}];
+        propertyCopy = [v16 objectForKeyedSubscript:{propertyCopy, v16}];
 
-        return v3;
+        return propertyCopy;
       }
 
       v15 = v8;
@@ -277,9 +277,9 @@ LABEL_8:
       }
 
       *buf = 138412802;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
-      v21 = v3;
+      v21 = propertyCopy;
       v22 = 1024;
       v23 = v15;
       v14 = "%@ (PROXY) GetProperty '%@' failed: %{mach.errno}d";
@@ -289,7 +289,7 @@ LABEL_8:
     {
       client = self->_client;
       queuePort = self->_queuePort;
-      v17 = v3;
+      v17 = propertyCopy;
       v11 = sub_7870(client, queuePort, [NSArray arrayWithObjects:&v17 count:1], &v16);
       if (!v11)
       {
@@ -304,9 +304,9 @@ LABEL_8:
       }
 
       *buf = 138412802;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2112;
-      v21 = v3;
+      v21 = propertyCopy;
       v22 = 1024;
       v23 = v12;
       v14 = "%@ GetProperty '%@' failed: %{mach.errno}d";
@@ -321,9 +321,9 @@ LABEL_8:
   return [NSNumber numberWithUnsignedLongLong:queueID];
 }
 
-- (int)getDataAvailableNotification:(unsigned int *)a3
+- (int)getDataAvailableNotification:(unsigned int *)notification
 {
-  if (!a3)
+  if (!notification)
   {
     return 0;
   }
@@ -338,13 +338,13 @@ LABEL_8:
   result = IOConnectSetNotificationPort(self->_client->_connection, self->_queuePort, NotificationPort, 0);
   if (!result)
   {
-    *a3 = v6;
+    *notification = v6;
   }
 
   return result;
 }
 
-- (int)createReaderObject:(IUnknownVTbl *)a3
+- (int)createReaderObject:(IUnknownVTbl *)object
 {
   v4 = [[PSVR2FastPathKernelReader alloc] initWithQueue:self];
   if (!v4)
@@ -355,9 +355,9 @@ LABEL_8:
   v5 = v4;
   v6 = CFUUIDGetConstantUUIDWithBytes(kCFAllocatorSystemDefault, 0, 0, 0, 0, 0, 0, 0, 0, 0xC0u, 0, 0, 0, 0, 0, 0, 0x46u);
   v7 = CFUUIDGetUUIDBytes(v6);
-  v8 = [(PSVR2FastPathKernelReader *)v5 queryInterface:*&v7.byte0 outInterface:*&v7.byte8, a3];
+  object = [(PSVR2FastPathKernelReader *)v5 queryInterface:*&v7.byte0 outInterface:*&v7.byte8, object];
 
-  return v8;
+  return object;
 }
 
 @end

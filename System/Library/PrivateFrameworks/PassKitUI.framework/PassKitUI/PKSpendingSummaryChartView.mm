@@ -1,23 +1,23 @@
 @interface PKSpendingSummaryChartView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKSpendingSummaryChartView)initWithFrame:(CGRect)a3;
-- (void)_configureBarView:(id)a3 smallContext:(BOOL)a4;
-- (void)configureWithSummary:(id)a3 presentationStyle:(unint64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKSpendingSummaryChartView)initWithFrame:(CGRect)frame;
+- (void)_configureBarView:(id)view smallContext:(BOOL)context;
+- (void)configureWithSummary:(id)summary presentationStyle:(unint64_t)style;
 - (void)layoutSubviews;
-- (void)setBlurDisabled:(BOOL)a3;
-- (void)setPrioritizeLegendPlacementUI:(BOOL)a3;
-- (void)setShowLegendGraph:(BOOL)a3;
-- (void)setShowLegendLabels:(BOOL)a3;
-- (void)setShowPlaceholders:(BOOL)a3;
+- (void)setBlurDisabled:(BOOL)disabled;
+- (void)setPrioritizeLegendPlacementUI:(BOOL)i;
+- (void)setShowLegendGraph:(BOOL)graph;
+- (void)setShowLegendLabels:(BOOL)labels;
+- (void)setShowPlaceholders:(BOOL)placeholders;
 @end
 
 @implementation PKSpendingSummaryChartView
 
-- (PKSpendingSummaryChartView)initWithFrame:(CGRect)a3
+- (PKSpendingSummaryChartView)initWithFrame:(CGRect)frame
 {
   v21.receiver = self;
   v21.super_class = PKSpendingSummaryChartView;
-  v3 = [(PKSpendingSummaryChartView *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKSpendingSummaryChartView *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = *MEMORY[0x1E69DDD10];
@@ -46,9 +46,9 @@
     valueLabels = v3->_valueLabels;
     v3->_valueLabels = v16;
 
-    v18 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     currentCalendar = v3->_currentCalendar;
-    v3->_currentCalendar = v18;
+    v3->_currentCalendar = currentCalendar;
 
     v3->_isCompactUI = PKUIGetMinScreenWidthType() == 0;
   }
@@ -56,18 +56,18 @@
   return v3;
 }
 
-- (void)configureWithSummary:(id)a3 presentationStyle:(unint64_t)a4
+- (void)configureWithSummary:(id)summary presentationStyle:(unint64_t)style
 {
-  v66 = a3;
-  objc_storeStrong(&self->_summary, a3);
+  summaryCopy = summary;
+  objc_storeStrong(&self->_summary, summary);
   self->_chartMaxAmount = 0.0;
   self->_groupsMaxAmount = 0.0;
-  self->_presentationStyle = a4;
-  v7 = [v66 totalSpending];
-  v64 = [v7 currency];
+  self->_presentationStyle = style;
+  totalSpending = [summaryCopy totalSpending];
+  currency = [totalSpending currency];
 
-  v8 = [v66 summaryType];
-  if (v8 == 2)
+  summaryType = [summaryCopy summaryType];
+  if (summaryType == 2)
   {
     v63 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v63 setLocalizedDateFormatFromTemplate:@"MMM"];
@@ -75,7 +75,7 @@
     goto LABEL_9;
   }
 
-  if (v8 == 1)
+  if (summaryType == 1)
   {
     v61 = objc_alloc_init(MEMORY[0x1E696AB88]);
     [v61 setDateTemplate:@"d"];
@@ -85,11 +85,11 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  if (v8)
+  if (summaryType)
   {
     v61 = 0;
     v63 = 0;
-    [v66 spendingsPerCalendarUnit];
+    [summaryCopy spendingsPerCalendarUnit];
     goto LABEL_14;
   }
 
@@ -108,7 +108,7 @@ LABEL_9:
   v61 = 0;
   v10 = 3;
 LABEL_13:
-  [v66 spendingsPerCalendarUnit];
+  [summaryCopy spendingsPerCalendarUnit];
   v11 = LABEL_14:;
   v65 = v11;
   if ([v11 count])
@@ -126,8 +126,8 @@ LABEL_13:
         v18 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v13, v14, v15, v16}];
         [v18 setNumberOfLines:1];
         [v18 setAdjustsFontSizeToFitWidth:1];
-        v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [v18 setTextColor:v19];
+        secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [v18 setTextColor:secondaryLabelColor];
 
         [(NSMutableArray *)self->_legendLabels addObject:v18];
         [(PKSpendingSummaryChartView *)self addSubview:v18];
@@ -135,34 +135,34 @@ LABEL_13:
 
       [v18 setFont:self->_fontForLabels];
       [v18 setHidden:0];
-      v20 = [v17 startDate];
-      v21 = [v66 summaryType];
-      if (!v21 || v21 == 2)
+      startDate = [v17 startDate];
+      summaryType2 = [summaryCopy summaryType];
+      if (!summaryType2 || summaryType2 == 2)
       {
-        v25 = [v63 stringFromDate:v20];
-        v26 = [v25 pk_uppercaseFirstStringForPreferredLocale];
-        [v18 setText:v26];
+        v25 = [v63 stringFromDate:startDate];
+        pk_uppercaseFirstStringForPreferredLocale = [v25 pk_uppercaseFirstStringForPreferredLocale];
+        [v18 setText:pk_uppercaseFirstStringForPreferredLocale];
       }
 
       else
       {
-        if (v21 != 1)
+        if (summaryType2 != 1)
         {
           goto LABEL_28;
         }
 
         isCompactUI = self->_isCompactUI;
-        v23 = v20;
+        v23 = startDate;
         if (!isCompactUI)
         {
-          v62 = [v17 endDate];
-          v23 = v62;
+          endDate = [v17 endDate];
+          v23 = endDate;
         }
 
-        v24 = [v61 stringFromDate:v20 toDate:v23];
+        v24 = [v61 stringFromDate:startDate toDate:v23];
         [v18 setText:v24];
 
-        v25 = v62;
+        v25 = endDate;
         if (isCompactUI)
         {
           goto LABEL_28;
@@ -181,9 +181,9 @@ LABEL_28:
       }
 
       [(PKSegmentedBarView *)v27 setHidden:0];
-      v28 = [v17 totalSpending];
-      v29 = [v28 amount];
-      [v29 floatValue];
+      totalSpending2 = [v17 totalSpending];
+      amount = [totalSpending2 amount];
+      [amount floatValue];
       v31 = v30;
 
       if (self->_groupsMaxAmount < v31)
@@ -201,17 +201,17 @@ LABEL_28:
   groupsMaxAmount = self->_groupsMaxAmount;
   if (groupsMaxAmount <= 0.0)
   {
-    v34 = [v66 previousMaxAmount];
+    previousMaxAmount = [summaryCopy previousMaxAmount];
 
-    if (v34)
+    if (previousMaxAmount)
     {
-      v35 = [v66 previousMaxAmount];
-      v36 = [v35 amount];
-      [v36 floatValue];
+      previousMaxAmount2 = [summaryCopy previousMaxAmount];
+      amount2 = [previousMaxAmount2 amount];
+      [amount2 floatValue];
       self->_chartMaxAmount = (10 * ((llroundf(v37) + 10) / 10));
     }
 
-    else if (([v66 isLoading] & 1) == 0)
+    else if (([summaryCopy isLoading] & 1) == 0)
     {
       self->_chartMaxAmount = 10.0;
     }
@@ -254,42 +254,42 @@ LABEL_28:
     [v47 setHidden:0];
     if (v38)
     {
-      v49 = [MEMORY[0x1E69DC888] systemGray5Color];
-      [v47 setBackgroundColor:v49];
+      systemGray5Color = [MEMORY[0x1E69DC888] systemGray5Color];
+      [v47 setBackgroundColor:systemGray5Color];
     }
 
     else
     {
-      v48 = [MEMORY[0x1E69DC888] systemGray3Color];
-      [v47 setBackgroundColor:v48];
+      systemGray3Color = [MEMORY[0x1E69DC888] systemGray3Color];
+      [v47 setBackgroundColor:systemGray3Color];
 
-      if ([(NSMutableArray *)self->_valueLabels count]<= v38 >> 1 || ([(NSMutableArray *)self->_valueLabels objectAtIndex:v38 >> 1], (v49 = objc_claimAutoreleasedReturnValue()) == 0))
+      if ([(NSMutableArray *)self->_valueLabels count]<= v38 >> 1 || ([(NSMutableArray *)self->_valueLabels objectAtIndex:v38 >> 1], (systemGray5Color = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v49 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v42, v43, v44, v45}];
-        [v49 setNumberOfLines:1];
-        [v49 setAdjustsFontSizeToFitWidth:1];
-        [v49 setMinimumScaleFactor:0.5];
-        [v49 setBaselineAdjustment:1];
-        [v49 setFont:self->_fontForValues];
-        v50 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-        [v49 setTextColor:v50];
+        systemGray5Color = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v42, v43, v44, v45}];
+        [systemGray5Color setNumberOfLines:1];
+        [systemGray5Color setAdjustsFontSizeToFitWidth:1];
+        [systemGray5Color setMinimumScaleFactor:0.5];
+        [systemGray5Color setBaselineAdjustment:1];
+        [systemGray5Color setFont:self->_fontForValues];
+        secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+        [systemGray5Color setTextColor:secondaryLabelColor2];
 
-        [(NSMutableArray *)self->_valueLabels addObject:v49];
-        [(PKSpendingSummaryChartView *)self addSubview:v49];
+        [(NSMutableArray *)self->_valueLabels addObject:systemGray5Color];
+        [(PKSpendingSummaryChartView *)self addSubview:systemGray5Color];
       }
 
-      [v49 setHidden:self->_chartMaxAmount <= 0.0];
-      if (v64)
+      [systemGray5Color setHidden:self->_chartMaxAmount <= 0.0];
+      if (currency)
       {
         v51 = [objc_alloc(MEMORY[0x1E696AB90]) initWithDouble:round(v46)];
-        v52 = PKCurrencyAmountCreate(v51, v64);
-        v53 = [v52 minimalFormattedStringValue];
-        [v49 setText:v53];
+        v52 = PKCurrencyAmountCreate(v51, currency);
+        minimalFormattedStringValue = [v52 minimalFormattedStringValue];
+        [systemGray5Color setText:minimalFormattedStringValue];
       }
 
       else
       {
-        [v49 setText:0];
+        [systemGray5Color setText:0];
       }
 
       if ((v38 >> 1) + 2 == v40)
@@ -382,8 +382,8 @@ LABEL_28:
 
   if (self->_showLegendLabels)
   {
-    v16 = [(NSMutableArray *)self->_legendLabels firstObject];
-    [v16 sizeThatFits:{v4, v6}];
+    firstObject = [(NSMutableArray *)self->_legendLabels firstObject];
+    [firstObject sizeThatFits:{v4, v6}];
     v18 = v17;
 
     CGRectDivide(remainder, &slice, &remainder, v18, CGRectMaxYEdge);
@@ -403,16 +403,16 @@ LABEL_28:
   v64 = remainder.origin.x;
   v56 = remainder.origin.y;
   CGRectGetMaxY(remainder);
-  v59 = [(PKSpendingSummary *)self->_summary summaryType];
-  v67 = [(PKSpendingSummary *)self->_summary spendingsPerCalendarUnit];
-  v20 = [v67 count];
+  summaryType = [(PKSpendingSummary *)self->_summary summaryType];
+  spendingsPerCalendarUnit = [(PKSpendingSummary *)self->_summary spendingsPerCalendarUnit];
+  v20 = [spendingsPerCalendarUnit count];
   if (self->_prioritizeLegendPlacement && self->_showLegendLabels)
   {
-    v21 = [(NSMutableArray *)self->_legendLabels firstObject];
-    [v21 sizeThatFits:{v62, v61}];
+    firstObject2 = [(NSMutableArray *)self->_legendLabels firstObject];
+    [firstObject2 sizeThatFits:{v62, v61}];
 
-    v22 = [(NSMutableArray *)self->_legendLabels lastObject];
-    [v22 sizeThatFits:{v62, v61}];
+    lastObject = [(NSMutableArray *)self->_legendLabels lastObject];
+    [lastObject sizeThatFits:{v62, v61}];
   }
 
   if (self->_showLegendGraph)
@@ -436,7 +436,7 @@ LABEL_28:
   objc_initWeak(&location, self);
   presentationStyle = self->_presentationStyle;
   v66 = presentationStyle < 4;
-  v58 = [(PKSpendingSummary *)self->_summary summaryType];
+  summaryType2 = [(PKSpendingSummary *)self->_summary summaryType];
   if (v20)
   {
     v29 = 0;
@@ -453,15 +453,15 @@ LABEL_28:
         PKFloatRoundToPixel();
         [v33 setFrame:?];
         v34 = v29 & 1;
-        if ((v29 & 1) != 0 && v59 != 2)
+        if ((v29 & 1) != 0 && summaryType != 2)
         {
-          v34 = v58 == 1 && self->_prioritizeLegendPlacement;
+          v34 = summaryType2 == 1 && self->_prioritizeLegendPlacement;
         }
 
         [v33 setHidden:v34];
       }
 
-      v35 = [v67 objectAtIndex:v29];
+      v35 = [spendingsPerCalendarUnit objectAtIndex:v29];
       v36 = [[PKSpendingSummaryChartBarConfiguration alloc] initWithSummary:v35];
       v37 = [(NSMutableArray *)self->_bars objectAtIndex:v29];
       v38 = 0.0;
@@ -480,8 +480,8 @@ LABEL_28:
 
       PKFloatRoundToPixel();
       [v37 setFrame:?];
-      v42 = [v37 layer];
-      [v42 setOpacity:0.0];
+      layer = [v37 layer];
+      [layer setOpacity:0.0];
 
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
@@ -590,9 +590,9 @@ void __44__PKSpendingSummaryChartView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   PKFloatRoundToPixel();
   v5 = v4;
   v6 = width;
@@ -601,31 +601,31 @@ void __44__PKSpendingSummaryChartView_layoutSubviews__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setShowLegendLabels:(BOOL)a3
+- (void)setShowLegendLabels:(BOOL)labels
 {
-  if (self->_showLegendLabels == !a3)
+  if (self->_showLegendLabels == !labels)
   {
-    self->_showLegendLabels = a3;
+    self->_showLegendLabels = labels;
     [(PKSpendingSummaryChartView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowLegendGraph:(BOOL)a3
+- (void)setShowLegendGraph:(BOOL)graph
 {
-  if (self->_showLegendGraph == !a3)
+  if (self->_showLegendGraph == !graph)
   {
-    self->_showLegendGraph = a3;
+    self->_showLegendGraph = graph;
     [(PKSpendingSummaryChartView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowPlaceholders:(BOOL)a3
+- (void)setShowPlaceholders:(BOOL)placeholders
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_showPlaceholders == !a3)
+  if (self->_showPlaceholders == !placeholders)
   {
-    v3 = a3;
-    self->_showPlaceholders = a3;
+    placeholdersCopy = placeholders;
+    self->_showPlaceholders = placeholders;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -646,7 +646,7 @@ void __44__PKSpendingSummaryChartView_layoutSubviews__block_invoke(uint64_t a1)
             objc_enumerationMutation(v5);
           }
 
-          [(PKSpendingSummaryChartView *)self _configureBarView:*(*(&v10 + 1) + 8 * v9++) smallContext:v3, v10];
+          [(PKSpendingSummaryChartView *)self _configureBarView:*(*(&v10 + 1) + 8 * v9++) smallContext:placeholdersCopy, v10];
         }
 
         while (v7 != v9);
@@ -660,22 +660,22 @@ void __44__PKSpendingSummaryChartView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPrioritizeLegendPlacementUI:(BOOL)a3
+- (void)setPrioritizeLegendPlacementUI:(BOOL)i
 {
-  if (self->_prioritizeLegendPlacement == !a3)
+  if (self->_prioritizeLegendPlacement == !i)
   {
-    self->_prioritizeLegendPlacement = a3;
+    self->_prioritizeLegendPlacement = i;
     [(PKSpendingSummaryChartView *)self setNeedsLayout];
   }
 }
 
-- (void)setBlurDisabled:(BOOL)a3
+- (void)setBlurDisabled:(BOOL)disabled
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (self->_blurDisabled == !a3)
+  if (self->_blurDisabled == !disabled)
   {
-    v3 = a3;
-    self->_blurDisabled = a3;
+    disabledCopy = disabled;
+    self->_blurDisabled = disabled;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
@@ -696,7 +696,7 @@ void __44__PKSpendingSummaryChartView_layoutSubviews__block_invoke(uint64_t a1)
             objc_enumerationMutation(v5);
           }
 
-          [*(*(&v10 + 1) + 8 * v9++) setBlurDisabled:{v3, v10}];
+          [*(*(&v10 + 1) + 8 * v9++) setBlurDisabled:{disabledCopy, v10}];
         }
 
         while (v7 != v9);
@@ -710,13 +710,13 @@ void __44__PKSpendingSummaryChartView_layoutSubviews__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_configureBarView:(id)a3 smallContext:(BOOL)a4
+- (void)_configureBarView:(id)view smallContext:(BOOL)context
 {
-  v4 = a4;
-  v5 = a3;
-  [v5 setShowPlaceholder:v4];
-  [v5 setUseSmallCornerRadius:v4];
-  [v5 setRoundBaselineCorners:v4];
+  contextCopy = context;
+  viewCopy = view;
+  [viewCopy setShowPlaceholder:contextCopy];
+  [viewCopy setUseSmallCornerRadius:contextCopy];
+  [viewCopy setRoundBaselineCorners:contextCopy];
 }
 
 @end

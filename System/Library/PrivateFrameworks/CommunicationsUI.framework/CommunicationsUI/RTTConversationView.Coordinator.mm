@@ -7,7 +7,7 @@
 
 - (void)handleClose
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C2E732A4();
 }
 

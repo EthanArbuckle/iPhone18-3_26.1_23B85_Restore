@@ -1,14 +1,14 @@
 @interface PXDisplayAssetViewPPTPerformer
 - (PXDisplayAssetViewPPTPerformer)init;
-- (PXDisplayAssetViewPPTPerformer)initWithContainerView:(id)a3 delegate:(id)a4 testOptions:(id)a5;
+- (PXDisplayAssetViewPPTPerformer)initWithContainerView:(id)view delegate:(id)delegate testOptions:(id)options;
 - (PXPPTDelegate)delegate;
-- (void)_createAssetViewWithConfiguration:(id)a3 resultHandler:(id)a4;
-- (void)_runScrubbingSubtestWithAssetView:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-- (void)_runSubtestWithName:(id)a3 metrics:(id)a4 configuration:(id)a5 usingBlock:(id)a6 completionHandler:(id)a7;
-- (void)_runTestUsingBlock:(id)a3 completionHandler:(id)a4;
-- (void)_tearDownAssetView:(id)a3 completionHandler:(id)a4;
-- (void)runLocalizedTitleTestWithConfigurations:(id)a3 completionHandler:(id)a4;
-- (void)runScrubbingTestWithConfigurations:(id)a3 completionHandler:(id)a4;
+- (void)_createAssetViewWithConfiguration:(id)configuration resultHandler:(id)handler;
+- (void)_runScrubbingSubtestWithAssetView:(id)view configuration:(id)configuration completionHandler:(id)handler;
+- (void)_runSubtestWithName:(id)name metrics:(id)metrics configuration:(id)configuration usingBlock:(id)block completionHandler:(id)handler;
+- (void)_runTestUsingBlock:(id)block completionHandler:(id)handler;
+- (void)_tearDownAssetView:(id)view completionHandler:(id)handler;
+- (void)runLocalizedTitleTestWithConfigurations:(id)configurations completionHandler:(id)handler;
+- (void)runScrubbingTestWithConfigurations:(id)configurations completionHandler:(id)handler;
 @end
 
 @implementation PXDisplayAssetViewPPTPerformer
@@ -20,51 +20,51 @@
   return WeakRetained;
 }
 
-- (void)_tearDownAssetView:(id)a3 completionHandler:(id)a4
+- (void)_tearDownAssetView:(id)view completionHandler:(id)handler
 {
-  v5 = a4;
-  [a3 removeFromSuperview];
-  v5[2](v5, 1, 0);
+  handlerCopy = handler;
+  [view removeFromSuperview];
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
-- (void)_createAssetViewWithConfiguration:(id)a3 resultHandler:(id)a4
+- (void)_createAssetViewWithConfiguration:(id)configuration resultHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 assetViewFactory];
-  v9 = v7[2]();
+  handlerCopy = handler;
+  assetViewFactory = [configuration assetViewFactory];
+  v9 = assetViewFactory[2]();
 
-  v8 = [(PXDisplayAssetViewPPTPerformer *)self containerView];
-  [v8 bounds];
+  containerView = [(PXDisplayAssetViewPPTPerformer *)self containerView];
+  [containerView bounds];
   [v9 setFrame:?];
-  [v8 addSubview:v9];
-  v6[2](v6, v9, 0);
+  [containerView addSubview:v9];
+  handlerCopy[2](handlerCopy, v9, 0);
 }
 
-- (void)_runSubtestWithName:(id)a3 metrics:(id)a4 configuration:(id)a5 usingBlock:(id)a6 completionHandler:(id)a7
+- (void)_runSubtestWithName:(id)name metrics:(id)metrics configuration:(id)configuration usingBlock:(id)block completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = [(PXDisplayAssetViewPPTPerformer *)self delegate];
-  v16 = [(PXDisplayAssetViewPPTPerformer *)self testName];
-  v17 = v11;
-  [v15 startedSubTest:v17 forTest:v16 withMetrics:v14];
+  nameCopy = name;
+  handlerCopy = handler;
+  blockCopy = block;
+  metricsCopy = metrics;
+  delegate = [(PXDisplayAssetViewPPTPerformer *)self delegate];
+  testName = [(PXDisplayAssetViewPPTPerformer *)self testName];
+  v17 = nameCopy;
+  [delegate startedSubTest:v17 forTest:testName withMetrics:metricsCopy];
 
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __105__PXDisplayAssetViewPPTPerformer__runSubtestWithName_metrics_configuration_usingBlock_completionHandler___block_invoke;
   v23[3] = &unk_1E774AD10;
-  v24 = v15;
+  v24 = delegate;
   v25 = v17;
-  v26 = v16;
-  v27 = v12;
-  v18 = v13[2];
-  v19 = v12;
-  v20 = v16;
+  v26 = testName;
+  v27 = handlerCopy;
+  v18 = blockCopy[2];
+  v19 = handlerCopy;
+  v20 = testName;
   v21 = v17;
-  v22 = v15;
-  v18(v13, v23);
+  v22 = delegate;
+  v18(blockCopy, v23);
 }
 
 void __105__PXDisplayAssetViewPPTPerformer__runSubtestWithName_metrics_configuration_usingBlock_completionHandler___block_invoke(void *a1, int a2, void *a3)
@@ -86,25 +86,25 @@ void __105__PXDisplayAssetViewPPTPerformer__runSubtestWithName_metrics_configura
   (*(a1[7] + 16))();
 }
 
-- (void)_runTestUsingBlock:(id)a3 completionHandler:(id)a4
+- (void)_runTestUsingBlock:(id)block completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXDisplayAssetViewPPTPerformer *)self delegate];
-  v9 = [(PXDisplayAssetViewPPTPerformer *)self testName];
-  [v8 startedTest:v9];
+  handlerCopy = handler;
+  blockCopy = block;
+  delegate = [(PXDisplayAssetViewPPTPerformer *)self delegate];
+  testName = [(PXDisplayAssetViewPPTPerformer *)self testName];
+  [delegate startedTest:testName];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__PXDisplayAssetViewPPTPerformer__runTestUsingBlock_completionHandler___block_invoke;
   v14[3] = &unk_1E774ACE8;
-  v15 = v8;
-  v16 = v9;
-  v17 = v6;
-  v10 = v7[2];
-  v11 = v6;
-  v12 = v9;
-  v13 = v8;
-  v10(v7, v14);
+  v15 = delegate;
+  v16 = testName;
+  v17 = handlerCopy;
+  v10 = blockCopy[2];
+  v11 = handlerCopy;
+  v12 = testName;
+  v13 = delegate;
+  v10(blockCopy, v14);
 }
 
 void __71__PXDisplayAssetViewPPTPerformer__runTestUsingBlock_completionHandler___block_invoke(void *a1, int a2, void *a3)
@@ -126,14 +126,14 @@ void __71__PXDisplayAssetViewPPTPerformer__runTestUsingBlock_completionHandler__
   (*(a1[6] + 16))();
 }
 
-- (void)_runScrubbingSubtestWithAssetView:(id)a3 configuration:(id)a4 completionHandler:(id)a5
+- (void)_runScrubbingSubtestWithAssetView:(id)view configuration:(id)configuration completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 assets];
-  if ([v11 count] > 4)
+  viewCopy = view;
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  assets = [configurationCopy assets];
+  if ([assets count] > 4)
   {
     v14[0] = 0;
     v14[1] = v14;
@@ -146,23 +146,23 @@ void __71__PXDisplayAssetViewPPTPerformer__runTestUsingBlock_completionHandler__
     v19 = __Block_byref_object_dispose__248458;
     v20 = 0;
     [(PXDisplayAssetViewPPTPerformer *)self testIterations];
-    v11;
-    v9;
-    v8;
-    v10;
+    assets;
+    configurationCopy;
+    viewCopy;
+    handlerCopy;
     PXIterateAsynchronously();
   }
 
   v12 = PLOneUpGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v13 = [v9 label];
+    label = [configurationCopy label];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v13;
+    *(&buf + 4) = label;
     _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_ERROR, "not enough assets for scrubbing subtest %@", &buf, 0xCu);
   }
 
-  (*(v10 + 2))(v10, 1, 0);
+  (*(handlerCopy + 2))(handlerCopy, 1, 0);
 }
 
 void __100__PXDisplayAssetViewPPTPerformer__runScrubbingSubtestWithAssetView_configuration_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -217,15 +217,15 @@ void __100__PXDisplayAssetViewPPTPerformer__runScrubbingSubtestWithAssetView_con
   }
 }
 
-- (void)runLocalizedTitleTestWithConfigurations:(id)a3 completionHandler:(id)a4
+- (void)runLocalizedTitleTestWithConfigurations:(id)configurations completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  configurationsCopy = configurations;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!configurationsCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"configurations != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:98 description:{@"Invalid parameter not satisfying: %@", @"configurations != nil"}];
 
     if (v9)
     {
@@ -233,13 +233,13 @@ void __100__PXDisplayAssetViewPPTPerformer__runScrubbingSubtestWithAssetView_con
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -249,9 +249,9 @@ LABEL_3:
   v13[1] = 3221225472;
   v13[2] = __92__PXDisplayAssetViewPPTPerformer_runLocalizedTitleTestWithConfigurations_completionHandler___block_invoke;
   v13[3] = &unk_1E774AC70;
-  v14 = v7;
-  v15 = self;
-  v10 = v7;
+  v14 = configurationsCopy;
+  selfCopy = self;
+  v10 = configurationsCopy;
   [(PXDisplayAssetViewPPTPerformer *)self _runTestUsingBlock:v13 completionHandler:v9];
 }
 
@@ -363,15 +363,15 @@ void __92__PXDisplayAssetViewPPTPerformer_runLocalizedTitleTestWithConfiguration
   }
 }
 
-- (void)runScrubbingTestWithConfigurations:(id)a3 completionHandler:(id)a4
+- (void)runScrubbingTestWithConfigurations:(id)configurations completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  configurationsCopy = configurations;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!configurationsCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"configurations != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"configurations != nil"}];
 
     if (v9)
     {
@@ -379,13 +379,13 @@ void __92__PXDisplayAssetViewPPTPerformer_runLocalizedTitleTestWithConfiguration
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -395,10 +395,10 @@ LABEL_3:
   v13[1] = 3221225472;
   v13[2] = __87__PXDisplayAssetViewPPTPerformer_runScrubbingTestWithConfigurations_completionHandler___block_invoke;
   v13[3] = &unk_1E774ABF8;
-  v14 = v7;
-  v15 = self;
+  v14 = configurationsCopy;
+  selfCopy = self;
   v16 = a2;
-  v10 = v7;
+  v10 = configurationsCopy;
   [(PXDisplayAssetViewPPTPerformer *)self _runTestUsingBlock:v13 completionHandler:v9];
 }
 
@@ -567,23 +567,23 @@ void __87__PXDisplayAssetViewPPTPerformer_runScrubbingTestWithConfigurations_com
   (*(*(a1 + 32) + 16))();
 }
 
-- (PXDisplayAssetViewPPTPerformer)initWithContainerView:(id)a3 delegate:(id)a4 testOptions:(id)a5
+- (PXDisplayAssetViewPPTPerformer)initWithContainerView:(id)view delegate:(id)delegate testOptions:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  viewCopy = view;
+  delegateCopy = delegate;
+  optionsCopy = options;
+  if (viewCopy)
   {
-    if (v11)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_11:
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"delegate != nil"}];
 
-    if (v12)
+    if (optionsCopy)
     {
       goto LABEL_4;
     }
@@ -591,23 +591,23 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"containerView != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"containerView != nil"}];
 
-  if (!v11)
+  if (!delegateCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_3:
-  if (v12)
+  if (optionsCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_12:
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"testOptions != nil"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"testOptions != nil"}];
 
 LABEL_4:
   v25.receiver = self;
@@ -616,25 +616,25 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_containerView, a3);
-    objc_storeWeak(&v14->_delegate, v11);
-    objc_storeStrong(&v14->_testOptions, a5);
+    objc_storeStrong(&v13->_containerView, view);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
+    objc_storeStrong(&v14->_testOptions, options);
     v15 = [(NSDictionary *)v14->_testOptions objectForKeyedSubscript:@"testName"];
     testName = v14->_testName;
     v14->_testName = v15;
 
-    v17 = [(PXDisplayAssetViewPPTPerformer *)v14 testOptions];
-    v18 = [v17 objectForKeyedSubscript:@"iterations"];
-    v19 = [v18 integerValue];
+    testOptions = [(PXDisplayAssetViewPPTPerformer *)v14 testOptions];
+    v18 = [testOptions objectForKeyedSubscript:@"iterations"];
+    integerValue = [v18 integerValue];
 
-    if (v19 <= 1)
+    if (integerValue <= 1)
     {
       v20 = 1;
     }
 
     else
     {
-      v20 = v19;
+      v20 = integerValue;
     }
 
     v14->_testIterations = v20;
@@ -645,8 +645,8 @@ LABEL_4:
 
 - (PXDisplayAssetViewPPTPerformer)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXDisplayAssetViewPPTPerformer init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetViewPPTPerformer.m" lineNumber:34 description:{@"%s is not available as initializer", "-[PXDisplayAssetViewPPTPerformer init]"}];
 
   abort();
 }

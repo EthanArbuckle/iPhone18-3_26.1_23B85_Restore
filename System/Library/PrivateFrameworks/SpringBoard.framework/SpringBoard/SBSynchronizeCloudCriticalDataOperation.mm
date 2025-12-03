@@ -1,16 +1,16 @@
 @interface SBSynchronizeCloudCriticalDataOperation
 - (BOOL)isComplete;
-- (BOOL)waitForSynchronizeToCompleteWithTimeout:(double)a3;
+- (BOOL)waitForSynchronizeToCompleteWithTimeout:(double)timeout;
 - (SBSynchronizeCloudCriticalDataOperation)init;
-- (SBSynchronizeCloudCriticalDataOperation)initWithDefaults:(id)a3 userManager:(id)a4;
+- (SBSynchronizeCloudCriticalDataOperation)initWithDefaults:(id)defaults userManager:(id)manager;
 - (id)_queue_fetchCloudAccountOperation;
 - (id)_queue_fetchCloudDefaultsOperation;
 - (id)_queue_fetchMDMProfilesOperation;
 - (id)_queue_migrateSoundPreferencesOperation;
 - (unint64_t)_pendingOperationCount;
-- (void)_addTestOperation:(id)a3 shouldBlock:(BOOL)a4;
-- (void)_fetchDomains:(id)a3 fromIndex:(int64_t)a4 queue:(id)a5 completion:(id)a6;
-- (void)_queue_addOperation:(id)a3 shouldBlock:(BOOL)a4;
+- (void)_addTestOperation:(id)operation shouldBlock:(BOOL)block;
+- (void)_fetchDomains:(id)domains fromIndex:(int64_t)index queue:(id)queue completion:(id)completion;
+- (void)_queue_addOperation:(id)operation shouldBlock:(BOOL)block;
 - (void)_queue_startFetchingCloudCriticalData;
 - (void)startSynchronize;
 @end
@@ -20,18 +20,18 @@
 - (SBSynchronizeCloudCriticalDataOperation)init
 {
   v3 = +[SBDefaults localDefaults];
-  v4 = [v3 bootDefaults];
-  v5 = [MEMORY[0x277D77BF8] sharedManager];
-  v6 = [(SBSynchronizeCloudCriticalDataOperation *)self initWithDefaults:v4 userManager:v5];
+  bootDefaults = [v3 bootDefaults];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  v6 = [(SBSynchronizeCloudCriticalDataOperation *)self initWithDefaults:bootDefaults userManager:mEMORY[0x277D77BF8]];
 
   return v6;
 }
 
-- (SBSynchronizeCloudCriticalDataOperation)initWithDefaults:(id)a3 userManager:(id)a4
+- (SBSynchronizeCloudCriticalDataOperation)initWithDefaults:(id)defaults userManager:(id)manager
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  defaultsCopy = defaults;
+  managerCopy = manager;
   v21.receiver = self;
   v21.super_class = SBSynchronizeCloudCriticalDataOperation;
   v9 = [(SBSynchronizeCloudCriticalDataOperation *)&v21 init];
@@ -39,9 +39,9 @@
   if (v9)
   {
     v9->_queue_cloudSyncStartTime = -1.79769313e308;
-    if ([v8 isMultiUser] && (objc_msgSend(v8, "isLoginSession") & 1) == 0)
+    if ([managerCopy isMultiUser] && (objc_msgSend(managerCopy, "isLoginSession") & 1) == 0)
     {
-      v11 = [v7 hasCompletedSynchronizingCloudCriticalData] ^ 1;
+      v11 = [defaultsCopy hasCompletedSynchronizingCloudCriticalData] ^ 1;
     }
 
     else
@@ -60,7 +60,7 @@
     v10->_queue_operationGroup = v14;
 
     v10->_queue_isComplete = !v10->_needsSync;
-    objc_storeStrong(&v10->_queue_bootDefaults, a3);
+    objc_storeStrong(&v10->_queue_bootDefaults, defaults);
     v10->_queue_operationCount = 0;
     v16 = objc_alloc_init(MEMORY[0x277CCABD8]);
     operationQueue = v10->_operationQueue;
@@ -135,7 +135,7 @@ uint64_t __53__SBSynchronizeCloudCriticalDataOperation_isComplete__block_invoke(
   }
 }
 
-- (BOOL)waitForSynchronizeToCompleteWithTimeout:(double)a3
+- (BOOL)waitForSynchronizeToCompleteWithTimeout:(double)timeout
 {
   if ([(SBSynchronizeCloudCriticalDataOperation *)self isComplete])
   {
@@ -173,18 +173,18 @@ uint64_t __65__SBSynchronizeCloudCriticalDataOperation__pendingOperationCount__b
   return result;
 }
 
-- (void)_addTestOperation:(id)a3 shouldBlock:(BOOL)a4
+- (void)_addTestOperation:(id)operation shouldBlock:(BOOL)block
 {
-  v6 = a3;
+  operationCopy = operation;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__SBSynchronizeCloudCriticalDataOperation__addTestOperation_shouldBlock___block_invoke;
   block[3] = &unk_2783A97D8;
-  v11 = a4;
+  blockCopy = block;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = operationCopy;
+  v8 = operationCopy;
   dispatch_sync(queue, block);
 }
 
@@ -225,11 +225,11 @@ LABEL_7:
   return [v3 addObject:v8];
 }
 
-- (void)_queue_addOperation:(id)a3 shouldBlock:(BOOL)a4
+- (void)_queue_addOperation:(id)operation shouldBlock:(BOOL)block
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  blockCopy = block;
+  operationCopy = operation;
+  if (blockCopy)
   {
     dispatch_group_enter(self->_queue_operationGroup);
   }
@@ -240,9 +240,9 @@ LABEL_7:
   v7[2] = __75__SBSynchronizeCloudCriticalDataOperation__queue_addOperation_shouldBlock___block_invoke;
   v7[3] = &unk_2783A9F58;
   v7[4] = self;
-  v8 = v4;
-  [v6 setCompletionBlock:v7];
-  [(NSOperationQueue *)self->_operationQueue addOperation:v6];
+  v8 = blockCopy;
+  [operationCopy setCompletionBlock:v7];
+  [(NSOperationQueue *)self->_operationQueue addOperation:operationCopy];
 }
 
 void __75__SBSynchronizeCloudCriticalDataOperation__queue_addOperation_shouldBlock___block_invoke(uint64_t a1)
@@ -294,12 +294,12 @@ void __75__SBSynchronizeCloudCriticalDataOperation__queue_addOperation_shouldBlo
   BSDispatchQueueAssert();
   BSContinuousMachTimeNow();
   self->_queue_cloudSyncStartTime = v3;
-  v4 = [(SBSynchronizeCloudCriticalDataOperation *)self _queue_fetchCloudAccountOperation];
-  v5 = [(SBSynchronizeCloudCriticalDataOperation *)self _queue_fetchCloudDefaultsOperation];
-  v6 = [(SBSynchronizeCloudCriticalDataOperation *)self _queue_fetchMDMProfilesOperation];
-  v7 = [(SBSynchronizeCloudCriticalDataOperation *)self _queue_migrateSoundPreferencesOperation];
-  [v5 addDependency:v4];
-  [v7 addDependency:v5];
+  _queue_fetchCloudAccountOperation = [(SBSynchronizeCloudCriticalDataOperation *)self _queue_fetchCloudAccountOperation];
+  _queue_fetchCloudDefaultsOperation = [(SBSynchronizeCloudCriticalDataOperation *)self _queue_fetchCloudDefaultsOperation];
+  _queue_fetchMDMProfilesOperation = [(SBSynchronizeCloudCriticalDataOperation *)self _queue_fetchMDMProfilesOperation];
+  _queue_migrateSoundPreferencesOperation = [(SBSynchronizeCloudCriticalDataOperation *)self _queue_migrateSoundPreferencesOperation];
+  [_queue_fetchCloudDefaultsOperation addDependency:_queue_fetchCloudAccountOperation];
+  [_queue_migrateSoundPreferencesOperation addDependency:_queue_fetchCloudDefaultsOperation];
   v8 = _os_feature_enabled_impl();
   v9 = _os_feature_enabled_impl();
   v10 = SBLogCommon();
@@ -324,10 +324,10 @@ void __75__SBSynchronizeCloudCriticalDataOperation__queue_addOperation_shouldBlo
     v14 = v8 ^ 1u;
   }
 
-  [(SBSynchronizeCloudCriticalDataOperation *)self _queue_addOperation:v4 shouldBlock:v13];
-  [(SBSynchronizeCloudCriticalDataOperation *)self _queue_addOperation:v5 shouldBlock:v14];
-  [(SBSynchronizeCloudCriticalDataOperation *)self _queue_addOperation:v6 shouldBlock:0];
-  [(SBSynchronizeCloudCriticalDataOperation *)self _queue_addOperation:v7 shouldBlock:v14];
+  [(SBSynchronizeCloudCriticalDataOperation *)self _queue_addOperation:_queue_fetchCloudAccountOperation shouldBlock:v13];
+  [(SBSynchronizeCloudCriticalDataOperation *)self _queue_addOperation:_queue_fetchCloudDefaultsOperation shouldBlock:v14];
+  [(SBSynchronizeCloudCriticalDataOperation *)self _queue_addOperation:_queue_fetchMDMProfilesOperation shouldBlock:0];
+  [(SBSynchronizeCloudCriticalDataOperation *)self _queue_addOperation:_queue_migrateSoundPreferencesOperation shouldBlock:v14];
   blockingTestOperations = self->_blockingTestOperations;
   if (blockingTestOperations)
   {
@@ -487,21 +487,21 @@ void __77__SBSynchronizeCloudCriticalDataOperation__queue_fetchCloudDefaultsOper
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (void)_fetchDomains:(id)a3 fromIndex:(int64_t)a4 queue:(id)a5 completion:(id)a6
+- (void)_fetchDomains:(id)domains fromIndex:(int64_t)index queue:(id)queue completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  domainsCopy = domains;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (domainsCopy)
   {
-    if (v12)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     [SBSynchronizeCloudCriticalDataOperation _fetchDomains:a2 fromIndex:self queue:? completion:?];
-    if (v13)
+    if (completionCopy)
     {
       goto LABEL_4;
     }
@@ -512,13 +512,13 @@ LABEL_7:
   }
 
   [SBSynchronizeCloudCriticalDataOperation _fetchDomains:a2 fromIndex:self queue:? completion:?];
-  if (!v12)
+  if (!queueCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  if (!v13)
+  if (!completionCopy)
   {
     goto LABEL_7;
   }
@@ -528,14 +528,14 @@ LABEL_4:
   block[1] = 3221225472;
   block[2] = __84__SBSynchronizeCloudCriticalDataOperation__fetchDomains_fromIndex_queue_completion___block_invoke;
   block[3] = &unk_2783AA4F8;
-  v21 = v13;
-  v22 = a4;
-  v18 = v11;
-  v19 = self;
-  v20 = v12;
-  v14 = v13;
-  v15 = v12;
-  v16 = v11;
+  v21 = completionCopy;
+  indexCopy = index;
+  v18 = domainsCopy;
+  selfCopy = self;
+  v20 = queueCopy;
+  v14 = completionCopy;
+  v15 = queueCopy;
+  v16 = domainsCopy;
   dispatch_async(v15, block);
 }
 

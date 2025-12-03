@@ -1,18 +1,18 @@
 @interface WCAXPCService
-- (void)executeFetchRequest:(id)a3 completionHandler:(id)a4;
+- (void)executeFetchRequest:(id)request completionHandler:(id)handler;
 - (void)fetchWiFiAssetsFromServer;
 @end
 
 @implementation WCAXPCService
 
-- (void)executeFetchRequest:(id)a3 completionHandler:(id)a4
+- (void)executeFetchRequest:(id)request completionHandler:(id)handler
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, handler);
   v6 = +[WCAServer sharedInstance];
   v5 = location[0];
   v7 = _NSConcreteStackBlock;

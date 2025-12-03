@@ -1,54 +1,54 @@
 @interface CoreDAVContainerMultiGetTask
-- (CoreDAVContainerMultiGetTask)initWithURLs:(id)a3 atContainerURL:(id)a4 appSpecificDataItemClass:(Class)a5;
+- (CoreDAVContainerMultiGetTask)initWithURLs:(id)ls atContainerURL:(id)l appSpecificDataItemClass:(Class)class;
 - (NSSet)allProperties;
-- (id)copyDefaultParserForContentType:(id)a3;
+- (id)copyDefaultParserForContentType:(id)type;
 - (id)requestBody;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CoreDAVContainerMultiGetTask
 
-- (CoreDAVContainerMultiGetTask)initWithURLs:(id)a3 atContainerURL:(id)a4 appSpecificDataItemClass:(Class)a5
+- (CoreDAVContainerMultiGetTask)initWithURLs:(id)ls atContainerURL:(id)l appSpecificDataItemClass:(Class)class
 {
-  v10 = a3;
-  v11 = a4;
+  lsCopy = ls;
+  lCopy = l;
   if ([(CoreDAVContainerMultiGetTask *)self isMemberOfClass:objc_opt_class()])
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"CoreDAVContainerMultiGetTask.m" lineNumber:37 description:{@"You instantiated a class that doesn't want to be instantiated.  Please choose a concrete subclass of %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CoreDAVContainerMultiGetTask.m" lineNumber:37 description:{@"You instantiated a class that doesn't want to be instantiated.  Please choose a concrete subclass of %@", objc_opt_class()}];
 
-    v13 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = CoreDAVContainerMultiGetTask;
-    v14 = [(CoreDAVTask *)&v17 initWithURL:v11];
+    v14 = [(CoreDAVTask *)&v17 initWithURL:lCopy];
     v15 = v14;
     if (v14)
     {
-      objc_storeStrong(&v14->_urls, a3);
-      if (!a5)
+      objc_storeStrong(&v14->_urls, ls);
+      if (!class)
       {
-        a5 = objc_opt_class();
+        class = objc_opt_class();
       }
 
-      v15->_appSpecificDataItemClass = a5;
+      v15->_appSpecificDataItemClass = class;
     }
 
     self = v15;
-    v13 = self;
+    selfCopy = self;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 - (id)requestBody
 {
   v41 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(CoreDAVXMLData);
-  v27 = [(CoreDAVContainerMultiGetTask *)self copyAdditionalPropElements];
+  copyAdditionalPropElements = [(CoreDAVContainerMultiGetTask *)self copyAdditionalPropElements];
   [(CoreDAVContainerMultiGetTask *)self setAdditionalPropElements:?];
   appSpecificMultiGetNameSpace = self->_appSpecificMultiGetNameSpace;
   if (!appSpecificMultiGetNameSpace)
@@ -64,8 +64,8 @@
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v5 = [(CoreDAVContainerMultiGetTask *)self additionalPropElements];
-  v6 = [v5 countByEnumeratingWithState:&v33 objects:v40 count:16];
+  additionalPropElements = [(CoreDAVContainerMultiGetTask *)self additionalPropElements];
+  v6 = [additionalPropElements countByEnumeratingWithState:&v33 objects:v40 count:16];
   if (v6)
   {
     v7 = v6;
@@ -76,16 +76,16 @@
       {
         if (*v34 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(additionalPropElements);
         }
 
         v10 = *(*(&v33 + 1) + 8 * i);
-        v11 = [v10 name];
-        v12 = [v10 nameSpace];
-        [(CoreDAVXMLData *)v3 appendElement:v11 inNamespace:v12 withStringContent:0 withAttributeNamesAndValues:0];
+        name = [v10 name];
+        nameSpace = [v10 nameSpace];
+        [(CoreDAVXMLData *)v3 appendElement:name inNamespace:nameSpace withStringContent:0 withAttributeNamesAndValues:0];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v33 objects:v40 count:16];
+      v7 = [additionalPropElements countByEnumeratingWithState:&v33 objects:v40 count:16];
     }
 
     while (v7);
@@ -112,20 +112,20 @@
         }
 
         v17 = *(*(&v29 + 1) + 8 * j);
-        v18 = [v17 CDVRawPath];
+        cDVRawPath = [v17 CDVRawPath];
 
-        if (v18)
+        if (cDVRawPath)
         {
-          v19 = [v17 CDVRawPath];
-          [(CoreDAVXMLData *)v3 appendElement:@"href" inNamespace:@"DAV:" withStringContent:v19 withAttributeNamesAndValues:0];
+          cDVRawPath2 = [v17 CDVRawPath];
+          [(CoreDAVXMLData *)v3 appendElement:@"href" inNamespace:@"DAV:" withStringContent:cDVRawPath2 withAttributeNamesAndValues:0];
         }
 
         else
         {
-          v19 = +[CoreDAVLogging sharedLogging];
-          v20 = self;
+          cDVRawPath2 = +[CoreDAVLogging sharedLogging];
+          selfCopy = self;
           WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
-          v22 = [v19 logHandleForAccountInfoProvider:WeakRetained];
+          v22 = [cDVRawPath2 logHandleForAccountInfoProvider:WeakRetained];
 
           if (v22 && os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
           {
@@ -134,7 +134,7 @@
             _os_log_impl(&dword_2452FB000, v22, OS_LOG_TYPE_DEFAULT, "Skipping item URL, as it has no path.  URL %@", buf, 0xCu);
           }
 
-          self = v20;
+          self = selfCopy;
         }
       }
 
@@ -151,17 +151,17 @@
   }
 
   [(CoreDAVXMLData *)v3 endElement:self->_appSpecificMultiGetCommand inNamespace:appSpecificNamespace];
-  v24 = [(CoreDAVXMLData *)v3 data];
+  data = [(CoreDAVXMLData *)v3 data];
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v24;
+  return data;
 }
 
 - (NSSet)allProperties
 {
-  v3 = [(CoreDAVContainerMultiGetTask *)self copyAdditionalPropElements];
-  v4 = [v3 mutableCopy];
+  copyAdditionalPropElements = [(CoreDAVContainerMultiGetTask *)self copyAdditionalPropElements];
+  v4 = [copyAdditionalPropElements mutableCopy];
 
   [v4 CDVAddItemParserMappingWithNameSpace:@"DAV:" name:@"getetag" parseClass:objc_opt_class()];
   [v4 CDVAddItemParserMappingWithNameSpace:self->_appSpecificNamespace name:self->_appSpecificDataProp parseClass:self->_appSpecificDataItemClass];
@@ -170,7 +170,7 @@
   return v5;
 }
 
-- (id)copyDefaultParserForContentType:(id)a3
+- (id)copyDefaultParserForContentType:(id)type
 {
   v4 = [CoreDAVXMLParser alloc];
   v5 = objc_opt_class();
@@ -180,8 +180,8 @@
   v8 = [[CoreDAVItemParserMapping alloc] initWithNameSpace:@"DAV:" name:@"getetag" parseClass:objc_opt_class()];
   v9 = [[CoreDAVItemParserMapping alloc] initWithNameSpace:self->_appSpecificNamespace name:self->_appSpecificDataProp parseClass:objc_opt_class()];
   v10 = objc_alloc(MEMORY[0x277CBEB58]);
-  v11 = [(CoreDAVContainerMultiGetTask *)self additionalPropElements];
-  v12 = [v10 initWithSet:v11];
+  additionalPropElements = [(CoreDAVContainerMultiGetTask *)self additionalPropElements];
+  v12 = [v10 initWithSet:additionalPropElements];
 
   [v12 addObject:v8];
   [v12 addObject:v9];
@@ -190,19 +190,19 @@
   return v7;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v73 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [v4 code];
+    code = [errorCopy code];
     v7 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
     v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {
@@ -281,12 +281,12 @@ LABEL_35:
       }
 
       v18 = *(*(&v64 + 1) + 8 * v17);
-      v19 = [v18 firstHref];
-      v20 = [v19 payloadAsFullURL];
+      firstHref = [v18 firstHref];
+      payloadAsFullURL = [firstHref payloadAsFullURL];
 
-      v21 = [v18 status];
-      v22 = [v21 payloadAsString];
-      v23 = [v22 CDVIsHTTPStatusLineWithStatusCode:404];
+      status = [v18 status];
+      payloadAsString = [status payloadAsString];
+      v23 = [payloadAsString CDVIsHTTPStatusLineWithStatusCode:404];
 
       if (v23)
       {
@@ -297,32 +297,32 @@ LABEL_35:
         if (v26 && os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v70 = v20;
+          v70 = payloadAsFullURL;
           _os_log_impl(&dword_2452FB000, v26, OS_LOG_TYPE_DEFAULT, "Got a 404 in response to our multistatus. It looks like the item at %@ has gone away.", buf, 0xCu);
         }
 
-        [(NSSet *)v59 addObject:v20];
+        [(NSSet *)v59 addObject:payloadAsFullURL];
       }
 
-      v27 = [v18 successfulPropertiesToValues];
-      v28 = v27;
-      if (v27)
+      successfulPropertiesToValues = [v18 successfulPropertiesToValues];
+      v28 = successfulPropertiesToValues;
+      if (successfulPropertiesToValues)
       {
-        v29 = [v27 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"getetag"];
-        v30 = [v29 payloadAsString];
+        v29 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"getetag"];
+        payloadAsString2 = [v29 payloadAsString];
 
         v31 = [v28 CDVObjectForKeyWithNameSpace:self->_appSpecificNamespace andName:self->_appSpecificDataProp];
-        v32 = [v31 payload];
+        payload = [v31 payload];
 
-        if (v20)
+        if (payloadAsFullURL)
         {
-          [v58 addObject:v20];
+          [v58 addObject:payloadAsFullURL];
         }
 
         v33 = objc_alloc(self->_appSpecificDataItemClass);
         v34 = [(CoreDAVTask *)self url];
-        v35 = [(CoreDAVTask *)self accountInfoProvider];
-        v36 = [v33 initWithURL:v20 eTag:v30 dataPayload:v32 inContainerWithURL:v34 withAccountInfoProvider:v35];
+        accountInfoProvider = [(CoreDAVTask *)self accountInfoProvider];
+        v36 = [v33 initWithURL:payloadAsFullURL eTag:payloadAsString2 dataPayload:payload inContainerWithURL:v34 withAccountInfoProvider:accountInfoProvider];
 
         [(CoreDAVContainerMultiGetTask *)self setAdditionalProperties:v28 onDataItem:v36];
         [(NSSet *)v16 addObject:v36];
@@ -330,9 +330,9 @@ LABEL_35:
         goto LABEL_20;
       }
 
-      v37 = [v18 status];
-      v38 = [v37 payloadAsString];
-      v39 = [v38 CDVIsHTTPStatusLineWithStatusCode:404];
+      status2 = [v18 status];
+      payloadAsString3 = [status2 payloadAsString];
+      v39 = [payloadAsString3 CDVIsHTTPStatusLineWithStatusCode:404];
 
       if ((v39 & 1) == 0)
       {
@@ -350,7 +350,7 @@ LABEL_35:
         if (!self->_shouldIgnoreResponseErrors)
         {
           [MEMORY[0x277CCA9B8] errorWithDomain:@"CoreDAVErrorDomain" code:8 userInfo:0];
-          v57 = v30 = v57;
+          v57 = payloadAsString2 = v57;
 LABEL_20:
         }
       }

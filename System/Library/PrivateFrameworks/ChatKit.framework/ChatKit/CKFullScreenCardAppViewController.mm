@@ -5,38 +5,38 @@
 - (BOOL)prefersStatusBarHidden;
 - (CGRect)finalContentViewFrame;
 - (CKExpandedAppViewControllerDelegate)delegate;
-- (CKFullScreenCardAppViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4;
-- (CKFullScreenCardAppViewController)initWithConversation:(id)a3 plugin:(id)a4;
+- (CKFullScreenCardAppViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source;
+- (CKFullScreenCardAppViewController)initWithConversation:(id)conversation plugin:(id)plugin;
 - (UIViewControllerTransitioningDelegate)parentTransitioningDelegate;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection;
 - (int64_t)preferredStatusBarStyle;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_handleRemoteConnectionInterrupted:(id)a3;
+- (void)_handleRemoteConnectionInterrupted:(id)interrupted;
 - (void)_updateDimmingViewAlpha;
 - (void)dealloc;
 - (void)loadView;
-- (void)setContentView:(id)a3;
-- (void)setContentViewController:(id)a3;
-- (void)setIsBusiness:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setContentView:(id)view;
+- (void)setContentViewController:(id)controller;
+- (void)setIsBusiness:(BOOL)business;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation CKFullScreenCardAppViewController
 
-- (CKFullScreenCardAppViewController)initWithConversation:(id)a3 plugin:(id)a4
+- (CKFullScreenCardAppViewController)initWithConversation:(id)conversation plugin:(id)plugin
 {
-  v5 = a3;
+  conversationCopy = conversation;
   v6 = [(CKFullScreenCardAppViewController *)self init];
   v7 = v6;
   if (v6)
   {
-    [(CKFullScreenCardAppViewController *)v6 setConversation:v5];
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 addObserver:v7 selector:sel__handleRemoteConnectionInterrupted_ name:*MEMORY[0x1E69A6F28] object:0];
+    [(CKFullScreenCardAppViewController *)v6 setConversation:conversationCopy];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleRemoteConnectionInterrupted_ name:*MEMORY[0x1E69A6F28] object:0];
   }
 
   return v7;
@@ -47,11 +47,11 @@
   v5.receiver = self;
   v5.super_class = CKFullScreenCardAppViewController;
   [(CKFullScreenCardAppViewController *)&v5 loadView];
-  v3 = [(CKFullScreenCardAppViewController *)self view];
-  [v3 setBackgroundColor:0];
+  view = [(CKFullScreenCardAppViewController *)self view];
+  [view setBackgroundColor:0];
 
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  -[CKFullScreenCardAppViewController setLastKnownDeviceOrientation:](self, "setLastKnownDeviceOrientation:", [v4 orientation]);
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  -[CKFullScreenCardAppViewController setLastKnownDeviceOrientation:](self, "setLastKnownDeviceOrientation:", [currentDevice orientation]);
 }
 
 - (void)viewDidLayoutSubviews
@@ -59,65 +59,65 @@
   v18.receiver = self;
   v18.super_class = CKFullScreenCardAppViewController;
   [(CKFullScreenCardAppViewController *)&v18 viewDidLayoutSubviews];
-  v3 = [(CKFullScreenCardAppViewController *)self view];
-  [v3 bounds];
+  view = [(CKFullScreenCardAppViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKFullScreenCardAppViewController *)self contentView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  contentView = [(CKFullScreenCardAppViewController *)self contentView];
+  [contentView setFrame:{v5, v7, v9, v11}];
 
-  v13 = [(CKFullScreenCardAppViewController *)self dismissView];
-  [v13 setHidden:1];
+  dismissView = [(CKFullScreenCardAppViewController *)self dismissView];
+  [dismissView setHidden:1];
 
-  v14 = [(CKFullScreenCardAppViewController *)self contentView];
-  v15 = [v14 superview];
+  contentView2 = [(CKFullScreenCardAppViewController *)self contentView];
+  superview = [contentView2 superview];
 
-  if (!v15)
+  if (!superview)
   {
-    v16 = [(CKFullScreenCardAppViewController *)self view];
-    v17 = [(CKFullScreenCardAppViewController *)self contentView];
-    [v16 addSubview:v17];
+    view2 = [(CKFullScreenCardAppViewController *)self view];
+    contentView3 = [(CKFullScreenCardAppViewController *)self contentView];
+    [view2 addSubview:contentView3];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = CKFullScreenCardAppViewController;
-  [(CKFullScreenCardAppViewController *)&v3 viewWillAppear:a3];
+  [(CKFullScreenCardAppViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = CKFullScreenCardAppViewController;
-  [(CKFullScreenCardAppViewController *)&v7 viewDidDisappear:a3];
+  [(CKFullScreenCardAppViewController *)&v7 viewDidDisappear:disappear];
   [(CKFullScreenCardAppViewController *)self setEditing:0];
-  v4 = [(CKFullScreenCardAppViewController *)self contentViewController];
-  v5 = [v4 isDismissing];
+  contentViewController = [(CKFullScreenCardAppViewController *)self contentViewController];
+  isDismissing = [contentViewController isDismissing];
 
-  if ((v5 & 1) == 0)
+  if ((isDismissing & 1) == 0)
   {
-    v6 = [(CKFullScreenCardAppViewController *)self contentViewController];
-    [v6 dismiss];
+    contentViewController2 = [(CKFullScreenCardAppViewController *)self contentViewController];
+    [contentViewController2 dismiss];
   }
 }
 
-- (void)setContentViewController:(id)a3
+- (void)setContentViewController:(id)controller
 {
-  v5 = a3;
-  if (self->_contentViewController != v5)
+  controllerCopy = controller;
+  if (self->_contentViewController != controllerCopy)
   {
-    v10 = v5;
+    v10 = controllerCopy;
     [(CKFullScreenCardAppViewController *)self removeChildViewController:?];
-    v6 = [(CKBrowserViewControllerProtocol *)self->_contentViewController view];
-    [v6 removeFromSuperview];
+    view = [(CKBrowserViewControllerProtocol *)self->_contentViewController view];
+    [view removeFromSuperview];
 
     [(CKBrowserViewControllerProtocol *)self->_contentViewController didMoveToParentViewController:0];
-    objc_storeStrong(&self->_contentViewController, a3);
+    objc_storeStrong(&self->_contentViewController, controller);
     if (v10)
     {
       if (objc_opt_respondsToSelector())
@@ -126,61 +126,61 @@
       }
 
       [(CKFullScreenCardAppViewController *)self addChildViewController:self->_contentViewController];
-      v7 = [(CKBrowserViewControllerProtocol *)self->_contentViewController view];
-      [(CKFullScreenCardAppViewController *)self setContentView:v7];
+      view2 = [(CKBrowserViewControllerProtocol *)self->_contentViewController view];
+      [(CKFullScreenCardAppViewController *)self setContentView:view2];
 
       [(CKBrowserViewControllerProtocol *)self->_contentViewController didMoveToParentViewController:self];
       if (CKIsRunningInMessages())
       {
-        v8 = [(CKFullScreenCardAppViewController *)self _currentPluginIsJellyfish];
-        v9 = [MEMORY[0x1E69DC668] sharedApplication];
-        [v9 setIdleTimerDisabled:v8];
+        _currentPluginIsJellyfish = [(CKFullScreenCardAppViewController *)self _currentPluginIsJellyfish];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        [mEMORY[0x1E69DC668] setIdleTimerDisabled:_currentPluginIsJellyfish];
       }
     }
 
     [(CKFullScreenCardAppViewController *)self setNeedsStatusBarAppearanceUpdate];
     [(CKFullScreenCardAppViewController *)self reloadInputViews];
-    v5 = v10;
+    controllerCopy = v10;
   }
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UIView *)contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
-    v7 = [(CKFullScreenCardAppViewController *)self view];
-    [v7 addSubview:v9];
+    objc_storeStrong(&self->_contentView, view);
+    view = [(CKFullScreenCardAppViewController *)self view];
+    [view addSubview:v9];
 
-    v8 = [(CKFullScreenCardAppViewController *)self view];
-    [v8 setNeedsLayout];
+    view2 = [(CKFullScreenCardAppViewController *)self view];
+    [view2 setNeedsLayout];
 
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
 - (CGRect)finalContentViewFrame
 {
-  v3 = [(CKFullScreenCardAppViewController *)self view];
-  [v3 bounds];
+  view = [(CKFullScreenCardAppViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(CKFullScreenCardAppViewController *)self view];
-  [v12 safeAreaInsets];
+  view2 = [(CKFullScreenCardAppViewController *)self view];
+  [view2 safeAreaInsets];
   v14 = v5 + v13;
 
-  v15 = [(CKFullScreenCardAppViewController *)self view];
-  [v15 safeAreaInsets];
+  view3 = [(CKFullScreenCardAppViewController *)self view];
+  [view3 safeAreaInsets];
   v17 = v16;
-  v18 = [(CKFullScreenCardAppViewController *)self view];
-  [v18 safeAreaInsets];
+  view4 = [(CKFullScreenCardAppViewController *)self view];
+  [view4 safeAreaInsets];
   v20 = v9 - (v17 + v19);
 
   v21 = v14;
@@ -196,11 +196,11 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v4 setIdleTimerDisabled:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] setIdleTimerDisabled:0];
 
   dismissView = self->_dismissView;
   if (dismissView)
@@ -213,13 +213,13 @@
   [(CKFullScreenCardAppViewController *)&v6 dealloc];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 setNavigationBarHidden:1 animated:0];
+    [controllerCopy setNavigationBarHidden:1 animated:0];
   }
 }
 
@@ -235,22 +235,22 @@
   else
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 supportedInterfaceOrientations];
+    supportedInterfaceOrientations = [v5 supportedInterfaceOrientations];
 
-    return v6;
+    return supportedInterfaceOrientations;
   }
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v3 = [(CKFullScreenCardAppViewController *)self contentViewController];
+  contentViewController = [(CKFullScreenCardAppViewController *)self contentViewController];
 
-  if (v3)
+  if (contentViewController)
   {
-    v4 = [(CKFullScreenCardAppViewController *)self contentViewController];
-    v5 = [v4 preferredStatusBarStyle];
+    contentViewController2 = [(CKFullScreenCardAppViewController *)self contentViewController];
+    preferredStatusBarStyle = [contentViewController2 preferredStatusBarStyle];
 
-    return v5;
+    return preferredStatusBarStyle;
   }
 
   else
@@ -263,14 +263,14 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-  v3 = [(CKFullScreenCardAppViewController *)self contentViewController];
+  contentViewController = [(CKFullScreenCardAppViewController *)self contentViewController];
 
-  if (v3)
+  if (contentViewController)
   {
-    v4 = [(CKFullScreenCardAppViewController *)self contentViewController];
-    v5 = [v4 prefersStatusBarHidden];
+    contentViewController2 = [(CKFullScreenCardAppViewController *)self contentViewController];
+    prefersStatusBarHidden = [contentViewController2 prefersStatusBarHidden];
 
-    return v5;
+    return prefersStatusBarHidden;
   }
 
   else
@@ -281,15 +281,15 @@
   }
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3 traitCollection:(id)a4
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller traitCollection:(id)collection
 {
-  v4 = a4;
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  collectionCopy = collection;
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v6 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v7 = 2 * ([v4 horizontalSizeClass] != 1);
+    v7 = 2 * ([collectionCopy horizontalSizeClass] != 1);
   }
 
   else
@@ -302,26 +302,26 @@
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(CKFullScreenCardAppViewController *)self contentViewController];
-  v3 = [v2 shouldShowChatChrome];
+  contentViewController = [(CKFullScreenCardAppViewController *)self contentViewController];
+  shouldShowChatChrome = [contentViewController shouldShowChatChrome];
 
-  return v3;
+  return shouldShowChatChrome;
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = CKFullScreenCardAppViewController;
-  v7 = a4;
-  [(CKFullScreenCardAppViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(CKFullScreenCardAppViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __88__CKFullScreenCardAppViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E72F0B40;
   v8[4] = self;
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
 }
 
 uint64_t __88__CKFullScreenCardAppViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -352,10 +352,10 @@ uint64_t __88__CKFullScreenCardAppViewController_viewWillTransitionToSize_withTr
 
 - (BOOL)_currentPluginIsJellyfish
 {
-  v2 = [(CKFullScreenCardAppViewController *)self balloonPlugin];
-  v3 = [v2 identifier];
+  balloonPlugin = [(CKFullScreenCardAppViewController *)self balloonPlugin];
+  identifier = [balloonPlugin identifier];
   v4 = IMBalloonExtensionIDWithSuffix();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [identifier isEqualToString:v4];
 
   return v5;
 }
@@ -372,8 +372,8 @@ uint64_t __88__CKFullScreenCardAppViewController_viewWillTransitionToSize_withTr
     v3 = 0.0;
   }
 
-  v4 = [(CKFullScreenCardAppViewController *)self dismissView];
-  [v4 setAlpha:v3];
+  dismissView = [(CKFullScreenCardAppViewController *)self dismissView];
+  [dismissView setAlpha:v3];
 }
 
 - (CKExpandedAppViewControllerDelegate)delegate
@@ -402,50 +402,50 @@ uint64_t __88__CKFullScreenCardAppViewController_viewWillTransitionToSize_withTr
   return [(CKBrowserViewControllerProtocol *)contentViewController isBusiness];
 }
 
-- (void)setIsBusiness:(BOOL)a3
+- (void)setIsBusiness:(BOOL)business
 {
-  v3 = a3;
+  businessCopy = business;
   if (objc_opt_respondsToSelector())
   {
     contentViewController = self->_contentViewController;
 
-    [(CKBrowserViewControllerProtocol *)contentViewController setIsBusiness:v3];
+    [(CKBrowserViewControllerProtocol *)contentViewController setIsBusiness:businessCopy];
   }
 }
 
-- (CKFullScreenCardAppViewController)initWithBalloonPlugin:(id)a3 dataSource:(id)a4
+- (CKFullScreenCardAppViewController)initWithBalloonPlugin:(id)plugin dataSource:(id)source
 {
-  v5 = a3;
-  v6 = a4;
+  pluginCopy = plugin;
+  sourceCopy = source;
   __assert_rtn("[CKFullScreenCardAppViewController(CKBrowserViewControllerProtocol) initWithBalloonPlugin:dataSource:]", "CKFullScreenCardAppViewController.m", 363, "false");
 }
 
-- (void)_handleRemoteConnectionInterrupted:(id)a3
+- (void)_handleRemoteConnectionInterrupted:(id)interrupted
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69A6F20]];
+  userInfo = [interrupted userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69A6F20]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [(CKFullScreenCardAppViewController *)self contentViewController];
-    v7 = [v6 balloonPlugin];
-    v8 = [v7 identifier];
+    contentViewController = [(CKFullScreenCardAppViewController *)self contentViewController];
+    balloonPlugin = [contentViewController balloonPlugin];
+    identifier = [balloonPlugin identifier];
 
-    if ([v8 isEqualToIgnoringCase:v5])
+    if ([identifier isEqualToIgnoringCase:v5])
     {
       v9 = IMLogHandleForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v13 = 138412290;
-        v14 = v8;
+        v14 = identifier;
         _os_log_impl(&dword_19020E000, v9, OS_LOG_TYPE_INFO, "Dismissing due to extension interruption for %@", &v13, 0xCu);
       }
 
-      v10 = [(CKFullScreenCardAppViewController *)self sendDelegate];
-      v11 = [(CKFullScreenCardAppViewController *)self balloonPlugin];
-      v12 = [v11 identifier];
-      [v10 dismissAndReloadInputViews:1 forPlugin:v12];
+      sendDelegate = [(CKFullScreenCardAppViewController *)self sendDelegate];
+      balloonPlugin2 = [(CKFullScreenCardAppViewController *)self balloonPlugin];
+      identifier2 = [balloonPlugin2 identifier];
+      [sendDelegate dismissAndReloadInputViews:1 forPlugin:identifier2];
     }
   }
 }

@@ -1,7 +1,7 @@
 @interface DBHomeKitServiceTypes
 + (NSDictionary)serviceNameByType;
 + (NSDictionary)serviceTypeByName;
-+ (id)serviceNameForType:(id)a3;
++ (id)serviceNameForType:(id)type;
 @end
 
 @implementation DBHomeKitServiceTypes
@@ -50,15 +50,15 @@ void __42__DBHomeKitServiceTypes_serviceNameByType__block_invoke()
   serviceNameByType__serviceNameByType = v0;
 }
 
-+ (id)serviceNameForType:(id)a3
++ (id)serviceNameForType:(id)type
 {
-  v4 = a3;
-  v5 = [a1 serviceNameByType];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  typeCopy = type;
+  serviceNameByType = [self serviceNameByType];
+  v6 = [serviceNameByType objectForKeyedSubscript:typeCopy];
 
   if (!v6)
   {
-    v6 = v4;
+    v6 = typeCopy;
   }
 
   return v6;

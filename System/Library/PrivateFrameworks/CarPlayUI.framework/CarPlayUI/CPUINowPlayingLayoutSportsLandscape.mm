@@ -18,9 +18,9 @@
 
 - (double)sportsScoreTextSize
 {
-  v2 = [(CPUINowPlayingLayoutSportsLandscape *)self playModeControlButtonsFullWidth];
+  playModeControlButtonsFullWidth = [(CPUINowPlayingLayoutSportsLandscape *)self playModeControlButtonsFullWidth];
   result = 52.0;
-  if (v2)
+  if (playModeControlButtonsFullWidth)
   {
     return 40.0;
   }

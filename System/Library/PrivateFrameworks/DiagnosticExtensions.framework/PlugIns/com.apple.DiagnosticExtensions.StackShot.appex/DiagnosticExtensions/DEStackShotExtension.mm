@@ -1,6 +1,6 @@
 @interface DEStackShotExtension
 - (id)attachmentList;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 - (id)takeStackshot;
 @end
 
@@ -16,17 +16,17 @@
   return v5;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   [DELogMover moveSystemLogsWithExtensions:0];
-  v4 = [(DEStackShotExtension *)self attachmentList];
-  v5 = [v4 mutableCopy];
+  attachmentList = [(DEStackShotExtension *)self attachmentList];
+  v5 = [attachmentList mutableCopy];
   v6 = [[NSDate alloc] initWithTimeIntervalSinceNow:-1800.0];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = v4;
+  v7 = attachmentList;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -42,8 +42,8 @@
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 modificationDate];
-        v14 = [v13 compare:v6];
+        modificationDate = [v12 modificationDate];
+        v14 = [modificationDate compare:v6];
 
         if (v14 == -1)
         {
@@ -63,10 +63,10 @@
     do
     {
       v16 = v15;
-      v17 = [(DEStackShotExtension *)self takeStackshot];
-      if (v17)
+      takeStackshot = [(DEStackShotExtension *)self takeStackshot];
+      if (takeStackshot)
       {
-        [v5 addObject:v17];
+        [v5 addObject:takeStackshot];
       }
 
       v15 = 0;
@@ -97,8 +97,8 @@ LABEL_11:
         v23 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v7 = [(DEStackShotExtension *)self attachmentList];
-        v8 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        attachmentList = [(DEStackShotExtension *)self attachmentList];
+        v8 = [attachmentList countByEnumeratingWithState:&v20 objects:v26 count:16];
         if (v8)
         {
           v9 = v8;
@@ -110,7 +110,7 @@ LABEL_11:
             {
               if (*v21 != v11)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(attachmentList);
               }
 
               v13 = *(*(&v20 + 1) + 8 * i);
@@ -119,9 +119,9 @@ LABEL_11:
                 v10 = v13;
               }
 
-              v14 = [v13 modificationDate];
-              v15 = [v10 modificationDate];
-              v16 = [v14 compare:v15];
+              modificationDate = [v13 modificationDate];
+              modificationDate2 = [v10 modificationDate];
+              v16 = [modificationDate compare:modificationDate2];
 
               if (v16 == 1)
               {
@@ -131,7 +131,7 @@ LABEL_11:
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v20 objects:v26 count:16];
+            v9 = [attachmentList countByEnumeratingWithState:&v20 objects:v26 count:16];
           }
 
           while (v9);

@@ -1,8 +1,8 @@
 @interface Window
 + (BOOL)_isSecure;
-- (_TtC10prototyped6Window)initWithCoder:(id)a3;
-- (_TtC10prototyped6Window)initWithFrame:(CGRect)a3;
-- (_TtC10prototyped6Window)initWithWindowScene:(id)a3;
+- (_TtC10prototyped6Window)initWithCoder:(id)coder;
+- (_TtC10prototyped6Window)initWithFrame:(CGRect)frame;
+- (_TtC10prototyped6Window)initWithWindowScene:(id)scene;
 @end
 
 @implementation Window
@@ -20,7 +20,7 @@
   return 1;
 }
 
-- (_TtC10prototyped6Window)initWithWindowScene:(id)a3
+- (_TtC10prototyped6Window)initWithWindowScene:(id)scene
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -32,17 +32,17 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for Window();
-  v5 = [(Window *)&v7 initWithWindowScene:a3];
+  v5 = [(Window *)&v7 initWithWindowScene:scene];
 
   return v5;
 }
 
-- (_TtC10prototyped6Window)initWithFrame:(CGRect)a3
+- (_TtC10prototyped6Window)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -53,12 +53,12 @@
 
   v10.receiver = self;
   v10.super_class = type metadata accessor for Window();
-  v8 = [(Window *)&v10 initWithFrame:x, y, width, height];
+  height = [(Window *)&v10 initWithFrame:x, y, width, height];
 
-  return v8;
+  return height;
 }
 
-- (_TtC10prototyped6Window)initWithCoder:(id)a3
+- (_TtC10prototyped6Window)initWithCoder:(id)coder
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -70,8 +70,8 @@
 
   v8.receiver = self;
   v8.super_class = type metadata accessor for Window();
-  v5 = a3;
-  v6 = [(Window *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(Window *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

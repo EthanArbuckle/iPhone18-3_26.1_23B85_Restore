@@ -1,12 +1,12 @@
 @interface HMAccessorySettingsController
 + (id)logCategory;
-- (HMAccessorySettingsController)initWithContext:(id)a3 messengerFactory:(id)a4 metricsDispatcher:(id)a5;
+- (HMAccessorySettingsController)initWithContext:(id)context messengerFactory:(id)factory metricsDispatcher:(id)dispatcher;
 - (HMAccessorySettingsControllerDataSource)dataSource;
 - (HMAccessorySettingsMessengerFactory)messengerFactory;
-- (id)dataSourceHomeWithHomeIdentifier:(id)a3;
-- (id)messengerWithHomeUUID:(id)a3;
-- (void)updateAccessorySettingWithAccessoryIdentifier:(id)a3 keyPath:(id)a4 settingValue:(id)a5 completionHandler:(id)a6;
-- (void)updateAccessorySettingWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 keyPath:(id)a5 settingValue:(id)a6 completionHandler:(id)a7;
+- (id)dataSourceHomeWithHomeIdentifier:(id)identifier;
+- (id)messengerWithHomeUUID:(id)d;
+- (void)updateAccessorySettingWithAccessoryIdentifier:(id)identifier keyPath:(id)path settingValue:(id)value completionHandler:(id)handler;
+- (void)updateAccessorySettingWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier keyPath:(id)path settingValue:(id)value completionHandler:(id)handler;
 @end
 
 @implementation HMAccessorySettingsController
@@ -25,21 +25,21 @@
   return WeakRetained;
 }
 
-- (id)dataSourceHomeWithHomeIdentifier:(id)a3
+- (id)dataSourceHomeWithHomeIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessorySettingsController *)self dataSource];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  dataSource = [(HMAccessorySettingsController *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 accessorySettingsController:self homeWithHomeIdentifier:v4];
+    v7 = [dataSource accessorySettingsController:self homeWithHomeIdentifier:identifierCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -58,16 +58,16 @@
   return v7;
 }
 
-- (id)messengerWithHomeUUID:(id)a3
+- (id)messengerWithHomeUUID:(id)d
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMAccessorySettingsController *)self messengerFactory];
+  dCopy = d;
+  messengerFactory = [(HMAccessorySettingsController *)self messengerFactory];
   os_unfair_lock_lock_with_options();
   messenger = self->_messenger;
   if (!messenger)
   {
-    v7 = [v5 createAccessorySettingsMessengerWithHomeUUID:v4];
+    v7 = [messengerFactory createAccessorySettingsMessengerWithHomeUUID:dCopy];
     v8 = self->_messenger;
     self->_messenger = v7;
 
@@ -79,7 +79,7 @@
   if (!v9)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -87,7 +87,7 @@
       v16 = 138543618;
       v17 = v13;
       v18 = 2112;
-      v19 = v5;
+      v19 = messengerFactory;
       _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_ERROR, "%{public}@Failed to get accessory settings messenger with factory: %@", &v16, 0x16u);
     }
 
@@ -99,16 +99,16 @@
   return v9;
 }
 
-- (void)updateAccessorySettingWithHomeIdentifier:(id)a3 accessoryIdentifier:(id)a4 keyPath:(id)a5 settingValue:(id)a6 completionHandler:(id)a7
+- (void)updateAccessorySettingWithHomeIdentifier:(id)identifier accessoryIdentifier:(id)accessoryIdentifier keyPath:(id)path settingValue:(id)value completionHandler:(id)handler
 {
   v67 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  identifierCopy = identifier;
+  accessoryIdentifierCopy = accessoryIdentifier;
+  pathCopy = path;
+  valueCopy = value;
+  handlerCopy = handler;
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
@@ -116,53 +116,53 @@
     *buf = 138544386;
     v58 = v20;
     v59 = 2112;
-    v60 = v12;
+    v60 = identifierCopy;
     v61 = 2112;
-    v62 = v13;
+    v62 = accessoryIdentifierCopy;
     v63 = 2114;
-    v64 = v14;
+    v64 = pathCopy;
     v65 = 2112;
-    v66 = v15;
+    v66 = valueCopy;
     _os_log_impl(&dword_19BB39000, v19, OS_LOG_TYPE_INFO, "%{public}@Updating accessory setting with home identifier: %@ accessory identifier: %@ key path: %{public}@ value: %@", buf, 0x34u);
   }
 
   objc_autoreleasePoolPop(v17);
-  v21 = [(HMAccessorySettingsController *)v18 dataSourceHomeWithHomeIdentifier:v12];
+  v21 = [(HMAccessorySettingsController *)selfCopy dataSourceHomeWithHomeIdentifier:identifierCopy];
   v22 = v21;
   if (v21)
   {
-    v23 = [v21 accessoryWithUniqueIdentifier:v13];
+    v23 = [v21 accessoryWithUniqueIdentifier:accessoryIdentifierCopy];
     if (v23)
     {
       v24 = v23;
-      v25 = [v22 uuid];
-      v26 = [(HMAccessorySettingsController *)v18 messengerWithHomeUUID:v25];
+      uuid = [v22 uuid];
+      context3 = [(HMAccessorySettingsController *)selfCopy messengerWithHomeUUID:uuid];
 
-      if (v26)
+      if (context3)
       {
-        v27 = [v24 uuid];
+        uuid2 = [v24 uuid];
         v53[0] = MEMORY[0x1E69E9820];
         v53[1] = 3221225472;
         v53[2] = __133__HMAccessorySettingsController_updateAccessorySettingWithHomeIdentifier_accessoryIdentifier_keyPath_settingValue_completionHandler___block_invoke;
         v53[3] = &unk_1E754C7E8;
-        v53[4] = v18;
-        v54 = v14;
-        v28 = v15;
-        v51 = v15;
-        v29 = v14;
+        v53[4] = selfCopy;
+        v54 = pathCopy;
+        v28 = valueCopy;
+        v51 = valueCopy;
+        v29 = pathCopy;
         v30 = v28;
         v55 = v28;
-        v56 = v16;
+        v56 = handlerCopy;
         v31 = v30;
-        v14 = v29;
-        v15 = v51;
-        [v26 sendUpdateAccessorySettingRequestWithAccessoryUUID:v27 keyPath:v54 settingValue:v31 completionHandler:v53];
+        pathCopy = v29;
+        valueCopy = v51;
+        [context3 sendUpdateAccessorySettingRequestWithAccessoryUUID:uuid2 keyPath:v54 settingValue:v31 completionHandler:v53];
       }
 
       else
       {
         v43 = objc_autoreleasePoolPush();
-        v44 = v18;
+        v44 = selfCopy;
         v45 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
@@ -177,18 +177,18 @@
 
         objc_autoreleasePoolPop(v43);
         v47 = [MEMORY[0x1E696ABC0] hmfErrorWithCode:15];
-        v48 = [(HMAccessorySettingsController *)v44 context];
-        v49 = [v48 delegateCaller];
-        [v49 callCompletion:v16 error:v47];
+        context = [(HMAccessorySettingsController *)v44 context];
+        delegateCaller = [context delegateCaller];
+        [delegateCaller callCompletion:handlerCopy error:v47];
 
-        v26 = 0;
+        context3 = 0;
       }
     }
 
     else
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = v18;
+      v38 = selfCopy;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -196,15 +196,15 @@
         *buf = 138543618;
         v58 = v40;
         v59 = 2112;
-        v60 = v13;
+        v60 = accessoryIdentifierCopy;
         _os_log_impl(&dword_19BB39000, v39, OS_LOG_TYPE_ERROR, "%{public}@Failed to update accessory setting due to unknown accessory identifier: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v37);
-      v26 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-      v41 = [(HMAccessorySettingsController *)v38 context];
-      v42 = [v41 delegateCaller];
-      [v42 callCompletion:v16 error:v26];
+      context3 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
+      context2 = [(HMAccessorySettingsController *)v38 context];
+      delegateCaller2 = [context2 delegateCaller];
+      [delegateCaller2 callCompletion:handlerCopy error:context3];
 
       v24 = 0;
     }
@@ -213,7 +213,7 @@
   else
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = v18;
+    v33 = selfCopy;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
@@ -221,15 +221,15 @@
       *buf = 138543618;
       v58 = v35;
       v59 = 2112;
-      v60 = v12;
+      v60 = identifierCopy;
       _os_log_impl(&dword_19BB39000, v34, OS_LOG_TYPE_ERROR, "%{public}@Failed to update accessory setting due to unknown home identifier: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v32);
     v24 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    v26 = [(HMAccessorySettingsController *)v33 context];
-    v36 = [v26 delegateCaller];
-    [v36 callCompletion:v16 error:v24];
+    context3 = [(HMAccessorySettingsController *)v33 context];
+    delegateCaller3 = [context3 delegateCaller];
+    [delegateCaller3 callCompletion:handlerCopy error:v24];
   }
 
   v50 = *MEMORY[0x1E69E9840];
@@ -288,26 +288,26 @@ LABEL_6:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (HMAccessorySettingsController)initWithContext:(id)a3 messengerFactory:(id)a4 metricsDispatcher:(id)a5
+- (HMAccessorySettingsController)initWithContext:(id)context messengerFactory:(id)factory metricsDispatcher:(id)dispatcher
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  contextCopy = context;
+  factoryCopy = factory;
+  dispatcherCopy = dispatcher;
+  if (!contextCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!factoryCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = dispatcherCopy;
+  if (!dispatcherCopy)
   {
 LABEL_9:
     v16 = _HMFPreconditionFailure();
@@ -320,9 +320,9 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_context, a3);
-    objc_storeWeak(&v14->_messengerFactory, v10);
-    objc_storeStrong(&v14->_metricsDispatcher, a5);
+    objc_storeStrong(&v13->_context, context);
+    objc_storeWeak(&v14->_messengerFactory, factoryCopy);
+    objc_storeStrong(&v14->_metricsDispatcher, dispatcher);
   }
 
   return v14;
@@ -348,28 +348,28 @@ uint64_t __44__HMAccessorySettingsController_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)updateAccessorySettingWithAccessoryIdentifier:(id)a3 keyPath:(id)a4 settingValue:(id)a5 completionHandler:(id)a6
+- (void)updateAccessorySettingWithAccessoryIdentifier:(id)identifier keyPath:(id)path settingValue:(id)value completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMAccessorySettingsController *)self context];
-  v15 = [v14 delegateCaller];
+  identifierCopy = identifier;
+  pathCopy = path;
+  valueCopy = value;
+  handlerCopy = handler;
+  context = [(HMAccessorySettingsController *)self context];
+  delegateCaller = [context delegateCaller];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __132__HMAccessorySettingsController_Deprecations__updateAccessorySettingWithAccessoryIdentifier_keyPath_settingValue_completionHandler___block_invoke;
   v20[3] = &unk_1E754D7A8;
   v20[4] = self;
-  v21 = v10;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v16 = v13;
-  v17 = v12;
-  v18 = v11;
-  v19 = v10;
-  [v15 invokeBlock:v20];
+  v21 = identifierCopy;
+  v22 = pathCopy;
+  v23 = valueCopy;
+  v24 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = valueCopy;
+  v18 = pathCopy;
+  v19 = identifierCopy;
+  [delegateCaller invokeBlock:v20];
 }
 
 void __132__HMAccessorySettingsController_Deprecations__updateAccessorySettingWithAccessoryIdentifier_keyPath_settingValue_completionHandler___block_invoke(uint64_t a1)

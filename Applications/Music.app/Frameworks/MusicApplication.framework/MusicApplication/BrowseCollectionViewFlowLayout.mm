@@ -1,50 +1,50 @@
 @interface BrowseCollectionViewFlowLayout
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3;
-- (CGPoint)_contentOffsetFromProposedContentOffset:(CGPoint)a3 forScrollingToItemAtIndexPath:(id)a4 atScrollPosition:(unint64_t)a5;
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change;
+- (CGPoint)_contentOffsetFromProposedContentOffset:(CGPoint)offset forScrollingToItemAtIndexPath:(id)path atScrollPosition:(unint64_t)position;
 - (CGSize)collectionViewContentSize;
 - (_TtC16MusicApplication30BrowseCollectionViewFlowLayout)init;
-- (_TtC16MusicApplication30BrowseCollectionViewFlowLayout)initWithCoder:(id)a3;
-- (id)invalidationContextForBoundsChange:(CGRect)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)invalidateLayoutWithContext:(id)a3;
+- (_TtC16MusicApplication30BrowseCollectionViewFlowLayout)initWithCoder:(id)coder;
+- (id)invalidationContextForBoundsChange:(CGRect)change;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)invalidateLayoutWithContext:(id)context;
 - (void)prepareLayout;
 @end
 
 @implementation BrowseCollectionViewFlowLayout
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)a3
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)change
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_2AC344();
 
   return v4 & 1;
 }
 
-- (id)invalidationContextForBoundsChange:(CGRect)a3
+- (id)invalidationContextForBoundsChange:(CGRect)change
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = change.size.height;
+  width = change.size.width;
+  y = change.origin.y;
+  x = change.origin.x;
+  selfCopy = self;
   sub_2AC448(x, y, width, height);
   v9 = v8;
 
   return v9;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_2AC768(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_2AC768(contextCopy);
 }
 
 - (void)prepareLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_2ACEF4();
 }
 
@@ -65,13 +65,13 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   v8 = sub_2AD0E4(x, y, width, height);
 
   if (v8)
@@ -88,15 +88,15 @@
   return v9.super.isa;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
   v5 = sub_AB3820();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB3790();
-  v9 = a3;
-  v10 = self;
+  pathCopy = path;
+  selfCopy = self;
   v11 = sub_2ADD4C();
 
   (*(v6 + 8))(v8, v5);
@@ -104,7 +104,7 @@
   return v11;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v7 = sub_AB3820();
   v8 = *(v7 - 8);
@@ -113,9 +113,9 @@
   v11 = sub_AB92A0();
   v13 = v12;
   sub_AB3790();
-  v14 = a3;
-  v15 = a4;
-  v16 = self;
+  kindCopy = kind;
+  pathCopy = path;
+  selfCopy = self;
   v17 = sub_2ADF84(v11, v13);
 
   (*(v8 + 8))(v10, v7);
@@ -123,16 +123,16 @@
   return v17;
 }
 
-- (CGPoint)_contentOffsetFromProposedContentOffset:(CGPoint)a3 forScrollingToItemAtIndexPath:(id)a4 atScrollPosition:(unint64_t)a5
+- (CGPoint)_contentOffsetFromProposedContentOffset:(CGPoint)offset forScrollingToItemAtIndexPath:(id)path atScrollPosition:(unint64_t)position
 {
   v8 = sub_AB3820();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v20 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_AB3790();
-  v12 = a4;
-  v13 = self;
-  sub_2AE734(v11, a5);
+  pathCopy = path;
+  selfCopy = self;
+  sub_2AE734(v11, position);
   v15 = v14;
   v17 = v16;
 
@@ -156,17 +156,17 @@
   return [(BrowseCollectionViewFlowLayout *)&v5 init];
 }
 
-- (_TtC16MusicApplication30BrowseCollectionViewFlowLayout)initWithCoder:(id)a3
+- (_TtC16MusicApplication30BrowseCollectionViewFlowLayout)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication30BrowseCollectionViewFlowLayout_customSectionHeadersPinToVisibleBounds) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication30BrowseCollectionViewFlowLayout_globalHeaderHeight) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication30BrowseCollectionViewFlowLayout_globalFooterHeight) = 0;
   v4 = OBJC_IVAR____TtC16MusicApplication30BrowseCollectionViewFlowLayout_returnedSupplementaryViewIndexPaths;
-  v5 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.isa + v4) = sub_98FF4(_swiftEmptyArrayStorage);
   v8.receiver = self;
   v8.super_class = type metadata accessor for BrowseCollectionViewFlowLayout();
-  v6 = [(BrowseCollectionViewFlowLayout *)&v8 initWithCoder:v5];
+  v6 = [(BrowseCollectionViewFlowLayout *)&v8 initWithCoder:coderCopy];
 
   return v6;
 }

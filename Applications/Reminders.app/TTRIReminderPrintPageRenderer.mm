@@ -1,25 +1,25 @@
 @interface TTRIReminderPrintPageRenderer
 - (_TtC9Reminders29TTRIReminderPrintPageRenderer)init;
 - (int64_t)numberOfPages;
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)drawFooterForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4;
-- (void)prepareForDrawingPages:(_NSRange)a3;
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)drawFooterForPageAtIndex:(int64_t)index inRect:(CGRect)rect;
+- (void)prepareForDrawingPages:(_NSRange)pages;
 @end
 
 @implementation TTRIReminderPrintPageRenderer
 
 - (int64_t)numberOfPages
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1005B8B88();
 
   return v3;
 }
 
-- (void)prepareForDrawingPages:(_NSRange)a3
+- (void)prepareForDrawingPages:(_NSRange)pages
 {
-  length = a3.length;
-  location = a3.location;
+  length = pages.length;
+  location = pages.location;
   ObjectType = swift_getObjectType();
   v7 = self + OBJC_IVAR____TtC9Reminders29TTRIReminderPrintPageRenderer_pageRange;
   *v7 = location;
@@ -30,25 +30,25 @@
   [(TTRIReminderPrintPageRenderer *)&v8 prepareForDrawingPages:location, length];
 }
 
-- (void)drawContentForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawContentForPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  [(TTRIReminderPrintPageRenderer *)&v9 drawContentForPageAtIndex:a3 inRect:x, y, width, height];
+  [(TTRIReminderPrintPageRenderer *)&v9 drawContentForPageAtIndex:index inRect:x, y, width, height];
 }
 
-- (void)drawFooterForPageAtIndex:(int64_t)a3 inRect:(CGRect)a4
+- (void)drawFooterForPageAtIndex:(int64_t)index inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = self;
-  sub_1005B8FD4(a3, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
+  sub_1005B8FD4(index, x, y, width, height);
 }
 
 - (_TtC9Reminders29TTRIReminderPrintPageRenderer)init

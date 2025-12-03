@@ -1,27 +1,27 @@
 @interface SBHSpecialWidgetDescriptor
-- (BOOL)isEqual:(id)a3;
-- (SBHSpecialWidgetDescriptor)initWithCoder:(id)a3;
-- (id)_initWithType:(unint64_t)a3 supportedSizeClasses:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (SBHSpecialWidgetDescriptor)initWithCoder:(id)coder;
+- (id)_initWithType:(unint64_t)type supportedSizeClasses:(unint64_t)classes;
 - (id)accentColor;
 - (id)backgroundColor;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)succinctDescriptionBuilder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBHSpecialWidgetDescriptor
 
-- (id)_initWithType:(unint64_t)a3 supportedSizeClasses:(unint64_t)a4
+- (id)_initWithType:(unint64_t)type supportedSizeClasses:(unint64_t)classes
 {
   v7 = [objc_alloc(MEMORY[0x1E6994290]) initWithExtensionBundleIdentifier:&stru_1F3D472A8 containerBundleIdentifier:0 deviceIdentifier:0];
   v21.receiver = self;
   v21.super_class = SBHSpecialWidgetDescriptor;
-  v8 = [(SBHSpecialWidgetDescriptor *)&v21 initWithExtensionIdentity:v7 kind:&stru_1F3D472A8 supportedFamilies:a4 intentType:0];
+  v8 = [(SBHSpecialWidgetDescriptor *)&v21 initWithExtensionIdentity:v7 kind:&stru_1F3D472A8 supportedFamilies:classes intentType:0];
   if (v8)
   {
-    v9 = a3 - 1;
-    if (a3 - 1 > 5)
+    v9 = type - 1;
+    if (type - 1 > 5)
     {
       v12 = @"None";
     }
@@ -53,7 +53,7 @@
     description = v8->_description;
     v8->_description = v18;
 
-    v8->_type = a3;
+    v8->_type = type;
   }
 
   return v8;
@@ -63,37 +63,37 @@
 {
   if (self->_type == 5)
   {
-    v4 = [MEMORY[0x1E69DC888] systemTealColor];
+    systemTealColor = [MEMORY[0x1E69DC888] systemTealColor];
   }
 
   else
   {
-    v4 = 0;
+    systemTealColor = 0;
   }
 
-  return v4;
+  return systemTealColor;
 }
 
 - (id)accentColor
 {
   if (self->_type == 5)
   {
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v4 = 0;
+    whiteColor = 0;
   }
 
-  return v4;
+  return whiteColor;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = equalCopy;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -135,8 +135,8 @@
   v7.receiver = self;
   v7.super_class = SBHSpecialWidgetDescriptor;
   v3 = [(SBHSpecialWidgetDescriptor *)&v7 hash];
-  v4 = [(SBHSpecialWidgetDescriptor *)self displayName];
-  v5 = [v4 hash];
+  displayName = [(SBHSpecialWidgetDescriptor *)self displayName];
+  v5 = [displayName hash];
 
   return v5 ^ v3;
 }
@@ -145,42 +145,42 @@
 {
   v5.receiver = self;
   v5.super_class = SBHSpecialWidgetDescriptor;
-  v3 = [(SBHSpecialWidgetDescriptor *)&v5 succinctDescriptionBuilder];
-  [v3 appendString:self->_displayName withName:@"displayName"];
-  [v3 appendString:self->_description withName:@"description"];
+  succinctDescriptionBuilder = [(SBHSpecialWidgetDescriptor *)&v5 succinctDescriptionBuilder];
+  [succinctDescriptionBuilder appendString:self->_displayName withName:@"displayName"];
+  [succinctDescriptionBuilder appendString:self->_description withName:@"description"];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v6.receiver = self;
   v6.super_class = SBHSpecialWidgetDescriptor;
-  v4 = [(SBHSpecialWidgetDescriptor *)&v6 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBHSpecialWidgetDescriptor *)&v6 descriptionBuilderWithMultilinePrefix:prefix];
   [v4 appendString:self->_displayName withName:@"displayName"];
   [v4 appendString:self->_description withName:@"description"];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SBHSpecialWidgetDescriptor;
-  v4 = a3;
-  [(SBHSpecialWidgetDescriptor *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SBHSpecialWidgetDescriptor *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_type forKey:{@"type", v5.receiver, v5.super_class}];
 }
 
-- (SBHSpecialWidgetDescriptor)initWithCoder:(id)a3
+- (SBHSpecialWidgetDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SBHSpecialWidgetDescriptor;
-  v5 = [(SBHSpecialWidgetDescriptor *)&v7 initWithCoder:v4];
+  v5 = [(SBHSpecialWidgetDescriptor *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;

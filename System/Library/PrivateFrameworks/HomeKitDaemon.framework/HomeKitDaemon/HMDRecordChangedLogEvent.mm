@@ -1,22 +1,22 @@
 @interface HMDRecordChangedLogEvent
-+ (id)legacyRecordChanged:(id)a3;
-+ (id)recordChanged:(id)a3;
++ (id)legacyRecordChanged:(id)changed;
++ (id)recordChanged:(id)changed;
 @end
 
 @implementation HMDRecordChangedLogEvent
 
-+ (id)legacyRecordChanged:(id)a3
++ (id)legacyRecordChanged:(id)changed
 {
-  v3 = a3;
-  v4 = [[HMDRecordChangedLogEvent alloc] initWithChangedRecord:v3 isLegacy:1];
+  changedCopy = changed;
+  v4 = [[HMDRecordChangedLogEvent alloc] initWithChangedRecord:changedCopy isLegacy:1];
 
   return v4;
 }
 
-+ (id)recordChanged:(id)a3
++ (id)recordChanged:(id)changed
 {
-  v3 = a3;
-  v4 = [[HMDRecordChangedLogEvent alloc] initWithChangedRecord:v3 isLegacy:0];
+  changedCopy = changed;
+  v4 = [[HMDRecordChangedLogEvent alloc] initWithChangedRecord:changedCopy isLegacy:0];
 
   return v4;
 }

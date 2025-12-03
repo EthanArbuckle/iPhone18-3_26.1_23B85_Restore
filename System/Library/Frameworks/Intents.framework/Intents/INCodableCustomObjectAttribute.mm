@@ -1,10 +1,10 @@
 @interface INCodableCustomObjectAttribute
-+ (BOOL)_isSupportedClass:(Class)a3;
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)_isSupportedClass:(Class)class;
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (Class)_unsafeObjectClass;
 - (Class)objectClass;
-- (INCodableCustomObjectAttribute)initWithCoder:(id)a3;
+- (INCodableCustomObjectAttribute)initWithCoder:(id)coder;
 - (INCodableDescription)codableDescription;
 - (id)__INCodableDescriptionObjectTypeKey;
 - (id)__INCodableDescriptionObjectTypeNamespaceKey;
@@ -12,33 +12,33 @@
 - (id)__INIntentResponseCodableDescriptionObjectTypeNamespaceKey;
 - (id)__INTypeCodableDescriptionObjectTypeKey;
 - (id)__INTypeCodableDescriptionObjectTypeNamespaceKey;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)dictionaryRepresentationWithLocalizer:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer;
 - (id)valueTransformer;
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4;
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error;
 - (unint64_t)hash;
 - (void)_assignCodableDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateWithDictionary:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateWithDictionary:(id)dictionary;
 @end
 
 @implementation INCodableCustomObjectAttribute
 
 - (id)valueTransformer
 {
-  v3 = [(INCodableCustomObjectAttribute *)self codableDescription];
+  codableDescription = [(INCodableCustomObjectAttribute *)self codableDescription];
   v4 = MEMORY[0x1E696B0A0];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__INCodableCustomObjectAttribute_valueTransformer__block_invoke;
   v11[3] = &unk_1E7282F78;
-  v12 = v3;
+  v12 = codableDescription;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__INCodableCustomObjectAttribute_valueTransformer__block_invoke_2;
   v8[3] = &unk_1E7282FA0;
   v9 = v12;
-  v10 = self;
+  selfCopy = self;
   v5 = v12;
   v6 = [v4 if_transformerUsingForwardTransformation:v11 reverseTransformation:v8];
 
@@ -50,16 +50,16 @@
   WeakRetained = objc_loadWeakRetained(&self->_codableDescription);
   if (!WeakRetained)
   {
-    v4 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
-    v5 = [v4 isEqualToString:@"System"];
+    objectTypeNamespace = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
+    v5 = [objectTypeNamespace isEqualToString:@"System"];
 
     if (v5)
     {
       v6 = +[INSchema systemSchema];
-      v7 = [v6 _types];
-      v8 = [(INCodableCustomObjectAttribute *)self objectTypeName];
-      v9 = INIntentDefinitionNamespacedName(@"System", v8);
-      WeakRetained = [v7 objectForKeyedSubscript:v9];
+      _types = [v6 _types];
+      objectTypeName = [(INCodableCustomObjectAttribute *)self objectTypeName];
+      v9 = INIntentDefinitionNamespacedName(@"System", objectTypeName);
+      WeakRetained = [_types objectForKeyedSubscript:v9];
     }
 
     else
@@ -279,10 +279,10 @@ id __50__INCodableCustomObjectAttribute_valueTransformer__block_invoke_2(uint64_
 
 - (unint64_t)hash
 {
-  v3 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
-  v4 = [v3 hash];
-  v5 = [(INCodableCustomObjectAttribute *)self objectTypeName];
-  v6 = [v5 hash] ^ v4;
+  objectTypeNamespace = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
+  v4 = [objectTypeNamespace hash];
+  objectTypeName = [(INCodableCustomObjectAttribute *)self objectTypeName];
+  v6 = [objectTypeName hash] ^ v4;
   v9.receiver = self;
   v9.super_class = INCodableCustomObjectAttribute;
   v7 = [(INCodableObjectAttribute *)&v9 hash];
@@ -292,43 +292,43 @@ id __50__INCodableCustomObjectAttribute_valueTransformer__block_invoke_2(uint64_
 
 - (id)__INCodableDescriptionObjectTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableCustomObjectAttributeObjectTypeKey = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeKey];
 
-  return v3;
+  return __INCodableCustomObjectAttributeObjectTypeKey;
 }
 
 - (id)__INCodableDescriptionObjectTypeNamespaceKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeNamespaceKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableCustomObjectAttributeObjectTypeNamespaceKey = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeNamespaceKey];
 
-  return v3;
+  return __INCodableCustomObjectAttributeObjectTypeNamespaceKey;
 }
 
 - (void)_assignCodableDescription
 {
-  v3 = [(INCodableAttribute *)self _codableDescription];
-  v15 = [v3 schema];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  schema = [_codableDescription schema];
 
-  v4 = [v15 _types];
-  v5 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
-  v6 = [(INCodableCustomObjectAttribute *)self objectTypeName];
-  v7 = INIntentDefinitionNamespacedName(v5, v6);
-  v8 = [v4 objectForKeyedSubscript:v7];
+  _types = [schema _types];
+  objectTypeNamespace = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
+  objectTypeName = [(INCodableCustomObjectAttribute *)self objectTypeName];
+  v7 = INIntentDefinitionNamespacedName(objectTypeNamespace, objectTypeName);
+  v8 = [_types objectForKeyedSubscript:v7];
 
-  if (([v15 isSystem] & 1) == 0 && !v8)
+  if (([schema isSystem] & 1) == 0 && !v8)
   {
-    v9 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
-    v10 = [v9 isEqualToString:@"System"];
+    objectTypeNamespace2 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
+    v10 = [objectTypeNamespace2 isEqualToString:@"System"];
 
     if (v10)
     {
       v11 = +[INSchema systemSchema];
-      v12 = [v11 _types];
-      v13 = [(INCodableCustomObjectAttribute *)self objectTypeName];
-      v14 = INIntentDefinitionNamespacedName(@"System", v13);
-      v8 = [v12 objectForKeyedSubscript:v14];
+      _types2 = [v11 _types];
+      objectTypeName2 = [(INCodableCustomObjectAttribute *)self objectTypeName];
+      v14 = INIntentDefinitionNamespacedName(@"System", objectTypeName2);
+      v8 = [_types2 objectForKeyedSubscript:v14];
     }
 
     else
@@ -340,56 +340,56 @@ id __50__INCodableCustomObjectAttribute_valueTransformer__block_invoke_2(uint64_
   objc_storeWeak(&self->_codableDescription, v8);
 }
 
-- (INCodableCustomObjectAttribute)initWithCoder:(id)a3
+- (INCodableCustomObjectAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = INCodableCustomObjectAttribute;
-  v5 = [(INCodableObjectAttribute *)&v12 initWithCoder:v4];
+  v5 = [(INCodableObjectAttribute *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectTypeName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectTypeName"];
     objectTypeName = v5->_objectTypeName;
     v5->_objectTypeName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectTypeNamespace"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectTypeNamespace"];
     objectTypeNamespace = v5->_objectTypeNamespace;
     v5->_objectTypeNamespace = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"codableDescription"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"codableDescription"];
     objc_storeWeak(&v5->_codableDescription, v10);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = INCodableCustomObjectAttribute;
-  v4 = a3;
-  [(INCodableObjectAttribute *)&v6 encodeWithCoder:v4];
-  [v4 encodeObject:self->_objectTypeName forKey:{@"objectTypeName", v6.receiver, v6.super_class}];
-  [v4 encodeObject:self->_objectTypeNamespace forKey:@"objectTypeNamespace"];
+  coderCopy = coder;
+  [(INCodableObjectAttribute *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_objectTypeName forKey:{@"objectTypeName", v6.receiver, v6.super_class}];
+  [coderCopy encodeObject:self->_objectTypeNamespace forKey:@"objectTypeNamespace"];
   WeakRetained = objc_loadWeakRetained(&self->_codableDescription);
-  [v4 encodeConditionalObject:WeakRetained forKey:@"codableDescription"];
+  [coderCopy encodeConditionalObject:WeakRetained forKey:@"codableDescription"];
 }
 
-- (id)widgetPlistableRepresentationWithParameters:(id)a3 error:(id *)a4
+- (id)widgetPlistableRepresentationWithParameters:(id)parameters error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = INCodableCustomObjectAttribute;
   v13 = 0;
-  v6 = [(INCodableObjectAttribute *)&v12 widgetPlistableRepresentationWithParameters:a3 error:&v13];
+  v6 = [(INCodableObjectAttribute *)&v12 widgetPlistableRepresentationWithParameters:parameters error:&v13];
   v7 = v13;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
       v10 = 0;
-      *a4 = v8;
+      *error = v8;
     }
 
     else
@@ -408,112 +408,112 @@ id __50__INCodableCustomObjectAttribute_valueTransformer__block_invoke_2(uint64_
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = INCodableCustomObjectAttribute;
-  v4 = [(INCodableObjectAttribute *)&v9 copyWithZone:a3];
-  v5 = [(INCodableCustomObjectAttribute *)self objectTypeName];
-  [v4 setObjectTypeName:v5];
+  v4 = [(INCodableObjectAttribute *)&v9 copyWithZone:zone];
+  objectTypeName = [(INCodableCustomObjectAttribute *)self objectTypeName];
+  [v4 setObjectTypeName:objectTypeName];
 
-  v6 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
-  [v4 setObjectTypeNamespace:v6];
+  objectTypeNamespace = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
+  [v4 setObjectTypeNamespace:objectTypeNamespace];
 
-  v7 = [(INCodableCustomObjectAttribute *)self codableDescription];
-  [v4 setCodableDescription:v7];
+  codableDescription = [(INCodableCustomObjectAttribute *)self codableDescription];
+  [v4 setCodableDescription:codableDescription];
 
   return v4;
 }
 
-- (id)dictionaryRepresentationWithLocalizer:(id)a3
+- (id)dictionaryRepresentationWithLocalizer:(id)localizer
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = INCodableCustomObjectAttribute;
-  v4 = [(INCodableObjectAttribute *)&v16 dictionaryRepresentationWithLocalizer:a3];
-  v5 = [(INCodableCustomObjectAttribute *)self __INCodableDescriptionObjectTypeNamespaceKey];
-  v17[0] = v5;
-  v6 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
-  v7 = v6;
-  if (!v6)
+  v4 = [(INCodableObjectAttribute *)&v16 dictionaryRepresentationWithLocalizer:localizer];
+  __INCodableDescriptionObjectTypeNamespaceKey = [(INCodableCustomObjectAttribute *)self __INCodableDescriptionObjectTypeNamespaceKey];
+  v17[0] = __INCodableDescriptionObjectTypeNamespaceKey;
+  objectTypeNamespace = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
+  null = objectTypeNamespace;
+  if (!objectTypeNamespace)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[0] = v7;
-  v8 = [(INCodableCustomObjectAttribute *)self __INCodableDescriptionObjectTypeKey];
-  v17[1] = v8;
-  v9 = [(INCodableCustomObjectAttribute *)self objectTypeName];
-  v10 = v9;
-  if (!v9)
+  v18[0] = null;
+  __INCodableDescriptionObjectTypeKey = [(INCodableCustomObjectAttribute *)self __INCodableDescriptionObjectTypeKey];
+  v17[1] = __INCodableDescriptionObjectTypeKey;
+  objectTypeName = [(INCodableCustomObjectAttribute *)self objectTypeName];
+  null2 = objectTypeName;
+  if (!objectTypeName)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18[1] = v10;
+  v18[1] = null2;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
   v12 = [v4 if_dictionaryByAddingEntriesFromDictionary:v11];
 
-  if (!v9)
+  if (!objectTypeName)
   {
   }
 
-  if (!v6)
+  if (!objectTypeNamespace)
   {
   }
 
-  v13 = [v12 if_dictionaryWithNonEmptyValues];
+  if_dictionaryWithNonEmptyValues = [v12 if_dictionaryWithNonEmptyValues];
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return if_dictionaryWithNonEmptyValues;
 }
 
-- (void)updateWithDictionary:(id)a3
+- (void)updateWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(INCodableCustomObjectAttribute *)self __INCodableDescriptionObjectTypeKey];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  dictionaryCopy = dictionary;
+  __INCodableDescriptionObjectTypeKey = [(INCodableCustomObjectAttribute *)self __INCodableDescriptionObjectTypeKey];
+  v6 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionObjectTypeKey];
   objectTypeName = self->_objectTypeName;
   self->_objectTypeName = v6;
 
-  v8 = [(INCodableCustomObjectAttribute *)self __INCodableDescriptionObjectTypeNamespaceKey];
-  v9 = [v4 objectForKeyedSubscript:v8];
+  __INCodableDescriptionObjectTypeNamespaceKey = [(INCodableCustomObjectAttribute *)self __INCodableDescriptionObjectTypeNamespaceKey];
+  v9 = [dictionaryCopy objectForKeyedSubscript:__INCodableDescriptionObjectTypeNamespaceKey];
   objectTypeNamespace = self->_objectTypeNamespace;
   self->_objectTypeNamespace = v9;
 
   [(INCodableCustomObjectAttribute *)self _assignCodableDescription];
   v11.receiver = self;
   v11.super_class = INCodableCustomObjectAttribute;
-  [(INCodableObjectAttribute *)&v11 updateWithDictionary:v4];
+  [(INCodableObjectAttribute *)&v11 updateWithDictionary:dictionaryCopy];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
+  equalCopy = equal;
   v16.receiver = self;
   v16.super_class = INCodableCustomObjectAttribute;
-  if ([(INCodableObjectAttribute *)&v16 isEqual:v5])
+  if ([(INCodableObjectAttribute *)&v16 isEqual:equalCopy])
   {
-    v6 = [(INCodableCustomObjectAttribute *)self objectTypeName];
-    if (v6 || ([v5 objectTypeName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    objectTypeName = [(INCodableCustomObjectAttribute *)self objectTypeName];
+    if (objectTypeName || ([equalCopy objectTypeName], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v7 = [(INCodableCustomObjectAttribute *)self objectTypeName];
-      v8 = [v5 objectTypeName];
-      v9 = [v7 isEqual:v8];
+      objectTypeName2 = [(INCodableCustomObjectAttribute *)self objectTypeName];
+      objectTypeName3 = [equalCopy objectTypeName];
+      v9 = [objectTypeName2 isEqual:objectTypeName3];
 
-      if (v6)
+      if (objectTypeName)
       {
 LABEL_9:
 
-        v11 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
-        if (v11 || ([v5 objectTypeNamespace], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+        objectTypeNamespace = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
+        if (objectTypeNamespace || ([equalCopy objectTypeNamespace], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
         {
-          v12 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
-          v13 = [v5 objectTypeNamespace];
-          v14 = [v12 isEqual:v13];
+          objectTypeNamespace2 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
+          objectTypeNamespace3 = [equalCopy objectTypeNamespace];
+          v14 = [objectTypeNamespace2 isEqual:objectTypeNamespace3];
 
-          if (v11)
+          if (objectTypeNamespace)
           {
 LABEL_15:
 
@@ -548,14 +548,14 @@ LABEL_16:
 - (Class)_unsafeObjectClass
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(INCodableCustomObjectAttribute *)self objectClass];
-  if (v3 == objc_opt_class())
+  objectClass = [(INCodableCustomObjectAttribute *)self objectClass];
+  if (objectClass == objc_opt_class())
   {
-    v4 = [(INCodableCustomObjectAttribute *)self codableDescription];
-    v5 = [v4 className];
-    v3 = NSClassFromString(v5);
+    codableDescription = [(INCodableCustomObjectAttribute *)self codableDescription];
+    className = [codableDescription className];
+    objectClass = NSClassFromString(className);
 
-    if (([objc_opt_class() _isSupportedClass:v3] & 1) == 0)
+    if (([objc_opt_class() _isSupportedClass:objectClass] & 1) == 0)
     {
       v6 = INSiriLogContextIntents;
       if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_FAULT))
@@ -566,39 +566,39 @@ LABEL_16:
         v12 = 2114;
         v13 = objc_opt_class();
         v14 = 2114;
-        v15 = v3;
+        v15 = objectClass;
         _os_log_fault_impl(&dword_18E991000, v9, OS_LOG_TYPE_FAULT, "%s Use of %{public}@ on a class outside of allowed classes: %{public}@", &v10, 0x20u);
       }
 
-      v3 = 0;
+      objectClass = 0;
     }
   }
 
   v7 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return objectClass;
 }
 
 - (Class)objectClass
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
-  v4 = [v3 isEqualToString:@"System"];
+  objectTypeNamespace = [(INCodableCustomObjectAttribute *)self objectTypeNamespace];
+  v4 = [objectTypeNamespace isEqualToString:@"System"];
 
   if (v4)
   {
     v5 = +[INSchema systemSchema];
-    v6 = [v5 _types];
-    v7 = [(INCodableCustomObjectAttribute *)self objectTypeName];
-    v8 = INIntentDefinitionNamespacedName(@"System", v7);
-    v9 = [v6 objectForKeyedSubscript:v8];
+    _types = [v5 _types];
+    objectTypeName = [(INCodableCustomObjectAttribute *)self objectTypeName];
+    v8 = INIntentDefinitionNamespacedName(@"System", objectTypeName);
+    v9 = [_types objectForKeyedSubscript:v8];
 
-    v10 = [v9 className];
+    className = [v9 className];
 
-    if (v10)
+    if (className)
     {
-      v11 = [v9 className];
-      v12 = NSClassFromString(v11);
+      className2 = [v9 className];
+      v12 = NSClassFromString(className2);
 
       if ([objc_opt_class() _isSupportedClass:v12])
       {
@@ -634,22 +634,22 @@ LABEL_10:
   return v12;
 }
 
-+ (id)makeFromWidgetPlistableRepresentation:(id)a3 error:(id *)a4
++ (id)makeFromWidgetPlistableRepresentation:(id)representation error:(id *)error
 {
-  v6 = a3;
-  v17.receiver = a1;
+  representationCopy = representation;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___INCodableCustomObjectAttribute;
   v18 = 0;
-  v7 = objc_msgSendSuper2(&v17, sel_makeFromWidgetPlistableRepresentation_error_, v6, &v18);
+  v7 = objc_msgSendSuper2(&v17, sel_makeFromWidgetPlistableRepresentation_error_, representationCopy, &v18);
   v8 = v18;
   v9 = v8;
   if (v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -660,11 +660,11 @@ LABEL_10:
 
   else
   {
-    v12 = [v6 intents_stringForKey:@"objectTypeName"];
+    v12 = [representationCopy intents_stringForKey:@"objectTypeName"];
     v13 = v7[22];
     v7[22] = v12;
 
-    v14 = [v6 intents_stringForKey:@"objectTypeNamespace"];
+    v14 = [representationCopy intents_stringForKey:@"objectTypeNamespace"];
     v15 = v7[23];
     v7[23] = v14;
 
@@ -674,52 +674,52 @@ LABEL_10:
   return v11;
 }
 
-+ (BOOL)_isSupportedClass:(Class)a3
++ (BOOL)_isSupportedClass:(Class)class
 {
   v4 = [MEMORY[0x1E696AAE8] bundleForClass:?];
   v5 = +[INSchema _supportedClasses];
-  v6 = [v5 containsObject:a3];
+  v6 = [v5 containsObject:class];
 
-  LOBYTE(v5) = [(objc_class *)a3 isSubclassOfClass:objc_opt_class()];
-  v7 = [v4 bundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.siri.IntentsTests"];
+  LOBYTE(v5) = [(objc_class *)class isSubclassOfClass:objc_opt_class()];
+  bundleIdentifier = [v4 bundleIdentifier];
+  v8 = [bundleIdentifier isEqualToString:@"com.apple.siri.IntentsTests"];
 
-  LOBYTE(v7) = objc_opt_class() == a3;
-  LOBYTE(a3) = (a3 == 0) | v6 | v5 | v8 | v7 | (objc_opt_class() == a3);
+  LOBYTE(bundleIdentifier) = objc_opt_class() == class;
+  LOBYTE(class) = (class == 0) | v6 | v5 | v8 | bundleIdentifier | (objc_opt_class() == class);
 
-  return a3 & 1;
+  return class & 1;
 }
 
 - (id)__INTypeCodableDescriptionObjectTypeNamespaceKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeNamespaceKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableCustomObjectAttributeObjectTypeNamespaceKey = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeNamespaceKey];
 
-  return v3;
+  return __INCodableCustomObjectAttributeObjectTypeNamespaceKey;
 }
 
 - (id)__INTypeCodableDescriptionObjectTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableCustomObjectAttributeObjectTypeKey = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeKey];
 
-  return v3;
+  return __INCodableCustomObjectAttributeObjectTypeKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionObjectTypeNamespaceKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeNamespaceKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableCustomObjectAttributeObjectTypeNamespaceKey = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeNamespaceKey];
 
-  return v3;
+  return __INCodableCustomObjectAttributeObjectTypeNamespaceKey;
 }
 
 - (id)__INIntentResponseCodableDescriptionObjectTypeKey
 {
-  v2 = [(INCodableAttribute *)self _codableDescription];
-  v3 = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeKey];
+  _codableDescription = [(INCodableAttribute *)self _codableDescription];
+  __INCodableCustomObjectAttributeObjectTypeKey = [objc_opt_class() __INCodableCustomObjectAttributeObjectTypeKey];
 
-  return v3;
+  return __INCodableCustomObjectAttributeObjectTypeKey;
 }
 
 @end

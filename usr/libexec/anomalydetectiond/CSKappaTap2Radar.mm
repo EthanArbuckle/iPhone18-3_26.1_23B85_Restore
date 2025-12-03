@@ -1,33 +1,33 @@
 @interface CSKappaTap2Radar
-- (BOOL)createNotification:(id)a3 confirmation:(__CFUserNotification *)a4 error:(id *)a5;
-- (BOOL)enqueueTTRWithTriggerUUID:(id)a3 error:(id *)a4;
-- (BOOL)showPrivacyNotificationWithError:(id *)a3;
-- (BOOL)startMonitoringWithError:(id *)a3;
-- (CSKappaTap2Radar)initWithSpoolerFolder:(id)a3 andConfiguration:(id)a4;
-- (CSKappaTap2Radar)radarWithResult:(CSKappaTap2RadarConfirmation_struct)a3 triggerUUID:(id)a4 ttrType:(int64_t)a5 error:(id *)a6;
-- (CSKappaTap2RadarConfirmation_struct)showConfirmationWithError:(id *)a3 andEventType:(int64_t)a4;
-- (unint64_t)getNotificationResponse:(__CFUserNotification *)a3 error:(id *)a4;
-- (void)showTTRWithTriggerUUID:(id)a3 andEventType:(int64_t)a4;
+- (BOOL)createNotification:(id)notification confirmation:(__CFUserNotification *)confirmation error:(id *)error;
+- (BOOL)enqueueTTRWithTriggerUUID:(id)d error:(id *)error;
+- (BOOL)showPrivacyNotificationWithError:(id *)error;
+- (BOOL)startMonitoringWithError:(id *)error;
+- (CSKappaTap2Radar)initWithSpoolerFolder:(id)folder andConfiguration:(id)configuration;
+- (CSKappaTap2Radar)radarWithResult:(CSKappaTap2RadarConfirmation_struct)result triggerUUID:(id)d ttrType:(int64_t)type error:(id *)error;
+- (CSKappaTap2RadarConfirmation_struct)showConfirmationWithError:(id *)error andEventType:(int64_t)type;
+- (unint64_t)getNotificationResponse:(__CFUserNotification *)response error:(id *)error;
+- (void)showTTRWithTriggerUUID:(id)d andEventType:(int64_t)type;
 @end
 
 @implementation CSKappaTap2Radar
 
-- (CSKappaTap2Radar)initWithSpoolerFolder:(id)a3 andConfiguration:(id)a4
+- (CSKappaTap2Radar)initWithSpoolerFolder:(id)folder andConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  folderCopy = folder;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = CSKappaTap2Radar;
   v8 = [(CSKappaTap2Radar *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_config, a4);
+    objc_storeStrong(&v8->_config, configuration);
     v9->_monitoring = 0;
     ttrMonitor = v9->_ttrMonitor;
     v9->_ttrMonitor = 0;
 
-    v11 = [[NSURL alloc] initFileURLWithPath:v6 isDirectory:1];
+    v11 = [[NSURL alloc] initFileURLWithPath:folderCopy isDirectory:1];
     folderURL = v9->_folderURL;
     v9->_folderURL = v11;
 
@@ -53,14 +53,14 @@
   return v9;
 }
 
-- (BOOL)startMonitoringWithError:(id *)a3
+- (BOOL)startMonitoringWithError:(id *)error
 {
   v5 = +[SOSUtilities isKappaVisible];
   v6 = +[CSPlatformInfo sharedInstance];
   v7 = v6;
   if (!v5 || [v6 getSystemReleaseType] != 2)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_12;
     }
@@ -75,14 +75,14 @@
     v21 = NSLocalizedDescriptionKey;
     v22 = v17;
     v18 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    *a3 = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:v18];
+    *error = [NSError errorWithDomain:NSCocoaErrorDomain code:3328 userInfo:v18];
 
     goto LABEL_11;
   }
 
   if (![(CSKappaTap2Radar *)self monitoring])
   {
-    if (sub_10001B724(self, a3, @"starter"))
+    if (sub_10001B724(self, error, @"starter"))
     {
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
@@ -90,61 +90,61 @@
       v20[3] = &unk_100413240;
       v20[4] = self;
       v8 = objc_retainBlock(v20);
-      v9 = self;
-      objc_sync_enter(v9);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v10 = [CSFolderMonitor alloc];
-      v11 = [(CSKappaTap2Radar *)v9 folderURL];
-      v12 = [v11 path];
-      v13 = [(CSFolderMonitor *)v10 initWithFolder:v12 fileExtension:@"ttr" queue:v9->_queue postfix:@"Kappa" andAction:v8];
-      ttrMonitor = v9->_ttrMonitor;
-      v9->_ttrMonitor = v13;
+      folderURL = [(CSKappaTap2Radar *)selfCopy folderURL];
+      path = [folderURL path];
+      v13 = [(CSFolderMonitor *)v10 initWithFolder:path fileExtension:@"ttr" queue:selfCopy->_queue postfix:@"Kappa" andAction:v8];
+      ttrMonitor = selfCopy->_ttrMonitor;
+      selfCopy->_ttrMonitor = v13;
 
-      v15 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:[(CSKappaTap2RadarConfiguration *)v9->_config allowOnBattery] periodInseconds:[(CSKappaTap2RadarConfiguration *)v9->_config checkIntervalInSeconds]];
-      [(CSFolderMonitor *)v9->_ttrMonitor setupRecurringScanningWithConfiguration:v15 runNow:0];
-      [(CSKappaTap2Radar *)v9 setMonitoring:1];
+      v15 = [[CSFolderMonitorBackgroundScanningConfiguration alloc] initWithFileProtectionType:NSFileProtectionCompleteUnlessOpen allowBattery:[(CSKappaTap2RadarConfiguration *)selfCopy->_config allowOnBattery] periodInseconds:[(CSKappaTap2RadarConfiguration *)selfCopy->_config checkIntervalInSeconds]];
+      [(CSFolderMonitor *)selfCopy->_ttrMonitor setupRecurringScanningWithConfiguration:v15 runNow:0];
+      [(CSKappaTap2Radar *)selfCopy setMonitoring:1];
 
-      objc_sync_exit(v9);
+      objc_sync_exit(selfCopy);
       goto LABEL_6;
     }
 
 LABEL_11:
-    LOBYTE(a3) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_12;
   }
 
 LABEL_6:
-  LOBYTE(a3) = 1;
+  LOBYTE(error) = 1;
 LABEL_12:
 
-  return a3;
+  return error;
 }
 
-- (BOOL)enqueueTTRWithTriggerUUID:(id)a3 error:(id *)a4
+- (BOOL)enqueueTTRWithTriggerUUID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   Current = CFAbsoluteTimeGetCurrent();
   v8 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
   [v8 encodeInt64:Current forKey:@"timestamp"];
-  [v8 encodeObject:v6 forKey:@"triggerUUID"];
+  [v8 encodeObject:dCopy forKey:@"triggerUUID"];
   [v8 finishEncoding];
-  v9 = [(CSKappaTap2Radar *)self folderURL];
+  folderURL = [(CSKappaTap2Radar *)self folderURL];
   v10 = +[NSUUID UUID];
-  v11 = [v10 UUIDString];
-  v12 = [v9 URLByAppendingPathComponent:v11];
+  uUIDString = [v10 UUIDString];
+  v12 = [folderURL URLByAppendingPathComponent:uUIDString];
   v13 = [v12 URLByAppendingPathExtension:@"ttr"];
 
-  v14 = [v8 encodedData];
-  LOBYTE(a4) = [v14 writeToURL:v13 options:805306369 error:a4];
+  encodedData = [v8 encodedData];
+  LOBYTE(error) = [encodedData writeToURL:v13 options:805306369 error:error];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)createNotification:(id)a3 confirmation:(__CFUserNotification *)a4 error:(id *)a5
+- (BOOL)createNotification:(id)notification confirmation:(__CFUserNotification *)confirmation error:(id *)error
 {
-  v7 = a3;
+  notificationCopy = notification;
   error = 0;
-  v8 = CFUserNotificationCreate(0, 0.0, 3uLL, &error, v7);
-  *a4 = v8;
+  v8 = CFUserNotificationCreate(0, 0.0, 3uLL, &error, notificationCopy);
+  *confirmation = v8;
   if (v8)
   {
     if (!error)
@@ -153,13 +153,13 @@ LABEL_12:
       goto LABEL_18;
     }
 
-    if (a5)
+    if (error)
     {
       v19 = NSLocalizedDescriptionKey;
-      v9 = [NSString stringWithFormat:@"Error %d", error];
-      v20 = v9;
+      error = [NSString stringWithFormat:@"Error %d", error];
+      v20 = error;
       v10 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-      *a5 = [NSError errorWithDomain:NSCocoaErrorDomain code:256 userInfo:v10];
+      *error = [NSError errorWithDomain:NSCocoaErrorDomain code:256 userInfo:v10];
     }
 
     if (qword_100456908 != -1)
@@ -174,18 +174,18 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Error showing confirmation window", buf, 2u);
     }
 
-    CFRelease(*a4);
+    CFRelease(*confirmation);
   }
 
   else
   {
-    if (a5)
+    if (error)
     {
       v21 = NSLocalizedDescriptionKey;
-      v12 = [NSString stringWithFormat:@"Error %d", error];
-      v22 = v12;
+      error2 = [NSString stringWithFormat:@"Error %d", error];
+      v22 = error2;
       v13 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-      *a5 = [NSError errorWithDomain:NSCocoaErrorDomain code:4 userInfo:v13];
+      *error = [NSError errorWithDomain:NSCocoaErrorDomain code:4 userInfo:v13];
     }
 
     if (qword_100456908 != -1)
@@ -207,7 +207,7 @@ LABEL_18:
   return v15;
 }
 
-- (CSKappaTap2RadarConfirmation_struct)showConfirmationWithError:(id *)a3 andEventType:(int64_t)a4
+- (CSKappaTap2RadarConfirmation_struct)showConfirmationWithError:(id *)error andEventType:(int64_t)type
 {
   v7 = objc_alloc_init(NSDateFormatter);
   [v7 setDateFormat:@"EEE h:mm a"];
@@ -216,7 +216,7 @@ LABEL_18:
 
   v10 = objc_alloc_init(NSMutableDictionary);
   [v10 setObject:@"Improve Crash Detection" forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
-  if (a4 == 4)
+  if (type == 4)
   {
     v11 = @"\nRecently, your device sensed a potential crash event.";
     [v10 setObject:@"Was NOT in an accident. File radar." forKeyedSubscript:kCFUserNotificationOtherButtonTitleKey];
@@ -237,9 +237,9 @@ LABEL_18:
   [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:SBUserNotificationIgnoresQuietMode];
   [v10 setObject:&__kCFBooleanTrue forKeyedSubscript:SBUserNotificationDisableIdleSleepWhileVisible];
   cf = 0;
-  if ([(CSKappaTap2Radar *)self createNotification:v10 confirmation:&cf error:a3])
+  if ([(CSKappaTap2Radar *)self createNotification:v10 confirmation:&cf error:error])
   {
-    v12 = [(CSKappaTap2Radar *)self getNotificationResponse:cf error:a3]& 3;
+    v12 = [(CSKappaTap2Radar *)self getNotificationResponse:cf error:error]& 3;
     if (v12 > 1)
     {
       if (v12 == 2)
@@ -250,7 +250,7 @@ LABEL_18:
 
     else if (!v12)
     {
-      v12 = a4 == 4;
+      v12 = type == 4;
 LABEL_11:
       CFRelease(cf);
       goto LABEL_12;
@@ -270,17 +270,17 @@ LABEL_12:
   return result;
 }
 
-- (unint64_t)getNotificationResponse:(__CFUserNotification *)a3 error:(id *)a4
+- (unint64_t)getNotificationResponse:(__CFUserNotification *)response error:(id *)error
 {
   responseFlags = 0;
-  if (CFUserNotificationReceiveResponse(a3, 0.0, &responseFlags))
+  if (CFUserNotificationReceiveResponse(response, 0.0, &responseFlags))
   {
-    if (a4)
+    if (error)
     {
       v14 = NSLocalizedDescriptionKey;
       v15 = @"Error receiving notification response";
       v5 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-      *a4 = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:v5];
+      *error = [NSError errorWithDomain:NSCocoaErrorDomain code:3072 userInfo:v5];
     }
 
     if (qword_100456908 != -1)
@@ -321,7 +321,7 @@ LABEL_12:
   return responseFlags;
 }
 
-- (BOOL)showPrivacyNotificationWithError:(id *)a3
+- (BOOL)showPrivacyNotificationWithError:(id *)error
 {
   v5 = objc_alloc_init(NSMutableDictionary);
   [v5 setObject:@"Collected Sensor Data" forKeyedSubscript:kCFUserNotificationAlertHeaderKey];
@@ -334,9 +334,9 @@ LABEL_12:
   [v5 setObject:&__kCFBooleanTrue forKeyedSubscript:SBUserNotificationIgnoresQuietMode];
   [v5 setObject:&__kCFBooleanFalse forKeyedSubscript:SBUserNotificationDisableIdleSleepWhileVisible];
   cf = 0;
-  if ([(CSKappaTap2Radar *)self createNotification:v5 confirmation:&cf error:a3])
+  if ([(CSKappaTap2Radar *)self createNotification:v5 confirmation:&cf error:error])
   {
-    v6 = [(CSKappaTap2Radar *)self getNotificationResponse:cf error:a3];
+    v6 = [(CSKappaTap2Radar *)self getNotificationResponse:cf error:error];
     CFRelease(cf);
     v7 = v6 == 0;
   }
@@ -349,12 +349,12 @@ LABEL_12:
   return v7;
 }
 
-- (CSKappaTap2Radar)radarWithResult:(CSKappaTap2RadarConfirmation_struct)a3 triggerUUID:(id)a4 ttrType:(int64_t)a5 error:(id *)a6
+- (CSKappaTap2Radar)radarWithResult:(CSKappaTap2RadarConfirmation_struct)result triggerUUID:(id)d ttrType:(int64_t)type error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = a4;
-  if ((a5 - 2) >= 3)
+  var1 = result.var1;
+  var0 = result.var0;
+  dCopy = d;
+  if ((type - 2) >= 3)
   {
     sub_100357DF0(buf);
 
@@ -365,26 +365,26 @@ LABEL_12:
   v10 = 0;
   if (var0 <= 2)
   {
-    v11 = *(&off_1004132A8 + a5 - 2);
+    v11 = *(&off_1004132A8 + type - 2);
     if (!var0)
     {
-      v20 = [NSString stringWithFormat:@"[Kappa] Improve Crash Detection %@ Event=%@", v9, v11];
+      v20 = [NSString stringWithFormat:@"[Kappa] Improve Crash Detection %@ Event=%@", dCopy, v11];
       v21 = +[NSCharacterSet URLQueryAllowedCharacterSet];
       v12 = [v20 stringByAddingPercentEncodingWithAllowedCharacters:v21];
 
-      v15 = [NSString stringWithFormat:@"Please tell us more about what you were doing around %@. \n\nFor example, were you recently in a car or some other moving platform? Were you actively moving or doing some other activity? \n\nWe'll use what you file to refine our iOS/watchOS Safety algorithms.", var1];
+      var1 = [NSString stringWithFormat:@"Please tell us more about what you were doing around %@. \n\nFor example, were you recently in a car or some other moving platform? Were you actively moving or doing some other activity? \n\nWe'll use what you file to refine our iOS/watchOS Safety algorithms.", var1];
       v16 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-      v17 = [v15 stringByAddingPercentEncodingWithAllowedCharacters:v16];
+      v17 = [var1 stringByAddingPercentEncodingWithAllowedCharacters:v16];
       goto LABEL_14;
     }
 
     if (var0 == 1)
     {
-      v22 = [NSString stringWithFormat:@"[Kappa] True Positive Detection %@ Event=%@", v9, v11];
+      v22 = [NSString stringWithFormat:@"[Kappa] True Positive Detection %@ Event=%@", dCopy, v11];
       v23 = +[NSCharacterSet URLQueryAllowedCharacterSet];
       v12 = [v22 stringByAddingPercentEncodingWithAllowedCharacters:v23];
 
-      v15 = +[NSCharacterSet URLQueryAllowedCharacterSet];
+      var1 = +[NSCharacterSet URLQueryAllowedCharacterSet];
       v10 = [@"If you are comfortable sharing please tell us more about your incident. We'll use what you file to refine our iOS/watchOS Safety algorithms."];
       goto LABEL_16;
     }
@@ -392,13 +392,13 @@ LABEL_12:
     v12 = 0;
     if (var0 == 2)
     {
-      v13 = [NSString stringWithFormat:@"[Kappa] False Positive Detection %@ Event=%@", v9, v11];
+      v13 = [NSString stringWithFormat:@"[Kappa] False Positive Detection %@ Event=%@", dCopy, v11];
       v14 = +[NSCharacterSet URLQueryAllowedCharacterSet];
       v12 = [v13 stringByAddingPercentEncodingWithAllowedCharacters:v14];
 
-      v15 = [NSString stringWithFormat:@"Please tell us more about what you were doing around %@. \n\nFor example, were you recently in a car or some other moving platform? Were you actively moving or doing some other activity? \n\nWe'll use what you file to refine our iOS/watchOS Safety algorithms.", var1];
+      var1 = [NSString stringWithFormat:@"Please tell us more about what you were doing around %@. \n\nFor example, were you recently in a car or some other moving platform? Were you actively moving or doing some other activity? \n\nWe'll use what you file to refine our iOS/watchOS Safety algorithms.", var1];
       v16 = +[NSCharacterSet URLQueryAllowedCharacterSet];
-      v17 = [v15 stringByAddingPercentEncodingWithAllowedCharacters:v16];
+      v17 = [var1 stringByAddingPercentEncodingWithAllowedCharacters:v16];
 LABEL_14:
       v10 = v17;
 
@@ -453,18 +453,18 @@ LABEL_22:
   return v19;
 }
 
-- (void)showTTRWithTriggerUUID:(id)a3 andEventType:(int64_t)a4
+- (void)showTTRWithTriggerUUID:(id)d andEventType:(int64_t)type
 {
-  v6 = a3;
+  dCopy = d;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100018F20;
   block[3] = &unk_100413268;
-  v10 = v6;
-  v11 = a4;
+  v10 = dCopy;
+  typeCopy = type;
   block[4] = self;
-  v8 = v6;
+  v8 = dCopy;
   dispatch_async(queue, block);
 }
 

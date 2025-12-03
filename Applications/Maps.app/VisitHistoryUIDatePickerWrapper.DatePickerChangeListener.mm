@@ -1,15 +1,15 @@
 @interface VisitHistoryUIDatePickerWrapper.DatePickerChangeListener
 - (_TtCV4Maps31VisitHistoryUIDatePickerWrapper24DatePickerChangeListener)init;
-- (void)handleDatePickerValueChangedWithSender:(id)a3;
+- (void)handleDatePickerValueChangedWithSender:(id)sender;
 @end
 
 @implementation VisitHistoryUIDatePickerWrapper.DatePickerChangeListener
 
-- (void)handleDatePickerValueChangedWithSender:(id)a3
+- (void)handleDatePickerValueChangedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_1003742F4(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_1003742F4(senderCopy);
 }
 
 - (_TtCV4Maps31VisitHistoryUIDatePickerWrapper24DatePickerChangeListener)init

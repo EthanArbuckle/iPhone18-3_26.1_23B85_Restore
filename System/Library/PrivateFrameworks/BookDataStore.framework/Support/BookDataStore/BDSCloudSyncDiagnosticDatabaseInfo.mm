@@ -1,40 +1,40 @@
 @interface BDSCloudSyncDiagnosticDatabaseInfo
-- (BDSCloudSyncDiagnosticDatabaseInfo)initWithAttached:(BOOL)a3 establishedSalt:(BOOL)a4 container:(id)a5;
-- (BDSCloudSyncDiagnosticDatabaseInfo)initWithCoder:(id)a3;
+- (BDSCloudSyncDiagnosticDatabaseInfo)initWithAttached:(BOOL)attached establishedSalt:(BOOL)salt container:(id)container;
+- (BDSCloudSyncDiagnosticDatabaseInfo)initWithCoder:(id)coder;
 - (NSDictionary)stateForLog;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSCloudSyncDiagnosticDatabaseInfo
 
-- (BDSCloudSyncDiagnosticDatabaseInfo)initWithAttached:(BOOL)a3 establishedSalt:(BOOL)a4 container:(id)a5
+- (BDSCloudSyncDiagnosticDatabaseInfo)initWithAttached:(BOOL)attached establishedSalt:(BOOL)salt container:(id)container
 {
-  v9 = a5;
+  containerCopy = container;
   v13.receiver = self;
   v13.super_class = BDSCloudSyncDiagnosticDatabaseInfo;
   v10 = [(BDSCloudSyncDiagnosticDatabaseInfo *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_attached = a3;
-    v10->_establishedSalt = a4;
-    objc_storeStrong(&v10->_container, a5);
+    v10->_attached = attached;
+    v10->_establishedSalt = salt;
+    objc_storeStrong(&v10->_container, container);
   }
 
   return v11;
 }
 
-- (BDSCloudSyncDiagnosticDatabaseInfo)initWithCoder:(id)a3
+- (BDSCloudSyncDiagnosticDatabaseInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BDSCloudSyncDiagnosticDatabaseInfo *)self init];
   if (v5)
   {
-    v5->_attached = [v4 decodeBoolForKey:@"attached"];
-    v5->_establishedSalt = [v4 decodeBoolForKey:@"establishedSalt"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"container"];
+    v5->_attached = [coderCopy decodeBoolForKey:@"attached"];
+    v5->_establishedSalt = [coderCopy decodeBoolForKey:@"establishedSalt"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"container"];
     container = v5->_container;
     v5->_container = v6;
   }
@@ -42,24 +42,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[BDSCloudSyncDiagnosticDatabaseInfo attached](self forKey:{"attached"), @"attached"}];
-  [v4 encodeBool:-[BDSCloudSyncDiagnosticDatabaseInfo establishedSalt](self forKey:{"establishedSalt"), @"establishedSalt"}];
-  v5 = [(BDSCloudSyncDiagnosticDatabaseInfo *)self container];
-  [v4 encodeObject:v5 forKey:@"container"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[BDSCloudSyncDiagnosticDatabaseInfo attached](self forKey:{"attached"), @"attached"}];
+  [coderCopy encodeBool:-[BDSCloudSyncDiagnosticDatabaseInfo establishedSalt](self forKey:{"establishedSalt"), @"establishedSalt"}];
+  container = [(BDSCloudSyncDiagnosticDatabaseInfo *)self container];
+  [coderCopy encodeObject:container forKey:@"container"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BDSCloudSyncDiagnosticDatabaseInfo);
   if (v4)
   {
     [(BDSCloudSyncDiagnosticDatabaseInfo *)v4 setAttached:[(BDSCloudSyncDiagnosticDatabaseInfo *)self attached]];
     [(BDSCloudSyncDiagnosticDatabaseInfo *)v4 setEstablishedSalt:[(BDSCloudSyncDiagnosticDatabaseInfo *)self establishedSalt]];
-    v5 = [(BDSCloudSyncDiagnosticDatabaseInfo *)self container];
-    [(BDSCloudSyncDiagnosticDatabaseInfo *)v4 setContainer:v5];
+    container = [(BDSCloudSyncDiagnosticDatabaseInfo *)self container];
+    [(BDSCloudSyncDiagnosticDatabaseInfo *)v4 setContainer:container];
   }
 
   return v4;
@@ -68,10 +68,10 @@
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(BDSCloudSyncDiagnosticDatabaseInfo *)self attached];
-  v5 = [(BDSCloudSyncDiagnosticDatabaseInfo *)self establishedSalt];
-  v6 = [(BDSCloudSyncDiagnosticDatabaseInfo *)self container];
-  v7 = [NSString stringWithFormat:@"<%@: attached:%d, establishedSalt:%d, container:%@>", v3, v4, v5, v6];
+  attached = [(BDSCloudSyncDiagnosticDatabaseInfo *)self attached];
+  establishedSalt = [(BDSCloudSyncDiagnosticDatabaseInfo *)self establishedSalt];
+  container = [(BDSCloudSyncDiagnosticDatabaseInfo *)self container];
+  v7 = [NSString stringWithFormat:@"<%@: attached:%d, establishedSalt:%d, container:%@>", v3, attached, establishedSalt, container];
 
   return v7;
 }
@@ -85,11 +85,11 @@
   v5 = [NSNumber numberWithBool:[(BDSCloudSyncDiagnosticDatabaseInfo *)self establishedSalt]];
   [v3 setObject:v5 forKeyedSubscript:@"establishedSalt"];
 
-  v6 = [(BDSCloudSyncDiagnosticDatabaseInfo *)self container];
-  v7 = v6;
-  if (v6)
+  container = [(BDSCloudSyncDiagnosticDatabaseInfo *)self container];
+  v7 = container;
+  if (container)
   {
-    v8 = v6;
+    v8 = container;
   }
 
   else

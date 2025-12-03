@@ -8,21 +8,21 @@
 - (int64_t)allTimeRecordStreak;
 - (int64_t)currentStreak;
 - (int64_t)timeReadToday;
-- (void)changeBooksPerYearGoal:(int64_t)a3 :(BOOL)a4;
-- (void)changeDailyGoal:(double)a3 :(BOOL)a4;
+- (void)changeBooksPerYearGoal:(int64_t)goal :(BOOL)a4;
+- (void)changeDailyGoal:(double)goal :(BOOL)a4;
 - (void)clearData;
-- (void)dynamicProgressChanged:(id)a3;
-- (void)handleCloudChangeNotification:(id)a3;
+- (void)dynamicProgressChanged:(id)changed;
+- (void)handleCloudChangeNotification:(id)notification;
 - (void)resumeNotifications;
-- (void)setCurrentBooksFinishedStateTo:(int64_t)a3;
-- (void)setEnableCloudSync:(BOOL)a3;
-- (void)setReadingGoalsEnabled:(BOOL)a3;
-- (void)setReadingHistoryForWeekWithEnding:(id)a3;
-- (void)setReadingHistoryWithBeginning:(id)a3 ending:(id)a4;
+- (void)setCurrentBooksFinishedStateTo:(int64_t)to;
+- (void)setEnableCloudSync:(BOOL)sync;
+- (void)setReadingGoalsEnabled:(BOOL)enabled;
+- (void)setReadingHistoryForWeekWithEnding:(id)ending;
+- (void)setReadingHistoryWithBeginning:(id)beginning ending:(id)ending;
 - (void)suppressNotifications;
-- (void)timeTracker:(id)a3 didBeginTrackingSession:(id)a4 trackerEventType:(unint64_t)a5 asset:(id)a6 readingFeatureFlags:(int64_t)a7;
-- (void)timeTracker:(id)a3 didEndTrackingSession:(id)a4 duration:(double)a5 trackerEventType:(unint64_t)a6 asset:(id)a7 readingFeatureFlags:(int64_t)a8;
-- (void)willMarkAsset:(id)a3 finished:(BOOL)a4 finishedDate:(id)a5;
+- (void)timeTracker:(id)tracker didBeginTrackingSession:(id)session trackerEventType:(unint64_t)type asset:(id)asset readingFeatureFlags:(int64_t)flags;
+- (void)timeTracker:(id)tracker didEndTrackingSession:(id)session duration:(double)duration trackerEventType:(unint64_t)type asset:(id)asset readingFeatureFlags:(int64_t)flags;
+- (void)willMarkAsset:(id)asset finished:(BOOL)finished finishedDate:(id)date;
 @end
 
 @implementation BKReadingActivityService
@@ -48,15 +48,15 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setEnableCloudSync:(BOOL)a3
+- (void)setEnableCloudSync:(BOOL)sync
 {
-  v4 = self;
-  ReadingActivityService.enableCloudSync.setter(a3);
+  selfCopy = self;
+  ReadingActivityService.enableCloudSync.setter(sync);
 }
 
 - (int64_t)currentStreak
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ReadingActivityService.currentStreak.getter();
 
   return v3;
@@ -64,7 +64,7 @@
 
 - (int64_t)allTimeRecordStreak
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ReadingActivityService.allTimeRecordStreak.getter();
 
   return v3;
@@ -72,7 +72,7 @@
 
 - (int64_t)timeReadToday
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ReadingActivityService.timeReadToday.getter();
 
   return v3;
@@ -80,7 +80,7 @@
 
 - (BOOL)todayIsStreakDay
 {
-  v2 = self;
+  selfCopy = self;
   IsStreak = ReadingActivityService.todayIsStreakDay.getter();
 
   return IsStreak & 1;
@@ -88,36 +88,36 @@
 
 - (double)readingTimeTodayIncludingUnflushed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ReadingActivityService.readingTimeTodayIncludingUnflushed()();
 
   return v3;
 }
 
-- (void)setReadingGoalsEnabled:(BOOL)a3
+- (void)setReadingGoalsEnabled:(BOOL)enabled
 {
-  v3 = [objc_opt_self() books];
-  v4 = [v3 userDefaults];
+  books = [objc_opt_self() books];
+  userDefaults = [books userDefaults];
 
   isa = sub_1007A2684().super.super.isa;
   v6 = sub_1007A2214();
-  [v4 setValue:isa forKey:v6];
+  [userDefaults setValue:isa forKey:v6];
 }
 
 - (void)clearData
 {
-  v2 = self;
+  selfCopy = self;
   ReadingActivityService.clearData()();
 }
 
-- (void)handleCloudChangeNotification:(id)a3
+- (void)handleCloudChangeNotification:(id)notification
 {
   v4 = sub_100796594();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796564();
-  v8 = self;
+  selfCopy = self;
   sub_100647748();
 
   (*(v5 + 8))(v7, v4);
@@ -130,19 +130,19 @@
   return result;
 }
 
-- (void)changeBooksPerYearGoal:(int64_t)a3 :(BOOL)a4
+- (void)changeBooksPerYearGoal:(int64_t)goal :(BOOL)a4
 {
-  v6 = self;
-  ReadingActivityService.changeBooksPerYearGoal(_:_:)(a3, a4);
+  selfCopy = self;
+  ReadingActivityService.changeBooksPerYearGoal(_:_:)(goal, a4);
 }
 
-- (void)changeDailyGoal:(double)a3 :(BOOL)a4
+- (void)changeDailyGoal:(double)goal :(BOOL)a4
 {
-  v6 = self;
-  ReadingActivityService.changeDailyGoal(_:_:)(a3, a4);
+  selfCopy = self;
+  ReadingActivityService.changeDailyGoal(_:_:)(goal, a4);
 }
 
-- (void)setCurrentBooksFinishedStateTo:(int64_t)a3
+- (void)setCurrentBooksFinishedStateTo:(int64_t)to
 {
   v3 = self + OBJC_IVAR___BKReadingActivityService_booksFinishedModule;
   swift_beginAccess();
@@ -160,7 +160,7 @@
   }
 }
 
-- (void)setReadingHistoryWithBeginning:(id)a3 ending:(id)a4
+- (void)setReadingHistoryWithBeginning:(id)beginning ending:(id)ending
 {
   v5 = sub_100796BB4();
   v6 = *(v5 - 8);
@@ -189,7 +189,7 @@
   }
 }
 
-- (void)setReadingHistoryForWeekWithEnding:(id)a3
+- (void)setReadingHistoryForWeekWithEnding:(id)ending
 {
   v4 = sub_100796BB4();
   v5 = *(v4 - 8);
@@ -215,65 +215,65 @@
 
 - (void)suppressNotifications
 {
-  v2 = self;
+  selfCopy = self;
   ReadingActivityService.suppressNotifications()();
 }
 
 - (void)resumeNotifications
 {
-  v2 = self;
+  selfCopy = self;
   ReadingActivityService.resumeNotifications()();
 }
 
-- (void)timeTracker:(id)a3 didBeginTrackingSession:(id)a4 trackerEventType:(unint64_t)a5 asset:(id)a6 readingFeatureFlags:(int64_t)a7
+- (void)timeTracker:(id)tracker didBeginTrackingSession:(id)session trackerEventType:(unint64_t)type asset:(id)asset readingFeatureFlags:(int64_t)flags
 {
-  v7 = a7;
+  flagsCopy = flags;
   v12 = sub_100796C04();
   v13 = *(v12 - 8);
   __chkstk_darwin(v12);
   v15 = &v18 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796BE4();
-  v16 = a3;
+  trackerCopy = tracker;
   swift_unknownObjectRetain();
-  v17 = self;
-  sub_10064DCBC(v15, a5, a6, v7);
+  selfCopy = self;
+  sub_10064DCBC(v15, type, asset, flagsCopy);
 
   swift_unknownObjectRelease();
   (*(v13 + 8))(v15, v12);
 }
 
-- (void)timeTracker:(id)a3 didEndTrackingSession:(id)a4 duration:(double)a5 trackerEventType:(unint64_t)a6 asset:(id)a7 readingFeatureFlags:(int64_t)a8
+- (void)timeTracker:(id)tracker didEndTrackingSession:(id)session duration:(double)duration trackerEventType:(unint64_t)type asset:(id)asset readingFeatureFlags:(int64_t)flags
 {
-  v8 = a8;
+  flagsCopy = flags;
   v12 = sub_100796C04();
   v13 = *(v12 - 8);
   __chkstk_darwin(v12);
   v15 = &v18 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796BE4();
-  v16 = a3;
+  trackerCopy = tracker;
   swift_unknownObjectRetain();
-  v17 = self;
-  sub_10064E574(v15, a7, v8);
+  selfCopy = self;
+  sub_10064E574(v15, asset, flagsCopy);
 
   swift_unknownObjectRelease();
   (*(v13 + 8))(v15, v12);
 }
 
-- (void)dynamicProgressChanged:(id)a3
+- (void)dynamicProgressChanged:(id)changed
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  ReadingActivityService.dynamicProgressChanged(_:)(a3);
+  selfCopy = self;
+  ReadingActivityService.dynamicProgressChanged(_:)(changed);
   swift_unknownObjectRelease();
 }
 
-- (void)willMarkAsset:(id)a3 finished:(BOOL)a4 finishedDate:(id)a5
+- (void)willMarkAsset:(id)asset finished:(BOOL)finished finishedDate:(id)date
 {
   v7 = sub_1001F1160(&unk_100ADB5C0);
   __chkstk_darwin(v7 - 8);
   v9 = &v13 - v8;
   sub_1007A2254();
-  if (a5)
+  if (date)
   {
     sub_100796B64();
     v10 = sub_100796BB4();
@@ -288,7 +288,7 @@
 
   if (*(&self->super.isa + OBJC_IVAR___BKReadingActivityService_achievementsController))
   {
-    v12 = self;
+    selfCopy = self;
 
     sub_10079EAD4();
 

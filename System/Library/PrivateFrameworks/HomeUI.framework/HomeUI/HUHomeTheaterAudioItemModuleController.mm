@@ -1,21 +1,21 @@
 @interface HUHomeTheaterAudioItemModuleController
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUHomeTheaterAudioItemModuleController
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  animatedCopy = animated;
+  cellCopy = cell;
+  itemCopy = item;
   v21.receiver = self;
   v21.super_class = HUHomeTheaterAudioItemModuleController;
-  [(HUItemModuleController *)&v21 updateCell:v8 forItem:v9 animated:v5];
+  [(HUItemModuleController *)&v21 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
   objc_opt_class();
-  v10 = v8;
+  v10 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v11 = v10;
@@ -28,26 +28,26 @@
 
   v12 = v11;
 
-  v13 = [v9 latestResults];
-  v14 = [v13 objectForKeyedSubscript:*MEMORY[0x277D13F60]];
+  latestResults = [itemCopy latestResults];
+  v14 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13F60]];
   [v12 setTitleText:v14];
 
-  v15 = [v9 latestResults];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x277D140F0]];
-  v17 = [v16 BOOLValue];
+  latestResults2 = [itemCopy latestResults];
+  v16 = [latestResults2 objectForKeyedSubscript:*MEMORY[0x277D140F0]];
+  bOOLValue = [v16 BOOLValue];
 
-  if (v17)
+  if (bOOLValue)
   {
-    v18 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
-    [v18 startAnimating];
-    [v12 setAccessoryView:v18];
+    latestResults3 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];
+    [latestResults3 startAnimating];
+    [v12 setAccessoryView:latestResults3];
   }
 
   else
   {
     [v12 setAccessoryView:0];
-    v18 = [v9 latestResults];
-    v19 = [v18 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+    latestResults3 = [itemCopy latestResults];
+    v19 = [latestResults3 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
     if ([v19 BOOLValue])
     {
       v20 = 3;
@@ -62,14 +62,14 @@
   }
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -79,28 +79,28 @@
 
   v7 = v6;
 
-  v8 = [v7 allItems];
-  v9 = [v8 containsObject:v4];
+  allItems = [v7 allItems];
+  v9 = [allItems containsObject:itemCopy];
 
   if (v9)
   {
-    [v7 selectItem:v4];
+    [v7 selectItem:itemCopy];
   }
 
   return 0;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v4 = a3;
-  [v4 setIconDisplayStyle:1];
+  cellCopy = cell;
+  [cellCopy setIconDisplayStyle:1];
   v5 = +[HUIconCellContentMetrics compactMetrics];
-  [v4 setContentMetrics:v5];
+  [cellCopy setContentMetrics:v5];
 
-  [v4 setDisableContinuousIconAnimation:1];
-  [v4 setIconForegroundColorFollowsTintColor:0];
-  v6 = [MEMORY[0x277D75348] secondaryLabelColor];
-  [v4 setIconForegroundColor:v6];
+  [cellCopy setDisableContinuousIconAnimation:1];
+  [cellCopy setIconForegroundColorFollowsTintColor:0];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  [cellCopy setIconForegroundColor:secondaryLabelColor];
 }
 
 @end

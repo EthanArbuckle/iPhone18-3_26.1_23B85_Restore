@@ -1,29 +1,29 @@
 @interface ATXActionSessionLog
-+ (BOOL)isLowConfidenceSession:(id)a3;
-+ (double)_bucketize:(double)result bucketSize:(double)a4;
-+ (double)roundedElapsedTimeWithStartDate:(id)a3 endDate:(id)a4 accuracy:(double)a5;
-+ (unint64_t)_determineNumItemsInSession:(id)a3 engagedAction:(id)a4 cacheReader:(id)a5;
-+ (void)harvestActionPredictionDataForResponse:(id)a3;
-- (ATXActionSessionLog)initWithActionEngagementType:(unint64_t)a3 actionResponse:(id)a4 context:(id)a5 isShadowLog:(BOOL)a6;
-- (id)constructActionDataDictionaryWithEngagedIndicesOut:(id *)a3 andAWDActionOut:(id *)a4 andEngagementTypeFound:(unint64_t *)a5 forTestingMode:(BOOL)a6;
++ (BOOL)isLowConfidenceSession:(id)session;
++ (double)_bucketize:(double)result bucketSize:(double)size;
++ (double)roundedElapsedTimeWithStartDate:(id)date endDate:(id)endDate accuracy:(double)accuracy;
++ (unint64_t)_determineNumItemsInSession:(id)session engagedAction:(id)action cacheReader:(id)reader;
++ (void)harvestActionPredictionDataForResponse:(id)response;
+- (ATXActionSessionLog)initWithActionEngagementType:(unint64_t)type actionResponse:(id)response context:(id)context isShadowLog:(BOOL)log;
+- (id)constructActionDataDictionaryWithEngagedIndicesOut:(id *)out andAWDActionOut:(id *)actionOut andEngagementTypeFound:(unint64_t *)found forTestingMode:(BOOL)mode;
 @end
 
 @implementation ATXActionSessionLog
 
-- (ATXActionSessionLog)initWithActionEngagementType:(unint64_t)a3 actionResponse:(id)a4 context:(id)a5 isShadowLog:(BOOL)a6
+- (ATXActionSessionLog)initWithActionEngagementType:(unint64_t)type actionResponse:(id)response context:(id)context isShadowLog:(BOOL)log
 {
-  v11 = a4;
-  v12 = a5;
+  responseCopy = response;
+  contextCopy = context;
   v16.receiver = self;
   v16.super_class = ATXActionSessionLog;
   v13 = [(ATXActionSessionLog *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_engagementType = a3;
-    objc_storeStrong(&v13->_actionResponse, a4);
-    objc_storeStrong(&v14->_context, a5);
-    v14->_isShadowLog = a6;
+    v13->_engagementType = type;
+    objc_storeStrong(&v13->_actionResponse, response);
+    objc_storeStrong(&v14->_context, context);
+    v14->_isShadowLog = log;
   }
 
   return v14;
@@ -73,17 +73,17 @@ void __45__ATXActionSessionLog_performSessionLogging___block_invoke(uint64_t a1,
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)isLowConfidenceSession:(id)a3
++ (BOOL)isLowConfidenceSession:(id)session
 {
-  MEMORY[0x28223BE20](a1, a2);
+  MEMORY[0x28223BE20](self, a2);
   v36 = *MEMORY[0x277D85DE8];
   v4 = v3;
-  v5 = [v4 cacheFileData];
-  if (v5)
+  cacheFileData = [v4 cacheFileData];
+  if (cacheFileData)
   {
     v6 = [ATXActionCacheReader alloc];
-    v7 = [v4 cacheFileData];
-    v8 = [(ATXActionCacheReader *)v6 initWithData:v7];
+    cacheFileData2 = [v4 cacheFileData];
+    v8 = [(ATXActionCacheReader *)v6 initWithData:cacheFileData2];
   }
 
   else
@@ -95,8 +95,8 @@ void __45__ATXActionSessionLog_performSessionLogging___block_invoke(uint64_t a1,
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = [v4 actions];
-  v10 = [v9 countByEnumeratingWithState:&v28 objects:v35 count:16];
+  actions = [v4 actions];
+  v10 = [actions countByEnumeratingWithState:&v28 objects:v35 count:16];
   if (v10)
   {
     v11 = *v29;
@@ -110,7 +110,7 @@ void __45__ATXActionSessionLog_performSessionLogging___block_invoke(uint64_t a1,
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(actions);
         }
 
         if (v8)
@@ -161,7 +161,7 @@ LABEL_27:
       }
 
       while (v13 != v10);
-      v19 = [v9 countByEnumeratingWithState:&v28 objects:v35 count:16];
+      v19 = [actions countByEnumeratingWithState:&v28 objects:v35 count:16];
       v10 = v19;
     }
 
@@ -175,32 +175,32 @@ LABEL_29:
   return v20;
 }
 
-+ (double)_bucketize:(double)result bucketSize:(double)a4
++ (double)_bucketize:(double)result bucketSize:(double)size
 {
   if (result >= 0.0)
   {
-    return (result / a4) * a4;
+    return (result / size) * size;
   }
 
   return result;
 }
 
-+ (double)roundedElapsedTimeWithStartDate:(id)a3 endDate:(id)a4 accuracy:(double)a5
++ (double)roundedElapsedTimeWithStartDate:(id)date endDate:(id)endDate accuracy:(double)accuracy
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  dateCopy = date;
+  endDateCopy = endDate;
+  v9 = endDateCopy;
   v10 = NAN;
-  if (v7 && v8)
+  if (dateCopy && endDateCopy)
   {
-    [v8 timeIntervalSinceDate:v7];
-    v10 = floor(v11 / a5) * a5;
+    [endDateCopy timeIntervalSinceDate:dateCopy];
+    v10 = floor(v11 / accuracy) * accuracy;
   }
 
   return v10;
 }
 
-- (id)constructActionDataDictionaryWithEngagedIndicesOut:(id *)a3 andAWDActionOut:(id *)a4 andEngagementTypeFound:(unint64_t *)a5 forTestingMode:(BOOL)a6
+- (id)constructActionDataDictionaryWithEngagedIndicesOut:(id *)out andAWDActionOut:(id *)actionOut andEngagementTypeFound:(unint64_t *)found forTestingMode:(BOOL)mode
 {
   v6 = MEMORY[0x28223BE20](self, a2);
   v84 = v7;
@@ -209,12 +209,12 @@ LABEL_29:
   v77 = v10;
   v11 = v6;
   *(&v106[1] + 4) = *MEMORY[0x277D85DE8];
-  v12 = [*(v6 + 16) cacheFileData];
-  if (v12)
+  cacheFileData = [*(v6 + 16) cacheFileData];
+  if (cacheFileData)
   {
     v13 = [ATXActionCacheReader alloc];
-    v14 = [*(v11 + 16) cacheFileData];
-    v82 = [(ATXActionCacheReader *)v13 initWithData:v14];
+    cacheFileData2 = [*(v11 + 16) cacheFileData];
+    v82 = [(ATXActionCacheReader *)v13 initWithData:cacheFileData2];
   }
 
   else
@@ -229,30 +229,30 @@ LABEL_29:
   v100 = 0x2020000000;
   v101 = 0;
   v15 = +[_ATXGlobals sharedInstance];
-  v16 = [v15 actionPredictionSessionLoggingBottomBlockMaxItemsToLog];
+  actionPredictionSessionLoggingBottomBlockMaxItemsToLog = [v15 actionPredictionSessionLoggingBottomBlockMaxItemsToLog];
 
-  v17 = [*(v11 + 16) matchingIntentDonatedAction];
-  v18 = v17;
-  if (v17)
+  matchingIntentDonatedAction = [*(v11 + 16) matchingIntentDonatedAction];
+  v18 = matchingIntentDonatedAction;
+  if (matchingIntentDonatedAction)
   {
-    v86 = v17;
+    engagedAction = matchingIntentDonatedAction;
   }
 
   else
   {
-    v86 = [*(v11 + 16) engagedAction];
+    engagedAction = [*(v11 + 16) engagedAction];
   }
 
   v19 = 0;
   *(v99 + 6) = 0;
-  v85 = v16;
+  v85 = actionPredictionSessionLoggingBottomBlockMaxItemsToLog;
   *v20.i32 = -31337.0;
   v79 = vdupq_lane_s32(v20, 0);
   v78 = *MEMORY[0x277CBE658];
   while (1)
   {
-    v21 = [*(v11 + 16) scoredActions];
-    v22 = [v21 count];
+    scoredActions = [*(v11 + 16) scoredActions];
+    v22 = [scoredActions count];
 
     v23 = v85;
     if (v22 < v85)
@@ -266,12 +266,12 @@ LABEL_29:
     }
 
     v24 = objc_autoreleasePoolPush();
-    v25 = [*(v11 + 16) scoredActions];
-    v26 = [v25 objectAtIndexedSubscript:*(v99 + 6)];
-    v27 = [v26 predictedItem];
+    scoredActions2 = [*(v11 + 16) scoredActions];
+    v26 = [scoredActions2 objectAtIndexedSubscript:*(v99 + 6)];
+    predictedItem = [v26 predictedItem];
 
-    v28 = [*(v11 + 16) scoredActions];
-    v29 = [v28 objectAtIndexedSubscript:*(v99 + 6)];
+    scoredActions3 = [*(v11 + 16) scoredActions];
+    v29 = [scoredActions3 objectAtIndexedSubscript:*(v99 + 6)];
     [v29 score];
     v31 = v30;
 
@@ -296,8 +296,8 @@ LABEL_29:
     if (*(v11 + 32) != 1)
     {
       v41 = *(v11 + 8);
-      v42 = v27;
-      v43 = v86;
+      v42 = predictedItem;
+      v43 = engagedAction;
       if (v41 > 4)
       {
         if ((v41 - 5) < 2)
@@ -315,8 +315,8 @@ LABEL_26:
         }
 
         v48 = MEMORY[0x277CBEAD8];
-        v44 = [MEMORY[0x277CEB2E8] engagementTypeToString:v41];
-        [v48 raise:v78 format:{@"%@ is not a valid engagment type to call matchesEngagedAction with", v44}];
+        actionKey = [MEMORY[0x277CEB2E8] engagementTypeToString:v41];
+        [v48 raise:v78 format:{@"%@ is not a valid engagment type to call matchesEngagedAction with", actionKey}];
         v39 = 0;
       }
 
@@ -342,15 +342,15 @@ LABEL_30:
           goto LABEL_26;
         }
 
-        v44 = [v42 actionKey];
-        v45 = [(ATXAction *)v43 actionKey];
-        v39 = [v44 isEqualToString:v45];
+        actionKey = [v42 actionKey];
+        actionKey2 = [(ATXAction *)v43 actionKey];
+        v39 = [actionKey isEqualToString:actionKey2];
       }
 
       goto LABEL_30;
     }
 
-    v38 = engagementTypeFoundForPredictedAction(v27, v86);
+    v38 = engagementTypeFoundForPredictedAction(predictedItem, engagedAction);
     if (v38 != 9 && *v81 != 7)
     {
       *v81 = v38;
@@ -383,38 +383,38 @@ LABEL_31:
     [(NSMutableDictionary *)v33 setObject:v53 forKeyedSubscript:@"Score"];
 
     [v32 setScore:v51];
-    v54 = [v27 actionKey];
-    [(NSMutableDictionary *)v33 setObject:v54 forKeyedSubscript:@"ActionKey"];
+    actionKey3 = [predictedItem actionKey];
+    [(NSMutableDictionary *)v33 setObject:actionKey3 forKeyedSubscript:@"ActionKey"];
 
-    v55 = [v27 actionKey];
-    [v32 setActionKey:v55];
+    actionKey4 = [predictedItem actionKey];
+    [v32 setActionKey:actionKey4];
 
     if (ATXDetailedActionLoggingEnabled())
     {
-      v56 = [MEMORY[0x277CEB2E8] actionTypeToString:{objc_msgSend(v27, "actionType")}];
+      v56 = [MEMORY[0x277CEB2E8] actionTypeToString:{objc_msgSend(predictedItem, "actionType")}];
       [(NSMutableDictionary *)v33 setObject:v56 forKeyedSubscript:@"ActionType"];
 
-      v57 = [v27 actionTitle];
-      [(NSMutableDictionary *)v33 setObject:v57 forKeyedSubscript:@"ActionTitle"];
+      actionTitle = [predictedItem actionTitle];
+      [(NSMutableDictionary *)v33 setObject:actionTitle forKeyedSubscript:@"ActionTitle"];
 
-      v58 = [v27 slotSet];
-      v59 = [v58 parameters];
-      v60 = [v59 allObjects];
-      [(NSMutableDictionary *)v33 setObject:v60 forKeyedSubscript:@"SlotSet"];
+      slotSet = [predictedItem slotSet];
+      parameters = [slotSet parameters];
+      allObjects = [parameters allObjects];
+      [(NSMutableDictionary *)v33 setObject:allObjects forKeyedSubscript:@"SlotSet"];
     }
 
-    if ([v27 isHeuristic])
+    if ([predictedItem isHeuristic])
     {
-      v61 = [v27 heuristic];
-      [(NSMutableDictionary *)v33 setObject:v61 forKeyedSubscript:@"Heuristic"];
+      heuristic = [predictedItem heuristic];
+      [(NSMutableDictionary *)v33 setObject:heuristic forKeyedSubscript:@"Heuristic"];
 
-      v62 = [v27 heuristic];
-      [v32 setHeuristicName:v62];
+      heuristic2 = [predictedItem heuristic];
+      [v32 setHeuristicName:heuristic2];
     }
 
-    v63 = [v27 isFutureMedia];
+    isFutureMedia = [predictedItem isFutureMedia];
     v64 = MEMORY[0x277CBEC28];
-    if (v63)
+    if (isFutureMedia)
     {
       v64 = MEMORY[0x277CBEC38];
     }
@@ -422,12 +422,12 @@ LABEL_31:
     v65 = v64;
     [(NSMutableDictionary *)v33 setObject:v65 forKeyedSubscript:@"IsFutureMedia"];
 
-    [v32 setFutureMedia:{objc_msgSend(v27, "isFutureMedia")}];
+    [v32 setFutureMedia:{objc_msgSend(predictedItem, "isFutureMedia")}];
     if ((v84 & 1) == 0)
     {
       if (v82)
       {
-        [(ATXActionCacheReader *)v82 predictionItemForAction:v27];
+        [(ATXActionCacheReader *)v82 predictionItemForAction:predictedItem];
         v102[0] = 0;
         v104 = -31337.0;
         for (i = 2; i != 416; i += 2)
@@ -475,7 +475,7 @@ LABEL_48:
     v88[3] = &unk_278597198;
     v92 = &v98;
     v88[4] = v11;
-    v89 = v86;
+    v89 = engagedAction;
     v93 = v81;
     v90 = v80;
     v91 = v87;
@@ -580,32 +580,32 @@ void __128__ATXActionSessionLog_constructActionDataDictionaryWithEngagedIndicesO
   ++*(*(*(v5 + 64) + 8) + 24);
 }
 
-+ (unint64_t)_determineNumItemsInSession:(id)a3 engagedAction:(id)a4 cacheReader:(id)a5
++ (unint64_t)_determineNumItemsInSession:(id)session engagedAction:(id)action cacheReader:(id)reader
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sessionCopy = session;
+  actionCopy = action;
+  readerCopy = reader;
   v10 = +[ATXAppPredictionDataHarvesterConstants actionPredictionSessionDataHarvestMaxItems];
   v28 = 0;
   v29 = &v28;
   v30 = 0x2020000000;
   v31 = 0;
-  v11 = [v7 scoredActions];
+  scoredActions = [sessionCopy scoredActions];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __77__ATXActionSessionLog__determineNumItemsInSession_engagedAction_cacheReader___block_invoke;
   v24[3] = &unk_2785971C0;
-  v12 = v8;
+  v12 = actionCopy;
   v26 = &v28;
   v27 = v10;
   v25 = v12;
-  [v11 enumerateObjectsUsingBlock:v24];
+  [scoredActions enumerateObjectsUsingBlock:v24];
 
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
-  v13 = [v7 scoredActions];
-  v14 = [v13 count];
+  scoredActions2 = [sessionCopy scoredActions];
+  v14 = [scoredActions2 count];
 
   v23[3] = v14;
   v18[0] = MEMORY[0x277D85DD0];
@@ -617,7 +617,7 @@ void __128__ATXActionSessionLog_constructActionDataDictionaryWithEngagedIndicesO
   v20 = v23;
   v21 = &v28;
   v22 = v10;
-  [v9 enumerateExtraPredictionItemsWithBlock:v18];
+  [readerCopy enumerateExtraPredictionItemsWithBlock:v18];
   v16 = v29[3];
 
   _Block_object_dispose(v23, 8);
@@ -652,42 +652,42 @@ void __77__ATXActionSessionLog__determineNumItemsInSession_engagedAction_cacheRe
   }
 }
 
-+ (void)harvestActionPredictionDataForResponse:(id)a3
++ (void)harvestActionPredictionDataForResponse:(id)response
 {
   v52 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 matchingIntentDonatedAction];
-  v5 = v4;
-  if (v4)
+  responseCopy = response;
+  matchingIntentDonatedAction = [responseCopy matchingIntentDonatedAction];
+  v5 = matchingIntentDonatedAction;
+  if (matchingIntentDonatedAction)
   {
-    v26 = v4;
+    engagedAction = matchingIntentDonatedAction;
   }
 
   else
   {
-    v26 = [v3 engagedAction];
+    engagedAction = [responseCopy engagedAction];
   }
 
   v6 = objc_opt_new();
-  v7 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
   v8 = +[ATXAppPredictionDataHarvesterConstants actionPredictionSessionDataHarvestMaxItems];
-  v9 = [v3 cacheFileData];
-  if (v9 && (v10 = [ATXActionCacheReader alloc], [v3 cacheFileData], v11 = objc_claimAutoreleasedReturnValue(), v12 = -[ATXActionCacheReader initWithData:](v10, "initWithData:", v11), v11, v9, v12))
+  cacheFileData = [responseCopy cacheFileData];
+  if (cacheFileData && (v10 = [ATXActionCacheReader alloc], [responseCopy cacheFileData], v11 = objc_claimAutoreleasedReturnValue(), v12 = -[ATXActionCacheReader initWithData:](v10, "initWithData:", v11), v11, cacheFileData, v12))
   {
     *buf = 0;
     v49 = buf;
     v50 = 0x2020000000;
     v51 = 9;
-    v13 = [v3 scoredActions];
+    scoredActions = [responseCopy scoredActions];
     v45[0] = MEMORY[0x277D85DD0];
     v45[1] = 3221225472;
     v45[2] = __62__ATXActionSessionLog_harvestActionPredictionDataForResponse___block_invoke;
     v45[3] = &unk_278597210;
-    v14 = v26;
+    v14 = engagedAction;
     v46 = v14;
     v47 = buf;
-    [v13 enumerateObjectsUsingBlock:v45];
+    [scoredActions enumerateObjectsUsingBlock:v45];
 
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
@@ -697,8 +697,8 @@ void __77__ATXActionSessionLog__determineNumItemsInSession_engagedAction_cacheRe
     v15 = v14;
     v43 = v15;
     [(ATXActionCacheReader *)v12 enumerateExtraPredictionItemsWithBlock:v42];
-    v16 = [ATXActionSessionLog _determineNumItemsInSession:v3 engagedAction:v15 cacheReader:v12];
-    v17 = [v3 scoredActions];
+    v16 = [ATXActionSessionLog _determineNumItemsInSession:responseCopy engagedAction:v15 cacheReader:v12];
+    scoredActions2 = [responseCopy scoredActions];
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = __62__ATXActionSessionLog_harvestActionPredictionDataForResponse___block_invoke_3;
@@ -709,16 +709,16 @@ void __77__ATXActionSessionLog__determineNumItemsInSession_engagedAction_cacheRe
     v19 = v12;
     v37 = v19;
     v39 = buf;
-    v20 = v7;
+    v20 = uUIDString;
     v38 = v20;
     v41 = v16;
-    [v17 enumerateObjectsUsingBlock:v35];
+    [scoredActions2 enumerateObjectsUsingBlock:v35];
 
     v34[0] = 0;
     v34[1] = v34;
     v34[2] = 0x2020000000;
-    v21 = [v3 scoredActions];
-    v22 = [v21 count];
+    scoredActions3 = [responseCopy scoredActions];
+    v22 = [scoredActions3 count];
 
     v34[3] = v22;
     v27[0] = MEMORY[0x277D85DD0];

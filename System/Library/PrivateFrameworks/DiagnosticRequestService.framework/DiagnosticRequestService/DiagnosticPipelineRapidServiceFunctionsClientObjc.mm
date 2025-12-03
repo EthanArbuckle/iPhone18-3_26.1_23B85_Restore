@@ -1,11 +1,11 @@
 @interface DiagnosticPipelineRapidServiceFunctionsClientObjc
 - (DiagnosticPipelineRapidServiceFunctionsClientObjc)init;
-- (void)submitRapidPayloadWithBuildVariant:(id)a3 deviceCategory:(id)a4 deviceModel:(id)a5 platform:(id)a6 teamID:(id)a7 issueCategory:(id)a8 contextDictionaryData:(id)a9 requestTime:(unint64_t)a10 build:(id)a11 logType:(id)a12 logSize:(unint64_t)a13 fileName:(id)a14 uploadAttempts:(unsigned int)a15 payload:(id)a16 completionHandler:(id)aBlock;
+- (void)submitRapidPayloadWithBuildVariant:(id)variant deviceCategory:(id)category deviceModel:(id)model platform:(id)platform teamID:(id)d issueCategory:(id)issueCategory contextDictionaryData:(id)data requestTime:(unint64_t)self0 build:(id)self1 logType:(id)self2 logSize:(unint64_t)self3 fileName:(id)self4 uploadAttempts:(unsigned int)self5 payload:(id)self6 completionHandler:(id)aBlock;
 @end
 
 @implementation DiagnosticPipelineRapidServiceFunctionsClientObjc
 
-- (void)submitRapidPayloadWithBuildVariant:(id)a3 deviceCategory:(id)a4 deviceModel:(id)a5 platform:(id)a6 teamID:(id)a7 issueCategory:(id)a8 contextDictionaryData:(id)a9 requestTime:(unint64_t)a10 build:(id)a11 logType:(id)a12 logSize:(unint64_t)a13 fileName:(id)a14 uploadAttempts:(unsigned int)a15 payload:(id)a16 completionHandler:(id)aBlock
+- (void)submitRapidPayloadWithBuildVariant:(id)variant deviceCategory:(id)category deviceModel:(id)model platform:(id)platform teamID:(id)d issueCategory:(id)issueCategory contextDictionaryData:(id)data requestTime:(unint64_t)self0 build:(id)self1 logType:(id)self2 logSize:(unint64_t)self3 fileName:(id)self4 uploadAttempts:(unsigned int)self5 payload:(id)self6 completionHandler:(id)aBlock
 {
   v55 = _Block_copy(aBlock);
   v58 = sub_232973CE8();
@@ -20,14 +20,14 @@
   v64 = v21;
   v52 = sub_232973CE8();
   v63 = v22;
-  v23 = a11;
-  v24 = a12;
-  v25 = a14;
-  v26 = a16;
-  v27 = self;
-  if (a9)
+  buildCopy = build;
+  typeCopy = type;
+  nameCopy = name;
+  payloadCopy = payload;
+  selfCopy = self;
+  if (data)
   {
-    v28 = a9;
+    dataCopy = data;
     v51 = sub_232973AF8();
     v30 = v29;
   }
@@ -55,17 +55,17 @@
   *(v43 + 16) = v55;
   *(&v49 + 1) = v37;
   *(&v48 + 1) = v36;
-  *&v49 = a13;
+  *&v49 = size;
   *&v48 = v34;
   *(&v47 + 1) = v31;
   *(&v46 + 1) = v30;
-  *&v47 = a10;
+  *&v47 = time;
   *&v46 = v51;
   *&v45 = v52;
   *(&v45 + 1) = v63;
   *&v44 = v53;
   *(&v44 + 1) = v64;
-  DiagnosticPipelineRapidServiceFunctionsClient.submitRapidPayload(buildVariant:deviceCategory:deviceModel:platform:teamID:issueCategory:contextDictionaryData:requestTime:build:logType:logSize:fileName:uploadAttempts:payload:completionHandler:)(v58, v62, v57, v61, v56, v60, v54, v59, v44, v45, v46, v47, v33, v48, v49, v39, a15, v40, v42, sub_2329696C8, v43);
+  DiagnosticPipelineRapidServiceFunctionsClient.submitRapidPayload(buildVariant:deviceCategory:deviceModel:platform:teamID:issueCategory:contextDictionaryData:requestTime:build:logType:logSize:fileName:uploadAttempts:payload:completionHandler:)(v58, v62, v57, v61, v56, v60, v54, v59, v44, v45, v46, v47, v33, v48, v49, v39, attempts, v40, v42, sub_2329696C8, v43);
 
   sub_2329696D0(v40, v50);
 

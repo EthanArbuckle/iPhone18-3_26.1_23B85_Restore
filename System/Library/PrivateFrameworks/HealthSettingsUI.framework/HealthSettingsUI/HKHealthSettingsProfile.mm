@@ -1,10 +1,10 @@
 @interface HKHealthSettingsProfile
 + (id)sharedProfile;
-- (HKHealthSettingsProfile)initWithProfileIdentifier:(id)a3;
+- (HKHealthSettingsProfile)initWithProfileIdentifier:(id)identifier;
 - (id)fetchMedicalIDDataSynchronously;
 - (id)getNameComponents;
 - (id)profileStore;
-- (void)getProfilesOfType:(int64_t)a3 completion:(id)a4;
+- (void)getProfilesOfType:(int64_t)type completion:(id)completion;
 @end
 
 @implementation HKHealthSettingsProfile
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __40__HKHealthSettingsProfile_sharedProfile__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedProfile_onceToken != -1)
   {
     dispatch_once(&sharedProfile_onceToken, block);
@@ -36,19 +36,19 @@ void __40__HKHealthSettingsProfile_sharedProfile__block_invoke(uint64_t a1)
   sharedProfile_sharedProfile = v2;
 }
 
-- (HKHealthSettingsProfile)initWithProfileIdentifier:(id)a3
+- (HKHealthSettingsProfile)initWithProfileIdentifier:(id)identifier
 {
   v4 = MEMORY[0x277CCD4D8];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(v4);
-  [v6 setProfileIdentifier:v5];
+  [v6 setProfileIdentifier:identifierCopy];
 
   [v6 resume];
   v11.receiver = self;
   v11.super_class = HKHealthSettingsProfile;
   v7 = [(WDProfile *)&v11 initWithHealthStore:v6];
-  v8 = [(HKHealthSettingsProfile *)v7 getNameComponents];
-  [(HKHealthSettingsProfile *)v7 setNameComponents:v8];
+  getNameComponents = [(HKHealthSettingsProfile *)v7 getNameComponents];
+  [(HKHealthSettingsProfile *)v7 setNameComponents:getNameComponents];
 
   v9 = [MEMORY[0x277CCAC08] localizedStringFromPersonNameComponents:v7->_nameComponents style:2 options:0];
   [(HKHealthSettingsProfile *)v7 setLocalizedName:v9];
@@ -56,19 +56,19 @@ void __40__HKHealthSettingsProfile_sharedProfile__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)getProfilesOfType:(int64_t)a3 completion:(id)a4
+- (void)getProfilesOfType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(HKHealthSettingsProfile *)self profileStore];
+  completionCopy = completion;
+  profileStore = [(HKHealthSettingsProfile *)self profileStore];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__HKHealthSettingsProfile_getProfilesOfType_completion___block_invoke;
   v9[3] = &unk_2796E5420;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  typeCopy = type;
   v9[4] = self;
-  v8 = v6;
-  [v7 fetchAllProfilesWithCompletion:v9];
+  v8 = completionCopy;
+  [profileStore fetchAllProfilesWithCompletion:v9];
 }
 
 void __56__HKHealthSettingsProfile_getProfilesOfType_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -105,7 +105,7 @@ void __56__HKHealthSettingsProfile_getProfilesOfType_completion___block_invoke(u
   v17 = objc_alloc_init(MEMORY[0x277CCAC00]);
   v3 = dispatch_group_create();
   dispatch_group_enter(v3);
-  v4 = [(HKHealthSettingsProfile *)self profileStore];
+  profileStore = [(HKHealthSettingsProfile *)self profileStore];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __44__HKHealthSettingsProfile_getNameComponents__block_invoke;
@@ -114,7 +114,7 @@ void __56__HKHealthSettingsProfile_getProfilesOfType_completion___block_invoke(u
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  [v4 fetchDisplayName:v9];
+  [profileStore fetchDisplayName:v9];
 
   v6 = dispatch_time(0, 5000000000);
   dispatch_group_wait(v5, v6);
@@ -150,8 +150,8 @@ void __44__HKHealthSettingsProfile_getNameComponents__block_invoke(uint64_t a1, 
 - (id)profileStore
 {
   v3 = objc_alloc(MEMORY[0x277CCD7D0]);
-  v4 = [(WDProfile *)self healthStore];
-  v5 = [v3 initWithHealthStore:v4];
+  healthStore = [(WDProfile *)self healthStore];
+  v5 = [v3 initWithHealthStore:healthStore];
 
   return v5;
 }
@@ -166,8 +166,8 @@ void __44__HKHealthSettingsProfile_getNameComponents__block_invoke(uint64_t a1, 
   v19 = 0;
   v3 = dispatch_semaphore_create(0);
   v4 = objc_alloc(MEMORY[0x277CCD5E8]);
-  v5 = [(WDProfile *)self healthStore];
-  v6 = [v4 initWithHealthStore:v5];
+  healthStore = [(WDProfile *)self healthStore];
+  v6 = [v4 initWithHealthStore:healthStore];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __58__HKHealthSettingsProfile_fetchMedicalIDDataSynchronously__block_invoke;

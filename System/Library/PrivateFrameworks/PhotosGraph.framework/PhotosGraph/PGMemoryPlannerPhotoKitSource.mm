@@ -1,26 +1,26 @@
 @interface PGMemoryPlannerPhotoKitSource
-+ (BOOL)translateLegacyMemoryCategory:(unint64_t)a3 subcategory:(unint64_t)a4 toNewMemoryCategory:(unint64_t *)a5 triggerType:(unint64_t *)a6;
-- (PGMemoryPlannerPhotoKitSource)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4;
-- (id)memoriesToAvoidForConfiguration:(id)a3 withGraph:(id)a4 progressReporter:(id)a5;
-- (id)pastMemoriesForConfiguration:(id)a3 withGraph:(id)a4 progressReporter:(id)a5;
-- (id)triggeredMemoriesFromPersistedMemories:(id)a3 withGraph:(id)a4 progressReporter:(id)a5;
++ (BOOL)translateLegacyMemoryCategory:(unint64_t)category subcategory:(unint64_t)subcategory toNewMemoryCategory:(unint64_t *)memoryCategory triggerType:(unint64_t *)type;
+- (PGMemoryPlannerPhotoKitSource)initWithPhotoLibrary:(id)library loggingConnection:(id)connection;
+- (id)memoriesToAvoidForConfiguration:(id)configuration withGraph:(id)graph progressReporter:(id)reporter;
+- (id)pastMemoriesForConfiguration:(id)configuration withGraph:(id)graph progressReporter:(id)reporter;
+- (id)triggeredMemoriesFromPersistedMemories:(id)memories withGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryPlannerPhotoKitSource
 
-- (id)triggeredMemoriesFromPersistedMemories:(id)a3 withGraph:(id)a4 progressReporter:(id)a5
+- (id)triggeredMemoriesFromPersistedMemories:(id)memories withGraph:(id)graph progressReporter:(id)reporter
 {
   v111 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v75 = a5;
-  v9 = [v7 count];
+  memoriesCopy = memories;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  v9 = [memoriesCopy count];
   v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v11 = v7;
+  v11 = memoriesCopy;
   v74 = [v11 countByEnumeratingWithState:&v95 objects:v110 count:16];
   if (v74)
   {
@@ -28,7 +28,7 @@
     v73 = *v96;
     v13 = 0.0;
     v71 = v11;
-    v72 = v8;
+    v72 = graphCopy;
     v70 = v10;
 LABEL_3:
     v14 = 0;
@@ -42,7 +42,7 @@ LABEL_3:
       v15 = *(*(&v95 + 1) + 8 * v14);
       v16 = objc_autoreleasePoolPush();
       v13 = v12 + v13;
-      if ([v75 isCancelledWithProgress:v13])
+      if ([reporterCopy isCancelledWithProgress:v13])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -80,8 +80,8 @@ LABEL_3:
               objc_enumerationMutation(obj);
             }
 
-            v22 = [*(*(&v91 + 1) + 8 * i) uuid];
-            [v84 addObject:v22];
+            uuid = [*(*(&v91 + 1) + 8 * i) uuid];
+            [v84 addObject:uuid];
           }
 
           v19 = [obj countByEnumeratingWithState:&v91 objects:v109 count:16];
@@ -90,7 +90,7 @@ LABEL_3:
         while (v19);
       }
 
-      v23 = [PGGraphMomentNodeCollection momentNodesForArrayOfUUIDs:v84 inGraph:v8];
+      v23 = [PGGraphMomentNodeCollection momentNodesForArrayOfUUIDs:v84 inGraph:graphCopy];
       v24 = [v23 count];
       if (v24 < [v84 count])
       {
@@ -126,28 +126,28 @@ LABEL_35:
     }
 
 LABEL_18:
-    v90 = [v15 category];
-    v26 = [v15 subcategory];
-    v27 = [(MAElementCollection *)[PGGraphFeatureNodeCollection alloc] initWithGraph:v8];
+    category = [v15 category];
+    subcategory = [v15 subcategory];
+    v27 = [(MAElementCollection *)[PGGraphFeatureNodeCollection alloc] initWithGraph:graphCopy];
     [v15 photosGraphVersion];
     v28 = PLMemoriesAlgorithmsVersionFromPhotosGraphVersion();
     v81 = v14;
     v82 = v16;
     v80 = v23;
-    if (v90 > 0x64 || v28 < 0x301)
+    if (category > 0x64 || v28 < 0x301)
     {
       v89 = 0;
-      if (([objc_opt_class() translateLegacyMemoryCategory:v90 subcategory:v26 toNewMemoryCategory:&v90 triggerType:&v89] & 1) == 0)
+      if (([objc_opt_class() translateLegacyMemoryCategory:category subcategory:subcategory toNewMemoryCategory:&category triggerType:&v89] & 1) == 0)
       {
         v39 = self->_loggingConnection;
         if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
         {
           v59 = MEMORY[0x277CD98D8];
-          v60 = v90;
+          v60 = category;
           v61 = v39;
           v62 = [v59 stringForCategory:v60];
-          v63 = [MEMORY[0x277CD98D8] stringForSubcategory:v26];
-          v64 = [PGGraphBuilder memoryLabelForCategory:v90];
+          v63 = [MEMORY[0x277CD98D8] stringForSubcategory:subcategory];
+          v64 = [PGGraphBuilder memoryLabelForCategory:category];
           v65 = [PGMemoryTrigger stringFromTriggerType:v89];
           *buf = 136316162;
           *v102 = "[PGMemoryPlannerPhotoKitSource triggeredMemoriesFromPersistedMemories:withGraph:progressReporter:]";
@@ -167,14 +167,14 @@ LABEL_18:
       v100 = v40;
       v33 = [MEMORY[0x277CBEA60] arrayWithObjects:&v100 count:1];
 
-      v77 = 0;
-      v78 = 0;
+      bOOLValue = 0;
+      unsignedIntegerValue = 0;
     }
 
     else
     {
-      v29 = [v15 photosGraphProperties];
-      v30 = [v29 objectForKeyedSubscript:@"triggerTypes"];
+      photosGraphProperties = [v15 photosGraphProperties];
+      v30 = [photosGraphProperties objectForKeyedSubscript:@"triggerTypes"];
       v31 = v30;
       v32 = MEMORY[0x277CBEBF8];
       if (v30)
@@ -184,15 +184,15 @@ LABEL_18:
 
       v33 = v32;
 
-      v34 = [v29 objectForKeyedSubscript:@"memoryCategorySubcategory"];
-      v78 = [v34 unsignedIntegerValue];
+      v34 = [photosGraphProperties objectForKeyedSubscript:@"memoryCategorySubcategory"];
+      unsignedIntegerValue = [v34 unsignedIntegerValue];
 
-      v35 = [v29 objectForKeyedSubscript:@"encodedFeatures"];
+      v35 = [photosGraphProperties objectForKeyedSubscript:@"encodedFeatures"];
       v36 = [PGFeature featuresForEncodedFeatures:v35];
-      v37 = [PGGraphFeatureNodeCollection featureNodeCollectionWithFeatures:v36 inGraph:v8];
+      v37 = [PGGraphFeatureNodeCollection featureNodeCollectionWithFeatures:v36 inGraph:graphCopy];
 
-      v38 = [v29 objectForKeyedSubscript:@"generatedWithFallbackRequirements"];
-      v77 = [v38 BOOLValue];
+      v38 = [photosGraphProperties objectForKeyedSubscript:@"generatedWithFallbackRequirements"];
+      bOOLValue = [v38 BOOLValue];
 
       v27 = v37;
     }
@@ -220,9 +220,9 @@ LABEL_18:
 
           v47 = *(*(&v85 + 1) + 8 * j);
           v48 = objc_alloc(MEMORY[0x277CCA970]);
-          v49 = [v15 creationDate];
-          v50 = [v15 creationDate];
-          v51 = [v48 initWithStartDate:v49 endDate:v50];
+          creationDate = [v15 creationDate];
+          creationDate2 = [v15 creationDate];
+          v51 = [v48 initWithStartDate:creationDate endDate:creationDate2];
           [v41 setObject:v51 forKeyedSubscript:v47];
         }
 
@@ -232,22 +232,22 @@ LABEL_18:
       while (v44);
     }
 
-    v52 = [PGGraphBuilder memoryLabelForCategory:v90];
+    v52 = [PGGraphBuilder memoryLabelForCategory:category];
     v53 = [PGGraphMemoryNode uniqueMemoryIdentifierWithMemoryLabel:v52 featureNodes:v79];
 
     v54 = [PGTriggeredMemory alloc];
-    v55 = v90;
-    v56 = [v15 creationDate];
-    LOBYTE(v69) = v77;
+    v55 = category;
+    creationDate3 = [v15 creationDate];
+    LOBYTE(v69) = bOOLValue;
     v57 = v55;
     v23 = v80;
-    v58 = [(PGTriggeredMemory *)v54 initWithMemoryCategory:v57 memoryCategorySubcategory:v78 memoryMomentNodes:v80 memoryFeatureNodes:v79 validityIntervalByTriggerType:v41 creationDate:v56 uniqueMemoryIdentifier:v53 generatedWithFallbackRequirements:v69];
+    v58 = [(PGTriggeredMemory *)v54 initWithMemoryCategory:v57 memoryCategorySubcategory:unsignedIntegerValue memoryMomentNodes:v80 memoryFeatureNodes:v79 validityIntervalByTriggerType:v41 creationDate:creationDate3 uniqueMemoryIdentifier:v53 generatedWithFallbackRequirements:v69];
 
     v10 = v70;
     [v70 addObject:v58];
 
     v11 = v71;
-    v8 = v72;
+    graphCopy = v72;
     v14 = v81;
     v16 = v82;
     goto LABEL_35;
@@ -263,11 +263,11 @@ LABEL_41:
   return v66;
 }
 
-- (id)memoriesToAvoidForConfiguration:(id)a3 withGraph:(id)a4 progressReporter:(id)a5
+- (id)memoriesToAvoidForConfiguration:(id)configuration withGraph:(id)graph progressReporter:(id)reporter
 {
   v33[2] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v9 = self->_loggingConnection;
   v10 = os_signpost_id_generate(v9);
   v11 = v9;
@@ -281,22 +281,22 @@ LABEL_41:
   info = 0;
   mach_timebase_info(&info);
   v27 = mach_absolute_time();
-  v13 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-  [v13 setIncludeRejectedMemories:1];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeRejectedMemories:1];
   v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"userCreated == NO && rejected == YES"];
-  [v13 setPredicate:v14];
+  [librarySpecificFetchOptions setPredicate:v14];
 
   v15 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
   v33[0] = v15;
   v16 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"objectID" ascending:1];
   v33[1] = v16;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
-  [v13 setSortDescriptors:v17];
+  [librarySpecificFetchOptions setSortDescriptors:v17];
 
-  v18 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v13];
+  v18 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   if ([v18 count])
   {
-    v19 = [(PGMemoryPlannerPhotoKitSource *)self triggeredMemoriesFromPersistedMemories:v18 withGraph:v7 progressReporter:v8];
+    v19 = [(PGMemoryPlannerPhotoKitSource *)self triggeredMemoriesFromPersistedMemories:v18 withGraph:graphCopy progressReporter:reporterCopy];
     v20 = mach_absolute_time();
     numer = info.numer;
     denom = info.denom;
@@ -328,13 +328,13 @@ LABEL_41:
   return v19;
 }
 
-- (id)pastMemoriesForConfiguration:(id)a3 withGraph:(id)a4 progressReporter:(id)a5
+- (id)pastMemoriesForConfiguration:(id)configuration withGraph:(id)graph progressReporter:(id)reporter
 {
   v39[2] = *MEMORY[0x277D85DE8];
-  v33 = a4;
-  v8 = a5;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v9 = self->_loggingConnection;
-  v10 = a3;
+  configurationCopy = configuration;
   v11 = os_signpost_id_generate(v9);
   v12 = v9;
   v13 = v12;
@@ -347,26 +347,26 @@ LABEL_41:
   info = 0;
   mach_timebase_info(&info);
   v32 = mach_absolute_time();
-  v14 = [v10 pastMemoryCollisionUniversalDateInterval];
+  pastMemoryCollisionUniversalDateInterval = [configurationCopy pastMemoryCollisionUniversalDateInterval];
 
-  v15 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v16 = MEMORY[0x277CCAC30];
-  v17 = [v14 startDate];
-  v18 = [v14 endDate];
-  v19 = [v16 predicateWithFormat:@"creationDate >= %@ AND creationDate <= %@ && category != %d", v17, v18, 401];
-  [v15 setPredicate:v19];
+  startDate = [pastMemoryCollisionUniversalDateInterval startDate];
+  endDate = [pastMemoryCollisionUniversalDateInterval endDate];
+  v19 = [v16 predicateWithFormat:@"creationDate >= %@ AND creationDate <= %@ && category != %d", startDate, endDate, 401];
+  [librarySpecificFetchOptions setPredicate:v19];
 
   v20 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
   v39[0] = v20;
   v21 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"objectID" ascending:1];
   v39[1] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:2];
-  [v15 setSortDescriptors:v22];
+  [librarySpecificFetchOptions setSortDescriptors:v22];
 
-  v23 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v15];
+  v23 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:librarySpecificFetchOptions];
   if ([v23 count])
   {
-    v24 = [(PGMemoryPlannerPhotoKitSource *)self triggeredMemoriesFromPersistedMemories:v23 withGraph:v33 progressReporter:v8];
+    v24 = [(PGMemoryPlannerPhotoKitSource *)self triggeredMemoriesFromPersistedMemories:v23 withGraph:graphCopy progressReporter:reporterCopy];
     v25 = mach_absolute_time();
     numer = info.numer;
     denom = info.denom;
@@ -398,35 +398,35 @@ LABEL_41:
   return v24;
 }
 
-- (PGMemoryPlannerPhotoKitSource)initWithPhotoLibrary:(id)a3 loggingConnection:(id)a4
+- (PGMemoryPlannerPhotoKitSource)initWithPhotoLibrary:(id)library loggingConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  connectionCopy = connection;
   v12.receiver = self;
   v12.super_class = PGMemoryPlannerPhotoKitSource;
   v9 = [(PGMemoryPlannerPhotoKitSource *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    objc_storeStrong(&v10->_loggingConnection, a4);
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_loggingConnection, connection);
   }
 
   return v10;
 }
 
-+ (BOOL)translateLegacyMemoryCategory:(unint64_t)a3 subcategory:(unint64_t)a4 toNewMemoryCategory:(unint64_t *)a5 triggerType:(unint64_t *)a6
++ (BOOL)translateLegacyMemoryCategory:(unint64_t)category subcategory:(unint64_t)subcategory toNewMemoryCategory:(unint64_t *)memoryCategory triggerType:(unint64_t *)type
 {
-  *a5 = 0;
-  *a6 = 0;
+  *memoryCategory = 0;
+  *type = 0;
   result = 1;
-  if (a3 <= 215)
+  if (category <= 215)
   {
-    if (a3 <= 211)
+    if (category <= 211)
     {
-      if (a3 <= 200)
+      if (category <= 200)
       {
-        if (a3 && a3 != 32)
+        if (category && category != 32)
         {
           goto LABEL_36;
         }
@@ -436,13 +436,13 @@ LABEL_18:
         goto LABEL_36;
       }
 
-      if (a3 != 201)
+      if (category != 201)
       {
-        if (a3 == 202)
+        if (category == 202)
         {
           result = 1;
-          *a5 = 1;
-          *a6 = 4;
+          *memoryCategory = 1;
+          *type = 4;
         }
 
         goto LABEL_36;
@@ -450,18 +450,18 @@ LABEL_18:
 
       v7 = 8;
 LABEL_35:
-      *a5 = v7;
+      *memoryCategory = v7;
       result = 1;
       goto LABEL_36;
     }
 
-    if (a3 > 213)
+    if (category > 213)
     {
-      if (a3 == 214)
+      if (category == 214)
       {
         result = 1;
-        *a5 = 1;
-        *a6 = 11;
+        *memoryCategory = 1;
+        *type = 11;
         goto LABEL_36;
       }
 
@@ -470,26 +470,26 @@ LABEL_35:
 
     else
     {
-      if (a3 != 212)
+      if (category != 212)
       {
         result = 1;
-        *a5 = 1;
+        *memoryCategory = 1;
 LABEL_31:
-        *a6 = 1;
+        *type = 1;
         goto LABEL_36;
       }
 
       v8 = 16;
     }
 
-    *a5 = v8;
+    *memoryCategory = v8;
     result = 1;
     goto LABEL_31;
   }
 
-  if (a3 > 219)
+  if (category > 219)
   {
-    switch(a3)
+    switch(category)
     {
       case 0xDCuLL:
         v7 = 3;
@@ -506,15 +506,15 @@ LABEL_31:
     goto LABEL_35;
   }
 
-  if (a3 - 216 < 2)
+  if (category - 216 < 2)
   {
     v7 = 21;
     goto LABEL_35;
   }
 
-  if (a3 != 218)
+  if (category != 218)
   {
-    if (a3 != 219)
+    if (category != 219)
     {
       goto LABEL_36;
     }
@@ -524,14 +524,14 @@ LABEL_31:
   }
 
   result = 1;
-  if (a4 == 203)
+  if (subcategory == 203)
   {
 LABEL_57:
     v9 = 6;
     goto LABEL_67;
   }
 
-  if (a4 == 204)
+  if (subcategory == 204)
   {
 LABEL_54:
     v9 = 3;
@@ -539,9 +539,9 @@ LABEL_54:
   }
 
 LABEL_36:
-  if (a4 <= 300)
+  if (subcategory <= 300)
   {
-    switch(a4)
+    switch(subcategory)
     {
       case 0xC9uLL:
         v9 = 1;
@@ -549,7 +549,7 @@ LABEL_36:
       case 0xCAuLL:
         goto LABEL_54;
       case 0xCBuLL:
-        if (a3 != 220)
+        if (category != 220)
         {
           goto LABEL_57;
         }
@@ -557,7 +557,7 @@ LABEL_36:
         v9 = 5;
         goto LABEL_67;
       case 0xCCuLL:
-        if (a3 != 220)
+        if (category != 220)
         {
           goto LABEL_54;
         }
@@ -573,8 +573,8 @@ LABEL_36:
       case 0xD1uLL:
         return result;
       case 0xD2uLL:
-        *a5 = 3;
-        *a6 = 2;
+        *memoryCategory = 3;
+        *type = 2;
         return result;
       case 0xD3uLL:
         v9 = 20;
@@ -599,7 +599,7 @@ LABEL_36:
         v9 = 9;
         goto LABEL_67;
       default:
-        if (a4 != 102)
+        if (subcategory != 102)
         {
           return result;
         }
@@ -612,9 +612,9 @@ LABEL_50:
     goto LABEL_67;
   }
 
-  if (a4 <= 400)
+  if (subcategory <= 400)
   {
-    if (a4 - 301 < 3)
+    if (subcategory - 301 < 3)
     {
       return 0;
     }
@@ -622,9 +622,9 @@ LABEL_50:
 
   else
   {
-    if (a4 <= 402)
+    if (subcategory <= 402)
     {
-      if (a4 == 401)
+      if (subcategory == 401)
       {
         v9 = 13;
       }
@@ -637,17 +637,17 @@ LABEL_50:
       goto LABEL_67;
     }
 
-    if (a4 == 403)
+    if (subcategory == 403)
     {
       v9 = 15;
       goto LABEL_67;
     }
 
-    if (a4 == 404)
+    if (subcategory == 404)
     {
       v9 = 14;
 LABEL_67:
-      *a5 = v9;
+      *memoryCategory = v9;
     }
   }
 

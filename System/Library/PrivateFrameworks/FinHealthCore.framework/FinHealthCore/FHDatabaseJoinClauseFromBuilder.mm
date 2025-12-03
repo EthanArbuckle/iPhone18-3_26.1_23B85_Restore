@@ -1,25 +1,25 @@
 @interface FHDatabaseJoinClauseFromBuilder
-+ (id)initWithBuilder:(id)a3;
-- (id)_init:(id)a3;
++ (id)initWithBuilder:(id)builder;
+- (id)_init:(id)_init;
 - (id)description;
 @end
 
 @implementation FHDatabaseJoinClauseFromBuilder
 
-+ (id)initWithBuilder:(id)a3
++ (id)initWithBuilder:(id)builder
 {
-  v3 = a3;
+  builderCopy = builder;
   v4 = objc_alloc_init(FHDatabaseJoinClauseBuilder);
-  v3[2](v3, v4);
+  builderCopy[2](builderCopy, v4);
 
   v5 = [[FHDatabaseJoinClauseFromBuilder alloc] _init:v4];
 
   return v5;
 }
 
-- (id)_init:(id)a3
+- (id)_init:(id)_init
 {
-  v4 = a3;
+  _initCopy = _init;
   v14.receiver = self;
   v14.super_class = FHDatabaseJoinClauseFromBuilder;
   v13.receiver = [(FHDatabaseJoinClauseFromBuilder *)&v14 init];
@@ -27,13 +27,13 @@
   v5 = [(FHDatabaseJoinClauseFromBuilder *)&v13 init];
   if (v5)
   {
-    v6 = [v4 clauses];
-    v7 = [v6 copy];
+    clauses = [_initCopy clauses];
+    v7 = [clauses copy];
     clauses = v5->_clauses;
     v5->_clauses = v7;
 
-    v9 = [v4 entities];
-    v10 = [v9 copy];
+    entities = [_initCopy entities];
+    v10 = [entities copy];
     entities = v5->_entities;
     v5->_entities = v10;
   }

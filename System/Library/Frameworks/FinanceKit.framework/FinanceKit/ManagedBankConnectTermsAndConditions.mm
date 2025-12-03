@@ -1,20 +1,20 @@
 @interface ManagedBankConnectTermsAndConditions
-- (_TtC10FinanceKit36ManagedBankConnectTermsAndConditions)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit36ManagedBankConnectTermsAndConditions)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void)willSave;
 @end
 
 @implementation ManagedBankConnectTermsAndConditions
 
-- (_TtC10FinanceKit36ManagedBankConnectTermsAndConditions)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit36ManagedBankConnectTermsAndConditions)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedBankConnectTermsAndConditions *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedBankConnectTermsAndConditions *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void)willSave
 {
-  v2 = self;
+  selfCopy = self;
   ManagedBankConnectTermsAndConditions.willSave()();
 }
 

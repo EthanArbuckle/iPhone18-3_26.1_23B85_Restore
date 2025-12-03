@@ -1,38 +1,38 @@
 @interface DTActivityTraceTapLocalDelegate
-- (DTActivityTraceTapLocalDelegate)initWithConfig:(id)a3;
-- (id)noticeForRecordingMode:(unint64_t)a3 isAllProcesses:(BOOL)a4 lossCount:(unint64_t)a5;
+- (DTActivityTraceTapLocalDelegate)initWithConfig:(id)config;
+- (id)noticeForRecordingMode:(unint64_t)mode isAllProcesses:(BOOL)processes lossCount:(unint64_t)count;
 - (id)validateConfig;
 - (void)_handleHARExternalNotificationChange;
 - (void)_handleStopOfHARRecordingCausedByUser;
 - (void)_setupHARDisabledByExternalClientNotifications;
 - (void)_tearDownHARDisabledNotifications;
 - (void)dealloc;
-- (void)fetchDataForReason:(unint64_t)a3 block:(id)a4;
+- (void)fetchDataForReason:(unint64_t)reason block:(id)block;
 - (void)initializeHARTimer;
-- (void)logLoaderNeedsFetchNow:(id)a3;
-- (void)setTap:(id)a3;
+- (void)logLoaderNeedsFetchNow:(id)now;
+- (void)setTap:(id)tap;
 - (void)start;
 - (void)stop;
-- (void)updateHARLogPrefsWithIsEnabled:(BOOL)a3;
+- (void)updateHARLogPrefsWithIsEnabled:(BOOL)enabled;
 @end
 
 @implementation DTActivityTraceTapLocalDelegate
 
-- (DTActivityTraceTapLocalDelegate)initWithConfig:(id)a3
+- (DTActivityTraceTapLocalDelegate)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v9.receiver = self;
   v9.super_class = DTActivityTraceTapLocalDelegate;
   v6 = [(DTActivityTraceTapLocalDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (!v5)
+    if (!configCopy)
     {
       sub_24802EC58();
     }
 
-    objc_storeStrong(&v6->_config, a3);
+    objc_storeStrong(&v6->_config, config);
     v7->_harLoggingNotificationToken = -1;
   }
 
@@ -50,9 +50,9 @@
 - (id)validateConfig
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [(DTActivityTraceTapConfig *)self->_config predicateString];
-  v4 = v3;
-  if (v3 && ([v3 isEqualToString:&stru_285A19CB8] & 1) == 0)
+  predicateString = [(DTActivityTraceTapConfig *)self->_config predicateString];
+  v4 = predicateString;
+  if (predicateString && ([predicateString isEqualToString:&stru_285A19CB8] & 1) == 0)
   {
     v16 = [MEMORY[0x277CCAC30] predicateWithFormat:v4];
 
@@ -143,22 +143,22 @@ LABEL_20:
   return v6;
 }
 
-- (void)setTap:(id)a3
+- (void)setTap:(id)tap
 {
-  v4 = a3;
-  if (!v4)
+  tapCopy = tap;
+  if (!tapCopy)
   {
     sub_24802EC84();
   }
 
-  v5 = v4;
-  objc_storeWeak(&self->_tap, v4);
+  v5 = tapCopy;
+  objc_storeWeak(&self->_tap, tapCopy);
 }
 
-- (void)logLoaderNeedsFetchNow:(id)a3
+- (void)logLoaderNeedsFetchNow:(id)now
 {
   WeakRetained = objc_loadWeakRetained(&self->_tap);
-  v3 = [WeakRetained fetchDataNow];
+  fetchDataNow = [WeakRetained fetchDataNow];
 }
 
 - (void)_setupHARDisabledByExternalClientNotifications
@@ -255,14 +255,14 @@ LABEL_20:
   dispatch_resume(self->_harLoggingTimer);
 }
 
-- (void)updateHARLogPrefsWithIsEnabled:(BOOL)a3
+- (void)updateHARLogPrefsWithIsEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v5 = [objc_alloc(MEMORY[0x277D24458]) initWithName:@"com.apple.CFNetwork"];
   v6 = [objc_alloc(MEMORY[0x277D24450]) initWithName:@"HAR" subsystem:v5];
   v7 = [objc_alloc(MEMORY[0x277D24458]) initWithName:@"com.apple.CFNetwork.Instruments"];
   v8 = [objc_alloc(MEMORY[0x277D24450]) initWithName:@"HTTP Transactions" subsystem:v7];
-  if (v3)
+  if (enabledCopy)
   {
     v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:60.0];
     v10 = [MEMORY[0x277CCABB0] numberWithInt:0x100000];
@@ -331,12 +331,12 @@ LABEL_20:
 
   [(DTActivityTraceTapLocalShuttle *)self->_shuttle setLoaderStop:self->_loaderStop];
   [(DTActivityTraceTapLocalShuttle *)self->_shuttle setOwnersDock:self->_dock];
-  v9 = [(DTActivityTraceTapConfig *)self->_config predicateString];
-  if (v9 && (-[DTActivityTraceTapConfig predicateString](self->_config, "predicateString"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 length], v10, v9, v11))
+  predicateString = [(DTActivityTraceTapConfig *)self->_config predicateString];
+  if (predicateString && (-[DTActivityTraceTapConfig predicateString](self->_config, "predicateString"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 length], v10, predicateString, v11))
   {
     v12 = MEMORY[0x277CCAC30];
-    v13 = [(DTActivityTraceTapConfig *)self->_config predicateString];
-    v70 = [v12 predicateWithFormat:v13];
+    predicateString2 = [(DTActivityTraceTapConfig *)self->_config predicateString];
+    v70 = [v12 predicateWithFormat:predicateString2];
   }
 
   else
@@ -359,50 +359,50 @@ LABEL_20:
     v14 = 2;
   }
 
-  v15 = [(DTActivityTraceTapConfig *)self->_config excludeInfo];
+  excludeInfo = [(DTActivityTraceTapConfig *)self->_config excludeInfo];
   if ([(DTActivityTraceTapConfig *)self->_config excludeDebug])
   {
-    v16 = v15 | 2;
+    v16 = excludeInfo | 2;
   }
 
   else
   {
-    v16 = v15;
+    v16 = excludeInfo;
   }
 
-  v17 = [(DTActivityTraceTapConfig *)self->_config includeSenderInfo];
+  includeSenderInfo = [(DTActivityTraceTapConfig *)self->_config includeSenderInfo];
   if ([(DTActivityTraceTapConfig *)self->_config includeWallTime])
   {
-    v17 |= 2uLL;
+    includeSenderInfo |= 2uLL;
   }
 
   if ([(DTActivityTraceTapConfig *)self->_config includeEmitLocation])
   {
-    v17 |= 2uLL;
+    includeSenderInfo |= 2uLL;
   }
 
-  v18 = [(DTActivityTraceTapConfig *)self->_config mode];
+  mode = [(DTActivityTraceTapConfig *)self->_config mode];
   config = self->_config;
   v67 = v16;
   v68 = v14;
-  if (v18)
+  if (mode)
   {
-    v20 = [(DTActivityTraceTapConfig *)config mode];
-    v21 = 2 * (v20 == 1);
-    if (v20 == 2)
+    mode2 = [(DTActivityTraceTapConfig *)config mode];
+    v21 = 2 * (mode2 == 1);
+    if (mode2 == 2)
     {
       v21 = 3;
     }
 
     v66 = v21;
-    v22 = [(DTActivityTraceTapConfig *)self->_config processDetectionCallback];
-    [(DTActivityTraceTapLocalShuttle *)self->_shuttle setProcessDetectionCallback:v22];
+    processDetectionCallback = [(DTActivityTraceTapConfig *)self->_config processDetectionCallback];
+    [(DTActivityTraceTapLocalShuttle *)self->_shuttle setProcessDetectionCallback:processDetectionCallback];
   }
 
   else
   {
-    v23 = [(DTTapConfig *)config bufferMode];
-    switch(v23)
+    bufferMode = [(DTTapConfig *)config bufferMode];
+    switch(bufferMode)
     {
       case 2:
         [(DTActivityTraceTapLocalShuttle *)self->_shuttle setFetchWindow:([(DTTapConfig *)self->_config windowSize]* 1.2) / 1000000000.0];
@@ -423,18 +423,18 @@ LABEL_20:
 
 LABEL_28:
   v65 = [DTOSLogLoaderConfiguration alloc];
-  v64 = [(DTActivityTraceTapConfig *)self->_config enableBacktraceReplacement];
-  v63 = [(DTActivityTraceTapConfig *)self->_config machTimebase];
-  v62 = [(DTActivityTraceTapConfig *)self->_config machContinuousStart];
-  v25 = [(DTActivityTraceTapConfig *)self->_config importedFileURL];
-  v26 = [(DTActivityTraceTapConfig *)self->_config importForcedStartDate];
-  v27 = [(DTActivityTraceTapConfig *)self->_config importForcedEndDate];
-  v28 = [(DTActivityTraceTapConfig *)self->_config processDetectionCallback];
-  v29 = [(DTActivityTraceTapConfig *)self->_config dynamicTracingEnabledSubsystems];
-  v30 = [(DTActivityTraceTapConfig *)self->_config loggingSubsystemCategoryPairsToEnable];
-  v31 = [(DTActivityTraceTapConfig *)self->_config signpostSubsystemCategoryPairsToEnable];
-  LOBYTE(v61) = v28 != 0;
-  v32 = [(DTOSLogLoaderConfiguration *)v65 initWithFilterPredicate:v70 signpostConfig:v68 loaderExclusions:v67 columnInclusions:v17 mode:v66 enableBacktraceReplacement:v64 machTimebase:v63 machContinuousStart:v62 importedFileURL:v25 importForcedStartDate:v26 importForcedEndDate:v27 trackPidToExecNameMapping:v61 dynamicTracingEnabledSubsystems:v29 logSubsystemCategoryPairsToEnable:v30 signpostSubsystemCategoryPairsToEnable:v31];
+  enableBacktraceReplacement = [(DTActivityTraceTapConfig *)self->_config enableBacktraceReplacement];
+  machTimebase = [(DTActivityTraceTapConfig *)self->_config machTimebase];
+  machContinuousStart = [(DTActivityTraceTapConfig *)self->_config machContinuousStart];
+  importedFileURL = [(DTActivityTraceTapConfig *)self->_config importedFileURL];
+  importForcedStartDate = [(DTActivityTraceTapConfig *)self->_config importForcedStartDate];
+  importForcedEndDate = [(DTActivityTraceTapConfig *)self->_config importForcedEndDate];
+  processDetectionCallback2 = [(DTActivityTraceTapConfig *)self->_config processDetectionCallback];
+  dynamicTracingEnabledSubsystems = [(DTActivityTraceTapConfig *)self->_config dynamicTracingEnabledSubsystems];
+  loggingSubsystemCategoryPairsToEnable = [(DTActivityTraceTapConfig *)self->_config loggingSubsystemCategoryPairsToEnable];
+  signpostSubsystemCategoryPairsToEnable = [(DTActivityTraceTapConfig *)self->_config signpostSubsystemCategoryPairsToEnable];
+  LOBYTE(v61) = processDetectionCallback2 != 0;
+  v32 = [(DTOSLogLoaderConfiguration *)v65 initWithFilterPredicate:v70 signpostConfig:v68 loaderExclusions:v67 columnInclusions:includeSenderInfo mode:v66 enableBacktraceReplacement:enableBacktraceReplacement machTimebase:machTimebase machContinuousStart:machContinuousStart importedFileURL:importedFileURL importForcedStartDate:importForcedStartDate importForcedEndDate:importForcedEndDate trackPidToExecNameMapping:v61 dynamicTracingEnabledSubsystems:dynamicTracingEnabledSubsystems logSubsystemCategoryPairsToEnable:loggingSubsystemCategoryPairsToEnable signpostSubsystemCategoryPairsToEnable:signpostSubsystemCategoryPairsToEnable];
 
   v69 = v32;
   [(DTActivityTraceTapLocalShuttle *)self->_shuttle setConfiguration:v32];
@@ -462,12 +462,12 @@ LABEL_28:
 
   if ([(DTActivityTraceTapConfig *)self->_config enablePowerLog])
   {
-    v36 = [MEMORY[0x277D3A0F0] defaultConfiguration];
-    [v36 setMode:0];
-    [v36 setUpdateInterval:1.0];
-    [v36 setEmitTracingSignposts:1];
-    [v36 setIsHeadless:1];
-    [v36 setUpdateDelegate:0];
+    defaultConfiguration = [MEMORY[0x277D3A0F0] defaultConfiguration];
+    [defaultConfiguration setMode:0];
+    [defaultConfiguration setUpdateInterval:1.0];
+    [defaultConfiguration setEmitTracingSignposts:1];
+    [defaultConfiguration setIsHeadless:1];
+    [defaultConfiguration setUpdateDelegate:0];
     if ([MEMORY[0x277D3A0F8] isMonitoring])
     {
       [MEMORY[0x277D3A0F8] stopMonitoring];
@@ -476,7 +476,7 @@ LABEL_28:
     if ([(DTActivityTraceTapConfig *)self->_config isTargetAllProcesses])
     {
       v77 = 0;
-      v37 = [MEMORY[0x277D3A0F8] startMonitoringSystemMetricsWithConfig:v36 error:&v77];
+      v37 = [MEMORY[0x277D3A0F8] startMonitoringSystemMetricsWithConfig:defaultConfiguration error:&v77];
       v38 = v77;
       if ((v37 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
@@ -486,13 +486,13 @@ LABEL_28:
 
     else
     {
-      v39 = [(DTActivityTraceTapConfig *)self->_config targetPID];
+      targetPID = [(DTActivityTraceTapConfig *)self->_config targetPID];
       v40 = MEMORY[0x277D3A0F8];
-      v41 = [MEMORY[0x277CCABB0] numberWithInt:v39];
+      v41 = [MEMORY[0x277CCABB0] numberWithInt:targetPID];
       v82[0] = v41;
       v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v82 count:1];
       v76 = 0;
-      v43 = [v40 startMonitoringProcessesWithPID:v42 config:v36 error:&v76];
+      v43 = [v40 startMonitoringProcessesWithPID:v42 config:defaultConfiguration error:&v76];
       v38 = v76;
 
       if ((v43 & 1) == 0 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
@@ -513,8 +513,8 @@ LABEL_28:
   if (!(times | mach_timebase_info(&info)))
   {
     v80[0] = DTActivityTraceTapDeviceTimeIntervalSince1970Key;
-    v47 = [MEMORY[0x277CCABB0] numberWithDouble:v72 / 1000000000.0 + location];
-    v81[0] = v47;
+    location = [MEMORY[0x277CCABB0] numberWithDouble:v72 / 1000000000.0 + location];
+    v81[0] = location;
     v80[1] = DTActivityTraceTapDeviceMachContinuousTimeKey;
     v48 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v73];
     v81[1] = v48;
@@ -537,8 +537,8 @@ LABEL_28:
   [(XRMobileAgent *)self->_shuttle activateWithFinalDestination:self->_dock ticket:0];
   if ([(XRMobileAgentDock *)self->_dock waitForAgentToDock])
   {
-    v55 = [(XRMobileAgentDock *)self->_dock dockedAgent];
-    if (v55 != self->_shuttle)
+    dockedAgent = [(XRMobileAgentDock *)self->_dock dockedAgent];
+    if (dockedAgent != self->_shuttle)
     {
       sub_24802EE40();
     }
@@ -567,25 +567,25 @@ LABEL_49:
 
 - (void)stop
 {
-  v3 = [(XRMobileAgentDock *)self->_dock dockedAgent];
+  dockedAgent = [(XRMobileAgentDock *)self->_dock dockedAgent];
 
-  if (!v3)
+  if (!dockedAgent)
   {
     [(XRMobileAgentDock *)self->_dock waitForAgentToDock];
   }
 
-  v4 = [(XRMobileAgentDock *)self->_dock dockedAgent];
+  dockedAgent2 = [(XRMobileAgentDock *)self->_dock dockedAgent];
 
-  if (v4)
+  if (dockedAgent2)
   {
     [(DTActivityTraceTapLocalShuttle *)self->_shuttle setShouldStop:1];
     [(XRMobileAgentDock *)self->_dock releaseDockedAgent];
   }
 
   [(XRMobileAgentDock *)self->_dock waitForAgentToDock];
-  v5 = [(XRMobileAgentDock *)self->_dock dockedAgent];
+  dockedAgent3 = [(XRMobileAgentDock *)self->_dock dockedAgent];
 
-  if (v5)
+  if (dockedAgent3)
   {
     if (![(DTActivityTraceTapLocalShuttle *)self->_shuttle didStop])
     {
@@ -621,10 +621,10 @@ LABEL_49:
   }
 }
 
-- (void)fetchDataForReason:(unint64_t)a3 block:(id)a4
+- (void)fetchDataForReason:(unint64_t)reason block:(id)block
 {
-  v45 = a4;
-  if (a3 == 2)
+  blockCopy = block;
+  if (reason == 2)
   {
     if (![(DTTapConfig *)self->_config discardHeartbeatsWhenPossible])
     {
@@ -636,30 +636,30 @@ LABEL_49:
 
   else
   {
-    if (!a3)
+    if (!reason)
     {
       v6 = [DTActivityTraceTapMemo alloc];
       v7 = objc_opt_new();
       v8 = [(DTActivityTraceTapMemo *)v6 initWithData:v7];
 
       [(DTTapDataMemo *)v8 setFinalMemo:1];
-      v45[2](v45, v8, 1);
+      blockCopy[2](blockCopy, v8, 1);
       goto LABEL_51;
     }
 
     v9 = 0;
   }
 
-  v10 = [(XRMobileAgentDock *)self->_dock dockedAgent];
+  dockedAgent = [(XRMobileAgentDock *)self->_dock dockedAgent];
 
-  if (!v10)
+  if (!dockedAgent)
   {
     [(XRMobileAgentDock *)self->_dock waitForAgentToDock];
   }
 
-  v11 = [(XRMobileAgentDock *)self->_dock dockedAgent];
+  dockedAgent2 = [(XRMobileAgentDock *)self->_dock dockedAgent];
 
-  if (v11)
+  if (dockedAgent2)
   {
     v12 = 0;
     v8 = 0;
@@ -669,13 +669,13 @@ LABEL_49:
       [(DTActivityTraceTapLocalShuttle *)self->_shuttle setShouldFetch:1];
       [(XRMobileAgentDock *)self->_dock releaseDockedAgent];
       [(XRMobileAgentDock *)self->_dock waitForAgentToDock];
-      v13 = [(DTActivityTraceTapLocalShuttle *)self->_shuttle failureReason];
-      v14 = v13;
-      if (v13)
+      failureReason = [(DTActivityTraceTapLocalShuttle *)self->_shuttle failureReason];
+      v14 = failureReason;
+      if (failureReason)
       {
-        v15 = [v13 localizedFailureReason];
+        localizedFailureReason = [failureReason localizedFailureReason];
 
-        if (v15)
+        if (localizedFailureReason)
         {
           [v14 localizedFailureReason];
         }
@@ -689,26 +689,26 @@ LABEL_49:
         v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Fatal logging system error: %@", v16];
         v19 = [(DTTapStatusMemo *)v17 initWithStatus:2147484548 notice:v18];
 
-        v45[2](v45, v19, 0);
+        blockCopy[2](blockCopy, v19, 0);
       }
 
       v12 += [(DTActivityTraceTapLocalShuttle *)self->_shuttle lostEventsSinceLastVisit];
       if (v9)
       {
-        v20 = [(DTActivityTraceTapLocalShuttle *)self->_shuttle nextOutputBytes];
+        nextOutputBytes = [(DTActivityTraceTapLocalShuttle *)self->_shuttle nextOutputBytes];
 
-        if (v20)
+        if (nextOutputBytes)
         {
-          v21 = [(DTActivityTraceTapLocalShuttle *)self->_shuttle nextOutputBytes];
-          v22 = v21;
+          nextOutputBytes2 = [(DTActivityTraceTapLocalShuttle *)self->_shuttle nextOutputBytes];
+          v22 = nextOutputBytes2;
           if (v8)
           {
-            [(DTActivityTraceTapMemo *)v8 appendData:v21];
+            [(DTActivityTraceTapMemo *)v8 appendData:nextOutputBytes2];
           }
 
           else
           {
-            v8 = [(DTActivityTraceTapMemo *)v21 mutableCopy];
+            v8 = [(DTActivityTraceTapMemo *)nextOutputBytes2 mutableCopy];
           }
 
           goto LABEL_31;
@@ -723,7 +723,7 @@ LABEL_49:
           v24 = [(DTActivityTraceTapLocalDelegate *)self noticeForRecordingMode:[(DTTapConfig *)self->_config bufferMode] isAllProcesses:[(DTActivityTraceTapConfig *)self->_config isTargetAllProcesses] lossCount:v12];
           v25 = [(DTTapStatusMemo *)v23 initWithStatus:2281701476 notice:v24];
 
-          v45[2](v45, v25, 0);
+          blockCopy[2](blockCopy, v25, 0);
         }
 
         if ([(DTActivityTraceTapLocalShuttle *)self->_shuttle encounteredBackdatedEvent])
@@ -731,30 +731,30 @@ LABEL_49:
           if (!self->_sentOutBackdatedEventsWarning)
           {
             WeakRetained = objc_loadWeakRetained(&self->_tap);
-            v27 = [WeakRetained config];
-            v28 = [v27 bufferMode];
+            config = [WeakRetained config];
+            bufferMode = [config bufferMode];
 
-            if (!v28)
+            if (!bufferMode)
             {
               v29 = [[DTTapStatusMemo alloc] initWithStatus:2281701477 notice:@"Signpost intervals with backdated timestamps were emitted that are not visualized on the timeline until immediate mode recording is stopped."];
-              v45[2](v45, v29, 0);
+              blockCopy[2](blockCopy, v29, 0);
               self->_sentOutBackdatedEventsWarning = 1;
             }
           }
         }
 
-        v30 = [(DTActivityTraceTapLocalShuttle *)self->_shuttle nextOutputBytes];
-        v31 = [v30 length];
+        nextOutputBytes3 = [(DTActivityTraceTapLocalShuttle *)self->_shuttle nextOutputBytes];
+        v31 = [nextOutputBytes3 length];
 
         if (v31)
         {
           v32 = [DTActivityTraceTapMemo alloc];
-          v33 = [(DTActivityTraceTapLocalShuttle *)self->_shuttle nextOutputBytes];
-          v22 = [(DTActivityTraceTapMemo *)v32 initWithData:v33];
+          nextOutputBytes4 = [(DTActivityTraceTapLocalShuttle *)self->_shuttle nextOutputBytes];
+          v22 = [(DTActivityTraceTapMemo *)v32 initWithData:nextOutputBytes4];
 
           [(DTTapDataMemo *)v22 setFinalMemo:[(DTActivityTraceTapLocalShuttle *)self->_shuttle isFetchComplete]];
           [(DTActivityTraceTapMemo *)v22 setLastMachContinuousTimeSeen:[(DTActivityTraceTapLocalShuttle *)self->_shuttle lastMachContinuousTime]];
-          v45[2](v45, v22, [(DTTapDataMemo *)v22 finalMemo]);
+          blockCopy[2](blockCopy, v22, [(DTTapDataMemo *)v22 finalMemo]);
           v12 = 0;
           v44 = 1;
 LABEL_31:
@@ -791,7 +791,7 @@ LABEL_32:
             v35 = 1;
             [(DTTapDataMemo *)v36 setFinalMemo:1];
             [(DTActivityTraceTapMemo *)v36 setLastMachContinuousTimeSeen:[(DTActivityTraceTapLocalShuttle *)self->_shuttle lastMachContinuousTime]];
-            v45[2](v45, v36, 1);
+            blockCopy[2](blockCopy, v36, 1);
           }
         }
 
@@ -822,14 +822,14 @@ LABEL_32:
 
         if ((v35 & 1) == 0)
         {
-          if (a3 == 2)
+          if (reason == 2)
           {
             v43 = [[DTTapHeartbeatMemo alloc] initWithTimestamp:[(DTActivityTraceTapLocalShuttle *)self->_shuttle lastMachContinuousTime]];
 LABEL_50:
-            v45[2](v45, v43, 1);
+            blockCopy[2](blockCopy, v43, 1);
           }
 
-          else if (a3 == 1)
+          else if (reason == 1)
           {
             v43 = [[DTActivityTraceTapMemo alloc] initWithData:v8];
             [(DTTapHeartbeatMemo *)v43 setFinalMemo:1];
@@ -845,18 +845,18 @@ LABEL_51:
   }
 }
 
-- (id)noticeForRecordingMode:(unint64_t)a3 isAllProcesses:(BOOL)a4 lossCount:(unint64_t)a5
+- (id)noticeForRecordingMode:(unint64_t)mode isAllProcesses:(BOOL)processes lossCount:(unint64_t)count
 {
-  if (a3 - 1 >= 2)
+  if (mode - 1 >= 2)
   {
-    if (!a3)
+    if (!mode)
     {
       v6 = @"%llu log/signpost messages lost due to high rates in live mode recording. Try windowed recording mode.";
       goto LABEL_7;
     }
   }
 
-  else if (a4)
+  else if (processes)
   {
     v6 = @"%llu log/signpost messages lost due to high rates. Try target specific process.";
     goto LABEL_7;
@@ -864,7 +864,7 @@ LABEL_51:
 
   v6 = @"%llu log/signpost messages lost due to high rates";
 LABEL_7:
-  v7 = [MEMORY[0x277CCACA8] stringWithFormat:v6, a5];
+  v7 = [MEMORY[0x277CCACA8] stringWithFormat:v6, count];
 
   return v7;
 }

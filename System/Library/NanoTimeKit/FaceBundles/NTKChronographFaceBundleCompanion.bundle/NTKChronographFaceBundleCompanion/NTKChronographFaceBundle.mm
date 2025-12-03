@@ -1,15 +1,15 @@
 @interface NTKChronographFaceBundle
 - (id)complicationTypesBySlot;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
 @end
 
 @implementation NTKChronographFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   if (NTKShowBlueRidgeUI())
   {
     v4 = 202;
@@ -20,15 +20,15 @@
     v4 = 2;
   }
 
-  v5 = [NTKChronographFace defaultFaceOfStyle:v4 forDevice:v3];
+  v5 = [NTKChronographFace defaultFaceOfStyle:v4 forDevice:deviceCopy];
 
   return v5;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3669496134])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3669496134])
   {
     v5 = 0;
   }
@@ -37,21 +37,21 @@
   {
     v7.receiver = self;
     v7.super_class = NTKChronographFaceBundle;
-    v5 = [(NTKChronographFaceBundle *)&v7 galleryTitleForDevice:v4];
+    v5 = [(NTKChronographFaceBundle *)&v7 galleryTitleForDevice:deviceCopy];
   }
 
   return v5;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_opt_new();
   v6 = objc_opt_class();
-  v7 = [(NTKChronographFaceBundle *)self _orderedColorEditOptionsForDevice:v4];
+  v7 = [(NTKChronographFaceBundle *)self _orderedColorEditOptionsForDevice:deviceCopy];
   v8 = [v7 mutableCopy];
 
-  v9 = [v6 optionsRestrictedByDevice:v4];
+  v9 = [v6 optionsRestrictedByDevice:deviceCopy];
   v10 = [v9 mutableCopy];
 
   if ([v10 count])
@@ -66,11 +66,11 @@
 
   do
   {
-    v12 = [(NTKChronographFaceBundle *)self defaultFaceForDevice:v4];
+    v12 = [(NTKChronographFaceBundle *)self defaultFaceForDevice:deviceCopy];
     if (v12)
     {
-      v13 = [(NTKChronographFaceBundle *)self complicationTypesBySlot];
-      [v12 _setFaceGalleryComplicationTypesForSlots:v13];
+      complicationTypesBySlot = [(NTKChronographFaceBundle *)self complicationTypesBySlot];
+      [v12 _setFaceGalleryComplicationTypesForSlots:complicationTypesBySlot];
 
       if ([v12 _faceGalleryDidUpdateFaceColorForColorEditOptionClass:v6 availableHardwareSpecificColorOptions:v10 availableColorOptions:v8])
       {

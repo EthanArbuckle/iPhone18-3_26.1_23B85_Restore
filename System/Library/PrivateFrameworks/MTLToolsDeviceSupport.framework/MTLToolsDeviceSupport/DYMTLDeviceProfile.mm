@@ -1,44 +1,44 @@
 @interface DYMTLDeviceProfile
-- (BOOL)isEqual:(id)a3;
-- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)a3;
-- (DYMTLDeviceProfile)initWithCoder:(id)a3;
-- (DYMTLDeviceProfile)initWithDevice:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)i;
+- (DYMTLDeviceProfile)initWithCoder:(id)coder;
+- (DYMTLDeviceProfile)initWithDevice:(id)device;
 - (NSString)description;
 - (NSString)descriptionForBugReport;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DYMTLDeviceProfile
 
-- (DYMTLDeviceProfile)initWithCoder:(id)a3
+- (DYMTLDeviceProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = DYMTLDeviceProfile;
   v5 = [(DYMTLDeviceProfile *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"registryID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"registryID"];
     registryID = v5->_registryID;
     v5->_registryID = v8;
 
-    v5->_streamRef = [v4 decodeInt64ForKey:@"streamRef"];
+    v5->_streamRef = [coderCopy decodeInt64ForKey:@"streamRef"];
     v10 = MEMORY[0x277CBEB98];
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"supportedFeatureSets"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"supportedFeatureSets"];
     supportedFeatureSets = v5->_supportedFeatureSets;
     v5->_supportedFeatureSets = v13;
 
     v15 = MEMORY[0x277CBEB98];
     v16 = objc_opt_class();
     v17 = [v15 setWithObjects:{v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"supportedGPUFamilies"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"supportedGPUFamilies"];
     supportedGPUFamilies = v5->_supportedGPUFamilies;
     v5->_supportedGPUFamilies = v18;
 
@@ -47,7 +47,7 @@
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v24 = [v20 setWithObjects:{v21, v22, v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"defaultSamplePositions"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"defaultSamplePositions"];
     defaultSamplePositions = v5->_defaultSamplePositions;
     v5->_defaultSamplePositions = v25;
 
@@ -57,18 +57,18 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_name forKey:@"name"];
-  [v4 encodeInt64:self->_streamRef forKey:@"streamRef"];
-  [v4 encodeObject:self->_supportedFeatureSets forKey:@"supportedFeatureSets"];
-  [v4 encodeObject:self->_supportedGPUFamilies forKey:@"supportedGPUFamilies"];
-  [v4 encodeObject:self->_defaultSamplePositions forKey:@"defaultSamplePositions"];
-  [v4 encodeObject:self->_registryID forKey:@"registryID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeInt64:self->_streamRef forKey:@"streamRef"];
+  [coderCopy encodeObject:self->_supportedFeatureSets forKey:@"supportedFeatureSets"];
+  [coderCopy encodeObject:self->_supportedGPUFamilies forKey:@"supportedGPUFamilies"];
+  [coderCopy encodeObject:self->_defaultSamplePositions forKey:@"defaultSamplePositions"];
+  [coderCopy encodeObject:self->_registryID forKey:@"registryID"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   if (v4)
@@ -93,9 +93,9 @@
   return v4;
 }
 
-- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)a3
+- (BOOL)supportsCapabilitiesOfGraphicsAPI:(id)i
 {
-  v4 = a3;
+  iCopy = i;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -103,31 +103,31 @@
     v13 = &v12;
     v14 = 0x2020000000;
     v15 = 1;
-    v5 = v4;
-    v6 = [v5 supportedGPUFamilies];
+    v5 = iCopy;
+    supportedGPUFamilies = [v5 supportedGPUFamilies];
 
-    if (v6)
+    if (supportedGPUFamilies)
     {
-      v7 = [v5 supportedGPUFamilies];
+      supportedGPUFamilies2 = [v5 supportedGPUFamilies];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __56__DYMTLDeviceProfile_supportsCapabilitiesOfGraphicsAPI___block_invoke;
       v11[3] = &unk_27984EC78;
       v11[4] = self;
       v11[5] = &v12;
-      [v7 enumerateObjectsUsingBlock:v11];
+      [supportedGPUFamilies2 enumerateObjectsUsingBlock:v11];
     }
 
     else
     {
-      v7 = [v5 supportedFeatureSets];
+      supportedGPUFamilies2 = [v5 supportedFeatureSets];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __56__DYMTLDeviceProfile_supportsCapabilitiesOfGraphicsAPI___block_invoke_2;
       v10[3] = &unk_27984EC78;
       v10[4] = self;
       v10[5] = &v12;
-      [v7 enumerateObjectsUsingBlock:v10];
+      [supportedGPUFamilies2 enumerateObjectsUsingBlock:v10];
     }
 
     v8 = *(v13 + 24);
@@ -166,19 +166,19 @@ uint64_t __56__DYMTLDeviceProfile_supportsCapabilitiesOfGraphicsAPI___block_invo
   return result;
 }
 
-- (DYMTLDeviceProfile)initWithDevice:(id)a3
+- (DYMTLDeviceProfile)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v35.receiver = self;
   v35.super_class = DYMTLDeviceProfile;
   v5 = [(DYMTLDeviceProfile *)&v35 init];
   if (v5)
   {
-    v6 = [v4 name];
+    name = [deviceCopy name];
     name = v5->_name;
-    v5->_name = v6;
+    v5->_name = name;
 
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "registryID")}];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(deviceCopy, "registryID")}];
     registryID = v5->_registryID;
     v5->_registryID = v8;
 
@@ -193,7 +193,7 @@ uint64_t __56__DYMTLDeviceProfile_supportsCapabilitiesOfGraphicsAPI___block_invo
     for (i = 0; i != 17; ++i)
     {
       v15 = [DYMTLDeviceProfile initWithDevice:]::availableFeatures[i];
-      if ([v4 supportsFeatureSet:v15])
+      if ([deviceCopy supportsFeatureSet:v15])
       {
         v16 = v5->_supportedFeatureSets;
         v17 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v15];
@@ -206,7 +206,7 @@ uint64_t __56__DYMTLDeviceProfile_supportsCapabilitiesOfGraphicsAPI___block_invo
       for (j = 0; j != 18; ++j)
       {
         v19 = [DYMTLDeviceProfile initWithDevice:]::availableGPUFamilies[j];
-        if ([v4 supportsFamily:v19])
+        if ([deviceCopy supportsFamily:v19])
         {
           v20 = v5->_supportedGPUFamilies;
           v21 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v19];
@@ -221,15 +221,15 @@ uint64_t __56__DYMTLDeviceProfile_supportsCapabilitiesOfGraphicsAPI___block_invo
       v5->_supportedGPUFamilies = 0;
     }
 
-    v34 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     if (objc_opt_respondsToSelector())
     {
-      for (k = 1; k <= [v4 maxCustomSamplePositions]; ++k)
+      for (k = 1; k <= [deviceCopy maxCustomSamplePositions]; ++k)
       {
-        if ([v4 supportsTextureSampleCount:k])
+        if ([deviceCopy supportsTextureSampleCount:k])
         {
           v24 = malloc_type_calloc(k, 8uLL, 0x100004000313F17uLL);
-          [v4 getDefaultSamplePositions:v24 count:k];
+          [deviceCopy getDefaultSamplePositions:v24 count:k];
           v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
           if (k)
           {
@@ -250,12 +250,12 @@ uint64_t __56__DYMTLDeviceProfile_supportsCapabilitiesOfGraphicsAPI___block_invo
           free(v24);
           v29 = [MEMORY[0x277CBEA60] arrayWithArray:v25];
           v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:k];
-          [v34 setObject:v29 forKey:v30];
+          [dictionary setObject:v29 forKey:v30];
         }
       }
     }
 
-    v31 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v34];
+    v31 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
     defaultSamplePositions = v5->_defaultSamplePositions;
     v5->_defaultSamplePositions = v31;
   }
@@ -397,21 +397,21 @@ uint64_t __56__DYMTLDeviceProfile_supportsCapabilitiesOfGraphicsAPI___block_invo
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
     registryID = self->_registryID;
     if (registryID)
     {
-      v8 = [(NSNumber *)registryID isEqual:v4[6]];
+      v8 = [(NSNumber *)registryID isEqual:equalCopy[6]];
     }
 
     else
     {
-      v8 = [(NSString *)self->_name isEqualToString:v4[5]];
+      v8 = [(NSString *)self->_name isEqualToString:equalCopy[5]];
     }
 
     v6 = v8;

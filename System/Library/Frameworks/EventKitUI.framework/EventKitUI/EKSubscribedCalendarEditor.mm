@@ -1,65 +1,65 @@
 @interface EKSubscribedCalendarEditor
-+ (id)createNewCalendarForEntityType:(unint64_t)a3 inEventStore:(id)a4;
++ (id)createNewCalendarForEntityType:(unint64_t)type inEventStore:(id)store;
 - (BOOL)_needToShowPrivacyNotice;
 - (BOOL)_shouldShowDeleteButton;
-- (BOOL)updateURL:(id)a3;
+- (BOOL)updateURL:(id)l;
 - (CGSize)calculatePreferredContentSize;
-- (EKSubscribedCalendarEditor)initWithCalendar:(id)a3 eventStore:(id)a4 entityType:(unint64_t)a5 limitedToSource:(id)a6;
-- (id)_editItemsForState:(unint64_t)a3;
+- (EKSubscribedCalendarEditor)initWithCalendar:(id)calendar eventStore:(id)store entityType:(unint64_t)type limitedToSource:(id)source;
+- (id)_editItemsForState:(unint64_t)state;
 - (id)rightButton;
-- (void)URLEditItemDidChangeURLString:(id)a3;
+- (void)URLEditItemDidChangeURLString:(id)string;
 - (void)_allowButtonTapped;
 - (void)_cancelInFlightPreviewDataFetch;
 - (void)_denyButtonTapped;
-- (void)_kickoffPreviewDataFetch:(id)a3;
+- (void)_kickoffPreviewDataFetch:(id)fetch;
 - (void)_promptToContinueUsingInsecureConnection;
 - (void)_setTableHeaderViewForState;
 - (void)_showPrivacyNotice;
-- (void)_startSpamCheckingURLString:(id)a3;
+- (void)_startSpamCheckingURLString:(id)string;
 - (void)_unsubscribeFromCalendar;
 - (void)_unsubscribeFromCalendarAndReportJunk;
-- (void)_unsubscribeTapped:(id)a3;
-- (void)_updateCancelButtonVisibilityForSpamStatus:(BOOL)a3;
-- (void)_updateTableHeaderLayoutForWidth:(double)a3;
+- (void)_unsubscribeTapped:(id)tapped;
+- (void)_updateCancelButtonVisibilityForSpamStatus:(BOOL)status;
+- (void)_updateTableHeaderLayoutForWidth:(double)width;
 - (void)_validateURL;
-- (void)_validateURL:(id)a3;
+- (void)_validateURL:(id)l;
 - (void)_validateUserEnteredURL;
-- (void)calendarItemStartedEditing:(id)a3;
-- (void)calendarSubscriptionSpamCheckEditItem:(id)a3 didDetermineThatURL:(id)a4 isSpam:(BOOL)a5;
-- (void)cancel:(id)a3;
-- (void)contentSizeCategoryDidChangeNotification:(id)a3;
-- (void)didSaveCalendar:(id)a3;
+- (void)calendarItemStartedEditing:(id)editing;
+- (void)calendarSubscriptionSpamCheckEditItem:(id)item didDetermineThatURL:(id)l isSpam:(BOOL)spam;
+- (void)cancel:(id)cancel;
+- (void)contentSizeCategoryDidChangeNotification:(id)notification;
+- (void)didSaveCalendar:(id)calendar;
 - (void)loadView;
-- (void)setState:(unint64_t)a3;
-- (void)subscribedCalendarDidFinishLoading:(id)a3;
-- (void)subscribedCalendarFailedWithError:(id)a3;
-- (void)subscribedCalendarRequiresPassword:(id)a3 withContinuation:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setState:(unint64_t)state;
+- (void)subscribedCalendarDidFinishLoading:(id)loading;
+- (void)subscribedCalendarFailedWithError:(id)error;
+- (void)subscribedCalendarRequiresPassword:(id)password withContinuation:(id)continuation;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)willSaveCalendar:(id)a3;
+- (void)willSaveCalendar:(id)calendar;
 @end
 
 @implementation EKSubscribedCalendarEditor
 
-- (EKSubscribedCalendarEditor)initWithCalendar:(id)a3 eventStore:(id)a4 entityType:(unint64_t)a5 limitedToSource:(id)a6
+- (EKSubscribedCalendarEditor)initWithCalendar:(id)calendar eventStore:(id)store entityType:(unint64_t)type limitedToSource:(id)source
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  calendarCopy = calendar;
+  storeCopy = store;
+  sourceCopy = source;
   v23.receiver = self;
   v23.super_class = EKSubscribedCalendarEditor;
-  v13 = [(EKAbstractCalendarEditor *)&v23 initWithCalendar:v10 eventStore:v11 entityType:a5 limitedToSource:v12];
+  v13 = [(EKAbstractCalendarEditor *)&v23 initWithCalendar:calendarCopy eventStore:storeCopy entityType:type limitedToSource:sourceCopy];
   if (v13)
   {
     v14 = objc_alloc_init(MEMORY[0x1E6993490]);
     subCalManager = v13->_subCalManager;
     v13->_subCalManager = v14;
 
-    objc_storeStrong(&v13->_limitedToSource, a6);
+    objc_storeStrong(&v13->_limitedToSource, source);
     if ([(EKAbstractCalendarEditor *)v13 isNewCalendar])
     {
       v16 = 0;
@@ -102,9 +102,9 @@ void __85__EKSubscribedCalendarEditor_initWithCalendar_eventStore_entityType_lim
   }
 }
 
-+ (id)createNewCalendarForEntityType:(unint64_t)a3 inEventStore:(id)a4
++ (id)createNewCalendarForEntityType:(unint64_t)type inEventStore:(id)store
 {
-  v4 = [MEMORY[0x1E6966990] calendarForEntityType:0 eventStore:a4];
+  v4 = [MEMORY[0x1E6966990] calendarForEntityType:0 eventStore:store];
   [v4 setSubscribed:1];
   [v4 setReadOnly:1];
   [v4 setStripAlarms:1];
@@ -113,33 +113,33 @@ void __85__EKSubscribedCalendarEditor_initWithCalendar_eventStore_entityType_lim
   return v4;
 }
 
-- (BOOL)updateURL:(id)a3
+- (BOOL)updateURL:(id)l
 {
-  v4 = a3;
-  v5 = [(EKSubscribedCalendarEditor *)self state];
-  if (!v5)
+  lCopy = l;
+  state = [(EKSubscribedCalendarEditor *)self state];
+  if (!state)
   {
-    [(EKSubscribedCalendarEditor *)self setPrefillURL:v4];
-    v6 = [(EKSubscribedCalendarEditor *)self prefillURL];
-    v7 = [v6 absoluteString];
-    [(EKCalendarSubscriptionURLEditItem *)self->_urlItem setUrlString:v7];
+    [(EKSubscribedCalendarEditor *)self setPrefillURL:lCopy];
+    prefillURL = [(EKSubscribedCalendarEditor *)self prefillURL];
+    absoluteString = [prefillURL absoluteString];
+    [(EKCalendarSubscriptionURLEditItem *)self->_urlItem setUrlString:absoluteString];
 
-    v8 = [(EKSubscribedCalendarEditor *)self prefillURL];
-    v9 = [v8 absoluteString];
-    [(EKSubscribedCalendarEditor *)self _startSpamCheckingURLString:v9];
+    prefillURL2 = [(EKSubscribedCalendarEditor *)self prefillURL];
+    absoluteString2 = [prefillURL2 absoluteString];
+    [(EKSubscribedCalendarEditor *)self _startSpamCheckingURLString:absoluteString2];
   }
 
-  return v5 == 0;
+  return state == 0;
 }
 
 - (void)loadView
 {
   if (!self->_holidayCalendarMode)
   {
-    v3 = [(EKAbstractCalendarEditor *)self isNewCalendar];
+    isNewCalendar = [(EKAbstractCalendarEditor *)self isNewCalendar];
     v4 = EventKitUIBundle();
     v5 = v4;
-    if (v3)
+    if (isNewCalendar)
     {
       v6 = @"Add Subscription Calendar Title";
       v7 = @"Add Subscription Calendar";
@@ -174,22 +174,22 @@ void __85__EKSubscribedCalendarEditor_initWithCalendar_eventStore_entityType_lim
 {
   v7.receiver = self;
   v7.super_class = EKSubscribedCalendarEditor;
-  v3 = [(EKAbstractCalendarEditor *)&v7 viewDidLoad];
-  if (MEMORY[0x1D38B98D0](v3))
+  viewDidLoad = [(EKAbstractCalendarEditor *)&v7 viewDidLoad];
+  if (MEMORY[0x1D38B98D0](viewDidLoad))
   {
     if (![(EKSubscribedCalendarEditor *)self state])
     {
-      v4 = [(EKAbstractCalendarEditor *)self enableDoneInitially];
-      v5 = [(EKSubscribedCalendarEditor *)self navigationItem];
-      v6 = [v5 rightBarButtonItem];
-      [v6 setHidden:!v4];
+      enableDoneInitially = [(EKAbstractCalendarEditor *)self enableDoneInitially];
+      navigationItem = [(EKSubscribedCalendarEditor *)self navigationItem];
+      rightBarButtonItem = [navigationItem rightBarButtonItem];
+      [rightBarButtonItem setHidden:!enableDoneInitially];
     }
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if ([(EKAbstractCalendarEditor *)self isNewCalendar]&& !self->_holidayCalendarMode)
   {
     if ([(EKSubscribedCalendarEditor *)self _needToShowPrivacyNotice])
@@ -197,15 +197,15 @@ void __85__EKSubscribedCalendarEditor_initWithCalendar_eventStore_entityType_lim
       [(EKSubscribedCalendarEditor *)self _showPrivacyNotice];
     }
 
-    v5 = [(EKAbstractCalendarEditor *)self editItems];
-    v6 = [v5 objectAtIndex:0];
+    editItems = [(EKAbstractCalendarEditor *)self editItems];
+    v6 = [editItems objectAtIndex:0];
     [v6 becomeFirstResponder];
   }
 
   self->_allowTableHeaderLayouts = 1;
   v7.receiver = self;
   v7.super_class = EKSubscribedCalendarEditor;
-  [(EKSubscribedCalendarEditor *)&v7 viewDidAppear:v3];
+  [(EKSubscribedCalendarEditor *)&v7 viewDidAppear:appearCopy];
   if (self->_holidayCalendarMode && [(EKSubscribedCalendarEditor *)self state]!= 1)
   {
     [(EKSubscribedCalendarEditor *)self _validateURL];
@@ -216,8 +216,8 @@ void __85__EKSubscribedCalendarEditor_initWithCalendar_eventStore_entityType_lim
 {
   if (_os_feature_enabled_impl())
   {
-    v2 = [MEMORY[0x1E6993470] sharedPreferences];
-    v3 = [v2 displayedSubscribedCalendarSpamDetectionPrivacyNotice] ^ 1;
+    mEMORY[0x1E6993470] = [MEMORY[0x1E6993470] sharedPreferences];
+    v3 = [mEMORY[0x1E6993470] displayedSubscribedCalendarSpamDetectionPrivacyNotice] ^ 1;
   }
 
   else
@@ -228,32 +228,32 @@ void __85__EKSubscribedCalendarEditor_initWithCalendar_eventStore_entityType_lim
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = EKSubscribedCalendarEditor;
-  [(EKAbstractCalendarEditor *)&v4 viewWillAppear:a3];
+  [(EKAbstractCalendarEditor *)&v4 viewWillAppear:appear];
   [(EKSubscribedCalendarEditor *)self _setTableHeaderViewForState];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   self->_allowTableHeaderLayouts = 0;
   v3.receiver = self;
   v3.super_class = EKSubscribedCalendarEditor;
-  [(EKAbstractCalendarEditor *)&v3 viewWillDisappear:a3];
+  [(EKAbstractCalendarEditor *)&v3 viewWillDisappear:disappear];
 }
 
 - (void)_setTableHeaderViewForState
 {
-  v3 = [(EKSubscribedCalendarEditor *)self tableView];
-  v4 = [v3 tableHeaderView];
+  tableView = [(EKSubscribedCalendarEditor *)self tableView];
+  tableHeaderView = [tableView tableHeaderView];
 
   if (self->_state == 3)
   {
     v5 = 0;
     v6 = 0;
-    if (!v4)
+    if (!tableHeaderView)
     {
       goto LABEL_4;
     }
@@ -263,13 +263,13 @@ void __85__EKSubscribedCalendarEditor_initWithCalendar_eventStore_entityType_lim
 
   v6 = [[EKSubscribedCalendarDescriptionHeader alloc] initWithParentWidth:self->_holidayCalendarMode showHolidayCalendarDescription:EKUIContainedControllerIdealWidth()];
   v5 = v6;
-  if ((v4 == 0) == (v6 != 0))
+  if ((tableHeaderView == 0) == (v6 != 0))
   {
 LABEL_3:
     objc_storeStrong(&self->_tableViewHeader, v5);
     tableViewHeader = self->_tableViewHeader;
-    v8 = [(EKSubscribedCalendarEditor *)self tableView];
-    [v8 setTableHeaderView:tableViewHeader];
+    tableView2 = [(EKSubscribedCalendarEditor *)self tableView];
+    [tableView2 setTableHeaderView:tableViewHeader];
 
     v6 = v5;
   }
@@ -280,16 +280,16 @@ LABEL_4:
   [(EKAbstractCalendarEditor *)self updatePreferredContentSize];
 }
 
-- (void)_updateTableHeaderLayoutForWidth:(double)a3
+- (void)_updateTableHeaderLayoutForWidth:(double)width
 {
-  if ([(EKSubscribedCalendarDescriptionHeader *)self->_tableViewHeader updateLayoutForWidth:a3])
+  if ([(EKSubscribedCalendarDescriptionHeader *)self->_tableViewHeader updateLayoutForWidth:width])
   {
-    v4 = [(EKSubscribedCalendarEditor *)self tableView];
-    [v4 setTableHeaderView:0];
+    tableView = [(EKSubscribedCalendarEditor *)self tableView];
+    [tableView setTableHeaderView:0];
 
     tableViewHeader = self->_tableViewHeader;
-    v6 = [(EKSubscribedCalendarEditor *)self tableView];
-    [v6 setTableHeaderView:tableViewHeader];
+    tableView2 = [(EKSubscribedCalendarEditor *)self tableView];
+    [tableView2 setTableHeaderView:tableViewHeader];
 
     [(EKAbstractCalendarEditor *)self updatePreferredContentSize];
   }
@@ -302,40 +302,40 @@ LABEL_4:
     return 0;
   }
 
-  v3 = [(EKAbstractCalendarEditor *)self calendar];
-  v4 = [v3 isImmutable];
+  calendar = [(EKAbstractCalendarEditor *)self calendar];
+  isImmutable = [calendar isImmutable];
 
-  if (v4)
+  if (isImmutable)
   {
     return 0;
   }
 
-  v5 = [(EKAbstractCalendarEditor *)self calendar];
-  v6 = [v5 isSubscribedHolidayCalendar];
+  calendar2 = [(EKAbstractCalendarEditor *)self calendar];
+  isSubscribedHolidayCalendar = [calendar2 isSubscribedHolidayCalendar];
 
-  if (v6)
+  if (isSubscribedHolidayCalendar)
   {
     return 0;
   }
 
-  v8 = [(EKAbstractCalendarEditor *)self calendar];
-  v9 = [v8 isMarkedUndeletable];
+  calendar3 = [(EKAbstractCalendarEditor *)self calendar];
+  isMarkedUndeletable = [calendar3 isMarkedUndeletable];
 
-  return v9 ^ 1;
+  return isMarkedUndeletable ^ 1;
 }
 
-- (void)contentSizeCategoryDidChangeNotification:(id)a3
+- (void)contentSizeCategoryDidChangeNotification:(id)notification
 {
   [(EKCalendarColorEditItem *)self->_colorEditItem reset];
-  v4 = [(EKSubscribedCalendarEditor *)self tableView];
-  [v4 reloadData];
+  tableView = [(EKSubscribedCalendarEditor *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(EKSubscribedCalendarEditor *)self _setTableHeaderViewForState];
     [(EKAbstractCalendarEditor *)self reconfigureAndReloadEditItems];
     if (self->_state == 1)
@@ -347,53 +347,53 @@ LABEL_4:
           return;
         }
 
-        v15 = [(EKSubscribedCalendarEditor *)self navigationItem];
-        v4 = [v15 leftBarButtonItem];
+        navigationItem = [(EKSubscribedCalendarEditor *)self navigationItem];
+        leftBarButtonItem = [navigationItem leftBarButtonItem];
       }
 
       else
       {
         if (MEMORY[0x1D38B98D0]())
         {
-          v5 = [(EKSubscribedCalendarEditor *)self navigationItem];
-          v6 = [v5 rightBarButtonItem];
-          v7 = [v6 isEnabled];
+          navigationItem2 = [(EKSubscribedCalendarEditor *)self navigationItem];
+          rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+          isEnabled = [rightBarButtonItem isEnabled];
 
-          if ((v7 & 1) == 0)
+          if ((isEnabled & 1) == 0)
           {
-            v8 = [MEMORY[0x1E6979538] animation];
-            [v8 setDuration:0.25];
-            [v8 setType:*MEMORY[0x1E697A030]];
-            v9 = [(EKSubscribedCalendarEditor *)self navigationController];
-            v10 = [v9 navigationBar];
-            v11 = [v10 layer];
-            [v11 addAnimation:v8 forKey:@"fadeButton"];
+            animation = [MEMORY[0x1E6979538] animation];
+            [animation setDuration:0.25];
+            [animation setType:*MEMORY[0x1E697A030]];
+            navigationController = [(EKSubscribedCalendarEditor *)self navigationController];
+            navigationBar = [navigationController navigationBar];
+            layer = [navigationBar layer];
+            [layer addAnimation:animation forKey:@"fadeButton"];
 
-            v12 = [(EKSubscribedCalendarEditor *)self navigationItem];
-            v13 = [v12 rightBarButtonItem];
-            [v13 setHidden:0];
+            navigationItem3 = [(EKSubscribedCalendarEditor *)self navigationItem];
+            rightBarButtonItem2 = [navigationItem3 rightBarButtonItem];
+            [rightBarButtonItem2 setHidden:0];
           }
         }
 
-        v15 = [(EKSubscribedCalendarEditor *)self navigationItem];
-        v4 = [v15 rightBarButtonItem];
+        navigationItem = [(EKSubscribedCalendarEditor *)self navigationItem];
+        leftBarButtonItem = [navigationItem rightBarButtonItem];
       }
 
-      v14 = v4;
-      [v4 setEnabled:1];
+      v14 = leftBarButtonItem;
+      [leftBarButtonItem setEnabled:1];
     }
   }
 }
 
-- (id)_editItemsForState:(unint64_t)a3
+- (id)_editItemsForState:(unint64_t)state
 {
   v62[4] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 != 2)
+    if (state != 2)
     {
-      if (a3 != 3)
+      if (state != 3)
       {
         goto LABEL_33;
       }
@@ -456,9 +456,9 @@ LABEL_30:
     goto LABEL_31;
   }
 
-  if (a3)
+  if (state)
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       goto LABEL_33;
     }
@@ -526,13 +526,13 @@ LABEL_30:
 
   [(EKCalendarSubscriptionURLEditItem *)self->_urlItem setEditable:1];
   [(EKCalendarSubscriptionURLEditItem *)self->_urlItem setUrlEditItemDelegate:self];
-  v28 = [(EKSubscribedCalendarEditor *)self prefillURL];
+  prefillURL = [(EKSubscribedCalendarEditor *)self prefillURL];
 
-  if (v28)
+  if (prefillURL)
   {
-    v29 = [(EKSubscribedCalendarEditor *)self prefillURL];
-    v30 = [v29 absoluteString];
-    [(EKCalendarSubscriptionURLEditItem *)self->_urlItem setUrlString:v30];
+    prefillURL2 = [(EKSubscribedCalendarEditor *)self prefillURL];
+    absoluteString = [prefillURL2 absoluteString];
+    [(EKCalendarSubscriptionURLEditItem *)self->_urlItem setUrlString:absoluteString];
   }
 
   v31 = objc_alloc_init(EKCalendarValidateEditItem);
@@ -559,13 +559,13 @@ LABEL_30:
     [(EKCalendarButtonEditItem *)v37 setButtonTitle:v39];
   }
 
-  v40 = [(EKSubscribedCalendarEditor *)self prefillURL];
+  prefillURL3 = [(EKSubscribedCalendarEditor *)self prefillURL];
 
-  if (v40)
+  if (prefillURL3)
   {
-    v41 = [(EKSubscribedCalendarEditor *)self prefillURL];
-    v42 = [v41 absoluteString];
-    [(EKSubscribedCalendarEditor *)self _startSpamCheckingURLString:v42];
+    prefillURL4 = [(EKSubscribedCalendarEditor *)self prefillURL];
+    absoluteString2 = [prefillURL4 absoluteString];
+    [(EKSubscribedCalendarEditor *)self _startSpamCheckingURLString:absoluteString2];
   }
 
   if (!self->_holidayCalendarMode)
@@ -618,31 +618,31 @@ uint64_t __49__EKSubscribedCalendarEditor__editItemsForState___block_invoke(uint
   return v7;
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   [(EKSubscribedCalendarEditor *)self _cancelInFlightPreviewDataFetch];
   v5.receiver = self;
   v5.super_class = EKSubscribedCalendarEditor;
-  [(EKAbstractCalendarEditor *)&v5 cancel:v4];
+  [(EKAbstractCalendarEditor *)&v5 cancel:cancelCopy];
 }
 
-- (void)willSaveCalendar:(id)a3
+- (void)willSaveCalendar:(id)calendar
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 source];
+  calendarCopy = calendar;
+  source = [calendarCopy source];
 
-  if (!v5)
+  if (!source)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(EKAbstractCalendarEditor *)self eventStore];
-    v7 = [v6 sources];
+    eventStore = [(EKAbstractCalendarEditor *)self eventStore];
+    sources = [eventStore sources];
 
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v8 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = *v14;
@@ -652,7 +652,7 @@ uint64_t __49__EKSubscribedCalendarEditor__editItemsForState___block_invoke(uint
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(sources);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
@@ -663,7 +663,7 @@ uint64_t __49__EKSubscribedCalendarEditor__editItemsForState___block_invoke(uint
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [sources countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -675,20 +675,20 @@ uint64_t __49__EKSubscribedCalendarEditor__editItemsForState___block_invoke(uint
 
 LABEL_12:
 
-    v12 = [(EKAbstractCalendarEditor *)self calendar];
-    [v12 setSource:v8];
+    calendar = [(EKAbstractCalendarEditor *)self calendar];
+    [calendar setSource:v8];
   }
 
-  if (([v4 isSubscribedHolidayCalendar] & 1) == 0)
+  if (([calendarCopy isSubscribedHolidayCalendar] & 1) == 0)
   {
     [(CUIKSubscribedCalendarManager *)self->_subCalManager shutdownDAForCalendarUpdates];
-    [(CUIKSubscribedCalendarManager *)self->_subCalManager updateOrCreateAccountWithCalendar:v4 previousAccountID:0 newUsername:self->_username newPassword:self->_password newAllowsInsecureConnections:self->_insecureConnectionApproved];
+    [(CUIKSubscribedCalendarManager *)self->_subCalManager updateOrCreateAccountWithCalendar:calendarCopy previousAccountID:0 newUsername:self->_username newPassword:self->_password newAllowsInsecureConnections:self->_insecureConnectionApproved];
   }
 }
 
-- (void)didSaveCalendar:(id)a3
+- (void)didSaveCalendar:(id)calendar
 {
-  if (([a3 isSubscribedHolidayCalendar] & 1) == 0)
+  if (([calendar isSubscribedHolidayCalendar] & 1) == 0)
   {
     subCalManager = self->_subCalManager;
 
@@ -699,20 +699,20 @@ LABEL_12:
 - (void)_unsubscribeFromCalendar
 {
   v3 = MEMORY[0x1E6993498];
-  v4 = [(EKAbstractCalendarEditor *)self calendar];
-  [v3 unsubscribeFromCalendar:v4];
+  calendar = [(EKAbstractCalendarEditor *)self calendar];
+  [v3 unsubscribeFromCalendar:calendar];
 
-  v5 = [(EKAbstractCalendarEditor *)self delegate];
-  if (v5)
+  delegate = [(EKAbstractCalendarEditor *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(EKAbstractCalendarEditor *)self delegate];
+    v6 = delegate;
+    delegate2 = [(EKAbstractCalendarEditor *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(EKAbstractCalendarEditor *)self delegate];
-      [v9 calendarEditor:self didCompleteWithAction:2];
+      delegate3 = [(EKAbstractCalendarEditor *)self delegate];
+      [delegate3 calendarEditor:self didCompleteWithAction:2];
     }
   }
 }
@@ -720,30 +720,30 @@ LABEL_12:
 - (void)_unsubscribeFromCalendarAndReportJunk
 {
   v3 = MEMORY[0x1E6993498];
-  v4 = [(EKAbstractCalendarEditor *)self calendar];
-  [v3 unsubscribeFromCalendar:v4 reportAsJunk:1];
+  calendar = [(EKAbstractCalendarEditor *)self calendar];
+  [v3 unsubscribeFromCalendar:calendar reportAsJunk:1];
 
-  v5 = [(EKAbstractCalendarEditor *)self delegate];
-  if (v5)
+  delegate = [(EKAbstractCalendarEditor *)self delegate];
+  if (delegate)
   {
-    v6 = v5;
-    v7 = [(EKAbstractCalendarEditor *)self delegate];
+    v6 = delegate;
+    delegate2 = [(EKAbstractCalendarEditor *)self delegate];
     v8 = objc_opt_respondsToSelector();
 
     if (v8)
     {
-      v9 = [(EKAbstractCalendarEditor *)self delegate];
-      [v9 calendarEditor:self didCompleteWithAction:2];
+      delegate3 = [(EKAbstractCalendarEditor *)self delegate];
+      [delegate3 calendarEditor:self didCompleteWithAction:2];
     }
   }
 }
 
-- (void)_unsubscribeTapped:(id)a3
+- (void)_unsubscribeTapped:(id)tapped
 {
-  v5 = a3;
-  v6 = [(EKAbstractCalendarEditor *)self calendar];
+  tappedCopy = tapped;
+  calendar = [(EKAbstractCalendarEditor *)self calendar];
 
-  if (!v6)
+  if (!calendar)
   {
     [(EKSubscribedCalendarEditor *)a2 _unsubscribeTapped:?];
   }
@@ -783,24 +783,24 @@ LABEL_12:
   [v21 addAction:v12];
   [v21 addAction:v16];
   [v21 addAction:v20];
-  v22 = [v5 buttonView];
-  v23 = [v21 popoverPresentationController];
-  [v23 setSourceView:v22];
+  buttonView = [tappedCopy buttonView];
+  popoverPresentationController = [v21 popoverPresentationController];
+  [popoverPresentationController setSourceView:buttonView];
 
-  v24 = [v5 buttonView];
+  buttonView2 = [tappedCopy buttonView];
 
-  [v24 bounds];
+  [buttonView2 bounds];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  v33 = [v21 popoverPresentationController];
-  [v33 setSourceRect:{v26, v28, v30, v32}];
+  popoverPresentationController2 = [v21 popoverPresentationController];
+  [popoverPresentationController2 setSourceRect:{v26, v28, v30, v32}];
 
   [(EKSubscribedCalendarEditor *)self presentViewController:v21 animated:1 completion:0];
 }
 
-- (void)_validateURL:(id)a3
+- (void)_validateURL:(id)l
 {
   if ([(EKCalendarValidateEditItem *)self->_validateItem URLIsSpam])
   {
@@ -856,8 +856,8 @@ LABEL_12:
   {
     [(EKCalendarValidateEditItem *)self->_validateItem setAnimateSpinner:1];
     v3 = MEMORY[0x1E6993498];
-    v4 = [(EKCalendarSubscriptionURLEditItem *)self->_urlItem urlString];
-    v5 = [v3 checkSubscriptionURL:v4 missingSchemeBlock:0 unsupportedSchemeBlock:0];
+    urlString = [(EKCalendarSubscriptionURLEditItem *)self->_urlItem urlString];
+    v5 = [v3 checkSubscriptionURL:urlString missingSchemeBlock:0 unsupportedSchemeBlock:0];
 
     if (v5)
     {
@@ -865,8 +865,8 @@ LABEL_12:
       v7 = v6;
       if (v6)
       {
-        v8 = [v6 absoluteString];
-        [(EKCalendarSubscriptionURLEditItem *)self->_urlItem setUrlString:v8];
+        absoluteString = [v6 absoluteString];
+        [(EKCalendarSubscriptionURLEditItem *)self->_urlItem setUrlString:absoluteString];
 
         [(EKSubscribedCalendarEditor *)self _kickoffPreviewDataFetch:v7];
       }
@@ -942,12 +942,12 @@ LABEL_12:
   [(EKSubscribedCalendarEditor *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)_kickoffPreviewDataFetch:(id)a3
+- (void)_kickoffPreviewDataFetch:(id)fetch
 {
   v4 = MEMORY[0x1E69998A8];
-  v5 = a3;
-  v8 = [v4 sharedConnection];
-  v6 = [v8 downloadSubscribedCalendarWithURL:v5 queue:MEMORY[0x1E69E96A0] delegate:self];
+  fetchCopy = fetch;
+  sharedConnection = [v4 sharedConnection];
+  v6 = [sharedConnection downloadSubscribedCalendarWithURL:fetchCopy queue:MEMORY[0x1E69E96A0] delegate:self];
 
   previewDownloadToken = self->_previewDownloadToken;
   self->_previewDownloadToken = v6;
@@ -957,25 +957,25 @@ LABEL_12:
 {
   if (self->_previewDownloadToken)
   {
-    v3 = [MEMORY[0x1E69998A8] sharedConnection];
-    [v3 cancelDownloadingSubscriptionCalendarWithDownloadID:self->_previewDownloadToken];
+    mEMORY[0x1E69998A8] = [MEMORY[0x1E69998A8] sharedConnection];
+    [mEMORY[0x1E69998A8] cancelDownloadingSubscriptionCalendarWithDownloadID:self->_previewDownloadToken];
   }
 }
 
-- (void)calendarItemStartedEditing:(id)a3
+- (void)calendarItemStartedEditing:(id)editing
 {
   if ([(EKSubscribedCalendarEditor *)self state]== 3)
   {
     if ([(EKAbstractCalendarEditor *)self shouldShowCancelButton])
     {
-      v4 = [(EKSubscribedCalendarEditor *)self navigationItem];
-      v5 = [v4 leftBarButtonItem];
-      [v5 setEnabled:1];
+      navigationItem = [(EKSubscribedCalendarEditor *)self navigationItem];
+      leftBarButtonItem = [navigationItem leftBarButtonItem];
+      [leftBarButtonItem setEnabled:1];
     }
 
-    v7 = [(EKSubscribedCalendarEditor *)self navigationItem];
-    v6 = [v7 rightBarButtonItem];
-    [v6 setEnabled:1];
+    navigationItem2 = [(EKSubscribedCalendarEditor *)self navigationItem];
+    rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+    [rightBarButtonItem setEnabled:1];
   }
 }
 
@@ -984,8 +984,8 @@ LABEL_12:
   v16 = *MEMORY[0x1E69E9840];
   if (self->_tableViewHeader && self->_allowTableHeaderLayouts)
   {
-    v3 = [(EKSubscribedCalendarEditor *)self tableView];
-    [v3 bounds];
+    tableView = [(EKSubscribedCalendarEditor *)self tableView];
+    [tableView bounds];
     [(EKSubscribedCalendarEditor *)self _updateTableHeaderLayoutForWidth:CGRectGetWidth(v17)];
   }
 
@@ -993,8 +993,8 @@ LABEL_12:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(EKAbstractCalendarEditor *)self editItems];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  editItems = [(EKAbstractCalendarEditor *)self editItems];
+  v5 = [editItems countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1006,19 +1006,19 @@ LABEL_12:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(editItems);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
-        v10 = [(EKSubscribedCalendarEditor *)self view];
-        [v10 frame];
+        view = [(EKSubscribedCalendarEditor *)self view];
+        [view frame];
         [v9 layoutForWidth:CGRectGetWidth(v18)];
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [editItems countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1047,9 +1047,9 @@ LABEL_12:
   return result;
 }
 
-- (void)subscribedCalendarDidFinishLoading:(id)a3
+- (void)subscribedCalendarDidFinishLoading:(id)loading
 {
-  v5 = a3;
+  loadingCopy = loading;
   v6 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -1057,18 +1057,18 @@ LABEL_12:
     _os_log_impl(&dword_1D3400000, v6, OS_LOG_TYPE_DEFAULT, "Successfully fetched subscribed calendar preview data", v22, 2u);
   }
 
-  objc_storeStrong(&self->_previewSummary, a3);
-  v7 = [(DAESubscribedCalendarSummary *)self->_previewSummary title];
-  v8 = [(EKAbstractCalendarEditor *)self calendar];
-  [v8 setTitle:v7];
+  objc_storeStrong(&self->_previewSummary, loading);
+  title = [(DAESubscribedCalendarSummary *)self->_previewSummary title];
+  calendar = [(EKAbstractCalendarEditor *)self calendar];
+  [calendar setTitle:title];
 
-  v9 = [(DAESubscribedCalendarSummary *)self->_previewSummary color];
-  v10 = [(EKAbstractCalendarEditor *)self calendar];
-  [v10 setColorStringRaw:v9];
+  color = [(DAESubscribedCalendarSummary *)self->_previewSummary color];
+  calendar2 = [(EKAbstractCalendarEditor *)self calendar];
+  [calendar2 setColorStringRaw:color];
 
-  v11 = [(DAESubscribedCalendarSummary *)self->_previewSummary notes];
-  v12 = [(EKAbstractCalendarEditor *)self calendar];
-  [v12 setNotes:v11];
+  notes = [(DAESubscribedCalendarSummary *)self->_previewSummary notes];
+  calendar3 = [(EKAbstractCalendarEditor *)self calendar];
+  [calendar3 setNotes:notes];
 
   [(DAESubscribedCalendarSummary *)self->_previewSummary refreshInterval];
   if (v13 <= 0.0)
@@ -1082,31 +1082,31 @@ LABEL_12:
     v15 = v14;
   }
 
-  v16 = [(EKAbstractCalendarEditor *)self calendar];
-  [v16 setRefreshInterval:v15];
+  calendar4 = [(EKAbstractCalendarEditor *)self calendar];
+  [calendar4 setRefreshInterval:v15];
 
-  v17 = [v5 subscriptionID];
-  v18 = [(EKAbstractCalendarEditor *)self calendar];
-  [v18 setSubscriptionID:v17];
+  subscriptionID = [loadingCopy subscriptionID];
+  calendar5 = [(EKAbstractCalendarEditor *)self calendar];
+  [calendar5 setSubscriptionID:subscriptionID];
 
-  v19 = [v5 subscriptionURL];
-  v20 = [v19 absoluteString];
-  v21 = [(EKAbstractCalendarEditor *)self calendar];
-  [v21 setSubcalURL:v20];
+  subscriptionURL = [loadingCopy subscriptionURL];
+  absoluteString = [subscriptionURL absoluteString];
+  calendar6 = [(EKAbstractCalendarEditor *)self calendar];
+  [calendar6 setSubcalURL:absoluteString];
 
   [(EKCalendarValidateEditItem *)self->_validateItem setAnimateSpinner:0];
   [(EKSubscribedCalendarEditor *)self setState:1];
 }
 
-- (void)subscribedCalendarFailedWithError:(id)a3
+- (void)subscribedCalendarFailedWithError:(id)error
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_ERROR))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = errorCopy;
     _os_log_impl(&dword_1D3400000, v5, OS_LOG_TYPE_ERROR, "Failed to fetch subscribed calendar preview data: %@", &v7, 0xCu);
   }
 
@@ -1125,9 +1125,9 @@ LABEL_12:
   }
 }
 
-- (void)subscribedCalendarRequiresPassword:(id)a3 withContinuation:(id)a4
+- (void)subscribedCalendarRequiresPassword:(id)password withContinuation:(id)continuation
 {
-  v5 = a4;
+  continuationCopy = continuation;
   v6 = kEKUILogHandle;
   if (os_log_type_enabled(kEKUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
@@ -1153,7 +1153,7 @@ LABEL_12:
   v26[3] = &unk_1E8442B18;
   v26[4] = self;
   v27 = v12;
-  v16 = v5;
+  v16 = continuationCopy;
   v28 = v16;
   v17 = v12;
   v18 = [v13 actionWithTitle:v15 style:0 handler:v26];
@@ -1231,19 +1231,19 @@ uint64_t __82__EKSubscribedCalendarEditor_subscribedCalendarRequiresPassword_wit
   return v6();
 }
 
-- (void)_startSpamCheckingURLString:(id)a3
+- (void)_startSpamCheckingURLString:(id)string
 {
-  v7 = a3;
+  stringCopy = string;
   if (_os_feature_enabled_impl())
   {
-    v4 = [MEMORY[0x1E6993470] sharedPreferences];
-    v5 = [v4 allowSubscribedCalendarSpamDetection];
+    mEMORY[0x1E6993470] = [MEMORY[0x1E6993470] sharedPreferences];
+    allowSubscribedCalendarSpamDetection = [mEMORY[0x1E6993470] allowSubscribedCalendarSpamDetection];
 
-    if (v5)
+    if (allowSubscribedCalendarSpamDetection)
     {
-      if ([v7 length])
+      if ([stringCopy length])
       {
-        v6 = [MEMORY[0x1E6993498] checkSubscriptionURL:v7 missingSchemeBlock:0 unsupportedSchemeBlock:0];
+        v6 = [MEMORY[0x1E6993498] checkSubscriptionURL:stringCopy missingSchemeBlock:0 unsupportedSchemeBlock:0];
       }
 
       else
@@ -1258,28 +1258,28 @@ uint64_t __82__EKSubscribedCalendarEditor_subscribedCalendarRequiresPassword_wit
   }
 }
 
-- (void)URLEditItemDidChangeURLString:(id)a3
+- (void)URLEditItemDidChangeURLString:(id)string
 {
-  v4 = [a3 urlString];
-  [(EKSubscribedCalendarEditor *)self _startSpamCheckingURLString:v4];
+  urlString = [string urlString];
+  [(EKSubscribedCalendarEditor *)self _startSpamCheckingURLString:urlString];
 }
 
-- (void)calendarSubscriptionSpamCheckEditItem:(id)a3 didDetermineThatURL:(id)a4 isSpam:(BOOL)a5
+- (void)calendarSubscriptionSpamCheckEditItem:(id)item didDetermineThatURL:(id)l isSpam:(BOOL)spam
 {
-  v5 = a5;
-  [(EKCalendarValidateEditItem *)self->_validateItem setURLIsSpam:a5, a4];
+  spamCopy = spam;
+  [(EKCalendarValidateEditItem *)self->_validateItem setURLIsSpam:spam, l];
 
-  [(EKSubscribedCalendarEditor *)self _updateCancelButtonVisibilityForSpamStatus:v5];
+  [(EKSubscribedCalendarEditor *)self _updateCancelButtonVisibilityForSpamStatus:spamCopy];
 }
 
-- (void)_updateCancelButtonVisibilityForSpamStatus:(BOOL)a3
+- (void)_updateCancelButtonVisibilityForSpamStatus:(BOOL)status
 {
-  v3 = a3;
-  if ([(EKCalendarCancelValidationEditItem *)self->_cancelValidationItem hidden]== a3)
+  statusCopy = status;
+  if ([(EKCalendarCancelValidationEditItem *)self->_cancelValidationItem hidden]== status)
   {
-    [(EKCalendarCancelValidationEditItem *)self->_cancelValidationItem setHidden:!v3];
-    v5 = [(EKSubscribedCalendarEditor *)self tableView];
-    [v5 reloadData];
+    [(EKCalendarCancelValidationEditItem *)self->_cancelValidationItem setHidden:!statusCopy];
+    tableView = [(EKSubscribedCalendarEditor *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -1292,23 +1292,23 @@ uint64_t __82__EKSubscribedCalendarEditor_subscribedCalendarRequiresPassword_wit
   v5 = [v4 localizedStringForKey:@"Calendar can check whether a subscribed calendar is spam before you add it. In order to do this value:Calendar will send the URL of the subscribed calendar to Apple for checking. You can change this in Settings." table:{&stru_1F4EF6790, 0}];
 
   v6 = [objc_alloc(MEMORY[0x1E69B7D70]) initWithTitle:v15 detailText:v5 icon:0];
-  v7 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   v8 = EventKitUIBundle();
   v9 = [v8 localizedStringForKey:@"Enable" value:&stru_1F4EF6790 table:0];
-  [v7 setTitle:v9 forState:0];
+  [boldButton setTitle:v9 forState:0];
 
-  [v7 addTarget:self action:sel__allowButtonTapped forControlEvents:64];
-  v10 = [MEMORY[0x1E69B7D38] linkButton];
+  [boldButton addTarget:self action:sel__allowButtonTapped forControlEvents:64];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   v11 = EventKitUIBundle();
   v12 = [v11 localizedStringForKey:@"Disable" value:&stru_1F4EF6790 table:0];
-  [v10 setTitle:v12 forState:0];
+  [linkButton setTitle:v12 forState:0];
 
-  [v10 addTarget:self action:sel__denyButtonTapped forControlEvents:64];
-  v13 = [v6 buttonTray];
-  [v13 addButton:v7];
+  [linkButton addTarget:self action:sel__denyButtonTapped forControlEvents:64];
+  buttonTray = [v6 buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v14 = [v6 buttonTray];
-  [v14 addButton:v10];
+  buttonTray2 = [v6 buttonTray];
+  [buttonTray2 addButton:linkButton];
 
   [(EKSubscribedCalendarEditor *)self presentViewController:v6 animated:1 completion:0];
 }
@@ -1316,21 +1316,21 @@ uint64_t __82__EKSubscribedCalendarEditor_subscribedCalendarRequiresPassword_wit
 - (void)_allowButtonTapped
 {
   [(EKSubscribedCalendarEditor *)self dismissViewControllerAnimated:1 completion:0];
-  v2 = [MEMORY[0x1E6993470] sharedPreferences];
-  [v2 setAllowSubscribedCalendarSpamDetection:1];
+  mEMORY[0x1E6993470] = [MEMORY[0x1E6993470] sharedPreferences];
+  [mEMORY[0x1E6993470] setAllowSubscribedCalendarSpamDetection:1];
 
-  v3 = [MEMORY[0x1E6993470] sharedPreferences];
-  [v3 setDisplayedSubscribedCalendarSpamDetectionPrivacyNotice:1];
+  mEMORY[0x1E6993470]2 = [MEMORY[0x1E6993470] sharedPreferences];
+  [mEMORY[0x1E6993470]2 setDisplayedSubscribedCalendarSpamDetectionPrivacyNotice:1];
 }
 
 - (void)_denyButtonTapped
 {
   [(EKSubscribedCalendarEditor *)self dismissViewControllerAnimated:1 completion:0];
-  v2 = [MEMORY[0x1E6993470] sharedPreferences];
-  [v2 setAllowSubscribedCalendarSpamDetection:0];
+  mEMORY[0x1E6993470] = [MEMORY[0x1E6993470] sharedPreferences];
+  [mEMORY[0x1E6993470] setAllowSubscribedCalendarSpamDetection:0];
 
-  v3 = [MEMORY[0x1E6993470] sharedPreferences];
-  [v3 setDisplayedSubscribedCalendarSpamDetectionPrivacyNotice:1];
+  mEMORY[0x1E6993470]2 = [MEMORY[0x1E6993470] sharedPreferences];
+  [mEMORY[0x1E6993470]2 setDisplayedSubscribedCalendarSpamDetectionPrivacyNotice:1];
 }
 
 - (void)_unsubscribeTapped:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

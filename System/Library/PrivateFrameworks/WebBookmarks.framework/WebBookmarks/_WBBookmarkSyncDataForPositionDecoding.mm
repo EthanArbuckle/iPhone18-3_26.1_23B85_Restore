@@ -1,18 +1,18 @@
 @interface _WBBookmarkSyncDataForPositionDecoding
-- (_WBBookmarkSyncDataForPositionDecoding)initWithCoder:(id)a3;
+- (_WBBookmarkSyncDataForPositionDecoding)initWithCoder:(id)coder;
 @end
 
 @implementation _WBBookmarkSyncDataForPositionDecoding
 
-- (_WBBookmarkSyncDataForPositionDecoding)initWithCoder:(id)a3
+- (_WBBookmarkSyncDataForPositionDecoding)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = _WBBookmarkSyncDataForPositionDecoding;
   v5 = [(_WBBookmarkSyncDataForPositionDecoding *)&v10 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Position"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Position"];
     position = v5->_position;
     v5->_position = v6;
 

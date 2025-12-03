@@ -1,11 +1,11 @@
 @interface HKDeletedObject
-+ (id)_deletedObjectWithUUID:(id)a3 metadata:(id)a4;
-+ (id)_metadataWithSyncIdentifier:(id)a3 syncVersion:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (HKDeletedObject)initWithCoder:(id)a3;
++ (id)_deletedObjectWithUUID:(id)d metadata:(id)metadata;
++ (id)_metadataWithSyncIdentifier:(id)identifier syncVersion:(id)version;
+- (BOOL)isEqual:(id)equal;
+- (HKDeletedObject)initWithCoder:(id)coder;
 - (id)_init;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKDeletedObject
@@ -17,39 +17,39 @@
   return [(HKDeletedObject *)&v3 init];
 }
 
-+ (id)_deletedObjectWithUUID:(id)a3 metadata:(id)a4
++ (id)_deletedObjectWithUUID:(id)d metadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [[a1 alloc] _init];
-  objc_storeStrong((v10 + 8), a3);
-  v11 = [v9 copy];
-  v12 = *(v10 + 16);
-  *(v10 + 16) = v11;
+  dCopy = d;
+  metadataCopy = metadata;
+  _init = [[self alloc] _init];
+  objc_storeStrong((_init + 8), d);
+  v11 = [metadataCopy copy];
+  v12 = *(_init + 16);
+  *(_init + 16) = v11;
 
-  if (v9)
+  if (metadataCopy)
   {
     v18 = 0;
-    v13 = [v9 hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:0 applicationSDKVersionToken:HKApplicationSDKVersionToken() error:&v18];
+    v13 = [metadataCopy hk_validateMetadataKeysAndValuesAllowingPrivateMetadataKeys:0 applicationSDKVersionToken:HKApplicationSDKVersionToken() error:&v18];
     v14 = v18;
     if ((v13 & 1) == 0)
     {
-      [(HKDeletedObject *)a2 _deletedObjectWithUUID:a1 metadata:v14];
+      [(HKDeletedObject *)a2 _deletedObjectWithUUID:self metadata:v14];
     }
 
-    if ([v9 count] != 2)
+    if ([metadataCopy count] != 2)
     {
       +[HKDeletedObject _deletedObjectWithUUID:metadata:];
     }
 
-    v15 = [v9 objectForKeyedSubscript:@"HKMetadataKeySyncIdentifier"];
+    v15 = [metadataCopy objectForKeyedSubscript:@"HKMetadataKeySyncIdentifier"];
 
     if (!v15)
     {
       +[HKDeletedObject _deletedObjectWithUUID:metadata:];
     }
 
-    v16 = [v9 objectForKeyedSubscript:@"HKMetadataKeySyncVersion"];
+    v16 = [metadataCopy objectForKeyedSubscript:@"HKMetadataKeySyncVersion"];
 
     if (!v16)
     {
@@ -57,21 +57,21 @@
     }
   }
 
-  return v10;
+  return _init;
 }
 
-+ (id)_metadataWithSyncIdentifier:(id)a3 syncVersion:(id)a4
++ (id)_metadataWithSyncIdentifier:(id)identifier syncVersion:(id)version
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!(v5 | v6))
+  identifierCopy = identifier;
+  versionCopy = version;
+  v7 = versionCopy;
+  if (!(identifierCopy | versionCopy))
   {
     v8 = 0;
     goto LABEL_6;
   }
 
-  if (!v5)
+  if (!identifierCopy)
   {
     +[HKDeletedObject _metadataWithSyncIdentifier:syncVersion:];
     if (v7)
@@ -84,29 +84,29 @@ LABEL_10:
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!versionCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_5:
   v8 = objc_opt_new();
-  [v8 setObject:v5 forKeyedSubscript:@"HKMetadataKeySyncIdentifier"];
+  [v8 setObject:identifierCopy forKeyedSubscript:@"HKMetadataKeySyncIdentifier"];
   [v8 setObject:v7 forKeyedSubscript:@"HKMetadataKeySyncVersion"];
 LABEL_6:
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     UUID = self->_UUID;
-    v6 = [v4 UUID];
-    v7 = [(NSUUID *)UUID isEqual:v6];
+    uUID = [equalCopy UUID];
+    v7 = [(NSUUID *)UUID isEqual:uUID];
   }
 
   else
@@ -132,44 +132,44 @@ LABEL_6:
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
-  v7 = [(NSUUID *)self->_UUID UUIDString];
-  v8 = v7;
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
+  v8 = uUIDString;
   v9 = &stru_1F05FF230;
   if (v4)
   {
     v9 = v4;
   }
 
-  v10 = [v5 stringWithFormat:@"<%@ %@%@>", v6, v7, v9];
+  v10 = [v5 stringWithFormat:@"<%@ %@%@>", v6, uUIDString, v9];
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   UUID = self->_UUID;
-  v5 = a3;
-  [v5 encodeObject:UUID forKey:@"UUID"];
-  [v5 encodeObject:self->_metadata forKey:@"Metadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:UUID forKey:@"UUID"];
+  [coderCopy encodeObject:self->_metadata forKey:@"Metadata"];
 }
 
-- (HKDeletedObject)initWithCoder:(id)a3
+- (HKDeletedObject)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKDeletedObject *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(HKDeletedObject *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-    UUID = v5->_UUID;
-    v5->_UUID = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    UUID = _init->_UUID;
+    _init->_UUID = v6;
 
-    v8 = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Metadata"];
-    metadata = v5->_metadata;
-    v5->_metadata = v9;
+    hk_secureCodingClasses = [MEMORY[0x1E695DF20] hk_secureCodingClasses];
+    v9 = [coderCopy decodeObjectOfClasses:hk_secureCodingClasses forKey:@"Metadata"];
+    metadata = _init->_metadata;
+    _init->_metadata = v9;
   }
 
-  return v5;
+  return _init;
 }
 
 + (void)_deletedObjectWithUUID:(uint64_t)a3 metadata:.cold.1(uint64_t a1, uint64_t a2, uint64_t a3)

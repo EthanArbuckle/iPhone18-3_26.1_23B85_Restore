@@ -1,19 +1,19 @@
 @interface TSUCache
-- (TSUCache)initWithName:(id)a3;
+- (TSUCache)initWithName:(id)name;
 @end
 
 @implementation TSUCache
 
-- (TSUCache)initWithName:(id)a3
+- (TSUCache)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = TSUCache;
   v5 = [(TSUCache *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(TSUCache *)v5 setName:v4];
+    [(TSUCache *)v5 setName:nameCopy];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_2770FBC8C;

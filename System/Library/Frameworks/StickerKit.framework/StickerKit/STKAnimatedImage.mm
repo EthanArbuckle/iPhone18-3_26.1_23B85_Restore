@@ -1,23 +1,23 @@
 @interface STKAnimatedImage
 - (STKAnimatedImage)init;
-- (STKAnimatedImage)initWithData:(id)a3 maxCount:(int64_t)a4 maxDimension:(double)a5 identifier:(id)a6;
-- (STKAnimatedImage)initWithImages:(id)a3 durations:(id)a4 identifier:(id)a5;
-- (STKAnimatedImage)initWithURL:(id)a3 maxCount:(int64_t)a4 maxDimension:(double)a5 identifier:(id)a6;
+- (STKAnimatedImage)initWithData:(id)data maxCount:(int64_t)count maxDimension:(double)dimension identifier:(id)identifier;
+- (STKAnimatedImage)initWithImages:(id)images durations:(id)durations identifier:(id)identifier;
+- (STKAnimatedImage)initWithURL:(id)l maxCount:(int64_t)count maxDimension:(double)dimension identifier:(id)identifier;
 @end
 
 @implementation STKAnimatedImage
 
-- (STKAnimatedImage)initWithData:(id)a3 maxCount:(int64_t)a4 maxDimension:(double)a5 identifier:(id)a6
+- (STKAnimatedImage)initWithData:(id)data maxCount:(int64_t)count maxDimension:(double)dimension identifier:(id)identifier
 {
   v10 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAFCD800);
   MEMORY[0x1EEE9AC00](v10 - 8);
   v12 = &v22 - v11;
-  v13 = a3;
-  v14 = a6;
+  dataCopy = data;
+  identifierCopy = identifier;
   v15 = sub_19A7A8E34();
   v17 = v16;
 
-  if (v14)
+  if (identifierCopy)
   {
     sub_19A7A8F44();
 
@@ -31,12 +31,12 @@
     (*(*(v19 - 8) + 56))(v12, 1, 1, v19);
   }
 
-  v20 = sub_19A625940(v15, v17, a4, v12, a5);
+  v20 = sub_19A625940(v15, v17, count, v12, dimension);
   sub_19A612F14(v15, v17);
   return v20;
 }
 
-- (STKAnimatedImage)initWithImages:(id)a3 durations:(id)a4 identifier:(id)a5
+- (STKAnimatedImage)initWithImages:(id)images durations:(id)durations identifier:(id)identifier
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAFCD800);
   MEMORY[0x1EEE9AC00](v6 - 8);
@@ -45,7 +45,7 @@
   v9 = sub_19A7AB254();
   sub_19A5F5028(0, &qword_1ED8B1FE0);
   v10 = sub_19A7AB254();
-  if (a5)
+  if (identifier)
   {
     sub_19A7A8F44();
     v11 = sub_19A7A8F64();
@@ -61,7 +61,7 @@
   return AnimatedImage.init(images:durations:identifier:)(v9, v10, v8);
 }
 
-- (STKAnimatedImage)initWithURL:(id)a3 maxCount:(int64_t)a4 maxDimension:(double)a5 identifier:(id)a6
+- (STKAnimatedImage)initWithURL:(id)l maxCount:(int64_t)count maxDimension:(double)dimension identifier:(id)identifier
 {
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EAFCD800);
   MEMORY[0x1EEE9AC00](v9 - 8);
@@ -70,7 +70,7 @@
   MEMORY[0x1EEE9AC00](v12 - 8);
   v14 = &v18 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_19A7A8D94();
-  if (a6)
+  if (identifier)
   {
     sub_19A7A8F44();
     v15 = 0;
@@ -83,7 +83,7 @@
 
   v16 = sub_19A7A8F64();
   (*(*(v16 - 8) + 56))(v11, v15, 1, v16);
-  return AnimatedImage.init(url:maxCount:maxDimension:identifier:)(v14, a4, v11, a5);
+  return AnimatedImage.init(url:maxCount:maxDimension:identifier:)(v14, count, v11, dimension);
 }
 
 - (STKAnimatedImage)init

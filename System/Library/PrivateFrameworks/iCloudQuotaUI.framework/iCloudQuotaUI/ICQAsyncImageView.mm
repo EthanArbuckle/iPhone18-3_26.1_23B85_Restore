@@ -1,68 +1,68 @@
 @interface ICQAsyncImageView
-- (ICQAsyncImageView)initWithURL:(id)a3;
-- (void)loadImageFromURL:(id)a3;
-- (void)updateToImageFromURL:(id)a3;
+- (ICQAsyncImageView)initWithURL:(id)l;
+- (void)loadImageFromURL:(id)l;
+- (void)updateToImageFromURL:(id)l;
 @end
 
 @implementation ICQAsyncImageView
 
-- (ICQAsyncImageView)initWithURL:(id)a3
+- (ICQAsyncImageView)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = ICQAsyncImageView;
   v5 = [(ICQAsyncImageView *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ICQAsyncImageView *)v5 updateToImageFromURL:v4];
+    [(ICQAsyncImageView *)v5 updateToImageFromURL:lCopy];
   }
 
   return v6;
 }
 
-- (void)updateToImageFromURL:(id)a3
+- (void)updateToImageFromURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v9 = v4;
-    v5 = [v4 absoluteString];
-    v6 = [(ICQAsyncImageView *)self currentImageURL];
-    v7 = [v6 absoluteString];
-    v8 = [v5 isEqualToString:v7];
+    v9 = lCopy;
+    absoluteString = [lCopy absoluteString];
+    currentImageURL = [(ICQAsyncImageView *)self currentImageURL];
+    absoluteString2 = [currentImageURL absoluteString];
+    v8 = [absoluteString isEqualToString:absoluteString2];
 
-    v4 = v9;
+    lCopy = v9;
     if ((v8 & 1) == 0)
     {
       [(ICQAsyncImageView *)self loadImageFromURL:v9];
       [(ICQAsyncImageView *)self setCurrentImageURL:v9];
-      v4 = v9;
+      lCopy = v9;
     }
   }
 }
 
-- (void)loadImageFromURL:(id)a3
+- (void)loadImageFromURL:(id)l
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lCopy = l;
   v5 = _ICQGetLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 absoluteString];
+    absoluteString = [lCopy absoluteString];
     *buf = 138412290;
-    v12 = v6;
+    v12 = absoluteString;
     _os_log_impl(&dword_275623000, v5, OS_LOG_TYPE_DEFAULT, "Retrieving image at url: %@", buf, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CCAD20] requestWithURL:v4 cachePolicy:1 timeoutInterval:30.0];
-  v8 = [MEMORY[0x277CCAD30] sharedSession];
+  v7 = [MEMORY[0x277CCAD20] requestWithURL:lCopy cachePolicy:1 timeoutInterval:30.0];
+  mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __38__ICQAsyncImageView_loadImageFromURL___block_invoke;
   v10[3] = &unk_27A65A7A0;
   v10[4] = self;
-  v9 = [v8 dataTaskWithRequest:v7 completionHandler:v10];
+  v9 = [mEMORY[0x277CCAD30] dataTaskWithRequest:v7 completionHandler:v10];
 
   [v9 resume];
 }

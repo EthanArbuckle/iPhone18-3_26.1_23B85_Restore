@@ -1,79 +1,79 @@
 @interface BKKeyboardHIDEventProcessor
-- (BKKeyboardHIDEventProcessor)initWithContext:(id)a3;
-- (BKKeyboardHIDEventProcessor)initWithContext:(id)a3 server:(id)a4;
+- (BKKeyboardHIDEventProcessor)initWithContext:(id)context;
+- (BKKeyboardHIDEventProcessor)initWithContext:(id)context server:(id)server;
 - (BOOL)_lock_anyKeyboardHasCapsLockActive;
 - (BOOL)capsLockKeyHasLanguageSwitchLabel;
 - (BOOL)isCapsLockLightOn;
-- (BOOL)isCapsLockLightOnForSenderID:(unint64_t)a3;
-- (BOOL)keyboardWantsStandardTypeOverrideForSenderID:(unint64_t)a3;
+- (BOOL)isCapsLockLightOnForSenderID:(unint64_t)d;
+- (BOOL)keyboardWantsStandardTypeOverrideForSenderID:(unint64_t)d;
 - (NSArray)allUsableDeviceProperties;
 - (NSSet)keyCommandsToAuthenticate;
 - (NSString)debugDescription;
 - (NSString)keyboardLayout;
-- (id)addGlobalKeyboardObserver:(id)a3;
-- (id)devicePropertiesForSenderID:(unint64_t)a3;
-- (id)keyboardLanguageForSenderID:(unint64_t)a3;
-- (id)setObservingUsableKeyboardConnections:(id)a3;
-- (int)_eventSourceForKeyboardInfo:(id)a3 sender:(id)a4;
-- (int)eventSourceForSender:(id)a3;
+- (id)addGlobalKeyboardObserver:(id)observer;
+- (id)devicePropertiesForSenderID:(unint64_t)d;
+- (id)keyboardLanguageForSenderID:(unint64_t)d;
+- (id)setObservingUsableKeyboardConnections:(id)connections;
+- (int)_eventSourceForKeyboardInfo:(id)info sender:(id)sender;
+- (int)eventSourceForSender:(id)sender;
 - (int64_t)_lock_activeModifiers;
 - (int64_t)activeModifiers;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 withContext:(id)a4 buffer:(id)a5 sequence:(id)a6 sender:(id)a7 dispatcher:(id)a8 resolution:(id)a9;
-- (void)_commonInitWithContext:(id)a3 server:(id)a4;
-- (void)_lock_addModifierKeyDown:(id)a3;
-- (void)_lock_applyDeliveryInformation:(id)a3 resolution:(id)a4 toEvent:(__IOHIDEvent *)a5;
-- (void)_lock_cancelKeyDownEvents:(id)a3;
-- (void)_lock_dispatchKeyEvent:(__IOHIDEvent *)a3 keyCommand:(id)a4 keyboardInfo:(id)a5 eventSource:(int)a6 fromSender:(id)a7 dispatcher:(id)a8;
-- (void)_lock_handleKeyEvent:(__IOHIDEvent *)a3 fromSender:(id)a4 dispatcher:(id)a5 bypassCapsLockChecks:(BOOL)a6;
-- (void)_lock_handleUnicodeEvent:(__IOHIDEvent *)a3 fromSender:(id)a4 dispatcher:(id)a5;
-- (void)_lock_keyboardRemoved:(id)a3;
-- (void)_lock_keyboardsDetected:(id)a3;
-- (void)_lock_postSyntheticCapsLockPressForKeyboard:(id)a3;
-- (void)_lock_publishUsableKeyboards:(id)a3 toServiceConnection:(id)a4;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (int64_t)processEvent:(__IOHIDEvent *)event withContext:(id)context buffer:(id)buffer sequence:(id)sequence sender:(id)sender dispatcher:(id)dispatcher resolution:(id)resolution;
+- (void)_commonInitWithContext:(id)context server:(id)server;
+- (void)_lock_addModifierKeyDown:(id)down;
+- (void)_lock_applyDeliveryInformation:(id)information resolution:(id)resolution toEvent:(__IOHIDEvent *)event;
+- (void)_lock_cancelKeyDownEvents:(id)events;
+- (void)_lock_dispatchKeyEvent:(__IOHIDEvent *)event keyCommand:(id)command keyboardInfo:(id)info eventSource:(int)source fromSender:(id)sender dispatcher:(id)dispatcher;
+- (void)_lock_handleKeyEvent:(__IOHIDEvent *)event fromSender:(id)sender dispatcher:(id)dispatcher bypassCapsLockChecks:(BOOL)checks;
+- (void)_lock_handleUnicodeEvent:(__IOHIDEvent *)event fromSender:(id)sender dispatcher:(id)dispatcher;
+- (void)_lock_keyboardRemoved:(id)removed;
+- (void)_lock_keyboardsDetected:(id)detected;
+- (void)_lock_postSyntheticCapsLockPressForKeyboard:(id)keyboard;
+- (void)_lock_publishUsableKeyboards:(id)keyboards toServiceConnection:(id)connection;
 - (void)_lock_publishUsableKeyboardsToServiceConnections;
-- (void)_lock_removeCapsLockEntryIfNeeded:(id)a3;
-- (void)_lock_removeModifierKeyDown:(id)a3;
-- (void)_lock_removeSenderIDFromTracking:(unint64_t)a3;
-- (void)_lock_restoreCapsLockStateToKeyboard:(id)a3;
-- (void)_lock_setCapsLockActive:(BOOL)a3 onSenderID:(unint64_t)a4;
-- (void)_lock_setKeyboardLightsSuspended:(BOOL)a3;
-- (void)_lock_setPrimaryKeyboard:(id)a3;
-- (void)_lock_smartKeyboardAttachmentStateDidChange:(id)a3;
-- (void)_lock_stopWatchingForGestures:(id)a3;
+- (void)_lock_removeCapsLockEntryIfNeeded:(id)needed;
+- (void)_lock_removeModifierKeyDown:(id)down;
+- (void)_lock_removeSenderIDFromTracking:(unint64_t)tracking;
+- (void)_lock_restoreCapsLockStateToKeyboard:(id)keyboard;
+- (void)_lock_setCapsLockActive:(BOOL)active onSenderID:(unint64_t)d;
+- (void)_lock_setKeyboardLightsSuspended:(BOOL)suspended;
+- (void)_lock_setPrimaryKeyboard:(id)keyboard;
+- (void)_lock_smartKeyboardAttachmentStateDidChange:(id)change;
+- (void)_lock_stopWatchingForGestures:(id)gestures;
 - (void)_lock_updateGlobalModifierState;
-- (void)_lock_usableKeyboardAttached:(id)a3;
-- (void)_lock_usableKeyboardDetached:(id)a3;
-- (void)_lock_watchForGestures:(id)a3;
+- (void)_lock_usableKeyboardAttached:(id)attached;
+- (void)_lock_usableKeyboardDetached:(id)detached;
+- (void)_lock_watchForGestures:(id)gestures;
 - (void)_modifierRemappingsDidChange;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)bufferDidEndDraining:(id)a3;
-- (void)bufferingDidAddNewBuffers:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)bufferDidEndDraining:(id)draining;
+- (void)bufferingDidAddNewBuffers:(id)buffers;
 - (void)dealloc;
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4;
-- (void)postEvent:(__IOHIDEvent *)a3 withContext:(id)a4 toResolution:(id)a5 fromSequence:(id)a6;
-- (void)serviceDidDisappear:(id)a3;
-- (void)setCapsLockDelayOverride:(double)a3;
-- (void)setCapsLockDelayOverride:(double)a3 forSenderID:(unint64_t)a4;
-- (void)setKeyCommandsToAuthenticate:(id)a3;
-- (void)setKeyboardLayout:(id)a3;
-- (void)setKeyboardLayout:(id)a3 forSenderID:(unint64_t)a4;
-- (void)setRomanCapsLockSwitchModeActive:(BOOL)a3;
-- (void)setRomanCapsLockSwitchModeActive:(BOOL)a3 forSenderID:(unint64_t)a4;
-- (void)setStandardType:(unsigned int)a3 forSenderID:(unint64_t)a4;
-- (void)smartKeyboardAttachmentStateDidChange:(id)a3;
+- (void)matcher:(id)matcher servicesDidMatch:(id)match;
+- (void)postEvent:(__IOHIDEvent *)event withContext:(id)context toResolution:(id)resolution fromSequence:(id)sequence;
+- (void)serviceDidDisappear:(id)disappear;
+- (void)setCapsLockDelayOverride:(double)override;
+- (void)setCapsLockDelayOverride:(double)override forSenderID:(unint64_t)d;
+- (void)setKeyCommandsToAuthenticate:(id)authenticate;
+- (void)setKeyboardLayout:(id)layout;
+- (void)setKeyboardLayout:(id)layout forSenderID:(unint64_t)d;
+- (void)setRomanCapsLockSwitchModeActive:(BOOL)active;
+- (void)setRomanCapsLockSwitchModeActive:(BOOL)active forSenderID:(unint64_t)d;
+- (void)setStandardType:(unsigned int)type forSenderID:(unint64_t)d;
+- (void)smartKeyboardAttachmentStateDidChange:(id)change;
 @end
 
 @implementation BKKeyboardHIDEventProcessor
 
-- (id)setObservingUsableKeyboardConnections:(id)a3
+- (id)setObservingUsableKeyboardConnections:(id)connections
 {
-  v4 = a3;
+  connectionsCopy = connections;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(BKHIDDomainServiceServer *)self->_server currentConnection];
-  v6 = [(BKHIDDomainServiceServer *)self->_server userInfoForConnection:v5];
-  v7 = [v4 BOOLValue];
-  if (v7 == [v6 BOOLValue] || (-[BKHIDDomainServiceServer setUserInfo:forConnection:](self->_server, "setUserInfo:forConnection:", v4, v5), !v7))
+  currentConnection = [(BKHIDDomainServiceServer *)self->_server currentConnection];
+  v6 = [(BKHIDDomainServiceServer *)self->_server userInfoForConnection:currentConnection];
+  bOOLValue = [connectionsCopy BOOLValue];
+  if (bOOLValue == [v6 BOOLValue] || (-[BKHIDDomainServiceServer setUserInfo:forConnection:](self->_server, "setUserInfo:forConnection:", connectionsCopy, currentConnection), !bOOLValue))
   {
     v8 = 0;
   }
@@ -88,66 +88,66 @@
   return v8;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [v4 appendObject:self->_keyboardLayout withName:@"keyboardLayout"];
-  v6 = [v4 appendObject:self->_primaryKeyboardInfo withName:@"primaryKeyboard"];
-  v7 = [v4 appendObject:self->_usableKeyboards withName:@"usableKeyboards"];
-  v8 = [v4 appendBool:self->_countOfKeyboardsRequiringAllSmartCoverHESDisengagedForOpen > 0 withName:@"StrictWakeHallEffectSensors"];
-  v9 = [v4 appendObject:self->_keyDownToEventSequence withName:@"keyDownToEventSequence"];
+  v5 = [formatterCopy appendObject:self->_keyboardLayout withName:@"keyboardLayout"];
+  v6 = [formatterCopy appendObject:self->_primaryKeyboardInfo withName:@"primaryKeyboard"];
+  v7 = [formatterCopy appendObject:self->_usableKeyboards withName:@"usableKeyboards"];
+  v8 = [formatterCopy appendBool:self->_countOfKeyboardsRequiringAllSmartCoverHESDisengagedForOpen > 0 withName:@"StrictWakeHallEffectSensors"];
+  v9 = [formatterCopy appendObject:self->_keyDownToEventSequence withName:@"keyDownToEventSequence"];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000429F8;
   v10[3] = &unk_1000FCF28;
   v10[4] = self;
-  [v4 appendCustomFormatWithName:@"globalActiveModifiers" block:v10];
+  [formatterCopy appendCustomFormatWithName:@"globalActiveModifiers" block:v10];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)serviceDidDisappear:(id)a3
+- (void)serviceDidDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(BKKeyboardHIDEventProcessor *)self _lock_keyboardRemoved:v4];
+  [(BKKeyboardHIDEventProcessor *)self _lock_keyboardRemoved:disappearCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)matcher:(id)a3 servicesDidMatch:(id)a4
+- (void)matcher:(id)matcher servicesDidMatch:(id)match
 {
-  v5 = a4;
-  v7 = [v5 bs_compactMap:&stru_1000FB248];
+  matchCopy = match;
+  v7 = [matchCopy bs_compactMap:&stru_1000FB248];
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v6 = [(BKHIDSystemInterfacing *)self->_eventSystemInterface senderCache];
-  [v6 addSenderInfo:v5];
+  senderCache = [(BKHIDSystemInterfacing *)self->_eventSystemInterface senderCache];
+  [senderCache addSenderInfo:matchCopy];
 
   [(BKKeyboardHIDEventProcessor *)self _lock_keyboardsDetected:v7];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)bufferDidEndDraining:(id)a3
+- (void)bufferDidEndDraining:(id)draining
 {
-  v4 = a3;
+  drainingCopy = draining;
   os_unfair_lock_lock(&self->_lock);
   keyDownToEventSequence = self->_keyDownToEventSequence;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000431F8;
   v7[3] = &unk_1000FB228;
-  v8 = v4;
-  v6 = v4;
+  v8 = drainingCopy;
+  v6 = drainingCopy;
   [(NSMutableDictionary *)keyDownToEventSequence enumerateKeysAndObjectsUsingBlock:v7];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)bufferingDidAddNewBuffers:(id)a3
+- (void)bufferingDidAddNewBuffers:(id)buffers
 {
-  v4 = a3;
+  buffersCopy = buffers;
   os_unfair_lock_lock(&self->_lock);
   v13 = 0u;
   v14 = 0u;
@@ -170,7 +170,7 @@
         }
 
         v10 = [(NSMutableDictionary *)self->_keyDownToEventSequence objectForKey:*(*(&v11 + 1) + 8 * v9), v11];
-        [v10 repostFirstEventToBufferedTargets:v4];
+        [v10 repostFirstEventToBufferedTargets:buffersCopy];
 
         v9 = v9 + 1;
       }
@@ -185,13 +185,13 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 withContext:(id)a4 buffer:(id)a5 sequence:(id)a6 sender:(id)a7 dispatcher:(id)a8 resolution:(id)a9
+- (int64_t)processEvent:(__IOHIDEvent *)event withContext:(id)context buffer:(id)buffer sequence:(id)sequence sender:(id)sender dispatcher:(id)dispatcher resolution:(id)resolution
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a9;
-  v17 = *a3;
+  contextCopy = context;
+  bufferCopy = buffer;
+  sequenceCopy = sequence;
+  resolutionCopy = resolution;
+  v17 = *event;
   Type = IOHIDEventGetType();
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
@@ -210,23 +210,23 @@
     v19 = 3;
   }
 
-  [v15 postEvent:v17 position:v19 additionalContext:v13 fromBuffer:v14 toResolution:v16];
+  [sequenceCopy postEvent:v17 position:v19 additionalContext:contextCopy fromBuffer:bufferCopy toResolution:resolutionCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   return 1;
 }
 
-- (void)postEvent:(__IOHIDEvent *)a3 withContext:(id)a4 toResolution:(id)a5 fromSequence:(id)a6
+- (void)postEvent:(__IOHIDEvent *)event withContext:(id)context toResolution:(id)resolution fromSequence:(id)sequence
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  resolutionCopy = resolution;
+  sequenceCopy = sequence;
   Copy = IOHIDEventCreateCopy();
-  v14 = [v11 display];
-  v15 = [v14 _hardwareIdentifier];
+  display = [resolutionCopy display];
+  _hardwareIdentifier = [display _hardwareIdentifier];
   _BKHIDNoteUserEventOccurredOnDisplay();
 
-  v16 = v10;
+  v16 = contextCopy;
   if (!v16)
   {
     v26 = objc_opt_class();
@@ -243,7 +243,7 @@
       v42 = 2114;
       v43 = v31;
       v44 = 2048;
-      v45 = self;
+      selfCopy2 = self;
       v46 = 2114;
       v47 = @"BKKeyboardHIDEventProcessor.m";
       v48 = 1024;
@@ -263,13 +263,13 @@
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v32 = [v17 classForCoder];
-    if (!v32)
+    classForCoder = [v17 classForCoder];
+    if (!classForCoder)
     {
-      v32 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v33 = NSStringFromClass(v32);
+    v33 = NSStringFromClass(classForCoder);
     v34 = objc_opt_class();
     v35 = NSStringFromClass(v34);
     v36 = [NSString stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"extras", v33, v35];
@@ -284,7 +284,7 @@
       v42 = 2114;
       v43 = v39;
       v44 = 2048;
-      v45 = self;
+      selfCopy2 = self;
       v46 = 2114;
       v47 = @"BKKeyboardHIDEventProcessor.m";
       v48 = 1024;
@@ -300,7 +300,7 @@
     JUMPOUT(0x100043914);
   }
 
-  [(BKKeyboardHIDEventProcessor *)self _lock_applyDeliveryInformation:v17 resolution:v11 toEvent:Copy];
+  [(BKKeyboardHIDEventProcessor *)self _lock_applyDeliveryInformation:v17 resolution:resolutionCopy toEvent:Copy];
   IntegerValue = IOHIDEventGetIntegerValue();
   if ([BKSHIDEventKeyCommand _isModifierKeyWithPage:IntegerValue usage:IOHIDEventGetIntegerValue()])
   {
@@ -308,7 +308,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = BKSHIDEventGetConciseDescription();
-      v21 = [BSDescriptionStream descriptionForRootObject:v11];
+      v21 = [BSDescriptionStream descriptionForRootObject:resolutionCopy];
       *buf = 138543618;
       v41 = v20;
       v42 = 2114;
@@ -321,7 +321,7 @@
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
   {
     v24 = BKSHIDEventGetConciseDescription();
-    v25 = [BSDescriptionStream descriptionForRootObject:v11];
+    v25 = [BSDescriptionStream descriptionForRootObject:resolutionCopy];
     *buf = 138543618;
     v41 = v24;
     v42 = 2114;
@@ -329,23 +329,23 @@
     _os_log_debug_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEBUG, "%{public}@ -> %{public}@", buf, 0x16u);
   }
 
-  v23 = [v12 dispatcher];
-  [v23 postEvent:Copy toDestination:v11];
+  dispatcher = [sequenceCopy dispatcher];
+  [dispatcher postEvent:Copy toDestination:resolutionCopy];
 
   CFRelease(Copy);
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = *a3;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  v10 = *event;
   Type = IOHIDEventGetType();
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if (Type == 30)
   {
-    [(BKKeyboardHIDEventProcessor *)self _lock_handleUnicodeEvent:v10 fromSender:v8 dispatcher:v9];
+    [(BKKeyboardHIDEventProcessor *)self _lock_handleUnicodeEvent:v10 fromSender:senderCopy dispatcher:dispatcherCopy];
   }
 
   else
@@ -358,7 +358,7 @@
       goto LABEL_8;
     }
 
-    [(BKKeyboardHIDEventProcessor *)self _lock_handleKeyEvent:v10 fromSender:v8 dispatcher:v9 bypassCapsLockChecks:0];
+    [(BKKeyboardHIDEventProcessor *)self _lock_handleKeyEvent:v10 fromSender:senderCopy dispatcher:dispatcherCopy bypassCapsLockChecks:0];
     [(BKKeyboardHIDEventProcessor *)self _lock_updateGlobalModifierState];
   }
 
@@ -405,9 +405,9 @@ LABEL_8:
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
           {
             v11 = *(v9 + 24);
-            v12 = [v11 senderID];
+            senderID = [v11 senderID];
             *buf = 134217984;
-            v18 = v12;
+            v18 = senderID;
             _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "_modifierRemappingsDidChange: [senderID %llX] capslock unmapped", buf, 0xCu);
           }
 
@@ -424,11 +424,11 @@ LABEL_8:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_setCapsLockActive:(BOOL)a3 onSenderID:(unint64_t)a4
+- (void)_lock_setCapsLockActive:(BOOL)active onSenderID:(unint64_t)d
 {
-  v5 = a3;
+  activeCopy = active;
   allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-  v8 = [NSNumber numberWithUnsignedLongLong:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:d];
   v9 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v8];
 
   if (v9)
@@ -439,7 +439,7 @@ LABEL_8:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v16 = 134217984;
-        v17 = a4;
+        dCopy5 = d;
         v11 = "setCapsLockActive: [senderID %llX] the caps lock key is a language switch -- you cannot modify caps lock state";
 LABEL_16:
         _os_log_error_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, v11, &v16, 0xCu);
@@ -449,7 +449,7 @@ LABEL_16:
     else if (sub_1000761BC(v9))
     {
       v12 = @"off";
-      if (v5)
+      if (activeCopy)
       {
         v12 = @"active";
       }
@@ -458,12 +458,12 @@ LABEL_16:
       v13 = *(v9 + 8);
       v14 = BKLogKeyboard();
       v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-      if (v13 == v5)
+      if (v13 == activeCopy)
       {
         if (v15)
         {
           v16 = 134218242;
-          v17 = a4;
+          dCopy5 = d;
           v18 = 2114;
           v19 = v10;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "setCapsLockActive: [senderID %llX] caps lock is already %{public}@", &v16, 0x16u);
@@ -475,7 +475,7 @@ LABEL_16:
         if (v15)
         {
           v16 = 134218242;
-          v17 = a4;
+          dCopy5 = d;
           v18 = 2114;
           v19 = v10;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "setCapsLockActive: [senderID %llX] set caps lock to %{public}@", &v16, 0x16u);
@@ -491,7 +491,7 @@ LABEL_16:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         v16 = 134217984;
-        v17 = a4;
+        dCopy5 = d;
         v11 = "setCapsLockActive: [senderID %llX] the capslock key on this keyboard has been remapped and there are no keys mapped to capslock";
         goto LABEL_16;
       }
@@ -504,18 +504,18 @@ LABEL_16:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v16 = 134217984;
-      v17 = a4;
+      dCopy5 = d;
       v11 = "setCapsLockActive: [senderID %llX] no such keyboard";
       goto LABEL_16;
     }
   }
 }
 
-- (void)_lock_postSyntheticCapsLockPressForKeyboard:(id)a3
+- (void)_lock_postSyntheticCapsLockPressForKeyboard:(id)keyboard
 {
-  if (a3)
+  if (keyboard)
   {
-    v4 = *(a3 + 3);
+    v4 = *(keyboard + 3);
   }
 
   else
@@ -539,45 +539,45 @@ LABEL_16:
   CFRelease(v6);
 }
 
-- (void)_lock_smartKeyboardAttachmentStateDidChange:(id)a3
+- (void)_lock_smartKeyboardAttachmentStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_owner(&self->_lock);
   v5 = BKLogKeyboard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "smartKeyboardAttachmentStateDidChange:%{public}@", &v6, 0xCu);
   }
 
-  if (sub_100076354(v4))
+  if (sub_100076354(changeCopy))
   {
-    [(BKKeyboardHIDEventProcessor *)self _lock_usableKeyboardAttached:v4];
+    [(BKKeyboardHIDEventProcessor *)self _lock_usableKeyboardAttached:changeCopy];
   }
 
   else
   {
-    [(BKKeyboardHIDEventProcessor *)self _lock_cancelKeyDownEvents:v4];
-    [(BKKeyboardHIDEventProcessor *)self _lock_usableKeyboardDetached:v4];
+    [(BKKeyboardHIDEventProcessor *)self _lock_cancelKeyDownEvents:changeCopy];
+    [(BKKeyboardHIDEventProcessor *)self _lock_usableKeyboardDetached:changeCopy];
   }
 }
 
-- (void)smartKeyboardAttachmentStateDidChange:(id)a3
+- (void)smartKeyboardAttachmentStateDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(BKKeyboardHIDEventProcessor *)self _lock_smartKeyboardAttachmentStateDidChange:v4];
+  [(BKKeyboardHIDEventProcessor *)self _lock_smartKeyboardAttachmentStateDidChange:changeCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_stopWatchingForGestures:(id)a3
+- (void)_lock_stopWatchingForGestures:(id)gestures
 {
-  if (a3)
+  if (gestures)
   {
-    v4 = *(a3 + 13);
+    v4 = *(gestures + 13);
     if (v4)
     {
       v7 = v4;
@@ -596,13 +596,13 @@ LABEL_16:
   }
 }
 
-- (void)_lock_watchForGestures:(id)a3
+- (void)_lock_watchForGestures:(id)gestures
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && *(v4 + 14) == 1)
+  gesturesCopy = gestures;
+  v5 = gesturesCopy;
+  if (gesturesCopy && *(gesturesCopy + 14) == 1)
   {
-    v6 = v4[14];
+    v6 = gesturesCopy[14];
     if (v6)
     {
       v7 = v6;
@@ -631,7 +631,7 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v8 = [v4[3] propertyForKey:@"KeyboardEnabledEvent"];
+    v8 = [gesturesCopy[3] propertyForKey:@"KeyboardEnabledEvent"];
     v9 = objc_opt_class();
     v10 = v8;
     if (v9)
@@ -660,10 +660,10 @@ LABEL_20:
 
     if (v13 && v14 && v15)
     {
-      v16 = [v14 unsignedIntegerValue];
-      v17 = [v15 unsignedIntegerValue];
-      v18 = [v13 unsignedIntegerValue];
-      v19 = [BKSHIDEventUsagePairDescriptor descriptorForHIDEventType:v18 page:v16 usage:v17];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v15 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v13 unsignedIntegerValue];
+      v19 = [BKSHIDEventUsagePairDescriptor descriptorForHIDEventType:unsignedIntegerValue3 page:unsignedIntegerValue usage:unsignedIntegerValue2];
       if (v19)
       {
         v20 = [v19 descriptorByAddingSenderIDToMatchCriteria:{objc_msgSend(v5[3], "senderID")}];
@@ -677,7 +677,7 @@ LABEL_20:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           LODWORD(location) = 67109378;
-          HIDWORD(location) = v18;
+          HIDWORD(location) = unsignedIntegerValue3;
           v31 = 2114;
           Name = IOHIDEventTypeGetName();
           _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "keyboardActivationChangeEventDescriptor: unsupported KeyboardEnabledEvent:EventType %d (%{public}@)", &location, 0x12u);
@@ -695,12 +695,12 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_lock_handleKeyEvent:(__IOHIDEvent *)a3 fromSender:(id)a4 dispatcher:(id)a5 bypassCapsLockChecks:(BOOL)a6
+- (void)_lock_handleKeyEvent:(__IOHIDEvent *)event fromSender:(id)sender dispatcher:(id)dispatcher bypassCapsLockChecks:(BOOL)checks
 {
-  v10 = a4;
-  v11 = a5;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
   os_unfair_lock_assert_owner(&self->_lock);
-  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v10 senderID]);
+  v12 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [senderCopy senderID]);
   v13 = [(NSMutableDictionary *)self->_allKeyboardsBySenderID objectForKeyedSubscript:v12];
   primaryKeyboardInfo = v13;
   if (!v13)
@@ -712,10 +712,10 @@ LABEL_21:
 
   IntegerValue = IOHIDEventGetIntegerValue();
   v17 = IOHIDEventGetIntegerValue();
-  v18 = [(BKKeyboardHIDEventProcessor *)self _eventSourceForKeyboardInfo:v15 sender:v10];
+  v18 = [(BKKeyboardHIDEventProcessor *)self _eventSourceForKeyboardInfo:v15 sender:senderCopy];
   if (IntegerValue == 57 && v17)
   {
-    if (a6)
+    if (checks)
     {
       goto LABEL_10;
     }
@@ -752,10 +752,10 @@ LABEL_10:
 
   gsKeyboard = 0;
 LABEL_15:
-  if ([BKSHIDEventKeyCommand _shouldMatchKeyCommandsForEvent:a3 gsKeyboard:gsKeyboard])
+  if ([BKSHIDEventKeyCommand _shouldMatchKeyCommandsForEvent:event gsKeyboard:gsKeyboard])
   {
     v25 = 0;
-    v22 = [BKSHIDEventKeyCommand keyCommandForEvent:a3 gsKeyboard:gsKeyboard activeModifiers:&v25];
+    v22 = [BKSHIDEventKeyCommand keyCommandForEvent:event gsKeyboard:gsKeyboard activeModifiers:&v25];
     if (v15)
     {
       v15->_activeModifiers = v25;
@@ -767,7 +767,7 @@ LABEL_15:
     v22 = 0;
   }
 
-  [(BKKeyboardHIDEventProcessor *)self _lock_dispatchKeyEvent:a3 keyCommand:v22 keyboardInfo:v15 eventSource:v18 fromSender:v10 dispatcher:v11];
+  [(BKKeyboardHIDEventProcessor *)self _lock_dispatchKeyEvent:event keyCommand:v22 keyboardInfo:v15 eventSource:v18 fromSender:senderCopy dispatcher:dispatcherCopy];
   v23 = [(NSMutableDictionary *)self->_senderIDToKeysDown objectForKey:v12];
   v24 = [v23 count];
 
@@ -777,23 +777,23 @@ LABEL_15:
   }
 }
 
-- (void)_lock_dispatchKeyEvent:(__IOHIDEvent *)a3 keyCommand:(id)a4 keyboardInfo:(id)a5 eventSource:(int)a6 fromSender:(id)a7 dispatcher:(id)a8
+- (void)_lock_dispatchKeyEvent:(__IOHIDEvent *)event keyCommand:(id)command keyboardInfo:(id)info eventSource:(int)source fromSender:(id)sender dispatcher:(id)dispatcher
 {
-  v50 = a4;
-  v53 = a5;
-  v13 = a7;
-  v52 = a8;
-  v54 = [(BKHIDSystemInterfacing *)self->_eventSystemInterface deliveryManager];
+  commandCopy = command;
+  infoCopy = info;
+  senderCopy = sender;
+  dispatcherCopy = dispatcher;
+  deliveryManager = [(BKHIDSystemInterfacing *)self->_eventSystemInterface deliveryManager];
   IntegerValue = IOHIDEventGetIntegerValue();
   v15 = IOHIDEventGetIntegerValue();
-  v57 = a3;
+  eventCopy = event;
   v16 = IOHIDEventGetIntegerValue();
-  v58 = v13;
-  v17 = [v13 senderID];
-  v18 = [NSNumber numberWithUnsignedLongLong:v17];
+  v58 = senderCopy;
+  senderID = [senderCopy senderID];
+  v18 = [NSNumber numberWithUnsignedLongLong:senderID];
   objc_opt_self();
   v19 = objc_alloc_init(_BKKeyDownKey);
-  v19->_senderID = v17;
+  v19->_senderID = senderID;
   v19->_page = IntegerValue;
   v19->_usage = v15;
   v20 = v19;
@@ -802,13 +802,13 @@ LABEL_15:
   v59 = v16;
   if (![BKSHIDEventKeyCommand _isModifierKeyWithPage:IntegerValue usage:v15])
   {
-    v22 = self;
+    selfCopy2 = self;
     v23 = v18;
     [(NSMutableSet *)self->_senderIDsWithModifiersOnly removeObject:v18];
-    v25 = v50;
-    v24 = v52;
-    v27 = v53;
-    v26 = v54;
+    v25 = commandCopy;
+    v24 = dispatcherCopy;
+    v27 = infoCopy;
+    v26 = deliveryManager;
     if (v16)
     {
       goto LABEL_7;
@@ -817,35 +817,35 @@ LABEL_15:
 LABEL_11:
     v51 = v21;
     [v21 removeObject:v20];
-    v28 = v57;
+    v28 = eventCopy;
     goto LABEL_12;
   }
 
-  v22 = self;
+  selfCopy2 = self;
   v23 = v18;
   if (![v21 count])
   {
     [(NSMutableSet *)self->_senderIDsWithModifiersOnly addObject:v18];
   }
 
-  v25 = v50;
-  v24 = v52;
-  v26 = v54;
+  v25 = commandCopy;
+  v24 = dispatcherCopy;
+  v26 = deliveryManager;
   if (!v16)
   {
     [(BKKeyboardHIDEventProcessor *)self _lock_removeModifierKeyDown:v20];
-    v27 = v53;
+    v27 = infoCopy;
     goto LABEL_11;
   }
 
   [(BKKeyboardHIDEventProcessor *)self _lock_addModifierKeyDown:v20];
-  v27 = v53;
+  v27 = infoCopy;
 LABEL_7:
-  v28 = v57;
+  v28 = eventCopy;
   if (!v21)
   {
     v21 = objc_alloc_init(NSMutableSet);
-    [(NSMutableDictionary *)v22->_senderIDToKeysDown setObject:v21 forKey:v23];
+    [(NSMutableDictionary *)selfCopy2->_senderIDToKeysDown setObject:v21 forKey:v23];
   }
 
   v51 = v21;
@@ -856,8 +856,8 @@ LABEL_12:
   v31 = v30;
   if (v30)
   {
-    v30->_eventSource = a6;
-    v30->_modifiersOnly = [(NSMutableSet *)v22->_senderIDsWithModifiersOnly containsObject:v23];
+    v30->_eventSource = source;
+    v30->_modifiersOnly = [(NSMutableSet *)selfCopy2->_senderIDsWithModifiersOnly containsObject:v23];
     if (!v27)
     {
       goto LABEL_17;
@@ -866,7 +866,7 @@ LABEL_12:
 
   else
   {
-    [(NSMutableSet *)v22->_senderIDsWithModifiersOnly containsObject:v23];
+    [(NSMutableSet *)selfCopy2->_senderIDsWithModifiersOnly containsObject:v23];
     if (!v27)
     {
       goto LABEL_17;
@@ -916,14 +916,14 @@ LABEL_17:
       _os_log_error_impl(&_mh_execute_header, v34, OS_LOG_TYPE_ERROR, "missing a sequence for %{public}@", buf, 0xCu);
     }
 
-    v28 = v57;
+    v28 = eventCopy;
     if (!v25)
     {
       goto LABEL_37;
     }
   }
 
-  v35 = [v26 sequenceForKeyCommand:v25 sender:v58 processor:v22 dispatcher:v24 additionalContext:v31];
+  v35 = [v26 sequenceForKeyCommand:v25 sender:v58 processor:selfCopy2 dispatcher:v24 additionalContext:v31];
   if (v35)
   {
     v29 = v35;
@@ -931,7 +931,7 @@ LABEL_17:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v36 = v22->_keyCommandsToAuthenticate;
+    v36 = selfCopy2->_keyCommandsToAuthenticate;
     v37 = [(NSMutableSet *)v36 countByEnumeratingWithState:&v60 objects:v64 count:16];
     if (v37)
     {
@@ -951,8 +951,8 @@ LABEL_17:
           }
 
           v42 = *(*(&v60 + 1) + 8 * i);
-          v43 = [v42 keyCommand];
-          if ([v43 describes:v39] == 3)
+          keyCommand = [v42 keyCommand];
+          if ([keyCommand describes:v39] == 3)
           {
             if (v31)
             {
@@ -975,9 +975,9 @@ LABEL_17:
 LABEL_41:
 
       v25 = v39;
-      v24 = v52;
-      v27 = v53;
-      v26 = v54;
+      v24 = dispatcherCopy;
+      v27 = infoCopy;
+      v26 = deliveryManager;
       v29 = v56;
       v20 = v47;
       v23 = v49;
@@ -986,17 +986,17 @@ LABEL_41:
     else
     {
 
-      v26 = v54;
+      v26 = deliveryManager;
     }
 
-    v28 = v57;
+    v28 = eventCopy;
     goto LABEL_44;
   }
 
 LABEL_37:
-  v29 = [v26 sequenceForFirstEvent:v28 sender:v58 processor:v22 dispatcher:v24 additionalContext:v31];
+  v29 = [v26 sequenceForFirstEvent:v28 sender:v58 processor:selfCopy2 dispatcher:v24 additionalContext:v31];
 LABEL_44:
-  [(NSMutableDictionary *)v22->_keyDownToEventSequence setObject:v29 forKey:v20];
+  [(NSMutableDictionary *)selfCopy2->_keyDownToEventSequence setObject:v29 forKey:v20];
   if (v59)
   {
     v33 = 1;
@@ -1011,13 +1011,13 @@ LABEL_47:
   [v29 postEvent:v28 position:v33 additionalContext:v31];
   if (v29 && !v59)
   {
-    [(NSMutableDictionary *)v22->_keyDownToEventSequence removeObjectForKey:v20];
+    [(NSMutableDictionary *)selfCopy2->_keyDownToEventSequence removeObjectForKey:v20];
   }
 
   v44 = sub_100052990();
   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
   {
-    [BSDescriptionStream descriptionForRootObject:v22->_keyDownToEventSequence];
+    [BSDescriptionStream descriptionForRootObject:selfCopy2->_keyDownToEventSequence];
     v46 = v45 = v23;
     *buf = 138543362;
     v66 = v46;
@@ -1027,22 +1027,22 @@ LABEL_47:
   }
 }
 
-- (void)_lock_applyDeliveryInformation:(id)a3 resolution:(id)a4 toEvent:(__IOHIDEvent *)a5
+- (void)_lock_applyDeliveryInformation:(id)information resolution:(id)resolution toEvent:(__IOHIDEvent *)event
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [BKSHIDEventKeyboardAttributes baseAttributesFromProvider:v8];
-  v10 = [(BKHIDSystemInterfacing *)self->_eventSystemInterface deliveryManager];
-  if (v7)
+  informationCopy = information;
+  resolutionCopy = resolution;
+  v9 = [BKSHIDEventKeyboardAttributes baseAttributesFromProvider:resolutionCopy];
+  deliveryManager = [(BKHIDSystemInterfacing *)self->_eventSystemInterface deliveryManager];
+  if (informationCopy)
   {
-    if (v7[8] == 1)
+    if (informationCopy[8] == 1)
     {
       [v9 setOptions:128];
     }
 
-    [v9 setSource:*(v7 + 3)];
-    [v9 setGSModifierState:*(v7 + 4)];
-    v11 = *(v7 + 3);
+    [v9 setSource:*(informationCopy + 3)];
+    [v9 setGSModifierState:*(informationCopy + 4)];
+    v11 = *(informationCopy + 3);
   }
 
   else
@@ -1058,19 +1058,19 @@ LABEL_47:
   v15 = 0;
   if (v12 && IntegerValue)
   {
-    v21 = v10;
-    v16 = [v12 context];
-    v17 = [(BKHIDSystemInterfacing *)self->_eventSystemInterface clientConnectionManager];
-    v18 = [v17 versionedPIDForPID:{objc_msgSend(v8, "pid")}];
+    v21 = deliveryManager;
+    context = [v12 context];
+    clientConnectionManager = [(BKHIDSystemInterfacing *)self->_eventSystemInterface clientConnectionManager];
+    v18 = [clientConnectionManager versionedPIDForPID:{objc_msgSend(resolutionCopy, "pid")}];
 
     if (v18 == -1)
     {
-      v19 = BKLogKeyboard();
-      if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+      authenticationOriginator = BKLogKeyboard();
+      if (os_log_type_enabled(authenticationOriginator, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v26 = v7;
-        _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "invalid audit token for destination:%{public}@", buf, 0xCu);
+        v26 = informationCopy;
+        _os_log_error_impl(&_mh_execute_header, authenticationOriginator, OS_LOG_TYPE_ERROR, "invalid audit token for destination:%{public}@", buf, 0xCu);
       }
 
       v15 = 0;
@@ -1078,29 +1078,29 @@ LABEL_47:
 
     else
     {
-      v19 = [v21 authenticationOriginator];
+      authenticationOriginator = [v21 authenticationOriginator];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_100045104;
       v24[3] = &unk_1000FB1D8;
-      v24[4] = v16;
+      v24[4] = context;
       v24[5] = v18;
-      v15 = [v19 buildMessage:v24];
+      v15 = [authenticationOriginator buildMessage:v24];
     }
 
-    v10 = v21;
+    deliveryManager = v21;
   }
 
   if (v14 && !v15)
   {
-    v20 = [v10 simpleProvenanceOriginator];
+    simpleProvenanceOriginator = [deliveryManager simpleProvenanceOriginator];
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_10004518C;
     v22[3] = &unk_1000FB200;
     v22[4] = self;
-    v23 = v8;
-    v15 = [v20 buildProvenance:v22];
+    v23 = resolutionCopy;
+    v15 = [simpleProvenanceOriginator buildProvenance:v22];
   }
 
   if (v15)
@@ -1111,33 +1111,33 @@ LABEL_47:
   BKSHIDEventSetAttributes();
 }
 
-- (void)_lock_handleUnicodeEvent:(__IOHIDEvent *)a3 fromSender:(id)a4 dispatcher:(id)a5
+- (void)_lock_handleUnicodeEvent:(__IOHIDEvent *)event fromSender:(id)sender dispatcher:(id)dispatcher
 {
-  v8 = a5;
-  v9 = a4;
+  dispatcherCopy = dispatcher;
+  senderCopy = sender;
   os_unfair_lock_assert_owner(&self->_lock);
   allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-  v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v9 senderID]);
+  v11 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [senderCopy senderID]);
   v16 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKeyedSubscript:v11];
 
-  v12 = [(BKHIDSystemInterfacing *)self->_eventSystemInterface deliveryManager];
+  deliveryManager = [(BKHIDSystemInterfacing *)self->_eventSystemInterface deliveryManager];
   v13 = objc_alloc_init(_BKKeyboardEventExtras);
-  v14 = [(BKKeyboardHIDEventProcessor *)self _eventSourceForKeyboardInfo:v16 sender:v9];
+  v14 = [(BKKeyboardHIDEventProcessor *)self _eventSourceForKeyboardInfo:v16 sender:senderCopy];
   if (v13)
   {
     v13->_eventSource = v14;
   }
 
-  v15 = [v12 sequenceForFirstEvent:a3 sender:v9 processor:self dispatcher:v8 additionalContext:v13];
+  v15 = [deliveryManager sequenceForFirstEvent:event sender:senderCopy processor:self dispatcher:dispatcherCopy additionalContext:v13];
 
-  [v15 postEvent:a3 position:1 additionalContext:v13];
+  [v15 postEvent:event position:1 additionalContext:v13];
 }
 
-- (int)_eventSourceForKeyboardInfo:(id)a3 sender:(id)a4
+- (int)_eventSourceForKeyboardInfo:(id)info sender:(id)sender
 {
-  if (a3)
+  if (info)
   {
-    if ([a4 isAuthenticated])
+    if ([sender isAuthenticated])
     {
       return 3;
     }
@@ -1151,17 +1151,17 @@ LABEL_47:
   else
   {
 
-    return [a4 eventSource];
+    return [sender eventSource];
   }
 }
 
-- (void)_lock_cancelKeyDownEvents:(id)a3
+- (void)_lock_cancelKeyDownEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v5 = mach_absolute_time();
-  if (v4)
+  if (eventsCopy)
   {
-    v6 = v4[3];
+    v6 = eventsCopy[3];
   }
 
   else
@@ -1171,37 +1171,37 @@ LABEL_47:
 
   v7 = v6;
 
-  v8 = [v7 senderID];
+  senderID = [v7 senderID];
   keyDownToEventSequence = self->_keyDownToEventSequence;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10004544C;
   v10[3] = &unk_1000FB1B8;
-  v10[4] = v8;
+  v10[4] = senderID;
   v10[5] = v5;
   [(NSMutableDictionary *)keyDownToEventSequence enumerateKeysAndObjectsUsingBlock:v10];
-  [(BKKeyboardHIDEventProcessor *)self _lock_removeSenderIDFromTracking:v8];
+  [(BKKeyboardHIDEventProcessor *)self _lock_removeSenderIDFromTracking:senderID];
 }
 
-- (void)_lock_usableKeyboardDetached:(id)a3
+- (void)_lock_usableKeyboardDetached:(id)detached
 {
-  v4 = a3;
+  detachedCopy = detached;
   os_unfair_lock_assert_owner(&self->_lock);
-  [(BKKeyboardHIDEventProcessor *)self _lock_removeCapsLockEntryIfNeeded:v4];
-  if ([(NSMutableArray *)self->_usableKeyboards containsObject:v4])
+  [(BKKeyboardHIDEventProcessor *)self _lock_removeCapsLockEntryIfNeeded:detachedCopy];
+  if ([(NSMutableArray *)self->_usableKeyboards containsObject:detachedCopy])
   {
     v5 = BKLogKeyboard();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v4;
+      v10 = detachedCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Usable keyboard detached: %{public}@", &v9, 0xCu);
     }
 
-    [(NSMutableArray *)self->_usableKeyboards removeObject:v4];
-    if (v4)
+    [(NSMutableArray *)self->_usableKeyboards removeObject:detachedCopy];
+    if (detachedCopy)
     {
-      v6 = v4[3];
+      v6 = detachedCopy[3];
     }
 
     else
@@ -1212,34 +1212,34 @@ LABEL_47:
     v7 = v6;
     -[BKKeyboardHIDEventProcessor _lock_removeSenderIDFromTracking:](self, "_lock_removeSenderIDFromTracking:", [v7 senderID]);
 
-    if ([(BKKeyboardInfo *)self->_primaryKeyboardInfo isEqual:v4])
+    if ([(BKKeyboardInfo *)self->_primaryKeyboardInfo isEqual:detachedCopy])
     {
       [(BKKeyboardHIDEventProcessor *)self _lock_setPrimaryKeyboard:0];
       if ([(NSMutableArray *)self->_usableKeyboards count])
       {
-        v8 = [(NSMutableArray *)self->_usableKeyboards firstObject];
-        [(BKKeyboardHIDEventProcessor *)self _lock_setPrimaryKeyboard:v8];
+        firstObject = [(NSMutableArray *)self->_usableKeyboards firstObject];
+        [(BKKeyboardHIDEventProcessor *)self _lock_setPrimaryKeyboard:firstObject];
       }
     }
 
     [(BKKeyboardHIDEventProcessor *)self _lock_publishUsableKeyboardsToServiceConnections];
-    if (v4 && *(v4 + 14) == 1)
+    if (detachedCopy && *(detachedCopy + 14) == 1)
     {
-      [v4[3] setElementValue:0 forUsagePage:8 usage:2];
+      [detachedCopy[3] setElementValue:0 forUsagePage:8 usage:2];
       BKLogEvent();
     }
   }
 }
 
-- (void)_lock_removeCapsLockEntryIfNeeded:(id)a3
+- (void)_lock_removeCapsLockEntryIfNeeded:(id)needed
 {
-  v4 = sub_100076938(a3);
+  v4 = sub_100076938(needed);
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_productIdentifierWithCapsLockActiveToGeneration objectForKeyedSubscript:v4];
-    v6 = [v5 integerValue];
+    integerValue = [v5 integerValue];
 
-    if (v6)
+    if (integerValue)
     {
       v7 = dispatch_time(0, 30000000000);
       block[0] = _NSConcreteStackBlock;
@@ -1248,20 +1248,20 @@ LABEL_47:
       block[3] = &unk_1000FCA90;
       block[4] = self;
       v9 = v4;
-      v10 = v6;
+      v10 = integerValue;
       dispatch_after(v7, &_dispatch_main_q, block);
     }
   }
 }
 
-- (void)_lock_removeSenderIDFromTracking:(unint64_t)a3
+- (void)_lock_removeSenderIDFromTracking:(unint64_t)tracking
 {
-  v5 = [(NSMutableDictionary *)self->_keyDownToEventSequence allKeys];
+  allKeys = [(NSMutableDictionary *)self->_keyDownToEventSequence allKeys];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1273,7 +1273,7 @@ LABEL_47:
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v26 + 1) + 8 * v9);
@@ -1287,7 +1287,7 @@ LABEL_47:
           v11 = 0;
         }
 
-        if (v11 == a3)
+        if (v11 == tracking)
         {
           [(NSMutableDictionary *)self->_keyDownToEventSequence removeObjectForKey:?];
         }
@@ -1296,7 +1296,7 @@ LABEL_47:
       }
 
       while (v7 != v9);
-      v12 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v12 = [allKeys countByEnumeratingWithState:&v26 objects:v31 count:16];
       v7 = v12;
     }
 
@@ -1334,7 +1334,7 @@ LABEL_47:
           v19 = 0;
         }
 
-        if (v19 == a3)
+        if (v19 == tracking)
         {
           [(BKKeyboardHIDEventProcessor *)self _lock_removeModifierKeyDown:?];
         }
@@ -1350,49 +1350,49 @@ LABEL_47:
     while (v20);
   }
 
-  v21 = [NSNumber numberWithUnsignedLongLong:a3];
+  v21 = [NSNumber numberWithUnsignedLongLong:tracking];
   [(NSMutableSet *)self->_senderIDsWithModifiersOnly removeObject:v21];
   [(NSMutableDictionary *)self->_senderIDToKeysDown removeObjectForKey:v21];
 }
 
-- (void)_lock_removeModifierKeyDown:(id)a3
+- (void)_lock_removeModifierKeyDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   v5 = sub_100052990();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = downCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "modifier key up: %{public}@", &v6, 0xCu);
   }
 
-  [(NSMutableSet *)self->_downModifierKeys removeObject:v4];
+  [(NSMutableSet *)self->_downModifierKeys removeObject:downCopy];
 }
 
-- (void)_lock_addModifierKeyDown:(id)a3
+- (void)_lock_addModifierKeyDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   v5 = sub_100052990();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = downCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "modifier key down: %{public}@", &v6, 0xCu);
   }
 
-  [(NSMutableSet *)self->_downModifierKeys addObject:v4];
+  [(NSMutableSet *)self->_downModifierKeys addObject:downCopy];
 }
 
-- (void)_lock_usableKeyboardAttached:(id)a3
+- (void)_lock_usableKeyboardAttached:(id)attached
 {
-  v4 = a3;
-  if (([(NSMutableArray *)self->_usableKeyboards containsObject:v4]& 1) == 0)
+  attachedCopy = attached;
+  if (([(NSMutableArray *)self->_usableKeyboards containsObject:attachedCopy]& 1) == 0)
   {
     v5 = BKLogKeyboard();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = attachedCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Usable keyboard attached: %{public}@", &v10, 0xCu);
     }
 
@@ -1408,31 +1408,31 @@ LABEL_47:
     }
 
     self->_keyboardGeneration = v7;
-    if (v4)
+    if (attachedCopy)
     {
-      v4[12] = v7;
+      attachedCopy[12] = v7;
     }
 
-    [(NSMutableArray *)self->_usableKeyboards addObject:v4];
+    [(NSMutableArray *)self->_usableKeyboards addObject:attachedCopy];
     if (!self->_primaryKeyboardInfo)
     {
-      [(BKKeyboardHIDEventProcessor *)self _lock_setPrimaryKeyboard:v4];
+      [(BKKeyboardHIDEventProcessor *)self _lock_setPrimaryKeyboard:attachedCopy];
     }
 
     if (self->_keyboardLayout)
     {
-      v8 = v4 ? v4[6] : 0;
+      v8 = attachedCopy ? attachedCopy[6] : 0;
       v9 = v8;
 
       if (!v9)
       {
-        sub_100076410(v4, self->_keyboardLayout);
+        sub_100076410(attachedCopy, self->_keyboardLayout);
       }
     }
 
-    [(BKKeyboardHIDEventProcessor *)self _lock_restoreCapsLockStateToKeyboard:v4];
+    [(BKKeyboardHIDEventProcessor *)self _lock_restoreCapsLockStateToKeyboard:attachedCopy];
     [(BKKeyboardHIDEventProcessor *)self _lock_publishUsableKeyboardsToServiceConnections];
-    if (v4 && *(v4 + 14) == 1)
+    if (attachedCopy && *(attachedCopy + 14) == 1)
     {
       BKLogEvent();
     }
@@ -1454,16 +1454,16 @@ LABEL_47:
   [(BKHIDDomainServiceServer *)server enumerateUserInfoWithBlock:v6];
 }
 
-- (void)_lock_publishUsableKeyboards:(id)a3 toServiceConnection:(id)a4
+- (void)_lock_publishUsableKeyboards:(id)keyboards toServiceConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  if (([(BKHIDDomainServiceServer *)self->_server responsePendingForConnection:v7]& 1) == 0)
+  keyboardsCopy = keyboards;
+  connectionCopy = connection;
+  if (([(BKHIDDomainServiceServer *)self->_server responsePendingForConnection:connectionCopy]& 1) == 0)
   {
-    v8 = [(BKHIDDomainServiceServer *)self->_server didRespondBlockForConnection:v7];
+    v8 = [(BKHIDDomainServiceServer *)self->_server didRespondBlockForConnection:connectionCopy];
     lock_keyboardPublicationSeed = self->_lock_keyboardPublicationSeed;
     objc_initWeak(&location, self);
-    v10 = [v7 remoteTarget];
+    remoteTarget = [connectionCopy remoteTarget];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100045F9C;
@@ -1472,29 +1472,29 @@ LABEL_47:
     v11 = v8;
     v14 = v11;
     v15[1] = lock_keyboardPublicationSeed;
-    v13 = v7;
-    [v10 setConnectedKeyboards:v6 withReply:v12];
+    v13 = connectionCopy;
+    [remoteTarget setConnectedKeyboards:keyboardsCopy withReply:v12];
 
     objc_destroyWeak(v15);
     objc_destroyWeak(&location);
   }
 }
 
-- (void)_lock_restoreCapsLockStateToKeyboard:(id)a3
+- (void)_lock_restoreCapsLockStateToKeyboard:(id)keyboard
 {
-  v4 = a3;
-  if (v4)
+  keyboardCopy = keyboard;
+  if (keyboardCopy)
   {
-    v13 = v4;
-    v5 = sub_1000761BC(v4);
+    v13 = keyboardCopy;
+    v5 = sub_1000761BC(keyboardCopy);
     v6 = v13;
     if (v5)
     {
       if ((*(v13 + 9) & 1) == 0)
       {
-        v7 = [v13[3] isVirtualService];
+        isVirtualService = [v13[3] isVirtualService];
         v6 = v13;
-        if ((v7 & 1) == 0)
+        if ((isVirtualService & 1) == 0)
         {
           v8 = sub_100076938(v13);
           if (v8)
@@ -1511,7 +1511,7 @@ LABEL_47:
               [(NSMutableDictionary *)productIdentifierWithCapsLockActiveToGeneration setObject:v12 forKey:v8];
 
 LABEL_10:
-              v4 = v13;
+              keyboardCopy = v13;
               goto LABEL_11;
             }
           }
@@ -1528,29 +1528,29 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_lock_setPrimaryKeyboard:(id)a3
+- (void)_lock_setPrimaryKeyboard:(id)keyboard
 {
-  v5 = a3;
+  keyboardCopy = keyboard;
   os_unfair_lock_assert_owner(&self->_lock);
   v6 = self->_primaryKeyboardInfo;
-  if (v6 != v5)
+  if (v6 != keyboardCopy)
   {
-    objc_storeStrong(&self->_primaryKeyboardInfo, a3);
-    if (v5)
+    objc_storeStrong(&self->_primaryKeyboardInfo, keyboard);
+    if (keyboardCopy)
     {
-      sub_100076410(v5, self->_keyboardLayout);
-      keyboardType = v5->_keyboardType;
-      v8 = [NSNumber numberWithUnsignedChar:v5->_countryCode];
-      gsKeyboard = v5->_gsKeyboard;
+      sub_100076410(keyboardCopy, self->_keyboardLayout);
+      keyboardType = keyboardCopy->_keyboardType;
+      v8 = [NSNumber numberWithUnsignedChar:keyboardCopy->_countryCode];
+      gsKeyboard = keyboardCopy->_gsKeyboard;
       GSKeyboardSetHardwareKeyboardAttached();
       v10 = BKLogKeyboard();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v8 unsignedIntValue];
+        unsignedIntValue = [v8 unsignedIntValue];
         keyboardLayout = self->_keyboardLayout;
-        v13 = v5->_gsKeyboard;
+        v13 = keyboardCopy->_gsKeyboard;
         v15[0] = 67109890;
-        v15[1] = v11;
+        v15[1] = unsignedIntValue;
         v16 = 1024;
         v17 = keyboardType;
         v18 = 2114;
@@ -1569,11 +1569,11 @@ LABEL_11:
   }
 }
 
-- (void)_lock_keyboardRemoved:(id)a3
+- (void)_lock_keyboardRemoved:(id)removed
 {
-  v4 = a3;
+  removedCopy = removed;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 senderID]);
+  v5 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [removedCopy senderID]);
   v6 = [(NSMutableDictionary *)self->_allKeyboardsBySenderID objectForKeyedSubscript:v5];
   v7 = BKLogKeyboard();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -1586,10 +1586,10 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Keyboard detached: %{public}@", &v15, 0xCu);
     }
 
-    v9 = [v4 propertyForKey:@"VendorID"];
-    v10 = [v9 unsignedIntValue];
-    v11 = [v4 propertyForKey:@"ProductID"];
-    v12 = sub_100046580(v10, [v11 unsignedIntValue]);
+    v9 = [removedCopy propertyForKey:@"VendorID"];
+    unsignedIntValue = [v9 unsignedIntValue];
+    v11 = [removedCopy propertyForKey:@"ProductID"];
+    v12 = sub_100046580(unsignedIntValue, [v11 unsignedIntValue]);
 
     if (v12)
     {
@@ -1612,27 +1612,27 @@ LABEL_11:
     if (v8)
     {
       v15 = 138543362;
-      v16 = v4;
+      v16 = removedCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Keyboard not found for IOHIDService: %{public}@", &v15, 0xCu);
     }
   }
 }
 
-- (void)_lock_keyboardsDetected:(id)a3
+- (void)_lock_keyboardsDetected:(id)detected
 {
-  v4 = a3;
+  detectedCopy = detected;
   os_unfair_lock_assert_owner(&self->_lock);
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100046A1C;
   v5[3] = &unk_1000FB108;
   v5[4] = self;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [detectedCopy enumerateObjectsUsingBlock:v5];
 }
 
-- (void)_lock_setKeyboardLightsSuspended:(BOOL)a3
+- (void)_lock_setKeyboardLightsSuspended:(BOOL)suspended
 {
-  v3 = a3;
+  suspendedCopy = suspended;
   os_unfair_lock_assert_owner(&self->_lock);
   v13 = 0u;
   v14 = 0u;
@@ -1657,7 +1657,7 @@ LABEL_11:
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (v10 && *(v10 + 8) == 1)
         {
-          [*(v10 + 24) setElementValue:!v3 forUsagePage:8 usage:{2, v11}];
+          [*(v10 + 24) setElementValue:!suspendedCopy forUsagePage:8 usage:{2, v11}];
         }
 
         v9 = v9 + 1;
@@ -1717,25 +1717,25 @@ LABEL_12:
 - (int64_t)_lock_activeModifiers
 {
   v2 = [(NSMutableArray *)self->_usableKeyboards bs_reduce:&off_100107958 block:&stru_1000FB0E0];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (void)_lock_updateGlobalModifierState
 {
   globalActiveModifiers = self->_globalActiveModifiers;
-  v4 = [(BKKeyboardHIDEventProcessor *)self _lock_activeModifiers];
-  if (globalActiveModifiers != v4)
+  _lock_activeModifiers = [(BKKeyboardHIDEventProcessor *)self _lock_activeModifiers];
+  if (globalActiveModifiers != _lock_activeModifiers)
   {
-    v5 = v4;
-    self->_globalActiveModifiers = v4;
+    v5 = _lock_activeModifiers;
+    self->_globalActiveModifiers = _lock_activeModifiers;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(BSCompoundAssertion *)self->_keyboardObserverAssertion context];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    context = [(BSCompoundAssertion *)self->_keyboardObserverAssertion context];
+    v7 = [context countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1747,7 +1747,7 @@ LABEL_12:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(context);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
@@ -1760,7 +1760,7 @@ LABEL_12:
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [context countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -1801,22 +1801,22 @@ LABEL_12:
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKKeyboardHIDEventProcessor *)self _lock_anyKeyboardHasCapsLockActive];
+  _lock_anyKeyboardHasCapsLockActive = [(BKKeyboardHIDEventProcessor *)self _lock_anyKeyboardHasCapsLockActive];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_anyKeyboardHasCapsLockActive;
 }
 
-- (void)setStandardType:(unsigned int)a3 forSenderID:(unint64_t)a4
+- (void)setStandardType:(unsigned int)type forSenderID:(unint64_t)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-  v8 = [NSNumber numberWithUnsignedLongLong:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:d];
   v16 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v8];
 
-  if (v16 && *(v16 + 4) != a3)
+  if (v16 && *(v16 + 4) != type)
   {
-    *(v16 + 4) = a3;
+    *(v16 + 4) = type;
     v9 = v16[3];
     v10 = [NSNumber numberWithUnsignedInt:*(v16 + 4)];
     [v9 setProperty:v10 forKey:@"StandardType"];
@@ -1837,7 +1837,7 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setCapsLockDelayOverride:(double)a3
+- (void)setCapsLockDelayOverride:(double)override
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
@@ -1861,7 +1861,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        sub_10007680C(*(*(&v10 + 1) + 8 * v9), a3);
+        sub_10007680C(*(*(&v10 + 1) + 8 * v9), override);
         v9 = v9 + 1;
       }
 
@@ -1875,9 +1875,9 @@ LABEL_12:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setRomanCapsLockSwitchModeActive:(BOOL)a3
+- (void)setRomanCapsLockSwitchModeActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v12 = 0u;
@@ -1900,7 +1900,7 @@ LABEL_12:
           objc_enumerationMutation(v5);
         }
 
-        sub_100076730(*(*(&v10 + 1) + 8 * v9), v3);
+        sub_100076730(*(*(&v10 + 1) + 8 * v9), activeCopy);
         v9 = v9 + 1;
       }
 
@@ -1923,11 +1923,11 @@ LABEL_12:
   return v3;
 }
 
-- (id)devicePropertiesForSenderID:(unint64_t)a3
+- (id)devicePropertiesForSenderID:(unint64_t)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if (!a3)
+  if (!d)
   {
     goto LABEL_3;
   }
@@ -1937,13 +1937,13 @@ LABEL_12:
   v12[1] = 3221225472;
   v12[2] = sub_1000476E4;
   v12[3] = &unk_1000FB060;
-  v12[4] = a3;
+  v12[4] = d;
   v6 = [v5 bs_containsObjectPassingTest:v12];
 
   if (!v6)
   {
     allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-    v10 = [NSNumber numberWithUnsignedLongLong:a3];
+    v10 = [NSNumber numberWithUnsignedLongLong:d];
     v7 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v10];
 
     if (v7)
@@ -1971,19 +1971,19 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)keyboardWantsStandardTypeOverrideForSenderID:(unint64_t)a3
+- (BOOL)keyboardWantsStandardTypeOverrideForSenderID:(unint64_t)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if (a3)
+  if (d)
   {
     allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-    v6 = [NSNumber numberWithUnsignedLongLong:a3];
-    v7 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v6];
+    v6 = [NSNumber numberWithUnsignedLongLong:d];
+    allValues = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v6];
 
-    if (v7)
+    if (allValues)
     {
-      LOBYTE(v8) = v7[13];
+      LOBYTE(v8) = allValues[13];
     }
 
     else
@@ -1998,8 +1998,8 @@ LABEL_7:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v7 = [(NSMutableDictionary *)self->_allKeyboardsBySenderID allValues];
-    v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    allValues = [(NSMutableDictionary *)self->_allKeyboardsBySenderID allValues];
+    v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v8)
     {
       v9 = *v14;
@@ -2009,7 +2009,7 @@ LABEL_7:
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allValues);
           }
 
           v11 = *(*(&v13 + 1) + 8 * i);
@@ -2020,7 +2020,7 @@ LABEL_7:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v8)
         {
           continue;
@@ -2037,12 +2037,12 @@ LABEL_15:
   return v8 & 1;
 }
 
-- (BOOL)isCapsLockLightOnForSenderID:(unint64_t)a3
+- (BOOL)isCapsLockLightOnForSenderID:(unint64_t)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
+  v6 = [NSNumber numberWithUnsignedLongLong:d];
   v7 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v6];
 
   if (v7)
@@ -2060,44 +2060,44 @@ LABEL_15:
   return v8 & 1;
 }
 
-- (void)setCapsLockDelayOverride:(double)a3 forSenderID:(unint64_t)a4
+- (void)setCapsLockDelayOverride:(double)override forSenderID:(unint64_t)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-  v8 = [NSNumber numberWithUnsignedLongLong:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:d];
   v9 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v8];
 
-  sub_10007680C(v9, a3);
+  sub_10007680C(v9, override);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setRomanCapsLockSwitchModeActive:(BOOL)a3 forSenderID:(unint64_t)a4
+- (void)setRomanCapsLockSwitchModeActive:(BOOL)active forSenderID:(unint64_t)d
 {
-  v5 = a3;
+  activeCopy = active;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-  v8 = [NSNumber numberWithUnsignedLongLong:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:d];
   v9 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v8];
 
   if (v9)
   {
-    if (v5)
+    if (activeCopy)
     {
       [(BKKeyboardHIDEventProcessor *)self _lock_setCapsLockState:0 forKeyboard:v9 updateGS:1];
     }
 
-    sub_100076730(v9, v5);
+    sub_100076730(v9, activeCopy);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setKeyboardLayout:(id)a3 forSenderID:(unint64_t)a4
+- (void)setKeyboardLayout:(id)layout forSenderID:(unint64_t)d
 {
-  v14 = a3;
-  if (!v14)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     v10 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"keyboardLayout != ((void *)0)"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -2110,7 +2110,7 @@ LABEL_15:
       v17 = 2114;
       v18 = v13;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"BKKeyboardHIDEventProcessor.m";
       v23 = 1024;
@@ -2129,19 +2129,19 @@ LABEL_15:
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-  v8 = [NSNumber numberWithUnsignedLongLong:a4];
+  v8 = [NSNumber numberWithUnsignedLongLong:d];
   v9 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v8];
 
-  sub_100076410(v9, v14);
+  sub_100076410(v9, layoutCopy);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)keyboardLanguageForSenderID:(unint64_t)a3
+- (id)keyboardLanguageForSenderID:(unint64_t)d
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
+  v6 = [NSNumber numberWithUnsignedLongLong:d];
   v7 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKey:v6];
 
   if (v7)
@@ -2160,14 +2160,14 @@ LABEL_15:
   return v9;
 }
 
-- (void)setKeyCommandsToAuthenticate:(id)a3
+- (void)setKeyCommandsToAuthenticate:(id)authenticate
 {
-  v6 = a3;
+  authenticateCopy = authenticate;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if (self->_keyCommandsToAuthenticate != v6)
+  if (self->_keyCommandsToAuthenticate != authenticateCopy)
   {
-    v4 = [(NSMutableSet *)v6 copy];
+    v4 = [(NSMutableSet *)authenticateCopy copy];
     keyCommandsToAuthenticate = self->_keyCommandsToAuthenticate;
     self->_keyCommandsToAuthenticate = v4;
   }
@@ -2175,9 +2175,9 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)addGlobalKeyboardObserver:(id)a3
+- (id)addGlobalKeyboardObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   keyboardObserverAssertion = self->_keyboardObserverAssertion;
@@ -2191,7 +2191,7 @@ LABEL_15:
   }
 
   v8 = [objc_opt_class() description];
-  v9 = [(BSCompoundAssertion *)keyboardObserverAssertion acquireForReason:v8 withContext:v4];
+  v9 = [(BSCompoundAssertion *)keyboardObserverAssertion acquireForReason:v8 withContext:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -2202,15 +2202,15 @@ LABEL_15:
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BKKeyboardHIDEventProcessor *)self _lock_activeModifiers];
+  _lock_activeModifiers = [(BKKeyboardHIDEventProcessor *)self _lock_activeModifiers];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_activeModifiers;
 }
 
-- (void)setKeyboardLayout:(id)a3
+- (void)setKeyboardLayout:(id)layout
 {
-  v5 = a3;
-  if (!v5)
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     v14 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"keyboardLayout != ((void *)0)"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -2223,7 +2223,7 @@ LABEL_15:
       v25 = 2114;
       v26 = v17;
       v27 = 2048;
-      v28 = self;
+      selfCopy = self;
       v29 = 2114;
       v30 = @"BKKeyboardHIDEventProcessor.m";
       v31 = 1024;
@@ -2239,7 +2239,7 @@ LABEL_15:
     JUMPOUT(0x100048130);
   }
 
-  v6 = v5;
+  v6 = layoutCopy;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v7 = [v6 copy];
@@ -2250,8 +2250,8 @@ LABEL_15:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(NSMutableDictionary *)self->_allKeyboardsBySenderID allValues];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allValues = [(NSMutableDictionary *)self->_allKeyboardsBySenderID allValues];
+  v10 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -2263,7 +2263,7 @@ LABEL_15:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         sub_100076410(*(*(&v18 + 1) + 8 * v13), v6);
@@ -2271,7 +2271,7 @@ LABEL_15:
       }
 
       while (v11 != v13);
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -2291,15 +2291,15 @@ LABEL_15:
   return v3;
 }
 
-- (int)eventSourceForSender:(id)a3
+- (int)eventSourceForSender:(id)sender
 {
-  v4 = a3;
+  senderCopy = sender;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   allKeyboardsBySenderID = self->_allKeyboardsBySenderID;
-  v6 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v4 senderID]);
+  v6 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [senderCopy senderID]);
   v7 = [(NSMutableDictionary *)allKeyboardsBySenderID objectForKeyedSubscript:v6];
-  v8 = [(BKKeyboardHIDEventProcessor *)self _eventSourceForKeyboardInfo:v7 sender:v4];
+  v8 = [(BKKeyboardHIDEventProcessor *)self _eventSourceForKeyboardInfo:v7 sender:senderCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v8;
@@ -2333,10 +2333,10 @@ LABEL_15:
   [(BKKeyboardHIDEventProcessor *)&v7 dealloc];
 }
 
-- (void)_commonInitWithContext:(id)a3 server:(id)a4
+- (void)_commonInitWithContext:(id)context server:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  serverCopy = server;
   self->_lock._os_unfair_lock_opaque = 0;
   v8 = objc_alloc_init(NSMutableDictionary);
   productIdentifierWithCapsLockActiveToGeneration = self->_productIdentifierWithCapsLockActiveToGeneration;
@@ -2354,17 +2354,17 @@ LABEL_15:
   eventRecognizers = self->_eventRecognizers;
   self->_eventRecognizers = v14;
 
-  v16 = [v6 eventDispatcher];
+  eventDispatcher = [contextCopy eventDispatcher];
   eventDispatcher = self->_eventDispatcher;
-  self->_eventDispatcher = v16;
+  self->_eventDispatcher = eventDispatcher;
 
-  v18 = [v6 systemInterface];
+  systemInterface = [contextCopy systemInterface];
   eventSystemInterface = self->_eventSystemInterface;
-  self->_eventSystemInterface = v18;
+  self->_eventSystemInterface = systemInterface;
 
-  v20 = [v6 eventProcessorRegistry];
+  eventProcessorRegistry = [contextCopy eventProcessorRegistry];
   eventProcessorRegistry = self->_eventProcessorRegistry;
-  self->_eventProcessorRegistry = v20;
+  self->_eventProcessorRegistry = eventProcessorRegistry;
 
   v22 = +[BKDisplayController sharedInstance];
   displayController = self->_displayController;
@@ -2383,8 +2383,8 @@ LABEL_15:
   *(&buf + 1) = &off_100107988;
   v27 = [NSDictionary dictionaryWithObjects:&buf forKeys:v53 count:2];
   v28 = [BKIOHIDServiceMatcher alloc];
-  v29 = [v6 serviceMatcherDataProvider];
-  v30 = [v28 initWithMatchingDictionary:v27 dataProvider:v29];
+  serviceMatcherDataProvider = [contextCopy serviceMatcherDataProvider];
+  v30 = [v28 initWithMatchingDictionary:v27 dataProvider:serviceMatcherDataProvider];
   keyboardServiceMatcher = self->_keyboardServiceMatcher;
   self->_keyboardServiceMatcher = v30;
 
@@ -2411,14 +2411,14 @@ LABEL_15:
   self->_downModifierKeys = v39;
 
   v41 = +[BKSDefaults externalDefaults];
-  v42 = [v41 keyboardDefaults];
+  keyboardDefaults = [v41 keyboardDefaults];
 
-  [v42 migrateIfNeeded];
+  [keyboardDefaults migrateIfNeeded];
   v43 = BKLogKeyboard();
   if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v42;
+    *(&buf + 4) = keyboardDefaults;
     _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "external defaults: %@", &buf, 0xCu);
   }
 
@@ -2428,12 +2428,12 @@ LABEL_15:
   v50[1] = 3221225472;
   v50[2] = sub_1000488C0;
   v50[3] = &unk_1000FD128;
-  v46 = v42;
+  v46 = keyboardDefaults;
   v51 = v46;
-  v52 = self;
+  selfCopy = self;
   v47 = [v46 observeDefault:v45 onQueue:&_dispatch_main_q withBlock:v50];
 
-  objc_storeStrong(&self->_server, a4);
+  objc_storeStrong(&self->_server, server);
   [(BKHIDDomainServiceServer *)self->_server activate];
   objc_initWeak(&buf, self);
   objc_copyWeak(&v49, &buf);
@@ -2442,25 +2442,25 @@ LABEL_15:
   objc_destroyWeak(&buf);
 }
 
-- (BKKeyboardHIDEventProcessor)initWithContext:(id)a3 server:(id)a4
+- (BKKeyboardHIDEventProcessor)initWithContext:(id)context server:(id)server
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  serverCopy = server;
   v11.receiver = self;
   v11.super_class = BKKeyboardHIDEventProcessor;
   v8 = [(BKKeyboardHIDEventProcessor *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(BKKeyboardHIDEventProcessor *)v8 _commonInitWithContext:v6 server:v7];
+    [(BKKeyboardHIDEventProcessor *)v8 _commonInitWithContext:contextCopy server:serverCopy];
   }
 
   return v9;
 }
 
-- (BKKeyboardHIDEventProcessor)initWithContext:(id)a3
+- (BKKeyboardHIDEventProcessor)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = BKKeyboardHIDEventProcessor;
   v5 = [(BKKeyboardHIDEventProcessor *)&v11 init];
@@ -2471,7 +2471,7 @@ LABEL_15:
     v8 = BKLogKeyboard();
     v9 = [v6 initWithDelegate:v5 incomingServiceConnectionHandler:0 serverTarget:v5 serverProtocol:&OBJC_PROTOCOL___BKSKeyboardServiceClientToServerIPC clientProtocol:&OBJC_PROTOCOL___BKSKeyboardServiceServerToClientIPC serviceName:v7 queue:0 log:v8 entitlement:0];
 
-    [(BKKeyboardHIDEventProcessor *)v5 _commonInitWithContext:v4 server:v9];
+    [(BKKeyboardHIDEventProcessor *)v5 _commonInitWithContext:contextCopy server:v9];
   }
 
   return v5;

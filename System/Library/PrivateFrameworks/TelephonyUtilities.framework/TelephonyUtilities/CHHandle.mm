@@ -1,21 +1,21 @@
 @interface CHHandle
-+ (CHHandle)handleWithTUHandle:(id)a3;
-+ (id)normalizedHandleWithTUHandle:(id)a3 andISOCountryCode:(id)a4;
-+ (int64_t)handleTypeForTUHandle:(id)a3;
++ (CHHandle)handleWithTUHandle:(id)handle;
++ (id)normalizedHandleWithTUHandle:(id)handle andISOCountryCode:(id)code;
++ (int64_t)handleTypeForTUHandle:(id)handle;
 - (TUHandle)tuHandle;
 - (int64_t)tuHandleType;
 @end
 
 @implementation CHHandle
 
-+ (int64_t)handleTypeForTUHandle:(id)a3
++ (int64_t)handleTypeForTUHandle:(id)handle
 {
-  if (!a3)
+  if (!handle)
   {
     return 1;
   }
 
-  result = [a3 type];
+  result = [handle type];
   if (result == 3)
   {
     v4 = 3;
@@ -34,16 +34,16 @@
   return result;
 }
 
-+ (CHHandle)handleWithTUHandle:(id)a3
++ (CHHandle)handleWithTUHandle:(id)handle
 {
-  if (a3)
+  if (handle)
   {
-    v4 = a3;
-    v5 = [a1 handleTypeForTUHandle:v4];
+    handleCopy = handle;
+    v5 = [self handleTypeForTUHandle:handleCopy];
     v6 = [CHHandle alloc];
-    v7 = [v4 value];
+    value = [handleCopy value];
 
-    v8 = [v6 initWithType:v5 value:v7];
+    v8 = [v6 initWithType:v5 value:value];
   }
 
   else
@@ -54,25 +54,25 @@
   return v8;
 }
 
-+ (id)normalizedHandleWithTUHandle:(id)a3 andISOCountryCode:(id)a4
++ (id)normalizedHandleWithTUHandle:(id)handle andISOCountryCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  handleCopy = handle;
+  codeCopy = code;
+  if (handleCopy)
   {
-    v7 = [CHHandle handleTypeForTUHandle:v5];
+    v7 = [CHHandle handleTypeForTUHandle:handleCopy];
     v8 = v7;
-    if (v6 || v7 != 2)
+    if (codeCopy || v7 != 2)
     {
-      v10 = [v5 value];
-      v11 = [CHHandle normalizedHandleWithType:v8 value:v10 isoCountryCode:v6];
+      value = [handleCopy value];
+      v11 = [CHHandle normalizedHandleWithType:v8 value:value isoCountryCode:codeCopy];
     }
 
     else
     {
       v9 = [CHHandle alloc];
-      v10 = [v5 value];
-      v11 = [v9 initWithType:2 value:v10];
+      value = [handleCopy value];
+      v11 = [v9 initWithType:2 value:value];
     }
 
     v12 = v11;
@@ -110,10 +110,10 @@
 - (TUHandle)tuHandle
 {
   v3 = [TUHandle alloc];
-  v4 = [(CHHandle *)self tuHandleType];
-  v5 = [(CHHandle *)self value];
-  v6 = [(CHHandle *)self normalizedValue];
-  v7 = [v3 initWithType:v4 value:v5 normalizedValue:v6];
+  tuHandleType = [(CHHandle *)self tuHandleType];
+  value = [(CHHandle *)self value];
+  normalizedValue = [(CHHandle *)self normalizedValue];
+  v7 = [v3 initWithType:tuHandleType value:value normalizedValue:normalizedValue];
 
   return v7;
 }

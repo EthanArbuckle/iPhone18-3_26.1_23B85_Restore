@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_SetShareParticipantOnCloudComments
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_SetShareParticipantOnCloudComments
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v83 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v7 = MEMORY[0x1E695D5E0];
   v8 = +[PLCloudSharedComment entityName];
   v9 = [v7 fetchRequestWithEntityName:v8];
@@ -32,13 +32,13 @@
   v36[3] = &unk_1E75680D8;
   v36[4] = self;
   v36[5] = &v38;
-  v11 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v6 fetchRequest:v9 pendingParentUnitCount:0 error:&v37 processingBlock:v36];
+  v11 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v9 pendingParentUnitCount:0 error:&v37 processingBlock:v36];
   v12 = v37;
   if (v39[3])
   {
-    v13 = [(PLModelMigrationActionCore *)self analyticsEventManager];
+    analyticsEventManager = [(PLModelMigrationActionCore *)self analyticsEventManager];
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69BFF48] code:46702 userInfo:0];
-    [v13 setPayloadValue:v14 forKey:*MEMORY[0x1E69BF6D8] onEventWithName:*MEMORY[0x1E69BF6D0]];
+    [analyticsEventManager setPayloadValue:v14 forKey:*MEMORY[0x1E69BF6D8] onEventWithName:*MEMORY[0x1E69BF6D0]];
   }
 
   v15 = PLMigrationGetLog();
@@ -46,8 +46,8 @@
 
   if (v16)
   {
-    v17 = [(PLModelMigrationActionCore *)self logger];
-    v18 = v17 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v18 = logger == 0;
 
     if (v18)
     {
@@ -129,10 +129,10 @@
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v31 = v12;
   v32 = v31;
-  if (v11 != 1 && a4)
+  if (v11 != 1 && error)
   {
     v33 = v31;
-    *a4 = v32;
+    *error = v32;
   }
 
   _Block_object_dispose(&v38, 8);

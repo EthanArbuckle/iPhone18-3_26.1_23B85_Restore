@@ -3,11 +3,11 @@
 - (CNRenderingSessionFrameAttributes)initWithTimedMetadataGroup:(AVTimedMetadataGroup *)metadataGroup sessionAttributes:(CNRenderingSessionAttributes *)sessionAttributes;
 - (float)originalFNumber;
 - (float)originalFocusDisparity;
-- (id)_initJustWithPTTimedRenderingMetadata:(id)a3;
-- (id)_initWithPTTimedRenderingMetadata:(id)a3;
-- (id)_initWithTimedData:(id)a3 sessionAttributes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initJustWithPTTimedRenderingMetadata:(id)metadata;
+- (id)_initWithPTTimedRenderingMetadata:(id)metadata;
+- (id)_initWithTimedData:(id)data sessionAttributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CNRenderingSessionFrameAttributes
@@ -32,8 +32,8 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(AVTimedMetadataGroup *)metadataGroup items];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    items = [(AVTimedMetadataGroup *)metadataGroup items];
+    v8 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -44,7 +44,7 @@
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(items);
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
@@ -53,33 +53,33 @@
 
           if (v14)
           {
-            v16 = [v12 value];
+            value = [v12 value];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
             if (isKindOfClass)
             {
-              v18 = [v12 value];
-              self = [(CNRenderingSessionFrameAttributes *)self _initWithTimedData:v18 sessionAttributes:v6];
-              v15 = self;
+              value2 = [v12 value];
+              self = [(CNRenderingSessionFrameAttributes *)self _initWithTimedData:value2 sessionAttributes:v6];
+              selfCopy = self;
             }
 
             else
             {
-              v18 = _CNLogSystem();
-              if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+              value2 = _CNLogSystem();
+              if (os_log_type_enabled(value2, OS_LOG_TYPE_ERROR))
               {
-                [(CNRenderingSessionFrameAttributes *)0x284A05320 initWithTimedMetadataGroup:v12 sessionAttributes:v18];
+                [(CNRenderingSessionFrameAttributes *)0x284A05320 initWithTimedMetadataGroup:v12 sessionAttributes:value2];
               }
 
-              v15 = 0;
+              selfCopy = 0;
             }
 
             goto LABEL_18;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [items countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v9)
         {
           continue;
@@ -89,30 +89,30 @@
       }
     }
 
-    v15 = 0;
+    selfCopy = 0;
 LABEL_18:
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
   v19 = *MEMORY[0x277D85DE8];
-  return v15;
+  return selfCopy;
 }
 
 - (float)originalFocusDisparity
 {
-  v3 = [(CNRenderingSessionFrameAttributes *)self majorVersion];
-  if (v3 == 2)
+  majorVersion = [(CNRenderingSessionFrameAttributes *)self majorVersion];
+  if (majorVersion == 2)
   {
     internalMetadata = self->_internalMetadata;
 
     [(PTTimedRenderingMetadata *)internalMetadata focusDisparity];
   }
 
-  else if (v3 == 1)
+  else if (majorVersion == 1)
   {
     v4 = self->_internalMetadata;
 
@@ -129,15 +129,15 @@ LABEL_18:
 
 - (float)originalFNumber
 {
-  v3 = [(CNRenderingSessionFrameAttributes *)self majorVersion];
-  if (v3 == 2)
+  majorVersion = [(CNRenderingSessionFrameAttributes *)self majorVersion];
+  if (majorVersion == 2)
   {
     internalMetadata = self->_internalMetadata;
 
     [(PTTimedRenderingMetadata *)internalMetadata fNumber];
   }
 
-  else if (v3 == 1)
+  else if (majorVersion == 1)
   {
     v4 = self->_internalMetadata;
 
@@ -152,14 +152,14 @@ LABEL_18:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(CNRenderingSessionFrameAttributes *)self mutableCopyWithZone:a3];
+  v3 = [(CNRenderingSessionFrameAttributes *)self mutableCopyWithZone:zone];
 
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) _initJustWithPTTimedRenderingMetadata:self->_internalMetadata];
   [(CNRenderingSessionFrameAttributes *)self focusDisparity];
@@ -169,16 +169,16 @@ LABEL_18:
   return v4;
 }
 
-- (id)_initWithPTTimedRenderingMetadata:(id)a3
+- (id)_initWithPTTimedRenderingMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v11.receiver = self;
   v11.super_class = CNRenderingSessionFrameAttributes;
   v6 = [(CNRenderingSessionFrameAttributes *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalMetadata, a3);
+    objc_storeStrong(&v6->_internalMetadata, metadata);
     [(CNRenderingSessionFrameAttributes *)v7 originalFocusDisparity];
     v7->_focusDisparity = v8;
     [(CNRenderingSessionFrameAttributes *)v7 originalFNumber];
@@ -188,34 +188,34 @@ LABEL_18:
   return v7;
 }
 
-- (id)_initJustWithPTTimedRenderingMetadata:(id)a3
+- (id)_initJustWithPTTimedRenderingMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v9.receiver = self;
   v9.super_class = CNRenderingSessionFrameAttributes;
   v6 = [(CNRenderingSessionFrameAttributes *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_internalMetadata, a3);
+    objc_storeStrong(&v6->_internalMetadata, metadata);
   }
 
   return v7;
 }
 
-- (id)_initWithTimedData:(id)a3 sessionAttributes:(id)a4
+- (id)_initWithTimedData:(id)data sessionAttributes:(id)attributes
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = MEMORY[0x277D3E8F8];
-  v8 = a4;
-  v9 = [v8 majorVersion];
-  v10 = [v8 minorVersion];
+  attributesCopy = attributes;
+  majorVersion = [attributesCopy majorVersion];
+  minorVersion = [attributesCopy minorVersion];
 
-  v11 = [v7 objectFromData:v6 withMajorVersion:v9 minorVersion:v10];
+  v11 = [v7 objectFromData:dataCopy withMajorVersion:majorVersion minorVersion:minorVersion];
   if (v11)
   {
     self = [(CNRenderingSessionFrameAttributes *)self _initWithPTTimedRenderingMetadata:v11];
-    v12 = self;
+    selfCopy = self;
   }
 
   else
@@ -223,13 +223,13 @@ LABEL_18:
     v13 = _CNLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [CNRenderingSessionFrameAttributes _initWithTimedData:v6 sessionAttributes:v13];
+      [CNRenderingSessionFrameAttributes _initWithTimedData:dataCopy sessionAttributes:v13];
     }
 
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (void)initWithTimedMetadataGroup:(NSObject *)a3 sessionAttributes:.cold.1(uint64_t a1, void *a2, NSObject *a3)

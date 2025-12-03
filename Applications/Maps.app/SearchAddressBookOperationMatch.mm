@@ -1,8 +1,8 @@
 @interface SearchAddressBookOperationMatch
 - (AutocompleteMatchInfo)autocompleteMatchInfo;
 - (SearchAddressBookOperationMatch)init;
-- (SearchAddressBookOperationMatch)initWithContact:(id)a3 context:(id)a4;
-- (int64_t)compare:(id)a3;
+- (SearchAddressBookOperationMatch)initWithContact:(id)contact context:(id)context;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation SearchAddressBookOperationMatch
@@ -31,21 +31,21 @@
     [v4 setPeopleSuggesterRank:?];
     [(SearchAddressBookOperationMatch *)self fractionOfMatch];
     [v4 setFractionOfMatch:?];
-    v5 = [(AutocompleteQueryStringMatch *)self->_stringMatch prefixLastTokenMatchCover];
-    [v4 setPrefixLastTokenMatchCover:v5];
+    prefixLastTokenMatchCover = [(AutocompleteQueryStringMatch *)self->_stringMatch prefixLastTokenMatchCover];
+    [v4 setPrefixLastTokenMatchCover:prefixLastTokenMatchCover];
 
-    v6 = [(AutocompleteQueryStringMatch *)self->_stringMatch prefixMatchCover];
-    [v4 setPrefixMatchCover:v6];
+    prefixMatchCover = [(AutocompleteQueryStringMatch *)self->_stringMatch prefixMatchCover];
+    [v4 setPrefixMatchCover:prefixMatchCover];
 
-    v7 = [(AutocompleteQueryStringMatch *)self->_stringMatch prefixMatchPosition];
-    [v4 setPrefixMatchPosition:v7];
+    prefixMatchPosition = [(AutocompleteQueryStringMatch *)self->_stringMatch prefixMatchPosition];
+    [v4 setPrefixMatchPosition:prefixMatchPosition];
 
     [v4 setPrefixMatchesWordBoundary:{-[AutocompleteQueryStringMatch prefixMatchesWordBoundary](self->_stringMatch, "prefixMatchesWordBoundary")}];
-    v8 = [(AutocompleteQueryStringMatch *)self->_stringMatch firstPrefixToken];
-    [v4 setFirstPrefixToken:v8];
+    firstPrefixToken = [(AutocompleteQueryStringMatch *)self->_stringMatch firstPrefixToken];
+    [v4 setFirstPrefixToken:firstPrefixToken];
 
-    v9 = [(AutocompleteQueryStringMatch *)self->_stringMatch secondPrefixToken];
-    [v4 setSecondPrefixToken:v9];
+    secondPrefixToken = [(AutocompleteQueryStringMatch *)self->_stringMatch secondPrefixToken];
+    [v4 setSecondPrefixToken:secondPrefixToken];
   }
 
   else
@@ -56,17 +56,17 @@
   return v4;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   [(SearchAddressBookOperationMatch *)self peopleSuggesterRank];
   v6 = v5;
-  [v4 peopleSuggesterRank];
+  [compareCopy peopleSuggesterRank];
   if (v6 == v7)
   {
     [(SearchAddressBookOperationMatch *)self fractionOfMatch];
     v11 = [NSNumber numberWithDouble:?];
-    [v4 fractionOfMatch];
+    [compareCopy fractionOfMatch];
     v12 = [NSNumber numberWithDouble:?];
     v10 = [v12 compare:v11];
   }
@@ -103,21 +103,21 @@
   return v10;
 }
 
-- (SearchAddressBookOperationMatch)initWithContact:(id)a3 context:(id)a4
+- (SearchAddressBookOperationMatch)initWithContact:(id)contact context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  contextCopy = context;
   v57.receiver = self;
   v57.super_class = SearchAddressBookOperationMatch;
   v9 = [(SearchAddressBookOperationMatch *)&v57 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contact, a3);
+    objc_storeStrong(&v9->_contact, contact);
     v10->_peopleSuggesterRank = 0.0;
-    v10->_isCJK = [v8 isCJK];
-    v11 = [v7 postalAddresses];
-    v10->_hasAddress = [v11 count] != 0;
+    v10->_isCJK = [contextCopy isCJK];
+    postalAddresses = [contactCopy postalAddresses];
+    v10->_hasAddress = [postalAddresses count] != 0;
 
     if (v10->_hasAddress)
     {
@@ -131,28 +131,28 @@
       v51 = v12;
       v56 = v51;
       v14 = objc_retainBlock(v55);
-      v15 = [v7 namePrefix];
-      v16 = (v14[2])(v14, v15);
+      namePrefix = [contactCopy namePrefix];
+      v16 = (v14[2])(v14, namePrefix);
       [v13 setObject:v16 forKeyedSubscript:@"namePrefix"];
 
-      v17 = [v7 nickname];
-      v18 = (v14[2])(v14, v17);
+      nickname = [contactCopy nickname];
+      v18 = (v14[2])(v14, nickname);
       [v13 setObject:v18 forKeyedSubscript:@"nickname"];
 
-      v19 = [v7 givenName];
-      v20 = (v14[2])(v14, v19);
+      givenName = [contactCopy givenName];
+      v20 = (v14[2])(v14, givenName);
       [v13 setObject:v20 forKeyedSubscript:@"givenName"];
 
-      v21 = [v7 middleName];
-      v22 = (v14[2])(v14, v21);
+      middleName = [contactCopy middleName];
+      v22 = (v14[2])(v14, middleName);
       [v13 setObject:v22 forKeyedSubscript:@"middleName"];
 
-      v23 = [v7 familyName];
-      v24 = (v14[2])(v14, v23);
+      familyName = [contactCopy familyName];
+      v24 = (v14[2])(v14, familyName);
       [v13 setObject:v24 forKeyedSubscript:@"familyName"];
 
-      v25 = [v7 nameSuffix];
-      v26 = (v14[2])(v14, v25);
+      nameSuffix = [contactCopy nameSuffix];
+      v26 = (v14[2])(v14, nameSuffix);
       [v13 setObject:v26 forKeyedSubscript:@"nameSuffix"];
 
       v52[0] = _NSConcreteStackBlock;
@@ -170,11 +170,11 @@
       (v28[2])(v28, @"middleName");
       (v28[2])(v28, @"familyName");
       (v28[2])(v28, @"nameSuffix");
-      v29 = [CNContactFormatter stringFromContact:v7 style:0];
+      v29 = [CNContactFormatter stringFromContact:contactCopy style:0];
       if ([v27 count])
       {
-        v30 = [v8 query];
-        v31 = [v30 matchesInStringTerms:v27 displayString:v29];
+        query = [contextCopy query];
+        v31 = [query matchesInStringTerms:v27 displayString:v29];
         stringMatch = v10->_stringMatch;
         v10->_stringMatch = v31;
 
@@ -192,8 +192,8 @@
           (v28[2])(v28, @"givenName");
           (v28[2])(v28, @"middleName");
           (v28[2])(v28, @"nameSuffix");
-          v39 = [v8 query];
-          v40 = [v39 matchesInStringTerms:v27 displayString:v29];
+          query2 = [contextCopy query];
+          v40 = [query2 matchesInStringTerms:v27 displayString:v29];
           v41 = v10->_stringMatch;
           v10->_stringMatch = v40;
 
@@ -202,7 +202,7 @@
           if (!v42 && v10->_isCJK)
           {
             v43 = [v27 componentsJoinedByString:&stru_1016631F0];
-            [v8 query];
+            [contextCopy query];
             v45 = v44 = v29;
             v46 = [v45 matchesInString:v43];
             v47 = v10->_stringMatch;
@@ -216,12 +216,12 @@
 
       else
       {
-        v33 = [v7 organizationName];
-        (v14[2])(v14, v33);
+        organizationName = [contactCopy organizationName];
+        (v14[2])(v14, organizationName);
         v35 = v34 = v29;
 
-        v36 = [v8 query];
-        v37 = [v36 matchesInStringTerms:v35 displayString:v34];
+        query3 = [contextCopy query];
+        v37 = [query3 matchesInStringTerms:v35 displayString:v34];
         v38 = v10->_stringMatch;
         v10->_stringMatch = v37;
 

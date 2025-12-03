@@ -1,9 +1,9 @@
 @interface CHSWidgetDescriptorsBox
-- (CHSWidgetDescriptorsBox)initWithCoder:(id)a3;
-- (CHSWidgetDescriptorsBox)initWithDescriptors:(id)a3;
+- (CHSWidgetDescriptorsBox)initWithCoder:(id)coder;
+- (CHSWidgetDescriptorsBox)initWithDescriptors:(id)descriptors;
 - (NSSet)descriptors;
 - (void)_performValidation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSWidgetDescriptorsBox
@@ -165,22 +165,22 @@ void __45__CHSWidgetDescriptorsBox__performValidation__block_invoke(uint64_t a1,
 - (NSSet)descriptors
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [(NSDictionary *)self->_descriptorsByExtensionIdentifier allValues];
-  v4 = [v3 bs_flatten];
-  v5 = [v2 setWithArray:v4];
+  allValues = [(NSDictionary *)self->_descriptorsByExtensionIdentifier allValues];
+  bs_flatten = [allValues bs_flatten];
+  v5 = [v2 setWithArray:bs_flatten];
 
   return v5;
 }
 
-- (CHSWidgetDescriptorsBox)initWithDescriptors:(id)a3
+- (CHSWidgetDescriptorsBox)initWithDescriptors:(id)descriptors
 {
-  v4 = a3;
+  descriptorsCopy = descriptors;
   v9.receiver = self;
   v9.super_class = CHSWidgetDescriptorsBox;
   v5 = [(CHSWidgetDescriptorsBox *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [descriptorsCopy copy];
     descriptorsByExtensionIdentifier = v5->_descriptorsByExtensionIdentifier;
     v5->_descriptorsByExtensionIdentifier = v6;
 
@@ -190,37 +190,37 @@ void __45__CHSWidgetDescriptorsBox__performValidation__block_invoke(uint64_t a1,
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(CHSWidgetDescriptorsBox *)self _performValidation];
-  [v4 encodeObject:self->_descriptorsByExtensionIdentifier forKey:@"descriptors"];
+  [coderCopy encodeObject:self->_descriptorsByExtensionIdentifier forKey:@"descriptors"];
 }
 
-- (CHSWidgetDescriptorsBox)initWithCoder:(id)a3
+- (CHSWidgetDescriptorsBox)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v5 setWithObjects:{v6, v7, v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"descriptors"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"descriptors"];
 
   v12 = __41__CHSWidgetDescriptorsBox_initWithCoder___block_invoke(v11, v10);
 
   if (v12)
   {
     self = [(CHSWidgetDescriptorsBox *)self initWithDescriptors:v12];
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 id __41__CHSWidgetDescriptorsBox_initWithCoder___block_invoke(uint64_t a1, void *a2)

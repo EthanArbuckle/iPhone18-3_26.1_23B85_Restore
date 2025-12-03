@@ -1,15 +1,15 @@
 @interface PXAppleMusicCuration
-+ (id)_parseAppleMusicCurationInfoFromJSONDictionary:(id)a3;
-+ (id)curationFromDictionary:(id)a3 photoLibrary:(id)a4;
++ (id)_parseAppleMusicCurationInfoFromJSONDictionary:(id)dictionary;
++ (id)curationFromDictionary:(id)dictionary photoLibrary:(id)library;
 - (PXAppleMusicCuration)init;
-- (PXAppleMusicCuration)initWithBestMusicSuggestions:(id)a3 musicForYou:(id)a4 musicForLocation:(id)a5 musicForTime:(id)a6 musicForPerformer:(id)a7 musicCurationInfo:(id)a8;
+- (PXAppleMusicCuration)initWithBestMusicSuggestions:(id)suggestions musicForYou:(id)you musicForLocation:(id)location musicForTime:(id)time musicForPerformer:(id)performer musicCurationInfo:(id)info;
 @end
 
 @implementation PXAppleMusicCuration
 
-+ (id)_parseAppleMusicCurationInfoFromJSONDictionary:(id)a3
++ (id)_parseAppleMusicCurationInfoFromJSONDictionary:(id)dictionary
 {
-  v3 = [a3 objectForKeyedSubscript:@"performerNames"];
+  v3 = [dictionary objectForKeyedSubscript:@"performerNames"];
   v4 = v3;
   v5 = MEMORY[0x1E695E0F0];
   if (v3)
@@ -248,28 +248,28 @@ id __82__PXAppleMusicCuration_Creation__parseAppleMusicAssetsFromJSONArray_photo
   return v8;
 }
 
-+ (id)curationFromDictionary:(id)a3 photoLibrary:(id)a4
++ (id)curationFromDictionary:(id)dictionary photoLibrary:(id)library
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKeyedSubscript:@"bestMusicSuggestions"];
-  v9 = [a1 parseAppleMusicAssetsFromJSONArray:v8 photoLibrary:v6];
+  libraryCopy = library;
+  dictionaryCopy = dictionary;
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"bestMusicSuggestions"];
+  v9 = [self parseAppleMusicAssetsFromJSONArray:v8 photoLibrary:libraryCopy];
 
-  v10 = [v7 objectForKeyedSubscript:@"musicForYou"];
-  v11 = [a1 parseAppleMusicAssetsFromJSONArray:v10 photoLibrary:v6];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"musicForYou"];
+  v11 = [self parseAppleMusicAssetsFromJSONArray:v10 photoLibrary:libraryCopy];
 
-  v12 = [v7 objectForKeyedSubscript:@"musicForLocation"];
-  v13 = [a1 parseAppleMusicAssetsFromJSONArray:v12 photoLibrary:v6];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"musicForLocation"];
+  v13 = [self parseAppleMusicAssetsFromJSONArray:v12 photoLibrary:libraryCopy];
 
-  v14 = [v7 objectForKeyedSubscript:@"musicForTime"];
-  v15 = [a1 parseAppleMusicAssetsFromJSONArray:v14 photoLibrary:v6];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"musicForTime"];
+  v15 = [self parseAppleMusicAssetsFromJSONArray:v14 photoLibrary:libraryCopy];
 
-  v16 = [v7 objectForKeyedSubscript:@"musicForPerformer"];
-  v17 = [a1 parseAppleMusicAssetsFromJSONArray:v16 photoLibrary:v6];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"musicForPerformer"];
+  v17 = [self parseAppleMusicAssetsFromJSONArray:v16 photoLibrary:libraryCopy];
 
-  v18 = [v7 objectForKeyedSubscript:@"musicCurationInfo"];
+  v18 = [dictionaryCopy objectForKeyedSubscript:@"musicCurationInfo"];
 
-  v19 = [a1 _parseAppleMusicCurationInfoFromJSONDictionary:v18];
+  v19 = [self _parseAppleMusicCurationInfoFromJSONDictionary:v18];
 
   v20 = [[PXAppleMusicCuration alloc] initWithBestMusicSuggestions:v9 musicForYou:v11 musicForLocation:v13 musicForTime:v15 musicForPerformer:v17 musicCurationInfo:v19];
 
@@ -278,32 +278,32 @@ id __82__PXAppleMusicCuration_Creation__parseAppleMusicAssetsFromJSONArray_photo
 
 - (PXAppleMusicCuration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAppleMusicCuration.m" lineNumber:59 description:{@"%s is not available as initializer", "-[PXAppleMusicCuration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicCuration.m" lineNumber:59 description:{@"%s is not available as initializer", "-[PXAppleMusicCuration init]"}];
 
   abort();
 }
 
-- (PXAppleMusicCuration)initWithBestMusicSuggestions:(id)a3 musicForYou:(id)a4 musicForLocation:(id)a5 musicForTime:(id)a6 musicForPerformer:(id)a7 musicCurationInfo:(id)a8
+- (PXAppleMusicCuration)initWithBestMusicSuggestions:(id)suggestions musicForYou:(id)you musicForLocation:(id)location musicForTime:(id)time musicForPerformer:(id)performer musicCurationInfo:(id)info
 {
-  v23 = a3;
-  v22 = a4;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  suggestionsCopy = suggestions;
+  youCopy = you;
+  locationCopy = location;
+  timeCopy = time;
+  performerCopy = performer;
+  infoCopy = info;
   v24.receiver = self;
   v24.super_class = PXAppleMusicCuration;
   v18 = [(PXAppleMusicCuration *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_bestMusicSuggestions, a3);
-    objc_storeStrong(&v19->_musicForYou, a4);
-    objc_storeStrong(&v19->_musicForLocation, a5);
-    objc_storeStrong(&v19->_musicForTime, a6);
-    objc_storeStrong(&v19->_musicForPerformer, a7);
-    objc_storeStrong(&v19->_musicCurationInfo, a8);
+    objc_storeStrong(&v18->_bestMusicSuggestions, suggestions);
+    objc_storeStrong(&v19->_musicForYou, you);
+    objc_storeStrong(&v19->_musicForLocation, location);
+    objc_storeStrong(&v19->_musicForTime, time);
+    objc_storeStrong(&v19->_musicForPerformer, performer);
+    objc_storeStrong(&v19->_musicCurationInfo, info);
   }
 
   return v19;

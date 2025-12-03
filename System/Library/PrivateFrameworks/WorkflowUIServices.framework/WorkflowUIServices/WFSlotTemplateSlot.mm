@@ -1,36 +1,36 @@
 @interface WFSlotTemplateSlot
-+ (id)addingSlotWithIdentifier:(id)a3 imageScaleFactor:(double)a4;
-+ (id)addingSlotWithKey:(id)a3;
-+ (id)slotWithLocalizedName:(id)a3 localizedPlaceholder:(id)a4 key:(id)a5;
-+ (id)slotWithLocalizedName:(id)a3 localizedPlaceholder:(id)a4 languageCode:(id)a5 key:(id)a6;
-+ (id)slotWithLocalizedName:(id)a3 localizedPlaceholder:(id)a4 localizedAttributedPlaceholder:(id)a5 key:(id)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)addingSlotWithIdentifier:(id)identifier imageScaleFactor:(double)factor;
++ (id)addingSlotWithKey:(id)key;
++ (id)slotWithLocalizedName:(id)name localizedPlaceholder:(id)placeholder key:(id)key;
++ (id)slotWithLocalizedName:(id)name localizedPlaceholder:(id)placeholder languageCode:(id)code key:(id)key;
++ (id)slotWithLocalizedName:(id)name localizedPlaceholder:(id)placeholder localizedAttributedPlaceholder:(id)attributedPlaceholder key:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isPopulated;
-- (WFSlotTemplateSlot)initWithLocalizedName:(id)a3 localizedPlaceholder:(id)a4 localizedAttributedPlaceholder:(id)a5 languageCode:(id)a6 identifier:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (WFSlotTemplateSlot)initWithLocalizedName:(id)name localizedPlaceholder:(id)placeholder localizedAttributedPlaceholder:(id)attributedPlaceholder languageCode:(id)code identifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)populateWithAttributedString:(id)a3;
-- (void)populateWithAttributedVariableString:(id)a3 attachmentName:(id)a4;
-- (void)populateWithIcon:(id)a3 string:(id)a4;
-- (void)populateWithSlotTemplateToken:(id)a3 attachmentName:(id)a4;
-- (void)populateWithString:(id)a3;
-- (void)setContentAttributedString:(id)a3;
+- (void)populateWithAttributedString:(id)string;
+- (void)populateWithAttributedVariableString:(id)string attachmentName:(id)name;
+- (void)populateWithIcon:(id)icon string:(id)string;
+- (void)populateWithSlotTemplateToken:(id)token attachmentName:(id)name;
+- (void)populateWithString:(id)string;
+- (void)setContentAttributedString:(id)string;
 @end
 
 @implementation WFSlotTemplateSlot
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(WFSlotTemplateSlot *)self localizedName];
-  v6 = [(WFSlotTemplateSlot *)self localizedPlaceholder];
-  v7 = [(WFSlotTemplateSlot *)self localizedAttributedPlaceholder];
-  v8 = [(WFSlotTemplateSlot *)self languageCode];
-  v9 = [(WFSlotTemplateSlot *)self identifier];
-  v10 = [v4 initWithLocalizedName:v5 localizedPlaceholder:v6 localizedAttributedPlaceholder:v7 languageCode:v8 identifier:v9];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  localizedName = [(WFSlotTemplateSlot *)self localizedName];
+  localizedPlaceholder = [(WFSlotTemplateSlot *)self localizedPlaceholder];
+  localizedAttributedPlaceholder = [(WFSlotTemplateSlot *)self localizedAttributedPlaceholder];
+  languageCode = [(WFSlotTemplateSlot *)self languageCode];
+  identifier = [(WFSlotTemplateSlot *)self identifier];
+  v10 = [v4 initWithLocalizedName:localizedName localizedPlaceholder:localizedPlaceholder localizedAttributedPlaceholder:localizedAttributedPlaceholder languageCode:languageCode identifier:identifier];
 
-  v11 = [(WFSlotTemplateSlot *)self contentAttributedString];
-  [v10 setContentAttributedString:v11];
+  contentAttributedString = [(WFSlotTemplateSlot *)self contentAttributedString];
+  [v10 setContentAttributedString:contentAttributedString];
 
   [v10 setEnabled:{-[WFSlotTemplateSlot isEnabled](self, "isEnabled")}];
   [v10 setInvalid:{-[WFSlotTemplateSlot isInvalid](self, "isInvalid")}];
@@ -41,10 +41,10 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
     goto LABEL_10;
@@ -57,53 +57,53 @@
     goto LABEL_10;
   }
 
-  v7 = [(WFSlotTemplateSlot *)self identifier];
-  v8 = [(WFSlotTemplateSlot *)v6 identifier];
-  if ([v7 isEqual:v8])
+  identifier = [(WFSlotTemplateSlot *)self identifier];
+  identifier2 = [(WFSlotTemplateSlot *)equalCopy identifier];
+  if ([identifier isEqual:identifier2])
   {
-    v9 = [(WFSlotTemplateSlot *)self isEnabled];
-    if (v9 == [(WFSlotTemplateSlot *)v6 isEnabled])
+    isEnabled = [(WFSlotTemplateSlot *)self isEnabled];
+    if (isEnabled == [(WFSlotTemplateSlot *)equalCopy isEnabled])
     {
-      v10 = [(WFSlotTemplateSlot *)self isInvalid];
-      if (v10 == [(WFSlotTemplateSlot *)v6 isInvalid])
+      isInvalid = [(WFSlotTemplateSlot *)self isInvalid];
+      if (isInvalid == [(WFSlotTemplateSlot *)equalCopy isInvalid])
       {
-        v13 = [(WFSlotTemplateSlot *)self localizedName];
-        v14 = [(WFSlotTemplateSlot *)v6 localizedName];
-        if (v13 != v14)
+        localizedName = [(WFSlotTemplateSlot *)self localizedName];
+        localizedName2 = [(WFSlotTemplateSlot *)equalCopy localizedName];
+        if (localizedName != localizedName2)
         {
-          v15 = [(WFSlotTemplateSlot *)self localizedName];
-          v3 = [(WFSlotTemplateSlot *)v6 localizedName];
-          if (![v15 isEqualToString:v3])
+          localizedName3 = [(WFSlotTemplateSlot *)self localizedName];
+          localizedName4 = [(WFSlotTemplateSlot *)equalCopy localizedName];
+          if (![localizedName3 isEqualToString:localizedName4])
           {
             LOBYTE(v11) = 0;
             goto LABEL_42;
           }
 
-          v49 = v3;
-          v50 = v15;
+          v49 = localizedName4;
+          v50 = localizedName3;
         }
 
-        v16 = [(WFSlotTemplateSlot *)self localizedPlaceholder];
-        v17 = [(WFSlotTemplateSlot *)v6 localizedPlaceholder];
-        v18 = v17;
-        if (v16 == v17)
+        localizedPlaceholder = [(WFSlotTemplateSlot *)self localizedPlaceholder];
+        localizedPlaceholder2 = [(WFSlotTemplateSlot *)equalCopy localizedPlaceholder];
+        v18 = localizedPlaceholder2;
+        if (localizedPlaceholder == localizedPlaceholder2)
         {
-          v47 = v17;
+          v47 = localizedPlaceholder2;
         }
 
         else
         {
-          v3 = [(WFSlotTemplateSlot *)self localizedPlaceholder];
-          v4 = [(WFSlotTemplateSlot *)v6 localizedPlaceholder];
-          if (![v3 isEqualToString:v4])
+          localizedName4 = [(WFSlotTemplateSlot *)self localizedPlaceholder];
+          localizedPlaceholder3 = [(WFSlotTemplateSlot *)equalCopy localizedPlaceholder];
+          if (![localizedName4 isEqualToString:localizedPlaceholder3])
           {
             LOBYTE(v11) = 0;
 LABEL_40:
 
 LABEL_41:
-            v3 = v49;
-            v15 = v50;
-            if (v13 == v14)
+            localizedName4 = v49;
+            localizedName3 = v50;
+            if (localizedName == localizedName2)
             {
 LABEL_43:
 
@@ -118,39 +118,39 @@ LABEL_42:
           v47 = v18;
         }
 
-        v19 = [(WFSlotTemplateSlot *)self localizedAttributedPlaceholder];
-        v20 = [(WFSlotTemplateSlot *)v6 localizedAttributedPlaceholder];
-        v48 = v19;
-        v21 = v19 == v20;
-        v22 = v20;
-        v46 = v13;
+        localizedAttributedPlaceholder = [(WFSlotTemplateSlot *)self localizedAttributedPlaceholder];
+        localizedAttributedPlaceholder2 = [(WFSlotTemplateSlot *)equalCopy localizedAttributedPlaceholder];
+        v48 = localizedAttributedPlaceholder;
+        v21 = localizedAttributedPlaceholder == localizedAttributedPlaceholder2;
+        v22 = localizedAttributedPlaceholder2;
+        v46 = localizedName;
         if (v21)
         {
-          v44 = v3;
-          v45 = v16;
+          v44 = localizedName4;
+          v45 = localizedPlaceholder;
         }
 
         else
         {
-          v38 = v14;
-          v23 = v20;
-          v42 = [(WFSlotTemplateSlot *)self localizedAttributedPlaceholder];
-          v24 = [v42 string];
-          v40 = [(WFSlotTemplateSlot *)v6 localizedAttributedPlaceholder];
-          [v40 string];
-          v39 = v41 = v24;
-          if (![v24 isEqualToString:?])
+          v38 = localizedName2;
+          v23 = localizedAttributedPlaceholder2;
+          localizedAttributedPlaceholder3 = [(WFSlotTemplateSlot *)self localizedAttributedPlaceholder];
+          string = [localizedAttributedPlaceholder3 string];
+          localizedAttributedPlaceholder4 = [(WFSlotTemplateSlot *)equalCopy localizedAttributedPlaceholder];
+          [localizedAttributedPlaceholder4 string];
+          v39 = v41 = string;
+          if (![string isEqualToString:?])
           {
             LOBYTE(v11) = 0;
             v22 = v23;
             v30 = v48;
-            v14 = v38;
+            localizedName2 = v38;
 LABEL_38:
 
 LABEL_39:
-            v13 = v46;
+            localizedName = v46;
             v18 = v47;
-            if (v16 == v47)
+            if (localizedPlaceholder == v47)
             {
               goto LABEL_41;
             }
@@ -158,40 +158,40 @@ LABEL_39:
             goto LABEL_40;
           }
 
-          v44 = v3;
-          v45 = v16;
+          v44 = localizedName4;
+          v45 = localizedPlaceholder;
           v22 = v23;
-          v14 = v38;
+          localizedName2 = v38;
         }
 
-        v25 = [(WFSlotTemplateSlot *)self contentAttributedString];
-        v26 = [(WFSlotTemplateSlot *)v6 contentAttributedString];
-        v27 = v26;
-        v43 = v4;
-        if (v25 != v26)
+        contentAttributedString = [(WFSlotTemplateSlot *)self contentAttributedString];
+        contentAttributedString2 = [(WFSlotTemplateSlot *)equalCopy contentAttributedString];
+        v27 = contentAttributedString2;
+        v43 = localizedPlaceholder3;
+        if (contentAttributedString != contentAttributedString2)
         {
-          v36 = v26;
-          v28 = v25;
-          v29 = [(WFSlotTemplateSlot *)self contentAttributedString];
-          v37 = [(WFSlotTemplateSlot *)v6 contentAttributedString];
-          v38 = v29;
-          if (![v29 isEqualToAttributedString:?])
+          v36 = contentAttributedString2;
+          v28 = contentAttributedString;
+          contentAttributedString3 = [(WFSlotTemplateSlot *)self contentAttributedString];
+          contentAttributedString4 = [(WFSlotTemplateSlot *)equalCopy contentAttributedString];
+          v38 = contentAttributedString3;
+          if (![contentAttributedString3 isEqualToAttributedString:?])
           {
             LOBYTE(v11) = 0;
-            v25 = v28;
+            contentAttributedString = v28;
             v27 = v36;
             goto LABEL_36;
           }
 
-          v25 = v28;
+          contentAttributedString = v28;
           v27 = v36;
         }
 
-        v31 = [(WFSlotTemplateSlot *)self prefersNoWrapping];
-        if (v31 == [(WFSlotTemplateSlot *)v6 prefersNoWrapping]&& (v32 = [(WFSlotTemplateSlot *)self standaloneTextAttachment], v32 == [(WFSlotTemplateSlot *)v6 standaloneTextAttachment]) && (v33 = [(WFSlotTemplateSlot *)self userInputInsertionIndex], v33 == [(WFSlotTemplateSlot *)v6 userInputInsertionIndex]))
+        prefersNoWrapping = [(WFSlotTemplateSlot *)self prefersNoWrapping];
+        if (prefersNoWrapping == [(WFSlotTemplateSlot *)equalCopy prefersNoWrapping]&& (v32 = [(WFSlotTemplateSlot *)self standaloneTextAttachment], v32 == [(WFSlotTemplateSlot *)equalCopy standaloneTextAttachment]) && (v33 = [(WFSlotTemplateSlot *)self userInputInsertionIndex], v33 == [(WFSlotTemplateSlot *)equalCopy userInputInsertionIndex]))
         {
-          v34 = [(WFSlotTemplateSlot *)self representsButton];
-          v11 = v34 ^ [(WFSlotTemplateSlot *)v6 representsButton]^ 1;
+          representsButton = [(WFSlotTemplateSlot *)self representsButton];
+          v11 = representsButton ^ [(WFSlotTemplateSlot *)equalCopy representsButton]^ 1;
           v35 = v11;
         }
 
@@ -201,7 +201,7 @@ LABEL_39:
           v35 = 0;
         }
 
-        if (v25 == v27)
+        if (contentAttributedString == v27)
         {
 
           LOBYTE(v11) = v35;
@@ -212,9 +212,9 @@ LABEL_36:
 
 LABEL_37:
         v30 = v48;
-        v4 = v43;
-        v3 = v44;
-        v16 = v45;
+        localizedPlaceholder3 = v43;
+        localizedName4 = v44;
+        localizedPlaceholder = v45;
         if (v48 == v22)
         {
           goto LABEL_39;
@@ -234,21 +234,21 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v2 = [(WFSlotTemplateSlot *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(WFSlotTemplateSlot *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)setContentAttributedString:(id)a3
+- (void)setContentAttributedString:(id)string
 {
-  v4 = [a3 mutableCopy];
+  v4 = [string mutableCopy];
   v5 = [v4 length];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __49__WFSlotTemplateSlot_setContentAttributedString___block_invoke;
   v12 = &unk_1E8308330;
-  v13 = self;
+  selfCopy = self;
   v14 = v4;
   v6 = v4;
   [v6 enumerateAttributesInRange:0 options:v5 usingBlock:{0, &v9}];
@@ -318,23 +318,23 @@ void __49__WFSlotTemplateSlot_setContentAttributedString___block_invoke_2(uint64
 
 - (BOOL)isPopulated
 {
-  v2 = [(WFSlotTemplateSlot *)self contentAttributedString];
-  v3 = [v2 length] != 0;
+  contentAttributedString = [(WFSlotTemplateSlot *)self contentAttributedString];
+  v3 = [contentAttributedString length] != 0;
 
   return v3;
 }
 
-- (WFSlotTemplateSlot)initWithLocalizedName:(id)a3 localizedPlaceholder:(id)a4 localizedAttributedPlaceholder:(id)a5 languageCode:(id)a6 identifier:(id)a7
+- (WFSlotTemplateSlot)initWithLocalizedName:(id)name localizedPlaceholder:(id)placeholder localizedAttributedPlaceholder:(id)attributedPlaceholder languageCode:(id)code identifier:(id)identifier
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  if (!v17)
+  nameCopy = name;
+  placeholderCopy = placeholder;
+  attributedPlaceholderCopy = attributedPlaceholder;
+  codeCopy = code;
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"WFSlotTemplateSlot.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSlotTemplateSlot.m" lineNumber:87 description:{@"Invalid parameter not satisfying: %@", @"identifier"}];
   }
 
   v30.receiver = self;
@@ -342,23 +342,23 @@ void __49__WFSlotTemplateSlot_setContentAttributedString___block_invoke_2(uint64
   v18 = [(WFSlotTemplateSlot *)&v30 init];
   if (v18)
   {
-    v19 = [v13 copy];
+    v19 = [nameCopy copy];
     localizedName = v18->_localizedName;
     v18->_localizedName = v19;
 
-    v21 = [v14 copy];
+    v21 = [placeholderCopy copy];
     localizedPlaceholder = v18->_localizedPlaceholder;
     v18->_localizedPlaceholder = v21;
 
-    v23 = [v15 copy];
+    v23 = [attributedPlaceholderCopy copy];
     localizedAttributedPlaceholder = v18->_localizedAttributedPlaceholder;
     v18->_localizedAttributedPlaceholder = v23;
 
-    v25 = [v16 copy];
+    v25 = [codeCopy copy];
     languageCode = v18->_languageCode;
     v18->_languageCode = v25;
 
-    objc_storeStrong(&v18->_identifier, a7);
+    objc_storeStrong(&v18->_identifier, identifier);
     v18->_userInputInsertionIndex = -1;
     v18->_enabled = 1;
     v27 = v18;
@@ -367,62 +367,62 @@ void __49__WFSlotTemplateSlot_setContentAttributedString___block_invoke_2(uint64
   return v18;
 }
 
-+ (id)slotWithLocalizedName:(id)a3 localizedPlaceholder:(id)a4 localizedAttributedPlaceholder:(id)a5 key:(id)a6
++ (id)slotWithLocalizedName:(id)name localizedPlaceholder:(id)placeholder localizedAttributedPlaceholder:(id)attributedPlaceholder key:(id)key
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a1 alloc];
-  v15 = [[WFSlotIdentifier alloc] initWithKey:v10];
+  keyCopy = key;
+  attributedPlaceholderCopy = attributedPlaceholder;
+  placeholderCopy = placeholder;
+  nameCopy = name;
+  v14 = [self alloc];
+  v15 = [[WFSlotIdentifier alloc] initWithKey:keyCopy];
 
-  v16 = [v14 initWithLocalizedName:v13 localizedPlaceholder:v12 localizedAttributedPlaceholder:v11 languageCode:0 identifier:v15];
+  v16 = [v14 initWithLocalizedName:nameCopy localizedPlaceholder:placeholderCopy localizedAttributedPlaceholder:attributedPlaceholderCopy languageCode:0 identifier:v15];
 
   return v16;
 }
 
-+ (id)slotWithLocalizedName:(id)a3 localizedPlaceholder:(id)a4 languageCode:(id)a5 key:(id)a6
++ (id)slotWithLocalizedName:(id)name localizedPlaceholder:(id)placeholder languageCode:(id)code key:(id)key
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [a1 alloc];
-  v15 = [[WFSlotIdentifier alloc] initWithKey:v10];
+  keyCopy = key;
+  codeCopy = code;
+  placeholderCopy = placeholder;
+  nameCopy = name;
+  v14 = [self alloc];
+  v15 = [[WFSlotIdentifier alloc] initWithKey:keyCopy];
 
-  v16 = [v14 initWithLocalizedName:v13 localizedPlaceholder:v12 localizedAttributedPlaceholder:0 languageCode:v11 identifier:v15];
+  v16 = [v14 initWithLocalizedName:nameCopy localizedPlaceholder:placeholderCopy localizedAttributedPlaceholder:0 languageCode:codeCopy identifier:v15];
 
   return v16;
 }
 
-+ (id)slotWithLocalizedName:(id)a3 localizedPlaceholder:(id)a4 key:(id)a5
++ (id)slotWithLocalizedName:(id)name localizedPlaceholder:(id)placeholder key:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v12 = [[WFSlotIdentifier alloc] initWithKey:v8];
+  keyCopy = key;
+  placeholderCopy = placeholder;
+  nameCopy = name;
+  v11 = [self alloc];
+  v12 = [[WFSlotIdentifier alloc] initWithKey:keyCopy];
 
-  v13 = [v11 initWithLocalizedName:v10 localizedPlaceholder:v9 localizedAttributedPlaceholder:0 languageCode:0 identifier:v12];
+  v13 = [v11 initWithLocalizedName:nameCopy localizedPlaceholder:placeholderCopy localizedAttributedPlaceholder:0 languageCode:0 identifier:v12];
 
   return v13;
 }
 
-- (void)populateWithAttributedVariableString:(id)a3 attachmentName:(id)a4
+- (void)populateWithAttributedVariableString:(id)string attachmentName:(id)name
 {
-  v6 = a4;
-  v7 = [a3 mutableCopy];
+  nameCopy = name;
+  v7 = [string mutableCopy];
   v8 = *MEMORY[0x1E69DB5F8];
   v9 = [v7 length];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __95__WFSlotTemplateSlot_WFVariableUtilities__populateWithAttributedVariableString_attachmentName___block_invoke;
   v14 = &unk_1E8308380;
-  v15 = self;
-  v16 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v16 = nameCopy;
+  v10 = nameCopy;
   [v7 enumerateAttribute:v8 inRange:0 options:v9 usingBlock:{0, &v11}];
-  [(WFSlotTemplateSlot *)self setContentAttributedString:v7, v11, v12, v13, v14, v15];
+  [(WFSlotTemplateSlot *)self setContentAttributedString:v7, v11, v12, v13, v14, selfCopy];
   [(WFSlotTemplateSlot *)self setStandaloneTextAttachment:0];
 }
 
@@ -459,19 +459,19 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)populateWithSlotTemplateToken:(id)a3 attachmentName:(id)a4
+- (void)populateWithSlotTemplateToken:(id)token attachmentName:(id)name
 {
-  v10 = a4;
-  v6 = a3;
-  v7 = [[WFSlotTextAttachment alloc] initWithSlotTemplateToken:v6];
+  nameCopy = name;
+  tokenCopy = token;
+  v7 = [[WFSlotTextAttachment alloc] initWithSlotTemplateToken:tokenCopy];
 
-  v8 = [(WFSlotTemplateSlot *)self identifier];
-  [(WFSlotTextAttachment *)v7 setContainingSlotIdentifier:v8];
+  identifier = [(WFSlotTemplateSlot *)self identifier];
+  [(WFSlotTextAttachment *)v7 setContainingSlotIdentifier:identifier];
 
   [(WFSlotTextAttachment *)v7 setStandalone:1];
-  if ([v10 length])
+  if ([nameCopy length])
   {
-    [(WFSlotTextAttachment *)v7 setOverrideVariableName:v10];
+    [(WFSlotTextAttachment *)v7 setOverrideVariableName:nameCopy];
   }
 
   v9 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v7];
@@ -480,21 +480,21 @@ LABEL_7:
   [(WFSlotTemplateSlot *)self setStandaloneTextAttachment:1];
 }
 
-- (void)populateWithIcon:(id)a3 string:(id)a4
+- (void)populateWithIcon:(id)icon string:(id)string
 {
-  v13 = a3;
-  v6 = a4;
+  iconCopy = icon;
+  stringCopy = string;
   v7 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  if (v13)
+  if (iconCopy)
   {
     v8 = [[WFSlotTemplateImageAttachment alloc] initWithData:0 ofType:0];
-    v9 = [v13 platformImage];
-    [(WFSlotTemplateImageAttachment *)v8 setImage:v9];
+    platformImage = [iconCopy platformImage];
+    [(WFSlotTemplateImageAttachment *)v8 setImage:platformImage];
 
     v10 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v8];
     [v7 appendAttributedString:v10];
 
-    if (!v6)
+    if (!stringCopy)
     {
       goto LABEL_6;
     }
@@ -503,12 +503,12 @@ LABEL_7:
     [v7 appendAttributedString:v11];
   }
 
-  else if (!v6)
+  else if (!stringCopy)
   {
     goto LABEL_6;
   }
 
-  v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v6];
+  v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy];
   [v7 appendAttributedString:v12];
 
 LABEL_6:
@@ -516,24 +516,24 @@ LABEL_6:
   [(WFSlotTemplateSlot *)self setStandaloneTextAttachment:0];
 }
 
-- (void)populateWithAttributedString:(id)a3
+- (void)populateWithAttributedString:(id)string
 {
-  v4 = a3;
-  [(WFSlotTemplateSlot *)self setContentAttributedString:v4];
-  if ([v4 length] == 1 && (objc_msgSend(v4, "string"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "characterAtIndex:", 0), v5, v6 == 65532))
+  stringCopy = string;
+  [(WFSlotTemplateSlot *)self setContentAttributedString:stringCopy];
+  if ([stringCopy length] == 1 && (objc_msgSend(stringCopy, "string"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "characterAtIndex:", 0), v5, v6 == 65532))
   {
     v10 = 0;
     v11 = &v10;
     v12 = 0x2020000000;
     v13 = 0;
-    v7 = [v4 length];
+    v7 = [stringCopy length];
     v8 = *MEMORY[0x1E69DB5F8];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __72__WFSlotTemplateSlot_WFVariableUtilities__populateWithAttributedString___block_invoke;
     v9[3] = &unk_1E8308358;
     v9[4] = &v10;
-    [v4 enumerateAttribute:v8 inRange:0 options:v7 usingBlock:{0, v9}];
+    [stringCopy enumerateAttribute:v8 inRange:0 options:v7 usingBlock:{0, v9}];
     [(WFSlotTemplateSlot *)self setStandaloneTextAttachment:*(v11 + 24)];
     _Block_object_dispose(&v10, 8);
   }
@@ -555,12 +555,12 @@ void __72__WFSlotTemplateSlot_WFVariableUtilities__populateWithAttributedString_
   }
 }
 
-- (void)populateWithString:(id)a3
+- (void)populateWithString:(id)string
 {
-  v5 = a3;
-  if (v5)
+  stringCopy = string;
+  if (stringCopy)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5];
+    v4 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:stringCopy];
     [(WFSlotTemplateSlot *)self populateWithAttributedString:v4];
   }
 
@@ -570,29 +570,29 @@ void __72__WFSlotTemplateSlot_WFVariableUtilities__populateWithAttributedString_
   }
 }
 
-+ (id)addingSlotWithIdentifier:(id)a3 imageScaleFactor:(double)a4
++ (id)addingSlotWithIdentifier:(id)identifier imageScaleFactor:(double)factor
 {
-  if (a4 == 1.0)
+  if (factor == 1.0)
   {
     v8 = MEMORY[0x1E69DB7F0];
-    v9 = a3;
+    identifierCopy = identifier;
     v7 = [[v8 alloc] initWithData:0 ofType:0];
   }
 
   else
   {
-    v6 = a3;
+    identifierCopy2 = identifier;
     v7 = [[WFSlotTemplateImageAttachment alloc] initWithData:0 ofType:0];
-    [(WFSlotTemplateImageAttachment *)v7 setImageScaleFactor:a4];
+    [(WFSlotTemplateImageAttachment *)v7 setImageScaleFactor:factor];
   }
 
   v10 = [MEMORY[0x1E69E0B68] configurationWithPointSize:20.0];
   v11 = [MEMORY[0x1E69E0B58] systemImageNamed:@"plus" configuration:v10 renderingMode:0];
   v12 = [v11 imageWithRenderingMode:2];
-  v13 = [v12 platformImage];
-  [(WFSlotTemplateImageAttachment *)v7 setImage:v13];
+  platformImage = [v12 platformImage];
+  [(WFSlotTemplateImageAttachment *)v7 setImage:platformImage];
 
-  v14 = [[WFSlotTemplateSlot alloc] initWithLocalizedName:0 localizedPlaceholder:0 localizedAttributedPlaceholder:0 languageCode:0 identifier:a3];
+  v14 = [[WFSlotTemplateSlot alloc] initWithLocalizedName:0 localizedPlaceholder:0 localizedAttributedPlaceholder:0 languageCode:0 identifier:identifier];
   v15 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v7];
   [(WFSlotTemplateSlot *)v14 setContentAttributedString:v15];
 
@@ -601,12 +601,12 @@ void __72__WFSlotTemplateSlot_WFVariableUtilities__populateWithAttributedString_
   return v14;
 }
 
-+ (id)addingSlotWithKey:(id)a3
++ (id)addingSlotWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [[WFSlotIdentifier alloc] initWithKey:v4];
+  keyCopy = key;
+  v5 = [[WFSlotIdentifier alloc] initWithKey:keyCopy];
 
-  v6 = [a1 addingSlotWithIdentifier:v5 imageScaleFactor:1.0];
+  v6 = [self addingSlotWithIdentifier:v5 imageScaleFactor:1.0];
 
   return v6;
 }

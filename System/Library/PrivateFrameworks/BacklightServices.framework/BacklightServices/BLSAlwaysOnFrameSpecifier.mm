@@ -1,24 +1,24 @@
 @interface BLSAlwaysOnFrameSpecifier
-- (BLSAlwaysOnFrameSpecifier)initWithTimelineEntrySpecifiers:(id)a3 presentationInterval:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)correctedSpecifierWithNextSpecifier:(id)a3;
+- (BLSAlwaysOnFrameSpecifier)initWithTimelineEntrySpecifiers:(id)specifiers presentationInterval:(id)interval;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)correctedSpecifierWithNextSpecifier:(id)specifier;
 - (id)debugDescription;
 - (id)description;
-- (id)entrySpecifierForTimelineIdentifier:(id)a3;
-- (int64_t)compare:(id)a3;
+- (id)entrySpecifierForTimelineIdentifier:(id)identifier;
+- (int64_t)compare:(id)compare;
 - (int64_t)grantedFidelity;
 - (int64_t)requestedFidelity;
-- (void)constrainEntriesToUpdateFidelity:(uint64_t)a1;
-- (void)setGrantedFidelity:(int64_t)a3;
+- (void)constrainEntriesToUpdateFidelity:(uint64_t)fidelity;
+- (void)setGrantedFidelity:(int64_t)fidelity;
 @end
 
 @implementation BLSAlwaysOnFrameSpecifier
 
-- (BLSAlwaysOnFrameSpecifier)initWithTimelineEntrySpecifiers:(id)a3 presentationInterval:(id)a4
+- (BLSAlwaysOnFrameSpecifier)initWithTimelineEntrySpecifiers:(id)specifiers presentationInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
+  specifiersCopy = specifiers;
+  intervalCopy = interval;
   v15.receiver = self;
   v15.super_class = BLSAlwaysOnFrameSpecifier;
   v8 = [(BLSAlwaysOnFrameSpecifier *)&v15 init];
@@ -26,11 +26,11 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [v6 copy];
+    v10 = [specifiersCopy copy];
     entrySpecifiers = v9->_entrySpecifiers;
     v9->_entrySpecifiers = v10;
 
-    v12 = [v7 copy];
+    v12 = [intervalCopy copy];
     presentationInterval = v9->_presentationInterval;
     v9->_presentationInterval = v12;
 
@@ -40,15 +40,15 @@
   return v9;
 }
 
-- (id)entrySpecifierForTimelineIdentifier:(id)a3
+- (id)entrySpecifierForTimelineIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_entrySpecifiers;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__BLSAlwaysOnFrameSpecifier_entrySpecifierForTimelineIdentifier___block_invoke;
   v10[3] = &unk_2784286B0;
-  v6 = v4;
+  v6 = identifierCopy;
   v11 = v6;
   v7 = [(NSArray *)v5 indexOfObjectPassingTest:v10];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -78,11 +78,11 @@ uint64_t __65__BLSAlwaysOnFrameSpecifier_entrySpecifierForTimelineIdentifier___b
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   presentationInterval = self->_presentationInterval;
-  v4 = [a3 presentationInterval];
-  v5 = [(NSDateInterval *)presentationInterval compare:v4];
+  presentationInterval = [compare presentationInterval];
+  v5 = [(NSDateInterval *)presentationInterval compare:presentationInterval];
 
   return v5;
 }
@@ -110,10 +110,10 @@ uint64_t __65__BLSAlwaysOnFrameSpecifier_entrySpecifierForTimelineIdentifier___b
           objc_enumerationMutation(v2);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) requestedFidelity];
-        if (v8 > v5)
+        requestedFidelity = [*(*(&v11 + 1) + 8 * i) requestedFidelity];
+        if (requestedFidelity > v5)
         {
-          v5 = v8;
+          v5 = requestedFidelity;
         }
       }
 
@@ -140,24 +140,24 @@ uint64_t __65__BLSAlwaysOnFrameSpecifier_entrySpecifierForTimelineIdentifier___b
   return grantedFidelity;
 }
 
-- (void)setGrantedFidelity:(int64_t)a3
+- (void)setGrantedFidelity:(int64_t)fidelity
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_grantedFidelity = a3;
+  self->_grantedFidelity = fidelity;
   os_unfair_lock_unlock(&self->_lock);
 
-  [(BLSAlwaysOnFrameSpecifier *)self constrainEntriesToUpdateFidelity:a3];
+  [(BLSAlwaysOnFrameSpecifier *)self constrainEntriesToUpdateFidelity:fidelity];
 }
 
-- (id)correctedSpecifierWithNextSpecifier:(id)a3
+- (id)correctedSpecifierWithNextSpecifier:(id)specifier
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  specifierCopy = specifier;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v37 = self;
+  selfCopy = self;
   v5 = self->_entrySpecifiers;
   v6 = [(NSArray *)v5 countByEnumeratingWithState:&v39 objects:v43 count:16];
   if (v6)
@@ -178,43 +178,43 @@ uint64_t __65__BLSAlwaysOnFrameSpecifier_entrySpecifierForTimelineIdentifier___b
         v10 = *(*(&v39 + 1) + 8 * v9);
         if ([v10 requestedFidelity] == -1)
         {
-          v11 = [v10 timelineEntry];
-          v12 = [v11 timelineIdentifier];
-          v13 = [v4 entrySpecifierForTimelineIdentifier:v12];
+          timelineEntry = [v10 timelineEntry];
+          timelineIdentifier = [timelineEntry timelineIdentifier];
+          v13 = [specifierCopy entrySpecifierForTimelineIdentifier:timelineIdentifier];
 
-          v14 = [v13 timelineEntry];
-          if ([v11 isEqual:v14])
+          timelineEntry2 = [v13 timelineEntry];
+          if ([timelineEntry isEqual:timelineEntry2])
           {
-            v15 = [v13 requestedFidelity];
+            requestedFidelity = [v13 requestedFidelity];
           }
 
           else
           {
-            [v14 presentationTime];
+            [timelineEntry2 presentationTime];
             v16 = v8;
             v17 = v5;
-            v19 = v18 = v4;
-            v20 = [v11 presentationTime];
-            [v19 timeIntervalSinceDate:v20];
+            v19 = v18 = specifierCopy;
+            presentationTime = [timelineEntry presentationTime];
+            [v19 timeIntervalSinceDate:presentationTime];
             v22 = v21;
 
-            v4 = v18;
+            specifierCopy = v18;
             v5 = v17;
             v8 = v16;
             v7 = v38;
             v23 = [BLSFidelityThreshold fidelityForUpdateInterval:v22];
             if (v23 == 3)
             {
-              v15 = 2;
+              requestedFidelity = 2;
             }
 
             else
             {
-              v15 = v23;
+              requestedFidelity = v23;
             }
           }
 
-          [v10 setRequestedFidelity:v15];
+          [v10 setRequestedFidelity:requestedFidelity];
         }
 
         ++v9;
@@ -227,12 +227,12 @@ uint64_t __65__BLSAlwaysOnFrameSpecifier_entrySpecifierForTimelineIdentifier___b
     while (v7);
   }
 
-  v24 = [(BLSAlwaysOnFrameSpecifier *)v37 presentationInterval];
-  v25 = [v4 presentationInterval];
-  v26 = [v25 startDate];
+  presentationInterval = [(BLSAlwaysOnFrameSpecifier *)selfCopy presentationInterval];
+  presentationInterval2 = [specifierCopy presentationInterval];
+  startDate = [presentationInterval2 startDate];
 
-  v27 = [v24 endDate];
-  v28 = [v27 isEqualToDate:v26];
+  endDate = [presentationInterval endDate];
+  v28 = [endDate isEqualToDate:startDate];
 
   if (v28)
   {
@@ -242,11 +242,11 @@ uint64_t __65__BLSAlwaysOnFrameSpecifier_entrySpecifierForTimelineIdentifier___b
   else
   {
     v30 = [BLSAlwaysOnFrameSpecifier alloc];
-    v31 = [(BLSAlwaysOnFrameSpecifier *)v37 entrySpecifiers];
+    entrySpecifiers = [(BLSAlwaysOnFrameSpecifier *)selfCopy entrySpecifiers];
     v32 = objc_alloc(MEMORY[0x277CCA970]);
-    v33 = [v24 startDate];
-    v34 = [v32 initWithStartDate:v33 endDate:v26];
-    v29 = [(BLSAlwaysOnFrameSpecifier *)v30 initWithTimelineEntrySpecifiers:v31 presentationInterval:v34];
+    startDate2 = [presentationInterval startDate];
+    v34 = [v32 initWithStartDate:startDate2 endDate:startDate];
+    v29 = [(BLSAlwaysOnFrameSpecifier *)v30 initWithTimelineEntrySpecifiers:entrySpecifiers presentationInterval:v34];
   }
 
   v35 = *MEMORY[0x277D85DE8];
@@ -263,7 +263,7 @@ uint64_t __65__BLSAlwaysOnFrameSpecifier_entrySpecifierForTimelineIdentifier___b
   v11[3] = &unk_278428688;
   v4 = v3;
   v12 = v4;
-  v13 = self;
+  selfCopy = self;
   [v4 appendProem:0 block:v11];
   entrySpecifiers = self->_entrySpecifiers;
   v9[0] = MEMORY[0x277D85DD0];
@@ -345,8 +345,8 @@ void __40__BLSAlwaysOnFrameSpecifier_description__block_invoke_3(uint64_t a1, vo
 - (id)debugDescription
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(NSDateInterval *)self->_presentationInterval bls_loggingString];
-  [v3 appendString:v4 withName:@"presentation interval"];
+  bls_loggingString = [(NSDateInterval *)self->_presentationInterval bls_loggingString];
+  [v3 appendString:bls_loggingString withName:@"presentation interval"];
 
   v5 = NSStringFromBLSUpdateFidelity([(BLSAlwaysOnFrameSpecifier *)self grantedFidelity]);
   v6 = [v3 appendObject:v5 withName:@"grantedFidelity"];
@@ -355,24 +355,24 @@ void __40__BLSAlwaysOnFrameSpecifier_description__block_invoke_3(uint64_t a1, vo
   v8 = [v3 appendObject:v7 withName:@"requestedFidelity"];
 
   [v3 appendArraySection:self->_entrySpecifiers withName:@"entries" skipIfEmpty:1 objectTransformer:&__block_literal_global];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     presentationInterval = self->_presentationInterval;
-    v6 = [v4 presentationInterval];
-    if ([(NSDateInterval *)presentationInterval isEqual:v6])
+    presentationInterval = [equalCopy presentationInterval];
+    if ([(NSDateInterval *)presentationInterval isEqual:presentationInterval])
     {
       entrySpecifiers = self->_entrySpecifiers;
-      v8 = [v4 entrySpecifiers];
-      v9 = [(NSArray *)entrySpecifiers isEqualToArray:v8];
+      entrySpecifiers = [equalCopy entrySpecifiers];
+      v9 = [(NSArray *)entrySpecifiers isEqualToArray:entrySpecifiers];
     }
 
     else
@@ -389,7 +389,7 @@ void __40__BLSAlwaysOnFrameSpecifier_description__block_invoke_3(uint64_t a1, vo
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [BLSAlwaysOnFrameSpecifier alloc];
   v5 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:self->_entrySpecifiers copyItems:1];
@@ -398,16 +398,16 @@ void __40__BLSAlwaysOnFrameSpecifier_description__block_invoke_3(uint64_t a1, vo
   return v6;
 }
 
-- (void)constrainEntriesToUpdateFidelity:(uint64_t)a1
+- (void)constrainEntriesToUpdateFidelity:(uint64_t)fidelity
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (fidelity)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v3 = *(a1 + 24);
+    v3 = *(fidelity + 24);
     v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v4)
     {
@@ -423,15 +423,15 @@ void __40__BLSAlwaysOnFrameSpecifier_description__block_invoke_3(uint64_t a1, vo
           }
 
           v8 = *(*(&v12 + 1) + 8 * i);
-          v9 = [v8 requestedFidelity];
-          if (v9 >= a2)
+          requestedFidelity = [v8 requestedFidelity];
+          if (requestedFidelity >= a2)
           {
             v10 = a2;
           }
 
           else
           {
-            v10 = v9;
+            v10 = requestedFidelity;
           }
 
           [v8 setGrantedFidelity:v10];

@@ -7,19 +7,19 @@
 + (BOOL)shouldEnableTTRButton
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 isRunningTest];
+  isRunningTest = [v2 isRunningTest];
 
-  if (v3)
+  if (isRunningTest)
   {
     return 0;
   }
 
   BOOL = GEOConfigGetBOOL();
   v6 = +[GEOPlatform sharedPlatform];
-  v7 = [v6 isInternalInstall];
+  isInternalInstall = [v6 isInternalInstall];
   v8 = BOOL ^ 1;
-  v4 = (BOOL ^ 1) & v7;
-  if (v8 & 1) == 0 && (v7)
+  v4 = (BOOL ^ 1) & isInternalInstall;
+  if (v8 & 1) == 0 && (isInternalInstall)
   {
     if (+[MapsRadarDraft isTapToRadarKitSupported])
     {

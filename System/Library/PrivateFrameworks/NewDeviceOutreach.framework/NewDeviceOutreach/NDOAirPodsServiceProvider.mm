@@ -1,16 +1,16 @@
 @interface NDOAirPodsServiceProvider
 + (id)airPodsDataStore;
-- (BOOL)isLastSyncNeedsRetryWithSerialNumber:(id)a3 withServiceName:(id)a4;
-- (BOOL)shouldSendFirmwareUpdateAndGetUpdatedData:(id *)a3;
-- (BOOL)shouldSendFirstPairingData:(id)a3;
+- (BOOL)isLastSyncNeedsRetryWithSerialNumber:(id)number withServiceName:(id)name;
+- (BOOL)shouldSendFirmwareUpdateAndGetUpdatedData:(id *)data;
+- (BOOL)shouldSendFirstPairingData:(id)data;
 - (NDOAirPodsServiceProvider)init;
-- (id)getCachedAirPodsWarrantyDetailsForKey:(id)a3;
-- (int64_t)calculateDaysBetweenStartDate:(id)a3 endDate:(id)a4;
-- (void)cacheAirPodsFirmwareUpdateDetails:(id)a3;
-- (void)cacheAirPodsFirstPairingData:(id)a3;
-- (void)sendFirmwareUpdateDataIfRequired:(id)a3 completionHandler:(id)a4;
-- (void)sendPairingDataIfRequired:(id)a3 completionHandler:(id)a4;
-- (void)setSyncDateForDeviceServicesWithSerialNumber:(id)a3 needsRetry:(BOOL)a4 withServiceName:(id)a5;
+- (id)getCachedAirPodsWarrantyDetailsForKey:(id)key;
+- (int64_t)calculateDaysBetweenStartDate:(id)date endDate:(id)endDate;
+- (void)cacheAirPodsFirmwareUpdateDetails:(id)details;
+- (void)cacheAirPodsFirstPairingData:(id)data;
+- (void)sendFirmwareUpdateDataIfRequired:(id)required completionHandler:(id)handler;
+- (void)sendPairingDataIfRequired:(id)required completionHandler:(id)handler;
+- (void)setSyncDateForDeviceServicesWithSerialNumber:(id)number needsRetry:(BOOL)retry withServiceName:(id)name;
 @end
 
 @implementation NDOAirPodsServiceProvider
@@ -41,9 +41,9 @@
   return v3;
 }
 
-- (BOOL)shouldSendFirmwareUpdateAndGetUpdatedData:(id *)a3
+- (BOOL)shouldSendFirmwareUpdateAndGetUpdatedData:(id *)data
 {
-  v5 = [[NSMutableDictionary alloc] initWithDictionary:*a3];
+  v5 = [[NSMutableDictionary alloc] initWithDictionary:*data];
   if ([v5 count])
   {
     v6 = [v5 valueForKey:@"caseSerialNumber"];
@@ -125,17 +125,17 @@ LABEL_22:
   v18 = 0;
 LABEL_26:
   v20 = v5;
-  *a3 = v5;
+  *data = v5;
 
   return v18;
 }
 
-- (BOOL)shouldSendFirstPairingData:(id)a3
+- (BOOL)shouldSendFirstPairingData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"caseSerialNumber"];
-  v6 = [v4 valueForKey:@"leftBudSerialNumber"];
-  v7 = [v4 valueForKey:@"rightBudSerialNumber"];
+  dataCopy = data;
+  v5 = [dataCopy valueForKey:@"caseSerialNumber"];
+  v6 = [dataCopy valueForKey:@"leftBudSerialNumber"];
+  v7 = [dataCopy valueForKey:@"rightBudSerialNumber"];
 
   if (![(NDOAirPodsServiceProvider *)self isLastSyncNeedsRetryWithSerialNumber:v5 withServiceName:@"FirstPairing"])
   {
@@ -186,12 +186,12 @@ LABEL_20:
   return v8;
 }
 
-- (void)cacheAirPodsFirstPairingData:(id)a3
+- (void)cacheAirPodsFirstPairingData:(id)data
 {
-  v3 = a3;
-  v11 = [v3 valueForKey:@"caseSerialNumber"];
-  v4 = [v3 valueForKey:@"leftBudSerialNumber"];
-  v5 = [v3 valueForKey:@"rightBudSerialNumber"];
+  dataCopy = data;
+  v11 = [dataCopy valueForKey:@"caseSerialNumber"];
+  v4 = [dataCopy valueForKey:@"leftBudSerialNumber"];
+  v5 = [dataCopy valueForKey:@"rightBudSerialNumber"];
 
   v6 = [NSString stringWithFormat:@"%@_%@", v11, @"FirstPairing"];
   v7 = +[NDOAirPodsServiceProvider airPodsDataStore];
@@ -210,14 +210,14 @@ LABEL_20:
   [v10 setObject:v9 forKey:v6];
 }
 
-- (void)cacheAirPodsFirmwareUpdateDetails:(id)a3
+- (void)cacheAirPodsFirmwareUpdateDetails:(id)details
 {
-  v3 = a3;
-  v13 = [v3 valueForKey:@"caseSerialNumber"];
-  v4 = [v3 valueForKey:@"leftBudSerialNumber"];
-  v5 = [v3 valueForKey:@"rightBudSerialNumber"];
-  v6 = [v3 valueForKey:@"caseFirmwareVersion"];
-  v7 = [v3 valueForKey:@"firmwareUpdateDate"];
+  detailsCopy = details;
+  v13 = [detailsCopy valueForKey:@"caseSerialNumber"];
+  v4 = [detailsCopy valueForKey:@"leftBudSerialNumber"];
+  v5 = [detailsCopy valueForKey:@"rightBudSerialNumber"];
+  v6 = [detailsCopy valueForKey:@"caseFirmwareVersion"];
+  v7 = [detailsCopy valueForKey:@"firmwareUpdateDate"];
 
   v8 = [NSString stringWithFormat:@"%@_%@", v13, @"Firmware"];
   v9 = +[NDOAirPodsServiceProvider airPodsDataStore];
@@ -238,20 +238,20 @@ LABEL_20:
   [v12 setObject:v11 forKey:v8];
 }
 
-- (id)getCachedAirPodsWarrantyDetailsForKey:(id)a3
+- (id)getCachedAirPodsWarrantyDetailsForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[NDOAirPodsServiceProvider airPodsDataStore];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   return v5;
 }
 
-- (void)sendPairingDataIfRequired:(id)a3 completionHandler:(id)a4
+- (void)sendPairingDataIfRequired:(id)required completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  requiredCopy = required;
+  handlerCopy = handler;
+  if (!requiredCopy)
   {
     v9 = _NDOLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -262,7 +262,7 @@ LABEL_20:
     goto LABEL_8;
   }
 
-  if (![(NDOAirPodsServiceProvider *)self shouldSendFirstPairingData:v6])
+  if (![(NDOAirPodsServiceProvider *)self shouldSendFirstPairingData:requiredCopy])
   {
     v9 = _NDOLogSystem();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -272,44 +272,44 @@ LABEL_20:
 
 LABEL_8:
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_9;
   }
 
-  v8 = [(NDOAirPodsServiceProvider *)self deviceServicesInterface];
+  deviceServicesInterface = [(NDOAirPodsServiceProvider *)self deviceServicesInterface];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000A890;
   v10[3] = &unk_10009A8B0;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  [v8 sendPairingRequest:v11 completionHandler:v10];
+  v11 = requiredCopy;
+  v12 = handlerCopy;
+  [deviceServicesInterface sendPairingRequest:v11 completionHandler:v10];
 
 LABEL_9:
 }
 
-- (void)sendFirmwareUpdateDataIfRequired:(id)a3 completionHandler:(id)a4
+- (void)sendFirmwareUpdateDataIfRequired:(id)required completionHandler:(id)handler
 {
-  v6 = a4;
-  if (a3)
+  handlerCopy = handler;
+  if (required)
   {
-    v7 = [NSMutableDictionary dictionaryWithDictionary:a3];
+    v7 = [NSMutableDictionary dictionaryWithDictionary:required];
     v16 = v7;
     v8 = [(NDOAirPodsServiceProvider *)self shouldSendFirmwareUpdateAndGetUpdatedData:&v16];
     v9 = v16;
 
     if (v8)
     {
-      v10 = [(NDOAirPodsServiceProvider *)self deviceServicesInterface];
+      deviceServicesInterface = [(NDOAirPodsServiceProvider *)self deviceServicesInterface];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_10000AADC;
       v13[3] = &unk_10009A8B0;
       v13[4] = self;
       v14 = v9;
-      v15 = v6;
-      [v10 sendFirmwareUpdateRequest:v14 completionHandler:v13];
+      v15 = handlerCopy;
+      [deviceServicesInterface sendFirmwareUpdateRequest:v14 completionHandler:v13];
     }
 
     else
@@ -320,7 +320,7 @@ LABEL_9:
         sub_100072D84();
       }
 
-      (*(v6 + 2))(v6, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
@@ -332,15 +332,15 @@ LABEL_9:
       sub_100072DC0();
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
-- (BOOL)isLastSyncNeedsRetryWithSerialNumber:(id)a3 withServiceName:(id)a4
+- (BOOL)isLastSyncNeedsRetryWithSerialNumber:(id)number withServiceName:(id)name
 {
-  v5 = [NSString stringWithFormat:@"%@_%@", a3, a4];
+  name = [NSString stringWithFormat:@"%@_%@", number, name];
   v6 = +[NDOAirPodsServiceProvider airPodsDataStore];
-  v7 = [v6 objectForKey:v5];
+  v7 = [v6 objectForKey:name];
 
   if (!v7)
   {
@@ -393,12 +393,12 @@ LABEL_13:
   return v16;
 }
 
-- (void)setSyncDateForDeviceServicesWithSerialNumber:(id)a3 needsRetry:(BOOL)a4 withServiceName:(id)a5
+- (void)setSyncDateForDeviceServicesWithSerialNumber:(id)number needsRetry:(BOOL)retry withServiceName:(id)name
 {
-  v5 = a4;
-  v14 = [NSString stringWithFormat:@"%@_%@", a3, a5];
+  retryCopy = retry;
+  name = [NSString stringWithFormat:@"%@_%@", number, name];
   v6 = +[NDOAirPodsServiceProvider airPodsDataStore];
-  v7 = [v6 objectForKey:v14];
+  v7 = [v6 objectForKey:name];
   v8 = [v7 mutableCopy];
 
   if (!v8)
@@ -410,7 +410,7 @@ LABEL_13:
   v10 = objc_alloc_init(NSDateFormatter);
   [v10 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
   v11 = [v10 stringFromDate:v9];
-  if (v5)
+  if (retryCopy)
   {
     v12 = @"YES";
   }
@@ -423,15 +423,15 @@ LABEL_13:
   [v8 setValue:v12 forKey:@"LastSyncNeedRetry"];
   [NDOTypeChecking safeAddValue:v11 forKey:@"LastSyncTime" toDictionary:v8];
   v13 = +[NDOAirPodsServiceProvider airPodsDataStore];
-  [v13 setObject:v8 forKey:v14];
+  [v13 setObject:v8 forKey:name];
 }
 
-- (int64_t)calculateDaysBetweenStartDate:(id)a3 endDate:(id)a4
+- (int64_t)calculateDaysBetweenStartDate:(id)date endDate:(id)endDate
 {
-  v5 = a4;
-  v6 = a3;
+  endDateCopy = endDate;
+  dateCopy = date;
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 components:16 fromDate:v6 toDate:v5 options:0];
+  v8 = [v7 components:16 fromDate:dateCopy toDate:endDateCopy options:0];
 
   v9 = [v8 day];
   return v9;

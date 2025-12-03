@@ -1,14 +1,14 @@
 @interface HSPCUpdateToOptimizeEnergySavingsViewController
 + (id)_createCenterContentView;
-- (HSPCUpdateToOptimizeEnergySavingsViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCUpdateToOptimizeEnergySavingsViewController)initWithCoordinator:(id)coordinator config:(id)config;
 @end
 
 @implementation HSPCUpdateToOptimizeEnergySavingsViewController
 
-- (HSPCUpdateToOptimizeEnergySavingsViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCUpdateToOptimizeEnergySavingsViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v8 = +[HSPCUpdateToOptimizeEnergySavingsViewController _createCenterContentView];
   v15.receiver = self;
   v15.super_class = HSPCUpdateToOptimizeEnergySavingsViewController;
@@ -22,8 +22,8 @@
     v11 = sub_100063A44(@"HSThermostatUnqualifiedHome_TopDescription");
     [(HSPCUpdateToOptimizeEnergySavingsViewController *)v9 setSubtitle:v11];
 
-    [(HSPCUpdateToOptimizeEnergySavingsViewController *)v9 setCoordinator:v6];
-    [(HSPCUpdateToOptimizeEnergySavingsViewController *)v9 setConfig:v7];
+    [(HSPCUpdateToOptimizeEnergySavingsViewController *)v9 setCoordinator:coordinatorCopy];
+    [(HSPCUpdateToOptimizeEnergySavingsViewController *)v9 setConfig:configCopy];
     v12 = sub_100063A44(@"HSThermostatUnqualifiedHome_Continue");
     v13 = [(HSPCUpdateToOptimizeEnergySavingsViewController *)v9 addProminentButtonWithTitleKey:v12 target:v9 futureSelector:"commitConfiguration"];
   }
@@ -91,36 +91,36 @@
   [v28 setAlignment:3];
   v40 = v28;
   [v28 setSpacing:8.0];
-  v52 = [v26 heightAnchor];
-  v51 = [v52 constraintEqualToConstant:56.0];
+  heightAnchor = [v26 heightAnchor];
+  v51 = [heightAnchor constraintEqualToConstant:56.0];
   v56[0] = v51;
   v53 = v4;
-  v50 = [v4 heightAnchor];
-  v48 = [v50 constraintEqualToConstant:56.0];
+  heightAnchor2 = [v4 heightAnchor];
+  v48 = [heightAnchor2 constraintEqualToConstant:56.0];
   v56[1] = v48;
-  v47 = [v4 widthAnchor];
-  v46 = [v47 constraintEqualToConstant:56.0];
+  widthAnchor = [v4 widthAnchor];
+  v46 = [widthAnchor constraintEqualToConstant:56.0];
   v56[2] = v46;
   v49 = v8;
-  v44 = [v8 heightAnchor];
-  v43 = [v44 constraintEqualToConstant:56.0];
+  heightAnchor3 = [v8 heightAnchor];
+  v43 = [heightAnchor3 constraintEqualToConstant:56.0];
   v56[3] = v43;
-  v41 = [v8 widthAnchor];
-  v29 = [v41 constraintEqualToConstant:56.0];
+  widthAnchor2 = [v8 widthAnchor];
+  v29 = [widthAnchor2 constraintEqualToConstant:56.0];
   v56[4] = v29;
   v45 = v12;
-  v30 = [v12 heightAnchor];
-  v31 = [v30 constraintEqualToConstant:56.0];
+  heightAnchor4 = [v12 heightAnchor];
+  v31 = [heightAnchor4 constraintEqualToConstant:56.0];
   v56[5] = v31;
-  v32 = [v12 widthAnchor];
-  v33 = [v32 constraintEqualToConstant:56.0];
+  widthAnchor3 = [v12 widthAnchor];
+  v33 = [widthAnchor3 constraintEqualToConstant:56.0];
   v56[6] = v33;
   v42 = v19;
-  v34 = [v19 heightAnchor];
-  v35 = [v34 constraintEqualToConstant:56.0];
+  heightAnchor5 = [v19 heightAnchor];
+  v35 = [heightAnchor5 constraintEqualToConstant:56.0];
   v56[7] = v35;
-  v36 = [v19 widthAnchor];
-  v37 = [v36 constraintEqualToConstant:56.0];
+  widthAnchor4 = [v19 widthAnchor];
+  v37 = [widthAnchor4 constraintEqualToConstant:56.0];
   v56[8] = v37;
   v38 = [NSArray arrayWithObjects:v56 count:9];
   [NSLayoutConstraint activateConstraints:v38];

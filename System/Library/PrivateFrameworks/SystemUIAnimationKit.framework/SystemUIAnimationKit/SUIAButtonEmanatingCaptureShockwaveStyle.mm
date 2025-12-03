@@ -1,21 +1,21 @@
 @interface SUIAButtonEmanatingCaptureShockwaveStyle
-- (SUIAButtonEmanatingCaptureShockwaveStyle)initWithNormalizedButtonEdgeLocation:(CGRect)a3 shockwaveViewBounds:(CGRect)a4;
-- (id)chromaticAberrationConfigurationForState:(int64_t)a3;
-- (id)fillLightConfigurationForState:(int64_t)a3;
-- (id)meshConfigurationForState:(int64_t)a3;
+- (SUIAButtonEmanatingCaptureShockwaveStyle)initWithNormalizedButtonEdgeLocation:(CGRect)location shockwaveViewBounds:(CGRect)bounds;
+- (id)chromaticAberrationConfigurationForState:(int64_t)state;
+- (id)fillLightConfigurationForState:(int64_t)state;
+- (id)meshConfigurationForState:(int64_t)state;
 @end
 
 @implementation SUIAButtonEmanatingCaptureShockwaveStyle
 
-- (SUIAButtonEmanatingCaptureShockwaveStyle)initWithNormalizedButtonEdgeLocation:(CGRect)a3 shockwaveViewBounds:(CGRect)a4
+- (SUIAButtonEmanatingCaptureShockwaveStyle)initWithNormalizedButtonEdgeLocation:(CGRect)location shockwaveViewBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = location.size.height;
+  width = location.size.width;
+  y = location.origin.y;
+  x = location.origin.x;
   v9.receiver = self;
   v9.super_class = SUIAButtonEmanatingCaptureShockwaveStyle;
-  result = [(SUIAAbstractShockwaveStyle *)&v9 initWithShockwaveViewBounds:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  result = [(SUIAAbstractShockwaveStyle *)&v9 initWithShockwaveViewBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   if (result)
   {
     result->_normalizedButtonLocation.origin.x = x;
@@ -27,22 +27,22 @@
   return result;
 }
 
-- (id)chromaticAberrationConfigurationForState:(int64_t)a3
+- (id)chromaticAberrationConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
-  v6 = [v5 captureChromaticAberrationEnabled];
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  captureChromaticAberrationEnabled = [_shockwaveSettings captureChromaticAberrationEnabled];
 
-  if (v6)
+  if (captureChromaticAberrationEnabled)
   {
     v7 = +[_SUIAShockwaveChromaticAberrationConfiguration configurationType];
-    v8 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v7 state:a3];
+    v8 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v7 state:state];
     if (!v8)
     {
-      v9 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+      _shockwaveSettings2 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
       [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-      v8 = [_SUIAShockwaveChromaticAberrationConfiguration chromaticAberrationConfigurationForState:a3 variant:0 buttonEmanating:1 normalizedStartLocation:v9 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v10, v11, v12, v13];
+      v8 = [_SUIAShockwaveChromaticAberrationConfiguration chromaticAberrationConfigurationForState:state variant:0 buttonEmanating:1 normalizedStartLocation:_shockwaveSettings2 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v10, v11, v12, v13];
 
-      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v8 forType:v7 state:a3];
+      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v8 forType:v7 state:state];
     }
   }
 
@@ -54,18 +54,18 @@
   return v8;
 }
 
-- (id)meshConfigurationForState:(int64_t)a3
+- (id)meshConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
-  if ([v5 captureMeshEnabled])
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  if ([_shockwaveSettings captureMeshEnabled])
   {
     v6 = +[_SUIAShockwaveMeshConfiguration configurationType];
-    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:a3];
+    v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:state];
     if (!v7)
     {
       [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-      v7 = [_SUIAShockwaveMeshConfiguration meshConfigurationForState:a3 variant:0 normalizedStartLocation:v5 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
-      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:a3];
+      v7 = [_SUIAShockwaveMeshConfiguration meshConfigurationForState:state variant:0 normalizedStartLocation:_shockwaveSettings settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
+      [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:state];
     }
   }
 
@@ -77,16 +77,16 @@
   return v7;
 }
 
-- (id)fillLightConfigurationForState:(int64_t)a3
+- (id)fillLightConfigurationForState:(int64_t)state
 {
-  v5 = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
+  _shockwaveSettings = [(SUIAAbstractShockwaveStyle *)self _shockwaveSettings];
   v6 = +[_SUIAShockwaveFillLightConfiguration configurationType];
-  v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:a3];
+  v7 = [(SUIAAbstractShockwaveStyle *)self _configurationForType:v6 state:state];
   if (!v7)
   {
     [(SUIAAbstractShockwaveStyle *)self shockwaveBounds];
-    v7 = [_SUIAShockwaveFillLightConfiguration fillLightConfigurationForState:a3 variant:0 normalizedStartLocation:v5 settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
-    [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:a3];
+    v7 = [_SUIAShockwaveFillLightConfiguration fillLightConfigurationForState:state variant:0 normalizedStartLocation:_shockwaveSettings settings:[(SUIAAbstractShockwaveStyle *)self userInterfaceIdiom] bounds:[(SUIAAbstractShockwaveStyle *)self usesIntelligentFillLight] idiom:self->_normalizedButtonLocation.origin.x usesIntelligentFillLight:self->_normalizedButtonLocation.origin.y, self->_normalizedButtonLocation.size.width, self->_normalizedButtonLocation.size.height, v8, v9, v10, v11];
+    [(SUIAAbstractShockwaveStyle *)self _setConfiguration:v7 forType:v6 state:state];
   }
 
   return v7;

@@ -2,12 +2,12 @@
 - (BOOL)becomeFirstResponderForAuxStyling;
 - (BOOL)canConvertToTag;
 - (BOOL)canConvertToText;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)resignFirstResponderForAuxStyling;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)textViewShouldBeginEditing:(id)a3;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)textViewShouldBeginEditing:(id)editing;
 - (CGPoint)initialDragOffset;
 - (CGPoint)previousNoteContentOffset;
 - (CGPoint)previousViewOrigin;
@@ -21,7 +21,7 @@
 - (id)columnMenu;
 - (id)copySelectionAction;
 - (id)cutSelectionAction;
-- (id)dragSnapshotFromRect:(CGRect)a3 afterScreenUpdates:(BOOL)a4;
+- (id)dragSnapshotFromRect:(CGRect)rect afterScreenUpdates:(BOOL)updates;
 - (id)formatMenu;
 - (id)icTableDataFromPasteboard;
 - (id)noteEditorViewController;
@@ -36,108 +36,108 @@
 - (id)toggleStrikethroughAction;
 - (id)toggleTableDirectionAction;
 - (id)toggleUnderlineAction;
-- (void)adjustScrollPositionByOffset:(CGPoint)a3;
-- (void)beginEditingCellWithColumnID:(id)a3 andRowID:(id)a4 textRange:(id)a5;
-- (void)beginEditingNoteAtRange:(_NSRange)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)adjustScrollPositionByOffset:(CGPoint)offset;
+- (void)beginEditingCellWithColumnID:(id)d andRowID:(id)iD textRange:(id)range;
+- (void)beginEditingNoteAtRange:(_NSRange)range;
+- (void)buildMenuWithBuilder:(id)builder;
 - (void)cellFirstResponderChanged;
 - (void)cleanUpKVOIfNeeded;
-- (void)columnButtonMenuActionTriggered:(id)a3;
-- (void)columnButtonPressed:(id)a3;
-- (void)convertToTag:(id)a3;
-- (void)convertToText:(id)a3;
+- (void)columnButtonMenuActionTriggered:(id)triggered;
+- (void)columnButtonPressed:(id)pressed;
+- (void)convertToTag:(id)tag;
+- (void)convertToText:(id)text;
 - (void)convertUnconfirmedHashtagsMentionsIfNecessary;
-- (void)copySelection:(id)a3;
+- (void)copySelection:(id)selection;
 - (void)dealloc;
-- (void)didBeginEditingWithTextView:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)didTapEmptyTable:(id)a3;
+- (void)didBeginEditingWithTextView:(id)view;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)didTapEmptyTable:(id)table;
 - (void)didUpdateContentSize;
-- (void)dragCellRange:(id)a3;
-- (void)dragColumn:(id)a3;
-- (void)dragRow:(id)a3;
-- (void)dragTextRange:(id)a3;
-- (void)ensureGesturesOnSelectionGrabbers:(id)a3;
-- (void)eventReporterLostSession:(id)a3;
+- (void)dragCellRange:(id)range;
+- (void)dragColumn:(id)column;
+- (void)dragRow:(id)row;
+- (void)dragTextRange:(id)range;
+- (void)ensureGesturesOnSelectionGrabbers:(id)grabbers;
+- (void)eventReporterLostSession:(id)session;
 - (void)invalidateCachedChildrenForAccessibilityReparenting;
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5;
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end;
 - (void)loadView;
-- (void)makeDelegateOfTextView:(id)a3;
-- (void)menuDidHide:(id)a3;
-- (void)menuWillHide:(id)a3;
+- (void)makeDelegateOfTextView:(id)view;
+- (void)menuDidHide:(id)hide;
+- (void)menuWillHide:(id)hide;
 - (void)moveAccessibilityFocusToSelectedColumnOrRowButton;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)paste:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)paste:(id)paste;
 - (void)performInitialLayoutIfNeeded;
-- (void)rowButtonMenuActionTriggered:(id)a3;
-- (void)rowButtonPressed:(id)a3;
-- (void)scrollToCaretIfNeededForTextView:(id)a3;
-- (void)scrollToRect:(CGRect)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)rowButtonMenuActionTriggered:(id)triggered;
+- (void)rowButtonPressed:(id)pressed;
+- (void)scrollToCaretIfNeededForTextView:(id)view;
+- (void)scrollToRect:(CGRect)rect animated:(BOOL)animated completion:(id)completion;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)selectCell;
 - (void)selectCurrentColumnForAccessibility;
 - (void)selectCurrentRowForAccessibility;
-- (void)selectionDidResignFirstResponder:(id)a3;
+- (void)selectionDidResignFirstResponder:(id)responder;
 - (void)sendAnalyticsForEndEditIfNeeded;
 - (void)sendAnalyticsForStartEditIfNeeded;
-- (void)setTextViewWritingDirection:(int64_t)a3 sender:(id)a4;
+- (void)setTextViewWritingDirection:(int64_t)direction sender:(id)sender;
 - (void)setupEventHandling;
 - (void)setupKVOIfNeeded;
-- (void)setupTableTextView:(id)a3;
-- (void)shareTable:(id)a3;
-- (void)showButtonsAtColumns:(id)a3 rows:(id)a4;
+- (void)setupTableTextView:(id)view;
+- (void)shareTable:(id)table;
+- (void)showButtonsAtColumns:(id)columns rows:(id)rows;
 - (void)showRangeSelectionMenu;
-- (void)showSelectionMenuFromRect:(CGRect)a3;
-- (void)speakAccessibilityAnnouncementForMoveToCellWithColumnID:(id)a3 rowID:(id)a4;
-- (void)speakAccessibilityExitedTableAnnouncementAndDidRemoveRow:(BOOL)a3;
-- (void)strikethrough:(id)a3;
+- (void)showSelectionMenuFromRect:(CGRect)rect;
+- (void)speakAccessibilityAnnouncementForMoveToCellWithColumnID:(id)d rowID:(id)iD;
+- (void)speakAccessibilityExitedTableAnnouncementAndDidRemoveRow:(BOOL)row;
+- (void)strikethrough:(id)strikethrough;
 - (void)tableAttachmentDidChange;
-- (void)tableAttachmentSelectionDidChange:(id)a3;
-- (void)textViewDidBeginEditing:(id)a3;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)textViewDidEndEditing:(id)a3;
+- (void)tableAttachmentSelectionDidChange:(id)change;
+- (void)textViewDidBeginEditing:(id)editing;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)textViewDidEndEditing:(id)editing;
 - (void)unselectColumnRow;
 - (void)updateAccessibilityValueForColumnAndRowButtons;
 - (void)updateChrome;
-- (void)updateKeyboardAppearanceForTextView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateKeyboardAppearanceForTextView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willBeginEditingWithTextView:(id)a3;
-- (void)willMoveToParentViewController:(id)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willBeginEditingWithTextView:(id)view;
+- (void)willMoveToParentViewController:(id)controller;
 @end
 
 @implementation ICiOSTableAttachmentViewController
 
 - (void)dealloc
 {
-  v3 = [(ICiOSTableAttachmentViewController *)self rowLongPress];
+  rowLongPress = [(ICiOSTableAttachmentViewController *)self rowLongPress];
 
-  if (v3)
+  if (rowLongPress)
   {
-    v4 = [(ICiOSTableAttachmentViewController *)self ic_viewControllerManager];
-    v5 = [v4 mainSplitViewController];
-    v6 = [v5 viewControllerForColumn:3];
+    ic_viewControllerManager = [(ICiOSTableAttachmentViewController *)self ic_viewControllerManager];
+    mainSplitViewController = [ic_viewControllerManager mainSplitViewController];
+    v6 = [mainSplitViewController viewControllerForColumn:3];
 
     objc_opt_class();
     v7 = ICDynamicCast();
-    v8 = [v7 interactivePopGestureRecognizer];
+    interactivePopGestureRecognizer = [v7 interactivePopGestureRecognizer];
 
-    v9 = [(ICiOSTableAttachmentViewController *)self rowLongPress];
-    [v8 removeFailureRequirement:v9];
+    rowLongPress2 = [(ICiOSTableAttachmentViewController *)self rowLongPress];
+    [interactivePopGestureRecognizer removeFailureRequirement:rowLongPress2];
   }
 
   [(ICiOSTableAttachmentViewController *)self cleanUpKVOIfNeeded];
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v11.receiver = self;
   v11.super_class = ICiOSTableAttachmentViewController;
@@ -146,44 +146,44 @@
 
 - (CGRect)editingViewport
 {
-  v3 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
-  v4 = [(ICiOSTableAttachmentViewController *)self view];
-  v5 = [v4 superview];
+  noteScrollView = [(ICiOSTableAttachmentViewController *)self noteScrollView];
+  view = [(ICiOSTableAttachmentViewController *)self view];
+  superview = [view superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v3 contentOffset];
-    [v6 convertPoint:v3 fromView:?];
+    tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+    [noteScrollView contentOffset];
+    [tableContentView convertPoint:noteScrollView fromView:?];
     v8 = v7;
   }
 
   else
   {
-    [v3 contentOffset];
+    [noteScrollView contentOffset];
     v10 = v9;
     [(ICTableAttachmentViewController *)self proposedLineFragmentRect];
     v12 = v10 - v11;
-    v13 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v13 textContainerInset];
-    v14 = [(ICTableAttachmentViewController *)self noteTextView];
-    v15 = [v14 textContainer];
-    [v15 lineFragmentPadding];
+    noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+    [noteTextView textContainerInset];
+    noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+    textContainer = [noteTextView2 textContainer];
+    [textContainer lineFragmentPadding];
 
-    v6 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v6 textContainerInset];
+    tableContentView = [(ICTableAttachmentViewController *)self noteTextView];
+    [tableContentView textContainerInset];
     v8 = v12 - v16;
   }
 
-  v17 = [(ICTableAttachmentViewController *)self scrollView];
-  [v17 contentOffset];
+  scrollView = [(ICTableAttachmentViewController *)self scrollView];
+  [scrollView contentOffset];
   v19 = v18;
 
-  if (v3)
+  if (noteScrollView)
   {
     [(ICTableAttachmentViewController *)self availableWidth];
     v21 = v20;
-    [v3 bounds];
+    [noteScrollView bounds];
     v23 = v22;
   }
 
@@ -208,8 +208,8 @@
 {
   IsTextKit2Enabled = ICInternalSettingsIsTextKit2Enabled();
   objc_opt_class();
-  v4 = [(ICiOSTableAttachmentViewController *)self parentViewController];
-  v5 = v4;
+  parentViewController = [(ICiOSTableAttachmentViewController *)self parentViewController];
+  v5 = parentViewController;
   if (IsTextKit2Enabled)
   {
     v6 = ICCheckedDynamicCast();
@@ -217,7 +217,7 @@
 
   else
   {
-    v7 = [v4 parentViewController];
+    v4ParentViewController = [parentViewController parentViewController];
     v6 = ICCheckedDynamicCast();
   }
 
@@ -226,7 +226,7 @@
 
 - (id)auxiliaryTextViewHost
 {
-  v2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
   objc_opt_class();
   v3 = ICClassAndProtocolCast();
 
@@ -238,17 +238,17 @@
   v7.receiver = self;
   v7.super_class = ICiOSTableAttachmentViewController;
   [(ICTableAttachmentViewController *)&v7 loadView];
-  v3 = [(ICTableAttachmentViewController *)self scrollView];
-  [v3 setDirectionalLockEnabled:1];
+  scrollView = [(ICTableAttachmentViewController *)self scrollView];
+  [scrollView setDirectionalLockEnabled:1];
 
-  v4 = [(ICTableAttachmentViewController *)self scrollView];
-  [v4 setShowsVerticalScrollIndicator:0];
+  scrollView2 = [(ICTableAttachmentViewController *)self scrollView];
+  [scrollView2 setShowsVerticalScrollIndicator:0];
 
-  v5 = [(ICTableAttachmentViewController *)self scrollView];
-  [v5 setDelegate:self];
+  scrollView3 = [(ICTableAttachmentViewController *)self scrollView];
+  [scrollView3 setDelegate:self];
 
-  v6 = [(ICTableAttachmentViewController *)self headerClipView];
-  [v6 setAutoresizingMask:34];
+  headerClipView = [(ICTableAttachmentViewController *)self headerClipView];
+  [headerClipView setAutoresizingMask:34];
 }
 
 - (void)viewDidLoad
@@ -258,27 +258,27 @@
   [(ICiOSTableAttachmentViewController *)&v7 viewDidLoad];
   v3 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_dragCellRange_];
   [v3 setMinimumPressDuration:0.0];
-  v4 = [(ICTableAttachmentViewController *)self startKnob];
-  [v4 addGestureRecognizer:v3];
+  startKnob = [(ICTableAttachmentViewController *)self startKnob];
+  [startKnob addGestureRecognizer:v3];
 
   v5 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_dragCellRange_];
   [v5 setMinimumPressDuration:0.0];
-  v6 = [(ICTableAttachmentViewController *)self endKnob];
-  [v6 addGestureRecognizer:v5];
+  endKnob = [(ICTableAttachmentViewController *)self endKnob];
+  [endKnob addGestureRecognizer:v5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = ICiOSTableAttachmentViewController;
-  [(ICiOSTableAttachmentViewController *)&v3 viewWillAppear:a3];
+  [(ICiOSTableAttachmentViewController *)&v3 viewWillAppear:appear];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = ICiOSTableAttachmentViewController;
-  [(ICiOSTableAttachmentViewController *)&v4 viewDidAppear:a3];
+  [(ICiOSTableAttachmentViewController *)&v4 viewDidAppear:appear];
   [(ICiOSTableAttachmentViewController *)self setupKVOIfNeeded];
   if (ICInternalSettingsIsTextKit2Enabled())
   {
@@ -286,11 +286,11 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = ICiOSTableAttachmentViewController;
-  [(ICiOSTableAttachmentViewController *)&v4 viewWillDisappear:a3];
+  [(ICiOSTableAttachmentViewController *)&v4 viewWillDisappear:disappear];
   [(ICiOSTableAttachmentViewController *)self cleanUpKVOIfNeeded];
 }
 
@@ -299,14 +299,14 @@
   v13.receiver = self;
   v13.super_class = ICiOSTableAttachmentViewController;
   [(ICiOSTableAttachmentViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(ICiOSTableAttachmentViewController *)self view];
-  [v3 bounds];
+  view = [(ICiOSTableAttachmentViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ICTableAttachmentViewController *)self scrollView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  scrollView = [(ICTableAttachmentViewController *)self scrollView];
+  [scrollView setFrame:{v5, v7, v9, v11}];
 
   [(ICTableAttachmentViewController *)self updateTiles];
 }
@@ -331,13 +331,13 @@
   }
 
   [(ICiOSTableAttachmentViewController *)self performInitialLayoutIfNeeded];
-  v3 = [(ICTableAttachmentViewController *)self textViewManager];
+  textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __59__ICiOSTableAttachmentViewController_viewDidLayoutSubviews__block_invoke_2;
   v4[3] = &unk_2781AC718;
   v4[4] = self;
-  [v3 enumerateTextViewsWithBlock:v4];
+  [textViewManager enumerateTextViewsWithBlock:v4];
 }
 
 void __59__ICiOSTableAttachmentViewController_viewDidLayoutSubviews__block_invoke(uint64_t a1)
@@ -346,37 +346,37 @@ void __59__ICiOSTableAttachmentViewController_viewDidLayoutSubviews__block_invok
   [WeakRetained beginEditingInitialCell];
 }
 
-- (void)willMoveToParentViewController:(id)a3
+- (void)willMoveToParentViewController:(id)controller
 {
   v5.receiver = self;
   v5.super_class = ICiOSTableAttachmentViewController;
   [(ICiOSTableAttachmentViewController *)&v5 willMoveToParentViewController:?];
-  if (!a3)
+  if (!controller)
   {
     [(ICiOSTableAttachmentViewController *)self cleanUpKVOIfNeeded];
   }
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = ICiOSTableAttachmentViewController;
   [(ICiOSTableAttachmentViewController *)&v6 didMoveToParentViewController:?];
-  if (a3)
+  if (controller)
   {
-    v5 = [(ICTableAttachmentViewController *)self textViewManager];
-    [v5 parentViewDidChange];
+    textViewManager = [(ICTableAttachmentViewController *)self textViewManager];
+    [textViewManager parentViewDidChange];
   }
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v9.receiver = self;
   v9.super_class = ICiOSTableAttachmentViewController;
-  [(ICiOSTableAttachmentViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(ICiOSTableAttachmentViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(ICiOSTableAttachmentViewController *)self editingViewport];
   [(ICTableAttachmentViewController *)self setTransitionViewport:?];
   if (ICInternalSettingsIsTextKit2Enabled())
@@ -389,7 +389,7 @@ void __59__ICiOSTableAttachmentViewController_viewDidLayoutSubviews__block_invok
   v8[2] = __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v8[3] = &unk_2781AC788;
   v8[4] = self;
-  [v7 animateAlongsideTransition:&__block_literal_global_0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:&__block_literal_global_0 completion:v8];
 }
 
 void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2(uint64_t a1)
@@ -432,19 +432,19 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
 {
   if (![(ICiOSTableAttachmentViewController *)self isObservingContentOffset])
   {
-    v3 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-    v4 = [v3 isEditingOnSystemPaper];
+    noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+    isEditingOnSystemPaper = [noteEditorViewController isEditingOnSystemPaper];
 
-    if ((v4 & 1) == 0)
+    if ((isEditingOnSystemPaper & 1) == 0)
     {
-      v5 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
-      [v5 ic_addObserver:self forKeyPath:@"contentOffset" context:&compoundliteral];
+      noteScrollView = [(ICiOSTableAttachmentViewController *)self noteScrollView];
+      [noteScrollView ic_addObserver:self forKeyPath:@"contentOffset" context:&compoundliteral];
 
       [(ICiOSTableAttachmentViewController *)self setIsObservingContentOffset:1];
     }
 
-    v6 = [(ICiOSTableAttachmentViewController *)self view];
-    [v6 ic_addObserver:self forKeyPath:@"frame" context:&compoundliteral_637];
+    view = [(ICiOSTableAttachmentViewController *)self view];
+    [view ic_addObserver:self forKeyPath:@"frame" context:&compoundliteral_637];
   }
 }
 
@@ -452,37 +452,37 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
 {
   if ([(ICiOSTableAttachmentViewController *)self isObservingContentOffset])
   {
-    v3 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
-    [v3 ic_removeObserver:self forKeyPath:@"contentOffset" context:&compoundliteral];
+    noteScrollView = [(ICiOSTableAttachmentViewController *)self noteScrollView];
+    [noteScrollView ic_removeObserver:self forKeyPath:@"contentOffset" context:&compoundliteral];
 
-    v4 = [(ICiOSTableAttachmentViewController *)self view];
-    [v4 ic_removeObserver:self forKeyPath:@"frame" context:&compoundliteral_637];
+    view = [(ICiOSTableAttachmentViewController *)self view];
+    [view ic_removeObserver:self forKeyPath:@"frame" context:&compoundliteral_637];
 
     [(ICiOSTableAttachmentViewController *)self setIsObservingContentOffset:0];
   }
 
-  v5 = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
+  keyboardWillShowScrollObservation = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
 
-  if (v5)
+  if (keyboardWillShowScrollObservation)
   {
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    v6 = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
-    [v7 removeObserver:v6];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    keyboardWillShowScrollObservation2 = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
+    [defaultCenter removeObserver:keyboardWillShowScrollObservation2];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  if (([(ICiOSTableAttachmentViewController *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/Common/TextAttachmentUI/iOS/ICiOSTableAttachmentViewController.m"]& 1) != 0)
+  objectCopy = object;
+  changeCopy = change;
+  pathCopy = path;
+  if (([(ICiOSTableAttachmentViewController *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotes/Ironcade/Common/TextAttachmentUI/iOS/ICiOSTableAttachmentViewController.m"]& 1) != 0)
   {
-    v13 = [(ICiOSTableAttachmentViewController *)self ic_shouldIgnoreObserveValue:v11 ofObject:v10 forKeyPath:v12];
+    v13 = [(ICiOSTableAttachmentViewController *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
     if ((v13 & 1) == 0)
     {
-      if (a6 == &compoundliteral)
+      if (context == &compoundliteral)
       {
         if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
         {
@@ -492,15 +492,15 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
         [(ICiOSTableAttachmentViewController *)self previousNoteContentOffset];
         v25 = v24;
         v27 = v26;
-        v28 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
-        [v28 contentOffset];
+        noteScrollView = [(ICiOSTableAttachmentViewController *)self noteScrollView];
+        [noteScrollView contentOffset];
         v30 = v29;
         v32 = v31;
 
         if (v25 != v30 || v27 != v32)
         {
-          v33 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
-          [v33 contentOffset];
+          noteScrollView2 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
+          [noteScrollView2 contentOffset];
           [(ICiOSTableAttachmentViewController *)self setPreviousNoteContentOffset:?];
 
           v34[0] = MEMORY[0x277D85DD0];
@@ -509,12 +509,12 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
           v34[3] = &unk_2781ABCF8;
           v34[4] = self;
           [MEMORY[0x277D75D18] ic_performWithoutAnimation:v34];
-          [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_scrollViewDidEndScrollingAnimation_ object:v10];
-          [(ICiOSTableAttachmentViewController *)self performSelector:sel_scrollViewDidEndScrollingAnimation_ withObject:v10 afterDelay:0.2];
+          [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_scrollViewDidEndScrollingAnimation_ object:objectCopy];
+          [(ICiOSTableAttachmentViewController *)self performSelector:sel_scrollViewDidEndScrollingAnimation_ withObject:objectCopy afterDelay:0.2];
         }
       }
 
-      else if (a6 == &compoundliteral_637)
+      else if (context == &compoundliteral_637)
       {
         if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
         {
@@ -524,15 +524,15 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
         [(ICiOSTableAttachmentViewController *)self previousViewOrigin];
         v15 = v14;
         v17 = v16;
-        v18 = [(ICiOSTableAttachmentViewController *)self view];
-        [v18 frame];
+        view = [(ICiOSTableAttachmentViewController *)self view];
+        [view frame];
         v20 = v19;
         v22 = v21;
 
         if (v15 != v20 || v17 != v22)
         {
-          v23 = [(ICiOSTableAttachmentViewController *)self view];
-          [v23 frame];
+          view2 = [(ICiOSTableAttachmentViewController *)self view];
+          [view2 frame];
           [(ICiOSTableAttachmentViewController *)self setPreviousViewOrigin:?];
 
           [(ICTableAttachmentViewController *)self updateTiles];
@@ -545,21 +545,21 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
   {
     v35.receiver = self;
     v35.super_class = ICiOSTableAttachmentViewController;
-    [(ICiOSTableAttachmentViewController *)&v35 observeValueForKeyPath:v12 ofObject:v10 change:v11 context:a6];
+    [(ICiOSTableAttachmentViewController *)&v35 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(ICTableAttachmentViewController *)self updateTiles];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [(ICTableAttachmentViewController *)self scrollView];
-  [v5 postNotificationName:@"ICTableScrollViewBoundsDidChangeNotification" object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  scrollView = [(ICTableAttachmentViewController *)self scrollView];
+  [defaultCenter postNotificationName:@"ICTableScrollViewBoundsDidChangeNotification" object:scrollView];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_showRangeSelectionMenu object:0];
 
@@ -567,16 +567,16 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_showRangeSelectionMenu object:0];
 
   [(ICiOSTableAttachmentViewController *)self performSelector:sel_showRangeSelectionMenu withObject:0 afterDelay:0.2];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
-  [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_scrollViewDidEndScrollingAnimation_ object:a3];
+  [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_scrollViewDidEndScrollingAnimation_ object:animation];
 
   [(ICiOSTableAttachmentViewController *)self showRangeSelectionMenu];
 }
@@ -589,34 +589,34 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
   [(ICTableAttachmentViewController *)self intrinsicSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(ICTableAttachmentViewController *)self scrollView];
-  [v7 setContentSize:{v4, v6}];
+  scrollView = [(ICTableAttachmentViewController *)self scrollView];
+  [scrollView setContentSize:{v4, v6}];
 
-  v8 = [(ICTableAttachmentViewController *)self scrollView];
-  [v8 setContentInsetAdjustmentBehavior:2];
+  scrollView2 = [(ICTableAttachmentViewController *)self scrollView];
+  [scrollView2 setContentInsetAdjustmentBehavior:2];
 }
 
-- (void)adjustScrollPositionByOffset:(CGPoint)a3
+- (void)adjustScrollPositionByOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(ICTableAttachmentViewController *)self scrollView];
-  [v6 contentOffset];
+  y = offset.y;
+  x = offset.x;
+  scrollView = [(ICTableAttachmentViewController *)self scrollView];
+  [scrollView contentOffset];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(ICTableAttachmentViewController *)self scrollView];
-  [v11 setContentOffset:{x + v8, y + v10}];
+  scrollView2 = [(ICTableAttachmentViewController *)self scrollView];
+  [scrollView2 setContentOffset:{x + v8, y + v10}];
 }
 
-- (void)scrollToRect:(CGRect)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)scrollToRect:(CGRect)rect animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  rect.origin.x = a3.origin.x;
-  v10 = a5;
+  animatedCopy = animated;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  rect.origin.x = rect.origin.x;
+  completionCopy = completion;
   if (![(ICTableAttachmentViewController *)self preventScrolling])
   {
     v74 = width;
@@ -626,8 +626,8 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
     v15 = v14;
     v73 = v16;
     v18 = v17;
-    v19 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
-    [v19 contentInset];
+    noteScrollView = [(ICiOSTableAttachmentViewController *)self noteScrollView];
+    [noteScrollView contentInset];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -635,8 +635,8 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
 
     if (ICInternalSettingsIsTextKit2Enabled())
     {
-      v28 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
-      [v28 safeAreaInsets];
+      noteScrollView2 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
+      [noteScrollView2 safeAreaInsets];
       v21 = v29;
     }
 
@@ -646,9 +646,9 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
     v33 = v73 - (v23 + v27);
     v70 = v32;
     v34 = v18 - (v25 + v32);
-    if (v10)
+    if (completionCopy)
     {
-      v35 = v10;
+      v35 = completionCopy;
     }
 
     else
@@ -673,17 +673,17 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
       goto LABEL_27;
     }
 
-    v37 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
-    v38 = [(ICTableAttachmentViewController *)self scrollView];
-    v39 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
-    v40 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v39 convertRect:v40 fromView:{rect.origin.x, y, v74, v72}];
+    noteScrollView3 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
+    scrollView = [(ICTableAttachmentViewController *)self scrollView];
+    noteScrollView4 = [(ICiOSTableAttachmentViewController *)self noteScrollView];
+    tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+    [noteScrollView4 convertRect:tableContentView fromView:{rect.origin.x, y, v74, v72}];
     v66 = v42;
     v67 = v41;
     v64 = v44;
     v65 = v43;
 
-    [v37 contentOffset];
+    [noteScrollView3 contentOffset];
     v68 = v45;
     v69 = v46;
     v87.origin.x = rect.origin.x;
@@ -702,9 +702,9 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
       v91.size.height = v64;
       v91.size.width = v65;
       v49 = CGRectGetMidY(v91) + v34 * -0.5 - v70;
-      [v37 contentSize];
+      [noteScrollView3 contentSize];
       v51 = v50 - v34;
-      [v37 contentInset];
+      [noteScrollView3 contentInset];
       v53 = -v52;
       if (v49 >= v51)
       {
@@ -725,7 +725,7 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
       v69 = v53;
     }
 
-    [v38 contentOffset];
+    [scrollView contentOffset];
     v71 = v55;
     v75 = v56;
     v92.origin.x = rect.origin.x;
@@ -740,7 +740,7 @@ void __89__ICiOSTableAttachmentViewController_viewWillTransitionToSize_withTrans
     if (MinX >= CGRectGetMinX(v93) && (v94.origin.x = rect.origin.x, v94.origin.y = y, v94.size.width = v36, v94.size.height = v72, MaxX = CGRectGetMaxX(v94), v95.origin.x = v30, v95.origin.y = v31, v95.size.width = v33, v95.size.height = v34, MaxX <= CGRectGetMaxX(v95)))
     {
       v62 = v71;
-      if (v5)
+      if (animatedCopy)
       {
 LABEL_23:
         v63 = MEMORY[0x277D75D18];
@@ -748,10 +748,10 @@ LABEL_23:
         v79[1] = 3221225472;
         v79[2] = __71__ICiOSTableAttachmentViewController_scrollToRect_animated_completion___block_invoke_2;
         v79[3] = &unk_2781AC7B0;
-        v80 = v37;
+        v80 = noteScrollView3;
         v82 = v68;
         v83 = v69;
-        v81 = v38;
+        v81 = scrollView;
         v84 = v62;
         v85 = v75;
         *&rect.origin.y = MEMORY[0x277D85DD0];
@@ -781,19 +781,19 @@ LABEL_26:
       }
 
       v62 = fmax(v61, 0.0);
-      if (v5)
+      if (animatedCopy)
       {
         goto LABEL_23;
       }
     }
 
-    [v37 setContentOffset:{v68, v69}];
-    [v38 setContentOffset:{v62, v75}];
+    [noteScrollView3 setContentOffset:{v68, v69}];
+    [scrollView setContentOffset:{v62, v75}];
     v11[2](v11);
     goto LABEL_26;
   }
 
-  v11 = v10;
+  v11 = completionCopy;
 LABEL_27:
 }
 
@@ -807,36 +807,36 @@ uint64_t __71__ICiOSTableAttachmentViewController_scrollToRect_animated_completi
   return [v2 setContentOffset:{v3, v4}];
 }
 
-- (void)beginEditingNoteAtRange:(_NSRange)a3
+- (void)beginEditingNoteAtRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   objc_opt_class();
-  v6 = [(ICiOSTableAttachmentViewController *)self view];
+  view = [(ICiOSTableAttachmentViewController *)self view];
   v11 = ICDynamicCast();
 
   objc_opt_class();
-  v7 = [v11 textView];
+  textView = [v11 textView];
   v8 = ICDynamicCast();
 
-  v9 = [v8 editorController];
-  [v9 setSelectedRange:{location, length}];
+  editorController = [v8 editorController];
+  [editorController setSelectedRange:{location, length}];
 
-  v10 = [v8 editorController];
-  [v10 startEditing];
+  editorController2 = [v8 editorController];
+  [editorController2 startEditing];
 
   [(ICiOSTableAttachmentViewController *)self speakAccessibilityExitedTableAnnouncementAndDidRemoveRow:0];
 }
 
-- (id)dragSnapshotFromRect:(CGRect)a3 afterScreenUpdates:(BOOL)a4
+- (id)dragSnapshotFromRect:(CGRect)rect afterScreenUpdates:(BOOL)updates
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(ICTableAttachmentViewController *)self scrollView];
-  v11 = [v10 resizableSnapshotViewFromRect:v4 afterScreenUpdates:x withCapInsets:{y, width, height, *MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
+  updatesCopy = updates;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  scrollView = [(ICTableAttachmentViewController *)self scrollView];
+  v11 = [scrollView resizableSnapshotViewFromRect:updatesCopy afterScreenUpdates:x withCapInsets:{y, width, height, *MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
 
   if ([MEMORY[0x277D75418] ic_isVision])
   {
@@ -846,9 +846,9 @@ uint64_t __71__ICiOSTableAttachmentViewController_scrollToRect_animated_completi
   else
   {
     v12 = MEMORY[0x277D75348];
-    v13 = [(ICiOSTableAttachmentViewController *)self view];
-    v14 = [v13 traitCollection];
-    v15 = [v12 ic_attachmentBackgroundColorForTraitCollection:v14];
+    view = [(ICiOSTableAttachmentViewController *)self view];
+    traitCollection = [view traitCollection];
+    v15 = [v12 ic_attachmentBackgroundColorForTraitCollection:traitCollection];
     v16 = [v15 colorWithAlphaComponent:0.7];
     [v11 setBackgroundColor:v16];
   }
@@ -856,45 +856,45 @@ uint64_t __71__ICiOSTableAttachmentViewController_scrollToRect_animated_completi
   return v11;
 }
 
-- (void)setupTableTextView:(id)a3
+- (void)setupTableTextView:(id)view
 {
   v5.receiver = self;
   v5.super_class = ICiOSTableAttachmentViewController;
-  v4 = a3;
-  [(ICTableAttachmentViewController *)&v5 setupTableTextView:v4];
-  [(ICiOSTableAttachmentViewController *)self updateKeyboardAppearanceForTextView:v4, v5.receiver, v5.super_class];
+  viewCopy = view;
+  [(ICTableAttachmentViewController *)&v5 setupTableTextView:viewCopy];
+  [(ICiOSTableAttachmentViewController *)self updateKeyboardAppearanceForTextView:viewCopy, v5.receiver, v5.super_class];
 }
 
-- (void)updateKeyboardAppearanceForTextView:(id)a3
+- (void)updateKeyboardAppearanceForTextView:(id)view
 {
-  v4 = a3;
-  v5 = [(ICTableAttachmentViewController *)self noteTextView];
-  [v4 setOverrideUserInterfaceStyle:{objc_msgSend(v5, "overrideUserInterfaceStyle")}];
+  viewCopy = view;
+  noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+  [viewCopy setOverrideUserInterfaceStyle:{objc_msgSend(noteTextView, "overrideUserInterfaceStyle")}];
 
-  v6 = [(ICTableAttachmentViewController *)self noteTextView];
-  [v4 setKeyboardAppearance:{objc_msgSend(v6, "keyboardAppearance")}];
+  noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+  [viewCopy setKeyboardAppearance:{objc_msgSend(noteTextView2, "keyboardAppearance")}];
 }
 
 - (void)setupEventHandling
 {
   v4 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel_didTapEmptyTable_];
   [v4 setDelegate:self];
-  v3 = [(ICTableAttachmentViewController *)self tableContentView];
-  [v3 addGestureRecognizer:v4];
+  tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+  [tableContentView addGestureRecognizer:v4];
 }
 
-- (void)didTapEmptyTable:(id)a3
+- (void)didTapEmptyTable:(id)table
 {
-  v12 = a3;
-  if ([v12 state] == 3)
+  tableCopy = table;
+  if ([tableCopy state] == 3)
   {
-    v4 = [(ICTableAttachmentViewController *)self table];
-    if ([v4 columnCount])
+    table = [(ICTableAttachmentViewController *)self table];
+    if ([table columnCount])
     {
-      v5 = [(ICTableAttachmentViewController *)self table];
-      v6 = [v5 rowCount];
+      table2 = [(ICTableAttachmentViewController *)self table];
+      rowCount = [table2 rowCount];
 
-      if (v6)
+      if (rowCount)
       {
         goto LABEL_7;
       }
@@ -904,8 +904,8 @@ uint64_t __71__ICiOSTableAttachmentViewController_scrollToRect_animated_completi
     {
     }
 
-    v7 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v12 locationInView:v7];
+    tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+    [tableCopy locationInView:tableContentView];
     v9 = v8;
     v11 = v10;
 
@@ -917,53 +917,53 @@ LABEL_7:
 
 - (BOOL)becomeFirstResponderForAuxStyling
 {
-  v2 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  v3 = [v2 becomeFirstResponder];
+  selectionHighlightView = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  becomeFirstResponder = [selectionHighlightView becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponderForAuxStyling
 {
-  v2 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  v3 = [v2 resignFirstResponder];
+  selectionHighlightView = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  resignFirstResponder = [selectionHighlightView resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)makeDelegateOfTextView:(id)a3
+- (void)makeDelegateOfTextView:(id)view
 {
-  v4 = a3;
-  [v4 setDelegate:self];
-  [v4 setIcDelegate:self];
-  v5 = [v4 layoutManager];
+  viewCopy = view;
+  [viewCopy setDelegate:self];
+  [viewCopy setIcDelegate:self];
+  layoutManager = [viewCopy layoutManager];
 
-  [v5 setDelegate:self];
+  [layoutManager setDelegate:self];
 }
 
-- (void)willBeginEditingWithTextView:(id)a3
+- (void)willBeginEditingWithTextView:(id)view
 {
   v7.receiver = self;
   v7.super_class = ICiOSTableAttachmentViewController;
-  [(ICTableAttachmentViewController *)&v7 willBeginEditingWithTextView:a3];
-  v4 = [(ICTableAttachmentViewController *)self noteTextView];
-  v5 = [v4 isEditable];
+  [(ICTableAttachmentViewController *)&v7 willBeginEditingWithTextView:view];
+  noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+  isEditable = [noteTextView isEditable];
 
-  if ((v5 & 1) == 0)
+  if ((isEditable & 1) == 0)
   {
-    v6 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v6 setEditable:1];
+    noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+    [noteTextView2 setEditable:1];
   }
 }
 
-- (void)didBeginEditingWithTextView:(id)a3
+- (void)didBeginEditingWithTextView:(id)view
 {
   v6.receiver = self;
   v6.super_class = ICiOSTableAttachmentViewController;
-  [(ICTableAttachmentViewController *)&v6 didBeginEditingWithTextView:a3];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  v5 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  [v4 postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:v5];
+  [(ICTableAttachmentViewController *)&v6 didBeginEditingWithTextView:view];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  [defaultCenter postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:noteEditorViewController];
 }
 
 - (void)cellFirstResponderChanged
@@ -972,193 +972,193 @@ LABEL_7:
   v4.super_class = ICiOSTableAttachmentViewController;
   [(ICTableAttachmentViewController *)&v4 cellFirstResponderChanged];
   [(ICiOSTableAttachmentViewController *)self convertUnconfirmedHashtagsMentionsIfNecessary];
-  v3 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  [v3 tableCellFirstResponderChanged];
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  [noteEditorViewController tableCellFirstResponderChanged];
 }
 
 - (void)convertUnconfirmedHashtagsMentionsIfNecessary
 {
-  v3 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  if (v3)
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  if (currentlyEditingTextView)
   {
-    v4 = v3;
-    v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+    v4 = currentlyEditingTextView;
+    currentlyEditingTextStorage = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
 
-    if (v5)
+    if (currentlyEditingTextStorage)
     {
-      v6 = [(ICTableAttachmentViewController *)self noteTextView];
-      v7 = [v6 editorController];
-      v34 = [v7 mentionsController];
+      noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+      editorController = [noteTextView editorController];
+      mentionsController = [editorController mentionsController];
 
       v8 = MEMORY[0x277D35F20];
-      v9 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-      v10 = [v8 rangeOfUnconfirmedMentionInTextStorage:v9];
+      currentlyEditingTextStorage2 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+      v10 = [v8 rangeOfUnconfirmedMentionInTextStorage:currentlyEditingTextStorage2];
       v12 = v11;
 
       if (v10 != 0x7FFFFFFFFFFFFFFFLL && v12)
       {
-        v13 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-        v14 = [(ICTableAttachmentViewController *)self note];
-        v15 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-        v16 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-        v17 = [v16 languageHasSpaces];
-        v18 = [(ICAttachmentViewController *)self attachment];
-        BYTE1(v33) = v17;
+        currentlyEditingTextStorage3 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+        note = [(ICTableAttachmentViewController *)self note];
+        currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+        currentlyEditingTextView3 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+        languageHasSpaces = [currentlyEditingTextView3 languageHasSpaces];
+        attachment = [(ICAttachmentViewController *)self attachment];
+        BYTE1(v33) = languageHasSpaces;
         LOBYTE(v33) = 1;
-        [v34 checkForMentionInEditedRange:v10 ofTextStorage:v12 note:v13 textView:v14 allowAutoExplicitMention:v15 isEndingEditing:1 languageHasSpaces:v33 parentAttachment:v18];
+        [mentionsController checkForMentionInEditedRange:v10 ofTextStorage:v12 note:currentlyEditingTextStorage3 textView:note allowAutoExplicitMention:currentlyEditingTextView2 isEndingEditing:1 languageHasSpaces:v33 parentAttachment:attachment];
       }
 
-      v19 = [(ICTableAttachmentViewController *)self noteTextView];
-      v20 = [v19 editorController];
-      v21 = [v20 hashtagController];
+      noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+      editorController2 = [noteTextView2 editorController];
+      hashtagController = [editorController2 hashtagController];
 
       v22 = MEMORY[0x277D35EE8];
-      v23 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-      v24 = [v22 rangeOfUnconfirmedHashtagInTextStorage:v23];
+      currentlyEditingTextStorage4 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+      v24 = [v22 rangeOfUnconfirmedHashtagInTextStorage:currentlyEditingTextStorage4];
       v26 = v25;
 
       if (v24 != 0x7FFFFFFFFFFFFFFFLL && v26)
       {
-        v27 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
-        v28 = [(ICTableAttachmentViewController *)self note];
-        v29 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-        v30 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-        v31 = [v30 languageHasSpaces];
-        v32 = [(ICAttachmentViewController *)self attachment];
-        BYTE1(v33) = v31;
+        currentlyEditingTextStorage5 = [(ICTableAttachmentViewController *)self currentlyEditingTextStorage];
+        note2 = [(ICTableAttachmentViewController *)self note];
+        currentlyEditingTextView4 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+        currentlyEditingTextView5 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+        languageHasSpaces2 = [currentlyEditingTextView5 languageHasSpaces];
+        attachment2 = [(ICAttachmentViewController *)self attachment];
+        BYTE1(v33) = languageHasSpaces2;
         LOBYTE(v33) = 1;
-        [v21 checkForHashtagInEditedRange:v24 ofTextStorage:v26 note:v27 textView:v28 allowAutoExplicitHashtag:v29 isEndingEditing:1 languageHasSpaces:v33 parentAttachment:v32];
+        [hashtagController checkForHashtagInEditedRange:v24 ofTextStorage:v26 note:currentlyEditingTextStorage5 textView:note2 allowAutoExplicitHashtag:currentlyEditingTextView4 isEndingEditing:1 languageHasSpaces:v33 parentAttachment:attachment2];
       }
     }
   }
 }
 
-- (void)showButtonsAtColumns:(id)a3 rows:(id)a4
+- (void)showButtonsAtColumns:(id)columns rows:(id)rows
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICTableAttachmentViewController *)self columnButton];
-  if (!v8 || (v9 = v8, [(ICTableAttachmentViewController *)self rowButton], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10))
+  rowsCopy = rows;
+  columnsCopy = columns;
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  if (!columnButton || (v9 = columnButton, [(ICTableAttachmentViewController *)self rowButton], v10 = objc_claimAutoreleasedReturnValue(), v10, v9, !v10))
   {
     v11 = [ICTableColumnRowButton alloc];
-    v12 = [(ICTableAttachmentViewController *)self table];
-    v13 = -[ICTableColumnRowButton initAsColumn:isLeftToRight:](v11, "initAsColumn:isLeftToRight:", 1, [v12 isLeftToRight]);
+    table = [(ICTableAttachmentViewController *)self table];
+    v13 = -[ICTableColumnRowButton initAsColumn:isLeftToRight:](v11, "initAsColumn:isLeftToRight:", 1, [table isLeftToRight]);
     [(ICTableAttachmentViewController *)self setColumnButton:v13];
 
     v14 = [ICTableColumnRowButton alloc];
-    v15 = [(ICTableAttachmentViewController *)self table];
-    v16 = -[ICTableColumnRowButton initAsColumn:isLeftToRight:](v14, "initAsColumn:isLeftToRight:", 0, [v15 isLeftToRight]);
+    table2 = [(ICTableAttachmentViewController *)self table];
+    v16 = -[ICTableColumnRowButton initAsColumn:isLeftToRight:](v14, "initAsColumn:isLeftToRight:", 0, [table2 isLeftToRight]);
     [(ICTableAttachmentViewController *)self setRowButton:v16];
 
-    v17 = [(ICTableAttachmentViewController *)self columnButton];
-    [v17 addTarget:self action:sel_columnButtonTouched_ forControlEvents:1];
+    columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
+    [columnButton2 addTarget:self action:sel_columnButtonTouched_ forControlEvents:1];
 
-    v18 = [(ICTableAttachmentViewController *)self columnButton];
-    [v18 addTarget:self action:sel_columnButtonPressed_ forControlEvents:64];
+    columnButton3 = [(ICTableAttachmentViewController *)self columnButton];
+    [columnButton3 addTarget:self action:sel_columnButtonPressed_ forControlEvents:64];
 
-    v19 = [(ICTableAttachmentViewController *)self columnButton];
-    [v19 addTarget:self action:sel_columnButtonMenuActionTriggered_ forControlEvents:0x4000];
+    columnButton4 = [(ICTableAttachmentViewController *)self columnButton];
+    [columnButton4 addTarget:self action:sel_columnButtonMenuActionTriggered_ forControlEvents:0x4000];
 
-    v20 = [(ICTableAttachmentViewController *)self columnButton];
-    [v20 setExclusiveTouch:1];
+    columnButton5 = [(ICTableAttachmentViewController *)self columnButton];
+    [columnButton5 setExclusiveTouch:1];
 
-    v21 = [(ICTableAttachmentViewController *)self columnButton];
-    [v21 setShowsMenuAsPrimaryAction:1];
+    columnButton6 = [(ICTableAttachmentViewController *)self columnButton];
+    [columnButton6 setShowsMenuAsPrimaryAction:1];
 
-    v22 = [(ICTableAttachmentViewController *)self rowButton];
-    [v22 addTarget:self action:sel_rowButtonTouched_ forControlEvents:1];
+    rowButton = [(ICTableAttachmentViewController *)self rowButton];
+    [rowButton addTarget:self action:sel_rowButtonTouched_ forControlEvents:1];
 
-    v23 = [(ICTableAttachmentViewController *)self rowButton];
-    [v23 addTarget:self action:sel_rowButtonPressed_ forControlEvents:64];
+    rowButton2 = [(ICTableAttachmentViewController *)self rowButton];
+    [rowButton2 addTarget:self action:sel_rowButtonPressed_ forControlEvents:64];
 
-    v24 = [(ICTableAttachmentViewController *)self rowButton];
-    [v24 addTarget:self action:sel_rowButtonMenuActionTriggered_ forControlEvents:0x4000];
+    rowButton3 = [(ICTableAttachmentViewController *)self rowButton];
+    [rowButton3 addTarget:self action:sel_rowButtonMenuActionTriggered_ forControlEvents:0x4000];
 
-    v25 = [(ICTableAttachmentViewController *)self rowButton];
-    [v25 setExclusiveTouch:1];
+    rowButton4 = [(ICTableAttachmentViewController *)self rowButton];
+    [rowButton4 setExclusiveTouch:1];
 
-    v26 = [(ICTableAttachmentViewController *)self rowButton];
-    [v26 setShowsMenuAsPrimaryAction:1];
+    rowButton5 = [(ICTableAttachmentViewController *)self rowButton];
+    [rowButton5 setShowsMenuAsPrimaryAction:1];
 
-    v27 = [MEMORY[0x277CCA8D8] mainBundle];
-    [v27 localizedStringForKey:@"Column selection handle" value:&stru_282757698 table:0];
-    v28 = v79 = v6;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    [mainBundle localizedStringForKey:@"Column selection handle" value:&stru_282757698 table:0];
+    v28 = v79 = rowsCopy;
     [(ICTableAttachmentViewController *)self columnButton];
-    v29 = v78 = v7;
+    v29 = v78 = columnsCopy;
     [v29 setAccessibilityLabel:v28];
 
-    v30 = [MEMORY[0x277CCA8D8] mainBundle];
-    v31 = [v30 localizedStringForKey:@"Double tap and drag to reorder this column." value:&stru_282757698 table:0];
-    v32 = [(ICTableAttachmentViewController *)self columnButton];
-    [v32 setAccessibilityHint:v31];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v31 = [mainBundle2 localizedStringForKey:@"Double tap and drag to reorder this column." value:&stru_282757698 table:0];
+    columnButton7 = [(ICTableAttachmentViewController *)self columnButton];
+    [columnButton7 setAccessibilityHint:v31];
 
-    v33 = [MEMORY[0x277CCA8D8] mainBundle];
-    v34 = [v33 localizedStringForKey:@"Row selection handle" value:&stru_282757698 table:0];
-    v35 = [(ICTableAttachmentViewController *)self rowButton];
-    [v35 setAccessibilityLabel:v34];
+    mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+    v34 = [mainBundle3 localizedStringForKey:@"Row selection handle" value:&stru_282757698 table:0];
+    rowButton6 = [(ICTableAttachmentViewController *)self rowButton];
+    [rowButton6 setAccessibilityLabel:v34];
 
-    v36 = [MEMORY[0x277CCA8D8] mainBundle];
-    v37 = [v36 localizedStringForKey:@"Double tap and drag to reorder this row." value:&stru_282757698 table:0];
-    v38 = [(ICTableAttachmentViewController *)self rowButton];
-    [v38 setAccessibilityHint:v37];
+    mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+    v37 = [mainBundle4 localizedStringForKey:@"Double tap and drag to reorder this row." value:&stru_282757698 table:0];
+    rowButton7 = [(ICTableAttachmentViewController *)self rowButton];
+    [rowButton7 setAccessibilityHint:v37];
 
     v39 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel_dragColumn_];
     [v39 setDelegate:self];
-    v40 = [(ICTableAttachmentViewController *)self columnButton];
-    [v40 addGestureRecognizer:v39];
+    columnButton8 = [(ICTableAttachmentViewController *)self columnButton];
+    [columnButton8 addGestureRecognizer:v39];
 
     v41 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_dragColumn_];
     [v41 setDelegate:self];
     [v41 setMinimumPressDuration:0.3];
-    v42 = [(ICTableAttachmentViewController *)self columnButton];
-    [v42 addGestureRecognizer:v41];
+    columnButton9 = [(ICTableAttachmentViewController *)self columnButton];
+    [columnButton9 addGestureRecognizer:v41];
 
     v43 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel_dragRow_];
     [v43 setDelegate:self];
-    v44 = [(ICTableAttachmentViewController *)self rowButton];
-    [v44 addGestureRecognizer:v43];
+    rowButton8 = [(ICTableAttachmentViewController *)self rowButton];
+    [rowButton8 addGestureRecognizer:v43];
 
     v45 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:self action:sel_dragRow_];
     [v45 setDelegate:self];
     [v45 setMinimumPressDuration:0.3];
-    v46 = [(ICTableAttachmentViewController *)self rowButton];
-    [v46 addGestureRecognizer:v45];
+    rowButton9 = [(ICTableAttachmentViewController *)self rowButton];
+    [rowButton9 addGestureRecognizer:v45];
 
     [(ICiOSTableAttachmentViewController *)self setRowLongPress:v45];
-    v47 = [(ICiOSTableAttachmentViewController *)self ic_viewControllerManager];
-    v48 = [v47 mainSplitViewController];
-    v49 = [v48 viewControllerForColumn:3];
+    ic_viewControllerManager = [(ICiOSTableAttachmentViewController *)self ic_viewControllerManager];
+    mainSplitViewController = [ic_viewControllerManager mainSplitViewController];
+    v49 = [mainSplitViewController viewControllerForColumn:3];
 
     objc_opt_class();
     v50 = ICDynamicCast();
-    v51 = [v50 interactivePopGestureRecognizer];
+    interactivePopGestureRecognizer = [v50 interactivePopGestureRecognizer];
 
-    [v51 requireGestureRecognizerToFail:v45];
-    v52 = [(ICiOSTableAttachmentViewController *)self view];
-    v53 = [v52 outsideViews];
-    v54 = [(ICTableAttachmentViewController *)self columnButton];
-    [v53 addObject:v54];
+    [interactivePopGestureRecognizer requireGestureRecognizerToFail:v45];
+    view = [(ICiOSTableAttachmentViewController *)self view];
+    outsideViews = [view outsideViews];
+    columnButton10 = [(ICTableAttachmentViewController *)self columnButton];
+    [outsideViews addObject:columnButton10];
 
-    v55 = [(ICiOSTableAttachmentViewController *)self view];
-    v56 = [v55 outsideViews];
-    v57 = [(ICTableAttachmentViewController *)self rowButton];
-    [v56 addObject:v57];
+    view2 = [(ICiOSTableAttachmentViewController *)self view];
+    outsideViews2 = [view2 outsideViews];
+    rowButton10 = [(ICTableAttachmentViewController *)self rowButton];
+    [outsideViews2 addObject:rowButton10];
 
     [(ICiOSTableAttachmentViewController *)self invalidateCachedChildrenForAccessibilityReparenting];
-    v7 = v78;
+    columnsCopy = v78;
 
-    v6 = v79;
+    rowsCopy = v79;
   }
 
-  v58 = [(ICTableAttachmentViewController *)self columnButton];
-  v59 = [v58 superview];
-  if (v59)
+  columnButton11 = [(ICTableAttachmentViewController *)self columnButton];
+  superview = [columnButton11 superview];
+  if (superview)
   {
-    v60 = v59;
-    v61 = [(ICTableAttachmentViewController *)self rowButton];
-    v62 = [v61 superview];
+    v60 = superview;
+    rowButton11 = [(ICTableAttachmentViewController *)self rowButton];
+    superview2 = [rowButton11 superview];
 
-    if (v62)
+    if (superview2)
     {
       goto LABEL_9;
     }
@@ -1168,37 +1168,37 @@ LABEL_7:
   {
   }
 
-  v63 = [(ICTableAttachmentViewController *)self headerClipView];
-  v64 = [(ICTableAttachmentViewController *)self columnButton];
-  [v63 addSubview:v64];
+  headerClipView = [(ICTableAttachmentViewController *)self headerClipView];
+  columnButton12 = [(ICTableAttachmentViewController *)self columnButton];
+  [headerClipView addSubview:columnButton12];
 
-  v65 = [(ICiOSTableAttachmentViewController *)self view];
-  v66 = [(ICTableAttachmentViewController *)self rowButton];
-  [v65 addSubview:v66];
+  view3 = [(ICiOSTableAttachmentViewController *)self view];
+  rowButton12 = [(ICTableAttachmentViewController *)self rowButton];
+  [view3 addSubview:rowButton12];
 
 LABEL_9:
-  v67 = [(ICTableAttachmentViewController *)self columnButton];
-  [v67 setColumnOrRowIdentifiers:v7];
+  columnButton13 = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton13 setColumnOrRowIdentifiers:columnsCopy];
 
-  v68 = [(ICTableAttachmentViewController *)self rowButton];
-  [v68 setColumnOrRowIdentifiers:v6];
+  rowButton13 = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton13 setColumnOrRowIdentifiers:rowsCopy];
 
   [(ICTableAttachmentViewController *)self showColumnRowButtons];
   v69 = *MEMORY[0x277CBF3A0];
   v70 = *(MEMORY[0x277CBF3A0] + 8);
   v71 = *(MEMORY[0x277CBF3A0] + 16);
   v72 = *(MEMORY[0x277CBF3A0] + 24);
-  v73 = [(ICTableAttachmentViewController *)self columnButton];
-  [v73 setFrame:{v69, v70, v71, v72}];
+  columnButton14 = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton14 setFrame:{v69, v70, v71, v72}];
 
-  v74 = [(ICTableAttachmentViewController *)self rowButton];
-  [v74 setFrame:{v69, v70, v71, v72}];
+  rowButton14 = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton14 setFrame:{v69, v70, v71, v72}];
 
   [(ICTableAttachmentViewController *)self updateButtonFrames];
-  v75 = [(ICiOSTableAttachmentViewController *)self view];
-  v76 = [v75 superview];
-  v77 = [(ICiOSTableAttachmentViewController *)self view];
-  [v76 bringSubviewToFront:v77];
+  view4 = [(ICiOSTableAttachmentViewController *)self view];
+  superview3 = [view4 superview];
+  view5 = [(ICiOSTableAttachmentViewController *)self view];
+  [superview3 bringSubviewToFront:view5];
 
   [(ICiOSTableAttachmentViewController *)self updateAccessibilityValueForColumnAndRowButtons];
 }
@@ -1207,43 +1207,43 @@ LABEL_9:
 {
   if (![(ICTableAttachmentViewController *)self lockSelection])
   {
-    v3 = [(ICTableAttachmentViewController *)self tableSelection];
-    v4 = [v3 moving];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    moving = [tableSelection moving];
 
-    if ((v4 & 1) == 0)
+    if ((moving & 1) == 0)
     {
       v15.receiver = self;
       v15.super_class = ICiOSTableAttachmentViewController;
       [(ICTableAttachmentViewController *)&v15 updateChrome];
-      v5 = [(ICiOSTableAttachmentViewController *)self columnMenu];
-      v6 = [(ICTableAttachmentViewController *)self columnButton];
-      [v6 setMenu:v5];
+      columnMenu = [(ICiOSTableAttachmentViewController *)self columnMenu];
+      columnButton = [(ICTableAttachmentViewController *)self columnButton];
+      [columnButton setMenu:columnMenu];
 
-      v7 = [(ICiOSTableAttachmentViewController *)self rowMenu];
-      v8 = [(ICTableAttachmentViewController *)self rowButton];
-      [v8 setMenu:v7];
+      rowMenu = [(ICiOSTableAttachmentViewController *)self rowMenu];
+      rowButton = [(ICTableAttachmentViewController *)self rowButton];
+      [rowButton setMenu:rowMenu];
 
-      v9 = [(ICTableAttachmentViewController *)self tableSelection];
-      v10 = [v9 type];
+      tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+      type = [tableSelection2 type];
 
-      v11 = self;
-      if ((v10 - 1) < 4)
+      selfCopy = self;
+      if ((type - 1) < 4)
       {
 LABEL_4:
-        v12 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-        [v12 setAuxiliaryStylingController:v11];
+        noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+        [noteEditorViewController setAuxiliaryStylingController:selfCopy];
 
         return;
       }
 
-      if (!v10)
+      if (!type)
       {
-        v13 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-        v14 = [v13 auxiliaryStylingController];
+        noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+        auxiliaryStylingController = [noteEditorViewController2 auxiliaryStylingController];
 
-        if (v14 == self)
+        if (auxiliaryStylingController == self)
         {
-          v11 = 0;
+          selfCopy = 0;
           goto LABEL_4;
         }
       }
@@ -1256,19 +1256,19 @@ LABEL_4:
   v9.receiver = self;
   v9.super_class = ICiOSTableAttachmentViewController;
   [(ICTableAttachmentViewController *)&v9 unselectColumnRow];
-  v3 = [(ICTableAttachmentViewController *)self columnButton];
-  [v3 setSelected:0];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton setSelected:0];
 
-  v4 = [(ICiOSTableAttachmentViewController *)self columnMenu];
-  v5 = [(ICTableAttachmentViewController *)self columnButton];
-  [v5 setMenu:v4];
+  columnMenu = [(ICiOSTableAttachmentViewController *)self columnMenu];
+  columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton2 setMenu:columnMenu];
 
-  v6 = [(ICTableAttachmentViewController *)self rowButton];
-  [v6 setSelected:0];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton setSelected:0];
 
-  v7 = [(ICiOSTableAttachmentViewController *)self rowMenu];
-  v8 = [(ICTableAttachmentViewController *)self rowButton];
-  [v8 setMenu:v7];
+  rowMenu = [(ICiOSTableAttachmentViewController *)self rowMenu];
+  rowButton2 = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton2 setMenu:rowMenu];
 }
 
 void __58__ICiOSTableAttachmentViewController_columnButtonTouched___block_invoke(uint64_t a1)
@@ -1280,56 +1280,56 @@ void __58__ICiOSTableAttachmentViewController_columnButtonTouched___block_invoke
   }
 }
 
-- (void)columnButtonPressed:(id)a3
+- (void)columnButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   [(ICiOSTableAttachmentViewController *)self setTouchingColumnButton:0];
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v4 columnOrRowIdentifiers];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columnOrRowIdentifiers = [pressedCopy columnOrRowIdentifiers];
 
-  [v5 selectColumns:v6];
-  v7 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  LOBYTE(v5) = [v7 ic_isFirstResponder];
+  [tableSelection selectColumns:columnOrRowIdentifiers];
+  selectionHighlightView = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  LOBYTE(tableSelection) = [selectionHighlightView ic_isFirstResponder];
 
-  if ((v5 & 1) == 0)
+  if ((tableSelection & 1) == 0)
   {
-    v8 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v8 removeFromSuperview];
+    selectionHighlightView2 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [selectionHighlightView2 removeFromSuperview];
 
-    v9 = [(ICTableAttachmentViewController *)self scrollView];
-    v10 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v9 addSubview:v10];
+    scrollView = [(ICTableAttachmentViewController *)self scrollView];
+    selectionHighlightView3 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [scrollView addSubview:selectionHighlightView3];
 
-    v11 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v11 becomeFirstResponder];
+    selectionHighlightView4 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [selectionHighlightView4 becomeFirstResponder];
   }
 
   [(ICiOSTableAttachmentViewController *)self updateChrome];
-  v12 = [(ICTableAttachmentViewController *)self columnButton];
-  [v12 setSelected:1];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton setSelected:1];
 
-  v13 = [(ICiOSTableAttachmentViewController *)self columnMenu];
-  v14 = [(ICTableAttachmentViewController *)self columnButton];
-  [v14 setMenu:v13];
+  columnMenu = [(ICiOSTableAttachmentViewController *)self columnMenu];
+  columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton2 setMenu:columnMenu];
 
-  v15 = [(ICTableAttachmentViewController *)self rowButton];
-  [v15 setSelected:0];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton setSelected:0];
 
-  v16 = [(ICiOSTableAttachmentViewController *)self rowMenu];
-  v17 = [(ICTableAttachmentViewController *)self rowButton];
-  [v17 setMenu:v16];
+  rowMenu = [(ICiOSTableAttachmentViewController *)self rowMenu];
+  rowButton2 = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton2 setMenu:rowMenu];
 
   [(ICTableAttachmentViewController *)self showColumnRowButtons];
-  v18 = [(ICTableAttachmentViewController *)self tableAXController];
-  [v18 tableRowOrColumnSelectionDidChange];
+  tableAXController = [(ICTableAttachmentViewController *)self tableAXController];
+  [tableAXController tableRowOrColumnSelectionDidChange];
 }
 
-- (void)columnButtonMenuActionTriggered:(id)a3
+- (void)columnButtonMenuActionTriggered:(id)triggered
 {
   [(ICiOSTableAttachmentViewController *)self setTouchingColumnButton:0];
-  v5 = [(ICiOSTableAttachmentViewController *)self columnMenu];
-  v4 = [(ICTableAttachmentViewController *)self columnButton];
-  [v4 setMenu:v5];
+  columnMenu = [(ICiOSTableAttachmentViewController *)self columnMenu];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton setMenu:columnMenu];
 }
 
 void __55__ICiOSTableAttachmentViewController_rowButtonTouched___block_invoke(uint64_t a1)
@@ -1341,71 +1341,71 @@ void __55__ICiOSTableAttachmentViewController_rowButtonTouched___block_invoke(ui
   }
 }
 
-- (void)rowButtonPressed:(id)a3
+- (void)rowButtonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   [(ICiOSTableAttachmentViewController *)self setTouchingRowButton:0];
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v4 columnOrRowIdentifiers];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columnOrRowIdentifiers = [pressedCopy columnOrRowIdentifiers];
 
-  [v5 selectRows:v6];
-  v7 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  LOBYTE(v5) = [v7 ic_isFirstResponder];
+  [tableSelection selectRows:columnOrRowIdentifiers];
+  selectionHighlightView = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  LOBYTE(tableSelection) = [selectionHighlightView ic_isFirstResponder];
 
-  if ((v5 & 1) == 0)
+  if ((tableSelection & 1) == 0)
   {
-    v8 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v8 removeFromSuperview];
+    selectionHighlightView2 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [selectionHighlightView2 removeFromSuperview];
 
-    v9 = [(ICTableAttachmentViewController *)self scrollView];
-    v10 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v9 addSubview:v10];
+    scrollView = [(ICTableAttachmentViewController *)self scrollView];
+    selectionHighlightView3 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [scrollView addSubview:selectionHighlightView3];
 
-    v11 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-    [v11 becomeFirstResponder];
+    selectionHighlightView4 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+    [selectionHighlightView4 becomeFirstResponder];
   }
 
   [(ICiOSTableAttachmentViewController *)self updateChrome];
-  v12 = [(ICTableAttachmentViewController *)self columnButton];
-  [v12 setSelected:0];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton setSelected:0];
 
-  v13 = [(ICiOSTableAttachmentViewController *)self columnMenu];
-  v14 = [(ICTableAttachmentViewController *)self columnButton];
-  [v14 setMenu:v13];
+  columnMenu = [(ICiOSTableAttachmentViewController *)self columnMenu];
+  columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton2 setMenu:columnMenu];
 
-  v15 = [(ICTableAttachmentViewController *)self rowButton];
-  [v15 setSelected:1];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton setSelected:1];
 
-  v16 = [(ICiOSTableAttachmentViewController *)self rowMenu];
-  v17 = [(ICTableAttachmentViewController *)self rowButton];
-  [v17 setMenu:v16];
+  rowMenu = [(ICiOSTableAttachmentViewController *)self rowMenu];
+  rowButton2 = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton2 setMenu:rowMenu];
 
   [(ICTableAttachmentViewController *)self showColumnRowButtons];
-  v18 = [(ICTableAttachmentViewController *)self tableAXController];
-  [v18 tableRowOrColumnSelectionDidChange];
+  tableAXController = [(ICTableAttachmentViewController *)self tableAXController];
+  [tableAXController tableRowOrColumnSelectionDidChange];
 }
 
-- (void)rowButtonMenuActionTriggered:(id)a3
+- (void)rowButtonMenuActionTriggered:(id)triggered
 {
   [(ICiOSTableAttachmentViewController *)self setTouchingRowButton:0];
-  v5 = [(ICiOSTableAttachmentViewController *)self rowMenu];
-  v4 = [(ICTableAttachmentViewController *)self rowButton];
-  [v4 setMenu:v5];
+  rowMenu = [(ICiOSTableAttachmentViewController *)self rowMenu];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton setMenu:rowMenu];
 }
 
-- (void)showSelectionMenuFromRect:(CGRect)a3
+- (void)showSelectionMenuFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = [MEMORY[0x277D75718] sharedMenuController];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
   v20.origin.x = x;
   v20.origin.y = y;
   v20.size.width = width;
   v20.size.height = height;
   MaxX = CGRectGetMaxX(v20);
-  v9 = v18;
+  v9 = mEMORY[0x277D75718];
   if (MaxX > 0.0)
   {
     v21.origin.x = x;
@@ -1413,45 +1413,45 @@ void __55__ICiOSTableAttachmentViewController_rowButtonTouched___block_invoke(ui
     v21.size.width = width;
     v21.size.height = height;
     MinX = CGRectGetMinX(v21);
-    v11 = [(ICiOSTableAttachmentViewController *)self view];
-    [v11 bounds];
+    view = [(ICiOSTableAttachmentViewController *)self view];
+    [view bounds];
     if (MinX < CGRectGetWidth(v22))
     {
-      v12 = [v18 isMenuVisible];
+      isMenuVisible = [mEMORY[0x277D75718] isMenuVisible];
 
-      v9 = v18;
-      if (v12)
+      v9 = mEMORY[0x277D75718];
+      if (isMenuVisible)
       {
         goto LABEL_6;
       }
 
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 addObserver:self selector:sel_menuWillHide_ name:*MEMORY[0x277D76CB8] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_menuWillHide_ name:*MEMORY[0x277D76CB8] object:0];
 
-      v14 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v14 addObserver:self selector:sel_menuDidHide_ name:*MEMORY[0x277D76CA8] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_menuDidHide_ name:*MEMORY[0x277D76CA8] object:0];
 
-      v15 = [(ICiOSTableAttachmentViewController *)self view];
-      [v18 showMenuFromView:v15 rect:{x, y, width, height}];
+      view2 = [(ICiOSTableAttachmentViewController *)self view];
+      [mEMORY[0x277D75718] showMenuFromView:view2 rect:{x, y, width, height}];
 
-      LODWORD(v15) = *MEMORY[0x277D76488];
-      v11 = [MEMORY[0x277D75238] sharedCalloutBar];
-      v16 = [v11 _accessibleSubviews];
-      v17 = [v16 firstObject];
-      UIAccessibilityPostNotification(v15, v17);
+      LODWORD(view2) = *MEMORY[0x277D76488];
+      view = [MEMORY[0x277D75238] sharedCalloutBar];
+      _accessibleSubviews = [view _accessibleSubviews];
+      firstObject = [_accessibleSubviews firstObject];
+      UIAccessibilityPostNotification(view2, firstObject);
     }
 
-    v9 = v18;
+    v9 = mEMORY[0x277D75718];
   }
 
 LABEL_6:
 }
 
-- (void)ensureGesturesOnSelectionGrabbers:(id)a3
+- (void)ensureGesturesOnSelectionGrabbers:(id)grabbers
 {
-  v7 = a3;
-  v4 = [v7 gestureRecognizers];
-  v5 = [v4 ic_containsObjectOfClass:objc_opt_class()];
+  grabbersCopy = grabbers;
+  gestureRecognizers = [grabbersCopy gestureRecognizers];
+  v5 = [gestureRecognizers ic_containsObjectOfClass:objc_opt_class()];
 
   if ((v5 & 1) == 0)
   {
@@ -1459,24 +1459,24 @@ LABEL_6:
     [(ICTableSelectionGrabberRecognizer *)v6 setMinimumPressDuration:0.0];
     [(ICTableSelectionGrabberRecognizer *)v6 setCancelsTouchesInView:0];
     [(ICTableSelectionGrabberRecognizer *)v6 setDelegate:self];
-    [v7 addGestureRecognizer:v6];
+    [grabbersCopy addGestureRecognizer:v6];
   }
 }
 
-- (void)dragTextRange:(id)a3
+- (void)dragTextRange:(id)range
 {
-  v4 = a3;
-  if ([v4 state] == 2)
+  rangeCopy = range;
+  if ([rangeCopy state] == 2)
   {
-    v5 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v4 locationInView:v5];
+    tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+    [rangeCopy locationInView:tableContentView];
     v7 = v6;
     v9 = v8;
 
     [(ICTableAttachmentViewController *)self textRangeDraggedAtLocation:v7, v9];
   }
 
-  else if ([v4 state] == 3 || objc_msgSend(v4, "state") == 4 || objc_msgSend(v4, "state") == 5)
+  else if ([rangeCopy state] == 3 || objc_msgSend(rangeCopy, "state") == 4 || objc_msgSend(rangeCopy, "state") == 5)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -1495,26 +1495,26 @@ uint64_t __52__ICiOSTableAttachmentViewController_dragTextRange___block_invoke(u
   return [v2 showRangeSelectionMenuAfterDelay];
 }
 
-- (void)dragCellRange:(id)a3
+- (void)dragCellRange:(id)range
 {
-  v10 = a3;
-  if ([v10 state] == 1)
+  rangeCopy = range;
+  if ([rangeCopy state] == 1)
   {
-    v4 = [v10 view];
-    [(ICTableAttachmentViewController *)self cellRangeDragBeganOnView:v4];
+    view = [rangeCopy view];
+    [(ICTableAttachmentViewController *)self cellRangeDragBeganOnView:view];
   }
 
-  else if ([v10 state] == 2)
+  else if ([rangeCopy state] == 2)
   {
-    v5 = [(ICTableAttachmentViewController *)self tableContentView];
-    [v10 locationInView:v5];
+    tableContentView = [(ICTableAttachmentViewController *)self tableContentView];
+    [rangeCopy locationInView:tableContentView];
     v7 = v6;
     v9 = v8;
 
     [(ICTableAttachmentViewController *)self cellRangeDraggedAtLocation:v7, v9];
   }
 
-  else if ([v10 state] == 3 || objc_msgSend(v10, "state") == 4 || objc_msgSend(v10, "state") == 5)
+  else if ([rangeCopy state] == 3 || objc_msgSend(rangeCopy, "state") == 4 || objc_msgSend(rangeCopy, "state") == 5)
   {
     [(ICiOSTableAttachmentViewController *)self showRangeSelectionMenu];
   }
@@ -1522,15 +1522,15 @@ uint64_t __52__ICiOSTableAttachmentViewController_dragTextRange___block_invoke(u
 
 - (void)selectCell
 {
-  v3 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  [v3 removeFromSuperview];
+  selectionHighlightView = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  [selectionHighlightView removeFromSuperview];
 
-  v4 = [(ICiOSTableAttachmentViewController *)self view];
-  v5 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  [v4 addSubview:v5];
+  view = [(ICiOSTableAttachmentViewController *)self view];
+  selectionHighlightView2 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  [view addSubview:selectionHighlightView2];
 
-  v6 = [(ICTableAttachmentViewController *)self selectionHighlightView];
-  [v6 becomeFirstResponder];
+  selectionHighlightView3 = [(ICTableAttachmentViewController *)self selectionHighlightView];
+  [selectionHighlightView3 becomeFirstResponder];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1560,18 +1560,18 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
   if (!UIAccessibilityIsVoiceOverRunning())
   {
     [MEMORY[0x277D82BB8] cancelPreviousPerformRequestsWithTarget:self selector:sel_showRangeSelectionMenu object:0];
-    v3 = [(ICTableAttachmentViewController *)self tableSelection];
-    v4 = [v3 type];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    type = [tableSelection type];
 
-    if (v4 == 4)
+    if (type == 4)
     {
-      v5 = [(ICTableAttachmentViewController *)self startKnob];
-      [v5 center];
+      startKnob = [(ICTableAttachmentViewController *)self startKnob];
+      [startKnob center];
       v7 = v6;
       v9 = v8;
 
-      v10 = [(ICTableAttachmentViewController *)self endKnob];
-      [v10 center];
+      endKnob = [(ICTableAttachmentViewController *)self endKnob];
+      [endKnob center];
       v12 = v11;
       v14 = v13;
 
@@ -1603,91 +1603,91 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
   }
 }
 
-- (void)dragColumn:(id)a3
+- (void)dragColumn:(id)column
 {
-  v11 = a3;
-  v4 = [(ICiOSTableAttachmentViewController *)self view];
-  [v11 locationInView:v4];
+  columnCopy = column;
+  view = [(ICiOSTableAttachmentViewController *)self view];
+  [columnCopy locationInView:view];
   v6 = v5;
   v8 = v7;
 
-  if ([v11 state] == 1)
+  if ([columnCopy state] == 1)
   {
-    v9 = [MEMORY[0x277D75718] sharedMenuController];
-    [v9 setMenuVisible:0 animated:1];
+    mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+    [mEMORY[0x277D75718] setMenuVisible:0 animated:1];
 
-    v10 = [MEMORY[0x277D75678] activeInstance];
-    [v10 removeAutocorrection];
+    activeInstance = [MEMORY[0x277D75678] activeInstance];
+    [activeInstance removeAutocorrection];
 
     [(ICTableAttachmentViewController *)self dragBeganOnColumnOrRow:1 atLocation:v6, v8];
   }
 
-  else if ([v11 state] == 2)
+  else if ([columnCopy state] == 2)
   {
     [(ICTableAttachmentViewController *)self dragMovedOnColumnOrRow:1 atLocation:v6, v8];
   }
 
-  else if ([v11 state] == 3 || objc_msgSend(v11, "state") == 5 || objc_msgSend(v11, "state") == 4)
+  else if ([columnCopy state] == 3 || objc_msgSend(columnCopy, "state") == 5 || objc_msgSend(columnCopy, "state") == 4)
   {
     [(ICTableAttachmentViewController *)self dragEndedOnColumnOrRow:1 atLocation:v6, v8];
   }
 }
 
-- (void)dragRow:(id)a3
+- (void)dragRow:(id)row
 {
-  v19 = a3;
-  v4 = [(ICiOSTableAttachmentViewController *)self view];
-  [v19 locationInView:v4];
+  rowCopy = row;
+  view = [(ICiOSTableAttachmentViewController *)self view];
+  [rowCopy locationInView:view];
   v6 = v5;
   v8 = v7;
 
-  if ([v19 state] == 1)
+  if ([rowCopy state] == 1)
   {
-    v9 = [MEMORY[0x277D75718] sharedMenuController];
-    [v9 setMenuVisible:0 animated:1];
+    mEMORY[0x277D75718] = [MEMORY[0x277D75718] sharedMenuController];
+    [mEMORY[0x277D75718] setMenuVisible:0 animated:1];
 
-    v10 = [MEMORY[0x277D75678] activeInstance];
-    [v10 removeAutocorrection];
+    activeInstance = [MEMORY[0x277D75678] activeInstance];
+    [activeInstance removeAutocorrection];
 
     [(ICTableAttachmentViewController *)self dragBeganOnColumnOrRow:0 atLocation:v6, v8];
-    v11 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v11 contentInset];
+    noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+    [noteTextView contentInset];
     v13 = v12;
-    v14 = [(ICTableAttachmentViewController *)self tableAutoScroller];
-    [v14 setTopThresholdDistance:v13];
+    tableAutoScroller = [(ICTableAttachmentViewController *)self tableAutoScroller];
+    [tableAutoScroller setTopThresholdDistance:v13];
 
-    v15 = [(ICTableAttachmentViewController *)self noteTextView];
-    [v15 contentInset];
+    noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+    [noteTextView2 contentInset];
     v17 = v16;
-    v18 = [(ICTableAttachmentViewController *)self tableAutoScroller];
-    [v18 setBottomThresholdDistance:v17];
+    tableAutoScroller2 = [(ICTableAttachmentViewController *)self tableAutoScroller];
+    [tableAutoScroller2 setBottomThresholdDistance:v17];
   }
 
-  else if ([v19 state] == 2)
+  else if ([rowCopy state] == 2)
   {
     [(ICTableAttachmentViewController *)self dragMovedOnColumnOrRow:0 atLocation:v6, v8];
   }
 
-  else if ([v19 state] == 3 || objc_msgSend(v19, "state") == 5 || objc_msgSend(v19, "state") == 4)
+  else if ([rowCopy state] == 3 || objc_msgSend(rowCopy, "state") == 5 || objc_msgSend(rowCopy, "state") == 4)
   {
     [(ICTableAttachmentViewController *)self dragEndedOnColumnOrRow:0 atLocation:v6, v8];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v5 = a3;
-  v6 = [(ICTableAttachmentViewController *)self tableSelection];
-  v7 = [v6 type];
+  recognizerCopy = recognizer;
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 view], v8 = objc_claimAutoreleasedReturnValue(), -[ICTableAttachmentViewController tableContentView](self, "tableContentView"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v8 == v9))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([recognizerCopy view], v8 = objc_claimAutoreleasedReturnValue(), -[ICTableAttachmentViewController tableContentView](self, "tableContentView"), v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v8 == v9))
   {
-    v15 = [(ICTableAttachmentViewController *)self table];
-    if ([v15 columnCount])
+    table = [(ICTableAttachmentViewController *)self table];
+    if ([table columnCount])
     {
-      v16 = [(ICTableAttachmentViewController *)self table];
-      isKindOfClass = [v16 rowCount] == 0;
+      table2 = [(ICTableAttachmentViewController *)self table];
+      isKindOfClass = [table2 rowCount] == 0;
     }
 
     else
@@ -1698,22 +1698,22 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
 
   else
   {
-    v10 = [v5 view];
-    v11 = [(ICTableAttachmentViewController *)self columnButton];
+    view = [recognizerCopy view];
+    columnButton = [(ICTableAttachmentViewController *)self columnButton];
 
-    if (v10 == v11)
+    if (view == columnButton)
     {
-      isKindOfClass = (v7 - 1) < 2;
+      isKindOfClass = (type - 1) < 2;
     }
 
     else
     {
-      v12 = [v5 view];
-      v13 = [(ICTableAttachmentViewController *)self rowButton];
+      view2 = [recognizerCopy view];
+      rowButton = [(ICTableAttachmentViewController *)self rowButton];
 
-      if (v12 == v13)
+      if (view2 == rowButton)
       {
-        isKindOfClass = (v7 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+        isKindOfClass = (type & 0xFFFFFFFFFFFFFFFDLL) == 1;
       }
 
       else
@@ -1727,9 +1727,9 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
   return isKindOfClass & 1;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1739,8 +1739,8 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
 - (id)toggleBoldAction
 {
   v3 = MEMORY[0x277D750C8];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"Bold" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"Bold" value:&stru_282757698 table:0];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__ICiOSTableAttachmentViewController_toggleBoldAction__block_invoke;
@@ -1754,8 +1754,8 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
 - (id)toggleItalicAction
 {
   v3 = MEMORY[0x277D750C8];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"Italic" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"Italic" value:&stru_282757698 table:0];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__ICiOSTableAttachmentViewController_toggleItalicAction__block_invoke;
@@ -1769,8 +1769,8 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
 - (id)toggleUnderlineAction
 {
   v3 = MEMORY[0x277D750C8];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"Underline" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"Underline" value:&stru_282757698 table:0];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__ICiOSTableAttachmentViewController_toggleUnderlineAction__block_invoke;
@@ -1784,8 +1784,8 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
 - (id)toggleStrikethroughAction
 {
   v3 = MEMORY[0x277D750C8];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"Strikethrough" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"Strikethrough" value:&stru_282757698 table:0];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__ICiOSTableAttachmentViewController_toggleStrikethroughAction__block_invoke;
@@ -1801,8 +1801,8 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
   if ([MEMORY[0x277D36828] supportsRTL] && (-[ICTableAttachmentViewController tableSelection](self, "tableSelection"), v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
   {
     v4 = MEMORY[0x277D750C8];
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"Table Direction" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"Table Direction" value:&stru_282757698 table:0];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __64__ICiOSTableAttachmentViewController_toggleTableDirectionAction__block_invoke;
@@ -1821,15 +1821,15 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
 
 - (id)formatMenu
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  if ([v3 isRangeOrSpanningSelection])
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  if ([tableSelection isRangeOrSpanningSelection])
   {
-    v4 = [(ICTableAttachmentViewController *)self table];
-    v5 = [(ICTableAttachmentViewController *)self tableSelection];
-    v6 = [v5 columns];
-    v7 = [(ICTableAttachmentViewController *)self tableSelection];
-    v8 = [v7 rows];
-    v9 = [v4 isEmptyAtColumnIdentifiers:v6 rowIdentifiers:v8];
+    table = [(ICTableAttachmentViewController *)self table];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    columns = [tableSelection2 columns];
+    tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection3 rows];
+    v9 = [table isEmptyAtColumnIdentifiers:columns rowIdentifiers:rows];
 
     if (v9)
     {
@@ -1837,27 +1837,27 @@ uint64_t __48__ICiOSTableAttachmentViewController_selectCell__block_invoke(uint6
       goto LABEL_7;
     }
 
-    v3 = [MEMORY[0x277CBEB18] array];
-    v11 = [(ICiOSTableAttachmentViewController *)self toggleBoldAction];
-    [v3 ic_addNonNilObject:v11];
+    tableSelection = [MEMORY[0x277CBEB18] array];
+    toggleBoldAction = [(ICiOSTableAttachmentViewController *)self toggleBoldAction];
+    [tableSelection ic_addNonNilObject:toggleBoldAction];
 
-    v12 = [(ICiOSTableAttachmentViewController *)self toggleItalicAction];
-    [v3 ic_addNonNilObject:v12];
+    toggleItalicAction = [(ICiOSTableAttachmentViewController *)self toggleItalicAction];
+    [tableSelection ic_addNonNilObject:toggleItalicAction];
 
-    v13 = [(ICiOSTableAttachmentViewController *)self toggleUnderlineAction];
-    [v3 ic_addNonNilObject:v13];
+    toggleUnderlineAction = [(ICiOSTableAttachmentViewController *)self toggleUnderlineAction];
+    [tableSelection ic_addNonNilObject:toggleUnderlineAction];
 
-    v14 = [(ICiOSTableAttachmentViewController *)self toggleStrikethroughAction];
-    [v3 ic_addNonNilObject:v14];
+    toggleStrikethroughAction = [(ICiOSTableAttachmentViewController *)self toggleStrikethroughAction];
+    [tableSelection ic_addNonNilObject:toggleStrikethroughAction];
 
-    v15 = [(ICiOSTableAttachmentViewController *)self toggleTableDirectionAction];
-    [v3 ic_addNonNilObject:v15];
+    toggleTableDirectionAction = [(ICiOSTableAttachmentViewController *)self toggleTableDirectionAction];
+    [tableSelection ic_addNonNilObject:toggleTableDirectionAction];
 
     v16 = MEMORY[0x277D75710];
-    v17 = [MEMORY[0x277CCA8D8] mainBundle];
-    v18 = [v17 localizedStringForKey:@"Format" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v18 = [mainBundle localizedStringForKey:@"Format" value:&stru_282757698 table:0];
     v19 = [MEMORY[0x277D755B8] systemImageNamed:@"character"];
-    v20 = [v3 copy];
+    v20 = [tableSelection copy];
     v10 = [v16 menuWithTitle:v18 image:v19 identifier:0 options:0 children:v20];
   }
 
@@ -1871,19 +1871,19 @@ LABEL_7:
   return v10;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   v7.receiver = self;
   v7.super_class = ICiOSTableAttachmentViewController;
-  v4 = a3;
-  [(ICiOSTableAttachmentViewController *)&v7 buildMenuWithBuilder:v4];
+  builderCopy = builder;
+  [(ICiOSTableAttachmentViewController *)&v7 buildMenuWithBuilder:builderCopy];
   v5 = *MEMORY[0x277D76D70];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __59__ICiOSTableAttachmentViewController_buildMenuWithBuilder___block_invoke;
   v6[3] = &unk_2781AC828;
   v6[4] = self;
-  [v4 replaceChildrenOfMenuForIdentifier:v5 fromChildrenBlock:v6];
+  [builderCopy replaceChildrenOfMenuForIdentifier:v5 fromChildrenBlock:v6];
 }
 
 id __59__ICiOSTableAttachmentViewController_buildMenuWithBuilder___block_invoke(uint64_t a1, void *a2)
@@ -2004,22 +2004,22 @@ LABEL_22:
 
 - (id)removeColumnAction
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  if ([v3 type] == 2)
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  if ([tableSelection type] == 2)
   {
-    v4 = [(ICTableAttachmentViewController *)self table];
-    v5 = [v4 columnCount];
+    table = [(ICTableAttachmentViewController *)self table];
+    columnCount = [table columnCount];
 
-    if (v5 != 1)
+    if (columnCount != 1)
     {
-      v6 = [MEMORY[0x277CCA8D8] mainBundle];
-      v7 = [v6 localizedStringForKey:@"Delete %lu Column" value:&stru_282757698 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v7 = [mainBundle localizedStringForKey:@"Delete %lu Column" value:&stru_282757698 table:0];
 
       v8 = MEMORY[0x277D750C8];
       v9 = MEMORY[0x277CCACA8];
-      v10 = [(ICTableAttachmentViewController *)self tableSelection];
-      v11 = [v10 columns];
-      v12 = [v9 localizedStringWithFormat:v7, objc_msgSend(v11, "count")];
+      tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+      columns = [tableSelection2 columns];
+      v12 = [v9 localizedStringWithFormat:v7, objc_msgSend(columns, "count")];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __56__ICiOSTableAttachmentViewController_removeColumnAction__block_invoke;
@@ -2043,13 +2043,13 @@ LABEL_6:
 
 - (id)addColumnAction
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  v4 = [v3 type];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
-  if (v4 == 2)
+  if (type == 2)
   {
-    v5 = [MEMORY[0x277CCA8D8] mainBundle];
-    v6 = [v5 localizedStringForKey:@"ADD_COLUMN_MENU_ACTION" value:@"Add Column" table:@"Localizable"];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v6 = [mainBundle localizedStringForKey:@"ADD_COLUMN_MENU_ACTION" value:@"Add Column" table:@"Localizable"];
 
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
@@ -2069,22 +2069,22 @@ LABEL_6:
 
 - (id)removeRowAction
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  if ([v3 type] == 3)
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  if ([tableSelection type] == 3)
   {
-    v4 = [(ICTableAttachmentViewController *)self table];
-    v5 = [v4 rowCount];
+    table = [(ICTableAttachmentViewController *)self table];
+    rowCount = [table rowCount];
 
-    if (v5 != 1)
+    if (rowCount != 1)
     {
-      v6 = [MEMORY[0x277CCA8D8] mainBundle];
-      v7 = [v6 localizedStringForKey:@"Delete %lu Row" value:&stru_282757698 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v7 = [mainBundle localizedStringForKey:@"Delete %lu Row" value:&stru_282757698 table:0];
 
       v8 = MEMORY[0x277D750C8];
       v9 = MEMORY[0x277CCACA8];
-      v10 = [(ICTableAttachmentViewController *)self tableSelection];
-      v11 = [v10 rows];
-      v12 = [v9 localizedStringWithFormat:v7, objc_msgSend(v11, "count")];
+      tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+      rows = [tableSelection2 rows];
+      v12 = [v9 localizedStringWithFormat:v7, objc_msgSend(rows, "count")];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __53__ICiOSTableAttachmentViewController_removeRowAction__block_invoke;
@@ -2108,14 +2108,14 @@ LABEL_6:
 
 - (id)addRowAction
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  v4 = [v3 type];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
-  if (v4 == 3)
+  if (type == 3)
   {
     v5 = MEMORY[0x277D750C8];
-    v6 = [MEMORY[0x277CCA8D8] mainBundle];
-    v7 = [v6 localizedStringForKey:@"Add Row" value:&stru_282757698 table:0];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v7 = [mainBundle localizedStringForKey:@"Add Row" value:&stru_282757698 table:0];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __50__ICiOSTableAttachmentViewController_addRowAction__block_invoke;
@@ -2134,19 +2134,19 @@ LABEL_6:
 
 - (id)copySelectionAction
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  if (([v3 isRangeOrSpanningSelection] & 1) == 0)
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  if (([tableSelection isRangeOrSpanningSelection] & 1) == 0)
   {
 
     return 0;
   }
 
-  v4 = [(ICTableAttachmentViewController *)self table];
-  v5 = [(ICTableAttachmentViewController *)self tableSelection];
-  v6 = [v5 columns];
-  v7 = [(ICTableAttachmentViewController *)self tableSelection];
-  v8 = [v7 rows];
-  v9 = [v4 isEmptyAtColumnIdentifiers:v6 rowIdentifiers:v8];
+  table = [(ICTableAttachmentViewController *)self table];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection2 columns];
+  tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection3 rows];
+  v9 = [table isEmptyAtColumnIdentifiers:columns rowIdentifiers:rows];
 
   if (v9)
   {
@@ -2154,8 +2154,8 @@ LABEL_6:
   }
 
   v10 = MEMORY[0x277D750C8];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"Copy" value:&stru_282757698 table:0];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle localizedStringForKey:@"Copy" value:&stru_282757698 table:0];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __57__ICiOSTableAttachmentViewController_copySelectionAction__block_invoke;
@@ -2168,21 +2168,21 @@ LABEL_6:
 
 - (id)cutSelectionAction
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  if ([v3 isRangeOrSpanningSelection])
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  if ([tableSelection isRangeOrSpanningSelection])
   {
-    v4 = [(ICTableAttachmentViewController *)self table];
-    v5 = [(ICTableAttachmentViewController *)self tableSelection];
-    v6 = [v5 columns];
-    v7 = [(ICTableAttachmentViewController *)self tableSelection];
-    v8 = [v7 rows];
-    v9 = [v4 isEmptyAtColumnIdentifiers:v6 rowIdentifiers:v8];
+    table = [(ICTableAttachmentViewController *)self table];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    columns = [tableSelection2 columns];
+    tableSelection3 = [(ICTableAttachmentViewController *)self tableSelection];
+    rows = [tableSelection3 rows];
+    v9 = [table isEmptyAtColumnIdentifiers:columns rowIdentifiers:rows];
 
     if ((v9 & 1) == 0)
     {
       v10 = MEMORY[0x277D750C8];
-      v11 = [MEMORY[0x277CCA8D8] mainBundle];
-      v12 = [v11 localizedStringForKey:@"Cut" value:&stru_282757698 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v12 = [mainBundle localizedStringForKey:@"Cut" value:&stru_282757698 table:0];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __56__ICiOSTableAttachmentViewController_cutSelectionAction__block_invoke;
@@ -2206,17 +2206,17 @@ LABEL_6:
 
 - (id)pasteSelectionAction
 {
-  v3 = [MEMORY[0x277D75810] generalPasteboard];
-  if ([v3 hasStrings])
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  if ([generalPasteboard hasStrings])
   {
-    v4 = [(ICTableAttachmentViewController *)self tableSelection];
-    v5 = [v4 isRangeOrSpanningSelection];
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    isRangeOrSpanningSelection = [tableSelection isRangeOrSpanningSelection];
 
-    if (v5)
+    if (isRangeOrSpanningSelection)
     {
       v6 = MEMORY[0x277D750C8];
-      v7 = [MEMORY[0x277CCA8D8] mainBundle];
-      v8 = [v7 localizedStringForKey:@"Paste" value:&stru_282757698 table:0];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v8 = [mainBundle localizedStringForKey:@"Paste" value:&stru_282757698 table:0];
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __58__ICiOSTableAttachmentViewController_pasteSelectionAction__block_invoke;
@@ -2240,31 +2240,31 @@ LABEL_6:
 
 - (id)columnMenu
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  v4 = [v3 type];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
-  if (v4 == 2)
+  if (type == 2)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(ICiOSTableAttachmentViewController *)self removeColumnAction];
-    [v5 ic_addNonNilObject:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    removeColumnAction = [(ICiOSTableAttachmentViewController *)self removeColumnAction];
+    [array ic_addNonNilObject:removeColumnAction];
 
-    v7 = [(ICiOSTableAttachmentViewController *)self addColumnAction];
-    [v5 ic_addNonNilObject:v7];
+    addColumnAction = [(ICiOSTableAttachmentViewController *)self addColumnAction];
+    [array ic_addNonNilObject:addColumnAction];
 
-    v8 = [(ICiOSTableAttachmentViewController *)self formatMenu];
-    [v5 ic_addNonNilObject:v8];
+    formatMenu = [(ICiOSTableAttachmentViewController *)self formatMenu];
+    [array ic_addNonNilObject:formatMenu];
 
-    v9 = [(ICiOSTableAttachmentViewController *)self copySelectionAction];
-    [v5 ic_addNonNilObject:v9];
+    copySelectionAction = [(ICiOSTableAttachmentViewController *)self copySelectionAction];
+    [array ic_addNonNilObject:copySelectionAction];
 
-    v10 = [(ICiOSTableAttachmentViewController *)self cutSelectionAction];
-    [v5 ic_addNonNilObject:v10];
+    cutSelectionAction = [(ICiOSTableAttachmentViewController *)self cutSelectionAction];
+    [array ic_addNonNilObject:cutSelectionAction];
 
-    v11 = [(ICiOSTableAttachmentViewController *)self pasteSelectionAction];
-    [v5 ic_addNonNilObject:v11];
+    pasteSelectionAction = [(ICiOSTableAttachmentViewController *)self pasteSelectionAction];
+    [array ic_addNonNilObject:pasteSelectionAction];
 
-    v12 = [MEMORY[0x277D75710] menuWithChildren:v5];
+    v12 = [MEMORY[0x277D75710] menuWithChildren:array];
   }
 
   else
@@ -2277,31 +2277,31 @@ LABEL_6:
 
 - (id)rowMenu
 {
-  v3 = [(ICTableAttachmentViewController *)self tableSelection];
-  v4 = [v3 type];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
-  if (v4 == 3)
+  if (type == 3)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
-    v6 = [(ICiOSTableAttachmentViewController *)self removeRowAction];
-    [v5 ic_addNonNilObject:v6];
+    array = [MEMORY[0x277CBEB18] array];
+    removeRowAction = [(ICiOSTableAttachmentViewController *)self removeRowAction];
+    [array ic_addNonNilObject:removeRowAction];
 
-    v7 = [(ICiOSTableAttachmentViewController *)self addRowAction];
-    [v5 ic_addNonNilObject:v7];
+    addRowAction = [(ICiOSTableAttachmentViewController *)self addRowAction];
+    [array ic_addNonNilObject:addRowAction];
 
-    v8 = [(ICiOSTableAttachmentViewController *)self formatMenu];
-    [v5 ic_addNonNilObject:v8];
+    formatMenu = [(ICiOSTableAttachmentViewController *)self formatMenu];
+    [array ic_addNonNilObject:formatMenu];
 
-    v9 = [(ICiOSTableAttachmentViewController *)self copySelectionAction];
-    [v5 ic_addNonNilObject:v9];
+    copySelectionAction = [(ICiOSTableAttachmentViewController *)self copySelectionAction];
+    [array ic_addNonNilObject:copySelectionAction];
 
-    v10 = [(ICiOSTableAttachmentViewController *)self cutSelectionAction];
-    [v5 ic_addNonNilObject:v10];
+    cutSelectionAction = [(ICiOSTableAttachmentViewController *)self cutSelectionAction];
+    [array ic_addNonNilObject:cutSelectionAction];
 
-    v11 = [(ICiOSTableAttachmentViewController *)self pasteSelectionAction];
-    [v5 ic_addNonNilObject:v11];
+    pasteSelectionAction = [(ICiOSTableAttachmentViewController *)self pasteSelectionAction];
+    [array ic_addNonNilObject:pasteSelectionAction];
 
-    v12 = [MEMORY[0x277D75710] menuWithChildren:v5];
+    v12 = [MEMORY[0x277D75710] menuWithChildren:array];
   }
 
   else
@@ -2312,14 +2312,14 @@ LABEL_6:
   return v12;
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  v5 = self;
-  v6 = [(ICiOSTableAttachmentViewController *)self biuTextView:a3];
+  selfCopy = self;
+  v6 = [(ICiOSTableAttachmentViewController *)self biuTextView:action];
 
   if (v6)
   {
-    if (sel_isEqual(a3, sel_toggleBoldface_) || sel_isEqual(a3, sel_toggleItalics_) || sel_isEqual(a3, sel_toggleUnderline_))
+    if (sel_isEqual(action, sel_toggleBoldface_) || sel_isEqual(action, sel_toggleItalics_) || sel_isEqual(action, sel_toggleUnderline_))
     {
       goto LABEL_9;
     }
@@ -2328,70 +2328,70 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if (sel_isEqual(a3, sel_strikethrough_))
+  if (sel_isEqual(action, sel_strikethrough_))
   {
     goto LABEL_9;
   }
 
-  if (sel_isEqual(a3, sel_cut_) || sel_isEqual(a3, sel_copy_))
+  if (sel_isEqual(action, sel_cut_) || sel_isEqual(action, sel_copy_))
   {
-    v9 = [(ICTableAttachmentViewController *)v5 tableSelection];
-    if ([v9 isRangeOrSpanningSelection])
+    tableSelection = [(ICTableAttachmentViewController *)selfCopy tableSelection];
+    if ([tableSelection isRangeOrSpanningSelection])
     {
-      v10 = [(ICTableAttachmentViewController *)v5 table];
-      v11 = [(ICTableAttachmentViewController *)v5 tableSelection];
-      v12 = [v11 columns];
-      v13 = [(ICTableAttachmentViewController *)v5 tableSelection];
-      v14 = [v13 rows];
-      LODWORD(v5) = [v10 isEmptyAtColumnIdentifiers:v12 rowIdentifiers:v14] ^ 1;
+      table = [(ICTableAttachmentViewController *)selfCopy table];
+      tableSelection2 = [(ICTableAttachmentViewController *)selfCopy tableSelection];
+      columns = [tableSelection2 columns];
+      tableSelection3 = [(ICTableAttachmentViewController *)selfCopy tableSelection];
+      rows = [tableSelection3 rows];
+      LODWORD(selfCopy) = [table isEmptyAtColumnIdentifiers:columns rowIdentifiers:rows] ^ 1;
 
 LABEL_15:
 LABEL_20:
 
-      return v5;
+      return selfCopy;
     }
 
     goto LABEL_19;
   }
 
-  if (sel_isEqual(a3, sel_paste_))
+  if (sel_isEqual(action, sel_paste_))
   {
-    v9 = [MEMORY[0x277D75810] generalPasteboard];
-    if ([v9 hasStrings])
+    tableSelection = [MEMORY[0x277D75810] generalPasteboard];
+    if ([tableSelection hasStrings])
     {
-      v10 = [(ICTableAttachmentViewController *)v5 tableSelection];
-      LOBYTE(v5) = [v10 isRangeOrSpanningSelection];
+      table = [(ICTableAttachmentViewController *)selfCopy tableSelection];
+      LOBYTE(selfCopy) = [table isRangeOrSpanningSelection];
       goto LABEL_15;
     }
 
 LABEL_19:
-    LOBYTE(v5) = 0;
+    LOBYTE(selfCopy) = 0;
     goto LABEL_20;
   }
 
-  if (sel_isEqual(a3, sel_convertToTag_))
+  if (sel_isEqual(action, sel_convertToTag_))
   {
 
-    return [(ICiOSTableAttachmentViewController *)v5 canConvertToTag];
+    return [(ICiOSTableAttachmentViewController *)selfCopy canConvertToTag];
   }
 
   else
   {
-    if (!sel_isEqual(a3, sel_convertToText_))
+    if (!sel_isEqual(action, sel_convertToText_))
     {
-      if (sel_isEqual(a3, sel_makeTextWritingDirectionLeftToRight_))
+      if (sel_isEqual(action, sel_makeTextWritingDirectionLeftToRight_))
       {
         if ([MEMORY[0x277D36828] supportsRTL])
         {
-          v15 = [(ICTableAttachmentViewController *)v5 tableSelection];
-          v16 = [v15 type];
+          tableSelection4 = [(ICTableAttachmentViewController *)selfCopy tableSelection];
+          type = [tableSelection4 type];
 
-          if (v16 == 2)
+          if (type == 2)
           {
-            v17 = [(ICTableAttachmentViewController *)v5 table];
-            v18 = [v17 isRightToLeft];
+            table2 = [(ICTableAttachmentViewController *)selfCopy table];
+            isRightToLeft = [table2 isRightToLeft];
 
-            return v18;
+            return isRightToLeft;
           }
         }
 
@@ -2400,49 +2400,49 @@ LABEL_19:
           goto LABEL_7;
         }
 
-        v21 = [(ICTableAttachmentViewController *)v5 tableSelection];
-        v22 = [v21 type];
+        tableSelection5 = [(ICTableAttachmentViewController *)selfCopy tableSelection];
+        type2 = [tableSelection5 type];
 
-        if (v22 != 4)
+        if (type2 != 4)
         {
           goto LABEL_7;
         }
 
-        v23 = [(ICTableAttachmentViewController *)v5 textDirectionForCurrentSelection]== 1;
+        v23 = [(ICTableAttachmentViewController *)selfCopy textDirectionForCurrentSelection]== 1;
       }
 
       else
       {
-        if (!sel_isEqual(a3, sel_makeTextWritingDirectionRightToLeft_))
+        if (!sel_isEqual(action, sel_makeTextWritingDirectionRightToLeft_))
         {
-          if (sel_isEqual(a3, sel_copyTable_) || sel_isEqual(a3, sel_shareTable_) || sel_isEqual(a3, sel_convertTableToText_))
+          if (sel_isEqual(action, sel_copyTable_) || sel_isEqual(action, sel_shareTable_) || sel_isEqual(action, sel_convertTableToText_))
           {
             goto LABEL_9;
           }
 
           v7 = sel_deleteTable_;
 LABEL_6:
-          if (!sel_isEqual(a3, v7))
+          if (!sel_isEqual(action, v7))
           {
 LABEL_7:
-            LOBYTE(v5) = 0;
-            return v5;
+            LOBYTE(selfCopy) = 0;
+            return selfCopy;
           }
 
 LABEL_9:
-          LOBYTE(v5) = 1;
-          return v5;
+          LOBYTE(selfCopy) = 1;
+          return selfCopy;
         }
 
         if ([MEMORY[0x277D36828] supportsRTL])
         {
-          v19 = [(ICTableAttachmentViewController *)v5 tableSelection];
-          v20 = [v19 type];
+          tableSelection6 = [(ICTableAttachmentViewController *)selfCopy tableSelection];
+          type3 = [tableSelection6 type];
 
-          if (v20 == 2)
+          if (type3 == 2)
           {
-            v9 = [(ICTableAttachmentViewController *)v5 table];
-            LODWORD(v5) = [v9 isRightToLeft] ^ 1;
+            tableSelection = [(ICTableAttachmentViewController *)selfCopy table];
+            LODWORD(selfCopy) = [tableSelection isRightToLeft] ^ 1;
             goto LABEL_20;
           }
         }
@@ -2452,30 +2452,30 @@ LABEL_9:
           goto LABEL_7;
         }
 
-        v24 = [(ICTableAttachmentViewController *)v5 tableSelection];
-        v25 = [v24 type];
+        tableSelection7 = [(ICTableAttachmentViewController *)selfCopy tableSelection];
+        type4 = [tableSelection7 type];
 
-        if (v25 != 4)
+        if (type4 != 4)
         {
           goto LABEL_7;
         }
 
-        v23 = [(ICTableAttachmentViewController *)v5 textDirectionForCurrentSelection]== 0;
+        v23 = [(ICTableAttachmentViewController *)selfCopy textDirectionForCurrentSelection]== 0;
       }
 
-      LOBYTE(v5) = v23;
-      return v5;
+      LOBYTE(selfCopy) = v23;
+      return selfCopy;
     }
 
-    return [(ICiOSTableAttachmentViewController *)v5 canConvertToText];
+    return [(ICiOSTableAttachmentViewController *)selfCopy canConvertToText];
   }
 }
 
 - (BOOL)canConvertToTag
 {
-  v3 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  v4 = [v3 selectedText];
-  if ([v4 ic_canConvertToTag])
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  selectedText = [currentlyEditingTextView selectedText];
+  if ([selectedText ic_canConvertToTag])
   {
     v5 = ![(ICiOSTableAttachmentViewController *)self canConvertToText];
   }
@@ -2488,32 +2488,32 @@ LABEL_9:
   return v5;
 }
 
-- (void)convertToTag:(id)a3
+- (void)convertToTag:(id)tag
 {
   v4 = MEMORY[0x277D35EF8];
-  v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  v6 = [v5 selectedText];
-  v7 = [(ICTableAttachmentViewController *)self note];
-  v19 = [v4 createHashtagAttachmentIfApplicableWithHashtagText:v6 creatingHashtagIfNecessary:1 note:v7 parentAttachment:0];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  selectedText = [currentlyEditingTextView selectedText];
+  note = [(ICTableAttachmentViewController *)self note];
+  v19 = [v4 createHashtagAttachmentIfApplicableWithHashtagText:selectedText creatingHashtagIfNecessary:1 note:note parentAttachment:0];
 
   if (v19)
   {
     v8 = objc_alloc(MEMORY[0x277D366A8]);
-    v9 = [(ICTableAttachmentViewController *)self note];
-    v10 = [v8 initWithNote:v9];
+    note2 = [(ICTableAttachmentViewController *)self note];
+    v10 = [v8 initWithNote:note2];
 
-    v11 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-    v12 = [v11 selectedRange];
+    currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    selectedRange = [currentlyEditingTextView2 selectedRange];
     v14 = v13;
-    v15 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-    v16 = [v10 addInlineAttachment:v19 atTextRange:v12 textView:{v14, v15}];
+    currentlyEditingTextView3 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    v16 = [v10 addInlineAttachment:v19 atTextRange:selectedRange textView:{v14, currentlyEditingTextView3}];
 
     [v19 updateChangeCountWithReason:@"Converted text to tag"];
-    v17 = [(ICTableAttachmentViewController *)self note];
-    [v17 updateChangeCountWithReason:@"Converted text to tag"];
+    note3 = [(ICTableAttachmentViewController *)self note];
+    [note3 updateChangeCountWithReason:@"Converted text to tag"];
 
-    v18 = [(ICTableAttachmentViewController *)self note];
-    [v18 save];
+    note4 = [(ICTableAttachmentViewController *)self note];
+    [note4 save];
   }
 
   [(ICiOSTableAttachmentViewController *)self setEditing:1 animated:1];
@@ -2521,140 +2521,140 @@ LABEL_9:
 
 - (BOOL)canConvertToText
 {
-  v3 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  v4 = [v3 textController];
-  v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  v6 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  v7 = [v6 selectedRange];
-  v9 = [v4 canConvertInlineAttachmentToTextInTextView:v5 forRange:{v7, v8}];
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  textController = [noteEditorViewController textController];
+  currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  selectedRange = [currentlyEditingTextView2 selectedRange];
+  v9 = [textController canConvertInlineAttachmentToTextInTextView:currentlyEditingTextView forRange:{selectedRange, v8}];
 
   return v9;
 }
 
-- (void)convertToText:(id)a3
+- (void)convertToText:(id)text
 {
   v18 = *MEMORY[0x277D85DE8];
   v4 = os_log_create("com.apple.notes", "UI");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-    v19.location = [v5 selectedRange];
+    currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    v19.location = [currentlyEditingTextView selectedRange];
     v6 = NSStringFromRange(v19);
     v16 = 138412290;
     v17 = v6;
     _os_log_impl(&dword_2151A1000, v4, OS_LOG_TYPE_INFO, "Converting inline attachment at %@ to text", &v16, 0xCu);
   }
 
-  v7 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  v8 = [v7 textController];
-  v9 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  v10 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  v11 = [v10 selectedRange];
-  [v8 convertInlineAttachmentToTextInTextView:v9 forRange:{v11, v12}];
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  textController = [noteEditorViewController textController];
+  currentlyEditingTextView2 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  currentlyEditingTextView3 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  selectedRange = [currentlyEditingTextView3 selectedRange];
+  [textController convertInlineAttachmentToTextInTextView:currentlyEditingTextView2 forRange:{selectedRange, v12}];
 
-  v13 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-  [(ICiOSTableAttachmentViewController *)self textViewDidChange:v13];
+  currentlyEditingTextView4 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+  [(ICiOSTableAttachmentViewController *)self textViewDidChange:currentlyEditingTextView4];
 
-  v14 = [(ICTableAttachmentViewController *)self note];
-  [v14 updateChangeCountWithReason:@"Converted tag to text"];
+  note = [(ICTableAttachmentViewController *)self note];
+  [note updateChangeCountWithReason:@"Converted tag to text"];
 
-  v15 = [(ICTableAttachmentViewController *)self note];
-  [v15 save];
+  note2 = [(ICTableAttachmentViewController *)self note];
+  [note2 save];
 }
 
-- (void)menuWillHide:(id)a3
+- (void)menuWillHide:(id)hide
 {
   [(ICiOSTableAttachmentViewController *)self setMenuHiding:1];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76CB8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76CB8] object:0];
 }
 
-- (void)menuDidHide:(id)a3
+- (void)menuDidHide:(id)hide
 {
   [(ICiOSTableAttachmentViewController *)self setMenuHiding:0];
   [(ICiOSTableAttachmentViewController *)self setShowingTextStyleOptions:0];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x277D76CA8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277D76CA8] object:0];
 
-  v5 = [(ICiOSTableAttachmentViewController *)self biuTextView];
-  [v5 removeFromSuperview];
+  biuTextView = [(ICiOSTableAttachmentViewController *)self biuTextView];
+  [biuTextView removeFromSuperview];
 
   [(ICiOSTableAttachmentViewController *)self setBiuTextView:0];
 
   [(ICiOSTableAttachmentViewController *)self moveAccessibilityFocusToSelectedColumnOrRowButton];
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v4 = a3;
+  pasteCopy = paste;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __44__ICiOSTableAttachmentViewController_paste___block_invoke;
   v6[3] = &unk_2781ABEB8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = pasteCopy;
+  v5 = pasteCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)strikethrough:(id)a3
+- (void)strikethrough:(id)strikethrough
 {
-  v7 = a3;
-  v4 = [(ICTableAttachmentViewController *)self tableSelection];
-  v5 = [v4 type];
+  strikethroughCopy = strikethrough;
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
-  if (v5 == 1)
+  if (type == 1)
   {
-    v6 = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
-    [v6 ic_toggleStrikethrough];
+    currentlyEditingTextView = [(ICTableAttachmentViewController *)self currentlyEditingTextView];
+    [currentlyEditingTextView ic_toggleStrikethrough];
   }
 
   else
   {
-    [(ICTableAttachmentViewController *)self toggleStrikethrough:v7];
+    [(ICTableAttachmentViewController *)self toggleStrikethrough:strikethroughCopy];
   }
 }
 
-- (void)setTextViewWritingDirection:(int64_t)a3 sender:(id)a4
+- (void)setTextViewWritingDirection:(int64_t)direction sender:(id)sender
 {
-  v10 = a4;
-  v6 = [(ICTableAttachmentViewController *)self tableSelection];
-  v7 = [v6 type];
+  senderCopy = sender;
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  type = [tableSelection type];
 
-  if (v7 == 2)
+  if (type == 2)
   {
-    [(ICTableAttachmentViewController *)self reverseTableColumnDirection:v10];
+    [(ICTableAttachmentViewController *)self reverseTableColumnDirection:senderCopy];
   }
 
   else
   {
-    v8 = [(ICTableAttachmentViewController *)self tableSelection];
-    v9 = [v8 type];
+    tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+    type2 = [tableSelection2 type];
 
-    if (v9 == 4)
+    if (type2 == 4)
     {
-      [(ICTableAttachmentViewController *)self setSelectionDirection:a3];
+      [(ICTableAttachmentViewController *)self setSelectionDirection:direction];
     }
 
     else if ([(ICTableAttachmentViewController *)self containedInNoteSelection])
     {
-      [(ICTableAttachmentViewController *)self updateTableColumnDirectionForWritingDirection:a3];
+      [(ICTableAttachmentViewController *)self updateTableColumnDirectionForWritingDirection:direction];
     }
   }
 }
 
-- (void)shareTable:(id)a3
+- (void)shareTable:(id)table
 {
   v27[3] = *MEMORY[0x277D85DE8];
-  v4 = [(ICAttachmentViewController *)self attachment];
+  attachment = [(ICAttachmentViewController *)self attachment];
   v5 = objc_alloc(MEMORY[0x277D546D8]);
-  v6 = [v4 activityItems];
-  v7 = [v5 initWithActivityItems:v6 applicationActivities:0];
+  activityItems = [attachment activityItems];
+  v7 = [v5 initWithActivityItems:activityItems applicationActivities:0];
 
-  v8 = [(ICAttachmentViewController *)self attachment];
-  v9 = [v8 note];
-  v10 = [v9 account];
-  [v7 setIsContentManaged:{objc_msgSend(v10, "isManaged")}];
+  attachment2 = [(ICAttachmentViewController *)self attachment];
+  note = [attachment2 note];
+  account = [note account];
+  [v7 setIsContentManaged:{objc_msgSend(account, "isManaged")}];
 
   v11 = *MEMORY[0x277D360F8];
   v27[0] = *MEMORY[0x277D54740];
@@ -2675,102 +2675,102 @@ LABEL_9:
 
   [v7 setModalPresentationStyle:v13];
   [(ICiOSTableAttachmentViewController *)self presentViewController:v7 animated:1 completion:0];
-  v14 = [(ICiOSTableAttachmentViewController *)self view];
-  [v14 frame];
+  view = [(ICiOSTableAttachmentViewController *)self view];
+  [view frame];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  v23 = [v7 popoverPresentationController];
-  [v23 setSourceRect:{v16, v18, v20, v22}];
+  popoverPresentationController = [v7 popoverPresentationController];
+  [popoverPresentationController setSourceRect:{v16, v18, v20, v22}];
 
-  v24 = [(ICiOSTableAttachmentViewController *)self view];
-  v25 = [v24 superview];
-  v26 = [v7 popoverPresentationController];
-  [v26 setSourceView:v25];
+  view2 = [(ICiOSTableAttachmentViewController *)self view];
+  superview = [view2 superview];
+  popoverPresentationController2 = [v7 popoverPresentationController];
+  [popoverPresentationController2 setSourceView:superview];
 }
 
 - (id)icTableDataFromPasteboard
 {
-  v2 = [MEMORY[0x277D75810] generalPasteboard];
-  v3 = [v2 dataForPasteboardType:@"com.apple.notes.table"];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  v3 = [generalPasteboard dataForPasteboardType:@"com.apple.notes.table"];
 
   return v3;
 }
 
 - (id)soloPlainTextStringFromPasteboard
 {
-  v2 = [MEMORY[0x277D75810] generalPasteboard];
-  v3 = [v2 items];
-  v4 = [v3 count];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  items = [generalPasteboard items];
+  v4 = [items count];
 
-  if (v4 == 1 && ([v2 dataForPasteboardType:*MEMORY[0x277D35D08]], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (v4 == 1 && ([generalPasteboard dataForPasteboardType:*MEMORY[0x277D35D08]], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
-    v6 = [v2 string];
+    string = [generalPasteboard string];
   }
 
   else
   {
-    v6 = 0;
+    string = 0;
   }
 
-  return v6;
+  return string;
 }
 
 - (id)notesDataFromPasteboard
 {
-  v2 = [MEMORY[0x277D75810] generalPasteboard];
-  v3 = [v2 dataForPasteboardType:*MEMORY[0x277D35D08]];
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  v3 = [generalPasteboard dataForPasteboardType:*MEMORY[0x277D35D08]];
 
   return v3;
 }
 
-- (void)copySelection:(id)a3
+- (void)copySelection:(id)selection
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277D75810] generalPasteboard];
-  v5 = [(ICTableAttachmentViewController *)self pasteboardItemsForSelection];
-  v7[0] = v5;
+  generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+  pasteboardItemsForSelection = [(ICTableAttachmentViewController *)self pasteboardItemsForSelection];
+  v7[0] = pasteboardItemsForSelection;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  [v4 setItems:v6];
+  [generalPasteboard setItems:v6];
 
   [(ICiOSTableAttachmentViewController *)self _accessibilityPostPasteboardTextForOperation:*MEMORY[0x277CE6E18]];
 }
 
-- (void)selectionDidResignFirstResponder:(id)a3
+- (void)selectionDidResignFirstResponder:(id)responder
 {
   v12.receiver = self;
   v12.super_class = ICiOSTableAttachmentViewController;
-  [(ICTableAttachmentViewController *)&v12 selectionDidResignFirstResponder:a3];
+  [(ICTableAttachmentViewController *)&v12 selectionDidResignFirstResponder:responder];
   if (![(ICTableAttachmentViewController *)self lockSelection])
   {
     [(ICiOSTableAttachmentViewController *)self sendAnalyticsForEndEditIfNeeded];
-    v4 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-    [v4 updateTextInputAccessoryViewForDidEndEditing:0];
+    noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+    [noteEditorViewController updateTextInputAccessoryViewForDidEndEditing:0];
 
-    v5 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-    v6 = [v5 auxiliaryResponder];
-    if (v6)
+    noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+    auxiliaryResponder = [noteEditorViewController2 auxiliaryResponder];
+    if (auxiliaryResponder)
     {
     }
 
     else
     {
-      v7 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-      v8 = [v7 textView];
-      v9 = [v8 isBecomingFirstResponder];
+      noteEditorViewController3 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+      textView = [noteEditorViewController3 textView];
+      isBecomingFirstResponder = [textView isBecomingFirstResponder];
 
-      if (v9)
+      if (isBecomingFirstResponder)
       {
         return;
       }
 
-      v10 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-      v11 = [v10 textView];
-      [v11 setEditable:0];
+      noteEditorViewController4 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+      textView2 = [noteEditorViewController4 textView];
+      [textView2 setEditable:0];
 
-      v5 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-      [v5 setEditing:0];
+      noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+      [noteEditorViewController2 setEditing:0];
     }
   }
 }
@@ -2789,63 +2789,63 @@ LABEL_9:
   [(ICTableAttachmentViewController *)&v2 performInitialLayoutIfNeeded];
 }
 
-- (void)tableAttachmentSelectionDidChange:(id)a3
+- (void)tableAttachmentSelectionDidChange:(id)change
 {
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v4 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  [v5 postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  [defaultCenter postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:noteEditorViewController];
 }
 
-- (BOOL)textViewShouldBeginEditing:(id)a3
+- (BOOL)textViewShouldBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  v6 = [v5 textViewShouldBeginEditing:v4];
+  editingCopy = editing;
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  v6 = [noteEditorViewController textViewShouldBeginEditing:editingCopy];
 
   if (v6)
   {
-    v7 = [(ICiOSTableAttachmentViewController *)self auxiliaryTextViewHost];
-    [v7 setAuxiliaryResponder:v4];
+    auxiliaryTextViewHost = [(ICiOSTableAttachmentViewController *)self auxiliaryTextViewHost];
+    [auxiliaryTextViewHost setAuxiliaryResponder:editingCopy];
 
-    v8 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-    v9 = [v8 textViewInputAccessoryView];
-    [v4 setInputAccessoryView:v9];
+    noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+    textViewInputAccessoryView = [noteEditorViewController2 textViewInputAccessoryView];
+    [editingCopy setInputAccessoryView:textViewInputAccessoryView];
   }
 
   return v6;
 }
 
-- (void)textViewDidBeginEditing:(id)a3
+- (void)textViewDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  if ([v5 isStyleSelectorInputViewPresenting])
+  editingCopy = editing;
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  if ([noteEditorViewController isStyleSelectorInputViewPresenting])
   {
   }
 
   else
   {
-    v6 = [v4 isFirstResponder];
+    isFirstResponder = [editingCopy isFirstResponder];
 
-    if (v6)
+    if (isFirstResponder)
     {
       [(ICiOSTableAttachmentViewController *)self sendAnalyticsForStartEditIfNeeded];
-      v7 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-      [v7 setEditing:1];
+      noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+      [noteEditorViewController2 setEditing:1];
 
-      v8 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-      v9 = [v8 textView];
-      v10 = [v9 ink];
-      v11 = [v10 _isHandwritingInk];
+      noteEditorViewController3 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+      textView = [noteEditorViewController3 textView];
+      v10 = [textView ink];
+      _isHandwritingInk = [v10 _isHandwritingInk];
 
-      if ((v11 & 1) == 0)
+      if ((_isHandwritingInk & 1) == 0)
       {
-        v12 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-        [v12 showInkPicker:0 animated:1];
+        noteEditorViewController4 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+        [noteEditorViewController4 showInkPicker:0 animated:1];
       }
 
-      v13 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-      [v13 updateTextInputAccessoryViewForDidBeginEditing:v4];
+      noteEditorViewController5 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+      [noteEditorViewController5 updateTextInputAccessoryViewForDidBeginEditing:editingCopy];
 
       if (![(ICTableAttachmentViewController *)self preventScrolling]&& ![(ICTableAttachmentViewController *)self makingCellFirstResponder])
       {
@@ -2855,7 +2855,7 @@ LABEL_9:
         block[2] = __62__ICiOSTableAttachmentViewController_textViewDidBeginEditing___block_invoke;
         block[3] = &unk_2781AC760;
         objc_copyWeak(&v16, &location);
-        v15 = v4;
+        v15 = editingCopy;
         dispatch_async(MEMORY[0x277D85CD0], block);
 
         objc_destroyWeak(&v16);
@@ -2883,13 +2883,13 @@ void __62__ICiOSTableAttachmentViewController_textViewDidBeginEditing___block_in
   [WeakRetained beginEditingCellWithColumnID:v6 andRowID:v7 textRange:v8];
 }
 
-- (void)textViewDidEndEditing:(id)a3
+- (void)textViewDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  v6 = [v5 isStyleSelectorInputViewPresenting];
+  editingCopy = editing;
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  isStyleSelectorInputViewPresenting = [noteEditorViewController isStyleSelectorInputViewPresenting];
 
-  if (v6)
+  if (isStyleSelectorInputViewPresenting)
   {
     goto LABEL_12;
   }
@@ -2898,31 +2898,31 @@ void __62__ICiOSTableAttachmentViewController_textViewDidBeginEditing___block_in
   v7 = ICDynamicCast();
   if (v7)
   {
-    v8 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-    v9 = [v8 auxiliaryResponder];
-    v10 = v9;
-    if (v7 == v9)
+    noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+    auxiliaryResponder = [noteEditorViewController2 auxiliaryResponder];
+    v10 = auxiliaryResponder;
+    if (v7 == auxiliaryResponder)
     {
-      v11 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-      v12 = [v11 textView];
-      v13 = [v12 isBecomingFirstResponder];
+      noteEditorViewController3 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+      textView = [noteEditorViewController3 textView];
+      isBecomingFirstResponder = [textView isBecomingFirstResponder];
 
-      if (v13)
+      if (isBecomingFirstResponder)
       {
 LABEL_8:
         [(ICTableAttachmentViewController *)self endCellEditingSessionWithTextView:v7];
-        v16 = [(ICAttachmentViewController *)self attachment];
-        [v16 setIsBeingEditedLocallyOnDevice:0];
+        attachment = [(ICAttachmentViewController *)self attachment];
+        [attachment setIsBeingEditedLocallyOnDevice:0];
 
         goto LABEL_9;
       }
 
-      v14 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-      v15 = [v14 textView];
-      [v15 setEditable:0];
+      noteEditorViewController4 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+      textView2 = [noteEditorViewController4 textView];
+      [textView2 setEditable:0];
 
-      v8 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-      [v8 setEditing:0];
+      noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+      [noteEditorViewController2 setEditing:0];
     }
 
     else
@@ -2938,18 +2938,18 @@ LABEL_9:
   v22 = 3221225472;
   v23 = __60__ICiOSTableAttachmentViewController_textViewDidEndEditing___block_invoke;
   v24 = &unk_2781ABEB8;
-  v25 = self;
-  v17 = v4;
+  selfCopy = self;
+  v17 = editingCopy;
   v26 = v17;
   dispatch_async(MEMORY[0x277D85CD0], &v21);
-  [v17 setInputAccessoryView:{0, v21, v22, v23, v24, v25}];
-  v18 = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
+  [v17 setInputAccessoryView:{0, v21, v22, v23, v24, selfCopy}];
+  keyboardWillShowScrollObservation = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
 
-  if (v18)
+  if (keyboardWillShowScrollObservation)
   {
-    v19 = [MEMORY[0x277CCAB98] defaultCenter];
-    v20 = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
-    [v19 removeObserver:v20];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    keyboardWillShowScrollObservation2 = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
+    [defaultCenter removeObserver:keyboardWillShowScrollObservation2];
 
     [(ICiOSTableAttachmentViewController *)self setKeyboardWillShowScrollObservation:0];
   }
@@ -2963,40 +2963,40 @@ void __60__ICiOSTableAttachmentViewController_textViewDidEndEditing___block_invo
   [v2 updateTextInputAccessoryViewForDidEndEditing:*(a1 + 40)];
 }
 
-- (void)beginEditingCellWithColumnID:(id)a3 andRowID:(id)a4 textRange:(id)a5
+- (void)beginEditingCellWithColumnID:(id)d andRowID:(id)iD textRange:(id)range
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
+  dCopy = d;
+  iDCopy = iD;
+  rangeCopy = range;
+  keyboardWillShowScrollObservation = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
 
-  if (v11)
+  if (keyboardWillShowScrollObservation)
   {
-    v12 = [MEMORY[0x277CCAB98] defaultCenter];
-    v13 = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
-    [v12 removeObserver:v13];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    keyboardWillShowScrollObservation2 = [(ICiOSTableAttachmentViewController *)self keyboardWillShowScrollObservation];
+    [defaultCenter removeObserver:keyboardWillShowScrollObservation2];
 
     [(ICiOSTableAttachmentViewController *)self setKeyboardWillShowScrollObservation:0];
   }
 
   objc_initWeak(&location, self);
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v15 = *MEMORY[0x277D76C60];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __86__ICiOSTableAttachmentViewController_beginEditingCellWithColumnID_andRowID_textRange___block_invoke;
   v20[3] = &unk_2781AC8A0;
   objc_copyWeak(&v23, &location);
-  v16 = v8;
+  v16 = dCopy;
   v21 = v16;
-  v17 = v9;
+  v17 = iDCopy;
   v22 = v17;
-  v18 = [v14 addObserverForName:v15 object:0 queue:0 usingBlock:v20];
+  v18 = [defaultCenter2 addObserverForName:v15 object:0 queue:0 usingBlock:v20];
   [(ICiOSTableAttachmentViewController *)self setKeyboardWillShowScrollObservation:v18];
 
   v19.receiver = self;
   v19.super_class = ICiOSTableAttachmentViewController;
-  [(ICTableAttachmentViewController *)&v19 beginEditingCellWithColumnID:v16 andRowID:v17 textRange:v10];
+  [(ICTableAttachmentViewController *)&v19 beginEditingCellWithColumnID:v16 andRowID:v17 textRange:rangeCopy];
 
   objc_destroyWeak(&v23);
   objc_destroyWeak(&location);
@@ -3062,81 +3062,81 @@ void __86__ICiOSTableAttachmentViewController_beginEditingCellWithColumnID_andRo
   [v2 showButtonsAtColumns:v3 rows:v4];
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  v6 = [v5 viewControllerManager];
-  [v6 dismissOverlayContent];
+  changeCopy = change;
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  viewControllerManager = [noteEditorViewController viewControllerManager];
+  [viewControllerManager dismissOverlayContent];
 
-  v7 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  [v7 setHasMadeEdits];
+  noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  [noteEditorViewController2 setHasMadeEdits];
 
-  [v4 updateTextViewForDidChange];
+  [changeCopy updateTextViewForDidChange];
   [(ICTableAttachmentViewController *)self setNeedsSaveAfterUserEdit];
-  v15 = v4;
-  v8 = v4;
+  v15 = changeCopy;
+  v8 = changeCopy;
   dispatchMainAfterDelay();
-  v9 = [(ICTableAttachmentViewController *)self tableSelection];
-  v10 = [v9 columns];
-  v11 = [v10 firstObject];
+  tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+  columns = [tableSelection columns];
+  firstObject = [columns firstObject];
 
-  v12 = [(ICTableAttachmentViewController *)self tableSelection];
-  v13 = [v12 rows];
-  v14 = [v13 firstObject];
+  tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+  rows = [tableSelection2 rows];
+  firstObject2 = [rows firstObject];
 
-  if (v11 && v14)
+  if (firstObject && firstObject2)
   {
-    [(ICTableAttachmentViewController *)self updateCellSizeAtColumn:v11 row:v14 immediateWidthUpdate:0];
+    [(ICTableAttachmentViewController *)self updateCellSizeAtColumn:firstObject row:firstObject2 immediateWidthUpdate:0];
   }
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = a3;
+  selectionCopy = selection;
   objc_opt_class();
   v5 = ICDynamicCast();
   objc_opt_class();
-  v6 = [v4 textStorage];
+  textStorage = [selectionCopy textStorage];
   v7 = ICDynamicCast();
 
-  v8 = [v4 selectedRange];
+  selectedRange = [selectionCopy selectedRange];
   v10 = v9;
-  v11 = v8;
-  v65 = v4;
+  previousSelectedRange = selectedRange;
+  v65 = selectionCopy;
   v66 = v7;
   if (([v7 isApplyingUndoCommand] & 1) == 0)
   {
-    v12 = [v4 selectedRange];
+    selectedRange2 = [selectionCopy selectedRange];
     v14 = v13;
-    v15 = [v4 selectedRange];
+    selectedRange3 = [selectionCopy selectedRange];
     v17 = v16;
     v71.location = [v5 previousSelectedRange];
     v71.length = v18;
-    v69.location = v15;
-    v4 = v65;
+    v69.location = selectedRange3;
+    selectionCopy = v65;
     v69.length = v17;
     v19 = NSUnionRange(v69, v71);
     v7 = v66;
-    if (v12 == v19.location && v14 == v19.length)
+    if (selectedRange2 == v19.location && v14 == v19.length)
     {
-      v11 = [v5 previousSelectedRange];
+      previousSelectedRange = [v5 previousSelectedRange];
     }
   }
 
   v67 = 0;
   v68 = 0;
-  v21 = [v7 rowAtIndex:v11 rowRange:&v67];
+  v21 = [v7 rowAtIndex:previousSelectedRange rowRange:&v67];
   v22.length = v68;
   v22.location = v68 + v67;
-  if (v8 >= v68 + v67)
+  if (selectedRange >= v68 + v67)
   {
     v22.length = 0;
   }
 
   else if (v68)
   {
-    v70.location = v8;
+    v70.location = selectedRange;
     v70.length = v10;
     v22.location = v67;
     v22 = NSIntersectionRange(v70, v22);
@@ -3147,31 +3147,31 @@ void __86__ICiOSTableAttachmentViewController_beginEditingCellWithColumnID_andRo
     v22.location = v67;
   }
 
-  if (v22.location == v8 && v22.length == v10)
+  if (v22.location == selectedRange && v22.length == v10)
   {
-    v23 = [(ICTableAttachmentViewController *)self tableSelection];
-    if (![v23 draggingText])
+    tableSelection = [(ICTableAttachmentViewController *)self tableSelection];
+    if (![tableSelection draggingText])
     {
-      v24 = [(ICTableAttachmentViewController *)self tableSelection];
-      if (([v24 moving] & 1) != 0 || (objc_msgSend(v4, "isFirstResponder") & 1) == 0)
+      tableSelection2 = [(ICTableAttachmentViewController *)self tableSelection];
+      if (([tableSelection2 moving] & 1) != 0 || (objc_msgSend(selectionCopy, "isFirstResponder") & 1) == 0)
       {
       }
 
       else
       {
-        v25 = [v5 isResigningFirstResponder];
+        isResigningFirstResponder = [v5 isResigningFirstResponder];
 
-        if (v25)
+        if (isResigningFirstResponder)
         {
           goto LABEL_24;
         }
 
         objc_opt_class();
-        v23 = ICDynamicCast();
-        v26 = [v4 selectedTextRange];
-        v27 = [v26 isEmpty];
+        tableSelection = ICDynamicCast();
+        selectedTextRange = [selectionCopy selectedTextRange];
+        isEmpty = [selectedTextRange isEmpty];
 
-        if (v27)
+        if (isEmpty)
         {
           [(ICTableAttachmentViewController *)self showColumnRowButtons];
         }
@@ -3186,17 +3186,17 @@ void __86__ICiOSTableAttachmentViewController_beginEditingCellWithColumnID_andRo
             [(ICiOSTableAttachmentViewController *)self ensureGesturesOnSelectionGrabbers:v60];
           }
 
-          v61 = [(ICTableAttachmentViewController *)self columnButton];
-          [v61 setHidden:1];
+          columnButton = [(ICTableAttachmentViewController *)self columnButton];
+          [columnButton setHidden:1];
 
-          v62 = [(ICTableAttachmentViewController *)self rowButton];
-          [v62 setHidden:1];
+          rowButton = [(ICTableAttachmentViewController *)self rowButton];
+          [rowButton setHidden:1];
         }
 
-        if (v23)
+        if (tableSelection)
         {
-          [(ICiOSTableAttachmentViewController *)self didBeginEditingWithTextView:v23];
-          [(ICiOSTableAttachmentViewController *)self scrollToCaretIfNeededForTextView:v23];
+          [(ICiOSTableAttachmentViewController *)self didBeginEditingWithTextView:tableSelection];
+          [(ICiOSTableAttachmentViewController *)self scrollToCaretIfNeededForTextView:tableSelection];
         }
       }
     }
@@ -3204,74 +3204,74 @@ void __86__ICiOSTableAttachmentViewController_beginEditingCellWithColumnID_andRo
 
   else
   {
-    [v4 setSelectedRange:?];
+    [selectionCopy setSelectedRange:?];
   }
 
 LABEL_24:
-  v28 = [v5 selectedRange];
-  [v5 setPreviousSelectedRange:{v28, v29}];
-  v30 = [(ICTableAttachmentViewController *)self noteTextView];
-  v31 = [v30 editorController];
-  v32 = [v31 hashtagController];
-  [v32 setHashtagTableKeyboardDelegate:v5];
+  selectedRange4 = [v5 selectedRange];
+  [v5 setPreviousSelectedRange:{selectedRange4, v29}];
+  noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+  editorController = [noteTextView editorController];
+  hashtagController = [editorController hashtagController];
+  [hashtagController setHashtagTableKeyboardDelegate:v5];
 
-  v33 = [(ICTableAttachmentViewController *)self noteTextView];
-  v34 = [v33 editorController];
-  v35 = [v34 mentionsController];
-  [v35 setMentionsTableKeyboardDelegate:v5];
+  noteTextView2 = [(ICTableAttachmentViewController *)self noteTextView];
+  editorController2 = [noteTextView2 editorController];
+  mentionsController = [editorController2 mentionsController];
+  [mentionsController setMentionsTableKeyboardDelegate:v5];
 
-  v36 = [(ICTableAttachmentViewController *)self noteTextView];
-  v37 = [v36 editorController];
-  v38 = [v37 mentionsController];
-  v39 = [v5 selectedRange];
+  noteTextView3 = [(ICTableAttachmentViewController *)self noteTextView];
+  editorController3 = [noteTextView3 editorController];
+  mentionsController2 = [editorController3 mentionsController];
+  selectedRange5 = [v5 selectedRange];
   v41 = v40;
-  v42 = [(ICTableAttachmentViewController *)self note];
-  v43 = [v5 languageHasSpaces];
-  v44 = [(ICAttachmentViewController *)self attachment];
-  BYTE1(v63) = v43;
+  note = [(ICTableAttachmentViewController *)self note];
+  languageHasSpaces = [v5 languageHasSpaces];
+  attachment = [(ICAttachmentViewController *)self attachment];
+  BYTE1(v63) = languageHasSpaces;
   LOBYTE(v63) = 0;
   v45 = v41;
   v46 = v66;
-  LOBYTE(v39) = [v38 checkForMentionInEditedRange:v39 ofTextStorage:v45 note:v66 textView:v42 allowAutoExplicitMention:v5 isEndingEditing:0 languageHasSpaces:v63 parentAttachment:v44];
+  LOBYTE(selectedRange5) = [mentionsController2 checkForMentionInEditedRange:selectedRange5 ofTextStorage:v45 note:v66 textView:note allowAutoExplicitMention:v5 isEndingEditing:0 languageHasSpaces:v63 parentAttachment:attachment];
 
-  if ((v39 & 1) == 0)
+  if ((selectedRange5 & 1) == 0)
   {
-    v47 = [(ICTableAttachmentViewController *)self noteTextView];
-    v48 = [v47 editorController];
-    v49 = [v48 hashtagController];
-    v50 = [v5 selectedRange];
+    noteTextView4 = [(ICTableAttachmentViewController *)self noteTextView];
+    editorController4 = [noteTextView4 editorController];
+    hashtagController2 = [editorController4 hashtagController];
+    selectedRange6 = [v5 selectedRange];
     v52 = v51;
-    v53 = [(ICTableAttachmentViewController *)self note];
-    v54 = [v5 languageHasSpaces];
-    v55 = [(ICAttachmentViewController *)self attachment];
-    BYTE1(v64) = v54;
+    note2 = [(ICTableAttachmentViewController *)self note];
+    languageHasSpaces2 = [v5 languageHasSpaces];
+    attachment2 = [(ICAttachmentViewController *)self attachment];
+    BYTE1(v64) = languageHasSpaces2;
     LOBYTE(v64) = 0;
-    [v49 checkForHashtagInEditedRange:v50 ofTextStorage:v52 note:v66 textView:v53 allowAutoExplicitHashtag:v5 isEndingEditing:0 languageHasSpaces:v64 parentAttachment:v55];
+    [hashtagController2 checkForHashtagInEditedRange:selectedRange6 ofTextStorage:v52 note:v66 textView:note2 allowAutoExplicitHashtag:v5 isEndingEditing:0 languageHasSpaces:v64 parentAttachment:attachment2];
 
     v46 = v66;
   }
 
-  v56 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  v57 = [v56 navigationItemConfiguration];
-  [v57 updateSelectionInTextView:v5];
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  navigationItemConfiguration = [noteEditorViewController navigationItemConfiguration];
+  [navigationItemConfiguration updateSelectionInTextView:v5];
 
-  v58 = [MEMORY[0x277CCAB98] defaultCenter];
-  v59 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  [v58 postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:v59];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  [defaultCenter postNotificationName:@"ICNoteEditorViewControllerSelectionDidChangeNotification" object:noteEditorViewController2];
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  textCopy = text;
   if (![(ICTableAttachmentViewController *)self acceptsKeystrokes])
   {
     goto LABEL_10;
   }
 
-  if ([v8 hasSuffix:@"\n"] && (objc_msgSend(MEMORY[0x277D75658], "ic_isShiftKeyPressed") & 1) == 0)
+  if ([textCopy hasSuffix:@"\n"] && (objc_msgSend(MEMORY[0x277D75658], "ic_isShiftKeyPressed") & 1) == 0)
   {
-    if ([v7 returnKeyType] == 4)
+    if ([viewCopy returnKeyType] == 4)
     {
       [(ICTableAttachmentViewController *)self moveNextCell];
     }
@@ -3284,7 +3284,7 @@ LABEL_24:
     goto LABEL_10;
   }
 
-  if ([v8 hasSuffix:@"\t"])
+  if ([textCopy hasSuffix:@"\t"])
   {
     [(ICTableAttachmentViewController *)self moveTabCell];
 LABEL_10:
@@ -3298,49 +3298,49 @@ LABEL_11:
   return v9;
 }
 
-- (void)scrollToCaretIfNeededForTextView:(id)a3
+- (void)scrollToCaretIfNeededForTextView:(id)view
 {
-  v6 = a3;
-  v4 = [v6 selectedTextRange];
-  v5 = [v4 isEmpty];
+  viewCopy = view;
+  selectedTextRange = [viewCopy selectedTextRange];
+  isEmpty = [selectedTextRange isEmpty];
 
-  if (v5)
+  if (isEmpty)
   {
-    [(ICTableAttachmentViewController *)self scrollToSelectionInTextView:v6 animated:1 completion:0];
+    [(ICTableAttachmentViewController *)self scrollToSelectionInTextView:viewCopy animated:1 completion:0];
   }
 }
 
-- (void)layoutManager:(id)a3 didCompleteLayoutForTextContainer:(id)a4 atEnd:(BOOL)a5
+- (void)layoutManager:(id)manager didCompleteLayoutForTextContainer:(id)container atEnd:(BOOL)end
 {
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = [(ICTableAttachmentViewController *)self noteTextView];
-  [v7 postNotificationName:@"ICTextViewLayoutDidChangeNotification" object:v6];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
+  [defaultCenter postNotificationName:@"ICTextViewLayoutDidChangeNotification" object:noteTextView];
 }
 
 - (void)selectCurrentColumnForAccessibility
 {
-  v3 = [(ICTableAttachmentViewController *)self columnButton];
-  [(ICiOSTableAttachmentViewController *)self columnButtonPressed:v3];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  [(ICiOSTableAttachmentViewController *)self columnButtonPressed:columnButton];
 
-  LODWORD(v3) = *MEMORY[0x277D76488];
-  v4 = [(ICTableAttachmentViewController *)self columnButton];
-  UIAccessibilityPostNotification(v3, v4);
+  LODWORD(columnButton) = *MEMORY[0x277D76488];
+  columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
+  UIAccessibilityPostNotification(columnButton, columnButton2);
 }
 
 - (void)selectCurrentRowForAccessibility
 {
-  v3 = [(ICTableAttachmentViewController *)self rowButton];
-  [(ICiOSTableAttachmentViewController *)self rowButtonPressed:v3];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  [(ICiOSTableAttachmentViewController *)self rowButtonPressed:rowButton];
 
-  LODWORD(v3) = *MEMORY[0x277D76488];
-  v4 = [(ICTableAttachmentViewController *)self rowButton];
-  UIAccessibilityPostNotification(v3, v4);
+  LODWORD(rowButton) = *MEMORY[0x277D76488];
+  rowButton2 = [(ICTableAttachmentViewController *)self rowButton];
+  UIAccessibilityPostNotification(rowButton, rowButton2);
 }
 
 - (void)invalidateCachedChildrenForAccessibilityReparenting
 {
   objc_opt_class();
-  v3 = [(ICTableAttachmentViewController *)self noteTextView];
+  noteTextView = [(ICTableAttachmentViewController *)self noteTextView];
   v4 = ICDynamicCast();
 
   [v4 icaxClearCachedChildrenForReparenting];
@@ -3348,93 +3348,93 @@ LABEL_11:
 
 - (void)updateAccessibilityValueForColumnAndRowButtons
 {
-  v3 = [(ICTableAttachmentViewController *)self table];
-  v4 = [(ICTableAttachmentViewController *)self columnButton];
-  v5 = [v4 columnOrRowIdentifiers];
-  v6 = [v5 firstObject];
-  v7 = [v3 columnIndexForIdentifier:v6];
+  table = [(ICTableAttachmentViewController *)self table];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  columnOrRowIdentifiers = [columnButton columnOrRowIdentifiers];
+  firstObject = [columnOrRowIdentifiers firstObject];
+  v7 = [table columnIndexForIdentifier:firstObject];
 
-  v8 = [(ICTableAttachmentViewController *)self table];
-  v9 = [(ICTableAttachmentViewController *)self columnButton];
-  v10 = [v9 columnOrRowIdentifiers];
-  v11 = [v10 lastObject];
-  v12 = [v8 columnIndexForIdentifier:v11];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
+  columnOrRowIdentifiers2 = [columnButton2 columnOrRowIdentifiers];
+  lastObject = [columnOrRowIdentifiers2 lastObject];
+  v12 = [table2 columnIndexForIdentifier:lastObject];
 
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = v13;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v14 = mainBundle;
   v15 = v7 + 1;
   if (v7 == v12)
   {
-    v16 = [v13 localizedStringForKey:@"column %lu" value:&stru_282757698 table:0];
+    v16 = [mainBundle localizedStringForKey:@"column %lu" value:&stru_282757698 table:0];
 
     v17 = MEMORY[0x277CCACA8];
   }
 
   else
   {
-    v16 = [v13 localizedStringForKey:@"columns %lu to %lu" value:&stru_282757698 table:0];
+    v16 = [mainBundle localizedStringForKey:@"columns %lu to %lu" value:&stru_282757698 table:0];
 
     v17 = MEMORY[0x277CCACA8];
     v35 = v12 + 1;
   }
 
   v18 = [v17 localizedStringWithFormat:v16, v15, v35];
-  v19 = [(ICTableAttachmentViewController *)self columnButton];
-  [v19 setAccessibilityValue:v18];
+  columnButton3 = [(ICTableAttachmentViewController *)self columnButton];
+  [columnButton3 setAccessibilityValue:v18];
 
-  v20 = [(ICTableAttachmentViewController *)self table];
-  v21 = [(ICTableAttachmentViewController *)self rowButton];
-  v22 = [v21 columnOrRowIdentifiers];
-  v23 = [v22 firstObject];
-  v24 = [v20 rowIndexForIdentifier:v23];
+  table3 = [(ICTableAttachmentViewController *)self table];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  columnOrRowIdentifiers3 = [rowButton columnOrRowIdentifiers];
+  firstObject2 = [columnOrRowIdentifiers3 firstObject];
+  v24 = [table3 rowIndexForIdentifier:firstObject2];
 
-  v25 = [(ICTableAttachmentViewController *)self table];
-  v26 = [(ICTableAttachmentViewController *)self rowButton];
-  v27 = [v26 columnOrRowIdentifiers];
-  v28 = [v27 lastObject];
-  v29 = [v25 rowIndexForIdentifier:v28];
+  table4 = [(ICTableAttachmentViewController *)self table];
+  rowButton2 = [(ICTableAttachmentViewController *)self rowButton];
+  columnOrRowIdentifiers4 = [rowButton2 columnOrRowIdentifiers];
+  lastObject2 = [columnOrRowIdentifiers4 lastObject];
+  v29 = [table4 rowIndexForIdentifier:lastObject2];
 
-  v30 = [MEMORY[0x277CCA8D8] mainBundle];
-  v31 = v30;
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v31 = mainBundle2;
   if (v24 == v29)
   {
-    v37 = [v30 localizedStringForKey:@"row %lu" value:&stru_282757698 table:0];
+    v37 = [mainBundle2 localizedStringForKey:@"row %lu" value:&stru_282757698 table:0];
 
     v32 = MEMORY[0x277CCACA8];
   }
 
   else
   {
-    v37 = [v30 localizedStringForKey:@"rows %lu to %lu" value:&stru_282757698 table:0];
+    v37 = [mainBundle2 localizedStringForKey:@"rows %lu to %lu" value:&stru_282757698 table:0];
 
     v32 = MEMORY[0x277CCACA8];
     v36 = v29 + 1;
   }
 
   v33 = [v32 localizedStringWithFormat:v37, v24 + 1, v36];
-  v34 = [(ICTableAttachmentViewController *)self rowButton];
-  [v34 setAccessibilityValue:v33];
+  rowButton3 = [(ICTableAttachmentViewController *)self rowButton];
+  [rowButton3 setAccessibilityValue:v33];
 }
 
 - (void)moveAccessibilityFocusToSelectedColumnOrRowButton
 {
-  v3 = [(ICTableAttachmentViewController *)self columnButton];
-  v4 = [v3 isSelected];
+  columnButton = [(ICTableAttachmentViewController *)self columnButton];
+  isSelected = [columnButton isSelected];
 
-  if (v4)
+  if (isSelected)
   {
-    v5 = [(ICTableAttachmentViewController *)self columnButton];
+    columnButton2 = [(ICTableAttachmentViewController *)self columnButton];
 LABEL_5:
-    v8 = v5;
+    v8 = columnButton2;
     goto LABEL_7;
   }
 
-  v6 = [(ICTableAttachmentViewController *)self rowButton];
-  v7 = [v6 isSelected];
+  rowButton = [(ICTableAttachmentViewController *)self rowButton];
+  isSelected2 = [rowButton isSelected];
 
-  if (v7)
+  if (isSelected2)
   {
-    v5 = [(ICTableAttachmentViewController *)self rowButton];
+    columnButton2 = [(ICTableAttachmentViewController *)self rowButton];
     goto LABEL_5;
   }
 
@@ -3444,32 +3444,32 @@ LABEL_7:
   UIAccessibilityPostNotification(*MEMORY[0x277D76488], v8);
 }
 
-- (void)speakAccessibilityAnnouncementForMoveToCellWithColumnID:(id)a3 rowID:(id)a4
+- (void)speakAccessibilityAnnouncementForMoveToCellWithColumnID:(id)d rowID:(id)iD
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICTableAttachmentViewController *)self table];
-  v9 = [v8 columnIndexForIdentifier:v7];
+  iDCopy = iD;
+  dCopy = d;
+  table = [(ICTableAttachmentViewController *)self table];
+  v9 = [table columnIndexForIdentifier:dCopy];
 
-  v10 = [(ICTableAttachmentViewController *)self table];
-  v11 = [v10 rowIndexForIdentifier:v6];
+  table2 = [(ICTableAttachmentViewController *)self table];
+  v11 = [table2 rowIndexForIdentifier:iDCopy];
 
-  v12 = [(ICTableAttachmentViewController *)self tableAXController];
-  v16 = [v12 cellElementForColumnIndex:v9 rowIndex:v11];
+  tableAXController = [(ICTableAttachmentViewController *)self tableAXController];
+  v16 = [tableAXController cellElementForColumnIndex:v9 rowIndex:v11];
 
-  v13 = [v16 accessibilityLabel];
-  v15 = [v16 accessibilityValue];
+  accessibilityLabel = [v16 accessibilityLabel];
+  accessibilityValue = [v16 accessibilityValue];
   v14 = __ICAccessibilityStringForVariables();
 
   UIAccessibilityPostNotification(*MEMORY[0x277D76438], v14);
 }
 
-- (void)speakAccessibilityExitedTableAnnouncementAndDidRemoveRow:(BOOL)a3
+- (void)speakAccessibilityExitedTableAnnouncementAndDidRemoveRow:(BOOL)row
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = v4;
-  if (v3)
+  rowCopy = row;
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = mainBundle;
+  if (rowCopy)
   {
     v6 = @"Removed empty row and exited table";
   }
@@ -3479,7 +3479,7 @@ LABEL_7:
     v6 = @"Exited table";
   }
 
-  argument = [v4 localizedStringForKey:v6 value:&stru_282757698 table:0];
+  argument = [mainBundle localizedStringForKey:v6 value:&stru_282757698 table:0];
 
   UIAccessibilityPostNotification(*MEMORY[0x277D76438], argument);
 }
@@ -3489,36 +3489,36 @@ LABEL_7:
   if (![(ICiOSTableAttachmentViewController *)self isTrackingAnalyticsEdit])
   {
     [(ICiOSTableAttachmentViewController *)self setIsTrackingAnalyticsEdit:1];
-    v3 = [(ICTableAttachmentViewController *)self table];
-    v4 = [v3 columnCount];
+    table = [(ICTableAttachmentViewController *)self table];
+    columnCount = [table columnCount];
 
-    v5 = [(ICTableAttachmentViewController *)self table];
-    v6 = [v5 rowCount];
+    table2 = [(ICTableAttachmentViewController *)self table];
+    rowCount = [table2 rowCount];
 
-    v7 = [(ICiOSTableAttachmentViewController *)self eventReporter];
-    [v7 pushStartTableDataWithStartColumns:v4 startRows:v6];
+    eventReporter = [(ICiOSTableAttachmentViewController *)self eventReporter];
+    [eventReporter pushStartTableDataWithStartColumns:columnCount startRows:rowCount];
   }
 }
 
 - (void)sendAnalyticsForEndEditIfNeeded
 {
   objc_opt_class();
-  v3 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-  v4 = [v3 auxiliaryResponder];
+  noteEditorViewController = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+  auxiliaryResponder = [noteEditorViewController auxiliaryResponder];
   v16 = ICDynamicCast();
 
   if ([(ICiOSTableAttachmentViewController *)self isTrackingAnalyticsEdit])
   {
     if (v16)
     {
-      v5 = [(ICiOSTableAttachmentViewController *)self view];
-      if ([v16 isDescendantOfView:v5])
+      view = [(ICiOSTableAttachmentViewController *)self view];
+      if ([v16 isDescendantOfView:view])
       {
-        v6 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-        v7 = [v6 textView];
-        v8 = [v7 isBecomingFirstResponder];
+        noteEditorViewController2 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+        textView = [noteEditorViewController2 textView];
+        isBecomingFirstResponder = [textView isBecomingFirstResponder];
 
-        if (!v8)
+        if (!isBecomingFirstResponder)
         {
           goto LABEL_8;
         }
@@ -3529,16 +3529,16 @@ LABEL_7:
       }
     }
 
-    v9 = [(ICTableAttachmentViewController *)self table];
-    v10 = [v9 columnCount];
+    table = [(ICTableAttachmentViewController *)self table];
+    columnCount = [table columnCount];
 
-    v11 = [(ICTableAttachmentViewController *)self table];
-    v12 = [v11 rowCount];
+    table2 = [(ICTableAttachmentViewController *)self table];
+    rowCount = [table2 rowCount];
 
-    v13 = [(ICiOSTableAttachmentViewController *)self eventReporter];
-    v14 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
-    v15 = [v14 note];
-    [v13 submitTableEditEventForNote:v15 endColumns:v10 endRows:v12];
+    eventReporter = [(ICiOSTableAttachmentViewController *)self eventReporter];
+    noteEditorViewController3 = [(ICiOSTableAttachmentViewController *)self noteEditorViewController];
+    note = [noteEditorViewController3 note];
+    [eventReporter submitTableEditEventForNote:note endColumns:columnCount endRows:rowCount];
 
     [(ICiOSTableAttachmentViewController *)self setIsTrackingAnalyticsEdit:0];
   }
@@ -3552,20 +3552,20 @@ LABEL_8:
   {
     if ([MEMORY[0x277D35978] isOptedInForAnalytics])
     {
-      v3 = [(ICiOSTableAttachmentViewController *)self viewIfLoaded];
+      viewIfLoaded = [(ICiOSTableAttachmentViewController *)self viewIfLoaded];
 
-      if (v3)
+      if (viewIfLoaded)
       {
         v4 = objc_alloc(MEMORY[0x277D35978]);
         v5 = objc_opt_class();
         v6 = NSStringFromClass(v5);
-        v7 = [(ICiOSTableAttachmentViewController *)self view];
-        v8 = [v4 initWithSubTrackerName:v6 view:v7];
+        view = [(ICiOSTableAttachmentViewController *)self view];
+        v8 = [v4 initWithSubTrackerName:v6 view:view];
         eventReporter = self->_eventReporter;
         self->_eventReporter = v8;
 
-        v10 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v10 addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter addObserver:self selector:sel_eventReporterLostSession_ name:*MEMORY[0x277D35958] object:self->_eventReporter];
       }
     }
   }
@@ -3575,17 +3575,17 @@ LABEL_8:
   return v11;
 }
 
-- (void)eventReporterLostSession:(id)a3
+- (void)eventReporterLostSession:(id)session
 {
   eventReporter = self->_eventReporter;
   self->_eventReporter = 0;
-  v5 = a3;
+  sessionCopy = session;
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v6 = *MEMORY[0x277D35958];
-  v7 = [v5 object];
+  object = [sessionCopy object];
 
-  [v8 removeObserver:self name:v6 object:v7];
+  [defaultCenter removeObserver:self name:v6 object:object];
 }
 
 - (CGPoint)initialDragOffset

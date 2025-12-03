@@ -1,36 +1,36 @@
 @interface DKExtensionAdapter
-+ (id)extensionAdapterWithExtensionAttributes:(id)a3;
-- (DKExtensionAdapter)initWithExtensionAttributes:(id)a3;
++ (id)extensionAdapterWithExtensionAttributes:(id)attributes;
+- (DKExtensionAdapter)initWithExtensionAttributes:(id)attributes;
 - (NSString)description;
-- (id)_requestForExtensionRequestIdentifier:(id)a3;
-- (void)_attachHandlersToExtension:(id)a3;
-- (void)_didCancelExtensionRequest:(id)a3 error:(id)a4;
-- (void)_didCompleteExtensionRequest:(id)a3;
-- (void)_didInterruptExtensionRequest:(id)a3;
-- (void)beginRequest:(id)a3 payload:(id)a4 completion:(id)a5;
+- (id)_requestForExtensionRequestIdentifier:(id)identifier;
+- (void)_attachHandlersToExtension:(id)extension;
+- (void)_didCancelExtensionRequest:(id)request error:(id)error;
+- (void)_didCompleteExtensionRequest:(id)request;
+- (void)_didInterruptExtensionRequest:(id)request;
+- (void)beginRequest:(id)request payload:(id)payload completion:(id)completion;
 - (void)cancelAll;
-- (void)request:(id)a3 didCompleteWithPayload:(id)a4 error:(id)a5;
+- (void)request:(id)request didCompleteWithPayload:(id)payload error:(id)error;
 @end
 
 @implementation DKExtensionAdapter
 
-- (DKExtensionAdapter)initWithExtensionAttributes:(id)a3
+- (DKExtensionAdapter)initWithExtensionAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v17.receiver = self;
   v17.super_class = DKExtensionAdapter;
   v6 = [(DKExtensionAdapter *)&v17 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extensionAttributes, a3);
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v6->_extensionAttributes, attributes);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     requestLookup = v7->_requestLookup;
-    v7->_requestLookup = v8;
+    v7->_requestLookup = dictionary;
 
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     extensionToRequestIdentifierLookup = v7->_extensionToRequestIdentifierLookup;
-    v7->_extensionToRequestIdentifierLookup = v10;
+    v7->_extensionToRequestIdentifierLookup = dictionary2;
 
     v12 = dispatch_queue_create("com.apple.DiagnosticsKit.extensionAdapterQueue", 0);
     adapterQueue = v7->_adapterQueue;
@@ -40,40 +40,40 @@
     adapterConnectQueue = v7->_adapterConnectQueue;
     v7->_adapterConnectQueue = v14;
 
-    [(DKExtensionAdapter *)v7 _attachHandlersToExtension:v5];
+    [(DKExtensionAdapter *)v7 _attachHandlersToExtension:attributesCopy];
   }
 
   return v7;
 }
 
-+ (id)extensionAdapterWithExtensionAttributes:(id)a3
++ (id)extensionAdapterWithExtensionAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithExtensionAttributes:v4];
+  attributesCopy = attributes;
+  v5 = [[self alloc] initWithExtensionAttributes:attributesCopy];
 
   return v5;
 }
 
-- (void)beginRequest:(id)a3 payload:(id)a4 completion:(id)a5
+- (void)beginRequest:(id)request payload:(id)payload completion:(id)completion
 {
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(DKExtensionAdapter *)self requestLookup];
-  objc_sync_enter(v11);
-  v12 = [(DKExtensionAdapter *)self requestLookup];
-  v13 = [v8 requestIdentifier];
-  [v12 setObject:v8 forKeyedSubscript:v13];
+  requestCopy = request;
+  payloadCopy = payload;
+  completionCopy = completion;
+  requestLookup = [(DKExtensionAdapter *)self requestLookup];
+  objc_sync_enter(requestLookup);
+  requestLookup2 = [(DKExtensionAdapter *)self requestLookup];
+  requestIdentifier = [requestCopy requestIdentifier];
+  [requestLookup2 setObject:requestCopy forKeyedSubscript:requestIdentifier];
 
-  objc_sync_exit(v11);
+  objc_sync_exit(requestLookup);
   v14 = objc_opt_new();
-  v15 = [v10 copy];
+  v15 = [completionCopy copy];
   [v14 setCompletion:v15];
 
   [v14 setCompletionHandlerExecuted:0];
-  [v8 setContext:v14];
-  [v8 setDelegate:self];
+  [requestCopy setContext:v14];
+  [requestCopy setDelegate:self];
   v34 = 0;
   v35[0] = &v34;
   v35[1] = 0x3032000000;
@@ -86,27 +86,27 @@
   v31 = __Block_byref_object_copy__1;
   v32 = __Block_byref_object_dispose__1;
   v33 = 0;
-  v16 = [(DKExtensionAdapter *)self adapterConnectQueue];
+  adapterConnectQueue = [(DKExtensionAdapter *)self adapterConnectQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__DKExtensionAdapter_beginRequest_payload_completion___block_invoke;
   block[3] = &unk_278F6C328;
   v26 = &v28;
-  v17 = v8;
+  v17 = requestCopy;
   v25 = v17;
   v27 = &v34;
-  dispatch_sync(v16, block);
+  dispatch_sync(adapterConnectQueue, block);
 
   if (v29[5])
   {
-    v18 = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
-    objc_sync_enter(v18);
-    v19 = [v17 requestIdentifier];
-    v20 = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
-    [v20 setObject:v19 forKeyedSubscript:v29[5]];
+    extensionToRequestIdentifierLookup = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
+    objc_sync_enter(extensionToRequestIdentifierLookup);
+    requestIdentifier2 = [v17 requestIdentifier];
+    extensionToRequestIdentifierLookup2 = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
+    [extensionToRequestIdentifierLookup2 setObject:requestIdentifier2 forKeyedSubscript:v29[5]];
 
-    objc_sync_exit(v18);
-    [v17 beginWithPayload:v9];
+    objc_sync_exit(extensionToRequestIdentifierLookup);
+    [v17 beginWithPayload:payloadCopy];
   }
 
   else
@@ -114,8 +114,8 @@
     v21 = DiagnosticsKitLogHandleForCategory(1);
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
-      v22 = [v17 requestIdentifier];
-      [(DKExtensionAdapter *)v22 beginRequest:v35 payload:buf completion:v21];
+      requestIdentifier3 = [v17 requestIdentifier];
+      [(DKExtensionAdapter *)requestIdentifier3 beginRequest:v35 payload:buf completion:v21];
     }
 
     [DKAnalytics sendAnalyticsWithEvent:3 error:*(v35[0] + 40)];
@@ -142,13 +142,13 @@ void __54__DKExtensionAdapter_beginRequest_payload_completion___block_invoke(voi
 - (void)cancelAll
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(DKExtensionAdapter *)self requestLookup];
-  objc_sync_enter(v3);
-  v4 = [(DKExtensionAdapter *)self requestLookup];
-  v5 = [v4 allValues];
-  v6 = [v5 copy];
+  requestLookup = [(DKExtensionAdapter *)self requestLookup];
+  objc_sync_enter(requestLookup);
+  requestLookup2 = [(DKExtensionAdapter *)self requestLookup];
+  allValues = [requestLookup2 allValues];
+  v6 = [allValues copy];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(requestLookup);
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -181,65 +181,65 @@ void __54__DKExtensionAdapter_beginRequest_payload_completion___block_invoke(voi
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)request:(id)a3 didCompleteWithPayload:(id)a4 error:(id)a5
+- (void)request:(id)request didCompleteWithPayload:(id)payload error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 requestIdentifier];
+  requestCopy = request;
+  payloadCopy = payload;
+  errorCopy = error;
+  requestIdentifier = [requestCopy requestIdentifier];
   v12 = DiagnosticsKitLogHandleForCategory(1);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138412802;
-    v26 = v11;
+    v26 = requestIdentifier;
     v27 = 2112;
-    v28 = v9;
+    v28 = payloadCopy;
     v29 = 2112;
-    v30 = v10;
+    v30 = errorCopy;
     _os_log_impl(&dword_248B9D000, v12, OS_LOG_TYPE_DEFAULT, "[RID: %@] request:didCompleteWithPayload: %@, error: %@", &v25, 0x20u);
   }
 
-  v13 = [v8 extensionRequestIdentifier];
+  extensionRequestIdentifier = [requestCopy extensionRequestIdentifier];
 
-  if (v13)
+  if (extensionRequestIdentifier)
   {
-    v14 = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
-    objc_sync_enter(v14);
-    v15 = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
-    v16 = [v8 extensionRequestIdentifier];
-    [v15 removeObjectForKey:v16];
+    extensionToRequestIdentifierLookup = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
+    objc_sync_enter(extensionToRequestIdentifierLookup);
+    extensionToRequestIdentifierLookup2 = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
+    extensionRequestIdentifier2 = [requestCopy extensionRequestIdentifier];
+    [extensionToRequestIdentifierLookup2 removeObjectForKey:extensionRequestIdentifier2];
 
-    objc_sync_exit(v14);
+    objc_sync_exit(extensionToRequestIdentifierLookup);
   }
 
-  v17 = [(DKExtensionAdapter *)self requestLookup];
-  objc_sync_enter(v17);
-  v18 = [(DKExtensionAdapter *)self requestLookup];
-  [v18 removeObjectForKey:v11];
+  requestLookup = [(DKExtensionAdapter *)self requestLookup];
+  objc_sync_enter(requestLookup);
+  requestLookup2 = [(DKExtensionAdapter *)self requestLookup];
+  [requestLookup2 removeObjectForKey:requestIdentifier];
 
-  objc_sync_exit(v17);
-  v19 = [v8 context];
-  v20 = [v19 completion];
-  if (v20)
+  objc_sync_exit(requestLookup);
+  context = [requestCopy context];
+  completion = [context completion];
+  if (completion)
   {
-    v21 = [v19 completionHandlerExecuted];
+    completionHandlerExecuted = [context completionHandlerExecuted];
 
-    if ((v21 & 1) == 0)
+    if ((completionHandlerExecuted & 1) == 0)
     {
       v22 = DiagnosticsKitLogHandleForCategory(1);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         v25 = 138412290;
-        v26 = v11;
+        v26 = requestIdentifier;
         _os_log_impl(&dword_248B9D000, v22, OS_LOG_TYPE_DEFAULT, "[RID: %@] Calling final completion.", &v25, 0xCu);
       }
 
-      v23 = [v19 completion];
-      (v23)[2](v23, v9, v10);
+      completion2 = [context completion];
+      (completion2)[2](completion2, payloadCopy, errorCopy);
 
-      [v19 setCompletion:0];
-      [v19 setCompletionHandlerExecuted:1];
+      [context setCompletion:0];
+      [context setCompletionHandlerExecuted:1];
     }
   }
 
@@ -251,36 +251,36 @@ void __54__DKExtensionAdapter_beginRequest_payload_completion___block_invoke(voi
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DKExtensionAdapter *)self extensionAttributes];
-  v7 = [v3 stringWithFormat:@"<%@: %p attributes: %@>", v5, self, v6];;
+  extensionAttributes = [(DKExtensionAdapter *)self extensionAttributes];
+  v7 = [v3 stringWithFormat:@"<%@: %p attributes: %@>", v5, self, extensionAttributes];;
 
   return v7;
 }
 
-- (void)_attachHandlersToExtension:(id)a3
+- (void)_attachHandlersToExtension:(id)extension
 {
-  v4 = a3;
+  extensionCopy = extension;
   objc_initWeak(&location, self);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __49__DKExtensionAdapter__attachHandlersToExtension___block_invoke;
   v12[3] = &unk_278F6C350;
   objc_copyWeak(&v13, &location);
-  v5 = [v4 extension];
-  [v5 setRequestCompletionBlock:v12];
+  extension = [extensionCopy extension];
+  [extension setRequestCompletionBlock:v12];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __49__DKExtensionAdapter__attachHandlersToExtension___block_invoke_2;
   v10[3] = &unk_278F6C3A0;
   objc_copyWeak(&v11, &location);
-  v6 = [v4 extension];
-  [v6 setRequestCancellationBlock:v10];
+  extension2 = [extensionCopy extension];
+  [extension2 setRequestCancellationBlock:v10];
 
   v8 = MEMORY[0x277D85DD0];
   objc_copyWeak(&v9, &location);
-  v7 = [v4 extension];
-  [v7 setRequestInterruptionBlock:&v8];
+  extension3 = [extensionCopy extension];
+  [extension3 setRequestInterruptionBlock:&v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
@@ -373,34 +373,34 @@ void __49__DKExtensionAdapter__attachHandlersToExtension___block_invoke_2_29(uin
   }
 }
 
-- (id)_requestForExtensionRequestIdentifier:(id)a3
+- (id)_requestForExtensionRequestIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DKExtensionAdapter *)self requestLookup];
-  objc_sync_enter(v5);
-  v6 = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  requestLookup = [(DKExtensionAdapter *)self requestLookup];
+  objc_sync_enter(requestLookup);
+  extensionToRequestIdentifierLookup = [(DKExtensionAdapter *)self extensionToRequestIdentifierLookup];
+  v7 = [extensionToRequestIdentifierLookup objectForKeyedSubscript:identifierCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(requestLookup);
   v8 = DiagnosticsKitLogHandleForCategory(1);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412546;
     v15 = v7;
     v16 = 2112;
-    v17 = v4;
+    v17 = identifierCopy;
     _os_log_impl(&dword_248B9D000, v8, OS_LOG_TYPE_DEFAULT, "[RID: %@] [ERID: %@] Looking up request identifier", &v14, 0x16u);
   }
 
   if (v7)
   {
-    v9 = [(DKExtensionAdapter *)self requestLookup];
-    objc_sync_enter(v9);
-    v10 = [(DKExtensionAdapter *)self requestLookup];
-    v11 = [v10 objectForKeyedSubscript:v7];
+    requestLookup2 = [(DKExtensionAdapter *)self requestLookup];
+    objc_sync_enter(requestLookup2);
+    requestLookup3 = [(DKExtensionAdapter *)self requestLookup];
+    v11 = [requestLookup3 objectForKeyedSubscript:v7];
 
-    objc_sync_exit(v9);
+    objc_sync_exit(requestLookup2);
   }
 
   else
@@ -413,10 +413,10 @@ void __49__DKExtensionAdapter__attachHandlersToExtension___block_invoke_2_29(uin
   return v11;
 }
 
-- (void)_didCompleteExtensionRequest:(id)a3
+- (void)_didCompleteExtensionRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(DKExtensionAdapter *)self _requestForExtensionRequestIdentifier:v4];
+  requestCopy = request;
+  v5 = [(DKExtensionAdapter *)self _requestForExtensionRequestIdentifier:requestCopy];
   v6 = v5;
   if (v5)
   {
@@ -433,15 +433,15 @@ void __49__DKExtensionAdapter__attachHandlersToExtension___block_invoke_2_29(uin
   }
 }
 
-- (void)_didCancelExtensionRequest:(id)a3 error:(id)a4
+- (void)_didCancelExtensionRequest:(id)request error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(DKExtensionAdapter *)self _requestForExtensionRequestIdentifier:v6];
+  requestCopy = request;
+  errorCopy = error;
+  v8 = [(DKExtensionAdapter *)self _requestForExtensionRequestIdentifier:requestCopy];
   v9 = v8;
   if (v8)
   {
-    [v8 cancelWithError:v7];
+    [v8 cancelWithError:errorCopy];
   }
 
   else
@@ -454,18 +454,18 @@ void __49__DKExtensionAdapter__attachHandlersToExtension___block_invoke_2_29(uin
   }
 }
 
-- (void)_didInterruptExtensionRequest:(id)a3
+- (void)_didInterruptExtensionRequest:(id)request
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(DKExtensionAdapter *)self _requestForExtensionRequestIdentifier:v4];
-  v6 = [(DKExtensionAdapter *)self requestLookup];
-  objc_sync_enter(v6);
-  v7 = [(DKExtensionAdapter *)self requestLookup];
-  v8 = [v7 allValues];
-  v9 = [v8 copy];
+  requestCopy = request;
+  v5 = [(DKExtensionAdapter *)self _requestForExtensionRequestIdentifier:requestCopy];
+  requestLookup = [(DKExtensionAdapter *)self requestLookup];
+  objc_sync_enter(requestLookup);
+  requestLookup2 = [(DKExtensionAdapter *)self requestLookup];
+  allValues = [requestLookup2 allValues];
+  v9 = [allValues copy];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(requestLookup);
   v10 = DiagnosticsKitLogHandleForCategory(1);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
   if (v5)
@@ -484,30 +484,30 @@ void __49__DKExtensionAdapter__attachHandlersToExtension___block_invoke_2_29(uin
   v12 = DiagnosticsKitLogHandleForCategory(1);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [v5 requestIdentifier];
+    requestIdentifier = [v5 requestIdentifier];
     v21 = 138412290;
-    v22 = v13;
+    v22 = requestIdentifier;
     _os_log_impl(&dword_248B9D000, v12, OS_LOG_TYPE_DEFAULT, "[RID: %@] Calling interrupt", &v21, 0xCu);
   }
 
   [v5 interrupt];
-  v14 = [v5 extensionRequestIdentifier];
+  extensionRequestIdentifier = [v5 extensionRequestIdentifier];
 
-  if (v14)
+  if (extensionRequestIdentifier)
   {
     v15 = DiagnosticsKitLogHandleForCategory(1);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v5 requestIdentifier];
+      requestIdentifier2 = [v5 requestIdentifier];
       v21 = 138412290;
-      v22 = v16;
+      v22 = requestIdentifier2;
       _os_log_impl(&dword_248B9D000, v15, OS_LOG_TYPE_DEFAULT, "[RID: %@] Cancelling extension request", &v21, 0xCu);
     }
 
-    v17 = [(DKExtensionAdapter *)self extensionAttributes];
-    v18 = [v17 extension];
-    v19 = [v5 extensionRequestIdentifier];
-    [v18 cancelExtensionRequestWithIdentifier:v19];
+    extensionAttributes = [(DKExtensionAdapter *)self extensionAttributes];
+    extension = [extensionAttributes extension];
+    extensionRequestIdentifier2 = [v5 extensionRequestIdentifier];
+    [extension cancelExtensionRequestWithIdentifier:extensionRequestIdentifier2];
   }
 
   v20 = *MEMORY[0x277D85DE8];

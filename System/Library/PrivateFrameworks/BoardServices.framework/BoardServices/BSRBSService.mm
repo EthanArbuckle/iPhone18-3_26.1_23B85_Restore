@@ -1,21 +1,21 @@
 @interface BSRBSService
-+ (__CFString)debugDescriptionWithMultilinePrefix:(uint64_t)a1;
++ (__CFString)debugDescriptionWithMultilinePrefix:(uint64_t)prefix;
 + (id)_sharedTestInstance;
-+ (void)_sharedInstanceCreatingIfNecessary:(uint64_t)a1;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)launchIdentifiersForMachName:(uint64_t)a1;
-- (id)registerMonitor:(uint64_t)a1;
++ (void)_sharedInstanceCreatingIfNecessary:(uint64_t)necessary;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)launchIdentifiersForMachName:(uint64_t)name;
+- (id)registerMonitor:(uint64_t)monitor;
 - (id)succinctDescription;
-- (void)_callOutLock_noteEndpointsChangedForServices:(os_unfair_lock_s *)a1;
-- (void)service:(id)a3 didLoseInheritances:(id)a4;
-- (void)service:(id)a3 didReceiveInheritances:(id)a4;
+- (void)_callOutLock_noteEndpointsChangedForServices:(os_unfair_lock_s *)services;
+- (void)service:(id)service didLoseInheritances:(id)inheritances;
+- (void)service:(id)service didReceiveInheritances:(id)inheritances;
 @end
 
 @implementation BSRBSService
 
-+ (void)_sharedInstanceCreatingIfNecessary:(uint64_t)a1
++ (void)_sharedInstanceCreatingIfNecessary:(uint64_t)necessary
 {
   objc_opt_self();
   os_unfair_lock_lock(&_MergedGlobals_5);
@@ -36,26 +36,26 @@
     if (v5 && (v26.receiver = v5, v26.super_class = BSRBSService, v6 = objc_msgSendSuper2(&v26, sel_init), (v7 = v6) != 0))
     {
       v6[16] = 0;
-      v8 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v9 = v7[2];
-      v7[2] = v8;
+      v7[2] = dictionary;
 
-      v10 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
       v11 = v7[3];
-      v7[3] = v10;
+      v7[3] = dictionary2;
 
-      v12 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary3 = [MEMORY[0x1E695DF90] dictionary];
       v13 = v7[4];
-      v7[4] = v12;
+      v7[4] = dictionary3;
 
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary4 = [MEMORY[0x1E695DF90] dictionary];
       v15 = v7[5];
-      v7[5] = v14;
+      v7[5] = dictionary4;
 
       *(v7 + 17) = 0;
-      v16 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary5 = [MEMORY[0x1E695DF90] dictionary];
       v17 = v7[7];
-      v7[7] = v16;
+      v7[7] = dictionary5;
 
       v18 = v7;
       v28 = 0;
@@ -77,9 +77,9 @@
       _Block_object_dispose(&v28, 8);
       if (!v19)
       {
-        v25 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v24 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"RBSService *softlinkRBSServiceInitialize(id<RBSServiceDelegate>  _Nullable __strong)"];
-        [v25 handleFailureInFunction:v24 file:@"BSRBSService.m" lineNumber:23 description:{@"%s", dlerror()}];
+        [currentHandler handleFailureInFunction:v24 file:@"BSRBSService.m" lineNumber:23 description:{@"%s", dlerror()}];
 
         __break(1u);
         return;
@@ -121,7 +121,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = a1;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSRBSService.m";
     v18 = 1024;
@@ -138,26 +138,26 @@
   return result;
 }
 
-- (id)launchIdentifiersForMachName:(uint64_t)a1
+- (id)launchIdentifiersForMachName:(uint64_t)name
 {
   v3 = a2;
-  if (a1)
+  if (name)
   {
-    os_unfair_lock_lock((a1 + 64));
-    v4 = *(a1 + 48);
+    os_unfair_lock_lock((name + 64));
+    v4 = *(name + 48);
     if (!v4)
     {
-      v5 = [*(a1 + 8) managedEndpointByLaunchIdentifier];
-      if ([v5 count])
+      managedEndpointByLaunchIdentifier = [*(name + 8) managedEndpointByLaunchIdentifier];
+      if ([managedEndpointByLaunchIdentifier count])
       {
-        v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v5, "count")}];
+        v6 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(managedEndpointByLaunchIdentifier, "count")}];
         v20[0] = MEMORY[0x1E69E9820];
         v20[1] = 3221225472;
         v20[2] = __45__BSRBSService_launchIdentifiersForMachName___block_invoke;
         v20[3] = &unk_1E75207F8;
         v7 = v6;
         v21 = v7;
-        [v5 enumerateKeysAndObjectsUsingBlock:v20];
+        [managedEndpointByLaunchIdentifier enumerateKeysAndObjectsUsingBlock:v20];
         v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v7, "count")}];
         v15 = MEMORY[0x1E69E9820];
         v16 = 3221225472;
@@ -167,21 +167,21 @@
         v19 = v9;
         [v7 enumerateKeysAndObjectsUsingBlock:&v15];
         v10 = [v7 copy];
-        v11 = *(a1 + 48);
-        *(a1 + 48) = v10;
+        v11 = *(name + 48);
+        *(name + 48) = v10;
       }
 
       else
       {
-        v12 = *(a1 + 48);
-        *(a1 + 48) = MEMORY[0x1E695E0F8];
+        v12 = *(name + 48);
+        *(name + 48) = MEMORY[0x1E695E0F8];
       }
 
-      v4 = *(a1 + 48);
+      v4 = *(name + 48);
     }
 
     v13 = [v4 objectForKey:v3];
-    os_unfair_lock_unlock((a1 + 64));
+    os_unfair_lock_unlock((name + 64));
   }
 
   else
@@ -222,12 +222,12 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
   [v5 setObject:v6 forKey:v7];
 }
 
-- (id)registerMonitor:(uint64_t)a1
+- (id)registerMonitor:(uint64_t)monitor
 {
   v47 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (monitor)
   {
     if (!v3)
     {
@@ -242,7 +242,7 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
         v37 = 2114;
         v38 = v23;
         v39 = 2048;
-        v40 = a1;
+        monitorCopy3 = monitor;
         v41 = 2114;
         v42 = @"BSRBSService.m";
         v43 = 1024;
@@ -259,8 +259,8 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
       JUMPOUT(0x19A844FB4);
     }
 
-    v5 = [v3 service];
-    if (!v5)
+    service = [v3 service];
+    if (!service)
     {
       v25 = [MEMORY[0x1E696AEC0] stringWithFormat:@"asked to register a monitor with a nil service : monitor=%@", v4];
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -273,7 +273,7 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
         v37 = 2114;
         v38 = v28;
         v39 = 2048;
-        v40 = a1;
+        monitorCopy3 = monitor;
         v41 = 2114;
         v42 = @"BSRBSService.m";
         v43 = 1024;
@@ -290,15 +290,15 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
       JUMPOUT(0x19A8450B0);
     }
 
-    os_unfair_lock_lock((a1 + 68));
-    os_unfair_lock_lock((a1 + 64));
-    v6 = [*(a1 + 40) objectForKey:v5];
+    os_unfair_lock_lock((monitor + 68));
+    os_unfair_lock_lock((monitor + 64));
+    v6 = [*(monitor + 40) objectForKey:service];
     v7 = v6;
     if (v6)
     {
       if ([v6 containsObject:v4])
       {
-        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"already tracking monitor for service %@ : %@", v5, v4];
+        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"already tracking monitor for service %@ : %@", service, v4];
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           v9 = NSStringFromSelector(sel_registerMonitor_);
@@ -309,7 +309,7 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
           v37 = 2114;
           v38 = v11;
           v39 = 2048;
-          v40 = a1;
+          monitorCopy3 = monitor;
           v41 = 2114;
           v42 = @"BSRBSService.m";
           v43 = 1024;
@@ -330,13 +330,13 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
     else
     {
       v7 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
-      [*(a1 + 40) setObject:? forKey:?];
+      [*(monitor + 40) setObject:? forKey:?];
     }
 
     [v7 addObject:v4];
     objc_initWeak(buf, v4);
-    os_unfair_lock_unlock((a1 + 64));
-    v13 = [*(a1 + 56) objectForKey:v5];
+    os_unfair_lock_unlock((monitor + 64));
+    v13 = [*(monitor + 56) objectForKey:service];
     v14 = v13;
     if (v13)
     {
@@ -350,8 +350,8 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
 
     [v4 serialCallOut_didUpdateEndpointEnvironments:v15];
 
-    os_unfair_lock_unlock((a1 + 68));
-    objc_initWeak(&location, a1);
+    os_unfair_lock_unlock((monitor + 68));
+    objc_initWeak(&location, monitor);
     v16 = objc_alloc(MEMORY[0x1E698E778]);
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
@@ -359,9 +359,9 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
     v30[3] = &unk_1E7520848;
     objc_copyWeak(&v32, &location);
     objc_copyWeak(&v33, buf);
-    v17 = v5;
+    v17 = service;
     v31 = v17;
-    a1 = [v16 initWithIdentifier:@"com.apple.boardservices.manager.monitor" forReason:v17 invalidationBlock:v30];
+    monitor = [v16 initWithIdentifier:@"com.apple.boardservices.manager.monitor" forReason:v17 invalidationBlock:v30];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&v32);
@@ -371,7 +371,7 @@ void __45__BSRBSService_launchIdentifiersForMachName___block_invoke_2(uint64_t a
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return a1;
+  return monitor;
 }
 
 void __32__BSRBSService_registerMonitor___block_invoke(uint64_t a1)
@@ -400,16 +400,16 @@ void __32__BSRBSService_registerMonitor___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_callOutLock_noteEndpointsChangedForServices:(os_unfair_lock_s *)a1
+- (void)_callOutLock_noteEndpointsChangedForServices:(os_unfair_lock_s *)services
 {
   v53 = *MEMORY[0x1E69E9840];
   v26 = a2;
-  if (a1)
+  if (services)
   {
-    os_unfair_lock_assert_owner(a1 + 17);
-    v25 = [MEMORY[0x1E695DF90] dictionary];
-    v35 = a1;
-    os_unfair_lock_lock(a1 + 16);
+    os_unfair_lock_assert_owner(services + 17);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    servicesCopy = services;
+    os_unfair_lock_lock(services + 16);
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
@@ -432,9 +432,9 @@ void __32__BSRBSService_registerMonitor___block_invoke(uint64_t a1)
         }
 
         v33 = *(*(&v46 + 1) + 8 * i);
-        v30 = [*&v35[8]._os_unfair_lock_opaque objectForKey:?];
+        v30 = [*&servicesCopy[8]._os_unfair_lock_opaque objectForKey:?];
         v3 = [v30 count];
-        v4 = *&v35[14]._os_unfair_lock_opaque;
+        v4 = *&servicesCopy[14]._os_unfair_lock_opaque;
         if (v3)
         {
           v32 = [v4 objectForKey:v33];
@@ -442,15 +442,15 @@ void __32__BSRBSService_registerMonitor___block_invoke(uint64_t a1)
           v6 = v5;
           if (v5)
           {
-            v7 = v5;
+            dictionary2 = v5;
           }
 
           else
           {
-            v7 = [MEMORY[0x1E695DF90] dictionary];
+            dictionary2 = [MEMORY[0x1E695DF90] dictionary];
           }
 
-          v36 = v7;
+          v36 = dictionary2;
 
           v44 = 0u;
           v45 = 0u;
@@ -476,7 +476,7 @@ void __32__BSRBSService_registerMonitor___block_invoke(uint64_t a1)
                 v41 = 0u;
                 v38 = 0u;
                 v39 = 0u;
-                v13 = [*&v35[6]._os_unfair_lock_opaque objectForKey:v11];
+                v13 = [*&servicesCopy[6]._os_unfair_lock_opaque objectForKey:v11];
                 v14 = [v13 countByEnumeratingWithState:&v38 objects:v50 count:16];
                 if (v14)
                 {
@@ -490,10 +490,10 @@ void __32__BSRBSService_registerMonitor___block_invoke(uint64_t a1)
                         objc_enumerationMutation(v13);
                       }
 
-                      v17 = [*(*(&v38 + 1) + 8 * k) environment];
-                      if (v17)
+                      environment = [*(*(&v38 + 1) + 8 * k) environment];
+                      if (environment)
                       {
-                        [v12 addObject:v17];
+                        [v12 addObject:environment];
                       }
                     }
 
@@ -525,7 +525,7 @@ void __32__BSRBSService_registerMonitor___block_invoke(uint64_t a1)
             goto LABEL_34;
           }
 
-          v22 = *&v35[14]._os_unfair_lock_opaque;
+          v22 = *&servicesCopy[14]._os_unfair_lock_opaque;
           v23 = [v36 copy];
           [v22 setObject:v23 forKey:v33];
         }
@@ -535,14 +535,14 @@ void __32__BSRBSService_registerMonitor___block_invoke(uint64_t a1)
           [v4 removeObjectForKey:v33];
         }
 
-        v32 = [*&v35[10]._os_unfair_lock_opaque objectForKey:v33];
+        v32 = [*&servicesCopy[10]._os_unfair_lock_opaque objectForKey:v33];
         if (![v32 count])
         {
           goto LABEL_35;
         }
 
         v21 = [v32 copy];
-        [v25 setObject:v21 forKey:v33];
+        [dictionary setObject:v21 forKey:v33];
 LABEL_34:
 
 LABEL_35:
@@ -553,13 +553,13 @@ LABEL_35:
       {
 LABEL_37:
 
-        os_unfair_lock_unlock(v35 + 16);
+        os_unfair_lock_unlock(servicesCopy + 16);
         v37[0] = MEMORY[0x1E69E9820];
         v37[1] = 3221225472;
         v37[2] = __61__BSRBSService__callOutLock_noteEndpointsChangedForServices___block_invoke;
         v37[3] = &unk_1E7520870;
-        v37[4] = v35;
-        [v25 enumerateKeysAndObjectsUsingBlock:v37];
+        v37[4] = servicesCopy;
+        [dictionary enumerateKeysAndObjectsUsingBlock:v37];
 
         break;
       }
@@ -615,24 +615,24 @@ void __61__BSRBSService__callOutLock_noteEndpointsChangedForServices___block_inv
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 didReceiveInheritances:(id)a4
+- (void)service:(id)service didReceiveInheritances:(id)inheritances
 {
   v35 = *MEMORY[0x1E69E9840];
-  v22 = a4;
+  inheritancesCopy = inheritances;
   v4 = BSServiceLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543362;
-    v31 = v22;
+    v31 = inheritancesCopy;
     _os_log_debug_impl(&dword_19A821000, v4, OS_LOG_TYPE_DEBUG, "BSServiceMonitor received inheritances %{public}@", buf, 0xCu);
   }
 
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v22;
+  v6 = inheritancesCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v7)
   {
@@ -649,16 +649,16 @@ void __61__BSRBSService__callOutLock_noteEndpointsChangedForServices___block_inv
 
         v10 = *(*(&v26 + 1) + 8 * v9);
         v11 = BSServiceEndpointGrantNamespace();
-        v12 = [v10 endowmentNamespace];
-        v13 = [v11 isEqual:v12];
+        endowmentNamespace = [v10 endowmentNamespace];
+        v13 = [v11 isEqual:endowmentNamespace];
 
         if (v13)
         {
-          v14 = [v10 endowment];
-          v15 = [BSServiceConnectionEndpoint _endpointFromEndowmentRepresentation:v14];
+          endowment = [v10 endowment];
+          v15 = [BSServiceConnectionEndpoint _endpointFromEndowmentRepresentation:endowment];
           if (v15)
           {
-            [v5 setObject:v15 forKey:v10];
+            [dictionary setObject:v15 forKey:v10];
           }
 
           else
@@ -669,7 +669,7 @@ void __61__BSRBSService__callOutLock_noteEndpointsChangedForServices___block_inv
               *buf = 138412546;
               v31 = v10;
               v32 = 2112;
-              v33 = v14;
+              v33 = endowment;
               _os_log_error_impl(&dword_19A821000, v16, OS_LOG_TYPE_ERROR, "Ignoring invalid service endowment : %@ -> %@", buf, 0x16u);
             }
           }
@@ -685,7 +685,7 @@ void __61__BSRBSService__callOutLock_noteEndpointsChangedForServices___block_inv
     while (v7);
   }
 
-  if ([v5 count])
+  if ([dictionary count])
   {
     os_unfair_lock_lock(&self->_callOutLock);
     os_unfair_lock_lock(&self->_lock);
@@ -698,7 +698,7 @@ void __61__BSRBSService__callOutLock_noteEndpointsChangedForServices___block_inv
     v25 = a2;
     v18 = v17;
     v24 = v18;
-    [v5 enumerateKeysAndObjectsUsingBlock:v23];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v23];
     os_unfair_lock_unlock(&self->_lock);
     [(BSRBSService *)self _callOutLock_noteEndpointsChangedForServices:v18];
     os_unfair_lock_unlock(&self->_callOutLock);
@@ -794,11 +794,11 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)service:(id)a3 didLoseInheritances:(id)a4
+- (void)service:(id)service didLoseInheritances:(id)inheritances
 {
   v47 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v6 = a4;
+  serviceCopy = service;
+  inheritancesCopy = inheritances;
   os_unfair_lock_lock(&self->_callOutLock);
   os_unfair_lock_lock(&self->_lock);
   v7 = [MEMORY[0x1E695DFA8] set];
@@ -806,7 +806,7 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v6;
+  v8 = inheritancesCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v46 count:16];
   if (v9)
   {
@@ -838,7 +838,7 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
               v36 = 2114;
               v37 = v21;
               v38 = 2048;
-              v39 = self;
+              selfCopy2 = self;
               v40 = 2114;
               v41 = @"BSRBSService.m";
               v42 = 1024;
@@ -859,11 +859,11 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
           if ([v14 count] < 2)
           {
             [(NSMutableDictionary *)self->_lock_endpointToInheritances removeObjectForKey:v13];
-            v15 = [v13 service];
-            v16 = [(NSMutableDictionary *)self->_lock_serviceIdentifierToEndpoints objectForKey:v15];
+            service = [v13 service];
+            v16 = [(NSMutableDictionary *)self->_lock_serviceIdentifierToEndpoints objectForKey:service];
             if (([v16 containsObject:v13] & 1) == 0)
             {
-              v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"serviceIdentifierToEndpoints is missing an entry for a lost endpoint : service=%@ endpoint=%@", v15, v13];
+              v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"serviceIdentifierToEndpoints is missing an entry for a lost endpoint : service=%@ endpoint=%@", service, v13];
               if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
               {
                 v24 = NSStringFromSelector(a2);
@@ -874,7 +874,7 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
                 v36 = 2114;
                 v37 = v26;
                 v38 = 2048;
-                v39 = self;
+                selfCopy2 = self;
                 v40 = 2114;
                 v41 = @"BSRBSService.m";
                 v42 = 1024;
@@ -893,7 +893,7 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
 
             if ([v16 count] < 2)
             {
-              [(NSMutableDictionary *)self->_lock_serviceIdentifierToEndpoints removeObjectForKey:v15];
+              [(NSMutableDictionary *)self->_lock_serviceIdentifierToEndpoints removeObjectForKey:service];
             }
 
             else
@@ -901,14 +901,14 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
               [v16 removeObject:v13];
             }
 
-            [v7 addObject:v15];
+            [v7 addObject:service];
           }
 
           else
           {
             [v14 removeObject:v12];
-            v15 = [v13 service];
-            [v7 addObject:v15];
+            service = [v13 service];
+            [v7 addObject:service];
           }
         }
       }
@@ -926,7 +926,7 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
   v17 = *MEMORY[0x1E69E9840];
 }
 
-+ (__CFString)debugDescriptionWithMultilinePrefix:(uint64_t)a1
++ (__CFString)debugDescriptionWithMultilinePrefix:(uint64_t)prefix
 {
   v2 = a2;
   objc_opt_self();
@@ -948,22 +948,22 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
   return v6;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSRBSService *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSRBSService *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
   v6 = v5;
-  if (v4)
+  if (prefixCopy)
   {
-    [v5 setActiveMultilinePrefix:v4];
+    [v5 setActiveMultilinePrefix:prefixCopy];
   }
 
   return v6;
@@ -971,29 +971,29 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
 
 - (id)succinctDescription
 {
-  v2 = [(BSRBSService *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSRBSService *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v26 = [(BSRBSService *)self descriptionBuilderWithMultilinePrefix:v4];
+  prefixCopy = prefix;
+  v26 = [(BSRBSService *)self descriptionBuilderWithMultilinePrefix:prefixCopy];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_lock_endpointToInheritances allKeys];
-  v6 = [v5 mutableCopy];
+  allKeys = [(NSMutableDictionary *)self->_lock_endpointToInheritances allKeys];
+  v6 = [allKeys mutableCopy];
 
   [v6 sortUsingSelector:sel_compare_];
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v38 = 0u;
   v39 = 0u;
   v37 = 0u;
   v36 = 0u;
-  v8 = [(NSMutableDictionary *)self->_lock_serviceIdentifierToMonitors allKeys];
-  v9 = [v8 sortedArrayUsingSelector:sel_compare_];
+  allKeys2 = [(NSMutableDictionary *)self->_lock_serviceIdentifierToMonitors allKeys];
+  v9 = [allKeys2 sortedArrayUsingSelector:sel_compare_];
 
   v10 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v10)
@@ -1009,8 +1009,8 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
         }
 
         v13 = [(NSMutableDictionary *)self->_lock_serviceIdentifierToMonitors objectForKey:*(*(&v36 + 1) + 8 * i), v26];
-        v14 = [v13 allObjects];
-        [v7 addObjectsFromArray:v14];
+        allObjects = [v13 allObjects];
+        [array addObjectsFromArray:allObjects];
       }
 
       v10 = [v9 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -1027,10 +1027,10 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
   v33 = v15;
   v16 = v6;
   v34 = v16;
-  v17 = v7;
+  v17 = array;
   v35 = v17;
   v18 = [v15 modifyProem:v32];
-  v19 = [v15 activeMultilinePrefix];
+  activeMultilinePrefix = [v15 activeMultilinePrefix];
   v27[0] = MEMORY[0x1E69E9820];
   v27[1] = 3221225472;
   v27[2] = __52__BSRBSService_debugDescriptionWithMultilinePrefix___block_invoke_2;
@@ -1039,17 +1039,17 @@ void __47__BSRBSService_service_didReceiveInheritances___block_invoke(uint64_t a
   v28 = v20;
   v21 = v16;
   v29 = v21;
-  v30 = self;
+  selfCopy = self;
   v22 = v17;
   v31 = v22;
-  [v20 appendBodySectionWithName:0 multilinePrefix:v19 block:v27];
+  [v20 appendBodySectionWithName:0 multilinePrefix:activeMultilinePrefix block:v27];
 
   os_unfair_lock_unlock(&self->_lock);
-  v23 = [v20 build];
+  build = [v20 build];
 
   v24 = *MEMORY[0x1E69E9840];
 
-  return v23;
+  return build;
 }
 
 void __52__BSRBSService_debugDescriptionWithMultilinePrefix___block_invoke_2(uint64_t a1)

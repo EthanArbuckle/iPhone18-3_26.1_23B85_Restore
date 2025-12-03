@@ -1,47 +1,47 @@
 @interface CRFormContentTypeRefiner
-+ (BOOL)_isRegion:(id)a3 onLeftOfRegion:(id)a4 withTolerance:(double)a5;
-+ (id)_findSubTextFieldsInFields:(const void *)a3 maxLength:(unint64_t)a4 minAspectRatio:(double)a5 contentTypes:(const void *)a6 includeNone:(BOOL)a7;
-+ (id)groupAndAssignStructuralContentTypesForFields:(id)a3 locale:(id)a4 updateExternalFields:(BOOL)a5;
-+ (void)_groupOrRefinePhoneNumberWithContext:(ContentTypeRefinementContext *)a3 shouldGroup:(BOOL)a4;
-+ (void)_refineAddressTypesWithContext:(ContentTypeRefinementContext *)a3;
-+ (void)_refineDateAndBirthdayTypesWithContext:(ContentTypeRefinementContext *)a3 locale:(id)a4;
++ (BOOL)_isRegion:(id)region onLeftOfRegion:(id)ofRegion withTolerance:(double)tolerance;
++ (id)_findSubTextFieldsInFields:(const void *)fields maxLength:(unint64_t)length minAspectRatio:(double)ratio contentTypes:(const void *)types includeNone:(BOOL)none;
++ (id)groupAndAssignStructuralContentTypesForFields:(id)fields locale:(id)locale updateExternalFields:(BOOL)externalFields;
++ (void)_groupOrRefinePhoneNumberWithContext:(ContentTypeRefinementContext *)context shouldGroup:(BOOL)group;
++ (void)_refineAddressTypesWithContext:(ContentTypeRefinementContext *)context;
++ (void)_refineDateAndBirthdayTypesWithContext:(ContentTypeRefinementContext *)context locale:(id)locale;
 @end
 
 @implementation CRFormContentTypeRefiner
 
-+ (BOOL)_isRegion:(id)a3 onLeftOfRegion:(id)a4 withTolerance:(double)a5
++ (BOOL)_isRegion:(id)region onLeftOfRegion:(id)ofRegion withTolerance:(double)tolerance
 {
-  v7 = a4;
-  v8 = [a3 boundingQuad];
-  v9 = [v7 boundingQuad];
-  [v8 size];
+  ofRegionCopy = ofRegion;
+  boundingQuad = [region boundingQuad];
+  boundingQuad2 = [ofRegionCopy boundingQuad];
+  [boundingQuad size];
   v11 = v10;
-  [v9 size];
+  [boundingQuad2 size];
   v13 = v12;
-  [v9 topLeft];
+  [boundingQuad2 topLeft];
   v15 = v14;
-  [v8 topRight];
+  [boundingQuad topRight];
   v17 = v16;
-  [v8 midPoint];
+  [boundingQuad midPoint];
   v19 = v18;
-  [v9 midPoint];
-  if (v19 >= v20 || (v21 = (v11 + v13) * 0.5, v15 - v17 >= v21 * a5 * 1.5) || v15 - v17 <= -(a5 * v21) || ([v8 size], v23 = v22, objc_msgSend(v9, "size"), vabdd_f64(v23, v24) >= v21 * 0.3))
+  [boundingQuad2 midPoint];
+  if (v19 >= v20 || (v21 = (v11 + v13) * 0.5, v15 - v17 >= v21 * tolerance * 1.5) || v15 - v17 <= -(tolerance * v21) || ([boundingQuad size], v23 = v22, objc_msgSend(boundingQuad2, "size"), vabdd_f64(v23, v24) >= v21 * 0.3))
   {
     v28 = 0;
   }
 
   else
   {
-    [v8 midPoint];
+    [boundingQuad midPoint];
     v26 = v25;
-    [v9 midPoint];
+    [boundingQuad2 midPoint];
     v28 = vabdd_f64(v26, v27) < v21 * 0.5;
   }
 
   return v28;
 }
 
-+ (void)_groupOrRefinePhoneNumberWithContext:(ContentTypeRefinementContext *)a3 shouldGroup:(BOOL)a4
++ (void)_groupOrRefinePhoneNumberWithContext:(ContentTypeRefinementContext *)context shouldGroup:(BOOL)group
 {
   __p = 0;
   v5 = 0;
@@ -49,22 +49,22 @@
   std::vector<CRFormContentType>::__init_with_size[abi:ne200100]<CRFormContentType const*,CRFormContentType const*>();
 }
 
-+ (id)_findSubTextFieldsInFields:(const void *)a3 maxLength:(unint64_t)a4 minAspectRatio:(double)a5 contentTypes:(const void *)a6 includeNone:(BOOL)a7
++ (id)_findSubTextFieldsInFields:(const void *)fields maxLength:(unint64_t)length minAspectRatio:(double)ratio contentTypes:(const void *)types includeNone:(BOOL)none
 {
   v10 = objc_opt_new();
-  v35 = a4;
-  v11 = *(a3 + 1);
-  if (3 * a4 >= *(a3 + 2))
+  lengthCopy = length;
+  v11 = *(fields + 1);
+  if (3 * length >= *(fields + 2))
   {
-    v12 = *(a3 + 2);
+    v12 = *(fields + 2);
   }
 
   else
   {
-    v12 = 3 * a4;
+    v12 = 3 * length;
   }
 
-  if (v11 == a3 || v12 == 0)
+  if (v11 == fields || v12 == 0)
   {
 
     goto LABEL_41;
@@ -77,8 +77,8 @@
     v15 = *(v11 + 16);
     if ([v15 fieldType] == 1)
     {
-      v16 = [v15 fieldSource];
-      if (v16 == [*(*(a3 + 1) + 16) fieldSource])
+      fieldSource = [v15 fieldSource];
+      if (fieldSource == [*(*(fields + 1) + 16) fieldSource])
       {
         break;
       }
@@ -88,7 +88,7 @@ LABEL_35:
 
     ++v14;
     v11 = *(v11 + 8);
-    if (v11 == a3 || v14 >= v12)
+    if (v11 == fields || v14 >= v12)
     {
       goto LABEL_40;
     }
@@ -98,11 +98,11 @@ LABEL_35:
   v18 = v17;
   if (v17)
   {
-    v19 = [v17 labelRegion];
-    v20 = v19;
-    if (v39 || !v19)
+    labelRegion = [v17 labelRegion];
+    v20 = labelRegion;
+    if (v39 || !labelRegion)
     {
-      if (v39 && v19 && v19 != v39)
+      if (v39 && labelRegion && labelRegion != v39)
       {
 
 LABEL_34:
@@ -112,18 +112,18 @@ LABEL_34:
 
     else
     {
-      v39 = v19;
+      v39 = labelRegion;
     }
   }
 
-  if ([v15 textContentType] && (objc_msgSend(v15, "textContentType") != 1 || !a7))
+  if ([v15 textContentType] && (objc_msgSend(v15, "textContentType") != 1 || !none))
   {
-    v21 = *a6;
-    v22 = *(a6 + 1);
-    v23 = [v15 textContentType];
+    v21 = *types;
+    v22 = *(types + 1);
+    textContentType = [v15 textContentType];
     if (v21 != v22)
     {
-      while (*v21 != v23)
+      while (*v21 != textContentType)
       {
         if (++v21 == v22)
         {
@@ -133,17 +133,17 @@ LABEL_34:
       }
     }
 
-    if (v21 == *(a6 + 1))
+    if (v21 == *(types + 1))
     {
       goto LABEL_34;
     }
   }
 
-  v24 = [v10 lastObject];
-  if (v24)
+  lastObject = [v10 lastObject];
+  if (lastObject)
   {
-    v25 = [v10 lastObject];
-    v26 = [a1 _isRegion:v25 onLeftOfRegion:v15 withTolerance:2.0];
+    lastObject2 = [v10 lastObject];
+    v26 = [self _isRegion:lastObject2 onLeftOfRegion:v15 withTolerance:2.0];
 
     if ((v26 & 1) == 0)
     {
@@ -151,12 +151,12 @@ LABEL_34:
     }
   }
 
-  v27 = [v15 boundingQuad];
-  [v27 size];
+  boundingQuad = [v15 boundingQuad];
+  [boundingQuad size];
   v29 = v28;
-  v30 = [v15 boundingQuad];
-  [v30 size];
-  v32 = v31 * a5;
+  boundingQuad2 = [v15 boundingQuad];
+  [boundingQuad2 size];
+  v32 = v31 * ratio;
 
   if (v29 < v32)
   {
@@ -164,7 +164,7 @@ LABEL_34:
   }
 
   [v10 addObject:v15];
-  if ([v10 count] != v35)
+  if ([v10 count] != lengthCopy)
   {
     goto LABEL_34;
   }
@@ -175,17 +175,17 @@ LABEL_41:
   return v10;
 }
 
-+ (void)_refineDateAndBirthdayTypesWithContext:(ContentTypeRefinementContext *)a3 locale:(id)a4
++ (void)_refineDateAndBirthdayTypesWithContext:(ContentTypeRefinementContext *)context locale:(id)locale
 {
-  v5 = a4;
-  +[CRFormContentTypeUtilities contentTypeIsBirthdayComponent:](CRFormContentTypeUtilities, "contentTypeIsBirthdayComponent:", [*(*(a3->var1 + 1) + 16) textContentType]);
+  localeCopy = locale;
+  +[CRFormContentTypeUtilities contentTypeIsBirthdayComponent:](CRFormContentTypeUtilities, "contentTypeIsBirthdayComponent:", [*(*(context->var1 + 1) + 16) textContentType]);
   std::vector<CRFormContentType>::__init_with_size[abi:ne200100]<CRFormContentType const*,CRFormContentType const*>();
 }
 
-+ (void)_refineAddressTypesWithContext:(ContentTypeRefinementContext *)a3
++ (void)_refineAddressTypesWithContext:(ContentTypeRefinementContext *)context
 {
   v49 = *MEMORY[0x1E69E9840];
-  var1 = a3->var1;
+  var1 = context->var1;
   [*(var1[1] + 16) textContentType];
   v38 = *(var1[1] + 16);
   if (var1[2] < 2)
@@ -201,24 +201,24 @@ LABEL_41:
     v6 = *(v4 + 16);
     if ([v6 fieldSource] != 2 && objc_msgSend(v6, "fieldSource") != 3 && objc_msgSend(v6, "fieldType") == 1 && +[CRFormContentTypeUtilities shouldAssignTextContentTypeForField:updateExternalFields:allowOverride:allowAllDetectionSources:](CRFormContentTypeUtilities, "shouldAssignTextContentTypeForField:updateExternalFields:allowOverride:allowAllDetectionSources:", v6, 1, 1, 0))
     {
-      v7 = [v38 boundingQuad];
-      [v7 size];
+      boundingQuad = [v38 boundingQuad];
+      [boundingQuad size];
       v9 = v8;
-      v10 = [v6 boundingQuad];
-      [v10 size];
+      boundingQuad2 = [v6 boundingQuad];
+      [boundingQuad2 size];
       v12 = v11 >= v9 ? v9 : v11;
 
-      v13 = [v6 boundingQuad];
-      [v13 topLeft];
+      boundingQuad3 = [v6 boundingQuad];
+      [boundingQuad3 topLeft];
       v15 = v14;
-      v16 = [v38 boundingQuad];
-      [v16 bottomLeft];
+      boundingQuad4 = [v38 boundingQuad];
+      [boundingQuad4 bottomLeft];
       v18 = v15 - v17;
 
       if (v18 <= v12 * 2.5)
       {
-        v19 = [v6 textContentType];
-        if (v19 <= 0x14 && ((1 << v19) & 0x138000) != 0)
+        textContentType = [v6 textContentType];
+        if (textContentType <= 0x14 && ((1 << textContentType) & 0x138000) != 0)
         {
           break;
         }
@@ -297,8 +297,8 @@ LABEL_31:
   }
 
   v25 = v24;
-  v26 = [v25 labelRegion];
-  v27 = v26 == 0;
+  labelRegion = [v25 labelRegion];
+  v27 = labelRegion == 0;
 
   if (v27)
   {
@@ -310,7 +310,7 @@ LABEL_31:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
         v29 = +[CRFormContentTypeUtilities stringFromContentType:](CRFormContentTypeUtilities, "stringFromContentType:", [v38 textContentType]);
-        v30 = [v25 textContentTypeString];
+        textContentTypeString = [v25 textContentTypeString];
         v31 = [CRFormContentTypeUtilities stringFromContentType:13];
         v32 = [CRFormContentTypeUtilities stringFromContentType:14];
         *buf = 136316162;
@@ -318,7 +318,7 @@ LABEL_31:
         v41 = 2112;
         v42 = v29;
         v43 = 2112;
-        v44 = v30;
+        v44 = textContentTypeString;
         v45 = 2112;
         v46 = v31;
         v47 = 2112;
@@ -334,23 +334,23 @@ LABEL_39:
 LABEL_40:
 }
 
-+ (id)groupAndAssignStructuralContentTypesForFields:(id)a3 locale:(id)a4 updateExternalFields:(BOOL)a5
++ (id)groupAndAssignStructuralContentTypesForFields:(id)fields locale:(id)locale updateExternalFields:(BOOL)externalFields
 {
-  v5 = a5;
+  externalFieldsCopy = externalFields;
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  fieldsCopy = fields;
+  localeCopy = locale;
   if (qword_1ED9601E0 != -1)
   {
     dispatch_once(&qword_1ED9601E0, &__block_literal_global_22);
   }
 
-  v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(fieldsCopy, "count")}];
   v19 = &v19;
   v20 = &v19;
   v21 = 0;
   memset(v18, 0, sizeof(v18));
-  v10 = v8;
+  v10 = fieldsCopy;
   if ([v10 countByEnumeratingWithState:v18 objects:v22 count:16])
   {
     operator new();
@@ -365,23 +365,23 @@ LABEL_40:
     while (1)
     {
       v13 = v20[2];
-      if (![CRFormContentTypeUtilities shouldAssignTextContentTypeForField:v13 updateExternalFields:v5 allowOverride:1 allowAllDetectionSources:0])
+      if (![CRFormContentTypeUtilities shouldAssignTextContentTypeForField:v13 updateExternalFields:externalFieldsCopy allowOverride:1 allowAllDetectionSources:0])
       {
         goto LABEL_10;
       }
 
-      v14 = [v13 textContentType];
-      if (v14 > 0x37)
+      textContentType = [v13 textContentType];
+      if (textContentType > 0x37)
       {
         goto LABEL_17;
       }
 
-      if (((1 << v14) & 0xF001E000000000) == 0)
+      if (((1 << textContentType) & 0xF001E000000000) == 0)
       {
         break;
       }
 
-      [a1 _refineDateAndBirthdayTypesWithContext:v17 locale:v9];
+      [self _refineDateAndBirthdayTypesWithContext:v17 locale:localeCopy];
 LABEL_11:
 
       if (!v21)
@@ -391,28 +391,28 @@ LABEL_11:
       }
     }
 
-    if (((1 << v14) & 0xE0000000) != 0)
+    if (((1 << textContentType) & 0xE0000000) != 0)
     {
-      [a1 _refineCreditCardExpirationTypesWithContext:v17];
+      [self _refineCreditCardExpirationTypesWithContext:v17];
       goto LABEL_11;
     }
 
-    if (((1 << v14) & 0x240000000000) != 0)
+    if (((1 << textContentType) & 0x240000000000) != 0)
     {
-      [a1 _groupOrRefinePhoneNumberWithContext:v17 shouldGroup:_MergedGlobals_28];
+      [self _groupOrRefinePhoneNumberWithContext:v17 shouldGroup:_MergedGlobals_28];
       goto LABEL_11;
     }
 
 LABEL_17:
-    if (v14 == 12)
+    if (textContentType == 12)
     {
-      [a1 _refineAddressTypesWithContext:v17];
+      [self _refineAddressTypesWithContext:v17];
       goto LABEL_11;
     }
 
-    if (v14 == 28 && [v13 fieldSource] == 1)
+    if (textContentType == 28 && [v13 fieldSource] == 1)
     {
-      [a1 _groupCreditCardNumberWithContext:v17 shouldGroup:_MergedGlobals_28];
+      [self _groupCreditCardNumberWithContext:v17 shouldGroup:_MergedGlobals_28];
       goto LABEL_11;
     }
 

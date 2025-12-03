@@ -1,53 +1,53 @@
 @interface _SWStartCollaborationActionResponse
-+ (id)responseWithURL:(id)a3 updatedMetadata:(id)a4;
-- (BOOL)isEqualToActionResponse:(id)a3;
-- (_SWStartCollaborationActionResponse)initWithCoder:(id)a3;
-- (_SWStartCollaborationActionResponse)initWithDestinationResponse:(id)a3;
-- (_SWStartCollaborationActionResponse)initWithURL:(id)a3 updatedMetadata:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithBSActionResponseSettings:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)responseWithURL:(id)l updatedMetadata:(id)metadata;
+- (BOOL)isEqualToActionResponse:(id)response;
+- (_SWStartCollaborationActionResponse)initWithCoder:(id)coder;
+- (_SWStartCollaborationActionResponse)initWithDestinationResponse:(id)response;
+- (_SWStartCollaborationActionResponse)initWithURL:(id)l updatedMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithBSActionResponseSettings:(id)settings;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SWStartCollaborationActionResponse
 
-+ (id)responseWithURL:(id)a3 updatedMetadata:(id)a4
++ (id)responseWithURL:(id)l updatedMetadata:(id)metadata
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithURL:v6 updatedMetadata:v5];
+  metadataCopy = metadata;
+  lCopy = l;
+  v7 = [objc_alloc(objc_opt_class()) initWithURL:lCopy updatedMetadata:metadataCopy];
 
   return v7;
 }
 
-- (_SWStartCollaborationActionResponse)initWithURL:(id)a3 updatedMetadata:(id)a4
+- (_SWStartCollaborationActionResponse)initWithURL:(id)l updatedMetadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = _SWStartCollaborationActionResponse;
   v9 = [(_SWActionResponse *)&v12 initWithSuccess:1 error:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_url, a3);
-    objc_storeStrong(&v10->_updatedMetadata, a4);
+    objc_storeStrong(&v9->_url, l);
+    objc_storeStrong(&v10->_updatedMetadata, metadata);
   }
 
   return v10;
 }
 
-- (_SWStartCollaborationActionResponse)initWithCoder:(id)a3
+- (_SWStartCollaborationActionResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _SWStartCollaborationActionResponse;
-  v5 = [(_SWActionResponse *)&v17 initWithCoder:v4];
+  v5 = [(_SWActionResponse *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = objc_opt_class();
     v7 = NSStringFromSelector("url");
-    v8 = [v4 decodeObjectOfClass:v6 forKey:v7];
+    v8 = [coderCopy decodeObjectOfClass:v6 forKey:v7];
     url = v5->_url;
     v5->_url = v8;
 
@@ -55,7 +55,7 @@
     v11 = objc_opt_class();
     v12 = [v10 setWithObjects:{v11, objc_opt_class(), 0}];
     v13 = NSStringFromSelector(sel_updatedMetadata);
-    v14 = [v4 decodeObjectOfClasses:v12 forKey:v13];
+    v14 = [coderCopy decodeObjectOfClasses:v12 forKey:v13];
     updatedMetadata = v5->_updatedMetadata;
     v5->_updatedMetadata = v14;
   }
@@ -63,26 +63,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = _SWStartCollaborationActionResponse;
-  v4 = a3;
-  [(_SWActionResponse *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(_SWActionResponse *)&v9 encodeWithCoder:coderCopy];
   v5 = [(_SWStartCollaborationActionResponse *)self url:v9.receiver];
   v6 = NSStringFromSelector("url");
-  [v4 encodeObject:v5 forKey:v6];
+  [coderCopy encodeObject:v5 forKey:v6];
 
   updatedMetadata = self->_updatedMetadata;
   v8 = NSStringFromSelector(sel_updatedMetadata);
-  [v4 encodeObject:updatedMetadata forKey:v8];
+  [coderCopy encodeObject:updatedMetadata forKey:v8];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = _SWStartCollaborationActionResponse;
-  v4 = [(_SWActionResponse *)&v7 copyWithZone:a3];
+  v4 = [(_SWActionResponse *)&v7 copyWithZone:zone];
   if (v4)
   {
     v5 = [(_SWStartCollaborationActionResponse *)self url];
@@ -94,17 +94,17 @@
   return v4;
 }
 
-- (BOOL)isEqualToActionResponse:(id)a3
+- (BOOL)isEqualToActionResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   v13.receiver = self;
   v13.super_class = _SWStartCollaborationActionResponse;
-  if ([(_SWActionResponse *)&v13 isEqualToActionResponse:v5])
+  if ([(_SWActionResponse *)&v13 isEqualToActionResponse:responseCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = responseCopy;
       updatedMetadata = self->_updatedMetadata;
       if (updatedMetadata | v6[4] && ![(SWCollaborationMetadata *)updatedMetadata isEqual:?])
       {
@@ -144,17 +144,17 @@ LABEL_15:
   return v11;
 }
 
-- (_SWStartCollaborationActionResponse)initWithDestinationResponse:(id)a3
+- (_SWStartCollaborationActionResponse)initWithDestinationResponse:(id)response
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   v19.receiver = self;
   v19.super_class = _SWStartCollaborationActionResponse;
-  v5 = [(_SWActionResponse *)&v19 initWithDestinationResponse:v4];
+  v5 = [(_SWActionResponse *)&v19 initWithDestinationResponse:responseCopy];
   if (v5)
   {
-    v6 = [v4 info];
-    v7 = [v6 objectForSetting:2];
+    info = [responseCopy info];
+    v7 = [info objectForSetting:2];
 
     v8 = MEMORY[0x1E696ACD0];
     v9 = MEMORY[0x1E695DFD8];
@@ -166,8 +166,8 @@ LABEL_15:
     updatedMetadata = v5->_updatedMetadata;
     v5->_updatedMetadata = v12;
 
-    v14 = [v4 info];
-    v15 = [v14 objectForSetting:3];
+    info2 = [responseCopy info];
+    v15 = [info2 objectForSetting:3];
     url = v5->_url;
     v5->_url = v15;
   }
@@ -176,16 +176,16 @@ LABEL_15:
   return v5;
 }
 
-- (void)encodeWithBSActionResponseSettings:(id)a3
+- (void)encodeWithBSActionResponseSettings:(id)settings
 {
   v7.receiver = self;
   v7.super_class = _SWStartCollaborationActionResponse;
-  v4 = a3;
-  [(_SWActionResponse *)&v7 encodeWithBSActionResponseSettings:v4];
+  settingsCopy = settings;
+  [(_SWActionResponse *)&v7 encodeWithBSActionResponseSettings:settingsCopy];
   v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:self->_updatedMetadata requiringSecureCoding:1 error:{0, v7.receiver, v7.super_class}];
-  [v4 setObject:v5 forSetting:2];
+  [settingsCopy setObject:v5 forSetting:2];
   v6 = [(_SWStartCollaborationActionResponse *)self url];
-  [v4 setObject:v6 forSetting:3];
+  [settingsCopy setObject:v6 forSetting:3];
 }
 
 @end

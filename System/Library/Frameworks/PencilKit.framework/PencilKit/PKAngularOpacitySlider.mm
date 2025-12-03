@@ -1,43 +1,43 @@
 @interface PKAngularOpacitySlider
-+ (void)_layoutGradientMaskLayer:(double)a3 frame:(double)a4 isReversed:(uint64_t)a5;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
++ (void)_layoutGradientMaskLayer:(double)layer frame:(double)frame isReversed:(uint64_t)reversed;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGSize)sizeThatFits:(CGSize)result;
 - (_PKColorAlphaSliderDelegate)delegate;
-- (double)_angleForSliderKnobPosition:(double)a3;
-- (double)_colorAlphaForSliderKnobAngle:(double *)a1;
-- (double)_knobViewFrameForColorAlpha:(uint64_t)a1;
-- (double)initWithFrame:(double)a3 startAngle:(double)a4 endAngle:(double)a5 arcRadius:(double)a6 arcWidth:(double)a7;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)_colorViewTapGestureHandler:(id)a3;
-- (void)_didPanSliderKnob:(id)a3;
+- (double)_angleForSliderKnobPosition:(double)position;
+- (double)_colorAlphaForSliderKnobAngle:(double *)angle;
+- (double)_knobViewFrameForColorAlpha:(uint64_t)alpha;
+- (double)initWithFrame:(double)frame startAngle:(double)angle endAngle:(double)endAngle arcRadius:(double)radius arcWidth:(double)width;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)_colorViewTapGestureHandler:(id)handler;
+- (void)_didPanSliderKnob:(id)knob;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setColor:(id)a3 animated:(BOOL)a4;
-- (void)setColorUserInterfaceStyle:(int64_t)a3;
+- (void)setColor:(id)color animated:(BOOL)animated;
+- (void)setColorUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation PKAngularOpacitySlider
 
-- (double)initWithFrame:(double)a3 startAngle:(double)a4 endAngle:(double)a5 arcRadius:(double)a6 arcWidth:(double)a7
+- (double)initWithFrame:(double)frame startAngle:(double)angle endAngle:(double)endAngle arcRadius:(double)radius arcWidth:(double)width
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v39.receiver = a1;
+  v39.receiver = self;
   v39.super_class = PKAngularOpacitySlider;
   v13 = objc_msgSendSuper2(&v39, sel_initWithFrame_);
   v14 = v13;
   if (v13)
   {
-    v13[57] = a6;
-    v13[58] = a7;
+    v13[57] = radius;
+    v13[58] = width;
     v13[59] = a8;
     v13[60] = a9;
-    v15 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     v16 = *(v14 + 52);
-    *(v14 + 52) = v15;
+    *(v14 + 52) = blackColor;
 
     v14[56] = 0.0;
     v14[55] = 1.0;
@@ -74,8 +74,8 @@
     [*(v14 + 62) setStartPoint:{0.5, 0.5}];
     [*(v14 + 62) setEndPoint:{0.5, 1.0}];
     v26 = *(v14 + 62);
-    v27 = [*(v14 + 61) layer];
-    [v27 setMask:v26];
+    layer = [*(v14 + 61) layer];
+    [layer setMask:v26];
 
     v28 = objc_alloc_init(MEMORY[0x1E69794A0]);
     v29 = *(v14 + 66);
@@ -85,15 +85,15 @@
     [*(v14 + 66) setStrokeStart:0.0];
     [*(v14 + 66) setStrokeEnd:1.0];
     [*(v14 + 66) setFillColor:0];
-    v30 = [MEMORY[0x1E69DC888] blackColor];
-    [*(v14 + 66) setStrokeColor:{objc_msgSend(v30, "CGColor")}];
+    blackColor2 = [MEMORY[0x1E69DC888] blackColor];
+    [*(v14 + 66) setStrokeColor:{objc_msgSend(blackColor2, "CGColor")}];
 
     v31 = *(v14 + 66);
-    v32 = [v14 layer];
-    [v32 setMask:v31];
+    layer2 = [v14 layer];
+    [layer2 setMask:v31];
 
-    v33 = [v14 layer];
-    [v33 setMasksToBounds:1];
+    layer3 = [v14 layer];
+    [layer3 setMasksToBounds:1];
 
     v34 = [PKPerforatedOpacitySliderKnobView alloc];
     v35 = [(PKPerforatedOpacitySliderKnobView *)v34 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -127,15 +127,15 @@
   [(PKAngularOpacitySlider *)&v4 dealloc];
 }
 
-- (void)setColor:(id)a3 animated:(BOOL)a4
+- (void)setColor:(id)color animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PKAngularOpacitySlider *)self color];
-  [v7 alphaComponent];
+  animatedCopy = animated;
+  colorCopy = color;
+  color = [(PKAngularOpacitySlider *)self color];
+  [color alphaComponent];
   v9 = v8;
 
-  v10 = v6;
+  v10 = colorCopy;
   if (self && ([(UIColor *)self->_color isEqual:v10]& 1) == 0)
   {
     v11 = [_PKColorAlphaSliderIOS rgbaColorFromColorIfPossible:v10];
@@ -150,7 +150,7 @@
   }
 
   [(PKAngularOpacitySlider *)self setNeedsLayout];
-  if (v4)
+  if (animatedCopy)
   {
     [v10 alphaComponent];
     v20 = vabdd_f64(*&v9, v19);
@@ -232,24 +232,24 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
   [v9 setFrame:{v2, v4, v6, v8}];
 }
 
-- (double)_knobViewFrameForColorAlpha:(uint64_t)a1
+- (double)_knobViewFrameForColorAlpha:(uint64_t)alpha
 {
-  if (!a1)
+  if (!alpha)
   {
     return 0.0;
   }
 
-  [a1 minAlpha];
+  [alpha minAlpha];
   v5 = fmax(a2, v4);
-  [a1 maxAlpha];
+  [alpha maxAlpha];
   v7 = fmin(v5, v6);
-  [a1 minAlpha];
+  [alpha minAlpha];
   v9 = v8;
-  [a1 maxAlpha];
-  v11 = *(a1 + 456) + (*(a1 + 464) - *(a1 + 456)) * ((a2 - v9) / (v10 - v9));
-  [a1 bounds];
+  [alpha maxAlpha];
+  v11 = *(alpha + 456) + (*(alpha + 464) - *(alpha + 456)) * ((a2 - v9) / (v10 - v9));
+  [alpha bounds];
   UIRectGetCenter();
-  PKPointOnArc(v12, v13, *(a1 + 472), v11);
+  PKPointOnArc(v12, v13, *(alpha + 472), v11);
   v14 = a2 - v7;
   v15 = 0.0;
   if (v14 != 0.0)
@@ -258,9 +258,9 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
     v15 = v16 * 44.0;
   }
 
-  [*(a1 + 520) sizeThatFits:{*(a1 + 480), 1.79769313e308}];
-  v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v17 scale];
+  [*(alpha + 520) sizeThatFits:{*(alpha + 480), 1.79769313e308}];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRectCenteredAboutPointScale();
   v19 = v18;
   v21 = v20;
@@ -272,8 +272,8 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
   v30.size.width = v23;
   v30.size.height = v25;
   CGRectOffset(v30, v15, 0.0);
-  v26 = [a1 traitCollection];
-  [v26 displayScale];
+  traitCollection = [alpha traitCollection];
+  [traitCollection displayScale];
   UIRectIntegralWithScale();
   v28 = v27;
 
@@ -301,41 +301,41 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
   CGRectGetWidth(v55);
   [(PKAngularOpacitySlider *)self bounds];
   CGRectGetHeight(v56);
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v9 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   UIRectCenteredAboutPointScale();
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(PKAngularOpacitySlider *)self color];
-  v19 = [(PKAngularOpacitySlider *)self colorView];
-  [v19 setFrame:{v11, v13, v15, v17}];
-  [v19 _setContinuousCornerRadius:arcRadius];
-  [v19 setClipsToBounds:1];
-  v20 = [v18 colorWithAlphaComponent:1.0];
-  [v19 setBackgroundColor:v20];
+  color = [(PKAngularOpacitySlider *)self color];
+  colorView = [(PKAngularOpacitySlider *)self colorView];
+  [colorView setFrame:{v11, v13, v15, v17}];
+  [colorView _setContinuousCornerRadius:arcRadius];
+  [colorView setClipsToBounds:1];
+  v20 = [color colorWithAlphaComponent:1.0];
+  [colorView setBackgroundColor:v20];
 
-  v21 = [(PKAngularOpacitySlider *)self colorViewMaskLayer];
-  [v19 bounds];
-  [(PKAngularOpacitySlider *)v22 _layoutGradientMaskLayer:v23 frame:v24 isReversed:v25, PKAngularOpacitySlider, v21];
+  colorViewMaskLayer = [(PKAngularOpacitySlider *)self colorViewMaskLayer];
+  [colorView bounds];
+  [(PKAngularOpacitySlider *)v22 _layoutGradientMaskLayer:v23 frame:v24 isReversed:v25, PKAngularOpacitySlider, colorViewMaskLayer];
 
-  v26 = [(PKAngularOpacitySlider *)self alphaGridView];
-  [v26 setFrame:{v11, v13, v15, v17}];
-  [v26 _setContinuousCornerRadius:arcRadius];
-  [v26 setClipsToBounds:1];
-  v27 = [(PKAngularOpacitySlider *)self alphaGridViewMaskLayer];
-  [v26 bounds];
-  [(PKAngularOpacitySlider *)v28 _layoutGradientMaskLayer:v29 frame:v30 isReversed:v31, PKAngularOpacitySlider, v27];
+  alphaGridView = [(PKAngularOpacitySlider *)self alphaGridView];
+  [alphaGridView setFrame:{v11, v13, v15, v17}];
+  [alphaGridView _setContinuousCornerRadius:arcRadius];
+  [alphaGridView setClipsToBounds:1];
+  alphaGridViewMaskLayer = [(PKAngularOpacitySlider *)self alphaGridViewMaskLayer];
+  [alphaGridView bounds];
+  [(PKAngularOpacitySlider *)v28 _layoutGradientMaskLayer:v29 frame:v30 isReversed:v31, PKAngularOpacitySlider, alphaGridViewMaskLayer];
 
-  [v18 alphaComponent];
+  [color alphaComponent];
   v33 = [(PKAngularOpacitySlider *)self _knobViewFrameForColorAlpha:v32];
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  v40 = [(PKAngularOpacitySlider *)self sliderKnob];
-  [v40 setFrame:{v33, v35, v37, v39}];
+  sliderKnob = [(PKAngularOpacitySlider *)self sliderKnob];
+  [sliderKnob setFrame:{v33, v35, v37, v39}];
 
   arcWidth = 0.0;
   endAngle = 0.0;
@@ -346,12 +346,12 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
     endAngle = self->_endAngle;
   }
 
-  v43 = [(PKAngularOpacitySlider *)self baseShapeLayer];
-  [v43 setLineWidth:arcWidth];
+  baseShapeLayer = [(PKAngularOpacitySlider *)self baseShapeLayer];
+  [baseShapeLayer setLineWidth:arcWidth];
   v44 = [MEMORY[0x1E69DC728] bezierPathWithArcCenter:1 radius:v6 startAngle:v8 endAngle:arcRadius clockwise:{startAngle, endAngle}];
-  v45 = [v44 CGPath];
+  cGPath = [v44 CGPath];
 
-  [v43 setPath:v45];
+  [baseShapeLayer setPath:cGPath];
   baseShapeLayerPathForHitTesting = self->_baseShapeLayerPathForHitTesting;
   if (baseShapeLayerPathForHitTesting)
   {
@@ -359,7 +359,7 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
     self->_baseShapeLayerPathForHitTesting = 0;
   }
 
-  self->_baseShapeLayerPathForHitTesting = CGPathCreateCopyByStrokingPath(v45, 0, arcWidth, kCGLineCapRound, kCGLineJoinRound, 0.0);
+  self->_baseShapeLayerPathForHitTesting = CGPathCreateCopyByStrokingPath(cGPath, 0, arcWidth, kCGLineCapRound, kCGLineJoinRound, 0.0);
   v47 = endAngle + -1.57079633;
   *&v47 = (startAngle + -1.57079633) / 6.28318531;
   v48 = [MEMORY[0x1E696AD98] numberWithFloat:v47];
@@ -368,25 +368,25 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
   v50 = [MEMORY[0x1E696AD98] numberWithFloat:v49];
   v54[1] = v50;
   v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v54 count:2];
-  v52 = [(PKAngularOpacitySlider *)self colorViewMaskLayer];
-  [v52 setLocations:v51];
+  colorViewMaskLayer2 = [(PKAngularOpacitySlider *)self colorViewMaskLayer];
+  [colorViewMaskLayer2 setLocations:v51];
 }
 
-+ (void)_layoutGradientMaskLayer:(double)a3 frame:(double)a4 isReversed:(uint64_t)a5
++ (void)_layoutGradientMaskLayer:(double)layer frame:(double)frame isReversed:(uint64_t)reversed
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v10 = a6;
   objc_opt_self();
-  v11 = [MEMORY[0x1E69DC888] whiteColor];
-  v12 = [v11 colorWithAlphaComponent:0.0];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v12 = [whiteColor colorWithAlphaComponent:0.0];
   v16[0] = [v12 CGColor];
-  v13 = [MEMORY[0x1E69DC888] whiteColor];
-  v14 = [v13 colorWithAlphaComponent:1.0];
+  whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+  v14 = [whiteColor2 colorWithAlphaComponent:1.0];
   v16[1] = [v14 CGColor];
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   [v10 setColors:v15];
 
-  [v10 setFrame:{a1, a2, a3, a4}];
+  [v10 setFrame:{self, a2, layer, frame}];
 }
 
 - (CGSize)sizeThatFits:(CGSize)result
@@ -405,13 +405,13 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v9.receiver = self;
   v9.super_class = PKAngularOpacitySlider;
-  v7 = [(PKAngularOpacitySlider *)&v9 hitTest:a4 withEvent:?];
+  v7 = [(PKAngularOpacitySlider *)&v9 hitTest:event withEvent:?];
   if (!self || (v11.x = x, v11.y = y, !CGPathContainsPoint(self->_baseShapeLayerPathForHitTesting, 0, v11, 0)))
   {
 
@@ -421,37 +421,37 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
   return v7;
 }
 
-- (void)_colorViewTapGestureHandler:(id)a3
+- (void)_colorViewTapGestureHandler:(id)handler
 {
-  v14 = a3;
-  if ([v14 state] == 3)
+  handlerCopy = handler;
+  if ([handlerCopy state] == 3)
   {
-    v4 = [v14 view];
-    [v14 locationInView:v4];
+    view = [handlerCopy view];
+    [handlerCopy locationInView:view];
     v6 = v5;
     v8 = v7;
 
     v9 = [(PKAngularOpacitySlider *)self _angleForSliderKnobPosition:v6, v8];
     v10 = [(PKAngularOpacitySlider *)self _colorAlphaForSliderKnobAngle:v9];
-    v11 = [(PKAngularOpacitySlider *)self color];
-    v12 = [v11 colorWithAlphaComponent:v10];
+    color = [(PKAngularOpacitySlider *)self color];
+    v12 = [color colorWithAlphaComponent:v10];
     [(PKAngularOpacitySlider *)self setColor:v12 animated:1];
 
-    v13 = [(PKAngularOpacitySlider *)self delegate];
-    [v13 _colorAlphaSliderUserDidChangeSlider:self];
+    delegate = [(PKAngularOpacitySlider *)self delegate];
+    [delegate _colorAlphaSliderUserDidChangeSlider:self];
   }
 }
 
-- (double)_angleForSliderKnobPosition:(double)a3
+- (double)_angleForSliderKnobPosition:(double)position
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 bounds];
+  [self bounds];
   UIRectGetCenter();
-  v8 = atan2(a3 - v7, a2 - v6);
+  v8 = atan2(position - v7, a2 - v6);
   v9 = fmod(v8, 6.28318531);
   if (v8 <= 6.28318531 && v8 >= 0.0)
   {
@@ -473,13 +473,13 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
     v11 = v9;
   }
 
-  v12 = [a1 color];
-  [v12 alphaComponent];
+  color = [self color];
+  [color alphaComponent];
   v14 = v13;
-  [a1 minAlpha];
+  [self minAlpha];
   v16 = v15;
-  [a1 maxAlpha];
-  v18 = a1[57] + (a1[58] - a1[57]) * ((v14 - v16) / (v17 - v16));
+  [self maxAlpha];
+  v18 = self[57] + (self[58] - self[57]) * ((v14 - v16) / (v17 - v16));
 
   v19 = v11 + 6.28318531;
   v20 = vabdd_f64(v11, v18);
@@ -492,26 +492,26 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
     }
   }
 
-  return fmin(fmax(v19, a1[57]), a1[58]);
+  return fmin(fmax(v19, self[57]), self[58]);
 }
 
-- (double)_colorAlphaForSliderKnobAngle:(double *)a1
+- (double)_colorAlphaForSliderKnobAngle:(double *)angle
 {
-  if (!a1)
+  if (!angle)
   {
     return 0.0;
   }
 
-  v3 = (a2 - a1[57]) / (a1[58] - a1[57]);
-  [a1 minAlpha];
+  v3 = (a2 - angle[57]) / (angle[58] - angle[57]);
+  [angle minAlpha];
   v5 = v4;
-  [a1 maxAlpha];
+  [angle maxAlpha];
   return v6 * v3 + v5 * (1.0 - v3);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  [a4 locationInView:self];
+  [touch locationInView:self];
   if (!self)
   {
     return 0;
@@ -522,38 +522,38 @@ void __44__PKAngularOpacitySlider_setColor_animated___block_invoke_2(uint64_t a1
   return CGPathContainsPoint(baseShapeLayerPathForHitTesting, 0, *&v5, 0);
 }
 
-- (void)_didPanSliderKnob:(id)a3
+- (void)_didPanSliderKnob:(id)knob
 {
-  v11 = a3;
-  [v11 locationInView:self];
+  knobCopy = knob;
+  [knobCopy locationInView:self];
   v6 = [(PKAngularOpacitySlider *)self _angleForSliderKnobPosition:v4, v5];
   v7 = [(PKAngularOpacitySlider *)self _colorAlphaForSliderKnobAngle:v6];
-  v8 = [(PKAngularOpacitySlider *)self color];
-  v9 = [v8 colorWithAlphaComponent:v7];
+  color = [(PKAngularOpacitySlider *)self color];
+  v9 = [color colorWithAlphaComponent:v7];
   [(PKAngularOpacitySlider *)self setColor:v9];
 
-  v10 = [(PKAngularOpacitySlider *)self delegate];
-  if ([v11 state] == 1)
+  delegate = [(PKAngularOpacitySlider *)self delegate];
+  if ([knobCopy state] == 1)
   {
-    if (v10 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v10 _colorAlphaSliderUserDidStartDraggingSlider:self];
+      [delegate _colorAlphaSliderUserDidStartDraggingSlider:self];
     }
   }
 
-  else if ([v11 state] == 3 || objc_msgSend(v11, "state") == 4 || objc_msgSend(v11, "state") == 5) && v10 && (objc_opt_respondsToSelector())
+  else if ([knobCopy state] == 3 || objc_msgSend(knobCopy, "state") == 4 || objc_msgSend(knobCopy, "state") == 5) && delegate && (objc_opt_respondsToSelector())
   {
-    [v10 _colorAlphaSliderUserDidEndDraggingSlider:self];
+    [delegate _colorAlphaSliderUserDidEndDraggingSlider:self];
   }
 
-  [v10 _colorAlphaSliderUserDidChangeSlider:self];
+  [delegate _colorAlphaSliderUserDidChangeSlider:self];
 }
 
-- (void)setColorUserInterfaceStyle:(int64_t)a3
+- (void)setColorUserInterfaceStyle:(int64_t)style
 {
-  if (self->_colorUserInterfaceStyle != a3)
+  if (self->_colorUserInterfaceStyle != style)
   {
-    self->_colorUserInterfaceStyle = a3;
+    self->_colorUserInterfaceStyle = style;
     [(PKAngularOpacitySlider *)self setNeedsLayout];
   }
 }

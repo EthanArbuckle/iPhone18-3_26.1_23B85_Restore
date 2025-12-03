@@ -1,22 +1,22 @@
 @interface CNFaceTimeCell
-- (CNFaceTimeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNFaceTimeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CNPropertyCellDelegate)delegate;
-- (id)actionViewForType:(id)a3;
+- (id)actionViewForType:(id)type;
 - (id)allModelsObservable;
 - (id)constantConstraints;
 - (id)labelView;
 - (id)variableConstraints;
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4;
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4;
-- (void)didPressActionView:(id)a3 longPress:(BOOL)a4;
-- (void)didSelectActionType:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5;
+- (void)contactActionsController:(id)controller didSelectAction:(id)action;
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu;
+- (void)didPressActionView:(id)view longPress:(BOOL)press;
+- (void)didSelectActionType:(id)type withSourceView:(id)view longPress:(BOOL)press;
 - (void)discoverAvailableActionTypes;
 - (void)loadCachedActions;
-- (void)performAction:(id)a3;
+- (void)performAction:(id)action;
 - (void)performDefaultAction;
-- (void)processModels:(id)a3;
-- (void)setActionsDataSource:(id)a3;
-- (void)setContact:(id)a3;
+- (void)processModels:(id)models;
+- (void)setActionsDataSource:(id)source;
+- (void)setContact:(id)contact;
 - (void)updateHorizontalTouchAreas;
 @end
 
@@ -29,68 +29,68 @@
   return WeakRetained;
 }
 
-- (void)contactActionsController:(id)a3 didSelectAction:(id)a4
+- (void)contactActionsController:(id)controller didSelectAction:(id)action
 {
-  v5 = a4;
-  v6 = [(CNFaceTimeCell *)self actionsControllerPresentation];
-  v7 = [v6 presentedViewController];
+  actionCopy = action;
+  actionsControllerPresentation = [(CNFaceTimeCell *)self actionsControllerPresentation];
+  presentedViewController = [actionsControllerPresentation presentedViewController];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __59__CNFaceTimeCell_contactActionsController_didSelectAction___block_invoke;
   v13[3] = &unk_1E74E6A88;
   v13[4] = self;
-  [v7 dismissViewControllerAnimated:1 completion:v13];
+  [presentedViewController dismissViewControllerAnimated:1 completion:v13];
 
-  [(CNFaceTimeCell *)self performAction:v5];
-  v8 = [(CNFaceTimeCell *)self actionsController];
-  v9 = [v8 actionTypes];
-  v10 = [v9 firstObject];
+  [(CNFaceTimeCell *)self performAction:actionCopy];
+  actionsController = [(CNFaceTimeCell *)self actionsController];
+  actionTypes = [actionsController actionTypes];
+  firstObject = [actionTypes firstObject];
 
-  v11 = [(CNFaceTimeCell *)self actionsDataSource];
-  v12 = [(CNFaceTimeCell *)self contact];
-  [v11 consumer:self didSelectItem:v5 forContact:v12 actionType:v10];
+  actionsDataSource = [(CNFaceTimeCell *)self actionsDataSource];
+  contact = [(CNFaceTimeCell *)self contact];
+  [actionsDataSource consumer:self didSelectItem:actionCopy forContact:contact actionType:firstObject];
 
   [(CNFaceTimeCell *)self setActionsController:0];
 }
 
-- (void)didSelectActionType:(id)a3 withSourceView:(id)a4 longPress:(BOOL)a5
+- (void)didSelectActionType:(id)type withSourceView:(id)view longPress:(BOOL)press
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  typeCopy = type;
   v7 = [CNContactActionsController alloc];
-  v8 = [(CNFaceTimeCell *)self contact];
-  v9 = [(CNFaceTimeCell *)self actionsDataSource];
-  v15[0] = v6;
+  contact = [(CNFaceTimeCell *)self contact];
+  actionsDataSource = [(CNFaceTimeCell *)self actionsDataSource];
+  v15[0] = typeCopy;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
 
-  v11 = [(CNContactActionsController *)v7 initWithContact:v8 dataSource:v9 actionTypes:v10];
+  v11 = [(CNContactActionsController *)v7 initWithContact:contact dataSource:actionsDataSource actionTypes:v10];
   [(CNFaceTimeCell *)self setActionsController:v11];
 
-  v12 = [(CNFaceTimeCell *)self actionsController];
-  [v12 setDelegate:self];
+  actionsController = [(CNFaceTimeCell *)self actionsController];
+  [actionsController setDelegate:self];
 
-  v13 = [(CNFaceTimeCell *)self actionsController];
-  [v13 setGenerateFaceTimeListItemsOnly:1];
+  actionsController2 = [(CNFaceTimeCell *)self actionsController];
+  [actionsController2 setGenerateFaceTimeListItemsOnly:1];
 
-  v14 = [(CNFaceTimeCell *)self actionsController];
-  [v14 retrieveModels];
+  actionsController3 = [(CNFaceTimeCell *)self actionsController];
+  [actionsController3 retrieveModels];
 }
 
-- (void)contactActionsController:(id)a3 didUpdateWithMenu:(id)a4
+- (void)contactActionsController:(id)controller didUpdateWithMenu:(id)menu
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && ([(CNFaceTimeCell *)self actionsController], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == v6))
+  controllerCopy = controller;
+  menuCopy = menu;
+  if (menuCopy && ([(CNFaceTimeCell *)self actionsController], v8 = objc_claimAutoreleasedReturnValue(), v8, v8 == controllerCopy))
   {
-    v10 = [(CNFaceTimeCell *)self actionsController];
-    v11 = [v10 actionTypes];
-    v12 = [v11 firstObject];
-    v13 = [(CNFaceTimeCell *)self actionViewForType:v12];
+    actionsController = [(CNFaceTimeCell *)self actionsController];
+    actionTypes = [actionsController actionTypes];
+    firstObject = [actionTypes firstObject];
+    v13 = [(CNFaceTimeCell *)self actionViewForType:firstObject];
 
     if (v13)
     {
-      [v13 updateWithMenuItems:v7];
+      [v13 updateWithMenuItems:menuCopy];
       v9 = 1;
     }
 
@@ -108,54 +108,54 @@
   v14 = CNUILogContactCard();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [(CNFaceTimeCell *)self actionsController];
-    v16 = [v15 actionTypes];
-    v17 = [v16 firstObject];
+    actionsController2 = [(CNFaceTimeCell *)self actionsController];
+    actionTypes2 = [actionsController2 actionTypes];
+    firstObject2 = [actionTypes2 firstObject];
     v18 = 138412802;
-    v19 = v17;
+    v19 = firstObject2;
     v20 = 1024;
     v21 = v9;
     v22 = 2112;
-    v23 = v7;
+    v23 = menuCopy;
     _os_log_impl(&dword_199A75000, v14, OS_LOG_TYPE_DEFAULT, "[CNFaceTimeCell contactActionsController:didUpdateWithMenu:], actionType = %@, didUpdate = %i, menuItems = %@,", &v18, 0x1Cu);
   }
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   v5 = CNUILogContactCard();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = actionCopy;
     _os_log_impl(&dword_199A75000, v5, OS_LOG_TYPE_DEFAULT, "[CNFaceTimeCell performAction:], action = %@", buf, 0xCu);
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E6996BD0]);
-  v7 = [(CNFaceTimeCell *)self delegate];
-  if (v7)
+  delegate = [(CNFaceTimeCell *)self delegate];
+  if (delegate)
   {
-    v8 = v7;
-    v9 = [(CNFaceTimeCell *)self delegate];
+    v8 = delegate;
+    delegate2 = [(CNFaceTimeCell *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CNFaceTimeCell *)self delegate];
-      v12 = [v11 geminiDataSource];
-      v13 = [v12 channelIdentifier];
-      [v6 setChannelIdentifier:v13];
+      delegate3 = [(CNFaceTimeCell *)self delegate];
+      geminiDataSource = [delegate3 geminiDataSource];
+      channelIdentifier = [geminiDataSource channelIdentifier];
+      [v6 setChannelIdentifier:channelIdentifier];
     }
   }
 
-  v14 = [v4 performActionWithContext:v6];
+  v14 = [actionCopy performActionWithContext:v6];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __32__CNFaceTimeCell_performAction___block_invoke;
   v19[3] = &unk_1E74E5980;
-  v15 = v4;
+  v15 = actionCopy;
   v20 = v15;
   [v14 addSuccessBlock:v19];
   v17[0] = MEMORY[0x1E69E9820];
@@ -193,18 +193,18 @@ void __32__CNFaceTimeCell_performAction___block_invoke_40(uint64_t a1)
   }
 }
 
-- (void)didPressActionView:(id)a3 longPress:(BOOL)a4
+- (void)didPressActionView:(id)view longPress:(BOOL)press
 {
-  v4 = a4;
+  pressCopy = press;
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CNFaceTimeCell *)self defaultActionPerType];
-  v8 = [v6 type];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  viewCopy = view;
+  defaultActionPerType = [(CNFaceTimeCell *)self defaultActionPerType];
+  type = [viewCopy type];
+  v9 = [defaultActionPerType objectForKeyedSubscript:type];
 
   if (v9)
   {
-    v10 = v4;
+    v10 = pressCopy;
   }
 
   else
@@ -215,17 +215,17 @@ void __32__CNFaceTimeCell_performAction___block_invoke_40(uint64_t a1)
   v11 = CNUILogContactCard();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 type];
+    type2 = [viewCopy type];
     v13 = @"nil";
     *buf = 138413058;
-    v25 = v12;
+    v25 = type2;
     if (v9)
     {
       v13 = v9;
     }
 
     v26 = 1024;
-    v27 = v4;
+    v27 = pressCopy;
     v28 = 1024;
     v29 = v10;
     v30 = 2112;
@@ -236,22 +236,22 @@ void __32__CNFaceTimeCell_performAction___block_invoke_40(uint64_t a1)
   if (v10)
   {
     v14 = [CNContactActionsController alloc];
-    v15 = [(CNFaceTimeCell *)self contact];
-    v16 = [(CNFaceTimeCell *)self actionsDataSource];
-    v17 = [v6 type];
-    v23 = v17;
+    contact = [(CNFaceTimeCell *)self contact];
+    actionsDataSource = [(CNFaceTimeCell *)self actionsDataSource];
+    type3 = [viewCopy type];
+    v23 = type3;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v23 count:1];
-    v19 = [(CNContactActionsController *)v14 initWithContact:v15 dataSource:v16 actionTypes:v18];
+    v19 = [(CNContactActionsController *)v14 initWithContact:contact dataSource:actionsDataSource actionTypes:v18];
     [(CNFaceTimeCell *)self setActionsController:v19];
 
-    v20 = [(CNFaceTimeCell *)self actionsController];
-    [v20 setDelegate:self];
+    actionsController = [(CNFaceTimeCell *)self actionsController];
+    [actionsController setDelegate:self];
 
-    v21 = [(CNFaceTimeCell *)self actionsController];
-    [v21 setGenerateFaceTimeListItemsOnly:1];
+    actionsController2 = [(CNFaceTimeCell *)self actionsController];
+    [actionsController2 setGenerateFaceTimeListItemsOnly:1];
 
-    v22 = [(CNFaceTimeCell *)self actionsController];
-    [v22 retrieveModels];
+    actionsController3 = [(CNFaceTimeCell *)self actionsController];
+    [actionsController3 retrieveModels];
   }
 
   else
@@ -262,15 +262,15 @@ void __32__CNFaceTimeCell_performAction___block_invoke_40(uint64_t a1)
 
 - (void)updateHorizontalTouchAreas
 {
-  v3 = [(CNFaceTimeCell *)self rightMostView];
-  [v3 _setTouchInsets:{0.0, -8.0, 0.0, -16.0}];
+  rightMostView = [(CNFaceTimeCell *)self rightMostView];
+  [rightMostView _setTouchInsets:{0.0, -8.0, 0.0, -16.0}];
 
-  v4 = [(CNFaceTimeCell *)self actionView2];
+  actionView2 = [(CNFaceTimeCell *)self actionView2];
 
-  if (v4)
+  if (actionView2)
   {
-    v5 = [(CNFaceTimeCell *)self actionView2];
-    [v5 _setTouchInsets:{0.0, -8.0, 0.0, -8.0}];
+    actionView22 = [(CNFaceTimeCell *)self actionView2];
+    [actionView22 _setTouchInsets:{0.0, -8.0, 0.0, -8.0}];
   }
 }
 
@@ -280,36 +280,36 @@ void __32__CNFaceTimeCell_performAction___block_invoke_40(uint64_t a1)
   v3 = MEMORY[0x1E695DF70];
   v24.receiver = self;
   v24.super_class = CNFaceTimeCell;
-  v4 = [(CNLabeledCell *)&v24 variableConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  variableConstraints = [(CNLabeledCell *)&v24 variableConstraints];
+  v5 = [v3 arrayWithArray:variableConstraints];
 
-  v6 = [(CNFaceTimeCell *)self actionView1];
+  actionView1 = [(CNFaceTimeCell *)self actionView1];
   if ([(CNFaceTimeCell *)self isFaceTimeAudioAvailable])
   {
-    v23 = [(CNFaceTimeCell *)self actionView2];
+    actionView2 = [(CNFaceTimeCell *)self actionView2];
 
-    v22 = [(CNFaceTimeCell *)self actionView1];
-    v20 = [v22 leadingAnchor];
-    v21 = [(CNFaceTimeCell *)self actionView2];
-    v7 = [v21 trailingAnchor];
-    v8 = [v20 constraintEqualToAnchor:v7 constant:16.0];
+    actionView12 = [(CNFaceTimeCell *)self actionView1];
+    leadingAnchor = [actionView12 leadingAnchor];
+    actionView22 = [(CNFaceTimeCell *)self actionView2];
+    trailingAnchor = [actionView22 trailingAnchor];
+    v8 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:16.0];
     v25[0] = v8;
-    v9 = [(CNFaceTimeCell *)self actionView2];
-    v10 = [v9 centerYAnchor];
-    v11 = [(CNFaceTimeCell *)self contentView];
-    v12 = [v11 centerYAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12];
+    actionView23 = [(CNFaceTimeCell *)self actionView2];
+    centerYAnchor = [actionView23 centerYAnchor];
+    contentView = [(CNFaceTimeCell *)self contentView];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v25[1] = v13;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     [v5 addObjectsFromArray:v14];
 
-    v6 = v23;
+    actionView1 = actionView2;
   }
 
-  v15 = [v6 leadingAnchor];
-  v16 = [(CNFaceTimeCell *)self faceTimeLabel];
-  v17 = [v16 trailingAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:16.0];
+  leadingAnchor2 = [actionView1 leadingAnchor];
+  faceTimeLabel = [(CNFaceTimeCell *)self faceTimeLabel];
+  trailingAnchor2 = [faceTimeLabel trailingAnchor];
+  v18 = [leadingAnchor2 constraintEqualToAnchor:trailingAnchor2 constant:16.0];
   [v5 addObject:v18];
 
   return v5;
@@ -321,14 +321,14 @@ void __32__CNFaceTimeCell_performAction___block_invoke_40(uint64_t a1)
   v3 = MEMORY[0x1E695DF70];
   v13.receiver = self;
   v13.super_class = CNFaceTimeCell;
-  v4 = [(CNLabeledCell *)&v13 constantConstraints];
-  v5 = [v3 arrayWithArray:v4];
+  constantConstraints = [(CNLabeledCell *)&v13 constantConstraints];
+  v5 = [v3 arrayWithArray:constantConstraints];
 
-  v6 = [(CNFaceTimeCell *)self actionView1];
-  v7 = [v6 centerYAnchor];
-  v8 = [(CNFaceTimeCell *)self contentView];
-  v9 = [v8 centerYAnchor];
-  v10 = [v7 constraintEqualToAnchor:v9];
+  actionView1 = [(CNFaceTimeCell *)self actionView1];
+  centerYAnchor = [actionView1 centerYAnchor];
+  contentView = [(CNFaceTimeCell *)self contentView];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v14[0] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   [v5 addObjectsFromArray:v11];
@@ -345,9 +345,9 @@ void __32__CNFaceTimeCell_performAction___block_invoke_40(uint64_t a1)
     _os_log_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEFAULT, "[CNFaceTimeCell performDefaultAction]", v6, 2u);
   }
 
-  v4 = [(CNFaceTimeCell *)self delegate];
-  v5 = [(CNContactCell *)self cardGroupItem];
-  [v4 propertyCell:self performActionForItem:v5 withTransportType:3];
+  delegate = [(CNFaceTimeCell *)self delegate];
+  cardGroupItem = [(CNContactCell *)self cardGroupItem];
+  [delegate propertyCell:self performActionForItem:cardGroupItem withTransportType:3];
 }
 
 - (id)labelView
@@ -355,9 +355,9 @@ void __32__CNFaceTimeCell_performAction___block_invoke_40(uint64_t a1)
   faceTimeLabel = self->_faceTimeLabel;
   if (!faceTimeLabel)
   {
-    v4 = [(CNLabeledCell *)self standardLabelView];
+    standardLabelView = [(CNLabeledCell *)self standardLabelView];
     v5 = self->_faceTimeLabel;
-    self->_faceTimeLabel = v4;
+    self->_faceTimeLabel = standardLabelView;
 
     v6 = CNContactsUIBundle();
     v7 = [v6 localizedStringForKey:@"PHONE_ACTION_VIDEO_CONFERENCE" value:&stru_1F0CE7398 table:@"Localized"];
@@ -370,43 +370,43 @@ void __32__CNFaceTimeCell_performAction___block_invoke_40(uint64_t a1)
   return faceTimeLabel;
 }
 
-- (id)actionViewForType:(id)a3
+- (id)actionViewForType:(id)type
 {
-  v4 = a3;
-  v5 = [(CNFaceTimeCell *)self actionView1];
-  v6 = [v5 type];
+  typeCopy = type;
+  actionView1 = [(CNFaceTimeCell *)self actionView1];
+  type = [actionView1 type];
 
-  if (v6 == v4)
+  if (type == typeCopy)
   {
-    v10 = [(CNFaceTimeCell *)self actionView1];
+    actionView12 = [(CNFaceTimeCell *)self actionView1];
   }
 
   else
   {
-    v7 = [(CNFaceTimeCell *)self actionView2];
-    v8 = [v7 type];
+    actionView2 = [(CNFaceTimeCell *)self actionView2];
+    type2 = [actionView2 type];
 
-    if (v8 != v4)
+    if (type2 != typeCopy)
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    v10 = [(CNFaceTimeCell *)self actionView2];
+    actionView12 = [(CNFaceTimeCell *)self actionView2];
   }
 
-  v9 = v10;
+  v9 = actionView12;
 LABEL_7:
 
   return v9;
 }
 
-- (void)processModels:(id)a3
+- (void)processModels:(id)models
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNFaceTimeCell *)self defaultActionPerType];
-  v6 = [v5 mutableCopy];
+  modelsCopy = models;
+  defaultActionPerType = [(CNFaceTimeCell *)self defaultActionPerType];
+  v6 = [defaultActionPerType mutableCopy];
 
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
@@ -414,8 +414,8 @@ LABEL_7:
   v12 = &unk_1E74E6A10;
   v7 = v6;
   v13 = v7;
-  v14 = self;
-  [v4 _cn_each:&v9];
+  selfCopy = self;
+  [modelsCopy _cn_each:&v9];
 
   if ([v7 count])
   {
@@ -452,23 +452,23 @@ void __32__CNFaceTimeCell_processModels___block_invoke(uint64_t a1, void *a2, vo
 
 - (id)allModelsObservable
 {
-  v3 = [(CNFaceTimeCell *)self supportedActionTypes];
+  supportedActionTypes = [(CNFaceTimeCell *)self supportedActionTypes];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __37__CNFaceTimeCell_allModelsObservable__block_invoke;
   v14[3] = &unk_1E74E6928;
   v14[4] = self;
-  v4 = [v3 _cn_map:v14];
+  v4 = [supportedActionTypes _cn_map:v14];
 
   v5 = MEMORY[0x1E6996798];
-  v6 = [(CNFaceTimeCell *)self schedulerProvider];
-  v7 = [v5 merge:v4 schedulerProvider:v6];
+  schedulerProvider = [(CNFaceTimeCell *)self schedulerProvider];
+  v7 = [v5 merge:v4 schedulerProvider:schedulerProvider];
 
   v8 = [v7 scan:&__block_literal_global_16899 seed:MEMORY[0x1E695E0F8]];
   [(CNFaceTimeCell *)self throttleDelay];
   v10 = v9;
-  v11 = [(CNFaceTimeCell *)self schedulerProvider];
-  v12 = [v8 throttle:v11 schedulerProvider:v10];
+  schedulerProvider2 = [(CNFaceTimeCell *)self schedulerProvider];
+  v12 = [v8 throttle:schedulerProvider2 schedulerProvider:v10];
 
   return v12;
 }
@@ -519,30 +519,30 @@ id __37__CNFaceTimeCell_allModelsObservable__block_invoke_2(uint64_t a1, void *a
   v3 = CNUILogContactCard();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(CNFaceTimeCell *)self contact];
-    v16 = [v15 shortDebugDescription];
+    contact = [(CNFaceTimeCell *)self contact];
+    shortDebugDescription = [contact shortDebugDescription];
     *buf = 138412546;
     *&buf[4] = self;
     *&buf[12] = 2112;
-    *&buf[14] = v16;
+    *&buf[14] = shortDebugDescription;
     _os_log_debug_impl(&dword_199A75000, v3, OS_LOG_TYPE_DEBUG, "[CNFaceTimeCell discoverAvailableActionTypes], %@ cancelling previous action discovering requests, contact now is %@", buf, 0x16u);
   }
 
-  v4 = [(CNFaceTimeCell *)self tokens];
+  tokens = [(CNFaceTimeCell *)self tokens];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __46__CNFaceTimeCell_discoverAvailableActionTypes__block_invoke;
   v26[3] = &unk_1E74E6998;
   v26[4] = self;
-  [v4 enumerateObjectsUsingBlock:v26];
+  [tokens enumerateObjectsUsingBlock:v26];
 
   [(CNFaceTimeCell *)self setTokens:MEMORY[0x1E695E0F0]];
-  v5 = [(CNFaceTimeCell *)self contact];
-  LOBYTE(v4) = v5 == 0;
+  contact2 = [(CNFaceTimeCell *)self contact];
+  LOBYTE(tokens) = contact2 == 0;
 
-  if ((v4 & 1) == 0)
+  if ((tokens & 1) == 0)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     objc_initWeak(&location, self);
     *buf = 0;
     *&buf[8] = buf;
@@ -553,19 +553,19 @@ id __37__CNFaceTimeCell_allModelsObservable__block_invoke_2(uint64_t a1, void *a
     v7 = CNUILogContactCard();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v17 = [(CNFaceTimeCell *)self contact];
-      v18 = [v17 shortDebugDescription];
+      contact3 = [(CNFaceTimeCell *)self contact];
+      shortDebugDescription2 = [contact3 shortDebugDescription];
       *v27 = 138412546;
-      v28 = self;
+      selfCopy = self;
       v29 = 2112;
-      v30 = v18;
+      v30 = shortDebugDescription2;
       _os_log_debug_impl(&dword_199A75000, v7, OS_LOG_TYPE_DEBUG, "[CNFaceTimeCell discoverAvailableActionTypes], %@ subscribing action discovering requests for contact %@.", v27, 0x16u);
     }
 
-    v8 = [(CNFaceTimeCell *)self allModelsObservable];
-    v9 = [(CNFaceTimeCell *)self schedulerProvider];
-    v10 = [v9 backgroundScheduler];
-    v11 = [v8 subscribeOn:v10];
+    allModelsObservable = [(CNFaceTimeCell *)self allModelsObservable];
+    schedulerProvider = [(CNFaceTimeCell *)self schedulerProvider];
+    backgroundScheduler = [schedulerProvider backgroundScheduler];
+    v11 = [allModelsObservable subscribeOn:backgroundScheduler];
     v12 = MEMORY[0x1E69967A0];
     v19 = MEMORY[0x1E69E9820];
     v20 = 3221225472;
@@ -576,9 +576,9 @@ id __37__CNFaceTimeCell_allModelsObservable__block_invoke_2(uint64_t a1, void *a
     v13 = [v12 observerWithResultBlock:&v19];
     v14 = [v11 subscribe:{v13, v19, v20, v21, v22}];
 
-    [v6 addObject:v14];
+    [array addObject:v14];
     objc_storeWeak((*&buf[8] + 40), v14);
-    [(CNFaceTimeCell *)self setTokens:v6];
+    [(CNFaceTimeCell *)self setTokens:array];
 
     objc_destroyWeak(&v24);
     _Block_object_dispose(buf, 8);
@@ -637,17 +637,17 @@ void __46__CNFaceTimeCell_discoverAvailableActionTypes__block_invoke_2_13(uint64
 
 - (void)loadCachedActions
 {
-  v3 = [(CNFaceTimeCell *)self supportedActionTypes];
+  supportedActionTypes = [(CNFaceTimeCell *)self supportedActionTypes];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __35__CNFaceTimeCell_loadCachedActions__block_invoke;
   v8[3] = &unk_1E74E6970;
   v8[4] = self;
-  v4 = [v3 _cn_map:v8];
+  v4 = [supportedActionTypes _cn_map:v8];
 
   v5 = MEMORY[0x1E695DF20];
-  v6 = [(CNFaceTimeCell *)self supportedActionTypes];
-  v7 = [v5 dictionaryWithObjects:v4 forKeys:v6];
+  supportedActionTypes2 = [(CNFaceTimeCell *)self supportedActionTypes];
+  v7 = [v5 dictionaryWithObjects:v4 forKeys:supportedActionTypes2];
 
   [(CNFaceTimeCell *)self processModels:v7];
 }
@@ -676,58 +676,58 @@ id __35__CNFaceTimeCell_loadCachedActions__block_invoke(uint64_t a1, void *a2)
   return v10;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v5 = a3;
-  if (self->_contact != v5)
+  contactCopy = contact;
+  if (self->_contact != contactCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_contact, a3);
+    v6 = contactCopy;
+    objc_storeStrong(&self->_contact, contact);
     [(CNFaceTimeCell *)self reset];
     [(CNFaceTimeCell *)self loadCachedActions];
     [(CNFaceTimeCell *)self discoverAvailableActionTypes];
-    v5 = v6;
+    contactCopy = v6;
   }
 }
 
-- (void)setActionsDataSource:(id)a3
+- (void)setActionsDataSource:(id)source
 {
-  v17 = a3;
-  if (self->_actionsDataSource != v17)
+  sourceCopy = source;
+  if (self->_actionsDataSource != sourceCopy)
   {
-    objc_storeStrong(&self->_actionsDataSource, a3);
-    v5 = [(CNFaceTimeCell *)self actionView1];
+    objc_storeStrong(&self->_actionsDataSource, source);
+    actionView1 = [(CNFaceTimeCell *)self actionView1];
 
-    if (v5)
+    if (actionView1)
     {
       v6 = MEMORY[0x1E69DCAB8];
-      v7 = [(CNFaceTimeCell *)self actionView1];
-      v8 = [v7 type];
-      v9 = [v6 cnui_userActionSymbolImageForActionType:v8 scale:-1 withColor:0];
-      v10 = [(CNFaceTimeCell *)self actionView1];
-      [v10 setImage:v9];
+      actionView12 = [(CNFaceTimeCell *)self actionView1];
+      type = [actionView12 type];
+      v9 = [v6 cnui_userActionSymbolImageForActionType:type scale:-1 withColor:0];
+      actionView13 = [(CNFaceTimeCell *)self actionView1];
+      [actionView13 setImage:v9];
     }
 
-    v11 = [(CNFaceTimeCell *)self actionView2];
+    actionView2 = [(CNFaceTimeCell *)self actionView2];
 
-    if (v11)
+    if (actionView2)
     {
       v12 = MEMORY[0x1E69DCAB8];
-      v13 = [(CNFaceTimeCell *)self actionView2];
-      v14 = [v13 type];
-      v15 = [v12 cnui_userActionSymbolImageForActionType:v14 scale:-1 withColor:0];
-      v16 = [(CNFaceTimeCell *)self actionView2];
-      [v16 setImage:v15];
+      actionView22 = [(CNFaceTimeCell *)self actionView2];
+      type2 = [actionView22 type];
+      v15 = [v12 cnui_userActionSymbolImageForActionType:type2 scale:-1 withColor:0];
+      actionView23 = [(CNFaceTimeCell *)self actionView2];
+      [actionView23 setImage:v15];
     }
   }
 }
 
-- (CNFaceTimeCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNFaceTimeCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v30[2] = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = CNFaceTimeCell;
-  v4 = [(CNLabeledCell *)&v28 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNLabeledCell *)&v28 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -735,9 +735,9 @@ id __35__CNFaceTimeCell_loadCachedActions__block_invoke(uint64_t a1, void *a2)
     v4->_tokens = MEMORY[0x1E695E0F0];
 
     v7 = +[CNUIContactsEnvironment currentEnvironment];
-    v8 = [v7 defaultSchedulerProvider];
+    defaultSchedulerProvider = [v7 defaultSchedulerProvider];
     schedulerProvider = v5->_schedulerProvider;
-    v5->_schedulerProvider = v8;
+    v5->_schedulerProvider = defaultSchedulerProvider;
 
     defaultActionPerType = v5->_defaultActionPerType;
     v5->_defaultActionPerType = MEMORY[0x1E695E0F8];
@@ -787,8 +787,8 @@ id __35__CNFaceTimeCell_loadCachedActions__block_invoke(uint64_t a1, void *a2)
     [(CNActionView *)v5->_actionView1 setContentCompressionResistancePriority:0 forAxis:v19];
     LODWORD(v20) = 1148846080;
     [(CNActionView *)v5->_actionView1 setContentCompressionResistancePriority:1 forAxis:v20];
-    v21 = [(CNFaceTimeCell *)v5 contentView];
-    [v21 addSubview:v5->_actionView1];
+    contentView = [(CNFaceTimeCell *)v5 contentView];
+    [contentView addSubview:v5->_actionView1];
 
     if ([(CNFaceTimeCell *)v5 isFaceTimeAudioAvailable])
     {
@@ -805,8 +805,8 @@ id __35__CNFaceTimeCell_loadCachedActions__block_invoke(uint64_t a1, void *a2)
       [(CNActionView *)v5->_actionView2 setContentCompressionResistancePriority:0 forAxis:v24];
       LODWORD(v25) = 1148846080;
       [(CNActionView *)v5->_actionView2 setContentCompressionResistancePriority:1 forAxis:v25];
-      v26 = [(CNFaceTimeCell *)v5 contentView];
-      [v26 addSubview:v5->_actionView2];
+      contentView2 = [(CNFaceTimeCell *)v5 contentView];
+      [contentView2 addSubview:v5->_actionView2];
     }
 
     [(CNFaceTimeCell *)v5 updateHorizontalTouchAreas];

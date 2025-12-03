@@ -2,7 +2,7 @@
 + (id)sharedCompanionSyncService;
 - (id)_init;
 - (void)_updateHeadlines;
-- (void)attemptSyncWithCompletion:(id)a3;
+- (void)attemptSyncWithCompletion:(id)completion;
 - (void)resumeSync;
 @end
 
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = sub_100004DB0;
   block[3] = &unk_1000103B8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100016EA0 != -1)
   {
     dispatch_once(&qword_100016EA0, block);
@@ -42,21 +42,21 @@
     [(NNCompanionSyncServiceManager *)v8 setDelegate:v2];
     v9 = [[SYService alloc] initWithService:@"com.apple.private.alloy.news" priority:0 asMasterStore:1 options:0];
     [v9 setEngineType:2];
-    v10 = [(NNCompanionSyncServiceManager *)v8 syncQueue];
-    [v9 setDelegate:v8 queue:v10];
+    syncQueue = [(NNCompanionSyncServiceManager *)v8 syncQueue];
+    [v9 setDelegate:v8 queue:syncQueue];
 
     v11 = +[NRPairedDeviceRegistry sharedInstance];
-    v12 = [v11 getActivePairedDevice];
+    getActivePairedDevice = [v11 getActivePairedDevice];
 
     v13 = NNSetupCompanionSyncLog();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_INFO);
-    if (v12)
+    if (getActivePairedDevice)
     {
       if (v14)
       {
-        v15 = [v12 pairingID];
+        pairingID = [getActivePairedDevice pairingID];
         *buf = 138412290;
-        v25 = v15;
+        v25 = pairingID;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Starting CompanionSync with device pairingID: %@", buf, 0xCu);
       }
 
@@ -92,28 +92,28 @@
   return v2;
 }
 
-- (void)attemptSyncWithCompletion:(id)a3
+- (void)attemptSyncWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = NNSetupCompanionSyncLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(NNCompanionSyncService *)self service];
+    service = [(NNCompanionSyncService *)self service];
     *buf = 138412290;
-    v13 = v6;
+    v13 = service;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Someone has asked to start a sync with %@.", buf, 0xCu);
   }
 
-  v7 = [(NNCompanionSyncService *)self serviceManager];
-  v8 = [v7 syncQueue];
+  serviceManager = [(NNCompanionSyncService *)self serviceManager];
+  syncQueue = [serviceManager syncQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000526C;
   v10[3] = &unk_100010408;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_async(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_async(syncQueue, v10);
 }
 
 - (void)resumeSync
@@ -124,24 +124,24 @@
   v6[3] = sub_1000053F0;
   v6[4] = sub_100005400;
   v7 = os_transaction_create();
-  v3 = [(NNCompanionSyncService *)self serviceManager];
-  v4 = [v3 syncQueue];
+  serviceManager = [(NNCompanionSyncService *)self serviceManager];
+  syncQueue = [serviceManager syncQueue];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100005408;
   v5[3] = &unk_1000104C0;
   v5[4] = self;
   v5[5] = v6;
-  dispatch_async(v4, v5);
+  dispatch_async(syncQueue, v5);
 
   _Block_object_dispose(v6, 8);
 }
 
 - (void)_updateHeadlines
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if ([(NNCompanionSyncService *)v2 updatingHeadlines])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(NNCompanionSyncService *)selfCopy updatingHeadlines])
   {
     v3 = NNSetupCompanionSyncLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -150,13 +150,13 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Skipping fetch of headlines for gizmo. Fetch in progress…", buf, 2u);
     }
 
-    objc_sync_exit(v2);
+    objc_sync_exit(selfCopy);
   }
 
   else
   {
-    [(NNCompanionSyncService *)v2 setUpdatingHeadlines:1];
-    objc_sync_exit(v2);
+    [(NNCompanionSyncService *)selfCopy setUpdatingHeadlines:1];
+    objc_sync_exit(selfCopy);
 
     *buf = 0;
     v13 = buf;
@@ -197,7 +197,7 @@
     v9[1] = 3221225472;
     v9[2] = sub_100005824;
     v9[3] = &unk_100010510;
-    v9[4] = v2;
+    v9[4] = selfCopy;
     v9[5] = v10;
     v9[6] = buf;
     [v8 fetchLatestResultsWithParameters:v4 completion:v9];

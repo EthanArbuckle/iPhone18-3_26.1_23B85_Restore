@@ -1,41 +1,41 @@
 @interface ViewController
 - (id)extensionHostViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismissalDidEnd:(id)a3;
-- (void)handleButtonActions:(id)a3;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismissalDidEnd:(id)end;
+- (void)handleButtonActions:(id)actions;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
 - (void)teardown;
 @end
 
 @implementation ViewController
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v5 = [(ViewController *)self _remoteViewControllerProxy];
-  [v5 setAllowsAlertStacking:1];
-  [v5 setAllowsBanners:1];
-  [v5 setAllowsSiri:1];
-  [v5 setAllowsControlCenter:1];
-  [v5 setAllowsAlertItems:1];
-  [v5 setShouldDisableFadeInAnimation:1];
-  [v5 setSwipeDismissalStyle:1];
-  [v5 setDesiredHardwareButtonEvents:16];
-  [v5 setSceneDeactivationReason:&off_100008298];
-  if (v6)
+  completionCopy = completion;
+  _remoteViewControllerProxy = [(ViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setAllowsSiri:1];
+  [_remoteViewControllerProxy setAllowsControlCenter:1];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setShouldDisableFadeInAnimation:1];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:1];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSceneDeactivationReason:&off_100008298];
+  if (completionCopy)
   {
-    v6[2]();
+    completionCopy[2]();
   }
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -47,7 +47,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v10 + 1) + 8 * v8) events] & 0x10) != 0)
@@ -64,75 +64,75 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v23 = a3;
-  v6 = a4;
-  v7 = [(ViewController *)self _remoteViewControllerProxy];
-  v8 = [v23 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"renderID"];
-  v10 = [v9 unsignedLongLongValue];
+  contextCopy = context;
+  completionCopy = completion;
+  _remoteViewControllerProxy = [(ViewController *)self _remoteViewControllerProxy];
+  userInfo = [contextCopy userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"renderID"];
+  unsignedLongLongValue = [v9 unsignedLongLongValue];
 
-  v11 = [v23 userInfo];
-  v12 = [v11 objectForKeyedSubscript:@"contextID"];
-  v13 = [v12 unsignedIntValue];
+  userInfo2 = [contextCopy userInfo];
+  v12 = [userInfo2 objectForKeyedSubscript:@"contextID"];
+  unsignedIntValue = [v12 unsignedIntValue];
 
-  if (v10 && v13)
+  if (unsignedLongLongValue && unsignedIntValue)
   {
     v14 = [PortalView alloc];
-    v15 = [(ViewController *)self view];
-    [v15 bounds];
-    v16 = [(PortalView *)v14 initWithFrame:?];
+    view = [(ViewController *)self view];
+    [view bounds];
+    view4 = [(PortalView *)v14 initWithFrame:?];
 
-    [(PortalView *)v16 setAutoresizingMask:18];
-    [(PortalView *)v16 setSourceLayerRenderId:v10];
-    [(PortalView *)v16 setSourceContextId:v13];
-    v17 = [(ViewController *)self view];
-    [v17 addSubview:v16];
+    [(PortalView *)view4 setAutoresizingMask:18];
+    [(PortalView *)view4 setSourceLayerRenderId:unsignedLongLongValue];
+    [(PortalView *)view4 setSourceContextId:unsignedIntValue];
+    view2 = [(ViewController *)self view];
+    [view2 addSubview:view4];
 
-    v18 = +[UIColor systemBlackColor];
-    v19 = [(ViewController *)self view];
-    v20 = [v19 window];
-    [v20 setBackgroundColor:v18];
+    window2 = +[UIColor systemBlackColor];
+    view3 = [(ViewController *)self view];
+    window = [view3 window];
+    [window setBackgroundColor:window2];
   }
 
   else
   {
-    v16 = [(ViewController *)self view];
-    v18 = [(PortalView *)v16 window];
-    v19 = [v18 _rootSheetPresentationController];
-    [v19 _setShouldScaleDownBehindDescendantSheets:0];
+    view4 = [(ViewController *)self view];
+    window2 = [(PortalView *)view4 window];
+    view3 = [window2 _rootSheetPresentationController];
+    [view3 _setShouldScaleDownBehindDescendantSheets:0];
   }
 
-  v21 = [v23 userInfo];
-  v22 = [v21 objectForKeyedSubscript:@"userActivityData"];
+  userInfo3 = [contextCopy userInfo];
+  v22 = [userInfo3 objectForKeyedSubscript:@"userActivityData"];
   [(ViewController *)self setUserActivityData:v22];
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)dismissalDidEnd:(id)a3
+- (void)dismissalDidEnd:(id)end
 {
-  v8 = a3;
-  v4 = [v8 object];
+  endCopy = end;
+  object = [endCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v8 userInfo];
-    v6 = [v5 objectForKeyedSubscript:UIPresentationControllerDismissalTransitionDidEndCompletedKey];
-    v7 = [v6 BOOLValue];
+    userInfo = [endCopy userInfo];
+    v6 = [userInfo objectForKeyedSubscript:UIPresentationControllerDismissalTransitionDidEndCompletedKey];
+    bOOLValue = [v6 BOOLValue];
 
-    if (v7)
+    if (bOOLValue)
     {
       [(ViewController *)self teardown];
     }
@@ -151,26 +151,26 @@
     v3 = +[NSProcessInfo processInfo];
     [v3 performExpiringActivityWithReason:@"Extending runtime for teardown" usingBlock:&stru_100008188];
 
-    v7 = [(ViewController *)self extensionHostViewController];
-    [v7 setConfiguration:0];
-    v4 = [v7 valueForKey:@"connection"];
+    extensionHostViewController = [(ViewController *)self extensionHostViewController];
+    [extensionHostViewController setConfiguration:0];
+    v4 = [extensionHostViewController valueForKey:@"connection"];
     [v4 invalidate];
 
-    v5 = [v7 presentingViewController];
-    [v5 dismissViewControllerAnimated:0 completion:0];
+    presentingViewController = [extensionHostViewController presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:0 completion:0];
 
-    v6 = [(ViewController *)self _remoteViewControllerProxy];
-    [v6 invalidate];
+    _remoteViewControllerProxy = [(ViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy invalidate];
   }
 }
 
 - (id)extensionHostViewController
 {
-  v2 = [(ViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 rootViewController];
+  view = [(ViewController *)self view];
+  window = [view window];
+  rootViewController = [window rootViewController];
 
-  if (v4)
+  if (rootViewController)
   {
     do
     {
@@ -180,15 +180,15 @@
         break;
       }
 
-      v5 = [v4 presentedViewController];
+      presentedViewController = [rootViewController presentedViewController];
 
-      v4 = v5;
+      rootViewController = presentedViewController;
     }
 
-    while (v5);
+    while (presentedViewController);
   }
 
-  return v4;
+  return rootViewController;
 }
 
 @end

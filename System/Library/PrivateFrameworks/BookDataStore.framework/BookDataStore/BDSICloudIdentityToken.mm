@@ -2,12 +2,12 @@
 + (id)tokenForCurrentIdentityIfCloudKitEnabled;
 + (id)tokenForCurrentIdentityIfICloudDriveEnabled;
 - (BDSICloudIdentityToken)initWithCurrentIdentity;
-- (BDSICloudIdentityToken)initWithToken:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_hashFor:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BDSICloudIdentityToken)initWithToken:(id)token;
+- (BOOL)isEqual:(id)equal;
+- (id)_hashFor:(id)for;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)initFromArchive:(id)a3;
+- (id)initFromArchive:(id)archive;
 @end
 
 @implementation BDSICloudIdentityToken
@@ -16,23 +16,23 @@
 {
   if (+[BDSSyncUserDefaults isSignedIntoICloud](BDSSyncUserDefaults, "isSignedIntoICloud") && +[BDSSyncUserDefaults isCloudKitSyncOptedIn])
   {
-    v2 = [[BDSICloudIdentityToken alloc] initWithCurrentIdentity];
+    initWithCurrentIdentity = [[BDSICloudIdentityToken alloc] initWithCurrentIdentity];
   }
 
   else
   {
-    v2 = 0;
+    initWithCurrentIdentity = 0;
   }
 
-  return v2;
+  return initWithCurrentIdentity;
 }
 
 - (BDSICloudIdentityToken)initWithCurrentIdentity
 {
-  v3 = [MEMORY[0x1E698F538] sharedProvider];
-  v4 = [v3 iCloudIdentity];
+  mEMORY[0x1E698F538] = [MEMORY[0x1E698F538] sharedProvider];
+  iCloudIdentity = [mEMORY[0x1E698F538] iCloudIdentity];
 
-  v5 = [(BDSICloudIdentityToken *)self _hashFor:v4];
+  v5 = [(BDSICloudIdentityToken *)self _hashFor:iCloudIdentity];
   v6 = [(BDSICloudIdentityToken *)self initWithToken:v5];
 
   return v6;
@@ -40,14 +40,14 @@
 
 + (id)tokenForCurrentIdentityIfICloudDriveEnabled
 {
-  v2 = [MEMORY[0x1E698F538] sharedProvider];
-  if ([v2 isUserSignedInToiCloud] && +[BDSSyncUserDefaults isICloudDriveSyncOptedIn](BDSSyncUserDefaults, "isICloudDriveSyncOptedIn"))
+  mEMORY[0x1E698F538] = [MEMORY[0x1E698F538] sharedProvider];
+  if ([mEMORY[0x1E698F538] isUserSignedInToiCloud] && +[BDSSyncUserDefaults isICloudDriveSyncOptedIn](BDSSyncUserDefaults, "isICloudDriveSyncOptedIn"))
   {
     v3 = +[BDSSyncUserDefaults isGlobalICloudDriveSyncOptedIn];
 
     if (v3)
     {
-      v4 = [[BDSICloudIdentityToken alloc] initWithCurrentIdentity];
+      initWithCurrentIdentity = [[BDSICloudIdentityToken alloc] initWithCurrentIdentity];
       goto LABEL_7;
     }
   }
@@ -56,63 +56,63 @@
   {
   }
 
-  v4 = 0;
+  initWithCurrentIdentity = 0;
 LABEL_7:
 
-  return v4;
+  return initWithCurrentIdentity;
 }
 
-- (BDSICloudIdentityToken)initWithToken:(id)a3
+- (BDSICloudIdentityToken)initWithToken:(id)token
 {
-  v4 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v10.receiver = self;
     v10.super_class = BDSICloudIdentityToken;
     v5 = [(BDSICloudIdentityToken *)&v10 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [tokenCopy copy];
       token = v5->_token;
       v5->_token = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (id)initFromArchive:(id)a3
+- (id)initFromArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    self = [(BDSICloudIdentityToken *)self initWithToken:v4];
-    v5 = self;
+    self = [(BDSICloudIdentityToken *)self initWithToken:archiveCopy];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  v6 = v5;
+  v6 = selfCopy;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -122,9 +122,9 @@ LABEL_7:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BDSICloudIdentityToken *)self token];
-      v6 = [(BDSICloudIdentityToken *)v4 token];
-      v7 = [v5 isEqualToString:v6];
+      token = [(BDSICloudIdentityToken *)self token];
+      token2 = [(BDSICloudIdentityToken *)equalCopy token];
+      v7 = [token isEqualToString:token2];
     }
 
     else
@@ -136,11 +136,11 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(BDSICloudIdentityToken *)self token];
-  v6 = [v4 initWithToken:v5];
+  token = [(BDSICloudIdentityToken *)self token];
+  v6 = [v4 initWithToken:token];
 
   return v6;
 }
@@ -155,12 +155,12 @@ LABEL_7:
   return v6;
 }
 
-- (id)_hashFor:(id)a3
+- (id)_hashFor:(id)for
 {
-  v3 = [a3 dataUsingEncoding:4];
-  v4 = [v3 bu_md5UpperCase];
+  v3 = [for dataUsingEncoding:4];
+  bu_md5UpperCase = [v3 bu_md5UpperCase];
 
-  return v4;
+  return bu_md5UpperCase;
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface _TUICellScrollObserver
-- (_TUICellScrollObserver)initWithPolicy:(id)a3 view:(id)a4 host:(id)a5 uuid:(id)a6 uid:(id)a7;
+- (_TUICellScrollObserver)initWithPolicy:(id)policy view:(id)view host:(id)host uuid:(id)uuid uid:(id)uid;
 - (id)_computeHiddenCells;
 - (void)reset;
-- (void)updateScrollingWithVisibleBounds:(CGRect)a3 active:(BOOL)a4;
+- (void)updateScrollingWithVisibleBounds:(CGRect)bounds active:(BOOL)active;
 @end
 
 @implementation _TUICellScrollObserver
 
-- (_TUICellScrollObserver)initWithPolicy:(id)a3 view:(id)a4 host:(id)a5 uuid:(id)a6 uid:(id)a7
+- (_TUICellScrollObserver)initWithPolicy:(id)policy view:(id)view host:(id)host uuid:(id)uuid uid:(id)uid
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  policyCopy = policy;
+  viewCopy = view;
+  hostCopy = host;
+  uuidCopy = uuid;
+  uidCopy = uid;
   v22.receiver = self;
   v22.super_class = _TUICellScrollObserver;
   v18 = [(_TUICellScrollObserver *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    v18->_view = v14;
-    objc_storeStrong(&v18->_policy, a3);
-    v20 = [v15 renderOverrideProvider];
-    v19->_provider = v20;
+    v18->_view = viewCopy;
+    objc_storeStrong(&v18->_policy, policy);
+    renderOverrideProvider = [hostCopy renderOverrideProvider];
+    v19->_provider = renderOverrideProvider;
 
-    objc_storeStrong(&v19->_uuid, a6);
-    objc_storeStrong(&v19->_uid, a7);
+    objc_storeStrong(&v19->_uuid, uuid);
+    objc_storeStrong(&v19->_uid, uid);
   }
 
   return v19;
@@ -56,10 +56,10 @@
 - (id)_computeHiddenCells
 {
   v3 = objc_opt_new();
-  v4 = [(TUICellScrollPolicy *)self->_policy cells];
-  v5 = *v4;
-  v6 = v4[1];
-  if (*v4 != v6)
+  cells = [(TUICellScrollPolicy *)self->_policy cells];
+  v5 = *cells;
+  v6 = cells[1];
+  if (*cells != v6)
   {
     v7 = 0;
     do
@@ -84,23 +84,23 @@
   return v3;
 }
 
-- (void)updateScrollingWithVisibleBounds:(CGRect)a3 active:(BOOL)a4
+- (void)updateScrollingWithVisibleBounds:(CGRect)bounds active:(BOOL)active
 {
-  self->_active = a4;
-  self->_visibleBounds = a3;
-  v5 = [(TUICellScrollPolicy *)self->_policy cells];
+  self->_active = active;
+  self->_visibleBounds = bounds;
+  cells = [(TUICellScrollPolicy *)self->_policy cells];
   if (self->_active)
   {
-    v6 = 0;
+    _computeHiddenCells = 0;
   }
 
   else
   {
-    v6 = [(_TUICellScrollObserver *)self _computeHiddenCells];
+    _computeHiddenCells = [(_TUICellScrollObserver *)self _computeHiddenCells];
   }
 
   hiddenCells = self->_hiddenCells;
-  if (hiddenCells != v6 && ![(NSIndexSet *)hiddenCells isEqualToIndexSet:v6])
+  if (hiddenCells != _computeHiddenCells && ![(NSIndexSet *)hiddenCells isEqualToIndexSet:_computeHiddenCells])
   {
     overrides = self->_overrides;
     v24[0] = _NSConcreteStackBlock;
@@ -109,7 +109,7 @@
     v24[3] = &unk_262D38;
     v24[4] = self;
     [(NSArray *)overrides enumerateObjectsUsingBlock:v24];
-    objc_storeStrong(&self->_hiddenCells, v6);
+    objc_storeStrong(&self->_hiddenCells, _computeHiddenCells);
     v9 = self->_overrides;
     self->_overrides = 0;
 
@@ -122,20 +122,20 @@
       v21[2] = sub_15C94C;
       v21[3] = &unk_262D60;
       v21[4] = self;
-      v23 = v5;
+      v23 = cells;
       v12 = v10;
       v22 = v12;
       [(NSIndexSet *)v11 enumerateIndexesUsingBlock:v21];
-      v13 = [(NSIndexSet *)v6 mutableCopy];
+      v13 = [(NSIndexSet *)_computeHiddenCells mutableCopy];
       [v13 shiftIndexesStartingAtIndex:0 by:1];
-      [v13 addIndexes:v6];
-      [v13 removeIndex:0xCCCCCCCCCCCCCCCDLL * ((v5[1] - *v5) >> 3)];
+      [v13 addIndexes:_computeHiddenCells];
+      [v13 removeIndex:0xCCCCCCCCCCCCCCCDLL * ((cells[1] - *cells) >> 3)];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_15CA5C;
       v18[3] = &unk_262D60;
       v18[4] = self;
-      v20 = v5;
+      v20 = cells;
       v14 = v12;
       v19 = v14;
       [v13 enumerateIndexesUsingBlock:v18];

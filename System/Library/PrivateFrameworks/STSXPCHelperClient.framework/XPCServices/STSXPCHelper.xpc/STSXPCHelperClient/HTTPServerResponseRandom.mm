@@ -1,11 +1,11 @@
 @interface HTTPServerResponseRandom
-- (HTTPServerResponseRandom)initWithMinimumLength:(unint64_t)a3 maximumLength:(unint64_t)a4;
-- (id)responseForRequest:(id)a3;
+- (HTTPServerResponseRandom)initWithMinimumLength:(unint64_t)length maximumLength:(unint64_t)maximumLength;
+- (id)responseForRequest:(id)request;
 @end
 
 @implementation HTTPServerResponseRandom
 
-- (HTTPServerResponseRandom)initWithMinimumLength:(unint64_t)a3 maximumLength:(unint64_t)a4
+- (HTTPServerResponseRandom)initWithMinimumLength:(unint64_t)length maximumLength:(unint64_t)maximumLength
 {
   v10.receiver = self;
   v10.super_class = HTTPServerResponseRandom;
@@ -18,8 +18,8 @@
 
   if (v6->_maxLen >= v6->_minLen)
   {
-    v6->_minLen = a3;
-    v6->_maxLen = a4;
+    v6->_minLen = length;
+    v6->_maxLen = maximumLength;
 LABEL_5:
     v8 = v6;
     goto LABEL_6;
@@ -31,11 +31,11 @@ LABEL_6:
   return v8;
 }
 
-- (id)responseForRequest:(id)a3
+- (id)responseForRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(HTTPServerResponseRandom *)self minLen];
-  if (v5 == [(HTTPServerResponseRandom *)self maxLen])
+  requestCopy = request;
+  minLen = [(HTTPServerResponseRandom *)self minLen];
+  if (minLen == [(HTTPServerResponseRandom *)self maxLen])
   {
     minLen = self->_minLen;
   }
@@ -56,11 +56,11 @@ LABEL_6:
     [v11 setObject:@"CFNetworkPPTServer-ResponseRandom" forKeyedSubscript:@"Server"];
     [v11 setObject:@"keep-alive" forKeyedSubscript:@"Connection"];
     v12 = [NSNumber numberWithUnsignedInteger:minLen];
-    v13 = [v12 stringValue];
-    [v11 setObject:v13 forKeyedSubscript:@"Content-Length"];
+    stringValue = [v12 stringValue];
+    [v11 setObject:stringValue forKeyedSubscript:@"Content-Length"];
 
     v14 = [NSHTTPURLResponse alloc];
-    v15 = [v4 URL];
+    v15 = [requestCopy URL];
     v16 = [v14 initWithURL:v15 statusCode:200 HTTPVersion:@"HTTP/1.1" headerFields:v11];
 
     v17 = [[HTTPServerResponse alloc] initWithResponse:v16 bodyData:v10];

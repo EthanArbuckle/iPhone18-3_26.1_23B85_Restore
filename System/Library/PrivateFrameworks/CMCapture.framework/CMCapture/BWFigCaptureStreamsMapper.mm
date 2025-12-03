@@ -1,10 +1,10 @@
 @interface BWFigCaptureStreamsMapper
-- (uint64_t)bwFigCaptureStreamForFigCaptureStream:(uint64_t)a1;
-- (uint64_t)figCaptureStreamForBWFigCaptureStream:(uint64_t)a1;
-- (void)bwFigCaptureStreamsForFigCaptureStreams:(uint64_t)a1;
+- (uint64_t)bwFigCaptureStreamForFigCaptureStream:(uint64_t)stream;
+- (uint64_t)figCaptureStreamForBWFigCaptureStream:(uint64_t)stream;
+- (void)bwFigCaptureStreamsForFigCaptureStreams:(uint64_t)streams;
 - (void)dealloc;
-- (void)figCaptureStreamsForBWFigCaptureStreams:(uint64_t)a1;
-- (void)initWithBWFigCaptureStreams:(void *)a3 figCaptureStreams:;
+- (void)figCaptureStreamsForBWFigCaptureStreams:(uint64_t)streams;
+- (void)initWithBWFigCaptureStreams:(void *)streams figCaptureStreams:;
 @end
 
 @implementation BWFigCaptureStreamsMapper
@@ -16,33 +16,33 @@
   [(BWFigCaptureStreamsMapper *)&v3 dealloc];
 }
 
-- (void)initWithBWFigCaptureStreams:(void *)a3 figCaptureStreams:
+- (void)initWithBWFigCaptureStreams:(void *)streams figCaptureStreams:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = BWFigCaptureStreamsMapper;
   v5 = objc_msgSendSuper2(&v7, sel_init);
   if (v5)
   {
     v5[1] = [a2 copy];
-    v5[2] = [a3 copy];
+    v5[2] = [streams copy];
   }
 
   return v5;
 }
 
-- (uint64_t)bwFigCaptureStreamForFigCaptureStream:(uint64_t)a1
+- (uint64_t)bwFigCaptureStreamForFigCaptureStream:(uint64_t)stream
 {
-  if (!a1)
+  if (!stream)
   {
     return 0;
   }
 
-  [*(a1 + 16) indexOfObject:a2];
+  [*(stream + 16) indexOfObject:a2];
   OUTLINED_FUNCTION_79();
   if (v4)
   {
@@ -50,19 +50,19 @@
   }
 
   v6 = v3;
-  v7 = *(a1 + 8);
+  v7 = *(stream + 8);
 
   return [v7 objectAtIndexedSubscript:v6];
 }
 
-- (uint64_t)figCaptureStreamForBWFigCaptureStream:(uint64_t)a1
+- (uint64_t)figCaptureStreamForBWFigCaptureStream:(uint64_t)stream
 {
-  if (!a1)
+  if (!stream)
   {
     return 0;
   }
 
-  [*(a1 + 8) indexOfObject:a2];
+  [*(stream + 8) indexOfObject:a2];
   OUTLINED_FUNCTION_79();
   if (v4)
   {
@@ -70,15 +70,15 @@
   }
 
   v6 = v3;
-  v7 = *(a1 + 16);
+  v7 = *(stream + 16);
 
   return [v7 objectAtIndexedSubscript:v6];
 }
 
-- (void)bwFigCaptureStreamsForFigCaptureStreams:(uint64_t)a1
+- (void)bwFigCaptureStreamsForFigCaptureStreams:(uint64_t)streams
 {
   v45 = 0;
-  if (a1)
+  if (streams)
   {
     if (a2)
     {
@@ -103,9 +103,9 @@
             }
 
             v17 = *(*(&v68 + 1) + 8 * v16);
-            [*(a1 + 16) indexOfObject:{v17, v40, v42}];
+            [*(streams + 16) indexOfObject:{v17, v40, v42}];
             OUTLINED_FUNCTION_79();
-            if (v19 || (v20 = [*(a1 + 8) objectAtIndexedSubscript:v18]) == 0)
+            if (v19 || (v20 = [*(streams + 8) objectAtIndexedSubscript:v18]) == 0)
             {
               v29 = OUTLINED_FUNCTION_19_18();
               if (OUTLINED_FUNCTION_25_14(v29, v30, v31, v32, v33, v34, v35, v36, v40, v42, v44, v45, v47[0], v47[1], *v49, *&v49[8], *&v49[16], v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, SBYTE2(v66), BYTE3(v66), SHIDWORD(v66)))
@@ -155,10 +155,10 @@
   return v45;
 }
 
-- (void)figCaptureStreamsForBWFigCaptureStreams:(uint64_t)a1
+- (void)figCaptureStreamsForBWFigCaptureStreams:(uint64_t)streams
 {
   v45 = 0;
-  if (a1)
+  if (streams)
   {
     if (a2)
     {
@@ -183,9 +183,9 @@
             }
 
             v17 = *(*(&v68 + 1) + 8 * v16);
-            [*(a1 + 8) indexOfObject:{v17, v40, v42}];
+            [*(streams + 8) indexOfObject:{v17, v40, v42}];
             OUTLINED_FUNCTION_79();
-            if (v19 || (v20 = [*(a1 + 16) objectAtIndexedSubscript:v18]) == 0)
+            if (v19 || (v20 = [*(streams + 16) objectAtIndexedSubscript:v18]) == 0)
             {
               v29 = OUTLINED_FUNCTION_19_18();
               if (OUTLINED_FUNCTION_25_14(v29, v30, v31, v32, v33, v34, v35, v36, v40, v42, v44, v45, v47[0], v47[1], *v49, *&v49[8], *&v49[16], v50, v51, v52, v53, v54, v55, v56, v57, v58, v59, v60, v61, v62, v63, v64, v65, v66, SBYTE2(v66), BYTE3(v66), SHIDWORD(v66)))

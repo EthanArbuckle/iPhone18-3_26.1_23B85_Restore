@@ -1,25 +1,25 @@
 @interface PKShowPreview
-- (PKShowPreview)initWithTitle:(id)a3 storeId:(id)a4 feedUrl:(id)a5 uuid:(id)a6;
+- (PKShowPreview)initWithTitle:(id)title storeId:(id)id feedUrl:(id)url uuid:(id)uuid;
 @end
 
 @implementation PKShowPreview
 
-- (PKShowPreview)initWithTitle:(id)a3 storeId:(id)a4 feedUrl:(id)a5 uuid:(id)a6
+- (PKShowPreview)initWithTitle:(id)title storeId:(id)id feedUrl:(id)url uuid:(id)uuid
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  idCopy = id;
+  urlCopy = url;
+  uuidCopy = uuid;
   v17.receiver = self;
   v17.super_class = PKShowPreview;
   v14 = [(PKShowPreview *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    [(PKShowPreview *)v14 setTitle:v10];
-    [(PKShowPreview *)v15 setStoreId:v11];
-    [(PKShowPreview *)v15 setFeedUrl:v12];
-    [(PKShowPreview *)v15 setUuid:v13];
+    [(PKShowPreview *)v14 setTitle:titleCopy];
+    [(PKShowPreview *)v15 setStoreId:idCopy];
+    [(PKShowPreview *)v15 setFeedUrl:urlCopy];
+    [(PKShowPreview *)v15 setUuid:uuidCopy];
   }
 
   return v15;

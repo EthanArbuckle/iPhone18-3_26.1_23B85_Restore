@@ -1,25 +1,25 @@
 @interface PKDashboardMessageRowItem
-- (BOOL)isEqual:(id)a3;
-- (PKDashboardMessageRowItem)initWithMessages:(id)a3 currentMessageIndex:(int64_t)a4 messagesViewDelegate:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKDashboardMessageRowItem)initWithMessages:(id)messages currentMessageIndex:(int64_t)index messagesViewDelegate:(id)delegate;
 - (PKDashboardMessagesViewDelegate)messagesViewDelegate;
 - (unint64_t)hash;
 @end
 
 @implementation PKDashboardMessageRowItem
 
-- (PKDashboardMessageRowItem)initWithMessages:(id)a3 currentMessageIndex:(int64_t)a4 messagesViewDelegate:(id)a5
+- (PKDashboardMessageRowItem)initWithMessages:(id)messages currentMessageIndex:(int64_t)index messagesViewDelegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a5;
+  messagesCopy = messages;
+  delegateCopy = delegate;
   v14.receiver = self;
   v14.super_class = PKDashboardMessageRowItem;
   v11 = [(PKDashboardMessageRowItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_messages, a3);
-    v12->_currentMessageIndex = a4;
-    objc_storeWeak(&v12->_messagesViewDelegate, v10);
+    objc_storeStrong(&v11->_messages, messages);
+    v12->_currentMessageIndex = index;
+    objc_storeWeak(&v12->_messagesViewDelegate, delegateCopy);
   }
 
   return v12;
@@ -38,16 +38,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     WeakRetained = objc_loadWeakRetained(&self->_messagesViewDelegate);

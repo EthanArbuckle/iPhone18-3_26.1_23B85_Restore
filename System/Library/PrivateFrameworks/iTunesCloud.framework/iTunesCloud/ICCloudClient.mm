@@ -3,7 +3,7 @@
 - (BOOL)canShowCloudDownloadButtons;
 - (BOOL)canShowCloudMusic;
 - (BOOL)canShowCloudVideo;
-- (BOOL)createMusicNotificationFromAMSDialogRequest:(id)a3 error:(id *)a4;
+- (BOOL)createMusicNotificationFromAMSDialogRequest:(id)request error:(id *)error;
 - (BOOL)hasProperNetworkConditionsToPlayMedia;
 - (BOOL)hasProperNetworkConditionsToShowCloudMedia;
 - (BOOL)hasSetPreferenceForAutomaticDownloads;
@@ -14,141 +14,141 @@
 - (BOOL)isCellularDataRestrictedForMusic;
 - (BOOL)isCellularDataRestrictedForStoreApps;
 - (BOOL)isCellularDataRestrictedForVideos;
-- (BOOL)isMediaKindDisabledForJaliscoLibrary:(int64_t)a3;
+- (BOOL)isMediaKindDisabledForJaliscoLibrary:(int64_t)library;
 - (BOOL)musicPurchasesDisabledForJaliscoLibrary;
 - (BOOL)shouldProhibitActionsForCurrentNetworkConditions;
 - (BOOL)shouldProhibitMusicActionForCurrentNetworkConditions;
 - (BOOL)shouldProhibitStoreAppsActionForCurrentNetworkConditions;
 - (BOOL)shouldProhibitVideosActionForCurrentNetworkConditions;
-- (ICCloudClient)initWithConfiguration:(id)a3;
-- (ICCloudClient)initWithUserIdentity:(id)a3;
+- (ICCloudClient)initWithConfiguration:(id)configuration;
+- (ICCloudClient)initWithUserIdentity:(id)identity;
 - (ICConnectionConfiguration)configuration;
 - (NSXPCConnection)xpcConnection;
-- (void)_enableCloudLibraryWithPolicy:(int64_t)a3 startinitialImport:(BOOL)a4 isExplicitUserAction:(BOOL)a5 completionHandler:(id)a6;
+- (void)_enableCloudLibraryWithPolicy:(int64_t)policy startinitialImport:(BOOL)import isExplicitUserAction:(BOOL)action completionHandler:(id)handler;
 - (void)_serverJaliscoUpdateInProgressDidChange;
 - (void)_serverSagaUpdateInProgressDidChange;
 - (void)_serverSetupDidComplete;
 - (void)_setupNotifications;
 - (void)_tearDownNotifications;
-- (void)addGeniusPlaylistWithPersistentID:(int64_t)a3 name:(id)a4 seedItemSagaIDs:(id)a5 itemSagaIDs:(id)a6 completionHandler:(id)a7;
-- (void)addItemWithSagaID:(int64_t)a3 toPlaylistWithPersistentID:(int64_t)a4 completionHandler:(id)a5;
-- (void)addStoreItemWithAdamID:(int64_t)a3 referral:(id)a4 completionHandler:(id)a5;
-- (void)addStoreItemWithAdamID:(int64_t)a3 referral:(id)a4 toPlaylistWithPersistentID:(int64_t)a5 completionHandler:(id)a6;
-- (void)addStoreItemsWithAdamIDs:(id)a3 referral:(id)a4 completionHandler:(id)a5;
-- (void)addStorePlaylistWithGlobalID:(id)a3 completionHandler:(id)a4;
+- (void)addGeniusPlaylistWithPersistentID:(int64_t)d name:(id)name seedItemSagaIDs:(id)ds itemSagaIDs:(id)iDs completionHandler:(id)handler;
+- (void)addItemWithSagaID:(int64_t)d toPlaylistWithPersistentID:(int64_t)iD completionHandler:(id)handler;
+- (void)addStoreItemWithAdamID:(int64_t)d referral:(id)referral completionHandler:(id)handler;
+- (void)addStoreItemWithAdamID:(int64_t)d referral:(id)referral toPlaylistWithPersistentID:(int64_t)iD completionHandler:(id)handler;
+- (void)addStoreItemsWithAdamIDs:(id)ds referral:(id)referral completionHandler:(id)handler;
+- (void)addStorePlaylistWithGlobalID:(id)d completionHandler:(id)handler;
 - (void)becomeActive;
-- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)a3 sharingMode:(unint64_t)a4 completion:(id)a5;
-- (void)createPlaylistWithPersistentID:(int64_t)a3 properties:(id)a4 trackList:(id)a5 completionHandler:(id)a6;
+- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)d sharingMode:(unint64_t)mode completion:(id)completion;
+- (void)createPlaylistWithPersistentID:(int64_t)d properties:(id)properties trackList:(id)list completionHandler:(id)handler;
 - (void)dealloc;
-- (void)deauthenticateWithCompletionHandler:(id)a3;
-- (void)deprioritizeAlbumArtistHeroImageForPersistentID:(int64_t)a3;
-- (void)deprioritizeArtistHeroImageForPersistentID:(int64_t)a3;
-- (void)deprioritizeContainerArtworkForSagaID:(unint64_t)a3;
-- (void)deprioritizeItemArtworkForPurchaseHistoryID:(unint64_t)a3;
-- (void)deprioritizeItemArtworkForSagaID:(unint64_t)a3;
-- (void)deprioritizeScreenshotForPurchaseHistoryID:(unint64_t)a3;
-- (void)deprioritizeScreenshotForSagaID:(unint64_t)a3;
-- (void)deprioritizeSubscriptionContainerArtworkForPersistentID:(int64_t)a3;
-- (void)deprioritizeSubscriptionItemArtworkForPersistentID:(int64_t)a3;
-- (void)deprioritizeSubscriptionScreenshotForPersistentID:(int64_t)a3;
-- (void)disableCloudLibraryWithReason:(int64_t)a3 completionHandler:(id)a4;
-- (void)editCollaborationWithPersistentID:(int64_t)a3 properties:(id)a4 trackEdits:(id)a5 completion:(id)a6;
-- (void)endCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4;
-- (void)favoriteAlbumWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6;
-- (void)favoriteArtistWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6;
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 sagaID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7;
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 storeID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7;
-- (void)favoritePlaylistWithPersistentID:(int64_t)a3 globalID:(id)a4 time:(id)a5 completionHandler:(id)a6;
+- (void)deauthenticateWithCompletionHandler:(id)handler;
+- (void)deprioritizeAlbumArtistHeroImageForPersistentID:(int64_t)d;
+- (void)deprioritizeArtistHeroImageForPersistentID:(int64_t)d;
+- (void)deprioritizeContainerArtworkForSagaID:(unint64_t)d;
+- (void)deprioritizeItemArtworkForPurchaseHistoryID:(unint64_t)d;
+- (void)deprioritizeItemArtworkForSagaID:(unint64_t)d;
+- (void)deprioritizeScreenshotForPurchaseHistoryID:(unint64_t)d;
+- (void)deprioritizeScreenshotForSagaID:(unint64_t)d;
+- (void)deprioritizeSubscriptionContainerArtworkForPersistentID:(int64_t)d;
+- (void)deprioritizeSubscriptionItemArtworkForPersistentID:(int64_t)d;
+- (void)deprioritizeSubscriptionScreenshotForPersistentID:(int64_t)d;
+- (void)disableCloudLibraryWithReason:(int64_t)reason completionHandler:(id)handler;
+- (void)editCollaborationWithPersistentID:(int64_t)d properties:(id)properties trackEdits:(id)edits completion:(id)completion;
+- (void)endCollaborationWithPersistentID:(int64_t)d completion:(id)completion;
+- (void)favoriteAlbumWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler;
+- (void)favoriteArtistWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler;
+- (void)favoriteEntityWithPersistentID:(int64_t)d sagaID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler;
+- (void)favoriteEntityWithPersistentID:(int64_t)d storeID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler;
+- (void)favoritePlaylistWithPersistentID:(int64_t)d globalID:(id)iD time:(id)time completionHandler:(id)handler;
 - (void)fetchEnhancedAudioOfflineKeys;
-- (void)handleAutomaticDownloadPreferenceChangedForMediaKindMusic:(BOOL)a3 withCompletionHandler:(id)a4;
-- (void)handleAutomaticDownloadPreferenceChangedForPinnedLibraryEntities:(BOOL)a3;
-- (void)hideItemsWithPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4;
-- (void)importAlbumArtistHeroImageForPersistentID:(int64_t)a3 completionHandler:(id)a4;
-- (void)importArtistHeroImageForPersistentID:(int64_t)a3 completionHandler:(id)a4;
-- (void)importContainerArtworkForSagaID:(unint64_t)a3 artworkVariantType:(int64_t)a4 completionHandler:(id)a5;
-- (void)importContainerArtworkForSagaID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)importItemArtworkForPurchaseHistoryID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)importItemArtworkForSagaID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)importScreenshotForPurchaseHistoryID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)importScreenshotForSagaID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)importSubscriptionContainerArtworkForPersistentID:(int64_t)a3 completionHandler:(id)a4;
-- (void)importSubscriptionItemArtworkForPersistentID:(int64_t)a3 completionHandler:(id)a4;
-- (void)importSubscriptionScreenshotForPersistentID:(int64_t)a3 completionHandler:(id)a4;
-- (void)isAuthenticatedWithQueue:(id)a3 completionHandler:(id)a4;
-- (void)joinCollaborationWithGlobalPlaylistID:(id)a3 invitationURL:(id)a4 completion:(id)a5;
+- (void)handleAutomaticDownloadPreferenceChangedForMediaKindMusic:(BOOL)music withCompletionHandler:(id)handler;
+- (void)handleAutomaticDownloadPreferenceChangedForPinnedLibraryEntities:(BOOL)entities;
+- (void)hideItemsWithPurchaseHistoryIDs:(id)ds completionHandler:(id)handler;
+- (void)importAlbumArtistHeroImageForPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)importArtistHeroImageForPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)importContainerArtworkForSagaID:(unint64_t)d artworkVariantType:(int64_t)type completionHandler:(id)handler;
+- (void)importContainerArtworkForSagaID:(unint64_t)d completionHandler:(id)handler;
+- (void)importItemArtworkForPurchaseHistoryID:(unint64_t)d completionHandler:(id)handler;
+- (void)importItemArtworkForSagaID:(unint64_t)d completionHandler:(id)handler;
+- (void)importScreenshotForPurchaseHistoryID:(unint64_t)d completionHandler:(id)handler;
+- (void)importScreenshotForSagaID:(unint64_t)d completionHandler:(id)handler;
+- (void)importSubscriptionContainerArtworkForPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)importSubscriptionItemArtworkForPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)importSubscriptionScreenshotForPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)isAuthenticatedWithQueue:(id)queue completionHandler:(id)handler;
+- (void)joinCollaborationWithGlobalPlaylistID:(id)d invitationURL:(id)l completion:(id)completion;
 - (void)listCloudServerOperations;
-- (void)loadArtworkInfoForContainerSagaID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadArtworkInfoForContainerSagaIDs:(id)a3 completionHandler:(id)a4;
-- (void)loadArtworkInfoForPurchaseHistoryID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadArtworkInfoForPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4;
-- (void)loadArtworkInfoForSagaID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadArtworkInfoForSagaIDs:(id)a3 completionHandler:(id)a4;
-- (void)loadArtworkInfoForSubscriptionContainerPersistentID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadArtworkInfoForSubscriptionContainerPersistentIDs:(id)a3 completionHandler:(id)a4;
-- (void)loadArtworkInfoForSubscriptionItemPersistentID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadArtworkInfoForSubscriptionItemPersistentIDs:(id)a3 completionHandler:(id)a4;
-- (void)loadBooksForStoreIDs:(id)a3 withCompletionHandler:(id)a4;
-- (void)loadGeniusItemsForSagaID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadIsJaliscoUpdateInProgressWithCompletionHandler:(id)a3;
-- (void)loadIsSagaUpdateInProgressWithCompletionHandler:(id)a3;
-- (void)loadIsUpdateInProgressWithCompletionHandler:(id)a3;
-- (void)loadJaliscoUpdateProgressWithCompletionHandler:(id)a3;
-- (void)loadLastKnownEnableICMLErrorStatusWithCompletionHander:(id)a3;
+- (void)loadArtworkInfoForContainerSagaID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadArtworkInfoForContainerSagaIDs:(id)ds completionHandler:(id)handler;
+- (void)loadArtworkInfoForPurchaseHistoryID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadArtworkInfoForPurchaseHistoryIDs:(id)ds completionHandler:(id)handler;
+- (void)loadArtworkInfoForSagaID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadArtworkInfoForSagaIDs:(id)ds completionHandler:(id)handler;
+- (void)loadArtworkInfoForSubscriptionContainerPersistentID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadArtworkInfoForSubscriptionContainerPersistentIDs:(id)ds completionHandler:(id)handler;
+- (void)loadArtworkInfoForSubscriptionItemPersistentID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadArtworkInfoForSubscriptionItemPersistentIDs:(id)ds completionHandler:(id)handler;
+- (void)loadBooksForStoreIDs:(id)ds withCompletionHandler:(id)handler;
+- (void)loadGeniusItemsForSagaID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadIsJaliscoUpdateInProgressWithCompletionHandler:(id)handler;
+- (void)loadIsSagaUpdateInProgressWithCompletionHandler:(id)handler;
+- (void)loadIsUpdateInProgressWithCompletionHandler:(id)handler;
+- (void)loadJaliscoUpdateProgressWithCompletionHandler:(id)handler;
+- (void)loadLastKnownEnableICMLErrorStatusWithCompletionHander:(id)hander;
 - (void)loadMissingArtwork;
-- (void)loadSagaUpdateProgressWithCompletionHandler:(id)a3;
-- (void)loadScreenshotInfoForPurchaseHistoryID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadScreenshotInfoForPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4;
-- (void)loadScreenshotInfoForSagaID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadScreenshotInfoForSagaIDs:(id)a3 completionHandler:(id)a4;
-- (void)loadScreenshotInfoForSubscriptionPersistentID:(unint64_t)a3 completionHandler:(id)a4;
-- (void)loadScreenshotInfoForSubscriptionPersistentIDs:(id)a3 completionHandler:(id)a4;
-- (void)loadUpdateProgressWithCompletionHandler:(id)a3;
-- (void)movePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6;
-- (void)movePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6;
-- (void)movePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 toPosition:(int64_t)a6 completion:(id)a7;
-- (void)notifyDeviceSetupFinishedWithCompletion:(id)a3;
-- (void)performBlockAfterServerSetup:(id)a3;
-- (void)pinLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)pinLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)pinLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7;
+- (void)loadSagaUpdateProgressWithCompletionHandler:(id)handler;
+- (void)loadScreenshotInfoForPurchaseHistoryID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadScreenshotInfoForPurchaseHistoryIDs:(id)ds completionHandler:(id)handler;
+- (void)loadScreenshotInfoForSagaID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadScreenshotInfoForSagaIDs:(id)ds completionHandler:(id)handler;
+- (void)loadScreenshotInfoForSubscriptionPersistentID:(unint64_t)d completionHandler:(id)handler;
+- (void)loadScreenshotInfoForSubscriptionPersistentIDs:(id)ds completionHandler:(id)handler;
+- (void)loadUpdateProgressWithCompletionHandler:(id)handler;
+- (void)movePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD toPosition:(int64_t)position completion:(id)completion;
+- (void)movePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD toPosition:(int64_t)position completion:(id)completion;
+- (void)movePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type toPosition:(int64_t)position completion:(id)completion;
+- (void)notifyDeviceSetupFinishedWithCompletion:(id)completion;
+- (void)performBlockAfterServerSetup:(id)setup;
+- (void)pinLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)pinLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)pinLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion;
 - (void)processPendingKeyInvalidations;
-- (void)publishPlaylistWithSagaID:(int64_t)a3 completionHandler:(id)a4;
+- (void)publishPlaylistWithSagaID:(int64_t)d completionHandler:(id)handler;
 - (void)refreshEnhancedAudioSharedKeys;
-- (void)removeCollaborators:(id)a3 fromCollaborationWithPersistentID:(int64_t)a4 completion:(id)a5;
-- (void)removeItemsWithSagaIDs:(id)a3 completionHandler:(id)a4;
-- (void)removeJaliscoLibraryWithCompletionHander:(id)a3;
-- (void)removePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 completion:(id)a5;
-- (void)removePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 completion:(id)a5;
-- (void)removePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 completion:(id)a6;
-- (void)removePlaylistsWithSagaIDs:(id)a3 performDeltaSync:(BOOL)a4 completionHandler:(id)a5;
+- (void)removeCollaborators:(id)collaborators fromCollaborationWithPersistentID:(int64_t)d completion:(id)completion;
+- (void)removeItemsWithSagaIDs:(id)ds completionHandler:(id)handler;
+- (void)removeJaliscoLibraryWithCompletionHander:(id)hander;
+- (void)removePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD completion:(id)completion;
+- (void)removePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD completion:(id)completion;
+- (void)removePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type completion:(id)completion;
+- (void)removePlaylistsWithSagaIDs:(id)ds performDeltaSync:(BOOL)sync completionHandler:(id)handler;
 - (void)reportAppIconBadgeActionMetrics;
-- (void)resetConfiguration:(id)a3;
-- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4;
-- (void)respondToPendingCollaborator:(id)a3 onCollaborationWithPersistentID:(int64_t)a4 withApproval:(BOOL)a5 completion:(id)a6;
-- (void)sdk_addItemWithSagaID:(int64_t)a3 toPlaylistWithPersistentID:(int64_t)a4 completionHandler:(id)a5;
-- (void)sdk_addStoreItemWithOpaqueID:(id)a3 completionHandler:(id)a4;
-- (void)sdk_addStoreItemWithOpaqueID:(id)a3 toPlaylistWithPersistentID:(int64_t)a4 completionHandler:(id)a5;
-- (void)sdk_createPlaylistWithPersistentID:(int64_t)a3 properties:(id)a4 tracklist:(id)a5 completionHandler:(id)a6;
-- (void)sdk_setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistPersistentID:(int64_t)a5 completionHandler:(id)a6;
-- (void)setActive:(BOOL)a3;
-- (void)setAlbumArtistProperties:(id)a3 forAlbumArtistPersistentID:(int64_t)a4 completionHandler:(id)a5;
-- (void)setAlbumEntityProperties:(id)a3 forAlbumPersistentID:(int64_t)a4 completionHandler:(id)a5;
-- (void)setAlbumProperties:(id)a3 forAlbumPersistentID:(int64_t)a4 completionHandler:(id)a5;
-- (void)setCloudAddToPlaylistBehavior:(int64_t)a3 completionHandler:(id)a4;
-- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3 completionHandler:(id)a4;
-- (void)setItemProperties:(id)a3 forPurchaseHistoryID:(unint64_t)a4;
-- (void)setItemProperties:(id)a3 forSagaID:(unint64_t)a4;
-- (void)setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistPersistentID:(int64_t)a5 completionHandler:(id)a6;
-- (void)setPreferredVideoQuality:(int64_t)a3;
+- (void)resetConfiguration:(id)configuration;
+- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)d completion:(id)completion;
+- (void)respondToPendingCollaborator:(id)collaborator onCollaborationWithPersistentID:(int64_t)d withApproval:(BOOL)approval completion:(id)completion;
+- (void)sdk_addItemWithSagaID:(int64_t)d toPlaylistWithPersistentID:(int64_t)iD completionHandler:(id)handler;
+- (void)sdk_addStoreItemWithOpaqueID:(id)d completionHandler:(id)handler;
+- (void)sdk_addStoreItemWithOpaqueID:(id)d toPlaylistWithPersistentID:(int64_t)iD completionHandler:(id)handler;
+- (void)sdk_createPlaylistWithPersistentID:(int64_t)d properties:(id)properties tracklist:(id)tracklist completionHandler:(id)handler;
+- (void)sdk_setPlaylistProperties:(id)properties trackList:(id)list forPlaylistPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)setActive:(BOOL)active;
+- (void)setAlbumArtistProperties:(id)properties forAlbumArtistPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)setAlbumEntityProperties:(id)properties forAlbumPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)setAlbumProperties:(id)properties forAlbumPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)setCloudAddToPlaylistBehavior:(int64_t)behavior completionHandler:(id)handler;
+- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior completionHandler:(id)handler;
+- (void)setItemProperties:(id)properties forPurchaseHistoryID:(unint64_t)d;
+- (void)setItemProperties:(id)properties forSagaID:(unint64_t)d;
+- (void)setPlaylistProperties:(id)properties trackList:(id)list forPlaylistPersistentID:(int64_t)d completionHandler:(id)handler;
+- (void)setPreferredVideoQuality:(int64_t)quality;
 - (void)updateArtistHeroImages;
-- (void)updateJaliscoLibraryWithReason:(int64_t)a3 completionHandler:(id)a4;
-- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6;
-- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7;
-- (void)updatePinnedSubscribedPlaylistsWithCompletion:(id)a3;
-- (void)updateSagaLibraryWithReason:(int64_t)a3 completionHandler:(id)a4;
-- (void)updateSubscribedPlaylistsWithSagaIDs:(id)a3 ignoreMinRefreshInterval:(BOOL)a4 completionHandler:(id)a5;
-- (void)uploadArtworkForPlaylistWithPersistentID:(int64_t)a3 completionHandler:(id)a4;
+- (void)updateJaliscoLibraryWithReason:(int64_t)reason completionHandler:(id)handler;
+- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion;
+- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion;
+- (void)updatePinnedSubscribedPlaylistsWithCompletion:(id)completion;
+- (void)updateSagaLibraryWithReason:(int64_t)reason completionHandler:(id)handler;
+- (void)updateSubscribedPlaylistsWithSagaIDs:(id)ds ignoreMinRefreshInterval:(BOOL)interval completionHandler:(id)handler;
+- (void)uploadArtworkForPlaylistWithPersistentID:(int64_t)d completionHandler:(id)handler;
 - (void)uploadCloudItemProperties;
 - (void)uploadCloudPlaylistProperties;
 @end
@@ -185,32 +185,32 @@
 - (BOOL)_isAuthenticated
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = [(ICCloudClient *)self configuration];
-  v5 = [v4 userIdentityStore];
+  configuration = [(ICCloudClient *)self configuration];
+  userIdentityStore = [configuration userIdentityStore];
 
-  if (!v5)
+  if (!userIdentityStore)
   {
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"ICCloudClient.m" lineNumber:2359 description:@"userIndentityStore cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICCloudClient.m" lineNumber:2359 description:@"userIndentityStore cannot be nil"];
   }
 
-  v6 = [v4 userIdentity];
+  userIdentity = [configuration userIdentity];
 
-  if (!v6)
+  if (!userIdentity)
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"ICCloudClient.m" lineNumber:2360 description:@"userIndentity cannot be nil"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"ICCloudClient.m" lineNumber:2360 description:@"userIndentity cannot be nil"];
   }
 
-  v7 = [v4 userIdentityStore];
-  [v7 synchronize];
+  userIdentityStore2 = [configuration userIdentityStore];
+  [userIdentityStore2 synchronize];
 
-  v8 = [(ICCloudClient *)self configuration];
-  v9 = [v8 userIdentityStore];
-  v10 = [(ICCloudClient *)self configuration];
-  v11 = [v10 userIdentity];
+  configuration2 = [(ICCloudClient *)self configuration];
+  userIdentityStore3 = [configuration2 userIdentityStore];
+  configuration3 = [(ICCloudClient *)self configuration];
+  userIdentity2 = [configuration3 userIdentity];
   v20 = 0;
-  v12 = [v9 getPropertiesForUserIdentity:v11 error:&v20];
+  v12 = [userIdentityStore3 getPropertiesForUserIdentity:userIdentity2 error:&v20];
   v13 = v20;
 
   if (v13 || !v12)
@@ -218,34 +218,34 @@
     v15 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
-      v16 = [v4 userIdentity];
+      userIdentity3 = [configuration userIdentity];
       *buf = 138543874;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2112;
-      v24 = v16;
+      v24 = userIdentity3;
       v25 = 2114;
       v26 = v13;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_ERROR, "%{public}@ - isAuthenticatedWithQueue: - Error retrieving properties - userIdentity=%@ - error=%{public}@", buf, 0x20u);
     }
 
-    LOBYTE(v14) = 0;
+    LOBYTE(isActiveLocker) = 0;
   }
 
   else
   {
-    v14 = [v12 isActiveLocker];
+    isActiveLocker = [v12 isActiveLocker];
     v15 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 1024;
-      LODWORD(v24) = v14;
+      LODWORD(v24) = isActiveLocker;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ - isAuthenticatedWithQueue: - isAuthenticated=%{BOOL}u", buf, 0x12u);
     }
   }
 
-  return v14;
+  return isActiveLocker;
 }
 
 - (void)dealloc
@@ -269,33 +269,33 @@
 
 - (NSXPCConnection)xpcConnection
 {
-  v2 = [(ICCloudClient *)self cloudService];
-  v3 = [v2 xpcConnection];
+  cloudService = [(ICCloudClient *)self cloudService];
+  xpcConnection = [cloudService xpcConnection];
 
-  return v3;
+  return xpcConnection;
 }
 
 - (void)_serverJaliscoUpdateInProgressDidChange
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(ICCloudClient *)self updateJaliscoInProgressChangedHandler];
+  updateJaliscoInProgressChangedHandler = [(ICCloudClient *)self updateJaliscoInProgressChangedHandler];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = v3 != 0;
+    v10 = updateJaliscoInProgressChangedHandler != 0;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - Receveived Jalisco update in progress notification [Handler present: %{BOOL}u", buf, 0x12u);
   }
 
-  if (v3)
+  if (updateJaliscoInProgressChangedHandler)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __56__ICCloudClient__serverJaliscoUpdateInProgressDidChange__block_invoke;
     v5[3] = &unk_1E7BF4108;
-    v6 = v3;
+    v6 = updateJaliscoInProgressChangedHandler;
     [(ICCloudClient *)self loadIsJaliscoUpdateInProgressWithCompletionHandler:v5];
   }
 }
@@ -309,8 +309,8 @@
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "Sending request to process pending key invalidations...", v6, 2u);
   }
 
-  v4 = [(ICCloudClient *)self xpcConnection];
-  v5 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_211];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
+  v5 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_211];
   [v5 processPendingKeyInvalidations];
 }
 
@@ -326,62 +326,62 @@
     v16 = __Block_byref_object_copy__4265;
     v17 = __Block_byref_object_dispose__4266;
     v18 = 0;
-    v3 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __29__ICCloudClient_becomeActive__block_invoke;
     v12[3] = &unk_1E7BF8E70;
     v12[4] = &v13;
-    v4 = [v3 remoteObjectProxyWithErrorHandler:v12];
+    v4 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
 
     if (v14[5])
     {
-      v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+      bundleIdentifier = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
+      if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_ERROR))
       {
         v6 = v14[5];
         *buf = 134218242;
-        v20 = self;
+        selfCopy = self;
         v21 = 2114;
         v22 = v6;
-        _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_ERROR, "ICCloudClient %p - becomeActive - Error retrieving xpc service - error=%{public}@", buf, 0x16u);
+        _os_log_impl(&dword_1B4491000, bundleIdentifier, OS_LOG_TYPE_ERROR, "ICCloudClient %p - becomeActive - Error retrieving xpc service - error=%{public}@", buf, 0x16u);
       }
 
       goto LABEL_13;
     }
 
-    v7 = [(ICCloudClient *)self configuration];
-    [v4 setupInitialJaliscoPoolingForConfiguration:v7];
+    configuration = [(ICCloudClient *)self configuration];
+    [v4 setupInitialJaliscoPoolingForConfiguration:configuration];
 
-    v8 = [MEMORY[0x1E696AAE8] mainBundle];
-    v5 = [v8 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     v9 = ICBundleIdentifierForSystemApplicationType(0);
-    if ([v5 isEqualToString:v9])
+    if ([bundleIdentifier isEqualToString:v9])
     {
       if (![(ICCloudClient *)self isAuthenticated]|| ![(ICCloudClient *)self isActive])
       {
         goto LABEL_12;
       }
 
-      v10 = [(ICCloudClient *)self configuration];
-      [v4 setupInitialSagaPoolingForConfiguration:v10];
+      configuration2 = [(ICCloudClient *)self configuration];
+      [v4 setupInitialSagaPoolingForConfiguration:configuration2];
     }
 
     else
     {
-      v10 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      configuration2 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
+      if (os_log_type_enabled(configuration2, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v20 = v5;
-        _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "Skip refreshing cloud library and subscribed playlists for bundle: %{public}@", buf, 0xCu);
+        selfCopy = bundleIdentifier;
+        _os_log_impl(&dword_1B4491000, configuration2, OS_LOG_TYPE_DEFAULT, "Skip refreshing cloud library and subscribed playlists for bundle: %{public}@", buf, 0xCu);
       }
     }
 
 LABEL_12:
-    v11 = [(ICCloudClient *)self configuration];
-    [v4 updateArtistHeroImagesForConfiguration:v11];
+    configuration3 = [(ICCloudClient *)self configuration];
+    [v4 updateArtistHeroImagesForConfiguration:configuration3];
 
 LABEL_13:
     _Block_object_dispose(&v13, 8);
@@ -390,46 +390,46 @@ LABEL_13:
 
 - (BOOL)isActive
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICCloudClient *)self serialAccessQueue];
+  serialAccessQueue = [(ICCloudClient *)self serialAccessQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __25__ICCloudClient_isActive__block_invoke;
   v5[3] = &unk_1E7BFA430;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialAccessQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)_serverSagaUpdateInProgressDidChange
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = [(ICCloudClient *)self updateSagaInProgressChangedHandler];
+  updateSagaInProgressChangedHandler = [(ICCloudClient *)self updateSagaInProgressChangedHandler];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
-    v10 = v3 != 0;
+    v10 = updateSagaInProgressChangedHandler != 0;
     _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ - Receveived Saga update in progress notification [Handler present: %{BOOL}u", buf, 0x12u);
   }
 
-  if (v3)
+  if (updateSagaInProgressChangedHandler)
   {
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __53__ICCloudClient__serverSagaUpdateInProgressDidChange__block_invoke;
     v5[3] = &unk_1E7BF4108;
-    v6 = v3;
+    v6 = updateSagaInProgressChangedHandler;
     [(ICCloudClient *)self loadIsSagaUpdateInProgressWithCompletionHandler:v5];
   }
 }
@@ -498,126 +498,126 @@ uint64_t __40__ICCloudClient__serverSetupDidComplete__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  v5 = [(ICCloudClient *)self serialAccessQueue];
+  serialAccessQueue = [(ICCloudClient *)self serialAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__ICCloudClient_setActive___block_invoke;
   v6[3] = &unk_1E7BF7860;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  activeCopy = active;
+  dispatch_sync(serialAccessQueue, v6);
 }
 
 - (BOOL)shouldProhibitActionsForCurrentNetworkConditions
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 shouldProhibitStoreAppsActionForCurrentNetworkConditions];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  shouldProhibitStoreAppsActionForCurrentNetworkConditions = [availabilityService shouldProhibitStoreAppsActionForCurrentNetworkConditions];
 
-  return v3;
+  return shouldProhibitStoreAppsActionForCurrentNetworkConditions;
 }
 
 - (BOOL)isCellularDataRestricted
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 isCellularDataRestrictedForStoreApps];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  isCellularDataRestrictedForStoreApps = [availabilityService isCellularDataRestrictedForStoreApps];
 
-  return v3;
+  return isCellularDataRestrictedForStoreApps;
 }
 
 - (BOOL)canShowCloudVideo
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 canShowCloudVideo];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  canShowCloudVideo = [availabilityService canShowCloudVideo];
 
-  return v3;
+  return canShowCloudVideo;
 }
 
 - (BOOL)canShowCloudMusic
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 canShowCloudMusic];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  canShowCloudMusic = [availabilityService canShowCloudMusic];
 
-  return v3;
+  return canShowCloudMusic;
 }
 
 - (BOOL)canShowCloudDownloadButtons
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 canShowCloudDownloadButtons];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  canShowCloudDownloadButtons = [availabilityService canShowCloudDownloadButtons];
 
-  return v3;
+  return canShowCloudDownloadButtons;
 }
 
 - (BOOL)shouldProhibitStoreAppsActionForCurrentNetworkConditions
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 shouldProhibitStoreAppsActionForCurrentNetworkConditions];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  shouldProhibitStoreAppsActionForCurrentNetworkConditions = [availabilityService shouldProhibitStoreAppsActionForCurrentNetworkConditions];
 
-  return v3;
+  return shouldProhibitStoreAppsActionForCurrentNetworkConditions;
 }
 
 - (BOOL)isCellularDataRestrictedForStoreApps
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 isCellularDataRestrictedForStoreApps];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  isCellularDataRestrictedForStoreApps = [availabilityService isCellularDataRestrictedForStoreApps];
 
-  return v3;
+  return isCellularDataRestrictedForStoreApps;
 }
 
 - (BOOL)shouldProhibitVideosActionForCurrentNetworkConditions
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 shouldProhibitVideosActionForCurrentNetworkConditions];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  shouldProhibitVideosActionForCurrentNetworkConditions = [availabilityService shouldProhibitVideosActionForCurrentNetworkConditions];
 
-  return v3;
+  return shouldProhibitVideosActionForCurrentNetworkConditions;
 }
 
 - (BOOL)isCellularDataRestrictedForVideos
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 isCellularDataRestrictedForVideos];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  isCellularDataRestrictedForVideos = [availabilityService isCellularDataRestrictedForVideos];
 
-  return v3;
+  return isCellularDataRestrictedForVideos;
 }
 
 - (BOOL)shouldProhibitMusicActionForCurrentNetworkConditions
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 shouldProhibitMusicActionForCurrentNetworkConditions];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  shouldProhibitMusicActionForCurrentNetworkConditions = [availabilityService shouldProhibitMusicActionForCurrentNetworkConditions];
 
-  return v3;
+  return shouldProhibitMusicActionForCurrentNetworkConditions;
 }
 
 - (BOOL)isCellularDataRestrictedForMusic
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 isCellularDataRestrictedForMusic];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  isCellularDataRestrictedForMusic = [availabilityService isCellularDataRestrictedForMusic];
 
-  return v3;
+  return isCellularDataRestrictedForMusic;
 }
 
 - (BOOL)hasProperNetworkConditionsToShowCloudMedia
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 hasProperNetworkConditionsToShowCloudMedia];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  hasProperNetworkConditionsToShowCloudMedia = [availabilityService hasProperNetworkConditionsToShowCloudMedia];
 
-  return v3;
+  return hasProperNetworkConditionsToShowCloudMedia;
 }
 
 - (BOOL)hasProperNetworkConditionsToPlayMedia
 {
-  v2 = [(ICCloudClient *)self availabilityService];
-  v3 = [v2 hasProperNetworkConditionsToPlayMedia];
+  availabilityService = [(ICCloudClient *)self availabilityService];
+  hasProperNetworkConditionsToPlayMedia = [availabilityService hasProperNetworkConditionsToPlayMedia];
 
-  return v3;
+  return hasProperNetworkConditionsToPlayMedia;
 }
 
 - (void)listCloudServerOperations
 {
-  v3 = [(ICCloudClient *)self xpcConnection];
-  v2 = [v3 remoteObjectProxyWithErrorHandler:&__block_literal_global_213];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
+  v2 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_213];
   [v2 listCloudServerOperations];
 }
 
@@ -634,9 +634,9 @@ void __42__ICCloudClient_listCloudServerOperations__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)notifyDeviceSetupFinishedWithCompletion:(id)a3
+- (void)notifyDeviceSetupFinishedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -649,8 +649,8 @@ void __42__ICCloudClient_listCloudServerOperations__block_invoke(uint64_t a1, vo
   v8[1] = 3221225472;
   v8[2] = __57__ICCloudClient_notifyDeviceSetupFinishedWithCompletion___block_invoke;
   v8[3] = &unk_1E7BF77C0;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(ICCloudServerListenerEndpointProvider *)listenerEndpointProvider notifyDeviceSetupFinishedWithCompletion:v8];
 }
 
@@ -702,8 +702,8 @@ void __47__ICCloudClient_processPendingKeyInvalidations__block_invoke(uint64_t a
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "Sending request to fetch enhanced-audio offline keys...", v6, 2u);
   }
 
-  v4 = [(ICCloudClient *)self xpcConnection];
-  v5 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_209];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
+  v5 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_209];
   [v5 fetchEnhancedAudioOfflineKeys];
 }
 
@@ -729,8 +729,8 @@ void __46__ICCloudClient_fetchEnhancedAudioOfflineKeys__block_invoke(uint64_t a1
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "Sending request to refresh enhanced-audio shared keys...", v6, 2u);
   }
 
-  v4 = [(ICCloudClient *)self xpcConnection];
-  v5 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_207];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
+  v5 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_207];
   [v5 refreshEnhancedAudioSharedKeys];
 }
 
@@ -747,16 +747,16 @@ void __47__ICCloudClient_refreshEnhancedAudioSharedKeys__block_invoke(uint64_t a
   }
 }
 
-- (BOOL)createMusicNotificationFromAMSDialogRequest:(id)a3 error:(id *)a4
+- (BOOL)createMusicNotificationFromAMSDialogRequest:(id)request error:(id *)error
 {
-  v5 = a3;
+  requestCopy = request;
   v6 = ICBundleIdentifierForSystemApplicationType(0);
   v7 = +[ICInAppMessageManager sharedManager];
-  [v7 addMessageEntryFromAMSDialogRequest:v5 bundleIdentifier:v6 completion:&__block_literal_global_205];
+  [v7 addMessageEntryFromAMSDialogRequest:requestCopy bundleIdentifier:v6 completion:&__block_literal_global_205];
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return 1;
@@ -778,26 +778,26 @@ void __67__ICCloudClient_createMusicNotificationFromAMSDialogRequest_error___blo
   }
 }
 
-- (void)handleAutomaticDownloadPreferenceChangedForPinnedLibraryEntities:(BOOL)a3
+- (void)handleAutomaticDownloadPreferenceChangedForPinnedLibraryEntities:(BOOL)entities
 {
-  v3 = a3;
+  entitiesCopy = entities;
   v17 = *MEMORY[0x1E69E9840];
   AppBooleanValue = CFPreferencesGetAppBooleanValue(@"AutomaticDownloadEnabledForLibraryPins", @"com.apple.mobileipod", 0);
   v6 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543874;
-    v12 = self;
+    selfCopy = self;
     v13 = 1024;
-    v14 = v3;
+    v14 = entitiesCopy;
     v15 = 1024;
     v16 = AppBooleanValue != 0;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating automatic download preference change for library pins. shouldAutomaticallyDownload=%{BOOL}u, currentAutomaticDownloadPrefs=%{BOOL}u", &v11, 0x18u);
   }
 
-  if ((AppBooleanValue != 0) == v3 || (CFPreferencesSetAppValue(@"AutomaticDownloadEnabledForLibraryPins", [MEMORY[0x1E696AD98] numberWithBool:v3], @"com.apple.mobileipod"), CFPreferencesAppSynchronize(@"com.apple.mobileipod")))
+  if ((AppBooleanValue != 0) == entitiesCopy || (CFPreferencesSetAppValue(@"AutomaticDownloadEnabledForLibraryPins", [MEMORY[0x1E696AD98] numberWithBool:entitiesCopy], @"com.apple.mobileipod"), CFPreferencesAppSynchronize(@"com.apple.mobileipod")))
   {
-    if (!v3)
+    if (!entitiesCopy)
     {
       return;
     }
@@ -812,15 +812,15 @@ void __67__ICCloudClient_createMusicNotificationFromAMSDialogRequest_error___blo
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_ERROR, "Error setting automatic download preference for library pins", &v11, 2u);
   }
 
-  if (v3)
+  if (entitiesCopy)
   {
 LABEL_6:
     if ((MSVDeviceIsiPhone() & 1) != 0 || (MSVDeviceIsiPad() & 1) != 0 || MSVDeviceIsROSDevice())
     {
-      v7 = [(ICCloudClient *)self xpcConnection];
-      v8 = [v7 remoteObjectProxyWithErrorHandler:&__block_literal_global_202];
-      v9 = [(ICCloudClient *)self configuration];
-      [v8 prepareToDownloadAllLibraryPinnedEntitiesForConfiguration:v9];
+      xpcConnection = [(ICCloudClient *)self xpcConnection];
+      v8 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_202];
+      configuration = [(ICCloudClient *)self configuration];
+      [v8 prepareToDownloadAllLibraryPinnedEntitiesForConfiguration:configuration];
     }
   }
 }
@@ -841,27 +841,27 @@ void __82__ICCloudClient_handleAutomaticDownloadPreferenceChangedForPinnedLibrar
 - (BOOL)hasSetPreferenceForAutomaticDownloads
 {
   v2 = +[ICDefaults standardDefaults];
-  v3 = [v2 automaticDownloadsEnabled];
+  automaticDownloadsEnabled = [v2 automaticDownloadsEnabled];
 
-  return v3;
+  return automaticDownloadsEnabled;
 }
 
 - (BOOL)isAutomaticDownloadsEnabledForMediaKindMusic
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6959A48] ic_sharedAccountStore];
+  ic_sharedAccountStore = [MEMORY[0x1E6959A48] ic_sharedAccountStore];
   v8 = 0;
-  v3 = [v2 ic_activeStoreAccountWithError:&v8];
+  v3 = [ic_sharedAccountStore ic_activeStoreAccountWithError:&v8];
   v4 = v8;
 
   if (v3)
   {
-    v5 = [v3 ic_isAutomaticDownloadsEnabledForMediaKindMusic];
+    ic_isAutomaticDownloadsEnabledForMediaKindMusic = [v3 ic_isAutomaticDownloadsEnabledForMediaKindMusic];
     v6 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109120;
-      LODWORD(v10) = v5;
+      LODWORD(v10) = ic_isAutomaticDownloadsEnabledForMediaKindMusic;
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_ERROR, "Automatic downloads are %{BOOL}u for media kind music", buf, 8u);
     }
   }
@@ -876,24 +876,24 @@ void __82__ICCloudClient_handleAutomaticDownloadPreferenceChangedForPinnedLibrar
       _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "Not able to determine if automatic downloads are enabled for media kind music. Could not load active store account: error=%{public}@", buf, 0xCu);
     }
 
-    LOBYTE(v5) = 0;
+    LOBYTE(ic_isAutomaticDownloadsEnabledForMediaKindMusic) = 0;
   }
 
-  return v5;
+  return ic_isAutomaticDownloadsEnabledForMediaKindMusic;
 }
 
-- (void)handleAutomaticDownloadPreferenceChangedForMediaKindMusic:(BOOL)a3 withCompletionHandler:(id)a4
+- (void)handleAutomaticDownloadPreferenceChangedForMediaKindMusic:(BOOL)music withCompletionHandler:(id)handler
 {
-  v4 = a3;
+  musicCopy = music;
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = self;
+    selfCopy = self;
     v22 = 1024;
-    v23 = v4;
+    v23 = musicCopy;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Updating automatic download preference change. shouldAutomaticallyDownload=%{BOOL}u", buf, 0x12u);
   }
 
@@ -903,7 +903,7 @@ void __82__ICCloudClient_handleAutomaticDownloadPreferenceChangedForPinnedLibrar
   v11 = [(ICStoreRequestContext *)v9 initWithIdentity:v10];
 
   v12 = [ICUpdateAutomaticDownloadMediaKindsRequest alloc];
-  if (v4)
+  if (musicCopy)
   {
     v13 = v8;
   }
@@ -913,7 +913,7 @@ void __82__ICCloudClient_handleAutomaticDownloadPreferenceChangedForPinnedLibrar
     v13 = 0;
   }
 
-  if (v4)
+  if (musicCopy)
   {
     v14 = 0;
   }
@@ -928,10 +928,10 @@ void __82__ICCloudClient_handleAutomaticDownloadPreferenceChangedForPinnedLibrar
   v17[1] = 3221225472;
   v17[2] = __97__ICCloudClient_handleAutomaticDownloadPreferenceChangedForMediaKindMusic_withCompletionHandler___block_invoke;
   v17[3] = &unk_1E7BF5210;
-  v19 = v4;
+  v19 = musicCopy;
   v17[4] = self;
-  v18 = v6;
-  v16 = v6;
+  v18 = handlerCopy;
+  v16 = handlerCopy;
   [(ICRequestOperation *)v15 performRequestWithCompletionHandler:v17];
 }
 
@@ -983,26 +983,26 @@ void __97__ICCloudClient_handleAutomaticDownloadPreferenceChangedForMediaKindMus
   }
 }
 
-- (void)loadBooksForStoreIDs:(id)a3 withCompletionHandler:(id)a4
+- (void)loadBooksForStoreIDs:(id)ds withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  dsCopy = ds;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __60__ICCloudClient_loadBooksForStoreIDs_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__ICCloudClient_loadBooksForStoreIDs_withCompletionHandler___block_invoke_2;
   v13[3] = &unk_1E7BF59C0;
   v14 = v9;
   v12 = v9;
-  [v10 loadBooksForStoreIDs:v7 configuration:v11 completion:v13];
+  [v10 loadBooksForStoreIDs:dsCopy configuration:configuration completion:v13];
 }
 
 void __60__ICCloudClient_loadBooksForStoreIDs_withCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1071,10 +1071,10 @@ void __60__ICCloudClient_loadBooksForStoreIDs_withCompletionHandler___block_invo
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "Sending request to update artist hero images...", v7, 2u);
   }
 
-  v4 = [(ICCloudClient *)self xpcConnection];
-  v5 = [v4 remoteObjectProxyWithErrorHandler:&__block_literal_global_186];
-  v6 = [(ICCloudClient *)self configuration];
-  [v5 updateArtistHeroImagesForConfiguration:v6];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
+  v5 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_186];
+  configuration = [(ICCloudClient *)self configuration];
+  [v5 updateArtistHeroImagesForConfiguration:configuration];
 }
 
 void __39__ICCloudClient_updateArtistHeroImages__block_invoke(uint64_t a1, void *a2)
@@ -1090,37 +1090,37 @@ void __39__ICCloudClient_updateArtistHeroImages__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)setAlbumArtistProperties:(id)a3 forAlbumArtistPersistentID:(int64_t)a4 completionHandler:(id)a5
+- (void)setAlbumArtistProperties:(id)properties forAlbumArtistPersistentID:(int64_t)d completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  propertiesCopy = properties;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = v8;
+    v21 = propertiesCopy;
     v22 = 2048;
-    v23 = a4;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "Setting album artist properties %{public}@ for persistent ID %llu...", buf, 0x16u);
   }
 
-  v11 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __87__ICCloudClient_setAlbumArtistProperties_forAlbumArtistPersistentID_completionHandler___block_invoke;
   v18[3] = &unk_1E7BF77C0;
-  v12 = v9;
+  v12 = handlerCopy;
   v19 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v18];
-  v14 = [(ICCloudClient *)self configuration];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v18];
+  configuration = [(ICCloudClient *)self configuration];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __87__ICCloudClient_setAlbumArtistProperties_forAlbumArtistPersistentID_completionHandler___block_invoke_2;
   v16[3] = &unk_1E7BF77C0;
   v17 = v12;
   v15 = v12;
-  [v13 setAlbumArtistProperties:v8 forAlbumArtistPersistentID:a4 configuration:v14 completion:v16];
+  [v13 setAlbumArtistProperties:propertiesCopy forAlbumArtistPersistentID:d configuration:configuration completion:v16];
 }
 
 void __87__ICCloudClient_setAlbumArtistProperties_forAlbumArtistPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1178,37 +1178,37 @@ void __87__ICCloudClient_setAlbumArtistProperties_forAlbumArtistPersistentID_com
   }
 }
 
-- (void)setAlbumEntityProperties:(id)a3 forAlbumPersistentID:(int64_t)a4 completionHandler:(id)a5
+- (void)setAlbumEntityProperties:(id)properties forAlbumPersistentID:(int64_t)d completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  propertiesCopy = properties;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = v8;
+    v21 = propertiesCopy;
     v22 = 2048;
-    v23 = a4;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "Setting album properties %{public}@ for persistent ID %llu ...", buf, 0x16u);
   }
 
-  v11 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __81__ICCloudClient_setAlbumEntityProperties_forAlbumPersistentID_completionHandler___block_invoke;
   v18[3] = &unk_1E7BF77C0;
-  v12 = v9;
+  v12 = handlerCopy;
   v19 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v18];
-  v14 = [(ICCloudClient *)self configuration];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v18];
+  configuration = [(ICCloudClient *)self configuration];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __81__ICCloudClient_setAlbumEntityProperties_forAlbumPersistentID_completionHandler___block_invoke_2;
   v16[3] = &unk_1E7BF77C0;
   v17 = v12;
   v15 = v12;
-  [v13 setAlbumEntityProperties:v8 forAlbumPersistentID:a4 configuration:v14 completion:v16];
+  [v13 setAlbumEntityProperties:propertiesCopy forAlbumPersistentID:d configuration:configuration completion:v16];
 }
 
 void __81__ICCloudClient_setAlbumEntityProperties_forAlbumPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1266,37 +1266,37 @@ void __81__ICCloudClient_setAlbumEntityProperties_forAlbumPersistentID_completio
   }
 }
 
-- (void)setAlbumProperties:(id)a3 forAlbumPersistentID:(int64_t)a4 completionHandler:(id)a5
+- (void)setAlbumProperties:(id)properties forAlbumPersistentID:(int64_t)d completionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  propertiesCopy = properties;
+  handlerCopy = handler;
   v10 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = v8;
+    v21 = propertiesCopy;
     v22 = 2048;
-    v23 = a4;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "Setting album properties %{public}@ for persistent ID %llu...", buf, 0x16u);
   }
 
-  v11 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __75__ICCloudClient_setAlbumProperties_forAlbumPersistentID_completionHandler___block_invoke;
   v18[3] = &unk_1E7BF77C0;
-  v12 = v9;
+  v12 = handlerCopy;
   v19 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v18];
-  v14 = [(ICCloudClient *)self configuration];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v18];
+  configuration = [(ICCloudClient *)self configuration];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __75__ICCloudClient_setAlbumProperties_forAlbumPersistentID_completionHandler___block_invoke_2;
   v16[3] = &unk_1E7BF77C0;
   v17 = v12;
   v15 = v12;
-  [v13 setAlbumProperties:v8 forAlbumPersistentID:a4 configuration:v14 completion:v16];
+  [v13 setAlbumProperties:propertiesCopy forAlbumPersistentID:d configuration:configuration completion:v16];
 }
 
 void __75__ICCloudClient_setAlbumProperties_forAlbumPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1356,10 +1356,10 @@ void __75__ICCloudClient_setAlbumProperties_forAlbumPersistentID_completionHandl
 
 - (void)uploadCloudPlaylistProperties
 {
-  v5 = [(ICCloudClient *)self xpcConnection];
-  v3 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_175];
-  v4 = [(ICCloudClient *)self configuration];
-  [v3 uploadCloudPlaylistPropertiesForConfiguration:v4 completion:&__block_literal_global_178];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
+  v3 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_175];
+  configuration = [(ICCloudClient *)self configuration];
+  [v3 uploadCloudPlaylistPropertiesForConfiguration:configuration completion:&__block_literal_global_178];
 }
 
 void __46__ICCloudClient_uploadCloudPlaylistProperties__block_invoke_176(uint64_t a1, void *a2)
@@ -1393,10 +1393,10 @@ void __46__ICCloudClient_uploadCloudPlaylistProperties__block_invoke(uint64_t a1
 
 - (void)uploadCloudItemProperties
 {
-  v5 = [(ICCloudClient *)self xpcConnection];
-  v3 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_170];
-  v4 = [(ICCloudClient *)self configuration];
-  [v3 uploadCloudItemPropertiesForConfiguration:v4 completion:&__block_literal_global_173];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
+  v3 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_170];
+  configuration = [(ICCloudClient *)self configuration];
+  [v3 uploadCloudItemPropertiesForConfiguration:configuration completion:&__block_literal_global_173];
 }
 
 void __42__ICCloudClient_uploadCloudItemProperties__block_invoke_171(uint64_t a1, void *a2)
@@ -1428,26 +1428,26 @@ void __42__ICCloudClient_uploadCloudItemProperties__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)setItemProperties:(id)a3 forSagaID:(unint64_t)a4
+- (void)setItemProperties:(id)properties forSagaID:(unint64_t)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  propertiesCopy = properties;
+  if (d)
   {
     v7 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543618;
-      v12 = v6;
+      v12 = propertiesCopy;
       v13 = 2048;
-      v14 = a4;
+      dCopy = d;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Setting item properties %{public}@ for saga ID %llu...", &v11, 0x16u);
     }
 
-    v8 = [(ICCloudClient *)self xpcConnection];
-    v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_165];
-    v10 = [(ICCloudClient *)self configuration];
-    [v9 setItemProperties:v6 forSagaID:a4 configuration:v10 completion:&__block_literal_global_168];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
+    v9 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_165];
+    configuration = [(ICCloudClient *)self configuration];
+    [v9 setItemProperties:propertiesCopy forSagaID:d configuration:configuration completion:&__block_literal_global_168];
   }
 }
 
@@ -1480,26 +1480,26 @@ void __45__ICCloudClient_setItemProperties_forSagaID___block_invoke(uint64_t a1,
   }
 }
 
-- (void)setItemProperties:(id)a3 forPurchaseHistoryID:(unint64_t)a4
+- (void)setItemProperties:(id)properties forPurchaseHistoryID:(unint64_t)d
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4)
+  propertiesCopy = properties;
+  if (d)
   {
     v7 = os_log_create("com.apple.amp.iTunesCloud", "Default_Oversize");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543618;
-      v12 = v6;
+      v12 = propertiesCopy;
       v13 = 2048;
-      v14 = a4;
+      dCopy = d;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Setting item properties %{public}@ for purchaseHistoryID %llu...", &v11, 0x16u);
     }
 
-    v8 = [(ICCloudClient *)self xpcConnection];
-    v9 = [v8 remoteObjectProxyWithErrorHandler:&__block_literal_global_160];
-    v10 = [(ICCloudClient *)self configuration];
-    [v9 setItemProperties:v6 forPurchaseHistoryID:a4 configuration:v10 completion:&__block_literal_global_163];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
+    v9 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_160];
+    configuration = [(ICCloudClient *)self configuration];
+    [v9 setItemProperties:propertiesCopy forPurchaseHistoryID:d configuration:configuration completion:&__block_literal_global_163];
   }
 }
 
@@ -1532,55 +1532,55 @@ void __56__ICCloudClient_setItemProperties_forPurchaseHistoryID___block_invoke(u
   }
 }
 
-- (void)setPreferredVideoQuality:(int64_t)a3
+- (void)setPreferredVideoQuality:(int64_t)quality
 {
-  v5 = [(ICCloudClient *)self serialAccessQueue];
+  serialAccessQueue = [(ICCloudClient *)self serialAccessQueue];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __42__ICCloudClient_setPreferredVideoQuality___block_invoke;
   v10[3] = &unk_1E7BF9890;
   v10[4] = self;
-  v10[5] = a3;
-  dispatch_sync(v5, v10);
+  v10[5] = quality;
+  dispatch_sync(serialAccessQueue, v10);
 
-  v6 = [(ICCloudClient *)self xpcConnection];
-  v7 = [v6 remoteObjectProxy];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection remoteObjectProxy];
   preferredVideoQuality = self->_preferredVideoQuality;
-  v9 = [(ICCloudClient *)self configuration];
-  [v7 setPreferredVideoQuality:preferredVideoQuality forConfiguration:v9 completion:&__block_literal_global_158];
+  configuration = [(ICCloudClient *)self configuration];
+  [remoteObjectProxy setPreferredVideoQuality:preferredVideoQuality forConfiguration:configuration completion:&__block_literal_global_158];
 }
 
-- (void)resetConfiguration:(id)a3
+- (void)resetConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self serialAccessQueue];
+  configurationCopy = configuration;
+  serialAccessQueue = [(ICCloudClient *)self serialAccessQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__ICCloudClient_resetConfiguration___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  dispatch_sync(serialAccessQueue, v7);
 }
 
 - (void)reportAppIconBadgeActionMetrics
 {
-  v2 = [(ICCloudClient *)self badgingService];
-  [v2 reportAppIconBadgeActionMetrics];
+  badgingService = [(ICCloudClient *)self badgingService];
+  [badgingService reportAppIconBadgeActionMetrics];
 }
 
 - (BOOL)initialLibrarySyncsComplete
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = [(ICCloudClient *)self configuration];
-  v4 = [v3 userIdentity];
+  configuration = [(ICCloudClient *)self configuration];
+  userIdentity = [configuration userIdentity];
 
-  v5 = [getML3MusicLibraryClass() musicLibraryForUserAccount:v4];
-  v6 = [(ICCloudClient *)self configuration];
-  v7 = [v6 userIdentityStore];
+  v5 = [getML3MusicLibraryClass() musicLibraryForUserAccount:userIdentity];
+  configuration2 = [(ICCloudClient *)self configuration];
+  userIdentityStore = [configuration2 userIdentityStore];
   v30 = 0;
-  v8 = [v7 getPropertiesForUserIdentity:v4 error:&v30];
+  v8 = [userIdentityStore getPropertiesForUserIdentity:userIdentity error:&v30];
   v9 = v30;
 
   if (v9)
@@ -1594,23 +1594,23 @@ void __56__ICCloudClient_setItemProperties_forPurchaseHistoryID___block_invoke(u
     }
   }
 
-  v11 = [v5 jaliscoOnDiskDatabaseRevision];
-  v12 = [v5 sagaOnDiskDatabaseRevision];
-  v13 = [v5 syncLibraryID];
-  v14 = [v8 isActiveLocker];
+  jaliscoOnDiskDatabaseRevision = [v5 jaliscoOnDiskDatabaseRevision];
+  sagaOnDiskDatabaseRevision = [v5 sagaOnDiskDatabaseRevision];
+  syncLibraryID = [v5 syncLibraryID];
+  isActiveLocker = [v8 isActiveLocker];
   v15 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138544386;
-    v32 = v4;
+    v32 = userIdentity;
     v33 = 2048;
-    v34 = v11;
+    v34 = jaliscoOnDiskDatabaseRevision;
     v35 = 2048;
-    v36 = v12;
+    v36 = sagaOnDiskDatabaseRevision;
     v37 = 2114;
-    v38 = v13;
+    v38 = syncLibraryID;
     v39 = 1024;
-    v40 = v14;
+    v40 = isActiveLocker;
     _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_ERROR, "Checking if initial library syncs are completed. userIdentity = %{public}@, jaliscoOnDiskDatabaseRevision=%ld, sagaOnDiskDatabaseRevision=%ld, syncLibraryID=%{public}@, isActiveLocker=%{BOOL}u", buf, 0x30u);
   }
 
@@ -1620,26 +1620,26 @@ void __56__ICCloudClient_setItemProperties_forPurchaseHistoryID___block_invoke(u
   if ([v16 isWatch])
   {
     v17 = +[ICNanoPairedDeviceStatusMonitor sharedMonitor];
-    v18 = v4;
+    v18 = userIdentity;
     v19 = v9;
     v20 = [v17 isMediaSyncingSupported] ^ 1;
-    v21 = v13;
+    v21 = syncLibraryID;
 
-    v22 = v20 | (v13 != 0);
+    v22 = v20 | (syncLibraryID != 0);
     v9 = v19;
-    v4 = v18;
+    userIdentity = v18;
   }
 
   else
   {
-    v21 = v13;
+    v21 = syncLibraryID;
 
     v22 = 1;
   }
 
   if (v8)
   {
-    v23 = v11 == 0;
+    v23 = jaliscoOnDiskDatabaseRevision == 0;
   }
 
   else
@@ -1648,7 +1648,7 @@ void __56__ICCloudClient_setItemProperties_forPurchaseHistoryID___block_invoke(u
   }
 
   v24 = !v23;
-  v25 = ((v12 != 0) | ~[v8 isActiveLocker]) & v24 & v22;
+  v25 = ((sagaOnDiskDatabaseRevision != 0) | ~[v8 isActiveLocker]) & v24 & v22;
   v26 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
   {
@@ -1660,25 +1660,25 @@ void __56__ICCloudClient_setItemProperties_forPurchaseHistoryID___block_invoke(u
   return v25;
 }
 
-- (void)loadJaliscoUpdateProgressWithCompletionHandler:(id)a3
+- (void)loadJaliscoUpdateProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __64__ICCloudClient_loadJaliscoUpdateProgressWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF77C0;
-  v6 = v4;
+  v6 = handlerCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(ICCloudClient *)self configuration];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  configuration = [(ICCloudClient *)self configuration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__ICCloudClient_loadJaliscoUpdateProgressWithCompletionHandler___block_invoke_2;
   v10[3] = &unk_1E7BF4158;
   v11 = v6;
   v9 = v6;
-  [v7 loadJaliscoUpdateProgressForConfiguration:v8 completion:v10];
+  [v7 loadJaliscoUpdateProgressForConfiguration:configuration completion:v10];
 }
 
 void __64__ICCloudClient_loadJaliscoUpdateProgressWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1735,25 +1735,25 @@ void __64__ICCloudClient_loadJaliscoUpdateProgressWithCompletionHandler___block_
   }
 }
 
-- (void)loadSagaUpdateProgressWithCompletionHandler:(id)a3
+- (void)loadSagaUpdateProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__ICCloudClient_loadSagaUpdateProgressWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF77C0;
-  v6 = v4;
+  v6 = handlerCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(ICCloudClient *)self configuration];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  configuration = [(ICCloudClient *)self configuration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__ICCloudClient_loadSagaUpdateProgressWithCompletionHandler___block_invoke_2;
   v10[3] = &unk_1E7BF4158;
   v11 = v6;
   v9 = v6;
-  [v7 loadSagaUpdateProgressForConfiguration:v8 completion:v10];
+  [v7 loadSagaUpdateProgressForConfiguration:configuration completion:v10];
 }
 
 void __61__ICCloudClient_loadSagaUpdateProgressWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1810,25 +1810,25 @@ void __61__ICCloudClient_loadSagaUpdateProgressWithCompletionHandler___block_inv
   }
 }
 
-- (void)loadIsJaliscoUpdateInProgressWithCompletionHandler:(id)a3
+- (void)loadIsJaliscoUpdateInProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __68__ICCloudClient_loadIsJaliscoUpdateInProgressWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF77C0;
-  v6 = v4;
+  v6 = handlerCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(ICCloudClient *)self configuration];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  configuration = [(ICCloudClient *)self configuration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __68__ICCloudClient_loadIsJaliscoUpdateInProgressWithCompletionHandler___block_invoke_2;
   v10[3] = &unk_1E7BF4108;
   v11 = v6;
   v9 = v6;
-  [v7 loadIsJaliscoUpdateInProgressForConfiguration:v8 completion:v10];
+  [v7 loadIsJaliscoUpdateInProgressForConfiguration:configuration completion:v10];
 }
 
 void __68__ICCloudClient_loadIsJaliscoUpdateInProgressWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1871,25 +1871,25 @@ void __68__ICCloudClient_loadIsJaliscoUpdateInProgressWithCompletionHandler___bl
   }
 }
 
-- (void)loadIsSagaUpdateInProgressWithCompletionHandler:(id)a3
+- (void)loadIsSagaUpdateInProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__ICCloudClient_loadIsSagaUpdateInProgressWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF77C0;
-  v6 = v4;
+  v6 = handlerCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(ICCloudClient *)self configuration];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  configuration = [(ICCloudClient *)self configuration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __65__ICCloudClient_loadIsSagaUpdateInProgressWithCompletionHandler___block_invoke_2;
   v10[3] = &unk_1E7BF4108;
   v11 = v6;
   v9 = v6;
-  [v7 loadIsSagaUpdateInProgressForConfiguration:v8 completion:v10];
+  [v7 loadIsSagaUpdateInProgressForConfiguration:configuration completion:v10];
 }
 
 void __65__ICCloudClient_loadIsSagaUpdateInProgressWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -1932,25 +1932,25 @@ void __65__ICCloudClient_loadIsSagaUpdateInProgressWithCompletionHandler___block
   }
 }
 
-- (void)loadUpdateProgressWithCompletionHandler:(id)a3
+- (void)loadUpdateProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __57__ICCloudClient_loadUpdateProgressWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF77C0;
-  v6 = v4;
+  v6 = handlerCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(ICCloudClient *)self configuration];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  configuration = [(ICCloudClient *)self configuration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__ICCloudClient_loadUpdateProgressWithCompletionHandler___block_invoke_2;
   v10[3] = &unk_1E7BF4158;
   v11 = v6;
   v9 = v6;
-  [v7 loadUpdateProgressForConfiguration:v8 completion:v10];
+  [v7 loadUpdateProgressForConfiguration:configuration completion:v10];
 }
 
 void __57__ICCloudClient_loadUpdateProgressWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2007,25 +2007,25 @@ void __57__ICCloudClient_loadUpdateProgressWithCompletionHandler___block_invoke_
   }
 }
 
-- (void)loadIsUpdateInProgressWithCompletionHandler:(id)a3
+- (void)loadIsUpdateInProgressWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__ICCloudClient_loadIsUpdateInProgressWithCompletionHandler___block_invoke;
   v12[3] = &unk_1E7BF77C0;
-  v6 = v4;
+  v6 = handlerCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(ICCloudClient *)self configuration];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  configuration = [(ICCloudClient *)self configuration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __61__ICCloudClient_loadIsUpdateInProgressWithCompletionHandler___block_invoke_2;
   v10[3] = &unk_1E7BF4108;
   v11 = v6;
   v9 = v6;
-  [v7 loadIsUpdateInProgressForConfiguration:v8 completion:v10];
+  [v7 loadIsUpdateInProgressForConfiguration:configuration completion:v10];
 }
 
 void __61__ICCloudClient_loadIsUpdateInProgressWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -2068,39 +2068,39 @@ void __61__ICCloudClient_loadIsUpdateInProgressWithCompletionHandler___block_inv
   }
 }
 
-- (void)loadGeniusItemsForSagaID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadGeniusItemsForSagaID:(unint64_t)d completionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (a3)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (d)
   {
     v8 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "Sending load genius items request for saga ID %llu...", buf, 0xCu);
     }
 
-    v9 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __60__ICCloudClient_loadGeniusItemsForSagaID_completionHandler___block_invoke;
     v16[3] = &unk_1E7BF77C0;
     v10 = v7;
     v17 = v10;
-    v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
-    v12 = [(ICCloudClient *)self configuration];
+    v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v16];
+    configuration = [(ICCloudClient *)self configuration];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __60__ICCloudClient_loadGeniusItemsForSagaID_completionHandler___block_invoke_2;
     v14[3] = &unk_1E7BF59C0;
     v15 = v10;
-    [v11 loadGeniusItemsForSagaID:a3 configuration:v12 completion:v14];
+    [v11 loadGeniusItemsForSagaID:d configuration:configuration completion:v14];
   }
 
-  else if (v6)
+  else if (handlerCopy)
   {
     v13 = [MEMORY[0x1E696ABC0] ic_cloudClientErrorWithCode:2015 userInfo:0];
     (v7)[2](v7, 0, v13);
@@ -2166,10 +2166,10 @@ void __60__ICCloudClient_loadGeniusItemsForSagaID_completionHandler___block_invo
 
 - (void)loadMissingArtwork
 {
-  v5 = [(ICCloudClient *)self xpcConnection];
-  v3 = [v5 remoteObjectProxyWithErrorHandler:&__block_literal_global_4240];
-  v4 = [(ICCloudClient *)self configuration];
-  [v3 loadMissingArtworkForConfiguration:v4];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
+  v3 = [xpcConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_4240];
+  configuration = [(ICCloudClient *)self configuration];
+  [v3 loadMissingArtworkForConfiguration:configuration];
 }
 
 void __35__ICCloudClient_loadMissingArtwork__block_invoke(uint64_t a1, void *a2)
@@ -2185,32 +2185,32 @@ void __35__ICCloudClient_loadMissingArtwork__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)loadArtworkInfoForSubscriptionContainerPersistentIDs:(id)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForSubscriptionContainerPersistentIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (dsCopy && [dsCopy count])
   {
-    v8 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __88__ICCloudClient_loadArtworkInfoForSubscriptionContainerPersistentIDs_completionHandler___block_invoke;
     v14[3] = &unk_1E7BF77C0;
-    v9 = v7;
+    v9 = handlerCopy;
     v15 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-    v11 = [(ICCloudClient *)self configuration];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    configuration = [(ICCloudClient *)self configuration];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __88__ICCloudClient_loadArtworkInfoForSubscriptionContainerPersistentIDs_completionHandler___block_invoke_2;
     v12[3] = &unk_1E7BF40E0;
     v13 = v9;
-    [v10 loadArtworkInfoForSubscriptionContainerPersistentIDs:v6 configuration:v11 completion:v12];
+    [v10 loadArtworkInfoForSubscriptionContainerPersistentIDs:dsCopy configuration:configuration completion:v12];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -2269,19 +2269,19 @@ void __88__ICCloudClient_loadArtworkInfoForSubscriptionContainerPersistentIDs_co
   }
 }
 
-- (void)loadArtworkInfoForSubscriptionContainerPersistentID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForSubscriptionContainerPersistentID:(unint64_t)d completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __87__ICCloudClient_loadArtworkInfoForSubscriptionContainerPersistentID_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF40B8;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(ICCloudClient *)self loadArtworkInfoForSubscriptionContainerPersistentIDs:v8 completionHandler:v10];
 }
 
@@ -2295,32 +2295,32 @@ void __87__ICCloudClient_loadArtworkInfoForSubscriptionContainerPersistentID_com
   }
 }
 
-- (void)loadScreenshotInfoForSubscriptionPersistentIDs:(id)a3 completionHandler:(id)a4
+- (void)loadScreenshotInfoForSubscriptionPersistentIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (dsCopy && [dsCopy count])
   {
-    v8 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __82__ICCloudClient_loadScreenshotInfoForSubscriptionPersistentIDs_completionHandler___block_invoke;
     v14[3] = &unk_1E7BF77C0;
-    v9 = v7;
+    v9 = handlerCopy;
     v15 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-    v11 = [(ICCloudClient *)self configuration];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    configuration = [(ICCloudClient *)self configuration];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __82__ICCloudClient_loadScreenshotInfoForSubscriptionPersistentIDs_completionHandler___block_invoke_2;
     v12[3] = &unk_1E7BF40E0;
     v13 = v9;
-    [v10 loadScreenshotInfoForSubscriptionPersistentIDs:v6 configuration:v11 completion:v12];
+    [v10 loadScreenshotInfoForSubscriptionPersistentIDs:dsCopy configuration:configuration completion:v12];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -2379,19 +2379,19 @@ void __82__ICCloudClient_loadScreenshotInfoForSubscriptionPersistentIDs_completi
   }
 }
 
-- (void)loadScreenshotInfoForSubscriptionPersistentID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadScreenshotInfoForSubscriptionPersistentID:(unint64_t)d completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__ICCloudClient_loadScreenshotInfoForSubscriptionPersistentID_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF40B8;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(ICCloudClient *)self loadScreenshotInfoForSubscriptionPersistentIDs:v8 completionHandler:v10];
 }
 
@@ -2405,32 +2405,32 @@ void __81__ICCloudClient_loadScreenshotInfoForSubscriptionPersistentID_completio
   }
 }
 
-- (void)loadArtworkInfoForSubscriptionItemPersistentIDs:(id)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForSubscriptionItemPersistentIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (dsCopy && [dsCopy count])
   {
-    v8 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __83__ICCloudClient_loadArtworkInfoForSubscriptionItemPersistentIDs_completionHandler___block_invoke;
     v14[3] = &unk_1E7BF77C0;
-    v9 = v7;
+    v9 = handlerCopy;
     v15 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-    v11 = [(ICCloudClient *)self configuration];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    configuration = [(ICCloudClient *)self configuration];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __83__ICCloudClient_loadArtworkInfoForSubscriptionItemPersistentIDs_completionHandler___block_invoke_2;
     v12[3] = &unk_1E7BF40E0;
     v13 = v9;
-    [v10 loadArtworkInfoForSubscriptionItemPersistentIDs:v6 configuration:v11 completion:v12];
+    [v10 loadArtworkInfoForSubscriptionItemPersistentIDs:dsCopy configuration:configuration completion:v12];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -2489,19 +2489,19 @@ void __83__ICCloudClient_loadArtworkInfoForSubscriptionItemPersistentIDs_complet
   }
 }
 
-- (void)loadArtworkInfoForSubscriptionItemPersistentID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForSubscriptionItemPersistentID:(unint64_t)d completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __82__ICCloudClient_loadArtworkInfoForSubscriptionItemPersistentID_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF40B8;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(ICCloudClient *)self loadArtworkInfoForSubscriptionItemPersistentIDs:v8 completionHandler:v10];
 }
 
@@ -2515,32 +2515,32 @@ void __82__ICCloudClient_loadArtworkInfoForSubscriptionItemPersistentID_completi
   }
 }
 
-- (void)loadScreenshotInfoForSagaIDs:(id)a3 completionHandler:(id)a4
+- (void)loadScreenshotInfoForSagaIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (dsCopy && [dsCopy count])
   {
-    v8 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __64__ICCloudClient_loadScreenshotInfoForSagaIDs_completionHandler___block_invoke;
     v14[3] = &unk_1E7BF77C0;
-    v9 = v7;
+    v9 = handlerCopy;
     v15 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-    v11 = [(ICCloudClient *)self configuration];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    configuration = [(ICCloudClient *)self configuration];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __64__ICCloudClient_loadScreenshotInfoForSagaIDs_completionHandler___block_invoke_2;
     v12[3] = &unk_1E7BF40E0;
     v13 = v9;
-    [v10 loadScreenshotInfoForSagaIDs:v6 configuration:v11 completion:v12];
+    [v10 loadScreenshotInfoForSagaIDs:dsCopy configuration:configuration completion:v12];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -2599,19 +2599,19 @@ void __64__ICCloudClient_loadScreenshotInfoForSagaIDs_completionHandler___block_
   }
 }
 
-- (void)loadScreenshotInfoForSagaID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadScreenshotInfoForSagaID:(unint64_t)d completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__ICCloudClient_loadScreenshotInfoForSagaID_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF40B8;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(ICCloudClient *)self loadScreenshotInfoForSagaIDs:v8 completionHandler:v10];
 }
 
@@ -2625,32 +2625,32 @@ void __63__ICCloudClient_loadScreenshotInfoForSagaID_completionHandler___block_i
   }
 }
 
-- (void)loadArtworkInfoForContainerSagaIDs:(id)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForContainerSagaIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (dsCopy && [dsCopy count])
   {
-    v8 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __70__ICCloudClient_loadArtworkInfoForContainerSagaIDs_completionHandler___block_invoke;
     v14[3] = &unk_1E7BF77C0;
-    v9 = v7;
+    v9 = handlerCopy;
     v15 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-    v11 = [(ICCloudClient *)self configuration];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    configuration = [(ICCloudClient *)self configuration];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __70__ICCloudClient_loadArtworkInfoForContainerSagaIDs_completionHandler___block_invoke_2;
     v12[3] = &unk_1E7BF40E0;
     v13 = v9;
-    [v10 loadArtworkInfoForContainerSagaIDs:v6 configuration:v11 completion:v12];
+    [v10 loadArtworkInfoForContainerSagaIDs:dsCopy configuration:configuration completion:v12];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -2709,19 +2709,19 @@ void __70__ICCloudClient_loadArtworkInfoForContainerSagaIDs_completionHandler___
   }
 }
 
-- (void)loadArtworkInfoForContainerSagaID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForContainerSagaID:(unint64_t)d completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__ICCloudClient_loadArtworkInfoForContainerSagaID_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF40B8;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(ICCloudClient *)self loadArtworkInfoForContainerSagaIDs:v8 completionHandler:v10];
 }
 
@@ -2735,32 +2735,32 @@ void __69__ICCloudClient_loadArtworkInfoForContainerSagaID_completionHandler___b
   }
 }
 
-- (void)loadArtworkInfoForSagaIDs:(id)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForSagaIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (dsCopy && [dsCopy count])
   {
-    v8 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __61__ICCloudClient_loadArtworkInfoForSagaIDs_completionHandler___block_invoke;
     v14[3] = &unk_1E7BF77C0;
-    v9 = v7;
+    v9 = handlerCopy;
     v15 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-    v11 = [(ICCloudClient *)self configuration];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    configuration = [(ICCloudClient *)self configuration];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __61__ICCloudClient_loadArtworkInfoForSagaIDs_completionHandler___block_invoke_2;
     v12[3] = &unk_1E7BF40E0;
     v13 = v9;
-    [v10 loadArtworkInfoForSagaIDs:v6 configuration:v11 completion:v12];
+    [v10 loadArtworkInfoForSagaIDs:dsCopy configuration:configuration completion:v12];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -2819,19 +2819,19 @@ void __61__ICCloudClient_loadArtworkInfoForSagaIDs_completionHandler___block_inv
   }
 }
 
-- (void)loadArtworkInfoForSagaID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForSagaID:(unint64_t)d completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __60__ICCloudClient_loadArtworkInfoForSagaID_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF40B8;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(ICCloudClient *)self loadArtworkInfoForSagaIDs:v8 completionHandler:v10];
 }
 
@@ -2845,32 +2845,32 @@ void __60__ICCloudClient_loadArtworkInfoForSagaID_completionHandler___block_invo
   }
 }
 
-- (void)loadScreenshotInfoForPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4
+- (void)loadScreenshotInfoForPurchaseHistoryIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (dsCopy && [dsCopy count])
   {
-    v8 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __75__ICCloudClient_loadScreenshotInfoForPurchaseHistoryIDs_completionHandler___block_invoke;
     v14[3] = &unk_1E7BF77C0;
-    v9 = v7;
+    v9 = handlerCopy;
     v15 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-    v11 = [(ICCloudClient *)self configuration];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    configuration = [(ICCloudClient *)self configuration];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __75__ICCloudClient_loadScreenshotInfoForPurchaseHistoryIDs_completionHandler___block_invoke_2;
     v12[3] = &unk_1E7BF40E0;
     v13 = v9;
-    [v10 loadScreenshotInfoForPurchaseHistoryIDs:v6 configuration:v11 completion:v12];
+    [v10 loadScreenshotInfoForPurchaseHistoryIDs:dsCopy configuration:configuration completion:v12];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -2929,19 +2929,19 @@ void __75__ICCloudClient_loadScreenshotInfoForPurchaseHistoryIDs_completionHandl
   }
 }
 
-- (void)loadScreenshotInfoForPurchaseHistoryID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadScreenshotInfoForPurchaseHistoryID:(unint64_t)d completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __74__ICCloudClient_loadScreenshotInfoForPurchaseHistoryID_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF40B8;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(ICCloudClient *)self loadScreenshotInfoForPurchaseHistoryIDs:v8 completionHandler:v10];
 }
 
@@ -2955,32 +2955,32 @@ void __74__ICCloudClient_loadScreenshotInfoForPurchaseHistoryID_completionHandle
   }
 }
 
-- (void)loadArtworkInfoForPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForPurchaseHistoryIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 count])
+  dsCopy = ds;
+  handlerCopy = handler;
+  if (dsCopy && [dsCopy count])
   {
-    v8 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __72__ICCloudClient_loadArtworkInfoForPurchaseHistoryIDs_completionHandler___block_invoke;
     v14[3] = &unk_1E7BF77C0;
-    v9 = v7;
+    v9 = handlerCopy;
     v15 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
-    v11 = [(ICCloudClient *)self configuration];
+    v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+    configuration = [(ICCloudClient *)self configuration];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __72__ICCloudClient_loadArtworkInfoForPurchaseHistoryIDs_completionHandler___block_invoke_2;
     v12[3] = &unk_1E7BF40E0;
     v13 = v9;
-    [v10 loadArtworkInfoForPurchaseHistoryIDs:v6 configuration:v11 completion:v12];
+    [v10 loadArtworkInfoForPurchaseHistoryIDs:dsCopy configuration:configuration completion:v12];
   }
 
-  else if (v7)
+  else if (handlerCopy)
   {
-    (*(v7 + 2))(v7, MEMORY[0x1E695E0F0]);
+    (*(handlerCopy + 2))(handlerCopy, MEMORY[0x1E695E0F0]);
   }
 }
 
@@ -3039,19 +3039,19 @@ void __72__ICCloudClient_loadArtworkInfoForPurchaseHistoryIDs_completionHandler_
   }
 }
 
-- (void)loadArtworkInfoForPurchaseHistoryID:(unint64_t)a3 completionHandler:(id)a4
+- (void)loadArtworkInfoForPurchaseHistoryID:(unint64_t)d completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  handlerCopy = handler;
+  v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:d];
   v12[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __71__ICCloudClient_loadArtworkInfoForPurchaseHistoryID_completionHandler___block_invoke;
   v10[3] = &unk_1E7BF40B8;
-  v11 = v6;
-  v9 = v6;
+  v11 = handlerCopy;
+  v9 = handlerCopy;
   [(ICCloudClient *)self loadArtworkInfoForPurchaseHistoryIDs:v8 completionHandler:v10];
 }
 
@@ -3065,26 +3065,26 @@ void __71__ICCloudClient_loadArtworkInfoForPurchaseHistoryID_completionHandler__
   }
 }
 
-- (void)deprioritizeAlbumArtistHeroImageForPersistentID:(int64_t)a3
+- (void)deprioritizeAlbumArtistHeroImageForPersistentID:(int64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize album artist hero artwork import with persistent ID %lld...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __65__ICCloudClient_deprioritizeAlbumArtistHeroImageForPersistentID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeAlbumArtistHeroImageForPersistentID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeAlbumArtistHeroImageForPersistentID:d configuration:configuration];
 }
 
 void __65__ICCloudClient_deprioritizeAlbumArtistHeroImageForPersistentID___block_invoke(uint64_t a1, void *a2)
@@ -3103,26 +3103,26 @@ void __65__ICCloudClient_deprioritizeAlbumArtistHeroImageForPersistentID___block
   }
 }
 
-- (void)deprioritizeArtistHeroImageForPersistentID:(int64_t)a3
+- (void)deprioritizeArtistHeroImageForPersistentID:(int64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize artist hero artwork import with persistent ID %lld...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__ICCloudClient_deprioritizeArtistHeroImageForPersistentID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeArtistHeroImageForPersistentID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeArtistHeroImageForPersistentID:d configuration:configuration];
 }
 
 void __60__ICCloudClient_deprioritizeArtistHeroImageForPersistentID___block_invoke(uint64_t a1, void *a2)
@@ -3141,26 +3141,26 @@ void __60__ICCloudClient_deprioritizeArtistHeroImageForPersistentID___block_invo
   }
 }
 
-- (void)deprioritizeSubscriptionContainerArtworkForPersistentID:(int64_t)a3
+- (void)deprioritizeSubscriptionContainerArtworkForPersistentID:(int64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize subscription container artwork import with persistent ID %lld...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __73__ICCloudClient_deprioritizeSubscriptionContainerArtworkForPersistentID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeSubscriptionContainerArtworkForPersistentID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeSubscriptionContainerArtworkForPersistentID:d configuration:configuration];
 }
 
 void __73__ICCloudClient_deprioritizeSubscriptionContainerArtworkForPersistentID___block_invoke(uint64_t a1, void *a2)
@@ -3179,26 +3179,26 @@ void __73__ICCloudClient_deprioritizeSubscriptionContainerArtworkForPersistentID
   }
 }
 
-- (void)deprioritizeSubscriptionScreenshotForPersistentID:(int64_t)a3
+- (void)deprioritizeSubscriptionScreenshotForPersistentID:(int64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize subscription screenshot import with persistent ID %lld...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __67__ICCloudClient_deprioritizeSubscriptionScreenshotForPersistentID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeSubscriptionScreenshotForPersistentID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeSubscriptionScreenshotForPersistentID:d configuration:configuration];
 }
 
 void __67__ICCloudClient_deprioritizeSubscriptionScreenshotForPersistentID___block_invoke(uint64_t a1, void *a2)
@@ -3217,26 +3217,26 @@ void __67__ICCloudClient_deprioritizeSubscriptionScreenshotForPersistentID___blo
   }
 }
 
-- (void)deprioritizeSubscriptionItemArtworkForPersistentID:(int64_t)a3
+- (void)deprioritizeSubscriptionItemArtworkForPersistentID:(int64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize subscription item artwork import with persistent ID %lld...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __68__ICCloudClient_deprioritizeSubscriptionItemArtworkForPersistentID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeSubscriptionItemArtworkForPersistentID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeSubscriptionItemArtworkForPersistentID:d configuration:configuration];
 }
 
 void __68__ICCloudClient_deprioritizeSubscriptionItemArtworkForPersistentID___block_invoke(uint64_t a1, void *a2)
@@ -3255,26 +3255,26 @@ void __68__ICCloudClient_deprioritizeSubscriptionItemArtworkForPersistentID___bl
   }
 }
 
-- (void)deprioritizeContainerArtworkForSagaID:(unint64_t)a3
+- (void)deprioritizeContainerArtworkForSagaID:(unint64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize container artwork import with saga ID %llu...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __55__ICCloudClient_deprioritizeContainerArtworkForSagaID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeContainerArtworkForSagaID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeContainerArtworkForSagaID:d configuration:configuration];
 }
 
 void __55__ICCloudClient_deprioritizeContainerArtworkForSagaID___block_invoke(uint64_t a1, void *a2)
@@ -3293,26 +3293,26 @@ void __55__ICCloudClient_deprioritizeContainerArtworkForSagaID___block_invoke(ui
   }
 }
 
-- (void)deprioritizeScreenshotForSagaID:(unint64_t)a3
+- (void)deprioritizeScreenshotForSagaID:(unint64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize screenshot import with saga ID %llu...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49__ICCloudClient_deprioritizeScreenshotForSagaID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeScreenshotForSagaID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeScreenshotForSagaID:d configuration:configuration];
 }
 
 void __49__ICCloudClient_deprioritizeScreenshotForSagaID___block_invoke(uint64_t a1, void *a2)
@@ -3331,26 +3331,26 @@ void __49__ICCloudClient_deprioritizeScreenshotForSagaID___block_invoke(uint64_t
   }
 }
 
-- (void)deprioritizeItemArtworkForSagaID:(unint64_t)a3
+- (void)deprioritizeItemArtworkForSagaID:(unint64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize item artwork import with saga ID %llu...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __50__ICCloudClient_deprioritizeItemArtworkForSagaID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeItemArtworkForSagaID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeItemArtworkForSagaID:d configuration:configuration];
 }
 
 void __50__ICCloudClient_deprioritizeItemArtworkForSagaID___block_invoke(uint64_t a1, void *a2)
@@ -3369,26 +3369,26 @@ void __50__ICCloudClient_deprioritizeItemArtworkForSagaID___block_invoke(uint64_
   }
 }
 
-- (void)deprioritizeScreenshotForPurchaseHistoryID:(unint64_t)a3
+- (void)deprioritizeScreenshotForPurchaseHistoryID:(unint64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize screenshot artwork import with purchase history ID %llu...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__ICCloudClient_deprioritizeScreenshotForPurchaseHistoryID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeScreenshotForPurchaseHistoryID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeScreenshotForPurchaseHistoryID:d configuration:configuration];
 }
 
 void __60__ICCloudClient_deprioritizeScreenshotForPurchaseHistoryID___block_invoke(uint64_t a1, void *a2)
@@ -3407,26 +3407,26 @@ void __60__ICCloudClient_deprioritizeScreenshotForPurchaseHistoryID___block_invo
   }
 }
 
-- (void)deprioritizeItemArtworkForPurchaseHistoryID:(unint64_t)a3
+- (void)deprioritizeItemArtworkForPurchaseHistoryID:(unint64_t)d
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v11 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to deprioritize item artwork import with purchase history ID %llu...", buf, 0xCu);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__ICCloudClient_deprioritizeItemArtworkForPurchaseHistoryID___block_invoke;
   v9[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v9[4] = a3;
-  v7 = [v6 remoteObjectProxyWithErrorHandler:v9];
-  v8 = [(ICCloudClient *)self configuration];
-  [v7 deprioritizeItemArtworkForPurchaseHistoryID:a3 configuration:v8];
+  v9[4] = d;
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v9];
+  configuration = [(ICCloudClient *)self configuration];
+  [v7 deprioritizeItemArtworkForPurchaseHistoryID:d configuration:configuration];
 }
 
 void __61__ICCloudClient_deprioritizeItemArtworkForPurchaseHistoryID___block_invoke(uint64_t a1, void *a2)
@@ -3445,34 +3445,34 @@ void __61__ICCloudClient_deprioritizeItemArtworkForPurchaseHistoryID___block_inv
   }
 }
 
-- (void)importAlbumArtistHeroImageForPersistentID:(int64_t)a3 completionHandler:(id)a4
+- (void)importAlbumArtistHeroImageForPersistentID:(int64_t)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Sending request to import album artist hero image for item persistent ID %lld...", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __77__ICCloudClient_importAlbumArtistHeroImageForPersistentID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__ICCloudClient_importAlbumArtistHeroImageForPersistentID_completionHandler___block_invoke_120;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 importAlbumArtistHeroImageForPersistentID:a3 configuration:v11 completion:v13];
+  [v10 importAlbumArtistHeroImageForPersistentID:d configuration:configuration completion:v13];
 }
 
 void __77__ICCloudClient_importAlbumArtistHeroImageForPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3516,34 +3516,34 @@ void __77__ICCloudClient_importAlbumArtistHeroImageForPersistentID_completionHan
   }
 }
 
-- (void)importArtistHeroImageForPersistentID:(int64_t)a3 completionHandler:(id)a4
+- (void)importArtistHeroImageForPersistentID:(int64_t)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Sending request to artist hero image hero for item persistent ID %lld...", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __72__ICCloudClient_importArtistHeroImageForPersistentID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __72__ICCloudClient_importArtistHeroImageForPersistentID_completionHandler___block_invoke_119;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 importArtistHeroImageForPersistentID:a3 configuration:v11 completion:v13];
+  [v10 importArtistHeroImageForPersistentID:d configuration:configuration completion:v13];
 }
 
 void __72__ICCloudClient_importArtistHeroImageForPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3587,34 +3587,34 @@ void __72__ICCloudClient_importArtistHeroImageForPersistentID_completionHandler_
   }
 }
 
-- (void)importSubscriptionContainerArtworkForPersistentID:(int64_t)a3 completionHandler:(id)a4
+- (void)importSubscriptionContainerArtworkForPersistentID:(int64_t)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Sending request to import subscription artwork for container persistent ID %lld...", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __85__ICCloudClient_importSubscriptionContainerArtworkForPersistentID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __85__ICCloudClient_importSubscriptionContainerArtworkForPersistentID_completionHandler___block_invoke_118;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 importSubscriptionContainerArtworkForPersistentID:a3 configuration:v11 completion:v13];
+  [v10 importSubscriptionContainerArtworkForPersistentID:d configuration:configuration completion:v13];
 }
 
 void __85__ICCloudClient_importSubscriptionContainerArtworkForPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3658,34 +3658,34 @@ void __85__ICCloudClient_importSubscriptionContainerArtworkForPersistentID_compl
   }
 }
 
-- (void)importSubscriptionScreenshotForPersistentID:(int64_t)a3 completionHandler:(id)a4
+- (void)importSubscriptionScreenshotForPersistentID:(int64_t)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Sending request to import subscription screenshot for item persistent ID %lld...", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __79__ICCloudClient_importSubscriptionScreenshotForPersistentID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__ICCloudClient_importSubscriptionScreenshotForPersistentID_completionHandler___block_invoke_117;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 importSubscriptionScreenshotForPersistentID:a3 configuration:v11 completion:v13];
+  [v10 importSubscriptionScreenshotForPersistentID:d configuration:configuration completion:v13];
 }
 
 void __79__ICCloudClient_importSubscriptionScreenshotForPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3729,34 +3729,34 @@ void __79__ICCloudClient_importSubscriptionScreenshotForPersistentID_completionH
   }
 }
 
-- (void)importSubscriptionItemArtworkForPersistentID:(int64_t)a3 completionHandler:(id)a4
+- (void)importSubscriptionItemArtworkForPersistentID:(int64_t)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Sending request to import subscription artwork for item persistent ID %lld...", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __80__ICCloudClient_importSubscriptionItemArtworkForPersistentID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __80__ICCloudClient_importSubscriptionItemArtworkForPersistentID_completionHandler___block_invoke_116;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 importSubscriptionItemArtworkForPersistentID:a3 configuration:v11 completion:v13];
+  [v10 importSubscriptionItemArtworkForPersistentID:d configuration:configuration completion:v13];
 }
 
 void __80__ICCloudClient_importSubscriptionItemArtworkForPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3800,36 +3800,36 @@ void __80__ICCloudClient_importSubscriptionItemArtworkForPersistentID_completion
   }
 }
 
-- (void)importContainerArtworkForSagaID:(unint64_t)a3 artworkVariantType:(int64_t)a4 completionHandler:(id)a5
+- (void)importContainerArtworkForSagaID:(unint64_t)d artworkVariantType:(int64_t)type completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v20 = a3;
+    dCopy = d;
     v21 = 2048;
-    v22 = a4;
+    typeCopy = type;
     _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "Sending request to import container artwork for saga ID %llu and variant %ld...", buf, 0x16u);
   }
 
-  v10 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __86__ICCloudClient_importContainerArtworkForSagaID_artworkVariantType_completionHandler___block_invoke;
   v17[3] = &unk_1E7BF77C0;
-  v11 = v8;
+  v11 = handlerCopy;
   v18 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(ICCloudClient *)self configuration];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  configuration = [(ICCloudClient *)self configuration];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __86__ICCloudClient_importContainerArtworkForSagaID_artworkVariantType_completionHandler___block_invoke_115;
   v15[3] = &unk_1E7BF77C0;
   v16 = v11;
   v14 = v11;
-  [v12 importContainerArtworkForSagaID:a3 artworkVariantType:a4 configuration:v13 completion:v15];
+  [v12 importContainerArtworkForSagaID:d artworkVariantType:type configuration:configuration completion:v15];
 }
 
 void __86__ICCloudClient_importContainerArtworkForSagaID_artworkVariantType_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3873,34 +3873,34 @@ void __86__ICCloudClient_importContainerArtworkForSagaID_artworkVariantType_comp
   }
 }
 
-- (void)importContainerArtworkForSagaID:(unint64_t)a3 completionHandler:(id)a4
+- (void)importContainerArtworkForSagaID:(unint64_t)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Sending request to import container artwork for saga ID %llu...", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__ICCloudClient_importContainerArtworkForSagaID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__ICCloudClient_importContainerArtworkForSagaID_completionHandler___block_invoke_114;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 importContainerArtworkForSagaID:a3 configuration:v11 completion:v13];
+  [v10 importContainerArtworkForSagaID:d configuration:configuration completion:v13];
 }
 
 void __67__ICCloudClient_importContainerArtworkForSagaID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -3944,34 +3944,34 @@ void __67__ICCloudClient_importContainerArtworkForSagaID_completionHandler___blo
   }
 }
 
-- (void)importScreenshotForSagaID:(unint64_t)a3 completionHandler:(id)a4
+- (void)importScreenshotForSagaID:(unint64_t)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Sending request to import screenshot for saga ID %llu...", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__ICCloudClient_importScreenshotForSagaID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __61__ICCloudClient_importScreenshotForSagaID_completionHandler___block_invoke_113;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 importScreenshotForSagaID:a3 configuration:v11 completion:v13];
+  [v10 importScreenshotForSagaID:d configuration:configuration completion:v13];
 }
 
 void __61__ICCloudClient_importScreenshotForSagaID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -4015,34 +4015,34 @@ void __61__ICCloudClient_importScreenshotForSagaID_completionHandler___block_inv
   }
 }
 
-- (void)importItemArtworkForSagaID:(unint64_t)a3 completionHandler:(id)a4
+- (void)importItemArtworkForSagaID:(unint64_t)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Sending request to import item artwork for saga ID %llu...", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __62__ICCloudClient_importItemArtworkForSagaID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __62__ICCloudClient_importItemArtworkForSagaID_completionHandler___block_invoke_112;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 importItemArtworkForSagaID:a3 configuration:v11 completion:v13];
+  [v10 importItemArtworkForSagaID:d configuration:configuration completion:v13];
 }
 
 void __62__ICCloudClient_importItemArtworkForSagaID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -4086,39 +4086,39 @@ void __62__ICCloudClient_importItemArtworkForSagaID_completionHandler___block_in
   }
 }
 
-- (void)importScreenshotForPurchaseHistoryID:(unint64_t)a3 completionHandler:(id)a4
+- (void)importScreenshotForPurchaseHistoryID:(unint64_t)d completionHandler:(id)handler
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[ICCloudAvailabilityController sharedController];
-  v8 = [v7 shouldProhibitVideosActionForCurrentNetworkConditions];
+  shouldProhibitVideosActionForCurrentNetworkConditions = [v7 shouldProhibitVideosActionForCurrentNetworkConditions];
 
   v9 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (!v8)
+  if (!shouldProhibitVideosActionForCurrentNetworkConditions)
   {
     if (v10)
     {
       *buf = 134217984;
-      v21 = a3;
+      dCopy2 = d;
       _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "Sending request to import screenshot for purchase history ID %llu...", buf, 0xCu);
     }
 
-    v12 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __72__ICCloudClient_importScreenshotForPurchaseHistoryID_completionHandler___block_invoke;
     v18[3] = &unk_1E7BF77C0;
-    v13 = v6;
+    v13 = handlerCopy;
     v19 = v13;
-    v14 = [v12 remoteObjectProxyWithErrorHandler:v18];
-    v15 = [(ICCloudClient *)self configuration];
+    v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v18];
+    configuration = [(ICCloudClient *)self configuration];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __72__ICCloudClient_importScreenshotForPurchaseHistoryID_completionHandler___block_invoke_111;
     v16[3] = &unk_1E7BF77C0;
     v17 = v13;
-    [v14 importScreenshotForPurchaseHistoryID:a3 configuration:v15 completion:v16];
+    [v14 importScreenshotForPurchaseHistoryID:d configuration:configuration completion:v16];
 
     v11 = v19;
     goto LABEL_9;
@@ -4127,14 +4127,14 @@ void __62__ICCloudClient_importItemArtworkForSagaID_completionHandler___block_in
   if (v10)
   {
     *buf = 134217984;
-    v21 = a3;
+    dCopy2 = d;
     _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "Skipping request to import item screenshot for purchase history ID %llu due to insufficient network conditions", buf, 0xCu);
   }
 
-  if (v6)
+  if (handlerCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] ic_cloudClientErrorWithCode:2006 userInfo:0];
-    (*(v6 + 2))(v6, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
 LABEL_9:
   }
 }
@@ -4180,34 +4180,34 @@ void __72__ICCloudClient_importScreenshotForPurchaseHistoryID_completionHandler_
   }
 }
 
-- (void)importItemArtworkForPurchaseHistoryID:(unint64_t)a3 completionHandler:(id)a4
+- (void)importItemArtworkForPurchaseHistoryID:(unint64_t)d completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v18 = a3;
+    dCopy = d;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "Sending request to import item artwork for purchase history ID %llu...", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__ICCloudClient_importItemArtworkForPurchaseHistoryID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __73__ICCloudClient_importItemArtworkForPurchaseHistoryID_completionHandler___block_invoke_110;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 importItemArtworkForPurchaseHistoryID:a3 configuration:v11 completion:v13];
+  [v10 importItemArtworkForPurchaseHistoryID:d configuration:configuration completion:v13];
 }
 
 void __73__ICCloudClient_importItemArtworkForPurchaseHistoryID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -4251,25 +4251,25 @@ void __73__ICCloudClient_importItemArtworkForPurchaseHistoryID_completionHandler
   }
 }
 
-- (void)loadLastKnownEnableICMLErrorStatusWithCompletionHander:(id)a3
+- (void)loadLastKnownEnableICMLErrorStatusWithCompletionHander:(id)hander
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  handerCopy = hander;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__ICCloudClient_loadLastKnownEnableICMLErrorStatusWithCompletionHander___block_invoke;
   v12[3] = &unk_1E7BF77C0;
-  v6 = v4;
+  v6 = handerCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(ICCloudClient *)self configuration];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  configuration = [(ICCloudClient *)self configuration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__ICCloudClient_loadLastKnownEnableICMLErrorStatusWithCompletionHander___block_invoke_108;
   v10[3] = &unk_1E7BF4090;
   v11 = v6;
   v9 = v6;
-  [v7 loadLastKnownEnableICMLErrorStatusForConfiguration:v8 completion:v10];
+  [v7 loadLastKnownEnableICMLErrorStatusForConfiguration:configuration completion:v10];
 }
 
 void __72__ICCloudClient_loadLastKnownEnableICMLErrorStatusWithCompletionHander___block_invoke(uint64_t a1, void *a2)
@@ -4314,14 +4314,14 @@ void __72__ICCloudClient_loadLastKnownEnableICMLErrorStatusWithCompletionHander_
   }
 }
 
-- (void)isAuthenticatedWithQueue:(id)a3 completionHandler:(id)a4
+- (void)isAuthenticatedWithQueue:(id)queue completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICCloudClient *)self _isAuthenticated];
-  if (v6)
+  queueCopy = queue;
+  handlerCopy = handler;
+  _isAuthenticated = [(ICCloudClient *)self _isAuthenticated];
+  if (queueCopy)
   {
-    v9 = v6;
+    v9 = queueCopy;
   }
 
   else
@@ -4330,21 +4330,21 @@ void __72__ICCloudClient_loadLastKnownEnableICMLErrorStatusWithCompletionHander_
   }
 
   v10 = v9;
-  if (v7)
+  if (handlerCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __60__ICCloudClient_isAuthenticatedWithQueue_completionHandler___block_invoke;
     v11[3] = &unk_1E7BF8C60;
-    v12 = v7;
-    v13 = v8;
+    v12 = handlerCopy;
+    v13 = _isAuthenticated;
     dispatch_async(v10, v11);
   }
 }
 
-- (void)deauthenticateWithCompletionHandler:(id)a3
+- (void)deauthenticateWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -4352,22 +4352,22 @@ void __72__ICCloudClient_loadLastKnownEnableICMLErrorStatusWithCompletionHander_
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "Sending deauthenticate request...", buf, 2u);
   }
 
-  v6 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __53__ICCloudClient_deauthenticateWithCompletionHandler___block_invoke;
   v13[3] = &unk_1E7BF77C0;
-  v7 = v4;
+  v7 = handlerCopy;
   v14 = v7;
-  v8 = [v6 remoteObjectProxyWithErrorHandler:v13];
-  v9 = [(ICCloudClient *)self configuration];
+  v8 = [xpcConnection remoteObjectProxyWithErrorHandler:v13];
+  configuration = [(ICCloudClient *)self configuration];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __53__ICCloudClient_deauthenticateWithCompletionHandler___block_invoke_2;
   v11[3] = &unk_1E7BF77C0;
   v12 = v7;
   v10 = v7;
-  [v8 deauthenticateForConfiguration:v9 completion:v11];
+  [v8 deauthenticateForConfiguration:configuration completion:v11];
 }
 
 void __53__ICCloudClient_deauthenticateWithCompletionHandler___block_invoke(uint64_t a1, void *a2)
@@ -4425,9 +4425,9 @@ void __53__ICCloudClient_deauthenticateWithCompletionHandler___block_invoke_2(ui
   }
 }
 
-- (void)updateSagaLibraryWithReason:(int64_t)a3 completionHandler:(id)a4
+- (void)updateSagaLibraryWithReason:(int64_t)reason completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -4436,9 +4436,9 @@ void __53__ICCloudClient_deauthenticateWithCompletionHandler___block_invoke_2(ui
   }
 
   v8 = +[ICCloudAvailabilityController sharedController];
-  v9 = [v8 shouldProhibitMusicActionForCurrentNetworkConditions];
+  shouldProhibitMusicActionForCurrentNetworkConditions = [v8 shouldProhibitMusicActionForCurrentNetworkConditions];
 
-  if (v9)
+  if (shouldProhibitMusicActionForCurrentNetworkConditions)
   {
     v10 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -4447,29 +4447,29 @@ void __53__ICCloudClient_deauthenticateWithCompletionHandler___block_invoke_2(ui
       _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "Can't update cloud library using current network - skipping", buf, 2u);
     }
 
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v11 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __63__ICCloudClient_updateSagaLibraryWithReason_completionHandler___block_invoke;
     v17[3] = &unk_1E7BF77C0;
-    v12 = v6;
+    v12 = handlerCopy;
     v18 = v12;
-    v13 = [v11 remoteObjectProxyWithErrorHandler:v17];
-    v14 = [(ICCloudClient *)self configuration];
+    v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+    configuration = [(ICCloudClient *)self configuration];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __63__ICCloudClient_updateSagaLibraryWithReason_completionHandler___block_invoke_104;
     v15[3] = &unk_1E7BF77C0;
     v16 = v12;
-    [v13 updateSagaLibraryWithReason:a3 forConfiguration:v14 completion:v15];
+    [v13 updateSagaLibraryWithReason:reason forConfiguration:configuration completion:v15];
   }
 }
 
@@ -4523,40 +4523,40 @@ void __63__ICCloudClient_updateSagaLibraryWithReason_completionHandler___block_i
 
 - (BOOL)musicPurchasesDisabledForJaliscoLibrary
 {
-  v2 = [(ICCloudClient *)self configuration];
-  v3 = [v2 userIdentity];
-  v4 = [getML3MusicLibraryClass() musicLibraryForUserAccount:v3];
-  v5 = [v4 jaliscoLastExcludedMediaKinds];
-  v6 = [v5 containsObject:&unk_1F2C92050];
+  configuration = [(ICCloudClient *)self configuration];
+  userIdentity = [configuration userIdentity];
+  v4 = [getML3MusicLibraryClass() musicLibraryForUserAccount:userIdentity];
+  jaliscoLastExcludedMediaKinds = [v4 jaliscoLastExcludedMediaKinds];
+  v6 = [jaliscoLastExcludedMediaKinds containsObject:&unk_1F2C92050];
 
   return v6;
 }
 
-- (BOOL)isMediaKindDisabledForJaliscoLibrary:(int64_t)a3
+- (BOOL)isMediaKindDisabledForJaliscoLibrary:(int64_t)library
 {
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__ICCloudClient_isMediaKindDisabledForJaliscoLibrary___block_invoke;
   v10[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
-  v10[4] = a3;
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v10];
-  v7 = [(ICCloudClient *)self configuration];
+  v10[4] = library;
+  v6 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
+  configuration = [(ICCloudClient *)self configuration];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __54__ICCloudClient_isMediaKindDisabledForJaliscoLibrary___block_invoke_98;
   v9[3] = &unk_1E7BF4068;
   v9[4] = &v11;
-  v9[5] = a3;
-  [v6 isMediaKindDisabledForJaliscoLibrary:a3 configuration:v7 completion:v9];
+  v9[5] = library;
+  [v6 isMediaKindDisabledForJaliscoLibrary:library configuration:configuration completion:v9];
 
-  LOBYTE(a3) = *(v12 + 24);
+  LOBYTE(library) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
-  return a3;
+  return library;
 }
 
 void __54__ICCloudClient_isMediaKindDisabledForJaliscoLibrary___block_invoke(uint64_t a1, void *a2)
@@ -4631,25 +4631,25 @@ LABEL_9:
   }
 }
 
-- (void)removeJaliscoLibraryWithCompletionHander:(id)a3
+- (void)removeJaliscoLibraryWithCompletionHander:(id)hander
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  handerCopy = hander;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__ICCloudClient_removeJaliscoLibraryWithCompletionHander___block_invoke;
   v12[3] = &unk_1E7BF77C0;
-  v6 = v4;
+  v6 = handerCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(ICCloudClient *)self configuration];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  configuration = [(ICCloudClient *)self configuration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __58__ICCloudClient_removeJaliscoLibraryWithCompletionHander___block_invoke_2;
   v10[3] = &unk_1E7BF77C0;
   v11 = v6;
   v9 = v6;
-  [v7 removeJaliscoLibraryForConfiguration:v8 completion:v10];
+  [v7 removeJaliscoLibraryForConfiguration:configuration completion:v10];
 }
 
 void __58__ICCloudClient_removeJaliscoLibraryWithCompletionHander___block_invoke(uint64_t a1, void *a2)
@@ -4707,25 +4707,25 @@ void __58__ICCloudClient_removeJaliscoLibraryWithCompletionHander___block_invoke
   }
 }
 
-- (void)updateJaliscoLibraryWithReason:(int64_t)a3 completionHandler:(id)a4
+- (void)updateJaliscoLibraryWithReason:(int64_t)reason completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __66__ICCloudClient_updateJaliscoLibraryWithReason_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF77C0;
-  v8 = v6;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
-  v10 = [(ICCloudClient *)self configuration];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+  configuration = [(ICCloudClient *)self configuration];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__ICCloudClient_updateJaliscoLibraryWithReason_completionHandler___block_invoke_2;
   v12[3] = &unk_1E7BF77C0;
   v13 = v8;
   v11 = v8;
-  [v9 updateJaliscoLibraryWithReason:a3 forConfiguration:v10 completion:v12];
+  [v9 updateJaliscoLibraryWithReason:reason forConfiguration:configuration completion:v12];
 }
 
 void __66__ICCloudClient_updateJaliscoLibraryWithReason_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -4799,34 +4799,34 @@ void __29__ICCloudClient_becomeActive__block_invoke(uint64_t a1, void *a2)
   *(v5 + 40) = v3;
 }
 
-- (void)disableCloudLibraryWithReason:(int64_t)a3 completionHandler:(id)a4
+- (void)disableCloudLibraryWithReason:(int64_t)reason completionHandler:(id)handler
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "<ICCloudClient %p> - Attempting disable cloud library", buf, 0xCu);
   }
 
-  v8 = [(ICCloudClient *)self xpcConnection];
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__ICCloudClient_disableCloudLibraryWithReason_completionHandler___block_invoke;
   v14[3] = &unk_1E7BFA490;
   v14[4] = self;
-  v9 = v6;
+  v9 = handlerCopy;
   v15 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v14];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__ICCloudClient_disableCloudLibraryWithReason_completionHandler___block_invoke_92;
   v12[3] = &unk_1E7BF77C0;
   v13 = v9;
   v11 = v9;
-  [v10 disableCloudLibraryWithReason:a3 completion:v12];
+  [v10 disableCloudLibraryWithReason:reason completion:v12];
 }
 
 void __65__ICCloudClient_disableCloudLibraryWithReason_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -4894,53 +4894,53 @@ LABEL_7:
   }
 }
 
-- (void)_enableCloudLibraryWithPolicy:(int64_t)a3 startinitialImport:(BOOL)a4 isExplicitUserAction:(BOOL)a5 completionHandler:(id)a6
+- (void)_enableCloudLibraryWithPolicy:(int64_t)policy startinitialImport:(BOOL)import isExplicitUserAction:(BOOL)action completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = a4;
+  actionCopy = action;
+  importCopy = import;
   v30 = *MEMORY[0x1E69E9840];
-  v10 = a6;
+  handlerCopy = handler;
   v11 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218752;
-    v23 = self;
+    selfCopy = self;
     v24 = 1024;
-    v25 = a3;
+    policyCopy = policy;
     v26 = 1024;
-    v27 = v7;
+    v27 = importCopy;
     v28 = 1024;
-    v29 = v6;
+    v29 = actionCopy;
     _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "<ICCloudClient %p> - Attempting cloud library authenticate (start initial import with explicit user action, merge policy=%d, shouldStartInitialImport=%{BOOL}u, isExplicitUserAction = %{BOOL}u)", buf, 0x1Eu);
   }
 
-  v12 = [(ICCloudClient *)self _isAuthenticated];
-  if (!a3 || !v12)
+  _isAuthenticated = [(ICCloudClient *)self _isAuthenticated];
+  if (!policy || !_isAuthenticated)
   {
-    v14 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __105__ICCloudClient__enableCloudLibraryWithPolicy_startinitialImport_isExplicitUserAction_completionHandler___block_invoke;
     v20[3] = &unk_1E7BF77C0;
-    v15 = v10;
+    v15 = handlerCopy;
     v21 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v20];
-    v17 = [(ICCloudClient *)self configuration];
+    v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v20];
+    configuration = [(ICCloudClient *)self configuration];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __105__ICCloudClient__enableCloudLibraryWithPolicy_startinitialImport_isExplicitUserAction_completionHandler___block_invoke_91;
     v18[3] = &unk_1E7BF77C0;
     v19 = v15;
-    [v16 authenticateForConfiguration:v17 startInitialImport:v7 enableCloudLibraryPolicy:a3 isExplicitUserAction:v6 completion:v18];
+    [v16 authenticateForConfiguration:configuration startInitialImport:importCopy enableCloudLibraryPolicy:policy isExplicitUserAction:actionCopy completion:v18];
 
     v13 = v21;
     goto LABEL_8;
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:0 userInfo:0];
-    (*(v10 + 2))(v10, v13);
+    (*(handlerCopy + 2))(handlerCopy, v13);
 LABEL_8:
   }
 }
@@ -5009,20 +5009,20 @@ LABEL_7:
   }
 }
 
-- (void)movePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6
+- (void)movePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD toPosition:(int64_t)position completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  iDCopy = iD;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __84__ICCloudClient_movePinnedAlbumWithPersistentID_cloudAlbumID_toPosition_completion___block_invoke;
   v19[3] = &unk_1E7BFA490;
   v19[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
-  v15 = [(ICCloudClient *)self configuration];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
+  configuration = [(ICCloudClient *)self configuration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __84__ICCloudClient_movePinnedAlbumWithPersistentID_cloudAlbumID_toPosition_completion___block_invoke_2;
@@ -5030,7 +5030,7 @@ LABEL_7:
   v17[4] = self;
   v18 = v13;
   v16 = v13;
-  [v14 movePinnedAlbumWithPersistentID:a3 cloudAlbumID:v11 toPosition:a5 configuration:v15 completion:v17];
+  [v14 movePinnedAlbumWithPersistentID:d cloudAlbumID:iDCopy toPosition:position configuration:configuration completion:v17];
 }
 
 void __84__ICCloudClient_movePinnedAlbumWithPersistentID_cloudAlbumID_toPosition_completion___block_invoke(uint64_t a1, void *a2)
@@ -5104,20 +5104,20 @@ void __84__ICCloudClient_movePinnedAlbumWithPersistentID_cloudAlbumID_toPosition
   }
 }
 
-- (void)movePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 toPosition:(int64_t)a5 completion:(id)a6
+- (void)movePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD toPosition:(int64_t)position completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  iDCopy = iD;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __86__ICCloudClient_movePinnedArtistWithPersistentID_cloudArtistID_toPosition_completion___block_invoke;
   v19[3] = &unk_1E7BFA490;
   v19[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
-  v15 = [(ICCloudClient *)self configuration];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
+  configuration = [(ICCloudClient *)self configuration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __86__ICCloudClient_movePinnedArtistWithPersistentID_cloudArtistID_toPosition_completion___block_invoke_2;
@@ -5125,7 +5125,7 @@ void __84__ICCloudClient_movePinnedAlbumWithPersistentID_cloudAlbumID_toPosition
   v17[4] = self;
   v18 = v13;
   v16 = v13;
-  [v14 movePinnedArtistWithPersistentID:a3 cloudArtistID:v11 toPosition:a5 configuration:v15 completion:v17];
+  [v14 movePinnedArtistWithPersistentID:d cloudArtistID:iDCopy toPosition:position configuration:configuration completion:v17];
 }
 
 void __86__ICCloudClient_movePinnedArtistWithPersistentID_cloudArtistID_toPosition_completion___block_invoke(uint64_t a1, void *a2)
@@ -5199,19 +5199,19 @@ void __86__ICCloudClient_movePinnedArtistWithPersistentID_cloudArtistID_toPositi
   }
 }
 
-- (void)movePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 toPosition:(int64_t)a6 completion:(id)a7
+- (void)movePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type toPosition:(int64_t)position completion:(id)completion
 {
-  v12 = a7;
-  v13 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __85__ICCloudClient_movePinnedEntityWithPersistentID_cloudID_type_toPosition_completion___block_invoke;
   v20[3] = &unk_1E7BFA490;
   v20[4] = self;
-  v14 = v12;
+  v14 = completionCopy;
   v21 = v14;
-  v15 = [v13 remoteObjectProxyWithErrorHandler:v20];
-  v16 = [(ICCloudClient *)self configuration];
+  v15 = [xpcConnection remoteObjectProxyWithErrorHandler:v20];
+  configuration = [(ICCloudClient *)self configuration];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __85__ICCloudClient_movePinnedEntityWithPersistentID_cloudID_type_toPosition_completion___block_invoke_2;
@@ -5219,7 +5219,7 @@ void __86__ICCloudClient_movePinnedArtistWithPersistentID_cloudArtistID_toPositi
   v18[4] = self;
   v19 = v14;
   v17 = v14;
-  [v15 movePinnedEntityWithPersistentID:a3 cloudID:a4 type:a5 toPosition:a6 configuration:v16 completion:v18];
+  [v15 movePinnedEntityWithPersistentID:d cloudID:iD type:type toPosition:position configuration:configuration completion:v18];
 }
 
 void __85__ICCloudClient_movePinnedEntityWithPersistentID_cloudID_type_toPosition_completion___block_invoke(uint64_t a1, void *a2)
@@ -5293,20 +5293,20 @@ void __85__ICCloudClient_movePinnedEntityWithPersistentID_cloudID_type_toPositio
   }
 }
 
-- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)updatePinnedLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  iDCopy = iD;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __96__ICCloudClient_updatePinnedLibraryAlbumWithPersistentID_cloudAlbumID_defaultAction_completion___block_invoke;
   v19[3] = &unk_1E7BFA490;
   v19[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
-  v15 = [(ICCloudClient *)self configuration];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
+  configuration = [(ICCloudClient *)self configuration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __96__ICCloudClient_updatePinnedLibraryAlbumWithPersistentID_cloudAlbumID_defaultAction_completion___block_invoke_2;
@@ -5314,7 +5314,7 @@ void __85__ICCloudClient_movePinnedEntityWithPersistentID_cloudID_type_toPositio
   v17[4] = self;
   v18 = v13;
   v16 = v13;
-  [v14 updatePinnedLibraryAlbumWithPersistentID:a3 cloudAlbumID:v11 defaultAction:a5 configuration:v15 completion:v17];
+  [v14 updatePinnedLibraryAlbumWithPersistentID:d cloudAlbumID:iDCopy defaultAction:action configuration:configuration completion:v17];
 }
 
 void __96__ICCloudClient_updatePinnedLibraryAlbumWithPersistentID_cloudAlbumID_defaultAction_completion___block_invoke(uint64_t a1, void *a2)
@@ -5388,20 +5388,20 @@ void __96__ICCloudClient_updatePinnedLibraryAlbumWithPersistentID_cloudAlbumID_d
   }
 }
 
-- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)updatePinnedLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  iDCopy = iD;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __98__ICCloudClient_updatePinnedLibraryArtistWithPersistentID_cloudArtistID_defaultAction_completion___block_invoke;
   v19[3] = &unk_1E7BFA490;
   v19[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
-  v15 = [(ICCloudClient *)self configuration];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
+  configuration = [(ICCloudClient *)self configuration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __98__ICCloudClient_updatePinnedLibraryArtistWithPersistentID_cloudArtistID_defaultAction_completion___block_invoke_2;
@@ -5409,7 +5409,7 @@ void __96__ICCloudClient_updatePinnedLibraryAlbumWithPersistentID_cloudAlbumID_d
   v17[4] = self;
   v18 = v13;
   v16 = v13;
-  [v14 updatePinnedLibraryArtistWithPersistentID:a3 cloudArtistID:v11 defaultAction:a5 configuration:v15 completion:v17];
+  [v14 updatePinnedLibraryArtistWithPersistentID:d cloudArtistID:iDCopy defaultAction:action configuration:configuration completion:v17];
 }
 
 void __98__ICCloudClient_updatePinnedLibraryArtistWithPersistentID_cloudArtistID_defaultAction_completion___block_invoke(uint64_t a1, void *a2)
@@ -5483,19 +5483,19 @@ void __98__ICCloudClient_updatePinnedLibraryArtistWithPersistentID_cloudArtistID
   }
 }
 
-- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7
+- (void)updatePinnedLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion
 {
-  v12 = a7;
-  v13 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __97__ICCloudClient_updatePinnedLibraryEntityWithPersistentID_cloudID_type_defaultAction_completion___block_invoke;
   v20[3] = &unk_1E7BFA490;
   v20[4] = self;
-  v14 = v12;
+  v14 = completionCopy;
   v21 = v14;
-  v15 = [v13 remoteObjectProxyWithErrorHandler:v20];
-  v16 = [(ICCloudClient *)self configuration];
+  v15 = [xpcConnection remoteObjectProxyWithErrorHandler:v20];
+  configuration = [(ICCloudClient *)self configuration];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __97__ICCloudClient_updatePinnedLibraryEntityWithPersistentID_cloudID_type_defaultAction_completion___block_invoke_2;
@@ -5503,7 +5503,7 @@ void __98__ICCloudClient_updatePinnedLibraryArtistWithPersistentID_cloudArtistID
   v18[4] = self;
   v19 = v14;
   v17 = v14;
-  [v15 updatePinnedLibraryEntityWithPersistentID:a3 cloudID:a4 type:a5 defaultAction:a6 configuration:v16 completion:v18];
+  [v15 updatePinnedLibraryEntityWithPersistentID:d cloudID:iD type:type defaultAction:action configuration:configuration completion:v18];
 }
 
 void __97__ICCloudClient_updatePinnedLibraryEntityWithPersistentID_cloudID_type_defaultAction_completion___block_invoke(uint64_t a1, void *a2)
@@ -5577,20 +5577,20 @@ void __97__ICCloudClient_updatePinnedLibraryEntityWithPersistentID_cloudID_type_
   }
 }
 
-- (void)removePinnedAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 completion:(id)a5
+- (void)removePinnedAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  iDCopy = iD;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __75__ICCloudClient_removePinnedAlbumWithPersistentID_cloudAlbumID_completion___block_invoke;
   v17[3] = &unk_1E7BFA490;
   v17[4] = self;
-  v11 = v8;
+  v11 = completionCopy;
   v18 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(ICCloudClient *)self configuration];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  configuration = [(ICCloudClient *)self configuration];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __75__ICCloudClient_removePinnedAlbumWithPersistentID_cloudAlbumID_completion___block_invoke_2;
@@ -5598,7 +5598,7 @@ void __97__ICCloudClient_updatePinnedLibraryEntityWithPersistentID_cloudID_type_
   v15[4] = self;
   v16 = v11;
   v14 = v11;
-  [v12 removePinnedAlbumWithPersistentID:a3 cloudAlbumID:v9 configuration:v13 completion:v15];
+  [v12 removePinnedAlbumWithPersistentID:d cloudAlbumID:iDCopy configuration:configuration completion:v15];
 }
 
 void __75__ICCloudClient_removePinnedAlbumWithPersistentID_cloudAlbumID_completion___block_invoke(uint64_t a1, void *a2)
@@ -5672,20 +5672,20 @@ void __75__ICCloudClient_removePinnedAlbumWithPersistentID_cloudAlbumID_completi
   }
 }
 
-- (void)removePinnedArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 completion:(id)a5
+- (void)removePinnedArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  iDCopy = iD;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __77__ICCloudClient_removePinnedArtistWithPersistentID_cloudArtistID_completion___block_invoke;
   v17[3] = &unk_1E7BFA490;
   v17[4] = self;
-  v11 = v8;
+  v11 = completionCopy;
   v18 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(ICCloudClient *)self configuration];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  configuration = [(ICCloudClient *)self configuration];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __77__ICCloudClient_removePinnedArtistWithPersistentID_cloudArtistID_completion___block_invoke_2;
@@ -5693,7 +5693,7 @@ void __75__ICCloudClient_removePinnedAlbumWithPersistentID_cloudAlbumID_completi
   v15[4] = self;
   v16 = v11;
   v14 = v11;
-  [v12 removePinnedArtistWithPersistentID:a3 cloudArtistID:v9 configuration:v13 completion:v15];
+  [v12 removePinnedArtistWithPersistentID:d cloudArtistID:iDCopy configuration:configuration completion:v15];
 }
 
 void __77__ICCloudClient_removePinnedArtistWithPersistentID_cloudArtistID_completion___block_invoke(uint64_t a1, void *a2)
@@ -5767,19 +5767,19 @@ void __77__ICCloudClient_removePinnedArtistWithPersistentID_cloudArtistID_comple
   }
 }
 
-- (void)removePinnedEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 completion:(id)a6
+- (void)removePinnedEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type completion:(id)completion
 {
-  v10 = a6;
-  v11 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __76__ICCloudClient_removePinnedEntityWithPersistentID_cloudID_type_completion___block_invoke;
   v18[3] = &unk_1E7BFA490;
   v18[4] = self;
-  v12 = v10;
+  v12 = completionCopy;
   v19 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v18];
-  v14 = [(ICCloudClient *)self configuration];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v18];
+  configuration = [(ICCloudClient *)self configuration];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __76__ICCloudClient_removePinnedEntityWithPersistentID_cloudID_type_completion___block_invoke_2;
@@ -5787,7 +5787,7 @@ void __77__ICCloudClient_removePinnedArtistWithPersistentID_cloudArtistID_comple
   v16[4] = self;
   v17 = v12;
   v15 = v12;
-  [v13 removePinnedEntityWithPersistentID:a3 cloudID:a4 type:a5 configuration:v14 completion:v16];
+  [v13 removePinnedEntityWithPersistentID:d cloudID:iD type:type configuration:configuration completion:v16];
 }
 
 void __76__ICCloudClient_removePinnedEntityWithPersistentID_cloudID_type_completion___block_invoke(uint64_t a1, void *a2)
@@ -5861,20 +5861,20 @@ void __76__ICCloudClient_removePinnedEntityWithPersistentID_cloudID_type_complet
   }
 }
 
-- (void)pinLibraryAlbumWithPersistentID:(int64_t)a3 cloudAlbumID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)pinLibraryAlbumWithPersistentID:(int64_t)d cloudAlbumID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  iDCopy = iD;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __87__ICCloudClient_pinLibraryAlbumWithPersistentID_cloudAlbumID_defaultAction_completion___block_invoke;
   v19[3] = &unk_1E7BFA490;
   v19[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
-  v15 = [(ICCloudClient *)self configuration];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
+  configuration = [(ICCloudClient *)self configuration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __87__ICCloudClient_pinLibraryAlbumWithPersistentID_cloudAlbumID_defaultAction_completion___block_invoke_2;
@@ -5882,7 +5882,7 @@ void __76__ICCloudClient_removePinnedEntityWithPersistentID_cloudID_type_complet
   v17[4] = self;
   v18 = v13;
   v16 = v13;
-  [v14 pinLibraryAlbumWithPersistentID:a3 cloudAlbumID:v11 defaultAction:a5 configuration:v15 completion:v17];
+  [v14 pinLibraryAlbumWithPersistentID:d cloudAlbumID:iDCopy defaultAction:action configuration:configuration completion:v17];
 }
 
 void __87__ICCloudClient_pinLibraryAlbumWithPersistentID_cloudAlbumID_defaultAction_completion___block_invoke(uint64_t a1, void *a2)
@@ -5956,20 +5956,20 @@ void __87__ICCloudClient_pinLibraryAlbumWithPersistentID_cloudAlbumID_defaultAct
   }
 }
 
-- (void)pinLibraryArtistWithPersistentID:(int64_t)a3 cloudArtistID:(id)a4 defaultAction:(int64_t)a5 completion:(id)a6
+- (void)pinLibraryArtistWithPersistentID:(int64_t)d cloudArtistID:(id)iD defaultAction:(int64_t)action completion:(id)completion
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  iDCopy = iD;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __89__ICCloudClient_pinLibraryArtistWithPersistentID_cloudArtistID_defaultAction_completion___block_invoke;
   v19[3] = &unk_1E7BFA490;
   v19[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
-  v15 = [(ICCloudClient *)self configuration];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
+  configuration = [(ICCloudClient *)self configuration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __89__ICCloudClient_pinLibraryArtistWithPersistentID_cloudArtistID_defaultAction_completion___block_invoke_2;
@@ -5977,7 +5977,7 @@ void __87__ICCloudClient_pinLibraryAlbumWithPersistentID_cloudAlbumID_defaultAct
   v17[4] = self;
   v18 = v13;
   v16 = v13;
-  [v14 pinLibraryArtistWithPersistentID:a3 cloudArtistID:v11 defaultAction:a5 configuration:v15 completion:v17];
+  [v14 pinLibraryArtistWithPersistentID:d cloudArtistID:iDCopy defaultAction:action configuration:configuration completion:v17];
 }
 
 void __89__ICCloudClient_pinLibraryArtistWithPersistentID_cloudArtistID_defaultAction_completion___block_invoke(uint64_t a1, void *a2)
@@ -6051,19 +6051,19 @@ void __89__ICCloudClient_pinLibraryArtistWithPersistentID_cloudArtistID_defaultA
   }
 }
 
-- (void)pinLibraryEntityWithPersistentID:(int64_t)a3 cloudID:(int64_t)a4 type:(int64_t)a5 defaultAction:(int64_t)a6 completion:(id)a7
+- (void)pinLibraryEntityWithPersistentID:(int64_t)d cloudID:(int64_t)iD type:(int64_t)type defaultAction:(int64_t)action completion:(id)completion
 {
-  v12 = a7;
-  v13 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __88__ICCloudClient_pinLibraryEntityWithPersistentID_cloudID_type_defaultAction_completion___block_invoke;
   v20[3] = &unk_1E7BFA490;
   v20[4] = self;
-  v14 = v12;
+  v14 = completionCopy;
   v21 = v14;
-  v15 = [v13 remoteObjectProxyWithErrorHandler:v20];
-  v16 = [(ICCloudClient *)self configuration];
+  v15 = [xpcConnection remoteObjectProxyWithErrorHandler:v20];
+  configuration = [(ICCloudClient *)self configuration];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __88__ICCloudClient_pinLibraryEntityWithPersistentID_cloudID_type_defaultAction_completion___block_invoke_2;
@@ -6071,7 +6071,7 @@ void __89__ICCloudClient_pinLibraryArtistWithPersistentID_cloudArtistID_defaultA
   v18[4] = self;
   v19 = v14;
   v17 = v14;
-  [v15 pinLibraryEntityWithPersistentID:a3 cloudID:a4 type:a5 defaultAction:a6 configuration:v16 completion:v18];
+  [v15 pinLibraryEntityWithPersistentID:d cloudID:iD type:type defaultAction:action configuration:configuration completion:v18];
 }
 
 void __88__ICCloudClient_pinLibraryEntityWithPersistentID_cloudID_type_defaultAction_completion___block_invoke(uint64_t a1, void *a2)
@@ -6145,19 +6145,19 @@ void __88__ICCloudClient_pinLibraryEntityWithPersistentID_cloudID_type_defaultAc
   }
 }
 
-- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4
+- (void)resetInvitationURLForCollaborationWithPersistentID:(int64_t)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __79__ICCloudClient_resetInvitationURLForCollaborationWithPersistentID_completion___block_invoke;
   v14[3] = &unk_1E7BFA490;
   v14[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   v15 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
-  v10 = [(ICCloudClient *)self configuration];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+  configuration = [(ICCloudClient *)self configuration];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__ICCloudClient_resetInvitationURLForCollaborationWithPersistentID_completion___block_invoke_2;
@@ -6165,7 +6165,7 @@ void __88__ICCloudClient_pinLibraryEntityWithPersistentID_cloudID_type_defaultAc
   v12[4] = self;
   v13 = v8;
   v11 = v8;
-  [v9 resetInvitationURLForCollaborationWithPersistentID:a3 configuration:v10 completion:v12];
+  [v9 resetInvitationURLForCollaborationWithPersistentID:d configuration:configuration completion:v12];
 }
 
 void __79__ICCloudClient_resetInvitationURLForCollaborationWithPersistentID_completion___block_invoke(uint64_t a1, void *a2)
@@ -6241,20 +6241,20 @@ void __79__ICCloudClient_resetInvitationURLForCollaborationWithPersistentID_comp
   }
 }
 
-- (void)removeCollaborators:(id)a3 fromCollaborationWithPersistentID:(int64_t)a4 completion:(id)a5
+- (void)removeCollaborators:(id)collaborators fromCollaborationWithPersistentID:(int64_t)d completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  collaboratorsCopy = collaborators;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __82__ICCloudClient_removeCollaborators_fromCollaborationWithPersistentID_completion___block_invoke;
   v17[3] = &unk_1E7BFA490;
   v17[4] = self;
-  v11 = v8;
+  v11 = completionCopy;
   v18 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(ICCloudClient *)self configuration];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  configuration = [(ICCloudClient *)self configuration];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __82__ICCloudClient_removeCollaborators_fromCollaborationWithPersistentID_completion___block_invoke_2;
@@ -6262,7 +6262,7 @@ void __79__ICCloudClient_resetInvitationURLForCollaborationWithPersistentID_comp
   v15[4] = self;
   v16 = v11;
   v14 = v11;
-  [v12 removeCollaborators:v9 fromCollaborationWithPersistentID:a4 configuration:v13 completion:v15];
+  [v12 removeCollaborators:collaboratorsCopy fromCollaborationWithPersistentID:d configuration:configuration completion:v15];
 }
 
 void __82__ICCloudClient_removeCollaborators_fromCollaborationWithPersistentID_completion___block_invoke(uint64_t a1, void *a2)
@@ -6336,30 +6336,30 @@ void __82__ICCloudClient_removeCollaborators_fromCollaborationWithPersistentID_c
   }
 }
 
-- (void)respondToPendingCollaborator:(id)a3 onCollaborationWithPersistentID:(int64_t)a4 withApproval:(BOOL)a5 completion:(id)a6
+- (void)respondToPendingCollaborator:(id)collaborator onCollaborationWithPersistentID:(int64_t)d withApproval:(BOOL)approval completion:(id)completion
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(ICCloudClient *)self xpcConnection];
+  approvalCopy = approval;
+  completionCopy = completion;
+  collaboratorCopy = collaborator;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __102__ICCloudClient_respondToPendingCollaborator_onCollaborationWithPersistentID_withApproval_completion___block_invoke;
   v20[3] = &unk_1E7BFA490;
   v20[4] = self;
-  v13 = v10;
+  v13 = completionCopy;
   v21 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v20];
-  v15 = [(ICCloudClient *)self configuration];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v20];
+  configuration = [(ICCloudClient *)self configuration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __102__ICCloudClient_respondToPendingCollaborator_onCollaborationWithPersistentID_withApproval_completion___block_invoke_2;
   v17[3] = &unk_1E7BF76F8;
   v18 = v13;
-  v19 = a4;
+  dCopy = d;
   v17[4] = self;
   v16 = v13;
-  [v14 respondToPendingCollaborator:v11 onCollaborationWithPersistentID:a4 withApproval:v6 configuration:v15 completion:v17];
+  [v14 respondToPendingCollaborator:collaboratorCopy onCollaborationWithPersistentID:d withApproval:approvalCopy configuration:configuration completion:v17];
 }
 
 void __102__ICCloudClient_respondToPendingCollaborator_onCollaborationWithPersistentID_withApproval_completion___block_invoke(uint64_t a1, void *a2)
@@ -6439,31 +6439,31 @@ void __102__ICCloudClient_respondToPendingCollaborator_onCollaborationWithPersis
   }
 }
 
-- (void)joinCollaborationWithGlobalPlaylistID:(id)a3 invitationURL:(id)a4 completion:(id)a5
+- (void)joinCollaborationWithGlobalPlaylistID:(id)d invitationURL:(id)l completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [(ICCloudClient *)self xpcConnection];
+  dCopy = d;
+  completionCopy = completion;
+  lCopy = l;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __80__ICCloudClient_joinCollaborationWithGlobalPlaylistID_invitationURL_completion___block_invoke;
   v20[3] = &unk_1E7BFA490;
   v20[4] = self;
-  v12 = v9;
+  v12 = completionCopy;
   v21 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v20];
-  v14 = [(ICCloudClient *)self configuration];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v20];
+  configuration = [(ICCloudClient *)self configuration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __80__ICCloudClient_joinCollaborationWithGlobalPlaylistID_invitationURL_completion___block_invoke_2;
   v17[3] = &unk_1E7BF7540;
   v17[4] = self;
-  v18 = v8;
+  v18 = dCopy;
   v19 = v12;
   v15 = v12;
-  v16 = v8;
-  [v13 joinCollaborationWithGlobalPlaylistID:v16 invitationURL:v10 configuration:v14 completion:v17];
+  v16 = dCopy;
+  [v13 joinCollaborationWithGlobalPlaylistID:v16 invitationURL:lCopy configuration:configuration completion:v17];
 }
 
 void __80__ICCloudClient_joinCollaborationWithGlobalPlaylistID_invitationURL_completion___block_invoke(uint64_t a1, void *a2)
@@ -6544,30 +6544,30 @@ void __80__ICCloudClient_joinCollaborationWithGlobalPlaylistID_invitationURL_com
   }
 }
 
-- (void)editCollaborationWithPersistentID:(int64_t)a3 properties:(id)a4 trackEdits:(id)a5 completion:(id)a6
+- (void)editCollaborationWithPersistentID:(int64_t)d properties:(id)properties trackEdits:(id)edits completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  editsCopy = edits;
+  propertiesCopy = properties;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __84__ICCloudClient_editCollaborationWithPersistentID_properties_trackEdits_completion___block_invoke;
   v21[3] = &unk_1E7BFA490;
   v21[4] = self;
-  v14 = v10;
+  v14 = completionCopy;
   v22 = v14;
-  v15 = [v13 remoteObjectProxyWithErrorHandler:v21];
-  v16 = [(ICCloudClient *)self configuration];
+  v15 = [xpcConnection remoteObjectProxyWithErrorHandler:v21];
+  configuration = [(ICCloudClient *)self configuration];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __84__ICCloudClient_editCollaborationWithPersistentID_properties_trackEdits_completion___block_invoke_2;
   v18[3] = &unk_1E7BF76F8;
   v19 = v14;
-  v20 = a3;
+  dCopy = d;
   v18[4] = self;
   v17 = v14;
-  [v15 editCollaborationWithPersistentID:a3 configuration:v16 properties:v12 trackEdits:v11 completion:v18];
+  [v15 editCollaborationWithPersistentID:d configuration:configuration properties:propertiesCopy trackEdits:editsCopy completion:v18];
 }
 
 void __84__ICCloudClient_editCollaborationWithPersistentID_properties_trackEdits_completion___block_invoke(uint64_t a1, void *a2)
@@ -6647,28 +6647,28 @@ void __84__ICCloudClient_editCollaborationWithPersistentID_properties_trackEdits
   }
 }
 
-- (void)endCollaborationWithPersistentID:(int64_t)a3 completion:(id)a4
+- (void)endCollaborationWithPersistentID:(int64_t)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __61__ICCloudClient_endCollaborationWithPersistentID_completion___block_invoke;
   v15[3] = &unk_1E7BFA490;
   v15[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   v16 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v15];
-  v10 = [(ICCloudClient *)self configuration];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__ICCloudClient_endCollaborationWithPersistentID_completion___block_invoke_2;
   v12[3] = &unk_1E7BF3FF8;
   v13 = v8;
-  v14 = a3;
+  dCopy = d;
   v12[4] = self;
   v11 = v8;
-  [v9 endCollaborationWithPersistentID:a3 configuration:v10 completion:v12];
+  [v9 endCollaborationWithPersistentID:d configuration:configuration completion:v12];
 }
 
 void __61__ICCloudClient_endCollaborationWithPersistentID_completion___block_invoke(uint64_t a1, void *a2)
@@ -6749,28 +6749,28 @@ void __61__ICCloudClient_endCollaborationWithPersistentID_completion___block_inv
   }
 }
 
-- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)a3 sharingMode:(unint64_t)a4 completion:(id)a5
+- (void)beginCollaborationUsingPlaylistWithPersistentID:(int64_t)d sharingMode:(unint64_t)mode completion:(id)completion
 {
-  v8 = a5;
-  v9 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __88__ICCloudClient_beginCollaborationUsingPlaylistWithPersistentID_sharingMode_completion___block_invoke;
   v17[3] = &unk_1E7BFA490;
   v17[4] = self;
-  v10 = v8;
+  v10 = completionCopy;
   v18 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v17];
-  v12 = [(ICCloudClient *)self configuration];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  configuration = [(ICCloudClient *)self configuration];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __88__ICCloudClient_beginCollaborationUsingPlaylistWithPersistentID_sharingMode_completion___block_invoke_2;
   v14[3] = &unk_1E7BF3FF8;
   v15 = v10;
-  v16 = a3;
+  dCopy = d;
   v14[4] = self;
   v13 = v10;
-  [v11 beginCollaborationUsingPlaylistWithPersistentID:a3 sharingMode:a4 configuration:v12 completion:v14];
+  [v11 beginCollaborationUsingPlaylistWithPersistentID:d sharingMode:mode configuration:configuration completion:v14];
 }
 
 void __88__ICCloudClient_beginCollaborationUsingPlaylistWithPersistentID_sharingMode_completion___block_invoke(uint64_t a1, void *a2)
@@ -6851,22 +6851,22 @@ void __88__ICCloudClient_beginCollaborationUsingPlaylistWithPersistentID_sharing
   }
 }
 
-- (void)favoriteArtistWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6
+- (void)favoriteArtistWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = [(ICCloudClient *)self xpcConnection];
+  iDCopy = iD;
+  handlerCopy = handler;
+  timeCopy = time;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __86__ICCloudClient_favoriteArtistWithPersistentID_cloudLibraryID_time_completionHandler___block_invoke;
   v23[3] = &unk_1E7BFA490;
-  v14 = v10;
+  v14 = iDCopy;
   v24 = v14;
-  v15 = v11;
+  v15 = handlerCopy;
   v25 = v15;
-  v16 = [v13 remoteObjectProxyWithErrorHandler:v23];
-  v17 = [(ICCloudClient *)self configuration];
+  v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
+  configuration = [(ICCloudClient *)self configuration];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __86__ICCloudClient_favoriteArtistWithPersistentID_cloudLibraryID_time_completionHandler___block_invoke_2;
@@ -6875,7 +6875,7 @@ void __88__ICCloudClient_beginCollaborationUsingPlaylistWithPersistentID_sharing
   v22 = v15;
   v18 = v15;
   v19 = v14;
-  [v16 favoriteArtistWithPersistentID:a3 cloudLibraryID:v19 time:v12 configuration:v17 completionHandler:v20];
+  [v16 favoriteArtistWithPersistentID:d cloudLibraryID:v19 time:timeCopy configuration:configuration completionHandler:v20];
 }
 
 void __86__ICCloudClient_favoriteArtistWithPersistentID_cloudLibraryID_time_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -6939,22 +6939,22 @@ void __86__ICCloudClient_favoriteArtistWithPersistentID_cloudLibraryID_time_comp
   }
 }
 
-- (void)favoriteAlbumWithPersistentID:(int64_t)a3 cloudLibraryID:(id)a4 time:(id)a5 completionHandler:(id)a6
+- (void)favoriteAlbumWithPersistentID:(int64_t)d cloudLibraryID:(id)iD time:(id)time completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = [(ICCloudClient *)self xpcConnection];
+  iDCopy = iD;
+  handlerCopy = handler;
+  timeCopy = time;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __85__ICCloudClient_favoriteAlbumWithPersistentID_cloudLibraryID_time_completionHandler___block_invoke;
   v23[3] = &unk_1E7BFA490;
-  v14 = v10;
+  v14 = iDCopy;
   v24 = v14;
-  v15 = v11;
+  v15 = handlerCopy;
   v25 = v15;
-  v16 = [v13 remoteObjectProxyWithErrorHandler:v23];
-  v17 = [(ICCloudClient *)self configuration];
+  v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
+  configuration = [(ICCloudClient *)self configuration];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __85__ICCloudClient_favoriteAlbumWithPersistentID_cloudLibraryID_time_completionHandler___block_invoke_2;
@@ -6963,7 +6963,7 @@ void __86__ICCloudClient_favoriteArtistWithPersistentID_cloudLibraryID_time_comp
   v22 = v15;
   v18 = v15;
   v19 = v14;
-  [v16 favoriteAlbumWithPersistentID:a3 cloudLibraryID:v19 time:v12 configuration:v17 completionHandler:v20];
+  [v16 favoriteAlbumWithPersistentID:d cloudLibraryID:v19 time:timeCopy configuration:configuration completionHandler:v20];
 }
 
 void __85__ICCloudClient_favoriteAlbumWithPersistentID_cloudLibraryID_time_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7027,28 +7027,28 @@ void __85__ICCloudClient_favoriteAlbumWithPersistentID_cloudLibraryID_time_compl
   }
 }
 
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 sagaID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7
+- (void)favoriteEntityWithPersistentID:(int64_t)d sagaID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  timeCopy = time;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __89__ICCloudClient_favoriteEntityWithPersistentID_sagaID_entityType_time_completionHandler___block_invoke;
   v22[3] = &unk_1E7BF7658;
-  v24 = a4;
-  v15 = v12;
+  iDCopy = iD;
+  v15 = handlerCopy;
   v23 = v15;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v22];
-  v17 = [(ICCloudClient *)self configuration];
+  v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v22];
+  configuration = [(ICCloudClient *)self configuration];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __89__ICCloudClient_favoriteEntityWithPersistentID_sagaID_entityType_time_completionHandler___block_invoke_2;
   v19[3] = &unk_1E7BF7658;
   v20 = v15;
-  v21 = a4;
+  iDCopy2 = iD;
   v18 = v15;
-  [v16 favoriteEntityWithPersistentID:a3 sagaID:a4 entityType:a5 time:v13 configuration:v17 completionHandler:v19];
+  [v16 favoriteEntityWithPersistentID:d sagaID:iD entityType:type time:timeCopy configuration:configuration completionHandler:v19];
 }
 
 void __89__ICCloudClient_favoriteEntityWithPersistentID_sagaID_entityType_time_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7112,22 +7112,22 @@ void __89__ICCloudClient_favoriteEntityWithPersistentID_sagaID_entityType_time_c
   }
 }
 
-- (void)favoritePlaylistWithPersistentID:(int64_t)a3 globalID:(id)a4 time:(id)a5 completionHandler:(id)a6
+- (void)favoritePlaylistWithPersistentID:(int64_t)d globalID:(id)iD time:(id)time completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
-  v13 = [(ICCloudClient *)self xpcConnection];
+  iDCopy = iD;
+  handlerCopy = handler;
+  timeCopy = time;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __82__ICCloudClient_favoritePlaylistWithPersistentID_globalID_time_completionHandler___block_invoke;
   v23[3] = &unk_1E7BFA490;
-  v14 = v10;
+  v14 = iDCopy;
   v24 = v14;
-  v15 = v11;
+  v15 = handlerCopy;
   v25 = v15;
-  v16 = [v13 remoteObjectProxyWithErrorHandler:v23];
-  v17 = [(ICCloudClient *)self configuration];
+  v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
+  configuration = [(ICCloudClient *)self configuration];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __82__ICCloudClient_favoritePlaylistWithPersistentID_globalID_time_completionHandler___block_invoke_2;
@@ -7136,7 +7136,7 @@ void __89__ICCloudClient_favoriteEntityWithPersistentID_sagaID_entityType_time_c
   v22 = v15;
   v18 = v15;
   v19 = v14;
-  [v16 favoritePlaylistWithPersistentID:a3 globalID:v19 time:v12 configuration:v17 completionHandler:v20];
+  [v16 favoritePlaylistWithPersistentID:d globalID:v19 time:timeCopy configuration:configuration completionHandler:v20];
 }
 
 void __82__ICCloudClient_favoritePlaylistWithPersistentID_globalID_time_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7200,28 +7200,28 @@ void __82__ICCloudClient_favoritePlaylistWithPersistentID_globalID_time_completi
   }
 }
 
-- (void)favoriteEntityWithPersistentID:(int64_t)a3 storeID:(int64_t)a4 entityType:(int64_t)a5 time:(id)a6 completionHandler:(id)a7
+- (void)favoriteEntityWithPersistentID:(int64_t)d storeID:(int64_t)iD entityType:(int64_t)type time:(id)time completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  timeCopy = time;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __90__ICCloudClient_favoriteEntityWithPersistentID_storeID_entityType_time_completionHandler___block_invoke;
   v22[3] = &unk_1E7BF7658;
-  v24 = a4;
-  v15 = v12;
+  iDCopy = iD;
+  v15 = handlerCopy;
   v23 = v15;
-  v16 = [v14 remoteObjectProxyWithErrorHandler:v22];
-  v17 = [(ICCloudClient *)self configuration];
+  v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v22];
+  configuration = [(ICCloudClient *)self configuration];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __90__ICCloudClient_favoriteEntityWithPersistentID_storeID_entityType_time_completionHandler___block_invoke_2;
   v19[3] = &unk_1E7BF7658;
   v20 = v15;
-  v21 = a4;
+  iDCopy2 = iD;
   v18 = v15;
-  [v16 favoriteEntityWithPersistentID:a3 storeID:a4 entityType:a5 time:v13 configuration:v17 completionHandler:v19];
+  [v16 favoriteEntityWithPersistentID:d storeID:iD entityType:type time:timeCopy configuration:configuration completionHandler:v19];
 }
 
 void __90__ICCloudClient_favoriteEntityWithPersistentID_storeID_entityType_time_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7285,28 +7285,28 @@ void __90__ICCloudClient_favoriteEntityWithPersistentID_storeID_entityType_time_
   }
 }
 
-- (void)addGeniusPlaylistWithPersistentID:(int64_t)a3 name:(id)a4 seedItemSagaIDs:(id)a5 itemSagaIDs:(id)a6 completionHandler:(id)a7
+- (void)addGeniusPlaylistWithPersistentID:(int64_t)d name:(id)name seedItemSagaIDs:(id)ds itemSagaIDs:(id)iDs completionHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  iDsCopy = iDs;
+  dsCopy = ds;
+  nameCopy = name;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __102__ICCloudClient_addGeniusPlaylistWithPersistentID_name_seedItemSagaIDs_itemSagaIDs_completionHandler___block_invoke;
   v23[3] = &unk_1E7BF77C0;
-  v17 = v12;
+  v17 = handlerCopy;
   v24 = v17;
-  v18 = [v16 remoteObjectProxyWithErrorHandler:v23];
-  v19 = [(ICCloudClient *)self configuration];
+  v18 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
+  configuration = [(ICCloudClient *)self configuration];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __102__ICCloudClient_addGeniusPlaylistWithPersistentID_name_seedItemSagaIDs_itemSagaIDs_completionHandler___block_invoke_2;
   v21[3] = &unk_1E7BF73D8;
   v22 = v17;
   v20 = v17;
-  [v18 addGeniusPlaylistWithPersistentID:a3 name:v15 seedItemSagaIDs:v14 itemSagaIDs:v13 configuration:v19 completion:v21];
+  [v18 addGeniusPlaylistWithPersistentID:d name:nameCopy seedItemSagaIDs:dsCopy itemSagaIDs:iDsCopy configuration:configuration completion:v21];
 }
 
 void __102__ICCloudClient_addGeniusPlaylistWithPersistentID_name_seedItemSagaIDs_itemSagaIDs_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7365,26 +7365,26 @@ void __102__ICCloudClient_addGeniusPlaylistWithPersistentID_name_seedItemSagaIDs
   }
 }
 
-- (void)hideItemsWithPurchaseHistoryIDs:(id)a3 completionHandler:(id)a4
+- (void)hideItemsWithPurchaseHistoryIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  dsCopy = ds;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__ICCloudClient_hideItemsWithPurchaseHistoryIDs_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__ICCloudClient_hideItemsWithPurchaseHistoryIDs_completionHandler___block_invoke_2;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 hideItemsWithPurchaseHistoryIDs:v7 configuration:v11 completion:v13];
+  [v10 hideItemsWithPurchaseHistoryIDs:dsCopy configuration:configuration completion:v13];
 }
 
 void __67__ICCloudClient_hideItemsWithPurchaseHistoryIDs_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7430,26 +7430,26 @@ void __67__ICCloudClient_hideItemsWithPurchaseHistoryIDs_completionHandler___blo
   }
 }
 
-- (void)removeItemsWithSagaIDs:(id)a3 completionHandler:(id)a4
+- (void)removeItemsWithSagaIDs:(id)ds completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  dsCopy = ds;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __58__ICCloudClient_removeItemsWithSagaIDs_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __58__ICCloudClient_removeItemsWithSagaIDs_completionHandler___block_invoke_2;
   v13[3] = &unk_1E7BF77C0;
   v14 = v9;
   v12 = v9;
-  [v10 removeItemsWithSagaIDs:v7 configuration:v11 completion:v13];
+  [v10 removeItemsWithSagaIDs:dsCopy configuration:configuration completion:v13];
 }
 
 void __58__ICCloudClient_removeItemsWithSagaIDs_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7495,29 +7495,29 @@ void __58__ICCloudClient_removeItemsWithSagaIDs_completionHandler___block_invoke
   }
 }
 
-- (void)removePlaylistsWithSagaIDs:(id)a3 performDeltaSync:(BOOL)a4 completionHandler:(id)a5
+- (void)removePlaylistsWithSagaIDs:(id)ds performDeltaSync:(BOOL)sync completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = [(ICCloudClient *)self xpcConnection];
+  syncCopy = sync;
+  dsCopy = ds;
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __79__ICCloudClient_removePlaylistsWithSagaIDs_performDeltaSync_completionHandler___block_invoke;
   v19[3] = &unk_1E7BF77C0;
-  v11 = v9;
+  v11 = handlerCopy;
   v20 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v19];
-  v13 = [(ICCloudClient *)self configuration];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
+  configuration = [(ICCloudClient *)self configuration];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __79__ICCloudClient_removePlaylistsWithSagaIDs_performDeltaSync_completionHandler___block_invoke_2;
   v16[3] = &unk_1E7BFA490;
-  v17 = v8;
+  v17 = dsCopy;
   v18 = v11;
   v14 = v11;
-  v15 = v8;
-  [v12 removePlaylistsWithSagaIDs:v15 performDeltaSync:v6 configuration:v13 completion:v16];
+  v15 = dsCopy;
+  [v12 removePlaylistsWithSagaIDs:v15 performDeltaSync:syncCopy configuration:configuration completion:v16];
 }
 
 void __79__ICCloudClient_removePlaylistsWithSagaIDs_performDeltaSync_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7578,28 +7578,28 @@ void __79__ICCloudClient_removePlaylistsWithSagaIDs_performDeltaSync_completionH
   }
 }
 
-- (void)addStorePlaylistWithGlobalID:(id)a3 completionHandler:(id)a4
+- (void)addStorePlaylistWithGlobalID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICCloudClient *)self xpcConnection];
+  dCopy = d;
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __64__ICCloudClient_addStorePlaylistWithGlobalID_completionHandler___block_invoke;
   v17[3] = &unk_1E7BF77C0;
-  v9 = v7;
+  v9 = handlerCopy;
   v18 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v17];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  configuration = [(ICCloudClient *)self configuration];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __64__ICCloudClient_addStorePlaylistWithGlobalID_completionHandler___block_invoke_2;
   v14[3] = &unk_1E7BF6AC0;
-  v15 = v6;
+  v15 = dCopy;
   v16 = v9;
   v12 = v9;
-  v13 = v6;
-  [v10 addStorePlaylistWithGlobalID:v13 configuration:v11 completion:v14];
+  v13 = dCopy;
+  [v10 addStorePlaylistWithGlobalID:v13 configuration:configuration completion:v14];
 }
 
 void __64__ICCloudClient_addStorePlaylistWithGlobalID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7662,26 +7662,26 @@ void __64__ICCloudClient_addStorePlaylistWithGlobalID_completionHandler___block_
   }
 }
 
-- (void)sdk_addStoreItemWithOpaqueID:(id)a3 completionHandler:(id)a4
+- (void)sdk_addStoreItemWithOpaqueID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  dCopy = d;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __64__ICCloudClient_sdk_addStoreItemWithOpaqueID_completionHandler___block_invoke;
   v15[3] = &unk_1E7BF77C0;
-  v9 = v6;
+  v9 = handlerCopy;
   v16 = v9;
-  v10 = [v8 remoteObjectProxyWithErrorHandler:v15];
-  v11 = [(ICCloudClient *)self configuration];
+  v10 = [xpcConnection remoteObjectProxyWithErrorHandler:v15];
+  configuration = [(ICCloudClient *)self configuration];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __64__ICCloudClient_sdk_addStoreItemWithOpaqueID_completionHandler___block_invoke_2;
   v13[3] = &unk_1E7BF3FA8;
   v14 = v9;
   v12 = v9;
-  [v10 sdk_addStoreItemWithOpaqueID:v7 configuration:v11 completion:v13];
+  [v10 sdk_addStoreItemWithOpaqueID:dCopy configuration:configuration completion:v13];
 }
 
 void __64__ICCloudClient_sdk_addStoreItemWithOpaqueID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7729,27 +7729,27 @@ void __64__ICCloudClient_sdk_addStoreItemWithOpaqueID_completionHandler___block_
   }
 }
 
-- (void)addStoreItemsWithAdamIDs:(id)a3 referral:(id)a4 completionHandler:(id)a5
+- (void)addStoreItemsWithAdamIDs:(id)ds referral:(id)referral completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  referralCopy = referral;
+  dsCopy = ds;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __69__ICCloudClient_addStoreItemsWithAdamIDs_referral_completionHandler___block_invoke;
   v18[3] = &unk_1E7BF77C0;
-  v12 = v8;
+  v12 = handlerCopy;
   v19 = v12;
-  v13 = [v11 remoteObjectProxyWithErrorHandler:v18];
-  v14 = [(ICCloudClient *)self configuration];
+  v13 = [xpcConnection remoteObjectProxyWithErrorHandler:v18];
+  configuration = [(ICCloudClient *)self configuration];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __69__ICCloudClient_addStoreItemsWithAdamIDs_referral_completionHandler___block_invoke_2;
   v16[3] = &unk_1E7BF3FA8;
   v17 = v12;
   v15 = v12;
-  [v13 addStoreItemsWithAdamIDs:v10 referral:v9 configuration:v14 completion:v16];
+  [v13 addStoreItemsWithAdamIDs:dsCopy referral:referralCopy configuration:configuration completion:v16];
 }
 
 void __69__ICCloudClient_addStoreItemsWithAdamIDs_referral_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -7797,44 +7797,44 @@ void __69__ICCloudClient_addStoreItemsWithAdamIDs_referral_completionHandler___b
   }
 }
 
-- (void)addStoreItemWithAdamID:(int64_t)a3 referral:(id)a4 completionHandler:(id)a5
+- (void)addStoreItemWithAdamID:(int64_t)d referral:(id)referral completionHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (a3 <= 0)
+  referralCopy = referral;
+  handlerCopy = handler;
+  if (d <= 0)
   {
     v14 = os_log_create("com.apple.amp.iTunesCloud", "CloudClient");
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v20 = a3;
+      dCopy = d;
       _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_ERROR, "Must provide a valid adam ID (%lld) adding to library.", buf, 0xCu);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      (*(v9 + 2))(v9, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
   else
   {
-    v10 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __67__ICCloudClient_addStoreItemWithAdamID_referral_completionHandler___block_invoke;
     v17[3] = &unk_1E7BF77C0;
-    v11 = v9;
+    v11 = handlerCopy;
     v18 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
-    v13 = [(ICCloudClient *)self configuration];
+    v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+    configuration = [(ICCloudClient *)self configuration];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __67__ICCloudClient_addStoreItemWithAdamID_referral_completionHandler___block_invoke_2;
     v15[3] = &unk_1E7BF3FA8;
     v16 = v11;
-    [v12 addStoreItemWithAdamID:a3 referral:v8 configuration:v13 completion:v15];
+    [v12 addStoreItemWithAdamID:d referral:referralCopy configuration:configuration completion:v15];
   }
 }
 
@@ -7883,25 +7883,25 @@ void __67__ICCloudClient_addStoreItemWithAdamID_referral_completionHandler___blo
   }
 }
 
-- (void)updatePinnedSubscribedPlaylistsWithCompletion:(id)a3
+- (void)updatePinnedSubscribedPlaylistsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ICCloudClient *)self xpcConnection];
+  completionCopy = completion;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __63__ICCloudClient_updatePinnedSubscribedPlaylistsWithCompletion___block_invoke;
   v12[3] = &unk_1E7BF77C0;
-  v6 = v4;
+  v6 = completionCopy;
   v13 = v6;
-  v7 = [v5 remoteObjectProxyWithErrorHandler:v12];
-  v8 = [(ICCloudClient *)self configuration];
+  v7 = [xpcConnection remoteObjectProxyWithErrorHandler:v12];
+  configuration = [(ICCloudClient *)self configuration];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__ICCloudClient_updatePinnedSubscribedPlaylistsWithCompletion___block_invoke_2;
   v10[3] = &unk_1E7BF77C0;
   v11 = v6;
   v9 = v6;
-  [v7 updatePinnedSubscribedPlaylistsWithConfiguration:v8 completion:v10];
+  [v7 updatePinnedSubscribedPlaylistsWithConfiguration:configuration completion:v10];
 }
 
 void __63__ICCloudClient_updatePinnedSubscribedPlaylistsWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -7947,27 +7947,27 @@ void __63__ICCloudClient_updatePinnedSubscribedPlaylistsWithCompletion___block_i
   }
 }
 
-- (void)updateSubscribedPlaylistsWithSagaIDs:(id)a3 ignoreMinRefreshInterval:(BOOL)a4 completionHandler:(id)a5
+- (void)updateSubscribedPlaylistsWithSagaIDs:(id)ds ignoreMinRefreshInterval:(BOOL)interval completionHandler:(id)handler
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ICCloudClient *)self xpcConnection];
+  intervalCopy = interval;
+  handlerCopy = handler;
+  dsCopy = ds;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __97__ICCloudClient_updateSubscribedPlaylistsWithSagaIDs_ignoreMinRefreshInterval_completionHandler___block_invoke;
   v17[3] = &unk_1E7BF77C0;
-  v11 = v8;
+  v11 = handlerCopy;
   v18 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(ICCloudClient *)self configuration];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  configuration = [(ICCloudClient *)self configuration];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __97__ICCloudClient_updateSubscribedPlaylistsWithSagaIDs_ignoreMinRefreshInterval_completionHandler___block_invoke_2;
   v15[3] = &unk_1E7BF77C0;
   v16 = v11;
   v14 = v11;
-  [v12 updateSubscribedPlaylistsWithSagaIDs:v9 ignoreMinRefreshInterval:v5 configuration:v13 completion:v15];
+  [v12 updateSubscribedPlaylistsWithSagaIDs:dsCopy ignoreMinRefreshInterval:intervalCopy configuration:configuration completion:v15];
 }
 
 void __97__ICCloudClient_updateSubscribedPlaylistsWithSagaIDs_ignoreMinRefreshInterval_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -8013,25 +8013,25 @@ void __97__ICCloudClient_updateSubscribedPlaylistsWithSagaIDs_ignoreMinRefreshIn
   }
 }
 
-- (void)uploadArtworkForPlaylistWithPersistentID:(int64_t)a3 completionHandler:(id)a4
+- (void)uploadArtworkForPlaylistWithPersistentID:(int64_t)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __76__ICCloudClient_uploadArtworkForPlaylistWithPersistentID_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF77C0;
-  v8 = v6;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
-  v10 = [(ICCloudClient *)self configuration];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+  configuration = [(ICCloudClient *)self configuration];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__ICCloudClient_uploadArtworkForPlaylistWithPersistentID_completionHandler___block_invoke_2;
   v12[3] = &unk_1E7BF77C0;
   v13 = v8;
   v11 = v8;
-  [v9 uploadArtworkForPlaylistWithPersistentID:a3 configuration:v10 completion:v12];
+  [v9 uploadArtworkForPlaylistWithPersistentID:d configuration:configuration completion:v12];
 }
 
 void __76__ICCloudClient_uploadArtworkForPlaylistWithPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -8077,25 +8077,25 @@ void __76__ICCloudClient_uploadArtworkForPlaylistWithPersistentID_completionHand
   }
 }
 
-- (void)publishPlaylistWithSagaID:(int64_t)a3 completionHandler:(id)a4
+- (void)publishPlaylistWithSagaID:(int64_t)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__ICCloudClient_publishPlaylistWithSagaID_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF77C0;
-  v8 = v6;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
-  v10 = [(ICCloudClient *)self configuration];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+  configuration = [(ICCloudClient *)self configuration];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __61__ICCloudClient_publishPlaylistWithSagaID_completionHandler___block_invoke_2;
   v12[3] = &unk_1E7BF3FD0;
   v13 = v8;
   v11 = v8;
-  [v9 publishPlaylistWithSagaID:a3 configuration:v10 completion:v12];
+  [v9 publishPlaylistWithSagaID:d configuration:configuration completion:v12];
 }
 
 void __61__ICCloudClient_publishPlaylistWithSagaID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -8145,25 +8145,25 @@ void __61__ICCloudClient_publishPlaylistWithSagaID_completionHandler___block_inv
   }
 }
 
-- (void)sdk_addItemWithSagaID:(int64_t)a3 toPlaylistWithPersistentID:(int64_t)a4 completionHandler:(id)a5
+- (void)sdk_addItemWithSagaID:(int64_t)d toPlaylistWithPersistentID:(int64_t)iD completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __84__ICCloudClient_sdk_addItemWithSagaID_toPlaylistWithPersistentID_completionHandler___block_invoke;
   v16[3] = &unk_1E7BF77C0;
-  v10 = v8;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
-  v12 = [(ICCloudClient *)self configuration];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v16];
+  configuration = [(ICCloudClient *)self configuration];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__ICCloudClient_sdk_addItemWithSagaID_toPlaylistWithPersistentID_completionHandler___block_invoke_2;
   v14[3] = &unk_1E7BF77C0;
   v15 = v10;
   v13 = v10;
-  [v11 sdk_addItemWithSagaID:a3 toPlaylistWithPersistentID:a4 configuration:v12 completion:v14];
+  [v11 sdk_addItemWithSagaID:d toPlaylistWithPersistentID:iD configuration:configuration completion:v14];
 }
 
 void __84__ICCloudClient_sdk_addItemWithSagaID_toPlaylistWithPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -8209,26 +8209,26 @@ void __84__ICCloudClient_sdk_addItemWithSagaID_toPlaylistWithPersistentID_comple
   }
 }
 
-- (void)sdk_addStoreItemWithOpaqueID:(id)a3 toPlaylistWithPersistentID:(int64_t)a4 completionHandler:(id)a5
+- (void)sdk_addStoreItemWithOpaqueID:(id)d toPlaylistWithPersistentID:(int64_t)iD completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  dCopy = d;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __91__ICCloudClient_sdk_addStoreItemWithOpaqueID_toPlaylistWithPersistentID_completionHandler___block_invoke;
   v17[3] = &unk_1E7BF77C0;
-  v11 = v8;
+  v11 = handlerCopy;
   v18 = v11;
-  v12 = [v10 remoteObjectProxyWithErrorHandler:v17];
-  v13 = [(ICCloudClient *)self configuration];
+  v12 = [xpcConnection remoteObjectProxyWithErrorHandler:v17];
+  configuration = [(ICCloudClient *)self configuration];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __91__ICCloudClient_sdk_addStoreItemWithOpaqueID_toPlaylistWithPersistentID_completionHandler___block_invoke_2;
   v15[3] = &unk_1E7BF3FA8;
   v16 = v11;
   v14 = v11;
-  [v12 sdk_addStoreItemWithOpaqueID:v9 toPlaylistWithPersistentID:a4 configuration:v13 completion:v15];
+  [v12 sdk_addStoreItemWithOpaqueID:dCopy toPlaylistWithPersistentID:iD configuration:configuration completion:v15];
 }
 
 void __91__ICCloudClient_sdk_addStoreItemWithOpaqueID_toPlaylistWithPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -8276,25 +8276,25 @@ void __91__ICCloudClient_sdk_addStoreItemWithOpaqueID_toPlaylistWithPersistentID
   }
 }
 
-- (void)addItemWithSagaID:(int64_t)a3 toPlaylistWithPersistentID:(int64_t)a4 completionHandler:(id)a5
+- (void)addItemWithSagaID:(int64_t)d toPlaylistWithPersistentID:(int64_t)iD completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __80__ICCloudClient_addItemWithSagaID_toPlaylistWithPersistentID_completionHandler___block_invoke;
   v16[3] = &unk_1E7BF77C0;
-  v10 = v8;
+  v10 = handlerCopy;
   v17 = v10;
-  v11 = [v9 remoteObjectProxyWithErrorHandler:v16];
-  v12 = [(ICCloudClient *)self configuration];
+  v11 = [xpcConnection remoteObjectProxyWithErrorHandler:v16];
+  configuration = [(ICCloudClient *)self configuration];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __80__ICCloudClient_addItemWithSagaID_toPlaylistWithPersistentID_completionHandler___block_invoke_2;
   v14[3] = &unk_1E7BF77C0;
   v15 = v10;
   v13 = v10;
-  [v11 addItemWithSagaID:a3 toPlaylistWithPersistentID:a4 configuration:v12 completion:v14];
+  [v11 addItemWithSagaID:d toPlaylistWithPersistentID:iD configuration:configuration completion:v14];
 }
 
 void __80__ICCloudClient_addItemWithSagaID_toPlaylistWithPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -8340,26 +8340,26 @@ void __80__ICCloudClient_addItemWithSagaID_toPlaylistWithPersistentID_completion
   }
 }
 
-- (void)addStoreItemWithAdamID:(int64_t)a3 referral:(id)a4 toPlaylistWithPersistentID:(int64_t)a5 completionHandler:(id)a6
+- (void)addStoreItemWithAdamID:(int64_t)d referral:(id)referral toPlaylistWithPersistentID:(int64_t)iD completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  referralCopy = referral;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __94__ICCloudClient_addStoreItemWithAdamID_referral_toPlaylistWithPersistentID_completionHandler___block_invoke;
   v19[3] = &unk_1E7BF77C0;
-  v13 = v10;
+  v13 = handlerCopy;
   v20 = v13;
-  v14 = [v12 remoteObjectProxyWithErrorHandler:v19];
-  v15 = [(ICCloudClient *)self configuration];
+  v14 = [xpcConnection remoteObjectProxyWithErrorHandler:v19];
+  configuration = [(ICCloudClient *)self configuration];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __94__ICCloudClient_addStoreItemWithAdamID_referral_toPlaylistWithPersistentID_completionHandler___block_invoke_2;
   v17[3] = &unk_1E7BF77C0;
   v18 = v13;
   v16 = v13;
-  [v14 addStoreItemWithAdamID:a3 referral:v11 toPlaylistWithPersistentID:a5 configuration:v15 completion:v17];
+  [v14 addStoreItemWithAdamID:d referral:referralCopy toPlaylistWithPersistentID:iD configuration:configuration completion:v17];
 }
 
 void __94__ICCloudClient_addStoreItemWithAdamID_referral_toPlaylistWithPersistentID_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -8405,34 +8405,34 @@ void __94__ICCloudClient_addStoreItemWithAdamID_referral_toPlaylistWithPersisten
   }
 }
 
-- (void)sdk_setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistPersistentID:(int64_t)a5 completionHandler:(id)a6
+- (void)sdk_setPlaylistProperties:(id)properties trackList:(id)list forPlaylistPersistentID:(int64_t)d completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (v10 | v11)
+  propertiesCopy = properties;
+  listCopy = list;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  if (propertiesCopy | listCopy)
   {
-    v14 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __95__ICCloudClient_sdk_setPlaylistProperties_trackList_forPlaylistPersistentID_completionHandler___block_invoke;
     v20[3] = &unk_1E7BF77C0;
     v15 = v13;
     v21 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v20];
-    v17 = [(ICCloudClient *)self configuration];
+    v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v20];
+    configuration = [(ICCloudClient *)self configuration];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __95__ICCloudClient_sdk_setPlaylistProperties_trackList_forPlaylistPersistentID_completionHandler___block_invoke_2;
     v18[3] = &unk_1E7BF77C0;
     v19 = v15;
-    [v16 sdk_setPlaylistProperties:v10 trackList:v11 forPlaylistPersistentID:a5 configuration:v17 completion:v18];
+    [v16 sdk_setPlaylistProperties:propertiesCopy trackList:listCopy forPlaylistPersistentID:d configuration:configuration completion:v18];
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
-    (*(v12 + 2))(v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -8479,34 +8479,34 @@ void __95__ICCloudClient_sdk_setPlaylistProperties_trackList_forPlaylistPersiste
   }
 }
 
-- (void)setPlaylistProperties:(id)a3 trackList:(id)a4 forPlaylistPersistentID:(int64_t)a5 completionHandler:(id)a6
+- (void)setPlaylistProperties:(id)properties trackList:(id)list forPlaylistPersistentID:(int64_t)d completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = v12;
-  if (v10 | v11)
+  propertiesCopy = properties;
+  listCopy = list;
+  handlerCopy = handler;
+  v13 = handlerCopy;
+  if (propertiesCopy | listCopy)
   {
-    v14 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __91__ICCloudClient_setPlaylistProperties_trackList_forPlaylistPersistentID_completionHandler___block_invoke;
     v20[3] = &unk_1E7BF77C0;
     v15 = v13;
     v21 = v15;
-    v16 = [v14 remoteObjectProxyWithErrorHandler:v20];
-    v17 = [(ICCloudClient *)self configuration];
+    v16 = [xpcConnection remoteObjectProxyWithErrorHandler:v20];
+    configuration = [(ICCloudClient *)self configuration];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __91__ICCloudClient_setPlaylistProperties_trackList_forPlaylistPersistentID_completionHandler___block_invoke_2;
     v18[3] = &unk_1E7BF77C0;
     v19 = v15;
-    [v16 setPlaylistProperties:v10 trackList:v11 forPlaylistPersistentID:a5 configuration:v17 completion:v18];
+    [v16 setPlaylistProperties:propertiesCopy trackList:listCopy forPlaylistPersistentID:d configuration:configuration completion:v18];
   }
 
-  else if (v12)
+  else if (handlerCopy)
   {
-    (*(v12 + 2))(v12, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -8553,31 +8553,31 @@ void __91__ICCloudClient_setPlaylistProperties_trackList_forPlaylistPersistentID
   }
 }
 
-- (void)sdk_createPlaylistWithPersistentID:(int64_t)a3 properties:(id)a4 tracklist:(id)a5 completionHandler:(id)a6
+- (void)sdk_createPlaylistWithPersistentID:(int64_t)d properties:(id)properties tracklist:(id)tracklist completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 objectForKey:@"name"];
+  propertiesCopy = properties;
+  tracklistCopy = tracklist;
+  handlerCopy = handler;
+  v13 = [propertiesCopy objectForKey:@"name"];
   v14 = [v13 length];
 
   if (v14)
   {
-    v15 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __91__ICCloudClient_sdk_createPlaylistWithPersistentID_properties_tracklist_completionHandler___block_invoke;
     v23[3] = &unk_1E7BF77C0;
-    v16 = v12;
+    v16 = handlerCopy;
     v24 = v16;
-    v17 = [v15 remoteObjectProxyWithErrorHandler:v23];
-    v18 = [(ICCloudClient *)self configuration];
+    v17 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
+    configuration = [(ICCloudClient *)self configuration];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __91__ICCloudClient_sdk_createPlaylistWithPersistentID_properties_tracklist_completionHandler___block_invoke_2;
     v21[3] = &unk_1E7BF73D8;
     v22 = v16;
-    [v17 sdk_createPlaylistWithPersistentID:a3 properties:v10 trackList:v11 configuration:v18 completion:v21];
+    [v17 sdk_createPlaylistWithPersistentID:d properties:propertiesCopy trackList:tracklistCopy configuration:configuration completion:v21];
 
     v19 = v24;
 LABEL_7:
@@ -8592,10 +8592,10 @@ LABEL_7:
     _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "Must provide at least a playlist name when creating a playlist.", buf, 2u);
   }
 
-  if (v12)
+  if (handlerCopy)
   {
     v19 = [MEMORY[0x1E696ABC0] ic_cloudClientErrorWithCode:2015 userInfo:0];
-    (*(v12 + 2))(v12, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, v19);
     goto LABEL_7;
   }
 
@@ -8643,31 +8643,31 @@ void __91__ICCloudClient_sdk_createPlaylistWithPersistentID_properties_tracklist
   dispatch_async(v6, block);
 }
 
-- (void)createPlaylistWithPersistentID:(int64_t)a3 properties:(id)a4 trackList:(id)a5 completionHandler:(id)a6
+- (void)createPlaylistWithPersistentID:(int64_t)d properties:(id)properties trackList:(id)list completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 objectForKey:@"name"];
+  propertiesCopy = properties;
+  listCopy = list;
+  handlerCopy = handler;
+  v13 = [propertiesCopy objectForKey:@"name"];
   v14 = [v13 length];
 
   if (v14)
   {
-    v15 = [(ICCloudClient *)self xpcConnection];
+    xpcConnection = [(ICCloudClient *)self xpcConnection];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __87__ICCloudClient_createPlaylistWithPersistentID_properties_trackList_completionHandler___block_invoke;
     v23[3] = &unk_1E7BF77C0;
-    v16 = v12;
+    v16 = handlerCopy;
     v24 = v16;
-    v17 = [v15 remoteObjectProxyWithErrorHandler:v23];
-    v18 = [(ICCloudClient *)self configuration];
+    v17 = [xpcConnection remoteObjectProxyWithErrorHandler:v23];
+    configuration = [(ICCloudClient *)self configuration];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __87__ICCloudClient_createPlaylistWithPersistentID_properties_trackList_completionHandler___block_invoke_2;
     v21[3] = &unk_1E7BF73D8;
     v22 = v16;
-    [v17 createPlaylistWithPersistentID:a3 properties:v10 trackList:v11 configuration:v18 completion:v21];
+    [v17 createPlaylistWithPersistentID:d properties:propertiesCopy trackList:listCopy configuration:configuration completion:v21];
 
     v19 = v24;
 LABEL_7:
@@ -8682,10 +8682,10 @@ LABEL_7:
     _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "Must provide at least a playlist name when creating a playlist.", buf, 2u);
   }
 
-  if (v12)
+  if (handlerCopy)
   {
     v19 = [MEMORY[0x1E696ABC0] ic_cloudClientErrorWithCode:2015 userInfo:0];
-    (*(v12 + 2))(v12, 0, v19);
+    (*(handlerCopy + 2))(handlerCopy, 0, v19);
     goto LABEL_7;
   }
 
@@ -8736,25 +8736,25 @@ void __87__ICCloudClient_createPlaylistWithPersistentID_properties_trackList_com
   }
 }
 
-- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)a3 completionHandler:(id)a4
+- (void)setCloudFavoriteSongAddToLibraryBehavior:(int64_t)behavior completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __76__ICCloudClient_setCloudFavoriteSongAddToLibraryBehavior_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF77C0;
-  v8 = v6;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
-  v10 = [(ICCloudClient *)self configuration];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+  configuration = [(ICCloudClient *)self configuration];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __76__ICCloudClient_setCloudFavoriteSongAddToLibraryBehavior_completionHandler___block_invoke_2;
   v12[3] = &unk_1E7BF77C0;
   v13 = v8;
   v11 = v8;
-  [v9 setCloudFavoriteSongAddToLibraryBehavior:a3 forConfiguration:v10 completion:v12];
+  [v9 setCloudFavoriteSongAddToLibraryBehavior:behavior forConfiguration:configuration completion:v12];
 }
 
 void __76__ICCloudClient_setCloudFavoriteSongAddToLibraryBehavior_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -8800,25 +8800,25 @@ void __76__ICCloudClient_setCloudFavoriteSongAddToLibraryBehavior_completionHand
   }
 }
 
-- (void)setCloudAddToPlaylistBehavior:(int64_t)a3 completionHandler:(id)a4
+- (void)setCloudAddToPlaylistBehavior:(int64_t)behavior completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(ICCloudClient *)self xpcConnection];
+  handlerCopy = handler;
+  xpcConnection = [(ICCloudClient *)self xpcConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __65__ICCloudClient_setCloudAddToPlaylistBehavior_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF77C0;
-  v8 = v6;
+  v8 = handlerCopy;
   v15 = v8;
-  v9 = [v7 remoteObjectProxyWithErrorHandler:v14];
-  v10 = [(ICCloudClient *)self configuration];
+  v9 = [xpcConnection remoteObjectProxyWithErrorHandler:v14];
+  configuration = [(ICCloudClient *)self configuration];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__ICCloudClient_setCloudAddToPlaylistBehavior_completionHandler___block_invoke_2;
   v12[3] = &unk_1E7BF77C0;
   v13 = v8;
   v11 = v8;
-  [v9 setCloudAddToPlaylistBehavior:a3 forConfiguration:v10 completion:v12];
+  [v9 setCloudAddToPlaylistBehavior:behavior forConfiguration:configuration completion:v12];
 }
 
 void __65__ICCloudClient_setCloudAddToPlaylistBehavior_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -8864,17 +8864,17 @@ void __65__ICCloudClient_setCloudAddToPlaylistBehavior_completionHandler___block
   }
 }
 
-- (void)performBlockAfterServerSetup:(id)a3
+- (void)performBlockAfterServerSetup:(id)setup
 {
-  v4 = a3;
+  setupCopy = setup;
   serverSetupBlockQueue = self->_serverSetupBlockQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __46__ICCloudClient_performBlockAfterServerSetup___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = setupCopy;
+  v6 = setupCopy;
   dispatch_async(serverSetupBlockQueue, v7);
 }
 
@@ -8910,15 +8910,15 @@ void __46__ICCloudClient_performBlockAfterServerSetup___block_invoke(uint64_t a1
   }
 }
 
-- (ICCloudClient)initWithConfiguration:(id)a3
+- (ICCloudClient)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = ICCloudClient;
   v5 = [(ICCloudClient *)&v25 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     configuration = v5->_configuration;
     v5->_configuration = v6;
 
@@ -8947,9 +8947,9 @@ void __46__ICCloudClient_performBlockAfterServerSetup___block_invoke(uint64_t a1
     cloudService = v5->_cloudService;
     v5->_cloudService = v18;
 
-    v20 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     pendingServerSetupCompleteBlocks = v5->_pendingServerSetupCompleteBlocks;
-    v5->_pendingServerSetupCompleteBlocks = v20;
+    v5->_pendingServerSetupCompleteBlocks = array;
 
     out_token = -1;
     notify_register_check("com.apple.itunescloud.setupcompleted", &out_token);
@@ -8963,12 +8963,12 @@ void __46__ICCloudClient_performBlockAfterServerSetup___block_invoke(uint64_t a1
   return v5;
 }
 
-- (ICCloudClient)initWithUserIdentity:(id)a3
+- (ICCloudClient)initWithUserIdentity:(id)identity
 {
-  if (a3)
+  if (identity)
   {
-    v4 = a3;
-    v5 = [[ICConnectionConfiguration alloc] initWithUserIdentity:v4];
+    identityCopy = identity;
+    v5 = [[ICConnectionConfiguration alloc] initWithUserIdentity:identityCopy];
   }
 
   else

@@ -1,69 +1,69 @@
 @interface WBSPasswordPatternMatcher
-- (id)_characterRepetitionPatternForPasscode:(id)a3;
+- (id)_characterRepetitionPatternForPasscode:(id)passcode;
 - (id)_commonPasscodeCharacterRepetitionPatterns;
 - (id)_commonlySubstitutedCharacterSet;
 - (id)_commonlySubstitutedCharactersMap;
-- (id)_dateMatchesForPasscode:(id)a3;
-- (id)_keyboardLayoutPatternMatchesForPassword:(id)a3;
-- (id)_keyboardMatchWithPassword:(id)a3 range:(_NSRange)a4 shiftedCharacterCount:(unint64_t)a5 keyboardIdentifier:(id)a6 keyboard:(id)a7;
+- (id)_dateMatchesForPasscode:(id)passcode;
+- (id)_keyboardLayoutPatternMatchesForPassword:(id)password;
+- (id)_keyboardMatchWithPassword:(id)password range:(_NSRange)range shiftedCharacterCount:(unint64_t)count keyboardIdentifier:(id)identifier keyboard:(id)keyboard;
 - (id)_keyboardsByIdentifier;
 - (id)_obviousSequenceStartCharacterSet;
-- (id)_passwordVariationsWithoutCommonCharacterSubstitutions:(id)a3;
-- (id)_passwordWithoutShiftedCharacters:(id)a3 shiftMap:(id)a4 outShiftedCharacterIndexSet:(id *)a5;
-- (id)_patternWithFewestGuessesRequiredWithRange:(_NSRange)a3 patternMatches:(id)a4;
-- (id)_repetitionMatchesForPasscode:(id)a3;
-- (id)_repetitionMatchesForPassword:(id)a3 withMatches:(id)a4;
-- (id)_sequenceMatchesForPasscode:(id)a3;
-- (id)_sequencePatternMatchWithPassword:(id)a3 startIndex:(unint64_t)a4 endIndex:(unint64_t)a5 delta:(int64_t)a6;
-- (id)_sequencePatternMatchesForPassword:(id)a3;
-- (id)_wordListMatchesForPasscode:(id)a3 withWordListCollection:(id)a4;
-- (id)_wordListMatchesForPassword:(id)a3 withWordListCollection:(id)a4;
-- (id)patternMatchesForPasscode:(id)a3 withWordListCollection:(id)a4;
-- (id)patternMatchesForPassword:(id)a3 withWordListCollection:(id)a4;
-- (unint64_t)_directionFromHexCoordinate:(id)a3 to:(id)a4;
-- (void)_enumerateGraphemeClusterSubrangesOfString:(id)a3 withMinimumLength:(unint64_t)a4 usingBlock:(id)a5;
+- (id)_passwordVariationsWithoutCommonCharacterSubstitutions:(id)substitutions;
+- (id)_passwordWithoutShiftedCharacters:(id)characters shiftMap:(id)map outShiftedCharacterIndexSet:(id *)set;
+- (id)_patternWithFewestGuessesRequiredWithRange:(_NSRange)range patternMatches:(id)matches;
+- (id)_repetitionMatchesForPasscode:(id)passcode;
+- (id)_repetitionMatchesForPassword:(id)password withMatches:(id)matches;
+- (id)_sequenceMatchesForPasscode:(id)passcode;
+- (id)_sequencePatternMatchWithPassword:(id)password startIndex:(unint64_t)index endIndex:(unint64_t)endIndex delta:(int64_t)delta;
+- (id)_sequencePatternMatchesForPassword:(id)password;
+- (id)_wordListMatchesForPasscode:(id)passcode withWordListCollection:(id)collection;
+- (id)_wordListMatchesForPassword:(id)password withWordListCollection:(id)collection;
+- (id)patternMatchesForPasscode:(id)passcode withWordListCollection:(id)collection;
+- (id)patternMatchesForPassword:(id)password withWordListCollection:(id)collection;
+- (unint64_t)_directionFromHexCoordinate:(id)coordinate to:(id)to;
+- (void)_enumerateGraphemeClusterSubrangesOfString:(id)string withMinimumLength:(unint64_t)length usingBlock:(id)block;
 @end
 
 @implementation WBSPasswordPatternMatcher
 
-- (id)patternMatchesForPassword:(id)a3 withWordListCollection:(id)a4
+- (id)patternMatchesForPassword:(id)password withWordListCollection:(id)collection
 {
   v6 = MEMORY[0x1E695DFA8];
-  v7 = a4;
-  v8 = a3;
+  collectionCopy = collection;
+  passwordCopy = password;
   v9 = objc_alloc_init(v6);
-  v10 = [(WBSPasswordPatternMatcher *)self _wordListMatchesForPassword:v8 withWordListCollection:v7];
+  v10 = [(WBSPasswordPatternMatcher *)self _wordListMatchesForPassword:passwordCopy withWordListCollection:collectionCopy];
 
   [v9 unionSet:v10];
-  v11 = [(WBSPasswordPatternMatcher *)self _sequencePatternMatchesForPassword:v8];
+  v11 = [(WBSPasswordPatternMatcher *)self _sequencePatternMatchesForPassword:passwordCopy];
   [v9 unionSet:v11];
 
-  v12 = [(WBSPasswordPatternMatcher *)self _keyboardLayoutPatternMatchesForPassword:v8];
+  v12 = [(WBSPasswordPatternMatcher *)self _keyboardLayoutPatternMatchesForPassword:passwordCopy];
   [v9 unionSet:v12];
 
-  v13 = [(WBSPasswordPatternMatcher *)self _repetitionMatchesForPassword:v8 withMatches:v9];
+  v13 = [(WBSPasswordPatternMatcher *)self _repetitionMatchesForPassword:passwordCopy withMatches:v9];
 
   [v9 unionSet:v13];
 
   return v9;
 }
 
-- (id)patternMatchesForPasscode:(id)a3 withWordListCollection:(id)a4
+- (id)patternMatchesForPasscode:(id)passcode withWordListCollection:(id)collection
 {
   v6 = MEMORY[0x1E695DFA8];
-  v7 = a4;
-  v8 = a3;
+  collectionCopy = collection;
+  passcodeCopy = passcode;
   v9 = objc_alloc_init(v6);
-  v10 = [(WBSPasswordPatternMatcher *)self _wordListMatchesForPasscode:v8 withWordListCollection:v7];
+  v10 = [(WBSPasswordPatternMatcher *)self _wordListMatchesForPasscode:passcodeCopy withWordListCollection:collectionCopy];
 
   [v9 unionSet:v10];
-  v11 = [(WBSPasswordPatternMatcher *)self _sequenceMatchesForPasscode:v8];
+  v11 = [(WBSPasswordPatternMatcher *)self _sequenceMatchesForPasscode:passcodeCopy];
   [v9 unionSet:v11];
 
-  v12 = [(WBSPasswordPatternMatcher *)self _dateMatchesForPasscode:v8];
+  v12 = [(WBSPasswordPatternMatcher *)self _dateMatchesForPasscode:passcodeCopy];
   [v9 unionSet:v12];
 
-  v13 = [(WBSPasswordPatternMatcher *)self _repetitionMatchesForPasscode:v8];
+  v13 = [(WBSPasswordPatternMatcher *)self _repetitionMatchesForPasscode:passcodeCopy];
 
   [v9 unionSet:v13];
 
@@ -101,32 +101,32 @@ void __51__WBSPasswordPatternMatcher__keyboardsByIdentifier__block_invoke()
   }
 }
 
-- (unint64_t)_directionFromHexCoordinate:(id)a3 to:(id)a4
+- (unint64_t)_directionFromHexCoordinate:(id)coordinate to:(id)to
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v7 integerValue];
-  v9 = [v6 objectAtIndexedSubscript:0];
-  v10 = [v9 integerValue];
+  toCopy = to;
+  coordinateCopy = coordinate;
+  v7 = [toCopy objectAtIndexedSubscript:0];
+  integerValue = [v7 integerValue];
+  v9 = [coordinateCopy objectAtIndexedSubscript:0];
+  integerValue2 = [v9 integerValue];
 
-  v11 = [v5 objectAtIndexedSubscript:1];
+  v11 = [toCopy objectAtIndexedSubscript:1];
 
-  v12 = [v11 integerValue];
-  v13 = [v6 objectAtIndexedSubscript:1];
+  integerValue3 = [v11 integerValue];
+  v13 = [coordinateCopy objectAtIndexedSubscript:1];
 
-  v14 = [v13 integerValue];
+  integerValue4 = [v13 integerValue];
   if (_directionFromHexCoordinate_to__onceToken != -1)
   {
     [WBSPasswordPatternMatcher _directionFromHexCoordinate:to:];
   }
 
-  v15 = v8 - v10;
+  v15 = integerValue - integerValue2;
   v16 = _directionFromHexCoordinate_to__directions;
   v17 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
   v23[0] = v17;
-  v18 = [MEMORY[0x1E696AD98] numberWithInteger:v12 - v14];
+  v18 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue3 - integerValue4];
   v23[1] = v18;
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
   v20 = [v16 indexOfObject:v19];
@@ -141,19 +141,19 @@ void __60__WBSPasswordPatternMatcher__directionFromHexCoordinate_to___block_invo
   _directionFromHexCoordinate_to__directions = &unk_1F308E808;
 }
 
-- (id)_passwordWithoutShiftedCharacters:(id)a3 shiftMap:(id)a4 outShiftedCharacterIndexSet:(id *)a5
+- (id)_passwordWithoutShiftedCharacters:(id)characters shiftMap:(id)map outShiftedCharacterIndexSet:(id *)set
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 length];
+  charactersCopy = characters;
+  mapCopy = map;
+  v9 = [charactersCopy length];
   v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
   v11 = objc_alloc_init(MEMORY[0x1E696AD60]);
   if (v9)
   {
     for (i = 0; i != v9; ++i)
     {
-      v13 = [v7 substringWithRange:{i, 1}];
-      v14 = [v8 objectForKeyedSubscript:v13];
+      v13 = [charactersCopy substringWithRange:{i, 1}];
+      v14 = [mapCopy objectForKeyedSubscript:v13];
       if (v14)
       {
         [v11 appendString:v14];
@@ -167,34 +167,34 @@ void __60__WBSPasswordPatternMatcher__directionFromHexCoordinate_to___block_invo
     }
   }
 
-  if (a5)
+  if (set)
   {
     v15 = v10;
-    *a5 = v10;
+    *set = v10;
   }
 
   return v11;
 }
 
-- (id)_keyboardLayoutPatternMatchesForPassword:(id)a3
+- (id)_keyboardLayoutPatternMatchesForPassword:(id)password
 {
-  v4 = a3;
-  v5 = [v4 length];
+  passwordCopy = password;
+  v5 = [passwordCopy length];
   if (v5 > 2)
   {
     v7 = v5;
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-    v9 = [(WBSPasswordPatternMatcher *)self _keyboardsByIdentifier];
+    _keyboardsByIdentifier = [(WBSPasswordPatternMatcher *)self _keyboardsByIdentifier];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __70__WBSPasswordPatternMatcher__keyboardLayoutPatternMatchesForPassword___block_invoke;
     v13[3] = &unk_1E7CF36E0;
     v13[4] = self;
-    v14 = v4;
+    v14 = passwordCopy;
     v16 = v7;
     v10 = v8;
     v15 = v10;
-    [v9 enumerateKeysAndObjectsUsingBlock:v13];
+    [_keyboardsByIdentifier enumerateKeysAndObjectsUsingBlock:v13];
 
     v11 = v15;
     v6 = v10;
@@ -272,26 +272,26 @@ void __70__WBSPasswordPatternMatcher__keyboardLayoutPatternMatchesForPassword___
   }
 }
 
-- (id)_keyboardMatchWithPassword:(id)a3 range:(_NSRange)a4 shiftedCharacterCount:(unint64_t)a5 keyboardIdentifier:(id)a6 keyboard:(id)a7
+- (id)_keyboardMatchWithPassword:(id)password range:(_NSRange)range shiftedCharacterCount:(unint64_t)count keyboardIdentifier:(id)identifier keyboard:(id)keyboard
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v26[1] = *MEMORY[0x1E69E9840];
-  v12 = a6;
-  v13 = a7;
-  v14 = [a3 substringWithRange:{location, length}];
-  v15 = [v13 objectForKeyedSubscript:@"Layout"];
+  identifierCopy = identifier;
+  keyboardCopy = keyboard;
+  v14 = [password substringWithRange:{location, length}];
+  v15 = [keyboardCopy objectForKeyedSubscript:@"Layout"];
 
   v16 = [v15 count];
   v17 = pow(6.0, ([v14 length] - 1)) * v16;
   v25 = @"KeyboardLayout";
-  v26[0] = v12;
+  v26[0] = identifierCopy;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v19 = [v18 mutableCopy];
 
-  if (a5)
+  if (count)
   {
-    v20 = nChooseK(length, a5);
+    v20 = nChooseK(length, count);
     v21 = [MEMORY[0x1E696AD98] numberWithDouble:?];
     [v19 setObject:v21 forKeyedSubscript:@"CaseVariations"];
 
@@ -305,10 +305,10 @@ void __70__WBSPasswordPatternMatcher__keyboardLayoutPatternMatchesForPassword___
   return v22;
 }
 
-- (id)_sequencePatternMatchesForPassword:(id)a3
+- (id)_sequencePatternMatchesForPassword:(id)password
 {
-  v4 = a3;
-  v5 = [v4 length];
+  passwordCopy = password;
+  v5 = [passwordCopy length];
   if (v5 > 2)
   {
     v7 = v5;
@@ -316,22 +316,22 @@ void __70__WBSPasswordPatternMatcher__keyboardLayoutPatternMatchesForPassword___
     v8 = 0;
     do
     {
-      v9 = [v4 characterAtIndex:v8 + 1];
-      v10 = [v4 characterAtIndex:v8];
+      v9 = [passwordCopy characterAtIndex:v8 + 1];
+      v10 = [passwordCopy characterAtIndex:v8];
       if (v9 != v10)
       {
         v11 = v9 - v10;
         v12 = v8 + 2;
         do
         {
-          v13 = [v4 characterAtIndex:v12];
+          v13 = [passwordCopy characterAtIndex:v12];
           v14 = v12 - 1;
-          if (v13 - [v4 characterAtIndex:v14] != v11)
+          if (v13 - [passwordCopy characterAtIndex:v14] != v11)
           {
             break;
           }
 
-          v15 = [(WBSPasswordPatternMatcher *)self _sequencePatternMatchWithPassword:v4 startIndex:v8 endIndex:v14 + 1 delta:v11];
+          v15 = [(WBSPasswordPatternMatcher *)self _sequencePatternMatchWithPassword:passwordCopy startIndex:v8 endIndex:v14 + 1 delta:v11];
           [v6 addObject:v15];
 
           v12 = v14 + 2;
@@ -352,19 +352,19 @@ void __70__WBSPasswordPatternMatcher__keyboardLayoutPatternMatchesForPassword___
   return v6;
 }
 
-- (id)_sequencePatternMatchWithPassword:(id)a3 startIndex:(unint64_t)a4 endIndex:(unint64_t)a5 delta:(int64_t)a6
+- (id)_sequencePatternMatchWithPassword:(id)password startIndex:(unint64_t)index endIndex:(unint64_t)endIndex delta:(int64_t)delta
 {
-  v9 = a5 - a4 + 1;
-  v10 = [a3 substringWithRange:{a4, v9}];
+  v9 = endIndex - index + 1;
+  v10 = [password substringWithRange:{index, v9}];
   v11 = [v10 characterAtIndex:0];
-  v12 = [(WBSPasswordPatternMatcher *)self _obviousSequenceStartCharacterSet];
-  v13 = [v12 characterIsMember:v11];
+  _obviousSequenceStartCharacterSet = [(WBSPasswordPatternMatcher *)self _obviousSequenceStartCharacterSet];
+  v13 = [_obviousSequenceStartCharacterSet characterIsMember:v11];
 
   v14 = 4.0;
   if ((v13 & 1) == 0)
   {
-    v15 = [MEMORY[0x1E696AB08] safari_asciiDigitCharacterSet];
-    v16 = [v15 characterIsMember:v11];
+    safari_asciiDigitCharacterSet = [MEMORY[0x1E696AB08] safari_asciiDigitCharacterSet];
+    v16 = [safari_asciiDigitCharacterSet characterIsMember:v11];
 
     v14 = 26.0;
     if (v16)
@@ -373,17 +373,17 @@ void __70__WBSPasswordPatternMatcher__keyboardLayoutPatternMatchesForPassword___
     }
   }
 
-  if (a6 >= 0)
+  if (delta >= 0)
   {
-    v17 = a6;
+    deltaCopy = delta;
   }
 
   else
   {
-    v17 = -a6;
+    deltaCopy = -delta;
   }
 
-  v18 = [[WBSPasswordPatternMatch alloc] initWithType:2 matchedSubstring:v10 range:a4 guessesRequired:v9 userInfo:0, v14 * v17 * v9];
+  v18 = [[WBSPasswordPatternMatch alloc] initWithType:2 matchedSubstring:v10 range:index guessesRequired:v9 userInfo:0, v14 * deltaCopy * v9];
 
   return v18;
 }
@@ -407,22 +407,22 @@ void __62__WBSPasswordPatternMatcher__obviousSequenceStartCharacterSet__block_in
   _obviousSequenceStartCharacterSet_obviousSequenceStartCharacterSet = v0;
 }
 
-- (id)_wordListMatchesForPassword:(id)a3 withWordListCollection:(id)a4
+- (id)_wordListMatchesForPassword:(id)password withWordListCollection:(id)collection
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v35 = a4;
+  passwordCopy = password;
+  collectionCopy = collection;
   v33 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v7 = [(WBSPasswordPatternMatcher *)self _commonlySubstitutedCharacterSet];
-  v8 = [v6 length];
-  v9 = [v6 lowercaseString];
+  _commonlySubstitutedCharacterSet = [(WBSPasswordPatternMatcher *)self _commonlySubstitutedCharacterSet];
+  v8 = [passwordCopy length];
+  lowercaseString = [passwordCopy lowercaseString];
   v10 = objc_alloc_init(MEMORY[0x1E696AD50]);
-  if ([v6 length])
+  if ([passwordCopy length])
   {
     v11 = 0;
     do
     {
-      if ([v7 characterIsMember:{objc_msgSend(v9, "characterAtIndex:", v11)}])
+      if ([_commonlySubstitutedCharacterSet characterIsMember:{objc_msgSend(lowercaseString, "characterAtIndex:", v11)}])
       {
         [v10 addIndex:v11];
       }
@@ -430,14 +430,14 @@ void __62__WBSPasswordPatternMatcher__obviousSequenceStartCharacterSet__block_in
       ++v11;
     }
 
-    while (v11 < [v6 length]);
+    while (v11 < [passwordCopy length]);
   }
 
   v32 = v10;
-  v34 = v6;
-  v36 = self;
-  v37 = v7;
-  v12 = [(WBSPasswordPatternMatcher *)self _passwordVariationsWithoutCommonCharacterSubstitutions:v9];
+  v34 = passwordCopy;
+  selfCopy = self;
+  v37 = _commonlySubstitutedCharacterSet;
+  v12 = [(WBSPasswordPatternMatcher *)self _passwordVariationsWithoutCommonCharacterSubstitutions:lowercaseString];
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v46 = 0u;
   v47 = 0u;
@@ -466,7 +466,7 @@ void __62__WBSPasswordPatternMatcher__obviousSequenceStartCharacterSet__block_in
           for (i = 0; i != v8; ++i)
           {
             v21 = [v18 characterAtIndex:i];
-            if (v21 != [v9 characterAtIndex:i])
+            if (v21 != [lowercaseString characterAtIndex:i])
             {
               [v19 addIndex:i];
             }
@@ -490,7 +490,7 @@ void __62__WBSPasswordPatternMatcher__obviousSequenceStartCharacterSet__block_in
   v39[2] = __80__WBSPasswordPatternMatcher__wordListMatchesForPassword_withWordListCollection___block_invoke;
   v39[3] = &unk_1E7CF3730;
   v40 = obj;
-  v41 = v35;
+  v41 = collectionCopy;
   v42 = v13;
   v43 = v34;
   v44 = v32;
@@ -499,9 +499,9 @@ void __62__WBSPasswordPatternMatcher__obviousSequenceStartCharacterSet__block_in
   v23 = v32;
   v24 = v34;
   v25 = v13;
-  v26 = v35;
+  v26 = collectionCopy;
   v27 = obj;
-  [(WBSPasswordPatternMatcher *)v36 _enumerateGraphemeClusterSubrangesOfString:v24 withMinimumLength:3 usingBlock:v39];
+  [(WBSPasswordPatternMatcher *)selfCopy _enumerateGraphemeClusterSubrangesOfString:v24 withMinimumLength:3 usingBlock:v39];
   v28 = v45;
   v29 = v22;
 
@@ -685,25 +685,25 @@ void __61__WBSPasswordPatternMatcher__commonlySubstitutedCharacterSet__block_inv
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_passwordVariationsWithoutCommonCharacterSubstitutions:(id)a3
+- (id)_passwordVariationsWithoutCommonCharacterSubstitutions:(id)substitutions
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v27 = [(WBSPasswordPatternMatcher *)self _commonlySubstitutedCharactersMap];
-  v5 = [v4 length];
+  substitutionsCopy = substitutions;
+  _commonlySubstitutedCharactersMap = [(WBSPasswordPatternMatcher *)self _commonlySubstitutedCharactersMap];
+  v5 = [substitutionsCopy length];
   v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{&stru_1F3064D08, 0}];
   v26 = v5;
   if (v5)
   {
     v7 = 0;
-    v25 = v4;
+    v25 = substitutionsCopy;
     while (1)
     {
       v8 = v6;
       v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
       v28 = v7;
-      v29 = [v4 substringWithRange:{v7, 1}];
-      v31 = [v27 objectForKeyedSubscript:?];
+      v29 = [substitutionsCopy substringWithRange:{v7, 1}];
+      v31 = [_commonlySubstitutedCharactersMap objectForKeyedSubscript:?];
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
@@ -774,21 +774,21 @@ void __61__WBSPasswordPatternMatcher__commonlySubstitutedCharacterSet__block_inv
       }
 
       v7 = v28 + 1;
-      v4 = v25;
+      substitutionsCopy = v25;
       if (v28 + 1 == v26)
       {
         goto LABEL_21;
       }
     }
 
-    v4 = v25;
+    substitutionsCopy = v25;
     v22 = [MEMORY[0x1E695DFD8] setWithObject:v25];
   }
 
   else
   {
 LABEL_21:
-    [v6 addObject:v4];
+    [v6 addObject:substitutionsCopy];
     v22 = [MEMORY[0x1E695DFD8] setWithArray:v6];
     v9 = v6;
   }
@@ -798,40 +798,40 @@ LABEL_21:
   return v22;
 }
 
-- (void)_enumerateGraphemeClusterSubrangesOfString:(id)a3 withMinimumLength:(unint64_t)a4 usingBlock:(id)a5
+- (void)_enumerateGraphemeClusterSubrangesOfString:(id)string withMinimumLength:(unint64_t)length usingBlock:(id)block
 {
-  v16 = a3;
-  v7 = a5;
-  v8 = [v16 length];
+  stringCopy = string;
+  blockCopy = block;
+  v8 = [stringCopy length];
   if (v8)
   {
     v9 = v8;
     v10 = 0;
     do
     {
-      v11 = [v16 rangeOfComposedCharacterSequenceAtIndex:v10];
+      v11 = [stringCopy rangeOfComposedCharacterSequenceAtIndex:v10];
       if (v11 == v10)
       {
-        if (v9 - v10 >= a4)
+        if (v9 - v10 >= length)
         {
-          v13 = a4;
+          lengthCopy = length;
           do
           {
-            v14 = [v16 rangeOfComposedCharacterSequenceAtIndex:v13 + v10 - 1];
-            if (v14 + v15 == v13 + v10)
+            v14 = [stringCopy rangeOfComposedCharacterSequenceAtIndex:lengthCopy + v10 - 1];
+            if (v14 + v15 == lengthCopy + v10)
             {
-              v7[2](v7, v10, v13);
+              blockCopy[2](blockCopy, v10, lengthCopy);
             }
 
             else
             {
-              v13 = v13 + v15 - 2;
+              lengthCopy = lengthCopy + v15 - 2;
             }
 
-            ++v13;
+            ++lengthCopy;
           }
 
-          while (v13 <= v9 - v10);
+          while (lengthCopy <= v9 - v10);
         }
 
         ++v10;
@@ -847,13 +847,13 @@ LABEL_21:
   }
 }
 
-- (id)_repetitionMatchesForPassword:(id)a3 withMatches:(id)a4
+- (id)_repetitionMatchesForPassword:(id)password withMatches:(id)matches
 {
   v38[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v34 = a4;
+  passwordCopy = password;
+  matchesCopy = matches;
   v35 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [v5 length];
+  v6 = [passwordCopy length];
   v30 = v6 - 1;
   if (v6 != 1)
   {
@@ -876,14 +876,14 @@ LABEL_21:
         v11 = 1;
         do
         {
-          v12 = [v5 substringWithRange:{v8, v11, v30}];
+          v12 = [passwordCopy substringWithRange:{v8, v11, v30}];
           v13 = v8 + v11;
           if (v8 + v11 <= (v7 - v11))
           {
             v14 = 1;
             do
             {
-              v15 = [v5 substringWithRange:{v13, v11}];
+              v15 = [passwordCopy substringWithRange:{v13, v11}];
               v16 = [v15 isEqualToString:v12];
 
               if ((v16 & 1) == 0)
@@ -898,17 +898,17 @@ LABEL_21:
             while (v13 <= v7 - v11);
             if (v14 >= 2)
             {
-              v17 = [(WBSPasswordPatternMatcher *)self _patternWithFewestGuessesRequiredWithRange:v8 patternMatches:v11, v34];
-              if (!v17)
+              matchesCopy = [(WBSPasswordPatternMatcher *)self _patternWithFewestGuessesRequiredWithRange:v8 patternMatches:v11, matchesCopy];
+              if (!matchesCopy)
               {
-                v17 = [[WBSPasswordPatternMatch alloc] initExhaustiveSearchPatternWithMatchedSubstring:v12 range:v8, v11];
+                matchesCopy = [[WBSPasswordPatternMatch alloc] initExhaustiveSearchPatternWithMatchedSubstring:v12 range:v8, v11];
               }
 
-              [v17 guessesRequired];
+              [matchesCopy guessesRequired];
               v19 = v18;
               v20 = v18 * v14;
               v21 = v14 * v11;
-              v22 = [v5 substringWithRange:{v8, v14 * v11}];
+              v22 = [passwordCopy substringWithRange:{v8, v14 * v11}];
               v37[0] = @"BaseGuesses";
               v23 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
               v37[1] = @"RepetitionCount";
@@ -940,17 +940,17 @@ LABEL_21:
   return v35;
 }
 
-- (id)_patternWithFewestGuessesRequiredWithRange:(_NSRange)a3 patternMatches:(id)a4
+- (id)_patternWithFewestGuessesRequiredWithRange:(_NSRange)range patternMatches:(id)matches
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  matchesCopy = matches;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v7 = [matchesCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -962,7 +962,7 @@ LABEL_21:
       {
         if (*v22 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(matchesCopy);
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
@@ -977,7 +977,7 @@ LABEL_21:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [matchesCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -993,18 +993,18 @@ LABEL_21:
   return v9;
 }
 
-- (id)_characterRepetitionPatternForPasscode:(id)a3
+- (id)_characterRepetitionPatternForPasscode:(id)passcode
 {
-  v3 = a3;
+  passcodeCopy = passcode;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [v3 length];
+  v6 = [passcodeCopy length];
   if (v6)
   {
     v7 = v6;
     for (i = 0; i != v7; ++i)
     {
-      v9 = [v3 substringWithRange:{i, 1}];
+      v9 = [passcodeCopy substringWithRange:{i, 1}];
       v10 = [v4 objectForKeyedSubscript:v9];
       if (!v10)
       {
@@ -1038,37 +1038,37 @@ void __71__WBSPasswordPatternMatcher__commonPasscodeCharacterRepetitionPatterns_
   _commonPasscodeCharacterRepetitionPatterns_patterns = v0;
 }
 
-- (id)_repetitionMatchesForPasscode:(id)a3
+- (id)_repetitionMatchesForPasscode:(id)passcode
 {
-  v4 = a3;
+  passcodeCopy = passcode;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [(WBSPasswordPatternMatcher *)self _characterRepetitionPatternForPasscode:v4];
-  v7 = [(WBSPasswordPatternMatcher *)self _commonPasscodeCharacterRepetitionPatterns];
-  v8 = [v7 containsObject:v6];
+  v6 = [(WBSPasswordPatternMatcher *)self _characterRepetitionPatternForPasscode:passcodeCopy];
+  _commonPasscodeCharacterRepetitionPatterns = [(WBSPasswordPatternMatcher *)self _commonPasscodeCharacterRepetitionPatterns];
+  v8 = [_commonPasscodeCharacterRepetitionPatterns containsObject:v6];
 
   if (v8)
   {
-    v9 = -[WBSPasswordPatternMatch initWithType:matchedSubstring:range:guessesRequired:userInfo:]([WBSPasswordPatternMatch alloc], "initWithType:matchedSubstring:range:guessesRequired:userInfo:", 4, v4, 0, [v4 length], 0, 360.0);
+    v9 = -[WBSPasswordPatternMatch initWithType:matchedSubstring:range:guessesRequired:userInfo:]([WBSPasswordPatternMatch alloc], "initWithType:matchedSubstring:range:guessesRequired:userInfo:", 4, passcodeCopy, 0, [passcodeCopy length], 0, 360.0);
     [v5 addObject:v9];
   }
 
   return v5;
 }
 
-- (id)_sequenceMatchesForPasscode:(id)a3
+- (id)_sequenceMatchesForPasscode:(id)passcode
 {
-  v3 = a3;
+  passcodeCopy = passcode;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v5 = [v3 length];
-  v6 = [v3 characterAtIndex:0];
-  v7 = [v3 characterAtIndex:1];
+  v5 = [passcodeCopy length];
+  v6 = [passcodeCopy characterAtIndex:0];
+  v7 = [passcodeCopy characterAtIndex:1];
   v8 = v7 - v6;
   if (v8 == -1 || v8 == 1)
   {
     if (v5 < 3)
     {
 LABEL_10:
-      v12 = -[WBSPasswordPatternMatch initWithType:matchedSubstring:range:guessesRequired:userInfo:]([WBSPasswordPatternMatch alloc], "initWithType:matchedSubstring:range:guessesRequired:userInfo:", 2, v3, 0, [v3 length], 0, 20.0);
+      v12 = -[WBSPasswordPatternMatch initWithType:matchedSubstring:range:guessesRequired:userInfo:]([WBSPasswordPatternMatch alloc], "initWithType:matchedSubstring:range:guessesRequired:userInfo:", 2, passcodeCopy, 0, [passcodeCopy length], 0, 20.0);
       [v4 addObject:v12];
       v13 = v4;
 
@@ -1079,7 +1079,7 @@ LABEL_10:
     while (1)
     {
       v11 = v7;
-      v7 = [v3 characterAtIndex:v10];
+      v7 = [passcodeCopy characterAtIndex:v10];
       if (v7 - v11 != v8)
       {
         break;
@@ -1098,13 +1098,13 @@ LABEL_12:
   return v4;
 }
 
-- (id)_dateMatchesForPasscode:(id)a3
+- (id)_dateMatchesForPasscode:(id)passcode
 {
-  v3 = a3;
+  passcodeCopy = passcode;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  if ([v3 length] == 4 && (objc_msgSend(v3, "integerValue") - 2026) > 0xFFFFFFFFFFFFFFB4)
+  if ([passcodeCopy length] == 4 && (objc_msgSend(passcodeCopy, "integerValue") - 2026) > 0xFFFFFFFFFFFFFFB4)
   {
-    v6 = [[WBSPasswordPatternMatch alloc] initWithType:5 matchedSubstring:v3 range:0 guessesRequired:4 userInfo:0, 75.0];
+    v6 = [[WBSPasswordPatternMatch alloc] initWithType:5 matchedSubstring:passcodeCopy range:0 guessesRequired:4 userInfo:0, 75.0];
     [v4 addObject:v6];
     v7 = v4;
   }
@@ -1117,21 +1117,21 @@ LABEL_12:
   return v4;
 }
 
-- (id)_wordListMatchesForPasscode:(id)a3 withWordListCollection:(id)a4
+- (id)_wordListMatchesForPasscode:(id)passcode withWordListCollection:(id)collection
 {
-  v5 = a3;
+  passcodeCopy = passcode;
   v6 = MEMORY[0x1E695DFA8];
-  v7 = a4;
+  collectionCopy = collection;
   v8 = objc_alloc_init(v6);
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __80__WBSPasswordPatternMatcher__wordListMatchesForPasscode_withWordListCollection___block_invoke;
   v14[3] = &unk_1E7CF3778;
-  v15 = v5;
+  v15 = passcodeCopy;
   v9 = v8;
   v16 = v9;
-  v10 = v5;
-  [v7 enumerateEntriesForString:v10 withBlock:v14];
+  v10 = passcodeCopy;
+  [collectionCopy enumerateEntriesForString:v10 withBlock:v14];
 
   v11 = v16;
   v12 = v9;

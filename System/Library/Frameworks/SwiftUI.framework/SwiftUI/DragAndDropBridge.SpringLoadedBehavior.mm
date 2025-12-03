@@ -1,24 +1,24 @@
 @interface DragAndDropBridge.SpringLoadedBehavior
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4;
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context;
 - (_TtCC7SwiftUI17DragAndDropBridge20SpringLoadedBehavior)init;
-- (void)interactionDidFinish:(id)a3;
+- (void)interactionDidFinish:(id)finish;
 @end
 
 @implementation DragAndDropBridge.SpringLoadedBehavior
 
-- (BOOL)shouldAllowInteraction:(id)a3 withContext:(id)a4
+- (BOOL)shouldAllowInteraction:(id)interaction withContext:(id)context
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v8 = Strong;
     v9 = *(&self->super.isa + OBJC_IVAR____TtCC7SwiftUI17DragAndDropBridge20SpringLoadedBehavior_base);
-    v10 = a3;
+    interactionCopy = interaction;
     swift_unknownObjectRetain();
-    v11 = self;
-    if ([v9 shouldAllowInteraction:v10 withContext:a4])
+    selfCopy = self;
+    if ([v9 shouldAllowInteraction:interactionCopy withContext:context])
     {
-      v12 = specialized DragAndDropBridge.shouldAllow(_:with:)(a4);
+      v12 = specialized DragAndDropBridge.shouldAllow(_:with:)(context);
     }
 
     else
@@ -37,11 +37,11 @@
   return v12 & 1;
 }
 
-- (void)interactionDidFinish:(id)a3
+- (void)interactionDidFinish:(id)finish
 {
-  v4 = a3;
-  v5 = self;
-  DragAndDropBridge.SpringLoadedBehavior.interactionDidFinish(_:)(v4);
+  finishCopy = finish;
+  selfCopy = self;
+  DragAndDropBridge.SpringLoadedBehavior.interactionDidFinish(_:)(finishCopy);
 }
 
 - (_TtCC7SwiftUI17DragAndDropBridge20SpringLoadedBehavior)init

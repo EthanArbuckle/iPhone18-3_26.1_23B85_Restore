@@ -1,10 +1,10 @@
 @interface FTSeenHeadlineWidgetEventTracker
 - (FTSeenHeadlineWidgetEventTracker)init;
-- (FTSeenHeadlineWidgetEventTracker)initWithTodayEventTracker:(id)a3 documentsDirectory:(id)a4;
-- (void)_registerOnceVisibleHeadlines:(id)a3 withLastSeenDate:(id)a4 minimumNumberOfTimesPreseenToBeSeen:(unint64_t)a5;
-- (void)submitEventsIfNeededWithCompletion:(id)a3;
-- (void)userEngagedWithWidgetAtDate:(id)a3 actionURL:(id)a4 trackableWidgetState:(id)a5;
-- (void)visibleItemsDidChangeAtDate:(id)a3 withTriggerEvent:(unint64_t)a4 trackableWidgetState:(id)a5;
+- (FTSeenHeadlineWidgetEventTracker)initWithTodayEventTracker:(id)tracker documentsDirectory:(id)directory;
+- (void)_registerOnceVisibleHeadlines:(id)headlines withLastSeenDate:(id)date minimumNumberOfTimesPreseenToBeSeen:(unint64_t)seen;
+- (void)submitEventsIfNeededWithCompletion:(id)completion;
+- (void)userEngagedWithWidgetAtDate:(id)date actionURL:(id)l trackableWidgetState:(id)state;
+- (void)visibleItemsDidChangeAtDate:(id)date withTriggerEvent:(unint64_t)event trackableWidgetState:(id)state;
 @end
 
 @implementation FTSeenHeadlineWidgetEventTracker
@@ -32,20 +32,20 @@
   objc_exception_throw(v4);
 }
 
-- (FTSeenHeadlineWidgetEventTracker)initWithTodayEventTracker:(id)a3 documentsDirectory:(id)a4
+- (FTSeenHeadlineWidgetEventTracker)initWithTodayEventTracker:(id)tracker documentsDirectory:(id)directory
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  trackerCopy = tracker;
+  directoryCopy = directory;
+  if (!trackerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000A0F04();
-    if (v8)
+    if (directoryCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (directoryCopy)
   {
     goto LABEL_6;
   }
@@ -62,8 +62,8 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_todayEventTracker, a3);
-    v11 = [v8 URLByAppendingPathComponent:@"seen-headline-storage" isDirectory:0];
+    objc_storeStrong(&v9->_todayEventTracker, tracker);
+    v11 = [directoryCopy URLByAppendingPathComponent:@"seen-headline-storage" isDirectory:0];
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = objc_opt_class();
@@ -80,17 +80,17 @@ LABEL_6:
   return v10;
 }
 
-- (void)visibleItemsDidChangeAtDate:(id)a3 withTriggerEvent:(unint64_t)a4 trackableWidgetState:(id)a5
+- (void)visibleItemsDidChangeAtDate:(id)date withTriggerEvent:(unint64_t)event trackableWidgetState:(id)state
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 4)
+  dateCopy = date;
+  stateCopy = state;
+  if (event == 4)
   {
-    v10 = [(FTSeenHeadlineWidgetEventTracker *)self visibleHeadlines];
-    v11 = [(FTSeenHeadlineWidgetEventTracker *)self visibleHeadlinesAppearanceDate];
-    v12 = [v11 copy];
+    visibleHeadlines = [(FTSeenHeadlineWidgetEventTracker *)self visibleHeadlines];
+    visibleHeadlinesAppearanceDate = [(FTSeenHeadlineWidgetEventTracker *)self visibleHeadlinesAppearanceDate];
+    v12 = [visibleHeadlinesAppearanceDate copy];
 
-    if (!v10 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    if (!visibleHeadlines && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_1000A108C();
     }
@@ -101,16 +101,16 @@ LABEL_6:
       sub_1000A1150();
     }
 
-    v13 = [v10 fc_arrayOfObjectsPassingTest:&stru_1000D73F8];
+    v13 = [visibleHeadlines fc_arrayOfObjectsPassingTest:&stru_1000D73F8];
     v14 = +[UIDevice currentDevice];
-    v15 = [v14 userInterfaceIdiom];
+    userInterfaceIdiom = [v14 userInterfaceIdiom];
 
     v16 = +[UIApplication sharedApplication];
-    v17 = [v16 keyWindow];
-    v18 = [v17 windowScene];
-    v19 = [v18 interfaceOrientation];
+    keyWindow = [v16 keyWindow];
+    windowScene = [keyWindow windowScene];
+    interfaceOrientation = [windowScene interfaceOrientation];
 
-    if (v15 == 1 && (v19 - 3) < 2 || [v9 stackLocation] != 1)
+    if (userInterfaceIdiom == 1 && (interfaceOrientation - 3) < 2 || [stateCopy stackLocation] != 1)
     {
       v21 = NTSharedLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -131,10 +131,10 @@ LABEL_6:
         v21 = +[NSDate date];
         [v21 timeIntervalSinceDate:v29];
         v25 = FCSecondsToMilliseconds();
-        v26 = [v9 fetchInfoForVisibleResults];
-        v27 = [v26 widgetConfig];
+        fetchInfoForVisibleResults = [stateCopy fetchInfoForVisibleResults];
+        widgetConfig = [fetchInfoForVisibleResults widgetConfig];
 
-        if (v25 >= [v27 minimumArticleExposureDurationToBePreseen])
+        if (v25 >= [widgetConfig minimumArticleExposureDurationToBePreseen])
         {
           v28 = NTSharedLog();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -144,12 +144,12 @@ LABEL_6:
             v32 = 2048;
             v33 = v25;
             v34 = 2048;
-            v35 = [v27 minimumArticleExposureDurationToBePreseen];
+            minimumArticleExposureDurationToBePreseen = [widgetConfig minimumArticleExposureDurationToBePreseen];
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "will register seen headlines due to widget disappearance, disappearanceDate=%{public}@, exposureTime=%llums, exposureTimeThreshold=%llums", buf, 0x20u);
           }
 
           v20 = v13;
-          -[FTSeenHeadlineWidgetEventTracker _registerOnceVisibleHeadlines:withLastSeenDate:minimumNumberOfTimesPreseenToBeSeen:](self, "_registerOnceVisibleHeadlines:withLastSeenDate:minimumNumberOfTimesPreseenToBeSeen:", v13, v21, [v27 minimumNumberOfTimesPreseenToBeSeen]);
+          -[FTSeenHeadlineWidgetEventTracker _registerOnceVisibleHeadlines:withLastSeenDate:minimumNumberOfTimesPreseenToBeSeen:](self, "_registerOnceVisibleHeadlines:withLastSeenDate:minimumNumberOfTimesPreseenToBeSeen:", v13, v21, [widgetConfig minimumNumberOfTimesPreseenToBeSeen]);
         }
 
         goto LABEL_18;
@@ -181,18 +181,18 @@ LABEL_18:
     [(FTSeenHeadlineWidgetEventTracker *)self setSessionHasEngagement:0];
   }
 
-  [(FTSeenHeadlineWidgetEventTracker *)self setVisibleHeadlinesAppearanceDate:v8];
-  v23 = [v9 visibleItems];
-  v24 = [v23 fc_arrayByTransformingWithBlock:&stru_1000D7438];
+  [(FTSeenHeadlineWidgetEventTracker *)self setVisibleHeadlinesAppearanceDate:dateCopy];
+  visibleItems = [stateCopy visibleItems];
+  v24 = [visibleItems fc_arrayByTransformingWithBlock:&stru_1000D7438];
   [(FTSeenHeadlineWidgetEventTracker *)self setVisibleHeadlines:v24];
 }
 
-- (void)userEngagedWithWidgetAtDate:(id)a3 actionURL:(id)a4 trackableWidgetState:(id)a5
+- (void)userEngagedWithWidgetAtDate:(id)date actionURL:(id)l trackableWidgetState:(id)state
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  dateCopy = date;
+  lCopy = l;
+  stateCopy = state;
+  if (!dateCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000A1214();
   }
@@ -200,44 +200,44 @@ LABEL_18:
   [(FTSeenHeadlineWidgetEventTracker *)self setSessionHasEngagement:1];
 }
 
-- (void)submitEventsIfNeededWithCompletion:(id)a3
+- (void)submitEventsIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(FTSeenHeadlineWidgetEventTracker *)self submissionGroup];
-  dispatch_group_notify(v5, &_dispatch_main_q, v4);
+  completionCopy = completion;
+  submissionGroup = [(FTSeenHeadlineWidgetEventTracker *)self submissionGroup];
+  dispatch_group_notify(submissionGroup, &_dispatch_main_q, completionCopy);
 }
 
-- (void)_registerOnceVisibleHeadlines:(id)a3 withLastSeenDate:(id)a4 minimumNumberOfTimesPreseenToBeSeen:(unint64_t)a5
+- (void)_registerOnceVisibleHeadlines:(id)headlines withLastSeenDate:(id)date minimumNumberOfTimesPreseenToBeSeen:(unint64_t)seen
 {
-  v8 = a3;
-  v9 = a4;
+  headlinesCopy = headlines;
+  dateCopy = date;
   +[NSThread isMainThread];
-  if (!v8 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (!headlinesCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000A12D8();
   }
 
-  v10 = [(FTSeenHeadlineWidgetEventTracker *)self todayEventTracker];
-  v11 = [(FTSeenHeadlineWidgetEventTracker *)self submissionGroup];
-  dispatch_group_enter(v11);
+  todayEventTracker = [(FTSeenHeadlineWidgetEventTracker *)self todayEventTracker];
+  submissionGroup = [(FTSeenHeadlineWidgetEventTracker *)self submissionGroup];
+  dispatch_group_enter(submissionGroup);
 
-  v12 = [(FTSeenHeadlineWidgetEventTracker *)self fileCoordinatedFIFOHost];
+  fileCoordinatedFIFOHost = [(FTSeenHeadlineWidgetEventTracker *)self fileCoordinatedFIFOHost];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100015898;
   v17[3] = &unk_1000D7488;
-  v21 = v9;
-  v22 = a5;
-  v18 = v8;
-  v19 = self;
-  v20 = v10;
-  v13 = v9;
-  v14 = v10;
-  v15 = v8;
-  [v12 writeSyncWithAccessor:v17];
+  v21 = dateCopy;
+  seenCopy = seen;
+  v18 = headlinesCopy;
+  selfCopy = self;
+  v20 = todayEventTracker;
+  v13 = dateCopy;
+  v14 = todayEventTracker;
+  v15 = headlinesCopy;
+  [fileCoordinatedFIFOHost writeSyncWithAccessor:v17];
 
-  v16 = [(FTSeenHeadlineWidgetEventTracker *)self submissionGroup];
-  dispatch_group_leave(v16);
+  submissionGroup2 = [(FTSeenHeadlineWidgetEventTracker *)self submissionGroup];
+  dispatch_group_leave(submissionGroup2);
 }
 
 @end

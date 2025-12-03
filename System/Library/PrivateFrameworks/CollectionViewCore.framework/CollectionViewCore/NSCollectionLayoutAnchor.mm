@@ -1,16 +1,16 @@
 @interface NSCollectionLayoutAnchor
-+ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)a3;
-+ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)a3 offset:(CGPoint)a4;
-+ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)a3 unitOffset:(CGPoint)a4;
++ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)point;
++ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)point offset:(CGPoint)offset;
++ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)point unitOffset:(CGPoint)offset;
 + (NSCollectionLayoutAnchor)layoutAnchorWithEdges:(NSDirectionalRectEdge)edges;
 + (NSCollectionLayoutAnchor)layoutAnchorWithEdges:(NSDirectionalRectEdge)edges absoluteOffset:(CGPoint)absoluteOffset;
 + (NSCollectionLayoutAnchor)layoutAnchorWithEdges:(NSDirectionalRectEdge)edges fractionalOffset:(CGPoint)fractionalOffset;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGPoint)anchorPoint;
 - (CGPoint)offset;
-- (CGRect)_itemFrameForContainerRect:(CGRect)a3 itemSize:(CGSize)a4 itemLayoutAnchor:(id)a5;
-- (NSCollectionLayoutAnchor)initWithEdges:(unint64_t)a3 offset:(CGPoint)a4 anchorPoint:(CGPoint)a5 offsetIsUnitOffset:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CGRect)_itemFrameForContainerRect:(CGRect)rect itemSize:(CGSize)size itemLayoutAnchor:(id)anchor;
+- (NSCollectionLayoutAnchor)initWithEdges:(unint64_t)edges offset:(CGPoint)offset anchorPoint:(CGPoint)point offsetIsUnitOffset:(BOOL)unitOffset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -34,23 +34,23 @@
   return result;
 }
 
-- (NSCollectionLayoutAnchor)initWithEdges:(unint64_t)a3 offset:(CGPoint)a4 anchorPoint:(CGPoint)a5 offsetIsUnitOffset:(BOOL)a6
+- (NSCollectionLayoutAnchor)initWithEdges:(unint64_t)edges offset:(CGPoint)offset anchorPoint:(CGPoint)point offsetIsUnitOffset:(BOOL)unitOffset
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4.y;
-  v10 = a4.x;
+  y = point.y;
+  x = point.x;
+  v9 = offset.y;
+  v10 = offset.x;
   v13.receiver = self;
   v13.super_class = NSCollectionLayoutAnchor;
   result = [(NSCollectionLayoutAnchor *)&v13 init];
   if (result)
   {
-    result->_edges = a3;
+    result->_edges = edges;
     result->_offset.x = v10;
     result->_offset.y = v9;
     result->_anchorPoint.x = x;
     result->_anchorPoint.y = y;
-    result->_offsetIsUnitOffset = a6;
+    result->_offsetIsUnitOffset = unitOffset;
   }
 
   return result;
@@ -66,7 +66,7 @@
   }
 
   v14 = vbslq_s8(vceqzq_s64(vandq_s8(v4, xmmword_243BB23B0)), vbslq_s8(vceqzq_s64(vandq_s8(v4, xmmword_243BB23C0)), _Q3, _Q4), vandq_s8(_Q3, vceqq_s64(vandq_s8(v4, xmmword_243BB23D0), xmmword_243BB23D0)));
-  v11 = [a1 alloc];
+  v11 = [self alloc];
   v12 = [v11 initWithEdges:edges offset:0 anchorPoint:*MEMORY[0x277CBF348] offsetIsUnitOffset:{*(MEMORY[0x277CBF348] + 8), *&v14}];
 
   return v12;
@@ -82,7 +82,7 @@
     FMOV            V4.2D, #1.0
   }
 
-  v12 = [[a1 alloc] initWithEdges:edges offset:0 anchorPoint:x offsetIsUnitOffset:{absoluteOffset.y, vbslq_s8(vceqzq_s64(vandq_s8(v5, xmmword_243BB23B0)), vbslq_s8(vceqzq_s64(vandq_s8(v5, xmmword_243BB23C0)), _Q3, _Q4), vandq_s8(_Q3, vceqq_s64(vandq_s8(v5, xmmword_243BB23D0), xmmword_243BB23D0)))}];
+  v12 = [[self alloc] initWithEdges:edges offset:0 anchorPoint:x offsetIsUnitOffset:{absoluteOffset.y, vbslq_s8(vceqzq_s64(vandq_s8(v5, xmmword_243BB23B0)), vbslq_s8(vceqzq_s64(vandq_s8(v5, xmmword_243BB23C0)), _Q3, _Q4), vandq_s8(_Q3, vceqq_s64(vandq_s8(v5, xmmword_243BB23D0), xmmword_243BB23D0)))}];
 
   return v12;
 }
@@ -97,54 +97,54 @@
     FMOV            V4.2D, #1.0
   }
 
-  v12 = [[a1 alloc] initWithEdges:edges offset:1 anchorPoint:x offsetIsUnitOffset:{fractionalOffset.y, vbslq_s8(vceqzq_s64(vandq_s8(v5, xmmword_243BB23B0)), vbslq_s8(vceqzq_s64(vandq_s8(v5, xmmword_243BB23C0)), _Q3, _Q4), vandq_s8(_Q3, vceqq_s64(vandq_s8(v5, xmmword_243BB23D0), xmmword_243BB23D0)))}];
+  v12 = [[self alloc] initWithEdges:edges offset:1 anchorPoint:x offsetIsUnitOffset:{fractionalOffset.y, vbslq_s8(vceqzq_s64(vandq_s8(v5, xmmword_243BB23B0)), vbslq_s8(vceqzq_s64(vandq_s8(v5, xmmword_243BB23C0)), _Q3, _Q4), vandq_s8(_Q3, vceqq_s64(vandq_s8(v5, xmmword_243BB23D0), xmmword_243BB23D0)))}];
 
   return v12;
 }
 
-+ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)a3
++ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [a1 alloc];
+  y = point.y;
+  x = point.x;
+  v5 = [self alloc];
   v6 = [v5 initWithEdges:0 offset:0 anchorPoint:*MEMORY[0x277CBF348] offsetIsUnitOffset:{*(MEMORY[0x277CBF348] + 8), x, y}];
 
   return v6;
 }
 
-+ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)a3 offset:(CGPoint)a4
++ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)point offset:(CGPoint)offset
 {
-  v4 = [[a1 alloc] initWithEdges:0 offset:0 anchorPoint:a4.x offsetIsUnitOffset:{a4.y, a3.x, a3.y}];
+  v4 = [[self alloc] initWithEdges:0 offset:0 anchorPoint:offset.x offsetIsUnitOffset:{offset.y, point.x, point.y}];
 
   return v4;
 }
 
-+ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)a3 unitOffset:(CGPoint)a4
++ (NSCollectionLayoutAnchor)layoutAnchorWithAnchorPoint:(CGPoint)point unitOffset:(CGPoint)offset
 {
-  v4 = [[a1 alloc] initWithEdges:0 offset:1 anchorPoint:a4.x offsetIsUnitOffset:{a4.y, a3.x, a3.y}];
+  v4 = [[self alloc] initWithEdges:0 offset:1 anchorPoint:offset.x offsetIsUnitOffset:{offset.y, point.x, point.y}];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NSCollectionLayoutAnchor *)self edges];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  edges = [(NSCollectionLayoutAnchor *)self edges];
   [(NSCollectionLayoutAnchor *)self offset];
   v7 = v6;
   v9 = v8;
   [(NSCollectionLayoutAnchor *)self anchorPoint];
   v11 = v10;
   v13 = v12;
-  v14 = [(NSCollectionLayoutAnchor *)self offsetIsUnitOffset];
+  offsetIsUnitOffset = [(NSCollectionLayoutAnchor *)self offsetIsUnitOffset];
 
-  return [v4 initWithEdges:v5 offset:v14 anchorPoint:v7 offsetIsUnitOffset:{v9, v11, v13}];
+  return [v4 initWithEdges:edges offset:offsetIsUnitOffset anchorPoint:v7 offsetIsUnitOffset:{v9, v11, v13}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
@@ -152,24 +152,24 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(NSCollectionLayoutAnchor *)self edges], v5 == [(NSCollectionLayoutAnchor *)v4 edges]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(NSCollectionLayoutAnchor *)self edges], v5 == [(NSCollectionLayoutAnchor *)equalCopy edges]))
     {
       [(NSCollectionLayoutAnchor *)self anchorPoint];
       v7 = v6;
       v9 = v8;
-      [(NSCollectionLayoutAnchor *)v4 anchorPoint];
+      [(NSCollectionLayoutAnchor *)equalCopy anchorPoint];
       LOBYTE(v11) = 0;
       if (v7 == v12 && v9 == v10)
       {
         [(NSCollectionLayoutAnchor *)self offset];
         v14 = v13;
         v16 = v15;
-        [(NSCollectionLayoutAnchor *)v4 offset];
+        [(NSCollectionLayoutAnchor *)equalCopy offset];
         LOBYTE(v11) = 0;
         if (v14 == v18 && v16 == v17)
         {
-          v19 = [(NSCollectionLayoutAnchor *)self offsetIsUnitOffset];
-          v11 = v19 ^ [(NSCollectionLayoutAnchor *)v4 offsetIsUnitOffset]^ 1;
+          offsetIsUnitOffset = [(NSCollectionLayoutAnchor *)self offsetIsUnitOffset];
+          v11 = offsetIsUnitOffset ^ [(NSCollectionLayoutAnchor *)equalCopy offsetIsUnitOffset]^ 1;
         }
       }
     }
@@ -198,39 +198,39 @@
   return v13;
 }
 
-- (CGRect)_itemFrameForContainerRect:(CGRect)a3 itemSize:(CGSize)a4 itemLayoutAnchor:(id)a5
+- (CGRect)_itemFrameForContainerRect:(CGRect)rect itemSize:(CGSize)size itemLayoutAnchor:(id)anchor
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3.size.height;
-  v8 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a5;
+  height = size.height;
+  width = size.width;
+  v7 = rect.size.height;
+  v8 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  anchorCopy = anchor;
   [(NSCollectionLayoutAnchor *)self anchorPoint];
   v14 = _CVCRectAnchorPointForUnitAnchorPoint(x, y, v8, v7, v13) - width * 0.5;
   v16 = v15 - height * 0.5;
-  if (v12)
+  if (anchorCopy)
   {
-    v17 = v12;
+    selfCopy = anchorCopy;
   }
 
   else
   {
-    v17 = self;
+    selfCopy = self;
   }
 
-  v18 = v17;
+  v18 = selfCopy;
   [(NSCollectionLayoutAnchor *)v18 anchorPoint];
   v20 = _CVCRectAdjustWithAnchorPoint(v14, v16, width, height, v19);
   v22 = v21;
   v24 = v23;
   v26 = v25;
-  v27 = [(NSCollectionLayoutAnchor *)self offsetIsUnitOffset];
+  offsetIsUnitOffset = [(NSCollectionLayoutAnchor *)self offsetIsUnitOffset];
   [(NSCollectionLayoutAnchor *)self offset];
   v29 = v28;
   v31 = v30;
-  if (v27)
+  if (offsetIsUnitOffset)
   {
     v53.origin.x = v20;
     v53.origin.y = v22;
@@ -264,15 +264,15 @@
     v20 = v52;
   }
 
-  if (v12)
+  if (anchorCopy)
   {
-    [(NSCollectionLayoutAnchor *)v12 offset];
+    [(NSCollectionLayoutAnchor *)anchorCopy offset];
     if (v32 != v37 || v33 != v36)
     {
-      v39 = [(NSCollectionLayoutAnchor *)v12 offsetIsUnitOffset];
-      [(NSCollectionLayoutAnchor *)v12 offset];
+      offsetIsUnitOffset2 = [(NSCollectionLayoutAnchor *)anchorCopy offsetIsUnitOffset];
+      [(NSCollectionLayoutAnchor *)anchorCopy offset];
       v42 = v41;
-      if (v39)
+      if (offsetIsUnitOffset2)
       {
         v43 = v40;
         v57.origin.x = v20;

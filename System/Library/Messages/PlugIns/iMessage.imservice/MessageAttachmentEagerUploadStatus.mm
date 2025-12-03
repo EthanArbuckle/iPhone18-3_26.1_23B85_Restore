@@ -1,33 +1,33 @@
 @interface MessageAttachmentEagerUploadStatus
 - (BOOL)cancel;
 - (BOOL)isSuccess;
-- (MessageAttachmentEagerUploadStatus)initWithOriginalURL:(id)a3 transferId:(id)a4 targetSize:(int64_t)a5;
+- (MessageAttachmentEagerUploadStatus)initWithOriginalURL:(id)l transferId:(id)id targetSize:(int64_t)size;
 - (id)description;
-- (void)attachToTransfer:(id)a3 message:(id)a4 commonCapabilities:(id)a5;
+- (void)attachToTransfer:(id)transfer message:(id)message commonCapabilities:(id)capabilities;
 - (void)finish;
 - (void)start;
-- (void)wait:(id)a3;
+- (void)wait:(id)wait;
 @end
 
 @implementation MessageAttachmentEagerUploadStatus
 
-- (MessageAttachmentEagerUploadStatus)initWithOriginalURL:(id)a3 transferId:(id)a4 targetSize:(int64_t)a5
+- (MessageAttachmentEagerUploadStatus)initWithOriginalURL:(id)l transferId:(id)id targetSize:(int64_t)size
 {
-  v8 = a3;
+  lCopy = l;
   v22.receiver = self;
   v22.super_class = MessageAttachmentEagerUploadStatus;
-  v9 = a4;
+  idCopy = id;
   v10 = [(MessageAttachmentEagerUploadStatus *)&v22 init];
   v10->_state = 0;
   originalURL = v10->_originalURL;
-  v10->_originalURL = v8;
-  v12 = v8;
+  v10->_originalURL = lCopy;
+  v12 = lCopy;
 
-  v13 = [v9 copy];
+  v13 = [idCopy copy];
   transferId = v10->_transferId;
   v10->_transferId = v13;
 
-  v10->_targetSize = a5;
+  v10->_targetSize = size;
   v15 = objc_alloc_init(MessageAttachmentSingleStatus);
   attachmentStatus = v10->_attachmentStatus;
   v10->_attachmentStatus = v15;
@@ -43,9 +43,9 @@
   return v10;
 }
 
-- (void)wait:(id)a3
+- (void)wait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   uploadGroup = self->_uploadGroup;
   ++self->_waitCount;
   v7[0] = _NSConcreteStackBlock;
@@ -53,8 +53,8 @@
   v7[2] = sub_560BC;
   v7[3] = &unk_113398;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = waitCopy;
+  v6 = waitCopy;
   dispatch_group_notify(uploadGroup, &_dispatch_main_q, v7);
 }
 
@@ -86,34 +86,34 @@
     return 0;
   }
 
-  v4 = [(MessageAttachmentSingleStatus *)self->_attachmentStatus transferError];
-  v3 = v4 == 0;
+  transferError = [(MessageAttachmentSingleStatus *)self->_attachmentStatus transferError];
+  v3 = transferError == 0;
 
   return v3;
 }
 
-- (void)attachToTransfer:(id)a3 message:(id)a4 commonCapabilities:(id)a5
+- (void)attachToTransfer:(id)transfer message:(id)message commonCapabilities:(id)capabilities
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  capabilitiesCopy = capabilities;
+  messageCopy = message;
+  transferCopy = transfer;
   v17 = +[IMDFileTransferCenter sharedInstance];
-  v11 = [(MessageAttachmentEagerUploadStatus *)self attachmentSendContexts];
-  v12 = [MessageAttachmentController _combinedTransferUserInfoForAttachmentSendContexts:v11 transfer:v10 message:v9 commonCapabilities:v8];
+  attachmentSendContexts = [(MessageAttachmentEagerUploadStatus *)self attachmentSendContexts];
+  v12 = [MessageAttachmentController _combinedTransferUserInfoForAttachmentSendContexts:attachmentSendContexts transfer:transferCopy message:messageCopy commonCapabilities:capabilitiesCopy];
 
-  v13 = [v10 guid];
-  [v17 startTransfer:v13];
-  [v10 setUserInfo:v12];
-  [v10 setAttachmentSendContexts:v11];
-  v14 = [v9 guid];
+  guid = [transferCopy guid];
+  [v17 startTransfer:guid];
+  [transferCopy setUserInfo:v12];
+  [transferCopy setAttachmentSendContexts:attachmentSendContexts];
+  guid2 = [messageCopy guid];
 
-  [v10 setMessageGUID:v14];
-  v15 = [(MessageAttachmentEagerUploadStatus *)self transferredName];
-  [v10 setTransferredFilename:v15];
+  [transferCopy setMessageGUID:guid2];
+  transferredName = [(MessageAttachmentEagerUploadStatus *)self transferredName];
+  [transferCopy setTransferredFilename:transferredName];
 
-  v16 = [(MessageAttachmentEagerUploadStatus *)self totalBytes];
-  [v17 updateTransfer:v13 currentBytes:v16 totalBytes:v16];
-  [v17 endTransfer:v13];
+  totalBytes = [(MessageAttachmentEagerUploadStatus *)self totalBytes];
+  [v17 updateTransfer:guid currentBytes:totalBytes totalBytes:totalBytes];
+  [v17 endTransfer:guid];
 }
 
 - (BOOL)cancel

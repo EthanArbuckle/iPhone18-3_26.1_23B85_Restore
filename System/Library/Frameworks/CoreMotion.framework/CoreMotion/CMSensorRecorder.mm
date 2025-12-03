@@ -2,10 +2,10 @@
 + (BOOL)isAccelerometerRecordingAvailable;
 + (BOOL)isGyroRecordingAvailable;
 + (BOOL)isPressureRecordingAvailable;
-- (BOOL)validateTimesFromDate:(id *)a3 toDate:(id)a4;
-- (id)accelerometerDataSinceId:(unint64_t)a3;
-- (id)gyroDataSinceId:(unint64_t)a3;
-- (id)pressureDataSinceId:(unint64_t)a3;
+- (BOOL)validateTimesFromDate:(id *)date toDate:(id)toDate;
+- (id)accelerometerDataSinceId:(unint64_t)id;
+- (id)gyroDataSinceId:(unint64_t)id;
+- (id)pressureDataSinceId:(unint64_t)id;
 @end
 
 @implementation CMSensorRecorder
@@ -17,7 +17,7 @@
     return 0;
   }
 
-  return MEMORY[0x1EEE66B58](a1, sel_isRecordingAvailableForType_, 0);
+  return MEMORY[0x1EEE66B58](self, sel_isRecordingAvailableForType_, 0);
 }
 
 + (BOOL)isGyroRecordingAvailable
@@ -27,7 +27,7 @@
     return 0;
   }
 
-  return MEMORY[0x1EEE66B58](a1, sel_isRecordingAvailableForType_, 1);
+  return MEMORY[0x1EEE66B58](self, sel_isRecordingAvailableForType_, 1);
 }
 
 + (BOOL)isPressureRecordingAvailable
@@ -37,50 +37,50 @@
     return 0;
   }
 
-  return MEMORY[0x1EEE66B58](a1, sel_isRecordingAvailableForType_, 2);
+  return MEMORY[0x1EEE66B58](self, sel_isRecordingAvailableForType_, 2);
 }
 
-- (id)accelerometerDataSinceId:(unint64_t)a3
+- (id)accelerometerDataSinceId:(unint64_t)id
 {
   v4 = NSStringFromSelector(a2);
   objc_msgSend_tccServiceMotionAccessWithLabel_(CMMotionUtils, v5, v4);
   v6 = [CMSensorDataList alloc];
-  v8 = objc_msgSend_initWithIdentifier_andType_(v6, v7, a3, 0);
+  v8 = objc_msgSend_initWithIdentifier_andType_(v6, v7, id, 0);
 
   return v8;
 }
 
-- (id)gyroDataSinceId:(unint64_t)a3
+- (id)gyroDataSinceId:(unint64_t)id
 {
   v4 = NSStringFromSelector(a2);
   objc_msgSend_tccServiceMotionAccessWithLabel_(CMMotionUtils, v5, v4);
   v6 = [CMSensorDataList alloc];
-  v8 = objc_msgSend_initWithIdentifier_andType_(v6, v7, a3, 1);
+  v8 = objc_msgSend_initWithIdentifier_andType_(v6, v7, id, 1);
 
   return v8;
 }
 
-- (id)pressureDataSinceId:(unint64_t)a3
+- (id)pressureDataSinceId:(unint64_t)id
 {
   v4 = NSStringFromSelector(a2);
   objc_msgSend_tccServiceMotionAccessWithLabel_(CMMotionUtils, v5, v4);
   v6 = [CMSensorDataList alloc];
-  v8 = objc_msgSend_initWithIdentifier_andType_(v6, v7, a3, 2);
+  v8 = objc_msgSend_initWithIdentifier_andType_(v6, v7, id, 2);
 
   return v8;
 }
 
-- (BOOL)validateTimesFromDate:(id *)a3 toDate:(id)a4
+- (BOOL)validateTimesFromDate:(id *)date toDate:(id)toDate
 {
-  if (!a3)
+  if (!date)
   {
     v22 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v22, v23, a2, self, @"CMSensorRecorder.mm", 640, @"Invalid parameter not satisfying: %@", @"startTime");
   }
 
-  if (*a3)
+  if (*date)
   {
-    if (a4)
+    if (toDate)
     {
       goto LABEL_5;
     }
@@ -88,18 +88,18 @@
 
   else
   {
-    v24 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+    v24 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, date);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v24, v25, a2, self, @"CMSensorRecorder.mm", 641, @"Invalid parameter not satisfying: %@", @"*startTime");
-    if (a4)
+    if (toDate)
     {
       goto LABEL_5;
     }
   }
 
-  v26 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, a3);
+  v26 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, date);
   objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v26, v27, a2, self, @"CMSensorRecorder.mm", 642, @"Invalid parameter not satisfying: %@", @"endTime");
 LABEL_5:
-  objc_msgSend_timeIntervalSinceDate_(a4, a2, *a3);
+  objc_msgSend_timeIntervalSinceDate_(toDate, a2, *date);
   if (v10 < 0.0)
   {
     v28 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v8, v9);
@@ -107,18 +107,18 @@ LABEL_5:
   }
 
   Current = CFAbsoluteTimeGetCurrent();
-  objc_msgSend_timeIntervalSinceReferenceDate(*a3, v12, v13);
+  objc_msgSend_timeIntervalSinceReferenceDate(*date, v12, v13);
   if (Current - v16 >= 259200.0)
   {
     v30 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], v14, v15);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v30, v31, a2, self, @"CMSensorRecorder.mm", 645, @"startTime must be within 3 days of today.");
   }
 
-  objc_msgSend_timeIntervalSinceDate_(a4, v14, *a3);
+  objc_msgSend_timeIntervalSinceDate_(toDate, v14, *date);
   v20 = v19;
   if (v19 > 43200.0)
   {
-    *a3 = objc_msgSend_dateByAddingTimeInterval_(a4, v17, v18, -43200.0);
+    *date = objc_msgSend_dateByAddingTimeInterval_(toDate, v17, v18, -43200.0);
   }
 
   return v20 > 43200.0;

@@ -13,7 +13,7 @@
     v5 = 3221225472;
     v6 = sub_17878;
     v7 = &unk_44540;
-    v8 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
   }
 

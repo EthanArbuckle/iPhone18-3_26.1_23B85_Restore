@@ -1,12 +1,12 @@
 @interface ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent
@@ -17,41 +17,41 @@
   v8.receiver = self;
   v8.super_class = ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent;
   v4 = [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)&v8 description];
-  v5 = [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   embeddingsBeforeActivation = self->_embeddingsBeforeActivation;
   if (embeddingsBeforeActivation)
   {
-    v5 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)embeddingsBeforeActivation dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"embeddingsBeforeActivation"];
+    dictionaryRepresentation = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)embeddingsBeforeActivation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"embeddingsBeforeActivation"];
   }
 
   embeddingsAfterActivation = self->_embeddingsAfterActivation;
   if (embeddingsAfterActivation)
   {
-    v7 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)embeddingsAfterActivation dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"embeddingsAfterActivation"];
+    dictionaryRepresentation2 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)embeddingsAfterActivation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"embeddingsAfterActivation"];
   }
 
   contactId = self->_contactId;
   if (contactId)
   {
-    [v3 setObject:contactId forKey:@"contactId"];
+    [dictionary setObject:contactId forKey:@"contactId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_embeddingsBeforeActivation)
   {
     [ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent writeTo:];
@@ -72,40 +72,40 @@
   PBDataWriterWriteStringField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   embeddingsBeforeActivation = self->_embeddingsBeforeActivation;
-  v5 = a3;
-  [v5 setEmbeddingsBeforeActivation:embeddingsBeforeActivation];
-  [v5 setEmbeddingsAfterActivation:self->_embeddingsAfterActivation];
-  [v5 setContactId:self->_contactId];
+  toCopy = to;
+  [toCopy setEmbeddingsBeforeActivation:embeddingsBeforeActivation];
+  [toCopy setEmbeddingsAfterActivation:self->_embeddingsAfterActivation];
+  [toCopy setContactId:self->_contactId];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self->_embeddingsBeforeActivation copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self->_embeddingsBeforeActivation copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self->_embeddingsAfterActivation copyWithZone:a3];
+  v8 = [(ContactEmbeddingAnalysisPETNeuralNetEmbedding *)self->_embeddingsAfterActivation copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_contactId copyWithZone:a3];
+  v10 = [(NSString *)self->_contactId copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((embeddingsBeforeActivation = self->_embeddingsBeforeActivation, !(embeddingsBeforeActivation | v4[3])) || -[ContactEmbeddingAnalysisPETNeuralNetEmbedding isEqual:](embeddingsBeforeActivation, "isEqual:")) && ((embeddingsAfterActivation = self->_embeddingsAfterActivation, !(embeddingsAfterActivation | v4[2])) || -[ContactEmbeddingAnalysisPETNeuralNetEmbedding isEqual:](embeddingsAfterActivation, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((embeddingsBeforeActivation = self->_embeddingsBeforeActivation, !(embeddingsBeforeActivation | equalCopy[3])) || -[ContactEmbeddingAnalysisPETNeuralNetEmbedding isEqual:](embeddingsBeforeActivation, "isEqual:")) && ((embeddingsAfterActivation = self->_embeddingsAfterActivation, !(embeddingsAfterActivation | equalCopy[2])) || -[ContactEmbeddingAnalysisPETNeuralNetEmbedding isEqual:](embeddingsAfterActivation, "isEqual:")))
   {
     contactId = self->_contactId;
-    if (contactId | v4[1])
+    if (contactId | equalCopy[1])
     {
       v8 = [(NSString *)contactId isEqual:?];
     }
@@ -131,12 +131,12 @@
   return v4 ^ [(NSString *)self->_contactId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   embeddingsBeforeActivation = self->_embeddingsBeforeActivation;
-  v6 = v4[3];
-  v9 = v4;
+  v6 = fromCopy[3];
+  v9 = fromCopy;
   if (embeddingsBeforeActivation)
   {
     if (!v6)
@@ -157,10 +157,10 @@
     [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)self setEmbeddingsBeforeActivation:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   embeddingsAfterActivation = self->_embeddingsAfterActivation;
-  v8 = v4[2];
+  v8 = fromCopy[2];
   if (embeddingsAfterActivation)
   {
     if (!v8)
@@ -181,9 +181,9 @@ LABEL_7:
     [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)self setEmbeddingsAfterActivation:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_13:
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(ContactEmbeddingAnalysisPETContactEmbeddingAnalysisEvent *)self setContactId:?];
   }

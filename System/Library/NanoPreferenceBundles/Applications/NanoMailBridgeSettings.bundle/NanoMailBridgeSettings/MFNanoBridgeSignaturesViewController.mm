@@ -1,18 +1,18 @@
 @interface MFNanoBridgeSignaturesViewController
-- (id)_signatureWithSpecifier:(id)a3;
+- (id)_signatureWithSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_setSignature:(id)a3 withSpecifier:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_setSignature:(id)signature withSpecifier:(id)specifier;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MFNanoBridgeSignaturesViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = MFNanoBridgeSignaturesViewController;
-  [(MFNanoBridgeSignaturesViewController *)&v3 viewWillAppear:a3];
+  [(MFNanoBridgeSignaturesViewController *)&v3 viewWillAppear:appear];
   +[MFNanoMailBridgeSettingsNavigationDonation donateUserVisitForSignatureSettings];
 }
 
@@ -41,62 +41,62 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = MFNanoBridgeSignaturesViewController;
-  v4 = [(MFNanoBridgeSignaturesViewController *)&v11 tableView:a3 cellForRowAtIndexPath:a4];
+  v4 = [(MFNanoBridgeSignaturesViewController *)&v11 tableView:view cellForRowAtIndexPath:path];
   if ([v4 tag] == &dword_C + 2)
   {
-    v5 = [v4 textView];
-    [v5 setTextLoupeVisibility:2];
+    textView = [v4 textView];
+    [textView setTextLoupeVisibility:2];
     v6 = +[UIColor clearColor];
-    [v5 setBackgroundColor:v6];
+    [textView setBackgroundColor:v6];
 
-    [v5 setAllowsEditingTextAttributes:1];
+    [textView setAllowsEditingTextAttributes:1];
     v7 = BPSDetailTextColor();
-    [v5 setTextColor:v7];
+    [textView setTextColor:v7];
 
     v8 = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleBody];
     v9 = [UIFont fontWithDescriptor:v8 size:13.0];
-    [v5 setFont:v9];
+    [textView setFont:v9];
   }
 
   return v4;
 }
 
-- (id)_signatureWithSpecifier:(id)a3
+- (id)_signatureWithSpecifier:(id)specifier
 {
   v3 = +[MFNanoBridgeSettingsManager sharedInstance];
-  v4 = [v3 htmlSignature];
+  htmlSignature = [v3 htmlSignature];
 
-  return v4;
+  return htmlSignature;
 }
 
-- (void)_setSignature:(id)a3 withSpecifier:(id)a4
+- (void)_setSignature:(id)signature withSpecifier:(id)specifier
 {
-  v13 = a3;
-  v6 = a4;
+  signatureCopy = signature;
+  specifierCopy = specifier;
   v7 = +[MFNanoBridgeSettingsManager sharedInstance];
-  [v7 setHtmlSignature:v13];
+  [v7 setHtmlSignature:signatureCopy];
 
-  v8 = [(MFNanoBridgeSignaturesViewController *)self specifier];
+  specifier = [(MFNanoBridgeSignaturesViewController *)self specifier];
 
-  v9 = [(MFNanoBridgeSignaturesViewController *)self parentController];
-  v10 = v9;
-  if (v9)
+  parentController = [(MFNanoBridgeSignaturesViewController *)self parentController];
+  v10 = parentController;
+  if (parentController)
   {
-    v11 = v9;
+    target = parentController;
   }
 
   else
   {
-    v11 = [v8 target];
+    target = [specifier target];
   }
 
-  v12 = v11;
+  v12 = target;
 
-  [v12 reloadSpecifier:v8];
+  [v12 reloadSpecifier:specifier];
 }
 
 @end

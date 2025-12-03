@@ -4,11 +4,11 @@
 - (BOOL)alwaysShowRecognizedSpeech;
 - (BOOL)assistantIsEnabled;
 - (BOOL)isAnnounceNotificationEnabled;
-- (BOOL)isAnnounceNotificationEnabledForApp:(id)a3;
-- (BOOL)isAnnounceNotificationEnabledForPlatform:(int64_t)a3;
+- (BOOL)isAnnounceNotificationEnabledForApp:(id)app;
+- (BOOL)isAnnounceNotificationEnabledForPlatform:(int64_t)platform;
 - (BOOL)isCallHangUpEnabled;
-- (BOOL)isLearningEnabledForApp:(id)a3;
-- (BOOL)isShowSuggestionsEnabledInApp:(id)a3;
+- (BOOL)isLearningEnabledForApp:(id)app;
+- (BOOL)isShowSuggestionsEnabledInApp:(id)app;
 - (BOOL)isSpokenNotificationSkipTriggerlessReplyConfirmationEnabled;
 - (BOOL)isVoiceTriggerEnabled;
 - (BOOL)siriResponseShouldAlwaysPrint;
@@ -16,12 +16,12 @@
 - (id)getAllNotificationApps;
 - (id)siriSuggestionClients;
 - (int64_t)useDeviceSpeakerForTTS;
-- (void)setAnnounceNotificationEnabled:(BOOL)a3;
-- (void)setAnnounceNotificationEnabledForApp:(id)a3 annouceNotificationEnabled:(BOOL)a4;
-- (void)setHardwareButtonAssistant:(BOOL)a3;
-- (void)setLearningForApp:(id)a3 enabled:(BOOL)a4;
-- (void)setShowSuggestionsInApp:(id)a3 enabled:(BOOL)a4;
-- (void)setUseDeviceSpeakerForTTS:(int64_t)a3;
+- (void)setAnnounceNotificationEnabled:(BOOL)enabled;
+- (void)setAnnounceNotificationEnabledForApp:(id)app annouceNotificationEnabled:(BOOL)enabled;
+- (void)setHardwareButtonAssistant:(BOOL)assistant;
+- (void)setLearningForApp:(id)app enabled:(BOOL)enabled;
+- (void)setShowSuggestionsInApp:(id)app enabled:(BOOL)enabled;
+- (void)setUseDeviceSpeakerForTTS:(int64_t)s;
 @end
 
 @implementation ASFController
@@ -41,7 +41,7 @@
   block[1] = 3221225472;
   block[2] = __33__ASFController_sharedController__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedController_onceToken_2 != -1)
   {
     dispatch_once(&sharedController_onceToken_2, block);
@@ -67,17 +67,17 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
   v2 = [(ASFController *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D7A8D0] sharedPreferences];
+    mEMORY[0x277D7A8D0] = [MEMORY[0x277D7A8D0] sharedPreferences];
     voiceTriggerPreferences = v2->_voiceTriggerPreferences;
-    v2->_voiceTriggerPreferences = v3;
+    v2->_voiceTriggerPreferences = mEMORY[0x277D7A8D0];
 
     v5 = objc_alloc_init(ASFApplicationSupplier);
     applicationSupplier = v2->_applicationSupplier;
     v2->_applicationSupplier = v5;
 
-    v7 = [MEMORY[0x277CEF368] sharedPreferences];
+    mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
     afPreferences = v2->_afPreferences;
-    v2->_afPreferences = v7;
+    v2->_afPreferences = mEMORY[0x277CEF368];
   }
 
   return v2;
@@ -85,23 +85,23 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
 
 - (BOOL)assistantIsEnabled
 {
-  v2 = [(ASFController *)self afPreferences];
-  v3 = [v2 assistantIsEnabled];
+  afPreferences = [(ASFController *)self afPreferences];
+  assistantIsEnabled = [afPreferences assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
 - (BOOL)isVoiceTriggerEnabled
 {
-  v2 = [(ASFController *)self voiceTriggerPreferences];
-  v3 = [v2 voiceTriggerEnabled];
+  voiceTriggerPreferences = [(ASFController *)self voiceTriggerPreferences];
+  voiceTriggerEnabled = [voiceTriggerPreferences voiceTriggerEnabled];
 
-  return v3;
+  return voiceTriggerEnabled;
 }
 
-- (void)setHardwareButtonAssistant:(BOOL)a3
+- (void)setHardwareButtonAssistant:(BOOL)assistant
 {
-  if (a3)
+  if (assistant)
   {
     v3 = 0;
   }
@@ -125,11 +125,11 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2413AE000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v4 = [(ASFController *)self afPreferences];
-  v5 = [v4 alwaysShowRecognizedSpeech];
+  afPreferences = [(ASFController *)self afPreferences];
+  alwaysShowRecognizedSpeech = [afPreferences alwaysShowRecognizedSpeech];
 
   v6 = *MEMORY[0x277D85DE8];
-  return v5;
+  return alwaysShowRecognizedSpeech;
 }
 
 - (BOOL)siriResponseShouldAlwaysPrint
@@ -143,11 +143,11 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2413AE000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v4 = [(ASFController *)self afPreferences];
-  v5 = [v4 siriResponseShouldAlwaysPrint];
+  afPreferences = [(ASFController *)self afPreferences];
+  siriResponseShouldAlwaysPrint = [afPreferences siriResponseShouldAlwaysPrint];
 
   v6 = *MEMORY[0x277D85DE8];
-  return v5;
+  return siriResponseShouldAlwaysPrint;
 }
 
 - (int64_t)useDeviceSpeakerForTTS
@@ -161,14 +161,14 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2413AE000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v4 = [(ASFController *)self afPreferences];
-  v5 = [v4 useDeviceSpeakerForTTS];
+  afPreferences = [(ASFController *)self afPreferences];
+  useDeviceSpeakerForTTS = [afPreferences useDeviceSpeakerForTTS];
 
   v6 = *MEMORY[0x277D85DE8];
-  return v5;
+  return useDeviceSpeakerForTTS;
 }
 
-- (void)setUseDeviceSpeakerForTTS:(int64_t)a3
+- (void)setUseDeviceSpeakerForTTS:(int64_t)s
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -179,8 +179,8 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2413AE000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v6 = [(ASFController *)self afPreferences];
-  [v6 setUseDeviceSpeakerForTTS:a3];
+  afPreferences = [(ASFController *)self afPreferences];
+  [afPreferences setUseDeviceSpeakerForTTS:s];
 
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -196,11 +196,11 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2413AE000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v4 = [(ASFController *)self voiceTriggerPreferences];
-  v5 = [v4 canUseVoiceTriggerDuringPhoneCall];
+  voiceTriggerPreferences = [(ASFController *)self voiceTriggerPreferences];
+  canUseVoiceTriggerDuringPhoneCall = [voiceTriggerPreferences canUseVoiceTriggerDuringPhoneCall];
 
   v6 = *MEMORY[0x277D85DE8];
-  return v5;
+  return canUseVoiceTriggerDuringPhoneCall;
 }
 
 - (BOOL)isAnnounceNotificationEnabled
@@ -214,17 +214,17 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2413AE000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v9, 0xCu);
   }
 
-  v4 = [(ASFController *)self notificationSettingsCenter];
-  v5 = [v4 notificationSystemSettings];
-  v6 = [v5 announcementSetting] == 2;
+  notificationSettingsCenter = [(ASFController *)self notificationSettingsCenter];
+  notificationSystemSettings = [notificationSettingsCenter notificationSystemSettings];
+  v6 = [notificationSystemSettings announcementSetting] == 2;
 
   v7 = *MEMORY[0x277D85DE8];
   return v6;
 }
 
-- (void)setAnnounceNotificationEnabled:(BOOL)a3
+- (void)setAnnounceNotificationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -234,11 +234,11 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2413AE000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v11, 0xCu);
   }
 
-  v6 = [(ASFController *)self notificationSettingsCenter];
-  v7 = [v6 notificationSystemSettings];
-  v8 = [v7 mutableCopy];
+  notificationSettingsCenter = [(ASFController *)self notificationSettingsCenter];
+  notificationSystemSettings = [notificationSettingsCenter notificationSystemSettings];
+  v8 = [notificationSystemSettings mutableCopy];
 
-  if (v3)
+  if (enabledCopy)
   {
     v9 = 2;
   }
@@ -249,7 +249,7 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
   }
 
   [v8 setAnnouncementSetting:v9];
-  [v6 setNotificationSystemSettings:v8];
+  [notificationSettingsCenter setNotificationSystemSettings:v8];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -265,14 +265,14 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2413AE000, v3, OS_LOG_TYPE_DEFAULT, "%s ", &v8, 0xCu);
   }
 
-  v4 = [(ASFController *)self afPreferences];
-  v5 = [v4 spokenNotificationSkipTriggerlessReplyConfirmation];
+  afPreferences = [(ASFController *)self afPreferences];
+  spokenNotificationSkipTriggerlessReplyConfirmation = [afPreferences spokenNotificationSkipTriggerlessReplyConfirmation];
 
   v6 = *MEMORY[0x277D85DE8];
-  return v5;
+  return spokenNotificationSkipTriggerlessReplyConfirmation;
 }
 
-- (BOOL)isAnnounceNotificationEnabledForPlatform:(int64_t)a3
+- (BOOL)isAnnounceNotificationEnabledForPlatform:(int64_t)platform
 {
   v16 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -283,45 +283,45 @@ uint64_t __33__ASFController_sharedController__block_invoke(uint64_t a1)
     _os_log_impl(&dword_2413AE000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v14, 0xCu);
   }
 
-  v6 = [(ASFController *)self notificationSettingsCenter];
-  v7 = [v6 notificationSystemSettings];
+  notificationSettingsCenter = [(ASFController *)self notificationSettingsCenter];
+  notificationSystemSettings = [notificationSettingsCenter notificationSystemSettings];
 
   v8 = 0;
-  if (a3 > 2)
+  if (platform > 2)
   {
-    if (a3 == 3)
+    if (platform == 3)
     {
-      v10 = [(ASFController *)self afPreferences];
-      v11 = [v10 announceNotificationsOnHearingAidsEnabled];
+      afPreferences = [(ASFController *)self afPreferences];
+      announceNotificationsOnHearingAidsEnabled = [afPreferences announceNotificationsOnHearingAidsEnabled];
     }
 
     else
     {
-      if (a3 != 4)
+      if (platform != 4)
       {
         goto LABEL_14;
       }
 
-      v10 = [(ASFController *)self afPreferences];
-      v11 = [v10 announceNotificationsOnBuiltInSpeakerEnabled];
+      afPreferences = [(ASFController *)self afPreferences];
+      announceNotificationsOnHearingAidsEnabled = [afPreferences announceNotificationsOnBuiltInSpeakerEnabled];
     }
 
-    v8 = v11;
+    v8 = announceNotificationsOnHearingAidsEnabled;
 
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (platform == 1)
   {
-    v9 = [v7 announcementHeadphonesSetting];
+    announcementHeadphonesSetting = [notificationSystemSettings announcementHeadphonesSetting];
     goto LABEL_11;
   }
 
-  if (a3 == 2)
+  if (platform == 2)
   {
-    v9 = [v7 announcementCarPlaySetting];
+    announcementHeadphonesSetting = [notificationSystemSettings announcementCarPlaySetting];
 LABEL_11:
-    v8 = v9 == 2;
+    v8 = announcementHeadphonesSetting == 2;
   }
 
 LABEL_14:
@@ -342,14 +342,14 @@ LABEL_14:
   }
 
   v4 = [MEMORY[0x277CBEB58] set];
-  v5 = [(ASFController *)self notificationSettingsCenter];
-  v6 = [v5 allNotificationSources];
+  notificationSettingsCenter = [(ASFController *)self notificationSettingsCenter];
+  allNotificationSources = [notificationSettingsCenter allNotificationSources];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v6;
+  v7 = allNotificationSources;
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -368,9 +368,9 @@ LABEL_14:
         if (([v12 isHiddenFromSettings] & 1) == 0)
         {
           v13 = [ASFApplication alloc];
-          v14 = [v12 sourceIdentifier];
-          v15 = [v12 displayName];
-          v16 = [(ASFApplication *)v13 initWithBundleId:v14 localizedName:v15];
+          sourceIdentifier = [v12 sourceIdentifier];
+          displayName = [v12 displayName];
+          v16 = [(ASFApplication *)v13 initWithBundleId:sourceIdentifier localizedName:displayName];
           [v4 addObject:v16];
         }
       }
@@ -389,13 +389,13 @@ LABEL_14:
 - (id)getAllNotificationAppIds
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(ASFController *)self getAllNotificationApps];
-  v3 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v2, "count")}];
+  getAllNotificationApps = [(ASFController *)self getAllNotificationApps];
+  v3 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(getAllNotificationApps, "count")}];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = v2;
+  v4 = getAllNotificationApps;
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -410,8 +410,8 @@ LABEL_14:
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) bundleId];
-        [v3 addObject:v9];
+        bundleId = [*(*(&v12 + 1) + 8 * i) bundleId];
+        [v3 addObject:bundleId];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -425,10 +425,10 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)isAnnounceNotificationEnabledForApp:(id)a3
+- (BOOL)isAnnounceNotificationEnabledForApp:(id)app
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  appCopy = app;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -437,14 +437,14 @@ LABEL_14:
     _os_log_impl(&dword_2413AE000, v5, OS_LOG_TYPE_DEFAULT, "%s ", &v15, 0xCu);
   }
 
-  v6 = [(ASFController *)self notificationSettingsCenter];
-  v7 = v6;
-  if (v4 && ([v6 notificationSourceWithIdentifier:v4], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
+  notificationSettingsCenter = [(ASFController *)self notificationSettingsCenter];
+  v7 = notificationSettingsCenter;
+  if (appCopy && ([notificationSettingsCenter notificationSourceWithIdentifier:appCopy], (v8 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v9 = v8;
-    v10 = [v8 sourceSettings];
-    v11 = [v10 notificationSettings];
-    v12 = [v11 announcementSetting] == 2;
+    sourceSettings = [v8 sourceSettings];
+    notificationSettings = [sourceSettings notificationSettings];
+    v12 = [notificationSettings announcementSetting] == 2;
   }
 
   else
@@ -456,11 +456,11 @@ LABEL_14:
   return v12;
 }
 
-- (void)setAnnounceNotificationEnabledForApp:(id)a3 annouceNotificationEnabled:(BOOL)a4
+- (void)setAnnounceNotificationEnabledForApp:(id)app annouceNotificationEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  appCopy = app;
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -469,13 +469,13 @@ LABEL_14:
     _os_log_impl(&dword_2413AE000, v7, OS_LOG_TYPE_DEFAULT, "%s ", &v16, 0xCu);
   }
 
-  v8 = [(ASFController *)self notificationSettingsCenter];
-  v9 = [v8 notificationSourceWithIdentifier:v6];
-  v10 = [v9 sourceSettings];
-  v11 = [v10 notificationSettings];
-  v12 = [v11 mutableCopy];
+  notificationSettingsCenter = [(ASFController *)self notificationSettingsCenter];
+  v9 = [notificationSettingsCenter notificationSourceWithIdentifier:appCopy];
+  sourceSettings = [v9 sourceSettings];
+  notificationSettings = [sourceSettings notificationSettings];
+  v12 = [notificationSettings mutableCopy];
 
-  if (v4)
+  if (enabledCopy)
   {
     v13 = 2;
   }
@@ -487,7 +487,7 @@ LABEL_14:
 
   [v12 setAnnouncementSetting:v13];
   v14 = [v12 copy];
-  [v8 replaceNotificationSettings:v14 forNotificationSourceIdentifier:v6];
+  [notificationSettingsCenter replaceNotificationSettings:v14 forNotificationSourceIdentifier:appCopy];
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -534,19 +534,19 @@ LABEL_14:
   return v4;
 }
 
-- (BOOL)isLearningEnabledForApp:(id)a3
+- (BOOL)isLearningEnabledForApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = CFPreferencesCopyAppValue(@"SiriCanLearnFromAppBlacklist", @"com.apple.suggestions");
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:appCopy];
 
   return v5 ^ 1;
 }
 
-- (void)setLearningForApp:(id)a3 enabled:(BOOL)a4
+- (void)setLearningForApp:(id)app enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v10 = a3;
+  enabledCopy = enabled;
+  appCopy = app;
   v5 = CFPreferencesCopyAppValue(@"SiriCanLearnFromAppBlacklist", @"com.apple.suggestions");
   v6 = v5;
   if (v5)
@@ -560,14 +560,14 @@ LABEL_14:
   }
 
   v8 = v7;
-  if (v4)
+  if (enabledCopy)
   {
-    [v7 removeObject:v10];
+    [v7 removeObject:appCopy];
   }
 
-  else if (([v7 containsObject:v10] & 1) == 0)
+  else if (([v7 containsObject:appCopy] & 1) == 0)
   {
-    [v8 addObject:v10];
+    [v8 addObject:appCopy];
   }
 
   CFPreferencesSetAppValue(@"SiriCanLearnFromAppBlacklist", v8, @"com.apple.suggestions");
@@ -575,19 +575,19 @@ LABEL_14:
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.suggestions.settingsChanged", 0, 0, 1u);
 }
 
-- (BOOL)isShowSuggestionsEnabledInApp:(id)a3
+- (BOOL)isShowSuggestionsEnabledInApp:(id)app
 {
-  v3 = a3;
+  appCopy = app;
   v4 = CFPreferencesCopyAppValue(@"AppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
-  v5 = [v4 containsObject:v3];
+  v5 = [v4 containsObject:appCopy];
 
   return v5 ^ 1;
 }
 
-- (void)setShowSuggestionsInApp:(id)a3 enabled:(BOOL)a4
+- (void)setShowSuggestionsInApp:(id)app enabled:(BOOL)enabled
 {
-  v4 = a4;
-  v10 = a3;
+  enabledCopy = enabled;
+  appCopy = app;
   v5 = CFPreferencesCopyAppValue(@"AppCanShowSiriSuggestionsBlacklist", @"com.apple.suggestions");
   v6 = v5;
   if (v5)
@@ -601,14 +601,14 @@ LABEL_14:
   }
 
   v8 = v7;
-  if (v4)
+  if (enabledCopy)
   {
-    [v7 removeObject:v10];
+    [v7 removeObject:appCopy];
   }
 
-  else if (([v7 containsObject:v10] & 1) == 0)
+  else if (([v7 containsObject:appCopy] & 1) == 0)
   {
-    [v8 addObject:v10];
+    [v8 addObject:appCopy];
   }
 
   CFPreferencesSetAppValue(@"AppCanShowSiriSuggestionsBlacklist", v8, @"com.apple.suggestions");

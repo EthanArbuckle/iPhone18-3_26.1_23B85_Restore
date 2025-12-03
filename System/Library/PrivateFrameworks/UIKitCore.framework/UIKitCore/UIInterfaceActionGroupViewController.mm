@@ -1,29 +1,29 @@
 @interface UIInterfaceActionGroupViewController
-- (UIInterfaceActionGroupViewController)initWithActionGroup:(id)a3;
+- (UIInterfaceActionGroupViewController)initWithActionGroup:(id)group;
 - (UIInterfaceActionVisualStyle)visualStyle;
 - (UIInterfaceActionVisualStyleProviding)visualStyleProvider;
-- (id)defaultVisualStyleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4;
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5;
+- (id)defaultVisualStyleForTraitCollection:(id)collection presentationStyle:(int64_t)style;
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion;
 - (void)loadView;
 - (void)reloadVisualStyle;
-- (void)setVisualStyleProvider:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)setVisualStyleProvider:(id)provider;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation UIInterfaceActionGroupViewController
 
-- (UIInterfaceActionGroupViewController)initWithActionGroup:(id)a3
+- (UIInterfaceActionGroupViewController)initWithActionGroup:(id)group
 {
-  v5 = a3;
+  groupCopy = group;
   v9.receiver = self;
   v9.super_class = UIInterfaceActionGroupViewController;
   v6 = [(UIViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_actionGroup, a3);
+    objc_storeStrong(&v6->_actionGroup, group);
   }
 
   return v7;
@@ -31,20 +31,20 @@
 
 - (void)reloadVisualStyle
 {
-  v2 = [(UIInterfaceActionGroupViewController *)self actionGroupView];
-  [v2 reloadVisualStyle];
+  actionGroupView = [(UIInterfaceActionGroupViewController *)self actionGroupView];
+  [actionGroupView reloadVisualStyle];
 }
 
-- (void)setVisualStyleProvider:(id)a3
+- (void)setVisualStyleProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_visualStyleProvider);
 
   if (WeakRetained != obj)
   {
     objc_storeWeak(&self->_visualStyleProvider, obj);
-    v5 = [(UIInterfaceActionGroupViewController *)self actionGroupView];
-    [v5 setVisualStyleProvider:obj];
+    actionGroupView = [(UIInterfaceActionGroupViewController *)self actionGroupView];
+    [actionGroupView setVisualStyleProvider:obj];
   }
 }
 
@@ -57,17 +57,17 @@
 
 - (UIInterfaceActionVisualStyle)visualStyle
 {
-  v2 = [(UIInterfaceActionGroupViewController *)self actionGroupView];
-  v3 = [v2 visualStyle];
+  actionGroupView = [(UIInterfaceActionGroupViewController *)self actionGroupView];
+  visualStyle = [actionGroupView visualStyle];
 
-  return v3;
+  return visualStyle;
 }
 
-- (id)defaultVisualStyleForTraitCollection:(id)a3 presentationStyle:(int64_t)a4
+- (id)defaultVisualStyleForTraitCollection:(id)collection presentationStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = [(UIInterfaceActionGroupViewController *)self actionGroupView];
-  v8 = [v7 defaultVisualStyleForTraitCollection:v6 presentationStyle:a4];
+  collectionCopy = collection;
+  actionGroupView = [(UIInterfaceActionGroupViewController *)self actionGroupView];
+  v8 = [actionGroupView defaultVisualStyleForTraitCollection:collectionCopy presentationStyle:style];
 
   return v8;
 }
@@ -75,9 +75,9 @@
 - (void)loadView
 {
   v3 = [UIInterfaceActionGroupView alloc];
-  v4 = [(UIInterfaceActionGroupViewController *)self actionGroup];
-  v5 = [(UIInterfaceActionGroupViewController *)self visualStyleProvider];
-  v6 = [(UIInterfaceActionGroupView *)v3 _initWithActionGroup:v4 visualStyleProvider:v5 actionHandlerInvocationDelegate:self];
+  actionGroup = [(UIInterfaceActionGroupViewController *)self actionGroup];
+  visualStyleProvider = [(UIInterfaceActionGroupViewController *)self visualStyleProvider];
+  v6 = [(UIInterfaceActionGroupView *)v3 _initWithActionGroup:actionGroup visualStyleProvider:visualStyleProvider actionHandlerInvocationDelegate:self];
   actionGroupView = self->_actionGroupView;
   self->_actionGroupView = v6;
 
@@ -87,55 +87,55 @@
   [(UIViewController *)self setView:v8];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __98__UIInterfaceActionGroupViewController_willTransitionToTraitCollection_withTransitionCoordinator___block_invoke;
   v9[3] = &unk_1E70F3B98;
   v9[4] = self;
-  v6 = a4;
-  v7 = a3;
-  [v6 animateAlongsideTransition:v9 completion:0];
+  coordinatorCopy = coordinator;
+  collectionCopy = collection;
+  [coordinatorCopy animateAlongsideTransition:v9 completion:0];
   v8.receiver = self;
   v8.super_class = UIInterfaceActionGroupViewController;
-  [(UIViewController *)&v8 willTransitionToTraitCollection:v7 withTransitionCoordinator:v6];
+  [(UIViewController *)&v8 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinatorCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = UIInterfaceActionGroupViewController;
-  [(UIViewController *)&v6 viewWillAppear:a3];
+  [(UIViewController *)&v6 viewWillAppear:appear];
   actionGroupView = self->_actionGroupView;
-  v5 = [(UIViewController *)self transitionCoordinator];
-  [(UIInterfaceActionGroupView *)actionGroupView configureForPresentAlongsideTransitionCoordinator:v5];
+  transitionCoordinator = [(UIViewController *)self transitionCoordinator];
+  [(UIInterfaceActionGroupView *)actionGroupView configureForPresentAlongsideTransitionCoordinator:transitionCoordinator];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = UIInterfaceActionGroupViewController;
-  [(UIViewController *)&v6 viewWillDisappear:a3];
+  [(UIViewController *)&v6 viewWillDisappear:disappear];
   actionGroupView = self->_actionGroupView;
-  v5 = [(UIViewController *)self transitionCoordinator];
-  [(UIInterfaceActionGroupView *)actionGroupView configureForDismissAlongsideTransitionCoordinator:v5];
+  transitionCoordinator = [(UIViewController *)self transitionCoordinator];
+  [(UIInterfaceActionGroupView *)actionGroupView configureForDismissAlongsideTransitionCoordinator:transitionCoordinator];
 }
 
-- (void)interfaceAction:(id)a3 invokeActionHandler:(id)a4 completion:(id)a5
+- (void)interfaceAction:(id)action invokeActionHandler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  handlerCopy = handler;
+  completionCopy = completion;
   v11 = 1;
-  if (v9 && (v9[2](v9, v8, &v11), (v11 & 1) == 0))
+  if (handlerCopy && (handlerCopy[2](handlerCopy, actionCopy, &v11), (v11 & 1) == 0))
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    [(UIViewController *)self dismissViewControllerAnimated:1 completion:v10];
+    [(UIViewController *)self dismissViewControllerAnimated:1 completion:completionCopy];
   }
 }
 

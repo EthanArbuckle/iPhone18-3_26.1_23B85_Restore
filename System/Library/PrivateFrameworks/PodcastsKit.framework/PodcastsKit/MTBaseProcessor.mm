@@ -8,10 +8,10 @@
 - (id)createQueryObserver;
 - (id)entityName;
 - (id)predicate;
-- (void)enqueueWorkBlock:(id)a3;
-- (void)results:(id)a3;
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5;
-- (void)setIsStopping:(BOOL)a3;
+- (void)enqueueWorkBlock:(id)block;
+- (void)results:(id)results;
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds;
+- (void)setIsStopping:(BOOL)stopping;
 - (void)stop;
 - (void)updatePredicate;
 @end
@@ -35,29 +35,29 @@ uint64_t __29__MTBaseProcessor_initialize__block_invoke()
 
 + (id)sharedInstance
 {
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = _instanceMap;
   objc_sync_enter(v4);
-  v5 = [_instanceMap objectForKey:v3];
+  allocWithZone_ = [_instanceMap objectForKey:v3];
   objc_sync_exit(v4);
 
-  if (!v5)
+  if (!allocWithZone_)
   {
     v6 = _instanceMap;
     objc_sync_enter(v6);
-    v5 = [_instanceMap objectForKey:v3];
-    if (!v5)
+    allocWithZone_ = [_instanceMap objectForKey:v3];
+    if (!allocWithZone_)
     {
-      v8.receiver = a1;
+      v8.receiver = self;
       v8.super_class = &OBJC_METACLASS___MTBaseProcessor;
-      v5 = [objc_msgSendSuper2(&v8 allocWithZone_];
-      [_instanceMap setObject:v5 forKey:v3];
+      allocWithZone_ = [objc_msgSendSuper2(&v8 allocWithZone_];
+      [_instanceMap setObject:allocWithZone_ forKey:v3];
     }
 
     objc_sync_exit(v6);
   }
 
-  return v5;
+  return allocWithZone_;
 }
 
 - (MTBaseProcessor)init
@@ -79,8 +79,8 @@ uint64_t __29__MTBaseProcessor_initialize__block_invoke()
 
 - (BOOL)start
 {
-  v3 = [(MTBaseProcessor *)self isStopping];
-  if (!v3)
+  isStopping = [(MTBaseProcessor *)self isStopping];
+  if (!isStopping)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = objc_opt_class();
@@ -103,7 +103,7 @@ uint64_t __29__MTBaseProcessor_initialize__block_invoke()
     objc_destroyWeak(&location);
   }
 
-  return !v3;
+  return !isStopping;
 }
 
 void __24__MTBaseProcessor_start__block_invoke(uint64_t a1)
@@ -196,29 +196,29 @@ void __24__MTBaseProcessor_start__block_invoke_4(uint64_t a1)
 - (void)stop
 {
   [(MTBaseProcessor *)self setIsStopping:1];
-  v3 = [(MTBaseProcessor *)self queryObserver];
-  [v3 stop];
+  queryObserver = [(MTBaseProcessor *)self queryObserver];
+  [queryObserver stop];
 
-  v4 = [(MTBaseProcessor *)self defaultsNotifier];
-  [v4 stop];
+  defaultsNotifier = [(MTBaseProcessor *)self defaultsNotifier];
+  [defaultsNotifier stop];
 }
 
 - (BOOL)isStopping
 {
-  v2 = self;
-  v3 = [(MTBaseProcessor *)self isStoppingLock];
-  objc_sync_enter(v3);
-  LOBYTE(v2) = v2->_isStopping;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  isStoppingLock = [(MTBaseProcessor *)self isStoppingLock];
+  objc_sync_enter(isStoppingLock);
+  LOBYTE(selfCopy) = selfCopy->_isStopping;
+  objc_sync_exit(isStoppingLock);
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setIsStopping:(BOOL)a3
+- (void)setIsStopping:(BOOL)stopping
 {
   obj = [(MTBaseProcessor *)self isStoppingLock];
   objc_sync_enter(obj);
-  self->_isStopping = a3;
+  self->_isStopping = stopping;
   objc_sync_exit(obj);
 }
 
@@ -238,9 +238,9 @@ void __24__MTBaseProcessor_start__block_invoke_4(uint64_t a1)
 - (id)createQueryObserver
 {
   v3 = [MTSafeUuidQueryObserver alloc];
-  v4 = [(MTBaseProcessor *)self entityName];
-  v5 = [(MTBaseProcessor *)self predicate];
-  v6 = [(MTBaseQueryObserver *)v3 initWithEntityName:v4 predicate:v5];
+  entityName = [(MTBaseProcessor *)self entityName];
+  predicate = [(MTBaseProcessor *)self predicate];
+  v6 = [(MTBaseQueryObserver *)v3 initWithEntityName:entityName predicate:predicate];
 
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
@@ -300,9 +300,9 @@ void __38__MTBaseProcessor_createQueryObserver__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_25E9F0000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ updated predicate", &v9, 0xCu);
   }
 
-  v6 = [(MTBaseProcessor *)self queryObserver];
-  v7 = [(MTBaseProcessor *)self predicate];
-  [v6 setPredicate:v7];
+  queryObserver = [(MTBaseProcessor *)self queryObserver];
+  predicate = [(MTBaseProcessor *)self predicate];
+  [queryObserver setPredicate:predicate];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -319,40 +319,40 @@ void __38__MTBaseProcessor_createQueryObserver__block_invoke_2(uint64_t a1)
   objc_exception_throw(v2);
 }
 
-- (void)resultsChangedWithDeletedIds:(id)a3 insertIds:(id)a4 updatedIds:(id)a5
+- (void)resultsChangedWithDeletedIds:(id)ids insertIds:(id)insertIds updatedIds:(id)updatedIds
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  idsCopy = ids;
+  insertIdsCopy = insertIds;
+  updatedIdsCopy = updatedIds;
   v10 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"resulstChanged must be implemented by subclasses" userInfo:0];
   objc_exception_throw(v10);
 }
 
-- (void)results:(id)a3
+- (void)results:(id)results
 {
-  v4 = a3;
-  v5 = [(MTBaseProcessor *)self queryObserver];
-  [v5 results:v4];
+  resultsCopy = results;
+  queryObserver = [(MTBaseProcessor *)self queryObserver];
+  [queryObserver results:resultsCopy];
 }
 
-- (void)enqueueWorkBlock:(id)a3
+- (void)enqueueWorkBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MTBaseProcessor *)self workQueue];
+  blockCopy = block;
+  workQueue = [(MTBaseProcessor *)self workQueue];
 
-  if (v5)
+  if (workQueue)
   {
     if (![(MTBaseProcessor *)self isStopping])
     {
       objc_initWeak(buf, self);
-      v8 = [(MTBaseProcessor *)self workQueue];
+      workQueue2 = [(MTBaseProcessor *)self workQueue];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __36__MTBaseProcessor_enqueueWorkBlock___block_invoke;
       v9[3] = &unk_279A448A0;
       objc_copyWeak(&v11, buf);
-      v10 = v4;
-      dispatch_async(v8, v9);
+      v10 = blockCopy;
+      dispatch_async(workQueue2, v9);
 
       objc_destroyWeak(&v11);
       objc_destroyWeak(buf);

@@ -1,25 +1,25 @@
 @interface BDSMediaLibraryUtils
-+ (id)_storeRepresentativeItem:(id)a3;
-+ (id)representativeDAAPMediaItemsWithAssetId:(id)a3;
++ (id)_storeRepresentativeItem:(id)item;
++ (id)representativeDAAPMediaItemsWithAssetId:(id)id;
 @end
 
 @implementation BDSMediaLibraryUtils
 
-+ (id)representativeDAAPMediaItemsWithAssetId:(id)a3
++ (id)representativeDAAPMediaItemsWithAssetId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v5 = objc_autoreleasePoolPush();
-  v6 = [MEMORY[0x1E6970618] audiobooksQuery];
-  [v6 setIgnoreSystemFilterPredicates:1];
-  if (v6)
+  audiobooksQuery = [MEMORY[0x1E6970618] audiobooksQuery];
+  [audiobooksQuery setIgnoreSystemFilterPredicates:1];
+  if (audiobooksQuery)
   {
-    v7 = [MEMORY[0x1E6970610] predicateWithValue:v4 forProperty:*MEMORY[0x1E696FB60]];
-    [v6 addFilterPredicate:v7];
-    v8 = [v6 collections];
-    if ([v8 count])
+    v7 = [MEMORY[0x1E6970610] predicateWithValue:idCopy forProperty:*MEMORY[0x1E696FB60]];
+    [audiobooksQuery addFilterPredicate:v7];
+    collections = [audiobooksQuery collections];
+    if ([collections count])
     {
-      v9 = [v8 lastObject];
-      v10 = [a1 _storeRepresentativeItem:v9];
+      lastObject = [collections lastObject];
+      v10 = [self _storeRepresentativeItem:lastObject];
 
       if (v10)
       {
@@ -31,7 +31,7 @@ LABEL_12:
       v11 = BDSCloudKitAudiobookLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_1E4701C30(v4, v11);
+        sub_1E4701C30(idCopy, v11);
       }
     }
 
@@ -40,7 +40,7 @@ LABEL_12:
       v11 = BDSCloudKitAudiobookLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        sub_1E4701CA8(v4, v11);
+        sub_1E4701CA8(idCopy, v11);
       }
     }
 
@@ -62,15 +62,15 @@ LABEL_13:
   return v10;
 }
 
-+ (id)_storeRepresentativeItem:(id)a3
++ (id)_storeRepresentativeItem:(id)item
 {
   v19 = *MEMORY[0x1E69E9840];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 items];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  items = [item items];
+  v4 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -82,7 +82,7 @@ LABEL_13:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(items);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -95,7 +95,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [items countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;

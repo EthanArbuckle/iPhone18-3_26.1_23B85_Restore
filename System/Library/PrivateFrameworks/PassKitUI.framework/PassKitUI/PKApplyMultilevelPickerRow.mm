@@ -1,66 +1,66 @@
 @interface PKApplyMultilevelPickerRow
-- (PKApplyMultilevelPickerRow)initWithPicker:(id)a3;
-- (void)configureCell:(id)a3;
+- (PKApplyMultilevelPickerRow)initWithPicker:(id)picker;
+- (void)configureCell:(id)cell;
 @end
 
 @implementation PKApplyMultilevelPickerRow
 
-- (PKApplyMultilevelPickerRow)initWithPicker:(id)a3
+- (PKApplyMultilevelPickerRow)initWithPicker:(id)picker
 {
-  v5 = a3;
+  pickerCopy = picker;
   v9.receiver = self;
   v9.super_class = PKApplyMultilevelPickerRow;
   v6 = [(PKApplyMultilevelPickerRow *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_picker, a3);
+    objc_storeStrong(&v6->_picker, picker);
   }
 
   return v7;
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  cellCopy = cell;
   [(PKApplyMultilevelPickerRow *)self cellClass];
   if (objc_opt_isKindOfClass())
   {
-    v5 = [MEMORY[0x1E69DCC28] valueCellConfiguration];
-    v6 = [v5 textProperties];
-    [v6 setNumberOfLines:0];
+    valueCellConfiguration = [MEMORY[0x1E69DCC28] valueCellConfiguration];
+    textProperties = [valueCellConfiguration textProperties];
+    [textProperties setNumberOfLines:0];
     v7 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD00]];
-    [v6 setFont:v7];
+    [textProperties setFont:v7];
 
-    v8 = [(PKPaymentSetupFieldPicker *)self->_picker localizedDisplayName];
-    v9 = [(PKPaymentSetupFieldPicker *)self->_picker localizedPlaceholder];
-    v10 = [(PKPaymentSetupFieldPicker *)self->_picker currentValue];
+    localizedDisplayName = [(PKPaymentSetupFieldPicker *)self->_picker localizedDisplayName];
+    localizedPlaceholder = [(PKPaymentSetupFieldPicker *)self->_picker localizedPlaceholder];
+    currentValue = [(PKPaymentSetupFieldPicker *)self->_picker currentValue];
 
-    if (v10)
+    if (currentValue)
     {
-      v11 = [(PKPaymentSetupFieldPicker *)self->_picker currentValue];
-      v12 = [v11 localizedDisplayName];
+      currentValue2 = [(PKPaymentSetupFieldPicker *)self->_picker currentValue];
+      localizedDisplayName2 = [currentValue2 localizedDisplayName];
 
-      v9 = 0;
-      v8 = v12;
+      localizedPlaceholder = 0;
+      localizedDisplayName = localizedDisplayName2;
     }
 
-    [v5 setText:v8];
-    [v5 setSecondaryText:v9];
-    v13 = [MEMORY[0x1E69DC6E8] listCellConfiguration];
+    [valueCellConfiguration setText:localizedDisplayName];
+    [valueCellConfiguration setSecondaryText:localizedPlaceholder];
+    listCellConfiguration = [MEMORY[0x1E69DC6E8] listCellConfiguration];
     v14 = PKProvisioningSecondaryBackgroundColor();
-    [v13 setBackgroundColor:v14];
+    [listCellConfiguration setBackgroundColor:v14];
 
-    [v4 setBackgroundConfiguration:v13];
-    [v4 setContentConfiguration:v5];
+    [cellCopy setBackgroundConfiguration:listCellConfiguration];
+    [cellCopy setContentConfiguration:valueCellConfiguration];
     v15 = objc_alloc_init(MEMORY[0x1E69DC7A8]);
     v18[0] = v15;
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-    [v4 setAccessories:v16];
+    [cellCopy setAccessories:v16];
 
-    v17 = [(PKApplyMultilevelPickerRow *)self identifier];
-    [v4 setAccessibilityIdentifier:v17];
+    identifier = [(PKApplyMultilevelPickerRow *)self identifier];
+    [cellCopy setAccessibilityIdentifier:identifier];
   }
 }
 

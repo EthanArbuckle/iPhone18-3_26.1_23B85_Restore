@@ -4,13 +4,13 @@
 - (VSDeveloperSettingsFacade)init;
 - (id)alertMessageForProxyDetection;
 - (id)alertTitleForProxyDetection;
-- (id)buildSystemTrustTestAlertMessageWithStatusMessage:(id)a3 andTrustInfo:(id)a4;
+- (id)buildSystemTrustTestAlertMessageWithStatusMessage:(id)message andTrustInfo:(id)info;
 - (id)dismissTitleForProxyDetection;
 - (void)_updateLabels;
-- (void)enqueueChange:(int64_t)a3 withIdentityProvider:(id)a4 completionHandler:(id)a5;
-- (void)fetchDeveloperSettingsWithCompletionHandler:(id)a3;
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4;
-- (void)updateDeveloperSettings:(id)a3 withCompletionHandler:(id)a4;
+- (void)enqueueChange:(int64_t)change withIdentityProvider:(id)provider completionHandler:(id)handler;
+- (void)fetchDeveloperSettingsWithCompletionHandler:(id)handler;
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info;
+- (void)updateDeveloperSettings:(id)settings withCompletionHandler:(id)handler;
 @end
 
 @implementation VSDeveloperSettingsFacade
@@ -57,11 +57,11 @@
     v11 = VSMainThreadOperationWithBlock();
     [v11 addDependency:v10];
     [v11 addDependency:v9];
-    v12 = [(VSDeveloperSettingsFacade *)v36 privateQueue];
-    [v12 addOperation:v10];
+    privateQueue = [(VSDeveloperSettingsFacade *)v36 privateQueue];
+    [privateQueue addOperation:v10];
 
-    v13 = [(VSDeveloperSettingsFacade *)v36 privateQueue];
-    [v13 addOperation:v9];
+    privateQueue2 = [(VSDeveloperSettingsFacade *)v36 privateQueue];
+    [privateQueue2 addOperation:v9];
 
     VSEnqueueCompletionOperation();
     v14 = +[VSDevice currentDevice];
@@ -96,21 +96,21 @@
   return v3;
 }
 
-- (void)enqueueChange:(int64_t)a3 withIdentityProvider:(id)a4 completionHandler:(id)a5
+- (void)enqueueChange:(int64_t)change withIdentityProvider:(id)provider completionHandler:(id)handler
 {
-  v33 = a3;
-  v7 = a4;
-  v34 = self;
-  v35 = a5;
-  v8 = [(VSDeveloperSettingsFacade *)self providers];
-  v9 = [v7 uniqueID];
-  v36 = [v9 forceUnwrapObject];
+  changeCopy = change;
+  providerCopy = provider;
+  selfCopy = self;
+  handlerCopy = handler;
+  providers = [(VSDeveloperSettingsFacade *)self providers];
+  uniqueID = [providerCopy uniqueID];
+  forceUnwrapObject = [uniqueID forceUnwrapObject];
 
   v42 = 0u;
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v10 = v8;
+  v10 = providers;
   v11 = [v10 countByEnumeratingWithState:&v40 objects:v46 count:16];
   if (v11)
   {
@@ -127,18 +127,18 @@
         }
 
         v15 = *(*(&v40 + 1) + 8 * i);
-        v16 = [v15 providerID];
-        v17 = [v16 forceUnwrapObject];
-        v18 = v7;
-        v19 = [v7 providerID];
-        v20 = [v19 forceUnwrapObject];
-        v21 = [v17 isEqualToString:v20];
+        providerID = [v15 providerID];
+        forceUnwrapObject2 = [providerID forceUnwrapObject];
+        v18 = providerCopy;
+        providerID2 = [providerCopy providerID];
+        forceUnwrapObject3 = [providerID2 forceUnwrapObject];
+        v21 = [forceUnwrapObject2 isEqualToString:forceUnwrapObject3];
 
         if (v21)
         {
-          v22 = [v15 uniqueID];
-          v23 = [v22 forceUnwrapObject];
-          v24 = [v23 isEqual:v36];
+          uniqueID2 = [v15 uniqueID];
+          forceUnwrapObject4 = [uniqueID2 forceUnwrapObject];
+          v24 = [forceUnwrapObject4 isEqual:forceUnwrapObject];
 
           if (!v24)
           {
@@ -151,14 +151,14 @@
             v45 = v27;
             v30 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
             v32 = [NSError errorWithDomain:@"DeveloperFacadeErrorDomain" code:0 userInfo:v30];
-            v26 = v35;
-            (*(v35 + 2))(v35, v32);
+            v26 = handlerCopy;
+            (*(handlerCopy + 2))(handlerCopy, v32);
 
             goto LABEL_12;
           }
         }
 
-        v7 = v18;
+        providerCopy = v18;
       }
 
       v10 = obj;
@@ -173,16 +173,16 @@
   }
 
   v25 = objc_alloc_init(VSDeveloperIdentityProviderChangeOperation);
-  [v25 setChangeKind:v33];
-  [v25 setIdentityProvider:v7];
-  v26 = v35;
+  [v25 setChangeKind:changeCopy];
+  [v25 setIdentityProvider:providerCopy];
+  v26 = handlerCopy;
   v38 = v25;
-  v39 = v35;
+  v39 = handlerCopy;
   v27 = v25;
   v28 = VSMainThreadOperationWithBlock();
   [v28 addDependency:v27];
-  [(VSDeveloperSettingsFacade *)v34 privateQueue];
-  v29 = v18 = v7;
+  [(VSDeveloperSettingsFacade *)selfCopy privateQueue];
+  v29 = v18 = providerCopy;
   [v29 addOperation:v27];
   VSEnqueueCompletionOperation();
 
@@ -190,54 +190,54 @@
 LABEL_12:
 }
 
-- (void)fetchDeveloperSettingsWithCompletionHandler:(id)a3
+- (void)fetchDeveloperSettingsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = objc_alloc_init(VSDeveloperSettingsFetchOperation);
-  v10 = v4;
-  v5 = v4;
+  v10 = handlerCopy;
+  v5 = handlerCopy;
   v6 = v9;
   v7 = VSMainThreadOperationWithBlock();
   [v7 addDependency:{v6, _NSConcreteStackBlock, 3221225472, sub_1A04, &unk_C4F0}];
-  v8 = [(VSDeveloperSettingsFacade *)self privateQueue];
-  [v8 addOperation:v6];
+  privateQueue = [(VSDeveloperSettingsFacade *)self privateQueue];
+  [privateQueue addOperation:v6];
 
   VSEnqueueCompletionOperation();
 }
 
-- (void)updateDeveloperSettings:(id)a3 withCompletionHandler:(id)a4
+- (void)updateDeveloperSettings:(id)settings withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[VSDeveloperSettingsUpdateOperation alloc] initWithSettings:v7];
+  handlerCopy = handler;
+  settingsCopy = settings;
+  v8 = [[VSDeveloperSettingsUpdateOperation alloc] initWithSettings:settingsCopy];
 
   v13 = v8;
-  v14 = v6;
-  v9 = v6;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
   v10 = v8;
   v11 = VSMainThreadOperationWithBlock();
   [v11 addDependency:{v10, _NSConcreteStackBlock, 3221225472, sub_1B88, &unk_C4F0}];
-  v12 = [(VSDeveloperSettingsFacade *)self privateQueue];
-  [v12 addOperation:v10];
+  privateQueue = [(VSDeveloperSettingsFacade *)self privateQueue];
+  [privateQueue addOperation:v10];
 
   VSEnqueueCompletionOperation();
 }
 
-- (id)buildSystemTrustTestAlertMessageWithStatusMessage:(id)a3 andTrustInfo:(id)a4
+- (id)buildSystemTrustTestAlertMessageWithStatusMessage:(id)message andTrustInfo:(id)info
 {
-  v5 = a3;
-  v6 = a4;
+  messageCopy = message;
+  infoCopy = info;
   v7 = +[NSBundle vs_frameworkBundle];
   v8 = [v7 localizedStringForKey:@"TEST_SYSTEM_TRUST_NO_SSL_RESPONSE_MESSAGE" value:0 table:0];
 
-  if (v6)
+  if (infoCopy)
   {
-    v9 = [v6 description];
+    v9 = [infoCopy description];
 
     v8 = v9;
   }
 
-  v10 = [NSString stringWithFormat:@"%@\n\n%@", v5, v8];
+  v10 = [NSString stringWithFormat:@"%@\n\n%@", messageCopy, v8];
 
   return v10;
 }
@@ -268,7 +268,7 @@ LABEL_12:
 
 - (void)_updateLabels
 {
-  v3 = [(VSDeveloperSettingsFacade *)self settings];
+  settings = [(VSDeveloperSettingsFacade *)self settings];
   v4 = +[NSBundle vs_frameworkBundle];
   v5 = [v4 localizedStringForKey:@"GENERIC_STATUS_ENABLED_LABEL" value:0 table:0];
 
@@ -277,7 +277,7 @@ LABEL_12:
 
   v8 = v7;
   v9 = v8;
-  if ([v3 isInSetTopBoxMode])
+  if ([settings isInSetTopBoxMode])
   {
     v9 = v5;
   }
@@ -285,7 +285,7 @@ LABEL_12:
   v26 = v9;
   v10 = v8;
   v11 = v10;
-  if ([v3 setTopBoxSupportsOptOut])
+  if ([settings setTopBoxSupportsOptOut])
   {
     v11 = v5;
   }
@@ -293,14 +293,14 @@ LABEL_12:
   v24 = v11;
   v25 = v10;
   v27 = v5;
-  v28 = v3;
-  v12 = [v3 setTopBoxIdentityProviderID];
+  v28 = settings;
+  setTopBoxIdentityProviderID = [settings setTopBoxIdentityProviderID];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v13 = [(VSDeveloperSettingsFacade *)self providers];
-  v14 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  providers = [(VSDeveloperSettingsFacade *)self providers];
+  v14 = [providers countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v14)
   {
     v15 = v14;
@@ -311,23 +311,23 @@ LABEL_12:
       {
         if (*v30 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(providers);
         }
 
         v18 = *(*(&v29 + 1) + 8 * i);
-        v19 = [v18 uniqueID];
-        v20 = [v19 forceUnwrapObject];
-        v21 = [v20 isEqualToString:v12];
+        uniqueID = [v18 uniqueID];
+        forceUnwrapObject = [uniqueID forceUnwrapObject];
+        v21 = [forceUnwrapObject isEqualToString:setTopBoxIdentityProviderID];
 
         if (v21)
         {
-          v22 = [v18 displayName];
-          v23 = [v22 forceUnwrapObject];
-          [(VSDeveloperSettingsFacade *)self setSetTopBoxProviderDisplayName:v23];
+          displayName = [v18 displayName];
+          forceUnwrapObject2 = [displayName forceUnwrapObject];
+          [(VSDeveloperSettingsFacade *)self setSetTopBoxProviderDisplayName:forceUnwrapObject2];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v15 = [providers countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v15);
@@ -337,10 +337,10 @@ LABEL_12:
   [(VSDeveloperSettingsFacade *)self setSetTopBoxSupportsOptOutStatus:v24];
 }
 
-- (void)remoteNotifier:(id)a3 didReceiveRemoteNotificationWithUserInfo:(id)a4
+- (void)remoteNotifier:(id)notifier didReceiveRemoteNotificationWithUserInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  notifierCopy = notifier;
+  infoCopy = info;
   v8 = VSDefaultLogObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -349,9 +349,9 @@ LABEL_12:
   }
 
   objc_initWeak(buf, self);
-  v9 = [(VSDeveloperSettingsFacade *)self settingsChangeRemoteNotifier];
+  settingsChangeRemoteNotifier = [(VSDeveloperSettingsFacade *)self settingsChangeRemoteNotifier];
 
-  if (v9 == v6)
+  if (settingsChangeRemoteNotifier == notifierCopy)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -365,9 +365,9 @@ LABEL_12:
 
   else
   {
-    v10 = [(VSDeveloperSettingsFacade *)self providersChangeRemoteNotifier];
+    providersChangeRemoteNotifier = [(VSDeveloperSettingsFacade *)self providersChangeRemoteNotifier];
 
-    if (v10 == v6)
+    if (providersChangeRemoteNotifier == notifierCopy)
     {
       v15[5] = _NSConcreteStackBlock;
       v15[6] = 3221225472;
@@ -378,8 +378,8 @@ LABEL_12:
       objc_copyWeak(&v16, buf);
       v13 = VSMainThreadOperationWithBlock();
       [v13 addDependency:v12];
-      v14 = [(VSDeveloperSettingsFacade *)self privateQueue];
-      [v14 addOperation:v12];
+      privateQueue = [(VSDeveloperSettingsFacade *)self privateQueue];
+      [privateQueue addOperation:v12];
 
       VSEnqueueCompletionOperation();
       objc_destroyWeak(&v16);
@@ -387,9 +387,9 @@ LABEL_12:
       goto LABEL_9;
     }
 
-    v11 = [(VSDeveloperSettingsFacade *)self stbChangeRemoteNotifier];
+    stbChangeRemoteNotifier = [(VSDeveloperSettingsFacade *)self stbChangeRemoteNotifier];
 
-    if (v11 == v6)
+    if (stbChangeRemoteNotifier == notifierCopy)
     {
       v12 = +[VSDevice currentDevice];
       v15[0] = _NSConcreteStackBlock;

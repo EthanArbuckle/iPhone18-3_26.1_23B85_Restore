@@ -29,9 +29,9 @@
   v38 = *MEMORY[0x1E69E9840];
   v8 = a4;
   v9 = +[ISDefaults sharedInstance];
-  v10 = [v9 logMissingURLCacheProperties];
+  logMissingURLCacheProperties = [v9 logMissingURLCacheProperties];
 
-  if (!v10)
+  if (!logMissingURLCacheProperties)
   {
     propertyValueTypeRefPtr = 0;
     *error = 0;
@@ -48,26 +48,26 @@ LABEL_11:
   }
 
   v14 = +[ISURLResourcePropertySpecification sharedInstance];
-  v15 = [v14 allowedMissingProperties];
-  v16 = [v15 containsObject:v8];
+  allowedMissingProperties = [v14 allowedMissingProperties];
+  v16 = [allowedMissingProperties containsObject:v8];
 
   if (v16)
   {
     goto LABEL_11;
   }
 
-  if ([(__CFURL *)a1 isFileReferenceURL])
+  if ([(__CFURL *)self isFileReferenceURL])
   {
     v31 = 0;
-    CFURLCopyResourcePropertyForKey(a1, *MEMORY[0x1E695DC40], &v31, 0);
-    v19 = v31;
+    CFURLCopyResourcePropertyForKey(self, *MEMORY[0x1E695DC40], &v31, 0);
+    path = v31;
     if (!v31)
     {
-      v19 = [(__CFURL *)a1 path];
+      path = [(__CFURL *)self path];
     }
 
     v20 = _ISURLCacheLog();
-    v21 = os_signpost_id_make_with_pointer(v20, a1);
+    v21 = os_signpost_id_make_with_pointer(v20, self);
 
     if (v21)
     {
@@ -81,9 +81,9 @@ LABEL_11:
         if (v21 != -1 && os_signpost_enabled(v24))
         {
           *error = 138412802;
-          *&error[4] = a1;
+          *&error[4] = self;
           v34 = 2112;
-          v35 = v19;
+          v35 = path;
           v36 = 2112;
           v37 = v8;
           _os_signpost_emit_with_name_impl(&dword_1A77B8000, v25, OS_SIGNPOST_EVENT, v21, "cache miss", "URL %@ path %@ was missing expected cached values for key: %@", error, 0x20u);
@@ -95,7 +95,7 @@ LABEL_11:
   else
   {
     v26 = _ISURLCacheLog();
-    v27 = os_signpost_id_make_with_pointer(v26, a1);
+    v27 = os_signpost_id_make_with_pointer(v26, self);
 
     if (!v27)
     {
@@ -111,21 +111,21 @@ LABEL_11:
     }
 
     v30 = _ISURLCacheLog();
-    v19 = v30;
+    path = v30;
     if (v27 != -1 && os_signpost_enabled(v30))
     {
       *error = 138412546;
-      *&error[4] = a1;
+      *&error[4] = self;
       v34 = 2112;
       v35 = v8;
-      _os_signpost_emit_with_name_impl(&dword_1A77B8000, v19, OS_SIGNPOST_EVENT, v27, "cache miss", "URL %@ was missing expected cached values for key: %@", error, 0x16u);
+      _os_signpost_emit_with_name_impl(&dword_1A77B8000, path, OS_SIGNPOST_EVENT, v27, "cache miss", "URL %@ was missing expected cached values for key: %@", error, 0x16u);
     }
   }
 
 LABEL_28:
   *error = 0;
 LABEL_5:
-  v11 = CFURLCopyResourcePropertyForKey(a1, v8, &propertyValueTypeRefPtr, error);
+  v11 = CFURLCopyResourcePropertyForKey(self, v8, &propertyValueTypeRefPtr, error);
   v12 = v11 != 0;
   if (v11)
   {
@@ -157,17 +157,17 @@ LABEL_12:
   v6 = a3;
   error = 0;
   v7 = +[ISDefaults sharedInstance];
-  v8 = [v7 logMissingURLCacheProperties];
+  logMissingURLCacheProperties = [v7 logMissingURLCacheProperties];
 
-  if (v8)
+  if (logMissingURLCacheProperties)
   {
     v9 = _CFURLCopyResourcePropertiesForKeysFromCache();
     v10 = [MEMORY[0x1E695DFA8] setWithArray:v6];
     if (v9)
     {
       v11 = MEMORY[0x1E695DFD8];
-      v12 = [v9 allKeys];
-      v13 = [v11 setWithArray:v12];
+      allKeys = [v9 allKeys];
+      v13 = [v11 setWithArray:allKeys];
 
       if (([v10 isEqual:v13]& 1) != 0)
       {
@@ -183,23 +183,23 @@ LABEL_12:
     }
 
     v15 = +[ISURLResourcePropertySpecification sharedInstance];
-    v16 = [v15 allowedMissingProperties];
-    [v10 minusSet:v16];
+    allowedMissingProperties = [v15 allowedMissingProperties];
+    [v10 minusSet:allowedMissingProperties];
 
     if ([v10 count])
     {
-      if ([a1 isFileReferenceURL])
+      if ([self isFileReferenceURL])
       {
         v32 = 0;
-        [a1 __is__getResourceValue:&v32 forKey:*MEMORY[0x1E695DC40] error:0];
-        v17 = v32;
-        if (!v17)
+        [self __is__getResourceValue:&v32 forKey:*MEMORY[0x1E695DC40] error:0];
+        path = v32;
+        if (!path)
         {
-          v17 = [a1 path];
+          path = [self path];
         }
 
         v18 = _ISURLCacheLog();
-        v19 = os_signpost_id_make_with_pointer(v18, a1);
+        v19 = os_signpost_id_make_with_pointer(v18, self);
 
         if (v19)
         {
@@ -213,9 +213,9 @@ LABEL_12:
             if (v19 != -1 && os_signpost_enabled(v22))
             {
               *buf = 138412802;
-              v35 = a1;
+              selfCopy2 = self;
               v36 = 2112;
-              v37 = v17;
+              v37 = path;
               v38 = 2112;
               v39 = v10;
               _os_signpost_emit_with_name_impl(&dword_1A77B8000, v23, OS_SIGNPOST_EVENT, v19, "cache miss", "URL %@ path %@ was missing expected cached values for keys: %@", buf, 0x20u);
@@ -227,7 +227,7 @@ LABEL_12:
       else
       {
         v24 = _ISURLCacheLog();
-        v25 = os_signpost_id_make_with_pointer(v24, a1);
+        v25 = os_signpost_id_make_with_pointer(v24, self);
 
         if (!v25)
         {
@@ -243,25 +243,25 @@ LABEL_12:
         }
 
         v28 = _ISURLCacheLog();
-        v17 = v28;
+        path = v28;
         if (v25 != -1 && os_signpost_enabled(v28))
         {
           *buf = 138412546;
-          v35 = a1;
+          selfCopy2 = self;
           v36 = 2112;
           v37 = v10;
-          _os_signpost_emit_with_name_impl(&dword_1A77B8000, v17, OS_SIGNPOST_EVENT, v25, "cache miss", "URL %@ was missing expected cached values for keys: %@", buf, 0x16u);
+          _os_signpost_emit_with_name_impl(&dword_1A77B8000, path, OS_SIGNPOST_EVENT, v25, "cache miss", "URL %@ was missing expected cached values for keys: %@", buf, 0x16u);
         }
       }
     }
 
 LABEL_23:
-    v14 = CFURLCopyResourcePropertiesForKeys(a1, v6, &error);
+    v14 = CFURLCopyResourcePropertiesForKeys(self, v6, &error);
 
     goto LABEL_24;
   }
 
-  v14 = CFURLCopyResourcePropertiesForKeys(a1, v6, &error);
+  v14 = CFURLCopyResourcePropertiesForKeys(self, v6, &error);
 LABEL_24:
   if (a4 && error)
   {
@@ -288,7 +288,7 @@ LABEL_24:
 {
   v4 = a3;
   inUTI = 0;
-  [a1 __is__getResourceValue:&inUTI forKey:*MEMORY[0x1E695DC68] error:0];
+  [self __is__getResourceValue:&inUTI forKey:*MEMORY[0x1E695DC68] error:0];
   if (inUTI)
   {
     v5 = UTTypeConformsTo(inUTI, v4) != 0;
@@ -305,7 +305,7 @@ LABEL_24:
 - (uint64_t)__is__isDirectory
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DB78] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DB78] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -313,15 +313,15 @@ LABEL_24:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)__is__isPackage
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DBA0] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DBA0] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -329,15 +329,15 @@ LABEL_24:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)__is__isVolume
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DBE8] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DBE8] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -345,15 +345,15 @@ LABEL_24:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)__is__isAliasFile
 {
   v6 = 0;
-  v2 = [a1 __is__getResourceValue:&v6 forKey:*MEMORY[0x1E695DB68] error:0];
+  v2 = [self __is__getResourceValue:&v6 forKey:*MEMORY[0x1E695DB68] error:0];
   v3 = v6;
   if (!v2 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -363,7 +363,7 @@ LABEL_24:
 
   if ([v3 BOOLValue])
   {
-    v4 = [a1 __is__isSymLink] ^ 1;
+    v4 = [self __is__isSymLink] ^ 1;
   }
 
   else
@@ -377,7 +377,7 @@ LABEL_24:
 - (uint64_t)__is__isSymLink
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DBC8] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DBC8] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -385,15 +385,15 @@ LABEL_24:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)__is_volumeURL
 {
   v4 = 0;
-  v1 = [a1 __is__getResourceValue:&v4 forKey:*MEMORY[0x1E695DEB0] error:0];
+  v1 = [self __is__getResourceValue:&v4 forKey:*MEMORY[0x1E695DEB0] error:0];
   v2 = v4;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -407,7 +407,7 @@ LABEL_24:
 - (uint64_t)__has_ResourceFork
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695E2B8] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695E2B8] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -415,15 +415,15 @@ LABEL_24:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)__is_isBootVolume
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DDC0] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DDC0] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -431,24 +431,24 @@ LABEL_24:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)__is_isOnBootVolume
 {
-  v1 = [a1 __is_volumeURL];
-  v2 = [v1 __is_isBootVolume];
+  __is_volumeURL = [self __is_volumeURL];
+  __is_isBootVolume = [__is_volumeURL __is_isBootVolume];
 
-  return v2;
+  return __is_isBootVolume;
 }
 
 - (BOOL)__is_hasFileExtension:()UTIAdditions
 {
   v4 = a3;
-  v5 = [a1 pathExtension];
-  v6 = [v5 caseInsensitiveCompare:v4];
+  pathExtension = [self pathExtension];
+  v6 = [pathExtension caseInsensitiveCompare:v4];
 
   return v6 == 0;
 }
@@ -456,7 +456,7 @@ LABEL_24:
 - (uint64_t)__is_isApplication
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DB70] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DB70] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -464,52 +464,52 @@ LABEL_24:
     v2 = 0;
   }
 
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (uint64_t)__is_isAppExtension
 {
-  v2 = [a1 pathExtension];
-  if ([v2 isEqualToString:@"appex"])
+  pathExtension = [self pathExtension];
+  if ([pathExtension isEqualToString:@"appex"])
   {
-    v3 = [a1 __is__isDirectory];
+    __is__isDirectory = [self __is__isDirectory];
   }
 
   else
   {
-    v3 = 0;
+    __is__isDirectory = 0;
   }
 
-  return v3;
+  return __is__isDirectory;
 }
 
 - (uint64_t)__is_isBundleWithUnregisteredPersonality
 {
-  v2 = [MEMORY[0x1E695DFF8] _is_unregisteredPersonlityFileExtensions];
-  v3 = [a1 pathExtension];
-  v4 = [v3 lowercaseString];
-  v5 = [v2 objectForKey:v4];
+  _is_unregisteredPersonlityFileExtensions = [MEMORY[0x1E695DFF8] _is_unregisteredPersonlityFileExtensions];
+  pathExtension = [self pathExtension];
+  lowercaseString = [pathExtension lowercaseString];
+  v5 = [_is_unregisteredPersonlityFileExtensions objectForKey:lowercaseString];
   if (v5)
   {
     v6 = v5;
-    v7 = [a1 __is__isDirectory];
+    __is__isDirectory = [self __is__isDirectory];
   }
 
   else
   {
-    v7 = 0;
+    __is__isDirectory = 0;
   }
 
-  return v7;
+  return __is__isDirectory;
 }
 
 - (uint64_t)__is_fileExists
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [a1 path];
-  v4 = [v2 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [self path];
+  v4 = [defaultManager fileExistsAtPath:path];
 
   return v4;
 }
@@ -522,7 +522,7 @@ LABEL_24:
   v2 = v11[0];
   v11[1] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:2];
-  v5 = [a1 __is_resourceValuesForKeys:v4 error:0];
+  v5 = [self __is_resourceValuesForKeys:v4 error:0];
 
   LODWORD(v2) = [v5 _IF_BOOLForKey:v2];
   v6 = [v5 _IF_BOOLForKey:v3];
@@ -558,13 +558,13 @@ LABEL_24:
   v2 = v8[0];
   v8[1] = v3;
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:2];
-  v5 = [a1 __is_resourceValuesForKeys:v4 error:0];
+  v5 = [self __is_resourceValuesForKeys:v4 error:0];
 
-  LODWORD(a1) = [v5 _IF_BOOLForKey:v2];
+  LODWORD(self) = [v5 _IF_BOOLForKey:v2];
   LODWORD(v2) = [v5 _IF_BOOLForKey:v3];
 
   v6 = *MEMORY[0x1E69E9840];
-  return (a1 | v2) & 1;
+  return (self | v2) & 1;
 }
 
 + (id)__is_coreTypesURL
@@ -582,7 +582,7 @@ LABEL_24:
 - (id)__is_typeIdentifier
 {
   v5 = 0;
-  v1 = [a1 __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DC68] error:0];
+  v1 = [self __is__getResourceValue:&v5 forKey:*MEMORY[0x1E695DC68] error:0];
   v2 = v5;
   if (!v1 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {

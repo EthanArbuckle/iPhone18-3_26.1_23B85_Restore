@@ -1,29 +1,29 @@
 @interface GTMTLFXTracingDelegate
 - (GTMTLFXTracingDelegate)init;
 - (NSData)mtlfxTracingInfo;
-- (void)scaler:(id)a3 didCreateBlitCommandEncoder:(id)a4 forEncode:(unint64_t)a5;
-- (void)scaler:(id)a3 didCreateComputeCommandEncoder:(id)a4 forEncode:(unint64_t)a5;
-- (void)scaler:(id)a3 didCreateRenderCommandEncoder:(id)a4 forEncode:(unint64_t)a5;
+- (void)scaler:(id)scaler didCreateBlitCommandEncoder:(id)encoder forEncode:(unint64_t)encode;
+- (void)scaler:(id)scaler didCreateComputeCommandEncoder:(id)encoder forEncode:(unint64_t)encode;
+- (void)scaler:(id)scaler didCreateRenderCommandEncoder:(id)encoder forEncode:(unint64_t)encode;
 @end
 
 @implementation GTMTLFXTracingDelegate
 
-- (void)scaler:(id)a3 didCreateComputeCommandEncoder:(id)a4 forEncode:(unint64_t)a5
+- (void)scaler:(id)scaler didCreateComputeCommandEncoder:(id)encoder forEncode:(unint64_t)encode
 {
-  v6 = a4;
-  -[GTMTLFXTracingDelegate _addEncoderInfo:](self, "_addEncoderInfo:", [v6 globalTraceObjectID]);
+  encoderCopy = encoder;
+  -[GTMTLFXTracingDelegate _addEncoderInfo:](self, "_addEncoderInfo:", [encoderCopy globalTraceObjectID]);
 }
 
-- (void)scaler:(id)a3 didCreateBlitCommandEncoder:(id)a4 forEncode:(unint64_t)a5
+- (void)scaler:(id)scaler didCreateBlitCommandEncoder:(id)encoder forEncode:(unint64_t)encode
 {
-  v6 = a4;
-  -[GTMTLFXTracingDelegate _addEncoderInfo:](self, "_addEncoderInfo:", [v6 globalTraceObjectID]);
+  encoderCopy = encoder;
+  -[GTMTLFXTracingDelegate _addEncoderInfo:](self, "_addEncoderInfo:", [encoderCopy globalTraceObjectID]);
 }
 
-- (void)scaler:(id)a3 didCreateRenderCommandEncoder:(id)a4 forEncode:(unint64_t)a5
+- (void)scaler:(id)scaler didCreateRenderCommandEncoder:(id)encoder forEncode:(unint64_t)encode
 {
-  v6 = a4;
-  -[GTMTLFXTracingDelegate _addEncoderInfo:](self, "_addEncoderInfo:", [v6 globalTraceObjectID]);
+  encoderCopy = encoder;
+  -[GTMTLFXTracingDelegate _addEncoderInfo:](self, "_addEncoderInfo:", [encoderCopy globalTraceObjectID]);
 }
 
 - (NSData)mtlfxTracingInfo

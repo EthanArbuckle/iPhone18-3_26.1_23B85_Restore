@@ -1,17 +1,17 @@
 @interface EDSearchableIndexSchedulerState
 - (BOOL)_isIndexingEnabledByActivitiesOrTasks;
 - (BOOL)isIndexingEnabledByActivities;
-- (BOOL)isIndexingEnabledForActivityType:(id)a3;
-- (BOOL)isIndexingEnabledForTaskType:(id)a3;
+- (BOOL)isIndexingEnabledForActivityType:(id)type;
+- (BOOL)isIndexingEnabledForTaskType:(id)type;
 - (EDSearchableIndexSchedulerState)init;
 - (NSDictionary)powerEventData;
-- (void)didIndexForTime:(double)a3;
-- (void)didIndexItemCount:(int64_t)a3;
-- (void)disableIndexingForActivityType:(id)a3;
-- (void)disableIndexingForTaskType:(id)a3;
-- (void)enableIndexingForActivityType:(id)a3;
-- (void)enableIndexingForTaskType:(id)a3;
-- (void)setDataSourceIndexingPermitted:(BOOL)a3;
+- (void)didIndexForTime:(double)time;
+- (void)didIndexItemCount:(int64_t)count;
+- (void)disableIndexingForActivityType:(id)type;
+- (void)disableIndexingForTaskType:(id)type;
+- (void)enableIndexingForActivityType:(id)type;
+- (void)enableIndexingForTaskType:(id)type;
+- (void)setDataSourceIndexingPermitted:(BOOL)permitted;
 @end
 
 @implementation EDSearchableIndexSchedulerState
@@ -38,12 +38,12 @@
   return v2;
 }
 
-- (void)setDataSourceIndexingPermitted:(BOOL)a3
+- (void)setDataSourceIndexingPermitted:(BOOL)permitted
 {
-  if (self->_dataSourceIndexingPermitted != a3)
+  if (self->_dataSourceIndexingPermitted != permitted)
   {
-    self->_dataSourceIndexingPermitted = a3;
-    if (a3)
+    self->_dataSourceIndexingPermitted = permitted;
+    if (permitted)
     {
       [(EDSearchableIndexSchedulerState *)self setOtherIndexingTime:0.0];
 
@@ -152,81 +152,81 @@
 
 - (BOOL)isIndexingEnabledByActivities
 {
-  v2 = [(EDSearchableIndexSchedulerState *)self indexingEnabledForActivityTypes];
-  v3 = [v2 count] != 0;
+  indexingEnabledForActivityTypes = [(EDSearchableIndexSchedulerState *)self indexingEnabledForActivityTypes];
+  v3 = [indexingEnabledForActivityTypes count] != 0;
 
   return v3;
 }
 
 - (BOOL)_isIndexingEnabledByActivitiesOrTasks
 {
-  v3 = [(EDSearchableIndexSchedulerState *)self indexingEnabledForActivityTypes];
-  if ([v3 count])
+  indexingEnabledForActivityTypes = [(EDSearchableIndexSchedulerState *)self indexingEnabledForActivityTypes];
+  if ([indexingEnabledForActivityTypes count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(EDSearchableIndexSchedulerState *)self indexingEnabledForTaskTypes];
-    v4 = [v5 count] != 0;
+    indexingEnabledForTaskTypes = [(EDSearchableIndexSchedulerState *)self indexingEnabledForTaskTypes];
+    v4 = [indexingEnabledForTaskTypes count] != 0;
   }
 
   return v4;
 }
 
-- (BOOL)isIndexingEnabledForActivityType:(id)a3
+- (BOOL)isIndexingEnabledForActivityType:(id)type
 {
-  v4 = a3;
-  v5 = [(EDSearchableIndexSchedulerState *)self indexingEnabledForActivityTypes];
-  v6 = [v5 containsObject:v4];
+  typeCopy = type;
+  indexingEnabledForActivityTypes = [(EDSearchableIndexSchedulerState *)self indexingEnabledForActivityTypes];
+  v6 = [indexingEnabledForActivityTypes containsObject:typeCopy];
 
   return v6;
 }
 
-- (void)enableIndexingForActivityType:(id)a3
+- (void)enableIndexingForActivityType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(NSMutableSet *)self->_indexingEnabledForActivityTypes addObject:?];
   [(EDSearchableIndexSchedulerState *)self setDataSourceIndexingPermitted:[(EDSearchableIndexSchedulerState *)self _isIndexingEnabledByActivitiesOrTasks]];
 }
 
-- (void)disableIndexingForActivityType:(id)a3
+- (void)disableIndexingForActivityType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(NSMutableSet *)self->_indexingEnabledForActivityTypes removeObject:?];
   [(EDSearchableIndexSchedulerState *)self setDataSourceIndexingPermitted:[(EDSearchableIndexSchedulerState *)self _isIndexingEnabledByActivitiesOrTasks]];
 }
 
-- (BOOL)isIndexingEnabledForTaskType:(id)a3
+- (BOOL)isIndexingEnabledForTaskType:(id)type
 {
-  v4 = a3;
-  v5 = [(EDSearchableIndexSchedulerState *)self indexingEnabledForTaskTypes];
-  v6 = [v5 containsObject:v4];
+  typeCopy = type;
+  indexingEnabledForTaskTypes = [(EDSearchableIndexSchedulerState *)self indexingEnabledForTaskTypes];
+  v6 = [indexingEnabledForTaskTypes containsObject:typeCopy];
 
   return v6;
 }
 
-- (void)enableIndexingForTaskType:(id)a3
+- (void)enableIndexingForTaskType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(NSMutableSet *)self->_indexingEnabledForTaskTypes addObject:?];
   [(EDSearchableIndexSchedulerState *)self setDataSourceIndexingPermitted:[(EDSearchableIndexSchedulerState *)self _isIndexingEnabledByActivitiesOrTasks]];
 }
 
-- (void)disableIndexingForTaskType:(id)a3
+- (void)disableIndexingForTaskType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   [(NSMutableSet *)self->_indexingEnabledForTaskTypes removeObject:?];
   [(EDSearchableIndexSchedulerState *)self setDataSourceIndexingPermitted:[(EDSearchableIndexSchedulerState *)self _isIndexingEnabledByActivitiesOrTasks]];
 }
 
-- (void)didIndexForTime:(double)a3
+- (void)didIndexForTime:(double)time
 {
   if ([(EDSearchableIndexSchedulerState *)self isIndexingEnabledForActivityType:@"maintenance"])
   {
     [(EDSearchableIndexSchedulerState *)self maintenanceIndexingTime];
-    [(EDSearchableIndexSchedulerState *)self setMaintenanceIndexingTime:v5 + a3];
+    [(EDSearchableIndexSchedulerState *)self setMaintenanceIndexingTime:v5 + time];
   }
 
   else
@@ -237,23 +237,23 @@
   if ([(EDSearchableIndexSchedulerState *)self isIndexingEnabledForTaskType:@"fastpass"])
   {
     [(EDSearchableIndexSchedulerState *)self fastPassIndexingTime];
-    [(EDSearchableIndexSchedulerState *)self setFastPassIndexingTime:v6 + a3];
+    [(EDSearchableIndexSchedulerState *)self setFastPassIndexingTime:v6 + time];
   }
 
   if (![(EDSearchableIndexSchedulerState *)self _isIndexingEnabledByActivitiesOrTasks])
   {
     [(EDSearchableIndexSchedulerState *)self otherIndexingTime];
-    v8 = v7 + a3;
+    v8 = v7 + time;
 
     [(EDSearchableIndexSchedulerState *)self setOtherIndexingTime:v8];
   }
 }
 
-- (void)didIndexItemCount:(int64_t)a3
+- (void)didIndexItemCount:(int64_t)count
 {
   if ([(EDSearchableIndexSchedulerState *)self isIndexingEnabledForTaskType:@"fastpass"])
   {
-    self->_fastPassIndexedItemCount += a3;
+    self->_fastPassIndexedItemCount += count;
   }
 }
 

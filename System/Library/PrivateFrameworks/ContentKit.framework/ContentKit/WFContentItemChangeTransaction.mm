@@ -1,16 +1,16 @@
 @interface WFContentItemChangeTransaction
-- (WFContentItemChangeTransaction)initWithContentItem:(id)a3;
+- (WFContentItemChangeTransaction)initWithContentItem:(id)item;
 @end
 
 @implementation WFContentItemChangeTransaction
 
-- (WFContentItemChangeTransaction)initWithContentItem:(id)a3
+- (WFContentItemChangeTransaction)initWithContentItem:(id)item
 {
-  v6 = a3;
-  if (!v6)
+  itemCopy = item;
+  if (!itemCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFContentItemChangeTransaction.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItemChangeTransaction.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"contentItem"}];
   }
 
   v13.receiver = self;
@@ -22,7 +22,7 @@
     mode = v7->_mode;
     v7->_mode = @"Set";
 
-    objc_storeStrong(&v8->_contentItem, a3);
+    objc_storeStrong(&v8->_contentItem, item);
     v10 = v8;
   }
 

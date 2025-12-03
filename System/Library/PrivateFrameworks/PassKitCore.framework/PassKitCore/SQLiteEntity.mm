@@ -1,53 +1,53 @@
 @interface SQLiteEntity
-+ (BOOL)existsInDatabase:(id)a3 predicate:(id)a4;
-+ (id)_aggregateValueForProperty:(id)a3 function:(id)a4 predicate:(id)a5 database:(id)a6;
-+ (id)anyInDatabase:(id)a3 predicate:(id)a4;
-+ (id)copyDatabaseDictionaryToSetClientDictionary:(id)a3;
-+ (id)disambiguatedSQLForProperty:(id)a3;
-+ (id)queryWithDatabase:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 orderingDirections:(id)a6 limit:(int64_t)a7 groupingProperties:(id)a8 returnsDistinctEntities:(BOOL)a9;
-+ (int64_t)countDistinctInDatabase:(id)a3 predicate:(id)a4;
-+ (int64_t)countInDatabase:(id)a3 predicate:(id)a4;
-+ (void)applyPropertySetters:(id)a3 toObject:(id)a4 withProperties:(id)a5 values:(const void *)a6;
++ (BOOL)existsInDatabase:(id)database predicate:(id)predicate;
++ (id)_aggregateValueForProperty:(id)property function:(id)function predicate:(id)predicate database:(id)database;
++ (id)anyInDatabase:(id)database predicate:(id)predicate;
++ (id)copyDatabaseDictionaryToSetClientDictionary:(id)dictionary;
++ (id)disambiguatedSQLForProperty:(id)property;
++ (id)queryWithDatabase:(id)database predicate:(id)predicate orderingProperties:(id)properties orderingDirections:(id)directions limit:(int64_t)limit groupingProperties:(id)groupingProperties returnsDistinctEntities:(BOOL)entities;
++ (int64_t)countDistinctInDatabase:(id)database predicate:(id)predicate;
++ (int64_t)countInDatabase:(id)database predicate:(id)predicate;
++ (void)applyPropertySetters:(id)setters toObject:(id)object withProperties:(id)properties values:(const void *)values;
 - (BOOL)deleteFromDatabase;
 - (BOOL)existsInDatabase;
-- (BOOL)setValue:(id)a3 forProperty:(id)a4;
-- (BOOL)setValuesWithDictionary:(id)a3;
-- (SQLiteEntity)initWithPersistentID:(int64_t)a3 inDatabase:(id)a4;
-- (SQLiteEntity)initWithPropertyValues:(id)a3 inDatabase:(id)a4;
-- (void)getValuesForProperties:(id)a3 withApplier:(id)a4;
+- (BOOL)setValue:(id)value forProperty:(id)property;
+- (BOOL)setValuesWithDictionary:(id)dictionary;
+- (SQLiteEntity)initWithPersistentID:(int64_t)d inDatabase:(id)database;
+- (SQLiteEntity)initWithPropertyValues:(id)values inDatabase:(id)database;
+- (void)getValuesForProperties:(id)properties withApplier:(id)applier;
 @end
 
 @implementation SQLiteEntity
 
-- (SQLiteEntity)initWithPersistentID:(int64_t)a3 inDatabase:(id)a4
+- (SQLiteEntity)initWithPersistentID:(int64_t)d inDatabase:(id)database
 {
   v7.receiver = self;
   v7.super_class = SQLiteEntity;
   result = [(SQLiteEntity *)&v7 init];
   if (result)
   {
-    result->_database = a4;
-    result->_persistentID = a3;
+    result->_database = database;
+    result->_persistentID = d;
   }
 
   return result;
 }
 
-- (SQLiteEntity)initWithPropertyValues:(id)a3 inDatabase:(id)a4
+- (SQLiteEntity)initWithPropertyValues:(id)values inDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:@"ROWID"];
+  valuesCopy = values;
+  databaseCopy = database;
+  v8 = [valuesCopy objectForKey:@"ROWID"];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 longLongValue];
+    longLongValue = [v8 longLongValue];
   }
 
   else
   {
     v11 = CFUUIDCreate(0);
-    v10 = *&CFUUIDGetUUIDBytes(v11);
+    longLongValue = *&CFUUIDGetUUIDBytes(v11);
     CFRelease(v11);
   }
 
@@ -59,61 +59,61 @@
   v17 = 3221225472;
   v18 = sub_100073D68;
   v19 = &unk_100840570;
-  v12 = sub_1005B864C(self, v6);
+  v12 = sub_1005B864C(self, valuesCopy);
   v20 = v12;
-  v23 = v10;
-  v13 = v7;
+  v23 = longLongValue;
+  v13 = databaseCopy;
   v21 = v13;
   v22 = &v24;
   sub_1005D4424(v13, &v16);
   if (v25[3])
   {
-    self = [(SQLiteEntity *)self initWithPersistentID:v10 inDatabase:v13, v16, v17, v18, v19, v20];
-    v14 = self;
+    self = [(SQLiteEntity *)self initWithPersistentID:longLongValue inDatabase:v13, v16, v17, v18, v19, v20];
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
   _Block_object_dispose(&v24, 8);
-  return v14;
+  return selfCopy;
 }
 
-+ (id)copyDatabaseDictionaryToSetClientDictionary:(id)a3
++ (id)copyDatabaseDictionaryToSetClientDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000743C0;
   v7[3] = &unk_100840598;
-  v9 = a1;
+  selfCopy = self;
   v5 = objc_alloc_init(NSMutableDictionary);
   v8 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
 
-+ (id)disambiguatedSQLForProperty:(id)a3
++ (id)disambiguatedSQLForProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   v5 = objc_alloc_init(NSMutableSet);
-  [a1 addJoinClausesForProperty:v4 toJoins:v5];
+  [self addJoinClausesForProperty:propertyCopy toJoins:v5];
   if ([v5 count])
   {
-    v6 = v4;
+    propertyCopy = propertyCopy;
   }
 
   else
   {
     v7 = [NSString alloc];
-    v8 = [a1 databaseTable];
-    v6 = [v7 initWithFormat:@"%@.%@", v8, v4];
+    databaseTable = [self databaseTable];
+    propertyCopy = [v7 initWithFormat:@"%@.%@", databaseTable, propertyCopy];
   }
 
-  return v6;
+  return propertyCopy;
 }
 
 - (BOOL)deleteFromDatabase
@@ -142,8 +142,8 @@
   v11 = 0x2020000000;
   v12 = 0;
   v3 = [NSString alloc];
-  v4 = [objc_opt_class() databaseTable];
-  v5 = [v3 initWithFormat:@"SELECT 1 FROM %@ WHERE %@ = ? LIMIT 1;", v4, @"ROWID"];
+  databaseTable = [objc_opt_class() databaseTable];
+  v5 = [v3 initWithFormat:@"SELECT 1 FROM %@ WHERE %@ = ? LIMIT 1;", databaseTable, @"ROWID"];
 
   database = self->_database;
   v8[0] = _NSConcreteStackBlock;
@@ -159,21 +159,21 @@
   return self;
 }
 
-- (BOOL)setValue:(id)a3 forProperty:(id)a4
+- (BOOL)setValue:(id)value forProperty:(id)property
 {
-  v6 = a3;
-  v7 = a4;
+  valueCopy = value;
+  propertyCopy = property;
   v8 = [NSDictionary alloc];
   v9 = v8;
-  if (v6)
+  if (valueCopy)
   {
-    v10 = [v8 initWithObjectsAndKeys:{v6, v7, 0}];
+    v10 = [v8 initWithObjectsAndKeys:{valueCopy, propertyCopy, 0}];
   }
 
   else
   {
     v11 = +[NSNull null];
-    v10 = [v9 initWithObjectsAndKeys:{v11, v7, 0}];
+    v10 = [v9 initWithObjectsAndKeys:{v11, propertyCopy, 0}];
   }
 
   v12 = [(SQLiteEntity *)self setValuesWithDictionary:v10];
@@ -181,25 +181,25 @@
   return v12;
 }
 
-- (BOOL)setValuesWithDictionary:(id)a3
+- (BOOL)setValuesWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 1;
   v5 = objc_opt_class();
-  v6 = [v5 databaseTable];
+  databaseTable = [v5 databaseTable];
   database = self->_database;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1005B8C8C;
   v11[3] = &unk_1008406E8;
   v11[4] = self;
-  v8 = v4;
+  v8 = dictionaryCopy;
   v12 = v8;
   v15 = v5;
-  v9 = v6;
+  v9 = databaseTable;
   v13 = v9;
   v14 = &v16;
   sub_1005D4424(database, v11);
@@ -209,27 +209,27 @@
   return v5;
 }
 
-- (void)getValuesForProperties:(id)a3 withApplier:(id)a4
+- (void)getValuesForProperties:(id)properties withApplier:(id)applier
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [v8 count];
+  propertiesCopy = properties;
+  applierCopy = applier;
+  v7 = [propertiesCopy count];
   if (v7)
   {
-    sub_1005B8E1C(self, v8, v7, v6);
+    sub_1005B8E1C(self, propertiesCopy, v7, applierCopy);
   }
 }
 
-+ (void)applyPropertySetters:(id)a3 toObject:(id)a4 withProperties:(id)a5 values:(const void *)a6
++ (void)applyPropertySetters:(id)setters toObject:(id)object withProperties:(id)properties values:(const void *)values
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  settersCopy = setters;
+  objectCopy = object;
+  propertiesCopy = properties;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v12 = [propertiesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {
     v13 = v12;
@@ -242,13 +242,13 @@
       {
         if (*v19 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(propertiesCopy);
         }
 
-        v17 = [v9 objectForKey:*(*(&v18 + 1) + 8 * v16)];
+        v17 = [settersCopy objectForKey:*(*(&v18 + 1) + 8 * v16)];
         if (v17)
         {
-          v17[2](v17, v10, a6[v14]);
+          v17[2](v17, objectCopy, values[v14]);
         }
 
         ++v14;
@@ -256,31 +256,31 @@
       }
 
       while (v13 != v16);
-      v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v13 = [propertiesCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v13);
   }
 }
 
-+ (id)anyInDatabase:(id)a3 predicate:(id)a4
++ (id)anyInDatabase:(id)database predicate:(id)predicate
 {
-  v6 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  predicateCopy = predicate;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_100005A40;
   v20 = sub_10000B12C;
   v21 = 0;
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  v8 = [self queryWithDatabase:databaseCopy predicate:predicateCopy];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10009F884;
   v12[3] = &unk_100841AD8;
   v14 = &v16;
-  v15 = a1;
-  v9 = v6;
+  selfCopy = self;
+  v9 = databaseCopy;
   v13 = v9;
   [v8 enumeratePersistentIDsUsingBlock:v12];
   v10 = v17[5];
@@ -290,37 +290,37 @@
   return v10;
 }
 
-+ (BOOL)existsInDatabase:(id)a3 predicate:(id)a4
++ (BOOL)existsInDatabase:(id)database predicate:(id)predicate
 {
-  v4 = [a1 queryWithDatabase:a3 predicate:a4];
-  v5 = [v4 exists];
+  v4 = [self queryWithDatabase:database predicate:predicate];
+  exists = [v4 exists];
 
-  return v5;
+  return exists;
 }
 
-+ (int64_t)countInDatabase:(id)a3 predicate:(id)a4
++ (int64_t)countInDatabase:(id)database predicate:(id)predicate
 {
-  v4 = [a1 queryWithDatabase:a3 predicate:a4];
-  v5 = [v4 countOfEntities];
+  v4 = [self queryWithDatabase:database predicate:predicate];
+  countOfEntities = [v4 countOfEntities];
 
-  return v5;
+  return countOfEntities;
 }
 
-+ (int64_t)countDistinctInDatabase:(id)a3 predicate:(id)a4
++ (int64_t)countDistinctInDatabase:(id)database predicate:(id)predicate
 {
   LOBYTE(v7) = 1;
-  v4 = [a1 queryWithDatabase:a3 predicate:a4 orderingProperties:0 orderingDirections:0 limit:0 groupingProperties:0 returnsDistinctEntities:v7];
-  v5 = [v4 countOfEntities];
+  v4 = [self queryWithDatabase:database predicate:predicate orderingProperties:0 orderingDirections:0 limit:0 groupingProperties:0 returnsDistinctEntities:v7];
+  countOfEntities = [v4 countOfEntities];
 
-  return v5;
+  return countOfEntities;
 }
 
-+ (id)_aggregateValueForProperty:(id)a3 function:(id)a4 predicate:(id)a5 database:(id)a6
++ (id)_aggregateValueForProperty:(id)property function:(id)function predicate:(id)predicate database:(id)database
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  propertyCopy = property;
+  functionCopy = function;
+  predicateCopy = predicate;
+  databaseCopy = database;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -328,13 +328,13 @@
   v31 = sub_10000B12C;
   v32 = 0;
   v14 = objc_alloc_init(SQLiteQueryDescriptor);
-  [(SQLiteQueryDescriptor *)v14 setEntityClass:a1];
-  [(SQLiteQueryDescriptor *)v14 setPredicate:v12];
+  [(SQLiteQueryDescriptor *)v14 setEntityClass:self];
+  [(SQLiteQueryDescriptor *)v14 setPredicate:predicateCopy];
   v15 = [NSString alloc];
-  v16 = [a1 disambiguatedSQLForProperty:v10];
-  v17 = [v15 initWithFormat:@"%@(%@)", v11, v16];
+  v16 = [self disambiguatedSQLForProperty:propertyCopy];
+  v17 = [v15 initWithFormat:@"%@(%@)", functionCopy, v16];
 
-  v18 = [NSArray arrayWithObject:v10];
+  v18 = [NSArray arrayWithObject:propertyCopy];
   v19 = [NSArray arrayWithObject:v17];
   v20 = [(SQLiteQueryDescriptor *)v14 _newSelectSQLWithProperties:v18 columns:v19];
 
@@ -345,7 +345,7 @@
   v21 = v14;
   v25 = v21;
   v26 = &v27;
-  sub_1005D44A8(v13, v20, v24);
+  sub_1005D44A8(databaseCopy, v20, v24);
   v22 = v28[5];
 
   _Block_object_dispose(&v27, 8);
@@ -353,25 +353,25 @@
   return v22;
 }
 
-+ (id)queryWithDatabase:(id)a3 predicate:(id)a4 orderingProperties:(id)a5 orderingDirections:(id)a6 limit:(int64_t)a7 groupingProperties:(id)a8 returnsDistinctEntities:(BOOL)a9
++ (id)queryWithDatabase:(id)database predicate:(id)predicate orderingProperties:(id)properties orderingDirections:(id)directions limit:(int64_t)limit groupingProperties:(id)groupingProperties returnsDistinctEntities:(BOOL)entities
 {
-  v15 = a8;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  groupingPropertiesCopy = groupingProperties;
+  directionsCopy = directions;
+  propertiesCopy = properties;
+  predicateCopy = predicate;
+  databaseCopy = database;
   v20 = objc_alloc_init(SQLiteQueryDescriptor);
-  [(SQLiteQueryDescriptor *)v20 setEntityClass:a1];
-  [(SQLiteQueryDescriptor *)v20 setOrderingProperties:v17];
+  [(SQLiteQueryDescriptor *)v20 setEntityClass:self];
+  [(SQLiteQueryDescriptor *)v20 setOrderingProperties:propertiesCopy];
 
-  [(SQLiteQueryDescriptor *)v20 setOrderingDirections:v16];
-  [(SQLiteQueryDescriptor *)v20 setPredicate:v18];
+  [(SQLiteQueryDescriptor *)v20 setOrderingDirections:directionsCopy];
+  [(SQLiteQueryDescriptor *)v20 setPredicate:predicateCopy];
 
-  [(SQLiteQueryDescriptor *)v20 setLimitCount:a7];
-  [(SQLiteQueryDescriptor *)v20 setGroupingProperties:v15];
+  [(SQLiteQueryDescriptor *)v20 setLimitCount:limit];
+  [(SQLiteQueryDescriptor *)v20 setGroupingProperties:groupingPropertiesCopy];
 
-  [(SQLiteQueryDescriptor *)v20 setReturnsDistinctEntities:a9];
-  v21 = [[SQLiteQuery alloc] initWithDatabase:v19 descriptor:v20];
+  [(SQLiteQueryDescriptor *)v20 setReturnsDistinctEntities:entities];
+  v21 = [[SQLiteQuery alloc] initWithDatabase:databaseCopy descriptor:v20];
 
   return v21;
 }

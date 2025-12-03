@@ -1,8 +1,8 @@
 @interface SBCaptureButtonRestrictionCoordinator
-- (BOOL)isCaptureButtonActionInhibited:(id *)a3;
+- (BOOL)isCaptureButtonActionInhibited:(id *)inhibited;
 - (SBCaptureButtonRestrictionCoordinator)init;
-- (id)addObserver:(id)a3;
-- (id)inhibitCaptureButtonActionAssertionWithReason:(id)a3 options:(unint64_t)a4;
+- (id)addObserver:(id)observer;
+- (id)inhibitCaptureButtonActionAssertionWithReason:(id)reason options:(unint64_t)options;
 - (unint64_t)captureButtonSuppressionOptions;
 @end
 
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (id)inhibitCaptureButtonActionAssertionWithReason:(id)a3 options:(unint64_t)a4
+- (id)inhibitCaptureButtonActionAssertionWithReason:(id)reason options:(unint64_t)options
 {
-  v6 = a3;
+  reasonCopy = reason;
   inhibitedAssertion = self->_inhibitedAssertion;
   if (!inhibitedAssertion)
   {
@@ -61,8 +61,8 @@
     inhibitedAssertion = self->_inhibitedAssertion;
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-  v14 = [(BSCompoundAssertion *)inhibitedAssertion acquireForReason:v6 withContext:v13];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:options];
+  v14 = [(BSCompoundAssertion *)inhibitedAssertion acquireForReason:reasonCopy withContext:v13];
 
   return v14;
 }
@@ -73,9 +73,9 @@ void __95__SBCaptureButtonRestrictionCoordinator_inhibitCaptureButtonActionAsser
   [WeakRetained _notifyObserversCaptureButtonInhibitionDidChange];
 }
 
-- (BOOL)isCaptureButtonActionInhibited:(id *)a3
+- (BOOL)isCaptureButtonActionInhibited:(id *)inhibited
 {
-  v5 = [(BSCompoundAssertion *)self->_inhibitedAssertion context];
+  context = [(BSCompoundAssertion *)self->_inhibitedAssertion context];
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -85,11 +85,11 @@ void __95__SBCaptureButtonRestrictionCoordinator_inhibitCaptureButtonActionAsser
   v12[2] = __SBSCombineSupressionOptions_block_invoke;
   v12[3] = &unk_2783BA860;
   v12[4] = &v13;
-  [v5 bs_each:v12];
+  [context bs_each:v12];
   v6 = v14[3];
   _Block_object_dispose(&v13, 8);
 
-  v7 = [(BSCompoundAssertion *)self->_inhibitedAssertion isActive];
+  isActive = [(BSCompoundAssertion *)self->_inhibitedAssertion isActive];
   if (v6)
   {
     v8 = 0;
@@ -97,14 +97,14 @@ void __95__SBCaptureButtonRestrictionCoordinator_inhibitCaptureButtonActionAsser
 
   else
   {
-    v8 = v7;
+    v8 = isActive;
   }
 
-  if (a3 && v8)
+  if (inhibited && v8)
   {
-    v9 = [(BSCompoundAssertion *)self->_inhibitedAssertion orderedReasons];
-    v10 = [v9 array];
-    *a3 = [v10 componentsJoinedByString:{@", "}];
+    orderedReasons = [(BSCompoundAssertion *)self->_inhibitedAssertion orderedReasons];
+    array = [orderedReasons array];
+    *inhibited = [array componentsJoinedByString:{@", "}];
   }
 
   return v8;
@@ -112,7 +112,7 @@ void __95__SBCaptureButtonRestrictionCoordinator_inhibitCaptureButtonActionAsser
 
 - (unint64_t)captureButtonSuppressionOptions
 {
-  v2 = [(BSCompoundAssertion *)self->_inhibitedAssertion context];
+  context = [(BSCompoundAssertion *)self->_inhibitedAssertion context];
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
@@ -122,16 +122,16 @@ void __95__SBCaptureButtonRestrictionCoordinator_inhibitCaptureButtonActionAsser
   v5[2] = __SBSCombineSupressionOptions_block_invoke;
   v5[3] = &unk_2783BA860;
   v5[4] = &v6;
-  [v2 bs_each:v5];
+  [context bs_each:v5];
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
 
   return v3;
 }
 
-- (id)addObserver:(id)a3
+- (id)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
   if (!observers)
   {
@@ -143,7 +143,7 @@ void __95__SBCaptureButtonRestrictionCoordinator_inhibitCaptureButtonActionAsser
   }
 
   v8 = [objc_opt_class() description];
-  v9 = [(BSCompoundAssertion *)observers acquireForReason:v8 withContext:v4];
+  v9 = [(BSCompoundAssertion *)observers acquireForReason:v8 withContext:observerCopy];
 
   return v9;
 }

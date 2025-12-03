@@ -1,19 +1,19 @@
 @interface MLPOptimizerAdam
-- (MLPOptimizerAdam)initWithNetwork:(id)a3 momentum:(id)a4 velocity:(id)a5;
-- (void)encodeToCommandBuffer:(id)a3 inputGradientVector:(id)a4 inputValuesVector:(id)a5;
+- (MLPOptimizerAdam)initWithNetwork:(id)network momentum:(id)momentum velocity:(id)velocity;
+- (void)encodeToCommandBuffer:(id)buffer inputGradientVector:(id)vector inputValuesVector:(id)valuesVector;
 @end
 
 @implementation MLPOptimizerAdam
 
-- (MLPOptimizerAdam)initWithNetwork:(id)a3 momentum:(id)a4 velocity:(id)a5
+- (MLPOptimizerAdam)initWithNetwork:(id)network momentum:(id)momentum velocity:(id)velocity
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v14 = objc_msgSend_deviceHandler(v8, v11, v12, v13);
+  networkCopy = network;
+  momentumCopy = momentum;
+  velocityCopy = velocity;
+  v14 = objc_msgSend_deviceHandler(networkCopy, v11, v12, v13);
   v18 = objc_msgSend_device(v14, v15, v16, v17);
 
-  v22 = objc_msgSend_optimizerParams(v8, v19, v20, v21);
+  v22 = objc_msgSend_optimizerParams(networkCopy, v19, v20, v21);
   v23 = MEMORY[0x1E6974A38];
   objc_msgSend_learningRate(v22, v24, v25, v26);
   v29 = objc_msgSend_optimizerDescriptorWithLearningRate_gradientRescale_regularizationType_regularizationScale_(v23, v27, 0, v28);
@@ -40,14 +40,14 @@
   v63 = objc_msgSend_initWithDevice_beta1_beta2_epsilon_timeStep_optimizerDescriptor_(v60, v62, v18, 0, v29, 0.899999976, 0.999000013, v61);
   v70.receiver = self;
   v70.super_class = MLPOptimizerAdam;
-  v64 = [(MLPOptimizer *)&v70 initWithNetwork:v8 mpsOptimizer:v63];
+  v64 = [(MLPOptimizer *)&v70 initWithNetwork:networkCopy mpsOptimizer:v63];
   if (v64)
   {
-    v65 = v9[2](v9);
+    v65 = momentumCopy[2](momentumCopy);
     momentum = v64->_momentum;
     v64->_momentum = v65;
 
-    v67 = v10[2](v10);
+    v67 = velocityCopy[2](velocityCopy);
     velocity = v64->_velocity;
     v64->_velocity = v67;
   }
@@ -55,15 +55,15 @@
   return v64;
 }
 
-- (void)encodeToCommandBuffer:(id)a3 inputGradientVector:(id)a4 inputValuesVector:(id)a5
+- (void)encodeToCommandBuffer:(id)buffer inputGradientVector:(id)vector inputValuesVector:(id)valuesVector
 {
-  v23 = a3;
-  v8 = a4;
-  v9 = a5;
+  bufferCopy = buffer;
+  vectorCopy = vector;
+  valuesVectorCopy = valuesVector;
   v13 = objc_msgSend_mpsOptimizer(self, v10, v11, v12);
   v17 = objc_msgSend_momentum(self, v14, v15, v16);
   v21 = objc_msgSend_velocity(self, v18, v19, v20);
-  objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(v13, v22, v23, v8, v9, v17, v21, v9);
+  objc_msgSend_encodeToCommandBuffer_inputGradientVector_inputValuesVector_inputMomentumVector_inputVelocityVector_resultValuesVector_(v13, v22, bufferCopy, vectorCopy, valuesVectorCopy, v17, v21, valuesVectorCopy);
 }
 
 @end

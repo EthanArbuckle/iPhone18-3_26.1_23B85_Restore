@@ -1,14 +1,14 @@
 @interface WBSSearchEnginePreferenceObserver
 + (WBSSearchEnginePreferenceObserver)sharedObserver;
-+ (void)setUpSharedObserverWithSearchProviderContext:(id)a3;
++ (void)setUpSharedObserverWithSearchProviderContext:(id)context;
 + (void)sharedObserver;
 - (BOOL)defaultSearchEngineMatchesExperiment;
 - (NSString)defaultSearchEngineShortName;
-- (WBSSearchEnginePreferenceObserver)initWithSearchProviderContext:(id)a3;
+- (WBSSearchEnginePreferenceObserver)initWithSearchProviderContext:(id)context;
 - (WBSSearchEnginePreferenceObserverDelegate)delegate;
-- (void)_suppressSearchSuggestionsSettingDidChange:(id)a3;
-- (void)_updateSearchEnginePreference:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)_suppressSearchSuggestionsSettingDidChange:(id)change;
+- (void)_updateSearchEnginePreference:(id)preference;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation WBSSearchEnginePreferenceObserver
@@ -51,39 +51,39 @@ LABEL_9:
 
 - (NSString)defaultSearchEngineShortName
 {
-  v2 = [(WBSSearchProviderContext *)self->_searchProviderContext defaultSearchProvider];
-  v3 = [v2 shortName];
+  defaultSearchProvider = [(WBSSearchProviderContext *)self->_searchProviderContext defaultSearchProvider];
+  shortName = [defaultSearchProvider shortName];
 
-  return v3;
+  return shortName;
 }
 
-+ (void)setUpSharedObserverWithSearchProviderContext:(id)a3
++ (void)setUpSharedObserverWithSearchProviderContext:(id)context
 {
-  v3 = a3;
-  v4 = [[WBSSearchEnginePreferenceObserver alloc] initWithSearchProviderContext:v3];
+  contextCopy = context;
+  v4 = [[WBSSearchEnginePreferenceObserver alloc] initWithSearchProviderContext:contextCopy];
 
   v5 = sharedSearchEngineObserver;
   sharedSearchEngineObserver = v4;
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"WBSTrialGroupManagerDidChangeGroupIdentifier" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSTrialGroupManagerDidChangeGroupIdentifier" object:0];
 }
 
-- (WBSSearchEnginePreferenceObserver)initWithSearchProviderContext:(id)a3
+- (WBSSearchEnginePreferenceObserver)initWithSearchProviderContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = WBSSearchEnginePreferenceObserver;
   v6 = [(WBSSearchEnginePreferenceObserver *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_searchProviderContext, a3);
-    v8 = [MEMORY[0x1E695E000] safari_browserSharedDefaults];
-    [v8 addObserver:v7 forKeyPath:@"SearchEngineStringSetting" options:3 context:userDefaultsObserverContext];
+    objc_storeStrong(&v6->_searchProviderContext, context);
+    safari_browserSharedDefaults = [MEMORY[0x1E695E000] safari_browserSharedDefaults];
+    [safari_browserSharedDefaults addObserver:v7 forKeyPath:@"SearchEngineStringSetting" options:3 context:userDefaultsObserverContext];
 
-    v9 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    [v9 addObserver:v7 forKeyPath:@"SuppressSearchSuggestions" options:3 context:userDefaultsObserverContext];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    [safari_browserDefaults addObserver:v7 forKeyPath:@"SuppressSearchSuggestions" options:3 context:userDefaultsObserverContext];
 
     [(WBSSearchEnginePreferenceObserver *)v7 _updateSearchEnginePreference:0];
     v10 = v7;
@@ -92,24 +92,24 @@ LABEL_9:
   return v7;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (userDefaultsObserverContext == a6)
+  pathCopy = path;
+  if (userDefaultsObserverContext == context)
   {
     v12 = *MEMORY[0x1E696A500];
-    v13 = a5;
-    v11 = [v13 objectForKeyedSubscript:v12];
-    v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
+    changeCopy = change;
+    changeCopy2 = [changeCopy objectForKeyedSubscript:v12];
+    v14 = [changeCopy objectForKeyedSubscript:*MEMORY[0x1E696A4F0]];
 
-    if (v11 | v14 && ([v11 isEqual:v14] & 1) == 0)
+    if (changeCopy2 | v14 && ([changeCopy2 isEqual:v14] & 1) == 0)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __84__WBSSearchEnginePreferenceObserver_observeValueForKeyPath_ofObject_change_context___block_invoke;
       v15[3] = &unk_1E7CF1708;
-      v16 = v10;
-      v17 = self;
+      v16 = pathCopy;
+      selfCopy = self;
       dispatch_async(MEMORY[0x1E69E96A0], v15);
     }
   }
@@ -118,8 +118,8 @@ LABEL_9:
   {
     v18.receiver = self;
     v18.super_class = WBSSearchEnginePreferenceObserver;
-    v11 = a5;
-    [(WBSSearchEnginePreferenceObserver *)&v18 observeValueForKeyPath:v10 ofObject:a4 change:v11 context:a6];
+    changeCopy2 = change;
+    [(WBSSearchEnginePreferenceObserver *)&v18 observeValueForKeyPath:pathCopy ofObject:object change:changeCopy2 context:context];
   }
 }
 
@@ -141,29 +141,29 @@ uint64_t __84__WBSSearchEnginePreferenceObserver_observeValueForKeyPath_ofObject
   return result;
 }
 
-- (void)_updateSearchEnginePreference:(id)a3
+- (void)_updateSearchEnginePreference:(id)preference
 {
-  v4 = [MEMORY[0x1E695E000] safari_browserSharedDefaults];
-  v15 = [v4 objectForKey:@"SearchEngineStringSetting"];
+  safari_browserSharedDefaults = [MEMORY[0x1E695E000] safari_browserSharedDefaults];
+  shortName = [safari_browserSharedDefaults objectForKey:@"SearchEngineStringSetting"];
 
-  if (!v15)
+  if (!shortName)
   {
-    v5 = [(WBSSearchProviderContext *)self->_searchProviderContext defaultSearchProvider];
-    v15 = [v5 shortName];
+    defaultSearchProvider = [(WBSSearchProviderContext *)self->_searchProviderContext defaultSearchProvider];
+    shortName = [defaultSearchProvider shortName];
   }
 
-  v6 = [MEMORY[0x1E695E000] safari_browserSharedDefaults];
-  v7 = [v6 objectForKey:@"PrivateSearchEngineStringSetting"];
+  safari_browserSharedDefaults2 = [MEMORY[0x1E695E000] safari_browserSharedDefaults];
+  shortName2 = [safari_browserSharedDefaults2 objectForKey:@"PrivateSearchEngineStringSetting"];
 
-  if (!v7)
+  if (!shortName2)
   {
-    v8 = [(WBSSearchProviderContext *)self->_searchProviderContext defaultSeachProviderForPrivateBrowsing];
-    v7 = [v8 shortName];
+    defaultSeachProviderForPrivateBrowsing = [(WBSSearchProviderContext *)self->_searchProviderContext defaultSeachProviderForPrivateBrowsing];
+    shortName2 = [defaultSeachProviderForPrivateBrowsing shortName];
   }
 
-  self->_duckDuckGoDefaultSearchEngine = [@"DuckDuckGo" safari_isCaseInsensitiveEqualToString:v15];
+  self->_duckDuckGoDefaultSearchEngine = [@"DuckDuckGo" safari_isCaseInsensitiveEqualToString:shortName];
   isGoogleEnabledSearchEngine = self->_isGoogleEnabledSearchEngine;
-  v10 = [@"Google" safari_isCaseInsensitiveEqualToString:v15];
+  v10 = [@"Google" safari_isCaseInsensitiveEqualToString:shortName];
   self->_googleIsDefaultSearchEngine = v10;
   if (v10)
   {
@@ -172,27 +172,27 @@ uint64_t __84__WBSSearchEnginePreferenceObserver_observeValueForKeyPath_ofObject
 
   else
   {
-    v11 = [@"Google" safari_isCaseInsensitiveEqualToString:v7];
+    v11 = [@"Google" safari_isCaseInsensitiveEqualToString:shortName2];
   }
 
   self->_isGoogleEnabledSearchEngine = v11;
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 postNotificationName:@"WBSDefaultSearchEngineChanged" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"WBSDefaultSearchEngineChanged" object:0];
 
-  v13 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v13 postNotificationName:@"WBSTrialGroupManagerDidChangeGroupIdentifier" object:self];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 postNotificationName:@"WBSTrialGroupManagerDidChangeGroupIdentifier" object:self];
 
   if (self->_isGoogleEnabledSearchEngine || isGoogleEnabledSearchEngine)
   {
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 postNotificationName:@"DidChangeSearchProviderToFromGoogle" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 postNotificationName:@"DidChangeSearchProviderToFromGoogle" object:0];
   }
 }
 
-- (void)_suppressSearchSuggestionsSettingDidChange:(id)a3
+- (void)_suppressSearchSuggestionsSettingDidChange:(id)change
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"SuppressSearchSuggestions" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SuppressSearchSuggestions" object:0];
 }
 
 - (WBSSearchEnginePreferenceObserverDelegate)delegate
@@ -207,20 +207,20 @@ uint64_t __84__WBSSearchEnginePreferenceObserver_observeValueForKeyPath_ofObject
   v0 = [MEMORY[0x1E696AEC0] stringWithFormat:&stru_1F3064D08];
   v1 = MEMORY[0x1E696AEC0];
   v2 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/SafariShared/SafariShared/SafariCore/Preferences/WBSSearchEnginePreferenceObserver.m"];
-  v3 = [v2 lastPathComponent];
+  lastPathComponent = [v2 lastPathComponent];
   if ([v0 length])
   {
     v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@", %@", v0];
-    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "sharedSearchEngineObserver", "+[WBSSearchEnginePreferenceObserver sharedObserver]", v3, 60, v5];
+    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "sharedSearchEngineObserver", "+[WBSSearchEnginePreferenceObserver sharedObserver]", lastPathComponent, 60, v5];
   }
 
   else
   {
-    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "sharedSearchEngineObserver", "+[WBSSearchEnginePreferenceObserver sharedObserver]", v3, 60, &stru_1F3064D08];
+    v4 = [v1 stringWithFormat:@"ASSERTION FAILURE: %s in %s, %@:%d%@", "sharedSearchEngineObserver", "+[WBSSearchEnginePreferenceObserver sharedObserver]", lastPathComponent, 60, &stru_1F3064D08];
   }
 
-  v6 = [MEMORY[0x1E696AF00] callStackSymbols];
-  NSLog(&stru_1F3069F08.isa, v4, v6);
+  callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
+  NSLog(&stru_1F3069F08.isa, v4, callStackSymbols);
 
   abort();
 }

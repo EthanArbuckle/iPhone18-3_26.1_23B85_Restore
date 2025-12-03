@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (APSubjectMonitorSubscription)appProtectionSubjectMonitorSubscription;
 - (_ATXAppProtectionMonitor)init;
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4;
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription;
 - (void)dealloc;
 @end
 
@@ -27,8 +27,8 @@
   v2 = [(_ATXAppProtectionMonitor *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
-    v4 = [v3 addMonitor:v2 subjectMask:1];
+    subjectMonitorRegistry = [MEMORY[0x277CEBEB8] subjectMonitorRegistry];
+    v4 = [subjectMonitorRegistry addMonitor:v2 subjectMask:1];
     objc_storeWeak(&v2->_appProtectionSubjectMonitorSubscription, v4);
 
     v5 = __atxlog_handle_default();
@@ -52,20 +52,20 @@
   [(_ATXAppProtectionMonitor *)&v4 dealloc];
 }
 
-- (void)appProtectionSubjectsChanged:(id)a3 forSubscription:(id)a4
+- (void)appProtectionSubjectsChanged:(id)changed forSubscription:(id)subscription
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  subscriptionCopy = subscription;
   v8 = dispatch_get_global_queue(25, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73___ATXAppProtectionMonitor_appProtectionSubjectsChanged_forSubscription___block_invoke;
   block[3] = &unk_278597828;
-  v12 = v7;
-  v13 = self;
-  v14 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = subscriptionCopy;
+  selfCopy = self;
+  v14 = changedCopy;
+  v9 = changedCopy;
+  v10 = subscriptionCopy;
   dispatch_async(v8, block);
 }
 

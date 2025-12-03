@@ -10,28 +10,28 @@
 {
   v5 = a3;
   v35 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v7 = MEMORY[0x277CE6520];
-  v8 = [v5 commonMetadata];
+  commonMetadata = [v5 commonMetadata];
   v9 = *MEMORY[0x277CE5F98];
-  v10 = [v7 metadataItemsFromArray:v8 withKey:*MEMORY[0x277CE5F08] keySpace:*MEMORY[0x277CE5F98]];
-  v11 = [v10 firstObject];
-  v12 = [v11 stringValue];
+  v10 = [v7 metadataItemsFromArray:commonMetadata withKey:*MEMORY[0x277CE5F08] keySpace:*MEMORY[0x277CE5F98]];
+  firstObject = [v10 firstObject];
+  stringValue = [firstObject stringValue];
 
-  if (v12)
+  if (stringValue)
   {
-    [v6 setObject:v12 forKeyedSubscript:*MEMORY[0x277CD56E8]];
+    [dictionary setObject:stringValue forKeyedSubscript:*MEMORY[0x277CD56E8]];
   }
 
   v13 = MEMORY[0x277CE6520];
-  v14 = [v5 commonMetadata];
-  v15 = [v13 metadataItemsFromArray:v14 withKey:*MEMORY[0x277CE5F00] keySpace:v9];
-  v16 = [v15 firstObject];
-  v17 = [v16 stringValue];
+  commonMetadata2 = [v5 commonMetadata];
+  v15 = [v13 metadataItemsFromArray:commonMetadata2 withKey:*MEMORY[0x277CE5F00] keySpace:v9];
+  firstObject2 = [v15 firstObject];
+  stringValue2 = [firstObject2 stringValue];
 
-  if (v17)
+  if (stringValue2)
   {
-    [v6 setObject:v17 forKeyedSubscript:*MEMORY[0x277CD56D0]];
+    [dictionary setObject:stringValue2 forKeyedSubscript:*MEMORY[0x277CD56D0]];
   }
 
   v18 = [objc_opt_class() ql_propertyTitleFromAsset:v5];
@@ -45,16 +45,16 @@
     v19 = v35;
   }
 
-  [v6 setObject:v19 forKeyedSubscript:*MEMORY[0x277CD58B8]];
+  [dictionary setObject:v19 forKeyedSubscript:*MEMORY[0x277CD58B8]];
   v20 = MEMORY[0x277CE6520];
-  v21 = [v5 commonMetadata];
-  v22 = [v20 metadataItemsFromArray:v21 withKey:*MEMORY[0x277CE5F10] keySpace:v9];
-  v23 = [v22 firstObject];
-  v24 = [v23 dataValue];
+  commonMetadata3 = [v5 commonMetadata];
+  v22 = [v20 metadataItemsFromArray:commonMetadata3 withKey:*MEMORY[0x277CE5F10] keySpace:v9];
+  firstObject3 = [v22 firstObject];
+  dataValue = [firstObject3 dataValue];
 
-  if (v24 && [v24 length])
+  if (dataValue && [dataValue length])
   {
-    v25 = [MEMORY[0x277D755B8] imageWithData:v24];
+    v25 = [MEMORY[0x277D755B8] imageWithData:dataValue];
     v26 = objc_alloc(MEMORY[0x277CD5DE8]);
     [v25 size];
     v28 = v27;
@@ -68,11 +68,11 @@
     v32 = [v26 initWithBoundsSize:v36 requestHandler:{v28, v30}];
     if (v32)
     {
-      [v6 setObject:v32 forKeyedSubscript:*MEMORY[0x277CD56F8]];
+      [dictionary setObject:v32 forKeyedSubscript:*MEMORY[0x277CD56F8]];
     }
   }
 
-  v33 = [v6 copy];
+  v33 = [dictionary copy];
 
   return v33;
 }
@@ -82,7 +82,7 @@
   v4 = [MEMORY[0x277CD5DE0] playingInfoFromAsset:? withDefaultTitle:?];
   v5 = [v4 mutableCopy];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithDouble:a1];
+  v6 = [MEMORY[0x277CCABB0] numberWithDouble:self];
   [v5 setObject:v6 forKeyedSubscript:*MEMORY[0x277CD57E8]];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:a2];
@@ -96,12 +96,12 @@
 + (id)ql_propertyTitleFromAsset:()_QLUtilities
 {
   v3 = MEMORY[0x277CE6520];
-  v4 = [a3 commonMetadata];
-  v5 = [v3 metadataItemsFromArray:v4 withKey:*MEMORY[0x277CE5F28] keySpace:*MEMORY[0x277CE5F98]];
-  v6 = [v5 firstObject];
-  v7 = [v6 stringValue];
+  commonMetadata = [a3 commonMetadata];
+  v5 = [v3 metadataItemsFromArray:commonMetadata withKey:*MEMORY[0x277CE5F28] keySpace:*MEMORY[0x277CE5F98]];
+  firstObject = [v5 firstObject];
+  stringValue = [firstObject stringValue];
 
-  return v7;
+  return stringValue;
 }
 
 @end

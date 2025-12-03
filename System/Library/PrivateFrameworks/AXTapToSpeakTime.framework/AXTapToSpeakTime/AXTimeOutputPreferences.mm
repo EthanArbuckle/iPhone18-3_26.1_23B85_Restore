@@ -1,18 +1,18 @@
 @interface AXTimeOutputPreferences
 + (id)sharedInstance;
-- (BOOL)_npsBoolValueForPreferenceKey:(id)a3 defaultValue:(BOOL)a4;
+- (BOOL)_npsBoolValueForPreferenceKey:(id)key defaultValue:(BOOL)value;
 - (BOOL)_voiceOverIsInTripleClick;
 - (BOOL)tapToSpeakTimeEnabled;
 - (BOOL)voiceOverTapticChimesEnabled;
 - (BOOL)voiceOverTapticChimesUnity25Active;
 - (BOOL)voiceOverTapticTimeMode;
-- (id)_npsValueForPreferenceKey:(id)a3 expectedClass:(Class)a4;
+- (id)_npsValueForPreferenceKey:(id)key expectedClass:(Class)class;
 - (id)accessibilityDomainAccessor;
-- (id)localizedStringForKey:(id)a3;
-- (id)localizedStringForTapToSpeakTimeAvailability:(int64_t)a3;
-- (id)localizedStringForTapticChimesFrequencyEncoding:(int64_t)a3;
-- (id)localizedStringForTapticChimesSoundType:(int64_t)a3;
-- (id)localizedStringForTapticTimeEncoding:(int64_t)a3;
+- (id)localizedStringForKey:(id)key;
+- (id)localizedStringForTapToSpeakTimeAvailability:(int64_t)availability;
+- (id)localizedStringForTapticChimesFrequencyEncoding:(int64_t)encoding;
+- (id)localizedStringForTapticChimesSoundType:(int64_t)type;
+- (id)localizedStringForTapticTimeEncoding:(int64_t)encoding;
 - (id)tapticChimesLocalizedCurrentFrequency;
 - (id)tapticChimesLocalizedCurrentSounds;
 - (id)tapticChimesLocalizedDescription;
@@ -20,23 +20,23 @@
 - (id)tapticTimeLocalizedCurrentMode;
 - (id)tapticTimeLocalizedDescription;
 - (id)tapticTimeModeLocalizedDescription;
-- (id)unity25_localizedStringForKey:(id)a3;
-- (int64_t)_npsIntegerValueForPreferenceKey:(id)a3 defaultValue:(int64_t)a4;
+- (id)unity25_localizedStringForKey:(id)key;
+- (int64_t)_npsIntegerValueForPreferenceKey:(id)key defaultValue:(int64_t)value;
 - (int64_t)_voiceOverTapticChimesUnity25SoundType;
 - (int64_t)tapToSpeakTimeAvailability;
 - (int64_t)voiceOverTapticChimesFrequencyEncoding;
 - (int64_t)voiceOverTapticChimesSoundType;
 - (int64_t)voiceOverTapticChimesSoundTypeForCurrentFace;
 - (int64_t)voiceOverTapticTimeEncoding;
-- (void)_setNPSValue:(id)a3 preferenceKey:(id)a4;
-- (void)_setVoiceOverTapticChimesUnity25SoundType:(int64_t)a3;
-- (void)_syncWithStandardVoiceOverTapticChimesSoundType:(int64_t)a3;
-- (void)_syncWithUnity25VoiceOverTapticChimesSoundType:(int64_t)a3;
-- (void)setTapToSpeakTimeAvailability:(int64_t)a3;
-- (void)setVoiceOverTapticChimesFrequencyEncoding:(int64_t)a3;
-- (void)setVoiceOverTapticChimesSoundType:(int64_t)a3;
-- (void)setVoiceOverTapticChimesSoundTypeForCurrentFace:(int64_t)a3;
-- (void)setVoiceOverTapticTimeEncoding:(int64_t)a3;
+- (void)_setNPSValue:(id)value preferenceKey:(id)key;
+- (void)_setVoiceOverTapticChimesUnity25SoundType:(int64_t)type;
+- (void)_syncWithStandardVoiceOverTapticChimesSoundType:(int64_t)type;
+- (void)_syncWithUnity25VoiceOverTapticChimesSoundType:(int64_t)type;
+- (void)setTapToSpeakTimeAvailability:(int64_t)availability;
+- (void)setVoiceOverTapticChimesFrequencyEncoding:(int64_t)encoding;
+- (void)setVoiceOverTapticChimesSoundType:(int64_t)type;
+- (void)setVoiceOverTapticChimesSoundTypeForCurrentFace:(int64_t)face;
+- (void)setVoiceOverTapticTimeEncoding:(int64_t)encoding;
 @end
 
 @implementation AXTimeOutputPreferences
@@ -70,21 +70,21 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)_npsValueForPreferenceKey:(id)a3 expectedClass:(Class)a4
+- (id)_npsValueForPreferenceKey:(id)key expectedClass:(Class)class
 {
-  v6 = a3;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [(AXTimeOutputPreferences *)self accessibilityDomainAccessor];
-    v8 = [v7 synchronize];
-    v9 = [v7 objectForKey:v6];
+    accessibilityDomainAccessor = [(AXTimeOutputPreferences *)self accessibilityDomainAccessor];
+    synchronize = [accessibilityDomainAccessor synchronize];
+    v9 = [accessibilityDomainAccessor objectForKey:keyCopy];
     v10 = v9;
-    if (a4 && v9 && (objc_opt_isKindOfClass() & 1) == 0)
+    if (class && v9 && (objc_opt_isKindOfClass() & 1) == 0)
     {
       v12 = AXLogTapticTime();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
       {
-        [(AXTimeOutputPreferences *)v10 _npsValueForPreferenceKey:a4 expectedClass:v12];
+        [(AXTimeOutputPreferences *)v10 _npsValueForPreferenceKey:class expectedClass:v12];
       }
 
       v11 = 0;
@@ -98,8 +98,8 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
 
   else
   {
-    v7 = AXLogTapticTime();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
+    accessibilityDomainAccessor = AXLogTapticTime();
+    if (os_log_type_enabled(accessibilityDomainAccessor, OS_LOG_TYPE_FAULT))
     {
       [AXTimeOutputPreferences _npsValueForPreferenceKey:expectedClass:];
     }
@@ -110,31 +110,31 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   return v11;
 }
 
-- (void)_setNPSValue:(id)a3 preferenceKey:(id)a4
+- (void)_setNPSValue:(id)value preferenceKey:(id)key
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  valueCopy = value;
+  keyCopy = key;
+  if (keyCopy)
   {
-    v8 = [(AXTimeOutputPreferences *)self accessibilityDomainAccessor];
-    v9 = v8;
-    if (v8)
+    accessibilityDomainAccessor = [(AXTimeOutputPreferences *)self accessibilityDomainAccessor];
+    v9 = accessibilityDomainAccessor;
+    if (accessibilityDomainAccessor)
     {
-      v10 = [v8 domain];
-      v11 = [v10 length];
+      domain = [accessibilityDomainAccessor domain];
+      v11 = [domain length];
 
       if (v11)
       {
-        [v9 setObject:v6 forKey:v7];
-        v12 = [v9 synchronize];
+        [v9 setObject:valueCopy forKey:keyCopy];
+        synchronize = [v9 synchronize];
         v13 = objc_opt_new();
-        v14 = [v9 domain];
+        domain2 = [v9 domain];
         v15 = MEMORY[0x277CBEB98];
-        v19[0] = v7;
+        v19[0] = keyCopy;
         v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
         v17 = [v15 setWithArray:v16];
-        [v13 synchronizeNanoDomain:v14 keys:v17];
+        [v13 synchronizeNanoDomain:domain2 keys:v17];
       }
 
       else
@@ -169,28 +169,28 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_npsBoolValueForPreferenceKey:(id)a3 defaultValue:(BOOL)a4
+- (BOOL)_npsBoolValueForPreferenceKey:(id)key defaultValue:(BOOL)value
 {
-  v5 = [(AXTimeOutputPreferences *)self _npsValueForPreferenceKey:a3];
+  v5 = [(AXTimeOutputPreferences *)self _npsValueForPreferenceKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v5 BOOLValue];
+    value = [v5 BOOLValue];
   }
 
-  return a4;
+  return value;
 }
 
-- (int64_t)_npsIntegerValueForPreferenceKey:(id)a3 defaultValue:(int64_t)a4
+- (int64_t)_npsIntegerValueForPreferenceKey:(id)key defaultValue:(int64_t)value
 {
-  v5 = [(AXTimeOutputPreferences *)self _npsValueForPreferenceKey:a3];
+  v5 = [(AXTimeOutputPreferences *)self _npsValueForPreferenceKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = [v5 integerValue];
+    value = [v5 integerValue];
   }
 
-  return a4;
+  return value;
 }
 
 - (BOOL)_voiceOverIsInTripleClick
@@ -211,11 +211,11 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
 
 - (BOOL)tapToSpeakTimeEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_tapToSpeakTimeEnabled];
-  LOBYTE(v2) = [(AXTimeOutputPreferences *)v2 _npsBoolValueForPreferenceKey:v3 defaultValue:*MEMORY[0x277CE6850]];
+  LOBYTE(selfCopy) = [(AXTimeOutputPreferences *)selfCopy _npsBoolValueForPreferenceKey:v3 defaultValue:*MEMORY[0x277CE6850]];
 
-  return v2;
+  return selfCopy;
 }
 
 - (int64_t)tapToSpeakTimeAvailability
@@ -226,9 +226,9 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)setTapToSpeakTimeAvailability:(int64_t)a3
+- (void)setTapToSpeakTimeAvailability:(int64_t)availability
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:availability];
   v4 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_tapToSpeakTimeAvailability];
   [(AXTimeOutputPreferences *)self _setNPSValue:v5 preferenceKey:v4];
 }
@@ -252,20 +252,20 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)setVoiceOverTapticTimeEncoding:(int64_t)a3
+- (void)setVoiceOverTapticTimeEncoding:(int64_t)encoding
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:encoding];
   v4 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_voiceOverTapticTimeEncoding];
   [(AXTimeOutputPreferences *)self _setNPSValue:v5 preferenceKey:v4];
 }
 
 - (BOOL)voiceOverTapticChimesEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_voiceOverTapticChimesEnabled];
-  LOBYTE(v2) = [(AXTimeOutputPreferences *)v2 _npsBoolValueForPreferenceKey:v3 defaultValue:*MEMORY[0x277CE6858]];
+  LOBYTE(selfCopy) = [(AXTimeOutputPreferences *)selfCopy _npsBoolValueForPreferenceKey:v3 defaultValue:*MEMORY[0x277CE6858]];
 
-  return v2;
+  return selfCopy;
 }
 
 - (int64_t)voiceOverTapticChimesFrequencyEncoding
@@ -276,9 +276,9 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)setVoiceOverTapticChimesFrequencyEncoding:(int64_t)a3
+- (void)setVoiceOverTapticChimesFrequencyEncoding:(int64_t)encoding
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithInteger:encoding];
   v4 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_voiceOverTapticChimesFrequencyEncoding];
   [(AXTimeOutputPreferences *)self _setNPSValue:v5 preferenceKey:v4];
 }
@@ -300,21 +300,21 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   }
 }
 
-- (void)setVoiceOverTapticChimesSoundType:(int64_t)a3
+- (void)setVoiceOverTapticChimesSoundType:(int64_t)type
 {
   if ([(AXTimeOutputPreferences *)self voiceOverTapticChimesUnity25Active])
   {
 
-    [(AXTimeOutputPreferences *)self _setVoiceOverTapticChimesUnity25SoundType:a3];
+    [(AXTimeOutputPreferences *)self _setVoiceOverTapticChimesUnity25SoundType:type];
   }
 
   else
   {
-    v5 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v6 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_voiceOverTapticChimesSoundType];
     [(AXTimeOutputPreferences *)self _setNPSValue:v5 preferenceKey:v6];
 
-    [(AXTimeOutputPreferences *)self _syncWithUnity25VoiceOverTapticChimesSoundType:a3];
+    [(AXTimeOutputPreferences *)self _syncWithUnity25VoiceOverTapticChimesSoundType:type];
   }
 }
 
@@ -333,28 +333,28 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   }
 }
 
-- (void)setVoiceOverTapticChimesSoundTypeForCurrentFace:(int64_t)a3
+- (void)setVoiceOverTapticChimesSoundTypeForCurrentFace:(int64_t)face
 {
   if ([(AXTimeOutputPreferences *)self voiceOverTapticChimesUnity25Active])
   {
 
-    [(AXTimeOutputPreferences *)self _setVoiceOverTapticChimesUnity25SoundType:a3];
+    [(AXTimeOutputPreferences *)self _setVoiceOverTapticChimesUnity25SoundType:face];
   }
 
   else
   {
 
-    [(AXTimeOutputPreferences *)self setVoiceOverTapticChimesSoundType:a3];
+    [(AXTimeOutputPreferences *)self setVoiceOverTapticChimesSoundType:face];
   }
 }
 
 - (BOOL)voiceOverTapticChimesUnity25Active
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_voiceOverTapticChimesUnity25Active];
-  LOBYTE(v2) = [(AXTimeOutputPreferences *)v2 _npsBoolValueForPreferenceKey:v3 defaultValue:0];
+  LOBYTE(selfCopy) = [(AXTimeOutputPreferences *)selfCopy _npsBoolValueForPreferenceKey:v3 defaultValue:0];
 
-  return v2;
+  return selfCopy;
 }
 
 - (int64_t)_voiceOverTapticChimesUnity25SoundType
@@ -365,18 +365,18 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)_setVoiceOverTapticChimesUnity25SoundType:(int64_t)a3
+- (void)_setVoiceOverTapticChimesUnity25SoundType:(int64_t)type
 {
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:?];
   v6 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_voiceOverTapticChimesUnity25SoundType];
   [(AXTimeOutputPreferences *)self _setNPSValue:v5 preferenceKey:v6];
 
-  [(AXTimeOutputPreferences *)self _syncWithStandardVoiceOverTapticChimesSoundType:a3];
+  [(AXTimeOutputPreferences *)self _syncWithStandardVoiceOverTapticChimesSoundType:type];
 }
 
-- (void)_syncWithStandardVoiceOverTapticChimesSoundType:(int64_t)a3
+- (void)_syncWithStandardVoiceOverTapticChimesSoundType:(int64_t)type
 {
-  if (a3 != 3)
+  if (type != 3)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
     v5 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_voiceOverTapticChimesSoundType];
@@ -384,9 +384,9 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   }
 }
 
-- (void)_syncWithUnity25VoiceOverTapticChimesSoundType:(int64_t)a3
+- (void)_syncWithUnity25VoiceOverTapticChimesSoundType:(int64_t)type
 {
-  if (a3 != 3)
+  if (type != 3)
   {
     v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
     v5 = [(AXBaseSettings *)self preferenceKeyForSelector:sel_voiceOverTapticChimesUnity25SoundType];
@@ -405,16 +405,16 @@ id __41__AXTimeOutputPreferences_sharedInstance__block_invoke()
   return v3;
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
   v3 = localizedStringForKey__onceToken;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     [AXTimeOutputPreferences localizedStringForKey:];
   }
 
-  v5 = [localizedStringForKey___Bundle localizedStringForKey:v4 value:0 table:@"Localizable"];
+  v5 = [localizedStringForKey___Bundle localizedStringForKey:keyCopy value:0 table:@"Localizable"];
 
   return v5;
 }
@@ -426,16 +426,16 @@ uint64_t __49__AXTimeOutputPreferences_localizedStringForKey___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)unity25_localizedStringForKey:(id)a3
+- (id)unity25_localizedStringForKey:(id)key
 {
   v3 = unity25_localizedStringForKey__onceToken;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     [AXTimeOutputPreferences unity25_localizedStringForKey:];
   }
 
-  v5 = [unity25_localizedStringForKey___Bundle localizedStringForKey:v4 value:0 table:@"Localizable-unity25"];
+  v5 = [unity25_localizedStringForKey___Bundle localizedStringForKey:keyCopy value:0 table:@"Localizable-unity25"];
 
   return v5;
 }
@@ -450,11 +450,11 @@ uint64_t __57__AXTimeOutputPreferences_unity25_localizedStringForKey___block_inv
 - (id)tapticChimesLocalizedDescription
 {
   v3 = +[AXTimeOutputPreferences sharedInstance];
-  v4 = [v3 voiceOverTapticChimesFrequencyEncoding];
+  voiceOverTapticChimesFrequencyEncoding = [v3 voiceOverTapticChimesFrequencyEncoding];
 
-  if ((v4 - 1) <= 3)
+  if ((voiceOverTapticChimesFrequencyEncoding - 1) <= 3)
   {
-    v5 = [(AXTimeOutputPreferences *)self localizedStringForKey:off_278BDFD20[v4 - 1]];
+    v5 = [(AXTimeOutputPreferences *)self localizedStringForKey:off_278BDFD20[voiceOverTapticChimesFrequencyEncoding - 1]];
   }
 
   return v5;
@@ -476,33 +476,33 @@ uint64_t __57__AXTimeOutputPreferences_unity25_localizedStringForKey___block_inv
   return v4;
 }
 
-- (id)localizedStringForTapticChimesFrequencyEncoding:(int64_t)a3
+- (id)localizedStringForTapticChimesFrequencyEncoding:(int64_t)encoding
 {
-  if ((a3 - 1) <= 3)
+  if ((encoding - 1) <= 3)
   {
-    a2 = [(AXTimeOutputPreferences *)self localizedStringForKey:off_278BDFD40[a3 - 1], v3];
+    a2 = [(AXTimeOutputPreferences *)self localizedStringForKey:off_278BDFD40[encoding - 1], v3];
   }
 
   return a2;
 }
 
-- (id)localizedStringForTapticChimesSoundType:(int64_t)a3
+- (id)localizedStringForTapticChimesSoundType:(int64_t)type
 {
-  if (a3 == 3)
+  if (type == 3)
   {
     v4 = [(AXTimeOutputPreferences *)self unity25_localizedStringForKey:@"TAPTIC_CHIMES_SOUND_UNITY25_LABEL"];
   }
 
   else
   {
-    if (a3 == 2)
+    if (type == 2)
     {
       v3 = @"TAPTIC_CHIMES_SOUND_BIRDS_LABEL";
     }
 
     else
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_9;
       }
@@ -519,16 +519,16 @@ LABEL_9:
   return a2;
 }
 
-- (id)localizedStringForTapToSpeakTimeAvailability:(int64_t)a3
+- (id)localizedStringForTapToSpeakTimeAvailability:(int64_t)availability
 {
-  if (a3 == 1)
+  if (availability == 1)
   {
     v5 = @"TAP_TO_SPEAK_RESPECT_MUTE_LABEL";
   }
 
   else
   {
-    if (a3 != 2)
+    if (availability != 2)
     {
       goto LABEL_6;
     }
@@ -545,9 +545,9 @@ LABEL_6:
 - (id)tapticTimeLocalizedDescription
 {
   v3 = +[AXTimeOutputPreferences sharedInstance];
-  v4 = [v3 tapticTimeIsAvailable];
+  tapticTimeIsAvailable = [v3 tapticTimeIsAvailable];
 
-  if ((v4 & 1) == 0)
+  if ((tapticTimeIsAvailable & 1) == 0)
   {
     v14 = @"TAPTIC_TIME_UNAVAILABLE_DESCRIPTION";
 LABEL_12:
@@ -556,19 +556,19 @@ LABEL_12:
   }
 
   v5 = +[AXTimeOutputPreferences sharedInstance];
-  v6 = [v5 voiceOverTapticTimeMode];
+  voiceOverTapticTimeMode = [v5 voiceOverTapticTimeMode];
 
-  if ((v6 & 1) == 0)
+  if ((voiceOverTapticTimeMode & 1) == 0)
   {
     v14 = @"TAPTIC_TIME_DISABLED_DESCRIPTION";
     goto LABEL_12;
   }
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v8 = +[AXTimeOutputPreferences sharedInstance];
-  v9 = [v8 tapToSpeakTimeEnabled];
+  tapToSpeakTimeEnabled = [v8 tapToSpeakTimeEnabled];
 
-  if (v9)
+  if (tapToSpeakTimeEnabled)
   {
     v10 = @"TAPTIC_TIME_MUTE_DESCRIPTION";
   }
@@ -579,15 +579,15 @@ LABEL_12:
   }
 
   v11 = [(AXTimeOutputPreferences *)self localizedStringForKey:v10];
-  [v7 addObject:v11];
+  [array addObject:v11];
 
   if ([(AXTimeOutputPreferences *)self _voiceOverIsEnabled]|| [(AXTimeOutputPreferences *)self _voiceOverIsInTripleClick])
   {
     v12 = [(AXTimeOutputPreferences *)self localizedStringForKey:@"TAPTIC_TIME_VOICEOVER_DESCRIPTION"];
-    [v7 addObject:v12];
+    [array addObject:v12];
   }
 
-  v13 = [v7 componentsJoinedByString:@"\n\n"];
+  v13 = [array componentsJoinedByString:@"\n\n"];
 
 LABEL_13:
 
@@ -600,9 +600,9 @@ LABEL_13:
   if ([v3 tapticTimeIsAvailable])
   {
     v4 = +[AXTimeOutputPreferences sharedInstance];
-    v5 = [v4 voiceOverTapticTimeMode];
+    voiceOverTapticTimeMode = [v4 voiceOverTapticTimeMode];
 
-    if (v5)
+    if (voiceOverTapticTimeMode)
     {
       v6 = +[AXTimeOutputPreferences sharedInstance];
       v7 = -[AXTimeOutputPreferences localizedStringForTapticTimeEncoding:](self, "localizedStringForTapticTimeEncoding:", [v6 voiceOverTapticTimeEncoding]);
@@ -624,21 +624,21 @@ LABEL_6:
 - (id)tapticTimeModeLocalizedDescription
 {
   v3 = +[AXTimeOutputPreferences sharedInstance];
-  v4 = [v3 voiceOverTapticTimeEncoding];
+  voiceOverTapticTimeEncoding = [v3 voiceOverTapticTimeEncoding];
 
-  if ((v4 - 1) <= 2)
+  if ((voiceOverTapticTimeEncoding - 1) <= 2)
   {
-    v5 = [(AXTimeOutputPreferences *)self localizedStringForKey:off_278BDFD60[v4 - 1]];
+    v5 = [(AXTimeOutputPreferences *)self localizedStringForKey:off_278BDFD60[voiceOverTapticTimeEncoding - 1]];
   }
 
   return v5;
 }
 
-- (id)localizedStringForTapticTimeEncoding:(int64_t)a3
+- (id)localizedStringForTapticTimeEncoding:(int64_t)encoding
 {
-  if ((a3 - 1) <= 2)
+  if ((encoding - 1) <= 2)
   {
-    a2 = [(AXTimeOutputPreferences *)self localizedStringForKey:off_278BDFD78[a3 - 1], v3];
+    a2 = [(AXTimeOutputPreferences *)self localizedStringForKey:off_278BDFD78[encoding - 1], v3];
   }
 
   return a2;

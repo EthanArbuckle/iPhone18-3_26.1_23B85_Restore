@@ -1,5 +1,5 @@
 @interface SBIconListModelAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsVisibleByCompleteHitTest;
 - (id)automationElements;
 - (void)dealloc;
@@ -7,12 +7,12 @@
 
 @implementation SBIconListModelAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIconListModel" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconView" hasInstanceVariable:@"_iconLocation" withType:"NSString"];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"_axIconView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIconListModel" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceVariable:@"_iconLocation" withType:"NSString"];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"_axIconView" withFullSignature:{"@", 0}];
 }
 
 - (void)dealloc
@@ -107,8 +107,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v7 = [v6 _accessibilityParentView];
-          LOBYTE(v3) = [v7 _accessibilityIsVisibleByCompleteHitTest];
+          _accessibilityParentView = [v6 _accessibilityParentView];
+          LOBYTE(v3) = [_accessibilityParentView _accessibilityIsVisibleByCompleteHitTest];
 
           goto LABEL_11;
         }

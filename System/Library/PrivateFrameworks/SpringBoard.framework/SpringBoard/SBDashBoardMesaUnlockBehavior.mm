@@ -1,41 +1,41 @@
 @interface SBDashBoardMesaUnlockBehavior
 - (SBBiometricUnlockBehaviorDelegate)biometricUnlockBehaviorDelegate;
-- (SBDashBoardMesaUnlockBehavior)initWithMesaSettings:(id)a3 andUnlockTrigger:(id)a4;
-- (id)_failureSettingsForFailAttempt:(int64_t)a3;
-- (id)_feedbackForBioUnlockEventThatWasSpontaneous:(BOOL)a3;
-- (id)_feedbackForFailureSettings:(id)a3;
+- (SBDashBoardMesaUnlockBehavior)initWithMesaSettings:(id)settings andUnlockTrigger:(id)trigger;
+- (id)_failureSettingsForFailAttempt:(int64_t)attempt;
+- (id)_feedbackForBioUnlockEventThatWasSpontaneous:(BOOL)spontaneous;
+- (id)_feedbackForFailureSettings:(id)settings;
 - (id)_feedbackForPasscodeEvent;
 - (id)_homeHardwareButton;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)_handleMesaFailure;
-- (void)_setTrigger:(id)a3;
-- (void)handleBiometricEvent:(unint64_t)a3;
+- (void)_setTrigger:(id)trigger;
+- (void)handleBiometricEvent:(unint64_t)event;
 - (void)lockButtonDown;
 - (void)menuButtonDown;
 - (void)menuButtonUp;
-- (void)mesaUnlockTriggerFired:(id)a3;
+- (void)mesaUnlockTriggerFired:(id)fired;
 - (void)screenOff;
 - (void)screenOn;
-- (void)setAuthenticated:(BOOL)a3;
+- (void)setAuthenticated:(BOOL)authenticated;
 - (void)significantUserInteractionDidOccur;
 @end
 
 @implementation SBDashBoardMesaUnlockBehavior
 
-- (SBDashBoardMesaUnlockBehavior)initWithMesaSettings:(id)a3 andUnlockTrigger:(id)a4
+- (SBDashBoardMesaUnlockBehavior)initWithMesaSettings:(id)settings andUnlockTrigger:(id)trigger
 {
-  v7 = a3;
-  v8 = a4;
+  settingsCopy = settings;
+  triggerCopy = trigger;
   v12.receiver = self;
   v12.super_class = SBDashBoardMesaUnlockBehavior;
   v9 = [(SBDashBoardMesaUnlockBehavior *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mesaSettings, a3);
-    objc_storeStrong(&v10->_trigger, a4);
+    objc_storeStrong(&v9->_mesaSettings, settings);
+    objc_storeStrong(&v10->_trigger, trigger);
     [(SBMesaUnlockTrigger *)v10->_trigger setDelegate:v10];
   }
 
@@ -44,53 +44,53 @@
 
 - (void)menuButtonDown
 {
-  v2 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-  [v2 menuButtonDown];
+  _trigger = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+  [_trigger menuButtonDown];
 }
 
 - (void)menuButtonUp
 {
-  v2 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-  [v2 menuButtonUp];
+  _trigger = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+  [_trigger menuButtonUp];
 }
 
 - (void)screenOn
 {
-  v2 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-  [v2 screenOn];
+  _trigger = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+  [_trigger screenOn];
 }
 
 - (void)screenOff
 {
-  v3 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-  [v3 screenOff];
+  _trigger = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+  [_trigger screenOff];
 
   self->_failedMesaUnlockAttempts = 0;
 }
 
 - (void)significantUserInteractionDidOccur
 {
-  v2 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-  [v2 significantUserInteractionOccurred];
+  _trigger = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+  [_trigger significantUserInteractionOccurred];
 }
 
 - (void)lockButtonDown
 {
-  v2 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-  [v2 lockButtonDown];
+  _trigger = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+  [_trigger lockButtonDown];
 }
 
-- (void)_setTrigger:(id)a3
+- (void)_setTrigger:(id)trigger
 {
-  v5 = a3;
+  triggerCopy = trigger;
   trigger = self->_trigger;
-  if (trigger != v5)
+  if (trigger != triggerCopy)
   {
-    v7 = v5;
+    v7 = triggerCopy;
     [(SBMesaUnlockTrigger *)trigger setDelegate:0];
-    objc_storeStrong(&self->_trigger, a3);
+    objc_storeStrong(&self->_trigger, trigger);
     [(SBMesaUnlockTrigger *)self->_trigger setDelegate:self];
-    v5 = v7;
+    triggerCopy = v7;
   }
 }
 
@@ -99,21 +99,21 @@
   homeHardwareButton = self->_homeHardwareButton;
   if (homeHardwareButton)
   {
-    v3 = homeHardwareButton;
+    homeHardwareButton = homeHardwareButton;
   }
 
   else
   {
-    v3 = [SBApp homeHardwareButton];
+    homeHardwareButton = [SBApp homeHardwareButton];
   }
 
-  return v3;
+  return homeHardwareButton;
 }
 
-- (id)_feedbackForFailureSettings:(id)a3
+- (id)_feedbackForFailureSettings:(id)settings
 {
-  v3 = a3;
-  v4 = [[SBAuthenticationFeedback alloc] initForFailureWithFailureSettings:v3];
+  settingsCopy = settings;
+  v4 = [[SBAuthenticationFeedback alloc] initForFailureWithFailureSettings:settingsCopy];
 
   return v4;
 }
@@ -125,55 +125,55 @@
   return v2;
 }
 
-- (id)_feedbackForBioUnlockEventThatWasSpontaneous:(BOOL)a3
+- (id)_feedbackForBioUnlockEventThatWasSpontaneous:(BOOL)spontaneous
 {
-  if (a3)
+  if (spontaneous)
   {
-    v5 = 0;
+    initForSuccess = 0;
   }
 
   else
   {
-    v5 = [[SBAuthenticationFeedback alloc] initForSuccess];
+    initForSuccess = [[SBAuthenticationFeedback alloc] initForSuccess];
   }
 
-  return v5;
+  return initForSuccess;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBDashBoardMesaUnlockBehavior *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDashBoardMesaUnlockBehavior *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDashBoardMesaUnlockBehavior *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDashBoardMesaUnlockBehavior *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBDashBoardMesaUnlockBehavior *)self succinctDescriptionBuilder];
-  v5 = [v4 appendInteger:self->_failedMesaUnlockAttempts withName:@"failedMesaUnlockAttempts"];
-  v6 = [v4 appendObject:self->_trigger withName:@"trigger"];
+  succinctDescriptionBuilder = [(SBDashBoardMesaUnlockBehavior *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendInteger:self->_failedMesaUnlockAttempts withName:@"failedMesaUnlockAttempts"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_trigger withName:@"trigger"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
-- (void)handleBiometricEvent:(unint64_t)a3
+- (void)handleBiometricEvent:(unint64_t)event
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277D67C98] sharedInstance];
-  v6 = [v5 hasEnrolledIdentities];
+  mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+  hasEnrolledIdentities = [mEMORY[0x277D67C98] hasEnrolledIdentities];
 
   WeakRetained = SBLogLockScreenMesaUnlockBehaviors();
   v8 = os_log_type_enabled(WeakRetained, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (hasEnrolledIdentities)
   {
     if (v8)
     {
@@ -184,7 +184,7 @@
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_biometricUnlockBehaviorDelegate);
-    if (a3 <= 0x21 && ((1 << a3) & 0x2070009E0) != 0)
+    if (event <= 0x21 && ((1 << event) & 0x2070009E0) != 0)
     {
       if ([(CSLockScreenMesaSettings *)self->_mesaSettings passcodeRequiredEventsCountAsFailures])
       {
@@ -193,23 +193,23 @@
 
       else
       {
-        v11 = [(SBDashBoardMesaUnlockBehavior *)self _feedbackForPasscodeEvent];
+        _feedbackForPasscodeEvent = [(SBDashBoardMesaUnlockBehavior *)self _feedbackForPasscodeEvent];
         v12 = SBLogLockScreenMesaUnlockBehaviors();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v25 = v11;
+          v25 = _feedbackForPasscodeEvent;
           _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_INFO, "requesting feedback: %@", buf, 0xCu);
         }
 
-        [WeakRetained biometricUnlockBehavior:self requestsFeedback:v11];
+        [WeakRetained biometricUnlockBehavior:self requestsFeedback:_feedbackForPasscodeEvent];
       }
 
       if ([(CSLockScreenMesaSettings *)self->_mesaSettings flashRedOnPasscodeRequiredEvents])
       {
-        v10 = +[SBScreenFlash mainScreenFlasher];
-        v13 = [MEMORY[0x277D75348] redColor];
-        [v10 flashColor:v13 withCompletion:0];
+        _trigger = +[SBScreenFlash mainScreenFlasher];
+        redColor = [MEMORY[0x277D75348] redColor];
+        [_trigger flashColor:redColor withCompletion:0];
 
         goto LABEL_15;
       }
@@ -217,51 +217,51 @@
 
     else
     {
-      if (a3 - 9 <= 1)
+      if (event - 9 <= 1)
       {
         [(SBDashBoardMesaUnlockBehavior *)self _handleMesaFailure];
         goto LABEL_16;
       }
 
-      switch(a3)
+      switch(event)
       {
         case 0uLL:
-          v10 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-          [v10 fingerOff];
+          _trigger = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+          [_trigger fingerOff];
           goto LABEL_15;
         case 1uLL:
-          v10 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-          [v10 fingerOn];
+          _trigger = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+          [_trigger fingerOn];
           goto LABEL_15;
         case 4uLL:
           self->_failedMesaUnlockAttempts = 0;
-          v14 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-          v15 = [v14 bioUnlock];
+          _trigger2 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+          bioUnlock = [_trigger2 bioUnlock];
 
           v21[0] = MEMORY[0x277D85DD0];
           v21[1] = 3221225472;
           v21[2] = __54__SBDashBoardMesaUnlockBehavior_handleBiometricEvent___block_invoke;
           v21[3] = &unk_2783B1948;
           v21[4] = self;
-          v23 = v15;
+          v23 = bioUnlock;
           WeakRetained = WeakRetained;
           v22 = WeakRetained;
           v16 = MEMORY[0x223D6F7F0](v21);
           if ([(CSLockScreenMesaSettings *)self->_mesaSettings successFeedbackWaitsUntilButtonUp])
           {
-            v17 = [(SBDashBoardMesaUnlockBehavior *)self _homeHardwareButton];
+            _homeHardwareButton = [(SBDashBoardMesaUnlockBehavior *)self _homeHardwareButton];
             v18[0] = MEMORY[0x277D85DD0];
             v18[1] = 3221225472;
             v18[2] = __54__SBDashBoardMesaUnlockBehavior_handleBiometricEvent___block_invoke_10;
             v18[3] = &unk_2783AB500;
             v19 = v16;
-            v20 = v15;
-            [v17 performWhenMenuButtonIsUpUsingBlock:v18];
+            v20 = bioUnlock;
+            [_homeHardwareButton performWhenMenuButtonIsUpUsingBlock:v18];
           }
 
           else
           {
-            v16[2](v16, v15);
+            v16[2](v16, bioUnlock);
           }
 
           break;
@@ -271,9 +271,9 @@
 
   else if (v8)
   {
-    v10 = NSStringFromSBUIBiometricEvent();
+    _trigger = NSStringFromSBUIBiometricEvent();
     *buf = 138543362;
-    v25 = v10;
+    v25 = _trigger;
     _os_log_impl(&dword_21ED4E000, WeakRetained, OS_LOG_TYPE_INFO, "Unlock behavior received biometric event but has no enrolled identities. Bailing. Event: %{public}@", buf, 0xCu);
 LABEL_15:
   }
@@ -315,14 +315,14 @@ void __54__SBDashBoardMesaUnlockBehavior_handleBiometricEvent___block_invoke(uin
   [*(a1 + 40) biometricUnlockBehavior:*(a1 + 32) requestsUnlock:v2 withFeedback:v6];
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  v3 = a3;
-  v4 = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
-  [v4 setAuthenticated:v3];
+  authenticatedCopy = authenticated;
+  _trigger = [(SBDashBoardMesaUnlockBehavior *)self _trigger];
+  [_trigger setAuthenticated:authenticatedCopy];
 }
 
-- (void)mesaUnlockTriggerFired:(id)a3
+- (void)mesaUnlockTriggerFired:(id)fired
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = objc_alloc_init(SBLockScreenUnlockRequest);
@@ -343,8 +343,8 @@ void __54__SBDashBoardMesaUnlockBehavior_handleBiometricEvent___block_invoke(uin
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_INFO, "trigger fired - requesting unlock with intent: %d and feedback: %@", v10, 0x12u);
   }
 
-  v9 = [(SBDashBoardMesaUnlockBehavior *)self biometricUnlockBehaviorDelegate];
-  [v9 biometricUnlockBehavior:self requestsUnlock:v4 withFeedback:v7];
+  biometricUnlockBehaviorDelegate = [(SBDashBoardMesaUnlockBehavior *)self biometricUnlockBehaviorDelegate];
+  [biometricUnlockBehaviorDelegate biometricUnlockBehavior:self requestsUnlock:v4 withFeedback:v7];
 }
 
 - (void)_handleMesaFailure
@@ -358,17 +358,17 @@ void __54__SBDashBoardMesaUnlockBehavior_handleBiometricEvent___block_invoke(uin
   v10[3] = &unk_2783A92D8;
   v5 = v4;
   v11 = v5;
-  v12 = self;
+  selfCopy = self;
   v6 = MEMORY[0x223D6F7F0](v10);
   if ([v3 waitUntilButtonUp])
   {
-    v7 = [(SBDashBoardMesaUnlockBehavior *)self _homeHardwareButton];
+    _homeHardwareButton = [(SBDashBoardMesaUnlockBehavior *)self _homeHardwareButton];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__SBDashBoardMesaUnlockBehavior__handleMesaFailure__block_invoke_12;
     v8[3] = &unk_2783A9348;
     v9 = v6;
-    [v7 performWhenMenuButtonIsUpUsingBlock:v8];
+    [_homeHardwareButton performWhenMenuButtonIsUpUsingBlock:v8];
   }
 
   else
@@ -393,7 +393,7 @@ void __51__SBDashBoardMesaUnlockBehavior__handleMesaFailure__block_invoke(uint64
   [v4 biometricUnlockBehavior:*(a1 + 40) requestsFeedback:*(a1 + 32)];
 }
 
-- (id)_failureSettingsForFailAttempt:(int64_t)a3
+- (id)_failureSettingsForFailAttempt:(int64_t)attempt
 {
   failedMesaUnlockAttempts = self->_failedMesaUnlockAttempts;
   mesaSettings = self->_mesaSettings;
@@ -403,14 +403,14 @@ void __51__SBDashBoardMesaUnlockBehavior__handleMesaFailure__block_invoke(uint64
     {
       if (failedMesaUnlockAttempts == 4)
       {
-        v5 = [(CSLockScreenMesaSettings *)mesaSettings fourthFailureSettings];
+        fourthFailureSettings = [(CSLockScreenMesaSettings *)mesaSettings fourthFailureSettings];
         goto LABEL_11;
       }
 
       goto LABEL_8;
     }
 
-    v5 = [(CSLockScreenMesaSettings *)mesaSettings thirdFailureSettings];
+    fourthFailureSettings = [(CSLockScreenMesaSettings *)mesaSettings thirdFailureSettings];
   }
 
   else
@@ -419,21 +419,21 @@ void __51__SBDashBoardMesaUnlockBehavior__handleMesaFailure__block_invoke(uint64
     {
       if (failedMesaUnlockAttempts == 2)
       {
-        v5 = [(CSLockScreenMesaSettings *)mesaSettings secondFailureSettings];
+        fourthFailureSettings = [(CSLockScreenMesaSettings *)mesaSettings secondFailureSettings];
         goto LABEL_11;
       }
 
 LABEL_8:
-      v5 = [(CSLockScreenMesaSettings *)mesaSettings fifthFailureSettings];
+      fourthFailureSettings = [(CSLockScreenMesaSettings *)mesaSettings fifthFailureSettings];
       goto LABEL_11;
     }
 
-    v5 = [(CSLockScreenMesaSettings *)mesaSettings firstFailureSettings];
+    fourthFailureSettings = [(CSLockScreenMesaSettings *)mesaSettings firstFailureSettings];
   }
 
 LABEL_11:
 
-  return v5;
+  return fourthFailureSettings;
 }
 
 - (SBBiometricUnlockBehaviorDelegate)biometricUnlockBehaviorDelegate

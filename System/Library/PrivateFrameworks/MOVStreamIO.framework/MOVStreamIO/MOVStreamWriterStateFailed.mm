@@ -1,14 +1,14 @@
 @interface MOVStreamWriterStateFailed
-- (void)activateWithContext:(id)a3;
+- (void)activateWithContext:(id)context;
 @end
 
 @implementation MOVStreamWriterStateFailed
 
-- (void)activateWithContext:(id)a3
+- (void)activateWithContext:(id)context
 {
-  v3 = a3;
-  [v3 closeEncodersAfterFailure];
-  [v3 deleteMOVFile];
+  contextCopy = context;
+  [contextCopy closeEncodersAfterFailure];
+  [contextCopy deleteMOVFile];
 }
 
 @end

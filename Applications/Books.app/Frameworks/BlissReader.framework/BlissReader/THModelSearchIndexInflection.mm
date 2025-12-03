@@ -1,21 +1,21 @@
 @interface THModelSearchIndexInflection
-- (BOOL)isEqual:(id)a3;
-- (THModelSearchIndexInflection)initWithInflection:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (THModelSearchIndexInflection)initWithInflection:(id)inflection;
 - (id)description;
-- (void)addOccurrence:(id)a3 rank:(unint64_t)a4 paragraphIndex:(unint64_t)a5 pageNumber:(unint64_t)a6 displayPageNumber:(id)a7;
+- (void)addOccurrence:(id)occurrence rank:(unint64_t)rank paragraphIndex:(unint64_t)index pageNumber:(unint64_t)number displayPageNumber:(id)pageNumber;
 - (void)dealloc;
 @end
 
 @implementation THModelSearchIndexInflection
 
-- (THModelSearchIndexInflection)initWithInflection:(id)a3
+- (THModelSearchIndexInflection)initWithInflection:(id)inflection
 {
   v7.receiver = self;
   v7.super_class = THModelSearchIndexInflection;
   v4 = [(THModelSearchIndexInflection *)&v7 init];
   if (v4)
   {
-    v5 = [a3 copy];
+    v5 = [inflection copy];
     v4->mOccurrenceCount = 0;
     v4->mOccurrences = 0;
     v4->mInflection = v5;
@@ -47,20 +47,20 @@
   [(THModelSearchIndexInflection *)&v6 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
 
-  else if (a3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equal && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = -[NSString isEqualToString:](self->mInflection, "isEqualToString:", [a3 inflection]);
+    v5 = -[NSString isEqualToString:](self->mInflection, "isEqualToString:", [equal inflection]);
     if (v5)
     {
       mOccurrenceCount = self->mOccurrenceCount;
-      LOBYTE(v5) = mOccurrenceCount == [a3 occurrenceCount];
+      LOBYTE(v5) = mOccurrenceCount == [equal occurrenceCount];
     }
   }
 
@@ -74,13 +74,13 @@
 
 - (id)description
 {
-  v3 = [(THModelSearchIndexInflection *)self occurrenceCount];
-  v4 = [NSMutableArray arrayWithCapacity:v3];
-  v5 = [(THModelSearchIndexInflection *)self occurrences];
-  if (v3)
+  occurrenceCount = [(THModelSearchIndexInflection *)self occurrenceCount];
+  v4 = [NSMutableArray arrayWithCapacity:occurrenceCount];
+  occurrences = [(THModelSearchIndexInflection *)self occurrences];
+  if (occurrenceCount)
   {
-    p_var3 = &v5->var3;
-    v7 = v3;
+    p_var3 = &occurrences->var3;
+    v7 = occurrenceCount;
     do
     {
       v8 = *(p_var3 - 4);
@@ -96,14 +96,14 @@
     while (v7);
   }
 
-  return [NSString stringWithFormat:@"%@[%ld]%@", [(THModelSearchIndexInflection *)self inflection], v3, [(NSMutableArray *)v4 componentsJoinedByString:@", "]];
+  return [NSString stringWithFormat:@"%@[%ld]%@", [(THModelSearchIndexInflection *)self inflection], occurrenceCount, [(NSMutableArray *)v4 componentsJoinedByString:@", "]];
 }
 
-- (void)addOccurrence:(id)a3 rank:(unint64_t)a4 paragraphIndex:(unint64_t)a5 pageNumber:(unint64_t)a6 displayPageNumber:(id)a7
+- (void)addOccurrence:(id)occurrence rank:(unint64_t)rank paragraphIndex:(unint64_t)index pageNumber:(unint64_t)number displayPageNumber:(id)pageNumber
 {
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  numberCopy = number;
+  indexCopy = index;
+  rankCopy = rank;
   mOccurrenceCount = self->mOccurrenceCount;
   mOccurrences = self->mOccurrences;
   self->mOccurrenceCount = ++mOccurrenceCount;
@@ -116,11 +116,11 @@
   }
 
   v16 = &v15[self->mOccurrenceCount];
-  v16[-1].var0 = v10;
-  v16[-1].var1 = v9;
-  v16[-1].var4 = [a3 copy];
-  v16[-1].var2 = v8;
-  v16[-1].var3 = [a7 copy];
+  v16[-1].var0 = rankCopy;
+  v16[-1].var1 = indexCopy;
+  v16[-1].var4 = [occurrence copy];
+  v16[-1].var2 = numberCopy;
+  v16[-1].var3 = [pageNumber copy];
 }
 
 @end

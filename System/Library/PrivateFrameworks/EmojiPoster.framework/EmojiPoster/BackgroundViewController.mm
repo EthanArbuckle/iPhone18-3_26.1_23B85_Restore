@@ -1,5 +1,5 @@
 @interface BackgroundViewController
-- (_TtC11EmojiPoster24BackgroundViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11EmojiPoster24BackgroundViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -8,7 +8,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A01C870();
 }
 
@@ -19,11 +19,11 @@
   v2 = v14.receiver;
   [(BackgroundViewController *)&v14 viewDidLayoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC11EmojiPoster24BackgroundViewController_dimmingLayer];
-  v4 = [v2 view];
-  if (v4)
+  view = [v2 view];
+  if (view)
   {
-    v5 = v4;
-    [v4 bounds];
+    v5 = view;
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -38,9 +38,9 @@
   }
 }
 
-- (_TtC11EmojiPoster24BackgroundViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11EmojiPoster24BackgroundViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_24A021698();
     v7 = v6;
@@ -52,8 +52,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return BackgroundViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return BackgroundViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

@@ -1,31 +1,31 @@
 @interface FSBlockDeviceBufferResource
-+ (id)bufferFromResource:(id)a3;
-+ (id)dynamicCast:(id)a3;
-- (BOOL)asynchronousMetadataFlushWithError:(id *)a3;
-- (BOOL)delayedMetadataWriteFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
-- (BOOL)metadataClear:(id)a3 withDelayedWrites:(BOOL)a4 error:(id *)a5;
-- (BOOL)metadataFlushWithError:(id *)a3;
-- (BOOL)metadataPurge:(id)a3 error:(id *)a4;
-- (BOOL)metadataReadInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
-- (BOOL)metadataReadInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 readAheadExtents:(id *)a6 readAheadCount:(int64_t)a7 error:(id *)a8;
-- (BOOL)metadataWriteFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
-- (FSBlockDeviceBufferResource)initWithCoder:(id)a3;
-- (id)initBufferFromResource:(id)a3;
-- (unint64_t)readInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
-- (unint64_t)writeFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6;
-- (void)encodeWithCoder:(id)a3;
-- (void)readInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 completionHandler:(id)a6;
-- (void)writeFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 completionHandler:(id)a6;
++ (id)bufferFromResource:(id)resource;
++ (id)dynamicCast:(id)cast;
+- (BOOL)asynchronousMetadataFlushWithError:(id *)error;
+- (BOOL)delayedMetadataWriteFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
+- (BOOL)metadataClear:(id)clear withDelayedWrites:(BOOL)writes error:(id *)error;
+- (BOOL)metadataFlushWithError:(id *)error;
+- (BOOL)metadataPurge:(id)purge error:(id *)error;
+- (BOOL)metadataReadInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
+- (BOOL)metadataReadInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length readAheadExtents:(id *)extents readAheadCount:(int64_t)count error:(id *)error;
+- (BOOL)metadataWriteFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
+- (FSBlockDeviceBufferResource)initWithCoder:(id)coder;
+- (id)initBufferFromResource:(id)resource;
+- (unint64_t)readInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
+- (unint64_t)writeFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
+- (void)readInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length completionHandler:(id)handler;
+- (void)writeFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length completionHandler:(id)handler;
 @end
 
 @implementation FSBlockDeviceBufferResource
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = FSBlockDeviceBufferResource;
-  [(FSBlockDeviceResource *)&v6 encodeWithCoder:v4];
+  [(FSBlockDeviceResource *)&v6 encodeWithCoder:coderCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -33,15 +33,15 @@
     objc_exception_throw(v5);
   }
 
-  [v4 encodeObject:self->_buffer forKey:@"FSResource.buffer"];
-  [v4 encodeInteger:self->_headerLength forKey:@"FSResource.headerLength"];
-  [v4 encodeInteger:self->_footerLength forKey:@"FSResource.footerLength"];
-  [v4 encodeInteger:self->_size forKey:@"FSResource.size"];
+  [coderCopy encodeObject:self->_buffer forKey:@"FSResource.buffer"];
+  [coderCopy encodeInteger:self->_headerLength forKey:@"FSResource.headerLength"];
+  [coderCopy encodeInteger:self->_footerLength forKey:@"FSResource.footerLength"];
+  [coderCopy encodeInteger:self->_size forKey:@"FSResource.size"];
 }
 
-- (FSBlockDeviceBufferResource)initWithCoder:(id)a3
+- (FSBlockDeviceBufferResource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -51,27 +51,27 @@
 
   v10.receiver = self;
   v10.super_class = FSBlockDeviceBufferResource;
-  v5 = [(FSBlockDeviceResource *)&v10 initWithCoder:v4];
+  v5 = [(FSBlockDeviceResource *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"FSResource.buffer"];
+    v6 = [coderCopy decodeObjectForKey:@"FSResource.buffer"];
     buffer = v5->_buffer;
     v5->_buffer = v6;
 
-    v5->_headerLength = [v4 decodeIntegerForKey:@"FSResource.headerLength"];
-    v5->_footerLength = [v4 decodeIntegerForKey:@"FSResource.footerLength"];
-    v5->_size = [v4 decodeIntegerForKey:@"FSResource.size"];
+    v5->_headerLength = [coderCopy decodeIntegerForKey:@"FSResource.headerLength"];
+    v5->_footerLength = [coderCopy decodeIntegerForKey:@"FSResource.footerLength"];
+    v5->_size = [coderCopy decodeIntegerForKey:@"FSResource.size"];
   }
 
   return v5;
 }
 
-- (id)initBufferFromResource:(id)a3
+- (id)initBufferFromResource:(id)resource
 {
-  v4 = a3;
+  resourceCopy = resource;
   v30.receiver = self;
   v30.super_class = FSBlockDeviceBufferResource;
-  v5 = [(FSBlockDeviceResource *)&v30 initWithResource:v4];
+  v5 = [(FSBlockDeviceResource *)&v30 initWithResource:resourceCopy];
   v6 = v5;
   if (!v5)
   {
@@ -86,8 +86,8 @@
   buffer = v6->_buffer;
   v6->_buffer = v9;
 
-  v11 = [(FSBlockDeviceResource *)v6 blockSize];
-  v12 = [(FSBlockDeviceResource *)v6 blockCount]* v11;
+  blockSize = [(FSBlockDeviceResource *)v6 blockSize];
+  v12 = [(FSBlockDeviceResource *)v6 blockCount]* blockSize;
   v6->_size = v12;
   headerLength = v6->_headerLength;
   if (headerLength > v12 || v6->_footerLength + headerLength > v12)
@@ -96,10 +96,10 @@
     v6->_footerLength = 0;
   }
 
-  v14 = [(NSMutableData *)v6->_buffer mutableBytes];
+  mutableBytes = [(NSMutableData *)v6->_buffer mutableBytes];
   v15 = v6->_headerLength;
   v29 = 0;
-  v16 = [v4 readInto:v14 startingAt:0 length:v15 error:&v29];
+  v16 = [resourceCopy readInto:mutableBytes startingAt:0 length:v15 error:&v29];
   v17 = v29;
   if (!v17)
   {
@@ -114,12 +114,12 @@
       goto LABEL_9;
     }
 
-    v21 = [(NSMutableData *)v6->_buffer mutableBytes];
+    mutableBytes2 = [(NSMutableData *)v6->_buffer mutableBytes];
     v22 = v6->_headerLength;
     footerLength = v6->_footerLength;
     v24 = v6->_size - footerLength;
     v28 = 0;
-    v25 = [v4 readInto:v21 + v22 startingAt:v24 length:footerLength error:&v28];
+    v25 = [resourceCopy readInto:mutableBytes2 + v22 startingAt:v24 length:footerLength error:&v28];
     v26 = v28;
     if (v26)
     {
@@ -165,29 +165,29 @@ LABEL_20:
   return v20;
 }
 
-+ (id)bufferFromResource:(id)a3
++ (id)bufferFromResource:(id)resource
 {
-  v3 = a3;
-  v4 = [[FSBlockDeviceBufferResource alloc] initBufferFromResource:v3];
+  resourceCopy = resource;
+  v4 = [[FSBlockDeviceBufferResource alloc] initBufferFromResource:resourceCopy];
 
   return v4;
 }
 
-- (void)readInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 completionHandler:(id)a6
+- (void)readInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = [(FSBlockDeviceResource *)self fsExecQueue];
+  handlerCopy = handler;
+  fsExecQueue = [(FSBlockDeviceResource *)self fsExecQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__FSBlockDeviceBufferResource_readInto_startingAt_length_completionHandler___block_invoke;
   v13[3] = &unk_278FED470;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
+  intoCopy = into;
+  atCopy = at;
+  lengthCopy = length;
   v13[4] = self;
-  v14 = v10;
-  v12 = v10;
-  [v11 enqueue:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [fsExecQueue enqueue:v13];
 }
 
 void __76__FSBlockDeviceBufferResource_readInto_startingAt_length_completionHandler___block_invoke(void *a1)
@@ -202,192 +202,192 @@ void __76__FSBlockDeviceBufferResource_readInto_startingAt_length_completionHand
   (*(a1[5] + 16))();
 }
 
-- (unint64_t)readInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (unint64_t)readInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
-  v10 = self;
-  objc_sync_enter(v10);
-  if ([(FSBlockDeviceResource *)v10 terminated])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(FSBlockDeviceResource *)selfCopy terminated])
   {
     v11 = fs_errorForPOSIXError(5);
-    if (a6)
+    if (error)
     {
       v11 = v11;
-      *a6 = v11;
+      *error = v11;
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(selfCopy);
     return 0;
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
-  if (!a3)
+  if (!into)
   {
     v14 = 14;
 LABEL_13:
     v17 = fs_errorForPOSIXError(v14);
-    if (a6)
+    if (error)
     {
       v17 = v17;
-      *a6 = v17;
+      *error = v17;
     }
 
     return 0;
   }
 
-  headerLength = v10->_headerLength;
-  if (headerLength > a4)
+  headerLength = selfCopy->_headerLength;
+  if (headerLength > at)
   {
-    if (a5 + a4 <= headerLength)
+    if (length + at <= headerLength)
     {
-      v13 = [(NSMutableData *)v10->_buffer mutableBytes]+ a4;
+      v13 = [(NSMutableData *)selfCopy->_buffer mutableBytes]+ at;
       goto LABEL_19;
     }
 
     goto LABEL_12;
   }
 
-  size = v10->_size;
-  v16 = size - v10->_footerLength;
-  if (a4 <= v16 || a5 + a4 > size)
+  size = selfCopy->_size;
+  v16 = size - selfCopy->_footerLength;
+  if (at <= v16 || length + at > size)
   {
 LABEL_12:
     v14 = 22;
     goto LABEL_13;
   }
 
-  v13 = [(NSMutableData *)v10->_buffer mutableBytes]+ headerLength + a4 - v16;
+  v13 = [(NSMutableData *)selfCopy->_buffer mutableBytes]+ headerLength + at - v16;
 LABEL_19:
-  memcpy(a3, v13, a5);
-  if (a6)
+  memcpy(into, v13, length);
+  if (error)
   {
-    *a6 = 0;
+    *error = 0;
   }
 
-  return a5;
+  return length;
 }
 
-- (void)writeFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 completionHandler:(id)a6
+- (void)writeFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length completionHandler:(id)handler
 {
-  v7 = a6;
+  handlerCopy = handler;
   v8 = fs_errorForPOSIXError(45);
-  (*(a6 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 }
 
-- (unint64_t)writeFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (unint64_t)writeFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
   v7 = fs_errorForPOSIXError(45);
-  if (a6)
+  if (error)
   {
     v7 = v7;
-    *a6 = v7;
+    *error = v7;
   }
 
   return 0;
 }
 
-- (BOOL)metadataReadInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (BOOL)metadataReadInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
   v7 = fs_errorForPOSIXError(45);
-  if (a6)
+  if (error)
   {
     v7 = v7;
-    *a6 = v7;
+    *error = v7;
   }
 
   return 0;
 }
 
-- (BOOL)metadataReadInto:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 readAheadExtents:(id *)a6 readAheadCount:(int64_t)a7 error:(id *)a8
+- (BOOL)metadataReadInto:(void *)into startingAt:(int64_t)at length:(unint64_t)length readAheadExtents:(id *)extents readAheadCount:(int64_t)count error:(id *)error
 {
   v9 = fs_errorForPOSIXError(45);
-  if (a8)
+  if (error)
   {
     v9 = v9;
-    *a8 = v9;
+    *error = v9;
   }
 
   return 0;
 }
 
-- (BOOL)metadataWriteFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (BOOL)metadataWriteFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
   v7 = fs_errorForPOSIXError(45);
-  if (a6)
+  if (error)
   {
     v7 = v7;
-    *a6 = v7;
+    *error = v7;
   }
 
   return 0;
 }
 
-- (BOOL)delayedMetadataWriteFrom:(void *)a3 startingAt:(int64_t)a4 length:(unint64_t)a5 error:(id *)a6
+- (BOOL)delayedMetadataWriteFrom:(void *)from startingAt:(int64_t)at length:(unint64_t)length error:(id *)error
 {
   v7 = fs_errorForPOSIXError(45);
-  if (a6)
+  if (error)
   {
     v7 = v7;
-    *a6 = v7;
+    *error = v7;
   }
 
   return 0;
 }
 
-- (BOOL)asynchronousMetadataFlushWithError:(id *)a3
+- (BOOL)asynchronousMetadataFlushWithError:(id *)error
 {
   v4 = fs_errorForPOSIXError(45);
-  if (a3)
+  if (error)
   {
     v4 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   return 0;
 }
 
-- (BOOL)metadataFlushWithError:(id *)a3
+- (BOOL)metadataFlushWithError:(id *)error
 {
   v4 = fs_errorForPOSIXError(45);
-  if (a3)
+  if (error)
   {
     v4 = v4;
-    *a3 = v4;
+    *error = v4;
   }
 
   return 0;
 }
 
-- (BOOL)metadataClear:(id)a3 withDelayedWrites:(BOOL)a4 error:(id *)a5
+- (BOOL)metadataClear:(id)clear withDelayedWrites:(BOOL)writes error:(id *)error
 {
   v6 = fs_errorForPOSIXError(45);
-  if (a5)
+  if (error)
   {
     v6 = v6;
-    *a5 = v6;
+    *error = v6;
   }
 
   return 0;
 }
 
-- (BOOL)metadataPurge:(id)a3 error:(id *)a4
+- (BOOL)metadataPurge:(id)purge error:(id *)error
 {
   v5 = fs_errorForPOSIXError(45);
-  if (a4)
+  if (error)
   {
     v5 = v5;
-    *a4 = v5;
+    *error = v5;
   }
 
   return 0;
 }
 
-+ (id)dynamicCast:(id)a3
++ (id)dynamicCast:(id)cast
 {
-  v3 = a3;
+  castCopy = cast;
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = castCopy;
   }
 
   else

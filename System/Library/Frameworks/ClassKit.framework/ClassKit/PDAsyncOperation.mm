@@ -3,7 +3,7 @@
 - (void)execute;
 - (void)markAsFinished;
 - (void)prepare;
-- (void)setExecuting:(BOOL)a3;
+- (void)setExecuting:(BOOL)executing;
 - (void)start;
 @end
 
@@ -15,8 +15,8 @@
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v3 = [(PDAsyncOperation *)self dependencies];
-  v4 = [v3 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  dependencies = [(PDAsyncOperation *)self dependencies];
+  v4 = [dependencies countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (!v4)
   {
     goto LABEL_19;
@@ -30,7 +30,7 @@
     {
       if (*v24 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(dependencies);
       }
 
       v8 = *(*(&v23 + 1) + 8 * i);
@@ -43,13 +43,13 @@
         {
 LABEL_13:
           v11 = v8;
-          v12 = [v11 operationError];
-          v13 = [v12 cls_underlyingErrorWithDomain:CLSErrorCodeDomain];
+          operationError = [v11 operationError];
+          v13 = [operationError cls_underlyingErrorWithDomain:CLSErrorCodeDomain];
 
           if (v13)
           {
-            v14 = [v13 domain];
-            v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Aborting operation (dependency failed with error domain:'%@' code:%ld).", v14, [v13 code]);
+            domain = [v13 domain];
+            v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"Aborting operation (dependency failed with error domain:'%@' code:%ld).", domain, [v13 code]);
 
 LABEL_16:
             v16 = [NSError cls_createErrorWithCode:326 underlyingError:v13 description:v15];
@@ -91,7 +91,7 @@ LABEL_16:
       objc_autoreleasePoolPop(v9);
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v23 objects:v33 count:16];
+    v5 = [dependencies countByEnumeratingWithState:&v23 objects:v33 count:16];
     if (v5)
     {
       continue;
@@ -120,9 +120,9 @@ LABEL_19:
 
   else
   {
-    v4 = [(PDOperation *)self database];
+    database = [(PDOperation *)self database];
 
-    if (v4)
+    if (database)
     {
       [(PDAsyncOperation *)self prepare];
       if (![(PDOperation *)self isFinished])
@@ -149,11 +149,11 @@ LABEL_19:
   [(PDOperation *)&v3 markAsFinished];
 }
 
-- (void)setExecuting:(BOOL)a3
+- (void)setExecuting:(BOOL)executing
 {
-  if (self->_executing != a3)
+  if (self->_executing != executing)
   {
-    if (a3)
+    if (executing)
     {
       self->_didExecute = 1;
     }
@@ -175,11 +175,11 @@ LABEL_19:
 {
   v6.receiver = self;
   v6.super_class = PDAsyncOperation;
-  v3 = [(PDOperation *)&v6 statusReport];
+  statusReport = [(PDOperation *)&v6 statusReport];
   v4 = [NSNumber numberWithBool:[(PDAsyncOperation *)self didExecute]];
-  [v3 setObject:v4 forKeyedSubscript:@"didExecute"];
+  [statusReport setObject:v4 forKeyedSubscript:@"didExecute"];
 
-  return v3;
+  return statusReport;
 }
 
 @end

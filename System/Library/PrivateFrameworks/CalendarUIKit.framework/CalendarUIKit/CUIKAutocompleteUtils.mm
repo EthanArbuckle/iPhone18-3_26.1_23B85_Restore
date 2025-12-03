@@ -1,34 +1,34 @@
 @interface CUIKAutocompleteUtils
-+ (BOOL)shouldShowOtherTimeZoneForResult:(id)a3;
-+ (id)_copyAlarmsForAutocompleteFromResult:(id)a3;
-+ (id)foundInStringForResult:(id)a3 pasteboardEvent:(BOOL)a4 outGlyphNames:(id *)a5;
-+ (id)inviteeStringForResult:(id)a3;
-+ (id)locationStringForResult:(id)a3 outGlyphNames:(id *)a4;
-+ (id)timeStringForResult:(id)a3 usingTimeZone:(id)a4;
-+ (id)titleStringForResult:(id)a3;
-+ (void)applyTimeToAutocompleteResults:(id)a3 usingCurrentStartDate:(id)a4 currentEndDate:(id)a5 timeImplicitlySet:(BOOL)a6;
-+ (void)modifyCurrentEvent:(id)a3 withAutocompleteResult:(id)a4 isPasteboardResult:(BOOL)a5 calendarToPasteTo:(id)a6 outHasModifiedAttendeesFromSuggestion:(BOOL *)a7;
++ (BOOL)shouldShowOtherTimeZoneForResult:(id)result;
++ (id)_copyAlarmsForAutocompleteFromResult:(id)result;
++ (id)foundInStringForResult:(id)result pasteboardEvent:(BOOL)event outGlyphNames:(id *)names;
++ (id)inviteeStringForResult:(id)result;
++ (id)locationStringForResult:(id)result outGlyphNames:(id *)names;
++ (id)timeStringForResult:(id)result usingTimeZone:(id)zone;
++ (id)titleStringForResult:(id)result;
++ (void)applyTimeToAutocompleteResults:(id)results usingCurrentStartDate:(id)date currentEndDate:(id)endDate timeImplicitlySet:(BOOL)set;
++ (void)modifyCurrentEvent:(id)event withAutocompleteResult:(id)result isPasteboardResult:(BOOL)pasteboardResult calendarToPasteTo:(id)to outHasModifiedAttendeesFromSuggestion:(BOOL *)suggestion;
 @end
 
 @implementation CUIKAutocompleteUtils
 
-+ (void)applyTimeToAutocompleteResults:(id)a3 usingCurrentStartDate:(id)a4 currentEndDate:(id)a5 timeImplicitlySet:(BOOL)a6
++ (void)applyTimeToAutocompleteResults:(id)results usingCurrentStartDate:(id)date currentEndDate:(id)endDate timeImplicitlySet:(BOOL)set
 {
-  v6 = a6;
+  setCopy = set;
   v47 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 _now];
-  v14 = v13;
-  v36 = v12;
-  if (!v6)
+  resultsCopy = results;
+  dateCopy = date;
+  endDateCopy = endDate;
+  _now = [self _now];
+  v14 = _now;
+  v36 = endDateCopy;
+  if (!setCopy)
   {
     goto LABEL_5;
   }
 
-  v15 = [v13 dateByAddingTimeInterval:86400.0];
-  v16 = [v11 isAfterOrSameDayAsDate:v15 inCalendar:0];
+  v15 = [_now dateByAddingTimeInterval:86400.0];
+  v16 = [dateCopy isAfterOrSameDayAsDate:v15 inCalendar:0];
 
   if (v16)
   {
@@ -36,14 +36,14 @@
     goto LABEL_6;
   }
 
-  v18 = [v14 laterDate:v12];
+  v18 = [v14 laterDate:endDateCopy];
 
   if (v18 == v14)
   {
-    v34 = [MEMORY[0x1E695DF00] dateWithDatePartFromDate:v14 timePartFromDate:v11 inCalendar:0];
+    v34 = [MEMORY[0x1E695DF00] dateWithDatePartFromDate:v14 timePartFromDate:dateCopy inCalendar:0];
 
     v17 = 0;
-    v11 = v34;
+    dateCopy = v34;
   }
 
   else
@@ -57,9 +57,9 @@ LABEL_6:
   aBlock[1] = 3221225472;
   aBlock[2] = __111__CUIKAutocompleteUtils_applyTimeToAutocompleteResults_usingCurrentStartDate_currentEndDate_timeImplicitlySet___block_invoke;
   aBlock[3] = &unk_1E8399B10;
-  v44 = v6;
+  v44 = setCopy;
   v45 = v17;
-  v35 = v11;
+  v35 = dateCopy;
   v42 = v35;
   v19 = v14;
   v43 = v19;
@@ -68,7 +68,7 @@ LABEL_6:
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v21 = v10;
+  v21 = resultsCopy;
   v22 = [v21 countByEnumeratingWithState:&v37 objects:v46 count:16];
   if (v22)
   {
@@ -85,22 +85,22 @@ LABEL_6:
         }
 
         v26 = *(*(&v37 + 1) + 8 * v25);
-        v27 = [v26 suggestionInfo];
+        suggestionInfo = [v26 suggestionInfo];
 
-        if (!v27)
+        if (!suggestionInfo)
         {
-          v28 = [v26 pasteboardResults];
+          pasteboardResults = [v26 pasteboardResults];
 
-          if (v28)
+          if (pasteboardResults)
           {
-            v29 = [v26 pasteboardResults];
-            v30 = [v29 count];
+            pasteboardResults2 = [v26 pasteboardResults];
+            v30 = [pasteboardResults2 count];
 
             if (v30 == 1)
             {
-              v31 = [v26 pasteboardResults];
-              v32 = [v31 firstObject];
-              v20[2](v20, v32);
+              pasteboardResults3 = [v26 pasteboardResults];
+              firstObject = [pasteboardResults3 firstObject];
+              v20[2](v20, firstObject);
             }
           }
 
@@ -183,145 +183,145 @@ LABEL_10:
 LABEL_11:
 }
 
-+ (void)modifyCurrentEvent:(id)a3 withAutocompleteResult:(id)a4 isPasteboardResult:(BOOL)a5 calendarToPasteTo:(id)a6 outHasModifiedAttendeesFromSuggestion:(BOOL *)a7
++ (void)modifyCurrentEvent:(id)event withAutocompleteResult:(id)result isPasteboardResult:(BOOL)pasteboardResult calendarToPasteTo:(id)to outHasModifiedAttendeesFromSuggestion:(BOOL *)suggestion
 {
-  v9 = a5;
-  v44 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v9)
+  pasteboardResultCopy = pasteboardResult;
+  eventCopy = event;
+  resultCopy = result;
+  toCopy = to;
+  if (pasteboardResultCopy)
   {
-    v13 = [v11 pasteboardResults];
-    v14 = [v13 firstObject];
+    pasteboardResults = [resultCopy pasteboardResults];
+    firstObject = [pasteboardResults firstObject];
 
-    v11 = v14;
+    resultCopy = firstObject;
   }
 
-  if ([v44 changingAllDayPropertyIsAllowed])
+  if ([eventCopy changingAllDayPropertyIsAllowed])
   {
-    [v44 setAllDay:{objc_msgSend(v11, "allDay")}];
+    [eventCopy setAllDay:{objc_msgSend(resultCopy, "allDay")}];
   }
 
-  v15 = [v11 title];
-  [v44 setTitle:v15];
+  title = [resultCopy title];
+  [eventCopy setTitle:title];
 
-  v16 = [v11 startDate];
-  [v44 setStartDate:v16];
+  startDate = [resultCopy startDate];
+  [eventCopy setStartDate:startDate];
 
-  v17 = [v11 endDate];
-  [v44 setEndDateUnadjustedForLegacyClients:v17];
+  endDate = [resultCopy endDate];
+  [eventCopy setEndDateUnadjustedForLegacyClients:endDate];
 
-  v18 = [v11 timeZone];
-  [v44 setTimeZone:v18];
+  timeZone = [resultCopy timeZone];
+  [eventCopy setTimeZone:timeZone];
 
-  if (v9)
+  if (pasteboardResultCopy)
   {
-    [v11 travelTime];
-    [v44 setTravelTime:?];
-    v19 = [v11 travelStartLocation];
-    [v44 setTravelStartLocation:v19];
+    [resultCopy travelTime];
+    [eventCopy setTravelTime:?];
+    travelStartLocation = [resultCopy travelStartLocation];
+    [eventCopy setTravelStartLocation:travelStartLocation];
   }
 
-  v20 = [v11 displayLocationWithoutPrediction];
-  v21 = [v20 length];
+  displayLocationWithoutPrediction = [resultCopy displayLocationWithoutPrediction];
+  v21 = [displayLocationWithoutPrediction length];
 
   if (v21)
   {
-    v22 = [v11 displayLocationWithoutPrediction];
-    [v44 setLocation:v22];
+    displayLocationWithoutPrediction2 = [resultCopy displayLocationWithoutPrediction];
+    [eventCopy setLocation:displayLocationWithoutPrediction2];
   }
 
-  v23 = [v11 preferredLocation];
-  if (v23)
+  preferredLocation = [resultCopy preferredLocation];
+  if (preferredLocation)
   {
-    v24 = v23;
-    v25 = [v11 preferredLocation];
-    v26 = [v25 isPrediction];
+    v24 = preferredLocation;
+    preferredLocation2 = [resultCopy preferredLocation];
+    isPrediction = [preferredLocation2 isPrediction];
 
-    if ((v26 & 1) == 0)
+    if ((isPrediction & 1) == 0)
     {
-      v27 = [v11 preferredLocation];
-      v28 = [v27 duplicate];
-      [v44 setStructuredLocation:v28];
+      preferredLocation3 = [resultCopy preferredLocation];
+      duplicate = [preferredLocation3 duplicate];
+      [eventCopy setStructuredLocation:duplicate];
     }
   }
 
-  v29 = [objc_opt_class() _copyAlarmsForAutocompleteFromResult:v11];
-  [v44 setAlarms:v29];
+  v29 = [objc_opt_class() _copyAlarmsForAutocompleteFromResult:resultCopy];
+  [eventCopy setAlarms:v29];
 
-  v30 = [v11 URL];
+  v30 = [resultCopy URL];
 
   if (v30)
   {
-    v31 = [v11 URL];
-    [v44 setURL:v31];
+    v31 = [resultCopy URL];
+    [eventCopy setURL:v31];
   }
 
-  v32 = [v11 notes];
+  notes = [resultCopy notes];
 
-  if (v32)
+  if (notes)
   {
-    v33 = [v11 notes];
-    [v44 setNotes:v33];
+    notes2 = [resultCopy notes];
+    [eventCopy setNotes:notes2];
   }
 
-  if (v9)
+  if (pasteboardResultCopy)
   {
-    v34 = v12;
+    calendar = toCopy;
   }
 
   else
   {
-    v34 = [v11 calendar];
+    calendar = [resultCopy calendar];
   }
 
-  v35 = v34;
-  v36 = [v44 calendar];
-  v37 = [v44 canMoveToCalendar:v35 fromCalendar:v36 error:0];
+  v35 = calendar;
+  calendar2 = [eventCopy calendar];
+  v37 = [eventCopy canMoveToCalendar:v35 fromCalendar:calendar2 error:0];
 
   if (v37)
   {
-    [v44 setCalendar:v35];
+    [eventCopy setCalendar:v35];
   }
 
-  v38 = [v11 suggestionInfo];
+  suggestionInfo = [resultCopy suggestionInfo];
 
-  if (v38)
+  if (suggestionInfo)
   {
-    v39 = [v11 suggestionInfo];
-    v40 = [v39 duplicate];
-    [v44 setSuggestionInfo:v40];
+    suggestionInfo2 = [resultCopy suggestionInfo];
+    duplicate2 = [suggestionInfo2 duplicate];
+    [eventCopy setSuggestionInfo:duplicate2];
   }
 
-  v41 = [v11 attendees];
-  v42 = [v41 count];
+  attendees = [resultCopy attendees];
+  v42 = [attendees count];
 
   if (v42)
   {
-    v43 = [v11 attendees];
-    [v44 setAttendees:v43];
+    attendees2 = [resultCopy attendees];
+    [eventCopy setAttendees:attendees2];
 
-    if (a7)
+    if (suggestion)
     {
-      *a7 = 1;
+      *suggestion = 1;
     }
   }
 }
 
-+ (id)_copyAlarmsForAutocompleteFromResult:(id)a3
++ (id)_copyAlarmsForAutocompleteFromResult:(id)result
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resultCopy = result;
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
-  v5 = [v3 alarms];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  alarms = [resultCopy alarms];
+  v6 = [v4 initWithCapacity:{objc_msgSend(alarms, "count")}];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [v3 alarms];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  alarms2 = [resultCopy alarms];
+  v8 = [alarms2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -333,17 +333,17 @@ LABEL_11:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(alarms2);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) duplicate];
-        [v6 addObject:v12];
+        duplicate = [*(*(&v14 + 1) + 8 * v11) duplicate];
+        [v6 addObject:duplicate];
 
         ++v11;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [alarms2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);
@@ -352,67 +352,67 @@ LABEL_11:
   return v6;
 }
 
-+ (id)titleStringForResult:(id)a3
++ (id)titleStringForResult:(id)result
 {
-  v3 = a3;
-  v4 = [v3 suggestionInfo];
+  resultCopy = result;
+  suggestionInfo = [resultCopy suggestionInfo];
 
-  if (v4)
+  if (suggestionInfo)
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = CUIKBundle();
     v7 = [v6 localizedStringForKey:@"Maybe: %@" value:&stru_1F4AA8958 table:0];
-    v8 = [v3 title];
-    v9 = [v5 localizedStringWithFormat:v7, v8];
+    title = [resultCopy title];
+    title2 = [v5 localizedStringWithFormat:v7, title];
   }
 
   else
   {
-    v9 = [v3 title];
+    title2 = [resultCopy title];
   }
 
-  return v9;
+  return title2;
 }
 
-+ (id)locationStringForResult:(id)a3 outGlyphNames:(id *)a4
++ (id)locationStringForResult:(id)result outGlyphNames:(id *)names
 {
-  v5 = a3;
+  resultCopy = result;
   v6 = MEMORY[0x1E69669D0];
-  v7 = [v5 notes];
-  v8 = [v6 deserializeConference:v7];
-  v9 = [v8 conference];
+  notes = [resultCopy notes];
+  v8 = [v6 deserializeConference:notes];
+  conference = [v8 conference];
 
-  v10 = [v9 joinMethods];
-  v11 = [v10 firstObject];
-  v12 = [v11 URL];
+  joinMethods = [conference joinMethods];
+  firstObject = [joinMethods firstObject];
+  v12 = [firstObject URL];
 
-  v13 = [MEMORY[0x1E695DF70] array];
-  v14 = [v5 displayLocationWithoutPrediction];
+  array = [MEMORY[0x1E695DF70] array];
+  displayLocationWithoutPrediction = [resultCopy displayLocationWithoutPrediction];
 
-  if (v14)
+  if (displayLocationWithoutPrediction)
   {
-    v15 = [v5 displayLocationWithoutPrediction];
-    [v13 addObject:v15];
+    displayLocationWithoutPrediction2 = [resultCopy displayLocationWithoutPrediction];
+    [array addObject:displayLocationWithoutPrediction2];
   }
 
-  v16 = [v5 notes];
+  notes2 = [resultCopy notes];
 
-  if (v16)
+  if (notes2)
   {
-    v17 = [v5 notes];
-    [v13 addObject:v17];
+    notes3 = [resultCopy notes];
+    [array addObject:notes3];
   }
 
-  v18 = [v5 URL];
+  v18 = [resultCopy URL];
 
   if (v18)
   {
-    v19 = [v5 URL];
-    v20 = [v19 absoluteString];
-    [v13 addObject:v20];
+    v19 = [resultCopy URL];
+    absoluteString = [v19 absoluteString];
+    [array addObject:absoluteString];
   }
 
-  v21 = [MEMORY[0x1E6992F40] conferenceURLFromSources:v13];
+  v21 = [MEMORY[0x1E6992F40] conferenceURLFromSources:array];
   v22 = v21;
   if (v12)
   {
@@ -425,43 +425,43 @@ LABEL_11:
   }
 
   v24 = v23;
-  if (a4)
+  if (names)
   {
-    *a4 = [CUIKLocationDescriptionGenerator glyphNamesForConferenceURL:v24];
+    *names = [CUIKLocationDescriptionGenerator glyphNamesForConferenceURL:v24];
   }
 
-  v25 = [v5 displayLocation];
-  v26 = [v5 displayLocationWithoutPrediction];
-  v27 = [v5 preferredLocation];
-  v28 = [CUIKLocationDescriptionGenerator locationStringForLocation:v25 locationWithoutPrediction:v26 preferredLocation:v27 conferenceURL:v24 conferenceURLIsBroadcast:0];
+  displayLocation = [resultCopy displayLocation];
+  displayLocationWithoutPrediction3 = [resultCopy displayLocationWithoutPrediction];
+  preferredLocation = [resultCopy preferredLocation];
+  v28 = [CUIKLocationDescriptionGenerator locationStringForLocation:displayLocation locationWithoutPrediction:displayLocationWithoutPrediction3 preferredLocation:preferredLocation conferenceURL:v24 conferenceURLIsBroadcast:0];
 
   return v28;
 }
 
-+ (id)foundInStringForResult:(id)a3 pasteboardEvent:(BOOL)a4 outGlyphNames:(id *)a5
++ (id)foundInStringForResult:(id)result pasteboardEvent:(BOOL)event outGlyphNames:(id *)names
 {
-  v6 = a4;
+  eventCopy = event;
   v19[1] = *MEMORY[0x1E69E9840];
-  v7 = [a3 foundInBundleID];
-  if (v7)
+  foundInBundleID = [result foundInBundleID];
+  if (foundInBundleID)
   {
     v18 = 0;
-    v8 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:v7 allowPlaceholder:1 error:&v18];
+    v8 = [MEMORY[0x1E6963620] bundleRecordWithBundleIdentifier:foundInBundleID allowPlaceholder:1 error:&v18];
     v9 = v18;
     if (!v8)
     {
       v8 = +[CUIKLogSubsystem defaultCategory];
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        [CUIKAutocompleteUtils foundInStringForResult:v7 pasteboardEvent:v9 outGlyphNames:v8];
+        [CUIKAutocompleteUtils foundInStringForResult:foundInBundleID pasteboardEvent:v9 outGlyphNames:v8];
       }
 
       v12 = 0;
       goto LABEL_12;
     }
 
-    v10 = [v8 localizedName];
-    v11 = [CUIKSuggestionDescriptionGenerator brandedOriginDescriptionStringWithAppName:v10];
+    localizedName = [v8 localizedName];
+    v11 = [CUIKSuggestionDescriptionGenerator brandedOriginDescriptionStringWithAppName:localizedName];
     v12 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v11];
 
 LABEL_8:
@@ -470,23 +470,23 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v6)
+  if (eventCopy)
   {
     v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"doc.on.clipboard"];
     v8 = [MEMORY[0x1E69DB7F0] cuik_textAttachmentWithImage:v9];
-    v10 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v8];
+    localizedName = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v8];
     v13 = objc_alloc(MEMORY[0x1E696AAB0]);
     v14 = CUIKBundle();
     v15 = [v14 localizedStringForKey:@"%@ From clipboard" value:&stru_1F4AA8958 table:0];
     v16 = [v13 initWithString:v15];
 
-    if (a5)
+    if (names)
     {
       v19[0] = @"doc.on.clipboard";
-      *a5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
+      *names = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:1];
     }
 
-    v12 = [MEMORY[0x1E696AAB0] localizedAttributedStringWithFormat:v16, v10];
+    v12 = [MEMORY[0x1E696AAB0] localizedAttributedStringWithFormat:v16, localizedName];
 
     goto LABEL_8;
   }
@@ -497,53 +497,53 @@ LABEL_13:
   return v12;
 }
 
-+ (BOOL)shouldShowOtherTimeZoneForResult:(id)a3
++ (BOOL)shouldShowOtherTimeZoneForResult:(id)result
 {
-  v3 = a3;
-  if (([v3 allDay] & 1) != 0 || (objc_msgSend(v3, "timeZone"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
+  resultCopy = result;
+  if (([resultCopy allDay] & 1) != 0 || (objc_msgSend(resultCopy, "timeZone"), v4 = objc_claimAutoreleasedReturnValue(), v4, !v4))
   {
     v7 = 0;
   }
 
   else
   {
-    v5 = [v3 timeZone];
-    v6 = [v3 startDate];
-    if (CUIKShouldShowTimezoneClarification(v5, v6))
+    timeZone = [resultCopy timeZone];
+    startDate = [resultCopy startDate];
+    if (CUIKShouldShowTimezoneClarification(timeZone, startDate))
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [v3 timeZone];
-      v9 = [v3 endDate];
-      v7 = CUIKShouldShowTimezoneClarification(v8, v9);
+      timeZone2 = [resultCopy timeZone];
+      endDate = [resultCopy endDate];
+      v7 = CUIKShouldShowTimezoneClarification(timeZone2, endDate);
     }
   }
 
   return v7;
 }
 
-+ (id)timeStringForResult:(id)a3 usingTimeZone:(id)a4
++ (id)timeStringForResult:(id)result usingTimeZone:(id)zone
 {
-  v5 = a4 != 0;
-  v6 = a4;
-  v7 = a3;
+  v5 = zone != 0;
+  zoneCopy = zone;
+  resultCopy = result;
   v8 = +[CUIKDateDescriptionGenerator sharedGenerator];
-  v9 = [v7 startDate];
-  v10 = [v7 endDate];
-  v11 = [v7 allDay];
+  startDate = [resultCopy startDate];
+  endDate = [resultCopy endDate];
+  allDay = [resultCopy allDay];
 
-  v12 = [v8 dateStringForEventInvitationWithStartDate:v9 endDate:v10 timeZone:v6 allDay:v11 withFormat:1 showTimeZone:v5];
+  v12 = [v8 dateStringForEventInvitationWithStartDate:startDate endDate:endDate timeZone:zoneCopy allDay:allDay withFormat:1 showTimeZone:v5];
 
   return v12;
 }
 
-+ (id)inviteeStringForResult:(id)a3
++ (id)inviteeStringForResult:(id)result
 {
-  v3 = [a3 attendees];
-  v4 = [CUIKInviteeDescriptionGenerator inviteeStringForAttendees:v3];
+  attendees = [result attendees];
+  v4 = [CUIKInviteeDescriptionGenerator inviteeStringForAttendees:attendees];
 
   return v4;
 }

@@ -1,59 +1,59 @@
 @interface ENRegion
-+ (BOOL)validSubdivisionCode:(id)a3 forCountryCode:(id)a4;
-+ (ENRegion)regionWithCode:(id)a3;
-+ (id)regionFromServerResponseDictionary:(id)a3;
-- (BOOL)isCountryCodeEqualToRegion:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isSubdivisionCodeEqualToRegion:(id)a3;
-- (ENRegion)initWithCoder:(id)a3;
-- (ENRegion)initWithCountryCode:(id)a3 subdivisionCode:(id)a4;
++ (BOOL)validSubdivisionCode:(id)code forCountryCode:(id)countryCode;
++ (ENRegion)regionWithCode:(id)code;
++ (id)regionFromServerResponseDictionary:(id)dictionary;
+- (BOOL)isCountryCodeEqualToRegion:(id)region;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isSubdivisionCodeEqualToRegion:(id)region;
+- (ENRegion)initWithCoder:(id)coder;
+- (ENRegion)initWithCountryCode:(id)code subdivisionCode:(id)subdivisionCode;
 - (NSString)regionCode;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENRegion
 
-+ (ENRegion)regionWithCode:(id)a3
++ (ENRegion)regionWithCode:(id)code
 {
-  v3 = a3;
-  if ([v3 containsString:@"-"])
+  codeCopy = code;
+  if ([codeCopy containsString:@"-"])
   {
-    v4 = [v3 componentsSeparatedByString:@"-"];
-    v5 = [v4 firstObject];
-    v6 = [[ENRegion alloc] initWithCountryCode:v5 subdivisionCode:v3];
+    v4 = [codeCopy componentsSeparatedByString:@"-"];
+    firstObject = [v4 firstObject];
+    v6 = [[ENRegion alloc] initWithCountryCode:firstObject subdivisionCode:codeCopy];
 
-    v3 = v4;
+    codeCopy = v4;
   }
 
   else
   {
-    v6 = [[ENRegion alloc] initWithCountryCode:v3];
+    v6 = [[ENRegion alloc] initWithCountryCode:codeCopy];
   }
 
   return v6;
 }
 
-- (ENRegion)initWithCountryCode:(id)a3 subdivisionCode:(id)a4
+- (ENRegion)initWithCountryCode:(id)code subdivisionCode:(id)subdivisionCode
 {
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  subdivisionCodeCopy = subdivisionCode;
   v14.receiver = self;
   v14.super_class = ENRegion;
   v8 = [(ENRegion *)&v14 init];
   if (v8)
   {
-    v9 = [v6 uppercaseString];
+    uppercaseString = [codeCopy uppercaseString];
     countryCode = v8->_countryCode;
-    v8->_countryCode = v9;
+    v8->_countryCode = uppercaseString;
 
-    if (v7)
+    if (subdivisionCodeCopy)
     {
-      if ([ENRegion validSubdivisionCode:v7 forCountryCode:v6])
+      if ([ENRegion validSubdivisionCode:subdivisionCodeCopy forCountryCode:codeCopy])
       {
-        v11 = [v7 uppercaseString];
+        uppercaseString2 = [subdivisionCodeCopy uppercaseString];
         subdivisionCode = v8->_subdivisionCode;
-        v8->_subdivisionCode = v11;
+        v8->_subdivisionCode = uppercaseString2;
       }
 
       else if (gLogCategory_ENRegion <= 90 && (gLogCategory_ENRegion != -1 || _LogCategory_Initialize()))
@@ -66,39 +66,39 @@
   return v8;
 }
 
-- (ENRegion)initWithCoder:(id)a3
+- (ENRegion)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subdivisionCode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subdivisionCode"];
 
   v7 = [(ENRegion *)self initWithCountryCode:v5 subdivisionCode:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   countryCode = self->_countryCode;
-  v5 = a3;
-  [v5 encodeObject:countryCode forKey:@"countryCode"];
-  [v5 encodeObject:self->_subdivisionCode forKey:@"subdivisionCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:countryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:self->_subdivisionCode forKey:@"subdivisionCode"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   countryCode = self->_countryCode;
   subdivisionCode = self->_subdivisionCode;
 
   return [v4 initWithCountryCode:countryCode subdivisionCode:subdivisionCode];
 }
 
-- (BOOL)isCountryCodeEqualToRegion:(id)a3
+- (BOOL)isCountryCodeEqualToRegion:(id)region
 {
   countryCode = self->_countryCode;
-  v4 = [a3 countryCode];
+  countryCode = [region countryCode];
   v5 = countryCode;
-  v6 = v4;
+  v6 = countryCode;
   v7 = v6;
   if (v5 == v6)
   {
@@ -118,12 +118,12 @@
   return v8;
 }
 
-- (BOOL)isSubdivisionCodeEqualToRegion:(id)a3
+- (BOOL)isSubdivisionCodeEqualToRegion:(id)region
 {
   subdivisionCode = self->_subdivisionCode;
-  v4 = [a3 subdivisionCode];
+  subdivisionCode = [region subdivisionCode];
   v5 = subdivisionCode;
-  v6 = v4;
+  v6 = subdivisionCode;
   v7 = v6;
   if (v5 == v6)
   {
@@ -143,14 +143,14 @@
   return v8;
 }
 
-+ (BOOL)validSubdivisionCode:(id)a3 forCountryCode:(id)a4
++ (BOOL)validSubdivisionCode:(id)code forCountryCode:(id)countryCode
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && objc_msgSend(v5, "containsString:", @"-"))
+  codeCopy = code;
+  countryCodeCopy = countryCode;
+  if ([codeCopy length] && objc_msgSend(codeCopy, "containsString:", @"-"))
   {
-    v7 = [v5 substringToIndex:{objc_msgSend(v5, "rangeOfString:", @"-"}];
-    v8 = [v7 isEqualToString:v6];
+    v7 = [codeCopy substringToIndex:{objc_msgSend(codeCopy, "rangeOfString:", @"-"}];
+    v8 = [v7 isEqualToString:countryCodeCopy];
   }
 
   else
@@ -161,13 +161,13 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([(ENRegion *)self isCountryCodeEqualToRegion:v5])
     {
       v6 = [(ENRegion *)self isSubdivisionCodeEqualToRegion:v5];
@@ -203,9 +203,9 @@
   return v3;
 }
 
-+ (id)regionFromServerResponseDictionary:(id)a3
++ (id)regionFromServerResponseDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   CFStringGetTypeID();
   v4 = CFDictionaryGetTypedValue();
   CFStringGetTypeID();

@@ -1,83 +1,83 @@
 @interface AXMPhotoAssetData
-+ (id)_photoAuthorizationMessage:(int64_t)a3;
-+ (id)phAssetFromLocalIdentifier:(id)a3 photoLibraryURL:(id)a4;
-- (AXMPhotoAssetData)initWithCoder:(id)a3;
-- (AXMPhotoAssetData)initWithImageAssetLocalIdentifier:(id)a3 photoLibraryURL:(id)a4 allowsNetworkAccess:(BOOL)a5 needsImageData:(BOOL)a6;
++ (id)_photoAuthorizationMessage:(int64_t)message;
++ (id)phAssetFromLocalIdentifier:(id)identifier photoLibraryURL:(id)l;
+- (AXMPhotoAssetData)initWithCoder:(id)coder;
+- (AXMPhotoAssetData)initWithImageAssetLocalIdentifier:(id)identifier photoLibraryURL:(id)l allowsNetworkAccess:(BOOL)access needsImageData:(BOOL)data;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)updateAssetDetails;
 @end
 
 @implementation AXMPhotoAssetData
 
-- (AXMPhotoAssetData)initWithCoder:(id)a3
+- (AXMPhotoAssetData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = AXMPhotoAssetData;
   v5 = [(AXMPhotoAssetData *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyAssetURL];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyAssetURL];
     [(AXMPhotoAssetData *)v5 setAssetURL:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyCreationDate];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyCreationDate];
     [(AXMPhotoAssetData *)v5 setAssetCreationDate:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyUTI];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyUTI];
     [(AXMPhotoAssetData *)v5 setAssetUTI:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyLocalIdentifier];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyLocalIdentifier];
     [(AXMPhotoAssetData *)v5 setAssetLocalIdentifier:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyImageData];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyImageData];
     [(AXMPhotoAssetData *)v5 setAssetImageData:v10];
 
-    -[AXMPhotoAssetData setAssetOrientation:](v5, "setAssetOrientation:", [v4 decodeInt32ForKey:AXMPhotoAssetDataCodingKeyOrientation]);
-    -[AXMPhotoAssetData setAllowNetworkAccess:](v5, "setAllowNetworkAccess:", [v4 decodeBoolForKey:AXMPhotoAssetDataCodingKeyAllowNetworkAccess]);
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyPhotoLibraryURL];
+    -[AXMPhotoAssetData setAssetOrientation:](v5, "setAssetOrientation:", [coderCopy decodeInt32ForKey:AXMPhotoAssetDataCodingKeyOrientation]);
+    -[AXMPhotoAssetData setAllowNetworkAccess:](v5, "setAllowNetworkAccess:", [coderCopy decodeBoolForKey:AXMPhotoAssetDataCodingKeyAllowNetworkAccess]);
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:AXMPhotoAssetDataCodingKeyPhotoLibraryURL];
     [(AXMPhotoAssetData *)v5 setPhotoLibraryURL:v11];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(AXMPhotoAssetData *)self assetURL];
-  [v4 encodeObject:v5 forKey:AXMPhotoAssetDataCodingKeyAssetURL];
+  coderCopy = coder;
+  assetURL = [(AXMPhotoAssetData *)self assetURL];
+  [coderCopy encodeObject:assetURL forKey:AXMPhotoAssetDataCodingKeyAssetURL];
 
-  v6 = [(AXMPhotoAssetData *)self assetCreationDate];
-  [v4 encodeObject:v6 forKey:AXMPhotoAssetDataCodingKeyCreationDate];
+  assetCreationDate = [(AXMPhotoAssetData *)self assetCreationDate];
+  [coderCopy encodeObject:assetCreationDate forKey:AXMPhotoAssetDataCodingKeyCreationDate];
 
-  v7 = [(AXMPhotoAssetData *)self assetUTI];
-  [v4 encodeObject:v7 forKey:AXMPhotoAssetDataCodingKeyUTI];
+  assetUTI = [(AXMPhotoAssetData *)self assetUTI];
+  [coderCopy encodeObject:assetUTI forKey:AXMPhotoAssetDataCodingKeyUTI];
 
-  v8 = [(AXMPhotoAssetData *)self assetLocalIdentifier];
-  [v4 encodeObject:v8 forKey:AXMPhotoAssetDataCodingKeyLocalIdentifier];
+  assetLocalIdentifier = [(AXMPhotoAssetData *)self assetLocalIdentifier];
+  [coderCopy encodeObject:assetLocalIdentifier forKey:AXMPhotoAssetDataCodingKeyLocalIdentifier];
 
-  v9 = [(AXMPhotoAssetData *)self assetImageData];
-  [v4 encodeObject:v9 forKey:AXMPhotoAssetDataCodingKeyImageData];
+  assetImageData = [(AXMPhotoAssetData *)self assetImageData];
+  [coderCopy encodeObject:assetImageData forKey:AXMPhotoAssetDataCodingKeyImageData];
 
-  v10 = [(AXMPhotoAssetData *)self assetOrientation];
-  [v4 encodeInt32:v10 forKey:AXMPhotoAssetDataCodingKeyOrientation];
-  v11 = [(AXMPhotoAssetData *)self allowNetworkAccess];
-  [v4 encodeBool:v11 forKey:AXMPhotoAssetDataCodingKeyAllowNetworkAccess];
-  v12 = [(AXMPhotoAssetData *)self photoLibraryURL];
-  [v4 encodeObject:v12 forKey:AXMPhotoAssetDataCodingKeyPhotoLibraryURL];
+  assetOrientation = [(AXMPhotoAssetData *)self assetOrientation];
+  [coderCopy encodeInt32:assetOrientation forKey:AXMPhotoAssetDataCodingKeyOrientation];
+  allowNetworkAccess = [(AXMPhotoAssetData *)self allowNetworkAccess];
+  [coderCopy encodeBool:allowNetworkAccess forKey:AXMPhotoAssetDataCodingKeyAllowNetworkAccess];
+  photoLibraryURL = [(AXMPhotoAssetData *)self photoLibraryURL];
+  [coderCopy encodeObject:photoLibraryURL forKey:AXMPhotoAssetDataCodingKeyPhotoLibraryURL];
 }
 
-+ (id)_photoAuthorizationMessage:(int64_t)a3
++ (id)_photoAuthorizationMessage:(int64_t)message
 {
-  if (a3 > 2)
+  if (message > 2)
   {
     return 0;
   }
 
   else
   {
-    return *(&off_1E7A1D210 + a3);
+    return *(&off_1E7A1D210 + message);
   }
 }
 
@@ -85,32 +85,32 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(AXMPhotoAssetData *)self assetURL];
-  v6 = [(AXMPhotoAssetData *)self assetCreationDate];
-  v7 = [(AXMPhotoAssetData *)self assetLocalIdentifier];
-  v8 = [(AXMPhotoAssetData *)self assetImageData];
-  v9 = [(AXMPhotoAssetData *)self assetUTI];
-  v10 = [v3 stringWithFormat:@"<%@ %p URL=%@ creationDate=%@ localIdentifier=%@ data=%@ UTI=%@ orientation=%u>", v4, self, v5, v6, v7, v8, v9, -[AXMPhotoAssetData assetOrientation](self, "assetOrientation")];
+  assetURL = [(AXMPhotoAssetData *)self assetURL];
+  assetCreationDate = [(AXMPhotoAssetData *)self assetCreationDate];
+  assetLocalIdentifier = [(AXMPhotoAssetData *)self assetLocalIdentifier];
+  assetImageData = [(AXMPhotoAssetData *)self assetImageData];
+  assetUTI = [(AXMPhotoAssetData *)self assetUTI];
+  v10 = [v3 stringWithFormat:@"<%@ %p URL=%@ creationDate=%@ localIdentifier=%@ data=%@ UTI=%@ orientation=%u>", v4, self, assetURL, assetCreationDate, assetLocalIdentifier, assetImageData, assetUTI, -[AXMPhotoAssetData assetOrientation](self, "assetOrientation")];
 
   return v10;
 }
 
-- (AXMPhotoAssetData)initWithImageAssetLocalIdentifier:(id)a3 photoLibraryURL:(id)a4 allowsNetworkAccess:(BOOL)a5 needsImageData:(BOOL)a6
+- (AXMPhotoAssetData)initWithImageAssetLocalIdentifier:(id)identifier photoLibraryURL:(id)l allowsNetworkAccess:(BOOL)access needsImageData:(BOOL)data
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  dataCopy = data;
+  accessCopy = access;
+  identifierCopy = identifier;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = AXMPhotoAssetData;
   v12 = [(AXMPhotoAssetData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    [(AXMPhotoAssetData *)v12 setAssetLocalIdentifier:v10];
-    [(AXMPhotoAssetData *)v13 setAllowNetworkAccess:v7];
-    [(AXMPhotoAssetData *)v13 setPhotoLibraryURL:v11];
-    if (v6)
+    [(AXMPhotoAssetData *)v12 setAssetLocalIdentifier:identifierCopy];
+    [(AXMPhotoAssetData *)v13 setAllowNetworkAccess:accessCopy];
+    [(AXMPhotoAssetData *)v13 setPhotoLibraryURL:lCopy];
+    if (dataCopy)
     {
       [(AXMPhotoAssetData *)v13 updateAssetDetails];
     }
@@ -119,12 +119,12 @@
   return v13;
 }
 
-+ (id)phAssetFromLocalIdentifier:(id)a3 photoLibraryURL:(id)a4
++ (id)phAssetFromLocalIdentifier:(id)identifier photoLibraryURL:(id)l
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(getPHPhotoLibraryClass()) initWithPhotoLibraryURL:v6];
+  identifierCopy = identifier;
+  lCopy = l;
+  v7 = [objc_alloc(getPHPhotoLibraryClass()) initWithPhotoLibraryURL:lCopy];
   v21 = 0;
   v8 = [v7 openAndWaitWithUpgrade:0 error:&v21];
   v9 = v21;
@@ -142,8 +142,8 @@
   v12 = v11;
   if (v12 & v8)
   {
-    v13 = [v7 librarySpecificFetchOptions];
-    [v13 setIncludeGuestAssets:1];
+    librarySpecificFetchOptions = [v7 librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludeGuestAssets:1];
     if ([getPHPhotoLibraryClass() authorizationStatus] == 3)
     {
       v23 = 0;
@@ -164,13 +164,13 @@
 
       v15 = v14;
       _Block_object_dispose(&v23, 8);
-      v27[0] = v5;
+      v27[0] = identifierCopy;
       v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-      v17 = [v14 fetchAssetsWithLocalIdentifiers:v16 options:v13];
+      v17 = [v14 fetchAssetsWithLocalIdentifiers:v16 options:librarySpecificFetchOptions];
 
       if ([v17 count])
       {
-        v18 = [v17 firstObject];
+        firstObject = [v17 firstObject];
 LABEL_22:
 
         goto LABEL_23;
@@ -179,7 +179,7 @@ LABEL_22:
       v19 = AXMediaLogCommon();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
-        [AXMPhotoAssetData phAssetFromLocalIdentifier:v5 photoLibraryURL:v19];
+        [AXMPhotoAssetData phAssetFromLocalIdentifier:identifierCopy photoLibraryURL:v19];
       }
     }
 
@@ -192,42 +192,42 @@ LABEL_22:
       }
     }
 
-    v18 = 0;
+    firstObject = 0;
     goto LABEL_22;
   }
 
-  v13 = AXMediaLogCommon();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
+  librarySpecificFetchOptions = AXMediaLogCommon();
+  if (os_log_type_enabled(librarySpecificFetchOptions, OS_LOG_TYPE_FAULT))
   {
-    [(AXMPhotoAssetData *)v6 phAssetFromLocalIdentifier:v10 photoLibraryURL:v13];
+    [(AXMPhotoAssetData *)lCopy phAssetFromLocalIdentifier:v10 photoLibraryURL:librarySpecificFetchOptions];
   }
 
-  v18 = 0;
+  firstObject = 0;
 LABEL_23:
 
-  return v18;
+  return firstObject;
 }
 
 - (void)updateAssetDetails
 {
-  v3 = [(AXMPhotoAssetData *)self photoLibraryURL];
+  photoLibraryURL = [(AXMPhotoAssetData *)self photoLibraryURL];
 
-  if (v3)
+  if (photoLibraryURL)
   {
-    v4 = [(AXMPhotoAssetData *)self assetLocalIdentifier];
-    v5 = [(AXMPhotoAssetData *)self photoLibraryURL];
-    v6 = [AXMPhotoAssetData phAssetFromLocalIdentifier:v4 photoLibraryURL:v5];
+    assetLocalIdentifier = [(AXMPhotoAssetData *)self assetLocalIdentifier];
+    photoLibraryURL2 = [(AXMPhotoAssetData *)self photoLibraryURL];
+    v6 = [AXMPhotoAssetData phAssetFromLocalIdentifier:assetLocalIdentifier photoLibraryURL:photoLibraryURL2];
 
-    v7 = [v6 creationDate];
-    [(AXMPhotoAssetData *)self setAssetCreationDate:v7];
+    creationDate = [v6 creationDate];
+    [(AXMPhotoAssetData *)self setAssetCreationDate:creationDate];
 
-    v8 = [v6 mainFileURL];
-    [(AXMPhotoAssetData *)self setAssetURL:v8];
+    mainFileURL = [v6 mainFileURL];
+    [(AXMPhotoAssetData *)self setAssetURL:mainFileURL];
 
     getPHImageManagerClass();
     if (objc_opt_respondsToSelector())
     {
-      v9 = [getPHImageManagerClass() defaultManager];
+      defaultManager = [getPHImageManagerClass() defaultManager];
       v15 = 0;
       v16 = &v15;
       v17 = 0x2050000000;
@@ -256,7 +256,7 @@ LABEL_23:
       v13[2] = __39__AXMPhotoAssetData_updateAssetDetails__block_invoke;
       v13[3] = &unk_1E7A1D1D8;
       v13[4] = self;
-      [v9 requestImageDataAndOrientationForAsset:v6 options:v12 resultHandler:v13];
+      [defaultManager requestImageDataAndOrientationForAsset:v6 options:v12 resultHandler:v13];
     }
   }
 }

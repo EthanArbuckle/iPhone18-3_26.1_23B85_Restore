@@ -1,18 +1,18 @@
 @interface GTIntKeyedDictionary_replayer
-- (GTIntKeyedDictionary_replayer)initWithCapacity:(unint64_t)a3;
-- (GTIntKeyedDictionary_replayer)initWithCoder:(id)a3;
-- (GTIntKeyedDictionary_replayer)initWithIntKeyedDictionary:(id)a3;
+- (GTIntKeyedDictionary_replayer)initWithCapacity:(unint64_t)capacity;
+- (GTIntKeyedDictionary_replayer)initWithCoder:(id)coder;
+- (GTIntKeyedDictionary_replayer)initWithIntKeyedDictionary:(id)dictionary;
 - (id)allKeys;
-- (id)objectForIntKey:(int64_t)a3;
-- (id)objectForKey:(id)a3;
+- (id)objectForIntKey:(int64_t)key;
+- (id)objectForKey:(id)key;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block;
 - (void)removeAllObjects;
-- (void)removeObjectForIntKey:(int64_t)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setObject:(id)a3 forIntKey:(int64_t)a4;
-- (void)setObject:(id)a3 forKey:(id)a4;
+- (void)removeObjectForIntKey:(int64_t)key;
+- (void)removeObjectForKey:(id)key;
+- (void)setObject:(id)object forIntKey:(int64_t)key;
+- (void)setObject:(id)object forKey:(id)key;
 @end
 
 @implementation GTIntKeyedDictionary_replayer
@@ -29,28 +29,28 @@
   return v3;
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
-  v4 = [a3 longLongValue];
+  longLongValue = [key longLongValue];
 
-  [(GTIntKeyedDictionary_replayer *)self removeObjectForIntKey:v4];
+  [(GTIntKeyedDictionary_replayer *)self removeObjectForIntKey:longLongValue];
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = [a3 longLongValue];
+  longLongValue = [key longLongValue];
 
-  return [(GTIntKeyedDictionary_replayer *)self objectForIntKey:v4];
+  return [(GTIntKeyedDictionary_replayer *)self objectForIntKey:longLongValue];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
-  v6 = [a4 longLongValue];
+  longLongValue = [key longLongValue];
 
-  [(GTIntKeyedDictionary_replayer *)self setObject:a3 forIntKey:v6];
+  [(GTIntKeyedDictionary_replayer *)self setObject:object forIntKey:longLongValue];
 }
 
-- (void)enumerateKeysAndObjectsUsingBlock:(id)a3
+- (void)enumerateKeysAndObjectsUsingBlock:(id)block
 {
   v4 = self->_private;
   v6 = 0;
@@ -63,16 +63,16 @@
       break;
     }
 
-    (*(a3 + 2))(a3, v5[2], v5[3], &v6);
+    (*(block + 2))(block, v5[2], v5[3], &v6);
   }
 
   while (v6 != 1);
 }
 
-- (void)removeObjectForIntKey:(int64_t)a3
+- (void)removeObjectForIntKey:(int64_t)key
 {
   v3 = self->_private;
-  v4 = std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::find<unsigned long long>(v3, a3);
+  v4 = std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::find<unsigned long long>(v3, key);
   if (v4)
   {
     v5 = v4;
@@ -182,9 +182,9 @@ LABEL_21:
   }
 }
 
-- (id)objectForIntKey:(int64_t)a3
+- (id)objectForIntKey:(int64_t)key
 {
-  result = std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::find<unsigned long long>(self->_private, a3);
+  result = std::__hash_table<unsigned long long,std::hash<unsigned long long>,std::equal_to<unsigned long long>,std::allocator<unsigned long long>>::find<unsigned long long>(self->_private, key);
   if (result)
   {
     return *(result + 3);
@@ -193,9 +193,9 @@ LABEL_21:
   return result;
 }
 
-- (void)setObject:(id)a3 forIntKey:(int64_t)a4
+- (void)setObject:(id)object forIntKey:(int64_t)key
 {
-  if (a3)
+  if (object)
   {
     v5 = self->_private;
     v6 = v5[1];
@@ -208,19 +208,19 @@ LABEL_21:
     v7.i16[0] = vaddlv_u8(v7);
     if (v7.u32[0] > 1uLL)
     {
-      v8 = a4;
-      if (v6 <= a4)
+      keyCopy = key;
+      if (v6 <= key)
       {
-        v8 = a4 % v6;
+        keyCopy = key % v6;
       }
     }
 
     else
     {
-      v8 = (v6 - 1) & a4;
+      keyCopy = (v6 - 1) & key;
     }
 
-    v9 = *(*v5 + 8 * v8);
+    v9 = *(*v5 + 8 * keyCopy);
     if (!v9 || (v10 = *v9) == 0)
     {
 LABEL_22:
@@ -230,16 +230,16 @@ LABEL_22:
     while (1)
     {
       v11 = v10[1];
-      if (v11 == a4)
+      if (v11 == key)
       {
-        if (v10[2] == a4)
+        if (v10[2] == key)
         {
           v12 = v10[3];
-          if (v12 != a3)
+          if (v12 != object)
           {
             CFRelease(v12);
-            CFRetain(a3);
-            v10[3] = a3;
+            CFRetain(object);
+            v10[3] = object;
           }
 
           return;
@@ -261,7 +261,7 @@ LABEL_22:
           v11 &= v6 - 1;
         }
 
-        if (v11 != v8)
+        if (v11 != keyCopy)
         {
           goto LABEL_22;
         }
@@ -275,7 +275,7 @@ LABEL_22:
     }
   }
 
-  [(GTIntKeyedDictionary_replayer *)self removeObjectForIntKey:a4];
+  [(GTIntKeyedDictionary_replayer *)self removeObjectForIntKey:key];
 }
 
 - (void)removeAllObjects
@@ -338,25 +338,25 @@ LABEL_22:
   [(GTIntKeyedDictionary_replayer *)&v6 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     __assert_rtn("[GTIntKeyedDictionary encodeWithCoder:]", ", 0, "[coder allowsKeyedCoding]"");
   }
 
-  [a3 encodeObject:-[GTIntKeyedDictionary_replayer allKeys](self forKey:{"allKeys"), @"keys"}];
+  [coder encodeObject:-[GTIntKeyedDictionary_replayer allKeys](self forKey:{"allKeys"), @"keys"}];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__GTIntKeyedDictionary_encodeWithCoder___block_invoke;
   v5[3] = &unk_279657C80;
-  v5[4] = a3;
+  v5[4] = coder;
   [(GTIntKeyedDictionary_replayer *)self enumerateKeysAndObjectsUsingBlock:v5];
 }
 
-- (GTIntKeyedDictionary_replayer)initWithCoder:(id)a3
+- (GTIntKeyedDictionary_replayer)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v12 = "[coder allowsKeyedCoding]";
     goto LABEL_8;
@@ -364,7 +364,7 @@ LABEL_22:
 
   v5 = MEMORY[0x277CBEB98];
   v6 = objc_opt_class();
-  v7 = [a3 decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"keys"}];
+  v7 = [coder decodeObjectOfClasses:objc_msgSend(v5 forKey:{"setWithObjects:", v6, objc_opt_class(), 0), @"keys"}];
   if (!v7)
   {
     v12 = "keys";
@@ -381,7 +381,7 @@ LABEL_8:
     v13[1] = 3221225472;
     v13[2] = __38__GTIntKeyedDictionary_initWithCoder___block_invoke;
     v13[3] = &unk_279657CA8;
-    v13[4] = a3;
+    v13[4] = coder;
     v13[5] = v9;
     [v8 enumerateObjectsUsingBlock:v13];
   }
@@ -389,9 +389,9 @@ LABEL_8:
   return v10;
 }
 
-- (GTIntKeyedDictionary_replayer)initWithIntKeyedDictionary:(id)a3
+- (GTIntKeyedDictionary_replayer)initWithIntKeyedDictionary:(id)dictionary
 {
-  v4 = -[GTIntKeyedDictionary_replayer initWithCapacity:](self, "initWithCapacity:", [a3 count]);
+  v4 = -[GTIntKeyedDictionary_replayer initWithCapacity:](self, "initWithCapacity:", [dictionary count]);
   v5 = v4;
   if (v4)
   {
@@ -400,13 +400,13 @@ LABEL_8:
     v7[2] = __51__GTIntKeyedDictionary_initWithIntKeyedDictionary___block_invoke;
     v7[3] = &unk_279657C80;
     v7[4] = v4;
-    [a3 enumerateKeysAndObjectsUsingBlock:v7];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v7];
   }
 
   return v5;
 }
 
-- (GTIntKeyedDictionary_replayer)initWithCapacity:(unint64_t)a3
+- (GTIntKeyedDictionary_replayer)initWithCapacity:(unint64_t)capacity
 {
   v4.receiver = self;
   v4.super_class = GTIntKeyedDictionary_replayer;

@@ -77,13 +77,13 @@
     if (state >= 5)
     {
       v7 = v3;
-      v6 = [[NSString alloc] initWithFormat:@"Unknown(%u)", state];
+      state = [[NSString alloc] initWithFormat:@"Unknown(%u)", state];
       v3 = v7;
     }
 
     else
     {
-      v6 = *(&off_1001FA6B8 + self->super._state);
+      state = *(&off_1001FA6B8 + self->super._state);
     }
 
     localIfIndices = self->_localIfIndices;
@@ -93,12 +93,12 @@
   {
     identifier = 0;
     localIfIndices = 0;
-    v6 = @"Invalid";
+    state = @"Invalid";
   }
 
-  v9 = [v3 initWithFormat:@"NRDNSProxyServer[%llu, %@, idx:%@]", identifier, v6, localIfIndices];
+  localIfIndices = [v3 initWithFormat:@"NRDNSProxyServer[%llu, %@, idx:%@]", identifier, state, localIfIndices];
 
-  return v9;
+  return localIfIndices;
 }
 
 @end

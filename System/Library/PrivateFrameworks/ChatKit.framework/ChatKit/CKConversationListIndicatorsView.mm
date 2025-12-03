@@ -1,36 +1,36 @@
 @interface CKConversationListIndicatorsView
 - (BOOL)isHighlighted;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (double)verticalOffsetForCenteringVisibleIndicators;
 - (double)widthForVisibleIndicators;
 - (double)xOriginForCenteringWithTrailingSlot;
 - (int64_t)orientation;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setIsHighlighted:(BOOL)a3;
-- (void)setOrientation:(int64_t)a3;
+- (void)setIsHighlighted:(BOOL)highlighted;
+- (void)setOrientation:(int64_t)orientation;
 @end
 
 @implementation CKConversationListIndicatorsView
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
   v5 = OBJC_IVAR____TtC7ChatKit32CKConversationListIndicatorsView_orientation;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  if (v6 != a3)
+  *(&self->super.super.super.isa + v5) = orientation;
+  if (v6 != orientation)
   {
-    v7 = self;
-    [(CKConversationListIndicatorsView *)v7 setNeedsLayout];
-    [(CKConversationListIndicatorsView *)v7 layoutIfNeeded];
+    selfCopy = self;
+    [(CKConversationListIndicatorsView *)selfCopy setNeedsLayout];
+    [(CKConversationListIndicatorsView *)selfCopy layoutIfNeeded];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_190242A94();
   v5 = v4;
   v7 = v6;
@@ -62,7 +62,7 @@
 
 - (double)verticalOffsetForCenteringVisibleIndicators
 {
-  v2 = self;
+  selfCopy = self;
   sub_190242D00();
   v4 = v3;
 
@@ -90,7 +90,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190242FE8();
 }
 
@@ -108,10 +108,10 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setIsHighlighted:(BOOL)a3
+- (void)setIsHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  sub_190C0D600(a3);
+  selfCopy = self;
+  sub_190C0D600(highlighted);
 }
 
 - (CGSize)intrinsicContentSize
@@ -126,7 +126,7 @@
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit32CKConversationListIndicatorsView_indicatorConfiguration);
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7ChatKit32CKConversationListIndicatorsView_indicatorConfiguration) = 0;
-  v3 = self;
+  selfCopy = self;
   sub_19023EF88(v2, 0);
 }
 

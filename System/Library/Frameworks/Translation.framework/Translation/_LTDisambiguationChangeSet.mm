@@ -1,68 +1,68 @@
 @interface _LTDisambiguationChangeSet
-- (BOOL)hasAnyChangeOfType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addUserSelection:(id)a3;
+- (BOOL)hasAnyChangeOfType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addUserSelection:(id)selection;
 @end
 
 @implementation _LTDisambiguationChangeSet
 
-- (void)addUserSelection:(id)a3
+- (void)addUserSelection:(id)selection
 {
-  if (!a3)
+  if (!selection)
   {
     return;
   }
 
-  v9 = [a3 edge];
-  v4 = [v9 type];
-  if (v4 == 1)
+  edge = [selection edge];
+  type = [edge type];
+  if (type == 1)
   {
-    v5 = [v9 targetGender];
+    targetGender = [edge targetGender];
     v6 = 16;
     goto LABEL_7;
   }
 
-  if (!v4)
+  if (!type)
   {
-    v5 = [v9 menuDescription];
+    targetGender = [edge menuDescription];
     v6 = 8;
 LABEL_7:
-    v7 = [v5 copy];
+    v7 = [targetGender copy];
     v8 = *(&self->super.isa + v6);
     *(&self->super.isa + v6) = v7;
   }
 }
 
-- (BOOL)hasAnyChangeOfType:(unint64_t)a3
+- (BOOL)hasAnyChangeOfType:(unint64_t)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 != 1)
+    if (type != 1)
     {
       return 0;
     }
 
-    v3 = [(_LTDisambiguationChangeSet *)self genderNumber];
+    genderNumber = [(_LTDisambiguationChangeSet *)self genderNumber];
   }
 
   else
   {
-    v3 = [(_LTDisambiguationChangeSet *)self meaningDescription];
+    genderNumber = [(_LTDisambiguationChangeSet *)self meaningDescription];
   }
 
-  v4 = v3 != 0;
+  v4 = genderNumber != 0;
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_LTDisambiguationChangeSet allocWithZone:](_LTDisambiguationChangeSet init];
-  v6 = [(NSString *)self->_meaningDescription copyWithZone:a3];
+  v6 = [(NSString *)self->_meaningDescription copyWithZone:zone];
   meaningDescription = v5->_meaningDescription;
   v5->_meaningDescription = v6;
 
-  v8 = [(NSNumber *)self->_genderNumber copyWithZone:a3];
+  v8 = [(NSNumber *)self->_genderNumber copyWithZone:zone];
   genderNumber = v5->_genderNumber;
   v5->_genderNumber = v8;
 

@@ -1,10 +1,10 @@
 @interface CRSDashboardFocusableItem
 - (CGRect)frameInWindow;
 - (CRSDashboardFocusableItem)init;
-- (CRSDashboardFocusableItem)initWithCoder:(id)a3;
-- (CRSDashboardFocusableItem)initWithFocusableView:(id)a3;
+- (CRSDashboardFocusableItem)initWithCoder:(id)coder;
+- (CRSDashboardFocusableItem)initWithFocusableView:(id)view;
 - (CRSUIDashboardFocusableItemProviding)focusProvidingItem;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRSDashboardFocusableItem
@@ -16,43 +16,43 @@
   v2 = [(CRSDashboardFocusableItem *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v2->_identifier;
-    v2->_identifier = v3;
+    v2->_identifier = uUID;
   }
 
   return v2;
 }
 
-- (CRSDashboardFocusableItem)initWithFocusableView:(id)a3
+- (CRSDashboardFocusableItem)initWithFocusableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v10.receiver = self;
   v10.super_class = CRSDashboardFocusableItem;
   v5 = [(CRSDashboardFocusableItem *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_focusProvidingItem, v4);
-    v7 = [MEMORY[0x277CCAD78] UUID];
+    objc_storeWeak(&v5->_focusProvidingItem, viewCopy);
+    uUID = [MEMORY[0x277CCAD78] UUID];
     identifier = v6->_identifier;
-    v6->_identifier = v7;
+    v6->_identifier = uUID;
   }
 
   return v6;
 }
 
-- (CRSDashboardFocusableItem)initWithCoder:(id)a3
+- (CRSDashboardFocusableItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CRSDashboardFocusableItem;
   v5 = [(CRSDashboardFocusableItem *)&v9 init];
   if (v5)
   {
-    [v4 decodeCGRectForKey:@"frameInWindow"];
+    [coderCopy decodeCGRectForKey:@"frameInWindow"];
     [(CRSDashboardFocusableItem *)v5 setFrameInWindow:?];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"focusableIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"focusableIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
   }
@@ -60,14 +60,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CRSDashboardFocusableItem *)self identifier];
-  [v5 encodeObject:v4 forKey:@"focusableIdentifier"];
+  coderCopy = coder;
+  identifier = [(CRSDashboardFocusableItem *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"focusableIdentifier"];
 
   [(CRSDashboardFocusableItem *)self frameInWindow];
-  [v5 encodeCGRect:@"frameInWindow" forKey:?];
+  [coderCopy encodeCGRect:@"frameInWindow" forKey:?];
 }
 
 - (CGRect)frameInWindow

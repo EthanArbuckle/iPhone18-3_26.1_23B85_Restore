@@ -1,7 +1,7 @@
 @interface MKPlaceCompactCollectionSizeController
 - ($0AC6E346AE4835514AAA8AC86D8F4844)configuration;
-- (CGSize)sizeForCollectionWithMaxCollectionsWidth:(double)a3;
-- (MKPlaceCompactCollectionSizeController)initWithCollectionsConfiguration:(id)a3 usingTraitCollections:(id)a4 inContext:(int64_t)a5;
+- (CGSize)sizeForCollectionWithMaxCollectionsWidth:(double)width;
+- (MKPlaceCompactCollectionSizeController)initWithCollectionsConfiguration:(id)configuration usingTraitCollections:(id)collections inContext:(int64_t)context;
 - (UIEdgeInsets)sectionInset;
 @end
 
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (CGSize)sizeForCollectionWithMaxCollectionsWidth:(double)a3
+- (CGSize)sizeForCollectionWithMaxCollectionsWidth:(double)width
 {
   [(MKPlaceCompactCollectionSizeController *)self sectionInset];
   v7 = v6;
@@ -37,8 +37,8 @@
   v9 = v8;
   [(MKPlaceCompactCollectionSizeController *)self configuration];
   v11 = v10;
-  v12 = [(MKPlaceCompactCollectionSizeController *)self configuration];
-  if (v12 == 1)
+  configuration = [(MKPlaceCompactCollectionSizeController *)self configuration];
+  if (configuration == 1)
   {
     [(MKPlaceCompactCollectionSizeController *)self defaultCompactCollectionWidth];
     v3 = v16;
@@ -46,9 +46,9 @@
     v13 = v17;
   }
 
-  else if (!v12)
+  else if (!configuration)
   {
-    v14 = a3 - (v7 + v9) * (v11 - 1);
+    v14 = width - (v7 + v9) * (v11 - 1);
     [(MKPlaceCompactCollectionSizeController *)self configuration];
     v3 = v14 / v15;
     v13 = ceil(v14 * 0.3) + 10.0;
@@ -60,21 +60,21 @@
   return result;
 }
 
-- (MKPlaceCompactCollectionSizeController)initWithCollectionsConfiguration:(id)a3 usingTraitCollections:(id)a4 inContext:(int64_t)a5
+- (MKPlaceCompactCollectionSizeController)initWithCollectionsConfiguration:(id)configuration usingTraitCollections:(id)collections inContext:(int64_t)context
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = configuration.var1;
+  var0 = configuration.var0;
   v16.receiver = self;
   v16.super_class = MKPlaceCompactCollectionSizeController;
-  v8 = [(MKPlaceCompactCollectionSizeController *)&v16 init:a3.var0];
+  v8 = [(MKPlaceCompactCollectionSizeController *)&v16 init:configuration.var0];
   v9 = v8;
   if (v8)
   {
     v8->_configuration.displayStyle = var0;
     v8->_configuration.collectionsPerRow = var1;
     v10 = 6.0;
-    v8->_context = a5;
-    switch(a5)
+    v8->_context = context;
+    switch(context)
     {
       case 0:
         v11 = 16.0;

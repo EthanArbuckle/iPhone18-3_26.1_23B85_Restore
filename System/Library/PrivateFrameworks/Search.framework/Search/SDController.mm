@@ -3,35 +3,35 @@
 + (id)getMeContactIdentifier;
 + (id)getMeEmailAddresses;
 + (void)deactivated;
-+ (void)handleMemoryPressureWithStatus:(unint64_t)a3;
++ (void)handleMemoryPressureWithStatus:(unint64_t)status;
 + (void)initialize;
 + (void)readyForQueries;
-+ (void)setDatastores:(id)a3;
-- (BOOL)_valueFromArray:(id)a3 notInSet:(id)a4;
-- (BOOL)blocklistCheck:(id)a3 withOptions:(int64_t)a4;
++ (void)setDatastores:(id)datastores;
+- (BOOL)_valueFromArray:(id)array notInSet:(id)set;
+- (BOOL)blocklistCheck:(id)check withOptions:(int64_t)options;
 - (BOOL)deviceCXUnlocked;
 - (BOOL)deviceFirstUnlockedInMKB;
 - (BOOL)deviceFirstUnlockedInSB;
 - (BOOL)deviceUnlocked;
-- (BOOL)disableABCReporting:(id)a3;
+- (BOOL)disableABCReporting:(id)reporting;
 - (BOOL)unlockedSinceBoot;
 - (SDController)init;
 - (id)extraTTRInfo;
 - (id)indexDirectory;
-- (id)taskForTopHitQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7;
-- (void)didReceiveMemoryPressureNotification:(unint64_t)a3;
-- (void)didReceiveSignal:(unint64_t)a3;
+- (id)taskForTopHitQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler;
+- (void)didReceiveMemoryPressureNotification:(unint64_t)notification;
+- (void)didReceiveSignal:(unint64_t)signal;
 - (void)dumpTTRDebugFiles;
 - (void)firstUnlockSBCompleted;
-- (void)indexAvailableForProtectionClass:(id)a3 newIndex:(BOOL)a4;
-- (void)issueLoadTrial:(id)a3;
+- (void)indexAvailableForProtectionClass:(id)class newIndex:(BOOL)index;
+- (void)issueLoadTrial:(id)trial;
 - (void)locked;
 - (void)lockedCx;
 - (void)locking;
 - (void)lockingCx;
 - (void)migrationCompleted;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)recordEngagementForBundleID:(id)a3 uniqueIdentifier:(id)a4 protectionClass:(id)a5 userQuery:(id)a6 date:(id)a7;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)recordEngagementForBundleID:(id)d uniqueIdentifier:(id)identifier protectionClass:(id)class userQuery:(id)query date:(id)date;
 - (void)registerMessageHandlers;
 - (void)startIndexer;
 - (void)unlockAppUninstallMonitor;
@@ -45,9 +45,9 @@
 - (BOOL)deviceUnlocked
 {
   v2 = +[SDLockHandler sharedLockHandler];
-  v3 = [v2 unlocked];
+  unlocked = [v2 unlocked];
 
-  return v3;
+  return unlocked;
 }
 
 - (id)indexDirectory
@@ -114,11 +114,11 @@
   v4 = dispatch_get_global_queue(17, 2uLL);
   tracing_dispatch_async();
 
-  v5 = [(SDController *)self indexer];
-  [v5 unlock];
+  indexer = [(SDController *)self indexer];
+  [indexer unlock];
 
-  v6 = [(SDController *)self indexer];
-  [v6 moveMailToClassC];
+  indexer2 = [(SDController *)self indexer];
+  [indexer2 moveMailToClassC];
 }
 
 - (void)unlockAppUninstallMonitor
@@ -142,9 +142,9 @@
 - (BOOL)deviceFirstUnlockedInSB
 {
   v2 = +[SDLockHandler sharedLockHandler];
-  v3 = [v2 firstUnlockedInSB];
+  firstUnlockedInSB = [v2 firstUnlockedInSB];
 
-  return v3;
+  return firstUnlockedInSB;
 }
 
 - (void)migrationCompleted
@@ -156,8 +156,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "### SDController migrationCompleted", &v6, 2u);
   }
 
-  v4 = [(SDController *)self indexer];
-  [v4 resume];
+  indexer = [(SDController *)self indexer];
+  [indexer resume];
 
   v5 = SPLogForSPLogCategoryIndex();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -196,8 +196,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "### SDController locking", v5, 2u);
   }
 
-  v4 = [(SDController *)self indexer];
-  [v4 locking];
+  indexer = [(SDController *)self indexer];
+  [indexer locking];
 }
 
 - (void)locked
@@ -209,8 +209,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "### SDController locked", v5, 2u);
   }
 
-  v4 = [(SDController *)self indexer];
-  [v4 locked];
+  indexer = [(SDController *)self indexer];
+  [indexer locked];
 }
 
 - (void)lockingCx
@@ -222,8 +222,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "### SDController locking Cx", v5, 2u);
   }
 
-  v4 = [(SDController *)self indexer];
-  [v4 lockingCx];
+  indexer = [(SDController *)self indexer];
+  [indexer lockingCx];
 }
 
 - (void)lockedCx
@@ -235,19 +235,19 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "### SDController locked Cx", v5, 2u);
   }
 
-  v4 = [(SDController *)self indexer];
-  [v4 lockedCx];
+  indexer = [(SDController *)self indexer];
+  [indexer lockedCx];
 }
 
-- (void)didReceiveSignal:(unint64_t)a3
+- (void)didReceiveSignal:(unint64_t)signal
 {
-  if (a3 == 1)
+  if (signal == 1)
   {
 
     +[SPCoreSpotlightIndexer sync];
   }
 
-  else if (a3 == 15)
+  else if (signal == 15)
   {
     +[SDAppUninstallMonitor shutdown];
     [(SPXPCServer *)self->_xpcServer shutdown];
@@ -257,7 +257,7 @@
   }
 }
 
-+ (void)handleMemoryPressureWithStatus:(unint64_t)a3
++ (void)handleMemoryPressureWithStatus:(unint64_t)status
 {
   [SPCoreSpotlightIndexer shrink:?];
   v4 = +[LSApplicationWorkspace defaultWorkspace];
@@ -286,7 +286,7 @@
         v10 = *(*(&v11 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          [v10 shrink:a3];
+          [v10 shrink:status];
         }
 
         v9 = v9 + 1;
@@ -300,10 +300,10 @@
   }
 }
 
-- (void)didReceiveMemoryPressureNotification:(unint64_t)a3
+- (void)didReceiveMemoryPressureNotification:(unint64_t)notification
 {
   [SPCoreSpotlightIndexer setMemoryPressureStatus:?];
-  if (a3 != 1)
+  if (notification != 1)
   {
     tracing_dispatch_async();
   }
@@ -334,15 +334,15 @@
   return 0;
 }
 
-- (BOOL)_valueFromArray:(id)a3 notInSet:(id)a4
+- (BOOL)_valueFromArray:(id)array notInSet:(id)set
 {
-  v5 = a3;
-  v6 = a4;
+  arrayCopy = array;
+  setCopy = set;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v5;
+  v7 = arrayCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -356,7 +356,7 @@
           objc_enumerationMutation(v7);
         }
 
-        if (![v6 containsObject:{*(*(&v12 + 1) + 8 * i), v12}])
+        if (![setCopy containsObject:{*(*(&v12 + 1) + 8 * i), v12}])
         {
           LOBYTE(v8) = 1;
           goto LABEL_11;
@@ -449,10 +449,10 @@ LABEL_8:
   }
 }
 
-+ (void)setDatastores:(id)a3
++ (void)setDatastores:(id)datastores
 {
-  v3 = a3;
-  v4 = [[NSMutableArray alloc] initWithArray:v3];
+  datastoresCopy = datastores;
+  v4 = [[NSMutableArray alloc] initWithArray:datastoresCopy];
   v5 = qword_1000A8288;
   qword_1000A8288 = v4;
 
@@ -464,7 +464,7 @@ LABEL_8:
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v3;
+  v8 = datastoresCopy;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -480,9 +480,9 @@ LABEL_8:
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
-        v14 = [v13 domain];
+        domain = [v13 domain];
         v15 = qword_1000A8290;
-        v16 = [NSNumber numberWithUnsignedInt:v14];
+        v16 = [NSNumber numberWithUnsignedInt:domain];
         [v15 setObject:v13 forKeyedSubscript:v16];
       }
 
@@ -499,7 +499,7 @@ LABEL_8:
   block[1] = 3221225472;
   block[2] = sub_10000A9FC;
   block[3] = &unk_1000923B0;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000A8298 != -1)
   {
     dispatch_once(&qword_1000A8298, block);
@@ -625,9 +625,9 @@ LABEL_8:
 
     [v37 start];
     v40 = +[SDLockHandler sharedLockHandler];
-    v41 = [v40 unlockedSinceBoot];
+    unlockedSinceBoot = [v40 unlockedSinceBoot];
 
-    if (v41)
+    if (unlockedSinceBoot)
     {
       [v2 startIndexer];
     }
@@ -704,7 +704,7 @@ LABEL_8:
 
 + (id)datastores
 {
-  [a1 readyForQueries];
+  [self readyForQueries];
   v2 = qword_1000A8288;
 
   return v2;
@@ -714,18 +714,18 @@ LABEL_8:
 {
   v3 = SPGetDisabledDomainSet();
   [v3 containsObject:@"DOMAIN_ZKWS"];
-  v4 = 0;
+  isSpotlightInternetResultsAllowed = 0;
   if (([v3 containsObject:@"DOMAIN_PARSEC"] & 1) == 0)
   {
     v5 = +[MCProfileConnection sharedConnection];
-    v4 = [v5 isSpotlightInternetResultsAllowed];
+    isSpotlightInternetResultsAllowed = [v5 isSpotlightInternetResultsAllowed];
   }
 
   ADClientSetValueForScalarKey();
-  v6 = [(SDController *)self defaultsCenter];
-  v7 = [v6 integerForKey:@"SPUISearchFirstTimeShowCount"];
+  defaultsCenter = [(SDController *)self defaultsCenter];
+  v7 = [defaultsCenter integerForKey:@"SPUISearchFirstTimeShowCount"];
 
-  byte_1000A8279 = (v7 > 0) & v4;
+  byte_1000A8279 = (v7 > 0) & isSpotlightInternetResultsAllowed;
   [qword_1000A8280 setParsecState:?];
   v8 = SPLogForSPLogCategoryDefault();
   v9 = v8;
@@ -761,7 +761,7 @@ LABEL_8:
   if (os_log_type_enabled(v11, v13))
   {
     v17 = 67109120;
-    LODWORD(v18) = v4 ^ 1;
+    LODWORD(v18) = isSpotlightInternetResultsAllowed ^ 1;
     _os_log_impl(&_mh_execute_header, v12, v13, "[FEEDBACK-DEBUG] (_userPrefsChanged) DOMAIN_PARSEC disabled: %d", &v17, 8u);
   }
 
@@ -787,12 +787,12 @@ LABEL_8:
   [SPFeedbackSender synchronizedBlock:&stru_100092530];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (([v10 isEqualToString:@"SPUISearchFirstTimeShowCount"] & 1) != 0 || objc_msgSend(v10, "isEqualToString:", @"SBSearchDisabledDomains"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (([pathCopy isEqualToString:@"SPUISearchFirstTimeShowCount"] & 1) != 0 || objc_msgSend(pathCopy, "isEqualToString:", @"SBSearchDisabledDomains"))
   {
     [(SDController *)self updateParsecEnabled];
   }
@@ -805,18 +805,18 @@ LABEL_8:
     {
       v13.receiver = self;
       v13.super_class = SDController;
-      [(SDController *)&v13 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(SDController *)&v13 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
     }
   }
 }
 
-- (BOOL)blocklistCheck:(id)a3 withOptions:(int64_t)a4
+- (BOOL)blocklistCheck:(id)check withOptions:(int64_t)options
 {
-  v4 = a4;
-  v5 = a3;
+  optionsCopy = options;
+  checkCopy = check;
   if (qword_1000A82B0)
   {
-    if (v4 < 0)
+    if (optionsCopy < 0)
     {
       goto LABEL_6;
     }
@@ -825,12 +825,12 @@ LABEL_8:
   else
   {
     sub_100062414();
-    if (v4 < 0)
+    if (optionsCopy < 0)
     {
 LABEL_6:
       if (!qword_1000A82D0)
       {
-        sub_100062464(v5);
+        sub_100062464(checkCopy);
       }
 
       v7 = qword_1000A8280;
@@ -864,8 +864,8 @@ LABEL_6:
 LABEL_14:
           v7 = qword_1000A8280;
 LABEL_15:
-          v16 = [v7 appBlocklist];
-          v6 = [v16 containsObject:v5];
+          appBlocklist = [v7 appBlocklist];
+          v6 = [appBlocklist containsObject:checkCopy];
 
           goto LABEL_16;
         }
@@ -899,16 +899,16 @@ LABEL_16:
   return v6;
 }
 
-- (id)taskForTopHitQueryWithQueryString:(id)a3 queryContext:(id)a4 eventHandler:(id)a5 resultsHandler:(id)a6 completionHandler:(id)a7
+- (id)taskForTopHitQueryWithQueryString:(id)string queryContext:(id)context eventHandler:(id)handler resultsHandler:(id)resultsHandler completionHandler:(id)completionHandler
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  completionHandlerCopy = completionHandler;
+  resultsHandlerCopy = resultsHandler;
+  handlerCopy = handler;
+  contextCopy = context;
+  stringCopy = string;
   +[SDController readyForQueries];
   v16 = +[SPCoreSpotlightDatastore sharedInstance];
-  v17 = [v16 taskForTopHitQueryWithQueryString:v15 queryContext:v14 eventHandler:v13 resultsHandler:v12 completionHandler:v11];
+  v17 = [v16 taskForTopHitQueryWithQueryString:stringCopy queryContext:contextCopy eventHandler:handlerCopy resultsHandler:resultsHandlerCopy completionHandler:completionHandlerCopy];
 
   return v17;
 }
@@ -916,48 +916,48 @@ LABEL_16:
 - (BOOL)unlockedSinceBoot
 {
   v2 = +[SDLockHandler sharedLockHandler];
-  v3 = [v2 unlockedSinceBoot];
+  unlockedSinceBoot = [v2 unlockedSinceBoot];
 
-  return v3;
+  return unlockedSinceBoot;
 }
 
 - (BOOL)deviceFirstUnlockedInMKB
 {
   v2 = +[SDLockHandler sharedLockHandler];
-  v3 = [v2 unlockedSinceBoot];
+  unlockedSinceBoot = [v2 unlockedSinceBoot];
 
-  return v3;
+  return unlockedSinceBoot;
 }
 
 - (BOOL)deviceCXUnlocked
 {
   v2 = +[SDLockHandler sharedLockHandler];
-  v3 = [v2 cxUnlocked];
+  cxUnlocked = [v2 cxUnlocked];
 
-  return v3;
+  return cxUnlocked;
 }
 
-- (void)recordEngagementForBundleID:(id)a3 uniqueIdentifier:(id)a4 protectionClass:(id)a5 userQuery:(id)a6 date:(id)a7
+- (void)recordEngagementForBundleID:(id)d uniqueIdentifier:(id)identifier protectionClass:(id)class userQuery:(id)query date:(id)date
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  dateCopy = date;
+  queryCopy = query;
+  classCopy = class;
+  identifierCopy = identifier;
+  dCopy = d;
   v16 = +[PRSAnonymousPipelineManager sharedManager];
-  [v16 userEngagedItemWithIdentifier:v14 forBundle:v15 forQuery:v12];
+  [v16 userEngagedItemWithIdentifier:identifierCopy forBundle:dCopy forQuery:queryCopy];
 
   v17 = objc_alloc_init(CSSearchableItem);
-  [v17 setUniqueIdentifier:v14];
+  [v17 setUniqueIdentifier:identifierCopy];
 
-  [v17 setBundleID:v15];
+  [v17 setBundleID:dCopy];
   v18 = [CSSearchableItemAttributeSet alloc];
   v24[0] = @"kMDItemLastUsedDate";
   v24[1] = @"_kMDItemShortcutLastUsedDate";
-  v25[0] = v11;
-  v25[1] = v11;
+  v25[0] = dateCopy;
+  v25[1] = dateCopy;
   v24[2] = @"_kMDItemLaunchString";
-  v25[2] = v12;
+  v25[2] = queryCopy;
   v19 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:3];
   v20 = [v18 initWithAttributes:v19];
   [v17 setAttributeSet:v20];
@@ -967,7 +967,7 @@ LABEL_16:
   v23 = v17;
   v22 = [NSArray arrayWithObjects:&v23 count:1];
 
-  [v21 indexSearchableItems:v22 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:v13 forBundleID:v15 options:0 completionHandler:0];
+  [v21 indexSearchableItems:v22 deleteSearchableItemsWithIdentifiers:0 clientState:0 protectionClass:classCopy forBundleID:dCopy options:0 completionHandler:0];
 }
 
 - (void)dumpTTRDebugFiles
@@ -985,7 +985,7 @@ LABEL_16:
   v3 = +[SDSearchQuery searchContinuationCompatibilitySet];
   v4 = SPFastHiddenAppsGetNoBuild();
   v5 = +[SRResourcesManager sharedResourcesManager];
-  v6 = [v5 allLoadedAssets];
+  allLoadedAssets = [v5 allLoadedAssets];
 
   if (_os_feature_enabled_impl())
   {
@@ -1002,28 +1002,28 @@ LABEL_16:
     v8 = 0;
   }
 
-  v11 = [NSString stringWithFormat:@"\nApp Genre Cache:\n%@\n\nSearch Continuation Compatibility Cache:\n%@\n\n(MC)Hidden Apps:\n%@\n\nLoaded Assets:%@\n\nLocked Apps:%@\n\nHiddenApps:%@\n\n", v2, v3, v4, v6, v8, v10];
+  v11 = [NSString stringWithFormat:@"\nApp Genre Cache:\n%@\n\nSearch Continuation Compatibility Cache:\n%@\n\n(MC)Hidden Apps:\n%@\n\nLoaded Assets:%@\n\nLocked Apps:%@\n\nHiddenApps:%@\n\n", v2, v3, v4, allLoadedAssets, v8, v10];
   v12 = [v11 dataUsingEncoding:4];
 
   return v12;
 }
 
-- (void)indexAvailableForProtectionClass:(id)a3 newIndex:(BOOL)a4
+- (void)indexAvailableForProtectionClass:(id)class newIndex:(BOOL)index
 {
-  v4 = a4;
-  v6 = a3;
+  indexCopy = index;
+  classCopy = class;
   v7 = SPLogForSPLogCategoryDefault();
   v8 = gSPLogInfoAsDefault;
   if (os_log_type_enabled(v7, ((gSPLogInfoAsDefault & 1) == 0)))
   {
     *buf = 138412546;
-    v16 = v6;
+    v16 = classCopy;
     v17 = 1024;
-    v18 = v4;
+    v18 = indexCopy;
     _os_log_impl(&_mh_execute_header, v7, ((v8 & 1) == 0), "indexAvailable pc:%@ new: %d", buf, 0x12u);
   }
 
-  if (([v6 isEqualToString:NSFileProtectionCompleteUntilFirstUserAuthentication] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"Priority"))
+  if (([classCopy isEqualToString:NSFileProtectionCompleteUntilFirstUserAuthentication] & 1) != 0 || objc_msgSend(classCopy, "isEqualToString:", @"Priority"))
   {
     if ((byte_1000A8278 & 1) == 0)
     {
@@ -1031,13 +1031,13 @@ LABEL_16:
       [v9 start];
     }
 
-    if (v4)
+    if (indexCopy)
     {
       v10 = SPLogForSPLogCategoryDefault();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v16 = v6;
+        v16 = classCopy;
         v17 = 1024;
         v18 = 1;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "New index; trigger apps rebuild pc:%@ new: %d", buf, 0x12u);
@@ -1047,32 +1047,32 @@ LABEL_16:
       if ([v11 count])
       {
         v12 = +[SPApplicationIndexer sharedIndexer];
-        v13 = [v11 allKeys];
-        [v12 updateApplications:0 appBundleArray:v13 clean:0 activity:0];
+        allKeys = [v11 allKeys];
+        [v12 updateApplications:0 appBundleArray:allKeys clean:0 activity:0];
       }
     }
 
     else
     {
-      v14 = [(SDController *)self firstUnlockQueue];
+      firstUnlockQueue = [(SDController *)self firstUnlockQueue];
       tracing_dispatch_async();
     }
   }
 }
 
-- (void)issueLoadTrial:(id)a3
+- (void)issueLoadTrial:(id)trial
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  trialCopy = trial;
+  v4 = trialCopy;
+  if (trialCopy)
   {
-    dispatch_group_enter(v3);
+    dispatch_group_enter(trialCopy);
   }
 
   v5 = +[SDLockHandler sharedLockHandler];
-  v6 = [v5 unlockedSinceBoot];
+  unlockedSinceBoot = [v5 unlockedSinceBoot];
 
-  if (v6)
+  if (unlockedSinceBoot)
   {
     v7 = dispatch_get_global_queue(25, 0);
     v11[1] = _NSConcreteStackBlock;
@@ -1095,11 +1095,11 @@ LABEL_16:
   tracing_dispatch_async();
 }
 
-- (BOOL)disableABCReporting:(id)a3
+- (BOOL)disableABCReporting:(id)reporting
 {
-  if (a3)
+  if (reporting)
   {
-    return [a3 isEqualToString:NSFileProtectionCompleteUnlessOpen];
+    return [reporting isEqualToString:NSFileProtectionCompleteUnlessOpen];
   }
 
   else

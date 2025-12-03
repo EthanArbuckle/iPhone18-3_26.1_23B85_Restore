@@ -1,6 +1,6 @@
 @interface MTRCommodityTariffClusterDayPatternStruct
 - (MTRCommodityTariffClusterDayPatternStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,25 +20,25 @@
     daysOfWeek = v3->_daysOfWeek;
     v3->_daysOfWeek = &unk_284C3E588;
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     dayEntryIDs = v3->_dayEntryIDs;
-    v3->_dayEntryIDs = v6;
+    v3->_dayEntryIDs = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterDayPatternStruct);
-  v5 = [(MTRCommodityTariffClusterDayPatternStruct *)self dayPatternID];
-  [(MTRCommodityTariffClusterDayPatternStruct *)v4 setDayPatternID:v5];
+  dayPatternID = [(MTRCommodityTariffClusterDayPatternStruct *)self dayPatternID];
+  [(MTRCommodityTariffClusterDayPatternStruct *)v4 setDayPatternID:dayPatternID];
 
-  v6 = [(MTRCommodityTariffClusterDayPatternStruct *)self daysOfWeek];
-  [(MTRCommodityTariffClusterDayPatternStruct *)v4 setDaysOfWeek:v6];
+  daysOfWeek = [(MTRCommodityTariffClusterDayPatternStruct *)self daysOfWeek];
+  [(MTRCommodityTariffClusterDayPatternStruct *)v4 setDaysOfWeek:daysOfWeek];
 
-  v7 = [(MTRCommodityTariffClusterDayPatternStruct *)self dayEntryIDs];
-  [(MTRCommodityTariffClusterDayPatternStruct *)v4 setDayEntryIDs:v7];
+  dayEntryIDs = [(MTRCommodityTariffClusterDayPatternStruct *)self dayEntryIDs];
+  [(MTRCommodityTariffClusterDayPatternStruct *)v4 setDayEntryIDs:dayEntryIDs];
 
   return v4;
 }

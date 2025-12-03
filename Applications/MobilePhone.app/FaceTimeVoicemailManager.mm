@@ -1,14 +1,14 @@
 @interface FaceTimeVoicemailManager
 - (void)dealloc;
-- (void)deleteVoicemails:(NSArray *)a3 completion:(id)a4;
-- (void)markVoicemailsAsRead:(NSArray *)a3 completion:(id)a4;
-- (void)messagesPassingTest:(id)a3 completion:;
-- (void)removeVoicemailsFromTrash:(NSArray *)a3 completion:(id)a4;
-- (void)reportTranscriptionProblemForVoicemail:(id)a3;
-- (void)reportTranscriptionRatedAccurate:(BOOL)a3 forVoicemail:(id)a4;
-- (void)requestInitialStateIfNecessaryAndSendNotifications:(BOOL)a3;
-- (void)trashVoicemails:(NSArray *)a3 completion:(id)a4;
-- (void)voicemailWithIdentifier:(MPMessageID *)a3 completion:(id)a4;
+- (void)deleteVoicemails:(NSArray *)voicemails completion:(id)completion;
+- (void)markVoicemailsAsRead:(NSArray *)read completion:(id)completion;
+- (void)messagesPassingTest:(id)test completion:;
+- (void)removeVoicemailsFromTrash:(NSArray *)trash completion:(id)completion;
+- (void)reportTranscriptionProblemForVoicemail:(id)voicemail;
+- (void)reportTranscriptionRatedAccurate:(BOOL)accurate forVoicemail:(id)voicemail;
+- (void)requestInitialStateIfNecessaryAndSendNotifications:(BOOL)notifications;
+- (void)trashVoicemails:(NSArray *)voicemails completion:(id)completion;
+- (void)voicemailWithIdentifier:(MPMessageID *)identifier completion:(id)completion;
 @end
 
 @implementation FaceTimeVoicemailManager
@@ -21,24 +21,24 @@
   v5 = v12;
   __swift_project_boxed_opaque_existential_0(v10, v11);
   v6 = *(v5 + 16);
-  v7 = self;
+  selfCopy = self;
 
   v6(v8, v4, v5);
 
   __swift_destroy_boxed_opaque_existential_0(v10);
-  v9.receiver = v7;
+  v9.receiver = selfCopy;
   v9.super_class = ObjectType;
   [(FaceTimeVoicemailManager *)&v9 dealloc];
 }
 
-- (void)voicemailWithIdentifier:(MPMessageID *)a3 completion:(id)a4
+- (void)voicemailWithIdentifier:(MPMessageID *)identifier completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = identifier;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -53,28 +53,28 @@
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTA_276Tu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTA_281Tu, v14);
 }
 
-- (void)requestInitialStateIfNecessaryAndSendNotifications:(BOOL)a3
+- (void)requestInitialStateIfNecessaryAndSendNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (notifications)
   {
-    v3 = self;
+    selfCopy = self;
     FaceTimeVoicemailManager.voicemailsChanged(messageChanges:)(0, 3u);
   }
 }
 
-- (void)deleteVoicemails:(NSArray *)a3 completion:(id)a4
+- (void)deleteVoicemails:(NSArray *)voicemails completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = voicemails;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -89,19 +89,19 @@
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTA_201Tu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  voicemailsCopy = voicemails;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTA_206Tu, v14);
 }
 
-- (void)markVoicemailsAsRead:(NSArray *)a3 completion:(id)a4
+- (void)markVoicemailsAsRead:(NSArray *)read completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = read;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -116,19 +116,19 @@
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTA_186Tu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  readCopy = read;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTA_191Tu, v14);
 }
 
-- (void)trashVoicemails:(NSArray *)a3 completion:(id)a4
+- (void)trashVoicemails:(NSArray *)voicemails completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = voicemails;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -143,19 +143,19 @@
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTA_171Tu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  voicemailsCopy = voicemails;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTA_176Tu, v14);
 }
 
-- (void)removeVoicemailsFromTrash:(NSArray *)a3 completion:(id)a4
+- (void)removeVoicemailsFromTrash:(NSArray *)trash completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = trash;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -170,18 +170,18 @@
   v14[3] = 0;
   v14[4] = &_sIeghH_IeAgH_TRTA_156Tu;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  trashCopy = trash;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTA_161Tu, v14);
 }
 
-- (void)messagesPassingTest:(id)a3 completion:
+- (void)messagesPassingTest:(id)test completion:
 {
   v4 = v3;
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sScPSgMd);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(test);
   v11 = _Block_copy(v4);
   v12 = swift_allocObject();
   v12[2] = v10;
@@ -199,21 +199,21 @@
   v15[3] = 0;
   v15[4] = &_sIeghH_IeAgH_TRTATu;
   v15[5] = v14;
-  v16 = self;
+  selfCopy = self;
   _sScTss5NeverORs_rlE4name8priority9operationScTyxABGSSSg_ScPSgxyYaYAcntcfCyt_Tt2gq5(0, 0, v9, &_sIeAgH_ytIeAgHr_TRTATu, v15);
 }
 
-- (void)reportTranscriptionRatedAccurate:(BOOL)a3 forVoicemail:(id)a4
+- (void)reportTranscriptionRatedAccurate:(BOOL)accurate forVoicemail:(id)voicemail
 {
-  v5 = a4;
-  v6 = self;
+  voicemailCopy = voicemail;
+  selfCopy = self;
   specialized FaceTimeVoicemailManager.reportTranscription(isAccurate:for:)();
 }
 
-- (void)reportTranscriptionProblemForVoicemail:(id)a3
+- (void)reportTranscriptionProblemForVoicemail:(id)voicemail
 {
-  v4 = a3;
-  v5 = self;
+  voicemailCopy = voicemail;
+  selfCopy = self;
   specialized FaceTimeVoicemailManager.reportTranscription(isAccurate:for:)();
 }
 

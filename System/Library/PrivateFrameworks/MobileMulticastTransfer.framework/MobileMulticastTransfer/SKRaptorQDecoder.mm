@@ -1,10 +1,10 @@
 @interface SKRaptorQDecoder
-- (BOOL)addPacket:(id)a3 error:(id *)a4;
-- (BOOL)addPacketsFromFilesInSummary:(id)a3 error:(id *)a4;
-- (BOOL)decodeAllSourceBlocks:(id *)a3 discarded:(unint64_t *)a4;
-- (BOOL)decodeBlock:(unint64_t)a3 error:(id *)a4 discarded:(unint64_t *)a5;
-- (BOOL)decodeInputURL:(id)a3 error:(id *)a4;
-- (SKRaptorQDecoder)initWithBasicParameters:(unint64_t)a3 extendedParameters:(unsigned int)a4 repairFactor:(unsigned int)a5 threshold:(unint64_t)a6 outputURL:(id)a7 error:(id *)a8;
+- (BOOL)addPacket:(id)packet error:(id *)error;
+- (BOOL)addPacketsFromFilesInSummary:(id)summary error:(id *)error;
+- (BOOL)decodeAllSourceBlocks:(id *)blocks discarded:(unint64_t *)discarded;
+- (BOOL)decodeBlock:(unint64_t)block error:(id *)error discarded:(unint64_t *)discarded;
+- (BOOL)decodeInputURL:(id)l error:(id *)error;
+- (SKRaptorQDecoder)initWithBasicParameters:(unint64_t)parameters extendedParameters:(unsigned int)extendedParameters repairFactor:(unsigned int)factor threshold:(unint64_t)threshold outputURL:(id)l error:(id *)error;
 - (double)calculateSymbolLostRate;
 - (unint64_t)missingSymbolCount;
 - (void)dealloc;
@@ -12,10 +12,10 @@
 
 @implementation SKRaptorQDecoder
 
-- (SKRaptorQDecoder)initWithBasicParameters:(unint64_t)a3 extendedParameters:(unsigned int)a4 repairFactor:(unsigned int)a5 threshold:(unint64_t)a6 outputURL:(id)a7 error:(id *)a8
+- (SKRaptorQDecoder)initWithBasicParameters:(unint64_t)parameters extendedParameters:(unsigned int)extendedParameters repairFactor:(unsigned int)factor threshold:(unint64_t)threshold outputURL:(id)l error:(id *)error
 {
   v77 = *MEMORY[0x277D85DE8];
-  v13 = a7;
+  lCopy = l;
   v72.receiver = self;
   v72.super_class = SKRaptorQDecoder;
   v71 = [(SKRaptorQDecoder *)&v72 init];
@@ -36,11 +36,11 @@
     _os_log_impl(&dword_259B04000, v14, OS_LOG_TYPE_DEFAULT, "Initialize NanoRQ decoder...", buf, 2u);
   }
 
-  v15 = nanorq_decoder_new(a3, a4);
+  v15 = nanorq_decoder_new(parameters, extendedParameters);
   *(v71 + 2) = v15;
   if (!v15)
   {
-    if (!a8)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -48,15 +48,15 @@
     v56 = *MEMORY[0x277CCA590];
 LABEL_34:
     NSErrorF();
-    *a8 = v35 = 0;
+    *error = v35 = 0;
     goto LABEL_36;
   }
 
-  nanorq_set_repair_factor(v15, a5);
-  v16 = [v13 fileSystemRepresentation];
-  if (!v16)
+  nanorq_set_repair_factor(v15, factor);
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  if (!fileSystemRepresentation)
   {
-    if (!a8)
+    if (!error)
     {
       goto LABEL_35;
     }
@@ -65,11 +65,11 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  v17 = ioctx_mmap_file(v16, 0);
+  v17 = ioctx_mmap_file(fileSystemRepresentation, 0);
   *(v71 + 1) = v17;
   if (!v17)
   {
-    if (a8)
+    if (error)
     {
       v58 = *MEMORY[0x277CCA590];
       goto LABEL_34;
@@ -80,22 +80,22 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v18 = [MEMORY[0x277CCAA00] defaultManager];
-  v19 = [v13 lastPathComponent];
-  v20 = [v19 stringByAppendingPathExtension:@"intermediate"];
-  v21 = [v13 URLByDeletingLastPathComponent];
-  v22 = [v21 URLByAppendingPathComponent:v20 isDirectory:1];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  lastPathComponent = [lCopy lastPathComponent];
+  v20 = [lastPathComponent stringByAppendingPathExtension:@"intermediate"];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  v22 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v20 isDirectory:1];
 
-  v23 = [v22 path];
-  v24 = [v18 fileExistsAtPath:v23];
+  path = [v22 path];
+  v24 = [defaultManager fileExistsAtPath:path];
 
-  if ((!v24 || [v18 removeItemAtURL:v22 error:a8]) && objc_msgSend(v18, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v22, 1, 0, a8))
+  if ((!v24 || [defaultManager removeItemAtURL:v22 error:error]) && objc_msgSend(defaultManager, "createDirectoryAtURL:withIntermediateDirectories:attributes:error:", v22, 1, 0, error))
   {
     v61 = v20;
-    v62 = v19;
-    v70 = v18;
-    v64 = a8;
-    v63 = v13;
+    v62 = lastPathComponent;
+    v70 = defaultManager;
+    errorCopy = error;
+    v63 = lCopy;
     v25 = nanorq_blocks(*(v71 + 2));
     v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -112,23 +112,23 @@ LABEL_35:
         v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"encoded.%lu", v28];
         v31 = v22;
         v32 = [v22 URLByAppendingPathComponent:v30];
-        v33 = [v32 path];
-        v34 = [v70 createFileAtPath:v33 contents:0 attributes:0];
+        path2 = [v32 path];
+        v34 = [v70 createFileAtPath:path2 contents:0 attributes:0];
 
         if ((v34 & 1) == 0)
         {
-          [SKRaptorQDecoder initWithBasicParameters:v64 extendedParameters:v32 repairFactor:v30 threshold:? outputURL:? error:?];
+          [SKRaptorQDecoder initWithBasicParameters:errorCopy extendedParameters:v32 repairFactor:v30 threshold:? outputURL:? error:?];
           v35 = 0;
           goto LABEL_26;
         }
 
-        v35 = [MEMORY[0x277CCA9F8] fileHandleForWritingToURL:v32 error:v64];
+        v35 = [MEMORY[0x277CCA9F8] fileHandleForWritingToURL:v32 error:errorCopy];
         if (!v35)
         {
           break;
         }
 
-        v36 = v29 + a6;
+        v36 = v29 + threshold;
         [v26 addObject:v32];
         [v27 addObject:v35];
         v37 = objc_alloc_init(MEMORY[0x277CCAB58]);
@@ -206,9 +206,9 @@ LABEL_21:
       v35 = v71;
     }
 
-    v19 = v62;
-    v13 = v63;
-    v18 = v70;
+    lastPathComponent = v62;
+    lCopy = v63;
+    defaultManager = v70;
     v20 = v61;
   }
 
@@ -349,14 +349,14 @@ void __27__SKRaptorQDecoder_dealloc__block_invoke()
   }
 }
 
-- (BOOL)decodeInputURL:(id)a3 error:(id *)a4
+- (BOOL)decodeInputURL:(id)l error:(id *)error
 {
   v25[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 fileSystemRepresentation];
-  if (v7)
+  lCopy = l;
+  fileSystemRepresentation = [lCopy fileSystemRepresentation];
+  if (fileSystemRepresentation)
   {
-    v8 = fopen(v7, "rb");
+    v8 = fopen(fileSystemRepresentation, "rb");
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __41__SKRaptorQDecoder_decodeInputURL_error___block_invoke;
@@ -366,7 +366,7 @@ void __27__SKRaptorQDecoder_dealloc__block_invoke()
     v10 = nanorq_blocks(self->_rq);
     v11 = nanorq_symbol_size(self->_rq);
     v23 = *MEMORY[0x277CCA590];
-    if (a4)
+    if (error)
     {
       v12 = fread(&__ptr, 1uLL, 4uLL, v8);
       if (v12)
@@ -377,7 +377,7 @@ void __27__SKRaptorQDecoder_dealloc__block_invoke()
           MEMORY[0x28223BE20](4);
           if (fread(&v23 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 1uLL, v11, v8) != v11 || nanorq_decoder_add_symbol(self->_rq, &v23 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), v13, self->_outputIO, v14) == -1)
           {
-            *a4 = NSErrorF();
+            *error = NSErrorF();
             goto LABEL_22;
           }
 
@@ -426,7 +426,7 @@ LABEL_8:
         {
           if (v15 == 256)
           {
-            if (!a4)
+            if (!error)
             {
               goto LABEL_22;
             }
@@ -446,14 +446,14 @@ LABEL_8:
           }
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_22;
         }
 
 LABEL_28:
         NSErrorF();
-        *a4 = v16 = 0;
+        *error = v16 = 0;
       }
 
       else
@@ -469,9 +469,9 @@ LABEL_23:
     }
 
 LABEL_20:
-    if (a4)
+    if (error)
     {
-      *a4 = NSErrorF();
+      *error = NSErrorF();
     }
 
 LABEL_22:
@@ -479,11 +479,11 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a4)
+  if (error)
   {
     v22 = *MEMORY[0x277CCA590];
     NSErrorF();
-    *a4 = v16 = 0;
+    *error = v16 = 0;
   }
 
   else
@@ -497,43 +497,43 @@ LABEL_24:
   return v16;
 }
 
-- (BOOL)addPacketsFromFilesInSummary:(id)a3 error:(id *)a4
+- (BOOL)addPacketsFromFilesInSummary:(id)summary error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 rqEncodedFileURLs];
+  summaryCopy = summary;
+  rqEncodedFileURLs = [summaryCopy rqEncodedFileURLs];
   v8 = nanorq_symbol_size(self->_rq);
-  if (![v7 count])
+  if (![rqEncodedFileURLs count])
   {
-    if (a4)
+    if (error)
     {
       v22 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *a4 = v19 = 0;
+      *error = v19 = 0;
       goto LABEL_21;
     }
 
     goto LABEL_27;
   }
 
-  v24 = a4;
-  v25 = v6;
-  if (![v7 count])
+  errorCopy = error;
+  v25 = summaryCopy;
+  if (![rqEncodedFileURLs count])
   {
 LABEL_15:
     if ([(SKRaptorQDecoder *)self sufficientSymbolsReceived])
     {
       v19 = 1;
-      v6 = v25;
+      summaryCopy = v25;
       goto LABEL_21;
     }
 
-    v6 = v25;
-    if (v24)
+    summaryCopy = v25;
+    if (errorCopy)
     {
       v23 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *v24 = v19 = 0;
+      *errorCopy = v19 = 0;
       goto LABEL_21;
     }
 
@@ -543,13 +543,13 @@ LABEL_27:
   }
 
   v9 = 0;
-  v26 = v7;
+  v26 = rqEncodedFileURLs;
   while (1)
   {
     v10 = [(NSArray *)self->_targetSymbolCounts objectAtIndexedSubscript:v9];
-    v11 = [v10 unsignedIntegerValue];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-    v12 = [v7 objectAtIndexedSubscript:v9];
+    v12 = [rqEncodedFileURLs objectAtIndexedSubscript:v9];
     if (MIBUOnceToken != -1)
     {
       [SKRaptorQDecoder addPacketsFromFilesInSummary:error:];
@@ -568,12 +568,12 @@ LABEL_27:
     v15 = v29;
     if (!v14)
     {
-      [(SKRaptorQDecoder *)v24 addPacketsFromFilesInSummary:v15 error:buf];
+      [(SKRaptorQDecoder *)errorCopy addPacketsFromFilesInSummary:v15 error:buf];
       v18 = *buf;
       goto LABEL_20;
     }
 
-    if (v11)
+    if (unsignedIntegerValue)
     {
       break;
     }
@@ -582,7 +582,7 @@ LABEL_4:
     [v14 closeAndReturnError:0];
 
     ++v9;
-    v7 = v26;
+    rqEncodedFileURLs = v26;
     if (v9 >= [v26 count])
     {
       goto LABEL_15;
@@ -598,7 +598,7 @@ LABEL_4:
 
     if (!v17)
     {
-      [SKRaptorQDecoder addPacketsFromFilesInSummary:v24 error:v18];
+      [SKRaptorQDecoder addPacketsFromFilesInSummary:errorCopy error:v18];
       goto LABEL_19;
     }
 
@@ -612,21 +612,21 @@ LABEL_4:
     v15 = v27;
 
     objc_autoreleasePoolPop(v16);
-    if (!--v11)
+    if (!--unsignedIntegerValue)
     {
       goto LABEL_4;
     }
   }
 
-  [SKRaptorQDecoder addPacketsFromFilesInSummary:v24 error:?];
+  [SKRaptorQDecoder addPacketsFromFilesInSummary:errorCopy error:?];
 LABEL_19:
 
   objc_autoreleasePoolPop(v16);
 LABEL_20:
-  v6 = v25;
+  summaryCopy = v25;
 
   v19 = 0;
-  v7 = v26;
+  rqEncodedFileURLs = v26;
 LABEL_21:
 
   v20 = *MEMORY[0x277D85DE8];
@@ -649,12 +649,12 @@ void __55__SKRaptorQDecoder_addPacketsFromFilesInSummary_error___block_invoke()
   }
 }
 
-- (BOOL)addPacket:(id)a3 error:(id *)a4
+- (BOOL)addPacket:(id)packet error:(id *)error
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  packetCopy = packet;
   v25 = 0;
-  [v6 getBytes:&v25 range:{0, 4}];
+  [packetCopy getBytes:&v25 range:{0, 4}];
   v7 = nanorq_sbn_in_tag(v25);
   v8 = nanorq_esi_in_tag(v25);
   v9 = v7;
@@ -677,13 +677,13 @@ LABEL_15:
     v15 = v14;
     if (v14)
     {
-      if ([v14 writeData:v6 error:a4])
+      if ([v14 writeData:packetCopy error:error])
       {
         [v11 addIndex:v12];
         v16 = [(NSArray *)self->_targetSymbolCounts objectAtIndexedSubscript:v9];
-        v17 = [v16 unsignedIntegerValue];
+        unsignedIntegerValue = [v16 unsignedIntegerValue];
 
-        if ([v11 count] >= v17 && -[NSMutableIndexSet containsIndex:](self->_sbnStillReceiving, "containsIndex:", v9))
+        if ([v11 count] >= unsignedIntegerValue && -[NSMutableIndexSet containsIndex:](self->_sbnStillReceiving, "containsIndex:", v9))
         {
           if (MIBUOnceToken != -1)
           {
@@ -700,7 +700,7 @@ LABEL_15:
             v28 = 2048;
             v29 = v20;
             v30 = 2048;
-            v31 = v17;
+            v31 = unsignedIntegerValue;
             _os_log_impl(&dword_259B04000, v19, OS_LOG_TYPE_DEFAULT, "Received enough symbols for source block #%u: %lu of %lu", buf, 0x1Cu);
           }
 
@@ -712,11 +712,11 @@ LABEL_15:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       v24 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *a4 = v13 = 0;
+      *error = v13 = 0;
 LABEL_14:
 
       goto LABEL_15;
@@ -726,11 +726,11 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (a4)
+  if (error)
   {
     v23 = *MEMORY[0x277CCA590];
     NSErrorF();
-    *a4 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -760,17 +760,17 @@ void __36__SKRaptorQDecoder_addPacket_error___block_invoke()
   }
 }
 
-- (BOOL)decodeAllSourceBlocks:(id *)a3 discarded:(unint64_t *)a4
+- (BOOL)decodeAllSourceBlocks:(id *)blocks discarded:(unint64_t *)discarded
 {
   v39 = *MEMORY[0x277D85DE8];
   v7 = nanorq_blocks(self->_rq);
   if (v7 >= 0x100)
   {
-    if (a3)
+    if (blocks)
     {
       v26 = *MEMORY[0x277CCA590];
       NSErrorF();
-      *a3 = v10 = 0;
+      *blocks = v10 = 0;
     }
 
     else
@@ -789,8 +789,8 @@ void __36__SKRaptorQDecoder_addPacket_error___block_invoke()
     v30[2] = __52__SKRaptorQDecoder_decodeAllSourceBlocks_discarded___block_invoke;
     v30[3] = &unk_2798EC108;
     v31 = 0;
-    v32 = a3;
-    v33 = a4;
+    blocksCopy = blocks;
+    discardedCopy = discarded;
     v34 = &v35;
     v28 = MEMORY[0x259CAE830](v30);
     v27 = [MEMORY[0x277CBEAA8] now];
@@ -984,7 +984,7 @@ void __52__SKRaptorQDecoder_decodeAllSourceBlocks_discarded___block_invoke_66()
   }
 }
 
-- (BOOL)decodeBlock:(unint64_t)a3 error:(id *)a4 discarded:(unint64_t *)a5
+- (BOOL)decodeBlock:(unint64_t)block error:(id *)error discarded:(unint64_t *)discarded
 {
   v78 = *MEMORY[0x277D85DE8];
   v62[0] = MEMORY[0x277D85DD0];
@@ -992,10 +992,10 @@ void __52__SKRaptorQDecoder_decodeAllSourceBlocks_discarded___block_invoke_66()
   v62[2] = __48__SKRaptorQDecoder_decodeBlock_error_discarded___block_invoke;
   v62[3] = &unk_2798EBC60;
   v62[4] = self;
-  v63 = a3;
-  v49 = a3;
+  blockCopy = block;
+  blockCopy2 = block;
   v45 = MEMORY[0x259CAE830](v62, a2);
-  v41 = [(NSArray *)self->_encodedFileURLs objectAtIndexedSubscript:v49];
+  v41 = [(NSArray *)self->_encodedFileURLs objectAtIndexedSubscript:blockCopy2];
   v8 = [MEMORY[0x277CCA9F8] fileHandleForReadingFromURL:? error:?];
   if (!v8)
   {
@@ -1012,15 +1012,15 @@ void __52__SKRaptorQDecoder_decodeAllSourceBlocks_discarded___block_invoke_66()
   v61 = v9;
   v40 = MEMORY[0x259CAE830](v60);
   v10 = nanorq_symbol_size(self->_rq);
-  v48 = nanorq_block_symbols(self->_rq, v49);
+  v48 = nanorq_block_symbols(self->_rq, blockCopy2);
   v59 = 0;
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __48__SKRaptorQDecoder_decodeBlock_error_discarded___block_invoke_3;
   v54[3] = &unk_2798EC108;
-  v56 = a4;
+  errorCopy = error;
   v55 = 0;
-  v57 = a5;
+  discardedCopy = discarded;
   v58 = &v59;
   v43 = MEMORY[0x259CAE830](v54);
   v11 = 0;
@@ -1068,7 +1068,7 @@ void __52__SKRaptorQDecoder_decodeAllSourceBlocks_discarded___block_invoke_66()
               *buf = v42;
               v65 = v12;
               v66 = 2048;
-              v67 = v49;
+              v67 = blockCopy2;
               v68 = 1024;
               v69 = -1;
               v70 = 1024;
@@ -1088,11 +1088,11 @@ void __52__SKRaptorQDecoder_decodeAllSourceBlocks_discarded___block_invoke_66()
 
           else
           {
-            if (&v12[-v59] >= v48 && nanorq_repair_block(self->_rq, self->_outputIO, v49))
+            if (&v12[-v59] >= v48 && nanorq_repair_block(self->_rq, self->_outputIO, blockCopy2))
             {
               v21 = 4;
               v22 = 1;
-              v23 = &v63 + 2;
+              v23 = &blockCopy + 2;
             }
 
             else
@@ -1305,10 +1305,10 @@ void __48__SKRaptorQDecoder_decodeBlock_error_discarded___block_invoke_78()
       v6 = [v5 count];
 
       v7 = [(NSArray *)self->_targetSymbolCounts objectAtIndexedSubscript:v4];
-      v8 = [v7 unsignedIntegerValue];
+      unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-      v9 = v8 - v6;
-      if (v8 < v6)
+      v9 = unsignedIntegerValue - v6;
+      if (unsignedIntegerValue < v6)
       {
         v9 = 0;
       }

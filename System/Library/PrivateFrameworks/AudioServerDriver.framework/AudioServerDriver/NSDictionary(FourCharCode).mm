@@ -6,7 +6,7 @@
 
 - (uint64_t)fourCharCode:()FourCharCode forKey:
 {
-  v5 = [a1 objectForKeyedSubscript:a4];
+  v5 = [self objectForKeyedSubscript:a4];
   v6 = v5;
   v7 = 0;
   if (a3 && v5)

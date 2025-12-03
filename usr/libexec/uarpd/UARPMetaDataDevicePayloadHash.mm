@@ -1,8 +1,8 @@
 @interface UARPMetaDataDevicePayloadHash
 - (UARPMetaDataDevicePayloadHash)init;
-- (UARPMetaDataDevicePayloadHash)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataDevicePayloadHash)initWithPayloadHash:(id)a3;
-- (UARPMetaDataDevicePayloadHash)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataDevicePayloadHash)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataDevicePayloadHash)initWithPayloadHash:(id)hash;
+- (UARPMetaDataDevicePayloadHash)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 @end
 
@@ -24,16 +24,16 @@
   return v3;
 }
 
-- (UARPMetaDataDevicePayloadHash)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataDevicePayloadHash)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataDevicePayloadHash *)self init];
   v7 = v6;
   if (v6)
   {
     v12.receiver = v6;
     v12.super_class = UARPMetaDataDevicePayloadHash;
-    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v12 dataFromPlistValue:valueCopy];
     payloadHash = v7->_payloadHash;
     v7->_payloadHash = v8;
 
@@ -53,12 +53,12 @@
   return v10;
 }
 
-- (UARPMetaDataDevicePayloadHash)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataDevicePayloadHash)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataDevicePayloadHash *)self init];
   if (v6)
   {
-    v7 = [[NSData alloc] initWithBytes:a4 length:a3];
+    v7 = [[NSData alloc] initWithBytes:value length:length];
     payloadHash = v6->_payloadHash;
     v6->_payloadHash = v7;
 
@@ -68,20 +68,20 @@
   return v6;
 }
 
-- (UARPMetaDataDevicePayloadHash)initWithPayloadHash:(id)a3
+- (UARPMetaDataDevicePayloadHash)initWithPayloadHash:(id)hash
 {
-  v4 = a3;
-  v5 = [v4 length];
-  v6 = [v4 bytes];
+  hashCopy = hash;
+  v5 = [hashCopy length];
+  bytes = [hashCopy bytes];
 
-  return [(UARPMetaDataDevicePayloadHash *)self initWithLength:v5 value:v6];
+  return [(UARPMetaDataDevicePayloadHash *)self initWithLength:v5 value:bytes];
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataDevicePayloadHash *)self payloadHash];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  payloadHash = [(UARPMetaDataDevicePayloadHash *)self payloadHash];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, payloadHash];
 
   return v5;
 }

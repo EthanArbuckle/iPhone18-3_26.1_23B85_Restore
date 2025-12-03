@@ -6,17 +6,17 @@
 - (BOOL)_isClientOnGeneralEntitlementAllowlist;
 - (BOOL)_isClientOnSystemShutdownAllowlist;
 - (BOOL)_supportedPlatform;
-- (BOOL)_updateInterruptionForUWBSystemOffWithCause:(int)a3;
-- (BOOL)addObservers:(id)a3;
-- (BOOL)entitlementGranted:(int)a3;
+- (BOOL)_updateInterruptionForUWBSystemOffWithCause:(int)cause;
+- (BOOL)addObservers:(id)observers;
+- (BOOL)entitlementGranted:(int)granted;
 - (BOOL)longRangeEnabled;
-- (BOOL)removeObservers:(id)a3;
+- (BOOL)removeObservers:(id)observers;
 - (BOOL)requiresBiasCorrection;
 - (BOOL)requiresLargeRegions;
 - (NIRecentlyObservedObjectsCache)nearbyObjectsCache;
 - (NIServerSessionActivationGuard)activationGuard;
 - (NIServerSessionAggregateStateProvider)aggregateStateProvider;
-- (NIServerSessionContainer)initWithClient:(id)a3 clientInfo:(const NIServerClientInfo *)a4 connection:(id)a5 authorizationManager:(id)a6;
+- (NIServerSessionContainer)initWithClient:(id)client clientInfo:(const NIServerClientInfo *)info connection:(id)connection authorizationManager:(id)manager;
 - (NIServerSessionObservationRegistrar)observationRegistrar;
 - (NSString)description;
 - (NSString)processNameBestGuess;
@@ -24,14 +24,14 @@
 - (PRWiFiServiceProviding)wifiProvider;
 - (basic_string<char,)_interruptionsMapAsString;
 - (id).cxx_construct;
-- (id)_augmentDiscoveryTokenWithDeviceCapabilities:(id)a3;
-- (id)_augmentDiscoveryTokenWithMmsNumFragments:(id)a3;
-- (id)_augmentDiscoveryTokenWithNbUwbAcquisitionChannel:(id)a3;
+- (id)_augmentDiscoveryTokenWithDeviceCapabilities:(id)capabilities;
+- (id)_augmentDiscoveryTokenWithMmsNumFragments:(id)fragments;
+- (id)_augmentDiscoveryTokenWithNbUwbAcquisitionChannel:(id)channel;
 - (id)_displayPermissionsPromptIfNeeded;
-- (id)_fatalErrorForUwbServiceState:(int)a3 cause:(int)a4;
+- (id)_fatalErrorForUwbServiceState:(int)state cause:(int)cause;
 - (id)_getCapabilities;
 - (id)_getExpandedCapabilities;
-- (id)canHandleAcwgMsg:(id)a3;
+- (id)canHandleAcwgMsg:(id)msg;
 - (id)devicePresenceResource;
 - (id)discoveryToken;
 - (id)printableState;
@@ -43,68 +43,68 @@
 - (unsigned)_getDiscoveryTokenFlags;
 - (void)_acquireClientMessageHandlingRuntimeAssertionIfNecessary;
 - (void)_activateBluetoothResource;
-- (void)_addObject:(id)a3 reply:(id)a4;
-- (void)_dumpInterruptionsMapWithDebugString:(id)a3;
+- (void)_addObject:(id)object reply:(id)reply;
+- (void)_dumpInterruptionsMapWithDebugString:(id)string;
 - (void)_handleBluetoothBecameAvailable;
 - (void)_handleBluetoothBecameUnavailable;
-- (void)_handleSpecializedSessionBackgroundSupportUpdate:(BOOL)a3;
-- (void)_handleSpecializedSessionInvalidation:(id)a3;
+- (void)_handleSpecializedSessionBackgroundSupportUpdate:(BOOL)update;
+- (void)_handleSpecializedSessionInvalidation:(id)invalidation;
 - (void)_populateClientEntitlements;
-- (void)_processBluetoothSample:(id)a3;
-- (void)_processCarKeyEvent:(id)a3 reply:(id)a4;
-- (void)_processFindingEvent:(id)a3 reply:(id)a4;
-- (void)_processSystemEvent:(id)a3 reply:(id)a4;
-- (void)_provideTruthTag:(id)a3;
-- (void)_removeObject:(id)a3 reply:(id)a4;
-- (void)_setContainerState:(unsigned __int8)a3;
-- (void)_setURSKTTL:(unint64_t)a3 reply:(id)a4;
+- (void)_processBluetoothSample:(id)sample;
+- (void)_processCarKeyEvent:(id)event reply:(id)reply;
+- (void)_processFindingEvent:(id)event reply:(id)reply;
+- (void)_processSystemEvent:(id)event reply:(id)reply;
+- (void)_provideTruthTag:(id)tag;
+- (void)_removeObject:(id)object reply:(id)reply;
+- (void)_setContainerState:(unsigned __int8)state;
+- (void)_setURSKTTL:(unint64_t)l reply:(id)reply;
 - (void)_updateClientAppVisibilityInterruption;
 - (void)_updateInterruptionForUWBSystemError;
 - (void)_updateInterruptionForUWBSystemReady;
-- (void)activate:(id)a3;
-- (void)arSessionDidFailWithError:(id)a3;
+- (void)activate:(id)activate;
+- (void)arSessionDidFailWithError:(id)error;
 - (void)arSessionInterruptionEnded;
 - (void)arSessionWasInterrupted;
 - (void)arSessionWillRunWithInvalidConfiguration;
-- (void)bluetoothAdvertisingAddressChanged:(unint64_t)a3;
-- (void)bluetoothDidChangeState:(int64_t)a3;
+- (void)bluetoothAdvertisingAddressChanged:(unint64_t)changed;
+- (void)bluetoothDidChangeState:(int64_t)state;
 - (void)bluetoothServiceInterrupted;
 - (void)dealloc;
-- (void)deleteURSKs:(id)a3;
-- (void)didDiscoverDevice:(id)a3;
-- (void)didFailWithErrorCode:(int64_t)a3 errorString:(const void *)a4;
-- (void)didFinishActivatingWithDiscoveryTokenData:(id)a3 error:(id)a4;
-- (void)didLoseDevice:(id)a3;
-- (void)didReceiveNewSolution:(const void *)a3;
-- (void)didReceiveRemoteData:(const void *)a3;
-- (void)didReceiveSessionStartNotification:(const void *)a3;
-- (void)discoveredDevice:(id)a3 didUpdate:(id)a4;
+- (void)deleteURSKs:(id)ks;
+- (void)didDiscoverDevice:(id)device;
+- (void)didFailWithErrorCode:(int64_t)code errorString:(const void *)string;
+- (void)didFinishActivatingWithDiscoveryTokenData:(id)data error:(id)error;
+- (void)didLoseDevice:(id)device;
+- (void)didReceiveNewSolution:(const void *)solution;
+- (void)didReceiveRemoteData:(const void *)data;
+- (void)didReceiveSessionStartNotification:(const void *)notification;
+- (void)discoveredDevice:(id)device didUpdate:(id)update;
 - (void)generateDiscoveryToken;
-- (void)getActivelyInteractingDiscoveryTokens:(id)a3;
-- (void)getInteractableDiscoveryTokens:(id)a3;
-- (void)getLocalDevicePrintableState:(id)a3;
-- (void)interruptSessionWithReason:(int64_t)a3 monotonicTimeSeconds:(double)a4;
-- (void)interruptionReasonEnded:(int64_t)a3 monotonicTimeSeconds:(double)a4;
+- (void)getActivelyInteractingDiscoveryTokens:(id)tokens;
+- (void)getInteractableDiscoveryTokens:(id)tokens;
+- (void)getLocalDevicePrintableState:(id)state;
+- (void)interruptSessionWithReason:(int64_t)reason monotonicTimeSeconds:(double)seconds;
+- (void)interruptionReasonEnded:(int64_t)ended monotonicTimeSeconds:(double)seconds;
 - (void)invalidate;
-- (void)isExtendedDistanceMeasurementAllowed:(id)a3;
-- (void)isPreciseRangingAllowed:(id)a3;
-- (void)isRangingLimitExceeded:(id)a3;
-- (void)monitoredApp:(int)a3 didChangeState:(int)a4;
-- (void)notifySystemShutdownWithReason:(int64_t)a3 reply:(id)a4;
-- (void)pause:(id)a3;
-- (void)processAcwgM1Msg:(id)a3 withSessionTriggerReason:(int64_t)a4;
-- (void)processAcwgM3Msg:(id)a3;
-- (void)processBluetoothHostTimeSyncWithType:(int64_t)a3 btcClockTicks:(unint64_t)a4 eventCounter:(unint64_t)a5 reply:(id)a6;
-- (void)processDCKMessage:(id)a3 reply:(id)a4;
-- (void)processVisionInput:(id)a3;
-- (void)queryDeviceCapabilities:(id)a3;
-- (void)rangingServiceDidUpdateState:(int)a3 cause:(int)a4;
-- (void)runWithConfiguration:(id)a3 reply:(id)a4;
-- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3;
-- (void)setAppStateMonitor:(id)a3;
-- (void)setLocalDeviceCanInteract:(BOOL)a3 withDiscoveryTokens:(id)a4 reply:(id)a5;
-- (void)setLocalDeviceDebugParameters:(id)a3 reply:(id)a4;
-- (void)setLocalDeviceInteractableDiscoveryTokens:(id)a3 reply:(id)a4;
+- (void)isExtendedDistanceMeasurementAllowed:(id)allowed;
+- (void)isPreciseRangingAllowed:(id)allowed;
+- (void)isRangingLimitExceeded:(id)exceeded;
+- (void)monitoredApp:(int)app didChangeState:(int)state;
+- (void)notifySystemShutdownWithReason:(int64_t)reason reply:(id)reply;
+- (void)pause:(id)pause;
+- (void)processAcwgM1Msg:(id)msg withSessionTriggerReason:(int64_t)reason;
+- (void)processAcwgM3Msg:(id)msg;
+- (void)processBluetoothHostTimeSyncWithType:(int64_t)type btcClockTicks:(unint64_t)ticks eventCounter:(unint64_t)counter reply:(id)reply;
+- (void)processDCKMessage:(id)message reply:(id)reply;
+- (void)processVisionInput:(id)input;
+- (void)queryDeviceCapabilities:(id)capabilities;
+- (void)rangingServiceDidUpdateState:(int)state cause:(int)cause;
+- (void)runWithConfiguration:(id)configuration reply:(id)reply;
+- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status;
+- (void)setAppStateMonitor:(id)monitor;
+- (void)setLocalDeviceCanInteract:(BOOL)interact withDiscoveryTokens:(id)tokens reply:(id)reply;
+- (void)setLocalDeviceDebugParameters:(id)parameters reply:(id)reply;
+- (void)setLocalDeviceInteractableDiscoveryTokens:(id)tokens reply:(id)reply;
 @end
 
 @implementation NIServerSessionContainer
@@ -135,30 +135,30 @@
 
 - (BOOL)_supportedPlatform
 {
-  v2 = [(NIServerSessionContainer *)self _getExpandedCapabilities];
-  v3 = [v2 objectForKeyedSubscript:@"SupportedPlatform"];
-  v4 = [v3 BOOLValue];
+  _getExpandedCapabilities = [(NIServerSessionContainer *)self _getExpandedCapabilities];
+  v3 = [_getExpandedCapabilities objectForKeyedSubscript:@"SupportedPlatform"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)_getExpandedCapabilities
 {
   v3 = objc_opt_new();
-  v4 = [(NIServerSessionContainer *)self _getCapabilities];
-  [v3 addEntriesFromDictionary:v4];
+  _getCapabilities = [(NIServerSessionContainer *)self _getCapabilities];
+  [v3 addEntriesFromDictionary:_getCapabilities];
 
-  v5 = [(NIServerSessionContainer *)self devicePresenceResource];
-  v6 = [v5 internalObserver];
-  LODWORD(v4) = [v6 deviceCapabilities];
+  devicePresenceResource = [(NIServerSessionContainer *)self devicePresenceResource];
+  internalObserver = [devicePresenceResource internalObserver];
+  LODWORD(_getCapabilities) = [internalObserver deviceCapabilities];
 
   v7 = [v3 objectForKey:@"UWBSupportedPlatform"];
-  LODWORD(v5) = [v7 BOOLValue];
+  LODWORD(devicePresenceResource) = [v7 BOOLValue];
 
   v8 = [v3 objectForKey:@"WifiSupportedPlatform"];
   LODWORD(v7) = [v8 BOOLValue];
 
-  v9 = [NSNumber numberWithBool:[(NIServerSessionContainer *)self entitlementGranted:5]& v4 | v5 | [(NIServerSessionContainer *)self entitlementGranted:2]& v7];
+  v9 = [NSNumber numberWithBool:[(NIServerSessionContainer *)self entitlementGranted:5]& _getCapabilities | devicePresenceResource | [(NIServerSessionContainer *)self entitlementGranted:2]& v7];
   [v3 setObject:v9 forKey:@"SupportedPlatform"];
 
   return v3;
@@ -167,19 +167,19 @@
 - (id)_getCapabilities
 {
   v3 = objc_opt_new();
-  v4 = [(NIServerSessionContainer *)self uwbProvider];
-  v5 = [v4 deviceCapabilities];
+  uwbProvider = [(NIServerSessionContainer *)self uwbProvider];
+  deviceCapabilities = [uwbProvider deviceCapabilities];
 
-  v6 = [(NIServerSessionContainer *)self wifiProvider];
-  LOBYTE(self) = [v6 deviceCapabilities];
+  wifiProvider = [(NIServerSessionContainer *)self wifiProvider];
+  LOBYTE(self) = [wifiProvider deviceCapabilities];
 
-  v7 = [NSNumber numberWithBool:v5 & 1];
+  v7 = [NSNumber numberWithBool:deviceCapabilities & 1];
   [v3 setObject:v7 forKey:@"UWBSupportedPlatform"];
 
-  v8 = [NSNumber numberWithBool:(v5 >> 8) & 1];
+  v8 = [NSNumber numberWithBool:(deviceCapabilities >> 8) & 1];
   [v3 setObject:v8 forKey:@"UWBSupportedPlatformPDOA"];
 
-  v9 = [NSNumber numberWithBool:HIWORD(v5) & 1];
+  v9 = [NSNumber numberWithBool:HIWORD(deviceCapabilities) & 1];
   [v3 setObject:v9 forKey:@"UWBSupportedPlatformExtendedDistance"];
 
   v10 = [NSNumber numberWithBool:self & 1];
@@ -193,14 +193,14 @@
 
 - (PRUWBServiceProviding)uwbProvider
 {
-  v5 = self;
+  selfCopy = self;
   if (!self->_uwbProvider)
   {
     v2 = [PRUWBManagerAgent alloc];
     sub_1001D07D8();
   }
 
-  uwbProvider = v5->_uwbProvider;
+  uwbProvider = selfCopy->_uwbProvider;
 
   return uwbProvider;
 }
@@ -220,17 +220,17 @@
   return wifiProvider;
 }
 
-- (NIServerSessionContainer)initWithClient:(id)a3 clientInfo:(const NIServerClientInfo *)a4 connection:(id)a5 authorizationManager:(id)a6
+- (NIServerSessionContainer)initWithClient:(id)client clientInfo:(const NIServerClientInfo *)info connection:(id)connection authorizationManager:(id)manager
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 _queue];
-  dispatch_assert_queue_V2(v14);
+  clientCopy = client;
+  connectionCopy = connection;
+  managerCopy = manager;
+  _queue = [connectionCopy _queue];
+  dispatch_assert_queue_V2(_queue);
 
-  if (v12)
+  if (connectionCopy)
   {
-    if (v13)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -241,7 +241,7 @@
     v34 = +[NSAssertionHandler currentHandler];
     [v34 handleFailureInMethod:a2 object:self file:@"NIServerSessionContainer.mm" lineNumber:303 description:{@"Invalid parameter not satisfying: %@", @"connection"}];
 
-    if (v13)
+    if (managerCopy)
     {
       goto LABEL_3;
     }
@@ -258,35 +258,35 @@ LABEL_3:
   if (v15)
   {
     v15->_entitlementsLock._os_unfair_lock_opaque = 0;
-    v17 = [NIServerClientPublisher publisherForClient:v11];
+    v17 = [NIServerClientPublisher publisherForClient:clientCopy];
     client = v16->_client;
     v16->_client = v17;
 
-    objc_storeStrong(&v16->_connection, a5);
-    v19 = [v12 _queue];
+    objc_storeStrong(&v16->_connection, connection);
+    _queue2 = [connectionCopy _queue];
     connectionQueue = v16->_connectionQueue;
-    v16->_connectionQueue = v19;
+    v16->_connectionQueue = _queue2;
 
     v21 = objc_opt_new();
     sessionIdentifier = v16->_sessionIdentifier;
     v16->_sessionIdentifier = v21;
 
-    objc_storeStrong(&v16->_signingIdentity, a4->var0);
+    objc_storeStrong(&v16->_signingIdentity, info->var0);
     bundleIdentifier = v16->_bundleIdentifier;
     v16->_bundleIdentifier = 0;
 
-    v16->_pid = a4->var1;
+    v16->_pid = info->var1;
     *v16->_clientEntitlementsArray.__elems_ = 0;
     *&v16->_clientEntitlementsArray.__elems_[7] = 0;
-    objc_storeStrong(&v16->_authManager, a6);
+    objc_storeStrong(&v16->_authManager, manager);
     v24 = qword_1009F9820;
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(NIServerSessionContainer *)v16 signingIdentity];
+      signingIdentity = [(NIServerSessionContainer *)v16 signingIdentity];
       v26 = [(NIServerSessionContainer *)v16 pid];
       v27 = v16->_sessionIdentifier;
       *buf = 138412802;
-      v38 = v25;
+      v38 = signingIdentity;
       v39 = 1024;
       v40 = v26;
       v41 = 2112;
@@ -335,8 +335,8 @@ LABEL_3:
 
   if (self->_connectedToUwbProvider)
   {
-    v7 = [(NIServerSessionContainer *)self uwbProvider];
-    [v7 disconnect];
+    uwbProvider = [(NIServerSessionContainer *)self uwbProvider];
+    [uwbProvider disconnect];
 
     self->_connectedToUwbProvider = 0;
   }
@@ -357,13 +357,13 @@ LABEL_3:
   return v7;
 }
 
-- (BOOL)addObservers:(id)a3
+- (BOOL)addObservers:(id)observers
 {
-  v4 = a3;
-  v5 = [(NIServerBaseSession *)self->_specializedSession supportsSessionObservers];
-  if (v5)
+  observersCopy = observers;
+  supportsSessionObservers = [(NIServerBaseSession *)self->_specializedSession supportsSessionObservers];
+  if (supportsSessionObservers)
   {
-    [(NIServerClientPublisher *)self->_client addObservers:v4];
+    [(NIServerClientPublisher *)self->_client addObservers:observersCopy];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -371,16 +371,16 @@ LABEL_3:
     sub_1004A5620();
   }
 
-  return v5;
+  return supportsSessionObservers;
 }
 
-- (BOOL)removeObservers:(id)a3
+- (BOOL)removeObservers:(id)observers
 {
-  v4 = a3;
-  v5 = [(NIServerBaseSession *)self->_specializedSession supportsSessionObservers];
-  if (v5)
+  observersCopy = observers;
+  supportsSessionObservers = [(NIServerBaseSession *)self->_specializedSession supportsSessionObservers];
+  if (supportsSessionObservers)
   {
-    [(NIServerClientPublisher *)self->_client removeObservers:v4];
+    [(NIServerClientPublisher *)self->_client removeObservers:observersCopy];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -388,20 +388,20 @@ LABEL_3:
     sub_1004A565C();
   }
 
-  return v5;
+  return supportsSessionObservers;
 }
 
-- (void)queryDeviceCapabilities:(id)a3
+- (void)queryDeviceCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v11 = 138412802;
-    v12 = v6;
+    v12 = signingIdentity;
     v13 = 1024;
     v14 = v7;
     v15 = 2112;
@@ -409,24 +409,24 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - queryDeviceCapabilities. Signing identity: %@, pid: %d, session identifier: %@", &v11, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  v10 = [(NIServerSessionContainer *)self _getExpandedCapabilities];
-  v4[2](v4, v10);
+  _getExpandedCapabilities = [(NIServerSessionContainer *)self _getExpandedCapabilities];
+  capabilitiesCopy[2](capabilitiesCopy, _getExpandedCapabilities);
 }
 
-- (void)activate:(id)a3
+- (void)activate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     *buf = 138412802;
-    v32 = v6;
+    v32 = signingIdentity;
     v33 = 1024;
     v34 = v7;
     v35 = 2112;
@@ -434,8 +434,8 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - activate. Signing identity: %@, pid: %d, session identifier: %@", buf, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   [(NIServerSessionContainer *)self _setContainerState:1];
   if (+[NIPlatformInfo isInternalBuild])
@@ -473,20 +473,20 @@ LABEL_3:
 
   if ([(NIServerSessionContainer *)self _supportedPlatform])
   {
-    v15 = [(NIServerSessionContainer *)self activationGuard];
-    if ([v15 isSessionAllowedToActivate:self])
+    activationGuard = [(NIServerSessionContainer *)self activationGuard];
+    if ([activationGuard isSessionAllowedToActivate:self])
     {
       v16 = [[NIServerAnalyticsManager alloc] initWithBundleIdentifier:self->_bundleIdentifier];
       analyticsManager = self->_analyticsManager;
       self->_analyticsManager = v16;
 
-      v18 = [(NIServerSessionContainer *)self uwbProvider];
-      v19 = [v18 deviceCapabilities];
+      uwbProvider = [(NIServerSessionContainer *)self uwbProvider];
+      deviceCapabilities = [uwbProvider deviceCapabilities];
 
-      if (v19)
+      if (deviceCapabilities)
       {
-        v20 = [(NIServerSessionContainer *)self uwbProvider];
-        [v20 connect];
+        uwbProvider2 = [(NIServerSessionContainer *)self uwbProvider];
+        [uwbProvider2 connect];
 
         self->_connectedToUwbProvider = 1;
       }
@@ -500,7 +500,7 @@ LABEL_3:
       }
 
       [(NIServerSessionContainer *)self _setContainerState:2];
-      v4[2](v4, v14, 0);
+      activateCopy[2](activateCopy, v14, 0);
     }
 
     else
@@ -510,7 +510,7 @@ LABEL_3:
       p_activationError = &self->_activationError;
       *p_activationError = v25;
 
-      (v4)[2](v4, v14, *p_activationError);
+      (activateCopy)[2](activateCopy, v14, *p_activationError);
     }
   }
 
@@ -521,22 +521,22 @@ LABEL_3:
     v23 = &self->_activationError;
     *v23 = v22;
 
-    (v4)[2](v4, v14, *v23);
+    (activateCopy)[2](activateCopy, v14, *v23);
   }
 }
 
-- (void)runWithConfiguration:(id)a3 reply:(id)a4
+- (void)runWithConfiguration:(id)configuration reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v10 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     LODWORD(buf[0]) = 138412802;
-    *(buf + 4) = v9;
+    *(buf + 4) = signingIdentity;
     WORD2(buf[1]) = 1024;
     *(&buf[1] + 6) = v10;
     WORD1(buf[2]) = 2112;
@@ -544,17 +544,17 @@ LABEL_3:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - runWithConfiguration. Signing identity: %@, pid: %d, session identifier: %@", buf, 0x1Cu);
   }
 
-  v12 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v12);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if ([(NIServerSessionContainer *)self _supportedPlatform])
   {
-    if (v6)
+    if (configurationCopy)
     {
       [(NIServerSessionContainer *)self _setContainerState:3];
-      v13 = [v6 _internalIsMemoryAssertionRequired];
+      _internalIsMemoryAssertionRequired = [configurationCopy _internalIsMemoryAssertionRequired];
       assertionManager = self->_assertionManager;
-      if (v13)
+      if (_internalIsMemoryAssertionRequired)
       {
         [(NIServerAssertionManager *)assertionManager acquireMemoryAssertion];
       }
@@ -564,9 +564,9 @@ LABEL_3:
         [(NIServerAssertionManager *)assertionManager releaseMemoryAssertion];
       }
 
-      v17 = [v6 _internalIsPowerAssertionRequired];
+      _internalIsPowerAssertionRequired = [configurationCopy _internalIsPowerAssertionRequired];
       v18 = self->_assertionManager;
-      if (v17)
+      if (_internalIsPowerAssertionRequired)
       {
         [(NIServerAssertionManager *)v18 acquirePowerAssertion];
       }
@@ -584,15 +584,15 @@ LABEL_3:
           sub_1004A5738(buf, [(NSError *)self->_activationError code], v19);
         }
 
-        v7[2](v7, self->_activationError);
+        replyCopy[2](replyCopy, self->_activationError);
         goto LABEL_22;
       }
 
-      v20 = [(NIServerSessionContainer *)self uwbProvider];
-      v21 = [v20 deviceCapabilities];
+      uwbProvider = [(NIServerSessionContainer *)self uwbProvider];
+      deviceCapabilities = [uwbProvider deviceCapabilities];
 
-      v22 = [(NIServerSessionContainer *)self _displayPermissionsPromptIfNeeded];
-      if (v22)
+      _displayPermissionsPromptIfNeeded = [(NIServerSessionContainer *)self _displayPermissionsPromptIfNeeded];
+      if (_displayPermissionsPromptIfNeeded)
       {
         goto LABEL_20;
       }
@@ -687,8 +687,8 @@ LABEL_43:
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
             [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-            v22 = v25 = 0;
-            if (v22)
+            _displayPermissionsPromptIfNeeded = v25 = 0;
+            if (_displayPermissionsPromptIfNeeded)
             {
 LABEL_162:
               if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -697,7 +697,7 @@ LABEL_162:
               }
 
 LABEL_20:
-              v7[2](v7, v22);
+              replyCopy[2](replyCopy, _displayPermissionsPromptIfNeeded);
 LABEL_21:
 
               goto LABEL_22;
@@ -707,7 +707,7 @@ LABEL_44:
             specializedSession = self->_specializedSession;
             if (specializedSession)
             {
-              if ([(NIServerBaseSession *)specializedSession updateConfiguration:v6])
+              if ([(NIServerBaseSession *)specializedSession updateConfiguration:configurationCopy])
               {
                 v27 = qword_1009F9820;
                 if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -722,8 +722,8 @@ LABEL_51:
                 goto LABEL_52;
               }
 
-              v29 = [(NIServerBaseSession *)self->_specializedSession lastConfiguration];
-              v30 = [v29 isEqual:v6];
+              lastConfiguration = [(NIServerBaseSession *)self->_specializedSession lastConfiguration];
+              v30 = [lastConfiguration isEqual:configurationCopy];
 
               v27 = qword_1009F9820;
               if (v30)
@@ -743,11 +743,11 @@ LABEL_52:
               v32 = qword_1009F9820;
               if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
               {
-                v33 = [(NIServerBaseSession *)self->_specializedSession lastConfiguration];
+                lastConfiguration2 = [(NIServerBaseSession *)self->_specializedSession lastConfiguration];
                 LODWORD(buf[0]) = 138412546;
-                *(buf + 4) = v33;
+                *(buf + 4) = lastConfiguration2;
                 WORD2(buf[1]) = 2112;
-                *(&buf[1] + 6) = v6;
+                *(&buf[1] + 6) = configurationCopy;
                 _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "#ses-container,Existing session with different config.\nCurrent:%@\nNew:%@", buf, 0x16u);
               }
             }
@@ -757,12 +757,12 @@ LABEL_57:
             v34 = qword_1009F9820;
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
             {
-              v35 = [(NIServerSessionContainer *)self signingIdentity];
+              signingIdentity2 = [(NIServerSessionContainer *)self signingIdentity];
               v36 = [(NIServerSessionContainer *)self pid];
               LODWORD(buf[0]) = 67109634;
               HIDWORD(buf[0]) = v31;
               LOWORD(buf[1]) = 2112;
-              *(&buf[1] + 2) = v35;
+              *(&buf[1] + 2) = signingIdentity2;
               WORD1(buf[2]) = 1024;
               HIDWORD(buf[2]) = v36;
               _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "#ses-container,Creating a new session: %d, Signing identity: %@, pid: %d.", buf, 0x18u);
@@ -779,19 +779,19 @@ LABEL_57:
 
               sub_100022400(&self->_interruptionsMap.__table_.__bucket_list_.__ptr_);
               v126 = 0;
-              v39 = [[v25 alloc] initWithResourcesManager:self configuration:v6 error:&v126];
-              v22 = v126;
+              v39 = [[v25 alloc] initWithResourcesManager:self configuration:configurationCopy error:&v126];
+              _displayPermissionsPromptIfNeeded = v126;
               v40 = self->_specializedSession;
               self->_specializedSession = v39;
 
-              if (v22)
+              if (_displayPermissionsPromptIfNeeded)
               {
                 if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
                 {
                   sub_1004A57EC(self);
                 }
 
-                v7[2](v7, v22);
+                replyCopy[2](replyCopy, _displayPermissionsPromptIfNeeded);
                 goto LABEL_21;
               }
 
@@ -819,10 +819,10 @@ LABEL_57:
               v46 = voucher_copy();
               [(NIServerBaseSession *)v45 setClientVoucher:v46];
 
-              if (v21)
+              if (deviceCapabilities)
               {
-                v47 = [(NIServerSessionContainer *)self uwbProvider];
-                [v47 requestAsyncServiceStatusUpdate];
+                uwbProvider2 = [(NIServerSessionContainer *)self uwbProvider];
+                [uwbProvider2 requestAsyncServiceStatusUpdate];
               }
 
               [(NIServerSessionContainer *)self _handleSpecializedSessionBackgroundSupportUpdate:[(NIServerBaseSession *)self->_specializedSession supportsBackgroundedClients]];
@@ -831,22 +831,22 @@ LABEL_57:
               objc_destroyWeak(buf);
             }
 
-            v48 = [(NIServerBaseSession *)self->_specializedSession requiresUWBToRun];
-            v49 = [(NIServerBaseSession *)self->_specializedSession requiresNarrowbandToRun];
-            if (v49 == 2 && v48 != 2)
+            requiresUWBToRun = [(NIServerBaseSession *)self->_specializedSession requiresUWBToRun];
+            requiresNarrowbandToRun = [(NIServerBaseSession *)self->_specializedSession requiresNarrowbandToRun];
+            if (requiresNarrowbandToRun == 2 && requiresUWBToRun != 2)
             {
               __assert_rtn("[NIServerSessionContainer runWithConfiguration:reply:]", "NIServerSessionContainer.mm", 783, "requiresUWBToRun");
             }
 
-            if (v48 == 2)
+            if (requiresUWBToRun == 2)
             {
-              v50 = [(NIServerSessionContainer *)self uwbProvider];
-              v51 = [v50 currentServiceState];
+              uwbProvider3 = [(NIServerSessionContainer *)self uwbProvider];
+              currentServiceState = [uwbProvider3 currentServiceState];
 
-              v52 = v51 == 1;
-              if (v49 != 2)
+              v52 = currentServiceState == 1;
+              if (requiresNarrowbandToRun != 2)
               {
-                v52 = (v51 - 1) < 2;
+                v52 = (currentServiceState - 1) < 2;
               }
 
               if (!v52)
@@ -857,7 +857,7 @@ LABEL_57:
                   v63 = self->_sessionIdentifier;
                   v64 = @"NO";
                   LODWORD(buf[0]) = 138413314;
-                  if (v49 == 2)
+                  if (requiresNarrowbandToRun == 2)
                   {
                     v65 = @"YES";
                   }
@@ -869,7 +869,7 @@ LABEL_57:
 
                   *(buf + 4) = v63;
                   WORD2(buf[1]) = 2112;
-                  if ((v51 - 1) >= 2)
+                  if ((currentServiceState - 1) >= 2)
                   {
                     v66 = @"NO";
                   }
@@ -880,7 +880,7 @@ LABEL_57:
                   }
 
                   *(&buf[1] + 6) = @"YES";
-                  if (v51 == 1)
+                  if (currentServiceState == 1)
                   {
                     v64 = @"YES";
                   }
@@ -894,16 +894,16 @@ LABEL_57:
                   _os_log_error_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "#ses-container,Specialized session %@, requires UWB: %@, requires NB: %@, UWB available: %@, NB available: %@", buf, 0x34u);
                 }
 
-                v22 = [(NIServerSessionContainer *)self _fatalErrorForUwbServiceState:v51 cause:HIDWORD(v51)];
-                if (!v22)
+                _displayPermissionsPromptIfNeeded = [(NIServerSessionContainer *)self _fatalErrorForUwbServiceState:currentServiceState cause:HIDWORD(currentServiceState)];
+                if (!_displayPermissionsPromptIfNeeded)
                 {
-                  if (![(NIServerSessionContainer *)self _updateInterruptionForUWBServiceState:v51 cause:HIDWORD(v51) requiresNarrowBand:v49 == 2])
+                  if (![(NIServerSessionContainer *)self _updateInterruptionForUWBServiceState:currentServiceState cause:HIDWORD(currentServiceState) requiresNarrowBand:requiresNarrowbandToRun == 2])
                   {
                     __assert_rtn("[NIServerSessionContainer runWithConfiguration:reply:]", "NIServerSessionContainer.mm", 830, "false");
                   }
 
-                  v7[2](v7, 0);
-                  v22 = 0;
+                  replyCopy[2](replyCopy, 0);
+                  _displayPermissionsPromptIfNeeded = 0;
                   goto LABEL_21;
                 }
 
@@ -928,17 +928,17 @@ LABEL_57:
                   _os_log_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEFAULT, "#ses-container,Session interrupted since BT unavailable, wait for session suspension to end", buf, 2u);
                 }
 
-                v54 = [(NIServerSessionContainer *)self remote];
-                [v54 uwbSessionInterruptedWithReason:9 timestamp:sub_100005288()];
+                remote = [(NIServerSessionContainer *)self remote];
+                [remote uwbSessionInterruptedWithReason:9 timestamp:sub_100005288()];
 LABEL_80:
 
-                v22 = 0;
+                _displayPermissionsPromptIfNeeded = 0;
                 goto LABEL_21;
               }
             }
 
-            v22 = [(NIServerBaseSession *)self->_specializedSession configure];
-            if (v22)
+            _displayPermissionsPromptIfNeeded = [(NIServerBaseSession *)self->_specializedSession configure];
+            if (_displayPermissionsPromptIfNeeded)
             {
               if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
               {
@@ -946,29 +946,29 @@ LABEL_80:
               }
 
 LABEL_87:
-              v7[2](v7, v22);
+              replyCopy[2](replyCopy, _displayPermissionsPromptIfNeeded);
               goto LABEL_21;
             }
 
-            if (!-[NIServerBaseSession supportsCameraAssistance](self->_specializedSession, "supportsCameraAssistance") && [v6 _internalIsCameraAssistanceEnabled])
+            if (!-[NIServerBaseSession supportsCameraAssistance](self->_specializedSession, "supportsCameraAssistance") && [configurationCopy _internalIsCameraAssistanceEnabled])
             {
               if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
               {
                 sub_1004A58C4(self);
               }
 
-              v22 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-              (v7[2])(v7);
+              _displayPermissionsPromptIfNeeded = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
+              (replyCopy[2])(replyCopy);
               goto LABEL_21;
             }
 
             if ([(NIServerBaseSession *)self->_specializedSession supportsSessionObservers])
             {
-              v56 = [(NIServerSessionContainer *)self observationRegistrar];
-              [v56 registerObserversForSession:self];
+              observationRegistrar = [(NIServerSessionContainer *)self observationRegistrar];
+              [observationRegistrar registerObserversForSession:self];
             }
 
-            if ([v6 _internalIsCameraAssistanceEnabled])
+            if ([configurationCopy _internalIsCameraAssistanceEnabled])
             {
               v57 = +[NIServerVisionDataDistributor sharedProvider];
               [v57 registerForVisionInput:self->_specializedSession];
@@ -977,8 +977,8 @@ LABEL_87:
             if (![(NIServerBaseSession *)self->_specializedSession supportsDevicePresence])
             {
 LABEL_115:
-              v22 = [(NIServerBaseSession *)self->_specializedSession run];
-              if (v22)
+              _displayPermissionsPromptIfNeeded = [(NIServerBaseSession *)self->_specializedSession run];
+              if (_displayPermissionsPromptIfNeeded)
               {
                 if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
                 {
@@ -988,21 +988,21 @@ LABEL_115:
                 v67 = +[NIServerVisionDataDistributor sharedProvider];
                 [v67 unregisterForVisionInput:self->_specializedSession];
 
-                v68 = [(NIServerSessionContainer *)self devicePresenceResource];
-                v69 = [v68 internalObserver];
-                [v69 stopLeechingForConsumer:self];
+                devicePresenceResource = [(NIServerSessionContainer *)self devicePresenceResource];
+                internalObserver = [devicePresenceResource internalObserver];
+                [internalObserver stopLeechingForConsumer:self];
 
-                v70 = [(NIServerSessionContainer *)self devicePresenceResource];
-                v71 = [v70 internalObserver];
-                [v71 unregisterForInternalBluetoothSamples:self];
+                devicePresenceResource2 = [(NIServerSessionContainer *)self devicePresenceResource];
+                internalObserver2 = [devicePresenceResource2 internalObserver];
+                [internalObserver2 unregisterForInternalBluetoothSamples:self];
 
-                v7[2](v7, v22);
+                replyCopy[2](replyCopy, _displayPermissionsPromptIfNeeded);
                 goto LABEL_21;
               }
 
               [(NIServerSessionContainer *)self _setContainerState:4];
-              v7[2](v7, 0);
-              v54 = kTCCServiceNearbyInteraction;
+              replyCopy[2](replyCopy, 0);
+              remote = kTCCServiceNearbyInteraction;
               connection = self->_connection;
               if (connection)
               {
@@ -1020,7 +1020,7 @@ LABEL_115:
                 v74 = [[PAApplication alloc] initWithTCCIdentity:v73];
                 if (v74)
                 {
-                  v75 = [PATCCAccess accessWithAccessor:v74 forService:v54];
+                  v75 = [PATCCAccess accessWithAccessor:v74 forService:remote];
                   if (v75)
                   {
                     v76 = +[PAAccessLogger sharedInstance];
@@ -1043,18 +1043,18 @@ LABEL_115:
               self->_paAccessInterval = 0;
 LABEL_128:
 
-              if ([v6 _internalIsCameraAssistanceEnabled] && (objc_msgSend(v6, "_internalIsCameraAssistanceInClientProcess") & 1) == 0)
+              if ([configurationCopy _internalIsCameraAssistanceEnabled] && (objc_msgSend(configurationCopy, "_internalIsCameraAssistanceInClientProcess") & 1) == 0)
               {
                 v79 = [NIServerVisionInternalSessionRequest alloc];
-                v80 = [(NSUUID *)self->_sessionIdentifier UUIDString];
-                v81 = [(NIServerVisionInternalSessionRequest *)v79 initWithIdentifier:v80 observer:self];
+                uUIDString = [(NSUUID *)self->_sessionIdentifier UUIDString];
+                v81 = [(NIServerVisionInternalSessionRequest *)v79 initWithIdentifier:uUIDString observer:self];
                 visionSessionRequest = self->_visionSessionRequest;
                 self->_visionSessionRequest = v81;
 
                 [(NIServerVisionInternalSessionRequest *)self->_visionSessionRequest activate];
               }
 
-              [(NIServerAnalyticsManager *)self->_analyticsManager sessionSuccessfullyRanWithConfig:v6 withTimestamp:sub_100005288()];
+              [(NIServerAnalyticsManager *)self->_analyticsManager sessionSuccessfullyRanWithConfig:configurationCopy withTimestamp:sub_100005288()];
 
               goto LABEL_80;
             }
@@ -1062,24 +1062,24 @@ LABEL_128:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v58 = v6;
-              v59 = [v58 token];
-              v60 = v59 == 0;
+              devicePresenceResource4 = configurationCopy;
+              token = [devicePresenceResource4 token];
+              v60 = token == 0;
 
               if (!v60)
               {
-                v61 = [(NIServerSessionContainer *)self devicePresenceResource];
-                v62 = [v61 internalObserver];
-                [v62 registerForInternalBluetoothSamples:self reportCache:0];
+                devicePresenceResource3 = [(NIServerSessionContainer *)self devicePresenceResource];
+                internalObserver3 = [devicePresenceResource3 internalObserver];
+                [internalObserver3 registerForInternalBluetoothSamples:self reportCache:0];
 
 LABEL_114:
                 goto LABEL_115;
               }
             }
 
-            v58 = [(NIServerSessionContainer *)self devicePresenceResource];
-            v61 = [v58 internalObserver];
-            [v61 registerForInternalBluetoothSamples:self];
+            devicePresenceResource4 = [(NIServerSessionContainer *)self devicePresenceResource];
+            devicePresenceResource3 = [devicePresenceResource4 internalObserver];
+            [devicePresenceResource3 registerForInternalBluetoothSamples:self];
             goto LABEL_114;
           }
 
@@ -1097,13 +1097,13 @@ LABEL_114:
             v93 = [v83 BOOLForKey:@"NIEnableDLTDOA"];
           }
 
-          v98 = [(NIServerSessionContainer *)self _isClientOnDLTDOAInternalAllowlist];
+          _isClientOnDLTDOAInternalAllowlist = [(NIServerSessionContainer *)self _isClientOnDLTDOAInternalAllowlist];
           if (v93)
           {
             v93 = +[NIPlatformInfo isInternalBuild];
           }
 
-          if ((v98 | v93 | [(NIServerSessionContainer *)self entitlementGranted:10]))
+          if ((_isClientOnDLTDOAInternalAllowlist | v93 | [(NIServerSessionContainer *)self entitlementGranted:10]))
           {
             v87 = objc_opt_class();
             goto LABEL_181;
@@ -1112,11 +1112,11 @@ LABEL_114:
           v99 = qword_1009F9820;
           if (os_log_type_enabled(v99, OS_LOG_TYPE_FAULT))
           {
-            v119 = [(NIServerSessionContainer *)self signingIdentity];
+            signingIdentity3 = [(NIServerSessionContainer *)self signingIdentity];
             v120 = [(NIServerSessionContainer *)self pid];
             v121 = self->_sessionIdentifier;
             LODWORD(buf[0]) = 138412802;
-            *(buf + 4) = v119;
+            *(buf + 4) = signingIdentity3;
             WORD2(buf[1]) = 1024;
             *(&buf[1] + 6) = v120;
             WORD1(buf[2]) = 2112;
@@ -1127,7 +1127,7 @@ LABEL_114:
           v132 = NSLocalizedFailureReasonErrorKey;
           v133 = @"Not authorized to run DL-TDOA configuration.";
           v100 = [NSDictionary dictionaryWithObjects:&v133 forKeys:&v132 count:1];
-          v22 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v100];
+          _displayPermissionsPromptIfNeeded = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v100];
 
 LABEL_160:
           v25 = 0;
@@ -1143,11 +1143,11 @@ LABEL_160:
         v94 = qword_1009F9820;
         if (os_log_type_enabled(v94, OS_LOG_TYPE_FAULT))
         {
-          v116 = [(NIServerSessionContainer *)self signingIdentity];
+          signingIdentity4 = [(NIServerSessionContainer *)self signingIdentity];
           v117 = [(NIServerSessionContainer *)self pid];
           v118 = self->_sessionIdentifier;
           LODWORD(buf[0]) = 138412802;
-          *(buf + 4) = v116;
+          *(buf + 4) = signingIdentity4;
           WORD2(buf[1]) = 1024;
           *(&buf[1] + 6) = v117;
           WORD1(buf[2]) = 2112;
@@ -1160,7 +1160,7 @@ LABEL_160:
         v83 = [NSDictionary dictionaryWithObjects:&v135 forKeys:&v134 count:1];
         v89 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:v83];
 LABEL_159:
-        v22 = v89;
+        _displayPermissionsPromptIfNeeded = v89;
         goto LABEL_160;
       }
 
@@ -1169,11 +1169,11 @@ LABEL_159:
         v88 = qword_1009F9820;
         if (os_log_type_enabled(v88, OS_LOG_TYPE_FAULT))
         {
-          v101 = [(NIServerSessionContainer *)self signingIdentity];
+          signingIdentity5 = [(NIServerSessionContainer *)self signingIdentity];
           v102 = [(NIServerSessionContainer *)self pid];
           v103 = self->_sessionIdentifier;
           LODWORD(buf[0]) = 138412802;
-          *(buf + 4) = v101;
+          *(buf + 4) = signingIdentity5;
           WORD2(buf[1]) = 1024;
           *(&buf[1] + 6) = v102;
           WORD1(buf[2]) = 2112;
@@ -1188,27 +1188,27 @@ LABEL_159:
         goto LABEL_159;
       }
 
-      v83 = v6;
-      v84 = [v83 discoveryTokenVariant];
+      v83 = configurationCopy;
+      discoveryTokenVariant = [v83 discoveryTokenVariant];
       v25 = 0;
-      if (v84 > 1)
+      if (discoveryTokenVariant > 1)
       {
-        if (v84 == 2)
+        if (discoveryTokenVariant == 2)
         {
-          v95 = [v83 requestedMeasurementQuality];
+          requestedMeasurementQuality = [v83 requestedMeasurementQuality];
           v25 = 0;
-          if (v95 > 1)
+          if (requestedMeasurementQuality > 1)
           {
-            if (v95 == 2)
+            if (requestedMeasurementQuality == 2)
             {
               v90 = qword_1009F9820;
               if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
               {
-                v107 = [(NIServerSessionContainer *)self signingIdentity];
+                signingIdentity6 = [(NIServerSessionContainer *)self signingIdentity];
                 v108 = [(NIServerSessionContainer *)self pid];
                 v109 = self->_sessionIdentifier;
                 LODWORD(buf[0]) = 138412802;
-                *(buf + 4) = v107;
+                *(buf + 4) = signingIdentity6;
                 WORD2(buf[1]) = 1024;
                 *(&buf[1] + 6) = v108;
                 WORD1(buf[2]) = 2112;
@@ -1219,13 +1219,13 @@ LABEL_159:
 
             else
             {
-              if (v95 != 3)
+              if (requestedMeasurementQuality != 3)
               {
                 goto LABEL_175;
               }
 
-              v96 = [v83 monitoredRegions];
-              v97 = v96 == 0;
+              monitoredRegions = [v83 monitoredRegions];
+              v97 = monitoredRegions == 0;
 
               if (!v97)
               {
@@ -1236,11 +1236,11 @@ LABEL_159:
               v90 = qword_1009F9820;
               if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
               {
-                v113 = [(NIServerSessionContainer *)self signingIdentity];
+                signingIdentity7 = [(NIServerSessionContainer *)self signingIdentity];
                 v114 = [(NIServerSessionContainer *)self pid];
                 v115 = self->_sessionIdentifier;
                 LODWORD(buf[0]) = 138412802;
-                *(buf + 4) = v113;
+                *(buf + 4) = signingIdentity7;
                 WORD2(buf[1]) = 1024;
                 *(&buf[1] + 6) = v114;
                 WORD1(buf[2]) = 2112;
@@ -1252,27 +1252,27 @@ LABEL_159:
 
           else
           {
-            if (v95)
+            if (requestedMeasurementQuality)
             {
-              if (v95 == 1)
+              if (requestedMeasurementQuality == 1)
               {
                 v85 = off_1009894C8;
                 goto LABEL_138;
               }
 
 LABEL_175:
-              v22 = 0;
+              _displayPermissionsPromptIfNeeded = 0;
               goto LABEL_161;
             }
 
             v90 = qword_1009F9820;
             if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
             {
-              v104 = [(NIServerSessionContainer *)self signingIdentity];
+              signingIdentity8 = [(NIServerSessionContainer *)self signingIdentity];
               v105 = [(NIServerSessionContainer *)self pid];
               v106 = self->_sessionIdentifier;
               LODWORD(buf[0]) = 138412802;
-              *(buf + 4) = v104;
+              *(buf + 4) = signingIdentity8;
               WORD2(buf[1]) = 1024;
               *(&buf[1] + 6) = v105;
               WORD1(buf[2]) = 2112;
@@ -1284,15 +1284,15 @@ LABEL_175:
           goto LABEL_152;
         }
 
-        if (v84 != 3)
+        if (discoveryTokenVariant != 3)
         {
           goto LABEL_175;
         }
       }
 
-      else if (v84)
+      else if (discoveryTokenVariant)
       {
-        if (v84 == 1)
+        if (discoveryTokenVariant == 1)
         {
           v85 = off_1009894B0;
 LABEL_138:
@@ -1300,10 +1300,10 @@ LABEL_138:
           v87 = objc_opt_class();
 LABEL_181:
           v25 = v87;
-          v22 = 0;
+          _displayPermissionsPromptIfNeeded = 0;
 LABEL_161:
 
-          if (v22)
+          if (_displayPermissionsPromptIfNeeded)
           {
             goto LABEL_162;
           }
@@ -1317,11 +1317,11 @@ LABEL_161:
       v90 = qword_1009F9820;
       if (os_log_type_enabled(v90, OS_LOG_TYPE_ERROR))
       {
-        v110 = [(NIServerSessionContainer *)self signingIdentity];
+        signingIdentity9 = [(NIServerSessionContainer *)self signingIdentity];
         v111 = [(NIServerSessionContainer *)self pid];
         v112 = self->_sessionIdentifier;
         LODWORD(buf[0]) = 138412802;
-        *(buf + 4) = v110;
+        *(buf + 4) = signingIdentity9;
         WORD2(buf[1]) = 1024;
         *(&buf[1] + 6) = v111;
         WORD1(buf[2]) = 2112;
@@ -1336,7 +1336,7 @@ LABEL_152:
     }
 
     v16 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-    v7[2](v7, v16);
+    replyCopy[2](replyCopy, v16);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1347,7 +1347,7 @@ LABEL_152:
   else
   {
     v15 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5889 userInfo:0];
-    v7[2](v7, v15);
+    replyCopy[2](replyCopy, v15);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1358,17 +1358,17 @@ LABEL_152:
 LABEL_22:
 }
 
-- (void)pause:(id)a3
+- (void)pause:(id)pause
 {
-  v4 = a3;
+  pauseCopy = pause;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v15 = 138412802;
-    v16 = v6;
+    v16 = signingIdentity;
     v17 = 1024;
     v18 = v7;
     v19 = 2112;
@@ -1376,8 +1376,8 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - pause. Signing identity: %@, pid: %d, session identifier: %@", &v15, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if ([(NIServerSessionContainer *)self _supportedPlatform])
   {
@@ -1401,13 +1401,13 @@ LABEL_22:
         [(NIServerSessionContainer *)self _setContainerState:6];
       }
 
-      v4[2](v4, v12);
+      pauseCopy[2](pauseCopy, v12);
     }
 
     else
     {
       v14 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-      v4[2](v4, v14);
+      pauseCopy[2](pauseCopy, v14);
 
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -1419,7 +1419,7 @@ LABEL_22:
   else
   {
     v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5889 userInfo:0];
-    v4[2](v4, v13);
+    pauseCopy[2](pauseCopy, v13);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1433,11 +1433,11 @@ LABEL_22:
   v3 = qword_1009F9820;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v5 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v8 = 138412802;
-    v9 = v4;
+    v9 = signingIdentity;
     v10 = 1024;
     v11 = v5;
     v12 = 2112;
@@ -1445,23 +1445,23 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - generateDiscoveryToken. Signing identity: %@, pid: %d, session identifier: %@", &v8, 0x1Cu);
   }
 
-  v7 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v7);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   [(NIServerSessionContainer *)self _activateBluetoothResource];
 }
 
-- (void)notifySystemShutdownWithReason:(int64_t)a3 reply:(id)a4
+- (void)notifySystemShutdownWithReason:(int64_t)reason reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v9 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     *buf = 138412802;
-    v24 = v8;
+    v24 = signingIdentity;
     v25 = 1024;
     v26 = v9;
     v27 = 2112;
@@ -1471,14 +1471,14 @@ LABEL_22:
 
   if ([(NIServerSessionContainer *)self entitlementGranted:6])
   {
-    if ((a3 - 1) >= 2)
+    if ((reason - 1) >= 2)
     {
-      if (a3)
+      if (reason)
       {
         v19 = NSLocalizedDescriptionKey;
         v20 = @"Invalid reason.";
         v14 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-        a3 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v14];
+        reason = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v14];
       }
     }
 
@@ -1494,7 +1494,7 @@ LABEL_22:
       v12 = sub_10035D02C();
       if (sub_10035D2A4(v12))
       {
-        a3 = 0;
+        reason = 0;
       }
 
       else
@@ -1502,7 +1502,7 @@ LABEL_22:
         v17 = NSLocalizedDescriptionKey;
         v18 = @"Shutdown operation failed.";
         v15 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-        a3 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v15];
+        reason = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v15];
       }
 
       v16 = qword_1009F9820;
@@ -1513,30 +1513,30 @@ LABEL_22:
       }
     }
 
-    v6[2](v6, a3);
+    replyCopy[2](replyCopy, reason);
   }
 
   else
   {
     v21 = NSLocalizedDescriptionKey;
     v22 = @"Operation disallowed.";
-    a3 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:a3];
-    v6[2](v6, v13);
+    reason = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
+    v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:reason];
+    replyCopy[2](replyCopy, v13);
   }
 }
 
-- (void)_provideTruthTag:(id)a3
+- (void)_provideTruthTag:(id)tag
 {
-  v4 = a3;
+  tagCopy = tag;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v10 = 138412802;
-    v11 = v6;
+    v11 = signingIdentity;
     v12 = 1024;
     v13 = v7;
     v14 = 2112;
@@ -1544,24 +1544,24 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - _provideTruthTag. Signing identity: %@, pid: %d, session identifier: %@", &v10, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  sub_10005E284(v4);
+  sub_10005E284(tagCopy);
 }
 
-- (void)_addObject:(id)a3 reply:(id)a4
+- (void)_addObject:(id)object reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v10 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v17 = 138412802;
-    v18 = v9;
+    v18 = signingIdentity;
     v19 = 1024;
     v20 = v10;
     v21 = 2112;
@@ -1569,22 +1569,22 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - _addObject. Signing identity: %@, pid: %d, session identifier: %@", &v17, 0x1Cu);
   }
 
-  v12 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v12);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if ([(NIServerSessionContainer *)self _supportedPlatform])
   {
     specializedSession = self->_specializedSession;
     if (specializedSession)
     {
-      v14 = [(NIServerBaseSession *)specializedSession addObject:v6];
-      v7[2](v7, v14);
+      v14 = [(NIServerBaseSession *)specializedSession addObject:objectCopy];
+      replyCopy[2](replyCopy, v14);
     }
 
     else
     {
       v16 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-      v7[2](v7, v16);
+      replyCopy[2](replyCopy, v16);
 
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -1596,7 +1596,7 @@ LABEL_22:
   else
   {
     v15 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5889 userInfo:0];
-    v7[2](v7, v15);
+    replyCopy[2](replyCopy, v15);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1605,18 +1605,18 @@ LABEL_22:
   }
 }
 
-- (void)_removeObject:(id)a3 reply:(id)a4
+- (void)_removeObject:(id)object reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v10 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v17 = 138412802;
-    v18 = v9;
+    v18 = signingIdentity;
     v19 = 1024;
     v20 = v10;
     v21 = 2112;
@@ -1624,22 +1624,22 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - _removeObject. Signing identity: %@, pid: %d, session identifier: %@", &v17, 0x1Cu);
   }
 
-  v12 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v12);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if ([(NIServerSessionContainer *)self _supportedPlatform])
   {
     specializedSession = self->_specializedSession;
     if (specializedSession)
     {
-      v14 = [(NIServerBaseSession *)specializedSession removeObject:v6];
-      v7[2](v7, v14);
+      v14 = [(NIServerBaseSession *)specializedSession removeObject:objectCopy];
+      replyCopy[2](replyCopy, v14);
     }
 
     else
     {
       v16 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-      v7[2](v7, v16);
+      replyCopy[2](replyCopy, v16);
 
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -1651,7 +1651,7 @@ LABEL_22:
   else
   {
     v15 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5889 userInfo:0];
-    v7[2](v7, v15);
+    replyCopy[2](replyCopy, v15);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1660,17 +1660,17 @@ LABEL_22:
   }
 }
 
-- (void)isPreciseRangingAllowed:(id)a3
+- (void)isPreciseRangingAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v11 = 138412802;
-    v12 = v6;
+    v12 = signingIdentity;
     v13 = 1024;
     v14 = v7;
     v15 = 2112;
@@ -1680,20 +1680,20 @@ LABEL_22:
 
   v9 = sub_10035D02C();
   v10 = (*(*v9 + 160))(v9);
-  v4[2](v4, v10, 0);
+  allowedCopy[2](allowedCopy, v10, 0);
 }
 
-- (void)isExtendedDistanceMeasurementAllowed:(id)a3
+- (void)isExtendedDistanceMeasurementAllowed:(id)allowed
 {
-  v4 = a3;
+  allowedCopy = allowed;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v12 = 138412802;
-    v13 = v6;
+    v13 = signingIdentity;
     v14 = 1024;
     v15 = v7;
     v16 = 2112;
@@ -1713,21 +1713,21 @@ LABEL_22:
     v11 = 0;
   }
 
-  v4[2](v4, v11, 0);
+  allowedCopy[2](allowedCopy, v11, 0);
 }
 
-- (void)processDCKMessage:(id)a3 reply:(id)a4
+- (void)processDCKMessage:(id)message reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v10 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v27 = 138412802;
-    v28 = v9;
+    v28 = signingIdentity;
     v29 = 1024;
     v30 = v10;
     v31 = 2112;
@@ -1735,13 +1735,13 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - processDCKMessage. Signing identity: %@, pid: %d, session identifier: %@", &v27, 0x1Cu);
   }
 
-  v12 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v12);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if (self->_interruptionsMap.__table_.__size_)
   {
     v13 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10014 userInfo:0];
-    v7[2](v7, 0, v13);
+    replyCopy[2](replyCopy, 0, v13);
 
     v14 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -1757,15 +1757,15 @@ LABEL_22:
     specializedSession = self->_specializedSession;
     if (specializedSession)
     {
-      v23 = [(NIServerBaseSession *)specializedSession processDCKMessage:v6];
+      v23 = [(NIServerBaseSession *)specializedSession processDCKMessage:messageCopy];
       v25 = v24;
-      (v7)[2](v7, v23, v24);
+      (replyCopy)[2](replyCopy, v23, v24);
     }
 
     else
     {
       v26 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-      v7[2](v7, 0, v26);
+      replyCopy[2](replyCopy, 0, v26);
 
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
       {
@@ -1775,17 +1775,17 @@ LABEL_22:
   }
 }
 
-- (void)processBluetoothHostTimeSyncWithType:(int64_t)a3 btcClockTicks:(unint64_t)a4 eventCounter:(unint64_t)a5 reply:(id)a6
+- (void)processBluetoothHostTimeSyncWithType:(int64_t)type btcClockTicks:(unint64_t)ticks eventCounter:(unint64_t)counter reply:(id)reply
 {
-  v10 = a6;
+  replyCopy = reply;
   v11 = qword_1009F9820;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v13 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     *buf = 138412802;
-    v33 = v12;
+    v33 = signingIdentity;
     v34 = 1024;
     v35 = v13;
     v36 = 2112;
@@ -1793,17 +1793,17 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - processBluetoothHostTimeSyncWithType. Signing identity: %@, pid: %d, session identifier: %@", buf, 0x1Cu);
   }
 
-  v15 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v15);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v16 = sub_100005288();
   specializedSession = self->_specializedSession;
   if (specializedSession)
   {
     v29 = 0;
-    v18 = [(NIServerBaseSession *)specializedSession processBluetoothHostTimeSyncWithType:a3 btcClockTicks:a4 eventCounter:a5 monotonicTimeSec:&v29 response:v16];
+    v18 = [(NIServerBaseSession *)specializedSession processBluetoothHostTimeSyncWithType:type btcClockTicks:ticks eventCounter:counter monotonicTimeSec:&v29 response:v16];
     v19 = v29;
-    v10[2](v10, v19, v18);
+    replyCopy[2](replyCopy, v19, v18);
   }
 
   else
@@ -1819,21 +1819,21 @@ LABEL_22:
     v28 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     v18 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5887 userInfo:v28];
 
-    v10[2](v10, 0, v18);
+    replyCopy[2](replyCopy, 0, v18);
   }
 }
 
-- (void)isRangingLimitExceeded:(id)a3
+- (void)isRangingLimitExceeded:(id)exceeded
 {
-  v4 = a3;
+  exceededCopy = exceeded;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v17 = 138412802;
-    v18 = v6;
+    v18 = signingIdentity;
     v19 = 1024;
     v20 = v7;
     v21 = 2112;
@@ -1841,32 +1841,32 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - isRangingLimitExceeded. Signing identity: %@, pid: %d, session identifier: %@", &v17, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   specializedSession = self->_specializedSession;
   if (specializedSession)
   {
-    v11 = [(NIServerBaseSession *)specializedSession isRangingLimitExceeded];
-    v12 = v11;
+    isRangingLimitExceeded = [(NIServerBaseSession *)specializedSession isRangingLimitExceeded];
+    v12 = isRangingLimitExceeded;
     v14 = v13;
-    if (v11)
+    if (isRangingLimitExceeded)
     {
-      v15 = [v11 BOOLValue];
+      bOOLValue = [isRangingLimitExceeded BOOLValue];
     }
 
     else
     {
-      v15 = 0;
+      bOOLValue = 0;
     }
 
-    v4[2](v4, v15, v14);
+    exceededCopy[2](exceededCopy, bOOLValue, v14);
   }
 
   else
   {
     v16 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-    v4[2](v4, 0, v16);
+    exceededCopy[2](exceededCopy, 0, v16);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1875,17 +1875,17 @@ LABEL_22:
   }
 }
 
-- (void)deleteURSKs:(id)a3
+- (void)deleteURSKs:(id)ks
 {
-  v4 = a3;
+  ksCopy = ks;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v13 = 138412802;
-    v14 = v6;
+    v14 = signingIdentity;
     v15 = 1024;
     v16 = v7;
     v17 = 2112;
@@ -1893,20 +1893,20 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - deleteURSKs. Signing identity: %@, pid: %d, session identifier: %@", &v13, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   specializedSession = self->_specializedSession;
   if (specializedSession)
   {
-    v11 = [(NIServerBaseSession *)specializedSession deleteURSKs];
-    v4[2](v4, v11);
+    deleteURSKs = [(NIServerBaseSession *)specializedSession deleteURSKs];
+    ksCopy[2](ksCopy, deleteURSKs);
   }
 
   else
   {
     v12 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-    v4[2](v4, v12);
+    ksCopy[2](ksCopy, v12);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1915,17 +1915,17 @@ LABEL_22:
   }
 }
 
-- (void)_setURSKTTL:(unint64_t)a3 reply:(id)a4
+- (void)_setURSKTTL:(unint64_t)l reply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v9 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v15 = 138412802;
-    v16 = v8;
+    v16 = signingIdentity;
     v17 = 1024;
     v18 = v9;
     v19 = 2112;
@@ -1933,20 +1933,20 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - _setURSKTTL. Signing identity: %@, pid: %d, session identifier: %@", &v15, 0x1Cu);
   }
 
-  v11 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v11);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   specializedSession = self->_specializedSession;
   if (specializedSession)
   {
-    v13 = [(NIServerBaseSession *)specializedSession _setURSKTTL:a3];
-    v6[2](v6, v13);
+    v13 = [(NIServerBaseSession *)specializedSession _setURSKTTL:l];
+    replyCopy[2](replyCopy, v13);
   }
 
   else
   {
     v14 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-    v6[2](v6, v14);
+    replyCopy[2](replyCopy, v14);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1955,18 +1955,18 @@ LABEL_22:
   }
 }
 
-- (void)_processCarKeyEvent:(id)a3 reply:(id)a4
+- (void)_processCarKeyEvent:(id)event reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v10 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v16 = 138412802;
-    v17 = v9;
+    v17 = signingIdentity;
     v18 = 1024;
     v19 = v10;
     v20 = 2112;
@@ -1974,20 +1974,20 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - _processCarKeyEvent. Signing identity: %@, pid: %d, session identifier: %@", &v16, 0x1Cu);
   }
 
-  v12 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v12);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   specializedSession = self->_specializedSession;
   if (specializedSession)
   {
-    v14 = [(NIServerBaseSession *)specializedSession _processCarKeyEvent:v6];
-    v7[2](v7, v14);
+    v14 = [(NIServerBaseSession *)specializedSession _processCarKeyEvent:eventCopy];
+    replyCopy[2](replyCopy, v14);
   }
 
   else
   {
     v15 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-    v7[2](v7, v15);
+    replyCopy[2](replyCopy, v15);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -1996,9 +1996,9 @@ LABEL_22:
   }
 }
 
-- (id)canHandleAcwgMsg:(id)a3
+- (id)canHandleAcwgMsg:(id)msg
 {
-  v4 = a3;
+  msgCopy = msg;
   if (self->_interruptionsMap.__table_.__size_)
   {
     v5 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10014 userInfo:0];
@@ -2007,7 +2007,7 @@ LABEL_22:
       sub_1004A5B70();
     }
 
-    [(NIServerSessionContainer *)self _dumpInterruptionsMapWithDebugString:v4];
+    [(NIServerSessionContainer *)self _dumpInterruptionsMapWithDebugString:msgCopy];
   }
 
   else if (self->_specializedSession)
@@ -2027,17 +2027,17 @@ LABEL_22:
   return v5;
 }
 
-- (void)processAcwgM1Msg:(id)a3 withSessionTriggerReason:(int64_t)a4
+- (void)processAcwgM1Msg:(id)msg withSessionTriggerReason:(int64_t)reason
 {
-  v6 = a3;
+  msgCopy = msg;
   v7 = qword_1009F9820;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v9 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v14 = 138412802;
-    v15 = v8;
+    v15 = signingIdentity;
     v16 = 1024;
     v17 = v9;
     v18 = 2112;
@@ -2045,33 +2045,33 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - processAcwgM1Msg. Signing identity: %@, pid: %d, session identifier: %@", &v14, 0x1Cu);
   }
 
-  v11 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v11);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v12 = [(NIServerSessionContainer *)self canHandleAcwgMsg:@"processAcwgM1Msg"];
   if (v12)
   {
-    v13 = [(NIServerSessionContainer *)self remote];
-    [v13 didProcessAcwgM1MsgWithResponse:0 error:v12];
+    remote = [(NIServerSessionContainer *)self remote];
+    [remote didProcessAcwgM1MsgWithResponse:0 error:v12];
   }
 
   else
   {
-    [(NIServerBaseSession *)self->_specializedSession processAcwgM1Msg:v6 withSessionTriggerReason:a4];
+    [(NIServerBaseSession *)self->_specializedSession processAcwgM1Msg:msgCopy withSessionTriggerReason:reason];
   }
 }
 
-- (void)processAcwgM3Msg:(id)a3
+- (void)processAcwgM3Msg:(id)msg
 {
-  v4 = a3;
+  msgCopy = msg;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v12 = 138412802;
-    v13 = v6;
+    v13 = signingIdentity;
     v14 = 1024;
     v15 = v7;
     v16 = 2112;
@@ -2079,60 +2079,60 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - processAcwgM3Msg. Signing identity: %@, pid: %d, session identifier: %@", &v12, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v10 = [(NIServerSessionContainer *)self canHandleAcwgMsg:@"processAcwgM3Msg"];
   if (v10)
   {
-    v11 = [(NIServerSessionContainer *)self remote];
-    [v11 didProcessAcwgM3MsgWithResponse:0 error:v10];
+    remote = [(NIServerSessionContainer *)self remote];
+    [remote didProcessAcwgM3MsgWithResponse:0 error:v10];
   }
 
   else
   {
-    [(NIServerBaseSession *)self->_specializedSession processAcwgM3Msg:v4];
+    [(NIServerBaseSession *)self->_specializedSession processAcwgM3Msg:msgCopy];
   }
 }
 
-- (void)_processBluetoothSample:(id)a3
+- (void)_processBluetoothSample:(id)sample
 {
-  v6 = a3;
-  v4 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v4);
+  sampleCopy = sample;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  v5 = [(NIServerSessionContainer *)self devicePresenceResource];
-  [v5 consumeBluetoothSample:v6];
+  devicePresenceResource = [(NIServerSessionContainer *)self devicePresenceResource];
+  [devicePresenceResource consumeBluetoothSample:sampleCopy];
 }
 
-- (void)processVisionInput:(id)a3
+- (void)processVisionInput:(id)input
 {
-  v6 = a3;
-  v4 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v4);
+  inputCopy = input;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v5 = +[NIServerVisionDataDistributor sharedProvider];
-  [v5 processVisionInput:v6];
+  [v5 processVisionInput:inputCopy];
 }
 
-- (void)arSessionDidFailWithError:(id)a3
+- (void)arSessionDidFailWithError:(id)error
 {
-  v8 = a3;
-  v4 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v4);
+  errorCopy = error;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  v5 = [v8 userInfo];
-  v6 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10010 userInfo:v5];
+  userInfo = [errorCopy userInfo];
+  v6 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10010 userInfo:userInfo];
 
   [(NIServerBaseSession *)self->_specializedSession invalidate];
-  v7 = [(NIServerSessionContainer *)self remote];
-  [v7 uwbSessionDidFailWithError:v6];
+  remote = [(NIServerSessionContainer *)self remote];
+  [remote uwbSessionDidFailWithError:v6];
 }
 
 - (void)arSessionWasInterrupted
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v4 = sub_100005288();
 
@@ -2141,8 +2141,8 @@ LABEL_22:
 
 - (void)arSessionInterruptionEnded
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v4 = sub_100005288();
 
@@ -2153,23 +2153,23 @@ LABEL_22:
 {
   v4 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5883 userInfo:0];
   [(NIServerBaseSession *)self->_specializedSession invalidate];
-  v3 = [(NIServerSessionContainer *)self remote];
-  [v3 uwbSessionDidFailWithError:v4];
+  remote = [(NIServerSessionContainer *)self remote];
+  [remote uwbSessionDidFailWithError:v4];
 }
 
-- (void)setLocalDeviceCanInteract:(BOOL)a3 withDiscoveryTokens:(id)a4 reply:(id)a5
+- (void)setLocalDeviceCanInteract:(BOOL)interact withDiscoveryTokens:(id)tokens reply:(id)reply
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  interactCopy = interact;
+  tokensCopy = tokens;
+  replyCopy = reply;
   v10 = qword_1009F9820;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v12 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     *buf = 138412802;
-    *&buf[4] = v11;
+    *&buf[4] = signingIdentity;
     *&buf[12] = 1024;
     *&buf[14] = v12;
     *&buf[18] = 2112;
@@ -2181,7 +2181,7 @@ LABEL_22:
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     v15 = "NO";
-    if (v6)
+    if (interactCopy)
     {
       v15 = "YES";
     }
@@ -2191,10 +2191,10 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "#ses-container,canInteract: %s", buf, 0xCu);
   }
 
-  v16 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v16);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  LOBYTE(v16) = [(NIServerSessionContainer *)self entitlementGranted:3];
+  LOBYTE(connectionQueue) = [(NIServerSessionContainer *)self entitlementGranted:3];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -2205,12 +2205,12 @@ LABEL_22:
   v24 = 3221225472;
   v25 = sub_1001CA690;
   v26 = &unk_10099C700;
-  v30 = v16;
-  v17 = v9;
-  v27 = self;
+  v30 = connectionQueue;
+  v17 = replyCopy;
+  selfCopy = self;
   v28 = v17;
   v29 = buf;
-  [v8 enumerateObjectsUsingBlock:&v23];
+  [tokensCopy enumerateObjectsUsingBlock:&v23];
   if ([NIPlatformInfo isInternalBuild:v23])
   {
     sub_100347330(*(*&buf[8] + 40));
@@ -2219,18 +2219,18 @@ LABEL_22:
   if ([*(*&buf[8] + 40) count])
   {
     +[NIServerFindableDeviceProxySessionManager sharedInstance];
-    if (v6)
+    if (interactCopy)
       v18 = {;
       v19 = *(*&buf[8] + 40);
-      v20 = [(NIServerSessionContainer *)self processNameBestGuess];
-      [v18 startBeingFindableWithDiscoveryTokens:v19 tokenGroup:v20];
+      processNameBestGuess = [(NIServerSessionContainer *)self processNameBestGuess];
+      [v18 startBeingFindableWithDiscoveryTokens:v19 tokenGroup:processNameBestGuess];
     }
 
     else
       v18 = {;
       v22 = *(*&buf[8] + 40);
-      v20 = [(NIServerSessionContainer *)self processNameBestGuess];
-      [v18 stopBeingFindableWithDiscoveryTokens:v22 tokenGroup:v20];
+      processNameBestGuess = [(NIServerSessionContainer *)self processNameBestGuess];
+      [v18 stopBeingFindableWithDiscoveryTokens:v22 tokenGroup:processNameBestGuess];
     }
     v21 = ;
   }
@@ -2245,18 +2245,18 @@ LABEL_22:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)setLocalDeviceInteractableDiscoveryTokens:(id)a3 reply:(id)a4
+- (void)setLocalDeviceInteractableDiscoveryTokens:(id)tokens reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  tokensCopy = tokens;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v10 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     *buf = 138412802;
-    *&buf[4] = v9;
+    *&buf[4] = signingIdentity;
     *&buf[12] = 1024;
     *&buf[14] = v10;
     *&buf[18] = 2112;
@@ -2264,10 +2264,10 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - setLocalDeviceInteractableDiscoveryTokens. Signing identity: %@, pid: %d, session identifier: %@", buf, 0x1Cu);
   }
 
-  v12 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v12);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  LOBYTE(v12) = [(NIServerSessionContainer *)self entitlementGranted:3];
+  LOBYTE(connectionQueue) = [(NIServerSessionContainer *)self entitlementGranted:3];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x3032000000;
@@ -2278,12 +2278,12 @@ LABEL_22:
   v19 = 3221225472;
   v20 = sub_1001CAB70;
   v21 = &unk_10099C700;
-  v25 = v12;
-  v13 = v7;
-  v22 = self;
+  v25 = connectionQueue;
+  v13 = replyCopy;
+  selfCopy = self;
   v23 = v13;
   v24 = buf;
-  [v6 enumerateObjectsUsingBlock:&v18];
+  [tokensCopy enumerateObjectsUsingBlock:&v18];
   if ([NIPlatformInfo isInternalBuild:v18])
   {
     sub_100347330(*(*&buf[8] + 40));
@@ -2291,25 +2291,25 @@ LABEL_22:
 
   v14 = +[NIServerFindableDeviceProxySessionManager sharedInstance];
   v15 = *(*&buf[8] + 40);
-  v16 = [(NIServerSessionContainer *)self processNameBestGuess];
-  v17 = [v14 setFindableDiscoveryTokens:v15 tokenGroup:v16];
+  processNameBestGuess = [(NIServerSessionContainer *)self processNameBestGuess];
+  v17 = [v14 setFindableDiscoveryTokens:v15 tokenGroup:processNameBestGuess];
 
   (*(v13 + 2))(v13, v17);
   _Block_object_dispose(buf, 8);
 }
 
-- (void)setLocalDeviceDebugParameters:(id)a3 reply:(id)a4
+- (void)setLocalDeviceDebugParameters:(id)parameters reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v10 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     *buf = 138412802;
-    v20 = v9;
+    v20 = signingIdentity;
     v21 = 1024;
     v22 = v10;
     v23 = 2112;
@@ -2317,15 +2317,15 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - setLocalDeviceDebugParameters:reply:. Signing identity: %@, pid: %d, session identifier: %@", buf, 0x1Cu);
   }
 
-  v12 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v12);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if ([(NIServerSessionContainer *)self entitlementGranted:3])
   {
     v13 = +[NIServerFindableDeviceProxySessionManager sharedInstance];
-    v14 = [v13 setLocalDeviceDebugParameters:v6];
+    v14 = [v13 setLocalDeviceDebugParameters:parametersCopy];
 
-    v7[2](v7, v14);
+    replyCopy[2](replyCopy, v14);
   }
 
   else
@@ -2334,7 +2334,7 @@ LABEL_22:
     v18 = @"Not allowed to configure findable local device.";
     v15 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v16 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v15];
-    v7[2](v7, v16);
+    replyCopy[2](replyCopy, v16);
 
     v14 = qword_1009F9820;
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
@@ -2347,17 +2347,17 @@ LABEL_22:
   }
 }
 
-- (void)getInteractableDiscoveryTokens:(id)a3
+- (void)getInteractableDiscoveryTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v14 = 138412802;
-    v15 = v6;
+    v15 = signingIdentity;
     v16 = 1024;
     v17 = v7;
     v18 = 2112;
@@ -2365,33 +2365,33 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - getInteractableDiscoveryTokens. Signing identity: %@, pid: %d, session identifier: %@", &v14, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v10 = objc_opt_new();
   if ([(NIServerSessionContainer *)self entitlementGranted:3])
   {
     v11 = +[NIServerFindableDeviceProxySessionManager sharedInstance];
-    v12 = [(NIServerSessionContainer *)self processNameBestGuess];
-    v13 = [v11 findableDiscoveryTokensForGroup:v12];
+    processNameBestGuess = [(NIServerSessionContainer *)self processNameBestGuess];
+    v13 = [v11 findableDiscoveryTokensForGroup:processNameBestGuess];
 
     [v10 addObjectsFromArray:v13];
   }
 
-  v4[2](v4, v10, 0);
+  tokensCopy[2](tokensCopy, v10, 0);
 }
 
-- (void)getActivelyInteractingDiscoveryTokens:(id)a3
+- (void)getActivelyInteractingDiscoveryTokens:(id)tokens
 {
-  v4 = a3;
+  tokensCopy = tokens;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v14 = 138412802;
-    v15 = v6;
+    v15 = signingIdentity;
     v16 = 1024;
     v17 = v7;
     v18 = 2112;
@@ -2399,33 +2399,33 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - getActivelyInteractingDiscoveryTokens. Signing identity: %@, pid: %d, session identifier: %@", &v14, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v10 = objc_opt_new();
   if ([(NIServerSessionContainer *)self entitlementGranted:3])
   {
     v11 = +[NIServerFindableDeviceProxySessionManager sharedInstance];
-    v12 = [(NIServerSessionContainer *)self processNameBestGuess];
-    v13 = [v11 interactingFinderDiscoveryTokensForGroup:v12];
+    processNameBestGuess = [(NIServerSessionContainer *)self processNameBestGuess];
+    v13 = [v11 interactingFinderDiscoveryTokensForGroup:processNameBestGuess];
 
     [v10 addObjectsFromArray:v13];
   }
 
-  v4[2](v4, v10, 0);
+  tokensCopy[2](tokensCopy, v10, 0);
 }
 
-- (void)getLocalDevicePrintableState:(id)a3
+- (void)getLocalDevicePrintableState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = qword_1009F9820;
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v7 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     *buf = 138412802;
-    v19 = v6;
+    v19 = signingIdentity;
     v20 = 1024;
     v21 = v7;
     v22 = 2112;
@@ -2433,8 +2433,8 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,XPC Command - getLocalDevicePrintableState. Signing identity: %@, pid: %d, session identifier: %@", buf, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if (![(NIServerSessionContainer *)self entitlementGranted:0])
   {
@@ -2443,7 +2443,7 @@ LABEL_22:
     v10 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     v11 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-10020 userInfo:v10];
 
-    v4[2](v4, 0, v11);
+    stateCopy[2](stateCopy, 0, v11);
   }
 
   objc_initWeak(buf, self);
@@ -2452,26 +2452,26 @@ LABEL_22:
   v13[2] = sub_1001CB6B8;
   v13[3] = &unk_10099C728;
   objc_copyWeak(&v15, buf);
-  v14 = v4;
-  v12 = v4;
+  v14 = stateCopy;
+  v12 = stateCopy;
   dispatch_async(&_dispatch_main_q, v13);
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(buf);
 }
 
-- (void)_processFindingEvent:(id)a3 reply:(id)a4
+- (void)_processFindingEvent:(id)event reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v14 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v16 = 138412802;
-    v17 = v13;
+    v17 = signingIdentity;
     v18 = 1024;
     v19 = v14;
     v20 = 2112;
@@ -2479,20 +2479,20 @@ LABEL_22:
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "#ses-container,XPC Command - _processFindingEvent. Signing identity: %@, pid: %d, session identifier: %@", &v16, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   specializedSession = self->_specializedSession;
   if (specializedSession)
   {
-    v11 = [(NIServerBaseSession *)specializedSession _processFindingEvent:v6];
-    v7[2](v7, v11);
+    v11 = [(NIServerBaseSession *)specializedSession _processFindingEvent:eventCopy];
+    replyCopy[2](replyCopy, v11);
   }
 
   else
   {
     v12 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-    v7[2](v7, v12);
+    replyCopy[2](replyCopy, v12);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -2501,18 +2501,18 @@ LABEL_22:
   }
 }
 
-- (void)_processSystemEvent:(id)a3 reply:(id)a4
+- (void)_processSystemEvent:(id)event reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  replyCopy = reply;
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v14 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v16 = 138412802;
-    v17 = v13;
+    v17 = signingIdentity;
     v18 = 1024;
     v19 = v14;
     v20 = 2112;
@@ -2520,20 +2520,20 @@ LABEL_22:
     _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "#ses-container,XPC Command - _processSystemEvent. Signing identity: %@, pid: %d, session identifier: %@", &v16, 0x1Cu);
   }
 
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   specializedSession = self->_specializedSession;
   if (specializedSession)
   {
-    v11 = [(NIServerBaseSession *)specializedSession _processSystemEvent:v6];
-    v7[2](v7, v11);
+    v11 = [(NIServerBaseSession *)specializedSession _processSystemEvent:eventCopy];
+    replyCopy[2](replyCopy, v11);
   }
 
   else
   {
     v12 = [NSError errorWithDomain:@"com.apple.NearbyInteraction" code:-5888 userInfo:0];
-    v7[2](v7, v12);
+    replyCopy[2](replyCopy, v12);
 
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -2571,11 +2571,11 @@ LABEL_22:
     bleProvider = self->_bleProvider;
     self->_bleProvider = v8;
 
-    v10 = [(NIServerSessionContainer *)self uwbProvider];
-    v11 = [v10 deviceCapabilities];
+    uwbProvider = [(NIServerSessionContainer *)self uwbProvider];
+    deviceCapabilities = [uwbProvider deviceCapabilities];
 
-    v12 = [(NIServerSessionContainer *)self wifiProvider];
-    if ([v12 deviceCapabilities])
+    wifiProvider = [(NIServerSessionContainer *)self wifiProvider];
+    if ([wifiProvider deviceCapabilities])
     {
       v13 = [(NIServerSessionContainer *)self entitlementGranted:2];
     }
@@ -2586,52 +2586,52 @@ LABEL_22:
     }
 
     v14 = self->_bleProvider;
-    v15 = [(NIServerSessionContainer *)self connectionQueue];
+    connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
     v16 = self->_bleProviderSessionIRK;
     v17 = self->_bleProviderSessionIdentifier;
-    v18 = [(NIServerSessionContainer *)self _getDiscoveryTokenFlags];
+    _getDiscoveryTokenFlags = [(NIServerSessionContainer *)self _getDiscoveryTokenFlags];
     v19 = 256;
     if (!v13)
     {
       v19 = 0;
     }
 
-    [(PRBLEDiscoverySession *)v14 activateWithDelegate:self delegateQueue:v15 sessionIRK:v16 sessionIdentifier:v17 controlFlags:v19 | v11 & 1 tokenFlags:v18];
+    [(PRBLEDiscoverySession *)v14 activateWithDelegate:self delegateQueue:connectionQueue sessionIRK:v16 sessionIdentifier:v17 controlFlags:v19 | deviceCapabilities & 1 tokenFlags:_getDiscoveryTokenFlags];
   }
 }
 
 - (unsigned)_getDiscoveryTokenFlags
 {
-  v3 = [(NIServerSessionContainer *)self longRangeEnabled];
+  longRangeEnabled = [(NIServerSessionContainer *)self longRangeEnabled];
   if ([(NIServerSessionContainer *)self requiresBiasCorrection])
   {
-    v3 |= 2u;
+    longRangeEnabled |= 2u;
   }
 
   if ([(NIServerSessionContainer *)self requiresLargeRegions])
   {
-    return v3 | 4;
+    return longRangeEnabled | 4;
   }
 
   else
   {
-    return v3;
+    return longRangeEnabled;
   }
 }
 
-- (id)_augmentDiscoveryTokenWithNbUwbAcquisitionChannel:(id)a3
+- (id)_augmentDiscoveryTokenWithNbUwbAcquisitionChannel:(id)channel
 {
-  v4 = a3;
-  if (v4)
+  channelCopy = channel;
+  if (channelCopy)
   {
-    v5 = [(NIServerSessionContainer *)self discoveryToken];
-    v6 = [v5 getIRK];
-    v7 = [NSNumber numberWithInt:sub_100347044(5u, 0xBu, v6)];
+    discoveryToken = [(NIServerSessionContainer *)self discoveryToken];
+    getIRK = [discoveryToken getIRK];
+    v7 = [NSNumber numberWithInt:sub_100347044(5u, 0xBu, getIRK)];
 
     v11 = &off_1009C3E60;
     v12 = v7;
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    v9 = sub_10030079C(v8, v4);
+    v9 = sub_10030079C(v8, channelCopy);
   }
 
   else
@@ -2642,10 +2642,10 @@ LABEL_22:
   return v9;
 }
 
-- (id)_augmentDiscoveryTokenWithMmsNumFragments:(id)a3
+- (id)_augmentDiscoveryTokenWithMmsNumFragments:(id)fragments
 {
-  v3 = a3;
-  if (v3)
+  fragmentsCopy = fragments;
+  if (fragmentsCopy)
   {
     v4 = sub_10035D02C();
     v5 = *(v4 + 406);
@@ -2664,7 +2664,7 @@ LABEL_22:
     v11 = &off_1009C3E78;
     v12 = v7;
     v8 = [NSDictionary dictionaryWithObjects:&v12 forKeys:&v11 count:1];
-    v9 = sub_10030079C(v8, v3);
+    v9 = sub_10030079C(v8, fragmentsCopy);
   }
 
   else
@@ -2675,34 +2675,34 @@ LABEL_22:
   return v9;
 }
 
-- (id)_augmentDiscoveryTokenWithDeviceCapabilities:(id)a3
+- (id)_augmentDiscoveryTokenWithDeviceCapabilities:(id)capabilities
 {
-  v4 = a3;
-  if (v4)
+  capabilitiesCopy = capabilities;
+  if (capabilitiesCopy)
   {
-    v5 = [(NIServerSessionContainer *)self _getCapabilities];
-    v6 = [v5 objectForKey:@"UWBSupportedPlatform"];
-    v7 = [v6 BOOLValue];
+    _getCapabilities = [(NIServerSessionContainer *)self _getCapabilities];
+    v6 = [_getCapabilities objectForKey:@"UWBSupportedPlatform"];
+    bOOLValue = [v6 BOOLValue];
 
-    v8 = [v5 objectForKey:@"WifiSupportedPlatform"];
-    v9 = [v8 BOOLValue];
+    v8 = [_getCapabilities objectForKey:@"WifiSupportedPlatform"];
+    bOOLValue2 = [v8 BOOLValue];
 
-    v10 = [v5 objectForKey:@"UWBSupportedPlatformPDOA"];
-    v11 = [v10 BOOLValue];
+    v10 = [_getCapabilities objectForKey:@"UWBSupportedPlatformPDOA"];
+    bOOLValue3 = [v10 BOOLValue];
 
-    v12 = [v5 objectForKey:@"UWBSupportedPlatformSyntheticAperture"];
-    v13 = [v12 BOOLValue];
+    v12 = [_getCapabilities objectForKey:@"UWBSupportedPlatformSyntheticAperture"];
+    bOOLValue4 = [v12 BOOLValue];
 
-    v14 = [v5 objectForKey:@"UWBSupportedPlatformExtendedDistance"];
-    v15 = [v14 BOOLValue];
+    v14 = [_getCapabilities objectForKey:@"UWBSupportedPlatformExtendedDistance"];
+    bOOLValue5 = [v14 BOOLValue];
 
-    v16 = [[NIDeviceCapabilities alloc] initWithFineRangingSupport:v7 coarseRangingSupport:v9 aoaSupport:v11 extendedDistanceMeasurementSupport:v15 syntheticApertureSupport:v13];
+    v16 = [[NIDeviceCapabilities alloc] initWithFineRangingSupport:bOOLValue coarseRangingSupport:bOOLValue2 aoaSupport:bOOLValue3 extendedDistanceMeasurementSupport:bOOLValue5 syntheticApertureSupport:bOOLValue4];
     v21 = &off_1009C3E90;
     v17 = [NSNumber numberWithUnsignedInt:[(NIDeviceCapabilities *)v16 toBitmap]];
     v22 = v17;
     v18 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
 
-    v19 = sub_10030079C(v18, v4);
+    v19 = sub_10030079C(v18, capabilitiesCopy);
   }
 
   else
@@ -2713,44 +2713,44 @@ LABEL_22:
   return v19;
 }
 
-- (void)_handleSpecializedSessionInvalidation:(id)a3
+- (void)_handleSpecializedSessionInvalidation:(id)invalidation
 {
-  v4 = a3;
+  invalidationCopy = invalidation;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
   {
     sub_1004A5CB4();
   }
 
   objc_initWeak(&location, self);
-  v5 = [(NIServerSessionContainer *)self connectionQueue];
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001CC894;
   block[3] = &unk_10098B940;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = invalidationCopy;
+  v6 = invalidationCopy;
+  dispatch_async(connectionQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_handleSpecializedSessionBackgroundSupportUpdate:(BOOL)a3
+- (void)_handleSpecializedSessionBackgroundSupportUpdate:(BOOL)update
 {
-  v3 = a3;
-  v5 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v5);
+  updateCopy = update;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v6 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v3;
+    HIDWORD(buf) = updateCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "#ses-container,Specialized session updated background support: %d", &buf, 8u);
   }
 
-  if (v3)
+  if (updateCopy)
   {
     v7 = 1;
   }
@@ -2762,13 +2762,13 @@ LABEL_22:
 
   self->_specializedSessionBackgroundSupport = v7;
   objc_initWeak(&buf, self);
-  v8 = [(NIServerSessionContainer *)self connectionQueue];
+  connectionQueue2 = [(NIServerSessionContainer *)self connectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001CCAA0;
   block[3] = &unk_10098AB18;
   objc_copyWeak(&v10, &buf);
-  dispatch_async(v8, block);
+  dispatch_async(connectionQueue2, block);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&buf);
@@ -2776,24 +2776,24 @@ LABEL_22:
 
 - (void)_updateClientAppVisibilityInterruption
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  v4 = [(NIServerSessionContainer *)self _isBackgroundOperationAllowed];
+  _isBackgroundOperationAllowed = [(NIServerSessionContainer *)self _isBackgroundOperationAllowed];
   *v17 = 0;
   v5 = sub_100009978(&self->_interruptionsMap.__table_.__bucket_list_.__ptr_, v17);
-  v6 = (self->_latestAppState == 4) & (v4 ^ 1);
+  v6 = (self->_latestAppState == 4) & (_isBackgroundOperationAllowed ^ 1);
   v7 = qword_1009F9820;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(NIServerSessionContainer *)self signingIdentity];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     v9 = [(NIServerSessionContainer *)self pid];
     sessionIdentifier = self->_sessionIdentifier;
     v11 = sub_100208CC4(self->_latestAppState);
     v12 = v11;
     v13 = "N";
     *v17 = 138413826;
-    *&v17[4] = v8;
+    *&v17[4] = signingIdentity;
     v18 = 1024;
     if (v6)
     {
@@ -2817,7 +2817,7 @@ LABEL_22:
     }
 
     v20 = 2112;
-    if (v4)
+    if (_isBackgroundOperationAllowed)
     {
       v13 = "Y";
     }
@@ -2849,13 +2849,13 @@ LABEL_22:
   }
 }
 
-- (void)setAppStateMonitor:(id)a3
+- (void)setAppStateMonitor:(id)monitor
 {
-  v5 = a3;
-  v6 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v6);
+  monitorCopy = monitor;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  objc_storeStrong(&self->_appStateMonitor, a3);
+  objc_storeStrong(&self->_appStateMonitor, monitor);
   [(PRAppStateMonitor *)self->_appStateMonitor addObserver:self];
   self->_latestAppState = [(PRAppStateMonitor *)self->_appStateMonitor currentAppState];
   if ([(PRAppStateMonitor *)self->_appStateMonitor isRunningBoardApp])
@@ -2888,9 +2888,9 @@ LABEL_22:
 
     else
     {
-      v13 = [v11 bundleIdentifier];
+      bundleIdentifier = [v11 bundleIdentifier];
       v14 = self->_bundleIdentifier;
-      self->_bundleIdentifier = v13;
+      self->_bundleIdentifier = bundleIdentifier;
 
       v15 = qword_1009F9820;
       if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -2926,18 +2926,18 @@ LABEL_22:
 
 - (BOOL)_isBackgroundOperationAllowed
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if ([(PRAppStateMonitor *)self->_appStateMonitor isUIBackgroundModeEnabled]&& self->_specializedSessionBackgroundSupport != 2)
   {
     v5 = qword_1009F9820;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
+      monitoredProcessName = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
       specializedSessionBackgroundSupport = self->_specializedSessionBackgroundSupport;
       v13 = 138412546;
-      v14 = v10;
+      v14 = monitoredProcessName;
       v15 = 1024;
       v16 = specializedSessionBackgroundSupport;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,BG operation allowed for process %@. Process enables UIBackgroundMode. Specialized session support: %d", &v13, 0x12u);
@@ -2953,9 +2953,9 @@ LABEL_22:
   {
     if (v6)
     {
-      v7 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
+      monitoredProcessName2 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
       v13 = 138412290;
-      v14 = v7;
+      v14 = monitoredProcessName2;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,BG operation allowed for process %@. Process is granted entitlement", &v13, 0xCu);
     }
 
@@ -2966,9 +2966,9 @@ LABEL_11:
 
   if (v6)
   {
-    v8 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
+    monitoredProcessName3 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
     v13 = 138412290;
-    v14 = v8;
+    v14 = monitoredProcessName3;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,BG operation NOT allowed for process %@", &v13, 0xCu);
   }
 
@@ -2980,8 +2980,8 @@ LABEL_12:
 
 - (void)_acquireClientMessageHandlingRuntimeAssertionIfNecessary
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if (![(PRAppStateMonitor *)self->_appStateMonitor isDaemon]&& [(PRAppStateMonitor *)self->_appStateMonitor isRunningBoardApp])
   {
@@ -2999,16 +2999,16 @@ LABEL_12:
     [v8 handleFailureInMethod:a2 object:self file:@"NIServerSessionContainer.mm" lineNumber:1858 description:@"AppStateMonitor is required for to check if client is internal tool."];
   }
 
-  v3 = [(NIServerSessionContainer *)self processNameBestGuess];
-  if ([&off_1009C3BA8 containsObject:v3])
+  processNameBestGuess = [(NIServerSessionContainer *)self processNameBestGuess];
+  if ([&off_1009C3BA8 containsObject:processNameBestGuess])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
-    v4 = [&off_1009C3BC0 containsObject:v5];
+    monitoredProcessName = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
+    v4 = [&off_1009C3BC0 containsObject:monitoredProcessName];
   }
 
   return v4;
@@ -3022,7 +3022,7 @@ LABEL_12:
     [v10 handleFailureInMethod:a2 object:self file:@"NIServerSessionContainer.mm" lineNumber:1877 description:@"AppStateMonitor is required for to check if client is on general entitlement allowlist."];
   }
 
-  v3 = [(NIServerSessionContainer *)self _isClientInternalTool];
+  _isClientInternalTool = [(NIServerSessionContainer *)self _isClientInternalTool];
   v4 = +[NIPlatformInfo isInternalBuild];
   [@"com.apple.nearbyd" UTF8String];
   v5 = os_variant_allows_internal_security_policies();
@@ -3032,10 +3032,10 @@ LABEL_12:
   }
 
   v6 = 1;
-  if (![(PRAppStateMonitor *)self->_appStateMonitor isXPCService]&& (v3 & (v4 | v5) & 1) == 0)
+  if (![(PRAppStateMonitor *)self->_appStateMonitor isXPCService]&& (_isClientInternalTool & (v4 | v5) & 1) == 0)
   {
-    v7 = [(NIServerSessionContainer *)self processNameBestGuess];
-    v6 = [&off_1009C3BD8 containsObject:v7];
+    processNameBestGuess = [(NIServerSessionContainer *)self processNameBestGuess];
+    v6 = [&off_1009C3BD8 containsObject:processNameBestGuess];
   }
 
   return v6;
@@ -3054,8 +3054,8 @@ LABEL_12:
     return 0;
   }
 
-  v3 = [(NIServerSessionContainer *)self processNameBestGuess];
-  v4 = [&off_1009C3BF0 containsObject:v3];
+  processNameBestGuess = [(NIServerSessionContainer *)self processNameBestGuess];
+  v4 = [&off_1009C3BF0 containsObject:processNameBestGuess];
 
   return v4;
 }
@@ -3068,27 +3068,27 @@ LABEL_12:
     [v11 handleFailureInMethod:a2 object:self file:@"NIServerSessionContainer.mm" lineNumber:1925 description:@"AppStateMonitor is required for to check if client is on system shutdown entitlement allowlist."];
   }
 
-  v3 = [(NIServerSessionContainer *)self _isClientInternalTool];
+  _isClientInternalTool = [(NIServerSessionContainer *)self _isClientInternalTool];
   v4 = +[NIPlatformInfo isInternalBuild];
   [@"com.apple.nearbyd" UTF8String];
   v5 = os_variant_allows_internal_security_policies();
-  v6 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
-  if ([v6 isEqualToString:@"com.apple.SpringBoard"])
+  launchdJobLabel = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
+  if ([launchdJobLabel isEqualToString:@"com.apple.SpringBoard"])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
-    if ([v8 isEqualToString:@"com.apple.Carousel"])
+    launchdJobLabel2 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
+    if ([launchdJobLabel2 isEqualToString:@"com.apple.Carousel"])
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = v3 & (v4 | v5);
+      v7 = _isClientInternalTool & (v4 | v5);
     }
   }
 
@@ -3097,8 +3097,8 @@ LABEL_12:
 
 - (void)_populateClientEntitlements
 {
-  v4 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v4);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   if (!self->_appStateMonitor)
   {
@@ -3106,33 +3106,33 @@ LABEL_12:
     [v26 handleFailureInMethod:a2 object:self file:@"NIServerSessionContainer.mm" lineNumber:1942 description:@"AppStateMonitor is required for populating client entitlements."];
   }
 
-  v5 = [(NIServerSessionContainer *)self _isClientInternalTool];
-  v6 = [(NIServerSessionContainer *)self _isClientOnGeneralEntitlementAllowlist];
-  v27 = [(NIServerSessionContainer *)self _isClientOnSystemShutdownAllowlist];
+  _isClientInternalTool = [(NIServerSessionContainer *)self _isClientInternalTool];
+  _isClientOnGeneralEntitlementAllowlist = [(NIServerSessionContainer *)self _isClientOnGeneralEntitlementAllowlist];
+  _isClientOnSystemShutdownAllowlist = [(NIServerSessionContainer *)self _isClientOnSystemShutdownAllowlist];
   v7 = qword_1009F9820;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(NIServerSessionContainer *)self processNameBestGuess];
+    processNameBestGuess = [(NIServerSessionContainer *)self processNameBestGuess];
     bundleIdentifier = self->_bundleIdentifier;
-    v10 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
-    v11 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
-    v12 = [(NIServerSessionContainer *)self signingIdentity];
+    launchdJobLabel = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
+    monitoredProcessName = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
     *buf = 138414082;
-    v29 = v8;
+    v29 = processNameBestGuess;
     v30 = 2112;
     v31 = bundleIdentifier;
     v32 = 2112;
-    *v33 = v10;
+    *v33 = launchdJobLabel;
     *&v33[8] = 2112;
-    *&v33[10] = v11;
+    *&v33[10] = monitoredProcessName;
     v34 = 2112;
-    v35 = v12;
+    v35 = signingIdentity;
     v36 = 1024;
-    v37 = v5;
+    v37 = _isClientInternalTool;
     v38 = 1024;
-    v39 = v6;
+    v39 = _isClientOnGeneralEntitlementAllowlist;
     v40 = 1024;
-    v41 = v27;
+    v41 = _isClientOnSystemShutdownAllowlist;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-container,Populating entitlements for client %@ [bundle ID: %@, job label: %@, monitored name: %@, signing identity: %@, internal flags %d|%d|%d]", buf, 0x46u);
   }
 
@@ -3153,10 +3153,10 @@ LABEL_12:
       }
     }
 
-    v16 = v6;
+    v16 = _isClientOnGeneralEntitlementAllowlist;
     if (v13 >= 3)
     {
-      v16 = v6;
+      v16 = _isClientOnGeneralEntitlementAllowlist;
       if (v13 != 5)
       {
         if (v13 != 6)
@@ -3164,7 +3164,7 @@ LABEL_12:
           goto LABEL_14;
         }
 
-        v16 = v27;
+        v16 = _isClientOnSystemShutdownAllowlist;
       }
     }
 
@@ -3172,8 +3172,8 @@ LABEL_12:
 LABEL_14:
     if (+[NIPlatformInfo isInternalBuild])
     {
-      v17 = [(NIServerSessionContainer *)self signingIdentity];
-      if ([v17 isEqualToString:@"com.apple.dt.xctest.tool"])
+      signingIdentity2 = [(NIServerSessionContainer *)self signingIdentity];
+      if ([signingIdentity2 isEqualToString:@"com.apple.dt.xctest.tool"])
       {
 
 LABEL_18:
@@ -3181,8 +3181,8 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v18 = [(NIServerSessionContainer *)self signingIdentity];
-      v19 = [v18 isEqualToString:@"com.apple.xctest"];
+      signingIdentity3 = [(NIServerSessionContainer *)self signingIdentity];
+      v19 = [signingIdentity3 isEqualToString:@"com.apple.xctest"];
 
       if (v19)
       {
@@ -3212,10 +3212,10 @@ LABEL_19:
     v23 = qword_1009F9820;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(NIServerSessionContainer *)self processNameBestGuess];
+      processNameBestGuess2 = [(NIServerSessionContainer *)self processNameBestGuess];
       v25 = self->_clientEntitlementsArray.__elems_[v13];
       *buf = 138413058;
-      v29 = v24;
+      v29 = processNameBestGuess2;
       v30 = 2112;
       v31 = v14;
       v32 = 1024;
@@ -3237,36 +3237,36 @@ LABEL_19:
   bundleIdentifier = self->_bundleIdentifier;
   if (bundleIdentifier)
   {
-    v3 = bundleIdentifier;
+    launchdJobLabel2 = bundleIdentifier;
   }
 
   else
   {
-    v5 = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
+    launchdJobLabel = [(PRAppStateMonitor *)self->_appStateMonitor launchdJobLabel];
 
     appStateMonitor = self->_appStateMonitor;
-    if (v5)
+    if (launchdJobLabel)
     {
-      v3 = [(PRAppStateMonitor *)appStateMonitor launchdJobLabel];
+      launchdJobLabel2 = [(PRAppStateMonitor *)appStateMonitor launchdJobLabel];
     }
 
     else
     {
-      v7 = [(PRAppStateMonitor *)appStateMonitor monitoredProcessName];
+      monitoredProcessName = [(PRAppStateMonitor *)appStateMonitor monitoredProcessName];
 
-      if (v7)
+      if (monitoredProcessName)
       {
-        v3 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
+        launchdJobLabel2 = [(PRAppStateMonitor *)self->_appStateMonitor monitoredProcessName];
       }
 
       else
       {
-        v3 = 0;
+        launchdJobLabel2 = 0;
       }
     }
   }
 
-  return v3;
+  return launchdJobLabel2;
 }
 
 - (id)_displayPermissionsPromptIfNeeded
@@ -3287,8 +3287,8 @@ LABEL_19:
   {
     v6 = sub_10003C870(v4);
     sessionIdentifier = self->_sessionIdentifier;
-    v8 = [(NIServerSessionContainer *)self signingIdentity];
-    v9 = v8;
+    signingIdentity = [(NIServerSessionContainer *)self signingIdentity];
+    v9 = signingIdentity;
     v10 = @"NO";
     *v14 = 138478851;
     *&v14[4] = v6;
@@ -3300,7 +3300,7 @@ LABEL_19:
 
     *&v14[14] = sessionIdentifier;
     v15 = 2113;
-    v16 = v8;
+    v16 = signingIdentity;
     v17 = 2113;
     v18 = @"Privileged?";
     v19 = 2113;
@@ -3344,9 +3344,9 @@ LABEL_15:
 
 - (id)uwbResource
 {
-  v3 = [(NIServerSessionContainer *)self uwbProvider];
+  uwbProvider = [(NIServerSessionContainer *)self uwbProvider];
 
-  if (!v3)
+  if (!uwbProvider)
   {
     sub_1004A5D94();
   }
@@ -3356,9 +3356,9 @@ LABEL_15:
 
 - (id)wifiResource
 {
-  v3 = [(NIServerSessionContainer *)self wifiProvider];
+  wifiProvider = [(NIServerSessionContainer *)self wifiProvider];
 
-  if (!v3)
+  if (!wifiProvider)
   {
     sub_1004A5E2C();
   }
@@ -3424,15 +3424,15 @@ LABEL_15:
   return v3 ^ 1;
 }
 
-- (BOOL)entitlementGranted:(int)a3
+- (BOOL)entitlementGranted:(int)granted
 {
   os_unfair_lock_lock(&self->_entitlementsLock);
-  if (a3 >= 0xB)
+  if (granted >= 0xB)
   {
     v6 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
     {
-      sub_1004A5EC4(a3, v6);
+      sub_1004A5EC4(granted, v6);
     }
 
     v5 = 0;
@@ -3440,7 +3440,7 @@ LABEL_15:
 
   else
   {
-    v5 = self->_clientEntitlementsArray.__elems_[a3];
+    v5 = self->_clientEntitlementsArray.__elems_[granted];
   }
 
   os_unfair_lock_unlock(&self->_entitlementsLock);
@@ -3525,9 +3525,9 @@ LABEL_15:
   os_unfair_lock_unlock(&self->_entitlementsLock);
   v7 = v31[5];
   sessionIdentifier = self->_sessionIdentifier;
-  v9 = [(NIServerSessionContainer *)self discoveryToken];
-  v10 = [v9 descriptionInternal];
-  v11 = [NSString stringWithFormat:@"Identifier: %@. Token: %@. Entitlements: 0x%llX%s. Assertions: %@", sessionIdentifier, v10, v5, "", self->_assertionManager];
+  discoveryToken = [(NIServerSessionContainer *)self discoveryToken];
+  descriptionInternal = [discoveryToken descriptionInternal];
+  v11 = [NSString stringWithFormat:@"Identifier: %@. Token: %@. Entitlements: 0x%llX%s. Assertions: %@", sessionIdentifier, descriptionInternal, v5, "", self->_assertionManager];
   [v7 addObject:v11];
 
   v12 = v31[5];
@@ -3555,8 +3555,8 @@ LABEL_15:
   }
 
   v18 = v31[5];
-  v19 = [(NIServerBaseSession *)self->_specializedSession lastConfiguration];
-  v20 = [NSString stringWithFormat:@"Configuration: %@", v19];
+  lastConfiguration = [(NIServerBaseSession *)self->_specializedSession lastConfiguration];
+  v20 = [NSString stringWithFormat:@"Configuration: %@", lastConfiguration];
   [v18 addObject:v20];
 
   v21 = v31[5];
@@ -3564,13 +3564,13 @@ LABEL_15:
   v23 = [NSString stringWithFormat:@"Specialized session: %@", objc_opt_class()];
   [v21 addObject:v23];
 
-  v24 = [(NIServerBaseSession *)self->_specializedSession printableState];
+  printableState = [(NIServerBaseSession *)self->_specializedSession printableState];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_1001CE4F4;
   v27[3] = &unk_10099C778;
   v27[4] = &v30;
-  [v24 enumerateObjectsUsingBlock:v27];
+  [printableState enumerateObjectsUsingBlock:v27];
   v25 = v31[5];
 
   _Block_object_dispose(&v30, 8);
@@ -3578,7 +3578,7 @@ LABEL_15:
   return v25;
 }
 
-- (void)didFailWithErrorCode:(int64_t)a3 errorString:(const void *)a4
+- (void)didFailWithErrorCode:(int64_t)code errorString:(const void *)string
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
   {
@@ -3586,7 +3586,7 @@ LABEL_15:
   }
 }
 
-- (void)didReceiveNewSolution:(const void *)a3
+- (void)didReceiveNewSolution:(const void *)solution
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
   {
@@ -3594,7 +3594,7 @@ LABEL_15:
   }
 }
 
-- (void)didReceiveSessionStartNotification:(const void *)a3
+- (void)didReceiveSessionStartNotification:(const void *)notification
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
   {
@@ -3602,7 +3602,7 @@ LABEL_15:
   }
 }
 
-- (void)didReceiveRemoteData:(const void *)a3
+- (void)didReceiveRemoteData:(const void *)data
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
   {
@@ -3610,7 +3610,7 @@ LABEL_15:
   }
 }
 
-- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3
+- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status
 {
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
   {
@@ -3618,35 +3618,35 @@ LABEL_15:
   }
 }
 
-- (void)rangingServiceDidUpdateState:(int)a3 cause:(int)a4
+- (void)rangingServiceDidUpdateState:(int)state cause:(int)cause
 {
-  v7 = [(NIServerSessionContainer *)self uwbProvider];
-  v8 = [v7 getQueue];
-  dispatch_assert_queue_V2(v8);
+  uwbProvider = [(NIServerSessionContainer *)self uwbProvider];
+  getQueue = [uwbProvider getQueue];
+  dispatch_assert_queue_V2(getQueue);
 
   objc_initWeak(&location, self);
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001CE7EC;
   block[3] = &unk_10098ABD8;
   objc_copyWeak(&v11, &location);
-  v12 = a3;
-  v13 = a4;
-  dispatch_async(v9, block);
+  stateCopy = state;
+  causeCopy = cause;
+  dispatch_async(connectionQueue, block);
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)didFinishActivatingWithDiscoveryTokenData:(id)a3 error:(id)a4
+- (void)didFinishActivatingWithDiscoveryTokenData:(id)data error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v9);
+  dataCopy = data;
+  errorCopy = error;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  if (v8)
+  if (errorCopy)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -3659,7 +3659,7 @@ LABEL_4:
     goto LABEL_16;
   }
 
-  if (!v7)
+  if (!dataCopy)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -3669,7 +3669,7 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&self->_localDiscoveryToken, a3);
+  objc_storeStrong(&self->_localDiscoveryToken, data);
   v11 = +[NSUserDefaults standardUserDefaults];
   v12 = [v11 BOOLForKey:@"NIHomeDisableDeviceSpecificSTS"];
 
@@ -3684,7 +3684,7 @@ LABEL_4:
     v14 = sub_10041C974(v13[144]);
   }
 
-  v15 = [(NIServerSessionContainer *)self _augmentDiscoveryTokenWithDeviceCapabilities:v7];
+  v15 = [(NIServerSessionContainer *)self _augmentDiscoveryTokenWithDeviceCapabilities:dataCopy];
   localDiscoveryToken = self->_localDiscoveryToken;
   self->_localDiscoveryToken = v15;
 
@@ -3692,11 +3692,11 @@ LABEL_4:
   v18 = self->_localDiscoveryToken;
   self->_localDiscoveryToken = v17;
 
-  v19 = [(NIServerSessionContainer *)self _getCapabilities];
-  v20 = [v19 objectForKey:@"UWBSupportedPlatformExtendedDistance"];
-  v21 = [v20 BOOLValue];
+  _getCapabilities = [(NIServerSessionContainer *)self _getCapabilities];
+  v20 = [_getCapabilities objectForKey:@"UWBSupportedPlatformExtendedDistance"];
+  bOOLValue = [v20 BOOLValue];
 
-  if (v21)
+  if (bOOLValue)
   {
     v22 = [(NIServerSessionContainer *)self _augmentDiscoveryTokenWithNbUwbAcquisitionChannel:self->_localDiscoveryToken];
     v23 = self->_localDiscoveryToken;
@@ -3720,53 +3720,53 @@ LABEL_4:
   }
 
   bleProvider = [(NIServerSessionContainer *)self remote];
-  v29 = [(NIServerSessionContainer *)self discoveryToken];
-  [bleProvider didUpdateLocalDiscoveryToken:v29];
+  discoveryToken = [(NIServerSessionContainer *)self discoveryToken];
+  [bleProvider didUpdateLocalDiscoveryToken:discoveryToken];
 
 LABEL_16:
 }
 
-- (void)didDiscoverDevice:(id)a3
+- (void)didDiscoverDevice:(id)device
 {
-  v5 = a3;
-  v4 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v4);
+  deviceCopy = device;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  [(NIServerBaseSession *)self->_specializedSession deviceDiscovered:v5];
+  [(NIServerBaseSession *)self->_specializedSession deviceDiscovered:deviceCopy];
 }
 
-- (void)discoveredDevice:(id)a3 didUpdate:(id)a4
+- (void)discoveredDevice:(id)device didUpdate:(id)update
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v7);
+  deviceCopy = device;
+  updateCopy = update;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  [(NIServerBaseSession *)self->_specializedSession device:v8 rediscovered:v6];
+  [(NIServerBaseSession *)self->_specializedSession device:deviceCopy rediscovered:updateCopy];
 }
 
-- (void)didLoseDevice:(id)a3
+- (void)didLoseDevice:(id)device
 {
-  v5 = a3;
-  v4 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v4);
+  deviceCopy = device;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  [(NIServerBaseSession *)self->_specializedSession deviceLost:v5];
+  [(NIServerBaseSession *)self->_specializedSession deviceLost:deviceCopy];
 }
 
-- (void)bluetoothDidChangeState:(int64_t)a3
+- (void)bluetoothDidChangeState:(int64_t)state
 {
-  v5 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
-  if (a3 <= 2)
+  if (state <= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
       goto LABEL_10;
     }
 
-    if (a3 == 2 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
+    if (state == 2 && os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
     {
       sub_1004A60E4();
     }
@@ -3774,11 +3774,11 @@ LABEL_16:
 
   else
   {
-    if (a3 != 3)
+    if (state != 3)
     {
-      if (a3 != 4)
+      if (state != 4)
       {
-        if (a3 == 5)
+        if (state == 5)
         {
           [(NIServerSessionContainer *)self _handleBluetoothBecameAvailable];
         }
@@ -3798,39 +3798,39 @@ LABEL_10:
   }
 
 LABEL_13:
-  [(NIServerSessionContainer *)self setLatestBluetoothState:a3];
+  [(NIServerSessionContainer *)self setLatestBluetoothState:state];
 }
 
 - (void)bluetoothServiceInterrupted
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   [(NIServerSessionContainer *)self _handleBluetoothBecameUnavailable];
 }
 
-- (void)bluetoothAdvertisingAddressChanged:(unint64_t)a3
+- (void)bluetoothAdvertisingAddressChanged:(unint64_t)changed
 {
-  v5 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   specializedSession = self->_specializedSession;
   if (objc_opt_respondsToSelector())
   {
     v7 = self->_specializedSession;
 
-    [(NIServerBaseSession *)v7 bluetoothAdvertisingAddressChanged:a3];
+    [(NIServerBaseSession *)v7 bluetoothAdvertisingAddressChanged:changed];
   }
 }
 
-- (void)_setContainerState:(unsigned __int8)a3
+- (void)_setContainerState:(unsigned __int8)state
 {
-  if (self->_latestSessionContainerState != a3)
+  if (self->_latestSessionContainerState != state)
   {
     v5 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = sub_1001CE4C4(a3);
+      v6 = sub_1001CE4C4(state);
       v7 = sub_1001CE4C4(self->_latestSessionContainerState);
       signingIdentity = self->_signingIdentity;
       pid = self->_pid;
@@ -3848,7 +3848,7 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "#ses-container,Container state change. New: %s. Old: %s. Signing identity: %@, pid: %d, session identifier: %@", &v11, 0x30u);
     }
 
-    self->_latestSessionContainerState = a3;
+    self->_latestSessionContainerState = state;
     self->_timeOfLatestContainerState = sub_100005288();
   }
 }
@@ -3856,17 +3856,17 @@ LABEL_13:
 - (basic_string<char,)_interruptionsMapAsString
 {
   v2 = v1;
-  v3 = [v1 connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [v1 connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   sub_100193120(v10);
   sub_10000EA44(&v11, "[", 1);
   for (i = v2[14]; i; i = *i)
   {
     v5 = sub_10036B2EC(i[2]);
-    v6 = [v5 UTF8String];
-    v7 = strlen(v6);
-    sub_10000EA44(&v11, v6, v7);
+    uTF8String = [v5 UTF8String];
+    v7 = strlen(uTF8String);
+    sub_10000EA44(&v11, uTF8String, v7);
     if (*i)
     {
       sub_10000EA44(&v11, ", ", 2);
@@ -3886,11 +3886,11 @@ LABEL_13:
   return std::ios::~ios();
 }
 
-- (void)_dumpInterruptionsMapWithDebugString:(id)a3
+- (void)_dumpInterruptionsMapWithDebugString:(id)string
 {
-  v4 = a3;
-  v5 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v5);
+  stringCopy = string;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v6 = qword_1009F9820;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -3906,7 +3906,7 @@ LABEL_13:
       p_p = v8;
     }
 
-    v14 = v4;
+    v14 = stringCopy;
     v15 = 2080;
     v16 = p_p;
     v17 = 2048;
@@ -3919,28 +3919,28 @@ LABEL_13:
   }
 }
 
-- (void)interruptSessionWithReason:(int64_t)a3 monotonicTimeSeconds:(double)a4
+- (void)interruptSessionWithReason:(int64_t)reason monotonicTimeSeconds:(double)seconds
 {
-  v16 = a3;
-  v7 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v7);
+  reasonCopy = reason;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     sessionIdentifier = self->_sessionIdentifier;
-    v10 = sub_10036B2EC(a3);
+    v10 = sub_10036B2EC(reason);
     *buf = 138412802;
     *&buf[4] = sessionIdentifier;
     *&buf[12] = 2112;
     *&buf[14] = v10;
     *&buf[22] = 2048;
-    v18 = a4;
+    secondsCopy = seconds;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-container,#interrupt Interrupt session %@ with reason: %@. ContTime: %f", buf, 0x20u);
   }
 
   [(NIServerSessionContainer *)self _setContainerState:7];
-  if (sub_100009978(&self->_interruptionsMap.__table_.__bucket_list_.__ptr_, &v16))
+  if (sub_100009978(&self->_interruptionsMap.__table_.__bucket_list_.__ptr_, &reasonCopy))
   {
     v11 = qword_1009F9820;
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_DEFAULT))
@@ -3952,9 +3952,9 @@ LABEL_13:
 
   else
   {
-    *buf = v16;
-    *&buf[8] = v16;
-    *&buf[16] = a4;
+    *buf = reasonCopy;
+    *&buf[8] = reasonCopy;
+    *&buf[16] = seconds;
     sub_1001D08BC(&self->_interruptionsMap.__table_.__bucket_list_.__ptr_, buf);
     [(NIServerSessionContainer *)self _dumpInterruptionsMapWithDebugString:@"interruptWithReason"];
     v12 = [(NIServerBaseSession *)self->_specializedSession pauseWithSource:2];
@@ -3973,39 +3973,39 @@ LABEL_13:
     }
 
     [(NIServerVisionInternalSessionRequest *)self->_visionSessionRequest invalidate];
-    [(NIServerAnalyticsManager *)self->_analyticsManager sessionInterruptedWithTimestamp:a4];
-    v15 = [(NIServerSessionContainer *)self remote];
-    [v15 uwbSessionInterruptedWithReason:v16 timestamp:a4];
+    [(NIServerAnalyticsManager *)self->_analyticsManager sessionInterruptedWithTimestamp:seconds];
+    remote = [(NIServerSessionContainer *)self remote];
+    [remote uwbSessionInterruptedWithReason:reasonCopy timestamp:seconds];
   }
 }
 
-- (void)interruptionReasonEnded:(int64_t)a3 monotonicTimeSeconds:(double)a4
+- (void)interruptionReasonEnded:(int64_t)ended monotonicTimeSeconds:(double)seconds
 {
-  v13 = a3;
-  v7 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v7);
+  endedCopy = ended;
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     sessionIdentifier = self->_sessionIdentifier;
-    v10 = sub_10036B2EC(a3);
+    v10 = sub_10036B2EC(ended);
     *buf = 138412802;
     v15 = sessionIdentifier;
     v16 = 2112;
     v17 = v10;
     v18 = 2048;
-    v19 = a4;
+    secondsCopy = seconds;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "#ses-container,#interrupt Session %@ interruption ended. Reason: %@. ContTime: %f", buf, 0x20u);
   }
 
-  v11 = sub_100009978(&self->_interruptionsMap.__table_.__bucket_list_.__ptr_, &v13);
+  v11 = sub_100009978(&self->_interruptionsMap.__table_.__bucket_list_.__ptr_, &endedCopy);
   if (v11)
   {
     sub_1000223BC(&self->_interruptionsMap.__table_.__bucket_list_.__ptr_, v11);
     [(NIServerSessionContainer *)self _dumpInterruptionsMapWithDebugString:@"interruptionEnded"];
-    v12 = [(NIServerSessionContainer *)self remote];
-    [v12 uwbSessionInterruptionReasonEnded:v13 timestamp:a4];
+    remote = [(NIServerSessionContainer *)self remote];
+    [remote uwbSessionInterruptionReasonEnded:endedCopy timestamp:seconds];
   }
 
   else if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
@@ -4020,13 +4020,13 @@ LABEL_13:
   v3 = +[NIServerVisionDataDistributor sharedProvider];
   [v3 unregisterForVisionInput:self->_specializedSession];
 
-  v4 = [(NIServerSessionContainer *)self devicePresenceResource];
-  v5 = [v4 internalObserver];
-  [v5 stopLeechingForConsumer:self];
+  devicePresenceResource = [(NIServerSessionContainer *)self devicePresenceResource];
+  internalObserver = [devicePresenceResource internalObserver];
+  [internalObserver stopLeechingForConsumer:self];
 
-  v6 = [(NIServerSessionContainer *)self devicePresenceResource];
-  v7 = [v6 internalObserver];
-  [v7 unregisterForInternalBluetoothSamples:self];
+  devicePresenceResource2 = [(NIServerSessionContainer *)self devicePresenceResource];
+  internalObserver2 = [devicePresenceResource2 internalObserver];
+  [internalObserver2 unregisterForInternalBluetoothSamples:self];
 
   [(NIServerBaseSession *)self->_specializedSession invalidate];
   specializedSession = self->_specializedSession;
@@ -4036,8 +4036,8 @@ LABEL_13:
   bleProvider = self->_bleProvider;
   self->_bleProvider = 0;
 
-  v10 = [(NIServerSessionContainer *)self appStateMonitor];
-  [v10 removeObserver:self];
+  appStateMonitor = [(NIServerSessionContainer *)self appStateMonitor];
+  [appStateMonitor removeObserver:self];
 
   [(NIServerAssertionManager *)self->_assertionManager invalidate];
   assertionManager = self->_assertionManager;
@@ -4058,19 +4058,19 @@ LABEL_13:
   [(NIServerAnalyticsManager *)analyticsManager sessionInvalidatedWithTimestamp:v15];
 }
 
-- (id)_fatalErrorForUwbServiceState:(int)a3 cause:(int)a4
+- (id)_fatalErrorForUwbServiceState:(int)state cause:(int)cause
 {
-  v7 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v7);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v8 = qword_1009F9820;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     sessionIdentifier = self->_sessionIdentifier;
-    sub_100004A08(v18, off_10099C8D0[a3]);
+    sub_100004A08(v18, off_10099C8D0[state]);
     v10 = v19;
     v11 = v18[0];
-    sub_100004A08(__p, off_10099C8F8[a4]);
+    sub_100004A08(__p, off_10099C8F8[cause]);
     v12 = v18;
     if (v10 < 0)
     {
@@ -4106,7 +4106,7 @@ LABEL_13:
   }
 
   v14 = 0;
-  if (a3 == 3 && (a4 - 5) <= 1)
+  if (state == 3 && (cause - 5) <= 1)
   {
     if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_ERROR))
     {
@@ -4121,8 +4121,8 @@ LABEL_13:
 
 - (void)_updateInterruptionForUWBSystemReady
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   __src = 0;
   v19 = 0;
@@ -4209,17 +4209,17 @@ LABEL_13:
   }
 }
 
-- (BOOL)_updateInterruptionForUWBSystemOffWithCause:(int)a3
+- (BOOL)_updateInterruptionForUWBSystemOffWithCause:(int)cause
 {
-  v5 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v5);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v6 = 0;
   v7 = 5;
   v8 = sub_100005288();
-  if (a3 > 2)
+  if (cause > 2)
   {
-    switch(a3)
+    switch(cause)
     {
       case 3:
         v7 = 1;
@@ -4236,16 +4236,16 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (a3)
+  if (cause)
   {
-    if (a3 == 1)
+    if (cause == 1)
     {
 LABEL_15:
       [(NIServerSessionContainer *)self interruptSessionWithReason:v7 monotonicTimeSeconds:v8];
       return 1;
     }
 
-    if (a3 == 2)
+    if (cause == 2)
     {
       sub_1004A6258();
     }
@@ -4266,8 +4266,8 @@ LABEL_15:
 
 - (void)_updateInterruptionForUWBSystemError
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v4 = sub_100005288();
 
@@ -4276,8 +4276,8 @@ LABEL_15:
 
 - (void)_handleBluetoothBecameUnavailable
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v4 = sub_100005288();
 
@@ -4286,36 +4286,36 @@ LABEL_15:
 
 - (void)_handleBluetoothBecameAvailable
 {
-  v3 = [(NIServerSessionContainer *)self connectionQueue];
-  dispatch_assert_queue_V2(v3);
+  connectionQueue = [(NIServerSessionContainer *)self connectionQueue];
+  dispatch_assert_queue_V2(connectionQueue);
 
   v4 = sub_100005288();
 
   [(NIServerSessionContainer *)self interruptionReasonEnded:9 monotonicTimeSeconds:v4];
 }
 
-- (void)monitoredApp:(int)a3 didChangeState:(int)a4
+- (void)monitoredApp:(int)app didChangeState:(int)state
 {
   dispatch_assert_queue_V2(self->_connectionQueue);
   v7 = qword_1009F9820;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = sub_100208CC4(a4);
+    v8 = sub_100208CC4(state);
     v10[0] = 67109378;
-    v10[1] = a3;
+    v10[1] = app;
     v11 = 2112;
     v12 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "#ses-container,Monitored app with pid: %d did change state: %@", v10, 0x12u);
   }
 
-  if (!a4)
+  if (!state)
   {
     sub_1004A62B8();
   }
 
   v9 = sub_100005288();
-  self->_latestAppState = a4;
-  switch(a4)
+  self->_latestAppState = state;
+  switch(state)
   {
     case 2:
       [(NIServerAnalyticsManager *)self->_analyticsManager appBecameVisibleWithTimestamp:v9];

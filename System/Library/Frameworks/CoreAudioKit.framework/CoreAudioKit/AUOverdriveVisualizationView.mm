@@ -1,5 +1,5 @@
 @interface AUOverdriveVisualizationView
-- (_TtC12CoreAudioKit28AUOverdriveVisualizationView)initWithFrame:(CGRect)a3;
+- (_TtC12CoreAudioKit28AUOverdriveVisualizationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -19,12 +19,12 @@
   sub_237146D28();
 }
 
-- (_TtC12CoreAudioKit28AUOverdriveVisualizationView)initWithFrame:(CGRect)a3
+- (_TtC12CoreAudioKit28AUOverdriveVisualizationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC12CoreAudioKit28AUOverdriveVisualizationView_overdriveShape;
   *(&self->super.super.super.super.isa + v8) = [objc_allocWithZone(MEMORY[0x277CD9F90]) init];
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC12CoreAudioKit28AUOverdriveVisualizationView_linear) = 1065353216;

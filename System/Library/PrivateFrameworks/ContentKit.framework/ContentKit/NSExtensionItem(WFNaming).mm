@@ -6,10 +6,10 @@
 
 - (id)wfName
 {
-  v1 = [a1 attributedTitle];
-  v2 = [v1 string];
+  attributedTitle = [self attributedTitle];
+  string = [attributedTitle string];
 
-  return v2;
+  return string;
 }
 
 @end

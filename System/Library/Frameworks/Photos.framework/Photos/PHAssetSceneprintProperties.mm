@@ -2,7 +2,7 @@
 + (id)propertiesToFetch;
 - (NSString)duplicateMatchingAlternateValue;
 - (NSString)duplicateMatchingValue;
-- (PHAssetSceneprintProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetSceneprintProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHAssetSceneprintProperties
@@ -10,8 +10,8 @@
 - (NSString)duplicateMatchingAlternateValue
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(PHAssetSceneprintProperties *)self duplicateMatchingAlternateData];
-  v5 = [v3 initWithData:v4 encoding:4];
+  duplicateMatchingAlternateData = [(PHAssetSceneprintProperties *)self duplicateMatchingAlternateData];
+  v5 = [v3 initWithData:duplicateMatchingAlternateData encoding:4];
 
   return v5;
 }
@@ -19,26 +19,26 @@
 - (NSString)duplicateMatchingValue
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(PHAssetSceneprintProperties *)self duplicateMatchingData];
-  v5 = [v3 initWithData:v4 encoding:4];
+  duplicateMatchingData = [(PHAssetSceneprintProperties *)self duplicateMatchingData];
+  v5 = [v3 initWithData:duplicateMatchingData encoding:4];
 
   return v5;
 }
 
-- (PHAssetSceneprintProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetSceneprintProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v23.receiver = self;
   v23.super_class = PHAssetSceneprintProperties;
   v10 = [(PHAssetSceneprintProperties *)&v23 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    v12 = !v5;
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    v12 = !prefetchedCopy;
+    if (prefetchedCopy)
     {
       v13 = @"additionalAttributes.sceneprint.data";
     }
@@ -48,7 +48,7 @@
       v13 = @"sceneprint.data";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v14 = @"additionalAttributes.sceneprint.duplicateMatchingData";
     }
@@ -68,15 +68,15 @@
       v15 = @"additionalAttributes.sceneprint.duplicateMatchingAlternateData";
     }
 
-    v16 = [v8 objectForKeyedSubscript:v13];
+    v16 = [dictionaryCopy objectForKeyedSubscript:v13];
     sceneprint = v11->_sceneprint;
     v11->_sceneprint = v16;
 
-    v18 = [v8 objectForKeyedSubscript:v14];
+    v18 = [dictionaryCopy objectForKeyedSubscript:v14];
     duplicateMatchingData = v11->_duplicateMatchingData;
     v11->_duplicateMatchingData = v18;
 
-    v20 = [v8 objectForKeyedSubscript:v15];
+    v20 = [dictionaryCopy objectForKeyedSubscript:v15];
     duplicateMatchingAlternateData = v11->_duplicateMatchingAlternateData;
     v11->_duplicateMatchingAlternateData = v20;
   }

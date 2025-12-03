@@ -1,14 +1,14 @@
 @interface CPUITableHeaderFooterView
 + (NSString)reuseIdentifier;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CPUITableHeaderFooterView)initWithCoder:(id)a3;
-- (CPUITableHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CPUITableHeaderFooterView)initWithCoder:(id)coder;
+- (CPUITableHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 - (NSString)title;
 - (id)action;
 - (void)observeViewModel;
 - (void)prepareForReuse;
-- (void)setAction:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAction:(id)action;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CPUITableHeaderFooterView
@@ -25,7 +25,7 @@
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR___CPUITableHeaderFooterView_viewModel);
   swift_getKeyPath();
   lazy protocol witness table accessor for type CPUITableHeaderFooterView.ViewModel and conformance CPUITableHeaderFooterView.ViewModel(&lazy protocol witness table cache variable for type CPUITableHeaderFooterView.ViewModel and conformance CPUITableHeaderFooterView.ViewModel, type metadata accessor for CPUITableHeaderFooterView.ViewModel);
-  v4 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
   v5 = *(v3 + 16);
@@ -36,11 +36,11 @@
   return v7;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   CPUITableHeaderFooterView.ViewModel.title.setter(v4, v6);
 }
 
@@ -50,7 +50,7 @@
   swift_getKeyPath();
   v8[0] = v3;
   lazy protocol witness table accessor for type CPUITableHeaderFooterView.ViewModel and conformance CPUITableHeaderFooterView.ViewModel(&lazy protocol witness table cache variable for type CPUITableHeaderFooterView.ViewModel and conformance CPUITableHeaderFooterView.ViewModel, type metadata accessor for CPUITableHeaderFooterView.ViewModel);
-  v4 = self;
+  selfCopy = self;
   ObservationRegistrar.access<A, B>(_:keyPath:)();
 
   v5 = *(v3 + 32);
@@ -71,9 +71,9 @@
   return v5;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(action);
   if (v4)
   {
     *(swift_allocObject() + 16) = v4;
@@ -88,14 +88,14 @@
   KeyPath = swift_getKeyPath();
   MEMORY[0x28223BE20](KeyPath);
   lazy protocol witness table accessor for type CPUITableHeaderFooterView.ViewModel and conformance CPUITableHeaderFooterView.ViewModel(&lazy protocol witness table cache variable for type CPUITableHeaderFooterView.ViewModel and conformance CPUITableHeaderFooterView.ViewModel, type metadata accessor for CPUITableHeaderFooterView.ViewModel);
-  v7 = self;
+  selfCopy = self;
   ObservationRegistrar.withMutation<A, B, C>(of:keyPath:_:)();
   outlined consume of (@escaping @callee_guaranteed () -> ())?(v5);
 }
 
-- (CPUITableHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (CPUITableHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -109,27 +109,27 @@
   return CPUITableHeaderFooterView.init(reuseIdentifier:)(v3, v4);
 }
 
-- (CPUITableHeaderFooterView)initWithCoder:(id)a3
+- (CPUITableHeaderFooterView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = *(&self->super.super.super.super.isa + OBJC_IVAR___CPUITableHeaderFooterView_hostingView);
-  v4 = self;
+  selfCopy = self;
   v5 = v3;
-  v6 = [(CPUITableHeaderFooterView *)v4 contentView];
-  [v6 bounds];
+  contentView = [(CPUITableHeaderFooterView *)selfCopy contentView];
+  [contentView bounds];
   v8 = v7;
 
   [v5 sizeThatFits_];
   v10 = v9;
 
-  v11 = [(CPUITableHeaderFooterView *)v4 contentView];
-  [v11 bounds];
+  contentView2 = [(CPUITableHeaderFooterView *)selfCopy contentView];
+  [contentView2 bounds];
   v13 = v12;
 
   v14 = v13;
@@ -143,7 +143,7 @@
 {
   v3.receiver = self;
   v3.super_class = CPUITableHeaderFooterView;
-  v2 = self;
+  selfCopy = self;
   [(CPUITableHeaderFooterView *)&v3 prepareForReuse];
   CPUITableHeaderFooterView.ViewModel.title.setter(0, 0xE000000000000000);
   swift_getKeyPath();
@@ -153,7 +153,7 @@
 
 - (void)observeViewModel
 {
-  v2 = self;
+  selfCopy = self;
   withObservationTracking<A>(_:onChange:)();
 }
 

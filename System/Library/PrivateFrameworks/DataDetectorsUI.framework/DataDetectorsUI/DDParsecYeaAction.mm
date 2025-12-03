@@ -1,8 +1,8 @@
 @interface DDParsecYeaAction
 - (id)createViewController;
 - (id)feedbackListener;
-- (void)performFromView:(id)a3;
-- (void)prepareViewControllerForActionController:(id)a3;
+- (void)performFromView:(id)view;
+- (void)prepareViewControllerForActionController:(id)controller;
 - (void)report;
 @end
 
@@ -12,9 +12,9 @@
 {
   v4.receiver = self;
   v4.super_class = DDParsecYeaAction;
-  v2 = [(DDParsecAction *)&v4 createViewController];
+  createViewController = [(DDParsecAction *)&v4 createViewController];
 
-  return v2;
+  return createViewController;
 }
 
 - (id)feedbackListener
@@ -79,27 +79,27 @@ void __37__DDParsecYeaAction_feedbackListener__block_invoke(uint64_t a1)
     v8 = [v4 length];
     v9 = self->super.super.super._result;
     v10 = [v7 initWithContext:v4 hintRange:0 domain:v8 discarded:v12 grade:{DDShouldUseDebugHighlightForResult(), -[DDParsecYeaAction relevancy](self, "relevancy")}];
-    v11 = [(DDParsecYeaAction *)self feedbackListener];
-    [v11 didGradeLookupHintRelevancy:v10];
+    feedbackListener = [(DDParsecYeaAction *)self feedbackListener];
+    [feedbackListener didGradeLookupHintRelevancy:v10];
   }
 }
 
-- (void)prepareViewControllerForActionController:(id)a3
+- (void)prepareViewControllerForActionController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(DDParsecYeaAction *)self report];
   v5.receiver = self;
   v5.super_class = DDParsecYeaAction;
-  [(DDAction *)&v5 prepareViewControllerForActionController:v4];
+  [(DDAction *)&v5 prepareViewControllerForActionController:controllerCopy];
 }
 
-- (void)performFromView:(id)a3
+- (void)performFromView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(DDParsecYeaAction *)self report];
   v5.receiver = self;
   v5.super_class = DDParsecYeaAction;
-  [(DDAction *)&v5 performFromView:v4];
+  [(DDAction *)&v5 performFromView:viewCopy];
 }
 
 @end

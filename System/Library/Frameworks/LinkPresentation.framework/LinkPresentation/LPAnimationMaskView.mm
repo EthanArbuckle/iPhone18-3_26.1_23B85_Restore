@@ -1,31 +1,31 @@
 @interface LPAnimationMaskView
-- (LPAnimationMaskView)initWithFrame:(CGRect)a3;
+- (LPAnimationMaskView)initWithFrame:(CGRect)frame;
 - (void)internalLayoutSubviews;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation LPAnimationMaskView
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  objc_storeStrong(&self->_image, a3);
+  objc_storeStrong(&self->_image, image);
 
   [(LPAnimationMaskView *)self setNeedsLayout];
 }
 
-- (LPAnimationMaskView)initWithFrame:(CGRect)a3
+- (LPAnimationMaskView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = LPAnimationMaskView;
-  v3 = [(LPAnimationMaskView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(LPAnimationMaskView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
     imageView = v3->_imageView;
     v3->_imageView = v4;
 
-    v6 = [(LPAnimationMaskView *)v3 imageView];
-    [(LPAnimationMaskView *)v3 addSubview:v6];
+    imageView = [(LPAnimationMaskView *)v3 imageView];
+    [(LPAnimationMaskView *)v3 addSubview:imageView];
   }
 
   return v3;
@@ -41,7 +41,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_1AE97856C();
 }
 

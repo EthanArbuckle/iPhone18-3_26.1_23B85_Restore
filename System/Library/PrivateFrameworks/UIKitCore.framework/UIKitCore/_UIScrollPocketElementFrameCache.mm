@@ -1,8 +1,8 @@
 @interface _UIScrollPocketElementFrameCache
-- (CGRect)getValueForCoordinateSpace:(id)a3;
+- (CGRect)getValueForCoordinateSpace:(id)space;
 - (_UIScrollPocketElementFrameCache)init;
 - (void)invalidate;
-- (void)putValue:(CGRect)a3 forCoordinateSpace:(id)a4;
+- (void)putValue:(CGRect)value forCoordinateSpace:(id)space;
 @end
 
 @implementation _UIScrollPocketElementFrameCache
@@ -15,9 +15,9 @@
   return [(_UIScrollPocketElementFrameCache *)&v4 init];
 }
 
-- (CGRect)getValueForCoordinateSpace:(id)a3
+- (CGRect)getValueForCoordinateSpace:(id)space
 {
-  v3 = sub_18903568C(a3);
+  v3 = sub_18903568C(space);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -25,18 +25,18 @@
   return result;
 }
 
-- (void)putValue:(CGRect)a3 forCoordinateSpace:(id)a4
+- (void)putValue:(CGRect)value forCoordinateSpace:(id)space
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  x = a3.origin.x;
-  y = a3.origin.y;
+  width = value.size.width;
+  height = value.size.height;
+  x = value.origin.x;
+  y = value.origin.y;
   v5 = *MEMORY[0x1E695F050];
   v6 = *(MEMORY[0x1E695F050] + 8);
   v7 = *(MEMORY[0x1E695F050] + 16);
   v8 = *(MEMORY[0x1E695F050] + 24);
-  v9 = a4;
-  v10 = self;
+  spaceCopy = space;
+  selfCopy = self;
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
@@ -65,7 +65,7 @@
   v20[1] = vbicq_s8(v13, v15);
   v21 = v11;
   swift_beginAccess();
-  sub_188F28E1C(v20, v9);
+  sub_188F28E1C(v20, spaceCopy);
   swift_endAccess();
 }
 

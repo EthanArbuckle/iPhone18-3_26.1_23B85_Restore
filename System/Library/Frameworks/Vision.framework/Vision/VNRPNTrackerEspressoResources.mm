@@ -1,23 +1,23 @@
 @interface VNRPNTrackerEspressoResources
-- (id)_initWithRPNInitEspressoResources:(id)a3 RPNTrackEspressoResources:(id)a4;
+- (id)_initWithRPNInitEspressoResources:(id)resources RPNTrackEspressoResources:(id)espressoResources;
 - (id)rpnInitEspressoResources;
 - (id)rpnTrackEspressoResources;
 @end
 
 @implementation VNRPNTrackerEspressoResources
 
-- (id)_initWithRPNInitEspressoResources:(id)a3 RPNTrackEspressoResources:(id)a4
+- (id)_initWithRPNInitEspressoResources:(id)resources RPNTrackEspressoResources:(id)espressoResources
 {
-  v7 = a3;
-  v8 = a4;
+  resourcesCopy = resources;
+  espressoResourcesCopy = espressoResources;
   v12.receiver = self;
   v12.super_class = VNRPNTrackerEspressoResources;
   v9 = [(VNRPNTrackerEspressoResources *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_rpnInitEspressoResources, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_rpnInitEspressoResources, resources);
+    objc_storeStrong(p_isa + 2, espressoResources);
   }
 
   return p_isa;
@@ -55,24 +55,24 @@ id __110__VNRPNTrackerEspressoResources_resourcesForOptions_PRNInitEspressoModel
 
 - (id)rpnInitEspressoResources
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)rpnTrackEspressoResources
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[2];
+    self = self[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

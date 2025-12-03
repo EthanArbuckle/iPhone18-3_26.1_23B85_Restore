@@ -1,138 +1,138 @@
 @interface ICCRTombstoneOrderedSet
-- (BOOL)containsObjectEqualTo:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)containsObjectEqualTo:(id)to;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)wantsUndoCommands;
 - (ICCRDocument)document;
 - (ICCRTombstoneOrderedSet)init;
-- (ICCRTombstoneOrderedSet)initWithDocument:(id)a3;
-- (ICCRTombstoneOrderedSet)initWithICCRCoder:(id)a3;
-- (ICCRTombstoneOrderedSet)initWithICCRCoder:(id)a3 orderedSet:(const void *)a4;
-- (ICCRTombstoneOrderedSet)initWithOrdering:(id)a3 elements:(id)a4 document:(id)a5;
+- (ICCRTombstoneOrderedSet)initWithDocument:(id)document;
+- (ICCRTombstoneOrderedSet)initWithICCRCoder:(id)coder;
+- (ICCRTombstoneOrderedSet)initWithICCRCoder:(id)coder orderedSet:(const void *)set;
+- (ICCRTombstoneOrderedSet)initWithOrdering:(id)ordering elements:(id)elements document:(id)document;
 - (ICCRUndoDelegate)delegate;
 - (NSMapTable)cachedIndexMapping;
 - (NSMutableOrderedSet)cachedIdentifierSet;
 - (NSString)description;
-- (id)deltaSince:(id)a3 in:(id)a4;
-- (id)generateNSOrderedIdentifierSetWithIndexMapping:(id)a3;
-- (id)identifierForObjectInCachedSet:(id)a3;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectForIdentifier:(id)a3;
+- (id)deltaSince:(id)since in:(id)in;
+- (id)generateNSOrderedIdentifierSetWithIndexMapping:(id)mapping;
+- (id)identifierForObjectInCachedSet:(id)set;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectForIdentifier:(id)identifier;
 - (id)tombstone;
 - (unint64_t)count;
 - (unint64_t)hash;
-- (unint64_t)indexOfEqualObject:(id)a3;
-- (void)_removeObjectsFromOrderingAtIndices:(id)a3;
-- (void)addObject:(id)a3;
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4;
-- (void)encodeWithICCRCoder:(id)a3;
-- (void)encodeWithICCRCoder:(id)a3 orderedSet:(void *)a4;
-- (void)enumerateObjectsUsingBlock:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
-- (void)mergeWith:(id)a3;
+- (unint64_t)indexOfEqualObject:(id)object;
+- (void)_removeObjectsFromOrderingAtIndices:(id)indices;
+- (void)addObject:(id)object;
+- (void)addUndoCommandsForObject:(id)object block:(id)block;
+- (void)encodeWithICCRCoder:(id)coder;
+- (void)encodeWithICCRCoder:(id)coder orderedSet:(void *)set;
+- (void)enumerateObjectsUsingBlock:(id)block;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
+- (void)mergeWith:(id)with;
 - (void)moveClock;
-- (void)moveObjectFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 mutableSafe:(BOOL)a5;
-- (void)realizeLocalChangesIn:(id)a3;
+- (void)moveObjectFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex mutableSafe:(BOOL)safe;
+- (void)realizeLocalChangesIn:(id)in;
 - (void)regenerateNSOrderedIdentifierSetAndIndexMapping;
-- (void)reinsertIdentifier:(id)a3 withMaskedIdentifiers:(id)a4 atIndex:(unint64_t)a5 forObjectToMove:(id)a6;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)setDocument:(id)a3;
-- (void)shiftCachedIndicesStartingAtIndex:(unint64_t)a3 by:(int64_t)a4;
-- (void)undoablyInsertObjectIdentifiersIntoElements:(id)a3;
-- (void)undoablyRemoveObjectIdentifiersFromElements:(id)a3;
-- (void)walkGraph:(id)a3;
+- (void)reinsertIdentifier:(id)identifier withMaskedIdentifiers:(id)identifiers atIndex:(unint64_t)index forObjectToMove:(id)move;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)setDocument:(id)document;
+- (void)shiftCachedIndicesStartingAtIndex:(unint64_t)index by:(int64_t)by;
+- (void)undoablyInsertObjectIdentifiersIntoElements:(id)elements;
+- (void)undoablyRemoveObjectIdentifiersFromElements:(id)elements;
+- (void)walkGraph:(id)graph;
 - (void)wipeoutCaches;
 @end
 
 @implementation ICCRTombstoneOrderedSet
 
-- (void)encodeWithICCRCoder:(id)a3
+- (void)encodeWithICCRCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [v6 currentDocumentObjectForEncoding];
-  v5 = v4;
-  if (*(v4 + 48) != 16)
+  coderCopy = coder;
+  currentDocumentObjectForEncoding = [coderCopy currentDocumentObjectForEncoding];
+  v5 = currentDocumentObjectForEncoding;
+  if (*(currentDocumentObjectForEncoding + 48) != 16)
   {
-    CRDT::Document_DocObject::clear_contents(v4);
+    CRDT::Document_DocObject::clear_contents(currentDocumentObjectForEncoding);
     *(v5 + 48) = 16;
     operator new();
   }
 
-  [(ICCRTombstoneOrderedSet *)self encodeWithICCRCoder:v6 orderedSet:*(v4 + 40)];
+  [(ICCRTombstoneOrderedSet *)self encodeWithICCRCoder:coderCopy orderedSet:*(currentDocumentObjectForEncoding + 40)];
 }
 
-- (void)encodeWithICCRCoder:(id)a3 orderedSet:(void *)a4
+- (void)encodeWithICCRCoder:(id)coder orderedSet:(void *)set
 {
-  v10 = a3;
-  v6 = [(ICCRTombstoneOrderedSet *)self ordering];
-  *(a4 + 8) |= 1u;
-  v7 = *(a4 + 5);
+  coderCopy = coder;
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  *(set + 8) |= 1u;
+  v7 = *(set + 5);
   if (!v7)
   {
     operator new();
   }
 
-  [v6 encodeWithICCRCoder:v10 array:v7];
+  [ordering encodeWithICCRCoder:coderCopy array:v7];
 
-  v8 = [(ICCRTombstoneOrderedSet *)self elements];
-  *(a4 + 8) |= 2u;
-  v9 = *(a4 + 6);
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  *(set + 8) |= 2u;
+  v9 = *(set + 6);
   if (!v9)
   {
     operator new();
   }
 
-  [v8 encodeWithICCRCoder:v10 set:v9];
+  [elements encodeWithICCRCoder:coderCopy set:v9];
 }
 
-- (ICCRTombstoneOrderedSet)initWithICCRCoder:(id)a3
+- (ICCRTombstoneOrderedSet)initWithICCRCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 currentDocumentObjectForDecoding];
-  if (*(v5 + 48) == 16)
+  coderCopy = coder;
+  currentDocumentObjectForDecoding = [coderCopy currentDocumentObjectForDecoding];
+  if (*(currentDocumentObjectForDecoding + 48) == 16)
   {
-    v6 = [(ICCRTombstoneOrderedSet *)self initWithICCRCoder:v4 orderedSet:*(v5 + 40)];
+    v6 = [(ICCRTombstoneOrderedSet *)self initWithICCRCoder:coderCopy orderedSet:*(currentDocumentObjectForDecoding + 40)];
   }
 
   else
   {
-    v7 = [v4 document];
-    v6 = [(ICCRTombstoneOrderedSet *)self initWithDocument:v7];
+    document = [coderCopy document];
+    v6 = [(ICCRTombstoneOrderedSet *)self initWithDocument:document];
   }
 
   return v6;
 }
 
-- (ICCRTombstoneOrderedSet)initWithICCRCoder:(id)a3 orderedSet:(const void *)a4
+- (ICCRTombstoneOrderedSet)initWithICCRCoder:(id)coder orderedSet:(const void *)set
 {
-  v6 = a3;
+  coderCopy = coder;
   v7 = [ICCRArray alloc];
   v8 = v7;
-  v9 = *(a4 + 5);
+  v9 = *(set + 5);
   if (!v9)
   {
     v9 = *(CRDT::OrderedSet::default_instance(v7) + 40);
   }
 
-  v10 = [(ICCRArray *)v8 initWithICCRCoder:v6 array:v9];
+  v10 = [(ICCRArray *)v8 initWithICCRCoder:coderCopy array:v9];
   v11 = [ICCRSet alloc];
   v12 = v11;
-  v13 = *(a4 + 6);
+  v13 = *(set + 6);
   if (!v13)
   {
     v13 = *(CRDT::OrderedSet::default_instance(v11) + 48);
   }
 
-  v14 = [(ICCRSet *)v12 initWithICCRCoder:v6 set:v13];
-  v15 = [v6 document];
-  v16 = [(ICCRTombstoneOrderedSet *)self initWithOrdering:v10 elements:v14 document:v15];
+  v14 = [(ICCRSet *)v12 initWithICCRCoder:coderCopy set:v13];
+  document = [coderCopy document];
+  v16 = [(ICCRTombstoneOrderedSet *)self initWithOrdering:v10 elements:v14 document:document];
 
   return v16;
 }
 
 - (unint64_t)count
 {
-  v2 = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
-  v3 = [v2 count];
+  cachedIdentifierSet = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
+  v3 = [cachedIdentifierSet count];
 
   return v3;
 }
@@ -144,30 +144,30 @@
   return 0;
 }
 
-- (ICCRTombstoneOrderedSet)initWithDocument:(id)a3
+- (ICCRTombstoneOrderedSet)initWithDocument:(id)document
 {
-  v4 = a3;
-  v5 = [[ICCRArray alloc] initWithDocument:v4];
-  v6 = [[ICCRSet alloc] initWithDocument:v4];
-  v7 = [(ICCRTombstoneOrderedSet *)self initWithOrdering:v5 elements:v6 document:v4];
+  documentCopy = document;
+  v5 = [[ICCRArray alloc] initWithDocument:documentCopy];
+  v6 = [[ICCRSet alloc] initWithDocument:documentCopy];
+  v7 = [(ICCRTombstoneOrderedSet *)self initWithOrdering:v5 elements:v6 document:documentCopy];
 
   return v7;
 }
 
-- (ICCRTombstoneOrderedSet)initWithOrdering:(id)a3 elements:(id)a4 document:(id)a5
+- (ICCRTombstoneOrderedSet)initWithOrdering:(id)ordering elements:(id)elements document:(id)document
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  orderingCopy = ordering;
+  elementsCopy = elements;
+  documentCopy = document;
   v13.receiver = self;
   v13.super_class = ICCRTombstoneOrderedSet;
   v11 = [(ICCRTombstoneOrderedSet *)&v13 init];
   if (v11)
   {
-    [v8 setDelegate:v11];
-    [(ICCRTombstoneOrderedSet *)v11 setOrdering:v8];
-    [(ICCRTombstoneOrderedSet *)v11 setElements:v9];
-    [(ICCRTombstoneOrderedSet *)v11 setDocument:v10];
+    [orderingCopy setDelegate:v11];
+    [(ICCRTombstoneOrderedSet *)v11 setOrdering:orderingCopy];
+    [(ICCRTombstoneOrderedSet *)v11 setElements:elementsCopy];
+    [(ICCRTombstoneOrderedSet *)v11 setDocument:documentCopy];
   }
 
   return v11;
@@ -199,38 +199,38 @@
 
 - (void)regenerateNSOrderedIdentifierSetAndIndexMapping
 {
-  v3 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+  strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
   cachedIndexMapping = self->_cachedIndexMapping;
-  self->_cachedIndexMapping = v3;
+  self->_cachedIndexMapping = strongToStrongObjectsMapTable;
 
   v5 = [(ICCRTombstoneOrderedSet *)self generateNSOrderedIdentifierSetWithIndexMapping:self->_cachedIndexMapping];
   cachedIdentifierSet = self->_cachedIdentifierSet;
   self->_cachedIdentifierSet = v5;
 }
 
-- (id)generateNSOrderedIdentifierSetWithIndexMapping:(id)a3
+- (id)generateNSOrderedIdentifierSetWithIndexMapping:(id)mapping
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB40] orderedSet];
-  v6 = [(ICCRTombstoneOrderedSet *)self elements];
-  v7 = [(ICCRTombstoneOrderedSet *)self ordering];
-  v8 = [v7 contents];
+  mappingCopy = mapping;
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  contents = [ordering contents];
 
-  v9 = [(ICCRTombstoneOrderedSet *)self ordering];
-  v10 = [v9 array];
+  ordering2 = [(ICCRTombstoneOrderedSet *)self ordering];
+  array = [ordering2 array];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __74__ICCRTombstoneOrderedSet_generateNSOrderedIdentifierSetWithIndexMapping___block_invoke;
   v18[3] = &unk_27819A210;
-  v19 = v6;
-  v20 = v8;
-  v21 = v4;
-  v11 = v5;
+  v19 = elements;
+  v20 = contents;
+  v21 = mappingCopy;
+  v11 = orderedSet;
   v22 = v11;
-  v12 = v4;
-  v13 = v8;
-  v14 = v6;
-  [v10 enumerateObjectsUsingBlock:v18];
+  v12 = mappingCopy;
+  v13 = contents;
+  v14 = elements;
+  [array enumerateObjectsUsingBlock:v18];
 
   v15 = v22;
   v16 = v11;
@@ -269,41 +269,41 @@ void __74__ICCRTombstoneOrderedSet_generateNSOrderedIdentifierSetWithIndexMappin
   self->_cachedIdentifierSet = 0;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  v5 = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
-  v6 = [v5 objectAtIndex:a3];
+  cachedIdentifierSet = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
+  v6 = [cachedIdentifierSet objectAtIndex:index];
 
   v7 = [(ICCRTombstoneOrderedSet *)self objectForIdentifier:v6];
 
   return v7;
 }
 
-- (id)objectForIdentifier:(id)a3
+- (id)objectForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICCRTombstoneOrderedSet *)self ordering];
-  v6 = [v5 contents];
-  v7 = [v6 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  contents = [ordering contents];
+  v7 = [contents objectForKeyedSubscript:identifierCopy];
 
   return v7;
 }
 
-- (unint64_t)indexOfEqualObject:(id)a3
+- (unint64_t)indexOfEqualObject:(id)object
 {
-  v4 = a3;
-  v5 = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
-  v6 = [v5 objectForKey:v4];
+  objectCopy = object;
+  cachedIndexMapping = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
+  v6 = [cachedIndexMapping objectForKey:objectCopy];
 
   if (v6 && [v6 count])
   {
-    v7 = [v6 firstIndex];
-    v8 = [(ICCRTombstoneOrderedSet *)self ordering];
-    v9 = [v8 array];
-    v10 = [v9 objectAtIndexedSubscript:v7];
+    firstIndex = [v6 firstIndex];
+    ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+    array = [ordering array];
+    v10 = [array objectAtIndexedSubscript:firstIndex];
 
-    v11 = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
-    v12 = [v11 indexOfObject:v10];
+    cachedIdentifierSet = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
+    v12 = [cachedIdentifierSet indexOfObject:v10];
   }
 
   else
@@ -314,17 +314,17 @@ void __74__ICCRTombstoneOrderedSet_generateNSOrderedIdentifierSetWithIndexMappin
   return v12;
 }
 
-- (id)identifierForObjectInCachedSet:(id)a3
+- (id)identifierForObjectInCachedSet:(id)set
 {
-  v4 = a3;
-  v5 = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
-  v6 = [v5 objectForKey:v4];
+  setCopy = set;
+  cachedIndexMapping = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
+  v6 = [cachedIndexMapping objectForKey:setCopy];
 
   if (v6)
   {
-    v7 = [(ICCRTombstoneOrderedSet *)self ordering];
-    v8 = [v7 array];
-    v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "firstIndex")}];
+    ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+    array = [ordering array];
+    v9 = [array objectAtIndexedSubscript:{objc_msgSend(v6, "firstIndex")}];
   }
 
   else
@@ -335,82 +335,82 @@ void __74__ICCRTombstoneOrderedSet_generateNSOrderedIdentifierSetWithIndexMappin
   return v9;
 }
 
-- (BOOL)containsObjectEqualTo:(id)a3
+- (BOOL)containsObjectEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
-  v6 = [v5 objectForKey:v4];
+  toCopy = to;
+  cachedIndexMapping = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
+  v6 = [cachedIndexMapping objectForKey:toCopy];
 
-  LOBYTE(v4) = [v6 count] != 0;
-  return v4;
+  LOBYTE(toCopy) = [v6 count] != 0;
+  return toCopy;
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(ICCRTombstoneOrderedSet *)self identifierForObjectInCachedSet:v6];
+  objectCopy = object;
+  v7 = [(ICCRTombstoneOrderedSet *)self identifierForObjectInCachedSet:objectCopy];
   if (!v7)
   {
     v8 = [(ICCRTombstoneOrderedSet *)self count];
-    if (v8 <= a4)
+    if (v8 <= index)
     {
-      if (v8 != a4)
+      if (v8 != index)
       {
         v22 = os_log_create("com.apple.coreCRDT", "ICCRTombstoneOrderedSet");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
-          [ICCRTombstoneOrderedSet insertObject:a4 atIndex:v22];
+          [ICCRTombstoneOrderedSet insertObject:index atIndex:v22];
         }
 
         v24 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"ICCRTombstoneOrderedSet: inserting element at invalid index" userInfo:0];
         objc_exception_throw(v24);
       }
 
-      v16 = [(ICCRTombstoneOrderedSet *)self ordering];
-      v7 = [v16 _addObject:v6];
+      ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+      v7 = [ordering _addObject:objectCopy];
 
       cachedIndexMapping = self->_cachedIndexMapping;
       v18 = MEMORY[0x277CCAB58];
-      v9 = [(ICCRTombstoneOrderedSet *)self ordering];
-      v11 = [v18 indexSetWithIndex:{objc_msgSend(v9, "count") - 1}];
-      [(NSMapTable *)cachedIndexMapping setObject:v11 forKey:v6];
+      ordering2 = [(ICCRTombstoneOrderedSet *)self ordering];
+      v11 = [v18 indexSetWithIndex:{objc_msgSend(ordering2, "count") - 1}];
+      [(NSMapTable *)cachedIndexMapping setObject:v11 forKey:objectCopy];
     }
 
     else
     {
-      v9 = [(ICCRTombstoneOrderedSet *)self objectAtIndexedSubscript:a4];
-      v10 = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
-      v11 = [v10 objectForKey:v9];
+      ordering2 = [(ICCRTombstoneOrderedSet *)self objectAtIndexedSubscript:index];
+      cachedIndexMapping = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
+      v11 = [cachedIndexMapping objectForKey:ordering2];
 
-      v12 = [v11 firstIndex];
-      v13 = [(ICCRTombstoneOrderedSet *)self ordering];
-      v7 = [v13 _insertObject:v6 atIndex:v12];
+      firstIndex = [v11 firstIndex];
+      ordering3 = [(ICCRTombstoneOrderedSet *)self ordering];
+      v7 = [ordering3 _insertObject:objectCopy atIndex:firstIndex];
 
-      [(ICCRTombstoneOrderedSet *)self shiftCachedIndicesStartingAtIndex:v12 by:1];
+      [(ICCRTombstoneOrderedSet *)self shiftCachedIndicesStartingAtIndex:firstIndex by:1];
       v14 = self->_cachedIndexMapping;
-      v15 = [MEMORY[0x277CCAB58] indexSetWithIndex:v12];
-      [(NSMapTable *)v14 setObject:v15 forKey:v6];
+      v15 = [MEMORY[0x277CCAB58] indexSetWithIndex:firstIndex];
+      [(NSMapTable *)v14 setObject:v15 forKey:objectCopy];
     }
 
-    v19 = [(ICCRTombstoneOrderedSet *)self elements];
-    [v19 addObject:v7];
+    elements = [(ICCRTombstoneOrderedSet *)self elements];
+    [elements addObject:v7];
 
     cachedIdentifierSet = self->_cachedIdentifierSet;
     if (cachedIdentifierSet)
     {
-      [(NSMutableOrderedSet *)cachedIdentifierSet insertObject:v7 atIndex:a4];
+      [(NSMutableOrderedSet *)cachedIdentifierSet insertObject:v7 atIndex:index];
     }
 
     if ([(ICCRTombstoneOrderedSet *)self wantsUndoCommands])
     {
-      v21 = [(ICCRTombstoneOrderedSet *)self delegate];
+      delegate = [(ICCRTombstoneOrderedSet *)self delegate];
       v25[0] = MEMORY[0x277D85DD0];
       v25[1] = 3221225472;
       v25[2] = __48__ICCRTombstoneOrderedSet_insertObject_atIndex___block_invoke;
       v25[3] = &unk_27819A238;
       v7 = v7;
       v26 = v7;
-      [v21 addUndoCommandsForObject:self block:v25];
+      [delegate addUndoCommandsForObject:self block:v25];
     }
   }
 }
@@ -425,16 +425,16 @@ void __48__ICCRTombstoneOrderedSet_insertObject_atIndex___block_invoke(uint64_t 
   [v3 undoablyRemoveObjectIdentifiersFromElements:{v4, v5, v6}];
 }
 
-- (void)undoablyRemoveObjectIdentifiersFromElements:(id)a3
+- (void)undoablyRemoveObjectIdentifiersFromElements:(id)elements
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICCRTombstoneOrderedSet *)self elements];
+  elementsCopy = elements;
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = elementsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -450,7 +450,7 @@ void __48__ICCRTombstoneOrderedSet_insertObject_atIndex___block_invoke(uint64_t 
           objc_enumerationMutation(v6);
         }
 
-        [v5 removeObject:*(*(&v14 + 1) + 8 * v10++)];
+        [elements removeObject:*(*(&v14 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
@@ -463,26 +463,26 @@ void __48__ICCRTombstoneOrderedSet_insertObject_atIndex___block_invoke(uint64_t 
   [(ICCRTombstoneOrderedSet *)self wipeoutCaches];
   if ([(ICCRTombstoneOrderedSet *)self wantsUndoCommands])
   {
-    v11 = [(ICCRTombstoneOrderedSet *)self delegate];
+    delegate = [(ICCRTombstoneOrderedSet *)self delegate];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __71__ICCRTombstoneOrderedSet_undoablyRemoveObjectIdentifiersFromElements___block_invoke;
     v12[3] = &unk_27819A238;
     v13 = v6;
-    [v11 addUndoCommandsForObject:self block:v12];
+    [delegate addUndoCommandsForObject:self block:v12];
   }
 }
 
-- (void)undoablyInsertObjectIdentifiersIntoElements:(id)a3
+- (void)undoablyInsertObjectIdentifiersIntoElements:(id)elements
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICCRTombstoneOrderedSet *)self elements];
+  elementsCopy = elements;
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = elementsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -498,7 +498,7 @@ void __48__ICCRTombstoneOrderedSet_insertObject_atIndex___block_invoke(uint64_t 
           objc_enumerationMutation(v6);
         }
 
-        [v5 addObject:*(*(&v14 + 1) + 8 * v10++)];
+        [elements addObject:*(*(&v14 + 1) + 8 * v10++)];
       }
 
       while (v8 != v10);
@@ -511,58 +511,58 @@ void __48__ICCRTombstoneOrderedSet_insertObject_atIndex___block_invoke(uint64_t 
   [(ICCRTombstoneOrderedSet *)self wipeoutCaches];
   if ([(ICCRTombstoneOrderedSet *)self wantsUndoCommands])
   {
-    v11 = [(ICCRTombstoneOrderedSet *)self delegate];
+    delegate = [(ICCRTombstoneOrderedSet *)self delegate];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __71__ICCRTombstoneOrderedSet_undoablyInsertObjectIdentifiersIntoElements___block_invoke;
     v12[3] = &unk_27819A238;
     v13 = v6;
-    [v11 addUndoCommandsForObject:self block:v12];
+    [delegate addUndoCommandsForObject:self block:v12];
   }
 }
 
-- (void)shiftCachedIndicesStartingAtIndex:(unint64_t)a3 by:(int64_t)a4
+- (void)shiftCachedIndicesStartingAtIndex:(unint64_t)index by:(int64_t)by
 {
   cachedIndexMapping = self->_cachedIndexMapping;
   if (cachedIndexMapping)
   {
-    v10 = [(NSMapTable *)cachedIndexMapping objectEnumerator];
-    v7 = [v10 nextObject];
-    if (v7)
+    objectEnumerator = [(NSMapTable *)cachedIndexMapping objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v8 = v7;
+      v8 = nextObject;
       do
       {
-        [v8 shiftIndexesStartingAtIndex:a3 by:a4];
-        v9 = [v10 nextObject];
+        [v8 shiftIndexesStartingAtIndex:index by:by];
+        nextObject2 = [objectEnumerator nextObject];
 
-        v8 = v9;
+        v8 = nextObject2;
       }
 
-      while (v9);
+      while (nextObject2);
     }
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
-  [(ICCRTombstoneOrderedSet *)self insertObject:v4 atIndex:[(ICCRTombstoneOrderedSet *)self count]];
+  objectCopy = object;
+  [(ICCRTombstoneOrderedSet *)self insertObject:objectCopy atIndex:[(ICCRTombstoneOrderedSet *)self count]];
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   v5 = [(ICCRTombstoneOrderedSet *)self objectAtIndexedSubscript:?];
-  v6 = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
-  v7 = [v6 objectForKey:v5];
+  cachedIndexMapping = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
+  v7 = [cachedIndexMapping objectForKey:v5];
 
-  v8 = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
-  v9 = [v8 objectAtIndexedSubscript:a3];
+  cachedIdentifierSet = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
+  v9 = [cachedIdentifierSet objectAtIndexedSubscript:index];
 
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v7, "count") + 1}];
   [v10 addObject:v9];
-  v11 = [(ICCRTombstoneOrderedSet *)self elements];
-  [v11 removeObject:v9];
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  [elements removeObject:v9];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -577,18 +577,18 @@ void __48__ICCRTombstoneOrderedSet_insertObject_atIndex___block_invoke(uint64_t 
   cachedIdentifierSet = self->_cachedIdentifierSet;
   if (cachedIdentifierSet)
   {
-    [(NSMutableOrderedSet *)cachedIdentifierSet removeObjectAtIndex:a3];
+    [(NSMutableOrderedSet *)cachedIdentifierSet removeObjectAtIndex:index];
   }
 
   if ([(ICCRTombstoneOrderedSet *)self wantsUndoCommands])
   {
-    v14 = [(ICCRTombstoneOrderedSet *)self delegate];
+    delegate = [(ICCRTombstoneOrderedSet *)self delegate];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __47__ICCRTombstoneOrderedSet_removeObjectAtIndex___block_invoke_2;
     v15[3] = &unk_27819A238;
     v16 = v12;
-    [v14 addUndoCommandsForObject:self block:v15];
+    [delegate addUndoCommandsForObject:self block:v15];
   }
 }
 
@@ -604,34 +604,34 @@ void __47__ICCRTombstoneOrderedSet_removeObjectAtIndex___block_invoke(uint64_t a
   [*(a1 + 40) addObject:v7];
 }
 
-- (void)moveObjectFromIndex:(unint64_t)a3 toIndex:(unint64_t)a4 mutableSafe:(BOOL)a5
+- (void)moveObjectFromIndex:(unint64_t)index toIndex:(unint64_t)toIndex mutableSafe:(BOOL)safe
 {
-  v5 = a5;
-  if ([(ICCRTombstoneOrderedSet *)self count]< a4)
+  safeCopy = safe;
+  if ([(ICCRTombstoneOrderedSet *)self count]< toIndex)
   {
     v31 = os_log_create("com.apple.coreCRDT", "ICCRTombstoneOrderedSet");
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
-      [ICCRTombstoneOrderedSet moveObjectFromIndex:a4 toIndex:v31 mutableSafe:?];
+      [ICCRTombstoneOrderedSet moveObjectFromIndex:toIndex toIndex:v31 mutableSafe:?];
     }
 
     v32 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"ICCRTombstoneOrderedSet: moving element to an invalid index" userInfo:0];
     objc_exception_throw(v32);
   }
 
-  if (a3 != a4 || !v5)
+  if (index != toIndex || !safeCopy)
   {
-    v34 = [(ICCRTombstoneOrderedSet *)self objectAtIndexedSubscript:a4];
-    v9 = [(ICCRTombstoneOrderedSet *)self objectAtIndexedSubscript:a3];
-    v10 = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
-    v11 = [v10 objectForKey:v9];
+    v34 = [(ICCRTombstoneOrderedSet *)self objectAtIndexedSubscript:toIndex];
+    v9 = [(ICCRTombstoneOrderedSet *)self objectAtIndexedSubscript:index];
+    cachedIndexMapping = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
+    v11 = [cachedIndexMapping objectForKey:v9];
 
-    v12 = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
-    v13 = [v12 objectAtIndexedSubscript:a3];
+    cachedIdentifierSet = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
+    v13 = [cachedIdentifierSet objectAtIndexedSubscript:index];
 
     v14 = [MEMORY[0x277CBEB58] set];
-    v15 = [(ICCRTombstoneOrderedSet *)self ordering];
-    v16 = [v15 array];
+    ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+    array = [ordering array];
 
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
@@ -639,54 +639,54 @@ void __47__ICCRTombstoneOrderedSet_removeObjectAtIndex___block_invoke(uint64_t a
     v37[3] = &unk_278197968;
     v17 = v14;
     v38 = v17;
-    v33 = v16;
+    v33 = array;
     v39 = v33;
     [v11 enumerateIndexesUsingBlock:v37];
     [v17 removeObject:v13];
     [(NSMapTable *)self->_cachedIndexMapping removeObjectForKey:v9];
-    if (a3 == a4)
+    if (index == toIndex)
     {
-      v18 = [v11 firstIndex];
-      [v11 removeIndex:v18];
+      firstIndex = [v11 firstIndex];
+      [v11 removeIndex:firstIndex];
       cachedIndexMapping = self->_cachedIndexMapping;
-      v20 = [MEMORY[0x277CCAB58] indexSetWithIndex:v18];
+      v20 = [MEMORY[0x277CCAB58] indexSetWithIndex:firstIndex];
       [(NSMapTable *)cachedIndexMapping setObject:v20 forKey:v9];
     }
 
     [(ICCRTombstoneOrderedSet *)self _removeObjectsFromOrderingAtIndices:v11];
-    if (!v5)
+    if (!safeCopy)
     {
-      v21 = [(ICCRTombstoneOrderedSet *)self ordering];
-      v22 = [v21 contents];
+      ordering2 = [(ICCRTombstoneOrderedSet *)self ordering];
+      contents = [ordering2 contents];
 
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __67__ICCRTombstoneOrderedSet_moveObjectFromIndex_toIndex_mutableSafe___block_invoke_2;
       v35[3] = &unk_27819A260;
-      v36 = v22;
-      v23 = v22;
+      v36 = contents;
+      v23 = contents;
       [v17 enumerateObjectsUsingBlock:v35];
       [v23 removeObjectForKey:v13];
       [v23 setObject:v9 forKey:v13];
     }
 
-    if (a3 != a4)
+    if (index != toIndex)
     {
-      v24 = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
-      v25 = [v24 objectForKey:v34];
+      cachedIndexMapping2 = [(ICCRTombstoneOrderedSet *)self cachedIndexMapping];
+      v25 = [cachedIndexMapping2 objectForKey:v34];
 
-      v26 = [v25 firstIndex];
-      if (a3 > a4)
+      firstIndex2 = [v25 firstIndex];
+      if (index > toIndex)
       {
-        v27 = v26;
+        v27 = firstIndex2;
       }
 
       else
       {
-        v27 = v26 + 1;
+        v27 = firstIndex2 + 1;
       }
 
-      if (v5)
+      if (safeCopy)
       {
         v28 = v17;
       }
@@ -702,8 +702,8 @@ void __47__ICCRTombstoneOrderedSet_removeObjectAtIndex___block_invoke(uint64_t a
     cachedIdentifierSet = self->_cachedIdentifierSet;
     if (cachedIdentifierSet)
     {
-      v30 = [MEMORY[0x277CCAA78] indexSetWithIndex:a3];
-      [(NSMutableOrderedSet *)cachedIdentifierSet moveObjectsAtIndexes:v30 toIndex:a4];
+      v30 = [MEMORY[0x277CCAA78] indexSetWithIndex:index];
+      [(NSMutableOrderedSet *)cachedIdentifierSet moveObjectsAtIndexes:v30 toIndex:toIndex];
     }
   }
 }
@@ -715,26 +715,26 @@ void __67__ICCRTombstoneOrderedSet_moveObjectFromIndex_toIndex_mutableSafe___blo
   [v2 addObject:v3];
 }
 
-- (void)_removeObjectsFromOrderingAtIndices:(id)a3
+- (void)_removeObjectsFromOrderingAtIndices:(id)indices
 {
-  v4 = a3;
-  if ([v4 count])
+  indicesCopy = indices;
+  if ([indicesCopy count])
   {
-    v5 = [(ICCRTombstoneOrderedSet *)self ordering];
-    v6 = [v5 array];
+    ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+    array = [ordering array];
 
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __63__ICCRTombstoneOrderedSet__removeObjectsFromOrderingAtIndices___block_invoke;
     v15[3] = &unk_27819A288;
-    v7 = v6;
+    v7 = array;
     v16 = v7;
-    [v4 enumerateIndexesWithOptions:2 usingBlock:v15];
-    v8 = [(NSMapTable *)self->_cachedIndexMapping objectEnumerator];
-    v9 = [v8 nextObject];
-    if (v9)
+    [indicesCopy enumerateIndexesWithOptions:2 usingBlock:v15];
+    objectEnumerator = [(NSMapTable *)self->_cachedIndexMapping objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v10 = v9;
+      nextObject2 = nextObject;
       v11 = MEMORY[0x277D85DD0];
       do
       {
@@ -742,14 +742,14 @@ void __67__ICCRTombstoneOrderedSet_moveObjectFromIndex_toIndex_mutableSafe___blo
         v13[1] = 3221225472;
         v13[2] = __63__ICCRTombstoneOrderedSet__removeObjectsFromOrderingAtIndices___block_invoke_2;
         v13[3] = &unk_27819A288;
-        v14 = v10;
-        v12 = v10;
-        [v4 enumerateIndexesWithOptions:2 usingBlock:v13];
+        v14 = nextObject2;
+        v12 = nextObject2;
+        [indicesCopy enumerateIndexesWithOptions:2 usingBlock:v13];
 
-        v10 = [v8 nextObject];
+        nextObject2 = [objectEnumerator nextObject];
       }
 
-      while (v10);
+      while (nextObject2);
     }
   }
 }
@@ -767,30 +767,30 @@ unint64_t __63__ICCRTombstoneOrderedSet__removeObjectsFromOrderingAtIndices___bl
   return result;
 }
 
-- (void)reinsertIdentifier:(id)a3 withMaskedIdentifiers:(id)a4 atIndex:(unint64_t)a5 forObjectToMove:(id)a6
+- (void)reinsertIdentifier:(id)identifier withMaskedIdentifiers:(id)identifiers atIndex:(unint64_t)index forObjectToMove:(id)move
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [(ICCRTombstoneOrderedSet *)self ordering];
-  v14 = [v13 array];
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  moveCopy = move;
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  array = [ordering array];
 
-  v21 = v10;
-  [v14 insertObject:v10 atIndex:a5];
-  v15 = [MEMORY[0x277CCAB58] indexSetWithIndex:a5];
-  if (v11)
+  v21 = identifierCopy;
+  [array insertObject:identifierCopy atIndex:index];
+  v15 = [MEMORY[0x277CCAB58] indexSetWithIndex:index];
+  if (identifiersCopy)
   {
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __92__ICCRTombstoneOrderedSet_reinsertIdentifier_withMaskedIdentifiers_atIndex_forObjectToMove___block_invoke;
     v22[3] = &unk_27819A2B0;
-    v23 = v14;
-    v25 = a5;
+    v23 = array;
+    indexCopy = index;
     v24 = v15;
-    [v11 enumerateObjectsUsingBlock:v22];
+    [identifiersCopy enumerateObjectsUsingBlock:v22];
 
     [(ICCRTombstoneOrderedSet *)self moveClock];
-    v16 = [v11 count] + 1;
+    v16 = [identifiersCopy count] + 1;
   }
 
   else
@@ -799,27 +799,27 @@ unint64_t __63__ICCRTombstoneOrderedSet__removeObjectsFromOrderingAtIndices___bl
     v16 = 1;
   }
 
-  v17 = [(NSMapTable *)self->_cachedIndexMapping objectEnumerator];
-  v18 = [v17 nextObject];
-  if (v18)
+  objectEnumerator = [(NSMapTable *)self->_cachedIndexMapping objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (nextObject)
   {
-    v19 = v18;
+    v19 = nextObject;
     do
     {
-      if ([v19 lastIndex] >= a5)
+      if ([v19 lastIndex] >= index)
       {
-        [v19 shiftIndexesStartingAtIndex:a5 by:v16];
+        [v19 shiftIndexesStartingAtIndex:index by:v16];
       }
 
-      v20 = [v17 nextObject];
+      nextObject2 = [objectEnumerator nextObject];
 
-      v19 = v20;
+      v19 = nextObject2;
     }
 
-    while (v20);
+    while (nextObject2);
   }
 
-  [(NSMapTable *)self->_cachedIndexMapping setObject:v15 forKey:v12];
+  [(NSMapTable *)self->_cachedIndexMapping setObject:v15 forKey:moveCopy];
 }
 
 uint64_t __92__ICCRTombstoneOrderedSet_reinsertIdentifier_withMaskedIdentifiers_atIndex_forObjectToMove___block_invoke(uint64_t a1, uint64_t a2)
@@ -833,28 +833,28 @@ uint64_t __92__ICCRTombstoneOrderedSet_reinsertIdentifier_withMaskedIdentifiers_
 
 - (void)moveClock
 {
-  v3 = [(ICCRTombstoneOrderedSet *)self ordering];
-  [v3 setMoveClock:1];
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  [ordering setMoveClock:1];
 
   if ([(ICCRTombstoneOrderedSet *)self wantsUndoCommands])
   {
-    v4 = [(ICCRTombstoneOrderedSet *)self delegate];
-    [v4 addUndoCommandsForObject:self block:&__block_literal_global_68];
+    delegate = [(ICCRTombstoneOrderedSet *)self delegate];
+    [delegate addUndoCommandsForObject:self block:&__block_literal_global_68];
   }
 }
 
-- (void)enumerateObjectsUsingBlock:(id)a3
+- (void)enumerateObjectsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
+  blockCopy = block;
+  cachedIdentifierSet = [(ICCRTombstoneOrderedSet *)self cachedIdentifierSet];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__ICCRTombstoneOrderedSet_enumerateObjectsUsingBlock___block_invoke;
   v7[3] = &unk_278197ED8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [cachedIdentifierSet enumerateObjectsUsingBlock:v7];
 }
 
 void __54__ICCRTombstoneOrderedSet_enumerateObjectsUsingBlock___block_invoke(uint64_t a1, uint64_t a2)
@@ -893,20 +893,20 @@ void __38__ICCRTombstoneOrderedSet_description__block_invoke(uint64_t a1, void *
   [v2 appendString:v4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ICCRTombstoneOrderedSet *)self ordering];
-    v7 = [v5 ordering];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+    ordering2 = [v5 ordering];
+    if ([ordering isEqual:ordering2])
     {
-      v8 = [(ICCRTombstoneOrderedSet *)self elements];
-      v9 = [v5 elements];
-      v10 = [v8 isEqual:v9];
+      elements = [(ICCRTombstoneOrderedSet *)self elements];
+      elements2 = [v5 elements];
+      v10 = [elements isEqual:elements2];
     }
 
     else
@@ -925,24 +925,24 @@ void __38__ICCRTombstoneOrderedSet_description__block_invoke(uint64_t a1, void *
 
 - (unint64_t)hash
 {
-  v3 = [(ICCRTombstoneOrderedSet *)self ordering];
-  v4 = [v3 hash];
-  v5 = [(ICCRTombstoneOrderedSet *)self elements];
-  v6 = [v5 hash];
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  v4 = [ordering hash];
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  v6 = [elements hash];
 
   return v6 ^ v4;
 }
 
-- (void)mergeWith:(id)a3
+- (void)mergeWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v9 = os_log_create("com.apple.coreCRDT", "ICCRTombstoneOrderedSet");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(ICCRTombstoneOrderedSet *)v4 mergeWith:v9];
+      [(ICCRTombstoneOrderedSet *)withCopy mergeWith:v9];
     }
 
     v10 = MEMORY[0x277CCACA8];
@@ -954,90 +954,90 @@ void __38__ICCRTombstoneOrderedSet_description__block_invoke(uint64_t a1, void *
     objc_exception_throw(v13);
   }
 
-  v15 = v4;
-  v5 = [(ICCRTombstoneOrderedSet *)self ordering];
-  v6 = [v15 ordering];
-  [v5 mergeWith:v6];
+  v15 = withCopy;
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  ordering2 = [v15 ordering];
+  [ordering mergeWith:ordering2];
 
-  v7 = [(ICCRTombstoneOrderedSet *)self elements];
-  v8 = [v15 elements];
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  elements2 = [v15 elements];
 
-  [v7 mergeWith:v8];
+  [elements mergeWith:elements2];
   [(ICCRTombstoneOrderedSet *)self wipeoutCaches];
 }
 
-- (id)deltaSince:(id)a3 in:(id)a4
+- (id)deltaSince:(id)since in:(id)in
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ICCRTombstoneOrderedSet *)self ordering];
-  v9 = [v8 deltaSince:v7 in:v6];
+  inCopy = in;
+  sinceCopy = since;
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  v9 = [ordering deltaSince:sinceCopy in:inCopy];
 
-  v10 = [(ICCRTombstoneOrderedSet *)self elements];
-  v11 = [v10 deltaSince:v7 in:v6];
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  v11 = [elements deltaSince:sinceCopy in:inCopy];
 
-  v12 = [[ICCRTombstoneOrderedSet alloc] initWithOrdering:v9 elements:v11 document:v6];
+  v12 = [[ICCRTombstoneOrderedSet alloc] initWithOrdering:v9 elements:v11 document:inCopy];
 
   return v12;
 }
 
-- (void)realizeLocalChangesIn:(id)a3
+- (void)realizeLocalChangesIn:(id)in
 {
-  v4 = a3;
-  v5 = [(ICCRTombstoneOrderedSet *)self ordering];
-  [v5 realizeLocalChangesIn:v4];
+  inCopy = in;
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  [ordering realizeLocalChangesIn:inCopy];
 
-  v6 = [(ICCRTombstoneOrderedSet *)self elements];
-  [v6 realizeLocalChangesIn:v4];
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  [elements realizeLocalChangesIn:inCopy];
 }
 
 - (id)tombstone
 {
-  v3 = [(ICCRTombstoneOrderedSet *)self ordering];
-  v4 = [v3 tombstone];
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  tombstone = [ordering tombstone];
 
-  v5 = [(ICCRTombstoneOrderedSet *)self elements];
-  v6 = [v5 tombstone];
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  tombstone2 = [elements tombstone];
 
   v7 = [ICCRTombstoneOrderedSet alloc];
-  v8 = [(ICCRTombstoneOrderedSet *)self document];
-  v9 = [(ICCRTombstoneOrderedSet *)v7 initWithOrdering:v4 elements:v6 document:v8];
+  document = [(ICCRTombstoneOrderedSet *)self document];
+  v9 = [(ICCRTombstoneOrderedSet *)v7 initWithOrdering:tombstone elements:tombstone2 document:document];
 
   return v9;
 }
 
-- (void)walkGraph:(id)a3
+- (void)walkGraph:(id)graph
 {
-  v4 = a3;
-  v5 = [(ICCRTombstoneOrderedSet *)self ordering];
-  [v5 walkGraph:v4];
+  graphCopy = graph;
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  [ordering walkGraph:graphCopy];
 
-  v6 = [(ICCRTombstoneOrderedSet *)self elements];
-  [v6 walkGraph:v4];
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  [elements walkGraph:graphCopy];
 }
 
-- (void)setDocument:(id)a3
+- (void)setDocument:(id)document
 {
-  v4 = a3;
-  objc_storeWeak(&self->_document, v4);
-  v5 = [(ICCRTombstoneOrderedSet *)self ordering];
-  [v5 setDocument:v4];
+  documentCopy = document;
+  objc_storeWeak(&self->_document, documentCopy);
+  ordering = [(ICCRTombstoneOrderedSet *)self ordering];
+  [ordering setDocument:documentCopy];
 
-  v6 = [(ICCRTombstoneOrderedSet *)self elements];
-  [v6 setDocument:v4];
+  elements = [(ICCRTombstoneOrderedSet *)self elements];
+  [elements setDocument:documentCopy];
 }
 
-- (void)addUndoCommandsForObject:(id)a3 block:(id)a4
+- (void)addUndoCommandsForObject:(id)object block:(id)block
 {
-  v5 = a4;
-  v6 = [(ICCRTombstoneOrderedSet *)self delegate];
+  blockCopy = block;
+  delegate = [(ICCRTombstoneOrderedSet *)self delegate];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__ICCRTombstoneOrderedSet_addUndoCommandsForObject_block___block_invoke;
   v8[3] = &unk_27819A320;
-  v9 = v5;
-  v7 = v5;
-  [v6 addUndoCommandsForObject:self block:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [delegate addUndoCommandsForObject:self block:v8];
 }
 
 void __58__ICCRTombstoneOrderedSet_addUndoCommandsForObject_block___block_invoke(uint64_t a1, void *a2)
@@ -1052,10 +1052,10 @@ void __58__ICCRTombstoneOrderedSet_addUndoCommandsForObject_block___block_invoke
 
 - (BOOL)wantsUndoCommands
 {
-  v2 = [(ICCRTombstoneOrderedSet *)self delegate];
-  v3 = [v2 wantsUndoCommands];
+  delegate = [(ICCRTombstoneOrderedSet *)self delegate];
+  wantsUndoCommands = [delegate wantsUndoCommands];
 
-  return v3;
+  return wantsUndoCommands;
 }
 
 - (ICCRDocument)document

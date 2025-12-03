@@ -1,14 +1,14 @@
 @interface MPCAssistantSendCommandResult
-- (MPCAssistantSendCommandResult)initWithCommandResult:(id)a3 error:(id)a4;
-- (MPCAssistantSendCommandResult)initWithReturnStatuses:(id)a3 error:(id)a4;
+- (MPCAssistantSendCommandResult)initWithCommandResult:(id)result error:(id)error;
+- (MPCAssistantSendCommandResult)initWithReturnStatuses:(id)statuses error:(id)error;
 @end
 
 @implementation MPCAssistantSendCommandResult
 
-- (MPCAssistantSendCommandResult)initWithCommandResult:(id)a3 error:(id)a4
+- (MPCAssistantSendCommandResult)initWithCommandResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  errorCopy = error;
   v23.receiver = self;
   v23.super_class = MPCAssistantSendCommandResult;
   v8 = [(MPCAssistantSendCommandResult *)&v23 init];
@@ -17,38 +17,38 @@
     goto LABEL_11;
   }
 
-  v9 = [v6 handlerReturnStatuses];
-  v10 = [v9 copy];
+  handlerReturnStatuses = [resultCopy handlerReturnStatuses];
+  v10 = [handlerReturnStatuses copy];
   returnStatuses = v8->_returnStatuses;
   v8->_returnStatuses = v10;
 
-  v12 = [v6 copy];
+  v12 = [resultCopy copy];
   commandResult = v8->_commandResult;
   v8->_commandResult = v12;
 
-  if (v7)
+  if (errorCopy)
   {
-    v14 = v7;
+    v14 = errorCopy;
 LABEL_6:
     error = v8->_error;
     v8->_error = v14;
     goto LABEL_7;
   }
 
-  if ([v6 sendError])
+  if ([resultCopy sendError])
   {
-    v14 = MPCAssistantCreateSendCommandError([v6 sendError]);
+    v14 = MPCAssistantCreateSendCommandError([resultCopy sendError]);
     goto LABEL_6;
   }
 
-  v20 = [v6 error];
+  error = [resultCopy error];
 
-  if (!v20)
+  if (!error)
   {
     goto LABEL_8;
   }
 
-  error = [v6 error];
+  error = [resultCopy error];
   v21 = MPCAssistantWrapError(error);
   v22 = v8->_error;
   v8->_error = v21;
@@ -69,20 +69,20 @@ LABEL_11:
   return v8;
 }
 
-- (MPCAssistantSendCommandResult)initWithReturnStatuses:(id)a3 error:(id)a4
+- (MPCAssistantSendCommandResult)initWithReturnStatuses:(id)statuses error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  statusesCopy = statuses;
+  errorCopy = error;
   v12.receiver = self;
   v12.super_class = MPCAssistantSendCommandResult;
   v8 = [(MPCAssistantSendCommandResult *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [statusesCopy copy];
     returnStatuses = v8->_returnStatuses;
     v8->_returnStatuses = v9;
 
-    objc_storeStrong(&v8->_error, a4);
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v8;

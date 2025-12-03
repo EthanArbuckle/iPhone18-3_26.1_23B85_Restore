@@ -1,12 +1,12 @@
 @interface _UIMorphAnimationContainerView
-- (_TtC5UIKit30_UIMorphAnimationContainerView)initWithCoder:(id)a3;
-- (void)addSubview:(id)a3;
-- (void)insertSubview:(id)a3 atIndex:(int64_t)a4;
+- (_TtC5UIKit30_UIMorphAnimationContainerView)initWithCoder:(id)coder;
+- (void)addSubview:(id)subview;
+- (void)insertSubview:(id)subview atIndex:(int64_t)index;
 @end
 
 @implementation _UIMorphAnimationContainerView
 
-- (_TtC5UIKit30_UIMorphAnimationContainerView)initWithCoder:(id)a3
+- (_TtC5UIKit30_UIMorphAnimationContainerView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC5UIKit30_UIMorphAnimationContainerView_kickView;
   type metadata accessor for _UIMorphAnimationContainerView.TransformView();
@@ -19,14 +19,14 @@
   return result;
 }
 
-- (void)addSubview:(id)a3
+- (void)addSubview:(id)subview
 {
   v4 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit30_UIMorphAnimationContainerView_kickView);
-  if (v4 == a3)
+  if (v4 == subview)
   {
     v6.receiver = self;
     v6.super_class = type metadata accessor for _UIMorphAnimationContainerView();
-    [(UIView *)&v6 addSubview:a3];
+    [(UIView *)&v6 addSubview:subview];
   }
 
   else
@@ -36,14 +36,14 @@
   }
 }
 
-- (void)insertSubview:(id)a3 atIndex:(int64_t)a4
+- (void)insertSubview:(id)subview atIndex:(int64_t)index
 {
   v5 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC5UIKit30_UIMorphAnimationContainerView_kickView);
-  if (v5 == a3)
+  if (v5 == subview)
   {
     v8.receiver = self;
     v8.super_class = type metadata accessor for _UIMorphAnimationContainerView();
-    [(UIView *)&v8 insertSubview:a3 atIndex:a4];
+    [(UIView *)&v8 insertSubview:subview atIndex:index];
   }
 
   else

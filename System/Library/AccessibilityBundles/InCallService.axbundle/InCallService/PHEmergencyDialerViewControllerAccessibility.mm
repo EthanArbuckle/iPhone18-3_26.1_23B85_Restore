@@ -1,24 +1,24 @@
 @interface PHEmergencyDialerViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)medicalIDButtonTapped:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)medicalIDButtonTapped:(id)tapped;
 @end
 
 @implementation PHEmergencyDialerViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PHEmergencyDialerViewController" hasInstanceVariable:@"_dialerView" withType:"PHEmergencyHandsetDialerView"];
-  [v3 validateClass:@"PHEmergencyHandsetDialerView" isKindOfClass:@"PHAbstractDialerView"];
-  [v3 validateClass:@"PHAbstractDialerView" hasInstanceMethod:@"callButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PHEmergencyDialerViewController" hasInstanceMethod:@"medicalIDButtonTapped:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PHEmergencyDialerViewController" hasInstanceVariable:@"_dialerView" withType:"PHEmergencyHandsetDialerView"];
+  [validationsCopy validateClass:@"PHEmergencyHandsetDialerView" isKindOfClass:@"PHAbstractDialerView"];
+  [validationsCopy validateClass:@"PHAbstractDialerView" hasInstanceMethod:@"callButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PHEmergencyDialerViewController" hasInstanceMethod:@"medicalIDButtonTapped:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)medicalIDButtonTapped:(id)a3
+- (void)medicalIDButtonTapped:(id)tapped
 {
   v4.receiver = self;
   v4.super_class = PHEmergencyDialerViewControllerAccessibility;
-  [(PHEmergencyDialerViewControllerAccessibility *)&v4 medicalIDButtonTapped:a3];
+  [(PHEmergencyDialerViewControllerAccessibility *)&v4 medicalIDButtonTapped:tapped];
   v3 = MEMORY[0x29EDC8008];
   [*MEMORY[0x29EDC8008] _accessibilitySetAllowsNotificationsDuringSuspension:1];
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], 0);

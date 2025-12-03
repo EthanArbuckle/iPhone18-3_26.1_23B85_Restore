@@ -1,50 +1,50 @@
 @interface _INPBRunWorkflowIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBRunWorkflowIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRunWorkflowIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRunWorkflowIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBRunWorkflowIntent *)self intentMetadata];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"intentMetadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  intentMetadata = [(_INPBRunWorkflowIntent *)self intentMetadata];
+  dictionaryRepresentation = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"intentMetadata"];
 
-  v6 = [(_INPBRunWorkflowIntent *)self workflow];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"workflow"];
+  workflow = [(_INPBRunWorkflowIntent *)self workflow];
+  dictionaryRepresentation2 = [workflow dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"workflow"];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBRunWorkflowIntent *)self intentMetadata];
-  v6 = [v4 intentMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  intentMetadata = [(_INPBRunWorkflowIntent *)self intentMetadata];
+  intentMetadata2 = [equalCopy intentMetadata];
+  if ((intentMetadata != 0) == (intentMetadata2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBRunWorkflowIntent *)self intentMetadata];
-  if (v7)
+  intentMetadata3 = [(_INPBRunWorkflowIntent *)self intentMetadata];
+  if (intentMetadata3)
   {
-    v8 = v7;
-    v9 = [(_INPBRunWorkflowIntent *)self intentMetadata];
-    v10 = [v4 intentMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = intentMetadata3;
+    intentMetadata4 = [(_INPBRunWorkflowIntent *)self intentMetadata];
+    intentMetadata5 = [equalCopy intentMetadata];
+    v11 = [intentMetadata4 isEqual:intentMetadata5];
 
     if (!v11)
     {
@@ -56,12 +56,12 @@
   {
   }
 
-  v5 = [(_INPBRunWorkflowIntent *)self workflow];
-  v6 = [v4 workflow];
-  if ((v5 != 0) != (v6 == 0))
+  intentMetadata = [(_INPBRunWorkflowIntent *)self workflow];
+  intentMetadata2 = [equalCopy workflow];
+  if ((intentMetadata != 0) != (intentMetadata2 == 0))
   {
-    v12 = [(_INPBRunWorkflowIntent *)self workflow];
-    if (!v12)
+    workflow = [(_INPBRunWorkflowIntent *)self workflow];
+    if (!workflow)
     {
 
 LABEL_15:
@@ -69,10 +69,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBRunWorkflowIntent *)self workflow];
-    v15 = [v4 workflow];
-    v16 = [v14 isEqual:v15];
+    v13 = workflow;
+    workflow2 = [(_INPBRunWorkflowIntent *)self workflow];
+    workflow3 = [equalCopy workflow];
+    v16 = [workflow2 isEqual:workflow3];
 
     if (v16)
     {
@@ -92,58 +92,58 @@ LABEL_13:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRunWorkflowIntent allocWithZone:](_INPBRunWorkflowIntent init];
-  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v6 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBRunWorkflowIntent *)v5 setIntentMetadata:v6];
 
-  v7 = [(_INPBDataString *)self->_workflow copyWithZone:a3];
+  v7 = [(_INPBDataString *)self->_workflow copyWithZone:zone];
   [(_INPBRunWorkflowIntent *)v5 setWorkflow:v7];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRunWorkflowIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBRunWorkflowIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRunWorkflowIntent)initWithCoder:(id)a3
+- (_INPBRunWorkflowIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRunWorkflowIntent *)self initWithData:v6];
+    self = [(_INPBRunWorkflowIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_INPBRunWorkflowIntent *)self intentMetadata];
+  toCopy = to;
+  intentMetadata = [(_INPBRunWorkflowIntent *)self intentMetadata];
 
-  if (v4)
+  if (intentMetadata)
   {
-    v5 = [(_INPBRunWorkflowIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBRunWorkflowIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_INPBRunWorkflowIntent *)self workflow];
+  workflow = [(_INPBRunWorkflowIntent *)self workflow];
 
-  if (v6)
+  if (workflow)
   {
-    v7 = [(_INPBRunWorkflowIntent *)self workflow];
+    workflow2 = [(_INPBRunWorkflowIntent *)self workflow];
     PBDataWriterWriteSubmessage();
   }
 }

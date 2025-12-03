@@ -30,8 +30,8 @@
 
 - (void)invalidateCache
 {
-  v2 = self;
-  sub_195622100(v2);
+  selfCopy = self;
+  sub_195622100(selfCopy);
 }
 
 @end

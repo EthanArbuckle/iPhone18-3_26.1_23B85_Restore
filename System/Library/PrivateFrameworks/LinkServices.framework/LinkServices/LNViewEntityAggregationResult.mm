@@ -2,7 +2,7 @@
 - (LNViewEntityAggregationResult)init;
 - (NSDictionary)entities;
 - (NSError)error;
-- (void)addResults:(id)a3 error:(id)a4 forBundle:(id)a5;
+- (void)addResults:(id)results error:(id)error forBundle:(id)bundle;
 @end
 
 @implementation LNViewEntityAggregationResult
@@ -48,12 +48,12 @@
   return v4;
 }
 
-- (void)addResults:(id)a3 error:(id)a4 forBundle:(id)a5
+- (void)addResults:(id)results error:(id)error forBundle:(id)bundle
 {
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  resultsCopy = results;
+  errorCopy = error;
+  bundleCopy = bundle;
   os_unfair_lock_lock(&self->_lock);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -61,42 +61,42 @@
   aBlock[3] = &unk_1E74B2318;
   aBlock[4] = self;
   v11 = _Block_copy(aBlock);
-  if (v8)
+  if (resultsCopy)
   {
     v12 = getLNLogCategoryView();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v13 = [v8 count];
+      v13 = [resultsCopy count];
       *buf = 134218242;
       v19 = v13;
       v20 = 2112;
-      v21 = v10;
+      v21 = bundleCopy;
       _os_log_impl(&dword_19763D000, v12, OS_LOG_TYPE_INFO, "Successfully fetched %lu view entities from %@", buf, 0x16u);
     }
 
     v14 = 8;
-    v15 = v8;
+    v15 = resultsCopy;
 LABEL_9:
 
-    [*(&self->super.isa + v14) setValue:v15 forKey:v10];
+    [*(&self->super.isa + v14) setValue:v15 forKey:bundleCopy];
     goto LABEL_10;
   }
 
-  if (v9)
+  if (errorCopy)
   {
     v12 = getLNLogCategoryView();
     v14 = 16;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v19 = v10;
+      v19 = bundleCopy;
       v20 = 2112;
-      v21 = v9;
+      v21 = errorCopy;
       v14 = 16;
       _os_log_impl(&dword_19763D000, v12, OS_LOG_TYPE_ERROR, "Failed to fetch view entities from %@: %@", buf, 0x16u);
     }
 
-    v15 = v9;
+    v15 = errorCopy;
     goto LABEL_9;
   }
 

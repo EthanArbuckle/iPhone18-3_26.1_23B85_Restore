@@ -1,14 +1,14 @@
 @interface StatusBarBackgroundView
-- (StatusBarBackgroundView)initWithSafeAreaTopLayoutAnchor:(id)a3;
+- (StatusBarBackgroundView)initWithSafeAreaTopLayoutAnchor:(id)anchor;
 - (double)_blurViewBottomPadding;
 - (id)_blurView;
 - (id)maskImage;
-- (void)_addBlurView:(id)a3;
+- (void)_addBlurView:(id)view;
 - (void)_removeBlurView;
 - (void)_updateContent;
 - (void)layoutSubviews;
-- (void)setAdditionalColor:(id)a3;
-- (void)setStyle:(id)a3;
+- (void)setAdditionalColor:(id)color;
+- (void)setStyle:(id)style;
 - (void)updateTheme;
 @end
 
@@ -16,29 +16,29 @@
 
 - (id)_blurView
 {
-  v3 = [(StatusBarBackgroundView *)self style];
-  v4 = [v3 type];
+  style = [(StatusBarBackgroundView *)self style];
+  type = [style type];
 
-  if (v4 == 2)
+  if (type == 2)
   {
     v5 = [MUBlurView alloc];
-    v6 = [(StatusBarBackgroundView *)self style];
-    v7 = [v5 initWithBlurEffectStyle:{objc_msgSend(v6, "blurStyle")}];
+    style2 = [(StatusBarBackgroundView *)self style];
+    v7 = [v5 initWithBlurEffectStyle:{objc_msgSend(style2, "blurStyle")}];
   }
 
   else
   {
-    v8 = [(StatusBarBackgroundView *)self style];
-    v9 = [v8 type];
+    style3 = [(StatusBarBackgroundView *)self style];
+    type2 = [style3 type];
 
     v10 = [MUBlurView alloc];
-    v6 = [(StatusBarBackgroundView *)self style];
-    [v6 blurRadius];
+    style2 = [(StatusBarBackgroundView *)self style];
+    [style2 blurRadius];
     v12 = v11;
-    if (v9 == 4)
+    if (type2 == 4)
     {
-      v13 = [(StatusBarBackgroundView *)self maskImage];
-      v14 = [v10 initWithVariableBlurWithRadius:v13 maskImage:v12];
+      maskImage = [(StatusBarBackgroundView *)self maskImage];
+      v14 = [v10 initWithVariableBlurWithRadius:maskImage maskImage:v12];
 
       goto LABEL_7;
     }
@@ -49,21 +49,21 @@
   v14 = v7;
 LABEL_7:
 
-  v15 = [(StatusBarBackgroundView *)self additionalColor];
-  [v14 setOverlayColor:v15];
+  additionalColor = [(StatusBarBackgroundView *)self additionalColor];
+  [v14 setOverlayColor:additionalColor];
 
-  v16 = [(StatusBarBackgroundView *)self style];
-  v17 = [v16 defaultColorProvider];
-  v18 = [(StatusBarBackgroundView *)self theme];
-  v19 = (v17)[2](v17, v18);
+  style4 = [(StatusBarBackgroundView *)self style];
+  defaultColorProvider = [style4 defaultColorProvider];
+  theme = [(StatusBarBackgroundView *)self theme];
+  v19 = (defaultColorProvider)[2](defaultColorProvider, theme);
   [v14 setNonBlurredColor:v19];
 
-  v20 = [(StatusBarBackgroundView *)self style];
-  v21 = [v20 groupName];
-  [v14 setBlurGroupName:v21];
+  style5 = [(StatusBarBackgroundView *)self style];
+  groupName = [style5 groupName];
+  [v14 setBlurGroupName:groupName];
 
-  v22 = [(StatusBarBackgroundView *)self style];
-  if ([v22 disableBlur])
+  style6 = [(StatusBarBackgroundView *)self style];
+  if ([style6 disableBlur])
   {
     v23 = 2;
   }
@@ -118,29 +118,29 @@ LABEL_7:
 
   else
   {
-    v3 = [(StatusBarBackgroundView *)self style];
-    v4 = [v3 type];
+    style = [(StatusBarBackgroundView *)self style];
+    type = [style type];
 
-    if ((v4 - 2) >= 3)
+    if ((type - 2) >= 3)
     {
-      if (v4 == 1)
+      if (type == 1)
       {
         [(StatusBarBackgroundView *)self _removeBlurView];
-        v10 = [(StatusBarBackgroundView *)self style];
-        v9 = [v10 color];
-        [(StatusBarBackgroundView *)self setBackgroundColor:v9];
+        style2 = [(StatusBarBackgroundView *)self style];
+        color = [style2 color];
+        [(StatusBarBackgroundView *)self setBackgroundColor:color];
       }
 
       else
       {
-        if (v4)
+        if (type)
         {
           return;
         }
 
         [(StatusBarBackgroundView *)self _removeBlurView];
-        v10 = +[UIColor clearColor];
-        [(StatusBarBackgroundView *)self setBackgroundColor:v10];
+        style2 = +[UIColor clearColor];
+        [(StatusBarBackgroundView *)self setBackgroundColor:style2];
       }
     }
 
@@ -150,9 +150,9 @@ LABEL_7:
       v5 = +[UIColor clearColor];
       [(StatusBarBackgroundView *)self setBackgroundColor:v5];
 
-      v6 = [(StatusBarBackgroundView *)self _blurView];
+      _blurView = [(StatusBarBackgroundView *)self _blurView];
       blurView = self->_blurView;
-      self->_blurView = v6;
+      self->_blurView = _blurView;
 
       v8 = self->_blurView;
 
@@ -208,29 +208,29 @@ LABEL_7:
   [(NSLayoutConstraint *)self->_blurViewBottomConstraint setConstant:?];
 }
 
-- (void)_addBlurView:(id)a3
+- (void)_addBlurView:(id)view
 {
-  v4 = a3;
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(StatusBarBackgroundView *)self insertSubview:v4 atIndex:0];
-  v5 = [v4 bottomAnchor];
-  v6 = [(StatusBarBackgroundView *)self bottomAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [(StatusBarBackgroundView *)self insertSubview:viewCopy atIndex:0];
+  bottomAnchor = [viewCopy bottomAnchor];
+  bottomAnchor2 = [(StatusBarBackgroundView *)self bottomAnchor];
+  v7 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   blurViewBottomConstraint = self->_blurViewBottomConstraint;
   self->_blurViewBottomConstraint = v7;
 
-  v19 = [v4 leadingAnchor];
-  v18 = [(StatusBarBackgroundView *)self leadingAnchor];
-  v9 = [v19 constraintEqualToAnchor:v18];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [(StatusBarBackgroundView *)self leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v21[0] = v9;
-  v10 = [v4 trailingAnchor];
-  v11 = [(StatusBarBackgroundView *)self trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [(StatusBarBackgroundView *)self trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v21[1] = v12;
-  v13 = [v4 topAnchor];
+  topAnchor = [viewCopy topAnchor];
 
-  v14 = [(StatusBarBackgroundView *)self topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  topAnchor2 = [(StatusBarBackgroundView *)self topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v16 = self->_blurViewBottomConstraint;
   v21[2] = v15;
   v21[3] = v16;
@@ -245,11 +245,11 @@ LABEL_7:
   [UIView performWithoutAnimation:v20];
 }
 
-- (void)setAdditionalColor:(id)a3
+- (void)setAdditionalColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v6 = self->_additionalColor;
-  v7 = v5;
+  v7 = colorCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -258,18 +258,18 @@ LABEL_7:
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_additionalColor, a3);
+      objc_storeStrong(&self->_additionalColor, color);
       [(MUBlurView *)self->_blurView setOverlayColor:v9];
       v7 = v9;
     }
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   v6 = self->_style;
-  v7 = v5;
+  v7 = styleCopy;
   if (v7 | v6)
   {
     v9 = v7;
@@ -278,23 +278,23 @@ LABEL_7:
     v7 = v9;
     if ((v8 & 1) == 0)
     {
-      objc_storeStrong(&self->_style, a3);
+      objc_storeStrong(&self->_style, style);
       [(StatusBarBackgroundView *)self _updateContent];
       v7 = v9;
     }
   }
 }
 
-- (StatusBarBackgroundView)initWithSafeAreaTopLayoutAnchor:(id)a3
+- (StatusBarBackgroundView)initWithSafeAreaTopLayoutAnchor:(id)anchor
 {
-  v5 = a3;
+  anchorCopy = anchor;
   v13.receiver = self;
   v13.super_class = StatusBarBackgroundView;
   v6 = [(StatusBarBackgroundView *)&v13 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_safeAreaTopLayoutAnchor, a3);
+    objc_storeStrong(&v6->_safeAreaTopLayoutAnchor, anchor);
     v8 = [StatusBarBackgroundViewStyle alloc];
     v9 = +[UIColor clearColor];
     v10 = [(StatusBarBackgroundViewStyle *)v8 initWithColor:v9];

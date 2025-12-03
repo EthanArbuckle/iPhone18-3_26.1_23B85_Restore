@@ -1,17 +1,17 @@
 @interface HAPPGSegment
 - (HAPPGFrameEnumerator)frameEnumerator;
-- (HAPPGSegment)initWithBinaryRepresentation:(id)a3;
+- (HAPPGSegment)initWithBinaryRepresentation:(id)representation;
 @end
 
 @implementation HAPPGSegment
 
-- (HAPPGSegment)initWithBinaryRepresentation:(id)a3
+- (HAPPGSegment)initWithBinaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v9.receiver = self;
   v9.super_class = HAPPGSegment;
   v5 = [(HAPPGSegment *)&v9 init];
-  v6 = [v4 copy];
+  v6 = [representationCopy copy];
   mimosaData = v5->_mimosaData;
   v5->_mimosaData = v6;
 

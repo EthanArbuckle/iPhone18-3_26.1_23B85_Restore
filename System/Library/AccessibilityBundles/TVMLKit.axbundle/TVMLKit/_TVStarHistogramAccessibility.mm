@@ -1,17 +1,17 @@
 @interface _TVStarHistogramAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityAncestorFocusParcel;
 - (id)accessibilityLabel;
 @end
 
 @implementation _TVStarHistogramAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_TVStarHistogram" hasInstanceMethod:@"starBars" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_TVStarBar" hasInstanceMethod:@"numStars" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"_TVStarBar" hasInstanceMethod:@"countStr" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_TVStarHistogram" hasInstanceMethod:@"starBars" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_TVStarBar" hasInstanceMethod:@"numStars" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"_TVStarBar" hasInstanceMethod:@"countStr" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -25,7 +25,7 @@
   if ([v4 count])
   {
     v32 = v4;
-    v33 = self;
+    selfCopy = self;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -74,17 +74,17 @@
 
           if (!v18)
           {
-            v19 = [v17 string];
-            v20 = [v19 integerValue];
+            string = [v17 string];
+            integerValue = [string integerValue];
 
-            if (v20 >= 1)
+            if (integerValue >= 1)
             {
               v21 = MEMORY[0x29EDBA0F8];
               accessibilityLocalizedString(@"star.histogram");
               v22 = v10;
               v23 = v9;
               v25 = v24 = v8;
-              v30 = [v21 stringWithFormat:v25, v20, objc_msgSend(v15, "integerValue")];
+              v30 = [v21 stringWithFormat:v25, integerValue, objc_msgSend(v15, "integerValue")];
               v31 = @"__AXStringForVariablesSentinel";
               v26 = __UIAXStringForVariables();
 
@@ -112,7 +112,7 @@
     }
 
     v4 = v32;
-    self = v33;
+    self = selfCopy;
   }
 
   else
@@ -124,9 +124,9 @@
   {
     v36.receiver = self;
     v36.super_class = _TVStarHistogramAccessibility;
-    v27 = [(_TVStarHistogramAccessibility *)&v36 accessibilityLabel];
+    accessibilityLabel = [(_TVStarHistogramAccessibility *)&v36 accessibilityLabel];
 
-    v7 = v27;
+    v7 = accessibilityLabel;
   }
 
   v28 = *MEMORY[0x29EDCA608];
@@ -136,22 +136,22 @@
 
 - (id)_accessibilityAncestorFocusParcel
 {
-  v3 = [MEMORY[0x29EDBDDF0] sharedInstance];
-  v4 = [v3 isProcessTVAppStore];
+  mEMORY[0x29EDBDDF0] = [MEMORY[0x29EDBDDF0] sharedInstance];
+  isProcessTVAppStore = [mEMORY[0x29EDBDDF0] isProcessTVAppStore];
 
-  if (v4)
+  if (isProcessTVAppStore)
   {
-    v5 = 0;
+    _accessibilityAncestorFocusParcel = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _TVStarHistogramAccessibility;
-    v5 = [(_TVStarHistogramAccessibility *)&v7 _accessibilityAncestorFocusParcel];
+    _accessibilityAncestorFocusParcel = [(_TVStarHistogramAccessibility *)&v7 _accessibilityAncestorFocusParcel];
   }
 
-  return v5;
+  return _accessibilityAncestorFocusParcel;
 }
 
 @end

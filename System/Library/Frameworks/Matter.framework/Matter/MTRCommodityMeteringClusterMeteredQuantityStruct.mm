@@ -1,6 +1,6 @@
 @interface MTRCommodityMeteringClusterMeteredQuantityStruct
 - (MTRCommodityMeteringClusterMeteredQuantityStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,9 +13,9 @@
   v2 = [(MTRCommodityMeteringClusterMeteredQuantityStruct *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     tariffComponentIDs = v2->_tariffComponentIDs;
-    v2->_tariffComponentIDs = v3;
+    v2->_tariffComponentIDs = array;
 
     quantity = v2->_quantity;
     v2->_quantity = &unk_284C3E588;
@@ -24,14 +24,14 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityMeteringClusterMeteredQuantityStruct);
-  v5 = [(MTRCommodityMeteringClusterMeteredQuantityStruct *)self tariffComponentIDs];
-  [(MTRCommodityMeteringClusterMeteredQuantityStruct *)v4 setTariffComponentIDs:v5];
+  tariffComponentIDs = [(MTRCommodityMeteringClusterMeteredQuantityStruct *)self tariffComponentIDs];
+  [(MTRCommodityMeteringClusterMeteredQuantityStruct *)v4 setTariffComponentIDs:tariffComponentIDs];
 
-  v6 = [(MTRCommodityMeteringClusterMeteredQuantityStruct *)self quantity];
-  [(MTRCommodityMeteringClusterMeteredQuantityStruct *)v4 setQuantity:v6];
+  quantity = [(MTRCommodityMeteringClusterMeteredQuantityStruct *)self quantity];
+  [(MTRCommodityMeteringClusterMeteredQuantityStruct *)v4 setQuantity:quantity];
 
   return v4;
 }

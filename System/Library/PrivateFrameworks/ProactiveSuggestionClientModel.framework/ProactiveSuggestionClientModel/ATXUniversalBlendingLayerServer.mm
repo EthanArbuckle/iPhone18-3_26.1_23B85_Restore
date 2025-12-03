@@ -1,21 +1,21 @@
 @interface ATXUniversalBlendingLayerServer
-- (ATXUniversalBlendingLayerServer)initWithBlendingLayer:(id)a3 engagementRecordsManager:(id)a4 hyperParameters:(id)a5 clientModelCacheManager:(id)a6 clientModelNotificationManager:(id)a7 serverDelegate:(id)a8 pendingRefreshTracker:(id)a9;
-- (ATXUniversalBlendingLayerServer)initWithBlendingLayer:(id)a3 engagementRecordsManager:(id)a4 hyperParameters:(id)a5 serverDelegate:(id)a6;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (ATXUniversalBlendingLayerServer)initWithBlendingLayer:(id)layer engagementRecordsManager:(id)manager hyperParameters:(id)parameters clientModelCacheManager:(id)cacheManager clientModelNotificationManager:(id)notificationManager serverDelegate:(id)delegate pendingRefreshTracker:(id)tracker;
+- (ATXUniversalBlendingLayerServer)initWithBlendingLayer:(id)layer engagementRecordsManager:(id)manager hyperParameters:(id)parameters serverDelegate:(id)delegate;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)willForceRefreshOfAllUIs;
 - (id)clientModelsThatUpdatedSuggestionsRecently;
-- (void)clientModelUpdatedNotificationId:(id)a3 clientModelId:(id)a4 completion:(id)a5;
-- (void)clientModelUpdatedSuggestions:(id)a3 feedbackMetadata:(id)a4 clientModelId:(id)a5 completion:(id)a6;
+- (void)clientModelUpdatedNotificationId:(id)id clientModelId:(id)modelId completion:(id)completion;
+- (void)clientModelUpdatedSuggestions:(id)suggestions feedbackMetadata:(id)metadata clientModelId:(id)id completion:(id)completion;
 - (void)coalescedBlendingLayerRefresh;
 - (void)dealloc;
-- (void)generateLayoutForRequest:(id)a3 reply:(id)a4;
-- (void)generateRankedSuggestionsForRequest:(id)a3 limit:(id)a4 reply:(id)a5;
+- (void)generateLayoutForRequest:(id)request reply:(id)reply;
+- (void)generateRankedSuggestionsForRequest:(id)request limit:(id)limit reply:(id)reply;
 - (void)refreshBlendingLayer;
-- (void)refreshBlendingLayerIfNeededForNewSuggestions:(id)a3 previousCacheUpdate:(id)a4 clientModelId:(id)a5;
-- (void)retrieveSuggestionsForClientModelId:(id)a3 reply:(id)a4;
+- (void)refreshBlendingLayerIfNeededForNewSuggestions:(id)suggestions previousCacheUpdate:(id)update clientModelId:(id)id;
+- (void)retrieveSuggestionsForClientModelId:(id)id reply:(id)reply;
 - (void)setupXPCListener;
 - (void)start;
-- (void)updateClientModelCacheWithCacheUpdate:(id)a3 previousCacheUpdate:(id)a4 completion:(id)a5;
+- (void)updateClientModelCacheWithCacheUpdate:(id)update previousCacheUpdate:(id)cacheUpdate completion:(id)completion;
 @end
 
 @implementation ATXUniversalBlendingLayerServer
@@ -38,7 +38,7 @@ void __40__ATXUniversalBlendingLayerServer_start__block_invoke(uint64_t a1)
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1DEFC4000, a2, OS_LOG_TYPE_DEBUG, "BlendingRefresh: The Blending Layer has the following suggestions: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -67,44 +67,44 @@ uint64_t __64__ATXUniversalBlendingLayerServer_coalescedBlendingLayerRefresh__bl
   return [v2 stringForConsumerSubtype:v3];
 }
 
-- (ATXUniversalBlendingLayerServer)initWithBlendingLayer:(id)a3 engagementRecordsManager:(id)a4 hyperParameters:(id)a5 serverDelegate:(id)a6
+- (ATXUniversalBlendingLayerServer)initWithBlendingLayer:(id)layer engagementRecordsManager:(id)manager hyperParameters:(id)parameters serverDelegate:(id)delegate
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  delegateCopy = delegate;
+  parametersCopy = parameters;
+  managerCopy = manager;
+  layerCopy = layer;
   v14 = objc_opt_new();
   v15 = objc_opt_new();
   v16 = objc_opt_new();
-  v17 = [(ATXUniversalBlendingLayerServer *)self initWithBlendingLayer:v13 engagementRecordsManager:v12 hyperParameters:v11 clientModelCacheManager:v14 clientModelNotificationManager:v15 serverDelegate:v10 pendingRefreshTracker:v16];
+  v17 = [(ATXUniversalBlendingLayerServer *)self initWithBlendingLayer:layerCopy engagementRecordsManager:managerCopy hyperParameters:parametersCopy clientModelCacheManager:v14 clientModelNotificationManager:v15 serverDelegate:delegateCopy pendingRefreshTracker:v16];
 
   return v17;
 }
 
-- (ATXUniversalBlendingLayerServer)initWithBlendingLayer:(id)a3 engagementRecordsManager:(id)a4 hyperParameters:(id)a5 clientModelCacheManager:(id)a6 clientModelNotificationManager:(id)a7 serverDelegate:(id)a8 pendingRefreshTracker:(id)a9
+- (ATXUniversalBlendingLayerServer)initWithBlendingLayer:(id)layer engagementRecordsManager:(id)manager hyperParameters:(id)parameters clientModelCacheManager:(id)cacheManager clientModelNotificationManager:(id)notificationManager serverDelegate:(id)delegate pendingRefreshTracker:(id)tracker
 {
-  v16 = a3;
-  v38 = a4;
-  v37 = a5;
-  v36 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  layerCopy = layer;
+  managerCopy = manager;
+  parametersCopy = parameters;
+  cacheManagerCopy = cacheManager;
+  notificationManagerCopy = notificationManager;
+  delegateCopy = delegate;
+  trackerCopy = tracker;
   v42.receiver = self;
   v42.super_class = ATXUniversalBlendingLayerServer;
   v20 = [(ATXUniversalBlendingLayerServer *)&v42 init];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_blendingLayer, a3);
-    objc_storeStrong(&v21->_clientModelCacheManager, a6);
-    objc_storeStrong(&v21->_clientModelNotificationManager, a7);
-    objc_storeWeak(&v21->_serverDelegate, v18);
-    objc_storeStrong(&v21->_engagementRecordsManager, a4);
-    objc_storeStrong(&v21->_hyperParameters, a5);
-    v22 = [v16 feedbackWriter];
+    objc_storeStrong(&v20->_blendingLayer, layer);
+    objc_storeStrong(&v21->_clientModelCacheManager, cacheManager);
+    objc_storeStrong(&v21->_clientModelNotificationManager, notificationManager);
+    objc_storeWeak(&v21->_serverDelegate, delegateCopy);
+    objc_storeStrong(&v21->_engagementRecordsManager, manager);
+    objc_storeStrong(&v21->_hyperParameters, parameters);
+    feedbackWriter = [layerCopy feedbackWriter];
     feedbackWriter = v21->_feedbackWriter;
-    v21->_feedbackWriter = v22;
+    v21->_feedbackWriter = feedbackWriter;
 
     objc_initWeak(&location, v21);
     v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -112,7 +112,7 @@ uint64_t __64__ATXUniversalBlendingLayerServer_coalescedBlendingLayerRefresh__bl
     queue = v21->_queue;
     v21->_queue = v25;
 
-    v27 = [objc_alloc(MEMORY[0x1E69C5D60]) initWithGuardedData:v19];
+    v27 = [objc_alloc(MEMORY[0x1E69C5D60]) initWithGuardedData:trackerCopy];
     pendingRefreshTrackerLock = v21->_pendingRefreshTrackerLock;
     v21->_pendingRefreshTrackerLock = v27;
 
@@ -160,7 +160,7 @@ void __190__ATXUniversalBlendingLayerServer_initWithBlendingLayer_engagementReco
 - (void)start
 {
   objc_initWeak(&location, self);
-  v3 = [@"com.apple.duetexpertd.clientModelRefreshBlendingLayer" UTF8String];
+  uTF8String = [@"com.apple.duetexpertd.clientModelRefreshBlendingLayer" UTF8String];
   v4 = MEMORY[0x1E69E96A0];
   v5 = MEMORY[0x1E69E96A0];
   v7 = MEMORY[0x1E69E9820];
@@ -168,11 +168,11 @@ void __190__ATXUniversalBlendingLayerServer_initWithBlendingLayer_engagementReco
   v9 = __40__ATXUniversalBlendingLayerServer_start__block_invoke;
   v10 = &unk_1E86A4128;
   objc_copyWeak(&v11, &location);
-  notify_register_dispatch(v3, &self->_blendingDarwinNotificationObserver, v4, &v7);
+  notify_register_dispatch(uTF8String, &self->_blendingDarwinNotificationObserver, v4, &v7);
 
   [(ATXUniversalBlendingLayerServer *)self setupXPCListener:v7];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel_refreshBlendingLayer name:@"com.apple.duetexpertd.clientModelRefreshBlendingLayer" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_refreshBlendingLayer name:@"com.apple.duetexpertd.clientModelRefreshBlendingLayer" object:0];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -205,13 +205,13 @@ void __190__ATXUniversalBlendingLayerServer_initWithBlendingLayer_engagementReco
   [(NSXPCListener *)v5 resume];
 }
 
-- (void)clientModelUpdatedSuggestions:(id)a3 feedbackMetadata:(id)a4 clientModelId:(id)a5 completion:(id)a6
+- (void)clientModelUpdatedSuggestions:(id)suggestions feedbackMetadata:(id)metadata clientModelId:(id)id completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  suggestionsCopy = suggestions;
+  metadataCopy = metadata;
+  idCopy = id;
+  completionCopy = completion;
   v14 = __atxlog_handle_xpc();
   v15 = os_signpost_id_generate(v14);
 
@@ -226,38 +226,38 @@ void __190__ATXUniversalBlendingLayerServer_initWithBlendingLayer_engagementReco
   v18 = __atxlog_handle_blending();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [v10 count];
+    v19 = [suggestionsCopy count];
     *buf = 138543618;
-    v32 = v12;
+    v32 = idCopy;
     v33 = 2048;
     v34 = v19;
     _os_log_impl(&dword_1DEFC4000, v18, OS_LOG_TYPE_DEFAULT, "Blending: <<%{public}@>> client model produced %lu new suggestions. Updating the internal cache.", buf, 0x16u);
   }
 
-  v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Received the following suggestions for client model %@: \n%@", v12, v10];
+  suggestionsCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Received the following suggestions for client model %@: \n%@", idCopy, suggestionsCopy];
   v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%p> ", self];
-  [ATXUniversalBlendingLayer logLongDescriptionForBlendingLayerString:v20 prefix:v21 shouldUseDefaultLogLevel:1 limit:20];
+  [ATXUniversalBlendingLayer logLongDescriptionForBlendingLayerString:suggestionsCopy prefix:v21 shouldUseDefaultLogLevel:1 limit:20];
 
   WeakRetained = objc_loadWeakRetained(&self->_serverDelegate);
-  LOBYTE(v20) = [WeakRetained rerouteSuggestions:v10 clientModelId:v12 completion:v13];
+  LOBYTE(suggestionsCopy) = [WeakRetained rerouteSuggestions:suggestionsCopy clientModelId:idCopy completion:completionCopy];
 
-  if ((v20 & 1) == 0)
+  if ((suggestionsCopy & 1) == 0)
   {
     v23 = objc_autoreleasePoolPush();
     v24 = objc_loadWeakRetained(&self->_serverDelegate);
-    [v24 willCreateCacheUpdateWithFeedbackMetadataLength:objc_msgSend(v11 forClientModelId:{"length"), v12}];
+    [v24 willCreateCacheUpdateWithFeedbackMetadataLength:objc_msgSend(metadataCopy forClientModelId:{"length"), idCopy}];
 
-    v25 = [(ATXClientModelCacheManagerProtocol *)self->_clientModelCacheManager cachedSuggestionsForClientModel:v12];
-    v26 = [[ATXClientModelCacheUpdate alloc] initWithClientModelId:v12 suggestions:v10 feedbackMetadata:v11 responseForRealTimeRequest:0];
-    [(ATXUniversalBlendingLayerServer *)self updateClientModelCacheWithCacheUpdate:v26 previousCacheUpdate:v25 completion:v13];
-    [(ATXUniversalBlendingLayerServer *)self refreshBlendingLayerIfNeededForNewSuggestions:v10 previousCacheUpdate:v25 clientModelId:v12];
+    v25 = [(ATXClientModelCacheManagerProtocol *)self->_clientModelCacheManager cachedSuggestionsForClientModel:idCopy];
+    v26 = [[ATXClientModelCacheUpdate alloc] initWithClientModelId:idCopy suggestions:suggestionsCopy feedbackMetadata:metadataCopy responseForRealTimeRequest:0];
+    [(ATXUniversalBlendingLayerServer *)self updateClientModelCacheWithCacheUpdate:v26 previousCacheUpdate:v25 completion:completionCopy];
+    [(ATXUniversalBlendingLayerServer *)self refreshBlendingLayerIfNeededForNewSuggestions:suggestionsCopy previousCacheUpdate:v25 clientModelId:idCopy];
 
     objc_autoreleasePoolPop(v23);
   }
 
-  if (v10)
+  if (suggestionsCopy)
   {
-    v27 = v10;
+    v27 = suggestionsCopy;
   }
 
   else
@@ -265,7 +265,7 @@ void __190__ATXUniversalBlendingLayerServer_initWithBlendingLayer_engagementReco
     v27 = MEMORY[0x1E695E0F0];
   }
 
-  [(ATXEngagementRecordManagerProtocol *)self->_engagementRecordsManager updateForClientModelCacheUpdate:v27 clientModelId:v12];
+  [(ATXEngagementRecordManagerProtocol *)self->_engagementRecordsManager updateForClientModelCacheUpdate:v27 clientModelId:idCopy];
   v28 = __atxlog_handle_xpc();
   v29 = v28;
   if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
@@ -277,36 +277,36 @@ void __190__ATXUniversalBlendingLayerServer_initWithBlendingLayer_engagementReco
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateClientModelCacheWithCacheUpdate:(id)a3 previousCacheUpdate:(id)a4 completion:(id)a5
+- (void)updateClientModelCacheWithCacheUpdate:(id)update previousCacheUpdate:(id)cacheUpdate completion:(id)completion
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  updateCopy = update;
+  cacheUpdateCopy = cacheUpdate;
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __104__ATXUniversalBlendingLayerServer_updateClientModelCacheWithCacheUpdate_previousCacheUpdate_completion___block_invoke;
   block[3] = &unk_1E86A4150;
   block[4] = self;
-  v11 = v8;
+  v11 = updateCopy;
   v19 = v11;
-  v20 = v9;
-  v12 = v9;
-  v13 = a5;
+  v20 = cacheUpdateCopy;
+  v12 = cacheUpdateCopy;
+  completionCopy = completion;
   dispatch_sync(queue, block);
   v14 = __atxlog_handle_blending();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v11 clientModelId];
-    v16 = [v11 uuid];
+    clientModelId = [v11 clientModelId];
+    uuid = [v11 uuid];
     *buf = 138543618;
-    v22 = v15;
+    v22 = clientModelId;
     v23 = 2112;
-    v24 = v16;
+    v24 = uuid;
     _os_log_impl(&dword_1DEFC4000, v14, OS_LOG_TYPE_DEFAULT, "Blending: Updated cached client suggestions for client model: %{public}@ with client cache update UUID: %@", buf, 0x16u);
   }
 
-  v13[2](v13, 0);
+  completionCopy[2](completionCopy, 0);
   v17 = *MEMORY[0x1E69E9840];
 }
 
@@ -319,13 +319,13 @@ uint64_t __104__ATXUniversalBlendingLayerServer_updateClientModelCacheWithCacheU
   return [v3 updateCachedSuggestions:v2];
 }
 
-- (void)refreshBlendingLayerIfNeededForNewSuggestions:(id)a3 previousCacheUpdate:(id)a4 clientModelId:(id)a5
+- (void)refreshBlendingLayerIfNeededForNewSuggestions:(id)suggestions previousCacheUpdate:(id)update clientModelId:(id)id
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
-  v10 = [a4 suggestions];
-  v11 = [ATXProactiveSuggestion suggestionsHaveChangedFromPreviousSuggestions:v10 newSuggestions:v9];
+  idCopy = id;
+  suggestionsCopy = suggestions;
+  suggestions = [update suggestions];
+  v11 = [ATXProactiveSuggestion suggestionsHaveChangedFromPreviousSuggestions:suggestions newSuggestions:suggestionsCopy];
 
   v12 = __atxlog_handle_blending();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -334,7 +334,7 @@ uint64_t __104__ATXUniversalBlendingLayerServer_updateClientModelCacheWithCacheU
     if (v13)
     {
       *buf = 138543362;
-      v24 = v8;
+      v24 = idCopy;
       _os_log_impl(&dword_1DEFC4000, v12, OS_LOG_TYPE_DEFAULT, "BlendingRefresh: Executing Blending Layer refresh based on suggestion update for %{public}@", buf, 0xCu);
     }
 
@@ -343,7 +343,7 @@ uint64_t __104__ATXUniversalBlendingLayerServer_updateClientModelCacheWithCacheU
     v21[1] = 3221225472;
     v21[2] = __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSuggestions_previousCacheUpdate_clientModelId___block_invoke;
     v21[3] = &unk_1E86A4178;
-    v15 = v8;
+    v15 = idCopy;
     v22 = v15;
     [(_PASLock *)pendingRefreshTrackerLock runWithLockAcquired:v21];
     v16 = [ATXProactiveSuggestionClientModel clientModelTypeFromClientModelId:v15];
@@ -368,7 +368,7 @@ uint64_t __104__ATXUniversalBlendingLayerServer_updateClientModelCacheWithCacheU
   else if (v13)
   {
     *buf = 138543362;
-    v24 = v8;
+    v24 = idCopy;
     _os_log_impl(&dword_1DEFC4000, v12, OS_LOG_TYPE_DEFAULT, "BlendingRefresh: Skipping Blending Layer refresh based on suggestion update for %{public}@", buf, 0xCu);
   }
 
@@ -394,12 +394,12 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clientModelUpdatedNotificationId:(id)a3 clientModelId:(id)a4 completion:(id)a5
+- (void)clientModelUpdatedNotificationId:(id)id clientModelId:(id)modelId completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  idCopy = id;
+  modelIdCopy = modelId;
+  completionCopy = completion;
   v11 = __atxlog_handle_xpc();
   v12 = os_signpost_id_generate(v11);
 
@@ -415,14 +415,14 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138543618;
-    v20 = v9;
+    v20 = modelIdCopy;
     v21 = 2112;
-    v22 = v8;
+    v22 = idCopy;
     _os_log_impl(&dword_1DEFC4000, v15, OS_LOG_TYPE_DEFAULT, "Blending: <<%{public}@>> client model updated its notification id. New notification id: %@", &v19, 0x16u);
   }
 
-  [(ATXClientModelNotificationManagerProtocol *)self->_clientModelNotificationManager updateNotificationId:v8 clientModel:v9];
-  v10[2](v10, 0);
+  [(ATXClientModelNotificationManagerProtocol *)self->_clientModelNotificationManager updateNotificationId:idCopy clientModel:modelIdCopy];
+  completionCopy[2](completionCopy, 0);
 
   v16 = __atxlog_handle_xpc();
   v17 = v16;
@@ -435,11 +435,11 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retrieveSuggestionsForClientModelId:(id)a3 reply:(id)a4
+- (void)retrieveSuggestionsForClientModelId:(id)id reply:(id)reply
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  replyCopy = reply;
   v8 = __atxlog_handle_xpc();
   v9 = os_signpost_id_generate(v8);
 
@@ -455,19 +455,19 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138543362;
-    v20 = v6;
+    v20 = idCopy;
     _os_log_impl(&dword_1DEFC4000, v12, OS_LOG_TYPE_DEFAULT, "Blending: <<%{public}@>> client model retrieves suggestions.", &v19, 0xCu);
   }
 
-  v13 = [(ATXClientModelCacheManagerProtocol *)self->_clientModelCacheManager cachedSuggestionsForClientModel:v6];
+  v13 = [(ATXClientModelCacheManagerProtocol *)self->_clientModelCacheManager cachedSuggestionsForClientModel:idCopy];
   v14 = __atxlog_handle_blending();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXUniversalBlendingLayerServer *)v6 retrieveSuggestionsForClientModelId:v13 reply:v14];
+    [(ATXUniversalBlendingLayerServer *)idCopy retrieveSuggestionsForClientModelId:v13 reply:v14];
   }
 
-  v15 = [v13 suggestions];
-  v7[2](v7, v15, 0);
+  suggestions = [v13 suggestions];
+  replyCopy[2](replyCopy, suggestions, 0);
 
   v16 = __atxlog_handle_xpc();
   v17 = v16;
@@ -480,10 +480,10 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)generateLayoutForRequest:(id)a3 reply:(id)a4
+- (void)generateLayoutForRequest:(id)request reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
+  replyCopy = reply;
+  requestCopy = request;
   v8 = __atxlog_handle_xpc();
   v9 = os_signpost_id_generate(v8);
 
@@ -495,9 +495,9 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
     _os_signpost_emit_with_name_impl(&dword_1DEFC4000, v11, OS_SIGNPOST_INTERVAL_BEGIN, v9, "generateLayoutForRequest", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v12 = [(ATXUniversalBlendingLayerServer *)self selectedLayoutForSuggestionRequest:v7];
+  v12 = [(ATXUniversalBlendingLayerServer *)self selectedLayoutForSuggestionRequest:requestCopy];
 
-  v6[2](v6, v12);
+  replyCopy[2](replyCopy, v12);
   v13 = __atxlog_handle_xpc();
   v14 = v13;
   if (v9 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
@@ -507,11 +507,11 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
   }
 }
 
-- (void)generateRankedSuggestionsForRequest:(id)a3 limit:(id)a4 reply:(id)a5
+- (void)generateRankedSuggestionsForRequest:(id)request limit:(id)limit reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  replyCopy = reply;
+  limitCopy = limit;
+  requestCopy = request;
   v11 = __atxlog_handle_xpc();
   v12 = os_signpost_id_generate(v11);
 
@@ -523,9 +523,9 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
     _os_signpost_emit_with_name_impl(&dword_1DEFC4000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "generateSuggestionsForRequest", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v15 = [(ATXUniversalBlendingLayerServer *)self generatedRankedSuggestionsForSuggestionRequest:v10 limit:v9];
+  v15 = [(ATXUniversalBlendingLayerServer *)self generatedRankedSuggestionsForSuggestionRequest:requestCopy limit:limitCopy];
 
-  v8[2](v8, v15);
+  replyCopy[2](replyCopy, v15);
   v16 = __atxlog_handle_xpc();
   v17 = v16;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v16))
@@ -535,19 +535,19 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.proactive.ProactiveSuggestionClientModel.xpc"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.proactive.ProactiveSuggestionClientModel.xpc"];
   if (v6 && (objc_opt_respondsToSelector() & 1) != 0 && ([v6 BOOLValue] & 1) != 0)
   {
     v7 = ATXCreateProactiveSuggestionClientModelXPCInterface();
-    [v5 setExportedInterface:v7];
+    [connectionCopy setExportedInterface:v7];
 
-    [v5 setExportedObject:self];
-    [v5 setInterruptionHandler:&__block_literal_global_45];
-    [v5 setInvalidationHandler:&__block_literal_global_48];
-    [v5 resume];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_45];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_48];
+    [connectionCopy resume];
     v8 = 1;
   }
 
@@ -556,7 +556,7 @@ void __115__ATXUniversalBlendingLayerServer_refreshBlendingLayerIfNeededForNewSu
     v9 = __atxlog_handle_blending();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [(ATXUniversalBlendingLayerServer *)v5 listener:v9 shouldAcceptNewConnection:?];
+      [(ATXUniversalBlendingLayerServer *)connectionCopy listener:v9 shouldAcceptNewConnection:?];
     }
 
     v8 = 0;

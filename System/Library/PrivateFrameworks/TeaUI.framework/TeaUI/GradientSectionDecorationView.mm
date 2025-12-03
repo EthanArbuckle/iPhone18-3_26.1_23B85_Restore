@@ -1,36 +1,36 @@
 @interface GradientSectionDecorationView
-- (void)applyLayoutAttributes:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation GradientSectionDecorationView
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v5 = a3;
-  v6 = self;
-  GradientSectionDecorationView.willMove(toSuperview:)(a3);
+  superviewCopy = superview;
+  selfCopy = self;
+  GradientSectionDecorationView.willMove(toSuperview:)(superview);
 }
 
 - (void)didMoveToSuperview
 {
-  v2 = self;
+  selfCopy = self;
   GradientSectionDecorationView.didMoveToSuperview()();
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GradientSectionDecorationView.layoutSubviews()();
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  GradientSectionDecorationView.apply(_:)(v4);
+  attributesCopy = attributes;
+  selfCopy = self;
+  GradientSectionDecorationView.apply(_:)(attributesCopy);
 }
 
 @end

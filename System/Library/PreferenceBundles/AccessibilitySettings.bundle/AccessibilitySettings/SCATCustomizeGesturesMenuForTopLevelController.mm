@@ -1,6 +1,6 @@
 @interface SCATCustomizeGesturesMenuForTopLevelController
 - (id)itemsFromPreferences;
-- (void)updateItemsInPreferences:(id)a3;
+- (void)updateItemsInPreferences:(id)preferences;
 - (void)viewDidLoad;
 @end
 
@@ -12,24 +12,24 @@
   v4.super_class = SCATCustomizeGesturesMenuForTopLevelController;
   [(AXReorderableCheckmarkListController *)&v4 viewDidLoad];
   [(AXReorderableCheckmarkListController *)self clearItemCache];
-  v3 = [(SCATCustomizeGesturesMenuForTopLevelController *)self table];
-  [v3 setEditing:0 animated:0];
+  table = [(SCATCustomizeGesturesMenuForTopLevelController *)self table];
+  [table setEditing:0 animated:0];
 }
 
 - (id)itemsFromPreferences
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 switchControlGesturesTopLevelMenuItems];
+  switchControlGesturesTopLevelMenuItems = [v2 switchControlGesturesTopLevelMenuItems];
 
-  return v3;
+  return switchControlGesturesTopLevelMenuItems;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
-  v4 = a3;
-  [(SCATCustomizeMenuBaseController *)self updateElementsInTopLevelWithItems:v4];
+  preferencesCopy = preferences;
+  [(SCATCustomizeMenuBaseController *)self updateElementsInTopLevelWithItems:preferencesCopy];
   v5 = +[AXSettings sharedInstance];
-  [v5 setSwitchControlGesturesTopLevelMenuItems:v4];
+  [v5 setSwitchControlGesturesTopLevelMenuItems:preferencesCopy];
 }
 
 @end

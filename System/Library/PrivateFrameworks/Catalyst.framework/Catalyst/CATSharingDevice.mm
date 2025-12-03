@@ -1,43 +1,43 @@
 @interface CATSharingDevice
-+ (id)unlocalizedDescriptivePairingStateForPairingState:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDevice:(id)a3;
-- (CATSharingDevice)initWithIdentifier:(id)a3 modelIdentifier:(id)a4 RSSI:(int64_t)a5 paired:(BOOL)a6 pairingState:(unint64_t)a7 detectionTime:(id)a8;
++ (id)unlocalizedDescriptivePairingStateForPairingState:(unint64_t)state;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDevice:(id)device;
+- (CATSharingDevice)initWithIdentifier:(id)identifier modelIdentifier:(id)modelIdentifier RSSI:(int64_t)i paired:(BOOL)paired pairingState:(unint64_t)state detectionTime:(id)time;
 - (id)debugDescription;
 - (unint64_t)hash;
 @end
 
 @implementation CATSharingDevice
 
-- (CATSharingDevice)initWithIdentifier:(id)a3 modelIdentifier:(id)a4 RSSI:(int64_t)a5 paired:(BOOL)a6 pairingState:(unint64_t)a7 detectionTime:(id)a8
+- (CATSharingDevice)initWithIdentifier:(id)identifier modelIdentifier:(id)modelIdentifier RSSI:(int64_t)i paired:(BOOL)paired pairingState:(unint64_t)state detectionTime:(id)time
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a8;
+  identifierCopy = identifier;
+  modelIdentifierCopy = modelIdentifier;
+  timeCopy = time;
   v23.receiver = self;
   v23.super_class = CATSharingDevice;
   v18 = [(CATSharingDevice *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    v20 = [v16 copy];
+    objc_storeStrong(&v18->_identifier, identifier);
+    v20 = [modelIdentifierCopy copy];
     modelIdentifier = v19->_modelIdentifier;
     v19->_modelIdentifier = v20;
 
-    v19->_paired = a6;
-    v19->_RSSI = a5;
-    v19->_pairingState = a7;
-    objc_storeStrong(&v19->_detectionTime, a8);
+    v19->_paired = paired;
+    v19->_RSSI = i;
+    v19->_pairingState = state;
+    objc_storeStrong(&v19->_detectionTime, time);
   }
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -47,7 +47,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -64,8 +64,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CATSharingDevice *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(CATSharingDevice *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -74,33 +74,33 @@
 {
   v14 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [(CATSharingDevice *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [(CATSharingDevice *)self modelIdentifier];
+  identifier = [(CATSharingDevice *)self identifier];
+  uUIDString = [identifier UUIDString];
+  modelIdentifier = [(CATSharingDevice *)self modelIdentifier];
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CATSharingDevice RSSI](self, "RSSI")}];
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[CATSharingDevice isPaired](self, "isPaired")}];
   v9 = [CATSharingDevice unlocalizedDescriptivePairingStateForPairingState:[(CATSharingDevice *)self pairingState]];
-  v10 = [(CATSharingDevice *)self detectionTime];
-  v11 = [(CATSharingDevice *)self context];
-  v12 = [v14 stringWithFormat:@"<%@: %p> identifier: %@, modelIdentifier: %@, RSSI: %@, paired: %@, pairingState: %@, detectionTime: %@, context: %@", v3, self, v5, v6, v7, v8, v9, v10, v11];
+  detectionTime = [(CATSharingDevice *)self detectionTime];
+  context = [(CATSharingDevice *)self context];
+  v12 = [v14 stringWithFormat:@"<%@: %p> identifier: %@, modelIdentifier: %@, RSSI: %@, paired: %@, pairingState: %@, detectionTime: %@, context: %@", v3, self, uUIDString, modelIdentifier, v7, v8, v9, detectionTime, context];
 
   return v12;
 }
 
-- (BOOL)isEqualToDevice:(id)a3
+- (BOOL)isEqualToDevice:(id)device
 {
-  v4 = a3;
-  if (v4 && [v4 isMemberOfClass:objc_opt_class()])
+  deviceCopy = device;
+  if (deviceCopy && [deviceCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CATSharingDevice *)self identifier];
-    v6 = [v5 UUIDString];
-    v7 = [v4 identifier];
-    v8 = [v7 UUIDString];
-    if ([v6 isEqualToString:v8])
+    identifier = [(CATSharingDevice *)self identifier];
+    uUIDString = [identifier UUIDString];
+    identifier2 = [deviceCopy identifier];
+    uUIDString2 = [identifier2 UUIDString];
+    if ([uUIDString isEqualToString:uUIDString2])
     {
-      v9 = [(CATSharingDevice *)self modelIdentifier];
-      v10 = [v4 modelIdentifier];
-      v11 = [v9 isEqualToString:v10];
+      modelIdentifier = [(CATSharingDevice *)self modelIdentifier];
+      modelIdentifier2 = [deviceCopy modelIdentifier];
+      v11 = [modelIdentifier isEqualToString:modelIdentifier2];
     }
 
     else
@@ -117,9 +117,9 @@
   return v11;
 }
 
-+ (id)unlocalizedDescriptivePairingStateForPairingState:(unint64_t)a3
++ (id)unlocalizedDescriptivePairingStateForPairingState:(unint64_t)state
 {
-  if (a3 >= 4)
+  if (state >= 4)
   {
     v4 = MEMORY[0x277CCACA8];
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -128,7 +128,7 @@
 
   else
   {
-    v3 = off_278DA78E0[a3];
+    v3 = off_278DA78E0[state];
   }
 
   return v3;

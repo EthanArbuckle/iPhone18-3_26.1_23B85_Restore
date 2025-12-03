@@ -12,52 +12,52 @@
 
 - (uint64_t)uiCanReceiveDeviceOrientationEvents
 {
-  v1 = [a1 settings];
-  if ([v1 isUISubclass])
+  settings = [self settings];
+  if ([settings isUISubclass])
   {
-    v2 = [v1 deviceOrientationEventsEnabled];
+    deviceOrientationEventsEnabled = [settings deviceOrientationEventsEnabled];
   }
 
   else
   {
-    v2 = 1;
+    deviceOrientationEventsEnabled = 1;
   }
 
-  return v2;
+  return deviceOrientationEventsEnabled;
 }
 
 - (id)uiSettings
 {
-  v4 = [a1 settings];
-  if (([v4 isUISubclass] & 1) == 0)
+  settings = [self settings];
+  if (([settings isUISubclass] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"FBSScene+UIApp.m" lineNumber:32 description:{@"settings is of an unexpected class : %@", v4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FBSScene+UIApp.m" lineNumber:32 description:{@"settings is of an unexpected class : %@", settings}];
   }
 
-  return v4;
+  return settings;
 }
 
 - (id)uiClientSettings
 {
-  v4 = [a1 clientSettings];
-  if (([v4 isUISubclass] & 1) == 0)
+  clientSettings = [self clientSettings];
+  if (([clientSettings isUISubclass] & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:a1 file:@"FBSScene+UIApp.m" lineNumber:38 description:{@"clientSettings is of an unexpected class : %@", v4}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FBSScene+UIApp.m" lineNumber:38 description:{@"clientSettings is of an unexpected class : %@", clientSettings}];
   }
 
-  return v4;
+  return clientSettings;
 }
 
 - (BOOL)isPersistable
 {
-  v2 = [a1 settings];
-  if ([v2 isUISubclass])
+  settings = [self settings];
+  if ([settings isUISubclass])
   {
-    v3 = [a1 uiSettings];
-    v4 = [v3 persistenceIdentifier];
-    v5 = v4 != 0;
+    uiSettings = [self uiSettings];
+    persistenceIdentifier = [uiSettings persistenceIdentifier];
+    v5 = persistenceIdentifier != 0;
   }
 
   else
@@ -70,10 +70,10 @@
 
 - (BOOL)uiAlwaysSupportsAllInterfaceOrientations
 {
-  v1 = [a1 settings];
-  if ([v1 isUISubclass])
+  settings = [self settings];
+  if ([settings isUISubclass])
   {
-    v2 = [v1 interfaceOrientationMode] == 2;
+    v2 = [settings interfaceOrientationMode] == 2;
   }
 
   else
@@ -93,7 +93,7 @@
     block[1] = 3221225472;
     block[2] = __51__FBSScene_UIApp__updateUIClientSettingsWithBlock___block_invoke;
     block[3] = &unk_1E70F37C0;
-    block[4] = a1;
+    block[4] = self;
     v11 = v5;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v6 = v11;
@@ -107,16 +107,16 @@
     v7[2] = __51__FBSScene_UIApp__updateUIClientSettingsWithBlock___block_invoke_2;
     v7[3] = &unk_1E7109B28;
     v9 = a2;
-    v7[4] = a1;
+    v7[4] = self;
     v8 = v5;
-    [a1 updateClientSettingsWithBlock:v7];
+    [self updateClientSettingsWithBlock:v7];
     v6 = v8;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  [a1 updateClientSettingsWithBlock:0];
+  [self updateClientSettingsWithBlock:0];
 LABEL_8:
 }
 
@@ -129,7 +129,7 @@ LABEL_8:
     block[1] = 3221225472;
     block[2] = __61__FBSScene_UIApp__updateUIClientSettingsWithTransitionBlock___block_invoke;
     block[3] = &unk_1E70F37C0;
-    block[4] = a1;
+    block[4] = self;
     v11 = v5;
     dispatch_async(MEMORY[0x1E69E96A0], block);
     v6 = v11;
@@ -143,16 +143,16 @@ LABEL_8:
     v7[2] = __61__FBSScene_UIApp__updateUIClientSettingsWithTransitionBlock___block_invoke_2;
     v7[3] = &unk_1E70F41D0;
     v9 = a2;
-    v7[4] = a1;
+    v7[4] = self;
     v8 = v5;
-    [a1 updateClientSettingsWithTransitionBlock:v7];
+    [self updateClientSettingsWithTransitionBlock:v7];
     v6 = v8;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  [a1 updateClientSettingsWithTransitionBlock:0];
+  [self updateClientSettingsWithTransitionBlock:0];
 LABEL_8:
 }
 

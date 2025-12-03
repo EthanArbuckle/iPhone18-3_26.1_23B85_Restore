@@ -1,88 +1,88 @@
 @interface CDPDSecureBackupController
-+ (id)_dateWithSecureBackupDateString:(id)a3;
-+ (id)_printableAccountInfo:(id)a3;
-+ (id)_sanitizedInfoDictionary:(id)a3;
-- (BOOL)_disableSecureBackupWithEnableInfo:(id)a3 error:(id *)a4;
-- (BOOL)_disableThenEnableWithInfo:(id)a3 error:(id *)a4;
++ (id)_dateWithSecureBackupDateString:(id)string;
++ (id)_printableAccountInfo:(id)info;
++ (id)_sanitizedInfoDictionary:(id)dictionary;
+- (BOOL)_disableSecureBackupWithEnableInfo:(id)info error:(id *)error;
+- (BOOL)_disableThenEnableWithInfo:(id)info error:(id *)error;
 - (BOOL)_isInSOSCircle;
-- (BOOL)_isRecoveryKeySetInOctagonWithConfig:(id)a3;
-- (BOOL)_isRecoveryKeySetInSOSWithConfig:(id)a3;
-- (BOOL)_shouldUseSBDCacheWithSecureBackupContext:(id)a3 fallbackState:(unint64_t)a4;
-- (BOOL)_validateOctagonRecoveryKeyWithConfig:(id)a3 recoveryKey:(id)a4;
-- (BOOL)_validateSOSRecoveryKey:(id)a3 config:(id)a4;
-- (BOOL)authenticatedEnableSecureBackupWithRecoveryKey:(id)a3 error:(id *)a4;
-- (BOOL)disableRecoveryKey:(id *)a3;
-- (BOOL)recordIsEmpty:(id)a3;
-- (BOOL)supportsRecoveryKeyWithError:(id *)a3;
-- (BOOL)supportsWalrusRecoveryKeyWithError:(id *)a3;
-- (CDPDSecureBackupController)initWithContext:(id)a3 secureBackupProxy:(id)a4 octagonTrustProxy:(id)a5;
-- (CDPDSecureBackupController)initWithContext:(id)a3 uiProvider:(id)a4 delegate:(id)a5;
+- (BOOL)_isRecoveryKeySetInOctagonWithConfig:(id)config;
+- (BOOL)_isRecoveryKeySetInSOSWithConfig:(id)config;
+- (BOOL)_shouldUseSBDCacheWithSecureBackupContext:(id)context fallbackState:(unint64_t)state;
+- (BOOL)_validateOctagonRecoveryKeyWithConfig:(id)config recoveryKey:(id)key;
+- (BOOL)_validateSOSRecoveryKey:(id)key config:(id)config;
+- (BOOL)authenticatedEnableSecureBackupWithRecoveryKey:(id)key error:(id *)error;
+- (BOOL)disableRecoveryKey:(id *)key;
+- (BOOL)recordIsEmpty:(id)empty;
+- (BOOL)supportsRecoveryKeyWithError:(id *)error;
+- (BOOL)supportsWalrusRecoveryKeyWithError:(id *)error;
+- (CDPDSecureBackupController)initWithContext:(id)context secureBackupProxy:(id)proxy octagonTrustProxy:(id)trustProxy;
+- (CDPDSecureBackupController)initWithContext:(id)context uiProvider:(id)provider delegate:(id)delegate;
 - (CDPDSecureBackupDelegate)delegate;
-- (id)_clientMetadataWithSecretType:(unint64_t)a3 length:(unint64_t)a4;
+- (id)_clientMetadataWithSecretType:(unint64_t)type length:(unint64_t)length;
 - (id)_currentAnisetteData;
-- (id)_performEscrowRecoveryWithRecoveryContext:(id)a3 fallbackState:(unint64_t)a4 error:(id *)a5;
-- (id)_recoverBackupDictionaryWithContext:(id)a3 fallbackState:(unint64_t)a4 error:(id *)a5;
-- (id)_recoveryInfoDictionaryFromContext:(id)a3 usePreviouslyCachedSecret:(BOOL)a4;
-- (id)handleCDPDevices:(id)a3;
-- (id)performEscrowRecoveryWithData:(id)a3 error:(id *)a4;
-- (id)performEscrowRecoveryWithRecoveryContext:(id)a3 error:(id *)a4;
-- (id)performSilentEscrowRecoveryWithCDPContext:(id)a3 error:(id *)a4;
-- (void)_accountInfoWithCompletion:(id)a3;
-- (void)_authenticatedEnableSecureBackupIncludingFallbackWithContext:(id)a3 completion:(id)a4;
-- (void)_authenticatedEnableSecureBackupWithContext:(id)a3 fallbackState:(unint64_t)a4 completion:(id)a5;
-- (void)_deleteAllBackupRecordsWithCompletion:(id)a3;
-- (void)_deleteSingleICSCBackupWithCompletion:(id)a3;
-- (void)_disableRecoveryKeyFromSOS:(id *)a3;
-- (void)_enableSecureBackupWithContext:(id)a3 completion:(id)a4;
-- (void)_getBackupRecordDevicesIncludingUnrecoverableRecords:(id)a3;
-- (void)_handleSecureBackupEnablementError:(id)a3 fallbackState:(unint64_t)a4 context:(id)a5 delegate:(id)a6 completion:(id)a7;
-- (void)_postICSCCreationFailedEventWithError:(id)a3;
-- (void)_retryRepairWithContext:(id)a3 retryCount:(int64_t)a4 completion:(id)a5;
-- (void)_setRecoveryKeyInIDMSWithContext:(id)a3 circleProxy:(id)a4 authProvider:(id)a5 completion:(id)a6;
-- (void)_setRecoveryKeyInOctagonIfRequiredWithConfig:(id)a3 recoveryKey:(id)a4 error:(id *)a5;
-- (void)_setRecoveryKeyInSOSIfRequiredWithConfig:(id)a3 recoveryKey:(id)a4 error:(id *)a5;
-- (void)_updateContext:(id)a3 withDevices:(id)a4;
-- (void)_validateRecoveryKeyInIDMSWithContext:(id)a3 authProvider:(id)a4 completion:(id)a5;
-- (void)accountInfoWithCompletion:(id)a3;
-- (void)backupRecordsArePresentWithCompletion:(id)a3;
-- (void)checkAndRemoveExistingThenEnableSecureBackupRecordWithContext:(id)a3 completion:(id)a4;
-- (void)checkForAnyOctagonRecord:(id)a3;
-- (void)checkForExistingRecord:(id)a3;
-- (void)checkForExistingRecordWithPeerId:(id)a3 completion:(id)a4;
+- (id)_performEscrowRecoveryWithRecoveryContext:(id)context fallbackState:(unint64_t)state error:(id *)error;
+- (id)_recoverBackupDictionaryWithContext:(id)context fallbackState:(unint64_t)state error:(id *)error;
+- (id)_recoveryInfoDictionaryFromContext:(id)context usePreviouslyCachedSecret:(BOOL)secret;
+- (id)handleCDPDevices:(id)devices;
+- (id)performEscrowRecoveryWithData:(id)data error:(id *)error;
+- (id)performEscrowRecoveryWithRecoveryContext:(id)context error:(id *)error;
+- (id)performSilentEscrowRecoveryWithCDPContext:(id)context error:(id *)error;
+- (void)_accountInfoWithCompletion:(id)completion;
+- (void)_authenticatedEnableSecureBackupIncludingFallbackWithContext:(id)context completion:(id)completion;
+- (void)_authenticatedEnableSecureBackupWithContext:(id)context fallbackState:(unint64_t)state completion:(id)completion;
+- (void)_deleteAllBackupRecordsWithCompletion:(id)completion;
+- (void)_deleteSingleICSCBackupWithCompletion:(id)completion;
+- (void)_disableRecoveryKeyFromSOS:(id *)s;
+- (void)_enableSecureBackupWithContext:(id)context completion:(id)completion;
+- (void)_getBackupRecordDevicesIncludingUnrecoverableRecords:(id)records;
+- (void)_handleSecureBackupEnablementError:(id)error fallbackState:(unint64_t)state context:(id)context delegate:(id)delegate completion:(id)completion;
+- (void)_postICSCCreationFailedEventWithError:(id)error;
+- (void)_retryRepairWithContext:(id)context retryCount:(int64_t)count completion:(id)completion;
+- (void)_setRecoveryKeyInIDMSWithContext:(id)context circleProxy:(id)proxy authProvider:(id)provider completion:(id)completion;
+- (void)_setRecoveryKeyInOctagonIfRequiredWithConfig:(id)config recoveryKey:(id)key error:(id *)error;
+- (void)_setRecoveryKeyInSOSIfRequiredWithConfig:(id)config recoveryKey:(id)key error:(id *)error;
+- (void)_updateContext:(id)context withDevices:(id)devices;
+- (void)_validateRecoveryKeyInIDMSWithContext:(id)context authProvider:(id)provider completion:(id)completion;
+- (void)accountInfoWithCompletion:(id)completion;
+- (void)backupRecordsArePresentWithCompletion:(id)completion;
+- (void)checkAndRemoveExistingThenEnableSecureBackupRecordWithContext:(id)context completion:(id)completion;
+- (void)checkForAnyOctagonRecord:(id)record;
+- (void)checkForExistingRecord:(id)record;
+- (void)checkForExistingRecordWithPeerId:(id)id completion:(id)completion;
 - (void)clearAccountInfoCache;
-- (void)deleteAllBackupRecordsWithCompletion:(id)a3;
-- (void)deleteSingleICSCBackupWithCompletion:(id)a3;
-- (void)disableRecoveryKeyFromAllSystemsWithCompletion:(id)a3;
-- (void)disableRecoveryKeyWithCompletion:(id)a3;
-- (void)disableSecureBackupWithCompletion:(id)a3;
-- (void)enableSecureBackupWithContext:(id)a3 completion:(id)a4;
-- (void)enableSecureBackupWithRecoveryKey:(id)a3 completion:(id)a4;
-- (void)isEligibleForCDPWithCompletion:(id)a3;
-- (void)performEscrowRecoveryWithRecoveryContext:(id)a3 completion:(id)a4;
-- (void)recoverSecureBackupWithContext:(id)a3 completion:(id)a4;
-- (void)synchronizeKeyValueStoreWithCompletion:(id)a3;
-- (void)upgradeICSCRecordsThenEnableSecureBackupWithContext:(id)a3 completion:(id)a4;
-- (void)validateAndRepairRecoveryKeyMismatchWithContext:(id)a3 authProvider:(id)a4 circleProxy:(id)a5 completion:(id)a6;
-- (void)validateRecoveryKeyWithContext:(id)a3 completion:(id)a4;
+- (void)deleteAllBackupRecordsWithCompletion:(id)completion;
+- (void)deleteSingleICSCBackupWithCompletion:(id)completion;
+- (void)disableRecoveryKeyFromAllSystemsWithCompletion:(id)completion;
+- (void)disableRecoveryKeyWithCompletion:(id)completion;
+- (void)disableSecureBackupWithCompletion:(id)completion;
+- (void)enableSecureBackupWithContext:(id)context completion:(id)completion;
+- (void)enableSecureBackupWithRecoveryKey:(id)key completion:(id)completion;
+- (void)isEligibleForCDPWithCompletion:(id)completion;
+- (void)performEscrowRecoveryWithRecoveryContext:(id)context completion:(id)completion;
+- (void)recoverSecureBackupWithContext:(id)context completion:(id)completion;
+- (void)synchronizeKeyValueStoreWithCompletion:(id)completion;
+- (void)upgradeICSCRecordsThenEnableSecureBackupWithContext:(id)context completion:(id)completion;
+- (void)validateAndRepairRecoveryKeyMismatchWithContext:(id)context authProvider:(id)provider circleProxy:(id)proxy completion:(id)completion;
+- (void)validateRecoveryKeyWithContext:(id)context completion:(id)completion;
 @end
 
 @implementation CDPDSecureBackupController
 
-- (CDPDSecureBackupController)initWithContext:(id)a3 secureBackupProxy:(id)a4 octagonTrustProxy:(id)a5
+- (CDPDSecureBackupController)initWithContext:(id)context secureBackupProxy:(id)proxy octagonTrustProxy:(id)trustProxy
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  proxyCopy = proxy;
+  trustProxyCopy = trustProxy;
   v21.receiver = self;
   v21.super_class = CDPDSecureBackupController;
   v12 = [(CDPDSecureBackupController *)&v21 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_secureBackupProxy, a4);
-    objc_storeStrong(&v13->_octagonTrustProxy, a5);
-    objc_storeStrong(&v13->_context, a3);
-    v14 = [CDPDSecureBackupConfiguration configurationWithContext:v9];
+    objc_storeStrong(&v12->_secureBackupProxy, proxy);
+    objc_storeStrong(&v13->_octagonTrustProxy, trustProxy);
+    objc_storeStrong(&v13->_context, context);
+    v14 = [CDPDSecureBackupConfiguration configurationWithContext:contextCopy];
     configuration = v13->_configuration;
     v13->_configuration = v14;
 
@@ -130,32 +130,32 @@
   return v13;
 }
 
-- (CDPDSecureBackupController)initWithContext:(id)a3 uiProvider:(id)a4 delegate:(id)a5
+- (CDPDSecureBackupController)initWithContext:(id)context uiProvider:(id)provider delegate:(id)delegate
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a3;
-  v12 = [[CDPDSecureBackupProxyImpl alloc] initWithContext:v11];
-  v13 = [[CDPDOctagonTrustProxyImpl alloc] initWithContext:v11];
-  v14 = [(CDPDSecureBackupController *)self initWithContext:v11 secureBackupProxy:v12 octagonTrustProxy:v13];
+  providerCopy = provider;
+  delegateCopy = delegate;
+  contextCopy = context;
+  v12 = [[CDPDSecureBackupProxyImpl alloc] initWithContext:contextCopy];
+  v13 = [[CDPDOctagonTrustProxyImpl alloc] initWithContext:contextCopy];
+  v14 = [(CDPDSecureBackupController *)self initWithContext:contextCopy secureBackupProxy:v12 octagonTrustProxy:v13];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_uiProvider, a4);
-    objc_storeWeak(&v14->_delegate, v10);
+    objc_storeStrong(&v14->_uiProvider, provider);
+    objc_storeWeak(&v14->_delegate, delegateCopy);
   }
 
   return v14;
 }
 
-- (void)synchronizeKeyValueStoreWithCompletion:(id)a3
+- (void)synchronizeKeyValueStoreWithCompletion:(id)completion
 {
   v5 = self->_context;
-  v6 = a3;
-  v7 = [(CDPContext *)v5 backupActivity];
-  if (v7)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v5 backupActivity];
+  if (backupActivity)
   {
-    v8 = v7;
+    v8 = backupActivity;
   }
 
   else
@@ -164,7 +164,7 @@
   }
 
   [(CDPContext *)v5 setBackupActivity:v8];
-  v9 = _Block_copy(v6);
+  v9 = _Block_copy(completionCopy);
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -284,10 +284,10 @@ LABEL_11:
   }
 }
 
-- (void)accountInfoWithCompletion:(id)a3
+- (void)accountInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (self->_cachedAccountInfo)
   {
     v6 = _CDPLogSystem();
@@ -306,7 +306,7 @@ LABEL_11:
     v7[2] = __56__CDPDSecureBackupController_accountInfoWithCompletion___block_invoke;
     v7[3] = &unk_278E245F8;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     [(CDPDSecureBackupController *)self _accountInfoWithCompletion:v7];
   }
 }
@@ -332,10 +332,10 @@ void __56__CDPDSecureBackupController_accountInfoWithCompletion___block_invoke(u
 - (void)clearAccountInfoCache
 {
   v3 = self->_context;
-  v4 = [(CDPContext *)v3 backupActivity];
-  if (v4)
+  backupActivity = [(CDPContext *)v3 backupActivity];
+  if (backupActivity)
   {
-    v5 = v4;
+    v5 = backupActivity;
   }
 
   else
@@ -357,28 +357,28 @@ void __56__CDPDSecureBackupController_accountInfoWithCompletion___block_invoke(u
   [(CDPContext *)v3 setBackupActivity:0];
 }
 
-- (void)_accountInfoWithCompletion:(id)a3
+- (void)_accountInfoWithCompletion:(id)completion
 {
   configuration = self->_configuration;
-  v5 = a3;
-  v6 = [(CDPDSecureBackupConfiguration *)configuration accountInfoFetchSetupDictionary];
+  completionCopy = completion;
+  accountInfoFetchSetupDictionary = [(CDPDSecureBackupConfiguration *)configuration accountInfoFetchSetupDictionary];
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [CDPDSecureBackupController _accountInfoWithCompletion:];
   }
 
-  [(CDPDSecureBackupProxy *)self->_secureBackupProxy accountInfoWithInfo:v6 completion:v5];
+  [(CDPDSecureBackupProxy *)self->_secureBackupProxy accountInfoWithInfo:accountInfoFetchSetupDictionary completion:completionCopy];
 }
 
-- (void)isEligibleForCDPWithCompletion:(id)a3
+- (void)isEligibleForCDPWithCompletion:(id)completion
 {
   v4 = self->_context;
-  v5 = a3;
-  v6 = [(CDPContext *)v4 backupActivity];
-  if (v6)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v4 backupActivity];
+  if (backupActivity)
   {
-    v7 = v6;
+    v7 = backupActivity;
   }
 
   else
@@ -387,7 +387,7 @@ void __56__CDPDSecureBackupController_accountInfoWithCompletion___block_invoke(u
   }
 
   [(CDPContext *)v4 setBackupActivity:v7];
-  v8 = _Block_copy(v5);
+  v8 = _Block_copy(completionCopy);
 
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
@@ -400,10 +400,10 @@ void __56__CDPDSecureBackupController_accountInfoWithCompletion___block_invoke(u
   v11 = _Block_copy(&v15);
   if (v11)
   {
-    v12 = [MEMORY[0x277CFD4F8] sharedInstance];
-    v13 = [v12 hasLocalSecret];
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
 
-    if (v13)
+    if (hasLocalSecret)
     {
       v14 = 0;
     }
@@ -413,7 +413,7 @@ void __56__CDPDSecureBackupController_accountInfoWithCompletion___block_invoke(u
       v14 = _CDPStateError();
     }
 
-    v11[2](v11, v13, v14);
+    v11[2](v11, hasLocalSecret, v14);
   }
 }
 
@@ -430,14 +430,14 @@ uint64_t __61__CDPDSecureBackupController_isEligibleForCDPWithCompletion___block
   return [v3 setBackupActivity:0];
 }
 
-- (void)backupRecordsArePresentWithCompletion:(id)a3
+- (void)backupRecordsArePresentWithCompletion:(id)completion
 {
   v5 = self->_context;
-  v6 = a3;
-  v7 = [(CDPContext *)v5 backupActivity];
-  if (v7)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v5 backupActivity];
+  if (backupActivity)
   {
-    v8 = v7;
+    v8 = backupActivity;
   }
 
   else
@@ -446,7 +446,7 @@ uint64_t __61__CDPDSecureBackupController_isEligibleForCDPWithCompletion___block
   }
 
   [(CDPContext *)v5 setBackupActivity:v8];
-  v9 = _Block_copy(v6);
+  v9 = _Block_copy(completionCopy);
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -562,16 +562,16 @@ uint64_t __84__CDPDSecureBackupController_getBackupRecordDevicesWithOptionForceF
   return [v3 setBackupActivity:0];
 }
 
-- (id)handleCDPDevices:(id)a3
+- (id)handleCDPDevices:(id)devices
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v32 = [MEMORY[0x277CBEB18] array];
+  devicesCopy = devices;
+  array = [MEMORY[0x277CBEB18] array];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v4;
+  obj = devicesCopy;
   v5 = [obj countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v5)
   {
@@ -607,7 +607,7 @@ uint64_t __84__CDPDSecureBackupController_getBackupRecordDevicesWithOptionForceF
         {
           if ([v11 remainingAttempts])
           {
-            [v32 addObject:v11];
+            [array addObject:v11];
           }
 
           else if (![v11 remainingAttempts])
@@ -615,11 +615,11 @@ uint64_t __84__CDPDSecureBackupController_getBackupRecordDevicesWithOptionForceF
             v13 = _CDPLogSystem();
             if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
             {
-              v14 = [v11 remainingAttempts];
+              remainingAttempts = [v11 remainingAttempts];
               *buf = 138412546;
               v39 = v11;
               v40 = 2048;
-              v41 = v14;
+              v41 = remainingAttempts;
               _os_log_impl(&dword_24510B000, v13, OS_LOG_TYPE_DEFAULT, "Disqualified device %@ because the remaining attempts is %lu", buf, 0x16u);
             }
           }
@@ -628,13 +628,13 @@ uint64_t __84__CDPDSecureBackupController_getBackupRecordDevicesWithOptionForceF
         v15 = _CDPLogSystem();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v11 recordDate];
-          v17 = [v11 recordDate];
+          recordDate = [v11 recordDate];
+          recordDate2 = [v11 recordDate];
           v18 = objc_opt_class();
           *buf = 138412802;
           v39 = v11;
           v40 = 2112;
-          v41 = v16;
+          v41 = recordDate;
           v42 = 2112;
           v43 = v18;
           v19 = v18;
@@ -646,23 +646,23 @@ uint64_t __84__CDPDSecureBackupController_getBackupRecordDevicesWithOptionForceF
           goto LABEL_22;
         }
 
-        v20 = [v11 recordDate];
-        if (v20)
+        recordDate3 = [v11 recordDate];
+        if (recordDate3)
         {
-          v21 = v20;
-          v22 = [v11 recordDate];
-          v23 = [v8 laterDate:v22];
-          v24 = [v11 recordDate];
+          v21 = recordDate3;
+          recordDate4 = [v11 recordDate];
+          v23 = [v8 laterDate:recordDate4];
+          recordDate5 = [v11 recordDate];
 
-          if (v23 == v24)
+          if (v23 == recordDate5)
           {
 LABEL_22:
             v25 = _CDPLogSystem();
             if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
             {
-              v26 = [v11 recordDate];
+              recordDate6 = [v11 recordDate];
               *buf = 138412802;
-              v39 = v26;
+              v39 = recordDate6;
               v40 = 2112;
               v41 = v8;
               v42 = 2112;
@@ -670,9 +670,9 @@ LABEL_22:
               _os_log_impl(&dword_24510B000, v25, OS_LOG_TYPE_DEFAULT, "Backup record date %@ is later than the previously known newest record (%@), promoting %@ as newest device record", buf, 0x20u);
             }
 
-            v27 = [v11 recordDate];
+            recordDate7 = [v11 recordDate];
 
-            v8 = v27;
+            v8 = recordDate7;
           }
         }
       }
@@ -698,7 +698,7 @@ LABEL_22:
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v32;
+  return array;
 }
 
 void __98__CDPDSecureBackupController__getOctagonEscrowBackupRecordDevicesWithOptionForceFetch_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -865,15 +865,15 @@ void __98__CDPDSecureBackupController__getOctagonEscrowBackupRecordDevicesWithOp
   }
 }
 
-- (void)_updateContext:(id)a3 withDevices:(id)a4
+- (void)_updateContext:(id)context withDevices:(id)devices
 {
   v37 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  contextCopy = context;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = a4;
+  obj = devices;
   v5 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v5)
   {
@@ -894,11 +894,11 @@ void __98__CDPDSecureBackupController__getOctagonEscrowBackupRecordDevicesWithOp
         }
 
         v12 = *(*(&v32 + 1) + 8 * v11);
-        v13 = [v12 remainingAttempts];
-        v14 = v13;
-        if (v13 > v9)
+        remainingAttempts = [v12 remainingAttempts];
+        v14 = remainingAttempts;
+        if (remainingAttempts > v9)
         {
-          v9 = v13;
+          v9 = remainingAttempts;
         }
 
         if (!v7)
@@ -906,12 +906,12 @@ void __98__CDPDSecureBackupController__getOctagonEscrowBackupRecordDevicesWithOp
           goto LABEL_12;
         }
 
-        v15 = [v12 recordDate];
-        if (v15)
+        recordDate = [v12 recordDate];
+        if (recordDate)
         {
-          v16 = v15;
-          v17 = [v12 recordDate];
-          v18 = [v7 laterDate:v17];
+          v16 = recordDate;
+          recordDate2 = [v12 recordDate];
+          v18 = [v7 laterDate:recordDate2];
           [v12 recordDate];
           v31 = v9;
           v19 = v7;
@@ -925,9 +925,9 @@ void __98__CDPDSecureBackupController__getOctagonEscrowBackupRecordDevicesWithOp
           if (v22)
           {
 LABEL_12:
-            v23 = [v12 recordDate];
+            recordDate3 = [v12 recordDate];
 
-            v7 = v23;
+            v7 = recordDate3;
           }
         }
 
@@ -959,9 +959,9 @@ LABEL_12:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getBackupRecordDevicesIncludingUnrecoverableRecords:(id)a3
+- (void)_getBackupRecordDevicesIncludingUnrecoverableRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -974,8 +974,8 @@ LABEL_12:
   v7[2] = __83__CDPDSecureBackupController__getBackupRecordDevicesIncludingUnrecoverableRecords___block_invoke;
   v7[3] = &unk_278E25460;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordsCopy;
+  v6 = recordsCopy;
   [(CDPDSecureBackupController *)self accountInfoWithCompletion:v7];
 }
 
@@ -1215,15 +1215,15 @@ LABEL_57:
   v44 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_dateWithSecureBackupDateString:(id)a3
++ (id)_dateWithSecureBackupDateString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(MEMORY[0x277CCA968]);
   v5 = [MEMORY[0x277CBEAF8] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v4 setLocale:v5];
 
   [v4 setDateFormat:@"dd-MM-yyyy HH:mm:ss"];
-  v6 = [v4 dateFromString:v3];
+  v6 = [v4 dateFromString:stringCopy];
   v7 = v6;
   if (v6)
   {
@@ -1236,7 +1236,7 @@ LABEL_57:
     [v4 setTimeZone:v9];
 
     [v4 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    v8 = [v4 dateFromString:v3];
+    v8 = [v4 dateFromString:stringCopy];
   }
 
   v10 = v8;
@@ -1244,15 +1244,15 @@ LABEL_57:
   return v10;
 }
 
-- (void)enableSecureBackupWithContext:(id)a3 completion:(id)a4
+- (void)enableSecureBackupWithContext:(id)context completion:(id)completion
 {
   v7 = self->_context;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CDPContext *)v7 backupActivity];
-  if (v10)
+  completionCopy = completion;
+  contextCopy = context;
+  backupActivity = [(CDPContext *)v7 backupActivity];
+  if (backupActivity)
   {
-    v11 = v10;
+    v11 = backupActivity;
   }
 
   else
@@ -1261,7 +1261,7 @@ LABEL_57:
   }
 
   [(CDPContext *)v7 setBackupActivity:v11];
-  v12 = _Block_copy(v8);
+  v12 = _Block_copy(completionCopy);
 
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
@@ -1272,7 +1272,7 @@ LABEL_57:
   v13 = v7;
   v14 = v12;
   v15 = _Block_copy(&v16);
-  [(CDPDSecureBackupController *)self _enableSecureBackupWithContext:v9 completion:v15, v16, v17, v18, v19];
+  [(CDPDSecureBackupController *)self _enableSecureBackupWithContext:contextCopy completion:v15, v16, v17, v18, v19];
 }
 
 uint64_t __71__CDPDSecureBackupController_enableSecureBackupWithContext_completion___block_invoke(uint64_t a1)
@@ -1288,15 +1288,15 @@ uint64_t __71__CDPDSecureBackupController_enableSecureBackupWithContext_completi
   return [v3 setBackupActivity:0];
 }
 
-- (void)upgradeICSCRecordsThenEnableSecureBackupWithContext:(id)a3 completion:(id)a4
+- (void)upgradeICSCRecordsThenEnableSecureBackupWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = self->_context;
-  v8 = a4;
-  v9 = [(CDPContext *)v7 backupActivity];
-  if (v9)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v7 backupActivity];
+  if (backupActivity)
   {
-    v10 = v9;
+    v10 = backupActivity;
   }
 
   else
@@ -1305,7 +1305,7 @@ uint64_t __71__CDPDSecureBackupController_enableSecureBackupWithContext_completi
   }
 
   [(CDPContext *)v7 setBackupActivity:v10];
-  v11 = _Block_copy(v8);
+  v11 = _Block_copy(completionCopy);
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -1320,10 +1320,10 @@ uint64_t __71__CDPDSecureBackupController_enableSecureBackupWithContext_completi
   v17[1] = 3221225472;
   v17[2] = __93__CDPDSecureBackupController_upgradeICSCRecordsThenEnableSecureBackupWithContext_completion___block_invoke_2;
   v17[3] = &unk_278E25780;
-  v18 = v6;
+  v18 = contextCopy;
   v19 = v14;
   v17[4] = self;
-  v15 = v6;
+  v15 = contextCopy;
   v16 = v14;
   [(CDPDSecureBackupController *)self getBackupRecordDevicesWithOptionForceFetch:0 completion:v17];
 }
@@ -1467,15 +1467,15 @@ uint64_t __93__CDPDSecureBackupController_upgradeICSCRecordsThenEnableSecureBack
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)checkAndRemoveExistingThenEnableSecureBackupRecordWithContext:(id)a3 completion:(id)a4
+- (void)checkAndRemoveExistingThenEnableSecureBackupRecordWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = self->_context;
-  v8 = a4;
-  v9 = [(CDPContext *)v7 backupActivity];
-  if (v9)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v7 backupActivity];
+  if (backupActivity)
   {
-    v10 = v9;
+    v10 = backupActivity;
   }
 
   else
@@ -1484,7 +1484,7 @@ uint64_t __93__CDPDSecureBackupController_upgradeICSCRecordsThenEnableSecureBack
   }
 
   [(CDPContext *)v7 setBackupActivity:v10];
-  v11 = _Block_copy(v8);
+  v11 = _Block_copy(completionCopy);
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -1499,11 +1499,11 @@ uint64_t __93__CDPDSecureBackupController_upgradeICSCRecordsThenEnableSecureBack
   v17[1] = 3221225472;
   v17[2] = __103__CDPDSecureBackupController_checkAndRemoveExistingThenEnableSecureBackupRecordWithContext_completion___block_invoke_2;
   v17[3] = &unk_278E257A8;
-  v18 = v6;
-  v19 = self;
+  v18 = contextCopy;
+  selfCopy = self;
   v20 = v14;
   v15 = v14;
-  v16 = v6;
+  v16 = contextCopy;
   [(CDPDSecureBackupController *)self checkForExistingRecord:v17];
 }
 
@@ -1554,9 +1554,9 @@ LABEL_6:
   [*(a1 + 40) _enableSecureBackupWithContext:*(a1 + 32) completion:*(a1 + 48)];
 }
 
-- (void)checkForAnyOctagonRecord:(id)a3
+- (void)checkForAnyOctagonRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1568,8 +1568,8 @@ LABEL_6:
   v7[1] = 3221225472;
   v7[2] = __55__CDPDSecureBackupController_checkForAnyOctagonRecord___block_invoke;
   v7[3] = &unk_278E24708;
-  v8 = v4;
-  v6 = v4;
+  v8 = recordCopy;
+  v6 = recordCopy;
   [(CDPDSecureBackupController *)self getBackupRecordDevicesWithOptionForceFetch:0 completion:v7];
 }
 
@@ -1622,14 +1622,14 @@ BOOL __55__CDPDSecureBackupController_checkForAnyOctagonRecord___block_invoke_72
   return v3;
 }
 
-- (void)checkForExistingRecord:(id)a3
+- (void)checkForExistingRecord:(id)record
 {
   v5 = self->_context;
-  v6 = a3;
-  v7 = [(CDPContext *)v5 backupActivity];
-  if (v7)
+  recordCopy = record;
+  backupActivity = [(CDPContext *)v5 backupActivity];
+  if (backupActivity)
   {
-    v8 = v7;
+    v8 = backupActivity;
   }
 
   else
@@ -1638,7 +1638,7 @@ BOOL __55__CDPDSecureBackupController_checkForAnyOctagonRecord___block_invoke_72
   }
 
   [(CDPContext *)v5 setBackupActivity:v8];
-  v9 = _Block_copy(v6);
+  v9 = _Block_copy(recordCopy);
 
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
@@ -1668,16 +1668,16 @@ uint64_t __53__CDPDSecureBackupController_checkForExistingRecord___block_invoke(
   return [v3 setBackupActivity:0];
 }
 
-- (void)checkForExistingRecordWithPeerId:(id)a3 completion:(id)a4
+- (void)checkForExistingRecordWithPeerId:(id)id completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  idCopy = id;
   v7 = self->_context;
-  v8 = a4;
-  v9 = [(CDPContext *)v7 backupActivity];
-  if (v9)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v7 backupActivity];
+  if (backupActivity)
   {
-    v10 = v9;
+    v10 = backupActivity;
   }
 
   else
@@ -1686,7 +1686,7 @@ uint64_t __53__CDPDSecureBackupController_checkForExistingRecord___block_invoke(
   }
 
   [(CDPContext *)v7 setBackupActivity:v10];
-  v11 = _Block_copy(v8);
+  v11 = _Block_copy(completionCopy);
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -1701,7 +1701,7 @@ uint64_t __53__CDPDSecureBackupController_checkForExistingRecord___block_invoke(
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v26 = v6;
+    v26 = idCopy;
     _os_log_impl(&dword_24510B000, v15, OS_LOG_TYPE_DEFAULT, "Checking if the peer has a secure backup: %@", buf, 0xCu);
   }
 
@@ -1710,8 +1710,8 @@ uint64_t __53__CDPDSecureBackupController_checkForExistingRecord___block_invoke(
   v20[1] = 3221225472;
   v20[2] = __74__CDPDSecureBackupController_checkForExistingRecordWithPeerId_completion___block_invoke_75;
   v20[3] = &unk_278E24668;
-  v21 = v6;
-  v17 = v6;
+  v21 = idCopy;
+  v17 = idCopy;
   v18 = [v16 predicateWithBlock:v20];
   [(CDPDSecureBackupController *)self checkForExistingRecordMatchingPredicate:v18 forceFetch:0 completion:v14];
 
@@ -1791,13 +1791,13 @@ LABEL_9:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)supportsRecoveryKeyWithError:(id *)a3
+- (BOOL)supportsRecoveryKeyWithError:(id *)error
 {
   v5 = self->_context;
-  v6 = [(CDPContext *)v5 backupActivity];
-  if (v6)
+  backupActivity = [(CDPContext *)v5 backupActivity];
+  if (backupActivity)
   {
-    v7 = v6;
+    v7 = backupActivity;
   }
 
   else
@@ -1809,33 +1809,33 @@ LABEL_9:
   if (!CFPreferencesGetAppBooleanValue(@"ForceRecoveryKeySupport", @"com.apple.corecdp", 0))
   {
     v10 = objc_alloc_init(MEMORY[0x277CDBD50]);
-    v11 = [(CDPDSecureBackupController *)self context];
-    v12 = [v11 altDSID];
-    [v10 setAltDSID:v12];
+    context = [(CDPDSecureBackupController *)self context];
+    altDSID = [context altDSID];
+    [v10 setAltDSID:altDSID];
 
     [v10 setContext:*MEMORY[0x277CDBD90]];
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(CDPDSecureBackupController *)self context];
-      v14 = [v13 telemetryFlowID];
-      [v10 setFlowID:v14];
+      context2 = [(CDPDSecureBackupController *)self context];
+      telemetryFlowID = [context2 telemetryFlowID];
+      [v10 setFlowID:telemetryFlowID];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(CDPDSecureBackupController *)self context];
-      v16 = [v15 telemetryDeviceSessionID];
-      [v10 setDeviceSessionID:v16];
+      context3 = [(CDPDSecureBackupController *)self context];
+      telemetryDeviceSessionID = [context3 telemetryDeviceSessionID];
+      [v10 setDeviceSessionID:telemetryDeviceSessionID];
     }
 
-    v17 = [(CDPDSecureBackupController *)self octagonTrustProxy];
+    octagonTrustProxy = [(CDPDSecureBackupController *)self octagonTrustProxy];
     v29 = 0;
-    v18 = [v17 isRecoveryKeySet:v10 error:&v29];
+    v18 = [octagonTrustProxy isRecoveryKeySet:v10 error:&v29];
     v19 = v29;
 
-    v20 = [(CDPDSecureBackupController *)self secureBackupProxy];
+    secureBackupProxy = [(CDPDSecureBackupController *)self secureBackupProxy];
     v28 = 0;
-    v21 = [v20 isRecoveryKeySet:&v28];
+    v21 = [secureBackupProxy isRecoveryKeySet:&v28];
     v22 = v28;
 
     v9 = v21 | v18;
@@ -1849,10 +1849,10 @@ LABEL_28:
 
     if (v19)
     {
-      if (a3)
+      if (error)
       {
         v23 = v19;
-        *a3 = v19;
+        *error = v19;
       }
 
       [(CDPContext *)v5 setBackupActivity:0];
@@ -1875,10 +1875,10 @@ LABEL_28:
         goto LABEL_28;
       }
 
-      if (a3)
+      if (error)
       {
         v25 = v22;
-        *a3 = v22;
+        *error = v22;
       }
 
       [(CDPContext *)v5 setBackupActivity:0];
@@ -1906,17 +1906,17 @@ LABEL_29:
   return v9 & 1;
 }
 
-- (BOOL)supportsWalrusRecoveryKeyWithError:(id *)a3
+- (BOOL)supportsWalrusRecoveryKeyWithError:(id *)error
 {
-  v5 = [MEMORY[0x277CF0130] sharedInstance];
-  v6 = [(CDPContext *)self->_context altDSID];
-  v7 = [v5 authKitAccountWithAltDSID:v6];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  altDSID = [(CDPContext *)self->_context altDSID];
+  v7 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:altDSID];
 
   if (v7)
   {
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v5 hasModernRecoveryKeyForAccount:v7];
+      v8 = [mEMORY[0x277CF0130] hasModernRecoveryKeyForAccount:v7];
     }
 
     else
@@ -1924,10 +1924,10 @@ LABEL_29:
       v8 = 0;
     }
 
-    v18 = [(CDPContext *)self->_context cliqueConfiguration];
+    cliqueConfiguration = [(CDPContext *)self->_context cliqueConfiguration];
     octagonTrustProxy = self->_octagonTrustProxy;
     v24 = 0;
-    v17 = [(CDPDOctagonTrustProxy *)octagonTrustProxy isRecoveryKeySet:v18 error:&v24];
+    v17 = [(CDPDOctagonTrustProxy *)octagonTrustProxy isRecoveryKeySet:cliqueConfiguration error:&v24];
     v20 = v24;
     if (v20)
     {
@@ -1937,11 +1937,11 @@ LABEL_29:
         [CDPDSecureBackupController supportsRecoveryKeyWithError:];
       }
 
-      if (a3)
+      if (error)
       {
         v22 = v20;
         LOBYTE(v17) = 0;
-        *a3 = v20;
+        *error = v20;
       }
 
       else
@@ -1964,10 +1964,10 @@ LABEL_29:
       [(CDPDSecureBackupController *)v9 supportsWalrusRecoveryKeyWithError:v10, v11, v12, v13, v14, v15, v16];
     }
 
-    if (a3)
+    if (error)
     {
       [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5102];
-      *a3 = LOBYTE(v17) = 0;
+      *error = LOBYTE(v17) = 0;
     }
 
     else
@@ -1979,10 +1979,10 @@ LABEL_29:
   return v17;
 }
 
-- (void)_enableSecureBackupWithContext:(id)a3 completion:(id)a4
+- (void)_enableSecureBackupWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1993,11 +1993,11 @@ LABEL_29:
   v11[1] = 3221225472;
   v11[2] = __72__CDPDSecureBackupController__enableSecureBackupWithContext_completion___block_invoke;
   v11[3] = &unk_278E25818;
-  v12 = v6;
-  v13 = v7;
+  v12 = contextCopy;
+  v13 = completionCopy;
   v11[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = contextCopy;
+  v10 = completionCopy;
   [(CDPDSecureBackupController *)self _authenticatedEnableSecureBackupIncludingFallbackWithContext:v9 completion:v11];
 }
 
@@ -2031,10 +2031,10 @@ void __72__CDPDSecureBackupController__enableSecureBackupWithContext_completion_
   }
 }
 
-- (void)_retryRepairWithContext:(id)a3 retryCount:(int64_t)a4 completion:(id)a5
+- (void)_retryRepairWithContext:(id)context retryCount:(int64_t)count completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -2054,11 +2054,11 @@ void __72__CDPDSecureBackupController__enableSecureBackupWithContext_completion_
   v16[2] = __76__CDPDSecureBackupController__retryRepairWithContext_retryCount_completion___block_invoke;
   v16[3] = &unk_278E25868;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = a4;
-  v14 = v9;
-  v15 = v8;
+  v17 = contextCopy;
+  v18 = completionCopy;
+  countCopy = count;
+  v14 = completionCopy;
+  v15 = contextCopy;
   dispatch_after(v12, v13, v16);
 }
 
@@ -2196,30 +2196,30 @@ LABEL_14:
   }
 }
 
-- (void)_postICSCCreationFailedEventWithError:(id)a3
+- (void)_postICSCCreationFailedEventWithError:(id)error
 {
   v3 = MEMORY[0x277CE44D8];
   context = self->_context;
   v5 = *MEMORY[0x277CFD6F0];
   v6 = *MEMORY[0x277CFD930];
-  v7 = a3;
+  errorCopy = error;
   v9 = [v3 analyticsEventWithContext:context eventName:v5 category:v6];
   [v9 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277CFD6C0]];
-  [v9 populateUnderlyingErrorsStartingWithRootError:v7];
+  [v9 populateUnderlyingErrorsStartingWithRootError:errorCopy];
 
-  v8 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v8 sendEvent:v9];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v9];
 }
 
-- (void)enableSecureBackupWithRecoveryKey:(id)a3 completion:(id)a4
+- (void)enableSecureBackupWithRecoveryKey:(id)key completion:(id)completion
 {
-  v6 = a3;
+  keyCopy = key;
   v7 = self->_context;
-  v8 = a4;
-  v9 = [(CDPContext *)v7 backupActivity];
-  if (v9)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v7 backupActivity];
+  if (backupActivity)
   {
-    v10 = v9;
+    v10 = backupActivity;
   }
 
   else
@@ -2228,7 +2228,7 @@ LABEL_14:
   }
 
   [(CDPContext *)v7 setBackupActivity:v10];
-  v11 = _Block_copy(v8);
+  v11 = _Block_copy(completionCopy);
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -2240,7 +2240,7 @@ LABEL_14:
   v25 = v13;
   v14 = _Block_copy(aBlock);
   v23 = 0;
-  v15 = [(CDPDSecureBackupController *)self authenticatedEnableSecureBackupWithRecoveryKey:v6 error:&v23];
+  v15 = [(CDPDSecureBackupController *)self authenticatedEnableSecureBackupWithRecoveryKey:keyCopy error:&v23];
   v16 = v23;
   v17 = v16;
   if (v15)
@@ -2262,7 +2262,7 @@ LABEL_14:
     v20[2] = __75__CDPDSecureBackupController_enableSecureBackupWithRecoveryKey_completion___block_invoke_96;
     v20[3] = &unk_278E25438;
     v20[4] = self;
-    v21 = v6;
+    v21 = keyCopy;
     v22 = v14;
     [(CDPContext *)context reauthenticateUserWithCompletion:v20];
   }
@@ -2313,18 +2313,18 @@ void __75__CDPDSecureBackupController_enableSecureBackupWithRecoveryKey_completi
   }
 }
 
-- (BOOL)authenticatedEnableSecureBackupWithRecoveryKey:(id)a3 error:(id *)a4
+- (BOOL)authenticatedEnableSecureBackupWithRecoveryKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v8 = MEMORY[0x277CBEC38];
-    [v7 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB2D8]];
-    [v7 setObject:v8 forKey:*MEMORY[0x277CFB398]];
-    [v7 setObject:v6 forKey:*MEMORY[0x277CFB360]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB2D8]];
+    [dictionary setObject:v8 forKey:*MEMORY[0x277CFB398]];
+    [dictionary setObject:keyCopy forKey:*MEMORY[0x277CFB360]];
     v9 = [(CDPDSecureBackupConfiguration *)self->_configuration escrowAuthInfoForCreateEscrowRecordFlow:1];
-    [v7 addEntriesFromDictionary:v9];
+    [dictionary addEntriesFromDictionary:v9];
 
     v10 = _CDPLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -2332,10 +2332,10 @@ void __75__CDPDSecureBackupController_enableSecureBackupWithRecoveryKey_completi
       [CDPDSecureBackupController authenticatedEnableSecureBackupWithRecoveryKey:error:];
     }
 
-    v11 = [(CDPDSecureBackupProxy *)self->_secureBackupProxy enableWithInfo:v7 error:a4];
+    v11 = [(CDPDSecureBackupProxy *)self->_secureBackupProxy enableWithInfo:dictionary error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = _CDPLogSystem();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -2344,7 +2344,7 @@ void __75__CDPDSecureBackupController_enableSecureBackupWithRecoveryKey_completi
     }
 
     _CDPStateError();
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -2355,19 +2355,19 @@ void __75__CDPDSecureBackupController_enableSecureBackupWithRecoveryKey_completi
   return v11;
 }
 
-- (void)_authenticatedEnableSecureBackupIncludingFallbackWithContext:(id)a3 completion:(id)a4
+- (void)_authenticatedEnableSecureBackupIncludingFallbackWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __102__CDPDSecureBackupController__authenticatedEnableSecureBackupIncludingFallbackWithContext_completion___block_invoke;
   v10[3] = &unk_278E25818;
-  v11 = v6;
-  v12 = v7;
+  v11 = contextCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = contextCopy;
+  v9 = completionCopy;
   [(CDPDSecureBackupController *)self _authenticatedEnableSecureBackupWithContext:v8 fallbackState:0 completion:v10];
 }
 
@@ -2486,19 +2486,19 @@ LABEL_10:
   }
 }
 
-- (void)_authenticatedEnableSecureBackupWithContext:(id)a3 fallbackState:(unint64_t)a4 completion:(id)a5
+- (void)_authenticatedEnableSecureBackupWithContext:(id)context fallbackState:(unint64_t)state completion:(id)completion
 {
   v98 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     [CDPDSecureBackupController _authenticatedEnableSecureBackupWithContext:fallbackState:completion:];
   }
 
-  v91 = [(CDPDSecureBackupController *)self delegate];
-  v11 = [(CDPDSecureBackupController *)self _shouldUseSBDCacheWithSecureBackupContext:v8 fallbackState:a4];
+  delegate = [(CDPDSecureBackupController *)self delegate];
+  v11 = [(CDPDSecureBackupController *)self _shouldUseSBDCacheWithSecureBackupContext:contextCopy fallbackState:state];
   if (CFPreferencesGetAppBooleanValue(@"ForceCachedSecretPurge", @"com.apple.corecdp", 0))
   {
     v12 = _CDPLogSystem();
@@ -2510,24 +2510,24 @@ LABEL_10:
     [(CDPDSecureBackupProxy *)self->_secureBackupProxy uncacheAllSecrets];
   }
 
-  v89 = a4;
-  v90 = v9;
-  v13 = [v8 localSecretType];
-  v14 = [v8 localSecret];
-  v15 = -[CDPDSecureBackupController _clientMetadataWithSecretType:length:](self, "_clientMetadataWithSecretType:length:", v13, [v14 length]);
+  stateCopy = state;
+  v90 = completionCopy;
+  localSecretType = [contextCopy localSecretType];
+  localSecret = [contextCopy localSecret];
+  v15 = -[CDPDSecureBackupController _clientMetadataWithSecretType:length:](self, "_clientMetadataWithSecretType:length:", localSecretType, [localSecret length]);
 
   if (!v11)
   {
-    v16 = [v8 localSecret];
+    localSecret2 = [contextCopy localSecret];
 
-    if (!v16)
+    if (!localSecret2)
     {
       v38 = v15;
       goto LABEL_28;
     }
 
-    v17 = [v8 localSecret];
-    v18 = [v17 length];
+    localSecret3 = [contextCopy localSecret];
+    v18 = [localSecret3 length];
 
     if (!v18)
     {
@@ -2540,23 +2540,23 @@ LABEL_10:
   }
 
   v27 = [v15 mutableCopy];
-  v28 = [MEMORY[0x277D262A0] sharedConnection];
-  v29 = [v28 unlockScreenType];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  unlockScreenType = [mEMORY[0x277D262A0] unlockScreenType];
   v30 = _CDPLogSystem();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
   {
     *buf = 67109120;
-    v97 = v29 == 0;
+    v97 = unlockScreenType == 0;
     _os_log_debug_impl(&dword_24510B000, v30, OS_LOG_TYPE_DEBUG, "Using cached secret and managed config reports devicePasscodeIsSimple=%i", buf, 8u);
   }
 
-  v31 = [MEMORY[0x277CCABB0] numberWithInt:v29 != 0];
+  v31 = [MEMORY[0x277CCABB0] numberWithInt:unlockScreenType != 0];
   [v27 setObject:v31 forKey:*MEMORY[0x277CFB3A8]];
 
-  v32 = [MEMORY[0x277CCABB0] numberWithInt:v29 == 0];
+  v32 = [MEMORY[0x277CCABB0] numberWithInt:unlockScreenType == 0];
   [v27 setObject:v32 forKey:*MEMORY[0x277CFB3B8]];
 
-  if (v29)
+  if (unlockScreenType)
   {
     [v27 removeObjectForKey:*MEMORY[0x277CFB340]];
   }
@@ -2564,8 +2564,8 @@ LABEL_10:
   else
   {
     *buf = -1;
-    v33 = [MEMORY[0x277D262A0] sharedConnection];
-    v34 = [v33 unlockScreenTypeWithOutSimplePasscodeType:buf];
+    mEMORY[0x277D262A0]2 = [MEMORY[0x277D262A0] sharedConnection];
+    v34 = [mEMORY[0x277D262A0]2 unlockScreenTypeWithOutSimplePasscodeType:buf];
 
     if (v34 && *buf != -1)
     {
@@ -2601,13 +2601,13 @@ LABEL_10:
   }
 
 LABEL_28:
-  v40 = [MEMORY[0x277CBEB38] dictionary];
-  v41 = [v8 localSecret];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  localSecret4 = [contextCopy localSecret];
 
-  if (v41)
+  if (localSecret4)
   {
-    v42 = [v8 localSecret];
-    v43 = [v42 length];
+    localSecret5 = [contextCopy localSecret];
+    v43 = [localSecret5 length];
 
     if (!v43)
     {
@@ -2618,113 +2618,113 @@ LABEL_28:
       }
     }
 
-    v52 = [v8 localSecret];
+    localSecret6 = [contextCopy localSecret];
     v53 = MEMORY[0x277CFB348];
   }
 
   else
   {
-    v54 = [v8 recoveryKey];
+    recoveryKey = [contextCopy recoveryKey];
 
-    if (!v54)
+    if (!recoveryKey)
     {
       goto LABEL_37;
     }
 
-    [v40 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB398]];
-    v52 = [v8 recoveryKey];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB398]];
+    localSecret6 = [contextCopy recoveryKey];
     v53 = MEMORY[0x277CFB360];
   }
 
-  [v40 setObject:v52 forKey:*v53];
+  [dictionary setObject:localSecret6 forKey:*v53];
 
 LABEL_37:
-  if ([v8 synchronous])
+  if ([contextCopy synchronous])
   {
-    [v40 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB398]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB398]];
   }
 
-  v55 = [v8 preRecordUUID];
+  preRecordUUID = [contextCopy preRecordUUID];
 
-  if (v55)
+  if (preRecordUUID)
   {
-    v56 = [v8 preRecordUUID];
-    [v40 setObject:v56 forKey:*MEMORY[0x277CFB318]];
+    preRecordUUID2 = [contextCopy preRecordUUID];
+    [dictionary setObject:preRecordUUID2 forKey:*MEMORY[0x277CFB318]];
   }
 
   if (v11)
   {
-    [v40 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3A0]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3A0]];
   }
 
   else
   {
-    v57 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "localSecretType") == 1}];
-    [v40 setObject:v57 forKey:*MEMORY[0x277CFB3C0]];
+    v57 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(contextCopy, "localSecretType") == 1}];
+    [dictionary setObject:v57 forKey:*MEMORY[0x277CFB3C0]];
   }
 
   v58 = MEMORY[0x277CBEC38];
-  [v40 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB2D8]];
-  [v40 setObject:v58 forKey:*MEMORY[0x277CFB3B0]];
-  v59 = [v8 device];
-  v60 = [v59 recordInfo];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB2D8]];
+  [dictionary setObject:v58 forKey:*MEMORY[0x277CFB3B0]];
+  device = [contextCopy device];
+  recordInfo = [device recordInfo];
 
-  if (v60)
+  if (recordInfo)
   {
-    v61 = [v8 device];
-    v62 = [v61 recordInfo];
-    [v40 setObject:v62 forKey:*MEMORY[0x277CFB388]];
+    device2 = [contextCopy device];
+    recordInfo2 = [device2 recordInfo];
+    [dictionary setObject:recordInfo2 forKey:*MEMORY[0x277CFB388]];
   }
 
   v63 = [(CDPDSecureBackupConfiguration *)self->_configuration escrowAuthInfoForCreateEscrowRecordFlow:1];
-  [v40 addEntriesFromDictionary:v63];
+  [dictionary addEntriesFromDictionary:v63];
 
-  if ([v8 nonViableRequiresRepair])
+  if ([contextCopy nonViableRequiresRepair])
   {
-    [v40 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB338]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB338]];
   }
 
-  v64 = [v8 telemetryDeviceSessionID];
+  telemetryDeviceSessionID = [contextCopy telemetryDeviceSessionID];
 
-  if (v64)
+  if (telemetryDeviceSessionID)
   {
-    v65 = [v8 telemetryDeviceSessionID];
-    [v40 setObject:v65 forKey:*MEMORY[0x277CFB2E8]];
+    telemetryDeviceSessionID2 = [contextCopy telemetryDeviceSessionID];
+    [dictionary setObject:telemetryDeviceSessionID2 forKey:*MEMORY[0x277CFB2E8]];
   }
 
-  v66 = [v8 telemetryFlowID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
 
-  if (v66)
+  if (telemetryFlowID)
   {
-    v67 = [v8 telemetryFlowID];
-    [v40 setObject:v67 forKey:*MEMORY[0x277CFB310]];
+    telemetryFlowID2 = [contextCopy telemetryFlowID];
+    [dictionary setObject:telemetryFlowID2 forKey:*MEMORY[0x277CFB310]];
   }
 
   v68 = _CDPLogSystem();
   if (os_log_type_enabled(v68, OS_LOG_TYPE_DEBUG))
   {
-    [CDPDSecureBackupController _authenticatedEnableSecureBackupWithContext:v8 fallbackState:? completion:?];
+    [CDPDSecureBackupController _authenticatedEnableSecureBackupWithContext:contextCopy fallbackState:? completion:?];
   }
 
-  v69 = [MEMORY[0x277CFD480] sharedInstance];
-  v70 = [v69 primaryAccountStashedPRK];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  primaryAccountStashedPRK = [mEMORY[0x277CFD480] primaryAccountStashedPRK];
 
-  if (v70)
+  if (primaryAccountStashedPRK)
   {
-    v71 = [(CDPDSecureBackupController *)self _currentAnisetteData];
-    v72 = [v71 machineID];
+    _currentAnisetteData = [(CDPDSecureBackupController *)self _currentAnisetteData];
+    machineID = [_currentAnisetteData machineID];
 
-    if (v72)
+    if (machineID)
     {
       v73 = [v38 mutableCopy];
-      [v73 setObject:v72 forKeyedSubscript:@"device_mid"];
+      [v73 setObject:machineID forKeyedSubscript:@"device_mid"];
       v74 = [v73 copy];
 
       v94 = @"prk";
-      v95 = v70;
+      v95 = primaryAccountStashedPRK;
       v75 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v95 forKeys:&v94 count:1];
       v76 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v75 requiringSecureCoding:1 error:0];
-      [v40 setObject:v76 forKey:*MEMORY[0x277CFB320]];
+      [dictionary setObject:v76 forKey:*MEMORY[0x277CFB320]];
 
       v38 = v74;
     }
@@ -2739,22 +2739,22 @@ LABEL_37:
     }
 
     v78 = v90;
-    v77 = v91;
+    v77 = delegate;
   }
 
   else
   {
-    v72 = _CDPLogSystem();
-    if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
+    machineID = _CDPLogSystem();
+    if (os_log_type_enabled(machineID, OS_LOG_TYPE_ERROR))
     {
       [CDPDSecureBackupController _authenticatedEnableSecureBackupWithContext:fallbackState:completion:];
     }
 
     v78 = v90;
-    v77 = v91;
+    v77 = delegate;
   }
 
-  [v40 setObject:v38 forKeyedSubscript:*MEMORY[0x277CFB330]];
+  [dictionary setObject:v38 forKeyedSubscript:*MEMORY[0x277CFB330]];
   v79 = _CDPLogSystem();
   if (os_log_type_enabled(v79, OS_LOG_TYPE_DEBUG))
   {
@@ -2763,24 +2763,24 @@ LABEL_37:
 
   secureBackupProxy = self->_secureBackupProxy;
   v93 = 0;
-  [(CDPDSecureBackupProxy *)secureBackupProxy enableWithInfo:v40 error:&v93];
+  [(CDPDSecureBackupProxy *)secureBackupProxy enableWithInfo:dictionary error:&v93];
   v81 = v93;
   v82 = v81;
   if (v81)
   {
-    v83 = [v81 domain];
-    if ([v83 isEqual:*MEMORY[0x277CFB298]])
+    domain = [v81 domain];
+    if ([domain isEqual:*MEMORY[0x277CFB298]])
     {
-      v84 = [v82 code];
+      code = [v82 code];
 
-      if (v84 != -6005)
+      if (code != -6005)
       {
-        v77 = v91;
+        v77 = delegate;
         goto LABEL_74;
       }
 
       v85 = _CDPLogSystem();
-      v77 = v91;
+      v77 = delegate;
       if (os_log_type_enabled(v85, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -2788,14 +2788,14 @@ LABEL_37:
       }
 
       v92 = 0;
-      [(CDPDSecureBackupController *)self _disableThenEnableWithInfo:v40 error:&v92];
-      v83 = v82;
+      [(CDPDSecureBackupController *)self _disableThenEnableWithInfo:dictionary error:&v92];
+      domain = v82;
       v82 = v92;
     }
   }
 
 LABEL_74:
-  if (self->_context && v77 && ([v77 synchronizeCircleViewsForSecureBackupContext:v8] & 1) == 0)
+  if (self->_context && v77 && ([v77 synchronizeCircleViewsForSecureBackupContext:contextCopy] & 1) == 0)
   {
     if (!v78)
     {
@@ -2809,47 +2809,47 @@ LABEL_74:
       _os_log_impl(&dword_24510B000, v88, OS_LOG_TYPE_DEFAULT, "Failed to synchronize circle views", buf, 2u);
     }
 
-    v86 = _CDPStateError();
-    (v78)[2](v78, 0, v86);
+    context = _CDPStateError();
+    (v78)[2](v78, 0, context);
   }
 
   else
   {
-    v86 = [(CDPDSecureBackupController *)self context];
-    [(CDPDSecureBackupController *)self _handleSecureBackupEnablementError:v82 fallbackState:v89 context:v86 delegate:v77 completion:v78];
+    context = [(CDPDSecureBackupController *)self context];
+    [(CDPDSecureBackupController *)self _handleSecureBackupEnablementError:v82 fallbackState:stateCopy context:context delegate:v77 completion:v78];
   }
 
 LABEL_79:
   v87 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleSecureBackupEnablementError:(id)a3 fallbackState:(unint64_t)a4 context:(id)a5 delegate:(id)a6 completion:(id)a7
+- (void)_handleSecureBackupEnablementError:(id)error fallbackState:(unint64_t)state context:(id)context delegate:(id)delegate completion:(id)completion
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v12)
+  errorCopy = error;
+  contextCopy = context;
+  delegateCopy = delegate;
+  completionCopy = completion;
+  if (errorCopy)
   {
-    v16 = [v12 isMissingCachedPassphraseError];
-    v17 = [MEMORY[0x277CFD4F8] sharedInstance];
-    v18 = [v17 hasLocalSecret];
+    isMissingCachedPassphraseError = [errorCopy isMissingCachedPassphraseError];
+    mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+    hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
 
     v19 = _CDPLogSystem();
     v20 = v19;
-    if (v16 && v18)
+    if (isMissingCachedPassphraseError && hasLocalSecret)
     {
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
       {
         [CDPDSecureBackupController _handleSecureBackupEnablementError:fallbackState:context:delegate:completion:];
       }
 
-      if (a4)
+      if (state)
       {
-        v21 = [v13 disableAsyncModeRequested];
+        disableAsyncModeRequested = [contextCopy disableAsyncModeRequested];
         v22 = _CDPLogSystem();
         v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG);
-        if (v21)
+        if (disableAsyncModeRequested)
         {
           if (v23)
           {
@@ -2861,8 +2861,8 @@ LABEL_79:
           v27[2] = __107__CDPDSecureBackupController__handleSecureBackupEnablementError_fallbackState_context_delegate_completion___block_invoke;
           v27[3] = &unk_278E25410;
           v27[4] = self;
-          v28 = v15;
-          [v14 promptForLocalSecretWithCompletion:v27];
+          v28 = completionCopy;
+          [delegateCopy promptForLocalSecretWithCompletion:v27];
 
           goto LABEL_28;
         }
@@ -2882,10 +2882,10 @@ LABEL_79:
         }
       }
 
-      v26 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5501 underlyingError:v12];
-      if (v15)
+      v26 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:-5501 underlyingError:errorCopy];
+      if (completionCopy)
       {
-        (*(v15 + 2))(v15, 0, v26);
+        (*(completionCopy + 2))(completionCopy, 0, v26);
       }
     }
 
@@ -2896,9 +2896,9 @@ LABEL_79:
         [CDPDSecureBackupController _handleSecureBackupEnablementError:fallbackState:context:delegate:completion:];
       }
 
-      if (v15)
+      if (completionCopy)
       {
-        (*(v15 + 2))(v15, 0, v12);
+        (*(completionCopy + 2))(completionCopy, 0, errorCopy);
       }
     }
   }
@@ -2911,9 +2911,9 @@ LABEL_79:
       [CDPDSecureBackupController _handleSecureBackupEnablementError:fallbackState:context:delegate:completion:];
     }
 
-    if (v15)
+    if (completionCopy)
     {
-      (*(v15 + 2))(v15, 1, 0);
+      (*(completionCopy + 2))(completionCopy, 1, 0);
     }
   }
 
@@ -2956,9 +2956,9 @@ void __107__CDPDSecureBackupController__handleSecureBackupEnablementError_fallba
   }
 }
 
-- (BOOL)_shouldUseSBDCacheWithSecureBackupContext:(id)a3 fallbackState:(unint64_t)a4
+- (BOOL)_shouldUseSBDCacheWithSecureBackupContext:(id)context fallbackState:(unint64_t)state
 {
-  v6 = a3;
+  contextCopy = context;
   if (CFPreferencesGetAppBooleanValue(@"ForceUseCachedSecret", @"com.apple.corecdp", 0))
   {
     v7 = _CDPLogSystem();
@@ -2970,45 +2970,45 @@ void __107__CDPDSecureBackupController__handleSecureBackupEnablementError_fallba
 
   else
   {
-    if (a4 == 2 || ![MEMORY[0x277CFD560] useCDPContextSecretInsteadOfSBDSecretFeatureEnabled])
+    if (state == 2 || ![MEMORY[0x277CFD560] useCDPContextSecretInsteadOfSBDSecretFeatureEnabled])
     {
-      v8 = [v6 usePreviouslyCachedSecret];
+      usePreviouslyCachedSecret = [contextCopy usePreviouslyCachedSecret];
       goto LABEL_11;
     }
 
-    if (a4 != 1)
+    if (state != 1)
     {
-      v8 = [(CDPContext *)self->_context type]== 10;
+      usePreviouslyCachedSecret = [(CDPContext *)self->_context type]== 10;
       goto LABEL_11;
     }
   }
 
-  v8 = 1;
+  usePreviouslyCachedSecret = 1;
 LABEL_11:
 
-  return v8;
+  return usePreviouslyCachedSecret;
 }
 
-- (BOOL)_disableThenEnableWithInfo:(id)a3 error:(id *)a4
+- (BOOL)_disableThenEnableWithInfo:(id)info error:(id *)error
 {
-  v6 = a3;
+  infoCopy = info;
   v14 = 0;
-  v7 = [(CDPDSecureBackupController *)self _disableSecureBackupWithEnableInfo:v6 error:&v14];
+  v7 = [(CDPDSecureBackupController *)self _disableSecureBackupWithEnableInfo:infoCopy error:&v14];
   v8 = v14;
   v9 = v8;
   if (v7)
   {
-    v10 = [v6 mutableCopy];
+    v10 = [infoCopy mutableCopy];
     [v10 setObject:0 forKeyedSubscript:*MEMORY[0x277CFB388]];
     [v10 setObject:0 forKeyedSubscript:*MEMORY[0x277CFB338]];
-    v11 = [(CDPDSecureBackupProxy *)self->_secureBackupProxy enableWithInfo:v10 error:a4];
+    v11 = [(CDPDSecureBackupProxy *)self->_secureBackupProxy enableWithInfo:v10 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     v12 = v8;
     v11 = 0;
-    *a4 = v9;
+    *error = v9;
   }
 
   else
@@ -3066,114 +3066,114 @@ void __50__CDPDSecureBackupController__currentAnisetteData__block_invoke(uint64_
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_clientMetadataWithSecretType:(unint64_t)a3 length:(unint64_t)a4
+- (id)_clientMetadataWithSecretType:(unint64_t)type length:(unint64_t)length
 {
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v7 = [MEMORY[0x277CCABB0] numberWithInt:a3 == 3];
-  [v6 setObject:v7 forKey:*MEMORY[0x277CFB3A8]];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v7 = [MEMORY[0x277CCABB0] numberWithInt:type == 3];
+  [dictionary setObject:v7 forKey:*MEMORY[0x277CFB3A8]];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInt:a3 == 2];
-  [v6 setObject:v8 forKey:*MEMORY[0x277CFB3B8]];
+  v8 = [MEMORY[0x277CCABB0] numberWithInt:type == 2];
+  [dictionary setObject:v8 forKey:*MEMORY[0x277CFB3B8]];
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    [v6 setObject:v9 forKey:*MEMORY[0x277CFB340]];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:length];
+    [dictionary setObject:v9 forKey:*MEMORY[0x277CFB340]];
   }
 
-  v10 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v11 = [v10 deviceName];
+  mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+  deviceName = [mEMORY[0x277CFD4F8] deviceName];
 
-  if (v11)
+  if (deviceName)
   {
-    [v6 setObject:v11 forKeyedSubscript:@"device_name"];
+    [dictionary setObject:deviceName forKeyedSubscript:@"device_name"];
   }
 
-  v12 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v13 = [v12 marketingModel];
+  mEMORY[0x277CFD4F8]2 = [MEMORY[0x277CFD4F8] sharedInstance];
+  marketingModel = [mEMORY[0x277CFD4F8]2 marketingModel];
 
-  if (v13)
+  if (marketingModel)
   {
-    [v6 setObject:v13 forKeyedSubscript:@"device_model"];
+    [dictionary setObject:marketingModel forKeyedSubscript:@"device_model"];
   }
 
-  v14 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v15 = [v14 modelVersion];
+  mEMORY[0x277CFD4F8]3 = [MEMORY[0x277CFD4F8] sharedInstance];
+  modelVersion = [mEMORY[0x277CFD4F8]3 modelVersion];
 
-  if (v15)
+  if (modelVersion)
   {
-    [v6 setObject:v15 forKeyedSubscript:@"device_model_version"];
+    [dictionary setObject:modelVersion forKeyedSubscript:@"device_model_version"];
   }
 
-  v16 = [MEMORY[0x277CFD4F8] sharedInstance];
-  v17 = [v16 deviceClass];
+  mEMORY[0x277CFD4F8]4 = [MEMORY[0x277CFD4F8] sharedInstance];
+  deviceClass = [mEMORY[0x277CFD4F8]4 deviceClass];
 
-  if (v17)
+  if (deviceClass)
   {
-    [v6 setObject:v17 forKeyedSubscript:@"device_model_class"];
+    [dictionary setObject:deviceClass forKeyedSubscript:@"device_model_class"];
   }
 
-  [v6 setObject:&unk_2858222A0 forKeyedSubscript:@"device_platform"];
+  [dictionary setObject:&unk_2858222A0 forKeyedSubscript:@"device_platform"];
   v18 = MGCopyAnswer();
   if (v18)
   {
-    [v6 setObject:v18 forKeyedSubscript:@"device_color"];
+    [dictionary setObject:v18 forKeyedSubscript:@"device_color"];
   }
 
   v19 = MGCopyAnswer();
   if (v19)
   {
-    [v6 setObject:v19 forKeyedSubscript:@"device_enclosure_color"];
+    [dictionary setObject:v19 forKeyedSubscript:@"device_enclosure_color"];
   }
 
-  v20 = [v6 copy];
+  v20 = [dictionary copy];
 
   return v20;
 }
 
-- (id)performEscrowRecoveryWithData:(id)a3 error:(id *)a4
+- (id)performEscrowRecoveryWithData:(id)data error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dataCopy = data;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [CDPDSecureBackupController performEscrowRecoveryWithData:error:];
   }
 
-  v8 = [v6 mutableCopy];
-  v9 = [(CDPContext *)self->_context telemetryFlowID];
+  v8 = [dataCopy mutableCopy];
+  telemetryFlowID = [(CDPContext *)self->_context telemetryFlowID];
 
-  if (v9)
+  if (telemetryFlowID)
   {
-    v10 = [(CDPContext *)self->_context telemetryFlowID];
-    [v8 setObject:v10 forKeyedSubscript:*MEMORY[0x277CFB310]];
+    telemetryFlowID2 = [(CDPContext *)self->_context telemetryFlowID];
+    [v8 setObject:telemetryFlowID2 forKeyedSubscript:*MEMORY[0x277CFB310]];
   }
 
-  v11 = [(CDPContext *)self->_context telemetryDeviceSessionID];
+  telemetryDeviceSessionID = [(CDPContext *)self->_context telemetryDeviceSessionID];
 
-  if (v11)
+  if (telemetryDeviceSessionID)
   {
-    v12 = [(CDPContext *)self->_context telemetryDeviceSessionID];
-    [v8 setObject:v12 forKeyedSubscript:*MEMORY[0x277CFB2E8]];
+    telemetryDeviceSessionID2 = [(CDPContext *)self->_context telemetryDeviceSessionID];
+    [v8 setObject:telemetryDeviceSessionID2 forKeyedSubscript:*MEMORY[0x277CFB2E8]];
   }
 
   v13 = _CDPLogSystem();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CDPContext *)self->_context telemetryFlowID];
-    v15 = [(CDPContext *)self->_context telemetryDeviceSessionID];
+    telemetryFlowID3 = [(CDPContext *)self->_context telemetryFlowID];
+    telemetryDeviceSessionID3 = [(CDPContext *)self->_context telemetryDeviceSessionID];
     *buf = 138543618;
-    v28 = v14;
+    v28 = telemetryFlowID3;
     v29 = 2114;
-    v30 = v15;
+    v30 = telemetryDeviceSessionID3;
     _os_log_impl(&dword_24510B000, v13, OS_LOG_TYPE_DEFAULT, "Passing telemetry flow ID %{public}@ and session ID %{public}@ to OTClique performEscrowRecoveryWithContextData", buf, 0x16u);
   }
 
   v16 = MEMORY[0x277CDBD48];
-  v17 = [(CDPContext *)self->_context cliqueConfiguration];
+  cliqueConfiguration = [(CDPContext *)self->_context cliqueConfiguration];
   v26 = 0;
-  v18 = [v16 performEscrowRecoveryWithContextData:v17 escrowArguments:v8 error:&v26];
+  v18 = [v16 performEscrowRecoveryWithContextData:cliqueConfiguration escrowArguments:v8 error:&v26];
   v19 = v26;
 
   v20 = _CDPLogSystem();
@@ -3185,11 +3185,11 @@ void __50__CDPDSecureBackupController__currentAnisetteData__block_invoke(uint64_
       [CDPDSecureBackupController performEscrowRecoveryWithData:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v22 = v19;
       v23 = 0;
-      *a4 = v19;
+      *error = v19;
     }
 
     else
@@ -3213,10 +3213,10 @@ void __50__CDPDSecureBackupController__currentAnisetteData__block_invoke(uint64_
   return v23;
 }
 
-- (id)performSilentEscrowRecoveryWithCDPContext:(id)a3 error:(id *)a4
+- (id)performSilentEscrowRecoveryWithCDPContext:(id)context error:(id *)error
 {
   v80[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   v7 = _CDPLogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -3234,7 +3234,7 @@ void __50__CDPDSecureBackupController__currentAnisetteData__block_invoke(uint64_
   v65 = 0x3032000000;
   v66 = __Block_byref_object_copy__5;
   v67 = __Block_byref_object_dispose__5;
-  v68 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v59 = 0;
   v60 = &v59;
   v61 = 0x2020000000;
@@ -3259,10 +3259,10 @@ void __50__CDPDSecureBackupController__currentAnisetteData__block_invoke(uint64_
       [(CDPDSecureBackupController *)v70 performSilentEscrowRecoveryWithCDPContext:v10 error:v11, v12, v13, v14, v15, v16];
     }
 
-    if (a4)
+    if (error)
     {
       v17 = 0;
-      *a4 = *(v70[0] + 40);
+      *error = *(v70[0] + 40);
       goto LABEL_40;
     }
 
@@ -3279,7 +3279,7 @@ void __50__CDPDSecureBackupController__currentAnisetteData__block_invoke(uint64_
         [CDPDSecureBackupController performSilentEscrowRecoveryWithCDPContext:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v38 = MEMORY[0x277CCA9B8];
         v79 = *MEMORY[0x277CCA450];
@@ -3288,7 +3288,7 @@ void __50__CDPDSecureBackupController__currentAnisetteData__block_invoke(uint64_
         v40 = [v38 errorWithDomain:*MEMORY[0x277CFD418] code:-5305 userInfo:v39];
 
         v41 = v40;
-        *a4 = v40;
+        *error = v40;
       }
 
 LABEL_33:
@@ -3329,11 +3329,11 @@ LABEL_33:
     }
 
     v25 = MEMORY[0x277CDBD48];
-    v26 = [(CDPContext *)self->_context cliqueConfiguration];
+    cliqueConfiguration = [(CDPContext *)self->_context cliqueConfiguration];
     v27 = v64[5];
     v28 = (v70[0] + 40);
     obj = *(v70[0] + 40);
-    v17 = [v25 performSilentEscrowRecovery:v26 cdpContext:v6 allRecords:v27 error:&obj];
+    v17 = [v25 performSilentEscrowRecovery:cliqueConfiguration cdpContext:contextCopy allRecords:v27 error:&obj];
     objc_storeStrong(v28, obj);
 
     Nanoseconds = _CDPSignpostGetNanoseconds();
@@ -3341,22 +3341,22 @@ LABEL_33:
     v31 = v30;
     if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v30))
     {
-      v32 = [*(v70[0] + 40) code];
+      code = [*(v70[0] + 40) code];
       *buf = 67240192;
-      LODWORD(v73) = v32;
+      LODWORD(v73) = code;
       _os_signpost_emit_with_name_impl(&dword_24510B000, v31, OS_SIGNPOST_INTERVAL_END, v21, "OTCPerformSilentEscrowRecovery", " Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 8u);
     }
 
     v33 = _CDPSignpostLogSystem();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [*(v70[0] + 40) code];
+      code2 = [*(v70[0] + 40) code];
       *buf = 134218496;
       v73 = v21;
       v74 = 2048;
       v75 = Nanoseconds / 1000000000.0;
       v76 = 1026;
-      v77 = v34;
+      v77 = code2;
       _os_log_impl(&dword_24510B000, v33, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: OTCPerformSilentEscrowRecovery  Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 0x1Cu);
     }
 
@@ -3373,17 +3373,17 @@ LABEL_33:
         [(CDPDSecureBackupController *)v70 performSilentEscrowRecoveryWithCDPContext:v42 error:v43, v44, v45, v46, v47, v48];
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = *(v70[0] + 40);
+        *error = *(v70[0] + 40);
       }
 
       [v52 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277CFD6C0]];
       [v52 populateUnderlyingErrorsStartingWithRootError:*(v70[0] + 40)];
     }
 
-    v49 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-    [v49 sendEvent:v52];
+    rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+    [rtcAnalyticsReporter sendEvent:v52];
   }
 
   else
@@ -3394,8 +3394,8 @@ LABEL_33:
       [CDPDSecureBackupController performSilentEscrowRecoveryWithCDPContext:error:];
     }
 
-    v36 = [MEMORY[0x277D36DA0] CDPRecordContextToDictionary:v6];
-    v17 = [(CDPDSecureBackupController *)self performEscrowRecoveryWithData:v36 error:a4];
+    v36 = [MEMORY[0x277D36DA0] CDPRecordContextToDictionary:contextCopy];
+    v17 = [(CDPDSecureBackupController *)self performEscrowRecoveryWithData:v36 error:error];
   }
 
 LABEL_40:
@@ -3495,53 +3495,53 @@ LABEL_5:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)recordIsEmpty:(id)a3
+- (BOOL)recordIsEmpty:(id)empty
 {
-  v3 = a3;
-  if ([v3 creationDate])
+  emptyCopy = empty;
+  if ([emptyCopy creationDate])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 escrowInformationMetadata];
-    if ([v5 secureBackupTimestamp] || objc_msgSend(v3, "recordStatus") != 1 || objc_msgSend(v3, "remainingAttempts"))
+    escrowInformationMetadata = [emptyCopy escrowInformationMetadata];
+    if ([escrowInformationMetadata secureBackupTimestamp] || objc_msgSend(emptyCopy, "recordStatus") != 1 || objc_msgSend(emptyCopy, "remainingAttempts"))
     {
       v4 = 0;
     }
 
     else
     {
-      v7 = [v3 escrowInformationMetadata];
-      if ([v7 secureBackupUsesMultipleIcscs])
+      escrowInformationMetadata2 = [emptyCopy escrowInformationMetadata];
+      if ([escrowInformationMetadata2 secureBackupUsesMultipleIcscs])
       {
         v4 = 0;
       }
 
       else
       {
-        v8 = [v3 escrowInformationMetadata];
-        v9 = [v8 clientMetadata];
-        if ([v9 devicePlatform])
+        escrowInformationMetadata3 = [emptyCopy escrowInformationMetadata];
+        clientMetadata = [escrowInformationMetadata3 clientMetadata];
+        if ([clientMetadata devicePlatform])
         {
           v4 = 0;
         }
 
         else
         {
-          v10 = [v3 escrowInformationMetadata];
-          v11 = [v10 clientMetadata];
-          if ([v11 secureBackupMetadataTimestamp])
+          escrowInformationMetadata4 = [emptyCopy escrowInformationMetadata];
+          clientMetadata2 = [escrowInformationMetadata4 clientMetadata];
+          if ([clientMetadata2 secureBackupMetadataTimestamp])
           {
             v4 = 0;
           }
 
           else
           {
-            v12 = [v3 escrowInformationMetadata];
-            v13 = [v12 clientMetadata];
-            v4 = [v13 secureBackupNumericPassphraseLength] == 0;
+            escrowInformationMetadata5 = [emptyCopy escrowInformationMetadata];
+            clientMetadata3 = [escrowInformationMetadata5 clientMetadata];
+            v4 = [clientMetadata3 secureBackupNumericPassphraseLength] == 0;
           }
         }
       }
@@ -3551,46 +3551,46 @@ LABEL_5:
   return v4;
 }
 
-- (id)performEscrowRecoveryWithRecoveryContext:(id)a3 error:(id *)a4
+- (id)performEscrowRecoveryWithRecoveryContext:(id)context error:(id *)error
 {
-  v6 = a3;
+  contextCopy = context;
   v14 = 0;
-  v7 = [(CDPDSecureBackupController *)self _performEscrowRecoveryWithRecoveryContext:v6 fallbackState:0 error:&v14];
+  v7 = [(CDPDSecureBackupController *)self _performEscrowRecoveryWithRecoveryContext:contextCopy fallbackState:0 error:&v14];
   v8 = v14;
   if ([v8 indicatesRecoveryCanBeRetried])
   {
     v13 = v8;
-    v9 = [(CDPDSecureBackupController *)self _performEscrowRecoveryWithRecoveryContext:v6 fallbackState:1 error:&v13];
+    v9 = [(CDPDSecureBackupController *)self _performEscrowRecoveryWithRecoveryContext:contextCopy fallbackState:1 error:&v13];
     v10 = v13;
 
     v8 = v10;
     v7 = v9;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;
 }
 
-- (id)_performEscrowRecoveryWithRecoveryContext:(id)a3 fallbackState:(unint64_t)a4 error:(id *)a5
+- (id)_performEscrowRecoveryWithRecoveryContext:(id)context fallbackState:(unint64_t)state error:(id *)error
 {
   v94[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  contextCopy = context;
   v9 = _CDPLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     [CDPDSecureBackupController _performEscrowRecoveryWithRecoveryContext:fallbackState:error:];
   }
 
-  v10 = [(CDPDSecureBackupController *)self _recoveryInfoDictionaryFromContext:v8 usePreviouslyCachedSecret:[(CDPDSecureBackupController *)self _shouldUseSBDCacheWithSecureBackupContext:v8 fallbackState:a4]];
+  v10 = [(CDPDSecureBackupController *)self _recoveryInfoDictionaryFromContext:contextCopy usePreviouslyCachedSecret:[(CDPDSecureBackupController *)self _shouldUseSBDCacheWithSecureBackupContext:contextCopy fallbackState:state]];
   v11 = [MEMORY[0x277D36DA0] dictionaryToCDPRecordContext:v10];
-  v12 = [v8 recoveryKey];
+  recoveryKey = [contextCopy recoveryKey];
 
-  if (v12)
+  if (recoveryKey)
   {
     v13 = _CDPLogSystem();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -3598,8 +3598,8 @@ LABEL_5:
       [CDPDSecureBackupController _performEscrowRecoveryWithRecoveryContext:fallbackState:error:];
     }
 
-    v14 = [v8 recoveryKey];
-    if (!v14)
+    recoveryKey2 = [contextCopy recoveryKey];
+    if (!recoveryKey2)
     {
       goto LABEL_25;
     }
@@ -3611,35 +3611,35 @@ LABEL_12:
       [CDPDSecureBackupController _performEscrowRecoveryWithRecoveryContext:fallbackState:error:];
     }
 
-    v20 = [(CDPContext *)self->_context cliqueConfiguration];
-    [v20 setOctagonCapableRecordsExist:{objc_msgSend(v8, "octagonCapableRecordsExist")}];
+    cliqueConfiguration = [(CDPContext *)self->_context cliqueConfiguration];
+    [cliqueConfiguration setOctagonCapableRecordsExist:{objc_msgSend(contextCopy, "octagonCapableRecordsExist")}];
     v21 = objc_alloc(MEMORY[0x277CE44D8]);
     v22 = [v21 initWithEventName:*MEMORY[0x277CFD7C8] eventCategory:*MEMORY[0x277CFD930] initData:0];
-    v23 = [(CDPContext *)self->_context telemetryFlowID];
+    telemetryFlowID = [(CDPContext *)self->_context telemetryFlowID];
 
-    if (v23)
+    if (telemetryFlowID)
     {
-      v24 = [(CDPContext *)self->_context telemetryFlowID];
-      [v22 setObject:v24 forKeyedSubscript:*MEMORY[0x277CE45A8]];
+      telemetryFlowID2 = [(CDPContext *)self->_context telemetryFlowID];
+      [v22 setObject:telemetryFlowID2 forKeyedSubscript:*MEMORY[0x277CE45A8]];
     }
 
-    v25 = [(CDPContext *)self->_context telemetryDeviceSessionID];
+    telemetryDeviceSessionID = [(CDPContext *)self->_context telemetryDeviceSessionID];
 
-    if (v25)
+    if (telemetryDeviceSessionID)
     {
-      v26 = [(CDPContext *)self->_context telemetryDeviceSessionID];
-      [v22 setObject:v26 forKeyedSubscript:*MEMORY[0x277CE4578]];
+      telemetryDeviceSessionID2 = [(CDPContext *)self->_context telemetryDeviceSessionID];
+      [v22 setObject:telemetryDeviceSessionID2 forKeyedSubscript:*MEMORY[0x277CE4578]];
     }
 
     v86 = 0;
-    v27 = [MEMORY[0x277CDBD48] recoverWithRecoveryKey:v20 recoveryKey:v14 error:&v86];
+    v27 = [MEMORY[0x277CDBD48] recoverWithRecoveryKey:cliqueConfiguration recoveryKey:recoveryKey2 error:&v86];
     v28 = v86;
     if ((v27 & 1) == 0)
     {
       [v22 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277CFD6C0]];
       [v22 populateUnderlyingErrorsStartingWithRootError:v28];
-      v41 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-      [v41 sendEvent:v22];
+      rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+      [rtcAnalyticsReporter sendEvent:v22];
 
       v42 = _CDPLogSystem();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -3647,10 +3647,10 @@ LABEL_12:
         [CDPDSecureBackupController _performEscrowRecoveryWithRecoveryContext:fallbackState:error:];
       }
 
-      if (a5)
+      if (error)
       {
         v43 = v28;
-        *a5 = v28;
+        *error = v28;
       }
 
       v32 = 0;
@@ -3666,12 +3666,12 @@ LABEL_12:
     }
 
     v30 = objc_alloc(MEMORY[0x277CDBD48]);
-    v31 = [(CDPContext *)self->_context cliqueConfiguration];
-    v32 = [v30 initWithContextData:v31];
+    cliqueConfiguration2 = [(CDPContext *)self->_context cliqueConfiguration];
+    v32 = [v30 initWithContextData:cliqueConfiguration2];
 
     [v22 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277CFD6C0]];
-    v33 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-    [v33 sendEvent:v22];
+    rtcAnalyticsReporter2 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+    [rtcAnalyticsReporter2 sendEvent:v22];
 
 LABEL_22:
     v34 = _CDPLogSystem();
@@ -3695,28 +3695,28 @@ LABEL_22:
     }
 
     v16 = +[CDPRecoveryKeyCache sharedInstance];
-    v17 = [(CDPDSecureBackupController *)self context];
-    v18 = [v17 altDSID];
-    v14 = [v16 fetchRecoveryKeyFromCacheForAltDSID:v18];
+    context = [(CDPDSecureBackupController *)self context];
+    altDSID = [context altDSID];
+    recoveryKey2 = [v16 fetchRecoveryKeyFromCacheForAltDSID:altDSID];
 
-    if (v14)
+    if (recoveryKey2)
     {
       goto LABEL_12;
     }
   }
 
 LABEL_25:
-  v37 = [v8 silentRecovery];
+  silentRecovery = [contextCopy silentRecovery];
   v38 = _CDPLogSystem();
   v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG);
-  if (v37)
+  if (silentRecovery)
   {
     if (v39)
     {
       [CDPDSecureBackupController _performEscrowRecoveryWithRecoveryContext:fallbackState:error:];
     }
 
-    v40 = [(CDPDSecureBackupController *)self performSilentEscrowRecoveryWithCDPContext:v11 error:a5];
+    v40 = [(CDPDSecureBackupController *)self performSilentEscrowRecoveryWithCDPContext:v11 error:error];
 LABEL_47:
     v36 = v40;
     v32 = 0;
@@ -3729,10 +3729,10 @@ LABEL_47:
     [CDPDSecureBackupController _performEscrowRecoveryWithRecoveryContext:fallbackState:error:];
   }
 
-  v44 = [v8 device];
-  v45 = [v44 isUsingMultipleiCSC];
+  device = [contextCopy device];
+  isUsingMultipleiCSC = [device isUsingMultipleiCSC];
 
-  if ((v45 & 1) == 0)
+  if ((isUsingMultipleiCSC & 1) == 0)
   {
     v58 = _CDPLogSystem();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
@@ -3740,27 +3740,27 @@ LABEL_47:
       [CDPDSecureBackupController _performEscrowRecoveryWithRecoveryContext:fallbackState:error:];
     }
 
-    v40 = [(CDPDSecureBackupController *)self performEscrowRecoveryWithData:v10 error:a5];
+    v40 = [(CDPDSecureBackupController *)self performEscrowRecoveryWithData:v10 error:error];
     goto LABEL_47;
   }
 
   v46 = MEMORY[0x277D36DA0];
-  v47 = [v8 device];
-  v48 = [v47 recordInfo];
-  v49 = [v46 dictionaryToEscrowRecord:v48];
+  device2 = [contextCopy device];
+  recordInfo = [device2 recordInfo];
+  v49 = [v46 dictionaryToEscrowRecord:recordInfo];
 
   v50 = v49;
-  LODWORD(v47) = [(CDPDSecureBackupController *)self recordIsEmpty:v49];
+  LODWORD(device2) = [(CDPDSecureBackupController *)self recordIsEmpty:v49];
   v51 = _CDPLogSystem();
   v52 = v51;
-  if (v47)
+  if (device2)
   {
     if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
     {
       [CDPDSecureBackupController _performEscrowRecoveryWithRecoveryContext:fallbackState:error:];
     }
 
-    if (a5)
+    if (error)
     {
       v53 = MEMORY[0x277CCA9B8];
       v54 = *MEMORY[0x277CFD418];
@@ -3770,7 +3770,7 @@ LABEL_47:
       v56 = [v53 errorWithDomain:v54 code:-5305 userInfo:v55];
 
       v57 = v56;
-      *a5 = v56;
+      *error = v56;
     }
 
     v32 = 0;
@@ -3787,20 +3787,20 @@ LABEL_43:
 
   v61 = objc_alloc(MEMORY[0x277CE44D8]);
   v62 = [v61 initWithEventName:*MEMORY[0x277CFD828] eventCategory:*MEMORY[0x277CFD930] initData:0];
-  v63 = [(CDPContext *)self->_context telemetryFlowID];
+  telemetryFlowID3 = [(CDPContext *)self->_context telemetryFlowID];
 
-  if (v63)
+  if (telemetryFlowID3)
   {
-    v64 = [(CDPContext *)self->_context telemetryFlowID];
-    [v62 setObject:v64 forKeyedSubscript:*MEMORY[0x277CE45A8]];
+    telemetryFlowID4 = [(CDPContext *)self->_context telemetryFlowID];
+    [v62 setObject:telemetryFlowID4 forKeyedSubscript:*MEMORY[0x277CE45A8]];
   }
 
-  v65 = [(CDPContext *)self->_context telemetryDeviceSessionID];
+  telemetryDeviceSessionID3 = [(CDPContext *)self->_context telemetryDeviceSessionID];
 
-  if (v65)
+  if (telemetryDeviceSessionID3)
   {
-    v66 = [(CDPContext *)self->_context telemetryDeviceSessionID];
-    [v62 setObject:v66 forKeyedSubscript:*MEMORY[0x277CE4578]];
+    telemetryDeviceSessionID4 = [(CDPContext *)self->_context telemetryDeviceSessionID];
+    [v62 setObject:telemetryDeviceSessionID4 forKeyedSubscript:*MEMORY[0x277CE4578]];
   }
 
   v67 = _CDPSignpostLogSystem();
@@ -3823,10 +3823,10 @@ LABEL_43:
   }
 
   v72 = MEMORY[0x277CDBD48];
-  v73 = [(CDPContext *)self->_context cliqueConfiguration];
+  cliqueConfiguration3 = [(CDPContext *)self->_context cliqueConfiguration];
   v84 = v50;
   v85 = 0;
-  v32 = [v72 performEscrowRecovery:v73 cdpContext:v11 escrowRecord:v50 error:&v85];
+  v32 = [v72 performEscrowRecovery:cliqueConfiguration3 cdpContext:v11 escrowRecord:v50 error:&v85];
   v35 = v85;
 
   Nanoseconds = _CDPSignpostGetNanoseconds();
@@ -3834,22 +3834,22 @@ LABEL_43:
   v76 = v75;
   if (v68 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v75))
   {
-    v77 = [v35 code];
+    code = [v35 code];
     *buf = 67240192;
-    LODWORD(v88) = v77;
+    LODWORD(v88) = code;
     _os_signpost_emit_with_name_impl(&dword_24510B000, v76, OS_SIGNPOST_INTERVAL_END, v68, "OTCPerformEscrowRecovery", " Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 8u);
   }
 
   v78 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v78, OS_LOG_TYPE_DEFAULT))
   {
-    v79 = [v35 code];
+    code2 = [v35 code];
     *buf = 134218496;
     v88 = v68;
     v89 = 2048;
     v90 = Nanoseconds / 1000000000.0;
     v91 = 1026;
-    v92 = v79;
+    v92 = code2;
     _os_log_impl(&dword_24510B000, v78, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: OTCPerformEscrowRecovery  Error=%{public,signpost.telemetry:number1,name=Error}d ", buf, 0x1Cu);
   }
 
@@ -3865,8 +3865,8 @@ LABEL_43:
     [v62 populateUnderlyingErrorsStartingWithRootError:v35];
   }
 
-  v81 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v81 sendEvent:v62];
+  rtcAnalyticsReporter3 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter3 sendEvent:v62];
 
   if (!v35)
   {
@@ -3879,14 +3879,14 @@ LABEL_43:
     [CDPDSecureBackupController _performEscrowRecoveryWithRecoveryContext:fallbackState:error:];
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_43;
   }
 
   v83 = v35;
   v36 = 0;
-  *a5 = v35;
+  *error = v35;
 LABEL_48:
 
   v59 = *MEMORY[0x277D85DE8];
@@ -3894,19 +3894,19 @@ LABEL_48:
   return v36;
 }
 
-- (void)performEscrowRecoveryWithRecoveryContext:(id)a3 completion:(id)a4
+- (void)performEscrowRecoveryWithRecoveryContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  contextCopy = context;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __82__CDPDSecureBackupController_performEscrowRecoveryWithRecoveryContext_completion___block_invoke;
     v8[3] = &unk_278E25438;
-    v9 = v6;
-    v10 = self;
-    v11 = v7;
+    v9 = contextCopy;
+    selfCopy = self;
+    v11 = completionCopy;
     [(CDPDSecureBackupController *)self checkForAnyOctagonRecord:v8];
   }
 }
@@ -4067,15 +4067,15 @@ uint64_t __82__CDPDSecureBackupController_performEscrowRecoveryWithRecoveryConte
   }
 }
 
-- (void)recoverSecureBackupWithContext:(id)a3 completion:(id)a4
+- (void)recoverSecureBackupWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
+  contextCopy = context;
   v7 = self->_context;
-  v8 = a4;
-  v9 = [(CDPContext *)v7 backupActivity];
-  if (v9)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v7 backupActivity];
+  if (backupActivity)
   {
-    v10 = v9;
+    v10 = backupActivity;
   }
 
   else
@@ -4084,7 +4084,7 @@ uint64_t __82__CDPDSecureBackupController_performEscrowRecoveryWithRecoveryConte
   }
 
   [(CDPContext *)v7 setBackupActivity:v10];
-  v11 = _Block_copy(v8);
+  v11 = _Block_copy(completionCopy);
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -4110,7 +4110,7 @@ uint64_t __82__CDPDSecureBackupController_performEscrowRecoveryWithRecoveryConte
     v43 = __Block_byref_object_dispose__5;
     v44 = 0;
     obj = 0;
-    v15 = [(CDPDSecureBackupController *)self _recoverBackupDictionaryWithContext:v6 fallbackState:0 error:&obj];
+    v15 = [(CDPDSecureBackupController *)self _recoverBackupDictionaryWithContext:contextCopy fallbackState:0 error:&obj];
     objc_storeStrong(&v50, obj);
     v16 = v40[5];
     v40[5] = v15;
@@ -4119,7 +4119,7 @@ uint64_t __82__CDPDSecureBackupController_performEscrowRecoveryWithRecoveryConte
     {
       v17 = (v46 + 5);
       v37 = v46[5];
-      v18 = [(CDPDSecureBackupController *)self _recoverBackupDictionaryWithContext:v6 fallbackState:1 error:&v37];
+      v18 = [(CDPDSecureBackupController *)self _recoverBackupDictionaryWithContext:contextCopy fallbackState:1 error:&v37];
       objc_storeStrong(v17, v37);
       v19 = v40[5];
       v40[5] = v18;
@@ -4134,7 +4134,7 @@ uint64_t __82__CDPDSecureBackupController_performEscrowRecoveryWithRecoveryConte
       v32[3] = &unk_278E258E0;
       v35 = &v39;
       v32[4] = self;
-      v33 = v6;
+      v33 = contextCopy;
       v36 = &v45;
       v34 = v14;
       [(CDPContext *)context reauthenticateUserWithCompletion:v32];
@@ -4144,7 +4144,7 @@ uint64_t __82__CDPDSecureBackupController_performEscrowRecoveryWithRecoveryConte
 
     else
     {
-      if ([v6 silentRecovery] && objc_msgSend(v46[5], "isICSCInvalidError"))
+      if ([contextCopy silentRecovery] && objc_msgSend(v46[5], "isICSCInvalidError"))
       {
         v31 = 0;
         v22 = [(CDPDSecureBackupController *)self supportsRecoveryKeyWithError:&v31];
@@ -4158,10 +4158,10 @@ uint64_t __82__CDPDSecureBackupController_performEscrowRecoveryWithRecoveryConte
             _os_log_impl(&dword_24510B000, v23, OS_LOG_TYPE_DEFAULT, "Recovering SecureBackup failed - iCSC Invalid (silent burn failed). Trying again with cached recovery key.", buf, 2u);
           }
 
-          [v6 setUsePreviouslyCachedRecoveryKey:1];
+          [contextCopy setUsePreviouslyCachedRecoveryKey:1];
           v24 = (v46 + 5);
           v29 = v46[5];
-          v25 = [(CDPDSecureBackupController *)self _recoverBackupDictionaryWithContext:v6 fallbackState:2 error:&v29];
+          v25 = [(CDPDSecureBackupController *)self _recoverBackupDictionaryWithContext:contextCopy fallbackState:2 error:&v29];
           objc_storeStrong(v24, v29);
           v26 = v40[5];
           v40[5] = v25;
@@ -4250,11 +4250,11 @@ uint64_t __72__CDPDSecureBackupController_recoverSecureBackupWithContext_complet
   }
 }
 
-- (void)validateRecoveryKeyWithContext:(id)a3 completion:(id)a4
+- (void)validateRecoveryKeyWithContext:(id)context completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -4262,15 +4262,15 @@ uint64_t __72__CDPDSecureBackupController_recoverSecureBackupWithContext_complet
     _os_log_impl(&dword_24510B000, v8, OS_LOG_TYPE_DEFAULT, "Validating Recovery Key", buf, 2u);
   }
 
-  v9 = [v6 recoveryKey];
+  recoveryKey = [contextCopy recoveryKey];
 
-  if (v9)
+  if (recoveryKey)
   {
-    v10 = [(CDPContext *)self->_context cliqueConfiguration];
+    cliqueConfiguration = [(CDPContext *)self->_context cliqueConfiguration];
     v11 = MEMORY[0x277CDBD48];
-    v12 = [v6 recoveryKey];
+    recoveryKey2 = [contextCopy recoveryKey];
     v24 = 0;
-    [v11 preflightRecoverOctagonUsingRecoveryKey:v10 recoveryKey:v12 error:&v24];
+    [v11 preflightRecoverOctagonUsingRecoveryKey:cliqueConfiguration recoveryKey:recoveryKey2 error:&v24];
     v13 = v24;
 
     v14 = _CDPLogSystem();
@@ -4284,13 +4284,13 @@ uint64_t __72__CDPDSecureBackupController_recoverSecureBackupWithContext_complet
         _os_log_impl(&dword_24510B000, v14, OS_LOG_TYPE_DEFAULT, "validateRecoveryKey Failed: %@", buf, 0xCu);
       }
 
-      v16 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+      rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
       v17 = [(CDPDSecureBackupController *)self _makeRecoveryKeyVerifyEventWithError:v13 result:0];
-      [v16 sendEvent:v17];
+      [rtcAnalyticsReporter sendEvent:v17];
 
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, 0, v13);
+        completionCopy[2](completionCopy, 0, v13);
       }
     }
 
@@ -4302,18 +4302,18 @@ uint64_t __72__CDPDSecureBackupController_recoverSecureBackupWithContext_complet
         _os_log_impl(&dword_24510B000, v14, OS_LOG_TYPE_DEFAULT, "RecoveryKey Validated", buf, 2u);
       }
 
-      v19 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+      rtcAnalyticsReporter2 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
       v20 = [(CDPDSecureBackupController *)self _makeRecoveryKeyVerifyEventWithError:0 result:1];
-      [v19 sendEvent:v20];
+      [rtcAnalyticsReporter2 sendEvent:v20];
 
       v21 = objc_alloc_init(CDPDRemoteSecretValidationResult);
       [(CDPDRemoteSecretValidationResult *)v21 setSecretType:5];
-      v22 = [v6 recoveryKey];
-      [(CDPDRemoteSecretValidationResult *)v21 setValidSecret:v22];
+      recoveryKey3 = [contextCopy recoveryKey];
+      [(CDPDRemoteSecretValidationResult *)v21 setValidSecret:recoveryKey3];
 
-      if (v7)
+      if (completionCopy)
       {
-        (v7)[2](v7, v21, 0);
+        (completionCopy)[2](completionCopy, v21, 0);
       }
     }
 
@@ -4327,22 +4327,22 @@ uint64_t __72__CDPDSecureBackupController_recoverSecureBackupWithContext_complet
     _os_log_impl(&dword_24510B000, v18, OS_LOG_TYPE_DEFAULT, "Recovery key is nil, calling completion with error", buf, 2u);
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:0];
-    v7[2](v7, 0, v10);
+    cliqueConfiguration = [MEMORY[0x277CCA9B8] cdp_errorWithCode:0];
+    completionCopy[2](completionCopy, 0, cliqueConfiguration);
 LABEL_19:
   }
 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)validateAndRepairRecoveryKeyMismatchWithContext:(id)a3 authProvider:(id)a4 circleProxy:(id)a5 completion:(id)a6
+- (void)validateAndRepairRecoveryKeyMismatchWithContext:(id)context authProvider:(id)provider circleProxy:(id)proxy completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  providerCopy = provider;
+  proxyCopy = proxy;
+  completionCopy = completion;
   v14 = _CDPLogSystem();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
@@ -4350,11 +4350,11 @@ LABEL_19:
     _os_log_impl(&dword_24510B000, v14, OS_LOG_TYPE_DEFAULT, "Validating and Repairing Recovery Key Mismatch", buf, 2u);
   }
 
-  v15 = [v10 recoveryKey];
+  recoveryKey = [contextCopy recoveryKey];
 
-  if (v15)
+  if (recoveryKey)
   {
-    v16 = [(CDPContext *)self->_context cliqueConfiguration];
+    cliqueConfiguration = [(CDPContext *)self->_context cliqueConfiguration];
     v17 = [objc_alloc(MEMORY[0x277CFD548]) initWithContext:self->_context];
     v29 = 0;
     v18 = [v17 verifyRecoveryKeyObservingSystemsHaveMatchingStateWithError:&v29];
@@ -4368,7 +4368,7 @@ LABEL_19:
         [CDPDSecureBackupController validateAndRepairRecoveryKeyMismatchWithContext:authProvider:circleProxy:completion:];
       }
 
-      [(CDPDSecureBackupController *)self validateRecoveryKeyWithContext:v10 completion:v13];
+      [(CDPDSecureBackupController *)self validateRecoveryKeyWithContext:contextCopy completion:completionCopy];
     }
 
     else
@@ -4384,11 +4384,11 @@ LABEL_19:
       v23[2] = __114__CDPDSecureBackupController_validateAndRepairRecoveryKeyMismatchWithContext_authProvider_circleProxy_completion___block_invoke;
       v23[3] = &unk_278E25930;
       v23[4] = self;
-      v24 = v16;
-      v25 = v10;
-      v28 = v13;
-      v26 = v12;
-      v27 = v11;
+      v24 = cliqueConfiguration;
+      v25 = contextCopy;
+      v28 = completionCopy;
+      v26 = proxyCopy;
+      v27 = providerCopy;
       [(CDPDSecureBackupController *)self _validateRecoveryKeyInIDMSWithContext:v25 authProvider:v27 completion:v23];
     }
 
@@ -4402,10 +4402,10 @@ LABEL_19:
     _os_log_impl(&dword_24510B000, v22, OS_LOG_TYPE_DEFAULT, "Recovery key is nil, calling completion with error", buf, 2u);
   }
 
-  if (v13)
+  if (completionCopy)
   {
-    v16 = [MEMORY[0x277CCA9B8] cdp_errorWithCode:0];
-    (*(v13 + 2))(v13, 0, v16);
+    cliqueConfiguration = [MEMORY[0x277CCA9B8] cdp_errorWithCode:0];
+    (*(completionCopy + 2))(completionCopy, 0, cliqueConfiguration);
 LABEL_16:
   }
 }
@@ -4747,10 +4747,10 @@ LABEL_20:
 LABEL_21:
 }
 
-- (BOOL)_isRecoveryKeySetInOctagonWithConfig:(id)a3
+- (BOOL)_isRecoveryKeySetInOctagonWithConfig:(id)config
 {
   v7 = 0;
-  v3 = [MEMORY[0x277CDBD48] isRecoveryKeySetInOctagon:a3 error:&v7];
+  v3 = [MEMORY[0x277CDBD48] isRecoveryKeySetInOctagon:config error:&v7];
   v4 = v7;
   if (v4)
   {
@@ -4766,15 +4766,15 @@ LABEL_21:
   return v3;
 }
 
-- (BOOL)_validateOctagonRecoveryKeyWithConfig:(id)a3 recoveryKey:(id)a4
+- (BOOL)_validateOctagonRecoveryKeyWithConfig:(id)config recoveryKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([(CDPDSecureBackupController *)self _isRecoveryKeySetInOctagonWithConfig:v6])
+  configCopy = config;
+  keyCopy = key;
+  if ([(CDPDSecureBackupController *)self _isRecoveryKeySetInOctagonWithConfig:configCopy])
   {
     v17 = 0;
-    [MEMORY[0x277CDBD48] preflightRecoverOctagonUsingRecoveryKey:v6 recoveryKey:v7 error:&v17];
+    [MEMORY[0x277CDBD48] preflightRecoverOctagonUsingRecoveryKey:configCopy recoveryKey:keyCopy error:&v17];
     v8 = v17;
     v9 = v8 == 0;
     v10 = _CDPLogSystem();
@@ -4819,12 +4819,12 @@ LABEL_12:
   return v9;
 }
 
-- (void)_setRecoveryKeyInOctagonIfRequiredWithConfig:(id)a3 recoveryKey:(id)a4 error:(id *)a5
+- (void)_setRecoveryKeyInOctagonIfRequiredWithConfig:(id)config recoveryKey:(id)key error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if ([(CDPDSecureBackupController *)self _isRecoveryKeySetInOctagonWithConfig:v8])
+  configCopy = config;
+  keyCopy = key;
+  if ([(CDPDSecureBackupController *)self _isRecoveryKeySetInOctagonWithConfig:configCopy])
   {
     v10 = _CDPLogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -4837,7 +4837,7 @@ LABEL_12:
   else
   {
     v15 = 0;
-    [MEMORY[0x277CDBD48] setRecoveryKeyWithContext:v8 recoveryKey:v9 error:&v15];
+    [MEMORY[0x277CDBD48] setRecoveryKeyWithContext:configCopy recoveryKey:keyCopy error:&v15];
     v10 = v15;
     v11 = _CDPLogSystem();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -4850,10 +4850,10 @@ LABEL_12:
         _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "Set RK in Octagon Failed with error: %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v13 = v10;
-        *a5 = v10;
+        *error = v10;
       }
     }
 
@@ -4870,9 +4870,9 @@ LABEL_12:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isRecoveryKeySetInSOSWithConfig:(id)a3
+- (BOOL)_isRecoveryKeySetInSOSWithConfig:(id)config
 {
-  v4 = a3;
+  configCopy = config;
   if (![(CDPDSecureBackupController *)self _isSOSEnabled])
   {
     v6 = _CDPLogSystem();
@@ -4885,7 +4885,7 @@ LABEL_12:
   }
 
   v9 = 0;
-  v5 = [MEMORY[0x277CDBD48] isRecoveryKeySetInSOS:v4 error:&v9];
+  v5 = [MEMORY[0x277CDBD48] isRecoveryKeySetInSOS:configCopy error:&v9];
   v6 = v9;
   if (v6)
   {
@@ -4905,21 +4905,21 @@ LABEL_8:
 - (BOOL)_isInSOSCircle
 {
   v2 = MEMORY[0x277CFD540];
-  v3 = [(CDPContext *)self->_context altDSID];
-  v4 = [v2 syncingStatusForAltDSID:v3];
+  altDSID = [(CDPContext *)self->_context altDSID];
+  v4 = [v2 syncingStatusForAltDSID:altDSID];
 
   return v4 == 1;
 }
 
-- (BOOL)_validateSOSRecoveryKey:(id)a3 config:(id)a4
+- (BOOL)_validateSOSRecoveryKey:(id)key config:(id)config
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ([(CDPDSecureBackupController *)self _isRecoveryKeySetInSOSWithConfig:a4])
+  keyCopy = key;
+  if ([(CDPDSecureBackupController *)self _isRecoveryKeySetInSOSWithConfig:config])
   {
-    v7 = [(CDPDSecureBackupController *)self secureBackupProxy];
+    secureBackupProxy = [(CDPDSecureBackupController *)self secureBackupProxy];
     v18 = 0;
-    v8 = [v7 verifyRecoveryKey:v6 error:&v18];
+    v8 = [secureBackupProxy verifyRecoveryKey:keyCopy error:&v18];
     v9 = v18;
 
     v10 = (v9 == 0) & v8;
@@ -4965,11 +4965,11 @@ LABEL_12:
   return v10;
 }
 
-- (void)_setRecoveryKeyInSOSIfRequiredWithConfig:(id)a3 recoveryKey:(id)a4 error:(id *)a5
+- (void)_setRecoveryKeyInSOSIfRequiredWithConfig:(id)config recoveryKey:(id)key error:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  if ([(CDPDSecureBackupController *)self _isRecoveryKeySetInSOSWithConfig:a3]|| ![(CDPDSecureBackupController *)self _isInSOSCircle])
+  keyCopy = key;
+  if ([(CDPDSecureBackupController *)self _isRecoveryKeySetInSOSWithConfig:config]|| ![(CDPDSecureBackupController *)self _isInSOSCircle])
   {
     v11 = _CDPLogSystem();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -4981,9 +4981,9 @@ LABEL_12:
 
   else
   {
-    v9 = [(CDPDSecureBackupController *)self secureBackupProxy];
+    secureBackupProxy = [(CDPDSecureBackupController *)self secureBackupProxy];
     v16 = 0;
-    v10 = [v9 setRecoveryKeyInSOS:v8 error:&v16];
+    v10 = [secureBackupProxy setRecoveryKeyInSOS:keyCopy error:&v16];
     v11 = v16;
 
     if (v11 || (v10 & 1) == 0)
@@ -4996,10 +4996,10 @@ LABEL_12:
         _os_log_impl(&dword_24510B000, v12, OS_LOG_TYPE_DEFAULT, "setRecoveryKeyInSOSWithCompletion Failed: %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v13 = v11;
-        *a5 = v11;
+        *error = v11;
       }
     }
 
@@ -5014,23 +5014,23 @@ LABEL_12:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_validateRecoveryKeyInIDMSWithContext:(id)a3 authProvider:(id)a4 completion:(id)a5
+- (void)_validateRecoveryKeyInIDMSWithContext:(id)context authProvider:(id)provider completion:(id)completion
 {
   context = self->_context;
-  v8 = a5;
-  v9 = a4;
-  v10 = [a3 recoveryKey];
-  [v9 cdpContext:context verifyMasterKey:v10 completion:v8];
+  completionCopy = completion;
+  providerCopy = provider;
+  recoveryKey = [context recoveryKey];
+  [providerCopy cdpContext:context verifyMasterKey:recoveryKey completion:completionCopy];
 }
 
-- (void)_setRecoveryKeyInIDMSWithContext:(id)a3 circleProxy:(id)a4 authProvider:(id)a5 completion:(id)a6
+- (void)_setRecoveryKeyInIDMSWithContext:(id)context circleProxy:(id)proxy authProvider:(id)provider completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = [a3 recoveryKey];
+  providerCopy = provider;
+  completionCopy = completion;
+  proxyCopy = proxy;
+  recoveryKey = [context recoveryKey];
   v20 = 0;
-  v14 = [v12 generateVerifierWithRecoveryKey:v13 error:&v20];
+  v14 = [proxyCopy generateVerifierWithRecoveryKey:recoveryKey error:&v20];
 
   v15 = v20;
   if (!v14 || v15)
@@ -5041,9 +5041,9 @@ LABEL_12:
       [CDPDSecureBackupController _setRecoveryKeyInIDMSWithContext:circleProxy:authProvider:completion:];
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      v11[2](v11, 0, v15);
+      completionCopy[2](completionCopy, 0, v15);
     }
   }
 
@@ -5054,8 +5054,8 @@ LABEL_12:
     v18[1] = 3221225472;
     v18[2] = __99__CDPDSecureBackupController__setRecoveryKeyInIDMSWithContext_circleProxy_authProvider_completion___block_invoke;
     v18[3] = &unk_278E24B10;
-    v19 = v11;
-    [v10 cdpContext:context persistMasterKeyVerifier:v14 completion:v18];
+    v19 = completionCopy;
+    [providerCopy cdpContext:context persistMasterKeyVerifier:v14 completion:v18];
   }
 }
 
@@ -5103,14 +5103,14 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_recoverBackupDictionaryWithContext:(id)a3 fallbackState:(unint64_t)a4 error:(id *)a5
+- (id)_recoverBackupDictionaryWithContext:(id)context fallbackState:(unint64_t)state error:(id *)error
 {
-  v8 = a3;
-  v9 = [(CDPDSecureBackupController *)self _recoveryInfoDictionaryFromContext:v8 usePreviouslyCachedSecret:[(CDPDSecureBackupController *)self _shouldUseSBDCacheWithSecureBackupContext:v8 fallbackState:a4]];
+  contextCopy = context;
+  v9 = [(CDPDSecureBackupController *)self _recoveryInfoDictionaryFromContext:contextCopy usePreviouslyCachedSecret:[(CDPDSecureBackupController *)self _shouldUseSBDCacheWithSecureBackupContext:contextCopy fallbackState:state]];
   v10 = _CDPLogSystem();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    [CDPDSecureBackupController _recoverBackupDictionaryWithContext:v8 fallbackState:v9 error:?];
+    [CDPDSecureBackupController _recoverBackupDictionaryWithContext:contextCopy fallbackState:v9 error:?];
   }
 
   v11 = objc_alloc_init(CDPDRemoteSecretValidationResult);
@@ -5154,40 +5154,40 @@ LABEL_11:
     v15 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     v19 = v15;
-    *a5 = v15;
+    *error = v15;
   }
 
   return v11;
 }
 
-- (id)_recoveryInfoDictionaryFromContext:(id)a3 usePreviouslyCachedSecret:(BOOL)a4
+- (id)_recoveryInfoDictionaryFromContext:(id)context usePreviouslyCachedSecret:(BOOL)secret
 {
-  v4 = a4;
+  secretCopy = secret;
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  v8 = [v6 device];
+  contextCopy = context;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  device = [contextCopy device];
   v9 = [(CDPDSecureBackupConfiguration *)self->_configuration escrowAuthInfoForCreateEscrowRecordFlow:0];
-  [v7 addEntriesFromDictionary:v9];
+  [dictionary addEntriesFromDictionary:v9];
 
-  v10 = [v8 recordInfo];
+  recordInfo = [device recordInfo];
 
-  if (v10)
+  if (recordInfo)
   {
-    v11 = [v8 recordInfo];
-    v12 = [v11 objectForKeyedSubscript:@"metadata"];
-    [v7 setObject:v12 forKey:*MEMORY[0x277CFB330]];
+    recordInfo2 = [device recordInfo];
+    v12 = [recordInfo2 objectForKeyedSubscript:@"metadata"];
+    [dictionary setObject:v12 forKey:*MEMORY[0x277CFB330]];
   }
 
-  v13 = [v6 recoverySecret];
+  recoverySecret = [contextCopy recoverySecret];
 
-  if (v13)
+  if (recoverySecret)
   {
-    v14 = [v6 recoverySecret];
-    v15 = [v14 length];
+    recoverySecret2 = [contextCopy recoverySecret];
+    v15 = [recoverySecret2 length];
 
     if (!v15)
     {
@@ -5198,99 +5198,99 @@ LABEL_11:
       }
     }
 
-    v24 = [v6 recoverySecret];
-    [v7 setObject:v24 forKey:*MEMORY[0x277CFB348]];
+    recoverySecret3 = [contextCopy recoverySecret];
+    [dictionary setObject:recoverySecret3 forKey:*MEMORY[0x277CFB348]];
   }
 
   else
   {
-    v25 = [v6 recoveryKey];
+    recoveryKey = [contextCopy recoveryKey];
 
-    if (v25)
+    if (recoveryKey)
     {
-      v26 = [v6 recoveryKey];
-      [v7 setObject:v26 forKey:*MEMORY[0x277CFB360]];
+      recoveryKey2 = [contextCopy recoveryKey];
+      [dictionary setObject:recoveryKey2 forKey:*MEMORY[0x277CFB360]];
 
-      [v7 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB2D8]];
+      [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB2D8]];
     }
   }
 
-  if (v4)
+  if (secretCopy)
   {
-    [v7 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3A0]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3A0]];
   }
 
-  if (([v8 isUsingMultipleiCSC] & 1) != 0 || objc_msgSend(v6, "silentRecovery"))
+  if (([device isUsingMultipleiCSC] & 1) != 0 || objc_msgSend(contextCopy, "silentRecovery"))
   {
     v27 = MEMORY[0x277CBEC38];
-    [v7 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3B0]];
-    [v7 setObject:v27 forKey:*MEMORY[0x277CFB2D8]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3B0]];
+    [dictionary setObject:v27 forKey:*MEMORY[0x277CFB2D8]];
   }
 
-  v28 = [v8 recordID];
+  recordID = [device recordID];
 
-  if (v28)
+  if (recordID)
   {
-    v29 = [v8 recordID];
-    [v7 setObject:v29 forKey:*MEMORY[0x277CFB358]];
+    recordID2 = [device recordID];
+    [dictionary setObject:recordID2 forKey:*MEMORY[0x277CFB358]];
   }
 
-  if ([v6 silentRecovery])
+  if ([contextCopy silentRecovery])
   {
-    [v7 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB380]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB380]];
   }
 
-  if ([v6 usePreviouslyCachedRecoveryKey])
+  if ([contextCopy usePreviouslyCachedRecoveryKey])
   {
-    [v7 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3C8]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3C8]];
   }
 
-  v30 = [v6 telemetryFlowID];
+  telemetryFlowID = [contextCopy telemetryFlowID];
 
-  if (v30)
+  if (telemetryFlowID)
   {
-    v31 = [v6 telemetryFlowID];
-    [v7 setObject:v31 forKey:*MEMORY[0x277CFB310]];
+    telemetryFlowID2 = [contextCopy telemetryFlowID];
+    [dictionary setObject:telemetryFlowID2 forKey:*MEMORY[0x277CFB310]];
   }
 
-  v32 = [v6 telemetryDeviceSessionID];
+  telemetryDeviceSessionID = [contextCopy telemetryDeviceSessionID];
 
-  if (v32)
+  if (telemetryDeviceSessionID)
   {
-    v33 = [v6 telemetryDeviceSessionID];
-    [v7 setObject:v33 forKey:*MEMORY[0x277CFB2E8]];
+    telemetryDeviceSessionID2 = [contextCopy telemetryDeviceSessionID];
+    [dictionary setObject:telemetryDeviceSessionID2 forKey:*MEMORY[0x277CFB2E8]];
   }
 
   v34 = _CDPLogSystem();
   if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [v6 telemetryFlowID];
-    v36 = [v6 telemetryDeviceSessionID];
+    telemetryFlowID3 = [contextCopy telemetryFlowID];
+    telemetryDeviceSessionID3 = [contextCopy telemetryDeviceSessionID];
     v39 = 138543618;
-    v40 = v35;
+    v40 = telemetryFlowID3;
     v41 = 2114;
-    v42 = v36;
+    v42 = telemetryDeviceSessionID3;
     _os_log_impl(&dword_24510B000, v34, OS_LOG_TYPE_DEFAULT, "Adding telemetry flow ID %{public}@ and session ID %{public}@ to recoveryInfo", &v39, 0x16u);
   }
 
-  if ([v6 nonViableRequiresRepair])
+  if ([contextCopy nonViableRequiresRepair])
   {
-    [v7 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB338]];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB338]];
   }
 
   v37 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)deleteAllBackupRecordsWithCompletion:(id)a3
+- (void)deleteAllBackupRecordsWithCompletion:(id)completion
 {
   v5 = self->_context;
-  v6 = a3;
-  v7 = [(CDPContext *)v5 backupActivity];
-  if (v7)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v5 backupActivity];
+  if (backupActivity)
   {
-    v8 = v7;
+    v8 = backupActivity;
   }
 
   else
@@ -5299,7 +5299,7 @@ LABEL_11:
   }
 
   [(CDPContext *)v5 setBackupActivity:v8];
-  v9 = _Block_copy(v6);
+  v9 = _Block_copy(completionCopy);
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -5386,19 +5386,19 @@ uint64_t __67__CDPDSecureBackupController_deleteAllBackupRecordsWithCompletion__
   return MEMORY[0x2821F9730]();
 }
 
-- (void)_deleteAllBackupRecordsWithCompletion:(id)a3
+- (void)_deleteAllBackupRecordsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [(CDPContext *)self->_context appleID];
-  [v5 setObject:v6 forKey:*MEMORY[0x277CFB2A8]];
+  completionCopy = completion;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  appleID = [(CDPContext *)self->_context appleID];
+  [dictionary setObject:appleID forKey:*MEMORY[0x277CFB2A8]];
 
-  v7 = [(CDPContext *)self->_context passwordEquivToken];
-  [v5 setObject:v7 forKey:*MEMORY[0x277CFB2C8]];
+  passwordEquivToken = [(CDPContext *)self->_context passwordEquivToken];
+  [dictionary setObject:passwordEquivToken forKey:*MEMORY[0x277CFB2C8]];
 
   v8 = MEMORY[0x277CBEC38];
-  [v5 setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3D8]];
-  [v5 setObject:v8 forKey:*MEMORY[0x277CFB2D8]];
+  [dictionary setObject:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CFB3D8]];
+  [dictionary setObject:v8 forKey:*MEMORY[0x277CFB2D8]];
   v9 = _CDPLogSystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
@@ -5407,7 +5407,7 @@ uint64_t __67__CDPDSecureBackupController_deleteAllBackupRecordsWithCompletion__
 
   secureBackupProxy = self->_secureBackupProxy;
   v14 = 0;
-  v11 = [(CDPDSecureBackupProxy *)secureBackupProxy disableWithInfo:v5 error:&v14];
+  v11 = [(CDPDSecureBackupProxy *)secureBackupProxy disableWithInfo:dictionary error:&v14];
   v12 = v14;
   if (v12)
   {
@@ -5418,22 +5418,22 @@ uint64_t __67__CDPDSecureBackupController_deleteAllBackupRecordsWithCompletion__
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v11, v12);
+    completionCopy[2](completionCopy, v11, v12);
   }
 }
 
-- (void)deleteSingleICSCBackupWithCompletion:(id)a3
+- (void)deleteSingleICSCBackupWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__CDPDSecureBackupController_deleteSingleICSCBackupWithCompletion___block_invoke;
   v6[3] = &unk_278E24AE8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CDPDSecureBackupController *)self _deleteSingleICSCBackupWithCompletion:v6];
 }
 
@@ -5490,16 +5490,16 @@ uint64_t __67__CDPDSecureBackupController_deleteSingleICSCBackupWithCompletion__
   return MEMORY[0x2821F9730]();
 }
 
-- (void)_deleteSingleICSCBackupWithCompletion:(id)a3
+- (void)_deleteSingleICSCBackupWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __68__CDPDSecureBackupController__deleteSingleICSCBackupWithCompletion___block_invoke;
   v6[3] = &unk_278E245F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CDPDSecureBackupController *)self accountInfoWithCompletion:v6];
 }
 
@@ -5569,9 +5569,9 @@ void __68__CDPDSecureBackupController__deleteSingleICSCBackupWithCompletion___bl
   }
 }
 
-- (void)disableSecureBackupWithCompletion:(id)a3
+- (void)disableSecureBackupWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v10 = 0;
   [(CDPDSecureBackupController *)self _disableSecureBackup:&v10];
   v5 = v10;
@@ -5589,13 +5589,13 @@ void __68__CDPDSecureBackupController__deleteSingleICSCBackupWithCompletion___bl
     v8[2] = __64__CDPDSecureBackupController_disableSecureBackupWithCompletion___block_invoke;
     v8[3] = &unk_278E24AE8;
     v8[4] = self;
-    v9 = v4;
+    v9 = completionCopy;
     [(CDPContext *)context reauthenticateUserWithCompletion:v8];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    (*(v4 + 2))(v4, v5);
+    (*(completionCopy + 2))(completionCopy, v5);
   }
 }
 
@@ -5632,11 +5632,11 @@ void __64__CDPDSecureBackupController_disableSecureBackupWithCompletion___block_
   }
 }
 
-- (BOOL)_disableSecureBackupWithEnableInfo:(id)a3 error:(id *)a4
+- (BOOL)_disableSecureBackupWithEnableInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CDPDSecureBackupController *)self delegate];
-  v8 = [v7 circlePeerIDForSecureBackupController:self];
+  infoCopy = info;
+  delegate = [(CDPDSecureBackupController *)self delegate];
+  v8 = [delegate circlePeerIDForSecureBackupController:self];
 
   if (v8)
   {
@@ -5649,7 +5649,7 @@ void __64__CDPDSecureBackupController_disableSecureBackupWithCompletion___block_
     [v10 setObject:v8 forKey:*MEMORY[0x277CFB358]];
     objc_opt_class();
     v12 = *MEMORY[0x277CFB338];
-    v13 = [v6 objectForKeyedSubscript:*MEMORY[0x277CFB338]];
+    v13 = [infoCopy objectForKeyedSubscript:*MEMORY[0x277CFB338]];
     if (objc_opt_isKindOfClass())
     {
       v14 = v13;
@@ -5660,8 +5660,8 @@ void __64__CDPDSecureBackupController_disableSecureBackupWithCompletion___block_
       v14 = 0;
     }
 
-    v17 = [v14 BOOLValue];
-    if (v17)
+    bOOLValue = [v14 BOOLValue];
+    if (bOOLValue)
     {
       v18 = _CDPLogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -5678,7 +5678,7 @@ void __64__CDPDSecureBackupController_disableSecureBackupWithCompletion___block_
       [CDPDSecureBackupController _disableSecureBackupWithEnableInfo:error:];
     }
 
-    v16 = [(CDPDSecureBackupProxy *)self->_secureBackupProxy disableWithInfo:v10 error:a4];
+    v16 = [(CDPDSecureBackupProxy *)self->_secureBackupProxy disableWithInfo:v10 error:error];
   }
 
   else
@@ -5689,10 +5689,10 @@ void __64__CDPDSecureBackupController_disableSecureBackupWithCompletion___block_
       [CDPDSecureBackupController _disableSecureBackupWithEnableInfo:error:];
     }
 
-    if (a4)
+    if (error)
     {
       _CDPStateError();
-      *a4 = v16 = 0;
+      *error = v16 = 0;
     }
 
     else
@@ -5704,14 +5704,14 @@ void __64__CDPDSecureBackupController_disableSecureBackupWithCompletion___block_
   return v16;
 }
 
-- (void)disableRecoveryKeyWithCompletion:(id)a3
+- (void)disableRecoveryKeyWithCompletion:(id)completion
 {
   v5 = self->_context;
-  v6 = a3;
-  v7 = [(CDPContext *)v5 backupActivity];
-  if (v7)
+  completionCopy = completion;
+  backupActivity = [(CDPContext *)v5 backupActivity];
+  if (backupActivity)
   {
-    v8 = v7;
+    v8 = backupActivity;
   }
 
   else
@@ -5720,7 +5720,7 @@ void __64__CDPDSecureBackupController_disableSecureBackupWithCompletion___block_
   }
 
   [(CDPContext *)v5 setBackupActivity:v8];
-  v9 = _Block_copy(v6);
+  v9 = _Block_copy(completionCopy);
 
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -5804,7 +5804,7 @@ void __63__CDPDSecureBackupController_disableRecoveryKeyWithCompletion___block_i
   }
 }
 
-- (BOOL)disableRecoveryKey:(id *)a3
+- (BOOL)disableRecoveryKey:(id *)key
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = _CDPLogSystem();
@@ -5814,9 +5814,9 @@ void __63__CDPDSecureBackupController_disableRecoveryKeyWithCompletion___block_i
     _os_log_impl(&dword_24510B000, v5, OS_LOG_TYPE_DEFAULT, "Removing recovery key", buf, 2u);
   }
 
-  v6 = [(CDPDSecureBackupController *)self octagonTrustProxy];
+  octagonTrustProxy = [(CDPDSecureBackupController *)self octagonTrustProxy];
   v13 = 0;
-  v7 = [v6 disableRecoveryKey:&v13];
+  v7 = [octagonTrustProxy disableRecoveryKey:&v13];
   v8 = v13;
 
   v9 = _CDPLogSystem();
@@ -5829,19 +5829,19 @@ void __63__CDPDSecureBackupController_disableRecoveryKeyWithCompletion___block_i
     _os_log_impl(&dword_24510B000, v9, OS_LOG_TYPE_DEFAULT, "Removed recovery key result: %{BOOL}d, error: %@", buf, 0x12u);
   }
 
-  if (a3)
+  if (key)
   {
     v10 = v8;
-    *a3 = v8;
+    *key = v8;
   }
 
   v11 = *MEMORY[0x277D85DE8];
   return v7;
 }
 
-- (void)disableRecoveryKeyFromAllSystemsWithCompletion:(id)a3
+- (void)disableRecoveryKeyFromAllSystemsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _CDPLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -5869,11 +5869,11 @@ void __63__CDPDSecureBackupController_disableRecoveryKeyWithCompletion___block_i
     v11[2] = __77__CDPDSecureBackupController_disableRecoveryKeyFromAllSystemsWithCompletion___block_invoke;
     v11[3] = &unk_278E24AE8;
     v11[4] = self;
-    v12 = v4;
+    v12 = completionCopy;
     [(CDPContext *)context reauthenticateUserWithCompletion:v11];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     if (v6)
     {
@@ -5885,7 +5885,7 @@ void __63__CDPDSecureBackupController_disableRecoveryKeyWithCompletion___block_i
       v10 = v7;
     }
 
-    (*(v4 + 2))(v4, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -5927,18 +5927,18 @@ void __77__CDPDSecureBackupController_disableRecoveryKeyFromAllSystemsWithComple
   }
 }
 
-- (void)_disableRecoveryKeyFromSOS:(id *)a3
+- (void)_disableRecoveryKeyFromSOS:(id *)s
 {
   if ([(CDPDSecureBackupController *)self _isSOSEnabled]&& [(CDPDSecureBackupController *)self _isInSOSCircle])
   {
-    v5 = [(CDPDSecureBackupController *)self secureBackupProxy];
+    secureBackupProxy = [(CDPDSecureBackupController *)self secureBackupProxy];
     v10 = 0;
-    v6 = [v5 removeRecoveryKeyFromSOS:&v10];
+    v6 = [secureBackupProxy removeRecoveryKeyFromSOS:&v10];
     v7 = v10;
 
     if (v7 || !v6)
     {
-      if (a3)
+      if (s)
       {
         v9 = v7;
         v8 = v7;
@@ -5946,25 +5946,25 @@ void __77__CDPDSecureBackupController_disableRecoveryKeyFromAllSystemsWithComple
       }
     }
 
-    else if (a3)
+    else if (s)
     {
       v8 = 0;
 LABEL_11:
-      *a3 = v8;
+      *s = v8;
     }
 
     return;
   }
 
-  if (a3)
+  if (s)
   {
-    *a3 = 0;
+    *s = 0;
   }
 }
 
-+ (id)_sanitizedInfoDictionary:(id)a3
++ (id)_sanitizedInfoDictionary:(id)dictionary
 {
-  v3 = [a3 mutableCopy];
+  v3 = [dictionary mutableCopy];
   v4 = *MEMORY[0x277CFB348];
   v5 = [v3 objectForKey:*MEMORY[0x277CFB348]];
 
@@ -6009,16 +6009,16 @@ LABEL_11:
   return v13;
 }
 
-+ (id)_printableAccountInfo:(id)a3
++ (id)_printableAccountInfo:(id)info
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [a3 mutableCopy];
-  v4 = [v3 allKeys];
+  v3 = [info mutableCopy];
+  allKeys = [v3 allKeys];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -6029,7 +6029,7 @@ LABEL_11:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v19 + 1) + 8 * i);
@@ -6061,7 +6061,7 @@ LABEL_11:
         [v3 setObject:v15 forKeyedSubscript:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v6);

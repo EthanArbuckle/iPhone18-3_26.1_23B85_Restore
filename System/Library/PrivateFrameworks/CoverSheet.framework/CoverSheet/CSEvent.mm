@@ -1,28 +1,28 @@
 @interface CSEvent
-+ (id)eventWithType:(int64_t)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)eventWithType:(int64_t)type;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation CSEvent
 
-+ (id)eventWithType:(int64_t)a3
++ (id)eventWithType:(int64_t)type
 {
-  v4 = objc_alloc_init(a1);
-  [v4 setType:a3];
-  [v4 setConsumable:(a3 - 27) < 7];
-  [v4 setStateless:(a3 > 0x29) | ((0xC000000000uLL >> a3) & 1)];
+  v4 = objc_alloc_init(self);
+  [v4 setType:type];
+  [v4 setConsumable:(type - 27) < 7];
+  [v4 setStateless:(type > 0x29) | ((0xC000000000uLL >> type) & 1)];
 
   return v4;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(CSEvent *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(CSEvent *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -38,12 +38,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CSEvent *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CSEvent *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

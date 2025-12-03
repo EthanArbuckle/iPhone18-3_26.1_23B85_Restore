@@ -1,7 +1,7 @@
 @interface HMDWidget
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMDWidget)initWithIdentifier:(id)a3 kind:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDWidget)initWithIdentifier:(id)identifier kind:(id)kind;
 - (NSArray)attributeDescriptions;
 - (NSString)shortDescription;
 - (unint64_t)hash;
@@ -13,12 +13,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDWidget *)self identifier];
-  v5 = [v3 initWithName:@"Identifier" value:v4];
+  identifier = [(HMDWidget *)self identifier];
+  v5 = [v3 initWithName:@"Identifier" value:identifier];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDWidget *)self kind];
-  v8 = [v6 initWithName:@"Kind" value:v7];
+  kind = [(HMDWidget *)self kind];
+  v8 = [v6 initWithName:@"Kind" value:kind];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -36,19 +36,19 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMDWidget *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMDWidget *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -59,13 +59,13 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMDWidget *)self identifier];
-    v8 = [v6 identifier];
-    if ([v7 isEqualToString:v8])
+    identifier = [(HMDWidget *)self identifier];
+    identifier2 = [v6 identifier];
+    if ([identifier isEqualToString:identifier2])
     {
-      v9 = [(HMDWidget *)self kind];
-      v10 = [v6 kind];
-      v11 = [v9 isEqualToString:v10];
+      kind = [(HMDWidget *)self kind];
+      kind2 = [v6 kind];
+      v11 = [kind isEqualToString:kind2];
     }
 
     else
@@ -82,18 +82,18 @@
   return v11;
 }
 
-- (HMDWidget)initWithIdentifier:(id)a3 kind:(id)a4
+- (HMDWidget)initWithIdentifier:(id)identifier kind:(id)kind
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  identifierCopy = identifier;
+  kindCopy = kind;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = kindCopy;
+  if (!kindCopy)
   {
 LABEL_7:
     v15 = _HMFPreconditionFailure();
@@ -105,7 +105,7 @@ LABEL_7:
   v9 = [(HMDWidget *)&v17 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 

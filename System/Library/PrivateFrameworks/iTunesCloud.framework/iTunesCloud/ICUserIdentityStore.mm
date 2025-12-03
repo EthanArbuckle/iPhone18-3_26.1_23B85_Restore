@@ -1,67 +1,67 @@
 @interface ICUserIdentityStore
 + (ICUserIdentityStore)defaultIdentityStore;
 + (ICUserIdentityStore)nullIdentityStore;
-+ (id)testingIdentityStoreWithDatabasePath:(id)a3;
-+ (id)testingIdentityStoreWithSingleWriterService:(id)a3;
-- (BOOL)_allowsDelegationForUserIdentity:(id)a3;
-- (BOOL)_refreshLocalStoreAccountPropertiesAllowingDidChangeNotification:(BOOL)a3;
-- (BOOL)_saveIdentityProperties:(id)a3 andPostAccountChangeNotification:(BOOL)a4 forUserIdentity:(id)a5 error:(id *)a6;
-- (BOOL)insertPropertiesForUserIdentity:(id)a3 usingBlock:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)testingIdentityStoreWithDatabasePath:(id)path;
++ (id)testingIdentityStoreWithSingleWriterService:(id)service;
+- (BOOL)_allowsDelegationForUserIdentity:(id)identity;
+- (BOOL)_refreshLocalStoreAccountPropertiesAllowingDidChangeNotification:(BOOL)notification;
+- (BOOL)_saveIdentityProperties:(id)properties andPostAccountChangeNotification:(BOOL)notification forUserIdentity:(id)identity error:(id *)error;
+- (BOOL)insertPropertiesForUserIdentity:(id)identity usingBlock:(id)block error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (ICLocalStoreAccountProperties)localStoreAccountProperties;
-- (ICUserIdentityStore)initWithCoder:(id)a3;
+- (ICUserIdentityStore)initWithCoder:(id)coder;
 - (ICUserIdentityStoreBackend)_unsafeBackend;
-- (id)DSIDForUserIdentity:(id)a3 outError:(id *)a4;
-- (id)_dsidForTimestamp:(unint64_t)a3 history:(id)a4;
-- (id)_dsidForUserIdentity:(id)a3 error:(id *)a4;
-- (id)_existingIdentityPropertiesForUserIdentity:(id)a3 error:(id *)a4;
-- (id)_icValidStoreAccountsFromACAccounts:(id)a3;
+- (id)DSIDForUserIdentity:(id)identity outError:(id *)error;
+- (id)_dsidForTimestamp:(unint64_t)timestamp history:(id)history;
+- (id)_dsidForUserIdentity:(id)identity error:(id *)error;
+- (id)_existingIdentityPropertiesForUserIdentity:(id)identity error:(id *)error;
+- (id)_icValidStoreAccountsFromACAccounts:(id)accounts;
 - (id)_initCommon;
-- (id)_initWithStyle:(int64_t)a3 delegateAccountStoreOptions:(id)a4;
-- (id)_openDelegateAccountStoreForUserIdentity:(id)a3 error:(id *)a4;
-- (id)_openDelegateAccountStoreWithError:(id *)a3;
-- (id)getPropertiesForActiveICloudAccountReturningError:(id *)a3;
-- (id)getPropertiesForUserIdentity:(id)a3 error:(id *)a4;
-- (id)getVerificationContextForUserIdentity:(id)a3 error:(id *)a4;
-- (id)userIdentitiesForAllStoreAccountsWithError:(id *)a3;
-- (id)userIdentitiesForManageableAccountsWithError:(id *)a3;
+- (id)_initWithStyle:(int64_t)style delegateAccountStoreOptions:(id)options;
+- (id)_openDelegateAccountStoreForUserIdentity:(id)identity error:(id *)error;
+- (id)_openDelegateAccountStoreWithError:(id *)error;
+- (id)getPropertiesForActiveICloudAccountReturningError:(id *)error;
+- (id)getPropertiesForUserIdentity:(id)identity error:(id *)error;
+- (id)getVerificationContextForUserIdentity:(id)identity error:(id *)error;
+- (id)userIdentitiesForAllStoreAccountsWithError:(id *)error;
+- (id)userIdentitiesForManageableAccountsWithError:(id *)error;
 - (unint64_t)hash;
-- (void)_assertNonNullIdentityStoreForSelector:(SEL)a3;
-- (void)_delegateAccountStoreDidChangeNotification:(id)a3;
-- (void)_dispatchDidChangeNotification:(BOOL)a3 didDelegateAccountStoreChange:(BOOL)a4;
-- (void)_importValuesFromCodingHelper:(id)a3;
+- (void)_assertNonNullIdentityStoreForSelector:(SEL)selector;
+- (void)_delegateAccountStoreDidChangeNotification:(id)notification;
+- (void)_dispatchDidChangeNotification:(BOOL)notification didDelegateAccountStoreChange:(BOOL)change;
+- (void)_importValuesFromCodingHelper:(id)helper;
 - (void)_initializeLocalStoreAccountProperties;
-- (void)_prepareDelegateAccountStoreWithCompletionHandler:(id)a3;
-- (void)_registerForDelegateAccountStoreNotifications:(id)a3;
+- (void)_prepareDelegateAccountStoreWithCompletionHandler:(id)handler;
+- (void)_registerForDelegateAccountStoreNotifications:(id)notifications;
 - (void)_reloadForExternalChange;
-- (void)_resetDelegateAccountStoreWithCompletionHandler:(id)a3;
-- (void)_unregisterForDelegateAccountStoreNotifications:(id)a3;
+- (void)_resetDelegateAccountStoreWithCompletionHandler:(id)handler;
+- (void)_unregisterForDelegateAccountStoreNotifications:(id)notifications;
 - (void)_unsafe_deleteDelegateAccountStore;
-- (void)_updateDelegateAccountStoreUsingBlock:(id)a3;
-- (void)addDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
+- (void)_updateDelegateAccountStoreUsingBlock:(id)block;
+- (void)addDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler;
 - (void)dealloc;
-- (void)disableLockerAccountWithDSID:(id)a3 completionHandler:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateDelegateTokensUsingBlock:(id)a3 completionHandler:(id)a4;
-- (void)enumerateDelegateTokensWithType:(int64_t)a3 usingBlock:(id)a4 completionHandler:(id)a5;
-- (void)getDelegationUUIDsForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)getPropertiesForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)insertPropertiesForUserIdentity:(id)a3 andPostAccountChangeNotification:(BOOL)a4 usingBlock:(id)a5 completionHandler:(id)a6;
-- (void)insertPropertiesForUserIdentity:(id)a3 usingBlock:(id)a4;
-- (void)insertPropertiesForUserIdentity:(id)a3 usingBlock:(id)a4 completionHandler:(id)a5;
-- (void)removeAllDelegateTokensWithCompletionHandler:(id)a3;
-- (void)removeDelegateTokenForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)removeDelegateTokensExpiringBeforeDate:(id)a3 completionHandler:(id)a4;
-- (void)removeDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5;
-- (void)removePropertiesForUserIdentity:(id)a3 completionHandler:(id)a4;
-- (void)setActiveAccountWithDSID:(id)a3 completionHandler:(id)a4;
-- (void)setActiveLockerAccountWithDSID:(id)a3 completionHandler:(id)a4;
+- (void)disableLockerAccountWithDSID:(id)d completionHandler:(id)handler;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateDelegateTokensUsingBlock:(id)block completionHandler:(id)handler;
+- (void)enumerateDelegateTokensWithType:(int64_t)type usingBlock:(id)block completionHandler:(id)handler;
+- (void)getDelegationUUIDsForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)getPropertiesForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)insertPropertiesForUserIdentity:(id)identity andPostAccountChangeNotification:(BOOL)notification usingBlock:(id)block completionHandler:(id)handler;
+- (void)insertPropertiesForUserIdentity:(id)identity usingBlock:(id)block;
+- (void)insertPropertiesForUserIdentity:(id)identity usingBlock:(id)block completionHandler:(id)handler;
+- (void)removeAllDelegateTokensWithCompletionHandler:(id)handler;
+- (void)removeDelegateTokenForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removeDelegateTokensExpiringBeforeDate:(id)date completionHandler:(id)handler;
+- (void)removeDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)removePropertiesForUserIdentity:(id)identity completionHandler:(id)handler;
+- (void)setActiveAccountWithDSID:(id)d completionHandler:(id)handler;
+- (void)setActiveLockerAccountWithDSID:(id)d completionHandler:(id)handler;
 - (void)synchronize;
-- (void)synchronizeWithCompletionHandler:(id)a3;
-- (void)updatePropertiesForLocalStoreAccountUsingBlock:(id)a3 completionHandler:(id)a4;
-- (void)updatePropertiesForUserIdentity:(id)a3 usingBlock:(id)a4;
-- (void)updatePropertiesForUserIdentity:(id)a3 usingBlock:(id)a4 completionHandler:(id)a5;
-- (void)userIdentityStoreBackendDidChange:(id)a3;
+- (void)synchronizeWithCompletionHandler:(id)handler;
+- (void)updatePropertiesForLocalStoreAccountUsingBlock:(id)block completionHandler:(id)handler;
+- (void)updatePropertiesForUserIdentity:(id)identity usingBlock:(id)block;
+- (void)updatePropertiesForUserIdentity:(id)identity usingBlock:(id)block completionHandler:(id)handler;
+- (void)userIdentityStoreBackendDidChange:(id)change;
 @end
 
 @implementation ICUserIdentityStore
@@ -154,11 +154,11 @@ void __40__ICUserIdentityStore_nullIdentityStore__block_invoke()
 {
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v3 = +[ICDefaults standardDefaults];
-  v6 = [v3 lastKnownLocalStoreAccountProperties];
+  lastKnownLocalStoreAccountProperties = [v3 lastKnownLocalStoreAccountProperties];
 
-  if (v6)
+  if (lastKnownLocalStoreAccountProperties)
   {
-    v4 = [[ICLocalStoreAccountProperties alloc] initWithPropertyListRepresentation:v6];
+    v4 = [[ICLocalStoreAccountProperties alloc] initWithPropertyListRepresentation:lastKnownLocalStoreAccountProperties];
     localStoreAccountProperties = self->_localStoreAccountProperties;
     self->_localStoreAccountProperties = v4;
   }
@@ -186,16 +186,16 @@ void __40__ICUserIdentityStore_nullIdentityStore__block_invoke()
   v17 = v16 ^ v11;
   v64 = (v14 + v13) ^ __ROR8__(v13, 47);
 
-  v18 = [(ICUserIdentityStoreCoding *)self->_codingHelper identityStoreStyle];
+  identityStoreStyle = [(ICUserIdentityStoreCoding *)self->_codingHelper identityStoreStyle];
   v19 = (v17 + v64) ^ __ROR8__(v64, 51);
-  v20 = v67 + (v70 ^ v18);
-  v21 = __ROR8__(v70 ^ v18, 48);
+  v20 = v67 + (v70 ^ identityStoreStyle);
+  v21 = __ROR8__(v70 ^ identityStoreStyle, 48);
   v22 = (v20 ^ v21) + __ROR8__(v17 + v64, 32);
   v23 = v22 ^ __ROR8__(v20 ^ v21, 43);
   v24 = v20 + v19;
   v68 = __ROR8__(v24, 32);
   v71 = v23;
-  v62 = v22 ^ v18;
+  v62 = v22 ^ identityStoreStyle;
   v65 = v24 ^ __ROR8__(v19, 47);
   v25 = self->_delegateAccountStoreOptions;
   v26 = [(ICDelegateAccountStoreOptions *)v25 hash];
@@ -347,17 +347,17 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke(uint64_
   return backend;
 }
 
-- (id)_icValidStoreAccountsFromACAccounts:(id)a3
+- (id)_icValidStoreAccountsFromACAccounts:(id)accounts
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  accountsCopy = accounts;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  v6 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v5;
+  v7 = accountsCopy;
   v8 = [v7 countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v8)
   {
@@ -373,18 +373,18 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke(uint64_
         }
 
         v12 = *(*(&v21 + 1) + 8 * i);
-        v13 = [v12 ic_DSID];
-        if (v13)
+        ic_DSID = [v12 ic_DSID];
+        if (ic_DSID)
         {
-          v14 = v13;
-          v15 = [v12 ic_isLocalAccount];
+          v14 = ic_DSID;
+          ic_isLocalAccount = [v12 ic_isLocalAccount];
 
-          if ((v15 & 1) == 0)
+          if ((ic_isLocalAccount & 1) == 0)
           {
-            v16 = [v12 ic_DSID];
-            v17 = [ICUserIdentity specificAccountWithDSID:v16];
+            ic_DSID2 = [v12 ic_DSID];
+            v17 = [ICUserIdentity specificAccountWithDSID:ic_DSID2];
 
-            [v6 addObject:v17];
+            [array addObject:v17];
           }
         }
       }
@@ -399,28 +399,28 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke(uint64_
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v26 = v6;
+    v26 = array;
     _os_log_impl(&dword_1B4491000, v18, OS_LOG_TYPE_DEFAULT, "[ICUserIdentityStore] - _icValidStoreAccountsFromACAccounts=%{public}@", buf, 0xCu);
   }
 
-  v19 = [v6 copy];
+  v19 = [array copy];
 
   return v19;
 }
 
-- (void)_unregisterForDelegateAccountStoreNotifications:(id)a3
+- (void)_unregisterForDelegateAccountStoreNotifications:(id)notifications
 {
-  v5 = a3;
+  notificationsCopy = notifications;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 removeObserver:self name:@"ICDelegateAccountStoreDidChangeNotification" object:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"ICDelegateAccountStoreDidChangeNotification" object:notificationsCopy];
 }
 
-- (BOOL)_saveIdentityProperties:(id)a3 andPostAccountChangeNotification:(BOOL)a4 forUserIdentity:(id)a5 error:(id *)a6
+- (BOOL)_saveIdentityProperties:(id)properties andPostAccountChangeNotification:(BOOL)notification forUserIdentity:(id)identity error:(id *)error
 {
-  v30 = a4;
-  v10 = a3;
-  v11 = a5;
+  notificationCopy = notification;
+  propertiesCopy = properties;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v51 = 0;
   v52 = &v51;
@@ -436,7 +436,7 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke(uint64_
   v42 = &v41;
   v43 = 0x2020000000;
   v44 = 1;
-  if ([v10 isDelegated])
+  if ([propertiesCopy isDelegated])
   {
     v12 = v46;
     obj = v46[5];
@@ -458,26 +458,26 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke(uint64_
       v39 = &v41;
       v15 = v14;
       v37 = v15;
-      [v13 setIdentityProperties:v10 forUserIdentity:v11 completionHandler:v36];
+      [v13 setIdentityProperties:propertiesCopy forUserIdentity:identityCopy completionHandler:v36];
       dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
     }
   }
 
   v35 = 0;
-  v16 = [(ICUserIdentityStore *)self _dsidForUserIdentity:v11 error:&v35];
+  v16 = [(ICUserIdentityStore *)self _dsidForUserIdentity:identityCopy error:&v35];
   v17 = v35;
   if (v16)
   {
     v18 = self->_backend;
-    if ([v10 isDelegated])
+    if ([propertiesCopy isDelegated])
     {
       v34 = 0;
-      [(ICUserIdentityStoreBackend *)v18 replaceIdentityProperties:v10 forDSID:v16 error:&v34];
+      [(ICUserIdentityStoreBackend *)v18 replaceIdentityProperties:propertiesCopy forDSID:v16 error:&v34];
       v19 = v34;
       if ([v19 code] == -7401)
       {
-        v20 = [v19 domain];
-        v21 = [v20 isEqualToString:@"ICError"];
+        domain = [v19 domain];
+        v21 = [domain isEqualToString:@"ICError"];
 
         if (v21)
         {
@@ -490,7 +490,7 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke(uint64_
     else
     {
       v33 = 0;
-      [(ICUserIdentityStoreBackend *)v18 setIdentityProperties:v10 forDSID:v16 error:&v33];
+      [(ICUserIdentityStoreBackend *)v18 setIdentityProperties:propertiesCopy forDSID:v16 error:&v33];
       v19 = v33;
     }
 
@@ -525,7 +525,7 @@ LABEL_19:
   v32[3] = &unk_1E7BFA300;
   v32[4] = self;
   [(ICUserIdentityStoreCoding *)codingHelper lock:v32];
-  if (v30)
+  if (notificationCopy)
   {
     callbackQueue = self->_callbackQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -538,10 +538,10 @@ LABEL_19:
     dispatch_async(callbackQueue, block);
   }
 
-  if (a6)
+  if (error)
   {
     v27 = v23;
-    *a6 = v23;
+    *error = v23;
   }
 
   if (v23)
@@ -569,24 +569,24 @@ void __102__ICUserIdentityStore__saveIdentityProperties_andPostAccountChangeNoti
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_registerForDelegateAccountStoreNotifications:(id)a3
+- (void)_registerForDelegateAccountStoreNotifications:(id)notifications
 {
-  v5 = a3;
+  notificationsCopy = notifications;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel__delegateAccountStoreDidChangeNotification_ name:@"ICDelegateAccountStoreDidChangeNotification" object:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__delegateAccountStoreDidChangeNotification_ name:@"ICDelegateAccountStoreDidChangeNotification" object:notificationsCopy];
 }
 
-- (id)_openDelegateAccountStoreForUserIdentity:(id)a3 error:(id *)a4
+- (id)_openDelegateAccountStoreForUserIdentity:(id)identity error:(id *)error
 {
-  v7 = a3;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v8 = self->_delegateAccountStore;
   if (v8)
   {
     v9 = v8;
     v10 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -594,11 +594,11 @@ void __102__ICUserIdentityStore__saveIdentityProperties_andPostAccountChangeNoti
     goto LABEL_8;
   }
 
-  if (![v7 allowsDelegation])
+  if (![identityCopy allowsDelegation])
   {
     v10 = 0;
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -609,11 +609,11 @@ void __102__ICUserIdentityStore__saveIdentityProperties_andPostAccountChangeNoti
   v12 = 0;
   v9 = [(ICUserIdentityStore *)self _openDelegateAccountStoreWithError:&v12];
   v10 = v12;
-  if (a4)
+  if (error)
   {
 LABEL_8:
     v10 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_9:
@@ -621,7 +621,7 @@ LABEL_9:
   return v9;
 }
 
-- (id)_openDelegateAccountStoreWithError:(id *)a3
+- (id)_openDelegateAccountStoreWithError:(id *)error
 {
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v29 = 0;
@@ -700,9 +700,9 @@ LABEL_11:
 
   objc_storeStrong(&self->_delegateAccountStore, v15);
 LABEL_15:
-  if (a3)
+  if (error)
   {
-    *a3 = v30[5];
+    *error = v30[5];
   }
 
   v16 = v24[5];
@@ -744,18 +744,18 @@ void __58__ICUserIdentityStore__openDelegateAccountStoreWithError___block_invoke
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)_importValuesFromCodingHelper:(id)a3
+- (void)_importValuesFromCodingHelper:(id)helper
 {
-  v5 = a3;
+  helperCopy = helper;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__ICUserIdentityStore__importValuesFromCodingHelper___block_invoke;
   v8[3] = &unk_1E7BFA078;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = helperCopy;
+  selfCopy = self;
+  v7 = helperCopy;
   dispatch_sync(accessQueue, v8);
 }
 
@@ -778,9 +778,9 @@ void __53__ICUserIdentityStore__importValuesFromCodingHelper___block_invoke(uint
   }
 }
 
-- (id)_existingIdentityPropertiesForUserIdentity:(id)a3 error:(id *)a4
+- (id)_existingIdentityPropertiesForUserIdentity:(id)identity error:(id *)error
 {
-  v7 = a3;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v33 = 0;
   v34 = &v33;
@@ -788,17 +788,17 @@ void __53__ICUserIdentityStore__importValuesFromCodingHelper___block_invoke(uint
   v36 = __Block_byref_object_copy__38093;
   v37 = __Block_byref_object_dispose__38094;
   v38 = 0;
-  v8 = [(ICUserIdentityStore *)self _allowsDelegationForUserIdentity:v7];
-  v9 = [v7 type];
+  v8 = [(ICUserIdentityStore *)self _allowsDelegationForUserIdentity:identityCopy];
+  type = [identityCopy type];
   v10 = 0;
-  if (v9 <= 9)
+  if (type <= 9)
   {
-    if (((1 << v9) & 0x3CF) != 0)
+    if (((1 << type) & 0x3CF) != 0)
     {
       v32 = 0;
-      v11 = [(ICUserIdentityStore *)self _dsidForUserIdentity:v7 error:&v32];
+      deviceIdentifier = [(ICUserIdentityStore *)self _dsidForUserIdentity:identityCopy error:&v32];
       v10 = v32;
-      if (!v10 && v11)
+      if (!v10 && deviceIdentifier)
       {
         backend = self->_backend;
         v31 = 0;
@@ -806,7 +806,7 @@ void __53__ICUserIdentityStore__importValuesFromCodingHelper___block_invoke(uint
         v10 = v31;
         if (!v10)
         {
-          if (v8 && ![v13 isEqual:v11])
+          if (v8 && ![v13 isEqual:deviceIdentifier])
           {
             v10 = 0;
           }
@@ -815,7 +815,7 @@ void __53__ICUserIdentityStore__importValuesFromCodingHelper___block_invoke(uint
           {
             v14 = self->_backend;
             v30 = 0;
-            v15 = [(ICUserIdentityStoreBackend *)v14 identityPropertiesForDSID:v11 error:&v30];
+            v15 = [(ICUserIdentityStoreBackend *)v14 identityPropertiesForDSID:deviceIdentifier error:&v30];
             v10 = v30;
             v16 = [v15 mutableCopy];
             v17 = v34[5];
@@ -827,7 +827,7 @@ void __53__ICUserIdentityStore__importValuesFromCodingHelper___block_invoke(uint
 
     else
     {
-      if (v9 != 4)
+      if (type != 4)
       {
         goto LABEL_14;
       }
@@ -837,8 +837,8 @@ void __53__ICUserIdentityStore__importValuesFromCodingHelper___block_invoke(uint
       v34[5] = v18;
 
       v20 = v34[5];
-      v11 = [v7 deviceIdentifier];
-      [v20 setCarrierBundleDeviceIdentifier:v11];
+      deviceIdentifier = [identityCopy deviceIdentifier];
+      [v20 setCarrierBundleDeviceIdentifier:deviceIdentifier];
       v10 = 0;
     }
   }
@@ -857,17 +857,17 @@ LABEL_14:
       v26[2] = __72__ICUserIdentityStore__existingIdentityPropertiesForUserIdentity_error___block_invoke;
       v26[3] = &unk_1E7BF9B90;
       v28 = &v33;
-      v27 = v7;
+      v27 = identityCopy;
       [v21 readUsingBlock:v26];
     }
 
     v10 = v22;
   }
 
-  if (a4)
+  if (error)
   {
     v23 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   v24 = v34[5];
@@ -886,23 +886,23 @@ uint64_t __72__ICUserIdentityStore__existingIdentityPropertiesForUserIdentity_er
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (id)_dsidForUserIdentity:(id)a3 error:(id *)a4
+- (id)_dsidForUserIdentity:(id)identity error:(id *)error
 {
-  v7 = a3;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  v8 = [v7 DSID];
-  if ([v7 hasResolvedDSID])
+  dSID = [identityCopy DSID];
+  if ([identityCopy hasResolvedDSID])
   {
     v9 = 0;
     goto LABEL_33;
   }
 
-  v10 = [v7 type];
+  type = [identityCopy type];
   p_lastKnownActiveAccountTimestamp = &self->_lastKnownActiveAccountTimestamp;
   if (!self->_lastKnownActiveAccountTimestamp)
   {
     v17 = mach_absolute_time();
-    if ((v10 & 0xFFFFFFFFFFFFFFFDLL) == 1)
+    if ((type & 0xFFFFFFFFFFFFFFFDLL) == 1)
     {
       backend = self->_backend;
       v34 = 0;
@@ -918,7 +918,7 @@ uint64_t __72__ICUserIdentityStore__existingIdentityPropertiesForUserIdentity_er
 
     else
     {
-      if ((v10 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+      if ((type & 0xFFFFFFFFFFFFFFFDLL) != 0)
       {
         goto LABEL_4;
       }
@@ -944,51 +944,51 @@ LABEL_39:
 
 LABEL_4:
   v9 = 0;
-  if (v10 <= 5)
+  if (type <= 5)
   {
-    if (v10 <= 1)
+    if (type <= 1)
     {
-      if (v10)
+      if (type)
       {
-        if (v10 != 1)
+        if (type != 1)
         {
           goto LABEL_33;
         }
 
-        v12 = [v7 creationTime];
+        creationTime = [identityCopy creationTime];
         activeLockerAccountHistory = self->_activeLockerAccountHistory;
       }
 
       else
       {
-        v12 = [v7 creationTime];
+        creationTime = [identityCopy creationTime];
         activeLockerAccountHistory = self->_activeAccountHistory;
       }
 
-      v16 = [(ICUserIdentityStore *)self _dsidForTimestamp:v12 history:activeLockerAccountHistory];
+      dSID2 = [(ICUserIdentityStore *)self _dsidForTimestamp:creationTime history:activeLockerAccountHistory];
 
-      [v7 _setResolvedDSID:v16];
+      [identityCopy _setResolvedDSID:dSID2];
       goto LABEL_27;
     }
 
-    if (v10 == 2)
+    if (type == 2)
     {
       v25 = self->_backend;
       v33 = 0;
-      v16 = [(ICUserIdentityStoreBackend *)v25 activeAccountDSIDWithError:&v33];
+      dSID2 = [(ICUserIdentityStoreBackend *)v25 activeAccountDSIDWithError:&v33];
       v22 = v33;
     }
 
     else
     {
-      if (v10 != 3)
+      if (type != 3)
       {
         goto LABEL_33;
       }
 
       v21 = self->_backend;
       v32 = 0;
-      v16 = [(ICUserIdentityStoreBackend *)v21 activeLockerAccountDSIDWithError:&v32];
+      dSID2 = [(ICUserIdentityStoreBackend *)v21 activeLockerAccountDSIDWithError:&v32];
       v22 = v32;
     }
 
@@ -998,64 +998,64 @@ LABEL_29:
     goto LABEL_32;
   }
 
-  if (v10 > 7)
+  if (type > 7)
   {
-    if (v10 != 8)
+    if (type != 8)
     {
-      if (v10 != 9)
+      if (type != 9)
       {
         goto LABEL_33;
       }
 
       v23 = self->_backend;
       v29 = 0;
-      v16 = [(ICUserIdentityStoreBackend *)v23 defaultMediaAccountDSIDWithError:&v29];
+      dSID2 = [(ICUserIdentityStoreBackend *)v23 defaultMediaAccountDSIDWithError:&v29];
       v22 = v29;
       goto LABEL_29;
     }
 
     v26 = self->_backend;
     v30 = 0;
-    v16 = [(ICUserIdentityStoreBackend *)v26 defaultMediaAccountDSIDWithError:&v30];
+    dSID2 = [(ICUserIdentityStoreBackend *)v26 defaultMediaAccountDSIDWithError:&v30];
     v9 = v30;
 
 LABEL_31:
-    [v7 _setResolvedDSID:v16];
+    [identityCopy _setResolvedDSID:dSID2];
     goto LABEL_32;
   }
 
-  if (v10 != 6)
+  if (type != 6)
   {
     v14 = self->_backend;
-    v15 = [v7 altDSID];
+    altDSID = [identityCopy altDSID];
     v31 = 0;
-    v16 = [(ICUserIdentityStoreBackend *)v14 accountDSIDForAltDSID:v15 error:&v31];
+    dSID2 = [(ICUserIdentityStoreBackend *)v14 accountDSIDForAltDSID:altDSID error:&v31];
     v9 = v31;
 
     goto LABEL_31;
   }
 
-  v16 = [v7 DSID];
+  dSID2 = [identityCopy DSID];
 
 LABEL_27:
   v9 = 0;
 LABEL_32:
-  v8 = v16;
+  dSID = dSID2;
 LABEL_33:
-  if (a4)
+  if (error)
   {
     v27 = v9;
-    *a4 = v9;
+    *error = v9;
   }
 
-  return v8;
+  return dSID;
 }
 
-- (id)_dsidForTimestamp:(unint64_t)a3 history:(id)a4
+- (id)_dsidForTimestamp:(unint64_t)timestamp history:(id)history
 {
-  v7 = a4;
+  historyCopy = history;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  v8 = [v7 firstValueBeforeTimestamp:a3];
+  v8 = [historyCopy firstValueBeforeTimestamp:timestamp];
   v9 = v8;
   if (v8)
   {
@@ -1064,7 +1064,7 @@ LABEL_33:
 
   else
   {
-    v10 = [v7 firstValueAfterOrEqualToTimestamp:a3];
+    v10 = [historyCopy firstValueAfterOrEqualToTimestamp:timestamp];
   }
 
   v11 = v10;
@@ -1072,48 +1072,48 @@ LABEL_33:
   return v11;
 }
 
-- (void)_dispatchDidChangeNotification:(BOOL)a3 didDelegateAccountStoreChange:(BOOL)a4
+- (void)_dispatchDidChangeNotification:(BOOL)notification didDelegateAccountStoreChange:(BOOL)change
 {
-  v4 = a4;
-  v5 = a3;
+  changeCopy = change;
+  notificationCopy = notification;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  if (v5)
+  if (notificationCopy)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"ICUserIdentityStoreDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICUserIdentityStoreDidChangeNotification" object:self];
   }
 
-  if (v4)
+  if (changeCopy)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"ICUserIdentityStoreDelegateAccountStoreDidChangeNotification" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"ICUserIdentityStoreDelegateAccountStoreDidChangeNotification" object:self];
   }
 }
 
-- (void)_assertNonNullIdentityStoreForSelector:(SEL)a3
+- (void)_assertNonNullIdentityStoreForSelector:(SEL)selector
 {
   if ([(ICUserIdentityStoreCoding *)self->_codingHelper identityStoreStyle]== 2)
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"ICUserIdentityStore.m" lineNumber:1262 description:{@"The following method is not supported on the null identity store: %s.", sel_getName(a2)}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICUserIdentityStore.m" lineNumber:1262 description:{@"The following method is not supported on the null identity store: %s.", sel_getName(a2)}];
   }
 }
 
-- (BOOL)_allowsDelegationForUserIdentity:(id)a3
+- (BOOL)_allowsDelegationForUserIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  if ([v5 allowsDelegation])
+  if ([identityCopy allowsDelegation])
   {
-    v6 = [v5 type];
-    if (v6 == 7)
+    type = [identityCopy type];
+    if (type == 7)
     {
       backend = self->_backend;
       v19 = 0;
       v14 = [(ICUserIdentityStoreBackend *)backend activeAccountDSIDWithError:&v19];
       v15 = v19;
       v18 = v15;
-      v16 = [(ICUserIdentityStore *)self DSIDForUserIdentity:v5 outError:&v18];
+      v16 = [(ICUserIdentityStore *)self DSIDForUserIdentity:identityCopy outError:&v18];
       v17 = v18;
 
       if (v16 == v14)
@@ -1127,27 +1127,27 @@ LABEL_33:
       }
     }
 
-    else if (v6 == 6)
+    else if (type == 6)
     {
       v9 = self->_backend;
       v20 = 0;
       v10 = [(ICUserIdentityStoreBackend *)v9 activeAccountDSIDWithError:&v20];
-      v11 = [v5 DSID];
-      v12 = v11;
-      if (v11 == v10)
+      dSID = [identityCopy DSID];
+      v12 = dSID;
+      if (dSID == v10)
       {
         LOBYTE(v7) = 0;
       }
 
       else
       {
-        v7 = [v11 isEqual:v10] ^ 1;
+        v7 = [dSID isEqual:v10] ^ 1;
       }
     }
 
     else
     {
-      LOBYTE(v7) = v6 == 4;
+      LOBYTE(v7) = type == 4;
     }
   }
 
@@ -1159,68 +1159,68 @@ LABEL_33:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   codingHelper = self->_codingHelper;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __39__ICUserIdentityStore_encodeWithCoder___block_invoke;
   v8[3] = &unk_1E7BFA078;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = coderCopy;
+  selfCopy = self;
+  v7 = coderCopy;
   [(ICUserIdentityStoreCoding *)codingHelper lock:v8];
 }
 
-- (ICUserIdentityStore)initWithCoder:(id)a3
+- (ICUserIdentityStore)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ICUserIdentityStore *)v4 decodeObjectOfClass:objc_opt_class() forKey:@"helper"];
+  selfCopy = coder;
+  v5 = [(ICUserIdentityStore *)selfCopy decodeObjectOfClass:objc_opt_class() forKey:@"helper"];
 
   if (v5)
   {
-    v6 = [v5 identityStoreStyle];
-    switch(v6)
+    identityStoreStyle = [v5 identityStoreStyle];
+    switch(identityStoreStyle)
     {
       case 2:
-        v4 = +[ICUserIdentityStore nullIdentityStore];
+        selfCopy = +[ICUserIdentityStore nullIdentityStore];
 LABEL_12:
 
         self = 0;
         break;
       case 1:
-        v8 = [(ICUserIdentityStore *)self _initCommon];
-        if (v8)
+        _initCommon = [(ICUserIdentityStore *)self _initCommon];
+        if (_initCommon)
         {
-          v9 = [v5 activeAccountHistory];
-          v10 = *(v8 + 1);
-          *(v8 + 1) = v9;
+          activeAccountHistory = [v5 activeAccountHistory];
+          v10 = *(_initCommon + 1);
+          *(_initCommon + 1) = activeAccountHistory;
 
-          v11 = [v5 activeLockerAccountHistory];
-          v12 = *(v8 + 2);
-          *(v8 + 2) = v11;
+          activeLockerAccountHistory = [v5 activeLockerAccountHistory];
+          v12 = *(_initCommon + 2);
+          *(_initCommon + 2) = activeLockerAccountHistory;
 
-          v13 = [v5 backend];
-          v14 = *(v8 + 3);
-          *(v8 + 3) = v13;
+          backend = [v5 backend];
+          v14 = *(_initCommon + 3);
+          *(_initCommon + 3) = backend;
 
-          [*(v8 + 3) setDelegate:v8];
-          objc_storeStrong(v8 + 4, v5);
-          v15 = [v5 delegateAccountStoreOptions];
-          v16 = *(v8 + 6);
-          *(v8 + 6) = v15;
+          [*(_initCommon + 3) setDelegate:_initCommon];
+          objc_storeStrong(_initCommon + 4, v5);
+          delegateAccountStoreOptions = [v5 delegateAccountStoreOptions];
+          v16 = *(_initCommon + 6);
+          *(_initCommon + 6) = delegateAccountStoreOptions;
 
-          [v8 _initializeLocalStoreAccountProperties];
+          [_initCommon _initializeLocalStoreAccountProperties];
         }
 
-        self = v8;
-        v4 = self;
+        self = _initCommon;
+        selfCopy = self;
         break;
       case 0:
         v7 = +[ICUserIdentityStore defaultIdentityStore];
-        v4 = v7;
+        selfCopy = v7;
         if (v7)
         {
           [(ICUserIdentityStore *)v7 _importValuesFromCodingHelper:v5];
@@ -1234,25 +1234,25 @@ LABEL_12:
   {
 
     self = 0;
-    v4 = 0;
+    selfCopy = 0;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(ICUserIdentityStore *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(ICUserIdentityStore *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
-    v6 = [(ICUserIdentityStoreCoding *)self->_codingHelper identityStoreStyle];
-    if (v6 == [(ICUserIdentityStoreCoding *)v5->_codingHelper identityStoreStyle])
+    v5 = equalCopy;
+    identityStoreStyle = [(ICUserIdentityStoreCoding *)self->_codingHelper identityStoreStyle];
+    if (identityStoreStyle == [(ICUserIdentityStoreCoding *)v5->_codingHelper identityStoreStyle])
     {
       delegateAccountStoreOptions = self->_delegateAccountStoreOptions;
       v8 = v5->_delegateAccountStoreOptions;
@@ -1283,7 +1283,7 @@ LABEL_12:
   return v11;
 }
 
-- (void)_delegateAccountStoreDidChangeNotification:(id)a3
+- (void)_delegateAccountStoreDidChangeNotification:(id)notification
 {
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   callbackQueue = self->_callbackQueue;
@@ -1301,9 +1301,9 @@ void __66__ICUserIdentityStore__delegateAccountStoreDidChangeNotification___bloc
   [v2 postNotificationName:@"ICUserIdentityStoreDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_updateDelegateAccountStoreUsingBlock:(id)a3
+- (void)_updateDelegateAccountStoreUsingBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -1311,8 +1311,8 @@ void __66__ICUserIdentityStore__delegateAccountStoreDidChangeNotification___bloc
   v8[2] = __61__ICUserIdentityStore__updateDelegateAccountStoreUsingBlock___block_invoke;
   v8[3] = &unk_1E7BF9EC8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = blockCopy;
+  v7 = blockCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -1370,9 +1370,9 @@ void __57__ICUserIdentityStore__unsafe_deleteDelegateAccountStore__block_invoke(
   dispatch_barrier_sync(*(*(a1 + 32) + 88), &__block_literal_global_59);
 }
 
-- (void)_resetDelegateAccountStoreWithCompletionHandler:(id)a3
+- (void)_resetDelegateAccountStoreWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -1380,8 +1380,8 @@ void __57__ICUserIdentityStore__unsafe_deleteDelegateAccountStore__block_invoke(
   v8[2] = __71__ICUserIdentityStore__resetDelegateAccountStoreWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7BF9EC8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -1668,9 +1668,9 @@ void __47__ICUserIdentityStore__reloadForExternalChange__block_invoke_2(uint64_t
   }
 }
 
-- (BOOL)_refreshLocalStoreAccountPropertiesAllowingDidChangeNotification:(BOOL)a3
+- (BOOL)_refreshLocalStoreAccountPropertiesAllowingDidChangeNotification:(BOOL)notification
 {
-  v3 = a3;
+  notificationCopy = notification;
   v19 = *MEMORY[0x1E69E9840];
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   backend = self->_backend;
@@ -1702,7 +1702,7 @@ LABEL_10:
   v10 = self->_localStoreAccountProperties;
   self->_localStoreAccountProperties = v9;
 
-  if (v3)
+  if (notificationCopy)
   {
     callbackQueue = self->_callbackQueue;
     v15[0] = MEMORY[0x1E69E9820];
@@ -1732,9 +1732,9 @@ void __88__ICUserIdentityStore__refreshLocalStoreAccountPropertiesAllowingDidCha
   [v3 postNotificationName:@"ICUserIdentityStoreLocalStoreAccountPropertiesDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)_prepareDelegateAccountStoreWithCompletionHandler:(id)a3
+- (void)_prepareDelegateAccountStoreWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -1742,8 +1742,8 @@ void __88__ICUserIdentityStore__refreshLocalStoreAccountPropertiesAllowingDidCha
   v8[2] = __73__ICUserIdentityStore__prepareDelegateAccountStoreWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7BF9EC8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -1795,7 +1795,7 @@ uint64_t __73__ICUserIdentityStore__prepareDelegateAccountStoreWithCompletionHan
   return result;
 }
 
-- (void)userIdentityStoreBackendDidChange:(id)a3
+- (void)userIdentityStoreBackendDidChange:(id)change
 {
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Default");
@@ -1808,7 +1808,7 @@ uint64_t __73__ICUserIdentityStore__prepareDelegateAccountStoreWithCompletionHan
   [(ICUserIdentityStore *)self _reloadForExternalChange];
 }
 
-- (id)userIdentitiesForAllStoreAccountsWithError:(id *)a3
+- (id)userIdentitiesForAllStoreAccountsWithError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
@@ -1862,10 +1862,10 @@ uint64_t __73__ICUserIdentityStore__prepareDelegateAccountStoreWithCompletionHan
     }
   }
 
-  if (a3)
+  if (error)
   {
     v15 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   v16 = [v9 copy];
@@ -1873,10 +1873,10 @@ uint64_t __73__ICUserIdentityStore__prepareDelegateAccountStoreWithCompletionHan
   return v16;
 }
 
-- (void)updatePropertiesForLocalStoreAccountUsingBlock:(id)a3 completionHandler:(id)a4
+- (void)updatePropertiesForLocalStoreAccountUsingBlock:(id)block completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -1884,10 +1884,10 @@ uint64_t __73__ICUserIdentityStore__prepareDelegateAccountStoreWithCompletionHan
   block[2] = __88__ICUserIdentityStore_updatePropertiesForLocalStoreAccountUsingBlock_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9910;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = blockCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = blockCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1953,7 +1953,7 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke_51(uint
   [v2 postNotificationName:@"ICUserIdentityStoreLocalStoreAccountPropertiesDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (id)userIdentitiesForManageableAccountsWithError:(id *)a3
+- (id)userIdentitiesForManageableAccountsWithError:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
@@ -2007,10 +2007,10 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke_51(uint
     }
   }
 
-  if (a3)
+  if (error)
   {
     v15 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   v16 = [v9 copy];
@@ -2018,9 +2018,9 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke_51(uint
   return v16;
 }
 
-- (id)DSIDForUserIdentity:(id)a3 outError:(id *)a4
+- (id)DSIDForUserIdentity:(id)identity outError:(id *)error
 {
-  v7 = a3;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v22 = 0;
   v23 = &v22;
@@ -2041,13 +2041,13 @@ void __50__ICUserIdentityStore_localStoreAccountProperties__block_invoke_51(uint
   v12[3] = &unk_1E7BF9AF0;
   v14 = &v22;
   v12[4] = self;
-  v9 = v7;
+  v9 = identityCopy;
   v13 = v9;
   v15 = &v16;
   dispatch_sync(accessQueue, v12);
-  if (a4)
+  if (error)
   {
-    *a4 = v17[5];
+    *error = v17[5];
   }
 
   v10 = v23[5];
@@ -2071,11 +2071,11 @@ void __52__ICUserIdentityStore_DSIDForUserIdentity_outError___block_invoke(void 
   *(v6 + 40) = v5;
 }
 
-- (void)updatePropertiesForUserIdentity:(id)a3 usingBlock:(id)a4 completionHandler:(id)a5
+- (void)updatePropertiesForUserIdentity:(id)identity usingBlock:(id)block completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identityCopy = identity;
+  blockCopy = block;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v16[0] = MEMORY[0x1E69E9820];
@@ -2083,12 +2083,12 @@ void __52__ICUserIdentityStore_DSIDForUserIdentity_outError___block_invoke(void 
   v16[2] = __84__ICUserIdentityStore_updatePropertiesForUserIdentity_usingBlock_completionHandler___block_invoke;
   v16[3] = &unk_1E7BF9AC8;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
+  v17 = identityCopy;
+  v18 = blockCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = blockCopy;
+  v15 = identityCopy;
   dispatch_async(accessQueue, v16);
 }
 
@@ -2134,17 +2134,17 @@ uint64_t __84__ICUserIdentityStore_updatePropertiesForUserIdentity_usingBlock_co
   return result;
 }
 
-- (void)updatePropertiesForUserIdentity:(id)a3 usingBlock:(id)a4
+- (void)updatePropertiesForUserIdentity:(id)identity usingBlock:(id)block
 {
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  [(ICUserIdentityStore *)self updatePropertiesForUserIdentity:v8 usingBlock:v7 completionHandler:0];
+  [(ICUserIdentityStore *)self updatePropertiesForUserIdentity:identityCopy usingBlock:blockCopy completionHandler:0];
 }
 
-- (void)synchronizeWithCompletionHandler:(id)a3
+- (void)synchronizeWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -2152,8 +2152,8 @@ uint64_t __84__ICUserIdentityStore_updatePropertiesForUserIdentity_usingBlock_co
   v8[2] = __56__ICUserIdentityStore_synchronizeWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7BF9EC8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -2169,15 +2169,15 @@ void __56__ICUserIdentityStore_synchronizeWithCompletionHandler___block_invoke(u
   }
 }
 
-- (void)disableLockerAccountWithDSID:(id)a3 completionHandler:(id)a4
+- (void)disableLockerAccountWithDSID:(id)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  if (!v7)
+  if (!dCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"ICUserIdentityStore.m" lineNumber:690 description:{@"Invalid parameter not satisfying: %@", @"dsID != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICUserIdentityStore.m" lineNumber:690 description:{@"Invalid parameter not satisfying: %@", @"dsID != nil"}];
   }
 
   v9 = mach_absolute_time();
@@ -2187,11 +2187,11 @@ void __56__ICUserIdentityStore_synchronizeWithCompletionHandler___block_invoke(u
   block[2] = __70__ICUserIdentityStore_disableLockerAccountWithDSID_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9AA0;
   block[4] = self;
-  v15 = v7;
-  v16 = v8;
+  v15 = dCopy;
+  v16 = handlerCopy;
   v17 = v9;
-  v11 = v8;
-  v12 = v7;
+  v11 = handlerCopy;
+  v12 = dCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -2293,10 +2293,10 @@ uint64_t __70__ICUserIdentityStore_disableLockerAccountWithDSID_completionHandle
   return result;
 }
 
-- (void)setActiveLockerAccountWithDSID:(id)a3 completionHandler:(id)a4
+- (void)setActiveLockerAccountWithDSID:(id)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v9 = mach_absolute_time();
   accessQueue = self->_accessQueue;
@@ -2305,11 +2305,11 @@ uint64_t __70__ICUserIdentityStore_disableLockerAccountWithDSID_completionHandle
   v13[2] = __72__ICUserIdentityStore_setActiveLockerAccountWithDSID_completionHandler___block_invoke;
   v13[3] = &unk_1E7BF9AA0;
   v13[4] = self;
-  v14 = v7;
-  v15 = v8;
+  v14 = dCopy;
+  v15 = handlerCopy;
   v16 = v9;
-  v11 = v8;
-  v12 = v7;
+  v11 = handlerCopy;
+  v12 = dCopy;
   dispatch_async(accessQueue, v13);
 }
 
@@ -2416,10 +2416,10 @@ uint64_t __72__ICUserIdentityStore_setActiveLockerAccountWithDSID_completionHand
   return result;
 }
 
-- (void)setActiveAccountWithDSID:(id)a3 completionHandler:(id)a4
+- (void)setActiveAccountWithDSID:(id)d completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v9 = mach_absolute_time();
   accessQueue = self->_accessQueue;
@@ -2428,11 +2428,11 @@ uint64_t __72__ICUserIdentityStore_setActiveLockerAccountWithDSID_completionHand
   v13[2] = __66__ICUserIdentityStore_setActiveAccountWithDSID_completionHandler___block_invoke;
   v13[3] = &unk_1E7BF9AA0;
   v13[4] = self;
-  v14 = v7;
-  v15 = v8;
+  v14 = dCopy;
+  v15 = handlerCopy;
   v16 = v9;
-  v11 = v8;
-  v12 = v7;
+  v11 = handlerCopy;
+  v12 = dCopy;
   dispatch_async(accessQueue, v13);
 }
 
@@ -2539,10 +2539,10 @@ uint64_t __66__ICUserIdentityStore_setActiveAccountWithDSID_completionHandler___
   return result;
 }
 
-- (void)removePropertiesForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)removePropertiesForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2550,10 +2550,10 @@ uint64_t __66__ICUserIdentityStore_setActiveAccountWithDSID_completionHandler___
   block[2] = __73__ICUserIdentityStore_removePropertiesForUserIdentity_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = identityCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identityCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -2739,11 +2739,11 @@ uint64_t __73__ICUserIdentityStore_removePropertiesForUserIdentity_completionHan
   return result;
 }
 
-- (void)removeDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)removeDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v16[0] = MEMORY[0x1E69E9820];
@@ -2751,12 +2751,12 @@ uint64_t __73__ICUserIdentityStore_removePropertiesForUserIdentity_completionHan
   v16[2] = __79__ICUserIdentityStore_removeDelegationUUIDs_forUserIdentity_completionHandler___block_invoke;
   v16[3] = &unk_1E7BF9E78;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
+  v17 = dsCopy;
+  v18 = identityCopy;
+  v19 = handlerCopy;
+  v13 = identityCopy;
+  v14 = dsCopy;
+  v15 = handlerCopy;
   dispatch_async(accessQueue, v16);
 }
 
@@ -2832,21 +2832,21 @@ uint64_t __79__ICUserIdentityStore_removeDelegationUUIDs_forUserIdentity_complet
   return result;
 }
 
-- (void)removeDelegateTokensExpiringBeforeDate:(id)a3 completionHandler:(id)a4
+- (void)removeDelegateTokensExpiringBeforeDate:(id)date completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__ICUserIdentityStore_removeDelegateTokensExpiringBeforeDate_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
-  v13 = v7;
-  v14 = v8;
+  v13 = dateCopy;
+  v14 = handlerCopy;
   block[4] = self;
-  v10 = v7;
-  v11 = v8;
+  v10 = dateCopy;
+  v11 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -2921,21 +2921,21 @@ uint64_t __80__ICUserIdentityStore_removeDelegateTokensExpiringBeforeDate_comple
   return result;
 }
 
-- (void)removeDelegateTokenForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)removeDelegateTokenForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __76__ICUserIdentityStore_removeDelegateTokenForUserIdentity_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
-  v13 = v7;
-  v14 = v8;
+  v13 = identityCopy;
+  v14 = handlerCopy;
   block[4] = self;
-  v10 = v7;
-  v11 = v8;
+  v10 = identityCopy;
+  v11 = handlerCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -3010,9 +3010,9 @@ uint64_t __76__ICUserIdentityStore_removeDelegateTokenForUserIdentity_completion
   return result;
 }
 
-- (void)removeAllDelegateTokensWithCompletionHandler:(id)a3
+- (void)removeAllDelegateTokensWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
@@ -3020,8 +3020,8 @@ uint64_t __76__ICUserIdentityStore_removeDelegateTokenForUserIdentity_completion
   v8[2] = __68__ICUserIdentityStore_removeAllDelegateTokensWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7BF9EC8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = handlerCopy;
+  v7 = handlerCopy;
   dispatch_async(accessQueue, v8);
 }
 
@@ -3096,11 +3096,11 @@ uint64_t __68__ICUserIdentityStore_removeAllDelegateTokensWithCompletionHandler_
   return result;
 }
 
-- (void)insertPropertiesForUserIdentity:(id)a3 andPostAccountChangeNotification:(BOOL)a4 usingBlock:(id)a5 completionHandler:(id)a6
+- (void)insertPropertiesForUserIdentity:(id)identity andPostAccountChangeNotification:(BOOL)notification usingBlock:(id)block completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  identityCopy = identity;
+  blockCopy = block;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -3108,13 +3108,13 @@ uint64_t __68__ICUserIdentityStore_removeAllDelegateTokensWithCompletionHandler_
   block[2] = __117__ICUserIdentityStore_insertPropertiesForUserIdentity_andPostAccountChangeNotification_usingBlock_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9A00;
   block[4] = self;
-  v19 = v11;
-  v22 = a4;
-  v20 = v12;
-  v21 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  v19 = identityCopy;
+  notificationCopy = notification;
+  v20 = blockCopy;
+  v21 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = blockCopy;
+  v17 = identityCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -3161,19 +3161,19 @@ void __117__ICUserIdentityStore_insertPropertiesForUserIdentity_andPostAccountCh
   }
 }
 
-- (void)insertPropertiesForUserIdentity:(id)a3 usingBlock:(id)a4 completionHandler:(id)a5
+- (void)insertPropertiesForUserIdentity:(id)identity usingBlock:(id)block completionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  handlerCopy = handler;
+  blockCopy = block;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  [(ICUserIdentityStore *)self insertPropertiesForUserIdentity:v11 andPostAccountChangeNotification:1 usingBlock:v10 completionHandler:v9];
+  [(ICUserIdentityStore *)self insertPropertiesForUserIdentity:identityCopy andPostAccountChangeNotification:1 usingBlock:blockCopy completionHandler:handlerCopy];
 }
 
-- (BOOL)insertPropertiesForUserIdentity:(id)a3 usingBlock:(id)a4 error:(id *)a5
+- (BOOL)insertPropertiesForUserIdentity:(id)identity usingBlock:(id)block error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  identityCopy = identity;
+  blockCopy = block;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v21 = 0;
   v22 = &v21;
@@ -3187,16 +3187,16 @@ void __117__ICUserIdentityStore_insertPropertiesForUserIdentity_andPostAccountCh
   v17[2] = __72__ICUserIdentityStore_insertPropertiesForUserIdentity_usingBlock_error___block_invoke;
   v17[3] = &unk_1E7BF99D8;
   v17[4] = self;
-  v12 = v9;
+  v12 = identityCopy;
   v18 = v12;
   v20 = &v21;
-  v13 = v10;
+  v13 = blockCopy;
   v19 = v13;
   dispatch_sync(accessQueue, v17);
   v14 = v22[5];
-  if (a5 && v14)
+  if (error && v14)
   {
-    *a5 = v14;
+    *error = v14;
     v14 = v22[5];
   }
 
@@ -3237,18 +3237,18 @@ void __72__ICUserIdentityStore_insertPropertiesForUserIdentity_usingBlock_error_
   }
 }
 
-- (void)insertPropertiesForUserIdentity:(id)a3 usingBlock:(id)a4
+- (void)insertPropertiesForUserIdentity:(id)identity usingBlock:(id)block
 {
-  v7 = a4;
-  v8 = a3;
+  blockCopy = block;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
-  [(ICUserIdentityStore *)self insertPropertiesForUserIdentity:v8 usingBlock:v7 completionHandler:0];
+  [(ICUserIdentityStore *)self insertPropertiesForUserIdentity:identityCopy usingBlock:blockCopy completionHandler:0];
 }
 
-- (id)getVerificationContextForUserIdentity:(id)a3 error:(id *)a4
+- (id)getVerificationContextForUserIdentity:(id)identity error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v24 = 0;
   v25 = &v24;
@@ -3268,7 +3268,7 @@ void __72__ICUserIdentityStore_insertPropertiesForUserIdentity_usingBlock_error_
   v14[2] = __67__ICUserIdentityStore_getVerificationContextForUserIdentity_error___block_invoke;
   v14[3] = &unk_1E7BF9AF0;
   v14[4] = self;
-  v9 = v7;
+  v9 = identityCopy;
   v15 = v9;
   v16 = &v18;
   v17 = &v24;
@@ -3287,9 +3287,9 @@ void __72__ICUserIdentityStore_insertPropertiesForUserIdentity_usingBlock_error_
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v19[5];
+    *error = v19[5];
   }
 
   v12 = v25[5];
@@ -3365,9 +3365,9 @@ void __67__ICUserIdentityStore_getVerificationContextForUserIdentity_error___blo
   }
 }
 
-- (id)getPropertiesForUserIdentity:(id)a3 error:(id *)a4
+- (id)getPropertiesForUserIdentity:(id)identity error:(id *)error
 {
-  v7 = a3;
+  identityCopy = identity;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v23 = 0;
   v24 = &v23;
@@ -3386,15 +3386,15 @@ void __67__ICUserIdentityStore_getVerificationContextForUserIdentity_error___blo
   v12[1] = 3221225472;
   v12[2] = __58__ICUserIdentityStore_getPropertiesForUserIdentity_error___block_invoke;
   v12[3] = &unk_1E7BF9AF0;
-  v9 = v7;
+  v9 = identityCopy;
   v13 = v9;
-  v14 = self;
+  selfCopy = self;
   v15 = &v17;
   v16 = &v23;
   dispatch_sync(accessQueue, v12);
-  if (a4)
+  if (error)
   {
-    *a4 = v24[5];
+    *error = v24[5];
   }
 
   v10 = v18[5];
@@ -3448,21 +3448,21 @@ void __58__ICUserIdentityStore_getPropertiesForUserIdentity_error___block_invoke
   }
 }
 
-- (void)getPropertiesForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)getPropertiesForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __70__ICUserIdentityStore_getPropertiesForUserIdentity_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = identityCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identityCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -3501,7 +3501,7 @@ void __70__ICUserIdentityStore_getPropertiesForUserIdentity_completionHandler___
   dispatch_async(v9, v13);
 }
 
-- (id)getPropertiesForActiveICloudAccountReturningError:(id *)a3
+- (id)getPropertiesForActiveICloudAccountReturningError:(id *)error
 {
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   v15 = 0;
@@ -3525,9 +3525,9 @@ void __70__ICUserIdentityStore_getPropertiesForUserIdentity_completionHandler___
   block[5] = &v9;
   block[6] = &v15;
   dispatch_sync(accessQueue, block);
-  if (a3)
+  if (error)
   {
-    *a3 = v16[5];
+    *error = v16[5];
   }
 
   v6 = v10[5];
@@ -3574,10 +3574,10 @@ void __73__ICUserIdentityStore_getPropertiesForActiveICloudAccountReturningError
   }
 }
 
-- (void)getDelegationUUIDsForUserIdentity:(id)a3 completionHandler:(id)a4
+- (void)getDelegationUUIDsForUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  identityCopy = identity;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -3585,10 +3585,10 @@ void __73__ICUserIdentityStore_getPropertiesForActiveICloudAccountReturningError
   block[2] = __75__ICUserIdentityStore_getDelegationUUIDsForUserIdentity_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = identityCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = identityCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -3641,10 +3641,10 @@ void __75__ICUserIdentityStore_getDelegationUUIDsForUserIdentity_completionHandl
   [a2 enumerateDelegationUUIDsForUserIdentity:v3 usingBlock:v4];
 }
 
-- (void)enumerateDelegateTokensWithType:(int64_t)a3 usingBlock:(id)a4 completionHandler:(id)a5
+- (void)enumerateDelegateTokensWithType:(int64_t)type usingBlock:(id)block completionHandler:(id)handler
 {
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v14[0] = MEMORY[0x1E69E9820];
@@ -3652,11 +3652,11 @@ void __75__ICUserIdentityStore_getDelegationUUIDsForUserIdentity_completionHandl
   v14[2] = __84__ICUserIdentityStore_enumerateDelegateTokensWithType_usingBlock_completionHandler___block_invoke;
   v14[3] = &unk_1E7BF9960;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v17 = a3;
-  v12 = v10;
-  v13 = v9;
+  v15 = blockCopy;
+  v16 = handlerCopy;
+  typeCopy = type;
+  v12 = handlerCopy;
+  v13 = blockCopy;
   dispatch_async(accessQueue, v14);
 }
 
@@ -3686,10 +3686,10 @@ void __84__ICUserIdentityStore_enumerateDelegateTokensWithType_usingBlock_comple
   }
 }
 
-- (void)enumerateDelegateTokensUsingBlock:(id)a3 completionHandler:(id)a4
+- (void)enumerateDelegateTokensUsingBlock:(id)block completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -3697,10 +3697,10 @@ void __84__ICUserIdentityStore_enumerateDelegateTokensWithType_usingBlock_comple
   block[2] = __75__ICUserIdentityStore_enumerateDelegateTokensUsingBlock_completionHandler___block_invoke;
   block[3] = &unk_1E7BF9910;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = blockCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = blockCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -3729,11 +3729,11 @@ void __75__ICUserIdentityStore_enumerateDelegateTokensUsingBlock_completionHandl
   }
 }
 
-- (void)addDelegationUUIDs:(id)a3 forUserIdentity:(id)a4 completionHandler:(id)a5
+- (void)addDelegationUUIDs:(id)ds forUserIdentity:(id)identity completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dsCopy = ds;
+  identityCopy = identity;
+  handlerCopy = handler;
   [(ICUserIdentityStore *)self _assertNonNullIdentityStoreForSelector:a2];
   accessQueue = self->_accessQueue;
   v16[0] = MEMORY[0x1E69E9820];
@@ -3741,12 +3741,12 @@ void __75__ICUserIdentityStore_enumerateDelegateTokensUsingBlock_completionHandl
   v16[2] = __76__ICUserIdentityStore_addDelegationUUIDs_forUserIdentity_completionHandler___block_invoke;
   v16[3] = &unk_1E7BF9E78;
   v16[4] = self;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v13 = v10;
-  v14 = v9;
-  v15 = v11;
+  v17 = dsCopy;
+  v18 = identityCopy;
+  v19 = handlerCopy;
+  v13 = identityCopy;
+  v14 = dsCopy;
+  v15 = handlerCopy;
   dispatch_async(accessQueue, v16);
 }
 
@@ -3822,47 +3822,47 @@ uint64_t __76__ICUserIdentityStore_addDelegationUUIDs_forUserIdentity_completion
   return result;
 }
 
-- (id)_initWithStyle:(int64_t)a3 delegateAccountStoreOptions:(id)a4
+- (id)_initWithStyle:(int64_t)style delegateAccountStoreOptions:(id)options
 {
-  v6 = a4;
-  if (a3 != 2)
+  optionsCopy = options;
+  if (style != 2)
   {
-    v7 = [(ICUserIdentityStore *)self _initCommon];
-    if (!v7)
+    _initCommon = [(ICUserIdentityStore *)self _initCommon];
+    if (!_initCommon)
     {
       goto LABEL_12;
     }
 
     v10 = objc_alloc_init(ICValueHistory);
-    activeAccountHistory = v7->_activeAccountHistory;
-    v7->_activeAccountHistory = v10;
+    activeAccountHistory = _initCommon->_activeAccountHistory;
+    _initCommon->_activeAccountHistory = v10;
 
     v12 = objc_alloc_init(ICValueHistory);
-    activeLockerAccountHistory = v7->_activeLockerAccountHistory;
-    v7->_activeLockerAccountHistory = v12;
+    activeLockerAccountHistory = _initCommon->_activeLockerAccountHistory;
+    _initCommon->_activeLockerAccountHistory = v12;
 
-    v14 = [v6 copy];
-    delegateAccountStoreOptions = v7->_delegateAccountStoreOptions;
-    v7->_delegateAccountStoreOptions = v14;
+    v14 = [optionsCopy copy];
+    delegateAccountStoreOptions = _initCommon->_delegateAccountStoreOptions;
+    _initCommon->_delegateAccountStoreOptions = v14;
 
-    if (a3)
+    if (style)
     {
-      if (a3 != 1)
+      if (style != 1)
       {
 LABEL_10:
-        v19 = [[ICUserIdentityStoreCoding alloc] initWithIdentityStoreStyle:a3];
-        codingHelper = v7->_codingHelper;
-        v7->_codingHelper = v19;
+        v19 = [[ICUserIdentityStoreCoding alloc] initWithIdentityStoreStyle:style];
+        codingHelper = _initCommon->_codingHelper;
+        _initCommon->_codingHelper = v19;
 
-        [(ICUserIdentityStoreCoding *)v7->_codingHelper setDelegateAccountStoreOptions:v6];
+        [(ICUserIdentityStoreCoding *)_initCommon->_codingHelper setDelegateAccountStoreOptions:optionsCopy];
         v21 = mach_absolute_time();
-        accessQueue = v7->_accessQueue;
+        accessQueue = _initCommon->_accessQueue;
         v24[0] = MEMORY[0x1E69E9820];
         v24[1] = 3221225472;
         v24[2] = __66__ICUserIdentityStore__initWithStyle_delegateAccountStoreOptions___block_invoke;
         v24[3] = &unk_1E7BF9890;
-        v7 = v7;
-        v25 = v7;
+        _initCommon = _initCommon;
+        v25 = _initCommon;
         v26 = v21;
         dispatch_async(accessQueue, v24);
         v9 = v25;
@@ -3878,27 +3878,27 @@ LABEL_10:
     }
 
     v17 = objc_alloc_init(*v16);
-    backend = v7->_backend;
-    v7->_backend = v17;
+    backend = _initCommon->_backend;
+    _initCommon->_backend = v17;
 
-    [(ICUserIdentityStoreBackend *)v7->_backend setDelegate:v7];
+    [(ICUserIdentityStoreBackend *)_initCommon->_backend setDelegate:_initCommon];
     goto LABEL_10;
   }
 
   v27.receiver = self;
   v27.super_class = ICUserIdentityStore;
-  v7 = [(ICUserIdentityStore *)&v27 init];
-  if (v7)
+  _initCommon = [(ICUserIdentityStore *)&v27 init];
+  if (_initCommon)
   {
     v8 = [[ICUserIdentityStoreCoding alloc] initWithIdentityStoreStyle:2];
-    v9 = v7->_codingHelper;
-    v7->_codingHelper = v8;
+    v9 = _initCommon->_codingHelper;
+    _initCommon->_codingHelper = v8;
 LABEL_11:
   }
 
 LABEL_12:
 
-  return v7;
+  return _initCommon;
 }
 
 void __66__ICUserIdentityStore__initWithStyle_delegateAccountStoreOptions___block_invoke(uint64_t a1)
@@ -3961,18 +3961,18 @@ uint64_t __66__ICUserIdentityStore__initWithStyle_delegateAccountStoreOptions___
   return [v3 setActiveLockerAccountHistory:v4];
 }
 
-+ (id)testingIdentityStoreWithSingleWriterService:(id)a3
++ (id)testingIdentityStoreWithSingleWriterService:(id)service
 {
-  v4 = [ICDelegateAccountStoreOptions defaultOptionsWithServiceEndpoint:a3];
-  v5 = [[a1 alloc] _initWithStyle:1 delegateAccountStoreOptions:v4];
+  v4 = [ICDelegateAccountStoreOptions defaultOptionsWithServiceEndpoint:service];
+  v5 = [[self alloc] _initWithStyle:1 delegateAccountStoreOptions:v4];
 
   return v5;
 }
 
-+ (id)testingIdentityStoreWithDatabasePath:(id)a3
++ (id)testingIdentityStoreWithDatabasePath:(id)path
 {
-  v4 = [ICDelegateAccountStoreOptions singleWriterOptionsWithDatabasePath:a3];
-  v5 = [[a1 alloc] _initWithStyle:1 delegateAccountStoreOptions:v4];
+  v4 = [ICDelegateAccountStoreOptions singleWriterOptionsWithDatabasePath:path];
+  v5 = [[self alloc] _initWithStyle:1 delegateAccountStoreOptions:v4];
 
   return v5;
 }

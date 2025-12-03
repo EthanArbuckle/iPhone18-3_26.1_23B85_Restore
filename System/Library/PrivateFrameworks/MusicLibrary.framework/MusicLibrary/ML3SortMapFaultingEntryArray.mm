@@ -1,11 +1,11 @@
 @interface ML3SortMapFaultingEntryArray
-- (id)objectAtIndex:(unint64_t)a3;
+- (id)objectAtIndex:(unint64_t)index;
 - (unint64_t)count;
-- (void)addObject:(id)a3;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
+- (void)addObject:(id)object;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
 - (void)removeLastObject;
-- (void)removeObjectAtIndex:(unint64_t)a3;
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4;
+- (void)removeObjectAtIndex:(unint64_t)index;
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object;
 @end
 
 @implementation ML3SortMapFaultingEntryArray
@@ -20,16 +20,16 @@ void __64__ML3SortMapFaultingEntryArray_enumerateDirtyObjectsUsingBlock___block_
   }
 }
 
-- (void)replaceObjectAtIndex:(unint64_t)a3 withObject:(id)a4
+- (void)replaceObjectAtIndex:(unint64_t)index withObject:(id)object
 {
   dirtyInserts = self->_dirtyInserts;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithUnsignedInteger:a3];
-  [(NSMutableDictionary *)dirtyInserts setObject:v7 forKey:v8];
+  objectCopy = object;
+  v8 = [v6 numberWithUnsignedInteger:index];
+  [(NSMutableDictionary *)dirtyInserts setObject:objectCopy forKey:v8];
 }
 
-- (void)removeObjectAtIndex:(unint64_t)a3
+- (void)removeObjectAtIndex:(unint64_t)index
 {
   v15 = 0;
   v16 = &v15;
@@ -43,7 +43,7 @@ void __64__ML3SortMapFaultingEntryArray_enumerateDirtyObjectsUsingBlock___block_
   v14[2] = __52__ML3SortMapFaultingEntryArray_removeObjectAtIndex___block_invoke;
   v14[3] = &unk_278762048;
   v14[4] = &v15;
-  v14[5] = a3;
+  v14[5] = index;
   [(NSMutableDictionary *)dirtyInserts enumerateKeysAndObjectsUsingBlock:v14];
   if (v16[5])
   {
@@ -56,7 +56,7 @@ void __64__ML3SortMapFaultingEntryArray_enumerateDirtyObjectsUsingBlock___block_
   v11[1] = 3221225472;
   v11[2] = __52__ML3SortMapFaultingEntryArray_removeObjectAtIndex___block_invoke_2;
   v11[3] = &unk_278761FF8;
-  v13 = a3;
+  indexCopy = index;
   v8 = v6;
   v12 = v8;
   [(NSMutableDictionary *)v7 enumerateKeysAndObjectsUsingBlock:v11];
@@ -138,18 +138,18 @@ void __48__ML3SortMapFaultingEntryArray_removeLastObject__block_invoke(uint64_t 
 LABEL_5:
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
   v6 = MEMORY[0x277CBEB38];
   dirtyInserts = self->_dirtyInserts;
-  v8 = a3;
+  objectCopy = object;
   v9 = [v6 dictionaryWithCapacity:{-[NSMutableDictionary count](dirtyInserts, "count")}];
   v10 = self->_dirtyInserts;
   v16 = MEMORY[0x277D85DD0];
   v17 = 3221225472;
   v18 = __53__ML3SortMapFaultingEntryArray_insertObject_atIndex___block_invoke;
   v19 = &unk_278761FF8;
-  v21 = a4;
+  indexCopy = index;
   v11 = v9;
   v20 = v11;
   [(NSMutableDictionary *)v10 enumerateKeysAndObjectsUsingBlock:&v16];
@@ -158,8 +158,8 @@ LABEL_5:
   v13 = v11;
 
   v14 = self->_dirtyInserts;
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{a4, v16, v17, v18, v19}];
-  [(NSMutableDictionary *)v14 setObject:v8 forKey:v15];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{index, v16, v17, v18, v19}];
+  [(NSMutableDictionary *)v14 setObject:objectCopy forKey:v15];
 }
 
 void __53__ML3SortMapFaultingEntryArray_insertObject_atIndex___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -180,16 +180,16 @@ void __53__ML3SortMapFaultingEntryArray_insertObject_atIndex___block_invoke(uint
   [v7 setObject:v11 forKey:v5];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   dirtyInserts = self->_dirtyInserts;
   v5 = MEMORY[0x277CCABB0];
-  v6 = a3;
+  objectCopy = object;
   v7 = [v5 numberWithUnsignedInteger:{-[ML3SortMapFaultingEntryArray count](self, "count")}];
-  [(NSMutableDictionary *)dirtyInserts setObject:v6 forKey:v7];
+  [(NSMutableDictionary *)dirtyInserts setObject:objectCopy forKey:v7];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v23 = 0;
@@ -208,14 +208,14 @@ void __53__ML3SortMapFaultingEntryArray_insertObject_atIndex___block_invoke(uint
   v16[2] = __46__ML3SortMapFaultingEntryArray_objectAtIndex___block_invoke;
   v16[3] = &unk_278761FD0;
   v16[5] = &v23;
-  v16[6] = a3;
+  v16[6] = index;
   v16[4] = &v17;
   [(NSMutableDictionary *)dirtyInserts enumerateKeysAndObjectsUsingBlock:v16];
   v7 = v18[5];
   if (!v7)
   {
     connection = self->_connection;
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3 - *(v24 + 6)];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index - *(v24 + 6)];
     v27[0] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:1];
     v11 = [(ML3DatabaseConnection *)connection executeQuery:@"SELECT name withParameters:name_order, name_section, sort_key FROM sort_map ORDER BY name_order LIMIT 1 OFFSET ?", v10];
@@ -230,8 +230,8 @@ void __53__ML3SortMapFaultingEntryArray_insertObject_atIndex___block_invoke(uint
     v7 = v18[5];
     if (!v7)
     {
-      v14 = [MEMORY[0x277CCA890] currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"ML3SortMap.m" lineNumber:1135 description:{@"Did not find object at index %ld with %ld inserted objects", a3, -[NSMutableDictionary count](self->_dirtyInserts, "count")}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ML3SortMap.m" lineNumber:1135 description:{@"Did not find object at index %ld with %ld inserted objects", index, -[NSMutableDictionary count](self->_dirtyInserts, "count")}];
 
       v7 = v18[5];
     }
@@ -278,10 +278,10 @@ void __46__ML3SortMapFaultingEntryArray_objectAtIndex___block_invoke_2(uint64_t 
 - (unint64_t)count
 {
   v3 = [(ML3DatabaseConnection *)self->_connection executeQuery:@"SELECT COUNT() from sort_map"];
-  v4 = [v3 int64ValueForFirstRowAndColumn];
+  int64ValueForFirstRowAndColumn = [v3 int64ValueForFirstRowAndColumn];
   v5 = [(NSMutableDictionary *)self->_dirtyInserts count];
 
-  return v5 + v4;
+  return v5 + int64ValueForFirstRowAndColumn;
 }
 
 @end

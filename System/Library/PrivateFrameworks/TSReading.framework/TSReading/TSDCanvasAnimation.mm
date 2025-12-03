@@ -2,32 +2,32 @@
 - (NSString)beginTimeMode;
 - (SEL)didStopSelector;
 - (SEL)willStartSelector;
-- (TSDCanvasAnimation)initWithAnimationID:(id)a3 interactiveCanvasController:(id)a4 context:(void *)a5;
+- (TSDCanvasAnimation)initWithAnimationID:(id)d interactiveCanvasController:(id)controller context:(void *)context;
 - (double)beginTime;
-- (id)actionForLayer:(id)a3 forKey:(id)a4;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (id)actionForLayer:(id)layer forKey:(id)key;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)dealloc;
-- (void)setAnimation:(id)a3 forLayer:(id)a4 forKey:(id)a5;
-- (void)setDidStopSelector:(SEL)a3;
-- (void)setWillStartSelector:(SEL)a3;
+- (void)setAnimation:(id)animation forLayer:(id)layer forKey:(id)key;
+- (void)setDidStopSelector:(SEL)selector;
+- (void)setWillStartSelector:(SEL)selector;
 @end
 
 @implementation TSDCanvasAnimation
 
-- (TSDCanvasAnimation)initWithAnimationID:(id)a3 interactiveCanvasController:(id)a4 context:(void *)a5
+- (TSDCanvasAnimation)initWithAnimationID:(id)d interactiveCanvasController:(id)controller context:(void *)context
 {
   v10.receiver = self;
   v10.super_class = TSDCanvasAnimation;
   v8 = [(TSDCanvasAnimation *)&v10 init];
   if (v8)
   {
-    v8->_animationID = a3;
-    v8->_context = a5;
+    v8->_animationID = d;
+    v8->_context = context;
     v8->_duration = 0.2;
     v8->_timingFunction = [MEMORY[0x277CD9EF8] functionWithName:*MEMORY[0x277CDA7B8]];
     v8->_allAnimationsFinishedBeforeStopping = 1;
-    v8->_interactiveCanvasController = a4;
+    v8->_interactiveCanvasController = controller;
   }
 
   return v8;
@@ -71,16 +71,16 @@
   return *v2;
 }
 
-- (id)actionForLayer:(id)a3 forKey:(id)a4
+- (id)actionForLayer:(id)layer forKey:(id)key
 {
   if (self->_firstAnimationDidStart)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasAnimation actionForLayer:forKey:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasAnimation.m"), 116, @"shouldn't be adding animations after we've started showing them"}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasAnimation.m"), 116, @"shouldn't be adding animations after we've started showing them"}];
   }
 
-  v9 = [-[TSUNoCopyDictionary objectForKeyedSubscript:](self->_animationDictionariesForLayers objectForKeyedSubscript:{a3), "objectForKeyedSubscript:", a4}];
+  v9 = [-[TSUNoCopyDictionary objectForKeyedSubscript:](self->_animationDictionariesForLayers objectForKeyedSubscript:{layer), "objectForKeyedSubscript:", key}];
   filterBlock = self->_filterBlock;
   if (filterBlock)
   {
@@ -94,7 +94,7 @@
 
   if (v11)
   {
-    v9 = filterBlock[2](filterBlock, self, a3, a4);
+    v9 = filterBlock[2](filterBlock, self, layer, key);
   }
 
   if (v9)
@@ -102,39 +102,39 @@
     goto LABEL_35;
   }
 
-  if (a3 && self->_useRepFiltering)
+  if (layer && self->_useRepFiltering)
   {
-    v12 = a3;
+    layerCopy = layer;
     while (1)
     {
-      v13 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController repForLayer:v12];
+      v13 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController repForLayer:layerCopy];
       if (v13)
       {
         break;
       }
 
-      v13 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController repForContainerLayer:v12];
+      v13 = [(TSDInteractiveCanvasController *)self->_interactiveCanvasController repForContainerLayer:layerCopy];
       if (v13)
       {
         break;
       }
 
-      v12 = [v12 superlayer];
-      if (!v12)
+      layerCopy = [layerCopy superlayer];
+      if (!layerCopy)
       {
         goto LABEL_34;
       }
     }
 
     v14 = v13;
-    v15 = v13;
+    parentRep = v13;
     while (1)
     {
       v16 = TSUProtocolCast();
       v17 = v16;
       if (v16)
       {
-        v18 = v15 == v14;
+        v18 = parentRep == v14;
       }
 
       else
@@ -144,7 +144,7 @@
 
       if (v18)
       {
-        v9 = [v16 animationForRepLayer:a3 withEvent:a4];
+        v9 = [v16 animationForRepLayer:layer withEvent:key];
       }
 
       else
@@ -167,20 +167,20 @@
         goto LABEL_32;
       }
 
-      if (v15 != v14 && (objc_opt_respondsToSelector() & 1) != 0)
+      if (parentRep != v14 && (objc_opt_respondsToSelector() & 1) != 0)
       {
         break;
       }
 
 LABEL_33:
-      v15 = [v15 parentRep];
-      if (!v15)
+      parentRep = [parentRep parentRep];
+      if (!parentRep)
       {
         goto LABEL_34;
       }
     }
 
-    v9 = [v17 animationForChildRep:v14 layer:a3 withEvent:a4];
+    v9 = [v17 animationForChildRep:v14 layer:layer withEvent:key];
 LABEL_32:
     if (v9)
     {
@@ -191,7 +191,7 @@ LABEL_32:
   }
 
 LABEL_34:
-  v9 = [MEMORY[0x277CD9E10] animationWithKeyPath:a4];
+  v9 = [MEMORY[0x277CD9E10] animationWithKeyPath:key];
   [v9 setDuration:self->_duration];
   [(TSDCanvasAnimation *)self beginTime];
   [v9 setBeginTime:?];
@@ -215,7 +215,7 @@ LABEL_35:
   return v9;
 }
 
-- (void)setAnimation:(id)a3 forLayer:(id)a4 forKey:(id)a5
+- (void)setAnimation:(id)animation forLayer:(id)layer forKey:(id)key
 {
   animationDictionariesForLayers = self->_animationDictionariesForLayers;
   if (!animationDictionariesForLayers)
@@ -224,23 +224,23 @@ LABEL_35:
     self->_animationDictionariesForLayers = animationDictionariesForLayers;
   }
 
-  v10 = [(TSUNoCopyDictionary *)animationDictionariesForLayers objectForKeyedSubscript:a4];
-  if (!v10)
+  dictionary = [(TSUNoCopyDictionary *)animationDictionariesForLayers objectForKeyedSubscript:layer];
+  if (!dictionary)
   {
-    v10 = [MEMORY[0x277CBEB38] dictionary];
-    [(TSUNoCopyDictionary *)self->_animationDictionariesForLayers setObject:v10 forUncopiedKey:a4];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(TSUNoCopyDictionary *)self->_animationDictionariesForLayers setObject:dictionary forUncopiedKey:layer];
   }
 
-  [v10 setObject:a3 forKeyedSubscript:a5];
+  [dictionary setObject:animation forKeyedSubscript:key];
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   if (!self->_outstandingAnimationCount)
   {
-    v4 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasAnimation animationDidStart:]"];
-    [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasAnimation.m"), 219, @"unexpected animation started"}];
+    [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasAnimation.m"), 219, @"unexpected animation started"}];
   }
 
   if (!self->_firstAnimationDidStart)
@@ -258,24 +258,24 @@ LABEL_35:
   }
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
   if (!self->_outstandingAnimationCount)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasAnimation animationDidStop:finished:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasAnimation.m"), 234, @"unexpected animation stopped"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasAnimation.m"), 234, @"unexpected animation stopped"}];
   }
 
   if (!self->_firstAnimationDidStart)
   {
-    v8 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasAnimation animationDidStop:finished:]"];
-    [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasAnimation.m"), 235, @"animation stopped before starting"}];
+    [currentHandler2 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasAnimation.m"), 235, @"animation stopped before starting"}];
   }
 
   outstandingAnimationCount = self->_outstandingAnimationCount;
-  v11 = self->_allAnimationsFinishedBeforeStopping || a4;
+  v11 = self->_allAnimationsFinishedBeforeStopping || finished;
   self->_allAnimationsFinishedBeforeStopping = v11;
   self->_outstandingAnimationCount = --outstandingAnimationCount;
   if (!outstandingAnimationCount)
@@ -309,19 +309,19 @@ LABEL_35:
   }
 }
 
-- (void)setWillStartSelector:(SEL)a3
+- (void)setWillStartSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_willStartSelector = v3;
+  self->_willStartSelector = selectorCopy;
 }
 
 - (SEL)didStopSelector
@@ -337,19 +337,19 @@ LABEL_35:
   }
 }
 
-- (void)setDidStopSelector:(SEL)a3
+- (void)setDidStopSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_didStopSelector = v3;
+  self->_didStopSelector = selectorCopy;
 }
 
 @end

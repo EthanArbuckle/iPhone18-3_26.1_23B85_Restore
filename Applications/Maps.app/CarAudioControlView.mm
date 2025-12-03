@@ -1,7 +1,7 @@
 @interface CarAudioControlView
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
-- (double)containerTopPositionWhenCollapsedForAudioType:(unint64_t)a3;
+- (double)containerTopPositionWhenCollapsedForAudioType:(unint64_t)type;
 - (double)expandedHeight;
 - (double)highlightTopPosition;
 - (id)accessibilityUserInputLabels;
@@ -15,33 +15,33 @@
 {
   if ([(NavAudioControlView *)self isExpanded])
   {
-    v3 = [(NavAudioControlView *)self buttons];
+    buttons = [(NavAudioControlView *)self buttons];
   }
 
   else
   {
-    v4 = [(NavAudioControlView *)self availableAudioTypes];
+    availableAudioTypes = [(NavAudioControlView *)self availableAudioTypes];
     v5 = [NSNumber numberWithUnsignedInteger:[(NavAudioControlView *)self currentAudioType]];
-    v6 = [v4 indexOfObject:v5];
+    v6 = [availableAudioTypes indexOfObject:v5];
 
-    v7 = [(NavAudioControlView *)self buttons];
-    v8 = [v7 count];
+    buttons2 = [(NavAudioControlView *)self buttons];
+    v8 = [buttons2 count];
 
     if (v6 >= v8)
     {
-      v3 = &__NSArray0__struct;
+      buttons = &__NSArray0__struct;
     }
 
     else
     {
-      v9 = [(NavAudioControlView *)self buttons];
-      v10 = [v9 objectAtIndexedSubscript:v6];
+      buttons3 = [(NavAudioControlView *)self buttons];
+      v10 = [buttons3 objectAtIndexedSubscript:v6];
       v12 = v10;
-      v3 = [NSArray arrayWithObjects:&v12 count:1];
+      buttons = [NSArray arrayWithObjects:&v12 count:1];
     }
   }
 
-  return v3;
+  return buttons;
 }
 
 - (id)accessibilityUserInputLabels
@@ -59,12 +59,12 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v3 = [(NavAudioControlView *)self availableAudioTypes];
+  availableAudioTypes = [(NavAudioControlView *)self availableAudioTypes];
   v4 = [NSNumber numberWithUnsignedInteger:[(NavAudioControlView *)self currentAudioType]];
-  v5 = [v3 indexOfObject:v4];
+  v5 = [availableAudioTypes indexOfObject:v4];
 
-  v6 = [(NavAudioControlView *)self buttons];
-  v7 = [v6 count];
+  buttons = [(NavAudioControlView *)self buttons];
+  v7 = [buttons count];
 
   if (v5 >= v7)
   {
@@ -73,8 +73,8 @@
 
   else
   {
-    v8 = [(NavAudioControlView *)self buttons];
-    v9 = [v8 objectAtIndexedSubscript:v5];
+    buttons2 = [(NavAudioControlView *)self buttons];
+    v9 = [buttons2 objectAtIndexedSubscript:v5];
     v12 = v9;
     v10 = [NSArray arrayWithObjects:&v12 count:1];
   }
@@ -84,9 +84,9 @@
 
 - (double)highlightTopPosition
 {
-  v3 = [(NavAudioControlView *)self availableAudioTypes];
+  availableAudioTypes = [(NavAudioControlView *)self availableAudioTypes];
   v4 = [NSNumber numberWithUnsignedInteger:[(NavAudioControlView *)self currentAudioType]];
-  v5 = [v3 indexOfObject:v4];
+  v5 = [availableAudioTypes indexOfObject:v4];
 
   result = 31.5;
   if (v5 != 1)
@@ -102,11 +102,11 @@
   return result;
 }
 
-- (double)containerTopPositionWhenCollapsedForAudioType:(unint64_t)a3
+- (double)containerTopPositionWhenCollapsedForAudioType:(unint64_t)type
 {
-  v4 = [(NavAudioControlView *)self availableAudioTypes];
-  v5 = [NSNumber numberWithUnsignedInteger:a3];
-  v6 = [v4 indexOfObject:v5];
+  availableAudioTypes = [(NavAudioControlView *)self availableAudioTypes];
+  v5 = [NSNumber numberWithUnsignedInteger:type];
+  v6 = [availableAudioTypes indexOfObject:v5];
 
   result = 0.0;
   if (v6 == 1)
@@ -124,8 +124,8 @@
 
 - (double)expandedHeight
 {
-  v3 = [(NavAudioControlView *)self availableAudioTypes];
-  v4 = [v3 count];
+  availableAudioTypes = [(NavAudioControlView *)self availableAudioTypes];
+  v4 = [availableAudioTypes count];
 
   if (v4 == 3)
   {

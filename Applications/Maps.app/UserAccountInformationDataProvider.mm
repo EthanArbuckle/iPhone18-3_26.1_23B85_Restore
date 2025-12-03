@@ -9,11 +9,11 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC4Maps34UserAccountInformationDataProvider_userInformationManager);
-  v5 = self;
-  v6 = [v4 observers];
-  [v6 unregisterObserver:v5];
+  selfCopy = self;
+  observers = [v4 observers];
+  [observers unregisterObserver:selfCopy];
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(UserAccountInformationDataProvider *)&v7 dealloc];
 }
@@ -26,12 +26,12 @@
   v6 = type metadata accessor for TaskPriority();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   type metadata accessor for MainActor();
-  v7 = self;
+  selfCopy = self;
   v8 = static MainActor.shared.getter();
   v9 = swift_allocObject();
   v9[2] = v8;
   v9[3] = &protocol witness table for MainActor;
-  v9[4] = v7;
+  v9[4] = selfCopy;
   sub_10020AAE4(0, 0, v5, &unk_1011E9BB8, v9);
 }
 

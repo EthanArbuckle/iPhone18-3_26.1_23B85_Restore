@@ -1,14 +1,14 @@
 @interface CNContactSuggestionViewControllerSGOriginDataSource
 + (id)contactSuggestionTypeBySuggestionType;
 + (id)dateFormatter;
-- (CNContactSuggestionViewControllerSGOriginDataSource)initWithSGOrigin:(id)a3;
+- (CNContactSuggestionViewControllerSGOriginDataSource)initWithSGOrigin:(id)origin;
 - (NSAttributedString)formattedSnippet;
 - (NSString)appName;
 - (NSString)date;
 - (NSString)title;
 - (NSString)with;
 - (NSURL)url;
-- (id)contactNameFromPerson:(id)a3;
+- (id)contactNameFromPerson:(id)person;
 - (unint64_t)type;
 @end
 
@@ -16,53 +16,53 @@
 
 - (NSURL)url
 {
-  v2 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-  v3 = [v2 url];
+  origin = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+  v3 = [origin url];
 
   return v3;
 }
 
-- (id)contactNameFromPerson:(id)a3
+- (id)contactNameFromPerson:(id)person
 {
-  v3 = a3;
-  v4 = [v3 displayName];
+  personCopy = person;
+  displayName = [personCopy displayName];
   v5 = *MEMORY[0x1E6996568];
-  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], v4))
+  if ((*(*MEMORY[0x1E6996568] + 16))(*MEMORY[0x1E6996568], displayName))
   {
 
-    v6 = [v3 handles];
-    v7 = [v6 firstObject];
+    handles = [personCopy handles];
+    firstObject = [handles firstObject];
 
-    if ((*(v5 + 16))(v5, v7))
+    if ((*(v5 + 16))(v5, firstObject))
     {
-      v4 = 0;
+      displayName = 0;
     }
 
     else
     {
-      v4 = v7;
+      displayName = firstObject;
     }
   }
 
-  return v4;
+  return displayName;
 }
 
 - (NSString)with
 {
   if ([(CNContactSuggestionViewControllerSGOriginDataSource *)self type]== 1 || [(CNContactSuggestionViewControllerSGOriginDataSource *)self type]== 4)
   {
-    v3 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-    if ([v3 isSent])
+    origin = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+    if ([origin isSent])
     {
-      v4 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-      v5 = [v4 toPeople];
+      origin2 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+      toPeople = [origin2 toPeople];
 
-      if (v5)
+      if (toPeople)
       {
-        v6 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-        v7 = [v6 toPeople];
-        v8 = [v7 firstObject];
-        v9 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self contactNameFromPerson:v8];
+        origin3 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+        toPeople2 = [origin3 toPeople];
+        firstObject = [toPeople2 firstObject];
+        v9 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self contactNameFromPerson:firstObject];
 
 LABEL_8:
         goto LABEL_10;
@@ -73,9 +73,9 @@ LABEL_8:
     {
     }
 
-    v6 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-    v7 = [v6 fromPerson];
-    v9 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self contactNameFromPerson:v7];
+    origin3 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+    toPeople2 = [origin3 fromPerson];
+    v9 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self contactNameFromPerson:toPeople2];
     goto LABEL_8;
   }
 
@@ -86,37 +86,37 @@ LABEL_10:
     v10 = MEMORY[0x1E696AEC0];
     v11 = CNContactsUIBundle();
     v12 = [v11 localizedStringForKey:@"SUGGESTION_FROM_APP_WITH_CONTACT" value:&stru_1F0CE7398 table:@"Localized"];
-    v13 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self appName];
-    v14 = [v10 stringWithFormat:v12, v13, v9];
+    appName = [(CNContactSuggestionViewControllerSGOriginDataSource *)self appName];
+    appName2 = [v10 stringWithFormat:v12, appName, v9];
   }
 
   else
   {
-    v14 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self appName];
+    appName2 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self appName];
   }
 
-  return v14;
+  return appName2;
 }
 
 - (NSString)date
 {
-  v3 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-  v4 = [v3 date];
+  origin = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+  date = [origin date];
 
-  if (v4)
+  if (date)
   {
-    v5 = [objc_opt_class() dateFormatter];
-    [v5 setDoesRelativeDateFormatting:1];
-    v6 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v7 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-    v8 = [v7 date];
-    v9 = [v6 isDateInToday:v8];
+    dateFormatter = [objc_opt_class() dateFormatter];
+    [dateFormatter setDoesRelativeDateFormatting:1];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    origin2 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+    date2 = [origin2 date];
+    v9 = [currentCalendar isDateInToday:date2];
 
-    [v5 setDateStyle:v9 ^ 1];
-    [v5 setTimeStyle:v9];
-    v10 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-    v11 = [v10 date];
-    v12 = [v5 stringFromDate:v11];
+    [dateFormatter setDateStyle:v9 ^ 1];
+    [dateFormatter setTimeStyle:v9];
+    origin3 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+    date3 = [origin3 date];
+    v12 = [dateFormatter stringFromDate:date3];
   }
 
   else
@@ -129,45 +129,45 @@ LABEL_10:
 
 - (unint64_t)type
 {
-  v3 = [objc_opt_class() contactSuggestionTypeBySuggestionType];
+  contactSuggestionTypeBySuggestionType = [objc_opt_class() contactSuggestionTypeBySuggestionType];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "type")}];
-  v7 = [v3 objectForKey:v6];
+  origin = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(origin, "type")}];
+  v7 = [contactSuggestionTypeBySuggestionType objectForKey:v6];
 
   if (v7)
   {
-    v8 = [v7 unsignedIntegerValue];
+    unsignedIntegerValue = [v7 unsignedIntegerValue];
   }
 
   else
   {
-    v8 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v8;
+  return unsignedIntegerValue;
 }
 
 - (NSString)title
 {
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-  v5 = [v4 title];
-  LOBYTE(v3) = (*(v3 + 16))(v3, v5);
+  origin = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+  title = [origin title];
+  LOBYTE(v3) = (*(v3 + 16))(v3, title);
 
   if ((v3 & 1) == 0)
   {
-    v6 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-    v7 = [v6 title];
+    origin2 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+    title2 = [origin2 title];
     goto LABEL_5;
   }
 
   if ([(CNContactSuggestionViewControllerSGOriginDataSource *)self type]== 1)
   {
-    v6 = CNContactsUIBundle();
-    v7 = [v6 localizedStringForKey:@"SUGGESTION_REVIEW_MAIL_DEFAULT_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
+    origin2 = CNContactsUIBundle();
+    title2 = [origin2 localizedStringForKey:@"SUGGESTION_REVIEW_MAIL_DEFAULT_TITLE" value:&stru_1F0CE7398 table:@"Localized"];
 LABEL_5:
-    v8 = v7;
+    v8 = title2;
 
     goto LABEL_7;
   }
@@ -181,9 +181,9 @@ LABEL_7:
 - (NSAttributedString)formattedSnippet
 {
   v3 = *MEMORY[0x1E6996568];
-  v4 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-  v5 = [v4 contextSnippet];
-  LOBYTE(v3) = (*(v3 + 16))(v3, v5);
+  origin = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+  contextSnippet = [origin contextSnippet];
+  LOBYTE(v3) = (*(v3 + 16))(v3, contextSnippet);
 
   if (v3)
   {
@@ -191,47 +191,47 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v7 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-  if ([v7 contextSnippetRange] == 0x7FFFFFFFFFFFFFFFLL)
+  origin2 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+  if ([origin2 contextSnippetRange] == 0x7FFFFFFFFFFFFFFFLL)
   {
   }
 
   else
   {
-    v8 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-    v9 = [v8 contextSnippetRange];
-    v11 = v9 + v10;
-    v12 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-    v13 = [v12 contextSnippet];
-    v14 = [v13 length];
+    origin3 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+    contextSnippetRange = [origin3 contextSnippetRange];
+    v11 = contextSnippetRange + v10;
+    origin4 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+    contextSnippet2 = [origin4 contextSnippet];
+    v14 = [contextSnippet2 length];
 
     if (v11 <= v14)
     {
       v20 = objc_alloc(MEMORY[0x1E696AD40]);
-      v21 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-      v22 = [v21 contextSnippet];
-      v6 = [v20 initWithString:v22];
+      origin5 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+      contextSnippet3 = [origin5 contextSnippet];
+      v6 = [v20 initWithString:contextSnippet3];
 
       v23 = *MEMORY[0x1E69DB650];
       v24 = +[CNContactStyle currentStyle];
-      v25 = [v24 textColor];
-      v26 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-      v27 = [v26 contextSnippetRange];
-      [v6 addAttribute:v23 value:v25 range:{v27, v28}];
+      textColor = [v24 textColor];
+      origin6 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+      contextSnippetRange2 = [origin6 contextSnippetRange];
+      [v6 addAttribute:v23 value:textColor range:{contextSnippetRange2, v28}];
 
-      v19 = [v6 mutableString];
-      [v19 replaceOccurrencesOfString:@"\n\n" withString:@"\n" options:0 range:{0, objc_msgSend(v6, "length")}];
+      mutableString = [v6 mutableString];
+      [mutableString replaceOccurrencesOfString:@"\n\n" withString:@"\n" options:0 range:{0, objc_msgSend(v6, "length")}];
       goto LABEL_8;
     }
   }
 
-  v15 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-  v16 = [v15 contextSnippet];
-  v17 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-  v18 = [v17 contextSnippet];
-  v19 = [v16 stringByReplacingOccurrencesOfString:@"\n\n" withString:@"\n" options:0 range:{0, objc_msgSend(v18, "length")}];
+  origin7 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+  contextSnippet4 = [origin7 contextSnippet];
+  origin8 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+  contextSnippet5 = [origin8 contextSnippet];
+  mutableString = [contextSnippet4 stringByReplacingOccurrencesOfString:@"\n\n" withString:@"\n" options:0 range:{0, objc_msgSend(contextSnippet5, "length")}];
 
-  v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v19];
+  v6 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:mutableString];
 LABEL_8:
 
 LABEL_9:
@@ -241,22 +241,22 @@ LABEL_9:
 
 - (NSString)appName
 {
-  v2 = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
-  v3 = [v2 localizedApplicationName];
+  origin = [(CNContactSuggestionViewControllerSGOriginDataSource *)self origin];
+  localizedApplicationName = [origin localizedApplicationName];
 
-  return v3;
+  return localizedApplicationName;
 }
 
-- (CNContactSuggestionViewControllerSGOriginDataSource)initWithSGOrigin:(id)a3
+- (CNContactSuggestionViewControllerSGOriginDataSource)initWithSGOrigin:(id)origin
 {
-  v5 = a3;
+  originCopy = origin;
   v10.receiver = self;
   v10.super_class = CNContactSuggestionViewControllerSGOriginDataSource;
   v6 = [(CNContactSuggestionViewControllerSGOriginDataSource *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_origin, a3);
+    objc_storeStrong(&v6->_origin, origin);
     v8 = v7;
   }
 

@@ -1,11 +1,11 @@
 @interface ICPAAudioQualityDictionary
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setChannelLayoutDescription:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setChannelLayoutDescription:(uint64_t)description;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICPAAudioQualityDictionary
@@ -73,44 +73,44 @@ LABEL_9:
   return v4 ^ v3 ^ v6 ^ v7 ^ v8 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
   has = self->_has;
-  v6 = *(v4 + 48);
+  v6 = *(equalCopy + 48);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_bitRate != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_bitRate != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_27;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_bitDepth != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_bitDepth != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_27;
   }
 
   channelLayoutDescription = self->_channelLayoutDescription;
-  if (channelLayoutDescription | *(v4 + 4))
+  if (channelLayoutDescription | *(equalCopy + 4))
   {
     if (![(NSString *)channelLayoutDescription isEqual:?])
     {
@@ -118,12 +118,12 @@ LABEL_9:
     }
 
     has = self->_has;
-    v6 = *(v4 + 48);
+    v6 = *(equalCopy + 48);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v6 & 8) == 0 || self->_codec != *(v4 + 10))
+    if ((v6 & 8) == 0 || self->_codec != *(equalCopy + 10))
     {
       goto LABEL_27;
     }
@@ -136,7 +136,7 @@ LABEL_9:
 
   if ((has & 4) != 0)
   {
-    if ((v6 & 4) == 0 || self->_sampleRate != *(v4 + 3))
+    if ((v6 & 4) == 0 || self->_sampleRate != *(equalCopy + 3))
     {
       goto LABEL_27;
     }
@@ -154,13 +154,13 @@ LABEL_9:
     {
       if (self->_isSpatialized)
       {
-        if ((*(v4 + 44) & 1) == 0)
+        if ((*(equalCopy + 44) & 1) == 0)
         {
           goto LABEL_27;
         }
       }
 
-      else if (*(v4 + 44))
+      else if (*(equalCopy + 44))
       {
         goto LABEL_27;
       }
@@ -178,9 +178,9 @@ LABEL_28:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -196,7 +196,7 @@ LABEL_28:
     *(v5 + 48) |= 1u;
   }
 
-  v8 = [(NSString *)self->_channelLayoutDescription copyWithZone:a3];
+  v8 = [(NSString *)self->_channelLayoutDescription copyWithZone:zone];
   v9 = *(v6 + 32);
   *(v6 + 32) = v8;
 
@@ -238,9 +238,9 @@ LABEL_8:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -292,12 +292,12 @@ LABEL_11:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_bitRate];
-    [v3 setObject:v5 forKey:@"bitRate"];
+    [dictionary setObject:v5 forKey:@"bitRate"];
 
     has = self->_has;
   }
@@ -305,20 +305,20 @@ LABEL_11:
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_bitDepth];
-    [v3 setObject:v6 forKey:@"bitDepth"];
+    [dictionary setObject:v6 forKey:@"bitDepth"];
   }
 
   channelLayoutDescription = self->_channelLayoutDescription;
   if (channelLayoutDescription)
   {
-    [v3 setObject:channelLayoutDescription forKey:@"channelLayoutDescription"];
+    [dictionary setObject:channelLayoutDescription forKey:@"channelLayoutDescription"];
   }
 
   v8 = self->_has;
   if ((v8 & 8) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_codec];
-    [v3 setObject:v11 forKey:@"codec"];
+    [dictionary setObject:v11 forKey:@"codec"];
 
     v8 = self->_has;
     if ((v8 & 4) == 0)
@@ -339,18 +339,18 @@ LABEL_9:
   }
 
   v12 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_sampleRate];
-  [v3 setObject:v12 forKey:@"sampleRate"];
+  [dictionary setObject:v12 forKey:@"sampleRate"];
 
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_10:
     v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_isSpatialized];
-    [v3 setObject:v9 forKey:@"isSpatialized"];
+    [dictionary setObject:v9 forKey:@"isSpatialized"];
   }
 
 LABEL_11:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -359,17 +359,17 @@ LABEL_11:
   v8.receiver = self;
   v8.super_class = ICPAAudioQualityDictionary;
   v4 = [(ICPAAudioQualityDictionary *)&v8 description];
-  v5 = [(ICPAAudioQualityDictionary *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICPAAudioQualityDictionary *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setChannelLayoutDescription:(uint64_t)a1
+- (void)setChannelLayoutDescription:(uint64_t)description
 {
-  if (a1)
+  if (description)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((description + 32), a2);
   }
 }
 

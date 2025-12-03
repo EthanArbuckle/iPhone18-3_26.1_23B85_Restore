@@ -1,23 +1,23 @@
 @interface NanoCompassBaseRichView
 - (CLKMonochromeFilterProvider)filterProvider;
-- (id)initFullColorImageViewWithDevice:(id)a3;
-- (void)_applyFilters:(id)a3 toViews:(id)a4;
-- (void)transitionToMonochromeWithFraction:(double)a3;
+- (id)initFullColorImageViewWithDevice:(id)device;
+- (void)_applyFilters:(id)filters toViews:(id)views;
+- (void)transitionToMonochromeWithFraction:(double)fraction;
 - (void)updateMonochromeColor;
 @end
 
 @implementation NanoCompassBaseRichView
 
-- (void)transitionToMonochromeWithFraction:(double)a3
+- (void)transitionToMonochromeWithFraction:(double)fraction
 {
   v7 = objc_msgSend_filterProvider(self, a2, v3, v4);
-  v25 = objc_msgSend_filtersForView_style_fraction_(v7, v8, self, 2, a3);
+  v25 = objc_msgSend_filtersForView_style_fraction_(v7, v8, self, 2, fraction);
 
   v12 = objc_msgSend_monochromeAccentViews(self, v9, v10, v11);
   objc_msgSend__applyFilters_toViews_(self, v13, v25, v12);
 
   v17 = objc_msgSend_filterProvider(self, v14, v15, v16);
-  v19 = objc_msgSend_filtersForView_style_fraction_(v17, v18, self, 0, a3);
+  v19 = objc_msgSend_filtersForView_style_fraction_(v17, v18, self, 0, fraction);
 
   v23 = objc_msgSend_monochromeOtherViews(self, v20, v21, v22);
   objc_msgSend__applyFilters_toViews_(self, v24, v19, v23);
@@ -38,19 +38,19 @@
   objc_msgSend__applyFilters_toViews_(self, v22, v17, v21);
 }
 
-- (id)initFullColorImageViewWithDevice:(id)a3
+- (id)initFullColorImageViewWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = NanoCompassBaseRichView;
   v6 = [(NanoCompassBaseRichView *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
     v8 = objc_alloc(MEMORY[0x277CCAD78]);
     v11 = objc_msgSend_initWithUUIDString_(v8, v9, @"FE1BCD7B-63A2-4EB3-9EF5-D6A9E506101E", v10);
-    v14 = objc_msgSend_supportsCapability_(v5, v12, v11, v13);
+    v14 = objc_msgSend_supportsCapability_(deviceCopy, v12, v11, v13);
 
     v7->_supportsGossamer = v14;
   }
@@ -58,16 +58,16 @@
   return v7;
 }
 
-- (void)_applyFilters:(id)a3 toViews:(id)a4
+- (void)_applyFilters:(id)filters toViews:(id)views
 {
-  v5 = a3;
+  filtersCopy = filters;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_23BD3AC64;
   v9[3] = &unk_278B942B8;
-  v10 = v5;
-  v6 = v5;
-  objc_msgSend_enumerateObjectsUsingBlock_(a4, v7, v9, v8);
+  v10 = filtersCopy;
+  v6 = filtersCopy;
+  objc_msgSend_enumerateObjectsUsingBlock_(views, v7, v9, v8);
 }
 
 - (CLKMonochromeFilterProvider)filterProvider

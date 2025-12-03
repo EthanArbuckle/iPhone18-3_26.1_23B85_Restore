@@ -1,11 +1,11 @@
 @interface OKWidgetContentSepiaFilter
-+ (id)filterWithIntensity:(id)a3;
++ (id)filterWithIntensity:(id)intensity;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)inputKeys;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setSettingInputIntensity:(id)a3;
+- (void)setSettingInputIntensity:(id)intensity;
 @end
 
 @implementation OKWidgetContentSepiaFilter
@@ -27,7 +27,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetContentSepiaFilter;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"inputIntensity";
@@ -40,7 +40,7 @@
   return v2;
 }
 
-- (void)setSettingInputIntensity:(id)a3
+- (void)setSettingInputIntensity:(id)intensity
 {
   inputIntensity = self->_inputIntensity;
   if (inputIntensity)
@@ -49,7 +49,7 @@
     self->_inputIntensity = 0;
   }
 
-  self->_inputIntensity = a3;
+  self->_inputIntensity = intensity;
 }
 
 - (id)inputKeys
@@ -69,18 +69,18 @@
   return [v2 valueForKey:v3];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentSepiaFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentSepiaFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
-+ (id)filterWithIntensity:(id)a3
++ (id)filterWithIntensity:(id)intensity
 {
   v4 = objc_alloc_init(OKWidgetContentSepiaFilter);
-  [(OKWidgetContentSepiaFilter *)v4 setInputIntensity:a3];
+  [(OKWidgetContentSepiaFilter *)v4 setInputIntensity:intensity];
 
   return v4;
 }

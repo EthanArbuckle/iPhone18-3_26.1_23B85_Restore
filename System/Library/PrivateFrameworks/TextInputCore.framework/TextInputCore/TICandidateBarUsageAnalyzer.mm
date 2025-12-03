@@ -1,31 +1,31 @@
 @interface TICandidateBarUsageAnalyzer
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5;
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence;
 - (TICandidateBarUsageAnalyzer)init;
-- (id)stringFromInputMethod:(unint64_t)a3;
-- (id)stringFromSelectionType:(unint64_t)a3;
-- (void)analyzeWordEntry:(id)a3;
-- (void)dispatchEventWithInputMethod:(unint64_t)a3 typingEngineType:(unsigned int)a4 selectionType:(unint64_t)a5 keyboardState:(id)a6;
+- (id)stringFromInputMethod:(unint64_t)method;
+- (id)stringFromSelectionType:(unint64_t)type;
+- (void)analyzeWordEntry:(id)entry;
+- (void)dispatchEventWithInputMethod:(unint64_t)method typingEngineType:(unsigned int)type selectionType:(unint64_t)selectionType keyboardState:(id)state;
 - (void)registerEventSpec;
 @end
 
 @implementation TICandidateBarUsageAnalyzer
 
-- (id)stringFromSelectionType:(unint64_t)a3
+- (id)stringFromSelectionType:(unint64_t)type
 {
-  if (a3 - 1 > 9)
+  if (type - 1 > 9)
   {
     return @"None";
   }
 
   else
   {
-    return *(&off_278732010 + a3 - 1);
+    return *(&off_278732010 + type - 1);
   }
 }
 
-- (id)stringFromInputMethod:(unint64_t)a3
+- (id)stringFromInputMethod:(unint64_t)method
 {
-  if (a3)
+  if (method)
   {
     return @"Pathed";
   }
@@ -36,22 +36,22 @@
   }
 }
 
-- (void)dispatchEventWithInputMethod:(unint64_t)a3 typingEngineType:(unsigned int)a4 selectionType:(unint64_t)a5 keyboardState:(id)a6
+- (void)dispatchEventWithInputMethod:(unint64_t)method typingEngineType:(unsigned int)type selectionType:(unint64_t)selectionType keyboardState:(id)state
 {
   v53[20] = *MEMORY[0x277D85DE8];
-  v9 = a6;
+  stateCopy = state;
   v10 = [TIKBAnalyticsMetricsContext alloc];
-  v11 = [(TITypingSession *)self->_currentSession sessionParams];
-  v12 = [v11 activeInputModes];
-  v13 = [(TITypingSession *)self->_currentSession sessionParams];
-  v14 = [v13 testingParameters];
-  v15 = [(TIKBAnalyticsMetricsContext *)v10 initWithKeyboardState:v9 activeInputModes:v12 testingParameters:v14];
+  sessionParams = [(TITypingSession *)self->_currentSession sessionParams];
+  activeInputModes = [sessionParams activeInputModes];
+  sessionParams2 = [(TITypingSession *)self->_currentSession sessionParams];
+  testingParameters = [sessionParams2 testingParameters];
+  v15 = [(TIKBAnalyticsMetricsContext *)v10 initWithKeyboardState:stateCopy activeInputModes:activeInputModes testingParameters:testingParameters];
 
   v52[0] = @"inputMethod";
-  v51 = [(TICandidateBarUsageAnalyzer *)self stringFromInputMethod:a3];
+  v51 = [(TICandidateBarUsageAnalyzer *)self stringFromInputMethod:method];
   v53[0] = v51;
   v52[1] = @"selectionType";
-  v50 = [(TICandidateBarUsageAnalyzer *)self stringFromSelectionType:a5];
+  v50 = [(TICandidateBarUsageAnalyzer *)self stringFromSelectionType:selectionType];
   v53[1] = v50;
   v52[2] = @"predictionEnabled";
   v49 = [MEMORY[0x277CCABB0] numberWithBool:self->_predictionEnabled];
@@ -61,9 +61,9 @@
   v53[3] = v48;
   v52[4] = @"autocorrectionEnabled";
   v16 = MEMORY[0x277CCABB0];
-  v17 = [(TIKBAnalyticsMetricsContext *)v15 keyboardType];
+  keyboardType = [(TIKBAnalyticsMetricsContext *)v15 keyboardType];
   v18 = 18;
-  if (v17 == 5)
+  if (keyboardType == 5)
   {
     v18 = 19;
   }
@@ -71,37 +71,37 @@
   v47 = [v16 numberWithBool:*(&self->super.isa + v18)];
   v53[4] = v47;
   v52[5] = kFeatureKeyboardUsage;
-  v46 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
-  v45 = [v46 featureUsageMetricFromName:kFeatureKeyboardUsage forContext:v15];
+  featureUsageMetricsCache = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
+  v45 = [featureUsageMetricsCache featureUsageMetricFromName:kFeatureKeyboardUsage forContext:v15];
   v53[5] = v45;
   v52[6] = kFeatureContinuousPathUsage;
-  v44 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
-  v43 = [v44 featureUsageMetricFromName:kFeatureContinuousPathUsage forContext:v15];
+  featureUsageMetricsCache2 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
+  v43 = [featureUsageMetricsCache2 featureUsageMetricFromName:kFeatureContinuousPathUsage forContext:v15];
   v53[6] = v43;
   v52[7] = kFeatureAutocorrectionUsage;
-  v42 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
-  v41 = [v42 featureUsageMetricFromName:kFeatureAutocorrectionUsage forContext:v15];
+  featureUsageMetricsCache3 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
+  v41 = [featureUsageMetricsCache3 featureUsageMetricFromName:kFeatureAutocorrectionUsage forContext:v15];
   v53[7] = v41;
   v52[8] = kFeatureCandidateBarUsage;
-  v40 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
-  v39 = [v40 featureUsageMetricFromName:kFeatureCandidateBarUsage forContext:v15];
+  featureUsageMetricsCache4 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
+  v39 = [featureUsageMetricsCache4 featureUsageMetricFromName:kFeatureCandidateBarUsage forContext:v15];
   v53[8] = v39;
   v52[9] = kFeatureMultilingualUsage;
-  v38 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
-  v37 = [v38 featureUsageMetricFromName:kFeatureMultilingualUsage forContext:v15];
+  featureUsageMetricsCache5 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
+  v37 = [featureUsageMetricsCache5 featureUsageMetricFromName:kFeatureMultilingualUsage forContext:v15];
   v53[9] = v37;
   v52[10] = kFeatureStringTypingSpeed;
-  v36 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
-  v35 = [v36 featureUsageMetricFromName:kFeatureStringTypingSpeed forContext:v15];
+  featureUsageMetricsCache6 = [(TITypingSession *)self->_currentSession featureUsageMetricsCache];
+  v35 = [featureUsageMetricsCache6 featureUsageMetricFromName:kFeatureStringTypingSpeed forContext:v15];
   v53[10] = v35;
   v52[11] = kFeatureStringTypingEngine;
   v34 = TIKeyboardCandidateTypingEngineTypeToString();
   v53[11] = v34;
   v52[12] = kFeatureStringAssetAvailabilityStatus;
-  v19 = [(TITypingSession *)self->_currentSession sessionParams];
-  v20 = [v19 assetAvailabilityStatus];
+  sessionParams3 = [(TITypingSession *)self->_currentSession sessionParams];
+  assetAvailabilityStatus = [sessionParams3 assetAvailabilityStatus];
   v21 = @"Installed";
-  if (!v20)
+  if (!assetAvailabilityStatus)
   {
     v21 = @"Unavailable";
   }
@@ -109,31 +109,31 @@
   v22 = v21;
   v53[12] = v22;
   v52[13] = kFeatureStringKeyboardLanguage;
-  v23 = [(TIAnalyticsMetricsContext *)v15 inputLanguage];
-  v53[13] = v23;
+  inputLanguage = [(TIAnalyticsMetricsContext *)v15 inputLanguage];
+  v53[13] = inputLanguage;
   v52[14] = kFeatureStringKeyboardRegion;
-  v24 = [(TIAnalyticsMetricsContext *)v15 inputRegion];
-  v53[14] = v24;
+  inputRegion = [(TIAnalyticsMetricsContext *)v15 inputRegion];
+  v53[14] = inputRegion;
   v52[15] = kFeatureStringKeyboardVariant;
-  v25 = [(TIKBAnalyticsMetricsContext *)v15 inputVariant];
-  v53[15] = v25;
+  inputVariant = [(TIKBAnalyticsMetricsContext *)v15 inputVariant];
+  v53[15] = inputVariant;
   v52[16] = kFeatureStringKeyboardSecondaryLanguage;
-  v26 = [(TIKBAnalyticsMetricsContext *)v15 secondaryLanguage];
-  v53[16] = v26;
+  secondaryLanguage = [(TIKBAnalyticsMetricsContext *)v15 secondaryLanguage];
+  v53[16] = secondaryLanguage;
   v52[17] = kFeatureStringKeyboardSecondaryRegion;
-  v27 = [(TIKBAnalyticsMetricsContext *)v15 secondaryRegion];
-  v53[17] = v27;
+  secondaryRegion = [(TIKBAnalyticsMetricsContext *)v15 secondaryRegion];
+  v53[17] = secondaryRegion;
   v52[18] = kFeatureStringKeyboardLayout;
-  v28 = [(TIKBAnalyticsMetricsContext *)v15 layoutName];
-  v53[18] = v28;
+  layoutName = [(TIKBAnalyticsMetricsContext *)v15 layoutName];
+  v53[18] = layoutName;
   v52[19] = kFeatureStringKeyboardType;
   v29 = [TIKBAnalyticsMetricsContext keyboardTypeEnumToString:[(TIKBAnalyticsMetricsContext *)v15 keyboardType]];
   v53[19] = v29;
   v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v53 forKeys:v52 count:20];
 
-  v30 = [MEMORY[0x277D6F318] sharedInstance];
-  v31 = [(TIKBAnalyticsMetricsContext *)v15 testingParameters];
-  [v30 dispatchEventWithName:@"candidateBarUsage" payload:v33 testingParameters:v31 allowSparsePayload:0];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  testingParameters2 = [(TIKBAnalyticsMetricsContext *)v15 testingParameters];
+  [mEMORY[0x277D6F318] dispatchEventWithName:@"candidateBarUsage" payload:v33 testingParameters:testingParameters2 allowSparsePayload:0];
 
   v32 = *MEMORY[0x277D85DE8];
 }
@@ -226,30 +226,30 @@
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:20];
   v29 = [v48 eventSpecWithName:@"candidateBarUsage" inputModeRequired:0 fieldSpecs:v28];
 
-  v30 = [MEMORY[0x277D6F318] sharedInstance];
-  [v30 registerEventSpec:v29];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] registerEventSpec:v29];
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)analyzeWordEntry:(id)a3
+- (void)analyzeWordEntry:(id)entry
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 acceptedCandidate];
-  v6 = [v4 candidatesOffered];
-  v7 = [v6 lastObject];
+  entryCopy = entry;
+  acceptedCandidate = [entryCopy acceptedCandidate];
+  candidatesOffered = [entryCopy candidatesOffered];
+  lastObject = [candidatesOffered lastObject];
 
-  v8 = [v5 candidate];
-  v9 = [v8 length];
+  candidate = [acceptedCandidate candidate];
+  v9 = [candidate length];
 
   if (v9)
   {
-    v10 = [v5 isContinuousPathConversion];
-    if (([v4 wordEntryType] & 4) != 0)
+    isContinuousPathConversion = [acceptedCandidate isContinuousPathConversion];
+    if (([entryCopy wordEntryType] & 4) != 0)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && ([v5 proactiveTrigger], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+      if ((objc_opt_isKindOfClass() & 1) != 0 && ([acceptedCandidate proactiveTrigger], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
       {
         v11 = 8;
       }
@@ -264,13 +264,13 @@
 
         else
         {
-          if (([v5 isResponseKitCandidate] & 1) == 0)
+          if (([acceptedCandidate isResponseKitCandidate] & 1) == 0)
           {
-            v13 = [v5 candidate];
-            if ([v13 _containsEmoji])
+            candidate2 = [acceptedCandidate candidate];
+            if ([candidate2 _containsEmoji])
             {
-              v14 = [v5 input];
-              v15 = [v14 length];
+              input = [acceptedCandidate input];
+              v15 = [input length];
 
               if (!v15)
               {
@@ -283,11 +283,11 @@
             {
             }
 
-            v16 = [v5 candidate];
-            if ([v16 _containsEmoji])
+            candidate3 = [acceptedCandidate candidate];
+            if ([candidate3 _containsEmoji])
             {
-              v17 = [v5 input];
-              v18 = [v17 length];
+              input2 = [acceptedCandidate input];
+              v18 = [input2 length];
 
               if (v18)
               {
@@ -300,16 +300,16 @@
             {
             }
 
-            v19 = [v5 input];
-            v20 = [v19 length];
+            input3 = [acceptedCandidate input];
+            v20 = [input3 length];
 
             if (v20)
             {
-              v21 = [v5 candidate];
-              v22 = [v7 corrections];
-              v23 = [v22 autocorrection];
-              v24 = [v23 input];
-              v25 = [v21 isEqualToString:v24];
+              candidate4 = [acceptedCandidate candidate];
+              corrections = [lastObject corrections];
+              autocorrection = [corrections autocorrection];
+              input4 = [autocorrection input];
+              v25 = [candidate4 isEqualToString:input4];
 
               if (v25)
               {
@@ -318,11 +318,11 @@
 
               else
               {
-                v26 = [v5 candidate];
-                v27 = [v7 corrections];
-                v28 = [v27 autocorrection];
-                v29 = [v28 candidate];
-                v30 = [v26 isEqualToString:v29];
+                candidate5 = [acceptedCandidate candidate];
+                corrections2 = [lastObject corrections];
+                autocorrection2 = [corrections2 autocorrection];
+                candidate6 = [autocorrection2 candidate];
+                v30 = [candidate5 isEqualToString:candidate6];
 
                 if (v30)
                 {
@@ -335,7 +335,7 @@
                   v46 = 0u;
                   v43 = 0u;
                   v44 = 0u;
-                  obj = [v7 predictions];
+                  obj = [lastObject predictions];
                   v42 = [obj countByEnumeratingWithState:&v43 objects:v47 count:16];
                   if (v42)
                   {
@@ -351,9 +351,9 @@ LABEL_27:
                       }
 
                       v32 = *(*(&v43 + 1) + 8 * v31);
-                      v33 = [v5 candidate];
-                      v34 = [v32 candidate];
-                      v35 = [v33 isEqualToString:v34];
+                      candidate7 = [acceptedCandidate candidate];
+                      candidate8 = [v32 candidate];
+                      v35 = [candidate7 isEqualToString:candidate8];
 
                       if (v35)
                       {
@@ -401,33 +401,33 @@ LABEL_33:
     }
 
 LABEL_35:
-    v36 = [v4 acceptedCandidate];
-    v37 = [v36 typingEngine];
-    v38 = [v4 keyboardState];
-    [(TICandidateBarUsageAnalyzer *)self dispatchEventWithInputMethod:v10 typingEngineType:v37 selectionType:v11 keyboardState:v38];
+    acceptedCandidate2 = [entryCopy acceptedCandidate];
+    typingEngine = [acceptedCandidate2 typingEngine];
+    keyboardState = [entryCopy keyboardState];
+    [(TICandidateBarUsageAnalyzer *)self dispatchEventWithInputMethod:isContinuousPathConversion typingEngineType:typingEngine selectionType:v11 keyboardState:keyboardState];
   }
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (a5)
+  sessionCopy = session;
+  if (confidence)
   {
-    objc_storeStrong(&self->_currentSession, a3);
-    v9 = [MEMORY[0x277D6F470] sharedPreferencesController];
-    self->_predictionEnabled = [v9 BOOLForPreferenceKey:*MEMORY[0x277D6F928]];
-    self->_continuousPathEnabled = [v9 BOOLForPreferenceKey:*MEMORY[0x277D6F848]];
-    self->_autocorrectionEnabled = [v9 BOOLForPreferenceKey:*MEMORY[0x277D6F7C0]];
-    self->_hwAutocorrectionEnabled = [v9 BOOLForPreferenceKey:*MEMORY[0x277D6F638]];
+    objc_storeStrong(&self->_currentSession, session);
+    mEMORY[0x277D6F470] = [MEMORY[0x277D6F470] sharedPreferencesController];
+    self->_predictionEnabled = [mEMORY[0x277D6F470] BOOLForPreferenceKey:*MEMORY[0x277D6F928]];
+    self->_continuousPathEnabled = [mEMORY[0x277D6F470] BOOLForPreferenceKey:*MEMORY[0x277D6F848]];
+    self->_autocorrectionEnabled = [mEMORY[0x277D6F470] BOOLForPreferenceKey:*MEMORY[0x277D6F7C0]];
+    self->_hwAutocorrectionEnabled = [mEMORY[0x277D6F470] BOOLForPreferenceKey:*MEMORY[0x277D6F638]];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v10 = [(TITypingSession *)self->_currentSession userActionHistory];
-    v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    userActionHistory = [(TITypingSession *)self->_currentSession userActionHistory];
+    v11 = [userActionHistory countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v11)
     {
       v12 = v11;
@@ -438,7 +438,7 @@ LABEL_35:
         {
           if (*v19 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(userActionHistory);
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
@@ -448,7 +448,7 @@ LABEL_35:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v12 = [userActionHistory countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v12);
@@ -456,7 +456,7 @@ LABEL_35:
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return a5 != 0;
+  return confidence != 0;
 }
 
 - (TICandidateBarUsageAnalyzer)init

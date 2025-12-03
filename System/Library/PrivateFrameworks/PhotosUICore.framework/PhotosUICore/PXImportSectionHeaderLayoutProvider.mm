@@ -1,17 +1,17 @@
 @interface PXImportSectionHeaderLayoutProvider
-- (PXImportSectionHeaderLayoutProvider)initWithViewModel:(id)a3 viewProvider:(id)a4;
-- (id)primaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4;
-- (id)secondaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4;
+- (PXImportSectionHeaderLayoutProvider)initWithViewModel:(id)model viewProvider:(id)provider;
+- (id)primaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
+- (id)secondaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path;
 @end
 
 @implementation PXImportSectionHeaderLayoutProvider
 
-- (id)secondaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4
+- (id)secondaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = a3;
+  sourceCopy = source;
   if ((MEMORY[0x1A590D320]() & 1) == 0)
   {
-    [v5 numberOfItemsInSection:a4->section];
+    [sourceCopy numberOfItemsInSection:path->section];
     PXLocalizedStringFromTable(@"PXImportItemsCount", @"PhotosUICore");
     objc_claimAutoreleasedReturnValue();
     PXLocalizedStringWithValidatedFormat();
@@ -20,17 +20,17 @@
   return 0;
 }
 
-- (id)primaryTextForDataSource:(id)a3 sectionIndexPath:(PXSimpleIndexPath *)a4
+- (id)primaryTextForDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path
 {
-  v5 = *&a4->item;
-  v9[0] = *&a4->dataSourceIdentifier;
+  v5 = *&path->item;
+  v9[0] = *&path->dataSourceIdentifier;
   v9[1] = v5;
-  [a3 assetCollectionAtSectionIndexPath:v9];
-  v6 = [objc_claimAutoreleasedReturnValue() startDate];
-  if (v6)
+  [source assetCollectionAtSectionIndexPath:v9];
+  startDate = [objc_claimAutoreleasedReturnValue() startDate];
+  if (startDate)
   {
-    v7 = [(PXImportSectionHeaderLayoutProvider *)self dateFormatter];
-    [v7 stringFromDate:v6];
+    dateFormatter = [(PXImportSectionHeaderLayoutProvider *)self dateFormatter];
+    [dateFormatter stringFromDate:startDate];
     objc_claimAutoreleasedReturnValue();
   }
 
@@ -45,11 +45,11 @@
   PXStringWithValidatedFormat();
 }
 
-- (PXImportSectionHeaderLayoutProvider)initWithViewModel:(id)a3 viewProvider:(id)a4
+- (PXImportSectionHeaderLayoutProvider)initWithViewModel:(id)model viewProvider:(id)provider
 {
   v8.receiver = self;
   v8.super_class = PXImportSectionHeaderLayoutProvider;
-  v4 = [(PXActionableSectionHeaderLayoutProvider *)&v8 initWithViewModel:a3 viewProvider:a4];
+  v4 = [(PXActionableSectionHeaderLayoutProvider *)&v8 initWithViewModel:model viewProvider:provider];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E696AB78]);

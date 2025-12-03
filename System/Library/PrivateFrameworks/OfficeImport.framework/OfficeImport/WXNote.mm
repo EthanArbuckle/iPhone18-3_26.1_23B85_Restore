@@ -1,83 +1,83 @@
 @interface WXNote
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 skipNextSib:(BOOL *)a5 state:(id)a6;
++ (void)readFrom:(_xmlNode *)from to:(id)to skipNextSib:(BOOL *)sib state:(id)state;
 @end
 
 @implementation WXNote
 
-+ (void)readFrom:(_xmlNode *)a3 to:(id)a4 skipNextSib:(BOOL *)a5 state:(id)a6
++ (void)readFrom:(_xmlNode *)from to:(id)to skipNextSib:(BOOL *)sib state:(id)state
 {
-  v33 = a4;
-  v9 = a6;
-  v10 = [(OCXState *)v9 WXMainNamespace];
-  v11 = CXRequiredLongAttribute(a3, v10, "id");
+  toCopy = to;
+  stateCopy = state;
+  wXMainNamespace = [(OCXState *)stateCopy WXMainNamespace];
+  v11 = CXRequiredLongAttribute(from, wXMainNamespace, "id");
 
-  v32 = [(OCXState *)v9 packagePart];
-  if (xmlStrEqual(a3->name, "footnoteReference"))
+  packagePart = [(OCXState *)stateCopy packagePart];
+  if (xmlStrEqual(from->name, "footnoteReference"))
   {
-    v12 = [(OCXState *)v9 xmlFootnoteWithID:v11];
-    OCXFirstPartWithRelationshipOfTypeToPartWithFallback(v32, v9, sel_OCXFootnotesRelationshipType);
+    v12 = [(OCXState *)stateCopy xmlFootnoteWithID:v11];
+    OCXFirstPartWithRelationshipOfTypeToPartWithFallback(packagePart, stateCopy, sel_OCXFootnotesRelationshipType);
   }
 
   else
   {
-    v12 = [(OCXState *)v9 xmlEndnoteWithID:v11];
-    OCXFirstPartWithRelationshipOfTypeToPartWithFallback(v32, v9, sel_OCXEndnotesRelationshipType);
+    v12 = [(OCXState *)stateCopy xmlEndnoteWithID:v11];
+    OCXFirstPartWithRelationshipOfTypeToPartWithFallback(packagePart, stateCopy, sel_OCXEndnotesRelationshipType);
   }
   v13 = ;
-  v14 = [(OCXState *)v9 WXMainNamespace];
-  v15 = CXDefaultBoolAttribute(v12, v14, "suppressRef", 0);
+  wXMainNamespace2 = [(OCXState *)stateCopy WXMainNamespace];
+  v15 = CXDefaultBoolAttribute(v12, wXMainNamespace2, "suppressRef", 0);
 
-  [v33 setAutomaticNumbering:v15 ^ 1u];
-  v16 = [(OCXState *)v9 WXMainNamespace];
-  v17 = CXDefaultBoolAttribute(a3, v16, "customMarkFollows", 0);
+  [toCopy setAutomaticNumbering:v15 ^ 1u];
+  wXMainNamespace3 = [(OCXState *)stateCopy WXMainNamespace];
+  v17 = CXDefaultBoolAttribute(from, wXMainNamespace3, "customMarkFollows", 0);
 
-  if (([v33 automaticNumbering] & v17) == 1)
+  if (([toCopy automaticNumbering] & v17) == 1)
   {
-    [v33 setAutomaticNumbering:0];
+    [toCopy setAutomaticNumbering:0];
   }
 
-  if ([v33 automaticNumbering])
+  if ([toCopy automaticNumbering])
   {
-    v18 = [v33 reference];
-    [WXCharacterRun readFromString:@"\x02" source:a3 to:v18];
+    reference = [toCopy reference];
+    [WXCharacterRun readFromString:@"\x02" source:from to:reference];
   }
 
-  v19 = [(OCXState *)v9 wxoavState];
-  v31 = [v19 packagePart];
-  [v19 setPackagePart:v13];
-  v20 = [(OCXState *)v9 drawingState];
-  v30 = [v20 packagePart];
-  [v20 setPackagePart:v13];
-  v29 = [(OCXState *)v9 isNewSectionRequested];
-  [(OCXState *)v9 setNewSectionRequested:0];
-  v21 = [(OCXState *)v9 packagePart];
-  [(OCXState *)v9 setPackagePart:v13];
+  wxoavState = [(OCXState *)stateCopy wxoavState];
+  packagePart2 = [wxoavState packagePart];
+  [wxoavState setPackagePart:v13];
+  drawingState = [(OCXState *)stateCopy drawingState];
+  packagePart3 = [drawingState packagePart];
+  [drawingState setPackagePart:v13];
+  isNewSectionRequested = [(OCXState *)stateCopy isNewSectionRequested];
+  [(OCXState *)stateCopy setNewSectionRequested:0];
+  packagePart4 = [(OCXState *)stateCopy packagePart];
+  [(OCXState *)stateCopy setPackagePart:v13];
   if (v17)
   {
-    v22 = OCXNextSibling(a3);
-    v23 = [v33 reference];
-    [v23 setString:&stru_286EE1130];
+    v22 = OCXNextSibling(from);
+    reference2 = [toCopy reference];
+    [reference2 setString:&stru_286EE1130];
     if (xmlStrEqual(v22->name, "sym"))
     {
-      [WXSymbol readFrom:v22 to:v23 state:v9];
+      [WXSymbol readFrom:v22 to:reference2 state:stateCopy];
     }
 
     else
     {
-      [WXCharacterRun readFrom:v22 to:v23];
+      [WXCharacterRun readFrom:v22 to:reference2];
     }
 
-    v24 = [v23 string];
-    if ([v24 length])
+    string = [reference2 string];
+    if ([string length])
     {
     }
 
     else
     {
-      v25 = [v23 properties];
-      v26 = [v25 isSymbolCharacterOverridden];
+      properties = [reference2 properties];
+      isSymbolCharacterOverridden = [properties isSymbolCharacterOverridden];
 
-      if (!v26)
+      if (!isSymbolCharacterOverridden)
       {
 LABEL_16:
 
@@ -86,18 +86,18 @@ LABEL_16:
       }
     }
 
-    *a5 = 1;
+    *sib = 1;
     goto LABEL_16;
   }
 
 LABEL_17:
-  v27 = [v33 text];
-  [WXText readFrom:v12 baseStyle:0 to:v27 state:v9];
+  text = [toCopy text];
+  [WXText readFrom:v12 baseStyle:0 to:text state:stateCopy];
 
-  [v19 setPackagePart:v31];
-  [v20 setPackagePart:v30];
-  [(OCXState *)v9 setPackagePart:v21];
-  [(OCXState *)v9 setNewSectionRequested:v29];
+  [wxoavState setPackagePart:packagePart2];
+  [drawingState setPackagePart:packagePart3];
+  [(OCXState *)stateCopy setPackagePart:packagePart4];
+  [(OCXState *)stateCopy setNewSectionRequested:isNewSectionRequested];
 }
 
 @end

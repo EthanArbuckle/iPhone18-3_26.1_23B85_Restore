@@ -11,10 +11,10 @@
   v7 = MEMORY[0x1E69DB7D0];
   v8 = a5;
   v9 = a4;
-  v10 = [v7 defaultParagraphStyle];
-  v11 = [v10 mutableCopy];
+  defaultParagraphStyle = [v7 defaultParagraphStyle];
+  v11 = [defaultParagraphStyle mutableCopy];
 
-  *&v12 = a1;
+  *&v12 = self;
   [v11 setHyphenationFactor:v12];
   [v11 setLineBreakMode:4];
   v13 = objc_alloc(MEMORY[0x1E696AD40]);
@@ -34,22 +34,22 @@
 {
   v23[2] = *MEMORY[0x1E69E9840];
   v9 = a3;
-  v10 = a5;
+  blackColor = a5;
   v11 = a6;
   v12 = MEMORY[0x1E69DB878];
   v13 = a4;
   v14 = [v12 preferredFontForTextStyle:v13];
   v15 = [MEMORY[0x1E69DB878] hk_preferredFontForTextStyle:v13 symbolicTraits:2];
 
-  if (!v10)
+  if (!blackColor)
   {
-    v10 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
   v16 = *MEMORY[0x1E69DB648];
   v22[0] = *MEMORY[0x1E69DB650];
   v22[1] = v16;
-  v23[0] = v10;
+  v23[0] = blackColor;
   v23[1] = v14;
   v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:v22 count:2];
   v18 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v9 attributes:v17];

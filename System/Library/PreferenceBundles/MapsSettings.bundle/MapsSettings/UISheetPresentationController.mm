@@ -6,8 +6,8 @@
 
 - (NSArray)_maps_effectiveDetentValues
 {
-  v2 = [(UISheetPresentationController *)self _detentValues];
-  v3 = MapsMap(v2, &stru_7FC70);
+  _detentValues = [(UISheetPresentationController *)self _detentValues];
+  v3 = MapsMap(_detentValues, &stru_7FC70);
 
   return v3;
 }

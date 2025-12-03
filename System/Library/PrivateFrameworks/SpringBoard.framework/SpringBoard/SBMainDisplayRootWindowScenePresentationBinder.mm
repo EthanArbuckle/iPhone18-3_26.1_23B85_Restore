@@ -1,7 +1,7 @@
 @interface SBMainDisplayRootWindowScenePresentationBinder
 + (id)sharedInstance;
 - (id)_init;
-- (id)assertDisconnectionFromRenderServerForReason:(id)a3;
+- (id)assertDisconnectionFromRenderServerForReason:(id)reason;
 - (void)_disconnectFromRenderServer;
 - (void)_reconnectToRenderServer;
 @end
@@ -35,8 +35,8 @@ void __64__SBMainDisplayRootWindowScenePresentationBinder_sharedInstance__block_
   v6 = [v3 stringWithFormat:@"SBRootSceneWindow-%@-%p", v5, self];
 
   v7 = [SBRootSceneWindow alloc];
-  v8 = [MEMORY[0x277D0AA90] mainConfiguration];
-  v9 = [(SBRootSceneWindow *)v7 initWithDisplayConfiguration:v8];
+  mainConfiguration = [MEMORY[0x277D0AA90] mainConfiguration];
+  v9 = [(SBRootSceneWindow *)v7 initWithDisplayConfiguration:mainConfiguration];
 
   v13.receiver = self;
   v13.super_class = SBMainDisplayRootWindowScenePresentationBinder;
@@ -50,10 +50,10 @@ void __64__SBMainDisplayRootWindowScenePresentationBinder_sharedInstance__block_
   return v11;
 }
 
-- (id)assertDisconnectionFromRenderServerForReason:(id)a3
+- (id)assertDisconnectionFromRenderServerForReason:(id)reason
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   BSDispatchQueueAssertMain();
   if (!self->_disconnectionAssertions)
   {
@@ -68,7 +68,7 @@ void __64__SBMainDisplayRootWindowScenePresentationBinder_sharedInstance__block_
   v12[2] = __95__SBMainDisplayRootWindowScenePresentationBinder_assertDisconnectionFromRenderServerForReason___block_invoke;
   v12[3] = &unk_2783A8A98;
   v12[4] = self;
-  v8 = [v7 initWithIdentifier:@"RenderServerDisconnect" forReason:v4 queue:MEMORY[0x277D85CD0] invalidationBlock:v12];
+  v8 = [v7 initWithIdentifier:@"RenderServerDisconnect" forReason:reasonCopy queue:MEMORY[0x277D85CD0] invalidationBlock:v12];
 
   [(NSMutableArray *)self->_disconnectionAssertions addObject:v8];
   if ([(NSMutableArray *)self->_disconnectionAssertions count]== 1)
@@ -109,8 +109,8 @@ uint64_t __95__SBMainDisplayRootWindowScenePresentationBinder_assertDisconnectio
 
 - (void)_disconnectFromRenderServer
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"SBMainDisplayRootWindowScenePresentationBinder.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"_disconnectedFromScene == nil"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"SBMainDisplayRootWindowScenePresentationBinder.m" lineNumber:79 description:{@"Invalid parameter not satisfying: %@", @"_disconnectedFromScene == nil"}];
 }
 
 - (void)_reconnectToRenderServer

@@ -1,28 +1,28 @@
 @interface _DKKeyValueStore
 + (id)standardUserDefaultsKeyValueStore;
-- (BOOL)BOOLForKey:(id)a3;
-- (_DKKeyValueStore)initWithSimpleKeyValueStore:(id)a3;
-- (id)arrayForKey:(id)a3;
-- (id)dataForKey:(id)a3;
-- (id)dateForKey:(id)a3;
-- (id)dictionaryForKey:(id)a3;
-- (id)numberForKey:(id)a3;
-- (id)objectForKey:(id)a3 havingClass:(Class)a4;
-- (id)stringForKey:(id)a3;
+- (BOOL)BOOLForKey:(id)key;
+- (_DKKeyValueStore)initWithSimpleKeyValueStore:(id)store;
+- (id)arrayForKey:(id)key;
+- (id)dataForKey:(id)key;
+- (id)dateForKey:(id)key;
+- (id)dictionaryForKey:(id)key;
+- (id)numberForKey:(id)key;
+- (id)objectForKey:(id)key havingClass:(Class)class;
+- (id)stringForKey:(id)key;
 @end
 
 @implementation _DKKeyValueStore
 
-- (_DKKeyValueStore)initWithSimpleKeyValueStore:(id)a3
+- (_DKKeyValueStore)initWithSimpleKeyValueStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = _DKKeyValueStore;
   v6 = [(_DKKeyValueStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
@@ -30,82 +30,82 @@
 
 + (id)standardUserDefaultsKeyValueStore
 {
-  v2 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v3 = [[_DKKeyValueStore alloc] initWithSimpleKeyValueStore:v2];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v3 = [[_DKKeyValueStore alloc] initWithSimpleKeyValueStore:standardUserDefaults];
 
   return v3;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_DKKeyValueStore *)self objectForKey:v4 havingClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(_DKKeyValueStore *)self objectForKey:keyCopy havingClass:objc_opt_class()];
 
   return v5;
 }
 
-- (BOOL)BOOLForKey:(id)a3
+- (BOOL)BOOLForKey:(id)key
 {
-  v3 = [(_DKKeyValueStore *)self numberForKey:a3];
+  v3 = [(_DKKeyValueStore *)self numberForKey:key];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_DKKeyValueStore *)self objectForKey:v4 havingClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(_DKKeyValueStore *)self objectForKey:keyCopy havingClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)dateForKey:(id)a3
+- (id)dateForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_DKKeyValueStore *)self objectForKey:v4 havingClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(_DKKeyValueStore *)self objectForKey:keyCopy havingClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_DKKeyValueStore *)self objectForKey:v4 havingClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(_DKKeyValueStore *)self objectForKey:keyCopy havingClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)numberForKey:(id)a3
+- (id)numberForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_DKKeyValueStore *)self objectForKey:v4 havingClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(_DKKeyValueStore *)self objectForKey:keyCopy havingClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_DKKeyValueStore *)self objectForKey:v4 havingClass:objc_opt_class()];
+  keyCopy = key;
+  v5 = [(_DKKeyValueStore *)self objectForKey:keyCopy havingClass:objc_opt_class()];
 
   return v5;
 }
 
-- (id)objectForKey:(id)a3 havingClass:(Class)a4
+- (id)objectForKey:(id)key havingClass:(Class)class
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(_DKSimpleKeyValueStore *)self->_store objectForKey:v6];
+  keyCopy = key;
+  v7 = [(_DKSimpleKeyValueStore *)self->_store objectForKey:keyCopy];
   if (v7 && (objc_opt_isKindOfClass() & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
@@ -123,11 +123,11 @@
       v11 = 138413058;
       v12 = objc_opt_class();
       v13 = 2112;
-      v14 = v6;
+      v14 = keyCopy;
       v15 = 2112;
       v16 = v8;
       v17 = 2112;
-      v18 = a4;
+      classCopy = class;
       _os_log_error_impl(&dword_191750000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%@: Object %@ of wrong class, found %@ instead of %@", &v11, 0x2Au);
     }
 

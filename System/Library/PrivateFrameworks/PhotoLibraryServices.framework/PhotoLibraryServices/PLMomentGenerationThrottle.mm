@@ -1,7 +1,7 @@
 @interface PLMomentGenerationThrottle
 - (BOOL)isIdle;
-- (PLMomentGenerationThrottle)initWithName:(id)a3 canDelayAnyQOS:(BOOL)a4 singleThreadedMode:(BOOL)a5 timeProvider:(id)a6 targetQueue:(id)a7 target:(id)a8;
-- (void)_doAsyncUpdateWithCompletionBlock:(id)a3 tryAgainLaterBlock:(id)a4 tryAgainAfterCurrentExecutionBlock:(id)a5;
+- (PLMomentGenerationThrottle)initWithName:(id)name canDelayAnyQOS:(BOOL)s singleThreadedMode:(BOOL)mode timeProvider:(id)provider targetQueue:(id)queue target:(id)target;
+- (void)_doAsyncUpdateWithCompletionBlock:(id)block tryAgainLaterBlock:(id)laterBlock tryAgainAfterCurrentExecutionBlock:(id)executionBlock;
 - (void)update;
 @end
 
@@ -155,12 +155,12 @@ uint64_t __36__PLMomentGenerationThrottle_update__block_invoke_2(uint64_t a1)
   return [v2 stillAlive];
 }
 
-- (void)_doAsyncUpdateWithCompletionBlock:(id)a3 tryAgainLaterBlock:(id)a4 tryAgainAfterCurrentExecutionBlock:(id)a5
+- (void)_doAsyncUpdateWithCompletionBlock:(id)block tryAgainLaterBlock:(id)laterBlock tryAgainAfterCurrentExecutionBlock:(id)executionBlock
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  laterBlockCopy = laterBlock;
+  executionBlockCopy = executionBlock;
   v11 = 1;
   if (!self->_canDelayAnyQOS)
   {
@@ -193,7 +193,7 @@ uint64_t __36__PLMomentGenerationThrottle_update__block_invoke_2(uint64_t a1)
       }
 
       v15 = dispatch_time(0, v12);
-      dispatch_after(v15, self->_targetQueue, v10);
+      dispatch_after(v15, self->_targetQueue, executionBlockCopy);
     }
   }
 
@@ -264,7 +264,7 @@ uint64_t __36__PLMomentGenerationThrottle_update__block_invoke_2(uint64_t a1)
 
         self->_nextExpectedRun = v17 + v25;
         v30 = dispatch_time(0, (v25 * 1000000000.0));
-        dispatch_after(v30, self->_targetQueue, v9);
+        dispatch_after(v30, self->_targetQueue, laterBlockCopy);
       }
 
       atomic_store(0, &self->_isExecutingOrConsideringExecution);
@@ -272,12 +272,12 @@ uint64_t __36__PLMomentGenerationThrottle_update__block_invoke_2(uint64_t a1)
   }
 }
 
-- (PLMomentGenerationThrottle)initWithName:(id)a3 canDelayAnyQOS:(BOOL)a4 singleThreadedMode:(BOOL)a5 timeProvider:(id)a6 targetQueue:(id)a7 target:(id)a8
+- (PLMomentGenerationThrottle)initWithName:(id)name canDelayAnyQOS:(BOOL)s singleThreadedMode:(BOOL)mode timeProvider:(id)provider targetQueue:(id)queue target:(id)target
 {
-  v15 = a3;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  nameCopy = name;
+  providerCopy = provider;
+  queueCopy = queue;
+  targetCopy = target;
   v30.receiver = self;
   v30.super_class = PLMomentGenerationThrottle;
   v19 = [(PLMomentGenerationThrottle *)&v30 init];
@@ -286,58 +286,58 @@ uint64_t __36__PLMomentGenerationThrottle_update__block_invoke_2(uint64_t a1)
     goto LABEL_9;
   }
 
-  if (v18)
+  if (targetCopy)
   {
-    if (v15)
+    if (nameCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_11:
-    v28 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v28 handleFailureInMethod:a2 object:v19 file:@"PLMomentGenerationThrottle.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v19 file:@"PLMomentGenerationThrottle.m" lineNumber:59 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-    if (v17)
+    if (queueCopy)
     {
       goto LABEL_5;
     }
 
 LABEL_12:
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:v19 file:@"PLMomentGenerationThrottle.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"targetQueue"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v19 file:@"PLMomentGenerationThrottle.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"targetQueue"}];
 
     goto LABEL_5;
   }
 
-  v27 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v27 handleFailureInMethod:a2 object:v19 file:@"PLMomentGenerationThrottle.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"targetBlock"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:v19 file:@"PLMomentGenerationThrottle.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"targetBlock"}];
 
-  if (!v15)
+  if (!nameCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_4:
-  if (!v17)
+  if (!queueCopy)
   {
     goto LABEL_12;
   }
 
 LABEL_5:
-  v20 = [v15 copy];
+  v20 = [nameCopy copy];
   name = v19->_name;
   v19->_name = v20;
 
-  objc_storeStrong(&v19->_targetQueue, a7);
-  v22 = [v18 copy];
+  objc_storeStrong(&v19->_targetQueue, queue);
+  v22 = [targetCopy copy];
   targetBlock = v19->_targetBlock;
   v19->_targetBlock = v22;
 
-  v19->_canDelayAnyQOS = a4;
-  v19->_singleThreaded = a5;
-  if (v16)
+  v19->_canDelayAnyQOS = s;
+  v19->_singleThreaded = mode;
+  if (providerCopy)
   {
-    v24 = v16;
+    v24 = providerCopy;
   }
 
   else

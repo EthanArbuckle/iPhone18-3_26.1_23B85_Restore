@@ -1,33 +1,33 @@
 @interface CATConcreteIDSServiceConnectionDataAggregator
 + (id)missingContentTimerIdentifier;
-- (CATConcreteIDSServiceConnectionDataAggregator)initWithWorkQueue:(id)a3 timerSource:(id)a4 missingItemInterval:(double)a5 supportsSequenceCorrection:(BOOL)a6;
+- (CATConcreteIDSServiceConnectionDataAggregator)initWithWorkQueue:(id)queue timerSource:(id)source missingItemInterval:(double)interval supportsSequenceCorrection:(BOOL)correction;
 - (CATIDSServiceConnectionDataAggregatorDelegate)delegate;
 - (id)missingSequenceNumbers;
-- (void)dataAggregationCompleted:(id)a3;
-- (void)missingContentTimerDidFire:(id)a3 fireCount:(unint64_t)a4;
-- (void)processNewDataWindowWithContent:(id)a3;
-- (void)receiveDataContent:(id)a3;
-- (void)receiveExpectedSequenceNumber:(unint64_t)a3;
-- (void)updateExistingDataWindowWithContent:(id)a3;
-- (void)updateMissingContentTrackingForDataContent:(id)a3;
+- (void)dataAggregationCompleted:(id)completed;
+- (void)missingContentTimerDidFire:(id)fire fireCount:(unint64_t)count;
+- (void)processNewDataWindowWithContent:(id)content;
+- (void)receiveDataContent:(id)content;
+- (void)receiveExpectedSequenceNumber:(unint64_t)number;
+- (void)updateExistingDataWindowWithContent:(id)content;
+- (void)updateMissingContentTrackingForDataContent:(id)content;
 @end
 
 @implementation CATConcreteIDSServiceConnectionDataAggregator
 
-- (CATConcreteIDSServiceConnectionDataAggregator)initWithWorkQueue:(id)a3 timerSource:(id)a4 missingItemInterval:(double)a5 supportsSequenceCorrection:(BOOL)a6
+- (CATConcreteIDSServiceConnectionDataAggregator)initWithWorkQueue:(id)queue timerSource:(id)source missingItemInterval:(double)interval supportsSequenceCorrection:(BOOL)correction
 {
-  v11 = a3;
-  v12 = a4;
+  queueCopy = queue;
+  sourceCopy = source;
   v20.receiver = self;
   v20.super_class = CATConcreteIDSServiceConnectionDataAggregator;
   v13 = [(CATConcreteIDSServiceConnectionDataAggregator *)&v20 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->mWorkQueue, a3);
-    objc_storeStrong(&v14->mTimerSource, a4);
-    v14->mMissingItemInterval = a5;
-    v14->mSupportsSequenceCorrection = a6;
+    objc_storeStrong(&v13->mWorkQueue, queue);
+    objc_storeStrong(&v14->mTimerSource, source);
+    v14->mMissingItemInterval = interval;
+    v14->mSupportsSequenceCorrection = correction;
     v15 = objc_opt_new();
     mAggregationsByDataNumber = v14->mAggregationsByDataNumber;
     v14->mAggregationsByDataNumber = v15;
@@ -50,97 +50,97 @@
   return v5;
 }
 
-- (void)receiveDataContent:(id)a3
+- (void)receiveDataContent:(id)content
 {
-  v15 = a3;
+  contentCopy = content;
   CATAssertIsQueue(self->mWorkQueue);
-  v4 = [v15 dataNumber];
+  dataNumber = [contentCopy dataNumber];
   mNextDeploymentNumber = self->mNextDeploymentNumber;
-  if (v4 <= mNextDeploymentNumber)
+  if (dataNumber <= mNextDeploymentNumber)
   {
     v6 = self->mNextDeploymentNumber;
   }
 
   else
   {
-    v6 = v4;
+    v6 = dataNumber;
   }
 
-  if (v4 >= mNextDeploymentNumber)
+  if (dataNumber >= mNextDeploymentNumber)
   {
     v7 = self->mNextDeploymentNumber;
   }
 
   else
   {
-    v7 = v4;
+    v7 = dataNumber;
   }
 
   if (v6 - v7 < 0xFFFFFFFFFFFE795FLL)
   {
-    v8 = v4 >= mNextDeploymentNumber;
-    v9 = v4 > mNextDeploymentNumber;
+    v8 = dataNumber >= mNextDeploymentNumber;
+    v9 = dataNumber > mNextDeploymentNumber;
   }
 
   else
   {
-    v8 = mNextDeploymentNumber >= v4;
-    v9 = mNextDeploymentNumber > v4;
+    v8 = mNextDeploymentNumber >= dataNumber;
+    v9 = mNextDeploymentNumber > dataNumber;
   }
 
   v10 = !v8;
-  v11 = v15;
+  v11 = contentCopy;
   if (v9 || (v10 & 1) == 0)
   {
-    [(CATConcreteIDSServiceConnectionDataAggregator *)self updateMissingContentTrackingForDataContent:v15];
+    [(CATConcreteIDSServiceConnectionDataAggregator *)self updateMissingContentTrackingForDataContent:contentCopy];
     mAggregationsByDataNumber = self->mAggregationsByDataNumber;
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v15, "dataNumber")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(contentCopy, "dataNumber")}];
     v14 = [(NSMutableDictionary *)mAggregationsByDataNumber objectForKeyedSubscript:v13];
 
     if (v14)
     {
-      v4 = [(CATConcreteIDSServiceConnectionDataAggregator *)self updateExistingDataWindowWithContent:v15];
+      dataNumber = [(CATConcreteIDSServiceConnectionDataAggregator *)self updateExistingDataWindowWithContent:contentCopy];
     }
 
     else
     {
-      v4 = [(CATConcreteIDSServiceConnectionDataAggregator *)self processNewDataWindowWithContent:v15];
+      dataNumber = [(CATConcreteIDSServiceConnectionDataAggregator *)self processNewDataWindowWithContent:contentCopy];
     }
 
-    v11 = v15;
+    v11 = contentCopy;
   }
 
-  MEMORY[0x2821F96F8](v4, v11);
+  MEMORY[0x2821F96F8](dataNumber, v11);
 }
 
-- (void)receiveExpectedSequenceNumber:(unint64_t)a3
+- (void)receiveExpectedSequenceNumber:(unint64_t)number
 {
   CATAssertIsQueue(self->mWorkQueue);
   v5 = self->mNextExpectedSequenceNumber - 1;
-  if (a3 <= v5)
+  if (number <= v5)
   {
-    v6 = self->mNextExpectedSequenceNumber - 1;
+    numberCopy = self->mNextExpectedSequenceNumber - 1;
   }
 
   else
   {
-    v6 = a3;
+    numberCopy = number;
   }
 
-  if (a3 >= v5)
+  if (number >= v5)
   {
-    v7 = self->mNextExpectedSequenceNumber - 1;
+    numberCopy2 = self->mNextExpectedSequenceNumber - 1;
   }
 
   else
   {
-    v7 = a3;
+    numberCopy2 = number;
   }
 
-  if (v6 - v7 < 0xFFFFFFFFFFFE795FLL)
+  if (numberCopy - numberCopy2 < 0xFFFFFFFFFFFE795FLL)
   {
-    v10 = v5 >= a3;
-    v9 = v5 > a3;
+    v10 = v5 >= number;
+    v9 = v5 > number;
     if (!v10)
     {
       goto LABEL_15;
@@ -149,8 +149,8 @@
 
   else
   {
-    v8 = v5 > a3;
-    v9 = v5 < a3;
+    v8 = v5 > number;
+    v9 = v5 < number;
     if (v8)
     {
       goto LABEL_15;
@@ -159,52 +159,52 @@
 
   if (v9)
   {
-    v12 = [(CATConcreteIDSServiceConnectionDataAggregator *)self delegate];
-    [v12 connectionDataAggregatorWantsToReportSequenceNumber:self];
+    delegate = [(CATConcreteIDSServiceConnectionDataAggregator *)self delegate];
+    [delegate connectionDataAggregatorWantsToReportSequenceNumber:self];
     goto LABEL_16;
   }
 
 LABEL_15:
-  v12 = [(CATConcreteIDSServiceConnectionDataAggregator *)self delegate];
-  v11 = [(CATConcreteIDSServiceConnectionDataAggregator *)self missingSequenceNumbers];
-  [v12 connectionDataAggregator:self isMissingSequenceNumbers:v11];
+  delegate = [(CATConcreteIDSServiceConnectionDataAggregator *)self delegate];
+  missingSequenceNumbers = [(CATConcreteIDSServiceConnectionDataAggregator *)self missingSequenceNumbers];
+  [delegate connectionDataAggregator:self isMissingSequenceNumbers:missingSequenceNumbers];
 
 LABEL_16:
 }
 
-- (void)processNewDataWindowWithContent:(id)a3
+- (void)processNewDataWindowWithContent:(id)content
 {
   mWorkQueue = self->mWorkQueue;
-  v5 = a3;
+  contentCopy = content;
   CATAssertIsQueue(mWorkQueue);
   v8 = [[CATIDSServiceConnectionDataAggregation alloc] initWithWorkQueue:self->mWorkQueue];
   [(CATIDSServiceConnectionDataAggregation *)v8 setDelegate:self];
   mAggregationsByDataNumber = self->mAggregationsByDataNumber;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "dataNumber")}];
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(contentCopy, "dataNumber")}];
   [(NSMutableDictionary *)mAggregationsByDataNumber setObject:v8 forKeyedSubscript:v7];
 
-  [(CATConcreteIDSServiceConnectionDataAggregator *)self updateExistingDataWindowWithContent:v5];
+  [(CATConcreteIDSServiceConnectionDataAggregator *)self updateExistingDataWindowWithContent:contentCopy];
 }
 
-- (void)updateExistingDataWindowWithContent:(id)a3
+- (void)updateExistingDataWindowWithContent:(id)content
 {
-  v8 = a3;
+  contentCopy = content;
   CATAssertIsQueue(self->mWorkQueue);
   mAggregationsByDataNumber = self->mAggregationsByDataNumber;
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v8, "dataNumber")}];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(contentCopy, "dataNumber")}];
   v7 = [(NSMutableDictionary *)mAggregationsByDataNumber objectForKeyedSubscript:v6];
 
   if (!v7)
   {
-    [(CATConcreteIDSServiceConnectionDataAggregator *)v8 updateExistingDataWindowWithContent:a2, self];
+    [(CATConcreteIDSServiceConnectionDataAggregator *)contentCopy updateExistingDataWindowWithContent:a2, self];
   }
 
-  [v7 updateWithDataContent:v8];
+  [v7 updateWithDataContent:contentCopy];
 }
 
-- (void)updateMissingContentTrackingForDataContent:(id)a3
+- (void)updateMissingContentTrackingForDataContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   CATAssertIsQueue(self->mWorkQueue);
   if (!self->mSupportsSequenceCorrection)
   {
@@ -212,11 +212,11 @@ LABEL_16:
   }
 
   mNextExpectedSequenceNumber = self->mNextExpectedSequenceNumber;
-  v6 = [v4 sequenceNumber];
-  v7 = [v6 unsignedIntegerValue];
-  if (mNextExpectedSequenceNumber <= v7)
+  sequenceNumber = [contentCopy sequenceNumber];
+  unsignedIntegerValue = [sequenceNumber unsignedIntegerValue];
+  if (mNextExpectedSequenceNumber <= unsignedIntegerValue)
   {
-    v8 = v7;
+    v8 = unsignedIntegerValue;
   }
 
   else
@@ -224,9 +224,9 @@ LABEL_16:
     v8 = mNextExpectedSequenceNumber;
   }
 
-  if (mNextExpectedSequenceNumber >= v7)
+  if (mNextExpectedSequenceNumber >= unsignedIntegerValue)
   {
-    v9 = v7;
+    v9 = unsignedIntegerValue;
   }
 
   else
@@ -236,7 +236,7 @@ LABEL_16:
 
   if (v8 - v9 <= 0xFFFFFFFFFFFE795ELL)
   {
-    if (mNextExpectedSequenceNumber <= v7)
+    if (mNextExpectedSequenceNumber <= unsignedIntegerValue)
     {
       goto LABEL_10;
     }
@@ -246,17 +246,17 @@ LABEL_19:
     goto LABEL_34;
   }
 
-  if (v7 > mNextExpectedSequenceNumber)
+  if (unsignedIntegerValue > mNextExpectedSequenceNumber)
   {
     goto LABEL_19;
   }
 
 LABEL_10:
 
-  v10 = [v4 sequenceNumber];
-  v11 = [v10 unsignedIntegerValue];
-  v12 = v11 - [v4 segmentNumber];
-  v13 = v12 + [v4 totalSegments];
+  sequenceNumber2 = [contentCopy sequenceNumber];
+  unsignedIntegerValue2 = [sequenceNumber2 unsignedIntegerValue];
+  v12 = unsignedIntegerValue2 - [contentCopy segmentNumber];
+  v13 = v12 + [contentCopy totalSegments];
 
   mGreatestExpectedSequenceNumber = self->mGreatestExpectedSequenceNumber;
   if (mGreatestExpectedSequenceNumber <= v13)
@@ -298,8 +298,8 @@ LABEL_10:
   }
 
   mPendingSequenceNumbers = self->mPendingSequenceNumbers;
-  v21 = [v4 sequenceNumber];
-  -[NSMutableIndexSet addIndex:](mPendingSequenceNumbers, "addIndex:", [v21 unsignedIntegerValue]);
+  sequenceNumber3 = [contentCopy sequenceNumber];
+  -[NSMutableIndexSet addIndex:](mPendingSequenceNumbers, "addIndex:", [sequenceNumber3 unsignedIntegerValue]);
 
   v22 = [(NSMutableIndexSet *)self->mPendingSequenceNumbers containsIndex:self->mNextExpectedSequenceNumber];
   if (v22)
@@ -320,7 +320,7 @@ LABEL_10:
     objc_initWeak(&location, self);
     [(CATTimer *)self->mMissingContentTimer invalidate];
     mTimerSource = self->mTimerSource;
-    v26 = [objc_opt_class() missingContentTimerIdentifier];
+    missingContentTimerIdentifier = [objc_opt_class() missingContentTimerIdentifier];
     mMissingItemInterval = self->mMissingItemInterval;
     mWorkQueue = self->mWorkQueue;
     v31[0] = MEMORY[0x277D85DD0];
@@ -328,7 +328,7 @@ LABEL_10:
     v31[2] = __92__CATConcreteIDSServiceConnectionDataAggregator_updateMissingContentTrackingForDataContent___block_invoke;
     v31[3] = &unk_278DA7398;
     objc_copyWeak(&v32, &location);
-    v29 = [(CATTimerSource *)mTimerSource scheduleInfiniteTimerWithIdentifier:v26 timeInterval:mWorkQueue queue:v31 fireHandler:mMissingItemInterval];
+    v29 = [(CATTimerSource *)mTimerSource scheduleInfiniteTimerWithIdentifier:missingContentTimerIdentifier timeInterval:mWorkQueue queue:v31 fireHandler:mMissingItemInterval];
     mMissingContentTimer = self->mMissingContentTimer;
     self->mMissingContentTimer = v29;
 
@@ -346,29 +346,29 @@ void __92__CATConcreteIDSServiceConnectionDataAggregator_updateMissingContentTra
   [WeakRetained missingContentTimerDidFire:v5 fireCount:a3];
 }
 
-- (void)missingContentTimerDidFire:(id)a3 fireCount:(unint64_t)a4
+- (void)missingContentTimerDidFire:(id)fire fireCount:(unint64_t)count
 {
-  v4 = a4;
+  countCopy = count;
   mWorkQueue = self->mWorkQueue;
-  v7 = a3;
+  fireCopy = fire;
   CATAssertIsQueue(mWorkQueue);
   mMissingContentTimer = self->mMissingContentTimer;
 
-  if (mMissingContentTimer == v7)
+  if (mMissingContentTimer == fireCopy)
   {
-    v11 = [(CATConcreteIDSServiceConnectionDataAggregator *)self missingSequenceNumbers];
-    v9 = [v11 count];
-    if ((v4 & 1) != 0 && v9)
+    missingSequenceNumbers = [(CATConcreteIDSServiceConnectionDataAggregator *)self missingSequenceNumbers];
+    v9 = [missingSequenceNumbers count];
+    if ((countCopy & 1) != 0 && v9)
     {
-      v10 = [(CATConcreteIDSServiceConnectionDataAggregator *)self delegate];
-      [v10 connectionDataAggregator:self isMissingSequenceNumbers:v11];
+      delegate = [(CATConcreteIDSServiceConnectionDataAggregator *)self delegate];
+      [delegate connectionDataAggregator:self isMissingSequenceNumbers:missingSequenceNumbers];
     }
   }
 }
 
-- (void)dataAggregationCompleted:(id)a3
+- (void)dataAggregationCompleted:(id)completed
 {
-  v13 = a3;
+  completedCopy = completed;
   CATAssertIsQueue(self->mWorkQueue);
   v4 = 0;
   mNextDeploymentNumber = self->mNextDeploymentNumber;
@@ -377,15 +377,15 @@ void __92__CATConcreteIDSServiceConnectionDataAggregator_updateMissingContentTra
     mAggregationsByDataNumber = self->mAggregationsByDataNumber;
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mNextDeploymentNumber];
     v8 = [(NSMutableDictionary *)mAggregationsByDataNumber objectForKeyedSubscript:v7];
-    v9 = [v8 totalData];
+    totalData = [v8 totalData];
 
-    if (!v9)
+    if (!totalData)
     {
       break;
     }
 
-    v10 = [(CATConcreteIDSServiceConnectionDataAggregator *)self delegate];
-    [v10 connectionDataAggregator:self aggregatedData:v9 withNumber:self->mNextDeploymentNumber];
+    delegate = [(CATConcreteIDSServiceConnectionDataAggregator *)self delegate];
+    [delegate connectionDataAggregator:self aggregatedData:totalData withNumber:self->mNextDeploymentNumber];
 
     v11 = self->mAggregationsByDataNumber;
     v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->mNextDeploymentNumber];
@@ -393,14 +393,14 @@ void __92__CATConcreteIDSServiceConnectionDataAggregator_updateMissingContentTra
 
     mNextDeploymentNumber = self->mNextDeploymentNumber + 1;
     self->mNextDeploymentNumber = mNextDeploymentNumber;
-    v4 = v9;
+    v4 = totalData;
   }
 }
 
 + (id)missingContentTimerIdentifier
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = [v2 stringWithFormat:@"%@-MissingContentTimer", v3];
 
   return v4;

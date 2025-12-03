@@ -1,28 +1,28 @@
 @interface CKServerChangeToken
-+ (id)ad_unarchiveTokenFromData:(id)a3 withExceptionBlock:(id)a4;
-- (id)ad_archiveTokenToDataWithExceptionBlock:(id)a3;
++ (id)ad_unarchiveTokenFromData:(id)data withExceptionBlock:(id)block;
+- (id)ad_archiveTokenToDataWithExceptionBlock:(id)block;
 @end
 
 @implementation CKServerChangeToken
 
-- (id)ad_archiveTokenToDataWithExceptionBlock:(id)a3
+- (id)ad_archiveTokenToDataWithExceptionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
   [v5 encodeObject:self forKey:NSKeyedArchiveRootObjectKey];
-  v6 = [v5 encodedData];
-  v7 = [v6 copy];
+  encodedData = [v5 encodedData];
+  v7 = [encodedData copy];
 
   return v7;
 }
 
-+ (id)ad_unarchiveTokenFromData:(id)a3 withExceptionBlock:(id)a4
++ (id)ad_unarchiveTokenFromData:(id)data withExceptionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  dataCopy = data;
+  blockCopy = block;
+  if (dataCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:v5 error:0];
+    v7 = [[NSKeyedUnarchiver alloc] initForReadingFromData:dataCopy error:0];
     v8 = [v7 decodeObjectOfClass:objc_opt_class() forKey:NSKeyedArchiveRootObjectKey];
     [v7 finishDecoding];
   }

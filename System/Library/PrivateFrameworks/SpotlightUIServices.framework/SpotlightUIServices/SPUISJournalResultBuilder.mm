@@ -1,19 +1,19 @@
 @interface SPUISJournalResultBuilder
-- (SPUISJournalResultBuilder)initWithResult:(id)a3;
+- (SPUISJournalResultBuilder)initWithResult:(id)result;
 - (id)buildFootnote;
 @end
 
 @implementation SPUISJournalResultBuilder
 
-- (SPUISJournalResultBuilder)initWithResult:(id)a3
+- (SPUISJournalResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v8.receiver = self;
   v8.super_class = SPUISJournalResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v8 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v8 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 valueForAttribute:*MEMORY[0x277CC2640] withType:objc_opt_class()];
+    v6 = [resultCopy valueForAttribute:*MEMORY[0x277CC2640] withType:objc_opt_class()];
     [(SPUISJournalResultBuilder *)v5 setDateCreated:v6];
   }
 
@@ -23,12 +23,12 @@
 - (id)buildFootnote
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISJournalResultBuilder *)self dateCreated];
+  dateCreated = [(SPUISJournalResultBuilder *)self dateCreated];
 
-  if (v3)
+  if (dateCreated)
   {
-    v4 = [(SPUISJournalResultBuilder *)self dateCreated];
-    v5 = [SPUISDateFormatManager dynamicMediumStringFromDate:v4];
+    dateCreated2 = [(SPUISJournalResultBuilder *)self dateCreated];
+    v5 = [SPUISDateFormatManager dynamicMediumStringFromDate:dateCreated2];
 
     if ([v5 length])
     {
@@ -41,7 +41,7 @@
       v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:3];
       v9 = [v8 componentsJoinedByString:&stru_287C50EE8];
 
-      v10 = [MEMORY[0x277D4C598] textWithString:v9];
+      buildFootnote = [MEMORY[0x277D4C598] textWithString:v9];
 
       goto LABEL_6;
     }
@@ -49,11 +49,11 @@
 
   v13.receiver = self;
   v13.super_class = SPUISJournalResultBuilder;
-  v10 = [(SPUISResultBuilder *)&v13 buildFootnote];
+  buildFootnote = [(SPUISResultBuilder *)&v13 buildFootnote];
 LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return buildFootnote;
 }
 
 @end

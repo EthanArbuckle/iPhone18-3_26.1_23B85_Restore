@@ -1,44 +1,44 @@
 @interface MSASServerSideModelGroupedCommandQueue
-+ (id)calloutBlockForCommand:(id)a3;
++ (id)calloutBlockForCommand:(id)command;
 - (BOOL)hasEnqueuedItems;
-- (void)MSASModel:(id)a3 didDeleteComment:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6 info:(id)a7;
-- (void)MSASModel:(id)a3 didFindDeletedAccessControl:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)MSASModel:(id)a3 didFindDeletedAlbum:(id)a4 info:(id)a5;
-- (void)MSASModel:(id)a3 didFindDeletedAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)MSASModel:(id)a3 didFindDeletedInvitation:(id)a4 info:(id)a5;
-- (void)MSASModel:(id)a3 didFindNewAccessControl:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)MSASModel:(id)a3 didFindNewAlbum:(id)a4 info:(id)a5;
-- (void)MSASModel:(id)a3 didFindNewAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6;
-- (void)MSASModel:(id)a3 didFindNewComment:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6 info:(id)a7;
-- (void)MSASModel:(id)a3 didFindNewInvitation:(id)a4 info:(id)a5;
+- (void)MSASModel:(id)model didDeleteComment:(id)comment forAssetCollection:(id)collection inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindDeletedAccessControl:(id)control inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindDeletedAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindDeletedAssetCollection:(id)collection inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindDeletedInvitation:(id)invitation info:(id)info;
+- (void)MSASModel:(id)model didFindNewAccessControl:(id)control inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindNewAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindNewAssetCollection:(id)collection inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindNewComment:(id)comment forAssetCollection:(id)collection inAlbum:(id)album info:(id)info;
+- (void)MSASModel:(id)model didFindNewInvitation:(id)invitation info:(id)info;
 - (void)flushQueue;
-- (void)workQueueEnqueueCommand:(id)a3 variantParam:(id)a4 invariantParam:(id)a5;
+- (void)workQueueEnqueueCommand:(id)command variantParam:(id)param invariantParam:(id)invariantParam;
 - (void)workQueueFlushQueue;
 @end
 
 @implementation MSASServerSideModelGroupedCommandQueue
 
-- (void)MSASModel:(id)a3 didDeleteComment:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6 info:(id)a7
+- (void)MSASModel:(id)model didDeleteComment:(id)comment forAssetCollection:(id)collection inAlbum:(id)album info:(id)info
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(MSASGroupedQueue *)self workQueue];
+  commentCopy = comment;
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__MSASServerSideModelGroupedCommandQueue_MSASModel_didDeleteComment_forAssetCollection_inAlbum_info___block_invoke;
   block[3] = &unk_278E92688;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = self;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  dispatch_async(v15, block);
+  v21 = commentCopy;
+  v22 = collectionCopy;
+  v23 = albumCopy;
+  v24 = infoCopy;
+  selfCopy = self;
+  v16 = infoCopy;
+  v17 = albumCopy;
+  v18 = collectionCopy;
+  v19 = commentCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __101__MSASServerSideModelGroupedCommandQueue_MSASModel_didDeleteComment_forAssetCollection_inAlbum_info___block_invoke(uint64_t a1)
@@ -74,27 +74,27 @@ void __101__MSASServerSideModelGroupedCommandQueue_MSASModel_didDeleteComment_fo
   [*(a1 + 64) workQueueEnqueueCommand:@"deleteComment" variantParam:v9 invariantParam:v5];
 }
 
-- (void)MSASModel:(id)a3 didFindNewComment:(id)a4 forAssetCollection:(id)a5 inAlbum:(id)a6 info:(id)a7
+- (void)MSASModel:(id)model didFindNewComment:(id)comment forAssetCollection:(id)collection inAlbum:(id)album info:(id)info
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(MSASGroupedQueue *)self workQueue];
+  commentCopy = comment;
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __102__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewComment_forAssetCollection_inAlbum_info___block_invoke;
   block[3] = &unk_278E92688;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v24 = v14;
-  v25 = self;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  v19 = v11;
-  dispatch_async(v15, block);
+  v21 = commentCopy;
+  v22 = collectionCopy;
+  v23 = albumCopy;
+  v24 = infoCopy;
+  selfCopy = self;
+  v16 = infoCopy;
+  v17 = albumCopy;
+  v18 = collectionCopy;
+  v19 = commentCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __102__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewComment_forAssetCollection_inAlbum_info___block_invoke(uint64_t a1)
@@ -130,21 +130,21 @@ void __102__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewComment_f
   [*(a1 + 64) workQueueEnqueueCommand:@"newComment" variantParam:v9 invariantParam:v5];
 }
 
-- (void)MSASModel:(id)a3 didFindDeletedInvitation:(id)a4 info:(id)a5
+- (void)MSASModel:(id)model didFindDeletedInvitation:(id)invitation info:(id)info
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MSASGroupedQueue *)self workQueue];
+  invitationCopy = invitation;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedInvitation_info___block_invoke;
   block[3] = &unk_278E92638;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = invitationCopy;
+  v14 = infoCopy;
+  selfCopy = self;
+  v10 = infoCopy;
+  v11 = invitationCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __82__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedInvitation_info___block_invoke(uint64_t a1)
@@ -168,21 +168,21 @@ void __82__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedInvita
   [*(a1 + 48) workQueueEnqueueCommand:@"deleteInvitation" variantParam:v7 invariantParam:v5];
 }
 
-- (void)MSASModel:(id)a3 didFindNewInvitation:(id)a4 info:(id)a5
+- (void)MSASModel:(id)model didFindNewInvitation:(id)invitation info:(id)info
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MSASGroupedQueue *)self workQueue];
+  invitationCopy = invitation;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewInvitation_info___block_invoke;
   block[3] = &unk_278E92638;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = invitationCopy;
+  v14 = infoCopy;
+  selfCopy = self;
+  v10 = infoCopy;
+  v11 = invitationCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __78__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewInvitation_info___block_invoke(uint64_t a1)
@@ -206,24 +206,24 @@ void __78__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewInvitation
   [*(a1 + 48) workQueueEnqueueCommand:@"newInvitation" variantParam:v7 invariantParam:v5];
 }
 
-- (void)MSASModel:(id)a3 didFindDeletedAccessControl:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)MSASModel:(id)model didFindDeletedAccessControl:(id)control inAlbum:(id)album info:(id)info
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MSASGroupedQueue *)self workQueue];
+  controlCopy = control;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __93__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedAccessControl_inAlbum_info___block_invoke;
   v16[3] = &unk_278E92660;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = controlCopy;
+  v18 = albumCopy;
+  v19 = infoCopy;
+  selfCopy = self;
+  v13 = infoCopy;
+  v14 = albumCopy;
+  v15 = controlCopy;
+  dispatch_async(workQueue, v16);
 }
 
 void __93__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedAccessControl_inAlbum_info___block_invoke(uint64_t a1)
@@ -253,24 +253,24 @@ void __93__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedAccess
   [*(a1 + 56) workQueueEnqueueCommand:@"deleteACL" variantParam:v8 invariantParam:v5];
 }
 
-- (void)MSASModel:(id)a3 didFindNewAccessControl:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)MSASModel:(id)model didFindNewAccessControl:(id)control inAlbum:(id)album info:(id)info
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MSASGroupedQueue *)self workQueue];
+  controlCopy = control;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __89__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewAccessControl_inAlbum_info___block_invoke;
   v16[3] = &unk_278E92660;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = controlCopy;
+  v18 = albumCopy;
+  v19 = infoCopy;
+  selfCopy = self;
+  v13 = infoCopy;
+  v14 = albumCopy;
+  v15 = controlCopy;
+  dispatch_async(workQueue, v16);
 }
 
 void __89__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewAccessControl_inAlbum_info___block_invoke(uint64_t a1)
@@ -300,24 +300,24 @@ void __89__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewAccessCont
   [*(a1 + 56) workQueueEnqueueCommand:@"newACL" variantParam:v8 invariantParam:v5];
 }
 
-- (void)MSASModel:(id)a3 didFindDeletedAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)MSASModel:(id)model didFindDeletedAssetCollection:(id)collection inAlbum:(id)album info:(id)info
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MSASGroupedQueue *)self workQueue];
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __95__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedAssetCollection_inAlbum_info___block_invoke;
   v16[3] = &unk_278E92660;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = collectionCopy;
+  v18 = albumCopy;
+  v19 = infoCopy;
+  selfCopy = self;
+  v13 = infoCopy;
+  v14 = albumCopy;
+  v15 = collectionCopy;
+  dispatch_async(workQueue, v16);
 }
 
 void __95__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedAssetCollection_inAlbum_info___block_invoke(uint64_t a1)
@@ -347,24 +347,24 @@ void __95__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedAssetC
   [*(a1 + 56) workQueueEnqueueCommand:@"deleteAssetCollection" variantParam:v8 invariantParam:v5];
 }
 
-- (void)MSASModel:(id)a3 didFindNewAssetCollection:(id)a4 inAlbum:(id)a5 info:(id)a6
+- (void)MSASModel:(id)model didFindNewAssetCollection:(id)collection inAlbum:(id)album info:(id)info
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [(MSASGroupedQueue *)self workQueue];
+  collectionCopy = collection;
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __91__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewAssetCollection_inAlbum_info___block_invoke;
   v16[3] = &unk_278E92660;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  dispatch_async(v12, v16);
+  v17 = collectionCopy;
+  v18 = albumCopy;
+  v19 = infoCopy;
+  selfCopy = self;
+  v13 = infoCopy;
+  v14 = albumCopy;
+  v15 = collectionCopy;
+  dispatch_async(workQueue, v16);
 }
 
 void __91__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewAssetCollection_inAlbum_info___block_invoke(uint64_t a1)
@@ -394,21 +394,21 @@ void __91__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewAssetColle
   [*(a1 + 56) workQueueEnqueueCommand:@"newAssetCollection" variantParam:v8 invariantParam:v5];
 }
 
-- (void)MSASModel:(id)a3 didFindDeletedAlbum:(id)a4 info:(id)a5
+- (void)MSASModel:(id)model didFindDeletedAlbum:(id)album info:(id)info
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MSASGroupedQueue *)self workQueue];
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __77__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedAlbum_info___block_invoke;
   block[3] = &unk_278E92638;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = albumCopy;
+  v14 = infoCopy;
+  selfCopy = self;
+  v10 = infoCopy;
+  v11 = albumCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __77__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedAlbum_info___block_invoke(uint64_t a1)
@@ -432,21 +432,21 @@ void __77__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindDeletedAlbum_
   [*(a1 + 48) workQueueEnqueueCommand:@"deleteAlbum" variantParam:v7 invariantParam:v5];
 }
 
-- (void)MSASModel:(id)a3 didFindNewAlbum:(id)a4 info:(id)a5
+- (void)MSASModel:(id)model didFindNewAlbum:(id)album info:(id)info
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(MSASGroupedQueue *)self workQueue];
+  albumCopy = album;
+  infoCopy = info;
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewAlbum_info___block_invoke;
   block[3] = &unk_278E92638;
-  v13 = v7;
-  v14 = v8;
-  v15 = self;
-  v10 = v8;
-  v11 = v7;
-  dispatch_async(v9, block);
+  v13 = albumCopy;
+  v14 = infoCopy;
+  selfCopy = self;
+  v10 = infoCopy;
+  v11 = albumCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __73__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewAlbum_info___block_invoke(uint64_t a1)
@@ -470,74 +470,74 @@ void __73__MSASServerSideModelGroupedCommandQueue_MSASModel_didFindNewAlbum_info
   [*(a1 + 48) workQueueEnqueueCommand:@"newAlbum" variantParam:v7 invariantParam:v5];
 }
 
-- (void)workQueueEnqueueCommand:(id)a3 variantParam:(id)a4 invariantParam:(id)a5
+- (void)workQueueEnqueueCommand:(id)command variantParam:(id)param invariantParam:(id)invariantParam
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  commandCopy = command;
+  paramCopy = param;
+  invariantParamCopy = invariantParam;
   if ([(MSASGroupedQueue *)self isShuttingDown])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v19 = 138543618;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2114;
-      v22 = v8;
+      v22 = commandCopy;
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: Not enqueueing command %{public}@ because we're shutting down.", &v19, 0x16u);
     }
 
     goto LABEL_16;
   }
 
-  v11 = [(MSASGroupedQueue *)self model];
-  if (!v11)
+  model = [(MSASGroupedQueue *)self model];
+  if (!model)
   {
     __assert_rtn("[MSASServerSideModelGroupedCommandQueue workQueueEnqueueCommand:variantParam:invariantParam:]", "MSASServerSideModelGroupedCommandQueue.m", 128, "self.model");
   }
 
-  v12 = [(MSASGroupedQueue *)self model];
-  v13 = [v12 commandCount];
+  model2 = [(MSASGroupedQueue *)self model];
+  commandCount = [model2 commandCount];
 
-  v14 = [MSASEnqueuedCommand commandwithCommand:v8 variantParam:v9 invariantParam:v10];
+  v14 = [MSASEnqueuedCommand commandwithCommand:commandCopy variantParam:paramCopy invariantParam:invariantParamCopy];
   lastEnqueuedCommand = self->_lastEnqueuedCommand;
   if (lastEnqueuedCommand && ![(MSASEnqueuedCommand *)lastEnqueuedCommand canBeGroupedWithCommand:v14])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      v18 = [(MSASEnqueuedCommand *)self->_lastEnqueuedCommand command];
+      command = [(MSASEnqueuedCommand *)self->_lastEnqueuedCommand command];
       v19 = 138543874;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 2114;
-      v22 = v8;
+      v22 = commandCopy;
       v23 = 2114;
-      v24 = v18;
+      v24 = command;
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: New command %{public}@ cannot be grouped with command %{public}@. Flushing.", &v19, 0x20u);
     }
 
     goto LABEL_12;
   }
 
-  if (v13 >= [(MSASGroupedQueue *)self maxGroupedCallbackEventBatchCount])
+  if (commandCount >= [(MSASGroupedQueue *)self maxGroupedCallbackEventBatchCount])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v19 = 138543618;
-      v20 = self;
+      selfCopy3 = self;
       v21 = 1024;
-      LODWORD(v22) = v13;
+      LODWORD(v22) = commandCount;
       _os_log_debug_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "%{public}@: There are already %d commands in the queue. Flushing.", &v19, 0x12u);
     }
 
 LABEL_12:
     [(MSASServerSideModelGroupedCommandQueue *)self workQueueFlushQueue];
-    v13 = 0;
+    commandCount = 0;
   }
 
-  v16 = [(MSASGroupedQueue *)self model];
-  [v16 enqueueCommand:v14];
+  model3 = [(MSASGroupedQueue *)self model];
+  [model3 enqueueCommand:v14];
 
-  if (!v13)
+  if (!commandCount)
   {
     [(MSASGroupedQueue *)self workQueueDidEnqueueFirstItem];
   }
@@ -564,10 +564,10 @@ LABEL_16:
     {
       v7 = v4;
       v8 = v3;
-      v9 = [(MSASGroupedQueue *)self model];
-      v10 = [(MSASGroupedQueue *)self maxGroupedCallbackEventBatchCount];
+      model = [(MSASGroupedQueue *)self model];
+      maxGroupedCallbackEventBatchCount = [(MSASGroupedQueue *)self maxGroupedCallbackEventBatchCount];
       v18 = v4;
-      v3 = [v9 nextCommandGroupMaxCount:v10 outCommand:&v18 outLastCommandIndex:&v19];
+      v3 = [model nextCommandGroupMaxCount:maxGroupedCallbackEventBatchCount outCommand:&v18 outLastCommandIndex:&v19];
       v4 = v18;
 
       if (!v3)
@@ -581,24 +581,24 @@ LABEL_16:
       if (v12)
       {
         v13 = [v3 objectAtIndex:0];
-        v14 = [v13 invariantParam];
+        invariantParam = [v13 invariantParam];
 
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
         {
           *buf = v17;
-          v21 = self;
+          selfCopy = self;
           v22 = 1024;
           v23 = v12;
           v24 = 2114;
           v25 = v4;
           v26 = 2114;
-          v27 = v14;
+          v27 = invariantParam;
           _os_log_debug_impl(&dword_245B99000, v5, OS_LOG_TYPE_DEBUG, "%{public}@: Flushing %d events with command %{public}@. Invariant:%{public}@", buf, 0x26u);
         }
       }
 
-      v15 = [(MSASGroupedQueue *)self model];
-      [v15 removeCommandsUpToCommandIndex:v19];
+      model2 = [(MSASGroupedQueue *)self model];
+      [model2 removeCommandsUpToCommandIndex:v19];
     }
   }
 
@@ -607,41 +607,41 @@ LABEL_16:
 
 - (void)flushQueue
 {
-  v3 = [(MSASGroupedQueue *)self workQueue];
+  workQueue = [(MSASGroupedQueue *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__MSASServerSideModelGroupedCommandQueue_flushQueue__block_invoke;
   block[3] = &unk_278E926D8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (BOOL)hasEnqueuedItems
 {
-  v2 = [(MSASGroupedQueue *)self model];
-  v3 = [v2 commandCount] > 0;
+  model = [(MSASGroupedQueue *)self model];
+  v3 = [model commandCount] > 0;
 
   return v3;
 }
 
-+ (id)calloutBlockForCommand:(id)a3
++ (id)calloutBlockForCommand:(id)command
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   if (calloutBlockForCommand__onceToken != -1)
   {
     dispatch_once(&calloutBlockForCommand__onceToken, &__block_literal_global_8135);
   }
 
-  v5 = [calloutBlockForCommand__commandToCalloutBlockMap objectForKey:v4];
+  v5 = [calloutBlockForCommand__commandToCalloutBlockMap objectForKey:commandCopy];
   if (!v5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v9 = 138543618;
-      v10 = a1;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v4;
+      v12 = commandCopy;
       _os_log_error_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "%{public}@: Cannot find callout block for command: %{public}@", &v9, 0x16u);
     }
 

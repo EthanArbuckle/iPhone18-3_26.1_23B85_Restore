@@ -1,11 +1,11 @@
 @interface ComAppleContextkitCategoriesConstellation_Request_$4
-- (void)acceptWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5;
+- (void)acceptWithInt:(int)int withInt:(int)withInt withInt:(int)a5;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation_Request_$4
 
-- (void)acceptWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5
+- (void)acceptWithInt:(int)int withInt:(int)withInt withInt:(int)a5
 {
   v5 = self->val$categoryIdToRank_;
   if (!v5)

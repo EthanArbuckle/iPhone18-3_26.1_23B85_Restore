@@ -1,7 +1,7 @@
 @interface MUEVChargingViewModel
 - (_TtC6MapsUI21MUEVChargingViewModel)init;
 - (void)dealloc;
-- (void)evChargerAvailabilityProvider:(id)a3 didUpdateAvailability:(id)a4;
+- (void)evChargerAvailabilityProvider:(id)provider didUpdateAvailability:(id)availability;
 @end
 
 @implementation MUEVChargingViewModel
@@ -10,11 +10,11 @@
 {
   ObjectType = swift_getObjectType();
   v4 = *(&self->super.isa + OBJC_IVAR____TtC6MapsUI21MUEVChargingViewModel_availabilityProvider);
-  v5 = self;
+  selfCopy = self;
   v6 = v4;
-  MUEVChargerAvailabilityProvider.unregisterObserver(_:)(v5);
+  MUEVChargerAvailabilityProvider.unregisterObserver(_:)(selfCopy);
 
-  v7.receiver = v5;
+  v7.receiver = selfCopy;
   v7.super_class = ObjectType;
   [(MUEVChargingViewModel *)&v7 dealloc];
 }
@@ -26,12 +26,12 @@
   return result;
 }
 
-- (void)evChargerAvailabilityProvider:(id)a3 didUpdateAvailability:(id)a4
+- (void)evChargerAvailabilityProvider:(id)provider didUpdateAvailability:(id)availability
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC6MapsUI21MUEVChargingViewModel_availability);
-  *(&self->super.isa + OBJC_IVAR____TtC6MapsUI21MUEVChargingViewModel_availability) = a4;
-  v6 = a4;
-  v7 = self;
+  *(&self->super.isa + OBJC_IVAR____TtC6MapsUI21MUEVChargingViewModel_availability) = availability;
+  availabilityCopy = availability;
+  selfCopy = self;
 
   sub_1C5634B14();
 }

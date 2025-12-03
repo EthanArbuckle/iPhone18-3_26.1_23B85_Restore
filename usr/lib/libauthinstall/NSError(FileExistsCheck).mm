@@ -6,10 +6,10 @@
 
 - (BOOL)isFileExistsError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x29EDB9EF8]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x29EDB9EF8]])
   {
-    v3 = [a1 code] == 17;
+    v3 = [self code] == 17;
   }
 
   else

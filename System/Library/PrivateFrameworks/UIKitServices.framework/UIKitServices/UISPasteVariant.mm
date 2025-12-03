@@ -1,9 +1,9 @@
 @interface UISPasteVariant
 + (NSArray)allVariants;
-+ (id)variantForActionIdentifier:(id)a3;
-+ (id)variantForSecureName:(unsigned int)a3;
-+ (id)variantForSelector:(SEL)a3;
-- (UISPasteVariant)initWithSecureName:(unsigned int)a3 selector:(SEL)a4 actionIdentifier:(id)a5 glpyh:(id)a6 keyInput:(id)a7 keyModifierFlags:(int64_t)a8;
++ (id)variantForActionIdentifier:(id)identifier;
++ (id)variantForSecureName:(unsigned int)name;
++ (id)variantForSelector:(SEL)selector;
+- (UISPasteVariant)initWithSecureName:(unsigned int)name selector:(SEL)selector actionIdentifier:(id)identifier glpyh:(id)glpyh keyInput:(id)input keyModifierFlags:(int64_t)flags;
 @end
 
 @implementation UISPasteVariant
@@ -37,60 +37,60 @@ void __30__UISPasteVariant_allVariants__block_invoke()
   qword_1ED51BF30 = v5;
 }
 
-- (UISPasteVariant)initWithSecureName:(unsigned int)a3 selector:(SEL)a4 actionIdentifier:(id)a5 glpyh:(id)a6 keyInput:(id)a7 keyModifierFlags:(int64_t)a8
+- (UISPasteVariant)initWithSecureName:(unsigned int)name selector:(SEL)selector actionIdentifier:(id)identifier glpyh:(id)glpyh keyInput:(id)input keyModifierFlags:(int64_t)flags
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  identifierCopy = identifier;
+  glpyhCopy = glpyh;
+  inputCopy = input;
   v25.receiver = self;
   v25.super_class = UISPasteVariant;
   v18 = [(UISPasteVariant *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    v18->_secureName = a3;
-    v18->_selector = a4;
-    objc_storeStrong(&v18->_actionIdentifier, a5);
-    v20 = [v16 copy];
+    v18->_secureName = name;
+    v18->_selector = selector;
+    objc_storeStrong(&v18->_actionIdentifier, identifier);
+    v20 = [glpyhCopy copy];
     glyph = v19->_glyph;
     v19->_glyph = v20;
 
-    v22 = [v17 copy];
+    v22 = [inputCopy copy];
     keyInput = v19->_keyInput;
     v19->_keyInput = v22;
 
-    v19->_keyModifierFlags = a8;
+    v19->_keyModifierFlags = flags;
   }
 
   return v19;
 }
 
-+ (id)variantForSecureName:(unsigned int)a3
++ (id)variantForSecureName:(unsigned int)name
 {
-  v3 = a3;
-  v4 = [a1 allVariants];
-  if ([v4 count] <= v3)
+  nameCopy = name;
+  allVariants = [self allVariants];
+  if ([allVariants count] <= nameCopy)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = [v4 objectAtIndexedSubscript:v3];
+    v5 = [allVariants objectAtIndexedSubscript:nameCopy];
   }
 
   return v5;
 }
 
-+ (id)variantForSelector:(SEL)a3
++ (id)variantForSelector:(SEL)selector
 {
   v17 = *MEMORY[0x1E69E9840];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [a1 allVariants];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allVariants = [self allVariants];
+  v5 = [allVariants countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -101,18 +101,18 @@ void __30__UISPasteVariant_allVariants__block_invoke()
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allVariants);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 selector] == a3)
+        if ([v9 selector] == selector)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [allVariants countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -128,16 +128,16 @@ LABEL_11:
   return v10;
 }
 
-+ (id)variantForActionIdentifier:(id)a3
++ (id)variantForActionIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a1 allVariants];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allVariants = [self allVariants];
+  v6 = [allVariants countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -147,12 +147,12 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allVariants);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 actionIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        actionIdentifier = [v9 actionIdentifier];
+        v11 = [actionIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -161,7 +161,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [allVariants countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;

@@ -1,15 +1,15 @@
 @interface CCUIGameModeControlsView
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3;
-- (CCUIGameModeControlsView)initWithCoder:(id)a3;
-- (CCUIGameModeControlsView)initWithFrame:(CGRect)a3;
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view;
+- (CCUIGameModeControlsView)initWithCoder:(id)coder;
+- (CCUIGameModeControlsView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (_TtC15ControlCenterUI32CCUIGameModeActivityDataProvider)gameModeActivityDataProvider;
-- (void)setGameModeActivityDataProvider:(id)a3;
+- (void)setGameModeActivityDataProvider:(id)provider;
 @end
 
 @implementation CCUIGameModeControlsView
 
-- (CCUIGameModeControlsView)initWithCoder:(id)a3
+- (CCUIGameModeControlsView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___CCUIGameModeControlsView_gameModeActivityDataProvider) = 0;
   result = sub_21EAA94A0();
@@ -33,26 +33,26 @@
   return *(&self->super.super.super.isa + v3);
 }
 
-- (void)setGameModeActivityDataProvider:(id)a3
+- (void)setGameModeActivityDataProvider:(id)provider
 {
   v5 = OBJC_IVAR___CCUIGameModeControlsView_gameModeActivityDataProvider;
   swift_beginAccess();
   v6 = *(&self->super.super.super.isa + v5);
-  *(&self->super.super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.super.isa + v5) = provider;
+  providerCopy = provider;
 }
 
-- (CCUIGameModeControlsView)initWithFrame:(CGRect)a3
+- (CCUIGameModeControlsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)performPrimaryActionForControlTemplateView:(id)a3
+- (BOOL)performPrimaryActionForControlTemplateView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = GameModeControlsView.performPrimaryAction(for:)();
 
   return self & 1;

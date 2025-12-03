@@ -1,16 +1,16 @@
 @interface MPAssistantLoadQuickPlay
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantLoadQuickPlay
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277D47208];
-  v5 = a3;
+  completionCopy = completion;
   v7 = objc_alloc_init(v4);
-  v6 = [v7 dictionary];
-  (*(a3 + 2))(v5, v6);
+  dictionary = [v7 dictionary];
+  (*(completion + 2))(completionCopy, dictionary);
 }
 
 @end

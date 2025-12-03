@@ -1,27 +1,27 @@
 @interface IRServicePackageAdapterMedia
-+ (id)_getUniqueAirplayRoutsFromCandidateIdentifiers:(id)a3 inCandiateContainer:(id)a4;
-- (BOOL)shouldAskForLowLatencyMiLo:(id)a3 historyEventsAsc:(id)a4;
-- (BOOL)shouldRejectEvent:(id)a3 withHistoryEventsContainer:(id)a4 withSystemState:(id)a5 forCandidate:(id)a6 date:(id)a7;
++ (id)_getUniqueAirplayRoutsFromCandidateIdentifiers:(id)identifiers inCandiateContainer:(id)container;
+- (BOOL)shouldAskForLowLatencyMiLo:(id)lo historyEventsAsc:(id)asc;
+- (BOOL)shouldRejectEvent:(id)event withHistoryEventsContainer:(id)container withSystemState:(id)state forCandidate:(id)candidate date:(id)date;
 - (IRServicePackageAdapterMedia)init;
 - (NSDictionary)contexts;
 - (NSDictionary)policyInspections;
-- (id)_getGeneralWeeklyAnalyticsWithWeeklyHistory:(id)a3 withCandidatesContainer:(id)a4;
-- (id)_getUIWeeklyAnalyticsWithWeeklyHistory:(id)a3;
-- (id)_getWeeklyAnalyticsFromStatistics:(id)a3 candidatesContainer:(id)a4;
-- (id)filterHistory:(id)a3 withCandidatesContainer:(id)a4;
-- (id)getSignificantBundlesWithCandidates:(id)a3 fromHistory:(id)a4;
-- (id)uiAnalyticsWithEvent:(id)a3 forCandidateIdentifier:(id)a4 systemStateManager:(id)a5 candidatesContainer:(id)a6 inspections:(id)a7 statisticsManager:(id)a8 service:(id)a9 historyEventsContainer:(id)a10;
-- (id)weeklyAnalyticsWithServiceStore:(id)a3 statistics:(id)a4 service:(id)a5;
+- (id)_getGeneralWeeklyAnalyticsWithWeeklyHistory:(id)history withCandidatesContainer:(id)container;
+- (id)_getUIWeeklyAnalyticsWithWeeklyHistory:(id)history;
+- (id)_getWeeklyAnalyticsFromStatistics:(id)statistics candidatesContainer:(id)container;
+- (id)filterHistory:(id)history withCandidatesContainer:(id)container;
+- (id)getSignificantBundlesWithCandidates:(id)candidates fromHistory:(id)history;
+- (id)uiAnalyticsWithEvent:(id)event forCandidateIdentifier:(id)identifier systemStateManager:(id)manager candidatesContainer:(id)container inspections:(id)inspections statisticsManager:(id)statisticsManager service:(id)service historyEventsContainer:(id)self0;
+- (id)weeklyAnalyticsWithServiceStore:(id)store statistics:(id)statistics service:(id)service;
 @end
 
 @implementation IRServicePackageAdapterMedia
 
 - (NSDictionary)contexts
 {
-  v2 = [(IRServicePackageAdapterMedia *)self generator];
-  v3 = [v2 contexts];
+  generator = [(IRServicePackageAdapterMedia *)self generator];
+  contexts = [generator contexts];
 
-  return v3;
+  return contexts;
 }
 
 - (IRServicePackageAdapterMedia)init
@@ -40,25 +40,25 @@
 
 - (NSDictionary)policyInspections
 {
-  v2 = [(IRServicePackageAdapterMedia *)self generator];
-  v3 = [v2 policyInspections];
+  generator = [(IRServicePackageAdapterMedia *)self generator];
+  policyInspections = [generator policyInspections];
 
-  return v3;
+  return policyInspections;
 }
 
-- (id)filterHistory:(id)a3 withCandidatesContainer:(id)a4
+- (id)filterHistory:(id)history withCandidatesContainer:(id)container
 {
   v139 = *MEMORY[0x277D85DE8];
-  v115 = a3;
-  v113 = a4;
+  historyCopy = history;
+  containerCopy = container;
   v5 = dispatch_get_specific(*MEMORY[0x277D21308]);
   v6 = *MEMORY[0x277D21260];
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_INFO))
   {
     v7 = MEMORY[0x277CCABB0];
     v8 = v6;
-    v9 = [v115 historyEvents];
-    v10 = [v7 numberWithUnsignedInteger:{objc_msgSend(v9, "count")}];
+    historyEvents = [historyCopy historyEvents];
+    v10 = [v7 numberWithUnsignedInteger:{objc_msgSend(historyEvents, "count")}];
     *buf = 136315650;
     *&buf[4] = "#service-package-adapter-media, ";
     *&buf[12] = 2112;
@@ -69,8 +69,8 @@
   }
 
   v11 = MEMORY[0x277CBEB18];
-  v12 = [v115 historyEvents];
-  v13 = [v11 arrayWithArray:v12];
+  historyEvents2 = [historyCopy historyEvents];
+  v13 = [v11 arrayWithArray:historyEvents2];
 
   if ([&unk_286768F20 count])
   {
@@ -79,21 +79,21 @@
     {
       v117 = objc_opt_new();
       v14 = [&unk_286768F20 objectAtIndexedSubscript:v116];
-      v118 = [v14 integerValue];
+      integerValue = [v14 integerValue];
 
       v15 = [&unk_286768F20 count];
       v16 = ++v116 / v15;
       v17 = [&unk_286768F20 objectAtIndexedSubscript:v116 - v16 * v15];
-      v123 = [v17 integerValue];
+      integerValue2 = [v17 integerValue];
 
       if ([v13 count])
       {
         v18 = 0;
         do
         {
-          v19 = [v13 objectAtIndexedSubscript:{v18, v113}];
-          v20 = [v19 event];
-          v21 = [v20 eventType] == v118;
+          v19 = [v13 objectAtIndexedSubscript:{v18, containerCopy}];
+          event = [v19 event];
+          v21 = [event eventType] == integerValue;
 
           v120 = v18 + 1;
           if (v21 && v120 < [v13 count])
@@ -101,14 +101,14 @@
             for (i = v18 + 1; i < [v13 count]; ++i)
             {
               v23 = [v13 objectAtIndexedSubscript:i];
-              v24 = [v23 date];
+              date = [v23 date];
               v25 = [v13 objectAtIndexedSubscript:v18];
-              v26 = [v25 date];
-              [v24 timeIntervalSinceDate:v26];
+              date2 = [v25 date];
+              [date timeIntervalSinceDate:date2];
               v28 = v27;
               v29 = +[IRPreferences shared];
-              v30 = [v29 mediaPlaybackEventsTimeIntervalThreshold];
-              [v30 doubleValue];
+              mediaPlaybackEventsTimeIntervalThreshold = [v29 mediaPlaybackEventsTimeIntervalThreshold];
+              [mediaPlaybackEventsTimeIntervalThreshold doubleValue];
               v32 = v28 < v31;
 
               if (!v32)
@@ -117,28 +117,28 @@
               }
 
               v33 = [v13 objectAtIndexedSubscript:i];
-              v34 = [v33 event];
-              v35 = [v34 eventType] == v123;
+              event2 = [v33 event];
+              v35 = [event2 eventType] == integerValue2;
 
               if (v35)
               {
                 v36 = [v13 objectAtIndexedSubscript:i];
-                v37 = [v36 candidateIdentifier];
+                candidateIdentifier = [v36 candidateIdentifier];
                 v38 = [v13 objectAtIndexedSubscript:v18];
-                v39 = [v38 candidateIdentifier];
-                v40 = [v37 isEqual:v39];
+                candidateIdentifier2 = [v38 candidateIdentifier];
+                v40 = [candidateIdentifier isEqual:candidateIdentifier2];
 
                 if (v40)
                 {
                   v41 = [v13 objectAtIndexedSubscript:i];
-                  v42 = [v41 event];
-                  v43 = [v42 bundleID];
+                  event3 = [v41 event];
+                  bundleID = [event3 bundleID];
 
                   v44 = [v13 objectAtIndexedSubscript:v18];
-                  v45 = [v44 event];
-                  v46 = [v45 bundleID];
+                  event4 = [v44 event];
+                  bundleID2 = [event4 bundleID];
 
-                  if ([v43 isEqual:v46] && (objc_msgSend(v117, "containsIndex:", i) & 1) == 0)
+                  if ([bundleID isEqual:bundleID2] && (objc_msgSend(v117, "containsIndex:", i) & 1) == 0)
                   {
                     [v117 addIndex:v18];
                     [v117 addIndex:i];
@@ -156,7 +156,7 @@
         while (v120 < [v13 count]);
       }
 
-      [v13 removeObjectsAtIndexes:{v117, v113}];
+      [v13 removeObjectsAtIndexes:{v117, containerCopy}];
     }
 
     while (v116 < [&unk_286768F20 count]);
@@ -174,8 +174,8 @@
     {
       v49 = MEMORY[0x277CCABB0];
       v50 = [v13 objectAtIndexedSubscript:v48];
-      v51 = [v50 event];
-      v52 = [v49 numberWithLongLong:{objc_msgSend(v51, "eventType")}];
+      event5 = [v50 event];
+      v52 = [v49 numberWithLongLong:{objc_msgSend(event5, "eventType")}];
       LODWORD(v49) = [v124 containsObject:v52];
 
       if (v49)
@@ -184,14 +184,14 @@
         while (v53 < [v13 count])
         {
           v54 = [v13 objectAtIndexedSubscript:v53];
-          v55 = [v54 date];
+          date3 = [v54 date];
           v56 = [v13 objectAtIndexedSubscript:v48];
-          v57 = [v56 date];
-          [v55 timeIntervalSinceDate:v57];
+          date4 = [v56 date];
+          [date3 timeIntervalSinceDate:date4];
           v59 = v58;
           v60 = +[IRPreferences shared];
-          v61 = [v60 mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
-          [v61 doubleValue];
+          mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds = [v60 mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
+          [mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds doubleValue];
           v63 = v59 < v62;
 
           if (!v63)
@@ -201,8 +201,8 @@
 
           v64 = MEMORY[0x277CCABB0];
           v65 = [v13 objectAtIndexedSubscript:v53];
-          v66 = [v65 event];
-          v67 = [v64 numberWithLongLong:{objc_msgSend(v66, "eventType")}];
+          event6 = [v65 event];
+          v67 = [v64 numberWithLongLong:{objc_msgSend(event6, "eventType")}];
           LODWORD(v64) = [v124 containsObject:v67];
 
           ++v53;
@@ -230,8 +230,8 @@
     {
       v69 = MEMORY[0x277CCABB0];
       v70 = [v13 objectAtIndexedSubscript:v68];
-      v71 = [v70 event];
-      v72 = [v69 numberWithLongLong:{objc_msgSend(v71, "eventType")}];
+      event7 = [v70 event];
+      v72 = [v69 numberWithLongLong:{objc_msgSend(event7, "eventType")}];
       LODWORD(v69) = [v124 containsObject:v72];
 
       v122 = v68 + 1;
@@ -240,14 +240,14 @@
         for (j = v68 + 1; j < [v13 count]; ++j)
         {
           v74 = [v13 objectAtIndexedSubscript:j];
-          v75 = [v74 date];
+          date5 = [v74 date];
           v76 = [v13 objectAtIndexedSubscript:v68];
-          v77 = [v76 date];
-          [v75 timeIntervalSinceDate:v77];
+          date6 = [v76 date];
+          [date5 timeIntervalSinceDate:date6];
           v79 = v78;
           v80 = +[IRPreferences shared];
-          v81 = [v80 mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds];
-          [v81 doubleValue];
+          mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds = [v80 mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds];
+          [mediaRulesFilterSimilarMultipleEventsTimeIntervalInSeconds doubleValue];
           v83 = v79 < v82;
 
           if (!v83)
@@ -257,29 +257,29 @@
 
           v84 = MEMORY[0x277CCABB0];
           v85 = [v13 objectAtIndexedSubscript:j];
-          v86 = [v85 event];
-          v87 = [v84 numberWithLongLong:{objc_msgSend(v86, "eventType")}];
+          event8 = [v85 event];
+          v87 = [v84 numberWithLongLong:{objc_msgSend(event8, "eventType")}];
           LODWORD(v84) = [v124 containsObject:v87];
 
           if (v84)
           {
             v88 = [v13 objectAtIndexedSubscript:j];
-            v89 = [v88 candidateIdentifier];
+            candidateIdentifier3 = [v88 candidateIdentifier];
             v90 = [v13 objectAtIndexedSubscript:v68];
-            v91 = [v90 candidateIdentifier];
-            v92 = [v89 isEqual:v91];
+            candidateIdentifier4 = [v90 candidateIdentifier];
+            v92 = [candidateIdentifier3 isEqual:candidateIdentifier4];
 
             if (v92)
             {
               v93 = [v13 objectAtIndexedSubscript:j];
-              v94 = [v93 event];
-              v95 = [v94 bundleID];
+              event9 = [v93 event];
+              bundleID3 = [event9 bundleID];
 
               v96 = [v13 objectAtIndexedSubscript:v68];
-              v97 = [v96 event];
-              v98 = [v97 bundleID];
+              event10 = [v96 event];
+              bundleID4 = [event10 bundleID];
 
-              if ([v95 isEqual:v98])
+              if ([bundleID3 isEqual:bundleID4])
               {
                 [v119 addIndex:v68];
 
@@ -398,11 +398,11 @@ void __70__IRServicePackageAdapterMedia_filterHistory_withCandidatesContainer___
   }
 }
 
-- (BOOL)shouldAskForLowLatencyMiLo:(id)a3 historyEventsAsc:(id)a4
+- (BOOL)shouldAskForLowLatencyMiLo:(id)lo historyEventsAsc:(id)asc
 {
   v5 = MEMORY[0x277CBEB58];
-  v6 = a4;
-  v7 = a3;
+  ascCopy = asc;
+  loCopy = lo;
   v8 = [v5 set];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -410,9 +410,9 @@ void __70__IRServicePackageAdapterMedia_filterHistory_withCandidatesContainer___
   v16[3] = &unk_2797E1A28;
   v9 = v8;
   v17 = v9;
-  [v6 enumerateObjectsWithOptions:2 usingBlock:v16];
+  [ascCopy enumerateObjectsWithOptions:2 usingBlock:v16];
 
-  v10 = [v7 candidates];
+  candidates = [loCopy candidates];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -420,7 +420,7 @@ void __70__IRServicePackageAdapterMedia_filterHistory_withCandidatesContainer___
   v14[3] = &unk_2797E0CD0;
   v15 = v9;
   v11 = v9;
-  v12 = [v10 firstWhere:v14];
+  v12 = [candidates firstWhere:v14];
   LOBYTE(v9) = v12 != 0;
 
   return v9;
@@ -482,19 +482,19 @@ uint64_t __76__IRServicePackageAdapterMedia_shouldAskForLowLatencyMiLo_historyEv
   return v6;
 }
 
-- (BOOL)shouldRejectEvent:(id)a3 withHistoryEventsContainer:(id)a4 withSystemState:(id)a5 forCandidate:(id)a6 date:(id)a7
+- (BOOL)shouldRejectEvent:(id)event withHistoryEventsContainer:(id)container withSystemState:(id)state forCandidate:(id)candidate date:(id)date
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (+[IRPlatformInfo isIOS](IRPlatformInfo, "isIOS") && ![v13 displayOn])
+  eventCopy = event;
+  containerCopy = container;
+  stateCopy = state;
+  candidateCopy = candidate;
+  dateCopy = date;
+  if (+[IRPlatformInfo isIOS](IRPlatformInfo, "isIOS") && ![stateCopy displayOn])
   {
     v24 = 1;
   }
 
-  else if (([v14 isMediaRemoteLocal] & 1) != 0 || (objc_msgSend(v14, "candidateIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", @"speaker"), v16, v17))
+  else if (([candidateCopy isMediaRemoteLocal] & 1) != 0 || (objc_msgSend(candidateCopy, "candidateIdentifier"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "isEqual:", @"speaker"), v16, v17))
   {
     v29 = 0;
     v30 = &v29;
@@ -503,11 +503,11 @@ uint64_t __76__IRServicePackageAdapterMedia_shouldAskForLowLatencyMiLo_historyEv
     if (+[IRPlatformInfo isTVOS])
     {
       v18 = +[IRPreferences shared];
-      v19 = [v18 mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
-      [v19 doubleValue];
-      v21 = [v15 dateByAddingTimeInterval:-v20];
+      mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds = [v18 mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds];
+      [mediaRulesFilterAnyMultipleEventsTimeIntervalInSeconds doubleValue];
+      v21 = [dateCopy dateByAddingTimeInterval:-v20];
 
-      v22 = [v12 historyEvents];
+      historyEvents = [containerCopy historyEvents];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __111__IRServicePackageAdapterMedia_shouldRejectEvent_withHistoryEventsContainer_withSystemState_forCandidate_date___block_invoke;
@@ -515,7 +515,7 @@ uint64_t __76__IRServicePackageAdapterMedia_shouldAskForLowLatencyMiLo_historyEv
       v23 = v21;
       v27 = v23;
       v28 = &v29;
-      [v22 enumerateObjectsWithOptions:2 usingBlock:v26];
+      [historyEvents enumerateObjectsWithOptions:2 usingBlock:v26];
     }
 
     v24 = *(v30 + 24);
@@ -555,31 +555,31 @@ void __111__IRServicePackageAdapterMedia_shouldRejectEvent_withHistoryEventsCont
 LABEL_5:
 }
 
-- (id)getSignificantBundlesWithCandidates:(id)a3 fromHistory:(id)a4
+- (id)getSignificantBundlesWithCandidates:(id)candidates fromHistory:(id)history
 {
-  v6 = a4;
-  v7 = [a3 airplayOrUnknownCandidates];
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  historyCopy = history;
+  airplayOrUnknownCandidates = [candidates airplayOrUnknownCandidates];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v9 = [MEMORY[0x277CBEB58] set];
   v10 = +[IRPreferences shared];
-  v11 = [v10 startDateForSignificantBundlesLookup];
+  startDateForSignificantBundlesLookup = [v10 startDateForSignificantBundlesLookup];
 
-  v12 = [v6 historyEvents];
+  historyEvents = [historyCopy historyEvents];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __80__IRServicePackageAdapterMedia_getSignificantBundlesWithCandidates_fromHistory___block_invoke;
   v22[3] = &unk_2797E1CB8;
   v22[4] = self;
-  v23 = v7;
-  v24 = v11;
+  v23 = airplayOrUnknownCandidates;
+  v24 = startDateForSignificantBundlesLookup;
   v25 = v9;
-  v13 = v8;
+  v13 = dictionary;
   v26 = v13;
   v14 = v9;
-  v15 = v11;
-  v16 = v7;
-  [v12 enumerateObjectsUsingBlock:v22];
+  v15 = startDateForSignificantBundlesLookup;
+  v16 = airplayOrUnknownCandidates;
+  [historyEvents enumerateObjectsUsingBlock:v22];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -735,53 +735,53 @@ id __80__IRServicePackageAdapterMedia_getSignificantBundlesWithCandidates_fromHi
   return v4;
 }
 
-- (id)weeklyAnalyticsWithServiceStore:(id)a3 statistics:(id)a4 service:(id)a5
+- (id)weeklyAnalyticsWithServiceStore:(id)store statistics:(id)statistics service:(id)service
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  serviceCopy = service;
+  statisticsCopy = statistics;
+  storeCopy = store;
   v11 = +[IRPreferences shared];
-  v12 = [v11 numberOfHistoryEventsInCache];
-  v13 = [v10 fetchHistoryEventsContainerWithLimit:{objc_msgSend(v12, "unsignedIntegerValue")}];
+  numberOfHistoryEventsInCache = [v11 numberOfHistoryEventsInCache];
+  v13 = [storeCopy fetchHistoryEventsContainerWithLimit:{objc_msgSend(numberOfHistoryEventsInCache, "unsignedIntegerValue")}];
 
-  v14 = [v10 fetchCandidatesContainer];
+  fetchCandidatesContainer = [storeCopy fetchCandidatesContainer];
 
-  v15 = [MEMORY[0x277CBEAA8] date];
-  v16 = [v13 historyEvents];
+  date = [MEMORY[0x277CBEAA8] date];
+  historyEvents = [v13 historyEvents];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __96__IRServicePackageAdapterMedia_IRAnalytics__weeklyAnalyticsWithServiceStore_statistics_service___block_invoke;
   v29[3] = &unk_2797E1868;
-  v17 = v15;
+  v17 = date;
   v30 = v17;
-  v18 = [v16 allWhere:v29];
+  v18 = [historyEvents allWhere:v29];
   v19 = [IRHistoryEventsContainerDO historyEventsContainerDOWithHistoryEvents:v18];
 
-  v20 = [(IRServicePackageAdapterMedia *)self filterHistory:v19 withCandidatesContainer:v14];
+  v20 = [(IRServicePackageAdapterMedia *)self filterHistory:v19 withCandidatesContainer:fetchCandidatesContainer];
 
-  v21 = [MEMORY[0x277CBEB38] dictionary];
-  v22 = [v8 clientIdentifier];
-  if (v22)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  clientIdentifier = [serviceCopy clientIdentifier];
+  if (clientIdentifier)
   {
-    v23 = [v8 clientIdentifier];
-    [v21 setObject:v23 forKeyedSubscript:@"General_Weekly_Client_Identifier"];
+    clientIdentifier2 = [serviceCopy clientIdentifier];
+    [dictionary setObject:clientIdentifier2 forKeyedSubscript:@"General_Weekly_Client_Identifier"];
   }
 
   else
   {
-    [v21 setObject:&stru_286755D18 forKeyedSubscript:@"General_Weekly_Client_Identifier"];
+    [dictionary setObject:&stru_286755D18 forKeyedSubscript:@"General_Weekly_Client_Identifier"];
   }
 
   v24 = [(IRServicePackageAdapterMedia *)self _getUIWeeklyAnalyticsWithWeeklyHistory:v20];
-  [v21 addEntriesFromDictionary:v24];
+  [dictionary addEntriesFromDictionary:v24];
 
-  v25 = [(IRServicePackageAdapterMedia *)self _getGeneralWeeklyAnalyticsWithWeeklyHistory:v20 withCandidatesContainer:v14];
-  [v21 addEntriesFromDictionary:v25];
+  v25 = [(IRServicePackageAdapterMedia *)self _getGeneralWeeklyAnalyticsWithWeeklyHistory:v20 withCandidatesContainer:fetchCandidatesContainer];
+  [dictionary addEntriesFromDictionary:v25];
 
-  v26 = [(IRServicePackageAdapterMedia *)self _getWeeklyAnalyticsFromStatistics:v9 candidatesContainer:v14];
+  v26 = [(IRServicePackageAdapterMedia *)self _getWeeklyAnalyticsFromStatistics:statisticsCopy candidatesContainer:fetchCandidatesContainer];
 
-  [v21 addEntriesFromDictionary:v26];
-  v27 = [v21 copy];
+  [dictionary addEntriesFromDictionary:v26];
+  v27 = [dictionary copy];
 
   return v27;
 }
@@ -799,7 +799,7 @@ uint64_t __96__IRServicePackageAdapterMedia_IRAnalytics__weeklyAnalyticsWithServ
   return v7;
 }
 
-- (id)_getUIWeeklyAnalyticsWithWeeklyHistory:(id)a3
+- (id)_getUIWeeklyAnalyticsWithWeeklyHistory:(id)history
 {
   v50[10] = *MEMORY[0x277D85DE8];
   v45 = 0;
@@ -822,8 +822,8 @@ uint64_t __96__IRServicePackageAdapterMedia_IRAnalytics__weeklyAnalyticsWithServ
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v26 = a3;
-  v3 = [v26 historyEvents];
+  historyCopy = history;
+  historyEvents = [historyCopy historyEvents];
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
   v28[2] = __84__IRServicePackageAdapterMedia_IRAnalytics___getUIWeeklyAnalyticsWithWeeklyHistory___block_invoke;
@@ -833,7 +833,7 @@ uint64_t __96__IRServicePackageAdapterMedia_IRAnalytics__weeklyAnalyticsWithServ
   v28[6] = &v37;
   v28[7] = &v33;
   v28[8] = &v29;
-  [v3 enumerateObjectsUsingBlock:v28];
+  [historyEvents enumerateObjectsUsingBlock:v28];
 
   v4 = v46[3];
   v5 = v42[3] + v4;
@@ -979,14 +979,14 @@ LABEL_10:
 LABEL_13:
 }
 
-- (id)_getGeneralWeeklyAnalyticsWithWeeklyHistory:(id)a3 withCandidatesContainer:(id)a4
+- (id)_getGeneralWeeklyAnalyticsWithWeeklyHistory:(id)history withCandidatesContainer:(id)container
 {
   v96[13] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v32 = v5;
-  v7 = [v5 historyEvents];
-  v8 = [v7 count];
+  historyCopy = history;
+  containerCopy = container;
+  v32 = historyCopy;
+  historyEvents = [historyCopy historyEvents];
+  v8 = [historyEvents count];
 
   v91 = 0;
   v92 = &v91;
@@ -1017,12 +1017,12 @@ LABEL_13:
   v67 = 0x3032000000;
   v68 = __Block_byref_object_copy__10;
   v69 = __Block_byref_object_dispose__10;
-  v70 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v61 = 0;
   v62 = &v61;
   v63 = 0x2020000000;
   v64 = 0;
-  v9 = [v5 historyEvents];
+  historyEvents2 = [historyCopy historyEvents];
   v60[0] = MEMORY[0x277D85DD0];
   v60[1] = 3221225472;
   v60[2] = __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalyticsWithWeeklyHistory_withCandidatesContainer___block_invoke;
@@ -1034,11 +1034,11 @@ LABEL_13:
   v60[8] = &v71;
   v60[9] = &v77;
   v60[10] = &v61;
-  [v9 enumerateObjectsUsingBlock:v60];
+  [historyEvents2 enumerateObjectsUsingBlock:v60];
 
   v10 = [v78[5] count];
   v11 = [v72[5] count];
-  v26 = [IRServicePackageAdapterMedia _getUniqueAirplayRoutsFromCandidateIdentifiers:v72[5] inCandiateContainer:v6];
+  v26 = [IRServicePackageAdapterMedia _getUniqueAirplayRoutsFromCandidateIdentifiers:v72[5] inCandiateContainer:containerCopy];
   v27 = [v26 count];
   v56 = 0;
   v57 = &v56;
@@ -1065,7 +1065,7 @@ LABEL_13:
   v33[1] = 3221225472;
   v33[2] = __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalyticsWithWeeklyHistory_withCandidatesContainer___block_invoke_2;
   v33[3] = &unk_2797E1D58;
-  v25 = v6;
+  v25 = containerCopy;
   v34 = v25;
   v35 = &v56;
   v36 = &v40;
@@ -1266,25 +1266,25 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   }
 }
 
-- (id)_getWeeklyAnalyticsFromStatistics:(id)a3 candidatesContainer:(id)a4
+- (id)_getWeeklyAnalyticsFromStatistics:(id)statistics candidatesContainer:(id)container
 {
   v37[11] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [a4 candidates];
-  v7 = [v6 count];
+  statisticsCopy = statistics;
+  candidates = [container candidates];
+  v7 = [candidates count];
 
-  v8 = [v5 numberOfContextChanges];
-  v9 = [v5 numberOfMiLoPredictions];
-  v10 = [v5 numberOfMiLoPredictionsInUpdatesMode];
-  v11 = [v5 lastMiLoLSLItems];
-  v12 = [v5 lastMiLoQualityReasonBitmap];
-  v32 = [v5 lastMiLoQuality];
-  v33 = [v5 lastMiLoModels];
-  v13 = [v5 numberOfPickerChoiceEvents];
-  v14 = [v5 numberOfCorrectPickerChoiceEvents];
-  if (v13)
+  numberOfContextChanges = [statisticsCopy numberOfContextChanges];
+  numberOfMiLoPredictions = [statisticsCopy numberOfMiLoPredictions];
+  numberOfMiLoPredictionsInUpdatesMode = [statisticsCopy numberOfMiLoPredictionsInUpdatesMode];
+  lastMiLoLSLItems = [statisticsCopy lastMiLoLSLItems];
+  lastMiLoQualityReasonBitmap = [statisticsCopy lastMiLoQualityReasonBitmap];
+  lastMiLoQuality = [statisticsCopy lastMiLoQuality];
+  lastMiLoModels = [statisticsCopy lastMiLoModels];
+  numberOfPickerChoiceEvents = [statisticsCopy numberOfPickerChoiceEvents];
+  numberOfCorrectPickerChoiceEvents = [statisticsCopy numberOfCorrectPickerChoiceEvents];
+  if (numberOfPickerChoiceEvents)
   {
-    v15 = 100 * v14 / v13;
+    v15 = 100 * numberOfCorrectPickerChoiceEvents / numberOfPickerChoiceEvents;
   }
 
   else
@@ -1292,46 +1292,46 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
     v15 = 200;
   }
 
-  v31 = [v5 timeInUpdatesModeInSeconds];
+  timeInUpdatesModeInSeconds = [statisticsCopy timeInUpdatesModeInSeconds];
 
   v16 = +[IRPreferences shared];
-  v17 = [v16 mobileAssetVersion];
+  mobileAssetVersion = [v16 mobileAssetVersion];
 
   v18 = &stru_286755D18;
-  if (v17)
+  if (mobileAssetVersion)
   {
-    v18 = v17;
+    v18 = mobileAssetVersion;
   }
 
   v36[0] = @"General_Weekly_N_candidates";
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{v7, v18}];
   v37[0] = v35;
   v36[1] = @"General_Weekly_N_context_changes";
-  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
+  v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:numberOfContextChanges];
   v37[1] = v34;
   v36[2] = @"General_Weekly_N_milo_predictions";
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:numberOfMiLoPredictions];
   v37[2] = v19;
   v36[3] = @"General_Weekly_N_Milo_Predictions_in_Update_Mode";
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:numberOfMiLoPredictionsInUpdatesMode];
   v37[3] = v20;
   v36[4] = @"Milo_Number_of_LSL_Items_Weekly";
-  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v11];
+  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:lastMiLoLSLItems];
   v37[4] = v21;
   v36[5] = @"Milo_Quality_Reason_Weekly";
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v12];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:lastMiLoQualityReasonBitmap];
   v37[5] = v22;
   v36[6] = @"Milo_Quality_Weekly";
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v32];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:lastMiLoQuality];
   v37[6] = v23;
   v36[7] = @"N_MiLo_Different_Models_Weekly";
-  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v33];
+  v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:lastMiLoModels];
   v37[7] = v24;
   v36[8] = @"PickerTop_UI_Weekly_SuccessRate";
   v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v15];
   v37[8] = v25;
   v36[9] = @"Time_In_Update_Mode_Weekly";
-  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v31];
+  v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:timeInUpdatesModeInSeconds];
   v36[10] = @"General_Weekly_Mobile_Asset_Version";
   v37[9] = v26;
   v37[10] = v30;
@@ -1342,68 +1342,68 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   return v27;
 }
 
-- (id)uiAnalyticsWithEvent:(id)a3 forCandidateIdentifier:(id)a4 systemStateManager:(id)a5 candidatesContainer:(id)a6 inspections:(id)a7 statisticsManager:(id)a8 service:(id)a9 historyEventsContainer:(id)a10
+- (id)uiAnalyticsWithEvent:(id)event forCandidateIdentifier:(id)identifier systemStateManager:(id)manager candidatesContainer:(id)container inspections:(id)inspections statisticsManager:(id)statisticsManager service:(id)service historyEventsContainer:(id)self0
 {
   v181[37] = *MEMORY[0x277D85DE8];
-  v119 = a3;
-  v16 = a4;
-  v120 = a5;
-  v17 = a6;
-  v112 = a7;
-  v113 = a8;
-  v114 = a9;
-  v111 = a10;
-  v118 = v17;
+  eventCopy = event;
+  identifierCopy = identifier;
+  managerCopy = manager;
+  containerCopy = container;
+  inspectionsCopy = inspections;
+  statisticsManagerCopy = statisticsManager;
+  serviceCopy = service;
+  eventsContainerCopy = eventsContainer;
+  v118 = containerCopy;
   v18 = [IRServicePackageAdapterMedia filterHistory:"filterHistory:withCandidatesContainer:" withCandidatesContainer:?];
-  v110 = [v18 historyEvents];
+  historyEvents = [v18 historyEvents];
 
-  v115 = [v112 objectForKeyedSubscript:*MEMORY[0x277D21250]];
-  v19 = [v114 clientIdentifier];
-  if (v19)
+  v115 = [inspectionsCopy objectForKeyedSubscript:*MEMORY[0x277D21250]];
+  clientIdentifier = [serviceCopy clientIdentifier];
+  if (clientIdentifier)
   {
-    v108 = [v114 clientIdentifier];
+    clientIdentifier2 = [serviceCopy clientIdentifier];
   }
 
   else
   {
-    v108 = &stru_286755D18;
+    clientIdentifier2 = &stru_286755D18;
   }
 
-  v20 = [v119 bundleID];
-  v103 = [IRAnalyticsUtilities getRedactedBundleID:v20];
+  bundleID = [eventCopy bundleID];
+  v103 = [IRAnalyticsUtilities getRedactedBundleID:bundleID];
 
-  v101 = [v119 isEligibleApp];
-  v21 = [v120 systemState];
-  v99 = [v21 locationSemanticUserSpecificPlaceType];
+  isEligibleApp = [eventCopy isEligibleApp];
+  systemState = [managerCopy systemState];
+  locationSemanticUserSpecificPlaceType = [systemState locationSemanticUserSpecificPlaceType];
 
-  [v119 eventType];
+  [eventCopy eventType];
   v107 = IRMediaEventTypeToString();
-  v22 = [v120 systemState];
-  v72 = [v22 locationSemanticUserSpecificPlaceType];
+  systemState2 = [managerCopy systemState];
+  locationSemanticUserSpecificPlaceType2 = [systemState2 locationSemanticUserSpecificPlaceType];
 
-  v23 = [v120 miloProviderLslPredictionResults];
-  v96 = [v23 canUse];
+  miloProviderLslPredictionResults = [managerCopy miloProviderLslPredictionResults];
+  canUse = [miloProviderLslPredictionResults canUse];
 
-  v24 = [v120 miloProviderLslPredictionResults];
-  v94 = [v24 isPredictionValid];
+  miloProviderLslPredictionResults2 = [managerCopy miloProviderLslPredictionResults];
+  isPredictionValid = [miloProviderLslPredictionResults2 isPredictionValid];
 
-  v25 = [v120 miloProviderLslPredictionResults];
-  v92 = [v25 isMotionDetected];
+  miloProviderLslPredictionResults3 = [managerCopy miloProviderLslPredictionResults];
+  isMotionDetected = [miloProviderLslPredictionResults3 isMotionDetected];
 
-  v26 = [v120 miloProviderLslPredictionResults];
-  v27 = [v26 scores];
-  v90 = [v27 count];
+  miloProviderLslPredictionResults4 = [managerCopy miloProviderLslPredictionResults];
+  scores = [miloProviderLslPredictionResults4 scores];
+  v90 = [scores count];
 
-  v28 = [v120 miloProviderLslPredictionResults];
-  v88 = [v28 isMapValid];
+  miloProviderLslPredictionResults5 = [managerCopy miloProviderLslPredictionResults];
+  isMapValid = [miloProviderLslPredictionResults5 isMapValid];
 
-  v29 = [v120 miloProviderLslPredictionResults];
-  v30 = [v29 predictionTime];
-  [v30 timeIntervalSinceNow];
+  miloProviderLslPredictionResults6 = [managerCopy miloProviderLslPredictionResults];
+  predictionTime = [miloProviderLslPredictionResults6 predictionTime];
+  [predictionTime timeIntervalSinceNow];
   v32 = v31;
 
-  v33 = [v17 candidates];
-  v80 = [v33 count];
+  candidates = [containerCopy candidates];
+  v80 = [candidates count];
 
   v176 = 0;
   v177 = &v176;
@@ -1449,7 +1449,7 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   v139 = __Block_byref_object_copy__10;
   v140 = __Block_byref_object_dispose__10;
   v141 = &stru_286755D18;
-  v34 = [v115 candidates];
+  candidates2 = [v115 candidates];
   v123[0] = MEMORY[0x277D85DD0];
   v123[1] = 3221225472;
   v123[2] = __189__IRServicePackageAdapterMedia_IRAnalytics__uiAnalyticsWithEvent_forCandidateIdentifier_systemStateManager_candidatesContainer_inspections_statisticsManager_service_historyEventsContainer___block_invoke;
@@ -1458,7 +1458,7 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   v127 = &v172;
   v128 = &v168;
   v129 = &v164;
-  v117 = v16;
+  v117 = identifierCopy;
   v124 = v117;
   v130 = &v142;
   v131 = &v136;
@@ -1468,62 +1468,62 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   v133 = &v156;
   v134 = &v152;
   v135 = &v148;
-  [v34 enumerateObjectsUsingBlock:v123];
+  [candidates2 enumerateObjectsUsingBlock:v123];
 
-  v35 = [v17 candidateForCandidateIdentifier:v117];
-  v36 = [v35 containsAirplayTarget];
+  v35 = [containerCopy candidateForCandidateIdentifier:v117];
+  containsAirplayTarget = [v35 containsAirplayTarget];
   v106 = [IRAnalyticsUtilities candidateTypeForCandidate:v35];
   v105 = [IRAnalyticsUtilities candidateModelTypeForCandidate:v35];
-  v37 = [v113 timeToBannerInMilliSeconds];
-  if (v37)
+  timeToBannerInMilliSeconds = [statisticsManagerCopy timeToBannerInMilliSeconds];
+  if (timeToBannerInMilliSeconds)
   {
-    v38 = [v113 timeToBannerInMilliSeconds];
-    v39 = [v38 unsignedIntegerValue];
+    timeToBannerInMilliSeconds2 = [statisticsManagerCopy timeToBannerInMilliSeconds];
+    unsignedIntegerValue = [timeToBannerInMilliSeconds2 unsignedIntegerValue];
   }
 
   else
   {
-    v39 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  v40 = [v109 generatorNegativeInputs];
-  v41 = [v40 allValues];
-  v42 = [v41 firstWhere:&__block_literal_global_249];
+  generatorNegativeInputs = [v109 generatorNegativeInputs];
+  allValues = [generatorNegativeInputs allValues];
+  v42 = [allValues firstWhere:&__block_literal_global_249];
   v43 = v42 != 0;
 
   v44 = +[IRPreferences shared];
-  v45 = [v44 mobileAssetVersion];
+  mobileAssetVersion = [v44 mobileAssetVersion];
 
   v46 = &stru_286755D18;
-  if (v45)
+  if (mobileAssetVersion)
   {
-    v46 = v45;
+    v46 = mobileAssetVersion;
   }
 
   v82 = v46;
-  v47 = [v111 historyEvents];
+  historyEvents2 = [eventsContainerCopy historyEvents];
   v121[0] = MEMORY[0x277D85DD0];
   v121[1] = 3221225472;
   v121[2] = __189__IRServicePackageAdapterMedia_IRAnalytics__uiAnalyticsWithEvent_forCandidateIdentifier_systemStateManager_candidatesContainer_inspections_statisticsManager_service_historyEventsContainer___block_invoke_4;
   v121[3] = &unk_2797E1868;
   v70 = v35;
   v122 = v70;
-  v48 = [v47 firstWhere:v121];
+  v48 = [historyEvents2 firstWhere:v121];
 
-  v49 = [v120 miloProviderLslPredictionResults];
-  v50 = [MEMORY[0x277CBEAA8] date];
-  v116 = [IRCandidateClassificationDetectorSameSpace sameSpaceMiLoScoresForCandidate:v117 basedOnMiLoPrediction:v49 andHistoryEventsAsc:v110 andDate:v50];
+  miloProviderLslPredictionResults7 = [managerCopy miloProviderLslPredictionResults];
+  date = [MEMORY[0x277CBEAA8] date];
+  v116 = [IRCandidateClassificationDetectorSameSpace sameSpaceMiLoScoresForCandidate:v117 basedOnMiLoPrediction:miloProviderLslPredictionResults7 andHistoryEventsAsc:historyEvents andDate:date];
 
-  v51 = [v116 first];
-  v52 = [v51 unsignedIntegerValue];
+  first = [v116 first];
+  unsignedIntegerValue2 = [first unsignedIntegerValue];
 
-  v53 = [v116 second];
-  v54 = [v53 unsignedIntegerValue];
+  second = [v116 second];
+  unsignedIntegerValue3 = [second unsignedIntegerValue];
 
   v55 = v43;
-  if (v54)
+  if (unsignedIntegerValue3)
   {
-    v56 = 100 * v52 / v54;
+    v56 = 100 * unsignedIntegerValue2 / unsignedIntegerValue3;
   }
 
   else
@@ -1531,17 +1531,17 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
     v56 = 200;
   }
 
-  v71 = [v119 isOutsideApp];
-  v181[0] = v108;
+  isOutsideApp = [eventCopy isOutsideApp];
+  v181[0] = clientIdentifier2;
   v180[0] = @"UI_Event_Client_Identifier";
   v180[1] = @"UI_Event_Internal_App_Name_Enum";
   v104 = [MEMORY[0x277CCABB0] numberWithInteger:v103];
   v181[1] = v104;
   v180[2] = @"UI_Event_Is_Eligible_App";
-  v102 = [MEMORY[0x277CCABB0] numberWithBool:v101];
+  v102 = [MEMORY[0x277CCABB0] numberWithBool:isEligibleApp];
   v181[2] = v102;
   v180[3] = @"UI_Event_Current_LOI_Enum";
-  v100 = [MEMORY[0x277CCABB0] numberWithInt:v99];
+  v100 = [MEMORY[0x277CCABB0] numberWithInt:locationSemanticUserSpecificPlaceType];
   v181[3] = v100;
   v181[4] = v107;
   v180[4] = @"UI_Event_Type";
@@ -1549,19 +1549,19 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   v98 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:1];
   v181[5] = v98;
   v180[6] = @"UI_Event_MiLo_Available";
-  v97 = [MEMORY[0x277CCABB0] numberWithBool:v96];
+  v97 = [MEMORY[0x277CCABB0] numberWithBool:canUse];
   v181[6] = v97;
   v180[7] = @"UI_Event_MiLo_Confidence";
-  v95 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v94];
+  v95 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:isPredictionValid];
   v181[7] = v95;
   v180[8] = @"UI_Event_Milo_Confidence_Reason";
-  v93 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v92];
+  v93 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:isMotionDetected];
   v181[8] = v93;
   v180[9] = @"UI_Event_Milo_N_LSL_Items";
   v91 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v90];
   v181[9] = v91;
   v180[10] = @"UI_Event_Milo_Quality";
-  v89 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v88];
+  v89 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:isMapValid];
   v181[10] = v89;
   v180[11] = @"UI_Event_Milo_Quality_Reason";
   v87 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:0];
@@ -1574,8 +1574,8 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   v181[13] = v85;
   v180[14] = @"UI_Event_MiLo_Suspended_Reasons";
   v57 = MEMORY[0x277CCABB0];
-  v84 = [v120 miloProvider];
-  v83 = [v57 numberWithUnsignedInteger:{objc_msgSend(v84, "miLoServiceSuspendedReasonBitmap")}];
+  miloProvider = [managerCopy miloProvider];
+  v83 = [v57 numberWithUnsignedInteger:{objc_msgSend(miloProvider, "miLoServiceSuspendedReasonBitmap")}];
   v181[14] = v83;
   v180[15] = @"UI_Event_N_Candidates";
   v81 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v80];
@@ -1611,7 +1611,7 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   v59 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v149[3]];
   v181[26] = v59;
   v180[27] = @"UI_Event_Selected_Candidate_Is_Airplay_Target";
-  v60 = [MEMORY[0x277CCABB0] numberWithBool:v36];
+  v60 = [MEMORY[0x277CCABB0] numberWithBool:containsAirplayTarget];
   v181[27] = v60;
   v180[28] = @"UI_Event_Selected_Candidate_Was_Used_At_Home";
   v61 = [MEMORY[0x277CCABB0] numberWithBool:v48 != 0];
@@ -1619,13 +1619,13 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   v181[29] = v105;
   v180[29] = @"UI_Event_Selected_Candidate_Device_Model_Type";
   v180[30] = @"UI_Event_Selected_Candidate_Same_Space_MiLo_LSL_Items";
-  v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v54];
+  v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue3];
   v181[30] = v62;
   v180[31] = @"UI_Event_Selected_Candidate_Same_Space_MiLo_Agg_Score";
   v63 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v56];
   v181[31] = v63;
   v180[32] = @"UI_Event_Time_To_Banner_Milli_Seconds";
-  v64 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v39];
+  v64 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
   v181[32] = v64;
   v180[33] = @"UI_Event_Is_Negative_Rules";
   v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v55];
@@ -1633,10 +1633,10 @@ void __113__IRServicePackageAdapterMedia_IRAnalytics___getGeneralWeeklyAnalytics
   v181[34] = v82;
   v180[34] = @"UI_Event_Mobile_Asset_Version";
   v180[35] = @"UI_Event_Is_Location_Custom";
-  v66 = [MEMORY[0x277CCABB0] numberWithBool:v72 == 5];
+  v66 = [MEMORY[0x277CCABB0] numberWithBool:locationSemanticUserSpecificPlaceType2 == 5];
   v181[35] = v66;
   v180[36] = @"UI_Event_Is_Widget";
-  v67 = [MEMORY[0x277CCABB0] numberWithBool:v71];
+  v67 = [MEMORY[0x277CCABB0] numberWithBool:isOutsideApp];
   v181[36] = v67;
   v73 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v181 forKeys:v180 count:37];
 
@@ -1762,21 +1762,21 @@ BOOL __189__IRServicePackageAdapterMedia_IRAnalytics__uiAnalyticsWithEvent_forCa
   return v7;
 }
 
-+ (id)_getUniqueAirplayRoutsFromCandidateIdentifiers:(id)a3 inCandiateContainer:(id)a4
++ (id)_getUniqueAirplayRoutsFromCandidateIdentifiers:(id)identifiers inCandiateContainer:(id)container
 {
-  v5 = a4;
+  containerCopy = container;
   v6 = MEMORY[0x277CBEB58];
-  v7 = a3;
+  identifiersCopy = identifiers;
   v8 = [v6 set];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __112__IRServicePackageAdapterMedia_IRAnalytics___getUniqueAirplayRoutsFromCandidateIdentifiers_inCandiateContainer___block_invoke;
   v14[3] = &unk_2797E1DC8;
-  v15 = v5;
+  v15 = containerCopy;
   v9 = v8;
   v16 = v9;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:v14];
+  v10 = containerCopy;
+  [identifiersCopy enumerateObjectsUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;

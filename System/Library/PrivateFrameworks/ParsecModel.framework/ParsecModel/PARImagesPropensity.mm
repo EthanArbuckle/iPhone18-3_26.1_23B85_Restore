@@ -1,13 +1,13 @@
 @interface PARImagesPropensity
-- (PARImagesPropensity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (PARImagesPropensity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation PARImagesPropensity
 
-- (PARImagesPropensity)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (PARImagesPropensity)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  contextCopy = context;
   return PARImagesPropensity.init(entity:insertInto:)();
 }
 

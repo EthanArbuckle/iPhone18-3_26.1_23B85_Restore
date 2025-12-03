@@ -1,18 +1,18 @@
 @interface SHShazamModule
-- (id)contentViewControllerForContext:(id)a3;
-- (void)setContentModuleContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
+- (void)setContentModuleContext:(id)context;
 @end
 
 @implementation SHShazamModule
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
-  objc_storeStrong(&self->_contentModuleContext, a3);
-  v5 = a3;
-  [(SHShazamMenuModuleViewController *)self->_shazamMenuModuleViewController setContentModuleContext:v5];
+  objc_storeStrong(&self->_contentModuleContext, context);
+  contextCopy = context;
+  [(SHShazamMenuModuleViewController *)self->_shazamMenuModuleViewController setContentModuleContext:contextCopy];
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   shazamMenuModuleViewController = self->_shazamMenuModuleViewController;
   if (!shazamMenuModuleViewController)

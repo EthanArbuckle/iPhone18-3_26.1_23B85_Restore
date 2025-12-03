@@ -1,7 +1,7 @@
 @interface TSPFeatureInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSPFeatureInfo)init;
-- (TSPFeatureInfo)initWithIdentifier:(id)a3 readVersion:(unint64_t)a4 writeVersion:(unint64_t)a5 validatingValues:(BOOL)a6;
+- (TSPFeatureInfo)initWithIdentifier:(id)identifier readVersion:(unint64_t)version writeVersion:(unint64_t)writeVersion validatingValues:(BOOL)values;
 - (unint64_t)hash;
 @end
 
@@ -24,16 +24,16 @@
   objc_exception_throw(v14);
 }
 
-- (TSPFeatureInfo)initWithIdentifier:(id)a3 readVersion:(unint64_t)a4 writeVersion:(unint64_t)a5 validatingValues:(BOOL)a6
+- (TSPFeatureInfo)initWithIdentifier:(id)identifier readVersion:(unint64_t)version writeVersion:(unint64_t)writeVersion validatingValues:(BOOL)values
 {
-  v6 = a6;
-  v11 = a3;
-  if (v11 && v6 && (objc_msgSend_validateFeatureIdentifier_(TSPFeatureLocalization, v10, v11) & 1) == 0)
+  valuesCopy = values;
+  identifierCopy = identifier;
+  if (identifierCopy && valuesCopy && (objc_msgSend_validateFeatureIdentifier_(TSPFeatureLocalization, v10, identifierCopy) & 1) == 0)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSPFeatureInfo initWithIdentifier:readVersion:writeVersion:validatingValues:]");
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPFeature.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 19, 0, "You should declare the feature identifier %{public}@ and its associated localization in +[TSPFeatureLocalization localizationForFeatureIdentifiers].", v11);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 19, 0, "You should declare the feature identifier %{public}@ and its associated localization in +[TSPFeatureLocalization localizationForFeatureIdentifiers].", identifierCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   }
@@ -43,36 +43,36 @@
   v22 = [(TSPFeatureInfo *)&v28 init];
   if (v22)
   {
-    v23 = objc_msgSend_copy(v11, v20, v21);
+    v23 = objc_msgSend_copy(identifierCopy, v20, v21);
     identifier = v22->_identifier;
     v22->_identifier = v23;
 
-    if (v6)
+    if (valuesCopy)
     {
       v25 = UnsafePointer();
-      if (v25 >= a4)
+      if (v25 >= version)
       {
-        v26 = a4;
+        versionCopy = version;
       }
 
       else
       {
-        v26 = v25;
+        versionCopy = v25;
       }
 
-      v22->_readVersion = v26;
-      if (v25 < a5)
+      v22->_readVersion = versionCopy;
+      if (v25 < writeVersion)
       {
-        a5 = v25;
+        writeVersion = v25;
       }
     }
 
     else
     {
-      v22->_readVersion = a4;
+      v22->_readVersion = version;
     }
 
-    v22->_writeVersion = a5;
+    v22->_writeVersion = writeVersion;
   }
 
   return v22;
@@ -89,9 +89,9 @@
   return v9 ^ v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

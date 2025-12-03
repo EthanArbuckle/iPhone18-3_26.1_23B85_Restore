@@ -1,17 +1,17 @@
 @interface TSTLayoutSpaceBundle
-- (BOOL)performActionOnFrozenLayoutSpaces:(id)a3;
-- (BOOL)performActionOnRepeatLayoutSpaces:(id)a3;
-- (TSTLayoutSpaceBundle)initWithLayout:(id)a3;
+- (BOOL)performActionOnFrozenLayoutSpaces:(id)spaces;
+- (BOOL)performActionOnRepeatLayoutSpaces:(id)spaces;
+- (TSTLayoutSpaceBundle)initWithLayout:(id)layout;
 - (id)description;
-- (id)getSpaceContainingCellID:(id)a3;
+- (id)getSpaceContainingCellID:(id)d;
 - (int)validateLayoutSpaces;
 - (void)dealloc;
-- (void)performActionOnEachLayoutSpace:(id)a3;
+- (void)performActionOnEachLayoutSpace:(id)space;
 @end
 
 @implementation TSTLayoutSpaceBundle
 
-- (TSTLayoutSpaceBundle)initWithLayout:(id)a3
+- (TSTLayoutSpaceBundle)initWithLayout:(id)layout
 {
   v7.receiver = self;
   v7.super_class = TSTLayoutSpaceBundle;
@@ -19,7 +19,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->mLayout = a3;
+    v4->mLayout = layout;
     v4->mSpace = [[TSTLayoutSpace alloc] initWithLayoutSpaceBundle:v4 type:0];
   }
 
@@ -43,7 +43,7 @@
   [(TSTLayoutSpaceBundle *)&v3 dealloc];
 }
 
-- (id)getSpaceContainingCellID:(id)a3
+- (id)getSpaceContainingCellID:(id)d
 {
   p_mSpace = &self->mSpace;
   Range = TSTLayoutSpaceGetRange(self->mSpace);
@@ -57,7 +57,7 @@
     v7 = 1;
   }
 
-  if (!v7 && Range <= a3.var0 && (Range + HIWORD(Range) - 1) >= a3.var0 && a3.var1 >= BYTE2(Range) && a3.var1 <= (BYTE4(Range) + BYTE2(Range) - 1))
+  if (!v7 && Range <= d.var0 && (Range + HIWORD(Range) - 1) >= d.var0 && d.var1 >= BYTE2(Range) && d.var1 <= (BYTE4(Range) + BYTE2(Range) - 1))
   {
     return *p_mSpace;
   }
@@ -65,7 +65,7 @@
   p_mSpace = &self->mRepeatHeaderCornerSpace;
   v8 = TSTLayoutSpaceGetRange(self->mRepeatHeaderCornerSpace);
   v9 = !HIWORD(v8) || (v8 & 0xFFFF00000000) == 0;
-  if (!v9 && v8 <= a3.var0 && (v8 + HIWORD(v8) - 1) >= a3.var0 && a3.var1 >= BYTE2(v8) && a3.var1 <= (BYTE4(v8) + BYTE2(v8) - 1))
+  if (!v9 && v8 <= d.var0 && (v8 + HIWORD(v8) - 1) >= d.var0 && d.var1 >= BYTE2(v8) && d.var1 <= (BYTE4(v8) + BYTE2(v8) - 1))
   {
     return *p_mSpace;
   }
@@ -73,7 +73,7 @@
   p_mSpace = &self->mRepeatHeaderColumnsSpace;
   v10 = TSTLayoutSpaceGetRange(self->mRepeatHeaderColumnsSpace);
   v11 = !HIWORD(v10) || (v10 & 0xFFFF00000000) == 0;
-  if (!v11 && v10 <= a3.var0 && (v10 + HIWORD(v10) - 1) >= a3.var0 && a3.var1 >= BYTE2(v10) && a3.var1 <= (BYTE4(v10) + BYTE2(v10) - 1))
+  if (!v11 && v10 <= d.var0 && (v10 + HIWORD(v10) - 1) >= d.var0 && d.var1 >= BYTE2(v10) && d.var1 <= (BYTE4(v10) + BYTE2(v10) - 1))
   {
     return *p_mSpace;
   }
@@ -84,23 +84,23 @@
   v15 = 0;
   if (HIWORD(v14) && (v14 & 0xFFFF00000000) != 0)
   {
-    if (v14 > a3.var0)
+    if (v14 > d.var0)
     {
       return 0;
     }
 
-    if ((v14 + HIWORD(v14) - 1) < a3.var0)
+    if ((v14 + HIWORD(v14) - 1) < d.var0)
     {
       return 0;
     }
 
-    if (a3.var1 < BYTE2(v14))
+    if (d.var1 < BYTE2(v14))
     {
       return 0;
     }
 
     p_mSpace = p_mRepeatHeaderRowsSpace;
-    if (a3.var1 > (BYTE4(v14) + BYTE2(v14) - 1))
+    if (d.var1 > (BYTE4(v14) + BYTE2(v14) - 1))
     {
       return 0;
     }
@@ -122,19 +122,19 @@
   return v6 | v8 | [(TSTLayoutSpace *)self->mRepeatHeaderCornerSpace validate:self->mSpace];
 }
 
-- (void)performActionOnEachLayoutSpace:(id)a3
+- (void)performActionOnEachLayoutSpace:(id)space
 {
-  if (![(TSTLayoutSpaceBundle *)self performActionOnFrozenLayoutSpaces:?]&& ![(TSTLayoutSpaceBundle *)self performActionOnRepeatLayoutSpaces:a3]&& self->mSpace)
+  if (![(TSTLayoutSpaceBundle *)self performActionOnFrozenLayoutSpaces:?]&& ![(TSTLayoutSpaceBundle *)self performActionOnRepeatLayoutSpaces:space]&& self->mSpace)
   {
-    v5 = *(a3 + 2);
+    v5 = *(space + 2);
 
-    v5(a3);
+    v5(space);
   }
 }
 
-- (BOOL)performActionOnFrozenLayoutSpaces:(id)a3
+- (BOOL)performActionOnFrozenLayoutSpaces:(id)spaces
 {
-  if (self->mFrozenHeaderCornerSpace && ((*(a3 + 2))(a3) & 1) != 0 || self->mFrozenHeaderRowsSpace && ((*(a3 + 2))(a3) & 1) != 0)
+  if (self->mFrozenHeaderCornerSpace && ((*(spaces + 2))(spaces) & 1) != 0 || self->mFrozenHeaderRowsSpace && ((*(spaces + 2))(spaces) & 1) != 0)
   {
     return 1;
   }
@@ -144,14 +144,14 @@
     return 0;
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(spaces + 2);
 
-  return v6(a3);
+  return v6(spaces);
 }
 
-- (BOOL)performActionOnRepeatLayoutSpaces:(id)a3
+- (BOOL)performActionOnRepeatLayoutSpaces:(id)spaces
 {
-  if (self->mRepeatHeaderCornerSpace && ((*(a3 + 2))(a3) & 1) != 0 || self->mRepeatHeaderRowsSpace && ((*(a3 + 2))(a3) & 1) != 0)
+  if (self->mRepeatHeaderCornerSpace && ((*(spaces + 2))(spaces) & 1) != 0 || self->mRepeatHeaderRowsSpace && ((*(spaces + 2))(spaces) & 1) != 0)
   {
     return 1;
   }
@@ -161,9 +161,9 @@
     return 0;
   }
 
-  v6 = *(a3 + 2);
+  v6 = *(spaces + 2);
 
-  return v6(a3);
+  return v6(spaces);
 }
 
 - (id)description

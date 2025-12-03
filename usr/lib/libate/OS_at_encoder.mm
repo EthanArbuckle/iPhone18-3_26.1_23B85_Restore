@@ -1,5 +1,5 @@
 @interface OS_at_encoder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)debugDescription;
 - (void)dealloc;
 @end
@@ -30,11 +30,11 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self && a3)
+  if (self && equal)
   {
-    return ATEncoder_IsEqual(self, a3);
+    return ATEncoder_IsEqual(self, equal);
   }
 
   else

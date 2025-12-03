@@ -34,25 +34,25 @@
 
 - (BOOL)tsu_isSpecialCustomNumberFormatTokenOfType:()TSUCustomFormatTokenizerAdditions
 {
-  if ([a1 length] < 2 || objc_msgSend(a1, "characterAtIndex:", 0) != 63743)
+  if ([self length] < 2 || objc_msgSend(self, "characterAtIndex:", 0) != 63743)
   {
     return 0;
   }
 
-  v5 = [a1 characterAtIndex:1];
+  v5 = [self characterAtIndex:1];
   return TSUCustomFormatTokenIdentifierCharacterForTokenType(a3) == v5;
 }
 
 - (uint64_t)tsu_numberOfDigitsInCustomNumberFormatIntegerToken
 {
-  if (([a1 tsu_isSpecialCustomNumberFormatTokenOfType:1] & 1) == 0)
+  if (([self tsu_isSpecialCustomNumberFormatTokenOfType:1] & 1) == 0)
   {
     v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSUCustomFormatTokenizerAdditions) tsu_numberOfDigitsInCustomNumberFormatIntegerToken]"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v2, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUCustomFormatTokenizer.m"], 403, 0, "Wrong token type!");
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  if ([a1 length] < 3)
+  if ([self length] < 3)
   {
     return 0;
   }
@@ -61,7 +61,7 @@
   v4 = 2;
   do
   {
-    if ([a1 characterAtIndex:v4] != 44)
+    if ([self characterAtIndex:v4] != 44)
     {
       ++v3;
     }
@@ -69,20 +69,20 @@
     ++v4;
   }
 
-  while (v4 < [a1 length]);
+  while (v4 < [self length]);
   return v3;
 }
 
 - (BOOL)tsu_customFormatIntegerTokenUsesSeparator
 {
-  if (([a1 tsu_isSpecialCustomNumberFormatTokenOfType:1] & 1) == 0)
+  if (([self tsu_isSpecialCustomNumberFormatTokenOfType:1] & 1) == 0)
   {
     v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSUCustomFormatTokenizerAdditions) tsu_customFormatIntegerTokenUsesSeparator]"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v2, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUCustomFormatTokenizer.m"], 413, 0, "Wrong token type!");
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  return [a1 characterAtIndex:{objc_msgSend(a1, "length") - 1}] == 44;
+  return [self characterAtIndex:{objc_msgSend(self, "length") - 1}] == 44;
 }
 
 - (void)tsu_stringByInsertingFormatGroupingSeparators:()TSUCustomFormatTokenizerAdditions
@@ -94,9 +94,9 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [a3 groupingSize];
-  v8 = [a1 length];
+  string = [MEMORY[0x277CCAB68] string];
+  groupingSize = [a3 groupingSize];
+  v8 = [self length];
   if (v8)
   {
     v9 = -v8;
@@ -104,10 +104,10 @@
     v11 = 1;
     do
     {
-      [v6 insertString:objc_msgSend(MEMORY[0x277CCACA8] atIndex:{"stringWithFormat:", @"%C", objc_msgSend(a1, "characterAtIndex:", v10)), 0}];
-      if (v9 + v11 && v7 && !(v11 % v7))
+      [string insertString:objc_msgSend(MEMORY[0x277CCACA8] atIndex:{"stringWithFormat:", @"%C", objc_msgSend(self, "characterAtIndex:", v10)), 0}];
+      if (v9 + v11 && groupingSize && !(v11 % groupingSize))
       {
-        [v6 insertString:@" atIndex:{", 0}];
+        [string insertString:@" atIndex:{", 0}];
       }
 
       ++v11;
@@ -117,7 +117,7 @@
     while (v9 + v11 != 1);
   }
 
-  return v6;
+  return string;
 }
 
 + (void)tsu_customNumberFormatIntegerTokenDisplayStringWithDigits:()TSUCustomFormatTokenizerAdditions separator:digitString:locale:
@@ -129,11 +129,11 @@
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  v11 = [MEMORY[0x277CCAB68] string];
-  v12 = [a6 groupingSize];
+  string = [MEMORY[0x277CCAB68] string];
+  groupingSize = [a6 groupingSize];
   if (a3)
   {
-    v13 = v12;
+    v13 = groupingSize;
     v14 = 0;
     v15 = *MEMORY[0x277CBE6B8];
     do
@@ -152,11 +152,11 @@
 
         if (!v16)
         {
-          [v11 appendString:{objc_msgSend(objc_msgSend(MEMORY[0x277CBEAF8], "currentLocale"), "objectForKey:", v15)}];
+          [string appendString:{objc_msgSend(objc_msgSend(MEMORY[0x277CBEAF8], "currentLocale"), "objectForKey:", v15)}];
         }
       }
 
-      [v11 appendString:a5];
+      [string appendString:a5];
       ++v14;
       --a3;
     }
@@ -164,7 +164,7 @@
     while (a3);
   }
 
-  return v11;
+  return string;
 }
 
 + (uint64_t)tsu_customNumberFormatIntegerTokenRepresentedStringWithDigits:()TSUCustomFormatTokenizerAdditions separator:digitString:
@@ -196,27 +196,27 @@
 
 - (uint64_t)tsu_numberOfDigitsInCustomNumberFormatDecimalToken
 {
-  if (([a1 tsu_isSpecialCustomNumberFormatTokenOfType:2] & 1) == 0)
+  if (([self tsu_isSpecialCustomNumberFormatTokenOfType:2] & 1) == 0)
   {
     v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[NSString(TSUCustomFormatTokenizerAdditions) tsu_numberOfDigitsInCustomNumberFormatDecimalToken]"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v2, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUCustomFormatTokenizer.m"], 472, 0, "Wrong token type!");
     +[OITSUAssertionHandler logBacktraceThrottled];
   }
 
-  return [a1 length] - 3;
+  return [self length] - 3;
 }
 
 + (void)tsu_customNumberFormatDecimalTokenDisplayStringWithDigits:()TSUCustomFormatTokenizerAdditions digitString:
 {
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v6 appendString:{objc_msgSend(v7, "objectForKey:", *MEMORY[0x277CBE6A8])}];
+  string = [MEMORY[0x277CCAB68] string];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [string appendString:{objc_msgSend(currentLocale, "objectForKey:", *MEMORY[0x277CBE6A8])}];
   for (; a3; --a3)
   {
-    [v6 appendString:a4];
+    [string appendString:a4];
   }
 
-  return v6;
+  return string;
 }
 
 + (uint64_t)tsu_customNumberFormatDecimalTokenRepresentedStringWithDigits:()TSUCustomFormatTokenizerAdditions digitString:
@@ -241,11 +241,11 @@
 
 + (void)tsu_customNumberFormatDecimalFormatStringWithDigits:()TSUCustomFormatTokenizerAdditions digitString:includeDecimalSeparator:
 {
-  v8 = [MEMORY[0x277CCAB68] string];
-  v9 = v8;
+  string = [MEMORY[0x277CCAB68] string];
+  v9 = string;
   if (a5)
   {
-    [v8 appendString:@"."];
+    [string appendString:@"."];
   }
 
   for (; a3; --a3)
@@ -259,10 +259,10 @@
 - (__CFString)tsu_digitPlaceholderStringInDigitToken
 {
   v2 = @"0";
-  if ([a1 rangeOfString:@"0"] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfString:@"0"] == 0x7FFFFFFFFFFFFFFFLL)
   {
     v2 = @"#";
-    if ([a1 rangeOfString:@"#"] == 0x7FFFFFFFFFFFFFFFLL)
+    if ([self rangeOfString:@"#"] == 0x7FFFFFFFFFFFFFFFLL)
     {
       return @"?";
     }
@@ -273,7 +273,7 @@
 
 - (id)tsu_currencyCodeFromCustomNumberFormatCurrencyToken
 {
-  if ([a1 length] < 3)
+  if ([self length] < 3)
   {
 
     return +[OITSUNumberFormatter currentLocaleCurrencyCode];
@@ -282,13 +282,13 @@
   else
   {
 
-    return [a1 substringFromIndex:2];
+    return [self substringFromIndex:2];
   }
 }
 
 - (uint64_t)tsu_fractionAccuracyFromCustomNumberFormatFractionToken
 {
-  v1 = [a1 substringFromIndex:2];
+  v1 = [self substringFromIndex:2];
 
   return [v1 intValue];
 }

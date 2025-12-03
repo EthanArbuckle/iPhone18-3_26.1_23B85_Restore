@@ -8,10 +8,10 @@
 
 - (id)ic_firstIndexPathOfItemIdentifiers:()IC
 {
-  v1 = [a1 ic_sortedIndexPathsOfItemIdentifiers:?];
-  v2 = [v1 firstObject];
+  v1 = [self ic_sortedIndexPathsOfItemIdentifiers:?];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 - (id)ic_indexPathsOfItemIdentifiers:()IC
@@ -38,7 +38,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 indexPathForItemIdentifier:{*(*(&v14 + 1) + 8 * i), v14}];
+        v11 = [self indexPathForItemIdentifier:{*(*(&v14 + 1) + 8 * i), v14}];
         [v5 ic_addNonNilObject:v11];
       }
 
@@ -55,9 +55,9 @@
 
 - (id)ic_sortedIndexPathsOfItemIdentifiers:()IC
 {
-  v1 = [a1 ic_indexPathsOfItemIdentifiers:?];
-  v2 = [v1 allObjects];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  v1 = [self ic_indexPathsOfItemIdentifiers:?];
+  allObjects = [v1 allObjects];
+  v3 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   return v3;
 }

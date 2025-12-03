@@ -1,7 +1,7 @@
 @interface _UIUpdateLinkViewInteraction
-- (void)_updateWindowFrom:(void *)a3 to:;
+- (void)_updateWindowFrom:(void *)from to:;
 - (void)dealloc;
-- (void)didMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
 @end
 
 @implementation _UIUpdateLinkViewInteraction
@@ -19,33 +19,33 @@
   [(_UIUpdateLinkViewInteraction *)&v3 dealloc];
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = [(UIView *)self->_view _window];
-  v6 = [a3 _window];
-  [(_UIUpdateLinkViewInteraction *)self _updateWindowFrom:v5 to:v6];
+  _window = [(UIView *)self->_view _window];
+  _window2 = [view _window];
+  [(_UIUpdateLinkViewInteraction *)self _updateWindowFrom:_window to:_window2];
 
-  self->_view = a3;
+  self->_view = view;
 }
 
-- (void)_updateWindowFrom:(void *)a3 to:
+- (void)_updateWindowFrom:(void *)from to:
 {
-  if (a1)
+  if (self)
   {
-    [(_UIUpdateLinkTrackingWindow *)*(a1 + 16) _switchWindowFrom:a2 to:a3];
-    v6 = *(a1 + 16);
-    v7 = [a2 _windowHostingScene];
-    v8 = [a3 _windowHostingScene];
-    [(_UIUpdateLinkTrackingScene *)v6 _switchSceneFrom:v7 to:v8];
+    [(_UIUpdateLinkTrackingWindow *)*(self + 16) _switchWindowFrom:a2 to:from];
+    v6 = *(self + 16);
+    _windowHostingScene = [a2 _windowHostingScene];
+    _windowHostingScene2 = [from _windowHostingScene];
+    [(_UIUpdateLinkTrackingScene *)v6 _switchSceneFrom:_windowHostingScene to:_windowHostingScene2];
 
-    v9 = *(a1 + 16);
+    v9 = *(self + 16);
     if (v9)
     {
-      v10 = [v9 _canEngage];
-      if (v9[48] != v10)
+      _canEngage = [v9 _canEngage];
+      if (v9[48] != _canEngage)
       {
-        v9[48] = v10;
-        v11 = (v10 & v9[50]);
+        v9[48] = _canEngage;
+        v11 = (_canEngage & v9[50]);
 
         [(UIUpdateLink *)v9 _setActive:v11];
       }

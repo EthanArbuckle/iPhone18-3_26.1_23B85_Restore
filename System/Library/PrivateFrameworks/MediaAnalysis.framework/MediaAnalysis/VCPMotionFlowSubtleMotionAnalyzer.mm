@@ -2,14 +2,14 @@
 + (BOOL)enableR2D2;
 - (VCPMotionFlowSubtleMotionAnalyzer)init;
 - (id).cxx_construct;
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 withFrame:(void *)a4 withTimestamp:(id *)a5 andDuration:(id *)a6 hasSubtleScene:(int)a7 cancel:(id)a8;
-- (int)convertFlow:(__CVBuffer *)a3;
-- (int)convertPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 withPixelFormat:(int)a5;
-- (int)createPixelBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(int)a5 pixelBuffer:(__CVBuffer *)a6;
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer withFrame:(void *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration hasSubtleScene:(int)scene cancel:(id)cancel;
+- (int)convertFlow:(__CVBuffer *)flow;
+- (int)convertPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer withPixelFormat:(int)format;
+- (int)createPixelBufferWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format pixelBuffer:(__CVBuffer *)buffer;
 - (int)generateMotionFlow;
-- (int)generateSubleMotionScore:(void *)a3;
-- (int)preProcessing:(__CVBuffer *)a3;
-- (int)prepareAnalyzerWithCVPixelBuffer:(__CVBuffer *)a3 cancel:(id)a4;
+- (int)generateSubleMotionScore:(void *)score;
+- (int)preProcessing:(__CVBuffer *)processing;
+- (int)prepareAnalyzerWithCVPixelBuffer:(__CVBuffer *)buffer cancel:(id)cancel;
 - (void)dealloc;
 @end
 
@@ -114,12 +114,12 @@
   [(VCPMotionFlowSubtleMotionAnalyzer *)&v11 dealloc];
 }
 
-- (int)prepareAnalyzerWithCVPixelBuffer:(__CVBuffer *)a3 cancel:(id)a4
+- (int)prepareAnalyzerWithCVPixelBuffer:(__CVBuffer *)buffer cancel:(id)cancel
 {
   v33[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  cancelCopy = cancel;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
   self->_frameWidth = Width;
   self->_frameHeight = Height;
   if (Width <= Height)
@@ -191,7 +191,7 @@
     v33[2] = &unk_1F49BDEA0;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:3];
 
-    v21 = [[VCPMotionFlowRequest alloc] initWithOptions:v20 cancel:v6];
+    v21 = [[VCPMotionFlowRequest alloc] initWithOptions:v20 cancel:cancelCopy];
     moflowRequest = self->_moflowRequest;
     self->_moflowRequest = v21;
 
@@ -203,7 +203,7 @@
   {
     *&v9 = self->_frameWidth / self->_frameHeight;
     v24 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
-    v25 = [VCPImageMotionFlowAnalyzer analyzeWithLightweightOption:0 aspectRatio:v24 computationAccuracy:1 forceCPU:0 sharedModel:1 flushModel:1 cancel:v6];
+    v25 = [VCPImageMotionFlowAnalyzer analyzeWithLightweightOption:0 aspectRatio:v24 computationAccuracy:1 forceCPU:0 sharedModel:1 flushModel:1 cancel:cancelCopy];
     motionFlowAnalyzer = self->_motionFlowAnalyzer;
     self->_motionFlowAnalyzer = v25;
 
@@ -238,18 +238,18 @@ LABEL_25:
   return v30;
 }
 
-- (int)convertFlow:(__CVBuffer *)a3
+- (int)convertFlow:(__CVBuffer *)flow
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+  Width = CVPixelBufferGetWidth(flow);
+  Height = CVPixelBufferGetHeight(flow);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(flow);
   flow = self->_flow;
-  pixelBuffer = a3;
+  pixelBuffer = flow;
   unlockFlags = 1;
-  if (a3)
+  if (flow)
   {
     v9 = BytesPerRow;
-    v10 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+    v10 = CVPixelBufferLockBaseAddress(flow, 1uLL);
     v26 = v10;
     if (v10)
     {
@@ -262,7 +262,7 @@ LABEL_25:
 
     else
     {
-      BaseAddress = CVPixelBufferGetBaseAddress(a3);
+      BaseAddress = CVPixelBufferGetBaseAddress(flow);
       if (Height >= 1)
       {
         v14 = 0;
@@ -319,53 +319,53 @@ LABEL_25:
   return v11;
 }
 
-- (int)createPixelBufferWithWidth:(unint64_t)a3 height:(unint64_t)a4 pixelFormat:(int)a5 pixelBuffer:(__CVBuffer *)a6
+- (int)createPixelBufferWithWidth:(unint64_t)width height:(unint64_t)height pixelFormat:(int)format pixelBuffer:(__CVBuffer *)buffer
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v13 = *MEMORY[0x1E69660D8];
   v14[0] = MEMORY[0x1E695E0F8];
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-  v11 = CVPixelBufferCreate(0, a3, a4, a5, v10, a6);
-  if (v11 && *a6)
+  v11 = CVPixelBufferCreate(0, width, height, format, v10, buffer);
+  if (v11 && *buffer)
   {
-    CFRelease(*a6);
-    *a6 = 0;
+    CFRelease(*buffer);
+    *buffer = 0;
   }
 
   return v11;
 }
 
-- (int)convertPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 withPixelFormat:(int)a5
+- (int)convertPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer withPixelFormat:(int)format
 {
-  v5 = *&a5;
+  v5 = *&format;
   if (self->_transferSession || (result = VTPixelTransferSessionCreate(0, &self->_transferSession)) == 0)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    result = [(VCPMotionFlowSubtleMotionAnalyzer *)self createPixelBufferWithWidth:Width height:CVPixelBufferGetHeight(a3) pixelFormat:v5 pixelBuffer:a4];
+    Width = CVPixelBufferGetWidth(buffer);
+    result = [(VCPMotionFlowSubtleMotionAnalyzer *)self createPixelBufferWithWidth:Width height:CVPixelBufferGetHeight(buffer) pixelFormat:v5 pixelBuffer:pixelBuffer];
     if (!result)
     {
       transferSession = self->_transferSession;
-      v12 = *a4;
+      v12 = *pixelBuffer;
 
-      return VTPixelTransferSessionTransferImage(transferSession, a3, v12);
+      return VTPixelTransferSessionTransferImage(transferSession, buffer, v12);
     }
   }
 
   return result;
 }
 
-- (int)preProcessing:(__CVBuffer *)a3
+- (int)preProcessing:(__CVBuffer *)processing
 {
   v11 = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  if (*&self->_frameWidth != __PAIR64__(CVPixelBufferGetHeight(a3), Width))
+  Width = CVPixelBufferGetWidth(processing);
+  if (*&self->_frameWidth != __PAIR64__(CVPixelBufferGetHeight(processing), Width))
   {
     return -50;
   }
 
   if (self->_scale)
   {
-    Scaler::Scale(&self->_scaler, a3, &v11, self->_downScaleWidth, self->_downScaleHeight, 875704438);
+    Scaler::Scale(&self->_scaler, processing, &v11, self->_downScaleWidth, self->_downScaleHeight, 875704438);
     if (result)
     {
       return result;
@@ -374,7 +374,7 @@ LABEL_25:
 
   else
   {
-    result = [(VCPMotionFlowSubtleMotionAnalyzer *)self convertPixelBuffer:a3 toPixelBuffer:&v11 withPixelFormat:875704438];
+    result = [(VCPMotionFlowSubtleMotionAnalyzer *)self convertPixelBuffer:processing toPixelBuffer:&v11 withPixelFormat:875704438];
     if (result)
     {
       return result;
@@ -512,9 +512,9 @@ LABEL_17:
   return v15;
 }
 
-- (int)generateSubleMotionScore:(void *)a3
+- (int)generateSubleMotionScore:(void *)score
 {
-  v4 = a3;
+  scoreCopy2 = score;
   __p = 0;
   v62 = 0;
   v63 = 0;
@@ -672,7 +672,7 @@ LABEL_17:
 
     while (v8 < flowHeight);
     v36 = __p;
-    v4 = a3;
+    scoreCopy2 = score;
   }
 
   v37 = 126 - 2 * __clz(v7 - v36);
@@ -727,7 +727,7 @@ LABEL_17:
   }
 
   v46 = v41 / v43;
-  if (v4[196] == 1)
+  if (scoreCopy2[196] == 1)
   {
     v47 = 0.333;
     if (v46 < 0.333)
@@ -751,30 +751,30 @@ LABEL_17:
   return 0;
 }
 
-- (int)analyzePixelBuffer:(__CVBuffer *)a3 withFrame:(void *)a4 withTimestamp:(id *)a5 andDuration:(id *)a6 hasSubtleScene:(int)a7 cancel:(id)a8
+- (int)analyzePixelBuffer:(__CVBuffer *)buffer withFrame:(void *)frame withTimestamp:(id *)timestamp andDuration:(id *)duration hasSubtleScene:(int)scene cancel:(id)cancel
 {
-  v12 = a8;
-  self->_sceneType = a7;
-  if (!a7)
+  cancelCopy = cancel;
+  self->_sceneType = scene;
+  if (!scene)
   {
     goto LABEL_10;
   }
 
-  if ((*(a4 + 196) & 1) == 0)
+  if ((*(frame + 196) & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  if (*(a4 + 44) > 5.0)
+  if (*(frame + 44) > 5.0)
   {
     subtleMotionScore = self->_subtleMotionScore;
-    if (*(a4 + 48) < subtleMotionScore)
+    if (*(frame + 48) < subtleMotionScore)
     {
-      *(a4 + 48) = subtleMotionScore;
+      *(frame + 48) = subtleMotionScore;
     }
 
 LABEL_6:
-    a7 = 0;
+    scene = 0;
     frameNum = self->_frameNum;
     if ((frameNum % 6) <= 1)
     {
@@ -792,8 +792,8 @@ LABEL_6:
 
   if (!self->_initialized)
   {
-    a7 = [(VCPMotionFlowSubtleMotionAnalyzer *)self prepareAnalyzerWithCVPixelBuffer:a3 cancel:v12];
-    if (a7)
+    scene = [(VCPMotionFlowSubtleMotionAnalyzer *)self prepareAnalyzerWithCVPixelBuffer:buffer cancel:cancelCopy];
+    if (scene)
     {
       goto LABEL_10;
     }
@@ -802,9 +802,9 @@ LABEL_6:
   v17 = self->_frameNum % 6;
   if (!v17)
   {
-    v18 = [(VCPMotionFlowSubtleMotionAnalyzer *)self preProcessing:a3];
+    v18 = [(VCPMotionFlowSubtleMotionAnalyzer *)self preProcessing:buffer];
 LABEL_19:
-    a7 = v18;
+    scene = v18;
     if (v18)
     {
       goto LABEL_10;
@@ -815,34 +815,34 @@ LABEL_19:
 
   if (v17 == 1)
   {
-    a7 = [(VCPMotionFlowSubtleMotionAnalyzer *)self preProcessing:a3];
-    if (a7)
+    scene = [(VCPMotionFlowSubtleMotionAnalyzer *)self preProcessing:buffer];
+    if (scene)
     {
       goto LABEL_10;
     }
 
-    a7 = [(VCPMotionFlowSubtleMotionAnalyzer *)self generateMotionFlow];
-    if (a7)
+    scene = [(VCPMotionFlowSubtleMotionAnalyzer *)self generateMotionFlow];
+    if (scene)
     {
       goto LABEL_10;
     }
 
-    v18 = [(VCPMotionFlowSubtleMotionAnalyzer *)self generateSubleMotionScore:a4];
+    v18 = [(VCPMotionFlowSubtleMotionAnalyzer *)self generateSubleMotionScore:frame];
     goto LABEL_19;
   }
 
 LABEL_20:
   v19 = self->_subtleMotionScore;
-  if (*(a4 + 48) < v19 && *(a4 + 196) == 1)
+  if (*(frame + 48) < v19 && *(frame + 196) == 1)
   {
-    *(a4 + 48) = v19;
+    *(frame + 48) = v19;
   }
 
-  a7 = 0;
+  scene = 0;
   ++self->_frameNum;
 LABEL_10:
 
-  return a7;
+  return scene;
 }
 
 - (id).cxx_construct

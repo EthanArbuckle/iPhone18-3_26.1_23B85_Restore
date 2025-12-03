@@ -1,23 +1,23 @@
 @interface _SFSafariSharingExtensionController
-- (_SFSafariSharingExtensionController)initWithWebView:(id)a3;
+- (_SFSafariSharingExtensionController)initWithWebView:(id)view;
 - (id)_extensionControllerProxy;
-- (void)finalizeJavaScriptForSharingExtension:(id)a3 arguments:(id)a4;
-- (void)prepareJavaScriptWorldForSharingExtension:(id)a3 javaScript:(id)a4;
-- (void)runJavaScriptForSharingExtension:(id)a3 extraArguments:(id)a4 completion:(id)a5;
+- (void)finalizeJavaScriptForSharingExtension:(id)extension arguments:(id)arguments;
+- (void)prepareJavaScriptWorldForSharingExtension:(id)extension javaScript:(id)script;
+- (void)runJavaScriptForSharingExtension:(id)extension extraArguments:(id)arguments completion:(id)completion;
 @end
 
 @implementation _SFSafariSharingExtensionController
 
-- (_SFSafariSharingExtensionController)initWithWebView:(id)a3
+- (_SFSafariSharingExtensionController)initWithWebView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _SFSafariSharingExtensionController;
   v5 = [(_SFSafariSharingExtensionController *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_webView, v4);
+    objc_storeWeak(&v5->_webView, viewCopy);
     v7 = v6;
   }
 
@@ -30,10 +30,10 @@
   if (!extensionControllerProxy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_webView);
-    v5 = [WeakRetained _remoteObjectRegistry];
+    _remoteObjectRegistry = [WeakRetained _remoteObjectRegistry];
 
     v6 = [MEMORY[0x1E69853F8] remoteObjectInterfaceWithProtocol:&unk_1F50FE748];
-    v7 = [v5 remoteObjectProxyWithInterface:v6];
+    v7 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v6];
     v8 = self->_extensionControllerProxy;
     self->_extensionControllerProxy = v7;
 
@@ -43,31 +43,31 @@
   return extensionControllerProxy;
 }
 
-- (void)prepareJavaScriptWorldForSharingExtension:(id)a3 javaScript:(id)a4
+- (void)prepareJavaScriptWorldForSharingExtension:(id)extension javaScript:(id)script
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(_SFSafariSharingExtensionController *)self _extensionControllerProxy];
-  [v7 prepareJavaScriptWorldForSharingExtension:v8 javaScript:v6];
+  extensionCopy = extension;
+  scriptCopy = script;
+  _extensionControllerProxy = [(_SFSafariSharingExtensionController *)self _extensionControllerProxy];
+  [_extensionControllerProxy prepareJavaScriptWorldForSharingExtension:extensionCopy javaScript:scriptCopy];
 }
 
-- (void)runJavaScriptForSharingExtension:(id)a3 extraArguments:(id)a4 completion:(id)a5
+- (void)runJavaScriptForSharingExtension:(id)extension extraArguments:(id)arguments completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  extensionCopy = extension;
+  argumentsCopy = arguments;
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x3032000000;
   v22[3] = __Block_byref_object_copy__17;
   v22[4] = __Block_byref_object_dispose__17;
-  v23 = _Block_copy(a5);
-  v10 = [(_SFSafariSharingExtensionController *)self _extensionControllerProxy];
+  v23 = _Block_copy(completion);
+  _extensionControllerProxy = [(_SFSafariSharingExtensionController *)self _extensionControllerProxy];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __98___SFSafariSharingExtensionController_runJavaScriptForSharingExtension_extraArguments_completion___block_invoke;
   v21[3] = &unk_1E8496878;
   v21[4] = v22;
-  [v10 evaluateJavaScriptForSharingExtension:v8 extraArguments:v9 completionHandler:v21];
+  [_extensionControllerProxy evaluateJavaScriptForSharingExtension:extensionCopy extraArguments:argumentsCopy completionHandler:v21];
 
   v11 = dispatch_time(0, 2000000000);
   v20[0] = MEMORY[0x1E69E9820];
@@ -85,12 +85,12 @@
   _Block_object_dispose(v22, 8);
 }
 
-- (void)finalizeJavaScriptForSharingExtension:(id)a3 arguments:(id)a4
+- (void)finalizeJavaScriptForSharingExtension:(id)extension arguments:(id)arguments
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(_SFSafariSharingExtensionController *)self _extensionControllerProxy];
-  [v7 finalizeJavaScriptForSharingExtension:v8 arguments:v6];
+  extensionCopy = extension;
+  argumentsCopy = arguments;
+  _extensionControllerProxy = [(_SFSafariSharingExtensionController *)self _extensionControllerProxy];
+  [_extensionControllerProxy finalizeJavaScriptForSharingExtension:extensionCopy arguments:argumentsCopy];
 }
 
 @end

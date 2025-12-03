@@ -1,28 +1,28 @@
 @interface TUNeighborhoodHandoffContext
-- (TUNeighborhoodHandoffContext)initWithCoder:(id)a3;
-- (TUNeighborhoodHandoffContext)initWithHandoffType:(int64_t)a3;
-- (TUNeighborhoodHandoffContext)initWithPullContext:(int64_t)a3;
+- (TUNeighborhoodHandoffContext)initWithCoder:(id)coder;
+- (TUNeighborhoodHandoffContext)initWithHandoffType:(int64_t)type;
+- (TUNeighborhoodHandoffContext)initWithPullContext:(int64_t)context;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUNeighborhoodHandoffContext
 
-- (TUNeighborhoodHandoffContext)initWithHandoffType:(int64_t)a3
+- (TUNeighborhoodHandoffContext)initWithHandoffType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = TUNeighborhoodHandoffContext;
   result = [(TUNeighborhoodHandoffContext *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
     result->_pullContext = 0;
   }
 
   return result;
 }
 
-- (TUNeighborhoodHandoffContext)initWithPullContext:(int64_t)a3
+- (TUNeighborhoodHandoffContext)initWithPullContext:(int64_t)context
 {
   v5.receiver = self;
   v5.super_class = TUNeighborhoodHandoffContext;
@@ -30,7 +30,7 @@
   if (result)
   {
     result->_type = 1;
-    result->_pullContext = a3;
+    result->_pullContext = context;
   }
 
   return result;
@@ -73,14 +73,14 @@
   return v11;
 }
 
-- (TUNeighborhoodHandoffContext)initWithCoder:(id)a3
+- (TUNeighborhoodHandoffContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_type);
-  v6 = [v4 decodeIntegerForKey:v5];
+  v6 = [coderCopy decodeIntegerForKey:v5];
 
   v7 = NSStringFromSelector(sel_pullContext);
-  v8 = [v4 decodeIntegerForKey:v7];
+  v8 = [coderCopy decodeIntegerForKey:v7];
 
   if (v6 == 1)
   {
@@ -95,16 +95,16 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
+  coderCopy = coder;
   v6 = NSStringFromSelector(sel_type);
-  [v5 encodeInteger:type forKey:v6];
+  [coderCopy encodeInteger:type forKey:v6];
 
   pullContext = self->_pullContext;
   v8 = NSStringFromSelector(sel_pullContext);
-  [v5 encodeInteger:pullContext forKey:v8];
+  [coderCopy encodeInteger:pullContext forKey:v8];
 }
 
 @end

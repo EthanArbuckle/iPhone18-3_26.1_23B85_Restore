@@ -1,24 +1,24 @@
 @interface _CDDataCollection
 - (BOOL)submitDataForCollection;
-- (_CDDataCollection)initWithStorage:(id)a3 activity:(id)a4;
-- (_CDDataCollection)initWithStorage:(id)a3 activity:(id)a4 sessionPath:(id)a5 dataDirectory:(id)a6 collectionDate:(id)a7 samplingRate:(double)a8 daysPerBatch:(unint64_t)a9 eventStreams:(id)a10 maxBatches:(unint64_t)a11;
+- (_CDDataCollection)initWithStorage:(id)storage activity:(id)activity;
+- (_CDDataCollection)initWithStorage:(id)storage activity:(id)activity sessionPath:(id)path dataDirectory:(id)directory collectionDate:(id)date samplingRate:(double)rate daysPerBatch:(unint64_t)batch eventStreams:(id)self0 maxBatches:(unint64_t)self1;
 - (id)dataPath;
 - (id)truncatedFileHandle;
 - (void)_execute;
 - (void)cleanup;
 - (void)execute;
-- (void)setSession:(uint64_t)a1;
+- (void)setSession:(uint64_t)session;
 @end
 
 @implementation _CDDataCollection
 
-- (_CDDataCollection)initWithStorage:(id)a3 activity:(id)a4
+- (_CDDataCollection)initWithStorage:(id)storage activity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
+  storageCopy = storage;
+  activityCopy = activity;
   v8 = +[_CDPaths defaultSessionPathForDataCollection];
   v9 = +[_CDPaths defaultDirectoryPathForDataCollection];
-  v10 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v11 = 1.0;
   if (!CRIsAppleInternal())
   {
@@ -60,61 +60,61 @@
   v16 = OSAGetDATaskingValue();
   if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v17 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
   }
 
   else
   {
-    v17 = 7;
+    unsignedIntegerValue = 7;
   }
 
   v18 = OSAGetDATaskingValue();
   if (v18 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v19 = [v18 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v18 unsignedIntegerValue];
   }
 
   else
   {
-    v19 = 1000;
+    unsignedIntegerValue2 = 1000;
   }
 
-  v20 = [(_CDDataCollection *)self initWithStorage:v6 activity:v7 sessionPath:v8 dataDirectory:v9 collectionDate:v10 samplingRate:v17 daysPerBatch:v11 eventStreams:0 maxBatches:v19];
+  v20 = [(_CDDataCollection *)self initWithStorage:storageCopy activity:activityCopy sessionPath:v8 dataDirectory:v9 collectionDate:date samplingRate:unsignedIntegerValue daysPerBatch:v11 eventStreams:0 maxBatches:unsignedIntegerValue2];
 
   return v20;
 }
 
-- (_CDDataCollection)initWithStorage:(id)a3 activity:(id)a4 sessionPath:(id)a5 dataDirectory:(id)a6 collectionDate:(id)a7 samplingRate:(double)a8 daysPerBatch:(unint64_t)a9 eventStreams:(id)a10 maxBatches:(unint64_t)a11
+- (_CDDataCollection)initWithStorage:(id)storage activity:(id)activity sessionPath:(id)path dataDirectory:(id)directory collectionDate:(id)date samplingRate:(double)rate daysPerBatch:(unint64_t)batch eventStreams:(id)self0 maxBatches:(unint64_t)self1
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a7;
-  v24 = a10;
+  storageCopy = storage;
+  activityCopy = activity;
+  pathCopy = path;
+  directoryCopy = directory;
+  dateCopy = date;
+  streamsCopy = streams;
   v45.receiver = self;
   v45.super_class = _CDDataCollection;
   v25 = [(_CDDataCollection *)&v45 init];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_storage, a3);
-    objc_storeStrong(&v26->_activity, a4);
-    v28 = [v21 copy];
+    objc_storeStrong(&v25->_storage, storage);
+    objc_storeStrong(&v26->_activity, activity);
+    v28 = [pathCopy copy];
     sessionPath = v26->_sessionPath;
     v26->_sessionPath = v28;
 
-    v30 = [v22 copy];
+    v30 = [directoryCopy copy];
     dataDirectory = v26->_dataDirectory;
     v26->_dataDirectory = v30;
 
-    v32 = [v23 copy];
+    v32 = [dateCopy copy];
     collectionDate = v26->_collectionDate;
     v26->_collectionDate = v32;
 
-    v26->_samplingRate = a8;
-    v26->_daysPerBatch = a9;
-    v26->_maxBatches = a11;
+    v26->_samplingRate = rate;
+    v26->_daysPerBatch = batch;
+    v26->_maxBatches = batches;
     v34 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v26->_sessionPath options:0 error:0];
     v35 = 0;
     if (v34)
@@ -140,7 +140,7 @@
     submissionBlock = v26->_submissionBlock;
     v26->_submissionBlock = &__block_literal_global_81;
 
-    v41 = [[_CDEventStreamsRegister alloc] initWithEventStreams:v24];
+    v41 = [[_CDEventStreamsRegister alloc] initWithEventStreams:streamsCopy];
     eventStreamsRegister = v26->_eventStreamsRegister;
     v26->_eventStreamsRegister = v41;
   }
@@ -158,17 +158,17 @@
 - (void)_execute
 {
   v216 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v3 = *(a1 + 56);
-    if (!*(a1 + 64))
+    v3 = *(self + 56);
+    if (!*(self + 64))
     {
       v1 = +[_CDDataCollectionSession generateNewSession];
-      [(_CDDataCollection *)a1 setSession:v1];
+      [(_CDDataCollection *)self setSession:v1];
 
-      v4 = *(a1 + 72);
+      v4 = *(self + 72);
       v5 = arc4random_uniform(0xF4241u) / 1000000.0;
-      *(a1 + 8) = v5 <= v4;
+      *(self + 8) = v5 <= v4;
       if (v5 > v4)
       {
         goto LABEL_22;
@@ -183,13 +183,13 @@
       }
     }
 
-    if ([(_CDCloudFamilyDataCollectionSession *)*(a1 + 64) isValidForCollectionDate:v3])
+    if ([(_CDCloudFamilyDataCollectionSession *)*(self + 64) isValidForCollectionDate:v3])
     {
       v12 = +[_CDLogging dataCollectionChannel];
       if (OUTLINED_FUNCTION_44(v12))
       {
         v26 = MEMORY[0x1E696AD98];
-        v27 = *(a1 + 64);
+        v27 = *(self + 64);
         if (v27)
         {
           v28 = v27[5];
@@ -207,16 +207,16 @@
         _os_log_debug_impl(v30, v31, v32, v33, v34, 0xCu);
       }
 
-      v13 = *(a1 + 64);
+      v13 = *(self + 64);
       if (v13)
       {
         v13 = *(v13 + 32);
       }
 
-      v14 = *(a1 + 80) * 86400.0;
+      v14 = *(self + 80) * 86400.0;
       if (v13)
       {
-        v15 = *(a1 + 64);
+        v15 = *(self + 64);
         v16 = v15 ? v15[4] : 0;
         v17 = v15;
         [v3 timeIntervalSinceDate:v16];
@@ -232,16 +232,16 @@
             _os_log_debug_impl(v45, v46, v47, v48, v49, 2u);
           }
 
-          *(a1 + 9) = 0;
+          *(self + 9) = 0;
           goto LABEL_22;
         }
       }
 
-      v20 = *(a1 + 64);
+      v20 = *(self + 64);
       if (v20)
       {
         v21 = v20[5];
-        v22 = *(a1 + 88);
+        v22 = *(self + 88);
 
         if (v21 > v22)
         {
@@ -249,7 +249,7 @@
           if (OUTLINED_FUNCTION_44(v23))
           {
             v35 = MEMORY[0x1E696AD98];
-            v36 = *(a1 + 64);
+            v36 = *(self + 64);
             if (v36)
             {
               v37 = v36[5];
@@ -262,7 +262,7 @@
 
             v38 = v36;
             v39 = [v35 numberWithUnsignedInteger:v37];
-            [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*(a1 + 88)];
+            [MEMORY[0x1E696AD98] numberWithUnsignedInteger:*(self + 88)];
             *buf = 138412546;
             v213 = v39;
             v215 = v214 = 2112;
@@ -274,8 +274,8 @@
         }
       }
 
-      v195 = [(_CDDataCollection *)a1 truncatedFileHandle];
-      if (!v195)
+      truncatedFileHandle = [(_CDDataCollection *)self truncatedFileHandle];
+      if (!truncatedFileHandle)
       {
         obj = +[_CDLogging dataCollectionChannel];
         if (os_log_type_enabled(obj, OS_LOG_TYPE_ERROR))
@@ -289,7 +289,7 @@ LABEL_30:
         goto LABEL_22;
       }
 
-      v50 = *(a1 + 96);
+      v50 = *(self + 96);
       if (v50)
       {
         v51 = v50[1];
@@ -307,7 +307,7 @@ LABEL_30:
       v211 = v54;
       v55 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v211 count:1];
 
-      v56 = *(a1 + 64);
+      v56 = *(self + 64);
       v57 = v56;
       if (!v56 || (v58 = v56[3]) == 0)
       {
@@ -346,8 +346,8 @@ LABEL_30:
               objc_enumerationMutation(obj);
             }
 
-            v65 = [*(*(&v204 + 1) + 8 * i) name];
-            v66 = [_DKQuery predicateForEventsWithStreamName:v65];
+            name = [*(*(&v204 + 1) + 8 * i) name];
+            v66 = [_DKQuery predicateForEventsWithStreamName:name];
 
             [v196 addObject:v66];
           }
@@ -367,7 +367,7 @@ LABEL_30:
       v184 = [v68 andPredicateWithSubpredicates:v69];
 
       v70 = MEMORY[0x1E696AEC0];
-      v71 = *(a1 + 64);
+      v71 = *(self + 64);
       if (v71)
       {
         v72 = v71[1];
@@ -379,7 +379,7 @@ LABEL_30:
       }
 
       v73 = MEMORY[0x1E696AD98];
-      v74 = *(a1 + 64);
+      v74 = *(self + 64);
       v75 = v183;
       v180 = v3;
       if (v74)
@@ -400,9 +400,9 @@ LABEL_30:
 
       v178 = v80;
       v81 = [v80 dataUsingEncoding:4];
-      [v195 writeData:v81];
+      [truncatedFileHandle writeData:v81];
 
-      v82 = [(_CDEventStreamsRegister *)*(a1 + 96) getEventHandlerDictForStreams];
+      getEventHandlerDictForStreams = [(_CDEventStreamsRegister *)*(self + 96) getEventHandlerDictForStreams];
       v191 = 0;
       v83 = 0;
       v193 = 0;
@@ -410,19 +410,19 @@ LABEL_30:
       while (1)
       {
         v85 = objc_autoreleasePoolPush();
-        v86 = [a1 activity];
-        if (v86)
+        activity = [self activity];
+        if (activity)
         {
-          v87 = v86;
-          v88 = [a1 activity];
-          if (xpc_activity_should_defer(v88))
+          v87 = activity;
+          activity2 = [self activity];
+          if (xpc_activity_should_defer(activity2))
           {
-            v89 = [a1 activity];
-            v90 = xpc_activity_set_state(v89, 3);
+            activity3 = [self activity];
+            v90 = xpc_activity_set_state(activity3, 3);
 
             if (v90)
             {
-              *(a1 + 9) = 0;
+              *(self + 9) = 0;
               objc_autoreleasePoolPop(v85);
               v120 = 0;
               v121 = v83;
@@ -445,9 +445,9 @@ LABEL_30:
         [v92 setClientName:v94];
 
         [v92 setTracker:&__block_literal_global_99];
-        v95 = [a1 storage];
+        storage = [self storage];
         v203 = 0;
-        v121 = [v95 executeQuery:v92 error:&v203];
+        v121 = [storage executeQuery:v92 error:&v203];
         v120 = v203;
 
         if (!v120 && [v121 count])
@@ -476,17 +476,17 @@ LABEL_30:
                 }
 
                 v101 = *(*(&v199 + 1) + 8 * j);
-                v102 = [v101 stream];
-                v103 = [v102 name];
-                v104 = [v82 objectForKey:v103];
+                stream = [v101 stream];
+                name2 = [stream name];
+                v104 = [getEventHandlerDictForStreams objectForKey:name2];
 
                 if (v104)
                 {
-                  v105 = [v101 stream];
-                  v106 = [v105 name];
-                  v107 = [v82 objectForKey:v106];
+                  stream2 = [v101 stream];
+                  name3 = [stream2 name];
+                  v107 = [getEventHandlerDictForStreams objectForKey:name3];
 
-                  [v107 eventHandler:v101 withFileHandle:v195];
+                  [v107 eventHandler:v101 withFileHandle:truncatedFileHandle];
                 }
 
                 else
@@ -494,9 +494,9 @@ LABEL_30:
                   v107 = +[_CDLogging dataCollectionChannel];
                   if (os_log_type_enabled(v107, OS_LOG_TYPE_DEBUG))
                   {
-                    v108 = [v101 stream];
-                    v109 = [v108 name];
-                    OUTLINED_FUNCTION_0_37(v109, v110, v111, v112, v113, v114, v115, v116, v176, v177, v178, v179, v180, v181, v182, v183, v184, context, v186, v187, v189, v191, v192, v193, v117);
+                    stream3 = [v101 stream];
+                    name4 = [stream3 name];
+                    OUTLINED_FUNCTION_0_37(name4, v110, v111, v112, v113, v114, v115, v116, v176, v177, v178, v179, v180, v181, v182, v183, v184, context, v186, v187, v189, v191, v192, v193, v117);
                     *(v119 + 4) = v118;
                     _os_log_debug_impl(&dword_191750000, v107, OS_LOG_TYPE_DEBUG, "Event handler not found for eventStream: %@ in eventStreamHandlerDict", buf, 0xCu);
                   }
@@ -548,14 +548,14 @@ LABEL_78:
         v134 = [@" "];
         v135 = [v134 length];
 
-        [v195 truncateFileAtOffset:{objc_msgSend(v195, "offsetInFile") - v135}];
+        [truncatedFileHandle truncateFileAtOffset:{objc_msgSend(truncatedFileHandle, "offsetInFile") - v135}];
       }
 
       v136 = [MEMORY[0x1E696AEC0] stringWithFormat:@"]}"];
       v137 = [v136 dataUsingEncoding:4];
-      [v195 writeData:v137];
+      [truncatedFileHandle writeData:v137];
 
-      [v195 closeFile];
+      [truncatedFileHandle closeFile];
       v138 = +[_CDLogging dataCollectionChannel];
       v3 = v180;
       if (os_log_type_enabled(v138, OS_LOG_TYPE_DEBUG))
@@ -567,7 +567,7 @@ LABEL_78:
       }
 
       v84 = v184;
-      if (![(_CDDataCollection *)a1 submitDataForCollection])
+      if (![(_CDDataCollection *)self submitDataForCollection])
       {
 LABEL_83:
         v152 = v178;
@@ -577,11 +577,11 @@ LABEL_83:
 
       v188 = v120;
       v190 = v121;
-      v153 = [v121 lastObject];
-      v154 = [v153 startDate];
+      lastObject = [v121 lastObject];
+      startDate = [lastObject startDate];
 
       v155 = v3;
-      v156 = [(_CDDataCollectionSession *)*(a1 + 64) subsequentSessionWithlatestStartDate:v154 lastCollectionDate:v3];
+      v156 = [(_CDDataCollectionSession *)*(self + 64) subsequentSessionWithlatestStartDate:startDate lastCollectionDate:v3];
       v198 = 0;
       v157 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v156 requiringSecureCoding:1 error:&v198];
       v158 = v198;
@@ -592,11 +592,11 @@ LABEL_83:
 
       else
       {
-        v160 = [*(a1 + 48) stringByDeletingLastPathComponent];
-        v161 = [MEMORY[0x1E696AC08] defaultManager];
-        [v161 createDirectoryAtPath:v160 withIntermediateDirectories:1 attributes:0 error:0];
+        stringByDeletingLastPathComponent = [*(self + 48) stringByDeletingLastPathComponent];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
 
-        v162 = *(a1 + 48);
+        v162 = *(self + 48);
         v197 = 0;
         v163 = v162;
         [v157 writeToFile:v163 options:0 error:&v197];
@@ -604,7 +604,7 @@ LABEL_83:
 
         if (!v159)
         {
-          *(a1 + 9) = 0;
+          *(self + 9) = 0;
           goto LABEL_91;
         }
       }
@@ -640,13 +640,13 @@ LABEL_22:
 - (void)cleanup
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 9) == 1)
+  if (self && *(self + 9) == 1)
   {
-    v2 = [MEMORY[0x1E696AC08] defaultManager];
-    v3 = *(a1 + 48);
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v3 = *(self + 48);
     v13 = 0;
     v4 = v3;
-    [v2 removeItemAtPath:v4 error:&v13];
+    [defaultManager removeItemAtPath:v4 error:&v13];
     v5 = v13;
 
     if (!v5)
@@ -656,17 +656,17 @@ LABEL_13:
       goto LABEL_14;
     }
 
-    v6 = [v5 userInfo];
-    v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
+    userInfo = [v5 userInfo];
+    v7 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E696AA08]];
 
     if (v7)
     {
-      v8 = [v7 domain];
-      if ([v8 isEqualToString:*MEMORY[0x1E696A798]])
+      domain = [v7 domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A798]])
       {
-        v9 = [v7 code];
+        code = [v7 code];
 
-        if (v9 == 2)
+        if (code == 2)
         {
           goto LABEL_12;
         }
@@ -694,24 +694,24 @@ LABEL_14:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSession:(uint64_t)a1
+- (void)setSession:(uint64_t)session
 {
-  if (a1)
+  if (session)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((session + 64), a2);
   }
 }
 
 - (id)truncatedFileHandle
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v1 = [(_CDDataCollection *)a1 dataPath];
-    v2 = [v1 stringByDeletingLastPathComponent];
-    v3 = [MEMORY[0x1E696AC08] defaultManager];
+    dataPath = [(_CDDataCollection *)self dataPath];
+    stringByDeletingLastPathComponent = [dataPath stringByDeletingLastPathComponent];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v12 = 0;
-    [v3 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:&v12];
+    [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v12];
     v4 = v12;
 
     if (v4)
@@ -729,11 +729,11 @@ LABEL_14:
 
     else
     {
-      v8 = [MEMORY[0x1E696AC08] defaultManager];
-      v9 = [MEMORY[0x1E695DEF0] data];
-      [v8 createFileAtPath:v1 contents:v9 attributes:0];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      data = [MEMORY[0x1E695DEF0] data];
+      [defaultManager2 createFileAtPath:dataPath contents:data attributes:0];
 
-      v7 = [MEMORY[0x1E696AC00] fileHandleForWritingAtPath:v1];
+      v7 = [MEMORY[0x1E696AC00] fileHandleForWritingAtPath:dataPath];
     }
   }
 
@@ -750,7 +750,7 @@ LABEL_14:
 - (BOOL)submitDataForCollection
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     v10 = 0;
     goto LABEL_13;
@@ -763,18 +763,18 @@ LABEL_14:
     _os_log_debug_impl(&dword_191750000, v2, OS_LOG_TYPE_DEBUG, "Compressing data collection json file", buf, 2u);
   }
 
-  v3 = [(_CDDataCollection *)a1 dataPath];
-  v4 = [v3 stringByAppendingPathExtension:@"tar.gz"];
-  v5 = [v3 fileSystemRepresentation];
-  v6 = [v3 lastPathComponent];
-  [v6 fileSystemRepresentation];
+  dataPath = [(_CDDataCollection *)self dataPath];
+  v4 = [dataPath stringByAppendingPathExtension:@"tar.gz"];
+  fileSystemRepresentation = [dataPath fileSystemRepresentation];
+  lastPathComponent = [dataPath lastPathComponent];
+  [lastPathComponent fileSystemRepresentation];
 
   [v4 fileSystemRepresentation];
   archive_write_new();
   if (!archive_write_add_filter_gzip() && !archive_write_set_format_pax_restricted() && !archive_write_open_filename())
   {
     bzero(&v21, 0x90uLL);
-    stat(v5, &v21);
+    stat(fileSystemRepresentation, &v21);
     archive_entry_new();
     archive_entry_set_size();
     archive_entry_set_filetype();
@@ -782,7 +782,7 @@ LABEL_14:
     archive_entry_set_pathname();
     if (!archive_write_header())
     {
-      v14 = open(v5, 0);
+      v14 = open(fileSystemRepresentation, 0);
       while (read(v14, buf, 0x2000uLL))
       {
         archive_write_data();
@@ -798,20 +798,20 @@ LABEL_14:
       v10 = v16 == 0;
       if (v16)
       {
-        v17 = +[_CDLogging dataCollectionChannel];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+        lastPathComponent2 = +[_CDLogging dataCollectionChannel];
+        if (os_log_type_enabled(lastPathComponent2, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v23 = v16;
-          OUTLINED_FUNCTION_10(&dword_191750000, v17, v18, "Error mapping gzipped data collection file for DA submission: %@", buf);
+          OUTLINED_FUNCTION_10(&dword_191750000, lastPathComponent2, v18, "Error mapping gzipped data collection file for DA submission: %@", buf);
         }
       }
 
       else
       {
-        v17 = [v4 lastPathComponent];
-        v19 = [a1 submissionBlock];
-        (v19)[2](v19, v17, v15);
+        lastPathComponent2 = [v4 lastPathComponent];
+        submissionBlock = [self submissionBlock];
+        (submissionBlock)[2](submissionBlock, lastPathComponent2, v15);
       }
 
       goto LABEL_12;
@@ -845,12 +845,12 @@ LABEL_13:
 
 - (id)dataPath
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    if (a1[8])
+    if (self[8])
     {
-      v2 = a1[8];
+      v2 = self[8];
       if (v2)
       {
         v3 = v2[1];
@@ -862,7 +862,7 @@ LABEL_13:
       }
 
       v4 = MEMORY[0x1E696AD98];
-      v5 = a1[8];
+      v5 = self[8];
       if (v5)
       {
         v6 = v5[5];
@@ -879,16 +879,16 @@ LABEL_13:
       v10 = [v4 numberWithUnsignedInteger:v6];
       v11 = [v8 stringByAppendingFormat:@".%@.json", v10];
 
-      v1 = [v1[5] stringByAppendingPathComponent:v11];
+      selfCopy = [selfCopy[5] stringByAppendingPathComponent:v11];
     }
 
     else
     {
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
 - (void)initWithStorage:(NSObject *)a1 activity:.cold.1(NSObject *a1)

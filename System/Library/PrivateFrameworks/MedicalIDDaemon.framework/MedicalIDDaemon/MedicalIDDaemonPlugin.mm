@@ -1,9 +1,9 @@
 @interface MedicalIDDaemonPlugin
 - (NSString)pluginIdentifier;
 - (_TtC15MedicalIDDaemon21MedicalIDDaemonPlugin)init;
-- (id)extensionForHealthDaemon:(id)a3;
-- (id)extensionForProfile:(id)a3;
-- (void)setPluginIdentifier:(id)a3;
+- (id)extensionForHealthDaemon:(id)daemon;
+- (id)extensionForProfile:(id)profile;
+- (void)setPluginIdentifier:(id)identifier;
 @end
 
 @implementation MedicalIDDaemonPlugin
@@ -20,7 +20,7 @@
   return v5;
 }
 
-- (void)setPluginIdentifier:(id)a3
+- (void)setPluginIdentifier:(id)identifier
 {
   v4 = sub_2294854AC();
   v6 = v5;
@@ -31,21 +31,21 @@
   v7[1] = v6;
 }
 
-- (id)extensionForHealthDaemon:(id)a3
+- (id)extensionForHealthDaemon:(id)daemon
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_229484FDC();
   swift_unknownObjectRelease();
 
   return v5;
 }
 
-- (id)extensionForProfile:(id)a3
+- (id)extensionForProfile:(id)profile
 {
-  v4 = a3;
-  v5 = self;
-  sub_2294846F4(v4);
+  profileCopy = profile;
+  selfCopy = self;
+  sub_2294846F4(profileCopy);
 
   return 0;
 }

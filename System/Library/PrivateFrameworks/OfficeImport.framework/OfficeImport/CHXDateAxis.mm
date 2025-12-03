@@ -1,30 +1,30 @@
 @interface CHXDateAxis
-+ (id)chdAxisFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)stringFromTimeUnit:(int)a3;
-+ (int)chdTimeUnitFromXmlTimeUnitElement:(_xmlNode *)a3;
++ (id)chdAxisFromXmlAxisElement:(_xmlNode *)element state:(id)state;
++ (id)stringFromTimeUnit:(int)unit;
++ (int)chdTimeUnitFromXmlTimeUnitElement:(_xmlNode *)element;
 @end
 
 @implementation CHXDateAxis
 
-+ (id)chdAxisFromXmlAxisElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdAxisFromXmlAxisElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = [CHDDateAxis alloc];
-  v8 = [v6 resources];
-  v9 = [(CHDDateAxis *)v7 initWithResources:v8];
+  resources = [stateCopy resources];
+  v9 = [(CHDDateAxis *)v7 initWithResources:resources];
 
-  v10 = [v6 drawingState];
-  v11 = [v10 OAXChartNamespace];
-  v12 = OCXFindChild(a3, v11, "auto");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v12 = OCXFindChild(element, oAXChartNamespace, "auto");
 
   if (v12)
   {
     [(CHDDateAxis *)v9 setAutomatic:CXRequiredBoolAttribute(v12, CXNoNamespace, "val")];
   }
 
-  v13 = [v6 drawingState];
-  v14 = [v13 OAXChartNamespace];
-  v15 = OCXFindChild(a3, v14, "majorUnit");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v15 = OCXFindChild(element, oAXChartNamespace2, "majorUnit");
 
   if (v15)
   {
@@ -35,9 +35,9 @@
     }
   }
 
-  v16 = [v6 drawingState];
-  v17 = [v16 OAXChartNamespace];
-  v18 = OCXFindChild(a3, v17, "minorUnit");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v18 = OCXFindChild(element, oAXChartNamespace3, "minorUnit");
 
   if (v18)
   {
@@ -48,34 +48,34 @@
     }
   }
 
-  v19 = [v6 drawingState];
-  v20 = [v19 OAXChartNamespace];
-  v21 = OCXFindChild(a3, v20, "majorTimeUnit");
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+  v21 = OCXFindChild(element, oAXChartNamespace4, "majorTimeUnit");
 
-  -[CHDDateAxis setMajorTimeUnit:](v9, "setMajorTimeUnit:", [a1 chdTimeUnitFromXmlTimeUnitElement:v21]);
-  v22 = [v6 drawingState];
-  v23 = [v22 OAXChartNamespace];
-  v24 = OCXFindChild(a3, v23, "minorTimeUnit");
+  -[CHDDateAxis setMajorTimeUnit:](v9, "setMajorTimeUnit:", [self chdTimeUnitFromXmlTimeUnitElement:v21]);
+  drawingState5 = [stateCopy drawingState];
+  oAXChartNamespace5 = [drawingState5 OAXChartNamespace];
+  v24 = OCXFindChild(element, oAXChartNamespace5, "minorTimeUnit");
 
-  -[CHDDateAxis setMinorTimeUnit:](v9, "setMinorTimeUnit:", [a1 chdTimeUnitFromXmlTimeUnitElement:v24]);
-  v25 = [v6 drawingState];
-  v26 = [v25 OAXChartNamespace];
-  v27 = OCXFindChild(a3, v26, "baseTimeUnit");
+  -[CHDDateAxis setMinorTimeUnit:](v9, "setMinorTimeUnit:", [self chdTimeUnitFromXmlTimeUnitElement:v24]);
+  drawingState6 = [stateCopy drawingState];
+  oAXChartNamespace6 = [drawingState6 OAXChartNamespace];
+  v27 = OCXFindChild(element, oAXChartNamespace6, "baseTimeUnit");
 
-  -[CHDDateAxis setBaseTimeUnit:](v9, "setBaseTimeUnit:", [a1 chdTimeUnitFromXmlTimeUnitElement:v27]);
+  -[CHDDateAxis setBaseTimeUnit:](v9, "setBaseTimeUnit:", [self chdTimeUnitFromXmlTimeUnitElement:v27]);
 
   return v9;
 }
 
-+ (int)chdTimeUnitFromXmlTimeUnitElement:(_xmlNode *)a3
++ (int)chdTimeUnitFromXmlTimeUnitElement:(_xmlNode *)element
 {
-  if (!a3)
+  if (!element)
   {
     return 0;
   }
 
   v7 = 0;
-  v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v7);
+  v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v7);
   v4 = v7;
   v5 = v4;
   if (v3)
@@ -104,15 +104,15 @@
   return v3;
 }
 
-+ (id)stringFromTimeUnit:(int)a3
++ (id)stringFromTimeUnit:(int)unit
 {
   v3 = @"days";
-  if (a3 == 1)
+  if (unit == 1)
   {
     v3 = @"months";
   }
 
-  if (a3 == 2)
+  if (unit == 2)
   {
     return @"years";
   }

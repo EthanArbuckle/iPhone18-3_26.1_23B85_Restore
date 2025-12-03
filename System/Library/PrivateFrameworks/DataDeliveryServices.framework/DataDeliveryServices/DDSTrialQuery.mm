@@ -1,9 +1,9 @@
 @interface DDSTrialQuery
 + (id)defaultQuery;
-- (BOOL)isEqual:(id)a3;
-- (DDSTrialQuery)initWithCoder:(id)a3;
-- (DDSTrialQuery)initWithProjectId:(int)a3 namespaceId:(unsigned int)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DDSTrialQuery)initWithCoder:(id)coder;
+- (DDSTrialQuery)initWithProjectId:(int)id namespaceId:(unsigned int)namespaceId;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DDSTrialQuery
@@ -15,7 +15,7 @@
   return v2;
 }
 
-- (DDSTrialQuery)initWithProjectId:(int)a3 namespaceId:(unsigned int)a4
+- (DDSTrialQuery)initWithProjectId:(int)id namespaceId:(unsigned int)namespaceId
 {
   v17[2] = *MEMORY[0x1E69E9840];
   v15.receiver = self;
@@ -24,8 +24,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_projectId = a3;
-    v6->_namespaceId = a4;
+    v6->_projectId = id;
+    v6->_namespaceId = namespaceId;
     v16[0] = @"projectId";
     v8 = [MEMORY[0x1E696AD98] numberWithInt:{-[DDSTrialQuery projectId](v6, "projectId")}];
     v16[1] = @"namespaceId";
@@ -43,13 +43,13 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -60,8 +60,8 @@
   v6 = v5;
   if (v6 && (v7 = -[DDSTrialQuery namespaceId](self, "namespaceId"), v7 == [v6 namespaceId]))
   {
-    v8 = [(DDSTrialQuery *)self projectId];
-    v9 = v8 == [v6 projectId];
+    projectId = [(DDSTrialQuery *)self projectId];
+    v9 = projectId == [v6 projectId];
   }
 
   else
@@ -72,29 +72,29 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt32:-[DDSTrialQuery projectId](self forKey:{"projectId"), @"projectId"}];
-  [v4 encodeInt32:-[DDSTrialQuery namespaceId](self forKey:{"namespaceId"), @"namespaceId"}];
+  coderCopy = coder;
+  [coderCopy encodeInt32:-[DDSTrialQuery projectId](self forKey:{"projectId"), @"projectId"}];
+  [coderCopy encodeInt32:-[DDSTrialQuery namespaceId](self forKey:{"namespaceId"), @"namespaceId"}];
 }
 
-- (DDSTrialQuery)initWithCoder:(id)a3
+- (DDSTrialQuery)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt32ForKey:@"projectId"];
-  if (v5 && (v6 = v5, v7 = [v4 decodeInt32ForKey:@"namespaceId"], v7))
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt32ForKey:@"projectId"];
+  if (v5 && (v6 = v5, v7 = [coderCopy decodeInt32ForKey:@"namespaceId"], v7))
   {
     self = [(DDSTrialQuery *)self initWithProjectId:v6 namespaceId:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

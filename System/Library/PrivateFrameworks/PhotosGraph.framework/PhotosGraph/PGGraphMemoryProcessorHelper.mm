@@ -1,34 +1,34 @@
 @interface PGGraphMemoryProcessorHelper
-+ (id)_fetchLocalMemoriesWithFetchOptions:(id)a3;
-+ (id)_localMemoryByUniqueIdentifierInPhotoLibrary:(id)a3 withAdditionalPredicate:(id)a4;
-+ (id)localMemoryByUniqueIdentifierForMemoryUUIDs:(id)a3 inPhotoLibrary:(id)a4;
-+ (id)localMemoryByUniqueIdentifierWithGraphMemoryIdentifiers:(id)a3 inPhotoLibrary:(id)a4;
-+ (void)resetLocalMemoryLastEnrichmentDateOfMemoriesWithLocalMemories:(id)a3 inPhotoLibrary:(id)a4;
-+ (void)resetLocalMemoryLastEnrichmentDateOfMemoriesWithUniqueIdentifiers:(id)a3 localMemoryByUniqueIdentifierCache:(id)a4 inPhotoLibrary:(id)a5;
++ (id)_fetchLocalMemoriesWithFetchOptions:(id)options;
++ (id)_localMemoryByUniqueIdentifierInPhotoLibrary:(id)library withAdditionalPredicate:(id)predicate;
++ (id)localMemoryByUniqueIdentifierForMemoryUUIDs:(id)ds inPhotoLibrary:(id)library;
++ (id)localMemoryByUniqueIdentifierWithGraphMemoryIdentifiers:(id)identifiers inPhotoLibrary:(id)library;
++ (void)resetLocalMemoryLastEnrichmentDateOfMemoriesWithLocalMemories:(id)memories inPhotoLibrary:(id)library;
++ (void)resetLocalMemoryLastEnrichmentDateOfMemoriesWithUniqueIdentifiers:(id)identifiers localMemoryByUniqueIdentifierCache:(id)cache inPhotoLibrary:(id)library;
 @end
 
 @implementation PGGraphMemoryProcessorHelper
 
-+ (void)resetLocalMemoryLastEnrichmentDateOfMemoriesWithLocalMemories:(id)a3 inPhotoLibrary:(id)a4
++ (void)resetLocalMemoryLastEnrichmentDateOfMemoriesWithLocalMemories:(id)memories inPhotoLibrary:(id)library
 {
   v24 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  memoriesCopy = memories;
+  libraryCopy = library;
+  if ([memoriesCopy count])
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __109__PGGraphMemoryProcessorHelper_resetLocalMemoryLastEnrichmentDateOfMemoriesWithLocalMemories_inPhotoLibrary___block_invoke;
     v18[3] = &unk_27888A660;
-    v7 = v5;
+    v7 = memoriesCopy;
     v19 = v7;
     v17 = 0;
-    v8 = [v6 performChangesAndWait:v18 error:&v17];
+    v8 = [libraryCopy performChangesAndWait:v18 error:&v17];
     v9 = v17;
     v10 = +[PGLogging sharedLogging];
-    v11 = [v10 loggingConnection];
+    loggingConnection = [v10 loggingConnection];
 
-    v12 = v11;
+    v12 = loggingConnection;
     v13 = v12;
     if (v8)
     {
@@ -94,20 +94,20 @@ void __109__PGGraphMemoryProcessorHelper_resetLocalMemoryLastEnrichmentDateOfMem
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)resetLocalMemoryLastEnrichmentDateOfMemoriesWithUniqueIdentifiers:(id)a3 localMemoryByUniqueIdentifierCache:(id)a4 inPhotoLibrary:(id)a5
++ (void)resetLocalMemoryLastEnrichmentDateOfMemoriesWithUniqueIdentifiers:(id)identifiers localMemoryByUniqueIdentifierCache:(id)cache inPhotoLibrary:(id)library
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count] && objc_msgSend(v8, "count"))
+  identifiersCopy = identifiers;
+  cacheCopy = cache;
+  libraryCopy = library;
+  if ([identifiersCopy count] && objc_msgSend(cacheCopy, "count"))
   {
-    v10 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v11 = v7;
+    v11 = identifiersCopy;
     v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
@@ -123,10 +123,10 @@ void __109__PGGraphMemoryProcessorHelper_resetLocalMemoryLastEnrichmentDateOfMem
             objc_enumerationMutation(v11);
           }
 
-          v16 = [v8 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * v15), v18}];
+          v16 = [cacheCopy objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * v15), v18}];
           if (v16)
           {
-            [v10 addObject:v16];
+            [array addObject:v16];
           }
 
           ++v15;
@@ -139,22 +139,22 @@ void __109__PGGraphMemoryProcessorHelper_resetLocalMemoryLastEnrichmentDateOfMem
       while (v13);
     }
 
-    [objc_opt_class() resetLocalMemoryLastEnrichmentDateOfMemoriesWithLocalMemories:v10 inPhotoLibrary:v9];
+    [objc_opt_class() resetLocalMemoryLastEnrichmentDateOfMemoriesWithLocalMemories:array inPhotoLibrary:libraryCopy];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_fetchLocalMemoriesWithFetchOptions:(id)a3
++ (id)_fetchLocalMemoriesWithFetchOptions:(id)options
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  optionsCopy = options;
   v4 = +[PGLogging sharedLogging];
-  v5 = [v4 loggingConnection];
+  loggingConnection = [v4 loggingConnection];
 
-  v17 = v3;
-  v6 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:v3];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  v17 = optionsCopy;
+  v6 = [MEMORY[0x277CD97B8] fetchAssetCollectionsWithType:4 subtype:0x7FFFFFFFFFFFFFFFLL options:optionsCopy];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -175,17 +175,17 @@ void __109__PGGraphMemoryProcessorHelper_resetLocalMemoryLastEnrichmentDateOfMem
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        v14 = [v13 graphMemoryIdentifier];
-        if (v14)
+        graphMemoryIdentifier = [v13 graphMemoryIdentifier];
+        if (graphMemoryIdentifier)
         {
-          [v7 setObject:v13 forKeyedSubscript:v14];
+          [dictionary setObject:v13 forKeyedSubscript:graphMemoryIdentifier];
         }
 
-        else if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+        else if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v23 = v13;
-          _os_log_error_impl(&dword_22F0FC000, v5, OS_LOG_TYPE_ERROR, "[PGGraphMemoryProcessorHelper] graphMemoryIdentifier is nil for %@", buf, 0xCu);
+          _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "[PGGraphMemoryProcessorHelper] graphMemoryIdentifier is nil for %@", buf, 0xCu);
         }
       }
 
@@ -197,41 +197,41 @@ void __109__PGGraphMemoryProcessorHelper_resetLocalMemoryLastEnrichmentDateOfMem
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return dictionary;
 }
 
-+ (id)_localMemoryByUniqueIdentifierInPhotoLibrary:(id)a3 withAdditionalPredicate:(id)a4
++ (id)_localMemoryByUniqueIdentifierInPhotoLibrary:(id)library withAdditionalPredicate:(id)predicate
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEB18] array];
+  libraryCopy = library;
+  predicateCopy = predicate;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K = %d", @"pendingState", 2];
-  [v7 addObject:v8];
+  [array addObject:v8];
 
-  if (v6)
+  if (predicateCopy)
   {
-    [v7 addObject:v6];
+    [array addObject:predicateCopy];
   }
 
-  v9 = [v5 librarySpecificFetchOptions];
-  [v9 setIncludeLocalMemories:1];
-  [v9 setIncludeRejectedMemories:1];
-  v10 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v7];
-  [v9 setInternalPredicate:v10];
+  librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeLocalMemories:1];
+  [librarySpecificFetchOptions setIncludeRejectedMemories:1];
+  v10 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
+  [librarySpecificFetchOptions setInternalPredicate:v10];
 
-  v11 = [objc_opt_class() _fetchLocalMemoriesWithFetchOptions:v9];
+  v11 = [objc_opt_class() _fetchLocalMemoriesWithFetchOptions:librarySpecificFetchOptions];
 
   return v11;
 }
 
-+ (id)localMemoryByUniqueIdentifierWithGraphMemoryIdentifiers:(id)a3 inPhotoLibrary:(id)a4
++ (id)localMemoryByUniqueIdentifierWithGraphMemoryIdentifiers:(id)identifiers inPhotoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  libraryCopy = library;
+  if ([identifiersCopy count])
   {
-    v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"graphMemoryIdentifier", v6];
-    v9 = [a1 _localMemoryByUniqueIdentifierInPhotoLibrary:v7 withAdditionalPredicate:v8];
+    identifiersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"graphMemoryIdentifier", identifiersCopy];
+    v9 = [self _localMemoryByUniqueIdentifierInPhotoLibrary:libraryCopy withAdditionalPredicate:identifiersCopy];
   }
 
   else
@@ -242,14 +242,14 @@ void __109__PGGraphMemoryProcessorHelper_resetLocalMemoryLastEnrichmentDateOfMem
   return v9;
 }
 
-+ (id)localMemoryByUniqueIdentifierForMemoryUUIDs:(id)a3 inPhotoLibrary:(id)a4
++ (id)localMemoryByUniqueIdentifierForMemoryUUIDs:(id)ds inPhotoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  dsCopy = ds;
+  libraryCopy = library;
+  if ([dsCopy count])
   {
-    v8 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"uuid", v6];
-    v9 = [a1 _localMemoryByUniqueIdentifierInPhotoLibrary:v7 withAdditionalPredicate:v8];
+    dsCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"uuid", dsCopy];
+    v9 = [self _localMemoryByUniqueIdentifierInPhotoLibrary:libraryCopy withAdditionalPredicate:dsCopy];
   }
 
   else

@@ -1,19 +1,19 @@
 @interface AKAuthorizationClientImpl
 - (void)dealloc;
-- (void)presentAuthorizationUIForContext:(id)a3 completion:(id)a4;
+- (void)presentAuthorizationUIForContext:(id)context completion:(id)completion;
 @end
 
 @implementation AKAuthorizationClientImpl
 
-- (void)presentAuthorizationUIForContext:(id)a3 completion:(id)a4
+- (void)presentAuthorizationUIForContext:(id)context completion:(id)completion
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
-  if (v25->_uiProvider)
+  objc_storeStrong(&v23, completion);
+  if (selfCopy->_uiProvider)
   {
     v9 = MEMORY[0x1E69E96A0];
     v4 = MEMORY[0x1E69E96A0];
@@ -23,7 +23,7 @@
     v17 = 0;
     v18 = __73__AKAuthorizationClientImpl_presentAuthorizationUIForContext_completion___block_invoke;
     v19 = &unk_1E73D6640;
-    v20 = MEMORY[0x1E69E5928](v25);
+    v20 = MEMORY[0x1E69E5928](selfCopy);
     v21 = MEMORY[0x1E69E5928](location[0]);
     v22 = MEMORY[0x1E69E5928](v23);
     dispatch_sync(queue, &v15);
@@ -76,7 +76,7 @@ uint64_t __73__AKAuthorizationClientImpl_presentAuthorizationUIForContext_comple
 
 - (void)dealloc
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSiwa();
   v6 = OS_LOG_TYPE_DEFAULT;
@@ -89,7 +89,7 @@ uint64_t __73__AKAuthorizationClientImpl_presentAuthorizationUIForContext_comple
   }
 
   objc_storeStrong(location, 0);
-  v4.receiver = v8;
+  v4.receiver = selfCopy;
   v4.super_class = AKAuthorizationClientImpl;
   [(AKAuthorizationClientImpl *)&v4 dealloc];
 }

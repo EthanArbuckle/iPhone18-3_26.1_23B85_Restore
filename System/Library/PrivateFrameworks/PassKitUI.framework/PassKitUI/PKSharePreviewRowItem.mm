@@ -1,22 +1,22 @@
 @interface PKSharePreviewRowItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSharePreviewRowItem:(id)a3;
-- (PKSharePreviewRowItem)initWithIdentifier:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSharePreviewRowItem:(id)item;
+- (PKSharePreviewRowItem)initWithIdentifier:(id)identifier;
 - (unint64_t)hash;
 @end
 
 @implementation PKSharePreviewRowItem
 
-- (PKSharePreviewRowItem)initWithIdentifier:(id)a3
+- (PKSharePreviewRowItem)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKSharePreviewRowItem;
   v6 = [(PKSharePreviewRowItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
@@ -24,11 +24,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_identifier)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_title)
@@ -61,27 +61,27 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSharePreviewRowItem *)self isEqualToSharePreviewRowItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKSharePreviewRowItem *)self isEqualToSharePreviewRowItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToSharePreviewRowItem:(id)a3
+- (BOOL)isEqualToSharePreviewRowItem:(id)item
 {
-  v4 = a3;
-  v5 = v4 && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && self->_displayChevron == *(v4 + 8) && self->_displayToggleState == v4[7] && self->_displayCheckmark == *(v4 + 9) && self->_accessoryEnabled == *(v4 + 10) && self->_enabled == *(v4 + 11);
+  itemCopy = item;
+  v5 = itemCopy && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && PKEqualObjects() && self->_displayChevron == *(itemCopy + 8) && self->_displayToggleState == itemCopy[7] && self->_displayCheckmark == *(itemCopy + 9) && self->_accessoryEnabled == *(itemCopy + 10) && self->_enabled == *(itemCopy + 11);
 
   return v5;
 }

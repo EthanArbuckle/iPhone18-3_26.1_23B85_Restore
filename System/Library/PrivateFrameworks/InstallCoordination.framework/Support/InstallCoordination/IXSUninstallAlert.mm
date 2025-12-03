@@ -1,43 +1,43 @@
 @interface IXSUninstallAlert
-- (BOOL)_onMainQueue_deleteButtonActionWithDisposition:(unint64_t *)a3 error:(id *)a4;
+- (BOOL)_onMainQueue_deleteButtonActionWithDisposition:(unint64_t *)disposition error:(id *)error;
 - (BOOL)appHasiCloudDataOrDocuments;
-- (BOOL)isMDMRestrictedWithOrganizationName:(id *)a3;
-- (IXSUninstallAlert)initWithAppRecord:(id)a3 bundleIdentifier:(id)a4 removability:(unint64_t)a5 deletionIsRestricted:(BOOL)a6;
-- (id)_localizedStringForKey:(id)a3 tableName:(id)a4 withFormatHint:(id)a5;
-- (id)localizedStringForKey:(id)a3 withFormatHint:(id)a4;
-- (void)_configureOptionalButtonForConfiguration:(id)a3;
-- (void)_onMainQueue_displayAlertWithCompletion:(id)a3 uninstallAlertConfiguration:(id)a4;
-- (void)_processUserNotification:(__CFUserNotification *)a3 withConfiguration:(id)a4 response:(unint64_t)a5 completion:(id)a6;
+- (BOOL)isMDMRestrictedWithOrganizationName:(id *)name;
+- (IXSUninstallAlert)initWithAppRecord:(id)record bundleIdentifier:(id)identifier removability:(unint64_t)removability deletionIsRestricted:(BOOL)restricted;
+- (id)_localizedStringForKey:(id)key tableName:(id)name withFormatHint:(id)hint;
+- (id)localizedStringForKey:(id)key withFormatHint:(id)hint;
+- (void)_configureOptionalButtonForConfiguration:(id)configuration;
+- (void)_onMainQueue_displayAlertWithCompletion:(id)completion uninstallAlertConfiguration:(id)configuration;
+- (void)_processUserNotification:(__CFUserNotification *)notification withConfiguration:(id)configuration response:(unint64_t)response completion:(id)completion;
 - (void)dealloc;
-- (void)displayAlertWithCompletion:(id)a3;
-- (void)displayAlertWithCompletion:(id)a3 uninstallAlertConfiguration:(id)a4;
+- (void)displayAlertWithCompletion:(id)completion;
+- (void)displayAlertWithCompletion:(id)completion uninstallAlertConfiguration:(id)configuration;
 @end
 
 @implementation IXSUninstallAlert
 
-- (IXSUninstallAlert)initWithAppRecord:(id)a3 bundleIdentifier:(id)a4 removability:(unint64_t)a5 deletionIsRestricted:(BOOL)a6
+- (IXSUninstallAlert)initWithAppRecord:(id)record bundleIdentifier:(id)identifier removability:(unint64_t)removability deletionIsRestricted:(BOOL)restricted
 {
-  v11 = a3;
-  v12 = a4;
+  recordCopy = record;
+  identifierCopy = identifier;
   v23.receiver = self;
   v23.super_class = IXSUninstallAlert;
   v13 = [(IXSUninstallAlert *)&v23 init];
   v14 = v13;
   if (v13)
   {
-    v15 = !a6;
-    if (a5 != 1)
+    v15 = !restricted;
+    if (removability != 1)
     {
       v15 = 0;
     }
 
     v13->_appIsRemovable = v15;
-    v13->_appRemovability = a5;
-    v13->_deletionIsRestricted = a6;
-    objc_storeStrong(&v13->_appRecord, a3);
-    objc_storeStrong(&v14->_bundleIdentifier, a4);
+    v13->_appRemovability = removability;
+    v13->_deletionIsRestricted = restricted;
+    objc_storeStrong(&v13->_appRecord, record);
+    objc_storeStrong(&v14->_bundleIdentifier, identifier);
     v16 = +[IXGlobalConfiguration sharedInstance];
-    v17 = [v16 frameworkURL];
+    frameworkURL = [v16 frameworkURL];
 
     v14->_defaultStringsBundle = _CFBundleCreateUnique();
     if (![(IXSUninstallAlert *)v14 defaultStringsBundle])
@@ -45,11 +45,11 @@
       v18 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [v17 path];
+        path = [frameworkURL path];
         *buf = 136315394;
         v25 = "[IXSUninstallAlert initWithAppRecord:bundleIdentifier:removability:deletionIsRestricted:]";
         v26 = 2112;
-        v27 = v19;
+        v27 = path;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%s: Failed to create default strings bundle from path %@", buf, 0x16u);
       }
     }
@@ -69,9 +69,9 @@
 
 - (BOOL)appHasiCloudDataOrDocuments
 {
-  v3 = [(IXSUninstallAlert *)self appRecord];
-  v4 = [v3 entitlements];
-  v5 = [v4 objectForKey:@"com.apple.developer.icloud-services" ofClass:objc_opt_class()];
+  appRecord = [(IXSUninstallAlert *)self appRecord];
+  entitlements = [appRecord entitlements];
+  v5 = [entitlements objectForKey:@"com.apple.developer.icloud-services" ofClass:objc_opt_class()];
 
   if (v5)
   {
@@ -79,8 +79,8 @@
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = v5;
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    appRecord2 = v5;
+    v7 = [appRecord2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -91,7 +91,7 @@
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(appRecord2);
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
@@ -114,7 +114,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [appRecord2 countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v8)
         {
           continue;
@@ -133,8 +133,8 @@
   v14 = off_100121DD8;
   if (off_100121DD8)
   {
-    v6 = [(IXSUninstallAlert *)self appRecord];
-    v15 = [v6 entitlements];
+    appRecord2 = [(IXSUninstallAlert *)self appRecord];
+    entitlements2 = [appRecord2 entitlements];
     v16 = v14();
     v17 = [v16 count] != 0;
 
@@ -149,7 +149,7 @@ LABEL_20:
   return v17;
 }
 
-- (BOOL)_onMainQueue_deleteButtonActionWithDisposition:(unint64_t *)a3 error:(id *)a4
+- (BOOL)_onMainQueue_deleteButtonActionWithDisposition:(unint64_t *)disposition error:(id *)error
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if ([(IXSUninstallAlert *)self appIsRemovable])
@@ -174,15 +174,15 @@ LABEL_20:
       sub_10009F548(self);
     }
 
-    v11 = [(IXSUninstallAlert *)self bundleIdentifier];
-    v7 = sub_1000405FC("[IXSUninstallAlert _onMainQueue_deleteButtonActionWithDisposition:error:]", 358, @"IXErrorDomain", 0x16uLL, 0, 0, @"App with bundle ID %@ cannot be uninstalled", v12, v11);
+    bundleIdentifier = [(IXSUninstallAlert *)self bundleIdentifier];
+    v7 = sub_1000405FC("[IXSUninstallAlert _onMainQueue_deleteButtonActionWithDisposition:error:]", 358, @"IXErrorDomain", 0x16uLL, 0, 0, @"App with bundle ID %@ cannot be uninstalled", v12, bundleIdentifier);
 
-    if (a4)
+    if (error)
     {
       v13 = v7;
       v9 = 0;
       v8 = 0;
-      *a4 = v7;
+      *error = v7;
     }
 
     else
@@ -192,31 +192,31 @@ LABEL_20:
     }
   }
 
-  *a3 = v9;
+  *disposition = v9;
 
   return v8;
 }
 
-- (void)_processUserNotification:(__CFUserNotification *)a3 withConfiguration:(id)a4 response:(unint64_t)a5 completion:(id)a6
+- (void)_processUserNotification:(__CFUserNotification *)notification withConfiguration:(id)configuration response:(unint64_t)response completion:(id)completion
 {
-  v10 = a4;
-  v11 = a6;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v12 = sub_1000031B0(off_100121958);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = [IXSUninstallAlert stringForCFOptionFlag:a5];
+    v13 = [IXSUninstallAlert stringForCFOptionFlag:response];
     *buf = 136315650;
     v41 = "[IXSUninstallAlert _processUserNotification:withConfiguration:response:completion:]";
     v42 = 2048;
-    v43 = a5;
+    responseCopy = response;
     v44 = 2112;
     v45 = v13;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s: User selected response: %lx - %@", buf, 0x20u);
   }
 
-  if ((a5 & 3) >= 2)
+  if ((response & 3) >= 2)
   {
-    if ((a5 & 3) == 3)
+    if ((response & 3) == 3)
     {
       v18 = 0;
       v19 = 0;
@@ -225,7 +225,7 @@ LABEL_20:
       goto LABEL_11;
     }
 
-    v21 = CFUserNotificationGetResponseDictionary(a3);
+    v21 = CFUserNotificationGetResponseDictionary(notification);
     objc_opt_class();
     v18 = v21;
     if (objc_opt_isKindOfClass())
@@ -256,11 +256,11 @@ LABEL_20:
 
       if (v25)
       {
-        v28 = [v19 unsignedIntegerValue];
-        if (v28 < [v10 numButtons])
+        unsignedIntegerValue = [v19 unsignedIntegerValue];
+        if (unsignedIntegerValue < [configurationCopy numButtons])
         {
-          v29 = [v10 actionForButtonAtIndex:v28];
-          (v29)[2](v29, v11);
+          v29 = [configurationCopy actionForButtonAtIndex:unsignedIntegerValue];
+          (v29)[2](v29, completionCopy);
 
           v17 = 0;
           goto LABEL_12;
@@ -269,28 +269,28 @@ LABEL_20:
         v32 = sub_1000031B0(off_100121958);
         if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
-          v36 = [(IXSUninstallAlert *)self typeDescription];
-          v37 = [(IXSUninstallAlert *)self bundleIdentifier];
-          v38 = [v10 numButtons];
+          typeDescription = [(IXSUninstallAlert *)self typeDescription];
+          bundleIdentifier = [(IXSUninstallAlert *)self bundleIdentifier];
+          numButtons = [configurationCopy numButtons];
           *buf = 136316418;
           v41 = "[IXSUninstallAlert _processUserNotification:withConfiguration:response:completion:]";
           v42 = 2112;
-          v43 = v36;
+          responseCopy = typeDescription;
           v44 = 2112;
-          v45 = v37;
+          v45 = bundleIdentifier;
           v46 = 2048;
-          v47 = v28;
+          v47 = unsignedIntegerValue;
           v48 = 2048;
-          v49 = v38;
+          v49 = numButtons;
           v50 = 2112;
           v51 = 0;
           _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "%s: Received an invalid response (kCFUserNotificationOtherResponse) from the %@ uninstall alert for app with bundleID %@, Index: %lu, numButtons: %lu : %@", buf, 0x3Eu);
         }
 
-        v33 = [(IXSUninstallAlert *)self typeDescription];
-        v34 = [(IXSUninstallAlert *)self bundleIdentifier];
-        [v10 numButtons];
-        v17 = sub_1000405FC("[IXSUninstallAlert _processUserNotification:withConfiguration:response:completion:]", 411, @"IXErrorDomain", 1uLL, 0, 0, @"Received an invalid response (kCFUserNotificationOtherResponse) from the %@ uninstall alert for app with bundleID %@, Index: %lu, numButtons: %lu", v35, v33);
+        typeDescription2 = [(IXSUninstallAlert *)self typeDescription];
+        bundleIdentifier2 = [(IXSUninstallAlert *)self bundleIdentifier];
+        [configurationCopy numButtons];
+        v17 = sub_1000405FC("[IXSUninstallAlert _processUserNotification:withConfiguration:response:completion:]", 411, @"IXErrorDomain", 1uLL, 0, 0, @"Received an invalid response (kCFUserNotificationOtherResponse) from the %@ uninstall alert for app with bundleID %@, Index: %lu, numButtons: %lu", v35, typeDescription2);
       }
 
       else
@@ -324,9 +324,9 @@ LABEL_20:
       sub_10009F5E4(self);
     }
 
-    v15 = [(IXSUninstallAlert *)self typeDescription];
-    v39 = [(IXSUninstallAlert *)self bundleIdentifier];
-    v17 = sub_1000405FC("[IXSUninstallAlert _processUserNotification:withConfiguration:response:completion:]", 417, @"IXErrorDomain", 1uLL, 0, 0, @"Received unknown response %lx from the %@ uninstall alert for app with bundleID %@", v16, a5);
+    typeDescription3 = [(IXSUninstallAlert *)self typeDescription];
+    bundleIdentifier3 = [(IXSUninstallAlert *)self bundleIdentifier];
+    v17 = sub_1000405FC("[IXSUninstallAlert _processUserNotification:withConfiguration:response:completion:]", 417, @"IXErrorDomain", 1uLL, 0, 0, @"Received unknown response %lx from the %@ uninstall alert for app with bundleID %@", v16, response);
 
     v18 = 0;
   }
@@ -335,20 +335,20 @@ LABEL_20:
 LABEL_8:
   v20 = 0;
 LABEL_11:
-  v11[2](v11, v20, v17);
+  completionCopy[2](completionCopy, v20, v17);
 LABEL_12:
 }
 
-- (void)_onMainQueue_displayAlertWithCompletion:(id)a3 uninstallAlertConfiguration:(id)a4
+- (void)_onMainQueue_displayAlertWithCompletion:(id)completion uninstallAlertConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  configurationCopy = configuration;
   dispatch_assert_queue_V2(&_dispatch_main_q);
   error = 0;
   responseFlags = 0;
-  v8 = [(IXSUninstallAlert *)self notificationFlags];
-  v9 = [v7 alertParameters];
-  v10 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, v8, &error, v9);
+  notificationFlags = [(IXSUninstallAlert *)self notificationFlags];
+  alertParameters = [configurationCopy alertParameters];
+  v10 = CFUserNotificationCreate(kCFAllocatorDefault, 0.0, notificationFlags, &error, alertParameters);
 
   v11 = sub_1000031B0(off_100121958);
   v12 = v11;
@@ -373,16 +373,16 @@ LABEL_12:
         sub_10009F7DC(self);
       }
 
-      v16 = [(IXSUninstallAlert *)self typeDescription];
-      v21 = [(IXSUninstallAlert *)self bundleIdentifier];
-      v18 = sub_1000405FC("[IXSUninstallAlert _onMainQueue_displayAlertWithCompletion:uninstallAlertConfiguration:]", 489, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to recieve notification response for %@ uninstall alert for app with bundle ID %@, Response: %d", v17, v16);
+      typeDescription = [(IXSUninstallAlert *)self typeDescription];
+      bundleIdentifier = [(IXSUninstallAlert *)self bundleIdentifier];
+      v18 = sub_1000405FC("[IXSUninstallAlert _onMainQueue_displayAlertWithCompletion:uninstallAlertConfiguration:]", 489, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to recieve notification response for %@ uninstall alert for app with bundle ID %@, Response: %d", v17, typeDescription);
 
-      v6[2](v6, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
     }
 
     else
     {
-      [(IXSUninstallAlert *)self _processUserNotification:v10 withConfiguration:v7 response:responseFlags completion:v6];
+      [(IXSUninstallAlert *)self _processUserNotification:v10 withConfiguration:configurationCopy response:responseFlags completion:completionCopy];
       v18 = 0;
     }
 
@@ -396,64 +396,64 @@ LABEL_12:
       sub_10009F8C0(self, &error);
     }
 
-    v19 = [(IXSUninstallAlert *)self typeDescription];
-    v22 = [(IXSUninstallAlert *)self bundleIdentifier];
-    v18 = sub_1000405FC("[IXSUninstallAlert _onMainQueue_displayAlertWithCompletion:uninstallAlertConfiguration:]", 479, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to create %@ uninstall alert for app with bundle ID %@, error code %d", v20, v19);
+    typeDescription2 = [(IXSUninstallAlert *)self typeDescription];
+    bundleIdentifier2 = [(IXSUninstallAlert *)self bundleIdentifier];
+    v18 = sub_1000405FC("[IXSUninstallAlert _onMainQueue_displayAlertWithCompletion:uninstallAlertConfiguration:]", 479, @"IXErrorDomain", 1uLL, 0, 0, @"Failed to create %@ uninstall alert for app with bundle ID %@, error code %d", v20, typeDescription2);
 
-    v6[2](v6, 0, v18);
+    completionCopy[2](completionCopy, 0, v18);
   }
 }
 
-- (void)displayAlertWithCompletion:(id)a3 uninstallAlertConfiguration:(id)a4
+- (void)displayAlertWithCompletion:(id)completion uninstallAlertConfiguration:(id)configuration
 {
-  v6 = a3;
+  completionCopy = completion;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100046290;
   v9[3] = &unk_100102668;
-  v10 = a4;
-  v11 = v6;
+  configurationCopy = configuration;
+  v11 = completionCopy;
   v9[4] = self;
-  v7 = v10;
-  v8 = v6;
+  v7 = configurationCopy;
+  v8 = completionCopy;
   sub_100071134(&_dispatch_main_q, v9);
 }
 
-- (void)_configureOptionalButtonForConfiguration:(id)a3
+- (void)_configureOptionalButtonForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(IXSUninstallAlert *)self optionalButtonForNotRemovableAppLabel];
-  v6 = [(IXSUninstallAlert *)self optionalButtonForNotRemovableAppActionURL];
-  v7 = v6;
-  if (v5 && v6)
+  configurationCopy = configuration;
+  optionalButtonForNotRemovableAppLabel = [(IXSUninstallAlert *)self optionalButtonForNotRemovableAppLabel];
+  optionalButtonForNotRemovableAppActionURL = [(IXSUninstallAlert *)self optionalButtonForNotRemovableAppActionURL];
+  v7 = optionalButtonForNotRemovableAppActionURL;
+  if (optionalButtonForNotRemovableAppLabel && optionalButtonForNotRemovableAppActionURL)
   {
-    v8 = [[IXSUninstallButtonConfiguration alloc] initWithTitle:v5 buttonType:2];
+    v8 = [[IXSUninstallButtonConfiguration alloc] initWithTitle:optionalButtonForNotRemovableAppLabel buttonType:2];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100046474;
     v11[3] = &unk_100102690;
     v12 = v7;
-    [v4 addButtonDefinition:v8 forAction:v11];
+    [configurationCopy addButtonDefinition:v8 forAction:v11];
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  if (v5 | v6)
+  if (optionalButtonForNotRemovableAppLabel | optionalButtonForNotRemovableAppActionURL)
   {
     v8 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(&v8->super, OS_LOG_TYPE_FAULT))
     {
-      v9 = [(IXSUninstallAlert *)self appRecord];
-      v10 = [v9 bundleIdentifier];
+      appRecord = [(IXSUninstallAlert *)self appRecord];
+      bundleIdentifier = [appRecord bundleIdentifier];
       *buf = 136315906;
       v14 = "[IXSUninstallAlert _configureOptionalButtonForConfiguration:]";
       v15 = 2112;
-      v16 = v5;
+      v16 = optionalButtonForNotRemovableAppLabel;
       v17 = 2112;
       v18 = v7;
       v19 = 2112;
-      v20 = v10;
+      v20 = bundleIdentifier;
       _os_log_fault_impl(&_mh_execute_header, &v8->super, OS_LOG_TYPE_FAULT, "%s: Required app label (%@) and action URL (%@) both to be non-nil for %@, but one was nil", buf, 0x2Au);
     }
 
@@ -463,43 +463,43 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)displayAlertWithCompletion:(id)a3
+- (void)displayAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [IXSUninstallAlertConfiguration alloc];
-  v6 = [(IXSUninstallAlert *)self title];
-  v7 = [(IXSUninstallAlert *)self message];
-  v8 = [(IXSUninstallAlertConfiguration *)v5 initWithTitle:v6 message:v7];
+  title = [(IXSUninstallAlert *)self title];
+  message = [(IXSUninstallAlert *)self message];
+  v8 = [(IXSUninstallAlertConfiguration *)v5 initWithTitle:title message:message];
 
-  v9 = [(IXSUninstallAlert *)self appRecord];
-  LODWORD(v7) = [v9 isDeletable];
+  appRecord = [(IXSUninstallAlert *)self appRecord];
+  LODWORD(message) = [appRecord isDeletable];
 
   v10 = [IXSUninstallButtonConfiguration alloc];
-  if (v7)
+  if (message)
   {
-    v11 = [(IXSUninstallAlert *)self defaultButtonLabel];
-    v12 = [(IXSUninstallButtonConfiguration *)v10 initWithTitle:v11 buttonType:0];
+    defaultButtonLabel = [(IXSUninstallAlert *)self defaultButtonLabel];
+    v12 = [(IXSUninstallButtonConfiguration *)v10 initWithTitle:defaultButtonLabel buttonType:0];
 
     if ([(IXSUninstallAlert *)self defaultButtonAppearsDestructive])
     {
       [(IXSUninstallButtonConfiguration *)v12 setPresentationStyle:1];
     }
 
-    v13 = [(IXSUninstallAlert *)self otherButtonLabel];
+    otherButtonLabel = [(IXSUninstallAlert *)self otherButtonLabel];
 
-    if (v13)
+    if (otherButtonLabel)
     {
       v14 = [IXSUninstallButtonConfiguration alloc];
-      v15 = [(IXSUninstallAlert *)self otherButtonLabel];
-      v13 = [(IXSUninstallButtonConfiguration *)v14 initWithTitle:v15 buttonType:1];
+      otherButtonLabel2 = [(IXSUninstallAlert *)self otherButtonLabel];
+      otherButtonLabel = [(IXSUninstallButtonConfiguration *)v14 initWithTitle:otherButtonLabel2 buttonType:1];
     }
 
-    v16 = [(IXSUninstallAlert *)self cancelButtonLabel];
-    if (v16)
+    cancelButtonLabel = [(IXSUninstallAlert *)self cancelButtonLabel];
+    if (cancelButtonLabel)
     {
-      v17 = [[IXSUninstallButtonConfiguration alloc] initWithTitle:v16 buttonType:2];
+      v17 = [[IXSUninstallButtonConfiguration alloc] initWithTitle:cancelButtonLabel buttonType:2];
       v18 = v17;
-      if (v13 && v17)
+      if (otherButtonLabel && v17)
       {
         if ((![(IXSUninstallAlert *)self needsDemoteOptionButton]|| ![(IXSUninstallAlert *)self appIsRemovable]) && [(IXSUninstallAlert *)self needsDemoteOptionButton])
         {
@@ -525,7 +525,7 @@ LABEL_8:
           v30[4] = self;
           v26 = v30;
           v27 = v8;
-          v28 = v13;
+          v28 = otherButtonLabel;
         }
 
         else
@@ -535,7 +535,7 @@ LABEL_8:
           v29[2] = sub_1000469B4;
           v29[3] = &unk_100102690;
           v29[4] = self;
-          [(IXSUninstallAlertConfiguration *)v8 addButtonDefinition:v13 forAction:v29];
+          [(IXSUninstallAlertConfiguration *)v8 addButtonDefinition:otherButtonLabel forAction:v29];
           if ([(IXSUninstallAlert *)self appRemovability]== 3 || [(IXSUninstallAlert *)self deletionIsRestricted])
           {
             goto LABEL_31;
@@ -580,14 +580,14 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v19 = [(IXSUninstallAlert *)self cancelButtonLabel];
-  v12 = [(IXSUninstallButtonConfiguration *)v10 initWithTitle:v19 buttonType:0];
+  cancelButtonLabel2 = [(IXSUninstallAlert *)self cancelButtonLabel];
+  v12 = [(IXSUninstallButtonConfiguration *)v10 initWithTitle:cancelButtonLabel2 buttonType:0];
 
   if ([(IXSUninstallAlert *)self needsArchiveOptionButton])
   {
     v20 = [IXSUninstallButtonConfiguration alloc];
-    v21 = [(IXSUninstallAlert *)self otherButtonLabel];
-    v22 = [(IXSUninstallButtonConfiguration *)v20 initWithTitle:v21 buttonType:1];
+    otherButtonLabel3 = [(IXSUninstallAlert *)self otherButtonLabel];
+    v22 = [(IXSUninstallButtonConfiguration *)v20 initWithTitle:otherButtonLabel3 buttonType:1];
 
     [(IXSUninstallAlertConfiguration *)v8 addButtonDefinition:v22 forAction:&stru_100102770];
   }
@@ -595,23 +595,23 @@ LABEL_34:
   [(IXSUninstallAlertConfiguration *)v8 addButtonDefinition:v12 forAction:&stru_100102790];
 LABEL_35:
 
-  [(IXSUninstallAlert *)self displayAlertWithCompletion:v4 uninstallAlertConfiguration:v8];
+  [(IXSUninstallAlert *)self displayAlertWithCompletion:completionCopy uninstallAlertConfiguration:v8];
 }
 
-- (id)_localizedStringForKey:(id)a3 tableName:(id)a4 withFormatHint:(id)a5
+- (id)_localizedStringForKey:(id)key tableName:(id)name withFormatHint:(id)hint
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(IXSUninstallAlert *)self defaultStringsBundle];
-  v12 = v11;
-  v13 = v10;
-  if (v11)
+  keyCopy = key;
+  nameCopy = name;
+  hintCopy = hint;
+  defaultStringsBundle = [(IXSUninstallAlert *)self defaultStringsBundle];
+  v12 = defaultStringsBundle;
+  v13 = hintCopy;
+  if (defaultStringsBundle)
   {
-    v13 = CFBundleCopyLocalizedString(v11, v8, 0, v9);
+    v13 = CFBundleCopyLocalizedString(defaultStringsBundle, keyCopy, 0, nameCopy);
   }
 
-  if (v13 == v8)
+  if (v13 == keyCopy)
   {
     v14 = sub_1000031B0(off_100121958);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -619,42 +619,42 @@ LABEL_35:
       v17 = 136315906;
       v18 = "[IXSUninstallAlert _localizedStringForKey:tableName:withFormatHint:]";
       v19 = 2112;
-      v20 = v8;
+      v20 = keyCopy;
       v21 = 2112;
       v22 = v12;
       v23 = 2112;
-      v24 = v9;
+      v24 = nameCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: Failed to fetch localized string for key %@ from bundle %@ within table %@", &v17, 0x2Au);
     }
 
-    v15 = v10;
+    v15 = hintCopy;
     v13 = v15;
   }
 
   return v13;
 }
 
-- (id)localizedStringForKey:(id)a3 withFormatHint:(id)a4
+- (id)localizedStringForKey:(id)key withFormatHint:(id)hint
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(IXSUninstallAlert *)self defaultStringsTableName];
-  v9 = [(IXSUninstallAlert *)self _localizedStringForKey:v7 tableName:v8 withFormatHint:v6];
+  hintCopy = hint;
+  keyCopy = key;
+  defaultStringsTableName = [(IXSUninstallAlert *)self defaultStringsTableName];
+  v9 = [(IXSUninstallAlert *)self _localizedStringForKey:keyCopy tableName:defaultStringsTableName withFormatHint:hintCopy];
 
   return v9;
 }
 
-- (BOOL)isMDMRestrictedWithOrganizationName:(id *)a3
+- (BOOL)isMDMRestrictedWithOrganizationName:(id *)name
 {
   v5 = +[MCProfileConnection sharedConnection];
-  v6 = [(IXSUninstallAlert *)self appRecord];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v5 isRemovalRestrictedByPolicyForApp:v7];
+  appRecord = [(IXSUninstallAlert *)self appRecord];
+  bundleIdentifier = [appRecord bundleIdentifier];
+  v8 = [v5 isRemovalRestrictedByPolicyForApp:bundleIdentifier];
 
   if (v8)
   {
-    v9 = [v5 managingOrganizationInformation];
-    v10 = [v9 objectForKeyedSubscript:kMCCCOrganizationNameKey];
+    managingOrganizationInformation = [v5 managingOrganizationInformation];
+    v10 = [managingOrganizationInformation objectForKeyedSubscript:kMCCCOrganizationNameKey];
     objc_opt_class();
     v11 = v10;
     if (objc_opt_isKindOfClass())
@@ -667,10 +667,10 @@ LABEL_35:
       v12 = 0;
     }
 
-    if (a3 && v12)
+    if (name && v12)
     {
       v13 = v12;
-      *a3 = v12;
+      *name = v12;
     }
   }
 

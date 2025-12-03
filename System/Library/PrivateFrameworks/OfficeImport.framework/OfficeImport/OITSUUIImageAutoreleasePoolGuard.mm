@@ -1,18 +1,18 @@
 @interface OITSUUIImageAutoreleasePoolGuard
-- (OITSUUIImageAutoreleasePoolGuard)initWithUIImage:(id)a3;
+- (OITSUUIImageAutoreleasePoolGuard)initWithUIImage:(id)image;
 - (void)dealloc;
 @end
 
 @implementation OITSUUIImageAutoreleasePoolGuard
 
-- (OITSUUIImageAutoreleasePoolGuard)initWithUIImage:(id)a3
+- (OITSUUIImageAutoreleasePoolGuard)initWithUIImage:(id)image
 {
   v5.receiver = self;
   v5.super_class = OITSUUIImageAutoreleasePoolGuard;
   result = [(OITSUUIImageAutoreleasePoolGuard *)&v5 init];
   if (result)
   {
-    result->mImage = a3;
+    result->mImage = image;
   }
 
   return result;

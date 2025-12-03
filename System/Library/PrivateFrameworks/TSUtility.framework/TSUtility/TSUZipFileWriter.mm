@@ -1,19 +1,19 @@
 @interface TSUZipFileWriter
-+ (void)zipDirectoryAtURL:(id)a3 toURL:(id)a4 queue:(id)a5 completion:(id)a6;
-- (TSUZipFileWriter)initWithURL:(id)a3;
++ (void)zipDirectoryAtURL:(id)l toURL:(id)rL queue:(id)queue completion:(id)completion;
+- (TSUZipFileWriter)initWithURL:(id)l;
 @end
 
 @implementation TSUZipFileWriter
 
-- (TSUZipFileWriter)initWithURL:(id)a3
+- (TSUZipFileWriter)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = TSUZipFileWriter;
   v5 = [(TSUZipWriter *)&v10 init];
   if (v5)
   {
-    v6 = [[TSUFileIOChannel alloc] initForRandomWritingURL:v4];
+    v6 = [[TSUFileIOChannel alloc] initForRandomWritingURL:lCopy];
     writeChannel = v5->_writeChannel;
     v5->_writeChannel = v6;
 
@@ -33,18 +33,18 @@
   return v5;
 }
 
-+ (void)zipDirectoryAtURL:(id)a3 toURL:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)zipDirectoryAtURL:(id)l toURL:(id)rL queue:(id)queue completion:(id)completion
 {
   v61[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v44 = a5;
-  v42 = a6;
-  v43 = v10;
-  v45 = v9;
-  if (v9)
+  lCopy = l;
+  rLCopy = rL;
+  queueCopy = queue;
+  completionCopy = completion;
+  v43 = rLCopy;
+  v45 = lCopy;
+  if (lCopy)
   {
-    if (v10)
+    if (rLCopy)
     {
       goto LABEL_6;
     }
@@ -57,7 +57,7 @@
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipFileWriter.m"];
     [v11 handleFailureInFunction:v12 file:v13 lineNumber:45 description:{@"invalid nil value for '%s'", "directoryURL"}];
 
-    v10 = v43;
+    rLCopy = v43;
     if (v43)
     {
       goto LABEL_6;
@@ -69,39 +69,39 @@
   v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipFileWriter.m"];
   [v14 handleFailureInFunction:v15 file:v16 lineNumber:46 description:{@"invalid nil value for '%s'", "URL"}];
 
-  v10 = v43;
+  rLCopy = v43;
 LABEL_6:
-  if (!v44)
+  if (!queueCopy)
   {
     v17 = +[TSUAssertionHandler currentHandler];
     v18 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUZipFileWriter zipDirectoryAtURL:toURL:queue:completion:]"];
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipFileWriter.m"];
     [v17 handleFailureInFunction:v18 file:v19 lineNumber:47 description:{@"invalid nil value for '%s'", "queue"}];
 
-    v10 = v43;
+    rLCopy = v43;
   }
 
-  if (!v42)
+  if (!completionCopy)
   {
     v20 = +[TSUAssertionHandler currentHandler];
     v21 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUZipFileWriter zipDirectoryAtURL:toURL:queue:completion:]"];
     v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipFileWriter.m"];
     [v20 handleFailureInFunction:v21 file:v22 lineNumber:48 description:{@"invalid nil value for '%s'", "completion"}];
 
-    v10 = v43;
+    rLCopy = v43;
   }
 
-  v47 = [[TSUZipFileWriter alloc] initWithURL:v10];
-  v23 = [v9 path];
-  v24 = [v23 stringByDeletingLastPathComponent];
-  v41 = [v24 stringByStandardizingPath];
+  v47 = [[TSUZipFileWriter alloc] initWithURL:rLCopy];
+  path = [lCopy path];
+  stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
+  stringByStandardizingPath = [stringByDeletingLastPathComponent stringByStandardizingPath];
 
-  v46 = [v41 length];
-  v25 = [MEMORY[0x277CCAA00] defaultManager];
+  v46 = [stringByStandardizingPath length];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v26 = *MEMORY[0x277CBE868];
   v61[0] = *MEMORY[0x277CBE868];
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:1];
-  v28 = [v25 enumeratorAtURL:v9 includingPropertiesForKeys:v27 options:0 errorHandler:0];
+  v28 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:v27 options:0 errorHandler:0];
 
   v58[0] = 0;
   v58[1] = v58;
@@ -137,10 +137,10 @@ LABEL_6:
             goto LABEL_20;
           }
 
-          v36 = [v32 path];
-          v37 = [v36 stringByStandardizingPath];
+          path2 = [v32 path];
+          stringByStandardizingPath2 = [path2 stringByStandardizingPath];
 
-          v38 = [v37 substringFromIndex:v46 + 1];
+          v38 = [stringByStandardizingPath2 substringFromIndex:v46 + 1];
           v39 = [[TSUFileIOChannel alloc] initForReadingURL:v32];
           v52[0] = MEMORY[0x277D85DD0];
           v52[1] = 3221225472;
@@ -152,10 +152,10 @@ LABEL_6:
 
         else
         {
-          v37 = +[TSUAssertionHandler currentHandler];
+          stringByStandardizingPath2 = +[TSUAssertionHandler currentHandler];
           v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUZipFileWriter zipDirectoryAtURL:toURL:queue:completion:]"];
           v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/utility/TSUZipFileWriter.m"];
-          [v37 handleFailureInFunction:v38 file:v39 lineNumber:80 description:{@"Failed to obtain resource value for %@", v32}];
+          [stringByStandardizingPath2 handleFailureInFunction:v38 file:v39 lineNumber:80 description:{@"Failed to obtain resource value for %@", v32}];
         }
 
 LABEL_20:
@@ -171,10 +171,10 @@ LABEL_20:
   v49[1] = 3221225472;
   v49[2] = __61__TSUZipFileWriter_zipDirectoryAtURL_toURL_queue_completion___block_invoke_2;
   v49[3] = &unk_279D666A0;
-  v40 = v42;
+  v40 = completionCopy;
   v50 = v40;
   v51 = v58;
-  [(TSUZipWriter *)v47 closeWithQueue:v44 completion:v49];
+  [(TSUZipWriter *)v47 closeWithQueue:queueCopy completion:v49];
 
   _Block_object_dispose(v58, 8);
 }

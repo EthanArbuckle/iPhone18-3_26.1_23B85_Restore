@@ -1,14 +1,14 @@
 @interface PXStoryViewModel
-+ (void)registerViewModelDesiringSoloPlayback:(id)a3;
++ (void)registerViewModelDesiringSoloPlayback:(id)playback;
 - ($A25D1FC0A592AF581AFDBFE54D262C37)swipeDownInteractionState;
 - (BOOL)allowsRelated;
 - (BOOL)assetCollectionForcesAutoReplay;
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4;
-- (BOOL)checkIfShouldPreventAdvancingAndReturnReason:(id *)a3;
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index;
+- (BOOL)checkIfShouldPreventAdvancingAndReturnReason:(id *)reason;
 - (BOOL)hasCurrentClosePermission;
 - (BOOL)isModalInPresentation;
-- (BOOL)skipToBeginningOfSegmentWithIdentifier:(int64_t)a3;
-- (BOOL)skipToSegmentWithOffset:(int64_t)a3 byTappingEdge:(BOOL)a4;
+- (BOOL)skipToBeginningOfSegmentWithIdentifier:(int64_t)identifier;
+- (BOOL)skipToSegmentWithOffset:(int64_t)offset byTappingEdge:(BOOL)edge;
 - (BOOL)wantsReportConcernAction;
 - (NSDateFormatter)mainAssetInfoUpdateQueue_titleDateFormatter;
 - (PXAnonymousViewController)presentingViewController;
@@ -16,25 +16,25 @@
 - (PXStoryViewActionPerformer)actionPerformer;
 - (PXStoryViewEnvironmentModel)viewEnvironmentModel;
 - (PXStoryViewModel)init;
-- (PXStoryViewModel)initWithConfiguration:(id)a3 extendedTraitCollection:(id)a4 timeSource:(id)a5 mediaProvider:(id)a6;
-- (id)_gridEffectForAsset:(id)a3 colorGradingEffect:(id)a4 entityManager:(id)a5;
+- (PXStoryViewModel)initWithConfiguration:(id)configuration extendedTraitCollection:(id)collection timeSource:(id)source mediaProvider:(id)provider;
+- (id)_gridEffectForAsset:(id)asset colorGradingEffect:(id)effect entityManager:(id)manager;
 - (id)_internalRecoveryOptions;
-- (id)_mainAssetInfoUpdateQueue_infoForAsset:(id)a3;
-- (id)diagnosticHUDContentProviderForType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3;
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4;
+- (id)_mainAssetInfoUpdateQueue_infoForAsset:(id)asset;
+- (id)diagnosticHUDContentProviderForType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type;
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size;
 - (id)makeDefaultActionsMenu;
 - (id)memoryDebugInfo;
 - (id)requestImmediateNavigationPermission;
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4;
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler;
 - (unint64_t)endBehavior;
 - (void)_accessibilityStatusDidChange;
 - (void)_autoHideChrome;
 - (void)_autoHideMuteToggleButton;
 - (void)_cancelAutoHideChromeTimer;
 - (void)_cancelMuteToggleButtonAutoHideTimer;
-- (void)_changeMainModelToRelatedAtIndex:(int64_t)a3 changeOrigin:(unint64_t)a4;
-- (void)_completeClose:(id)a3;
+- (void)_changeMainModelToRelatedAtIndex:(int64_t)index changeOrigin:(unint64_t)origin;
+- (void)_completeClose:(id)close;
 - (void)_invalidateAXStoredPlayState;
 - (void)_invalidateCanToggleSelectMode;
 - (void)_invalidateControllersActiveness;
@@ -68,13 +68,13 @@
 - (void)_invalidateWantsRelatedOverlayScrollable;
 - (void)_invalidateWantsSoloPlayback;
 - (void)_navigateToUpNext;
-- (void)_readFromPhotosGridViewModel:(id)a3;
+- (void)_readFromPhotosGridViewModel:(id)model;
 - (void)_registerForAccessibilityEvents;
 - (void)_replayMusic;
 - (void)_resetSelectedRelatedIndex;
 - (void)_resetShouldAutoHideMuteToggleButton;
 - (void)_scheduleMuteToggleButtonAutoHide;
-- (void)_setMainModel:(id)a3 changeOrigin:(unint64_t)a4;
+- (void)_setMainModel:(id)model changeOrigin:(unint64_t)origin;
 - (void)_updateAXStoredPlayState;
 - (void)_updateCanToggleSelectMode;
 - (void)_updateControllersActiveness;
@@ -96,7 +96,7 @@
 - (void)_updatePlaybackDuration;
 - (void)_updatePlaybackFractionCompleted;
 - (void)_updateRecentlyUsedSongs;
-- (void)_updateScrubberFeedbackGeneratorWithShouldImpact:(BOOL)a3 shouldPrepare:(BOOL)a4;
+- (void)_updateScrubberFeedbackGeneratorWithShouldImpact:(BOOL)impact shouldPrepare:(BOOL)prepare;
 - (void)_updateShouldAutoHideChrome;
 - (void)_updateShouldAutoHideMuteToggleButton;
 - (void)_updateShouldPreventDisplaySleep;
@@ -108,117 +108,117 @@
 - (void)_updateViewModelControllers;
 - (void)_updateWantsRelatedOverlayScrollable;
 - (void)_updateWantsSoloPlayback;
-- (void)addInternalActionsTo:(id)a3;
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4;
+- (void)addInternalActionsTo:(id)to;
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler;
 - (void)autoPlayUpNext;
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3;
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container;
 - (void)dealloc;
 - (void)deselectAllGridItems;
 - (void)didPerformChanges;
 - (void)hideMuteToggleButtonWhenChromeIsHidden;
-- (void)infoUpdaterDidUpdate:(id)a3;
+- (void)infoUpdaterDidUpdate:(id)update;
 - (void)liveResizeDidEnd;
 - (void)liveResizeWillStart;
-- (void)networkStatusMonitor:(id)a3 didChangeBestAvailableNetworkType:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)requestNavigationPermission:(id)a3;
-- (void)rewindToBeginning:(BOOL)a3 rewindMusic:(BOOL)a4;
+- (void)networkStatusMonitor:(id)monitor didChangeBestAvailableNetworkType:(id)type;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)requestNavigationPermission:(id)permission;
+- (void)rewindToBeginning:(BOOL)beginning rewindMusic:(BOOL)music;
 - (void)selectAllGridItems;
-- (void)setActionPerformer:(id)a3;
-- (void)setAllowedChromeItems:(unint64_t)a3;
-- (void)setAudioSessionController:(id)a3;
-- (void)setBottomGradientLegibilityOverlayOpacity:(double)a3;
-- (void)setBufferingController:(id)a3;
-- (void)setBufferingIndicatorVisibilityFraction:(double)a3;
-- (void)setCanShowMuteToggleButtonWhenChromeIsHidden:(BOOL)a3;
-- (void)setCanToggleSelectMode:(BOOL)a3;
-- (void)setChromeItems:(unint64_t)a3;
-- (void)setChromeItemsToBeDisplayedExternally:(unint64_t)a3;
-- (void)setChromeTitleInfo:(id)a3;
-- (void)setChromeVisibilityFraction:(double)a3;
-- (void)setCurrentClosePermission:(id)a3;
-- (void)setCurrentPlaybackTime:(id *)a3;
-- (void)setCustomGeneralChromeTitleConfiguration:(id)a3;
-- (void)setDesiredPlayState:(int64_t)a3;
-- (void)setDiagnosticHUDContentProvider:(id)a3 forType:(int64_t)a4;
-- (void)setDiagnosticHUDType:(int64_t)a3;
-- (void)setDisplaySubtitle:(id)a3;
-- (void)setDisplayTitle:(id)a3;
-- (void)setDisplayedError:(id)a3;
-- (void)setEdgeToHighlight:(unint64_t)a3;
-- (void)setFadeOutOverlayVisibilityFraction:(double)a3;
-- (void)setHasAnyError:(BOOL)a3;
-- (void)setHighlightedRelatedIndex:(int64_t)a3;
-- (void)setIsActionMenuOpen:(BOOL)a3;
-- (void)setIsActive:(BOOL)a3;
-- (void)setIsAnyMenuOpen:(BOOL)a3;
-- (void)setIsAtPlaybackEnd:(BOOL)a3;
-- (void)setIsAtPlaybackStart:(BOOL)a3;
-- (void)setIsHUDVisible:(BOOL)a3;
-- (void)setIsInSelectMode:(BOOL)a3;
-- (void)setIsPerformingAnyExportOperation:(BOOL)a3;
-- (void)setIsPerformingCrossfadeTransitionToRelated:(BOOL)a3;
-- (void)setIsPerformingViewControllerTransition:(BOOL)a3;
-- (void)setIsRelatedOverlayScrolledIntoView:(BOOL)a3;
-- (void)setIsScrubbing:(BOOL)a3;
-- (void)setIsUserPerformingRemoteGesture:(BOOL)a3;
-- (void)setLastSkipSegmentActionDate:(id)a3;
-- (void)setMainAsset:(id)a3;
-- (void)setMainAssetCollection:(id)a3;
-- (void)setMainConfiguration:(id)a3;
-- (void)setMaximumIndividualTopChromeItemVisibilityFraction:(double)a3;
-- (void)setMenuIsOpen:(BOOL)a3 withIdentifier:(id)a4;
-- (void)setModelCoveredByRelated:(id)a3;
-- (void)setMusicPlayer:(id)a3;
-- (void)setMuted:(BOOL)a3 reason:(int64_t)a4;
-- (void)setNeedsStatusBarVisible:(BOOL)a3;
-- (void)setOutroFractionCompleted:(double)a3;
-- (void)setPacingController:(id)a3;
-- (void)setPerformingExportOperation:(BOOL)a3 withIdentifier:(id)a4;
-- (void)setPersistenceController:(id)a3;
-- (void)setPhotosGridViewModel:(id)a3;
-- (void)setPlaybackDuration:(id *)a3;
-- (void)setPlaybackEndDarkening:(double)a3;
-- (void)setPlaybackFractionCompleted:(double)a3;
-- (void)setRelatedConfigurations:(id)a3;
-- (void)setRelatedController:(id)a3;
-- (void)setRelatedModels:(id)a3;
-- (void)setRelatedOverlayVisibilityFraction:(double)a3;
-- (void)setResourcesPreloadingController:(id)a3;
-- (void)setScrubberPosition:(id *)a3;
-- (void)setScrubberVisibilityFraction:(double)a3;
-- (void)setSelectedRelatedIndex:(int64_t)a3;
-- (void)setShouldAutoHideChrome:(BOOL)a3;
-- (void)setShouldAutoHideMuteToggleButton:(BOOL)a3;
-- (void)setShouldAutoReplayPreference:(BOOL)a3;
-- (void)setShouldCountDownToUpNext:(BOOL)a3;
-- (void)setShouldPreventDisplaySleep:(BOOL)a3;
-- (void)setShouldShowErrorIndicator:(BOOL)a3;
-- (void)setShouldSimplifyUIForAccessibility:(BOOL)a3;
-- (void)setShowSongInTitleWhenPaused:(BOOL)a3;
-- (void)setSolidLegibilityOverlayOpacity:(double)a3;
-- (void)setStyleSwitcherVisibilityFraction:(double)a3;
-- (void)setSwipeDownDismissalPreviewEnabled:(BOOL)a3;
-- (void)setSwipeDownDismissalPreviewFraction:(double)a3;
-- (void)setSwipeDownInteractionState:(id *)a3;
-- (void)setSwipeDownTriggeringDismissal:(BOOL)a3;
-- (void)setTopGradientLegibilityOverlayOpacity:(double)a3;
-- (void)setValidationController:(id)a3;
-- (void)setViewControllerDismissalTargetPlacement:(id)a3;
-- (void)setViewEnvironmentModel:(id)a3;
-- (void)setViewLayoutSpec:(id)a3;
-- (void)setViewMode:(int64_t)a3;
-- (void)setViewModeTransition:(id)a3;
-- (void)setVolume:(double)a3;
-- (void)setWantsChromeVisible:(BOOL)a3;
-- (void)setWantsPlaybackEndDarkening:(BOOL)a3;
-- (void)setWantsRelatedOverlayNavigationButtonsVisible:(BOOL)a3;
-- (void)setWantsRelatedOverlayScrollable:(BOOL)a3;
-- (void)setWantsRelatedOverlayVisible:(BOOL)a3;
-- (void)setWantsScrubberVisible:(BOOL)a3;
-- (void)setWantsSoloPlayback:(BOOL)a3;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)setActionPerformer:(id)performer;
+- (void)setAllowedChromeItems:(unint64_t)items;
+- (void)setAudioSessionController:(id)controller;
+- (void)setBottomGradientLegibilityOverlayOpacity:(double)opacity;
+- (void)setBufferingController:(id)controller;
+- (void)setBufferingIndicatorVisibilityFraction:(double)fraction;
+- (void)setCanShowMuteToggleButtonWhenChromeIsHidden:(BOOL)hidden;
+- (void)setCanToggleSelectMode:(BOOL)mode;
+- (void)setChromeItems:(unint64_t)items;
+- (void)setChromeItemsToBeDisplayedExternally:(unint64_t)externally;
+- (void)setChromeTitleInfo:(id)info;
+- (void)setChromeVisibilityFraction:(double)fraction;
+- (void)setCurrentClosePermission:(id)permission;
+- (void)setCurrentPlaybackTime:(id *)time;
+- (void)setCustomGeneralChromeTitleConfiguration:(id)configuration;
+- (void)setDesiredPlayState:(int64_t)state;
+- (void)setDiagnosticHUDContentProvider:(id)provider forType:(int64_t)type;
+- (void)setDiagnosticHUDType:(int64_t)type;
+- (void)setDisplaySubtitle:(id)subtitle;
+- (void)setDisplayTitle:(id)title;
+- (void)setDisplayedError:(id)error;
+- (void)setEdgeToHighlight:(unint64_t)highlight;
+- (void)setFadeOutOverlayVisibilityFraction:(double)fraction;
+- (void)setHasAnyError:(BOOL)error;
+- (void)setHighlightedRelatedIndex:(int64_t)index;
+- (void)setIsActionMenuOpen:(BOOL)open;
+- (void)setIsActive:(BOOL)active;
+- (void)setIsAnyMenuOpen:(BOOL)open;
+- (void)setIsAtPlaybackEnd:(BOOL)end;
+- (void)setIsAtPlaybackStart:(BOOL)start;
+- (void)setIsHUDVisible:(BOOL)visible;
+- (void)setIsInSelectMode:(BOOL)mode;
+- (void)setIsPerformingAnyExportOperation:(BOOL)operation;
+- (void)setIsPerformingCrossfadeTransitionToRelated:(BOOL)related;
+- (void)setIsPerformingViewControllerTransition:(BOOL)transition;
+- (void)setIsRelatedOverlayScrolledIntoView:(BOOL)view;
+- (void)setIsScrubbing:(BOOL)scrubbing;
+- (void)setIsUserPerformingRemoteGesture:(BOOL)gesture;
+- (void)setLastSkipSegmentActionDate:(id)date;
+- (void)setMainAsset:(id)asset;
+- (void)setMainAssetCollection:(id)collection;
+- (void)setMainConfiguration:(id)configuration;
+- (void)setMaximumIndividualTopChromeItemVisibilityFraction:(double)fraction;
+- (void)setMenuIsOpen:(BOOL)open withIdentifier:(id)identifier;
+- (void)setModelCoveredByRelated:(id)related;
+- (void)setMusicPlayer:(id)player;
+- (void)setMuted:(BOOL)muted reason:(int64_t)reason;
+- (void)setNeedsStatusBarVisible:(BOOL)visible;
+- (void)setOutroFractionCompleted:(double)completed;
+- (void)setPacingController:(id)controller;
+- (void)setPerformingExportOperation:(BOOL)operation withIdentifier:(id)identifier;
+- (void)setPersistenceController:(id)controller;
+- (void)setPhotosGridViewModel:(id)model;
+- (void)setPlaybackDuration:(id *)duration;
+- (void)setPlaybackEndDarkening:(double)darkening;
+- (void)setPlaybackFractionCompleted:(double)completed;
+- (void)setRelatedConfigurations:(id)configurations;
+- (void)setRelatedController:(id)controller;
+- (void)setRelatedModels:(id)models;
+- (void)setRelatedOverlayVisibilityFraction:(double)fraction;
+- (void)setResourcesPreloadingController:(id)controller;
+- (void)setScrubberPosition:(id *)position;
+- (void)setScrubberVisibilityFraction:(double)fraction;
+- (void)setSelectedRelatedIndex:(int64_t)index;
+- (void)setShouldAutoHideChrome:(BOOL)chrome;
+- (void)setShouldAutoHideMuteToggleButton:(BOOL)button;
+- (void)setShouldAutoReplayPreference:(BOOL)preference;
+- (void)setShouldCountDownToUpNext:(BOOL)next;
+- (void)setShouldPreventDisplaySleep:(BOOL)sleep;
+- (void)setShouldShowErrorIndicator:(BOOL)indicator;
+- (void)setShouldSimplifyUIForAccessibility:(BOOL)accessibility;
+- (void)setShowSongInTitleWhenPaused:(BOOL)paused;
+- (void)setSolidLegibilityOverlayOpacity:(double)opacity;
+- (void)setStyleSwitcherVisibilityFraction:(double)fraction;
+- (void)setSwipeDownDismissalPreviewEnabled:(BOOL)enabled;
+- (void)setSwipeDownDismissalPreviewFraction:(double)fraction;
+- (void)setSwipeDownInteractionState:(id *)state;
+- (void)setSwipeDownTriggeringDismissal:(BOOL)dismissal;
+- (void)setTopGradientLegibilityOverlayOpacity:(double)opacity;
+- (void)setValidationController:(id)controller;
+- (void)setViewControllerDismissalTargetPlacement:(id)placement;
+- (void)setViewEnvironmentModel:(id)model;
+- (void)setViewLayoutSpec:(id)spec;
+- (void)setViewMode:(int64_t)mode;
+- (void)setViewModeTransition:(id)transition;
+- (void)setVolume:(double)volume;
+- (void)setWantsChromeVisible:(BOOL)visible;
+- (void)setWantsPlaybackEndDarkening:(BOOL)darkening;
+- (void)setWantsRelatedOverlayNavigationButtonsVisible:(BOOL)visible;
+- (void)setWantsRelatedOverlayScrollable:(BOOL)scrollable;
+- (void)setWantsRelatedOverlayVisible:(BOOL)visible;
+- (void)setWantsScrubberVisible:(BOOL)visible;
+- (void)setWantsSoloPlayback:(BOOL)playback;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 - (void)temporarilyShowMuteToggleButtonWhenChromeIsHidden;
 - (void)toggleAutoReplayPreference;
 - (void)toggleChrome;
@@ -229,20 +229,20 @@
 
 - (id)requestImmediateNavigationPermission
 {
-  v2 = self;
-  v3 = [(PXStoryViewModel *)v2 mainModel];
-  v4 = [(PXStoryModel *)v3 requestImmediateNavigationPermission];
+  selfCopy = self;
+  mainModel = [(PXStoryViewModel *)selfCopy mainModel];
+  requestImmediateNavigationPermission = [(PXStoryModel *)mainModel requestImmediateNavigationPermission];
 
-  return v4;
+  return requestImmediateNavigationPermission;
 }
 
-- (void)requestNavigationPermission:(id)a3
+- (void)requestNavigationPermission:(id)permission
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(permission);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
-  v7 = [(PXStoryViewModel *)v6 mainModel];
+  selfCopy = self;
+  mainModel = [(PXStoryViewModel *)selfCopy mainModel];
   v9[4] = sub_1A3E79128;
   v9[5] = v5;
   v9[0] = MEMORY[0x1E69E9820];
@@ -251,14 +251,14 @@
   v9[3] = &block_descriptor_10_2;
   v8 = _Block_copy(v9);
 
-  [(PXStoryModel *)v7 requestNavigationPermission:v8];
+  [(PXStoryModel *)mainModel requestNavigationPermission:v8];
 
   _Block_release(v8);
 }
 
 - (BOOL)wantsReportConcernAction
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PXStoryViewModel.wantsReportConcernAction.getter();
 
   return v3 & 1;
@@ -276,51 +276,51 @@
   v9[2] = sub_1A3D7692C;
   v9[3] = &block_descriptor_12_7;
   v5 = _Block_copy(v9);
-  v6 = self;
+  selfCopy = self;
 
-  v7 = [v3 menuWithDeferredConfiguration_];
+  menuWithDeferredConfiguration_ = [v3 menuWithDeferredConfiguration_];
   _Block_release(v5);
 
-  return v7;
+  return menuWithDeferredConfiguration_;
 }
 
-- (void)addInternalActionsTo:(id)a3
+- (void)addInternalActionsTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5._menuItems = self;
   menuItems = v5._menuItems;
-  v5.super.isa = v4;
+  v5.super.isa = toCopy;
   PXStoryViewModel.addInternalActions(to:)(v5);
 }
 
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  contextCopy = context;
   v8 = [PXStoryTimelineVisualDiagnosticsProvider alloc];
-  v11 = [(PXStoryViewModel *)self mainModel];
-  v9 = [(PXStoryViewModel *)self extendedTraitCollection];
-  [v9 displayScale];
-  v10 = [(PXStoryTimelineVisualDiagnosticsProvider *)v8 initWithModel:v11 screenScale:?];
-  [(PXStoryTimelineVisualDiagnosticsProvider *)v10 addVisualDiagnosticsToContext:v7 completionHandler:v6];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  extendedTraitCollection = [(PXStoryViewModel *)self extendedTraitCollection];
+  [extendedTraitCollection displayScale];
+  v10 = [(PXStoryTimelineVisualDiagnosticsProvider *)v8 initWithModel:mainModel screenScale:?];
+  [(PXStoryTimelineVisualDiagnosticsProvider *)v10 addVisualDiagnosticsToContext:contextCopy completionHandler:handlerCopy];
 }
 
 - (id)memoryDebugInfo
 {
-  v2 = [(PXStoryViewModel *)self mainAssetCollection];
+  mainAssetCollection = [(PXStoryViewModel *)self mainAssetCollection];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
-    v4 = [v3 photoLibrary];
-    v5 = [v3 photosGraphProperties];
-    v6 = [v3 localIdentifier];
-    v7 = +[PXMemoriesRelatedDiagnosticsHelper preprocessDictionary:forMemoryWithLocalIdentifier:algorithmsVersion:inPhotoLibrary:](PXMemoriesRelatedDiagnosticsHelper, "preprocessDictionary:forMemoryWithLocalIdentifier:algorithmsVersion:inPhotoLibrary:", v5, v6, [v3 photosGraphVersion], v4);
+    v3 = mainAssetCollection;
+    photoLibrary = [v3 photoLibrary];
+    photosGraphProperties = [v3 photosGraphProperties];
+    localIdentifier = [v3 localIdentifier];
+    v7 = +[PXMemoriesRelatedDiagnosticsHelper preprocessDictionary:forMemoryWithLocalIdentifier:algorithmsVersion:inPhotoLibrary:](PXMemoriesRelatedDiagnosticsHelper, "preprocessDictionary:forMemoryWithLocalIdentifier:algorithmsVersion:inPhotoLibrary:", photosGraphProperties, localIdentifier, [v3 photosGraphVersion], photoLibrary);
     v8 = [v7 mutableCopy];
 
-    v9 = [v3 localIdentifier];
+    localIdentifier2 = [v3 localIdentifier];
     v13 = 0;
-    v10 = [v4 curationDebugInformationForAssetCollectionWithLocalIdentifier:v9 options:&unk_1F190E6A8 error:&v13];
+    v10 = [photoLibrary curationDebugInformationForAssetCollectionWithLocalIdentifier:localIdentifier2 options:&unk_1F190E6A8 error:&v13];
 
     if (v10)
     {
@@ -339,34 +339,34 @@
   return v8;
 }
 
-- (void)collectTapToRadarDiagnosticsIntoContainer:(id)a3
+- (void)collectTapToRadarDiagnosticsIntoContainer:(id)container
 {
-  v11 = a3;
+  containerCopy = container;
   v4 = +[PXStorySettings sharedInstance];
   v5 = PXStoryDiagnosticDescriptionForAllHUDTypes(self, 1);
-  [v11 addAttachmentWithText:v5 name:@"HUD"];
-  v6 = [(PXStoryViewModel *)self mainModel];
-  [v11 addSubprovider:v6];
+  [containerCopy addAttachmentWithText:v5 name:@"HUD"];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  [containerCopy addSubprovider:mainModel];
 
-  v7 = [(PXStoryViewModel *)self relatedController];
-  [v11 addSubprovider:v7];
+  relatedController = [(PXStoryViewModel *)self relatedController];
+  [containerCopy addSubprovider:relatedController];
 
-  v8 = [(PXStoryViewModel *)self pacingController];
-  [v11 addSubprovider:v8];
+  pacingController = [(PXStoryViewModel *)self pacingController];
+  [containerCopy addSubprovider:pacingController];
 
-  v9 = [(PXStoryViewModel *)self memoryDebugInfo];
-  if (v9)
+  memoryDebugInfo = [(PXStoryViewModel *)self memoryDebugInfo];
+  if (memoryDebugInfo)
   {
-    [v11 addAttachmentWithDictionary:v9 name:@"MemoryInfoAndCuration"];
+    [containerCopy addAttachmentWithDictionary:memoryDebugInfo name:@"MemoryInfoAndCuration"];
   }
 
   v10 = [[off_1E7721970 alloc] initWithRootProvider:self];
   [v10 setName:@"Visual Diagnostics"];
   [v10 setIsPrivateDataAllowed:{objc_msgSend(v4, "includeImagesInVisualDiagnosticsForTTR")}];
-  [v11 addSubprovider:v10];
+  [containerCopy addSubprovider:v10];
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3 displaySize:(CGSize)a4
+- (id)diagnosticTextForHUDType:(int64_t)type displaySize:(CGSize)size
 {
   v54 = *MEMORY[0x1E69E9840];
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
@@ -377,38 +377,38 @@
   v46 = v6;
   v52 = v46;
   v7 = _Block_copy(aBlock);
-  if (a3 == 14)
+  if (type == 14)
   {
     v8 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v8 setDateFormat:@"yyyy-MM-dd HH:mm:ss.SSS"];
     v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v10 = [(PXStoryViewModel *)self lastMainModelChangeDate];
-    v11 = [v8 stringFromDate:v10];
+    lastMainModelChangeDate = [(PXStoryViewModel *)self lastMainModelChangeDate];
+    v11 = [v8 stringFromDate:lastMainModelChangeDate];
     v12 = [v9 initWithFormat:@"Playback Started: %@\n", v11];
     v7[2](v7, v12);
   }
 
-  v13 = [(PXStoryViewModel *)self diagnosticTextForHUDType:a3];
+  v13 = [(PXStoryViewModel *)self diagnosticTextForHUDType:type];
   v7[2](v7, v13);
 
-  v14 = [(PXStoryViewModel *)self mainModel];
-  v15 = [v14 diagnosticTextForHUDType:a3];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  v15 = [mainModel diagnosticTextForHUDType:type];
   v7[2](v7, v15);
 
-  v16 = [(PXStoryViewModel *)self musicPlayer];
-  v17 = [v16 diagnosticTextForHUDType:a3];
+  musicPlayer = [(PXStoryViewModel *)self musicPlayer];
+  v17 = [musicPlayer diagnosticTextForHUDType:type];
   v7[2](v7, v17);
 
-  v18 = [(PXStoryViewModel *)self pacingController];
-  v19 = [v18 diagnosticTextForHUDType:a3];
+  pacingController = [(PXStoryViewModel *)self pacingController];
+  v19 = [pacingController diagnosticTextForHUDType:type];
   v7[2](v7, v19);
 
-  if (a3 == 14)
+  if (type == 14)
   {
     v20 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v21 = [(PXStoryViewModel *)self shouldPreventDisplaySleep];
+    shouldPreventDisplaySleep = [(PXStoryViewModel *)self shouldPreventDisplaySleep];
     v22 = @"No 😴";
-    if (v21)
+    if (shouldPreventDisplaySleep)
     {
       v22 = @"Yes 😳";
     }
@@ -422,9 +422,9 @@
     v7[2](v7, v26);
   }
 
-  v27 = [(PXStoryViewModel *)self errorRepository];
-  v28 = [v27 errorsByComponent];
-  v29 = [v28 mutableCopy];
+  errorRepository = [(PXStoryViewModel *)self errorRepository];
+  errorsByComponent = [errorRepository errorsByComponent];
+  v29 = [errorsByComponent mutableCopy];
 
   for (i = 0; i != 20; ++i)
   {
@@ -445,8 +445,8 @@
     v50 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v33 = [v29 allKeys];
-    v34 = [v33 sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
+    allKeys = [v29 allKeys];
+    v34 = [allKeys sortedArrayUsingSelector:sel_caseInsensitiveCompare_];
 
     v35 = [v34 countByEnumeratingWithState:&v47 objects:v53 count:16];
     if (v35)
@@ -464,9 +464,9 @@
 
           v39 = *(*(&v47 + 1) + 8 * j);
           v40 = [v29 objectForKeyedSubscript:v39];
-          v41 = [v40 localizedDescription];
+          localizedDescription = [v40 localizedDescription];
           v42 = PXStoryErrorDetailsDescription(v40);
-          [v46 appendFormat:@"• %@: %@ / %@\n", v39, v41, v42];
+          [v46 appendFormat:@"• %@: %@ / %@\n", v39, localizedDescription, v42];
         }
 
         v36 = [v34 countByEnumeratingWithState:&v47 objects:v53 count:16];
@@ -537,23 +537,23 @@ void __70__PXStoryViewModel_Diagnostics__diagnosticTextForHUDType_displaySize___
   return self;
 }
 
-- (void)networkStatusMonitor:(id)a3 didChangeBestAvailableNetworkType:(id)a4
+- (void)networkStatusMonitor:(id)monitor didChangeBestAvailableNetworkType:(id)type
 {
-  if (a4.var0 != 1)
+  if (type.var0 != 1)
   {
-    v5 = [(PXStoryViewModel *)self errorReporter:a3];
+    v5 = [(PXStoryViewModel *)self errorReporter:monitor];
     [v5 setError:0 forComponent:@"NetworkReachablity"];
   }
 }
 
-- (id)diagnosticTextForHUDType:(int64_t)a3
+- (id)diagnosticTextForHUDType:(int64_t)type
 {
   v5 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  if (a3 == 14)
+  if (type == 14)
   {
-    v6 = [(PXStoryViewModel *)self shouldSimplifyUIForAccessibility];
+    shouldSimplifyUIForAccessibility = [(PXStoryViewModel *)self shouldSimplifyUIForAccessibility];
     v7 = @"NO";
-    if (v6)
+    if (shouldSimplifyUIForAccessibility)
     {
       v7 = @"YES";
     }
@@ -567,18 +567,18 @@ void __70__PXStoryViewModel_Diagnostics__diagnosticTextForHUDType_displaySize___
   return v9;
 }
 
-- (void)setShouldSimplifyUIForAccessibility:(BOOL)a3
+- (void)setShouldSimplifyUIForAccessibility:(BOOL)accessibility
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_shouldSimplifyUIForAccessibility != a3)
+  if (self->_shouldSimplifyUIForAccessibility != accessibility)
   {
-    v3 = a3;
-    self->_shouldSimplifyUIForAccessibility = a3;
+    accessibilityCopy = accessibility;
+    self->_shouldSimplifyUIForAccessibility = accessibility;
     v5 = PLStoryGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (accessibilityCopy)
       {
         v6 = @"YES";
       }
@@ -594,7 +594,7 @@ void __70__PXStoryViewModel_Diagnostics__diagnosticTextForHUDType_displaySize___
     v8[2] = __56__PXStoryViewModel_setShouldSimplifyUIForAccessibility___block_invoke;
     v8[3] = &unk_1E773E7C0;
     v8[4] = self;
-    v9 = v3;
+    v9 = accessibilityCopy;
     [(PXStoryViewModel *)self performChanges:v8];
   }
 }
@@ -621,28 +621,28 @@ uint64_t __56__PXStoryViewModel_setShouldSimplifyUIForAccessibility___block_invo
 
 - (void)_registerForAccessibilityEvents
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__accessibilityStatusDidChange name:*MEMORY[0x1E69DDA58] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__accessibilityStatusDidChange name:*MEMORY[0x1E69DDA58] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__accessibilityStatusDidChange name:*MEMORY[0x1E69DD960] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__accessibilityStatusDidChange name:*MEMORY[0x1E69DD960] object:0];
 
   [(PXStoryViewModel *)self _accessibilityStatusDidChange];
 }
 
-- (BOOL)attemptRecoveryFromError:(id)a3 optionIndex:(unint64_t)a4
+- (BOOL)attemptRecoveryFromError:(id)error optionIndex:(unint64_t)index
 {
-  v6 = [a3 underlyingErrors];
-  v7 = [v6 firstObject];
+  underlyingErrors = [error underlyingErrors];
+  firstObject = [underlyingErrors firstObject];
 
-  v8 = [v7 localizedRecoveryOptions];
-  v9 = [v8 count];
+  localizedRecoveryOptions = [firstObject localizedRecoveryOptions];
+  v9 = [localizedRecoveryOptions count];
 
-  v10 = a4 - v9;
-  if (a4 < v9)
+  v10 = index - v9;
+  if (index < v9)
   {
-    v11 = [v7 recoveryAttempter];
-    [v11 attemptRecoveryFromError:v7 optionIndex:a4];
+    recoveryAttempter = [firstObject recoveryAttempter];
+    [recoveryAttempter attemptRecoveryFromError:firstObject optionIndex:index];
 LABEL_6:
 
     goto LABEL_7;
@@ -661,8 +661,8 @@ LABEL_6:
 
   if (!v10)
   {
-    v11 = [(PXStoryViewModel *)self actionPerformer];
-    [v11 performActionForChromeActionMenuItem:8 withValue:0 sender:0 presentationSource:0];
+    recoveryAttempter = [(PXStoryViewModel *)self actionPerformer];
+    [recoveryAttempter performActionForChromeActionMenuItem:8 withValue:0 sender:0 presentationSource:0];
     goto LABEL_6;
   }
 
@@ -683,11 +683,11 @@ LABEL_7:
   return v4;
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = NSStringFromSelector(sel_defaultHUDType);
-  if ([v5 isEqualToString:v6])
+  if ([keyCopy isEqualToString:v6])
   {
 
 LABEL_4:
@@ -701,7 +701,7 @@ LABEL_4:
   }
 
   v7 = NSStringFromSelector(sel_isHUDVisible);
-  v8 = [v5 isEqualToString:v7];
+  v8 = [keyCopy isEqualToString:v7];
 
   if (v8)
   {
@@ -722,15 +722,15 @@ uint64_t __48__PXStoryViewModel_settings_changedValueForKey___block_invoke(uint6
   return [v1 performChanges:v3];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __49__PXStoryViewModel_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E773E798;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXStoryViewModel *)self performChanges:v5];
 }
@@ -974,15 +974,15 @@ LABEL_27:
 LABEL_54:
 }
 
-- (void)infoUpdaterDidUpdate:(id)a3
+- (void)infoUpdaterDidUpdate:(id)update
 {
-  v5 = a3;
-  v6 = [(PXStoryViewModel *)self mainAssetInfoUpdater];
+  updateCopy = update;
+  mainAssetInfoUpdater = [(PXStoryViewModel *)self mainAssetInfoUpdater];
 
-  if (v6 != v5)
+  if (mainAssetInfoUpdater != updateCopy)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXStoryViewModel.m" lineNumber:2512 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewModel.m" lineNumber:2512 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -1001,8 +1001,8 @@ LABEL_54:
   if (!mainAssetInfoUpdateQueue_titleDateFormatter)
   {
     v4 = objc_alloc_init(MEMORY[0x1E696AB78]);
-    v5 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
-    [(NSDateFormatter *)v4 setLocale:v5];
+    autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+    [(NSDateFormatter *)v4 setLocale:autoupdatingCurrentLocale];
 
     [(NSDateFormatter *)v4 setDateStyle:2];
     [(NSDateFormatter *)v4 setTimeStyle:0];
@@ -1015,50 +1015,50 @@ LABEL_54:
   return mainAssetInfoUpdateQueue_titleDateFormatter;
 }
 
-- (id)_mainAssetInfoUpdateQueue_infoForAsset:(id)a3
+- (id)_mainAssetInfoUpdateQueue_infoForAsset:(id)asset
 {
   v4 = MEMORY[0x1E695DF90];
-  v5 = a3;
+  assetCopy = asset;
   v6 = objc_alloc_init(v4);
-  v7 = [v5 localizedGeoDescription];
-  [v6 setObject:v7 forKeyedSubscript:@"PXStoryViewModelMainAssetInfoLocationDescriptionKey"];
+  localizedGeoDescription = [assetCopy localizedGeoDescription];
+  [v6 setObject:localizedGeoDescription forKeyedSubscript:@"PXStoryViewModelMainAssetInfoLocationDescriptionKey"];
 
-  v8 = [(PXStoryViewModel *)self mainAssetInfoUpdateQueue_titleDateFormatter];
-  v9 = [v5 localCreationDate];
+  mainAssetInfoUpdateQueue_titleDateFormatter = [(PXStoryViewModel *)self mainAssetInfoUpdateQueue_titleDateFormatter];
+  localCreationDate = [assetCopy localCreationDate];
 
-  v10 = [v8 stringFromDate:v9];
+  v10 = [mainAssetInfoUpdateQueue_titleDateFormatter stringFromDate:localCreationDate];
   [v6 setObject:v10 forKeyedSubscript:@"PXStoryViewModelMainAssetInfoDateDescriptionKey"];
 
   return v6;
 }
 
-- (id)requestInfoOfKind:(id)a3 withResultHandler:(id)a4
+- (id)requestInfoOfKind:(id)kind withResultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  kindCopy = kind;
+  handlerCopy = handler;
   v9 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  if (![v7 isEqualToString:@"PXStoryViewModelMainAssetInfoKind"])
+  if (![kindCopy isEqualToString:@"PXStoryViewModelMainAssetInfoKind"])
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXStoryViewModel.m" lineNumber:2480 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewModel.m" lineNumber:2480 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = [(PXStoryViewModel *)self mainAsset];
-  if (v10)
+  mainAsset = [(PXStoryViewModel *)self mainAsset];
+  if (mainAsset)
   {
     objc_initWeak(&location, self);
-    v11 = [(PXStoryViewModel *)self mainAssetInfoUpdateQueue];
+    mainAssetInfoUpdateQueue = [(PXStoryViewModel *)self mainAssetInfoUpdateQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __56__PXStoryViewModel_requestInfoOfKind_withResultHandler___block_invoke;
     block[3] = &unk_1E774B1F8;
     v15 = v9;
     objc_copyWeak(&v18, &location);
-    v16 = v10;
-    v17 = v8;
-    dispatch_async(v11, block);
+    v16 = mainAsset;
+    v17 = handlerCopy;
+    dispatch_async(mainAssetInfoUpdateQueue, block);
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -1066,7 +1066,7 @@ LABEL_54:
 
   else
   {
-    (*(v8 + 2))(v8, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 
   return v9;
@@ -1088,9 +1088,9 @@ void __56__PXStoryViewModel_requestInfoOfKind_withResultHandler___block_invoke(u
 
 - (void)_updateMainAsset
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
+  mainModel = [(PXStoryViewModel *)self mainModel];
   v12 = 0;
-  v4 = [v3 getMainVisibleClipIdentifier:0 assetReferece:&v12];
+  v4 = [mainModel getMainVisibleClipIdentifier:0 assetReferece:&v12];
   v5 = v12;
   v6 = v5;
   if ((v4 & 1) == 0)
@@ -1099,43 +1099,43 @@ void __56__PXStoryViewModel_requestInfoOfKind_withResultHandler___block_invoke(u
     goto LABEL_6;
   }
 
-  v7 = [v5 asset];
+  asset = [v5 asset];
 
-  if (!v7)
+  if (!asset)
   {
 LABEL_6:
     [(PXStoryViewModel *)self setMainAsset:0];
-    v8 = [(PXStoryViewModel *)self mainAssetInfoUpdater];
-    [v8 invalidateInfo];
+    mainAssetInfoUpdater = [(PXStoryViewModel *)self mainAssetInfoUpdater];
+    [mainAssetInfoUpdater invalidateInfo];
     goto LABEL_7;
   }
 
-  v8 = [v6 asset];
-  v9 = [(PXStoryViewModel *)self mainAsset];
-  v10 = [v8 isEqual:v9];
+  mainAssetInfoUpdater = [v6 asset];
+  mainAsset = [(PXStoryViewModel *)self mainAsset];
+  v10 = [mainAssetInfoUpdater isEqual:mainAsset];
 
   if ((v10 & 1) == 0)
   {
-    [(PXStoryViewModel *)self setMainAsset:v8];
-    v11 = [(PXStoryViewModel *)self mainAssetInfoUpdater];
-    [v11 invalidateInfo];
+    [(PXStoryViewModel *)self setMainAsset:mainAssetInfoUpdater];
+    mainAssetInfoUpdater2 = [(PXStoryViewModel *)self mainAssetInfoUpdater];
+    [mainAssetInfoUpdater2 invalidateInfo];
   }
 
 LABEL_7:
 }
 
-- (void)setMainAsset:(id)a3
+- (void)setMainAsset:(id)asset
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_mainAsset != v5)
+  assetCopy = asset;
+  v6 = assetCopy;
+  if (self->_mainAsset != assetCopy)
   {
-    v8 = v5;
-    v7 = [(PXDisplayAsset *)v5 isEqual:?];
+    v8 = assetCopy;
+    v7 = [(PXDisplayAsset *)assetCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_mainAsset, a3);
+      objc_storeStrong(&self->_mainAsset, asset);
       [(PXStoryViewModel *)self signalChange:0x1000000000000000];
       v6 = v8;
     }
@@ -1144,50 +1144,50 @@ LABEL_7:
 
 - (void)_invalidateMainAsset
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMainAsset];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMainAsset];
 }
 
 - (void)_updateDisplayTitleAndSubtitle
 {
   v68 = +[PXStorySettings sharedInstance];
-  v3 = [(PXStoryViewModel *)self viewLayoutSpec];
-  v66 = [v3 storyLayoutSpec];
-  v4 = [(PXStoryViewModel *)self mainModel];
-  v5 = [v4 activeSongResource];
+  viewLayoutSpec = [(PXStoryViewModel *)self viewLayoutSpec];
+  storyLayoutSpec = [viewLayoutSpec storyLayoutSpec];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  activeSongResource = [mainModel activeSongResource];
 
-  v6 = [v5 px_storyResourceSongAsset];
-  v7 = [v6 title];
+  px_storyResourceSongAsset = [activeSongResource px_storyResourceSongAsset];
+  title = [px_storyResourceSongAsset title];
 
-  v8 = [v5 px_storyResourceSongAsset];
-  v9 = [v8 artistName];
+  px_storyResourceSongAsset2 = [activeSongResource px_storyResourceSongAsset];
+  artistName = [px_storyResourceSongAsset2 artistName];
 
-  v65 = [(PXStoryViewModel *)self mainAssetCollection];
-  v10 = [[_TtC12PhotosUICore27PXPhotosCollectionTitleInfo alloc] initWithAssetCollection:v65];
-  v11 = [off_1E77217B8 defaultHelper];
+  mainAssetCollection = [(PXStoryViewModel *)self mainAssetCollection];
+  v10 = [[_TtC12PhotosUICore27PXPhotosCollectionTitleInfo alloc] initWithAssetCollection:mainAssetCollection];
+  defaultHelper = [off_1E77217B8 defaultHelper];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__PXStoryViewModel__updateDisplayTitleAndSubtitle__block_invoke;
   aBlock[3] = &unk_1E773E770;
-  v63 = v11;
+  v63 = defaultHelper;
   v71 = v63;
   v12 = _Block_copy(aBlock);
-  v13 = [(PXPhotosCollectionTitleInfo *)v10 title];
-  v14 = v12[2](v12, v13);
+  title2 = [(PXPhotosCollectionTitleInfo *)v10 title];
+  v14 = v12[2](v12, title2);
 
   v64 = v10;
-  v15 = [(PXPhotosCollectionTitleInfo *)v10 subtitle];
+  subtitle = [(PXPhotosCollectionTitleInfo *)v10 subtitle];
   v62 = v12;
-  v16 = v12[2](v12, v15);
+  v16 = v12[2](v12, subtitle);
 
-  v69 = v3;
-  v59 = v7;
-  v60 = v5;
-  v67 = v9;
-  if ([v3 shouldUseAssetCollectionForTitleAndSubtitle])
+  v69 = viewLayoutSpec;
+  v59 = title;
+  v60 = activeSongResource;
+  v67 = artistName;
+  if ([viewLayoutSpec shouldUseAssetCollectionForTitleAndSubtitle])
   {
-    v17 = [v14 localizedUppercaseString];
-    v18 = [v16 localizedUppercaseString];
+    localizedUppercaseString = [v14 localizedUppercaseString];
+    localizedUppercaseString2 = [v16 localizedUppercaseString];
     v19 = 0;
     v58 = 0;
     v20 = 0;
@@ -1201,8 +1201,8 @@ LABEL_3:
   v22 = v68;
   if ([(PXStoryViewModel *)self wantsRelatedOverlayVisible]|| [(PXStoryViewModel *)self viewMode]== 2)
   {
-    v17 = v21;
-    v18 = v16;
+    localizedUppercaseString = v21;
+    localizedUppercaseString2 = v16;
     v19 = 0;
     v58 = 0;
     v20 = 0;
@@ -1210,29 +1210,29 @@ LABEL_3:
 
   else
   {
-    if (-[PXStoryViewModel viewMode](self, "viewMode") != 4 || ([v66 styleSwitcherShowsTitle] & 1) != 0)
+    if (-[PXStoryViewModel viewMode](self, "viewMode") != 4 || ([storyLayoutSpec styleSwitcherShowsTitle] & 1) != 0)
     {
-      v47 = self;
-      v48 = [(PXStoryViewModel *)self mainAssetInfoUpdater];
-      v49 = [v48 info];
+      selfCopy = self;
+      mainAssetInfoUpdater = [(PXStoryViewModel *)self mainAssetInfoUpdater];
+      info = [mainAssetInfoUpdater info];
 
-      if (!v49)
+      if (!info)
       {
         v28 = 0;
         v44 = 0;
-        v46 = v66;
-        v43 = v9;
+        v46 = storyLayoutSpec;
+        v43 = artistName;
         v45 = v68;
         goto LABEL_24;
       }
 
-      v50 = [v49 objectForKeyedSubscript:@"PXStoryViewModelMainAssetInfoLocationDescriptionKey"];
-      v51 = [v49 objectForKeyedSubscript:@"PXStoryViewModelMainAssetInfoDateDescriptionKey"];
-      v57 = v47;
-      v52 = [(PXStoryViewModel *)v47 mainConfiguration];
-      v53 = [v52 preferAssetLocationAndCreationDateForClipTitleAndSubtitle];
+      v50 = [info objectForKeyedSubscript:@"PXStoryViewModelMainAssetInfoLocationDescriptionKey"];
+      v51 = [info objectForKeyedSubscript:@"PXStoryViewModelMainAssetInfoDateDescriptionKey"];
+      v57 = selfCopy;
+      mainConfiguration = [(PXStoryViewModel *)selfCopy mainConfiguration];
+      preferAssetLocationAndCreationDateForClipTitleAndSubtitle = [mainConfiguration preferAssetLocationAndCreationDateForClipTitleAndSubtitle];
 
-      if (v53)
+      if (preferAssetLocationAndCreationDateForClipTitleAndSubtitle)
       {
         v54 = &stru_1F1741150;
         if (v50)
@@ -1240,9 +1240,9 @@ LABEL_3:
           v54 = v50;
         }
 
-        v17 = v54;
+        localizedUppercaseString = v54;
         v19 = 0;
-        v7 = v51;
+        title = v51;
         v20 = v50;
       }
 
@@ -1251,9 +1251,9 @@ LABEL_3:
         v20 = v50;
         if (v50)
         {
-          v17 = v50;
-          v55 = [(PXStoryViewModel *)v57 desiredPlayState];
-          if ([(PXStoryViewModel *)v57 showSongInTitleWhenPaused]|| v55 == 1 && ![(PXStoryViewModel *)v57 isMuted])
+          localizedUppercaseString = v50;
+          desiredPlayState = [(PXStoryViewModel *)v57 desiredPlayState];
+          if ([(PXStoryViewModel *)v57 showSongInTitleWhenPaused]|| desiredPlayState == 1 && ![(PXStoryViewModel *)v57 isMuted])
           {
             v19 = 1;
           }
@@ -1261,7 +1261,7 @@ LABEL_3:
           else
           {
             v19 = 0;
-            v7 = v51;
+            title = v51;
           }
 
           v20 = v50;
@@ -1269,40 +1269,40 @@ LABEL_3:
 
         else
         {
-          v17 = v51;
+          localizedUppercaseString = v51;
           v19 = 1;
         }
       }
 
-      v18 = v7;
+      localizedUppercaseString2 = title;
       v58 = v51;
 
       self = v57;
       goto LABEL_3;
     }
 
-    v17 = PXLocalizedStringFromTable(@"InteractiveMemoryStyleSwitcherTitle", @"PhotosUICore");
+    localizedUppercaseString = PXLocalizedStringFromTable(@"InteractiveMemoryStyleSwitcherTitle", @"PhotosUICore");
     v19 = 0;
     v58 = 0;
     v20 = 0;
-    v18 = &stru_1F1741150;
+    localizedUppercaseString2 = &stru_1F1741150;
   }
 
 LABEL_7:
   v61 = v20;
   if ([v22 simulateLongChromeStrings])
   {
-    v23 = [(__CFString *)v17 px_stringByRepeating:10];
+    v23 = [(__CFString *)localizedUppercaseString px_stringByRepeating:10];
 
-    v24 = [(__CFString *)v18 px_stringByRepeating:10];
+    v24 = [(__CFString *)localizedUppercaseString2 px_stringByRepeating:10];
 
-    v18 = v24;
-    v17 = v23;
+    localizedUppercaseString2 = v24;
+    localizedUppercaseString = v23;
   }
 
-  if (v17)
+  if (localizedUppercaseString)
   {
-    v25 = v17;
+    v25 = localizedUppercaseString;
   }
 
   else
@@ -1312,9 +1312,9 @@ LABEL_7:
 
   v26 = v25;
 
-  if (v18)
+  if (localizedUppercaseString2)
   {
-    v27 = v18;
+    v27 = localizedUppercaseString2;
   }
 
   else
@@ -1324,37 +1324,37 @@ LABEL_7:
 
   v28 = v27;
 
-  v29 = [(PXStoryViewModel *)self wantsRelatedOverlayVisible];
+  wantsRelatedOverlayVisible = [(PXStoryViewModel *)self wantsRelatedOverlayVisible];
   v30 = objc_alloc(MEMORY[0x1E696AAB0]);
-  if (v29)
+  if (wantsRelatedOverlayVisible)
   {
-    v31 = [v69 playbackEndTitleAttributes];
-    v32 = [v30 initWithString:v26 attributes:v31];
+    playbackEndTitleAttributes = [v69 playbackEndTitleAttributes];
+    v32 = [v30 initWithString:v26 attributes:playbackEndTitleAttributes];
 
     v33 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v34 = [v69 playbackEndSubtitleAttributes];
+    playbackEndSubtitleAttributes = [v69 playbackEndSubtitleAttributes];
 LABEL_22:
-    v39 = v34;
-    v37 = [v33 initWithString:v28 attributes:v34];
+    v39 = playbackEndSubtitleAttributes;
+    v37 = [v33 initWithString:v28 attributes:playbackEndSubtitleAttributes];
 
-    v38 = 0;
+    chromeSongSymbolName = 0;
     goto LABEL_23;
   }
 
-  v35 = [v69 chromeTitleAttributes];
-  v32 = [v30 initWithString:v26 attributes:v35];
+  chromeTitleAttributes = [v69 chromeTitleAttributes];
+  v32 = [v30 initWithString:v26 attributes:chromeTitleAttributes];
 
   if (!v19 || !-[__CFString length](v28, "length") || ![v67 length])
   {
     v33 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v34 = [v69 chromeSubtitleAttributes];
+    playbackEndSubtitleAttributes = [v69 chromeSubtitleAttributes];
     goto LABEL_22;
   }
 
   v36 = [v69 chromeSongStringWithTitle:v28 artist:v67];
 
   v37 = [v69 chromeSongAttributedStringWithString:v36];
-  v38 = [v69 chromeSongSymbolName];
+  chromeSongSymbolName = [v69 chromeSongSymbolName];
   v28 = v36;
 LABEL_23:
   v56 = PXAttributedStringWithLanguageAwareLineHeightAdjustments(v32);
@@ -1363,16 +1363,16 @@ LABEL_23:
 
   [(PXStoryViewModel *)self setDisplayTitle:v56];
   [(PXStoryViewModel *)self setDisplaySubtitle:v40];
-  v41 = [[PXStoryViewChromeTitleInfo alloc] initWithCollectionTitle:v21 collectionSubtitle:v16 locationName:v61 dateName:v58 songName:v59 artistName:v67 title:v26 subtitle:v28 subtitleSymbolName:v38];
-  v42 = self;
+  v41 = [[PXStoryViewChromeTitleInfo alloc] initWithCollectionTitle:v21 collectionSubtitle:v16 locationName:v61 dateName:v58 songName:v59 artistName:v67 title:v26 subtitle:v28 subtitleSymbolName:chromeSongSymbolName];
+  selfCopy2 = self;
   v43 = v67;
-  [(PXStoryViewModel *)v42 setChromeTitleInfo:v41];
+  [(PXStoryViewModel *)selfCopy2 setChromeTitleInfo:v41];
 
-  v7 = v59;
+  title = v59;
   v44 = v26;
   v45 = v68;
-  v46 = v66;
-  v5 = v60;
+  v46 = storyLayoutSpec;
+  activeSongResource = v60;
 LABEL_24:
 }
 
@@ -1393,73 +1393,73 @@ id __50__PXStoryViewModel__updateDisplayTitleAndSubtitle__block_invoke(uint64_t 
 
 - (void)_invalidateDisplayTitleAndSubtitle
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDisplayTitleAndSubtitle];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDisplayTitleAndSubtitle];
 }
 
-- (void)_readFromPhotosGridViewModel:(id)a3
+- (void)_readFromPhotosGridViewModel:(id)model
 {
   isReadingFromPhotosGridViewModel = self->_isReadingFromPhotosGridViewModel;
   self->_isReadingFromPhotosGridViewModel = 1;
-  v6 = a3;
-  v7 = [(PXStoryViewModel *)self photosGridViewModel];
-  (*(a3 + 2))(v6, v7);
+  modelCopy = model;
+  photosGridViewModel = [(PXStoryViewModel *)self photosGridViewModel];
+  (*(model + 2))(modelCopy, photosGridViewModel);
 
   self->_isReadingFromPhotosGridViewModel = isReadingFromPhotosGridViewModel;
 }
 
 - (void)_updateSongControllerFailedAssets
 {
-  v3 = [(PXStoryViewModel *)self musicPlayer];
-  v4 = [v3 failedAudioAssets];
+  musicPlayer = [(PXStoryViewModel *)self musicPlayer];
+  failedAudioAssets = [musicPlayer failedAudioAssets];
 
-  v5 = [(PXStoryViewModel *)self songController];
+  songController = [(PXStoryViewModel *)self songController];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __53__PXStoryViewModel__updateSongControllerFailedAssets__block_invoke;
   v7[3] = &unk_1E773E748;
-  v8 = v4;
-  v6 = v4;
-  [v5 performChanges:v7];
+  v8 = failedAudioAssets;
+  v6 = failedAudioAssets;
+  [songController performChanges:v7];
 }
 
 - (void)_invalidateSongControllerFailedAssets
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSongControllerFailedAssets];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSongControllerFailedAssets];
 }
 
 - (void)_updateRecentlyUsedSongs
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
-  v4 = [v3 currentSongResource];
-  v10 = [v4 px_storyResourceSongAsset];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  currentSongResource = [mainModel currentSongResource];
+  px_storyResourceSongAsset = [currentSongResource px_storyResourceSongAsset];
 
-  v5 = v10;
-  if (v10)
+  v5 = px_storyResourceSongAsset;
+  if (px_storyResourceSongAsset)
   {
-    v6 = [v10 identifier];
-    v7 = [v10 catalog];
-    if (v7 == 4)
+    identifier = [px_storyResourceSongAsset identifier];
+    catalog = [px_storyResourceSongAsset catalog];
+    if (catalog == 4)
     {
-      v8 = [(PXStoryViewModel *)self recentlyUsedFlexSongIDs];
+      recentlyUsedFlexSongIDs = [(PXStoryViewModel *)self recentlyUsedFlexSongIDs];
     }
 
     else
     {
-      if (v7 != 2)
+      if (catalog != 2)
       {
 LABEL_7:
 
-        v5 = v10;
+        v5 = px_storyResourceSongAsset;
         goto LABEL_8;
       }
 
-      v8 = [(PXStoryViewModel *)self recentlyUsedAppleMusicSongIDs];
+      recentlyUsedFlexSongIDs = [(PXStoryViewModel *)self recentlyUsedAppleMusicSongIDs];
     }
 
-    v9 = v8;
-    [v8 addObject:v6];
+    v9 = recentlyUsedFlexSongIDs;
+    [recentlyUsedFlexSongIDs addObject:identifier];
 
     goto LABEL_7;
   }
@@ -1469,8 +1469,8 @@ LABEL_8:
 
 - (void)_invalidateRecentlyUsedSongs
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateRecentlyUsedSongs];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateRecentlyUsedSongs];
 }
 
 - (void)_updateIsInSelectMode
@@ -1491,53 +1491,53 @@ void __41__PXStoryViewModel__updateIsInSelectMode__block_invoke(uint64_t a1)
 
 - (void)_invalidateIsInSelectMode
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsInSelectMode];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsInSelectMode];
 }
 
-- (id)_gridEffectForAsset:(id)a3 colorGradingEffect:(id)a4 entityManager:(id)a5
+- (id)_gridEffectForAsset:(id)asset colorGradingEffect:(id)effect entityManager:(id)manager
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  assetCopy = asset;
+  effectCopy = effect;
+  managerCopy = manager;
   v10 = +[PXStorySettings sharedInstance];
   if (![v10 enableBrowseViewColorNormalization] || !objc_msgSend(v10, "colorNormalizationMode"))
   {
     goto LABEL_16;
   }
 
-  v11 = [v10 colorNormalizationMode];
-  if (!v8 && ![v10 enableColorNormalizationWithoutColorGrade])
+  colorNormalizationMode = [v10 colorNormalizationMode];
+  if (!effectCopy && ![v10 enableColorNormalizationWithoutColorGrade])
   {
     v13 = 0;
     v17 = 0;
     goto LABEL_17;
   }
 
-  if (v11 == 2)
+  if (colorNormalizationMode == 2)
   {
     PXDisplayAssetColorNormalizationData();
   }
 
-  if (v11 != 4 || (+[PXStoryColorNormalizationAdjustment dummyNormalization], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (colorNormalizationMode != 4 || (+[PXStoryColorNormalizationAdjustment dummyNormalization], (v12 = objc_claimAutoreleasedReturnValue()) == 0))
   {
 LABEL_16:
     v13 = 0;
-    v17 = v8;
+    v17 = effectCopy;
     goto LABEL_17;
   }
 
-  v13 = [[PXStoryColorNormalizationEffect alloc] initWithEntityManager:v9];
+  v13 = [[PXStoryColorNormalizationEffect alloc] initWithEntityManager:managerCopy];
   [(PXStoryColorNormalizationEffect *)v13 setAssetNormalization:v12];
   [v10 colorNormalizationIntensity];
   [(PXGColorGradingEffect *)v13 setIntensity:?];
 
-  if (v8 && v13)
+  if (effectCopy && v13)
   {
     v14 = [off_1E77215A8 alloc];
     v19[0] = v13;
-    v19[1] = v8;
+    v19[1] = effectCopy;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v16 = [v14 initWithEffects:v15];
 
@@ -1551,7 +1551,7 @@ LABEL_16:
 
   else
   {
-    v17 = v8;
+    v17 = effectCopy;
   }
 
 LABEL_17:
@@ -1563,15 +1563,15 @@ LABEL_18:
 
 - (void)_updateAXStoredPlayState
 {
-  v3 = [(PXStoryViewModel *)self viewMode];
-  v4 = v3;
-  if (v3 == 1)
+  viewMode = [(PXStoryViewModel *)self viewMode];
+  v4 = viewMode;
+  if (viewMode == 1)
   {
     if (self->_axStoredPlayStateLastViewModeOnUpdate == 4 && self->_axStoredPlayStateHasStoredPlayState)
     {
       self->_axStoredPlayStateHasStoredPlayState = 0;
-      v6 = [(PXStoryViewModel *)self mainModel];
-      v7 = v6;
+      mainModel = [(PXStoryViewModel *)self mainModel];
+      v7 = mainModel;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
       v9[2] = __44__PXStoryViewModel__updateAXStoredPlayState__block_invoke_2;
@@ -1582,17 +1582,17 @@ LABEL_18:
     }
   }
 
-  else if (v3 == 4 && self->_axStoredPlayStateLastViewModeOnUpdate == 1 && [(PXStoryViewModel *)self shouldSimplifyUIForAccessibility])
+  else if (viewMode == 4 && self->_axStoredPlayStateLastViewModeOnUpdate == 1 && [(PXStoryViewModel *)self shouldSimplifyUIForAccessibility])
   {
-    v5 = [(PXStoryViewModel *)self mainModel];
-    self->_axStoredPlayState = [v5 desiredPlayState];
+    mainModel2 = [(PXStoryViewModel *)self mainModel];
+    self->_axStoredPlayState = [mainModel2 desiredPlayState];
 
     self->_axStoredPlayStateHasStoredPlayState = 1;
-    v6 = [(PXStoryViewModel *)self mainModel];
-    v7 = v6;
+    mainModel = [(PXStoryViewModel *)self mainModel];
+    v7 = mainModel;
     v8 = &__block_literal_global_625_157045;
 LABEL_9:
-    [v6 performChanges:v8];
+    [mainModel performChanges:v8];
   }
 
   self->_axStoredPlayStateLastViewModeOnUpdate = v4;
@@ -1600,23 +1600,23 @@ LABEL_9:
 
 - (void)_invalidateAXStoredPlayState
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAXStoredPlayState];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAXStoredPlayState];
 }
 
 - (void)_updatePhotosGridEffectProvider
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
-  v4 = [v3 colorGradeKind];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  colorGradeKind = [mainModel colorGradeKind];
 
-  v5 = [(PXStoryViewModel *)self photosGridViewModel];
+  photosGridViewModel = [(PXStoryViewModel *)self photosGridViewModel];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__PXStoryViewModel__updatePhotosGridEffectProvider__block_invoke;
   v6[3] = &unk_1E773E6F8;
   v6[4] = self;
-  v6[5] = v4;
-  [v5 performChanges:v6];
+  v6[5] = colorGradeKind;
+  [photosGridViewModel performChanges:v6];
 }
 
 void __51__PXStoryViewModel__updatePhotosGridEffectProvider__block_invoke(uint64_t a1, void *a2)
@@ -1680,48 +1680,48 @@ id __51__PXStoryViewModel__updatePhotosGridEffectProvider__block_invoke_621(uint
 
 - (void)_invalidatePhotosGridEffectProvider
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePhotosGridEffectProvider];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePhotosGridEffectProvider];
 }
 
 - (void)_updateCanToggleSelectMode
 {
   if (-[PXStoryViewModel viewMode](self, "viewMode") == 2 && (-[PXStoryViewModel photosGridViewModel](self, "photosGridViewModel"), v3 = objc_claimAutoreleasedReturnValue(), v4 = [v3 canEnterSelectMode], v3, v4))
   {
-    v5 = [(PXStoryViewModel *)self photosGridViewModel];
-    v6 = [v5 canExitSelectMode];
+    photosGridViewModel = [(PXStoryViewModel *)self photosGridViewModel];
+    canExitSelectMode = [photosGridViewModel canExitSelectMode];
   }
 
   else
   {
-    v6 = 0;
+    canExitSelectMode = 0;
   }
 
-  [(PXStoryViewModel *)self setCanToggleSelectMode:v6];
+  [(PXStoryViewModel *)self setCanToggleSelectMode:canExitSelectMode];
 }
 
 - (void)_invalidateCanToggleSelectMode
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCanToggleSelectMode];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCanToggleSelectMode];
 }
 
-- (void)setPhotosGridViewModel:(id)a3
+- (void)setPhotosGridViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   photosGridViewModel = self->_photosGridViewModel;
-  if (photosGridViewModel != v5)
+  if (photosGridViewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXPhotosViewModel *)photosGridViewModel unregisterChangeObserver:self context:PhotosGridViewModelObservationContext];
-    objc_storeStrong(&self->_photosGridViewModel, a3);
+    objc_storeStrong(&self->_photosGridViewModel, model);
     [(PXPhotosViewModel *)self->_photosGridViewModel registerChangeObserver:self context:PhotosGridViewModelObservationContext];
     [(PXStoryViewModel *)self signalChange:0x80000000000000];
     [(PXStoryViewModel *)self _invalidateCanToggleSelectMode];
     [(PXStoryViewModel *)self _invalidateIsInSelectMode];
     [(PXStoryViewModel *)self _invalidateLegibilityOverlayOpacity];
     [(PXStoryViewModel *)self _invalidatePhotosGridEffectProvider];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
@@ -1730,35 +1730,35 @@ id __51__PXStoryViewModel__updatePhotosGridEffectProvider__block_invoke_621(uint
   v4 = +[PXStorySettings sharedInstance];
   if ([v4 isHUDEnabled])
   {
-    v3 = [v4 isHUDVisible];
+    isHUDVisible = [v4 isHUDVisible];
   }
 
   else
   {
-    v3 = 0;
+    isHUDVisible = 0;
   }
 
-  [(PXStoryViewModel *)self setIsHUDVisible:v3];
+  [(PXStoryViewModel *)self setIsHUDVisible:isHUDVisible];
   -[PXStoryViewModel setDiagnosticHUDType:](self, "setDiagnosticHUDType:", [v4 defaultHUDType]);
 }
 
 - (void)_invalidateDiagnosticHUDState
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDiagnosticHUDState];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDiagnosticHUDState];
 }
 
 - (void)_updateErrorIndicator
 {
   v33[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryViewModel *)self errorRepository];
-  v4 = [v3 errors];
+  errorRepository = [(PXStoryViewModel *)self errorRepository];
+  errors = [errorRepository errors];
 
   v5 = +[PXStorySettings sharedInstance];
-  if (![v4 count])
+  if (![errors count])
   {
-    v6 = [v5 simulatedError];
-    switch(v6)
+    simulatedError = [v5 simulatedError];
+    switch(simulatedError)
     {
       case 3:
         v13 = PXStoryPublicErrorCreateSimulatedCriticalError();
@@ -1781,36 +1781,36 @@ id __51__PXStoryViewModel__updatePhotosGridEffectProvider__block_invoke_621(uint
 
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:{1, v31, v32, v33[0]}];
 
-    v4 = v15;
+    errors = v15;
   }
 
 LABEL_9:
-  if ([v4 count])
+  if ([errors count])
   {
-    v16 = PXStoryPublicErrorForErrors(v4);
+    v16 = PXStoryPublicErrorForErrors(errors);
     v17 = +[PXRootSettings sharedInstance];
-    v18 = [v17 canShowInternalUI];
+    canShowInternalUI = [v17 canShowInternalUI];
 
-    if (v18)
+    if (canShowInternalUI)
     {
       if (!v16)
       {
-        v16 = PXStoryInternalErrorForErrors(v4);
+        v16 = PXStoryInternalErrorForErrors(errors);
       }
 
       v19 = objc_alloc_init(MEMORY[0x1E695DF90]);
-      v20 = [v16 localizedFailureReason];
-      [v19 setObject:v20 forKeyedSubscript:*MEMORY[0x1E696A588]];
+      localizedFailureReason = [v16 localizedFailureReason];
+      [v19 setObject:localizedFailureReason forKeyedSubscript:*MEMORY[0x1E696A588]];
 
-      v21 = [v16 localizedRecoverySuggestion];
-      [v19 setObject:v21 forKeyedSubscript:*MEMORY[0x1E696A598]];
+      localizedRecoverySuggestion = [v16 localizedRecoverySuggestion];
+      [v19 setObject:localizedRecoverySuggestion forKeyedSubscript:*MEMORY[0x1E696A598]];
 
       [v19 setObject:v16 forKeyedSubscript:*MEMORY[0x1E696AA08]];
-      v22 = [v16 localizedRecoveryOptions];
-      v23 = v22;
-      if (v22)
+      localizedRecoveryOptions = [v16 localizedRecoveryOptions];
+      v23 = localizedRecoveryOptions;
+      if (localizedRecoveryOptions)
       {
-        v24 = v22;
+        v24 = localizedRecoveryOptions;
       }
 
       else
@@ -1818,16 +1818,16 @@ LABEL_9:
         v24 = MEMORY[0x1E695E0F0];
       }
 
-      v25 = [(PXStoryViewModel *)self _internalRecoveryOptions];
-      v26 = [v24 arrayByAddingObjectsFromArray:v25];
+      _internalRecoveryOptions = [(PXStoryViewModel *)self _internalRecoveryOptions];
+      v26 = [v24 arrayByAddingObjectsFromArray:_internalRecoveryOptions];
       [v19 setObject:v26 forKeyedSubscript:*MEMORY[0x1E696A590]];
 
       v27 = [[_PXStoryInternalErrorRecoveryAttempter alloc] initWithRecoveryAttempter:self];
       [v19 setObject:v27 forKeyedSubscript:*MEMORY[0x1E696A8A8]];
 
       v28 = MEMORY[0x1E696ABC0];
-      v29 = [v16 domain];
-      v30 = [v28 errorWithDomain:v29 code:objc_msgSend(v16 userInfo:{"code"), v19}];
+      domain = [v16 domain];
+      v30 = [v28 errorWithDomain:domain code:objc_msgSend(v16 userInfo:{"code"), v19}];
 
       v16 = v30;
     }
@@ -1844,8 +1844,8 @@ LABEL_9:
 
 - (void)_invalidateErrorIndicator
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateErrorIndicator];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateErrorIndicator];
 }
 
 - (void)_updateShouldPreventDisplaySleep
@@ -1866,8 +1866,8 @@ LABEL_9:
 
 - (void)_invalidateShouldPreventDisplaySleep
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateShouldPreventDisplaySleep];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateShouldPreventDisplaySleep];
 }
 
 - (void)_updateShouldAutoHideMuteToggleButton
@@ -1887,8 +1887,8 @@ LABEL_9:
 
 - (void)_invalidateShouldAutoHideMuteToggleButton
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateShouldAutoHideMuteToggleButton];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateShouldAutoHideMuteToggleButton];
 }
 
 - (void)_resetShouldAutoHideMuteToggleButton
@@ -1901,12 +1901,12 @@ LABEL_9:
 - (void)_updateShouldAutoHideChrome
 {
   v3 = +[PXStorySettings sharedInstance];
-  v4 = [v3 chromeAllowAutoHide];
+  chromeAllowAutoHide = [v3 chromeAllowAutoHide];
 
-  if (v4 && [(PXStoryViewModel *)self wantsChromeVisible])
+  if (chromeAllowAutoHide && [(PXStoryViewModel *)self wantsChromeVisible])
   {
-    v6 = [(PXStoryViewModel *)self mainModel];
-    if (![v6 isActuallyPlaying] || -[PXStoryViewModel wantsRelatedOverlayVisible](self, "wantsRelatedOverlayVisible") || -[PXStoryViewModel shouldSimplifyUIForAccessibility](self, "shouldSimplifyUIForAccessibility") || -[PXStoryViewModel isAnyMenuOpen](self, "isAnyMenuOpen") || -[PXStoryViewModel isUserPerformingRemoteGesture](self, "isUserPerformingRemoteGesture"))
+    mainModel = [(PXStoryViewModel *)self mainModel];
+    if (![mainModel isActuallyPlaying] || -[PXStoryViewModel wantsRelatedOverlayVisible](self, "wantsRelatedOverlayVisible") || -[PXStoryViewModel shouldSimplifyUIForAccessibility](self, "shouldSimplifyUIForAccessibility") || -[PXStoryViewModel isAnyMenuOpen](self, "isAnyMenuOpen") || -[PXStoryViewModel isUserPerformingRemoteGesture](self, "isUserPerformingRemoteGesture"))
     {
       v5 = 0;
     }
@@ -1928,8 +1928,8 @@ LABEL_9:
 
 - (void)_invalidateShouldAutoHideChrome
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateShouldAutoHideChrome];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateShouldAutoHideChrome];
 }
 
 - (void)_updateIsAnyMenuOpen
@@ -1941,26 +1941,26 @@ LABEL_9:
 
 - (void)_invalidateIsAnyMenuOpen
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsAnyMenuOpen];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsAnyMenuOpen];
 }
 
 - (void)_updateWantsRelatedOverlayScrollable
 {
   if ([(PXStoryViewModel *)self wantsRelatedOverlayVisible])
   {
-    v4 = [(PXStoryViewModel *)self relatedModels];
-    if ([v4 count])
+    relatedModels = [(PXStoryViewModel *)self relatedModels];
+    if ([relatedModels count])
     {
-      v3 = [(PXStoryViewModel *)self allowsRelated];
+      allowsRelated = [(PXStoryViewModel *)self allowsRelated];
     }
 
     else
     {
-      v3 = 0;
+      allowsRelated = 0;
     }
 
-    [(PXStoryViewModel *)self setWantsRelatedOverlayScrollable:v3];
+    [(PXStoryViewModel *)self setWantsRelatedOverlayScrollable:allowsRelated];
   }
 
   else
@@ -1972,8 +1972,8 @@ LABEL_9:
 
 - (void)_invalidateWantsRelatedOverlayScrollable
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateWantsRelatedOverlayScrollable];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateWantsRelatedOverlayScrollable];
 }
 
 - (void)_updateLegibilityOverlayOpacity
@@ -1993,78 +1993,78 @@ LABEL_9:
 
 - (void)_invalidateLegibilityOverlayOpacity
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateLegibilityOverlayOpacity];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateLegibilityOverlayOpacity];
 }
 
 - (void)_updateControllersActiveness
 {
-  v3 = [(PXStoryViewModel *)self isActive];
+  isActive = [(PXStoryViewModel *)self isActive];
   v4 = [(PXStoryViewModel *)self viewMode]== 2;
   v5 = +[PXStorySettings sharedInstance];
-  v6 = [(PXStoryViewModel *)self relatedController];
+  relatedController = [(PXStoryViewModel *)self relatedController];
   v31[0] = MEMORY[0x1E69E9820];
   v31[1] = 3221225472;
   v31[2] = __48__PXStoryViewModel__updateControllersActiveness__block_invoke;
   v31[3] = &unk_1E773E5D8;
-  v34 = v3;
+  v34 = isActive;
   v7 = v5;
   v32 = v7;
-  v33 = self;
-  [v6 performChanges:v31];
+  selfCopy = self;
+  [relatedController performChanges:v31];
 
-  v8 = [(PXStoryViewModel *)self musicPlayer];
+  musicPlayer = [(PXStoryViewModel *)self musicPlayer];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __48__PXStoryViewModel__updateControllersActiveness__block_invoke_2;
   v29[3] = &__block_descriptor_33_e37_v16__0___PXMutableStoryMusicPlayer__8l;
-  v30 = v3;
-  [v8 performChanges:v29];
+  v30 = isActive;
+  [musicPlayer performChanges:v29];
 
-  v9 = [(PXStoryViewModel *)self pacingController];
+  pacingController = [(PXStoryViewModel *)self pacingController];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __48__PXStoryViewModel__updateControllersActiveness__block_invoke_3;
   v26[3] = &__block_descriptor_34_e42_v16__0___PXStoryMutablePacingController__8l;
-  v27 = v3;
+  v27 = isActive;
   v28 = v4;
-  [v9 performChanges:v26];
+  [pacingController performChanges:v26];
 
-  v10 = [(PXStoryViewModel *)self resourcesPreloadingController];
+  resourcesPreloadingController = [(PXStoryViewModel *)self resourcesPreloadingController];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __48__PXStoryViewModel__updateControllersActiveness__block_invoke_4;
   v23[3] = &unk_1E773E640;
-  v25 = v3;
+  v25 = isActive;
   v11 = v7;
   v24 = v11;
-  [v10 performChanges:v23];
+  [resourcesPreloadingController performChanges:v23];
 
-  v12 = [(PXStoryViewModel *)self persistenceController];
+  persistenceController = [(PXStoryViewModel *)self persistenceController];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __48__PXStoryViewModel__updateControllersActiveness__block_invoke_5;
   v20[3] = &unk_1E773E668;
-  v22 = v3;
+  v22 = isActive;
   v21 = v11;
   v13 = v11;
-  [v12 performChanges:v20];
+  [persistenceController performChanges:v20];
 
-  v14 = [(PXStoryViewModel *)self bufferingController];
+  bufferingController = [(PXStoryViewModel *)self bufferingController];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __48__PXStoryViewModel__updateControllersActiveness__block_invoke_6;
   v18[3] = &__block_descriptor_33_e49_v16__0___PXStoryMutableViewBufferingController__8l;
-  v19 = v3;
-  [v14 performChanges:v18];
+  v19 = isActive;
+  [bufferingController performChanges:v18];
 
-  v15 = [(PXStoryViewModel *)self validationController];
+  validationController = [(PXStoryViewModel *)self validationController];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __48__PXStoryViewModel__updateControllersActiveness__block_invoke_7;
   v16[3] = &__block_descriptor_33_e46_v16__0___PXStoryMutableValidationController__8l;
-  v17 = v3;
-  [v15 performChanges:v16];
+  v17 = isActive;
+  [validationController performChanges:v16];
 }
 
 void __48__PXStoryViewModel__updateControllersActiveness__block_invoke(uint64_t a1, void *a2)
@@ -2151,16 +2151,16 @@ void __48__PXStoryViewModel__updateControllersActiveness__block_invoke_5(uint64_
 
 - (void)_invalidateControllersActiveness
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateControllersActiveness];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateControllersActiveness];
 }
 
 - (void)_updateMainModelControllers
 {
-  v11 = [(PXStoryViewModel *)self mainModel];
+  mainModel = [(PXStoryViewModel *)self mainModel];
   if (self->_isAllowedToPlayAnyMusicOrSound)
   {
-    v3 = [[PXStoryMusicPlayer alloc] initWithModel:v11 targetDurationMatchesTimeline:[(PXStoryViewModel *)self assetCollectionForcesAutoReplay]^ 1];
+    v3 = [[PXStoryMusicPlayer alloc] initWithModel:mainModel targetDurationMatchesTimeline:[(PXStoryViewModel *)self assetCollectionForcesAutoReplay]^ 1];
     [(PXStoryViewModel *)self setMusicPlayer:v3];
   }
 
@@ -2171,29 +2171,29 @@ void __48__PXStoryViewModel__updateControllersActiveness__block_invoke_5(uint64_
 
   if (!self->_isAllowedToPlayAnyMusicOrSound)
   {
-    [v11 performChanges:&__block_literal_global_604_157082];
+    [mainModel performChanges:&__block_literal_global_604_157082];
   }
 
   v4 = [PXStoryPacingController alloc];
-  v5 = [(PXStoryViewModel *)self timeSource];
-  v6 = [(PXStoryViewModel *)self musicPlayer];
-  v7 = [(PXStoryPacingController *)v4 initWithModel:v11 timeSource:v5 cueSource:v6];
+  timeSource = [(PXStoryViewModel *)self timeSource];
+  musicPlayer = [(PXStoryViewModel *)self musicPlayer];
+  v7 = [(PXStoryPacingController *)v4 initWithModel:mainModel timeSource:timeSource cueSource:musicPlayer];
   [(PXStoryViewModel *)self setPacingController:v7];
 
-  v8 = [[PXStorySongController alloc] initWithModel:v11];
+  v8 = [[PXStorySongController alloc] initWithModel:mainModel];
   [(PXStoryViewModel *)self setSongController:v8];
 
-  v9 = [[PXStoryPersistenceController alloc] initWithModel:v11];
+  v9 = [[PXStoryPersistenceController alloc] initWithModel:mainModel];
   [(PXStoryViewModel *)self setPersistenceController:v9];
 
-  v10 = [[PXStoryAudioSessionController alloc] initWithModel:v11];
+  v10 = [[PXStoryAudioSessionController alloc] initWithModel:mainModel];
   [(PXStoryViewModel *)self setAudioSessionController:v10];
 }
 
 - (void)_invalidateMainModelControllers
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMainModelControllers];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMainModelControllers];
 }
 
 - (void)_updateViewModelControllers
@@ -2211,15 +2211,15 @@ void __48__PXStoryViewModel__updateControllersActiveness__block_invoke_5(uint64_
   [(PXStoryViewModel *)self setBufferingController:v6];
 
   v7 = [PXStoryMuteStateController alloc];
-  v8 = [(PXStoryViewModel *)self volumeController];
-  v9 = [(PXStoryViewModel *)self userDefaults];
-  v10 = [(PXStoryMuteStateController *)v7 initWithViewModel:self volumeController:v8 userDefaults:v9];
+  volumeController = [(PXStoryViewModel *)self volumeController];
+  userDefaults = [(PXStoryViewModel *)self userDefaults];
+  v10 = [(PXStoryMuteStateController *)v7 initWithViewModel:self volumeController:volumeController userDefaults:userDefaults];
   [(PXStoryViewModel *)self setMuteStateController:v10];
 
   v11 = +[PXStorySettings sharedInstance];
-  LODWORD(v8) = [v11 wantsValidation];
+  LODWORD(volumeController) = [v11 wantsValidation];
 
-  if (v8)
+  if (volumeController)
   {
     v12 = [[PXStoryValidationController alloc] initWithViewModel:self];
     [(PXStoryViewModel *)self setValidationController:v12];
@@ -2228,56 +2228,56 @@ void __48__PXStoryViewModel__updateControllersActiveness__block_invoke_5(uint64_
 
 - (void)_invalidateViewModelControllers
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewModelControllers];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewModelControllers];
 }
 
 - (void)_updateViewLayoutSpec
 {
-  v4 = [(PXStoryViewModel *)self viewLayoutSpecManager];
-  v3 = [v4 viewLayoutSpec];
-  [(PXStoryViewModel *)self setViewLayoutSpec:v3];
+  viewLayoutSpecManager = [(PXStoryViewModel *)self viewLayoutSpecManager];
+  viewLayoutSpec = [viewLayoutSpecManager viewLayoutSpec];
+  [(PXStoryViewModel *)self setViewLayoutSpec:viewLayoutSpec];
 }
 
 - (void)_invalidateViewLayoutSpec
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewLayoutSpec];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewLayoutSpec];
 }
 
 - (void)_updateMainAssetCollection
 {
-  v4 = [(PXStoryViewModel *)self mainModel];
-  v3 = [v4 currentAssetCollection];
-  [(PXStoryViewModel *)self setMainAssetCollection:v3];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  currentAssetCollection = [mainModel currentAssetCollection];
+  [(PXStoryViewModel *)self setMainAssetCollection:currentAssetCollection];
 }
 
 - (void)_invalidateMainAssetCollection
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMainAssetCollection];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMainAssetCollection];
 }
 
 - (void)_updateOutroFractionCompleted
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
-  [v3 outroFractionCompleted];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  [mainModel outroFractionCompleted];
   [(PXStoryViewModel *)self setOutroFractionCompleted:?];
 }
 
 - (void)_invalidateOutroFractionCompleted
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateOutroFractionCompleted];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateOutroFractionCompleted];
 }
 
 - (void)_updatePlaybackDuration
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
-  v4 = v3;
-  if (v3)
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  v4 = mainModel;
+  if (mainModel)
   {
-    [v3 playbackDuration];
+    [mainModel playbackDuration];
   }
 
   else
@@ -2293,18 +2293,18 @@ void __48__PXStoryViewModel__updateControllersActiveness__block_invoke_5(uint64_
 
 - (void)_invalidatePlaybackDuration
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlaybackDuration];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlaybackDuration];
 }
 
 - (void)_updatePlaybackFractionCompleted
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
-  [v3 playbackFractionCompleted];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  [mainModel playbackFractionCompleted];
   [(PXStoryViewModel *)self setPlaybackFractionCompleted:?];
-  if (v3)
+  if (mainModel)
   {
-    [v3 nominalPlaybackTime];
+    [mainModel nominalPlaybackTime];
   }
 
   else
@@ -2320,35 +2320,35 @@ void __48__PXStoryViewModel__updateControllersActiveness__block_invoke_5(uint64_
 
 - (void)_invalidatePlaybackFractionCompleted
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updatePlaybackFractionCompleted];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updatePlaybackFractionCompleted];
 }
 
 - (void)_updateDesiredPlayState
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
-  -[PXStoryViewModel setDesiredPlayState:](self, "setDesiredPlayState:", [v3 desiredPlayState]);
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  -[PXStoryViewModel setDesiredPlayState:](self, "setDesiredPlayState:", [mainModel desiredPlayState]);
 }
 
 - (void)_invalidateDesiredPlayState
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateDesiredPlayState];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateDesiredPlayState];
 }
 
 - (void)_updateViewModeTransition
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
-  v4 = [v3 viewModeTransition];
-  [(PXStoryViewModel *)self setViewModeTransition:v4];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  viewModeTransition = [mainModel viewModeTransition];
+  [(PXStoryViewModel *)self setViewModeTransition:viewModeTransition];
 
-  v5 = [(PXStoryViewModel *)self viewModeTransition];
+  viewModeTransition2 = [(PXStoryViewModel *)self viewModeTransition];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __45__PXStoryViewModel__updateViewModeTransition__block_invoke;
   v6[3] = &unk_1E773E5B0;
   v6[4] = self;
-  [v5 performChanges:v6];
+  [viewModeTransition2 performChanges:v6];
 }
 
 void __45__PXStoryViewModel__updateViewModeTransition__block_invoke(uint64_t a1, void *a2)
@@ -2379,28 +2379,28 @@ void __45__PXStoryViewModel__updateViewModeTransition__block_invoke(uint64_t a1,
 
 - (void)_invalidateViewModeTransition
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewModeTransition];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewModeTransition];
 }
 
 - (void)_updateViewMode
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
-  -[PXStoryViewModel setViewMode:](self, "setViewMode:", [v3 viewMode]);
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  -[PXStoryViewModel setViewMode:](self, "setViewMode:", [mainModel viewMode]);
 }
 
 - (void)_invalidateViewMode
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateViewMode];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateViewMode];
 }
 
 - (void)_updateMainModelProperties
 {
-  v3 = [(PXStoryViewModel *)self mainModel];
+  mainModel = [(PXStoryViewModel *)self mainModel];
   v6 = MEMORY[0x1E69E9820];
-  v7 = v3;
-  v4 = v3;
+  v7 = mainModel;
+  v4 = mainModel;
   v5 = [(PXStoryViewModel *)self modelChangeOrigin:v6];
   [v4 performChanges:&v6 origin:v5];
 }
@@ -2441,33 +2441,33 @@ void __46__PXStoryViewModel__updateMainModelProperties__block_invoke(uint64_t a1
 
 - (void)_invalidateMainModelProperties
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateMainModelProperties];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateMainModelProperties];
 }
 
 - (void)_updateSpecManager
 {
-  v5 = [(PXStoryViewModel *)self viewLayoutSpecManager];
-  v3 = [(PXStoryViewModel *)self mainConfiguration];
-  [v5 setStoryConfigurationOptions:{objc_msgSend(v3, "options")}];
+  viewLayoutSpecManager = [(PXStoryViewModel *)self viewLayoutSpecManager];
+  mainConfiguration = [(PXStoryViewModel *)self mainConfiguration];
+  [viewLayoutSpecManager setStoryConfigurationOptions:{objc_msgSend(mainConfiguration, "options")}];
 
-  v4 = [(PXStoryViewModel *)self customGeneralChromeTitleConfiguration];
-  [v5 setCustomGeneralChromeTitleConfiguration:v4];
+  customGeneralChromeTitleConfiguration = [(PXStoryViewModel *)self customGeneralChromeTitleConfiguration];
+  [viewLayoutSpecManager setCustomGeneralChromeTitleConfiguration:customGeneralChromeTitleConfiguration];
 }
 
 - (void)_invalidateSpecManager
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateSpecManager];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateSpecManager];
 }
 
-- (void)setIsUserPerformingRemoteGesture:(BOOL)a3
+- (void)setIsUserPerformingRemoteGesture:(BOOL)gesture
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_isUserPerformingRemoteGesture != a3)
+  if (self->_isUserPerformingRemoteGesture != gesture)
   {
-    v3 = a3;
-    self->_isUserPerformingRemoteGesture = a3;
+    gestureCopy = gesture;
+    self->_isUserPerformingRemoteGesture = gesture;
     [(PXStoryViewModel *)self _invalidateShouldAutoHideChrome];
     [(PXStoryViewModel *)self signalChange:0x200000000000000];
     v5 = [(PXStoryViewModel *)self log];
@@ -2478,7 +2478,7 @@ void __46__PXStoryViewModel__updateMainModelProperties__block_invoke(uint64_t a1
       if (os_signpost_enabled(v5))
       {
         v16 = 134217984;
-        v17 = [(PXStoryViewModel *)self logContext];
+        logContext = [(PXStoryViewModel *)self logContext];
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v5, OS_SIGNPOST_INTERVAL_END, v7, "PXStoryViewModelChangedIsUserPerformingRemoteGesture", "Context=%{signpost.telemetry:string2}lu ", &v16, 0xCu);
       }
     }
@@ -2490,11 +2490,11 @@ void __46__PXStoryViewModel__updateMainModelProperties__block_invoke(uint64_t a1
       v10 = v9;
       if (os_signpost_enabled(v8))
       {
-        v11 = [(PXStoryViewModel *)self logContext];
+        logContext2 = [(PXStoryViewModel *)self logContext];
         v16 = 134218240;
-        v17 = v11;
+        logContext = logContext2;
         v18 = 1024;
-        v19 = v3;
+        v19 = gestureCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_EVENT, v10, "PXStoryViewModelChangedIsUserPerformingRemoteGesture", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
@@ -2506,53 +2506,53 @@ void __46__PXStoryViewModel__updateMainModelProperties__block_invoke(uint64_t a1
       v14 = v13;
       if (os_signpost_enabled(v12))
       {
-        v15 = [(PXStoryViewModel *)self logContext];
+        logContext3 = [(PXStoryViewModel *)self logContext];
         v16 = 134218240;
-        v17 = v15;
+        logContext = logContext3;
         v18 = 1024;
-        v19 = v3;
+        v19 = gestureCopy;
         _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PXStoryViewModelChangedIsUserPerformingRemoteGesture", "Context=%{signpost.telemetry:string2}lu %d", &v16, 0x12u);
       }
     }
   }
 }
 
-- (BOOL)checkIfShouldPreventAdvancingAndReturnReason:(id *)a3
+- (BOOL)checkIfShouldPreventAdvancingAndReturnReason:(id *)reason
 {
   if ([(PXStoryViewModel *)self isAnyMenuOpen])
   {
-    if (a3)
+    if (reason)
     {
       v5 = "isAnyMenuOpen";
 LABEL_7:
-      *a3 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v5];
+      *reason = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:v5];
       goto LABEL_8;
     }
 
     goto LABEL_8;
   }
 
-  v6 = [(PXStoryViewModel *)self isScrubbing];
-  if (v6)
+  isScrubbing = [(PXStoryViewModel *)self isScrubbing];
+  if (isScrubbing)
   {
-    if (a3)
+    if (reason)
     {
       v5 = "isScrubbing";
       goto LABEL_7;
     }
 
 LABEL_8:
-    LOBYTE(v6) = 1;
+    LOBYTE(isScrubbing) = 1;
   }
 
-  return v6;
+  return isScrubbing;
 }
 
-- (void)setHighlightedRelatedIndex:(int64_t)a3
+- (void)setHighlightedRelatedIndex:(int64_t)index
 {
-  if (self->_highlightedRelatedIndex != a3)
+  if (self->_highlightedRelatedIndex != index)
   {
-    self->_highlightedRelatedIndex = a3;
+    self->_highlightedRelatedIndex = index;
     [(PXStoryViewModel *)self signalChange:0x100000000000000];
   }
 }
@@ -2570,8 +2570,8 @@ LABEL_8:
 
 - (void)_cancelMuteToggleButtonAutoHideTimer
 {
-  v3 = [(PXStoryViewModel *)self autoHideMuteToggleButtonTimer];
-  [v3 invalidate];
+  autoHideMuteToggleButtonTimer = [(PXStoryViewModel *)self autoHideMuteToggleButtonTimer];
+  [autoHideMuteToggleButtonTimer invalidate];
 
   [(PXStoryViewModel *)self setAutoHideMuteToggleButtonTimer:0];
 }
@@ -2593,9 +2593,9 @@ LABEL_8:
   v7 = [v6 timerWithTimeInterval:0 repeats:&v10 block:v5];
   [(PXStoryViewModel *)self setAutoHideMuteToggleButtonTimer:v7, v10, v11, v12, v13];
 
-  v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  v9 = [(PXStoryViewModel *)self autoHideMuteToggleButtonTimer];
-  [v8 addTimer:v9 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  autoHideMuteToggleButtonTimer = [(PXStoryViewModel *)self autoHideMuteToggleButtonTimer];
+  [mainRunLoop addTimer:autoHideMuteToggleButtonTimer forMode:*MEMORY[0x1E695DA28]];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -2607,12 +2607,12 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
   [WeakRetained _autoHideMuteToggleButton];
 }
 
-- (void)setShouldAutoHideMuteToggleButton:(BOOL)a3
+- (void)setShouldAutoHideMuteToggleButton:(BOOL)button
 {
-  if (self->_shouldAutoHideMuteToggleButton != a3)
+  if (self->_shouldAutoHideMuteToggleButton != button)
   {
-    self->_shouldAutoHideMuteToggleButton = a3;
-    if (a3)
+    self->_shouldAutoHideMuteToggleButton = button;
+    if (button)
     {
       [(PXStoryViewModel *)self _scheduleMuteToggleButtonAutoHide];
     }
@@ -2638,37 +2638,37 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
   [(PXStoryViewModel *)self _resetShouldAutoHideMuteToggleButton];
 }
 
-- (void)setCanShowMuteToggleButtonWhenChromeIsHidden:(BOOL)a3
+- (void)setCanShowMuteToggleButtonWhenChromeIsHidden:(BOOL)hidden
 {
-  if (self->_canShowMuteToggleButtonWhenChromeIsHidden != a3)
+  if (self->_canShowMuteToggleButtonWhenChromeIsHidden != hidden)
   {
-    self->_canShowMuteToggleButtonWhenChromeIsHidden = a3;
+    self->_canShowMuteToggleButtonWhenChromeIsHidden = hidden;
     [(PXStoryViewModel *)self signalChange:0x800000000000000];
 
     [(PXStoryViewModel *)self _invalidateShouldAutoHideMuteToggleButton];
   }
 }
 
-- (void)setVolume:(double)a3
+- (void)setVolume:(double)volume
 {
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
-    self->_volume = a3;
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    [v5 setObject:v6 forKey:@"PXStoryVolume"];
+    self->_volume = volume;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [MEMORY[0x1E696AD98] numberWithDouble:volume];
+    [standardUserDefaults setObject:v6 forKey:@"PXStoryVolume"];
 
     [(PXStoryViewModel *)self _invalidateMainModelProperties];
   }
 }
 
-- (void)setMuted:(BOOL)a3 reason:(int64_t)a4
+- (void)setMuted:(BOOL)muted reason:(int64_t)reason
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (self->_isMuted != a3)
+  if (self->_isMuted != muted)
   {
-    self->_isMuted = a3;
-    self->_lastMutedChangeReason = a4;
+    self->_isMuted = muted;
+    self->_lastMutedChangeReason = reason;
     [(PXStoryViewModel *)self signalChange:0x400000000000000];
     [(PXStoryViewModel *)self _invalidateMainModelProperties];
     [(PXStoryViewModel *)self _invalidateDisplayTitleAndSubtitle];
@@ -2680,9 +2680,9 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
       }
     }
 
-    if ((a4 - 1) <= 3)
+    if ((reason - 1) <= 3)
     {
-      v7 = off_1E773E7E8[a4 - 1];
+      v7 = off_1E773E7E8[reason - 1];
       if (self->_isMuted)
       {
         v8 = @"Muted";
@@ -2705,21 +2705,21 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
   }
 }
 
-- (void)setDiagnosticHUDContentProvider:(id)a3 forType:(int64_t)a4
+- (void)setDiagnosticHUDContentProvider:(id)provider forType:(int64_t)type
 {
-  v6 = a3;
-  v7 = [(PXStoryViewModel *)self diagnosticHUDContentProvidersByType];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v7 setObject:v6 forKey:v8];
+  providerCopy = provider;
+  diagnosticHUDContentProvidersByType = [(PXStoryViewModel *)self diagnosticHUDContentProvidersByType];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [diagnosticHUDContentProvidersByType setObject:providerCopy forKey:v8];
 
   [(PXStoryViewModel *)self signalChange:4096];
 }
 
-- (id)diagnosticHUDContentProviderForType:(int64_t)a3
+- (id)diagnosticHUDContentProviderForType:(int64_t)type
 {
-  v5 = [(PXStoryViewModel *)self diagnosticHUDContentProvidersByType];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [v5 objectForKey:v6];
+  diagnosticHUDContentProvidersByType = [(PXStoryViewModel *)self diagnosticHUDContentProvidersByType];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v7 = [diagnosticHUDContentProvidersByType objectForKey:v6];
   v8 = v7;
   if (v7)
   {
@@ -2728,8 +2728,8 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
 
   else
   {
-    v10 = [(PXStoryViewModel *)self mainModel];
-    v9 = [v10 diagnosticHUDContentProviderForType:a3];
+    mainModel = [(PXStoryViewModel *)self mainModel];
+    v9 = [mainModel diagnosticHUDContentProviderForType:type];
   }
 
   return v9;
@@ -2737,28 +2737,28 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
 
 - (void)_updateHUDSettings
 {
-  v3 = [(PXStoryViewModel *)self isHUDVisible];
-  v4 = [(PXStoryViewModel *)self diagnosticHUDType];
+  isHUDVisible = [(PXStoryViewModel *)self isHUDVisible];
+  diagnosticHUDType = [(PXStoryViewModel *)self diagnosticHUDType];
   v5 = +[PXStorySettings sharedInstance];
-  if (v3 != [v5 isHUDVisible] || objc_msgSend(v5, "defaultHUDType") != v4)
+  if (isHUDVisible != [v5 isHUDVisible] || objc_msgSend(v5, "defaultHUDType") != diagnosticHUDType)
   {
-    [v5 setIsHUDVisible:v3];
-    [v5 setDefaultHUDType:v4];
+    [v5 setIsHUDVisible:isHUDVisible];
+    [v5 setDefaultHUDType:diagnosticHUDType];
     [v5 save];
   }
 }
 
 - (void)_invalidateHUDSettings
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateHUDSettings];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateHUDSettings];
 }
 
-- (void)setDiagnosticHUDType:(int64_t)a3
+- (void)setDiagnosticHUDType:(int64_t)type
 {
-  if (self->_diagnosticHUDType != a3)
+  if (self->_diagnosticHUDType != type)
   {
-    self->_diagnosticHUDType = a3;
+    self->_diagnosticHUDType = type;
     [(PXStoryViewModel *)self signalChange:2048];
     [(PXStoryViewModel *)self _invalidateHUDSettings];
 
@@ -2766,11 +2766,11 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
   }
 }
 
-- (void)setIsHUDVisible:(BOOL)a3
+- (void)setIsHUDVisible:(BOOL)visible
 {
-  if (self->_isHUDVisible != a3)
+  if (self->_isHUDVisible != visible)
   {
-    self->_isHUDVisible = a3;
+    self->_isHUDVisible = visible;
     [(PXStoryViewModel *)self signalChange:1024];
     [(PXStoryViewModel *)self _invalidateHUDSettings];
 
@@ -2778,14 +2778,14 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
   }
 }
 
-- (void)setDisplayedError:(id)a3
+- (void)setDisplayedError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_displayedError != v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (self->_displayedError != errorCopy)
   {
-    v9 = v4;
-    v6 = [(NSError *)v4 isEqual:?];
+    v9 = errorCopy;
+    v6 = [(NSError *)errorCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -2799,21 +2799,21 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
   }
 }
 
-- (void)setShouldShowErrorIndicator:(BOOL)a3
+- (void)setShouldShowErrorIndicator:(BOOL)indicator
 {
-  if (self->_shouldShowErrorIndicator != a3)
+  if (self->_shouldShowErrorIndicator != indicator)
   {
-    self->_shouldShowErrorIndicator = a3;
+    self->_shouldShowErrorIndicator = indicator;
     [(PXStoryViewModel *)self signalChange:0x80000];
   }
 }
 
-- (void)setHasAnyError:(BOOL)a3
+- (void)setHasAnyError:(BOOL)error
 {
-  if (self->_hasAnyError != a3)
+  if (self->_hasAnyError != error)
   {
-    self->_hasAnyError = a3;
-    if (a3)
+    self->_hasAnyError = error;
+    if (error)
     {
       v4 = +[PXRootSettings sharedInstance];
       -[PXStoryViewModel setShouldShowErrorIndicator:](self, "setShouldShowErrorIndicator:", [v4 canShowInternalUI]);
@@ -2827,109 +2827,109 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
   }
 }
 
-- (void)setShowSongInTitleWhenPaused:(BOOL)a3
+- (void)setShowSongInTitleWhenPaused:(BOOL)paused
 {
-  if (self->_showSongInTitleWhenPaused != a3)
+  if (self->_showSongInTitleWhenPaused != paused)
   {
-    self->_showSongInTitleWhenPaused = a3;
+    self->_showSongInTitleWhenPaused = paused;
     [(PXStoryViewModel *)self _invalidateDisplayTitleAndSubtitle];
   }
 }
 
-- (void)setChromeTitleInfo:(id)a3
+- (void)setChromeTitleInfo:(id)info
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_chromeTitleInfo != v5)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (self->_chromeTitleInfo != infoCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryViewChromeTitleInfo *)v5 isEqual:?];
+    v8 = infoCopy;
+    v7 = [(PXStoryViewChromeTitleInfo *)infoCopy isEqual:?];
     v6 = v8;
     if (!v7)
     {
-      objc_storeStrong(&self->_chromeTitleInfo, a3);
+      objc_storeStrong(&self->_chromeTitleInfo, info);
       [(PXStoryViewModel *)self signalChange:0x8000000000000];
       v6 = v8;
     }
   }
 }
 
-- (void)setDisplaySubtitle:(id)a3
+- (void)setDisplaySubtitle:(id)subtitle
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_displaySubtitle != v5)
+  subtitleCopy = subtitle;
+  v6 = subtitleCopy;
+  if (self->_displaySubtitle != subtitleCopy)
   {
-    v8 = v5;
-    v7 = [(NSAttributedString *)v5 isEqual:?];
+    v8 = subtitleCopy;
+    v7 = [(NSAttributedString *)subtitleCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_displaySubtitle, a3);
+      objc_storeStrong(&self->_displaySubtitle, subtitle);
       [(PXStoryViewModel *)self signalChange:0x10000000000000];
       v6 = v8;
     }
   }
 }
 
-- (void)setDisplayTitle:(id)a3
+- (void)setDisplayTitle:(id)title
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_displayTitle != v5)
+  titleCopy = title;
+  v6 = titleCopy;
+  if (self->_displayTitle != titleCopy)
   {
-    v8 = v5;
-    v7 = [(NSAttributedString *)v5 isEqual:?];
+    v8 = titleCopy;
+    v7 = [(NSAttributedString *)titleCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_displayTitle, a3);
+      objc_storeStrong(&self->_displayTitle, title);
       [(PXStoryViewModel *)self signalChange:0x8000000000000];
       v6 = v8;
     }
   }
 }
 
-- (void)setViewControllerDismissalTargetPlacement:(id)a3
+- (void)setViewControllerDismissalTargetPlacement:(id)placement
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_viewControllerDismissalTargetPlacement != v5)
+  placementCopy = placement;
+  v6 = placementCopy;
+  if (self->_viewControllerDismissalTargetPlacement != placementCopy)
   {
-    v8 = v5;
-    v7 = [(PXGItemPlacement *)v5 isEqual:?];
+    v8 = placementCopy;
+    v7 = [(PXGItemPlacement *)placementCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_viewControllerDismissalTargetPlacement, a3);
+      objc_storeStrong(&self->_viewControllerDismissalTargetPlacement, placement);
       [(PXStoryViewModel *)self signalChange:0x2000000000];
       v6 = v8;
     }
   }
 }
 
-- (void)setIsPerformingViewControllerTransition:(BOOL)a3
+- (void)setIsPerformingViewControllerTransition:(BOOL)transition
 {
-  if (self->_isPerformingViewControllerTransition != a3)
+  if (self->_isPerformingViewControllerTransition != transition)
   {
-    self->_isPerformingViewControllerTransition = a3;
+    self->_isPerformingViewControllerTransition = transition;
     [(PXStoryViewModel *)self signalChange:0x1000000000];
 
     [(PXStoryViewModel *)self _invalidateMainModelProperties];
   }
 }
 
-- (void)setShouldPreventDisplaySleep:(BOOL)a3
+- (void)setShouldPreventDisplaySleep:(BOOL)sleep
 {
   v12 = *MEMORY[0x1E69E9840];
-  if (self->_shouldPreventDisplaySleep != a3)
+  if (self->_shouldPreventDisplaySleep != sleep)
   {
-    self->_shouldPreventDisplaySleep = a3;
+    self->_shouldPreventDisplaySleep = sleep;
     [(PXStoryViewModel *)self signalChange:0x20000000];
     v4 = +[PXApplicationState sharedState];
     shouldPreventDisplaySleep = self->_shouldPreventDisplaySleep;
-    v6 = [(PXStoryViewModel *)self preventedDisplaySleepToken];
-    v7 = v6;
+    preventedDisplaySleepToken = [(PXStoryViewModel *)self preventedDisplaySleepToken];
+    v7 = preventedDisplaySleepToken;
     if (shouldPreventDisplaySleep)
     {
 
@@ -2941,9 +2941,9 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
       v8 = [v4 beginDisablingIdleTimerForReason:@"Interactive memory playback (PXStoryViewModel)"];
       [(PXStoryViewModel *)self setPreventedDisplaySleepToken:v8];
 
-      v9 = [(PXStoryViewModel *)self preventedDisplaySleepToken];
+      preventedDisplaySleepToken2 = [(PXStoryViewModel *)self preventedDisplaySleepToken];
 
-      if (!v9)
+      if (!preventedDisplaySleepToken2)
       {
         v10 = PLStoryGetLog();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -2956,9 +2956,9 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
 
     else
     {
-      if (v6)
+      if (preventedDisplaySleepToken)
       {
-        [v4 endDisablingIdleTimer:v6];
+        [v4 endDisablingIdleTimer:preventedDisplaySleepToken];
       }
 
       [(PXStoryViewModel *)self setPreventedDisplaySleepToken:0];
@@ -2968,22 +2968,22 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
 
 - (void)deselectAllGridItems
 {
-  v2 = [(PXStoryViewModel *)self photosGridViewModel];
-  [v2 performChanges:&__block_literal_global_564];
+  photosGridViewModel = [(PXStoryViewModel *)self photosGridViewModel];
+  [photosGridViewModel performChanges:&__block_literal_global_564];
 }
 
 - (void)selectAllGridItems
 {
-  v2 = [(PXStoryViewModel *)self photosGridViewModel];
-  [v2 performChanges:&__block_literal_global_562];
+  photosGridViewModel = [(PXStoryViewModel *)self photosGridViewModel];
+  [photosGridViewModel performChanges:&__block_literal_global_562];
 }
 
 - (BOOL)isModalInPresentation
 {
-  v3 = [(PXStoryViewModel *)self mainConfiguration];
-  v4 = [v3 isAppleMusicPreview];
+  mainConfiguration = [(PXStoryViewModel *)self mainConfiguration];
+  isAppleMusicPreview = [mainConfiguration isAppleMusicPreview];
 
-  if (v4)
+  if (isAppleMusicPreview)
   {
     return 0;
   }
@@ -2993,30 +2993,30 @@ void __53__PXStoryViewModel__scheduleMuteToggleButtonAutoHide__block_invoke(uint
     return 1;
   }
 
-  v6 = [(PXStoryViewModel *)self viewModeTransition];
-  v5 = v6 != 0;
+  viewModeTransition = [(PXStoryViewModel *)self viewModeTransition];
+  v5 = viewModeTransition != 0;
 
   return v5;
 }
 
-- (void)setIsInSelectMode:(BOOL)a3
+- (void)setIsInSelectMode:(BOOL)mode
 {
-  if (self->_isInSelectMode != a3)
+  if (self->_isInSelectMode != mode)
   {
     v10 = v3;
     v11 = v4;
-    self->_isInSelectMode = a3;
+    self->_isInSelectMode = mode;
     [(PXStoryViewModel *)self signalChange:0x200000000];
     if (![(PXStoryViewModel *)self isReadingFromPhotosGridViewModel])
     {
-      v7 = [(PXStoryViewModel *)self photosGridViewModel];
+      photosGridViewModel = [(PXStoryViewModel *)self photosGridViewModel];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __38__PXStoryViewModel_setIsInSelectMode___block_invoke;
       v8[3] = &unk_1E773E588;
-      v9 = a3;
+      modeCopy = mode;
       v8[4] = self;
-      [v7 performChanges:v8];
+      [photosGridViewModel performChanges:v8];
     }
   }
 }
@@ -3038,66 +3038,66 @@ uint64_t __38__PXStoryViewModel_setIsInSelectMode___block_invoke(uint64_t a1, vo
   return result;
 }
 
-- (void)setCanToggleSelectMode:(BOOL)a3
+- (void)setCanToggleSelectMode:(BOOL)mode
 {
-  if (self->_canToggleSelectMode != a3)
+  if (self->_canToggleSelectMode != mode)
   {
-    self->_canToggleSelectMode = a3;
+    self->_canToggleSelectMode = mode;
     [(PXStoryViewModel *)self signalChange:0x100000000];
   }
 }
 
-- (void)setScrubberPosition:(id *)a3
+- (void)setScrubberPosition:(id *)position
 {
-  if (a3->var0 != self->_scrubberPosition.firstSegmentIdentifier || (a3->var1 == self->_scrubberPosition.secondSegmentMixFactor ? (v3 = a3->var2 == self->_scrubberPosition.secondSegmentIdentifier) : (v3 = 0), !v3))
+  if (position->var0 != self->_scrubberPosition.firstSegmentIdentifier || (position->var1 == self->_scrubberPosition.secondSegmentMixFactor ? (v3 = position->var2 == self->_scrubberPosition.secondSegmentIdentifier) : (v3 = 0), !v3))
   {
-    v4 = *&a3->var0;
-    self->_scrubberPosition.secondSegmentIdentifier = a3->var2;
+    v4 = *&position->var0;
+    self->_scrubberPosition.secondSegmentIdentifier = position->var2;
     *&self->_scrubberPosition.firstSegmentIdentifier = v4;
     [(PXStoryViewModel *)self signalChange:0x40000];
   }
 }
 
-- (void)_updateScrubberFeedbackGeneratorWithShouldImpact:(BOOL)a3 shouldPrepare:(BOOL)a4
+- (void)_updateScrubberFeedbackGeneratorWithShouldImpact:(BOOL)impact shouldPrepare:(BOOL)prepare
 {
-  v4 = a4;
-  if (a3)
+  prepareCopy = prepare;
+  if (impact)
   {
-    v6 = [(PXStoryViewModel *)self scrubberFeedbackGenerator];
-    [v6 impactOccurred];
+    scrubberFeedbackGenerator = [(PXStoryViewModel *)self scrubberFeedbackGenerator];
+    [scrubberFeedbackGenerator impactOccurred];
   }
 
-  if (v4)
+  if (prepareCopy)
   {
-    v7 = [(PXStoryViewModel *)self scrubberFeedbackGenerator];
-    [v7 prepare];
+    scrubberFeedbackGenerator2 = [(PXStoryViewModel *)self scrubberFeedbackGenerator];
+    [scrubberFeedbackGenerator2 prepare];
   }
 }
 
-- (void)setIsScrubbing:(BOOL)a3
+- (void)setIsScrubbing:(BOOL)scrubbing
 {
-  if (self->_isScrubbing != a3)
+  if (self->_isScrubbing != scrubbing)
   {
     v15 = v3;
     v16 = v4;
-    v5 = a3;
-    self->_isScrubbing = a3;
-    v7 = [(PXStoryViewModel *)self mainModel];
-    v8 = [v7 timeline];
-    v9 = [v8 firstSegmentIdentifier];
+    scrubbingCopy = scrubbing;
+    self->_isScrubbing = scrubbing;
+    mainModel = [(PXStoryViewModel *)self mainModel];
+    timeline = [mainModel timeline];
+    firstSegmentIdentifier = [timeline firstSegmentIdentifier];
     [(PXStoryViewModel *)self scrubberPosition];
     v10 = *&v13[16 * (v14 > 0.5)];
 
-    v11 = [(PXStoryViewModel *)self desiredPlayState];
-    if (v5 || v9 != v10)
+    desiredPlayState = [(PXStoryViewModel *)self desiredPlayState];
+    if (scrubbingCopy || firstSegmentIdentifier != v10)
     {
-      [(PXStoryViewModel *)self _updateScrubberFeedbackGeneratorWithShouldImpact:0 shouldPrepare:v5];
+      [(PXStoryViewModel *)self _updateScrubberFeedbackGeneratorWithShouldImpact:0 shouldPrepare:scrubbingCopy];
     }
 
     else
     {
-      v12 = v11;
-      [(PXStoryViewModel *)self _updateScrubberFeedbackGeneratorWithShouldImpact:v11 == 1 shouldPrepare:0];
+      v12 = desiredPlayState;
+      [(PXStoryViewModel *)self _updateScrubberFeedbackGeneratorWithShouldImpact:desiredPlayState == 1 shouldPrepare:0];
       if (v12 == 1)
       {
         [(PXStoryViewModel *)self _replayMusic];
@@ -3111,21 +3111,21 @@ uint64_t __38__PXStoryViewModel_setIsInSelectMode___block_invoke(uint64_t a1, vo
 
 - (void)_replayMusic
 {
-  v2 = [(PXStoryViewModel *)self musicPlayer];
-  [v2 performChanges:&__block_literal_global_559];
+  musicPlayer = [(PXStoryViewModel *)self musicPlayer];
+  [musicPlayer performChanges:&__block_literal_global_559];
 }
 
-- (void)rewindToBeginning:(BOOL)a3 rewindMusic:(BOOL)a4
+- (void)rewindToBeginning:(BOOL)beginning rewindMusic:(BOOL)music
 {
-  v7 = [(PXStoryViewModel *)self storyQueue];
+  storyQueue = [(PXStoryViewModel *)self storyQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __50__PXStoryViewModel_rewindToBeginning_rewindMusic___block_invoke;
   v8[3] = &unk_1E773E560;
   v8[4] = self;
-  v9 = a3;
-  v10 = a4;
-  dispatch_async(v7, v8);
+  beginningCopy = beginning;
+  musicCopy = music;
+  dispatch_async(storyQueue, v8);
 }
 
 uint64_t __50__PXStoryViewModel_rewindToBeginning_rewindMusic___block_invoke(uint64_t a1)
@@ -3174,26 +3174,26 @@ void __50__PXStoryViewModel_rewindToBeginning_rewindMusic___block_invoke_2(uint6
   [(PXStoryViewModel *)self performChanges:v2];
 }
 
-- (void)_changeMainModelToRelatedAtIndex:(int64_t)a3 changeOrigin:(unint64_t)a4
+- (void)_changeMainModelToRelatedAtIndex:(int64_t)index changeOrigin:(unint64_t)origin
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = [(PXStoryViewModel *)self requestImmediateNavigationPermission];
-  if (!v7)
+  requestImmediateNavigationPermission = [(PXStoryViewModel *)self requestImmediateNavigationPermission];
+  if (!requestImmediateNavigationPermission)
   {
     PXAssertGetLog();
   }
 
-  v8 = [(PXStoryViewModel *)self mainConfiguration];
-  v9 = [v8 presentingViewController];
+  mainConfiguration = [(PXStoryViewModel *)self mainConfiguration];
+  presentingViewController = [mainConfiguration presentingViewController];
 
-  v10 = [(PXStoryViewModel *)self relatedModels];
-  v11 = [v10 objectAtIndexedSubscript:a3];
+  relatedModels = [(PXStoryViewModel *)self relatedModels];
+  v11 = [relatedModels objectAtIndexedSubscript:index];
 
-  v12 = [v11 timeline];
-  v13 = v12;
-  if (v12)
+  timeline = [v11 timeline];
+  v13 = timeline;
+  if (timeline)
   {
-    [v12 timeRange];
+    [timeline timeRange];
   }
 
   else
@@ -3207,17 +3207,17 @@ void __50__PXStoryViewModel_rewindToBeginning_rewindMusic___block_invoke_2(uint6
 
   if (v14)
   {
-    v15 = [v11 configuration];
-    v16 = [v15 presentingViewController];
-    v17 = v16 == 0;
+    configuration = [v11 configuration];
+    presentingViewController2 = [configuration presentingViewController];
+    v17 = presentingViewController2 == 0;
 
     if (v17)
     {
-      v18 = [v11 configuration];
-      [v18 setPresentingViewController:v9];
+      configuration2 = [v11 configuration];
+      [configuration2 setPresentingViewController:presentingViewController];
     }
 
-    [(PXStoryViewModel *)self setSelectedRelatedIndex:a3];
+    [(PXStoryViewModel *)self setSelectedRelatedIndex:index];
     objc_initWeak(buf, self);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -3226,26 +3226,26 @@ void __50__PXStoryViewModel_rewindToBeginning_rewindMusic___block_invoke_2(uint6
     objc_copyWeak(&v28, buf);
     dispatch_async(MEMORY[0x1E69E96A0], block);
     [(PXStoryViewModel *)self setDidSelectAnyRelated:1];
-    [(PXStoryViewModel *)self _setMainModel:v11 changeOrigin:a4];
-    v19 = [(PXStoryViewModel *)self relatedConfigurations];
-    v20 = [v19 objectAtIndexedSubscript:a3];
+    [(PXStoryViewModel *)self _setMainModel:v11 changeOrigin:origin];
+    relatedConfigurations = [(PXStoryViewModel *)self relatedConfigurations];
+    v20 = [relatedConfigurations objectAtIndexedSubscript:index];
     [(PXStoryViewModel *)self setMainConfiguration:v20];
 
-    v21 = [(PXStoryViewModel *)self mainConfiguration];
-    v22 = [v21 presentingViewController];
-    LODWORD(v19) = v22 == 0;
+    mainConfiguration2 = [(PXStoryViewModel *)self mainConfiguration];
+    presentingViewController3 = [mainConfiguration2 presentingViewController];
+    LODWORD(relatedConfigurations) = presentingViewController3 == 0;
 
-    if (v19)
+    if (relatedConfigurations)
     {
-      v23 = [(PXStoryViewModel *)self mainConfiguration];
-      [v23 setPresentingViewController:v9];
+      mainConfiguration3 = [(PXStoryViewModel *)self mainConfiguration];
+      [mainConfiguration3 setPresentingViewController:presentingViewController];
     }
 
     [(PXStoryViewModel *)self setRelatedConfigurations:0];
     [(PXStoryViewModel *)self setWantsChromeVisible:[(PXStoryViewModel *)self shouldSimplifyUIForAccessibility]];
     [(PXStoryViewModel *)self setWantsRelatedOverlayVisible:0];
     [v11 performChanges:&__block_literal_global_557_157150];
-    [v7 fulfilled];
+    [requestImmediateNavigationPermission fulfilled];
     objc_destroyWeak(&v28);
     objc_destroyWeak(buf);
   }
@@ -3255,14 +3255,14 @@ void __50__PXStoryViewModel_rewindToBeginning_rewindMusic___block_invoke_2(uint6
     v24 = PLStoryGetLog();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_FAULT))
     {
-      v25 = [v11 currentAssetCollection];
-      v26 = [v25 px_cheapLogIdentifier];
+      currentAssetCollection = [v11 currentAssetCollection];
+      px_cheapLogIdentifier = [currentAssetCollection px_cheapLogIdentifier];
       *buf = 138543362;
-      *&buf[4] = v26;
+      *&buf[4] = px_cheapLogIdentifier;
       _os_log_impl(&dword_1A3C1C000, v24, OS_LOG_TYPE_FAULT, "Can't select related for asset collection %{public}@ because it's not ready", buf, 0xCu);
     }
 
-    [v7 cancelled];
+    [requestImmediateNavigationPermission cancelled];
   }
 }
 
@@ -3279,19 +3279,19 @@ void __66__PXStoryViewModel__changeMainModelToRelatedAtIndex_changeOrigin___bloc
   [v2 setTitleOpacity:1.0];
 }
 
-- (void)setSelectedRelatedIndex:(int64_t)a3
+- (void)setSelectedRelatedIndex:(int64_t)index
 {
-  if (self->_selectedRelatedIndex != a3)
+  if (self->_selectedRelatedIndex != index)
   {
-    self->_selectedRelatedIndex = a3;
+    self->_selectedRelatedIndex = index;
     [(PXStoryViewModel *)self signalChange:0x20000000000];
   }
 }
 
 - (void)_navigateToUpNext
 {
-  v3 = [(PXStoryViewModel *)self relatedConfigurations];
-  v4 = [v3 count];
+  relatedConfigurations = [(PXStoryViewModel *)self relatedConfigurations];
+  v4 = [relatedConfigurations count];
 
   if (v4)
   {
@@ -3345,18 +3345,18 @@ void __34__PXStoryViewModel_autoPlayUpNext__block_invoke_2(uint64_t a1)
   [WeakRetained _navigateToUpNext];
 }
 
-- (void)setMainConfiguration:(id)a3
+- (void)setMainConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_mainConfiguration != v5)
+  configurationCopy = configuration;
+  v6 = configurationCopy;
+  if (self->_mainConfiguration != configurationCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryConfiguration *)v5 isEqual:?];
+    v8 = configurationCopy;
+    v7 = [(PXStoryConfiguration *)configurationCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_mainConfiguration, a3);
+      objc_storeStrong(&self->_mainConfiguration, configuration);
       [(PXStoryViewModel *)self _invalidateSpecManager];
       [(PXStoryViewModel *)self signalChange:128];
       v6 = v8;
@@ -3364,27 +3364,27 @@ void __34__PXStoryViewModel_autoPlayUpNext__block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)setRelatedConfigurations:(id)a3
+- (void)setRelatedConfigurations:(id)configurations
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_relatedConfigurations != v4 && ([(NSArray *)v4 isEqual:?]& 1) == 0)
+  configurationsCopy = configurations;
+  v5 = configurationsCopy;
+  if (self->_relatedConfigurations != configurationsCopy && ([(NSArray *)configurationsCopy isEqual:?]& 1) == 0)
   {
     v6 = [(NSArray *)v5 copy];
     relatedConfigurations = self->_relatedConfigurations;
     self->_relatedConfigurations = v6;
 
     [(PXStoryViewModel *)self signalChange:512];
-    v8 = [(PXStoryViewModel *)self recentlyUsedFlexSongIDs];
-    v9 = [v8 allObjects];
+    recentlyUsedFlexSongIDs = [(PXStoryViewModel *)self recentlyUsedFlexSongIDs];
+    allObjects = [recentlyUsedFlexSongIDs allObjects];
 
-    v10 = [(PXStoryViewModel *)self recentlyUsedAppleMusicSongIDs];
-    v11 = [v10 allObjects];
+    recentlyUsedAppleMusicSongIDs = [(PXStoryViewModel *)self recentlyUsedAppleMusicSongIDs];
+    allObjects2 = [recentlyUsedAppleMusicSongIDs allObjects];
 
-    v12 = [(PXStoryViewModel *)self extendedTraitCollection];
-    v13 = v9;
-    v14 = v11;
-    v15 = v12;
+    extendedTraitCollection = [(PXStoryViewModel *)self extendedTraitCollection];
+    v13 = allObjects;
+    v14 = allObjects2;
+    v15 = extendedTraitCollection;
     PXMap();
   }
 }
@@ -3442,127 +3442,127 @@ void __45__PXStoryViewModel_setRelatedConfigurations___block_invoke_554(uint64_t
   }
 }
 
-- (void)setValidationController:(id)a3
+- (void)setValidationController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   validationController = self->_validationController;
-  if (validationController != v5)
+  if (validationController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXStoryController *)validationController performChanges:&__block_literal_global_553];
-    objc_storeStrong(&self->_validationController, a3);
+    objc_storeStrong(&self->_validationController, controller);
     [(PXStoryViewModel *)self _invalidateControllersActiveness];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setBufferingController:(id)a3
+- (void)setBufferingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   bufferingController = self->_bufferingController;
-  if (bufferingController != v5)
+  if (bufferingController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXStoryController *)bufferingController performChanges:&__block_literal_global_550];
-    objc_storeStrong(&self->_bufferingController, a3);
+    objc_storeStrong(&self->_bufferingController, controller);
     [(PXStoryViewModel *)self _invalidateControllersActiveness];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setPersistenceController:(id)a3
+- (void)setPersistenceController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   persistenceController = self->_persistenceController;
-  if (persistenceController != v5)
+  if (persistenceController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXStoryController *)persistenceController performChanges:&__block_literal_global_547];
-    objc_storeStrong(&self->_persistenceController, a3);
+    objc_storeStrong(&self->_persistenceController, controller);
     [(PXStoryViewModel *)self _invalidateControllersActiveness];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setAudioSessionController:(id)a3
+- (void)setAudioSessionController:(id)controller
 {
-  v5 = a3;
-  if (self->_audioSessionController != v5)
+  controllerCopy = controller;
+  if (self->_audioSessionController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_audioSessionController, a3);
-    v5 = v6;
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_audioSessionController, controller);
+    controllerCopy = v6;
   }
 }
 
-- (void)setResourcesPreloadingController:(id)a3
+- (void)setResourcesPreloadingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   resourcesPreloadingController = self->_resourcesPreloadingController;
-  if (resourcesPreloadingController != v5)
+  if (resourcesPreloadingController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXStoryController *)resourcesPreloadingController performChanges:&__block_literal_global_544_157155];
-    objc_storeStrong(&self->_resourcesPreloadingController, a3);
+    objc_storeStrong(&self->_resourcesPreloadingController, controller);
     [(PXStoryViewModel *)self _invalidateControllersActiveness];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setPacingController:(id)a3
+- (void)setPacingController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   pacingController = self->_pacingController;
-  if (pacingController != v5)
+  if (pacingController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXStoryController *)pacingController performChanges:&__block_literal_global_541_157156];
-    objc_storeStrong(&self->_pacingController, a3);
+    objc_storeStrong(&self->_pacingController, controller);
     [(PXStoryViewModel *)self _invalidateControllersActiveness];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setMusicPlayer:(id)a3
+- (void)setMusicPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   musicPlayer = self->_musicPlayer;
-  if (musicPlayer != v5)
+  if (musicPlayer != playerCopy)
   {
-    v7 = v5;
+    v7 = playerCopy;
     [(PXStoryMusicPlayer *)musicPlayer unregisterChangeObserver:self context:MusicPlayerObservationContext];
     [(PXStoryMusicPlayer *)self->_musicPlayer performChanges:&__block_literal_global_538];
-    objc_storeStrong(&self->_musicPlayer, a3);
+    objc_storeStrong(&self->_musicPlayer, player);
     [(PXStoryMusicPlayer *)self->_musicPlayer registerChangeObserver:self context:MusicPlayerObservationContext];
     [(PXStoryViewModel *)self _invalidateControllersActiveness];
-    v5 = v7;
+    playerCopy = v7;
   }
 }
 
-- (void)setRelatedController:(id)a3
+- (void)setRelatedController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   relatedController = self->_relatedController;
-  if (relatedController != v5)
+  if (relatedController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(PXStoryController *)relatedController performChanges:&__block_literal_global_535];
-    objc_storeStrong(&self->_relatedController, a3);
+    objc_storeStrong(&self->_relatedController, controller);
     [(PXStoryViewModel *)self _invalidateControllersActiveness];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
 - (void)liveResizeDidEnd
 {
-  v2 = [(PXStoryViewModel *)self mainModel];
-  [v2 performChanges:&__block_literal_global_532];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  [mainModel performChanges:&__block_literal_global_532];
 }
 
 - (void)liveResizeWillStart
 {
-  v2 = [(PXStoryViewModel *)self mainModel];
-  [v2 performChanges:&__block_literal_global_530];
+  mainModel = [(PXStoryViewModel *)self mainModel];
+  [mainModel performChanges:&__block_literal_global_530];
 }
 
 void __32__PXStoryViewModel_cycleHUDType__block_invoke(uint64_t a1, void *a2)
@@ -3611,24 +3611,24 @@ void __29__PXStoryViewModel_toggleHUD__block_invoke(uint64_t a1, void *a2)
   [(PXStoryViewModel *)self setWantsChromeVisible:v3];
 }
 
-- (BOOL)skipToBeginningOfSegmentWithIdentifier:(int64_t)a3
+- (BOOL)skipToBeginningOfSegmentWithIdentifier:(int64_t)identifier
 {
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v4 = [(PXStoryViewModel *)self mainModel];
+  mainModel = [(PXStoryViewModel *)self mainModel];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __59__PXStoryViewModel_skipToBeginningOfSegmentWithIdentifier___block_invoke;
   v6[3] = &unk_1E773E3D8;
   v6[4] = &v7;
-  v6[5] = a3;
-  [v4 performChanges:v6];
+  v6[5] = identifier;
+  [mainModel performChanges:v6];
 
-  LOBYTE(a3) = *(v8 + 24);
+  LOBYTE(identifier) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
-  return a3;
+  return identifier;
 }
 
 uint64_t __59__PXStoryViewModel_skipToBeginningOfSegmentWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -3638,35 +3638,35 @@ uint64_t __59__PXStoryViewModel_skipToBeginningOfSegmentWithIdentifier___block_i
   return result;
 }
 
-- (BOOL)skipToSegmentWithOffset:(int64_t)a3 byTappingEdge:(BOOL)a4
+- (BOOL)skipToSegmentWithOffset:(int64_t)offset byTappingEdge:(BOOL)edge
 {
-  v4 = a4;
+  edgeCopy = edge;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
   v18 = 0;
-  v8 = [(PXStoryViewModel *)self mainModel];
+  mainModel = [(PXStoryViewModel *)self mainModel];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_invoke;
   v14[3] = &unk_1E773E3D8;
   v14[4] = &v15;
-  v14[5] = a3;
-  [v8 performChanges:v14];
+  v14[5] = offset;
+  [mainModel performChanges:v14];
 
   if (*(v16 + 24) == 1)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF00]);
     [(PXStoryViewModel *)self setLastSkipSegmentActionDate:v9];
 
-    if (v4)
+    if (edgeCopy)
     {
-      if (a3 <= 0)
+      if (offset <= 0)
       {
-        if ((a3 & 0x8000000000000000) == 0)
+        if ((offset & 0x8000000000000000) == 0)
         {
-          v13 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v13 handleFailureInMethod:a2 object:self file:@"PXStoryViewModel.m" lineNumber:1141 description:@"Code which should be unreachable has been reached"];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewModel.m" lineNumber:1141 description:@"Code which should be unreachable has been reached"];
 
           abort();
         }
@@ -3702,60 +3702,60 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   [(PXStoryViewModel *)self setDesiredPlayState:v3];
 }
 
-- (void)setIsPerformingCrossfadeTransitionToRelated:(BOOL)a3
+- (void)setIsPerformingCrossfadeTransitionToRelated:(BOOL)related
 {
-  if (self->_isPerformingCrossfadeTransitionToRelated != a3)
+  if (self->_isPerformingCrossfadeTransitionToRelated != related)
   {
-    self->_isPerformingCrossfadeTransitionToRelated = a3;
+    self->_isPerformingCrossfadeTransitionToRelated = related;
     [(PXStoryViewModel *)self signalChange:0x20000000000000];
   }
 }
 
-- (void)setEdgeToHighlight:(unint64_t)a3
+- (void)setEdgeToHighlight:(unint64_t)highlight
 {
-  if (self->_edgeToHighlight != a3)
+  if (self->_edgeToHighlight != highlight)
   {
-    self->_edgeToHighlight = a3;
+    self->_edgeToHighlight = highlight;
     [(PXStoryViewModel *)self signalChange:0x80000000];
   }
 }
 
-- (void)setLastSkipSegmentActionDate:(id)a3
+- (void)setLastSkipSegmentActionDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   if (![(NSDate *)self->_lastSkipSegmentActionDate isEqualToDate:?])
   {
-    objc_storeStrong(&self->_lastSkipSegmentActionDate, a3);
+    objc_storeStrong(&self->_lastSkipSegmentActionDate, date);
     [(PXStoryViewModel *)self signalChange:0x4000000];
   }
 }
 
-- (void)_completeClose:(id)a3
+- (void)_completeClose:(id)close
 {
-  (*(a3 + 2))(a3, self->_currentClosePermission);
+  (*(close + 2))(close, self->_currentClosePermission);
   currentClosePermission = self->_currentClosePermission;
   self->_currentClosePermission = 0;
 }
 
-- (void)setCurrentClosePermission:(id)a3
+- (void)setCurrentClosePermission:(id)permission
 {
-  v4 = a3;
+  permissionCopy = permission;
   [(PXPhotosNavigationPermission *)self->_currentClosePermission cancelled];
   currentClosePermission = self->_currentClosePermission;
-  self->_currentClosePermission = v4;
+  self->_currentClosePermission = permissionCopy;
 }
 
 - (BOOL)hasCurrentClosePermission
 {
-  v2 = [(PXStoryViewModel *)self currentClosePermission];
-  v3 = v2 != 0;
+  currentClosePermission = [(PXStoryViewModel *)self currentClosePermission];
+  v3 = currentClosePermission != 0;
 
   return v3;
 }
 
-- (void)setViewEnvironmentModel:(id)a3
+- (void)setViewEnvironmentModel:(id)model
 {
-  obj = a3;
+  obj = model;
   WeakRetained = objc_loadWeakRetained(&self->_viewEnvironmentModel);
   if (WeakRetained == obj)
   {
@@ -3772,14 +3772,14 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setRelatedModels:(id)a3
+- (void)setRelatedModels:(id)models
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_relatedModels != v4)
+  modelsCopy = models;
+  v5 = modelsCopy;
+  if (self->_relatedModels != modelsCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = modelsCopy;
+    v6 = [(NSArray *)modelsCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -3794,33 +3794,33 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)_setMainModel:(id)a3 changeOrigin:(unint64_t)a4
+- (void)_setMainModel:(id)model changeOrigin:(unint64_t)origin
 {
   v47 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (self->_mainModel != v7 && ([(PXStoryModel *)v7 isEqual:?]& 1) == 0)
+  modelCopy = model;
+  v8 = modelCopy;
+  if (self->_mainModel != modelCopy && ([(PXStoryModel *)modelCopy isEqual:?]& 1) == 0)
   {
     [(PXStoryModel *)self->_mainModel unregisterChangeObserver:self context:MainModelObservationContext_157007];
-    objc_storeStrong(&self->_mainModel, a3);
+    objc_storeStrong(&self->_mainModel, model);
     [(PXStoryModel *)self->_mainModel registerChangeObserver:self context:MainModelObservationContext_157007];
     [(PXStoryViewModel *)self signalChange:64];
-    v9 = [(PXStoryModel *)self->_mainModel currentAssetCollection];
-    if (a4 == 2)
+    currentAssetCollection = [(PXStoryModel *)self->_mainModel currentAssetCollection];
+    if (origin == 2)
     {
       v10 = 0;
       v11 = @"autoPlayRelated";
       v12 = @"com.apple.photos.memory.interactiveMemoryFullscreenPlaybackStartedByAutoplayedRelated";
     }
 
-    else if (a4 == 1)
+    else if (origin == 1)
     {
       v10 = 0;
       v11 = @"userSelectedRelated";
       v12 = @"com.apple.photos.memory.interactiveMemoryFullscreenPlaybackStartedByUserSelectingRelated";
     }
 
-    else if (a4)
+    else if (origin)
     {
       v12 = 0;
       v11 = 0;
@@ -3836,16 +3836,16 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
 
     v13 = PLStoryGetLog();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v9)
+    if (currentAssetCollection)
     {
       if (v14)
       {
-        v15 = [v9 px_cheapLogIdentifier];
-        v16 = [v9 uuid];
+        px_cheapLogIdentifier = [currentAssetCollection px_cheapLogIdentifier];
+        uuid = [currentAssetCollection uuid];
         *buf = 138543874;
-        v42 = v15;
+        v42 = px_cheapLogIdentifier;
         v43 = 2114;
-        v44 = v16;
+        v44 = uuid;
         v45 = 2114;
         v46 = v11;
         _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "Started fullscreen playback for asset collection==%{public}@, uuid==%{public}@, origin==%{public}@", buf, 0x20u);
@@ -3859,13 +3859,13 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "Started fullscreen playback for arbitrary set of assets, origin==%{public}@", buf, 0xCu);
     }
 
-    v17 = [(PXStoryModel *)self->_mainModel configuration];
-    if ([v17 isAllowedToPlayAnyMusicOrSound])
+    configuration = [(PXStoryModel *)self->_mainModel configuration];
+    if ([configuration isAllowedToPlayAnyMusicOrSound])
     {
       v18 = +[PXStorySettings sharedInstance];
-      v19 = [v18 appleMusicPromptTrigger];
+      appleMusicPromptTrigger = [v18 appleMusicPromptTrigger];
 
-      if (v19 == 1)
+      if (appleMusicPromptTrigger == 1)
       {
         [PXAppleMusicPrompter showPromptsIfNeededWithCompletion:0];
       }
@@ -3891,17 +3891,17 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
       v20 = v24;
     }
 
-    v26 = [(PXStoryModel *)self->_mainModel untruncatedCuratedAssets];
-    v27 = v26;
-    if (v26)
+    untruncatedCuratedAssets = [(PXStoryModel *)self->_mainModel untruncatedCuratedAssets];
+    v27 = untruncatedCuratedAssets;
+    if (untruncatedCuratedAssets)
     {
-      v28 = [v26 count];
+      v28 = [untruncatedCuratedAssets count];
     }
 
     else
     {
-      v29 = [(PXStoryModel *)self->_mainModel curatedAssets];
-      v28 = [v29 count];
+      curatedAssets = [(PXStoryModel *)self->_mainModel curatedAssets];
+      v28 = [curatedAssets count];
     }
 
     v30 = [MEMORY[0x1E6991F28] bucketNameForInteger:v28 bucketLimits:{0, 10, 50, 100, 200, 300, 500, 1000, 2000, 5000, 10000, 20000, 0}];
@@ -3914,8 +3914,8 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
     v35 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
     [v32 sendEvent:v31 withPayload:v35];
 
-    v36 = [MEMORY[0x1E695DF00] date];
-    [(PXStoryViewModel *)self setLastMainModelChangeDate:v36];
+    date = [MEMORY[0x1E695DF00] date];
+    [(PXStoryViewModel *)self setLastMainModelChangeDate:date];
 
     [(PXStoryViewModel *)self _invalidateMainModelProperties];
     [(PXStoryViewModel *)self _invalidateDesiredPlayState];
@@ -3931,13 +3931,13 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setActionPerformer:(id)a3
+- (void)setActionPerformer:(id)performer
 {
   v7 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  performerCopy = performer;
   WeakRetained = objc_loadWeakRetained(&self->_actionPerformer);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != performerCopy)
   {
     v6 = objc_loadWeakRetained(&self->_actionPerformer);
 
@@ -3946,22 +3946,22 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
       PXAssertGetLog();
     }
 
-    objc_storeWeak(&self->_actionPerformer, v4);
+    objc_storeWeak(&self->_actionPerformer, performerCopy);
   }
 }
 
-- (void)setViewLayoutSpec:(id)a3
+- (void)setViewLayoutSpec:(id)spec
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_viewLayoutSpec != v5)
+  specCopy = spec;
+  v6 = specCopy;
+  if (self->_viewLayoutSpec != specCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryViewLayoutSpec *)v5 isEqual:?];
+    v8 = specCopy;
+    v7 = [(PXStoryViewLayoutSpec *)specCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_viewLayoutSpec, a3);
+      objc_storeStrong(&self->_viewLayoutSpec, spec);
       [(PXStoryViewModel *)self _invalidateDisplayTitleAndSubtitle];
       [(PXStoryViewModel *)self signalChange:32];
       v6 = v8;
@@ -3969,27 +3969,27 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setMainAssetCollection:(id)a3
+- (void)setMainAssetCollection:(id)collection
 {
-  v5 = a3;
-  if (self->_mainAssetCollection != v5)
+  collectionCopy = collection;
+  if (self->_mainAssetCollection != collectionCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mainAssetCollection, a3);
+    v6 = collectionCopy;
+    objc_storeStrong(&self->_mainAssetCollection, collection);
     [(PXStoryViewModel *)self _invalidateDisplayTitleAndSubtitle];
     [(PXStoryViewModel *)self signalChange:16];
-    v5 = v6;
+    collectionCopy = v6;
   }
 }
 
-- (void)setCustomGeneralChromeTitleConfiguration:(id)a3
+- (void)setCustomGeneralChromeTitleConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_customGeneralChromeTitleConfiguration != v4)
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (self->_customGeneralChromeTitleConfiguration != configurationCopy)
   {
-    v9 = v4;
-    v6 = [(PXStoryViewChromeTitleConfiguration *)v4 isEqual:?];
+    v9 = configurationCopy;
+    v6 = [(PXStoryViewChromeTitleConfiguration *)configurationCopy isEqual:?];
     v5 = v9;
     if (!v6)
     {
@@ -4003,92 +4003,92 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setBottomGradientLegibilityOverlayOpacity:(double)a3
+- (void)setBottomGradientLegibilityOverlayOpacity:(double)opacity
 {
-  if (self->_bottomGradientLegibilityOverlayOpacity != a3)
+  if (self->_bottomGradientLegibilityOverlayOpacity != opacity)
   {
-    self->_bottomGradientLegibilityOverlayOpacity = a3;
+    self->_bottomGradientLegibilityOverlayOpacity = opacity;
     [(PXStoryViewModel *)self signalChange:0x100000000000];
   }
 }
 
-- (void)setTopGradientLegibilityOverlayOpacity:(double)a3
+- (void)setTopGradientLegibilityOverlayOpacity:(double)opacity
 {
-  if (self->_topGradientLegibilityOverlayOpacity != a3)
+  if (self->_topGradientLegibilityOverlayOpacity != opacity)
   {
-    self->_topGradientLegibilityOverlayOpacity = a3;
+    self->_topGradientLegibilityOverlayOpacity = opacity;
     [(PXStoryViewModel *)self signalChange:0x80000000000];
   }
 }
 
-- (void)setSolidLegibilityOverlayOpacity:(double)a3
+- (void)setSolidLegibilityOverlayOpacity:(double)opacity
 {
-  if (self->_solidLegibilityOverlayOpacity != a3)
+  if (self->_solidLegibilityOverlayOpacity != opacity)
   {
-    self->_solidLegibilityOverlayOpacity = a3;
+    self->_solidLegibilityOverlayOpacity = opacity;
     [(PXStoryViewModel *)self signalChange:0x20000];
   }
 }
 
-- (void)setPlaybackEndDarkening:(double)a3
+- (void)setPlaybackEndDarkening:(double)darkening
 {
-  if (self->_playbackEndDarkening != a3)
+  if (self->_playbackEndDarkening != darkening)
   {
-    self->_playbackEndDarkening = a3;
+    self->_playbackEndDarkening = darkening;
     [(PXStoryViewModel *)self _invalidateLegibilityOverlayOpacity];
   }
 }
 
-- (void)setWantsPlaybackEndDarkening:(BOOL)a3
+- (void)setWantsPlaybackEndDarkening:(BOOL)darkening
 {
-  if (self->_wantsPlaybackEndDarkening != a3)
+  if (self->_wantsPlaybackEndDarkening != darkening)
   {
-    self->_wantsPlaybackEndDarkening = a3;
+    self->_wantsPlaybackEndDarkening = darkening;
     [(PXStoryViewModel *)self signalChange:0x800000000000];
   }
 }
 
-- (void)setShouldCountDownToUpNext:(BOOL)a3
+- (void)setShouldCountDownToUpNext:(BOOL)next
 {
-  if (self->_shouldCountDownToUpNext != a3)
+  if (self->_shouldCountDownToUpNext != next)
   {
-    self->_shouldCountDownToUpNext = a3;
+    self->_shouldCountDownToUpNext = next;
     [(PXStoryViewModel *)self signalChange:0x10000000];
   }
 }
 
-- (void)setWantsRelatedOverlayNavigationButtonsVisible:(BOOL)a3
+- (void)setWantsRelatedOverlayNavigationButtonsVisible:(BOOL)visible
 {
-  if (self->_wantsRelatedOverlayNavigationButtonsVisible != a3)
+  if (self->_wantsRelatedOverlayNavigationButtonsVisible != visible)
   {
-    self->_wantsRelatedOverlayNavigationButtonsVisible = a3;
+    self->_wantsRelatedOverlayNavigationButtonsVisible = visible;
     [(PXStoryViewModel *)self signalChange:0x40000000000000];
   }
 }
 
-- (void)setIsRelatedOverlayScrolledIntoView:(BOOL)a3
+- (void)setIsRelatedOverlayScrolledIntoView:(BOOL)view
 {
-  if (self->_isRelatedOverlayScrolledIntoView != a3)
+  if (self->_isRelatedOverlayScrolledIntoView != view)
   {
-    self->_isRelatedOverlayScrolledIntoView = a3;
+    self->_isRelatedOverlayScrolledIntoView = view;
     [(PXStoryViewModel *)self signalChange:0x8000000];
   }
 }
 
-- (void)setFadeOutOverlayVisibilityFraction:(double)a3
+- (void)setFadeOutOverlayVisibilityFraction:(double)fraction
 {
-  if (self->_fadeOutOverlayVisibilityFraction != a3)
+  if (self->_fadeOutOverlayVisibilityFraction != fraction)
   {
-    self->_fadeOutOverlayVisibilityFraction = a3;
+    self->_fadeOutOverlayVisibilityFraction = fraction;
     [(PXStoryViewModel *)self _invalidateLegibilityOverlayOpacity];
   }
 }
 
-- (void)setRelatedOverlayVisibilityFraction:(double)a3
+- (void)setRelatedOverlayVisibilityFraction:(double)fraction
 {
-  if (self->_relatedOverlayVisibilityFraction != a3)
+  if (self->_relatedOverlayVisibilityFraction != fraction)
   {
-    self->_relatedOverlayVisibilityFraction = a3;
+    self->_relatedOverlayVisibilityFraction = fraction;
     [(PXStoryViewModel *)self signalChange:0x10000];
     [(PXStoryViewModel *)self _invalidateLegibilityOverlayOpacity];
 
@@ -4096,18 +4096,18 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setWantsRelatedOverlayScrollable:(BOOL)a3
+- (void)setWantsRelatedOverlayScrollable:(BOOL)scrollable
 {
-  if (self->_wantsRelatedOverlayScrollable != a3)
+  if (self->_wantsRelatedOverlayScrollable != scrollable)
   {
-    self->_wantsRelatedOverlayScrollable = a3;
+    self->_wantsRelatedOverlayScrollable = scrollable;
     [(PXStoryViewModel *)self _invalidateMainModelProperties];
   }
 }
 
-- (void)setModelCoveredByRelated:(id)a3
+- (void)setModelCoveredByRelated:(id)related
 {
-  obj = a3;
+  obj = related;
   WeakRetained = objc_loadWeakRetained(&self->_modelCoveredByRelated);
 
   v5 = obj;
@@ -4119,11 +4119,11 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setWantsRelatedOverlayVisible:(BOOL)a3
+- (void)setWantsRelatedOverlayVisible:(BOOL)visible
 {
-  if (self->_wantsRelatedOverlayVisible != a3)
+  if (self->_wantsRelatedOverlayVisible != visible)
   {
-    self->_wantsRelatedOverlayVisible = a3;
+    self->_wantsRelatedOverlayVisible = visible;
     [(PXStoryViewModel *)self signalChange:0x8000];
     if (self->_wantsRelatedOverlayVisible)
     {
@@ -4162,8 +4162,8 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
 
     if (self->_wantsRelatedOverlayVisible)
     {
-      v6 = [(PXStoryViewModel *)self mainModel];
-      [(PXStoryViewModel *)self setModelCoveredByRelated:v6];
+      mainModel = [(PXStoryViewModel *)self mainModel];
+      [(PXStoryViewModel *)self setModelCoveredByRelated:mainModel];
     }
 
     else
@@ -4174,55 +4174,55 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setStyleSwitcherVisibilityFraction:(double)a3
+- (void)setStyleSwitcherVisibilityFraction:(double)fraction
 {
-  if (self->_styleSwitcherVisibilityFraction != a3)
+  if (self->_styleSwitcherVisibilityFraction != fraction)
   {
-    self->_styleSwitcherVisibilityFraction = a3;
+    self->_styleSwitcherVisibilityFraction = fraction;
     [(PXStoryViewModel *)self _invalidateMainModelProperties];
 
     [(PXStoryViewModel *)self _invalidateLegibilityOverlayOpacity];
   }
 }
 
-- (void)setScrubberVisibilityFraction:(double)a3
+- (void)setScrubberVisibilityFraction:(double)fraction
 {
-  if (self->_scrubberVisibilityFraction != a3)
+  if (self->_scrubberVisibilityFraction != fraction)
   {
-    self->_scrubberVisibilityFraction = a3;
+    self->_scrubberVisibilityFraction = fraction;
     [(PXStoryViewModel *)self signalChange:0x1000000];
 
     [(PXStoryViewModel *)self _invalidateLegibilityOverlayOpacity];
   }
 }
 
-- (void)setWantsScrubberVisible:(BOOL)a3
+- (void)setWantsScrubberVisible:(BOOL)visible
 {
-  if (self->_wantsScrubberVisible != a3)
+  if (self->_wantsScrubberVisible != visible)
   {
-    self->_wantsScrubberVisible = a3;
+    self->_wantsScrubberVisible = visible;
     [(PXStoryViewModel *)self signalChange:0x2000000];
   }
 }
 
-- (void)setMaximumIndividualTopChromeItemVisibilityFraction:(double)a3
+- (void)setMaximumIndividualTopChromeItemVisibilityFraction:(double)fraction
 {
-  if (self->_maximumIndividualTopChromeItemVisibilityFraction != a3)
+  if (self->_maximumIndividualTopChromeItemVisibilityFraction != fraction)
   {
-    self->_maximumIndividualTopChromeItemVisibilityFraction = a3;
+    self->_maximumIndividualTopChromeItemVisibilityFraction = fraction;
     [(PXStoryViewModel *)self _invalidateLegibilityOverlayOpacity];
   }
 }
 
-- (void)setBufferingIndicatorVisibilityFraction:(double)a3
+- (void)setBufferingIndicatorVisibilityFraction:(double)fraction
 {
-  if (self->_bufferingIndicatorVisibilityFraction != a3)
+  if (self->_bufferingIndicatorVisibilityFraction != fraction)
   {
-    self->_bufferingIndicatorVisibilityFraction = a3;
+    self->_bufferingIndicatorVisibilityFraction = fraction;
     v4 = +[PXStorySettings sharedInstance];
-    v5 = [v4 useBottomLegibilityGradientForBufferingIndicator];
+    useBottomLegibilityGradientForBufferingIndicator = [v4 useBottomLegibilityGradientForBufferingIndicator];
 
-    if (v5)
+    if (useBottomLegibilityGradientForBufferingIndicator)
     {
 
       [(PXStoryViewModel *)self _invalidateLegibilityOverlayOpacity];
@@ -4230,38 +4230,38 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setChromeItemsToBeDisplayedExternally:(unint64_t)a3
+- (void)setChromeItemsToBeDisplayedExternally:(unint64_t)externally
 {
-  if (self->_chromeItemsToBeDisplayedExternally != a3)
+  if (self->_chromeItemsToBeDisplayedExternally != externally)
   {
-    self->_chromeItemsToBeDisplayedExternally = a3;
+    self->_chromeItemsToBeDisplayedExternally = externally;
     [(PXStoryViewModel *)self signalChange:0x400000000000];
   }
 }
 
-- (void)setAllowedChromeItems:(unint64_t)a3
+- (void)setAllowedChromeItems:(unint64_t)items
 {
-  if (self->_allowedChromeItems != a3)
+  if (self->_allowedChromeItems != items)
   {
-    self->_allowedChromeItems = a3;
+    self->_allowedChromeItems = items;
     [(PXStoryViewModel *)self signalChange:0x40000000000];
   }
 }
 
-- (void)setChromeItems:(unint64_t)a3
+- (void)setChromeItems:(unint64_t)items
 {
-  if (self->_chromeItems != a3)
+  if (self->_chromeItems != items)
   {
-    self->_chromeItems = a3;
+    self->_chromeItems = items;
     [(PXStoryViewModel *)self signalChange:0x400000];
   }
 }
 
-- (void)setChromeVisibilityFraction:(double)a3
+- (void)setChromeVisibilityFraction:(double)fraction
 {
-  if (self->_chromeVisibilityFraction != a3)
+  if (self->_chromeVisibilityFraction != fraction)
   {
-    self->_chromeVisibilityFraction = a3;
+    self->_chromeVisibilityFraction = fraction;
     [(PXStoryViewModel *)self signalChange:0x4000];
     [(PXStoryViewModel *)self _invalidateLegibilityOverlayOpacity];
 
@@ -4269,20 +4269,20 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setNeedsStatusBarVisible:(BOOL)a3
+- (void)setNeedsStatusBarVisible:(BOOL)visible
 {
-  if (self->_needsStatusBarVisible != a3)
+  if (self->_needsStatusBarVisible != visible)
   {
-    self->_needsStatusBarVisible = a3;
+    self->_needsStatusBarVisible = visible;
     [(PXStoryViewModel *)self signalChange:0x2000000000000];
   }
 }
 
-- (void)setWantsChromeVisible:(BOOL)a3
+- (void)setWantsChromeVisible:(BOOL)visible
 {
-  if (self->_wantsChromeVisible != a3)
+  if (self->_wantsChromeVisible != visible)
   {
-    self->_wantsChromeVisible = a3;
+    self->_wantsChromeVisible = visible;
     [(PXStoryViewModel *)self signalChange:8];
     [(PXStoryViewModel *)self _invalidateShouldAutoHideChrome];
     [(PXStoryViewModel *)self _invalidateShouldAutoHideMuteToggleButton];
@@ -4291,11 +4291,11 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   }
 }
 
-- (void)setIsPerformingAnyExportOperation:(BOOL)a3
+- (void)setIsPerformingAnyExportOperation:(BOOL)operation
 {
-  if (self->_isPerformingAnyExportOperation != a3)
+  if (self->_isPerformingAnyExportOperation != operation)
   {
-    self->_isPerformingAnyExportOperation = a3;
+    self->_isPerformingAnyExportOperation = operation;
     [(PXStoryViewModel *)self signalChange:0x4000000000000];
   }
 }
@@ -4309,17 +4309,17 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
 
 - (void)_invalidateIsPerformingAnyExportOperation
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateIsPerformingAnyExportOperation];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateIsPerformingAnyExportOperation];
 }
 
-- (void)setPerformingExportOperation:(BOOL)a3 withIdentifier:(id)a4
+- (void)setPerformingExportOperation:(BOOL)operation withIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
+  operationCopy = operation;
+  identifierCopy = identifier;
   exportOperationIdentifiers = self->_exportOperationIdentifiers;
-  v10 = v6;
-  if (v4)
+  v10 = identifierCopy;
+  if (operationCopy)
   {
     if (!exportOperationIdentifiers)
     {
@@ -4327,39 +4327,39 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
       v9 = self->_exportOperationIdentifiers;
       self->_exportOperationIdentifiers = v8;
 
-      v6 = v10;
+      identifierCopy = v10;
       exportOperationIdentifiers = self->_exportOperationIdentifiers;
     }
 
-    [(NSMutableSet *)exportOperationIdentifiers addObject:v6];
+    [(NSMutableSet *)exportOperationIdentifiers addObject:identifierCopy];
   }
 
   else
   {
-    [(NSMutableSet *)exportOperationIdentifiers removeObject:v6];
+    [(NSMutableSet *)exportOperationIdentifiers removeObject:identifierCopy];
   }
 
   [(PXStoryViewModel *)self _invalidateIsPerformingAnyExportOperation];
 }
 
-- (void)setIsAnyMenuOpen:(BOOL)a3
+- (void)setIsAnyMenuOpen:(BOOL)open
 {
-  if (self->_isAnyMenuOpen != a3)
+  if (self->_isAnyMenuOpen != open)
   {
-    self->_isAnyMenuOpen = a3;
+    self->_isAnyMenuOpen = open;
     [(PXStoryViewModel *)self signalChange:0x4000000000000];
 
     [(PXStoryViewModel *)self _invalidateShouldAutoHideChrome];
   }
 }
 
-- (void)setMenuIsOpen:(BOOL)a3 withIdentifier:(id)a4
+- (void)setMenuIsOpen:(BOOL)open withIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = a4;
+  openCopy = open;
+  identifierCopy = identifier;
   openMenuIdentifiers = self->_openMenuIdentifiers;
-  v10 = v6;
-  if (v4)
+  v10 = identifierCopy;
+  if (openCopy)
   {
     if (!openMenuIdentifiers)
     {
@@ -4367,38 +4367,38 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
       v9 = self->_openMenuIdentifiers;
       self->_openMenuIdentifiers = v8;
 
-      v6 = v10;
+      identifierCopy = v10;
       openMenuIdentifiers = self->_openMenuIdentifiers;
     }
 
-    [(NSMutableSet *)openMenuIdentifiers addObject:v6];
+    [(NSMutableSet *)openMenuIdentifiers addObject:identifierCopy];
   }
 
   else
   {
-    [(NSMutableSet *)openMenuIdentifiers removeObject:v6];
+    [(NSMutableSet *)openMenuIdentifiers removeObject:identifierCopy];
   }
 
   [(PXStoryViewModel *)self _invalidateIsAnyMenuOpen];
 }
 
-- (void)setIsActionMenuOpen:(BOOL)a3
+- (void)setIsActionMenuOpen:(BOOL)open
 {
-  if (self->_isActionMenuOpen != a3)
+  if (self->_isActionMenuOpen != open)
   {
-    self->_isActionMenuOpen = a3;
+    self->_isActionMenuOpen = open;
     [PXStoryViewModel setMenuIsOpen:"setMenuIsOpen:withIdentifier:" withIdentifier:?];
   }
 }
 
 - (BOOL)assetCollectionForcesAutoReplay
 {
-  v2 = [(PXStoryViewModel *)self mainConfiguration];
-  v3 = [v2 assetCollection];
+  mainConfiguration = [(PXStoryViewModel *)self mainConfiguration];
+  assetCollection = [mainConfiguration assetCollection];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v4 = v3;
+    v4 = assetCollection;
   }
 
   else
@@ -4419,18 +4419,18 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   return v5;
 }
 
-- (void)setShouldAutoReplayPreference:(BOOL)a3
+- (void)setShouldAutoReplayPreference:(BOOL)preference
 {
-  if (self->_shouldAutoReplayPreference != a3)
+  if (self->_shouldAutoReplayPreference != preference)
   {
-    v4 = a3;
-    self->_shouldAutoReplayPreference = a3;
+    preferenceCopy = preference;
+    self->_shouldAutoReplayPreference = preference;
     [(PXStoryViewModel *)self signalChange:0x4000000000];
     if (![(PXStoryViewModel *)self assetCollectionForcesAutoReplay])
     {
-      v6 = [(PXStoryViewModel *)self userDefaults];
-      v7 = [MEMORY[0x1E696AD98] numberWithBool:v4];
-      [v6 setPersistedValue:v7 forKey:@"PXStoryViewModelAutoReplay"];
+      userDefaults = [(PXStoryViewModel *)self userDefaults];
+      v7 = [MEMORY[0x1E696AD98] numberWithBool:preferenceCopy];
+      [userDefaults setPersistedValue:v7 forKey:@"PXStoryViewModelAutoReplay"];
     }
 
     [(PXStoryViewModel *)self _invalidateWantsRelatedOverlayScrollable];
@@ -4446,51 +4446,51 @@ uint64_t __58__PXStoryViewModel_skipToSegmentWithOffset_byTappingEdge___block_in
   [(PXStoryViewModel *)self setShouldAutoReplayPreference:v3];
 }
 
-- (void)setIsAtPlaybackEnd:(BOOL)a3
+- (void)setIsAtPlaybackEnd:(BOOL)end
 {
-  if (self->_isAtPlaybackEnd == a3)
+  if (self->_isAtPlaybackEnd == end)
   {
     return;
   }
 
-  self->_isAtPlaybackEnd = a3;
+  self->_isAtPlaybackEnd = end;
   [(PXStoryViewModel *)self signalChange:0x200000];
   [(PXStoryViewModel *)self _invalidateShouldPreventDisplaySleep];
-  v4 = [(PXStoryViewModel *)self endBehavior];
-  if (v4 == 4)
+  endBehavior = [(PXStoryViewModel *)self endBehavior];
+  if (endBehavior == 4)
   {
-    v5 = self;
+    selfCopy3 = self;
     v6 = 0;
 LABEL_9:
     v7 = 1;
     goto LABEL_10;
   }
 
-  if (v4 != 3)
+  if (endBehavior != 3)
   {
-    if (v4 != 2)
+    if (endBehavior != 2)
     {
       return;
     }
 
-    v5 = self;
+    selfCopy3 = self;
     v6 = 1;
     goto LABEL_9;
   }
 
-  v5 = self;
+  selfCopy3 = self;
   v6 = 1;
   v7 = 0;
 LABEL_10:
 
-  [(PXStoryViewModel *)v5 rewindToBeginning:v6 rewindMusic:v7];
+  [(PXStoryViewModel *)selfCopy3 rewindToBeginning:v6 rewindMusic:v7];
 }
 
-- (void)setIsAtPlaybackStart:(BOOL)a3
+- (void)setIsAtPlaybackStart:(BOOL)start
 {
-  if (self->_isAtPlaybackStart != a3)
+  if (self->_isAtPlaybackStart != start)
   {
-    self->_isAtPlaybackStart = a3;
+    self->_isAtPlaybackStart = start;
     [(PXStoryViewModel *)self _invalidateShouldAutoHideMuteToggleButton];
   }
 }
@@ -4507,20 +4507,20 @@ LABEL_10:
 
 - (void)_cancelAutoHideChromeTimer
 {
-  v3 = [(PXStoryViewModel *)self autoHideChromeTimer];
-  [v3 invalidate];
+  autoHideChromeTimer = [(PXStoryViewModel *)self autoHideChromeTimer];
+  [autoHideChromeTimer invalidate];
 
   [(PXStoryViewModel *)self setAutoHideChromeTimer:0];
 }
 
-- (void)setShouldAutoHideChrome:(BOOL)a3
+- (void)setShouldAutoHideChrome:(BOOL)chrome
 {
-  if (self->_shouldAutoHideChrome != a3)
+  if (self->_shouldAutoHideChrome != chrome)
   {
-    v3 = a3;
-    self->_shouldAutoHideChrome = a3;
+    chromeCopy = chrome;
+    self->_shouldAutoHideChrome = chrome;
     [(PXStoryViewModel *)self _cancelAutoHideChromeTimer];
-    if (v3)
+    if (chromeCopy)
     {
       v5 = +[PXStorySettings sharedInstance];
       [v5 chromeAutoHideDelay];
@@ -4536,9 +4536,9 @@ LABEL_10:
       v9 = [v8 timerWithTimeInterval:0 repeats:&v12 block:v7];
       [(PXStoryViewModel *)self setAutoHideChromeTimer:v9, v12, v13, v14, v15];
 
-      v10 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      v11 = [(PXStoryViewModel *)self autoHideChromeTimer];
-      [v10 addTimer:v11 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      autoHideChromeTimer = [(PXStoryViewModel *)self autoHideChromeTimer];
+      [mainRunLoop addTimer:autoHideChromeTimer forMode:*MEMORY[0x1E695DA28]];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(&location);
@@ -4552,11 +4552,11 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
   [WeakRetained _autoHideChrome];
 }
 
-- (void)setOutroFractionCompleted:(double)a3
+- (void)setOutroFractionCompleted:(double)completed
 {
-  if (self->_outroFractionCompleted != a3)
+  if (self->_outroFractionCompleted != completed)
   {
-    self->_outroFractionCompleted = a3;
+    self->_outroFractionCompleted = completed;
     [(PXStoryViewModel *)self signalChange:0x1000000000000];
     v4 = self->_outroFractionCompleted > 0.0;
 
@@ -4564,39 +4564,39 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setPlaybackDuration:(id *)a3
+- (void)setPlaybackDuration:(id *)duration
 {
   p_playbackDuration = &self->_playbackDuration;
-  time1 = *a3;
+  time1 = *duration;
   playbackDuration = self->_playbackDuration;
   if (CMTimeCompare(&time1, &playbackDuration))
   {
-    v6 = *&a3->var0;
-    p_playbackDuration->epoch = a3->var3;
+    v6 = *&duration->var0;
+    p_playbackDuration->epoch = duration->var3;
     *&p_playbackDuration->value = v6;
     [(PXStoryViewModel *)self signalChange:0x200000000000];
   }
 }
 
-- (void)setCurrentPlaybackTime:(id *)a3
+- (void)setCurrentPlaybackTime:(id *)time
 {
   p_currentPlaybackTime = &self->_currentPlaybackTime;
-  time1 = *a3;
+  time1 = *time;
   currentPlaybackTime = self->_currentPlaybackTime;
   if (CMTimeCompare(&time1, &currentPlaybackTime))
   {
-    v6 = *&a3->var0;
-    p_currentPlaybackTime->epoch = a3->var3;
+    v6 = *&time->var0;
+    p_currentPlaybackTime->epoch = time->var3;
     *&p_currentPlaybackTime->value = v6;
     [(PXStoryViewModel *)self signalChange:4];
   }
 }
 
-- (void)setPlaybackFractionCompleted:(double)a3
+- (void)setPlaybackFractionCompleted:(double)completed
 {
-  if (self->_playbackFractionCompleted != a3)
+  if (self->_playbackFractionCompleted != completed)
   {
-    self->_playbackFractionCompleted = a3;
+    self->_playbackFractionCompleted = completed;
     [(PXStoryViewModel *)self signalChange:4];
     [(PXStoryViewModel *)self setIsAtPlaybackStart:self->_playbackFractionCompleted <= 0.0];
     v4 = self->_playbackFractionCompleted >= 1.0;
@@ -4605,14 +4605,14 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setWantsSoloPlayback:(BOOL)a3
+- (void)setWantsSoloPlayback:(BOOL)playback
 {
-  if (self->_wantsSoloPlayback != a3)
+  if (self->_wantsSoloPlayback != playback)
   {
-    v3 = a3;
-    self->_wantsSoloPlayback = a3;
+    playbackCopy = playback;
+    self->_wantsSoloPlayback = playback;
     v5 = objc_opt_class();
-    if (v3)
+    if (playbackCopy)
     {
 
       [v5 registerViewModelDesiringSoloPlayback:self];
@@ -4630,8 +4630,8 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
 {
   if ([(PXStoryViewModel *)self desiredPlayState]== 1 && [(PXStoryViewModel *)self isActive])
   {
-    v3 = [(PXStoryViewModel *)self mainConfiguration];
-    v4 = [v3 allowPlayingMultipleStoriesSimultaneously] ^ 1;
+    mainConfiguration = [(PXStoryViewModel *)self mainConfiguration];
+    v4 = [mainConfiguration allowPlayingMultipleStoriesSimultaneously] ^ 1;
   }
 
   else
@@ -4644,15 +4644,15 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
 
 - (void)_invalidateWantsSoloPlayback
 {
-  v2 = [(PXStoryViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateWantsSoloPlayback];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateWantsSoloPlayback];
 }
 
-- (void)setDesiredPlayState:(int64_t)a3
+- (void)setDesiredPlayState:(int64_t)state
 {
-  if (self->_desiredPlayState != a3)
+  if (self->_desiredPlayState != state)
   {
-    self->_desiredPlayState = a3;
+    self->_desiredPlayState = state;
     [(PXStoryViewModel *)self signalChange:2];
     [(PXStoryViewModel *)self _invalidateMainModelProperties];
     [(PXStoryViewModel *)self _invalidateDisplayTitleAndSubtitle];
@@ -4669,11 +4669,11 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setIsActive:(BOOL)a3
+- (void)setIsActive:(BOOL)active
 {
-  if (self->_isActive != a3)
+  if (self->_isActive != active)
   {
-    self->_isActive = a3;
+    self->_isActive = active;
     [(PXStoryViewModel *)self signalChange:1];
     [(PXStoryViewModel *)self _invalidateControllersActiveness];
     [(PXStoryViewModel *)self _invalidateShouldPreventDisplaySleep];
@@ -4681,38 +4681,38 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
     if (self->_isActive && !self->_hasBeenActiveOnce)
     {
       self->_hasBeenActiveOnce = 1;
-      v4 = [(PXStoryViewModel *)self loadingCoordinator];
-      [v4 resumeTimelineWork];
+      loadingCoordinator = [(PXStoryViewModel *)self loadingCoordinator];
+      [loadingCoordinator resumeTimelineWork];
     }
   }
 }
 
-- (void)setSwipeDownDismissalPreviewFraction:(double)a3
+- (void)setSwipeDownDismissalPreviewFraction:(double)fraction
 {
-  if (self->_swipeDownDismissalPreviewFraction != a3)
+  if (self->_swipeDownDismissalPreviewFraction != fraction)
   {
-    self->_swipeDownDismissalPreviewFraction = a3;
+    self->_swipeDownDismissalPreviewFraction = fraction;
   }
 }
 
-- (void)setSwipeDownDismissalPreviewEnabled:(BOOL)a3
+- (void)setSwipeDownDismissalPreviewEnabled:(BOOL)enabled
 {
-  if (self->_swipeDownDismissalPreviewEnabled != a3)
+  if (self->_swipeDownDismissalPreviewEnabled != enabled)
   {
-    self->_swipeDownDismissalPreviewEnabled = a3;
+    self->_swipeDownDismissalPreviewEnabled = enabled;
     [(PXStoryViewModel *)self signalChange:0x8000000000];
   }
 }
 
-- (void)setSwipeDownTriggeringDismissal:(BOOL)a3
+- (void)setSwipeDownTriggeringDismissal:(BOOL)dismissal
 {
-  if (self->_swipeDownTriggeringDismissal != a3)
+  if (self->_swipeDownTriggeringDismissal != dismissal)
   {
-    self->_swipeDownTriggeringDismissal = a3;
+    self->_swipeDownTriggeringDismissal = dismissal;
   }
 }
 
-- (void)setSwipeDownInteractionState:(id *)a3
+- (void)setSwipeDownInteractionState:(id *)state
 {
   p_swipeDownInteractionState = &self->_swipeDownInteractionState;
   v6 = *&self->_swipeDownInteractionState.coordinateSpace;
@@ -4722,20 +4722,20 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
   location = self->_swipeDownInteractionState.location;
   v15[0] = self->_swipeDownInteractionState.initialLocation;
   v15[1] = location;
-  v8 = *&a3->var3;
-  v13[2] = a3->var2;
+  v8 = *&state->var3;
+  v13[2] = state->var2;
   v13[3] = v8;
-  var5 = a3->var5;
-  var1 = a3->var1;
-  v13[0] = a3->var0;
+  var5 = state->var5;
+  var1 = state->var1;
+  v13[0] = state->var0;
   v13[1] = var1;
   if ((PXStorySwipeDownInteractionStateEqualsState(v15, v13) & 1) == 0)
   {
-    p_swipeDownInteractionState->initialLocation = a3->var0;
-    v10 = a3->var1;
-    var2 = a3->var2;
-    v12 = *&a3->var3;
-    p_swipeDownInteractionState->lastTimestamp = a3->var5;
+    p_swipeDownInteractionState->initialLocation = state->var0;
+    v10 = state->var1;
+    var2 = state->var2;
+    v12 = *&state->var3;
+    p_swipeDownInteractionState->lastTimestamp = state->var5;
     p_swipeDownInteractionState->velocity = var2;
     *&p_swipeDownInteractionState->coordinateSpace = v12;
     p_swipeDownInteractionState->location = v10;
@@ -4745,26 +4745,26 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setViewModeTransition:(id)a3
+- (void)setViewModeTransition:(id)transition
 {
-  v5 = a3;
+  transitionCopy = transition;
   viewModeTransition = self->_viewModeTransition;
-  if (viewModeTransition != v5)
+  if (viewModeTransition != transitionCopy)
   {
-    v7 = v5;
+    v7 = transitionCopy;
     [(PXStoryViewModeTransition *)viewModeTransition registerChangeObserver:self context:ViewModeTransitionObservationContext_157008];
-    objc_storeStrong(&self->_viewModeTransition, a3);
+    objc_storeStrong(&self->_viewModeTransition, transition);
     [(PXStoryViewModeTransition *)self->_viewModeTransition registerChangeObserver:self context:ViewModeTransitionObservationContext_157008];
     [(PXStoryViewModel *)self signalChange:0x400000000];
-    v5 = v7;
+    transitionCopy = v7;
   }
 }
 
-- (void)setViewMode:(int64_t)a3
+- (void)setViewMode:(int64_t)mode
 {
-  if (self->_viewMode != a3)
+  if (self->_viewMode != mode)
   {
-    self->_viewMode = a3;
+    self->_viewMode = mode;
     [(PXStoryViewModel *)self signalChange:0x2000];
     [(PXStoryViewModel *)self _invalidateMainModelProperties];
     [(PXStoryViewModel *)self _invalidateShouldPreventDisplaySleep];
@@ -4778,13 +4778,13 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
 
 - (unint64_t)endBehavior
 {
-  v3 = [(PXStoryViewModel *)self mainConfiguration];
-  if ([v3 isExportPreview])
+  mainConfiguration = [(PXStoryViewModel *)self mainConfiguration];
+  if ([mainConfiguration isExportPreview])
   {
     v4 = 2;
   }
 
-  else if (([v3 shouldReplayAtEnd] & 1) != 0 || (objc_msgSend(v3, "isAppleMusicPreview") & 1) != 0 || -[PXStoryViewModel viewMode](self, "viewMode") == 4)
+  else if (([mainConfiguration shouldReplayAtEnd] & 1) != 0 || (objc_msgSend(mainConfiguration, "isAppleMusicPreview") & 1) != 0 || -[PXStoryViewModel viewMode](self, "viewMode") == 4)
   {
     if ([(PXStoryViewModel *)self assetCollectionForcesAutoReplay])
     {
@@ -4797,7 +4797,7 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
     }
   }
 
-  else if ([v3 isPresentedForAirPlay])
+  else if ([mainConfiguration isPresentedForAirPlay])
   {
     v4 = 4;
   }
@@ -4817,15 +4817,15 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
 
 - (BOOL)allowsRelated
 {
-  v3 = [(PXStoryViewModel *)self mainConfiguration];
-  if ([v3 shouldReplayAtEnd] & 1) != 0 || -[PXStoryViewModel shouldAutoReplayPreference](self, "shouldAutoReplayPreference") || (objc_msgSend(v3, "isAppleMusicPreview") & 1) != 0 || (objc_msgSend(v3, "isPresentedForAirPlay"))
+  mainConfiguration = [(PXStoryViewModel *)self mainConfiguration];
+  if ([mainConfiguration shouldReplayAtEnd] & 1) != 0 || -[PXStoryViewModel shouldAutoReplayPreference](self, "shouldAutoReplayPreference") || (objc_msgSend(mainConfiguration, "isAppleMusicPreview") & 1) != 0 || (objc_msgSend(mainConfiguration, "isPresentedForAirPlay"))
   {
     LOBYTE(v4) = 0;
   }
 
   else
   {
-    v4 = [v3 isExportPreview] ^ 1;
+    v4 = [mainConfiguration isExportPreview] ^ 1;
   }
 
   return v4;
@@ -4836,19 +4836,19 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
   v4.receiver = self;
   v4.super_class = PXStoryViewModel;
   [(PXStoryViewModel *)&v4 didPerformChanges];
-  v3 = [(PXStoryViewModel *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryViewModel *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PXStoryViewModel *)self storyQueue];
-  dispatch_assert_queue_V2(v5);
+  changesCopy = changes;
+  storyQueue = [(PXStoryViewModel *)self storyQueue];
+  dispatch_assert_queue_V2(storyQueue);
 
   v6.receiver = self;
   v6.super_class = PXStoryViewModel;
-  [(PXStoryViewModel *)&v6 performChanges:v4];
+  [(PXStoryViewModel *)&v6 performChanges:changesCopy];
 }
 
 - (void)dealloc
@@ -4859,44 +4859,44 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
   [(PXStoryViewModel *)&v3 dealloc];
 }
 
-- (PXStoryViewModel)initWithConfiguration:(id)a3 extendedTraitCollection:(id)a4 timeSource:(id)a5 mediaProvider:(id)a6
+- (PXStoryViewModel)initWithConfiguration:(id)configuration extendedTraitCollection:(id)collection timeSource:(id)source mediaProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  configurationCopy = configuration;
+  collectionCopy = collection;
+  sourceCopy = source;
+  providerCopy = provider;
   v82.receiver = self;
   v82.super_class = PXStoryViewModel;
   v15 = [(PXStoryViewModel *)&v82 init];
   if (v15)
   {
-    v78 = v12;
-    v16 = [v11 log];
+    v78 = collectionCopy;
+    v16 = [configurationCopy log];
     [v15 setLog:v16];
 
-    [v15 setLogContext:{objc_msgSend(v11, "logContext")}];
-    objc_storeStrong(v15 + 61, a3);
-    objc_storeStrong(v15 + 91, a4);
-    objc_storeStrong(v15 + 92, a5);
-    objc_storeStrong(v15 + 93, a6);
-    v15[97] = [v11 isAllowedToPlayAnyMusicOrSound];
+    [v15 setLogContext:{objc_msgSend(configurationCopy, "logContext")}];
+    objc_storeStrong(v15 + 61, configuration);
+    objc_storeStrong(v15 + 91, collection);
+    objc_storeStrong(v15 + 92, source);
+    objc_storeStrong(v15 + 93, provider);
+    v15[97] = [configurationCopy isAllowedToPlayAnyMusicOrSound];
     *(v15 + 952) = 0u;
     *(v15 + 968) = 0u;
     *(v15 + 984) = 0u;
     *(v15 + 1000) = 0u;
     *(v15 + 127) = 0;
-    v17 = [MEMORY[0x1E696AFB0] UUID];
-    v18 = [v17 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     v19 = *(v15 + 59);
-    *(v15 + 59) = v18;
+    *(v15 + 59) = uUIDString;
 
-    v20 = [v11 storyQueue];
+    storyQueue = [configurationCopy storyQueue];
     v21 = *(v15 + 26);
-    *(v15 + 26) = v20;
+    *(v15 + 26) = storyQueue;
 
-    *(v15 + 29) = [v11 initialViewMode];
-    v22 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v23 = [v22 objectForKey:@"PXStoryVolume"];
+    *(v15 + 29) = [configurationCopy initialViewMode];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v23 = [standardUserDefaults objectForKey:@"PXStoryVolume"];
 
     if (v23)
     {
@@ -4918,55 +4918,55 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
     v28 = +[PXStorySettings sharedInstance];
     v29 = -[PXStoryModel initWithConfiguration:extendedTraitCollection:loadingCoordinator:paperTrailOptions:]([PXStoryModel alloc], "initWithConfiguration:extendedTraitCollection:loadingCoordinator:paperTrailOptions:", *(v15 + 61), *(v15 + 91), *(v15 + 79), [v28 fullsizePaperTrailOptions]);
     *(v15 + 30) = [(PXStoryModel *)v29 desiredPlayState];
-    v30 = [v11 presentingViewController];
-    objc_storeWeak(v15 + 66, v30);
+    presentingViewController = [configurationCopy presentingViewController];
+    objc_storeWeak(v15 + 66, presentingViewController);
 
     v31 = [(PXFeatureSpecManager *)[PXStoryViewLayoutSpecManager alloc] initWithExtendedTraitCollection:*(v15 + 91)];
     v32 = *(v15 + 75);
     *(v15 + 75) = v31;
 
-    [*(v15 + 75) setStoryConfigurationOptions:{objc_msgSend(v11, "options")}];
+    [*(v15 + 75) setStoryConfigurationOptions:{objc_msgSend(configurationCopy, "options")}];
     [*(v15 + 75) registerChangeObserver:v15 context:ViewLayoutSpecManagerObservationContext];
     *(v15 + 35) = -268435457;
     [v28 addDeferredKeyObserver:v15];
-    v33 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v34 = *(v15 + 78);
-    *(v15 + 78) = v33;
+    *(v15 + 78) = strongToWeakObjectsMapTable;
 
     v35 = [[PXStoryResourcesPreloadingCoordinator alloc] initWithQueue:*(v15 + 26)];
     v36 = *(v15 + 94);
     *(v15 + 94) = v35;
 
-    v37 = [v11 errorReporter];
+    errorReporter = [configurationCopy errorReporter];
     v38 = *(v15 + 57);
-    *(v15 + 57) = v37;
+    *(v15 + 57) = errorReporter;
 
-    v39 = [v11 errorRepository];
+    errorRepository = [configurationCopy errorRepository];
     v40 = *(v15 + 95);
-    *(v15 + 95) = v39;
+    *(v15 + 95) = errorRepository;
 
     [*(v15 + 95) registerChangeObserver:v15 context:ErrorRepositoryObservationContext];
-    v41 = [v11 volumeController];
-    v42 = v41;
-    if (!v41)
+    volumeController = [configurationCopy volumeController];
+    v42 = volumeController;
+    if (!volumeController)
     {
       v42 = +[PXDeviceVolumeController sharedInstance];
     }
 
     objc_storeStrong(v15 + 80, v42);
-    if (!v41)
+    if (!volumeController)
     {
     }
 
-    v43 = [v11 userDefaults];
-    v44 = v43;
-    if (!v43)
+    userDefaults = [configurationCopy userDefaults];
+    sharedInstance = userDefaults;
+    if (!userDefaults)
     {
-      v44 = [off_1E7721950 sharedInstance];
+      sharedInstance = [off_1E7721950 sharedInstance];
     }
 
-    objc_storeStrong(v15 + 81, v44);
-    if (!v43)
+    objc_storeStrong(v15 + 81, sharedInstance);
+    if (!userDefaults)
     {
     }
 
@@ -5001,7 +5001,7 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
     *(v15 + 84) = v59;
 
     v15[187] = 1;
-    if ([v11 wantsFeedbackAction])
+    if ([configurationCopy wantsFeedbackAction])
     {
       v61 = +[PXRootSettings sharedInstance];
       v15[183] = [v61 canShowInternalUI];
@@ -5016,16 +5016,16 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
     v62 = [*(v15 + 81) persistedValueForKey:@"PXStoryViewModelAutoReplay"];
     if ([v62 BOOLValue])
     {
-      v63 = 1;
+      assetCollectionForcesAutoReplay = 1;
     }
 
     else
     {
-      v63 = [v15 assetCollectionForcesAutoReplay];
+      assetCollectionForcesAutoReplay = [v15 assetCollectionForcesAutoReplay];
     }
 
-    v15[184] = v63;
-    v15[152] = [v11 isChromeAllowed];
+    v15[184] = assetCollectionForcesAutoReplay;
+    v15[152] = [configurationCopy isChromeAllowed];
     v64 = objc_alloc_init(PXStoryViewChromeTitleInfo);
     v65 = *(v15 + 70);
     *(v15 + 70) = v64;
@@ -5070,8 +5070,8 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
     v69 = *(v15 + 16);
     *(v15 + 16) = v68;
 
-    v70 = [v15 HUDObservable];
-    [v70 registerChangeObserver:v15 context:HUDObservableObservationContext];
+    hUDObservable = [v15 HUDObservable];
+    [hUDObservable registerChangeObserver:v15 context:HUDObservableObservationContext];
 
     v71 = [[PXGenerativeStoryInWatchNextController alloc] initWithStoryViewModel:v15];
     v72 = *(v15 + 107);
@@ -5092,7 +5092,7 @@ void __44__PXStoryViewModel_setShouldAutoHideChrome___block_invoke(uint64_t a1)
     v76 = *(v73 + 88);
     *(v73 + 88) = v75;
 
-    v12 = v78;
+    collectionCopy = v78;
   }
 
   return v15;
@@ -5117,32 +5117,32 @@ void __91__PXStoryViewModel_initWithConfiguration_extendedTraitCollection_timeSo
 
 - (PXStoryViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryViewModel.m" lineNumber:201 description:{@"%s is not available as initializer", "-[PXStoryViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryViewModel.m" lineNumber:201 description:{@"%s is not available as initializer", "-[PXStoryViewModel init]"}];
 
   abort();
 }
 
-+ (void)registerViewModelDesiringSoloPlayback:(id)a3
++ (void)registerViewModelDesiringSoloPlayback:(id)playback
 {
-  v5 = a3;
+  playbackCopy = playback;
   if (PFOSVariantHasInternalDiagnostics())
   {
     v6 = _viewModelsDesiringPlayback;
     if (!_viewModelsDesiringPlayback)
     {
-      v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+      weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
       v8 = _viewModelsDesiringPlayback;
-      _viewModelsDesiringPlayback = v7;
+      _viewModelsDesiringPlayback = weakObjectsHashTable;
 
       v6 = _viewModelsDesiringPlayback;
     }
 
-    [v6 addObject:v5];
-    v9 = [v5 mainConfiguration];
-    v10 = [v9 allowPlayingMultipleStoriesSimultaneously];
+    [v6 addObject:playbackCopy];
+    mainConfiguration = [playbackCopy mainConfiguration];
+    allowPlayingMultipleStoriesSimultaneously = [mainConfiguration allowPlayingMultipleStoriesSimultaneously];
 
-    if ((v10 & 1) == 0)
+    if ((allowPlayingMultipleStoriesSimultaneously & 1) == 0)
     {
       v11 = dispatch_time(0, 1000000000);
       v12[0] = MEMORY[0x1E69E9820];
@@ -5150,7 +5150,7 @@ void __91__PXStoryViewModel_initWithConfiguration_extendedTraitCollection_timeSo
       v12[2] = __58__PXStoryViewModel_registerViewModelDesiringSoloPlayback___block_invoke;
       v12[3] = &__block_descriptor_48_e5_v8__0l;
       v12[4] = a2;
-      v12[5] = a1;
+      v12[5] = self;
       dispatch_after(v11, MEMORY[0x1E69E96A0], v12);
     }
   }

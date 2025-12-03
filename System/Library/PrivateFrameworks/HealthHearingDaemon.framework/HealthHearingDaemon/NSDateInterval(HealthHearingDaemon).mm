@@ -45,12 +45,12 @@
       [NSDateInterval(HealthHearingDaemon) hd_hearingSevenDayLimitIntervalWithStartDate:v9 earliestStartDate:v8 boundedInterval:v13];
     }
 
-    v14 = [[a1 alloc] initWithStartDate:v8 duration:608400.0];
+    v14 = [[self alloc] initWithStartDate:v8 duration:608400.0];
   }
 
   else
   {
-    v14 = [[a1 alloc] initWithStartDate:v11 endDate:v12];
+    v14 = [[self alloc] initWithStartDate:v11 endDate:v12];
   }
 
   v15 = v14;
@@ -67,7 +67,7 @@
   }
 
   v5 = [v4 dateByAddingTimeInterval:-604800.0];
-  v6 = [[a1 alloc] initWithStartDate:v5 endDate:v4];
+  v6 = [[self alloc] initWithStartDate:v5 endDate:v4];
 
   return v6;
 }
@@ -82,7 +82,7 @@
 
   v5 = [v4 dateByAddingTimeInterval:3600.0];
   v6 = [v4 dateByAddingTimeInterval:-604800.0];
-  v7 = [[a1 alloc] initWithStartDate:v6 endDate:v5];
+  v7 = [[self alloc] initWithStartDate:v6 endDate:v5];
   [v7 duration];
   if (v8 != 608400.0)
   {

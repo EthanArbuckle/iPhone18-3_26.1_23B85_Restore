@@ -1,31 +1,31 @@
 @interface HSPCTextFieldViewController
-- (HSPCTextFieldViewController)initWithCoordinator:(id)a3 config:(id)a4 withTextFieldMinimumHeight:(double)a5;
+- (HSPCTextFieldViewController)initWithCoordinator:(id)coordinator config:(id)config withTextFieldMinimumHeight:(double)height;
 - (NSString)textFieldPlaceholderText;
 - (NSString)textFieldText;
 - (PRXTextField)textField;
 - (id)commitConfiguration;
 - (void)endEditing;
-- (void)setTextFieldPlaceholderText:(id)a3;
-- (void)setTextFieldText:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setTextFieldPlaceholderText:(id)text;
+- (void)setTextFieldText:(id)text;
+- (void)textFieldDidEndEditing:(id)editing;
 - (void)viewDidLoad;
 @end
 
 @implementation HSPCTextFieldViewController
 
-- (HSPCTextFieldViewController)initWithCoordinator:(id)a3 config:(id)a4 withTextFieldMinimumHeight:(double)a5
+- (HSPCTextFieldViewController)initWithCoordinator:(id)coordinator config:(id)config withTextFieldMinimumHeight:(double)height
 {
-  v9 = a3;
-  v10 = a4;
+  coordinatorCopy = coordinator;
+  configCopy = config;
   v18.receiver = self;
   v18.super_class = HSPCTextFieldViewController;
   v11 = [(HSPCTextFieldViewController *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_config, a4);
-    objc_storeStrong(&v12->_coordinator, a3);
-    v12->_textFieldMinimumHeight = a5;
+    objc_storeStrong(&v11->_config, config);
+    objc_storeStrong(&v12->_coordinator, coordinator);
+    v12->_textFieldMinimumHeight = height;
     v13 = [(HSPCTextFieldViewController *)v12 addProminentButtonWithTitleKey:@"HUContinueTitle" target:v12 futureSelector:"commitConfiguration"];
     continueAction = v12->_continueAction;
     v12->_continueAction = v13;
@@ -46,21 +46,21 @@
   return [NAFuture futureWithResult:&off_1000CD828];
 }
 
-- (void)setTextFieldText:(id)a3
+- (void)setTextFieldText:(id)text
 {
-  v4 = a3;
-  v5 = [(HSPCTextFieldViewController *)self textField];
-  [v5 setText:v4];
+  textCopy = text;
+  textField = [(HSPCTextFieldViewController *)self textField];
+  [textField setText:textCopy];
 }
 
 - (NSString)textFieldText
 {
-  v2 = [(HSPCTextFieldViewController *)self textField];
-  v3 = [v2 text];
-  v4 = v3;
-  if (v3)
+  textField = [(HSPCTextFieldViewController *)self textField];
+  text = [textField text];
+  v4 = text;
+  if (text)
   {
-    v5 = v3;
+    v5 = text;
   }
 
   else
@@ -73,19 +73,19 @@
   return &v5->isa;
 }
 
-- (void)setTextFieldPlaceholderText:(id)a3
+- (void)setTextFieldPlaceholderText:(id)text
 {
-  v4 = a3;
-  v5 = [(HSPCTextFieldViewController *)self textField];
-  [v5 setPlaceholder:v4];
+  textCopy = text;
+  textField = [(HSPCTextFieldViewController *)self textField];
+  [textField setPlaceholder:textCopy];
 }
 
 - (NSString)textFieldPlaceholderText
 {
-  v2 = [(HSPCTextFieldViewController *)self textField];
-  v3 = [v2 placeholder];
+  textField = [(HSPCTextFieldViewController *)self textField];
+  placeholder = [textField placeholder];
 
-  return v3;
+  return placeholder;
 }
 
 - (PRXTextField)textField
@@ -112,98 +112,98 @@
   v47.receiver = self;
   v47.super_class = HSPCTextFieldViewController;
   [(HSPCTextFieldViewController *)&v47 viewDidLoad];
-  v3 = [(HSPCTextFieldViewController *)self contentView];
-  v4 = [(HSPCTextFieldViewController *)self textField];
-  [v3 addSubview:v4];
+  contentView = [(HSPCTextFieldViewController *)self contentView];
+  textField = [(HSPCTextFieldViewController *)self textField];
+  [contentView addSubview:textField];
 
-  v5 = [(HSPCTextFieldViewController *)self contentView];
-  v6 = [v5 mainContentGuide];
+  contentView2 = [(HSPCTextFieldViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
 
-  v7 = [(HSPCTextFieldViewController *)self textField];
-  [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textField2 = [(HSPCTextFieldViewController *)self textField];
+  [textField2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v8 = objc_opt_new();
-  v9 = [(HSPCTextFieldViewController *)self textField];
-  v10 = [v9 topAnchor];
-  v11 = [v6 topAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  textField3 = [(HSPCTextFieldViewController *)self textField];
+  topAnchor = [textField3 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v8 na_safeAddObject:v12];
 
-  v13 = [(HSPCTextFieldViewController *)self textField];
-  v14 = [v13 leadingAnchor];
-  v15 = [v6 leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  textField4 = [(HSPCTextFieldViewController *)self textField];
+  leadingAnchor = [textField4 leadingAnchor];
+  leadingAnchor2 = [mainContentGuide leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v8 na_safeAddObject:v16];
 
-  v17 = [(HSPCTextFieldViewController *)self textField];
-  v18 = [v17 trailingAnchor];
-  v19 = [v6 trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  textField5 = [(HSPCTextFieldViewController *)self textField];
+  trailingAnchor = [textField5 trailingAnchor];
+  trailingAnchor2 = [mainContentGuide trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v8 na_safeAddObject:v20];
 
   [(HSPCTextFieldViewController *)self textFieldMinimumHeight];
   if (NACGFloatGreaterThanFloat())
   {
-    v21 = [(HSPCTextFieldViewController *)self textField];
-    v22 = [v21 heightAnchor];
+    textField6 = [(HSPCTextFieldViewController *)self textField];
+    heightAnchor = [textField6 heightAnchor];
     [(HSPCTextFieldViewController *)self textFieldMinimumHeight];
-    v23 = [v22 constraintGreaterThanOrEqualToConstant:?];
+    v23 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
 
     [v8 na_safeAddObject:v23];
   }
 
-  v24 = [(HSPCTextFieldViewController *)self footnoteLabel];
-  [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
+  footnoteLabel = [(HSPCTextFieldViewController *)self footnoteLabel];
+  [footnoteLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v25 = [(HSPCTextFieldViewController *)self contentView];
-  v26 = [(HSPCTextFieldViewController *)self footnoteLabel];
-  [v25 addSubview:v26];
+  contentView3 = [(HSPCTextFieldViewController *)self contentView];
+  footnoteLabel2 = [(HSPCTextFieldViewController *)self footnoteLabel];
+  [contentView3 addSubview:footnoteLabel2];
 
-  v27 = [(HSPCTextFieldViewController *)self footnoteLabel];
-  v28 = [v27 leadingAnchor];
-  v29 = [v6 leadingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  footnoteLabel3 = [(HSPCTextFieldViewController *)self footnoteLabel];
+  leadingAnchor3 = [footnoteLabel3 leadingAnchor];
+  leadingAnchor4 = [mainContentGuide leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v8 na_safeAddObject:v30];
 
-  v31 = [(HSPCTextFieldViewController *)self footnoteLabel];
-  v32 = [v31 trailingAnchor];
-  v33 = [v6 trailingAnchor];
-  v34 = [v32 constraintEqualToAnchor:v33];
+  footnoteLabel4 = [(HSPCTextFieldViewController *)self footnoteLabel];
+  trailingAnchor3 = [footnoteLabel4 trailingAnchor];
+  trailingAnchor4 = [mainContentGuide trailingAnchor];
+  v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v8 na_safeAddObject:v34];
 
-  v35 = [(HSPCTextFieldViewController *)self footnoteLabel];
-  v36 = [v35 topAnchor];
-  v37 = [(HSPCTextFieldViewController *)self textField];
-  v38 = [v37 bottomAnchor];
-  v39 = [v36 constraintEqualToAnchor:v38 constant:10.0];
+  footnoteLabel5 = [(HSPCTextFieldViewController *)self footnoteLabel];
+  topAnchor3 = [footnoteLabel5 topAnchor];
+  textField7 = [(HSPCTextFieldViewController *)self textField];
+  bottomAnchor = [textField7 bottomAnchor];
+  v39 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:10.0];
   [v8 na_safeAddObject:v39];
 
-  v40 = [v6 bottomAnchor];
-  v41 = [(HSPCTextFieldViewController *)self footnoteLabel];
-  v42 = [v41 bottomAnchor];
-  v43 = [v40 constraintGreaterThanOrEqualToAnchor:v42 constant:10.0];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  footnoteLabel6 = [(HSPCTextFieldViewController *)self footnoteLabel];
+  bottomAnchor3 = [footnoteLabel6 bottomAnchor];
+  v43 = [bottomAnchor2 constraintGreaterThanOrEqualToAnchor:bottomAnchor3 constant:10.0];
   [v8 na_safeAddObject:v43];
 
-  v44 = [(HSPCTextFieldViewController *)self footnoteLabel];
-  v45 = [v44 heightAnchor];
-  v46 = [v45 constraintGreaterThanOrEqualToConstant:40.0];
+  footnoteLabel7 = [(HSPCTextFieldViewController *)self footnoteLabel];
+  heightAnchor2 = [footnoteLabel7 heightAnchor];
+  v46 = [heightAnchor2 constraintGreaterThanOrEqualToConstant:40.0];
   [v8 na_safeAddObject:v46];
 
   [NSLayoutConstraint activateConstraints:v8];
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v6 = [a3 text];
+  text = [editing text];
   v4 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v5 = [v6 stringByTrimmingCharactersInSet:v4];
+  v5 = [text stringByTrimmingCharactersInSet:v4];
   [(HSPCTextFieldViewController *)self setTextFieldText:v5];
 }
 
 - (void)endEditing
 {
-  v2 = [(HSPCTextFieldViewController *)self contentView];
-  [v2 endEditing:1];
+  contentView = [(HSPCTextFieldViewController *)self contentView];
+  [contentView endEditing:1];
 }
 
 @end

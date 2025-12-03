@@ -1,18 +1,18 @@
 @interface WiFiUsageLQMWindowAnalysisJoin
-- (id)addDimensionsTo:(id)a3;
+- (id)addDimensionsTo:(id)to;
 @end
 
 @implementation WiFiUsageLQMWindowAnalysisJoin
 
-- (id)addDimensionsTo:(id)a3
+- (id)addDimensionsTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v7.receiver = self;
   v7.super_class = WiFiUsageLQMWindowAnalysisJoin;
-  v5 = [(WiFiUsageLQMWindowAnalysis *)&v7 addDimensionsTo:v4];
-  [v4 setObject:self->_joinReason forKeyedSubscript:@"join_reason"];
+  v5 = [(WiFiUsageLQMWindowAnalysis *)&v7 addDimensionsTo:toCopy];
+  [toCopy setObject:self->_joinReason forKeyedSubscript:@"join_reason"];
 
-  return v4;
+  return toCopy;
 }
 
 @end

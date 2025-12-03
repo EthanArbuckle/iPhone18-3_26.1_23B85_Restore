@@ -1,12 +1,12 @@
 @interface RTAuthorizedLocationZDRLocationsEnumerationContext
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToContext:(id)context;
 - (RTAuthorizedLocationZDRLocationsEnumerationContext)init;
-- (RTAuthorizedLocationZDRLocationsEnumerationContext)initWithCoder:(id)a3;
-- (RTAuthorizedLocationZDRLocationsEnumerationContext)initWithEnumerationOptions:(id)a3 offset:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTAuthorizedLocationZDRLocationsEnumerationContext)initWithCoder:(id)coder;
+- (RTAuthorizedLocationZDRLocationsEnumerationContext)initWithEnumerationOptions:(id)options offset:(unint64_t)offset;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTAuthorizedLocationZDRLocationsEnumerationContext
@@ -19,17 +19,17 @@
   return v4;
 }
 
-- (RTAuthorizedLocationZDRLocationsEnumerationContext)initWithEnumerationOptions:(id)a3 offset:(unint64_t)a4
+- (RTAuthorizedLocationZDRLocationsEnumerationContext)initWithEnumerationOptions:(id)options offset:(unint64_t)offset
 {
-  v6 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = RTAuthorizedLocationZDRLocationsEnumerationContext;
   v7 = [(RTAuthorizedLocationZDRLocationsEnumerationContext *)&v11 init];
   if (v7)
   {
-    if (v6)
+    if (optionsCopy)
     {
-      v8 = [v6 copy];
+      v8 = [optionsCopy copy];
     }
 
     else
@@ -40,67 +40,67 @@
     options = v7->_options;
     v7->_options = v8;
 
-    v7->_offset = a4;
+    v7->_offset = offset;
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(RTAuthorizedLocationZDRLocationsEnumerationContext *)self options];
-  v6 = [v4 initWithEnumerationOptions:v5 offset:{-[RTAuthorizedLocationZDRLocationsEnumerationContext offset](self, "offset")}];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  options = [(RTAuthorizedLocationZDRLocationsEnumerationContext *)self options];
+  v6 = [v4 initWithEnumerationOptions:options offset:{-[RTAuthorizedLocationZDRLocationsEnumerationContext offset](self, "offset")}];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   options = self->_options;
-  v5 = a3;
-  [v5 encodeObject:options forKey:@"options"];
-  [v5 encodeInteger:self->_offset forKey:@"offset"];
+  coderCopy = coder;
+  [coderCopy encodeObject:options forKey:@"options"];
+  [coderCopy encodeInteger:self->_offset forKey:@"offset"];
 }
 
-- (RTAuthorizedLocationZDRLocationsEnumerationContext)initWithCoder:(id)a3
+- (RTAuthorizedLocationZDRLocationsEnumerationContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"options"];
-  v6 = [v4 decodeIntegerForKey:@"offset"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"options"];
+  v6 = [coderCopy decodeIntegerForKey:@"offset"];
 
   v7 = [(RTAuthorizedLocationZDRLocationsEnumerationContext *)self initWithEnumerationOptions:v5 offset:v6];
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTAuthorizedLocationZDRLocationsEnumerationContext *)self isEqualToContext:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTAuthorizedLocationZDRLocationsEnumerationContext *)self isEqualToContext:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToContext:(id)a3
+- (BOOL)isEqualToContext:(id)context
 {
-  v5 = a3;
-  v6 = v5;
+  contextCopy = context;
+  v6 = contextCopy;
   options = self->_options;
   v8 = options;
   if (options)
   {
 LABEL_4:
-    v9 = [v6 options];
-    v10 = [(RTEnumerationOptions *)v8 isEqual:v9];
+    options = [v6 options];
+    v10 = [(RTEnumerationOptions *)v8 isEqual:options];
 
     if (options)
     {
@@ -110,8 +110,8 @@ LABEL_4:
     goto LABEL_7;
   }
 
-  v3 = [v5 options];
-  if (v3)
+  options2 = [contextCopy options];
+  if (options2)
   {
     v8 = self->_options;
     goto LABEL_4;

@@ -1,12 +1,12 @@
 @interface PUWatchFaceHelper
-+ (CGRect)screenBoundsForWatchType:(int64_t)a3;
++ (CGRect)screenBoundsForWatchType:(int64_t)type;
 @end
 
 @implementation PUWatchFaceHelper
 
-+ (CGRect)screenBoundsForWatchType:(int64_t)a3
++ (CGRect)screenBoundsForWatchType:(int64_t)type
 {
-  sub_1B37ED5F0(a3);
+  sub_1B37ED5F0(type);
   v5 = 0.0;
   v6 = 0.0;
   result.size.height = v4;

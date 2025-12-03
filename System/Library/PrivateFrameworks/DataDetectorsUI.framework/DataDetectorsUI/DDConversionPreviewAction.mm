@@ -10,16 +10,16 @@
   if ([DDConversionAction actionAvailableForResult:self->super.super._result])
   {
     v3 = [[DDConversionAction alloc] initWithURL:0 result:self->super.super._result context:self->super.super._context];
-    v4 = [(DDConversionAction *)v3 calculateResult];
-    v5 = [v4 formattedExpression];
+    calculateResult = [(DDConversionAction *)v3 calculateResult];
+    formattedExpression = [calculateResult formattedExpression];
 
-    v6 = [(DDConversionAction *)v3 calculateResult];
-    v7 = [v6 formattedResult];
+    calculateResult2 = [(DDConversionAction *)v3 calculateResult];
+    formattedResult = [calculateResult2 formattedResult];
 
     v8 = 0;
-    if (v5)
+    if (formattedExpression)
     {
-      v9 = v7 == 0;
+      v9 = formattedResult == 0;
     }
 
     else
@@ -30,10 +30,10 @@
     if (!v9)
     {
       v10 = [DDConversionPreviewController alloc];
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ =", v5];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ =", formattedExpression];
       v12 = self->super.super._result;
       v13 = *MEMORY[0x277D04140];
-      v8 = [(DDConversionPreviewController *)v10 initWithTitle:v11 subTitle:v7 finance:DDResultHasType()];
+      v8 = [(DDConversionPreviewController *)v10 initWithTitle:v11 subTitle:formattedResult finance:DDResultHasType()];
     }
   }
 

@@ -1,31 +1,31 @@
 @interface NCALRichComplicationPillView
-- (NCALRichComplicationPillView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setPillColors:(id)a3;
+- (NCALRichComplicationPillView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setPillColors:(id)colors;
 @end
 
 @implementation NCALRichComplicationPillView
 
-- (NCALRichComplicationPillView)initWithFrame:(CGRect)a3
+- (NCALRichComplicationPillView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NCALRichComplicationPillView;
-  v3 = [(NCALRichComplicationPillView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NCALRichComplicationPillView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(NCALRichComplicationPillView *)v3 setNeedsDisplayOnBoundsChange:1];
-    v5 = [(NCALRichComplicationPillView *)v4 layer];
-    [v5 setMasksToBounds:1];
+    layer = [(NCALRichComplicationPillView *)v4 layer];
+    [layer setMasksToBounds:1];
   }
 
   return v4;
 }
 
-- (void)setPillColors:(id)a3
+- (void)setPillColors:(id)colors
 {
-  v4 = a3;
-  v5 = [v4 count];
+  colorsCopy = colors;
+  v5 = [colorsCopy count];
   if (v5 >= 3)
   {
     v6 = 3;
@@ -36,7 +36,7 @@
     v6 = v5;
   }
 
-  v7 = [v4 subarrayWithRange:{0, v6}];
+  v7 = [colorsCopy subarrayWithRange:{0, v6}];
 
   pillColors = self->_pillColors;
   self->_pillColors = v7;
@@ -44,12 +44,12 @@
   [(NCALRichComplicationPillView *)self setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = [(NSArray *)self->_pillColors count];
   v31.origin.x = x;
   v31.origin.y = y;
@@ -57,7 +57,7 @@
   v31.size.height = height;
   CGRectGetHeight(v31);
   v9 = +[CLKRenderingContext sharedRenderingContext];
-  v10 = [v9 device];
+  device = [v9 device];
 
   CLKRoundForDevice();
   v12 = v11;
@@ -114,7 +114,7 @@
       v21 = NSStringFromCGRect(v37);
       pillColors = self->_pillColors;
       v23 = 138544130;
-      v24 = self;
+      selfCopy = self;
       v25 = 2114;
       v26 = v21;
       v27 = 2048;

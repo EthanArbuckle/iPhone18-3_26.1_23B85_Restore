@@ -2,42 +2,42 @@
 - (BOOL)isSkLoaded;
 - (NSOperationQueue)operationQueue;
 - (SUUIProductPageChildViewControllerDelegate)delegate;
-- (SUUISwooshArrayViewController)initWithSwooshComponents:(id)a3;
+- (SUUISwooshArrayViewController)initWithSwooshComponents:(id)components;
 - (id)_artworkLoader;
-- (id)_clickEventForSeeAllForViewController:(id)a3;
-- (id)_clickEventWithItem:(id)a3;
+- (id)_clickEventForSeeAllForViewController:(id)controller;
+- (id)_clickEventWithItem:(id)item;
 - (id)_scrollView;
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4;
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index;
 - (void)_addHeaderView;
-- (void)_addMissingItemsWithResponse:(id)a3 error:(id)a4;
+- (void)_addMissingItemsWithResponse:(id)response error:(id)error;
 - (void)_layoutSwooshViews;
 - (void)_loadMissingItemsIfNecessary;
 - (void)_reloadChildViewControllers;
 - (void)dealloc;
 - (void)loadView;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setAskPermission:(BOOL)a3;
-- (void)setClientContext:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setHeaderViewController:(id)a3;
-- (void)setSwooshComponents:(id)a3;
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4;
-- (void)swooshDidSelectSeeAll:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setAskPermission:(BOOL)permission;
+- (void)setClientContext:(id)context;
+- (void)setColorScheme:(id)scheme;
+- (void)setDelegate:(id)delegate;
+- (void)setHeaderViewController:(id)controller;
+- (void)setSwooshComponents:(id)components;
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index;
+- (void)swooshDidSelectSeeAll:(id)all;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUUISwooshArrayViewController
 
-- (SUUISwooshArrayViewController)initWithSwooshComponents:(id)a3
+- (SUUISwooshArrayViewController)initWithSwooshComponents:(id)components
 {
-  v4 = a3;
+  componentsCopy = components;
   v9.receiver = self;
   v9.super_class = SUUISwooshArrayViewController;
   v5 = [(SUUISwooshArrayViewController *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [componentsCopy copy];
     swooshComponents = v5->_swooshComponents;
     v5->_swooshComponents = v6;
   }
@@ -106,12 +106,12 @@
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v20 + 1) + 8 * i) lockups];
+        lockups = [*(*(&v20 + 1) + 8 * i) lockups];
         v16 = 0u;
         v17 = 0u;
         v18 = 0u;
         v19 = 0u;
-        v8 = v7;
+        v8 = lockups;
         v9 = [v8 countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v9)
         {
@@ -126,9 +126,9 @@
                 objc_enumerationMutation(v8);
               }
 
-              v13 = [*(*(&v16 + 1) + 8 * j) item];
+              item = [*(*(&v16 + 1) + 8 * j) item];
 
-              if (!v13)
+              if (!item)
               {
 
                 v14 = 0;
@@ -180,13 +180,13 @@ LABEL_19:
   return operationQueue;
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v5 = a3;
-  if (self->_clientContext != v5)
+  contextCopy = context;
+  if (self->_clientContext != contextCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_clientContext, a3);
+    v8 = contextCopy;
+    objc_storeStrong(&self->_clientContext, context);
     clientContext = self->_clientContext;
     if (clientContext)
     {
@@ -200,75 +200,75 @@ LABEL_19:
     v7 = ;
     [(SUUISwooshArrayViewController *)self setTitle:v7];
 
-    v5 = v8;
+    contextCopy = v8;
   }
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
-    v6 = [(SUUISwooshArrayViewController *)self view];
-    v7 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-    [v6 setBackgroundColor:v7];
+    v8 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
+    view = [(SUUISwooshArrayViewController *)self view];
+    backgroundColor = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+    [view setBackgroundColor:backgroundColor];
 
-    v5 = v8;
+    schemeCopy = v8;
   }
 }
 
-- (void)setSwooshComponents:(id)a3
+- (void)setSwooshComponents:(id)components
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_swooshComponents != v4)
+  componentsCopy = components;
+  v5 = componentsCopy;
+  if (self->_swooshComponents != componentsCopy)
   {
-    v8 = v4;
-    v6 = [(NSArray *)v4 copy];
+    v8 = componentsCopy;
+    v6 = [(NSArray *)componentsCopy copy];
     swooshComponents = self->_swooshComponents;
     self->_swooshComponents = v6;
 
-    v4 = [(SUUISwooshArrayViewController *)self isViewLoaded];
+    componentsCopy = [(SUUISwooshArrayViewController *)self isViewLoaded];
     v5 = v8;
-    if (v4)
+    if (componentsCopy)
     {
-      v4 = [(SUUISwooshArrayViewController *)self _reloadChildViewControllers];
+      componentsCopy = [(SUUISwooshArrayViewController *)self _reloadChildViewControllers];
       v5 = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](v4, v5);
+  MEMORY[0x2821F96F8](componentsCopy, v5);
 }
 
-- (void)setAskPermission:(BOOL)a3
+- (void)setAskPermission:(BOOL)permission
 {
-  if (self->_askPermission != a3)
+  if (self->_askPermission != permission)
   {
-    self->_askPermission = a3;
+    self->_askPermission = permission;
     [(SUUISwooshArrayViewController *)self _reloadChildViewControllers];
   }
 }
 
-- (void)setHeaderViewController:(id)a3
+- (void)setHeaderViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   headerViewController = self->_headerViewController;
-  v9 = v5;
-  if (headerViewController != v5)
+  v9 = controllerCopy;
+  if (headerViewController != controllerCopy)
   {
     if ([(SUUIProductPageHeaderViewController *)headerViewController isViewLoaded])
     {
-      v7 = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
-      [v7 removeFromSuperview];
+      view = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
+      [view removeFromSuperview];
 
-      v8 = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
-      [v8 removeFromSuperview];
+      floatingView = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
+      [floatingView removeFromSuperview];
     }
 
     [(SUUIProductPageHeaderViewController *)self->_headerViewController removeFromParentViewController];
-    objc_storeStrong(&self->_headerViewController, a3);
+    objc_storeStrong(&self->_headerViewController, controller);
     if (self->_headerViewController)
     {
       [(SUUISwooshArrayViewController *)self addChildViewController:?];
@@ -280,9 +280,9 @@ LABEL_19:
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -302,32 +302,32 @@ LABEL_19:
 
 - (void)loadView
 {
-  v3 = [(SUUISwooshArrayViewController *)self _scrollView];
-  [(SUUISwooshArrayViewController *)self setView:v3];
+  _scrollView = [(SUUISwooshArrayViewController *)self _scrollView];
+  [(SUUISwooshArrayViewController *)self setView:_scrollView];
 
   [(SUUISwooshArrayViewController *)self _reloadChildViewControllers];
 
   [(SUUISwooshArrayViewController *)self _addHeaderView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(SUUISwooshArrayViewController *)self _loadMissingItemsIfNecessary];
   v5.receiver = self;
   v5.super_class = SUUISwooshArrayViewController;
-  [(SUUISwooshArrayViewController *)&v5 viewWillAppear:v3];
+  [(SUUISwooshArrayViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index
 {
-  v6 = [a3 lockups];
-  v12 = [v6 objectAtIndex:a4];
+  lockups = [swoosh lockups];
+  v12 = [lockups objectAtIndex:index];
 
-  v7 = [v12 item];
-  if (v7)
+  item = [v12 item];
+  if (item)
   {
-    v8 = [(SUUISwooshArrayViewController *)self _clickEventWithItem:v7];
+    v8 = [(SUUISwooshArrayViewController *)self _clickEventWithItem:item];
     if (v8)
     {
       [(SUUIMetricsController *)self->_metricsController recordEvent:v8];
@@ -339,15 +339,15 @@ LABEL_19:
     if (v10)
     {
       v11 = objc_loadWeakRetained(&self->_delegate);
-      [v11 productPageChildOpenItem:v7];
+      [v11 productPageChildOpenItem:item];
     }
   }
 }
 
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:v6];
+  swooshCopy = swoosh;
+  v7 = [(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:swooshCopy];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -355,23 +355,23 @@ LABEL_19:
   }
 
   v9 = [(NSMutableArray *)self->_swooshArtworkLoaders objectAtIndex:v7];
-  v10 = [v6 lockups];
-  v11 = [v10 objectAtIndex:a4];
+  lockups = [swooshCopy lockups];
+  v11 = [lockups objectAtIndex:index];
 
-  v12 = [v11 item];
-  if (!v12)
+  item = [v11 item];
+  if (!item)
   {
     v13 = v9;
     v14 = 0;
     goto LABEL_7;
   }
 
-  v8 = [v9 cachedImageForItem:v12];
+  v8 = [v9 cachedImageForItem:item];
   if (!v8)
   {
-    [v9 loadImageForItem:v12 reason:1];
+    [v9 loadImageForItem:item reason:1];
     v13 = v9;
-    v14 = v12;
+    v14 = item;
 LABEL_7:
     v8 = [v13 placeholderImageForItem:v14];
   }
@@ -381,17 +381,17 @@ LABEL_9:
   return v8;
 }
 
-- (void)swooshDidSelectSeeAll:(id)a3
+- (void)swooshDidSelectSeeAll:(id)all
 {
-  v4 = a3;
-  v5 = [(SUUISwooshArrayViewController *)self _clickEventForSeeAllForViewController:v4];
+  allCopy = all;
+  v5 = [(SUUISwooshArrayViewController *)self _clickEventForSeeAllForViewController:allCopy];
   if (v5)
   {
     [(SUUIMetricsController *)self->_metricsController recordEvent:v5];
   }
 
-  v6 = [v4 seeAllURL];
-  if (v6)
+  seeAllURL = [allCopy seeAllURL];
+  if (seeAllURL)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v8[0] = MEMORY[0x277D85DD0];
@@ -399,8 +399,8 @@ LABEL_9:
     v8[2] = __55__SUUISwooshArrayViewController_swooshDidSelectSeeAll___block_invoke;
     v8[3] = &unk_2798F59A8;
     v8[4] = self;
-    v9 = v4;
-    v10 = v6;
+    v9 = allCopy;
+    v10 = seeAllURL;
     [WeakRetained productPageChildOpenURL:v10 viewControllerBlock:v8];
   }
 }
@@ -419,7 +419,7 @@ SUUIStorePageViewController *__55__SUUISwooshArrayViewController_swooshDidSelect
   return v2;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained productPageChildViewControllerDidScroll:self];
@@ -427,27 +427,27 @@ SUUIStorePageViewController *__55__SUUISwooshArrayViewController_swooshDidSelect
 
 - (void)_addHeaderView
 {
-  v8 = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
-  [v8 setAutoresizingMask:2];
-  [v8 frame];
+  view = [(SUUIProductPageHeaderViewController *)self->_headerViewController view];
+  [view setAutoresizingMask:2];
+  [view frame];
   v4 = v3;
   [(UIScrollView *)self->_scrollView bounds];
-  [v8 setFrame:{0.0, v4}];
-  [(UIScrollView *)self->_scrollView _addContentSubview:v8 atBack:0];
-  v5 = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
-  [v5 setAutoresizingMask:2];
-  [v5 frame];
+  [view setFrame:{0.0, v4}];
+  [(UIScrollView *)self->_scrollView _addContentSubview:view atBack:0];
+  floatingView = [(SUUIProductPageHeaderViewController *)self->_headerViewController floatingView];
+  [floatingView setAutoresizingMask:2];
+  [floatingView frame];
   v7 = v6;
   [(UIScrollView *)self->_scrollView bounds];
-  [v5 setFrame:{0.0, v7}];
-  [(UIScrollView *)self->_scrollView _addContentSubview:v5 atBack:0];
+  [floatingView setFrame:{0.0, v7}];
+  [(UIScrollView *)self->_scrollView _addContentSubview:floatingView atBack:0];
 }
 
-- (void)_addMissingItemsWithResponse:(id)a3 error:(id)a4
+- (void)_addMissingItemsWithResponse:(id)response error:(id)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  responseCopy = response;
+  if (responseCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -469,7 +469,7 @@ SUUIStorePageViewController *__55__SUUISwooshArrayViewController_swooshDidSelect
             objc_enumerationMutation(v6);
           }
 
-          [*(*(&v13 + 1) + 8 * v10++) _updateLockupItemsWithLookupResponse:{v5, v13}];
+          [*(*(&v13 + 1) + 8 * v10++) _updateLockupItemsWithLookupResponse:{responseCopy, v13}];
         }
 
         while (v8 != v10);
@@ -512,16 +512,16 @@ SUUIStorePageViewController *__55__SUUISwooshArrayViewController_swooshDidSelect
   return artworkLoader;
 }
 
-- (id)_clickEventForSeeAllForViewController:(id)a3
+- (id)_clickEventForSeeAllForViewController:(id)controller
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   if ([(SUUIMetricsController *)self->_metricsController canRecordEventWithType:*MEMORY[0x277D6A478]])
   {
     v5 = objc_alloc_init(MEMORY[0x277D69B68]);
     v6 = *MEMORY[0x277D6A4D0];
     [v5 setTargetType:*MEMORY[0x277D6A4D0]];
-    v7 = [(SUUIMetricsController *)self->_metricsController locationWithPosition:[(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:v4] type:@"swoosh" fieldData:0];
+    v7 = [(SUUIMetricsController *)self->_metricsController locationWithPosition:[(NSMutableArray *)self->_viewControllers indexOfObjectIdenticalTo:controllerCopy] type:@"swoosh" fieldData:0];
     v8 = [(SUUIMetricsController *)self->_metricsController locationWithPosition:0 type:v6 fieldData:0];
     v9 = v8;
     if (v7)
@@ -542,7 +542,7 @@ SUUIStorePageViewController *__55__SUUISwooshArrayViewController_swooshDidSelect
       [v5 setLocationWithEventLocations:v11];
     }
 
-    [v4 seeAllButtonFrame];
+    [controllerCopy seeAllButtonFrame];
     SUUIMetricsSetClickEventPositionWithPoint(v5, v12, v13);
   }
 
@@ -554,10 +554,10 @@ SUUIStorePageViewController *__55__SUUISwooshArrayViewController_swooshDidSelect
   return v5;
 }
 
-- (id)_clickEventWithItem:(id)a3
+- (id)_clickEventWithItem:(id)item
 {
   v42[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   if ([(SUUIMetricsController *)self->_metricsController canRecordEventWithType:*MEMORY[0x277D6A478]])
   {
     v5 = objc_alloc_init(MEMORY[0x277D69B68]);
@@ -580,7 +580,7 @@ SUUIStorePageViewController *__55__SUUISwooshArrayViewController_swooshDidSelect
     v21 = 3221225472;
     v22 = __53__SUUISwooshArrayViewController__clickEventWithItem___block_invoke;
     v23 = &unk_2798FA680;
-    v7 = v4;
+    v7 = itemCopy;
     v24 = v7;
     v25 = &v38;
     v26 = &v34;
@@ -599,13 +599,13 @@ SUUIStorePageViewController *__55__SUUISwooshArrayViewController_swooshDidSelect
     }
 
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v7 itemIdentifier];
-    v15 = [v13 stringWithFormat:@"%lld", v14, v20, v21, v22, v23];
+    itemIdentifier = [v7 itemIdentifier];
+    v15 = [v13 stringWithFormat:@"%lld", itemIdentifier, v20, v21, v22, v23];
     [v5 setTargetIdentifier:v15];
 
     [v5 setTargetType:v9];
-    v16 = [v7 productPageURLString];
-    [v5 setTargetURL:v16];
+    productPageURLString = [v7 productPageURLString];
+    [v5 setTargetURL:productPageURLString];
 
     [v29[5] frameForItemAtIndex:v39[3]];
     SUUIMetricsSetClickEventPositionWithPoint(v5, v17, v18);
@@ -653,8 +653,8 @@ BOOL __53__SUUISwooshArrayViewController__clickEventWithItem___block_invoke_2(ui
 
 - (void)_layoutSwooshViews
 {
-  v3 = [(SUUISwooshArrayViewController *)self view];
-  [v3 frame];
+  view = [(SUUISwooshArrayViewController *)self view];
+  [view frame];
   v5 = v4;
   v18 = 0;
   v19 = &v18;
@@ -671,7 +671,7 @@ BOOL __53__SUUISwooshArrayViewController__clickEventWithItem___block_invoke_2(ui
   v15 = v8;
   v16 = v4;
   v17 = v9;
-  v10 = v3;
+  v10 = view;
   v12 = v10;
   [(NSMutableArray *)viewControllers enumerateObjectsUsingBlock:v11];
   [v10 setContentSize:{v5, v19[3]}];
@@ -746,12 +746,12 @@ LABEL_4:
           objc_enumerationMutation(obj);
         }
 
-        v6 = [*(*(&v35 + 1) + 8 * v5) lockups];
+        lockups = [*(*(&v35 + 1) + 8 * v5) lockups];
         v33 = 0u;
         v34 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v7 = v6;
+        v7 = lockups;
         v8 = [v7 countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v8)
         {
@@ -766,8 +766,8 @@ LABEL_9:
             }
 
             v11 = *(*(&v31 + 1) + 8 * v10);
-            v12 = [v11 item];
-            v13 = v12 == 0;
+            item = [v11 item];
+            v13 = item == 0;
 
             if (v13)
             {
@@ -816,8 +816,8 @@ LABEL_9:
     if ([v3 count])
     {
       v17 = objc_alloc(MEMORY[0x277D69CF0]);
-      v18 = [(SUUIClientContext *)self->_clientContext platformContext];
-      v19 = [v17 initWithPlatformContext:v18];
+      platformContext = [(SUUIClientContext *)self->_clientContext platformContext];
+      v19 = [v17 initWithPlatformContext:platformContext];
       platformOperation = self->_platformOperation;
       self->_platformOperation = v19;
 
@@ -835,8 +835,8 @@ LABEL_9:
       v28[3] = &unk_2798F67F0;
       objc_copyWeak(&v29, &location);
       [(SSVPlatformRequestOperation *)v23 setResponseBlock:v28];
-      v24 = [(SUUISwooshArrayViewController *)self operationQueue];
-      [v24 addOperation:self->_platformOperation];
+      operationQueue = [(SUUISwooshArrayViewController *)self operationQueue];
+      [operationQueue addOperation:self->_platformOperation];
 
       objc_destroyWeak(&v29);
       objc_destroyWeak(&location);
@@ -912,8 +912,8 @@ void __61__SUUISwooshArrayViewController__loadMissingItemsIfNecessary__block_inv
         v15 = *(*(&v38 + 1) + 8 * i);
         if ([v15 isViewLoaded])
         {
-          v16 = [v15 view];
-          [v16 removeFromSuperview];
+          view = [v15 view];
+          [view removeFromSuperview];
         }
 
         [v15 removeFromParentViewController];
@@ -929,7 +929,7 @@ void __61__SUUISwooshArrayViewController__loadMissingItemsIfNecessary__block_inv
   [(NSMutableArray *)self->_viewControllers removeAllObjects];
   if (!self->_askPermission)
   {
-    v17 = [(SUUISwooshArrayViewController *)self _artworkLoader];
+    _artworkLoader = [(SUUISwooshArrayViewController *)self _artworkLoader];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -954,24 +954,24 @@ void __61__SUUISwooshArrayViewController__loadMissingItemsIfNecessary__block_inv
           if (!v22)
           {
             v22 = objc_alloc_init(SUUIColorScheme);
-            v23 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-            if (v23)
+            backgroundColor = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+            if (backgroundColor)
             {
-              [(SUUIColorScheme *)v22 setBackgroundColor:v23];
+              [(SUUIColorScheme *)v22 setBackgroundColor:backgroundColor];
             }
 
             else
             {
               [MEMORY[0x277D75348] colorWithWhite:0.97254902 alpha:1.0];
               v24 = v18;
-              v25 = v17;
+              v25 = _artworkLoader;
               v26 = v6;
               v28 = v27 = v3;
               [(SUUIColorScheme *)v22 setBackgroundColor:v28];
 
               v3 = v27;
               v6 = v26;
-              v17 = v25;
+              _artworkLoader = v25;
               v18 = v24;
               v19 = v32;
             }
@@ -981,12 +981,12 @@ void __61__SUUISwooshArrayViewController__loadMissingItemsIfNecessary__block_inv
           [(SUUILockupSwooshViewController *)v29 setColorScheme:v22];
           [(SUUILockupSwooshViewController *)v29 setClientContext:self->_clientContext];
           [(SUUILockupSwooshViewController *)v29 setDelegate:self];
-          v30 = [v21 lockups];
-          -[SUUILockupSwooshViewController setSeeAllHidden:](v29, "setSeeAllHidden:", [v30 count] < 4);
+          lockups = [v21 lockups];
+          -[SUUILockupSwooshViewController setSeeAllHidden:](v29, "setSeeAllHidden:", [lockups count] < 4);
 
           [*(&self->super.super.super.isa + v6) addObject:v29];
           [(SUUISwooshArrayViewController *)self addChildViewController:v29];
-          v31 = [[SUUILockupSwooshArtworkLoader alloc] initWithArtworkLoader:v17 swoosh:v29];
+          v31 = [[SUUILockupSwooshArtworkLoader alloc] initWithArtworkLoader:_artworkLoader swoosh:v29];
           [*(&self->super.super.super.isa + v3) addObject:v31];
         }
 
@@ -1012,10 +1012,10 @@ void __61__SUUISwooshArrayViewController__loadMissingItemsIfNecessary__block_inv
     [(UIScrollView *)self->_scrollView setAlwaysBounceVertical:1];
     [(UIScrollView *)self->_scrollView setAutoresizesSubviews:1];
     v6 = self->_scrollView;
-    v7 = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
-    if (v7)
+    backgroundColor = [(SUUIColorScheme *)self->_colorScheme backgroundColor];
+    if (backgroundColor)
     {
-      [(UIScrollView *)v6 setBackgroundColor:v7];
+      [(UIScrollView *)v6 setBackgroundColor:backgroundColor];
     }
 
     else

@@ -1,7 +1,7 @@
 @interface CrossPlatformTransferSourceSelectionWarningViewController
 - (CrossPlatformTransferSourceSelectionWarningViewController)init;
 - (TSSIMSetupFlowDelegate)delegate;
-- (void)_handleNotificationESIMInstallStateChanged:(id)a3;
+- (void)_handleNotificationESIMInstallStateChanged:(id)changed;
 - (void)viewDidLoad;
 @end
 
@@ -28,8 +28,8 @@
   v14.super_class = CrossPlatformTransferSourceSelectionWarningViewController;
   v11 = [(CrossPlatformTransferSourceSelectionWarningViewController *)&v14 initWithTitle:v10 detailText:v6 symbolName:@"antenna.radiowaves.left.and.right"];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:v11 selector:sel__handleNotificationESIMInstallStateChanged_ name:@"esim.install.state.changed" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v11 selector:sel__handleNotificationESIMInstallStateChanged_ name:@"esim.install.state.changed" object:0];
 
   return v11;
 }
@@ -39,26 +39,26 @@
   v4.receiver = self;
   v4.super_class = CrossPlatformTransferSourceSelectionWarningViewController;
   [(TSOBWelcomeController *)&v4 viewDidLoad];
-  v3 = [(OBBaseWelcomeController *)self navigationItem];
-  [v3 setHidesBackButton:1 animated:0];
+  navigationItem = [(OBBaseWelcomeController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 }
 
-- (void)_handleNotificationESIMInstallStateChanged:(id)a3
+- (void)_handleNotificationESIMInstallStateChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 mutableCopy];
+  userInfo = [changed userInfo];
+  v5 = [userInfo mutableCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    dictionary = v5;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v9 = v7;
+  v9 = dictionary;
 
   [v9 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"cross.platform.transfer"];
   v8 = [MEMORY[0x277CCAB88] notificationWithName:@"esim.install.state.changed" object:0 userInfo:v9];

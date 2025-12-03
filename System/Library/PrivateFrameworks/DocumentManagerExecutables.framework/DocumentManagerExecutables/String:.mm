@@ -9,7 +9,7 @@
 - (uint64_t)Any
 {
   v3 = a3;
-  v5 = *(a1 + 32);
+  v5 = *(self + 32);
   if (!a2)
   {
     memset(v10, 0, sizeof(v10));
@@ -41,7 +41,7 @@ LABEL_4:
 
 - (Class)NSObject
 {
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
 
   v3 = v1(v2);
 

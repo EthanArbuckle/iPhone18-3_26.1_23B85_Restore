@@ -1,8 +1,8 @@
 @interface ValueEditingViewController
-- (_TtC8PaperKit26ValueEditingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC8PaperKit26ValueEditingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)didChangeSliderValue;
 - (void)didChangeStepperValue;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
@@ -10,35 +10,35 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ValueEditingViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for ValueEditingViewController();
   v4 = v6.receiver;
-  [(ValueEditingViewController *)&v6 viewDidAppear:v3];
-  LODWORD(v3) = *MEMORY[0x1E69DD930];
+  [(ValueEditingViewController *)&v6 viewDidAppear:appearCopy];
+  LODWORD(appearCopy) = *MEMORY[0x1E69DD930];
   v5 = ValueEditingViewController.stepper.getter();
-  UIAccessibilityPostNotification(v3, v5);
+  UIAccessibilityPostNotification(appearCopy, v5);
 }
 
 - (void)didChangeStepperValue
 {
-  v2 = self;
+  selfCopy = self;
   ValueEditingViewController.didChangeStepperValue()();
 }
 
 - (void)didChangeSliderValue
 {
-  v2 = self;
+  selfCopy = self;
   ValueEditingViewController.didChangeSliderValue()();
 }
 
-- (_TtC8PaperKit26ValueEditingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8PaperKit26ValueEditingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

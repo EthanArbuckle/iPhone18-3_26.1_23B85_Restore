@@ -9,26 +9,26 @@
 
 - (id)handleTouchAtPoint:()PXFeed
 {
-  v6 = [a1 feedHitTestResultAtPoint:?];
-  v7 = [v6 touchAction];
-  if (v7)
+  v6 = [self feedHitTestResultAtPoint:?];
+  touchAction = [v6 touchAction];
+  if (touchAction)
   {
-    v8 = [v6 layout];
-    v9 = v8;
-    if (v8)
+    layout = [v6 layout];
+    v9 = layout;
+    if (layout)
     {
-      v10 = v8;
+      rootLayout = layout;
     }
 
     else
     {
-      v10 = [a1 rootLayout];
+      rootLayout = [self rootLayout];
     }
 
-    v12 = v10;
+    v12 = rootLayout;
 
-    [a1 convertPoint:v12 toLayout:{a2, a3}];
-    v11 = (v7)[2](v7, v12);
+    [self convertPoint:v12 toLayout:{a2, a3}];
+    v11 = (touchAction)[2](touchAction, v12);
   }
 
   else
@@ -43,12 +43,12 @@
 
 - (uint64_t)handlePrimaryInteractionAtPoint:()PXFeed
 {
-  v1 = [a1 feedHitTestResultAtPoint:?];
-  v2 = [v1 primaryAction];
-  v3 = v2;
-  if (v2)
+  v1 = [self feedHitTestResultAtPoint:?];
+  primaryAction = [v1 primaryAction];
+  v3 = primaryAction;
+  if (primaryAction)
   {
-    v4 = (*(v2 + 16))(v2);
+    v4 = (*(primaryAction + 16))(primaryAction);
   }
 
   else
@@ -61,7 +61,7 @@
 
 - (id)feedHitTestResultsInRect:()PXFeed
 {
-  v1 = [a1 hitTestResultsInRect:0 passingTest:?];
+  v1 = [self hitTestResultsInRect:0 passingTest:?];
   v2 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_48];
   v3 = [v1 filteredArrayUsingPredicate:v2];
 
@@ -72,12 +72,12 @@
 {
   if (a5)
   {
-    [a1 hitTestResultAtPoint:&__block_literal_global_28961 padding:a2 passingTest:{a3, *off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
+    [self hitTestResultAtPoint:&__block_literal_global_28961 padding:a2 passingTest:{a3, *off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
   }
 
   else
   {
-    [a1 hitTestResultAtPoint:?];
+    [self hitTestResultAtPoint:?];
   }
   v5 = ;
   objc_opt_class();

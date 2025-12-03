@@ -1,26 +1,26 @@
 @interface ApplicationWorkspaceFinishOperation
-- (ApplicationWorkspaceFinishOperation)initWithApplicationHandle:(id)a3 isPlaceholderRestore:(BOOL)a4;
-- (void)runWithCompletionBlock:(id)a3;
+- (ApplicationWorkspaceFinishOperation)initWithApplicationHandle:(id)handle isPlaceholderRestore:(BOOL)restore;
+- (void)runWithCompletionBlock:(id)block;
 @end
 
 @implementation ApplicationWorkspaceFinishOperation
 
-- (ApplicationWorkspaceFinishOperation)initWithApplicationHandle:(id)a3 isPlaceholderRestore:(BOOL)a4
+- (ApplicationWorkspaceFinishOperation)initWithApplicationHandle:(id)handle isPlaceholderRestore:(BOOL)restore
 {
   v6.receiver = self;
   v6.super_class = ApplicationWorkspaceFinishOperation;
-  result = [(ApplicationWorkspaceOperation *)&v6 initWithApplicationHandle:a3];
+  result = [(ApplicationWorkspaceOperation *)&v6 initWithApplicationHandle:handle];
   if (result)
   {
-    result->_isPlaceholderRestore = a4;
+    result->_isPlaceholderRestore = restore;
   }
 
   return result;
 }
 
-- (void)runWithCompletionBlock:(id)a3
+- (void)runWithCompletionBlock:(id)block
 {
-  v5 = [(ApplicationHandle *)[(ApplicationWorkspaceOperation *)self applicationHandle] bundleID];
+  bundleID = [(ApplicationHandle *)[(ApplicationWorkspaceOperation *)self applicationHandle] bundleID];
   v6 = +[LSApplicationWorkspace defaultWorkspace];
   isPlaceholderRestore = self->_isPlaceholderRestore;
   v8 = +[SSLogConfig sharedDaemonConfig];
@@ -32,15 +32,15 @@
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -74,15 +74,15 @@ LABEL_19:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v9 shouldLog];
+    shouldLog2 = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog2 | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -96,9 +96,9 @@ LABEL_19:
     }
   }
 
-  if ([(ApplicationWorkspaceOperation *)self applicationIsInstalled:v5, v31])
+  if ([(ApplicationWorkspaceOperation *)self applicationIsInstalled:bundleID, v31])
   {
-    v17 = [LSApplicationProxy applicationProxyForIdentifier:v5 placeholder:1];
+    v17 = [LSApplicationProxy applicationProxyForIdentifier:bundleID placeholder:1];
     if (v17)
     {
       v18 = [v6 installProgressForApplication:v17 withPhase:0];
@@ -133,15 +133,15 @@ LABEL_19:
         v25 = +[SSLogConfig sharedConfig];
       }
 
-      v26 = [v25 shouldLog];
+      shouldLog3 = [v25 shouldLog];
       if ([v25 shouldLogToDisk])
       {
-        v27 = v26 | 2;
+        v27 = shouldLog3 | 2;
       }
 
       else
       {
-        v27 = v26;
+        v27 = shouldLog3;
       }
 
       if (!os_log_type_enabled([v25 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -152,11 +152,11 @@ LABEL_19:
       if (v27)
       {
         v28 = self->_isPlaceholderRestore ? @"restored" : @"updated";
-        v29 = [(ApplicationWorkspaceOperation *)self applicationHandle];
+        applicationHandle = [(ApplicationWorkspaceOperation *)self applicationHandle];
         *v33 = 138412802;
         *&v33[4] = v28;
         *&v33[12] = 2112;
-        *&v33[14] = v29;
+        *&v33[14] = applicationHandle;
         v34 = 1024;
         v35 = v17;
         LODWORD(v32) = 28;
@@ -181,15 +181,15 @@ LABEL_53:
       v19 = +[SSLogConfig sharedConfig];
     }
 
-    v20 = [v19 shouldLog];
+    shouldLog4 = [v19 shouldLog];
     if ([v19 shouldLogToDisk])
     {
-      v21 = v20 | 2;
+      v21 = shouldLog4 | 2;
     }
 
     else
     {
-      v21 = v20;
+      v21 = shouldLog4;
     }
 
     if (!os_log_type_enabled([v19 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -203,9 +203,9 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    v22 = [(ApplicationWorkspaceOperation *)self applicationHandle];
+    applicationHandle2 = [(ApplicationWorkspaceOperation *)self applicationHandle];
     *v33 = 138412290;
-    *&v33[4] = v22;
+    *&v33[4] = applicationHandle2;
     LODWORD(v32) = 12;
     v23 = _os_log_send_and_compose_impl();
     v17 = 0;
@@ -216,9 +216,9 @@ LABEL_53:
   }
 
 LABEL_54:
-  if (a3)
+  if (block)
   {
-    (*(a3 + 2))(a3, v17, 0, 0);
+    (*(block + 2))(block, v17, 0, 0);
   }
 }
 

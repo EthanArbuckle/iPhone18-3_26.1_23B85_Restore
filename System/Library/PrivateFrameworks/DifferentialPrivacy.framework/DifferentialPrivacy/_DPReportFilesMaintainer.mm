@@ -1,25 +1,25 @@
 @interface _DPReportFilesMaintainer
-+ (BOOL)removeFilesFrom:(id)a3 olderThanSecond:(double)a4;
-+ (BOOL)retireFiles:(id)a3 toDirectory:(id)a4;
-+ (id)reportsInDirectory:(id)a3;
++ (BOOL)removeFilesFrom:(id)from olderThanSecond:(double)second;
++ (BOOL)retireFiles:(id)files toDirectory:(id)directory;
++ (id)reportsInDirectory:(id)directory;
 - (BOOL)doMaintenance;
 - (_DPReportFilesMaintainer)init;
-- (_DPReportFilesMaintainer)initWithDirectoryPath:(id)a3;
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4;
+- (_DPReportFilesMaintainer)initWithDirectoryPath:(id)path;
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database;
 @end
 
 @implementation _DPReportFilesMaintainer
 
-- (_DPReportFilesMaintainer)initWithDirectoryPath:(id)a3
+- (_DPReportFilesMaintainer)initWithDirectoryPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = _DPReportFilesMaintainer;
   v6 = [(_DPReportFilesMaintainer *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_reportsDirectoryPath, a3);
+    objc_storeStrong(&v6->_reportsDirectoryPath, path);
   }
 
   return v7;
@@ -33,22 +33,22 @@
   return v4;
 }
 
-+ (id)reportsInDirectory:(id)a3
++ (id)reportsInDirectory:(id)directory
 {
-  v3 = a3;
+  directoryCopy = directory;
   context = objc_autoreleasePoolPush();
   v4 = [MEMORY[0x277CBEBF8] mutableCopy];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v5 enumeratorAtPath:v3];
-  v7 = [v6 nextObject];
-  if (v7)
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v6 = [defaultManager enumeratorAtPath:directoryCopy];
+  nextObject = [v6 nextObject];
+  if (nextObject)
   {
-    v8 = v7;
+    v8 = nextObject;
     do
     {
-      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", v3, v8];
+      v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@", directoryCopy, v8];
       v15 = 0;
-      if ([v5 fileExistsAtPath:v9 isDirectory:&v15])
+      if ([defaultManager fileExistsAtPath:v9 isDirectory:&v15])
       {
         if (v15 == 1)
         {
@@ -62,12 +62,12 @@
         }
       }
 
-      v11 = [v6 nextObject];
+      nextObject2 = [v6 nextObject];
 
-      v8 = v11;
+      v8 = nextObject2;
     }
 
-    while (v11);
+    while (nextObject2);
   }
 
   v12 = [v4 copy];
@@ -77,22 +77,22 @@
   return v12;
 }
 
-+ (BOOL)removeFilesFrom:(id)a3 olderThanSecond:(double)a4
++ (BOOL)removeFilesFrom:(id)from olderThanSecond:(double)second
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-a4];
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v7 enumeratorAtPath:v5];
-  v9 = [v8 nextObject];
-  if (v9)
+  fromCopy = from;
+  v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-second];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v8 = [defaultManager enumeratorAtPath:fromCopy];
+  nextObject = [v8 nextObject];
+  if (nextObject)
   {
-    v10 = v9;
+    v10 = nextObject;
     v11 = 0x277CCA000uLL;
     do
     {
-      v12 = [*(v11 + 3240) stringWithFormat:@"%@/%@", v5, v10];
+      v12 = [*(v11 + 3240) stringWithFormat:@"%@/%@", fromCopy, v10];
       v21 = 0;
-      if ([v7 fileExistsAtPath:v12 isDirectory:&v21])
+      if ([defaultManager fileExistsAtPath:v12 isDirectory:&v21])
       {
         if (v21 == 1)
         {
@@ -101,13 +101,13 @@
 
         else
         {
-          v13 = [v7 attributesOfItemAtPath:v12 error:0];
-          v14 = [v13 fileCreationDate];
+          v13 = [defaultManager attributesOfItemAtPath:v12 error:0];
+          fileCreationDate = [v13 fileCreationDate];
 
-          if ([v14 compare:v6] == -1)
+          if ([fileCreationDate compare:v6] == -1)
           {
-            v15 = [MEMORY[0x277CCAA00] defaultManager];
-            [v15 attributesOfItemAtPath:v12 error:0];
+            defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+            [defaultManager2 attributesOfItemAtPath:v12 error:0];
             v16 = v11;
             v18 = v17 = v6;
             [v18 fileSize];
@@ -115,36 +115,36 @@
             v6 = v17;
             v11 = v16;
 
-            [v7 removeItemAtPath:v12 error:0];
+            [defaultManager removeItemAtPath:v12 error:0];
           }
         }
       }
 
-      v19 = [v8 nextObject];
+      nextObject2 = [v8 nextObject];
 
-      v10 = v19;
+      v10 = nextObject2;
     }
 
-    while (v19);
+    while (nextObject2);
   }
 
   return 1;
 }
 
-+ (BOOL)retireFiles:(id)a3 toDirectory:(id)a4
++ (BOOL)retireFiles:(id)files toDirectory:(id)directory
 {
   v42 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  filesCopy = files;
+  directoryCopy = directory;
   [MEMORY[0x277CCAA00] defaultManager];
   v27 = v34 = 0;
-  v28 = v6;
-  if (([v27 fileExistsAtPath:v6 isDirectory:&v34] & 1) == 0)
+  v28 = directoryCopy;
+  if (([v27 fileExistsAtPath:directoryCopy isDirectory:&v34] & 1) == 0)
   {
     obj = +[_DPLog daemon];
     if (os_log_type_enabled(obj, OS_LOG_TYPE_DEBUG))
     {
-      [_DPReportFilesMaintainer retireFiles:v6 toDirectory:&v34];
+      [_DPReportFilesMaintainer retireFiles:directoryCopy toDirectory:&v34];
     }
 
     goto LABEL_19;
@@ -155,7 +155,7 @@
     obj = +[_DPLog daemon];
     if (os_log_type_enabled(obj, OS_LOG_TYPE_DEBUG))
     {
-      [_DPReportFilesMaintainer retireFiles:v6 toDirectory:&v34];
+      [_DPReportFilesMaintainer retireFiles:directoryCopy toDirectory:&v34];
     }
 
 LABEL_19:
@@ -167,12 +167,12 @@ LABEL_19:
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v5;
+  obj = filesCopy;
   v7 = [obj countByEnumeratingWithState:&v30 objects:v41 count:16];
   if (v7)
   {
     v8 = v7;
-    v24 = v5;
+    v24 = filesCopy;
     v9 = *v31;
     v25 = 1;
     do
@@ -185,20 +185,20 @@ LABEL_19:
         }
 
         v11 = *(*(&v30 + 1) + 8 * i);
-        v12 = [v11 absoluteString];
-        v13 = [v12 lastPathComponent];
+        absoluteString = [v11 absoluteString];
+        lastPathComponent = [absoluteString lastPathComponent];
 
-        v14 = [v28 stringByAppendingPathComponent:v13];
+        v14 = [v28 stringByAppendingPathComponent:lastPathComponent];
         v15 = [MEMORY[0x277CBEBC0] fileURLWithPath:v14 isDirectory:0];
-        v16 = [v11 path];
-        v17 = [MEMORY[0x277CCAA00] defaultManager];
-        v18 = [v17 attributesOfItemAtPath:v16 error:0];
+        path = [v11 path];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        v18 = [defaultManager attributesOfItemAtPath:path error:0];
         [v18 fileSize];
 
         v29 = 0;
-        LOBYTE(v17) = [v27 moveItemAtURL:v11 toURL:v15 error:&v29];
+        LOBYTE(defaultManager) = [v27 moveItemAtURL:v11 toURL:v15 error:&v29];
         v19 = v29;
-        if ((v17 & 1) == 0)
+        if ((defaultManager & 1) == 0)
         {
           v20 = +[_DPLog daemon];
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -220,7 +220,7 @@ LABEL_19:
     }
 
     while (v8);
-    v5 = v24;
+    filesCopy = v24;
     v21 = v25;
   }
 
@@ -248,16 +248,16 @@ LABEL_20:
   return 1;
 }
 
-- (void)scheduleMaintenanceWithName:(id)a3 database:(id)a4
+- (void)scheduleMaintenanceWithName:(id)name database:(id)database
 {
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __65___DPReportFilesMaintainer_scheduleMaintenanceWithName_database___block_invoke;
   v7[3] = &unk_27858A930;
   v7[4] = self;
-  v4 = a3;
+  nameCopy = name;
   v5 = MEMORY[0x22AA7A8C0](v7);
-  v6 = [_DPPeriodicTask taskWithName:v4 period:kSecondsIn24Hours handler:v5];
+  v6 = [_DPPeriodicTask taskWithName:nameCopy period:kSecondsIn24Hours handler:v5];
 
   [_DPPeriodicTaskManager registerTask:v6];
 }

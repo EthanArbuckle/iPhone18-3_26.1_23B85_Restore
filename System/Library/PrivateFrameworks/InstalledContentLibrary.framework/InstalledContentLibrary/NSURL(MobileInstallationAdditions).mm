@@ -9,7 +9,7 @@
 {
   v6 = a3;
   v7 = objc_autoreleasePoolPush();
-  v8 = a1;
+  selfCopy = self;
   v9 = [v6 count];
   if (v9)
   {
@@ -28,10 +28,10 @@
       }
 
       v13 = [v6 objectAtIndexedSubscript:v11];
-      v14 = [v8 URLByAppendingPathComponent:v13 isDirectory:v12];
+      v14 = [selfCopy URLByAppendingPathComponent:v13 isDirectory:v12];
 
       ++v11;
-      v8 = v14;
+      selfCopy = v14;
     }
 
     while (v10);
@@ -39,7 +39,7 @@
 
   else
   {
-    v14 = v8;
+    v14 = selfCopy;
   }
 
   v15 = v14;
@@ -52,8 +52,8 @@
 - (id)MI_allAccessURLs
 {
   v2 = objc_opt_new();
-  v3 = [a1 pathComponents];
-  v4 = [v3 mutableCopy];
+  pathComponents = [self pathComponents];
+  v4 = [pathComponents mutableCopy];
 
   while ([v4 count])
   {

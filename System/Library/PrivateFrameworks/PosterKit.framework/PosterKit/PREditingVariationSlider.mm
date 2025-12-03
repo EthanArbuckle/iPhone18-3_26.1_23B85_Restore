@@ -1,24 +1,24 @@
 @interface PREditingVariationSlider
 - (CGColor)trackBorderColor;
-- (PREditingVariationSlider)initWithStyleCoordinator:(id)a3 contextIdentifier:(id)a4;
-- (void)_setSliderValue:(double)a3;
+- (PREditingVariationSlider)initWithStyleCoordinator:(id)coordinator contextIdentifier:(id)identifier;
+- (void)_setSliderValue:(double)value;
 - (void)_setupThumbView;
 - (void)layoutSubviews;
 - (void)layoutThumbView;
-- (void)setStyleCoordinator:(id)a3;
-- (void)setVariation:(double)a3;
-- (void)thumbViewDidPan:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setStyleCoordinator:(id)coordinator;
+- (void)setVariation:(double)variation;
+- (void)thumbViewDidPan:(id)pan;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateThumbContentView;
 - (void)updateTrack;
 @end
 
 @implementation PREditingVariationSlider
 
-- (PREditingVariationSlider)initWithStyleCoordinator:(id)a3 contextIdentifier:(id)a4
+- (PREditingVariationSlider)initWithStyleCoordinator:(id)coordinator contextIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = PREditingVariationSlider;
   v9 = [(PREditingVariationSlider *)&v17 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -26,8 +26,8 @@
   if (v9)
   {
     v9->_applyVariationOnGlass = 0;
-    objc_storeStrong(&v9->_styleCoordinator, a3);
-    objc_storeStrong(&v10->_contextIdentifier, a4);
+    objc_storeStrong(&v9->_styleCoordinator, coordinator);
+    objc_storeStrong(&v10->_contextIdentifier, identifier);
     [(PREditingVariationSlider *)v10 _setupThumbView];
     v11 = [objc_alloc(MEMORY[0x1E69DCD28]) initWithTarget:v10 action:sel_thumbViewDidPan_];
     panGesture = v10->_panGesture;
@@ -37,13 +37,13 @@
     [(PREditingVariationSlider *)v10 addSubview:v10->_thumbContainerView];
     [(PREditingVariationSlider *)v10 setClipsToBounds:0];
     [(PREditingVariationSlider *)v10 updateTrack];
-    v13 = [v7 style];
-    v14 = [v13 allowsVariation];
+    style = [coordinatorCopy style];
+    allowsVariation = [style allowsVariation];
 
-    if (v14)
+    if (allowsVariation)
     {
-      v15 = [v7 style];
-      [v15 variation];
+      style2 = [coordinatorCopy style];
+      [style2 variation];
       [(PREditingVariationSlider *)v10 _setSliderValue:?];
     }
   }
@@ -60,49 +60,49 @@
     self->_thumbContainerView = v3;
 
     v5 = self->_thumbContainerView;
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v5 setBackgroundColor:clearColor];
 
     [(UIView *)self->_thumbContainerView setContentMode:2];
     [(UIView *)self->_thumbContainerView setClipsToBounds:0];
-    v22 = [(UIView *)self->_thumbContainerView layer];
+    layer = [(UIView *)self->_thumbContainerView layer];
     LODWORD(v7) = 1042536202;
-    [v22 setShadowOpacity:v7];
-    [v22 setShadowOffset:{1.0, 5.5}];
-    [v22 setShadowRadius:3.5];
-    v8 = [MEMORY[0x1E6979398] layer];
+    [layer setShadowOpacity:v7];
+    [layer setShadowOffset:{1.0, 5.5}];
+    [layer setShadowRadius:3.5];
+    layer2 = [MEMORY[0x1E6979398] layer];
     thumbSoftShadowLayer = self->_thumbSoftShadowLayer;
-    self->_thumbSoftShadowLayer = v8;
+    self->_thumbSoftShadowLayer = layer2;
 
     LODWORD(v10) = 1042536202;
     [(CALayer *)self->_thumbSoftShadowLayer setShadowOpacity:v10];
     [(CALayer *)self->_thumbSoftShadowLayer setShadowOffset:0.0, 0.0];
     [(CALayer *)self->_thumbSoftShadowLayer setShadowRadius:6.5];
-    v11 = [(UIView *)self->_thumbContainerView layer];
-    [v11 addSublayer:self->_thumbSoftShadowLayer];
+    layer3 = [(UIView *)self->_thumbContainerView layer];
+    [layer3 addSublayer:self->_thumbSoftShadowLayer];
 
-    v12 = [MEMORY[0x1E6979398] layer];
+    layer4 = [MEMORY[0x1E6979398] layer];
     thumbContentLayer = self->_thumbContentLayer;
-    self->_thumbContentLayer = v12;
+    self->_thumbContentLayer = layer4;
 
-    v14 = [(UIView *)self->_thumbContainerView layer];
-    [v14 addSublayer:self->_thumbContentLayer];
+    layer5 = [(UIView *)self->_thumbContainerView layer];
+    [layer5 addSublayer:self->_thumbContentLayer];
 
     v15 = objc_alloc_init(MEMORY[0x1E69794A0]);
     thumbBorderLayer = self->_thumbBorderLayer;
     self->_thumbBorderLayer = v15;
 
     v17 = self->_thumbBorderLayer;
-    v18 = [MEMORY[0x1E69DC888] clearColor];
-    -[CAShapeLayer setFillColor:](v17, "setFillColor:", [v18 CGColor]);
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    -[CAShapeLayer setFillColor:](v17, "setFillColor:", [clearColor2 CGColor]);
 
     v19 = self->_thumbBorderLayer;
-    v20 = [MEMORY[0x1E69DC888] whiteColor];
-    -[CAShapeLayer setStrokeColor:](v19, "setStrokeColor:", [v20 CGColor]);
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    -[CAShapeLayer setStrokeColor:](v19, "setStrokeColor:", [whiteColor CGColor]);
 
     [(CAShapeLayer *)self->_thumbBorderLayer setLineWidth:2.0];
-    v21 = [(UIView *)self->_thumbContainerView layer];
-    [v21 addSublayer:self->_thumbBorderLayer];
+    layer6 = [(UIView *)self->_thumbContainerView layer];
+    [layer6 addSublayer:self->_thumbBorderLayer];
 
     [(PREditingVariationSlider *)self updateThumbContentView];
   }
@@ -110,11 +110,11 @@
 
 - (void)updateTrack
 {
-  v3 = [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator variationSliderTrackView];
+  variationSliderTrackView = [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator variationSliderTrackView];
   trackView = self->_trackView;
-  if (v3 != trackView)
+  if (variationSliderTrackView != trackView)
   {
-    obj = v3;
+    obj = variationSliderTrackView;
     [(UIView *)trackView removeFromSuperview];
     objc_storeStrong(&self->_trackView, obj);
     [(PREditingVariationSlider *)self insertSubview:self->_trackView atIndex:0];
@@ -122,18 +122,18 @@
     v5 = self->_trackView;
     [(PREditingVariationSlider *)self bounds];
     trackView = [(UIView *)v5 setFrame:?];
-    v3 = obj;
+    variationSliderTrackView = obj;
   }
 
-  MEMORY[0x1EEE66BB8](trackView, v3);
+  MEMORY[0x1EEE66BB8](trackView, variationSliderTrackView);
 }
 
 - (void)updateThumbContentView
 {
-  v3 = [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator variationSliderThumbView];
+  variationSliderThumbView = [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator variationSliderThumbView];
   thumbContentView = self->_thumbContentView;
-  obj = v3;
-  if (v3 != thumbContentView)
+  obj = variationSliderThumbView;
+  if (variationSliderThumbView != thumbContentView)
   {
     [(UIView *)thumbContentView removeFromSuperview];
     objc_storeStrong(&self->_thumbContentView, obj);
@@ -152,8 +152,8 @@
     [(CAShapeLayer *)self->_thumbClippingLayer setFillRule:*MEMORY[0x1E69797F8]];
   }
 
-  v7 = [(UIView *)self->_thumbContentView layer];
-  [v7 setMask:self->_thumbClippingLayer];
+  layer = [(UIView *)self->_thumbContentView layer];
+  [layer setMask:self->_thumbClippingLayer];
 }
 
 - (void)layoutThumbView
@@ -202,8 +202,8 @@
     v19 = [v18 bezierPathWithOvalInRect:{v49.origin.x, v49.origin.y, v49.size.width, v49.size.height}];
     -[CAShapeLayer setPath:](v17, "setPath:", [v19 CGPath]);
 
-    v20 = [(UIView *)self->_thumbContainerView layer];
-    [v20 bounds];
+    layer = [(UIView *)self->_thumbContainerView layer];
+    [layer bounds];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -227,12 +227,12 @@
     -[CAShapeLayer setPath:](thumbBorderLayer, "setPath:", [v38 CGPath]);
 
     v39 = self->_thumbBorderLayer;
-    v40 = [(UIView *)self->_thumbContainerView layer];
-    [v40 bounds];
+    layer2 = [(UIView *)self->_thumbContainerView layer];
+    [layer2 bounds];
     [(CAShapeLayer *)v39 setFrame:?];
 
-    v41 = [(UIView *)self->_thumbContainerView layer];
-    [v41 setShadowPath:{-[CAShapeLayer path](self->_thumbBorderLayer, "path")}];
+    layer3 = [(UIView *)self->_thumbContainerView layer];
+    [layer3 setShadowPath:{-[CAShapeLayer path](self->_thumbBorderLayer, "path")}];
 
     [(CALayer *)self->_thumbSoftShadowLayer setShadowPath:[(CAShapeLayer *)self->_thumbBorderLayer path]];
   }
@@ -243,59 +243,59 @@
     v43 = v42 * 0.444444444;
     [(UIView *)self->_trackView setFrame:0.0, (v42 - v42 * 0.444444444) * 0.5];
     [(UIView *)self->_trackView _setContinuousCornerRadius:v43 * 0.5];
-    v44 = [(UIView *)self->_trackView layer];
-    [v44 setBorderWidth:2.0];
+    layer4 = [(UIView *)self->_trackView layer];
+    [layer4 setBorderWidth:2.0];
 
-    v45 = [(UIView *)self->_trackView layer];
-    [v45 setBorderColor:{-[PREditingVariationSlider trackBorderColor](self, "trackBorderColor")}];
+    layer5 = [(UIView *)self->_trackView layer];
+    [layer5 setBorderColor:{-[PREditingVariationSlider trackBorderColor](self, "trackBorderColor")}];
   }
 }
 
 - (CGColor)trackBorderColor
 {
   v2 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:0.1];
-  v3 = [v2 CGColor];
+  cGColor = [v2 CGColor];
 
-  return v3;
+  return cGColor;
 }
 
-- (void)setStyleCoordinator:(id)a3
+- (void)setStyleCoordinator:(id)coordinator
 {
-  v5 = a3;
-  if (v5)
+  coordinatorCopy = coordinator;
+  if (coordinatorCopy)
   {
-    v9 = v5;
-    v6 = [(PREditingPosterContentStyleCoordinator *)v5 style];
-    v7 = [v6 allowsVariation];
+    v9 = coordinatorCopy;
+    style = [(PREditingPosterContentStyleCoordinator *)coordinatorCopy style];
+    allowsVariation = [style allowsVariation];
 
-    v5 = v9;
-    if (v7)
+    coordinatorCopy = v9;
+    if (allowsVariation)
     {
-      v8 = [(PREditingPosterContentStyleCoordinator *)v9 style];
+      style2 = [(PREditingPosterContentStyleCoordinator *)v9 style];
       if (self->_styleCoordinator != v9)
       {
-        objc_storeStrong(&self->_styleCoordinator, a3);
+        objc_storeStrong(&self->_styleCoordinator, coordinator);
       }
 
       [(PREditingVariationSlider *)self updateTrack];
       [(PREditingVariationSlider *)self updateThumbContentView];
-      [v8 variation];
+      [style2 variation];
       [(PREditingVariationSlider *)self _setSliderValue:?];
       [(PREditingVariationSlider *)self setNeedsLayout];
 
-      v5 = v9;
+      coordinatorCopy = v9;
     }
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(PREditingVariationSlider *)self traitCollection];
-  v6 = [v5 layoutDirection];
-  v7 = [v4 layoutDirection];
+  changeCopy = change;
+  traitCollection = [(PREditingVariationSlider *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
+  layoutDirection2 = [changeCopy layoutDirection];
 
-  if (v6 != v7)
+  if (layoutDirection != layoutDirection2)
   {
     v8 = *(MEMORY[0x1E69792E8] + 80);
     *&v16.m31 = *(MEMORY[0x1E69792E8] + 64);
@@ -309,35 +309,35 @@
     v11 = *(MEMORY[0x1E69792E8] + 48);
     *&v16.m21 = *(MEMORY[0x1E69792E8] + 32);
     *&v16.m23 = v11;
-    v12 = [(PREditingVariationSlider *)self traitCollection];
-    v13 = [v12 layoutDirection];
+    traitCollection2 = [(PREditingVariationSlider *)self traitCollection];
+    layoutDirection3 = [traitCollection2 layoutDirection];
 
-    if (v13 == 1)
+    if (layoutDirection3 == 1)
     {
       CATransform3DMakeRotation(&v16, 3.14159265, 0.0, 1.0, 0.0);
     }
 
-    v14 = [(UIView *)self->_trackView layer];
+    layer = [(UIView *)self->_trackView layer];
     v15 = v16;
-    [v14 setTransform:&v15];
+    [layer setTransform:&v15];
   }
 }
 
-- (void)thumbViewDidPan:(id)a3
+- (void)thumbViewDidPan:(id)pan
 {
-  v19 = a3;
-  if ([v19 state] == 1)
+  panCopy = pan;
+  if ([panCopy state] == 1)
   {
     [(UIView *)self->_thumbContainerView center];
     self->_startPanOffset = v4;
     [(PREditingVariationSlider *)self bringSubviewToFront:self->_thumbContainerView];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0x10000;
   }
 
   else
   {
-    if ([v19 state] != 2 && objc_msgSend(v19, "state") != 3)
+    if ([panCopy state] != 2 && objc_msgSend(panCopy, "state") != 3)
     {
       goto LABEL_14;
     }
@@ -346,7 +346,7 @@
     v8 = v7;
     [(UIView *)self->_thumbContainerView bounds];
     v10 = v9;
-    [v19 translationInView:self];
+    [panCopy translationInView:self];
     v12 = v11 + self->_startPanOffset;
     [(UIView *)self->_thumbContainerView bounds];
     MidX = CGRectGetMidX(v21);
@@ -360,52 +360,52 @@
     self->_value = v18 / (v8 - v10) - (1.0 - v18 / (v8 - v10));
     [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator setVariation:self->_applyVariationOnGlass glassStyleApplied:?];
     [(PREditingVariationSlider *)self sendActionsForControlEvents:4096];
-    if ([v19 state] != 3)
+    if ([panCopy state] != 3)
     {
       goto LABEL_14;
     }
 
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0x40000;
   }
 
-  [(PREditingVariationSlider *)v5 sendActionsForControlEvents:v6];
+  [(PREditingVariationSlider *)selfCopy2 sendActionsForControlEvents:v6];
 LABEL_14:
 }
 
-- (void)_setSliderValue:(double)a3
+- (void)_setSliderValue:(double)value
 {
-  self->_value = a3;
+  self->_value = value;
   [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator variation];
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator setVariation:self->_applyVariationOnGlass glassStyleApplied:a3];
+    [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator setVariation:self->_applyVariationOnGlass glassStyleApplied:value];
   }
 
   [(PREditingVariationSlider *)self layoutThumbView];
 }
 
-- (void)setVariation:(double)a3
+- (void)setVariation:(double)variation
 {
-  v5 = [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator style];
-  v6 = [v5 allowsVariation];
+  style = [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator style];
+  allowsVariation = [style allowsVariation];
 
-  if (v6)
+  if (allowsVariation)
   {
-    v7 = [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator style];
-    if (self->_value != a3)
+    style2 = [(PREditingPosterContentStyleCoordinator *)self->_styleCoordinator style];
+    if (self->_value != variation)
     {
-      v10 = v7;
-      [v7 maxVariation];
-      v7 = v10;
-      if (v8 >= a3)
+      v10 = style2;
+      [style2 maxVariation];
+      style2 = v10;
+      if (v8 >= variation)
       {
         [v10 minVariation];
-        v7 = v10;
-        if (v9 <= a3)
+        style2 = v10;
+        if (v9 <= variation)
         {
-          [(PREditingVariationSlider *)self _setSliderValue:a3];
-          v7 = v10;
+          [(PREditingVariationSlider *)self _setSliderValue:variation];
+          style2 = v10;
         }
       }
     }

@@ -1,7 +1,7 @@
 @interface LargeTextLargeMonthWeekView
-+ (CGPoint)positionOfCircleInCellWithWidth:(double)a3 circleSize:(CGSize)a4 compressed:(BOOL)a5 containsFirstDayOfMonth:(BOOL)a6;
-+ (CGRect)frameForCircleWithDayFrame:(CGRect)a3 dayLayerFrame:(CGRect)a4 numberString:(id)a5 overlayString:(id)a6 compressed:(BOOL)a7 containsFirstDay:(BOOL)a8;
-+ (double)_yOffsetForRoundedRect:(BOOL)a3;
++ (CGPoint)positionOfCircleInCellWithWidth:(double)width circleSize:(CGSize)size compressed:(BOOL)compressed containsFirstDayOfMonth:(BOOL)month;
++ (CGRect)frameForCircleWithDayFrame:(CGRect)frame dayLayerFrame:(CGRect)layerFrame numberString:(id)string overlayString:(id)overlayString compressed:(BOOL)compressed containsFirstDay:(BOOL)day;
++ (double)_yOffsetForRoundedRect:(BOOL)rect;
 - (double)monthWeekScale;
 @end
 
@@ -15,32 +15,32 @@
   return result;
 }
 
-+ (double)_yOffsetForRoundedRect:(BOOL)a3
++ (double)_yOffsetForRoundedRect:(BOOL)rect
 {
   result = 5.0;
-  if (a3)
+  if (rect)
   {
-    [a1 headerHeight];
+    [self headerHeight];
     return v4 + 5.0;
   }
 
   return result;
 }
 
-+ (CGRect)frameForCircleWithDayFrame:(CGRect)a3 dayLayerFrame:(CGRect)a4 numberString:(id)a5 overlayString:(id)a6 compressed:(BOOL)a7 containsFirstDay:(BOOL)a8
++ (CGRect)frameForCircleWithDayFrame:(CGRect)frame dayLayerFrame:(CGRect)layerFrame numberString:(id)string overlayString:(id)overlayString compressed:(BOOL)compressed containsFirstDay:(BOOL)day
 {
-  v8 = a8;
-  v9 = a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v16 = a6;
-  v17 = a5;
-  [objc_opt_class() dayNumberFontSize:v9];
+  dayCopy = day;
+  compressedCopy = compressed;
+  height = layerFrame.size.height;
+  width = layerFrame.size.width;
+  y = layerFrame.origin.y;
+  x = layerFrame.origin.x;
+  overlayStringCopy = overlayString;
+  stringCopy = string;
+  [objc_opt_class() dayNumberFontSize:compressedCopy];
   v19 = v18;
-  [objc_opt_class() dayNumberOverlayFontSize:v9];
-  [CompactMonthWeekTodayCircle roundedRectSizeForNumberString:v17 overlayString:v16 fontSize:v19 overlayFontSize:v20];
+  [objc_opt_class() dayNumberOverlayFontSize:compressedCopy];
+  [CompactMonthWeekTodayCircle roundedRectSizeForNumberString:stringCopy overlayString:overlayStringCopy fontSize:v19 overlayFontSize:v20];
   v22 = v21;
   v24 = v23;
 
@@ -51,7 +51,7 @@
   CGRectGetMidX(v32);
   CalRoundToScreenScale();
   v26 = v25;
-  [a1 _yOffsetForRoundedRect:v8];
+  [self _yOffsetForRoundedRect:dayCopy];
   v28 = v27;
   v29 = v26;
   v30 = v22;
@@ -63,12 +63,12 @@
   return result;
 }
 
-+ (CGPoint)positionOfCircleInCellWithWidth:(double)a3 circleSize:(CGSize)a4 compressed:(BOOL)a5 containsFirstDayOfMonth:(BOOL)a6
++ (CGPoint)positionOfCircleInCellWithWidth:(double)width circleSize:(CGSize)size compressed:(BOOL)compressed containsFirstDayOfMonth:(BOOL)month
 {
-  v6 = a6;
+  monthCopy = month;
   CalRoundToScreenScale();
   v9 = v8;
-  [a1 _yOffsetForRoundedRect:v6];
+  [self _yOffsetForRoundedRect:monthCopy];
   v11 = v10;
   v12 = v9;
   result.y = v11;

@@ -1,14 +1,14 @@
 @interface DocumentAccessoryView
-- (_TtC7SwiftUIP33_D03D906BE16D60978DB484CD1BCAACE321DocumentAccessoryView)initWithCoder:(id)a3;
-- (_TtC7SwiftUIP33_D03D906BE16D60978DB484CD1BCAACE321DocumentAccessoryView)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (_TtC7SwiftUIP33_D03D906BE16D60978DB484CD1BCAACE321DocumentAccessoryView)initWithCoder:(id)coder;
+- (_TtC7SwiftUIP33_D03D906BE16D60978DB484CD1BCAACE321DocumentAccessoryView)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
 @end
 
 @implementation DocumentAccessoryView
 
-- (_TtC7SwiftUIP33_D03D906BE16D60978DB484CD1BCAACE321DocumentAccessoryView)initWithCoder:(id)a3
+- (_TtC7SwiftUIP33_D03D906BE16D60978DB484CD1BCAACE321DocumentAccessoryView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -33,18 +33,18 @@
   DocumentAccessoryView.updateRootView()();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  v10 = DocumentAccessoryView.hitTest(_:with:)(a4, x, y);
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  v10 = DocumentAccessoryView.hitTest(_:with:)(event, x, y);
 
   return v10;
 }
 
-- (_TtC7SwiftUIP33_D03D906BE16D60978DB484CD1BCAACE321DocumentAccessoryView)initWithFrame:(CGRect)a3
+- (_TtC7SwiftUIP33_D03D906BE16D60978DB484CD1BCAACE321DocumentAccessoryView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

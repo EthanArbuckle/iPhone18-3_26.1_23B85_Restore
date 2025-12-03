@@ -1,11 +1,11 @@
 @interface PrivacyProxyServiceStatus
-+ (id)serviceStatusString:(unint64_t)a3;
-- (PrivacyProxyServiceStatus)initWithCoder:(id)a3;
-- (PrivacyProxyServiceStatus)initWithData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4;
++ (id)serviceStatusString:(unint64_t)string;
+- (PrivacyProxyServiceStatus)initWithCoder:(id)coder;
+- (PrivacyProxyServiceStatus)initWithData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options;
 - (id)serialize;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PrivacyProxyServiceStatus
@@ -14,66 +14,66 @@
 {
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(PrivacyProxyServiceStatus *)self encodeWithCoder:v3];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
-+ (id)serviceStatusString:(unint64_t)a3
++ (id)serviceStatusString:(unint64_t)string
 {
-  if (a3 > 7)
+  if (string > 7)
   {
     return @"Invalid";
   }
 
   else
   {
-    return off_1E7A30698[a3];
+    return off_1E7A30698[string];
   }
 }
 
-- (id)descriptionWithIndent:(int)a3 options:(unint64_t)a4
+- (id)descriptionWithIndent:(int)indent options:(unint64_t)options
 {
   v7 = [objc_alloc(MEMORY[0x1E696AD60]) initWithCapacity:0];
   v8 = [PrivacyProxyServiceStatus serviceStatusString:[(PrivacyProxyServiceStatus *)self serviceStatus]];
-  [(NSMutableString *)v7 appendPrettyObject:v8 withName:@"Service Status" andIndent:a3 options:a4];
+  [(NSMutableString *)v7 appendPrettyObject:v8 withName:@"Service Status" andIndent:indent options:options];
 
-  v9 = [(PrivacyProxyServiceStatus *)self networkStatuses];
-  [(NSMutableString *)v7 appendPrettyObject:v9 withName:@"Network Statuses" andIndent:a3 options:a4];
+  networkStatuses = [(PrivacyProxyServiceStatus *)self networkStatuses];
+  [(NSMutableString *)v7 appendPrettyObject:networkStatuses withName:@"Network Statuses" andIndent:indent options:options];
 
-  v10 = [(PrivacyProxyServiceStatus *)self details];
-  [(NSMutableString *)v7 appendPrettyObject:v10 withName:@"Details" andIndent:a3 options:a4];
+  details = [(PrivacyProxyServiceStatus *)self details];
+  [(NSMutableString *)v7 appendPrettyObject:details withName:@"Details" andIndent:indent options:options];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PrivacyProxyServiceStatus allocWithZone:?]];
   [(PrivacyProxyServiceStatus *)v4 setServiceStatus:[(PrivacyProxyServiceStatus *)self serviceStatus]];
-  v5 = [(PrivacyProxyServiceStatus *)self networkStatuses];
-  [(PrivacyProxyServiceStatus *)v4 setNetworkStatuses:v5];
+  networkStatuses = [(PrivacyProxyServiceStatus *)self networkStatuses];
+  [(PrivacyProxyServiceStatus *)v4 setNetworkStatuses:networkStatuses];
 
-  v6 = [(PrivacyProxyServiceStatus *)self details];
-  v7 = [v6 copy];
+  details = [(PrivacyProxyServiceStatus *)self details];
+  v7 = [details copy];
   [(PrivacyProxyServiceStatus *)v4 setDetails:v7];
 
   return v4;
 }
 
-- (PrivacyProxyServiceStatus)initWithCoder:(id)a3
+- (PrivacyProxyServiceStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PrivacyProxyServiceStatus;
   v5 = [(PrivacyProxyServiceStatus *)&v23 init];
   if (v5)
   {
-    v5->_serviceStatus = [v4 decodeIntForKey:@"PrivacyProxyServiceStatus"];
+    v5->_serviceStatus = [coderCopy decodeIntForKey:@"PrivacyProxyServiceStatus"];
     v6 = objc_alloc(MEMORY[0x1E695DFD8]);
     v7 = objc_opt_class();
     v8 = [v6 initWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"PrivacyProxyNetworkStatuses"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"PrivacyProxyNetworkStatuses"];
     networkStatuses = v5->_networkStatuses;
     v5->_networkStatuses = v9;
 
@@ -84,7 +84,7 @@
     v15 = objc_opt_class();
     v16 = objc_opt_class();
     v17 = [v11 initWithObjects:{v12, v13, v14, v15, v16, objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"PrivacyProxyDetails"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"PrivacyProxyDetails"];
     details = v5->_details;
     v5->_details = v18;
 
@@ -104,24 +104,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:-[PrivacyProxyServiceStatus serviceStatus](self forKey:{"serviceStatus"), @"PrivacyProxyServiceStatus"}];
-  v5 = [(PrivacyProxyServiceStatus *)self networkStatuses];
-  [v4 encodeObject:v5 forKey:@"PrivacyProxyNetworkStatuses"];
+  coderCopy = coder;
+  [coderCopy encodeInt:-[PrivacyProxyServiceStatus serviceStatus](self forKey:{"serviceStatus"), @"PrivacyProxyServiceStatus"}];
+  networkStatuses = [(PrivacyProxyServiceStatus *)self networkStatuses];
+  [coderCopy encodeObject:networkStatuses forKey:@"PrivacyProxyNetworkStatuses"];
 
-  v6 = [(PrivacyProxyServiceStatus *)self details];
-  [v4 encodeObject:v6 forKey:@"PrivacyProxyDetails"];
+  details = [(PrivacyProxyServiceStatus *)self details];
+  [coderCopy encodeObject:details forKey:@"PrivacyProxyDetails"];
 }
 
-- (PrivacyProxyServiceStatus)initWithData:(id)a3
+- (PrivacyProxyServiceStatus)initWithData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696ACD0];
-  v5 = a3;
+  dataCopy = data;
   v16 = 0;
-  v6 = [[v4 alloc] initForReadingFromData:v5 error:&v16];
+  v6 = [[v4 alloc] initForReadingFromData:dataCopy error:&v16];
 
   v7 = v16;
   v8 = v7;
@@ -146,7 +146,7 @@
     }
 
     self = v12;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -159,11 +159,11 @@
       _os_log_error_impl(&dword_1AE7E2000, v10, OS_LOG_TYPE_ERROR, "Failed to create a decoder for the service status %@", buf, 0xCu);
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   v13 = *MEMORY[0x1E69E9840];
-  return v11;
+  return selfCopy;
 }
 
 @end

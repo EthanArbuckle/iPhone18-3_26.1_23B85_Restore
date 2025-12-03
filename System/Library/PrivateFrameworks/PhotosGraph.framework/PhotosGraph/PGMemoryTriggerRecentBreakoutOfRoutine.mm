@@ -1,17 +1,17 @@
 @interface PGMemoryTriggerRecentBreakoutOfRoutine
-- (id)neighborScoreComputerWithGraph:(id)a3;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)neighborScoreComputerWithGraph:(id)graph;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerRecentBreakoutOfRoutine
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if ([reporterCopy isCancelledWithProgress:0.0])
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -27,34 +27,34 @@
 
   else
   {
-    v12 = [v8 localDate];
-    v24 = [v8 timeZone];
-    v25 = v12;
-    v13 = [PGMemoryTrigger dateNodesInGraph:v9 startDayOffset:-8 endDayOffset:-1 fromLocalDate:v12 inTimeZone:?];
-    v14 = [v13 momentNodes];
+    localDate = [contextCopy localDate];
+    timeZone = [contextCopy timeZone];
+    v25 = localDate;
+    v13 = [PGMemoryTrigger dateNodesInGraph:graphCopy startDayOffset:-8 endDayOffset:-1 fromLocalDate:localDate inTimeZone:?];
+    momentNodes = [v13 momentNodes];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __95__PGMemoryTriggerRecentBreakoutOfRoutine_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
     v29[3] = &unk_2788811C0;
     v29[4] = self;
-    v15 = v9;
+    v15 = graphCopy;
     v30 = v15;
-    v16 = [v14 filteredCollectionUsingBlock:v29];
+    v16 = [momentNodes filteredCollectionUsingBlock:v29];
 
-    v17 = [v16 memoryNodes];
+    memoryNodes = [v16 memoryNodes];
     v18 = [PGGraphMemoryNodeCollection memoryNodesOfCategory:1 inGraph:v15];
-    v19 = [v17 collectionByIntersecting:v18];
+    v19 = [memoryNodes collectionByIntersecting:v18];
     v20 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __95__PGMemoryTriggerRecentBreakoutOfRoutine_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke_2;
     v26[3] = &unk_278886FC0;
     v26[4] = self;
-    v27 = v8;
+    v27 = contextCopy;
     v21 = v20;
     v28 = v21;
     [v19 enumerateIdentifiersAsCollectionsWithBlock:v26];
-    if ([v10 isCancelledWithProgress:1.0])
+    if ([reporterCopy isCancelledWithProgress:1.0])
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
@@ -116,7 +116,7 @@ void __95__PGMemoryTriggerRecentBreakoutOfRoutine_resultsTriggeredWithContext_in
   [v14 addObjectsFromArray:v16];
 }
 
-- (id)neighborScoreComputerWithGraph:(id)a3
+- (id)neighborScoreComputerWithGraph:(id)graph
 {
   neighborScoreComputer = self->_neighborScoreComputer;
   if (!neighborScoreComputer)

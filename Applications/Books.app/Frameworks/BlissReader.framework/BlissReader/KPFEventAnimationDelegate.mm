@@ -1,29 +1,29 @@
 @interface KPFEventAnimationDelegate
-- (KPFEventAnimationDelegate)initWithEvent:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (KPFEventAnimationDelegate)initWithEvent:(id)event;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation KPFEventAnimationDelegate
 
-- (KPFEventAnimationDelegate)initWithEvent:(id)a3
+- (KPFEventAnimationDelegate)initWithEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = KPFEventAnimationDelegate;
   result = [(KPFEventAnimationDelegate *)&v5 init];
   if (result)
   {
-    result->_weakEvent = a3;
+    result->_weakEvent = event;
   }
 
   return result;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = [(KPFEventAnimationDelegate *)self weakEvent];
+  finishedCopy = finished;
+  weakEvent = [(KPFEventAnimationDelegate *)self weakEvent];
 
-  [(KPFEvent *)v6 animationDidStop:a3 finished:v4];
+  [(KPFEvent *)weakEvent animationDidStop:stop finished:finishedCopy];
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface IMDMessageSortOrderAssigner
-- (id)copyOfMessagesWithReplyToGUID:(id)a3;
-- (id)messageWithGUID:(id)a3;
-- (void)assignAndPersistSortIDForIncomingMessage:(id)a3 onChat:(id)a4;
-- (void)assignSortIDToIncomingMessage:(id)a3 onChat:(id)a4;
-- (void)assignSortIDToIncomingMessageWithNoExistingMessagesWithSameReplyToGUID:(id)a3 onChat:(id)a4;
-- (void)compareMessageToOtherMessagesWithSameReplyToGUIDAndAssignSortID:(id)a3 existingMessagesWithSameReplyToGUID:(id)a4;
-- (void)persistMessage:(id)a3;
+- (id)copyOfMessagesWithReplyToGUID:(id)d;
+- (id)messageWithGUID:(id)d;
+- (void)assignAndPersistSortIDForIncomingMessage:(id)message onChat:(id)chat;
+- (void)assignSortIDToIncomingMessage:(id)message onChat:(id)chat;
+- (void)assignSortIDToIncomingMessageWithNoExistingMessagesWithSameReplyToGUID:(id)d onChat:(id)chat;
+- (void)compareMessageToOtherMessagesWithSameReplyToGUIDAndAssignSortID:(id)d existingMessagesWithSameReplyToGUID:(id)iD;
+- (void)persistMessage:(id)message;
 @end
 
 @implementation IMDMessageSortOrderAssigner
 
-- (id)messageWithGUID:(id)a3
+- (id)messageWithGUID:(id)d
 {
   v4 = +[IMDMessageStore sharedInstance];
 
-  return [(IMDMessageStore *)v4 itemWithGUID:a3];
+  return [(IMDMessageStore *)v4 itemWithGUID:d];
 }
 
-- (id)copyOfMessagesWithReplyToGUID:(id)a3
+- (id)copyOfMessagesWithReplyToGUID:(id)d
 {
   v3 = +[IMDMessageStore sharedInstance];
 
   return MEMORY[0x2821F9670](v3, sel_messagesWithReplyToGUID_);
 }
 
-- (void)compareMessageToOtherMessagesWithSameReplyToGUIDAndAssignSortID:(id)a3 existingMessagesWithSameReplyToGUID:(id)a4
+- (void)compareMessageToOtherMessagesWithSameReplyToGUIDAndAssignSortID:(id)d existingMessagesWithSameReplyToGUID:(id)iD
 {
   v33 = *MEMORY[0x277D85DE8];
   v22 = 0u;
@@ -32,7 +32,7 @@
   v24 = 0u;
   v25 = 0u;
   v6 = 0;
-  v7 = [a4 countByEnumeratingWithState:&v22 objects:v32 count:16];
+  v7 = [iD countByEnumeratingWithState:&v22 objects:v32 count:16];
   if (!v7)
   {
     goto LABEL_23;
@@ -48,11 +48,11 @@
     {
       if (*v23 != v9)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(iD);
       }
 
       v12 = *(*(&v22 + 1) + 8 * v10);
-      if ([v12 isOlderThanItem:a3])
+      if ([v12 isOlderThanItem:d])
       {
         v8 = v12;
         if (v11)
@@ -74,7 +74,7 @@
         v8 = v11;
       }
 
-      else if (![a3 messageID] || (v13 = objc_msgSend(v12, "messageID"), v8 = v11, v13 < objc_msgSend(a3, "messageID")))
+      else if (![d messageID] || (v13 = objc_msgSend(v12, "messageID"), v8 = v11, v13 < objc_msgSend(d, "messageID")))
       {
         v8 = v12;
       }
@@ -89,69 +89,69 @@
     }
 
     while (v7 != v10);
-    v7 = [a4 countByEnumeratingWithState:&v22 objects:v32 count:16];
+    v7 = [iD countByEnumeratingWithState:&v22 objects:v32 count:16];
   }
 
   while (v7);
   if (v8)
   {
-    v14 = [v8 sortID];
+    sortID = [v8 sortID];
   }
 
   else
   {
 LABEL_23:
-    v15 = -[IMDMessageSortOrderAssigner messageWithGUID:](self, "messageWithGUID:", [a3 replyToGUID]);
+    v15 = -[IMDMessageSortOrderAssigner messageWithGUID:](self, "messageWithGUID:", [d replyToGUID]);
     if (!v15)
     {
       v16 = [v6 sortID] - 50;
       goto LABEL_27;
     }
 
-    v14 = [v15 sortID];
+    sortID = [v15 sortID];
   }
 
-  v16 = v14 + 50;
+  v16 = sortID + 50;
 LABEL_27:
   if (IMOSLoggingEnabled())
   {
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [a3 guid];
+      guid = [d guid];
       v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v16];
       *buf = 136315650;
       v27 = "[IMDMessageSortOrderAssigner compareMessageToOtherMessagesWithSameReplyToGUIDAndAssignSortID:existingMessagesWithSameReplyToGUID:]";
       v28 = 2112;
-      v29 = v18;
+      v29 = guid;
       v30 = 2112;
       v31 = v19;
       _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "%s assigning %@ sortID %@", buf, 0x20u);
     }
   }
 
-  [a3 setSortID:v16];
+  [d setSortID:v16];
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)assignSortIDToIncomingMessageWithNoExistingMessagesWithSameReplyToGUID:(id)a3 onChat:(id)a4
+- (void)assignSortIDToIncomingMessageWithNoExistingMessagesWithSameReplyToGUID:(id)d onChat:(id)chat
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = -[IMDMessageSortOrderAssigner messageWithGUID:](self, "messageWithGUID:", [a3 replyToGUID]);
-  v8 = -[IMDMessageSortOrderAssigner copyOfMessagesWithReplyToGUID:](self, "copyOfMessagesWithReplyToGUID:", [a3 guid]);
+  v7 = -[IMDMessageSortOrderAssigner messageWithGUID:](self, "messageWithGUID:", [d replyToGUID]);
+  v8 = -[IMDMessageSortOrderAssigner copyOfMessagesWithReplyToGUID:](self, "copyOfMessagesWithReplyToGUID:", [d guid]);
   if (![v8 count] || (v23 = 0u, v24 = 0u, v21 = 0u, v22 = 0u, (v9 = objc_msgSend(v8, "countByEnumeratingWithState:objects:count:", &v21, v31, 16)) == 0))
   {
     if (!v7)
     {
 LABEL_22:
-      v15 = [objc_msgSend(a4 "lastMessage")];
+      sortID = [objc_msgSend(chat "lastMessage")];
       goto LABEL_23;
     }
 
 LABEL_21:
-    v15 = [v7 sortID];
+    sortID = [v7 sortID];
 LABEL_23:
-    v16 = v15 + 100;
+    v16 = sortID + 100;
     goto LABEL_24;
   }
 
@@ -210,19 +210,19 @@ LABEL_24:
     v17 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
-      v18 = [a3 guid];
+      guid = [d guid];
       v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v16];
       *buf = 136315650;
       v26 = "[IMDMessageSortOrderAssigner assignSortIDToIncomingMessageWithNoExistingMessagesWithSameReplyToGUID:onChat:]";
       v27 = 2112;
-      v28 = v18;
+      v28 = guid;
       v29 = 2112;
       v30 = v19;
       _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "%s assigning %@ sortID %@", buf, 0x20u);
     }
   }
 
-  [a3 setSortID:v16];
+  [d setSortID:v16];
   if (v8)
   {
   }
@@ -230,24 +230,24 @@ LABEL_24:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)persistMessage:(id)a3
+- (void)persistMessage:(id)message
 {
   v4 = +[IMDMessageStore sharedInstance];
 
-  [(IMDMessageStore *)v4 storeItem:a3 forceReplace:0];
+  [(IMDMessageStore *)v4 storeItem:message forceReplace:0];
 }
 
-- (void)assignSortIDToIncomingMessage:(id)a3 onChat:(id)a4
+- (void)assignSortIDToIncomingMessage:(id)message onChat:(id)chat
 {
-  v7 = -[IMDMessageSortOrderAssigner copyOfMessagesWithReplyToGUID:](self, "copyOfMessagesWithReplyToGUID:", [a3 replyToGUID]);
+  v7 = -[IMDMessageSortOrderAssigner copyOfMessagesWithReplyToGUID:](self, "copyOfMessagesWithReplyToGUID:", [message replyToGUID]);
   if ([v7 count])
   {
-    [(IMDMessageSortOrderAssigner *)self compareMessageToOtherMessagesWithSameReplyToGUIDAndAssignSortID:a3 existingMessagesWithSameReplyToGUID:v7];
+    [(IMDMessageSortOrderAssigner *)self compareMessageToOtherMessagesWithSameReplyToGUIDAndAssignSortID:message existingMessagesWithSameReplyToGUID:v7];
   }
 
   else
   {
-    [(IMDMessageSortOrderAssigner *)self assignSortIDToIncomingMessageWithNoExistingMessagesWithSameReplyToGUID:a3 onChat:a4];
+    [(IMDMessageSortOrderAssigner *)self assignSortIDToIncomingMessageWithNoExistingMessagesWithSameReplyToGUID:message onChat:chat];
   }
 
   if (v7)
@@ -255,9 +255,9 @@ LABEL_24:
   }
 }
 
-- (void)assignAndPersistSortIDForIncomingMessage:(id)a3 onChat:(id)a4
+- (void)assignAndPersistSortIDForIncomingMessage:(id)message onChat:(id)chat
 {
-  [(IMDMessageSortOrderAssigner *)self assignSortIDToIncomingMessage:a3 onChat:a4];
+  [(IMDMessageSortOrderAssigner *)self assignSortIDToIncomingMessage:message onChat:chat];
 
   MEMORY[0x2821F9670](self, sel_persistMessage_);
 }

@@ -1,5 +1,5 @@
 @interface TUIEmbeddedCollectionView
-+ (TUIRenderModelView)renderModelWithUpdateController:(double)a3 uid:(double)a4 UUID:(double)a5 identifier:(double)a6 scrollIdentifier:(double)a7 ancestorScrollIdentifier:(double)a8 scrollPolicy:(uint64_t)a9 scrollAxis:(uint64_t)a10 additionalSafeAreaInsets:(void *)a11 contentIntrinsicInsets:(void *)a12 pageGap:(void *)a13 gradientInsets:(void *)a14 gradientFraction:(void *)a15 acceptsDrop:(void *)a16 dropHandler:(void *)a17 decelerationRate:(uint64_t)a18;
++ (TUIRenderModelView)renderModelWithUpdateController:(double)controller uid:(double)uid UUID:(double)d identifier:(double)identifier scrollIdentifier:(double)scrollIdentifier ancestorScrollIdentifier:(double)ancestorScrollIdentifier scrollPolicy:(uint64_t)policy scrollAxis:(uint64_t)self0 additionalSafeAreaInsets:(void *)self1 contentIntrinsicInsets:(void *)self2 pageGap:(void *)self3 gradientInsets:(void *)self4 gradientFraction:(void *)self5 acceptsDrop:(void *)self6 dropHandler:(void *)self7 decelerationRate:(uint64_t)self8;
 - (BOOL)visibilityProviderIsScrolling;
 - (BOOL)visibilityProviderIsVisible;
 - (CGRect)_leadingGradientFrame;
@@ -9,39 +9,39 @@
 - (TUIReusableSubviewPool)subviewPool;
 - (TUIViewFactory)factory;
 - (TUIViewRegistry)registry;
-- (id)descendentViewWithIdentifier:(id)a3;
-- (id)descendentViewWithRefId:(id)a3;
-- (id)viewFactoryDequeueReusableSubviewWithReuseIdentifier:(id)a3 indexPath:(id)a4 host:(id)a5;
+- (id)descendentViewWithIdentifier:(id)identifier;
+- (id)descendentViewWithRefId:(id)id;
+- (id)viewFactoryDequeueReusableSubviewWithReuseIdentifier:(id)identifier indexPath:(id)path host:(id)host;
 - (id)viewStateSave;
 - (id)visibilityProviderSections;
 - (id)visibilityProviderWindowLayer;
 - (void)_updateContentInsetAndOffsetIfNeeded;
-- (void)_updateContentInsetAndOffsetWithCollectionModel:(id)a3 reset:(BOOL)a4;
-- (void)_updateInsets:(id)a3;
+- (void)_updateContentInsetAndOffsetWithCollectionModel:(id)model reset:(BOOL)reset;
+- (void)_updateInsets:(id)insets;
 - (void)_updateModel;
 - (void)_updatePagedScrollable;
 - (void)_updateScrollObserver;
 - (void)_updateVisibilityCollector;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)applyUpdate:(id)a3 controller:(id)a4 completion:(id)a5;
-- (void)configureWithModel:(id)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)applyUpdate:(id)update controller:(id)controller completion:(id)completion;
+- (void)configureWithModel:(id)model;
 - (void)didMoveToWindow;
-- (void)pagedScrollableActionChangeToPageIndex:(unint64_t)a3;
-- (void)parentFeedDidUpdateTriggerStatesWithEvent:(unint64_t)a3;
+- (void)pagedScrollableActionChangeToPageIndex:(unint64_t)index;
+- (void)parentFeedDidUpdateTriggerStatesWithEvent:(unint64_t)event;
 - (void)prepareForReuse;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setFactory:(id)a3;
-- (void)setUpdateController:(id)a3;
-- (void)updateWithImpressionSnapshot:(id)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setFactory:(id)factory;
+- (void)setUpdateController:(id)controller;
+- (void)updateWithImpressionSnapshot:(id)snapshot;
 - (void)viewDidEndDisplay;
-- (void)viewFactoryPrepareToReuseHost:(id)a3;
-- (void)viewFactoryReuseSubviews:(id)a3 host:(id)a4;
-- (void)viewStateRestore:(id)a3;
+- (void)viewFactoryPrepareToReuseHost:(id)host;
+- (void)viewFactoryReuseSubviews:(id)subviews host:(id)host;
+- (void)viewStateRestore:(id)restore;
 - (void)viewWillDisplay;
 @end
 
@@ -50,53 +50,53 @@
 - (TUIViewRegistry)registry
 {
   WeakRetained = objc_loadWeakRetained(&self->_factory);
-  v3 = [WeakRetained registry];
+  registry = [WeakRetained registry];
 
-  return v3;
+  return registry;
 }
 
-+ (TUIRenderModelView)renderModelWithUpdateController:(double)a3 uid:(double)a4 UUID:(double)a5 identifier:(double)a6 scrollIdentifier:(double)a7 ancestorScrollIdentifier:(double)a8 scrollPolicy:(uint64_t)a9 scrollAxis:(uint64_t)a10 additionalSafeAreaInsets:(void *)a11 contentIntrinsicInsets:(void *)a12 pageGap:(void *)a13 gradientInsets:(void *)a14 gradientFraction:(void *)a15 acceptsDrop:(void *)a16 dropHandler:(void *)a17 decelerationRate:(uint64_t)a18
++ (TUIRenderModelView)renderModelWithUpdateController:(double)controller uid:(double)uid UUID:(double)d identifier:(double)identifier scrollIdentifier:(double)scrollIdentifier ancestorScrollIdentifier:(double)ancestorScrollIdentifier scrollPolicy:(uint64_t)policy scrollAxis:(uint64_t)self0 additionalSafeAreaInsets:(void *)self1 contentIntrinsicInsets:(void *)self2 pageGap:(void *)self3 gradientInsets:(void *)self4 gradientFraction:(void *)self5 acceptsDrop:(void *)self6 dropHandler:(void *)self7 decelerationRate:(uint64_t)self8
 {
   v40 = a29;
-  v41 = a17;
-  v54 = a16;
-  v42 = a15;
-  v43 = a14;
-  v44 = a13;
-  v45 = a12;
-  v46 = a11;
-  v47 = [[TUIEmbeddedCollectionViewRenderModel alloc] initWithUpdateController:v46 uid:v45 UUID:v44];
+  handlerCopy = handler;
+  dropCopy = drop;
+  fractionCopy = fraction;
+  gradientInsetsCopy = gradientInsets;
+  gapCopy = gap;
+  intrinsicInsetsCopy = intrinsicInsets;
+  insetsCopy = insets;
+  v47 = [[TUIEmbeddedCollectionViewRenderModel alloc] initWithUpdateController:insetsCopy uid:intrinsicInsetsCopy UUID:gapCopy];
 
-  [(TUIEmbeddedCollectionViewRenderModel *)v47 setScrollPolicy:v41];
-  [(TUIEmbeddedCollectionViewRenderModel *)v47 setScrollAxis:a18];
-  [(TUIEmbeddedCollectionViewRenderModel *)v47 setAdditionalSafeAreaInsets:a1, a2, a3, a4];
-  [(TUIEmbeddedCollectionViewRenderModel *)v47 setContentIntrinsicInsets:a5, a6, a7, a8];
+  [(TUIEmbeddedCollectionViewRenderModel *)v47 setScrollPolicy:handlerCopy];
+  [(TUIEmbeddedCollectionViewRenderModel *)v47 setScrollAxis:rate];
+  [(TUIEmbeddedCollectionViewRenderModel *)v47 setAdditionalSafeAreaInsets:self, a2, controller, uid];
+  [(TUIEmbeddedCollectionViewRenderModel *)v47 setContentIntrinsicInsets:d, identifier, scrollIdentifier, ancestorScrollIdentifier];
   [(TUIEmbeddedCollectionViewRenderModel *)v47 setPageGap:a19];
   [(TUIEmbeddedCollectionViewRenderModel *)v47 setGradientInsets:a20, a21, a22, a23];
   [(TUIEmbeddedCollectionViewRenderModel *)v47 setGradientFraction:a24, a25, a26, a27];
-  [(TUIEmbeddedCollectionViewRenderModel *)v47 setIdentifier:v43];
+  [(TUIEmbeddedCollectionViewRenderModel *)v47 setIdentifier:gradientInsetsCopy];
   [(TUIEmbeddedCollectionViewRenderModel *)v47 setAcceptsDrop:a28];
   [(TUIEmbeddedCollectionViewRenderModel *)v47 setDropHandler:v40];
 
   [(TUIEmbeddedCollectionViewRenderModel *)v47 setDecelerationRate:a30];
-  [(TUIEmbeddedCollectionViewRenderModel *)v47 setScrollIdentifier:v42];
+  [(TUIEmbeddedCollectionViewRenderModel *)v47 setScrollIdentifier:fractionCopy];
 
-  [(TUIEmbeddedCollectionViewRenderModel *)v47 setAncestorScrollIdentifier:v54];
-  v48 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierEmbeddedCollectionView" identifier:v43 submodel:v47];
+  [(TUIEmbeddedCollectionViewRenderModel *)v47 setAncestorScrollIdentifier:dropCopy];
+  v48 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierEmbeddedCollectionView" identifier:gradientInsetsCopy submodel:v47];
 
   return v48;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v7.receiver = self;
   v7.super_class = TUIEmbeddedCollectionView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v7 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
-  [(TUIEmbeddedCollectionView *)self configureWithModel:v6];
+  submodel = [renderModel submodel];
+  [(TUIEmbeddedCollectionView *)self configureWithModel:submodel];
 }
 
 - (void)didMoveToWindow
@@ -108,9 +108,9 @@
   [(TUIVisibilityCollector *)self->_visibilityCollector updateVisible];
 }
 
-- (void)setFactory:(id)a3
+- (void)setFactory:(id)factory
 {
-  obj = a3;
+  obj = factory;
   WeakRetained = objc_loadWeakRetained(&self->_factory);
 
   v5 = obj;
@@ -122,30 +122,30 @@
   }
 }
 
-- (void)setUpdateController:(id)a3
+- (void)setUpdateController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   updateController = self->_updateController;
-  if (updateController != v5)
+  if (updateController != controllerCopy)
   {
-    v13 = v5;
+    v13 = controllerCopy;
     [(TUIRenderUpdateCollectionController *)updateController unregisterDelegate:self];
-    objc_storeStrong(&self->_updateController, a3);
+    objc_storeStrong(&self->_updateController, controller);
     v7 = [(TUIRenderUpdateCollectionController *)self->_updateController registerDelegate:self];
-    v8 = [v7 first];
+    first = [v7 first];
 
-    v9 = [(TUIReusableBaseView *)self feedControllerHost];
-    [(TUIFeedView *)self->_feedView setControllerHost:v9];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    [(TUIFeedView *)self->_feedView setControllerHost:feedControllerHost];
 
-    [(TUIFeedView *)self->_feedView reloadWithRenderModel:v8];
-    if ([v8 layoutDirection] == &dword_0 + 2 && -[TUIFeedView effectiveUserInterfaceLayoutDirection](self->_feedView, "effectiveUserInterfaceLayoutDirection") != &dword_0 + 1)
+    [(TUIFeedView *)self->_feedView reloadWithRenderModel:first];
+    if ([first layoutDirection] == &dword_0 + 2 && -[TUIFeedView effectiveUserInterfaceLayoutDirection](self->_feedView, "effectiveUserInterfaceLayoutDirection") != &dword_0 + 1)
     {
       v10 = 4;
     }
 
     else
     {
-      if ([v8 layoutDirection] != &dword_0 + 1 || !-[TUIFeedView effectiveUserInterfaceLayoutDirection](self->_feedView, "effectiveUserInterfaceLayoutDirection"))
+      if ([first layoutDirection] != &dword_0 + 1 || !-[TUIFeedView effectiveUserInterfaceLayoutDirection](self->_feedView, "effectiveUserInterfaceLayoutDirection"))
       {
         goto LABEL_9;
       }
@@ -155,13 +155,13 @@
 
     [(TUIFeedView *)self->_feedView setSemanticContentAttribute:v10];
 LABEL_9:
-    [(TUIEmbeddedCollectionView *)self _updateContentInsetAndOffsetWithCollectionModel:v8 reset:1];
+    [(TUIEmbeddedCollectionView *)self _updateContentInsetAndOffsetWithCollectionModel:first reset:1];
     [(TUIRenderUpdateCollectionController *)self->_updateController applyInitialUpdate];
-    v11 = [(TUIFeedView *)self->_feedView controllerHost];
-    v12 = [v11 triggerStateManager];
-    [v12 registerEmbeddedCollectionDelegate:self];
+    controllerHost = [(TUIFeedView *)self->_feedView controllerHost];
+    triggerStateManager = [controllerHost triggerStateManager];
+    [triggerStateManager registerEmbeddedCollectionDelegate:self];
 
-    v5 = v13;
+    controllerCopy = v13;
   }
 }
 
@@ -180,28 +180,28 @@ LABEL_9:
   v14.receiver = self;
   v14.super_class = TUIEmbeddedCollectionView;
   [(TUIReusableBaseView *)&v14 viewWillDisplay];
-  v3 = [(TUIReusableBaseView *)self feedControllerHost];
-  [(TUIFeedView *)self->_feedView setControllerHost:v3];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  [(TUIFeedView *)self->_feedView setControllerHost:feedControllerHost];
 
   renderModel = self->_renderModel;
   if (renderModel)
   {
-    v5 = [(TUIEmbeddedCollectionViewRenderModel *)renderModel identifier];
-    v6 = [(TUIReusableBaseView *)self tui_querySectionUUID];
-    v7 = [v5 tui_identifierByPrependingUUID:v6];
+    identifier = [(TUIEmbeddedCollectionViewRenderModel *)renderModel identifier];
+    tui_querySectionUUID = [(TUIReusableBaseView *)self tui_querySectionUUID];
+    v7 = [identifier tui_identifierByPrependingUUID:tui_querySectionUUID];
 
-    v8 = [(TUIReusableBaseView *)self feedControllerHost];
-    v9 = [v8 pagedScrollableController];
-    v10 = [v9 registerPagedScrollableWithWithIdentifier:v7 action:self];
+    feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+    pagedScrollableController = [feedControllerHost2 pagedScrollableController];
+    v10 = [pagedScrollableController registerPagedScrollableWithWithIdentifier:v7 action:self];
     pagedScrollable = self->_pagedScrollable;
     self->_pagedScrollable = v10;
 
     [(TUIEmbeddedCollectionView *)self _updatePagedScrollable];
   }
 
-  v12 = [(TUIFeedView *)self->_feedView controllerHost];
-  v13 = [v12 embeddedScrollViewCoordinator];
-  [v13 registerEmbeddedScrollView:self];
+  controllerHost = [(TUIFeedView *)self->_feedView controllerHost];
+  embeddedScrollViewCoordinator = [controllerHost embeddedScrollViewCoordinator];
+  [embeddedScrollViewCoordinator registerEmbeddedScrollView:self];
 }
 
 - (void)viewDidEndDisplay
@@ -211,13 +211,13 @@ LABEL_9:
     renderModel = self->_renderModel;
     if (renderModel)
     {
-      v4 = [(TUIEmbeddedCollectionViewRenderModel *)renderModel identifier];
-      v5 = [(TUIReusableBaseView *)self tui_querySectionUUID];
-      v6 = [v4 tui_identifierByPrependingUUID:v5];
+      identifier = [(TUIEmbeddedCollectionViewRenderModel *)renderModel identifier];
+      tui_querySectionUUID = [(TUIReusableBaseView *)self tui_querySectionUUID];
+      v6 = [identifier tui_identifierByPrependingUUID:tui_querySectionUUID];
 
-      v7 = [(TUIReusableBaseView *)self feedControllerHost];
-      v8 = [v7 pagedScrollableController];
-      [v8 unregisterPagedScrollableWithIdentifier:v6];
+      feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+      pagedScrollableController = [feedControllerHost pagedScrollableController];
+      [pagedScrollableController unregisterPagedScrollableWithIdentifier:v6];
 
       pagedScrollable = self->_pagedScrollable;
       self->_pagedScrollable = 0;
@@ -227,13 +227,13 @@ LABEL_9:
   v16.receiver = self;
   v16.super_class = TUIEmbeddedCollectionView;
   [(TUIReusableBaseView *)&v16 viewDidEndDisplay];
-  v10 = [(TUIFeedView *)self->_feedView controllerHost];
-  v11 = [v10 triggerStateManager];
-  [v11 unregisterEmbeddedCollectionDelegate:self];
+  controllerHost = [(TUIFeedView *)self->_feedView controllerHost];
+  triggerStateManager = [controllerHost triggerStateManager];
+  [triggerStateManager unregisterEmbeddedCollectionDelegate:self];
 
-  v12 = [(TUIFeedView *)self->_feedView controllerHost];
-  v13 = [v12 embeddedScrollViewCoordinator];
-  [v13 unregisterEmbeddedScrollView:self];
+  controllerHost2 = [(TUIFeedView *)self->_feedView controllerHost];
+  embeddedScrollViewCoordinator = [controllerHost2 embeddedScrollViewCoordinator];
+  [embeddedScrollViewCoordinator unregisterEmbeddedScrollView:self];
 
   [(TUIFeedView *)self->_feedView setControllerHost:0];
   scrollPolicy = self->_scrollPolicy;
@@ -247,11 +247,11 @@ LABEL_9:
   [(TUIEmbeddedCollectionView *)self _resetUpdateController];
 }
 
-- (void)_updateInsets:(id)a3
+- (void)_updateInsets:(id)insets
 {
   renderModel = self->_renderModel;
-  v5 = a3;
-  [(TUIEmbeddedCollectionViewRenderModel *)renderModel _computedContentInsetsWithRenderModel:v5];
+  insetsCopy = insets;
+  [(TUIEmbeddedCollectionViewRenderModel *)renderModel _computedContentInsetsWithRenderModel:insetsCopy];
   p_insets = &self->_insets;
   self->_insets.top = -v7;
   self->_insets.left = -v8;
@@ -263,9 +263,9 @@ LABEL_9:
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v5 layoutDirection];
+  layoutDirection = [insetsCopy layoutDirection];
 
-  if (v19 == &dword_0 + 2)
+  if (layoutDirection == &dword_0 + 2)
   {
     v20 = v14;
   }
@@ -275,7 +275,7 @@ LABEL_9:
     v20 = v18;
   }
 
-  if (v19 == &dword_0 + 2)
+  if (layoutDirection == &dword_0 + 2)
   {
     v14 = v18;
   }
@@ -300,37 +300,37 @@ LABEL_9:
   *&v32[11] = v27;
   *&v32[12] = v29 - (top + bottom);
   [UIView performWithoutAnimation:v32];
-  v30 = [(TUIReusableBaseView *)self feedControllerHost];
-  v31 = [v30 viewVisibilityController];
-  [v31 updatedVisibleBoundsOfScrollView:self->_feedView];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  viewVisibilityController = [feedControllerHost viewVisibilityController];
+  [viewVisibilityController updatedVisibleBoundsOfScrollView:self->_feedView];
 }
 
 - (void)_updateContentInsetAndOffsetIfNeeded
 {
   if (self->_needsUpdateContentInsetAndOffset)
   {
-    v4 = [(TUIRenderUpdateCollectionController *)self->_updateController renderModel];
-    [(TUIEmbeddedCollectionView *)self _updateContentInsetAndOffsetWithCollectionModel:v4 reset:0];
+    renderModel = [(TUIRenderUpdateCollectionController *)self->_updateController renderModel];
+    [(TUIEmbeddedCollectionView *)self _updateContentInsetAndOffsetWithCollectionModel:renderModel reset:0];
   }
 }
 
-- (void)_updateContentInsetAndOffsetWithCollectionModel:(id)a3 reset:(BOOL)a4
+- (void)_updateContentInsetAndOffsetWithCollectionModel:(id)model reset:(BOOL)reset
 {
-  v4 = a4;
-  v6 = a3;
+  resetCopy = reset;
+  modelCopy = model;
   self->_needsUpdateContentInsetAndOffset = 0;
-  if (v4)
+  if (resetCopy)
   {
     [(TUIFeedView *)self->_feedView setContentInset:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
     [(TUIFeedView *)self->_feedView setContentOffset:CGPointZero.x, CGPointZero.y];
   }
 
-  [(TUIEmbeddedCollectionView *)self _updateInsets:v6];
+  [(TUIEmbeddedCollectionView *)self _updateInsets:modelCopy];
   [(TUIFeedView *)self->_feedView contentInset];
   v8 = v7;
   v10 = v9;
-  v11 = [(TUIEmbeddedCollectionView *)self _isRTL];
-  if (v11)
+  _isRTL = [(TUIEmbeddedCollectionView *)self _isRTL];
+  if (_isRTL)
   {
     v12 = v10;
   }
@@ -340,7 +340,7 @@ LABEL_9:
     v12 = v8;
   }
 
-  if (v11)
+  if (_isRTL)
   {
     v13 = v8;
   }
@@ -360,7 +360,7 @@ LABEL_9:
     v14 = v12;
   }
 
-  if (v4 && [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel scrollAxis]== &dword_0 + 1)
+  if (resetCopy && [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel scrollAxis]== &dword_0 + 1)
   {
     v15 = -v14;
     [(TUIFeedView *)self->_feedView contentOffset];
@@ -369,13 +369,13 @@ LABEL_9:
       v17 = TUIViewUpdateLog();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
-        v23 = [(TUIReusableBaseView *)self feedControllerHost];
-        v24 = [v23 feedId];
+        feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+        feedId = [feedControllerHost feedId];
         [(TUIFeedView *)self->_feedView contentOffset];
         v26 = 134218754;
-        v27 = v24;
+        v27 = feedId;
         v28 = 2112;
-        v29 = self;
+        selfCopy = self;
         v30 = 2048;
         v31 = v25;
         v32 = 2048;
@@ -388,59 +388,59 @@ LABEL_9:
     }
   }
 
-  v18 = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
-  v19 = [v18 anchorSet];
+  _collectionRenderModel = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
+  anchorSet = [_collectionRenderModel anchorSet];
 
-  if (v19)
+  if (anchorSet)
   {
     feedView = self->_feedView;
     [(TUIFeedView *)feedView contentOffset];
-    [v19 proposeAnchorOffsetWithScrollView:feedView velocity:CGPointZero.x target:{CGPointZero.y, v21, v22}];
+    [anchorSet proposeAnchorOffsetWithScrollView:feedView velocity:CGPointZero.x target:{CGPointZero.y, v21, v22}];
     [(TUIFeedView *)self->_feedView setContentOffset:?];
   }
 }
 
-- (void)applyUpdate:(id)a3 controller:(id)a4 completion:(id)a5
+- (void)applyUpdate:(id)update controller:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  updateCopy = update;
+  completionCopy = completion;
+  controllerCopy = controller;
   v11 = TUIViewUpdateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    sub_19A0EC(self, v8, v11);
+    sub_19A0EC(self, updateCopy, v11);
   }
 
   dispatch_assert_queue_V2(&_dispatch_main_q);
   updateController = self->_updateController;
 
-  if (updateController == v10)
+  if (updateController == controllerCopy)
   {
-    v13 = [v8 to];
+    v13 = [updateCopy to];
     [(TUIEmbeddedCollectionView *)self _updateInsets:v13];
 
-    v14 = [(TUIReusableBaseView *)self feedControllerHost];
-    v15 = [v14 hostingController];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    hostingController = [feedControllerHost hostingController];
 
-    [v15 beginViewUpdates];
-    [v8 applyToFeedView:self->_feedView completion:v9];
-    [v15 endViewUpdates];
+    [hostingController beginViewUpdates];
+    [updateCopy applyToFeedView:self->_feedView completion:completionCopy];
+    [hostingController endViewUpdates];
     [(TUIVisibilityCollector *)self->_visibilityCollector updateSections];
-    v16 = [(TUIFeedView *)self->_feedView renderModel];
+    renderModel = [(TUIFeedView *)self->_feedView renderModel];
     [(TUIEmbeddedCollectionView *)self visibleBounds];
-    [v16 updateVisibleBounds:?];
+    [renderModel updateVisibleBounds:?];
   }
 
-  else if (v9)
+  else if (completionCopy)
   {
-    v9[2](v9);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)configureWithModel:(id)a3
+- (void)configureWithModel:(id)model
 {
-  v33 = a3;
-  if (self->_renderModel != v33)
+  modelCopy = model;
+  if (self->_renderModel != modelCopy)
   {
     [(TUIVisibilityCollector *)self->_visibilityCollector teardown];
     visibilityCollector = self->_visibilityCollector;
@@ -451,45 +451,45 @@ LABEL_9:
       renderModel = self->_renderModel;
       if (renderModel)
       {
-        v7 = [(TUIEmbeddedCollectionViewRenderModel *)renderModel identifier];
-        v8 = [(TUIReusableBaseView *)self tui_querySectionUUID];
-        v9 = [v7 tui_identifierByPrependingUUID:v8];
+        identifier = [(TUIEmbeddedCollectionViewRenderModel *)renderModel identifier];
+        tui_querySectionUUID = [(TUIReusableBaseView *)self tui_querySectionUUID];
+        v9 = [identifier tui_identifierByPrependingUUID:tui_querySectionUUID];
 
-        v10 = [(TUIReusableBaseView *)self feedControllerHost];
-        v11 = [v10 pagedScrollableController];
-        [v11 unregisterPagedScrollableWithIdentifier:v9];
+        feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+        pagedScrollableController = [feedControllerHost pagedScrollableController];
+        [pagedScrollableController unregisterPagedScrollableWithIdentifier:v9];
 
         pagedScrollable = self->_pagedScrollable;
         self->_pagedScrollable = 0;
       }
     }
 
-    objc_storeStrong(&self->_renderModel, a3);
+    objc_storeStrong(&self->_renderModel, model);
     self->_needsUpdateContentInsetAndOffset = 1;
     [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel prepare];
     [(TUIEmbeddedCollectionView *)self _updateModel];
     [(TUIEmbeddedCollectionView *)self _updateContentInsetAndOffsetIfNeeded];
     scrollPolicy = self->_scrollPolicy;
-    v14 = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel scrollPolicy];
+    scrollPolicy = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel scrollPolicy];
 
-    if (scrollPolicy != v14)
+    if (scrollPolicy != scrollPolicy)
     {
       [(TUIScrollableObserverInstance *)self->_scrollObserver reset];
       scrollObserver = self->_scrollObserver;
       self->_scrollObserver = 0;
 
-      v16 = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel scrollPolicy];
+      scrollPolicy2 = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel scrollPolicy];
       v17 = self->_scrollPolicy;
-      self->_scrollPolicy = v16;
+      self->_scrollPolicy = scrollPolicy2;
 
       if (objc_opt_respondsToSelector())
       {
         v18 = self->_scrollPolicy;
         feedView = self->_feedView;
-        v20 = [(TUIReusableBaseView *)self feedControllerHost];
-        v21 = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel UUID];
+        feedControllerHost2 = [(TUIReusableBaseView *)self feedControllerHost];
+        uUID = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel UUID];
         v22 = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel uid];
-        v23 = [(TUIScrollablePolicy *)v18 newScrollableObserverInstanceWithView:feedView host:v20 uuid:v21 uid:v22];
+        v23 = [(TUIScrollablePolicy *)v18 newScrollableObserverInstanceWithView:feedView host:feedControllerHost2 uuid:uUID uid:v22];
         v24 = self->_scrollObserver;
         self->_scrollObserver = v23;
 
@@ -501,13 +501,13 @@ LABEL_9:
     v25 = self->_renderModel;
     if (v25)
     {
-      v26 = [(TUIEmbeddedCollectionViewRenderModel *)v25 identifier];
-      v27 = [(TUIReusableBaseView *)self tui_querySectionUUID];
-      v28 = [v26 tui_identifierByPrependingUUID:v27];
+      identifier2 = [(TUIEmbeddedCollectionViewRenderModel *)v25 identifier];
+      tui_querySectionUUID2 = [(TUIReusableBaseView *)self tui_querySectionUUID];
+      v28 = [identifier2 tui_identifierByPrependingUUID:tui_querySectionUUID2];
 
-      v29 = [(TUIReusableBaseView *)self feedControllerHost];
-      v30 = [v29 pagedScrollableController];
-      v31 = [v30 registerPagedScrollableWithWithIdentifier:v28 action:self];
+      feedControllerHost3 = [(TUIReusableBaseView *)self feedControllerHost];
+      pagedScrollableController2 = [feedControllerHost3 pagedScrollableController];
+      v31 = [pagedScrollableController2 registerPagedScrollableWithWithIdentifier:v28 action:self];
       v32 = self->_pagedScrollable;
       self->_pagedScrollable = v31;
 
@@ -649,13 +649,13 @@ LABEL_9:
         [(_TUIEmbeddedCollectionGradientView *)self->_trailingGradientView setFrame:?];
       }
 
-      v26 = [(TUIEmbeddedCollectionView *)self layer];
-      v27 = [v26 allowsGroupBlending];
+      layer = [(TUIEmbeddedCollectionView *)self layer];
+      allowsGroupBlending = [layer allowsGroupBlending];
 
-      if (v18 != v27)
+      if (v18 != allowsGroupBlending)
       {
-        v28 = [(TUIEmbeddedCollectionView *)self layer];
-        [v28 setAllowsGroupBlending:v18];
+        layer2 = [(TUIEmbeddedCollectionView *)self layer];
+        [layer2 setAllowsGroupBlending:v18];
       }
 
       v29 = self->_leadingGradientView;
@@ -679,9 +679,9 @@ LABEL_9:
       }
 
       [(TUIFeedView *)self->_feedView setFrame:v7, v9, v11, v13];
-      v32 = [(TUIReusableBaseView *)self feedControllerHost];
-      v33 = [v32 viewVisibilityController];
-      [v33 updatedVisibleBoundsOfScrollView:self->_feedView];
+      feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+      viewVisibilityController = [feedControllerHost viewVisibilityController];
+      [viewVisibilityController updatedVisibleBoundsOfScrollView:self->_feedView];
 
       renderModel = self->_renderModel;
     }
@@ -694,11 +694,11 @@ LABEL_9:
     v35 = [(TUIEmbeddedCollectionViewRenderModel *)renderModel uid];
     [(TUIFeedView *)self->_feedView setRenderQueryUID:v35];
 
-    v36 = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel UUID];
-    [(TUIFeedView *)self->_feedView setRenderQueryUUID:v36];
+    uUID = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel UUID];
+    [(TUIFeedView *)self->_feedView setRenderQueryUUID:uUID];
 
-    v37 = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel updateController];
-    [(TUIEmbeddedCollectionView *)self setUpdateController:v37];
+    updateController = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel updateController];
+    [(TUIEmbeddedCollectionView *)self setUpdateController:updateController];
 
     [(TUIEmbeddedCollectionView *)self _updateVisibilityCollector];
   }
@@ -706,17 +706,17 @@ LABEL_9:
 
 - (void)_updateVisibilityCollector
 {
-  v3 = [(TUIFeedView *)self->_feedView controllerHost];
-  v13 = [v3 visibilityController];
+  controllerHost = [(TUIFeedView *)self->_feedView controllerHost];
+  visibilityController = [controllerHost visibilityController];
 
-  v4 = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
-  if (v4 && (v5 = v4, [(TUIEmbeddedCollectionView *)self window], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
+  _collectionRenderModel = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
+  if (_collectionRenderModel && (v5 = _collectionRenderModel, [(TUIEmbeddedCollectionView *)self window], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
     if (!self->_visibilityCollector)
     {
-      v7 = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel scrollIdentifier];
-      v8 = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel ancestorScrollIdentifier];
-      v9 = [v13 newCollectorForProvider:self withIdentifier:v7 parentIdentifier:v8];
+      scrollIdentifier = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel scrollIdentifier];
+      ancestorScrollIdentifier = [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel ancestorScrollIdentifier];
+      v9 = [visibilityController newCollectorForProvider:self withIdentifier:scrollIdentifier parentIdentifier:ancestorScrollIdentifier];
       visibilityCollector = self->_visibilityCollector;
       self->_visibilityCollector = v9;
 
@@ -737,23 +737,23 @@ LABEL_9:
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  v9 = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
-  v10 = [v9 anchorSet];
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  _collectionRenderModel = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
+  anchorSet = [_collectionRenderModel anchorSet];
 
-  if (a5 && v10)
+  if (offset && anchorSet)
   {
-    [v10 proposeAnchorOffsetWithScrollView:v13 velocity:x target:{y, a5->x, a5->y}];
-    a5->x = v11;
-    a5->y = v12;
+    [anchorSet proposeAnchorOffsetWithScrollView:draggingCopy velocity:x target:{y, offset->x, offset->y}];
+    offset->x = v11;
+    offset->y = v12;
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   [(TUIEmbeddedCollectionView *)self _updateScrollObserver];
   [(TUIEmbeddedCollectionView *)self _updatePagedScrollable];
@@ -762,7 +762,7 @@ LABEL_9:
   [(TUIVisibilityCollector *)visibilityCollector updateVisibleBounds];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   [(TUIEmbeddedCollectionView *)self _updateScrollObserver];
   [(TUIEmbeddedCollectionView *)self _updatePagedScrollable];
@@ -771,7 +771,7 @@ LABEL_9:
   [(TUIVisibilityCollector *)visibilityCollector updateVisibleBounds];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(TUIEmbeddedCollectionView *)self _updateScrollObserver];
   [(TUIEmbeddedCollectionView *)self _updatePagedScrollable];
@@ -780,9 +780,9 @@ LABEL_9:
   [(TUIVisibilityCollector *)visibilityCollector updateVisibleBounds];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
     [(TUIEmbeddedCollectionView *)self _updateScrollObserver];
     [(TUIEmbeddedCollectionView *)self _updatePagedScrollable];
@@ -792,25 +792,25 @@ LABEL_9:
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v11 = a3;
+  scrollCopy = scroll;
   [(TUIVisibilityCollector *)self->_visibilityCollector updateVisibleBounds];
   [(TUIEmbeddedCollectionView *)self _updateScrollObserver];
   [(TUIEmbeddedCollectionView *)self _updatePagedScrollable];
-  v4 = [(TUIReusableBaseView *)self feedControllerHost];
-  v5 = [v4 viewVisibilityController];
-  [v5 updatedVisibleBoundsOfScrollView:self->_feedView];
+  feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+  viewVisibilityController = [feedControllerHost viewVisibilityController];
+  [viewVisibilityController updatedVisibleBoundsOfScrollView:self->_feedView];
 
-  v6 = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
-  v7 = [v6 anchorSet];
+  _collectionRenderModel = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
+  anchorSet = [_collectionRenderModel anchorSet];
 
-  if (v7)
+  if (anchorSet)
   {
-    v8 = [v7 computeTriggerStatesInScrollView:v11 axis:1];
-    v9 = [(TUIFeedView *)self->_feedView controllerHost];
-    v10 = [v9 triggerStateManager];
-    [v10 updateEmbeddedTriggerStatesWithNewStates:v8 updateEvent:3];
+    v8 = [anchorSet computeTriggerStatesInScrollView:scrollCopy axis:1];
+    controllerHost = [(TUIFeedView *)self->_feedView controllerHost];
+    triggerStateManager = [controllerHost triggerStateManager];
+    [triggerStateManager updateEmbeddedTriggerStatesWithNewStates:v8 updateEvent:3];
   }
 }
 
@@ -818,12 +818,12 @@ LABEL_9:
 {
   if (([(TUIFeedView *)self->_feedView isDragging]& 1) != 0)
   {
-    v3 = &dword_0 + 1;
+    isDecelerating = &dword_0 + 1;
   }
 
   else
   {
-    v3 = [(TUIFeedView *)self->_feedView isDecelerating];
+    isDecelerating = [(TUIFeedView *)self->_feedView isDecelerating];
   }
 
   [(TUIEmbeddedCollectionView *)self visibleBounds];
@@ -831,14 +831,14 @@ LABEL_9:
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v13 = [(TUIRenderUpdateCollectionController *)self->_updateController renderModel];
-  if ([v13 layoutDirection] == &dword_0 + 2)
+  renderModel = [(TUIRenderUpdateCollectionController *)self->_updateController renderModel];
+  if ([renderModel layoutDirection] == &dword_0 + 2)
   {
-    [v13 size];
+    [renderModel size];
     v5 = v12 - v9 - v5;
   }
 
-  [(TUIScrollableObserverInstance *)self->_scrollObserver updateScrollingWithVisibleBounds:v3 active:v5, v7, v9, v11];
+  [(TUIScrollableObserverInstance *)self->_scrollObserver updateScrollingWithVisibleBounds:isDecelerating active:v5, v7, v9, v11];
 }
 
 - (void)_updatePagedScrollable
@@ -858,7 +858,7 @@ LABEL_9:
   }
 }
 
-- (void)pagedScrollableActionChangeToPageIndex:(unint64_t)a3
+- (void)pagedScrollableActionChangeToPageIndex:(unint64_t)index
 {
   [(TUIFeedView *)self->_feedView contentInset];
   v6 = v5;
@@ -873,7 +873,7 @@ LABEL_9:
   [(TUIFeedView *)self->_feedView bounds];
   v18 = v17 - (v14 + v16);
   [(TUIEmbeddedCollectionViewRenderModel *)self->_renderModel pageGap];
-  v20 = (v19 + v18) * a3;
+  v20 = (v19 + v18) * index;
   [(TUIFeedView *)self->_feedView contentOffset];
   v22 = v6 + v21;
   [(TUIFeedView *)self->_feedView bounds];
@@ -886,69 +886,69 @@ LABEL_9:
   [(TUIFeedView *)feedView setContentOffset:1 animated:v26, v28];
 }
 
-- (void)parentFeedDidUpdateTriggerStatesWithEvent:(unint64_t)a3
+- (void)parentFeedDidUpdateTriggerStatesWithEvent:(unint64_t)event
 {
-  v5 = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
-  v10 = [v5 anchorSet];
+  _collectionRenderModel = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
+  anchorSet = [_collectionRenderModel anchorSet];
 
-  v6 = v10;
-  if (v10)
+  v6 = anchorSet;
+  if (anchorSet)
   {
-    if (a3 == 1)
+    if (event == 1)
     {
-      [v10 feedNotVisibleTriggerStatesForAxis:1];
+      [anchorSet feedNotVisibleTriggerStatesForAxis:1];
     }
 
     else
     {
-      [v10 computeTriggerStatesInScrollView:self->_feedView axis:1];
+      [anchorSet computeTriggerStatesInScrollView:self->_feedView axis:1];
     }
     v7 = ;
     if ([v7 hasUpdates])
     {
-      v8 = [(TUIFeedView *)self->_feedView controllerHost];
-      v9 = [v8 triggerStateManager];
-      [v9 updateEmbeddedTriggerStatesWithNewStates:v7 updateEvent:a3];
+      controllerHost = [(TUIFeedView *)self->_feedView controllerHost];
+      triggerStateManager = [controllerHost triggerStateManager];
+      [triggerStateManager updateEmbeddedTriggerStatesWithNewStates:v7 updateEvent:event];
     }
 
-    v6 = v10;
+    v6 = anchorSet;
   }
 }
 
-- (id)viewFactoryDequeueReusableSubviewWithReuseIdentifier:(id)a3 indexPath:(id)a4 host:(id)a5
+- (id)viewFactoryDequeueReusableSubviewWithReuseIdentifier:(id)identifier indexPath:(id)path host:(id)host
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  hostCopy = host;
+  pathCopy = path;
+  identifierCopy = identifier;
   WeakRetained = objc_loadWeakRetained(&self->_factory);
-  v12 = [WeakRetained viewFactoryDequeueReusableSubviewWithReuseIdentifier:v10 indexPath:v9 host:v8];
+  v12 = [WeakRetained viewFactoryDequeueReusableSubviewWithReuseIdentifier:identifierCopy indexPath:pathCopy host:hostCopy];
 
   return v12;
 }
 
-- (void)viewFactoryPrepareToReuseHost:(id)a3
+- (void)viewFactoryPrepareToReuseHost:(id)host
 {
-  v4 = a3;
+  hostCopy = host;
   WeakRetained = objc_loadWeakRetained(&self->_factory);
-  v5 = [WeakRetained subviewPool];
-  [v5 prepareToReuseHost:v4];
+  subviewPool = [WeakRetained subviewPool];
+  [subviewPool prepareToReuseHost:hostCopy];
 }
 
-- (void)viewFactoryReuseSubviews:(id)a3 host:(id)a4
+- (void)viewFactoryReuseSubviews:(id)subviews host:(id)host
 {
-  v6 = a4;
-  v7 = a3;
+  hostCopy = host;
+  subviewsCopy = subviews;
   WeakRetained = objc_loadWeakRetained(&self->_factory);
-  v8 = [WeakRetained subviewPool];
-  [v8 reuseSubviews:v7 host:v6];
+  subviewPool = [WeakRetained subviewPool];
+  [subviewPool reuseSubviews:subviewsCopy host:hostCopy];
 }
 
 - (TUIReusableSubviewPool)subviewPool
 {
   WeakRetained = objc_loadWeakRetained(&self->_factory);
-  v3 = [WeakRetained subviewPool];
+  subviewPool = [WeakRetained subviewPool];
 
-  return v3;
+  return subviewPool;
 }
 
 - (id)viewStateSave
@@ -957,19 +957,19 @@ LABEL_9:
   [(TUIFeedView *)self->_feedView saveViewStateForVisibleViews];
   [(TUIFeedView *)self->_feedView contentOffset];
   [v3 setContentOffset:?];
-  v4 = [(TUIFeedView *)self->_feedView currentViewState];
-  v5 = [v4 copy];
+  currentViewState = [(TUIFeedView *)self->_feedView currentViewState];
+  v5 = [currentViewState copy];
   [v3 setEmbeddedState:v5];
 
   return v3;
 }
 
-- (void)viewStateRestore:(id)a3
+- (void)viewStateRestore:(id)restore
 {
-  if (a3)
+  if (restore)
   {
-    v4 = a3;
-    [v4 contentOffset];
+    restoreCopy = restore;
+    [restoreCopy contentOffset];
     v6 = v5;
     v8 = v7;
     [(TUIFeedView *)self->_feedView bounds];
@@ -982,25 +982,25 @@ LABEL_9:
     [(TUIFeedView *)self->_feedView contentInset];
     [(TUIFeedView *)self->_feedView tui_contentOffsetForScrollingToRect:0 atScrollPosition:self->_feedView delegate:v11 + v20, v12 + v17, v14 - (v20 + v18), v16 - (v17 + v19)];
     [(TUIFeedView *)self->_feedView setContentOffset:?];
-    v22 = [v4 embeddedState];
+    embeddedState = [restoreCopy embeddedState];
 
-    v21 = [v22 mutableCopy];
+    v21 = [embeddedState mutableCopy];
     [(TUIFeedView *)self->_feedView setCurrentViewState:v21];
   }
 }
 
 - (id)visibilityProviderWindowLayer
 {
-  v2 = [(TUIFeedView *)self->_feedView window];
-  v3 = [v2 layer];
+  window = [(TUIFeedView *)self->_feedView window];
+  layer = [window layer];
 
-  return v3;
+  return layer;
 }
 
 - (CGRect)visibilityProviderVisibleBounds
 {
-  v2 = [(TUIFeedView *)self->_feedView layer];
-  [v2 bounds];
+  layer = [(TUIFeedView *)self->_feedView layer];
+  [layer bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1019,10 +1019,10 @@ LABEL_9:
 
 - (id)visibilityProviderSections
 {
-  v2 = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
-  v3 = [v2 sections];
+  _collectionRenderModel = [(TUIEmbeddedCollectionView *)self _collectionRenderModel];
+  sections = [_collectionRenderModel sections];
 
-  return v3;
+  return sections;
 }
 
 - (BOOL)visibilityProviderIsVisible
@@ -1032,8 +1032,8 @@ LABEL_9:
     return 0;
   }
 
-  v4 = [(TUIEmbeddedCollectionView *)self window];
-  v3 = v4 != 0;
+  window = [(TUIEmbeddedCollectionView *)self window];
+  v3 = window != 0;
 
   return v3;
 }
@@ -1060,47 +1060,47 @@ LABEL_9:
   return result;
 }
 
-- (void)updateWithImpressionSnapshot:(id)a3
+- (void)updateWithImpressionSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  [(TUIFeedView *)self->_feedView setImpressionSnapshot:v4];
+  [(TUIFeedView *)self->_feedView setImpressionSnapshot:snapshotCopy];
 }
 
-- (id)descendentViewWithIdentifier:(id)a3
+- (id)descendentViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = TUIEmbeddedCollectionView;
-  v5 = [(TUIReusableBaseView *)&v11 descendentViewWithIdentifier:v4];
+  v5 = [(TUIReusableBaseView *)&v11 descendentViewWithIdentifier:identifierCopy];
   if (!v5)
   {
     renderModel = self->_renderModel;
-    if (renderModel && (-[TUIEmbeddedCollectionViewRenderModel scrollIdentifier](renderModel, "scrollIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v4 isEqual:v7], v7, v8))
+    if (renderModel && (-[TUIEmbeddedCollectionViewRenderModel scrollIdentifier](renderModel, "scrollIdentifier"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [identifierCopy isEqual:v7], v7, v8))
     {
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = [(TUIFeedView *)self->_feedView descendentViewWithIdentifier:v4];
+      selfCopy = [(TUIFeedView *)self->_feedView descendentViewWithIdentifier:identifierCopy];
     }
 
-    v5 = v9;
+    v5 = selfCopy;
   }
 
   return v5;
 }
 
-- (id)descendentViewWithRefId:(id)a3
+- (id)descendentViewWithRefId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v7.receiver = self;
   v7.super_class = TUIEmbeddedCollectionView;
-  v5 = [(TUIReusableBaseView *)&v7 descendentViewWithRefId:v4];
+  v5 = [(TUIReusableBaseView *)&v7 descendentViewWithRefId:idCopy];
   if (!v5)
   {
-    v5 = [(TUIFeedView *)self->_feedView descendentViewWithRefId:v4];
+    v5 = [(TUIFeedView *)self->_feedView descendentViewWithRefId:idCopy];
   }
 
   return v5;

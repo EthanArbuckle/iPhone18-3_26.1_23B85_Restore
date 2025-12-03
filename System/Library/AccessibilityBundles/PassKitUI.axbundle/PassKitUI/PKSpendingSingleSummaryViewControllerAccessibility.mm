@@ -1,5 +1,5 @@
 @interface PKSpendingSingleSummaryViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_configureFooter;
 - (void)viewDidLoad;
@@ -7,15 +7,15 @@
 
 @implementation PKSpendingSingleSummaryViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKSpendingSingleSummaryViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKSpendingSingleSummaryViewController" isKindOfClass:@"UICollectionViewController"];
-  [v3 validateClass:@"PKSpendingSingleSummaryViewController" hasInstanceMethod:@"_configureFooter" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PKSpendingSingleSummaryViewController" hasInstanceVariable:@"_currentFooter" withType:"PKDashboardViewControllerFooterView"];
-  [v3 validateClass:@"PKDashboardViewControllerFooterView" hasInstanceVariable:@"_payButtonImage" withType:"UIImage"];
-  [v3 validateClass:@"PKDashboardViewControllerFooterView" hasInstanceVariable:@"_payButton" withType:"PKContinuousButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKSpendingSingleSummaryViewController" hasInstanceMethod:@"viewDidLoad" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKSpendingSingleSummaryViewController" isKindOfClass:@"UICollectionViewController"];
+  [validationsCopy validateClass:@"PKSpendingSingleSummaryViewController" hasInstanceMethod:@"_configureFooter" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PKSpendingSingleSummaryViewController" hasInstanceVariable:@"_currentFooter" withType:"PKDashboardViewControllerFooterView"];
+  [validationsCopy validateClass:@"PKDashboardViewControllerFooterView" hasInstanceVariable:@"_payButtonImage" withType:"UIImage"];
+  [validationsCopy validateClass:@"PKDashboardViewControllerFooterView" hasInstanceVariable:@"_payButton" withType:"PKContinuousButton"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

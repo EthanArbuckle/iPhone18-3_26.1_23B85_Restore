@@ -1,46 +1,46 @@
 @interface _HDSampleTypesDeletionEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (_HDSampleTypesDeletionEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithSourceIDs:(void *)a3 types:;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (_HDSampleTypesDeletionEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithSourceIDs:(void *)ds types:;
 @end
 
 @implementation _HDSampleTypesDeletionEntry
 
-- (void)initWithSourceIDs:(void *)a3 types:
+- (void)initWithSourceIDs:(void *)ds types:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  dsCopy = ds;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = _HDSampleTypesDeletionEntry;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v7 = [v5 copy];
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
-      v9 = [v6 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v9 = [dsCopy copy];
+      v10 = self[2];
+      self[2] = v9;
     }
   }
 
-  return a1;
+  return self;
 }
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entriesCopy = entries;
+  profileCopy = profile;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v5;
+  obj = entriesCopy;
   v7 = [obj countByEnumeratingWithState:&v27 objects:v37 count:16];
   if (v7)
   {
@@ -71,9 +71,9 @@
 
         v13 = v12;
         v14 = [v11 hk_map:&__block_literal_global_505];
-        v15 = [v6 dataManager];
+        dataManager = [profileCopy dataManager];
         v26 = 0;
-        v16 = [v15 deleteSamplesWithTypes:v13 sourceEntities:v14 recursiveDeleteAuthorizationBlock:0 error:&v26];
+        v16 = [dataManager deleteSamplesWithTypes:v13 sourceEntities:v14 recursiveDeleteAuthorizationBlock:0 error:&v26];
         v17 = v26;
 
         if ((v16 & 1) == 0)
@@ -98,9 +98,9 @@
           }
 
           v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@, %@", objc_opt_class(), v11, v13];
-          v20 = [v6 daemon];
-          v21 = [v20 autoBugCaptureReporter];
-          [v21 reportJournalFailureWithErrorDescription:v19 provenance:0 error:v17];
+          daemon = [profileCopy daemon];
+          autoBugCaptureReporter = [daemon autoBugCaptureReporter];
+          [autoBugCaptureReporter reportJournalFailureWithErrorDescription:v19 provenance:0 error:v17];
         }
 
         ++v9;
@@ -119,20 +119,20 @@ LABEL_19:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (_HDSampleTypesDeletionEntry)initWithCoder:(id)a3
+- (_HDSampleTypesDeletionEntry)initWithCoder:(id)coder
 {
   v18[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x277CBEB98];
   v18[0] = objc_opt_class();
   v18[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:2];
   v7 = [v5 setWithArray:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"sids"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"sids"];
 
   if (!v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
     if (v9)
     {
       v10 = [MEMORY[0x277CBEB98] setWithObject:v9];
@@ -149,19 +149,19 @@ LABEL_19:
   v11 = MEMORY[0x277CBEB98];
   v12 = objc_opt_class();
   v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"types"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"types"];
   v15 = [(_HDSampleTypesDeletionEntry *)self initWithSourceIDs:v8 types:v14];
 
   v16 = *MEMORY[0x277D85DE8];
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sourceIDs = self->_sourceIDs;
-  v5 = a3;
-  [v5 encodeObject:sourceIDs forKey:@"sids"];
-  [v5 encodeObject:self->_types forKey:@"types"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sourceIDs forKey:@"sids"];
+  [coderCopy encodeObject:self->_types forKey:@"types"];
 }
 
 @end

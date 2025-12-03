@@ -1,22 +1,22 @@
 @interface EDBiomeBlackPearlLogger
 + (OS_os_log)log;
-- (EDBiomeBlackPearlLogger)initWithStreamType:(unint64_t)a3;
-- (id)_constructBiomeMessageGrainQuery:(id)a3 andStartTS:(id)a4 andEndTS:(id)a5 andBPEnabledAccounts:(id)a6;
+- (EDBiomeBlackPearlLogger)initWithStreamType:(unint64_t)type;
+- (id)_constructBiomeMessageGrainQuery:(id)query andStartTS:(id)s andEndTS:(id)tS andBPEnabledAccounts:(id)accounts;
 - (id)_database;
-- (id)_domainStringFrom:(int64_t)a3;
-- (id)queryAllEventsForMessageID:(id)a3 andEventType:(id)a4;
-- (id)queryMessageGrainEvents:(id)a3 startingAt:(id)a4 endingAt:(id)a5 andBPEnabledAccounts:(id)a6;
-- (int)_biomeCategoryValueFrom:(int64_t)a3;
-- (int)_biomeDomainValueFrom:(int64_t)a3;
-- (int)_biomeFedStatsCategoryValueFrom:(unint64_t)a3;
-- (int)_biomeMailboxValueFrom:(int64_t)a3;
-- (int)_biomeRecategorizationScopeValueFrom:(int64_t)a3;
-- (void)_donateToBiomeWithEvent:(id)a3;
-- (void)deleteEventsForAccountIDs:(id)a3;
-- (void)deleteEventsForMessages:(id)a3;
-- (void)logRecategorizationEventForMessageID:(id)a3 messageDictionary:(id)a4;
-- (void)logRecategorizationFedStatsForMessage:(id)a3;
-- (void)logReceiveEventForMessageID:(id)a3 messageDictionary:(id)a4;
+- (id)_domainStringFrom:(int64_t)from;
+- (id)queryAllEventsForMessageID:(id)d andEventType:(id)type;
+- (id)queryMessageGrainEvents:(id)events startingAt:(id)at endingAt:(id)endingAt andBPEnabledAccounts:(id)accounts;
+- (int)_biomeCategoryValueFrom:(int64_t)from;
+- (int)_biomeDomainValueFrom:(int64_t)from;
+- (int)_biomeFedStatsCategoryValueFrom:(unint64_t)from;
+- (int)_biomeMailboxValueFrom:(int64_t)from;
+- (int)_biomeRecategorizationScopeValueFrom:(int64_t)from;
+- (void)_donateToBiomeWithEvent:(id)event;
+- (void)deleteEventsForAccountIDs:(id)ds;
+- (void)deleteEventsForMessages:(id)messages;
+- (void)logRecategorizationEventForMessageID:(id)d messageDictionary:(id)dictionary;
+- (void)logRecategorizationFedStatsForMessage:(id)message;
+- (void)logReceiveEventForMessageID:(id)d messageDictionary:(id)dictionary;
 @end
 
 @implementation EDBiomeBlackPearlLogger
@@ -27,7 +27,7 @@
   block[1] = 3221225472;
   block[2] = __30__EDBiomeBlackPearlLogger_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_13 != -1)
   {
     dispatch_once(&log_onceToken_13, block);
@@ -46,7 +46,7 @@ void __30__EDBiomeBlackPearlLogger_log__block_invoke(uint64_t a1)
   log_log_13 = v1;
 }
 
-- (EDBiomeBlackPearlLogger)initWithStreamType:(unint64_t)a3
+- (EDBiomeBlackPearlLogger)initWithStreamType:(unint64_t)type
 {
   v13.receiver = self;
   v13.super_class = EDBiomeBlackPearlLogger;
@@ -62,7 +62,7 @@ void __30__EDBiomeBlackPearlLogger_log__block_invoke(uint64_t a1)
     v10[1] = 3221225472;
     v10[2] = __46__EDBiomeBlackPearlLogger_initWithStreamType___block_invoke;
     v10[3] = &unk_1E8250A90;
-    v12 = a3;
+    typeCopy = type;
     v11 = v4;
     v8 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v10);
     dispatch_async(*(v4 + 1), v8);
@@ -161,69 +161,69 @@ void __36__EDBiomeBlackPearlLogger__database__block_invoke()
   _database_s_database = v0;
 }
 
-- (void)logReceiveEventForMessageID:(id)a3 messageDictionary:(id)a4
+- (void)logReceiveEventForMessageID:(id)d messageDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v31 = a3;
-  v6 = a4;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v7 = +[EDBiomeBlackPearlLogger log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v33 = v31;
+    v33 = dCopy;
     v34 = 2112;
     v35 = @"com.apple.mail.categorization.receive";
     _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "[Biome] Logging event for messageID: %@ and type: %@", buf, 0x16u);
   }
 
-  v8 = [v6 objectForKeyedSubscript:@"predictedCategory"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"predictedCategory"];
   v9 = -[EDBiomeBlackPearlLogger _biomeCategoryValueFrom:](self, "_biomeCategoryValueFrom:", [v8 integerValue]);
 
-  v10 = [v6 objectForKeyedSubscript:@"currCategoryView"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"currCategoryView"];
   v11 = -[EDBiomeBlackPearlLogger _biomeMailboxValueFrom:](self, "_biomeMailboxValueFrom:", [v10 integerValue]);
 
-  v12 = [v6 objectForKeyedSubscript:@"receivingAccountDomain"];
+  v12 = [dictionaryCopy objectForKeyedSubscript:@"receivingAccountDomain"];
   v13 = -[EDBiomeBlackPearlLogger _biomeDomainValueFrom:](self, "_biomeDomainValueFrom:", [v12 integerValue]);
 
-  v14 = [v6 objectForKeyedSubscript:@"isMailAccountBlackPearlEnabled"];
-  v15 = [v14 BOOLValue];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"isMailAccountBlackPearlEnabled"];
+  bOOLValue = [v14 BOOLValue];
 
-  v16 = [v6 objectForKeyedSubscript:@"isAllInboxesBlackPearlEnabled"];
-  v17 = [v16 BOOLValue];
+  v16 = [dictionaryCopy objectForKeyedSubscript:@"isAllInboxesBlackPearlEnabled"];
+  bOOLValue2 = [v16 BOOLValue];
 
   v18 = objc_alloc(MEMORY[0x1E698ECD8]);
-  v30 = [v6 objectForKeyedSubscript:@"accountId"];
+  v30 = [dictionaryCopy objectForKeyedSubscript:@"accountId"];
   v29 = [MEMORY[0x1E696AD98] numberWithInt:v13];
-  v28 = [v6 objectForKeyedSubscript:@"metadataPrimaryKey"];
+  v28 = [dictionaryCopy objectForKeyedSubscript:@"metadataPrimaryKey"];
   v27 = [MEMORY[0x1E696AD98] numberWithInt:v9];
   v19 = [MEMORY[0x1E696AD98] numberWithInt:v11];
-  v20 = [v6 objectForKeyedSubscript:@"reasonCodes"];
-  v21 = [v6 objectForKeyedSubscript:@"receivedTimestamp"];
-  v22 = [MEMORY[0x1E696AD98] numberWithBool:v17];
-  v23 = [v6 objectForKeyedSubscript:@"isMailAccountPersonalAccount"];
-  v24 = [MEMORY[0x1E696AD98] numberWithBool:v15];
-  v25 = [v18 initWithAccountId:v30 messageId:v31 senderId:0 receivingAccountDomain:v29 metadataPrimaryKey:v28 predictedCategory:v27 currCategoryView:v19 reasonCodes:v20 receiveTimestamp:v21 isAllInboxesCategoriesEnabled:v22 isMailAccountPersonalAccount:v23 isMailAccountCategoriesEnabled:v24];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"reasonCodes"];
+  v21 = [dictionaryCopy objectForKeyedSubscript:@"receivedTimestamp"];
+  v22 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue2];
+  v23 = [dictionaryCopy objectForKeyedSubscript:@"isMailAccountPersonalAccount"];
+  v24 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
+  v25 = [v18 initWithAccountId:v30 messageId:dCopy senderId:0 receivingAccountDomain:v29 metadataPrimaryKey:v28 predictedCategory:v27 currCategoryView:v19 reasonCodes:v20 receiveTimestamp:v21 isAllInboxesCategoriesEnabled:v22 isMailAccountPersonalAccount:v23 isMailAccountCategoriesEnabled:v24];
 
   [(EDBiomeBlackPearlLogger *)self _donateToBiomeWithEvent:v25];
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logRecategorizationEventForMessageID:(id)a3 messageDictionary:(id)a4
+- (void)logRecategorizationEventForMessageID:(id)d messageDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dictionaryCopy = dictionary;
   v8 = +[EDBiomeBlackPearlLogger log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v6;
+    v22 = dCopy;
     v23 = 2112;
     v24 = @"com.apple.mail.categorization.recategorize";
     _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "[Biome] Logging event for messageID: %@ and type: %@", &v21, 0x16u);
   }
 
-  v9 = [v7 objectForKeyedSubscript:@"currCategoryView"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"currCategoryView"];
   v10 = -[EDBiomeBlackPearlLogger _biomeMailboxValueFrom:](self, "_biomeMailboxValueFrom:", [v9 integerValue]);
 
   v11 = [MEMORY[0x1E695DF00] now];
@@ -231,55 +231,55 @@ void __36__EDBiomeBlackPearlLogger__database__block_invoke()
   v13 = v12;
 
   v14 = objc_alloc(MEMORY[0x1E698ECD0]);
-  v15 = [v7 objectForKeyedSubscript:@"accountId"];
+  v15 = [dictionaryCopy objectForKeyedSubscript:@"accountId"];
   v16 = [MEMORY[0x1E696AD98] numberWithInt:v10];
-  v17 = [v7 objectForKeyedSubscript:@"recategorizationBy"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"recategorizationBy"];
   v18 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
-  v19 = [v14 initWithAccountId:v15 messageId:v6 currCategoryView:v16 recategorizationBy:v17 recategorizeTimestamp:v18];
+  v19 = [v14 initWithAccountId:v15 messageId:dCopy currCategoryView:v16 recategorizationBy:v17 recategorizeTimestamp:v18];
 
   [(EDBiomeBlackPearlLogger *)self _donateToBiomeWithEvent:v19];
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logRecategorizationFedStatsForMessage:(id)a3
+- (void)logRecategorizationFedStatsForMessage:(id)message
 {
-  v15 = a3;
-  v4 = [v15 objectForKeyedSubscript:@"currCategoryView"];
+  messageCopy = message;
+  v4 = [messageCopy objectForKeyedSubscript:@"currCategoryView"];
   v5 = -[EDBiomeBlackPearlLogger _biomeFedStatsCategoryValueFrom:](self, "_biomeFedStatsCategoryValueFrom:", [v4 unsignedIntValue]);
 
-  v6 = [v15 objectForKeyedSubscript:@"prevCategoryView"];
+  v6 = [messageCopy objectForKeyedSubscript:@"prevCategoryView"];
   v7 = -[EDBiomeBlackPearlLogger _biomeFedStatsCategoryValueFrom:](self, "_biomeFedStatsCategoryValueFrom:", [v6 unsignedIntValue]);
 
-  v8 = [v15 objectForKeyedSubscript:@"recategorizationBy"];
+  v8 = [messageCopy objectForKeyedSubscript:@"recategorizationBy"];
   v9 = -[EDBiomeBlackPearlLogger _biomeRecategorizationScopeValueFrom:](self, "_biomeRecategorizationScopeValueFrom:", [v8 integerValue]);
 
   v10 = objc_alloc(MEMORY[0x1E698ECE0]);
-  v11 = [v15 objectForKeyedSubscript:@"senderId"];
-  v12 = [v15 objectForKeyedSubscript:@"senderDomain"];
-  v13 = [v15 objectForKeyedSubscript:@"language"];
+  v11 = [messageCopy objectForKeyedSubscript:@"senderId"];
+  v12 = [messageCopy objectForKeyedSubscript:@"senderDomain"];
+  v13 = [messageCopy objectForKeyedSubscript:@"language"];
   v14 = [v10 initWithCategory:v5 previous:v7 scope:v9 sender:v11 domain:v12 language:v13];
 
   [(EDBiomeBlackPearlLogger *)self _donateToBiomeWithEvent:v14];
 }
 
-- (id)queryAllEventsForMessageID:(id)a3 andEventType:(id)a4
+- (id)queryAllEventsForMessageID:(id)d andEventType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DF70] array];
-  v9 = [(EDBiomeBlackPearlLogger *)self queue];
+  dCopy = d;
+  typeCopy = type;
+  array = [MEMORY[0x1E695DF70] array];
+  queue = [(EDBiomeBlackPearlLogger *)self queue];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __67__EDBiomeBlackPearlLogger_queryAllEventsForMessageID_andEventType___block_invoke;
   v18 = &unk_1E8250AB8;
-  v10 = v7;
+  v10 = typeCopy;
   v19 = v10;
-  v11 = v6;
+  v11 = dCopy;
   v20 = v11;
-  v21 = self;
-  v12 = v8;
+  selfCopy = self;
+  v12 = array;
   v22 = v12;
-  dispatch_sync(v9, &v15);
+  dispatch_sync(queue, &v15);
 
   v13 = [v12 copy];
 
@@ -323,28 +323,28 @@ void __67__EDBiomeBlackPearlLogger_queryAllEventsForMessageID_andEventType___blo
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)queryMessageGrainEvents:(id)a3 startingAt:(id)a4 endingAt:(id)a5 andBPEnabledAccounts:(id)a6
+- (id)queryMessageGrainEvents:(id)events startingAt:(id)at endingAt:(id)endingAt andBPEnabledAccounts:(id)accounts
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x1E695DF70] array];
-  if ([v13 count])
+  eventsCopy = events;
+  atCopy = at;
+  endingAtCopy = endingAt;
+  accountsCopy = accounts;
+  array = [MEMORY[0x1E695DF70] array];
+  if ([accountsCopy count])
   {
-    v15 = [(EDBiomeBlackPearlLogger *)self queue];
+    queue = [(EDBiomeBlackPearlLogger *)self queue];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __92__EDBiomeBlackPearlLogger_queryMessageGrainEvents_startingAt_endingAt_andBPEnabledAccounts___block_invoke;
     v20[3] = &unk_1E8250AE0;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = v13;
-    v25 = self;
-    v16 = v14;
+    v21 = eventsCopy;
+    v22 = atCopy;
+    v23 = endingAtCopy;
+    v24 = accountsCopy;
+    selfCopy = self;
+    v16 = array;
     v26 = v16;
-    dispatch_sync(v15, v20);
+    dispatch_sync(queue, v20);
 
     v17 = v16;
     v18 = v21;
@@ -414,12 +414,12 @@ void __92__EDBiomeBlackPearlLogger_queryMessageGrainEvents_startingAt_endingAt_a
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteEventsForMessages:(id)a3
+- (void)deleteEventsForMessages:(id)messages
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messagesCopy = messages;
   v5 = MEMORY[0x1E695DFD8];
-  v6 = [v4 ef_map:&__block_literal_global_22];
+  v6 = [messagesCopy ef_map:&__block_literal_global_22];
   v7 = [v5 setWithArray:v6];
 
   v8 = +[EDBiomeBlackPearlLogger log];
@@ -595,9 +595,9 @@ uint64_t __51__EDBiomeBlackPearlLogger_deleteEventsForMessages___block_invoke_5(
   return v8;
 }
 
-- (void)deleteEventsForAccountIDs:(id)a3
+- (void)deleteEventsForAccountIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v20[0] = 0;
   v20[1] = v20;
   v20[2] = 0x2020000000;
@@ -614,7 +614,7 @@ uint64_t __51__EDBiomeBlackPearlLogger_deleteEventsForMessages___block_invoke_5(
   aBlock[1] = 3221225472;
   aBlock[2] = __53__EDBiomeBlackPearlLogger_deleteEventsForAccountIDs___block_invoke;
   aBlock[3] = &unk_1E8250B08;
-  v5 = v4;
+  v5 = dsCopy;
   v17 = v5;
   v6 = _Block_copy(aBlock);
   queue = self->_queue;
@@ -746,38 +746,38 @@ uint64_t __53__EDBiomeBlackPearlLogger_deleteEventsForAccountIDs___block_invoke_
   return v6;
 }
 
-- (void)_donateToBiomeWithEvent:(id)a3
+- (void)_donateToBiomeWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __51__EDBiomeBlackPearlLogger__donateToBiomeWithEvent___block_invoke;
   v7[3] = &unk_1E8250128;
   v7[4] = self;
-  v8 = v4;
-  v5 = v4;
+  v8 = eventCopy;
+  v5 = eventCopy;
   v6 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, v7);
   dispatch_async(self->_queue, v6);
 }
 
-- (int)_biomeCategoryValueFrom:(int64_t)a3
+- (int)_biomeCategoryValueFrom:(int64_t)from
 {
-  if (a3 >= 0xF)
+  if (from >= 0xF)
   {
     return 13;
   }
 
   else
   {
-    return a3;
+    return from;
   }
 }
 
-- (int)_biomeMailboxValueFrom:(int64_t)a3
+- (int)_biomeMailboxValueFrom:(int64_t)from
 {
-  if ((a3 - 1) < 6)
+  if ((from - 1) < 6)
   {
-    return a3;
+    return from;
   }
 
   else
@@ -786,37 +786,37 @@ uint64_t __53__EDBiomeBlackPearlLogger_deleteEventsForAccountIDs___block_invoke_
   }
 }
 
-- (int)_biomeDomainValueFrom:(int64_t)a3
+- (int)_biomeDomainValueFrom:(int64_t)from
 {
-  if (a3 >= 8)
+  if (from >= 8)
   {
     return 7;
   }
 
   else
   {
-    return a3;
+    return from;
   }
 }
 
-- (int)_biomeFedStatsCategoryValueFrom:(unint64_t)a3
+- (int)_biomeFedStatsCategoryValueFrom:(unint64_t)from
 {
-  if (a3 > 3)
+  if (from > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_1C6471D00[a3];
+    return dword_1C6471D00[from];
   }
 }
 
-- (int)_biomeRecategorizationScopeValueFrom:(int64_t)a3
+- (int)_biomeRecategorizationScopeValueFrom:(int64_t)from
 {
-  if (a3)
+  if (from)
   {
-    return 2 * (a3 == 1);
+    return 2 * (from == 1);
   }
 
   else
@@ -825,34 +825,34 @@ uint64_t __53__EDBiomeBlackPearlLogger_deleteEventsForAccountIDs___block_invoke_
   }
 }
 
-- (id)_domainStringFrom:(int64_t)a3
+- (id)_domainStringFrom:(int64_t)from
 {
-  if (a3 > 6)
+  if (from > 6)
   {
     v3 = kUserEmailDomainOther;
   }
 
   else
   {
-    v3 = off_1E8250B78[a3];
+    v3 = off_1E8250B78[from];
   }
 
   return *v3;
 }
 
-- (id)_constructBiomeMessageGrainQuery:(id)a3 andStartTS:(id)a4 andEndTS:(id)a5 andBPEnabledAccounts:(id)a6
+- (id)_constructBiomeMessageGrainQuery:(id)query andStartTS:(id)s andEndTS:(id)tS andBPEnabledAccounts:(id)accounts
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  queryCopy = query;
+  sCopy = s;
+  tSCopy = tS;
+  accountsCopy = accounts;
   v13 = MEMORY[0x1E696AEC0];
-  v14 = [v9 unsignedLongLongValue];
-  v15 = [v10 unsignedLongLongValue];
-  v16 = [v11 unsignedLongLongValue];
-  v17 = [v12 allObjects];
-  v18 = [v17 componentsJoinedByString:{@", "}];
-  v19 = [v13 stringWithFormat:&cfstr_WithReceiveRow, v14, v15, v16, v18];
+  unsignedLongLongValue = [queryCopy unsignedLongLongValue];
+  unsignedLongLongValue2 = [sCopy unsignedLongLongValue];
+  unsignedLongLongValue3 = [tSCopy unsignedLongLongValue];
+  allObjects = [accountsCopy allObjects];
+  v18 = [allObjects componentsJoinedByString:{@", "}];
+  v19 = [v13 stringWithFormat:&cfstr_WithReceiveRow, unsignedLongLongValue, unsignedLongLongValue2, unsignedLongLongValue3, v18];
 
   return v19;
 }

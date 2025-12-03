@@ -7,13 +7,13 @@
 - (__CFString)un_logDigest
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [a1 UTF8String];
-  if (v2)
+  uTF8String = [self UTF8String];
+  if (uTF8String)
   {
-    v3 = v2;
+    v3 = uTF8String;
   }
 
-  else if (![a1 length] || (objc_msgSend(a1, "dataUsingEncoding:allowLossyConversion:", 1, 1), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(objc_alloc(MEMORY[0x1E696AEC0]), "initWithData:encoding:", v6, 4), v3 = objc_msgSend(v7, "UTF8String"), v7, v6, !v3))
+  else if (![self length] || (objc_msgSend(self, "dataUsingEncoding:allowLossyConversion:", 1, 1), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(objc_alloc(MEMORY[0x1E696AEC0]), "initWithData:encoding:", v6, 4), v3 = objc_msgSend(v7, "UTF8String"), v7, v6, !v3))
   {
     v5 = @"<Unicode conversion error>";
     goto LABEL_8;

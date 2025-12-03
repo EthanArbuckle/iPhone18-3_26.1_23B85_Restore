@@ -1,5 +1,5 @@
 @interface AXMMobileAssetEvaluationNode
-- (AXMMobileAssetEvaluationNode)initWithIdentifier:(id)a3;
+- (AXMMobileAssetEvaluationNode)initWithIdentifier:(id)identifier;
 - (id)mlModelClasses;
 - (id)mobileAssetType;
 - (id)modelResourceNames;
@@ -7,17 +7,17 @@
 - (unint64_t)maxSupportedFormatVersion;
 - (unint64_t)minSupportedFormatVersion;
 - (void)_downloadAssetsIfNecessary;
-- (void)evaluate:(id)a3 metrics:(id)a4;
-- (void)setModelURLs:(id)a3;
+- (void)evaluate:(id)evaluate metrics:(id)metrics;
+- (void)setModelURLs:(id)ls;
 @end
 
 @implementation AXMMobileAssetEvaluationNode
 
-- (AXMMobileAssetEvaluationNode)initWithIdentifier:(id)a3
+- (AXMMobileAssetEvaluationNode)initWithIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = AXMMobileAssetEvaluationNode;
-  v3 = [(AXMVisionEngineNode *)&v5 initWithIdentifier:a3];
+  v3 = [(AXMVisionEngineNode *)&v5 initWithIdentifier:identifier];
   [(AXMMobileAssetEvaluationNode *)v3 _downloadAssetsIfNecessary];
   return v3;
 }
@@ -117,36 +117,36 @@ void __41__AXMMobileAssetEvaluationNode_modelURLs__block_invoke()
   __ModelURLs = v0;
 }
 
-- (void)setModelURLs:(id)a3
+- (void)setModelURLs:(id)ls
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lsCopy = ls;
   v5 = objc_opt_class();
   objc_sync_enter(v5);
   v6 = AXLogAssetLoader();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(AXMMobileAssetEvaluationNode *)self modelURLs];
+    modelURLs = [(AXMMobileAssetEvaluationNode *)self modelURLs];
     v10 = 138412546;
-    v11 = v4;
+    v11 = lsCopy;
     v12 = 2112;
-    v13 = v7;
+    v13 = modelURLs;
     _os_log_impl(&dword_1AE37B000, v6, OS_LOG_TYPE_INFO, "Setting new model URLs: %@. Replacing old modelURLs: %@", &v10, 0x16u);
   }
 
-  v8 = [(AXMMobileAssetEvaluationNode *)self modelURLs];
-  [v8 removeAllObjects];
+  modelURLs2 = [(AXMMobileAssetEvaluationNode *)self modelURLs];
+  [modelURLs2 removeAllObjects];
 
-  v9 = [(AXMMobileAssetEvaluationNode *)self modelURLs];
-  [v9 addObjectsFromArray:v4];
+  modelURLs3 = [(AXMMobileAssetEvaluationNode *)self modelURLs];
+  [modelURLs3 addObjectsFromArray:lsCopy];
 
   objc_sync_exit(v5);
 }
 
 - (void)_downloadAssetsIfNecessary
 {
-  v3 = [(AXMMobileAssetEvaluationNode *)self modelURLs];
-  if ([v3 count])
+  modelURLs = [(AXMMobileAssetEvaluationNode *)self modelURLs];
+  if ([modelURLs count])
   {
     mobileAssetBaseURL = self->_mobileAssetBaseURL;
 
@@ -161,8 +161,8 @@ void __41__AXMMobileAssetEvaluationNode_modelURLs__block_invoke()
   }
 
   v5 = objc_alloc(MEMORY[0x1E69B18E8]);
-  v6 = [(AXMMobileAssetEvaluationNode *)self mobileAssetType];
-  v7 = [v5 initWithType:v6];
+  mobileAssetType = [(AXMMobileAssetEvaluationNode *)self mobileAssetType];
+  v7 = [v5 initWithType:mobileAssetType];
 
   [v7 returnTypes:2];
   [v7 setDoNotBlockBeforeFirstUnlock:1];
@@ -171,7 +171,7 @@ void __41__AXMMobileAssetEvaluationNode_modelURLs__block_invoke()
   v9[2] = __58__AXMMobileAssetEvaluationNode__downloadAssetsIfNecessary__block_invoke;
   v9[3] = &unk_1E7A1CC68;
   v10 = v7;
-  v11 = self;
+  selfCopy = self;
   v8 = v7;
   [v8 queryMetaData:v9];
 }
@@ -410,45 +410,45 @@ uint64_t __58__AXMMobileAssetEvaluationNode__downloadAssetsIfNecessary__block_in
   return v12;
 }
 
-- (void)evaluate:(id)a3 metrics:(id)a4
+- (void)evaluate:(id)evaluate metrics:(id)metrics
 {
   v35 = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = AXMMobileAssetEvaluationNode;
-  v27 = a3;
-  v28 = a4;
-  [(AXMEvaluationNode *)&v30 evaluate:v27 metrics:?];
+  evaluateCopy = evaluate;
+  metricsCopy = metrics;
+  [(AXMEvaluationNode *)&v30 evaluate:evaluateCopy metrics:?];
   [(AXMMobileAssetEvaluationNode *)self _downloadAssetsIfNecessary];
   if (!self->_mlModels)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     obj = objc_opt_class();
     objc_sync_enter(obj);
-    v7 = [(AXMMobileAssetEvaluationNode *)self modelURLs];
-    v8 = [v7 count];
-    v9 = [(AXMMobileAssetEvaluationNode *)self mlModelClasses];
-    v10 = [v9 count];
+    modelURLs = [(AXMMobileAssetEvaluationNode *)self modelURLs];
+    v8 = [modelURLs count];
+    mlModelClasses = [(AXMMobileAssetEvaluationNode *)self mlModelClasses];
+    v10 = [mlModelClasses count];
 
     v11 = 0;
     *&v12 = 138412290;
     v25 = v12;
     while (1)
     {
-      v13 = [(AXMMobileAssetEvaluationNode *)self mlModelClasses];
-      v14 = [v13 count] > v11;
+      mlModelClasses2 = [(AXMMobileAssetEvaluationNode *)self mlModelClasses];
+      v14 = [mlModelClasses2 count] > v11;
 
       if (!v14)
       {
         break;
       }
 
-      v15 = [(AXMMobileAssetEvaluationNode *)self mlModelClasses];
-      v16 = [v15 objectAtIndexedSubscript:v11];
+      mlModelClasses3 = [(AXMMobileAssetEvaluationNode *)self mlModelClasses];
+      v16 = [mlModelClasses3 objectAtIndexedSubscript:v11];
 
       if (v8 == v10)
       {
-        v17 = [(AXMMobileAssetEvaluationNode *)self modelURLs];
-        v18 = [v17 objectAtIndexedSubscript:v11];
+        modelURLs2 = [(AXMMobileAssetEvaluationNode *)self modelURLs];
+        v18 = [modelURLs2 objectAtIndexedSubscript:v11];
 
         if (v18)
         {
@@ -491,7 +491,7 @@ uint64_t __58__AXMMobileAssetEvaluationNode__downloadAssetsIfNecessary__block_in
       if (v20)
       {
 LABEL_13:
-        [v6 addObject:v20];
+        [array addObject:v20];
       }
 
       ++v11;
@@ -499,13 +499,13 @@ LABEL_13:
 
     objc_sync_exit(obj);
 
-    v23 = [v6 count];
-    v24 = [(AXMMobileAssetEvaluationNode *)self mlModelClasses];
-    LOBYTE(v23) = v23 == [v24 count];
+    v23 = [array count];
+    mlModelClasses4 = [(AXMMobileAssetEvaluationNode *)self mlModelClasses];
+    LOBYTE(v23) = v23 == [mlModelClasses4 count];
 
     if (v23)
     {
-      objc_storeStrong(&self->_mlModels, v6);
+      objc_storeStrong(&self->_mlModels, array);
     }
   }
 }

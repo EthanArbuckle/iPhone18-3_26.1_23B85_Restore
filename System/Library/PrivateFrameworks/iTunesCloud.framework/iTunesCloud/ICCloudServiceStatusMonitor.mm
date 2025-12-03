@@ -2,53 +2,53 @@
 + (BOOL)_hasEntitlementForStatusAccessExemptedFromUserConsentRequirement;
 - (BOOL)isObservingCloudServiceStatus;
 - (ICCloudServiceStatusMonitor)init;
-- (id)_cloudServiceStatusMonitorConnectionForTransactionIdentifier:(id)a3 error:(id *)a4;
-- (int64_t)authorizationStatusForScopes:(int64_t)a3;
+- (id)_cloudServiceStatusMonitorConnectionForTransactionIdentifier:(id)identifier error:(id *)error;
+- (int64_t)authorizationStatusForScopes:(int64_t)scopes;
 - (int64_t)privacyAcknowledgementPolicy;
 - (void)_beginObservingCloudServiceStatus;
-- (void)_beginTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:(id)a3;
+- (void)_beginTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:(id)identifier;
 - (void)_cancelCloudServerLaunchedNotifyToken;
 - (void)_cloudServiceStatusMonitorConnectionWasInterrupted;
 - (void)_cloudServiceStatusMonitorConnectionWasInvalidated;
-- (void)_didBeginObservingCloudServiceStatusWithToken:(id)a3 transactionIdentifier:(id)a4;
-- (void)_didEndObservingCloudServiceStatusWithToken:(id)a3 transactionIdentifier:(id)a4;
-- (void)_didEndRequestingTokenWithTransactionIdentifier:(id)a3;
-- (void)_endObservingCloudServiceStatusWithToken:(id)a3;
-- (void)_endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:(id)a3;
+- (void)_didBeginObservingCloudServiceStatusWithToken:(id)token transactionIdentifier:(id)identifier;
+- (void)_didEndObservingCloudServiceStatusWithToken:(id)token transactionIdentifier:(id)identifier;
+- (void)_didEndRequestingTokenWithTransactionIdentifier:(id)identifier;
+- (void)_endObservingCloudServiceStatusWithToken:(id)token;
+- (void)_endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:(id)identifier;
 - (void)_invalidateCloudServerLaunchTimeoutTimer;
 - (void)_invalidateTriggersForCloudServiceStatusObservationRecovery;
-- (void)_musicKit_importTrackWithID:(int64_t)a3 addingToLibrary:(BOOL)a4 completionHandler:(id)a5;
-- (void)_performCloudServiceStatusMonitorRequestWithDescription:(id)a3 requestHandler:(id)a4 errorHandler:(id)a5;
+- (void)_musicKit_importTrackWithID:(int64_t)d addingToLibrary:(BOOL)library completionHandler:(id)handler;
+- (void)_performCloudServiceStatusMonitorRequestWithDescription:(id)description requestHandler:(id)handler errorHandler:(id)errorHandler;
 - (void)_recoverObservingCloudServiceStatus;
 - (void)_refreshCloudServiceStatus;
 - (void)_registerCloudServerLaunchedNotifyToken;
-- (void)_requestCapabilitiesWithPrivacyPromptPolicy:(id)a3 completionHandler:(id)a4;
-- (void)_requestCapabilitiesWithPrivacyPromptPolicy:(int64_t)a3 requestCapabilitiesWithCompletionHandler:(id)a4;
-- (void)_requestStorefrontCountryCodeWithCompletionHandler:(id)a3;
-- (void)_requestStorefrontIdentifierWithCompletionHandler:(id)a3;
-- (void)_resetCloudServiceStatusMonitorConnectionAllowingExplicitInvalidation:(BOOL)a3;
+- (void)_requestCapabilitiesWithPrivacyPromptPolicy:(id)policy completionHandler:(id)handler;
+- (void)_requestCapabilitiesWithPrivacyPromptPolicy:(int64_t)policy requestCapabilitiesWithCompletionHandler:(id)handler;
+- (void)_requestStorefrontCountryCodeWithCompletionHandler:(id)handler;
+- (void)_requestStorefrontIdentifierWithCompletionHandler:(id)handler;
+- (void)_resetCloudServiceStatusMonitorConnectionAllowingExplicitInvalidation:(BOOL)invalidation;
 - (void)_scheduleCloudServerLaunchTimeoutTimer;
 - (void)_scheduleTriggersForCloudServiceStatusObservationRecovery;
-- (void)_updateWithCapabilities:(unint64_t)a3 hasValidCapabilities:(BOOL)a4 transactionIdentifier:(id)a5;
-- (void)_updateWithStorefrontCountryCode:(id)a3 transactionIdentifier:(id)a4;
-- (void)_updateWithStorefrontIdentifier:(id)a3 transactionIdentifier:(id)a4;
-- (void)_validateAuthorizationExpiryWithCompletionHandler:(id)a3;
+- (void)_updateWithCapabilities:(unint64_t)capabilities hasValidCapabilities:(BOOL)validCapabilities transactionIdentifier:(id)identifier;
+- (void)_updateWithStorefrontCountryCode:(id)code transactionIdentifier:(id)identifier;
+- (void)_updateWithStorefrontIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier;
+- (void)_validateAuthorizationExpiryWithCompletionHandler:(id)handler;
 - (void)activeAccountDidChange;
 - (void)beginObservingCloudServiceStatus;
-- (void)capabilitiesDidChange:(unint64_t)a3;
+- (void)capabilitiesDidChange:(unint64_t)change;
 - (void)dealloc;
 - (void)endObservingCloudServiceStatus;
-- (void)requestAuthorizationForScopes:(int64_t)a3 completionHandler:(id)a4;
-- (void)requestCapabilitiesWithPrivacyPromptPolicy:(int64_t)a3 completionHandler:(id)a4;
-- (void)requestDeveloperTokenWithOptions:(unint64_t)a3 completionHandler:(id)a4;
-- (void)requestMusicKitTokensWithOptions:(unint64_t)a3 completionHandler:(id)a4;
-- (void)requestStorefrontCountryCodeWithCompletionHandler:(id)a3;
-- (void)requestStorefrontIdentifierWithCompletionHandler:(id)a3;
-- (void)requestUserTokenForDeveloperToken:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)revokeMusicKitUserTokensForAccountDSID:(id)a3 withCompletion:(id)a4;
-- (void)setPrivacyAcknowledgementPolicy:(int64_t)a3;
-- (void)storefrontCountryCodeDidChange:(id)a3;
-- (void)storefrontIdentifierDidChange:(id)a3;
+- (void)requestAuthorizationForScopes:(int64_t)scopes completionHandler:(id)handler;
+- (void)requestCapabilitiesWithPrivacyPromptPolicy:(int64_t)policy completionHandler:(id)handler;
+- (void)requestDeveloperTokenWithOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)requestMusicKitTokensWithOptions:(unint64_t)options completionHandler:(id)handler;
+- (void)requestStorefrontCountryCodeWithCompletionHandler:(id)handler;
+- (void)requestStorefrontIdentifierWithCompletionHandler:(id)handler;
+- (void)requestUserTokenForDeveloperToken:(id)token options:(unint64_t)options completionHandler:(id)handler;
+- (void)revokeMusicKitUserTokensForAccountDSID:(id)d withCompletion:(id)completion;
+- (void)setPrivacyAcknowledgementPolicy:(int64_t)policy;
+- (void)storefrontCountryCodeDidChange:(id)change;
+- (void)storefrontIdentifierDidChange:(id)change;
 @end
 
 @implementation ICCloudServiceStatusMonitor
@@ -76,17 +76,17 @@
   return v2;
 }
 
-- (void)_musicKit_importTrackWithID:(int64_t)a3 addingToLibrary:(BOOL)a4 completionHandler:(id)a5
+- (void)_musicKit_importTrackWithID:(int64_t)d addingToLibrary:(BOOL)library completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __93__ICCloudServiceStatusMonitor__musicKit_importTrackWithID_addingToLibrary_completionHandler___block_invoke;
   v12[3] = &unk_1E7BF7608;
-  v15 = a4;
-  v14 = a3;
+  libraryCopy = library;
+  dCopy = d;
   v12[4] = self;
-  v13 = v8;
+  v13 = handlerCopy;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __93__ICCloudServiceStatusMonitor__musicKit_importTrackWithID_addingToLibrary_completionHandler___block_invoke_206;
@@ -220,7 +220,7 @@ void __93__ICCloudServiceStatusMonitor__musicKit_importTrackWithID_addingToLibra
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
         v5 = 138543362;
-        v6 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1B4491000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: Missing cloud service status observation token despite the fact that the client asked to actively observe it.", &v5, 0xCu);
       }
 
@@ -251,7 +251,7 @@ void __93__ICCloudServiceStatusMonitor__musicKit_importTrackWithID_addingToLibra
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Invalidated timeout timer for cloud server launch.", &v6, 0xCu);
     }
   }
@@ -266,7 +266,7 @@ void __93__ICCloudServiceStatusMonitor__musicKit_importTrackWithID_addingToLibra
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v13 = self;
+    selfCopy = self;
     v14 = 2048;
     v15 = 0x403E000000000000;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Scheduling timeout timer for cloud server launch for %.1f seconds.", buf, 0x16u);
@@ -326,7 +326,7 @@ void __69__ICCloudServiceStatusMonitor__scheduleCloudServerLaunchTimeoutTimer__b
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         v11 = 138543874;
-        v12 = self;
+        selfCopy2 = self;
         v13 = 2082;
         v14 = "com.apple.itunescloudd.launched";
         v15 = 2048;
@@ -343,7 +343,7 @@ LABEL_7:
     else if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543618;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2082;
       v14 = "com.apple.itunescloudd.launched";
       v7 = "%{public}@: Successfully cancelled notify token for notify topic named %{public}s.";
@@ -380,7 +380,7 @@ LABEL_7:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v15 = self;
+        selfCopy2 = self;
         v16 = 2082;
         v17 = "com.apple.itunescloudd.launched";
         v18 = 2048;
@@ -397,7 +397,7 @@ LABEL_7:
     else if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2082;
       v17 = "com.apple.itunescloudd.launched";
       v7 = "%{public}@: Successfully registered notify token for notify topic named %{public}s.";
@@ -432,18 +432,18 @@ void __70__ICCloudServiceStatusMonitor__registerCloudServerLaunchedNotifyToken__
   }
 }
 
-- (void)_updateWithStorefrontIdentifier:(id)a3 transactionIdentifier:(id)a4
+- (void)_updateWithStorefrontIdentifier:(id)identifier transactionIdentifier:(id)transactionIdentifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  transactionIdentifierCopy = transactionIdentifier;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if (![(ICCloudServiceStatusMonitor *)self _locked_isObservingCloudServiceStatus])
   {
 LABEL_4:
     v10 = 0;
-    if (!v7)
+    if (!transactionIdentifierCopy)
     {
       goto LABEL_6;
     }
@@ -453,25 +453,25 @@ LABEL_4:
 
   v8 = self->_storefrontIdentifier;
   storefrontIdentifier = v8;
-  v10 = v8 != v6;
-  if (v8 != v6)
+  v10 = v8 != identifierCopy;
+  if (v8 != identifierCopy)
   {
-    v11 = [(NSString *)v8 isEqual:v6];
+    v11 = [(NSString *)v8 isEqual:identifierCopy];
 
     if (v11)
     {
       goto LABEL_4;
     }
 
-    v14 = [(NSString *)v6 copy];
+    v14 = [(NSString *)identifierCopy copy];
     storefrontIdentifier = self->_storefrontIdentifier;
     self->_storefrontIdentifier = v14;
   }
 
-  if (v7)
+  if (transactionIdentifierCopy)
   {
 LABEL_5:
-    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v7];
+    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:transactionIdentifierCopy];
   }
 
 LABEL_6:
@@ -482,31 +482,31 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543874;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v6;
+      v18 = identifierCopy;
       v19 = 2112;
       v20 = @"ICCloudServiceStatusStorefrontIdentifierDidChangeNotification";
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Storefront identifier did change: %{public}@. Posting %@.", &v15, 0x20u);
     }
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"ICCloudServiceStatusStorefrontIdentifierDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICCloudServiceStatusStorefrontIdentifierDidChangeNotification" object:self];
   }
 }
 
-- (void)_updateWithStorefrontCountryCode:(id)a3 transactionIdentifier:(id)a4
+- (void)_updateWithStorefrontCountryCode:(id)code transactionIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  codeCopy = code;
+  identifierCopy = identifier;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if (![(ICCloudServiceStatusMonitor *)self _locked_isObservingCloudServiceStatus])
   {
 LABEL_4:
     v10 = 0;
-    if (!v7)
+    if (!identifierCopy)
     {
       goto LABEL_6;
     }
@@ -516,25 +516,25 @@ LABEL_4:
 
   v8 = self->_storefrontCountryCode;
   storefrontCountryCode = v8;
-  v10 = v8 != v6;
-  if (v8 != v6)
+  v10 = v8 != codeCopy;
+  if (v8 != codeCopy)
   {
-    v11 = [(NSString *)v8 isEqual:v6];
+    v11 = [(NSString *)v8 isEqual:codeCopy];
 
     if (v11)
     {
       goto LABEL_4;
     }
 
-    v14 = [(NSString *)v6 copy];
+    v14 = [(NSString *)codeCopy copy];
     storefrontCountryCode = self->_storefrontCountryCode;
     self->_storefrontCountryCode = v14;
   }
 
-  if (v7)
+  if (identifierCopy)
   {
 LABEL_5:
-    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v7];
+    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:identifierCopy];
   }
 
 LABEL_6:
@@ -545,47 +545,47 @@ LABEL_6:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138543874;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
-      v18 = v6;
+      v18 = codeCopy;
       v19 = 2114;
       v20 = @"ICCloudServiceStatusStorefrontCountryCodeDidChangeNotification";
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Storefront country code did change: %{public}@. Posting %{public}@.", &v15, 0x20u);
     }
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:@"ICCloudServiceStatusStorefrontCountryCodeDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICCloudServiceStatusStorefrontCountryCodeDidChangeNotification" object:self];
   }
 }
 
-- (void)_updateWithCapabilities:(unint64_t)a3 hasValidCapabilities:(BOOL)a4 transactionIdentifier:(id)a5
+- (void)_updateWithCapabilities:(unint64_t)capabilities hasValidCapabilities:(BOOL)validCapabilities transactionIdentifier:(id)identifier
 {
-  v5 = a4;
+  validCapabilitiesCopy = validCapabilities;
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  identifierCopy = identifier;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if (![(ICCloudServiceStatusMonitor *)self _locked_isObservingCloudServiceStatus])
   {
 LABEL_5:
-    v5 = 0;
-    if (!v8)
+    validCapabilitiesCopy = 0;
+    if (!identifierCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_9:
-    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v8];
+    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:identifierCopy];
     goto LABEL_10;
   }
 
-  if (self->_capabilities != a3)
+  if (self->_capabilities != capabilities)
   {
-    self->_capabilities = a3;
-    self->_hasValidCapabilities = v5;
-    v5 = 1;
+    self->_capabilities = capabilities;
+    self->_hasValidCapabilities = validCapabilitiesCopy;
+    validCapabilitiesCopy = 1;
 LABEL_8:
-    if (!v8)
+    if (!identifierCopy)
     {
       goto LABEL_10;
     }
@@ -593,7 +593,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v5)
+  if (!validCapabilitiesCopy)
   {
     goto LABEL_8;
   }
@@ -603,23 +603,23 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  v5 = 1;
+  validCapabilitiesCopy = 1;
   self->_hasValidCapabilities = 1;
-  if (v8)
+  if (identifierCopy)
   {
     goto LABEL_9;
   }
 
 LABEL_10:
   os_unfair_lock_unlock(&self->_lock);
-  if (v5)
+  if (validCapabilitiesCopy)
   {
     v9 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = ICCloudServiceCapabilitiesGetDescription(a3);
+      v10 = ICCloudServiceCapabilitiesGetDescription(capabilities);
       v12 = 138543874;
-      v13 = self;
+      selfCopy = self;
       v14 = 2114;
       v15 = v10;
       v16 = 2112;
@@ -627,50 +627,50 @@ LABEL_10:
       _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Cloud service capabilities did change: %{public}@. Posting %@.", &v12, 0x20u);
     }
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"ICCloudServiceStatusCapabilitiesDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICCloudServiceStatusCapabilitiesDidChangeNotification" object:self];
   }
 }
 
-- (void)_didEndRequestingTokenWithTransactionIdentifier:(id)a3
+- (void)_didEndRequestingTokenWithTransactionIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v4];
+  [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_didEndObservingCloudServiceStatusWithToken:(id)a3 transactionIdentifier:(id)a4
+- (void)_didEndObservingCloudServiceStatusWithToken:(id)token transactionIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  identifierCopy = identifier;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v8 = self->_observationToken;
   v9 = self->_observationToken;
   v10 = v9;
-  if (v9 == v6)
+  if (v9 == tokenCopy)
   {
   }
 
   else
   {
-    v11 = [(NSUUID *)v9 isEqual:v6];
+    v11 = [(NSUUID *)v9 isEqual:tokenCopy];
 
     if (!v11)
     {
-      [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v7];
+      [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:identifierCopy];
       os_unfair_lock_unlock(&self->_lock);
       v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v20 = 138543874;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2114;
-        v23 = v6;
+        v23 = tokenCopy;
         v24 = 2114;
         v25 = v8;
         v13 = "%{public}@: Observation token %{public}@ did not match with active observation token %{public}@. Did not end observing cloud service status.";
@@ -694,15 +694,15 @@ LABEL_8:
   self->_transactionIdentifierForActiveObservationToken = 0;
 
   [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v18];
-  [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v7];
+  [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:identifierCopy];
   os_unfair_lock_unlock(&self->_lock);
   v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138543618;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 2114;
-    v23 = v6;
+    v23 = tokenCopy;
     v13 = "%{public}@: Ended observing cloud service status with token: %{public}@.";
     v14 = v12;
     v15 = 22;
@@ -712,18 +712,18 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_endObservingCloudServiceStatusWithToken:(id)a3
+- (void)_endObservingCloudServiceStatusWithToken:(id)token
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  tokenCopy = token;
   os_unfair_lock_assert_not_owner(&self->_lock);
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v11 = self;
+    selfCopy = self;
     v12 = 2114;
-    v13 = v4;
+    v13 = tokenCopy;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Ending observing cloud service status with token: %{public}@.", buf, 0x16u);
   }
 
@@ -731,9 +731,9 @@ LABEL_9:
   v7[1] = 3221225472;
   v7[2] = __72__ICCloudServiceStatusMonitor__endObservingCloudServiceStatusWithToken___block_invoke;
   v7[3] = &unk_1E7BF75E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = tokenCopy;
+  selfCopy2 = self;
+  v6 = tokenCopy;
   [(ICCloudServiceStatusMonitor *)self _performCloudServiceStatusMonitorRequestWithDescription:@"relinquishment of cloud service status observation token" requestHandler:v7 errorHandler:0];
 }
 
@@ -752,50 +752,50 @@ void __72__ICCloudServiceStatusMonitor__endObservingCloudServiceStatusWithToken_
   [a2 endObservingCloudServiceStatusWithToken:v6 completionHandler:v9];
 }
 
-- (void)_didBeginObservingCloudServiceStatusWithToken:(id)a3 transactionIdentifier:(id)a4
+- (void)_didBeginObservingCloudServiceStatusWithToken:(id)token transactionIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  identifierCopy = identifier;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if ([(ICCloudServiceStatusMonitor *)self _locked_isObservingCloudServiceStatus])
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"ongoing-observation-of-cloud-service-status-%@", v7];
-    objc_storeStrong(&self->_observationToken, a3);
+    tokenCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"ongoing-observation-of-cloud-service-status-%@", tokenCopy];
+    objc_storeStrong(&self->_observationToken, token);
     transactionIdentifierForActiveObservationToken = self->_transactionIdentifierForActiveObservationToken;
-    self->_transactionIdentifierForActiveObservationToken = v9;
-    v11 = v9;
+    self->_transactionIdentifierForActiveObservationToken = tokenCopy;
+    v11 = tokenCopy;
 
     [(ICCloudServiceStatusMonitor *)self _beginTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:self->_transactionIdentifierForActiveObservationToken];
-    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v8];
+    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:identifierCopy];
     os_unfair_lock_unlock(&self->_lock);
     v12 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
-      v17 = v7;
+      v17 = tokenCopy;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Began observing cloud service status with token: %{public}@.", buf, 0x16u);
     }
   }
 
   else
   {
-    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v8];
+    [(ICCloudServiceStatusMonitor *)self _endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:identifierCopy];
     os_unfair_lock_unlock(&self->_lock);
     v13 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543618;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
-      v17 = v7;
+      v17 = tokenCopy;
       _os_log_impl(&dword_1B4491000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: Began observing cloud service status with token: %{public}@, despite the fact that the client requested to end observing it. Immediately cancelling this.", buf, 0x16u);
     }
 
-    [(ICCloudServiceStatusMonitor *)self _endObservingCloudServiceStatusWithToken:v7];
+    [(ICCloudServiceStatusMonitor *)self _endObservingCloudServiceStatusWithToken:tokenCopy];
   }
 }
 
@@ -823,16 +823,16 @@ void __64__ICCloudServiceStatusMonitor__beginObservingCloudServiceStatus__block_
   [a2 beginObservingCloudServiceStatusWithCompletionHandler:v7];
 }
 
-- (void)_requestStorefrontIdentifierWithCompletionHandler:(id)a3
+- (void)_requestStorefrontIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __81__ICCloudServiceStatusMonitor__requestStorefrontIdentifierWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7BF7568;
   v8[4] = self;
-  v9 = v4;
+  v9 = handlerCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __81__ICCloudServiceStatusMonitor__requestStorefrontIdentifierWithCompletionHandler___block_invoke_3;
@@ -884,16 +884,16 @@ void __81__ICCloudServiceStatusMonitor__requestStorefrontIdentifierWithCompletio
   }
 }
 
-- (void)_requestStorefrontCountryCodeWithCompletionHandler:(id)a3
+- (void)_requestStorefrontCountryCodeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__ICCloudServiceStatusMonitor__requestStorefrontCountryCodeWithCompletionHandler___block_invoke;
   v8[3] = &unk_1E7BF7568;
   v8[4] = self;
-  v9 = v4;
+  v9 = handlerCopy;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __82__ICCloudServiceStatusMonitor__requestStorefrontCountryCodeWithCompletionHandler___block_invoke_3;
@@ -945,17 +945,17 @@ void __82__ICCloudServiceStatusMonitor__requestStorefrontCountryCodeWithCompleti
   }
 }
 
-- (void)_requestCapabilitiesWithPrivacyPromptPolicy:(int64_t)a3 requestCapabilitiesWithCompletionHandler:(id)a4
+- (void)_requestCapabilitiesWithPrivacyPromptPolicy:(int64_t)policy requestCapabilitiesWithCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __116__ICCloudServiceStatusMonitor__requestCapabilitiesWithPrivacyPromptPolicy_requestCapabilitiesWithCompletionHandler___block_invoke;
   v10[3] = &unk_1E7BF7400;
-  v12 = a3;
+  policyCopy = policy;
   v10[4] = self;
-  v11 = v6;
+  v11 = handlerCopy;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __116__ICCloudServiceStatusMonitor__requestCapabilitiesWithPrivacyPromptPolicy_requestCapabilitiesWithCompletionHandler___block_invoke_3;
@@ -1003,12 +1003,12 @@ void __116__ICCloudServiceStatusMonitor__requestCapabilitiesWithPrivacyPromptPol
   }
 }
 
-- (void)_validateAuthorizationExpiryWithCompletionHandler:(id)a3
+- (void)_validateAuthorizationExpiryWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([MEMORY[0x1E69B1418] hasEntitlement:*MEMORY[0x1E69D5580] inGroup:@"com.apple.private.tcc.allow" shouldLogForMissingEntitlement:0])
   {
-    v4[2](v4, 1);
+    handlerCopy[2](handlerCopy, 1);
   }
 
   else
@@ -1024,7 +1024,7 @@ void __116__ICCloudServiceStatusMonitor__requestCapabilitiesWithPrivacyPromptPol
     v6[2] = __81__ICCloudServiceStatusMonitor__validateAuthorizationExpiryWithCompletionHandler___block_invoke_2;
     v6[3] = &unk_1E7BF9EC8;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [v5 addOperationWithBlock:v6];
   }
 }
@@ -1156,22 +1156,22 @@ uint64_t __81__ICCloudServiceStatusMonitor__validateAuthorizationExpiryWithCompl
   return [v2 setName:@"com.apple.iTunesCloud.AccessPermissionHelper.operationQueue"];
 }
 
-- (void)requestAuthorizationForScopes:(int64_t)a3 completionHandler:(id)a4
+- (void)requestAuthorizationForScopes:(int64_t)scopes completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [(ICCloudServiceStatusMonitor *)self authorizationStatusForScopes:a3];
+  handlerCopy = handler;
+  v8 = [(ICCloudServiceStatusMonitor *)self authorizationStatusForScopes:scopes];
   if (v8 == 1)
   {
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
   else
   {
     v9 = v8;
-    if ((a3 & 2) != 0 || ![objc_opt_class() _hasEntitlementForStatusAccessExemptedFromUserConsentRequirement])
+    if ((scopes & 2) != 0 || ![objc_opt_class() _hasEntitlementForStatusAccessExemptedFromUserConsentRequirement])
     {
       v10 = objc_alloc(MEMORY[0x1E69B13F0]);
       v20[0] = MEMORY[0x1E69E9820];
@@ -1186,18 +1186,18 @@ uint64_t __81__ICCloudServiceStatusMonitor__validateAuthorizationExpiryWithCompl
       v13[2] = __79__ICCloudServiceStatusMonitor_requestAuthorizationForScopes_completionHandler___block_invoke_2;
       v13[3] = &unk_1E7BF7510;
       v14 = v11;
-      v15 = self;
-      v16 = v7;
+      selfCopy = self;
+      v16 = handlerCopy;
       v17 = a2;
-      v18 = a3;
+      scopesCopy = scopes;
       v19 = v9;
       v12 = v11;
       [(ICCloudServiceStatusMonitor *)self _validateAuthorizationExpiryWithCompletionHandler:v13];
     }
 
-    else if (v7)
+    else if (handlerCopy)
     {
-      v7[2](v7, 3);
+      handlerCopy[2](handlerCopy, 3);
     }
   }
 }
@@ -1280,9 +1280,9 @@ void __79__ICCloudServiceStatusMonitor_requestAuthorizationForScopes_completionH
   }
 }
 
-- (int64_t)authorizationStatusForScopes:(int64_t)a3
+- (int64_t)authorizationStatusForScopes:(int64_t)scopes
 {
-  if (a3 & 2) == 0 && ([objc_opt_class() _hasEntitlementForStatusAccessExemptedFromUserConsentRequirement])
+  if (scopes & 2) == 0 && ([objc_opt_class() _hasEntitlementForStatusAccessExemptedFromUserConsentRequirement])
   {
     return 3;
   }
@@ -1309,22 +1309,22 @@ void __79__ICCloudServiceStatusMonitor_requestAuthorizationForScopes_completionH
   }
 }
 
-- (void)_resetCloudServiceStatusMonitorConnectionAllowingExplicitInvalidation:(BOOL)a3
+- (void)_resetCloudServiceStatusMonitorConnectionAllowingExplicitInvalidation:(BOOL)invalidation
 {
-  v3 = a3;
+  invalidationCopy = invalidation;
   v16 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
   cloudServiceStatusMonitorConnection = self->_cloudServiceStatusMonitorConnection;
   if (cloudServiceStatusMonitorConnection)
   {
-    if (v3)
+    if (invalidationCopy)
     {
       [(NSXPCConnection *)cloudServiceStatusMonitorConnection invalidate];
       v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
-        v13 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Did invalidate cloud service status monitor connection.", &v12, 0xCu);
       }
 
@@ -1337,7 +1337,7 @@ void __79__ICCloudServiceStatusMonitor_requestAuthorizationForScopes_completionH
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Did reset cloud service status monitor connection.", &v12, 0xCu);
     }
   }
@@ -1356,7 +1356,7 @@ void __79__ICCloudServiceStatusMonitor_requestAuthorizationForScopes_completionH
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543618;
-      v13 = self;
+      selfCopy3 = self;
       v14 = 2114;
       v15 = v8;
       _os_log_impl(&dword_1B4491000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@: Was previously observing cloud service status with token: %{public}@. Scheduling appropriate triggers to request begin observing cloud service status again.", &v12, 0x16u);
@@ -1366,18 +1366,18 @@ void __79__ICCloudServiceStatusMonitor_requestAuthorizationForScopes_completionH
   }
 }
 
-- (void)_performCloudServiceStatusMonitorRequestWithDescription:(id)a3 requestHandler:(id)a4 errorHandler:(id)a5
+- (void)_performCloudServiceStatusMonitorRequestWithDescription:(id)description requestHandler:(id)handler errorHandler:(id)errorHandler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptionCopy = description;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v8 stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-  v13 = [MEMORY[0x1E696AFB0] UUID];
-  v14 = [v13 UUIDString];
-  v15 = [v11 stringWithFormat:@"request-%@-%@", v12, v14];
+  v12 = [descriptionCopy stringByReplacingOccurrencesOfString:@" " withString:@"-"];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v15 = [v11 stringWithFormat:@"request-%@-%@", v12, uUIDString];
 
   v27 = 0;
   v16 = [(ICCloudServiceStatusMonitor *)self _cloudServiceStatusMonitorConnectionForTransactionIdentifier:v15 error:&v27];
@@ -1391,10 +1391,10 @@ void __79__ICCloudServiceStatusMonitor_requestAuthorizationForScopes_completionH
     v23[4] = self;
     v18 = v15;
     v24 = v18;
-    v25 = v8;
-    v26 = v10;
+    v25 = descriptionCopy;
+    v26 = errorHandlerCopy;
     v19 = [v16 remoteObjectProxyWithErrorHandler:v23];
-    v9[2](v9, v19, v18);
+    handlerCopy[2](handlerCopy, v19, v18);
   }
 
   else
@@ -1403,21 +1403,21 @@ void __79__ICCloudServiceStatusMonitor_requestAuthorizationForScopes_completionH
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
       v21 = [v17 debugDescription];
-      v22 = [v17 msv_underlyingError];
+      msv_underlyingError = [v17 msv_underlyingError];
       *buf = 138544130;
-      v29 = self;
+      selfCopy = self;
       v30 = 2114;
-      v31 = v8;
+      v31 = descriptionCopy;
       v32 = 2114;
       v33 = v21;
       v34 = 2114;
-      v35 = v22;
+      v35 = msv_underlyingError;
       _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "%{public}@: Encountered error while requesting %{public}@. %{public}@ Underlying error: %{public}@.", buf, 0x2Au);
     }
 
-    if (v10)
+    if (errorHandlerCopy)
     {
-      (*(v10 + 2))(v10, v17);
+      (*(errorHandlerCopy + 2))(errorHandlerCopy, v17);
     }
   }
 }
@@ -1460,7 +1460,7 @@ void __115__ICCloudServiceStatusMonitor__performCloudServiceStatusMonitorRequest
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Cloud service status monitor connection was invalidated.", &v4, 0xCu);
   }
 
@@ -1477,7 +1477,7 @@ void __115__ICCloudServiceStatusMonitor__performCloudServiceStatusMonitorRequest
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138543362;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Cloud service status monitor connection was interrupted.", &v4, 0xCu);
   }
 
@@ -1486,9 +1486,9 @@ void __115__ICCloudServiceStatusMonitor__performCloudServiceStatusMonitorRequest
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_cloudServiceStatusMonitorConnectionForTransactionIdentifier:(id)a3 error:(id *)a4
+- (id)_cloudServiceStatusMonitorConnectionForTransactionIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   cloudServiceStatusMonitorConnection = self->_cloudServiceStatusMonitorConnection;
@@ -1549,16 +1549,16 @@ void __115__ICCloudServiceStatusMonitor__performCloudServiceStatusMonitorRequest
 
   v22 = cloudServiceStatusMonitorConnection;
   v23 = self->_cloudServiceStatusMonitorConnectionEstablishmentError;
-  if (v6 && v22)
+  if (identifierCopy && v22)
   {
-    [(ICCloudServiceStatusMonitor *)self _beginTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:v6];
+    [(ICCloudServiceStatusMonitor *)self _beginTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:identifierCopy];
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  if (a4)
+  if (error)
   {
     v24 = v23;
-    *a4 = v23;
+    *error = v23;
   }
 
   return v22;
@@ -1576,22 +1576,22 @@ void __98__ICCloudServiceStatusMonitor__cloudServiceStatusMonitorConnectionForTr
   [WeakRetained _cloudServiceStatusMonitorConnectionWasInvalidated];
 }
 
-- (void)_endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:(id)a3
+- (void)_endTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (([(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection containsObject:v4]& 1) != 0)
+  if (([(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection containsObject:identifierCopy]& 1) != 0)
   {
-    [(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection removeObject:v4];
+    [(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection removeObject:identifierCopy];
     v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = [(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection count];
       v9 = 138543874;
-      v10 = self;
+      selfCopy3 = self;
       v11 = 2114;
-      v12 = v4;
+      v12 = identifierCopy;
       v13 = 2048;
       v14 = v6;
       _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Ended transaction with identifier %{public}@ for cloud service status monitor connection; updated number of active transactions: %lu.", &v9, 0x20u);
@@ -1603,7 +1603,7 @@ void __98__ICCloudServiceStatusMonitor__cloudServiceStatusMonitorConnectionForTr
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138543362;
-        v10 = self;
+        selfCopy3 = self;
         _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: About to invalidate cloud service status monitor connection.", &v9, 0xCu);
       }
 
@@ -1617,59 +1617,59 @@ void __98__ICCloudServiceStatusMonitor__cloudServiceStatusMonitorConnectionForTr
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543618;
-      v10 = self;
+      selfCopy3 = self;
       v11 = 2114;
-      v12 = v4;
+      v12 = identifierCopy;
       _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Attempted to end transaction with unknown transaction identifier for cloud service status monitor connection: %{public}@. Ignoring.", &v9, 0x16u);
     }
   }
 }
 
-- (void)_beginTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:(id)a3
+- (void)_beginTransactionForCloudServiceStatusMonitorConnectionWithIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  if ([(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection containsObject:v5])
+  if ([(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection containsObject:identifierCopy])
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICCloudServiceStatusMonitor.m" lineNumber:557 description:@"Calling -_beginTransactionForCloudServiceStatusMonitorConnectionWithIdentifier: with the same transaction identifier more than once is invalid."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICCloudServiceStatusMonitor.m" lineNumber:557 description:@"Calling -_beginTransactionForCloudServiceStatusMonitorConnectionWithIdentifier: with the same transaction identifier more than once is invalid."];
   }
 
-  [(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection addObject:v5];
+  [(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection addObject:identifierCopy];
   v6 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = [(NSMutableSet *)self->_activeTransactionIdentifiersForCloudServiceStatusMonitorConnection count];
     v9 = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v5;
+    v12 = identifierCopy;
     v13 = 2048;
     v14 = v7;
     _os_log_impl(&dword_1B4491000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Began transaction with identifier %{public}@ for cloud service status monitor connection; updated number of active transactions: %lu.", &v9, 0x20u);
   }
 }
 
-- (void)storefrontIdentifierDidChange:(id)a3
+- (void)storefrontIdentifierDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  [(ICCloudServiceStatusMonitor *)self _updateWithStorefrontIdentifier:v4 transactionIdentifier:0];
+  [(ICCloudServiceStatusMonitor *)self _updateWithStorefrontIdentifier:changeCopy transactionIdentifier:0];
 }
 
-- (void)storefrontCountryCodeDidChange:(id)a3
+- (void)storefrontCountryCodeDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   os_unfair_lock_assert_not_owner(&self->_lock);
-  [(ICCloudServiceStatusMonitor *)self _updateWithStorefrontCountryCode:v4 transactionIdentifier:0];
+  [(ICCloudServiceStatusMonitor *)self _updateWithStorefrontCountryCode:changeCopy transactionIdentifier:0];
 }
 
-- (void)capabilitiesDidChange:(unint64_t)a3
+- (void)capabilitiesDidChange:(unint64_t)change
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
 
-  [(ICCloudServiceStatusMonitor *)self _updateWithCapabilities:a3 hasValidCapabilities:1 transactionIdentifier:0];
+  [(ICCloudServiceStatusMonitor *)self _updateWithCapabilities:change hasValidCapabilities:1 transactionIdentifier:0];
 }
 
 - (void)activeAccountDidChange
@@ -1680,28 +1680,28 @@ void __98__ICCloudServiceStatusMonitor__cloudServiceStatusMonitorConnectionForTr
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543618;
-    v6 = self;
+    selfCopy = self;
     v7 = 2112;
     v8 = @"ICCloudServiceStatusActiveAccountDidChangeNotification";
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Active account did change. Posting %@.", &v5, 0x16u);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"ICCloudServiceStatusActiveAccountDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICCloudServiceStatusActiveAccountDidChangeNotification" object:self];
 }
 
-- (void)revokeMusicKitUserTokensForAccountDSID:(id)a3 withCompletion:(id)a4
+- (void)revokeMusicKitUserTokensForAccountDSID:(id)d withCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v6;
+    v27 = dCopy;
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Revoking music user tokens DSID %{public}@", buf, 0x16u);
   }
 
@@ -1726,12 +1726,12 @@ void __98__ICCloudServiceStatusMonitor__cloudServiceStatusMonitorConnectionForTr
   v20[2] = __85__ICCloudServiceStatusMonitor_revokeMusicKitUserTokensForAccountDSID_withCompletion___block_invoke_124;
   v20[3] = &unk_1E7BFA490;
   v20[4] = self;
-  v11 = v7;
+  v11 = completionCopy;
   v21 = v11;
   v12 = [v9 remoteObjectProxyWithErrorHandler:v20];
-  if (v6)
+  if (dCopy)
   {
-    [ICUserIdentity specificAccountWithDSID:v6];
+    [ICUserIdentity specificAccountWithDSID:dCopy];
   }
 
   else
@@ -1744,7 +1744,7 @@ void __98__ICCloudServiceStatusMonitor__cloudServiceStatusMonitorConnectionForTr
   v16[2] = __85__ICCloudServiceStatusMonitor_revokeMusicKitUserTokensForAccountDSID_withCompletion___block_invoke_126;
   v16[3] = &unk_1E7BF80A8;
   v17 = v9;
-  v18 = self;
+  selfCopy2 = self;
   v19 = v11;
   v14 = v11;
   v15 = v9;
@@ -1834,10 +1834,10 @@ void __85__ICCloudServiceStatusMonitor_revokeMusicKitUserTokensForAccountDSID_wi
   [v4 invalidate];
 }
 
-- (void)requestMusicKitTokensWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (void)requestMusicKitTokensWithOptions:(unint64_t)options completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if (!self->_tokensCompletionHandlers)
@@ -1847,9 +1847,9 @@ void __85__ICCloudServiceStatusMonitor_revokeMusicKitUserTokensForAccountDSID_wi
     self->_tokensCompletionHandlers = v7;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   v10 = [(MSVDefaultDictionary *)self->_tokensCompletionHandlers objectForKey:v9];
-  v11 = [v6 copy];
+  v11 = [handlerCopy copy];
 
   v12 = MEMORY[0x1B8C781E0](v11);
   [v10 addObject:v12];
@@ -1872,15 +1872,15 @@ void __85__ICCloudServiceStatusMonitor_revokeMusicKitUserTokensForAccountDSID_wi
     v18[2] = __82__ICCloudServiceStatusMonitor_requestMusicKitTokensWithOptions_completionHandler___block_invoke_69;
     v18[3] = &unk_1E7BF7498;
     v18[4] = self;
-    v18[5] = a3;
+    v18[5] = options;
     v16 = v18;
     os_unfair_lock_assert_not_owner(&self->_lock);
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
     *&buf[16] = __83__ICCloudServiceStatusMonitor__requestMusicKitTokensWithOptions_completionHandler___block_invoke;
     v22 = &unk_1E7BF7400;
-    v25 = a3;
-    v23 = self;
+    optionsCopy = options;
+    selfCopy = self;
     v24 = v16;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -2038,11 +2038,11 @@ id __82__ICCloudServiceStatusMonitor_requestMusicKitTokensWithOptions_completion
   return v0;
 }
 
-- (void)requestUserTokenForDeveloperToken:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)requestUserTokenForDeveloperToken:(id)token options:(unint64_t)options completionHandler:(id)handler
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  tokenCopy = token;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if (!self->_userTokenCompletionHandlers)
@@ -2053,11 +2053,11 @@ id __82__ICCloudServiceStatusMonitor_requestMusicKitTokensWithOptions_completion
   }
 
   v12 = MEMORY[0x1E69B1470];
-  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-  v14 = [v12 pairWithFirst:v8 second:v13];
+  v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
+  v14 = [v12 pairWithFirst:tokenCopy second:v13];
 
   v15 = [(MSVDefaultDictionary *)self->_userTokenCompletionHandlers objectForKey:v14];
-  v16 = [v9 copy];
+  v16 = [handlerCopy copy];
 
   v17 = MEMORY[0x1B8C781E0](v16);
   [v15 addObject:v17];
@@ -2079,9 +2079,9 @@ id __82__ICCloudServiceStatusMonitor_requestMusicKitTokensWithOptions_completion
     v26 = 3221225472;
     v27 = __91__ICCloudServiceStatusMonitor_requestUserTokenForDeveloperToken_options_completionHandler___block_invoke_63;
     v28 = &unk_1E7BF7448;
-    v29 = self;
-    v30 = v8;
-    v31 = a4;
+    selfCopy = self;
+    v30 = tokenCopy;
+    optionsCopy = options;
     v21 = v30;
     v22 = &v25;
     os_unfair_lock_assert_not_owner(&self->_lock);
@@ -2090,9 +2090,9 @@ id __82__ICCloudServiceStatusMonitor_requestMusicKitTokensWithOptions_completion
     *&buf[16] = __92__ICCloudServiceStatusMonitor__requestUserTokenForDeveloperToken_options_completionHandler___block_invoke;
     v35 = &unk_1E7BF7470;
     v23 = v21;
-    v39 = a4;
+    optionsCopy2 = options;
     v36 = v23;
-    v37 = self;
+    selfCopy2 = self;
     v38 = v22;
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
@@ -2100,7 +2100,7 @@ id __82__ICCloudServiceStatusMonitor_requestMusicKitTokensWithOptions_completion
     v32[3] = &unk_1E7BF77C0;
     v24 = v38;
     v33 = v24;
-    [(ICCloudServiceStatusMonitor *)self _performCloudServiceStatusMonitorRequestWithDescription:@"user token" requestHandler:buf errorHandler:v32, v25, v26, v27, v28, v29];
+    [(ICCloudServiceStatusMonitor *)self _performCloudServiceStatusMonitorRequestWithDescription:@"user token" requestHandler:buf errorHandler:v32, v25, v26, v27, v28, selfCopy];
   }
 
   else
@@ -2255,15 +2255,15 @@ id __91__ICCloudServiceStatusMonitor_requestUserTokenForDeveloperToken_options_c
   return v0;
 }
 
-- (void)_requestCapabilitiesWithPrivacyPromptPolicy:(id)a3 completionHandler:(id)a4
+- (void)_requestCapabilitiesWithPrivacyPromptPolicy:(id)policy completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  policyCopy = policy;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  if (v6)
+  if (policyCopy)
   {
-    privacyAcknowledgementPolicy = [v6 integerValue];
+    privacyAcknowledgementPolicy = [policyCopy integerValue];
   }
 
   else
@@ -2288,7 +2288,7 @@ id __91__ICCloudServiceStatusMonitor_requestUserTokenForDeveloperToken_options_c
   os_unfair_lock_unlock(&self->_lock);
   if (hasValidCapabilities)
   {
-    v7[2](v7, capabilities, 0);
+    handlerCopy[2](handlerCopy, capabilities, 0);
   }
 
   else
@@ -2302,7 +2302,7 @@ id __91__ICCloudServiceStatusMonitor_requestUserTokenForDeveloperToken_options_c
     v12[1] = 3221225472;
     v12[2] = __93__ICCloudServiceStatusMonitor__requestCapabilitiesWithPrivacyPromptPolicy_completionHandler___block_invoke;
     v12[3] = &unk_1E7BF73D8;
-    v13 = v7;
+    v13 = handlerCopy;
     [(ICCloudServiceStatusMonitor *)self _requestCapabilitiesWithPrivacyPromptPolicy:privacyAcknowledgementPolicy requestCapabilitiesWithCompletionHandler:v12];
   }
 }
@@ -2320,10 +2320,10 @@ void __93__ICCloudServiceStatusMonitor__requestCapabilitiesWithPrivacyPromptPoli
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestDeveloperTokenWithOptions:(unint64_t)a3 completionHandler:(id)a4
+- (void)requestDeveloperTokenWithOptions:(unint64_t)options completionHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   if (!self->_developerTokenCompletionHandlers)
@@ -2333,9 +2333,9 @@ void __93__ICCloudServiceStatusMonitor__requestCapabilitiesWithPrivacyPromptPoli
     self->_developerTokenCompletionHandlers = v7;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:options];
   v10 = [(MSVDefaultDictionary *)self->_developerTokenCompletionHandlers objectForKey:v9];
-  v11 = [v6 copy];
+  v11 = [handlerCopy copy];
 
   v12 = MEMORY[0x1B8C781E0](v11);
   [v10 addObject:v12];
@@ -2358,15 +2358,15 @@ void __93__ICCloudServiceStatusMonitor__requestCapabilitiesWithPrivacyPromptPoli
     v18[2] = __82__ICCloudServiceStatusMonitor_requestDeveloperTokenWithOptions_completionHandler___block_invoke_48;
     v18[3] = &unk_1E7BF73B0;
     v18[4] = self;
-    v18[5] = a3;
+    v18[5] = options;
     v16 = v18;
     os_unfair_lock_assert_not_owner(&self->_lock);
     *buf = MEMORY[0x1E69E9820];
     *&buf[8] = 3221225472;
     *&buf[16] = __83__ICCloudServiceStatusMonitor__requestDeveloperTokenWithOptions_completionHandler___block_invoke;
     v22 = &unk_1E7BF7400;
-    v25 = a3;
-    v23 = self;
+    optionsCopy = options;
+    selfCopy = self;
     v24 = v16;
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
@@ -2524,48 +2524,48 @@ id __82__ICCloudServiceStatusMonitor_requestDeveloperTokenWithOptions_completion
   return v0;
 }
 
-- (void)requestStorefrontIdentifierWithCompletionHandler:(id)a3
+- (void)requestStorefrontIdentifierWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_storefrontIdentifier;
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    v4[2](v4, v5, 0);
+    handlerCopy[2](handlerCopy, v5, 0);
   }
 
   else
   {
-    [(ICCloudServiceStatusMonitor *)self _requestStorefrontIdentifierWithCompletionHandler:v4];
+    [(ICCloudServiceStatusMonitor *)self _requestStorefrontIdentifierWithCompletionHandler:handlerCopy];
   }
 }
 
-- (void)requestStorefrontCountryCodeWithCompletionHandler:(id)a3
+- (void)requestStorefrontCountryCodeWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_storefrontCountryCode;
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
-    v4[2](v4, v5, 0);
+    handlerCopy[2](handlerCopy, v5, 0);
   }
 
   else
   {
-    [(ICCloudServiceStatusMonitor *)self _requestStorefrontCountryCodeWithCompletionHandler:v4];
+    [(ICCloudServiceStatusMonitor *)self _requestStorefrontCountryCodeWithCompletionHandler:handlerCopy];
   }
 }
 
-- (void)requestCapabilitiesWithPrivacyPromptPolicy:(int64_t)a3 completionHandler:(id)a4
+- (void)requestCapabilitiesWithPrivacyPromptPolicy:(int64_t)policy completionHandler:(id)handler
 {
   v6 = MEMORY[0x1E696AD98];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(ICCloudServiceStatusMonitor *)self _requestCapabilitiesWithPrivacyPromptPolicy:v8 completionHandler:v7];
+  handlerCopy = handler;
+  v8 = [v6 numberWithInteger:policy];
+  [(ICCloudServiceStatusMonitor *)self _requestCapabilitiesWithPrivacyPromptPolicy:v8 completionHandler:handlerCopy];
 }
 
 - (void)endObservingCloudServiceStatus
@@ -2600,7 +2600,7 @@ id __82__ICCloudServiceStatusMonitor_requestDeveloperTokenWithOptions_completion
     v9 = "Will keep";
     v10 = 138544130;
     v12 = 2048;
-    v11 = self;
+    selfCopy = self;
     if (!v4)
     {
       v9 = "Will end";
@@ -2633,7 +2633,7 @@ id __82__ICCloudServiceStatusMonitor_requestDeveloperTokenWithOptions_completion
   {
     v5 = "Already";
     v6 = 138543874;
-    v7 = self;
+    selfCopy = self;
     if (!observingCloudServiceStatusRequestsCount)
     {
       v5 = "Will begin";
@@ -2656,34 +2656,34 @@ id __82__ICCloudServiceStatusMonitor_requestDeveloperTokenWithOptions_completion
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(ICCloudServiceStatusMonitor *)self _locked_isObservingCloudServiceStatus];
+  _locked_isObservingCloudServiceStatus = [(ICCloudServiceStatusMonitor *)self _locked_isObservingCloudServiceStatus];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _locked_isObservingCloudServiceStatus;
 }
 
-- (void)setPrivacyAcknowledgementPolicy:(int64_t)a3
+- (void)setPrivacyAcknowledgementPolicy:(int64_t)policy
 {
   v11 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  self->_privacyAcknowledgementPolicy = a3;
+  self->_privacyAcknowledgementPolicy = policy;
   os_unfair_lock_unlock(&self->_lock);
   v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"prompt-allowed";
-    if (a3 != 1)
+    if (policy != 1)
     {
       v6 = 0;
     }
 
-    if (!a3)
+    if (!policy)
     {
       v6 = @"prompt-prohibited";
     }
 
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
     v10 = v6;
     _os_log_impl(&dword_1B4491000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Cloud service status monitor was configured with privacy acknowledgement policy: %{public}@.", &v7, 0x16u);

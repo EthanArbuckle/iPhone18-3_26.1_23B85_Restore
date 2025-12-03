@@ -1,31 +1,31 @@
 @interface APAdBatchRequester
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_computeMinimumSize:(id)a3;
-- (APAdBatchRequester)initWithBatch:(id)a3 bundleID:(id)a4 requestIdentifier:(id)a5 clientInfo:(id)a6 idAccount:(id)a7;
-- (BOOL)_canSendLocationInformationForClientInfo:(id)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_computeMinimumSize:(id)size;
+- (APAdBatchRequester)initWithBatch:(id)batch bundleID:(id)d requestIdentifier:(id)identifier clientInfo:(id)info idAccount:(id)account;
+- (BOOL)_canSendLocationInformationForClientInfo:(id)info;
 - (NSArray)requestParameters;
-- (id)batchResponseFromBase64EncodedString:(id)a3;
+- (id)batchResponseFromBase64EncodedString:(id)string;
 - (id)headers;
 - (id)protoBuffer;
-- (id)requestFromRequestID:(id)a3;
+- (id)requestFromRequestID:(id)d;
 - (id)requestProperties;
-- (void)addAccountProperties:(id)a3;
-- (void)addClientInfoProperties:(id)a3;
-- (void)addContentRestrictionProperties:(id)a3;
-- (void)addDeviceInfoProperties:(id)a3;
-- (void)addMiscellaneousProperties:(id)a3;
-- (void)addPandoraTestProperties:(id)a3;
-- (void)addRequestersToRequest:(id)a3;
-- (void)makeRequest:(id)a3;
+- (void)addAccountProperties:(id)properties;
+- (void)addClientInfoProperties:(id)properties;
+- (void)addContentRestrictionProperties:(id)properties;
+- (void)addDeviceInfoProperties:(id)properties;
+- (void)addMiscellaneousProperties:(id)properties;
+- (void)addPandoraTestProperties:(id)properties;
+- (void)addRequestersToRequest:(id)request;
+- (void)makeRequest:(id)request;
 - (void)sendAnalyticsForMakingRequest;
 @end
 
 @implementation APAdBatchRequester
 
-- (id)batchResponseFromBase64EncodedString:(id)a3
+- (id)batchResponseFromBase64EncodedString:(id)string
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ![v4 length])
+  stringCopy = string;
+  v5 = stringCopy;
+  if (!stringCopy || ![stringCopy length])
   {
     v10 = 0;
     goto LABEL_55;
@@ -33,12 +33,12 @@
 
   v6 = &_sSo13os_log_type_ta0A0E5debugABvgZ_ptr;
   v7 = [NSMutableDictionary dictionaryWithCapacity:2];
-  v8 = [(APAdBatchRequester *)self headers];
+  headers = [(APAdBatchRequester *)self headers];
 
-  if (v8)
+  if (headers)
   {
-    v9 = [(APAdBatchRequester *)self headers];
-    [v7 setValue:v9 forKey:@"headers"];
+    headers2 = [(APAdBatchRequester *)self headers];
+    [v7 setValue:headers2 forKey:@"headers"];
   }
 
   else
@@ -54,27 +54,27 @@
     }
   }
 
-  v14 = [(APAdBatchRequester *)self protoBuffer];
-  v15 = [v14 dictionaryRepresentation];
+  protoBuffer = [(APAdBatchRequester *)self protoBuffer];
+  dictionaryRepresentation = [protoBuffer dictionaryRepresentation];
 
-  if (v15)
+  if (dictionaryRepresentation)
   {
-    v16 = [(APAdBatchRequester *)self protoBuffer];
-    v17 = [v16 dictionaryRepresentation];
-    [v7 setValue:v17 forKey:@"body"];
+    protoBuffer2 = [(APAdBatchRequester *)self protoBuffer];
+    dictionaryRepresentation2 = [protoBuffer2 dictionaryRepresentation];
+    [v7 setValue:dictionaryRepresentation2 forKey:@"body"];
 LABEL_13:
 
     goto LABEL_14;
   }
 
-  v16 = APLogForCategory();
-  if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  protoBuffer2 = APLogForCategory();
+  if (os_log_type_enabled(protoBuffer2, OS_LOG_TYPE_ERROR))
   {
     v18 = objc_opt_class();
-    v17 = NSStringFromClass(v18);
+    dictionaryRepresentation2 = NSStringFromClass(v18);
     *buf = 138412290;
-    v84 = v17;
-    _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "[%@] Request body was nil", buf, 0xCu);
+    v84 = dictionaryRepresentation2;
+    _os_log_impl(&_mh_execute_header, protoBuffer2, OS_LOG_TYPE_ERROR, "[%@] Request body was nil", buf, 0xCu);
     goto LABEL_13;
   }
 
@@ -83,20 +83,20 @@ LABEL_14:
   v19 = APLogForCategory();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(APAdBatchRequester *)self protoBuffer];
+    protoBuffer3 = [(APAdBatchRequester *)self protoBuffer];
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v23 = [(APServerRequester *)self requestIdentifier];
-    v24 = [(APServerRequester *)self additionalRequestDescription];
-    v25 = [v7 jsonString];
+    requestIdentifier = [(APServerRequester *)self requestIdentifier];
+    additionalRequestDescription = [(APServerRequester *)self additionalRequestDescription];
+    jsonString = [v7 jsonString];
     *buf = 138413058;
     v84 = v22;
     v85 = 2112;
-    v86 = v23;
+    v86 = requestIdentifier;
     v87 = 2112;
-    v88 = v24;
+    v88 = additionalRequestDescription;
     v89 = 2112;
-    v90 = v25;
+    v90 = jsonString;
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%@] Making MOCKED APPBAdBatchRequest for content identifier %@%@:\n%@", buf, 0x2Au);
 
     v6 = &_sSo13os_log_type_ta0A0E5debugABvgZ_ptr;
@@ -136,7 +136,7 @@ LABEL_14:
 
   v30 = 0;
   v67 = *v78;
-  v68 = self;
+  selfCopy = self;
   do
   {
     v31 = 0;
@@ -149,9 +149,9 @@ LABEL_14:
 
       v71 = v31;
       v32 = *(*(&v77 + 1) + 8 * v31);
-      v33 = [(APAdBatchRequester *)self batchedRequests];
-      v34 = [(APAdBatchRequester *)self batchedRequests];
-      v35 = [v34 count] - 1;
+      batchedRequests = [(APAdBatchRequester *)self batchedRequests];
+      batchedRequests2 = [(APAdBatchRequester *)self batchedRequests];
+      v35 = [batchedRequests2 count] - 1;
 
       v72 = v30;
       if (v30 >= v35)
@@ -164,24 +164,24 @@ LABEL_14:
         v36 = v30;
       }
 
-      v37 = [v33 objectAtIndexedSubscript:v36];
-      v38 = [v37 identifier];
-      v39 = [v38 UUIDString];
-      [v32 setAdOriginalRequesterId:v39];
+      v37 = [batchedRequests objectAtIndexedSubscript:v36];
+      identifier = [v37 identifier];
+      uUIDString = [identifier UUIDString];
+      [v32 setAdOriginalRequesterId:uUIDString];
 
-      v40 = [v69 specification];
-      v41 = [v40 type];
-      v42 = [v32 specification];
-      [v42 setType:v41];
+      specification = [v69 specification];
+      type = [specification type];
+      specification2 = [v32 specification];
+      [specification2 setType:type];
 
-      v43 = [v32 impressionIdentifierData];
+      impressionIdentifierData = [v32 impressionIdentifierData];
       objc_opt_class();
-      LOBYTE(v41) = objc_opt_isKindOfClass();
+      LOBYTE(type) = objc_opt_isKindOfClass();
 
-      if (v41)
+      if (type)
       {
-        v44 = [v32 impressionIdentifierData];
-        v45 = [v44 dataUsingEncoding:4];
+        impressionIdentifierData2 = [v32 impressionIdentifierData];
+        v45 = [impressionIdentifierData2 dataUsingEncoding:4];
         [v32 setImpressionIdentifierData:v45];
       }
 
@@ -189,8 +189,8 @@ LABEL_14:
       v76 = 0u;
       v73 = 0u;
       v74 = 0u;
-      v46 = [v32 actions];
-      v47 = [v46 countByEnumeratingWithState:&v73 objects:v81 count:16];
+      actions = [v32 actions];
+      v47 = [actions countByEnumeratingWithState:&v73 objects:v81 count:16];
       if (v47)
       {
         v48 = v47;
@@ -201,16 +201,16 @@ LABEL_14:
           {
             if (*v74 != v49)
             {
-              objc_enumerationMutation(v46);
+              objc_enumerationMutation(actions);
             }
 
             v51 = *(*(&v73 + 1) + 8 * i);
             if (![v51 action])
             {
-              v52 = [v32 specification];
-              v53 = [v52 type];
+              specification3 = [v32 specification];
+              type2 = [specification3 type];
 
-              switch(v53)
+              switch(type2)
               {
                 case 2u:
                   v54 = 13;
@@ -229,15 +229,15 @@ LABEL_14:
             }
 
 LABEL_41:
-            v55 = [v51 actionURL];
+            actionURL = [v51 actionURL];
 
-            if (!v55)
+            if (!actionURL)
             {
               [v51 setActionURL:@"https://www.apple.com"];
             }
           }
 
-          v48 = [v46 countByEnumeratingWithState:&v73 objects:v81 count:16];
+          v48 = [actions countByEnumeratingWithState:&v73 objects:v81 count:16];
         }
 
         while (v48);
@@ -245,7 +245,7 @@ LABEL_41:
 
       v30 = v72 + 1;
       v31 = v71 + 1;
-      self = v68;
+      self = selfCopy;
     }
 
     while ((v71 + 1) != v70);
@@ -267,19 +267,19 @@ LABEL_50:
   v56 = [v6[433] dictionaryWithCapacity:1];
   if (v10)
   {
-    v57 = [v10 dictionaryRepresentation];
-    [v56 setValue:v57 forKey:@"body"];
+    dictionaryRepresentation3 = [v10 dictionaryRepresentation];
+    [v56 setValue:dictionaryRepresentation3 forKey:@"body"];
   }
 
   v58 = APLogForCategory();
   if (os_log_type_enabled(v58, OS_LOG_TYPE_DEFAULT))
   {
-    v59 = [(APServerRequester *)self requestIdentifier];
-    v60 = [v56 jsonString];
+    requestIdentifier2 = [(APServerRequester *)self requestIdentifier];
+    jsonString2 = [v56 jsonString];
     *buf = 138412546;
-    v84 = v59;
+    v84 = requestIdentifier2;
     v85 = 2112;
-    v86 = v60;
+    v86 = jsonString2;
     _os_log_impl(&_mh_execute_header, v58, OS_LOG_TYPE_DEFAULT, "Returning MOCKED APPBAdBatchResponse for request %@:\n%@", buf, 0x16u);
   }
 
@@ -288,16 +288,16 @@ LABEL_55:
   return v10;
 }
 
-- (APAdBatchRequester)initWithBatch:(id)a3 bundleID:(id)a4 requestIdentifier:(id)a5 clientInfo:(id)a6 idAccount:(id)a7
+- (APAdBatchRequester)initWithBatch:(id)batch bundleID:(id)d requestIdentifier:(id)identifier clientInfo:(id)info idAccount:(id)account
 {
-  v11 = a3;
-  v40 = a4;
-  v39 = a5;
-  obj = a6;
-  v38 = a6;
-  v37 = a7;
-  v12 = v11;
-  if ([v11 count])
+  batchCopy = batch;
+  dCopy = d;
+  identifierCopy = identifier;
+  obj = info;
+  infoCopy = info;
+  accountCopy = account;
+  v12 = batchCopy;
+  if ([batchCopy count])
   {
     v13 = 0;
     v14 = &stru_1004810B8;
@@ -315,18 +315,18 @@ LABEL_55:
       }
 
       v17 = [v12 objectAtIndexedSubscript:v13];
-      v18 = [v17 context];
-      v19 = [v18 identifier];
-      v20 = [v19 UUIDString];
+      context = [v17 context];
+      identifier = [context identifier];
+      uUIDString = [identifier UUIDString];
       v21 = v12;
-      v22 = [(__CFString *)v14 stringByAppendingFormat:@"%@%@", v16, v20, obj];
+      v22 = [(__CFString *)v14 stringByAppendingFormat:@"%@%@", v16, uUIDString, obj];
 
       v23 = [v21 objectAtIndexedSubscript:v13];
-      v24 = [v23 identifier];
-      v25 = [v24 UUIDString];
+      identifier2 = [v23 identifier];
+      uUIDString2 = [identifier2 UUIDString];
       v26 = v21;
       v27 = v22;
-      v28 = [(__CFString *)v15 stringByAppendingFormat:@"%@%@", v16, v25];
+      v28 = [(__CFString *)v15 stringByAppendingFormat:@"%@%@", v16, uUIDString2];
 
       ++v13;
       v12 = v26;
@@ -346,7 +346,7 @@ LABEL_55:
 
   v41.receiver = self;
   v41.super_class = APAdBatchRequester;
-  v30 = [(APServerRequester *)&v41 initWithBundleID:v40 requestIdentifier:v39 contextIdentifier:v27 contentIdentifier:v28 idAccount:v37];
+  v30 = [(APServerRequester *)&v41 initWithBundleID:dCopy requestIdentifier:identifierCopy contextIdentifier:v27 contentIdentifier:v28 idAccount:accountCopy];
   v31 = v30;
   if (v30)
   {
@@ -361,8 +361,8 @@ LABEL_55:
 
 - (NSArray)requestParameters
 {
-  v2 = [(APAdBatchRequester *)self batchedRequests];
-  v3 = [v2 copy];
+  batchedRequests = [(APAdBatchRequester *)self batchedRequests];
+  v3 = [batchedRequests copy];
 
   return v3;
 }
@@ -370,23 +370,23 @@ LABEL_55:
 - (id)protoBuffer
 {
   v3 = objc_alloc_init(APPBAdBatchRequest);
-  v4 = [(APAdBatchRequester *)self requestProperties];
-  [(APPBAdBatchRequest *)v3 setRequestProperties:v4];
+  requestProperties = [(APAdBatchRequester *)self requestProperties];
+  [(APPBAdBatchRequest *)v3 setRequestProperties:requestProperties];
 
   [(APAdBatchRequester *)self addRequestersToRequest:v3];
-  v5 = [(APAdBatchRequester *)self batchedRequests];
-  v6 = [v5 count];
+  batchedRequests = [(APAdBatchRequester *)self batchedRequests];
+  v6 = [batchedRequests count];
 
   if (v6)
   {
     v7 = objc_alloc_init(APPBAdSpecification);
     [(APPBAdBatchRequest *)v3 setSpecification:v7];
 
-    v8 = [(APAdBatchRequester *)self batchedRequests];
-    v9 = [v8 objectAtIndexedSubscript:0];
+    batchedRequests2 = [(APAdBatchRequester *)self batchedRequests];
+    v9 = [batchedRequests2 objectAtIndexedSubscript:0];
     v10 = +[APLegacyTypeTranslator placementTypeToCreativeType:](APLegacyTypeTranslator, "placementTypeToCreativeType:", [v9 placementType]);
-    v11 = [(APPBAdBatchRequest *)v3 specification];
-    [v11 setType:v10];
+    specification = [(APPBAdBatchRequest *)v3 specification];
+    [specification setType:v10];
   }
 
   return v3;
@@ -396,8 +396,8 @@ LABEL_55:
 {
   v6.receiver = self;
   v6.super_class = APAdBatchRequester;
-  v2 = [(APServerRequester *)&v6 headers];
-  v3 = [v2 mutableCopy];
+  headers = [(APServerRequester *)&v6 headers];
+  v3 = [headers mutableCopy];
 
   v4 = [v3 copy];
 
@@ -417,13 +417,13 @@ LABEL_55:
   return v3;
 }
 
-- (BOOL)_canSendLocationInformationForClientInfo:(id)a3
+- (BOOL)_canSendLocationInformationForClientInfo:(id)info
 {
-  v4 = [a3 locationInfo];
-  if (v4)
+  locationInfo = [info locationInfo];
+  if (locationInfo)
   {
-    v5 = [(APServerRequester *)self idAccount];
-    if ([v5 isManagedAccount])
+    idAccount = [(APServerRequester *)self idAccount];
+    if ([idAccount isManagedAccount])
     {
       LOBYTE(v6) = 0;
     }
@@ -443,157 +443,157 @@ LABEL_55:
   return v6;
 }
 
-- (void)addClientInfoProperties:(id)a3
+- (void)addClientInfoProperties:(id)properties
 {
-  v25 = a3;
-  v4 = [(APServerRequester *)self bundleID];
-  [v25 setAppID:v4];
+  propertiesCopy = properties;
+  bundleID = [(APServerRequester *)self bundleID];
+  [propertiesCopy setAppID:bundleID];
 
-  v5 = [(APAdBatchRequester *)self clientInfo];
-  v6 = [v5 appVersion];
-  [v25 setAppVersion:v6];
+  clientInfo = [(APAdBatchRequester *)self clientInfo];
+  appVersion = [clientInfo appVersion];
+  [propertiesCopy setAppVersion:appVersion];
 
-  v7 = [v5 scale];
-  [v25 setScreenDPI:{objc_msgSend(v7, "intValue")}];
+  scale = [clientInfo scale];
+  [propertiesCopy setScreenDPI:{objc_msgSend(scale, "intValue")}];
 
-  [v25 setScreenWidth:{objc_msgSend(v5, "screenWidth")}];
-  [v25 setScreenHeight:{objc_msgSend(v5, "screenHeight")}];
-  v8 = [v5 keyboards];
-  v9 = [v8 mutableCopy];
-  [v25 setUserKeyboards:v9];
+  [propertiesCopy setScreenWidth:{objc_msgSend(clientInfo, "screenWidth")}];
+  [propertiesCopy setScreenHeight:{objc_msgSend(clientInfo, "screenHeight")}];
+  keyboards = [clientInfo keyboards];
+  v9 = [keyboards mutableCopy];
+  [propertiesCopy setUserKeyboards:v9];
 
   if (+[APSystemInternal isAppleInternalInstall])
   {
     v10 = +[APMockAdServerSettings settings];
-    v11 = [v10 keyboardOverride];
+    keyboardOverride = [v10 keyboardOverride];
 
-    if (v11)
+    if (keyboardOverride)
     {
       v12 = +[APMockAdServerSettings settings];
-      v13 = [v12 keyboardOverride];
-      v14 = [v13 mutableCopy];
-      [v25 setUserKeyboards:v14];
+      keyboardOverride2 = [v12 keyboardOverride];
+      v14 = [keyboardOverride2 mutableCopy];
+      [propertiesCopy setUserKeyboards:v14];
     }
   }
 
-  if ([(APAdBatchRequester *)self _canSendLocationInformationForClientInfo:v5])
+  if ([(APAdBatchRequester *)self _canSendLocationInformationForClientInfo:clientInfo])
   {
-    v15 = [v5 locationInfo];
-    v16 = [v15 locality];
-    [v25 setLocality:v16];
+    locationInfo = [clientInfo locationInfo];
+    locality = [locationInfo locality];
+    [propertiesCopy setLocality:locality];
 
-    v17 = [v5 locationInfo];
-    v18 = [v17 administrativeArea];
-    [v25 setAdministrativeArea:v18];
+    locationInfo2 = [clientInfo locationInfo];
+    administrativeArea = [locationInfo2 administrativeArea];
+    [propertiesCopy setAdministrativeArea:administrativeArea];
 
-    v19 = [v5 locationInfo];
-    v20 = [v19 subAdministrativeArea];
-    [v25 setSubAdministrativeArea:v20];
+    locationInfo3 = [clientInfo locationInfo];
+    subAdministrativeArea = [locationInfo3 subAdministrativeArea];
+    [propertiesCopy setSubAdministrativeArea:subAdministrativeArea];
 
-    v21 = [v5 locationInfo];
-    v22 = [v21 isoCountryCode];
-    [v25 setIsoCountryCode:v22];
+    locationInfo4 = [clientInfo locationInfo];
+    isoCountryCode = [locationInfo4 isoCountryCode];
+    [propertiesCopy setIsoCountryCode:isoCountryCode];
 
-    v23 = [v5 locationInfo];
-    v24 = [v23 postalCode];
-    [v25 setPostalCode:v24];
+    locationInfo5 = [clientInfo locationInfo];
+    postalCode = [locationInfo5 postalCode];
+    [propertiesCopy setPostalCode:postalCode];
   }
 }
 
-- (void)addDeviceInfoProperties:(id)a3
+- (void)addDeviceInfoProperties:(id)properties
 {
-  v3 = a3;
+  propertiesCopy = properties;
   v10 = +[APDeviceInfo current];
-  [v3 setDeviceMode:{objc_msgSend(v10, "educationModeEnabled")}];
-  v4 = [v10 osVersionAndBuild];
-  [v3 setOsVersionAndBuild:v4];
+  [propertiesCopy setDeviceMode:{objc_msgSend(v10, "educationModeEnabled")}];
+  osVersionAndBuild = [v10 osVersionAndBuild];
+  [propertiesCopy setOsVersionAndBuild:osVersionAndBuild];
 
-  v5 = [v10 deviceModel];
-  [v3 setDeviceModel:v5];
+  deviceModel = [v10 deviceModel];
+  [propertiesCopy setDeviceModel:deviceModel];
 
-  [v3 setConnectionType:{+[APLegacyTypeTranslator connectionTypeToAPPBAdConnection:](APLegacyTypeTranslator, "connectionTypeToAPPBAdConnection:", objc_msgSend(v10, "connectionType"))}];
+  [propertiesCopy setConnectionType:{+[APLegacyTypeTranslator connectionTypeToAPPBAdConnection:](APLegacyTypeTranslator, "connectionTypeToAPPBAdConnection:", objc_msgSend(v10, "connectionType"))}];
   v6 = +[NSTimeZone localTimeZone];
   v7 = [v6 secondsFromGMT] / 3600.0;
   *&v7 = v7;
-  [v3 setTimezone:v7];
+  [propertiesCopy setTimezone:v7];
 
   v8 = +[NSLocale currentLocale];
-  v9 = [v8 localeIdentifier];
-  [v3 setLocaleIdentifier:v9];
+  localeIdentifier = [v8 localeIdentifier];
+  [propertiesCopy setLocaleIdentifier:localeIdentifier];
 }
 
-- (void)addAccountProperties:(id)a3
+- (void)addAccountProperties:(id)properties
 {
-  v19 = a3;
+  propertiesCopy = properties;
   v4 = +[APEncryptedIDProvider provider];
-  v5 = [(APServerRequester *)self idAccount];
-  v6 = [v4 encryptedIDsForIDAccountPrivate:v5];
+  idAccount = [(APServerRequester *)self idAccount];
+  v6 = [v4 encryptedIDsForIDAccountPrivate:idAccount];
 
-  v7 = [v6 iAdID];
-  [v19 setIAdID:v7];
+  iAdID = [v6 iAdID];
+  [propertiesCopy setIAdID:iAdID];
 
-  v8 = [v6 anonymousDemandID];
-  [v19 setAnonymousDemandiAdID:v8];
+  anonymousDemandID = [v6 anonymousDemandID];
+  [propertiesCopy setAnonymousDemandiAdID:anonymousDemandID];
 
-  v9 = [v6 contentID];
-  [v19 setContentiAdID:v9];
+  contentID = [v6 contentID];
+  [propertiesCopy setContentiAdID:contentID];
 
-  v10 = [v6 DPID];
-  [v19 setDPID:v10];
+  dPID = [v6 DPID];
+  [propertiesCopy setDPID:dPID];
 
-  v11 = [(APServerRequester *)self idAccount];
-  v12 = [v11 storefront];
-  [v19 setITunesStore:v12];
+  idAccount2 = [(APServerRequester *)self idAccount];
+  storefront = [idAccount2 storefront];
+  [propertiesCopy setITunesStore:storefront];
 
-  v13 = [(APServerRequester *)self idAccount];
-  v14 = [v13 monthlyIDResetCount];
-  [v19 setAdvertisingIdentifierMonthResetCount:{objc_msgSend(v14, "intValue")}];
+  idAccount3 = [(APServerRequester *)self idAccount];
+  monthlyIDResetCount = [idAccount3 monthlyIDResetCount];
+  [propertiesCopy setAdvertisingIdentifierMonthResetCount:{objc_msgSend(monthlyIDResetCount, "intValue")}];
 
-  v15 = [v13 iTunesDSID];
-  v16 = [v15 isEqualToNumber:&off_100492C10];
+  iTunesDSID = [idAccount3 iTunesDSID];
+  v16 = [iTunesDSID isEqualToNumber:&off_100492C10];
 
   if (v16)
   {
     v17 = 0;
 LABEL_3:
-    [v19 setAccountType:v17];
+    [propertiesCopy setAccountType:v17];
     goto LABEL_18;
   }
 
-  if ([v13 ageUnknown])
+  if ([idAccount3 ageUnknown])
   {
     v18 = 6;
 LABEL_14:
-    [v19 setAccountType:v18];
+    [propertiesCopy setAccountType:v18];
     goto LABEL_15;
   }
 
-  if ([v13 isManagedAccount])
+  if ([idAccount3 isManagedAccount])
   {
     v18 = 2;
     goto LABEL_14;
   }
 
-  if ([v13 isChild])
+  if ([idAccount3 isChild])
   {
     v18 = 3;
     goto LABEL_14;
   }
 
-  if ([v13 isAdolescent])
+  if ([idAccount3 isAdolescent])
   {
     v18 = 5;
     goto LABEL_14;
   }
 
-  if ([v13 isAdult])
+  if ([idAccount3 isAdult])
   {
     v18 = 1;
     goto LABEL_14;
   }
 
 LABEL_15:
-  if (_os_feature_enabled_impl() && [v13 sensitiveContentEligible])
+  if (_os_feature_enabled_impl() && [idAccount3 sensitiveContentEligible])
   {
     v17 = 7;
     goto LABEL_3;
@@ -602,57 +602,57 @@ LABEL_15:
 LABEL_18:
 }
 
-- (void)addContentRestrictionProperties:(id)a3
+- (void)addContentRestrictionProperties:(id)properties
 {
-  v13 = a3;
+  propertiesCopy = properties;
   v3 = +[MCProfileConnection sharedConnection];
-  [v13 setDenyExplicit:{objc_msgSend(v3, "effectiveBoolValueForSetting:", MCFeatureExplicitContentAllowed) == 2}];
-  [v13 setAllowInstallApps:{objc_msgSend(v3, "isOnDeviceAppInstallationAllowed")}];
-  [v13 setAllowITunes:{objc_msgSend(v3, "effectiveBoolValueForSetting:", MCFeatureITunesAllowed) != 2}];
+  [propertiesCopy setDenyExplicit:{objc_msgSend(v3, "effectiveBoolValueForSetting:", MCFeatureExplicitContentAllowed) == 2}];
+  [propertiesCopy setAllowInstallApps:{objc_msgSend(v3, "isOnDeviceAppInstallationAllowed")}];
+  [propertiesCopy setAllowITunes:{objc_msgSend(v3, "effectiveBoolValueForSetting:", MCFeatureITunesAllowed) != 2}];
   v4 = [v3 effectiveValueForSetting:MCFeatureMaximumMoviesRating];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 intValue];
+    intValue = [v4 intValue];
   }
 
   else
   {
-    v6 = 1000;
+    intValue = 1000;
   }
 
-  [v13 setMoviesRank:v6];
+  [propertiesCopy setMoviesRank:intValue];
   v7 = [v3 effectiveValueForSetting:MCFeatureMaximumTVShowsRating];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 intValue];
+    intValue2 = [v7 intValue];
   }
 
   else
   {
-    v9 = 1000;
+    intValue2 = 1000;
   }
 
-  [v13 setTvshowsRank:v9];
+  [propertiesCopy setTvshowsRank:intValue2];
   v10 = [v3 effectiveValueForSetting:MCFeatureMaximumAppsRating];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 intValue];
+    intValue3 = [v10 intValue];
   }
 
   else
   {
-    v12 = 1000;
+    intValue3 = 1000;
   }
 
-  [v13 setAppsRank:v12];
+  [propertiesCopy setAppsRank:intValue3];
 }
 
-- (void)addMiscellaneousProperties:(id)a3
+- (void)addMiscellaneousProperties:(id)properties
 {
-  v9 = a3;
+  propertiesCopy = properties;
   v3 = +[APSystemInternal isAppleInternalInstall];
   if (v3)
   {
@@ -664,46 +664,46 @@ LABEL_18:
     v4 = 2;
   }
 
-  [v9 setRunState:v4];
+  [propertiesCopy setRunState:v4];
   v5 = +[NSDate date];
   [v5 timeIntervalSince1970];
-  [v9 setClientClockTime:?];
+  [propertiesCopy setClientClockTime:?];
 
   if (v3)
   {
     v6 = +[APDeviceInfoSettings settings];
-    v7 = [v6 serveProductionAds];
-    v8 = [v7 isEqualToNumber:&off_100492C28];
+    serveProductionAds = [v6 serveProductionAds];
+    v8 = [serveProductionAds isEqualToNumber:&off_100492C28];
 
     if (v8)
     {
-      [v9 setInternalUserWantsProdAds:1];
+      [propertiesCopy setInternalUserWantsProdAds:1];
     }
   }
 
-  [v9 setAppStoreViewAdVersion:2];
+  [propertiesCopy setAppStoreViewAdVersion:2];
 }
 
-- (void)addPandoraTestProperties:(id)a3
+- (void)addPandoraTestProperties:(id)properties
 {
-  v9 = a3;
+  propertiesCopy = properties;
   v3 = +[APSystemInternal isAppleInternalInstall];
   if (v3)
   {
     v4 = +[APDeviceInfoSettings settings];
-    v5 = [v4 isTest];
-    [v9 setIsTest:{objc_msgSend(v5, "BOOLValue")}];
+    isTest = [v4 isTest];
+    [propertiesCopy setIsTest:{objc_msgSend(isTest, "BOOLValue")}];
   }
 
   else
   {
-    [v9 setHasIsTest:0];
+    [propertiesCopy setHasIsTest:0];
   }
 
   v6 = +[APDeviceInfoSettings settings];
-  v7 = [v6 campaignNamespace];
+  campaignNamespace = [v6 campaignNamespace];
 
-  if (v7)
+  if (campaignNamespace)
   {
     v8 = v3;
   }
@@ -713,24 +713,24 @@ LABEL_18:
     v8 = 0;
   }
 
-  if (v8 == 1 && [v7 length])
+  if (v8 == 1 && [campaignNamespace length])
   {
-    [v9 setCampaignNameSpace:v7];
+    [propertiesCopy setCampaignNameSpace:campaignNamespace];
   }
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_computeMinimumSize:(id)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_computeMinimumSize:(id)size
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v5 = [(APAdBatchRequester *)self clientInfo];
-  v6 = v5;
-  if (!v5)
+  var1 = size.var1;
+  var0 = size.var0;
+  clientInfo = [(APAdBatchRequester *)self clientInfo];
+  v6 = clientInfo;
+  if (!clientInfo)
   {
     goto LABEL_19;
   }
 
-  if ([v5 interfaceIdiom] == 1)
+  if ([clientInfo interfaceIdiom] == 1)
   {
     v7 = 20.0;
   }
@@ -750,41 +750,41 @@ LABEL_18:
     var1 = [v6 screenHeight];
   }
 
-  v8 = [v6 interfaceIdiom];
-  if (v8)
+  interfaceIdiom = [v6 interfaceIdiom];
+  if (interfaceIdiom)
   {
-    if (v8 != 1)
+    if (interfaceIdiom != 1)
     {
       goto LABEL_19;
     }
 
-    v9 = [v6 orientation];
-    if (v9 < 2)
+    orientation = [v6 orientation];
+    if (orientation < 2)
     {
       goto LABEL_15;
     }
 
-    if ((v9 - 2) <= 1)
+    if ((orientation - 2) <= 1)
     {
-      v10 = [v6 screenWidth];
-      if (v10 + -320.0 < var0)
+      screenWidth = [v6 screenWidth];
+      if (screenWidth + -320.0 < var0)
       {
-        var0 = v10 + -320.0;
+        var0 = screenWidth + -320.0;
       }
 
 LABEL_15:
-      v11 = [v6 screenHeight];
-      if (v11 - v7 < var1)
+      screenHeight = [v6 screenHeight];
+      if (screenHeight - v7 < var1)
       {
-        var1 = v11 - v7;
+        var1 = screenHeight - v7;
       }
     }
   }
 
-  v12 = [v6 screenHeight];
-  if (v12 - v7 < var1)
+  screenHeight2 = [v6 screenHeight];
+  if (screenHeight2 - v7 < var1)
   {
-    var1 = v12 - v7;
+    var1 = screenHeight2 - v7;
   }
 
 LABEL_19:
@@ -796,12 +796,12 @@ LABEL_19:
   return result;
 }
 
-- (void)addRequestersToRequest:(id)a3
+- (void)addRequestersToRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[NSMutableArray array];
-  v33 = v4;
-  [v4 setRequesters:v5];
+  v33 = requestCopy;
+  [requestCopy setRequesters:v5];
 
   v36 = 0u;
   v37 = 0u;
@@ -827,38 +827,38 @@ LABEL_19:
 
         v11 = *(*(&v34 + 1) + 8 * v10);
         v12 = objc_alloc_init(APPBAdRequester);
-        v13 = [v11 identifier];
-        v14 = [v13 UUIDString];
-        [(APPBAdRequester *)v12 setIdentifier:v14];
+        identifier = [v11 identifier];
+        uUIDString = [identifier UUIDString];
+        [(APPBAdRequester *)v12 setIdentifier:uUIDString];
 
-        v15 = [v11 context];
-        [v15 maxSize];
+        context = [v11 context];
+        [context maxSize];
         [(APAdBatchRequester *)self _computeMinimumSize:?];
         v17 = v16;
         v19 = v18;
 
         [(APPBAdRequester *)v12 setHeight:v19];
         [(APPBAdRequester *)v12 setWidth:v17];
-        v20 = [v11 context];
-        v21 = [v11 identifier];
-        v22 = [v21 UUIDString];
-        v23 = [v20 contextJSONForRequest:v22 andPlacementType:{objc_msgSend(v11, "placementType")}];
+        context2 = [v11 context];
+        identifier2 = [v11 identifier];
+        uUIDString2 = [identifier2 UUIDString];
+        v23 = [context2 contextJSONForRequest:uUIDString2 andPlacementType:{objc_msgSend(v11, "placementType")}];
         [(APPBAdRequester *)v12 setContextJSON:v23];
 
         if ([(APPBAdRequester *)v12 width]< 1 || [(APPBAdRequester *)v12 height]<= 0)
         {
-          v24 = [(APAdBatchRequester *)self clientInfo];
-          v25 = v24;
-          if (v24 && [v24 interfaceIdiom] <= 1)
+          clientInfo = [(APAdBatchRequester *)self clientInfo];
+          v25 = clientInfo;
+          if (clientInfo && [clientInfo interfaceIdiom] <= 1)
           {
-            v26 = [v25 orientation];
-            if ((v26 - 2) < 2)
+            orientation = [v25 orientation];
+            if ((orientation - 2) < 2)
             {
               [(APPBAdRequester *)v12 setHeight:414];
               [(APPBAdRequester *)v12 setWidth:896];
             }
 
-            else if (v26 <= 1)
+            else if (orientation <= 1)
             {
               [(APPBAdRequester *)v12 setWidth:414];
               [(APPBAdRequester *)v12 setHeight:896];
@@ -866,16 +866,16 @@ LABEL_19:
           }
         }
 
-        v27 = [v33 requesters];
-        [v27 addObject:v12];
+        requesters = [v33 requesters];
+        [requesters addObject:v12];
 
         v28 = APLogForCategory();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
         {
-          v29 = [v11 context];
-          v30 = [v29 identifier];
+          context3 = [v11 context];
+          identifier3 = [context3 identifier];
           *buf = v31;
-          v39 = v30;
+          v39 = identifier3;
           _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "Making AdBatchRequest for context %{public}@", buf, 0xCu);
         }
 
@@ -890,15 +890,15 @@ LABEL_19:
   }
 }
 
-- (id)requestFromRequestID:(id)a3
+- (id)requestFromRequestID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(APAdBatchRequester *)self batchedRequests];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  batchedRequests = [(APAdBatchRequester *)self batchedRequests];
+  v6 = [batchedRequests countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -908,13 +908,13 @@ LABEL_19:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(batchedRequests);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 UUIDString];
-        v12 = [v4 isEqual:v11];
+        identifier = [v9 identifier];
+        uUIDString = [identifier UUIDString];
+        v12 = [dCopy isEqual:uUIDString];
 
         if (v12)
         {
@@ -923,7 +923,7 @@ LABEL_19:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [batchedRequests countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -940,41 +940,41 @@ LABEL_11:
 
 - (void)sendAnalyticsForMakingRequest
 {
-  v3 = [(APAdBatchRequester *)self batchedRequests];
-  v4 = [v3 count];
+  batchedRequests = [(APAdBatchRequester *)self batchedRequests];
+  v4 = [batchedRequests count];
 
   if (v4)
   {
-    v5 = [(APAdBatchRequester *)self batchedRequests];
-    v6 = [v5 objectAtIndexedSubscript:0];
-    v7 = [v6 context];
+    batchedRequests2 = [(APAdBatchRequester *)self batchedRequests];
+    v6 = [batchedRequests2 objectAtIndexedSubscript:0];
+    context = [v6 context];
 
     v8 = APLogForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v7 identifier];
-      v10 = [v9 UUIDString];
+      identifier = [context identifier];
+      uUIDString = [identifier UUIDString];
       *buf = 138543362;
-      v52 = *&v10;
+      v52 = *&uUIDString;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[LegacyInterface] Requester (%{public}@) sending ad request.", buf, 0xCu);
     }
 
     v11 = +[NSDate date];
-    v12 = [v7 prefetchTimestamp];
+    prefetchTimestamp = [context prefetchTimestamp];
 
-    if (v12)
+    if (prefetchTimestamp)
     {
-      v13 = [v7 prefetchTimestamp];
-      [v11 timeIntervalSinceDate:v13];
+      prefetchTimestamp2 = [context prefetchTimestamp];
+      [v11 timeIntervalSinceDate:prefetchTimestamp2];
       v15 = v14;
 
       v16 = APLogForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [v7 identifier];
-        v18 = [v17 UUIDString];
+        identifier2 = [context identifier];
+        uUIDString2 = [identifier2 UUIDString];
         *buf = 138543618;
-        v52 = *&v18;
+        v52 = *&uUIDString2;
         v53 = 2050;
         v54 = v15;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[LegacyInterface] Context %{public}@: Pre-fetch to daemon ad request interval is %{public}f.", buf, 0x16u);
@@ -1006,8 +1006,8 @@ LABEL_11:
         v24 = [NSNumber numberWithUnsignedLong:0];
         v50[2] = v24;
         v49[3] = @"PlacementType";
-        v25 = [v7 current];
-        v26 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v25 placement]);
+        current = [context current];
+        v26 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [current placement]);
         v50[3] = v26;
         v49[4] = @"Failed";
         v27 = [NSNumber numberWithBool:0];
@@ -1028,19 +1028,19 @@ LABEL_11:
       }
     }
 
-    v28 = [(APAdBatchRequester *)self batchedRequests];
-    v29 = [v28 objectAtIndexedSubscript:0];
+    batchedRequests3 = [(APAdBatchRequester *)self batchedRequests];
+    v29 = [batchedRequests3 objectAtIndexedSubscript:0];
     [v29 timestamp];
     v31 = v30;
 
-    v32 = [(APAdBatchRequester *)self batchedRequests];
-    v33 = [v32 count];
-    v34 = [(APServerRequester *)self requestIdentifier];
+    batchedRequests4 = [(APAdBatchRequester *)self batchedRequests];
+    v33 = [batchedRequests4 count];
+    requestIdentifier = [(APServerRequester *)self requestIdentifier];
     v35 = [NSDate dateWithTimeIntervalSinceReferenceDate:v31];
-    v36 = [NSString stringWithFormat:@"Sending %lu requests in batch %@: %@", v33, v34, v35];
+    v36 = [NSString stringWithFormat:@"Sending %lu requests in batch %@: %@", v33, requestIdentifier, v35];
 
-    v37 = [(APAdBatchRequester *)self batchedRequests];
-    v38 = [v37 count];
+    batchedRequests5 = [(APAdBatchRequester *)self batchedRequests];
+    v38 = [batchedRequests5 count];
 
     if (v38 < 2)
     {
@@ -1052,8 +1052,8 @@ LABEL_11:
       v39 = 1;
       do
       {
-        v40 = [(APAdBatchRequester *)self batchedRequests];
-        v41 = [v40 objectAtIndexedSubscript:v39];
+        batchedRequests6 = [(APAdBatchRequester *)self batchedRequests];
+        v41 = [batchedRequests6 objectAtIndexedSubscript:v39];
         [v41 timestamp];
         v43 = v42 - v31;
 
@@ -1061,8 +1061,8 @@ LABEL_11:
         v45 = [v36 stringByAppendingString:v44];
 
         ++v39;
-        v46 = [(APAdBatchRequester *)self batchedRequests];
-        v47 = [v46 count];
+        batchedRequests7 = [(APAdBatchRequester *)self batchedRequests];
+        v47 = [batchedRequests7 count];
 
         v36 = v45;
       }
@@ -1080,16 +1080,16 @@ LABEL_11:
   }
 }
 
-- (void)makeRequest:(id)a3
+- (void)makeRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if (!+[APSystemInternal isAppleInternalInstall])
   {
     goto LABEL_7;
   }
 
-  v5 = [(APAdBatchRequester *)self batchedRequests];
-  v6 = [v5 objectAtIndexedSubscript:0];
+  batchedRequests = [(APAdBatchRequester *)self batchedRequests];
+  v6 = [batchedRequests objectAtIndexedSubscript:0];
   v7 = +[APMockAdServerSettings isAdResponseMockedForPlacementType:](APMockAdServerSettings, "isAdResponseMockedForPlacementType:", [v6 placementType]);
 
   if (!v7)
@@ -1104,14 +1104,14 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "AdBatchRequester will return forced ad response for request.", buf, 2u);
   }
 
-  v9 = [(APAdBatchRequester *)self batchedRequests];
-  v10 = [v9 objectAtIndexedSubscript:0];
+  batchedRequests2 = [(APAdBatchRequester *)self batchedRequests];
+  v10 = [batchedRequests2 objectAtIndexedSubscript:0];
   v11 = +[APMockAdServerSettings adResponseDataForPlacementType:](APMockAdServerSettings, "adResponseDataForPlacementType:", [v10 placementType]);
 
   if (v11)
   {
     v12 = [(APAdBatchRequester *)self batchResponseFromBase64EncodedString:v11];
-    v4[2](v4, v12, 0);
+    requestCopy[2](requestCopy, v12, 0);
   }
 
   else
@@ -1119,7 +1119,7 @@ LABEL_11:
 LABEL_7:
     v13.receiver = self;
     v13.super_class = APAdBatchRequester;
-    [(APServerRequester *)&v13 makeRequest:v4];
+    [(APServerRequester *)&v13 makeRequest:requestCopy];
     [(APAdBatchRequester *)self sendAnalyticsForMakingRequest];
   }
 }

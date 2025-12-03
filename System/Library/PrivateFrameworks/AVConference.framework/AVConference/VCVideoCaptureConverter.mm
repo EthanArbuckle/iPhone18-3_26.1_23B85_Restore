@@ -1,16 +1,16 @@
 @interface VCVideoCaptureConverter
-- (BOOL)processFrame:(opaqueCMSampleBuffer *)a3;
-- (VCVideoCaptureConverter)initWithConvertedFrameHandler:(void *)a3 context:(id)a4;
-- (void)avConferencePreviewError:(id)a3;
+- (BOOL)processFrame:(opaqueCMSampleBuffer *)frame;
+- (VCVideoCaptureConverter)initWithConvertedFrameHandler:(void *)handler context:(id)context;
+- (void)avConferencePreviewError:(id)error;
 - (void)dealloc;
-- (void)setDestinationFramerate:(unsigned int)a3;
-- (void)setSourceFramerate:(unsigned int)a3;
+- (void)setDestinationFramerate:(unsigned int)framerate;
+- (void)setSourceFramerate:(unsigned int)framerate;
 - (void)updateThrottleRate;
 @end
 
 @implementation VCVideoCaptureConverter
 
-- (VCVideoCaptureConverter)initWithConvertedFrameHandler:(void *)a3 context:(id)a4
+- (VCVideoCaptureConverter)initWithConvertedFrameHandler:(void *)handler context:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -22,7 +22,7 @@
     return v7;
   }
 
-  if (!a3)
+  if (!handler)
   {
     [VCVideoCaptureConverter initWithConvertedFrameHandler:v6 context:?];
 LABEL_10:
@@ -30,14 +30,14 @@ LABEL_10:
     return 0;
   }
 
-  if (!a4)
+  if (!context)
   {
     [VCVideoCaptureConverter initWithConvertedFrameHandler:v6 context:?];
     goto LABEL_10;
   }
 
-  v6->_convertedFrameHandler = a3;
-  objc_storeWeak(&v6->_convertedFrameHandlerContext, a4);
+  v6->_convertedFrameHandler = handler;
+  objc_storeWeak(&v6->_convertedFrameHandlerContext, context);
   v7->_lastDestinationFrameCount = -1;
   if (VRTraceGetErrorLogLevelForModule() >= 7)
   {
@@ -72,10 +72,10 @@ LABEL_10:
   [(VCVideoCaptureConverter *)&v3 dealloc];
 }
 
-- (void)setSourceFramerate:(unsigned int)a3
+- (void)setSourceFramerate:(unsigned int)framerate
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_sourceFramerate == a3)
+  if (self->_sourceFramerate == framerate)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
@@ -91,7 +91,7 @@ LABEL_10:
         v14 = 1024;
         v15 = 56;
         v16 = 2048;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 1024;
         v19 = sourceFramerate;
         _os_log_impl(&dword_1DB56E000, v5, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p], Source frame rate is already at %u", &v10, 0x2Cu);
@@ -101,7 +101,7 @@ LABEL_10:
 
   else
   {
-    self->_sourceFramerate = a3;
+    self->_sourceFramerate = framerate;
     if (VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v7 = VRTraceErrorLogLevelToCSTR();
@@ -116,7 +116,7 @@ LABEL_10:
         v14 = 1024;
         v15 = 59;
         v16 = 2048;
-        v17 = self;
+        selfCopy2 = self;
         v18 = 1024;
         v19 = v9;
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p], Source frame rate set to %u", &v10, 0x2Cu);
@@ -127,7 +127,7 @@ LABEL_10:
   }
 }
 
-- (void)setDestinationFramerate:(unsigned int)a3
+- (void)setDestinationFramerate:(unsigned int)framerate
 {
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -143,18 +143,18 @@ LABEL_10:
       v11 = 1024;
       v12 = 65;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 1024;
-      v16 = a3;
+      framerateCopy = framerate;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d [%p], setting destination frame rate to %d", &v7, 0x2Cu);
     }
   }
 
-  self->_destinationFramerate = a3;
+  self->_destinationFramerate = framerate;
   [(VCVideoCaptureConverter *)self updateThrottleRate];
 }
 
-- (BOOL)processFrame:(opaqueCMSampleBuffer *)a3
+- (BOOL)processFrame:(opaqueCMSampleBuffer *)frame
 {
   if (!self->_isThrottling)
   {
@@ -204,7 +204,7 @@ LABEL_10:
       v16 = 1024;
       v17 = 87;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       v20 = 1024;
       v21 = v8;
       v22 = 1024;
@@ -218,14 +218,14 @@ LABEL_10:
   }
 }
 
-- (void)avConferencePreviewError:(id)a3
+- (void)avConferencePreviewError:(id)error
 {
   if (VRTraceGetErrorLogLevelForModule() >= 3)
   {
     v4 = VRTraceErrorLogLevelToCSTR();
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      [(VCVideoCaptureConverter *)v4 avConferencePreviewError:a3];
+      [(VCVideoCaptureConverter *)v4 avConferencePreviewError:error];
     }
   }
 }

@@ -3,40 +3,40 @@
 - (NSIndexSet)pageIndexesOfPagesContainingDrawables;
 - (NSSet)allDrawables;
 - (TPDocumentRoot)documentRoot;
-- (TPFloatingDrawables)initWithContext:(id)a3;
+- (TPFloatingDrawables)initWithContext:(id)context;
 - (id)childEnumerator;
-- (id)drawablesOnPageIndex:(unint64_t)a3;
-- (id)orderedDrawablesOnPageIndex:(unint64_t)a3;
-- (id)swift_drawablesOnPageIndex:(unint64_t)a3;
-- (id)tagForDrawable:(id)a3;
+- (id)drawablesOnPageIndex:(unint64_t)index;
+- (id)orderedDrawablesOnPageIndex:(unint64_t)index;
+- (id)swift_drawablesOnPageIndex:(unint64_t)index;
+- (id)tagForDrawable:(id)drawable;
 - (unint64_t)countOfAllDrawables;
 - (unint64_t)maximumPageIndex;
-- (unint64_t)pageIndexForDrawable:(id)a3;
-- (void)addDrawable:(id)a3 toPageIndex:(unint64_t)a4 insertContext:(id)a5 suppressDOLC:(BOOL)a6;
-- (void)addDrawables:(id)a3 toPageIndex:(unint64_t)a4 insertContext:(id)a5;
-- (void)applyTag:(id)a3 toDrawable:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)moveDrawable:(id)a3 toPageIndex:(unint64_t)a4;
-- (void)p_addDrawable:(id)a3 toPageIndex:(unint64_t)a4;
-- (void)p_removeDrawable:(id)a3;
-- (void)removeDrawable:(id)a3 suppressDOLC:(BOOL)a4;
-- (void)removeDrawables:(id)a3;
-- (void)removeTagForDrawable:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (unint64_t)pageIndexForDrawable:(id)drawable;
+- (void)addDrawable:(id)drawable toPageIndex:(unint64_t)index insertContext:(id)context suppressDOLC:(BOOL)c;
+- (void)addDrawables:(id)drawables toPageIndex:(unint64_t)index insertContext:(id)context;
+- (void)applyTag:(id)tag toDrawable:(id)drawable;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)moveDrawable:(id)drawable toPageIndex:(unint64_t)index;
+- (void)p_addDrawable:(id)drawable toPageIndex:(unint64_t)index;
+- (void)p_removeDrawable:(id)drawable;
+- (void)removeDrawable:(id)drawable suppressDOLC:(BOOL)c;
+- (void)removeDrawables:(id)drawables;
+- (void)removeTagForDrawable:(id)drawable;
+- (void)saveToArchiver:(id)archiver;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TPFloatingDrawables
 
-- (TPFloatingDrawables)initWithContext:(id)a3
+- (TPFloatingDrawables)initWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = TPFloatingDrawables;
-  v5 = [(TPFloatingDrawables *)&v23 initWithContext:v4];
+  v5 = [(TPFloatingDrawables *)&v23 initWithContext:contextCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -61,9 +61,9 @@
   return v5;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v119 = a3;
+  unarchiverCopy = unarchiver;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
   drawablesByPageIndex = self->_drawablesByPageIndex;
   self->_drawablesByPageIndex = v4;
@@ -76,10 +76,10 @@
   tagByDrawable = self->_tagByDrawable;
   self->_tagByDrawable = v18;
 
-  v20 = v119;
+  v20 = unarchiverCopy;
   google::protobuf::internal::AssignDescriptors();
   v26 = objc_msgSend_messageWithDescriptor_(v20, v21, v22, v23, v24, v25, off_2812F85B8[16]);
-  v120 = self;
+  selfCopy = self;
   v118 = v20;
 
   v131 = 0;
@@ -326,7 +326,7 @@ LABEL_45:
         v127[1] = 3221225472;
         v127[2] = sub_275FBF8E4;
         v127[3] = &unk_27A6A82B8;
-        v127[4] = v120;
+        v127[4] = selfCopy;
         v127[5] = v97;
         v99 = v74;
         v101 = objc_opt_class();
@@ -356,7 +356,7 @@ LABEL_45:
   v124[3] = &unk_27A6A8308;
   v126 = v106 == 3;
   v125 = v122;
-  v124[4] = v120;
+  v124[4] = selfCopy;
   v124[5] = v123;
   v124[6] = v129;
   v124[7] = v112;
@@ -366,12 +366,12 @@ LABEL_45:
   sub_275FB56E8(&v131);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
   v179 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v9 = objc_msgSend_messageWithNewFunction_descriptor_(v3, v4, v5, v6, v7, v8, sub_275FC2680, off_2812F85B8[16]);
+  v9 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, v5, v6, v7, v8, sub_275FC2680, off_2812F85B8[16]);
 
   v15 = objc_msgSend_allKeys(self->_drawablesByPageIndex, v10, v11, v12, v13, v14);
   v21 = objc_msgSend_sortedArrayUsingSelector_(v15, v16, v17, v18, v19, v20, sel_compare_);
@@ -507,7 +507,7 @@ LABEL_26:
                 *(v64 + 24) = v67;
               }
 
-              objc_msgSend_setStrongReference_message_(v3, v52, v54, v55, v56, v57, v60, v67);
+              objc_msgSend_setStrongReference_message_(archiverCopy, v52, v54, v55, v56, v57, v60, v67);
             }
 
             v53 = objc_msgSend_countByEnumeratingWithState_objects_count_(v46, v52, v54, v55, v56, v57, &v168, v177, 16);
@@ -528,8 +528,8 @@ LABEL_26:
 
   if (objc_msgSend_count(self->_tagByDrawable, v69, v70, v71, v72, v73))
   {
-    objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v3, v74, v75, v76, v77, v78, *MEMORY[0x277D80988], *MEMORY[0x277D80990], @"TPPageTemplates");
-    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(v3, v79, v80, v81, v82, v83, 2, v9);
+    objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(archiverCopy, v74, v75, v76, v77, v78, *MEMORY[0x277D80988], *MEMORY[0x277D80990], @"TPPageTemplates");
+    objc_msgSend_setIgnoreAndPreserveRuleForField_message_(archiverCopy, v79, v80, v81, v82, v83, 2, v9);
     *(v9 + 16) |= 1u;
     v89 = *(v9 + 48);
     if (!v89)
@@ -611,7 +611,7 @@ LABEL_51:
             *(v122 + 32) = v125;
           }
 
-          objc_msgSend_setWeakReference_message_(v3, v110, v112, v113, v114, v115, v118, v125);
+          objc_msgSend_setWeakReference_message_(archiverCopy, v110, v112, v113, v114, v115, v118, v125);
           v132 = objc_msgSend_objectForKey_(self->_tagByDrawable, v127, v128, v129, v130, v131, v118);
           v133 = v132;
           v139 = objc_msgSend_UTF8String(v132, v134, v135, v136, v137, v138);
@@ -662,7 +662,7 @@ LABEL_51:
   return v12;
 }
 
-- (id)drawablesOnPageIndex:(unint64_t)a3
+- (id)drawablesOnPageIndex:(unint64_t)index
 {
   if (objc_msgSend_isDocSetupPageIndex_(TPPageInfo, a2, v3, v4, v5, v6))
   {
@@ -675,25 +675,25 @@ LABEL_51:
   }
 
   drawablesByPageIndex = self->_drawablesByPageIndex;
-  v33 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v9, v10, v11, v12, v13, a3);
+  v33 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v9, v10, v11, v12, v13, index);
   v39 = objc_msgSend_objectForKeyedSubscript_(drawablesByPageIndex, v34, v35, v36, v37, v38, v33);
 
   return v39;
 }
 
-- (id)swift_drawablesOnPageIndex:(unint64_t)a3
+- (id)swift_drawablesOnPageIndex:(unint64_t)index
 {
-  v7 = objc_msgSend_drawablesOnPageIndex_(self, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_drawablesOnPageIndex_(self, a2, v3, v4, v5, v6, index);
   v13 = objc_msgSend_allObjects(v7, v8, v9, v10, v11, v12);
 
   return v13;
 }
 
-- (id)orderedDrawablesOnPageIndex:(unint64_t)a3
+- (id)orderedDrawablesOnPageIndex:(unint64_t)index
 {
   v9 = objc_msgSend_documentRoot(self, a2, v3, v4, v5, v6);
   v15 = objc_msgSend_drawablesZOrder(v9, v10, v11, v12, v13, v14);
-  v21 = objc_msgSend_drawablesOnPageIndex_(self, v16, v17, v18, v19, v20, a3);
+  v21 = objc_msgSend_drawablesOnPageIndex_(self, v16, v17, v18, v19, v20, index);
   v27 = objc_msgSend_orderedDrawables_(v15, v22, v23, v24, v25, v26, v21);
 
   return v27;
@@ -788,9 +788,9 @@ LABEL_51:
   return v29;
 }
 
-- (unint64_t)pageIndexForDrawable:(id)a3
+- (unint64_t)pageIndexForDrawable:(id)drawable
 {
-  v7 = objc_msgSend_objectForKey_(self->_pageIndexByDrawable, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_objectForKey_(self->_pageIndexByDrawable, a2, v3, v4, v5, v6, drawable);
   v13 = v7;
   if (v7)
   {
@@ -805,43 +805,43 @@ LABEL_51:
   return v14;
 }
 
-- (id)tagForDrawable:(id)a3
+- (id)tagForDrawable:(id)drawable
 {
-  v7 = objc_msgSend_objectForKey_(self->_tagByDrawable, a2, v3, v4, v5, v6, a3);
+  v7 = objc_msgSend_objectForKey_(self->_tagByDrawable, a2, v3, v4, v5, v6, drawable);
 
   return v7;
 }
 
-- (void)p_addDrawable:(id)a3 toPageIndex:(unint64_t)a4
+- (void)p_addDrawable:(id)drawable toPageIndex:(unint64_t)index
 {
-  v87 = a3;
+  drawableCopy = drawable;
   v11 = objc_msgSend_documentRoot(self, v6, v7, v8, v9, v10);
-  isAlternativePageIndex_documentRoot = objc_msgSend_isAlternativePageIndex_documentRoot_(TPPageInfo, v12, v13, v14, v15, v16, a4, v11);
+  isAlternativePageIndex_documentRoot = objc_msgSend_isAlternativePageIndex_documentRoot_(TPPageInfo, v12, v13, v14, v15, v16, index, v11);
 
   if (isAlternativePageIndex_documentRoot)
   {
     v23 = MEMORY[0x277D81150];
     v24 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v18, v19, v20, v21, v22, "[TPFloatingDrawables p_addDrawable:toPageIndex:]");
     v30 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v25, v26, v27, v28, v29, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPFloatingDrawables.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v31, v32, v33, v34, v35, v24, v30, 350, 0, "shouldn't use the alternative page page index in TPFloatingDrawables (%lu)", a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v23, v31, v32, v33, v34, v35, v24, v30, 350, 0, "shouldn't use the alternative page page index in TPFloatingDrawables (%lu)", index);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37, v38, v39, v40);
   }
 
-  if (a4 >= 0x7FFFFFFF)
+  if (index >= 0x7FFFFFFF)
   {
     TSUSetCrashReporterInfo();
     v69 = MEMORY[0x277D81150];
-    v75 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v70, v71, v72, v73, v74, "[TPFloatingDrawables p_addDrawable:toPageIndex:]", "[TPFloatingDrawables p_addDrawable:toPageIndex:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPFloatingDrawables.mm", 357, a4);
+    v75 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v70, v71, v72, v73, v74, "[TPFloatingDrawables p_addDrawable:toPageIndex:]", "[TPFloatingDrawables p_addDrawable:toPageIndex:]", "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPFloatingDrawables.mm", 357, index);
     v81 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v76, v77, v78, v79, v80, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPFloatingDrawables.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v69, v82, v83, v84, v85, v86, v75, v81, 357, 1, "bad page index: %lu for drawable", a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v69, v82, v83, v84, v85, v86, v75, v81, 357, 1, "bad page index: %lu for drawable", index);
 
     TSUCrashBreakpoint();
     abort();
   }
 
   v41 = objc_alloc(MEMORY[0x277CCABB0]);
-  v47 = objc_msgSend_initWithUnsignedInteger_(v41, v42, v43, v44, v45, v46, a4);
+  v47 = objc_msgSend_initWithUnsignedInteger_(v41, v42, v43, v44, v45, v46, index);
   v54 = objc_msgSend_objectForKeyedSubscript_(self->_drawablesByPageIndex, v48, v49, v50, v51, v52, v47);
   if (!v54)
   {
@@ -849,42 +849,42 @@ LABEL_51:
     objc_msgSend_setObject_forKeyedSubscript_(self->_drawablesByPageIndex, v59, v60, v61, v62, v63);
   }
 
-  objc_msgSend_addObject_(v54, v53, v55, v56, v57, v58, v87);
-  objc_msgSend_setObject_forKey_(self->_pageIndexByDrawable, v64, v65, v66, v67, v68, v47, v87);
+  objc_msgSend_addObject_(v54, v53, v55, v56, v57, v58, drawableCopy);
+  objc_msgSend_setObject_forKey_(self->_pageIndexByDrawable, v64, v65, v66, v67, v68, v47, drawableCopy);
 }
 
-- (void)addDrawable:(id)a3 toPageIndex:(unint64_t)a4 insertContext:(id)a5 suppressDOLC:(BOOL)a6
+- (void)addDrawable:(id)drawable toPageIndex:(unint64_t)index insertContext:(id)context suppressDOLC:(BOOL)c
 {
-  v39 = a3;
-  v10 = a5;
+  drawableCopy = drawable;
+  contextCopy = context;
   objc_msgSend_willModify(self, v11, v12, v13, v14, v15);
-  if (!a6)
+  if (!c)
   {
     WeakRetained = objc_loadWeakRetained(&self->_documentRoot);
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v39, v22, v23, v24, v25, v26, WeakRetained, v10);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(drawableCopy, v22, v23, v24, v25, v26, WeakRetained, contextCopy);
   }
 
-  objc_msgSend_p_addDrawable_toPageIndex_(self, v16, v17, v18, v19, v20, v39, a4);
-  if (!a6)
+  objc_msgSend_p_addDrawable_toPageIndex_(self, v16, v17, v18, v19, v20, drawableCopy, index);
+  if (!c)
   {
     v27 = objc_loadWeakRetained(&self->_documentRoot);
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v39, v28, v29, v30, v31, v32, v27, v10);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(drawableCopy, v28, v29, v30, v31, v32, v27, contextCopy);
 
     v33 = objc_loadWeakRetained(&self->_documentRoot);
-    objc_msgSend_didAddDrawable_(v33, v34, v35, v36, v37, v38, v39);
+    objc_msgSend_didAddDrawable_(v33, v34, v35, v36, v37, v38, drawableCopy);
   }
 }
 
-- (void)addDrawables:(id)a3 toPageIndex:(unint64_t)a4 insertContext:(id)a5
+- (void)addDrawables:(id)drawables toPageIndex:(unint64_t)index insertContext:(id)context
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  drawablesCopy = drawables;
+  contextCopy = context;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v10 = v8;
+  v10 = drawablesCopy;
   v17 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, v12, v13, v14, v15, &v24, v28, 16);
   if (v17)
   {
@@ -899,7 +899,7 @@ LABEL_51:
           objc_enumerationMutation(v10);
         }
 
-        objc_msgSend_addDrawable_toPageIndex_insertContext_(self, v16, v18, v19, v20, v21, *(*(&v24 + 1) + 8 * v23++), a4, v9, v24);
+        objc_msgSend_addDrawable_toPageIndex_insertContext_(self, v16, v18, v19, v20, v21, *(*(&v24 + 1) + 8 * v23++), index, contextCopy, v24);
       }
 
       while (v17 != v23);
@@ -910,12 +910,12 @@ LABEL_51:
   }
 }
 
-- (void)applyTag:(id)a3 toDrawable:(id)a4
+- (void)applyTag:(id)tag toDrawable:(id)drawable
 {
-  v6 = a3;
-  v7 = a4;
-  v14 = objc_msgSend_objectForKey_(self->_pageIndexByDrawable, v8, v9, v10, v11, v12, v7);
-  if (!v6 || !v7 || objc_msgSend_isEqualToString_(v6, v13, v15, v16, v17, v18, &stru_288501738))
+  tagCopy = tag;
+  drawableCopy = drawable;
+  v14 = objc_msgSend_objectForKey_(self->_pageIndexByDrawable, v8, v9, v10, v11, v12, drawableCopy);
+  if (!tagCopy || !drawableCopy || objc_msgSend_isEqualToString_(tagCopy, v13, v15, v16, v17, v18, &stru_288501738))
   {
     v19 = MEMORY[0x277D81150];
     v20 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v13, v15, v16, v17, v18, "[TPFloatingDrawables applyTag:toDrawable:]");
@@ -941,10 +941,10 @@ LABEL_51:
   v81 = 3221225472;
   v82 = sub_275FC1868;
   v83 = &unk_27A6A8350;
-  v62 = v7;
+  v62 = drawableCopy;
   v84 = v62;
-  v85 = self;
-  v63 = v6;
+  selfCopy = self;
+  v63 = tagCopy;
   v86 = v63;
   v64 = v14;
   v87 = v64;
@@ -953,31 +953,31 @@ LABEL_51:
   objc_msgSend_setObject_forKey_(self->_tagByDrawable, v75, v76, v77, v78, v79, v63, v62);
 }
 
-- (void)p_removeDrawable:(id)a3
+- (void)p_removeDrawable:(id)drawable
 {
-  v36 = a3;
+  drawableCopy = drawable;
   v10 = objc_msgSend_objectForKey_(self->_pageIndexByDrawable, v4, v5, v6, v7, v8);
   if (v10)
   {
     v15 = objc_msgSend_objectForKeyedSubscript_(self->_drawablesByPageIndex, v9, v11, v12, v13, v14, v10);
-    objc_msgSend_removeObjectForKey_(self->_pageIndexByDrawable, v16, v17, v18, v19, v20, v36);
-    objc_msgSend_removeObject_(v15, v21, v22, v23, v24, v25, v36);
+    objc_msgSend_removeObjectForKey_(self->_pageIndexByDrawable, v16, v17, v18, v19, v20, drawableCopy);
+    objc_msgSend_removeObject_(v15, v21, v22, v23, v24, v25, drawableCopy);
     if (!objc_msgSend_count(v15, v26, v27, v28, v29, v30))
     {
       objc_msgSend_removeObjectForKey_(self->_drawablesByPageIndex, v31, v32, v33, v34, v35, v10);
     }
 
-    objc_msgSend_removeObjectForKey_(self->_tagByDrawable, v31, v32, v33, v34, v35, v36);
+    objc_msgSend_removeObjectForKey_(self->_tagByDrawable, v31, v32, v33, v34, v35, drawableCopy);
   }
 }
 
-- (void)removeTagForDrawable:(id)a3
+- (void)removeTagForDrawable:(id)drawable
 {
-  v32 = a3;
-  if (v32)
+  drawableCopy = drawable;
+  if (drawableCopy)
   {
     objc_msgSend_willModify(self, v4, v5, v6, v7, v8);
-    objc_msgSend_removeObjectForKey_(self->_tagByDrawable, v9, v10, v11, v12, v13, v32);
+    objc_msgSend_removeObjectForKey_(self->_tagByDrawable, v9, v10, v11, v12, v13, drawableCopy);
   }
 
   else
@@ -991,36 +991,36 @@ LABEL_51:
   }
 }
 
-- (void)removeDrawable:(id)a3 suppressDOLC:(BOOL)a4
+- (void)removeDrawable:(id)drawable suppressDOLC:(BOOL)c
 {
-  v44 = a3;
+  drawableCopy = drawable;
   objc_msgSend_willModify(self, v6, v7, v8, v9, v10);
-  if (!a4)
+  if (!c)
   {
     v16 = objc_msgSend_documentRoot(self, v11, v12, v13, v14, v15);
-    objc_msgSend_willRemoveDrawable_(v16, v17, v18, v19, v20, v21, v44);
+    objc_msgSend_willRemoveDrawable_(v16, v17, v18, v19, v20, v21, drawableCopy);
 
     v27 = objc_msgSend_documentRoot(self, v22, v23, v24, v25, v26);
-    objc_msgSend_willBeRemovedFromDocumentRoot_(v44, v28, v29, v30, v31, v32, v27);
+    objc_msgSend_willBeRemovedFromDocumentRoot_(drawableCopy, v28, v29, v30, v31, v32, v27);
   }
 
-  objc_msgSend_p_removeDrawable_(self, v11, v12, v13, v14, v15, v44);
-  if (!a4)
+  objc_msgSend_p_removeDrawable_(self, v11, v12, v13, v14, v15, drawableCopy);
+  if (!c)
   {
     v38 = objc_msgSend_documentRoot(self, v33, v34, v35, v36, v37);
-    objc_msgSend_wasRemovedFromDocumentRoot_(v44, v39, v40, v41, v42, v43, v38);
+    objc_msgSend_wasRemovedFromDocumentRoot_(drawableCopy, v39, v40, v41, v42, v43, v38);
   }
 }
 
-- (void)removeDrawables:(id)a3
+- (void)removeDrawables:(id)drawables
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = a3;
-  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, v6, v7, v8, v9, &v18, v22, 16);
+  drawablesCopy = drawables;
+  v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(drawablesCopy, v5, v6, v7, v8, v9, &v18, v22, 16);
   if (v11)
   {
     v16 = *v19;
@@ -1031,23 +1031,23 @@ LABEL_51:
       {
         if (*v19 != v16)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(drawablesCopy);
         }
 
         objc_msgSend_removeDrawable_(self, v10, v12, v13, v14, v15, *(*(&v18 + 1) + 8 * v17++), v18);
       }
 
       while (v11 != v17);
-      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v10, v12, v13, v14, v15, &v18, v22, 16);
+      v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(drawablesCopy, v10, v12, v13, v14, v15, &v18, v22, 16);
     }
 
     while (v11);
   }
 }
 
-- (void)moveDrawable:(id)a3 toPageIndex:(unint64_t)a4
+- (void)moveDrawable:(id)drawable toPageIndex:(unint64_t)index
 {
-  v44 = a3;
+  drawableCopy = drawable;
   if (objc_msgSend_pageIndexForDrawable_(self, v6, v7, v8, v9, v10) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v16 = MEMORY[0x277D81150];
@@ -1061,8 +1061,8 @@ LABEL_51:
   else
   {
     objc_msgSend_willModify(self, v11, v12, v13, v14, v15);
-    objc_msgSend_p_removeDrawable_(self, v34, v35, v36, v37, v38, v44);
-    objc_msgSend_p_addDrawable_toPageIndex_(self, v39, v40, v41, v42, v43, v44, a4);
+    objc_msgSend_p_removeDrawable_(self, v34, v35, v36, v37, v38, drawableCopy);
+    objc_msgSend_p_addDrawable_toPageIndex_(self, v39, v40, v41, v42, v43, drawableCopy, index);
   }
 }
 
@@ -1074,11 +1074,11 @@ LABEL_51:
   return v12;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -1098,7 +1098,7 @@ LABEL_51:
           objc_enumerationMutation(v12);
         }
 
-        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v26 + 1) + 8 * v25++), v18, v20, v21, v22, v23, v6, v7);
+        objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(*(*(&v26 + 1) + 8 * v25++), v18, v20, v21, v22, v23, rootCopy, contextCopy);
       }
 
       while (v19 != v25);
@@ -1109,13 +1109,13 @@ LABEL_51:
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  objc_storeWeak(&self->_documentRoot, v6);
-  v13 = objc_msgSend_context(v6, v8, v9, v10, v11, v12);
+  rootCopy = root;
+  contextCopy = context;
+  objc_storeWeak(&self->_documentRoot, rootCopy);
+  v13 = objc_msgSend_context(rootCopy, v8, v9, v10, v11, v12);
   objc_msgSend_wasAddedToDocumentWithContext_(self, v14, v15, v16, v17, v18, v13);
 
   v45 = 0u;
@@ -1137,8 +1137,8 @@ LABEL_51:
         }
 
         v37 = *(*(&v43 + 1) + 8 * i);
-        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v37, v29, v31, v32, v33, v34, v6, v7);
-        objc_msgSend_didAddDrawable_(v6, v38, v39, v40, v41, v42, v37);
+        objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v37, v29, v31, v32, v33, v34, rootCopy, contextCopy);
+        objc_msgSend_didAddDrawable_(rootCopy, v38, v39, v40, v41, v42, v37);
       }
 
       v30 = objc_msgSend_countByEnumeratingWithState_objects_count_(v23, v29, v31, v32, v33, v34, &v43, v47, 16);
@@ -1148,10 +1148,10 @@ LABEL_51:
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   objc_storeWeak(&self->_documentRoot, 0);
   v46 = 0u;
   v47 = 0u;
@@ -1176,7 +1176,7 @@ LABEL_51:
         v24 = objc_msgSend_documentRoot(self, v15, v17, v18, v19, v20);
         objc_msgSend_willRemoveDrawable_(v24, v25, v26, v27, v28, v29, v23);
 
-        objc_msgSend_willBeRemovedFromDocumentRoot_(v23, v30, v31, v32, v33, v34, v4);
+        objc_msgSend_willBeRemovedFromDocumentRoot_(v23, v30, v31, v32, v33, v34, rootCopy);
         ++v22;
       }
 
@@ -1187,16 +1187,16 @@ LABEL_51:
     while (v16);
   }
 
-  v40 = objc_msgSend_context(v4, v35, v36, v37, v38, v39);
+  v40 = objc_msgSend_context(rootCopy, v35, v36, v37, v38, v39);
   objc_msgSend_willBeRemovedFromDocumentWithContext_(self, v41, v42, v43, v44, v45, v40);
 
   objc_storeWeak(&self->_documentRoot, 0);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  rootCopy = root;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -1216,7 +1216,7 @@ LABEL_51:
           objc_enumerationMutation(v9);
         }
 
-        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v23 + 1) + 8 * v22++), v15, v17, v18, v19, v20, v4);
+        objc_msgSend_wasRemovedFromDocumentRoot_(*(*(&v23 + 1) + 8 * v22++), v15, v17, v18, v19, v20, rootCopy);
       }
 
       while (v16 != v22);

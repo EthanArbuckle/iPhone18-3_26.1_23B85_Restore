@@ -1,22 +1,22 @@
 @interface INStartCallCallRecordToCallBackResolutionResult
 + (INStartCallCallRecordToCallBackResolutionResult)unsupportedForReason:(INStartCallCallRecordToCallBackUnsupportedReason)reason;
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3;
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4;
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description;
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description;
 @end
 
 @implementation INStartCallCallRecordToCallBackResolutionResult
 
-- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)a3
+- (id)_buildIntentSlotResolutionResultWithIntentSlotDescription:(id)description
 {
   v9.receiver = self;
   v9.super_class = INStartCallCallRecordToCallBackResolutionResult;
-  v4 = [(INIntentResolutionResult *)&v9 _buildIntentSlotResolutionResultWithIntentSlotDescription:a3];
+  v4 = [(INIntentResolutionResult *)&v9 _buildIntentSlotResolutionResultWithIntentSlotDescription:description];
   if ([(INIntentResolutionResult *)self resolutionResultCode]== 1 && [(INIntentResolutionResult *)self unsupportedReason])
   {
-    v5 = [v4 payloadUnsupported];
-    [v5 setReason:1000];
+    payloadUnsupported = [v4 payloadUnsupported];
+    [payloadUnsupported setReason:1000];
 
-    v6 = [v4 payloadUnsupported];
+    payloadUnsupported2 = [v4 payloadUnsupported];
     if ([(INIntentResolutionResult *)self unsupportedReason]== 1)
     {
       v7 = 1;
@@ -27,27 +27,27 @@
       v7 = 0x7FFFFFFFLL;
     }
 
-    [v6 setStartCallIntentCallRecordToCallBackUnsupportedReason:v7];
+    [payloadUnsupported2 setStartCallIntentCallRecordToCallBackUnsupportedReason:v7];
   }
 
   return v4;
 }
 
-- (id)_initWithIntentSlotResolutionResult:(id)a3 slotDescription:(id)a4
+- (id)_initWithIntentSlotResolutionResult:(id)result slotDescription:(id)description
 {
-  v6 = a3;
+  resultCopy = result;
   v12.receiver = self;
   v12.super_class = INStartCallCallRecordToCallBackResolutionResult;
-  v7 = [(INIntentResolutionResult *)&v12 _initWithIntentSlotResolutionResult:v6 slotDescription:a4];
+  v7 = [(INIntentResolutionResult *)&v12 _initWithIntentSlotResolutionResult:resultCopy slotDescription:description];
   if (v7)
   {
-    v8 = [v6 payloadUnsupported];
-    v9 = [v8 hasStartCallIntentCallRecordToCallBackUnsupportedReason];
+    payloadUnsupported = [resultCopy payloadUnsupported];
+    hasStartCallIntentCallRecordToCallBackUnsupportedReason = [payloadUnsupported hasStartCallIntentCallRecordToCallBackUnsupportedReason];
 
-    if (v9)
+    if (hasStartCallIntentCallRecordToCallBackUnsupportedReason)
     {
-      v10 = [v6 payloadUnsupported];
-      [v7 setUnsupportedReason:{objc_msgSend(v10, "startCallIntentCallRecordToCallBackUnsupportedReason") == 1}];
+      payloadUnsupported2 = [resultCopy payloadUnsupported];
+      [v7 setUnsupportedReason:{objc_msgSend(payloadUnsupported2, "startCallIntentCallRecordToCallBackUnsupportedReason") == 1}];
     }
   }
 
@@ -56,10 +56,10 @@
 
 + (INStartCallCallRecordToCallBackResolutionResult)unsupportedForReason:(INStartCallCallRecordToCallBackUnsupportedReason)reason
 {
-  v4 = [a1 unsupported];
-  [v4 setUnsupportedReason:reason];
+  unsupported = [self unsupported];
+  [unsupported setUnsupportedReason:reason];
 
-  return v4;
+  return unsupported;
 }
 
 @end

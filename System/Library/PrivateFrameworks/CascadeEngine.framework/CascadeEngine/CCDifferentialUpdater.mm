@@ -1,15 +1,15 @@
 @interface CCDifferentialUpdater
-+ (id)updaterForSet:(id)a3 withRequest:(id)a4 setWriter:(id)a5 changeNotifier:(id)a6 timeout:(double)a7;
++ (id)updaterForSet:(id)set withRequest:(id)request setWriter:(id)writer changeNotifier:(id)notifier timeout:(double)timeout;
 - (BOOL)_clearSetTombstoneStatus;
 - (BOOL)_deleteStaleItems;
-- (BOOL)_diffUpdateItemsWithContents:(id)a3 metaContents:(id)a4;
-- (BOOL)_finishWithRevisionToken:(id)a3 designateAsFullSet:(BOOL)a4;
+- (BOOL)_diffUpdateItemsWithContents:(id)contents metaContents:(id)metaContents;
+- (BOOL)_finishWithRevisionToken:(id)token designateAsFullSet:(BOOL)set;
 - (BOOL)_tombstoneSet;
-- (BOOL)addItemsWithContents:(id)a3 metaContents:(id)a4;
-- (BOOL)removeSourceItemIdentifier:(id)a3;
-- (BOOL)updateRemoteDeviceUUID:(id)a3 options:(unsigned __int16)a4 mergeableDelta:(id)a5 peerDeviceSite:(id)a6 relayedDeviceSites:(id)a7;
-- (BOOL)waitForCommit:(BOOL)a3;
-- (CCDifferentialUpdater)initWithSet:(id)a3 request:(id)a4 setWriter:(id)a5 database:(id)a6 changeNotifier:(id)a7 completion:(id)a8;
+- (BOOL)addItemsWithContents:(id)contents metaContents:(id)metaContents;
+- (BOOL)removeSourceItemIdentifier:(id)identifier;
+- (BOOL)updateRemoteDeviceUUID:(id)d options:(unsigned __int16)options mergeableDelta:(id)delta peerDeviceSite:(id)site relayedDeviceSites:(id)sites;
+- (BOOL)waitForCommit:(BOOL)commit;
+- (CCDifferentialUpdater)initWithSet:(id)set request:(id)request setWriter:(id)writer database:(id)database changeNotifier:(id)notifier completion:(id)completion;
 - (id)_readLocalSourcePriorsFromDatabase;
 - (id)description;
 - (unint64_t)priorVersion;
@@ -21,16 +21,16 @@
 
 - (id)_readLocalSourcePriorsFromDatabase
 {
-  v3 = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalSourceVersion];
-  v4 = [v3 unsignedLongLongValue];
+  priorLocalSourceVersion = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalSourceVersion];
+  unsignedLongLongValue = [priorLocalSourceVersion unsignedLongLongValue];
 
-  v5 = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalInstanceCount];
-  v6 = [v5 unsignedIntegerValue];
+  priorLocalInstanceCount = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalInstanceCount];
+  unsignedIntegerValue = [priorLocalInstanceCount unsignedIntegerValue];
 
-  v7 = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalDonationDate];
-  v8 = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalFullSetDonationDate];
-  v9 = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalSourceRevisionToken];
-  v10 = [objc_alloc(MEMORY[0x1E69939E8]) initWithVersion:v4 instanceCount:v6 donationDate:v7 fullSetDonationDate:v8 revisionToken:v9 options:32 * (v8 == 0)];
+  priorLocalDonationDate = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalDonationDate];
+  priorLocalFullSetDonationDate = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalFullSetDonationDate];
+  priorLocalSourceRevisionToken = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalSourceRevisionToken];
+  v10 = [objc_alloc(MEMORY[0x1E69939E8]) initWithVersion:unsignedLongLongValue instanceCount:unsignedIntegerValue donationDate:priorLocalDonationDate fullSetDonationDate:priorLocalFullSetDonationDate revisionToken:priorLocalSourceRevisionToken options:32 * (priorLocalFullSetDonationDate == 0)];
 
   return v10;
 }
@@ -71,12 +71,12 @@ LABEL_6:
   return v5;
 }
 
-+ (id)updaterForSet:(id)a3 withRequest:(id)a4 setWriter:(id)a5 changeNotifier:(id)a6 timeout:(double)a7
++ (id)updaterForSet:(id)set withRequest:(id)request setWriter:(id)writer changeNotifier:(id)notifier timeout:(double)timeout
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  setCopy = set;
+  requestCopy = request;
+  writerCopy = writer;
+  notifierCopy = notifier;
   v15 = dispatch_semaphore_create(0);
   v16 = dispatch_semaphore_create(0);
   v47 = 0;
@@ -102,26 +102,26 @@ LABEL_6:
   block[1] = 3221225472;
   block[2] = __84__CCDifferentialUpdater_updaterForSet_withRequest_setWriter_changeNotifier_timeout___block_invoke_2;
   block[3] = &unk_1E85C3150;
-  v20 = v12;
+  v20 = requestCopy;
   v32 = v20;
-  v21 = v13;
+  v21 = writerCopy;
   v33 = v21;
   v39 = &v47;
-  v22 = v11;
+  v22 = setCopy;
   v34 = v22;
-  v23 = v14;
+  v23 = notifierCopy;
   v35 = v23;
   v24 = v18;
   v38 = v24;
   v25 = v15;
   v36 = v25;
   v26 = v17;
-  v41 = a7;
+  timeoutCopy = timeout;
   v37 = v26;
   v40 = v45;
   dispatch_async(v19, block);
 
-  v27 = dispatch_time(0, (a7 * 1000000000.0));
+  v27 = dispatch_time(0, (timeout * 1000000000.0));
   if (dispatch_semaphore_wait(v25, v27))
   {
     v28 = __biome_log_for_category();
@@ -254,15 +254,15 @@ LABEL_9:
   return v10 & 1;
 }
 
-- (CCDifferentialUpdater)initWithSet:(id)a3 request:(id)a4 setWriter:(id)a5 database:(id)a6 changeNotifier:(id)a7 completion:(id)a8
+- (CCDifferentialUpdater)initWithSet:(id)set request:(id)request setWriter:(id)writer database:(id)database changeNotifier:(id)notifier completion:(id)completion
 {
   v73 = *MEMORY[0x1E69E9840];
-  v65 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  setCopy = set;
+  requestCopy = request;
+  writerCopy = writer;
+  databaseCopy = database;
+  notifierCopy = notifier;
+  completionCopy = completion;
   v66.receiver = self;
   v66.super_class = CCDifferentialUpdater;
   v20 = [(CCDifferentialUpdater *)&v66 init];
@@ -273,21 +273,21 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v21 = [MEMORY[0x1E69939D8] updaterForDonateRequest:v15 toDatabase:v17];
+  v21 = [MEMORY[0x1E69939D8] updaterForDonateRequest:requestCopy toDatabase:databaseCopy];
   databaseUpdater = v20->_databaseUpdater;
   v20->_databaseUpdater = v21;
 
   if (v20->_databaseUpdater)
   {
-    v23 = [v15 description];
+    v23 = [requestCopy description];
     requestDescription = v20->_requestDescription;
     v20->_requestDescription = v23;
 
-    objc_storeStrong(&v20->_set, a3);
-    objc_storeStrong(&v20->_setWriter, a5);
+    objc_storeStrong(&v20->_set, set);
+    objc_storeStrong(&v20->_setWriter, writer);
     v20->_incrementalErrorCode = 0;
     v25 = v20->_databaseUpdater;
-    v26 = v15;
+    v26 = requestCopy;
     v27 = v25;
     if ([v26 isRemoteSync])
     {
@@ -295,26 +295,26 @@ LABEL_34:
 LABEL_24:
 
       v20->_updateType = v28;
-      v43 = MEMORY[0x1DA74EA40](v19);
+      v43 = MEMORY[0x1DA74EA40](completionCopy);
       completion = v20->_completion;
       v20->_completion = v43;
 
-      objc_storeStrong(&v20->_changeNotifier, a7);
+      objc_storeStrong(&v20->_changeNotifier, notifier);
       if (v20->_updateType != 3)
       {
-        v45 = [(CCDifferentialUpdater *)v20 _readLocalSourcePriorsFromDatabase];
+        _readLocalSourcePriorsFromDatabase = [(CCDifferentialUpdater *)v20 _readLocalSourcePriorsFromDatabase];
         priors = v20->_priors;
-        v20->_priors = v45;
+        v20->_priors = _readLocalSourcePriorsFromDatabase;
 
         v47 = __biome_log_for_category();
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
           set = v20->_set;
-          v49 = [(CCDonateServicePriors *)v20->_priors instanceCount];
+          instanceCount = [(CCDonateServicePriors *)v20->_priors instanceCount];
           *buf = 138412546;
-          v68 = set;
+          setCopy2 = set;
           v69 = 1024;
-          LODWORD(v70) = v49;
+          LODWORD(v70) = instanceCount;
           _os_log_impl(&dword_1DA444000, v47, OS_LOG_TYPE_DEFAULT, "Local source updating set: %@ with stored local item instance count: %u", buf, 0x12u);
         }
 
@@ -337,7 +337,7 @@ LABEL_24:
       {
         v53 = CCDifferentialUpdateTypeDescription(v20->_updateType);
         *buf = 138412546;
-        v68 = v20;
+        setCopy2 = v20;
         v69 = 2112;
         v70 = v53;
         _os_log_impl(&dword_1DA444000, v52, OS_LOG_TYPE_DEFAULT, "%@ initialized with update type: %@", buf, 0x16u);
@@ -358,37 +358,37 @@ LABEL_24:
       goto LABEL_24;
     }
 
-    v30 = [(CCDatabaseUpdater *)v27 priorLocalSourceValidityHash];
-    v64 = v30;
-    if (v30)
+    priorLocalSourceValidityHash = [(CCDatabaseUpdater *)v27 priorLocalSourceValidityHash];
+    v64 = priorLocalSourceValidityHash;
+    if (priorLocalSourceValidityHash)
     {
-      v31 = v30;
-      v32 = [(CCDatabaseUpdater *)v27 updatedLocalSourceValidityHash];
+      v31 = priorLocalSourceValidityHash;
+      updatedLocalSourceValidityHash = [(CCDatabaseUpdater *)v27 updatedLocalSourceValidityHash];
       v33 = v31;
-      v34 = v32;
-      logb = [v33 isEqual:v32];
+      v34 = updatedLocalSourceValidityHash;
+      logb = [v33 isEqual:updatedLocalSourceValidityHash];
 
       if (logb)
       {
-        v35 = [(CCDatabaseUpdater *)v27 priorLocalSourceVersion];
-        v58 = [v35 unsignedLongLongValue];
+        priorLocalSourceVersion = [(CCDatabaseUpdater *)v27 priorLocalSourceVersion];
+        unsignedLongLongValue = [priorLocalSourceVersion unsignedLongLongValue];
 
         logc = [(CCDatabaseUpdater *)v27 updatedLocalSourceVersion];
-        v36 = [logc unsignedLongLongValue];
+        unsignedLongLongValue2 = [logc unsignedLongLongValue];
 
-        v57 = v36;
-        if (v36 >= v58)
+        v57 = unsignedLongLongValue2;
+        if (unsignedLongLongValue2 >= unsignedLongLongValue)
         {
           loga = __biome_log_for_category();
           v56 = os_log_type_enabled(loga, OS_LOG_TYPE_DEFAULT);
-          if (v36 != v58)
+          if (unsignedLongLongValue2 != unsignedLongLongValue)
           {
             if (v56)
             {
               *buf = 134218240;
-              v68 = v58;
+              setCopy2 = unsignedLongLongValue;
               v69 = 2048;
-              v70 = v36;
+              v70 = unsignedLongLongValue2;
               _os_log_impl(&dword_1DA444000, loga, OS_LOG_TYPE_DEFAULT, "Validity and version evolution verified - set is eligible for incremental update from version (%llu) to (%llu)", buf, 0x16u);
             }
 
@@ -399,9 +399,9 @@ LABEL_24:
           if (v56)
           {
             *buf = 134218240;
-            v68 = v58;
+            setCopy2 = unsignedLongLongValue;
             v69 = 2048;
-            v70 = v58;
+            v70 = unsignedLongLongValue;
             _os_log_impl(&dword_1DA444000, loga, OS_LOG_TYPE_DEFAULT, "Update set version (%llu) is equal to the prior version (%llu) - update may either be skipped or completed in full", buf, 0x16u);
           }
 
@@ -415,9 +415,9 @@ LABEL_24:
           if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 134218240;
-            v68 = v57;
+            setCopy2 = v57;
             v69 = 2048;
-            v70 = v58;
+            v70 = unsignedLongLongValue;
             _os_log_impl(&dword_1DA444000, v37, OS_LOG_TYPE_DEFAULT, "Update set version (%llu) is not greater than prior version (%llu) - full update required", buf, 0x16u);
           }
 
@@ -431,15 +431,15 @@ LABEL_24:
         log = __biome_log_for_category();
         if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
         {
-          v59 = [(CCDatabaseUpdater *)v27 updatedLocalSourceValidityHash];
-          v41 = [v26 sourceValidity];
+          updatedLocalSourceValidityHash2 = [(CCDatabaseUpdater *)v27 updatedLocalSourceValidityHash];
+          sourceValidity = [v26 sourceValidity];
           *buf = 138412802;
-          v68 = v64;
+          setCopy2 = v64;
           v69 = 2112;
-          v70 = v59;
+          v70 = updatedLocalSourceValidityHash2;
           v71 = 2112;
-          v72 = v41;
-          v42 = v41;
+          v72 = sourceValidity;
+          v42 = sourceValidity;
           _os_log_impl(&dword_1DA444000, log, OS_LOG_TYPE_DEFAULT, "Validity hash mismatch detected {prior: %@ requested: %@ (%@)} - full update required", buf, 0x20u);
         }
 
@@ -487,16 +487,16 @@ LABEL_35:
 
 - (unint64_t)priorVersion
 {
-  v2 = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalSourceVersion];
-  v3 = [v2 unsignedLongLongValue];
+  priorLocalSourceVersion = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalSourceVersion];
+  unsignedLongLongValue = [priorLocalSourceVersion unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)addItemsWithContents:(id)a3 metaContents:(id)a4
+- (BOOL)addItemsWithContents:(id)contents metaContents:(id)metaContents
 {
-  v6 = a3;
-  v7 = a4;
+  contentsCopy = contents;
+  metaContentsCopy = metaContents;
   p_updateType = &self->_updateType;
   if (self->_updateType - 1 >= 2)
   {
@@ -521,8 +521,8 @@ LABEL_35:
     goto LABEL_10;
   }
 
-  v9 = [v6 count];
-  if (v9 != [v7 count])
+  v9 = [contentsCopy count];
+  if (v9 != [metaContentsCopy count])
   {
     v11 = __biome_log_for_category();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -536,16 +536,16 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  self->_clientAddOrUpdateCount += [v6 count];
-  v10 = [(CCDifferentialUpdater *)self _diffUpdateItemsWithContents:v6 metaContents:v7];
+  self->_clientAddOrUpdateCount += [contentsCopy count];
+  v10 = [(CCDifferentialUpdater *)self _diffUpdateItemsWithContents:contentsCopy metaContents:metaContentsCopy];
 LABEL_11:
 
   return v10;
 }
 
-- (BOOL)removeSourceItemIdentifier:(id)a3
+- (BOOL)removeSourceItemIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (self->_updateType == 2)
   {
     v5 = CCHash64String();
@@ -633,9 +633,9 @@ LABEL_8:
   return [(CCDataResourceWriter *)setWriter clearTombstoneStatus:&v4];
 }
 
-- (BOOL)waitForCommit:(BOOL)a3
+- (BOOL)waitForCommit:(BOOL)commit
 {
-  v3 = a3;
+  commitCopy = commit;
   v25 = *MEMORY[0x1E69E9840];
   v15 = 0;
   v16 = &v15;
@@ -694,7 +694,7 @@ LABEL_8:
       [(CCSetChangeNotifierProtocol *)self->_changeNotifier notifyChangeToSet:self->_set];
     }
 
-    if (v3)
+    if (commitCopy)
     {
       if (![(CCDifferentialUpdater *)self _tombstoneSet])
       {
@@ -717,12 +717,12 @@ LABEL_20:
   return v11 & 1;
 }
 
-- (BOOL)_finishWithRevisionToken:(id)a3 designateAsFullSet:(BOOL)a4
+- (BOOL)_finishWithRevisionToken:(id)token designateAsFullSet:(BOOL)set
 {
-  v4 = a4;
+  setCopy = set;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v4)
+  tokenCopy = token;
+  if (setCopy)
   {
     v7 = __biome_log_for_category();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -732,10 +732,10 @@ LABEL_20:
     }
 
 LABEL_6:
-    v8 = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalInstanceCount];
-    v9 = [v8 unsignedIntegerValue];
+    priorLocalInstanceCount = [(CCDatabaseUpdater *)self->_databaseUpdater priorLocalInstanceCount];
+    unsignedIntegerValue = [priorLocalInstanceCount unsignedIntegerValue];
 
-    if (v9)
+    if (unsignedIntegerValue)
     {
       clientAddOrUpdateCount = self->_clientAddOrUpdateCount;
       if (!clientAddOrUpdateCount)
@@ -755,7 +755,7 @@ LABEL_6:
         goto LABEL_24;
       }
 
-      if (v9 == ([(CCDifferentialUpdateCache *)self->_diffUpdateCache unmodifiedItemCount]== clientAddOrUpdateCount))
+      if (unsignedIntegerValue == ([(CCDifferentialUpdateCache *)self->_diffUpdateCache unmodifiedItemCount]== clientAddOrUpdateCount))
       {
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -788,7 +788,7 @@ LABEL_16:
   v12 = 0;
 LABEL_17:
   v23 = 0;
-  v14 = [(CCDatabaseUpdater *)self->_databaseUpdater finishAndDetectDelta:&v23 updateRevisionToken:v6 isFullSet:v12];
+  v14 = [(CCDatabaseUpdater *)self->_databaseUpdater finishAndDetectDelta:&v23 updateRevisionToken:tokenCopy isFullSet:v12];
   if (v14)
   {
     self->_deltaProduced = v23;
@@ -858,13 +858,13 @@ LABEL_34:
   [(CCDifferentialUpdater *)self _complete:0];
 }
 
-- (BOOL)_diffUpdateItemsWithContents:(id)a3 metaContents:(id)a4
+- (BOOL)_diffUpdateItemsWithContents:(id)contents metaContents:(id)metaContents
 {
   v83 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v61 = a4;
-  v62 = v6;
-  v59 = [v6 count];
+  contentsCopy = contents;
+  metaContentsCopy = metaContents;
+  v62 = contentsCopy;
+  v59 = [contentsCopy count];
   if (!v59)
   {
     v7 = 1;
@@ -884,10 +884,10 @@ LABEL_34:
     }
 
     v12 = *(v10 + 2560);
-    v13 = [(CCSet *)self->_set itemType];
+    itemType = [(CCSet *)self->_set itemType];
     v14 = [v62 objectAtIndex:v8];
     v76 = v9;
-    v15 = [v12 contentMessageForItemType:v13 data:v14 error:&v76];
+    v15 = [v12 contentMessageForItemType:itemType data:v14 error:&v76];
     v16 = v76;
 
     if (!v15)
@@ -905,10 +905,10 @@ LABEL_34:
     context = v11;
     v17 = v10;
     v18 = *(v10 + 2560);
-    v19 = [(CCSet *)self->_set itemType];
-    v20 = [v61 objectAtIndex:v8];
+    itemType2 = [(CCSet *)self->_set itemType];
+    v20 = [metaContentsCopy objectAtIndex:v8];
     v75 = v16;
-    v21 = [v18 metaContentMessageForItemType:v19 data:v20 error:&v75];
+    v21 = [v18 metaContentMessageForItemType:itemType2 data:v20 error:&v75];
     v22 = v75;
 
     if (!v21)
@@ -954,10 +954,10 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    v25 = [v21 sourceItemIdentifier];
+    sourceItemIdentifier = [v21 sourceItemIdentifier];
     v26 = CCHash64String();
 
-    v27 = [v24 instanceIdentifier];
+    instanceIdentifier = [v24 instanceIdentifier];
     v73 = 0;
     databaseUpdater = self->_databaseUpdater;
     v71 = 0;
@@ -965,13 +965,13 @@ LABEL_52:
     v69 = 0;
     v70 = 0;
     v68 = 0;
-    LODWORD(v25) = [(CCDatabaseUpdater *)databaseUpdater selectSourceItemIdHash:v26 outLocalInstanceRowId:&v72 outProvenanceRowId:&v71 outInstanceHash:&v70 outContentHash:&v69 outContentSequenceNumber:&v68 isDuplicate:&v73];
+    LODWORD(sourceItemIdentifier) = [(CCDatabaseUpdater *)databaseUpdater selectSourceItemIdHash:v26 outLocalInstanceRowId:&v72 outProvenanceRowId:&v71 outInstanceHash:&v70 outContentHash:&v69 outContentSequenceNumber:&v68 isDuplicate:&v73];
     v64 = v72;
     v67 = v71;
     v66 = v70;
     v63 = v69;
     v29 = v68;
-    if (!v25)
+    if (!sourceItemIdentifier)
     {
       goto LABEL_29;
     }
@@ -979,12 +979,12 @@ LABEL_52:
     v60 = v29;
     if (v73 == 1)
     {
-      v30 = __biome_log_for_category();
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      sharedIdentifier = __biome_log_for_category();
+      if (os_log_type_enabled(sharedIdentifier, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v78 = v26;
-        v31 = v30;
+        v31 = sharedIdentifier;
         v32 = "Donated set contains multiple duplicate sourceItemIds (hash: %@) not donated previously";
 LABEL_11:
         _os_log_error_impl(&dword_1DA444000, v31, OS_LOG_TYPE_ERROR, v32, buf, 0xCu);
@@ -996,19 +996,19 @@ LABEL_11:
 
     if (!v67)
     {
-      v30 = [v24 sharedIdentifier];
+      sharedIdentifier = [v24 sharedIdentifier];
       v53 = self->_databaseUpdater;
       loga = [v21 data];
-      v33 = [v15 data];
-      v34 = v27;
-      v35 = v33;
+      data = [v15 data];
+      v34 = instanceIdentifier;
+      v35 = data;
       v36 = v53;
       v54 = v34;
       v47 = [CCDatabaseUpdater insertItemWithSourceItemIdHash:v36 instanceHash:"insertItemWithSourceItemIdHash:instanceHash:contentHash:metaContent:content:isDuplicate:" contentHash:v26 metaContent:? content:? isDuplicate:?];
 
       if (v47)
       {
-        v27 = v54;
+        instanceIdentifier = v54;
         goto LABEL_32;
       }
 
@@ -1021,11 +1021,11 @@ LABEL_11:
         _os_log_error_impl(&dword_1DA444000, v41, OS_LOG_TYPE_ERROR, "Failed to insert new sourceItemId (hash: %@)", buf, 0xCu);
       }
 
-      v27 = v54;
+      instanceIdentifier = v54;
       goto LABEL_28;
     }
 
-    if ([v27 isEqual:v66])
+    if ([instanceIdentifier isEqual:v66])
     {
       if ([(CCDifferentialUpdateCache *)self->_diffUpdateCache addUnmodifiedSourceItemIdHash:v26])
       {
@@ -1035,12 +1035,12 @@ LABEL_33:
         goto LABEL_35;
       }
 
-      v30 = __biome_log_for_category();
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      sharedIdentifier = __biome_log_for_category();
+      if (os_log_type_enabled(sharedIdentifier, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
         v78 = v26;
-        v31 = v30;
+        v31 = sharedIdentifier;
         v32 = "Donated set contains multiple duplicate sourceItemIds (hash: %@) matching a previously donated item";
         goto LABEL_11;
       }
@@ -1050,13 +1050,13 @@ LABEL_32:
       goto LABEL_33;
     }
 
-    v30 = [v24 sharedIdentifier];
-    v37 = [v30 isEqual:v63];
+    sharedIdentifier = [v24 sharedIdentifier];
+    v37 = [sharedIdentifier isEqual:v63];
     v55 = self->_databaseUpdater;
     if (v37)
     {
-      v51 = [v21 data];
-      v56 = [(CCDatabaseUpdater *)v55 updateMetaContent:v51 localInstanceRowId:v64 provenanceRowId:v67 priorInstanceHash:v66 instanceHash:v27 contentHash:v30 contentSequenceNumber:v60 isDuplicate:&v73];
+      data2 = [v21 data];
+      v56 = [(CCDatabaseUpdater *)v55 updateMetaContent:data2 localInstanceRowId:v64 provenanceRowId:v67 priorInstanceHash:v66 instanceHash:instanceIdentifier contentHash:sharedIdentifier contentSequenceNumber:v60 isDuplicate:&v73];
 
       if (v56)
       {
@@ -1072,7 +1072,7 @@ LABEL_32:
       *buf = 138412546;
       v78 = v26;
       v79 = 2112;
-      v80 = v30;
+      v80 = sharedIdentifier;
       v38 = log;
       v39 = "Failed to update MetaContent for existing sourceItemId (hash: %@) with unchanged content (hash: %@)";
       v40 = 22;
@@ -1080,9 +1080,9 @@ LABEL_32:
 
     else
     {
-      v52 = [v15 data];
+      data3 = [v15 data];
       logb = [v21 data];
-      v57 = [(CCDatabaseUpdater *)v55 updateContent:v52 andMetaContent:logb localInstanceRowId:v64 priorProvenanceRowId:v67 contentHash:v30 instanceHash:v27 isDuplicate:&v73];
+      v57 = [(CCDatabaseUpdater *)v55 updateContent:data3 andMetaContent:logb localInstanceRowId:v64 priorProvenanceRowId:v67 contentHash:sharedIdentifier instanceHash:instanceIdentifier isDuplicate:&v73];
 
       if (v57)
       {
@@ -1110,14 +1110,14 @@ LABEL_29:
     if (v73 == 1)
     {
       v60 = v29;
-      v30 = __biome_log_for_category();
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
+      sharedIdentifier = __biome_log_for_category();
+      if (os_log_type_enabled(sharedIdentifier, OS_LOG_TYPE_FAULT))
       {
         *buf = 138412546;
         v78 = v26;
         v79 = 2112;
-        v80 = v27;
-        _os_log_fault_impl(&dword_1DA444000, v30, OS_LOG_TYPE_FAULT, "Skipping sourceItemId (hash: %@) for an item instance (hash: %@) that collides with an existing record unexpectedly", buf, 0x16u);
+        v80 = instanceIdentifier;
+        _os_log_fault_impl(&dword_1DA444000, sharedIdentifier, OS_LOG_TYPE_FAULT, "Skipping sourceItemId (hash: %@) for an item instance (hash: %@) that collides with an existing record unexpectedly", buf, 0x16u);
       }
 
       goto LABEL_32;
@@ -1148,13 +1148,13 @@ LABEL_54:
   return v7;
 }
 
-- (BOOL)updateRemoteDeviceUUID:(id)a3 options:(unsigned __int16)a4 mergeableDelta:(id)a5 peerDeviceSite:(id)a6 relayedDeviceSites:(id)a7
+- (BOOL)updateRemoteDeviceUUID:(id)d options:(unsigned __int16)options mergeableDelta:(id)delta peerDeviceSite:(id)site relayedDeviceSites:(id)sites
 {
   v68 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  deltaCopy = delta;
+  siteCopy = site;
+  sitesCopy = sites;
   if (self->_updateType != 3)
   {
     v16 = __biome_log_for_category();
@@ -1177,19 +1177,19 @@ LABEL_54:
 
 LABEL_14:
 
-    v17 = 0;
+    deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = 0;
     goto LABEL_15;
   }
 
-  if ((a4 & 0x100) == 0)
+  if ((options & 0x100) == 0)
   {
-    if ((a4 & 0xC0) != 0)
+    if ((options & 0xC0) != 0)
     {
-      if (v13 || (a4 & 0x40) == 0)
+      if (deltaCopy || (options & 0x40) == 0)
       {
         databaseUpdater = self->_databaseUpdater;
         v64 = 0;
-        v22 = [(CCDatabaseUpdater *)databaseUpdater registerRemoteDeviceSite:v14 peerDeviceUUID:v12 isRelayed:0 hasDeltas:v13 != 0 returningRowId:&v64];
+        v22 = [(CCDatabaseUpdater *)databaseUpdater registerRemoteDeviceSite:siteCopy peerDeviceUUID:dCopy isRelayed:0 hasDeltas:deltaCopy != 0 returningRowId:&v64];
         oslog = v64;
         if (oslog)
         {
@@ -1207,7 +1207,7 @@ LABEL_14:
           v63 = 0u;
           v60 = 0u;
           v61 = 0u;
-          obj = v15;
+          obj = sitesCopy;
           v24 = [obj countByEnumeratingWithState:&v60 objects:v67 count:16];
           if (v24)
           {
@@ -1221,7 +1221,7 @@ LABEL_14:
                   objc_enumerationMutation(obj);
                 }
 
-                if (([(CCDatabaseUpdater *)self->_databaseUpdater registerRemoteDeviceSite:*(*(&v60 + 1) + 8 * i) peerDeviceUUID:v12 isRelayed:1 hasDeltas:0 returningRowId:0]& 1) == 0)
+                if (([(CCDatabaseUpdater *)self->_databaseUpdater registerRemoteDeviceSite:*(*(&v60 + 1) + 8 * i) peerDeviceUUID:dCopy isRelayed:1 hasDeltas:0 returningRowId:0]& 1) == 0)
                 {
                   v31 = __biome_log_for_category();
                   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1243,33 +1243,33 @@ LABEL_14:
             }
           }
 
-          if ((a4 & 0x80) != 0)
+          if ((options & 0x80) != 0)
           {
             v32 = __biome_log_for_category();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412546;
-              *&buf[4] = v14;
+              *&buf[4] = siteCopy;
               *&buf[12] = 2112;
               *&buf[14] = obj;
               _os_log_impl(&dword_1DA444000, v32, OS_LOG_TYPE_DEFAULT, "Completed attestation-only update for peer device site: %@ relayed device sites: %@", buf, 0x16u);
             }
 
-            v17 = 1;
+            deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = 1;
           }
 
           else
           {
-            v27 = [(CCDatabaseUpdater *)self->_databaseUpdater selectAllDeviceRecords];
-            if (v27)
+            selectAllDeviceRecords = [(CCDatabaseUpdater *)self->_databaseUpdater selectAllDeviceRecords];
+            if (selectAllDeviceRecords)
             {
               v59 = 0;
-              obja = [objc_alloc(MEMORY[0x1E69939C0]) initWithDeviceRecords:v27 siteIdentifierFormat:1 error:&v59];
+              obja = [objc_alloc(MEMORY[0x1E69939C0]) initWithDeviceRecords:selectAllDeviceRecords siteIdentifierFormat:1 error:&v59];
               v28 = v59;
               if (obja)
               {
                 v58 = v28;
-                v29 = [objc_alloc(MEMORY[0x1E6994940]) initWithMergeableDelta:v13 error:&v58];
+                v29 = [objc_alloc(MEMORY[0x1E6994940]) initWithMergeableDelta:deltaCopy error:&v58];
                 v43 = v58;
 
                 if (v29)
@@ -1286,25 +1286,25 @@ LABEL_14:
                   v54 = v42;
                   v41 = oslog;
                   v55 = v41;
-                  v56 = self;
+                  selfCopy = self;
                   v57 = buf;
                   [v29 enumerateAtomsWithOptions:0 usingBlock:v53];
                   if (*(*&buf[8] + 24))
                   {
-                    v17 = 0;
+                    deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = 0;
                   }
 
                   else
                   {
-                    v34 = [v29 vectors];
-                    v35 = [v34 contents];
-                    v36 = [v35 mutableCopy];
+                    vectors = [v29 vectors];
+                    contents = [vectors contents];
+                    v36 = [contents mutableCopy];
 
-                    v37 = [v29 vectors];
-                    v38 = [v37 removals];
-                    [v36 unionStateVector:v38];
+                    vectors2 = [v29 vectors];
+                    removals = [vectors2 removals];
+                    [v36 unionStateVector:removals];
 
-                    v39 = [v36 allSiteIdentifiers];
+                    allSiteIdentifiers = [v36 allSiteIdentifiers];
                     v47[0] = MEMORY[0x1E69E9820];
                     v47[1] = 3221225472;
                     v47[2] = __105__CCDifferentialUpdater_updateRemoteDeviceUUID_options_mergeableDelta_peerDeviceSite_relayedDeviceSites___block_invoke_58;
@@ -1313,17 +1313,17 @@ LABEL_14:
                     v49 = v41;
                     v40 = v36;
                     v50 = v40;
-                    v51 = self;
+                    selfCopy2 = self;
                     v52 = buf;
-                    [v39 enumerateObjectsUsingBlock:v47];
+                    [allSiteIdentifiers enumerateObjectsUsingBlock:v47];
                     if (*(*&buf[8] + 24))
                     {
-                      v17 = 0;
+                      deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = 0;
                     }
 
                     else
                     {
-                      v17 = [(CCDatabaseUpdater *)self->_databaseUpdater deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord];
+                      deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = [(CCDatabaseUpdater *)self->_databaseUpdater deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord];
                     }
                   }
 
@@ -1338,7 +1338,7 @@ LABEL_14:
                     [CCDifferentialUpdater updateRemoteDeviceUUID:v43 options:self mergeableDelta:? peerDeviceSite:? relayedDeviceSites:?];
                   }
 
-                  v17 = 0;
+                  deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = 0;
                 }
 
                 v28 = v43;
@@ -1352,13 +1352,13 @@ LABEL_14:
                   [CCDifferentialUpdater updateRemoteDeviceUUID:options:mergeableDelta:peerDeviceSite:relayedDeviceSites:];
                 }
 
-                v17 = 0;
+                deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = 0;
               }
             }
 
             else
             {
-              v17 = 0;
+              deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = 0;
             }
           }
 
@@ -1392,7 +1392,7 @@ LABEL_14:
     }
 
 LABEL_45:
-    v17 = 0;
+    deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = 0;
 LABEL_46:
 
     goto LABEL_15;
@@ -1402,15 +1402,15 @@ LABEL_46:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v12;
+    *&buf[4] = dCopy;
     _os_log_impl(&dword_1DA444000, v20, OS_LOG_TYPE_DEFAULT, "Expiring remote deviceUUID: %@", buf, 0xCu);
   }
 
-  v17 = [(CCDatabaseUpdater *)self->_databaseUpdater expireRemoteDeviceUUID:v12];
+  deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord = [(CCDatabaseUpdater *)self->_databaseUpdater expireRemoteDeviceUUID:dCopy];
 LABEL_15:
 
   v18 = *MEMORY[0x1E69E9840];
-  return v17;
+  return deleteContentRecordsNoLongerReferencedByAnyProvenanceRecord;
 }
 
 void __105__CCDifferentialUpdater_updateRemoteDeviceUUID_options_mergeableDelta_peerDeviceSite_relayedDeviceSites___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -1662,7 +1662,7 @@ void __84__CCDifferentialUpdater_updaterForSet_withRequest_setWriter_changeNotif
 - (void)_tombstoneSet
 {
   v1 = *MEMORY[0x1E69E9840];
-  v2 = OUTLINED_FUNCTION_7_0(a1);
+  v2 = OUTLINED_FUNCTION_7_0(self);
   v3 = CCDifferentialUpdateTypeDescription(v2);
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_0_0();

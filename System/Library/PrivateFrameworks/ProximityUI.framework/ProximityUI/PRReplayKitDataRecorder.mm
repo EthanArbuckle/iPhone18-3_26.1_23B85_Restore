@@ -3,7 +3,7 @@
 - (id)stopAndSave;
 - (id)writeToURL;
 - (void)discardRecording;
-- (void)saveScreenRecordingToURL:(id)a3;
+- (void)saveScreenRecordingToURL:(id)l;
 - (void)start;
 - (void)stopAndDiscard;
 @end
@@ -17,8 +17,8 @@
   v2 = [(PRDataRecorder *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CDB6A8] sharedRecorder];
-    [v3 setMicrophoneEnabled:0];
+    mEMORY[0x277CDB6A8] = [MEMORY[0x277CDB6A8] sharedRecorder];
+    [mEMORY[0x277CDB6A8] setMicrophoneEnabled:0];
   }
 
   return v2;
@@ -27,8 +27,8 @@
 - (void)start
 {
   [(PRReplayKitDataRecorder *)self stopAndDiscard];
-  v2 = [MEMORY[0x277CDB6A8] sharedRecorder];
-  [v2 startRecordingWithHandler:&__block_literal_global_2];
+  mEMORY[0x277CDB6A8] = [MEMORY[0x277CDB6A8] sharedRecorder];
+  [mEMORY[0x277CDB6A8] startRecordingWithHandler:&__block_literal_global_2];
 }
 
 void __32__PRReplayKitDataRecorder_start__block_invoke(uint64_t a1, void *a2)
@@ -42,10 +42,10 @@ void __32__PRReplayKitDataRecorder_start__block_invoke(uint64_t a1, void *a2)
 
 - (id)stopAndSave
 {
-  v3 = [(PRReplayKitDataRecorder *)self writeToURL];
+  writeToURL = [(PRReplayKitDataRecorder *)self writeToURL];
   [(PRReplayKitDataRecorder *)self stopAndDiscard];
 
-  return v3;
+  return writeToURL;
 }
 
 - (void)stopAndDiscard
@@ -72,12 +72,12 @@ void __32__PRReplayKitDataRecorder_start__block_invoke(uint64_t a1, void *a2)
   return v9;
 }
 
-- (void)saveScreenRecordingToURL:(id)a3
+- (void)saveScreenRecordingToURL:(id)l
 {
   v3 = MEMORY[0x277CDB6A8];
-  v4 = a3;
-  v5 = [v3 sharedRecorder];
-  [v5 stopRecordingWithOutputURL:v4 completionHandler:&__block_literal_global_11];
+  lCopy = l;
+  sharedRecorder = [v3 sharedRecorder];
+  [sharedRecorder stopRecordingWithOutputURL:lCopy completionHandler:&__block_literal_global_11];
 }
 
 void __52__PRReplayKitDataRecorder_saveScreenRecordingToURL___block_invoke(uint64_t a1, uint64_t a2)
@@ -90,11 +90,11 @@ void __52__PRReplayKitDataRecorder_saveScreenRecordingToURL___block_invoke(uint6
 
 - (void)discardRecording
 {
-  v2 = [MEMORY[0x277CDB6A8] sharedRecorder];
-  [v2 stopRecordingWithHandler:&__block_literal_global_17];
+  mEMORY[0x277CDB6A8] = [MEMORY[0x277CDB6A8] sharedRecorder];
+  [mEMORY[0x277CDB6A8] stopRecordingWithHandler:&__block_literal_global_17];
 
-  v3 = [MEMORY[0x277CDB6A8] sharedRecorder];
-  [v3 discardRecordingWithHandler:&__block_literal_global_20];
+  mEMORY[0x277CDB6A8]2 = [MEMORY[0x277CDB6A8] sharedRecorder];
+  [mEMORY[0x277CDB6A8]2 discardRecordingWithHandler:&__block_literal_global_20];
 }
 
 @end

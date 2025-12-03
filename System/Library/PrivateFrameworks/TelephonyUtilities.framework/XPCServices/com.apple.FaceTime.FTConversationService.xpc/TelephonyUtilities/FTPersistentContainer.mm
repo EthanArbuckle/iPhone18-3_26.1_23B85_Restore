@@ -1,7 +1,7 @@
 @interface FTPersistentContainer
-- (FTPersistentContainer)initWithStoreType:(int64_t)a3;
+- (FTPersistentContainer)initWithStoreType:(int64_t)type;
 - (NSManagedObjectContext)managedObjectContext;
-- (void)loadPersistentStoresWithCompletionHandler:(id)a3;
+- (void)loadPersistentStoresWithCompletionHandler:(id)handler;
 @end
 
 @implementation FTPersistentContainer
@@ -11,9 +11,9 @@
   managedObjectContext = self->_managedObjectContext;
   if (!managedObjectContext)
   {
-    v4 = [(FTPersistentContainer *)self newBackgroundContext];
+    newBackgroundContext = [(FTPersistentContainer *)self newBackgroundContext];
     v5 = self->_managedObjectContext;
-    self->_managedObjectContext = v4;
+    self->_managedObjectContext = newBackgroundContext;
 
     managedObjectContext = self->_managedObjectContext;
   }
@@ -21,7 +21,7 @@
   return managedObjectContext;
 }
 
-- (FTPersistentContainer)initWithStoreType:(int64_t)a3
+- (FTPersistentContainer)initWithStoreType:(int64_t)type
 {
   v16.receiver = self;
   v16.super_class = FTPersistentContainer;
@@ -32,7 +32,7 @@
     userConfiguration = v4->_userConfiguration;
     v4->_userConfiguration = v5;
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v13 = FTCServiceLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -43,7 +43,7 @@
       v9 = +[NSPersistentStoreDescription inMemoryPersistentStoreDescription];
     }
 
-    else if (a3)
+    else if (type)
     {
       v9 = 0;
     }
@@ -90,17 +90,17 @@
   return v4;
 }
 
-- (void)loadPersistentStoresWithCompletionHandler:(id)a3
+- (void)loadPersistentStoresWithCompletionHandler:(id)handler
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100001890;
   v5[3] = &unk_1000183F0;
-  v6 = self;
-  v7 = a3;
-  v4.receiver = v6;
+  selfCopy = self;
+  handlerCopy = handler;
+  v4.receiver = selfCopy;
   v4.super_class = FTPersistentContainer;
-  v3 = v7;
+  v3 = handlerCopy;
   [(FTPersistentContainer *)&v4 loadPersistentStoresWithCompletionHandler:v5];
 }
 

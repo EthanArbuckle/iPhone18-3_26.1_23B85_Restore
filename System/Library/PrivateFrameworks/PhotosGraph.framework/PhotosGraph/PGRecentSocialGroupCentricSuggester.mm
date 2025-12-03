@@ -1,31 +1,31 @@
 @interface PGRecentSocialGroupCentricSuggester
-- (BOOL)canGenerateSuggestionWithAsset:(id)a3 onDate:(id)a4;
-- (id)assetsMatchingSocialGroup:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5 matchingAssetUUID:(id)a6;
-- (id)assetsWithPersonsBetweenStartDate:(id)a3 andEndDate:(id)a4 matchAssetUUID:(id)a5;
-- (id)longTimeNoSeeSocialGroupPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4;
-- (id)nextLongTimeNoSeeSocialGroupPotentialSuggestionWithProgress:(id)a3;
-- (id)nextSocialGroupPotentialSuggestionWithProgress:(id)a3;
-- (id)nextSuggestionWithProgress:(id)a3;
-- (id)potentialSuggestionsWithOptions:(id)a3 progress:(id)a4;
-- (id)socialGroupPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4;
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4;
+- (BOOL)canGenerateSuggestionWithAsset:(id)asset onDate:(id)date;
+- (id)assetsMatchingSocialGroup:(id)group betweenStartDate:(id)date andEndDate:(id)endDate matchingAssetUUID:(id)d;
+- (id)assetsWithPersonsBetweenStartDate:(id)date andEndDate:(id)endDate matchAssetUUID:(id)d;
+- (id)longTimeNoSeeSocialGroupPotentialSuggestionsWithOptions:(id)options progress:(id)progress;
+- (id)nextLongTimeNoSeeSocialGroupPotentialSuggestionWithProgress:(id)progress;
+- (id)nextSocialGroupPotentialSuggestionWithProgress:(id)progress;
+- (id)nextSuggestionWithProgress:(id)progress;
+- (id)potentialSuggestionsWithOptions:(id)options progress:(id)progress;
+- (id)socialGroupPotentialSuggestionsWithOptions:(id)options progress:(id)progress;
+- (id)suggestionsWithOptions:(id)options progress:(id)progress;
 - (id)verifiedPersons;
 - (void)reset;
-- (void)startSuggestingWithOptions:(id)a3;
-- (void)usePotentialSuggestions:(id)a3;
+- (void)startSuggestingWithOptions:(id)options;
+- (void)usePotentialSuggestions:(id)suggestions;
 @end
 
 @implementation PGRecentSocialGroupCentricSuggester
 
-- (void)usePotentialSuggestions:(id)a3
+- (void)usePotentialSuggestions:(id)suggestions
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suggestionsCopy = suggestions;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [suggestionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -37,14 +37,14 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(suggestionsCopy);
         }
 
         [(NSMutableSet *)self->_usedPotentialSuggestions addObject:*(*(&v10 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [suggestionsCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -53,28 +53,28 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)assetsMatchingSocialGroup:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5 matchingAssetUUID:(id)a6
+- (id)assetsMatchingSocialGroup:(id)group betweenStartDate:(id)date andEndDate:(id)endDate matchingAssetUUID:(id)d
 {
   v37 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a3;
-  v14 = [(PGAbstractSuggester *)self session];
-  v15 = [v14 loggingConnection];
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  groupCopy = group;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v34 = v10;
+    v34 = dateCopy;
     v35 = 2112;
-    v36 = v11;
-    _os_log_impl(&dword_22F0FC000, v15, OS_LOG_TYPE_DEFAULT, "Recent SocialGroup Centric: Computing eligible socialgroup assets between %@ and %@", buf, 0x16u);
+    v36 = endDateCopy;
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent SocialGroup Centric: Computing eligible socialgroup assets between %@ and %@", buf, 0x16u);
   }
 
-  v16 = [(PGRecentSocialGroupCentricSuggester *)self assetsWithPersonsBetweenStartDate:v10 andEndDate:v11 matchAssetUUID:v12];
+  v16 = [(PGRecentSocialGroupCentricSuggester *)self assetsWithPersonsBetweenStartDate:dateCopy andEndDate:endDateCopy matchAssetUUID:dCopy];
 
-  v17 = [MEMORY[0x277CBEB98] setWithArray:v13];
-  v18 = [v13 count];
+  v17 = [MEMORY[0x277CBEB98] setWithArray:groupCopy];
+  v18 = [groupCopy count];
 
   v19 = MEMORY[0x277CCAC30];
   v27 = MEMORY[0x277D85DD0];
@@ -87,7 +87,7 @@
   v21 = [v19 predicateWithBlock:&v27];
   v22 = [v16 filteredArrayUsingPredicate:{v21, v27, v28, v29, v30}];
 
-  v23 = v15;
+  v23 = loggingConnection;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
     v24 = [v22 count];
@@ -129,45 +129,45 @@ BOOL __111__PGRecentSocialGroupCentricSuggester_assetsMatchingSocialGroup_betwee
   return v8;
 }
 
-- (id)assetsWithPersonsBetweenStartDate:(id)a3 andEndDate:(id)a4 matchAssetUUID:(id)a5
+- (id)assetsWithPersonsBetweenStartDate:(id)date andEndDate:(id)endDate matchAssetUUID:(id)d
 {
   v71 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
   eligibleAssets = self->_eligibleAssets;
   if (!eligibleAssets)
   {
-    v64 = [(PGAbstractSuggester *)self session];
-    v63 = [v64 photoLibrary];
-    v62 = [MEMORY[0x277CD97A8] clsPrefetchOptionsForKeyAsset];
+    session = [(PGAbstractSuggester *)self session];
+    photoLibrary = [session photoLibrary];
+    clsPrefetchOptionsForKeyAsset = [MEMORY[0x277CD97A8] clsPrefetchOptionsForKeyAsset];
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v55 = objc_autoreleasePoolPush();
-    v13 = [objc_opt_class() noVideoPredicate];
-    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v13, 0}];
-    if (v8)
+    noVideoPredicate = [objc_opt_class() noVideoPredicate];
+    v14 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{noVideoPredicate, 0}];
+    if (dateCopy)
     {
-      v15 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated >= %@", v8];
-      [v14 addObject:v15];
+      dateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated >= %@", dateCopy];
+      [v14 addObject:dateCopy];
     }
 
     v59 = v14;
-    if (v9)
+    if (endDateCopy)
     {
-      v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated <= %@", v9];
-      [v14 addObject:v16];
+      endDateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"dateCreated <= %@", endDateCopy];
+      [v14 addObject:endDateCopy];
     }
 
-    if (v10)
+    if (dCopy)
     {
-      v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", v10];
-      [v14 addObject:v17];
+      dCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"uuid == %@", dCopy];
+      [v14 addObject:dCopy];
     }
 
-    v57 = v9;
-    v58 = v8;
-    v56 = v10;
-    v54 = v13;
+    v57 = endDateCopy;
+    v58 = dateCopy;
+    v56 = dCopy;
+    v54 = noVideoPredicate;
     if ([v14 count] <= 1)
     {
       [v14 firstObject];
@@ -183,7 +183,7 @@ BOOL __111__PGRecentSocialGroupCentricSuggester_assetsMatchingSocialGroup_betwee
     [v18 setFetchPropertySets:v19];
 
     [v18 setChunkSizeForFetch:500];
-    v51 = [(PGRecentSocialGroupCentricSuggester *)self verifiedPersons];
+    verifiedPersons = [(PGRecentSocialGroupCentricSuggester *)self verifiedPersons];
     v52 = v18;
     v61 = [MEMORY[0x277CD97A8] fetchAssetsForPersons:? options:?];
     v20 = [v61 count];
@@ -209,13 +209,13 @@ BOOL __111__PGRecentSocialGroupCentricSuggester_assetsMatchingSocialGroup_betwee
         v25 = [v61 objectsAtIndexes:v24];
 
         v26 = objc_alloc(MEMORY[0x277CD98D0]);
-        v27 = [v61 fetchType];
-        v28 = [v61 fetchPropertySets];
-        v29 = [v26 initWithObjects:v25 photoLibrary:v63 fetchType:v27 fetchPropertySets:v28 identifier:0 registerIfNeeded:0];
+        fetchType = [v61 fetchType];
+        fetchPropertySets = [v61 fetchPropertySets];
+        v29 = [v26 initWithObjects:v25 photoLibrary:photoLibrary fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:0 registerIfNeeded:0];
 
         v30 = MEMORY[0x277CD97A8];
-        v31 = [v64 curationContext];
-        v32 = [v30 clsAllAssetsFromFetchResult:v29 prefetchOptions:v62 curationContext:v31];
+        curationContext = [session curationContext];
+        v32 = [v30 clsAllAssetsFromFetchResult:v29 prefetchOptions:clsPrefetchOptionsForKeyAsset curationContext:curationContext];
 
         v68 = 0u;
         v69 = 0u;
@@ -239,8 +239,8 @@ BOOL __111__PGRecentSocialGroupCentricSuggester_assetsMatchingSocialGroup_betwee
               v38 = *(*(&v66 + 1) + 8 * i);
               if ([(PGAbstractSuggester *)self assetIsValidForSuggesting:v38])
               {
-                v39 = [v38 uuid];
-                [v12 addObject:v39];
+                uuid = [v38 uuid];
+                [v12 addObject:uuid];
               }
             }
 
@@ -266,15 +266,15 @@ BOOL __111__PGRecentSocialGroupCentricSuggester_assetsMatchingSocialGroup_betwee
 
     v43 = [MEMORY[0x277CD97A8] fetchAssetsWithOptions:v41];
     v44 = MEMORY[0x277CD97A8];
-    v45 = [v64 curationContext];
-    v46 = [v44 clsAllAssetsFromFetchResult:v43 prefetchOptions:v62 curationContext:v45];
+    curationContext2 = [session curationContext];
+    v46 = [v44 clsAllAssetsFromFetchResult:v43 prefetchOptions:clsPrefetchOptionsForKeyAsset curationContext:curationContext2];
     v47 = self->_eligibleAssets;
     self->_eligibleAssets = v46;
 
     eligibleAssets = self->_eligibleAssets;
-    v9 = v57;
-    v8 = v58;
-    v10 = v56;
+    endDateCopy = v57;
+    dateCopy = v58;
+    dCopy = v56;
   }
 
   v48 = eligibleAssets;
@@ -285,32 +285,32 @@ BOOL __111__PGRecentSocialGroupCentricSuggester_assetsMatchingSocialGroup_betwee
 
 - (id)verifiedPersons
 {
-  v2 = [(PGAbstractSuggester *)self session];
-  v3 = [v2 photoLibrary];
-  v4 = [v3 librarySpecificFetchOptions];
+  session = [(PGAbstractSuggester *)self session];
+  photoLibrary = [session photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v4 setPersonContext:1];
-  v5 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:v4];
-  v6 = [v5 fetchedObjects];
+  [librarySpecificFetchOptions setPersonContext:1];
+  v5 = [MEMORY[0x277CD9938] fetchPersonsWithOptions:librarySpecificFetchOptions];
+  fetchedObjects = [v5 fetchedObjects];
 
-  return v6;
+  return fetchedObjects;
 }
 
-- (id)potentialSuggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)potentialSuggestionsWithOptions:(id)options progress:(id)progress
 {
-  v5 = a3;
+  optionsCopy = options;
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v7 = [(PGAbstractSuggester *)self session];
-  v8 = [v7 workingContext];
+  session = [(PGAbstractSuggester *)self session];
+  workingContext = [session workingContext];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __80__PGRecentSocialGroupCentricSuggester_potentialSuggestionsWithOptions_progress___block_invoke;
   v14[3] = &unk_27888A638;
-  v15 = v5;
+  v15 = optionsCopy;
   v9 = v6;
   v16 = v9;
-  v10 = v5;
-  [v8 performSynchronousConcurrentGraphReadUsingBlock:v14];
+  v10 = optionsCopy;
+  [workingContext performSynchronousConcurrentGraphReadUsingBlock:v14];
 
   v11 = v16;
   v12 = v9;
@@ -504,16 +504,16 @@ LABEL_38:
   v43 = *MEMORY[0x277D85DE8];
 }
 
-- (id)nextSocialGroupPotentialSuggestionWithProgress:(id)a3
+- (id)nextSocialGroupPotentialSuggestionWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   socialGroupPotentialSuggestionEnumerator = self->_socialGroupPotentialSuggestionEnumerator;
   if (!socialGroupPotentialSuggestionEnumerator)
   {
     socialGroupPotentialSuggestions = self->_socialGroupPotentialSuggestions;
     if (!socialGroupPotentialSuggestions)
     {
-      v7 = [(PGRecentSocialGroupCentricSuggester *)self socialGroupPotentialSuggestionsWithOptions:self->_options progress:v4];
+      v7 = [(PGRecentSocialGroupCentricSuggester *)self socialGroupPotentialSuggestionsWithOptions:self->_options progress:progressCopy];
       v8 = self->_socialGroupPotentialSuggestions;
       self->_socialGroupPotentialSuggestions = v7;
 
@@ -521,28 +521,28 @@ LABEL_38:
       socialGroupPotentialSuggestions = self->_socialGroupPotentialSuggestions;
     }
 
-    v9 = [(NSArray *)socialGroupPotentialSuggestions objectEnumerator];
+    objectEnumerator = [(NSArray *)socialGroupPotentialSuggestions objectEnumerator];
     v10 = self->_socialGroupPotentialSuggestionEnumerator;
-    self->_socialGroupPotentialSuggestionEnumerator = v9;
+    self->_socialGroupPotentialSuggestionEnumerator = objectEnumerator;
 
     socialGroupPotentialSuggestionEnumerator = self->_socialGroupPotentialSuggestionEnumerator;
   }
 
-  v11 = [(NSEnumerator *)socialGroupPotentialSuggestionEnumerator nextObject];
+  nextObject = [(NSEnumerator *)socialGroupPotentialSuggestionEnumerator nextObject];
 
-  return v11;
+  return nextObject;
 }
 
-- (id)nextLongTimeNoSeeSocialGroupPotentialSuggestionWithProgress:(id)a3
+- (id)nextLongTimeNoSeeSocialGroupPotentialSuggestionWithProgress:(id)progress
 {
-  v4 = a3;
+  progressCopy = progress;
   longTimeNoSeeSocialGroupPotentialSuggestionEnumerator = self->_longTimeNoSeeSocialGroupPotentialSuggestionEnumerator;
   if (!longTimeNoSeeSocialGroupPotentialSuggestionEnumerator)
   {
     longTimeNoSeeSocialGroupPotentialSuggestions = self->_longTimeNoSeeSocialGroupPotentialSuggestions;
     if (!longTimeNoSeeSocialGroupPotentialSuggestions)
     {
-      v7 = [(PGRecentSocialGroupCentricSuggester *)self longTimeNoSeeSocialGroupPotentialSuggestionsWithOptions:self->_options progress:v4];
+      v7 = [(PGRecentSocialGroupCentricSuggester *)self longTimeNoSeeSocialGroupPotentialSuggestionsWithOptions:self->_options progress:progressCopy];
       v8 = self->_longTimeNoSeeSocialGroupPotentialSuggestions;
       self->_longTimeNoSeeSocialGroupPotentialSuggestions = v7;
 
@@ -550,23 +550,23 @@ LABEL_38:
       longTimeNoSeeSocialGroupPotentialSuggestions = self->_longTimeNoSeeSocialGroupPotentialSuggestions;
     }
 
-    v9 = [(NSArray *)longTimeNoSeeSocialGroupPotentialSuggestions objectEnumerator];
+    objectEnumerator = [(NSArray *)longTimeNoSeeSocialGroupPotentialSuggestions objectEnumerator];
     v10 = self->_longTimeNoSeeSocialGroupPotentialSuggestionEnumerator;
-    self->_longTimeNoSeeSocialGroupPotentialSuggestionEnumerator = v9;
+    self->_longTimeNoSeeSocialGroupPotentialSuggestionEnumerator = objectEnumerator;
 
     longTimeNoSeeSocialGroupPotentialSuggestionEnumerator = self->_longTimeNoSeeSocialGroupPotentialSuggestionEnumerator;
   }
 
-  v11 = [(NSEnumerator *)longTimeNoSeeSocialGroupPotentialSuggestionEnumerator nextObject];
+  nextObject = [(NSEnumerator *)longTimeNoSeeSocialGroupPotentialSuggestionEnumerator nextObject];
 
-  return v11;
+  return nextObject;
 }
 
-- (id)socialGroupPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)socialGroupPotentialSuggestionsWithOptions:(id)options progress:(id)progress
 {
   v69 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v59 = 0;
   v60 = &v59;
   v61 = 0x2020000000;
@@ -575,8 +575,8 @@ LABEL_38:
   v56 = &v55;
   v57 = 0x2020000000;
   v58 = 0;
-  v43 = _Block_copy(v6);
-  v39 = v6;
+  v43 = _Block_copy(progressCopy);
+  v39 = progressCopy;
   if (v43)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -606,7 +606,7 @@ LABEL_17:
     }
   }
 
-  v42 = self;
+  selfCopy = self;
   if (!self->_allPotentialSuggestions)
   {
     v49[0] = MEMORY[0x277D85DD0];
@@ -617,7 +617,7 @@ LABEL_17:
     v51 = &v55;
     v52 = &v59;
     v53 = 0x3F847AE147AE147BLL;
-    v10 = [(PGRecentSocialGroupCentricSuggester *)self potentialSuggestionsWithOptions:v44 progress:v49];
+    v10 = [(PGRecentSocialGroupCentricSuggester *)self potentialSuggestionsWithOptions:optionsCopy progress:v49];
     allPotentialSuggestions = self->_allPotentialSuggestions;
     self->_allPotentialSuggestions = v10;
 
@@ -717,13 +717,13 @@ LABEL_18:
         if (([(NSMutableSet *)self->_usedPotentialSuggestions containsObject:v21]& 1) == 0)
         {
           v24 = objc_autoreleasePoolPush();
-          v25 = [v44 additionalOptions];
-          v26 = [v25 objectForKeyedSubscript:@"assetUUID"];
+          additionalOptions = [optionsCopy additionalOptions];
+          v26 = [additionalOptions objectForKeyedSubscript:@"assetUUID"];
 
-          v27 = [v21 personLocalIdentifiers];
-          v28 = [v44 universalStartDate];
-          v29 = [v44 universalEndDate];
-          v30 = [(PGRecentSocialGroupCentricSuggester *)v42 assetsMatchingSocialGroup:v27 betweenStartDate:v28 andEndDate:v29 matchingAssetUUID:v26];
+          personLocalIdentifiers = [v21 personLocalIdentifiers];
+          universalStartDate = [optionsCopy universalStartDate];
+          universalEndDate = [optionsCopy universalEndDate];
+          v30 = [(PGRecentSocialGroupCentricSuggester *)selfCopy assetsMatchingSocialGroup:personLocalIdentifiers betweenStartDate:universalStartDate andEndDate:universalEndDate matchingAssetUUID:v26];
 
           if ([v30 count])
           {
@@ -732,7 +732,7 @@ LABEL_18:
           }
 
           objc_autoreleasePoolPop(v24);
-          self = v42;
+          self = selfCopy;
         }
 
         v19 = v17 + v19;
@@ -818,11 +818,11 @@ void __91__PGRecentSocialGroupCentricSuggester_socialGroupPotentialSuggestionsWi
   }
 }
 
-- (id)longTimeNoSeeSocialGroupPotentialSuggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)longTimeNoSeeSocialGroupPotentialSuggestionsWithOptions:(id)options progress:(id)progress
 {
   v72 = *MEMORY[0x277D85DE8];
-  v45 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  progressCopy = progress;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2020000000;
@@ -831,8 +831,8 @@ void __91__PGRecentSocialGroupCentricSuggester_socialGroupPotentialSuggestionsWi
   v59 = &v58;
   v60 = 0x2020000000;
   v61 = 0;
-  v47 = _Block_copy(v6);
-  v42 = v6;
+  v47 = _Block_copy(progressCopy);
+  v42 = progressCopy;
   if (v47)
   {
     Current = CFAbsoluteTimeGetCurrent();
@@ -862,7 +862,7 @@ LABEL_17:
     }
   }
 
-  v46 = self;
+  selfCopy = self;
   if (!self->_allPotentialSuggestions)
   {
     v52[0] = MEMORY[0x277D85DD0];
@@ -873,7 +873,7 @@ LABEL_17:
     v54 = &v58;
     v55 = &v62;
     v56 = 0x3F847AE147AE147BLL;
-    v10 = [(PGRecentSocialGroupCentricSuggester *)self potentialSuggestionsWithOptions:v45 progress:v52];
+    v10 = [(PGRecentSocialGroupCentricSuggester *)self potentialSuggestionsWithOptions:optionsCopy progress:v52];
     allPotentialSuggestions = self->_allPotentialSuggestions;
     self->_allPotentialSuggestions = v10;
 
@@ -972,20 +972,20 @@ LABEL_18:
 
         if (([(NSMutableSet *)self->_usedPotentialSuggestions containsObject:v21]& 1) == 0)
         {
-          v24 = [v21 notSeenSinceDate];
-          v25 = v24 == 0;
+          notSeenSinceDate = [v21 notSeenSinceDate];
+          v25 = notSeenSinceDate == 0;
 
-          self = v46;
+          self = selfCopy;
           if (!v25)
           {
             v26 = objc_autoreleasePoolPush();
-            v27 = [v45 additionalOptions];
-            v28 = [v27 objectForKeyedSubscript:@"assetUUID"];
+            additionalOptions = [optionsCopy additionalOptions];
+            v28 = [additionalOptions objectForKeyedSubscript:@"assetUUID"];
 
-            v29 = [v21 personLocalIdentifiers];
-            v30 = [v45 universalStartDate];
-            v31 = [v45 universalEndDate];
-            v32 = [(PGRecentSocialGroupCentricSuggester *)v46 assetsMatchingSocialGroup:v29 betweenStartDate:v30 andEndDate:v31 matchingAssetUUID:v28];
+            personLocalIdentifiers = [v21 personLocalIdentifiers];
+            universalStartDate = [optionsCopy universalStartDate];
+            universalEndDate = [optionsCopy universalEndDate];
+            v32 = [(PGRecentSocialGroupCentricSuggester *)selfCopy assetsMatchingSocialGroup:personLocalIdentifiers betweenStartDate:universalStartDate andEndDate:universalEndDate matchingAssetUUID:v28];
 
             if ([v32 count])
             {
@@ -994,7 +994,7 @@ LABEL_18:
             }
 
             objc_autoreleasePoolPop(v26);
-            self = v46;
+            self = selfCopy;
           }
         }
 
@@ -1083,20 +1083,20 @@ void __104__PGRecentSocialGroupCentricSuggester_longTimeNoSeeSocialGroupPotentia
   }
 }
 
-- (BOOL)canGenerateSuggestionWithAsset:(id)a3 onDate:(id)a4
+- (BOOL)canGenerateSuggestionWithAsset:(id)asset onDate:(id)date
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  dateCopy = date;
   v8 = objc_alloc_init(PGSuggestionOptions);
-  [(PGSuggestionOptions *)v8 setLocalToday:v7];
+  [(PGSuggestionOptions *)v8 setLocalToday:dateCopy];
 
-  v9 = [v6 creationDate];
-  [(PGSuggestionOptions *)v8 setUniversalStartDate:v9];
+  creationDate = [assetCopy creationDate];
+  [(PGSuggestionOptions *)v8 setUniversalStartDate:creationDate];
 
   v23 = @"assetUUID";
-  v10 = [v6 uuid];
-  v24[0] = v10;
+  uuid = [assetCopy uuid];
+  v24[0] = uuid;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:&v23 count:1];
   [(PGSuggestionOptions *)v8 setAdditionalOptions:v11];
 
@@ -1104,16 +1104,16 @@ void __104__PGRecentSocialGroupCentricSuggester_longTimeNoSeeSocialGroupPotentia
   v12 = [(PGRecentSocialGroupCentricSuggester *)self suggestionsWithOptions:v8 progress:&__block_literal_global_21961];
   if ([v12 count] == 1)
   {
-    v13 = [v12 firstObject];
-    v14 = [v13 keyAssets];
-    if ([v14 count] == 1)
+    firstObject = [v12 firstObject];
+    keyAssets = [firstObject keyAssets];
+    if ([keyAssets count] == 1)
     {
-      v22 = [v12 firstObject];
-      v15 = [v22 keyAssets];
-      v16 = [v15 firstObject];
-      v17 = [v16 uuid];
-      v18 = [v6 uuid];
-      v19 = [v17 isEqualToString:v18];
+      firstObject2 = [v12 firstObject];
+      keyAssets2 = [firstObject2 keyAssets];
+      firstObject3 = [keyAssets2 firstObject];
+      uuid2 = [firstObject3 uuid];
+      uuid3 = [assetCopy uuid];
+      v19 = [uuid2 isEqualToString:uuid3];
     }
 
     else
@@ -1131,12 +1131,12 @@ void __104__PGRecentSocialGroupCentricSuggester_longTimeNoSeeSocialGroupPotentia
   return v19;
 }
 
-- (id)suggestionsWithOptions:(id)a3 progress:(id)a4
+- (id)suggestionsWithOptions:(id)options progress:(id)progress
 {
   v49 = *MEMORY[0x277D85DE8];
-  v27 = a3;
-  v26 = a4;
-  v6 = _Block_copy(v26);
+  optionsCopy = options;
+  progressCopy = progress;
+  v6 = _Block_copy(progressCopy);
   v41 = 0;
   v42 = &v41;
   v43 = 0x2020000000;
@@ -1161,13 +1161,13 @@ void __104__PGRecentSocialGroupCentricSuggester_longTimeNoSeeSocialGroupPotentia
 
   else
   {
-    [(PGRecentSocialGroupCentricSuggester *)self startSuggestingWithOptions:v27];
+    [(PGRecentSocialGroupCentricSuggester *)self startSuggestingWithOptions:optionsCopy];
     v28 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v10 = [v27 maximumNumberOfSuggestions];
+    maximumNumberOfSuggestions = [optionsCopy maximumNumberOfSuggestions];
     v11 = 0;
-    if (v10)
+    if (maximumNumberOfSuggestions)
     {
-      v12 = v10;
+      v12 = maximumNumberOfSuggestions;
     }
 
     else
@@ -1301,13 +1301,13 @@ void __71__PGRecentSocialGroupCentricSuggester_suggestionsWithOptions_progress__
 
 - (void)reset
 {
-  v3 = [(PGAbstractSuggester *)self session];
-  v4 = [v3 loggingConnection];
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
-    _os_log_impl(&dword_22F0FC000, v4, OS_LOG_TYPE_DEFAULT, "Recent SocialGroup Centric: Resetting", v7, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent SocialGroup Centric: Resetting", v7, 2u);
   }
 
   longTimeNoSeeSocialGroupPotentialSuggestionEnumerator = self->_longTimeNoSeeSocialGroupPotentialSuggestionEnumerator;
@@ -1317,11 +1317,11 @@ void __71__PGRecentSocialGroupCentricSuggester_suggestionsWithOptions_progress__
   self->_socialGroupPotentialSuggestionEnumerator = 0;
 }
 
-- (id)nextSuggestionWithProgress:(id)a3
+- (id)nextSuggestionWithProgress:(id)progress
 {
   v62 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v3 = _Block_copy(v36);
+  progressCopy = progress;
+  v3 = _Block_copy(progressCopy);
   v56 = 0;
   v57 = &v56;
   v58 = 0x2020000000;
@@ -1357,20 +1357,20 @@ void __71__PGRecentSocialGroupCentricSuggester_suggestionsWithOptions_progress__
     }
   }
 
-  v37 = [(PGAbstractSuggester *)self session];
-  v7 = [v37 workingContext];
-  v38 = [v7 curationManager];
+  session = [(PGAbstractSuggester *)self session];
+  workingContext = [session workingContext];
+  curationManager = [workingContext curationManager];
 
-  v8 = [v37 loggingConnection];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  loggingConnection = [session loggingConnection];
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
-    _os_log_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_DEFAULT, "Recent SocialGroup Centric: nextSuggestion", buf, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent SocialGroup Centric: nextSuggestion", buf, 2u);
   }
 
   v9 = 0;
   v39 = (v3 + 16);
-  v10 = v8;
+  v10 = loggingConnection;
   do
   {
     if (v9)
@@ -1379,7 +1379,7 @@ void __71__PGRecentSocialGroupCentricSuggester_suggestionsWithOptions_progress__
     }
 
     v11 = objc_autoreleasePoolPush();
-    if (!v3 || (v10 = v8, v12 = CFAbsoluteTimeGetCurrent(), v12 - v53[3] < 0.01) || (v53[3] = v12, v51 = 0, (*(v3 + 2))(v3, &v51, 0.5), v13 = *(v57 + 24) | v51, *(v57 + 24) = v13, (v13 & 1) == 0))
+    if (!v3 || (v10 = loggingConnection, v12 = CFAbsoluteTimeGetCurrent(), v12 - v53[3] < 0.01) || (v53[3] = v12, v51 = 0, (*(v3 + 2))(v3, &v51, 0.5), v13 = *(v57 + 24) | v51, *(v57 + 24) = v13, (v13 & 1) == 0))
     {
       v46[0] = MEMORY[0x277D85DD0];
       v46[1] = 3221225472;
@@ -1443,17 +1443,17 @@ void __71__PGRecentSocialGroupCentricSuggester_suggestionsWithOptions_progress__
           v14 = 3;
 LABEL_49:
 
-          v10 = v8;
+          v10 = loggingConnection;
           goto LABEL_50;
         }
 
-        v21 = [v17 personLocalIdentifiers];
+        personLocalIdentifiers = [v17 personLocalIdentifiers];
         v22 = objc_alloc_init(PGKeyAssetCurationOptions);
-        v23 = [MEMORY[0x277CBEB98] setWithArray:v21];
+        v23 = [MEMORY[0x277CBEB98] setWithArray:personLocalIdentifiers];
         [(PGKeyAssetCurationOptions *)v22 setReferencePersonLocalIdentifiers:v23];
 
-        v24 = [v17 assets];
-        v25 = [v38 bestAssetInAssets:v24 options:v22];
+        assets = [v17 assets];
+        v25 = [curationManager bestAssetInAssets:assets options:v22];
 
         if (v3 && (v26 = CFAbsoluteTimeGetCurrent(), v26 - v53[3] >= 0.01) && (v53[3] = v26, v51 = 0, (*v39)(v15, &v51, 0.5), v27 = *(v57 + 24) | v51, *(v57 + 24) = v27, (v27 & 1) != 0))
         {
@@ -1474,22 +1474,22 @@ LABEL_49:
         {
           if (v25)
           {
-            v9 = [[PGPeopleCentricSuggestion alloc] initWithPersonLocalIdentifiers:v21 asset:v25];
+            v9 = [[PGPeopleCentricSuggestion alloc] initWithPersonLocalIdentifiers:personLocalIdentifiers asset:v25];
             v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v29 = [v28 localizedStringForKey:@"PGPeopleTitleFormatGenericSocialGroup" value:@"PGPeopleTitleFormatGenericSocialGroup" table:@"Localizable"];
             [(PGSingleAssetSuggestion *)v9 setTitle:v29];
 
-            v30 = [v25 localCreationDate];
-            v31 = [MEMORY[0x277CCA968] localizedStringFromDate:v30 dateStyle:2 timeStyle:0];
+            localCreationDate = [v25 localCreationDate];
+            v31 = [MEMORY[0x277CCA968] localizedStringFromDate:localCreationDate dateStyle:2 timeStyle:0];
             [(PGSingleAssetSuggestion *)v9 setSubtitle:v31];
           }
 
           else
           {
-            if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+            if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_ERROR))
             {
               *buf = 0;
-              _os_log_error_impl(&dword_22F0FC000, v8, OS_LOG_TYPE_ERROR, "Recent SocialGroup Centric: bestAssetInAssets returned nil, cannot generate suggestion", buf, 2u);
+              _os_log_error_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_ERROR, "Recent SocialGroup Centric: bestAssetInAssets returned nil, cannot generate suggestion", buf, 2u);
             }
 
             v9 = 0;
@@ -1646,16 +1646,16 @@ void __66__PGRecentSocialGroupCentricSuggester_nextSuggestionWithProgress___bloc
   }
 }
 
-- (void)startSuggestingWithOptions:(id)a3
+- (void)startSuggestingWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PGAbstractSuggester *)self session];
-  v6 = [v5 loggingConnection];
+  optionsCopy = options;
+  session = [(PGAbstractSuggester *)self session];
+  loggingConnection = [session loggingConnection];
 
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_DEFAULT))
   {
     *v14 = 0;
-    _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, "Recent SocialGroup Centric: Starting suggesting", v14, 2u);
+    _os_log_impl(&dword_22F0FC000, loggingConnection, OS_LOG_TYPE_DEFAULT, "Recent SocialGroup Centric: Starting suggesting", v14, 2u);
   }
 
   allPotentialSuggestions = self->_allPotentialSuggestions;
@@ -1677,7 +1677,7 @@ void __66__PGRecentSocialGroupCentricSuggester_nextSuggestionWithProgress___bloc
   self->_socialGroupPotentialSuggestionEnumerator = 0;
 
   options = self->_options;
-  self->_options = v4;
+  self->_options = optionsCopy;
 }
 
 @end

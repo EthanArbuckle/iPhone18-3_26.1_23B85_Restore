@@ -1,28 +1,28 @@
 @interface HMDAccessorySettingsMessageHandlerRoar
-- (void)relayReplaceConstraints:(id)a3 constraintIdsToRemove:(id)a4 keyPath:(id)a5 destination:(id)a6 completion:(id)a7;
-- (void)relayUpdateValue:(id)a3 keyPath:(id)a4 destination:(id)a5 completion:(id)a6;
+- (void)relayReplaceConstraints:(id)constraints constraintIdsToRemove:(id)remove keyPath:(id)path destination:(id)destination completion:(id)completion;
+- (void)relayUpdateValue:(id)value keyPath:(id)path destination:(id)destination completion:(id)completion;
 @end
 
 @implementation HMDAccessorySettingsMessageHandlerRoar
 
-- (void)relayReplaceConstraints:(id)a3 constraintIdsToRemove:(id)a4 keyPath:(id)a5 destination:(id)a6 completion:(id)a7
+- (void)relayReplaceConstraints:(id)constraints constraintIdsToRemove:(id)remove keyPath:(id)path destination:(id)destination completion:(id)completion
 {
   v44 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v34 = a4;
-  v35 = a5;
-  v13 = a6;
-  v14 = a7;
-  v33 = v12;
-  if (v13)
+  constraintsCopy = constraints;
+  removeCopy = remove;
+  pathCopy = path;
+  destinationCopy = destination;
+  completionCopy = completion;
+  v33 = constraintsCopy;
+  if (destinationCopy)
   {
-    v15 = [MEMORY[0x277CD1F58] _encodedConstraintsToAdd:v12];
-    v32 = [v34 na_map:&__block_literal_global_127746];
-    v31 = [MEMORY[0x277CD1F58] _replaceConstraintsPayloadWithAdditions:v15 removals:v32 keyPath:v35];
+    v15 = [MEMORY[0x277CD1F58] _encodedConstraintsToAdd:constraintsCopy];
+    v32 = [removeCopy na_map:&__block_literal_global_127746];
+    v31 = [MEMORY[0x277CD1F58] _replaceConstraintsPayloadWithAdditions:v15 removals:v32 keyPath:pathCopy];
     v16 = [HMDRemoteDeviceMessageDestination alloc];
-    v17 = [(HMDAccessorySettingsMessageHandler *)self messageTargetUUID];
-    v18 = [v13 device];
-    v19 = [(HMDRemoteDeviceMessageDestination *)v16 initWithTarget:v17 device:v18];
+    messageTargetUUID = [(HMDAccessorySettingsMessageHandler *)self messageTargetUUID];
+    device = [destinationCopy device];
+    v19 = [(HMDRemoteDeviceMessageDestination *)v16 initWithTarget:messageTargetUUID device:device];
 
     v20 = [HMDRemoteMessage secureMessageWithName:*MEMORY[0x277CCED80] qualityOfService:25 destination:v19 messagePayload:v31];
     objc_initWeak(&location, self);
@@ -31,10 +31,10 @@
     v36[2] = __119__HMDAccessorySettingsMessageHandlerRoar_relayReplaceConstraints_constraintIdsToRemove_keyPath_destination_completion___block_invoke_2;
     v36[3] = &unk_278689728;
     objc_copyWeak(&v38, &location);
-    v37 = v14;
+    v37 = completionCopy;
     [v20 setResponseHandler:v36];
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -47,8 +47,8 @@
     }
 
     objc_autoreleasePoolPop(v21);
-    v25 = [(HMDAccessorySettingsMessageHandler *)v22 messageDispatcher];
-    [v25 sendMessage:v20 completionHandler:0];
+    messageDispatcher = [(HMDAccessorySettingsMessageHandler *)selfCopy messageDispatcher];
+    [messageDispatcher sendMessage:v20 completionHandler:0];
 
     objc_destroyWeak(&v38);
     objc_destroyWeak(&location);
@@ -57,7 +57,7 @@
   else
   {
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy2 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -69,7 +69,7 @@
 
     objc_autoreleasePoolPop(v26);
     v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
-    (*(v14 + 2))(v14, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -93,38 +93,38 @@ void __119__HMDAccessorySettingsMessageHandlerRoar_relayReplaceConstraints_const
   }
 }
 
-- (void)relayUpdateValue:(id)a3 keyPath:(id)a4 destination:(id)a5 completion:(id)a6
+- (void)relayUpdateValue:(id)value keyPath:(id)path destination:(id)destination completion:(id)completion
 {
   v43[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v33 = a6;
-  if (v12)
+  valueCopy = value;
+  pathCopy = path;
+  destinationCopy = destination;
+  completionCopy = completion;
+  if (destinationCopy)
   {
     v13 = *MEMORY[0x277CD0F88];
-    v43[0] = v11;
+    v43[0] = pathCopy;
     v14 = *MEMORY[0x277CCEDA8];
     v42[0] = v13;
     v42[1] = v14;
-    v15 = v10;
-    if (!v10)
+    null = valueCopy;
+    if (!valueCopy)
     {
-      v15 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
     }
 
     v16 = encodeRootObject();
     v43[1] = v16;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:2];
 
-    if (!v10)
+    if (!valueCopy)
     {
     }
 
     v18 = [HMDRemoteDeviceMessageDestination alloc];
-    v19 = [(HMDAccessorySettingsMessageHandler *)self messageTargetUUID];
-    v20 = [v12 device];
-    v21 = [(HMDRemoteDeviceMessageDestination *)v18 initWithTarget:v19 device:v20];
+    messageTargetUUID = [(HMDAccessorySettingsMessageHandler *)self messageTargetUUID];
+    device = [destinationCopy device];
+    v21 = [(HMDRemoteDeviceMessageDestination *)v18 initWithTarget:messageTargetUUID device:device];
 
     v22 = [HMDRemoteMessage secureMessageWithName:*MEMORY[0x277CCED98] qualityOfService:25 destination:v21 messagePayload:v17];
     objc_initWeak(&location, self);
@@ -133,10 +133,10 @@ void __119__HMDAccessorySettingsMessageHandlerRoar_relayReplaceConstraints_const
     v34[2] = __90__HMDAccessorySettingsMessageHandlerRoar_relayUpdateValue_keyPath_destination_completion___block_invoke;
     v34[3] = &unk_278689728;
     objc_copyWeak(&v36, &location);
-    v35 = v33;
+    v35 = completionCopy;
     [v22 setResponseHandler:v34];
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
@@ -149,8 +149,8 @@ void __119__HMDAccessorySettingsMessageHandlerRoar_relayReplaceConstraints_const
     }
 
     objc_autoreleasePoolPop(v23);
-    v27 = [(HMDAccessorySettingsMessageHandler *)v24 messageDispatcher];
-    [v27 sendMessage:v22 completionHandler:0];
+    messageDispatcher = [(HMDAccessorySettingsMessageHandler *)selfCopy messageDispatcher];
+    [messageDispatcher sendMessage:v22 completionHandler:0];
 
     objc_destroyWeak(&v36);
     objc_destroyWeak(&location);
@@ -159,7 +159,7 @@ void __119__HMDAccessorySettingsMessageHandlerRoar_relayReplaceConstraints_const
   else
   {
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy2 = self;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -171,7 +171,7 @@ void __119__HMDAccessorySettingsMessageHandlerRoar_relayReplaceConstraints_const
 
     objc_autoreleasePoolPop(v28);
     v17 = [MEMORY[0x277CCA9B8] hmErrorWithCode:54];
-    (*(v33 + 2))(v33, 0, 0, v17);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v17);
   }
 
   v32 = *MEMORY[0x277D85DE8];

@@ -1,14 +1,14 @@
 @interface BKHIDClientConnection
-+ (id)connectionWithConnection:(__IOHIDEventSystemConnection *)a3;
-- (BKHIDClientConnection)initWithConnection:(__IOHIDEventSystemConnection *)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)connectionWithConnection:(__IOHIDEventSystemConnection *)connection;
+- (BKHIDClientConnection)initWithConnection:(__IOHIDEventSystemConnection *)connection;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (__IOHIDEventSystemConnection)connection;
 - (__IOHIDEventSystemConnection)copyConnection;
 - (unint64_t)hash;
 - (void)dealloc;
 - (void)invalidate;
-- (void)sendEvent:(uint64_t)a1;
+- (void)sendEvent:(uint64_t)event;
 @end
 
 @implementation BKHIDClientConnection
@@ -23,9 +23,9 @@
 
   v8 = [v3 appendUnsignedInteger:self->_task withName:@"taskPort" format:1];
   v9 = [v3 appendObject:self->_bundleID withName:@"bundleID"];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (void)dealloc
@@ -67,9 +67,9 @@
 
 - (__IOHIDEventSystemConnection)connection
 {
-  v2 = [(BKHIDClientConnection *)self copyConnection];
-  CFAutorelease(v2);
-  return v2;
+  copyConnection = [(BKHIDClientConnection *)self copyConnection];
+  CFAutorelease(copyConnection);
+  return copyConnection;
 }
 
 - (unint64_t)hash
@@ -90,13 +90,13 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -111,13 +111,13 @@
     goto LABEL_15;
   }
 
-  v7 = [(BKHIDClientConnection *)self copyConnection];
-  v8 = [v6 copyConnection];
-  v9 = v8;
-  if ((v7 != 0) != (v8 != 0))
+  copyConnection = [(BKHIDClientConnection *)self copyConnection];
+  copyConnection2 = [v6 copyConnection];
+  v9 = copyConnection2;
+  if ((copyConnection != 0) != (copyConnection2 != 0))
   {
     v10 = 0;
-    if (!v7)
+    if (!copyConnection)
     {
       goto LABEL_8;
     }
@@ -125,20 +125,20 @@
 
   else
   {
-    if (!(v7 | v8))
+    if (!(copyConnection | copyConnection2))
     {
       v10 = 1;
       goto LABEL_15;
     }
 
-    v10 = CFEqual(v7, v8) != 0;
-    if (!v7)
+    v10 = CFEqual(copyConnection, copyConnection2) != 0;
+    if (!copyConnection)
     {
       goto LABEL_8;
     }
   }
 
-  CFRelease(v7);
+  CFRelease(copyConnection);
 LABEL_8:
   if (v9)
   {
@@ -150,7 +150,7 @@ LABEL_15:
   return v10;
 }
 
-- (BKHIDClientConnection)initWithConnection:(__IOHIDEventSystemConnection *)a3
+- (BKHIDClientConnection)initWithConnection:(__IOHIDEventSystemConnection *)connection
 {
   v30 = *MEMORY[0x277D85DE8];
   v27.receiver = self;
@@ -162,7 +162,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  if (!a3)
+  if (!connection)
   {
     v16 = BKLogHID();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -192,7 +192,7 @@ LABEL_15:
     }
 
     *buf = 138543362;
-    *&buf[4] = a3;
+    *&buf[4] = connection;
     v12 = "ignoring connection; bundleID is missing (or invalid) from the attributes: %{public}@";
 LABEL_22:
     v13 = buf;
@@ -213,7 +213,7 @@ LABEL_22:
       *&buf[8] = 2114;
       *&buf[10] = v11;
       *&buf[18] = 2114;
-      *&buf[20] = a3;
+      *&buf[20] = connection;
       v12 = "ignoring connection; pid:%d bundleID:%{public}@ doesn't have a valid task port: %{public}@";
       v13 = buf;
       v14 = v9;
@@ -238,7 +238,7 @@ LABEL_13:
     }
 
     *buf = 138543362;
-    *&buf[4] = a3;
+    *&buf[4] = connection;
     v12 = "ignoring connection; pid is missing from the attributes: %{public}@";
     goto LABEL_22;
   }
@@ -256,7 +256,7 @@ LABEL_13:
     *v28 = 67109378;
     *&v28[4] = v24;
     *&v28[8] = 2114;
-    *&v28[10] = a3;
+    *&v28[10] = connection;
     v12 = "ignoring connection; BSAuditTokenForTask returned NO (expected pid:%d) connection:%{public}@";
     v13 = v28;
     v14 = v9;
@@ -283,7 +283,7 @@ LABEL_13:
     *&v28[8] = 1024;
     *&v28[10] = v26;
     *&v28[14] = 2114;
-    *&v28[16] = a3;
+    *&v28[16] = connection;
     v12 = "ignoring connection; audit pid (%d) doesn't match attribute pid (%d): %{public}@";
     v13 = v28;
     v14 = v9;
@@ -291,8 +291,8 @@ LABEL_13:
     goto LABEL_23;
   }
 
-  CFRetain(a3);
-  v5->_lock_connection = a3;
+  CFRetain(connection);
+  v5->_lock_connection = connection;
   v20 = BKLogHID();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -304,7 +304,7 @@ LABEL_13:
     *&buf[12] = 2114;
     *&buf[14] = v23;
     *&buf[22] = 2114;
-    *&buf[24] = a3;
+    *&buf[24] = connection;
     _os_log_impl(&dword_223CBE000, v20, OS_LOG_TYPE_INFO, "HID connection vpid:%{public}@ bundleID:%{public}@ successfully initialized: %{public}@", buf, 0x20u);
   }
 
@@ -313,24 +313,24 @@ LABEL_14:
   return v5;
 }
 
-+ (id)connectionWithConnection:(__IOHIDEventSystemConnection *)a3
++ (id)connectionWithConnection:(__IOHIDEventSystemConnection *)connection
 {
-  v3 = [[BKHIDClientConnection alloc] initWithConnection:a3];
+  v3 = [[BKHIDClientConnection alloc] initWithConnection:connection];
 
   return v3;
 }
 
-- (void)sendEvent:(uint64_t)a1
+- (void)sendEvent:(uint64_t)event
 {
   *&v10[5] = *MEMORY[0x277D85DE8];
-  os_unfair_lock_lock((a1 + 8));
-  v2 = *(a1 + 16);
+  os_unfair_lock_lock((event + 8));
+  v2 = *(event + 16);
   if (v2)
   {
-    CFRetain(*(a1 + 16));
+    CFRetain(*(event + 16));
   }
 
-  os_unfair_lock_unlock((a1 + 8));
+  os_unfair_lock_unlock((event + 8));
   v3 = BKLogSendHIDEvent();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {

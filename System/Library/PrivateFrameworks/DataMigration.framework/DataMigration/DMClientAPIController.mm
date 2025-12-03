@@ -27,8 +27,8 @@
   {
     v3 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_int64(v3, "msgID", 14);
-    v4 = [v6 connection];
-    v5 = [v4 sendMessageSync:v3];
+    connection = [v6 connection];
+    v5 = [connection sendMessageSync:v3];
   }
 
   else

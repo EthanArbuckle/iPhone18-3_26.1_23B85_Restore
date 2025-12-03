@@ -9,19 +9,19 @@
   v52 = *MEMORY[0x1E69E9840];
   v7 = a4;
   v8 = a5;
-  v9 = [a1 physicalInput];
-  if (v9)
+  physicalInput = [self physicalInput];
+  if (physicalInput)
   {
     v44 = v8;
     v45 = v7;
-    v43 = v9;
-    v10 = [v9 elements];
+    v43 = physicalInput;
+    elements = [physicalInput elements];
     v11 = objc_opt_new();
     v47 = 0u;
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    obj = v10;
+    obj = elements;
     v12 = [obj countByEnumeratingWithState:&v47 objects:v51 count:16];
     if (!v12)
     {
@@ -45,23 +45,23 @@
         {
           v17 = v16;
           v18 = objc_opt_new();
-          v19 = [v17 identifier];
-          [v18 setIdentifier:v19];
+          identifier = [v17 identifier];
+          [v18 setIdentifier:identifier];
 
           v20 = MEMORY[0x1E695DFD8];
-          v21 = [v17 names];
-          v22 = [v20 setWithArray:v21];
+          names = [v17 names];
+          v22 = [v20 setWithArray:names];
           [v18 setAliases:v22];
 
-          v23 = [v17 localizedNameKey];
-          [v18 setLocalizedName:v23];
+          localizedNameKey = [v17 localizedNameKey];
+          [v18 setLocalizedName:localizedNameKey];
 
-          v24 = [v17 symbolName];
-          if (v24)
+          symbolName = [v17 symbolName];
+          if (symbolName)
           {
             v25 = MEMORY[0x1E69A06C0];
-            v26 = [v17 symbolName];
-            v27 = [v25 symbolWithSFSymbolsName:v26];
+            symbolName2 = [v17 symbolName];
+            v27 = [v25 symbolWithSFSymbolsName:symbolName2];
             [v18 setSymbol:v27];
           }
 
@@ -70,8 +70,8 @@
             [v18 setSymbol:0];
           }
 
-          v38 = [v17 isAnalog];
-          [v18 setAnalog:{objc_msgSend(v38, "BOOLValue")}];
+          isAnalog = [v17 isAnalog];
+          [v18 setAnalog:{objc_msgSend(isAnalog, "BOOLValue")}];
 
           [v18 setEventPressedValueField:{objc_msgSend(v17, "sourcePressedValueExtendedEventFieldIndex")}];
         }
@@ -86,23 +86,23 @@
 
           v28 = v16;
           v18 = objc_opt_new();
-          v29 = [v28 identifier];
-          [v18 setIdentifier:v29];
+          identifier2 = [v28 identifier];
+          [v18 setIdentifier:identifier2];
 
           v30 = MEMORY[0x1E695DFD8];
-          v31 = [v28 names];
-          v32 = [v30 setWithArray:v31];
+          names2 = [v28 names];
+          v32 = [v30 setWithArray:names2];
           [v18 setAliases:v32];
 
-          v33 = [v28 localizedNameKey];
-          [v18 setLocalizedName:v33];
+          localizedNameKey2 = [v28 localizedNameKey];
+          [v18 setLocalizedName:localizedNameKey2];
 
-          v34 = [v28 symbolName];
-          if (v34)
+          symbolName3 = [v28 symbolName];
+          if (symbolName3)
           {
             v35 = MEMORY[0x1E69A06C0];
-            v36 = [v28 symbolName];
-            v37 = [v35 symbolWithSFSymbolsName:v36];
+            symbolName4 = [v28 symbolName];
+            v37 = [v35 symbolWithSFSymbolsName:symbolName4];
             [v18 setSymbol:v37];
           }
 
@@ -132,7 +132,7 @@ LABEL_20:
         v7 = v45;
         v40 = [[_GCControllerInputComponentDescription alloc] initWithIdentifier:v45 controllerInputs:v39 bindings:v44];
 
-        v9 = v43;
+        physicalInput = v43;
         goto LABEL_22;
       }
     }

@@ -1,41 +1,41 @@
 @interface GTURLAccessProviderXPCDispatcher
-- (GTURLAccessProviderXPCDispatcher)initWithService:(id)a3 properties:(id)a4;
-- (void)copyIdentifier_toDevice_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)copyIdentifier_toDevice_directory_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)makeURL_:(id)a3 replyConnection:(id)a4;
-- (void)securityScopedURLFromSandboxID_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)transferIdentifier_toDevice_completionHandler_:(id)a3 replyConnection:(id)a4;
-- (void)urlForPath_:(id)a3 replyConnection:(id)a4;
+- (GTURLAccessProviderXPCDispatcher)initWithService:(id)service properties:(id)properties;
+- (void)copyIdentifier_toDevice_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)copyIdentifier_toDevice_directory_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)makeURL_:(id)l_ replyConnection:(id)connection;
+- (void)securityScopedURLFromSandboxID_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)transferIdentifier_toDevice_completionHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)urlForPath_:(id)path_ replyConnection:(id)connection;
 @end
 
 @implementation GTURLAccessProviderXPCDispatcher
 
-- (GTURLAccessProviderXPCDispatcher)initWithService:(id)a3 properties:(id)a4
+- (GTURLAccessProviderXPCDispatcher)initWithService:(id)service properties:(id)properties
 {
-  v7 = a3;
-  v8 = [a4 protocolMethods];
+  serviceCopy = service;
+  protocolMethods = [properties protocolMethods];
   v11.receiver = self;
   v11.super_class = GTURLAccessProviderXPCDispatcher;
-  v9 = [(GTXPCDispatcher *)&v11 initWithProtocolMethods:v8];
+  v9 = [(GTXPCDispatcher *)&v11 initWithProtocolMethods:protocolMethods];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_service, a3);
+    objc_storeStrong(&v9->_service, service);
   }
 
   return v9;
 }
 
-- (void)securityScopedURLFromSandboxID_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)securityScopedURLFromSandboxID_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  handler_Copy = handler_;
+  connectionCopy = connection;
   v8 = objc_opt_class();
-  nsobject = xpc_dictionary_get_nsobject(v6, "identifier", v8);
+  nsobject = xpc_dictionary_get_nsobject(handler_Copy, "identifier", v8);
   v23 = 0u;
   v24 = 0u;
   length = 0;
-  data = xpc_dictionary_get_data(v6, "auditToken", &length);
+  data = xpc_dictionary_get_data(handler_Copy, "auditToken", &length);
   if (data && length == 32)
   {
     v11 = data[1];
@@ -45,29 +45,29 @@
 
   else
   {
-    v12 = [v7 connection];
+    connection = [connectionCopy connection];
     xpc_connection_get_audit_token();
   }
 
-  v13 = gt_xpc_dictionary_create_reply(v6);
+  v13 = gt_xpc_dictionary_create_reply(handler_Copy);
   service = self->_service;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10001A1A8;
   v17[3] = &unk_100040E38;
-  v18 = v7;
+  v18 = connectionCopy;
   v19 = v13;
   v20 = v23;
   v21 = v24;
   v15 = v13;
-  v16 = v7;
+  v16 = connectionCopy;
   [(GTURLAccessProvider *)service securityScopedURLFromSandboxID:nsobject completionHandler:v17];
 }
 
-- (void)makeURL_:(id)a3 replyConnection:(id)a4
+- (void)makeURL_:(id)l_ replyConnection:(id)connection
 {
-  xdict = a3;
-  v6 = a4;
+  xdict = l_;
+  connectionCopy = connection;
   v7 = gt_xpc_dictionary_create_reply(xdict);
   v8 = objc_opt_class();
   nsobject = xpc_dictionary_get_nsobject(xdict, "url", v8);
@@ -81,7 +81,7 @@
     }
 
     v12 = [(GTURLAccessProvider *)self->_service makeURL:nsobject];
-    if (([v6 isTrusted] & 1) == 0)
+    if (([connectionCopy isTrusted] & 1) == 0)
     {
       v13 = [NSURLComponents componentsWithURL:v12 resolvingAgainstBaseURL:1];
       [v13 setHost:@"localhost"];
@@ -93,17 +93,17 @@
     xpc_dictionary_set_nsobject(v7, "identifier", v12);
   }
 
-  [v6 sendMessage:v7];
+  [connectionCopy sendMessage:v7];
 }
 
-- (void)transferIdentifier_toDevice_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)transferIdentifier_toDevice_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  handler_Copy = handler_;
+  v8 = gt_xpc_dictionary_create_reply(handler_Copy);
   v9 = objc_opt_class();
-  nsobject = xpc_dictionary_get_nsobject(v7, "identifier", v9);
-  string = xpc_dictionary_get_string(v7, "deviceUDID");
+  nsobject = xpc_dictionary_get_nsobject(handler_Copy, "identifier", v9);
+  string = xpc_dictionary_get_string(handler_Copy, "deviceUDID");
 
   if (string && ([NSString stringWithUTF8String:string], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -114,24 +114,24 @@
     v15[2] = sub_10001A554;
     v15[3] = &unk_100040E60;
     v16 = v8;
-    v17 = v6;
+    v17 = connectionCopy;
     [(GTURLAccessProvider *)service transferIdentifier:nsobject toDevice:v13 completionHandler:v15];
   }
 
   else
   {
-    [v6 sendMessage:v8];
+    [connectionCopy sendMessage:v8];
   }
 }
 
-- (void)copyIdentifier_toDevice_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)copyIdentifier_toDevice_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  handler_Copy = handler_;
+  v8 = gt_xpc_dictionary_create_reply(handler_Copy);
   v9 = objc_opt_class();
-  nsobject = xpc_dictionary_get_nsobject(v7, "identifier", v9);
-  string = xpc_dictionary_get_string(v7, "deviceUDID");
+  nsobject = xpc_dictionary_get_nsobject(handler_Copy, "identifier", v9);
+  string = xpc_dictionary_get_string(handler_Copy, "deviceUDID");
 
   if (string && ([NSString stringWithUTF8String:string], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -142,7 +142,7 @@
     v20[2] = sub_10001A850;
     v20[3] = &unk_100040D18;
     v21 = v8;
-    v22 = v6;
+    v22 = connectionCopy;
     [(GTURLAccessProvider *)service copyIdentifier:nsobject toDevice:v13 completionHandler:v20];
   }
 
@@ -171,24 +171,24 @@
     v13 = [NSError errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v19];
 
     xpc_dictionary_set_nserror(v8, "error", v13);
-    [v6 sendMessage:v8];
+    [connectionCopy sendMessage:v8];
   }
 }
 
-- (void)urlForPath_:(id)a3 replyConnection:(id)a4
+- (void)urlForPath_:(id)path_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = gt_xpc_dictionary_create_reply(v7);
-  string = xpc_dictionary_get_string(v7, "path");
+  connectionCopy = connection;
+  path_Copy = path_;
+  v8 = gt_xpc_dictionary_create_reply(path_Copy);
+  string = xpc_dictionary_get_string(path_Copy, "path");
 
   if (string && ([NSString stringWithUTF8String:string], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v10;
     v12 = [(GTURLAccessProvider *)self->_service urlForPath:v10];
-    v13 = [v12 startAccessingSecurityScopedResource];
+    startAccessingSecurityScopedResource = [v12 startAccessingSecurityScopedResource];
     xpc_dictionary_set_nsobject(v8, "result", v12);
-    v14 = [v6 connection];
+    connection = [connectionCopy connection];
     xpc_connection_get_audit_token();
 
     [v12 fileSystemRepresentation];
@@ -202,36 +202,36 @@
       free(v16);
     }
 
-    if (v13)
+    if (startAccessingSecurityScopedResource)
     {
       [v12 stopAccessingSecurityScopedResource];
     }
 
-    [v6 sendMessage:{v8, v17, v18}];
+    [connectionCopy sendMessage:{v8, v17, v18}];
   }
 
   else
   {
-    [v6 sendMessage:v8];
+    [connectionCopy sendMessage:v8];
   }
 }
 
-- (void)copyIdentifier_toDevice_directory_completionHandler_:(id)a3 replyConnection:(id)a4
+- (void)copyIdentifier_toDevice_directory_completionHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = gt_xpc_dictionary_create_reply(v6);
+  handler_Copy = handler_;
+  connectionCopy = connection;
+  v8 = gt_xpc_dictionary_create_reply(handler_Copy);
   v9 = objc_opt_class();
-  nsobject = xpc_dictionary_get_nsobject(v6, "identifier", v9);
-  string = xpc_dictionary_get_string(v6, "deviceUDID");
+  nsobject = xpc_dictionary_get_nsobject(handler_Copy, "identifier", v9);
+  string = xpc_dictionary_get_string(handler_Copy, "deviceUDID");
   if (string && ([NSString stringWithUTF8String:string], (v12 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v13 = v12;
     v14 = objc_opt_class();
-    v15 = xpc_dictionary_get_nsobject(v6, "dir", v14);
+    v15 = xpc_dictionary_get_nsobject(handler_Copy, "dir", v14);
     if (v15)
     {
-      v16 = xpc_dictionary_get_string(v6, "dirse");
+      v16 = xpc_dictionary_get_string(handler_Copy, "dirse");
       if (v16)
       {
         v17 = [NSData dataWithBytes:v16 length:strlen(v16) + 1];
@@ -244,7 +244,7 @@
       v30[2] = sub_10001AEB8;
       v30[3] = &unk_100040D18;
       v31 = v8;
-      v32 = v7;
+      v32 = connectionCopy;
       [(GTURLAccessProvider *)service copyIdentifier:nsobject toDevice:v13 directory:v15 completionHandler:v30];
 
       v19 = v31;
@@ -275,7 +275,7 @@
       v19 = [NSError errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v29];
 
       xpc_dictionary_set_nserror(v8, "error", v19);
-      [v7 sendMessage:v8];
+      [connectionCopy sendMessage:v8];
     }
   }
 
@@ -304,7 +304,7 @@
     v13 = [NSError errorWithDomain:@"com.apple.gputools.transport" code:4 userInfo:v24];
 
     xpc_dictionary_set_nserror(v8, "error", v13);
-    [v7 sendMessage:v8];
+    [connectionCopy sendMessage:v8];
   }
 }
 

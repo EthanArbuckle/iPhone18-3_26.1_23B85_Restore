@@ -1,12 +1,12 @@
 @interface CCUIModuleSettingsManager
-- (BOOL)_shouldSkipControlMigrationFor:(id)a3;
+- (BOOL)_shouldSkipControlMigrationFor:(id)for;
 - (CCUIModuleSettingsManager)init;
-- (id)moduleSettingsForModuleIdentifier:(id)a3;
+- (id)moduleSettingsForModuleIdentifier:(id)identifier;
 - (id)orderedEnabledModuleIdentifiersFromSettingsApp;
 - (void)_loadDefaultSettings;
 - (void)_loadMigrationSettings;
-- (void)_runBlockOnListeners:(id)a3;
-- (void)orderedEnabledModuleIdentifiersChangedForSettingsProvider:(id)a3;
+- (void)_runBlockOnListeners:(id)listeners;
+- (void)orderedEnabledModuleIdentifiersChangedForSettingsProvider:(id)provider;
 @end
 
 @implementation CCUIModuleSettingsManager
@@ -18,9 +18,9 @@
   v2 = [(CCUIModuleSettingsManager *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CFC868] sharedProvider];
+    mEMORY[0x277CFC868] = [MEMORY[0x277CFC868] sharedProvider];
     settingsProvider = v2->_settingsProvider;
-    v2->_settingsProvider = v3;
+    v2->_settingsProvider = mEMORY[0x277CFC868];
 
     v5 = [MEMORY[0x277CCAA50] hashTableWithOptions:517];
     observers = v2->_observers;
@@ -34,11 +34,11 @@
   return v2;
 }
 
-- (id)moduleSettingsForModuleIdentifier:(id)a3
+- (id)moduleSettingsForModuleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_migrationSettingsByModuleIdentifier objectForKey:v4];
-  if (v5 || ([(NSDictionary *)self->_defaultSettingsByModuleIdentifier objectForKey:v4], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  identifierCopy = identifier;
+  v5 = [(NSDictionary *)self->_migrationSettingsByModuleIdentifier objectForKey:identifierCopy];
+  if (v5 || ([(NSDictionary *)self->_defaultSettingsByModuleIdentifier objectForKey:identifierCopy], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
   }
@@ -55,35 +55,35 @@
 
 - (id)orderedEnabledModuleIdentifiersFromSettingsApp
 {
-  v3 = [MEMORY[0x277CBEA60] array];
-  v4 = [(CCSModuleSettingsProvider *)self->_settingsProvider orderedFixedModuleIdentifiers];
-  v5 = [v3 arrayByAddingObjectsFromArray:v4];
+  array = [MEMORY[0x277CBEA60] array];
+  orderedFixedModuleIdentifiers = [(CCSModuleSettingsProvider *)self->_settingsProvider orderedFixedModuleIdentifiers];
+  v5 = [array arrayByAddingObjectsFromArray:orderedFixedModuleIdentifiers];
 
-  v6 = [(CCSModuleSettingsProvider *)self->_settingsProvider orderedUserEnabledFixedModuleIdentifiers];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  orderedUserEnabledFixedModuleIdentifiers = [(CCSModuleSettingsProvider *)self->_settingsProvider orderedUserEnabledFixedModuleIdentifiers];
+  v7 = [v5 arrayByAddingObjectsFromArray:orderedUserEnabledFixedModuleIdentifiers];
 
-  v8 = [(CCSModuleSettingsProvider *)self->_settingsProvider orderedUserEnabledModuleIdentifiers];
-  v9 = [v7 arrayByAddingObjectsFromArray:v8];
+  orderedUserEnabledModuleIdentifiers = [(CCSModuleSettingsProvider *)self->_settingsProvider orderedUserEnabledModuleIdentifiers];
+  v9 = [v7 arrayByAddingObjectsFromArray:orderedUserEnabledModuleIdentifiers];
 
   return v9;
 }
 
-- (void)_runBlockOnListeners:(id)a3
+- (void)_runBlockOnListeners:(id)listeners
 {
-  v4 = a3;
-  v5 = [(NSHashTable *)self->_observers allObjects];
+  listenersCopy = listeners;
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__CCUIModuleSettingsManager__runBlockOnListeners___block_invoke;
   v8[3] = &unk_278382748;
-  v9 = v5;
-  v10 = v4;
-  v6 = v4;
-  v7 = v5;
+  v9 = allObjects;
+  v10 = listenersCopy;
+  v6 = listenersCopy;
+  v7 = allObjects;
   dispatch_async(MEMORY[0x277D85CD0], v8);
 }
 
-- (void)orderedEnabledModuleIdentifiersChangedForSettingsProvider:(id)a3
+- (void)orderedEnabledModuleIdentifiersChangedForSettingsProvider:(id)provider
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -148,9 +148,9 @@
         if (v13)
         {
           v14 = [v5 bs_safeObjectForKey:v13 ofType:objc_opt_class()];
-          v15 = [MEMORY[0x277D661B0] controlCenterDomain];
+          controlCenterDomain = [MEMORY[0x277D661B0] controlCenterDomain];
           v16 = [v14 bs_safeObjectForKey:@"gridSize" ofType:objc_opt_class()];
-          v17 = [v15 gridSizeClassForDescription:v16];
+          v17 = [controlCenterDomain gridSizeClassForDescription:v16];
 
           v18 = [v14 bs_safeObjectForKey:@"containerBundleIdentifier" ofType:objc_opt_class()];
           v19 = [[CCUIModuleSettings alloc] initWithGridSizeClass:v17 containerBundleIdentifier:v18];
@@ -172,28 +172,28 @@
   self->_defaultSettingsByModuleIdentifier = v20;
 }
 
-- (BOOL)_shouldSkipControlMigrationFor:(id)a3
+- (BOOL)_shouldSkipControlMigrationFor:(id)for
 {
-  v3 = a3;
-  if (v3)
+  forCopy = for;
+  if (forCopy)
   {
-    v4 = [MEMORY[0x277D75418] currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (!v5)
+    if (!userInterfaceIdiom)
     {
       v8 = @"iPhone";
       goto LABEL_7;
     }
 
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
-    if (v7 == 1)
+    if (userInterfaceIdiom2 == 1)
     {
       v8 = @"iPad";
 LABEL_7:
-      v9 = [v3 containsObject:v8];
+      v9 = [forCopy containsObject:v8];
       goto LABEL_8;
     }
   }
@@ -272,11 +272,11 @@ LABEL_8:
             v19 = v9;
             v20 = v7;
             v21 = v5;
-            v22 = self;
+            selfCopy = self;
             v23 = [[CCUIModuleSettings alloc] initWithGridSizeClass:v33 moduleContainerBundleIdentifier:v30 controlExtensionIdentifier:v32 controlContainerBundleIdentifier:v31 controlKind:v29 controlType:v17];
             [v27 bs_setSafeObject:v23 forKey:v15];
 
-            self = v22;
+            self = selfCopy;
             v5 = v21;
             v7 = v20;
             v9 = v19;

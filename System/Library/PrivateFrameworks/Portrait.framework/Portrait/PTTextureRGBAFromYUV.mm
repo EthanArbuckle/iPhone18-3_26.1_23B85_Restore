@@ -1,14 +1,14 @@
 @interface PTTextureRGBAFromYUV
-- (PTTextureRGBAFromYUV)initWithTexture:(id)a3;
+- (PTTextureRGBAFromYUV)initWithTexture:(id)texture;
 @end
 
 @implementation PTTextureRGBAFromYUV
 
-- (PTTextureRGBAFromYUV)initWithTexture:(id)a3
+- (PTTextureRGBAFromYUV)initWithTexture:(id)texture
 {
   v5.receiver = self;
   v5.super_class = PTTextureRGBAFromYUV;
-  v3 = [(PTTextureRGBA *)&v5 initWithTexture:a3];
+  v3 = [(PTTextureRGBA *)&v5 initWithTexture:texture];
   [(PTTexture *)v3 setColorPrimaries:*MEMORY[0x277CC4C30]];
   [(PTTexture *)v3 setTransferFunction:*MEMORY[0x277CC4CD8]];
   [(PTTexture *)v3 setYCbCrMatrix:*MEMORY[0x277CC4D28]];

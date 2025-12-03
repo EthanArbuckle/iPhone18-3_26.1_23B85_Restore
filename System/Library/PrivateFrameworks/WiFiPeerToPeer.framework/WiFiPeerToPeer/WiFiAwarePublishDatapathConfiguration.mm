@@ -1,115 +1,115 @@
 @interface WiFiAwarePublishDatapathConfiguration
-- (BOOL)isEqual:(id)a3;
-- (BOOL)securityConfigurationEqual:(id)a3;
-- (BOOL)serviceSpecificInfoEqual:(id)a3;
-- (WiFiAwarePublishDatapathConfiguration)initWithCoder:(id)a3;
-- (WiFiAwarePublishDatapathConfiguration)initWithServiceType:(int64_t)a3 securityConfiguration:(id)a4;
-- (WiFiAwarePublishDatapathConfiguration)initWithServiceType:(int64_t)a3 securityConfiguration:(id)a4 connectionMode:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)securityConfigurationEqual:(id)equal;
+- (BOOL)serviceSpecificInfoEqual:(id)equal;
+- (WiFiAwarePublishDatapathConfiguration)initWithCoder:(id)coder;
+- (WiFiAwarePublishDatapathConfiguration)initWithServiceType:(int64_t)type securityConfiguration:(id)configuration;
+- (WiFiAwarePublishDatapathConfiguration)initWithServiceType:(int64_t)type securityConfiguration:(id)configuration connectionMode:(int64_t)mode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WiFiAwarePublishDatapathConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:-[WiFiAwarePublishDatapathConfiguration serviceType](self forKey:{"serviceType"), @"WiFiAwarePublishDatapathConfiguration.serviceType"}];
-  v4 = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
-  [v6 encodeObject:v4 forKey:@"WiFiAwarePublishDatapathConfiguration.securityConfiguration"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[WiFiAwarePublishDatapathConfiguration serviceType](self forKey:{"serviceType"), @"WiFiAwarePublishDatapathConfiguration.serviceType"}];
+  securityConfiguration = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
+  [coderCopy encodeObject:securityConfiguration forKey:@"WiFiAwarePublishDatapathConfiguration.securityConfiguration"];
 
-  v5 = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
-  [v6 encodeObject:v5 forKey:@"WiFiAwarePublishDatapathConfiguration.serviceSpecificInfo"];
+  serviceSpecificInfo = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
+  [coderCopy encodeObject:serviceSpecificInfo forKey:@"WiFiAwarePublishDatapathConfiguration.serviceSpecificInfo"];
 
-  [v6 encodeInteger:-[WiFiAwarePublishDatapathConfiguration connectionMode](self forKey:{"connectionMode"), @"WiFiAwareDataRequest.connectionMode"}];
+  [coderCopy encodeInteger:-[WiFiAwarePublishDatapathConfiguration connectionMode](self forKey:{"connectionMode"), @"WiFiAwareDataRequest.connectionMode"}];
 }
 
-- (WiFiAwarePublishDatapathConfiguration)initWithCoder:(id)a3
+- (WiFiAwarePublishDatapathConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"WiFiAwarePublishDatapathConfiguration.serviceType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishDatapathConfiguration.securityConfiguration"];
-  v7 = -[WiFiAwarePublishDatapathConfiguration initWithServiceType:securityConfiguration:connectionMode:](self, "initWithServiceType:securityConfiguration:connectionMode:", v5, v6, [v4 decodeIntegerForKey:@"WiFiAwareDataRequest.connectionMode"]);
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishDatapathConfiguration.serviceSpecificInfo"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"WiFiAwarePublishDatapathConfiguration.serviceType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishDatapathConfiguration.securityConfiguration"];
+  v7 = -[WiFiAwarePublishDatapathConfiguration initWithServiceType:securityConfiguration:connectionMode:](self, "initWithServiceType:securityConfiguration:connectionMode:", v5, v6, [coderCopy decodeIntegerForKey:@"WiFiAwareDataRequest.connectionMode"]);
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WiFiAwarePublishDatapathConfiguration.serviceSpecificInfo"];
 
   [(WiFiAwarePublishDatapathConfiguration *)v7 setServiceSpecificInfo:v8];
   return v7;
 }
 
-- (WiFiAwarePublishDatapathConfiguration)initWithServiceType:(int64_t)a3 securityConfiguration:(id)a4
+- (WiFiAwarePublishDatapathConfiguration)initWithServiceType:(int64_t)type securityConfiguration:(id)configuration
 {
-  v7 = a4;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = WiFiAwarePublishDatapathConfiguration;
   v8 = [(WiFiAwarePublishDatapathConfiguration *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_serviceType = a3;
-    objc_storeStrong(&v8->_securityConfiguration, a4);
+    v8->_serviceType = type;
+    objc_storeStrong(&v8->_securityConfiguration, configuration);
     v9->_connectionMode = 0;
   }
 
   return v9;
 }
 
-- (WiFiAwarePublishDatapathConfiguration)initWithServiceType:(int64_t)a3 securityConfiguration:(id)a4 connectionMode:(int64_t)a5
+- (WiFiAwarePublishDatapathConfiguration)initWithServiceType:(int64_t)type securityConfiguration:(id)configuration connectionMode:(int64_t)mode
 {
-  v6 = [(WiFiAwarePublishDatapathConfiguration *)self initWithServiceType:a3 securityConfiguration:a4];
+  v6 = [(WiFiAwarePublishDatapathConfiguration *)self initWithServiceType:type securityConfiguration:configuration];
   v7 = v6;
   if (v6)
   {
-    [(WiFiAwarePublishDatapathConfiguration *)v6 setConnectionMode:a5];
+    [(WiFiAwarePublishDatapathConfiguration *)v6 setConnectionMode:mode];
   }
 
   return v7;
 }
 
-- (BOOL)securityConfigurationEqual:(id)a3
+- (BOOL)securityConfigurationEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
-  v6 = [v4 securityConfiguration];
-  if (v5 == v6)
+  equalCopy = equal;
+  securityConfiguration = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
+  securityConfiguration2 = [equalCopy securityConfiguration];
+  if (securityConfiguration == securityConfiguration2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
-    v8 = [v4 securityConfiguration];
-    v9 = [v7 isEqual:v8];
+    securityConfiguration3 = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
+    securityConfiguration4 = [equalCopy securityConfiguration];
+    v9 = [securityConfiguration3 isEqual:securityConfiguration4];
   }
 
   return v9;
 }
 
-- (BOOL)serviceSpecificInfoEqual:(id)a3
+- (BOOL)serviceSpecificInfoEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
-  v6 = [v4 serviceSpecificInfo];
-  if (v5 == v6)
+  equalCopy = equal;
+  serviceSpecificInfo = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
+  serviceSpecificInfo2 = [equalCopy serviceSpecificInfo];
+  if (serviceSpecificInfo == serviceSpecificInfo2)
   {
     v9 = 1;
   }
 
   else
   {
-    v7 = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
-    v8 = [v4 serviceSpecificInfo];
-    v9 = [v7 isEqual:v8];
+    serviceSpecificInfo3 = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
+    serviceSpecificInfo4 = [equalCopy serviceSpecificInfo];
+    v9 = [serviceSpecificInfo3 isEqual:serviceSpecificInfo4];
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 0;
 LABEL_9:
@@ -125,16 +125,16 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v5 = v4;
-  v6 = [(WiFiAwarePublishDatapathConfiguration *)self serviceType];
-  if (v6 == [(WiFiAwarePublishDatapathConfiguration *)v5 serviceType])
+  v5 = equalCopy;
+  serviceType = [(WiFiAwarePublishDatapathConfiguration *)self serviceType];
+  if (serviceType == [(WiFiAwarePublishDatapathConfiguration *)v5 serviceType])
   {
     if ([(WiFiAwarePublishDatapathConfiguration *)self securityConfigurationEqual:v5])
     {
       if ([(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfoEqual:v5])
       {
-        v7 = [(WiFiAwarePublishDatapathConfiguration *)self connectionMode];
-        if (v7 == [(WiFiAwarePublishDatapathConfiguration *)v5 connectionMode])
+        connectionMode = [(WiFiAwarePublishDatapathConfiguration *)self connectionMode];
+        if (connectionMode == [(WiFiAwarePublishDatapathConfiguration *)v5 connectionMode])
         {
           goto LABEL_9;
         }
@@ -150,45 +150,45 @@ LABEL_11:
 
 - (id)description
 {
-  v3 = [(WiFiAwarePublishDatapathConfiguration *)self serviceType];
-  if (v3 > 2)
+  serviceType = [(WiFiAwarePublishDatapathConfiguration *)self serviceType];
+  if (serviceType > 2)
   {
     v4 = "unrecognized";
   }
 
   else
   {
-    v4 = off_2787AB330[v3];
+    v4 = off_2787AB330[serviceType];
   }
 
-  v5 = [(WiFiAwarePublishDatapathConfiguration *)self connectionMode];
-  if (v5 > 2)
+  connectionMode = [(WiFiAwarePublishDatapathConfiguration *)self connectionMode];
+  if (connectionMode > 2)
   {
     v6 = "unknown";
   }
 
   else
   {
-    v6 = off_2787AB348[v5];
+    v6 = off_2787AB348[connectionMode];
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
-  v9 = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
-  v10 = [v7 stringWithFormat:@"<WiFiAwarePublishDatapathConfiguration: serviceType=%s, securityConfig=%@, serviceSpecificInfo=%@, connectionMode=%s", v4, v8, v9, v6];
+  securityConfiguration = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
+  serviceSpecificInfo = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
+  v10 = [v7 stringWithFormat:@"<WiFiAwarePublishDatapathConfiguration: serviceType=%s, securityConfig=%@, serviceSpecificInfo=%@, connectionMode=%s", v4, securityConfiguration, serviceSpecificInfo, v6];
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [WiFiAwarePublishDatapathConfiguration alloc];
-  v5 = [(WiFiAwarePublishDatapathConfiguration *)self serviceType];
-  v6 = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
-  v7 = [(WiFiAwarePublishDatapathConfiguration *)v4 initWithServiceType:v5 securityConfiguration:v6];
+  serviceType = [(WiFiAwarePublishDatapathConfiguration *)self serviceType];
+  securityConfiguration = [(WiFiAwarePublishDatapathConfiguration *)self securityConfiguration];
+  v7 = [(WiFiAwarePublishDatapathConfiguration *)v4 initWithServiceType:serviceType securityConfiguration:securityConfiguration];
 
-  v8 = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
-  [(WiFiAwarePublishDatapathConfiguration *)v7 setServiceSpecificInfo:v8];
+  serviceSpecificInfo = [(WiFiAwarePublishDatapathConfiguration *)self serviceSpecificInfo];
+  [(WiFiAwarePublishDatapathConfiguration *)v7 setServiceSpecificInfo:serviceSpecificInfo];
 
   [(WiFiAwarePublishDatapathConfiguration *)v7 setConnectionMode:[(WiFiAwarePublishDatapathConfiguration *)self connectionMode]];
   return v7;

@@ -8,8 +8,8 @@
 
 + (id)stringWithFileSystemRepresentation:()MobileInstallationAdditions length:
 {
-  v6 = [MEMORY[0x29EDB9FB8] defaultManager];
-  v7 = [v6 stringWithFileSystemRepresentation:a3 length:a4];
+  defaultManager = [MEMORY[0x29EDB9FB8] defaultManager];
+  v7 = [defaultManager stringWithFileSystemRepresentation:a3 length:a4];
 
   return v7;
 }
@@ -25,7 +25,7 @@
 - (uint64_t)containsDotDotPathComponents
 {
   v14 = *MEMORY[0x29EDCA608];
-  [a1 pathComponents];
+  [self pathComponents];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;

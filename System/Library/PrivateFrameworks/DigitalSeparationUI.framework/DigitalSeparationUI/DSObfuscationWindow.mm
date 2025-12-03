@@ -1,22 +1,22 @@
 @interface DSObfuscationWindow
-+ (id)showDSObfuscationWindowForApplicationWindow:(id)a3;
++ (id)showDSObfuscationWindowForApplicationWindow:(id)window;
 @end
 
 @implementation DSObfuscationWindow
 
-+ (id)showDSObfuscationWindowForApplicationWindow:(id)a3
++ (id)showDSObfuscationWindowForApplicationWindow:(id)window
 {
   v3 = MEMORY[0x277D75D28];
-  v4 = a3;
+  windowCopy = window;
   v5 = objc_alloc_init(v3);
-  v6 = [v5 view];
-  v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-  [v6 setBackgroundColor:v7];
+  view = [v5 view];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  [view setBackgroundColor:systemBackgroundColor];
 
   v8 = [DSObfuscationWindow alloc];
-  v9 = [v4 windowScene];
+  windowScene = [windowCopy windowScene];
 
-  v10 = [(DSObfuscationWindow *)v8 initWithWindowScene:v9];
+  v10 = [(DSObfuscationWindow *)v8 initWithWindowScene:windowScene];
   [(DSObfuscationWindow *)v10 setRootViewController:v5];
   [(DSObfuscationWindow *)v10 setWindowLevel:*MEMORY[0x277D772B8] + -1.0];
   [(DSObfuscationWindow *)v10 makeKeyAndVisible];

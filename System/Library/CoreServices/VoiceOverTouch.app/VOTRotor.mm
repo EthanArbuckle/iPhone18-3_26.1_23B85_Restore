@@ -1,11 +1,11 @@
 @interface VOTRotor
-+ (BOOL)rotorIsUsedForSettingAdjustment:(int64_t)a3;
-+ (id)rotorTypeForPreferenceString:(id)a3;
-+ (id)stringForRotorType:(int64_t)a3;
-+ (id)systemRotorTypeForRotorType:(int64_t)a3;
-+ (id)systemRotorTypeForSearchType:(int64_t)a3;
-+ (int64_t)rotorTypeForSearchType:(int64_t)a3;
-+ (int64_t)rotorTypeForSystemRotorType:(id)a3;
++ (BOOL)rotorIsUsedForSettingAdjustment:(int64_t)adjustment;
++ (id)rotorTypeForPreferenceString:(id)string;
++ (id)stringForRotorType:(int64_t)type;
++ (id)systemRotorTypeForRotorType:(int64_t)type;
++ (id)systemRotorTypeForSearchType:(int64_t)type;
++ (int64_t)rotorTypeForSearchType:(int64_t)type;
++ (int64_t)rotorTypeForSystemRotorType:(id)type;
 - (BOOL)inMisspelledWordRotor;
 - (BOOL)verifyNoDuplicatesInRotor;
 - (VOTElement)currentRotorElement;
@@ -17,13 +17,13 @@
 - (id)currentVisualRotorString;
 - (id)generateRotorTypeRequest;
 - (id)rotorItems;
-- (int64_t)indexOfRotorItem:(int64_t)a3;
+- (int64_t)indexOfRotorItem:(int64_t)item;
 - (int64_t)rotorIndex;
-- (void)_moveRotor:(BOOL)a3 didWrap:(BOOL *)a4 userInitiated:(BOOL)a5 eventOrigin:(int64_t)a6;
+- (void)_moveRotor:(BOOL)rotor didWrap:(BOOL *)wrap userInitiated:(BOOL)initiated eventOrigin:(int64_t)origin;
 - (void)dealloc;
-- (void)incrementDetectionRotor:(int64_t)a3;
-- (void)setCurrentRotorType:(int64_t)a3 saveToPreferences:(BOOL)a4 userInitiated:(BOOL)a5;
-- (void)setRotorItems:(id)a3;
+- (void)incrementDetectionRotor:(int64_t)rotor;
+- (void)setCurrentRotorType:(int64_t)type saveToPreferences:(BOOL)preferences userInitiated:(BOOL)initiated;
+- (void)setRotorItems:(id)items;
 @end
 
 @implementation VOTRotor
@@ -75,26 +75,26 @@
 
 - (id)generateRotorTypeRequest
 {
-  v3 = [(VOTRotor *)self currentRotorString];
-  if (v3)
+  currentRotorString = [(VOTRotor *)self currentRotorString];
+  if (currentRotorString)
   {
     v4 = [objc_allocWithZone(VOTOutputRequest) init];
-    v5 = [v4 addString:v3];
+    v5 = [v4 addString:currentRotorString];
     if (([VOTSharedWorkspace isBaseSystemSpokenEqualToLocalization] & 1) == 0)
     {
-      v6 = [v4 lastAction];
-      v7 = [VOTSharedWorkspace systemSpokenLanguage];
-      [v6 setObject:v7 forVariant:16];
+      lastAction = [v4 lastAction];
+      systemSpokenLanguage = [VOTSharedWorkspace systemSpokenLanguage];
+      [lastAction setObject:systemSpokenLanguage forVariant:16];
     }
 
     if ([VOTSharedWorkspace hintsEnabled])
     {
-      v8 = [(VOTRotor *)self currentRotorHint];
-      if (v8)
+      currentRotorHint = [(VOTRotor *)self currentRotorHint];
+      if (currentRotorHint)
       {
         LODWORD(v9) = 1061997773;
         [v4 addPause:v9];
-        v10 = [v4 addString:v8];
+        v10 = [v4 addString:currentRotorHint];
       }
     }
   }
@@ -107,19 +107,19 @@
   return v4;
 }
 
-- (void)setCurrentRotorType:(int64_t)a3 saveToPreferences:(BOOL)a4 userInitiated:(BOOL)a5
+- (void)setCurrentRotorType:(int64_t)type saveToPreferences:(BOOL)preferences userInitiated:(BOOL)initiated
 {
   currentRotorType = self->_currentRotorType;
-  if (currentRotorType != a3)
+  if (currentRotorType != type)
   {
-    v7 = a5;
-    v8 = a4;
+    initiatedCopy = initiated;
+    preferencesCopy = preferences;
     self->_previousRotorType = currentRotorType;
     v26[0] = @"kVOTRotorChangedNotificationOldRotor";
     v10 = [NSNumber numberWithInteger:?];
     v27[0] = v10;
     v26[1] = @"kVOTRotorChangedNotificationNewRotor";
-    v11 = [NSNumber numberWithInteger:a3];
+    v11 = [NSNumber numberWithInteger:type];
     v27[1] = v11;
     v12 = [NSDictionary dictionaryWithObjects:v27 forKeys:v26 count:2];
 
@@ -127,17 +127,17 @@
     v21 = 3221225472;
     v22 = sub_1000F8074;
     v23 = &unk_1001C7778;
-    v24 = self;
+    selfCopy = self;
     v13 = v12;
     v25 = v13;
     AXPerformBlockOnMainThreadAfterDelay();
-    self->_currentRotorType = a3;
-    if ((a3 - 3) <= 2)
+    self->_currentRotorType = type;
+    if ((type - 3) <= 2)
     {
-      self->_currentSelectionRotorType = a3;
+      self->_currentSelectionRotorType = type;
     }
 
-    if (v8)
+    if (preferencesCopy)
     {
       v14 = [(NSString *)self->_typeKey copy];
       v15 = dispatch_get_global_queue(0, 0);
@@ -150,19 +150,19 @@
       v16 = v14;
       dispatch_async(v15, block);
 
-      a3 = self->_currentRotorType;
+      type = self->_currentRotorType;
     }
 
-    [VOTSharedWorkspace setRotorType:a3];
-    v17 = [(VOTRotor *)self delegate];
-    [v17 rotor:self didChangeFrom:self->_previousRotorType to:self->_currentRotorType userInitiated:v7];
+    [VOTSharedWorkspace setRotorType:type];
+    delegate = [(VOTRotor *)self delegate];
+    [delegate rotor:self didChangeFrom:self->_previousRotorType to:self->_currentRotorType userInitiated:initiatedCopy];
   }
 }
 
-- (void)_moveRotor:(BOOL)a3 didWrap:(BOOL *)a4 userInitiated:(BOOL)a5 eventOrigin:(int64_t)a6
+- (void)_moveRotor:(BOOL)rotor didWrap:(BOOL *)wrap userInitiated:(BOOL)initiated eventOrigin:(int64_t)origin
 {
-  v7 = a5;
-  v9 = a3;
+  initiatedCopy = initiated;
+  rotorCopy = rotor;
   Count = CFArrayGetCount(self->_currentRotors);
   if (!Count)
   {
@@ -179,7 +179,7 @@
   }
 
   publicCustomRotorIndex = self->_publicCustomRotorIndex;
-  if (v9)
+  if (rotorCopy)
   {
     v15 = publicCustomRotorIndex + 1;
   }
@@ -202,14 +202,14 @@ LABEL_9:
     if (currentRotorType == 54)
     {
       customActionIndex = self->_customActionIndex;
-      v17 = v9 ? 1 : -1;
+      v17 = rotorCopy ? 1 : -1;
       self->_customActionIndex = customActionIndex + v17;
       if (customActionIndex + v17 >= 0 && customActionIndex + v17 < [(NSArray *)self->_customRotorActionCategories count])
       {
-        v45 = v7;
+        v45 = initiatedCopy;
         v18 = [(NSArray *)self->_customRotorActionCategories objectAtIndexedSubscript:self->_customActionIndex];
-        v19 = [v18 categoryName];
-        v20 = [v19 isEqualToString:UIAccessibilityCustomActionCategoryEdit];
+        categoryName = [v18 categoryName];
+        v20 = [categoryName isEqualToString:UIAccessibilityCustomActionCategoryEdit];
 
         v21 = self->_customActionIndex;
         if (v20)
@@ -218,7 +218,7 @@ LABEL_9:
           self->_customActionIndex = v21;
         }
 
-        v7 = v45;
+        initiatedCopy = v45;
         if ((v21 & 0x8000000000000000) == 0 && v21 < [(NSArray *)self->_customRotorActionCategories count])
         {
           goto LABEL_25;
@@ -231,7 +231,7 @@ LABEL_9:
   if (v22 == 92)
   {
     customContentIndex = self->_customContentIndex;
-    if (v9)
+    if (rotorCopy)
     {
       v24 = customContentIndex + 1;
     }
@@ -265,16 +265,16 @@ LABEL_25:
     }
   }
 
-  v47 = v7;
-  *a4 = 0;
+  v47 = initiatedCopy;
+  *wrap = 0;
   v49.location = 0;
   v49.length = v12;
   FirstIndexOfValue = CFArrayGetFirstIndexOfValue(self->_currentRotors, v49, v22);
   v26 = FirstIndexOfValue;
   ValueAtIndex = 0;
-  v44 = v9;
-  v28 = !v9;
-  if (v9)
+  v44 = rotorCopy;
+  v28 = !rotorCopy;
+  if (rotorCopy)
   {
     v29 = 1;
   }
@@ -297,7 +297,7 @@ LABEL_25:
   v31 = FirstIndexOfValue;
   do
   {
-    if ([(VOTRotor *)self rotorTypeIsValid:ValueAtIndex eventOrigin:a6])
+    if ([(VOTRotor *)self rotorTypeIsValid:ValueAtIndex eventOrigin:origin])
     {
       break;
     }
@@ -314,7 +314,7 @@ LABEL_25:
 
     if (v31 < 0 || v31 >= v12)
     {
-      *a4 = 1;
+      *wrap = 1;
       v31 = v30;
     }
 
@@ -348,8 +348,8 @@ LABEL_25:
     if (v34 < [(NSArray *)self->_customRotorActionCategories count])
     {
       v35 = [(NSArray *)self->_customRotorActionCategories objectAtIndexedSubscript:self->_customActionIndex];
-      v36 = [v35 categoryName];
-      v37 = [v36 isEqualToString:@"UIAccessibilityCustomActionCategoryEdit"];
+      categoryName2 = [v35 categoryName];
+      v37 = [categoryName2 isEqualToString:@"UIAccessibilityCustomActionCategoryEdit"];
 
       if (v37)
       {
@@ -393,7 +393,7 @@ LABEL_25:
   [v43 setRotorType:v42];
 }
 
-- (void)incrementDetectionRotor:(int64_t)a3
+- (void)incrementDetectionRotor:(int64_t)rotor
 {
   Count = CFArrayGetCount(self->_currentRotors);
   if (!Count)
@@ -409,7 +409,7 @@ LABEL_25:
   v9 = FirstIndexOfValue;
   do
   {
-    if ([(VOTRotor *)self rotorTypeIsValid:ValueAtIndex eventOrigin:a3]&& (ValueAtIndex & 0xFFFFFFFFFFFFFFFELL) != 0x3C)
+    if ([(VOTRotor *)self rotorTypeIsValid:ValueAtIndex eventOrigin:rotor]&& (ValueAtIndex & 0xFFFFFFFFFFFFFFFELL) != 0x3C)
     {
       break;
     }
@@ -475,48 +475,48 @@ LABEL_25:
   [v18 setRotorType:v17];
 }
 
-+ (id)systemRotorTypeForSearchType:(int64_t)a3
++ (id)systemRotorTypeForSearchType:(int64_t)type
 {
-  if ((a3 - 1) > 0x21)
+  if ((type - 1) > 0x21)
   {
     return 0;
   }
 
   else
   {
-    return off_1001CAFF0[a3 - 1];
+    return off_1001CAFF0[type - 1];
   }
 }
 
-+ (id)systemRotorTypeForRotorType:(int64_t)a3
++ (id)systemRotorTypeForRotorType:(int64_t)type
 {
-  if (a3 <= 33)
+  if (type <= 33)
   {
     v4 = @"AXCustomSystemRotorTypeImage";
     v5 = @"AXCustomSystemRotorTypeLandmark";
-    if (a3 != 33)
+    if (type != 33)
     {
       v5 = 0;
     }
 
-    if (a3 != 17)
+    if (type != 17)
     {
       v4 = v5;
     }
 
     v6 = @"AXCustomSystemRotorTypeList";
     v7 = @"AXCustomSystemRotorTypeVisitedLink";
-    if (a3 != 15)
+    if (type != 15)
     {
       v7 = 0;
     }
 
-    if (a3 != 14)
+    if (type != 14)
     {
       v6 = v7;
     }
 
-    if (a3 <= 16)
+    if (type <= 16)
     {
       v4 = v6;
     }
@@ -524,22 +524,22 @@ LABEL_25:
     v8 = @"AXCustomSystemRotorTypeHeading";
     v9 = @"AXCustomSystemRotorTypeLink";
     v10 = @"AXCustomSystemRotorTypeTable";
-    if (a3 != 12)
+    if (type != 12)
     {
       v10 = 0;
     }
 
-    if (a3 != 9)
+    if (type != 9)
     {
       v9 = v10;
     }
 
-    if (a3 != 8)
+    if (type != 8)
     {
       v8 = v9;
     }
 
-    if (a3 <= 13)
+    if (type <= 13)
     {
       return v8;
     }
@@ -553,7 +553,7 @@ LABEL_25:
   else
   {
     result = 0;
-    switch(a3)
+    switch(type)
     {
       case '-':
         result = @"AXCustomSystemRotorTypeHeadingLevel1";
@@ -619,12 +619,12 @@ LABEL_25:
         break;
       default:
         v11 = @"AXCustomSystemRotorTypeTextField";
-        if (a3 != 36)
+        if (type != 36)
         {
           v11 = 0;
         }
 
-        if (a3 == 34)
+        if (type == 34)
         {
           result = @"AXCustomSystemRotorTypeArticle";
         }
@@ -641,108 +641,108 @@ LABEL_25:
   return result;
 }
 
-+ (int64_t)rotorTypeForSearchType:(int64_t)a3
++ (int64_t)rotorTypeForSearchType:(int64_t)type
 {
-  v3 = [VOTRotor systemRotorTypeForSearchType:a3];
+  v3 = [VOTRotor systemRotorTypeForSearchType:type];
   v4 = [VOTRotor rotorTypeForSystemRotorType:v3];
 
   return v4;
 }
 
-+ (int64_t)rotorTypeForSystemRotorType:(id)a3
++ (int64_t)rotorTypeForSystemRotorType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AXCustomSystemRotorTypeLink"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeLink"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeArticle"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeArticle"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeVisitedLink"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeVisitedLink"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeHeading"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeHeading"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel1"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel1"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel2"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel2"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel3"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel3"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel4"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel4"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel5"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel5"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel6"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeHeadingLevel6"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeBoldText"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeBoldText"])
   {
     v4 = 70;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeItalicText"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeItalicText"])
   {
     v4 = 71;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeUnderlineText"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeUnderlineText"])
   {
     v4 = 72;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeMisspelledWord"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeMisspelledWord"])
   {
     v4 = 73;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeImage"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeImage"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeTextField"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeTextField"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeTable"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeTable"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeList"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeList"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"AXCustomSystemRotorTypeLandmark"])
+  else if ([typeCopy isEqualToString:@"AXCustomSystemRotorTypeLandmark"])
   {
     v4 = 33;
   }
@@ -757,11 +757,11 @@ LABEL_25:
 
 - (id)currentVisualRotorString
 {
-  v3 = [(VOTRotor *)self _currentCustomRotorString];
-  v4 = v3;
-  if (v3)
+  _currentCustomRotorString = [(VOTRotor *)self _currentCustomRotorString];
+  v4 = _currentCustomRotorString;
+  if (_currentCustomRotorString)
   {
-    v5 = v3;
+    v5 = _currentCustomRotorString;
   }
 
   else
@@ -816,34 +816,34 @@ LABEL_6:
   return v5;
 }
 
-- (int64_t)indexOfRotorItem:(int64_t)a3
+- (int64_t)indexOfRotorItem:(int64_t)item
 {
   currentRotors = self->_currentRotors;
   v5.length = CFArrayGetCount(currentRotors);
   v5.location = 0;
 
-  return CFArrayGetFirstIndexOfValue(currentRotors, v5, a3);
+  return CFArrayGetFirstIndexOfValue(currentRotors, v5, item);
 }
 
-+ (id)rotorTypeForPreferenceString:(id)a3
++ (id)rotorTypeForPreferenceString:(id)string
 {
   v3 = qword_1001FEF98;
-  v4 = a3;
+  stringCopy = string;
   if (v3 != -1)
   {
     sub_100130BE4();
   }
 
-  v5 = [qword_1001FEF90 objectForKey:v4];
+  v5 = [qword_1001FEF90 objectForKey:stringCopy];
 
   return v5;
 }
 
-+ (id)stringForRotorType:(int64_t)a3
++ (id)stringForRotorType:(int64_t)type
 {
   v4 = off_1001FDDD0;
   v5 = 0;
-  switch(a3)
+  switch(type)
   {
     case 1:
       v5 = @"search.rotor.adjust";
@@ -916,9 +916,9 @@ LABEL_6:
       break;
     case 24:
       v6 = +[AXSettings sharedInstance];
-      v7 = [v6 voiceOverTouchBrailleDisplaySyncInputOutputTables];
+      voiceOverTouchBrailleDisplaySyncInputOutputTables = [v6 voiceOverTouchBrailleDisplaySyncInputOutputTables];
 
-      if (v7)
+      if (voiceOverTouchBrailleDisplaySyncInputOutputTables)
       {
         v5 = @"search.rotor.braille.languages";
       }
@@ -1169,8 +1169,8 @@ LABEL_6:
         self->_customContentIndex = customContentIndex;
         v17 = [AXAttributedString alloc];
         v9 = [(NSArray *)self->_customContent objectAtIndexedSubscript:self->_customContentIndex];
-        v18 = [v9 attributedLabel];
-        v14 = [v17 initWithStringOrAttributedString:v18];
+        attributedLabel = [v9 attributedLabel];
+        v14 = [v17 initWithStringOrAttributedString:attributedLabel];
 
         goto LABEL_21;
       }
@@ -1192,7 +1192,7 @@ LABEL_6:
 
         self->_customActionIndex = customActionIndex;
         v9 = [(NSArray *)self->_customRotorActionCategories objectAtIndexedSubscript:?];
-        v11 = [v9 categoryName];
+        categoryName = [v9 categoryName];
         goto LABEL_16;
       }
 
@@ -1213,17 +1213,17 @@ LABEL_6:
           v10 = [VOTRotor rotorTypeForSystemRotorType:v9];
           if (v10)
           {
-            v11 = [VOTRotor stringForRotorType:v10];
+            categoryName = [VOTRotor stringForRotorType:v10];
           }
 
           else
           {
-            v11 = v9;
-            v9 = v11;
+            categoryName = v9;
+            v9 = categoryName;
           }
 
 LABEL_16:
-          v14 = v11;
+          v14 = categoryName;
 LABEL_21:
 
           goto LABEL_23;
@@ -1260,11 +1260,11 @@ LABEL_23:
     return 0;
   }
 
-  v6 = [(VOTRotor *)self customPublicRotors];
-  v7 = [v6 count];
-  v8 = [(VOTRotor *)self publicCustomRotorIndex];
+  customPublicRotors = [(VOTRotor *)self customPublicRotors];
+  v7 = [customPublicRotors count];
+  publicCustomRotorIndex = [(VOTRotor *)self publicCustomRotorIndex];
 
-  if (v7 <= v8)
+  if (v7 <= publicCustomRotorIndex)
   {
     v11 = VOTLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -1277,8 +1277,8 @@ LABEL_23:
 
   else
   {
-    v9 = [(VOTRotor *)self customPublicRotors];
-    v10 = [v9 objectAtIndexedSubscript:{-[VOTRotor publicCustomRotorIndex](self, "publicCustomRotorIndex")}];
+    customPublicRotors2 = [(VOTRotor *)self customPublicRotors];
+    v10 = [customPublicRotors2 objectAtIndexedSubscript:{-[VOTRotor publicCustomRotorIndex](self, "publicCustomRotorIndex")}];
     v11 = [v10 objectForKeyedSubscript:@"name"];
 
     v4 = [VOTRotor rotorTypeForSystemRotorType:v11]== 73;
@@ -1311,11 +1311,11 @@ LABEL_7:
 
 - (id)currentRotorString
 {
-  v3 = [(VOTRotor *)self _currentCustomRotorString];
-  v4 = v3;
-  if (v3)
+  _currentCustomRotorString = [(VOTRotor *)self _currentCustomRotorString];
+  v4 = _currentCustomRotorString;
+  if (_currentCustomRotorString)
   {
-    v5 = v3;
+    v5 = _currentCustomRotorString;
   }
 
   else
@@ -1344,24 +1344,24 @@ LABEL_7:
   return v3;
 }
 
-- (void)setRotorItems:(id)a3
+- (void)setRotorItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   CFArrayRemoveAllValues(self->_currentRotors);
-  v4 = [v6 firstIndex];
-  if (v4 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [itemsCopy firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    for (i = v4; i != 0x7FFFFFFFFFFFFFFFLL; i = [v6 indexGreaterThanIndex:i])
+    for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [itemsCopy indexGreaterThanIndex:i])
     {
       CFArrayAppendValue(self->_currentRotors, i);
     }
   }
 }
 
-+ (BOOL)rotorIsUsedForSettingAdjustment:(int64_t)a3
++ (BOOL)rotorIsUsedForSettingAdjustment:(int64_t)adjustment
 {
   result = 1;
-  switch(a3)
+  switch(adjustment)
   {
     case 21:
     case 22:

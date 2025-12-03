@@ -1,31 +1,31 @@
 @interface BRCVolume
-- (BOOL)setupWithError:(id *)a3;
+- (BOOL)setupWithError:(id *)error;
 - (id)description;
-- (int)_setUpForStatfs:(statfs *)a3;
+- (int)_setUpForStatfs:(statfs *)statfs;
 @end
 
 @implementation BRCVolume
 
-- (int)_setUpForStatfs:(statfs *)a3
+- (int)_setUpForStatfs:(statfs *)statfs
 {
   v10 = 0;
   v9 = xmmword_2241ABDB0;
   v8 = 0;
   memset(v7, 0, sizeof(v7));
-  if (getattrlist(a3->f_mntonname, &v9, v7, 0x24uLL, 0x21u) < 0)
+  if (getattrlist(statfs->f_mntonname, &v9, v7, 0x24uLL, 0x21u) < 0)
   {
     return *__error();
   }
 
-  if (strcmp(a3->f_fstypename, "hfs") && (~DWORD1(v7[0]) & 0x180000) != 0)
+  if (strcmp(statfs->f_fstypename, "hfs") && (~DWORD1(v7[0]) & 0x180000) != 0)
   {
     return 19;
   }
 
-  f_flags = a3->f_flags;
+  f_flags = statfs->f_flags;
   if ((f_flags & 0x1001) == 0x1000)
   {
-    memcpy(&self->_stfs, a3, sizeof(self->_stfs));
+    memcpy(&self->_stfs, statfs, sizeof(self->_stfs));
     return 0;
   }
 
@@ -52,15 +52,15 @@
   return v8;
 }
 
-- (BOOL)setupWithError:(id *)a3
+- (BOOL)setupWithError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
   self->_deviceID = 0;
   memset(&__src, 0, 512);
-  v5 = [MEMORY[0x277CFAEF0] homeDirForCurrentPersona];
+  homeDirForCurrentPersona = [MEMORY[0x277CFAEF0] homeDirForCurrentPersona];
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [v5 br_realpath];
-  v8 = [v6 fileURLWithPath:v7];
+  br_realpath = [homeDirForCurrentPersona br_realpath];
+  v8 = [v6 fileURLWithPath:br_realpath];
   v9 = [v8 URLByAppendingPathComponent:*MEMORY[0x277CFABC8] isDirectory:1];
 
   if (statfs([v9 fileSystemRepresentation], &__src) < 0)
@@ -80,8 +80,8 @@
     }
 
     *__error() = v15;
-    v11 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
-    if (!v11)
+    br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+    if (!br_errorFromErrno)
     {
       goto LABEL_13;
     }
@@ -97,7 +97,7 @@
     *__dst = 136315906;
     *&__dst[4] = "[BRCVolume setupWithError:]";
     *&__dst[12] = 2080;
-    if (!a3)
+    if (!error)
     {
       v14 = "(ignored by caller)";
     }
@@ -109,8 +109,8 @@
   v10 = [(BRCVolume *)self _setUpForStatfs:__dst];
   if (v10)
   {
-    v11 = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:v10];
-    if (v11)
+    br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorWithPOSIXCode:v10];
+    if (br_errorFromErrno)
     {
       v12 = brc_bread_crumbs();
       v13 = brc_default_log();
@@ -120,7 +120,7 @@
         *__dst = 136315906;
         *&__dst[4] = "[BRCVolume setupWithError:]";
         *&__dst[12] = 2080;
-        if (!a3)
+        if (!error)
         {
           v14 = "(ignored by caller)";
         }
@@ -128,7 +128,7 @@
 LABEL_30:
         *&__dst[14] = v14;
         *&__dst[22] = 2112;
-        *&__dst[24] = v11;
+        *&__dst[24] = br_errorFromErrno;
         *&__dst[32] = 2112;
         *&__dst[34] = v12;
         v28 = __dst;
@@ -155,7 +155,7 @@ LABEL_12:
     if (os_log_type_enabled(v26, 0x90u))
     {
       v29 = 136315650;
-      v30 = [v9 fileSystemRepresentation];
+      fileSystemRepresentation = [v9 fileSystemRepresentation];
       v31 = 1024;
       *v32 = v24;
       *&v32[4] = 2112;
@@ -164,8 +164,8 @@ LABEL_12:
     }
 
     *__error() = v24;
-    v11 = [MEMORY[0x277CCA9B8] br_errorFromErrno];
-    if (v11)
+    br_errorFromErrno = [MEMORY[0x277CCA9B8] br_errorFromErrno];
+    if (br_errorFromErrno)
     {
       v12 = brc_bread_crumbs();
       v13 = brc_default_log();
@@ -173,16 +173,16 @@ LABEL_12:
       {
         v27 = "(passed to caller)";
         v29 = 136315906;
-        v30 = "[BRCVolume setupWithError:]";
+        fileSystemRepresentation = "[BRCVolume setupWithError:]";
         v31 = 2080;
-        if (!a3)
+        if (!error)
         {
           v27 = "(ignored by caller)";
         }
 
         *v32 = v27;
         *&v32[8] = 2112;
-        *&v32[10] = v11;
+        *&v32[10] = br_errorFromErrno;
         v33 = 2112;
         v34 = v12;
         v28 = &v29;
@@ -194,10 +194,10 @@ LABEL_12:
   }
 
 LABEL_13:
-  if (a3)
+  if (error)
   {
-    v18 = v11;
-    *a3 = v11;
+    v18 = br_errorFromErrno;
+    *error = br_errorFromErrno;
   }
 
 LABEL_16:

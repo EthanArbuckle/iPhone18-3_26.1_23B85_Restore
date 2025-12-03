@@ -23,7 +23,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D64D60];
+    v1 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result = v1;
     acceptsTopLevelLeaves___haveChecked = 1;
   }
@@ -40,7 +40,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D5E660];
+    v1 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result = v1;
     parsingLeafNode___haveChecked = 1;
   }
@@ -57,7 +57,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D64A10];
+    v1 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result = v1;
     parsingWithSubItems___haveChecked = 1;
   }
@@ -74,7 +74,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v1 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result = v1;
     frontingBasicTypes___haveChecked = 1;
   }
@@ -91,7 +91,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v1 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result = v1;
     notifyOfUnknownTokens___haveChecked = 1;
   }
@@ -137,7 +137,7 @@
 - (id)activeSyncString
 {
   v2 = [MEMORY[0x277CBEBB0] gmt];
-  v3 = [a1 descriptionWithCalendarFormat:@"%Y-%m-%dT%H:%M:%S.%FZ" timeZone:v2 locale:0];
+  v3 = [self descriptionWithCalendarFormat:@"%Y-%m-%dT%H:%M:%S.%FZ" timeZone:v2 locale:0];
 
   return v3;
 }
@@ -145,7 +145,7 @@
 - (id)activeSyncStringWithoutSeparators
 {
   v2 = [MEMORY[0x277CBEBB0] gmt];
-  v3 = [a1 descriptionWithCalendarFormat:@"%Y%m%dT%H%M%SZ" timeZone:v2 locale:0];
+  v3 = [self descriptionWithCalendarFormat:@"%Y%m%dT%H%M%SZ" timeZone:v2 locale:0];
 
   return v3;
 }
@@ -153,7 +153,7 @@
 - (id)activeSyncStringForYearMonthDay
 {
   v2 = [MEMORY[0x277CBEBB0] gmt];
-  v3 = [a1 descriptionWithCalendarFormat:@"%Y%m%d" timeZone:v2 locale:0];
+  v3 = [self descriptionWithCalendarFormat:@"%Y%m%d" timeZone:v2 locale:0];
 
   return v3;
 }

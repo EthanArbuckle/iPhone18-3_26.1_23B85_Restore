@@ -4,10 +4,10 @@
 - (UISearchBar)searchBar;
 - (UISearchController)searchController;
 - (id)_mainContentView;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)cancelSearchAndDismiss;
 - (void)dealloc;
 - (void)deselectHighlightedRow;
@@ -15,8 +15,8 @@
 - (void)generateLanguageCells;
 - (void)loadData;
 - (void)loadView;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateNavigationItem;
 @end
 
@@ -26,8 +26,8 @@
 {
   [(UITableView *)self->_tableView setDelegate:0];
   [(UITableView *)self->_tableView setDataSource:0];
-  v3 = [(ISLanguageViewController *)self searchBar];
-  [v3 setDelegate:0];
+  searchBar = [(ISLanguageViewController *)self searchBar];
+  [searchBar setDelegate:0];
 
   v4.receiver = self;
   v4.super_class = ISLanguageViewController;
@@ -52,22 +52,22 @@
 
 - (void)updateNavigationItem
 {
-  v7 = [(ISLanguageViewController *)self navigationItem];
+  navigationItem = [(ISLanguageViewController *)self navigationItem];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = [v3 localizedStringForKey:@"SELECT_LANGUAGE" value:&stru_35798 table:@"InternationalSettings"];
   v5 = [NSString stringWithFormat:v4];
-  [v7 setTitle:v5];
+  [navigationItem setTitle:v5];
 
   v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:24 target:self action:"navBarCloseButtonClicked"];
-  [v7 setLeftBarButtonItem:v6];
+  [navigationItem setLeftBarButtonItem:v6];
 }
 
 - (void)generateLanguageCells
 {
-  v3 = [(UITableView *)self->_tableView numberOfSections];
-  if (v3 >= 1)
+  numberOfSections = [(UITableView *)self->_tableView numberOfSections];
+  if (numberOfSections >= 1)
   {
-    v4 = v3;
+    v4 = numberOfSections;
     for (i = 0; i != v4; ++i)
     {
       v6 = [(UITableView *)self->_tableView numberOfRowsInSection:i];
@@ -97,20 +97,20 @@
   v3 = [_NSLocalizedStringResource alloc];
   v4 = +[NSLocale currentLocale];
   v5 = [NSBundle bundleForClass:objc_opt_class()];
-  v6 = [v5 bundleURL];
-  v7 = [v3 initWithKey:@"GENERAL" table:@"InternationalSettings" locale:v4 bundleURL:v6];
+  bundleURL = [v5 bundleURL];
+  v7 = [v3 initWithKey:@"GENERAL" table:@"InternationalSettings" locale:v4 bundleURL:bundleURL];
 
   v8 = [_NSLocalizedStringResource alloc];
   v9 = +[NSLocale currentLocale];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
-  v11 = [v10 bundleURL];
-  v12 = [v8 initWithKey:@"INTERNATIONAL" table:@"InternationalSettings" locale:v9 bundleURL:v11];
+  bundleURL2 = [v10 bundleURL];
+  v12 = [v8 initWithKey:@"INTERNATIONAL" table:@"InternationalSettings" locale:v9 bundleURL:bundleURL2];
 
   v13 = [_NSLocalizedStringResource alloc];
   v14 = +[NSLocale currentLocale];
   v15 = [NSBundle bundleForClass:objc_opt_class()];
-  v16 = [v15 bundleURL];
-  v17 = [v13 initWithKey:@"SELECT_LANGUAGE" table:@"InternationalSettings" locale:v14 bundleURL:v16];
+  bundleURL3 = [v15 bundleURL];
+  v17 = [v13 initWithKey:@"SELECT_LANGUAGE" table:@"InternationalSettings" locale:v14 bundleURL:bundleURL3];
 
   v20[0] = v7;
   v20[1] = v12;
@@ -121,8 +121,8 @@
 - (id)_mainContentView
 {
   WeakRetained = objc_loadWeakRetained(&self->PSViewController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  v4 = [WeakRetained view];
-  [v4 frame];
+  view = [WeakRetained view];
+  [view frame];
   v6 = v5;
   v8 = v7;
 
@@ -144,33 +144,33 @@
 
   [(UIView *)self->_contentView addSubview:self->_tableView];
   v14 = [[UISearchController alloc] initWithSearchResultsController:0];
-  v15 = [(ISLanguageViewController *)self navigationItem];
-  [v15 setSearchController:v14];
+  navigationItem = [(ISLanguageViewController *)self navigationItem];
+  [navigationItem setSearchController:v14];
 
-  v16 = [(ISLanguageViewController *)self navigationItem];
-  [v16 setHidesSearchBarWhenScrolling:0];
+  navigationItem2 = [(ISLanguageViewController *)self navigationItem];
+  [navigationItem2 setHidesSearchBarWhenScrolling:0];
 
-  v17 = [(ISLanguageViewController *)self navigationItem];
-  v18 = [v17 searchController];
-  [(ISLanguageViewController *)self setSearchController:v18];
+  navigationItem3 = [(ISLanguageViewController *)self navigationItem];
+  searchController = [navigationItem3 searchController];
+  [(ISLanguageViewController *)self setSearchController:searchController];
 
-  v19 = [(ISLanguageViewController *)self searchController];
-  v20 = [v19 searchBar];
-  [(ISLanguageViewController *)self setSearchBar:v20];
+  searchController2 = [(ISLanguageViewController *)self searchController];
+  searchBar = [searchController2 searchBar];
+  [(ISLanguageViewController *)self setSearchBar:searchBar];
 
-  v21 = [(ISLanguageViewController *)self searchController];
-  [v21 setHidesNavigationBarDuringPresentation:1];
+  searchController3 = [(ISLanguageViewController *)self searchController];
+  [searchController3 setHidesNavigationBarDuringPresentation:1];
 
-  v22 = [(ISLanguageViewController *)self searchController];
-  [v22 setObscuresBackgroundDuringPresentation:0];
+  searchController4 = [(ISLanguageViewController *)self searchController];
+  [searchController4 setObscuresBackgroundDuringPresentation:0];
 
-  v23 = [(ISLanguageViewController *)self searchBar];
-  [v23 setDelegate:self];
+  searchBar2 = [(ISLanguageViewController *)self searchBar];
+  [searchBar2 setDelegate:self];
 
   v24 = [NSBundle bundleForClass:objc_opt_class()];
   v25 = [v24 localizedStringForKey:@"SEARCH" value:&stru_35798 table:@"InternationalSettings"];
-  v26 = [(ISLanguageViewController *)self searchBar];
-  [v26 setPlaceholder:v25];
+  searchBar3 = [(ISLanguageViewController *)self searchBar];
+  [searchBar3 setPlaceholder:v25];
 
   v27 = +[NSArray array];
   [(ISLanguageViewController *)self setFilteredLanguageSections:v27];
@@ -184,9 +184,9 @@
 
 - (void)loadView
 {
-  v3 = [(ISLanguageViewController *)self _mainContentView];
+  _mainContentView = [(ISLanguageViewController *)self _mainContentView];
   contentView = self->_contentView;
-  self->_contentView = v3;
+  self->_contentView = _mainContentView;
 
   v5 = self->_contentView;
 
@@ -208,24 +208,24 @@
   v9 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
 
   [v4 addObject:v9];
-  v10 = [v3 languageVariants];
-  if ([v10 count])
+  languageVariants = [v3 languageVariants];
+  if ([languageVariants count])
   {
     v22[0] = @"kLanguageSectionKeyTitle";
     v11 = [NSBundle bundleForClass:objc_opt_class()];
     v12 = [v11 localizedStringForKey:@"LANGUAGE_VARIANTS" value:&stru_35798 table:@"InternationalSettings"];
     v22[1] = @"kLanguageSectionKeyLanguages";
     v23[0] = v12;
-    v23[1] = v10;
+    v23[1] = languageVariants;
     v13 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
 
     [v4 addObject:v13];
   }
 
-  v14 = [v3 otherLanguages];
-  v15 = [v14 mutableCopy];
+  otherLanguages = [v3 otherLanguages];
+  v15 = [otherLanguages mutableCopy];
 
-  [v15 removeObjectsInArray:v10];
+  [v15 removeObjectsInArray:languageVariants];
   v20[0] = @"kLanguageSectionKeyTitle";
   v16 = [NSBundle bundleForClass:objc_opt_class()];
   v17 = [v16 localizedStringForKey:@"OTHER_LANGUAGES" value:&stru_35798 table:@"InternationalSettings"];
@@ -236,8 +236,8 @@
 
   [v4 addObject:v18];
   [(ISLanguageViewController *)self setUnfilteredLanguageSections:v4];
-  v19 = [v3 systemDisplayLanguage];
-  [(ISLanguageViewController *)self setCheckedLanguageCode:v19];
+  systemDisplayLanguage = [v3 systemDisplayLanguage];
+  [(ISLanguageViewController *)self setCheckedLanguageCode:systemDisplayLanguage];
 }
 
 - (NSArray)languageSections
@@ -256,7 +256,7 @@
   return v2;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_searchIsActive)
   {
@@ -273,62 +273,62 @@
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(ISLanguageViewController *)self languageSections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  languageSections = [(ISLanguageViewController *)self languageSections];
+  v6 = [languageSections objectAtIndexedSubscript:section];
   v7 = [v6 objectForKeyedSubscript:@"kLanguageSectionKeyLanguages"];
   v8 = [v7 count];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(ISLanguageViewController *)self languageSections];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  languageSections = [(ISLanguageViewController *)self languageSections];
+  v6 = [languageSections objectAtIndexedSubscript:section];
   v7 = [v6 objectForKeyedSubscript:@"kLanguageSectionKeyTitle"];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"Cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"Cell"];
   if (!v7)
   {
     v7 = [[ISLanguageTableViewCell alloc] initWithStyle:3 reuseIdentifier:@"Cell"];
   }
 
-  v8 = [v6 row];
-  v9 = [v6 section];
+  v8 = [pathCopy row];
+  section = [pathCopy section];
 
-  v10 = [(ISLanguageViewController *)self languageSections];
-  v11 = [v10 objectAtIndexedSubscript:v9];
+  languageSections = [(ISLanguageViewController *)self languageSections];
+  v11 = [languageSections objectAtIndexedSubscript:section];
   v12 = [v11 objectForKeyedSubscript:@"kLanguageSectionKeyLanguages"];
   v13 = [v12 objectAtIndexedSubscript:v8];
 
   v14 = [NSAttributedString alloc];
-  v15 = [v13 name];
+  name = [v13 name];
   v26 = kCTLanguageAttributeName;
-  v16 = [v13 identifier];
-  v27 = v16;
+  identifier = [v13 identifier];
+  v27 = identifier;
   v17 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
-  v18 = [v14 initWithString:v15 attributes:v17];
+  v18 = [v14 initWithString:name attributes:v17];
 
-  v19 = [(ISLanguageTableViewCell *)v7 textLabel];
-  [v19 setAttributedText:v18];
+  textLabel = [(ISLanguageTableViewCell *)v7 textLabel];
+  [textLabel setAttributedText:v18];
 
-  v20 = [v13 localizedStringForName];
-  v21 = [(ISLanguageTableViewCell *)v7 detailTextLabel];
-  [v21 setText:v20];
+  localizedStringForName = [v13 localizedStringForName];
+  detailTextLabel = [(ISLanguageTableViewCell *)v7 detailTextLabel];
+  [detailTextLabel setText:localizedStringForName];
 
-  v22 = [(ISLanguageViewController *)self checkedLanguageCode];
-  v23 = [v13 identifier];
-  LODWORD(v21) = [v22 isEqualToString:v23];
+  checkedLanguageCode = [(ISLanguageViewController *)self checkedLanguageCode];
+  identifier2 = [v13 identifier];
+  LODWORD(detailTextLabel) = [checkedLanguageCode isEqualToString:identifier2];
 
-  if (v21)
+  if (detailTextLabel)
   {
     v24 = 3;
   }
@@ -343,21 +343,21 @@
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
-  v7 = [v5 section];
+  pathCopy = path;
+  v6 = [pathCopy row];
+  section = [pathCopy section];
 
-  v8 = [(ISLanguageViewController *)self languageSections];
-  v9 = [v8 objectAtIndexedSubscript:v7];
+  languageSections = [(ISLanguageViewController *)self languageSections];
+  v9 = [languageSections objectAtIndexedSubscript:section];
   v10 = [v9 objectForKeyedSubscript:@"kLanguageSectionKeyLanguages"];
   v15 = [v10 objectAtIndexedSubscript:v6];
 
-  v11 = [v15 identifier];
+  identifier = [v15 identifier];
   v12 = OBJC_IVAR___PSViewController__parentController;
   WeakRetained = objc_loadWeakRetained(&self->PSViewController_opaque[OBJC_IVAR___PSViewController__parentController]);
-  [WeakRetained setLanguage:v11 specifier:0];
+  [WeakRetained setLanguage:identifier specifier:0];
 
   v14 = objc_loadWeakRetained(&self->PSViewController_opaque[v12]);
   [v14 commit];
@@ -366,18 +366,18 @@
 - (void)deselectHighlightedRow
 {
   tableView = self->_tableView;
-  v3 = [(UITableView *)tableView indexPathForSelectedRow];
-  [(UITableView *)tableView deselectRowAtIndexPath:v3 animated:1];
+  indexPathForSelectedRow = [(UITableView *)tableView indexPathForSelectedRow];
+  [(UITableView *)tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ISLanguageViewController *)self searchQueue];
-  [v8 cancelAllOperations];
+  barCopy = bar;
+  changeCopy = change;
+  searchQueue = [(ISLanguageViewController *)self searchQueue];
+  [searchQueue cancelAllOperations];
 
-  if ([v7 length])
+  if ([changeCopy length])
   {
     v9 = objc_alloc_init(NSBlockOperation);
     objc_initWeak(&location, v9);
@@ -385,8 +385,8 @@
     v12 = 3221225472;
     v13 = sub_E634;
     v14 = &unk_35088;
-    v15 = self;
-    v16 = v7;
+    selfCopy = self;
+    v16 = changeCopy;
     objc_copyWeak(&v17, &location);
     [v9 addExecutionBlock:&v11];
     v10 = [(ISLanguageViewController *)self searchQueue:v11];
@@ -405,8 +405,8 @@
 
 - (void)cancelSearchAndDismiss
 {
-  v3 = [(ISLanguageViewController *)self searchController];
-  [v3 setActive:0];
+  searchController = [(ISLanguageViewController *)self searchController];
+  [searchController setActive:0];
 
   WeakRetained = objc_loadWeakRetained(&self->PSViewController_opaque[OBJC_IVAR___PSViewController__parentController]);
   [WeakRetained dismiss];

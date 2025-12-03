@@ -1,74 +1,74 @@
 @interface _UIFlexInteractionSpec
 + (id)settingsControllerModule;
-- (id)dynamicWithSize:(CGSize)a3;
-- (id)liquidLensWithSize:(CGSize)a3;
-- (void)setLarge:(id)a3;
-- (void)setLoupe:(id)a3;
-- (void)setMenu:(id)a3;
-- (void)setSmall:(id)a3;
-- (void)setSmallLoupe:(id)a3;
-- (void)setUltraSmall:(id)a3;
+- (id)dynamicWithSize:(CGSize)size;
+- (id)liquidLensWithSize:(CGSize)size;
+- (void)setLarge:(id)large;
+- (void)setLoupe:(id)loupe;
+- (void)setMenu:(id)menu;
+- (void)setSmall:(id)small;
+- (void)setSmallLoupe:(id)loupe;
+- (void)setUltraSmall:(id)small;
 @end
 
 @implementation _UIFlexInteractionSpec
 
-- (void)setUltraSmall:(id)a3
+- (void)setUltraSmall:(id)small
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_ultraSmall);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_ultraSmall) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_ultraSmall) = small;
+  smallCopy = small;
 }
 
-- (void)setSmall:(id)a3
+- (void)setSmall:(id)small
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_small);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_small) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_small) = small;
+  smallCopy = small;
 }
 
-- (void)setLarge:(id)a3
+- (void)setLarge:(id)large
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_large);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_large) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_large) = large;
+  largeCopy = large;
 }
 
-- (void)setLoupe:(id)a3
+- (void)setLoupe:(id)loupe
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_loupe);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_loupe) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_loupe) = loupe;
+  loupeCopy = loupe;
 }
 
-- (void)setSmallLoupe:(id)a3
+- (void)setSmallLoupe:(id)loupe
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_smallLoupe);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_smallLoupe) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_smallLoupe) = loupe;
+  loupeCopy = loupe;
 }
 
-- (void)setMenu:(id)a3
+- (void)setMenu:(id)menu
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_menu);
-  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_menu) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC5UIKit22_UIFlexInteractionSpec_menu) = menu;
+  menuCopy = menu;
 }
 
-- (id)dynamicWithSize:(CGSize)a3
+- (id)dynamicWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v6 = sub_188F76B80(width, height);
 
   return v6;
 }
 
-- (id)liquidLensWithSize:(CGSize)a3
+- (id)liquidLensWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v6 = sub_188F76FD0(width, height);
 
   return v6;

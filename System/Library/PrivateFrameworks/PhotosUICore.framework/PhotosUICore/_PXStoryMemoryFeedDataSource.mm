@@ -1,35 +1,35 @@
 @interface _PXStoryMemoryFeedDataSource
-- (_PXStoryMemoryFeedDataSource)initWithDataSource:(id)a3;
-- (id)objectIDAtIndexPath:(PXSimpleIndexPath *)a3;
-- (id)objectReferenceNearestToObjectReference:(id)a3;
+- (_PXStoryMemoryFeedDataSource)initWithDataSource:(id)source;
+- (id)objectIDAtIndexPath:(PXSimpleIndexPath *)path;
+- (id)objectReferenceNearestToObjectReference:(id)reference;
 @end
 
 @implementation _PXStoryMemoryFeedDataSource
 
-- (id)objectReferenceNearestToObjectReference:(id)a3
+- (id)objectReferenceNearestToObjectReference:(id)reference
 {
-  v4 = a3;
-  v5 = [(PXSectionedDataSource *)self->_dataSource objectReferenceNearestToObjectReference:v4];
+  referenceCopy = reference;
+  v5 = [(PXSectionedDataSource *)self->_dataSource objectReferenceNearestToObjectReference:referenceCopy];
   v6 = v5;
-  if (v4 && !v5)
+  if (referenceCopy && !v5)
   {
-    v7 = [v4 leafObject];
-    v8 = [v7 assetCollection];
-    v9 = [v8 creationDate];
+    leafObject = [referenceCopy leafObject];
+    assetCollection = [leafObject assetCollection];
+    creationDate = [assetCollection creationDate];
 
     v6 = 0;
-    if ([(PXSectionedDataSource *)self->_dataSource numberOfSections]== 1 && v9)
+    if ([(PXSectionedDataSource *)self->_dataSource numberOfSections]== 1 && creationDate)
     {
-      v25 = v4;
+      v25 = referenceCopy;
       v10 = *off_1E7722228;
       v26 = *(off_1E7722228 + 2);
       v27 = *(off_1E7722228 + 3);
       v28 = *(off_1E7722228 + 1);
       v11 = [(PXSectionedDataSource *)self->_dataSource numberOfItemsInSection:0];
-      v12 = [(PXSectionedDataSource *)self->_dataSource identifier];
+      identifier = [(PXSectionedDataSource *)self->_dataSource identifier];
       if (v11 >= 1)
       {
-        v13 = v12;
+        v13 = identifier;
         v14 = 0;
         v15 = 1.79769313e308;
         do
@@ -40,9 +40,9 @@
           v31 = v14;
           v32 = 0x7FFFFFFFFFFFFFFFLL;
           v17 = [(PXSectionedDataSource *)dataSource objectAtIndexPath:&v29];
-          v18 = [v17 assetCollection];
-          v19 = [v18 creationDate];
-          [v19 timeIntervalSinceDate:v9];
+          assetCollection2 = [v17 assetCollection];
+          creationDate2 = [assetCollection2 creationDate];
+          [creationDate2 timeIntervalSinceDate:creationDate];
           v21 = v20;
 
           v22 = -v21;
@@ -81,37 +81,37 @@
         v6 = [(PXSectionedDataSource *)v23 objectReferenceAtIndexPath:&v29];
       }
 
-      v4 = v25;
+      referenceCopy = v25;
     }
   }
 
   return v6;
 }
 
-- (id)objectIDAtIndexPath:(PXSimpleIndexPath *)a3
+- (id)objectIDAtIndexPath:(PXSimpleIndexPath *)path
 {
   dataSource = self->_dataSource;
-  v4 = *&a3->item;
-  v10[0] = *&a3->dataSourceIdentifier;
+  v4 = *&path->item;
+  v10[0] = *&path->dataSourceIdentifier;
   v10[1] = v4;
   v5 = [(PXSectionedDataSource *)dataSource objectReferenceAtIndexPath:v10];
-  v6 = [v5 leafObject];
-  v7 = [v6 assetCollection];
-  v8 = [v7 localIdentifier];
+  leafObject = [v5 leafObject];
+  assetCollection = [leafObject assetCollection];
+  localIdentifier = [assetCollection localIdentifier];
 
-  return v8;
+  return localIdentifier;
 }
 
-- (_PXStoryMemoryFeedDataSource)initWithDataSource:(id)a3
+- (_PXStoryMemoryFeedDataSource)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = _PXStoryMemoryFeedDataSource;
   v6 = [(_PXStoryMemoryFeedDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;

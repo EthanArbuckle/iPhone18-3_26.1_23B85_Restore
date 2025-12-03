@@ -1,26 +1,26 @@
 @interface FPDSharedSystemSchedulerWithFastPass
 - (BOOL)isRunningAsFastPass;
 - (BOOL)preventRunning;
-- (FPDSharedSystemSchedulerWithFastPass)initWithTaskRequest:(id)a3 fastPassTaskRequest:(id)a4 options:(int64_t)a5;
+- (FPDSharedSystemSchedulerWithFastPass)initWithTaskRequest:(id)request fastPassTaskRequest:(id)taskRequest options:(int64_t)options;
 - (id)buildNewTaskRequest;
 - (id)taskLabel;
 - (void)defer;
-- (void)enableFastPassRunWithSemanticVersion:(int64_t)a3;
-- (void)setAllowRunningOnlyAsFastPass:(BOOL)a3;
+- (void)enableFastPassRunWithSemanticVersion:(int64_t)version;
+- (void)setAllowRunningOnlyAsFastPass:(BOOL)pass;
 @end
 
 @implementation FPDSharedSystemSchedulerWithFastPass
 
-- (FPDSharedSystemSchedulerWithFastPass)initWithTaskRequest:(id)a3 fastPassTaskRequest:(id)a4 options:(int64_t)a5
+- (FPDSharedSystemSchedulerWithFastPass)initWithTaskRequest:(id)request fastPassTaskRequest:(id)taskRequest options:(int64_t)options
 {
-  v8 = a4;
+  taskRequestCopy = taskRequest;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__FPDSharedSystemSchedulerWithFastPass_initWithTaskRequest_fastPassTaskRequest_options___block_invoke;
   aBlock[3] = &unk_1E83BFFF8;
-  v19 = v8;
-  v9 = v8;
-  v10 = a3;
+  v19 = taskRequestCopy;
+  v9 = taskRequestCopy;
+  requestCopy = request;
   v11 = _Block_copy(aBlock);
   fastPassCriteriaBuilder = self->_fastPassCriteriaBuilder;
   self->_fastPassCriteriaBuilder = v11;
@@ -28,13 +28,13 @@
   self->_shouldRunInFastPass = 0;
   self->_allowRunningOnlyAsFastPass = 0;
   self->_semanticVersion = 0;
-  v13 = [v9 identifier];
+  identifier = [v9 identifier];
   fastPassLabel = self->_fastPassLabel;
-  self->_fastPassLabel = v13;
+  self->_fastPassLabel = identifier;
 
   v17.receiver = self;
   v17.super_class = FPDSharedSystemSchedulerWithFastPass;
-  v15 = [(FPDSharedSystemScheduler *)&v17 initWithTaskRequest:v10 options:a5];
+  v15 = [(FPDSharedSystemScheduler *)&v17 initWithTaskRequest:requestCopy options:options];
 
   return v15;
 }
@@ -43,17 +43,17 @@
 {
   if (self->_shouldRunInFastPass)
   {
-    v2 = self->_fastPassLabel;
+    taskLabel = self->_fastPassLabel;
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = FPDSharedSystemSchedulerWithFastPass;
-    v2 = [(FPDSharedSystemScheduler *)&v4 taskLabel];
+    taskLabel = [(FPDSharedSystemScheduler *)&v4 taskLabel];
   }
 
-  return v2;
+  return taskLabel;
 }
 
 - (void)defer
@@ -75,21 +75,21 @@
   if (self->_shouldRunInFastPass)
   {
     fastPassCriteriaBuilder = self->_fastPassCriteriaBuilder;
-    v4 = (*(self->_fastPassCriteriaBuilder + 2))();
-    [v4 setSemanticVersion:self->_semanticVersion];
+    buildNewTaskRequest = (*(self->_fastPassCriteriaBuilder + 2))();
+    [buildNewTaskRequest setSemanticVersion:self->_semanticVersion];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = FPDSharedSystemSchedulerWithFastPass;
-    v4 = [(FPDSharedSystemScheduler *)&v6 buildNewTaskRequest];
+    buildNewTaskRequest = [(FPDSharedSystemScheduler *)&v6 buildNewTaskRequest];
   }
 
-  return v4;
+  return buildNewTaskRequest;
 }
 
-- (void)enableFastPassRunWithSemanticVersion:(int64_t)a3
+- (void)enableFastPassRunWithSemanticVersion:(int64_t)version
 {
   v5 = +[FPDSharedSystemScheduler queue];
   v6[0] = MEMORY[0x1E69E9820];
@@ -97,7 +97,7 @@
   v6[2] = __77__FPDSharedSystemSchedulerWithFastPass_enableFastPassRunWithSemanticVersion___block_invoke;
   v6[3] = &unk_1E83BEFB0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = version;
   dispatch_sync(v5, v6);
 }
 
@@ -111,14 +111,14 @@ id __77__FPDSharedSystemSchedulerWithFastPass_enableFastPassRunWithSemanticVersi
   return result;
 }
 
-- (void)setAllowRunningOnlyAsFastPass:(BOOL)a3
+- (void)setAllowRunningOnlyAsFastPass:(BOOL)pass
 {
   v5 = +[FPDSharedSystemScheduler queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __70__FPDSharedSystemSchedulerWithFastPass_setAllowRunningOnlyAsFastPass___block_invoke;
   v6[3] = &unk_1E83BFFD0;
-  v7 = a3;
+  passCopy = pass;
   v6[4] = self;
   dispatch_sync(v5, v6);
 }
@@ -161,18 +161,18 @@ unsigned __int8 *__70__FPDSharedSystemSchedulerWithFastPass_setAllowRunningOnlyA
 {
   if (!self->_allowRunningOnlyAsFastPass)
   {
-    v5 = self;
-    v3 = &v5;
+    selfCopy = self;
+    v3 = &selfCopy;
     goto LABEL_5;
   }
 
   if ([(FPDSharedSystemSchedulerWithFastPass *)self isRunningAsFastPass])
   {
-    v6 = self;
-    v3 = &v6;
+    selfCopy2 = self;
+    v3 = &selfCopy2;
 LABEL_5:
     v3[1] = FPDSharedSystemSchedulerWithFastPass;
-    return objc_msgSendSuper2(v3, sel_preventRunning, v5);
+    return objc_msgSendSuper2(v3, sel_preventRunning, selfCopy);
   }
 
   return 1;

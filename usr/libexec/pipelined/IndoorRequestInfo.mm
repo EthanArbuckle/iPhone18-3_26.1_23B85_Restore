@@ -1,27 +1,27 @@
 @interface IndoorRequestInfo
-+ (id)indoorRequestInfoFromRequest:(id)a3;
-+ (id)indoorRequestInfoFromTask:(id)a3;
-- (IndoorRequestInfo)initWithCoder:(id)a3;
++ (id)indoorRequestInfoFromRequest:(id)request;
++ (id)indoorRequestInfoFromTask:(id)task;
+- (IndoorRequestInfo)initWithCoder:(id)coder;
 - (id)description;
-- (id)initFloor:(id)a3 inVenue:(id)a4 withContext:(int64_t)a5 requestFor:(int)a6 withinSession:(int)a7 lastRelevant:(id)a8 allowCellularDownloadTile:(BOOL)a9 requestUUID:(id)a10;
-- (id)initFromRequest:(id)a3 updatedRelevancy:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)setOnRequest:(id)a3;
+- (id)initFloor:(id)floor inVenue:(id)venue withContext:(int64_t)context requestFor:(int)for withinSession:(int)session lastRelevant:(id)relevant allowCellularDownloadTile:(BOOL)tile requestUUID:(id)self0;
+- (id)initFromRequest:(id)request updatedRelevancy:(id)relevancy;
+- (void)encodeWithCoder:(id)coder;
+- (void)setOnRequest:(id)request;
 @end
 
 @implementation IndoorRequestInfo
 
-+ (id)indoorRequestInfoFromRequest:(id)a3
++ (id)indoorRequestInfoFromRequest:(id)request
 {
-  v3 = a3;
-  v4 = [NSURLProtocol propertyForKey:@"com.apple.pipelined.RequestInfo" inRequest:v3];
-  v5 = [v3 description];
-  v20 = [v5 UTF8String];
+  requestCopy = request;
+  v4 = [NSURLProtocol propertyForKey:@"com.apple.pipelined.RequestInfo" inRequest:requestCopy];
+  v5 = [requestCopy description];
+  uTF8String = [v5 UTF8String];
   if (!v4)
   {
     sub_1000474A4(v22, "");
     sub_1001CCEE8("No indoor request information in NSURLRequest: ", &v24);
-    sub_1002C60F8(&v20, &v25);
+    sub_1002C60F8(&uTF8String, &v25);
     sub_1000E661C(v22, &v24, 2);
     if (SHIBYTE(v25.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -59,12 +59,12 @@ LABEL_11:
   isKindOfClass = objc_opt_isKindOfClass();
   v7 = [objc_opt_class() description];
   v8 = v7;
-  v20 = [v7 UTF8String];
+  uTF8String = [v7 UTF8String];
   if ((isKindOfClass & 1) == 0)
   {
     sub_1000474A4(v22, "");
     sub_10020E0B8("Invalid indoor request information in NSURLRequest. Type = ", &v24);
-    sub_1002C60F8(&v20, &v25);
+    sub_1002C60F8(&uTF8String, &v25);
     sub_1000E661C(v22, &v24, 2);
     if (SHIBYTE(v25.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -103,12 +103,12 @@ LABEL_15:
   v10 = v19;
   v11 = [v10 description];
   v12 = v11;
-  v20 = [v11 UTF8String];
+  uTF8String = [v11 UTF8String];
   if (!v9)
   {
     sub_1000474A4(v22, "");
     sub_1000D36B0("Hit an error while unarchiving: %s", &v24);
-    sub_1002C60F8(&v20, &v25);
+    sub_1002C60F8(&uTF8String, &v25);
     sub_1000E661C(v22, &v24, 2);
     if (SHIBYTE(v25.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -142,20 +142,20 @@ LABEL_19:
     goto LABEL_32;
   }
 
-  v13 = [v3 description];
+  v13 = [requestCopy description];
   v14 = v13;
-  v20 = [v13 UTF8String];
+  uTF8String = [v13 UTF8String];
 
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
   v16 = [objc_opt_class() description];
   v17 = v16;
-  v20 = [v16 UTF8String];
+  uTF8String = [v16 UTF8String];
   if ((v15 & 1) == 0)
   {
     sub_1000474A4(v22, "");
     sub_10020E0B8("Invalid indoor request information in NSURLRequest. Type = ", &v24);
-    sub_1002C60F8(&v20, &v25);
+    sub_1002C60F8(&uTF8String, &v25);
     sub_1000E661C(v22, &v24, 2);
     if (SHIBYTE(v25.__r_.__value_.__r.__words[2]) < 0)
     {
@@ -192,80 +192,80 @@ LABEL_23:
   return v9;
 }
 
-+ (id)indoorRequestInfoFromTask:(id)a3
++ (id)indoorRequestInfoFromTask:(id)task
 {
-  v3 = [a3 originalRequest];
-  v4 = [IndoorRequestInfo indoorRequestInfoFromRequest:v3];
+  originalRequest = [task originalRequest];
+  v4 = [IndoorRequestInfo indoorRequestInfoFromRequest:originalRequest];
 
   return v4;
 }
 
-- (IndoorRequestInfo)initWithCoder:(id)a3
+- (IndoorRequestInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"venueUuid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"floorUuid"];
-  v7 = [v4 decodeIntForKey:@"locationContext"];
-  v8 = [v4 decodeBoolForKey:@"isFloorMetadata"];
-  v9 = [v4 decodeIntForKey:@"session"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"venueUuid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"floorUuid"];
+  v7 = [coderCopy decodeIntForKey:@"locationContext"];
+  v8 = [coderCopy decodeBoolForKey:@"isFloorMetadata"];
+  v9 = [coderCopy decodeIntForKey:@"session"];
   v10 = [NSDate alloc];
-  [v4 decodeDoubleForKey:@"lastRelevant"];
+  [coderCopy decodeDoubleForKey:@"lastRelevant"];
   v11 = [v10 initWithTimeIntervalSinceReferenceDate:?];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestUUID"];
-  LOBYTE(v15) = [v4 decodeBoolForKey:@"allowCellularDownloadTile"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestUUID"];
+  LOBYTE(v15) = [coderCopy decodeBoolForKey:@"allowCellularDownloadTile"];
   v13 = [(IndoorRequestInfo *)self initFloor:v6 inVenue:v5 withContext:v7 requestFor:v8 ^ 1 withinSession:v9 lastRelevant:v11 allowCellularDownloadTile:v15 requestUUID:v12];
 
   return v13;
 }
 
-- (id)initFloor:(id)a3 inVenue:(id)a4 withContext:(int64_t)a5 requestFor:(int)a6 withinSession:(int)a7 lastRelevant:(id)a8 allowCellularDownloadTile:(BOOL)a9 requestUUID:(id)a10
+- (id)initFloor:(id)floor inVenue:(id)venue withContext:(int64_t)context requestFor:(int)for withinSession:(int)session lastRelevant:(id)relevant allowCellularDownloadTile:(BOOL)tile requestUUID:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a8;
-  v24 = a10;
+  floorCopy = floor;
+  venueCopy = venue;
+  relevantCopy = relevant;
+  dCopy = d;
   v25.receiver = self;
   v25.super_class = IndoorRequestInfo;
   v19 = [(IndoorRequestInfo *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_floorUuid, a3);
-    objc_storeStrong(&v20->_venueUuid, a4);
-    v20->_context = a5;
-    v20->_session = a7;
-    v20->_kind = a6;
-    objc_storeStrong(&v20->_lastRelevant, a8);
-    objc_storeStrong(&v20->_requestUUID, a10);
-    v20->_allowCellularDownloadTile = a9;
+    objc_storeStrong(&v19->_floorUuid, floor);
+    objc_storeStrong(&v20->_venueUuid, venue);
+    v20->_context = context;
+    v20->_session = session;
+    v20->_kind = for;
+    objc_storeStrong(&v20->_lastRelevant, relevant);
+    objc_storeStrong(&v20->_requestUUID, d);
+    v20->_allowCellularDownloadTile = tile;
     v21 = v20;
   }
 
   return v20;
 }
 
-- (id)initFromRequest:(id)a3 updatedRelevancy:(id)a4
+- (id)initFromRequest:(id)request updatedRelevancy:(id)relevancy
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 floorUuid];
-  v9 = [v6 venueUuid];
-  v10 = [v6 context];
-  v11 = [v6 kind];
-  v12 = [v6 session];
-  v13 = [v6 allowCellularDownloadTile];
-  v14 = [v6 requestUUID];
-  LOBYTE(v17) = v13;
-  v15 = [(IndoorRequestInfo *)self initFloor:v8 inVenue:v9 withContext:v10 requestFor:v11 withinSession:v12 lastRelevant:v7 allowCellularDownloadTile:v17 requestUUID:v14];
+  requestCopy = request;
+  relevancyCopy = relevancy;
+  floorUuid = [requestCopy floorUuid];
+  venueUuid = [requestCopy venueUuid];
+  context = [requestCopy context];
+  kind = [requestCopy kind];
+  session = [requestCopy session];
+  allowCellularDownloadTile = [requestCopy allowCellularDownloadTile];
+  requestUUID = [requestCopy requestUUID];
+  LOBYTE(v17) = allowCellularDownloadTile;
+  v15 = [(IndoorRequestInfo *)self initFloor:floorUuid inVenue:venueUuid withContext:context requestFor:kind withinSession:session lastRelevant:relevancyCopy allowCellularDownloadTile:v17 requestUUID:requestUUID];
 
   return v15;
 }
 
-- (void)setOnRequest:(id)a3
+- (void)setOnRequest:(id)request
 {
-  v4 = a3;
-  v5 = [IndoorRequestInfo isMetadata:[(IndoorRequestInfo *)self kind]]|| [(IndoorRequestInfo *)self allowCellularDownloadTile];
-  [v4 setAllowsCellularAccess:v5];
+  requestCopy = request;
+  allowCellularDownloadTile = [IndoorRequestInfo isMetadata:[(IndoorRequestInfo *)self kind]]|| [(IndoorRequestInfo *)self allowCellularDownloadTile];
+  [requestCopy setAllowsCellularAccess:allowCellularDownloadTile];
   v6 = [NSKeyedArchiver archivedDataWithRootObject:self];
   if (!v6)
   {
@@ -285,23 +285,23 @@ LABEL_23:
     sub_1000BA6B0(&v7);
   }
 
-  [NSURLProtocol setProperty:v6 forKey:@"com.apple.pipelined.RequestInfo" inRequest:v4];
+  [NSURLProtocol setProperty:v6 forKey:@"com.apple.pipelined.RequestInfo" inRequest:requestCopy];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeObject:self->_venueUuid forKey:@"venueUuid"];
-  [v5 encodeObject:self->_floorUuid forKey:@"floorUuid"];
-  [v5 encodeInt:LODWORD(self->_context) forKey:@"locationContext"];
-  [v5 encodeBool:+[IndoorRequestInfo isMetadata:](IndoorRequestInfo forKey:{"isMetadata:", self->_kind), @"isFloorMetadata"}];
-  [v5 encodeInt:self->_session forKey:@"session"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_venueUuid forKey:@"venueUuid"];
+  [coderCopy encodeObject:self->_floorUuid forKey:@"floorUuid"];
+  [coderCopy encodeInt:LODWORD(self->_context) forKey:@"locationContext"];
+  [coderCopy encodeBool:+[IndoorRequestInfo isMetadata:](IndoorRequestInfo forKey:{"isMetadata:", self->_kind), @"isFloorMetadata"}];
+  [coderCopy encodeInt:self->_session forKey:@"session"];
   [(NSDate *)self->_lastRelevant timeIntervalSinceReferenceDate];
-  [v5 encodeDouble:@"lastRelevant" forKey:?];
-  v4 = [(IndoorRequestInfo *)self requestUUID];
-  [v5 encodeObject:v4 forKey:@"requestUUID"];
+  [coderCopy encodeDouble:@"lastRelevant" forKey:?];
+  requestUUID = [(IndoorRequestInfo *)self requestUUID];
+  [coderCopy encodeObject:requestUUID forKey:@"requestUUID"];
 
-  [v5 encodeBool:-[IndoorRequestInfo allowCellularDownloadTile](self forKey:{"allowCellularDownloadTile"), @"allowCellularDownloadTile"}];
+  [coderCopy encodeBool:-[IndoorRequestInfo allowCellularDownloadTile](self forKey:{"allowCellularDownloadTile"), @"allowCellularDownloadTile"}];
 }
 
 - (id)description
@@ -334,9 +334,9 @@ LABEL_23:
   v9 = [NSString alloc];
   venueUuid = self->_venueUuid;
   floorUuid = self->_floorUuid;
-  v12 = [(IndoorRequestInfo *)self requestUUID];
-  v13 = [v12 UUIDString];
-  v14 = v13;
+  requestUUID = [(IndoorRequestInfo *)self requestUUID];
+  uUIDString = [requestUUID UUIDString];
+  v14 = uUIDString;
   v15 = @"I";
   if (context)
   {
@@ -348,7 +348,7 @@ LABEL_23:
     v15 = @"R";
   }
 
-  v16 = [v9 initWithFormat:@"%@|%@|%@|%@|%@|%@", v3, v7, v15, venueUuid, floorUuid, v13];
+  v16 = [v9 initWithFormat:@"%@|%@|%@|%@|%@|%@", v3, v7, v15, venueUuid, floorUuid, uUIDString];
 
   return v16;
 }

@@ -1,57 +1,57 @@
 @interface DAContactsSearchQuery
-+ (id)contactsSearchQueryWithSearchString:(id)a3 searchBase:(id)a4 searchScope:(id)a5 consumer:(id)a6;
-- (DAContactsSearchQuery)initWithDictionaryRepresentation:(id)a3 consumer:(id)a4;
-- (DAContactsSearchQuery)initWithSearchString:(id)a3 searchBase:(id)a4 searchScope:(id)a5 consumer:(id)a6;
++ (id)contactsSearchQueryWithSearchString:(id)string searchBase:(id)base searchScope:(id)scope consumer:(id)consumer;
+- (DAContactsSearchQuery)initWithDictionaryRepresentation:(id)representation consumer:(id)consumer;
+- (DAContactsSearchQuery)initWithSearchString:(id)string searchBase:(id)base searchScope:(id)scope consumer:(id)consumer;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation DAContactsSearchQuery
 
-+ (id)contactsSearchQueryWithSearchString:(id)a3 searchBase:(id)a4 searchScope:(id)a5 consumer:(id)a6
++ (id)contactsSearchQueryWithSearchString:(id)string searchBase:(id)base searchScope:(id)scope consumer:(id)consumer
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[DAContactsSearchQuery alloc] initWithSearchString:v12 searchBase:v11 searchScope:v10 consumer:v9];
+  consumerCopy = consumer;
+  scopeCopy = scope;
+  baseCopy = base;
+  stringCopy = string;
+  v13 = [[DAContactsSearchQuery alloc] initWithSearchString:stringCopy searchBase:baseCopy searchScope:scopeCopy consumer:consumerCopy];
 
   return v13;
 }
 
-- (DAContactsSearchQuery)initWithSearchString:(id)a3 searchBase:(id)a4 searchScope:(id)a5 consumer:(id)a6
+- (DAContactsSearchQuery)initWithSearchString:(id)string searchBase:(id)base searchScope:(id)scope consumer:(id)consumer
 {
-  v10 = a4;
-  v11 = a5;
+  baseCopy = base;
+  scopeCopy = scope;
   v15.receiver = self;
   v15.super_class = DAContactsSearchQuery;
-  v12 = [(DASearchQuery *)&v15 initWithSearchString:a3 consumer:a6];
+  v12 = [(DASearchQuery *)&v15 initWithSearchString:string consumer:consumer];
   v13 = v12;
   if (v12)
   {
     [(DASearchQuery *)v12 setRange:0, 100];
-    [(DAContactsSearchQuery *)v13 setSearchBase:v10];
-    [(DAContactsSearchQuery *)v13 setSearchScope:v11];
+    [(DAContactsSearchQuery *)v13 setSearchBase:baseCopy];
+    [(DAContactsSearchQuery *)v13 setSearchScope:scopeCopy];
     [(DAContactsSearchQuery *)v13 setIncludePhotos:1];
   }
 
   return v13;
 }
 
-- (DAContactsSearchQuery)initWithDictionaryRepresentation:(id)a3 consumer:(id)a4
+- (DAContactsSearchQuery)initWithDictionaryRepresentation:(id)representation consumer:(id)consumer
 {
-  v6 = a3;
+  representationCopy = representation;
   v12.receiver = self;
   v12.super_class = DAContactsSearchQuery;
-  v7 = [(DASearchQuery *)&v12 initWithDictionaryRepresentation:v6 consumer:a4];
+  v7 = [(DASearchQuery *)&v12 initWithDictionaryRepresentation:representationCopy consumer:consumer];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"ContactSearchBase"];
+    v8 = [representationCopy objectForKeyedSubscript:@"ContactSearchBase"];
     [(DAContactsSearchQuery *)v7 setSearchBase:v8];
 
-    v9 = [v6 objectForKeyedSubscript:@"ContactSearchScope"];
+    v9 = [representationCopy objectForKeyedSubscript:@"ContactSearchScope"];
     [(DAContactsSearchQuery *)v7 setSearchScope:v9];
 
-    v10 = [v6 objectForKeyedSubscript:@"ContactSearchIncludePhotos"];
+    v10 = [representationCopy objectForKeyedSubscript:@"ContactSearchIncludePhotos"];
     -[DAContactsSearchQuery setIncludePhotos:](v7, "setIncludePhotos:", [v10 BOOLValue]);
   }
 
@@ -62,27 +62,27 @@
 {
   v10.receiver = self;
   v10.super_class = DAContactsSearchQuery;
-  v3 = [(DASearchQuery *)&v10 dictionaryRepresentation];
-  v4 = [(DAContactsSearchQuery *)self searchBase];
+  dictionaryRepresentation = [(DASearchQuery *)&v10 dictionaryRepresentation];
+  searchBase = [(DAContactsSearchQuery *)self searchBase];
 
-  if (v4)
+  if (searchBase)
   {
-    v5 = [(DAContactsSearchQuery *)self searchBase];
-    [v3 setObject:v5 forKeyedSubscript:@"ContactSearchBase"];
+    searchBase2 = [(DAContactsSearchQuery *)self searchBase];
+    [dictionaryRepresentation setObject:searchBase2 forKeyedSubscript:@"ContactSearchBase"];
   }
 
-  v6 = [(DAContactsSearchQuery *)self searchScope];
+  searchScope = [(DAContactsSearchQuery *)self searchScope];
 
-  if (v6)
+  if (searchScope)
   {
-    v7 = [(DAContactsSearchQuery *)self searchScope];
-    [v3 setObject:v7 forKeyedSubscript:@"ContactSearchScope"];
+    searchScope2 = [(DAContactsSearchQuery *)self searchScope];
+    [dictionaryRepresentation setObject:searchScope2 forKeyedSubscript:@"ContactSearchScope"];
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[DAContactsSearchQuery includePhotos](self, "includePhotos")}];
-  [v3 setObject:v8 forKeyedSubscript:@"ContactSearchIncludePhotos"];
+  [dictionaryRepresentation setObject:v8 forKeyedSubscript:@"ContactSearchIncludePhotos"];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 @end

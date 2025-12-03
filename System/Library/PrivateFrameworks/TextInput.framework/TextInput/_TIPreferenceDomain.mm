@@ -1,17 +1,17 @@
 @interface _TIPreferenceDomain
-+ (id)domainWithName:(id)a3 notification:(id)a4;
++ (id)domainWithName:(id)name notification:(id)notification;
 @end
 
 @implementation _TIPreferenceDomain
 
-+ (id)domainWithName:(id)a3 notification:(id)a4
++ (id)domainWithName:(id)name notification:(id)notification
 {
-  v5 = a4;
-  v6 = a3;
+  notificationCopy = notification;
+  nameCopy = name;
   v7 = objc_alloc_init(objc_opt_class());
-  [v7 setDomain:v6];
+  [v7 setDomain:nameCopy];
 
-  [v7 setNotification:v5];
+  [v7 setNotification:notificationCopy];
 
   return v7;
 }

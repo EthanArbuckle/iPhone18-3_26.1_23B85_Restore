@@ -1,16 +1,16 @@
 @interface MTREventReport
-- (MTREventReport)initWithPath:(const ConcreteEventPath *)a3 error:(id)a4;
-- (MTREventReport)initWithPath:(const ConcreteEventPath *)a3 eventNumber:(id)a4 priority:(unsigned __int8)a5 timestamp:(const Timestamp *)a6 value:(id)a7;
+- (MTREventReport)initWithPath:(const ConcreteEventPath *)path error:(id)error;
+- (MTREventReport)initWithPath:(const ConcreteEventPath *)path eventNumber:(id)number priority:(unsigned __int8)priority timestamp:(const Timestamp *)timestamp value:(id)value;
 - (MTREventReport)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
 @end
 
 @implementation MTREventReport
 
-- (MTREventReport)initWithPath:(const ConcreteEventPath *)a3 eventNumber:(id)a4 priority:(unsigned __int8)a5 timestamp:(const Timestamp *)a6 value:(id)a7
+- (MTREventReport)initWithPath:(const ConcreteEventPath *)path eventNumber:(id)number priority:(unsigned __int8)priority timestamp:(const Timestamp *)timestamp value:(id)value
 {
-  v9 = a5;
-  v13 = a4;
-  v14 = a7;
+  priorityCopy = priority;
+  numberCopy = number;
+  valueCopy = value;
   v29.receiver = self;
   v29.super_class = MTREventReport;
   v15 = [(MTREventReport *)&v29 init];
@@ -19,20 +19,20 @@
     goto LABEL_14;
   }
 
-  v16 = [[MTREventPath alloc] initWithPath:a3];
+  v16 = [[MTREventPath alloc] initWithPath:path];
   path = v15->_path;
   v15->_path = v16;
 
-  objc_storeStrong(&v15->_eventNumber, a4);
-  if (v9 < 3)
+  objc_storeStrong(&v15->_eventNumber, number);
+  if (priorityCopy < 3)
   {
     v18 = 1;
-    if (v9 != 1)
+    if (priorityCopy != 1)
     {
       v18 = 2;
     }
 
-    if (v9)
+    if (priorityCopy)
     {
       v19 = v18;
     }
@@ -46,26 +46,26 @@
     priority = v15->_priority;
     v15->_priority = v20;
 
-    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a6->var1];
+    v22 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:timestamp->var1];
     timestampValue = v15->_timestampValue;
     v15->_timestampValue = v22;
 
-    if (a6->var0 == 1)
+    if (timestamp->var0 == 1)
     {
       v15->_eventTimeType = 1;
-      v25 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(a6->var1 % 0x3E8) / 1000.0 + (a6->var1 / 0x3E8)];
+      v25 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:(timestamp->var1 % 0x3E8) / 1000.0 + (timestamp->var1 / 0x3E8)];
       timestampDate = v15->_timestampDate;
       v15->_timestampDate = v25;
 
       goto LABEL_13;
     }
 
-    if (!a6->var0)
+    if (!timestamp->var0)
     {
       v15->_eventTimeType = 0;
-      v15->_systemUpTime = (a6->var1 % 0x3E8) / 1000.0 + (a6->var1 / 0x3E8);
+      v15->_systemUpTime = (timestamp->var1 % 0x3E8) / 1000.0 + (timestamp->var1 / 0x3E8);
 LABEL_13:
-      objc_storeStrong(&v15->_value, a7);
+      objc_storeStrong(&v15->_value, value);
       error = v15->_error;
       v15->_error = 0;
 
@@ -81,15 +81,15 @@ LABEL_15:
   return v24;
 }
 
-- (MTREventReport)initWithPath:(const ConcreteEventPath *)a3 error:(id)a4
+- (MTREventReport)initWithPath:(const ConcreteEventPath *)path error:(id)error
 {
-  v7 = a4;
+  errorCopy = error;
   v16.receiver = self;
   v16.super_class = MTREventReport;
   v8 = [(MTREventReport *)&v16 init];
   if (v8)
   {
-    v9 = [[MTREventPath alloc] initWithPath:a3];
+    v9 = [[MTREventPath alloc] initWithPath:path];
     path = v8->_path;
     v8->_path = v9;
 
@@ -107,7 +107,7 @@ LABEL_15:
     value = v8->_value;
     v8->_value = 0;
 
-    objc_storeStrong(&v8->_error, a4);
+    objc_storeStrong(&v8->_error, error);
   }
 
   return v8;
@@ -131,9 +131,9 @@ LABEL_15:
         v11 = objc_opt_class();
         if (sub_238EEE250(v6, @"error", v11, @"response-value error is not an NSError.", error))
         {
-          v39 = [v9 _asConcretePath];
+          _asConcretePath = [v9 _asConcretePath];
           v40 = v12;
-          v7 = [(MTREventReport *)v7 initWithPath:&v39 error:v10];
+          v7 = [(MTREventReport *)v7 initWithPath:&_asConcretePath error:v10];
           v13 = v7;
 LABEL_26:
 
@@ -154,8 +154,8 @@ LABEL_18:
       v15 = [(NSDictionary *)v6 objectForKeyedSubscript:@"data"];
       v41 = 0;
       v42 = 0;
-      sub_2393C5AAC(&v39);
-      if ((sub_238EF2604(&v42, &v41, v15, &v39, error) & 1) == 0)
+      sub_2393C5AAC(&_asConcretePath);
+      if ((sub_238EF2604(&v42, &v41, v15, &_asConcretePath, error) & 1) == 0)
       {
         v13 = 0;
 LABEL_25:
@@ -165,10 +165,10 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v37 = [v9 _asConcretePath];
+      _asConcretePath2 = [v9 _asConcretePath];
       v38 = v16;
       v36 = xmmword_278A72F50;
-      v17 = sub_2392D45E0(&v37, &v39, &v36);
+      v17 = sub_2392D45E0(&_asConcretePath2, &_asConcretePath, &v36);
       if (v36 == 182)
       {
         v29 = @"No known schema for decoding event payload.";

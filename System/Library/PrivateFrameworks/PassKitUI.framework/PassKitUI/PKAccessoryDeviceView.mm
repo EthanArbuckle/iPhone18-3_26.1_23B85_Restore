@@ -1,8 +1,8 @@
 @interface PKAccessoryDeviceView
 - (CGRect)_springBoardCutoutRect;
 - (CGRect)cutoutFrame;
-- (PKAccessoryDeviceView)initWithPass:(id)a3 accessory:(id)a4 cutoutFrame:(CGRect)a5 parentView:(id)a6;
-- (PKAccessoryDeviceView)initWithState:(int64_t)a3 accessory:(id)a4 cutoutFrame:(CGRect)a5 parentView:(id)a6;
+- (PKAccessoryDeviceView)initWithPass:(id)pass accessory:(id)accessory cutoutFrame:(CGRect)frame parentView:(id)view;
+- (PKAccessoryDeviceView)initWithState:(int64_t)state accessory:(id)accessory cutoutFrame:(CGRect)frame parentView:(id)view;
 - (PKAccessoryDeviceViewDelegate)delegate;
 - (void)_layoutFailureState;
 - (void)_layoutProcessingState;
@@ -10,39 +10,39 @@
 - (void)_layoutSuccessWithUserInterventionState;
 - (void)_layoutTryAgainState;
 - (void)_setColors;
-- (void)_showWalletWithMessage:(id)a3;
-- (void)changeToState:(int64_t)a3;
-- (void)dismissViewWithCompletion:(id)a3;
+- (void)_showWalletWithMessage:(id)message;
+- (void)changeToState:(int64_t)state;
+- (void)dismissViewWithCompletion:(id)completion;
 - (void)layoutSubviews;
 - (void)presentOnParentView;
 @end
 
 @implementation PKAccessoryDeviceView
 
-- (PKAccessoryDeviceView)initWithPass:(id)a3 accessory:(id)a4 cutoutFrame:(CGRect)a5 parentView:(id)a6
+- (PKAccessoryDeviceView)initWithPass:(id)pass accessory:(id)accessory cutoutFrame:(CGRect)frame parentView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v17 bounds];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  passCopy = pass;
+  accessoryCopy = accessory;
+  viewCopy = view;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v20.receiver = self;
   v20.super_class = PKAccessoryDeviceView;
   v18 = [(PKAccessoryDeviceView *)&v20 initWithFrame:?];
 
   if (v18)
   {
-    objc_storeStrong(&v18->_accessory, a4);
-    objc_storeStrong(&v18->_pass, a3);
+    objc_storeStrong(&v18->_accessory, accessory);
+    objc_storeStrong(&v18->_pass, pass);
     v18->_cutoutFrame.origin.x = x;
     v18->_cutoutFrame.origin.y = y;
     v18->_cutoutFrame.size.width = width;
     v18->_cutoutFrame.size.height = height;
-    objc_storeStrong(&v18->_parentView, a6);
+    objc_storeStrong(&v18->_parentView, view);
     v18->_state = 0;
     [(PKAccessoryDeviceView *)v18 changeToState:0];
     v18->_animationDelay = 4.0;
@@ -53,29 +53,29 @@
   return v18;
 }
 
-- (PKAccessoryDeviceView)initWithState:(int64_t)a3 accessory:(id)a4 cutoutFrame:(CGRect)a5 parentView:(id)a6
+- (PKAccessoryDeviceView)initWithState:(int64_t)state accessory:(id)accessory cutoutFrame:(CGRect)frame parentView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a4;
-  v15 = a6;
-  v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v16 bounds];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  accessoryCopy = accessory;
+  viewCopy = view;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v19.receiver = self;
   v19.super_class = PKAccessoryDeviceView;
   v17 = [(PKAccessoryDeviceView *)&v19 initWithFrame:?];
 
   if (v17)
   {
-    v17->_state = a3;
-    objc_storeStrong(&v17->_accessory, a4);
+    v17->_state = state;
+    objc_storeStrong(&v17->_accessory, accessory);
     v17->_cutoutFrame.origin.x = x;
     v17->_cutoutFrame.origin.y = y;
     v17->_cutoutFrame.size.width = width;
     v17->_cutoutFrame.size.height = height;
-    objc_storeStrong(&v17->_parentView, a6);
+    objc_storeStrong(&v17->_parentView, view);
     [(PKAccessoryDeviceView *)v17 _setColors];
     [(PKAccessoryDeviceView *)v17 changeToState:v17->_state];
     [(PKAccessoryDeviceView *)v17 presentOnParentView];
@@ -86,27 +86,27 @@
 
 - (void)_setColors
 {
-  v3 = [(PKAccessoryDevice *)self->_accessory primaryColorData];
-  v15 = v3;
-  if (v3)
+  primaryColorData = [(PKAccessoryDevice *)self->_accessory primaryColorData];
+  v15 = primaryColorData;
+  if (primaryColorData)
   {
-    v4 = PKUIColorFromP3ColorData(v3);
+    v4 = PKUIColorFromP3ColorData(primaryColorData);
     strokeColor = self->_strokeColor;
     self->_strokeColor = v4;
   }
 
   if (!self->_strokeColor)
   {
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     v7 = self->_strokeColor;
-    self->_strokeColor = v6;
+    self->_strokeColor = whiteColor;
   }
 
-  v8 = [(PKAccessoryDevice *)self->_accessory secondaryColorData];
-  v9 = v8;
-  if (v8)
+  secondaryColorData = [(PKAccessoryDevice *)self->_accessory secondaryColorData];
+  v9 = secondaryColorData;
+  if (secondaryColorData)
   {
-    v10 = PKUIColorFromP3ColorData(v8);
+    v10 = PKUIColorFromP3ColorData(secondaryColorData);
     backgroundColor = self->_backgroundColor;
     self->_backgroundColor = v10;
   }
@@ -114,9 +114,9 @@
   v12 = self->_backgroundColor;
   if (!v12)
   {
-    v13 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     v14 = self->_backgroundColor;
-    self->_backgroundColor = v13;
+    self->_backgroundColor = blackColor;
 
     v12 = self->_backgroundColor;
   }
@@ -174,9 +174,9 @@ void __44__PKAccessoryDeviceView_presentOnParentView__block_invoke(uint64_t a1)
   }
 }
 
-- (void)changeToState:(int64_t)a3
+- (void)changeToState:(int64_t)state
 {
-  self->_state = a3;
+  self->_state = state;
   timeOutBlockTimer = self->_timeOutBlockTimer;
   if (timeOutBlockTimer)
   {
@@ -190,7 +190,7 @@ void __44__PKAccessoryDeviceView_presentOnParentView__block_invoke(uint64_t a1)
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 accessoryDeviceDidChangeStateTo:a3];
+    [v8 accessoryDeviceDidChangeStateTo:state];
   }
 }
 
@@ -295,8 +295,8 @@ void __44__PKAccessoryDeviceView_presentOnParentView__block_invoke(uint64_t a1)
   if (v4)
   {
     v5 = v4;
-    v6 = [(PKGlyphView *)self->_glyph primaryColor];
-    v7 = [v5 _flatImageWithColor:v6];
+    primaryColor = [(PKGlyphView *)self->_glyph primaryColor];
+    v7 = [v5 _flatImageWithColor:primaryColor];
   }
 
   else
@@ -306,9 +306,9 @@ void __44__PKAccessoryDeviceView_presentOnParentView__block_invoke(uint64_t a1)
 
   [(PKGlyphView *)self->_glyph setState:10];
   glyph = self->_glyph;
-  v9 = [v7 CGImage];
+  cGImage = [v7 CGImage];
   [v7 alignmentRectInsets];
-  [(PKGlyphView *)glyph setCustomImage:v9 withAlignmentEdgeInsets:?];
+  [(PKGlyphView *)glyph setCustomImage:cGImage withAlignmentEdgeInsets:?];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __44__PKAccessoryDeviceView__layoutFailureState__block_invoke;
@@ -344,21 +344,21 @@ void __44__PKAccessoryDeviceView_presentOnParentView__block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PKPass *)self->_pass frontFaceImage];
+  frontFaceImage = [(PKPass *)self->_pass frontFaceImage];
   v12 = [MEMORY[0x1E69B8950] constraintsWithAspectFillToSize:{83.0, 52.0}];
-  v13 = [v11 resizedImageWithConstraints:v12];
+  v13 = [frontFaceImage resizedImageWithConstraints:v12];
   v14 = [MEMORY[0x1E69DCAB8] imageWithPKImage:v13];
   v15 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v14];
   imageBackgroundView = self->_imageBackgroundView;
   self->_imageBackgroundView = v15;
 
-  v17 = [(UIView *)self->_imageBackgroundView layer];
+  layer = [(UIView *)self->_imageBackgroundView layer];
   [(UIView *)self->_imageBackgroundView setContentMode:1];
   [(UIView *)self->_imageBackgroundView setClipsToBounds:1];
   [(UIView *)self->_imageBackgroundView _setContinuousCornerRadius:4.0];
   [(UIView *)self->_imageBackgroundView setBackgroundColor:self->_backgroundColor];
-  [v17 setBorderWidth:PKUIPixelLength()];
-  [v17 setBorderColor:{-[UIColor CGColor](self->_strokeColor, "CGColor")}];
+  [layer setBorderWidth:PKUIPixelLength()];
+  [layer setBorderColor:{-[UIColor CGColor](self->_strokeColor, "CGColor")}];
   v18 = self->_imageBackgroundView;
   v19 = v4 + (v8 + -151.0) * 0.5;
   v20 = v6 + (v10 + -52.0) * 0.5;
@@ -439,10 +439,10 @@ uint64_t __47__PKAccessoryDeviceView__layoutProcessingState__block_invoke_2(uint
   return [v2 setAlpha:1.0];
 }
 
-- (void)_showWalletWithMessage:(id)a3
+- (void)_showWalletWithMessage:(id)message
 {
   label = self->_label;
-  v5 = a3;
+  messageCopy = message;
   [(UILabel *)label setAlpha:0.0];
   [(PKGlyphView *)self->_glyph setAlpha:0.0];
   [(UIView *)self->_imageBackgroundView setAlpha:0.0];
@@ -460,10 +460,10 @@ uint64_t __47__PKAccessoryDeviceView__layoutProcessingState__block_invoke_2(uint
   self->_label = v14;
 
   v16 = self->_label;
-  v17 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)v16 setTextColor:v17];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)v16 setTextColor:whiteColor];
 
-  [(UILabel *)self->_label setText:v5];
+  [(UILabel *)self->_label setText:messageCopy];
   [(UILabel *)self->_label setNumberOfLines:2];
   v18 = self->_label;
   v19 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC38]);
@@ -488,8 +488,8 @@ uint64_t __47__PKAccessoryDeviceView__layoutProcessingState__block_invoke_2(uint
   self->_imageBackgroundView = v31;
 
   v33 = self->_imageBackgroundView;
-  v34 = [MEMORY[0x1E69DC888] blackColor];
-  [(UIView *)v33 setBackgroundColor:v34];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(UIView *)v33 setBackgroundColor:blackColor];
 
   [(UIView *)self->_imageBackgroundView _setContinuousCornerRadius:8.0];
   v35.n128_f64[0] = v7 + (v11 - (v21 + 60.0)) * 0.5;
@@ -536,9 +536,9 @@ uint64_t __48__PKAccessoryDeviceView__showWalletWithMessage___block_invoke(uint6
   return [v2 setAlpha:1.0];
 }
 
-- (void)dismissViewWithCompletion:(id)a3
+- (void)dismissViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   animationDelay = self->_animationDelay;
   v6 = MEMORY[0x1E69DD250];
   v10[0] = MEMORY[0x1E69E9820];
@@ -551,8 +551,8 @@ uint64_t __48__PKAccessoryDeviceView__showWalletWithMessage___block_invoke(uint6
   v8[2] = __51__PKAccessoryDeviceView_dismissViewWithCompletion___block_invoke_2;
   v8[3] = &unk_1E80109C0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v6 animateWithDuration:0 delay:v10 options:v8 animations:2.0 completion:animationDelay];
 }
 

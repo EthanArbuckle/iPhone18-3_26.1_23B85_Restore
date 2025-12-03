@@ -1,17 +1,17 @@
 @interface VCPCNNData
 + (Class)cnnDataClass;
 + (id)cnnData;
-+ (id)cnnDataWithGPUContext:(id)a3;
-+ (id)cnnDataWithPlane:(int)a3 height:(int)a4 width:(int)a5 context:(id)a6;
++ (id)cnnDataWithGPUContext:(id)context;
++ (id)cnnDataWithPlane:(int)plane height:(int)height width:(int)width context:(id)context;
 - (VCPCNNData)init;
-- (VCPCNNData)initWithGPUContext:(id)a3;
-- (VCPCNNData)initWithParameters:(int)a3 height:(int)a4 width:(int)a5 context:(id)a6;
+- (VCPCNNData)initWithGPUContext:(id)context;
+- (VCPCNNData)initWithParameters:(int)parameters height:(int)height width:(int)width context:(id)context;
 - (VCPCNNMetalContext)context;
 - (int)bufferAllocCPU;
-- (int)copyImage:(__CVBuffer *)a3 withChunk:(int)a4;
+- (int)copyImage:(__CVBuffer *)image withChunk:(int)chunk;
 - (int)normalization;
 - (int)randInit;
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4;
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor;
 - (int)softmax;
 - (void)dealloc;
 @end
@@ -36,20 +36,20 @@
   return v2;
 }
 
-+ (id)cnnDataWithGPUContext:(id)a3
++ (id)cnnDataWithGPUContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [objc_alloc(+[VCPCNNData cnnDataClass](VCPCNNData "cnnDataClass"))];
 
   return v4;
 }
 
-+ (id)cnnDataWithPlane:(int)a3 height:(int)a4 width:(int)a5 context:(id)a6
++ (id)cnnDataWithPlane:(int)plane height:(int)height width:(int)width context:(id)context
 {
-  v6 = *&a5;
-  v7 = *&a4;
-  v8 = *&a3;
-  v9 = a6;
+  v6 = *&width;
+  v7 = *&height;
+  v8 = *&plane;
+  contextCopy = context;
   v10 = [objc_alloc(+[VCPCNNData cnnDataClass](VCPCNNData "cnnDataClass"))];
 
   return v10;
@@ -78,9 +78,9 @@
   return v3;
 }
 
-- (VCPCNNData)initWithGPUContext:(id)a3
+- (VCPCNNData)initWithGPUContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = VCPCNNData;
   v5 = [(VCPCNNData *)&v12 init];
@@ -92,7 +92,7 @@
     size = v6->_size;
     v6->_size = v7;
 
-    objc_storeWeak(&v6->_context, v4);
+    objc_storeWeak(&v6->_context, contextCopy);
     mpsImg = v6->_mpsImg;
     v6->_mpsImg = 0;
 
@@ -102,12 +102,12 @@
   return v6;
 }
 
-- (VCPCNNData)initWithParameters:(int)a3 height:(int)a4 width:(int)a5 context:(id)a6
+- (VCPCNNData)initWithParameters:(int)parameters height:(int)height width:(int)width context:(id)context
 {
-  v6 = *&a5;
-  v7 = *&a4;
-  v8 = *&a3;
-  v10 = a6;
+  v6 = *&width;
+  v7 = *&height;
+  v8 = *&parameters;
+  contextCopy = context;
   v23.receiver = self;
   v23.super_class = VCPCNNData;
   v11 = [(VCPCNNData *)&v23 init];
@@ -130,7 +130,7 @@
     [(NSMutableArray *)v18 addObject:v19];
 
     v11->_data = 0;
-    objc_storeWeak(&v11->_context, v10);
+    objc_storeWeak(&v11->_context, contextCopy);
     mpsImg = v11->_mpsImg;
     v11->_mpsImg = 0;
 
@@ -156,30 +156,30 @@
 - (int)randInit
 {
   v3 = [(NSMutableArray *)self->_size objectAtIndexedSubscript:0];
-  v4 = [v3 intValue];
+  intValue = [v3 intValue];
 
   v5 = [(NSMutableArray *)self->_size objectAtIndexedSubscript:1];
-  v6 = [v5 intValue];
+  intValue2 = [v5 intValue];
 
   v7 = [(NSMutableArray *)self->_size objectAtIndexedSubscript:2];
-  v8 = [v7 intValue];
+  intValue3 = [v7 intValue];
 
-  if (v4 >= 1)
+  if (intValue >= 1)
   {
     v9 = 0;
     v10 = 0;
     do
     {
-      if (v6 >= 1)
+      if (intValue2 >= 1)
       {
-        for (i = 0; i != v6; ++i)
+        for (i = 0; i != intValue2; ++i)
         {
-          if (v8 >= 1)
+          if (intValue3 >= 1)
           {
             v12 = 255;
             v13 = &self->_data[v10];
-            v10 += v8;
-            v14 = v8;
+            v10 += intValue3;
+            v14 = intValue3;
             do
             {
               v15 = ((10 * v9 + (255 - i) * (255 - i) + v12 * v12) % 0xFFu) / 255.0;
@@ -196,7 +196,7 @@
       ++v9;
     }
 
-    while (v9 != v4);
+    while (v9 != intValue);
   }
 
   return 0;
@@ -251,16 +251,16 @@
   return 0;
 }
 
-- (int)copyImage:(__CVBuffer *)a3 withChunk:(int)a4
+- (int)copyImage:(__CVBuffer *)image withChunk:(int)chunk
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (CVPixelBufferGetPixelFormatType(a3) != 1111970369)
+  if (CVPixelBufferGetPixelFormatType(image) != 1111970369)
   {
     return -50;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  Width = CVPixelBufferGetWidth(image);
+  Height = CVPixelBufferGetHeight(image);
   [(NSMutableArray *)self->_size addObject:&unk_1F49BE158];
   size = self->_size;
   v10 = [MEMORY[0x1E696AD98] numberWithInt:Height];
@@ -276,9 +276,9 @@
     return v13;
   }
 
-  pixelBuffer = a3;
+  pixelBuffer = image;
   unlockFlags = 1;
-  if (!a3)
+  if (!image)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -288,14 +288,14 @@
     return -50;
   }
 
-  v14 = CVPixelBufferLockBaseAddress(a3, 1uLL);
+  v14 = CVPixelBufferLockBaseAddress(image, 1uLL);
   v42 = v14;
-  if (!v14 || (v13 = v14, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v46 = a3, v47 = 1024, v48 = v13, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v13 = v42) == 0))
+  if (!v14 || (v13 = v14, os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR)) && (*buf = 134218240, v46 = image, v47 = 1024, v48 = v13, _os_log_error_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to lock CVPixelBuffer (%p, %d)", buf, 0x12u), (v13 = v42) == 0))
   {
-    BaseAddress = CVPixelBufferGetBaseAddress(a3);
-    BytesPerRow = CVPixelBufferGetBytesPerRow(a3);
+    BaseAddress = CVPixelBufferGetBaseAddress(image);
+    BytesPerRow = CVPixelBufferGetBytesPerRow(image);
     WeakRetained = objc_loadWeakRetained(&self->_context);
-    v19 = a4 != 4 || WeakRetained != 0;
+    v19 = chunk != 4 || WeakRetained != 0;
 
     data = self->_data;
     if (v19)
@@ -401,9 +401,9 @@
   return v13;
 }
 
-- (int)readFromDisk:(__sFILE *)a3 quantFactor:(signed __int16)a4
+- (int)readFromDisk:(__sFILE *)disk quantFactor:(signed __int16)factor
 {
-  v4 = a4;
+  factorCopy = factor;
   if ([(NSMutableArray *)self->_size count])
   {
     v7 = 0;
@@ -424,9 +424,9 @@
     v8 = 1;
   }
 
-  if (v4 > 1)
+  if (factorCopy > 1)
   {
-    if (fread(self->_data, 2uLL, v8, a3))
+    if (fread(self->_data, 2uLL, v8, disk))
     {
       if (v8 >= 1)
       {
@@ -434,7 +434,7 @@
         v11 = v8 - 1;
         do
         {
-          data[v11] = *(data + v11) / v4;
+          data[v11] = *(data + v11) / factorCopy;
           v12 = v11-- + 1;
         }
 
@@ -447,9 +447,9 @@
     return -19;
   }
 
-  if (v4 == 1)
+  if (factorCopy == 1)
   {
-    if (fread(self->_data, 4uLL, v8, a3))
+    if (fread(self->_data, 4uLL, v8, disk))
     {
       return 0;
     }
@@ -457,7 +457,7 @@
     return -19;
   }
 
-  if (!v4)
+  if (!factorCopy)
   {
     operator new[]();
   }
@@ -523,14 +523,14 @@ LABEL_7:
   if ([(NSMutableArray *)self->_size count]== 1)
   {
     v3 = [(NSMutableArray *)self->_size objectAtIndexedSubscript:0];
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
 
-    if (v4 >= 1)
+    if (intValue >= 1)
     {
       data = self->_data;
-      v6 = v4;
+      v6 = intValue;
       v7 = -1.0e10;
-      v8 = v4;
+      v8 = intValue;
       do
       {
         v9 = *data++;

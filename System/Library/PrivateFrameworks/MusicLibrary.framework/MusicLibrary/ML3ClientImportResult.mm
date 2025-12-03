@@ -1,33 +1,33 @@
 @interface ML3ClientImportResult
-- (ML3ClientImportResult)initWithCoder:(id)a3;
-- (ML3ClientImportResult)initWithSuccess:(BOOL)a3 resultingDatabasePersistentIDs:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (ML3ClientImportResult)initWithCoder:(id)coder;
+- (ML3ClientImportResult)initWithSuccess:(BOOL)success resultingDatabasePersistentIDs:(id)ds;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3ClientImportResult
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   success = self->_success;
-  v5 = a3;
-  [v5 encodeBool:success forKey:@"success"];
-  [v5 encodeObject:self->_resultingDatabasePersistentIDs forKey:@"persistentIDs"];
+  coderCopy = coder;
+  [coderCopy encodeBool:success forKey:@"success"];
+  [coderCopy encodeObject:self->_resultingDatabasePersistentIDs forKey:@"persistentIDs"];
 }
 
-- (ML3ClientImportResult)initWithCoder:(id)a3
+- (ML3ClientImportResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ML3ClientImportResult;
   v5 = [(ML3ClientImportResult *)&v13 init];
   if (v5)
   {
-    v5->_success = [v4 decodeBoolForKey:@"success"];
+    v5->_success = [coderCopy decodeBoolForKey:@"success"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"persistentIDs"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"persistentIDs"];
     resultingDatabasePersistentIDs = v5->_resultingDatabasePersistentIDs;
     v5->_resultingDatabasePersistentIDs = v10;
   }
@@ -35,15 +35,15 @@
   return v5;
 }
 
-- (ML3ClientImportResult)initWithSuccess:(BOOL)a3 resultingDatabasePersistentIDs:(id)a4
+- (ML3ClientImportResult)initWithSuccess:(BOOL)success resultingDatabasePersistentIDs:(id)ds
 {
-  v6 = a4;
+  dsCopy = ds;
   v7 = [(ML3ClientImportResult *)self init];
   v8 = v7;
   if (v7)
   {
-    v7->_success = a3;
-    v9 = [v6 copy];
+    v7->_success = success;
+    v9 = [dsCopy copy];
     resultingDatabasePersistentIDs = v8->_resultingDatabasePersistentIDs;
     v8->_resultingDatabasePersistentIDs = v9;
   }

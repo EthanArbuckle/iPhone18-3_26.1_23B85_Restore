@@ -1,24 +1,24 @@
 @interface ASUDefaultsManager
-+ (BOOL)_BOOLForKey:(__CFString *)a3 applicationId:(__CFString *)a4 ifMissing:(BOOL)a5;
++ (BOOL)_BOOLForKey:(__CFString *)key applicationId:(__CFString *)id ifMissing:(BOOL)missing;
 + (BOOL)_isRunningInAppleVirtualMachine;
-+ (double)_doubleForKey:(__CFString *)a3 applicationId:(__CFString *)a4 ifMissing:(double)a5;
-+ (id)_copyNumberForKey:(__CFString *)a3 applicationId:(__CFString *)a4;
-+ (id)copyDefaultsKeyForEncryptionKeyWithIdentifier:(id)a3;
-+ (void)_setBool:(BOOL)a3 forKey:(__CFString *)a4 applicationId:(__CFString *)a5;
-+ (void)_setDouble:(double)a3 forKey:(__CFString *)a4 applicationId:(__CFString *)a5;
-+ (void)_setNullableValue:(void *)a3 forKey:(__CFString *)a4;
++ (double)_doubleForKey:(__CFString *)key applicationId:(__CFString *)id ifMissing:(double)missing;
++ (id)_copyNumberForKey:(__CFString *)key applicationId:(__CFString *)id;
++ (id)copyDefaultsKeyForEncryptionKeyWithIdentifier:(id)identifier;
++ (void)_setBool:(BOOL)bool forKey:(__CFString *)key applicationId:(__CFString *)id;
++ (void)_setDouble:(double)double forKey:(__CFString *)key applicationId:(__CFString *)id;
++ (void)_setNullableValue:(void *)value forKey:(__CFString *)key;
 @end
 
 @implementation ASUDefaultsManager
 
-+ (id)copyDefaultsKeyForEncryptionKeyWithIdentifier:(id)a3
++ (id)copyDefaultsKeyForEncryptionKeyWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[AMSDevice serialNumber];
   v6 = v5;
   if (!v5)
   {
-    if (([a1 _isRunningInAppleVirtualMachine] & 1) == 0)
+    if (([self _isRunningInAppleVirtualMachine] & 1) == 0)
     {
       v7 = ASULogHandleForCategory(1);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -32,16 +32,16 @@
 
   v8 = v6;
 
-  v9 = [v4 stringByAppendingString:v8];
+  v9 = [identifierCopy stringByAppendingString:v8];
 
   v10 = [[NSString alloc] initWithFormat:@"%lu", objc_msgSend(v9, "hash")];
   return v10;
 }
 
-+ (BOOL)_BOOLForKey:(__CFString *)a3 applicationId:(__CFString *)a4 ifMissing:(BOOL)a5
++ (BOOL)_BOOLForKey:(__CFString *)key applicationId:(__CFString *)id ifMissing:(BOOL)missing
 {
   keyExistsAndHasValidFormat = 0;
-  v6 = CFPreferencesGetAppBooleanValue(a3, a4, &keyExistsAndHasValidFormat) == 1;
+  v6 = CFPreferencesGetAppBooleanValue(key, id, &keyExistsAndHasValidFormat) == 1;
   if (keyExistsAndHasValidFormat == 1)
   {
     return v6;
@@ -49,40 +49,40 @@
 
   else
   {
-    return a5;
+    return missing;
   }
 }
 
-+ (void)_setBool:(BOOL)a3 forKey:(__CFString *)a4 applicationId:(__CFString *)a5
++ (void)_setBool:(BOOL)bool forKey:(__CFString *)key applicationId:(__CFString *)id
 {
-  v7 = [NSNumber numberWithBool:a3];
+  v7 = [NSNumber numberWithBool:bool];
 
-  CFPreferencesSetAppValue(a4, v7, a5);
+  CFPreferencesSetAppValue(key, v7, id);
 }
 
-+ (double)_doubleForKey:(__CFString *)a3 applicationId:(__CFString *)a4 ifMissing:(double)a5
++ (double)_doubleForKey:(__CFString *)key applicationId:(__CFString *)id ifMissing:(double)missing
 {
-  v6 = [a1 _copyNumberForKey:a3 applicationId:a4];
+  v6 = [self _copyNumberForKey:key applicationId:id];
   v7 = v6;
   if (v6)
   {
     [v6 doubleValue];
-    a5 = v8;
+    missing = v8;
   }
 
-  return a5;
+  return missing;
 }
 
-+ (void)_setDouble:(double)a3 forKey:(__CFString *)a4 applicationId:(__CFString *)a5
++ (void)_setDouble:(double)double forKey:(__CFString *)key applicationId:(__CFString *)id
 {
-  v7 = [NSNumber numberWithDouble:a3];
+  v7 = [NSNumber numberWithDouble:double];
 
-  CFPreferencesSetAppValue(a4, v7, a5);
+  CFPreferencesSetAppValue(key, v7, id);
 }
 
-+ (id)_copyNumberForKey:(__CFString *)a3 applicationId:(__CFString *)a4
++ (id)_copyNumberForKey:(__CFString *)key applicationId:(__CFString *)id
 {
-  v4 = CFPreferencesCopyAppValue(a3, a4);
+  v4 = CFPreferencesCopyAppValue(key, id);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -99,9 +99,9 @@
   return v6;
 }
 
-+ (void)_setNullableValue:(void *)a3 forKey:(__CFString *)a4
++ (void)_setNullableValue:(void *)value forKey:(__CFString *)key
 {
-  CFPreferencesSetAppValue(a4, a3, @"com.apple.appstoreutilities");
+  CFPreferencesSetAppValue(key, value, @"com.apple.appstoreutilities");
 
   CFPreferencesAppSynchronize(@"com.apple.appstoreutilities");
 }

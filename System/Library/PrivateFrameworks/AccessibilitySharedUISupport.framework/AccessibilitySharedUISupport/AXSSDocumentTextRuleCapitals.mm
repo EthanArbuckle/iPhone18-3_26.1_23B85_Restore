@@ -1,10 +1,10 @@
 @interface AXSSDocumentTextRuleCapitals
 - (AXSSDocumentTextRuleCapitals)init;
-- (BOOL)checkSpelledCorrectly:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_NSRange)checkSpellingOfString:(id)a3 includeAutocorrect:(BOOL)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)issuesForWord:(id)a3 atRange:(_NSRange)a4 previousWord:(id)a5 previousWordRange:(_NSRange)a6 inText:(id)a7 ignoreRuleUntilIndex:(int64_t *)a8;
+- (BOOL)checkSpelledCorrectly:(id)correctly;
+- (BOOL)isEqual:(id)equal;
+- (_NSRange)checkSpellingOfString:(id)string includeAutocorrect:(BOOL)autocorrect;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)issuesForWord:(id)word atRange:(_NSRange)range previousWord:(id)previousWord previousWordRange:(_NSRange)wordRange inText:(id)text ignoreRuleUntilIndex:(int64_t *)index;
 @end
 
 @implementation AXSSDocumentTextRuleCapitals
@@ -22,10 +22,10 @@
     textChecker = v3->_textChecker;
     v3->_textChecker = v4;
 
-    v6 = [MEMORY[0x277D75B98] availableLanguages];
-    v7 = [v6 firstObject];
+    availableLanguages = [MEMORY[0x277D75B98] availableLanguages];
+    firstObject = [availableLanguages firstObject];
     textCheckerLanguage = v3->_textCheckerLanguage;
-    v3->_textCheckerLanguage = v7;
+    v3->_textCheckerLanguage = firstObject;
 
     if (!v3->_textCheckerLanguage)
     {
@@ -36,24 +36,24 @@
   return v3;
 }
 
-- (BOOL)checkSpelledCorrectly:(id)a3
+- (BOOL)checkSpelledCorrectly:(id)correctly
 {
-  v4 = a3;
-  if ([(AXSSDocumentTextRuleCapitals *)self checkSpellingOfString:v4 includeAutocorrect:0]!= 0x7FFFFFFFFFFFFFFFLL)
+  correctlyCopy = correctly;
+  if ([(AXSSDocumentTextRuleCapitals *)self checkSpellingOfString:correctlyCopy includeAutocorrect:0]!= 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_11;
   }
 
-  if ([v4 length] != 3)
+  if ([correctlyCopy length] != 3)
   {
     v8 = 1;
     goto LABEL_13;
   }
 
-  if ([(AXSSDocumentTextRuleCapitals *)self checkSpellingOfString:v4 includeAutocorrect:1]== 0x7FFFFFFFFFFFFFFFLL)
+  if ([(AXSSDocumentTextRuleCapitals *)self checkSpellingOfString:correctlyCopy includeAutocorrect:1]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@.", v4, v4];
-    if ([(AXSSDocumentTextRuleCapitals *)self checkSpellingOfString:v5 includeAutocorrect:1])
+    correctlyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@.", correctlyCopy, correctlyCopy];
+    if ([(AXSSDocumentTextRuleCapitals *)self checkSpellingOfString:correctlyCopy includeAutocorrect:1])
     {
       v7 = 0;
     }
@@ -77,13 +77,13 @@ LABEL_13:
   return v8;
 }
 
-- (_NSRange)checkSpellingOfString:(id)a3 includeAutocorrect:(BOOL)a4
+- (_NSRange)checkSpellingOfString:(id)string includeAutocorrect:(BOOL)autocorrect
 {
-  v5 = a3;
-  v6 = [(AXSSDocumentTextRuleCapitals *)self textChecker];
-  v7 = [v5 length];
-  v8 = [(AXSSDocumentTextRuleCapitals *)self textCheckerLanguage];
-  v9 = [v6 rangeOfMisspelledWordInString:v5 range:0 startingAt:v7 wrap:0 language:{0, v8}];
+  stringCopy = string;
+  textChecker = [(AXSSDocumentTextRuleCapitals *)self textChecker];
+  v7 = [stringCopy length];
+  textCheckerLanguage = [(AXSSDocumentTextRuleCapitals *)self textCheckerLanguage];
+  v9 = [textChecker rangeOfMisspelledWordInString:stringCopy range:0 startingAt:v7 wrap:0 language:{0, textCheckerLanguage}];
   v11 = v10;
 
   v12 = v9;
@@ -93,18 +93,18 @@ LABEL_13:
   return result;
 }
 
-- (id)issuesForWord:(id)a3 atRange:(_NSRange)a4 previousWord:(id)a5 previousWordRange:(_NSRange)a6 inText:(id)a7 ignoreRuleUntilIndex:(int64_t *)a8
+- (id)issuesForWord:(id)word atRange:(_NSRange)range previousWord:(id)previousWord previousWordRange:(_NSRange)wordRange inText:(id)text ignoreRuleUntilIndex:(int64_t *)index
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v46[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v32 = a5;
-  v13 = a7;
-  if ([v12 length])
+  wordCopy = word;
+  previousWordCopy = previousWord;
+  textCopy = text;
+  if ([wordCopy length])
   {
-    v14 = [v12 string];
-    v15 = [v14 length];
+    string = [wordCopy string];
+    v15 = [string length];
     v16 = v15 == 3;
     if (v15 == 3)
     {
@@ -129,15 +129,15 @@ LABEL_13:
     v41 = __Block_byref_object_copy__0;
     v42 = __Block_byref_object_dispose__0;
     v43 = 0;
-    v19 = [v14 length];
+    v19 = [string length];
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __113__AXSSDocumentTextRuleCapitals_issuesForWord_atRange_previousWord_previousWordRange_inText_ignoreRuleUntilIndex___block_invoke;
     v33[3] = &unk_278BF0418;
     v36 = &v38;
-    v20 = v14;
+    v20 = string;
     v34 = v20;
-    v35 = self;
+    selfCopy = self;
     v37 = v16;
     [v18 enumerateMatchesInString:v20 options:0 range:0 usingBlock:{v19, v33}];
     v21 = [v39[5] length];
@@ -151,7 +151,7 @@ LABEL_13:
     if ([v39[5] length] && (objc_msgSend(v39[5], "isEqual:", v20) & 1) == 0)
     {
       v24 = objc_opt_new();
-      [v24 setOffendingText:v12];
+      [v24 setOffendingText:wordCopy];
       [v24 setRange:{location, length}];
       v28 = objc_alloc(MEMORY[0x277CCA898]);
       v29 = [v28 initWithString:v39[5]];
@@ -249,17 +249,17 @@ LABEL_16:
   [v15 appendString:v16];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = AXSSDocumentTextRuleCapitals;
-  return [(AXSSDocumentTextRule *)&v4 copyWithZone:a3];
+  return [(AXSSDocumentTextRule *)&v4 copyWithZone:zone];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -271,7 +271,7 @@ LABEL_16:
     {
       v7.receiver = self;
       v7.super_class = AXSSDocumentTextRuleCapitals;
-      v5 = [(AXSSDocumentTextRule *)&v7 isEqual:v4];
+      v5 = [(AXSSDocumentTextRule *)&v7 isEqual:equalCopy];
     }
 
     else

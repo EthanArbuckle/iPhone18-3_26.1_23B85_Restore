@@ -1,12 +1,12 @@
 @interface JavaIoByteArrayOutputStream
 - (JavaIoByteArrayOutputStream)init;
 - (id)toByteArray;
-- (id)toStringWithInt:(int)a3;
+- (id)toStringWithInt:(int)int;
 - (void)close;
 - (void)dealloc;
 - (void)reset;
-- (void)writeToWithJavaIoOutputStream:(id)a3;
-- (void)writeWithInt:(int)a3;
+- (void)writeToWithJavaIoOutputStream:(id)stream;
+- (void)writeWithInt:(int)int;
 @end
 
 @implementation JavaIoByteArrayOutputStream
@@ -42,14 +42,14 @@
   return v3;
 }
 
-- (id)toStringWithInt:(int)a3
+- (id)toStringWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   v5 = [IOSCharArray arrayWithLength:[(JavaIoByteArrayOutputStream *)self size]];
   if (v5->super.size_ >= 1)
   {
     v6 = 0;
-    v7 = v3 << 8;
+    v7 = intCopy << 8;
     do
     {
       buf = self->buf_;
@@ -80,9 +80,9 @@
   return [NSString stringWithCharacters:v5];
 }
 
-- (void)writeWithInt:(int)a3
+- (void)writeWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   objc_sync_enter(self);
   buf = self->buf_;
   if (!buf)
@@ -105,20 +105,20 @@
     IOSArray_throwOutOfBoundsWithMsg(size, count);
   }
 
-  *(&buf->super.size_ + count + 4) = v3;
+  *(&buf->super.size_ + count + 4) = intCopy;
 
   objc_sync_exit(self);
 }
 
-- (void)writeToWithJavaIoOutputStream:(id)a3
+- (void)writeToWithJavaIoOutputStream:(id)stream
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!stream)
   {
     JreThrowNullPointerException();
   }
 
-  [a3 writeWithByteArray:self->buf_ withInt:0 withInt:self->count_];
+  [stream writeWithByteArray:self->buf_ withInt:0 withInt:self->count_];
 
   objc_sync_exit(self);
 }

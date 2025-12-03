@@ -1,30 +1,30 @@
 @interface PlistReader
-+ (id)plistReaderWithResourcePath:(id)a3;
-- (PlistReader)initWithPlist:(id)a3;
++ (id)plistReaderWithResourcePath:(id)path;
+- (PlistReader)initWithPlist:(id)plist;
 @end
 
 @implementation PlistReader
 
-+ (id)plistReaderWithResourcePath:(id)a3
++ (id)plistReaderWithResourcePath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  if (![v4 fileExistsAtPath:v3])
+  pathCopy = path;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (![defaultManager fileExistsAtPath:pathCopy])
   {
     goto LABEL_9;
   }
 
-  if ([v3 hasSuffix:@".mdplist"])
+  if ([pathCopy hasSuffix:@".mdplist"])
   {
 
 LABEL_5:
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v3];
-    v4 = v6;
+    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:pathCopy];
+    defaultManager = v6;
     if (v6)
     {
       v7 = *MEMORY[0x1E695E480];
       [v6 bytes];
-      [v4 length];
+      [defaultManager length];
       v8 = _MDPlistContainerCreateWithBytes();
       if (v8)
       {
@@ -46,7 +46,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v5 = [v3 hasSuffix:@".factors"];
+  v5 = [pathCopy hasSuffix:@".factors"];
 
   if (v5)
   {
@@ -59,16 +59,16 @@ LABEL_11:
   return v11;
 }
 
-- (PlistReader)initWithPlist:(id)a3
+- (PlistReader)initWithPlist:(id)plist
 {
-  v5 = a3;
+  plistCopy = plist;
   v9.receiver = self;
   v9.super_class = PlistReader;
   v6 = [(PlistReader *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_plist, a3);
+    objc_storeStrong(&v6->_plist, plist);
   }
 
   return v7;

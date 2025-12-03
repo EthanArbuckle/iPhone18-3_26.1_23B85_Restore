@@ -1,61 +1,61 @@
 @interface CPUIFocusEffectView
-+ (unint64_t)focusEffectStyleVariantForTraitCollection:(id)a3;
-- (CPUIFocusEffectView)initWithCoder:(id)a3;
-- (CPUIFocusEffectView)initWithCornerRadius:(double)a3 strokeWidth:(double)a4;
-- (CPUIFocusEffectView)initWithFrame:(CGRect)a3;
-- (CPUIFocusEffectView)initWithImage:(id)a3;
++ (unint64_t)focusEffectStyleVariantForTraitCollection:(id)collection;
+- (CPUIFocusEffectView)initWithCoder:(id)coder;
+- (CPUIFocusEffectView)initWithCornerRadius:(double)radius strokeWidth:(double)width;
+- (CPUIFocusEffectView)initWithFrame:(CGRect)frame;
+- (CPUIFocusEffectView)initWithImage:(id)image;
 - (void)layoutSubviews;
-- (void)setEffectMask:(id)a3;
+- (void)setEffectMask:(id)mask;
 - (void)updateAppearance;
-- (void)updateEffectWithCornerRadius:(double)a3;
-- (void)updateEffectWithCornerRadius:(double)a3 cornerCurve:(id)a4;
-- (void)updateEffectWithCornerRadius:(double)a3 strokeWidth:(double)a4;
-- (void)updateEffectWithImage:(id)a3;
+- (void)updateEffectWithCornerRadius:(double)radius;
+- (void)updateEffectWithCornerRadius:(double)radius cornerCurve:(id)curve;
+- (void)updateEffectWithCornerRadius:(double)radius strokeWidth:(double)width;
+- (void)updateEffectWithImage:(id)image;
 - (void)updateVariant;
-- (void)updateWithStyleVariant:(unint64_t)a3 isPressed:(BOOL)a4;
+- (void)updateWithStyleVariant:(unint64_t)variant isPressed:(BOOL)pressed;
 @end
 
 @implementation CPUIFocusEffectView
 
-- (void)setEffectMask:(id)a3
+- (void)setEffectMask:(id)mask
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___CPUIFocusEffectView_effectMask);
-  *(&self->super.super.super.isa + OBJC_IVAR___CPUIFocusEffectView_effectMask) = a3;
-  v5 = a3;
-  v6 = self;
+  *(&self->super.super.super.isa + OBJC_IVAR___CPUIFocusEffectView_effectMask) = mask;
+  maskCopy = mask;
+  selfCopy = self;
   [v4 removeFromSuperview];
-  [(CPUIFocusEffectView *)v6 updateAppearance];
+  [(CPUIFocusEffectView *)selfCopy updateAppearance];
 }
 
-+ (unint64_t)focusEffectStyleVariantForTraitCollection:(id)a3
++ (unint64_t)focusEffectStyleVariantForTraitCollection:(id)collection
 {
   lazy protocol witness table accessor for type CPUIWallpaperAppearanceTypeTrait and conformance CPUIWallpaperAppearanceTypeTrait();
   lazy protocol witness table accessor for type CPUIWallpaperAppearanceType and conformance CPUIWallpaperAppearanceType();
-  v4 = a3;
+  collectionCopy = collection;
   UITraitCollection.subscript.getter();
 
   return v6 != 1;
 }
 
-- (CPUIFocusEffectView)initWithImage:(id)a3
+- (CPUIFocusEffectView)initWithImage:(id)image
 {
-  v4 = a3;
-  v5 = [v4 imageWithRenderingMode_];
-  v6 = [objc_allocWithZone(MEMORY[0x277D755E8]) initWithImage_];
+  imageCopy = image;
+  imageWithRenderingMode_ = [imageCopy imageWithRenderingMode_];
+  initWithImage_ = [objc_allocWithZone(MEMORY[0x277D755E8]) initWithImage_];
 
-  v7 = [(CPUIFocusEffectView *)self initWithEffectMask:v6];
+  v7 = [(CPUIFocusEffectView *)self initWithEffectMask:initWithImage_];
   return v7;
 }
 
-- (CPUIFocusEffectView)initWithCornerRadius:(double)a3 strokeWidth:(double)a4
+- (CPUIFocusEffectView)initWithCornerRadius:(double)radius strokeWidth:(double)width
 {
-  v5 = specialized CPUIFocusEffectView.RingView.__allocating_init(cornerRadius:strokeWidth:)(a3, a4);
+  v5 = specialized CPUIFocusEffectView.RingView.__allocating_init(cornerRadius:strokeWidth:)(radius, width);
   v6 = [(CPUIFocusEffectView *)self initWithEffectMask:v5];
 
   return v6;
 }
 
-- (CPUIFocusEffectView)initWithCoder:(id)a3
+- (CPUIFocusEffectView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___CPUIFocusEffectView__isPressed) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -67,76 +67,76 @@
 {
   v5.receiver = self;
   v5.super_class = CPUIFocusEffectView;
-  v2 = self;
+  selfCopy = self;
   [(CPUIFocusEffectView *)&v5 layoutSubviews];
-  v3 = [(CPUIFocusEffectView *)v2 effectMask:v5.receiver];
-  [(CPUIFocusEffectView *)v2 bounds];
+  v3 = [(CPUIFocusEffectView *)selfCopy effectMask:v5.receiver];
+  [(CPUIFocusEffectView *)selfCopy bounds];
   [(UIView *)v3 setFrame:?];
 
-  v4 = [(CPUIFocusEffectView *)v2 materialView];
-  [(CPUIFocusEffectView *)v2 bounds];
-  [(UIVisualEffectView *)v4 setFrame:?];
+  materialView = [(CPUIFocusEffectView *)selfCopy materialView];
+  [(CPUIFocusEffectView *)selfCopy bounds];
+  [(UIVisualEffectView *)materialView setFrame:?];
 }
 
-- (void)updateWithStyleVariant:(unint64_t)a3 isPressed:(BOOL)a4
+- (void)updateWithStyleVariant:(unint64_t)variant isPressed:(BOOL)pressed
 {
-  v6 = self;
-  CPUIFocusEffectView.update(with:isPressed:)(a3, a4);
+  selfCopy = self;
+  CPUIFocusEffectView.update(with:isPressed:)(variant, pressed);
 }
 
-- (void)updateEffectWithImage:(id)a3
+- (void)updateEffectWithImage:(id)image
 {
-  v4 = a3;
-  v7 = self;
-  v5 = [v4 imageWithRenderingMode_];
-  v6 = [objc_allocWithZone(MEMORY[0x277D755E8]) initWithImage_];
+  imageCopy = image;
+  selfCopy = self;
+  imageWithRenderingMode_ = [imageCopy imageWithRenderingMode_];
+  initWithImage_ = [objc_allocWithZone(MEMORY[0x277D755E8]) initWithImage_];
 
-  [(CPUIFocusEffectView *)v7 setEffectMask:v6];
+  [(CPUIFocusEffectView *)selfCopy setEffectMask:initWithImage_];
 }
 
-- (void)updateEffectWithCornerRadius:(double)a3 strokeWidth:(double)a4
+- (void)updateEffectWithCornerRadius:(double)radius strokeWidth:(double)width
 {
-  v7 = self;
-  v6 = specialized CPUIFocusEffectView.RingView.__allocating_init(cornerRadius:strokeWidth:)(a3, a4);
-  [(CPUIFocusEffectView *)v7 setEffectMask:v6];
+  selfCopy = self;
+  v6 = specialized CPUIFocusEffectView.RingView.__allocating_init(cornerRadius:strokeWidth:)(radius, width);
+  [(CPUIFocusEffectView *)selfCopy setEffectMask:v6];
 }
 
-- (void)updateEffectWithCornerRadius:(double)a3
+- (void)updateEffectWithCornerRadius:(double)radius
 {
-  v4 = self;
-  CPUIFocusEffectView.updateEffect(withCornerRadius:)(a3);
+  selfCopy = self;
+  CPUIFocusEffectView.updateEffect(withCornerRadius:)(radius);
 }
 
-- (void)updateEffectWithCornerRadius:(double)a3 cornerCurve:(id)a4
+- (void)updateEffectWithCornerRadius:(double)radius cornerCurve:(id)curve
 {
   v7 = type metadata accessor for CPUIFocusEffectView.SolidRoundedRectangleView();
   v13.receiver = objc_allocWithZone(v7);
   v13.super_class = v7;
-  v8 = a4;
-  v9 = self;
+  curveCopy = curve;
+  selfCopy = self;
   v10 = [(CPUIFocusEffectView *)&v13 initWithFrame:0.0, 0.0, 0.0, 0.0];
   v11 = [(CPUIFocusEffectView *)v10 layer:v13.receiver];
   [v11 setCornerRadius_];
 
-  v12 = [(CPUIFocusEffectView *)v10 layer];
-  [v12 setCornerCurve_];
+  layer = [(CPUIFocusEffectView *)v10 layer];
+  [layer setCornerCurve_];
 
-  [(CPUIFocusEffectView *)v9 setEffectMask:v10];
+  [(CPUIFocusEffectView *)selfCopy setEffectMask:v10];
 }
 
 - (void)updateVariant
 {
-  v2 = self;
+  selfCopy = self;
   CPUIFocusEffectView.updateVariant()();
 }
 
 - (void)updateAppearance
 {
-  v2 = self;
+  selfCopy = self;
   CPUIFocusEffectView.updateAppearance()();
 }
 
-- (CPUIFocusEffectView)initWithFrame:(CGRect)a3
+- (CPUIFocusEffectView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -19,26 +19,26 @@
 {
   v4 = a3;
   v5 = objc_alloc_init(MEMORY[0x1E69D96E0]);
-  [v5 setAutocapitalizationType:{objc_msgSend(a1, "translateToTextInputAutocapitalizationType:", objc_msgSend(v4, "autocapitalizationType"))}];
-  [v5 setAutocorrectionType:{objc_msgSend(a1, "translateToTextInputAutocorrectionType:", objc_msgSend(v4, "autocorrectionType"))}];
-  [v5 setSpellCheckingType:{objc_msgSend(a1, "translateToTextInputSpellCheckingType:", objc_msgSend(v4, "spellCheckingType"))}];
-  [v5 setKeyboardType:{objc_msgSend(a1, "translateToTextInputKeyboardType:", objc_msgSend(v4, "keyboardType"))}];
-  [v5 setKeyboardAppearance:{objc_msgSend(a1, "translateToTextInputKeyboardAppearance:", objc_msgSend(v4, "keyboardAppearance"))}];
-  [v5 setReturnKeyType:{objc_msgSend(a1, "translateToTextInputReturnKeyType:", objc_msgSend(v4, "returnKeyType"))}];
+  [v5 setAutocapitalizationType:{objc_msgSend(self, "translateToTextInputAutocapitalizationType:", objc_msgSend(v4, "autocapitalizationType"))}];
+  [v5 setAutocorrectionType:{objc_msgSend(self, "translateToTextInputAutocorrectionType:", objc_msgSend(v4, "autocorrectionType"))}];
+  [v5 setSpellCheckingType:{objc_msgSend(self, "translateToTextInputSpellCheckingType:", objc_msgSend(v4, "spellCheckingType"))}];
+  [v5 setKeyboardType:{objc_msgSend(self, "translateToTextInputKeyboardType:", objc_msgSend(v4, "keyboardType"))}];
+  [v5 setKeyboardAppearance:{objc_msgSend(self, "translateToTextInputKeyboardAppearance:", objc_msgSend(v4, "keyboardAppearance"))}];
+  [v5 setReturnKeyType:{objc_msgSend(self, "translateToTextInputReturnKeyType:", objc_msgSend(v4, "returnKeyType"))}];
   [v5 setEnablesReturnKeyAutomatically:{objc_msgSend(v4, "enablesReturnKeyAutomatically")}];
   [v5 setSecureTextEntry:{objc_msgSend(v4, "isSecureTextEntry")}];
-  [v5 setSmartInsertDeleteEnabled:{objc_msgSend(a1, "translateToTextInputSmartInsertDeleteEnabled:", objc_msgSend(v4, "smartInsertDeleteType"))}];
-  [v5 setSmartQuotesEnabled:{objc_msgSend(a1, "translateToTextInputSmartQuotesEnabled:", objc_msgSend(v4, "smartQuotesType"))}];
-  [v5 setSmartDashesEnabled:{objc_msgSend(a1, "translateToTextInputSmartDashesEnabled:", objc_msgSend(v4, "smartDashesType"))}];
+  [v5 setSmartInsertDeleteEnabled:{objc_msgSend(self, "translateToTextInputSmartInsertDeleteEnabled:", objc_msgSend(v4, "smartInsertDeleteType"))}];
+  [v5 setSmartQuotesEnabled:{objc_msgSend(self, "translateToTextInputSmartQuotesEnabled:", objc_msgSend(v4, "smartQuotesType"))}];
+  [v5 setSmartDashesEnabled:{objc_msgSend(self, "translateToTextInputSmartDashesEnabled:", objc_msgSend(v4, "smartDashesType"))}];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v4 textContentType];
-    [v5 setTextContentType:v6];
+    textContentType = [v4 textContentType];
+    [v5 setTextContentType:textContentType];
   }
 
-  [v5 setTextScriptType:{objc_msgSend(a1, "translateToTextScriptType:", objc_msgSend(v4, "textScriptType"))}];
-  v7 = [v4 recentInputIdentifier];
-  v8 = [a1 translateToTextInputRecentInputIdentifier:v7];
+  [v5 setTextScriptType:{objc_msgSend(self, "translateToTextScriptType:", objc_msgSend(v4, "textScriptType"))}];
+  recentInputIdentifier = [v4 recentInputIdentifier];
+  v8 = [self translateToTextInputRecentInputIdentifier:recentInputIdentifier];
   [v5 setRecentInputIdentifier:v8];
 
   if (objc_opt_respondsToSelector())
@@ -46,15 +46,15 @@
     [v5 setDisablePrediction:{objc_msgSend(v4, "disablePrediction")}];
   }
 
-  [v5 setInlineCompletionType:{objc_msgSend(a1, "translateToTextInputInlineCompletionType:", objc_msgSend(v4, "inlinePredictionType"))}];
+  [v5 setInlineCompletionType:{objc_msgSend(self, "translateToTextInputInlineCompletionType:", objc_msgSend(v4, "inlinePredictionType"))}];
   if (objc_opt_respondsToSelector())
   {
-    [v5 setMathExpressionCompletionType:{objc_msgSend(a1, "translateToTextMathExpressionCompletionType:", objc_msgSend(v4, "mathExpressionCompletionType"))}];
+    [v5 setMathExpressionCompletionType:{objc_msgSend(self, "translateToTextMathExpressionCompletionType:", objc_msgSend(v4, "mathExpressionCompletionType"))}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 setAllowsTextAnimationsType:{objc_msgSend(a1, "translateToAllowsTextAnimationsType:", objc_msgSend(v4, "allowsTextAnimationsType"))}];
+    [v5 setAllowsTextAnimationsType:{objc_msgSend(self, "translateToAllowsTextAnimationsType:", objc_msgSend(v4, "allowsTextAnimationsType"))}];
   }
 
   return v5;

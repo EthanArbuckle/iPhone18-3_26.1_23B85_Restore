@@ -3,17 +3,17 @@
 - (CGPoint)center;
 - (CGRect)frame;
 - (CGSize)size;
-- (TUIGeometryAttributes)initWithSize:(CGSize)a3 center:(CGPoint)a4 transform:(CGAffineTransform *)a5;
+- (TUIGeometryAttributes)initWithSize:(CGSize)size center:(CGPoint)center transform:(CGAffineTransform *)transform;
 @end
 
 @implementation TUIGeometryAttributes
 
-- (TUIGeometryAttributes)initWithSize:(CGSize)a3 center:(CGPoint)a4 transform:(CGAffineTransform *)a5
+- (TUIGeometryAttributes)initWithSize:(CGSize)size center:(CGPoint)center transform:(CGAffineTransform *)transform
 {
-  y = a4.y;
-  x = a4.x;
-  height = a3.height;
-  width = a3.width;
+  y = center.y;
+  x = center.x;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = TUIGeometryAttributes;
   result = [(TUIGeometryAttributes *)&v14 init];
@@ -26,9 +26,9 @@
     result->_size.height = height;
     result->_center.x = x;
     result->_center.y = y;
-    v13 = *&a5->a;
-    v12 = *&a5->c;
-    *&result->_transform.tx = *&a5->tx;
+    v13 = *&transform->a;
+    v12 = *&transform->c;
+    *&result->_transform.tx = *&transform->tx;
     *&result->_transform.a = v13;
     *&result->_transform.c = v12;
   }

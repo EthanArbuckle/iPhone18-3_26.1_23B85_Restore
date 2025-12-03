@@ -1,12 +1,12 @@
 @interface DOCFileSystemCollection
 - (BOOL)isGathering;
 - (_TtC26DocumentManagerExecutables23DOCFileSystemCollection)init;
-- (void)childChanged:(id)a3 in:(id)a4 for:(unsigned int)a5;
-- (void)nodeChanged:(id)a3 for:(unsigned int)a4;
-- (void)openSyncCompleted:(id)a3;
-- (void)openSyncStarted:(id)a3;
-- (void)setIsGathering:(BOOL)a3;
-- (void)temporaryNodeDeleted:(id)a3;
+- (void)childChanged:(id)changed in:(id)in for:(unsigned int)for;
+- (void)nodeChanged:(id)changed for:(unsigned int)for;
+- (void)openSyncCompleted:(id)completed;
+- (void)openSyncStarted:(id)started;
+- (void)setIsGathering:(BOOL)gathering;
+- (void)temporaryNodeDeleted:(id)deleted;
 @end
 
 @implementation DOCFileSystemCollection
@@ -18,16 +18,16 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setIsGathering:(BOOL)a3
+- (void)setIsGathering:(BOOL)gathering
 {
-  v3 = a3;
+  gatheringCopy = gathering;
   v5 = OBJC_IVAR____TtC26DocumentManagerExecutables23DOCFileSystemCollection_isGathering;
   swift_beginAccess();
-  *(&self->super.isa + v5) = v3;
-  if (v3)
+  *(&self->super.isa + v5) = gatheringCopy;
+  if (gatheringCopy)
   {
     *(swift_allocObject() + 16) = self;
-    v6 = self;
+    selfCopy = self;
     DOCRunInMainThread(_:)();
   }
 }
@@ -39,40 +39,40 @@
   return result;
 }
 
-- (void)childChanged:(id)a3 in:(id)a4 for:(unsigned int)a5
+- (void)childChanged:(id)changed in:(id)in for:(unsigned int)for
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  DOCFileSystemCollection.changed(child:in:for:)(v8, v9, a5);
+  changedCopy = changed;
+  inCopy = in;
+  selfCopy = self;
+  DOCFileSystemCollection.changed(child:in:for:)(changedCopy, inCopy, for);
 }
 
-- (void)nodeChanged:(id)a3 for:(unsigned int)a4
+- (void)nodeChanged:(id)changed for:(unsigned int)for
 {
-  v6 = a3;
-  v7 = self;
-  DOCFileSystemCollection.changed(_:for:)(v6, a4);
+  changedCopy = changed;
+  selfCopy = self;
+  DOCFileSystemCollection.changed(_:for:)(changedCopy, for);
 }
 
-- (void)temporaryNodeDeleted:(id)a3
+- (void)temporaryNodeDeleted:(id)deleted
 {
-  v4 = a3;
-  v5 = self;
-  DOCFileSystemCollection.deleted(_:)(v4);
+  deletedCopy = deleted;
+  selfCopy = self;
+  DOCFileSystemCollection.deleted(_:)(deletedCopy);
 }
 
-- (void)openSyncStarted:(id)a3
+- (void)openSyncStarted:(id)started
 {
-  v4 = a3;
-  v5 = self;
-  DOCFileSystemCollection.openSyncStarted(_:)(v4);
+  startedCopy = started;
+  selfCopy = self;
+  DOCFileSystemCollection.openSyncStarted(_:)(startedCopy);
 }
 
-- (void)openSyncCompleted:(id)a3
+- (void)openSyncCompleted:(id)completed
 {
-  v4 = a3;
-  v5 = self;
-  DOCFileSystemCollection.openSyncCompleted(_:)(v4);
+  completedCopy = completed;
+  selfCopy = self;
+  DOCFileSystemCollection.openSyncCompleted(_:)(completedCopy);
 }
 
 @end

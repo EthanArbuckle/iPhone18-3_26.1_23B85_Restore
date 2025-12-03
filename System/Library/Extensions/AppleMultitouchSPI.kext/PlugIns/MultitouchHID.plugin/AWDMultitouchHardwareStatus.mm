@@ -1,14 +1,14 @@
 @interface AWDMultitouchHardwareStatus
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)openRowsAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)openRowsAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDMultitouchHardwareStatus
@@ -21,16 +21,16 @@
   [(AWDMultitouchHardwareStatus *)&v3 dealloc];
 }
 
-- (unsigned)openRowsAtIndex:(unint64_t)a3
+- (unsigned)openRowsAtIndex:(unint64_t)index
 {
   p_openRows = &self->_openRows;
   count = self->_openRows.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%tu) is out of range (%tu)", a3, count), 0), "raise"}];
+    [objc_msgSend(MEMORY[0x29EDB8DD0] exceptionWithName:*MEMORY[0x29EDB8D10] reason:objc_msgSend(MEMORY[0x29EDBA0F8] userInfo:{"stringWithFormat:", @"idx (%tu) is out of range (%tu)", index, count), 0), "raise"}];
   }
 
-  return p_openRows->list[a3];
+  return p_openRows->list[index];
 }
 
 - (id)description
@@ -42,17 +42,17 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
-  [v3 setObject:PBRepeatedUInt32NSArray() forKey:@"openRows"];
-  return v3;
+  [dictionary setObject:PBRepeatedUInt32NSArray() forKey:@"openRows"];
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -75,32 +75,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 4) = self->_timestamp;
-    *(a3 + 40) |= 1u;
+    *(to + 4) = self->_timestamp;
+    *(to + 40) |= 1u;
   }
 
   if ([(AWDMultitouchHardwareStatus *)self openRowsCount])
   {
-    [a3 clearOpenRows];
-    v5 = [(AWDMultitouchHardwareStatus *)self openRowsCount];
-    if (v5)
+    [to clearOpenRows];
+    openRowsCount = [(AWDMultitouchHardwareStatus *)self openRowsCount];
+    if (openRowsCount)
     {
-      v6 = v5;
+      v6 = openRowsCount;
       for (i = 0; i != v6; ++i)
       {
-        [a3 addOpenRows:{-[AWDMultitouchHardwareStatus openRowsAtIndex:](self, "openRowsAtIndex:", i)}];
+        [to addOpenRows:{-[AWDMultitouchHardwareStatus openRowsAtIndex:](self, "openRowsAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -112,28 +112,28 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (![a3 isMemberOfClass:objc_opt_class()])
+  if (![equal isMemberOfClass:objc_opt_class()])
   {
     return 0;
   }
 
-  v5 = *(a3 + 40);
+  v5 = *(equal + 40);
   if (*&self->_has)
   {
-    if ((*(a3 + 40) & 1) == 0 || self->_timestamp != *(a3 + 4))
+    if ((*(equal + 40) & 1) == 0 || self->_timestamp != *(equal + 4))
     {
       return 0;
     }
   }
 
-  else if (*(a3 + 40))
+  else if (*(equal + 40))
   {
     return 0;
   }
 
-  return MEMORY[0x2A1C68D40](&self->_openRows, a3 + 8);
+  return MEMORY[0x2A1C68D40](&self->_openRows, equal + 8);
 }
 
 - (unint64_t)hash
@@ -151,21 +151,21 @@
   return PBRepeatedUInt32Hash() ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 40))
+  if (*(from + 40))
   {
-    self->_timestamp = *(a3 + 4);
+    self->_timestamp = *(from + 4);
     *&self->_has |= 1u;
   }
 
-  v5 = [a3 openRowsCount];
-  if (v5)
+  openRowsCount = [from openRowsCount];
+  if (openRowsCount)
   {
-    v6 = v5;
+    v6 = openRowsCount;
     for (i = 0; i != v6; ++i)
     {
-      -[AWDMultitouchHardwareStatus addOpenRows:](self, "addOpenRows:", [a3 openRowsAtIndex:i]);
+      -[AWDMultitouchHardwareStatus addOpenRows:](self, "addOpenRows:", [from openRowsAtIndex:i]);
     }
   }
 }

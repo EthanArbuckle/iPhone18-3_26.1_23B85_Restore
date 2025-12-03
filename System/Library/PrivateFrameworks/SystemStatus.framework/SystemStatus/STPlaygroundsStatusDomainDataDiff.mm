@@ -1,37 +1,37 @@
 @interface STPlaygroundsStatusDomainDataDiff
-+ (id)diffFromData:(id)a3 toData:(id)a4;
++ (id)diffFromData:(id)data toData:(id)toData;
 - (BOOL)isEmpty;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isOrthogonalToDiff:(id)a3;
-- (STPlaygroundsStatusDomainDataDiff)initWithCoder:(id)a3;
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:;
-- (id)dataByApplyingToData:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)diffByApplyingDiff:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isOrthogonalToDiff:(id)diff;
+- (STPlaygroundsStatusDomainDataDiff)initWithCoder:(id)coder;
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:;
+- (id)dataByApplyingToData:(id)data;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)diffByApplyingDiff:(id)diff;
 - (id)succinctDescription;
 - (unint64_t)hash;
-- (void)applyToMutableData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)initWithPlaygroundsActiveChangedValue:(void *)a1;
+- (void)applyToMutableData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)initWithPlaygroundsActiveChangedValue:(void *)value;
 @end
 
 @implementation STPlaygroundsStatusDomainDataDiff
 
-+ (id)diffFromData:(id)a3 toData:(id)a4
++ (id)diffFromData:(id)data toData:(id)toData
 {
-  v5 = a3;
-  v6 = [a4 isPlaygroundsActive];
-  v7 = [v5 isPlaygroundsActive];
+  dataCopy = data;
+  isPlaygroundsActive = [toData isPlaygroundsActive];
+  isPlaygroundsActive2 = [dataCopy isPlaygroundsActive];
 
-  if (v6 == v7)
+  if (isPlaygroundsActive == isPlaygroundsActive2)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithBool:v6];
+    v8 = [MEMORY[0x1E696AD98] numberWithBool:isPlaygroundsActive];
   }
 
   v9 = [[STPlaygroundsStatusDomainDataDiff alloc] initWithPlaygroundsActiveChangedValue:v8];
@@ -39,43 +39,43 @@
   return v9;
 }
 
-- (void)initWithPlaygroundsActiveChangedValue:(void *)a1
+- (void)initWithPlaygroundsActiveChangedValue:(void *)value
 {
   v3 = a2;
-  if (a1)
+  if (value)
   {
-    v7.receiver = a1;
+    v7.receiver = value;
     v7.super_class = STPlaygroundsStatusDomainDataDiff;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    value = objc_msgSendSuper2(&v7, sel_init);
+    if (value)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = value[1];
+      value[1] = v4;
     }
   }
 
-  return a1;
+  return value;
 }
 
-- (id)dataByApplyingToData:(id)a3
+- (id)dataByApplyingToData:(id)data
 {
-  v4 = [a3 mutableCopy];
+  v4 = [data mutableCopy];
   [(STPlaygroundsStatusDomainDataDiff *)self applyToMutableData:v4];
 
   return v4;
 }
 
-- (void)applyToMutableData:(id)a3
+- (void)applyToMutableData:(id)data
 {
-  v6 = a3;
+  dataCopy = data;
   if (self)
   {
     v4 = self->_playgroundsActiveChangedValue;
     if (v4)
     {
       v5 = v4;
-      [v6 setPlaygroundsActive:{-[NSNumber BOOLValue](v4, "BOOLValue")}];
+      [dataCopy setPlaygroundsActive:{-[NSNumber BOOLValue](v4, "BOOLValue")}];
     }
   }
 }
@@ -95,13 +95,13 @@
   return playgroundsActiveChangedValue == 0;
 }
 
-- (id)diffByApplyingDiff:(id)a3
+- (id)diffByApplyingDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (!v4 || (v5 = v4[1]) == 0)
+    if (!diffCopy || (v5 = diffCopy[1]) == 0)
     {
       if (self)
       {
@@ -127,26 +127,26 @@
   return v7;
 }
 
-- (BOOL)isOrthogonalToDiff:(id)a3
+- (BOOL)isOrthogonalToDiff:(id)diff
 {
-  v4 = a3;
+  diffCopy = diff;
   if ([(STPlaygroundsStatusDomainDataDiff *)self isEmpty])
   {
-    v5 = 1;
+    isEmpty = 1;
   }
 
   else
   {
-    v5 = [v4 isEmpty];
+    isEmpty = [diffCopy isEmpty];
   }
 
-  return v5;
+  return isEmpty;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   if (self)
   {
     self = self->_playgroundsActiveChangedValue;
@@ -156,8 +156,8 @@
   v10[1] = 3221225472;
   v10[2] = __45__STPlaygroundsStatusDomainDataDiff_isEqual___block_invoke;
   v10[3] = &unk_1E85DDCD8;
-  v11 = v4;
-  v6 = v4;
+  v11 = equalCopy;
+  v6 = equalCopy;
   v7 = [v5 appendObject:self counterpart:v10];
   v8 = [v5 isEqual];
 
@@ -180,8 +180,8 @@ id __45__STPlaygroundsStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = v3;
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = builder;
   if (self)
   {
     playgroundsActiveChangedValue = self->_playgroundsActiveChangedValue;
@@ -192,13 +192,13 @@ id __45__STPlaygroundsStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
     playgroundsActiveChangedValue = 0;
   }
 
-  v6 = [v3 appendObject:playgroundsActiveChangedValue];
+  v6 = [builder appendObject:playgroundsActiveChangedValue];
   v7 = [v4 hash];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   if (self)
   {
@@ -210,13 +210,13 @@ id __45__STPlaygroundsStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
     playgroundsActiveChangedValue = 0;
   }
 
-  [a3 encodeObject:playgroundsActiveChangedValue forKey:@"playgroundsActiveChangedValue"];
+  [coder encodeObject:playgroundsActiveChangedValue forKey:@"playgroundsActiveChangedValue"];
 }
 
-- (STPlaygroundsStatusDomainDataDiff)initWithCoder:(id)a3
+- (STPlaygroundsStatusDomainDataDiff)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playgroundsActiveChangedValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playgroundsActiveChangedValue"];
 
   v6 = [(STPlaygroundsStatusDomainDataDiff *)self initWithPlaygroundsActiveChangedValue:v5];
   return v6;
@@ -224,43 +224,43 @@ id __45__STPlaygroundsStatusDomainDataDiff_isEqual___block_invoke(uint64_t a1)
 
 - (id)succinctDescription
 {
-  v2 = [(STPlaygroundsStatusDomainDataDiff *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(STPlaygroundsStatusDomainDataDiff *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STPlaygroundsStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(STPlaygroundsStatusDomainDataDiff *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(STPlaygroundsStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:a3 forDebug:1];
-  v4 = [v3 build];
+  v3 = [(STPlaygroundsStatusDomainDataDiff *)self _descriptionBuilderWithMultilinePrefix:prefix forDebug:1];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)a3 forDebug:
+- (id)_descriptionBuilderWithMultilinePrefix:(uint64_t)prefix forDebug:
 {
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [a1 succinctDescriptionBuilder];
-    [v6 setUseDebugDescription:a3];
-    [v6 setActiveMultilinePrefix:v5];
+    succinctDescriptionBuilder = [self succinctDescriptionBuilder];
+    [succinctDescriptionBuilder setUseDebugDescription:prefix];
+    [succinctDescriptionBuilder setActiveMultilinePrefix:v5];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __85__STPlaygroundsStatusDomainDataDiff__descriptionBuilderWithMultilinePrefix_forDebug___block_invoke;
     v10[3] = &unk_1E85DDD00;
-    v7 = v6;
+    v7 = succinctDescriptionBuilder;
     v11 = v7;
-    v12 = a1;
+    selfCopy = self;
     [v7 appendBodySectionWithName:0 multilinePrefix:v5 block:v10];
 
     v8 = v7;

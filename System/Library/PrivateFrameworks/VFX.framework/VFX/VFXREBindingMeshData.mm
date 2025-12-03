@@ -1,7 +1,7 @@
 @interface VFXREBindingMeshData
 - (MTLBuffer)buffer;
 - (VFXREBindingMeshData)init;
-- (void)setBuffer:(id)a3;
+- (void)setBuffer:(id)buffer;
 @end
 
 @implementation VFXREBindingMeshData
@@ -13,9 +13,9 @@
   return v2;
 }
 
-- (void)setBuffer:(id)a3
+- (void)setBuffer:(id)buffer
 {
-  *(&self->super.isa + OBJC_IVAR___VFXREBindingMeshData_buffer) = a3;
+  *(&self->super.isa + OBJC_IVAR___VFXREBindingMeshData_buffer) = buffer;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();

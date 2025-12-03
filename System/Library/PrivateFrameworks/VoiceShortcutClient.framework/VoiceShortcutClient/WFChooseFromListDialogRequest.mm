@@ -1,79 +1,79 @@
 @interface WFChooseFromListDialogRequest
-- (WFChooseFromListDialogRequest)initWithCoder:(id)a3;
-- (WFChooseFromListDialogRequest)initWithItems:(id)a3 allowsMultipleSelection:(BOOL)a4 message:(id)a5 attribution:(id)a6 prompt:(id)a7 done:(id)a8 parameterKey:(id)a9;
+- (WFChooseFromListDialogRequest)initWithCoder:(id)coder;
+- (WFChooseFromListDialogRequest)initWithItems:(id)items allowsMultipleSelection:(BOOL)selection message:(id)message attribution:(id)attribution prompt:(id)prompt done:(id)done parameterKey:(id)key;
 - (WFDialogListItemStore)dataStore;
 - (id)requestByCompactingRequest;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFChooseFromListDialogRequest
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = WFChooseFromListDialogRequest;
-  v4 = a3;
-  [(WFDialogRequest *)&v12 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(WFDialogRequest *)&v12 encodeWithCoder:coderCopy];
   v5 = [(WFChooseFromListDialogRequest *)self items:v12.receiver];
-  [v4 encodeObject:v5 forKey:@"items"];
+  [coderCopy encodeObject:v5 forKey:@"items"];
 
-  [v4 encodeBool:-[WFChooseFromListDialogRequest allowsMultipleSelection](self forKey:{"allowsMultipleSelection"), @"allowsMultipleSelection"}];
-  v6 = [(WFChooseFromListDialogRequest *)self message];
-  [v4 encodeObject:v6 forKey:@"message"];
+  [coderCopy encodeBool:-[WFChooseFromListDialogRequest allowsMultipleSelection](self forKey:{"allowsMultipleSelection"), @"allowsMultipleSelection"}];
+  message = [(WFChooseFromListDialogRequest *)self message];
+  [coderCopy encodeObject:message forKey:@"message"];
 
-  v7 = [(WFChooseFromListDialogRequest *)self doneButton];
-  [v4 encodeObject:v7 forKey:@"doneButton"];
+  doneButton = [(WFChooseFromListDialogRequest *)self doneButton];
+  [coderCopy encodeObject:doneButton forKey:@"doneButton"];
 
-  v8 = [(WFChooseFromListDialogRequest *)self cancelButton];
-  [v4 encodeObject:v8 forKey:@"cancelButton"];
+  cancelButton = [(WFChooseFromListDialogRequest *)self cancelButton];
+  [coderCopy encodeObject:cancelButton forKey:@"cancelButton"];
 
-  v9 = [(WFChooseFromListDialogRequest *)self dataStoreEndpoint];
-  [v4 encodeObject:v9 forKey:@"dataStoreEndpoint"];
+  dataStoreEndpoint = [(WFChooseFromListDialogRequest *)self dataStoreEndpoint];
+  [coderCopy encodeObject:dataStoreEndpoint forKey:@"dataStoreEndpoint"];
 
-  v10 = [(WFChooseFromListDialogRequest *)self displayConfiguration];
-  [v4 encodeObject:v10 forKey:@"displayConfiguration"];
+  displayConfiguration = [(WFChooseFromListDialogRequest *)self displayConfiguration];
+  [coderCopy encodeObject:displayConfiguration forKey:@"displayConfiguration"];
 
-  v11 = [(WFChooseFromListDialogRequest *)self parameterKey];
-  [v4 encodeObject:v11 forKey:@"parameterKey"];
+  parameterKey = [(WFChooseFromListDialogRequest *)self parameterKey];
+  [coderCopy encodeObject:parameterKey forKey:@"parameterKey"];
 }
 
-- (WFChooseFromListDialogRequest)initWithCoder:(id)a3
+- (WFChooseFromListDialogRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = WFChooseFromListDialogRequest;
-  v5 = [(WFDialogRequest *)&v25 initWithCoder:v4];
+  v5 = [(WFDialogRequest *)&v25 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"items"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"items"];
     items = v5->_items;
     v5->_items = v9;
 
-    v5->_allowsMultipleSelection = [v4 decodeBoolForKey:@"allowsMultipleSelection"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v5->_allowsMultipleSelection = [coderCopy decodeBoolForKey:@"allowsMultipleSelection"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     message = v5->_message;
     v5->_message = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"doneButton"];
     doneButton = v5->_doneButton;
     v5->_doneButton = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cancelButton"];
     cancelButton = v5->_cancelButton;
     v5->_cancelButton = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dataStoreEndpoint"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dataStoreEndpoint"];
     dataStoreEndpoint = v5->_dataStoreEndpoint;
     v5->_dataStoreEndpoint = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayConfiguration"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayConfiguration"];
     displayConfiguration = v5->_displayConfiguration;
     v5->_displayConfiguration = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parameterKey"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parameterKey"];
     parameterKey = v5->_parameterKey;
     v5->_parameterKey = v21;
 
@@ -85,81 +85,81 @@
 
 - (id)requestByCompactingRequest
 {
-  v3 = [(WFChooseFromListDialogRequest *)self items];
-  v4 = [v3 count];
+  items = [(WFChooseFromListDialogRequest *)self items];
+  v4 = [items count];
 
   if (v4 > 0x64)
   {
     v16 = objc_alloc(objc_opt_class());
-    v6 = [(WFChooseFromListDialogRequest *)self items];
+    items2 = [(WFChooseFromListDialogRequest *)self items];
     v7 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, 100}];
-    v8 = [v6 objectsAtIndexes:v7];
-    v9 = [(WFChooseFromListDialogRequest *)self allowsMultipleSelection];
-    v10 = [(WFChooseFromListDialogRequest *)self message];
-    v11 = [(WFDialogRequest *)self attribution];
-    v12 = [(WFDialogRequest *)self prompt];
-    v13 = [(WFChooseFromListDialogRequest *)self doneButton];
-    v14 = [(WFChooseFromListDialogRequest *)self parameterKey];
-    v5 = [v16 initWithItems:v8 allowsMultipleSelection:v9 message:v10 attribution:v11 prompt:v12 done:v13 parameterKey:v14];
+    v8 = [items2 objectsAtIndexes:v7];
+    allowsMultipleSelection = [(WFChooseFromListDialogRequest *)self allowsMultipleSelection];
+    message = [(WFChooseFromListDialogRequest *)self message];
+    attribution = [(WFDialogRequest *)self attribution];
+    prompt = [(WFDialogRequest *)self prompt];
+    doneButton = [(WFChooseFromListDialogRequest *)self doneButton];
+    parameterKey = [(WFChooseFromListDialogRequest *)self parameterKey];
+    selfCopy = [v16 initWithItems:v8 allowsMultipleSelection:allowsMultipleSelection message:message attribution:attribution prompt:prompt done:doneButton parameterKey:parameterKey];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (WFDialogListItemStore)dataStore
 {
-  v3 = [(WFChooseFromListDialogRequest *)self xpcConnection];
+  xpcConnection = [(WFChooseFromListDialogRequest *)self xpcConnection];
 
-  if (!v3)
+  if (!xpcConnection)
   {
     v4 = objc_alloc(MEMORY[0x1E696B0B8]);
-    v5 = [(WFChooseFromListDialogRequest *)self dataStoreEndpoint];
-    v6 = [v4 initWithListenerEndpoint:v5];
+    dataStoreEndpoint = [(WFChooseFromListDialogRequest *)self dataStoreEndpoint];
+    v6 = [v4 initWithListenerEndpoint:dataStoreEndpoint];
     [(WFChooseFromListDialogRequest *)self setXpcConnection:v6];
 
     v7 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F295A210];
-    v8 = [(WFChooseFromListDialogRequest *)self xpcConnection];
-    [v8 setRemoteObjectInterface:v7];
+    xpcConnection2 = [(WFChooseFromListDialogRequest *)self xpcConnection];
+    [xpcConnection2 setRemoteObjectInterface:v7];
 
-    v9 = [(WFChooseFromListDialogRequest *)self xpcConnection];
-    [v9 resume];
+    xpcConnection3 = [(WFChooseFromListDialogRequest *)self xpcConnection];
+    [xpcConnection3 resume];
   }
 
-  v10 = [(WFChooseFromListDialogRequest *)self xpcConnection];
-  v11 = [v10 remoteObjectProxy];
+  xpcConnection4 = [(WFChooseFromListDialogRequest *)self xpcConnection];
+  remoteObjectProxy = [xpcConnection4 remoteObjectProxy];
 
-  return v11;
+  return remoteObjectProxy;
 }
 
-- (WFChooseFromListDialogRequest)initWithItems:(id)a3 allowsMultipleSelection:(BOOL)a4 message:(id)a5 attribution:(id)a6 prompt:(id)a7 done:(id)a8 parameterKey:(id)a9
+- (WFChooseFromListDialogRequest)initWithItems:(id)items allowsMultipleSelection:(BOOL)selection message:(id)message attribution:(id)attribution prompt:(id)prompt done:(id)done parameterKey:(id)key
 {
-  v12 = a4;
-  v14 = a3;
-  v15 = a5;
-  v16 = a9;
+  selectionCopy = selection;
+  itemsCopy = items;
+  messageCopy = message;
+  keyCopy = key;
   v29.receiver = self;
   v29.super_class = WFChooseFromListDialogRequest;
-  v17 = [(WFDialogRequest *)&v29 initWithAttribution:a6 prompt:a7];
+  v17 = [(WFDialogRequest *)&v29 initWithAttribution:attribution prompt:prompt];
   if (!v17)
   {
     goto LABEL_13;
   }
 
-  v18 = [v14 copy];
+  v18 = [itemsCopy copy];
   items = v17->_items;
   v17->_items = v18;
 
-  v17->_allowsMultipleSelection = v12;
-  v20 = [v15 copy];
+  v17->_allowsMultipleSelection = selectionCopy;
+  v20 = [messageCopy copy];
   message = v17->_message;
   v17->_message = v20;
 
-  if (v12)
+  if (selectionCopy)
   {
     v22 = +[WFDialogButton doneButton];
   }
@@ -170,7 +170,7 @@
   }
 
   objc_storeStrong(&v17->_doneButton, v22);
-  if (v12)
+  if (selectionCopy)
   {
 
 LABEL_9:
@@ -192,7 +192,7 @@ LABEL_10:
   {
   }
 
-  v25 = [v16 copy];
+  v25 = [keyCopy copy];
   parameterKey = v17->_parameterKey;
   v17->_parameterKey = v25;
 

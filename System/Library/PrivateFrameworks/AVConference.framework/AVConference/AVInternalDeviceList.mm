@@ -5,7 +5,7 @@
 - (unsigned)dataSourceControlID;
 - (void)dealloc;
 - (void)notifyDeviceListChanged;
-- (void)setChangeListener:(id)a3;
+- (void)setChangeListener:(id)listener;
 @end
 
 @implementation AVInternalDeviceList
@@ -35,7 +35,7 @@
         v7 = *(*(&v23 + 1) + 8 * i);
         if ([v7 isBuiltInDevice])
         {
-          v8 = [v7 getDataSourceControlID];
+          getDataSourceControlID = [v7 getDataSourceControlID];
           if (VRTraceGetErrorLogLevelForModule() >= 7)
           {
             v9 = VRTraceErrorLogLevelToCSTR();
@@ -49,14 +49,14 @@
               v16 = 1024;
               v17 = 574;
               v18 = 2112;
-              v19 = [v7 deviceID];
+              deviceID = [v7 deviceID];
               v20 = 1024;
-              v21 = v8;
+              v21 = getDataSourceControlID;
               _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Built-in audio device[%@]'s data source control ID[%u]", &v12, 0x2Cu);
             }
           }
 
-          return v8;
+          return getDataSourceControlID;
         }
       }
 
@@ -194,11 +194,11 @@ uint64_t __47__AVInternalDeviceList_notifyDeviceListChanged__block_invoke_2(uint
   return v3;
 }
 
-- (void)setChangeListener:(id)a3
+- (void)setChangeListener:(id)listener
 {
   pthread_mutex_lock(&self->listLock);
   changeListener = self->changeListener;
-  self->changeListener = [a3 copy];
+  self->changeListener = [listener copy];
   pthread_mutex_unlock(&self->listLock);
 }
 

@@ -1,29 +1,29 @@
 @interface CRKArrayDifferenceEngine
-+ (id)configurationWithIncomingItemsIdentifierFunction:(id)a3 publishedItemsIdentifierFunction:(id)a4;
++ (id)configurationWithIncomingItemsIdentifierFunction:(id)function publishedItemsIdentifierFunction:(id)identifierFunction;
 + (id)identityConfiguration;
-- (CRKArrayDifferenceEngine)initWithObject:(id)a3 keyPath:(id)a4 configuration:(id)a5;
-- (void)updateWithNewArray:(id)a3;
+- (CRKArrayDifferenceEngine)initWithObject:(id)object keyPath:(id)path configuration:(id)configuration;
+- (void)updateWithNewArray:(id)array;
 @end
 
 @implementation CRKArrayDifferenceEngine
 
-- (CRKArrayDifferenceEngine)initWithObject:(id)a3 keyPath:(id)a4 configuration:(id)a5
+- (CRKArrayDifferenceEngine)initWithObject:(id)object keyPath:(id)path configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  objectCopy = object;
+  pathCopy = path;
+  configurationCopy = configuration;
   v16.receiver = self;
   v16.super_class = CRKArrayDifferenceEngine;
   v11 = [(CRKArrayDifferenceEngine *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->mObject, v8);
-    v13 = [v9 copy];
+    objc_storeWeak(&v11->mObject, objectCopy);
+    v13 = [pathCopy copy];
     mKeyPath = v12->mKeyPath;
     v12->mKeyPath = v13;
 
-    objc_storeStrong(&v12->_configuration, a5);
+    objc_storeStrong(&v12->_configuration, configuration);
   }
 
   return v12;
@@ -36,22 +36,22 @@
   return v2;
 }
 
-+ (id)configurationWithIncomingItemsIdentifierFunction:(id)a3 publishedItemsIdentifierFunction:(id)a4
++ (id)configurationWithIncomingItemsIdentifierFunction:(id)function publishedItemsIdentifierFunction:(id)identifierFunction
 {
-  v5 = a4;
-  v6 = a3;
+  identifierFunctionCopy = identifierFunction;
+  functionCopy = function;
   v7 = objc_opt_new();
-  [v7 setIncomingItemsIdentifierFunction:v6];
+  [v7 setIncomingItemsIdentifierFunction:functionCopy];
 
-  [v7 setPublishedItemsIdentifierFunction:v5];
+  [v7 setPublishedItemsIdentifierFunction:identifierFunctionCopy];
 
   return v7;
 }
 
-- (void)updateWithNewArray:(id)a3
+- (void)updateWithNewArray:(id)array
 {
   v121 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  arrayCopy = array;
   WeakRetained = objc_loadWeakRetained(&self->mObject);
   if (!WeakRetained)
   {
@@ -60,30 +60,30 @@
 
   v87 = WeakRetained;
   v6 = [WeakRetained mutableArrayValueForKeyPath:self->mKeyPath];
-  v7 = [(CRKArrayDifferenceEngine *)self configuration];
-  v8 = [v7 incomingItemsIdentifierFunction];
+  configuration = [(CRKArrayDifferenceEngine *)self configuration];
+  incomingItemsIdentifierFunction = [configuration incomingItemsIdentifierFunction];
   v9 = &off_243616000;
-  v91 = v4;
+  v91 = arrayCopy;
   v94 = v6;
-  if (v8)
+  if (incomingItemsIdentifierFunction)
   {
-    v10 = v8;
-    v11 = [(CRKArrayDifferenceEngine *)self configuration];
-    v12 = [v11 publishedItemsIdentifierFunction];
+    v10 = incomingItemsIdentifierFunction;
+    configuration2 = [(CRKArrayDifferenceEngine *)self configuration];
+    publishedItemsIdentifierFunction = [configuration2 publishedItemsIdentifierFunction];
 
-    if (v12)
+    if (publishedItemsIdentifierFunction)
     {
-      v13 = [(CRKArrayDifferenceEngine *)self configuration];
-      v14 = [v13 incomingItemsIdentifierFunction];
+      configuration3 = [(CRKArrayDifferenceEngine *)self configuration];
+      incomingItemsIdentifierFunction2 = [configuration3 incomingItemsIdentifierFunction];
 
-      v15 = [(CRKArrayDifferenceEngine *)self configuration];
-      v16 = [v15 publishedItemsIdentifierFunction];
+      configuration4 = [(CRKArrayDifferenceEngine *)self configuration];
+      publishedItemsIdentifierFunction2 = [configuration4 publishedItemsIdentifierFunction];
 
       v118[0] = MEMORY[0x277D85DD0];
       v118[1] = 3221225472;
       v118[2] = __47__CRKArrayDifferenceEngine_updateWithNewArray___block_invoke;
       v118[3] = &unk_278DC20D8;
-      v17 = v16;
+      v17 = publishedItemsIdentifierFunction2;
       v119 = v17;
       v18 = [v6 crk_mapUsingBlock:v118];
       v92 = [MEMORY[0x277CBEB98] setWithArray:v18];
@@ -94,13 +94,13 @@
         [(CRKArrayDifferenceEngine *)a2 updateWithNewArray:v6];
       }
 
-      v98 = self;
+      selfCopy = self;
       v20 = objc_opt_new();
       v114 = 0u;
       v115 = 0u;
       v116 = 0u;
       v117 = 0u;
-      v21 = v4;
+      v21 = arrayCopy;
       v22 = [v21 countByEnumeratingWithState:&v114 objects:v120 count:16];
       if (v22)
       {
@@ -116,7 +116,7 @@
             }
 
             v26 = *(*(&v114 + 1) + 8 * i);
-            v27 = v14[2](v14, v26);
+            v27 = incomingItemsIdentifierFunction2[2](incomingItemsIdentifierFunction2, v26);
             [v20 setObject:v26 forKeyedSubscript:v27];
           }
 
@@ -127,15 +127,15 @@
       }
 
       v28 = MEMORY[0x277CBEB98];
-      v29 = [v20 allKeys];
-      v30 = [v28 setWithArray:v29];
+      allKeys = [v20 allKeys];
+      v30 = [v28 setWithArray:allKeys];
 
       v31 = v30;
       v32 = [v31 count];
-      self = v98;
+      self = selfCopy;
       if (v32 != [v20 count])
       {
-        [(CRKArrayDifferenceEngine *)a2 updateWithNewArray:v98, v21];
+        [(CRKArrayDifferenceEngine *)a2 updateWithNewArray:selfCopy, v21];
       }
 
       v112[0] = MEMORY[0x277D85DD0];
@@ -158,29 +158,29 @@
   {
   }
 
-  v38 = [(CRKArrayDifferenceEngine *)self configuration];
-  v39 = [v38 incomingItemsIdentifierFunction];
+  configuration5 = [(CRKArrayDifferenceEngine *)self configuration];
+  incomingItemsIdentifierFunction3 = [configuration5 incomingItemsIdentifierFunction];
 
-  if (v39)
+  if (incomingItemsIdentifierFunction3)
   {
     [CRKArrayDifferenceEngine updateWithNewArray:];
   }
 
-  v40 = [(CRKArrayDifferenceEngine *)self configuration];
-  v41 = [v40 publishedItemsIdentifierFunction];
+  configuration6 = [(CRKArrayDifferenceEngine *)self configuration];
+  publishedItemsIdentifierFunction3 = [configuration6 publishedItemsIdentifierFunction];
 
-  if (v41)
+  if (publishedItemsIdentifierFunction3)
   {
     [CRKArrayDifferenceEngine updateWithNewArray:];
   }
 
   v35 = [CRKPointerSet setWithArray:v6];
-  v31 = [CRKPointerSet setWithArray:v4];
+  v31 = [CRKPointerSet setWithArray:arrayCopy];
   v37 = v6;
   v36 = objc_opt_new();
   v17 = &__block_literal_global_67;
   v34 = &__block_literal_global_67;
-  v14 = &__block_literal_global_67;
+  incomingItemsIdentifierFunction2 = &__block_literal_global_67;
 LABEL_23:
   v89 = [v31 setBySubtractingSet:v35];
   v90 = v31;
@@ -199,7 +199,7 @@ LABEL_23:
   v105 = v84;
   v46 = v43;
   v106 = v46;
-  v107 = self;
+  selfCopy2 = self;
   v85 = v36;
   v108 = v85;
   v47 = v34;
@@ -221,36 +221,36 @@ LABEL_23:
   {
     v88 = v48;
     v82 = v47;
-    v53 = [(CRKArrayDifferenceEngine *)self configuration];
-    v54 = [v53 liftingFunction];
-    v55 = v54;
-    if (!v54)
+    configuration7 = [(CRKArrayDifferenceEngine *)self configuration];
+    liftingFunction = [configuration7 liftingFunction];
+    v55 = liftingFunction;
+    if (!liftingFunction)
     {
-      v54 = &__block_literal_global_67;
+      liftingFunction = &__block_literal_global_67;
     }
 
-    v56 = MEMORY[0x245D3AAD0](v54);
+    v56 = MEMORY[0x245D3AAD0](liftingFunction);
 
     v100[0] = MEMORY[0x277D85DD0];
     v100[1] = v45;
     v100[2] = __47__CRKArrayDifferenceEngine_updateWithNewArray___block_invoke_4;
     v100[3] = &unk_278DC2818;
     v101 = v89;
-    v102 = v14;
+    v102 = incomingItemsIdentifierFunction2;
     v81 = v56;
     v103 = v81;
     v57 = [v91 crk_mapUsingBlock:v100];
-    v58 = [(CRKArrayDifferenceEngine *)self configuration];
-    v59 = [v58 publishedItemsComparator];
+    configuration8 = [(CRKArrayDifferenceEngine *)self configuration];
+    publishedItemsComparator = [configuration8 publishedItemsComparator];
 
-    if (v59)
+    if (publishedItemsComparator)
     {
       v60 = v88;
       v80 = v57;
       [v60 addObjectsFromArray:v57];
-      v61 = [(CRKArrayDifferenceEngine *)self configuration];
-      v62 = [v61 publishedItemsComparator];
-      v63 = [v60 sortedArrayUsingComparator:v62];
+      configuration9 = [(CRKArrayDifferenceEngine *)self configuration];
+      publishedItemsComparator2 = [configuration9 publishedItemsComparator];
+      v63 = [v60 sortedArrayUsingComparator:publishedItemsComparator2];
 
       v64 = [MEMORY[0x277CBEA60] arrayWithArray:v49];
       if ([v64 count])
@@ -270,10 +270,10 @@ LABEL_23:
 
           v68 = [v64 objectAtIndexedSubscript:v66];
           v69 = [v63 objectAtIndexedSubscript:v65];
-          v70 = self;
-          v71 = [(CRKArrayDifferenceEngine *)self configuration];
-          v72 = [v71 publishedItemsComparator];
-          v73 = (v72)[2](v72, v68, v69);
+          selfCopy3 = self;
+          configuration10 = [(CRKArrayDifferenceEngine *)self configuration];
+          publishedItemsComparator3 = [configuration10 publishedItemsComparator];
+          v73 = (publishedItemsComparator3)[2](publishedItemsComparator3, v68, v69);
 
           if ((v73 + 1) > 1)
           {
@@ -289,7 +289,7 @@ LABEL_23:
           ++v67;
 
           v64 = v95;
-          self = v70;
+          self = selfCopy3;
           v63 = v97;
           v60 = v99;
         }

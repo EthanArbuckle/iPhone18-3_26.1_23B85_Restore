@@ -1,14 +1,14 @@
 @interface PKPaymentSetupFieldBuiltInCardPinCode
-- (PKPaymentSetupFieldBuiltInCardPinCode)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInCardPinCode)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInCardPinCode
 
-- (PKPaymentSetupFieldBuiltInCardPinCode)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInCardPinCode)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v8.receiver = self;
   v8.super_class = PKPaymentSetupFieldBuiltInCardPinCode;
-  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"cardPIN" type:a4];
+  v4 = [(PKPaymentSetupFieldText *)&v8 initWithIdentifier:@"cardPIN" type:type];
   if (v4)
   {
     v5 = PKLocalizedPaymentString(&cfstr_CardPinCode.isa, 0);

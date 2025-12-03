@@ -1,57 +1,57 @@
 @interface HMDCameraRecordingSessionFactory
 - (double)recordingExtensionDuration;
-- (id)createSignificantEventManagerWithWorkQueue:(id)a3 faceClassificationResolver:(id)a4 logIdentifier:(id)a5;
-- (id)createTimelapseFragmentManagerWithLogIdentifier:(id)a3;
-- (id)createUploaderWithClipUUID:(id)a3 startDate:(id)a4 targetFragmentDuration:(double)a5 quality:(int64_t)a6 localZone:(id)a7 workQueue:(id)a8 logIdentifier:(id)a9;
-- (id)createVideoAnalyzerWithConfiguration:(id)a3 identifier:(id)a4;
+- (id)createSignificantEventManagerWithWorkQueue:(id)queue faceClassificationResolver:(id)resolver logIdentifier:(id)identifier;
+- (id)createTimelapseFragmentManagerWithLogIdentifier:(id)identifier;
+- (id)createUploaderWithClipUUID:(id)d startDate:(id)date targetFragmentDuration:(double)duration quality:(int64_t)quality localZone:(id)zone workQueue:(id)queue logIdentifier:(id)identifier;
+- (id)createVideoAnalyzerWithConfiguration:(id)configuration identifier:(id)identifier;
 @end
 
 @implementation HMDCameraRecordingSessionFactory
 
-- (id)createUploaderWithClipUUID:(id)a3 startDate:(id)a4 targetFragmentDuration:(double)a5 quality:(int64_t)a6 localZone:(id)a7 workQueue:(id)a8 logIdentifier:(id)a9
+- (id)createUploaderWithClipUUID:(id)d startDate:(id)date targetFragmentDuration:(double)duration quality:(int64_t)quality localZone:(id)zone workQueue:(id)queue logIdentifier:(id)identifier
 {
-  v15 = a9;
-  v16 = a8;
-  v17 = a7;
-  v18 = a4;
-  v19 = a3;
-  v20 = [[HMDCameraClipUploader alloc] initWithClipUUID:v19 startDate:v18 targetFragmentDuration:a6 quality:v17 localZone:v16 workQueue:v15 logIdentifier:a5];
+  identifierCopy = identifier;
+  queueCopy = queue;
+  zoneCopy = zone;
+  dateCopy = date;
+  dCopy = d;
+  v20 = [[HMDCameraClipUploader alloc] initWithClipUUID:dCopy startDate:dateCopy targetFragmentDuration:quality quality:zoneCopy localZone:queueCopy workQueue:identifierCopy logIdentifier:duration];
 
   return v20;
 }
 
-- (id)createTimelapseFragmentManagerWithLogIdentifier:(id)a3
+- (id)createTimelapseFragmentManagerWithLogIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[HMDCameraRecordingSessionVariantFragmentManager alloc] initWithLogIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[HMDCameraRecordingSessionVariantFragmentManager alloc] initWithLogIdentifier:identifierCopy];
 
   return v4;
 }
 
-- (id)createSignificantEventManagerWithWorkQueue:(id)a3 faceClassificationResolver:(id)a4 logIdentifier:(id)a5
+- (id)createSignificantEventManagerWithWorkQueue:(id)queue faceClassificationResolver:(id)resolver logIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HMDCameraRecordingSessionSignificantEventManager alloc] initWithWorkQueue:v9 faceClassificationResolver:v8 logIdentifier:v7];
+  identifierCopy = identifier;
+  resolverCopy = resolver;
+  queueCopy = queue;
+  v10 = [[HMDCameraRecordingSessionSignificantEventManager alloc] initWithWorkQueue:queueCopy faceClassificationResolver:resolverCopy logIdentifier:identifierCopy];
 
   return v10;
 }
 
-- (id)createVideoAnalyzerWithConfiguration:(id)a3 identifier:(id)a4
+- (id)createVideoAnalyzerWithConfiguration:(id)configuration identifier:(id)identifier
 {
   v6 = 0;
-  v4 = [MEMORY[0x277D14DD0] analyzerWithConfiguration:a3 identifier:a4 error:&v6];
+  v4 = [MEMORY[0x277D14DD0] analyzerWithConfiguration:configuration identifier:identifier error:&v6];
 
   return v4;
 }
 
 - (double)recordingExtensionDuration
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"cameraRecordingExtensionDuration"];
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"cameraRecordingExtensionDuration"];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;

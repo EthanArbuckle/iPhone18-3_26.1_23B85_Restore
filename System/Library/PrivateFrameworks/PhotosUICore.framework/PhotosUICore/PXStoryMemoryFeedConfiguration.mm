@@ -1,36 +1,36 @@
 @interface PXStoryMemoryFeedConfiguration
-+ (id)_photoKitMediaProviderWithPhotoLibrary:(id)a3;
-+ (void)_handleContentSeenForDataSource:(id)a3;
-- (PXStoryMemoryFeedConfiguration)initWithDataSourceManagerPromise:(id)a3 layoutKind:(int64_t)a4 photoLibrary:(id)a5 viewControllerSetupBlock:(id)a6;
-- (PXStoryMemoryFeedConfiguration)initWithMemoriesInPhotoLibrary:(id)a3 layoutKind:(int64_t)a4 viewControllerSetupBlock:(id)a5 visibleRectChangeObserver:(id)a6;
-- (PXStoryMemoryFeedConfiguration)initWithSyntheticSectionCount:(int64_t)a3 numberOfItemsPerSection:(int64_t)a4 photoLibrary:(id)a5 layoutKind:(int64_t)a6;
-- (id)_defaultSpecManagerWithLayoutKind:(int64_t)a3 extendedTraitCollection:(id)a4;
-- (id)copyWithLayoutKind:(int64_t)a3;
-- (id)objectReferenceForDestination:(id)a3;
++ (id)_photoKitMediaProviderWithPhotoLibrary:(id)library;
++ (void)_handleContentSeenForDataSource:(id)source;
+- (PXStoryMemoryFeedConfiguration)initWithDataSourceManagerPromise:(id)promise layoutKind:(int64_t)kind photoLibrary:(id)library viewControllerSetupBlock:(id)block;
+- (PXStoryMemoryFeedConfiguration)initWithMemoriesInPhotoLibrary:(id)library layoutKind:(int64_t)kind viewControllerSetupBlock:(id)block visibleRectChangeObserver:(id)observer;
+- (PXStoryMemoryFeedConfiguration)initWithSyntheticSectionCount:(int64_t)count numberOfItemsPerSection:(int64_t)section photoLibrary:(id)library layoutKind:(int64_t)kind;
+- (id)_defaultSpecManagerWithLayoutKind:(int64_t)kind extendedTraitCollection:(id)collection;
+- (id)copyWithLayoutKind:(int64_t)kind;
+- (id)objectReferenceForDestination:(id)destination;
 - (void)handleContentSeen;
 @end
 
 @implementation PXStoryMemoryFeedConfiguration
 
-- (id)_defaultSpecManagerWithLayoutKind:(int64_t)a3 extendedTraitCollection:(id)a4
+- (id)_defaultSpecManagerWithLayoutKind:(int64_t)kind extendedTraitCollection:(id)collection
 {
-  v8 = a4;
-  v9 = v8;
-  if (a3 == 1)
+  collectionCopy = collection;
+  v9 = collectionCopy;
+  if (kind == 1)
   {
-    if (!v8)
+    if (!collectionCopy)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v12 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedConfiguration.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"extendedTraitCollection != nil"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedConfiguration.m" lineNumber:177 description:{@"Invalid parameter not satisfying: %@", @"extendedTraitCollection != nil"}];
     }
 
     v4 = [[PXStoryMemoryFeedViewLayoutSpecManager alloc] initWithLayoutKind:1 extendedTraitCollection:v9];
   }
 
-  else if (!a3)
+  else if (!kind)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedConfiguration.m" lineNumber:174 description:@"Code which should be unreachable has been reached"];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXStoryMemoryFeedConfiguration.m" lineNumber:174 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
@@ -40,8 +40,8 @@
 
 - (void)handleContentSeen
 {
-  v2 = [(PXFeedConfiguration *)self dataSourceManager];
-  v3 = [v2 dataSource];
+  dataSourceManager = [(PXFeedConfiguration *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
   if (handleContentSeen_onceToken != -1)
   {
@@ -53,8 +53,8 @@
   block[1] = 3221225472;
   block[2] = __51__PXStoryMemoryFeedConfiguration_handleContentSeen__block_invoke_2;
   block[3] = &unk_1E774C648;
-  v7 = v3;
-  v5 = v3;
+  v7 = dataSource;
+  v5 = dataSource;
   dispatch_async(v4, block);
 }
 
@@ -67,38 +67,38 @@ void __51__PXStoryMemoryFeedConfiguration_handleContentSeen__block_invoke()
   handleContentSeen_queue = v1;
 }
 
-- (id)objectReferenceForDestination:(id)a3
+- (id)objectReferenceForDestination:(id)destination
 {
-  v4 = a3;
-  v5 = [(PXFeedConfiguration *)self dataSourceManager];
-  v6 = [v5 dataSource];
+  destinationCopy = destination;
+  dataSourceManager = [(PXFeedConfiguration *)self dataSourceManager];
+  dataSource = [dataSourceManager dataSource];
 
-  v7 = PXStoryObjectReferenceForDestinationInMemoryDataSource(v4, v6);
+  v7 = PXStoryObjectReferenceForDestinationInMemoryDataSource(destinationCopy, dataSource);
 
   return v7;
 }
 
-- (id)copyWithLayoutKind:(int64_t)a3
+- (id)copyWithLayoutKind:(int64_t)kind
 {
   v4 = [(PXStoryMemoryFeedConfiguration *)self copy];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __53__PXStoryMemoryFeedConfiguration_copyWithLayoutKind___block_invoke;
   v6[3] = &__block_descriptor_40_e99___PXFeedViewLayoutSpecManager_24__0__PXStoryMemoryFeedConfiguration_8__PXExtendedTraitCollection_16l;
-  v6[4] = a3;
+  v6[4] = kind;
   [v4 setSpecManagerPromise:v6];
   return v4;
 }
 
-- (PXStoryMemoryFeedConfiguration)initWithDataSourceManagerPromise:(id)a3 layoutKind:(int64_t)a4 photoLibrary:(id)a5 viewControllerSetupBlock:(id)a6
+- (PXStoryMemoryFeedConfiguration)initWithDataSourceManagerPromise:(id)promise layoutKind:(int64_t)kind photoLibrary:(id)library viewControllerSetupBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v11 && (+[PXStorySettings sharedInstance](PXStorySettings, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 useFeedPlaceholderItems], v13, !v14))
+  promiseCopy = promise;
+  libraryCopy = library;
+  blockCopy = block;
+  if (libraryCopy && (+[PXStorySettings sharedInstance](PXStorySettings, "sharedInstance"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 useFeedPlaceholderItems], v13, !v14))
   {
     v15 = objc_alloc_init(PXStoryMemoryFeedItemLayoutFactory);
-    [(PXStoryMemoryFeedItemLayoutFactory *)v15 setLayoutKind:a4];
+    [(PXStoryMemoryFeedItemLayoutFactory *)v15 setLayoutKind:kind];
   }
 
   else
@@ -110,18 +110,18 @@ void __51__PXStoryMemoryFeedConfiguration_handleContentSeen__block_invoke()
   v23[1] = 3221225472;
   v23[2] = __116__PXStoryMemoryFeedConfiguration_initWithDataSourceManagerPromise_layoutKind_photoLibrary_viewControllerSetupBlock___block_invoke;
   v23[3] = &__block_descriptor_40_e99___PXFeedViewLayoutSpecManager_24__0__PXStoryMemoryFeedConfiguration_8__PXExtendedTraitCollection_16l;
-  v23[4] = a4;
+  v23[4] = kind;
   v22.receiver = self;
   v22.super_class = PXStoryMemoryFeedConfiguration;
-  v16 = [(PXFeedConfiguration *)&v22 initWithDataSourceManagerPromise:v10 specManagerPromise:v23 itemLayoutFactory:v15];
+  v16 = [(PXFeedConfiguration *)&v22 initWithDataSourceManagerPromise:promiseCopy specManagerPromise:v23 itemLayoutFactory:v15];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_photoLibrary, a5);
-    v18 = [PXStoryMemoryFeedConfiguration _photoKitMediaProviderWithPhotoLibrary:v11];
+    objc_storeStrong(&v16->_photoLibrary, library);
+    v18 = [PXStoryMemoryFeedConfiguration _photoKitMediaProviderWithPhotoLibrary:libraryCopy];
     [(PXFeedConfiguration *)v17 setMediaProvider:v18];
 
-    v19 = [[PXStoryMemoryFeedActionPerformer alloc] initWithViewControllerSetupBlock:v12];
+    v19 = [[PXStoryMemoryFeedActionPerformer alloc] initWithViewControllerSetupBlock:blockCopy];
     [(PXFeedConfiguration *)v17 setActionPerformer:v19];
     v20 = objc_alloc_init(PXStoryMemoryFeedPlaceholderFactory);
     [(PXFeedConfiguration *)v17 setPlaceholderFactory:v20];
@@ -130,19 +130,19 @@ void __51__PXStoryMemoryFeedConfiguration_handleContentSeen__block_invoke()
   return v17;
 }
 
-- (PXStoryMemoryFeedConfiguration)initWithSyntheticSectionCount:(int64_t)a3 numberOfItemsPerSection:(int64_t)a4 photoLibrary:(id)a5 layoutKind:(int64_t)a6
+- (PXStoryMemoryFeedConfiguration)initWithSyntheticSectionCount:(int64_t)count numberOfItemsPerSection:(int64_t)section photoLibrary:(id)library layoutKind:(int64_t)kind
 {
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __112__PXStoryMemoryFeedConfiguration_initWithSyntheticSectionCount_numberOfItemsPerSection_photoLibrary_layoutKind___block_invoke;
   v10[3] = &__block_descriptor_48_e70___PXSectionedDataSourceManager_16__0__PXStoryMemoryFeedConfiguration_8l;
-  v10[4] = a3;
-  v10[5] = a4;
-  v7 = [(PXStoryMemoryFeedConfiguration *)self initWithDataSourceManagerPromise:v10 layoutKind:a6 photoLibrary:a5 viewControllerSetupBlock:0];
+  v10[4] = count;
+  v10[5] = section;
+  v7 = [(PXStoryMemoryFeedConfiguration *)self initWithDataSourceManagerPromise:v10 layoutKind:kind photoLibrary:library viewControllerSetupBlock:0];
   v8 = v7;
   if (v7)
   {
-    [(PXFeedConfiguration *)v7 setShouldEmbedContentLayout:[(PXStoryMemoryFeedConfiguration *)v7 _shouldEmbedContentLayoutForLayoutKind:a6]];
+    [(PXFeedConfiguration *)v7 setShouldEmbedContentLayout:[(PXStoryMemoryFeedConfiguration *)v7 _shouldEmbedContentLayoutForLayoutKind:kind]];
   }
 
   return v8;
@@ -155,23 +155,23 @@ PXFeedSyntheticDataSourceManager *__112__PXStoryMemoryFeedConfiguration_initWith
   return v1;
 }
 
-- (PXStoryMemoryFeedConfiguration)initWithMemoriesInPhotoLibrary:(id)a3 layoutKind:(int64_t)a4 viewControllerSetupBlock:(id)a5 visibleRectChangeObserver:(id)a6
+- (PXStoryMemoryFeedConfiguration)initWithMemoriesInPhotoLibrary:(id)library layoutKind:(int64_t)kind viewControllerSetupBlock:(id)block visibleRectChangeObserver:(id)observer
 {
-  v10 = a3;
-  v11 = a6;
+  libraryCopy = library;
+  observerCopy = observer;
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __127__PXStoryMemoryFeedConfiguration_initWithMemoriesInPhotoLibrary_layoutKind_viewControllerSetupBlock_visibleRectChangeObserver___block_invoke;
   v17[3] = &unk_1E7742478;
-  v12 = v10;
+  v12 = libraryCopy;
   v18 = v12;
-  v13 = [(PXStoryMemoryFeedConfiguration *)self initWithDataSourceManagerPromise:v17 layoutKind:a4 photoLibrary:v12 viewControllerSetupBlock:a5];
+  v13 = [(PXStoryMemoryFeedConfiguration *)self initWithDataSourceManagerPromise:v17 layoutKind:kind photoLibrary:v12 viewControllerSetupBlock:block];
   v14 = v13;
   if (v13)
   {
     [(PXFeedConfiguration *)v13 setChromeControllerPromise:&__block_literal_global_191_194642];
-    [(PXFeedConfiguration *)v14 setShouldEmbedContentLayout:[(PXStoryMemoryFeedConfiguration *)v14 _shouldEmbedContentLayoutForLayoutKind:a4]];
-    v15 = [v11 copy];
+    [(PXFeedConfiguration *)v14 setShouldEmbedContentLayout:[(PXStoryMemoryFeedConfiguration *)v14 _shouldEmbedContentLayoutForLayoutKind:kind]];
+    v15 = [observerCopy copy];
     [(PXFeedConfiguration *)v14 setVisibleRectChangeObserver:v15];
   }
 
@@ -195,33 +195,33 @@ PXStoryMemoryFeedChromeController *__127__PXStoryMemoryFeedConfiguration_initWit
   return v6;
 }
 
-+ (id)_photoKitMediaProviderWithPhotoLibrary:(id)a3
++ (id)_photoKitMediaProviderWithPhotoLibrary:(id)library
 {
-  v3 = a3;
+  libraryCopy = library;
   v4 = objc_alloc_init(MEMORY[0x1E6978860]);
-  if (!v3)
+  if (!libraryCopy)
   {
-    v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    libraryCopy = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
   }
 
-  v5 = [[PXPhotoKitUIMediaProvider alloc] initWithImageManager:v4 library:v3];
+  v5 = [[PXPhotoKitUIMediaProvider alloc] initWithImageManager:v4 library:libraryCopy];
 
   return v5;
 }
 
-+ (void)_handleContentSeenForDataSource:(id)a3
++ (void)_handleContentSeenForDataSource:(id)source
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [a3 allItemsEnumerator];
-  if ([v3 count])
+  allItemsEnumerator = [source allItemsEnumerator];
+  if ([allItemsEnumerator count])
   {
-    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v3, "count")}];
+    v4 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(allItemsEnumerator, "count")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v13 = v3;
-    v5 = v3;
+    v13 = allItemsEnumerator;
+    v5 = allItemsEnumerator;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v6)
     {
@@ -240,18 +240,18 @@ PXStoryMemoryFeedChromeController *__127__PXStoryMemoryFeedConfiguration_initWit
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v11 = [v10 assetCollection];
-            [v4 addObject:v11];
+            assetCollection = [v10 assetCollection];
+            [v4 addObject:assetCollection];
           }
 
           else
           {
-            v11 = PLStoryGetLog();
-            if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+            assetCollection = PLStoryGetLog();
+            if (os_log_type_enabled(assetCollection, OS_LOG_TYPE_ERROR))
             {
               *buf = 138412290;
               v19 = v10;
-              _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "Incorrect dataSource object. Expect PXMemoryInfo got: %@", buf, 0xCu);
+              _os_log_impl(&dword_1A3C1C000, assetCollection, OS_LOG_TYPE_ERROR, "Incorrect dataSource object. Expect PXMemoryInfo got: %@", buf, 0xCu);
             }
           }
         }
@@ -266,7 +266,7 @@ PXStoryMemoryFeedChromeController *__127__PXStoryMemoryFeedConfiguration_initWit
     [v12 clearAnyPendingNotificationsFromMemories:v4];
     [v12 clearAnyPendingStateFromMemories:v4];
 
-    v3 = v13;
+    allItemsEnumerator = v13;
   }
 }
 

@@ -1,29 +1,29 @@
 @interface ICPrivacyInfo
 + (ICPrivacyInfo)sharedPrivacyInfo;
-+ (id)_onboardingKitPrivacyIdentifierForPrivacyIdentifier:(id)a3;
-+ (id)sharedPrivacyInfoForUserIdentity:(id)a3;
++ (id)_onboardingKitPrivacyIdentifierForPrivacyIdentifier:(id)identifier;
++ (id)sharedPrivacyInfoForUserIdentity:(id)identity;
 - (BOOL)_canUsePreviousPrivacyAcknowledgementForPersonalizedNetworkRequests;
-- (BOOL)_hasPreviouslyAcknowledgedPrivacyIdentifier:(id)a3;
-- (BOOL)_privacyAcknowledgementRequiredForIdentifier:(id)a3;
-- (BOOL)hasPreviouslyAcknowledgedPrivacyIdentifier:(id)a3;
-- (BOOL)hasPreviouslyAcknowledgedPrivacyIdentifierForBundleIdentifier:(id)a3;
-- (BOOL)preflightDisclosureRequiredForBundleIdentifier:(id)a3;
+- (BOOL)_hasPreviouslyAcknowledgedPrivacyIdentifier:(id)identifier;
+- (BOOL)_privacyAcknowledgementRequiredForIdentifier:(id)identifier;
+- (BOOL)hasPreviouslyAcknowledgedPrivacyIdentifier:(id)identifier;
+- (BOOL)hasPreviouslyAcknowledgedPrivacyIdentifierForBundleIdentifier:(id)identifier;
+- (BOOL)preflightDisclosureRequiredForBundleIdentifier:(id)identifier;
 - (BOOL)preflightDisclosureRequiredForMusic;
-- (BOOL)privacyAcknowledgementRequiredForBundleIdentifier:(id)a3;
-- (BOOL)privacyAcknowledgementRequiredForIdentifier:(id)a3;
+- (BOOL)privacyAcknowledgementRequiredForBundleIdentifier:(id)identifier;
+- (BOOL)privacyAcknowledgementRequiredForIdentifier:(id)identifier;
 - (BOOL)privacyAcknowledgementRequiredForMedia;
-- (BOOL)shouldBlockPersonalizedNetworkRequestsForBundleIdentifier:(id)a3;
-- (BOOL)shouldBlockPersonalizedNetworkRequestsForIdentifier:(id)a3;
+- (BOOL)shouldBlockPersonalizedNetworkRequestsForBundleIdentifier:(id)identifier;
+- (BOOL)shouldBlockPersonalizedNetworkRequestsForIdentifier:(id)identifier;
 - (BOOL)shouldBlockPersonalizedNetworkRequestsForMedia;
 - (ICPrivacyInfo)init;
-- (ICPrivacyInfo)initWithIdentity:(id)a3;
+- (ICPrivacyInfo)initWithIdentity:(id)identity;
 - (id)_accountForPrivacyInfo;
-- (id)_privacyDetailsForIdentifier:(id)a3;
-- (id)_queryPrivacyDetailsForIdentifier:(id)a3;
-- (id)beginObservingPrivacyAcknowledgementForIdentifier:(id)a3 handler:(id)a4;
+- (id)_privacyDetailsForIdentifier:(id)identifier;
+- (id)_queryPrivacyDetailsForIdentifier:(id)identifier;
+- (id)beginObservingPrivacyAcknowledgementForIdentifier:(id)identifier handler:(id)handler;
 - (void)_updateForPrivacyAcknowledgementChanged;
-- (void)acknowledgePrivacyPolicyForIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)endObservingPrivacyAcknowledgementForIdentifier:(id)a3 withToken:(id)a4;
+- (void)acknowledgePrivacyPolicyForIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)endObservingPrivacyAcknowledgementForIdentifier:(id)identifier withToken:(id)token;
 @end
 
 @implementation ICPrivacyInfo
@@ -78,7 +78,7 @@
   {
     v10 = self->_userIdentity;
     *buf = 138543874;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = v10;
     v18 = 2114;
@@ -131,7 +131,7 @@ LABEL_7:
     v8[2] = __56__ICPrivacyInfo__updateForPrivacyAcknowledgementChanged__block_invoke_2;
     v8[3] = &unk_1E7BF6E70;
     v9 = v6;
-    v10 = self;
+    selfCopy = self;
     [v7 enumerateKeysAndObjectsUsingBlock:v8];
   }
 
@@ -182,15 +182,15 @@ LABEL_8:
   v2 = +[ICDeviceInfo currentDeviceInfo];
   if ([v2 isAppleTV])
   {
-    v3 = [v2 isInternalBuild];
+    isInternalBuild = [v2 isInternalBuild];
   }
 
   else
   {
-    v3 = 0;
+    isInternalBuild = 0;
   }
 
-  return v3;
+  return isInternalBuild;
 }
 
 void __56__ICPrivacyInfo__updateForPrivacyAcknowledgementChanged__block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -236,18 +236,18 @@ void __56__ICPrivacyInfo__updateForPrivacyAcknowledgementChanged__block_invoke_3
   (*(v6 + 2))(v6, *(a1 + 40), *(a1 + 48));
 }
 
-- (id)_privacyDetailsForIdentifier:(id)a3
+- (id)_privacyDetailsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v5 = +[ICDeviceInfo currentDeviceInfo];
-    v6 = [v5 isStoreDemoModeEnabled];
+    isStoreDemoModeEnabled = [v5 isStoreDemoModeEnabled];
 
-    if ((v6 & 1) != 0 || ([(NSMutableDictionary *)self->_cache objectForKey:v4], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+    if ((isStoreDemoModeEnabled & 1) != 0 || ([(NSMutableDictionary *)self->_cache objectForKey:identifierCopy], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v7 = [(ICPrivacyInfo *)self _queryPrivacyDetailsForIdentifier:v4];
-      [(NSMutableDictionary *)self->_cache setObject:v7 forKey:v4];
+      v7 = [(ICPrivacyInfo *)self _queryPrivacyDetailsForIdentifier:identifierCopy];
+      [(NSMutableDictionary *)self->_cache setObject:v7 forKey:identifierCopy];
     }
   }
 
@@ -259,12 +259,12 @@ void __56__ICPrivacyInfo__updateForPrivacyAcknowledgementChanged__block_invoke_3
   return v7;
 }
 
-- (BOOL)_hasPreviouslyAcknowledgedPrivacyIdentifier:(id)a3
+- (BOOL)_hasPreviouslyAcknowledgedPrivacyIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(ICPrivacyInfo *)self _privacyDetailsForIdentifier:v4];
+  v5 = [(ICPrivacyInfo *)self _privacyDetailsForIdentifier:identifierCopy];
   if ([v5 previouslyAcknowledged])
   {
     v6 = [v5 rejected] ^ 1;
@@ -279,9 +279,9 @@ void __56__ICPrivacyInfo__updateForPrivacyAcknowledgementChanged__block_invoke_3
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138544130;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = identifierCopy;
     v13 = 1024;
     v14 = v6;
     v15 = 2114;
@@ -292,50 +292,50 @@ void __56__ICPrivacyInfo__updateForPrivacyAcknowledgementChanged__block_invoke_3
   return v6;
 }
 
-- (BOOL)_privacyAcknowledgementRequiredForIdentifier:(id)a3
+- (BOOL)_privacyAcknowledgementRequiredForIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(ICPrivacyInfo *)self _privacyDetailsForIdentifier:v4];
-  v6 = [v5 acknowledgementNeeded];
-  if (v6)
+  v5 = [(ICPrivacyInfo *)self _privacyDetailsForIdentifier:identifierCopy];
+  acknowledgementNeeded = [v5 acknowledgementNeeded];
+  if (acknowledgementNeeded)
   {
     v7 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543874;
-      v10 = self;
+      selfCopy = self;
       v11 = 2114;
-      v12 = v4;
+      v12 = identifierCopy;
       v13 = 2114;
       v14 = v5;
       _os_log_impl(&dword_1B4491000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Privacy acknowledgement required for %{public}@. details=(%{public}@)", &v9, 0x20u);
     }
   }
 
-  return v6;
+  return acknowledgementNeeded;
 }
 
-- (id)_queryPrivacyDetailsForIdentifier:(id)a3
+- (id)_queryPrivacyDetailsForIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = objc_alloc_init(ICPrivacyInfoDetails);
-  if ([v5 isEqualToString:@"Music"])
+  if ([identifierCopy isEqualToString:@"Music"])
   {
     v7 = +[ICDefaults standardDefaults];
-    v8 = [v7 isPrivacyAcknowledgementDisabledForMusic];
+    isPrivacyAcknowledgementDisabledForMusic = [v7 isPrivacyAcknowledgementDisabledForMusic];
 
-    if (v8)
+    if (isPrivacyAcknowledgementDisabledForMusic)
     {
       v9 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v29 = self;
+        selfCopy5 = self;
         v30 = 2114;
-        v31 = v5;
+        v31 = identifierCopy;
         _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring privacy acknowledgement for %{public}@ because [ICDefaults isPrivacyAcknowledgementDisabledForMusic] returned YES.", buf, 0x16u);
       }
 
@@ -345,29 +345,29 @@ LABEL_24:
     }
   }
 
-  if (![v5 isEqualToString:@"Music"] || (+[ICDefaults standardDefaults](ICDefaults, "standardDefaults"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "shouldForcePrivacyAcknowledgementRequiredForMusic"), v10, !v11))
+  if (![identifierCopy isEqualToString:@"Music"] || (+[ICDefaults standardDefaults](ICDefaults, "standardDefaults"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "shouldForcePrivacyAcknowledgementRequiredForMusic"), v10, !v11))
   {
-    v9 = [objc_opt_class() _onboardingKitPrivacyIdentifierForPrivacyIdentifier:v5];
+    v9 = [objc_opt_class() _onboardingKitPrivacyIdentifierForPrivacyIdentifier:identifierCopy];
     if (v9)
     {
-      v13 = [(ICPrivacyInfo *)self _accountForPrivacyInfo];
+      _accountForPrivacyInfo = [(ICPrivacyInfo *)self _accountForPrivacyInfo];
       v14 = os_log_create("com.apple.amp.iTunesCloud", "Default");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
-        v29 = self;
+        selfCopy5 = self;
         v30 = 2114;
-        v31 = v5;
+        v31 = identifierCopy;
         v32 = 2114;
-        v33 = v13;
+        v33 = _accountForPrivacyInfo;
         _os_log_impl(&dword_1B4491000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@: Loading privacy details for %{public}@ using account %{public}@.", buf, 0x20u);
       }
 
-      if (v13)
+      if (_accountForPrivacyInfo)
       {
-        -[ICPrivacyInfoDetails setAcknowledgementNeeded:](v6, "setAcknowledgementNeeded:", [MEMORY[0x1E698C790] acknowledgementNeededForPrivacyIdentifier:v9 account:v13]);
-        -[ICPrivacyInfoDetails setPreviouslyAcknowledged:](v6, "setPreviouslyAcknowledged:", [MEMORY[0x1E698C790] hasPreviouslyAcknowledgedPrivacyIdentifier:v9 account:v13]);
-        v15 = [MEMORY[0x1E698C790] hasRejectedPrivacyIdentifier:v9 account:v13];
+        -[ICPrivacyInfoDetails setAcknowledgementNeeded:](v6, "setAcknowledgementNeeded:", [MEMORY[0x1E698C790] acknowledgementNeededForPrivacyIdentifier:v9 account:_accountForPrivacyInfo]);
+        -[ICPrivacyInfoDetails setPreviouslyAcknowledged:](v6, "setPreviouslyAcknowledged:", [MEMORY[0x1E698C790] hasPreviouslyAcknowledgedPrivacyIdentifier:v9 account:_accountForPrivacyInfo]);
+        v15 = [MEMORY[0x1E698C790] hasRejectedPrivacyIdentifier:v9 account:_accountForPrivacyInfo];
       }
 
       else
@@ -389,33 +389,33 @@ LABEL_24:
         v20 = os_log_create("com.apple.amp.iTunesCloud", "Default");
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
-          v21 = [v19 msv_description];
+          msv_description = [v19 msv_description];
           *buf = 138543618;
-          v29 = self;
+          selfCopy5 = self;
           v30 = 2114;
-          v31 = v21;
+          v31 = msv_description;
           _os_log_impl(&dword_1B4491000, v20, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load account properties error=%{public}@", buf, 0x16u);
         }
       }
 
-      v22 = [v18 privacyAcknowledgementVersions];
-      v23 = [v22 objectForKeyedSubscript:v9];
+      privacyAcknowledgementVersions = [v18 privacyAcknowledgementVersions];
+      v23 = [privacyAcknowledgementVersions objectForKeyedSubscript:v9];
       [(ICPrivacyInfoDetails *)v6 setAcceptedVersion:v23];
     }
 
     else
     {
-      v26 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v26 handleFailureInMethod:a2 object:self file:@"ICPrivacyInfo.m" lineNumber:435 description:{@"Failed to map privacy identifier %@", v5}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"ICPrivacyInfo.m" lineNumber:435 description:{@"Failed to map privacy identifier %@", identifierCopy}];
     }
 
     v24 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v29 = self;
+      selfCopy5 = self;
       v30 = 2114;
-      v31 = v5;
+      v31 = identifierCopy;
       v32 = 2114;
       v33 = v6;
       _os_log_impl(&dword_1B4491000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@: Loaded privacy details for %{public}@: %{public}@", buf, 0x20u);
@@ -428,9 +428,9 @@ LABEL_24:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v29 = self;
+    selfCopy5 = self;
     v30 = 2114;
-    v31 = v5;
+    v31 = identifierCopy;
     _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Forcing privacy acknowledgement needed for %{public}@ because [ICDefaults shouldForcePrivacyAcknowledgementRequiredForMusic] returned YES.", buf, 0x16u);
   }
 
@@ -442,36 +442,36 @@ LABEL_25:
   return v6;
 }
 
-- (void)endObservingPrivacyAcknowledgementForIdentifier:(id)a3 withToken:(id)a4
+- (void)endObservingPrivacyAcknowledgementForIdentifier:(id)identifier withToken:(id)token
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  tokenCopy = token;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(NSMutableDictionary *)self->_observers objectForKey:v6];
-  [v8 removeObjectForKey:v7];
+  v8 = [(NSMutableDictionary *)self->_observers objectForKey:identifierCopy];
+  [v8 removeObjectForKey:tokenCopy];
   v9 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543874;
-    v13 = self;
+    selfCopy2 = self;
     v14 = 2114;
-    v15 = v6;
+    v15 = identifierCopy;
     v16 = 2114;
-    v17 = v7;
+    v17 = tokenCopy;
     _os_log_impl(&dword_1B4491000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Removed observer of privacy acknowledgement for %{public}@ with token: %{public}@.", &v12, 0x20u);
   }
 
   if (![v8 count])
   {
-    [(NSMutableDictionary *)self->_observers removeObjectForKey:v6];
+    [(NSMutableDictionary *)self->_observers removeObjectForKey:identifierCopy];
     v10 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543618;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2114;
-      v15 = v6;
+      v15 = identifierCopy;
       _os_log_impl(&dword_1B4491000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopped observing privacy acknowledgement for %{public}@.", &v12, 0x16u);
     }
 
@@ -485,22 +485,22 @@ LABEL_25:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)beginObservingPrivacyAcknowledgementForIdentifier:(id)a3 handler:(id)a4
+- (id)beginObservingPrivacyAcknowledgementForIdentifier:(id)identifier handler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AFB0] UUID];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   os_unfair_lock_lock(&self->_lock);
-  v9 = [(NSMutableDictionary *)self->_observers objectForKey:v6];
+  v9 = [(NSMutableDictionary *)self->_observers objectForKey:identifierCopy];
   if (!v9)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
-  v10 = [v7 copy];
+  v10 = [handlerCopy copy];
   v11 = MEMORY[0x1B8C781E0]();
-  [v9 setObject:v11 forKey:v8];
+  [v9 setObject:v11 forKey:uUID];
 
   observers = self->_observers;
   if (!observers)
@@ -512,17 +512,17 @@ LABEL_25:
     observers = self->_observers;
   }
 
-  [(NSMutableDictionary *)observers setObject:v9 forKey:v6];
+  [(NSMutableDictionary *)observers setObject:v9 forKey:identifierCopy];
   if ([v9 count] == 1)
   {
-    [(ICPrivacyInfo *)self _privacyAcknowledgementRequiredForIdentifier:v6];
+    [(ICPrivacyInfo *)self _privacyAcknowledgementRequiredForIdentifier:identifierCopy];
     v15 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138543618;
-      v19 = self;
+      selfCopy2 = self;
       v20 = 2114;
-      v21 = v6;
+      v21 = identifierCopy;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@: Beginning to observe privacy acknowledgement for %{public}@.", &v18, 0x16u);
     }
   }
@@ -531,28 +531,28 @@ LABEL_25:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138543874;
-    v19 = self;
+    selfCopy2 = self;
     v20 = 2114;
-    v21 = v6;
+    v21 = identifierCopy;
     v22 = 2114;
-    v23 = v8;
+    v23 = uUID;
     _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@: Registered new observer of privacy acknowledgement for %{public}@ with token: %{public}@.", &v18, 0x20u);
   }
 
   os_unfair_lock_unlock(&self->_lock);
 
-  return v8;
+  return uUID;
 }
 
-- (void)acknowledgePrivacyPolicyForIdentifier:(id)a3 completionHandler:(id)a4
+- (void)acknowledgePrivacyPolicyForIdentifier:(id)identifier completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() _onboardingKitPrivacyIdentifierForPrivacyIdentifier:v6];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  v8 = [objc_opt_class() _onboardingKitPrivacyIdentifierForPrivacyIdentifier:identifierCopy];
   if (!v8)
   {
-    if (!v7)
+    if (!handlerCopy)
     {
       goto LABEL_15;
     }
@@ -560,49 +560,49 @@ LABEL_25:
     v17 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7002 userInfo:0];
 LABEL_14:
     v18 = v17;
-    v7[2](v7, 0, v17);
+    handlerCopy[2](handlerCopy, 0, v17);
 
     goto LABEL_15;
   }
 
   v9 = +[ICSecurityInfo sharedSecurityInfo];
-  v10 = [v9 isDeviceUnlocked];
+  isDeviceUnlocked = [v9 isDeviceUnlocked];
 
   v11 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   v12 = v11;
-  if (v10)
+  if (isDeviceUnlocked)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v24 = self;
+      selfCopy2 = self;
       v25 = 2114;
-      v26 = v6;
+      v26 = identifierCopy;
       v27 = 2114;
       v28 = v8;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: Acknowledging privacy policy for %{public}@ (%{public}@)...", buf, 0x20u);
     }
 
-    if ([v6 isEqualToString:@"Music"])
+    if ([identifierCopy isEqualToString:@"Music"])
     {
       v13 = +[ICDefaults standardDefaults];
       [v13 setShouldForcePrivacyAcknowledgementRequiredForMusic:0];
     }
 
     v14 = [objc_alloc(MEMORY[0x1E698C790]) initWithPrivacyIdentifier:v8];
-    v15 = [(ICPrivacyInfo *)self _accountForPrivacyInfo];
-    [v14 setAccount:v15];
+    _accountForPrivacyInfo = [(ICPrivacyInfo *)self _accountForPrivacyInfo];
+    [v14 setAccount:_accountForPrivacyInfo];
 
-    v16 = [v14 acknowledgePrivacy];
+    acknowledgePrivacy = [v14 acknowledgePrivacy];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __73__ICPrivacyInfo_acknowledgePrivacyPolicyForIdentifier_completionHandler___block_invoke;
     v19[3] = &unk_1E7BF7630;
     v19[4] = self;
-    v20 = v6;
+    v20 = identifierCopy;
     v21 = v8;
-    v22 = v7;
-    [v16 addFinishBlock:v19];
+    v22 = handlerCopy;
+    [acknowledgePrivacy addFinishBlock:v19];
 
     goto LABEL_15;
   }
@@ -610,15 +610,15 @@ LABEL_14:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138543874;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 2114;
-    v26 = v6;
+    v26 = identifierCopy;
     v27 = 2114;
     v28 = v8;
     _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "%{public}@: Failed to acknowledge privacy policy for %{public}@ (%{public}@) because device is locked", buf, 0x20u);
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v17 = [MEMORY[0x1E696ABC0] msv_errorWithDomain:@"ICError" code:-7006 debugDescription:@"Acknowledging privacy policy requires the device to be unlocked"];
     goto LABEL_14;
@@ -689,27 +689,27 @@ LABEL_8:
   }
 }
 
-- (BOOL)shouldBlockPersonalizedNetworkRequestsForIdentifier:(id)a3
+- (BOOL)shouldBlockPersonalizedNetworkRequestsForIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 == @"Music" && [(ICPrivacyInfo *)self _canUsePreviousPrivacyAcknowledgementForPersonalizedNetworkRequests])
+  identifierCopy = identifier;
+  if (identifierCopy == @"Music" && [(ICPrivacyInfo *)self _canUsePreviousPrivacyAcknowledgementForPersonalizedNetworkRequests])
   {
     LODWORD(self) = ![(ICPrivacyInfo *)self hasPreviouslyAcknowledgedPrivacyIdentifier:@"Music"];
   }
 
   else
   {
-    LOBYTE(self) = [(ICPrivacyInfo *)self privacyAcknowledgementRequiredForIdentifier:v4];
+    LOBYTE(self) = [(ICPrivacyInfo *)self privacyAcknowledgementRequiredForIdentifier:identifierCopy];
   }
 
   return self;
 }
 
-- (BOOL)shouldBlockPersonalizedNetworkRequestsForBundleIdentifier:(id)a3
+- (BOOL)shouldBlockPersonalizedNetworkRequestsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (ICSystemApplicationTypeForBundleIdentifier(v4) + 1) > 1 || ![(ICPrivacyInfo *)self _canUsePreviousPrivacyAcknowledgementForPersonalizedNetworkRequests])
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy && (ICSystemApplicationTypeForBundleIdentifier(identifierCopy) + 1) > 1 || ![(ICPrivacyInfo *)self _canUsePreviousPrivacyAcknowledgementForPersonalizedNetworkRequests])
   {
     LOBYTE(self) = [(ICPrivacyInfo *)self privacyAcknowledgementRequiredForBundleIdentifier:v5];
   }
@@ -722,13 +722,13 @@ LABEL_8:
   return self;
 }
 
-- (BOOL)hasPreviouslyAcknowledgedPrivacyIdentifierForBundleIdentifier:(id)a3
+- (BOOL)hasPreviouslyAcknowledgedPrivacyIdentifierForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
-    v6 = ICSystemApplicationTypeForBundleIdentifier(v4) + 1;
+    v6 = ICSystemApplicationTypeForBundleIdentifier(identifierCopy) + 1;
     if (v6 > 5)
     {
       v8 = 0;
@@ -749,26 +749,26 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)hasPreviouslyAcknowledgedPrivacyIdentifier:(id)a3
+- (BOOL)hasPreviouslyAcknowledgedPrivacyIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(ICPrivacyInfo *)self _hasPreviouslyAcknowledgedPrivacyIdentifier:v4];
+  v5 = [(ICPrivacyInfo *)self _hasPreviouslyAcknowledgedPrivacyIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (BOOL)privacyAcknowledgementRequiredForBundleIdentifier:(id)a3
+- (BOOL)privacyAcknowledgementRequiredForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (!identifierCopy)
   {
     goto LABEL_4;
   }
 
-  v6 = ICSystemApplicationTypeForBundleIdentifier(v4);
+  v6 = ICSystemApplicationTypeForBundleIdentifier(identifierCopy);
   v7 = 0;
   if (v6 > 1)
   {
@@ -783,7 +783,7 @@ LABEL_7:
       case 4:
         v9 = @"AppStore";
 LABEL_13:
-        v8 = [(ICPrivacyInfo *)self privacyAcknowledgementRequiredForIdentifier:v9];
+        privacyAcknowledgementRequiredForMusic = [(ICPrivacyInfo *)self privacyAcknowledgementRequiredForIdentifier:v9];
         goto LABEL_14;
     }
   }
@@ -793,9 +793,9 @@ LABEL_13:
     if ((v6 + 1) < 2)
     {
 LABEL_4:
-      v8 = [(ICPrivacyInfo *)self privacyAcknowledgementRequiredForMusic];
+      privacyAcknowledgementRequiredForMusic = [(ICPrivacyInfo *)self privacyAcknowledgementRequiredForMusic];
 LABEL_14:
-      v7 = v8;
+      v7 = privacyAcknowledgementRequiredForMusic;
       goto LABEL_15;
     }
 
@@ -811,25 +811,25 @@ LABEL_15:
   return v7;
 }
 
-- (BOOL)privacyAcknowledgementRequiredForIdentifier:(id)a3
+- (BOOL)privacyAcknowledgementRequiredForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(ICPrivacyInfo *)self _privacyAcknowledgementRequiredForIdentifier:v4];
+  v5 = [(ICPrivacyInfo *)self _privacyAcknowledgementRequiredForIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (BOOL)preflightDisclosureRequiredForBundleIdentifier:(id)a3
+- (BOOL)preflightDisclosureRequiredForBundleIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
-  v6 = [v5 applicationState];
-  v7 = [v6 isValid];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:0];
+  applicationState = [v5 applicationState];
+  isValid = [applicationState isValid];
 
-  if (v7)
+  if (isValid)
   {
     os_unfair_lock_lock(&self->_lock);
     preflightManager = self->_preflightManager;
@@ -873,7 +873,7 @@ LABEL_15:
       *buf = 138543618;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v4;
+      *&buf[14] = identifierCopy;
       _os_log_impl(&dword_1B4491000, v15, OS_LOG_TYPE_ERROR, "%{public}@ Invalid [LSApplicationRecord applicationState] for bundleID: %{public}@", buf, 0x16u);
     }
 
@@ -901,27 +901,27 @@ LABEL_15:
   return self;
 }
 
-- (ICPrivacyInfo)initWithIdentity:(id)a3
+- (ICPrivacyInfo)initWithIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v14.receiver = self;
   v14.super_class = ICPrivacyInfo;
   v6 = [(ICPrivacyInfo *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userIdentity, a3);
+    objc_storeStrong(&v6->_userIdentity, identity);
     v8 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:5];
     cache = v7->_cache;
     v7->_cache = v8;
 
     v7->_lock._os_unfair_lock_opaque = 0;
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:0];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     v12 = +[ICDeviceInfo currentDeviceInfo];
-    [v11 addObserver:v7 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICDeviceInfoStoreDemoModeDidChangeNotification" object:v12];
+    [defaultCenter2 addObserver:v7 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICDeviceInfoStoreDemoModeDidChangeNotification" object:v12];
   }
 
   return v7;
@@ -935,10 +935,10 @@ LABEL_15:
   return v4;
 }
 
-+ (id)_onboardingKitPrivacyIdentifierForPrivacyIdentifier:(id)a3
++ (id)_onboardingKitPrivacyIdentifierForPrivacyIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Music"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"Music"])
   {
     v19 = 0;
     v20 = &v19;
@@ -960,9 +960,9 @@ LABEL_15:
     _Block_object_dispose(&v19, 8);
     if (!v4)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getOBPrivacyAppleMusicIdentifier(void)"];
-      [v6 handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:47 description:{@"%s", dlerror(), v15, v16, v17, v18}];
+      [currentHandler handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:47 description:{@"%s", dlerror(), v15, v16, v17, v18}];
 LABEL_36:
 
       __break(1u);
@@ -972,7 +972,7 @@ LABEL_36:
     goto LABEL_25;
   }
 
-  if ([v3 isEqualToString:@"TV"])
+  if ([identifierCopy isEqualToString:@"TV"])
   {
     v19 = 0;
     v20 = &v19;
@@ -994,16 +994,16 @@ LABEL_36:
     _Block_object_dispose(&v19, 8);
     if (!v4)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getOBPrivacyTVAppIdentifier(void)"];
-      [v6 handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:48 description:{@"%s", dlerror(), v15, v16, v17, v18}];
+      [currentHandler handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:48 description:{@"%s", dlerror(), v15, v16, v17, v18}];
       goto LABEL_36;
     }
 
     goto LABEL_25;
   }
 
-  if ([v3 isEqualToString:@"Books"])
+  if ([identifierCopy isEqualToString:@"Books"])
   {
     v19 = 0;
     v20 = &v19;
@@ -1025,16 +1025,16 @@ LABEL_36:
     _Block_object_dispose(&v19, 8);
     if (!v4)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getOBPrivacyiBooksIdentifier(void)"];
-      [v6 handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:49 description:{@"%s", dlerror(), v15, v16, v17, v18}];
+      [currentHandler handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:49 description:{@"%s", dlerror(), v15, v16, v17, v18}];
       goto LABEL_36;
     }
 
     goto LABEL_25;
   }
 
-  if ([v3 isEqualToString:@"Podcasts"])
+  if ([identifierCopy isEqualToString:@"Podcasts"])
   {
     v19 = 0;
     v20 = &v19;
@@ -1056,16 +1056,16 @@ LABEL_36:
     _Block_object_dispose(&v19, 8);
     if (!v4)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getOBPrivacyPodcastsIdentifier(void)"];
-      [v6 handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:50 description:{@"%s", dlerror(), v15, v16, v17, v18}];
+      [currentHandler handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:50 description:{@"%s", dlerror(), v15, v16, v17, v18}];
       goto LABEL_36;
     }
 
     goto LABEL_25;
   }
 
-  if ([v3 isEqualToString:@"AppStore"])
+  if ([identifierCopy isEqualToString:@"AppStore"])
   {
     v19 = 0;
     v20 = &v19;
@@ -1087,9 +1087,9 @@ LABEL_36:
     _Block_object_dispose(&v19, 8);
     if (!v4)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getOBPrivacyAppStoreIdentifier(void)"];
-      [v6 handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:51 description:{@"%s", dlerror(), v15, v16, v17, v18}];
+      [currentHandler handleFailureInFunction:v7 file:@"ICPrivacyInfo.m" lineNumber:51 description:{@"%s", dlerror(), v15, v16, v17, v18}];
       goto LABEL_36;
     }
 
@@ -1098,14 +1098,14 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if ([v3 isEqualToString:@"FitnessPlus"])
+  if ([identifierCopy isEqualToString:@"FitnessPlus"])
   {
     v12 = getOBPrivacyFitnessPlusIdentifier();
   }
 
   else
   {
-    if (![v3 isEqualToString:@"ImproveFitnessPlus"])
+    if (![identifierCopy isEqualToString:@"ImproveFitnessPlus"])
     {
       v13 = 0;
       goto LABEL_27;
@@ -1121,11 +1121,11 @@ LABEL_27:
   return v13;
 }
 
-+ (id)sharedPrivacyInfoForUserIdentity:(id)a3
++ (id)sharedPrivacyInfoForUserIdentity:(id)identity
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  identityCopy = identity;
+  v4 = identityCopy;
+  if (!identityCopy)
   {
     v5 = os_log_create("com.apple.amp.iTunesCloud", "Default");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))

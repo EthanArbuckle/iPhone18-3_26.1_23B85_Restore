@@ -2,10 +2,10 @@
 + (id)propertySets;
 + (id)sharedInstance;
 - (YIbYnDZMoU7hwSYC)init;
-- (id)_extractPHAssetPropertySets:(id)a3;
-- (id)_uTjOtNxowyWuuBCA:(id)a3 N3UHg1ij3irF9uUu:(id)a4;
-- (void)ZkTXckPDVjRWZuVM:(id)a3 QsX3tfdMvsGwvY0F:(int64_t)a4 oMKZEzaKOVd8YlLk:(id)a5 withCompletion:(id)a6;
-- (void)y8DihfZYjxGbiiEE:(id)a3 QsX3tfdMvsGwvY0F:(int64_t)a4 withCompletion:(id)a5;
+- (id)_extractPHAssetPropertySets:(id)sets;
+- (id)_uTjOtNxowyWuuBCA:(id)a N3UHg1ij3irF9uUu:(id)uu;
+- (void)ZkTXckPDVjRWZuVM:(id)m QsX3tfdMvsGwvY0F:(int64_t)f oMKZEzaKOVd8YlLk:(id)lk withCompletion:(id)completion;
+- (void)y8DihfZYjxGbiiEE:(id)e QsX3tfdMvsGwvY0F:(int64_t)f withCompletion:(id)completion;
 @end
 
 @implementation YIbYnDZMoU7hwSYC
@@ -37,41 +37,41 @@
   return v2;
 }
 
-- (void)y8DihfZYjxGbiiEE:(id)a3 QsX3tfdMvsGwvY0F:(int64_t)a4 withCompletion:(id)a5
+- (void)y8DihfZYjxGbiiEE:(id)e QsX3tfdMvsGwvY0F:(int64_t)f withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(YIbYnDZMoU7hwSYC *)self queue];
+  eCopy = e;
+  completionCopy = completion;
+  queue = [(YIbYnDZMoU7hwSYC *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000D0DC;
   block[3] = &unk_10068F340;
-  v15 = v9;
-  v16 = a4;
-  v14 = v8;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, block);
+  v15 = completionCopy;
+  fCopy = f;
+  v14 = eCopy;
+  v11 = completionCopy;
+  v12 = eCopy;
+  dispatch_async(queue, block);
 }
 
-- (id)_uTjOtNxowyWuuBCA:(id)a3 N3UHg1ij3irF9uUu:(id)a4
+- (id)_uTjOtNxowyWuuBCA:(id)a N3UHg1ij3irF9uUu:(id)uu
 {
-  v5 = a3;
-  v6 = a4;
+  aCopy = a;
+  uuCopy = uu;
   v7 = objc_alloc_init(NSMutableDictionary);
   v32 = v7;
   v34 = +[YIbYnDZMoU7hwSYC propertySets];
   v31 = [@"PHAssetPropertySet" length];
   v8 = 0;
   v33 = 0;
-  v30 = v5;
-  while ([v6 count] > v8)
+  v30 = aCopy;
+  while ([uuCopy count] > v8)
   {
-    v9 = [v6 objectAtIndexedSubscript:v8];
+    v9 = [uuCopy objectAtIndexedSubscript:v8];
     v10 = [v9 componentsSeparatedByString:@"."];
     if ([v10 count] < 2)
     {
-      v23 = [v5 valueForKey:v9];
+      v23 = [aCopy valueForKey:v9];
       if (v23)
       {
         [v7 setObject:v23 forKey:v9];
@@ -100,17 +100,17 @@
         v14 = [v13 substringFromIndex:v31];
 
         v15 = [v14 substringToIndex:1];
-        v35 = [v15 lowercaseString];
+        lowercaseString = [v15 lowercaseString];
 
         v16 = [v14 substringFromIndex:1];
         v17 = +[NSMutableString string];
-        [v17 appendString:v35];
+        [v17 appendString:lowercaseString];
         [v17 appendString:v16];
         [v17 appendString:@"Properties"];
         v18 = NSSelectorFromString(v17);
         if (objc_opt_respondsToSelector())
         {
-          v19 = ([v5 methodForSelector:v18])(v5, v18);
+          v19 = ([aCopy methodForSelector:v18])(aCopy, v18);
           if (v19)
           {
             v20 = [v10 objectAtIndexedSubscript:1];
@@ -135,7 +135,7 @@
             }
           }
 
-          v5 = v30;
+          aCopy = v30;
         }
 
         v23 = 0;
@@ -178,16 +178,16 @@
   return v3;
 }
 
-- (id)_extractPHAssetPropertySets:(id)a3
+- (id)_extractPHAssetPropertySets:(id)sets
 {
-  v17 = a3;
-  v3 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v17, "count")}];
+  setsCopy = sets;
+  v3 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(setsCopy, "count")}];
   v4 = +[YIbYnDZMoU7hwSYC propertySets];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v17;
+  v5 = setsCopy;
   v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
@@ -244,25 +244,25 @@
   return v3;
 }
 
-- (void)ZkTXckPDVjRWZuVM:(id)a3 QsX3tfdMvsGwvY0F:(int64_t)a4 oMKZEzaKOVd8YlLk:(id)a5 withCompletion:(id)a6
+- (void)ZkTXckPDVjRWZuVM:(id)m QsX3tfdMvsGwvY0F:(int64_t)f oMKZEzaKOVd8YlLk:(id)lk withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(YIbYnDZMoU7hwSYC *)self queue];
+  mCopy = m;
+  lkCopy = lk;
+  completionCopy = completion;
+  queue = [(YIbYnDZMoU7hwSYC *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000DF30;
   block[3] = &unk_10068F388;
-  v21 = v12;
-  v22 = a4;
-  v18 = v10;
-  v19 = self;
-  v20 = v11;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v21 = completionCopy;
+  fCopy = f;
+  v18 = mCopy;
+  selfCopy = self;
+  v20 = lkCopy;
+  v14 = completionCopy;
+  v15 = lkCopy;
+  v16 = mCopy;
+  dispatch_async(queue, block);
 }
 
 @end

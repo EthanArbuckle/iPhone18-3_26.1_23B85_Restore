@@ -1,29 +1,29 @@
 @interface CKMultiFrameImage
-+ (BOOL)_writeASTCImagesWithCount:(unint64_t)a3 imageProvider:(id)a4 durations:(id)a5 toOutputStream:(id)a6 error:(id *)a7;
-+ (BOOL)writeASTCImagesWithCount:(unint64_t)a3 imageProvider:(id)a4 durations:(id)a5 toFileURL:(id)a6 error:(id *)a7;
-+ (BOOL)writeCPBitmapImagesWithCount:(unint64_t)a3 imageProvider:(id)a4 frameDurations:(id)a5 frameScales:(id)a6 toFileURL:(id)a7 error:(id *)a8;
-+ (id)ASTCDataForImagesWithCount:(unint64_t)a3 imageProvider:(id)a4 durations:(id)a5 error:(id *)a6;
-+ (id)firstFrameImageWithContentsOfCPBitmapURL:(id)a3 error:(id *)a4;
-+ (id)multiFrameImageFromOptimizedBitmapAtFileURL:(id)a3 error:(id *)a4;
-+ (id)multiFrameImageWithASTCData:(id)a3 error:(id *)a4;
-+ (id)multiFrameImageWithContentsOfASTCURL:(id)a3 error:(id *)a4;
-+ (id)multiFrameImageWithContentsOfCPBitmapURL:(id)a3 error:(id *)a4;
-- (BOOL)writeAsCPBitmapToURL:(id)a3 error:(id *)a4;
-- (BOOL)writeAsOptimizedBitmapToFileURL:(id)a3 error:(id *)a4;
-- (CKMultiFrameImage)initWithFrameCount:(unint64_t)a3 frameProvider:(id)a4 frameDurations:(id)a5;
-- (CKMultiFrameImage)initWithFrameImages:(id)a3 frameDurations:(id)a4;
++ (BOOL)_writeASTCImagesWithCount:(unint64_t)count imageProvider:(id)provider durations:(id)durations toOutputStream:(id)stream error:(id *)error;
++ (BOOL)writeASTCImagesWithCount:(unint64_t)count imageProvider:(id)provider durations:(id)durations toFileURL:(id)l error:(id *)error;
++ (BOOL)writeCPBitmapImagesWithCount:(unint64_t)count imageProvider:(id)provider frameDurations:(id)durations frameScales:(id)scales toFileURL:(id)l error:(id *)error;
++ (id)ASTCDataForImagesWithCount:(unint64_t)count imageProvider:(id)provider durations:(id)durations error:(id *)error;
++ (id)firstFrameImageWithContentsOfCPBitmapURL:(id)l error:(id *)error;
++ (id)multiFrameImageFromOptimizedBitmapAtFileURL:(id)l error:(id *)error;
++ (id)multiFrameImageWithASTCData:(id)data error:(id *)error;
++ (id)multiFrameImageWithContentsOfASTCURL:(id)l error:(id *)error;
++ (id)multiFrameImageWithContentsOfCPBitmapURL:(id)l error:(id *)error;
+- (BOOL)writeAsCPBitmapToURL:(id)l error:(id *)error;
+- (BOOL)writeAsOptimizedBitmapToFileURL:(id)l error:(id *)error;
+- (CKMultiFrameImage)initWithFrameCount:(unint64_t)count frameProvider:(id)provider frameDurations:(id)durations;
+- (CKMultiFrameImage)initWithFrameImages:(id)images frameDurations:(id)durations;
 - (id)_calculateFrameScales;
 - (id)loadAllFrameImages;
 @end
 
 @implementation CKMultiFrameImage
 
-- (CKMultiFrameImage)initWithFrameImages:(id)a3 frameDurations:(id)a4
+- (CKMultiFrameImage)initWithFrameImages:(id)images frameDurations:(id)durations
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 count];
-  v9 = [v7 copy];
+  durationsCopy = durations;
+  imagesCopy = images;
+  v8 = [imagesCopy count];
+  v9 = [imagesCopy copy];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -32,18 +32,18 @@
   v16 = v9;
   v10 = v9;
   v11 = _Block_copy(aBlock);
-  v12 = [(CKMultiFrameImage *)self initWithFrameCount:v8 frameProvider:v11 frameDurations:v6];
+  v12 = [(CKMultiFrameImage *)self initWithFrameCount:v8 frameProvider:v11 frameDurations:durationsCopy];
 
   v13 = v12;
   return v13;
 }
 
-- (CKMultiFrameImage)initWithFrameCount:(unint64_t)a3 frameProvider:(id)a4 frameDurations:(id)a5
+- (CKMultiFrameImage)initWithFrameCount:(unint64_t)count frameProvider:(id)provider frameDurations:(id)durations
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && [v9 count] != a3)
+  providerCopy = provider;
+  durationsCopy = durations;
+  v10 = durationsCopy;
+  if (durationsCopy && [durationsCopy count] != count)
   {
     v18 = IMLogHandleForCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -51,7 +51,7 @@
       [CKMultiFrameImage initWithFrameCount:frameProvider:frameDurations:];
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -62,8 +62,8 @@
     v12 = v11;
     if (v11)
     {
-      v11->_frameCount = a3;
-      v13 = _Block_copy(v8);
+      v11->_frameCount = count;
+      v13 = _Block_copy(providerCopy);
       frameProvider = v12->_frameProvider;
       v12->_frameProvider = v13;
 
@@ -73,10 +73,10 @@
     }
 
     self = v12;
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
 - (id)loadAllFrameImages
@@ -104,34 +104,34 @@
   return v6;
 }
 
-+ (id)multiFrameImageFromOptimizedBitmapAtFileURL:(id)a3 error:(id *)a4
++ (id)multiFrameImageFromOptimizedBitmapAtFileURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   if (+[CKImageData supportsASTC])
   {
-    [CKMultiFrameImage multiFrameImageWithContentsOfASTCURL:v5 error:a4];
+    [CKMultiFrameImage multiFrameImageWithContentsOfASTCURL:lCopy error:error];
   }
 
   else
   {
-    [CKMultiFrameImage multiFrameImageWithContentsOfCPBitmapURL:v5 error:a4];
+    [CKMultiFrameImage multiFrameImageWithContentsOfCPBitmapURL:lCopy error:error];
   }
   v6 = ;
 
   return v6;
 }
 
-- (BOOL)writeAsOptimizedBitmapToFileURL:(id)a3 error:(id *)a4
+- (BOOL)writeAsOptimizedBitmapToFileURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   if (+[CKImageData supportsASTC])
   {
-    v7 = [(CKMultiFrameImage *)self writeAsASTCToURL:v6 error:a4];
+    v7 = [(CKMultiFrameImage *)self writeAsASTCToURL:lCopy error:error];
   }
 
   else
   {
-    v7 = [(CKMultiFrameImage *)self writeAsCPBitmapToURL:v6 error:a4];
+    v7 = [(CKMultiFrameImage *)self writeAsCPBitmapToURL:lCopy error:error];
   }
 
   v8 = v7;
@@ -139,17 +139,17 @@
   return v8;
 }
 
-+ (id)multiFrameImageWithContentsOfASTCURL:(id)a3 error:(id *)a4
++ (id)multiFrameImageWithContentsOfASTCURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  lCopy = l;
+  if (lCopy)
   {
     v16 = 0;
-    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v6 options:1 error:&v16];
+    v7 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:lCopy options:1 error:&v16];
     v8 = v16;
     if (v7)
     {
-      v9 = [a1 multiFrameImageWithASTCData:v7 error:a4];
+      v9 = [self multiFrameImageWithASTCData:v7 error:error];
       v10 = v9;
       if (v9)
       {
@@ -174,11 +174,11 @@
         +[CKMultiFrameImage(ASTC_Persistence) multiFrameImageWithContentsOfASTCURL:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v13 = v8;
         v10 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -202,11 +202,11 @@
   return v10;
 }
 
-+ (id)multiFrameImageWithASTCData:(id)a3 error:(id *)a4
++ (id)multiFrameImageWithASTCData:(id)data error:(id *)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy)
   {
     v8 = IMLogHandleForCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -218,7 +218,7 @@
     goto LABEL_19;
   }
 
-  v6 = [v4 length];
+  v6 = [dataCopy length];
   v49 = 0;
   v47 = 0;
   v48 = 0;
@@ -427,8 +427,8 @@ LABEL_64:
     {
       if (v41)
       {
-        v30 = [v41 objectAtIndexedSubscript:v20];
-        [v30 doubleValue];
+        mainScreen = [v41 objectAtIndexedSubscript:v20];
+        [mainScreen doubleValue];
       }
 
       else
@@ -439,8 +439,8 @@ LABEL_64:
           [CKMultiFrameImage(ASTC_Persistence) multiFrameImageWithASTCData:v45 error:?];
         }
 
-        v30 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v30 scale];
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen scale];
       }
 
       v29 = v31;
@@ -485,19 +485,19 @@ LABEL_19:
   return v9;
 }
 
-+ (id)ASTCDataForImagesWithCount:(unint64_t)a3 imageProvider:(id)a4 durations:(id)a5 error:(id *)a6
++ (id)ASTCDataForImagesWithCount:(unint64_t)count imageProvider:(id)provider durations:(id)durations error:(id *)error
 {
   v10 = MEMORY[0x1E695DFC0];
-  v11 = a5;
-  v12 = a4;
-  v13 = [v10 outputStreamToMemory];
+  durationsCopy = durations;
+  providerCopy = provider;
+  outputStreamToMemory = [v10 outputStreamToMemory];
   v19 = 0;
-  LOBYTE(a1) = [a1 _writeASTCImagesWithCount:a3 imageProvider:v12 durations:v11 toOutputStream:v13 error:&v19];
+  LOBYTE(self) = [self _writeASTCImagesWithCount:count imageProvider:providerCopy durations:durationsCopy toOutputStream:outputStreamToMemory error:&v19];
 
   v14 = v19;
-  if (a1)
+  if (self)
   {
-    v15 = [v13 propertyForKey:*MEMORY[0x1E695DA30]];
+    v15 = [outputStreamToMemory propertyForKey:*MEMORY[0x1E695DA30]];
   }
 
   else
@@ -508,11 +508,11 @@ LABEL_19:
       +[CKMultiFrameImage(ASTC_Persistence) ASTCDataForImagesWithCount:imageProvider:durations:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v17 = v14;
       v15 = 0;
-      *a6 = v14;
+      *error = v14;
     }
 
     else
@@ -524,19 +524,19 @@ LABEL_19:
   return v15;
 }
 
-+ (BOOL)writeASTCImagesWithCount:(unint64_t)a3 imageProvider:(id)a4 durations:(id)a5 toFileURL:(id)a6 error:(id *)a7
++ (BOOL)writeASTCImagesWithCount:(unint64_t)count imageProvider:(id)provider durations:(id)durations toFileURL:(id)l error:(id *)error
 {
-  if (!a6)
+  if (!l)
   {
     return 0;
   }
 
   v12 = MEMORY[0x1E695DFC0];
-  v13 = a5;
-  v14 = a4;
-  v15 = [v12 outputStreamWithURL:a6 append:0];
+  durationsCopy = durations;
+  providerCopy = provider;
+  v15 = [v12 outputStreamWithURL:l append:0];
   v21 = 0;
-  v16 = [a1 _writeASTCImagesWithCount:a3 imageProvider:v14 durations:v13 toOutputStream:v15 error:&v21];
+  v16 = [self _writeASTCImagesWithCount:count imageProvider:providerCopy durations:durationsCopy toOutputStream:v15 error:&v21];
 
   v17 = v21;
   if ((v16 & 1) == 0)
@@ -547,26 +547,26 @@ LABEL_19:
       +[CKMultiFrameImage(ASTC_Persistence) writeASTCImagesWithCount:imageProvider:durations:toFileURL:error:];
     }
 
-    if (a7)
+    if (error)
     {
       v19 = v17;
-      *a7 = v17;
+      *error = v17;
     }
   }
 
   return v16;
 }
 
-+ (BOOL)_writeASTCImagesWithCount:(unint64_t)a3 imageProvider:(id)a4 durations:(id)a5 toOutputStream:(id)a6 error:(id *)a7
++ (BOOL)_writeASTCImagesWithCount:(unint64_t)count imageProvider:(id)provider durations:(id)durations toOutputStream:(id)stream error:(id *)error
 {
   v72[3] = *MEMORY[0x1E69E9840];
-  v54 = a4;
-  v10 = a5;
-  v11 = a6;
-  v50 = v10;
-  if (!v10 || [v10 count] == a3)
+  providerCopy = provider;
+  durationsCopy = durations;
+  streamCopy = stream;
+  v50 = durationsCopy;
+  if (!durationsCopy || [durationsCopy count] == count)
   {
-    if (!v11)
+    if (!streamCopy)
     {
       v29 = IMLogHandleForCategory();
       v30 = v29;
@@ -586,7 +586,7 @@ LABEL_19:
 
 LABEL_60:
 
-      if (a7)
+      if (error)
       {
         v45 = v28;
       }
@@ -599,14 +599,14 @@ LABEL_60:
       if ((v45 & 1) == 0)
       {
         v46 = v14;
-        *a7 = v14;
+        *error = v14;
       }
 
       goto LABEL_65;
     }
 
-    v53 = a3;
-    [v11 open];
+    countCopy = count;
+    [streamCopy open];
     v12 = *MEMORY[0x1E696D3E0];
     v71[0] = *MEMORY[0x1E696D8A0];
     v71[1] = v12;
@@ -615,9 +615,9 @@ LABEL_60:
     v71[2] = *MEMORY[0x1E696D400];
     v72[2] = MEMORY[0x1E695E118];
     properties = [MEMORY[0x1E695DF20] dictionaryWithObjects:v72 forKeys:v71 count:3];
-    v52 = [MEMORY[0x1E695DF70] arrayWithCapacity:a3];
+    v52 = [MEMORY[0x1E695DF70] arrayWithCapacity:count];
     v13 = objc_alloc_init(MEMORY[0x1E695DF88]);
-    if (a3)
+    if (count)
     {
       v14 = 0;
       v48 = 0;
@@ -626,7 +626,7 @@ LABEL_60:
       while (1)
       {
         v17 = objc_autoreleasePoolPush();
-        v18 = v54[2](v54, v15);
+        v18 = providerCopy[2](providerCopy, v15);
         v19 = v18;
         if (!v18)
         {
@@ -672,12 +672,12 @@ LABEL_60:
 
 LABEL_29:
 
-          v32 = v14;
+          streamError = v14;
           goto LABEL_33;
         }
 
         v70 = [(__CFData *)v13 length];
-        if ([v11 write:&v70 maxLength:8] != 8)
+        if ([streamCopy write:&v70 maxLength:8] != 8)
         {
           break;
         }
@@ -696,7 +696,7 @@ LABEL_29:
         v56[1] = 3221225472;
         v56[2] = __110__CKMultiFrameImage_ASTC_Persistence___writeASTCImagesWithCount_imageProvider_durations_toOutputStream_error___block_invoke;
         v56[3] = &unk_1E72F37B8;
-        v57 = v11;
+        v57 = streamCopy;
         v58 = &v60;
         v59 = &v66;
         [(__CFData *)v13 enumerateByteRangesUsingBlock:v56];
@@ -717,13 +717,13 @@ LABEL_29:
           goto LABEL_34;
         }
 
-        if (v53 == ++v15)
+        if (countCopy == ++v15)
         {
           goto LABEL_35;
         }
       }
 
-      v32 = [v11 streamError];
+      streamError = [streamCopy streamError];
 
       v33 = IMLogHandleForCategory();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -733,7 +733,7 @@ LABEL_29:
 
 LABEL_33:
       objc_autoreleasePoolPop(v17);
-      v14 = v32;
+      v14 = streamError;
     }
 
     else
@@ -745,7 +745,7 @@ LABEL_33:
     }
 
 LABEL_34:
-    if (v15 == v53)
+    if (v15 == countCopy)
     {
 LABEL_35:
       v34 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -761,16 +761,16 @@ LABEL_35:
         [v35 setObject:v36 forKeyedSubscript:@"CKAnimatedImageScale"];
       }
 
-      if (v10)
+      if (durationsCopy)
       {
-        [v35 setObject:v10 forKeyedSubscript:@"CKAnimatedImageDurations"];
+        [v35 setObject:durationsCopy forKeyedSubscript:@"CKAnimatedImageDurations"];
       }
 
       v37 = [v35 copy];
       v55 = 0;
-      v38 = [MEMORY[0x1E696AE40] writePropertyList:v37 toStream:v11 format:200 options:0 error:&v55];
+      v38 = [MEMORY[0x1E696AE40] writePropertyList:v37 toStream:streamCopy format:200 options:0 error:&v55];
       v39 = v55;
-      v40 = v39;
+      streamError2 = v39;
       if (v38 <= 0)
       {
         v43 = IMLogHandleForCategory();
@@ -784,17 +784,17 @@ LABEL_35:
       {
 
         v60 = v38;
-        if ([v11 write:&v60 maxLength:8] == 8)
+        if ([streamCopy write:&v60 maxLength:8] == 8)
         {
-          v60 = v53;
-          if ([v11 write:&v60 maxLength:8] == 8)
+          v60 = countCopy;
+          if ([streamCopy write:&v60 maxLength:8] == 8)
           {
             LODWORD(v60) = 1129005385;
-            v41 = [v11 write:&v60 maxLength:4];
+            v41 = [streamCopy write:&v60 maxLength:4];
             v28 = v41 == 4;
             if (v41 != 4)
             {
-              v40 = [v11 streamError];
+              streamError2 = [streamCopy streamError];
 
               v42 = IMLogHandleForCategory();
               if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -806,13 +806,13 @@ LABEL_35:
             }
 
 LABEL_59:
-            [v11 close];
+            [streamCopy close];
 
             v30 = properties;
             goto LABEL_60;
           }
 
-          v40 = [v11 streamError];
+          streamError2 = [streamCopy streamError];
 
           v44 = IMLogHandleForCategory();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -823,7 +823,7 @@ LABEL_59:
 
         else
         {
-          v40 = [v11 streamError];
+          streamError2 = [streamCopy streamError];
 
           v44 = IMLogHandleForCategory();
           if (os_log_type_enabled(v44, OS_LOG_TYPE_ERROR))
@@ -835,7 +835,7 @@ LABEL_59:
 
       v28 = 0;
 LABEL_58:
-      v14 = v40;
+      v14 = streamError2;
       goto LABEL_59;
     }
 
@@ -875,10 +875,10 @@ void __110__CKMultiFrameImage_ASTC_Persistence___writeASTCImagesWithCount_imageP
   }
 }
 
-+ (id)multiFrameImageWithContentsOfCPBitmapURL:(id)a3 error:(id *)a4
++ (id)multiFrameImageWithContentsOfCPBitmapURL:(id)l error:(id *)error
 {
   cf = 0;
-  v5 = [a3 path];
+  path = [l path];
   v22 = 0;
   ImagesFromPath = CPBitmapCreateImagesFromPath();
   v7 = ImagesFromPath;
@@ -921,11 +921,11 @@ void __110__CKMultiFrameImage_ASTC_Persistence___writeASTCImagesWithCount_imageP
       +[CKMultiFrameImage(CPBitmap_Persistence) multiFrameImageWithContentsOfCPBitmapURL:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v10 = v11;
       v16 = 0;
-      *a4 = v11;
+      *error = v11;
       goto LABEL_11;
     }
   }
@@ -974,9 +974,9 @@ void __90__CKMultiFrameImage_CPBitmap_Persistence__multiFrameImageWithContentsOf
   [*(a1 + 48) addObject:v13];
 }
 
-+ (id)firstFrameImageWithContentsOfCPBitmapURL:(id)a3 error:(id *)a4
++ (id)firstFrameImageWithContentsOfCPBitmapURL:(id)l error:(id *)error
 {
-  v5 = [a3 path];
+  path = [l path];
   ImagesFromPath = CPBitmapCreateImagesFromPath();
   v7 = ImagesFromPath;
   if (!ImagesFromPath)
@@ -988,11 +988,11 @@ void __90__CKMultiFrameImage_CPBitmap_Persistence__multiFrameImageWithContentsOf
       +[CKMultiFrameImage(CPBitmap_Persistence) multiFrameImageWithContentsOfCPBitmapURL:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v9 = v11;
       v10 = 0;
-      *a4 = v11;
+      *error = v11;
       goto LABEL_14;
     }
 
@@ -1013,32 +1013,32 @@ LABEL_10:
   }
 
   v11 = 0;
-  v12 = [v7 firstObject];
+  firstObject = [v7 firstObject];
   v13 = IMLogHandleForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
   {
     __90__CKMultiFrameImage_CPBitmap_Persistence__multiFrameImageWithContentsOfCPBitmapURL_error___block_invoke_cold_1();
   }
 
-  v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v14 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v16 = v15;
 
-  v10 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:v12 scale:0 orientation:v16];
+  v10 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:firstObject scale:0 orientation:v16];
 LABEL_14:
 
   return v10;
 }
 
-+ (BOOL)writeCPBitmapImagesWithCount:(unint64_t)a3 imageProvider:(id)a4 frameDurations:(id)a5 frameScales:(id)a6 toFileURL:(id)a7 error:(id *)a8
++ (BOOL)writeCPBitmapImagesWithCount:(unint64_t)count imageProvider:(id)provider frameDurations:(id)durations frameScales:(id)scales toFileURL:(id)l error:(id *)error
 {
   v48 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v33 = a5;
-  v32 = a6;
-  v31 = a7;
-  v13 = [v31 path];
-  if (![v13 length])
+  providerCopy = provider;
+  durationsCopy = durations;
+  scalesCopy = scales;
+  lCopy = l;
+  path = [lCopy path];
+  if (![path length])
   {
     v15 = IMLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1049,7 +1049,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v33 && [v33 count] != a3)
+  if (durationsCopy && [durationsCopy count] != count)
   {
     v15 = IMLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1060,7 +1060,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if ([v32 count] != a3)
+  if ([scalesCopy count] != count)
   {
     v15 = IMLogHandleForCategory();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -1088,7 +1088,7 @@ LABEL_15:
   v37[3] = &unk_1E72F3808;
   v37[4] = &v38;
   v37[5] = &v42;
-  [v32 enumerateObjectsUsingBlock:v37];
+  [scalesCopy enumerateObjectsUsingBlock:v37];
   v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
   if (*(v43 + 24) == 1)
   {
@@ -1096,14 +1096,14 @@ LABEL_15:
     [v29 setObject:v14 forKeyedSubscript:@"CKMultiFrameImageFrameScales"];
   }
 
-  else if (v32)
+  else if (scalesCopy)
   {
-    [v29 setObject:v32 forKeyedSubscript:@"CKMultiFrameImageFrameScales"];
+    [v29 setObject:scalesCopy forKeyedSubscript:@"CKMultiFrameImageFrameScales"];
   }
 
-  if (v33)
+  if (durationsCopy)
   {
-    [v29 setObject:v33 forKeyedSubscript:@"CKAnimatedImageDurations"];
+    [v29 setObject:durationsCopy forKeyedSubscript:@"CKAnimatedImageDurations"];
   }
 
   v36 = 0;
@@ -1121,8 +1121,8 @@ LABEL_15:
     goto LABEL_46;
   }
 
-  v18 = 0;
-  if (!a3)
+  countCopy = 0;
+  if (!count)
   {
     v16 = 1;
     goto LABEL_38;
@@ -1132,7 +1132,7 @@ LABEL_15:
   do
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v12[2](v12, v18);
+    v20 = providerCopy[2](providerCopy, countCopy);
     v21 = v20;
     if (v20)
     {
@@ -1172,13 +1172,13 @@ LABEL_31:
       goto LABEL_38;
     }
 
-    ++v18;
+    ++countCopy;
   }
 
-  while (a3 != v18);
-  v18 = a3;
+  while (count != countCopy);
+  countCopy = count;
 LABEL_38:
-  if (v18 == a3 && (v16 & 1) != 0)
+  if (countCopy == count && (v16 & 1) != 0)
   {
     if (CPBitmapWriterFinalize())
     {
@@ -1199,9 +1199,9 @@ LABEL_38:
 
   CFRelease(v17);
 LABEL_46:
-  if (a8 && (v16 & 1) == 0)
+  if (error && (v16 & 1) == 0)
   {
-    *a8 = v36;
+    *error = v36;
   }
 
   _Block_object_dispose(&v38, 8);
@@ -1256,15 +1256,15 @@ uint64_t __129__CKMultiFrameImage_CPBitmap_Persistence__writeCPBitmapImagesWithC
   return v7;
 }
 
-- (BOOL)writeAsCPBitmapToURL:(id)a3 error:(id *)a4
+- (BOOL)writeAsCPBitmapToURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CKMultiFrameImage *)self _calculateFrameScales];
+  lCopy = l;
+  _calculateFrameScales = [(CKMultiFrameImage *)self _calculateFrameScales];
   frameCount = self->_frameCount;
   frameProvider = self->_frameProvider;
   frameDurations = self->_frameDurations;
   v16 = 0;
-  v11 = [CKMultiFrameImage writeCPBitmapImagesWithCount:frameCount imageProvider:frameProvider frameDurations:frameDurations frameScales:v7 toFileURL:v6 error:&v16];
+  v11 = [CKMultiFrameImage writeCPBitmapImagesWithCount:frameCount imageProvider:frameProvider frameDurations:frameDurations frameScales:_calculateFrameScales toFileURL:lCopy error:&v16];
 
   v12 = v16;
   if (!v11)
@@ -1275,10 +1275,10 @@ uint64_t __129__CKMultiFrameImage_CPBitmap_Persistence__writeCPBitmapImagesWithC
       [CKMultiFrameImage(CPBitmap_Persistence) writeAsCPBitmapToURL:error:];
     }
 
-    if (a4)
+    if (error)
     {
       v14 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 

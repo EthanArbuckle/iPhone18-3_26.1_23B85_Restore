@@ -1,18 +1,18 @@
 @interface _NTKUltraCubePhotoFaceUpgradeContext
-- (_NTKUltraCubePhotoFaceUpgradeContext)initWithReader:(id)a3 topComplication:(id)a4 bottomComplication:(id)a5 colorEffectOption:(id)a6 colorOption:(id)a7 typefaceOption:(id)a8;
-- (id)itemAtIndex:(unint64_t)a3;
+- (_NTKUltraCubePhotoFaceUpgradeContext)initWithReader:(id)reader topComplication:(id)complication bottomComplication:(id)bottomComplication colorEffectOption:(id)option colorOption:(id)colorOption typefaceOption:(id)typefaceOption;
+- (id)itemAtIndex:(unint64_t)index;
 @end
 
 @implementation _NTKUltraCubePhotoFaceUpgradeContext
 
-- (_NTKUltraCubePhotoFaceUpgradeContext)initWithReader:(id)a3 topComplication:(id)a4 bottomComplication:(id)a5 colorEffectOption:(id)a6 colorOption:(id)a7 typefaceOption:(id)a8
+- (_NTKUltraCubePhotoFaceUpgradeContext)initWithReader:(id)reader topComplication:(id)complication bottomComplication:(id)bottomComplication colorEffectOption:(id)option colorOption:(id)colorOption typefaceOption:(id)typefaceOption
 {
-  v30 = a3;
-  v29 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  readerCopy = reader;
+  complicationCopy = complication;
+  bottomComplicationCopy = bottomComplication;
+  optionCopy = option;
+  colorOptionCopy = colorOption;
+  typefaceOptionCopy = typefaceOption;
   v31.receiver = self;
   v31.super_class = _NTKUltraCubePhotoFaceUpgradeContext;
   v19 = [(_NTKUltraCubePhotoFaceUpgradeContext *)&v31 init];
@@ -22,16 +22,16 @@
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v19->_reader, a3);
-  objc_storeStrong(&v20->_topComplication, a4);
-  objc_storeStrong(&v20->_bottomComplication, a5);
-  if (![v16 colorEffect] || (objc_msgSend(v17, "optionName"), v21 = objc_claimAutoreleasedReturnValue(), +[NTKPhotosColorEditOption originalColorName](NTKPhotosColorEditOption, "originalColorName"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "isEqualToString:", v22), v22, v21, v23))
+  objc_storeStrong(&v19->_reader, reader);
+  objc_storeStrong(&v20->_topComplication, complication);
+  objc_storeStrong(&v20->_bottomComplication, bottomComplication);
+  if (![optionCopy colorEffect] || (objc_msgSend(colorOptionCopy, "optionName"), v21 = objc_claimAutoreleasedReturnValue(), +[NTKPhotosColorEditOption originalColorName](NTKPhotosColorEditOption, "originalColorName"), v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v21, "isEqualToString:", v22), v22, v21, v23))
   {
     v20->_colorEffect = 0;
     goto LABEL_13;
   }
 
-  if ([v17 isMultitoneOption])
+  if ([colorOptionCopy isMultitoneOption])
   {
     v24 = 3;
 LABEL_11:
@@ -39,27 +39,27 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v25 = [v16 colorEffect];
-  if (v25 == &dword_0 + 1)
+  colorEffect = [optionCopy colorEffect];
+  if (colorEffect == &dword_0 + 1)
   {
     v24 = 2;
     goto LABEL_11;
   }
 
-  if (v25 == &dword_0 + 2)
+  if (colorEffect == &dword_0 + 2)
   {
     v24 = 1;
     goto LABEL_11;
   }
 
 LABEL_12:
-  objc_storeStrong(&v20->_colorOption, a7);
+  objc_storeStrong(&v20->_colorOption, colorOption);
 LABEL_13:
   v20->_typeface = 0;
-  v26 = [v18 typeface];
-  if (v26 <= 2)
+  typeface = [typefaceOptionCopy typeface];
+  if (typeface <= 2)
   {
-    v20->_typeface = v26 + 1;
+    v20->_typeface = typeface + 1;
   }
 
 LABEL_15:
@@ -74,9 +74,9 @@ LABEL_15:
   return v20;
 }
 
-- (id)itemAtIndex:(unint64_t)a3
+- (id)itemAtIndex:(unint64_t)index
 {
-  v3 = [(NTKUltraCubePhotosReader *)self->_reader objectAtIndexedSubscript:a3];
+  v3 = [(NTKUltraCubePhotosReader *)self->_reader objectAtIndexedSubscript:index];
   if (v3)
   {
     v4 = [[_NTKUltraCubePhotoFaceUpgradeItemContext alloc] initWithPhoto:v3];

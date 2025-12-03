@@ -1,10 +1,10 @@
 @interface CRLInspectorTextFieldPercentFormatter
 - (CRLInspectorTextFieldPercentFormatter)init;
-- (CRLInspectorTextFieldPercentFormatter)initWithCoder:(id)a3;
-- (id)p_clampNumber:(id)a3 toMinimum:(id)a4 andMaximum:(id)a5 wasNumberClamped:(BOOL *)a6;
-- (id)p_numberScaledWithMultiplerForNumber:(id)a3;
-- (id)p_numberUnscaledWithMultiplerForNumber:(id)a3;
-- (id)stringForObjectValue:(id)a3;
+- (CRLInspectorTextFieldPercentFormatter)initWithCoder:(id)coder;
+- (id)p_clampNumber:(id)number toMinimum:(id)minimum andMaximum:(id)maximum wasNumberClamped:(BOOL *)clamped;
+- (id)p_numberScaledWithMultiplerForNumber:(id)number;
+- (id)p_numberUnscaledWithMultiplerForNumber:(id)number;
+- (id)stringForObjectValue:(id)value;
 - (void)p_commonInitPercentFormatter;
 @end
 
@@ -17,11 +17,11 @@
   [(CRLInspectorTextFieldPercentFormatter *)self setMultiplier:&off_1018E3070];
 }
 
-- (CRLInspectorTextFieldPercentFormatter)initWithCoder:(id)a3
+- (CRLInspectorTextFieldPercentFormatter)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CRLInspectorTextFieldPercentFormatter;
-  v3 = [(CRLInspectorTextFieldClampNumberFormatter *)&v6 initWithCoder:a3];
+  v3 = [(CRLInspectorTextFieldClampNumberFormatter *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -45,17 +45,17 @@
   return v3;
 }
 
-- (id)p_numberUnscaledWithMultiplerForNumber:(id)a3
+- (id)p_numberUnscaledWithMultiplerForNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, numberCopy);
 
-  v7 = [(CRLInspectorTextFieldPercentFormatter *)self multiplier];
-  v8 = v7;
+  multiplier = [(CRLInspectorTextFieldPercentFormatter *)self multiplier];
+  v8 = multiplier;
   if (v6)
   {
-    v9 = v7 == 0;
+    v9 = multiplier == 0;
   }
 
   else
@@ -81,17 +81,17 @@
   return v14;
 }
 
-- (id)p_numberScaledWithMultiplerForNumber:(id)a3
+- (id)p_numberScaledWithMultiplerForNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, numberCopy);
 
-  v7 = [(CRLInspectorTextFieldPercentFormatter *)self multiplier];
-  v8 = v7;
+  multiplier = [(CRLInspectorTextFieldPercentFormatter *)self multiplier];
+  v8 = multiplier;
   if (v6)
   {
-    v9 = v7 == 0;
+    v9 = multiplier == 0;
   }
 
   else
@@ -117,45 +117,45 @@
   return v14;
 }
 
-- (id)p_clampNumber:(id)a3 toMinimum:(id)a4 andMaximum:(id)a5 wasNumberClamped:(BOOL *)a6
+- (id)p_clampNumber:(id)number toMinimum:(id)minimum andMaximum:(id)maximum wasNumberClamped:(BOOL *)clamped
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = [(CRLInspectorTextFieldPercentFormatter *)self p_numberScaledWithMultiplerForNumber:a3];
+  maximumCopy = maximum;
+  minimumCopy = minimum;
+  v12 = [(CRLInspectorTextFieldPercentFormatter *)self p_numberScaledWithMultiplerForNumber:number];
   v16.receiver = self;
   v16.super_class = CRLInspectorTextFieldPercentFormatter;
-  v13 = [(CRLInspectorTextFieldClampNumberFormatter *)&v16 p_clampNumber:v12 toMinimum:v11 andMaximum:v10 wasNumberClamped:a6];
+  v13 = [(CRLInspectorTextFieldClampNumberFormatter *)&v16 p_clampNumber:v12 toMinimum:minimumCopy andMaximum:maximumCopy wasNumberClamped:clamped];
 
   v14 = [(CRLInspectorTextFieldPercentFormatter *)self p_numberUnscaledWithMultiplerForNumber:v13];
 
   return v14;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = objc_opt_class();
-  v6 = sub_100014370(v5, v4);
+  v6 = sub_100014370(v5, valueCopy);
   v7 = v6;
   if (v6)
   {
     [v6 doubleValue];
     v9 = v8;
-    v10 = [(CRLInspectorTextFieldPercentFormatter *)self multiplier];
-    [v10 doubleValue];
+    multiplier = [(CRLInspectorTextFieldPercentFormatter *)self multiplier];
+    [multiplier doubleValue];
     *&v11 = v9 * v11;
     v12 = roundf(*&v11);
 
     if (v12 == 0.0 || fabsf(v12) < 0.01)
     {
 
-      v4 = &off_1018E3080;
+      valueCopy = &off_1018E3080;
     }
   }
 
   v15.receiver = self;
   v15.super_class = CRLInspectorTextFieldPercentFormatter;
-  v13 = [(CRLInspectorTextFieldClampNumberFormatter *)&v15 stringForObjectValue:v4];
+  v13 = [(CRLInspectorTextFieldClampNumberFormatter *)&v15 stringForObjectValue:valueCopy];
 
   return v13;
 }

@@ -1,21 +1,21 @@
 @interface NTKCompanionRemoteComplicationManager
 + (id)sharedInstance;
-- (BOOL)isComplicationAvailable:(id)a3 forFamilies:(id)a4;
-- (BOOL)vendorExistsWithClientIdentifier:(id)a3 appBundleIdentifier:(id)a4;
+- (BOOL)isComplicationAvailable:(id)available forFamilies:(id)families;
+- (BOOL)vendorExistsWithClientIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier;
 - (NTKCompanionRemoteComplicationManager)init;
 - (id)_safeComplications;
 - (id)_safeInstalledComplications;
-- (id)itemIdForVendorWithClientIdentifier:(id)a3;
-- (id)localizedAppNameForClientIdentifier:(id)a3;
+- (id)itemIdForVendorWithClientIdentifier:(id)identifier;
+- (id)localizedAppNameForClientIdentifier:(id)identifier;
 - (void)_fetchInstalledApps;
 - (void)_load;
 - (void)_queryInstalledApps;
 - (void)_queue_reloadApps;
 - (void)_reloadApps;
 - (void)dealloc;
-- (void)enumerateComplicationDescriptorsForClientIdentifier:(id)a3 family:(int64_t)a4 withBlock:(id)a5;
-- (void)enumerateComplicationDescriptorsForClientIdentifier:(id)a3 withBlock:(id)a4;
-- (void)enumerateEnabledVendorsForComplicationFamily:(int64_t)a3 withBlock:(id)a4;
+- (void)enumerateComplicationDescriptorsForClientIdentifier:(id)identifier family:(int64_t)family withBlock:(id)block;
+- (void)enumerateComplicationDescriptorsForClientIdentifier:(id)identifier withBlock:(id)block;
+- (void)enumerateEnabledVendorsForComplicationFamily:(int64_t)family withBlock:(id)block;
 @end
 
 @implementation NTKCompanionRemoteComplicationManager
@@ -52,10 +52,10 @@ void __55__NTKCompanionRemoteComplicationManager_sharedInstance__block_invoke()
     v4 = dispatch_queue_create("com.apple.ntk.companionremotecomplicationmanager.updates", 0);
     [(NTKCompanionRemoteComplicationManager *)v3 setSerialQueue:v4];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v3 selector:sel__activeDeviceChanged name:*MEMORY[0x277CBB640] object:0];
-    [v5 addObserver:v3 selector:sel__appStartedInstall name:@"NTKCompanion3rdPartyAppInstallStartedNotification" object:0];
-    [v5 addObserver:v3 selector:sel__fetchInstalledApps name:@"NTKSystemAppStateChangedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__activeDeviceChanged name:*MEMORY[0x277CBB640] object:0];
+    [defaultCenter addObserver:v3 selector:sel__appStartedInstall name:@"NTKCompanion3rdPartyAppInstallStartedNotification" object:0];
+    [defaultCenter addObserver:v3 selector:sel__fetchInstalledApps name:@"NTKSystemAppStateChangedNotification" object:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, _handleAppConduitApplicationsChangedNotification, *MEMORY[0x277CEAF60], v3, 0);
     [(NTKCompanionRemoteComplicationManager *)v3 _load];
@@ -67,12 +67,12 @@ void __55__NTKCompanionRemoteComplicationManager_sharedInstance__block_invoke()
 - (void)_load
 {
   os_unfair_lock_lock(&self->_remoteComplicationsLock);
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  [(NTKCompanionRemoteComplicationManager *)self setDevice:v3];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  [(NTKCompanionRemoteComplicationManager *)self setDevice:currentDevice];
 
   [(NTKComplicationCollection *)self->_remoteComplications removeObserver:self];
-  v4 = [MEMORY[0x277CBBAE8] currentDevice];
-  v5 = [NTKCompanionComplicationCollectionManager sharedComplicationCollectionForDevice:v4];
+  currentDevice2 = [MEMORY[0x277CBBAE8] currentDevice];
+  v5 = [NTKCompanionComplicationCollectionManager sharedComplicationCollectionForDevice:currentDevice2];
   [(NTKCompanionRemoteComplicationManager *)self setRemoteComplications:v5];
 
   [(NTKComplicationCollection *)self->_remoteComplications addObserver:self];
@@ -85,11 +85,11 @@ void __55__NTKCompanionRemoteComplicationManager_sharedInstance__block_invoke()
 {
   v8 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_remoteComplicationsLock);
-  v3 = [(NTKCompanionRemoteComplicationManager *)self remoteComplications];
-  v4 = [v3 hasLoaded];
+  remoteComplications = [(NTKCompanionRemoteComplicationManager *)self remoteComplications];
+  hasLoaded = [remoteComplications hasLoaded];
 
   os_unfair_lock_unlock(&self->_remoteComplicationsLock);
-  if (v4)
+  if (hasLoaded)
   {
     os_unfair_lock_lock(&self->_remoteComplicationsLock);
     if (self->_fetchingApps)
@@ -118,10 +118,10 @@ void __55__NTKCompanionRemoteComplicationManager_sharedInstance__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBB640] object:0];
-  [v3 removeObserver:self name:@"NTKCompanion3rdPartyAppInstallStartedNotification" object:0];
-  [v3 removeObserver:self name:@"NTKSystemAppStateChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBB640] object:0];
+  [defaultCenter removeObserver:self name:@"NTKCompanion3rdPartyAppInstallStartedNotification" object:0];
+  [defaultCenter removeObserver:self name:@"NTKSystemAppStateChangedNotification" object:0];
   [(NTKComplicationCollection *)self->_remoteComplications removeObserver:self];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, *MEMORY[0x277CEAF60], self);
@@ -133,7 +133,7 @@ void __55__NTKCompanionRemoteComplicationManager_sharedInstance__block_invoke()
 
 - (void)_queryInstalledApps
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   os_unfair_lock_lock(&self->_remoteComplicationsLock);
   *&self->_fetchingApps = 1;
   os_unfair_lock_unlock(&self->_remoteComplicationsLock);
@@ -151,15 +151,15 @@ void __55__NTKCompanionRemoteComplicationManager_sharedInstance__block_invoke()
   aBlock[3] = &unk_27877F668;
   objc_copyWeak(&v23, buf);
   aBlock[4] = self;
-  v5 = v3;
+  v5 = dictionary;
   v22 = v5;
   v6 = _Block_copy(aBlock);
   os_unfair_lock_lock(&self->_remoteComplicationsLock);
-  v7 = [(CLKDevice *)self->_device isRunningGraceOrLater];
-  v8 = [(CLKDevice *)self->_device pdrDevice];
+  isRunningGraceOrLater = [(CLKDevice *)self->_device isRunningGraceOrLater];
+  pdrDevice = [(CLKDevice *)self->_device pdrDevice];
   os_unfair_lock_unlock(&self->_remoteComplicationsLock);
-  v9 = [v8 pairingID];
-  if (v8)
+  pairingID = [pdrDevice pairingID];
+  if (pdrDevice)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
@@ -172,20 +172,20 @@ void __55__NTKCompanionRemoteComplicationManager_sharedInstance__block_invoke()
     dispatch_group_enter(v11);
     dispatch_group_notify(v11, self->_serialQueue, v6);
     dispatch_group_enter(v11);
-    v12 = [MEMORY[0x277CEAF80] sharedDeviceConnection];
-    if (v7)
+    mEMORY[0x277CEAF80] = [MEMORY[0x277CEAF80] sharedDeviceConnection];
+    if (isRunningGraceOrLater)
     {
       v13 = v17;
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invoke_2_22;
       v17[3] = &unk_27877F6B8;
-      v18 = v7;
-      v14 = v9;
+      v18 = isRunningGraceOrLater;
+      v14 = pairingID;
       v17[4] = v14;
       v17[5] = v11;
       v17[6] = v10;
-      [v12 enumerateInstalledApplicationsOnDeviceWithPairingID:v14 withBlock:v17];
+      [mEMORY[0x277CEAF80] enumerateInstalledApplicationsOnDeviceWithPairingID:v14 withBlock:v17];
     }
 
     else
@@ -195,11 +195,11 @@ void __55__NTKCompanionRemoteComplicationManager_sharedInstance__block_invoke()
       v16[1] = 3221225472;
       v16[2] = __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invoke_24;
       v16[3] = &unk_27877F708;
-      v15 = v9;
+      v15 = pairingID;
       v16[4] = v15;
       v16[5] = v11;
       v16[6] = v10;
-      [v12 enumerateLocallyAvailableApplicationsForDeviceWithPairingID:v15 options:3 withBlock:v16];
+      [mEMORY[0x277CEAF80] enumerateLocallyAvailableApplicationsForDeviceWithPairingID:v15 options:3 withBlock:v16];
     }
 
     dispatch_group_leave(v11);
@@ -422,14 +422,14 @@ void __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invo
 - (void)_queue_reloadApps
 {
   v85 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKCompanionRemoteComplicationManager *)self _safeInstalledComplications];
-  v60 = [MEMORY[0x277CBEB38] dictionary];
+  _safeInstalledComplications = [(NTKCompanionRemoteComplicationManager *)self _safeInstalledComplications];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   os_unfair_lock_lock(&self->_remoteComplicationsLock);
   v4 = self->_remoteComplications;
-  v5 = [(NTKCompanionRemoteComplicationManager *)self device];
-  v56 = [v5 supportsPDRCapability:2817310462];
+  device = [(NTKCompanionRemoteComplicationManager *)self device];
+  v56 = [device supportsPDRCapability:2817310462];
 
-  v48 = self;
+  selfCopy = self;
   os_unfair_lock_unlock(&self->_remoteComplicationsLock);
   [(NTKComplicationCollection *)v4 clients];
   v74 = 0u;
@@ -438,7 +438,7 @@ void __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invo
   obj = v77 = 0u;
   v6 = [obj countByEnumeratingWithState:&v74 objects:v84 count:16];
   v51 = v4;
-  v52 = v3;
+  v52 = _safeInstalledComplications;
   if (v6)
   {
     v7 = v6;
@@ -455,8 +455,8 @@ void __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invo
         }
 
         v9 = *(*(&v74 + 1) + 8 * v8);
-        v10 = [MEMORY[0x277CBEB18] array];
-        v11 = [v3 objectForKeyedSubscript:v9];
+        array = [MEMORY[0x277CBEB18] array];
+        v11 = [_safeInstalledComplications objectForKeyedSubscript:v9];
         if (v11)
         {
           if (v56)
@@ -481,7 +481,7 @@ void __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invo
                   }
 
                   v17 = [[NTKCompanionSyncedComplication alloc] initWithRemoteApplication:v11 descriptor:*(*(&v70 + 1) + 8 * i)];
-                  [v10 addObject:v17];
+                  [array addObject:v17];
                 }
 
                 v14 = [v12 countByEnumeratingWithState:&v70 objects:v83 count:16];
@@ -489,25 +489,25 @@ void __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invo
 
               while (v14);
               v4 = v51;
-              v3 = v52;
+              _safeInstalledComplications = v52;
               v7 = v54;
             }
           }
 
           else
           {
-            v18 = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
-            v19 = [(NTKComplicationCollection *)v4 supportedTemplateFamiliesForClientIdentifier:v9 descriptor:v18];
+            legacyComplicationDescriptor = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
+            v19 = [(NTKComplicationCollection *)v4 supportedTemplateFamiliesForClientIdentifier:v9 descriptor:legacyComplicationDescriptor];
             v12 = [MEMORY[0x277CBB718] legacyComplicationDescriptorWithSupportedFamilies:v19];
 
             v20 = [[NTKCompanionSyncedComplication alloc] initWithRemoteApplication:v11 descriptor:v12];
-            [v10 addObject:v20];
+            [array addObject:v20];
 
             v7 = v54;
           }
 
-          v21 = [v10 copy];
-          [v60 setObject:v21 forKeyedSubscript:v9];
+          v21 = [array copy];
+          [dictionary setObject:v21 forKeyedSubscript:v9];
         }
 
         ++v8;
@@ -526,8 +526,8 @@ void __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invo
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v55 = [v3 allKeys];
-    v22 = [v55 countByEnumeratingWithState:&v66 objects:v82 count:16];
+    allKeys = [_safeInstalledComplications allKeys];
+    v22 = [allKeys countByEnumeratingWithState:&v66 objects:v82 count:16];
     if (v22)
     {
       v23 = v22;
@@ -541,12 +541,12 @@ void __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invo
         {
           if (*v67 != v24)
           {
-            objc_enumerationMutation(v55);
+            objc_enumerationMutation(allKeys);
           }
 
           v26 = *(*(&v66 + 1) + 8 * v25);
-          v27 = [v60 allKeys];
-          v28 = [v27 containsObject:v26];
+          allKeys2 = [dictionary allKeys];
+          v28 = [allKeys2 containsObject:v26];
 
           if ((v28 & 1) == 0)
           {
@@ -557,8 +557,8 @@ void __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invo
             v64 = 0u;
             v65 = 0u;
             v57 = v29;
-            v30 = [v29 allApps];
-            v31 = [v30 countByEnumeratingWithState:&v62 objects:v81 count:16];
+            allApps = [v29 allApps];
+            v31 = [allApps countByEnumeratingWithState:&v62 objects:v81 count:16];
             if (v31)
             {
               v32 = v31;
@@ -569,7 +569,7 @@ LABEL_29:
               {
                 if (*v63 != v33)
                 {
-                  objc_enumerationMutation(v30);
+                  objc_enumerationMutation(allApps);
                 }
 
                 v35 = *(*(&v62 + 1) + 8 * v34);
@@ -577,8 +577,8 @@ LABEL_29:
                 if (objc_opt_isKindOfClass())
                 {
                   v36 = v35;
-                  v37 = [v36 complicationClientIdentifier];
-                  v38 = [v37 isEqualToString:v26];
+                  complicationClientIdentifier = [v36 complicationClientIdentifier];
+                  v38 = [complicationClientIdentifier isEqualToString:v26];
 
                   if (v38)
                   {
@@ -592,13 +592,13 @@ LABEL_29:
                     }
 
                     v40 = MEMORY[0x277CBB718];
-                    v41 = [v36 supportedFamilies];
-                    v42 = [v40 legacyComplicationDescriptorWithSupportedFamilies:v41];
+                    supportedFamilies = [v36 supportedFamilies];
+                    v42 = [v40 legacyComplicationDescriptorWithSupportedFamilies:supportedFamilies];
 
                     v43 = [[NTKCompanionSyncedComplication alloc] initWithRemoteApplication:v59 descriptor:v42];
                     v80 = v43;
                     v44 = [MEMORY[0x277CBEA60] arrayWithObjects:&v80 count:1];
-                    [v60 setObject:v44 forKeyedSubscript:v26];
+                    [dictionary setObject:v44 forKeyedSubscript:v26];
 
                     goto LABEL_42;
                   }
@@ -606,13 +606,13 @@ LABEL_29:
 
                 if (v32 == ++v34)
                 {
-                  v32 = [v30 countByEnumeratingWithState:&v62 objects:v81 count:16];
+                  v32 = [allApps countByEnumeratingWithState:&v62 objects:v81 count:16];
                   if (v32)
                   {
                     goto LABEL_29;
                   }
 
-                  v36 = v30;
+                  v36 = allApps;
                   v24 = v49;
                   v23 = v50;
                   goto LABEL_41;
@@ -620,7 +620,7 @@ LABEL_29:
               }
             }
 
-            v36 = v30;
+            v36 = allApps;
 LABEL_41:
             v39 = v59;
 LABEL_42:
@@ -632,35 +632,35 @@ LABEL_43:
         }
 
         while (v25 != v23);
-        v23 = [v55 countByEnumeratingWithState:&v66 objects:v82 count:16];
+        v23 = [allKeys countByEnumeratingWithState:&v66 objects:v82 count:16];
       }
 
       while (v23);
     }
 
     v4 = v51;
-    v3 = v52;
+    _safeInstalledComplications = v52;
   }
 
   v45 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v79 = v60;
+    v79 = dictionary;
     _os_log_impl(&dword_22D9C5000, v45, OS_LOG_TYPE_DEFAULT, "Complications did change: %@", buf, 0xCu);
   }
 
-  os_unfair_lock_lock(&v48->_syncedComplicationsLock);
-  v46 = [v60 copy];
-  syncedComplications = v48->_syncedComplications;
-  v48->_syncedComplications = v46;
+  os_unfair_lock_lock(&selfCopy->_syncedComplicationsLock);
+  v46 = [dictionary copy];
+  syncedComplications = selfCopy->_syncedComplications;
+  selfCopy->_syncedComplications = v46;
 
-  os_unfair_lock_unlock(&v48->_syncedComplicationsLock);
+  os_unfair_lock_unlock(&selfCopy->_syncedComplicationsLock);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__NTKCompanionRemoteComplicationManager__queue_reloadApps__block_invoke;
   block[3] = &unk_27877DB10;
-  block[4] = v48;
+  block[4] = selfCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
@@ -699,17 +699,17 @@ void __58__NTKCompanionRemoteComplicationManager__queue_reloadApps__block_invoke
   return v3;
 }
 
-- (void)enumerateEnabledVendorsForComplicationFamily:(int64_t)a3 withBlock:(id)a4
+- (void)enumerateEnabledVendorsForComplicationFamily:(int64_t)family withBlock:(id)block
 {
-  v6 = a4;
-  v7 = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
+  blockCopy = block;
+  _safeComplications = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __96__NTKCompanionRemoteComplicationManager_enumerateEnabledVendorsForComplicationFamily_withBlock___block_invoke;
   aBlock[3] = &unk_27877F730;
-  v14 = v6;
-  v15 = a3;
-  v8 = v6;
+  v14 = blockCopy;
+  familyCopy = family;
+  v8 = blockCopy;
   v9 = _Block_copy(aBlock);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -717,7 +717,7 @@ void __58__NTKCompanionRemoteComplicationManager__queue_reloadApps__block_invoke
   v11[3] = &unk_27877F758;
   v12 = v9;
   v10 = v9;
-  [v7 enumerateKeysAndObjectsUsingBlock:v11];
+  [_safeComplications enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 uint64_t __96__NTKCompanionRemoteComplicationManager_enumerateEnabledVendorsForComplicationFamily_withBlock___block_invoke(uint64_t a1, void *a2)
@@ -793,25 +793,25 @@ LABEL_3:
   }
 }
 
-- (id)itemIdForVendorWithClientIdentifier:(id)a3
+- (id)itemIdForVendorWithClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NTKCompanionRemoteComplicationManager *)self _safeInstalledComplications];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  _safeInstalledComplications = [(NTKCompanionRemoteComplicationManager *)self _safeInstalledComplications];
+  v6 = [_safeInstalledComplications objectForKeyedSubscript:identifierCopy];
 
-  v7 = [v6 storeMetadata];
-  v8 = [v7 itemID];
+  storeMetadata = [v6 storeMetadata];
+  itemID = [storeMetadata itemID];
 
-  return v8;
+  return itemID;
 }
 
-- (void)enumerateComplicationDescriptorsForClientIdentifier:(id)a3 withBlock:(id)a4
+- (void)enumerateComplicationDescriptorsForClientIdentifier:(id)identifier withBlock:(id)block
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  blockCopy = block;
+  _safeComplications = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
+  v9 = [_safeComplications objectForKeyedSubscript:identifierCopy];
 
   v20 = 0u;
   v21 = 0u;
@@ -834,8 +834,8 @@ LABEL_3:
 
       v15 = *(*(&v18 + 1) + 8 * v14);
       v17 = 0;
-      v16 = [v15 descriptor];
-      v7[2](v7, v16, &v17);
+      descriptor = [v15 descriptor];
+      blockCopy[2](blockCopy, descriptor, &v17);
 
       if (v17)
       {
@@ -856,14 +856,14 @@ LABEL_3:
   }
 }
 
-- (void)enumerateComplicationDescriptorsForClientIdentifier:(id)a3 family:(int64_t)a4 withBlock:(id)a5
+- (void)enumerateComplicationDescriptorsForClientIdentifier:(id)identifier family:(int64_t)family withBlock:(id)block
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
-  v22 = v8;
-  v11 = [v10 objectForKeyedSubscript:v8];
+  identifierCopy = identifier;
+  blockCopy = block;
+  _safeComplications = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
+  v22 = identifierCopy;
+  v11 = [_safeComplications objectForKeyedSubscript:identifierCopy];
 
   v26 = 0u;
   v27 = 0u;
@@ -885,15 +885,15 @@ LABEL_3:
         }
 
         v16 = *(*(&v24 + 1) + 8 * i);
-        v17 = [v16 descriptor];
-        v18 = [v17 supportedFamilies];
-        v19 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
-        v20 = [v18 containsObject:v19];
+        descriptor = [v16 descriptor];
+        supportedFamilies = [descriptor supportedFamilies];
+        v19 = [MEMORY[0x277CCABB0] numberWithInteger:family];
+        v20 = [supportedFamilies containsObject:v19];
 
         if (v20)
         {
-          v21 = [v16 descriptor];
-          v9[2](v9, v21);
+          descriptor2 = [v16 descriptor];
+          blockCopy[2](blockCopy, descriptor2);
         }
       }
 
@@ -904,52 +904,52 @@ LABEL_3:
   }
 }
 
-- (BOOL)vendorExistsWithClientIdentifier:(id)a3 appBundleIdentifier:(id)a4
+- (BOOL)vendorExistsWithClientIdentifier:(id)identifier appBundleIdentifier:(id)bundleIdentifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  bundleIdentifierCopy = bundleIdentifier;
+  identifierCopy = identifier;
+  _safeComplications = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
+  v9 = [_safeComplications objectForKeyedSubscript:identifierCopy];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  v11 = [v10 appBundleIdentifier];
-  v12 = [v11 isEqualToString:v6];
+  appBundleIdentifier = [firstObject appBundleIdentifier];
+  v12 = [appBundleIdentifier isEqualToString:bundleIdentifierCopy];
 
   return v12;
 }
 
-- (BOOL)isComplicationAvailable:(id)a3 forFamilies:(id)a4
+- (BOOL)isComplicationAvailable:(id)available forFamilies:(id)families
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  availableCopy = available;
+  familiesCopy = families;
   v8 = CLKLoggingObjectForDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    *&buf[4] = v6;
+    *&buf[4] = availableCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = familiesCopy;
     _os_log_impl(&dword_22D9C5000, v8, OS_LOG_TYPE_DEFAULT, "Checking if complication is available %@ for families %@", buf, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CBEB98] setWithArray:v7];
+  v9 = [MEMORY[0x277CBEB98] setWithArray:familiesCopy];
   *buf = 0;
   *&buf[8] = buf;
   *&buf[16] = 0x2020000000;
   v20 = 0;
-  v10 = [v6 clientIdentifier];
+  clientIdentifier = [availableCopy clientIdentifier];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __77__NTKCompanionRemoteComplicationManager_isComplicationAvailable_forFamilies___block_invoke;
   v15[3] = &unk_27877F7A8;
-  v11 = v6;
+  v11 = availableCopy;
   v16 = v11;
   v12 = v9;
   v17 = v12;
   v18 = buf;
-  [(NTKCompanionRemoteComplicationManager *)self enumerateComplicationDescriptorsForClientIdentifier:v10 withBlock:v15];
+  [(NTKCompanionRemoteComplicationManager *)self enumerateComplicationDescriptorsForClientIdentifier:clientIdentifier withBlock:v15];
 
   v13 = *(*&buf[8] + 24);
   _Block_object_dispose(buf, 8);
@@ -1000,25 +1000,25 @@ uint64_t __77__NTKCompanionRemoteComplicationManager_isComplicationAvailable_for
   return result;
 }
 
-- (id)localizedAppNameForClientIdentifier:(id)a3
+- (id)localizedAppNameForClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 firstObject];
+  identifierCopy = identifier;
+  _safeComplications = [(NTKCompanionRemoteComplicationManager *)self _safeComplications];
+  v6 = [_safeComplications objectForKeyedSubscript:identifierCopy];
+  firstObject = [v6 firstObject];
 
-  if (!v7)
+  if (!firstObject)
   {
-    v8 = [(NTKCompanionRemoteComplicationManager *)self _safeInstalledComplications];
-    v9 = [v8 objectForKeyedSubscript:v4];
+    _safeInstalledComplications = [(NTKCompanionRemoteComplicationManager *)self _safeInstalledComplications];
+    v9 = [_safeInstalledComplications objectForKeyedSubscript:identifierCopy];
     v10 = [NTKCompanionSyncedComplication alloc];
-    v11 = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
-    v7 = [(NTKCompanionSyncedComplication *)v10 initWithRemoteApplication:v9 descriptor:v11];
+    legacyComplicationDescriptor = [MEMORY[0x277CBB718] legacyComplicationDescriptor];
+    firstObject = [(NTKCompanionSyncedComplication *)v10 initWithRemoteApplication:v9 descriptor:legacyComplicationDescriptor];
   }
 
-  v12 = [(NTKCompanionSyncedComplication *)v7 localizedName];
+  localizedName = [(NTKCompanionSyncedComplication *)firstObject localizedName];
 
-  return v12;
+  return localizedName;
 }
 
 void __60__NTKCompanionRemoteComplicationManager__queryInstalledApps__block_invoke_2_17_cold_1(uint64_t a1)

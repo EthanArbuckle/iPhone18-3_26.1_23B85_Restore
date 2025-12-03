@@ -1,72 +1,72 @@
 @interface REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount
-- (BOOL)isEqual:(id)a3;
-- (REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount)initWithCoder:(id)a3;
-- (REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount)initWithParentAccountObjectID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount)initWithCoder:(id)coder;
+- (REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount)initWithParentAccountObjectID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount
 
-- (REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount)initWithParentAccountObjectID:(id)a3
+- (REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount)initWithParentAccountObjectID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount;
   v6 = [(REMStoreInvocationValueStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_accountObjectID, a3);
+    objc_storeStrong(&v6->_accountObjectID, d);
   }
 
   return v7;
 }
 
-- (REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount)initWithCoder:(id)a3
+- (REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountObjectID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountObjectID"];
 
   if (v5)
   {
     self = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)self initWithParentAccountObjectID:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)self accountObjectID];
-  [v4 encodeObject:v5 forKey:@"accountObjectID"];
+  coderCopy = coder;
+  accountObjectID = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)self accountObjectID];
+  [coderCopy encodeObject:accountObjectID forKey:@"accountObjectID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)self accountObjectID];
-    v6 = [v4 accountObjectID];
-    if (v5 == v6)
+    accountObjectID = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)self accountObjectID];
+    accountObjectID2 = [equalCopy accountObjectID];
+    if (accountObjectID == accountObjectID2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)self accountObjectID];
-      v8 = [v4 accountObjectID];
-      v9 = [v7 isEqual:v8];
+      accountObjectID3 = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)self accountObjectID];
+      accountObjectID4 = [equalCopy accountObjectID];
+      v9 = [accountObjectID3 isEqual:accountObjectID4];
     }
   }
 
@@ -80,8 +80,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)self accountObjectID];
-  v3 = [v2 hash];
+  accountObjectID = [(REMSmartListsDataViewInvocation_fetchCustomSmartListsInAccount *)self accountObjectID];
+  v3 = [accountObjectID hash];
 
   return v3;
 }

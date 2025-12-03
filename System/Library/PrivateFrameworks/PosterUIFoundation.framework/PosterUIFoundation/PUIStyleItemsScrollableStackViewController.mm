@@ -1,18 +1,18 @@
 @interface PUIStyleItemsScrollableStackViewController
-- (void)layoutWithItemViews:(id)a3;
-- (void)scrollToSelectedItemAnimated:(BOOL)a3;
+- (void)layoutWithItemViews:(id)views;
+- (void)scrollToSelectedItemAnimated:(BOOL)animated;
 - (void)updateInteritemSpacingIfNeeded;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PUIStyleItemsScrollableStackViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUIStyleItemsScrollableStackViewController;
-  [(PUIStyleItemsScrollableStackViewController *)&v4 viewWillAppear:a3];
+  [(PUIStyleItemsScrollableStackViewController *)&v4 viewWillAppear:appear];
   [(PUIStyleItemsScrollableStackViewController *)self setNeedsScrollToSelectedItem:1];
 }
 
@@ -24,20 +24,20 @@
   [(PUIStyleItemsScrollableStackViewController *)self updateInteritemSpacingIfNeeded];
   if ([(PUIStyleItemsScrollableStackViewController *)self needsScrollToSelectedItem])
   {
-    v3 = [(PUIStyleItemsScrollableStackViewController *)self stackView];
-    [v3 layoutIfNeeded];
+    stackView = [(PUIStyleItemsScrollableStackViewController *)self stackView];
+    [stackView layoutIfNeeded];
 
     [(PUIStyleItemsScrollableStackViewController *)self scrollToSelectedItemAnimated:0];
     [(PUIStyleItemsScrollableStackViewController *)self setNeedsScrollToSelectedItem:0];
   }
 }
 
-- (void)layoutWithItemViews:(id)a3
+- (void)layoutWithItemViews:(id)views
 {
   v46[9] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DCF90];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithArrangedSubviews:v5];
+  viewsCopy = views;
+  v6 = [[v4 alloc] initWithArrangedSubviews:viewsCopy];
 
   [(UIStackView *)v6 setAxis:0];
   [(UIStackView *)v6 setAlignment:1];
@@ -59,49 +59,49 @@
   self->_scrollView = v10;
   v12 = v10;
 
-  v13 = [(PUIStyleItemsScrollableStackViewController *)self view];
-  [v13 addSubview:v12];
+  view = [(PUIStyleItemsScrollableStackViewController *)self view];
+  [view addSubview:v12];
 
-  v45 = [(UIStackView *)v8 leadingAnchor];
-  v44 = [(UIScrollView *)v12 leadingAnchor];
-  v43 = [v45 constraintEqualToAnchor:v44];
+  leadingAnchor = [(UIStackView *)v8 leadingAnchor];
+  leadingAnchor2 = [(UIScrollView *)v12 leadingAnchor];
+  v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[0] = v43;
-  v41 = [(UIStackView *)v8 trailingAnchor];
-  v40 = [(UIScrollView *)v12 trailingAnchor];
-  v39 = [v41 constraintEqualToAnchor:v40];
+  trailingAnchor = [(UIStackView *)v8 trailingAnchor];
+  trailingAnchor2 = [(UIScrollView *)v12 trailingAnchor];
+  v39 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[1] = v39;
   v42 = v8;
-  v38 = [(UIStackView *)v8 topAnchor];
-  v37 = [(UIScrollView *)v12 topAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37];
+  topAnchor = [(UIStackView *)v8 topAnchor];
+  topAnchor2 = [(UIScrollView *)v12 topAnchor];
+  v36 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[2] = v36;
-  v35 = [(UIStackView *)v8 bottomAnchor];
-  v34 = [(UIScrollView *)v12 bottomAnchor];
-  v33 = [v35 constraintEqualToAnchor:v34];
+  bottomAnchor = [(UIStackView *)v8 bottomAnchor];
+  bottomAnchor2 = [(UIScrollView *)v12 bottomAnchor];
+  v33 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v46[3] = v33;
-  v32 = [(UIScrollView *)v12 heightAnchor];
+  heightAnchor = [(UIScrollView *)v12 heightAnchor];
   [(PUIStyleItemsScrollableStackViewController *)self estimatedHeight];
-  v31 = [v32 constraintEqualToConstant:?];
+  v31 = [heightAnchor constraintEqualToConstant:?];
   v46[4] = v31;
-  v29 = [(UIScrollView *)v12 leadingAnchor];
-  v30 = [(PUIStyleItemsScrollableStackViewController *)self view];
-  v28 = [v30 leadingAnchor];
-  v27 = [v29 constraintEqualToAnchor:v28];
+  leadingAnchor3 = [(UIScrollView *)v12 leadingAnchor];
+  view2 = [(PUIStyleItemsScrollableStackViewController *)self view];
+  leadingAnchor4 = [view2 leadingAnchor];
+  v27 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v46[5] = v27;
-  v24 = [(UIScrollView *)v12 trailingAnchor];
-  v25 = [(PUIStyleItemsScrollableStackViewController *)self view];
-  v23 = [v25 trailingAnchor];
-  v14 = [v24 constraintEqualToAnchor:v23];
+  trailingAnchor3 = [(UIScrollView *)v12 trailingAnchor];
+  view3 = [(PUIStyleItemsScrollableStackViewController *)self view];
+  trailingAnchor4 = [view3 trailingAnchor];
+  v14 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v46[6] = v14;
-  v15 = [(UIScrollView *)v12 bottomAnchor];
-  v16 = [(PUIStyleItemsScrollableStackViewController *)self view];
-  v17 = [v16 bottomAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17];
+  bottomAnchor3 = [(UIScrollView *)v12 bottomAnchor];
+  view4 = [(PUIStyleItemsScrollableStackViewController *)self view];
+  bottomAnchor4 = [view4 bottomAnchor];
+  v18 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v46[7] = v18;
-  v19 = [(UIScrollView *)v12 topAnchor];
-  v20 = [(PUIStyleItemsScrollableStackViewController *)self view];
-  v21 = [v20 topAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  topAnchor3 = [(UIScrollView *)v12 topAnchor];
+  view5 = [(PUIStyleItemsScrollableStackViewController *)self view];
+  topAnchor4 = [view5 topAnchor];
+  v22 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v46[8] = v22;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v46 count:9];
 
@@ -110,8 +110,8 @@
 
 - (void)updateInteritemSpacingIfNeeded
 {
-  v3 = [(PUIStyleItemsScrollableStackViewController *)self view];
-  [v3 bounds];
+  view = [(PUIStyleItemsScrollableStackViewController *)self view];
+  [view bounds];
   v5 = v4;
 
   v6 = (v5 + -326.0) / 5.0;
@@ -125,30 +125,30 @@
   }
 }
 
-- (void)scrollToSelectedItemAnimated:(BOOL)a3
+- (void)scrollToSelectedItemAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5 = MEMORY[0x1E695EFF8];
-  v24 = [(PUIStyleItemsViewController *)self selectedStyleItemView];
-  v6 = [(PUIStyleItemsScrollableStackViewController *)self scrollView];
-  [v6 bounds];
+  selectedStyleItemView = [(PUIStyleItemsViewController *)self selectedStyleItemView];
+  scrollView = [(PUIStyleItemsScrollableStackViewController *)self scrollView];
+  [scrollView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(PUIStyleItemsViewController *)self selectedStyleCoordinator];
-  v16 = [(PUIStyleItemsViewController *)self uiKitColorPickerStyleCoordinator];
-  v17 = v16;
-  if (v16 && v15 == v16)
+  selectedStyleCoordinator = [(PUIStyleItemsViewController *)self selectedStyleCoordinator];
+  uiKitColorPickerStyleCoordinator = [(PUIStyleItemsViewController *)self uiKitColorPickerStyleCoordinator];
+  v17 = uiKitColorPickerStyleCoordinator;
+  if (uiKitColorPickerStyleCoordinator && selectedStyleCoordinator == uiKitColorPickerStyleCoordinator)
   {
-    v18 = [(PUIStyleItemsViewController *)self colorWellView];
+    colorWellView = [(PUIStyleItemsViewController *)self colorWellView];
 
-    v19 = v18;
+    v19 = colorWellView;
   }
 
   else
   {
-    v19 = v24;
+    v19 = selectedStyleItemView;
   }
 
   v20 = *(v5 + 8);
@@ -171,7 +171,7 @@
     v23 = -31.0;
   }
 
-  [v6 setContentOffset:v3 animated:{v23, v20}];
+  [scrollView setContentOffset:animatedCopy animated:{v23, v20}];
 }
 
 @end

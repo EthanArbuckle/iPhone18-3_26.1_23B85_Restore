@@ -1,16 +1,16 @@
 @interface CSDCallFilterController
-- (BOOL)containsOutgoingRestrictedHandle:(id)a3 forBundleIdentifier:(id)a4 performSynchronously:(BOOL)a5;
-- (BOOL)containsRecentsRestrictedHandle:(id)a3;
-- (BOOL)containsRestrictedHandle:(id)a3;
-- (BOOL)isUnknownAddress:(id)a3 normalizedAddress:(id)a4 forBundleIdentifier:(id)a5;
-- (BOOL)isUnknownCaller:(id)a3;
-- (BOOL)shouldFilterIncomingCall:(id)a3 from:(id)a4;
-- (BOOL)shouldRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4 performSynchronously:(BOOL)a5;
-- (BOOL)willRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4;
+- (BOOL)containsOutgoingRestrictedHandle:(id)handle forBundleIdentifier:(id)identifier performSynchronously:(BOOL)synchronously;
+- (BOOL)containsRecentsRestrictedHandle:(id)handle;
+- (BOOL)containsRestrictedHandle:(id)handle;
+- (BOOL)isUnknownAddress:(id)address normalizedAddress:(id)normalizedAddress forBundleIdentifier:(id)identifier;
+- (BOOL)isUnknownCaller:(id)caller;
+- (BOOL)shouldFilterIncomingCall:(id)call from:(id)from;
+- (BOOL)shouldRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier performSynchronously:(BOOL)synchronously;
+- (BOOL)willRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier;
 - (CSDCallFilterController)init;
-- (int64_t)filterStatusForAddresses:(id)a3 withBundleIdentifier:(id)a4;
-- (void)addCallFilter:(id)a3;
-- (void)removeCallFilter:(id)a3;
+- (int64_t)filterStatusForAddresses:(id)addresses withBundleIdentifier:(id)identifier;
+- (void)addCallFilter:(id)filter;
+- (void)removeCallFilter:(id)filter;
 @end
 
 @implementation CSDCallFilterController
@@ -32,92 +32,92 @@
   return v3;
 }
 
-- (void)addCallFilter:(id)a3
+- (void)addCallFilter:(id)filter
 {
-  v5 = a3;
+  filterCopy = filter;
   os_unfair_lock_lock(&self->_accessorLock);
-  v4 = [(CSDCallFilterController *)self filters];
-  [v4 addObject:v5];
+  filters = [(CSDCallFilterController *)self filters];
+  [filters addObject:filterCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)removeCallFilter:(id)a3
+- (void)removeCallFilter:(id)filter
 {
-  v5 = a3;
+  filterCopy = filter;
   os_unfair_lock_lock(&self->_accessorLock);
-  v4 = [(CSDCallFilterController *)self filters];
-  [v4 removeObject:v5];
+  filters = [(CSDCallFilterController *)self filters];
+  [filters removeObject:filterCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (BOOL)containsOutgoingRestrictedHandle:(id)a3 forBundleIdentifier:(id)a4 performSynchronously:(BOOL)a5
+- (BOOL)containsOutgoingRestrictedHandle:(id)handle forBundleIdentifier:(id)identifier performSynchronously:(BOOL)synchronously
 {
-  v8 = a3;
-  v9 = a4;
+  handleCopy = handle;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v10 = [(CSDCallFilterController *)self filters];
+  filters = [(CSDCallFilterController *)self filters];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10023DEDC;
   v15[3] = &unk_10061F618;
-  v11 = v8;
+  v11 = handleCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v17 = v12;
-  v18 = a5;
-  v13 = [v10 tu_containsObjectPassingTest:v15];
+  synchronouslyCopy = synchronously;
+  v13 = [filters tu_containsObjectPassingTest:v15];
 
   os_unfair_lock_unlock(&self->_accessorLock);
   return v13;
 }
 
-- (BOOL)containsRecentsRestrictedHandle:(id)a3
+- (BOOL)containsRecentsRestrictedHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CSDCallFilterController *)self filters];
+  filters = [(CSDCallFilterController *)self filters];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10023DFCC;
   v9[3] = &unk_10061F640;
-  v6 = v4;
+  v6 = handleCopy;
   v10 = v6;
-  v7 = [v5 tu_containsObjectPassingTest:v9];
+  v7 = [filters tu_containsObjectPassingTest:v9];
 
   os_unfair_lock_unlock(&self->_accessorLock);
   return v7;
 }
 
-- (BOOL)containsRestrictedHandle:(id)a3
+- (BOOL)containsRestrictedHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CSDCallFilterController *)self filters];
+  filters = [(CSDCallFilterController *)self filters];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10023E0B8;
   v9[3] = &unk_10061F640;
-  v6 = v4;
+  v6 = handleCopy;
   v10 = v6;
-  v7 = [v5 tu_containsObjectPassingTest:v9];
+  v7 = [filters tu_containsObjectPassingTest:v9];
 
   os_unfair_lock_unlock(&self->_accessorLock);
   return v7;
 }
 
-- (int64_t)filterStatusForAddresses:(id)a3 withBundleIdentifier:(id)a4
+- (int64_t)filterStatusForAddresses:(id)addresses withBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  addressesCopy = addresses;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [(CSDCallFilterController *)self filters];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  filters = [(CSDCallFilterController *)self filters];
+  v9 = [filters countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = *v15;
@@ -127,10 +127,10 @@ LABEL_3:
     {
       if (*v15 != v10)
       {
-        objc_enumerationMutation(v8);
+        objc_enumerationMutation(filters);
       }
 
-      v12 = [*(*(&v14 + 1) + 8 * v11) filterStatusForAddresses:v6 withBundleIdentifier:v7];
+      v12 = [*(*(&v14 + 1) + 8 * v11) filterStatusForAddresses:addressesCopy withBundleIdentifier:identifierCopy];
       if (v12)
       {
         break;
@@ -138,7 +138,7 @@ LABEL_3:
 
       if (v9 == ++v11)
       {
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [filters countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           goto LABEL_3;
@@ -159,69 +159,69 @@ LABEL_9:
   return v12;
 }
 
-- (BOOL)isUnknownAddress:(id)a3 normalizedAddress:(id)a4 forBundleIdentifier:(id)a5
+- (BOOL)isUnknownAddress:(id)address normalizedAddress:(id)normalizedAddress forBundleIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  normalizedAddressCopy = normalizedAddress;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v11 = [(CSDCallFilterController *)self filters];
+  filters = [(CSDCallFilterController *)self filters];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10023E360;
   v16[3] = &unk_10061F668;
-  v12 = v8;
+  v12 = addressCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = normalizedAddressCopy;
   v18 = v13;
-  v14 = v10;
+  v14 = identifierCopy;
   v19 = v14;
-  LOBYTE(v10) = [v11 tu_containsObjectPassingTest:v16];
+  LOBYTE(identifierCopy) = [filters tu_containsObjectPassingTest:v16];
 
   os_unfair_lock_unlock(&self->_accessorLock);
-  return v10;
+  return identifierCopy;
 }
 
-- (BOOL)isUnknownCaller:(id)a3
+- (BOOL)isUnknownCaller:(id)caller
 {
-  v4 = a3;
+  callerCopy = caller;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(CSDCallFilterController *)self filters];
+  filters = [(CSDCallFilterController *)self filters];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10023E450;
   v9[3] = &unk_10061F640;
-  v6 = v4;
+  v6 = callerCopy;
   v10 = v6;
-  v7 = [v5 tu_containsObjectPassingTest:v9];
+  v7 = [filters tu_containsObjectPassingTest:v9];
 
   os_unfair_lock_unlock(&self->_accessorLock);
   return v7;
 }
 
-- (BOOL)shouldFilterIncomingCall:(id)a3 from:(id)a4
+- (BOOL)shouldFilterIncomingCall:(id)call from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  fromCopy = from;
   os_unfair_lock_lock(&self->_accessorLock);
-  v8 = [(CSDCallFilterController *)self filters];
+  filters = [(CSDCallFilterController *)self filters];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10023E640;
   v23[3] = &unk_10061F690;
-  v9 = v6;
+  v9 = callCopy;
   v24 = v9;
-  v10 = v7;
+  v10 = fromCopy;
   v25 = v10;
-  v11 = [v8 tu_containsObjectPassingTest:v23];
+  v11 = [filters tu_containsObjectPassingTest:v23];
 
   if (v11)
   {
     goto LABEL_2;
   }
 
-  v13 = [(CSDCallFilterController *)self filters];
-  if (![v13 tu_containsObjectPassingTest:&stru_10061F6D0])
+  filters2 = [(CSDCallFilterController *)self filters];
+  if (![filters2 tu_containsObjectPassingTest:&stru_10061F6D0])
   {
 
 LABEL_9:
@@ -229,14 +229,14 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v14 = [(CSDCallFilterController *)self filters];
+  filters3 = [(CSDCallFilterController *)self filters];
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_10023E7A0;
   v20 = &unk_10061F690;
   v21 = v9;
   v22 = v10;
-  v15 = [v14 tu_containsObjectPassingTest:&v17];
+  v15 = [filters3 tu_containsObjectPassingTest:&v17];
 
   if (v15)
   {
@@ -256,42 +256,42 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)shouldRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4 performSynchronously:(BOOL)a5
+- (BOOL)shouldRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier performSynchronously:(BOOL)synchronously
 {
-  v8 = a3;
-  v9 = a4;
+  addressesCopy = addresses;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v10 = [(CSDCallFilterController *)self filters];
+  filters = [(CSDCallFilterController *)self filters];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10023E9C8;
   v15[3] = &unk_10061F618;
-  v11 = v8;
+  v11 = addressesCopy;
   v16 = v11;
-  v12 = v9;
+  v12 = identifierCopy;
   v17 = v12;
-  v18 = a5;
-  v13 = [v10 tu_containsObjectPassingTest:v15];
+  synchronouslyCopy = synchronously;
+  v13 = [filters tu_containsObjectPassingTest:v15];
 
   os_unfair_lock_unlock(&self->_accessorLock);
   return v13;
 }
 
-- (BOOL)willRestrictAddresses:(id)a3 forBundleIdentifier:(id)a4
+- (BOOL)willRestrictAddresses:(id)addresses forBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  addressesCopy = addresses;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_accessorLock);
-  v8 = [(CSDCallFilterController *)self filters];
+  filters = [(CSDCallFilterController *)self filters];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10023EAE4;
   v13[3] = &unk_10061F690;
-  v9 = v6;
+  v9 = addressesCopy;
   v14 = v9;
-  v10 = v7;
+  v10 = identifierCopy;
   v15 = v10;
-  v11 = [v8 tu_containsObjectPassingTest:v13];
+  v11 = [filters tu_containsObjectPassingTest:v13];
 
   os_unfair_lock_unlock(&self->_accessorLock);
   return v11;

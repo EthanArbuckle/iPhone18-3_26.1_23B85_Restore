@@ -1,13 +1,13 @@
 @interface PerfRunConfig
 - (_TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig)init;
-- (_TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig)initWithExperimentIterations:(int64_t)a3 loadCount:(int64_t)a4 predictionCount:(int64_t)a5 maxPredictionTime:(int64_t)a6 maxIterationTime:(int64_t)a7 functionName:(id)a8;
+- (_TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig)initWithExperimentIterations:(int64_t)iterations loadCount:(int64_t)count predictionCount:(int64_t)predictionCount maxPredictionTime:(int64_t)time maxIterationTime:(int64_t)iterationTime functionName:(id)name;
 @end
 
 @implementation PerfRunConfig
 
-- (_TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig)initWithExperimentIterations:(int64_t)a3 loadCount:(int64_t)a4 predictionCount:(int64_t)a5 maxPredictionTime:(int64_t)a6 maxIterationTime:(int64_t)a7 functionName:(id)a8
+- (_TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig)initWithExperimentIterations:(int64_t)iterations loadCount:(int64_t)count predictionCount:(int64_t)predictionCount maxPredictionTime:(int64_t)time maxIterationTime:(int64_t)iterationTime functionName:(id)name
 {
-  if (a8)
+  if (name)
   {
     v14 = sub_100026CC0();
   }
@@ -18,11 +18,11 @@
     v15 = 0;
   }
 
-  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_experimentIterations) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_loadCount) = a4;
-  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_predictionCount) = a5;
-  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_maxPredictionTime) = a6;
-  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_maxIterationTime) = a7;
+  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_experimentIterations) = iterations;
+  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_loadCount) = count;
+  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_predictionCount) = predictionCount;
+  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_maxPredictionTime) = time;
+  *(&self->super.isa + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_maxIterationTime) = iterationTime;
   v16 = (self + OBJC_IVAR____TtC35com_apple_dt_DTMLModelRunnerService13PerfRunConfig_functionName);
   *v16 = v14;
   v16[1] = v15;

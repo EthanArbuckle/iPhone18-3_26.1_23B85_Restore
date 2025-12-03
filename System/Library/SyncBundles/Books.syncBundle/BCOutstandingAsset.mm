@@ -1,14 +1,14 @@
 @interface BCOutstandingAsset
 - (NSDictionary)assetDictionaryAsDictionary;
-- (void)setAssetDictionaryAsDictionary:(id)a3;
+- (void)setAssetDictionaryAsDictionary:(id)dictionary;
 @end
 
 @implementation BCOutstandingAsset
 
-- (void)setAssetDictionaryAsDictionary:(id)a3
+- (void)setAssetDictionaryAsDictionary:(id)dictionary
 {
   v8 = 0;
-  v5 = [NSPropertyListSerialization dataWithPropertyList:a3 format:100 options:0 error:&v8];
+  v5 = [NSPropertyListSerialization dataWithPropertyList:dictionary format:100 options:0 error:&v8];
   if (v5)
   {
     v6 = 1;
@@ -24,7 +24,7 @@
     v7 = BCDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_1361C(a3, v7);
+      sub_1361C(dictionary, v7);
     }
   }
 

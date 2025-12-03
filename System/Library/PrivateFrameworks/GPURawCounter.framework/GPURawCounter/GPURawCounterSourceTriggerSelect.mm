@@ -1,20 +1,20 @@
 @interface GPURawCounterSourceTriggerSelect
-+ (id)selectWithName:(id)a3 options:(id)a4;
-- (GPURawCounterSourceTriggerSelect)initWithName:(id)a3 options:(id)a4;
++ (id)selectWithName:(id)name options:(id)options;
+- (GPURawCounterSourceTriggerSelect)initWithName:(id)name options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation GPURawCounterSourceTriggerSelect
 
-- (GPURawCounterSourceTriggerSelect)initWithName:(id)a3 options:(id)a4
+- (GPURawCounterSourceTriggerSelect)initWithName:(id)name options:(id)options
 {
   v8.receiver = self;
   v8.super_class = GPURawCounterSourceTriggerSelect;
   v6 = [(GPURawCounterSourceTriggerSelect *)&v8 init];
   if (v6)
   {
-    v6->_name = [a3 copy];
-    v6->_options = [a4 copy];
+    v6->_name = [name copy];
+    v6->_options = [options copy];
   }
 
   return v6;
@@ -27,9 +27,9 @@
   [(GPURawCounterSourceTriggerSelect *)&v3 dealloc];
 }
 
-+ (id)selectWithName:(id)a3 options:(id)a4
++ (id)selectWithName:(id)name options:(id)options
 {
-  v4 = [[GPURawCounterSourceTriggerSelect alloc] initWithName:a3 options:a4];
+  v4 = [[GPURawCounterSourceTriggerSelect alloc] initWithName:name options:options];
 
   return v4;
 }

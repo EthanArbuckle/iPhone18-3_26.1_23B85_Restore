@@ -1,12 +1,12 @@
 @interface JavaNioCharsetCharsetDecoder
-- (id)flushWithJavaNioCharBuffer:(id)a3;
-- (id)replaceWithWithNSString:(id)a3;
+- (id)flushWithJavaNioCharBuffer:(id)buffer;
+- (id)replaceWithWithNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation JavaNioCharsetCharsetDecoder
 
-- (id)flushWithJavaNioCharBuffer:(id)a3
+- (id)flushWithJavaNioCharBuffer:(id)buffer
 {
   if ((atomic_load_explicit(JavaNioCharsetCoderResult__initialized, memory_order_acquire) & 1) == 0)
   {
@@ -16,15 +16,15 @@
   return JavaNioCharsetCoderResult_UNDERFLOW__;
 }
 
-- (id)replaceWithWithNSString:(id)a3
+- (id)replaceWithWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     v6 = @"replacement == null";
     goto LABEL_6;
   }
 
-  if ([a3 isEmpty])
+  if ([string isEmpty])
   {
     v6 = @"replacement.isEmpty()";
 LABEL_6:
@@ -32,7 +32,7 @@ LABEL_6:
     objc_exception_throw(v7);
   }
 
-  JreStrongAssign(&self->replacementChars_, a3);
+  JreStrongAssign(&self->replacementChars_, string);
   return self;
 }
 

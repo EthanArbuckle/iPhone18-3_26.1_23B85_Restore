@@ -1,23 +1,23 @@
 @interface _PNPPencilMovieView
-- (_PNPPencilMovieView)initWithDeviceType:(int64_t)a3;
+- (_PNPPencilMovieView)initWithDeviceType:(int64_t)type;
 - (id)assetName;
 - (void)_applyFilterToLayer;
 - (void)_playbackEnded;
-- (void)completeRevolutionWithCompletionBlock:(id)a3;
+- (void)completeRevolutionWithCompletionBlock:(id)block;
 - (void)prepare;
 - (void)teardown;
 @end
 
 @implementation _PNPPencilMovieView
 
-- (_PNPPencilMovieView)initWithDeviceType:(int64_t)a3
+- (_PNPPencilMovieView)initWithDeviceType:(int64_t)type
 {
   v5.receiver = self;
   v5.super_class = _PNPPencilMovieView;
   result = [(_PNPPencilMovieView *)&v5 init];
   if (result)
   {
-    result->_deviceType = a3;
+    result->_deviceType = type;
   }
 
   return result;
@@ -42,8 +42,8 @@
 
 - (void)teardown
 {
-  v2 = [(_PNPPencilMovieView *)self _playerLayer];
-  [v2 setPlayer:0];
+  _playerLayer = [(_PNPPencilMovieView *)self _playerLayer];
+  [_playerLayer setPlayer:0];
 }
 
 - (id)assetName
@@ -65,40 +65,40 @@
   [(_PNPPencilMovieView *)self _applyFilterToLayer];
   if (!self->_player)
   {
-    v3 = [(_PNPPencilMovieView *)self assetName];
+    assetName = [(_PNPPencilMovieView *)self assetName];
     v4 = PencilPairingUIBundle();
-    v5 = [v4 URLForResource:v3 withExtension:@"mov"];
+    v5 = [v4 URLForResource:assetName withExtension:@"mov"];
 
     v6 = [MEMORY[0x277CE6598] playerWithURL:v5];
     player = self->_player;
     self->_player = v6;
 
     [(AVPlayer *)self->_player setAllowsExternalPlayback:0];
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v9 = *MEMORY[0x277CE60C0];
-    v10 = [(AVPlayer *)self->_player currentItem];
-    [v8 addObserver:self selector:sel__playbackEnded name:v9 object:v10];
+    currentItem = [(AVPlayer *)self->_player currentItem];
+    [defaultCenter addObserver:self selector:sel__playbackEnded name:v9 object:currentItem];
   }
 
-  v11 = [(_PNPPencilMovieView *)self _playerLayer];
-  [v11 setPlayer:self->_player];
+  _playerLayer = [(_PNPPencilMovieView *)self _playerLayer];
+  [_playerLayer setPlayer:self->_player];
 
   v12 = self->_player;
   [objc_opt_class() _playbackRate];
   *&v13 = v13;
   [(AVPlayer *)v12 setRate:v13];
-  v14 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v14 setCategory:*MEMORY[0x277CB8020] error:0];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8] setCategory:*MEMORY[0x277CB8020] error:0];
 }
 
 - (void)_applyFilterToLayer
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v3 = [(_PNPPencilMovieView *)self traitCollection];
-  v4 = [v3 userInterfaceStyle] == 1;
+  traitCollection = [(_PNPPencilMovieView *)self traitCollection];
+  v4 = [traitCollection userInterfaceStyle] == 1;
 
-  v5 = [(_PNPPencilMovieView *)self traitCollection];
-  if ([v5 userInterfaceStyle] == 1)
+  traitCollection2 = [(_PNPPencilMovieView *)self traitCollection];
+  if ([traitCollection2 userInterfaceStyle] == 1)
   {
     v6 = 0.5;
   }
@@ -110,8 +110,8 @@
 
   if (self->_deviceType == 4)
   {
-    v7 = [(_PNPPencilMovieView *)self traitCollection];
-    if ([v7 userInterfaceStyle] == 1)
+    traitCollection3 = [(_PNPPencilMovieView *)self traitCollection];
+    if ([traitCollection3 userInterfaceStyle] == 1)
     {
       v8 = 1.0;
     }
@@ -121,8 +121,8 @@
       v8 = 0.98;
     }
 
-    v9 = [(_PNPPencilMovieView *)self traitCollection];
-    if ([v9 userInterfaceStyle] == 1)
+    traitCollection4 = [(_PNPPencilMovieView *)self traitCollection];
+    if ([traitCollection4 userInterfaceStyle] == 1)
     {
       v6 = 0.5;
     }
@@ -156,40 +156,40 @@
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:v6];
   [v13 setValue:v14 forKey:@"inputAmount"];
 
-  v15 = [(_PNPPencilMovieView *)self layer];
+  layer = [(_PNPPencilMovieView *)self layer];
   v25[0] = v10;
   v25[1] = v13;
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
-  [v15 setFilters:v16];
+  [layer setFilters:v16];
 }
 
-- (void)completeRevolutionWithCompletionBlock:(id)a3
+- (void)completeRevolutionWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__0;
   v18 = __Block_byref_object_dispose__0;
-  v19 = [(AVPlayer *)self->_player currentItem];
+  currentItem = [(AVPlayer *)self->_player currentItem];
   [(AVPlayer *)self->_player rate];
   v6 = v15[5];
   if (v6)
   {
     v7 = v5;
-    v8 = [v6 asset];
+    asset = [v6 asset];
 
-    if (v8)
+    if (asset)
     {
-      v9 = [v15[5] asset];
+      asset2 = [v15[5] asset];
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __61___PNPPencilMovieView_completeRevolutionWithCompletionBlock___block_invoke;
       v10[3] = &unk_279A0A808;
       v12 = &v14;
       v13 = v7;
-      v11 = v4;
-      [v9 loadValuesAsynchronouslyForKeys:&unk_286FED428 completionHandler:v10];
+      v11 = blockCopy;
+      [asset2 loadValuesAsynchronouslyForKeys:&unk_286FED428 completionHandler:v10];
     }
   }
 

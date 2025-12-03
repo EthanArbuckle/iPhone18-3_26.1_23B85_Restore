@@ -1,90 +1,90 @@
 @interface POMutableLoginResponseJWTBody
-- (void)addCustomClaims:(id)a3;
-- (void)setAud:(id)a3;
-- (void)setExpires_in:(id)a3;
-- (void)setExpires_on:(id)a3;
-- (void)setIat:(id)a3;
-- (void)setId_token:(id)a3;
-- (void)setIss:(id)a3;
-- (void)setRefresh_token:(id)a3;
-- (void)setRefresh_token_expires_in:(id)a3;
-- (void)setToken_type:(id)a3;
+- (void)addCustomClaims:(id)claims;
+- (void)setAud:(id)aud;
+- (void)setExpires_in:(id)expires_in;
+- (void)setExpires_on:(id)expires_on;
+- (void)setIat:(id)iat;
+- (void)setId_token:(id)id_token;
+- (void)setIss:(id)iss;
+- (void)setRefresh_token:(id)refresh_token;
+- (void)setRefresh_token_expires_in:(id)refresh_token_expires_in;
+- (void)setToken_type:(id)token_type;
 @end
 
 @implementation POMutableLoginResponseJWTBody
 
-- (void)setAud:(id)a3
+- (void)setAud:(id)aud
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"aud"];
+  audCopy = aud;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:audCopy forKeyedSubscript:@"aud"];
 }
 
-- (void)setIss:(id)a3
+- (void)setIss:(id)iss
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"iss"];
+  issCopy = iss;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:issCopy forKeyedSubscript:@"iss"];
 }
 
-- (void)setIat:(id)a3
+- (void)setIat:(id)iat
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSince1970];
+  [iat timeIntervalSince1970];
   v7 = [v4 numberWithDouble:floor(v5)];
-  v6 = [(_POJWTBodyBase *)self data];
-  [v6 setObject:v7 forKeyedSubscript:@"iat"];
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:v7 forKeyedSubscript:@"iat"];
 }
 
-- (void)setToken_type:(id)a3
+- (void)setToken_type:(id)token_type
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"token_type"];
+  token_typeCopy = token_type;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:token_typeCopy forKeyedSubscript:@"token_type"];
 }
 
-- (void)setExpires_in:(id)a3
+- (void)setExpires_in:(id)expires_in
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"expires_in"];
+  expires_inCopy = expires_in;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:expires_inCopy forKeyedSubscript:@"expires_in"];
 }
 
-- (void)setRefresh_token_expires_in:(id)a3
+- (void)setRefresh_token_expires_in:(id)refresh_token_expires_in
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"refresh_token_expires_in"];
+  refresh_token_expires_inCopy = refresh_token_expires_in;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:refresh_token_expires_inCopy forKeyedSubscript:@"refresh_token_expires_in"];
 }
 
-- (void)setExpires_on:(id)a3
+- (void)setExpires_on:(id)expires_on
 {
   v4 = MEMORY[0x277CCABB0];
-  [a3 timeIntervalSince1970];
+  [expires_on timeIntervalSince1970];
   v7 = [v4 numberWithDouble:floor(v5)];
-  v6 = [(_POJWTBodyBase *)self data];
-  [v6 setObject:v7 forKeyedSubscript:@"expires_on"];
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:v7 forKeyedSubscript:@"expires_on"];
 }
 
-- (void)setRefresh_token:(id)a3
+- (void)setRefresh_token:(id)refresh_token
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"refresh_token"];
+  refresh_tokenCopy = refresh_token;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:refresh_tokenCopy forKeyedSubscript:@"refresh_token"];
 }
 
-- (void)setId_token:(id)a3
+- (void)setId_token:(id)id_token
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"id_token"];
+  id_tokenCopy = id_token;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:id_tokenCopy forKeyedSubscript:@"id_token"];
 }
 
-- (void)addCustomClaims:(id)a3
+- (void)addCustomClaims:(id)claims
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 addEntriesFromDictionary:v4];
+  claimsCopy = claims;
+  data = [(_POJWTBodyBase *)self data];
+  [data addEntriesFromDictionary:claimsCopy];
 }
 
 @end

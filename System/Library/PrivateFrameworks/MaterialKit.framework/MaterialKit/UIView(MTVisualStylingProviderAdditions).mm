@@ -6,31 +6,31 @@
 
 - (id)visualStylingProviderForCategory:()MTVisualStylingProviderAdditions
 {
-  v5 = [a1 superview];
-  v6 = [v5 subviews];
+  superview = [self superview];
+  subviews = [superview subviews];
 
-  v7 = [v6 indexOfObject:a1];
+  v7 = [subviews indexOfObject:self];
   if (v7)
   {
-    v8 = [v6 objectAtIndex:v7 - 1];
-    v9 = [v8 subviews];
-    v10 = [v9 count];
+    superview2 = [subviews objectAtIndex:v7 - 1];
+    subviews2 = [superview2 subviews];
+    v10 = [subviews2 count];
 
     if (v10)
     {
-      v11 = [v8 subviews];
-      v12 = [v11 lastObject];
+      subviews3 = [superview2 subviews];
+      lastObject = [subviews3 lastObject];
 
-      v8 = v12;
+      superview2 = lastObject;
     }
   }
 
   else
   {
-    v8 = [a1 superview];
+    superview2 = [self superview];
   }
 
-  v13 = [v8 visualStylingProviderForCategory:a3];
+  v13 = [superview2 visualStylingProviderForCategory:a3];
 
   return v13;
 }

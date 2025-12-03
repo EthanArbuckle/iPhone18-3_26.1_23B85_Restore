@@ -1,37 +1,37 @@
 @interface HKWorkoutRouteViewController
-- (HKWorkoutRouteViewController)initWithLocationReadings:(id)a3 title:(id)a4 sharingEnabled:(BOOL)a5 shareText:(id)a6 excludedActivityTypes:(id)a7;
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3;
+- (HKWorkoutRouteViewController)initWithLocationReadings:(id)readings title:(id)title sharingEnabled:(BOOL)enabled shareText:(id)text excludedActivityTypes:(id)types;
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata;
 - (void)_internalDebuggingOnly_fetchUnsmoothedRoutesFromDatabase;
-- (void)_internalDebuggingOnly_toggleUnsmoothedLocations:(id)a3;
-- (void)_shareButtonPressed:(id)a3;
+- (void)_internalDebuggingOnly_toggleUnsmoothedLocations:(id)locations;
+- (void)_shareButtonPressed:(id)pressed;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HKWorkoutRouteViewController
 
-- (HKWorkoutRouteViewController)initWithLocationReadings:(id)a3 title:(id)a4 sharingEnabled:(BOOL)a5 shareText:(id)a6 excludedActivityTypes:(id)a7
+- (HKWorkoutRouteViewController)initWithLocationReadings:(id)readings title:(id)title sharingEnabled:(BOOL)enabled shareText:(id)text excludedActivityTypes:(id)types
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
+  readingsCopy = readings;
+  titleCopy = title;
+  textCopy = text;
+  typesCopy = types;
   v21.receiver = self;
   v21.super_class = HKWorkoutRouteViewController;
   v17 = [(HKWorkoutRouteViewController *)&v21 init];
   if (v17)
   {
-    v18 = [v13 workout];
+    workout = [readingsCopy workout];
     workout = v17->_workout;
-    v17->_workout = v18;
+    v17->_workout = workout;
 
-    objc_storeStrong(&v17->_locationReadings, a3);
-    v17->_sharingEnabled = a5;
-    objc_storeStrong(&v17->_shareText, a6);
-    objc_storeStrong(&v17->_excludedActivityTypes, a7);
-    [(HKWorkoutRouteViewController *)v17 setTitle:v14];
+    objc_storeStrong(&v17->_locationReadings, readings);
+    v17->_sharingEnabled = enabled;
+    objc_storeStrong(&v17->_shareText, text);
+    objc_storeStrong(&v17->_excludedActivityTypes, types);
+    [(HKWorkoutRouteViewController *)v17 setTitle:titleCopy];
   }
 
   return v17;
@@ -51,21 +51,21 @@
     [(HKRouteView *)self->_routeView setLocationReadings:?];
   }
 
-  v5 = [(HKWorkoutRouteViewController *)self view];
-  [v5 addSubview:self->_routeView];
+  view = [(HKWorkoutRouteViewController *)self view];
+  [view addSubview:self->_routeView];
 
   v6 = self->_routeView;
-  v7 = [(HKWorkoutRouteViewController *)self view];
-  [(UIView *)v6 hk_alignConstraintsWithView:v7];
+  view2 = [(HKWorkoutRouteViewController *)self view];
+  [(UIView *)v6 hk_alignConstraintsWithView:view2];
 
-  v8 = [(HKRouteView *)self->_routeView toggleMapTypeButton];
-  [v8 addTarget:self action:sel__toggleRouteViewMapType_ forControlEvents:64];
+  toggleMapTypeButton = [(HKRouteView *)self->_routeView toggleMapTypeButton];
+  [toggleMapTypeButton addTarget:self action:sel__toggleRouteViewMapType_ forControlEvents:64];
 
   if (self->_sharingEnabled)
   {
     v9 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:9 target:self action:sel__shareButtonPressed_];
-    v10 = [(HKWorkoutRouteViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:v9];
+    navigationItem = [(HKWorkoutRouteViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v9];
   }
 
   if ([MEMORY[0x1E696C608] isAppleInternalInstall])
@@ -73,60 +73,60 @@
     v11 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__internalDebuggingOnly_toggleUnsmoothedLocations_];
     [v11 setNumberOfTapsRequired:4];
     [v11 setNumberOfTouchesRequired:2];
-    v12 = [(HKWorkoutRouteViewController *)self navigationController];
-    v13 = [v12 navigationBar];
-    [v13 addGestureRecognizer:v11];
+    navigationController = [(HKWorkoutRouteViewController *)self navigationController];
+    navigationBar = [navigationController navigationBar];
+    [navigationBar addGestureRecognizer:v11];
   }
 
-  v14 = [(HKWorkoutRouteViewController *)self routeView];
-  v15 = [(HKWorkoutRouteViewController *)self routeView];
-  v16 = [v15 toggleMapTypeButton];
-  [v14 bringSubviewToFront:v16];
+  routeView = [(HKWorkoutRouteViewController *)self routeView];
+  routeView2 = [(HKWorkoutRouteViewController *)self routeView];
+  toggleMapTypeButton2 = [routeView2 toggleMapTypeButton];
+  [routeView bringSubviewToFront:toggleMapTypeButton2];
 
   v17 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v17 configureWithDefaultBackground];
-  v18 = [(HKWorkoutRouteViewController *)self navigationItem];
-  [v18 setScrollEdgeAppearance:v17];
+  navigationItem2 = [(HKWorkoutRouteViewController *)self navigationItem];
+  [navigationItem2 setScrollEdgeAppearance:v17];
 
-  v19 = [(HKWorkoutRouteViewController *)self navigationItem];
-  [v19 setStandardAppearance:v17];
+  navigationItem3 = [(HKWorkoutRouteViewController *)self navigationItem];
+  [navigationItem3 setStandardAppearance:v17];
 
-  v20 = [(HKWorkoutRouteViewController *)self navigationItem];
-  [v20 setCompactAppearance:v17];
+  navigationItem4 = [(HKWorkoutRouteViewController *)self navigationItem];
+  [navigationItem4 setCompactAppearance:v17];
 
-  v21 = [(HKWorkoutRouteViewController *)self navigationItem];
-  [v21 setCompactScrollEdgeAppearance:v17];
+  navigationItem5 = [(HKWorkoutRouteViewController *)self navigationItem];
+  [navigationItem5 setCompactScrollEdgeAppearance:v17];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = HKWorkoutRouteViewController;
-  [(HKWorkoutRouteViewController *)&v8 viewWillAppear:a3];
+  [(HKWorkoutRouteViewController *)&v8 viewWillAppear:appear];
   v4 = objc_alloc_init(MEMORY[0x1E69DCFF8]);
   [v4 configureWithDefaultBackground];
-  v5 = [(HKWorkoutRouteViewController *)self tabBarController];
-  v6 = [v5 tabBar];
-  v7 = [v6 selectedItem];
+  tabBarController = [(HKWorkoutRouteViewController *)self tabBarController];
+  tabBar = [tabBarController tabBar];
+  selectedItem = [tabBar selectedItem];
 
-  [v7 setStandardAppearance:v4];
-  [v7 setScrollEdgeAppearance:v4];
+  [selectedItem setStandardAppearance:v4];
+  [selectedItem setScrollEdgeAppearance:v4];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = HKWorkoutRouteViewController;
-  [(HKWorkoutRouteViewController *)&v7 viewWillDisappear:a3];
-  v4 = [(HKWorkoutRouteViewController *)self tabBarController];
-  v5 = [v4 tabBar];
-  v6 = [v5 selectedItem];
+  [(HKWorkoutRouteViewController *)&v7 viewWillDisappear:disappear];
+  tabBarController = [(HKWorkoutRouteViewController *)self tabBarController];
+  tabBar = [tabBarController tabBar];
+  selectedItem = [tabBar selectedItem];
 
-  [v6 setStandardAppearance:0];
-  [v6 setScrollEdgeAppearance:0];
+  [selectedItem setStandardAppearance:0];
+  [selectedItem setScrollEdgeAppearance:0];
 }
 
-- (void)_internalDebuggingOnly_toggleUnsmoothedLocations:(id)a3
+- (void)_internalDebuggingOnly_toggleUnsmoothedLocations:(id)locations
 {
   _HKInitializeLogging();
   v4 = *MEMORY[0x1E696B9A8];
@@ -158,10 +158,10 @@
 
   [(HKRouteView *)routeView setLocationReadings:locationReadings];
 LABEL_8:
-  v8 = [(HKWorkoutRouteViewController *)self routeView];
-  v9 = [(HKWorkoutRouteViewController *)self routeView];
-  v10 = [v9 toggleMapTypeButton];
-  [v8 bringSubviewToFront:v10];
+  routeView = [(HKWorkoutRouteViewController *)self routeView];
+  routeView2 = [(HKWorkoutRouteViewController *)self routeView];
+  toggleMapTypeButton = [routeView2 toggleMapTypeButton];
+  [routeView bringSubviewToFront:toggleMapTypeButton];
 }
 
 - (void)_internalDebuggingOnly_fetchUnsmoothedRoutesFromDatabase
@@ -175,9 +175,9 @@ LABEL_8:
   }
 
   v5 = MEMORY[0x1E696C378];
-  v6 = [(HKWorkout *)self->_workout UUID];
-  v7 = [v6 UUIDString];
-  v16[0] = v7;
+  uUID = [(HKWorkout *)self->_workout UUID];
+  uUIDString = [uUID UUIDString];
+  v16[0] = uUIDString;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
   v9 = [v5 predicateForObjectsWithMetadataKey:*MEMORY[0x1E696C768] allowedValues:v8];
 
@@ -261,15 +261,15 @@ void __88__HKWorkoutRouteViewController__internalDebuggingOnly_fetchUnsmoothedRo
   [v2 setLocationReadings:*(a1 + 32)];
 }
 
-- (void)_shareButtonPressed:(id)a3
+- (void)_shareButtonPressed:(id)pressed
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKRouteView *)self->_routeView routeImageForSharing];
-  v6 = v5;
+  pressedCopy = pressed;
+  routeImageForSharing = [(HKRouteView *)self->_routeView routeImageForSharing];
+  v6 = routeImageForSharing;
   if (self->_shareText)
   {
-    v7 = v5 == 0;
+    v7 = routeImageForSharing == 0;
   }
 
   else
@@ -286,8 +286,8 @@ void __88__HKWorkoutRouteViewController__internalDebuggingOnly_fetchUnsmoothedRo
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:3];
     v10 = [v8 initWithActivityItems:v9 applicationActivities:0];
 
-    v11 = [v10 popoverPresentationController];
-    [v11 setSourceItem:v4];
+    popoverPresentationController = [v10 popoverPresentationController];
+    [popoverPresentationController setSourceItem:pressedCopy];
 
     [v10 setExcludedActivityTypes:self->_excludedActivityTypes];
     [(HKWorkoutRouteViewController *)self presentViewController:v10 animated:1 completion:0];
@@ -299,27 +299,27 @@ void __88__HKWorkoutRouteViewController__internalDebuggingOnly_fetchUnsmoothedRo
   v10.receiver = self;
   v10.super_class = HKWorkoutRouteViewController;
   [(HKWorkoutRouteViewController *)&v10 viewWillLayoutSubviews];
-  v3 = [(HKWorkoutRouteViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  [v4 frame];
+  navigationController = [(HKWorkoutRouteViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar frame];
   MaxY = CGRectGetMaxY(v11);
 
-  v6 = [(HKWorkoutRouteViewController *)self view];
-  [v6 bounds];
+  view = [(HKWorkoutRouteViewController *)self view];
+  [view bounds];
   v8 = v7 + -45.0 + -12.0;
 
-  v9 = [(HKRouteView *)self->_routeView toggleMapTypeButton];
-  [v9 setFrame:{v8, MaxY + 12.0, 45.0, 45.0}];
+  toggleMapTypeButton = [(HKRouteView *)self->_routeView toggleMapTypeButton];
+  [toggleMapTypeButton setFrame:{v8, MaxY + 12.0, 45.0, 45.0}];
 }
 
-- (id)activityViewControllerLinkPresentationMetadata:(id)a3
+- (id)activityViewControllerLinkPresentationMetadata:(id)metadata
 {
   v4 = objc_alloc_init(MEMORY[0x1E696ECA0]);
-  v5 = [(HKRouteView *)self->_routeView routeImageForSharing];
-  if (v5)
+  routeImageForSharing = [(HKRouteView *)self->_routeView routeImageForSharing];
+  if (routeImageForSharing)
   {
     v6 = objc_alloc(MEMORY[0x1E696EC68]);
-    v7 = UIImagePNGRepresentation(v5);
+    v7 = UIImagePNGRepresentation(routeImageForSharing);
     v8 = [v6 initWithData:v7 MIMEType:@"image/png"];
     [v4 setImage:v8];
   }

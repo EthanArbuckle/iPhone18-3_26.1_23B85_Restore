@@ -1,49 +1,49 @@
 @interface RAPWebBundleEditLocationViewController
 - (NSString)promptText;
-- (RAPWebBundleEditLocationViewController)initWithInitialCoordinates:(CLLocationCoordinate2D)a3 inMapRect:(id)a4 mapType:(unint64_t)a5 isShowingTraffic:(BOOL)a6 analyticsTarget:(int)a7 markerViewAttributes:(id)a8 showAnnotationTitle:(BOOL)a9 searchResultTypes:(unint64_t)a10 selectionHandler:(id)a11 cancelSelectionHandler:(id)a12;
+- (RAPWebBundleEditLocationViewController)initWithInitialCoordinates:(CLLocationCoordinate2D)coordinates inMapRect:(id)rect mapType:(unint64_t)type isShowingTraffic:(BOOL)traffic analyticsTarget:(int)target markerViewAttributes:(id)attributes showAnnotationTitle:(BOOL)title searchResultTypes:(unint64_t)self0 selectionHandler:(id)self1 cancelSelectionHandler:(id)self2;
 - (void)_setupFloatingConrols;
 - (void)_setupFloatingControlsAfterMapInitialized;
 - (void)_setupSearch;
-- (void)_updateWithInputText:(id)a3;
-- (void)dataSource:(id)a3 itemTapped:(id)a4;
-- (void)editLocationMapView:(id)a3 didChangeCenterCoordinate:(CLLocationCoordinate2D)a4;
-- (void)editLocationMapView:(id)a3 didChangeViewMode:(int64_t)a4;
-- (void)editLocationMapViewFinishedRenderingMap:(id)a3;
-- (void)setPromptText:(id)a3;
+- (void)_updateWithInputText:(id)text;
+- (void)dataSource:(id)source itemTapped:(id)tapped;
+- (void)editLocationMapView:(id)view didChangeCenterCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)editLocationMapView:(id)view didChangeViewMode:(int64_t)mode;
+- (void)editLocationMapViewFinishedRenderingMap:(id)map;
+- (void)setPromptText:(id)text;
 - (void)setupConstraints;
-- (void)viewControllerOpenSettings:(id)a3;
+- (void)viewControllerOpenSettings:(id)settings;
 - (void)viewDidLoad;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation RAPWebBundleEditLocationViewController
 
-- (void)viewControllerOpenSettings:(id)a3
+- (void)viewControllerOpenSettings:(id)settings
 {
-  v4 = [(EditLocationViewController *)self editLocationMapView];
-  [v4 setHideAllSuplementaryViews:0];
+  editLocationMapView = [(EditLocationViewController *)self editLocationMapView];
+  [editLocationMapView setHideAllSuplementaryViews:0];
 
-  v5 = [(EditLocationViewController *)self editLocationMapView];
-  [v5 setPrompt:&stru_1016631F0];
+  editLocationMapView2 = [(EditLocationViewController *)self editLocationMapView];
+  [editLocationMapView2 setPrompt:&stru_1016631F0];
 }
 
-- (void)dataSource:(id)a3 itemTapped:(id)a4
+- (void)dataSource:(id)source itemTapped:(id)tapped
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  tappedCopy = tapped;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v7;
+    v8 = tappedCopy;
     v9 = +[GEOMapService sharedService];
-    v10 = [v9 defaultTraits];
+    defaultTraits = [v9 defaultTraits];
 
-    [v10 setSource:23];
+    [defaultTraits setSource:23];
     v11 = +[MKMapService sharedService];
-    v12 = [v8 queryLine];
-    v13 = [v8 geoCompletionItem];
-    v14 = [v11 ticketForSearchQuery:v12 completionItem:v13 traits:v10 searchSessionData:0];
+    queryLine = [v8 queryLine];
+    geoCompletionItem = [v8 geoCompletionItem];
+    v14 = [v11 ticketForSearchQuery:queryLine completionItem:geoCompletionItem traits:defaultTraits searchSessionData:0];
 
     objc_initWeak(&location, self);
     v15[0] = _NSConcreteStackBlock;
@@ -57,83 +57,83 @@
   }
 }
 
-- (void)_updateWithInputText:(id)a3
+- (void)_updateWithInputText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v5 = +[GEOMapService sharedService];
-  v8 = [v5 defaultTraits];
+  defaultTraits = [v5 defaultTraits];
 
-  -[SearchDataSource setActive:](self->_dataSource, "setActive:", [v4 length] != 0);
+  -[SearchDataSource setActive:](self->_dataSource, "setActive:", [textCopy length] != 0);
   if (![(DataSource *)self->_dataSource active])
   {
     [(SearchDataSource *)self->_dataSource clearAutocompleteResults];
   }
 
   currentSearchString = self->_currentSearchString;
-  self->_currentSearchString = v4;
-  v7 = v4;
+  self->_currentSearchString = textCopy;
+  v7 = textCopy;
 
-  [(SearchDataSource *)self->_dataSource setInputText:self->_currentSearchString traits:v8 source:11];
+  [(SearchDataSource *)self->_dataSource setInputText:self->_currentSearchString traits:defaultTraits source:11];
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v4 = [(RAPWebBundleEditLocationViewController *)self promptText];
-  v5 = [(RAPWebBundleEditLocationViewController *)self navigationItem];
-  [v5 setPrompt:v4];
+  promptText = [(RAPWebBundleEditLocationViewController *)self promptText];
+  navigationItem = [(RAPWebBundleEditLocationViewController *)self navigationItem];
+  [navigationItem setPrompt:promptText];
 
   [(UITableView *)self->_tableView setHidden:1];
-  v6 = [(EditLocationViewController *)self editLocationMapView];
-  [v6 setHidden:0];
+  editLocationMapView = [(EditLocationViewController *)self editLocationMapView];
+  [editLocationMapView setHidden:0];
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = [(RAPWebBundleEditLocationViewController *)self navigationItem];
-  [v4 setPrompt:0];
+  navigationItem = [(RAPWebBundleEditLocationViewController *)self navigationItem];
+  [navigationItem setPrompt:0];
 
   [(UITableView *)self->_tableView setHidden:0];
-  v5 = [(EditLocationViewController *)self editLocationMapView];
-  [v5 setHidden:1];
+  editLocationMapView = [(EditLocationViewController *)self editLocationMapView];
+  [editLocationMapView setHidden:1];
 }
 
-- (void)editLocationMapViewFinishedRenderingMap:(id)a3
+- (void)editLocationMapViewFinishedRenderingMap:(id)map
 {
   if (self->_showAnnotationTitle)
   {
-    v5 = a3;
-    v7 = [(EditLocationViewController *)self editLocationMapView];
-    v6 = [v7 mapView];
-    [v6 centerCoordinate];
-    [v5 updateAnnotationTitleWithCenterCoordinate:?];
+    mapCopy = map;
+    editLocationMapView = [(EditLocationViewController *)self editLocationMapView];
+    mapView = [editLocationMapView mapView];
+    [mapView centerCoordinate];
+    [mapCopy updateAnnotationTitleWithCenterCoordinate:?];
   }
 }
 
-- (void)editLocationMapView:(id)a3 didChangeViewMode:(int64_t)a4
+- (void)editLocationMapView:(id)view didChangeViewMode:(int64_t)mode
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(RAPEditLocationViewController *)self _isInEditLocationMode])
   {
     v8.receiver = self;
     v8.super_class = RAPWebBundleEditLocationViewController;
-    [(RAPEditLocationViewController *)&v8 editLocationMapView:v6 didChangeViewMode:a4];
+    [(RAPEditLocationViewController *)&v8 editLocationMapView:viewCopy didChangeViewMode:mode];
   }
 
-  v7 = [(EditLocationViewController *)self editLocationMapView];
-  [v7 setHideAllSuplementaryViews:1];
+  editLocationMapView = [(EditLocationViewController *)self editLocationMapView];
+  [editLocationMapView setHideAllSuplementaryViews:1];
 }
 
-- (void)editLocationMapView:(id)a3 didChangeCenterCoordinate:(CLLocationCoordinate2D)a4
+- (void)editLocationMapView:(id)view didChangeCenterCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  longitude = a4.longitude;
-  latitude = a4.latitude;
-  v7 = a3;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  viewCopy = view;
   v8.receiver = self;
   v8.super_class = RAPWebBundleEditLocationViewController;
-  [(RAPEditLocationViewController *)&v8 editLocationMapView:v7 didChangeCenterCoordinate:latitude, longitude];
+  [(RAPEditLocationViewController *)&v8 editLocationMapView:viewCopy didChangeCenterCoordinate:latitude, longitude];
   if (self->_showAnnotationTitle)
   {
-    [v7 updateAnnotationTitleWithCenterCoordinate:{latitude, longitude}];
+    [viewCopy updateAnnotationTitleWithCenterCoordinate:{latitude, longitude}];
   }
 }
 
@@ -142,17 +142,17 @@
   v14.receiver = self;
   v14.super_class = RAPWebBundleEditLocationViewController;
   [(RAPEditLocationViewController *)&v14 setupConstraints];
-  v13 = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
-  v3 = [v13 topAnchor];
-  v4 = [(EditLocationViewController *)self editLocationMapView];
-  v5 = [v4 topAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5 constant:16.0];
+  view = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
+  topAnchor = [view topAnchor];
+  editLocationMapView = [(EditLocationViewController *)self editLocationMapView];
+  topAnchor2 = [editLocationMapView topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v15[0] = v6;
-  v7 = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
-  v8 = [v7 trailingAnchor];
-  v9 = [(EditLocationViewController *)self editLocationMapView];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10 constant:-16.0];
+  view2 = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
+  trailingAnchor = [view2 trailingAnchor];
+  editLocationMapView2 = [(EditLocationViewController *)self editLocationMapView];
+  trailingAnchor2 = [editLocationMapView2 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v15[1] = v11;
   v12 = [NSArray arrayWithObjects:v15 count:2];
   [NSLayoutConstraint activateConstraints:v12];
@@ -164,18 +164,18 @@
   [v3 setDelegate:self];
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"[Report an Issue Map] Search" value:@"localized string not found" table:0];
-  v6 = [v3 searchBar];
-  [v6 setPlaceholder:v5];
+  searchBar = [v3 searchBar];
+  [searchBar setPlaceholder:v5];
 
-  v7 = [v3 searchBar];
-  [v7 setReturnKeyType:9];
+  searchBar2 = [v3 searchBar];
+  [searchBar2 setReturnKeyType:9];
 
-  v8 = [v3 searchBar];
-  [v8 setDelegate:self];
+  searchBar3 = [v3 searchBar];
+  [searchBar3 setDelegate:self];
 
   [v3 setObscuresBackgroundDuringPresentation:0];
-  v9 = [(RAPWebBundleEditLocationViewController *)self navigationItem];
-  [v9 setSearchController:v3];
+  navigationItem = [(RAPWebBundleEditLocationViewController *)self navigationItem];
+  [navigationItem setSearchController:v3];
 
   objc_storeStrong(&self->_searchController, v3);
   v10 = [[UITableView alloc] initWithFrame:0 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -185,30 +185,30 @@
   [(UITableView *)self->_tableView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITableView *)self->_tableView setKeyboardDismissMode:1];
   [(UITableView *)self->_tableView setRowHeight:UITableViewAutomaticDimension];
-  v12 = [(RAPWebBundleEditLocationViewController *)self view];
-  [v12 addSubview:self->_tableView];
+  view = [(RAPWebBundleEditLocationViewController *)self view];
+  [view addSubview:self->_tableView];
 
-  v36 = [(UITableView *)self->_tableView leadingAnchor];
-  v37 = [(RAPWebBundleEditLocationViewController *)self view];
-  v35 = [v37 leadingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  leadingAnchor = [(UITableView *)self->_tableView leadingAnchor];
+  view2 = [(RAPWebBundleEditLocationViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v34 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v38[0] = v34;
-  v32 = [(UITableView *)self->_tableView trailingAnchor];
-  v33 = [(RAPWebBundleEditLocationViewController *)self view];
-  v31 = [v33 trailingAnchor];
-  v30 = [v32 constraintEqualToAnchor:v31];
+  trailingAnchor = [(UITableView *)self->_tableView trailingAnchor];
+  view3 = [(RAPWebBundleEditLocationViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v38[1] = v30;
-  v28 = [(UITableView *)self->_tableView topAnchor];
-  v29 = [(RAPWebBundleEditLocationViewController *)self view];
-  v27 = [v29 safeAreaLayoutGuide];
-  v13 = [v27 topAnchor];
-  v14 = [v28 constraintEqualToAnchor:v13];
+  topAnchor = [(UITableView *)self->_tableView topAnchor];
+  view4 = [(RAPWebBundleEditLocationViewController *)self view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v38[2] = v14;
-  v15 = [(UITableView *)self->_tableView bottomAnchor];
-  v16 = [(RAPWebBundleEditLocationViewController *)self view];
-  v17 = [v16 safeAreaLayoutGuide];
-  v18 = [v17 bottomAnchor];
-  v19 = [v15 constraintEqualToAnchor:v18];
+  bottomAnchor = [(UITableView *)self->_tableView bottomAnchor];
+  view5 = [(RAPWebBundleEditLocationViewController *)self view];
+  safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+  bottomAnchor2 = [safeAreaLayoutGuide2 bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v38[3] = v19;
   v20 = [NSArray arrayWithObjects:v38 count:4];
   [NSLayoutConstraint activateConstraints:v20];
@@ -236,27 +236,27 @@
   autocompleteFilter = self->_autocompleteFilter;
   self->_autocompleteFilter = v24;
 
-  v26 = [(EditLocationViewController *)self editLocationMapView];
-  [v26 setHideAllSuplementaryViews:1];
+  editLocationMapView = [(EditLocationViewController *)self editLocationMapView];
+  [editLocationMapView setHideAllSuplementaryViews:1];
 }
 
 - (void)_setupFloatingControlsAfterMapInitialized
 {
-  v3 = [(EditLocationViewController *)self editLocationMapView];
-  [(FloatingControlsViewController *)self->_floatingControlsViewController setMapViewProviding:v3];
+  editLocationMapView = [(EditLocationViewController *)self editLocationMapView];
+  [(FloatingControlsViewController *)self->_floatingControlsViewController setMapViewProviding:editLocationMapView];
 
   floatingControlsViewController = self->_floatingControlsViewController;
-  v5 = [(EditLocationViewController *)self editLocationMapView];
-  v6 = [v5 mapView];
-  [(IOSFloatingControlsViewController *)floatingControlsViewController mapView:v6 regionDidChangeAnimated:0];
+  editLocationMapView2 = [(EditLocationViewController *)self editLocationMapView];
+  mapView = [editLocationMapView2 mapView];
+  [(IOSFloatingControlsViewController *)floatingControlsViewController mapView:mapView regionDidChangeAnimated:0];
 
   [(IOSFloatingControlsViewController *)self->_floatingControlsViewController showControlsIfNeeded:3 animated:0];
-  v7 = [(RAPWebBundleEditLocationViewController *)self view];
-  v8 = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
-  [v7 bringSubviewToFront:v8];
+  view = [(RAPWebBundleEditLocationViewController *)self view];
+  view2 = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
+  [view bringSubviewToFront:view2];
 
-  v9 = [(RAPWebBundleEditLocationViewController *)self view];
-  [v9 bringSubviewToFront:self->_tableView];
+  view3 = [(RAPWebBundleEditLocationViewController *)self view];
+  [view3 bringSubviewToFront:self->_tableView];
 }
 
 - (void)_setupFloatingConrols
@@ -266,13 +266,13 @@
   self->_floatingControlsViewController = v3;
 
   [(FloatingControlsViewController *)self->_floatingControlsViewController setOpenSettingsDelegate:self];
-  v5 = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
-  [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(RAPWebBundleEditLocationViewController *)self addChildViewController:self->_floatingControlsViewController];
-  v6 = [(RAPWebBundleEditLocationViewController *)self view];
-  v7 = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
-  [v6 addSubview:v7];
+  view2 = [(RAPWebBundleEditLocationViewController *)self view];
+  view3 = [(IOSFloatingControlsViewController *)self->_floatingControlsViewController view];
+  [view2 addSubview:view3];
 
   v8 = self->_floatingControlsViewController;
 
@@ -295,52 +295,52 @@
     [(RAPWebBundleEditLocationViewController *)self _setupFloatingControlsAfterMapInitialized];
   }
 
-  v3 = [(EditLocationViewController *)self editLocationMapView];
-  [v3 setPrompt:&stru_1016631F0];
+  editLocationMapView = [(EditLocationViewController *)self editLocationMapView];
+  [editLocationMapView setPrompt:&stru_1016631F0];
 }
 
 - (NSString)promptText
 {
-  v2 = [(RAPWebBundleEditLocationViewController *)self navigationItem];
-  v3 = [v2 prompt];
+  navigationItem = [(RAPWebBundleEditLocationViewController *)self navigationItem];
+  prompt = [navigationItem prompt];
 
-  return v3;
+  return prompt;
 }
 
-- (void)setPromptText:(id)a3
+- (void)setPromptText:(id)text
 {
-  v4 = a3;
-  v5 = [(RAPWebBundleEditLocationViewController *)self navigationItem];
-  [v5 setPrompt:v4];
+  textCopy = text;
+  navigationItem = [(RAPWebBundleEditLocationViewController *)self navigationItem];
+  [navigationItem setPrompt:textCopy];
 }
 
-- (RAPWebBundleEditLocationViewController)initWithInitialCoordinates:(CLLocationCoordinate2D)a3 inMapRect:(id)a4 mapType:(unint64_t)a5 isShowingTraffic:(BOOL)a6 analyticsTarget:(int)a7 markerViewAttributes:(id)a8 showAnnotationTitle:(BOOL)a9 searchResultTypes:(unint64_t)a10 selectionHandler:(id)a11 cancelSelectionHandler:(id)a12
+- (RAPWebBundleEditLocationViewController)initWithInitialCoordinates:(CLLocationCoordinate2D)coordinates inMapRect:(id)rect mapType:(unint64_t)type isShowingTraffic:(BOOL)traffic analyticsTarget:(int)target markerViewAttributes:(id)attributes showAnnotationTitle:(BOOL)title searchResultTypes:(unint64_t)self0 selectionHandler:(id)self1 cancelSelectionHandler:(id)self2
 {
-  v15 = *&a7;
-  v16 = a6;
-  var1 = a4.var1.var1;
-  var0 = a4.var1.var0;
-  v20 = a4.var0.var1;
-  v21 = a4.var0.var0;
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v25 = a12;
-  v26 = a11;
-  v27 = a8;
+  v15 = *&target;
+  trafficCopy = traffic;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v20 = rect.var0.var1;
+  v21 = rect.var0.var0;
+  longitude = coordinates.longitude;
+  latitude = coordinates.latitude;
+  selectionHandlerCopy = selectionHandler;
+  handlerCopy = handler;
+  attributesCopy = attributes;
   v28 = [[RAPCorrectableEntryPoints alloc] initWithGEORoadAccessPoints:&__NSArray0__struct];
   v31.receiver = self;
   v31.super_class = RAPWebBundleEditLocationViewController;
-  v29 = [(RAPEditLocationViewController *)&v31 initWithInitialCoordinates:v15 inMapRect:v27 analyticsTarget:0 markerViewAttributes:v28 allowEditingEntryPoints:v26 correctableEntryPoints:v25 selectionHandler:latitude cancelSelectionHandler:longitude, v21, v20, var0, var1];
+  var1 = [(RAPEditLocationViewController *)&v31 initWithInitialCoordinates:v15 inMapRect:attributesCopy analyticsTarget:0 markerViewAttributes:v28 allowEditingEntryPoints:handlerCopy correctableEntryPoints:selectionHandlerCopy selectionHandler:latitude cancelSelectionHandler:longitude, v21, v20, var0, var1];
 
-  if (v29)
+  if (var1)
   {
-    v29->_showAnnotationTitle = a9;
-    v29->_resultTypes = a10;
-    [(EditLocationViewController *)v29 setMapType:a5];
-    [(EditLocationViewController *)v29 setIsShowingTraffic:v16];
+    var1->_showAnnotationTitle = title;
+    var1->_resultTypes = types;
+    [(EditLocationViewController *)var1 setMapType:type];
+    [(EditLocationViewController *)var1 setIsShowingTraffic:trafficCopy];
   }
 
-  return v29;
+  return var1;
 }
 
 @end

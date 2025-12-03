@@ -1,16 +1,16 @@
 @interface GKRealTimeMultiplayerBulletin
 - (GKRealTimeMultiplayerBulletin)init;
-- (GKRealTimeMultiplayerBulletin)initWithCoder:(id)a3;
-- (GKRealTimeMultiplayerBulletin)initWithPushNotification:(id)a3;
+- (GKRealTimeMultiplayerBulletin)initWithCoder:(id)coder;
+- (GKRealTimeMultiplayerBulletin)initWithPushNotification:(id)notification;
 - (id)clientNotification;
-- (id)clientNotificationWithiCloudID:(id)a3;
-- (id)customInviteSoundPathForBundleID:(id)a3;
+- (id)clientNotificationWithiCloudID:(id)d;
+- (id)customInviteSoundPathForBundleID:(id)d;
 - (id)description;
-- (int64_t)inviteVersionFromMessage:(id)a3;
-- (void)declineInviteWithReason:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)parseClientData:(id)a3;
-- (void)updateDeclineInviteTrackingForReason:(int64_t)a3;
+- (int64_t)inviteVersionFromMessage:(id)message;
+- (void)declineInviteWithReason:(int)reason;
+- (void)encodeWithCoder:(id)coder;
+- (void)parseClientData:(id)data;
+- (void)updateDeclineInviteTrackingForReason:(int64_t)reason;
 @end
 
 @implementation GKRealTimeMultiplayerBulletin
@@ -22,9 +22,9 @@
   return [(GKRealTimeMultiplayerBulletin *)&v3 init];
 }
 
-- (int64_t)inviteVersionFromMessage:(id)a3
+- (int64_t)inviteVersionFromMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -37,24 +37,24 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "GKRealTimeMultiplayerBulletin inviteVersionFromMessage:", v10, 2u);
   }
 
-  v6 = [v3 length];
-  v7 = [v3 bytes];
-  if (v6 < 2 || v7[v6 - 2])
+  v6 = [messageCopy length];
+  bytes = [messageCopy bytes];
+  if (v6 < 2 || bytes[v6 - 2])
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v7[v6 - 1];
+    v8 = bytes[v6 - 1];
   }
 
   return v8;
 }
 
-- (void)parseClientData:(id)a3
+- (void)parseClientData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -67,14 +67,14 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKRealTimeMultiplayerBulletin parseClientData:", v9, 2u);
   }
 
-  v7 = [NSNumber numberWithUnsignedChar:[(GKRealTimeMultiplayerBulletin *)self inviteVersionFromMessage:v4]];
+  v7 = [NSNumber numberWithUnsignedChar:[(GKRealTimeMultiplayerBulletin *)self inviteVersionFromMessage:dataCopy]];
   inviteVersion = self->_inviteVersion;
   self->_inviteVersion = v7;
 }
 
-- (GKRealTimeMultiplayerBulletin)initWithPushNotification:(id)a3
+- (GKRealTimeMultiplayerBulletin)initWithPushNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -89,33 +89,33 @@
 
   v49.receiver = self;
   v49.super_class = GKRealTimeMultiplayerBulletin;
-  v7 = [(GKMultiplayerBulletin *)&v49 initWithPushNotification:v4];
+  v7 = [(GKMultiplayerBulletin *)&v49 initWithPushNotification:notificationCopy];
   if (v7)
   {
-    v8 = [(NSDictionary *)v4 objectForKeyedSubscript:@"x"];
+    v8 = [(NSDictionary *)notificationCopy objectForKeyedSubscript:@"x"];
     clientDictionary = v7->_clientDictionary;
     v7->_clientDictionary = v8;
 
-    v10 = [(NSDictionary *)v4 objectForKeyedSubscript:@"s"];
+    v10 = [(NSDictionary *)notificationCopy objectForKeyedSubscript:@"s"];
     v11 = [(GKBulletin *)v7 dataFrom64String:v10];
     sessionToken = v7->_sessionToken;
     v7->_sessionToken = v11;
 
-    v13 = [(NSDictionary *)v4 objectForKeyedSubscript:@"P"];
+    v13 = [(NSDictionary *)notificationCopy objectForKeyedSubscript:@"P"];
     v14 = [(GKBulletin *)v7 dataFrom64String:v13];
     peerPushToken = v7->_peerPushToken;
     v7->_peerPushToken = v14;
 
-    v16 = [(NSDictionary *)v4 objectForKeyedSubscript:@"N"];
+    v16 = [(NSDictionary *)notificationCopy objectForKeyedSubscript:@"N"];
     peerNatType = v7->_peerNatType;
     v7->_peerNatType = v16;
 
-    v18 = [(NSDictionary *)v4 objectForKeyedSubscript:@"A"];
+    v18 = [(NSDictionary *)notificationCopy objectForKeyedSubscript:@"A"];
     v19 = [(GKBulletin *)v7 dataFrom64String:v18];
     peerNatIP = v7->_peerNatIP;
     v7->_peerNatIP = v19;
 
-    v21 = [(NSDictionary *)v4 objectForKeyedSubscript:@"B"];
+    v21 = [(NSDictionary *)notificationCopy objectForKeyedSubscript:@"B"];
     v22 = [(GKBulletin *)v7 dataFrom64String:v21];
     peerBlob = v7->_peerBlob;
     v7->_peerBlob = v22;
@@ -129,11 +129,11 @@
     v7->_peerPseudonym = v26;
 
     v28 = GKSuggestedTransportVersionPushShortKey;
-    v29 = [(NSDictionary *)v4 objectForKeyedSubscript:GKSuggestedTransportVersionPushShortKey];
+    v29 = [(NSDictionary *)notificationCopy objectForKeyedSubscript:GKSuggestedTransportVersionPushShortKey];
 
     if (v29)
     {
-      v30 = v4;
+      v30 = notificationCopy;
     }
 
     else
@@ -172,17 +172,17 @@
     v7->_transportVersionToUse = v32;
 
 LABEL_11:
-    v34 = [(GKRealTimeMultiplayerBulletin *)v7 clientDictionary];
-    v35 = [v34 objectForKeyedSubscript:@"s"];
+    clientDictionary = [(GKRealTimeMultiplayerBulletin *)v7 clientDictionary];
+    v35 = [clientDictionary objectForKeyedSubscript:@"s"];
     v36 = [(GKBulletin *)v7 dataFrom64String:v35];
 
     [(GKRealTimeMultiplayerBulletin *)v7 parseClientData:v36];
     v37 = [GKGameDescriptor alloc];
-    v38 = [(NSDictionary *)v4 objectForKey:@"d"];
+    v38 = [(NSDictionary *)notificationCopy objectForKey:@"d"];
     v39 = [v37 initWithPushDictionary:v38];
     [(GKBulletin *)v7 setGameDescriptor:v39];
 
-    v40 = [(NSDictionary *)v4 objectForKey:GKDeclineReasonKey];
+    v40 = [(NSDictionary *)notificationCopy objectForKey:GKDeclineReasonKey];
     declineReason = v7->_declineReason;
     v7->_declineReason = v40;
   }
@@ -190,9 +190,9 @@ LABEL_11:
   return v7;
 }
 
-- (GKRealTimeMultiplayerBulletin)initWithCoder:(id)a3
+- (GKRealTimeMultiplayerBulletin)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -207,41 +207,41 @@ LABEL_11:
 
   v40.receiver = self;
   v40.super_class = GKRealTimeMultiplayerBulletin;
-  v7 = [(GKGameplayBulletin *)&v40 initWithCoder:v4];
+  v7 = [(GKGameplayBulletin *)&v40 initWithCoder:coderCopy];
   if (v7)
   {
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionToken"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionToken"];
     sessionToken = v7->_sessionToken;
     v7->_sessionToken = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selfNatType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selfNatType"];
     selfNatType = v7->_selfNatType;
     v7->_selfNatType = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serverHosted"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serverHosted"];
     v7->_serverHosted = [v12 BOOLValue];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerPushToken"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerPushToken"];
     peerPushToken = v7->_peerPushToken;
     v7->_peerPushToken = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerNatType"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerNatType"];
     peerNatType = v7->_peerNatType;
     v7->_peerNatType = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerNatIP"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerNatIP"];
     peerNatIP = v7->_peerNatIP;
     v7->_peerNatIP = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerBlob"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerBlob"];
     peerBlob = v7->_peerBlob;
     v7->_peerBlob = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"selfTicket"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"selfTicket"];
     selfTicket = v7->_selfTicket;
     v7->_selfTicket = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"declineReason"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"declineReason"];
     declineReason = v7->_declineReason;
     v7->_declineReason = v23;
 
@@ -249,23 +249,23 @@ LABEL_11:
     v26 = objc_opt_class();
     v27 = objc_opt_class();
     v28 = [NSSet setWithObjects:v25, v26, v27, objc_opt_class(), 0];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"clientDictionary"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"clientDictionary"];
     clientDictionary = v7->_clientDictionary;
     v7->_clientDictionary = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"inviteVersion"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"inviteVersion"];
     inviteVersion = v7->_inviteVersion;
     v7->_inviteVersion = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionID"];
     sessionID = v7->_sessionID;
     v7->_sessionID = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pseudonym"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pseudonym"];
     peerPseudonym = v7->_peerPseudonym;
     v7->_peerPseudonym = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transportVersionToUse"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transportVersionToUse"];
     transportVersionToUse = v7->_transportVersionToUse;
     v7->_transportVersionToUse = v37;
   }
@@ -273,9 +273,9 @@ LABEL_11:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -290,59 +290,59 @@ LABEL_11:
 
   v21.receiver = self;
   v21.super_class = GKRealTimeMultiplayerBulletin;
-  [(GKGameplayBulletin *)&v21 encodeWithCoder:v4];
-  v7 = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
-  [v4 encodeObject:v7 forKey:@"sessionToken"];
+  [(GKGameplayBulletin *)&v21 encodeWithCoder:coderCopy];
+  sessionToken = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
+  [coderCopy encodeObject:sessionToken forKey:@"sessionToken"];
 
-  v8 = [(GKRealTimeMultiplayerBulletin *)self selfNatType];
-  [v4 encodeObject:v8 forKey:@"selfNatType"];
+  selfNatType = [(GKRealTimeMultiplayerBulletin *)self selfNatType];
+  [coderCopy encodeObject:selfNatType forKey:@"selfNatType"];
 
   v9 = [NSNumber numberWithBool:[(GKRealTimeMultiplayerBulletin *)self serverHosted]];
-  [v4 encodeObject:v9 forKey:@"serverHosted"];
+  [coderCopy encodeObject:v9 forKey:@"serverHosted"];
 
-  v10 = [(GKRealTimeMultiplayerBulletin *)self peerPushToken];
-  [v4 encodeObject:v10 forKey:@"peerPushToken"];
+  peerPushToken = [(GKRealTimeMultiplayerBulletin *)self peerPushToken];
+  [coderCopy encodeObject:peerPushToken forKey:@"peerPushToken"];
 
-  v11 = [(GKRealTimeMultiplayerBulletin *)self peerNatType];
-  [v4 encodeObject:v11 forKey:@"peerNatType"];
+  peerNatType = [(GKRealTimeMultiplayerBulletin *)self peerNatType];
+  [coderCopy encodeObject:peerNatType forKey:@"peerNatType"];
 
-  v12 = [(GKRealTimeMultiplayerBulletin *)self peerNatIP];
-  [v4 encodeObject:v12 forKey:@"peerNatIP"];
+  peerNatIP = [(GKRealTimeMultiplayerBulletin *)self peerNatIP];
+  [coderCopy encodeObject:peerNatIP forKey:@"peerNatIP"];
 
-  v13 = [(GKRealTimeMultiplayerBulletin *)self peerBlob];
-  [v4 encodeObject:v13 forKey:@"peerBlob"];
+  peerBlob = [(GKRealTimeMultiplayerBulletin *)self peerBlob];
+  [coderCopy encodeObject:peerBlob forKey:@"peerBlob"];
 
-  v14 = [(GKRealTimeMultiplayerBulletin *)self selfTicket];
-  [v4 encodeObject:v14 forKey:@"selfTicket"];
+  selfTicket = [(GKRealTimeMultiplayerBulletin *)self selfTicket];
+  [coderCopy encodeObject:selfTicket forKey:@"selfTicket"];
 
-  v15 = [(GKRealTimeMultiplayerBulletin *)self declineReason];
-  [v4 encodeObject:v15 forKey:@"declineReason"];
+  declineReason = [(GKRealTimeMultiplayerBulletin *)self declineReason];
+  [coderCopy encodeObject:declineReason forKey:@"declineReason"];
 
-  v16 = [(GKRealTimeMultiplayerBulletin *)self clientDictionary];
-  [v4 encodeObject:v16 forKey:@"clientDictionary"];
+  clientDictionary = [(GKRealTimeMultiplayerBulletin *)self clientDictionary];
+  [coderCopy encodeObject:clientDictionary forKey:@"clientDictionary"];
 
-  v17 = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
-  [v4 encodeObject:v17 forKey:@"inviteVersion"];
+  inviteVersion = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
+  [coderCopy encodeObject:inviteVersion forKey:@"inviteVersion"];
 
-  v18 = [(GKRealTimeMultiplayerBulletin *)self sessionID];
-  [v4 encodeObject:v18 forKey:@"sessionID"];
+  sessionID = [(GKRealTimeMultiplayerBulletin *)self sessionID];
+  [coderCopy encodeObject:sessionID forKey:@"sessionID"];
 
-  v19 = [(GKRealTimeMultiplayerBulletin *)self peerPseudonym];
-  [v4 encodeObject:v19 forKey:@"pseudonym"];
+  peerPseudonym = [(GKRealTimeMultiplayerBulletin *)self peerPseudonym];
+  [coderCopy encodeObject:peerPseudonym forKey:@"pseudonym"];
 
-  v20 = [(GKRealTimeMultiplayerBulletin *)self transportVersionToUse];
-  [v4 encodeObject:v20 forKey:@"transportVersionToUse"];
+  transportVersionToUse = [(GKRealTimeMultiplayerBulletin *)self transportVersionToUse];
+  [coderCopy encodeObject:transportVersionToUse forKey:@"transportVersionToUse"];
 }
 
-- (id)clientNotificationWithiCloudID:(id)a3
+- (id)clientNotificationWithiCloudID:(id)d
 {
-  v4 = a3;
-  v5 = [(GKRealTimeMultiplayerBulletin *)self clientNotification];
-  v6 = [NSMutableDictionary dictionaryWithDictionary:v5];
+  dCopy = d;
+  clientNotification = [(GKRealTimeMultiplayerBulletin *)self clientNotification];
+  v6 = [NSMutableDictionary dictionaryWithDictionary:clientNotification];
 
-  if (v4)
+  if (dCopy)
   {
-    [v6 setObject:v4 forKeyedSubscript:@"iCloudID"];
+    [v6 setObject:dCopy forKeyedSubscript:@"iCloudID"];
   }
 
   return v6;
@@ -363,118 +363,118 @@ LABEL_11:
   }
 
   v5 = objc_alloc_init(NSMutableDictionary);
-  v6 = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
+  sessionToken = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
 
-  if (v6)
+  if (sessionToken)
   {
-    v7 = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
-    [v5 setObject:v7 forKeyedSubscript:@"session-token"];
+    sessionToken2 = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
+    [v5 setObject:sessionToken2 forKeyedSubscript:@"session-token"];
   }
 
-  v8 = [(GKGameplayBulletin *)self receiverPlayerID];
+  receiverPlayerID = [(GKGameplayBulletin *)self receiverPlayerID];
 
-  if (v8)
+  if (receiverPlayerID)
   {
-    v9 = [(GKGameplayBulletin *)self receiverPlayerID];
-    [v5 setObject:v9 forKeyedSubscript:@"self-id"];
+    receiverPlayerID2 = [(GKGameplayBulletin *)self receiverPlayerID];
+    [v5 setObject:receiverPlayerID2 forKeyedSubscript:@"self-id"];
   }
 
-  v10 = [(GKGameplayBulletin *)self originatorPlayerID];
+  originatorPlayerID = [(GKGameplayBulletin *)self originatorPlayerID];
 
-  if (v10)
+  if (originatorPlayerID)
   {
-    v11 = [(GKGameplayBulletin *)self originatorPlayerID];
-    [v5 setObject:v11 forKeyedSubscript:@"peer-id"];
+    originatorPlayerID2 = [(GKGameplayBulletin *)self originatorPlayerID];
+    [v5 setObject:originatorPlayerID2 forKeyedSubscript:@"peer-id"];
   }
 
-  v12 = [(GKRealTimeMultiplayerBulletin *)self peerPushToken];
+  peerPushToken = [(GKRealTimeMultiplayerBulletin *)self peerPushToken];
 
-  if (v12)
+  if (peerPushToken)
   {
-    v13 = [(GKRealTimeMultiplayerBulletin *)self peerPushToken];
-    [v5 setObject:v13 forKeyedSubscript:@"peer-push-token"];
+    peerPushToken2 = [(GKRealTimeMultiplayerBulletin *)self peerPushToken];
+    [v5 setObject:peerPushToken2 forKeyedSubscript:@"peer-push-token"];
   }
 
-  v14 = [(GKRealTimeMultiplayerBulletin *)self peerNatType];
+  peerNatType = [(GKRealTimeMultiplayerBulletin *)self peerNatType];
 
-  if (v14)
+  if (peerNatType)
   {
-    v15 = [(GKRealTimeMultiplayerBulletin *)self peerNatType];
-    [v5 setObject:v15 forKeyedSubscript:@"peer-nat-type"];
+    peerNatType2 = [(GKRealTimeMultiplayerBulletin *)self peerNatType];
+    [v5 setObject:peerNatType2 forKeyedSubscript:@"peer-nat-type"];
   }
 
-  v16 = [(GKRealTimeMultiplayerBulletin *)self peerNatIP];
+  peerNatIP = [(GKRealTimeMultiplayerBulletin *)self peerNatIP];
 
-  if (v16)
+  if (peerNatIP)
   {
-    v17 = [(GKRealTimeMultiplayerBulletin *)self peerNatIP];
-    [v5 setObject:v17 forKeyedSubscript:@"peer-nat-ip"];
+    peerNatIP2 = [(GKRealTimeMultiplayerBulletin *)self peerNatIP];
+    [v5 setObject:peerNatIP2 forKeyedSubscript:@"peer-nat-ip"];
   }
 
-  v18 = [(GKRealTimeMultiplayerBulletin *)self peerBlob];
+  peerBlob = [(GKRealTimeMultiplayerBulletin *)self peerBlob];
 
-  if (v18)
+  if (peerBlob)
   {
-    v19 = [(GKRealTimeMultiplayerBulletin *)self peerBlob];
-    [v5 setObject:v19 forKeyedSubscript:@"peer-blob"];
+    peerBlob2 = [(GKRealTimeMultiplayerBulletin *)self peerBlob];
+    [v5 setObject:peerBlob2 forKeyedSubscript:@"peer-blob"];
   }
 
-  v20 = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
+  inviteVersion = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
 
-  if (v20)
+  if (inviteVersion)
   {
-    v21 = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
-    [v5 setObject:v21 forKeyedSubscript:@"invite-version"];
+    inviteVersion2 = [(GKRealTimeMultiplayerBulletin *)self inviteVersion];
+    [v5 setObject:inviteVersion2 forKeyedSubscript:@"invite-version"];
   }
 
-  v22 = [(GKRealTimeMultiplayerBulletin *)self transportVersionToUse];
+  transportVersionToUse = [(GKRealTimeMultiplayerBulletin *)self transportVersionToUse];
 
-  if (v22)
+  if (transportVersionToUse)
   {
-    v23 = [(GKRealTimeMultiplayerBulletin *)self transportVersionToUse];
-    [v5 setObject:v23 forKeyedSubscript:GKSuggestedTransportVersionPushShortKey];
+    transportVersionToUse2 = [(GKRealTimeMultiplayerBulletin *)self transportVersionToUse];
+    [v5 setObject:transportVersionToUse2 forKeyedSubscript:GKSuggestedTransportVersionPushShortKey];
   }
 
-  v24 = [(GKRealTimeMultiplayerBulletin *)self selfTicket];
+  selfTicket = [(GKRealTimeMultiplayerBulletin *)self selfTicket];
 
-  if (v24)
+  if (selfTicket)
   {
-    v25 = [(GKRealTimeMultiplayerBulletin *)self selfTicket];
-    [v5 setObject:v25 forKeyedSubscript:GKInviteCDXTicketIDKey];
+    selfTicket2 = [(GKRealTimeMultiplayerBulletin *)self selfTicket];
+    [v5 setObject:selfTicket2 forKeyedSubscript:GKInviteCDXTicketIDKey];
   }
 
-  v26 = [(GKRealTimeMultiplayerBulletin *)self sessionID];
+  sessionID = [(GKRealTimeMultiplayerBulletin *)self sessionID];
 
-  if (v26)
+  if (sessionID)
   {
-    v27 = [(GKRealTimeMultiplayerBulletin *)self sessionID];
-    [v5 setObject:v27 forKeyedSubscript:GKInviteSessionIDKey];
+    sessionID2 = [(GKRealTimeMultiplayerBulletin *)self sessionID];
+    [v5 setObject:sessionID2 forKeyedSubscript:GKInviteSessionIDKey];
   }
 
-  v28 = [(GKRealTimeMultiplayerBulletin *)self peerPseudonym];
+  peerPseudonym = [(GKRealTimeMultiplayerBulletin *)self peerPseudonym];
 
-  if (v28)
+  if (peerPseudonym)
   {
-    v29 = [(GKRealTimeMultiplayerBulletin *)self peerPseudonym];
-    [v5 setObject:v29 forKeyedSubscript:GKInvitePeerPseudonym];
+    peerPseudonym2 = [(GKRealTimeMultiplayerBulletin *)self peerPseudonym];
+    [v5 setObject:peerPseudonym2 forKeyedSubscript:GKInvitePeerPseudonym];
   }
 
-  v30 = [(GKBulletin *)self gameDescriptor];
-  v31 = [v30 bundleIdentifier];
-  [v5 setObject:v31 forKeyedSubscript:GKBundleIDKey];
+  gameDescriptor = [(GKBulletin *)self gameDescriptor];
+  bundleIdentifier = [gameDescriptor bundleIdentifier];
+  [v5 setObject:bundleIdentifier forKeyedSubscript:GKBundleIDKey];
 
-  v32 = [(GKRealTimeMultiplayerBulletin *)self declineReason];
+  declineReason = [(GKRealTimeMultiplayerBulletin *)self declineReason];
 
-  if (v32)
+  if (declineReason)
   {
-    v33 = [(GKRealTimeMultiplayerBulletin *)self declineReason];
-    [v5 setObject:v33 forKeyedSubscript:GKDeclineReasonKey];
+    declineReason2 = [(GKRealTimeMultiplayerBulletin *)self declineReason];
+    [v5 setObject:declineReason2 forKeyedSubscript:GKDeclineReasonKey];
   }
 
   return v5;
 }
 
-- (void)updateDeclineInviteTrackingForReason:(int64_t)a3
+- (void)updateDeclineInviteTrackingForReason:(int64_t)reason
 {
   if (!os_log_GKGeneral)
   {
@@ -488,17 +488,17 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "GKRealTimeMultiplayerBulletin updateDeclineInviteTrackingForReason:", v11, 2u);
   }
 
-  v7 = [NSNumber numberWithInteger:a3];
+  v7 = [NSNumber numberWithInteger:reason];
   [(GKRealTimeMultiplayerBulletin *)self setDeclineReason:v7];
 
-  if (a3 > 5)
+  if (reason > 5)
   {
     v8 = &GKReporterInviteDeclineUser;
   }
 
   else
   {
-    v8 = *(&off_10036A250 + a3);
+    v8 = *(&off_10036A250 + reason);
   }
 
   v9 = *v8;
@@ -506,9 +506,9 @@ LABEL_11:
   [v10 reportEvent:GKReporterDomainInvite type:v9];
 }
 
-- (void)declineInviteWithReason:(int)a3
+- (void)declineInviteWithReason:(int)reason
 {
-  v3 = *&a3;
+  v3 = *&reason;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -542,16 +542,16 @@ LABEL_11:
   else
   {
     v11 = [GKInviteInternal inviteWithBulletin:self];
-    v12 = [(GKBulletin *)self gameDescriptor];
-    v13 = [v12 bundleIdentifier];
-    v14 = [(GKService *)GKMultiplayerMatchService serviceForBundleID:v13 localPlayer:0];
+    gameDescriptor = [(GKBulletin *)self gameDescriptor];
+    bundleIdentifier = [gameDescriptor bundleIdentifier];
+    v14 = [(GKService *)GKMultiplayerMatchService serviceForBundleID:bundleIdentifier localPlayer:0];
     [v14 declineGameInvite:v11 reason:v9 handler:0];
   }
 }
 
-- (id)customInviteSoundPathForBundleID:(id)a3
+- (id)customInviteSoundPathForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   if (!os_log_GKGeneral)
   {
     v4 = GKOSLoggers();
@@ -566,11 +566,11 @@ LABEL_11:
 
   v6 = GKGetBundlePathForIdentifier();
   v7 = [NSBundle bundleWithPath:v6];
-  v8 = [v7 _gkPathForInviteSound];
-  v9 = v8;
-  if (v8)
+  _gkPathForInviteSound = [v7 _gkPathForInviteSound];
+  v9 = _gkPathForInviteSound;
+  if (_gkPathForInviteSound)
   {
-    v10 = v8;
+    v10 = _gkPathForInviteSound;
   }
 
   else
@@ -588,13 +588,13 @@ LABEL_11:
   v12.receiver = self;
   v12.super_class = GKRealTimeMultiplayerBulletin;
   v3 = [(GKBulletin *)&v12 description];
-  v4 = [(GKBulletin *)self gameDescriptor];
-  v5 = [v4 bundleIdentifier];
-  v6 = [(GKGameplayBulletin *)self originatorPlayerID];
-  v7 = [(GKGameplayBulletin *)self receiverPlayerID];
-  v8 = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
-  v9 = [(GKRealTimeMultiplayerBulletin *)self sessionID];
-  v10 = [v3 stringByAppendingFormat:@"\ngameDescriptor.bundleIdentifier:%@\noriginatorPlayerID:%@\nreceiverPlayerID:%@\nsessionToken:%@\nsessionID:%@\n", v5, v6, v7, v8, v9];
+  gameDescriptor = [(GKBulletin *)self gameDescriptor];
+  bundleIdentifier = [gameDescriptor bundleIdentifier];
+  originatorPlayerID = [(GKGameplayBulletin *)self originatorPlayerID];
+  receiverPlayerID = [(GKGameplayBulletin *)self receiverPlayerID];
+  sessionToken = [(GKRealTimeMultiplayerBulletin *)self sessionToken];
+  sessionID = [(GKRealTimeMultiplayerBulletin *)self sessionID];
+  v10 = [v3 stringByAppendingFormat:@"\ngameDescriptor.bundleIdentifier:%@\noriginatorPlayerID:%@\nreceiverPlayerID:%@\nsessionToken:%@\nsessionID:%@\n", bundleIdentifier, originatorPlayerID, receiverPlayerID, sessionToken, sessionID];
 
   return v10;
 }

@@ -1,12 +1,12 @@
 @interface ModifyContactAttributeIntentResponse
-- (ModifyContactAttributeIntentResponse)initWithPropertiesByName:(id)a3;
+- (ModifyContactAttributeIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation ModifyContactAttributeIntentResponse
 
-- (ModifyContactAttributeIntentResponse)initWithPropertiesByName:(id)a3
+- (ModifyContactAttributeIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }

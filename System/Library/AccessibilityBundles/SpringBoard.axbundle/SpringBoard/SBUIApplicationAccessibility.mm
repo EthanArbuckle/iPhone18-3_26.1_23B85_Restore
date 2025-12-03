@@ -1,5 +1,5 @@
 @interface SBUIApplicationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityLeftOfHomeTodayViewIsVisible;
 - (BOOL)_accessibilityLeftOfLockTodayViewIsVisible;
 - (BOOL)_accessibilityOverlayTodayViewIsVisible;
@@ -13,34 +13,34 @@
 
 @implementation SBUIApplicationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIApplication" hasInstanceMethod:@"_accessibilitySpeakThisViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIApplication" hasInstanceMethod:@"_accessibilityTitleBarElement" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconController"];
-  [v3 validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenController" hasInstanceMethod:@"homeScreenOverlayController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBRootFolderController"];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"isLeadingCustomViewVisible" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBRootFolderController" hasInstanceMethod:@"todayViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBLockScreenManager"];
-  [v3 validateClass:@"SBLockScreenManager" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBLockScreenManager" hasInstanceMethod:@"coverSheetViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController"];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"isShowingTodayView" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_indexOfTodayPage" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"pageViewControllerAtIndex:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"overlayController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBSpotlightMultiplexingViewController"];
-  [v3 validateClass:@"SBSpotlightMultiplexingViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"SBSpotlightMultiplexingViewController" hasClassMethod:@"sharedRemoteSearchViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"mainPageContentViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSMainPageContentViewController" hasInstanceMethod:@"combinedListViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CSCombinedListViewController" hasInstanceVariable:@"_structuredListViewController" withType:"NCNotificationStructuredListViewController"];
-  [v3 validateClass:@"SBHomeScreenOverlayController" hasInstanceMethod:@"overlayViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHomeScreenOverlayController" hasInstanceMethod:@"isPresented" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHomeScreenOverlayViewController" hasInstanceMethod:@"leadingSidebarViewController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIApplication" hasInstanceMethod:@"_accessibilitySpeakThisViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIApplication" hasInstanceMethod:@"_accessibilityTitleBarElement" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconController"];
+  [validationsCopy validateClass:@"SBIconController" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenController" hasInstanceMethod:@"homeScreenOverlayController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController"];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"isLeadingCustomViewVisible" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBRootFolderController" hasInstanceMethod:@"todayViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBLockScreenManager"];
+  [validationsCopy validateClass:@"SBLockScreenManager" hasClassMethod:@"sharedInstance" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBLockScreenManager" hasInstanceMethod:@"coverSheetViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController"];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"isShowingTodayView" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"_indexOfTodayPage" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"pageViewControllerAtIndex:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"overlayController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBSpotlightMultiplexingViewController"];
+  [validationsCopy validateClass:@"SBSpotlightMultiplexingViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"SBSpotlightMultiplexingViewController" hasClassMethod:@"sharedRemoteSearchViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSCoverSheetViewController" hasInstanceMethod:@"mainPageContentViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSMainPageContentViewController" hasInstanceMethod:@"combinedListViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CSCombinedListViewController" hasInstanceVariable:@"_structuredListViewController" withType:"NCNotificationStructuredListViewController"];
+  [validationsCopy validateClass:@"SBHomeScreenOverlayController" hasInstanceMethod:@"overlayViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenOverlayController" hasInstanceMethod:@"isPresented" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHomeScreenOverlayViewController" hasInstanceMethod:@"leadingSidebarViewController" withFullSignature:{"@", 0}];
 }
 
 - (id)_accessibilitySpeakThisViewController
@@ -49,17 +49,17 @@
   {
     LOBYTE(v9) = 0;
     objc_opt_class();
-    v3 = [(SBUIApplicationAccessibility *)self _accessibilityTodayOverlayController];
+    _accessibilityTodayOverlayController = [(SBUIApplicationAccessibility *)self _accessibilityTodayOverlayController];
     v4 = __UIAccessibilityCastAsClass();
     goto LABEL_3;
   }
 
   if ([(SBUIApplicationAccessibility *)self _accessibilityLeftOfHomeTodayViewIsVisible])
   {
-    v5 = [(SBUIApplicationAccessibility *)self _accessibilityRootFolderController];
+    _accessibilityRootFolderController = [(SBUIApplicationAccessibility *)self _accessibilityRootFolderController];
     LOBYTE(v9) = 0;
     objc_opt_class();
-    v6 = [v5 safeValueForKey:@"todayViewController"];
+    v6 = [_accessibilityRootFolderController safeValueForKey:@"todayViewController"];
     v4 = __UIAccessibilityCastAsClass();
 
 LABEL_13:
@@ -74,7 +74,7 @@ LABEL_13:
     v11 = 0x3032000000;
     v12 = __Block_byref_object_copy__9;
     v13 = __Block_byref_object_dispose__9;
-    v5 = v14 = 0;
+    _accessibilityRootFolderController = v14 = 0;
     AXPerformSafeBlock();
     v4 = v10[5];
 
@@ -84,14 +84,14 @@ LABEL_13:
 
   if (![(SBUIApplicationAccessibility *)self _accessibilitySpotlightIsVisible])
   {
-    v5 = [(SBUIApplicationAccessibility *)self _accessibilityCoverSheetViewController];
-    v4 = [v5 safeValueForKeyPath:@"mainPageContentViewController.combinedListViewController._structuredListViewController"];
+    _accessibilityRootFolderController = [(SBUIApplicationAccessibility *)self _accessibilityCoverSheetViewController];
+    v4 = [_accessibilityRootFolderController safeValueForKeyPath:@"mainPageContentViewController.combinedListViewController._structuredListViewController"];
     goto LABEL_13;
   }
 
   LOBYTE(v9) = 0;
   objc_opt_class();
-  v3 = [(SBUIApplicationAccessibility *)self _accessibilitySpotlightMultiplexingViewController];
+  _accessibilityTodayOverlayController = [(SBUIApplicationAccessibility *)self _accessibilitySpotlightMultiplexingViewController];
   v7 = [objc_opt_class() safeValueForKey:@"sharedRemoteSearchViewController"];
   v4 = __UIAccessibilityCastAsClass();
 
@@ -134,23 +134,23 @@ void __69__SBUIApplicationAccessibility__accessibilitySpeakThisViewController__b
 {
   if ([(SBUIApplicationAccessibility *)self _accessibilityLeftOfHomeTodayViewIsVisible]|| [(SBUIApplicationAccessibility *)self _accessibilityLeftOfLockTodayViewIsVisible])
   {
-    v3 = 0;
+    _accessibilityTitleBarElement = 0;
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = SBUIApplicationAccessibility;
-    v3 = [(SBUIApplicationAccessibility *)&v5 _accessibilityTitleBarElement];
+    _accessibilityTitleBarElement = [(SBUIApplicationAccessibility *)&v5 _accessibilityTitleBarElement];
   }
 
-  return v3;
+  return _accessibilityTitleBarElement;
 }
 
 - (BOOL)_accessibilitySpotlightIsVisible
 {
   objc_opt_class();
-  v3 = [(SBUIApplicationAccessibility *)self _accessibilitySpotlightMultiplexingViewController];
+  _accessibilitySpotlightMultiplexingViewController = [(SBUIApplicationAccessibility *)self _accessibilitySpotlightMultiplexingViewController];
   v4 = __UIAccessibilityCastAsClass();
 
   v5 = [v4 _appearState] == 2;
@@ -176,16 +176,16 @@ void __69__SBUIApplicationAccessibility__accessibilitySpeakThisViewController__b
 
 - (BOOL)_accessibilityLeftOfHomeTodayViewIsVisible
 {
-  v2 = [(SBUIApplicationAccessibility *)self _accessibilityRootFolderViewController];
-  v3 = [v2 safeBoolForKey:@"isLeadingCustomViewVisible"];
+  _accessibilityRootFolderViewController = [(SBUIApplicationAccessibility *)self _accessibilityRootFolderViewController];
+  v3 = [_accessibilityRootFolderViewController safeBoolForKey:@"isLeadingCustomViewVisible"];
 
   return v3;
 }
 
 - (BOOL)_accessibilityLeftOfLockTodayViewIsVisible
 {
-  v2 = [(SBUIApplicationAccessibility *)self _accessibilityCoverSheetViewController];
-  v3 = [v2 safeBoolForKey:@"isShowingTodayView"];
+  _accessibilityCoverSheetViewController = [(SBUIApplicationAccessibility *)self _accessibilityCoverSheetViewController];
+  v3 = [_accessibilityCoverSheetViewController safeBoolForKey:@"isShowingTodayView"];
 
   return v3;
 }

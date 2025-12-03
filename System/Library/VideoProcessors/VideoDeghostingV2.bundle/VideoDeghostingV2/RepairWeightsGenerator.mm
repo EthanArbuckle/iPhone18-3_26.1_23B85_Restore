@@ -1,40 +1,40 @@
 @interface RepairWeightsGenerator
 - ($BEDB99FD0828BB334BE1A07B64442EB9)configuration;
-- (RepairWeightsGenerator)initWithConfiguration:(id *)a3 withToolBox:(id)a4 homographyHandle:(id)a5 imageDimensions:(id)a6;
-- (int64_t)process:(__CVBuffer *)a3 info:(id)a4 metaContainerBuffer:(id)a5 computeBlendingWeights:(BOOL)a6 futureFrames:(id *)a7;
-- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)a3 info:(id)a4 meta:(id)a5 index:(signed __int16)a6;
-- (int64_t)updateQueuesWithTwoFutureFrames:(id *)a3 atBaseIndex:(signed __int16)a4;
-- (void)_computeBlendingWeightsYUVInput:(id)a3 frRefTPlusOrMinus1:(id)a4 frRefTPlusOrMinus2:(id)a5 trRefTPlusOrMinus1:(id)a6 trRefTPlusOrMinus2:(id)a7 meta:(id)a8 metaTPlusOrMinus1:(id)a9 metaTPlusOrMinus2:(id)a10 info:(id)a11 infoTPlusOrMinus1:(id)a12 infoTPlusOrMinus2:(id)a13 config:(id *)a14 trInput:(id)a15 usePastAsRef:(BOOL)a16;
-- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)a3;
+- (RepairWeightsGenerator)initWithConfiguration:(id *)configuration withToolBox:(id)box homographyHandle:(id)handle imageDimensions:(id)dimensions;
+- (int64_t)process:(__CVBuffer *)process info:(id)info metaContainerBuffer:(id)buffer computeBlendingWeights:(BOOL)weights futureFrames:(id *)frames;
+- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)frame info:(id)info meta:(id)meta index:(signed __int16)index;
+- (int64_t)updateQueuesWithTwoFutureFrames:(id *)frames atBaseIndex:(signed __int16)index;
+- (void)_computeBlendingWeightsYUVInput:(id)input frRefTPlusOrMinus1:(id)minus1 frRefTPlusOrMinus2:(id)minus2 trRefTPlusOrMinus1:(id)orMinus1 trRefTPlusOrMinus2:(id)orMinus2 meta:(id)meta metaTPlusOrMinus1:(id)plusOrMinus1 metaTPlusOrMinus2:(id)self0 info:(id)self1 infoTPlusOrMinus1:(id)self2 infoTPlusOrMinus2:(id)self3 config:(id *)self4 trInput:(id)self5 usePastAsRef:(BOOL)self6;
+- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)index;
 - (void)computeBlendingWeights;
 - (void)computeBlendingWeightsWithFuture;
 - (void)dealloc;
 - (void)reset;
-- (void)setConfiguration:(id *)a3;
+- (void)setConfiguration:(id *)configuration;
 @end
 
 @implementation RepairWeightsGenerator
 
-- (RepairWeightsGenerator)initWithConfiguration:(id *)a3 withToolBox:(id)a4 homographyHandle:(id)a5 imageDimensions:(id)a6
+- (RepairWeightsGenerator)initWithConfiguration:(id *)configuration withToolBox:(id)box homographyHandle:(id)handle imageDimensions:(id)dimensions
 {
-  v9 = a4;
-  v10 = a5;
+  boxCopy = box;
+  handleCopy = handle;
   v35.receiver = self;
   v35.super_class = RepairWeightsGenerator;
   v11 = [(RepairWeightsGenerator *)&v35 init];
   v12 = v11;
   if (v11)
   {
-    v13 = *&a3->var0.var0;
-    v14 = *&a3->var0.var7;
-    v15 = *&a3->var1.var4;
-    *(v11 + 296) = *&a3->var1.var0;
+    v13 = *&configuration->var0.var0;
+    v14 = *&configuration->var0.var7;
+    v15 = *&configuration->var1.var4;
+    *(v11 + 296) = *&configuration->var1.var0;
     *(v11 + 312) = v15;
     *(v11 + 264) = v13;
     *(v11 + 280) = v14;
-    if (v9)
+    if (boxCopy)
     {
-      v16 = v9;
+      v16 = boxCopy;
     }
 
     else
@@ -45,9 +45,9 @@
     v17 = *(v12 + 1);
     *(v12 + 1) = v16;
 
-    if (v10)
+    if (handleCopy)
     {
-      v18 = v10;
+      v18 = handleCopy;
     }
 
     else
@@ -71,8 +71,8 @@
       }
 
       v23 = PixelBuffer;
-      v24 = [*(v12 + 1) metalContext];
-      v25 = sub_C6CC(v23, v24, 0, 0);
+      metalContext = [*(v12 + 1) metalContext];
+      v25 = sub_C6CC(v23, metalContext, 0, 0);
       v26 = *(v22 + 23);
       *(v22 + 23) = v25;
 
@@ -83,8 +83,8 @@
       }
     }
 
-    v27 = [*(v12 + 1) getDevice];
-    v28 = [v27 newBufferWithLength:9544 options:0];
+    getDevice = [*(v12 + 1) getDevice];
+    v28 = [getDevice newBufferWithLength:9544 options:0];
     v29 = *(v12 + 29);
     *(v12 + 29) = v28;
 
@@ -98,8 +98,8 @@
         goto LABEL_16;
       }
 
-      v31 = [*(v12 + 1) metalContext];
-      v32 = sub_C6CC(v30, v31, 0, 0);
+      metalContext2 = [*(v12 + 1) metalContext];
+      v32 = sub_C6CC(v30, metalContext2, 0, 0);
       v33 = *(v12 + 31);
       *(v12 + 31) = v32;
 
@@ -157,24 +157,24 @@ LABEL_16:
   [(RepairWeightsGenerator *)&v5 dealloc];
 }
 
-- (void)_computeBlendingWeightsYUVInput:(id)a3 frRefTPlusOrMinus1:(id)a4 frRefTPlusOrMinus2:(id)a5 trRefTPlusOrMinus1:(id)a6 trRefTPlusOrMinus2:(id)a7 meta:(id)a8 metaTPlusOrMinus1:(id)a9 metaTPlusOrMinus2:(id)a10 info:(id)a11 infoTPlusOrMinus1:(id)a12 infoTPlusOrMinus2:(id)a13 config:(id *)a14 trInput:(id)a15 usePastAsRef:(BOOL)a16
+- (void)_computeBlendingWeightsYUVInput:(id)input frRefTPlusOrMinus1:(id)minus1 frRefTPlusOrMinus2:(id)minus2 trRefTPlusOrMinus1:(id)orMinus1 trRefTPlusOrMinus2:(id)orMinus2 meta:(id)meta metaTPlusOrMinus1:(id)plusOrMinus1 metaTPlusOrMinus2:(id)self0 info:(id)self1 infoTPlusOrMinus1:(id)self2 infoTPlusOrMinus2:(id)self3 config:(id *)self4 trInput:(id)self5 usePastAsRef:(BOOL)self6
 {
-  v22 = a3;
-  v23 = a4;
-  v68 = a5;
-  v67 = a6;
-  v66 = a7;
-  v24 = a8;
-  v62 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a13;
-  v65 = a15;
-  v60 = v27;
-  v61 = v26;
-  v59 = v28;
-  if (a14->var1.var1)
+  inputCopy = input;
+  minus1Copy = minus1;
+  minus2Copy = minus2;
+  orMinus1Copy = orMinus1;
+  orMinus2Copy = orMinus2;
+  metaCopy = meta;
+  plusOrMinus1Copy = plusOrMinus1;
+  plusOrMinus2Copy = plusOrMinus2;
+  infoCopy = info;
+  tPlusOrMinus1Copy = tPlusOrMinus1;
+  tPlusOrMinus2Copy = tPlusOrMinus2;
+  trInputCopy = trInput;
+  v60 = tPlusOrMinus1Copy;
+  v61 = infoCopy;
+  v59 = tPlusOrMinus2Copy;
+  if (config->var1.var1)
   {
     v70 = matrix_identity_float3x3.columns[1];
     v71 = matrix_identity_float3x3.columns[0];
@@ -182,24 +182,24 @@ LABEL_16:
     v73 = matrix_identity_float3x3.columns[0];
     v69 = matrix_identity_float3x3.columns[2];
     v74 = *v69.i64;
-    v29 = v68;
+    v29 = minus2Copy;
     goto LABEL_20;
   }
 
   calcTransform = self->_calcTransform;
-  if (a16)
+  if (ref)
   {
-    v29 = v68;
+    v29 = minus2Copy;
     if (calcTransform)
     {
-      [(CalcHomography *)calcTransform ispHomographyFromMetaInfo:v26];
+      [(CalcHomography *)calcTransform ispHomographyFromMetaInfo:infoCopy];
       v31 = self->_calcTransform;
       v32 = v87;
       v33 = v88;
       v34 = v89;
       if (v31)
       {
-        [(CalcHomography *)v31 ispHomographyFromMetaInfo:v27];
+        [(CalcHomography *)v31 ispHomographyFromMetaInfo:tPlusOrMinus1Copy];
         v33 = v88;
         v32 = v87;
         v34 = v89;
@@ -252,15 +252,15 @@ LABEL_12:
     goto LABEL_20;
   }
 
-  v29 = v68;
+  v29 = minus2Copy;
   if (calcTransform)
   {
-    [(CalcHomography *)calcTransform ispHomographyFromMetaInfo:v27];
+    [(CalcHomography *)calcTransform ispHomographyFromMetaInfo:tPlusOrMinus1Copy];
     v38 = self->_calcTransform;
     v39 = v81;
     if (v38)
     {
-      [(CalcHomography *)v38 ispHomographyFromMetaInfo:v28];
+      [(CalcHomography *)v38 ispHomographyFromMetaInfo:tPlusOrMinus2Copy];
       v39 = v81;
       v40 = v77;
       v41 = v78;
@@ -321,36 +321,36 @@ LABEL_17:
   v71.i64[0] = v98.columns[0].i64[0];
   v69.i64[0] = v98.columns[2].i64[0];
 LABEL_20:
-  v48 = v24;
-  v49 = -[GGMMetalToolBox generateMetaContainerArrayBufFromMetaContainerBuf:imageRect:](self->_metalToolbox, "generateMetaContainerArrayBufFromMetaContainerBuf:imageRect:", v24, 0.0, 0.0, [v22 width], objc_msgSend(v22, "height"));
+  v48 = metaCopy;
+  v49 = -[GGMMetalToolBox generateMetaContainerArrayBufFromMetaContainerBuf:imageRect:](self->_metalToolbox, "generateMetaContainerArrayBufFromMetaContainerBuf:imageRect:", metaCopy, 0.0, 0.0, [inputCopy width], objc_msgSend(inputCopy, "height"));
   self->_roiClusterCnt = v49->var1;
-  v50 = [(GGMMetalToolBox *)self->_metalToolbox metalContext];
-  v51 = [v50 commandQueue];
-  v52 = [v51 commandBuffer];
+  metalContext = [(GGMMetalToolBox *)self->_metalToolbox metalContext];
+  commandQueue = [metalContext commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  if (v52)
+  if (commandBuffer)
   {
     v64 = v48;
     if (v49->var1 >= 1)
     {
       v53 = 0;
-      v63 = v52;
+      v63 = commandBuffer;
       do
       {
-        v54 = [v52 computeCommandEncoder];
-        v55 = v23;
+        computeCommandEncoder = [commandBuffer computeCommandEncoder];
+        v55 = minus1Copy;
         metalToolbox = self->_metalToolbox;
         v57 = v49->var0[v53];
-        [(GGMMetalToolBox *)metalToolbox getGhostMaxLumaYUVInput:v22 metaBuf:v57 commandEncoder:v54];
-        [(GGMMetalToolBox *)self->_metalToolbox getRefTypeYUVInput:v22 ref0:v55 ref1:v68 metaBuf:v57 meta0Buf:v62 meta1Buf:v25 hmgrphy0:*v73.i64 hmgrphy1:v72 commandEncoder:v74, *v71.i64, *v70.i64, *v69.i64, v54];
-        v29 = v68;
-        v23 = v55;
-        [(GGMMetalToolBox *)self->_metalToolbox strongTemporalRepairYUVInput:v22 frRef0:v55 frRef1:v68 trRef0:v67 trRef1:v66 hmgrphy0:v57 hmgrphy1:*v73.i64 metaBuf:v72 ref0MetaBuf:v74 ref1MetaBuf:*v71.i64 strongTemporalOutput:*v70.i64 temporalOutput:*v69.i64 commandEncoder:v62, v25, v65, self->_temporalMitigatedTexture, v54, v59, v60, v61];
-        [(GGMMetalToolBox *)self->_metalToolbox computeBlendingWeightsYUVInput:v22 temporalRepaired:self->_temporalMitigatedTexture metadataBuf:v57 commandEncoder:v54];
-        [(GGMMetalToolBox *)self->_metalToolbox encodeCollectClusterStats:v54 clusterMetaBuf:v57 metaBuf:v64];
+        [(GGMMetalToolBox *)metalToolbox getGhostMaxLumaYUVInput:inputCopy metaBuf:v57 commandEncoder:computeCommandEncoder];
+        [(GGMMetalToolBox *)self->_metalToolbox getRefTypeYUVInput:inputCopy ref0:v55 ref1:minus2Copy metaBuf:v57 meta0Buf:plusOrMinus1Copy meta1Buf:plusOrMinus2Copy hmgrphy0:*v73.i64 hmgrphy1:v72 commandEncoder:v74, *v71.i64, *v70.i64, *v69.i64, computeCommandEncoder];
+        v29 = minus2Copy;
+        minus1Copy = v55;
+        [(GGMMetalToolBox *)self->_metalToolbox strongTemporalRepairYUVInput:inputCopy frRef0:v55 frRef1:minus2Copy trRef0:orMinus1Copy trRef1:orMinus2Copy hmgrphy0:v57 hmgrphy1:*v73.i64 metaBuf:v72 ref0MetaBuf:v74 ref1MetaBuf:*v71.i64 strongTemporalOutput:*v70.i64 temporalOutput:*v69.i64 commandEncoder:plusOrMinus1Copy, plusOrMinus2Copy, trInputCopy, self->_temporalMitigatedTexture, computeCommandEncoder, v59, v60, v61];
+        [(GGMMetalToolBox *)self->_metalToolbox computeBlendingWeightsYUVInput:inputCopy temporalRepaired:self->_temporalMitigatedTexture metadataBuf:v57 commandEncoder:computeCommandEncoder];
+        [(GGMMetalToolBox *)self->_metalToolbox encodeCollectClusterStats:computeCommandEncoder clusterMetaBuf:v57 metaBuf:v64];
 
-        [v54 endEncoding];
-        v52 = v63;
+        [computeCommandEncoder endEncoding];
+        commandBuffer = v63;
         ++v53;
       }
 
@@ -364,9 +364,9 @@ LABEL_20:
     v48 = v64;
     v76 = v64;
     v58 = objc_retainBlock(v75);
-    [v52 addCompletedHandler:v58];
+    [commandBuffer addCompletedHandler:v58];
 
-    [(GGMMetalToolBox *)self->_metalToolbox commitCmdBuffer:v52 waitForComplete:self->_forceWaitForComputeWeights];
+    [(GGMMetalToolBox *)self->_metalToolbox commitCmdBuffer:commandBuffer waitForComplete:self->_forceWaitForComputeWeights];
   }
 
   else
@@ -375,15 +375,15 @@ LABEL_20:
   }
 }
 
-- (int64_t)updateQueuesWithTwoFutureFrames:(id *)a3 atBaseIndex:(signed __int16)a4
+- (int64_t)updateQueuesWithTwoFutureFrames:(id *)frames atBaseIndex:(signed __int16)index
 {
-  v4 = a4;
+  indexCopy = index;
   v7 = 0;
   for (i = 1; ; i = 0)
   {
     v9 = i;
-    v10 = v7 + v4 + 1 < 4 ? v7 + v4 + 1 : v7 + v4 - 3;
-    v11 = (a3->var0 + 16 * v7);
+    v10 = v7 + indexCopy + 1 < 4 ? v7 + indexCopy + 1 : v7 + indexCopy - 3;
+    v11 = (frames->var0 + 16 * v7);
     v12 = *v11;
     v13 = v11[1];
     v14 = [(RepairWeightsGenerator *)self updateQueuesWithInputFrame:v12 info:v13 meta:self->_dummyMetaBuf index:v10];
@@ -404,9 +404,9 @@ LABEL_20:
   return v15;
 }
 
-- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)a3
+- (void)cleanTwoFutureFramesInQueuesAtBaseIndex:(signed __int16)index
 {
-  v3 = a3;
+  indexCopy = index;
   inputTextureQueue = self->_inputTextureQueue;
   inputInfoQueue = self->_inputInfoQueue;
   inputMetaQueue = self->_inputMetaQueue;
@@ -416,8 +416,8 @@ LABEL_20:
   do
   {
     v10 = v8;
-    v11 = v9 + v3;
-    v12 = v9 + v3 - 4;
+    v11 = v9 + indexCopy;
+    v12 = v9 + indexCopy - 4;
     if (v11 >= 4)
     {
       LOWORD(v11) = v12;
@@ -449,8 +449,8 @@ LABEL_20:
 
 - (void)computeBlendingWeights
 {
-  v3 = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
-  if (v3 > 0)
+  getFrameIndexInQueue = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
+  if (getFrameIndexInQueue > 0)
   {
     v4 = -1;
   }
@@ -460,8 +460,8 @@ LABEL_20:
     v4 = 3;
   }
 
-  v5 = v4 + v3;
-  if (v3 < 2)
+  v5 = v4 + getFrameIndexInQueue;
+  if (getFrameIndexInQueue < 2)
   {
     v6 = 2;
   }
@@ -471,10 +471,10 @@ LABEL_20:
     v6 = -2;
   }
 
-  v7 = self->_inputTextureQueue[v3];
+  v7 = self->_inputTextureQueue[getFrameIndexInQueue];
   v8 = self->_inputTextureQueue[v5];
   consecutiveTemporalRepairFrameCnt = self->_consecutiveTemporalRepairFrameCnt;
-  v10 = (v6 + v3);
+  v10 = (v6 + getFrameIndexInQueue);
   v11 = self->_inputTextureQueue[v10];
   v12 = v8;
   if (consecutiveTemporalRepairFrameCnt >= 2)
@@ -482,7 +482,7 @@ LABEL_20:
     v12 = self->_trRefTexQueue[v5];
   }
 
-  v13 = self->_inputMetaQueue[v3];
+  v13 = self->_inputMetaQueue[getFrameIndexInQueue];
   v14 = self->_inputMetaQueue[v5];
   v15 = self->_inputMetaQueue[v10];
   if (consecutiveTemporalRepairFrameCnt <= 1)
@@ -495,11 +495,11 @@ LABEL_20:
     v16 = &self->_trRefTexQueue[v10];
   }
 
-  v17 = self->_inputInfoQueue[v3];
+  v17 = self->_inputInfoQueue[getFrameIndexInQueue];
   v18 = self->_inputInfoQueue[v5];
   v19 = self->_inputInfoQueue[v10];
   v20 = *v16;
-  v21 = self->_trRefTexQueue[v3];
+  v21 = self->_trRefTexQueue[getFrameIndexInQueue];
   v22 = *&self->_configuration.internalCfg.enableColorMask;
   v25[0] = *&self->_configuration.internalCfg.clipThreshold;
   v25[1] = v22;
@@ -512,16 +512,16 @@ LABEL_20:
 
 - (void)computeBlendingWeightsWithFuture
 {
-  v3 = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
-  v4 = v3 - 3;
-  if (v3 < 3)
+  getFrameIndexInQueue = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
+  v4 = getFrameIndexInQueue - 3;
+  if (getFrameIndexInQueue < 3)
   {
-    v4 = v3 + 1;
+    v4 = getFrameIndexInQueue + 1;
   }
 
-  v5 = self->_inputTextureQueue[v3];
+  v5 = self->_inputTextureQueue[getFrameIndexInQueue];
   v6 = self->_inputTextureQueue[v4];
-  if (v3 < 2)
+  if (getFrameIndexInQueue < 2)
   {
     v7 = 2;
   }
@@ -531,15 +531,15 @@ LABEL_20:
     v7 = -2;
   }
 
-  v8 = (v7 + v3);
+  v8 = (v7 + getFrameIndexInQueue);
   v9 = self->_inputTextureQueue[v8];
-  v10 = self->_inputMetaQueue[v3];
+  v10 = self->_inputMetaQueue[getFrameIndexInQueue];
   v11 = self->_inputMetaQueue[v4];
   v12 = self->_inputMetaQueue[v8];
-  v13 = self->_inputInfoQueue[v3];
+  v13 = self->_inputInfoQueue[getFrameIndexInQueue];
   v14 = self->_inputInfoQueue[v4];
   v15 = self->_inputInfoQueue[v8];
-  v16 = self->_trRefTexQueue[v3];
+  v16 = self->_trRefTexQueue[getFrameIndexInQueue];
   v17 = *&self->_configuration.internalCfg.enableColorMask;
   v20[0] = *&self->_configuration.internalCfg.clipThreshold;
   v20[1] = v17;
@@ -550,17 +550,17 @@ LABEL_20:
   [(RepairWeightsGenerator *)self _computeBlendingWeightsYUVInput:v5 frRefTPlusOrMinus1:v6 frRefTPlusOrMinus2:v9 trRefTPlusOrMinus1:v6 trRefTPlusOrMinus2:v9 meta:v10 metaTPlusOrMinus1:v11 metaTPlusOrMinus2:v12 info:v13 infoTPlusOrMinus1:v14 infoTPlusOrMinus2:v15 config:v20 trInput:v16 usePastAsRef:v19];
 }
 
-- (int64_t)process:(__CVBuffer *)a3 info:(id)a4 metaContainerBuffer:(id)a5 computeBlendingWeights:(BOOL)a6 futureFrames:(id *)a7
+- (int64_t)process:(__CVBuffer *)process info:(id)info metaContainerBuffer:(id)buffer computeBlendingWeights:(BOOL)weights futureFrames:(id *)frames
 {
-  v12 = a4;
-  v13 = a5;
+  infoCopy = info;
+  bufferCopy = buffer;
   frameIndexInVideo = self->_frameIndexInVideo;
-  var2 = a7->var2;
+  var2 = frames->var2;
   v17 = frameIndexInVideo < 2 && var2 > 1;
-  v18 = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
+  getFrameIndexInQueue = [(RepairWeightsGenerator *)self getFrameIndexInQueue];
   if (v17)
   {
-    v19 = [(RepairWeightsGenerator *)self updateQueuesWithTwoFutureFrames:a7 atBaseIndex:v18];
+    v19 = [(RepairWeightsGenerator *)self updateQueuesWithTwoFutureFrames:frames atBaseIndex:getFrameIndexInQueue];
     if (v19)
     {
       v21 = v19;
@@ -569,7 +569,7 @@ LABEL_20:
     }
   }
 
-  v20 = [(RepairWeightsGenerator *)self updateQueuesWithInputFrame:a3 info:v12 meta:v13 index:v18];
+  v20 = [(RepairWeightsGenerator *)self updateQueuesWithInputFrame:process info:infoCopy meta:bufferCopy index:getFrameIndexInQueue];
   if (v20)
   {
     v21 = v20;
@@ -577,7 +577,7 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  if (a6)
+  if (weights)
   {
     if (var2 > 1 || frameIndexInVideo >= 2)
     {
@@ -600,7 +600,7 @@ LABEL_20:
 
     else
     {
-      [(GGMMetalToolBox *)self->_metalToolbox computeBlendingWeightsSpatialOnlyYUVInput:self->_inputTextureQueue[v18] metadataBuf:v13];
+      [(GGMMetalToolBox *)self->_metalToolbox computeBlendingWeightsSpatialOnlyYUVInput:self->_inputTextureQueue[getFrameIndexInQueue] metadataBuf:bufferCopy];
       self->_consecutiveTemporalRepairFrameCnt = 0;
       if (!v17)
       {
@@ -608,7 +608,7 @@ LABEL_20:
       }
     }
 
-    [(RepairWeightsGenerator *)self cleanTwoFutureFramesInQueuesAtBaseIndex:v18];
+    [(RepairWeightsGenerator *)self cleanTwoFutureFramesInQueuesAtBaseIndex:getFrameIndexInQueue];
 LABEL_21:
     v21 = 0;
     goto LABEL_22;
@@ -616,7 +616,7 @@ LABEL_21:
 
   self->_consecutiveTemporalRepairFrameCnt = 0;
   v21 = 0;
-  *([v13 contents] + 9536) = 1;
+  *([bufferCopy contents] + 9536) = 1;
 LABEL_22:
   ++self->_frameIndexInVideo;
 
@@ -634,48 +634,48 @@ LABEL_22:
   return self;
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var7;
-  v5 = *&a3->var1.var4;
-  *&self->_configuration.externalCfg.lightMode = *&a3->var1.var0;
+  v3 = *&configuration->var0.var0;
+  v4 = *&configuration->var0.var7;
+  v5 = *&configuration->var1.var4;
+  *&self->_configuration.externalCfg.lightMode = *&configuration->var1.var0;
   *&self->_configuration.externalCfg.frameDelay = v5;
   *&self->_configuration.internalCfg.clipThreshold = v3;
   *&self->_configuration.internalCfg.enableColorMask = v4;
 }
 
-- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)a3 info:(id)a4 meta:(id)a5 index:(signed __int16)a6
+- (int64_t)updateQueuesWithInputFrame:(__CVBuffer *)frame info:(id)info meta:(id)meta index:(signed __int16)index
 {
-  v6 = a6;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
+  indexCopy = index;
+  infoCopy = info;
+  metaCopy = meta;
+  v13 = metaCopy;
   v14 = 5;
-  if (a3 && v11 && v12)
+  if (frame && infoCopy && metaCopy)
   {
-    v15 = &self->super.isa + v6;
+    v15 = &self->super.isa + indexCopy;
     v16 = v15[3];
-    v15[3] = a3;
-    CFRetain(a3);
+    v15[3] = frame;
+    CFRetain(frame);
     if (v16)
     {
       CFRelease(v16);
     }
 
-    v17 = [(GGMMetalToolBox *)self->_metalToolbox cvMetalTextureCacheRef];
-    v18 = [(GGMMetalToolBox *)self->_metalToolbox metalContext];
-    v19 = sub_22594(a3, v17, v18, 0, 0);
+    cvMetalTextureCacheRef = [(GGMMetalToolBox *)self->_metalToolbox cvMetalTextureCacheRef];
+    metalContext = [(GGMMetalToolBox *)self->_metalToolbox metalContext];
+    v19 = sub_22594(frame, cvMetalTextureCacheRef, metalContext, 0, 0);
 
     if (v19)
     {
-      v20 = &self->super.isa + v6;
+      v20 = &self->super.isa + indexCopy;
       v21 = v20[7];
       v20[7] = v19;
       v22 = v19;
 
-      objc_storeStrong(v20 + 15, a4);
-      objc_storeStrong(v20 + 11, a5);
+      objc_storeStrong(v20 + 15, info);
+      objc_storeStrong(v20 + 11, meta);
 
       v14 = 0;
     }

@@ -1,37 +1,37 @@
 @interface DNDSStateProvider
-- (DNDSStateProvider)initWithModeConfigurationManager:(id)a3;
-- (id)recalculateStateForSnapshot:(id)a3;
+- (DNDSStateProvider)initWithModeConfigurationManager:(id)manager;
+- (id)recalculateStateForSnapshot:(id)snapshot;
 @end
 
 @implementation DNDSStateProvider
 
-- (DNDSStateProvider)initWithModeConfigurationManager:(id)a3
+- (DNDSStateProvider)initWithModeConfigurationManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = DNDSStateProvider;
   v6 = [(DNDSStateProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_modeConfigurationManager, a3);
+    objc_storeStrong(&v6->_modeConfigurationManager, manager);
   }
 
   return v7;
 }
 
-- (id)recalculateStateForSnapshot:(id)a3
+- (id)recalculateStateForSnapshot:(id)snapshot
 {
   v92 = *MEMORY[0x277D85DE8];
-  v79 = a3;
+  snapshotCopy = snapshot;
   [(DNDSStateProvider *)self setLastSystemSnapshot:?];
   v3 = DNDSLogStateProvider;
   if (os_log_type_enabled(DNDSLogStateProvider, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [v79 activeAssertionUUIDs];
+    activeAssertionUUIDs = [snapshotCopy activeAssertionUUIDs];
     *buf = 138543362;
-    v91 = v5;
+    v91 = activeAssertionUUIDs;
     _os_log_impl(&dword_24912E000, v4, OS_LOG_TYPE_DEFAULT, "Calculate DND state for snapshot: activeAssertionUUIDs=%{public}@", buf, 0xCu);
   }
 
@@ -39,8 +39,8 @@
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v6 = [v79 assertions];
-  v7 = [v6 countByEnumeratingWithState:&v84 objects:v89 count:16];
+  assertions = [snapshotCopy assertions];
+  v7 = [assertions countByEnumeratingWithState:&v84 objects:v89 count:16];
   if (v7)
   {
     v8 = v7;
@@ -51,7 +51,7 @@
       {
         if (*v85 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(assertions);
         }
 
         v11 = DNDSLogStateProvider;
@@ -64,20 +64,20 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v84 objects:v89 count:16];
+      v8 = [assertions countByEnumeratingWithState:&v84 objects:v89 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [v79 activeAssertionUUIDs];
-  if ([v13 count])
+  activeAssertionUUIDs2 = [snapshotCopy activeAssertionUUIDs];
+  if ([activeAssertionUUIDs2 count])
   {
-    v14 = [v79 lostModeState];
+    lostModeState = [snapshotCopy lostModeState];
 
-    if (v14 != 1)
+    if (lostModeState != 1)
     {
-      if ([v79 interruptionBehaviorSetting] == 1)
+      if ([snapshotCopy interruptionBehaviorSetting] == 1)
       {
         v15 = 1;
       }
@@ -99,25 +99,25 @@
 LABEL_19:
   v71 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v16 = objc_alloc_init(DNDSModeResolutionService);
-  v75 = [(DNDSModeResolutionService *)v16 recalculateModeForSnapshot:v79];
-  v17 = [v79 assertions];
-  v18 = [v17 count];
+  v75 = [(DNDSModeResolutionService *)v16 recalculateModeForSnapshot:snapshotCopy];
+  assertions2 = [snapshotCopy assertions];
+  v18 = [assertions2 count];
 
   if (!v18)
   {
-    v58 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     v59 = 0;
     goto LABEL_52;
   }
 
   v67 = v15;
   v68 = v16;
-  v73 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v80 = 0u;
   v81 = 0u;
   v82 = 0u;
   v83 = 0u;
-  obj = [v79 assertions];
+  obj = [snapshotCopy assertions];
   v77 = [obj countByEnumeratingWithState:&v80 objects:v88 count:16];
   if (!v77)
   {
@@ -138,59 +138,59 @@ LABEL_19:
       }
 
       v21 = *(*(&v80 + 1) + 8 * j);
-      v22 = [v79 activeDateIntervalByAssertionUUID];
-      v23 = [v21 UUID];
-      v24 = [v22 objectForKey:v23];
+      activeDateIntervalByAssertionUUID = [snapshotCopy activeDateIntervalByAssertionUUID];
+      uUID = [v21 UUID];
+      v24 = [activeDateIntervalByAssertionUUID objectForKey:uUID];
 
-      v25 = [v21 details];
-      v26 = [v25 userVisibleEndDate];
+      details = [v21 details];
+      userVisibleEndDate = [details userVisibleEndDate];
 
-      v27 = [v21 details];
-      v28 = [v27 lifetime];
-      v29 = [v28 lifetimeType];
+      details2 = [v21 details];
+      lifetime = [details2 lifetime];
+      lifetimeType = [lifetime lifetimeType];
 
-      v30 = [v79 activeAssertionUUIDs];
-      v31 = [v21 UUID];
-      v32 = [v30 containsObject:v31];
+      activeAssertionUUIDs3 = [snapshotCopy activeAssertionUUIDs];
+      uUID2 = [v21 UUID];
+      v32 = [activeAssertionUUIDs3 containsObject:uUID2];
 
       if (v32)
       {
         v33 = objc_alloc(MEMORY[0x277D05AA8]);
-        v34 = [v21 source];
-        [v34 clientIdentifier];
-        v35 = v29;
-        v37 = v36 = v26;
+        source = [v21 source];
+        [source clientIdentifier];
+        v35 = lifetimeType;
+        v37 = v36 = userVisibleEndDate;
         [v21 details];
         v39 = v38 = v24;
-        v40 = [v39 modeIdentifier];
+        modeIdentifier = [v39 modeIdentifier];
         v41 = v33;
         v42 = v35;
-        v43 = [v41 initWithClientIdentifier:v37 modeIdentifier:v40 lifetimeType:v35 activeDateInterval:v38 userVisibleEndDate:v36];
+        v43 = [v41 initWithClientIdentifier:v37 modeIdentifier:modeIdentifier lifetimeType:v35 activeDateInterval:v38 userVisibleEndDate:v36];
 
-        v26 = v36;
+        userVisibleEndDate = v36;
         [v71 addObject:v43];
         if (v36)
         {
-          v44 = v36;
+          endDate = v36;
         }
 
         else
         {
-          v44 = [v38 endDate];
+          endDate = [v38 endDate];
         }
 
-        v47 = v44;
+        startDate = endDate;
         v19 = v75;
         v24 = v38;
 
-        v29 = v42;
+        lifetimeType = v42;
         if (v75)
         {
 LABEL_33:
-          v78 = v26;
-          v48 = [v21 details];
-          v49 = [v48 modeIdentifier];
-          if (v49 == v19)
+          v78 = userVisibleEndDate;
+          details3 = [v21 details];
+          modeIdentifier2 = [details3 modeIdentifier];
+          if (modeIdentifier2 == v19)
           {
             v56 = 0;
           }
@@ -198,18 +198,18 @@ LABEL_33:
           else
           {
             v74 = v24;
-            v50 = [v21 details];
-            v51 = [v50 modeIdentifier];
-            if (v51)
+            details4 = [v21 details];
+            modeIdentifier3 = [details4 modeIdentifier];
+            if (modeIdentifier3)
             {
-              v52 = [v21 details];
-              v53 = [v52 modeIdentifier];
-              v54 = v29;
-              v55 = [v53 isEqual:v75];
+              details5 = [v21 details];
+              modeIdentifier4 = [details5 modeIdentifier];
+              v54 = lifetimeType;
+              v55 = [modeIdentifier4 isEqual:v75];
 
               v19 = v75;
               v56 = v55 ^ 1;
-              v29 = v54;
+              lifetimeType = v54;
             }
 
             else
@@ -220,8 +220,8 @@ LABEL_33:
             v24 = v74;
           }
 
-          v26 = v78;
-          if (!v47)
+          userVisibleEndDate = v78;
+          if (!startDate)
           {
             goto LABEL_46;
           }
@@ -232,12 +232,12 @@ LABEL_33:
 
       else
       {
-        v45 = [v79 activeAssertionUUIDs];
-        v46 = [v45 count];
+        activeAssertionUUIDs4 = [snapshotCopy activeAssertionUUIDs];
+        v46 = [activeAssertionUUIDs4 count];
 
         if (v46)
         {
-          v47 = 0;
+          startDate = 0;
           if (v19)
           {
             goto LABEL_33;
@@ -246,7 +246,7 @@ LABEL_33:
 
         else
         {
-          v47 = [v24 startDate];
+          startDate = [v24 startDate];
           if (v19)
           {
             goto LABEL_33;
@@ -255,18 +255,18 @@ LABEL_33:
       }
 
       v56 = 0;
-      if (!v47)
+      if (!startDate)
       {
         goto LABEL_46;
       }
 
 LABEL_43:
-      if ((v56 & 1) == 0 && [v73 compare:v47] == -1)
+      if ((v56 & 1) == 0 && [distantPast compare:startDate] == -1)
       {
-        v57 = v47;
+        v57 = startDate;
 
-        v70 = v29;
-        v73 = v57;
+        v70 = lifetimeType;
+        distantPast = v57;
       }
 
 LABEL_46:
@@ -280,7 +280,7 @@ LABEL_51:
 
   v15 = v67;
   v16 = v68;
-  v58 = v73;
+  distantFuture = distantPast;
   v59 = v70;
 LABEL_52:
   if (v75)
@@ -294,8 +294,8 @@ LABEL_52:
   }
 
   v61 = objc_alloc(MEMORY[0x277D05AA0]);
-  v62 = [v79 lastUpdate];
-  v63 = [v61 initWithSuppressionState:v15 activeModeAssertionMetadata:v71 startDate:v62 userVisibleTransitionDate:v58 userVisibleTransitionLifetimeType:v59 activeModeConfiguration:v60];
+  lastUpdate = [snapshotCopy lastUpdate];
+  v63 = [v61 initWithSuppressionState:v15 activeModeAssertionMetadata:v71 startDate:lastUpdate userVisibleTransitionDate:distantFuture userVisibleTransitionLifetimeType:v59 activeModeConfiguration:v60];
 
   v64 = DNDSLogStateProvider;
   if (os_log_type_enabled(DNDSLogStateProvider, OS_LOG_TYPE_DEFAULT))

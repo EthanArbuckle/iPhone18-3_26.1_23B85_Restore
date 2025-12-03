@@ -1,31 +1,31 @@
 @interface CIBarcodeDetector
-+ (id)messageStringFromDescriptor:(id)a3;
-- (CIBarcodeDetector)initWithContext:(id)a3 options:(id)a4;
-- (id)featuresInImage:(id)a3 options:(id)a4;
++ (id)messageStringFromDescriptor:(id)descriptor;
+- (CIBarcodeDetector)initWithContext:(id)context options:(id)options;
+- (id)featuresInImage:(id)image options:(id)options;
 - (void)dealloc;
 @end
 
 @implementation CIBarcodeDetector
 
-- (CIBarcodeDetector)initWithContext:(id)a3 options:(id)a4
+- (CIBarcodeDetector)initWithContext:(id)context options:(id)options
 {
   v10.receiver = self;
   v10.super_class = CIBarcodeDetector;
   v6 = [(CIDetector *)&v10 init];
   if (v6)
   {
-    if (!a3)
+    if (!context)
     {
-      a3 = +[CIContext _singletonContext];
+      context = +[CIContext _singletonContext];
     }
 
-    [(CIBarcodeDetector *)v6 setContext:a3];
+    [(CIBarcodeDetector *)v6 setContext:context];
     if (!v6->featureOptions)
     {
       v6->featureOptions = [MEMORY[0x1E695DF90] dictionary];
     }
 
-    v7 = [a4 objectForKey:@"CIDetectorAccuracy"];
+    v7 = [options objectForKey:@"CIDetectorAccuracy"];
     if ([v7 isEqual:@"CIDetectorAccuracyHigh"])
     {
       [(NSMutableDictionary *)v6->featureOptions setObject:@"CIDetectorAccuracyHigh" forKey:@"CIDetectorAccuracy"];
@@ -60,7 +60,7 @@
   [(CIBarcodeDetector *)&v4 dealloc];
 }
 
-- (id)featuresInImage:(id)a3 options:(id)a4
+- (id)featuresInImage:(id)image options:(id)options
 {
   values[1] = *MEMORY[0x1E69E9840];
   v6 = ci_signpost_log_detector();
@@ -78,7 +78,7 @@
   v121[1] = 3221225472;
   v122 = __45__CIBarcodeDetector_featuresInImage_options___block_invoke;
   v123 = &__block_descriptor_40_e5_v8__0l;
-  v124 = self;
+  selfCopy = self;
   if (!QuaggaLibraryCore(0))
   {
     v37 = ci_logger_api();
@@ -135,13 +135,13 @@ LABEL_23:
   }
 
   v107 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  [a3 extent];
+  [image extent];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
   CGAffineTransformMakeTranslation(&v112, -v12, -v14);
-  v20 = [a3 imageByApplyingTransform:&v112];
+  v20 = [image imageByApplyingTransform:&v112];
   v132.origin.x = v13;
   v132.origin.y = v15;
   v132.size.width = v17;
@@ -199,8 +199,8 @@ LABEL_95:
     __assert_rtn("[CIBarcodeDetector featuresInImage:options:]", "CIBarcodeDetector.mm", 254, "0 && unreachable");
   }
 
-  v21 = [(CIBarcodeDetector *)self context];
-  [(CIContext *)v21 render:v20 toCVPixelBuffer:pixelBufferOut];
+  context = [(CIBarcodeDetector *)self context];
+  [(CIContext *)context render:v20 toCVPixelBuffer:pixelBufferOut];
   CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
   Width = CVPixelBufferGetWidth(pixelBufferOut);
   Height = CVPixelBufferGetHeight(pixelBufferOut);
@@ -565,23 +565,23 @@ void __45__CIBarcodeDetector_featuresInImage_options___block_invoke(uint64_t a1)
   }
 }
 
-+ (id)messageStringFromDescriptor:(id)a3
++ (id)messageStringFromDescriptor:(id)descriptor
 {
   v19[3] = *MEMORY[0x1E69E9840];
   if (QuaggaLibraryCore(0))
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%c", objc_msgSend(a3, "errorCorrectionLevel")];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%c", objc_msgSend(descriptor, "errorCorrectionLevel")];
     v19[0] = @"QR";
     v18[0] = @"BarcodeType";
     v18[1] = @"BarcodeRawData";
-    v19[1] = [a3 errorCorrectedPayload];
+    v19[1] = [descriptor errorCorrectedPayload];
     v18[2] = @"CodeProperties";
     v17[0] = v4;
     v16[0] = @"ErrorCorrectionLevel";
     v16[1] = @"QRMASK";
-    v17[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(a3, "maskPattern")}];
+    v17[1] = [MEMORY[0x1E696AD98] numberWithUnsignedChar:{objc_msgSend(descriptor, "maskPattern")}];
     v16[2] = @"SymbolVersion";
-    v17[2] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(a3, "symbolVersion")}];
+    v17[2] = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(descriptor, "symbolVersion")}];
     v19[2] = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:3];
     v5 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
     v12 = 0;

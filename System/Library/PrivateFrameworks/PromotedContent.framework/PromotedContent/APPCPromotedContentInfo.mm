@@ -11,8 +11,8 @@
 - (int64_t)desiredPosition;
 - (int64_t)unfilledReason;
 - (void)dealloc;
-- (void)setPlaceholder:(BOOL)a3;
-- (void)setUnfilledReason:(int64_t)a3;
+- (void)setPlaceholder:(BOOL)placeholder;
+- (void)setUnfilledReason:(int64_t)reason;
 @end
 
 @implementation APPCPromotedContentInfo
@@ -27,13 +27,13 @@
 - (void)dealloc
 {
   v2 = *(self + OBJC_IVAR___APPCPromotedContentInfo_promotedContent);
-  v3 = self;
+  selfCopy = self;
   if ([v2 adType] == 1)
   {
-    [*(v3 + OBJC_IVAR___APPCPromotedContentInfo_metricsHelper) manuallyDiscardWithReason_];
+    [*(selfCopy + OBJC_IVAR___APPCPromotedContentInfo_metricsHelper) manuallyDiscardWithReason_];
   }
 
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for PromotedContentInfo();
   [(APPCPromotedContentInfo *)&v4 dealloc];
 }
@@ -70,52 +70,52 @@
 
 - (NSString)identifier
 {
-  v2 = [*(self + OBJC_IVAR___APPCPromotedContentInfo_promotedContent) identifier];
+  identifier = [*(self + OBJC_IVAR___APPCPromotedContentInfo_promotedContent) identifier];
 
-  return v2;
+  return identifier;
 }
 
 - (APPCNativeRepresentation)nativeInfo
 {
-  v2 = [*(self + OBJC_IVAR___APPCPromotedContentInfo_promotedContent) bestRepresentation];
-  if (v2)
+  bestRepresentation = [*(self + OBJC_IVAR___APPCPromotedContentInfo_promotedContent) bestRepresentation];
+  if (bestRepresentation)
   {
     type metadata accessor for NativeRepresentation();
-    v2 = swift_dynamicCastClass();
-    if (!v2)
+    bestRepresentation = swift_dynamicCastClass();
+    if (!bestRepresentation)
     {
       swift_unknownObjectRelease();
-      v2 = 0;
+      bestRepresentation = 0;
     }
   }
 
-  return v2;
+  return bestRepresentation;
 }
 
 - (int64_t)desiredPosition
 {
   v2 = *(self + OBJC_IVAR___APPCPromotedContentInfo_promotedContent);
-  v3 = self;
-  v4 = [v2 bestRepresentation];
-  if (v4)
+  selfCopy = self;
+  bestRepresentation = [v2 bestRepresentation];
+  if (bestRepresentation)
   {
-    v5 = [v4 desiredPosition];
+    desiredPosition = [bestRepresentation desiredPosition];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v5 = 0;
+    desiredPosition = 0;
   }
 
-  return v5;
+  return desiredPosition;
 }
 
-- (void)setUnfilledReason:(int64_t)a3
+- (void)setUnfilledReason:(int64_t)reason
 {
   v5 = OBJC_IVAR___APPCPromotedContentInfo_unfilledReason;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = reason;
 }
 
 - (BOOL)placeholder
@@ -125,17 +125,17 @@
   return *(self + v3);
 }
 
-- (void)setPlaceholder:(BOOL)a3
+- (void)setPlaceholder:(BOOL)placeholder
 {
   v5 = OBJC_IVAR___APPCPromotedContentInfo_placeholder;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = placeholder;
 }
 
 - (BOOL)isInteractive
 {
   v2 = *(self + OBJC_IVAR___APPCPromotedContentInfo_promotedContent);
-  v3 = self;
+  selfCopy = self;
   if ([v2 bestRepresentation])
   {
     type metadata accessor for ClientLayoutRepresentation();
@@ -155,7 +155,7 @@
 
 - (BOOL)isDownloadable
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C1B12214();
 
   return v3 & 1;
@@ -164,7 +164,7 @@
 - (BOOL)isVideo
 {
   v2 = *(self + OBJC_IVAR___APPCPromotedContentInfo_promotedContent);
-  v3 = self;
+  selfCopy = self;
   if ([v2 bestRepresentation])
   {
     type metadata accessor for VideoRepresentation();
@@ -178,9 +178,9 @@
     swift_unknownObjectRelease();
   }
 
-  v5 = [v2 isOutstreamVideoAd];
+  isOutstreamVideoAd = [v2 isOutstreamVideoAd];
 
-  return v5;
+  return isOutstreamVideoAd;
 }
 
 - (APPCPromotedContentInfo)init

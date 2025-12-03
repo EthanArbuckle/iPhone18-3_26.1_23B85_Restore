@@ -1,23 +1,23 @@
 @interface SearchUIScoreSummaryCardSectionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axRecordStringWithLeftTeamName:(id)a3 score:(id)a4 rightTeamName:(id)a5 score:(id)a6;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axRecordStringWithLeftTeamName:(id)name score:(id)score rightTeamName:(id)teamName score:(id)a6;
 - (id)accessibilityLabel;
 @end
 
 @implementation SearchUIScoreSummaryCardSectionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SearchUIScoreSummaryCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
-  [v3 validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"section" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"SFScoreboardCardSection" hasRequiredInstanceMethod:@"team1"];
-  [v3 validateProtocol:@"SFScoreboardCardSection" hasRequiredInstanceMethod:@"team2"];
-  [v3 validateProtocol:@"SFScoreboardCardSection" hasRequiredInstanceMethod:@"subtitle"];
-  [v3 validateProtocol:@"SFScoreboardCardSection" hasRequiredInstanceMethod:@"accessibilityDescription"];
-  [v3 validateClass:@"SFSportsTeam"];
-  [v3 validateClass:@"SFSportsTeam" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SFSportsTeam" hasInstanceMethod:@"record" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUIScoreSummaryCardSectionView" isKindOfClass:@"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SearchUICardSectionView" hasInstanceMethod:@"section" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"SFScoreboardCardSection" hasRequiredInstanceMethod:@"team1"];
+  [validationsCopy validateProtocol:@"SFScoreboardCardSection" hasRequiredInstanceMethod:@"team2"];
+  [validationsCopy validateProtocol:@"SFScoreboardCardSection" hasRequiredInstanceMethod:@"subtitle"];
+  [validationsCopy validateProtocol:@"SFScoreboardCardSection" hasRequiredInstanceMethod:@"accessibilityDescription"];
+  [validationsCopy validateClass:@"SFSportsTeam"];
+  [validationsCopy validateClass:@"SFSportsTeam" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SFSportsTeam" hasInstanceMethod:@"record" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -42,12 +42,12 @@
   return v13;
 }
 
-- (id)_axRecordStringWithLeftTeamName:(id)a3 score:(id)a4 rightTeamName:(id)a5 score:(id)a6
+- (id)_axRecordStringWithLeftTeamName:(id)name score:(id)score rightTeamName:(id)teamName score:(id)a6
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  teamNameCopy = teamName;
   v11 = a6;
-  v12 = [a4 componentsSeparatedByString:@"-"];
+  v12 = [score componentsSeparatedByString:@"-"];
   v13 = [v11 componentsSeparatedByString:@"-"];
 
   if ([v12 count] == 3 && objc_msgSend(v13, "count") == 3)
@@ -78,7 +78,7 @@
     v30 = MEMORY[0x29EDBA0F8];
     v31 = accessibilityLocalizedString(@"score.draws");
     [v13 objectAtIndexedSubscript:1];
-    v33 = v32 = v9;
+    v33 = v32 = nameCopy;
     v34 = [v30 localizedStringWithFormat:v31, objc_msgSend(v33, "integerValue")];
 
     v35 = MEMORY[0x29EDBA0F8];
@@ -90,7 +90,7 @@
     v39 = __AXStringForVariables();
 
     v40 = v60;
-    v9 = v32;
+    nameCopy = v32;
 LABEL_7:
 
     goto LABEL_9;
@@ -98,7 +98,7 @@ LABEL_7:
 
   if ([v12 count] == 2 && objc_msgSend(v13, "count") == 2)
   {
-    v61 = v9;
+    v61 = nameCopy;
     v41 = MEMORY[0x29EDBA0F8];
     v42 = accessibilityLocalizedString(@"score.wins");
     v43 = [v12 objectAtIndexedSubscript:0];
@@ -120,10 +120,10 @@ LABEL_7:
     v53 = MEMORY[0x29EDBA0F8];
     v54 = accessibilityLocalizedString(@"score.losses");
     v55 = [v13 objectAtIndexedSubscript:1];
-    v58 = [v55 integerValue];
+    integerValue = [v55 integerValue];
     v56 = v53;
-    v9 = v61;
-    v29 = [v56 localizedStringWithFormat:v54, v58];
+    nameCopy = v61;
+    v29 = [v56 localizedStringWithFormat:v54, integerValue];
 
     v40 = v49;
     v34 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"%@, %@", v25, v29];

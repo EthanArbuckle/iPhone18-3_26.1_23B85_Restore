@@ -1,7 +1,7 @@
 @interface COSEIDDetailsController
-- (id)EIDString:(id)a3;
+- (id)EIDString:(id)string;
 - (id)specifiers;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSEIDDetailsController
@@ -27,10 +27,10 @@
   return v4;
 }
 
-- (id)EIDString:(id)a3
+- (id)EIDString:(id)string
 {
-  v3 = [(COSEIDDetailsController *)self device];
-  v4 = [v3 valueForProperty:NRDevicePropertyCSN];
+  device = [(COSEIDDetailsController *)self device];
+  v4 = [device valueForProperty:NRDevicePropertyCSN];
 
   if (v4)
   {
@@ -46,25 +46,25 @@
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v16.receiver = self;
   v16.super_class = COSEIDDetailsController;
-  [(COSEIDDetailsController *)&v16 viewWillAppear:a3];
+  [(COSEIDDetailsController *)&v16 viewWillAppear:appear];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
-  v4 = [v3 bundleURL];
+  bundleURL = [v3 bundleURL];
 
   v5 = [_NSLocalizedStringResource alloc];
   v6 = +[NSLocale currentLocale];
-  v7 = [v5 initWithKey:@"EID" table:@"About" locale:v6 bundleURL:v4];
+  v7 = [v5 initWithKey:@"EID" table:@"About" locale:v6 bundleURL:bundleURL];
 
   v8 = [_NSLocalizedStringResource alloc];
   v9 = +[NSLocale currentLocale];
-  v10 = [v8 initWithKey:@"ABOUT" table:@"General" locale:v9 bundleURL:v4];
+  v10 = [v8 initWithKey:@"ABOUT" table:@"General" locale:v9 bundleURL:bundleURL];
 
   v11 = [_NSLocalizedStringResource alloc];
   v12 = +[NSLocale currentLocale];
-  v13 = [v11 initWithKey:@"GENERAL" table:@"Settings" locale:v12 bundleURL:v4];
+  v13 = [v11 initWithKey:@"GENERAL" table:@"Settings" locale:v12 bundleURL:bundleURL];
 
   v17[0] = v13;
   v17[1] = v10;

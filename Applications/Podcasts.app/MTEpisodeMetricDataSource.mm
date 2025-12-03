@@ -1,7 +1,7 @@
 @interface MTEpisodeMetricDataSource
-- (BOOL)isEqual:(id)a3;
-- (MTEpisodeMetricDataSource)initWithEpisodeIdentifier:(id)a3;
-- (MTEpisodeMetricDataSource)initWithPlayerItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTEpisodeMetricDataSource)initWithEpisodeIdentifier:(id)identifier;
+- (MTEpisodeMetricDataSource)initWithPlayerItem:(id)item;
 - (id)_contentGUID;
 - (id)_contentId;
 - (id)_duration;
@@ -9,45 +9,45 @@
 - (id)_mediaType;
 - (id)_podcastFeedURL;
 - (id)_podcastId;
-- (id)_podcastStateForPlayerItem:(id)a3;
+- (id)_podcastStateForPlayerItem:(id)item;
 - (id)metricsAdditionalData;
-- (unint64_t)_itemTypeForEpisode:(id)a3;
-- (unint64_t)_itemTypeForPlayerItem:(id)a3;
-- (unint64_t)_mediaTypeForEpisode:(id)a3;
-- (unint64_t)_mediaTypeForPlayerItem:(id)a3;
+- (unint64_t)_itemTypeForEpisode:(id)episode;
+- (unint64_t)_itemTypeForPlayerItem:(id)item;
+- (unint64_t)_mediaTypeForEpisode:(id)episode;
+- (unint64_t)_mediaTypeForPlayerItem:(id)item;
 - (unint64_t)hash;
 @end
 
 @implementation MTEpisodeMetricDataSource
 
-- (MTEpisodeMetricDataSource)initWithEpisodeIdentifier:(id)a3
+- (MTEpisodeMetricDataSource)initWithEpisodeIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = MTEpisodeMetricDataSource;
   v6 = [(MTEpisodeMetricDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_episodeIdentifier, a3);
+    objc_storeStrong(&v6->_episodeIdentifier, identifier);
   }
 
   return v7;
 }
 
-- (MTEpisodeMetricDataSource)initWithPlayerItem:(id)a3
+- (MTEpisodeMetricDataSource)initWithPlayerItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 episodeIdentifier];
-  v6 = [(MTEpisodeMetricDataSource *)self initWithEpisodeIdentifier:v5];
+  itemCopy = item;
+  episodeIdentifier = [itemCopy episodeIdentifier];
+  v6 = [(MTEpisodeMetricDataSource *)self initWithEpisodeIdentifier:episodeIdentifier];
 
   if (v6)
   {
-    [v4 duration];
+    [itemCopy duration];
     v6->_duration = v7;
-    v6->_mediaType = [(MTEpisodeMetricDataSource *)v6 _mediaTypeForPlayerItem:v4];
-    v6->_itemType = [(MTEpisodeMetricDataSource *)v6 _itemTypeForPlayerItem:v4];
-    v8 = [(MTEpisodeMetricDataSource *)v6 _podcastStateForPlayerItem:v4];
+    v6->_mediaType = [(MTEpisodeMetricDataSource *)v6 _mediaTypeForPlayerItem:itemCopy];
+    v6->_itemType = [(MTEpisodeMetricDataSource *)v6 _itemTypeForPlayerItem:itemCopy];
+    v8 = [(MTEpisodeMetricDataSource *)v6 _podcastStateForPlayerItem:itemCopy];
     podcastState = v6->_podcastState;
     v6->_podcastState = v8;
   }
@@ -55,10 +55,10 @@
   return v6;
 }
 
-- (unint64_t)_mediaTypeForEpisode:(id)a3
+- (unint64_t)_mediaTypeForEpisode:(id)episode
 {
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  episodeCopy = episode;
+  managedObjectContext = [episodeCopy managedObjectContext];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -67,20 +67,20 @@
   v8[1] = 3221225472;
   v8[2] = sub_100117CDC;
   v8[3] = &unk_1004D8CC8;
-  v5 = v3;
+  v5 = episodeCopy;
   v9 = v5;
   v10 = &v11;
-  [v4 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
   v6 = v12[3];
 
   _Block_object_dispose(&v11, 8);
   return v6;
 }
 
-- (unint64_t)_itemTypeForEpisode:(id)a3
+- (unint64_t)_itemTypeForEpisode:(id)episode
 {
-  v3 = a3;
-  v4 = [v3 managedObjectContext];
+  episodeCopy = episode;
+  managedObjectContext = [episodeCopy managedObjectContext];
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -89,62 +89,62 @@
   v8[1] = 3221225472;
   v8[2] = sub_100117E34;
   v8[3] = &unk_1004D8CC8;
-  v5 = v3;
+  v5 = episodeCopy;
   v9 = v5;
   v10 = &v11;
-  [v4 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
   v6 = v12[3];
 
   _Block_object_dispose(&v11, 8);
   return v6;
 }
 
-- (unint64_t)_mediaTypeForPlayerItem:(id)a3
+- (unint64_t)_mediaTypeForPlayerItem:(id)item
 {
-  if ([a3 isVideo])
+  if ([item isVideo])
   {
     return 2;
   }
 
   else
   {
-    return a3 != 0;
+    return item != 0;
   }
 }
 
-- (unint64_t)_itemTypeForPlayerItem:(id)a3
+- (unint64_t)_itemTypeForPlayerItem:(id)item
 {
-  if ([a3 isLocal])
+  if ([item isLocal])
   {
     return 2;
   }
 
   else
   {
-    return a3 != 0;
+    return item != 0;
   }
 }
 
-- (id)_podcastStateForPlayerItem:(id)a3
+- (id)_podcastStateForPlayerItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[_TtC8Podcasts24PodcastsStateCoordinator shared];
-  v5 = [v3 podcastUuid];
+  podcastUuid = [itemCopy podcastUuid];
 
-  v6 = [v4 currentPodcastStateDescriptionFrom:v5];
+  v6 = [v4 currentPodcastStateDescriptionFrom:podcastUuid];
 
   return v6;
 }
 
 - (id)_contentId
 {
-  v2 = [(MTEpisodeMetricDataSource *)self episodeIdentifier];
-  v3 = [v2 episodeSerpentID];
-  v4 = [v3 stringValue];
+  episodeIdentifier = [(MTEpisodeMetricDataSource *)self episodeIdentifier];
+  episodeSerpentID = [episodeIdentifier episodeSerpentID];
+  stringValue = [episodeSerpentID stringValue];
 
-  if (v4)
+  if (stringValue)
   {
-    v5 = v4;
+    v5 = stringValue;
   }
 
   else
@@ -159,12 +159,12 @@
 
 - (id)_contentGUID
 {
-  v2 = [(MTEpisodeMetricDataSource *)self episodeIdentifier];
-  v3 = [v2 episodeGUID];
+  episodeIdentifier = [(MTEpisodeMetricDataSource *)self episodeIdentifier];
+  episodeGUID = [episodeIdentifier episodeGUID];
 
-  if (v3)
+  if (episodeGUID)
   {
-    v4 = v3;
+    v4 = episodeGUID;
   }
 
   else
@@ -179,13 +179,13 @@
 
 - (id)_podcastId
 {
-  v2 = [(MTEpisodeMetricDataSource *)self episodeIdentifier];
-  v3 = [v2 podcastAdamID];
-  v4 = [v3 stringValue];
+  episodeIdentifier = [(MTEpisodeMetricDataSource *)self episodeIdentifier];
+  podcastAdamID = [episodeIdentifier podcastAdamID];
+  stringValue = [podcastAdamID stringValue];
 
-  if (v4)
+  if (stringValue)
   {
-    v5 = v4;
+    v5 = stringValue;
   }
 
   else
@@ -200,12 +200,12 @@
 
 - (id)_podcastFeedURL
 {
-  v2 = [(MTEpisodeMetricDataSource *)self episodeIdentifier];
-  v3 = [v2 currentPodcastFeedURL];
+  episodeIdentifier = [(MTEpisodeMetricDataSource *)self episodeIdentifier];
+  currentPodcastFeedURL = [episodeIdentifier currentPodcastFeedURL];
 
-  if (v3)
+  if (currentPodcastFeedURL)
   {
-    v4 = v3;
+    v4 = currentPodcastFeedURL;
   }
 
   else
@@ -220,28 +220,28 @@
 
 - (id)_mediaType
 {
-  v2 = [(MTEpisodeMetricDataSource *)self mediaType];
-  if (v2 - 1 > 2)
+  mediaType = [(MTEpisodeMetricDataSource *)self mediaType];
+  if (mediaType - 1 > 2)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1004DCDE0[v2 - 1];
+    return off_1004DCDE0[mediaType - 1];
   }
 }
 
 - (id)_itemType
 {
-  v2 = [(MTEpisodeMetricDataSource *)self itemType];
+  itemType = [(MTEpisodeMetricDataSource *)self itemType];
   v3 = @"unknown";
-  if (v2 == 2)
+  if (itemType == 2)
   {
     v3 = @"download";
   }
 
-  if (v2 == 1)
+  if (itemType == 1)
   {
     return @"stream";
   }
@@ -262,50 +262,50 @@
 - (id)metricsAdditionalData
 {
   v13[0] = @"contentGUID";
-  v3 = [(MTEpisodeMetricDataSource *)self _contentGUID];
-  v14[0] = v3;
+  _contentGUID = [(MTEpisodeMetricDataSource *)self _contentGUID];
+  v14[0] = _contentGUID;
   v13[1] = @"contentLength";
-  v4 = [(MTEpisodeMetricDataSource *)self _duration];
-  v14[1] = v4;
+  _duration = [(MTEpisodeMetricDataSource *)self _duration];
+  v14[1] = _duration;
   v13[2] = @"podcastId";
-  v5 = [(MTEpisodeMetricDataSource *)self _podcastId];
-  v14[2] = v5;
+  _podcastId = [(MTEpisodeMetricDataSource *)self _podcastId];
+  v14[2] = _podcastId;
   v13[3] = @"podcastFeedURL";
-  v6 = [(MTEpisodeMetricDataSource *)self _podcastFeedURL];
-  v14[3] = v6;
+  _podcastFeedURL = [(MTEpisodeMetricDataSource *)self _podcastFeedURL];
+  v14[3] = _podcastFeedURL;
   v13[4] = @"providerId";
-  v7 = [(MTEpisodeMetricDataSource *)self _providerId];
-  v14[4] = v7;
+  _providerId = [(MTEpisodeMetricDataSource *)self _providerId];
+  v14[4] = _providerId;
   v13[5] = @"mediaType";
-  v8 = [(MTEpisodeMetricDataSource *)self _mediaType];
-  v14[5] = v8;
+  _mediaType = [(MTEpisodeMetricDataSource *)self _mediaType];
+  v14[5] = _mediaType;
   v13[6] = @"itemType";
-  v9 = [(MTEpisodeMetricDataSource *)self _itemType];
-  v14[6] = v9;
+  _itemType = [(MTEpisodeMetricDataSource *)self _itemType];
+  v14[6] = _itemType;
   v13[7] = @"podcastState";
-  v10 = [(MTEpisodeMetricDataSource *)self _podcastState];
-  v14[7] = v10;
+  _podcastState = [(MTEpisodeMetricDataSource *)self _podcastState];
+  v14[7] = _podcastState;
   v11 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:8];
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 metricsContentIdentifier];
-    v7 = [(MTEpisodeMetricDataSource *)self metricsContentIdentifier];
-    v8 = [v6 isEqual:v7];
+    v5 = equalCopy;
+    metricsContentIdentifier = [v5 metricsContentIdentifier];
+    metricsContentIdentifier2 = [(MTEpisodeMetricDataSource *)self metricsContentIdentifier];
+    v8 = [metricsContentIdentifier isEqual:metricsContentIdentifier2];
 
     if (v8)
     {
-      v9 = [v5 metricsAdditionalData];
-      v10 = [(MTEpisodeMetricDataSource *)self metricsAdditionalData];
-      v11 = [v9 isEqualToDictionary:v10];
+      metricsAdditionalData = [v5 metricsAdditionalData];
+      metricsAdditionalData2 = [(MTEpisodeMetricDataSource *)self metricsAdditionalData];
+      v11 = [metricsAdditionalData isEqualToDictionary:metricsAdditionalData2];
     }
 
     else
@@ -324,10 +324,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(MTEpisodeMetricDataSource *)self metricsContentIdentifier];
-  v4 = [v3 hash];
-  v5 = [(MTEpisodeMetricDataSource *)self metricsAdditionalData];
-  v6 = [v5 hash];
+  metricsContentIdentifier = [(MTEpisodeMetricDataSource *)self metricsContentIdentifier];
+  v4 = [metricsContentIdentifier hash];
+  metricsAdditionalData = [(MTEpisodeMetricDataSource *)self metricsAdditionalData];
+  v6 = [metricsAdditionalData hash];
 
   return v6 ^ v4;
 }

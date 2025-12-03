@@ -1,10 +1,10 @@
 @interface SBDefaultWindowingModifier
-- (BOOL)supportsHomeAffordanceForItem:(id)a3;
-- (CGPoint)perspectiveAngleForItem:(id)a3;
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3;
-- (SBWindowingItemFrame)frameForItem:(SEL)a3;
-- (SBWindowingItemShadow)shadowForItem:(id)a3;
-- (id)animationAttributesForItem:(id)a3;
+- (BOOL)supportsHomeAffordanceForItem:(id)item;
+- (CGPoint)perspectiveAngleForItem:(id)item;
+- (SBWindowingItemCorners)cornersForItem:(SEL)item;
+- (SBWindowingItemFrame)frameForItem:(SEL)item;
+- (SBWindowingItemShadow)shadowForItem:(id)item;
+- (id)animationAttributesForItem:(id)item;
 - (id)stateModel;
 @end
 
@@ -17,7 +17,7 @@
   return v2;
 }
 
-- (SBWindowingItemFrame)frameForItem:(SEL)a3
+- (SBWindowingItemFrame)frameForItem:(SEL)item
 {
   [(SBDefaultWindowingModifier *)self bounds];
   v6 = v5;
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (SBWindowingItemCorners)cornersForItem:(SEL)a3
+- (SBWindowingItemCorners)cornersForItem:(SEL)item
 {
   [(SBDefaultWindowingModifier *)self displayCornerRadius];
   SBRectCornerRadiiForRadius();
@@ -39,7 +39,7 @@
   return SBWindowingItemCornersMake(15, retstr, v5, v6, v7, v8);
 }
 
-- (SBWindowingItemShadow)shadowForItem:(id)a3
+- (SBWindowingItemShadow)shadowForItem:(id)item
 {
   SBWindowingItemShadowMake();
   result.shadowStyle = v4;
@@ -47,7 +47,7 @@
   return result;
 }
 
-- (CGPoint)perspectiveAngleForItem:(id)a3
+- (CGPoint)perspectiveAngleForItem:(id)item
 {
   v3 = *MEMORY[0x277CBF348];
   v4 = *(MEMORY[0x277CBF348] + 8);
@@ -56,28 +56,28 @@
   return result;
 }
 
-- (id)animationAttributesForItem:(id)a3
+- (id)animationAttributesForItem:(id)item
 {
-  v3 = [(SBDefaultWindowingModifier *)self switcherSettings];
-  v4 = [v3 animationSettings];
+  switcherSettings = [(SBDefaultWindowingModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
 
   v5 = objc_alloc_init(SBMutableSwitcherAnimationAttributes);
   [(SBSwitcherAnimationAttributes *)v5 setUpdateMode:1];
-  v6 = [v4 layoutSettings];
-  [(SBSwitcherAnimationAttributes *)v5 setLayoutSettings:v6];
+  layoutSettings = [animationSettings layoutSettings];
+  [(SBSwitcherAnimationAttributes *)v5 setLayoutSettings:layoutSettings];
 
-  v7 = [v4 opacitySettings];
-  [(SBSwitcherAnimationAttributes *)v5 setOpacitySettings:v7];
+  opacitySettings = [animationSettings opacitySettings];
+  [(SBSwitcherAnimationAttributes *)v5 setOpacitySettings:opacitySettings];
 
   return v5;
 }
 
-- (BOOL)supportsHomeAffordanceForItem:(id)a3
+- (BOOL)supportsHomeAffordanceForItem:(id)item
 {
-  v3 = [(SBDefaultWindowingModifier *)self homeGrabberSettings];
-  v4 = [v3 isEnabled];
+  homeGrabberSettings = [(SBDefaultWindowingModifier *)self homeGrabberSettings];
+  isEnabled = [homeGrabberSettings isEnabled];
 
-  return v4;
+  return isEnabled;
 }
 
 @end

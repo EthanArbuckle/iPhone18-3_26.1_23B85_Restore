@@ -1,15 +1,15 @@
 @interface _WKPublicKeyCredentialRelyingPartyEntity
-- (_WKPublicKeyCredentialRelyingPartyEntity)initWithName:(id)a3;
+- (_WKPublicKeyCredentialRelyingPartyEntity)initWithName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation _WKPublicKeyCredentialRelyingPartyEntity
 
-- (_WKPublicKeyCredentialRelyingPartyEntity)initWithName:(id)a3
+- (_WKPublicKeyCredentialRelyingPartyEntity)initWithName:(id)name
 {
   v4.receiver = self;
   v4.super_class = _WKPublicKeyCredentialRelyingPartyEntity;
-  return [(_WKPublicKeyCredentialEntity *)&v4 initWithName:a3];
+  return [(_WKPublicKeyCredentialEntity *)&v4 initWithName:name];
 }
 
 - (void)dealloc

@@ -1,23 +1,23 @@
 @interface WFVoiceMemosActionIdentifiersMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFVoiceMemosActionIdentifiersMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1200"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1200"))
   {
-    if (WFWorkflowHasActionsWithIdentifier(@"com.apple.VoiceMemos.PlayRecording", v5))
+    if (WFWorkflowHasActionsWithIdentifier(@"com.apple.VoiceMemos.PlayRecording", migrationCopy))
     {
       HasActionsWithIdentifier = 1;
     }
 
     else
     {
-      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.apple.VoiceMemos.CreateRecording", v5);
+      HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"com.apple.VoiceMemos.CreateRecording", migrationCopy);
     }
   }
 
@@ -53,8 +53,8 @@
         }
 
         v7 = *(*(&v18 + 1) + 8 * v6);
-        v8 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v9 = [v7 objectForKeyedSubscript:v8];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v9 = [v7 objectForKeyedSubscript:actionIdentifierKey];
 
         if ([v9 isEqualToString:@"com.apple.VoiceMemos.PlayRecording"])
         {
@@ -73,11 +73,11 @@
           v11 = @"RecordVoiceMemoIntent";
         }
 
-        v12 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        [v7 setObject:v10 forKeyedSubscript:v12];
+        actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+        [v7 setObject:v10 forKeyedSubscript:actionIdentifierKey2];
 
-        v13 = [(WFWorkflowMigration *)self actionParametersKey];
-        v14 = [v7 objectForKeyedSubscript:v13];
+        actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+        v14 = [v7 objectForKeyedSubscript:actionParametersKey];
         v15 = [v14 objectForKeyedSubscript:@"AppIntentDescriptor"];
         [v15 setObject:v11 forKeyedSubscript:@"AppIntentIdentifier"];
 

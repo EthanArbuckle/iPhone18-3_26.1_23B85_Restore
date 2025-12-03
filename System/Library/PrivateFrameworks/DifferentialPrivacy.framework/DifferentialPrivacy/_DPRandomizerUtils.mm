@@ -1,44 +1,44 @@
 @interface _DPRandomizerUtils
-+ (id)auditedDPParametersWithMetadata:(id)a3 maxCentralEpsilon:(double)a4 maxCentralDelta:(double)a5;
-+ (id)dimensionFromMetadata:(id)a3;
++ (id)auditedDPParametersWithMetadata:(id)metadata maxCentralEpsilon:(double)epsilon maxCentralDelta:(double)delta;
++ (id)dimensionFromMetadata:(id)metadata;
 @end
 
 @implementation _DPRandomizerUtils
 
-+ (id)auditedDPParametersWithMetadata:(id)a3 maxCentralEpsilon:(double)a4 maxCentralDelta:(double)a5
++ (id)auditedDPParametersWithMetadata:(id)metadata maxCentralEpsilon:(double)epsilon maxCentralDelta:(double)delta
 {
-  v7 = a3;
-  IsV2 = _DPMetadataIsV2(v7);
+  metadataCopy = metadata;
+  IsV2 = _DPMetadataIsV2(metadataCopy);
   v9 = [_DPDPGaussianMechanismParameter alloc];
   if (IsV2)
   {
-    v10 = [(_DPDPGaussianMechanismParameter *)v9 initWithV2Metadata:v7 maxCentralEpsilon:a4 maxCentralDelta:a5];
+    v10 = [(_DPDPGaussianMechanismParameter *)v9 initWithV2Metadata:metadataCopy maxCentralEpsilon:epsilon maxCentralDelta:delta];
   }
 
   else
   {
-    v10 = [(_DPDPGaussianMechanismParameter *)v9 initWithV1Metadata:v7 maxCentralEpsilon:a4 maxCentralDelta:a5];
+    v10 = [(_DPDPGaussianMechanismParameter *)v9 initWithV1Metadata:metadataCopy maxCentralEpsilon:epsilon maxCentralDelta:delta];
   }
 
   v11 = v10;
 
   if (v11)
   {
-    v12 = [v11 auditedMetadata];
+    auditedMetadata = [v11 auditedMetadata];
   }
 
   else
   {
-    v12 = 0;
+    auditedMetadata = 0;
   }
 
-  return v12;
+  return auditedMetadata;
 }
 
-+ (id)dimensionFromMetadata:(id)a3
++ (id)dimensionFromMetadata:(id)metadata
 {
-  v3 = a3;
-  if (_DPMetadataIsV2(v3))
+  metadataCopy = metadata;
+  if (_DPMetadataIsV2(metadataCopy))
   {
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@.%@", @"DediscoTaskConfig", @"VDAFConfig", @"Dimensionality"];
   }
@@ -48,7 +48,7 @@
     [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", @"AlgorithmParameters", @"Dimensionality", v9];
   }
   v4 = ;
-  v5 = [v3 valueForKeyPath:v4];
+  v5 = [metadataCopy valueForKeyPath:v4];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

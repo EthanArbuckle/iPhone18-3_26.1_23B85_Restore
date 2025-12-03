@@ -1,6 +1,6 @@
 @interface PHBottomBarAnimations
-+ (id)backgroundColorAnimationFromColor:(CGColor *)a3 toColor:(CGColor *)a4;
-+ (id)crossFadeAnimationFromImage:(CGImage *)a3 toImage:(CGImage *)a4;
++ (id)backgroundColorAnimationFromColor:(CGColor *)color toColor:(CGColor *)toColor;
++ (id)crossFadeAnimationFromImage:(CGImage *)image toImage:(CGImage *)toImage;
 + (id)rollAnimation;
 @end
 
@@ -18,43 +18,43 @@
   return v2;
 }
 
-+ (id)crossFadeAnimationFromImage:(CGImage *)a3 toImage:(CGImage *)a4
++ (id)crossFadeAnimationFromImage:(CGImage *)image toImage:(CGImage *)toImage
 {
   v6 = [CABasicAnimation animationWithKeyPath:@"contents"];
   [v6 setDuration:0.300000012];
-  [v6 setFromValue:a3];
-  [v6 setToValue:a4];
+  [v6 setFromValue:image];
+  [v6 setToValue:toImage];
   [v6 setRemovedOnCompletion:0];
   [v6 setFillMode:kCAFillModeForwards];
 
   return v6;
 }
 
-+ (id)backgroundColorAnimationFromColor:(CGColor *)a3 toColor:(CGColor *)a4
++ (id)backgroundColorAnimationFromColor:(CGColor *)color toColor:(CGColor *)toColor
 {
   v8 = [CAKeyframeAnimation animationWithKeyPath:@"backgroundColor"];
-  v9 = a3;
-  if (!a3)
+  colorCopy = color;
+  if (!color)
   {
     v4 = +[UIColor clearColor];
-    v9 = [v4 CGColor];
+    colorCopy = [v4 CGColor];
   }
 
-  v13[0] = v9;
-  v10 = a4;
-  if (!a4)
+  v13[0] = colorCopy;
+  toColorCopy = toColor;
+  if (!toColor)
   {
     v5 = +[UIColor systemRedColor];
-    v10 = [v5 CGColor];
+    toColorCopy = [v5 CGColor];
   }
 
-  v13[1] = v10;
+  v13[1] = toColorCopy;
   v11 = [NSArray arrayWithObjects:v13 count:2];
   [v8 setValues:v11];
 
-  if (a4)
+  if (toColor)
   {
-    if (a3)
+    if (color)
     {
       goto LABEL_7;
     }
@@ -63,7 +63,7 @@
   else
   {
 
-    if (a3)
+    if (color)
     {
       goto LABEL_7;
     }

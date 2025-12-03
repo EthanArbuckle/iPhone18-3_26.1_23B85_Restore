@@ -1,8 +1,8 @@
 @interface SMSFilterExtensionParams
 + (void)_updateFilterParams;
 - (SMSFilterExtensionParams)init;
-- (SMSFilterExtensionParams)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SMSFilterExtensionParams)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMSFilterExtensionParams
@@ -14,77 +14,77 @@
   return [(SMSFilterExtensionParams *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v4 numberWithUnsignedInteger:{-[SMSFilterExtensionParams action](self, "action")}];
-  [v5 encodeObject:v6 forKey:@"action"];
+  [coderCopy encodeObject:v6 forKey:@"action"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SMSFilterExtensionParams subAction](self, "subAction")}];
-  [v5 encodeObject:v7 forKey:@"subAction"];
+  [coderCopy encodeObject:v7 forKey:@"subAction"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SMSFilterExtensionParams filterMode](self, "filterMode")}];
-  [v5 encodeObject:v8 forKey:@"filterMode"];
+  [coderCopy encodeObject:v8 forKey:@"filterMode"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SMSFilterExtensionParams orderOfPlacementInUI](self, "orderOfPlacementInUI")}];
-  [v5 encodeObject:v9 forKey:@"orderOfPlacementInUI"];
+  [coderCopy encodeObject:v9 forKey:@"orderOfPlacementInUI"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SMSFilterExtensionParams category](self, "category")}];
-  [v5 encodeObject:v10 forKey:@"category"];
+  [coderCopy encodeObject:v10 forKey:@"category"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[SMSFilterExtensionParams subCategory](self, "subCategory")}];
-  [v5 encodeObject:v11 forKey:@"subCategory"];
+  [coderCopy encodeObject:v11 forKey:@"subCategory"];
 
-  v12 = [(SMSFilterExtensionParams *)self filterModeStringValue];
-  [v5 encodeObject:v12 forKey:@"filterModeStringValue"];
+  filterModeStringValue = [(SMSFilterExtensionParams *)self filterModeStringValue];
+  [coderCopy encodeObject:filterModeStringValue forKey:@"filterModeStringValue"];
 
-  v13 = [(SMSFilterExtensionParams *)self label];
-  [v5 encodeObject:v13 forKey:@"label"];
+  label = [(SMSFilterExtensionParams *)self label];
+  [coderCopy encodeObject:label forKey:@"label"];
 
-  v14 = [(SMSFilterExtensionParams *)self iconName];
-  [v5 encodeObject:v14 forKey:@"iconName"];
+  iconName = [(SMSFilterExtensionParams *)self iconName];
+  [coderCopy encodeObject:iconName forKey:@"iconName"];
 
-  v15 = [(SMSFilterExtensionParams *)self folderName];
-  [v5 encodeObject:v15 forKey:@"folderName"];
+  folderName = [(SMSFilterExtensionParams *)self folderName];
+  [coderCopy encodeObject:folderName forKey:@"folderName"];
 }
 
-- (SMSFilterExtensionParams)initWithCoder:(id)a3
+- (SMSFilterExtensionParams)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = SMSFilterExtensionParams;
   v5 = [(SMSFilterExtensionParams *)&v17 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"action"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"action"];
     -[SMSFilterExtensionParams setAction:](v5, "setAction:", [v6 unsignedIntegerValue]);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subAction"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subAction"];
     -[SMSFilterExtensionParams setSubAction:](v5, "setSubAction:", [v7 unsignedIntegerValue]);
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filterMode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filterMode"];
     -[SMSFilterExtensionParams setFilterMode:](v5, "setFilterMode:", [v8 unsignedIntegerValue]);
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"orderOfPlacementInUI"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"orderOfPlacementInUI"];
     -[SMSFilterExtensionParams setOrderOfPlacementInUI:](v5, "setOrderOfPlacementInUI:", [v9 unsignedIntegerValue]);
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
     -[SMSFilterExtensionParams setCategory:](v5, "setCategory:", [v10 unsignedIntegerValue]);
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subCategory"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subCategory"];
     -[SMSFilterExtensionParams setSubCategory:](v5, "setSubCategory:", [v11 unsignedIntegerValue]);
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"filterModeStringValue"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"filterModeStringValue"];
     [(SMSFilterExtensionParams *)v5 setFilterModeStringValue:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     [(SMSFilterExtensionParams *)v5 setLabel:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iconName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iconName"];
     [(SMSFilterExtensionParams *)v5 setIconName:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"folderName"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"folderName"];
     [(SMSFilterExtensionParams *)v5 setFolderName:v15];
   }
 

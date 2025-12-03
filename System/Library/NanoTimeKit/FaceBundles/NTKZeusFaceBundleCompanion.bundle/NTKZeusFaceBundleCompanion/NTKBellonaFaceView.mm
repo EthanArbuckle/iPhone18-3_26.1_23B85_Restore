@@ -2,43 +2,43 @@
 - (CGRect)_lowerComplicationFrame;
 - (double)_horizontalPaddingForStatusBar;
 - (double)_lowerComplicationVerticalOffset;
-- (double)_numeralsViewAlphaForEditMode:(int64_t)a3;
-- (double)_timeViewAlphaForEditMode:(int64_t)a3;
+- (double)_numeralsViewAlphaForEditMode:(int64_t)mode;
+- (double)_timeViewAlphaForEditMode:(int64_t)mode;
 - (double)_verticalPaddingForStatusBar;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
 - (id)createFaceColorPalette;
 - (void)_applyBreathingAndRubberbanding;
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_applyDataMode;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_handleNotification;
-- (void)_handleTimeUpdate:(CLKClockTimerDate *)a3;
+- (void)_handleTimeUpdate:(CLKClockTimerDate *)update;
 - (void)_loadLayoutRules;
 - (void)_loadLogoImageView;
 - (void)_loadSnapshotContentViews;
 - (void)_reorderSwitcherSnapshotView;
-- (void)_setStatusBarIconShadowNeeded:(BOOL)a3;
+- (void)_setStatusBarIconShadowNeeded:(BOOL)needed;
 - (void)_startMinuteUpdate;
 - (void)_startSecondUpdate;
 - (void)_startSubsecondUpdate;
 - (void)_stopTimerUpdate;
 - (void)_unloadLogoImageView;
 - (void)_unloadSnapshotContentViews;
-- (void)_updateAlphasForHourChangeWithNow:(CLKClockTimerDate *)a3;
-- (void)_updateBackgroundColorWithPalette:(id)a3;
-- (void)_updateComplicationColorForPalette:(id)a3 slot:(id)a4 view:(id)a5;
-- (void)_updateDateComplicationColorsWithPalette:(id)a3 forView:(id)a4;
+- (void)_updateAlphasForHourChangeWithNow:(CLKClockTimerDate *)now;
+- (void)_updateBackgroundColorWithPalette:(id)palette;
+- (void)_updateComplicationColorForPalette:(id)palette slot:(id)slot view:(id)view;
+- (void)_updateDateComplicationColorsWithPalette:(id)palette forView:(id)view;
 - (void)_updateFaceViewForDateComplicationVisibility;
 - (void)_updateHour;
-- (void)_updateViewColorsWithPalette:(id)a3;
+- (void)_updateViewColorsWithPalette:(id)palette;
 - (void)layoutSubviews;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
+- (void)setOverrideDate:(id)date duration:(double)duration;
 @end
 
 @implementation NTKBellonaFaceView
@@ -58,21 +58,21 @@
   if (!self->_numeralsView)
   {
     v3 = [NTKBellonaNumeralsView alloc];
-    v4 = [(NTKBellonaFaceView *)self device];
-    v5 = [(NTKBellonaNumeralsView *)v3 initWithDevice:v4];
+    device = [(NTKBellonaFaceView *)self device];
+    v5 = [(NTKBellonaNumeralsView *)v3 initWithDevice:device];
     numeralsView = self->_numeralsView;
     self->_numeralsView = v5;
 
-    v7 = [(NTKBellonaFaceView *)self contentView];
-    [v7 addSubview:self->_numeralsView];
+    contentView = [(NTKBellonaFaceView *)self contentView];
+    [contentView addSubview:self->_numeralsView];
   }
 
   [(NTKBellonaFaceView *)self _updateFaceViewForDateComplicationVisibility];
   [(NTKBellonaFaceView *)self _loadLogoImageView];
-  v8 = [(NTKBellonaFaceView *)self timeView];
+  timeView = [(NTKBellonaFaceView *)self timeView];
   v9 = +[UIColor whiteColor];
   v10 = +[UIColor blackColor];
-  [v8 applyHourMinuteHandsStrokeColor:v9 fillColor:v10];
+  [timeView applyHourMinuteHandsStrokeColor:v9 fillColor:v10];
 
   v11 = +[NSNotificationCenter defaultCenter];
   [v11 addObserver:self selector:"_handleNotification" name:UIApplicationSignificantTimeChangeNotification object:0];
@@ -94,12 +94,12 @@
 
 - (void)_reorderSwitcherSnapshotView
 {
-  v3 = [(NTKBellonaFaceView *)self switcherSnapshotView];
+  switcherSnapshotView = [(NTKBellonaFaceView *)self switcherSnapshotView];
 
-  if (v3)
+  if (switcherSnapshotView)
   {
-    v4 = [(NTKBellonaFaceView *)self switcherSnapshotView];
-    [(NTKBellonaFaceView *)self bringSubviewToFront:v4];
+    switcherSnapshotView2 = [(NTKBellonaFaceView *)self switcherSnapshotView];
+    [(NTKBellonaFaceView *)self bringSubviewToFront:switcherSnapshotView2];
   }
 }
 
@@ -108,27 +108,27 @@
   v5.receiver = self;
   v5.super_class = NTKBellonaFaceView;
   [(NTKBellonaFaceView *)&v5 _applyDataMode];
-  v3 = [(NTKBellonaFaceView *)self dataMode];
-  if ((v3 - 2) < 4 || v3 == 0)
+  dataMode = [(NTKBellonaFaceView *)self dataMode];
+  if ((dataMode - 2) < 4 || dataMode == 0)
   {
     [(NTKBellonaFaceView *)self _stopTimerUpdate];
   }
 
-  else if (v3 == &dword_0 + 1)
+  else if (dataMode == &dword_0 + 1)
   {
     [(NTKBellonaFaceView *)self _updateHour];
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
-  v7 = a3;
+  dateCopy = date;
   v9.receiver = self;
   v9.super_class = NTKBellonaFaceView;
-  [(NTKBellonaFaceView *)&v9 setOverrideDate:v7 duration:a4];
-  if (![(NSDate *)self->_overrideDate isEqualToDate:v7])
+  [(NTKBellonaFaceView *)&v9 setOverrideDate:dateCopy duration:duration];
+  if (![(NSDate *)self->_overrideDate isEqualToDate:dateCopy])
   {
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     if (self->_overrideDate)
     {
       CLKClockTimerDateForDate();
@@ -163,8 +163,8 @@
 
 - (void)_updateHour
 {
-  v3 = [(NTKBellonaFaceView *)self currentDisplayDate];
-  if (v3)
+  currentDisplayDate = [(NTKBellonaFaceView *)self currentDisplayDate];
+  if (currentDisplayDate)
   {
     CLKClockTimerDateForDate();
   }
@@ -198,12 +198,12 @@
   logoImageView = self->_logoImageView;
   self->_logoImageView = v3;
 
-  v5 = [(NTKBellonaFaceView *)self palette];
-  v6 = [v5 beige];
-  [(UIImageView *)self->_logoImageView setTintColor:v6];
+  palette = [(NTKBellonaFaceView *)self palette];
+  beige = [palette beige];
+  [(UIImageView *)self->_logoImageView setTintColor:beige];
 
-  v7 = [(NTKBellonaFaceView *)self contentView];
-  [v7 addSubview:self->_logoImageView];
+  contentView = [(NTKBellonaFaceView *)self contentView];
+  [contentView addSubview:self->_logoImageView];
 }
 
 - (void)_unloadLogoImageView
@@ -228,8 +228,8 @@
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v3 = [(NTKBellonaFaceView *)self device];
-  sub_19EE4(v3, &v7);
+  device = [(NTKBellonaFaceView *)self device];
+  sub_19EE4(device, &v7);
 
   v4 = *(&v8 + 1);
   v5 = *&v9;
@@ -239,50 +239,50 @@
   [(UIImageView *)self->_logoImageView setFrame:v6, (CGRectGetMidY(v18) - v5) * 0.5, *(&v7 + 1), *&v8];
 }
 
-- (void)_updateViewColorsWithPalette:(id)a3
+- (void)_updateViewColorsWithPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [(NTKBellonaFaceView *)self timeView];
-  v6 = [v5 secondHandView];
-  v7 = [v4 secondHandColor];
-  [v6 setColor:v7];
+  paletteCopy = palette;
+  timeView = [(NTKBellonaFaceView *)self timeView];
+  secondHandView = [timeView secondHandView];
+  secondHandColor = [paletteCopy secondHandColor];
+  [secondHandView setColor:secondHandColor];
 
-  v8 = [(NTKBellonaFaceView *)self timeView];
-  v9 = [v8 hourHandView];
-  v10 = [v4 handStroke];
-  [v9 setColor:v10];
+  timeView2 = [(NTKBellonaFaceView *)self timeView];
+  hourHandView = [timeView2 hourHandView];
+  handStroke = [paletteCopy handStroke];
+  [hourHandView setColor:handStroke];
 
-  v11 = [(NTKBellonaFaceView *)self timeView];
-  v12 = [v11 minuteHandView];
-  v13 = [v4 handStroke];
-  [v12 setColor:v13];
+  timeView3 = [(NTKBellonaFaceView *)self timeView];
+  minuteHandView = [timeView3 minuteHandView];
+  handStroke2 = [paletteCopy handStroke];
+  [minuteHandView setColor:handStroke2];
 
-  v14 = [(NTKBellonaFaceView *)self timeView];
-  v15 = [v4 handInlay];
-  [v14 setInlayColor:v15];
+  timeView4 = [(NTKBellonaFaceView *)self timeView];
+  handInlay = [paletteCopy handInlay];
+  [timeView4 setInlayColor:handInlay];
 
-  v16 = [(NTKBellonaFaceView *)self timeView];
-  v17 = [v16 minuteHandView];
-  v18 = [v4 minuteHandDot];
-  [v17 setHandDotColor:v18];
+  timeView5 = [(NTKBellonaFaceView *)self timeView];
+  minuteHandView2 = [timeView5 minuteHandView];
+  minuteHandDot = [paletteCopy minuteHandDot];
+  [minuteHandView2 setHandDotColor:minuteHandDot];
 
-  [(NTKBellonaNumeralsView *)self->_numeralsView updateDigitsWithPalette:v4];
-  v19 = [v4 beige];
+  [(NTKBellonaNumeralsView *)self->_numeralsView updateDigitsWithPalette:paletteCopy];
+  beige = [paletteCopy beige];
 
-  [(UIImageView *)self->_logoImageView setTintColor:v19];
+  [(UIImageView *)self->_logoImageView setTintColor:beige];
 }
 
-- (void)_updateBackgroundColorWithPalette:(id)a3
+- (void)_updateBackgroundColorWithPalette:(id)palette
 {
   numeralsView = self->_numeralsView;
-  v5 = a3;
-  [(NTKBellonaNumeralsView *)numeralsView updateBackgroundWithPalette:v5];
-  v9 = [v5 background];
+  paletteCopy = palette;
+  [(NTKBellonaNumeralsView *)numeralsView updateBackgroundWithPalette:paletteCopy];
+  background = [paletteCopy background];
 
   [(NTKBellonaNumeralsView *)self->_numeralsView alpha];
   if (v6 >= 1.0)
   {
-    [(NTKBellonaFaceView *)self setComplicationBackgroundColor:v9];
+    [(NTKBellonaFaceView *)self setComplicationBackgroundColor:background];
   }
 
   else
@@ -295,78 +295,78 @@
   [(NTKBellonaFaceView *)self enumerateComplicationDisplayWrappersWithBlock:&stru_450D0];
 }
 
-- (void)_updateComplicationColorForPalette:(id)a3 slot:(id)a4 view:(id)a5
+- (void)_updateComplicationColorForPalette:(id)palette slot:(id)slot view:(id)view
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (NTKComplicationSlotBottomCenter == v8)
+  paletteCopy = palette;
+  slotCopy = slot;
+  viewCopy = view;
+  if (NTKComplicationSlotBottomCenter == slotCopy)
   {
-    v10 = [v14 beige];
-    [(NTKBellonaFaceView *)self setComplicationColor:v10];
-    [(NTKBellonaFaceView *)self setInterpolatedComplicationColor:v10];
-    v11 = [v14 complicationSecondaryColor];
-    [(NTKBellonaFaceView *)self setAlternateComplicationColor:v11];
+    beige = [paletteCopy beige];
+    [(NTKBellonaFaceView *)self setComplicationColor:beige];
+    [(NTKBellonaFaceView *)self setInterpolatedComplicationColor:beige];
+    complicationSecondaryColor = [paletteCopy complicationSecondaryColor];
+    [(NTKBellonaFaceView *)self setAlternateComplicationColor:complicationSecondaryColor];
 
-    v12 = v9;
+    v12 = viewCopy;
     [v12 updateMonochromeColor];
     v13 = +[UIColor clearColor];
     [v12 setPlatterColor:v13];
   }
 
-  else if (NTKComplicationSlotDate == v8)
+  else if (NTKComplicationSlotDate == slotCopy)
   {
-    [(NTKBellonaFaceView *)self _updateDateComplicationColorsWithPalette:v14 forView:v9];
+    [(NTKBellonaFaceView *)self _updateDateComplicationColorsWithPalette:paletteCopy forView:viewCopy];
   }
 }
 
-- (void)_updateDateComplicationColorsWithPalette:(id)a3 forView:(id)a4
+- (void)_updateDateComplicationColorsWithPalette:(id)palette forView:(id)view
 {
-  v7 = a4;
-  if ([v7 conformsToProtocol:&OBJC_PROTOCOL___NTKZeudleComplicationDisplay])
+  viewCopy = view;
+  if ([viewCopy conformsToProtocol:&OBJC_PROTOCOL___NTKZeudleComplicationDisplay])
   {
-    v5 = v7;
-    v6 = [(NTKBellonaFaceView *)self palette];
-    [v5 applyPalette:v6];
+    v5 = viewCopy;
+    palette = [(NTKBellonaFaceView *)self palette];
+    [v5 applyPalette:palette];
   }
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   [(NTKBellonaFaceView *)self _timeViewAlphaForEditMode:?];
   v6 = v5;
-  [(NTKBellonaFaceView *)self _numeralsViewAlphaForEditMode:a3];
+  [(NTKBellonaFaceView *)self _numeralsViewAlphaForEditMode:mode];
   v8 = v7;
-  v9 = [(NTKBellonaFaceView *)self timeView];
-  [v9 setAlpha:v6];
+  timeView = [(NTKBellonaFaceView *)self timeView];
+  [timeView setAlpha:v6];
 
   [(NTKBellonaNumeralsView *)self->_numeralsView setAlpha:v8];
-  v10 = [(NTKBellonaFaceView *)self palette];
-  [(NTKBellonaFaceView *)self _updateBackgroundColorWithPalette:v10];
+  palette = [(NTKBellonaFaceView *)self palette];
+  [(NTKBellonaFaceView *)self _updateBackgroundColorWithPalette:palette];
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   [(NTKBellonaFaceView *)self _timeViewAlphaForEditMode:?];
-  [(NTKBellonaFaceView *)self _timeViewAlphaForEditMode:a5];
+  [(NTKBellonaFaceView *)self _timeViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v9 = v8;
-  [(NTKBellonaFaceView *)self _numeralsViewAlphaForEditMode:a4];
-  [(NTKBellonaFaceView *)self _numeralsViewAlphaForEditMode:a5];
+  [(NTKBellonaFaceView *)self _numeralsViewAlphaForEditMode:mode];
+  [(NTKBellonaFaceView *)self _numeralsViewAlphaForEditMode:editMode];
   CLKInterpolateBetweenFloatsClipped();
   v11 = v10;
-  v12 = [(NTKBellonaFaceView *)self timeView];
-  [v12 setAlpha:v9];
+  timeView = [(NTKBellonaFaceView *)self timeView];
+  [timeView setAlpha:v9];
 
   [(NTKBellonaNumeralsView *)self->_numeralsView setAlpha:v11];
-  v13 = [(NTKBellonaFaceView *)self palette];
-  [(NTKBellonaFaceView *)self _updateBackgroundColorWithPalette:v13];
+  palette = [(NTKBellonaFaceView *)self palette];
+  [(NTKBellonaFaceView *)self _updateBackgroundColorWithPalette:palette];
 }
 
-- (double)_timeViewAlphaForEditMode:(int64_t)a3
+- (double)_timeViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (a3 != 1)
+  if (mode != 1)
   {
     return 1.0;
   }
@@ -374,10 +374,10 @@
   return result;
 }
 
-- (double)_numeralsViewAlphaForEditMode:(int64_t)a3
+- (double)_numeralsViewAlphaForEditMode:(int64_t)mode
 {
   result = NTKEditModeDimmedAlpha;
-  if (!a3)
+  if (!mode)
   {
     return 1.0;
   }
@@ -385,21 +385,21 @@
   return result;
 }
 
-- (void)_applyBreathingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyBreathingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    self->_breathingFraction = a3;
+    self->_breathingFraction = fraction;
     [(NTKBellonaFaceView *)self _applyBreathingAndRubberbanding:10];
   }
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
-    self->_rubberbandingFraction = a3;
-    [(NTKBellonaFaceView *)self _applyBreathingAndRubberbanding:a4];
+    self->_rubberbandingFraction = fraction;
+    [(NTKBellonaFaceView *)self _applyBreathingAndRubberbanding:mode];
     NTKAlphaForRubberBandingFraction();
 
     [(NTKBellonaFaceView *)self setAlpha:?];
@@ -417,17 +417,17 @@
   [(NTKBellonaFaceView *)self setTransform:&v6];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 10)
+  if (mode == 10)
   {
     v14[11] = v5;
     v14[12] = v6;
-    v8 = [(NTKBellonaFaceView *)self timeView:a3];
-    v9 = [v8 secondHandView];
-    v10 = [(NTKBellonaFaceView *)self palette];
-    v11 = [v10 secondHandColor];
-    [v9 setColor:v11];
+    v8 = [(NTKBellonaFaceView *)self timeView:option];
+    secondHandView = [v8 secondHandView];
+    palette = [(NTKBellonaFaceView *)self palette];
+    secondHandColor = [palette secondHandColor];
+    [secondHandView setColor:secondHandColor];
 
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
@@ -435,17 +435,17 @@
     v14[3] = &unk_450F8;
     v14[4] = self;
     [(NTKBellonaFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v14];
-    v12 = [(NTKBellonaFaceView *)self palette];
-    [(NTKBellonaFaceView *)self _updateViewColorsWithPalette:v12];
+    palette2 = [(NTKBellonaFaceView *)self palette];
+    [(NTKBellonaFaceView *)self _updateViewColorsWithPalette:palette2];
 
-    v13 = [(NTKBellonaFaceView *)self palette];
-    [(NTKBellonaFaceView *)self _updateBackgroundColorWithPalette:v13];
+    palette3 = [(NTKBellonaFaceView *)self palette];
+    [(NTKBellonaFaceView *)self _updateBackgroundColorWithPalette:palette3];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a6 == 10)
+  if (mode == 10)
   {
     v12[7] = v7;
     v12[8] = v8;
@@ -454,26 +454,26 @@
     v12[2] = sub_18C50;
     v12[3] = &unk_450F8;
     v12[4] = self;
-    [(NTKBellonaFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v12, a5, a6, a7];
-    v10 = [(NTKBellonaFaceView *)self interpolatedColorPalette];
-    [(NTKBellonaFaceView *)self _updateViewColorsWithPalette:v10];
+    [(NTKBellonaFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v12, toOption, mode, slot];
+    interpolatedColorPalette = [(NTKBellonaFaceView *)self interpolatedColorPalette];
+    [(NTKBellonaFaceView *)self _updateViewColorsWithPalette:interpolatedColorPalette];
 
-    v11 = [(NTKBellonaFaceView *)self interpolatedColorPalette];
-    [(NTKBellonaFaceView *)self _updateBackgroundColorWithPalette:v11];
+    interpolatedColorPalette2 = [(NTKBellonaFaceView *)self interpolatedColorPalette];
+    [(NTKBellonaFaceView *)self _updateBackgroundColorWithPalette:interpolatedColorPalette2];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromComplication:(id)a4 toComplication:(id)a5 slot:(id)a6
+- (void)_applyTransitionFraction:(double)fraction fromComplication:(id)complication toComplication:(id)toComplication slot:(id)slot
 {
   v6.receiver = self;
   v6.super_class = NTKBellonaFaceView;
-  [(NTKBellonaFaceView *)&v6 _applyTransitionFraction:a4 fromComplication:a5 toComplication:a6 slot:a3];
+  [(NTKBellonaFaceView *)&v6 _applyTransitionFraction:complication fromComplication:toComplication toComplication:slot slot:fraction];
 }
 
 - (double)_lowerComplicationVerticalOffset
 {
-  v2 = [(NTKBellonaFaceView *)self device];
-  sub_19EE4(v2, v5);
+  device = [(NTKBellonaFaceView *)self device];
+  sub_19EE4(device, v5);
   v3 = v6;
 
   return v3;
@@ -505,64 +505,64 @@
   return result;
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   v6 = NTKComplicationSlotDate;
-  v7 = a3;
-  if ([a5 isEqualToString:v6])
+  complicationCopy = complication;
+  if ([slot isEqualToString:v6])
   {
-    v8 = [v7 complicationType];
+    complicationType = [complicationCopy complicationType];
 
-    [NTKBellonaComplicationView viewForComplicationType:v8];
+    [NTKBellonaComplicationView viewForComplicationType:complicationType];
   }
 
   else
   {
-    v10 = [v7 complicationType];
+    complicationType2 = [complicationCopy complicationType];
 
-    [NTKRichComplicationCircularBaseView viewWithLegacyComplicationType:v10];
+    [NTKRichComplicationCircularBaseView viewWithLegacyComplicationType:complicationType2];
   }
 
   return objc_claimAutoreleasedReturnValue();
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v9 = a3;
+  viewCopy = view;
   v6 = NTKComplicationSlotDate;
-  v7 = a4;
-  if ([v7 isEqualToString:v6] && objc_msgSend(v9, "conformsToProtocol:", &OBJC_PROTOCOL___NTKBellonaNumeralsDelegate))
+  slotCopy = slot;
+  if ([slotCopy isEqualToString:v6] && objc_msgSend(viewCopy, "conformsToProtocol:", &OBJC_PROTOCOL___NTKBellonaNumeralsDelegate))
   {
-    [(NTKBellonaNumeralsView *)self->_numeralsView setBackgroundView:v9];
+    [(NTKBellonaNumeralsView *)self->_numeralsView setBackgroundView:viewCopy];
   }
 
-  v8 = [(NTKBellonaFaceView *)self palette];
-  [(NTKBellonaFaceView *)self _updateComplicationColorForPalette:v8 slot:v7 view:v9];
+  palette = [(NTKBellonaFaceView *)self palette];
+  [(NTKBellonaFaceView *)self _updateComplicationColorForPalette:palette slot:slotCopy view:viewCopy];
 }
 
 - (void)_loadLayoutRules
 {
   v4 = 0;
   memset(v3, 0, sizeof(v3));
-  v2 = [(NTKBellonaFaceView *)self device];
-  sub_19EE4(v2, v3);
+  device = [(NTKBellonaFaceView *)self device];
+  sub_19EE4(device, v3);
 
   NTKEnumerateComplicationStates();
 }
 
 - (void)_updateFaceViewForDateComplicationVisibility
 {
-  v3 = [(NTKBellonaFaceView *)self delegate];
-  -[NTKBellonaNumeralsView setDateIsOn:](self->_numeralsView, "setDateIsOn:", [v3 faceViewComplicationIsEmptyForSlot:NTKComplicationSlotDate] ^ 1);
+  delegate = [(NTKBellonaFaceView *)self delegate];
+  -[NTKBellonaNumeralsView setDateIsOn:](self->_numeralsView, "setDateIsOn:", [delegate faceViewComplicationIsEmptyForSlot:NTKComplicationSlotDate] ^ 1);
 }
 
-- (void)_setStatusBarIconShadowNeeded:(BOOL)a3
+- (void)_setStatusBarIconShadowNeeded:(BOOL)needed
 {
-  if (self->_isStatusBarIconShadowNeeded != a3)
+  if (self->_isStatusBarIconShadowNeeded != needed)
   {
     v7[3] = v3;
     v7[4] = v4;
-    self->_isStatusBarIconShadowNeeded = a3;
+    self->_isStatusBarIconShadowNeeded = needed;
     objc_initWeak(v7, self);
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
@@ -577,7 +577,7 @@
 
 - (double)_verticalPaddingForStatusBar
 {
-  v2 = [(NTKBellonaFaceView *)self device];
+  device = [(NTKBellonaFaceView *)self device];
   CLKValueForDeviceMetrics();
   v4 = v3;
 
@@ -586,18 +586,18 @@
 
 - (double)_horizontalPaddingForStatusBar
 {
-  v2 = [(NTKBellonaFaceView *)self device];
-  sub_19EE4(v2, v5);
+  device = [(NTKBellonaFaceView *)self device];
+  sub_19EE4(device, v5);
   v3 = v5[0];
 
   return v3;
 }
 
-- (void)_handleTimeUpdate:(CLKClockTimerDate *)a3
+- (void)_handleTimeUpdate:(CLKClockTimerDate *)update
 {
-  if (a3->var2 == 59)
+  if (update->var2 == 59)
   {
-    if (a3->var3 < 0x3A)
+    if (update->var3 < 0x3A)
     {
       if (!self->_secondToken)
       {
@@ -652,9 +652,9 @@
   v12 = *p_subsecondToken;
   *p_subsecondToken = 0;
 
-  v14 = a3->var0;
-  v13 = *&a3->var3;
-  v15 = *&a3->var1;
+  v14 = update->var0;
+  v13 = *&update->var3;
+  v15 = *&update->var1;
   v16 = v13;
   [(NTKBellonaFaceView *)self _updateAlphasForHourChangeWithNow:&v14];
 }
@@ -731,15 +731,15 @@
   self->_subsecondToken = 0;
 }
 
-- (void)_updateAlphasForHourChangeWithNow:(CLKClockTimerDate *)a3
+- (void)_updateAlphasForHourChangeWithNow:(CLKClockTimerDate *)now
 {
-  v5 = [(NTKBellonaFaceView *)self device];
+  device = [(NTKBellonaFaceView *)self device];
   v13 = 0.0;
   v12 = 0u;
   memset(v11, 0, sizeof(v11));
-  sub_19EE4(v5, v11);
+  sub_19EE4(device, v11);
 
-  var3 = a3->var3;
+  var3 = now->var3;
   v7 = var3;
   if (!var3)
   {
@@ -747,18 +747,18 @@
   }
 
   overrideDate = self->_overrideDate;
-  if (overrideDate || (v9 = a3->var4 + v7, v9 < *(&v12 + 1)) || v9 > v13 || a3->var2 != 59)
+  if (overrideDate || (v9 = now->var4 + v7, v9 < *(&v12 + 1)) || v9 > v13 || now->var2 != 59)
   {
-    [(NTKBellonaNumeralsView *)self->_numeralsView hourChangeAnimationFromNow:a3->var1 withFraction:overrideDate == 0 timeChanged:overrideDate != 0 overrideDate:1.0];
+    [(NTKBellonaNumeralsView *)self->_numeralsView hourChangeAnimationFromNow:now->var1 withFraction:overrideDate == 0 timeChanged:overrideDate != 0 overrideDate:1.0];
   }
 
   else
   {
     CLKMapFractionIntoRange();
-    [(NTKBellonaNumeralsView *)self->_numeralsView hourChangeAnimationFromNow:a3->var1 withFraction:0 timeChanged:0 overrideDate:?];
+    [(NTKBellonaNumeralsView *)self->_numeralsView hourChangeAnimationFromNow:now->var1 withFraction:0 timeChanged:0 overrideDate:?];
   }
 
-  var0 = a3->var0;
+  var0 = now->var0;
 }
 
 @end

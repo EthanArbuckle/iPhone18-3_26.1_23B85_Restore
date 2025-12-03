@@ -1,13 +1,13 @@
 @interface UICollectionViewListCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityHandleReorderMoveUp:(BOOL)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityHandleReorderMoveUp:(BOOL)up;
 - (BOOL)_axIsCustomAccessoryKindOfSwitch;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_accessibilityBriefLabel;
 - (id)_accessibilityNextIndexPath;
 - (id)_accessibilityPreviousIndexPath;
-- (id)_accessibilityRetrieveCollectionViewListCellTextExcludingDetailText:(BOOL)a3;
+- (id)_accessibilityRetrieveCollectionViewListCellTextExcludingDetailText:(BOOL)text;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_accessibilityTrailingViews;
 - (id)_axIgnoredConfigurationIdentifiers;
@@ -18,22 +18,22 @@
 - (uint64_t)_accessibilityHasReorderActions;
 - (uint64_t)_axCellSelectionTogglesExpansionState;
 - (unint64_t)accessibilityTraits;
-- (void)_accessibilityEnumerateCurrentConfigurationsWithBlock:(void *)a1;
+- (void)_accessibilityEnumerateCurrentConfigurationsWithBlock:(void *)block;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_updateSystemTypeAccessoryView:(id)a3 withCellAccessory:(id)a4 orConfiguration:(id)a5 usingState:(id)a6 isUserInitiated:(BOOL)a7;
+- (void)_updateSystemTypeAccessoryView:(id)view withCellAccessory:(id)accessory orConfiguration:(id)configuration usingState:(id)state isUserInitiated:(BOOL)initiated;
 - (void)accessibilityElementDidBecomeFocused;
 @end
 
 @implementation UICollectionViewListCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v18 = location;
   v17 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v15 = "@";
   v16 = "B";
   v13 = @"UICollectionViewListCell";
@@ -85,7 +85,7 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8.receiver = self;
   v8.super_class = UICollectionViewListCellAccessibility;
@@ -95,7 +95,7 @@
   v4 = 0;
   v5 = __83__UICollectionViewListCellAccessibility__accessibilityLoadAccessibilityInformation__block_invoke;
   v6 = &unk_29F30C7C8;
-  v7 = MEMORY[0x29EDC9748](v10);
+  v7 = MEMORY[0x29EDC9748](selfCopy);
   AXPerformSafeBlock();
   objc_storeStrong(&v7, 0);
 }
@@ -112,32 +112,32 @@ double __83__UICollectionViewListCellAccessibility__accessibilityLoadAccessibili
 
 - (id)_accessibilityBriefLabel
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   v18[0] = [(UICollectionViewListCellAccessibility *)self _accessibilityRetrieveCollectionViewListCellTextExcludingDetailText:1];
   if (![v18[0] length])
   {
-    v17 = [MEMORY[0x29EDB8DE8] array];
-    v7 = v19;
+    array = [MEMORY[0x29EDB8DE8] array];
+    v7 = selfCopy;
     v10 = MEMORY[0x29EDCA5F8];
     v11 = -1073741824;
     v12 = 0;
     v13 = __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__block_invoke;
     v14 = &unk_29F30D510;
-    v15 = MEMORY[0x29EDC9748](v19);
-    v16 = MEMORY[0x29EDC9748](v17);
+    v15 = MEMORY[0x29EDC9748](selfCopy);
+    v16 = MEMORY[0x29EDC9748](array);
     v2 = [(UICollectionViewListCellAccessibility *)v7 _accessibilityFindDescendant:&v10];
     v9 = AXLabelAndValueForElements();
     v8 = [v9 componentsSeparatedByString:{@", "}];
-    v3 = [v8 firstObject];
+    firstObject = [v8 firstObject];
     v4 = v18[0];
-    v18[0] = v3;
+    v18[0] = firstObject;
     MEMORY[0x29EDC9740](v4);
     MEMORY[0x29EDC9740](v8);
     MEMORY[0x29EDC9740](v9);
     objc_storeStrong(&v16, 0);
     objc_storeStrong(&v15, 0);
-    objc_storeStrong(&v17, 0);
+    objc_storeStrong(&array, 0);
   }
 
   v6 = MEMORY[0x29EDC9748](v18[0]);
@@ -164,68 +164,68 @@ uint64_t __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__b
   return 0;
 }
 
-- (id)_accessibilityRetrieveCollectionViewListCellTextExcludingDetailText:(BOOL)a3
+- (id)_accessibilityRetrieveCollectionViewListCellTextExcludingDetailText:(BOOL)text
 {
   v37 = *MEMORY[0x29EDCA608];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
-  v32 = a3;
+  textCopy = text;
   v30 = 0;
   objc_opt_class();
   v29 = __UIAccessibilityCastAsClass();
   v28 = MEMORY[0x29EDC9748](v29);
   objc_storeStrong(&v29, 0);
   v31 = v28;
-  if (v32)
+  if (textCopy)
   {
-    v27 = [(UICollectionViewListCellAccessibility *)v34 accessibilityUserDefinedLabel];
-    if (v27)
+    accessibilityUserDefinedLabel = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityUserDefinedLabel];
+    if (accessibilityUserDefinedLabel)
     {
-      v35 = MEMORY[0x29EDC9748](v27);
+      text = MEMORY[0x29EDC9748](accessibilityUserDefinedLabel);
       v26 = 1;
     }
 
     else
     {
-      v25 = [v31 contentConfiguration];
+      contentConfiguration = [v31 contentConfiguration];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v35 = [v25 text];
+        text = [contentConfiguration text];
       }
 
       else
       {
-        v35 = [v25 accessibilityLabel];
+        text = [contentConfiguration accessibilityLabel];
       }
 
       v26 = 1;
-      objc_storeStrong(&v25, 0);
+      objc_storeStrong(&contentConfiguration, 0);
     }
 
-    objc_storeStrong(&v27, 0);
+    objc_storeStrong(&accessibilityUserDefinedLabel, 0);
   }
 
   else
   {
-    v23.receiver = v34;
+    v23.receiver = selfCopy;
     v23.super_class = UICollectionViewListCellAccessibility;
-    v24 = [(UICollectionViewListCellAccessibility *)&v23 accessibilityLabel];
+    accessibilityLabel = [(UICollectionViewListCellAccessibility *)&v23 accessibilityLabel];
     v21 = 0;
-    v18 = 0;
-    if (v24)
+    isEditing = 0;
+    if (accessibilityLabel)
     {
-      v22 = [v31 configurationState];
+      configurationState = [v31 configurationState];
       v21 = 1;
-      v18 = [v22 isEditing];
+      isEditing = [configurationState isEditing];
     }
 
     if (v21)
     {
-      MEMORY[0x29EDC9740](v22);
+      MEMORY[0x29EDC9740](configurationState);
     }
 
-    if (v18)
+    if (isEditing)
     {
       memset(__b, 0, sizeof(__b));
       obj = [v31 accessories];
@@ -250,10 +250,10 @@ uint64_t __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__b
             if (objc_opt_isKindOfClass())
             {
               v11 = accessibilityUIKitLocalizedString();
-              v9 = v24;
+              v9 = accessibilityLabel;
               v3 = AXCFormattedString();
-              v4 = v24;
-              v24 = v3;
+              v4 = accessibilityLabel;
+              accessibilityLabel = v3;
               MEMORY[0x29EDC9740](v4);
               MEMORY[0x29EDC9740](v11);
             }
@@ -264,10 +264,10 @@ uint64_t __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__b
               if (objc_opt_isKindOfClass())
               {
                 v10 = accessibilityUIKitLocalizedString();
-                v9 = v24;
+                v9 = accessibilityLabel;
                 v5 = AXCFormattedString();
-                v6 = v24;
-                v24 = v5;
+                v6 = accessibilityLabel;
+                accessibilityLabel = v5;
                 MEMORY[0x29EDC9740](v6);
                 MEMORY[0x29EDC9740](v10);
               }
@@ -290,13 +290,13 @@ uint64_t __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__b
       MEMORY[0x29EDC9740](obj);
     }
 
-    v35 = MEMORY[0x29EDC9748](v24);
+    text = MEMORY[0x29EDC9748](accessibilityLabel);
     v26 = 1;
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&accessibilityLabel, 0);
   }
 
   objc_storeStrong(&v31, 0);
-  v7 = v35;
+  v7 = text;
 
   return v7;
 }
@@ -304,20 +304,20 @@ uint64_t __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__b
 - (id)accessibilityValue
 {
   v43 = *MEMORY[0x29EDCA608];
-  v41 = self;
+  selfCopy = self;
   v40[1] = a2;
   v40[0] = [(UICollectionViewListCellAccessibility *)self accessibilityUserDefinedValue];
   if (![v40[0] length])
   {
-    v39.receiver = v41;
+    v39.receiver = selfCopy;
     v39.super_class = UICollectionViewListCellAccessibility;
-    v2 = [(UICollectionViewListCellAccessibility *)&v39 accessibilityValue];
+    accessibilityValue = [(UICollectionViewListCellAccessibility *)&v39 accessibilityValue];
     v3 = v40[0];
-    v40[0] = v2;
+    v40[0] = accessibilityValue;
     *&v4 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-    v20 = [(UICollectionViewListCellAccessibility *)v41 _accessibilityTrailingViews];
-    location = [v20 axFilterObjectsUsingBlock:&__block_literal_global_17];
-    MEMORY[0x29EDC9740](v20);
+    _accessibilityTrailingViews = [(UICollectionViewListCellAccessibility *)selfCopy _accessibilityTrailingViews];
+    location = [_accessibilityTrailingViews axFilterObjectsUsingBlock:&__block_literal_global_17];
+    MEMORY[0x29EDC9740](_accessibilityTrailingViews);
     memset(__b, 0, sizeof(__b));
     obj = MEMORY[0x29EDC9748](location);
     v22 = [obj countByEnumeratingWithState:__b objects:v42 count:16];
@@ -335,18 +335,18 @@ uint64_t __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__b
         }
 
         v37 = *(__b[1] + 8 * v18);
-        v13 = [v37 accessibilityLabel];
+        accessibilityLabel = [v37 accessibilityLabel];
         v14 = @"__AXStringForVariablesSentinel";
         v5 = __UIAXStringForVariables();
         v6 = v40[0];
         v40[0] = v5;
         MEMORY[0x29EDC9740](v6);
-        *&v7 = MEMORY[0x29EDC9740](v13).n128_u64[0];
+        *&v7 = MEMORY[0x29EDC9740](accessibilityLabel).n128_u64[0];
         ++v18;
         if (v16 + 1 >= v19)
         {
           v18 = 0;
-          v19 = [obj countByEnumeratingWithState:__b objects:v42 count:{16, v7, v13, @"__AXStringForVariablesSentinel"}];
+          v19 = [obj countByEnumeratingWithState:__b objects:v42 count:{16, v7, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
           if (!v19)
           {
             break;
@@ -359,19 +359,19 @@ uint64_t __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__b
     objc_storeStrong(&location, 0);
   }
 
-  if ([(UICollectionViewListCellAccessibility *)v41 _axIsCustomAccessoryKindOfSwitch])
+  if ([(UICollectionViewListCellAccessibility *)selfCopy _axIsCustomAccessoryKindOfSwitch])
   {
     v34 = 0;
     objc_opt_class();
     v33 = __UIAccessibilityCastAsClass();
     v32 = MEMORY[0x29EDC9748](v33);
     objc_storeStrong(&v33, 0);
-    v35 = [v32 accessories];
+    accessories = [v32 accessories];
     *&v8 = MEMORY[0x29EDC9740](v32).n128_u64[0];
     v31 = 0;
-    if ([v35 count] == 1)
+    if ([accessories count] == 1)
     {
-      v30 = [v35 firstObject];
+      firstObject = [accessories firstObject];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -380,7 +380,7 @@ uint64_t __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__b
         v27 = __UIAccessibilityCastAsClass();
         v26 = MEMORY[0x29EDC9748](v27);
         objc_storeStrong(&v27, 0);
-        v29 = [v26 customView];
+        customView = [v26 customView];
         MEMORY[0x29EDC9740](v26);
         v25 = 0;
         objc_opt_class();
@@ -390,18 +390,18 @@ uint64_t __65__UICollectionViewListCellAccessibility__accessibilityBriefLabel__b
         v9 = v31;
         v31 = v23;
         MEMORY[0x29EDC9740](v9);
-        objc_storeStrong(&v29, 0);
+        objc_storeStrong(&customView, 0);
       }
 
-      objc_storeStrong(&v30, 0);
+      objc_storeStrong(&firstObject, 0);
     }
 
-    v10 = [v31 accessibilityValue];
+    accessibilityValue2 = [v31 accessibilityValue];
     v11 = v40[0];
-    v40[0] = v10;
+    v40[0] = accessibilityValue2;
     MEMORY[0x29EDC9740](v11);
     objc_storeStrong(&v31, 0);
-    objc_storeStrong(&v35, 0);
+    objc_storeStrong(&accessories, 0);
   }
 
   v15 = MEMORY[0x29EDC9748](v40[0]);
@@ -423,21 +423,21 @@ uint64_t __59__UICollectionViewListCellAccessibility_accessibilityValue__block_i
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   v5.receiver = self;
   v5.super_class = UICollectionViewListCellAccessibility;
   location[0] = [(UICollectionViewListCellAccessibility *)&v5 _accessibilitySupplementaryFooterViews];
-  if (location[0] || [(UICollectionViewListCellAccessibility *)v7 _axIsCustomAccessoryKindOfSwitch])
+  if (location[0] || [(UICollectionViewListCellAccessibility *)selfCopy _axIsCustomAccessoryKindOfSwitch])
   {
     v8 = MEMORY[0x29EDC9748](location[0]);
   }
 
   else
   {
-    v4 = [(UICollectionViewListCellAccessibility *)v7 _accessibilityTrailingViews];
-    v8 = [v4 axFilterObjectsUsingBlock:&__block_literal_global_456];
-    MEMORY[0x29EDC9740](v4);
+    _accessibilityTrailingViews = [(UICollectionViewListCellAccessibility *)selfCopy _accessibilityTrailingViews];
+    v8 = [_accessibilityTrailingViews axFilterObjectsUsingBlock:&__block_literal_global_456];
+    MEMORY[0x29EDC9740](_accessibilityTrailingViews);
   }
 
   objc_storeStrong(location, 0);
@@ -465,7 +465,7 @@ uint64_t __79__UICollectionViewListCellAccessibility__accessibilitySupplementary
 
 - (id)_axIgnoredConfigurationIdentifiers
 {
-  if (a1)
+  if (self)
   {
     v4 = &_axIgnoredConfigurationIdentifiers_onceToken;
     location = 0;
@@ -517,10 +517,10 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
 - (id)_accessibilityTrailingViews
 {
   v30 = *MEMORY[0x29EDCA608];
-  v27 = self;
+  selfCopy = self;
   v26[1] = a2;
   v26[0] = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-  v16 = [(UICollectionViewListCellAccessibility *)v27 safeValueForKey:@"_accessoryManager"];
+  v16 = [(UICollectionViewListCellAccessibility *)selfCopy safeValueForKey:@"_accessoryManager"];
   v25 = [v16 safeValueForKey:@"currentConfiguration"];
   MEMORY[0x29EDC9740](v16);
   memset(__b, 0, sizeof(__b));
@@ -543,8 +543,8 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
       v22 = 0;
       location = [v24 safeStringForKey:@"identifier"];
       memset(v19, 0, sizeof(v19));
-      v10 = [(UICollectionViewListCellAccessibility *)v27 _axIgnoredConfigurationIdentifiers];
-      v11 = [v10 countByEnumeratingWithState:v19 objects:v28 count:16];
+      _axIgnoredConfigurationIdentifiers = [(UICollectionViewListCellAccessibility *)selfCopy _axIgnoredConfigurationIdentifiers];
+      v11 = [_axIgnoredConfigurationIdentifiers countByEnumeratingWithState:v19 objects:v28 count:16];
       if (v11)
       {
         v7 = *v19[2];
@@ -555,7 +555,7 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
           v6 = v8;
           if (*v19[2] != v7)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_axIgnoredConfigurationIdentifiers);
           }
 
           v20 = *(v19[1] + 8 * v8);
@@ -569,7 +569,7 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
           if (v6 + 1 >= v9)
           {
             v8 = 0;
-            v9 = [v10 countByEnumeratingWithState:v19 objects:v28 count:16];
+            v9 = [_axIgnoredConfigurationIdentifiers countByEnumeratingWithState:v19 objects:v28 count:16];
             if (!v9)
             {
               break;
@@ -578,7 +578,7 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
         }
       }
 
-      MEMORY[0x29EDC9740](v10);
+      MEMORY[0x29EDC9740](_axIgnoredConfigurationIdentifiers);
       if ((v22 & 1) == 0)
       {
         NSClassFromString(&cfstr_Uicellviewacce.isa);
@@ -615,20 +615,20 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
 
 - (BOOL)isAccessibilityElement
 {
-  v6 = [(UICollectionViewListCellAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  if (v6)
+  isAccessibilityUserDefinedElement = [(UICollectionViewListCellAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (isAccessibilityUserDefinedElement)
   {
-    v5 = [(UICollectionViewListCellAccessibility *)self isAccessibilityUserDefinedElement];
-    v8 = [v5 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v5);
+    isAccessibilityUserDefinedElement2 = [(UICollectionViewListCellAccessibility *)self isAccessibilityUserDefinedElement];
+    v8 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   }
 
   else
   {
-    v4 = [(UICollectionViewListCellAccessibility *)self accessibilityLabel];
-    v8 = [v4 length] != 0;
-    MEMORY[0x29EDC9740](v4);
+    accessibilityLabel = [(UICollectionViewListCellAccessibility *)self accessibilityLabel];
+    v8 = [accessibilityLabel length] != 0;
+    MEMORY[0x29EDC9740](accessibilityLabel);
   }
 
   return v8;
@@ -637,24 +637,24 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
 - (unint64_t)accessibilityTraits
 {
   v29 = *MEMORY[0x29EDCA608];
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
   v24.receiver = self;
   v24.super_class = UICollectionViewListCellAccessibility;
-  v25 = [(UICollectionViewListCellAccessibility *)&v24 accessibilityTraits];
-  if ([(UICollectionViewListCellAccessibility *)v27 _accessibilityExpandedStatus]&& ([(UICollectionViewListCellAccessibility *)v27 _axCellSelectionTogglesExpansionState]& 1) != 0)
+  accessibilityTraits = [(UICollectionViewListCellAccessibility *)&v24 accessibilityTraits];
+  if ([(UICollectionViewListCellAccessibility *)selfCopy _accessibilityExpandedStatus]&& ([(UICollectionViewListCellAccessibility *)selfCopy _axCellSelectionTogglesExpansionState]& 1) != 0)
   {
-    v25 |= *MEMORY[0x29EDC7F70];
+    accessibilityTraits |= *MEMORY[0x29EDC7F70];
   }
 
-  v23 = [(UICollectionViewListCellAccessibility *)v27 contentView];
+  contentView = [(UICollectionViewListCellAccessibility *)selfCopy contentView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v23 configuration];
-    v2 = [v13 accessibilityTraits];
-    v25 |= v2;
-    MEMORY[0x29EDC9740](v13);
+    configuration = [contentView configuration];
+    accessibilityTraits2 = [configuration accessibilityTraits];
+    accessibilityTraits |= accessibilityTraits2;
+    MEMORY[0x29EDC9740](configuration);
   }
 
   memset(__b, 0, sizeof(__b));
@@ -684,13 +684,13 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 |= *MEMORY[0x29EDC7F70];
+          accessibilityTraits |= *MEMORY[0x29EDC7F70];
         }
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 |= *MEMORY[0x29EDC7FC0];
+          accessibilityTraits |= *MEMORY[0x29EDC7FC0];
         }
 
         objc_opt_class();
@@ -706,15 +706,15 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
 
           v14 = MEMORY[0x29EDC9748](v15);
           objc_storeStrong(&v15, 0);
-          v17 = [v14 customView];
+          customView = [v14 customView];
           *&v3 = MEMORY[0x29EDC9740](v14).n128_u64[0];
-          if (v17)
+          if (customView)
           {
-            v4 = [v17 accessibilityTraits];
-            v25 |= v4;
+            accessibilityTraits3 = [customView accessibilityTraits];
+            accessibilityTraits |= accessibilityTraits3;
           }
 
-          objc_storeStrong(&v17, 0);
+          objc_storeStrong(&customView, 0);
         }
       }
 
@@ -732,16 +732,16 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
   }
 
   MEMORY[0x29EDC9740](obj);
-  v6 = v25;
-  objc_storeStrong(&v23, 0);
+  v6 = accessibilityTraits;
+  objc_storeStrong(&contentView, 0);
   return v6;
 }
 
 - (uint64_t)_axCellSelectionTogglesExpansionState
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 safeBoolForKey:@"_cellSelectionTogglesExpansionState"] & 1;
+    v2 = [self safeBoolForKey:@"_cellSelectionTogglesExpansionState"] & 1;
   }
 
   else
@@ -754,7 +754,7 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v19 = self;
+  selfCopy = self;
   v18[1] = a2;
   if ([(UICollectionViewListCellAccessibility *)self _axIsCustomAccessoryKindOfSwitch])
   {
@@ -763,27 +763,27 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
     v16 = __UIAccessibilityCastAsClass();
     v15 = MEMORY[0x29EDC9748](v16);
     objc_storeStrong(&v16, 0);
-    v9 = [v15 accessories];
-    v18[0] = [v9 firstObject];
-    MEMORY[0x29EDC9740](v9);
+    accessories = [v15 accessories];
+    v18[0] = [accessories firstObject];
+    MEMORY[0x29EDC9740](accessories);
     MEMORY[0x29EDC9740](v15);
     v13 = 0;
     objc_opt_class();
     v12 = __UIAccessibilityCastAsClass();
     v11 = MEMORY[0x29EDC9748](v12);
     objc_storeStrong(&v12, 0);
-    v14 = [v11 customView];
+    customView = [v11 customView];
     *&v2 = MEMORY[0x29EDC9740](v11).n128_u64[0];
-    [v14 accessibilityActivationPoint];
+    [customView accessibilityActivationPoint];
     v20 = v3;
     v21 = v4;
-    objc_storeStrong(&v14, 0);
+    objc_storeStrong(&customView, 0);
     objc_storeStrong(v18, 0);
   }
 
   else
   {
-    v10.receiver = v19;
+    v10.receiver = selfCopy;
     v10.super_class = UICollectionViewListCellAccessibility;
     [(UICollectionViewListCellAccessibility *)&v10 accessibilityActivationPoint];
     v20 = v5;
@@ -813,7 +813,7 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
     goto LABEL_6;
   }
 
-  v9 = [v13[0] firstObject];
+  firstObject = [v13[0] firstObject];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -822,12 +822,12 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
     v6 = __UIAccessibilityCastAsClass();
     v5 = MEMORY[0x29EDC9748](v6);
     objc_storeStrong(&v6, 0);
-    v8 = [v5 customView];
+    customView = [v5 customView];
     MEMORY[0x29EDC9740](v5);
     objc_opt_class();
     v14 = objc_opt_isKindOfClass() & 1;
     v4 = 1;
-    objc_storeStrong(&v8, 0);
+    objc_storeStrong(&customView, 0);
   }
 
   else
@@ -835,7 +835,7 @@ void __75__UICollectionViewListCellAccessibility__axIgnoredConfigurationIdentifi
     v4 = 0;
   }
 
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&firstObject, 0);
   if (!v4)
   {
 LABEL_6:
@@ -848,13 +848,13 @@ LABEL_6:
 
 - (int64_t)_accessibilityExpandedStatus
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
   v11 = 0;
   v12 = &v11;
   v13 = 0x20000000;
   v14 = 32;
-  v15 = [(UICollectionViewListCellAccessibility *)self _axCellSelectionTogglesExpansionState];
+  _axCellSelectionTogglesExpansionState = [(UICollectionViewListCellAccessibility *)self _axCellSelectionTogglesExpansionState];
   if ((v12[3] & 1) == 0)
   {
     v5 = MEMORY[0x29EDCA5F8];
@@ -863,12 +863,12 @@ LABEL_6:
     v8 = __69__UICollectionViewListCellAccessibility__accessibilityExpandedStatus__block_invoke;
     v9 = &unk_29F30D538;
     v10 = &v11;
-    [(UICollectionViewListCellAccessibility *)v17 _accessibilityEnumerateCurrentConfigurationsWithBlock:?];
+    [(UICollectionViewListCellAccessibility *)selfCopy _accessibilityEnumerateCurrentConfigurationsWithBlock:?];
   }
 
   if (v12[3])
   {
-    v4 = [(UICollectionViewListCellAccessibility *)v17 safeBoolForKey:@"_expanded"];
+    v4 = [(UICollectionViewListCellAccessibility *)selfCopy safeBoolForKey:@"_expanded"];
     v2 = 2;
     if (v4)
     {
@@ -903,13 +903,13 @@ void __69__UICollectionViewListCellAccessibility__accessibilityExpandedStatus__b
   objc_storeStrong(location, 0);
 }
 
-- (void)_accessibilityEnumerateCurrentConfigurationsWithBlock:(void *)a1
+- (void)_accessibilityEnumerateCurrentConfigurationsWithBlock:(void *)block
 {
   v40 = *MEMORY[0x29EDCA608];
-  v38 = a1;
+  blockCopy = block;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v38)
+  if (blockCopy)
   {
     v31 = 0;
     v32 = &v31;
@@ -924,15 +924,15 @@ void __69__UICollectionViewListCellAccessibility__accessibilityExpandedStatus__b
     v29[1] = &v31;
     v29[0] = MEMORY[0x29EDC9748](location);
     v30 = MEMORY[0x29ED3E4C0](&v24);
-    v23 = [v38 safeBoolForKey:@"isEditing"];
+    v23 = [blockCopy safeBoolForKey:@"isEditing"];
     if (v23)
     {
       v17 = v30;
-      v16 = [v38 safeArrayForKey:@"leadingEditingAccessoryConfigurations"];
+      v16 = [blockCopy safeArrayForKey:@"leadingEditingAccessoryConfigurations"];
       v17[2]();
       *&v2 = MEMORY[0x29EDC9740](v16).n128_u64[0];
       v15 = v30;
-      v14 = [v38 safeArrayForKey:{@"trailingEditingAccessoryConfigurations", v2}];
+      v14 = [blockCopy safeArrayForKey:{@"trailingEditingAccessoryConfigurations", v2}];
       v15[2]();
       MEMORY[0x29EDC9740](v14);
     }
@@ -940,17 +940,17 @@ void __69__UICollectionViewListCellAccessibility__accessibilityExpandedStatus__b
     else
     {
       v13 = v30;
-      v12 = [v38 safeArrayForKey:@"leadingAccessoryConfigurations"];
+      v12 = [blockCopy safeArrayForKey:@"leadingAccessoryConfigurations"];
       v13[2]();
       *&v3 = MEMORY[0x29EDC9740](v12).n128_u64[0];
       v11 = v30;
-      v10 = [v38 safeArrayForKey:{@"trailingAccessoryConfigurations", v3}];
+      v10 = [blockCopy safeArrayForKey:{@"trailingAccessoryConfigurations", v3}];
       v11[2]();
       MEMORY[0x29EDC9740](v10);
     }
 
     memset(__b, 0, sizeof(__b));
-    obj = [v38 accessories];
+    obj = [blockCopy accessories];
     v9 = [obj countByEnumeratingWithState:__b objects:v39 count:16];
     if (v9)
     {
@@ -966,8 +966,8 @@ void __69__UICollectionViewListCellAccessibility__accessibilityExpandedStatus__b
         }
 
         v22 = *(__b[1] + 8 * v6);
-        v20 = [v22 displayedState];
-        if (([v22 isHidden] & 1) == 0 && (!v20 || (v23 & 1) != 0 && v20 == 1 || (v23 & 1) == 0 && v20 == 2))
+        displayedState = [v22 displayedState];
+        if (([v22 isHidden] & 1) == 0 && (!displayedState || (v23 & 1) != 0 && displayedState == 1 || (v23 & 1) == 0 && displayedState == 2))
         {
           v19 = [v22 safeBoolForKey:@"_isSystemType"];
           v18 = 0;
@@ -1021,22 +1021,22 @@ LABEL_22:
 
 - (id)_privateAccessibilityCustomActions
 {
-  v16 = self;
+  selfCopy = self;
   v15[1] = a2;
   v15[0] = [MEMORY[0x29EDB8DE8] array];
   v3 = v15[0];
-  v14.receiver = v16;
+  v14.receiver = selfCopy;
   v14.super_class = UICollectionViewListCellAccessibility;
-  v4 = [(UICollectionViewListCellAccessibility *)&v14 _privateAccessibilityCustomActions];
+  _privateAccessibilityCustomActions = [(UICollectionViewListCellAccessibility *)&v14 _privateAccessibilityCustomActions];
   [v3 axSafelyAddObjectsFromArray:?];
-  MEMORY[0x29EDC9740](v4);
-  v5 = v16;
+  MEMORY[0x29EDC9740](_privateAccessibilityCustomActions);
+  v5 = selfCopy;
   v7 = MEMORY[0x29EDCA5F8];
   v8 = -1073741824;
   v9 = 0;
   v10 = __75__UICollectionViewListCellAccessibility__privateAccessibilityCustomActions__block_invoke;
   v11 = &unk_29F30D600;
-  v12 = MEMORY[0x29EDC9748](v16);
+  v12 = MEMORY[0x29EDC9748](selfCopy);
   v13 = MEMORY[0x29EDC9748](v15[0]);
   [(UICollectionViewListCellAccessibility *)v5 _accessibilityEnumerateCurrentConfigurationsWithBlock:?];
   v6 = MEMORY[0x29EDC9748](v15[0]);
@@ -1338,19 +1338,19 @@ double __75__UICollectionViewListCellAccessibility__privateAccessibilityCustomAc
 
 - (id)_accessibilityPreviousIndexPath
 {
-  v12 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v11 = [v12 _accessibilityParentCollectionView];
-    location = [v12 _accessibilityIndexPath];
-    if (v11 && location)
+    _accessibilityParentCollectionView = [selfCopy _accessibilityParentCollectionView];
+    location = [selfCopy _accessibilityIndexPath];
+    if (_accessibilityParentCollectionView && location)
     {
       if ([location row] <= 0)
       {
         if (![location row] && objc_msgSend(location, "section") > 0)
         {
           v8 = [location section] - 1;
-          v7 = [v11 numberOfItemsInSection:v8] - 1;
+          v7 = [_accessibilityParentCollectionView numberOfItemsInSection:v8] - 1;
           if ((v7 & 0x8000000000000000) == 0)
           {
             v3 = [MEMORY[0x29EDB9FE0] indexPathForRow:v7 inSection:v8];
@@ -1379,7 +1379,7 @@ double __75__UICollectionViewListCellAccessibility__privateAccessibilityCustomAc
     }
 
     objc_storeStrong(&location, 0);
-    objc_storeStrong(&v11, 0);
+    objc_storeStrong(&_accessibilityParentCollectionView, 0);
   }
 
   else
@@ -1394,8 +1394,8 @@ double __75__UICollectionViewListCellAccessibility__privateAccessibilityCustomAc
 
 - (uint64_t)_accessibilityHasReorderActions
 {
-  v13 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v8 = 0;
     v9 = &v8;
@@ -1408,7 +1408,7 @@ double __75__UICollectionViewListCellAccessibility__privateAccessibilityCustomAc
     v5 = __72__UICollectionViewListCellAccessibility__accessibilityHasReorderActions__block_invoke;
     v6 = &unk_29F30D538;
     v7 = &v8;
-    [(UICollectionViewListCellAccessibility *)v13 _accessibilityEnumerateCurrentConfigurationsWithBlock:?];
+    [(UICollectionViewListCellAccessibility *)selfCopy _accessibilityEnumerateCurrentConfigurationsWithBlock:?];
     v14 = v9[3] & 1;
     _Block_object_dispose(&v8, 8);
   }
@@ -1423,21 +1423,21 @@ double __75__UICollectionViewListCellAccessibility__privateAccessibilityCustomAc
 
 - (id)_accessibilityNextIndexPath
 {
-  v13 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v12 = [v13 _accessibilityParentCollectionView];
-    location = [v13 _accessibilityIndexPath];
-    if (v12 && location)
+    _accessibilityParentCollectionView = [selfCopy _accessibilityParentCollectionView];
+    location = [selfCopy _accessibilityIndexPath];
+    if (_accessibilityParentCollectionView && location)
     {
-      v8 = [v12 numberOfItemsInSection:{objc_msgSend(location, "section")}];
+      v8 = [_accessibilityParentCollectionView numberOfItemsInSection:{objc_msgSend(location, "section")}];
       if (v8 <= [location row] + 1)
       {
-        v7 = [v12 numberOfSections];
-        if (v7 > [location section] + 1)
+        numberOfSections = [_accessibilityParentCollectionView numberOfSections];
+        if (numberOfSections > [location section] + 1)
         {
           v9 = [location section] + 1;
-          if ([v12 numberOfItemsInSection:v9] > 0)
+          if ([_accessibilityParentCollectionView numberOfItemsInSection:v9] > 0)
           {
             v3 = [MEMORY[0x29EDB9FE0] indexPathForRow:0 inSection:v9];
             v4 = location;
@@ -1465,7 +1465,7 @@ double __75__UICollectionViewListCellAccessibility__privateAccessibilityCustomAc
     }
 
     objc_storeStrong(&location, 0);
-    objc_storeStrong(&v12, 0);
+    objc_storeStrong(&_accessibilityParentCollectionView, 0);
   }
 
   else
@@ -1592,24 +1592,24 @@ double __75__UICollectionViewListCellAccessibility__privateAccessibilityCustomAc
 - (id)automationElements
 {
   v37 = *MEMORY[0x29EDCA608];
-  v34 = self;
+  selfCopy = self;
   v33[1] = a2;
   v33[0] = objc_opt_new();
   v14 = v33[0];
-  v32.receiver = v34;
+  v32.receiver = selfCopy;
   v32.super_class = UICollectionViewListCellAccessibility;
-  v15 = [(UICollectionViewListCellAccessibility *)&v32 automationElements];
+  automationElements = [(UICollectionViewListCellAccessibility *)&v32 automationElements];
   [v14 axSafelyAddObjectsFromArray:?];
-  MEMORY[0x29EDC9740](v15);
+  MEMORY[0x29EDC9740](automationElements);
   v24 = MEMORY[0x29EDCA5F8];
   v25 = -1073741824;
   v26 = 0;
   v27 = __59__UICollectionViewListCellAccessibility_automationElements__block_invoke;
   v28 = &unk_29F30D628;
-  v29 = MEMORY[0x29EDC9748](v34);
+  v29 = MEMORY[0x29EDC9748](selfCopy);
   v30 = MEMORY[0x29EDC9748](v33[0]);
   v31 = MEMORY[0x29ED3E4C0](&v24);
-  v16 = [(UICollectionViewListCellAccessibility *)v34 safeValueForKey:@"_accessoryManager"];
+  v16 = [(UICollectionViewListCellAccessibility *)selfCopy safeValueForKey:@"_accessoryManager"];
   location = [v16 safeValueForKey:@"currentConfiguration"];
   MEMORY[0x29EDC9740](v16);
   memset(__b, 0, sizeof(__b));
@@ -1744,12 +1744,12 @@ void __59__UICollectionViewListCellAccessibility_automationElements__block_invok
 - (void)accessibilityElementDidBecomeFocused
 {
   v18 = *MEMORY[0x29EDCA608];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
   v14.receiver = self;
   v14.super_class = UICollectionViewListCellAccessibility;
   [(UICollectionViewListCellAccessibility *)&v14 accessibilityElementDidBecomeFocused];
-  v13 = [(UICollectionViewListCellAccessibility *)v16 safeArrayForKey:@"_gestureRecognizers"];
+  v13 = [(UICollectionViewListCellAccessibility *)selfCopy safeArrayForKey:@"_gestureRecognizers"];
   memset(__b, 0, 0x40uLL);
   obj = MEMORY[0x29EDC9748](v13);
   v7 = [obj countByEnumeratingWithState:__b objects:v17 count:16];
@@ -1781,7 +1781,7 @@ void __59__UICollectionViewListCellAccessibility_automationElements__block_invok
         v8 = MEMORY[0x29EDC9748](v9);
         objc_storeStrong(&v9, 0);
         *v11 = v8;
-        [(UIHoverGestureRecognizerAccessibility *)v8 _axSetOverrideStateEnabled:v16 forFocusedElement:?];
+        [(UIHoverGestureRecognizerAccessibility *)v8 _axSetOverrideStateEnabled:selfCopy forFocusedElement:?];
         objc_storeStrong(v11, 0);
       }
 
@@ -1802,22 +1802,22 @@ void __59__UICollectionViewListCellAccessibility_automationElements__block_invok
   objc_storeStrong(&v13, 0);
 }
 
-- (void)_updateSystemTypeAccessoryView:(id)a3 withCellAccessory:(id)a4 orConfiguration:(id)a5 usingState:(id)a6 isUserInitiated:(BOOL)a7
+- (void)_updateSystemTypeAccessoryView:(id)view withCellAccessory:(id)accessory orConfiguration:(id)configuration usingState:(id)state isUserInitiated:(BOOL)initiated
 {
-  v65 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v63 = 0;
-  objc_storeStrong(&v63, a4);
+  objc_storeStrong(&v63, accessory);
   v62 = 0;
-  objc_storeStrong(&v62, a5);
+  objc_storeStrong(&v62, configuration);
   v61 = 0;
-  objc_storeStrong(&v61, a6);
-  v60 = a7;
-  v59.receiver = v65;
+  objc_storeStrong(&v61, state);
+  initiatedCopy = initiated;
+  v59.receiver = selfCopy;
   v59.super_class = UICollectionViewListCellAccessibility;
-  [(UICollectionViewListCellAccessibility *)&v59 _updateSystemTypeAccessoryView:location[0] withCellAccessory:v63 orConfiguration:v62 usingState:v61 isUserInitiated:a7];
+  [(UICollectionViewListCellAccessibility *)&v59 _updateSystemTypeAccessoryView:location[0] withCellAccessory:v63 orConfiguration:v62 usingState:v61 isUserInitiated:initiated];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1827,188 +1827,188 @@ void __59__UICollectionViewListCellAccessibility_automationElements__block_invok
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v37 = [(UICollectionViewListCellAccessibility *)v65 accessibilityIdentifier];
+        accessibilityIdentifier = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityIdentifier];
         v57 = 0;
         v38 = 0;
-        if (v37)
+        if (accessibilityIdentifier)
         {
-          v58 = [location[0] accessibilityIdentifier];
+          accessibilityIdentifier2 = [location[0] accessibilityIdentifier];
           v57 = 1;
-          v38 = v58 == 0;
+          v38 = accessibilityIdentifier2 == 0;
         }
 
         if (v57)
         {
-          MEMORY[0x29EDC9740](v58);
+          MEMORY[0x29EDC9740](accessibilityIdentifier2);
         }
 
-        v7 = MEMORY[0x29EDC9740](v37).n128_u64[0];
+        v7 = MEMORY[0x29EDC9740](accessibilityIdentifier).n128_u64[0];
         if (v38)
         {
-          v36 = [(UICollectionViewListCellAccessibility *)v65 accessibilityIdentifier];
+          accessibilityIdentifier3 = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityIdentifier];
           [location[0] setAccessibilityIdentifier:?];
-          v7 = MEMORY[0x29EDC9740](v36).n128_u64[0];
+          v7 = MEMORY[0x29EDC9740](accessibilityIdentifier3).n128_u64[0];
         }
 
-        v34 = [(UICollectionViewListCellAccessibility *)v65 accessibilityLabel];
+        accessibilityLabel = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityLabel];
         v55 = 0;
         v35 = 0;
-        if (v34)
+        if (accessibilityLabel)
         {
-          v56 = [location[0] accessibilityLabel];
+          accessibilityLabel2 = [location[0] accessibilityLabel];
           v55 = 1;
-          v35 = v56 == 0;
+          v35 = accessibilityLabel2 == 0;
         }
 
         if (v55)
         {
-          MEMORY[0x29EDC9740](v56);
+          MEMORY[0x29EDC9740](accessibilityLabel2);
         }
 
-        v8 = MEMORY[0x29EDC9740](v34).n128_u64[0];
+        v8 = MEMORY[0x29EDC9740](accessibilityLabel).n128_u64[0];
         if (v35)
         {
-          v33 = [(UICollectionViewListCellAccessibility *)v65 accessibilityLabel];
+          accessibilityLabel3 = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityLabel];
           [location[0] setAccessibilityLabel:?];
-          v8 = MEMORY[0x29EDC9740](v33).n128_u64[0];
+          v8 = MEMORY[0x29EDC9740](accessibilityLabel3).n128_u64[0];
         }
 
-        v31 = [(UICollectionViewListCellAccessibility *)v65 accessibilityAttributedLabel];
+        accessibilityAttributedLabel = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityAttributedLabel];
         v53 = 0;
         v32 = 0;
-        if (v31)
+        if (accessibilityAttributedLabel)
         {
-          v54 = [location[0] accessibilityAttributedLabel];
+          accessibilityAttributedLabel2 = [location[0] accessibilityAttributedLabel];
           v53 = 1;
-          v32 = v54 == 0;
+          v32 = accessibilityAttributedLabel2 == 0;
         }
 
         if (v53)
         {
-          MEMORY[0x29EDC9740](v54);
+          MEMORY[0x29EDC9740](accessibilityAttributedLabel2);
         }
 
-        v9 = MEMORY[0x29EDC9740](v31).n128_u64[0];
+        v9 = MEMORY[0x29EDC9740](accessibilityAttributedLabel).n128_u64[0];
         if (v32)
         {
-          v30 = [(UICollectionViewListCellAccessibility *)v65 accessibilityAttributedLabel];
+          accessibilityAttributedLabel3 = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityAttributedLabel];
           [location[0] setAccessibilityAttributedLabel:?];
-          v9 = MEMORY[0x29EDC9740](v30).n128_u64[0];
+          v9 = MEMORY[0x29EDC9740](accessibilityAttributedLabel3).n128_u64[0];
         }
 
-        v28 = [(UICollectionViewListCellAccessibility *)v65 accessibilityValue];
+        accessibilityValue = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityValue];
         v51 = 0;
         v29 = 0;
-        if (v28)
+        if (accessibilityValue)
         {
-          v52 = [location[0] accessibilityValue];
+          accessibilityValue2 = [location[0] accessibilityValue];
           v51 = 1;
-          v29 = v52 == 0;
+          v29 = accessibilityValue2 == 0;
         }
 
         if (v51)
         {
-          MEMORY[0x29EDC9740](v52);
+          MEMORY[0x29EDC9740](accessibilityValue2);
         }
 
-        v10 = MEMORY[0x29EDC9740](v28).n128_u64[0];
+        v10 = MEMORY[0x29EDC9740](accessibilityValue).n128_u64[0];
         if (v29)
         {
-          v27 = [(UICollectionViewListCellAccessibility *)v65 accessibilityValue];
+          accessibilityValue3 = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityValue];
           [location[0] setAccessibilityValue:?];
-          v10 = MEMORY[0x29EDC9740](v27).n128_u64[0];
+          v10 = MEMORY[0x29EDC9740](accessibilityValue3).n128_u64[0];
         }
 
-        v25 = [(UICollectionViewListCellAccessibility *)v65 accessibilityAttributedValue];
+        accessibilityAttributedValue = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityAttributedValue];
         v49 = 0;
         v26 = 0;
-        if (v25)
+        if (accessibilityAttributedValue)
         {
-          v50 = [location[0] accessibilityAttributedValue];
+          accessibilityAttributedValue2 = [location[0] accessibilityAttributedValue];
           v49 = 1;
-          v26 = v50 == 0;
+          v26 = accessibilityAttributedValue2 == 0;
         }
 
         if (v49)
         {
-          MEMORY[0x29EDC9740](v50);
+          MEMORY[0x29EDC9740](accessibilityAttributedValue2);
         }
 
-        v11 = MEMORY[0x29EDC9740](v25).n128_u64[0];
+        v11 = MEMORY[0x29EDC9740](accessibilityAttributedValue).n128_u64[0];
         if (v26)
         {
-          v24 = [(UICollectionViewListCellAccessibility *)v65 accessibilityAttributedValue];
+          accessibilityAttributedValue3 = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityAttributedValue];
           [location[0] setAccessibilityAttributedValue:?];
-          v11 = MEMORY[0x29EDC9740](v24).n128_u64[0];
+          v11 = MEMORY[0x29EDC9740](accessibilityAttributedValue3).n128_u64[0];
         }
 
-        v22 = [(UICollectionViewListCellAccessibility *)v65 accessibilityHint];
+        accessibilityHint = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityHint];
         v47 = 0;
         v23 = 0;
-        if (v22)
+        if (accessibilityHint)
         {
-          v48 = [location[0] accessibilityHint];
+          accessibilityHint2 = [location[0] accessibilityHint];
           v47 = 1;
-          v23 = v48 == 0;
+          v23 = accessibilityHint2 == 0;
         }
 
         if (v47)
         {
-          MEMORY[0x29EDC9740](v48);
+          MEMORY[0x29EDC9740](accessibilityHint2);
         }
 
-        v12 = MEMORY[0x29EDC9740](v22).n128_u64[0];
+        v12 = MEMORY[0x29EDC9740](accessibilityHint).n128_u64[0];
         if (v23)
         {
-          v21 = [(UICollectionViewListCellAccessibility *)v65 accessibilityHint];
+          accessibilityHint3 = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityHint];
           [location[0] setAccessibilityHint:?];
-          v12 = MEMORY[0x29EDC9740](v21).n128_u64[0];
+          v12 = MEMORY[0x29EDC9740](accessibilityHint3).n128_u64[0];
         }
 
-        v19 = [(UICollectionViewListCellAccessibility *)v65 accessibilityAttributedHint];
+        accessibilityAttributedHint = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityAttributedHint];
         v45 = 0;
         v20 = 0;
-        if (v19)
+        if (accessibilityAttributedHint)
         {
-          v46 = [location[0] accessibilityAttributedHint];
+          accessibilityAttributedHint2 = [location[0] accessibilityAttributedHint];
           v45 = 1;
-          v20 = v46 == 0;
+          v20 = accessibilityAttributedHint2 == 0;
         }
 
         if (v45)
         {
-          MEMORY[0x29EDC9740](v46);
+          MEMORY[0x29EDC9740](accessibilityAttributedHint2);
         }
 
-        v13 = MEMORY[0x29EDC9740](v19).n128_u64[0];
+        v13 = MEMORY[0x29EDC9740](accessibilityAttributedHint).n128_u64[0];
         if (v20)
         {
-          v18 = [(UICollectionViewListCellAccessibility *)v65 accessibilityAttributedHint];
+          accessibilityAttributedHint3 = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityAttributedHint];
           [location[0] setAccessibilityAttributedHint:?];
-          v13 = MEMORY[0x29EDC9740](v18).n128_u64[0];
+          v13 = MEMORY[0x29EDC9740](accessibilityAttributedHint3).n128_u64[0];
         }
 
-        v16 = [(UICollectionViewListCellAccessibility *)v65 accessibilityUserInputLabels];
+        accessibilityUserInputLabels = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityUserInputLabels];
         v43 = 0;
         v17 = 0;
-        if (v16)
+        if (accessibilityUserInputLabels)
         {
-          v44 = [location[0] accessibilityUserInputLabels];
+          accessibilityUserInputLabels2 = [location[0] accessibilityUserInputLabels];
           v43 = 1;
-          v17 = v44 == 0;
+          v17 = accessibilityUserInputLabels2 == 0;
         }
 
         if (v43)
         {
-          MEMORY[0x29EDC9740](v44);
+          MEMORY[0x29EDC9740](accessibilityUserInputLabels2);
         }
 
-        *&v14 = MEMORY[0x29EDC9740](v16).n128_u64[0];
+        *&v14 = MEMORY[0x29EDC9740](accessibilityUserInputLabels).n128_u64[0];
         if (v17)
         {
-          v15 = [(UICollectionViewListCellAccessibility *)v65 accessibilityUserInputLabels];
+          accessibilityUserInputLabels3 = [(UICollectionViewListCellAccessibility *)selfCopy accessibilityUserInputLabels];
           [location[0] setAccessibilityUserInputLabels:?];
-          MEMORY[0x29EDC9740](v15);
+          MEMORY[0x29EDC9740](accessibilityUserInputLabels3);
         }
       }
     }
@@ -2086,36 +2086,36 @@ void __72__UICollectionViewListCellAccessibility__accessibilityHasReorderActions
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)_accessibilityHandleReorderMoveUp:(BOOL)a3
+- (BOOL)_accessibilityHandleReorderMoveUp:(BOOL)up
 {
-  v62 = self;
+  selfCopy = self;
   v61 = a2;
-  v60 = a3;
-  v59 = [(UICollectionViewListCellAccessibility *)self _accessibilityParentCollectionView];
-  v58 = [(UICollectionViewListCellAccessibility *)v62 _accessibilityIndexPath];
-  if ((!v60 || [v58 row]) && (v60 || (v20 = objc_msgSend(v58, "row"), v20 != objc_msgSend(v59, "numberOfItemsInSection:", objc_msgSend(v58, "section")) - 1)))
+  upCopy = up;
+  _accessibilityParentCollectionView = [(UICollectionViewListCellAccessibility *)self _accessibilityParentCollectionView];
+  _accessibilityIndexPath = [(UICollectionViewListCellAccessibility *)selfCopy _accessibilityIndexPath];
+  if ((!upCopy || [_accessibilityIndexPath row]) && (upCopy || (v20 = objc_msgSend(_accessibilityIndexPath, "row"), v20 != objc_msgSend(_accessibilityParentCollectionView, "numberOfItemsInSection:", objc_msgSend(_accessibilityIndexPath, "section")) - 1)))
   {
-    v56 = MEMORY[0x29EDC9748](v62);
+    v56 = MEMORY[0x29EDC9748](selfCopy);
     v49 = MEMORY[0x29EDCA5F8];
     v50 = -1073741824;
     v51 = 0;
     v52 = __75__UICollectionViewListCellAccessibility__accessibilityHandleReorderMoveUp___block_invoke;
     v53 = &unk_29F30C888;
-    v54 = MEMORY[0x29EDC9748](v59);
-    v55 = MEMORY[0x29EDC9748](v58);
+    v54 = MEMORY[0x29EDC9748](_accessibilityParentCollectionView);
+    v55 = MEMORY[0x29EDC9748](_accessibilityIndexPath);
     AXPerformSafeBlock();
-    v17 = [MEMORY[0x29EDC7C40] mainScreen];
-    [v17 bounds];
+    mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+    [mainScreen bounds];
     v47 = v65;
     v18 = CGRectGetHeight(v65) / 2.0;
-    MEMORY[0x29EDC9740](v17);
+    MEMORY[0x29EDC9740](mainScreen);
     v48 = v18;
     [v56 frame];
     *&v45 = v3;
     *(&v45 + 1) = v4;
     *&v46 = v5;
     *(&v46 + 1) = v6;
-    if (v60)
+    if (upCopy)
     {
       v7 = -1;
     }
@@ -2136,7 +2136,7 @@ void __72__UICollectionViewListCellAccessibility__accessibilityHasReorderActions
     v42 = 0;
     do
     {
-      if (v60)
+      if (upCopy)
       {
         v12 = -1;
       }
@@ -2160,7 +2160,7 @@ void __72__UICollectionViewListCellAccessibility__accessibilityHasReorderActions
       v29 = __75__UICollectionViewListCellAccessibility__accessibilityHandleReorderMoveUp___block_invoke_515;
       v30 = &unk_29F30D678;
       v31[1] = &v35;
-      v31[0] = MEMORY[0x29EDC9748](v59);
+      v31[0] = MEMORY[0x29EDC9748](_accessibilityParentCollectionView);
       v32 = v45;
       v33 = v46;
       v34 = v44;
@@ -2172,7 +2172,7 @@ void __72__UICollectionViewListCellAccessibility__accessibilityHasReorderActions
       v13 = v43[0];
       v43[0] = v25;
       *&v14 = MEMORY[0x29EDC9740](v13).n128_u64[0];
-      v42 = ([v58 isEqual:{v43[0], v14}] ^ 1) & 1;
+      v42 = ([_accessibilityIndexPath isEqual:{v43[0], v14}] ^ 1) & 1;
       v16 = 0;
       if ((v42 & 1) == 0)
       {
@@ -2182,7 +2182,7 @@ void __72__UICollectionViewListCellAccessibility__accessibilityHasReorderActions
     }
 
     while (v16);
-    v21 = MEMORY[0x29EDC9748](v59);
+    v21 = MEMORY[0x29EDC9748](_accessibilityParentCollectionView);
     v22 = v45;
     v23 = v46;
     v24 = v44;
@@ -2203,8 +2203,8 @@ void __72__UICollectionViewListCellAccessibility__accessibilityHasReorderActions
     v57 = 1;
   }
 
-  objc_storeStrong(&v58, 0);
-  objc_storeStrong(&v59, 0);
+  objc_storeStrong(&_accessibilityIndexPath, 0);
+  objc_storeStrong(&_accessibilityParentCollectionView, 0);
   return v63 & 1;
 }
 

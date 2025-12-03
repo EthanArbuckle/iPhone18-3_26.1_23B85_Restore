@@ -1,18 +1,18 @@
 @interface _UIKeyShortcutHUDShortcutCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation _UIKeyShortcutHUDShortcutCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v9 = location;
   v8 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"_UIKeyShortcutHUDShortcutCell";
   v3 = @"UICollectionViewCell";
   [location[0] validateClass:? isKindOfClass:?];
@@ -31,23 +31,23 @@
 
 - (id)accessibilityLabel
 {
-  v14 = self;
+  selfCopy = self;
   v13[1] = a2;
   v13[0] = [(_UIKeyShortcutHUDShortcutCellAccessibility *)self safeValueForKey:@"contentConfiguration"];
   v12 = [v13[0] safeStringForKey:@"text"];
   v11 = [v13[0] safeStringForKey:@"secondaryText"];
-  v10 = [(_UIKeyShortcutHUDShortcutCellAccessibility *)v14 safeValueForKeyPath:@"shortcutInputAccessoryView.shortcutInputView"];
+  v10 = [(_UIKeyShortcutHUDShortcutCellAccessibility *)selfCopy safeValueForKeyPath:@"shortcutInputAccessoryView.shortcutInputView"];
   v4 = [v10 safeValueForKey:@"modifiersLabel"];
-  v9 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
   *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
   v6 = [v10 safeValueForKey:{@"inputLabel", v2}];
-  v5 = [v6 accessibilityLabel];
-  v8 = [v5 lowercaseString];
-  MEMORY[0x29EDC9740](v5);
+  accessibilityLabel2 = [v6 accessibilityLabel];
+  lowercaseString = [accessibilityLabel2 lowercaseString];
+  MEMORY[0x29EDC9740](accessibilityLabel2);
   MEMORY[0x29EDC9740](v6);
   v7 = __UIAXStringForVariables();
-  objc_storeStrong(&v8, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&lowercaseString, 0);
+  objc_storeStrong(&accessibilityLabel, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);

@@ -1,31 +1,31 @@
 @interface IDSTemporaryPhoneUserExpirationTimerInfo
-- (IDSTemporaryPhoneUserExpirationTimerInfo)initWithUser:(id)a3;
-- (IDSTemporaryPhoneUserExpirationTimerInfo)initWithUser:(id)a3 expirationPhase:(int64_t)a4;
+- (IDSTemporaryPhoneUserExpirationTimerInfo)initWithUser:(id)user;
+- (IDSTemporaryPhoneUserExpirationTimerInfo)initWithUser:(id)user expirationPhase:(int64_t)phase;
 - (double)expirationInterval;
 @end
 
 @implementation IDSTemporaryPhoneUserExpirationTimerInfo
 
-- (IDSTemporaryPhoneUserExpirationTimerInfo)initWithUser:(id)a3
+- (IDSTemporaryPhoneUserExpirationTimerInfo)initWithUser:(id)user
 {
-  v4 = a3;
-  v5 = [v4 expirationDate];
-  v6 = [(IDSTemporaryPhoneUserExpirationTimerInfo *)self initWithUser:v4 expirationPhase:[IDSTemporaryPhoneUserExpirationTimerInfo phaseForExpirationDate:v5]];
+  userCopy = user;
+  expirationDate = [userCopy expirationDate];
+  v6 = [(IDSTemporaryPhoneUserExpirationTimerInfo *)self initWithUser:userCopy expirationPhase:[IDSTemporaryPhoneUserExpirationTimerInfo phaseForExpirationDate:expirationDate]];
 
   return v6;
 }
 
-- (IDSTemporaryPhoneUserExpirationTimerInfo)initWithUser:(id)a3 expirationPhase:(int64_t)a4
+- (IDSTemporaryPhoneUserExpirationTimerInfo)initWithUser:(id)user expirationPhase:(int64_t)phase
 {
-  v7 = a3;
+  userCopy = user;
   v11.receiver = self;
   v11.super_class = IDSTemporaryPhoneUserExpirationTimerInfo;
   v8 = [(IDSTemporaryPhoneUserExpirationTimerInfo *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_user, a3);
-    v9->_expirationPhase = a4;
+    objc_storeStrong(&v8->_user, user);
+    v9->_expirationPhase = phase;
   }
 
   return v9;
@@ -33,11 +33,11 @@
 
 - (double)expirationInterval
 {
-  v3 = [(IDSTemporaryPhoneUserExpirationTimerInfo *)self expirationPhase];
-  v4 = [(IDSTemporaryPhoneUserExpirationTimerInfo *)self user];
-  v5 = [v4 expirationDate];
-  [v5 timeIntervalSinceNow];
-  if (v3)
+  expirationPhase = [(IDSTemporaryPhoneUserExpirationTimerInfo *)self expirationPhase];
+  user = [(IDSTemporaryPhoneUserExpirationTimerInfo *)self user];
+  expirationDate = [user expirationDate];
+  [expirationDate timeIntervalSinceNow];
+  if (expirationPhase)
   {
     v7 = v6;
   }

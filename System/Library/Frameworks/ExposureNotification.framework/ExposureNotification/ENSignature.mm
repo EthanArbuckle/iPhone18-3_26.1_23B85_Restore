@@ -1,16 +1,16 @@
 @interface ENSignature
-- (BOOL)_encodeInfoWithProtobufCoder:(id)a3 error:(id *)a4;
-- (BOOL)_readSignatureInfoPtr:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (BOOL)encodeWithProtobufCoder:(id)a3 error:(id *)a4;
-- (ENSignature)initWithBytes:(const char *)a3 length:(unint64_t)a4 error:(id *)a5;
-- (ENSignature)initWithXPCObject:(id)a3 error:(id *)a4;
+- (BOOL)_encodeInfoWithProtobufCoder:(id)coder error:(id *)error;
+- (BOOL)_readSignatureInfoPtr:(const char *)ptr length:(unint64_t)length error:(id *)error;
+- (BOOL)encodeWithProtobufCoder:(id)coder error:(id *)error;
+- (ENSignature)initWithBytes:(const char *)bytes length:(unint64_t)length error:(id *)error;
+- (ENSignature)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ENSignature
 
-- (ENSignature)initWithBytes:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (ENSignature)initWithBytes:(const char *)bytes length:(unint64_t)length error:(id *)error
 {
   v43 = 0;
   v44 = &v43;
@@ -23,7 +23,7 @@
   v42[2] = __42__ENSignature_initWithBytes_length_error___block_invoke;
   v42[3] = &unk_278A4B610;
   v42[4] = &v43;
-  v42[5] = a5;
+  v42[5] = error;
   v8 = MEMORY[0x2383EE560](v42, a2);
   v9 = [(ENSignature *)self init];
   if (!v9)
@@ -36,7 +36,7 @@
   }
 
   v10 = objc_alloc_init(ENProtobufCoder);
-  [(ENProtobufCoder *)v10 setReadMemory:a3 length:a4];
+  [(ENProtobufCoder *)v10 setReadMemory:bytes length:length];
   do
   {
     v11 = objc_autoreleasePoolPush();
@@ -183,7 +183,7 @@ id __42__ENSignature_initWithBytes_length_error___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)_readSignatureInfoPtr:(const char *)a3 length:(unint64_t)a4 error:(id *)a5
+- (BOOL)_readSignatureInfoPtr:(const char *)ptr length:(unint64_t)length error:(id *)error
 {
   v38 = 0;
   v39 = &v38;
@@ -196,10 +196,10 @@ id __42__ENSignature_initWithBytes_length_error___block_invoke(uint64_t a1)
   v37[2] = __50__ENSignature__readSignatureInfoPtr_length_error___block_invoke;
   v37[3] = &unk_278A4B610;
   v37[4] = &v38;
-  v37[5] = a5;
+  v37[5] = error;
   v8 = MEMORY[0x2383EE560](v37, a2);
   v9 = objc_alloc_init(ENProtobufCoder);
-  [(ENProtobufCoder *)v9 setReadMemory:a3 length:a4];
+  [(ENProtobufCoder *)v9 setReadMemory:ptr length:length];
   do
   {
     v10 = objc_autoreleasePoolPush();
@@ -347,25 +347,25 @@ id __50__ENSignature__readSignatureInfoPtr_length_error___block_invoke(uint64_t 
   return result;
 }
 
-- (BOOL)_encodeInfoWithProtobufCoder:(id)a3 error:(id *)a4
+- (BOOL)_encodeInfoWithProtobufCoder:(id)coder error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
+  coderCopy = coder;
+  v7 = coderCopy;
   appleBundleID = self->_appleBundleID;
   v13 = 0;
-  if (!appleBundleID || [v6 writeNSString:appleBundleID tag:1 error:a4])
+  if (!appleBundleID || [coderCopy writeNSString:appleBundleID tag:1 error:error])
   {
     androidBundleID = self->_androidBundleID;
-    if (!androidBundleID || [v7 writeNSString:androidBundleID tag:2 error:a4])
+    if (!androidBundleID || [v7 writeNSString:androidBundleID tag:2 error:error])
     {
       keyVersion = self->_keyVersion;
-      if (!keyVersion || [v7 writeNSString:keyVersion tag:3 error:a4])
+      if (!keyVersion || [v7 writeNSString:keyVersion tag:3 error:error])
       {
         keyID = self->_keyID;
-        if (!keyID || [v7 writeNSString:keyID tag:4 error:a4])
+        if (!keyID || [v7 writeNSString:keyID tag:4 error:error])
         {
           signatureAlgorithm = self->_signatureAlgorithm;
-          if (!signatureAlgorithm || [v7 writeNSString:signatureAlgorithm tag:5 error:a4])
+          if (!signatureAlgorithm || [v7 writeNSString:signatureAlgorithm tag:5 error:error])
           {
             v13 = 1;
           }
@@ -377,21 +377,21 @@ id __50__ENSignature__readSignatureInfoPtr_length_error___block_invoke(uint64_t 
   return v13;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NSString *)self->_appleBundleID UTF8String];
-  if (v5)
+  objectCopy = object;
+  uTF8String = [(NSString *)self->_appleBundleID UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v4, "aBid", v5);
+    xpc_dictionary_set_string(objectCopy, "aBid", uTF8String);
   }
 
   androidBundleID = self->_androidBundleID;
-  v7 = v4;
-  v8 = [(NSString *)androidBundleID UTF8String];
-  if (v8)
+  v7 = objectCopy;
+  uTF8String2 = [(NSString *)androidBundleID UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v7, "andBid", v8);
+    xpc_dictionary_set_string(v7, "andBid", uTF8String2);
   }
 
   batchCount = self->_batchCount;
@@ -408,26 +408,26 @@ id __50__ENSignature__readSignatureInfoPtr_length_error___block_invoke(uint64_t 
 
   keyID = self->_keyID;
   v12 = v7;
-  v13 = [(NSString *)keyID UTF8String];
-  if (v13)
+  uTF8String3 = [(NSString *)keyID UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(v12, "keyID", v13);
+    xpc_dictionary_set_string(v12, "keyID", uTF8String3);
   }
 
   keyVersion = self->_keyVersion;
   v15 = v12;
-  v16 = [(NSString *)keyVersion UTF8String];
-  if (v16)
+  uTF8String4 = [(NSString *)keyVersion UTF8String];
+  if (uTF8String4)
   {
-    xpc_dictionary_set_string(v15, "keyV", v16);
+    xpc_dictionary_set_string(v15, "keyV", uTF8String4);
   }
 
   signatureAlgorithm = self->_signatureAlgorithm;
   xdict = v15;
-  v18 = [(NSString *)signatureAlgorithm UTF8String];
-  if (v18)
+  uTF8String5 = [(NSString *)signatureAlgorithm UTF8String];
+  if (uTF8String5)
   {
-    xpc_dictionary_set_string(xdict, "sigAlg", v18);
+    xpc_dictionary_set_string(xdict, "sigAlg", uTF8String5);
   }
 
   signatureData = self->_signatureData;
@@ -435,10 +435,10 @@ id __50__ENSignature__readSignatureInfoPtr_length_error___block_invoke(uint64_t 
   {
     v20 = signatureData;
     v21 = xdict;
-    v22 = [(NSData *)v20 bytes];
-    if (v22)
+    bytes = [(NSData *)v20 bytes];
+    if (bytes)
     {
-      v23 = v22;
+      v23 = bytes;
     }
 
     else
@@ -489,24 +489,24 @@ id __50__ENSignature__readSignatureInfoPtr_length_error___block_invoke(uint64_t 
   return v4;
 }
 
-- (BOOL)encodeWithProtobufCoder:(id)a3 error:(id *)a4
+- (BOOL)encodeWithProtobufCoder:(id)coder error:(id *)error
 {
-  v6 = a3;
+  coderCopy = coder;
   v7 = objc_alloc_init(ENProtobufCoder);
   v8 = objc_alloc_init(MEMORY[0x277CBEB28]);
   [(ENProtobufCoder *)v7 setWriteMutableData:v8];
   v11 = 0;
-  if ([(ENSignature *)self _encodeInfoWithProtobufCoder:v7 error:a4])
+  if ([(ENSignature *)self _encodeInfoWithProtobufCoder:v7 error:error])
   {
     v9 = [v8 length];
-    if (!v9 || [v6 writeLengthDelimitedPtr:objc_msgSend(v8 length:"bytes") tag:v9 error:{1, a4}])
+    if (!v9 || [coderCopy writeLengthDelimitedPtr:objc_msgSend(v8 length:"bytes") tag:v9 error:{1, error}])
     {
-      if ([v6 writeVarIntUInt32:self->_batchNumber tag:2 error:a4])
+      if ([coderCopy writeVarIntUInt32:self->_batchNumber tag:2 error:error])
       {
-        if ([v6 writeVarIntUInt32:self->_batchCount tag:3 error:a4])
+        if ([coderCopy writeVarIntUInt32:self->_batchCount tag:3 error:error])
         {
           signatureData = self->_signatureData;
-          if (!signatureData || [v6 writeNSData:signatureData tag:4 error:a4])
+          if (!signatureData || [coderCopy writeNSData:signatureData tag:4 error:error])
           {
             v11 = 1;
           }
@@ -518,26 +518,26 @@ id __50__ENSignature__readSignatureInfoPtr_length_error___block_invoke(uint64_t 
   return v11;
 }
 
-- (ENSignature)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENSignature)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ENSignature *)self init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }
 
 LABEL_20:
     ENErrorF(2);
-    *a4 = v10 = 0;
+    *error = v10 = 0;
     goto LABEL_16;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_21;
     }

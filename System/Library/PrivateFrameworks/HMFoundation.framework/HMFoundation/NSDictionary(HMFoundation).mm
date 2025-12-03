@@ -44,7 +44,7 @@
 - (id)shortDescription
 {
   v2 = [MEMORY[0x277CBEB98] set];
-  v3 = [a1 secureDescriptionWithIndent:0 newLine:1 blacklistedKeys:v2];
+  v3 = [self secureDescriptionWithIndent:0 newLine:1 blacklistedKeys:v2];
 
   return v3;
 }
@@ -52,12 +52,12 @@
 - (id)privateDescription
 {
   v22 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(a1, "count")}];
+  v2 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(self, "count")}];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = [a1 keyEnumerator];
+  obj = [self keyEnumerator];
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -73,7 +73,7 @@
         }
 
         v7 = *(*(&v17 + 1) + 8 * i);
-        v8 = [a1 objectForKeyedSubscript:v7];
+        v8 = [self objectForKeyedSubscript:v7];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -116,7 +116,7 @@
 
 - (void)hmf_arrayForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -137,7 +137,7 @@
 {
   v35 = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = [a1 hmf_arrayForKey:a3];
+  v7 = [self hmf_arrayForKey:a3];
   v8 = v7;
   if (v7)
   {
@@ -241,7 +241,7 @@ LABEL_18:
 
 - (void)hmf_mutableArrayForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -260,7 +260,7 @@ LABEL_18:
 
 - (id)hmf_base64EncodedDataForKey:()HMFoundation
 {
-  v1 = [a1 hmf_stringForKey:?];
+  v1 = [self hmf_stringForKey:?];
   if (v1)
   {
     v2 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v1 options:1];
@@ -276,7 +276,7 @@ LABEL_18:
 
 - (uint64_t)hmf_BOOLForKey:()HMFoundation isPresent:
 {
-  v5 = [a1 hmf_numberForKey:?];
+  v5 = [self hmf_numberForKey:?];
   v6 = v5;
   if (a4)
   {
@@ -285,20 +285,20 @@ LABEL_18:
 
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 - (uint64_t)hmf_BOOLForKey:()HMFoundation error:
 {
-  v5 = [a1 objectForKeyedSubscript:?];
+  v5 = [self objectForKeyedSubscript:?];
   if (v5)
   {
     objc_opt_class();
@@ -316,38 +316,38 @@ LABEL_18:
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else if (a4)
     {
       [MEMORY[0x277CCA9B8] hmfErrorWithCode:3];
-      *a4 = v9 = 0;
+      *a4 = bOOLValue = 0;
     }
 
     else
     {
-      v9 = 0;
+      bOOLValue = 0;
     }
   }
 
   else if (a4)
   {
     [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    *a4 = v9 = 0;
+    *a4 = bOOLValue = 0;
   }
 
   else
   {
-    v9 = 0;
+    bOOLValue = 0;
   }
 
-  return v9;
+  return bOOLValue;
 }
 
 - (void)hmf_calendarForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -366,7 +366,7 @@ LABEL_18:
 
 - (void)hmf_dataForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -385,7 +385,7 @@ LABEL_18:
 
 - (void)hmf_dateForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -404,7 +404,7 @@ LABEL_18:
 
 - (void)hmf_dateComponentsForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -423,7 +423,7 @@ LABEL_18:
 
 - (void)hmf_dictionaryForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -442,7 +442,7 @@ LABEL_18:
 
 - (void)hmf_mutableDictionaryForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -461,7 +461,7 @@ LABEL_18:
 
 - (void)hmf_errorForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -483,7 +483,7 @@ LABEL_18:
   v8[1] = *MEMORY[0x277D85DE8];
   v8[0] = objc_opt_class();
   v2 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
-  v3 = [a1 hmf_unarchivedObjectForKey:@"HMFMessageFlowKey" ofClasses:v2];
+  v3 = [self hmf_unarchivedObjectForKey:@"HMFMessageFlowKey" ofClasses:v2];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -504,7 +504,7 @@ LABEL_18:
 
 - (void)hmf_nullForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -523,7 +523,7 @@ LABEL_18:
 
 - (uint64_t)hmf_integerForKey:()HMFoundation error:
 {
-  v5 = [a1 objectForKeyedSubscript:?];
+  v5 = [self objectForKeyedSubscript:?];
   if (v5)
   {
     objc_opt_class();
@@ -541,38 +541,38 @@ LABEL_18:
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 integerValue];
+      integerValue = [v7 integerValue];
     }
 
     else if (a4)
     {
       [MEMORY[0x277CCA9B8] hmfErrorWithCode:3];
-      *a4 = v9 = 0;
+      *a4 = integerValue = 0;
     }
 
     else
     {
-      v9 = 0;
+      integerValue = 0;
     }
   }
 
   else if (a4)
   {
     [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-    *a4 = v9 = 0;
+    *a4 = integerValue = 0;
   }
 
   else
   {
-    v9 = 0;
+    integerValue = 0;
   }
 
-  return v9;
+  return integerValue;
 }
 
 - (void)hmf_numberForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -591,7 +591,7 @@ LABEL_18:
 
 - (void)hmf_setForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -610,7 +610,7 @@ LABEL_18:
 
 - (void)hmf_mutableSetForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -629,7 +629,7 @@ LABEL_18:
 
 - (void)hmf_stringForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -648,7 +648,7 @@ LABEL_18:
 
 - (void)hmf_timeZoneForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -667,7 +667,7 @@ LABEL_18:
 
 - (void)hmf_URLForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -686,7 +686,7 @@ LABEL_18:
 
 - (id)hmf_UUIDForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   if (v1)
   {
     objc_opt_class();
@@ -742,7 +742,7 @@ LABEL_18:
 
 - (void)hmf_valueForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -765,7 +765,7 @@ LABEL_18:
   v6 = a3;
   v7 = a4;
   v8 = [MEMORY[0x277CBEB98] setWithArray:v7];
-  v9 = [a1 hmf_dataForKey:v6];
+  v9 = [self hmf_dataForKey:v6];
   if (v9)
   {
     v19 = 0;
@@ -779,11 +779,11 @@ LABEL_18:
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = a1;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        v16 = HMFGetLogIdentifier(v14);
+        v16 = HMFGetLogIdentifier(selfCopy);
         *buf = 138544130;
         v21 = v16;
         v22 = 2112;
@@ -811,7 +811,7 @@ LABEL_18:
 
 - (void)hmf_fileHandleForKey:()HMFoundation
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -837,16 +837,16 @@ LABEL_18:
   v6[3] = &unk_2786E7418;
   v7 = v4;
   v5 = v4;
-  [a1 enumerateKeysAndObjectsUsingBlock:v6];
+  [self enumerateKeysAndObjectsUsingBlock:v6];
 }
 
 - (id)hmf_copyAsMemoryMappedData
 {
-  v2 = [MEMORY[0x277CBEB28] data];
-  [v2 hmf_appendObject:a1];
-  v3 = [v2 hmf_copyAsMemoryMappedData];
+  data = [MEMORY[0x277CBEB28] data];
+  [data hmf_appendObject:self];
+  hmf_copyAsMemoryMappedData = [data hmf_copyAsMemoryMappedData];
 
-  return v3;
+  return hmf_copyAsMemoryMappedData;
 }
 
 @end

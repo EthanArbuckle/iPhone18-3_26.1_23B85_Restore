@@ -1,51 +1,51 @@
 @interface RTCReportingAgent
-- (BOOL)checkIfWeeklyIDIsExpired:(id)a3 currentWeek:(int64_t)a4 currentYear:(int64_t)a5;
+- (BOOL)checkIfWeeklyIDIsExpired:(id)expired currentWeek:(int64_t)week currentYear:(int64_t)year;
 - (BOOL)realtimeEventsEnabled;
-- (BOOL)registerPeriodicTaskForModule:(unsigned int)a3 needToUpdate:(BOOL)a4 needToReport:(BOOL)a5 serviceBlock:(id)a6;
-- (BOOL)setupConfigurationCompletionSemaphore:(id *)a3;
-- (BOOL)unregisterPeriodTaskForModule:(unsigned int)a3;
+- (BOOL)registerPeriodicTaskForModule:(unsigned int)module needToUpdate:(BOOL)update needToReport:(BOOL)report serviceBlock:(id)block;
+- (BOOL)setupConfigurationCompletionSemaphore:(id *)semaphore;
+- (BOOL)unregisterPeriodTaskForModule:(unsigned int)module;
 - (Class)sharedAWDAdaptorClass;
-- (RTCReportingAgent)initWithConfig:(id *)a3;
-- (id)deriveFromParentHierarchyToken:(id)a3;
+- (RTCReportingAgent)initWithConfig:(id *)config;
+- (id)deriveFromParentHierarchyToken:(id)token;
 - (id)directoryPathForWeeklyIDCache;
-- (id)getUserInfoFromReportingConfiguration:(id *)a3;
-- (id)newAggregatorForClientType:(int)a3 creationOptions:(id *)a4;
+- (id)getUserInfoFromReportingConfiguration:(id *)configuration;
+- (id)newAggregatorForClientType:(int)type creationOptions:(id *)options;
 - (id)sortedServiceKeys;
 - (int)nextUnassignedReportingModuleID;
-- (unsigned)reportingCallMethodForClientType:(int)a3;
-- (unsigned)reportingSegmentMethodForClientType:(int)a3;
-- (unsigned)reportingSessionMethodForClientType:(int)a3;
-- (unsigned)reportingSessionTypeForClientType:(int)a3;
+- (unsigned)reportingCallMethodForClientType:(int)type;
+- (unsigned)reportingSegmentMethodForClientType:(int)type;
+- (unsigned)reportingSessionMethodForClientType:(int)type;
+- (unsigned)reportingSessionTypeForClientType:(int)type;
 - (void)blockReportingQueueUntilReportingObjectInitialized;
-- (void)collectTelemetryForService:(id)a3 payload:(id)a4 lock:(_opaque_pthread_mutex_t *)a5;
-- (void)copyPersistentSettingsCommon:(id)a3;
-- (void)copyPersistentSettingsMultiway:(id)a3;
-- (void)createSecondAggregatorWithOptions:(id *)a3;
+- (void)collectTelemetryForService:(id)service payload:(id)payload lock:(_opaque_pthread_mutex_t *)lock;
+- (void)copyPersistentSettingsCommon:(id)common;
+- (void)copyPersistentSettingsMultiway:(id)multiway;
+- (void)createSecondAggregatorWithOptions:(id *)options;
 - (void)dealloc;
-- (void)didSendMessageForReportingClient:(id)a3 event:(id)a4;
+- (void)didSendMessageForReportingClient:(id)client event:(id)event;
 - (void)directoryPathForWeeklyIDCache;
-- (void)finalizeAggregation:(id)a3;
+- (void)finalizeAggregation:(id)aggregation;
 - (void)finishDataStore;
 - (void)releasePeriodicQueues;
 - (void)releaseReportingObject;
-- (void)reportQR:(id)a3;
-- (void)reportingAgentGetAlgosScores:(double *)a3 newAlgosScore:(double *)a4;
-- (void)reportingSetNetworkActivityReportingEnabled:(BOOL)a3;
-- (void)reportingSetReportCallback:(void *)a3 withContext:(void *)a4;
-- (void)reportingSymptom:(unsigned int)a3 withOptionalDict:(__CFDictionary *)a4;
+- (void)reportQR:(id)r;
+- (void)reportingAgentGetAlgosScores:(double *)scores newAlgosScore:(double *)score;
+- (void)reportingSetNetworkActivityReportingEnabled:(BOOL)enabled;
+- (void)reportingSetReportCallback:(void *)callback withContext:(void *)context;
+- (void)reportingSymptom:(unsigned int)symptom withOptionalDict:(__CFDictionary *)dict;
 - (void)sendLastFinalizedEvent;
-- (void)sendMessageWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5;
-- (void)sendNetworkScoreDictionary:(id)a3 networkScoreType:(unsigned __int8)a4;
-- (void)setAndSaveWeeklyID:(id)a3 currentWeek:(unint64_t)a4 currentYear:(unint64_t)a5 cachePath:(id)a6;
+- (void)sendMessageWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload;
+- (void)sendNetworkScoreDictionary:(id)dictionary networkScoreType:(unsigned __int8)type;
+- (void)setAndSaveWeeklyID:(id)d currentWeek:(unint64_t)week currentYear:(unint64_t)year cachePath:(id)path;
 - (void)setUpAWDAdapter;
 - (void)setUpWeeklyRotatingID;
-- (void)setupAdaptiveLearningWithParameters:(id)a3;
-- (void)setupPersistentDataStoreFromConfig:(id *)a3;
+- (void)setupAdaptiveLearningWithParameters:(id)parameters;
+- (void)setupPersistentDataStoreFromConfig:(id *)config;
 - (void)signalConfigurationCompleted;
-- (void)startLogTimerWithInterval:(int)a3 reportingMultiplier:(int)a4 category:(unsigned __int16)a5 type:(unsigned __int16)a6;
+- (void)startLogTimerWithInterval:(int)interval reportingMultiplier:(int)multiplier category:(unsigned __int16)category type:(unsigned __int16)type;
 - (void)stopLogTimer;
-- (void)telemetryUpdate:(id)a3 updateTimeout:(unint64_t)a4;
-- (void)updateSymptomCount:(unsigned int)a3;
+- (void)telemetryUpdate:(id)update updateTimeout:(unint64_t)timeout;
+- (void)updateSymptomCount:(unsigned int)count;
 @end
 
 @implementation RTCReportingAgent
@@ -59,33 +59,33 @@
   return nextUnassignedReportingModuleID;
 }
 
-- (id)deriveFromParentHierarchyToken:(id)a3
+- (id)deriveFromParentHierarchyToken:(id)token
 {
-  v3 = [gRTCReporting_class newHierarchyTokenFromParentToken:a3];
+  v3 = [gRTCReporting_class newHierarchyTokenFromParentToken:token];
 
   return v3;
 }
 
-- (id)getUserInfoFromReportingConfiguration:(id *)a3
+- (id)getUserInfoFromReportingConfiguration:(id *)configuration
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = v5;
-  if (*&a3->var7 == 0)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v6 = dictionary;
+  if (*&configuration->var7 == 0)
   {
     [RTCReportingAgent getUserInfoFromReportingConfiguration:];
   }
 
   else
   {
-    [v5 setObject:? forKeyedSubscript:?];
-    [v6 setObject:a3->var8 forKeyedSubscript:sRTCReportingUserInfoServiceName];
-    [(RTCReportingAgent *)self setServiceName:a3->var8];
+    [dictionary setObject:? forKeyedSubscript:?];
+    [v6 setObject:configuration->var8 forKeyedSubscript:sRTCReportingUserInfoServiceName];
+    [(RTCReportingAgent *)self setServiceName:configuration->var8];
     reportingUserInfoSetValueCorrection(v6);
     [(RTCReportingAgent *)self setSubSessionId:&unk_284FA5528];
-    v7 = [(RTCReportingAgent *)self subSessionId];
-    [v6 setObject:v7 forKeyedSubscript:kVCReportingSubSessionID];
-    if (a3->var11)
+    subSessionId = [(RTCReportingAgent *)self subSessionId];
+    [v6 setObject:subSessionId forKeyedSubscript:kVCReportingSubSessionID];
+    if (configuration->var11)
     {
       [v6 addEntriesFromDictionary:?];
     }
@@ -169,7 +169,7 @@ void __36__RTCReportingAgent_setUpAWDAdapter__block_invoke(uint64_t a1)
   }
 }
 
-- (RTCReportingAgent)initWithConfig:(id *)a3
+- (RTCReportingAgent)initWithConfig:(id *)config
 {
   v63[6] = *MEMORY[0x277D85DE8];
   v54.receiver = self;
@@ -178,8 +178,8 @@ void __36__RTCReportingAgent_setUpAWDAdapter__block_invoke(uint64_t a1)
   v5 = v4;
   if (v4)
   {
-    p_var3 = &a3->var3;
-    var3 = a3->var3;
+    p_var3 = &config->var3;
+    var3 = config->var3;
     if (var3 == -1)
     {
       if (objc_opt_class() == v4)
@@ -256,7 +256,7 @@ void __36__RTCReportingAgent_setUpAWDAdapter__block_invoke(uint64_t a1)
         [v9 setObject:@"com.apple.AVConference" forKeyedSubscript:?];
       }
 
-      if (a3->var5)
+      if (config->var5)
       {
         v11 = [(RTCReportingAgent *)v5 deriveFromParentHierarchyToken:?];
         if (v11)
@@ -265,39 +265,39 @@ void __36__RTCReportingAgent_setUpAWDAdapter__block_invoke(uint64_t a1)
         }
       }
 
-      v12 = [(RTCReportingAgent *)v5 realtimeEventsEnabled];
+      realtimeEventsEnabled = [(RTCReportingAgent *)v5 realtimeEventsEnabled];
       v62[0] = sRTCReportingSessionInfoClientType;
       v62[1] = sRTCReportingSessionInfoClientVersion;
       v63[0] = &unk_284FA5540;
       v63[1] = v8;
       v62[2] = sRTCReportingSessionInfoSessionID;
-      v63[2] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:a3->var0];
+      v63[2] = [MEMORY[0x277CCABA8] numberWithUnsignedInt:config->var0];
       v63[3] = MEMORY[0x277CBEC28];
       v62[3] = sRTCReportingSessionInfoBatchEvent;
       v62[4] = sRTCReportingSessionInfoRequireUserInfo;
       v63[4] = MEMORY[0x277CBEC38];
       v62[5] = sRTCReportingSessionInfoContainsRealtimeEvents;
-      v63[5] = [MEMORY[0x277CCABA8] numberWithBool:v12];
+      v63[5] = [MEMORY[0x277CCABA8] numberWithBool:realtimeEventsEnabled];
       [v10 addEntriesFromDictionary:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v63, v62, 6)}];
-      var1 = a3->var1;
+      var1 = config->var1;
       if (var1)
       {
         [v10 setObject:var1 forKeyedSubscript:sRTCReportingSessionInfoSamplingUUIID];
       }
 
-      var2 = a3->var2;
+      var2 = config->var2;
       if (var2)
       {
         v5->_conversationTimeBase = [(__CFDate *)var2 copy];
       }
 
-      var9 = a3->var9;
+      var9 = config->var9;
       if (var9)
       {
         v5->_osBuild = [(__CFString *)var9 copy];
       }
 
-      var10 = a3->var10;
+      var10 = config->var10;
       if (var10)
       {
         v5->_deviceType = [(__CFString *)var10 copy];
@@ -306,22 +306,22 @@ void __36__RTCReportingAgent_setUpAWDAdapter__block_invoke(uint64_t a1)
       v5->_reportingQueue = dispatch_queue_create("com.apple.VideoConference.reporting", 0);
       v17 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{@"/System/Library/PrivateFrameworks/VideoProcessing.framework", @"/System/Library/Frameworks/CoreMedia.framework", @"/System/Library/PrivateFrameworks/GameKitServices.framework", @"/System/Library/PrivateFrameworks/RTCReporting.framework", 0}];
       v18 = [gRTCReporting_class alloc];
-      v19 = *&a3->var15.audioErasurePercentageThreshold;
-      v59 = *&a3->var13;
+      v19 = *&config->var15.audioErasurePercentageThreshold;
+      v59 = *&config->var13;
       v60 = v19;
-      var16 = a3->var16;
-      v20 = *&a3->var7;
-      *&buf[32] = *&a3->var5;
+      var16 = config->var16;
+      v20 = *&config->var7;
+      *&buf[32] = *&config->var5;
       v56 = v20;
-      v21 = *&a3->var11;
-      v57 = *&a3->var9;
+      v21 = *&config->var11;
+      v57 = *&config->var9;
       v58 = v21;
-      v22 = *&a3->var2;
-      *buf = *&a3->var0;
+      v22 = *&config->var2;
+      *buf = *&config->var0;
       *&buf[16] = v22;
       v5->_reportingObject = [v18 initWithSessionInfo:v10 userInfo:-[RTCReportingAgent getUserInfoFromReportingConfiguration:](v5 frameworksToCheck:"getUserInfoFromReportingConfiguration:" aggregationBlock:{buf), v17, 0}];
 
-      if (v5->_reportingObject && [(RTCReportingAgent *)v5 setupConfigurationCompletionSemaphore:a3])
+      if (v5->_reportingObject && [(RTCReportingAgent *)v5 setupConfigurationCompletionSemaphore:config])
       {
         if (VRTraceGetErrorLogLevelForModule("ReportingVC") >= 6)
         {
@@ -342,25 +342,25 @@ void __36__RTCReportingAgent_setUpAWDAdapter__block_invoke(uint64_t a1)
           }
         }
 
-        v5->_callID = a3->var0;
+        v5->_callID = config->var0;
         [(RTCReportingAgent *)v5 setUpWeeklyRotatingID];
         v5->_aggregatorLock._os_unfair_lock_opaque = 0;
         *&v26 = 0xAAAAAAAAAAAAAAAALL;
         *(&v26 + 1) = 0xAAAAAAAAAAAAAAAALL;
         v50 = v26;
-        var6 = a3->var6;
-        LOBYTE(v50) = a3->var4;
+        var6 = config->var6;
+        LOBYTE(v50) = config->var4;
         *(&v50 + 1) = v5->_conversationTimeBase;
-        var14 = a3->var14;
+        var14 = config->var14;
         deviceUniqueID = v5->_deviceUniqueID;
         v52 = 0xAAAAAAAAAAAAAAAALL;
         v53 = deviceUniqueID;
         LOBYTE(v52) = var14;
         v51 = *&v5->_osBuild;
-        v29 = *&a3->var15.audioConnectionTimeThreshold;
-        v5->_abcSymptomsReportingTelemetryThresholdValues.videoStallPercentageThreshold = a3->var15.videoStallPercentageThreshold;
+        v29 = *&config->var15.audioConnectionTimeThreshold;
+        v5->_abcSymptomsReportingTelemetryThresholdValues.videoStallPercentageThreshold = config->var15.videoStallPercentageThreshold;
         *&v5->_abcSymptomsReportingTelemetryThresholdValues.audioConnectionTimeThreshold = v29;
-        v5->_aggregator = [(RTCReportingAgent *)v5 newAggregatorForClientType:a3->var3 creationOptions:&var6];
+        v5->_aggregator = [(RTCReportingAgent *)v5 newAggregatorForClientType:config->var3 creationOptions:&var6];
         v5->_symptomReporter = SymptomReporterCreate(v5->_callID);
         v5->_nwsMetricReporter = objc_alloc_init(MEMORY[0x277D2CA48]);
         v5->_nwsMetricReporterQueue = dispatch_queue_create("com.apple.VideoConference.nwsMetricReporter", 0);
@@ -383,7 +383,7 @@ void __36__RTCReportingAgent_setUpAWDAdapter__block_invoke(uint64_t a1)
         [(RTCReporting *)v5->_reportingObject setMessageSentDelegate:v5];
         v5->_nextUnassignedReportingModuleID = 22;
         v5->_userInfoMap = objc_alloc_init(MEMORY[0x277CBEB38]);
-        v32 = a3->var6;
+        v32 = config->var6;
         v5->_nwActivity = v32;
         if (v32)
         {
@@ -397,25 +397,25 @@ void __36__RTCReportingAgent_setUpAWDAdapter__block_invoke(uint64_t a1)
         v34 = dispatch_queue_attr_make_with_qos_class(MEMORY[0x277D85CD8], QOS_CLASS_USER_INITIATED, 0);
         v5->_periodicTaskTelemetryCollectionQueue = dispatch_queue_create("com.apple.VideoConference.PeriodicTaskTelemetryCollection", v34);
         v5->_periodicServiceRegisteredBlocks = objc_alloc_init(MEMORY[0x277CBEB38]);
-        videoStallPercentageThreshold = a3->var15.videoStallPercentageThreshold;
-        *&v5->_abcSymptomsReportingTelemetryThresholdValues.audioConnectionTimeThreshold = *&a3->var15.audioConnectionTimeThreshold;
+        videoStallPercentageThreshold = config->var15.videoStallPercentageThreshold;
+        *&v5->_abcSymptomsReportingTelemetryThresholdValues.audioConnectionTimeThreshold = *&config->var15.audioConnectionTimeThreshold;
         v5->_abcSymptomsReportingTelemetryThresholdValues.videoStallPercentageThreshold = videoStallPercentageThreshold;
         *&v5->_audioTotalConnectionTimeRegressedFromTelemetrySymptomReported = 0;
-        v36 = *&a3->var15.audioErasurePercentageThreshold;
-        v59 = *&a3->var13;
+        v36 = *&config->var15.audioErasurePercentageThreshold;
+        v59 = *&config->var13;
         v60 = v36;
-        var16 = a3->var16;
-        v37 = *&a3->var7;
-        *&buf[32] = *&a3->var5;
+        var16 = config->var16;
+        v37 = *&config->var7;
+        *&buf[32] = *&config->var5;
         v56 = v37;
-        v38 = *&a3->var11;
-        v57 = *&a3->var9;
+        v38 = *&config->var11;
+        v57 = *&config->var9;
         v58 = v38;
-        v39 = *&a3->var2;
-        *buf = *&a3->var0;
+        v39 = *&config->var2;
+        *buf = *&config->var0;
         *&buf[16] = v39;
         [(RTCReportingAgent *)v5 setupPersistentDataStoreFromConfig:buf];
-        if ([(__CFString *)a3->var7 isEqualToString:sRTCReportingWiFiCallingClientName])
+        if ([(__CFString *)config->var7 isEqualToString:sRTCReportingWiFiCallingClientName])
         {
           [(RTCReportingAgent *)v5 setUpAWDAdapter];
         }
@@ -468,7 +468,7 @@ LABEL_47:
       v18 = 1024;
       v19 = 599;
       v20 = 2112;
-      v21 = self;
+      selfCopy = self;
       _os_log_impl(&dword_23D4DF000, v4, OS_LOG_TYPE_DEFAULT, "ReportingVC [%s] %s:%d Releasing RTCReportingAgent instance=%@", buf, 0x26u);
     }
   }
@@ -551,13 +551,13 @@ LABEL_47:
   return v2;
 }
 
-- (void)setAndSaveWeeklyID:(id)a3 currentWeek:(unint64_t)a4 currentYear:(unint64_t)a5 cachePath:(id)a6
+- (void)setAndSaveWeeklyID:(id)d currentWeek:(unint64_t)week currentYear:(unint64_t)year cachePath:(id)path
 {
-  [a3 setObject:objc_msgSend(objc_msgSend(MEMORY[0x277CCAD70] forKeyedSubscript:{"UUID"), "UUIDString"), @"ReportingWeeklyID"}];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInteger:", a4), @"ReportingWeeklyIDValidityWeek"}];
-  [a3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInteger:", a5), @"ReportingWeeklyIDValidityYear"}];
+  [d setObject:objc_msgSend(objc_msgSend(MEMORY[0x277CCAD70] forKeyedSubscript:{"UUID"), "UUIDString"), @"ReportingWeeklyID"}];
+  [d setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInteger:", week), @"ReportingWeeklyIDValidityWeek"}];
+  [d setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInteger:", year), @"ReportingWeeklyIDValidityYear"}];
   v11 = 0;
-  if (([a3 writeToURL:a6 error:&v11] & 1) == 0 && VRTraceGetErrorLogLevelForModule("ReportingVC") >= 3)
+  if (([d writeToURL:path error:&v11] & 1) == 0 && VRTraceGetErrorLogLevelForModule("ReportingVC") >= 3)
   {
     v10 = VRTraceErrorLogLevelToCSTR(3u);
     if (os_log_type_enabled(gVRTraceOSLog, OS_LOG_TYPE_ERROR))
@@ -567,11 +567,11 @@ LABEL_47:
   }
 }
 
-- (BOOL)checkIfWeeklyIDIsExpired:(id)a3 currentWeek:(int64_t)a4 currentYear:(int64_t)a5
+- (BOOL)checkIfWeeklyIDIsExpired:(id)expired currentWeek:(int64_t)week currentYear:(int64_t)year
 {
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ReportingWeeklyIDValidityWeek", "integerValue"}];
-  v9 = [objc_msgSend(a3 objectForKeyedSubscript:{@"ReportingWeeklyIDValidityYear", "integerValue"}];
-  return v8 != a4 || v9 != a5;
+  v8 = [objc_msgSend(expired objectForKeyedSubscript:{@"ReportingWeeklyIDValidityWeek", "integerValue"}];
+  v9 = [objc_msgSend(expired objectForKeyedSubscript:{@"ReportingWeeklyIDValidityYear", "integerValue"}];
+  return v8 != week || v9 != year;
 }
 
 - (void)setUpWeeklyRotatingID
@@ -614,11 +614,11 @@ LABEL_47:
   return IsInternalOSInstalled;
 }
 
-- (BOOL)setupConfigurationCompletionSemaphore:(id *)a3
+- (BOOL)setupConfigurationCompletionSemaphore:(id *)semaphore
 {
-  if (a3)
+  if (semaphore)
   {
-    var13 = a3->var13;
+    var13 = semaphore->var13;
     if (var13)
     {
       v5 = var13;
@@ -704,7 +704,7 @@ LABEL_11:
         v19 = 2112;
         v20 = v4;
         v21 = 2048;
-        v22 = self;
+        selfCopy = self;
         v23 = 1024;
         v24 = v3;
         v7 = "ReportingVC [%s] %s:%d %@(%p) VCPersistentDataStore finalized with result=%d";
@@ -792,32 +792,32 @@ void __71__RTCReportingAgent_blockReportingQueueUntilReportingObjectInitialized_
   }
 }
 
-- (void)reportingAgentGetAlgosScores:(double *)a3 newAlgosScore:(double *)a4
+- (void)reportingAgentGetAlgosScores:(double *)scores newAlgosScore:(double *)score
 {
-  if (a3 && a4)
+  if (scores && score)
   {
     os_unfair_lock_lock(&self->_aggregatorLock);
     [(VCAlgosStreamingScoreAggregator *)[(VCAggregator *)self->_aggregator algosScoreAggregator] score];
-    *a3 = v7;
+    *scores = v7;
     [(VCAlgosStreamingScoreAggregator *)[(VCAggregator *)self->_aggregator algosScoreAggregator] aggregateScores];
-    *a4 = v8;
+    *score = v8;
 
     os_unfair_lock_unlock(&self->_aggregatorLock);
   }
 }
 
-- (void)sendNetworkScoreDictionary:(id)a3 networkScoreType:(unsigned __int8)a4
+- (void)sendNetworkScoreDictionary:(id)dictionary networkScoreType:(unsigned __int8)type
 {
-  v4 = a4;
+  typeCopy = type;
   v30[4] = *MEMORY[0x277D85DE8];
-  v6 = [a3 algosScorerForNonDefaultParticipantID];
-  if ([v6 algosScoreDictionary])
+  algosScorerForNonDefaultParticipantID = [dictionary algosScorerForNonDefaultParticipantID];
+  if ([algosScorerForNonDefaultParticipantID algosScoreDictionary])
   {
-    v7 = [objc_msgSend(v6 "algosScoreDictionary")];
+    v7 = [objc_msgSend(algosScorerForNonDefaultParticipantID "algosScoreDictionary")];
     v8 = objc_alloc_init(MEMORY[0x277CCA960]);
     [v8 setDateFormat:@"yyyy-MM-dd'T'HH:mm:ssZZZZZ"];
     v9 = [v8 stringFromDate:{objc_msgSend(MEMORY[0x277CBEAA8], "now")}];
-    if (v4)
+    if (typeCopy)
     {
       v10 = @"label-periodic";
     }
@@ -890,9 +890,9 @@ void __71__RTCReportingAgent_blockReportingQueueUntilReportingObjectInitialized_
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createSecondAggregatorWithOptions:(id *)a3
+- (void)createSecondAggregatorWithOptions:(id *)options
 {
-  if (!a3)
+  if (!options)
   {
     [RTCReportingAgent createSecondAggregatorWithOptions:];
 LABEL_9:
@@ -900,51 +900,51 @@ LABEL_9:
     goto LABEL_5;
   }
 
-  if (!a3->var1)
+  if (!options->var1)
   {
     [RTCReportingAgent createSecondAggregatorWithOptions:];
     goto LABEL_9;
   }
 
-  if (!a3->var5)
+  if (!options->var5)
   {
     [RTCReportingAgent createSecondAggregatorWithOptions:];
     goto LABEL_9;
   }
 
-  v4 = [[VCAggregatorFaceTime alloc] initWithDelegate:self nwParentActivity:a3->var0 conversationTimeBase:a3->var2];
+  v4 = [[VCAggregatorFaceTime alloc] initWithDelegate:self nwParentActivity:options->var0 conversationTimeBase:options->var2];
 LABEL_5:
   self->_aggregator2 = &v4->super;
 }
 
-- (void)copyPersistentSettingsCommon:(id)a3
+- (void)copyPersistentSettingsCommon:(id)common
 {
-  [a3 setReportingClientExperimentSettings:*&self->_persistentSettings.experimentSettings.networkConditionMonitoringClientExperimentEnabled | (self->_persistentSettings.experimentSettings.detectInactiveAudioFramesAACELD << 16)];
-  [a3 setPortraitModeStatus:self->_persistentSettings.portraitModeStatus];
-  [a3 setCenterStageStatus:self->_persistentSettings.centerStageStatus];
-  [a3 setStudioLightStatus:self->_persistentSettings.studioLightStatus];
-  [a3 setReactionsStatus:self->_persistentSettings.reactionsStatus];
-  [a3 setEyeContactStatus:self->_persistentSettings.eyeContactStatus];
-  [a3 setMlEnhanceStatus:self->_persistentSettings.mlEnhanceStatus];
-  [a3 setBackgroundReplacementStatus:self->_persistentSettings.backgroundReplacementStatus];
+  [common setReportingClientExperimentSettings:*&self->_persistentSettings.experimentSettings.networkConditionMonitoringClientExperimentEnabled | (self->_persistentSettings.experimentSettings.detectInactiveAudioFramesAACELD << 16)];
+  [common setPortraitModeStatus:self->_persistentSettings.portraitModeStatus];
+  [common setCenterStageStatus:self->_persistentSettings.centerStageStatus];
+  [common setStudioLightStatus:self->_persistentSettings.studioLightStatus];
+  [common setReactionsStatus:self->_persistentSettings.reactionsStatus];
+  [common setEyeContactStatus:self->_persistentSettings.eyeContactStatus];
+  [common setMlEnhanceStatus:self->_persistentSettings.mlEnhanceStatus];
+  [common setBackgroundReplacementStatus:self->_persistentSettings.backgroundReplacementStatus];
   alwaysfullbleedUserPreferenceStatus = self->_persistentSettings.alwaysfullbleedUserPreferenceStatus;
 
-  [a3 setAlwaysFullBleedUserPreferenceStatus:alwaysfullbleedUserPreferenceStatus];
+  [common setAlwaysFullBleedUserPreferenceStatus:alwaysfullbleedUserPreferenceStatus];
 }
 
-- (void)copyPersistentSettingsMultiway:(id)a3
+- (void)copyPersistentSettingsMultiway:(id)multiway
 {
   [(RTCReportingAgent *)self copyPersistentSettingsCommon:?];
 
-  [a3 processPersistentSettings:&self->_persistentSettings];
+  [multiway processPersistentSettings:&self->_persistentSettings];
 }
 
-- (id)newAggregatorForClientType:(int)a3 creationOptions:(id *)a4
+- (id)newAggregatorForClientType:(int)type creationOptions:(id *)options
 {
   v34[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (options)
   {
-    switch(a3)
+    switch(type)
     {
       case -1:
         if (VRTraceGetErrorLogLevelForModule("ReportingVC") >= 3)
@@ -958,7 +958,7 @@ LABEL_5:
 
         goto LABEL_30;
       case 0:
-        v18 = [[VCAggregatorFaceTime alloc] initWithDelegate:self nwParentActivity:a4->var0 conversationTimeBase:a4->var2];
+        v18 = [[VCAggregatorFaceTime alloc] initWithDelegate:self nwParentActivity:options->var0 conversationTimeBase:options->var2];
         [(RTCReportingAgent *)self copyPersistentSettingsCommon:v18];
         goto LABEL_32;
       case 1:
@@ -973,15 +973,15 @@ LABEL_5:
       case 4:
       case 6:
         v10 = [VCAggregator alloc];
-        var0 = a4->var0;
-        var2 = a4->var2;
+        var0 = options->var0;
+        var2 = options->var2;
         v13 = *MEMORY[0x277D85DE8];
 
         return [(VCAggregator *)v10 initWithDelegate:self nwParentActivity:var0 conversationTimeBase:var2];
       case 5:
-        v18 = [[VCAggregatorMultiway alloc] initWithDelegate:self creationOptions:a4];
+        v18 = [[VCAggregatorMultiway alloc] initWithDelegate:self creationOptions:options];
         [(RTCReportingAgent *)self copyPersistentSettingsMultiway:v18];
-        [(RTCReportingAgent *)self createSecondAggregatorWithOptions:a4];
+        [(RTCReportingAgent *)self createSecondAggregatorWithOptions:options];
         goto LABEL_32;
       case 7:
         v9 = VCAggregatorVideoMessaging;
@@ -1004,7 +1004,7 @@ LABEL_5:
       case 17:
         v14 = [VCAggregatorAudioStream alloc];
         v15 = *MEMORY[0x277D85DE8];
-        v16 = self;
+        selfCopy8 = self;
         v17 = 1;
         goto LABEL_39;
       case 12:
@@ -1015,7 +1015,7 @@ LABEL_5:
 LABEL_20:
         v14 = [v21 alloc];
         v22 = *MEMORY[0x277D85DE8];
-        v16 = self;
+        selfCopy8 = self;
         v17 = 2;
         goto LABEL_39;
       case 14:
@@ -1026,7 +1026,7 @@ LABEL_20:
 LABEL_34:
         v14 = [v19 alloc];
         v27 = *MEMORY[0x277D85DE8];
-        v16 = self;
+        selfCopy8 = self;
         v17 = 3;
         goto LABEL_39;
       case 18:
@@ -1037,13 +1037,13 @@ LABEL_34:
 LABEL_26:
         v14 = [v20 alloc];
         v25 = *MEMORY[0x277D85DE8];
-        v16 = self;
+        selfCopy8 = self;
         v17 = 4;
         goto LABEL_39;
       case 20:
         v14 = [VCAggregatorAudioStream alloc];
         v28 = *MEMORY[0x277D85DE8];
-        v16 = self;
+        selfCopy8 = self;
         v17 = 5;
         goto LABEL_39;
       case 21:
@@ -1057,23 +1057,23 @@ LABEL_22:
       case 22:
         v14 = [VCAggregatorAudioStream alloc];
         v30 = *MEMORY[0x277D85DE8];
-        v16 = self;
+        selfCopy8 = self;
         v17 = 7;
         goto LABEL_39;
       case 23:
         v14 = [VCAggregatorAudioStream alloc];
         v31 = *MEMORY[0x277D85DE8];
-        v16 = self;
+        selfCopy8 = self;
         v17 = 8;
         goto LABEL_39;
       case 25:
         v14 = [VCAggregatorAudioStream alloc];
         v29 = *MEMORY[0x277D85DE8];
-        v16 = self;
+        selfCopy8 = self;
         v17 = 9;
 LABEL_39:
 
-        return [(VCAggregatorAudioStream *)v14 initWithDelegate:v16 withMode:v17];
+        return [(VCAggregatorAudioStream *)v14 initWithDelegate:selfCopy8 withMode:v17];
       default:
 LABEL_30:
         v18 = 0;
@@ -1114,21 +1114,21 @@ void __43__RTCReportingAgent_sendLastFinalizedEvent__block_invoke(uint64_t a1)
   }
 }
 
-- (void)finalizeAggregation:(id)a3
+- (void)finalizeAggregation:(id)aggregation
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (aggregation)
   {
-    v5 = [a3 onceAggregatedReportsToken];
+    onceAggregatedReportsToken = [aggregation onceAggregatedReportsToken];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __41__RTCReportingAgent_finalizeAggregation___block_invoke;
     v9[3] = &unk_278BD4D48;
     v9[4] = self;
-    v9[5] = a3;
-    if (*v5 != -1)
+    v9[5] = aggregation;
+    if (*onceAggregatedReportsToken != -1)
     {
-      dispatch_once(v5, v9);
+      dispatch_once(onceAggregatedReportsToken, v9);
     }
   }
 
@@ -1207,17 +1207,17 @@ uint64_t __41__RTCReportingAgent_finalizeAggregation___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)sendMessageWithCategory:(unsigned __int16)a3 type:(unsigned __int16)a4 payload:(id)a5
+- (void)sendMessageWithCategory:(unsigned __int16)category type:(unsigned __int16)type payload:(id)payload
 {
   reportingQueue = self->_reportingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__RTCReportingAgent_sendMessageWithCategory_type_payload___block_invoke;
   block[3] = &unk_278BD48B8;
-  v7 = a3;
-  v8 = a4;
+  categoryCopy = category;
+  typeCopy = type;
   block[4] = self;
-  block[5] = a5;
+  block[5] = payload;
   dispatch_async(reportingQueue, block);
 }
 
@@ -1249,9 +1249,9 @@ void __58__RTCReportingAgent_sendMessageWithCategory_type_payload___block_invoke
 
 - (id)sortedServiceKeys
 {
-  v2 = [(NSMutableDictionary *)self->_periodicServiceRegisteredBlocks allKeys];
+  allKeys = [(NSMutableDictionary *)self->_periodicServiceRegisteredBlocks allKeys];
 
-  return [v2 sortedArrayUsingComparator:&__block_literal_global_230];
+  return [allKeys sortedArrayUsingComparator:&__block_literal_global_230];
 }
 
 uint64_t __38__RTCReportingAgent_sortedServiceKeys__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1274,22 +1274,22 @@ uint64_t __38__RTCReportingAgent_sortedServiceKeys__block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)collectTelemetryForService:(id)a3 payload:(id)a4 lock:(_opaque_pthread_mutex_t *)a5
+- (void)collectTelemetryForService:(id)service payload:(id)payload lock:(_opaque_pthread_mutex_t *)lock
 {
   v23 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!service)
   {
     [RTCReportingAgent collectTelemetryForService:payload:lock:];
     goto LABEL_22;
   }
 
-  if (!a4)
+  if (!payload)
   {
     [RTCReportingAgent collectTelemetryForService:payload:lock:];
     goto LABEL_22;
   }
 
-  if (!a5)
+  if (!lock)
   {
     [RTCReportingAgent collectTelemetryForService:payload:lock:];
     goto LABEL_22;
@@ -1303,9 +1303,9 @@ uint64_t __38__RTCReportingAgent_sortedServiceKeys__block_invoke(uint64_t a1, vo
   }
 
   v9 = v8;
-  v10 = [a3 block];
-  (*(v10 + 16))(v10, v9);
-  pthread_mutex_lock(a5);
+  block = [service block];
+  (*(block + 16))(block, v9);
+  pthread_mutex_lock(lock);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -1332,9 +1332,9 @@ uint64_t __38__RTCReportingAgent_sortedServiceKeys__block_invoke(uint64_t a1, vo
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        if ([a4 objectForKeyedSubscript:v15])
+        if ([payload objectForKeyedSubscript:v15])
         {
-          [objc_msgSend(a4 objectForKeyedSubscript:{v15), "addEntriesFromDictionary:", objc_msgSend(v9, "objectForKeyedSubscript:", v15)}];
+          [objc_msgSend(payload objectForKeyedSubscript:{v15), "addEntriesFromDictionary:", objc_msgSend(v9, "objectForKeyedSubscript:", v15)}];
           continue;
         }
       }
@@ -1349,16 +1349,16 @@ uint64_t __38__RTCReportingAgent_sortedServiceKeys__block_invoke(uint64_t a1, vo
           goto LABEL_18;
         }
 
-        if ([a4 objectForKeyedSubscript:v15])
+        if ([payload objectForKeyedSubscript:v15])
         {
-          [objc_msgSend(a4 objectForKeyedSubscript:{v15), "addObjectsFromArray:", objc_msgSend(v9, "objectForKeyedSubscript:", v15)}];
+          [objc_msgSend(payload objectForKeyedSubscript:{v15), "addObjectsFromArray:", objc_msgSend(v9, "objectForKeyedSubscript:", v15)}];
           continue;
         }
       }
 
       v16 = [objc_msgSend(v9 objectForKeyedSubscript:{v15), "mutableCopy"}];
 LABEL_18:
-      [a4 setObject:v16 forKeyedSubscript:v15];
+      [payload setObject:v16 forKeyedSubscript:v15];
     }
 
     v12 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -1366,7 +1366,7 @@ LABEL_18:
 
   while (v12);
 LABEL_21:
-  pthread_mutex_unlock(a5);
+  pthread_mutex_unlock(lock);
 
 LABEL_22:
   v17 = *MEMORY[0x277D85DE8];
@@ -1411,10 +1411,10 @@ intptr_t __67__RTCReportingAgent_telemetryReport_type_sortedKeys_updateTimeout__
   return dispatch_semaphore_signal(v2);
 }
 
-- (void)telemetryUpdate:(id)a3 updateTimeout:(unint64_t)a4
+- (void)telemetryUpdate:(id)update updateTimeout:(unint64_t)timeout
 {
   v34 = *MEMORY[0x277D85DE8];
-  if ([a3 count])
+  if ([update count])
   {
     group = dispatch_group_create();
     if (group)
@@ -1427,19 +1427,19 @@ intptr_t __67__RTCReportingAgent_telemetryReport_type_sortedKeys_updateTimeout__
         v26 = 0u;
         v23 = 0u;
         v24 = 0u;
-        v9 = [a3 countByEnumeratingWithState:&v23 objects:v33 count:16];
+        v9 = [update countByEnumeratingWithState:&v23 objects:v33 count:16];
         if (v9)
         {
           v10 = v9;
           v11 = *v24;
-          v12 = 95000000000 * a4 / 0x64;
+          v12 = 95000000000 * timeout / 0x64;
           while (2)
           {
             for (i = 0; i != v10; ++i)
             {
               if (*v24 != v11)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(update);
               }
 
               v14 = [(NSMutableDictionary *)self->_periodicServiceRegisteredBlocks objectForKeyedSubscript:*(*(&v23 + 1) + 8 * i)];
@@ -1463,7 +1463,7 @@ intptr_t __67__RTCReportingAgent_telemetryReport_type_sortedKeys_updateTimeout__
               }
             }
 
-            v10 = [a3 countByEnumeratingWithState:&v23 objects:v33 count:16];
+            v10 = [update countByEnumeratingWithState:&v23 objects:v33 count:16];
             if (v10)
             {
               continue;
@@ -1475,7 +1475,7 @@ intptr_t __67__RTCReportingAgent_telemetryReport_type_sortedKeys_updateTimeout__
 
         else
         {
-          v12 = 95000000000 * a4 / 0x64;
+          v12 = 95000000000 * timeout / 0x64;
         }
 
         v17 = dispatch_time(0, v12);
@@ -1532,7 +1532,7 @@ intptr_t __51__RTCReportingAgent_telemetryUpdate_updateTimeout___block_invoke(ui
   return dispatch_semaphore_signal(v3);
 }
 
-- (void)startLogTimerWithInterval:(int)a3 reportingMultiplier:(int)a4 category:(unsigned __int16)a5 type:(unsigned __int16)a6
+- (void)startLogTimerWithInterval:(int)interval reportingMultiplier:(int)multiplier category:(unsigned __int16)category type:(unsigned __int16)type
 {
   periodicTaskManagementQueue = self->_periodicTaskManagementQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -1540,10 +1540,10 @@ intptr_t __51__RTCReportingAgent_telemetryUpdate_updateTimeout___block_invoke(ui
   block[2] = __81__RTCReportingAgent_startLogTimerWithInterval_reportingMultiplier_category_type___block_invoke;
   block[3] = &unk_278BD5008;
   block[4] = self;
-  v10 = a5;
-  v11 = a6;
-  v8 = a3;
-  v9 = a4;
+  categoryCopy = category;
+  typeCopy = type;
+  intervalCopy = interval;
+  multiplierCopy = multiplier;
   dispatch_async(periodicTaskManagementQueue, block);
 }
 
@@ -1683,20 +1683,20 @@ void __33__RTCReportingAgent_stopLogTimer__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)registerPeriodicTaskForModule:(unsigned int)a3 needToUpdate:(BOOL)a4 needToReport:(BOOL)a5 serviceBlock:(id)a6
+- (BOOL)registerPeriodicTaskForModule:(unsigned int)module needToUpdate:(BOOL)update needToReport:(BOOL)report serviceBlock:(id)block
 {
-  if (a6)
+  if (block)
   {
     periodicTaskManagementQueue = self->_periodicTaskManagementQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __90__RTCReportingAgent_registerPeriodicTaskForModule_needToUpdate_needToReport_serviceBlock___block_invoke;
     block[3] = &unk_278BD5030;
-    v11 = a4;
-    v12 = a5;
+    updateCopy = update;
+    reportCopy = report;
     block[4] = self;
-    block[5] = a6;
-    v10 = a3;
+    block[5] = block;
+    moduleCopy = module;
     dispatch_async(periodicTaskManagementQueue, block);
   }
 
@@ -1705,7 +1705,7 @@ void __33__RTCReportingAgent_stopLogTimer__block_invoke(uint64_t a1)
     [RTCReportingAgent registerPeriodicTaskForModule:needToUpdate:needToReport:serviceBlock:];
   }
 
-  return a6 != 0;
+  return block != 0;
 }
 
 void __90__RTCReportingAgent_registerPeriodicTaskForModule_needToUpdate_needToReport_serviceBlock___block_invoke(uint64_t a1)
@@ -1764,7 +1764,7 @@ void __90__RTCReportingAgent_registerPeriodicTaskForModule_needToUpdate_needToRe
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)unregisterPeriodTaskForModule:(unsigned int)a3
+- (BOOL)unregisterPeriodTaskForModule:(unsigned int)module
 {
   periodicTaskManagementQueue = self->_periodicTaskManagementQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -1772,7 +1772,7 @@ void __90__RTCReportingAgent_registerPeriodicTaskForModule_needToUpdate_needToRe
   v5[2] = __51__RTCReportingAgent_unregisterPeriodTaskForModule___block_invoke;
   v5[3] = &unk_278BD4D98;
   v5[4] = self;
-  v6 = a3;
+  moduleCopy = module;
   dispatch_sync(periodicTaskManagementQueue, v5);
   return 1;
 }
@@ -1812,7 +1812,7 @@ void __51__RTCReportingAgent_unregisterPeriodTaskForModule___block_invoke(uint64
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupAdaptiveLearningWithParameters:(id)a3
+- (void)setupAdaptiveLearningWithParameters:(id)parameters
 {
   reportingQueue = self->_reportingQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1820,11 +1820,11 @@ void __51__RTCReportingAgent_unregisterPeriodTaskForModule___block_invoke(uint64
   v4[2] = __57__RTCReportingAgent_setupAdaptiveLearningWithParameters___block_invoke;
   v4[3] = &unk_278BD4D48;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = parameters;
   dispatch_async(reportingQueue, v4);
 }
 
-- (void)reportingSetNetworkActivityReportingEnabled:(BOOL)a3
+- (void)reportingSetNetworkActivityReportingEnabled:(BOOL)enabled
 {
   reportingQueue = self->_reportingQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1832,7 +1832,7 @@ void __51__RTCReportingAgent_unregisterPeriodTaskForModule___block_invoke(uint64
   v4[2] = __65__RTCReportingAgent_reportingSetNetworkActivityReportingEnabled___block_invoke;
   v4[3] = &unk_278BD4D20;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_async(reportingQueue, v4);
 }
 
@@ -1846,16 +1846,16 @@ uint64_t __65__RTCReportingAgent_reportingSetNetworkActivityReportingEnabled___b
   return result;
 }
 
-- (unsigned)reportingSegmentMethodForClientType:(int)a3
+- (unsigned)reportingSegmentMethodForClientType:(int)type
 {
-  if (a3 <= 15)
+  if (type <= 15)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       return 74;
     }
 
-    if (a3 != 9 && a3 != 10)
+    if (type != 9 && type != 10)
     {
       return 70;
     }
@@ -1863,14 +1863,14 @@ uint64_t __65__RTCReportingAgent_reportingSetNetworkActivityReportingEnabled___b
     return 78;
   }
 
-  if (a3 == 16)
+  if (type == 16)
   {
     return 78;
   }
 
-  if (a3 != 23)
+  if (type != 23)
   {
-    if (a3 != 24)
+    if (type != 24)
     {
       return 70;
     }
@@ -1907,11 +1907,11 @@ void __62__RTCReportingAgent_reportSegment_withMessageType_clientType___block_in
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportQR:(id)a3
+- (void)reportQR:(id)r
 {
-  if ([a3 count])
+  if ([r count])
   {
-    if (![a3 objectForKeyedSubscript:@"QRATKN"])
+    if (![r objectForKeyedSubscript:@"QRATKN"])
     {
       if (VRTraceGetErrorLogLevelForModule("ReportingVC") >= 3)
       {
@@ -1931,7 +1931,7 @@ void __62__RTCReportingAgent_reportSegment_withMessageType_clientType___block_in
     v6[2] = __30__RTCReportingAgent_reportQR___block_invoke;
     v6[3] = &unk_278BD4D48;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = r;
     dispatch_async(reportingQueue, v6);
   }
 }
@@ -1962,12 +1962,12 @@ void __30__RTCReportingAgent_reportQR___block_invoke(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didSendMessageForReportingClient:(id)a3 event:(id)a4
+- (void)didSendMessageForReportingClient:(id)client event:(id)event
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = [objc_msgSend(a4 objectForKeyedSubscript:{VCRTCReportingMessageParametersCategoryString), "unsignedIntValue"}];
-  v7 = [objc_msgSend(a4 objectForKeyedSubscript:{VCRTCReportingMessageParametersTypeString), "unsignedIntValue"}];
-  v8 = [a4 objectForKeyedSubscript:VCRTCReportingMessageParametersPayloadString];
+  v6 = [objc_msgSend(event objectForKeyedSubscript:{VCRTCReportingMessageParametersCategoryString), "unsignedIntValue"}];
+  v7 = [objc_msgSend(event objectForKeyedSubscript:{VCRTCReportingMessageParametersTypeString), "unsignedIntValue"}];
+  v8 = [event objectForKeyedSubscript:VCRTCReportingMessageParametersPayloadString];
   if (v6 <= 0xB3u)
   {
     if (v6 != 33 && v6 != 130)
@@ -2107,12 +2107,12 @@ void __43__RTCReportingAgent_releaseReportingObject__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)reportingCallMethodForClientType:(int)a3
+- (unsigned)reportingCallMethodForClientType:(int)type
 {
   result = -1;
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    if (a3 == 5)
+    if (type == 5)
     {
       v4 = 75;
     }
@@ -2122,7 +2122,7 @@ void __43__RTCReportingAgent_releaseReportingObject__block_invoke(uint64_t a1)
       v4 = -1;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v5 = 77;
     }
@@ -2132,7 +2132,7 @@ void __43__RTCReportingAgent_releaseReportingObject__block_invoke(uint64_t a1)
       v5 = v4;
     }
 
-    if (a3)
+    if (type)
     {
       return v5;
     }
@@ -2143,9 +2143,9 @@ void __43__RTCReportingAgent_releaseReportingObject__block_invoke(uint64_t a1)
     }
   }
 
-  if (a3 > 20)
+  if (type > 20)
   {
-    if (a3 != 21 && a3 != 27)
+    if (type != 21 && type != 27)
     {
       return result;
     }
@@ -2153,12 +2153,12 @@ void __43__RTCReportingAgent_releaseReportingObject__block_invoke(uint64_t a1)
     return 73;
   }
 
-  if (a3 == 7)
+  if (type == 7)
   {
     return 97;
   }
 
-  if (a3 == 12)
+  if (type == 12)
   {
     return 73;
   }
@@ -2200,23 +2200,23 @@ void __57__RTCReportingAgent_sendAggregatedCallReport_clientType___block_invoke(
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (unsigned)reportingSessionMethodForClientType:(int)a3
+- (unsigned)reportingSessionMethodForClientType:(int)type
 {
-  if (a3 > 0x19)
+  if (type > 0x19)
   {
     return -1;
   }
 
   else
   {
-    return word_23D59ABF8[a3];
+    return word_23D59ABF8[type];
   }
 }
 
-- (unsigned)reportingSessionTypeForClientType:(int)a3
+- (unsigned)reportingSessionTypeForClientType:(int)type
 {
   result = 0;
-  if (a3 <= 0x18 && ((1 << a3) & 0x1DDE700) != 0)
+  if (type <= 0x18 && ((1 << type) & 0x1DDE700) != 0)
   {
     return [(VCAggregator *)self->_aggregator direction:v3];
   }
@@ -2250,7 +2250,7 @@ void __60__RTCReportingAgent_sendAggregatedSessionReport_clientType___block_invo
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateSymptomCount:(unsigned int)a3
+- (void)updateSymptomCount:(unsigned int)count
 {
   reportingQueue = self->_reportingQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -2258,26 +2258,26 @@ void __60__RTCReportingAgent_sendAggregatedSessionReport_clientType___block_invo
   v4[2] = __40__RTCReportingAgent_updateSymptomCount___block_invoke;
   v4[3] = &unk_278BD4D98;
   v4[4] = self;
-  v5 = a3;
+  countCopy = count;
   dispatch_async(reportingQueue, v4);
 }
 
-- (void)reportingSymptom:(unsigned int)a3 withOptionalDict:(__CFDictionary *)a4
+- (void)reportingSymptom:(unsigned int)symptom withOptionalDict:(__CFDictionary *)dict
 {
-  v4 = 2 * (a3 == 3);
+  v4 = 2 * (symptom == 3);
   reportingQueue = self->_reportingQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__RTCReportingAgent_reportingSymptom_withOptionalDict___block_invoke;
   block[3] = &unk_278BD5080;
-  v7 = a3;
-  if (a3 == 2)
+  symptomCopy = symptom;
+  if (symptom == 2)
   {
     v4 = 1;
   }
 
   block[4] = self;
-  block[5] = a4;
+  block[5] = dict;
   v8 = v4;
   dispatch_async(reportingQueue, block);
 }
@@ -2335,11 +2335,11 @@ void __55__RTCReportingAgent_reportingSymptom_withOptionalDict___block_invoke(ui
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reportingSetReportCallback:(void *)a3 withContext:(void *)a4
+- (void)reportingSetReportCallback:(void *)callback withContext:(void *)context
 {
-  if (a4)
+  if (context)
   {
-    CFRetain(a4);
+    CFRetain(context);
   }
 
   reportingQueue = self->_reportingQueue;
@@ -2348,8 +2348,8 @@ void __55__RTCReportingAgent_reportingSymptom_withOptionalDict___block_invoke(ui
   block[2] = __60__RTCReportingAgent_reportingSetReportCallback_withContext___block_invoke;
   block[3] = &unk_278BD4FE0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = callback;
+  block[6] = context;
   dispatch_async(reportingQueue, block);
 }
 
@@ -2369,15 +2369,15 @@ void __60__RTCReportingAgent_reportingSetReportCallback_withContext___block_invo
   }
 }
 
-- (void)setupPersistentDataStoreFromConfig:(id *)a3
+- (void)setupPersistentDataStoreFromConfig:(id *)config
 {
   v66 = *MEMORY[0x277D85DE8];
-  if (!a3->var16.var0 && !a3->var16.var1)
+  if (!config->var16.var0 && !config->var16.var1)
   {
     goto LABEL_8;
   }
 
-  v7 = [[VCPersistentDataStore alloc] initWithIdentifier:a3->var1];
+  v7 = [[VCPersistentDataStore alloc] initWithIdentifier:config->var1];
   self->_dataStore = v7;
   if (!v7)
   {
@@ -2428,7 +2428,7 @@ LABEL_42:
     goto LABEL_8;
   }
 
-  if (a3->var16.var0)
+  if (config->var16.var0)
   {
     v8 = [[VCRemoteDataCollectionDumpProducer alloc] initWithDataStore:self->_dataStore];
     self->_remoteDataProducer = v8;
@@ -2489,12 +2489,12 @@ LABEL_42:
   }
 
 LABEL_6:
-  if (!a3->var16.var1)
+  if (!config->var16.var1)
   {
     goto LABEL_8;
   }
 
-  v9 = [[VCRateControlMachineLearningLocalTrainingDataProducer alloc] initWithDataStore:self->_dataStore recipeID:a3->var16.var2];
+  v9 = [[VCRateControlMachineLearningLocalTrainingDataProducer alloc] initWithDataStore:self->_dataStore recipeID:config->var16.var2];
   self->_vcrcmlTrainingDataProducer = v9;
   if (v9)
   {
@@ -2555,16 +2555,16 @@ LABEL_8:
       v11 = OUTLINED_FUNCTION_23();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        var1 = a3->var1;
-        var0 = a3->var16.var0;
+        var1 = config->var1;
+        var0 = config->var16.var0;
         self->_dataStore;
-        v14 = a3->var16.var1;
+        v14 = config->var16.var1;
         OUTLINED_FUNCTION_6_1();
         OUTLINED_FUNCTION_25_0();
         v55 = v15;
         v56 = v16;
         v57 = 2112;
-        v58 = v17;
+        selfCopy = v17;
         v59 = v18;
         *v60 = v19;
         *&v60[4] = v18;
@@ -2596,16 +2596,16 @@ LABEL_18:
       v24 = OUTLINED_FUNCTION_22();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = a3->var1;
-        v26 = a3->var16.var0;
+        v25 = config->var1;
+        v26 = config->var16.var0;
         self->_dataStore;
-        v27 = a3->var16.var1;
+        v27 = config->var16.var1;
         OUTLINED_FUNCTION_55();
         OUTLINED_FUNCTION_25_0();
         v55 = 2112;
         v56 = v10;
         v57 = 2048;
-        v58 = self;
+        selfCopy = self;
         v59 = v28;
         *v60 = v29;
         *&v60[8] = 2112;

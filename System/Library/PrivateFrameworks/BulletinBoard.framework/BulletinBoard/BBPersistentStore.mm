@@ -1,6 +1,6 @@
 @interface BBPersistentStore
 - (BBPersistentStore)init;
-- (BBPersistentStore)initWithDataDirectoryPath:(id)a3;
+- (BBPersistentStore)initWithDataDirectoryPath:(id)path;
 - (BOOL)hasSectionInfoLegacyFile;
 - (id)readClearedSections;
 - (id)readSectionInfo;
@@ -9,23 +9,23 @@
 - (id)readSectionOrder;
 - (void)deleteSectionInfoFile;
 - (void)deleteSectionInfoLegacyFile;
-- (void)writeClearedSections:(id)a3;
-- (void)writeSectionInfo:(id)a3;
-- (void)writeSectionOrder:(id)a3;
+- (void)writeClearedSections:(id)sections;
+- (void)writeSectionInfo:(id)info;
+- (void)writeSectionOrder:(id)order;
 @end
 
 @implementation BBPersistentStore
 
-- (BBPersistentStore)initWithDataDirectoryPath:(id)a3
+- (BBPersistentStore)initWithDataDirectoryPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = BBPersistentStore;
   v6 = [(BBPersistentStore *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataDirectoryPath, a3);
+    objc_storeStrong(&v6->_dataDirectoryPath, path);
   }
 
   return v7;
@@ -33,8 +33,8 @@
 
 - (BBPersistentStore)init
 {
-  v3 = [@"~/Library/BulletinBoard/" stringByExpandingTildeInPath];
-  v4 = [(BBPersistentStore *)self initWithDataDirectoryPath:v3];
+  stringByExpandingTildeInPath = [@"~/Library/BulletinBoard/" stringByExpandingTildeInPath];
+  v4 = [(BBPersistentStore *)self initWithDataDirectoryPath:stringByExpandingTildeInPath];
 
   return v4;
 }
@@ -49,8 +49,8 @@
   }
 
   v4 = MEMORY[0x277CBEAC0];
-  v5 = [(BBPersistentStore *)self _clearedSectionsPath];
-  v6 = [v4 dictionaryWithContentsOfFile:v5];
+  _clearedSectionsPath = [(BBPersistentStore *)self _clearedSectionsPath];
+  v6 = [v4 dictionaryWithContentsOfFile:_clearedSectionsPath];
 
   return v6;
 }
@@ -65,11 +65,11 @@
     _os_log_impl(&dword_241EFF000, v3, OS_LOG_TYPE_DEFAULT, "Reading BBSectionInfo from persistence", buf, 2u);
   }
 
-  v25 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   context = objc_autoreleasePoolPush();
   v4 = MEMORY[0x277CBEAC0];
-  v5 = [(BBPersistentStore *)self _sectionInfoPath];
-  v6 = [v4 dictionaryWithContentsOfFile:v5];
+  _sectionInfoPath = [(BBPersistentStore *)self _sectionInfoPath];
+  v6 = [v4 dictionaryWithContentsOfFile:_sectionInfoPath];
 
   v23 = v6;
   v7 = [v6 objectForKey:@"sectionInfo"];
@@ -119,7 +119,7 @@
         v17 = v28;
         if (v19)
         {
-          [v25 setObject:v19 forKey:v12];
+          [dictionary setObject:v19 forKey:v12];
         }
 
         if (v17)
@@ -150,7 +150,7 @@ LABEL_12:
   objc_autoreleasePoolPop(context);
   v21 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return dictionary;
 }
 
 - (id)readSectionInfoLegacy
@@ -163,8 +163,8 @@ LABEL_12:
   }
 
   v4 = MEMORY[0x277CBEAC0];
-  v5 = [(BBPersistentStore *)self _sectionInfoLegacyPath];
-  v6 = [v4 dictionaryWithContentsOfFile:v5];
+  _sectionInfoLegacyPath = [(BBPersistentStore *)self _sectionInfoLegacyPath];
+  v6 = [v4 dictionaryWithContentsOfFile:_sectionInfoLegacyPath];
 
   return v6;
 }
@@ -179,15 +179,15 @@ LABEL_12:
   }
 
   v4 = MEMORY[0x277CBEAC0];
-  v5 = [(BBPersistentStore *)self _sectionOrderPath];
-  v6 = [v4 dictionaryWithContentsOfFile:v5];
+  _sectionOrderPath = [(BBPersistentStore *)self _sectionOrderPath];
+  v6 = [v4 dictionaryWithContentsOfFile:_sectionOrderPath];
 
   return v6;
 }
 
-- (void)writeClearedSections:(id)a3
+- (void)writeClearedSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   v5 = BBLogPersistence;
   if (os_log_type_enabled(BBLogPersistence, OS_LOG_TYPE_DEFAULT))
   {
@@ -195,9 +195,9 @@ LABEL_12:
     _os_log_impl(&dword_241EFF000, v5, OS_LOG_TYPE_DEFAULT, "Writing cleared sections to persistence", v9, 2u);
   }
 
-  v6 = [MEMORY[0x277CCAC58] dataWithPropertyList:v4 format:200 options:0 error:0];
-  v7 = [(BBPersistentStore *)self _clearedSectionsPath];
-  v8 = [v6 writeToFile:v7 options:268435457 error:0];
+  v6 = [MEMORY[0x277CCAC58] dataWithPropertyList:sectionsCopy format:200 options:0 error:0];
+  _clearedSectionsPath = [(BBPersistentStore *)self _clearedSectionsPath];
+  v8 = [v6 writeToFile:_clearedSectionsPath options:268435457 error:0];
 
   if ((v8 & 1) == 0 && os_log_type_enabled(BBLogPersistence, OS_LOG_TYPE_ERROR))
   {
@@ -205,9 +205,9 @@ LABEL_12:
   }
 }
 
-- (void)writeSectionOrder:(id)a3
+- (void)writeSectionOrder:(id)order
 {
-  v4 = a3;
+  orderCopy = order;
   v5 = BBLogPersistence;
   if (os_log_type_enabled(BBLogPersistence, OS_LOG_TYPE_DEFAULT))
   {
@@ -215,9 +215,9 @@ LABEL_12:
     _os_log_impl(&dword_241EFF000, v5, OS_LOG_TYPE_DEFAULT, "Writing section order to persistence", v9, 2u);
   }
 
-  v6 = [MEMORY[0x277CCAC58] dataWithPropertyList:v4 format:100 options:0 error:0];
-  v7 = [(BBPersistentStore *)self _sectionOrderPath];
-  v8 = [v6 writeToFile:v7 options:268435457 error:0];
+  v6 = [MEMORY[0x277CCAC58] dataWithPropertyList:orderCopy format:100 options:0 error:0];
+  _sectionOrderPath = [(BBPersistentStore *)self _sectionOrderPath];
+  v8 = [v6 writeToFile:_sectionOrderPath options:268435457 error:0];
 
   if ((v8 & 1) == 0 && os_log_type_enabled(BBLogPersistence, OS_LOG_TYPE_ERROR))
   {
@@ -225,19 +225,19 @@ LABEL_12:
   }
 }
 
-- (void)writeSectionInfo:(id)a3
+- (void)writeSectionInfo:(id)info
 {
-  v22 = self;
+  selfCopy = self;
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  infoCopy = info;
   context = objc_autoreleasePoolPush();
-  v24 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v5 = v3;
+  v5 = infoCopy;
   v6 = [v5 countByEnumeratingWithState:&v27 objects:v33 count:16];
   if (v6)
   {
@@ -253,12 +253,12 @@ LABEL_12:
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
-        v11 = [v5 objectForKey:{v10, v22}];
+        v11 = [v5 objectForKey:{v10, selfCopy}];
         if (([v11 suppressFromSettings] & 1) == 0)
         {
           v12 = objc_autoreleasePoolPush();
           v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v11 requiringSecureCoding:1 error:0];
-          [v4 setObject:v13 forKey:v10];
+          [dictionary2 setObject:v13 forKey:v10];
 
           objc_autoreleasePoolPop(v12);
         }
@@ -270,24 +270,24 @@ LABEL_12:
     while (v7);
   }
 
-  [v24 setObject:v4 forKey:@"sectionInfo"];
+  [dictionary setObject:dictionary2 forKey:@"sectionInfo"];
   v14 = BBLogPersistence;
   if (os_log_type_enabled(BBLogPersistence, OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [v4 count];
+    v16 = [dictionary2 count];
     *buf = 134217984;
     v32 = v16;
     _os_log_impl(&dword_241EFF000, v15, OS_LOG_TYPE_DEFAULT, "Writing section info to persistence. Count %lu", buf, 0xCu);
   }
 
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{2, v22}];
-  [v24 setObject:v17 forKey:@"sectionInfoVersionNumber"];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{2, selfCopy}];
+  [dictionary setObject:v17 forKey:@"sectionInfoVersionNumber"];
 
-  v18 = [MEMORY[0x277CCAC58] dataWithPropertyList:v24 format:100 options:0 error:0];
-  v19 = [v23 _sectionInfoPath];
+  v18 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionary format:100 options:0 error:0];
+  _sectionInfoPath = [v23 _sectionInfoPath];
   v26 = 0;
-  [v18 writeToFile:v19 options:268435457 error:&v26];
+  [v18 writeToFile:_sectionInfoPath options:268435457 error:&v26];
   v20 = v26;
 
   if (v20 && os_log_type_enabled(BBLogPersistence, OS_LOG_TYPE_ERROR))
@@ -317,9 +317,9 @@ LABEL_12:
 
 - (BOOL)hasSectionInfoLegacyFile
 {
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  v4 = [(BBPersistentStore *)self _sectionInfoLegacyPath];
-  v5 = [v3 fileExistsAtPath:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _sectionInfoLegacyPath = [(BBPersistentStore *)self _sectionInfoLegacyPath];
+  v5 = [defaultManager fileExistsAtPath:_sectionInfoLegacyPath];
 
   return v5;
 }
@@ -327,8 +327,8 @@ LABEL_12:
 - (id)readSectionInfoWithVersionNumberForMigration
 {
   v2 = MEMORY[0x277CBEAC0];
-  v3 = [(BBPersistentStore *)self _sectionInfoPath];
-  v4 = [v2 dictionaryWithContentsOfFile:v3];
+  _sectionInfoPath = [(BBPersistentStore *)self _sectionInfoPath];
+  v4 = [v2 dictionaryWithContentsOfFile:_sectionInfoPath];
 
   return v4;
 }

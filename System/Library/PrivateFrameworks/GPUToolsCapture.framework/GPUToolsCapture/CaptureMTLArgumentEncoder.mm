@@ -1,41 +1,41 @@
 @interface CaptureMTLArgumentEncoder
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLArgumentEncoder)initWithBaseObject:(id)a3 captureDevice:(id)a4;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLArgumentEncoder)initWithBaseObject:(id)object captureDevice:(id)device;
 - (NSString)description;
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3;
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4;
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5;
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5;
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setDepthStencilState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setDepthStencilStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setIntersectionFunctionTable:(id)a3 atIndex:(unint64_t)a4;
-- (void)setIntersectionFunctionTables:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setLabel:(id)a3;
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4;
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4;
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4;
-- (void)setVisibleFunctionTable:(id)a3 atIndex:(unint64_t)a4;
-- (void)setVisibleFunctionTables:(const void *)a3 withRange:(_NSRange)a4;
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index;
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset;
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element;
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range;
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setDepthStencilState:(id)state atIndex:(unint64_t)index;
+- (void)setDepthStencilStates:(const void *)states withRange:(_NSRange)range;
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index;
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range;
+- (void)setIntersectionFunctionTable:(id)table atIndex:(unint64_t)index;
+- (void)setIntersectionFunctionTables:(const void *)tables withRange:(_NSRange)range;
+- (void)setLabel:(id)label;
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index;
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range;
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index;
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range;
+- (void)setTexture:(id)texture atIndex:(unint64_t)index;
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range;
+- (void)setVisibleFunctionTable:(id)table atIndex:(unint64_t)index;
+- (void)setVisibleFunctionTables:(const void *)tables withRange:(_NSRange)range;
 - (void)touch;
 @end
 
 @implementation CaptureMTLArgumentEncoder
 
-- (void)setVisibleFunctionTables:(const void *)a3 withRange:(_NSRange)a4
+- (void)setVisibleFunctionTables:(const void *)tables withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v35 = 0u;
@@ -49,12 +49,12 @@
     bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
     if (length)
     {
-      v13 = a3;
+      tablesCopy = tables;
       v14 = (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
       v15 = length;
       do
       {
-        v16 = *v13++;
+        v16 = *tablesCopy++;
         *v14++ = [v16 baseObject];
         --v15;
       }
@@ -82,10 +82,10 @@
     }
 
     *(v17 + 13) = v18;
-    v28 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v28)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v28->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -93,9 +93,9 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v28, v29);
+    __chkstk_darwin(traceStream, v29);
     bzero(&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), tables, length);
     *v19 = var0;
     *(v19 + 1) = location;
     *(v19 + 2) = length;
@@ -111,7 +111,7 @@
   else
   {
     v20 = self->_baseObject;
-    __chkstk_darwin(self, 8 * a4.length);
+    __chkstk_darwin(self, 8 * range.length);
     v22 = &v34 - ((v21 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v22, v21);
     if (length)
@@ -120,7 +120,7 @@
       v24 = length;
       do
       {
-        v25 = *a3++;
+        v25 = *tables++;
         *v23 = [v25 baseObject];
         v23 += 8;
         --v24;
@@ -133,10 +133,10 @@
   }
 }
 
-- (void)setVisibleFunctionTable:(id)a3 atIndex:(unint64_t)a4
+- (void)setVisibleFunctionTable:(id)table atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  tableCopy = table;
+  v7 = tableCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v25 = 0u;
@@ -145,8 +145,8 @@
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
     baseObject = self->_baseObject;
-    v10 = [v7 baseObject];
-    [(MTLArgumentEncoder *)baseObject setVisibleFunctionTable:v10 atIndex:a4];
+    baseObject = [v7 baseObject];
+    [(MTLArgumentEncoder *)baseObject setVisibleFunctionTable:baseObject atIndex:index];
 
     v11 = v25;
     *(v25 + 8) = -15537;
@@ -167,10 +167,10 @@
     }
 
     *(v11 + 13) = v12;
-    v18 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v18)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v18->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -178,10 +178,10 @@
       var0 = 0;
     }
 
-    v20 = [v7 traceStream];
-    if (v20)
+    traceStream2 = [v7 traceStream];
+    if (traceStream2)
     {
-      v21 = *v20;
+      v21 = *traceStream2;
     }
 
     else
@@ -191,7 +191,7 @@
 
     *v13 = var0;
     *(v13 + 1) = v21;
-    *(v13 + 2) = a4;
+    *(v13 + 2) = index;
     s();
     *v22 = v23;
     *(v22 + 8) = BYTE8(v26);
@@ -201,15 +201,15 @@
   else
   {
     v14 = self->_baseObject;
-    v15 = [v6 baseObject];
-    [(MTLArgumentEncoder *)v14 setVisibleFunctionTable:v15 atIndex:a4];
+    baseObject2 = [tableCopy baseObject];
+    [(MTLArgumentEncoder *)v14 setVisibleFunctionTable:baseObject2 atIndex:index];
   }
 }
 
-- (void)setTextures:(const void *)a3 withRange:(_NSRange)a4
+- (void)setTextures:(const void *)textures withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v35 = 0u;
@@ -223,12 +223,12 @@
     bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
     if (length)
     {
-      v13 = a3;
+      texturesCopy = textures;
       v14 = (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
       v15 = length;
       do
       {
-        v16 = *v13++;
+        v16 = *texturesCopy++;
         *v14++ = [v16 baseObject];
         --v15;
       }
@@ -256,10 +256,10 @@
     }
 
     *(v17 + 13) = v18;
-    v28 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v28)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v28->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -267,9 +267,9 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v28, v29);
+    __chkstk_darwin(traceStream, v29);
     bzero(&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), textures, length);
     *v19 = var0;
     *(v19 + 1) = location;
     *(v19 + 2) = length;
@@ -285,7 +285,7 @@
   else
   {
     v20 = self->_baseObject;
-    __chkstk_darwin(self, 8 * a4.length);
+    __chkstk_darwin(self, 8 * range.length);
     v22 = &v34 - ((v21 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v22, v21);
     if (length)
@@ -294,7 +294,7 @@
       v24 = length;
       do
       {
-        v25 = *a3++;
+        v25 = *textures++;
         *v23 = [v25 baseObject];
         v23 += 8;
         --v24;
@@ -307,10 +307,10 @@
   }
 }
 
-- (void)setTexture:(id)a3 atIndex:(unint64_t)a4
+- (void)setTexture:(id)texture atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  textureCopy = texture;
+  v7 = textureCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v25 = 0u;
@@ -319,8 +319,8 @@
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
     baseObject = self->_baseObject;
-    v10 = [v7 baseObject];
-    [(MTLArgumentEncoder *)baseObject setTexture:v10 atIndex:a4];
+    baseObject = [v7 baseObject];
+    [(MTLArgumentEncoder *)baseObject setTexture:baseObject atIndex:index];
 
     v11 = v25;
     *(v25 + 8) = -16058;
@@ -341,10 +341,10 @@
     }
 
     *(v11 + 13) = v12;
-    v18 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v18)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v18->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -352,10 +352,10 @@
       var0 = 0;
     }
 
-    v20 = [v7 traceStream];
-    if (v20)
+    traceStream2 = [v7 traceStream];
+    if (traceStream2)
     {
-      v21 = *v20;
+      v21 = *traceStream2;
     }
 
     else
@@ -365,7 +365,7 @@
 
     *v13 = var0;
     *(v13 + 1) = v21;
-    *(v13 + 2) = a4;
+    *(v13 + 2) = index;
     s();
     *v22 = v23;
     *(v22 + 8) = BYTE8(v26);
@@ -375,15 +375,15 @@
   else
   {
     v14 = self->_baseObject;
-    v15 = [v6 baseObject];
-    [(MTLArgumentEncoder *)v14 setTexture:v15 atIndex:a4];
+    baseObject2 = [textureCopy baseObject];
+    [(MTLArgumentEncoder *)v14 setTexture:baseObject2 atIndex:index];
   }
 }
 
-- (void)setSamplerStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setSamplerStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v35 = 0u;
@@ -397,12 +397,12 @@
     bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
     if (length)
     {
-      v13 = a3;
+      statesCopy = states;
       v14 = (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
       v15 = length;
       do
       {
-        v16 = *v13++;
+        v16 = *statesCopy++;
         *v14++ = [v16 baseObject];
         --v15;
       }
@@ -430,10 +430,10 @@
     }
 
     *(v17 + 13) = v18;
-    v28 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v28)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v28->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -441,9 +441,9 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v28, v29);
+    __chkstk_darwin(traceStream, v29);
     bzero(&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), states, length);
     *v19 = var0;
     *(v19 + 1) = location;
     *(v19 + 2) = length;
@@ -459,7 +459,7 @@
   else
   {
     v20 = self->_baseObject;
-    __chkstk_darwin(self, 8 * a4.length);
+    __chkstk_darwin(self, 8 * range.length);
     v22 = &v34 - ((v21 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v22, v21);
     if (length)
@@ -468,7 +468,7 @@
       v24 = length;
       do
       {
-        v25 = *a3++;
+        v25 = *states++;
         *v23 = [v25 baseObject];
         v23 += 8;
         --v24;
@@ -481,10 +481,10 @@
   }
 }
 
-- (void)setSamplerState:(id)a3 atIndex:(unint64_t)a4
+- (void)setSamplerState:(id)state atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  stateCopy = state;
+  v7 = stateCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v25 = 0u;
@@ -493,8 +493,8 @@
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
     baseObject = self->_baseObject;
-    v10 = [v7 baseObject];
-    [(MTLArgumentEncoder *)baseObject setSamplerState:v10 atIndex:a4];
+    baseObject = [v7 baseObject];
+    [(MTLArgumentEncoder *)baseObject setSamplerState:baseObject atIndex:index];
 
     v11 = v25;
     *(v25 + 8) = -16056;
@@ -515,10 +515,10 @@
     }
 
     *(v11 + 13) = v12;
-    v18 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v18)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v18->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -526,10 +526,10 @@
       var0 = 0;
     }
 
-    v20 = [v7 traceStream];
-    if (v20)
+    traceStream2 = [v7 traceStream];
+    if (traceStream2)
     {
-      v21 = *v20;
+      v21 = *traceStream2;
     }
 
     else
@@ -539,7 +539,7 @@
 
     *v13 = var0;
     *(v13 + 1) = v21;
-    *(v13 + 2) = a4;
+    *(v13 + 2) = index;
     s();
     *v22 = v23;
     *(v22 + 8) = BYTE8(v26);
@@ -549,15 +549,15 @@
   else
   {
     v14 = self->_baseObject;
-    v15 = [v6 baseObject];
-    [(MTLArgumentEncoder *)v14 setSamplerState:v15 atIndex:a4];
+    baseObject2 = [stateCopy baseObject];
+    [(MTLArgumentEncoder *)v14 setSamplerState:baseObject2 atIndex:index];
   }
 }
 
-- (void)setRenderPipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setRenderPipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v35 = 0u;
@@ -571,12 +571,12 @@
     bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
     if (length)
     {
-      v13 = a3;
+      statesCopy = states;
       v14 = (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
       v15 = length;
       do
       {
-        v16 = *v13++;
+        v16 = *statesCopy++;
         *v14++ = [v16 baseObject];
         --v15;
       }
@@ -604,10 +604,10 @@
     }
 
     *(v17 + 13) = v18;
-    v28 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v28)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v28->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -615,9 +615,9 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v28, v29);
+    __chkstk_darwin(traceStream, v29);
     bzero(&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), states, length);
     *v19 = var0;
     *(v19 + 1) = location;
     *(v19 + 2) = length;
@@ -633,7 +633,7 @@
   else
   {
     v20 = self->_baseObject;
-    __chkstk_darwin(self, 8 * a4.length);
+    __chkstk_darwin(self, 8 * range.length);
     v22 = &v34 - ((v21 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v22, v21);
     if (length)
@@ -642,7 +642,7 @@
       v24 = length;
       do
       {
-        v25 = *a3++;
+        v25 = *states++;
         *v23 = [v25 baseObject];
         v23 += 8;
         --v24;
@@ -655,10 +655,10 @@
   }
 }
 
-- (void)setRenderPipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setRenderPipelineState:(id)state atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  stateCopy = state;
+  v7 = stateCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v25 = 0u;
@@ -667,8 +667,8 @@
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
     baseObject = self->_baseObject;
-    v10 = [v7 baseObject];
-    [(MTLArgumentEncoder *)baseObject setRenderPipelineState:v10 atIndex:a4];
+    baseObject = [v7 baseObject];
+    [(MTLArgumentEncoder *)baseObject setRenderPipelineState:baseObject atIndex:index];
 
     v11 = v25;
     *(v25 + 8) = -16002;
@@ -689,10 +689,10 @@
     }
 
     *(v11 + 13) = v12;
-    v18 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v18)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v18->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -700,10 +700,10 @@
       var0 = 0;
     }
 
-    v20 = [v7 traceStream];
-    if (v20)
+    traceStream2 = [v7 traceStream];
+    if (traceStream2)
     {
-      v21 = *v20;
+      v21 = *traceStream2;
     }
 
     else
@@ -713,7 +713,7 @@
 
     *v13 = var0;
     *(v13 + 1) = v21;
-    *(v13 + 2) = a4;
+    *(v13 + 2) = index;
     s();
     *v22 = v23;
     *(v22 + 8) = BYTE8(v26);
@@ -723,15 +723,15 @@
   else
   {
     v14 = self->_baseObject;
-    v15 = [v6 baseObject];
-    [(MTLArgumentEncoder *)v14 setRenderPipelineState:v15 atIndex:a4];
+    baseObject2 = [stateCopy baseObject];
+    [(MTLArgumentEncoder *)v14 setRenderPipelineState:baseObject2 atIndex:index];
   }
 }
 
-- (void)setIntersectionFunctionTables:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIntersectionFunctionTables:(const void *)tables withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v35 = 0u;
@@ -745,12 +745,12 @@
     bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
     if (length)
     {
-      v13 = a3;
+      tablesCopy = tables;
       v14 = (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
       v15 = length;
       do
       {
-        v16 = *v13++;
+        v16 = *tablesCopy++;
         *v14++ = [v16 baseObject];
         --v15;
       }
@@ -778,10 +778,10 @@
     }
 
     *(v17 + 13) = v18;
-    v28 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v28)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v28->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -789,9 +789,9 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v28, v29);
+    __chkstk_darwin(traceStream, v29);
     bzero(&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), tables, length);
     *v19 = var0;
     *(v19 + 1) = location;
     *(v19 + 2) = length;
@@ -807,7 +807,7 @@
   else
   {
     v20 = self->_baseObject;
-    __chkstk_darwin(self, 8 * a4.length);
+    __chkstk_darwin(self, 8 * range.length);
     v22 = &v34 - ((v21 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v22, v21);
     if (length)
@@ -816,7 +816,7 @@
       v24 = length;
       do
       {
-        v25 = *a3++;
+        v25 = *tables++;
         *v23 = [v25 baseObject];
         v23 += 8;
         --v24;
@@ -829,10 +829,10 @@
   }
 }
 
-- (void)setIntersectionFunctionTable:(id)a3 atIndex:(unint64_t)a4
+- (void)setIntersectionFunctionTable:(id)table atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  tableCopy = table;
+  v7 = tableCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v25 = 0u;
@@ -841,8 +841,8 @@
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
     baseObject = self->_baseObject;
-    v10 = [v7 baseObject];
-    [(MTLArgumentEncoder *)baseObject setIntersectionFunctionTable:v10 atIndex:a4];
+    baseObject = [v7 baseObject];
+    [(MTLArgumentEncoder *)baseObject setIntersectionFunctionTable:baseObject atIndex:index];
 
     v11 = v25;
     *(v25 + 8) = -15539;
@@ -863,10 +863,10 @@
     }
 
     *(v11 + 13) = v12;
-    v18 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v18)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v18->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -874,10 +874,10 @@
       var0 = 0;
     }
 
-    v20 = [v7 traceStream];
-    if (v20)
+    traceStream2 = [v7 traceStream];
+    if (traceStream2)
     {
-      v21 = *v20;
+      v21 = *traceStream2;
     }
 
     else
@@ -887,7 +887,7 @@
 
     *v13 = var0;
     *(v13 + 1) = v21;
-    *(v13 + 2) = a4;
+    *(v13 + 2) = index;
     s();
     *v22 = v23;
     *(v22 + 8) = BYTE8(v26);
@@ -897,15 +897,15 @@
   else
   {
     v14 = self->_baseObject;
-    v15 = [v6 baseObject];
-    [(MTLArgumentEncoder *)v14 setIntersectionFunctionTable:v15 atIndex:a4];
+    baseObject2 = [tableCopy baseObject];
+    [(MTLArgumentEncoder *)v14 setIntersectionFunctionTable:baseObject2 atIndex:index];
   }
 }
 
-- (void)setIndirectCommandBuffers:(const void *)a3 withRange:(_NSRange)a4
+- (void)setIndirectCommandBuffers:(const void *)buffers withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v35 = 0u;
@@ -919,12 +919,12 @@
     bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
     if (length)
     {
-      v13 = a3;
+      buffersCopy = buffers;
       v14 = (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
       v15 = length;
       do
       {
-        v16 = *v13++;
+        v16 = *buffersCopy++;
         *v14++ = [v16 baseObject];
         --v15;
       }
@@ -952,10 +952,10 @@
     }
 
     *(v17 + 13) = v18;
-    v28 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v28)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v28->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -963,9 +963,9 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v28, v29);
+    __chkstk_darwin(traceStream, v29);
     bzero(&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), buffers, length);
     *v19 = var0;
     *(v19 + 1) = location;
     *(v19 + 2) = length;
@@ -981,7 +981,7 @@
   else
   {
     v20 = self->_baseObject;
-    __chkstk_darwin(self, 8 * a4.length);
+    __chkstk_darwin(self, 8 * range.length);
     v22 = &v34 - ((v21 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v22, v21);
     if (length)
@@ -990,7 +990,7 @@
       v24 = length;
       do
       {
-        v25 = *a3++;
+        v25 = *buffers++;
         *v23 = [v25 baseObject];
         v23 += 8;
         --v24;
@@ -1003,10 +1003,10 @@
   }
 }
 
-- (void)setIndirectCommandBuffer:(id)a3 atIndex:(unint64_t)a4
+- (void)setIndirectCommandBuffer:(id)buffer atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  bufferCopy = buffer;
+  v7 = bufferCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v25 = 0u;
@@ -1015,8 +1015,8 @@
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
     baseObject = self->_baseObject;
-    v10 = [v7 baseObject];
-    [(MTLArgumentEncoder *)baseObject setIndirectCommandBuffer:v10 atIndex:a4];
+    baseObject = [v7 baseObject];
+    [(MTLArgumentEncoder *)baseObject setIndirectCommandBuffer:baseObject atIndex:index];
 
     v11 = v25;
     *(v25 + 8) = -15916;
@@ -1037,10 +1037,10 @@
     }
 
     *(v11 + 13) = v12;
-    v18 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v18)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v18->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1048,10 +1048,10 @@
       var0 = 0;
     }
 
-    v20 = [v7 traceStream];
-    if (v20)
+    traceStream2 = [v7 traceStream];
+    if (traceStream2)
     {
-      v21 = *v20;
+      v21 = *traceStream2;
     }
 
     else
@@ -1061,7 +1061,7 @@
 
     *v13 = var0;
     *(v13 + 1) = v21;
-    *(v13 + 2) = a4;
+    *(v13 + 2) = index;
     s();
     *v22 = v23;
     *(v22 + 8) = BYTE8(v26);
@@ -1071,15 +1071,15 @@
   else
   {
     v14 = self->_baseObject;
-    v15 = [v6 baseObject];
-    [(MTLArgumentEncoder *)v14 setIndirectCommandBuffer:v15 atIndex:a4];
+    baseObject2 = [bufferCopy baseObject];
+    [(MTLArgumentEncoder *)v14 setIndirectCommandBuffer:baseObject2 atIndex:index];
   }
 }
 
-- (void)setDepthStencilStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setDepthStencilStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v35 = 0u;
@@ -1093,12 +1093,12 @@
     bzero(&v34 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
     if (length)
     {
-      v13 = a3;
+      statesCopy = states;
       v14 = (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0));
       v15 = length;
       do
       {
-        v16 = *v13++;
+        v16 = *statesCopy++;
         *v14++ = [v16 baseObject];
         --v15;
       }
@@ -1126,10 +1126,10 @@
     }
 
     *(v17 + 13) = v18;
-    v28 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v28)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v28->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1137,9 +1137,9 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v28, v29);
+    __chkstk_darwin(traceStream, v29);
     bzero(&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
+    v31 = StreamArray(&v34, (&v34 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0)), states, length);
     *v19 = var0;
     *(v19 + 1) = location;
     *(v19 + 2) = length;
@@ -1155,7 +1155,7 @@
   else
   {
     v20 = self->_baseObject;
-    __chkstk_darwin(self, 8 * a4.length);
+    __chkstk_darwin(self, 8 * range.length);
     v22 = &v34 - ((v21 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v22, v21);
     if (length)
@@ -1164,7 +1164,7 @@
       v24 = length;
       do
       {
-        v25 = *a3++;
+        v25 = *states++;
         *v23 = [v25 baseObject];
         v23 += 8;
         --v24;
@@ -1177,10 +1177,10 @@
   }
 }
 
-- (void)setDepthStencilState:(id)a3 atIndex:(unint64_t)a4
+- (void)setDepthStencilState:(id)state atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
+  stateCopy = state;
+  v7 = stateCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v25 = 0u;
@@ -1189,8 +1189,8 @@
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v24);
     baseObject = self->_baseObject;
-    v10 = [v7 baseObject];
-    [(MTLArgumentEncoder *)baseObject setDepthStencilState:v10 atIndex:a4];
+    baseObject = [v7 baseObject];
+    [(MTLArgumentEncoder *)baseObject setDepthStencilState:baseObject atIndex:index];
 
     v11 = v25;
     *(v25 + 8) = -15205;
@@ -1211,10 +1211,10 @@
     }
 
     *(v11 + 13) = v12;
-    v18 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v18)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v18->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1222,10 +1222,10 @@
       var0 = 0;
     }
 
-    v20 = [v7 traceStream];
-    if (v20)
+    traceStream2 = [v7 traceStream];
+    if (traceStream2)
     {
-      v21 = *v20;
+      v21 = *traceStream2;
     }
 
     else
@@ -1235,7 +1235,7 @@
 
     *v13 = var0;
     *(v13 + 1) = v21;
-    *(v13 + 2) = a4;
+    *(v13 + 2) = index;
     s();
     *v22 = v23;
     *(v22 + 8) = BYTE8(v26);
@@ -1245,17 +1245,17 @@
   else
   {
     v14 = self->_baseObject;
-    v15 = [v6 baseObject];
-    [(MTLArgumentEncoder *)v14 setDepthStencilState:v15 atIndex:a4];
+    baseObject2 = [stateCopy baseObject];
+    [(MTLArgumentEncoder *)v14 setDepthStencilState:baseObject2 atIndex:index];
   }
 }
 
-- (void)setComputePipelineStates:(const void *)a3 withRange:(_NSRange)a4
+- (void)setComputePipelineStates:(const void *)states withRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4.length);
+  __chkstk_darwin(self, 8 * range.length);
   v9 = &v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v9, v8);
   if (length)
@@ -1264,7 +1264,7 @@
     v11 = length;
     do
     {
-      v12 = *a3++;
+      v12 = *states++;
       *v10 = [v12 baseObject];
       v10 += 8;
       --v11;
@@ -1276,20 +1276,20 @@
   [(MTLArgumentEncoder *)baseObject setComputePipelineStates:v9 withRange:location, length];
 }
 
-- (void)setComputePipelineState:(id)a3 atIndex:(unint64_t)a4
+- (void)setComputePipelineState:(id)state atIndex:(unint64_t)index
 {
   baseObject = self->_baseObject;
-  v6 = [a3 baseObject];
-  [(MTLArgumentEncoder *)baseObject setComputePipelineState:v6 atIndex:a4];
+  baseObject = [state baseObject];
+  [(MTLArgumentEncoder *)baseObject setComputePipelineState:baseObject atIndex:index];
 }
 
-- (void)setBuffers:(const void *)a3 offsets:(const unint64_t *)a4 withRange:(_NSRange)a5
+- (void)setBuffers:(const void *)buffers offsets:(const unint64_t *)offsets withRange:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v39 = a5.location;
+    v39 = range.location;
     v41 = 0u;
     v42 = 0u;
     v40 = 0u;
@@ -1301,12 +1301,12 @@
     bzero(&v38 - ((8 * length + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
     if (length)
     {
-      v15 = a3;
+      buffersCopy = buffers;
       v16 = (&v38 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0));
       v17 = length;
       do
       {
-        v18 = *v15++;
+        v18 = *buffersCopy++;
         *v16++ = [v18 baseObject];
         --v17;
       }
@@ -1315,7 +1315,7 @@
     }
 
     v19 = v39;
-    [(MTLArgumentEncoder *)baseObject setBuffers:&v38 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:a4 withRange:v39, length];
+    [(MTLArgumentEncoder *)baseObject setBuffers:&v38 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0) offsets:offsets withRange:v39, length];
     v20 = v41;
     *(v41 + 8) = -16059;
     v21 = BYTE9(v42);
@@ -1335,10 +1335,10 @@
     }
 
     *(v20 + 13) = v21;
-    v31 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v31)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v31->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1346,10 +1346,10 @@
       var0 = 0;
     }
 
-    __chkstk_darwin(v31, v32);
+    __chkstk_darwin(traceStream, v32);
     bzero(&v38 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0), 8 * length);
-    v34 = StreamArray(&v40, (&v38 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), a3, length);
-    v35 = GTTraceEncoder_storeBytes(&v40, a4, 8 * length);
+    v34 = StreamArray(&v40, (&v38 - ((v13 + 15) & 0xFFFFFFFFFFFFFFF0)), buffers, length);
+    v35 = GTTraceEncoder_storeBytes(&v40, offsets, 8 * length);
     *v22 = var0;
     *(v22 + 1) = v19;
     *(v22 + 2) = length;
@@ -1366,7 +1366,7 @@
   else
   {
     v23 = self->_baseObject;
-    __chkstk_darwin(self, 8 * a5.length);
+    __chkstk_darwin(self, 8 * range.length);
     v25 = &v38 - ((v24 + 15) & 0xFFFFFFFFFFFFFFF0);
     bzero(v25, v24);
     if (length)
@@ -1375,7 +1375,7 @@
       v27 = length;
       do
       {
-        v28 = *a3++;
+        v28 = *buffers++;
         *v26 = [v28 baseObject];
         v26 += 8;
         --v27;
@@ -1384,14 +1384,14 @@
       while (v27);
     }
 
-    [(MTLArgumentEncoder *)v23 setBuffers:v25 offsets:a4 withRange:location, length];
+    [(MTLArgumentEncoder *)v23 setBuffers:v25 offsets:offsets withRange:location, length];
   }
 }
 
-- (void)setBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = a3;
-  v9 = v8;
+  bufferCopy = buffer;
+  v9 = bufferCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v27 = 0u;
@@ -1400,8 +1400,8 @@
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v26);
     baseObject = self->_baseObject;
-    v12 = [v9 baseObject];
-    [(MTLArgumentEncoder *)baseObject setBuffer:v12 offset:a4 atIndex:a5];
+    baseObject = [v9 baseObject];
+    [(MTLArgumentEncoder *)baseObject setBuffer:baseObject offset:offset atIndex:index];
 
     v13 = v27;
     *(v27 + 8) = -16060;
@@ -1422,10 +1422,10 @@
     }
 
     *(v13 + 13) = v14;
-    v20 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v20)
+    traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream)
     {
-      var0 = v20->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1433,10 +1433,10 @@
       var0 = 0;
     }
 
-    v22 = [v9 traceStream];
-    if (v22)
+    traceStream2 = [v9 traceStream];
+    if (traceStream2)
     {
-      v23 = *v22;
+      v23 = *traceStream2;
     }
 
     else
@@ -1446,8 +1446,8 @@
 
     *v15 = var0;
     *(v15 + 1) = v23;
-    *(v15 + 2) = a4;
-    *(v15 + 3) = a5;
+    *(v15 + 2) = offset;
+    *(v15 + 3) = index;
     s();
     *v24 = v25;
     *(v24 + 8) = BYTE8(v28);
@@ -1457,12 +1457,12 @@
   else
   {
     v16 = self->_baseObject;
-    v17 = [v8 baseObject];
-    [(MTLArgumentEncoder *)v16 setBuffer:v17 offset:a4 atIndex:a5];
+    baseObject2 = [bufferCopy baseObject];
+    [(MTLArgumentEncoder *)v16 setBuffer:baseObject2 offset:offset atIndex:index];
   }
 }
 
-- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)a3
+- (id)newArgumentEncoderForBufferAtIndex:(unint64_t)index
 {
   v26 = 0u;
   v27 = 0u;
@@ -1484,8 +1484,8 @@
   if (v10)
   {
     v11 = [CaptureMTLArgumentEncoder alloc];
-    v12 = [(CaptureMTLArgumentEncoder *)self device];
-    v13 = [(CaptureMTLArgumentEncoder *)v11 initWithBaseObject:v10 captureDevice:v12];
+    device = [(CaptureMTLArgumentEncoder *)self device];
+    v13 = [(CaptureMTLArgumentEncoder *)v11 initWithBaseObject:v10 captureDevice:device];
   }
 
   else
@@ -1513,10 +1513,10 @@
   }
 
   *(v14 + 13) = v15;
-  v19 = [(CaptureMTLArgumentEncoder *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1524,10 +1524,10 @@
     var0 = 0;
   }
 
-  v21 = [(CaptureMTLArgumentEncoder *)v13 traceStream];
-  if (v21)
+  traceStream2 = [(CaptureMTLArgumentEncoder *)v13 traceStream];
+  if (traceStream2)
   {
-    v22 = v21->var0;
+    v22 = traceStream2->var0;
   }
 
   else
@@ -1537,7 +1537,7 @@
 
   *v16 = var0;
   *(v16 + 1) = v22;
-  *(v16 + 2) = a3;
+  *(v16 + 2) = index;
   v23 = v26;
   *v7 = v27;
   *(v7 + 8) = BYTE8(v27);
@@ -1572,10 +1572,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLArgumentEncoder *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1594,15 +1594,15 @@
   [(CaptureMTLArgumentEncoder *)&v13 dealloc];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLArgumentEncoder *)self->_baseObject setLabel:v4];
+  [(MTLArgumentEncoder *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -16063;
   v7 = BYTE9(v20);
@@ -1622,10 +1622,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLArgumentEncoder *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1633,16 +1633,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -1651,13 +1651,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLArgumentEncoder *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLArgumentEncoder *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -1712,16 +1712,16 @@
   }
 }
 
-- (void)setAccelerationStructure:(id)a3 atIndex:(unint64_t)a4
+- (void)setAccelerationStructure:(id)structure atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  structureCopy = structure;
+  v7 = structureCopy;
+  if (structureCopy)
   {
-    v8 = [v6 device];
-    v9 = [v8 captureRaytracingEnabled];
+    device = [structureCopy device];
+    captureRaytracingEnabled = [device captureRaytracingEnabled];
 
-    if ((v9 & 1) == 0)
+    if ((captureRaytracingEnabled & 1) == 0)
     {
       GTMTLCaptureManager_notifyUnsupportedFenumWithMsg("kDYFEMTLArgumentEncoder_setAccelerationStructure_atIndex", "Raytracing", 0, 0);
       goto LABEL_7;
@@ -1732,8 +1732,8 @@
   {
 LABEL_7:
     baseObject = self->_baseObject;
-    v17 = [v7 baseObject];
-    [(MTLArgumentEncoder *)baseObject setAccelerationStructure:v17 atIndex:a4];
+    baseObject = [v7 baseObject];
+    [(MTLArgumentEncoder *)baseObject setAccelerationStructure:baseObject atIndex:index];
 
     goto LABEL_16;
   }
@@ -1744,8 +1744,8 @@ LABEL_7:
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v26);
   v11 = self->_baseObject;
-  v12 = [v7 baseObject];
-  [(MTLArgumentEncoder *)v11 setAccelerationStructure:v12 atIndex:a4];
+  baseObject2 = [v7 baseObject];
+  [(MTLArgumentEncoder *)v11 setAccelerationStructure:baseObject2 atIndex:index];
 
   v13 = v27;
   *(v27 + 8) = -15627;
@@ -1766,10 +1766,10 @@ LABEL_7:
   }
 
   *(v13 + 13) = v14;
-  v20 = [(CaptureMTLArgumentEncoder *)self traceStream];
-  if (v20)
+  traceStream = [(CaptureMTLArgumentEncoder *)self traceStream];
+  if (traceStream)
   {
-    var0 = v20->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1777,10 +1777,10 @@ LABEL_7:
     var0 = 0;
   }
 
-  v22 = [v7 traceStream];
-  if (v22)
+  traceStream2 = [v7 traceStream];
+  if (traceStream2)
   {
-    v23 = *v22;
+    v23 = *traceStream2;
   }
 
   else
@@ -1790,7 +1790,7 @@ LABEL_7:
 
   *v15 = var0;
   *(v15 + 1) = v23;
-  *(v15 + 2) = a4;
+  *(v15 + 2) = index;
   s();
   *v24 = v25;
   *(v24 + 8) = BYTE8(v28);
@@ -1798,20 +1798,20 @@ LABEL_7:
 LABEL_16:
 }
 
-- (void)setArgumentBuffer:(id)a3 startOffset:(unint64_t)a4 arrayElement:(unint64_t)a5
+- (void)setArgumentBuffer:(id)buffer startOffset:(unint64_t)offset arrayElement:(unint64_t)element
 {
-  v8 = a3;
-  v9 = v8;
+  bufferCopy = buffer;
+  v9 = bufferCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v10 = [v8 traceStream];
-    if (v10)
+    traceStream = [bufferCopy traceStream];
+    if (traceStream)
     {
-      v11 = atomic_load(v10 + 7);
+      v11 = atomic_load(traceStream + 7);
       v12 = v11;
       do
       {
-        atomic_compare_exchange_strong(v10 + 7, &v12, v11 | 2);
+        atomic_compare_exchange_strong(traceStream + 7, &v12, v11 | 2);
         v13 = v12 == v11;
         v11 = v12;
       }
@@ -1830,8 +1830,8 @@ LABEL_16:
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v30);
     baseObject = self->_baseObject;
-    v16 = [v9 baseObject];
-    [(MTLArgumentEncoder *)baseObject setArgumentBuffer:v16 startOffset:a4 arrayElement:a5];
+    baseObject = [v9 baseObject];
+    [(MTLArgumentEncoder *)baseObject setArgumentBuffer:baseObject startOffset:offset arrayElement:element];
 
     v17 = v31;
     *(v31 + 8) = -16033;
@@ -1852,10 +1852,10 @@ LABEL_16:
     }
 
     *(v17 + 13) = v18;
-    v24 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v24)
+    traceStream2 = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream2)
     {
-      var0 = v24->var0;
+      var0 = traceStream2->var0;
     }
 
     else
@@ -1863,10 +1863,10 @@ LABEL_16:
       var0 = 0;
     }
 
-    v26 = [v9 traceStream];
-    if (v26)
+    traceStream3 = [v9 traceStream];
+    if (traceStream3)
     {
-      v27 = *v26;
+      v27 = *traceStream3;
     }
 
     else
@@ -1876,8 +1876,8 @@ LABEL_16:
 
     *v19 = var0;
     *(v19 + 1) = v27;
-    *(v19 + 2) = a4;
-    *(v19 + 3) = a5;
+    *(v19 + 2) = offset;
+    *(v19 + 3) = element;
     s();
     *v28 = v29;
     *(v28 + 8) = BYTE8(v32);
@@ -1887,25 +1887,25 @@ LABEL_16:
   else
   {
     v20 = self->_baseObject;
-    v21 = [v8 baseObject];
-    [(MTLArgumentEncoder *)v20 setArgumentBuffer:v21 startOffset:a4 arrayElement:a5];
+    baseObject2 = [bufferCopy baseObject];
+    [(MTLArgumentEncoder *)v20 setArgumentBuffer:baseObject2 startOffset:offset arrayElement:element];
   }
 }
 
-- (void)setArgumentBuffer:(id)a3 offset:(unint64_t)a4
+- (void)setArgumentBuffer:(id)buffer offset:(unint64_t)offset
 {
-  v6 = a3;
-  v7 = v6;
+  bufferCopy = buffer;
+  v7 = bufferCopy;
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
-    v8 = [v6 traceStream];
-    if (v8)
+    traceStream = [bufferCopy traceStream];
+    if (traceStream)
     {
-      v9 = atomic_load(v8 + 7);
+      v9 = atomic_load(traceStream + 7);
       v10 = v9;
       do
       {
-        atomic_compare_exchange_strong(v8 + 7, &v10, v9 | 2);
+        atomic_compare_exchange_strong(traceStream + 7, &v10, v9 | 2);
         v11 = v10 == v9;
         v9 = v10;
       }
@@ -1924,8 +1924,8 @@ LABEL_16:
     traceStream = self->_traceStream;
     GTTraceContext_pushEncoderWithStream(self->_traceContext, &v28);
     baseObject = self->_baseObject;
-    v14 = [v7 baseObject];
-    [(MTLArgumentEncoder *)baseObject setArgumentBuffer:v14 offset:a4];
+    baseObject = [v7 baseObject];
+    [(MTLArgumentEncoder *)baseObject setArgumentBuffer:baseObject offset:offset];
 
     v15 = v29;
     *(v29 + 8) = -16061;
@@ -1946,10 +1946,10 @@ LABEL_16:
     }
 
     *(v15 + 13) = v16;
-    v22 = [(CaptureMTLArgumentEncoder *)self traceStream];
-    if (v22)
+    traceStream2 = [(CaptureMTLArgumentEncoder *)self traceStream];
+    if (traceStream2)
     {
-      var0 = v22->var0;
+      var0 = traceStream2->var0;
     }
 
     else
@@ -1957,10 +1957,10 @@ LABEL_16:
       var0 = 0;
     }
 
-    v24 = [v7 traceStream];
-    if (v24)
+    traceStream3 = [v7 traceStream];
+    if (traceStream3)
     {
-      v25 = *v24;
+      v25 = *traceStream3;
     }
 
     else
@@ -1970,7 +1970,7 @@ LABEL_16:
 
     *v17 = var0;
     *(v17 + 1) = v25;
-    *(v17 + 2) = a4;
+    *(v17 + 2) = offset;
     s();
     *v26 = v27;
     *(v26 + 8) = BYTE8(v30);
@@ -1980,27 +1980,27 @@ LABEL_16:
   else
   {
     v18 = self->_baseObject;
-    v19 = [v6 baseObject];
-    [(MTLArgumentEncoder *)v18 setArgumentBuffer:v19 offset:a4];
+    baseObject2 = [bufferCopy baseObject];
+    [(MTLArgumentEncoder *)v18 setArgumentBuffer:baseObject2 offset:offset];
   }
 }
 
-- (CaptureMTLArgumentEncoder)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLArgumentEncoder)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLArgumentEncoder;
   v9 = [(CaptureMTLArgumentEncoder *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

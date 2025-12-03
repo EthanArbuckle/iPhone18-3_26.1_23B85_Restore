@@ -1,6 +1,6 @@
 @interface GAXInterestAreaViewButton
-+ (GAXInterestAreaViewButton)buttonWithImage:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
++ (GAXInterestAreaViewButton)buttonWithImage:(id)image;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (id)accessibilityHint;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
@@ -8,21 +8,21 @@
 
 @implementation GAXInterestAreaViewButton
 
-+ (GAXInterestAreaViewButton)buttonWithImage:(id)a3
++ (GAXInterestAreaViewButton)buttonWithImage:(id)image
 {
-  v4 = a3;
-  v5 = [a1 buttonWithType:0];
-  [v5 setImage:v4 forState:0];
+  imageCopy = image;
+  v5 = [self buttonWithType:0];
+  [v5 setImage:imageCopy forState:0];
 
   [v5 sizeToFit];
 
   return v5;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(GAXInterestAreaViewButton *)self bounds];
   v11 = CGRectInset(v10, -20.0, -20.0);
   v6 = x;

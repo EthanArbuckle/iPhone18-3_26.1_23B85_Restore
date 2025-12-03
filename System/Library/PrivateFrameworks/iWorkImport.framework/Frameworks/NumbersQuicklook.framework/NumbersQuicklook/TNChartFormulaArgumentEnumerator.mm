@@ -1,14 +1,14 @@
 @interface TNChartFormulaArgumentEnumerator
-- (TNChartFormulaArgumentEnumerator)initWithEnumerator:(id)a3;
+- (TNChartFormulaArgumentEnumerator)initWithEnumerator:(id)enumerator;
 - (id)nextElement;
 @end
 
 @implementation TNChartFormulaArgumentEnumerator
 
-- (TNChartFormulaArgumentEnumerator)initWithEnumerator:(id)a3
+- (TNChartFormulaArgumentEnumerator)initWithEnumerator:(id)enumerator
 {
-  v6 = a3;
-  if (!v6)
+  enumeratorCopy = enumerator;
+  if (!enumeratorCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, "[TNChartFormulaArgumentEnumerator initWithEnumerator:]");
@@ -24,7 +24,7 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_underlyingEnumerator, a3);
+    objc_storeStrong(&v14->_underlyingEnumerator, enumerator);
   }
 
   return v15;

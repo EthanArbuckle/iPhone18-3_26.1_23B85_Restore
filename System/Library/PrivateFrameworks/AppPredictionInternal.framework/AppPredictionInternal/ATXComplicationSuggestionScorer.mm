@@ -1,15 +1,15 @@
 @interface ATXComplicationSuggestionScorer
 - (ATXComplicationSuggestionScorer)init;
-- (BOOL)_isNewlyInstalledWidget:(id)a3 additionalData:(id)a4;
-- (BOOL)_modularSetIsSuggestibleGivenAppScoreDictionary:(id)a3;
-- (id)_appBundleIdsForComplicationDescriptors:(id)a3;
-- (id)_decaySubsequentScoresFromSameBundleId:(id)a3 decayFactor:(double)a4;
-- (id)_scoredComplicationsForInlineSetGivenDescriptors:(id)a3;
-- (id)_scoredComplicationsForModularSetGivenDescriptors:(id)a3 appBundleIdScores:(id)a4 heuristicScores:(id)a5 widgetDescriptorsAdditionalData:(id)a6;
-- (id)complicationDescriptorsForInlineSetGivenComplicationDescriptors:(id)a3;
-- (id)complicationDescriptorsForModularSetGivenComplicationDescriptors:(id)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6;
-- (id)inputDescriptionForSignal:(id)a3 complicationDescriptors:(id)a4;
-- (id)scoredComplicationDescriptorsForModularSetGivenComplicationDescriptors:(id)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6 checkEligibility:(BOOL)a7;
+- (BOOL)_isNewlyInstalledWidget:(id)widget additionalData:(id)data;
+- (BOOL)_modularSetIsSuggestibleGivenAppScoreDictionary:(id)dictionary;
+- (id)_appBundleIdsForComplicationDescriptors:(id)descriptors;
+- (id)_decaySubsequentScoresFromSameBundleId:(id)id decayFactor:(double)factor;
+- (id)_scoredComplicationsForInlineSetGivenDescriptors:(id)descriptors;
+- (id)_scoredComplicationsForModularSetGivenDescriptors:(id)descriptors appBundleIdScores:(id)scores heuristicScores:(id)heuristicScores widgetDescriptorsAdditionalData:(id)data;
+- (id)complicationDescriptorsForInlineSetGivenComplicationDescriptors:(id)descriptors;
+- (id)complicationDescriptorsForModularSetGivenComplicationDescriptors:(id)descriptors widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id;
+- (id)inputDescriptionForSignal:(id)signal complicationDescriptors:(id)descriptors;
+- (id)scoredComplicationDescriptorsForModularSetGivenComplicationDescriptors:(id)descriptors widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id checkEligibility:(BOOL)eligibility;
 @end
 
 @implementation ATXComplicationSuggestionScorer
@@ -33,57 +33,57 @@
   return v2;
 }
 
-- (id)complicationDescriptorsForModularSetGivenComplicationDescriptors:(id)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6
+- (id)complicationDescriptorsForModularSetGivenComplicationDescriptors:(id)descriptors widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id
 {
-  v6 = [(ATXComplicationSuggestionScorer *)self scoredComplicationDescriptorsForModularSetGivenComplicationDescriptors:a3 widgetDescriptorsAdditionalData:a4 aggregatedAppLaunchData:a5 bundleIdToCompanionBundleId:a6 checkEligibility:1];
+  v6 = [(ATXComplicationSuggestionScorer *)self scoredComplicationDescriptorsForModularSetGivenComplicationDescriptors:descriptors widgetDescriptorsAdditionalData:data aggregatedAppLaunchData:launchData bundleIdToCompanionBundleId:id checkEligibility:1];
   v7 = [v6 keysSortedByValueUsingComparator:&__block_literal_global_150];
 
   return v7;
 }
 
-- (id)complicationDescriptorsForInlineSetGivenComplicationDescriptors:(id)a3
+- (id)complicationDescriptorsForInlineSetGivenComplicationDescriptors:(id)descriptors
 {
-  v3 = [(ATXComplicationSuggestionScorer *)self scoredComplicationDescriptorsForInlineSetGivenComplicationDescriptors:a3];
+  v3 = [(ATXComplicationSuggestionScorer *)self scoredComplicationDescriptorsForInlineSetGivenComplicationDescriptors:descriptors];
   v4 = [v3 keysSortedByValueUsingComparator:&__block_literal_global_19_0];
 
   return v4;
 }
 
-- (id)scoredComplicationDescriptorsForModularSetGivenComplicationDescriptors:(id)a3 widgetDescriptorsAdditionalData:(id)a4 aggregatedAppLaunchData:(id)a5 bundleIdToCompanionBundleId:(id)a6 checkEligibility:(BOOL)a7
+- (id)scoredComplicationDescriptorsForModularSetGivenComplicationDescriptors:(id)descriptors widgetDescriptorsAdditionalData:(id)data aggregatedAppLaunchData:(id)launchData bundleIdToCompanionBundleId:(id)id checkEligibility:(BOOL)eligibility
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a5;
-  v16 = [(ATXComplicationSuggestionScorer *)self _appBundleIdsForComplicationDescriptors:v12];
-  v17 = [(ATXComplicationAppBundleIdsScorer *)self->_bundleIdsScorer scoredComplicationBundleIdsForModularSet:v16 aggregatedAppLaunchData:v15 bundleIdToCompanionBundleId:v14];
+  eligibilityCopy = eligibility;
+  descriptorsCopy = descriptors;
+  dataCopy = data;
+  idCopy = id;
+  launchDataCopy = launchData;
+  v16 = [(ATXComplicationSuggestionScorer *)self _appBundleIdsForComplicationDescriptors:descriptorsCopy];
+  v17 = [(ATXComplicationAppBundleIdsScorer *)self->_bundleIdsScorer scoredComplicationBundleIdsForModularSet:v16 aggregatedAppLaunchData:launchDataCopy bundleIdToCompanionBundleId:idCopy];
 
-  if (v7 && ![(ATXComplicationSuggestionScorer *)self _modularSetIsSuggestibleGivenAppScoreDictionary:v17])
+  if (eligibilityCopy && ![(ATXComplicationSuggestionScorer *)self _modularSetIsSuggestibleGivenAppScoreDictionary:v17])
   {
     v20 = MEMORY[0x277CBEC10];
   }
 
   else
   {
-    v18 = [(ATXComplicationSuggestionHeuristics *)self->_heuristics complicationHeuristicsDictionary];
-    v19 = [(ATXComplicationSuggestionScorer *)self _scoredComplicationsForModularSetGivenDescriptors:v12 appBundleIdScores:v17 heuristicScores:v18 widgetDescriptorsAdditionalData:v13];
+    complicationHeuristicsDictionary = [(ATXComplicationSuggestionHeuristics *)self->_heuristics complicationHeuristicsDictionary];
+    v19 = [(ATXComplicationSuggestionScorer *)self _scoredComplicationsForModularSetGivenDescriptors:descriptorsCopy appBundleIdScores:v17 heuristicScores:complicationHeuristicsDictionary widgetDescriptorsAdditionalData:dataCopy];
     v20 = [(ATXComplicationSuggestionScorer *)self _decaySubsequentScoresFromSameBundleId:v19 decayFactor:0.2];
   }
 
   return v20;
 }
 
-- (id)_appBundleIdsForComplicationDescriptors:(id)a3
+- (id)_appBundleIdsForComplicationDescriptors:(id)descriptors
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = descriptorsCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -98,12 +98,12 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) extensionIdentity];
-        v11 = [v10 containerBundleIdentifier];
+        extensionIdentity = [*(*(&v14 + 1) + 8 * i) extensionIdentity];
+        containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
-        if (v11)
+        if (containerBundleIdentifier)
         {
-          [v4 addObject:v11];
+          [v4 addObject:containerBundleIdentifier];
         }
       }
 
@@ -118,16 +118,16 @@
   return v4;
 }
 
-- (id)_decaySubsequentScoresFromSameBundleId:(id)a3 decayFactor:(double)a4
+- (id)_decaySubsequentScoresFromSameBundleId:(id)id decayFactor:(double)factor
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  idCopy = id;
   v6 = objc_opt_new();
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v7 = v5;
+  v7 = idCopy;
   v8 = [v7 countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (v8)
   {
@@ -146,12 +146,12 @@
         v13 = [v7 objectForKeyedSubscript:v12];
         if (v13)
         {
-          v14 = [v12 extensionIdentity];
-          v15 = [v14 containerBundleIdentifier];
+          extensionIdentity = [v12 extensionIdentity];
+          containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
-          if (v15)
+          if (containerBundleIdentifier)
           {
-            v16 = [v6 valueForKey:v15];
+            v16 = [v6 valueForKey:containerBundleIdentifier];
             if (v16)
             {
               v17 = v16;
@@ -162,7 +162,7 @@
             {
               v17 = objc_opt_new();
               [v17 addObject:v13];
-              [v6 setObject:v17 forKeyedSubscript:v15];
+              [v6 setObject:v17 forKeyedSubscript:containerBundleIdentifier];
             }
           }
         }
@@ -197,17 +197,17 @@
         }
 
         v23 = *(*(&v36 + 1) + 8 * j);
-        v24 = [v23 extensionIdentity];
-        v25 = [v24 containerBundleIdentifier];
+        extensionIdentity2 = [v23 extensionIdentity];
+        containerBundleIdentifier2 = [extensionIdentity2 containerBundleIdentifier];
 
-        if (v25)
+        if (containerBundleIdentifier2)
         {
           v26 = [v18 objectForKeyedSubscript:v23];
-          v27 = [v35 valueForKey:v25];
+          v27 = [v35 valueForKey:containerBundleIdentifier2];
           v28 = [v27 indexOfObject:v26];
           v29 = MEMORY[0x277CCABB0];
           [v26 doubleValue];
-          v31 = [v29 numberWithDouble:{(v30 * pow(a4, v28))}];
+          v31 = [v29 numberWithDouble:{(v30 * pow(factor, v28))}];
           [v18 setObject:v31 forKeyedSubscript:v23];
         }
       }
@@ -223,15 +223,15 @@
   return v18;
 }
 
-- (id)inputDescriptionForSignal:(id)a3 complicationDescriptors:(id)a4
+- (id)inputDescriptionForSignal:(id)signal complicationDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  signalCopy = signal;
+  descriptorsCopy = descriptors;
   v8 = objc_opt_new();
-  if (([v6 isEqualToString:@"appLaunchUniqueDays"] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"appLaunchTotalCount") & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", @"preConfiguredWidgets") & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"appPriors"))
+  if (([signalCopy isEqualToString:@"appLaunchUniqueDays"] & 1) != 0 || (objc_msgSend(signalCopy, "isEqualToString:", @"appLaunchTotalCount") & 1) != 0 || (objc_msgSend(signalCopy, "isEqualToString:", @"preConfiguredWidgets") & 1) != 0 || objc_msgSend(signalCopy, "isEqualToString:", @"appPriors"))
   {
-    v9 = [(ATXComplicationSuggestionScorer *)self _appBundleIdsForComplicationDescriptors:v7];
-    v10 = [(ATXComplicationAppBundleIdsScorer *)self->_bundleIdsScorer inputDescriptionForSignal:v6 complicationAppBundleIds:v9];
+    v9 = [(ATXComplicationSuggestionScorer *)self _appBundleIdsForComplicationDescriptors:descriptorsCopy];
+    v10 = [(ATXComplicationAppBundleIdsScorer *)self->_bundleIdsScorer inputDescriptionForSignal:signalCopy complicationAppBundleIds:v9];
     v11 = v10;
     if (v10)
     {
@@ -249,7 +249,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:@"heuristics"])
+  if ([signalCopy isEqualToString:@"heuristics"])
   {
     [(ATXComplicationSuggestionHeuristics *)self->_heuristics flushCache];
     v14 = [(ATXComplicationSuggestionHeuristics *)self->_heuristics description];
@@ -270,13 +270,13 @@ LABEL_26:
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:@"complicationPriors"])
+  if ([signalCopy isEqualToString:@"complicationPriors"])
   {
     v15 = +[ATXComplicationSuggestionParameters sharedInstance];
-    v17 = [v15 modularComplicationsToPriorsMapping];
-    v18 = [v15 inlineComplicationsToPriorsMapping];
+    modularComplicationsToPriorsMapping = [v15 modularComplicationsToPriorsMapping];
+    inlineComplicationsToPriorsMapping = [v15 inlineComplicationsToPriorsMapping];
     [v8 appendString:@"Prior values for Modular Complications:\n"];
-    v19 = [v17 description];
+    v19 = [modularComplicationsToPriorsMapping description];
     v20 = v19;
     if (v19)
     {
@@ -291,7 +291,7 @@ LABEL_26:
     [v8 appendString:v21];
 
     [v8 appendString:@"\n\nPrior values for Inline Complications:\n"];
-    v22 = [v18 description];
+    v22 = [inlineComplicationsToPriorsMapping description];
     v23 = v22;
     if (v22)
     {
@@ -308,11 +308,11 @@ LABEL_26:
     goto LABEL_26;
   }
 
-  if ([v6 isEqualToString:@"hyperRecency"])
+  if ([signalCopy isEqualToString:@"hyperRecency"])
   {
-    v25 = [MEMORY[0x277CEB998] sharedInstance];
+    mEMORY[0x277CEB998] = [MEMORY[0x277CEB998] sharedInstance];
     v30 = 0;
-    v11 = [v25 fetchAccessoryWidgetDescriptorMetadataWithError:&v30];
+    v11 = [mEMORY[0x277CEB998] fetchAccessoryWidgetDescriptorMetadataWithError:&v30];
     v9 = v30;
 
     if (v9 || !v11)
@@ -352,22 +352,22 @@ LABEL_10:
   return v8;
 }
 
-- (id)_scoredComplicationsForModularSetGivenDescriptors:(id)a3 appBundleIdScores:(id)a4 heuristicScores:(id)a5 widgetDescriptorsAdditionalData:(id)a6
+- (id)_scoredComplicationsForModularSetGivenDescriptors:(id)descriptors appBundleIdScores:(id)scores heuristicScores:(id)heuristicScores widgetDescriptorsAdditionalData:(id)data
 {
   v57 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v50 = a4;
-  v10 = a5;
-  v11 = a6;
+  descriptorsCopy = descriptors;
+  scoresCopy = scores;
+  heuristicScoresCopy = heuristicScores;
+  dataCopy = data;
   v48 = objc_opt_new();
   v12 = +[ATXComplicationSuggestionParameters sharedInstance];
-  v47 = [v12 modularComplicationsToPriorsMapping];
+  modularComplicationsToPriorsMapping = [v12 modularComplicationsToPriorsMapping];
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  obj = v9;
+  obj = descriptorsCopy;
   v13 = [obj countByEnumeratingWithState:&v52 objects:v56 count:16];
   if (v13)
   {
@@ -383,49 +383,49 @@ LABEL_10:
         }
 
         v17 = *(*(&v52 + 1) + 8 * i);
-        v18 = [v17 extensionIdentity];
-        v19 = [v18 containerBundleIdentifier];
+        extensionIdentity = [v17 extensionIdentity];
+        containerBundleIdentifier = [extensionIdentity containerBundleIdentifier];
 
         v20 = 0.0;
         v21 = 0.0;
-        if (v19)
+        if (containerBundleIdentifier)
         {
-          v22 = [v17 extensionIdentity];
-          v23 = [v22 containerBundleIdentifier];
-          v24 = [v50 objectForKeyedSubscript:v23];
+          extensionIdentity2 = [v17 extensionIdentity];
+          containerBundleIdentifier2 = [extensionIdentity2 containerBundleIdentifier];
+          v24 = [scoresCopy objectForKeyedSubscript:containerBundleIdentifier2];
           [v24 doubleValue];
           v21 = v25;
         }
 
-        v26 = [v17 extensionBundleIdentifier];
-        if (v26)
+        extensionBundleIdentifier = [v17 extensionBundleIdentifier];
+        if (extensionBundleIdentifier)
         {
-          v27 = v26;
-          v28 = [v17 kind];
+          v27 = extensionBundleIdentifier;
+          kind = [v17 kind];
 
-          if (v28)
+          if (kind)
           {
             v29 = objc_alloc(MEMORY[0x277CCACA8]);
-            v30 = [v17 extensionBundleIdentifier];
-            v31 = [v17 kind];
-            v32 = [v29 initWithFormat:@"%@:%@", v30, v31];
+            extensionBundleIdentifier2 = [v17 extensionBundleIdentifier];
+            kind2 = [v17 kind];
+            v32 = [v29 initWithFormat:@"%@:%@", extensionBundleIdentifier2, kind2];
 
-            v33 = [v47 objectForKeyedSubscript:v32];
+            v33 = [modularComplicationsToPriorsMapping objectForKeyedSubscript:v32];
             [v33 doubleValue];
             v20 = v34 / 100.0;
           }
         }
 
         v35 = objc_alloc(MEMORY[0x277CEB9B0]);
-        v36 = [v17 extensionBundleIdentifier];
-        v37 = [v17 kind];
-        v38 = [v35 initWithExtensionBundleId:v36 kind:v37];
+        extensionBundleIdentifier3 = [v17 extensionBundleIdentifier];
+        kind3 = [v17 kind];
+        v38 = [v35 initWithExtensionBundleId:extensionBundleIdentifier3 kind:kind3];
 
-        v39 = [v10 objectForKeyedSubscript:v38];
-        LOBYTE(v37) = [v39 unsignedIntValue];
+        v39 = [heuristicScoresCopy objectForKeyedSubscript:v38];
+        LOBYTE(kind3) = [v39 unsignedIntValue];
 
-        v40 = v20 + [ATXComplicationSuggestionHeuristics scoreFromConfidence:v37];
-        v41 = [(ATXComplicationSuggestionScorer *)self _isNewlyInstalledWidget:v17 additionalData:v11];
+        v40 = v20 + [ATXComplicationSuggestionHeuristics scoreFromConfidence:kind3];
+        v41 = [(ATXComplicationSuggestionScorer *)self _isNewlyInstalledWidget:v17 additionalData:dataCopy];
         v42 = v40 + 30.0;
         if (!v41)
         {
@@ -451,19 +451,19 @@ LABEL_10:
   return v48;
 }
 
-- (id)_scoredComplicationsForInlineSetGivenDescriptors:(id)a3
+- (id)_scoredComplicationsForInlineSetGivenDescriptors:(id)descriptors
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  descriptorsCopy = descriptors;
   v4 = objc_opt_new();
   v5 = +[ATXComplicationSuggestionParameters sharedInstance];
-  v26 = [v5 inlineComplicationsToPriorsMapping];
+  inlineComplicationsToPriorsMapping = [v5 inlineComplicationsToPriorsMapping];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = v3;
+  v6 = descriptorsCopy;
   v7 = [v6 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v7)
   {
@@ -479,21 +479,21 @@ LABEL_10:
         }
 
         v11 = *(*(&v27 + 1) + 8 * i);
-        v12 = [v11 extensionBundleIdentifier];
+        extensionBundleIdentifier = [v11 extensionBundleIdentifier];
         v13 = 0.0;
-        if (v12)
+        if (extensionBundleIdentifier)
         {
-          v14 = v12;
-          v15 = [v11 kind];
+          v14 = extensionBundleIdentifier;
+          kind = [v11 kind];
 
-          if (v15)
+          if (kind)
           {
             v16 = objc_alloc(MEMORY[0x277CCACA8]);
-            v17 = [v11 extensionBundleIdentifier];
-            v18 = [v11 kind];
-            v19 = [v16 initWithFormat:@"%@:%@", v17, v18];
+            extensionBundleIdentifier2 = [v11 extensionBundleIdentifier];
+            kind2 = [v11 kind];
+            v19 = [v16 initWithFormat:@"%@:%@", extensionBundleIdentifier2, kind2];
 
-            v20 = [v26 objectForKeyedSubscript:v19];
+            v20 = [inlineComplicationsToPriorsMapping objectForKeyedSubscript:v19];
             [v20 doubleValue];
             v22 = v21 / 10.0;
 
@@ -516,15 +516,15 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)_modularSetIsSuggestibleGivenAppScoreDictionary:(id)a3
+- (BOOL)_modularSetIsSuggestibleGivenAppScoreDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [dictionaryCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = *v14;
@@ -535,10 +535,10 @@ LABEL_10:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dictionaryCopy);
         }
 
-        v8 = [v3 objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
+        v8 = [dictionaryCopy objectForKeyedSubscript:*(*(&v13 + 1) + 8 * i)];
         [v8 doubleValue];
         v10 = v9;
 
@@ -548,7 +548,7 @@ LABEL_10:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [dictionaryCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v4);
@@ -559,33 +559,33 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)_isNewlyInstalledWidget:(id)a3 additionalData:(id)a4
+- (BOOL)_isNewlyInstalledWidget:(id)widget additionalData:(id)data
 {
-  if (!a4)
+  if (!data)
   {
     return 0;
   }
 
   v5 = MEMORY[0x277CEB9B0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithDescriptor:v7];
+  dataCopy = data;
+  widgetCopy = widget;
+  v8 = [[v5 alloc] initWithDescriptor:widgetCopy];
 
-  v9 = [v6 objectForKeyedSubscript:v8];
+  v9 = [dataCopy objectForKeyedSubscript:v8];
 
   if (v9)
   {
-    v10 = [v9 installDate];
-    if (!v10)
+    installDate = [v9 installDate];
+    if (!installDate)
     {
       goto LABEL_5;
     }
 
-    v11 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v12 = [MEMORY[0x277CBEAA8] now];
-    v13 = [v11 dateByAddingUnit:16 value:-1 toDate:v12 options:0];
+    v13 = [currentCalendar dateByAddingUnit:16 value:-1 toDate:v12 options:0];
 
-    v14 = [v13 compare:v10];
+    v14 = [v13 compare:installDate];
     if (v14 == -1)
     {
       v15 = 1;

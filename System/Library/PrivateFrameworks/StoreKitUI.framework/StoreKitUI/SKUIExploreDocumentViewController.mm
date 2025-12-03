@@ -1,45 +1,45 @@
 @interface SKUIExploreDocumentViewController
 + (BOOL)_shouldForwardViewWillTransitionToSize;
 + (void)_shouldForwardViewWillTransitionToSize;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
-- (SKUIExploreDocumentViewController)initWithTemplateElement:(id)a3;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
+- (SKUIExploreDocumentViewController)initWithTemplateElement:(id)element;
 - (double)_leftColumnWidth;
-- (id)_leftPageComponentsAtIndex:(int64_t)a3;
-- (id)_newSectionsViewControllerAtIndex:(int64_t)a3;
-- (id)_pageComponentsAtIndex:(int64_t)a3;
+- (id)_leftPageComponentsAtIndex:(int64_t)index;
+- (id)_newSectionsViewControllerAtIndex:(int64_t)index;
+- (id)_pageComponentsAtIndex:(int64_t)index;
 - (id)_rightPageComponents;
 - (id)_rightVCColorScheme;
 - (id)_rootNavigationTitle;
 - (id)impressionableViewElements;
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6;
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController;
 - (void)_beginActiveImpressionsForImpressionableViewElements;
-- (void)_contentInsetDidChange:(id)a3;
-- (void)_getPageComponents:(id *)a3 title:(id *)a4 forViewControllerAtIndex:(int64_t)a5;
+- (void)_contentInsetDidChange:(id)change;
+- (void)_getPageComponents:(id *)components title:(id *)title forViewControllerAtIndex:(int64_t)index;
 - (void)_reloadData;
 - (void)_reloadLeftViewControllers;
 - (void)_reloadRightViewController;
-- (void)_reloadSelectionForViewController:(id)a3;
+- (void)_reloadSelectionForViewController:(id)controller;
 - (void)_updateChildViewControllers;
 - (void)dealloc;
-- (void)documentDidUpdate:(id)a3;
-- (void)documentMediaQueriesDidUpdate:(id)a3;
+- (void)documentDidUpdate:(id)update;
+- (void)documentMediaQueriesDidUpdate:(id)update;
 - (void)loadView;
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)selectGenreListComponent:(id)a3;
-- (void)setClientContext:(id)a3;
-- (void)stackedBar:(id)a3 didSelectItemAtIndex:(int64_t)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)selectGenreListComponent:(id)component;
+- (void)setClientContext:(id)context;
+- (void)stackedBar:(id)bar didSelectItemAtIndex:(int64_t)index;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SKUIExploreDocumentViewController
 
-- (SKUIExploreDocumentViewController)initWithTemplateElement:(id)a3
+- (SKUIExploreDocumentViewController)initWithTemplateElement:(id)element
 {
-  v5 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIExploreDocumentViewController initWithTemplateElement:];
@@ -51,7 +51,7 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_exploreTemplate, a3);
+    objc_storeStrong(&v6->_exploreTemplate, element);
     v8 = objc_alloc_init(SKUIMetricsImpressionSession);
     activeMetricsImpressionSession = v7->_activeMetricsImpressionSession;
     v7->_activeMetricsImpressionSession = v8;
@@ -68,19 +68,19 @@
   [(SKUIViewController *)&v3 dealloc];
 }
 
-- (void)selectGenreListComponent:(id)a3
+- (void)selectGenreListComponent:(id)component
 {
-  v3 = [a3 viewElement];
-  [v3 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
+  viewElement = [component viewElement];
+  [viewElement dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = SKUIExploreDocumentViewController;
-  v4 = a3;
-  [(SKUIViewController *)&v5 setClientContext:v4];
-  [(SKUIViewController *)self->_rightVC setClientContext:v4, v5.receiver, v5.super_class];
+  contextCopy = context;
+  [(SKUIViewController *)&v5 setClientContext:contextCopy];
+  [(SKUIViewController *)self->_rightVC setClientContext:contextCopy, v5.receiver, v5.super_class];
 }
 
 + (BOOL)_shouldForwardViewWillTransitionToSize
@@ -103,8 +103,8 @@
   self->_contentScrollView = v3;
 
   [v6 addSubview:self->_contentScrollView];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__contentInsetDidChange_ name:0x28280A1E8 object:self->_contentScrollView];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__contentInsetDidChange_ name:0x28280A1E8 object:self->_contentScrollView];
 
   if ([(SKUIExploreTemplateElement *)self->_exploreTemplate usesSplits])
   {
@@ -118,11 +118,11 @@
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  if (self->_rightVC == a3)
+  height = size.height;
+  width = size.width;
+  if (self->_rightVC == container)
   {
     [(UISplitViewController *)self->_splitVC primaryColumnWidth];
     v10 = width - v9;
@@ -134,7 +134,7 @@
   {
     v13.receiver = self;
     v13.super_class = SKUIExploreDocumentViewController;
-    [(SKUIExploreDocumentViewController *)&v13 sizeForChildContentContainer:a4.width withParentContainerSize:a4.height];
+    [(SKUIExploreDocumentViewController *)&v13 sizeForChildContentContainer:size.width withParentContainerSize:size.height];
     height = v8;
   }
 
@@ -144,64 +144,64 @@
   return result;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(SKUIExploreDocumentViewController *)self navigationController];
-  [v5 setNavigationBarHidden:0 animated:v3];
+  disappearCopy = disappear;
+  navigationController = [(SKUIExploreDocumentViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:0 animated:disappearCopy];
 
   [(SKUIExploreDocumentViewController *)self _endAllPendingActiveImpression];
   v6.receiver = self;
   v6.super_class = SKUIExploreDocumentViewController;
-  [(SKUIExploreDocumentViewController *)&v6 viewWillDisappear:v3];
+  [(SKUIExploreDocumentViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SKUIExploreDocumentViewController *)self navigationController];
-  [v5 setNavigationBarHidden:-[SKUIExploreTemplateElement usesSplits](self->_exploreTemplate animated:{"usesSplits") ^ 1, v3}];
+  appearCopy = appear;
+  navigationController = [(SKUIExploreDocumentViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:-[SKUIExploreTemplateElement usesSplits](self->_exploreTemplate animated:{"usesSplits") ^ 1, appearCopy}];
 
   [(SKUIExploreDocumentViewController *)self _beginActiveImpressionsForImpressionableViewElements];
   v6.receiver = self;
   v6.super_class = SKUIExploreDocumentViewController;
-  [(SKUIViewController *)&v6 viewWillAppear:v3];
+  [(SKUIViewController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"SKUIApplicationPageDidDisplayNotification" object:self];
+  appearCopy = appear;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SKUIApplicationPageDidDisplayNotification" object:self];
 
   v6.receiver = self;
   v6.super_class = SKUIExploreDocumentViewController;
-  [(SKUIExploreDocumentViewController *)&v6 viewDidAppear:v3];
+  [(SKUIExploreDocumentViewController *)&v6 viewDidAppear:appearCopy];
 }
 
-- (void)documentDidUpdate:(id)a3
+- (void)documentDidUpdate:(id)update
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"SKUIApplicationPageDidUpdateNotification" object:self];
+  updateCopy = update;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SKUIApplicationPageDidUpdateNotification" object:self];
 
-  v6 = [v4 templateElement];
+  templateElement = [updateCopy templateElement];
   exploreTemplate = self->_exploreTemplate;
-  self->_exploreTemplate = v6;
+  self->_exploreTemplate = templateElement;
 
   [(SKUIExploreDocumentViewController *)self _updateChildViewControllers];
-  v8 = [(SKUIExploreTemplateElement *)self->_exploreTemplate usesSplits];
-  if (v8)
+  usesSplits = [(SKUIExploreTemplateElement *)self->_exploreTemplate usesSplits];
+  if (usesSplits)
   {
-    v32 = v4;
-    v9 = [MEMORY[0x277CBEB18] array];
+    v32 = updateCopy;
+    array = [MEMORY[0x277CBEB18] array];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v10 = [(UINavigationController *)self->_leftVC viewControllers];
-    v11 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    viewControllers = [(UINavigationController *)self->_leftVC viewControllers];
+    v11 = [viewControllers countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v11)
     {
       v12 = v11;
@@ -212,38 +212,38 @@
         {
           if (*v34 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(viewControllers);
           }
 
-          v15 = [*(*(&v33 + 1) + 8 * i) contentScrollView];
-          [v15 contentOffset];
+          contentScrollView = [*(*(&v33 + 1) + 8 * i) contentScrollView];
+          [contentScrollView contentOffset];
           v17 = v16;
           v19 = v18;
 
           v20 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v17, v19}];
-          [(NSArray *)v9 addObject:v20];
+          [(NSArray *)array addObject:v20];
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v12 = [viewControllers countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v12);
     }
 
     contentOffsets = self->_contentOffsets;
-    self->_contentOffsets = v9;
-    v22 = v9;
+    self->_contentOffsets = array;
+    v22 = array;
 
-    v4 = v32;
-    v23 = [v32 templateElement];
+    updateCopy = v32;
+    templateElement2 = [v32 templateElement];
     v24 = self->_exploreTemplate;
-    self->_exploreTemplate = v23;
+    self->_exploreTemplate = templateElement2;
 
     [(SKUIExploreDocumentViewController *)self _reloadLeftViewControllers];
     [(SKUIExploreDocumentViewController *)self _reloadRightViewController];
-    v25 = [(UINavigationController *)self->_leftVC topViewController];
+    topViewController = [(UINavigationController *)self->_leftVC topViewController];
 
-    [(SKUIExploreDocumentViewController *)self _reloadSelectionForViewController:v25];
+    [(SKUIExploreDocumentViewController *)self _reloadSelectionForViewController:topViewController];
   }
 
   else
@@ -251,32 +251,32 @@
     [(SKUIExploreDocumentViewController *)self _reloadData];
   }
 
-  v26 = [(SKUIExploreDocumentViewController *)self navigationController];
-  v27 = [v26 topViewController];
-  IsDescendent = SKUIViewControllerIsDescendent(self, v27);
+  navigationController = [(SKUIExploreDocumentViewController *)self navigationController];
+  topViewController2 = [navigationController topViewController];
+  IsDescendent = SKUIViewControllerIsDescendent(self, topViewController2);
 
   if (IsDescendent)
   {
-    if (v8)
+    if (usesSplits)
     {
-      v29 = [SKUINavigationControllerAssistant existingAssistantForNavigationController:v26];
+      v29 = [SKUINavigationControllerAssistant existingAssistantForNavigationController:navigationController];
       [v29 setPalettePinningBarHidden:0];
     }
 
-    [v26 setNavigationBarHidden:v8 ^ 1 animated:0];
+    [navigationController setNavigationBarHidden:usesSplits ^ 1 animated:0];
   }
 
-  v30 = [(UINavigationController *)self->_navigationController view];
-  [v30 setHidden:v8];
+  view = [(UINavigationController *)self->_navigationController view];
+  [view setHidden:usesSplits];
 
-  v31 = [(UISplitViewController *)self->_splitVC view];
-  [v31 setHidden:v8 ^ 1];
+  view2 = [(UISplitViewController *)self->_splitVC view];
+  [view2 setHidden:usesSplits ^ 1];
 }
 
-- (void)documentMediaQueriesDidUpdate:(id)a3
+- (void)documentMediaQueriesDidUpdate:(id)update
 {
-  v4 = [(UINavigationController *)self->_leftVC viewControllers];
-  [v4 enumerateObjectsUsingBlock:&__block_literal_global_12];
+  viewControllers = [(UINavigationController *)self->_leftVC viewControllers];
+  [viewControllers enumerateObjectsUsingBlock:&__block_literal_global_12];
 
   rightVC = self->_rightVC;
 
@@ -301,12 +301,12 @@
       self->_rightVC = v5;
 
       v7 = self->_rightVC;
-      v8 = [(SKUIViewController *)self clientContext];
-      [(SKUIViewController *)v7 setClientContext:v8];
+      clientContext = [(SKUIViewController *)self clientContext];
+      [(SKUIViewController *)v7 setClientContext:clientContext];
 
       v9 = self->_rightVC;
-      v10 = [(SKUIViewController *)self operationQueue];
-      [(SKUIViewController *)v9 setOperationQueue:v10];
+      operationQueue = [(SKUIViewController *)self operationQueue];
+      [(SKUIViewController *)v9 setOperationQueue:operationQueue];
 
       [(SKUIStorePageSectionsViewController *)self->_rightVC setActiveMetricsImpressionSession:self->_activeMetricsImpressionSession];
       v11 = objc_alloc_init(MEMORY[0x277D75A50]);
@@ -328,21 +328,21 @@
 
       [(UISplitViewController *)self->_splitVC setDelegate:self];
       [(SKUIExploreDocumentViewController *)self addChildViewController:self->_splitVC];
-      v18 = [(UISplitViewController *)self->_splitVC view];
-      [v18 setAutoresizingMask:18];
-      v19 = [(SKUIExploreDocumentViewController *)self view];
-      [v19 bounds];
-      [v18 setFrame:?];
+      view = [(UISplitViewController *)self->_splitVC view];
+      [view setAutoresizingMask:18];
+      view2 = [(SKUIExploreDocumentViewController *)self view];
+      [view2 bounds];
+      [view setFrame:?];
 
-      v20 = [(SKUIExploreDocumentViewController *)self view];
-      [v20 addSubview:v18];
+      view3 = [(SKUIExploreDocumentViewController *)self view];
+      [view3 addSubview:view];
     }
 
     navigationController = self->_navigationController;
     if (navigationController)
     {
-      v22 = [(UINavigationController *)navigationController view];
-      [v22 removeFromSuperview];
+      view4 = [(UINavigationController *)navigationController view];
+      [view4 removeFromSuperview];
 
       [(SKUIExploreDocumentViewController *)self removeChildViewController:self->_navigationController];
       [(UINavigationController *)self->_navigationController setDelegate:0];
@@ -362,21 +362,21 @@
       [(UINavigationController *)self->_navigationController setDelegate:self];
       [(UINavigationController *)self->_navigationController setNavigationBarHidden:1 animated:0];
       [(SKUIExploreDocumentViewController *)self addChildViewController:self->_navigationController];
-      v26 = [(UINavigationController *)self->_navigationController view];
-      [v26 setAutoresizingMask:18];
-      v27 = [(SKUIExploreDocumentViewController *)self view];
-      [v27 bounds];
-      [v26 setFrame:?];
+      view5 = [(UINavigationController *)self->_navigationController view];
+      [view5 setAutoresizingMask:18];
+      view6 = [(SKUIExploreDocumentViewController *)self view];
+      [view6 bounds];
+      [view5 setFrame:?];
 
-      v28 = [(SKUIExploreDocumentViewController *)self view];
-      [v28 addSubview:v26];
+      view7 = [(SKUIExploreDocumentViewController *)self view];
+      [view7 addSubview:view5];
     }
 
     v29 = self->_splitVC;
     if (v29)
     {
-      v30 = [(UISplitViewController *)v29 view];
-      [v30 removeFromSuperview];
+      view8 = [(UISplitViewController *)v29 view];
+      [view8 removeFromSuperview];
 
       [(SKUIExploreDocumentViewController *)self removeChildViewController:self->_splitVC];
       [(UISplitViewController *)self->_splitVC setDelegate:0];
@@ -397,57 +397,57 @@
 {
   if ([(SKUIExploreTemplateElement *)self->_exploreTemplate usesSplits])
   {
-    v3 = [(UINavigationController *)self->_leftVC visibleViewController];
+    visibleViewController = [(UINavigationController *)self->_leftVC visibleViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 _impressionableViewElements];
+      _impressionableViewElements = [visibleViewController _impressionableViewElements];
     }
 
     else
     {
-      v4 = 0;
+      _impressionableViewElements = 0;
     }
 
-    v5 = [(SKUIStorePageSectionsViewController *)self->_rightVC _impressionableViewElements];
-    v6 = v5;
-    if (v5)
+    _impressionableViewElements2 = [(SKUIStorePageSectionsViewController *)self->_rightVC _impressionableViewElements];
+    v6 = _impressionableViewElements2;
+    if (_impressionableViewElements2)
     {
-      if (v4)
+      if (_impressionableViewElements)
       {
-        v7 = [v4 arrayByAddingObjectsFromArray:v5];
+        v7 = [_impressionableViewElements arrayByAddingObjectsFromArray:_impressionableViewElements2];
 
-        v4 = v7;
+        _impressionableViewElements = v7;
       }
 
       else
       {
-        v4 = v5;
+        _impressionableViewElements = _impressionableViewElements2;
       }
     }
   }
 
   else
   {
-    v3 = [(UINavigationController *)self->_navigationController visibleViewController];
+    visibleViewController = [(UINavigationController *)self->_navigationController visibleViewController];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [v3 _impressionableViewElements];
+      _impressionableViewElements = [visibleViewController _impressionableViewElements];
     }
 
     else
     {
-      v4 = 0;
+      _impressionableViewElements = 0;
     }
   }
 
-  return v4;
+  return _impressionableViewElements;
 }
 
-- (void)locationManager:(id)a3 didChangeAuthorizationStatus:(int)a4
+- (void)locationManager:(id)manager didChangeAuthorizationStatus:(int)status
 {
-  IsEnabledForAuthorizationStatus = SKUINearMeIsEnabledForAuthorizationStatus(a4);
+  IsEnabledForAuthorizationStatus = SKUINearMeIsEnabledForAuthorizationStatus(status);
   if (self->_nearMeEnabled != IsEnabledForAuthorizationStatus)
   {
     self->_nearMeEnabled = IsEnabledForAuthorizationStatus;
@@ -465,173 +465,173 @@
   }
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v20 = a3;
-  v7 = a4;
-  if (self->_leftVC == v20)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  if (self->_leftVC == controllerCopy)
   {
-    v8 = [v7 contentScrollView];
+    contentScrollView = [viewControllerCopy contentScrollView];
     [(SKUIContentInsetScrollView *)self->_contentScrollView scrollIndicatorInsets];
-    SKUIScrollViewSetContentInsets(v8, "SKUIExploreDocumentViewController", v9, v10, v11, v12);
+    SKUIScrollViewSetContentInsets(contentScrollView, "SKUIExploreDocumentViewController", v9, v10, v11, v12);
 
-    SKUIStackedBarNavDidShow(v20, v7);
-    v13 = [(UINavigationController *)v20 viewControllers];
-    v14 = [v13 indexOfObject:v7];
+    SKUIStackedBarNavDidShow(controllerCopy, viewControllerCopy);
+    viewControllers = [(UINavigationController *)controllerCopy viewControllers];
+    v14 = [viewControllers indexOfObject:viewControllerCopy];
 
     if ([(NSArray *)self->_contentOffsets count]> v14)
     {
-      v15 = [(UINavigationController *)v20 viewControllers];
-      v16 = [v15 count];
+      viewControllers2 = [(UINavigationController *)controllerCopy viewControllers];
+      v16 = [viewControllers2 count];
       v17 = [(NSArray *)self->_contentOffsets count];
 
       if (v16 == v17)
       {
-        v18 = [v7 contentScrollView];
+        contentScrollView2 = [viewControllerCopy contentScrollView];
         v19 = [(NSArray *)self->_contentOffsets objectAtIndex:v14];
         [v19 CGPointValue];
-        [v18 setContentOffset:?];
+        [contentScrollView2 setContentOffset:?];
       }
     }
   }
 
   else
   {
-    SKUIStackedBarNavDidShow(v20, v7);
+    SKUIStackedBarNavDidShow(controllerCopy, viewControllerCopy);
   }
 }
 
-- (id)navigationController:(id)a3 animationControllerForOperation:(int64_t)a4 fromViewController:(id)a5 toViewController:(id)a6
+- (id)navigationController:(id)controller animationControllerForOperation:(int64_t)operation fromViewController:(id)viewController toViewController:(id)toViewController
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (self->_leftVC == v10)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  toViewControllerCopy = toViewController;
+  if (self->_leftVC == controllerCopy)
   {
-    v18 = SKUIStackedBarNavAnimationController(v10, a4, v11, v12);
+    v18 = SKUIStackedBarNavAnimationController(controllerCopy, operation, viewControllerCopy, toViewControllerCopy);
     goto LABEL_14;
   }
 
-  v13 = [(UINavigationController *)v10 viewControllers];
-  v14 = v13;
-  if (a4 == 1)
+  viewControllers = [(UINavigationController *)controllerCopy viewControllers];
+  v14 = viewControllers;
+  if (operation == 1)
   {
-    if ([v13 count] < 2)
+    if ([viewControllers count] < 2)
     {
       goto LABEL_13;
     }
 
     v19 = [v14 objectAtIndex:1];
 
-    if (v19 != v12)
+    if (v19 != toViewControllerCopy)
     {
       goto LABEL_13;
     }
 
     v21 = 0;
     [(SKUIExploreDocumentViewController *)self _getPageComponents:0 title:&v21 forViewControllerAtIndex:0];
-    v16 = v21;
-    v17 = v11;
+    _rootNavigationTitle = v21;
+    v17 = viewControllerCopy;
     goto LABEL_11;
   }
 
-  if (a4 != 2)
+  if (operation != 2)
   {
     goto LABEL_13;
   }
 
-  v15 = [v13 firstObject];
+  firstObject = [viewControllers firstObject];
 
-  if (v15 != v12)
+  if (firstObject != toViewControllerCopy)
   {
     goto LABEL_13;
   }
 
-  v16 = [(SKUIExploreDocumentViewController *)self _rootNavigationTitle];
-  if (v16)
+  _rootNavigationTitle = [(SKUIExploreDocumentViewController *)self _rootNavigationTitle];
+  if (_rootNavigationTitle)
   {
-    v17 = v12;
+    v17 = toViewControllerCopy;
 LABEL_11:
-    [v17 setTitle:v16];
+    [v17 setTitle:_rootNavigationTitle];
   }
 
 LABEL_13:
-  v18 = SKUIStackedBarNavAnimationController(v10, a4, v11, v12);
+  v18 = SKUIStackedBarNavAnimationController(controllerCopy, operation, viewControllerCopy, toViewControllerCopy);
 
 LABEL_14:
 
   return v18;
 }
 
-- (void)stackedBar:(id)a3 didSelectItemAtIndex:(int64_t)a4
+- (void)stackedBar:(id)bar didSelectItemAtIndex:(int64_t)index
 {
-  if ((a4 & 0x8000000000000000) == 0)
+  if ((index & 0x8000000000000000) == 0)
   {
-    v6 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-    v7 = [v6 count];
+    childViewElements = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+    v7 = [childViewElements count];
 
-    if (v7 > a4)
+    if (v7 > index)
     {
-      v8 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-      v9 = [v8 objectAtIndex:a4];
+      childViewElements2 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+      v9 = [childViewElements2 objectAtIndex:index];
 
       [v9 dispatchEventOfType:2 canBubble:1 isCancelable:1 extraInfo:0 completionBlock:0];
     }
   }
 }
 
-- (void)navigationController:(id)a3 willShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller willShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v20 = a3;
-  v7 = a4;
-  if (self->_leftVC == v20)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  if (self->_leftVC == controllerCopy)
   {
-    v8 = [v7 contentScrollView];
+    contentScrollView = [viewControllerCopy contentScrollView];
     [(SKUIContentInsetScrollView *)self->_contentScrollView scrollIndicatorInsets];
-    SKUIScrollViewSetContentInsets(v8, "SKUIExploreDocumentViewController", v9, v10, v11, v12);
+    SKUIScrollViewSetContentInsets(contentScrollView, "SKUIExploreDocumentViewController", v9, v10, v11, v12);
 
-    [(SKUIExploreDocumentViewController *)self _reloadSelectionForViewController:v7];
-    v13 = [(UINavigationController *)v20 viewControllers];
-    v14 = [v13 indexOfObject:v7];
+    [(SKUIExploreDocumentViewController *)self _reloadSelectionForViewController:viewControllerCopy];
+    viewControllers = [(UINavigationController *)controllerCopy viewControllers];
+    v14 = [viewControllers indexOfObject:viewControllerCopy];
 
     if ([(NSArray *)self->_contentOffsets count]> v14)
     {
-      v15 = [(UINavigationController *)v20 viewControllers];
-      v16 = [v15 count];
+      viewControllers2 = [(UINavigationController *)controllerCopy viewControllers];
+      v16 = [viewControllers2 count];
       v17 = [(NSArray *)self->_contentOffsets count];
 
       if (v16 == v17)
       {
-        v18 = [v7 contentScrollView];
+        contentScrollView2 = [viewControllerCopy contentScrollView];
         v19 = [(NSArray *)self->_contentOffsets objectAtIndex:v14];
         [v19 CGPointValue];
-        [v18 setContentOffset:?];
+        [contentScrollView2 setContentOffset:?];
       }
     }
   }
 }
 
-- (void)_contentInsetDidChange:(id)a3
+- (void)_contentInsetDidChange:(id)change
 {
   if ([(SKUIExploreTemplateElement *)self->_exploreTemplate usesSplits])
   {
-    v4 = [(UINavigationController *)self->_leftVC viewControllers];
-    v5 = [v4 firstObject];
-    v6 = [v5 view];
+    viewControllers = [(UINavigationController *)self->_leftVC viewControllers];
+    firstObject = [viewControllers firstObject];
+    view = [firstObject view];
 
-    v7 = [(SKUIStorePageSectionsViewController *)self->_rightVC view];
+    view2 = [(SKUIStorePageSectionsViewController *)self->_rightVC view];
     [(SKUIContentInsetScrollView *)self->_contentScrollView scrollIndicatorInsets];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v16 = [(SKUIStorePageSectionsViewController *)self->_rightVC contentScrollView];
-    SKUIScrollViewSetContentInsets(v16, "SKUIExploreDocumentViewController", v9, v11, v13, v15);
+    contentScrollView = [(SKUIStorePageSectionsViewController *)self->_rightVC contentScrollView];
+    SKUIScrollViewSetContentInsets(contentScrollView, "SKUIExploreDocumentViewController", v9, v11, v13, v15);
 
-    v19 = [(UINavigationController *)self->_leftVC viewControllers];
-    v17 = [v19 firstObject];
-    v18 = [v17 contentScrollView];
-    SKUIScrollViewSetContentInsets(v18, "SKUIExploreDocumentViewController", v9, v11, 0.0, v15);
+    viewControllers2 = [(UINavigationController *)self->_leftVC viewControllers];
+    firstObject2 = [viewControllers2 firstObject];
+    contentScrollView2 = [firstObject2 contentScrollView];
+    SKUIScrollViewSetContentInsets(contentScrollView2, "SKUIExploreDocumentViewController", v9, v11, 0.0, v15);
   }
 }
 
@@ -643,13 +643,13 @@ LABEL_14:
   v9 = __Block_byref_object_copy__23;
   v10 = __Block_byref_object_dispose__23;
   v11 = 0;
-  v2 = [(SKUIExploreTemplateElement *)self->_exploreTemplate navigationBarElement];
+  navigationBarElement = [(SKUIExploreTemplateElement *)self->_exploreTemplate navigationBarElement];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __57__SKUIExploreDocumentViewController__rootNavigationTitle__block_invoke;
   v5[3] = &unk_2781F8568;
   v5[4] = &v6;
-  [v2 enumerateChildrenUsingBlock:v5];
+  [navigationBarElement enumerateChildrenUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -681,14 +681,14 @@ uint64_t __57__SKUIExploreDocumentViewController__rootNavigationTitle__block_inv
   return MEMORY[0x2821F96F8](isKindOfClass, v4);
 }
 
-- (void)_getPageComponents:(id *)a3 title:(id *)a4 forViewControllerAtIndex:(int64_t)a5
+- (void)_getPageComponents:(id *)components title:(id *)title forViewControllerAtIndex:(int64_t)index
 {
-  v14 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-  if ([v14 count] <= a5)
+  childViewElements = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+  if ([childViewElements count] <= index)
   {
-    v10 = 0;
+    title = 0;
     v11 = 0;
-    if (!a4)
+    if (!title)
     {
       goto LABEL_6;
     }
@@ -696,30 +696,30 @@ uint64_t __57__SKUIExploreDocumentViewController__rootNavigationTitle__block_inv
     goto LABEL_5;
   }
 
-  v9 = [v14 objectAtIndex:a5];
-  v10 = [v9 title];
+  v9 = [childViewElements objectAtIndex:index];
+  title = [v9 title];
 
-  v11 = [(SKUIExploreDocumentViewController *)self _pageComponentsAtIndex:a5];
-  if (a4)
+  v11 = [(SKUIExploreDocumentViewController *)self _pageComponentsAtIndex:index];
+  if (title)
   {
 LABEL_5:
-    v12 = v10;
-    *a4 = v10;
+    v12 = title;
+    *title = title;
   }
 
 LABEL_6:
-  if (a3)
+  if (components)
   {
     v13 = v11;
-    *a3 = v11;
+    *components = v11;
   }
 }
 
-- (id)_newSectionsViewControllerAtIndex:(int64_t)a3
+- (id)_newSectionsViewControllerAtIndex:(int64_t)index
 {
   v13 = 0;
   v14 = 0;
-  [(SKUIExploreDocumentViewController *)self _getPageComponents:&v14 title:&v13 forViewControllerAtIndex:a3];
+  [(SKUIExploreDocumentViewController *)self _getPageComponents:&v14 title:&v13 forViewControllerAtIndex:index];
   v5 = v14;
   v6 = v13;
   v7 = objc_alloc_init(SKUIStackedBar);
@@ -727,7 +727,7 @@ LABEL_6:
   [(SKUIStackedBar *)v7 setSplitViewStyle:[(SKUIExploreTemplateElement *)self->_exploreTemplate usesSplits]];
   if ([(SKUIExploreTemplateElement *)self->_exploreTemplate usesSplits])
   {
-    [(SKUIStackedBar *)v7 setZeroHeightWhenFirstChildExpanded:a3 == 0];
+    [(SKUIStackedBar *)v7 setZeroHeightWhenFirstChildExpanded:index == 0];
   }
 
   if ([(SKUIExploreTemplateElement *)self->_exploreTemplate usesSplits])
@@ -741,11 +741,11 @@ LABEL_6:
   }
 
   v9 = [[SKUIStorePageSectionsViewController alloc] initWithLayoutStyle:v8];
-  v10 = [(SKUIViewController *)self clientContext];
-  [(SKUIViewController *)v9 setClientContext:v10];
+  clientContext = [(SKUIViewController *)self clientContext];
+  [(SKUIViewController *)v9 setClientContext:clientContext];
 
-  v11 = [(SKUIViewController *)self operationQueue];
-  [(SKUIViewController *)v9 setOperationQueue:v11];
+  operationQueue = [(SKUIViewController *)self operationQueue];
+  [(SKUIViewController *)v9 setOperationQueue:operationQueue];
 
   [(SKUIStorePageSectionsViewController *)v9 setSectionsWithPageComponents:v5];
   [(SKUIStorePageSectionsViewController *)v9 setSKUIStackedBar:v7];
@@ -760,12 +760,12 @@ LABEL_6:
   return v9;
 }
 
-- (id)_pageComponentsAtIndex:(int64_t)a3
+- (id)_pageComponentsAtIndex:(int64_t)index
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-  v7 = [v6 objectAtIndex:a3];
+  childViewElements = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+  v7 = [childViewElements objectAtIndex:index];
 
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
@@ -864,17 +864,17 @@ void __60__SKUIExploreDocumentViewController__pageComponentsAtIndex___block_invo
     self->_nearMeEnabled = SKUINearMeIsEnabledForAuthorizationStatus([v6 authorizationStatus]);
   }
 
-  v7 = [(UINavigationController *)self->_navigationController viewControllers];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-  v10 = [v9 count];
+  viewControllers = [(UINavigationController *)self->_navigationController viewControllers];
+  array = [MEMORY[0x277CBEB18] array];
+  childViewElements = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+  v10 = [childViewElements count];
 
   if (v10)
   {
     v11 = 0;
     do
     {
-      if ([v7 count] <= v11)
+      if ([viewControllers count] <= v11)
       {
         v14 = [(SKUIExploreDocumentViewController *)self _newSectionsViewControllerAtIndex:v11];
       }
@@ -886,66 +886,66 @@ void __60__SKUIExploreDocumentViewController__pageComponentsAtIndex___block_invo
         [(SKUIExploreDocumentViewController *)self _getPageComponents:&v24 title:&v23 forViewControllerAtIndex:v11];
         v12 = v24;
         v13 = v23;
-        v14 = [v7 objectAtIndex:v11];
+        v14 = [viewControllers objectAtIndex:v11];
         [v14 setSectionsWithPageComponents:v12];
       }
 
-      v15 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-      v16 = [v15 count];
+      childViewElements2 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+      v16 = [childViewElements2 count];
 
       if (v16 == 1)
       {
-        v17 = [(SKUIExploreDocumentViewController *)self _rootNavigationTitle];
-        if (v17)
+        _rootNavigationTitle = [(SKUIExploreDocumentViewController *)self _rootNavigationTitle];
+        if (_rootNavigationTitle)
         {
-          [v14 setTitle:v17];
+          [v14 setTitle:_rootNavigationTitle];
         }
       }
 
-      [v8 addObject:v14];
+      [array addObject:v14];
 
       ++v11;
-      v18 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-      v19 = [v18 count];
+      childViewElements3 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+      v19 = [childViewElements3 count];
     }
 
     while (v11 < v19);
   }
 
-  if ([v7 count])
+  if ([viewControllers count])
   {
-    v20 = [v7 count];
-    if (v20 != [v8 count])
+    v20 = [viewControllers count];
+    if (v20 != [array count])
     {
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __48__SKUIExploreDocumentViewController__reloadData__block_invoke;
       v21[3] = &unk_2781F80C8;
       v21[4] = self;
-      v22 = v8;
+      v22 = array;
       dispatch_async(MEMORY[0x277D85CD0], v21);
     }
   }
 
   else
   {
-    [(UINavigationController *)self->_navigationController setViewControllers:v8 animated:0];
+    [(UINavigationController *)self->_navigationController setViewControllers:array animated:0];
   }
 }
 
 - (void)_reloadLeftViewControllers
 {
-  v3 = [(UINavigationController *)self->_leftVC viewControllers];
-  v4 = [MEMORY[0x277CBEB18] array];
-  v5 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-  v6 = [v5 count];
+  viewControllers = [(UINavigationController *)self->_leftVC viewControllers];
+  array = [MEMORY[0x277CBEB18] array];
+  childViewElements = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+  v6 = [childViewElements count];
 
   if (v6)
   {
     v7 = 0;
     do
     {
-      if ([v3 count] <= v7)
+      if ([viewControllers count] <= v7)
       {
         v10 = [(SKUIExploreDocumentViewController *)self _newSectionsViewControllerAtIndex:v7];
       }
@@ -957,71 +957,71 @@ void __60__SKUIExploreDocumentViewController__pageComponentsAtIndex___block_invo
         [(SKUIExploreDocumentViewController *)self _getPageComponents:&v17 title:&v16 forViewControllerAtIndex:v7];
         v8 = v17;
         v9 = v16;
-        v10 = [v3 objectAtIndex:v7];
+        v10 = [viewControllers objectAtIndex:v7];
         [v10 setTitle:v9];
         [v10 setSectionsWithPageComponents:v8];
       }
 
-      [v4 addObject:v10];
+      [array addObject:v10];
 
       ++v7;
-      v11 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-      v12 = [v11 count];
+      childViewElements2 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+      v12 = [childViewElements2 count];
     }
 
     while (v7 < v12);
   }
 
-  if ([v3 count])
+  if ([viewControllers count])
   {
-    v13 = [v3 count];
-    if (v13 != [v4 count])
+    v13 = [viewControllers count];
+    if (v13 != [array count])
     {
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __63__SKUIExploreDocumentViewController__reloadLeftViewControllers__block_invoke;
       v14[3] = &unk_2781F80C8;
       v14[4] = self;
-      v15 = v4;
+      v15 = array;
       dispatch_async(MEMORY[0x277D85CD0], v14);
     }
   }
 
   else
   {
-    [(UINavigationController *)self->_leftVC setViewControllers:v4 animated:0];
+    [(UINavigationController *)self->_leftVC setViewControllers:array animated:0];
   }
 }
 
-- (void)_reloadSelectionForViewController:(id)a3
+- (void)_reloadSelectionForViewController:(id)controller
 {
-  v11 = a3;
-  v3 = [v11 sections];
-  if ([v3 count])
+  controllerCopy = controller;
+  sections = [controllerCopy sections];
+  if ([sections count])
   {
     v4 = 0;
     do
     {
-      v5 = [v3 objectAtIndex:v4];
+      v5 = [sections objectAtIndex:v4];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = [v5 pageComponent];
-        v7 = [v6 viewElement];
-        v8 = [v7 isSelected];
+        pageComponent = [v5 pageComponent];
+        viewElement = [pageComponent viewElement];
+        isSelected = [viewElement isSelected];
 
-        if (v8)
+        if (isSelected)
         {
           v9 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v4];
-          v10 = [v11 collectionView];
-          [v10 selectItemAtIndexPath:v9 animated:0 scrollPosition:0];
+          collectionView = [controllerCopy collectionView];
+          [collectionView selectItemAtIndexPath:v9 animated:0 scrollPosition:0];
         }
       }
 
       ++v4;
     }
 
-    while (v4 < [v3 count]);
+    while (v4 < [sections count]);
   }
 }
 
@@ -1040,17 +1040,17 @@ void __60__SKUIExploreDocumentViewController__pageComponentsAtIndex___block_invo
   }
 
   rightVC = self->_rightVC;
-  v8 = [(SKUIExploreDocumentViewController *)self _rightPageComponents];
-  [(SKUIStorePageSectionsViewController *)rightVC setSectionsWithPageComponents:v8];
+  _rightPageComponents = [(SKUIExploreDocumentViewController *)self _rightPageComponents];
+  [(SKUIStorePageSectionsViewController *)rightVC setSectionsWithPageComponents:_rightPageComponents];
 
-  v9 = [(SKUIExploreDocumentViewController *)self _rightVCColorScheme];
-  [(SKUIStorePageSectionsViewController *)self->_rightVC setColorScheme:v9];
+  _rightVCColorScheme = [(SKUIExploreDocumentViewController *)self _rightVCColorScheme];
+  [(SKUIStorePageSectionsViewController *)self->_rightVC setColorScheme:_rightVCColorScheme];
 }
 
 - (double)_leftColumnWidth
 {
-  v2 = [MEMORY[0x277D75DA0] keyWindow];
-  [v2 bounds];
+  keyWindow = [MEMORY[0x277D75DA0] keyWindow];
+  [keyWindow bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -1071,19 +1071,19 @@ void __60__SKUIExploreDocumentViewController__pageComponentsAtIndex___block_invo
   }
 }
 
-- (id)_leftPageComponentsAtIndex:(int64_t)a3
+- (id)_leftPageComponentsAtIndex:(int64_t)index
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v6 = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
-  v7 = [v6 objectAtIndex:a3];
+  childViewElements = [(SKUIExploreTemplateElement *)self->_exploreTemplate childViewElements];
+  v7 = [childViewElements objectAtIndex:index];
 
-  v8 = [v7 flattenedChildren];
+  flattenedChildren = [v7 flattenedChildren];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [flattenedChildren countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1095,7 +1095,7 @@ void __60__SKUIExploreDocumentViewController__pageComponentsAtIndex___block_invo
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(flattenedChildren);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
@@ -1115,7 +1115,7 @@ void __60__SKUIExploreDocumentViewController__pageComponentsAtIndex___block_invo
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [flattenedChildren countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
@@ -1127,14 +1127,14 @@ void __60__SKUIExploreDocumentViewController__pageComponentsAtIndex___block_invo
 - (id)_rightPageComponents
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(SKUIExploreTemplateElement *)self->_exploreTemplate rightSplit];
+  rightSplit = [(SKUIExploreTemplateElement *)self->_exploreTemplate rightSplit];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__SKUIExploreDocumentViewController__rightPageComponents__block_invoke;
   v7[3] = &unk_2781F9640;
   v5 = v3;
   v8 = v5;
-  [v4 enumerateChildrenUsingBlock:v7];
+  [rightSplit enumerateChildrenUsingBlock:v7];
 
   return v5;
 }
@@ -1155,15 +1155,15 @@ void __57__SKUIExploreDocumentViewController__rightPageComponents__block_invoke(
 
 - (id)_rightVCColorScheme
 {
-  v2 = [(SKUIExploreTemplateElement *)self->_exploreTemplate rightSplit];
-  v3 = [v2 style];
-  v4 = [v3 ikBackgroundColor];
-  v5 = [v4 color];
+  rightSplit = [(SKUIExploreTemplateElement *)self->_exploreTemplate rightSplit];
+  style = [rightSplit style];
+  ikBackgroundColor = [style ikBackgroundColor];
+  color = [ikBackgroundColor color];
 
-  if (v5)
+  if (color)
   {
     v6 = objc_alloc_init(SKUIColorScheme);
-    [(SKUIColorScheme *)v6 setBackgroundColor:v5];
+    [(SKUIColorScheme *)v6 setBackgroundColor:color];
   }
 
   else
@@ -1177,12 +1177,12 @@ void __57__SKUIExploreDocumentViewController__rightPageComponents__block_invoke(
 - (void)_beginActiveImpressionsForImpressionableViewElements
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(SKUIExploreDocumentViewController *)self impressionableViewElements];
+  impressionableViewElements = [(SKUIExploreDocumentViewController *)self impressionableViewElements];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [impressionableViewElements countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1194,14 +1194,14 @@ void __57__SKUIExploreDocumentViewController__rightPageComponents__block_invoke(
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(impressionableViewElements);
         }
 
         [(SKUIMetricsImpressionSession *)self->_activeMetricsImpressionSession beginActiveImpressionForViewElement:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [impressionableViewElements countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);

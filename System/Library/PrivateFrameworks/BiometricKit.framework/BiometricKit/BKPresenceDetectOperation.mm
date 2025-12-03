@@ -1,19 +1,19 @@
 @interface BKPresenceDetectOperation
-- (id)optionsDictionaryWithError:(id *)a3;
+- (id)optionsDictionaryWithError:(id *)error;
 @end
 
 @implementation BKPresenceDetectOperation
 
-- (id)optionsDictionaryWithError:(id *)a3
+- (id)optionsDictionaryWithError:(id *)error
 {
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_priority)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:?];
-    [v4 setObject:v5 forKey:@"BKOptionPriority"];
+    [dictionary setObject:v5 forKey:@"BKOptionPriority"];
   }
 
-  return v4;
+  return dictionary;
 }
 
 void __53__BKPresenceDetectOperation_startBioOperation_reply___block_invoke(uint64_t a1, uint64_t a2)

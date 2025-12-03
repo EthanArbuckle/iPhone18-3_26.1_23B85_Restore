@@ -1,13 +1,13 @@
 @interface FPFileManagerFixPermDelegate
-- (BOOL)fileManager:(id)a3 shouldRemoveItemAtURL:(id)a4;
+- (BOOL)fileManager:(id)manager shouldRemoveItemAtURL:(id)l;
 @end
 
 @implementation FPFileManagerFixPermDelegate
 
-- (BOOL)fileManager:(id)a3 shouldRemoveItemAtURL:(id)a4
+- (BOOL)fileManager:(id)manager shouldRemoveItemAtURL:(id)l
 {
-  v4 = a4;
-  v5 = open([v4 fileSystemRepresentation], 260);
+  lCopy = l;
+  v5 = open([lCopy fileSystemRepresentation], 260);
   if ((v5 & 0x80000000) == 0)
   {
     v6 = v5;
@@ -28,7 +28,7 @@
         v23 = 0;
         v7 = *MEMORY[0x1E695DB48];
         v22 = 0;
-        v8 = [v4 getResourceValue:&v23 forKey:v7 error:&v22];
+        v8 = [lCopy getResourceValue:&v23 forKey:v7 error:&v22];
         v9 = v23;
         v10 = v22;
         if ((v8 & 1) == 0)
@@ -53,7 +53,7 @@
           }
 
           v21 = v10;
-          v14 = [v4 setResourceValue:v12 forKey:v7 error:&v21];
+          v14 = [lCopy setResourceValue:v12 forKey:v7 error:&v21];
           v15 = v21;
 
           if ((v14 & 1) == 0)

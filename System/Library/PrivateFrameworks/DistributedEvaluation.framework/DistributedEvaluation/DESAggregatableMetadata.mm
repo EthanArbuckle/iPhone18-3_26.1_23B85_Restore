@@ -1,14 +1,14 @@
 @interface DESAggregatableMetadata
-+ (id)encodeMetadata:(id)a3 recipe:(id)a4 error:(id *)a5;
++ (id)encodeMetadata:(id)metadata recipe:(id)recipe error:(id *)error;
 @end
 
 @implementation DESAggregatableMetadata
 
-+ (id)encodeMetadata:(id)a3 recipe:(id)a4 error:(id *)a5
++ (id)encodeMetadata:(id)metadata recipe:(id)recipe error:(id *)error
 {
   v90[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  metadataCopy = metadata;
+  recipeCopy = recipe;
   v89[0] = @"encodedCategoricalMetadata";
   v89[1] = @"encodedNumericMetadata";
   v73 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -16,28 +16,28 @@
   v90[0] = v73;
   v90[1] = v74;
   v70 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v90 forKeys:v89 count:2];
-  if (![v6 count])
+  if (![metadataCopy count])
   {
     v61 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
     {
-      v62 = [v7 recipeID];
+      recipeID = [recipeCopy recipeID];
       *buf = 138412290;
-      v83 = v62;
+      v83 = recipeID;
       _os_log_impl(&dword_248FF7000, v61, OS_LOG_TYPE_INFO, "No metadata for recipe %@", buf, 0xCu);
     }
 
     goto LABEL_56;
   }
 
-  if (([v7 useAggregatableMetadata] & 1) == 0)
+  if (([recipeCopy useAggregatableMetadata] & 1) == 0)
   {
     v61 = +[DESLogging coreChannel];
     if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
     {
-      v63 = [v7 recipeID];
+      recipeID2 = [recipeCopy recipeID];
       *buf = 138412290;
-      v83 = v63;
+      v83 = recipeID2;
       _os_log_impl(&dword_248FF7000, v61, OS_LOG_TYPE_INFO, "Recipe %@ is not configured to use aggregatable metadata.", buf, 0xCu);
     }
 
@@ -48,11 +48,11 @@ LABEL_56:
     goto LABEL_61;
   }
 
-  v8 = [v7 recipeUserInfo];
-  v76 = [v8 objectForKeyedSubscript:@"MetadataEncoding"];
+  recipeUserInfo = [recipeCopy recipeUserInfo];
+  v76 = [recipeUserInfo objectForKeyedSubscript:@"MetadataEncoding"];
 
-  v9 = [v76 allKeys];
-  v10 = [v9 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [v76 allKeys];
+  v10 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   v80 = 0u;
   v81 = 0u;
@@ -76,140 +76,140 @@ LABEL_56:
 
         v13 = *(*(&v78 + 1) + 8 * v12);
         v14 = [DESMetadataSchema alloc];
-        v15 = [v7 attachments];
+        attachments = [recipeCopy attachments];
         v77 = 0;
-        v16 = [(DESMetadataSchema *)v14 initWith:v76 key:v13 attachments:v15 error:&v77];
+        v16 = [(DESMetadataSchema *)v14 initWith:v76 key:v13 attachments:attachments error:&v77];
         v17 = v77;
 
         if (v16)
         {
-          v18 = [v6 valueForKeyPath:v13];
+          v18 = [metadataCopy valueForKeyPath:v13];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v20 = [v6 valueForKeyPath:v13];
+            v20 = [metadataCopy valueForKeyPath:v13];
             v21 = +[DESLogging coreChannel];
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
             {
-              v50 = [v7 recipeID];
+              recipeID3 = [recipeCopy recipeID];
               *buf = 138412802;
               v83 = v20;
               v84 = 2112;
               v85 = v13;
               v86 = 2112;
-              v87 = v50;
+              v87 = recipeID3;
               _os_log_debug_impl(&dword_248FF7000, v21, OS_LOG_TYPE_DEBUG, "Encoding string value %@ for metadata entry %@, recipe %@", buf, 0x20u);
             }
 
-            v22 = [(DESMetadataSchema *)v16 encoder];
-            v23 = [v22 encodeString:v20 toLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
+            encoder = [(DESMetadataSchema *)v16 encoder];
+            v23 = [encoder encodeString:v20 toLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
           }
 
           else
           {
-            v24 = [v6 valueForKeyPath:v13];
+            v24 = [metadataCopy valueForKeyPath:v13];
             objc_opt_class();
             v25 = objc_opt_isKindOfClass();
 
             if (v25)
             {
-              v26 = [v6 valueForKeyPath:v13];
+              v26 = [metadataCopy valueForKeyPath:v13];
               v27 = +[DESLogging coreChannel];
               if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
               {
-                v55 = [v7 recipeID];
+                recipeID4 = [recipeCopy recipeID];
                 *buf = 138412802;
                 v83 = v26;
                 v84 = 2112;
                 v85 = v13;
                 v86 = 2112;
-                v87 = v55;
+                v87 = recipeID4;
                 _os_log_debug_impl(&dword_248FF7000, v27, OS_LOG_TYPE_DEBUG, "Encoding numeric value %@ for metadata entry %@, recipe %@", buf, 0x20u);
               }
 
-              v28 = [(DESMetadataSchema *)v16 encoder];
-              v23 = [v28 encodeNumber:v26 toLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
+              encoder2 = [(DESMetadataSchema *)v16 encoder];
+              v23 = [encoder2 encodeNumber:v26 toLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
             }
 
             else
             {
-              v29 = [v6 valueForKeyPath:v13];
+              v29 = [metadataCopy valueForKeyPath:v13];
               objc_opt_class();
               v30 = objc_opt_isKindOfClass();
 
               if (v30)
               {
-                v71 = [v6 valueForKeyPath:v13];
+                v71 = [metadataCopy valueForKeyPath:v13];
                 if ([v71 count])
                 {
-                  v31 = [v71 firstObject];
+                  firstObject = [v71 firstObject];
                   objc_opt_class();
                   v32 = objc_opt_isKindOfClass();
 
                   if (v32)
                   {
-                    v33 = [v6 valueForKeyPath:v13];
+                    encoder4 = [metadataCopy valueForKeyPath:v13];
                     v34 = +[DESLogging coreChannel];
                     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
                     {
-                      v58 = [v7 recipeID];
+                      recipeID5 = [recipeCopy recipeID];
                       *buf = 138412802;
-                      v83 = v33;
+                      v83 = encoder4;
                       v84 = 2112;
                       v85 = v13;
                       v86 = 2112;
-                      v87 = v58;
+                      v87 = recipeID5;
                       _os_log_debug_impl(&dword_248FF7000, v34, OS_LOG_TYPE_DEBUG, "Encoding string vector %@ for metadata entry %@, recipe %@", buf, 0x20u);
                     }
 
-                    v35 = [(DESMetadataSchema *)v16 encoder];
-                    v36 = [v35 encodeStringVector:v33 toLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
+                    encoder3 = [(DESMetadataSchema *)v16 encoder];
+                    v36 = [encoder3 encodeStringVector:encoder4 toLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
                   }
 
                   else
                   {
-                    v47 = [v71 firstObject];
+                    firstObject2 = [v71 firstObject];
                     objc_opt_class();
                     v48 = objc_opt_isKindOfClass();
 
                     if (v48)
                     {
-                      v33 = [v6 valueForKeyPath:v13];
+                      encoder4 = [metadataCopy valueForKeyPath:v13];
                       v49 = +[DESLogging coreChannel];
                       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
                       {
-                        v59 = [v7 recipeID];
+                        recipeID6 = [recipeCopy recipeID];
                         *buf = 138412802;
-                        v83 = v33;
+                        v83 = encoder4;
                         v84 = 2112;
                         v85 = v13;
                         v86 = 2112;
-                        v87 = v59;
+                        v87 = recipeID6;
                         _os_log_debug_impl(&dword_248FF7000, v49, OS_LOG_TYPE_DEBUG, "Encoding numeric vector %@ for metadata entry %@, recipe %@", buf, 0x20u);
                       }
 
-                      v35 = [(DESMetadataSchema *)v16 encoder];
-                      v36 = [v35 encodeNumberVector:v33 toLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
+                      encoder3 = [(DESMetadataSchema *)v16 encoder];
+                      v36 = [encoder3 encodeNumberVector:encoder4 toLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
                     }
 
                     else
                     {
                       v51 = MEMORY[0x277CCACA8];
-                      v52 = [v7 recipeID];
-                      v33 = [v51 stringWithFormat:@"Array data type of %@ is not supported by schema for recipe %@, must be either string or number.", v13, v52];
+                      recipeID7 = [recipeCopy recipeID];
+                      encoder4 = [v51 stringWithFormat:@"Array data type of %@ is not supported by schema for recipe %@, must be either string or number.", v13, recipeID7];
 
                       v53 = +[DESLogging coreChannel];
                       if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138412290;
-                        v83 = v33;
+                        v83 = encoder4;
                         _os_log_error_impl(&dword_248FF7000, v53, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
                       }
 
-                      v35 = [(DESMetadataSchema *)v16 encoder];
-                      v36 = [v35 zeroWithLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
+                      encoder3 = [(DESMetadataSchema *)v16 encoder];
+                      v36 = [encoder3 zeroWithLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
                     }
                   }
 
@@ -221,22 +221,22 @@ LABEL_56:
                   v44 = +[DESLogging coreChannel];
                   if (os_log_type_enabled(v44, OS_LOG_TYPE_DEBUG))
                   {
-                    v56 = [v7 recipeID];
+                    recipeID8 = [recipeCopy recipeID];
                     *buf = 138412546;
                     v83 = v13;
                     v84 = 2112;
-                    v85 = v56;
+                    v85 = recipeID8;
                     _os_log_debug_impl(&dword_248FF7000, v44, OS_LOG_TYPE_DEBUG, "Zero encode empty vector for metadata entry %@, recipe %@", buf, 0x16u);
                   }
 
-                  v33 = [(DESMetadataSchema *)v16 encoder];
-                  v23 = [v33 zeroWithLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
+                  encoder4 = [(DESMetadataSchema *)v16 encoder];
+                  v23 = [encoder4 zeroWithLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
                 }
               }
 
               else
               {
-                v37 = [v6 valueForKeyPath:v13];
+                v37 = [metadataCopy valueForKeyPath:v13];
                 v38 = v37 == 0;
 
                 if (v38)
@@ -244,23 +244,23 @@ LABEL_56:
                   v45 = +[DESLogging coreChannel];
                   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
                   {
-                    v57 = [v7 recipeID];
+                    recipeID9 = [recipeCopy recipeID];
                     *buf = 138412546;
                     v83 = v13;
                     v84 = 2112;
-                    v85 = v57;
+                    v85 = recipeID9;
                     _os_log_debug_impl(&dword_248FF7000, v45, OS_LOG_TYPE_DEBUG, "Metadata %@ is specified in schema but missing from user data for recipe %@", buf, 0x16u);
                   }
 
-                  v46 = [(DESMetadataSchema *)v16 encoder];
-                  v23 = [v46 zeroWithLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
+                  encoder5 = [(DESMetadataSchema *)v16 encoder];
+                  v23 = [encoder5 zeroWithLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
                 }
 
                 else
                 {
                   v39 = MEMORY[0x277CCACA8];
-                  v40 = [v7 recipeID];
-                  v41 = [v39 stringWithFormat:@"Data type of %@ is not supported by schema for recipe %@, must be either string or number.", v13, v40];
+                  recipeID10 = [recipeCopy recipeID];
+                  v41 = [v39 stringWithFormat:@"Data type of %@ is not supported by schema for recipe %@, must be either string or number.", v13, recipeID10];
 
                   v42 = +[DESLogging coreChannel];
                   if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
@@ -270,8 +270,8 @@ LABEL_56:
                     _os_log_error_impl(&dword_248FF7000, v42, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
                   }
 
-                  v43 = [(DESMetadataSchema *)v16 encoder];
-                  v23 = [v43 zeroWithLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
+                  encoder6 = [(DESMetadataSchema *)v16 encoder];
+                  v23 = [encoder6 zeroWithLength:{-[DESMetadataSchema buckets](v16, "buckets")}];
                 }
               }
             }
@@ -292,10 +292,10 @@ LABEL_56:
 
         else if (v17)
         {
-          if (a5)
+          if (error)
           {
             v65 = v17;
-            *a5 = v17;
+            *error = v17;
           }
 
           v60 = 0;

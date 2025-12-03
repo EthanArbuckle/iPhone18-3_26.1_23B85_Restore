@@ -1,12 +1,12 @@
 @interface BMPBMicroLocationTruthTagEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBMicroLocationTruthTagEvent
@@ -17,104 +17,104 @@
   v8.receiver = self;
   v8.super_class = BMPBMicroLocationTruthTagEvent;
   v4 = [(BMPBMicroLocationTruthTagEvent *)&v8 description];
-  v5 = [(BMPBMicroLocationTruthTagEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBMicroLocationTruthTagEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_absoluteTimestamp];
-    [v3 setObject:v4 forKey:@"absoluteTimestamp"];
+    [dictionary setObject:v4 forKey:@"absoluteTimestamp"];
   }
 
   truthTagIdentifier = self->_truthTagIdentifier;
   if (truthTagIdentifier)
   {
-    [v3 setObject:truthTagIdentifier forKey:@"truthTagIdentifier"];
+    [dictionary setObject:truthTagIdentifier forKey:@"truthTagIdentifier"];
   }
 
   recordingRequestIdentifier = self->_recordingRequestIdentifier;
   if (recordingRequestIdentifier)
   {
-    [v3 setObject:recordingRequestIdentifier forKey:@"recordingRequestIdentifier"];
+    [dictionary setObject:recordingRequestIdentifier forKey:@"recordingRequestIdentifier"];
   }
 
   clientBundleId = self->_clientBundleId;
   if (clientBundleId)
   {
-    [v3 setObject:clientBundleId forKey:@"clientBundleId"];
+    [dictionary setObject:clientBundleId forKey:@"clientBundleId"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_truthTagIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_recordingRequestIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_clientBundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_absoluteTimestamp;
-    *(v4 + 40) |= 1u;
+    toCopy[1] = *&self->_absoluteTimestamp;
+    *(toCopy + 40) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_truthTagIdentifier)
   {
-    [v4 setTruthTagIdentifier:?];
-    v4 = v5;
+    [toCopy setTruthTagIdentifier:?];
+    toCopy = v5;
   }
 
   if (self->_recordingRequestIdentifier)
   {
     [v5 setRecordingRequestIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_clientBundleId)
   {
     [v5 setClientBundleId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -122,39 +122,39 @@
     *(v5 + 40) |= 1u;
   }
 
-  v7 = [(NSString *)self->_truthTagIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_truthTagIdentifier copyWithZone:zone];
   v8 = v6[4];
   v6[4] = v7;
 
-  v9 = [(NSString *)self->_recordingRequestIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_recordingRequestIdentifier copyWithZone:zone];
   v10 = v6[3];
   v6[3] = v9;
 
-  v11 = [(NSString *)self->_clientBundleId copyWithZone:a3];
+  v11 = [(NSString *)self->_clientBundleId copyWithZone:zone];
   v12 = v6[2];
   v6[2] = v11;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 40);
+  v5 = *(equalCopy + 40);
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
 LABEL_13:
     v9 = 0;
@@ -162,13 +162,13 @@ LABEL_13:
   }
 
   truthTagIdentifier = self->_truthTagIdentifier;
-  if (truthTagIdentifier | *(v4 + 4) && ![(NSString *)truthTagIdentifier isEqual:?])
+  if (truthTagIdentifier | *(equalCopy + 4) && ![(NSString *)truthTagIdentifier isEqual:?])
   {
     goto LABEL_13;
   }
 
   recordingRequestIdentifier = self->_recordingRequestIdentifier;
-  if (recordingRequestIdentifier | *(v4 + 3))
+  if (recordingRequestIdentifier | *(equalCopy + 3))
   {
     if (![(NSString *)recordingRequestIdentifier isEqual:?])
     {
@@ -177,7 +177,7 @@ LABEL_13:
   }
 
   clientBundleId = self->_clientBundleId;
-  if (clientBundleId | *(v4 + 2))
+  if (clientBundleId | *(equalCopy + 2))
   {
     v9 = [(NSString *)clientBundleId isEqual:?];
   }
@@ -232,32 +232,32 @@ LABEL_14:
   return v9 ^ v10 ^ [(NSString *)self->_clientBundleId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[5])
+  fromCopy = from;
+  if (fromCopy[5])
   {
-    self->_absoluteTimestamp = v4[1];
+    self->_absoluteTimestamp = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  v5 = v4;
-  if (*(v4 + 4))
+  v5 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(BMPBMicroLocationTruthTagEvent *)self setTruthTagIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBMicroLocationTruthTagEvent *)self setRecordingRequestIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBMicroLocationTruthTagEvent *)self setClientBundleId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

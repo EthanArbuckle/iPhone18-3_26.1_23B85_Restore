@@ -2,13 +2,13 @@
 - (ICDocCamRectangleResultsQueue)init;
 - (id)dequeue;
 - (id)peek;
-- (id)peek:(int64_t)a3;
+- (id)peek:(int64_t)peek;
 - (id)peekTail;
 - (int64_t)size;
-- (void)apply:(id)a3 atIndex:(int64_t)a4;
-- (void)apply:(id)a3 fromIndex:(int64_t)a4 toIndex:(unint64_t)a5;
+- (void)apply:(id)apply atIndex:(int64_t)index;
+- (void)apply:(id)apply fromIndex:(int64_t)index toIndex:(unint64_t)toIndex;
 - (void)clear;
-- (void)enqueue:(id)a3;
+- (void)enqueue:(id)enqueue;
 @end
 
 @implementation ICDocCamRectangleResultsQueue
@@ -27,62 +27,62 @@
   return v2;
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ICDocCamRectangleResultsQueue *)v4 array];
-  [v5 addObject:v6];
+  enqueueCopy = enqueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+  [array addObject:enqueueCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)dequeue
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICDocCamRectangleResultsQueue *)v2 array];
-  v4 = [v3 count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+  v4 = [array count];
 
   if (v4)
   {
-    v5 = [(ICDocCamRectangleResultsQueue *)v2 peek];
-    v6 = [(ICDocCamRectangleResultsQueue *)v2 array];
-    [v6 removeObjectAtIndex:0];
+    peek = [(ICDocCamRectangleResultsQueue *)selfCopy peek];
+    array2 = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+    [array2 removeObjectAtIndex:0];
   }
 
   else
   {
-    v5 = 0;
+    peek = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return peek;
 }
 
 - (void)clear
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(ICDocCamRectangleResultsQueue *)obj array];
-  [v2 removeAllObjects];
+  array = [(ICDocCamRectangleResultsQueue *)obj array];
+  [array removeAllObjects];
 
   objc_sync_exit(obj);
 }
 
 - (id)peek
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICDocCamRectangleResultsQueue *)v2 array];
-  v4 = [v3 count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+  v4 = [array count];
 
   if (v4)
   {
-    v5 = [(ICDocCamRectangleResultsQueue *)v2 array];
-    v6 = [v5 objectAtIndex:0];
+    array2 = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+    v6 = [array2 objectAtIndex:0];
   }
 
   else
@@ -92,20 +92,20 @@
 
   v7 = [v6 copy];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)peek:(int64_t)a3
+- (id)peek:(int64_t)peek
 {
-  v5 = [(ICDocCamRectangleResultsQueue *)self array];
-  v6 = [v5 lastObject];
+  array = [(ICDocCamRectangleResultsQueue *)self array];
+  lastObject = [array lastObject];
 
-  if (v6 && (-[ICDocCamRectangleResultsQueue array](self, "array"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v8 > a3))
+  if (lastObject && (-[ICDocCamRectangleResultsQueue array](self, "array"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 count], v7, v8 > peek))
   {
-    v9 = [(ICDocCamRectangleResultsQueue *)self array];
-    v10 = [v9 objectAtIndex:a3];
+    array2 = [(ICDocCamRectangleResultsQueue *)self array];
+    v10 = [array2 objectAtIndex:peek];
   }
 
   else
@@ -120,55 +120,55 @@
 
 - (id)peekTail
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICDocCamRectangleResultsQueue *)v2 array];
-  v4 = [v3 count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+  v4 = [array count];
 
   if (v4)
   {
-    v5 = [(ICDocCamRectangleResultsQueue *)v2 array];
-    v6 = [v5 lastObject];
+    array2 = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+    lastObject = [array2 lastObject];
   }
 
   else
   {
-    v6 = 0;
+    lastObject = 0;
   }
 
-  v7 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v6];
+  v7 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:lastObject];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)apply:(id)a3 atIndex:(int64_t)a4
+- (void)apply:(id)apply atIndex:(int64_t)index
 {
-  v9 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(ICDocCamRectangleResultsQueue *)v6 array];
-  v8 = [v7 objectAtIndex:a4];
+  applyCopy = apply;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+  v8 = [array objectAtIndex:index];
 
-  v9[2](v9, v8);
-  objc_sync_exit(v6);
+  applyCopy[2](applyCopy, v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)apply:(id)a3 fromIndex:(int64_t)a4 toIndex:(unint64_t)a5
+- (void)apply:(id)apply fromIndex:(int64_t)index toIndex:(unint64_t)toIndex
 {
-  v19 = a3;
-  v8 = self;
-  objc_sync_enter(v8);
-  if (a4 <= a5)
+  applyCopy = apply;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (index <= toIndex)
   {
     do
     {
-      v15 = [(ICDocCamRectangleResultsQueue *)v8 array];
-      v16 = [v15 objectAtIndex:a4];
+      array = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+      v16 = [array objectAtIndex:index];
 
-      v17 = v19[2](v19, v16);
-      if (++a4 <= a5)
+      v17 = applyCopy[2](applyCopy, v16);
+      if (++index <= toIndex)
       {
         v18 = v17;
       }
@@ -182,17 +182,17 @@
     while ((v18 & 1) != 0);
   }
 
-  else if (a4 >= a5)
+  else if (index >= toIndex)
   {
-    a4 = a4;
-    v9 = a5;
+    index = index;
+    toIndexCopy = toIndex;
     do
     {
-      v10 = [(ICDocCamRectangleResultsQueue *)v8 array];
-      v11 = [v10 objectAtIndex:a4];
+      array2 = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+      v11 = [array2 objectAtIndex:index];
 
-      v12 = v19[2](v19, v11);
-      if (a4-- <= v9)
+      v12 = applyCopy[2](applyCopy, v11);
+      if (index-- <= toIndexCopy)
       {
         v14 = 0;
       }
@@ -206,17 +206,17 @@
     while ((v14 & 1) != 0);
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
 - (int64_t)size
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICDocCamRectangleResultsQueue *)v2 array];
-  v4 = [v3 count];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  array = [(ICDocCamRectangleResultsQueue *)selfCopy array];
+  v4 = [array count];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 

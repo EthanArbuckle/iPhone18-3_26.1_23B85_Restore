@@ -1,14 +1,14 @@
 @interface BWOverCaptureAttachedMediaSplitNode
-- (BWOverCaptureAttachedMediaSplitNode)initWithBackPressureExtraRetainBufferCount:(int)a3;
-- (id)_handleIrisMovieRequestForInput:(uint64_t)a3 sbuf:;
+- (BWOverCaptureAttachedMediaSplitNode)initWithBackPressureExtraRetainBufferCount:(int)count;
+- (id)_handleIrisMovieRequestForInput:(uint64_t)input sbuf:;
 - (id)_updateSynchronizedSlaveFrameEnabledWithSampleBuffer:(id)result;
 - (void)dealloc;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWOverCaptureAttachedMediaSplitNode
 
-- (BWOverCaptureAttachedMediaSplitNode)initWithBackPressureExtraRetainBufferCount:(int)a3
+- (BWOverCaptureAttachedMediaSplitNode)initWithBackPressureExtraRetainBufferCount:(int)count
 {
   v11[0] = @"PrimaryFormat";
   v11[1] = @"SynchronizedSlaveFrame";
@@ -21,9 +21,9 @@
   {
     v6->_primaryFrameOutput = [(NSArray *)[(BWNode *)v6 outputs] objectAtIndexedSubscript:0];
     v7->_synchronizedSlaveFrameOutput = [(NSArray *)[(BWNode *)v7 outputs] objectAtIndexedSubscript:1];
-    [(BWNodeInput *)v7->super.super.super._input setRetainedBufferCount:[(BWNodeInput *)v7->super.super.super._input retainedBufferCount]+ a3];
+    [(BWNodeInput *)v7->super.super.super._input setRetainedBufferCount:[(BWNodeInput *)v7->super.super.super._input retainedBufferCount]+ count];
     v8 = [(BWNodeInput *)v7->super.super.super._input mediaConfigurationForAttachedMediaKey:@"SynchronizedSlaveFrame"];
-    [v8 setRetainedBufferCount:{objc_msgSend(v8, "retainedBufferCount") + a3}];
+    [v8 setRetainedBufferCount:{objc_msgSend(v8, "retainedBufferCount") + count}];
   }
 
   return v7;
@@ -36,18 +36,18 @@
   [(BWAttachedMediaSplitNode *)&v2 dealloc];
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  [(BWOverCaptureAttachedMediaSplitNode *)self _updateSynchronizedSlaveFrameEnabledWithSampleBuffer:a3];
-  if (BWSampleBufferIsMarkerBuffer(a3) && CMGetAttachment(a3, @"IrisMovieRequest", 0))
+  [(BWOverCaptureAttachedMediaSplitNode *)self _updateSynchronizedSlaveFrameEnabledWithSampleBuffer:buffer];
+  if (BWSampleBufferIsMarkerBuffer(buffer) && CMGetAttachment(buffer, @"IrisMovieRequest", 0))
   {
 
-    [(BWOverCaptureAttachedMediaSplitNode *)self _handleIrisMovieRequestForInput:a4 sbuf:a3];
+    [(BWOverCaptureAttachedMediaSplitNode *)self _handleIrisMovieRequestForInput:input sbuf:buffer];
   }
 
   else
   {
-    AttachedMedia = BWSampleBufferGetAttachedMedia(a3, @"SynchronizedSlaveFrame");
+    AttachedMedia = BWSampleBufferGetAttachedMedia(buffer, @"SynchronizedSlaveFrame");
     if (AttachedMedia)
     {
       v8 = AttachedMedia;
@@ -58,7 +58,7 @@
       v10 = *(MEMORY[0x1E6960CF0] + 16);
       *&timingArrayOut.duration.value = *MEMORY[0x1E6960CF0];
       *&timingArrayOut.duration.epoch = v10;
-      if (CMSampleBufferGetSampleTimingInfoArray(a3, 1, &timingArrayOut, 0))
+      if (CMSampleBufferGetSampleTimingInfoArray(buffer, 1, &timingArrayOut, 0))
       {
         [BWOverCaptureAttachedMediaSplitNode renderSampleBuffer:forInput:];
       }
@@ -77,7 +77,7 @@
 
           else
           {
-            BWSampleBufferSetAttachedMedia(a3, @"SynchronizedSlaveFrame", time2.value);
+            BWSampleBufferSetAttachedMedia(buffer, @"SynchronizedSlaveFrame", time2.value);
             CFRelease(time2.value);
           }
         }
@@ -86,11 +86,11 @@
 
     v11.receiver = self;
     v11.super_class = BWOverCaptureAttachedMediaSplitNode;
-    [(BWAttachedMediaSplitNode *)&v11 renderSampleBuffer:a3 forInput:a4];
+    [(BWAttachedMediaSplitNode *)&v11 renderSampleBuffer:buffer forInput:input];
   }
 }
 
-- (id)_handleIrisMovieRequestForInput:(uint64_t)a3 sbuf:
+- (id)_handleIrisMovieRequestForInput:(uint64_t)input sbuf:
 {
   if (result)
   {
@@ -100,7 +100,7 @@
       [BWOverCaptureAttachedMediaSplitNode _handleIrisMovieRequestForInput:sbuf:];
     }
 
-    return [(BWOverCaptureAttachedMediaSplitNode *)v5 _handleIrisMovieRequestForInput:a3 sbuf:&v6, a2];
+    return [(BWOverCaptureAttachedMediaSplitNode *)v5 _handleIrisMovieRequestForInput:input sbuf:&v6, a2];
   }
 
   return result;

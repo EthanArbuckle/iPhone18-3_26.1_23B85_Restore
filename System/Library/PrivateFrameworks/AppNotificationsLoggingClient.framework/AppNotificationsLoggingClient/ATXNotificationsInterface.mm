@@ -1,14 +1,14 @@
 @interface ATXNotificationsInterface
-+ (id)createArchivedMetadata:(id)a3 categoryId:(id)a4 title:(id)a5 subtitle:(id)a6 message:(id)a7 numSuppActions:(id)a8 feed:(unint64_t)a9;
-+ (id)getBundleIdFromMetadata:(id)a3;
-+ (id)getNumSuppActionsFromMetadata:(id)a3;
-+ (id)getTimezoneFromMetadata:(id)a3;
-+ (id)getTopicFromMetadata:(id)a3;
-+ (unint64_t)getFeedFromMetadata:(id)a3;
-+ (void)stripContentInMetadata:(id)a3;
-- (ATXNotificationsInterface)initWithCoder:(id)a3;
++ (id)createArchivedMetadata:(id)metadata categoryId:(id)id title:(id)title subtitle:(id)subtitle message:(id)message numSuppActions:(id)actions feed:(unint64_t)feed;
++ (id)getBundleIdFromMetadata:(id)metadata;
++ (id)getNumSuppActionsFromMetadata:(id)metadata;
++ (id)getTimezoneFromMetadata:(id)metadata;
++ (id)getTopicFromMetadata:(id)metadata;
++ (unint64_t)getFeedFromMetadata:(id)metadata;
++ (void)stripContentInMetadata:(id)metadata;
+- (ATXNotificationsInterface)initWithCoder:(id)coder;
 - (id)extractMetadata;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXNotificationsInterface
@@ -21,68 +21,68 @@
   return v4;
 }
 
-+ (id)createArchivedMetadata:(id)a3 categoryId:(id)a4 title:(id)a5 subtitle:(id)a6 message:(id)a7 numSuppActions:(id)a8 feed:(unint64_t)a9
++ (id)createArchivedMetadata:(id)metadata categoryId:(id)id title:(id)title subtitle:(id)subtitle message:(id)message numSuppActions:(id)actions feed:(unint64_t)feed
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  metadataCopy = metadata;
+  idCopy = id;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  messageCopy = message;
+  actionsCopy = actions;
   v20 = objc_opt_new();
   v21 = v20;
-  if (v14)
+  if (metadataCopy)
   {
-    [v20 setObject:v14 forKeyedSubscript:@"appName"];
+    [v20 setObject:metadataCopy forKeyedSubscript:@"appName"];
   }
 
-  if (v15)
+  if (idCopy)
   {
-    [v21 setObject:v15 forKeyedSubscript:@"categoryID"];
+    [v21 setObject:idCopy forKeyedSubscript:@"categoryID"];
   }
 
-  if (v16)
+  if (titleCopy)
   {
-    [v21 setObject:v16 forKeyedSubscript:@"title"];
+    [v21 setObject:titleCopy forKeyedSubscript:@"title"];
   }
 
-  if (v17)
+  if (subtitleCopy)
   {
-    [v21 setObject:v17 forKeyedSubscript:@"subtitle"];
+    [v21 setObject:subtitleCopy forKeyedSubscript:@"subtitle"];
   }
 
-  if (v18)
+  if (messageCopy)
   {
-    [v21 setObject:v18 forKeyedSubscript:@"message"];
+    [v21 setObject:messageCopy forKeyedSubscript:@"message"];
   }
 
-  if (v19)
+  if (actionsCopy)
   {
-    [v21 setObject:v19 forKeyedSubscript:@"numSuppActions"];
+    [v21 setObject:actionsCopy forKeyedSubscript:@"numSuppActions"];
   }
 
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a9];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:feed];
   [v21 setObject:v22 forKeyedSubscript:@"feed"];
 
   v23 = MEMORY[0x277CCABB0];
-  v24 = [MEMORY[0x277CBEBB0] localTimeZone];
-  v25 = [v23 numberWithInteger:{objc_msgSend(v24, "secondsFromGMT")}];
+  localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+  v25 = [v23 numberWithInteger:{objc_msgSend(localTimeZone, "secondsFromGMT")}];
   [v21 setObject:v25 forKeyedSubscript:@"tz"];
 
   return v21;
 }
 
-+ (void)stripContentInMetadata:(id)a3
++ (void)stripContentInMetadata:(id)metadata
 {
-  v3 = a3;
-  [v3 removeObjectForKey:@"title"];
-  [v3 removeObjectForKey:@"subtitle"];
-  [v3 removeObjectForKey:@"message"];
+  metadataCopy = metadata;
+  [metadataCopy removeObjectForKey:@"title"];
+  [metadataCopy removeObjectForKey:@"subtitle"];
+  [metadataCopy removeObjectForKey:@"message"];
 }
 
-+ (id)getBundleIdFromMetadata:(id)a3
++ (id)getBundleIdFromMetadata:(id)metadata
 {
-  v3 = [a3 objectForKeyedSubscript:@"appName"];
+  v3 = [metadata objectForKeyedSubscript:@"appName"];
   v4 = v3;
   if (v3)
   {
@@ -99,9 +99,9 @@
   return v5;
 }
 
-+ (id)getTopicFromMetadata:(id)a3
++ (id)getTopicFromMetadata:(id)metadata
 {
-  v3 = [a3 objectForKeyedSubscript:@"categoryID"];
+  v3 = [metadata objectForKeyedSubscript:@"categoryID"];
   v4 = v3;
   if (v3)
   {
@@ -118,9 +118,9 @@
   return v5;
 }
 
-+ (id)getNumSuppActionsFromMetadata:(id)a3
++ (id)getNumSuppActionsFromMetadata:(id)metadata
 {
-  v3 = [a3 objectForKeyedSubscript:@"numSuppActions"];
+  v3 = [metadata objectForKeyedSubscript:@"numSuppActions"];
   v4 = v3;
   if (v3)
   {
@@ -137,28 +137,28 @@
   return v5;
 }
 
-+ (id)getTimezoneFromMetadata:(id)a3
++ (id)getTimezoneFromMetadata:(id)metadata
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"tz"];
-  if (v4 && (v5 = v4, [v3 objectForKeyedSubscript:@"tz"], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, v5, (isKindOfClass & 1) != 0))
+  metadataCopy = metadata;
+  v4 = [metadataCopy objectForKeyedSubscript:@"tz"];
+  if (v4 && (v5 = v4, [metadataCopy objectForKeyedSubscript:@"tz"], v6 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v6, v5, (isKindOfClass & 1) != 0))
   {
-    v8 = [v3 objectForKeyedSubscript:@"tz"];
+    v8 = [metadataCopy objectForKeyedSubscript:@"tz"];
   }
 
   else
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [MEMORY[0x277CBEBB0] localTimeZone];
-    v8 = [v9 numberWithInteger:{objc_msgSend(v10, "secondsFromGMT")}];
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    v8 = [v9 numberWithInteger:{objc_msgSend(localTimeZone, "secondsFromGMT")}];
   }
 
   return v8;
 }
 
-+ (unint64_t)getFeedFromMetadata:(id)a3
++ (unint64_t)getFeedFromMetadata:(id)metadata
 {
-  v3 = [a3 objectForKeyedSubscript:@"feed"];
+  v3 = [metadata objectForKeyedSubscript:@"feed"];
   v4 = v3;
   v5 = &unk_2851FE4E0;
   if (v3)
@@ -168,58 +168,58 @@
 
   v6 = v5;
 
-  v7 = [v6 unsignedIntegerValue];
-  return v7;
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sectionID = self->_sectionID;
-  v5 = a3;
-  [v5 encodeObject:sectionID forKey:@"appName"];
-  [v5 encodeObject:self->_topic forKey:@"categoryID"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subtitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_message forKey:@"message"];
-  [v5 encodeObject:self->_publicationDate forKey:@"pubdate"];
-  [v5 encodeInteger:self->_numSuppActions forKey:@"numSuppActions"];
-  [v5 encodeInteger:self->_feed forKey:@"feed"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sectionID forKey:@"appName"];
+  [coderCopy encodeObject:self->_topic forKey:@"categoryID"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subtitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_message forKey:@"message"];
+  [coderCopy encodeObject:self->_publicationDate forKey:@"pubdate"];
+  [coderCopy encodeInteger:self->_numSuppActions forKey:@"numSuppActions"];
+  [coderCopy encodeInteger:self->_feed forKey:@"feed"];
 }
 
-- (ATXNotificationsInterface)initWithCoder:(id)a3
+- (ATXNotificationsInterface)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = ATXNotificationsInterface;
   v5 = [(ATXNotificationsInterface *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
     sectionID = v5->_sectionID;
     v5->_sectionID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"categoryID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"categoryID"];
     topic = v5->_topic;
     v5->_topic = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subtitle = v5->_subtitle;
     v5->_subtitle = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     message = v5->_message;
     v5->_message = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pubdate"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pubdate"];
     publicationDate = v5->_publicationDate;
     v5->_publicationDate = v16;
 
-    v5->_numSuppActions = [v4 decodeIntegerForKey:@"numSuppActions"];
-    v5->_feed = [v4 decodeIntegerForKey:@"feed"];
+    v5->_numSuppActions = [coderCopy decodeIntegerForKey:@"numSuppActions"];
+    v5->_feed = [coderCopy decodeIntegerForKey:@"feed"];
   }
 
   return v5;

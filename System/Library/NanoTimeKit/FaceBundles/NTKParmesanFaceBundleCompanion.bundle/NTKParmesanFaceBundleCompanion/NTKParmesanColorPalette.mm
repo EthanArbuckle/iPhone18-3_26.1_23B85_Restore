@@ -1,5 +1,5 @@
 @interface NTKParmesanColorPalette
-+ (id)colorRampFiltersForMonochromeColorMatrix:(id)a3 fromPalette:(id)a4 toPalette:(id)a5 transitionFraction:(double)a6;
++ (id)colorRampFiltersForMonochromeColorMatrix:(id)matrix fromPalette:(id)palette toPalette:(id)toPalette transitionFraction:(double)fraction;
 - (BOOL)isCompositePalette;
 - (BOOL)isGlassOption;
 - (BOOL)isPlainOption;
@@ -7,13 +7,13 @@
 - (BOOL)isVibrantOption;
 - (NTKParmesanColorPalette)init;
 - (double)frostAmount;
-- (id)_generateGlassSwatchImageWithBackgroundColor:(id)a3 size:(CGSize)a4;
+- (id)_generateGlassSwatchImageWithBackgroundColor:(id)color size:(CGSize)size;
 - (id)_monocolorRampColor;
 - (id)colorRampImage;
 - (id)colorRampsIndex;
 - (id)colorRampsIndexByColorName;
 - (id)monocolorRampImage;
-- (id)swatchImageForSize:(CGSize)a3;
+- (id)swatchImageForSize:(CGSize)size;
 - (id)swatchPrimaryColor;
 - (id)tritoneColors;
 @end
@@ -111,10 +111,10 @@
   return v18;
 }
 
-- (id)swatchImageForSize:(CGSize)a3
+- (id)swatchImageForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (objc_msgSend_isPlainOption(self, a2, v3, v4))
   {
     if (width == *MEMORY[0x277CBF3A8] && height == *(MEMORY[0x277CBF3A8] + 8))
@@ -162,7 +162,7 @@
     v82.size.width = width;
     v82.size.height = height;
     CGContextDrawImage(v21, v82, v30);
-    v31 = UIGraphicsGetImageFromCurrentImageContext();
+    height = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     CGImageRelease(Image);
 
@@ -172,7 +172,7 @@
   if (objc_msgSend_isGlassOption(self, v8, v9, v10))
   {
     v35 = objc_msgSend_primaryColor(self, v32, v33, v34);
-    v31 = objc_msgSend__generateGlassSwatchImageWithBackgroundColor_size_(self, v36, v35, v37, width, height);
+    height = objc_msgSend__generateGlassSwatchImageWithBackgroundColor_size_(self, v36, v35, v37, width, height);
 
     goto LABEL_12;
   }
@@ -181,7 +181,7 @@
   {
     v14 = objc_msgSend_colorWithRed_green_blue_alpha_(MEMORY[0x277D75348], v39, v40, v41, 0.874509804, 0.874509804, 0.874509804, 1.0);
     v45 = objc_msgSend_colorWithRed_green_blue_alpha_(MEMORY[0x277D75348], v42, v43, v44, 0.435294118, 0.435294118, 0.435294118, 1.0);
-    v31 = NTKSwatchTwoColorGradientImage();
+    height = NTKSwatchTwoColorGradientImage();
 
 LABEL_9:
     goto LABEL_12;
@@ -190,7 +190,7 @@ LABEL_9:
   if (objc_msgSend_isTritoneOption(self, v39, v40, v41))
   {
     v14 = objc_msgSend_tritoneColors(self, v46, v47, v48);
-    v31 = NTKSwatchColorSectorsImage();
+    height = NTKSwatchColorSectorsImage();
     goto LABEL_9;
   }
 
@@ -238,7 +238,7 @@ LABEL_9:
     v85.size.width = width;
     v85.size.height = height;
     CGContextDrawImage(v67, v85, v72);
-    v31 = UIGraphicsGetImageFromCurrentImageContext();
+    height = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     CGImageRelease(v66);
     goto LABEL_9;
@@ -246,10 +246,10 @@ LABEL_9:
 
   v73.receiver = self;
   v73.super_class = NTKParmesanColorPalette;
-  v31 = [(NTKFaceColorPalette *)&v73 swatchImageForSize:width, height];
+  height = [(NTKFaceColorPalette *)&v73 swatchImageForSize:width, height];
 LABEL_12:
 
-  return v31;
+  return height;
 }
 
 - (BOOL)isCompositePalette
@@ -370,17 +370,17 @@ LABEL_12:
 {
   if (objc_msgSend_isCompositePalette(self, a2, v2, v3))
   {
-    v5 = 0;
+    swatchPrimaryColor = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = NTKParmesanColorPalette;
-    v5 = [(NTKFaceColorPalette *)&v7 swatchPrimaryColor];
+    swatchPrimaryColor = [(NTKFaceColorPalette *)&v7 swatchPrimaryColor];
   }
 
-  return v5;
+  return swatchPrimaryColor;
 }
 
 - (id)colorRampsIndexByColorName
@@ -405,12 +405,12 @@ LABEL_12:
   return v2;
 }
 
-- (id)_generateGlassSwatchImageWithBackgroundColor:(id)a3 size:(CGSize)a4
+- (id)_generateGlassSwatchImageWithBackgroundColor:(id)color size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v6 = MEMORY[0x277CCA8D8];
-  v7 = a3;
+  colorCopy = color;
   v8 = objc_opt_class();
   v11 = objc_msgSend_bundleForClass_(v6, v9, v8, v10);
   v14 = NTKImageNamedFromBundle();
@@ -445,7 +445,7 @@ LABEL_12:
   v43.size.width = width;
   v43.size.height = height;
   CGContextClipToMask(v28, v43, Image);
-  objc_msgSend_setFill(v7, v29, v30, v31);
+  objc_msgSend_setFill(colorCopy, v29, v30, v31);
 
   v44.origin.x = 0.0;
   v44.origin.y = 0.0;
@@ -466,19 +466,19 @@ LABEL_12:
   return v37;
 }
 
-+ (id)colorRampFiltersForMonochromeColorMatrix:(id)a3 fromPalette:(id)a4 toPalette:(id)a5 transitionFraction:(double)a6
++ (id)colorRampFiltersForMonochromeColorMatrix:(id)matrix fromPalette:(id)palette toPalette:(id)toPalette transitionFraction:(double)fraction
 {
   v59[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v9;
+  matrixCopy = matrix;
+  paletteCopy = palette;
+  toPaletteCopy = toPalette;
+  v12 = matrixCopy;
   v13 = NTKIsDefaultMonochromeColorMatrix();
-  if (objc_msgSend_isPlainOption(v10, v14, v15, v16))
+  if (objc_msgSend_isPlainOption(paletteCopy, v14, v15, v16))
   {
     v20 = NTKInterpolateColorMatrixToIdentity();
 
-    v24 = v11;
+    v24 = toPaletteCopy;
     if (v13)
     {
 LABEL_3:
@@ -489,23 +489,23 @@ LABEL_3:
 
   else
   {
-    if (!objc_msgSend_isPlainOption(v11, v17, v18, v19))
+    if (!objc_msgSend_isPlainOption(toPaletteCopy, v17, v18, v19))
     {
       if (v13)
       {
-        v50 = objc_msgSend_monocolorRampImage(v10, v28, v29, v30);
-        objc_msgSend_monocolorRampImage(v11, v51, v52, v53);
+        v50 = objc_msgSend_monocolorRampImage(paletteCopy, v28, v29, v30);
+        objc_msgSend_monocolorRampImage(toPaletteCopy, v51, v52, v53);
       }
 
       else
       {
-        v50 = objc_msgSend_colorRampImage(v10, v28, v29, v30);
-        objc_msgSend_colorRampImage(v11, v54, v55, v56);
+        v50 = objc_msgSend_colorRampImage(paletteCopy, v28, v29, v30);
+        objc_msgSend_colorRampImage(toPaletteCopy, v54, v55, v56);
       }
       v57 = ;
       v31 = NTKInterpolateBetweenImages();
 
-      a6 = 1.0;
+      fraction = 1.0;
       v20 = v12;
       if (v31)
       {
@@ -517,8 +517,8 @@ LABEL_3:
 
     v20 = NTKInterpolateColorMatrixToIdentity();
 
-    a6 = 1.0 - a6;
-    v24 = v10;
+    fraction = 1.0 - fraction;
+    v24 = paletteCopy;
     if (v13)
     {
       goto LABEL_3;
@@ -534,7 +534,7 @@ LABEL_8:
     v32 = objc_msgSend_filterWithType_(MEMORY[0x277CD9EA0], v26, *MEMORY[0x277CDA2C0], v27);
     objc_msgSend_setValue_forKey_(v32, v33, v20, @"inputColorMatrix");
     v36 = objc_msgSend_filterWithType_(MEMORY[0x277CD9EA0], v34, *MEMORY[0x277CDA588], v35);
-    v40 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v37, v38, v39, a6);
+    v40 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v37, v38, v39, fraction);
     objc_msgSend_setValue_forKey_(v36, v41, v40, @"inputAmount");
 
     v42 = v31;

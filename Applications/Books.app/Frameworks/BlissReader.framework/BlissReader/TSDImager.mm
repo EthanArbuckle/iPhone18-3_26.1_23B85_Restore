@@ -1,40 +1,40 @@
 @interface TSDImager
-+ (CGImage)CGImageForInfo:(id)a3 documentRoot:(id)a4;
-+ (CGImage)CGImageOfSize:(CGSize)a3 forInfo:(id)a4 documentRoot:(id)a5;
-+ (id)imageForInfo:(id)a3 layoutRect:(CGRect *)a4 contentsScale:(double)a5 documentRoot:(id)a6;
-+ (id)imageForShapeInfo:(id)a3 viewScale:(double)a4 screenScale:(double)a5 lines:(id *)a6 layoutRect:(CGRect *)a7 useCullingRect:(BOOL)a8 documentRoot:(id)a9;
-+ (id)imageForStorage:(id)a3 maxWidth:(double)a4 lines:(id *)a5 layoutRect:(CGRect *)a6 useCullingRect:(BOOL)a7 maxLines:(unint64_t)a8 allowsLastLineTruncation:(BOOL)a9 contentsScale:(double)a10 documentRoot:(id)a11;
-+ (id)imageSizedForShapeWithSinglePixelStroke:(id)a3 contentsScale:(double)a4 documentRoot:(id)a5;
-- (CGImage)CGImageForInfo:(id)a3;
-- (CGImage)CGImageOfSize:(CGSize)a3 forInfo:(id)a4;
-- (id)imageSizedForShapeWithSinglePixelStroke:(id)a3 contentsScale:(double)a4;
-- (id)p_layoutForInfo:(id)a3;
-- (id)p_repForInfo:(id)a3;
++ (CGImage)CGImageForInfo:(id)info documentRoot:(id)root;
++ (CGImage)CGImageOfSize:(CGSize)size forInfo:(id)info documentRoot:(id)root;
++ (id)imageForInfo:(id)info layoutRect:(CGRect *)rect contentsScale:(double)scale documentRoot:(id)root;
++ (id)imageForShapeInfo:(id)info viewScale:(double)scale screenScale:(double)screenScale lines:(id *)lines layoutRect:(CGRect *)rect useCullingRect:(BOOL)cullingRect documentRoot:(id)root;
++ (id)imageForStorage:(id)storage maxWidth:(double)width lines:(id *)lines layoutRect:(CGRect *)rect useCullingRect:(BOOL)cullingRect maxLines:(unint64_t)maxLines allowsLastLineTruncation:(BOOL)truncation contentsScale:(double)self0 documentRoot:(id)self1;
++ (id)imageSizedForShapeWithSinglePixelStroke:(id)stroke contentsScale:(double)scale documentRoot:(id)root;
+- (CGImage)CGImageForInfo:(id)info;
+- (CGImage)CGImageOfSize:(CGSize)size forInfo:(id)info;
+- (id)imageSizedForShapeWithSinglePixelStroke:(id)stroke contentsScale:(double)scale;
+- (id)p_layoutForInfo:(id)info;
+- (id)p_repForInfo:(id)info;
 @end
 
 @implementation TSDImager
 
-+ (CGImage)CGImageForInfo:(id)a3 documentRoot:(id)a4
++ (CGImage)CGImageForInfo:(id)info documentRoot:(id)root
 {
-  v5 = [[TSDImager alloc] initWithDocumentRoot:a4];
-  v6 = [v5 CGImageForInfo:a3];
+  v5 = [[TSDImager alloc] initWithDocumentRoot:root];
+  v6 = [v5 CGImageForInfo:info];
 
   return v6;
 }
 
-+ (id)imageForInfo:(id)a3 layoutRect:(CGRect *)a4 contentsScale:(double)a5 documentRoot:(id)a6
++ (id)imageForInfo:(id)info layoutRect:(CGRect *)rect contentsScale:(double)scale documentRoot:(id)root
 {
-  v9 = [[TSDImager alloc] initWithDocumentRoot:a6];
-  [v9 setInfos:{+[NSArray arrayWithObject:](NSArray, "arrayWithObject:", a3)}];
-  [v9 setViewScale:a5];
-  v10 = [v9 newImage];
-  if (v10)
+  v9 = [[TSDImager alloc] initWithDocumentRoot:root];
+  [v9 setInfos:{+[NSArray arrayWithObject:](NSArray, "arrayWithObject:", info)}];
+  [v9 setViewScale:scale];
+  newImage = [v9 newImage];
+  if (newImage)
   {
-    v11 = v10;
-    v12 = [v9 p_layoutForInfo:a3];
+    v11 = newImage;
+    v12 = [v9 p_layoutForInfo:info];
     if (v12)
     {
-      if (a4)
+      if (rect)
       {
         v13 = v12;
         [v12 frameForCulling];
@@ -75,10 +75,10 @@
         v38.size.height = height;
         CGRectGetHeight(v38);
         TSDRoundedRect();
-        a4->origin.x = v25;
-        a4->origin.y = v26;
-        a4->size.width = v27;
-        a4->size.height = v28;
+        rect->origin.x = v25;
+        rect->origin.y = v26;
+        rect->size.width = v27;
+        rect->size.height = v28;
       }
     }
 
@@ -101,95 +101,95 @@
   return v29;
 }
 
-+ (CGImage)CGImageOfSize:(CGSize)a3 forInfo:(id)a4 documentRoot:(id)a5
++ (CGImage)CGImageOfSize:(CGSize)size forInfo:(id)info documentRoot:(id)root
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [[TSDImager alloc] initWithDocumentRoot:a5];
-  v9 = [v8 CGImageOfSize:a4 forInfo:{width, height}];
+  height = size.height;
+  width = size.width;
+  v8 = [[TSDImager alloc] initWithDocumentRoot:root];
+  v9 = [v8 CGImageOfSize:info forInfo:{width, height}];
 
   return v9;
 }
 
-+ (id)imageSizedForShapeWithSinglePixelStroke:(id)a3 contentsScale:(double)a4 documentRoot:(id)a5
++ (id)imageSizedForShapeWithSinglePixelStroke:(id)stroke contentsScale:(double)scale documentRoot:(id)root
 {
-  v7 = [[TSDImager alloc] initWithDocumentRoot:a5];
-  v8 = [v7 imageSizedForShapeWithSinglePixelStroke:a3 contentsScale:a4];
+  v7 = [[TSDImager alloc] initWithDocumentRoot:root];
+  v8 = [v7 imageSizedForShapeWithSinglePixelStroke:stroke contentsScale:scale];
 
   return v8;
 }
 
-- (CGImage)CGImageForInfo:(id)a3
+- (CGImage)CGImageForInfo:(id)info
 {
-  v5 = [(TSDImager *)self infos];
-  v6 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  infos = [(TSDImager *)self infos];
+  v6 = [[NSArray alloc] initWithObjects:{info, 0}];
   [(TSDImager *)self setInfos:v6];
-  v7 = [(TSDImager *)self newImage];
-  [(TSDImager *)self setInfos:v5];
+  newImage = [(TSDImager *)self newImage];
+  [(TSDImager *)self setInfos:infos];
 
-  v8 = v7;
-  return v7;
+  v8 = newImage;
+  return newImage;
 }
 
-- (CGImage)CGImageOfSize:(CGSize)a3 forInfo:(id)a4
+- (CGImage)CGImageOfSize:(CGSize)size forInfo:(id)info
 {
-  [(TSDImager *)self setScaledImageSize:a3.width, a3.height];
+  [(TSDImager *)self setScaledImageSize:size.width, size.height];
 
-  return [(TSDImager *)self CGImageForInfo:a4];
+  return [(TSDImager *)self CGImageForInfo:info];
 }
 
-- (id)imageSizedForShapeWithSinglePixelStroke:(id)a3 contentsScale:(double)a4
+- (id)imageSizedForShapeWithSinglePixelStroke:(id)stroke contentsScale:(double)scale
 {
-  [objc_msgSend(objc_msgSend(a3 "pathSource")];
+  [objc_msgSend(objc_msgSend(stroke "pathSource")];
   TSDRectWithSize();
   [(TSDImager *)self setUnscaledClipRect:?];
-  [(TSDImager *)self setViewScale:a4];
-  v7 = [a3 geometry];
-  v8 = [v7 mutableCopy];
+  [(TSDImager *)self setViewScale:scale];
+  geometry = [stroke geometry];
+  v8 = [geometry mutableCopy];
   [v8 setPosition:{0.5, 0.5}];
-  [v7 size];
+  [geometry size];
   v10 = v9 + -1.0;
-  [v7 size];
+  [geometry size];
   [v8 setSize:{v10, v11 + -1.0}];
-  [a3 setGeometry:v8];
+  [stroke setGeometry:v8];
 
-  v12 = [(TSDImager *)self CGImageForInfo:a3];
-  [a3 setGeometry:v7];
+  v12 = [(TSDImager *)self CGImageForInfo:stroke];
+  [stroke setGeometry:geometry];
 
   [(TSDImager *)self viewScale];
 
   return [TSUImage imageWithCGImage:v12 scale:0 orientation:?];
 }
 
-+ (id)imageForStorage:(id)a3 maxWidth:(double)a4 lines:(id *)a5 layoutRect:(CGRect *)a6 useCullingRect:(BOOL)a7 maxLines:(unint64_t)a8 allowsLastLineTruncation:(BOOL)a9 contentsScale:(double)a10 documentRoot:(id)a11
++ (id)imageForStorage:(id)storage maxWidth:(double)width lines:(id *)lines layoutRect:(CGRect *)rect useCullingRect:(BOOL)cullingRect maxLines:(unint64_t)maxLines allowsLastLineTruncation:(BOOL)truncation contentsScale:(double)self0 documentRoot:(id)self1
 {
-  v12 = a9;
-  v14 = a7;
-  v19 = [[TSSStylesheet alloc] initWithContext:{objc_msgSend(a3, "context")}];
-  v20 = +[TSWPShapeStyle defaultStyleWithContext:](TSWPShapeStyle, "defaultStyleWithContext:", [a3 context]);
+  truncationCopy = truncation;
+  cullingRectCopy = cullingRect;
+  v19 = [[TSSStylesheet alloc] initWithContext:{objc_msgSend(storage, "context")}];
+  v20 = +[TSWPShapeStyle defaultStyleWithContext:](TSWPShapeStyle, "defaultStyleWithContext:", [storage context]);
   [v20 setValue:+[TSDStroke emptyStroke](TSDStroke forProperty:{"emptyStroke"), 517}];
-  [v20 setIntValue:a8 forProperty:155];
+  [v20 setIntValue:maxLines forProperty:155];
   [v19 addStyle:v20];
-  v21 = [[TSDInfoGeometry alloc] initWithWidth:a4];
-  v22 = [objc_alloc(objc_opt_class()) initWithContext:objc_msgSend(a3 geometry:"context") style:v21 wpStorage:{v20, a3}];
-  [v22 setAllowsLastLineTruncation:v12];
-  v23 = [a1 imageForShapeInfo:v22 viewScale:a5 screenScale:a6 lines:v14 layoutRect:a11 useCullingRect:1.0 documentRoot:a10];
+  v21 = [[TSDInfoGeometry alloc] initWithWidth:width];
+  v22 = [objc_alloc(objc_opt_class()) initWithContext:objc_msgSend(storage geometry:"context") style:v21 wpStorage:{v20, storage}];
+  [v22 setAllowsLastLineTruncation:truncationCopy];
+  v23 = [self imageForShapeInfo:v22 viewScale:lines screenScale:rect lines:cullingRectCopy layoutRect:root useCullingRect:1.0 documentRoot:scale];
 
   return v23;
 }
 
-+ (id)imageForShapeInfo:(id)a3 viewScale:(double)a4 screenScale:(double)a5 lines:(id *)a6 layoutRect:(CGRect *)a7 useCullingRect:(BOOL)a8 documentRoot:(id)a9
++ (id)imageForShapeInfo:(id)info viewScale:(double)scale screenScale:(double)screenScale lines:(id *)lines layoutRect:(CGRect *)rect useCullingRect:(BOOL)cullingRect documentRoot:(id)root
 {
-  v9 = a8;
-  v15 = [[TSDImager alloc] initWithDocumentRoot:a9];
-  [v15 setInfos:{+[NSArray arrayWithObject:](NSArray, "arrayWithObject:", a3)}];
-  [v15 setViewScale:a4 * a5];
-  v16 = [v15 newImage];
-  if (v16)
+  cullingRectCopy = cullingRect;
+  v15 = [[TSDImager alloc] initWithDocumentRoot:root];
+  [v15 setInfos:{+[NSArray arrayWithObject:](NSArray, "arrayWithObject:", info)}];
+  [v15 setViewScale:scale * screenScale];
+  newImage = [v15 newImage];
+  if (newImage)
   {
-    v17 = v16;
+    v17 = newImage;
     objc_opt_class();
-    [v15 p_repForInfo:a3];
+    [v15 p_repForInfo:info];
     v18 = TSUDynamicCast();
     if (!v18)
     {
@@ -204,27 +204,27 @@
       [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
     }
 
-    if (a6)
+    if (lines)
     {
-      *a6 = [v19 allLines];
+      *lines = [v19 allLines];
     }
 
-    if (a7)
+    if (rect)
     {
-      if (v9)
+      if (cullingRectCopy)
       {
         [objc_msgSend(v18 "layout")];
       }
 
       [objc_msgSend(v18 "layout")];
       TSDRoundedRect();
-      a7->origin.x = v21;
-      a7->origin.y = v22;
-      a7->size.width = v23;
-      a7->size.height = v24;
+      rect->origin.x = v21;
+      rect->origin.y = v22;
+      rect->size.width = v23;
+      rect->size.height = v24;
     }
 
-    v20 = [TSUImage imageWithCGImage:v17 scale:0 orientation:a5];
+    v20 = [TSUImage imageWithCGImage:v17 scale:0 orientation:screenScale];
     CGImageRelease(v17);
   }
 
@@ -237,7 +237,7 @@
   return v20;
 }
 
-- (id)p_layoutForInfo:(id)a3
+- (id)p_layoutForInfo:(id)info
 {
   v4 = [-[TSDImager canvas](self "canvas")];
   if (!v4)
@@ -245,20 +245,20 @@
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  return [v4 layoutForInfo:a3];
+  return [v4 layoutForInfo:info];
 }
 
-- (id)p_repForInfo:(id)a3
+- (id)p_repForInfo:(id)info
 {
-  v4 = [(TSDImager *)self p_layoutForInfo:a3];
+  v4 = [(TSDImager *)self p_layoutForInfo:info];
   if (!v4)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
 
-  v5 = [(TSDImager *)self canvas];
+  canvas = [(TSDImager *)self canvas];
 
-  return [v5 repForLayout:v4];
+  return [canvas repForLayout:v4];
 }
 
 @end

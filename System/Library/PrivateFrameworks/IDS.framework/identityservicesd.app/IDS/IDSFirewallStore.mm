@@ -1,23 +1,23 @@
 @interface IDSFirewallStore
 + (id)sharedInstance;
-- (BOOL)addEntries:(id)a3 forImpactedServices:(id)a4 category:(unsigned int)a5 isDonated:(BOOL)a6;
-- (BOOL)isAllowed:(id)a3 category:(unsigned int)a4;
-- (BOOL)isAllowed:(id)a3 category:(unsigned int)a4 isDonated:(BOOL)a5;
-- (BOOL)removeAllEntries:(id)a3 forImpactedServices:(id)a4 category:(unsigned int)a5;
-- (BOOL)removeAllEntriesWithCategory:(unsigned int)a3;
-- (BOOL)removeEntries:(id)a3 forImpactedServices:(id)a4 category:(unsigned int)a5 isDonated:(BOOL)a6;
-- (BOOL)removeEntriesWithCategory:(unsigned int)a3 isDonated:(BOOL)a4;
-- (IDSFirewallStore)initWithFilePath:(id)a3;
-- (id)_createFirewallRecordsFromSQLRecords:(__CFArray *)a3;
-- (id)blockedEntriesForCategory:(unsigned int)a3;
-- (id)getAllAllowedEntriesForCategory:(unsigned int)a3;
-- (id)getDonatedAllowedEntriesForCategory:(unsigned int)a3;
+- (BOOL)addEntries:(id)entries forImpactedServices:(id)services category:(unsigned int)category isDonated:(BOOL)donated;
+- (BOOL)isAllowed:(id)allowed category:(unsigned int)category;
+- (BOOL)isAllowed:(id)allowed category:(unsigned int)category isDonated:(BOOL)donated;
+- (BOOL)removeAllEntries:(id)entries forImpactedServices:(id)services category:(unsigned int)category;
+- (BOOL)removeAllEntriesWithCategory:(unsigned int)category;
+- (BOOL)removeEntries:(id)entries forImpactedServices:(id)services category:(unsigned int)category isDonated:(BOOL)donated;
+- (BOOL)removeEntriesWithCategory:(unsigned int)category isDonated:(BOOL)donated;
+- (IDSFirewallStore)initWithFilePath:(id)path;
+- (id)_createFirewallRecordsFromSQLRecords:(__CFArray *)records;
+- (id)blockedEntriesForCategory:(unsigned int)category;
+- (id)getAllAllowedEntriesForCategory:(unsigned int)category;
+- (id)getDonatedAllowedEntriesForCategory:(unsigned int)category;
 - (unint64_t)_currentLocalTime;
 - (void)_registerSysdiagnoseBlock;
-- (void)_runCleanupWithExpirationInterval:(double)a3;
+- (void)_runCleanupWithExpirationInterval:(double)interval;
 - (void)_setDatabaseCloseTimerOnIvarQueue;
 - (void)_startCleanupTimer;
-- (void)addToBlockedList:(id)a3 forCategory:(unsigned int)a4;
+- (void)addToBlockedList:(id)list forCategory:(unsigned int)category;
 - (void)closeDatabase;
 @end
 
@@ -57,16 +57,16 @@
   return v3;
 }
 
-- (IDSFirewallStore)initWithFilePath:(id)a3
+- (IDSFirewallStore)initWithFilePath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = IDSFirewallStore;
   v5 = [(IDSFirewallStore *)&v17 init];
   v6 = v5;
   if (v5)
   {
-    [(IDSFirewallStore *)v5 setFilePath:v4];
+    [(IDSFirewallStore *)v5 setFilePath:pathCopy];
     v7 = OSLogHandleForIDSCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
@@ -101,17 +101,17 @@
   return v6;
 }
 
-- (BOOL)addEntries:(id)a3 forImpactedServices:(id)a4 category:(unsigned int)a5 isDonated:(BOOL)a6
+- (BOOL)addEntries:(id)entries forImpactedServices:(id)services category:(unsigned int)category isDonated:(BOOL)donated
 {
-  v6 = a6;
-  v7 = *&a5;
-  v10 = a3;
-  v17 = a4;
+  donatedCopy = donated;
+  v7 = *&category;
+  entriesCopy = entries;
+  servicesCopy = services;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v11 = [entriesCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
     v12 = v11;
@@ -122,11 +122,11 @@
       {
         if (*v27 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
-        if ([(IDSFirewallStore *)self isAllowed:v15 category:v7 isDonated:v6])
+        if ([(IDSFirewallStore *)self isAllowed:v15 category:v7 isDonated:donatedCopy])
         {
           v23[0] = _NSConcreteStackBlock;
           v23[1] = 3221225472;
@@ -135,7 +135,7 @@
           v23[4] = self;
           v23[5] = v15;
           v24 = v7;
-          v25 = v6;
+          v25 = donatedCopy;
           sub_1000157D8(v23, self->_filePath);
         }
 
@@ -146,15 +146,15 @@
           v18[2] = sub_1006C0AD0;
           v18[3] = &unk_100BE5450;
           v18[4] = self;
-          v19 = v17;
+          v19 = servicesCopy;
           v20 = v15;
           v21 = v7;
-          v22 = v6;
+          v22 = donatedCopy;
           sub_1000157D8(v18, self->_filePath);
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v12 = [entriesCopy countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v12);
@@ -163,23 +163,23 @@
   return 1;
 }
 
-- (BOOL)removeEntries:(id)a3 forImpactedServices:(id)a4 category:(unsigned int)a5 isDonated:(BOOL)a6
+- (BOOL)removeEntries:(id)entries forImpactedServices:(id)services category:(unsigned int)category isDonated:(BOOL)donated
 {
-  v10 = a3;
-  v11 = a4;
-  if (v10 && [v10 count])
+  entriesCopy = entries;
+  servicesCopy = services;
+  if (entriesCopy && [entriesCopy count])
   {
-    v28 = a5;
-    v29 = self;
-    v30 = a6;
-    v31 = v11;
+    categoryCopy = category;
+    selfCopy = self;
+    donatedCopy = donated;
+    v31 = servicesCopy;
     v12 = objc_alloc_init(NSMutableSet);
     v13 = objc_alloc_init(NSMutableSet);
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v14 = v10;
+    v14 = entriesCopy;
     v15 = [v14 countByEnumeratingWithState:&v37 objects:v41 count:16];
     if (v15)
     {
@@ -196,19 +196,19 @@
 
           v19 = *(*(&v37 + 1) + 8 * i);
           v20 = [v19 uri];
-          v21 = [v20 prefixedURI];
+          prefixedURI = [v20 prefixedURI];
 
-          if (v21)
+          if (prefixedURI)
           {
-            [v12 addObject:v21];
+            [v12 addObject:prefixedURI];
           }
 
-          v22 = [v19 mergeID];
+          mergeID = [v19 mergeID];
 
-          if (v22)
+          if (mergeID)
           {
-            v23 = [v19 mergeID];
-            [v13 addObject:v23];
+            mergeID2 = [v19 mergeID];
+            [v13 addObject:mergeID2];
           }
         }
 
@@ -222,37 +222,37 @@
     v32[1] = 3221225472;
     v32[2] = sub_1006C0EAC;
     v32[3] = &unk_100BE5428;
-    v35 = v28;
-    v36 = v30;
+    v35 = categoryCopy;
+    v36 = donatedCopy;
     v33 = v12;
     v34 = v13;
-    filePath = v29->_filePath;
+    filePath = selfCopy->_filePath;
     v25 = v13;
     v26 = v12;
     sub_1000157D8(v32, filePath);
 
-    v11 = v31;
+    servicesCopy = v31;
   }
 
   return 1;
 }
 
-- (BOOL)removeAllEntries:(id)a3 forImpactedServices:(id)a4 category:(unsigned int)a5
+- (BOOL)removeAllEntries:(id)entries forImpactedServices:(id)services category:(unsigned int)category
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8 && [v8 count])
+  entriesCopy = entries;
+  servicesCopy = services;
+  if (entriesCopy && [entriesCopy count])
   {
-    v26 = a5;
-    v27 = self;
-    v28 = v9;
+    categoryCopy = category;
+    selfCopy = self;
+    v28 = servicesCopy;
     v10 = objc_alloc_init(NSMutableSet);
     v11 = objc_alloc_init(NSMutableSet);
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v12 = v8;
+    v12 = entriesCopy;
     v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v13)
     {
@@ -269,19 +269,19 @@
 
           v17 = *(*(&v33 + 1) + 8 * i);
           v18 = [v17 uri];
-          v19 = [v18 prefixedURI];
+          prefixedURI = [v18 prefixedURI];
 
-          if (v19)
+          if (prefixedURI)
           {
-            [v10 addObject:v19];
+            [v10 addObject:prefixedURI];
           }
 
-          v20 = [v17 mergeID];
+          mergeID = [v17 mergeID];
 
-          if (v20)
+          if (mergeID)
           {
-            v21 = [v17 mergeID];
-            [v11 addObject:v21];
+            mergeID2 = [v17 mergeID];
+            [v11 addObject:mergeID2];
           }
         }
 
@@ -295,44 +295,44 @@
     v29[1] = 3221225472;
     v29[2] = sub_1006C1164;
     v29[3] = &unk_100BD9B68;
-    v32 = v26;
+    v32 = categoryCopy;
     v30 = v10;
     v31 = v11;
-    filePath = v27->_filePath;
+    filePath = selfCopy->_filePath;
     v23 = v11;
     v24 = v10;
     sub_1000157D8(v29, filePath);
 
-    v9 = v28;
+    servicesCopy = v28;
   }
 
   return 1;
 }
 
-- (BOOL)removeAllEntriesWithCategory:(unsigned int)a3
+- (BOOL)removeAllEntriesWithCategory:(unsigned int)category
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1006C123C;
   v4[3] = &unk_100BDA538;
-  v5 = a3;
+  categoryCopy = category;
   sub_1000157D8(v4, self->_filePath);
   return 1;
 }
 
-- (BOOL)removeEntriesWithCategory:(unsigned int)a3 isDonated:(BOOL)a4
+- (BOOL)removeEntriesWithCategory:(unsigned int)category isDonated:(BOOL)donated
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1006C12BC;
   v5[3] = &unk_100BE5470;
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  donatedCopy = donated;
   sub_1000157D8(v5, self->_filePath);
   return 1;
 }
 
-- (BOOL)isAllowed:(id)a3 category:(unsigned int)a4 isDonated:(BOOL)a5
+- (BOOL)isAllowed:(id)allowed category:(unsigned int)category isDonated:(BOOL)donated
 {
   v22 = 0;
   v23 = &v22;
@@ -343,25 +343,25 @@
   v17[2] = sub_1006C1458;
   v17[3] = &unk_100BE5498;
   v19 = &v22;
-  v8 = a3;
-  v18 = v8;
-  v20 = a4;
-  v21 = a5;
+  allowedCopy = allowed;
+  v18 = allowedCopy;
+  categoryCopy = category;
+  donatedCopy = donated;
   sub_1000157D8(v17, self->_filePath);
   if ((v23[3] & 1) == 0)
   {
-    v9 = [v8 mergeID];
+    mergeID = [allowedCopy mergeID];
 
-    if (v9)
+    if (mergeID)
     {
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
       v12[2] = sub_1006C14C0;
       v12[3] = &unk_100BE5498;
       v14 = &v22;
-      v13 = v8;
-      v15 = a4;
-      v16 = a5;
+      v13 = allowedCopy;
+      categoryCopy2 = category;
+      donatedCopy2 = donated;
       sub_1000157D8(v12, self->_filePath);
     }
   }
@@ -372,7 +372,7 @@
   return v10;
 }
 
-- (BOOL)isAllowed:(id)a3 category:(unsigned int)a4
+- (BOOL)isAllowed:(id)allowed category:(unsigned int)category
 {
   v18 = 0;
   v19 = &v18;
@@ -383,23 +383,23 @@
   v14[2] = sub_1006C1680;
   v14[3] = &unk_100BE54C0;
   v16 = &v18;
-  v6 = a3;
-  v15 = v6;
-  v17 = a4;
+  allowedCopy = allowed;
+  v15 = allowedCopy;
+  categoryCopy = category;
   sub_1000157D8(v14, self->_filePath);
   if ((v19[3] & 1) == 0)
   {
-    v7 = [v6 mergeID];
+    mergeID = [allowedCopy mergeID];
 
-    if (v7)
+    if (mergeID)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_1006C16E4;
       v10[3] = &unk_100BE54C0;
       v12 = &v18;
-      v11 = v6;
-      v13 = a4;
+      v11 = allowedCopy;
+      categoryCopy2 = category;
       sub_1000157D8(v10, self->_filePath);
     }
   }
@@ -410,7 +410,7 @@
   return v8;
 }
 
-- (id)getAllAllowedEntriesForCategory:(unsigned int)a3
+- (id)getAllAllowedEntriesForCategory:(unsigned int)category
 {
   v7 = 0;
   v8 = &v7;
@@ -422,7 +422,7 @@
   v5[1] = 3221225472;
   v5[2] = sub_1006C1828;
   v5[3] = &unk_100BE54C0;
-  v6 = a3;
+  categoryCopy = category;
   v5[4] = self;
   v5[5] = &v7;
   sub_1000157D8(v5, self->_filePath);
@@ -432,7 +432,7 @@
   return v3;
 }
 
-- (id)getDonatedAllowedEntriesForCategory:(unsigned int)a3
+- (id)getDonatedAllowedEntriesForCategory:(unsigned int)category
 {
   v7 = 0;
   v8 = &v7;
@@ -444,7 +444,7 @@
   v5[1] = 3221225472;
   v5[2] = sub_1006C1988;
   v5[3] = &unk_100BE54C0;
-  v6 = a3;
+  categoryCopy = category;
   v5[4] = self;
   v5[5] = &v7;
   sub_1000157D8(v5, self->_filePath);
@@ -454,10 +454,10 @@
   return v3;
 }
 
-- (id)blockedEntriesForCategory:(unsigned int)a3
+- (id)blockedEntriesForCategory:(unsigned int)category
 {
   recentlyBlockedHandles = self->_recentlyBlockedHandles;
-  v4 = [NSNumber numberWithUnsignedInt:*&a3];
+  v4 = [NSNumber numberWithUnsignedInt:*&category];
   v5 = [(NSMutableDictionary *)recentlyBlockedHandles objectForKey:v4];
   v6 = v5;
   if (v5)
@@ -475,18 +475,18 @@
   return v7;
 }
 
-- (id)_createFirewallRecordsFromSQLRecords:(__CFArray *)a3
+- (id)_createFirewallRecordsFromSQLRecords:(__CFArray *)records
 {
   v17 = objc_alloc_init(NSMutableArray);
-  if (a3)
+  if (records)
   {
-    Count = CFArrayGetCount(a3);
+    Count = CFArrayGetCount(records);
     if (Count >= 1)
     {
       for (i = 0; i != Count; ++i)
       {
         v5 = objc_autoreleasePoolPush();
-        ValueAtIndex = CFArrayGetValueAtIndex(a3, i);
+        ValueAtIndex = CFArrayGetValueAtIndex(records, i);
         v7 = CFArrayGetCount(ValueAtIndex);
         v8 = CFArrayGetValueAtIndex(ValueAtIndex, 0);
         v9 = CFArrayGetValueAtIndex(ValueAtIndex, 1);
@@ -518,16 +518,16 @@
       }
     }
 
-    CFRelease(a3);
+    CFRelease(records);
   }
 
   return v17;
 }
 
-- (void)addToBlockedList:(id)a3 forCategory:(unsigned int)a4
+- (void)addToBlockedList:(id)list forCategory:(unsigned int)category
 {
-  v4 = *&a4;
-  v11 = a3;
+  v4 = *&category;
+  listCopy = list;
   recentlyBlockedHandles = self->_recentlyBlockedHandles;
   v7 = [NSNumber numberWithUnsignedInt:v4];
   v8 = [(NSMutableDictionary *)recentlyBlockedHandles objectForKey:v7];
@@ -537,7 +537,7 @@
     v8 = objc_alloc_init(NSMutableSet);
   }
 
-  [v8 addObject:v11];
+  [v8 addObject:listCopy];
   v9 = self->_recentlyBlockedHandles;
   v10 = [NSNumber numberWithUnsignedInt:v4];
   [(NSMutableDictionary *)v9 setObject:v8 forKey:v10];
@@ -556,8 +556,8 @@
   else
   {
     v6 = mach_continuous_time();
-    v7 = [(IDSFirewallStore *)self initialProcessTime];
-    v8 = (v6 - v7) * info.numer / info.denom;
+    initialProcessTime = [(IDSFirewallStore *)self initialProcessTime];
+    v8 = (v6 - initialProcessTime) * info.numer / info.denom;
     return [(IDSFirewallStore *)self initialServerTime]+ v8 / 0x3B9ACA00;
   }
 
@@ -653,7 +653,7 @@
   }
 }
 
-- (void)_runCleanupWithExpirationInterval:(double)a3
+- (void)_runCleanupWithExpirationInterval:(double)interval
 {
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -672,7 +672,7 @@
   v6[2] = sub_1006C29D0;
   v6[3] = &unk_100BD7978;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_1000157D8(v6, self->_filePath);
 }
 

@@ -1,21 +1,21 @@
 @interface EFSQLNotExpression
-- (EFSQLNotExpression)initWithExpression:(id)a3;
+- (EFSQLNotExpression)initWithExpression:(id)expression;
 - (NSString)ef_SQLExpression;
-- (void)ef_renderSQLExpressionInto:(id)a3;
+- (void)ef_renderSQLExpressionInto:(id)into;
 @end
 
 @implementation EFSQLNotExpression
 
-- (EFSQLNotExpression)initWithExpression:(id)a3
+- (EFSQLNotExpression)initWithExpression:(id)expression
 {
-  v5 = a3;
+  expressionCopy = expression;
   v9.receiver = self;
   v9.super_class = EFSQLNotExpression;
   v6 = [(EFSQLNotExpression *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_expression, a3);
+    objc_storeStrong(&v6->_expression, expression);
   }
 
   return v7;
@@ -23,18 +23,18 @@
 
 - (NSString)ef_SQLExpression
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  [(EFSQLNotExpression *)self ef_renderSQLExpressionInto:v3];
+  string = [MEMORY[0x1E696AD60] string];
+  [(EFSQLNotExpression *)self ef_renderSQLExpressionInto:string];
 
-  return v3;
+  return string;
 }
 
-- (void)ef_renderSQLExpressionInto:(id)a3
+- (void)ef_renderSQLExpressionInto:(id)into
 {
-  v4 = a3;
-  objc_msgSend(v4, "appendString:", @"NOT (");
-  [(EFSQLValueExpressable *)self->_expression ef_renderSQLExpressionInto:v4];
-  [v4 appendString:@""]);
+  intoCopy = into;
+  objc_msgSend(intoCopy, "appendString:", @"NOT (");
+  [(EFSQLValueExpressable *)self->_expression ef_renderSQLExpressionInto:intoCopy];
+  [intoCopy appendString:@""]);
 }
 
 @end

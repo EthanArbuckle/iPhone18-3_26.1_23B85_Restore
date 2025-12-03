@@ -4,55 +4,55 @@
 - (BOOL)isLaunchProhibited;
 - (BOOL)shouldBalloonHideAppIcon;
 - (BOOL)shouldBreadcrumbHideAppIcon;
-- (IMBalloonAppExtension)initWithPluginBundle:(id)a3 appBundle:(id)a4;
-- (IMBalloonAppExtension)initWithPluginBundle:(id)a3 extension:(id)a4;
-- (IMBalloonAppExtension)initWithPluginBundle:(id)a3 pluginKitProxy:(id)a4 extension:(id)a5;
+- (IMBalloonAppExtension)initWithPluginBundle:(id)bundle appBundle:(id)appBundle;
+- (IMBalloonAppExtension)initWithPluginBundle:(id)bundle extension:(id)extension;
+- (IMBalloonAppExtension)initWithPluginBundle:(id)bundle pluginKitProxy:(id)proxy extension:(id)extension;
 - (NSNumber)itemID;
 - (PKPlugIn)plugin;
-- (id)_initWithPluginBundle:(id)a3 extension:(id)a4 pluginKitProxyClass:(Class)a5;
+- (id)_initWithPluginBundle:(id)bundle extension:(id)extension pluginKitProxyClass:(Class)class;
 - (id)version;
 @end
 
 @implementation IMBalloonAppExtension
 
-- (IMBalloonAppExtension)initWithPluginBundle:(id)a3 pluginKitProxy:(id)a4 extension:(id)a5
+- (IMBalloonAppExtension)initWithPluginBundle:(id)bundle pluginKitProxy:(id)proxy extension:(id)extension
 {
-  v9 = a4;
-  v10 = a3;
-  v12 = objc_msgSend_appWithPluginBundle_pluginKitProxy_extension_(IMBalloonApp, v11, v10, v9, a5);
+  proxyCopy = proxy;
+  bundleCopy = bundle;
+  v12 = objc_msgSend_appWithPluginBundle_pluginKitProxy_extension_(IMBalloonApp, v11, bundleCopy, proxyCopy, extension);
   v15.receiver = self;
   v15.super_class = IMBalloonAppExtension;
-  v13 = [(IMBalloonPlugin *)&v15 initWithBundle:v10 app:v12];
+  v13 = [(IMBalloonPlugin *)&v15 initWithBundle:bundleCopy app:v12];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_proxy, a4);
+    objc_storeStrong(&v13->_proxy, proxy);
   }
 
   return v13;
 }
 
-- (IMBalloonAppExtension)initWithPluginBundle:(id)a3 extension:(id)a4
+- (IMBalloonAppExtension)initWithPluginBundle:(id)bundle extension:(id)extension
 {
   sub_1A84E8A78(v4);
   v8 = *(v7 + 1656);
   v10 = v9;
-  v11 = a3;
+  bundleCopy = bundle;
   v12 = objc_opt_class();
-  v14 = objc_msgSend__initWithPluginBundle_extension_pluginKitProxyClass_(self, v13, v11, v10, v12);
+  v14 = objc_msgSend__initWithPluginBundle_extension_pluginKitProxyClass_(self, v13, bundleCopy, v10, v12);
 
   return v14;
 }
 
-- (id)_initWithPluginBundle:(id)a3 extension:(id)a4 pluginKitProxyClass:(Class)a5
+- (id)_initWithPluginBundle:(id)bundle extension:(id)extension pluginKitProxyClass:(Class)class
 {
-  v8 = a3;
-  v9 = a4;
-  v12 = v9;
-  if (v9)
+  bundleCopy = bundle;
+  extensionCopy = extension;
+  v12 = extensionCopy;
+  if (extensionCopy)
   {
-    v13 = objc_msgSend_identifier(v9, v10, v11);
-    v15 = objc_msgSend_pluginKitProxyForIdentifier_(a5, v14, v13);
+    v13 = objc_msgSend_identifier(extensionCopy, v10, v11);
+    v15 = objc_msgSend_pluginKitProxyForIdentifier_(class, v14, v13);
   }
 
   else
@@ -60,29 +60,29 @@
     v15 = 0;
   }
 
-  v16 = objc_msgSend_initWithPluginBundle_pluginKitProxy_extension_(self, v10, v8, v15, v12);
+  v16 = objc_msgSend_initWithPluginBundle_pluginKitProxy_extension_(self, v10, bundleCopy, v15, v12);
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong((v16 + 152), a4);
+    objc_storeStrong((v16 + 152), extension);
     objc_storeStrong(v17 + 20, v15);
   }
 
   return v17;
 }
 
-- (IMBalloonAppExtension)initWithPluginBundle:(id)a3 appBundle:(id)a4
+- (IMBalloonAppExtension)initWithPluginBundle:(id)bundle appBundle:(id)appBundle
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = objc_msgSend_appWithPluginBundle_appBundle_(IMBalloonApp, v8, v7, v6);
+  appBundleCopy = appBundle;
+  bundleCopy = bundle;
+  v9 = objc_msgSend_appWithPluginBundle_appBundle_(IMBalloonApp, v8, bundleCopy, appBundleCopy);
   v30.receiver = self;
   v30.super_class = IMBalloonAppExtension;
-  v10 = [(IMBalloonPlugin *)&v30 initWithBundle:v7 app:v9];
+  v10 = [(IMBalloonPlugin *)&v30 initWithBundle:bundleCopy app:v9];
 
   if (v10)
   {
-    v13 = objc_msgSend_infoDictionary(v6, v11, v12);
+    v13 = objc_msgSend_infoDictionary(appBundleCopy, v11, v12);
     v16 = objc_msgSend_browserImageName(v10, v14, v15);
 
     if (!v16)

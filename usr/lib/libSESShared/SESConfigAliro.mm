@@ -1,6 +1,6 @@
 @interface SESConfigAliro
 - (SESConfigAliro)init;
-- (id)getConfiguration:(id *)a3;
+- (id)getConfiguration:(id *)configuration;
 @end
 
 @implementation SESConfigAliro
@@ -83,7 +83,7 @@ LABEL_15:
   return v14;
 }
 
-- (id)getConfiguration:(id *)a3
+- (id)getConfiguration:(id *)configuration
 {
   v55 = *MEMORY[0x1E69E9840];
   v5 = [SESConfig alloc];
@@ -95,11 +95,11 @@ LABEL_15:
   v10 = v9;
   if (v9)
   {
-    if (a3)
+    if (configuration)
     {
       v11 = v9;
       v12 = 0;
-      *a3 = v10;
+      *configuration = v10;
       goto LABEL_51;
     }
 
@@ -252,7 +252,7 @@ LABEL_45:
           goto LABEL_21;
         }
 
-        if (a3)
+        if (configuration)
         {
           v16 = SESDefaultLogObject();
           SESCreateAndLogError(0, v16, SESErrorDomain, 0, @"Unknown device class %@", v37, v38, v39, self->_mgDeviceClass);
@@ -265,7 +265,7 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    if (!a3)
+    if (!configuration)
     {
       goto LABEL_49;
     }
@@ -276,7 +276,7 @@ LABEL_49:
 
   else
   {
-    if (!a3)
+    if (!configuration)
     {
       goto LABEL_49;
     }
@@ -286,7 +286,7 @@ LABEL_49:
   }
 
 LABEL_18:
-  *a3 = v12 = 0;
+  *configuration = v12 = 0;
 LABEL_46:
 
 LABEL_50:

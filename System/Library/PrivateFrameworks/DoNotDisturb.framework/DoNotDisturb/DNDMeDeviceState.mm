@@ -1,25 +1,25 @@
 @interface DNDMeDeviceState
-- (BOOL)isEqual:(id)a3;
-- (DNDMeDeviceState)initWithCoder:(id)a3;
-- (DNDMeDeviceState)initWithStatus:(unint64_t)a3 name:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (DNDMeDeviceState)initWithCoder:(id)coder;
+- (DNDMeDeviceState)initWithStatus:(unint64_t)status name:(id)name;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDMeDeviceState
 
-- (DNDMeDeviceState)initWithStatus:(unint64_t)a3 name:(id)a4
+- (DNDMeDeviceState)initWithStatus:(unint64_t)status name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v12.receiver = self;
   v12.super_class = DNDMeDeviceState;
   v7 = [(DNDMeDeviceState *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_meDeviceStatus = a3;
-    v9 = [v6 copy];
+    v7->_meDeviceStatus = status;
+    v9 = [nameCopy copy];
     meDeviceName = v8->_meDeviceName;
     v8->_meDeviceName = v9;
   }
@@ -29,17 +29,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDMeDeviceState *)self meDeviceStatus];
-  v4 = [(DNDMeDeviceState *)self meDeviceName];
-  v5 = [v4 hash];
+  meDeviceStatus = [(DNDMeDeviceState *)self meDeviceStatus];
+  meDeviceName = [(DNDMeDeviceState *)self meDeviceName];
+  v5 = [meDeviceName hash];
 
-  return v5 ^ v3;
+  return v5 ^ meDeviceStatus;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -49,28 +49,28 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(DNDMeDeviceState *)self meDeviceStatus];
-      if (v6 == [(DNDMeDeviceState *)v5 meDeviceStatus])
+      v5 = equalCopy;
+      meDeviceStatus = [(DNDMeDeviceState *)self meDeviceStatus];
+      if (meDeviceStatus == [(DNDMeDeviceState *)v5 meDeviceStatus])
       {
-        v7 = [(DNDMeDeviceState *)self meDeviceName];
-        v8 = [(DNDMeDeviceState *)v5 meDeviceName];
-        if (v7 == v8)
+        meDeviceName = [(DNDMeDeviceState *)self meDeviceName];
+        meDeviceName2 = [(DNDMeDeviceState *)v5 meDeviceName];
+        if (meDeviceName == meDeviceName2)
         {
           v13 = 1;
         }
 
         else
         {
-          v9 = [(DNDMeDeviceState *)self meDeviceName];
-          if (v9)
+          meDeviceName3 = [(DNDMeDeviceState *)self meDeviceName];
+          if (meDeviceName3)
           {
-            v10 = [(DNDMeDeviceState *)v5 meDeviceName];
-            if (v10)
+            meDeviceName4 = [(DNDMeDeviceState *)v5 meDeviceName];
+            if (meDeviceName4)
             {
-              v11 = [(DNDMeDeviceState *)self meDeviceName];
-              v12 = [(DNDMeDeviceState *)v5 meDeviceName];
-              v13 = [v11 isEqual:v12];
+              meDeviceName5 = [(DNDMeDeviceState *)self meDeviceName];
+              meDeviceName6 = [(DNDMeDeviceState *)v5 meDeviceName];
+              v13 = [meDeviceName5 isEqual:meDeviceName6];
             }
 
             else
@@ -116,18 +116,18 @@
     v6 = off_27843A3E0[v5];
   }
 
-  v7 = [(DNDMeDeviceState *)self meDeviceName];
-  v8 = [v3 stringWithFormat:@"<%@: %p meDeviceStatus: %@; meDeviceName: %@>", v4, self, v6, v7];;
+  meDeviceName = [(DNDMeDeviceState *)self meDeviceName];
+  v8 = [v3 stringWithFormat:@"<%@: %p meDeviceStatus: %@; meDeviceName: %@>", v4, self, v6, meDeviceName];;
 
   return v8;
 }
 
-- (DNDMeDeviceState)initWithCoder:(id)a3
+- (DNDMeDeviceState)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 containsValueForKey:@"meDeviceStatus"])
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"meDeviceStatus"])
   {
-    v5 = [v4 decodeIntegerForKey:@"meDeviceStatus"];
+    v5 = [coderCopy decodeIntegerForKey:@"meDeviceStatus"];
   }
 
   else
@@ -135,18 +135,18 @@
     v5 = 0;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"meDeviceName"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"meDeviceName"];
   v7 = [(DNDMeDeviceState *)self initWithStatus:v5 name:v6];
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[DNDMeDeviceState meDeviceStatus](self forKey:{"meDeviceStatus"), @"meDeviceStatus"}];
-  v5 = [(DNDMeDeviceState *)self meDeviceName];
-  [v4 encodeObject:v5 forKey:@"meDeviceName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[DNDMeDeviceState meDeviceStatus](self forKey:{"meDeviceStatus"), @"meDeviceStatus"}];
+  meDeviceName = [(DNDMeDeviceState *)self meDeviceName];
+  [coderCopy encodeObject:meDeviceName forKey:@"meDeviceName"];
 }
 
 @end

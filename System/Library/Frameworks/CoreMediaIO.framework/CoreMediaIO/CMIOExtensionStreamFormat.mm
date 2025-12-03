@@ -1,17 +1,17 @@
 @interface CMIOExtensionStreamFormat
 + (CMIOExtensionStreamFormat)streamFormatWithFormatDescription:(CMFormatDescriptionRef)formatDescription maxFrameDuration:(CMTime *)maxFrameDuration minFrameDuration:(CMTime *)minFrameDuration validFrameDurations:(NSArray *)validFrameDurations;
-+ (id)copyFormatsFromXPCArray:(id)a3;
-+ (id)copyXPCArrayFromFormats:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (CMIOExtensionStreamFormat)initWithCoder:(id)a3;
++ (id)copyFormatsFromXPCArray:(id)array;
++ (id)copyXPCArrayFromFormats:(id)formats;
+- (BOOL)isEqual:(id)equal;
+- (CMIOExtensionStreamFormat)initWithCoder:(id)coder;
 - (CMIOExtensionStreamFormat)initWithFormatDescription:(CMFormatDescriptionRef)formatDescription maxFrameDuration:(CMTime *)maxFrameDuration minFrameDuration:(CMTime *)minFrameDuration validFrameDurations:(NSArray *)validFrameDurations;
-- (CMIOExtensionStreamFormat)initWithXPCDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMIOExtensionStreamFormat)initWithXPCDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCDictionary;
 - (id)description;
 - (void)copyXPCDictionary;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMIOExtensionStreamFormat
@@ -94,9 +94,9 @@
   return v2;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -113,12 +113,12 @@ LABEL_13:
       return v7;
     }
 
-    v7 = CMFormatDescriptionEqual(self->_formatDescription, [a3 formatDescription]);
+    v7 = CMFormatDescriptionEqual(self->_formatDescription, [equal formatDescription]);
     if (v7)
     {
-      if (a3)
+      if (equal)
       {
-        [a3 minFrameDuration];
+        [equal minFrameDuration];
       }
 
       else
@@ -132,9 +132,9 @@ LABEL_13:
         goto LABEL_13;
       }
 
-      if (a3)
+      if (equal)
       {
-        [a3 maxFrameDuration];
+        [equal maxFrameDuration];
       }
 
       else
@@ -149,14 +149,14 @@ LABEL_13:
       }
 
       validFrameDurations = self->_validFrameDurations;
-      if (validFrameDurations == [a3 validFrameDurations])
+      if (validFrameDurations == [equal validFrameDurations])
       {
         LOBYTE(v7) = 1;
       }
 
       else
       {
-        LOBYTE(v7) = -[NSArray isEqual:](self->_validFrameDurations, "isEqual:", [a3 validFrameDurations]);
+        LOBYTE(v7) = -[NSArray isEqual:](self->_validFrameDurations, "isEqual:", [equal validFrameDurations]);
       }
     }
   }
@@ -164,9 +164,9 @@ LABEL_13:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CMIOExtensionStreamFormat allocWithZone:a3];
+  v4 = [CMIOExtensionStreamFormat allocWithZone:zone];
   formatDescription = self->_formatDescription;
   validFrameDurations = self->_validFrameDurations;
   maxFrameDuration = self->_maxFrameDuration;
@@ -174,7 +174,7 @@ LABEL_13:
   return [(CMIOExtensionStreamFormat *)v4 initWithFormatDescription:formatDescription maxFrameDuration:&maxFrameDuration minFrameDuration:&minFrameDuration validFrameDurations:validFrameDurations];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -182,11 +182,11 @@ LABEL_13:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@ can only be encoded as part of an xpc message", self}];
   }
 
-  v5 = [(CMIOExtensionStreamFormat *)self copyXPCDictionary];
-  if (v5)
+  copyXPCDictionary = [(CMIOExtensionStreamFormat *)self copyXPCDictionary];
+  if (copyXPCDictionary)
   {
-    v6 = v5;
-    [a3 encodeXPCObject:v5 forKey:@"streamFormat"];
+    v6 = copyXPCDictionary;
+    [coder encodeXPCObject:copyXPCDictionary forKey:@"streamFormat"];
 
     xpc_release(v6);
   }
@@ -201,7 +201,7 @@ LABEL_13:
   }
 }
 
-- (CMIOExtensionStreamFormat)initWithCoder:(id)a3
+- (CMIOExtensionStreamFormat)initWithCoder:(id)coder
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -209,7 +209,7 @@ LABEL_13:
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@ can only be encoded as part of an xpc message", self}];
   }
 
-  v5 = [a3 decodeXPCObjectOfType:MEMORY[0x277D86468] forKey:@"streamFormat"];
+  v5 = [coder decodeXPCObjectOfType:MEMORY[0x277D86468] forKey:@"streamFormat"];
   if (!v5)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"%@ nil xpc object", self}];
@@ -313,9 +313,9 @@ LABEL_13:
   return v3;
 }
 
-- (CMIOExtensionStreamFormat)initWithXPCDictionary:(id)a3
+- (CMIOExtensionStreamFormat)initWithXPCDictionary:(id)dictionary
 {
-  if (!a3)
+  if (!dictionary)
   {
 
     v9 = MEMORY[0x277CBEAD8];
@@ -333,21 +333,21 @@ LABEL_16:
   v32 = v34;
   length = 24;
   cf = 0;
-  data = xpc_dictionary_get_data(a3, "minFrameDuration", &length);
+  data = xpc_dictionary_get_data(dictionary, "minFrameDuration", &length);
   if (data)
   {
     v33 = *data;
     v34 = data[2];
   }
 
-  v6 = xpc_dictionary_get_data(a3, "maxFrameDuration", &length);
+  v6 = xpc_dictionary_get_data(dictionary, "maxFrameDuration", &length);
   if (v6)
   {
     v31 = *v6;
     v32 = v6[2];
   }
 
-  if (cmio_XPCMessageCopyCFArray(a3, "validFrameDurations", &cf))
+  if (cmio_XPCMessageCopyCFArray(dictionary, "validFrameDurations", &cf))
   {
     v7 = CMIOLog();
     if (v7)
@@ -373,7 +373,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  value = xpc_dictionary_get_value(a3, "muxFormatDescription");
+  value = xpc_dictionary_get_value(dictionary, "muxFormatDescription");
   if (value)
   {
     v15 = value;
@@ -430,7 +430,7 @@ LABEL_16:
   return v12;
 }
 
-+ (id)copyXPCArrayFromFormats:(id)a3
++ (id)copyXPCArrayFromFormats:(id)formats
 {
   v21 = *MEMORY[0x277D85DE8];
   v4 = xpc_array_create(0, 0);
@@ -438,7 +438,7 @@ LABEL_16:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v5 = [formats countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -449,7 +449,7 @@ LABEL_16:
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(formats);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -465,8 +465,8 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v10 = [v9 copyXPCDictionary];
-        if (!v10)
+        copyXPCDictionary = [v9 copyXPCDictionary];
+        if (!copyXPCDictionary)
         {
           v13 = CMIOLog();
           if (v13 && os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -477,12 +477,12 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v11 = v10;
-        xpc_array_append_value(v4, v10);
+        v11 = copyXPCDictionary;
+        xpc_array_append_value(v4, copyXPCDictionary);
         xpc_release(v11);
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [formats countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -497,9 +497,9 @@ LABEL_17:
   return v4;
 }
 
-+ (id)copyFormatsFromXPCArray:(id)a3
++ (id)copyFormatsFromXPCArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"nil xpc array"];
     return 0;
@@ -511,7 +511,7 @@ LABEL_17:
   applier[2] = __53__CMIOExtensionStreamFormat_copyFormatsFromXPCArray___block_invoke;
   applier[3] = &unk_27885BFC0;
   applier[4] = v4;
-  if (!xpc_array_apply(a3, applier))
+  if (!xpc_array_apply(array, applier))
   {
 
     return 0;

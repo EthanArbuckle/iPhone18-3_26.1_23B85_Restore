@@ -1,22 +1,22 @@
 @interface PETAggregatedMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PETAggregatedMessage
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   key = self->_key;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (key)
   {
     if (!v6)
@@ -37,16 +37,16 @@
     [(PETAggregatedMessage *)self setKey:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if (*(v4 + 32))
+  if (*(fromCopy + 32))
   {
-    self->_count = *(v4 + 2);
+    self->_count = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
   distribution = self->_distribution;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (distribution)
   {
     if (v8)
@@ -79,16 +79,16 @@ LABEL_7:
   return v4 ^ v3 ^ [(PETDistribution *)self->_distribution hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   key = self->_key;
-  if (key | *(v4 + 3))
+  if (key | *(equalCopy + 3))
   {
     if (![(PETAggregationKey *)key isEqual:?])
     {
@@ -96,16 +96,16 @@ LABEL_7:
     }
   }
 
-  v6 = *(v4 + 32);
+  v6 = *(equalCopy + 32);
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_count != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_count != *(equalCopy + 2))
     {
       goto LABEL_11;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
 LABEL_11:
     v8 = 0;
@@ -113,7 +113,7 @@ LABEL_11:
   }
 
   distribution = self->_distribution;
-  if (distribution | *(v4 + 2))
+  if (distribution | *(equalCopy + 2))
   {
     v8 = [(PETDistribution *)distribution isEqual:?];
   }
@@ -128,10 +128,10 @@ LABEL_12:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PETAggregationKey *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PETAggregationKey *)self->_key copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -141,84 +141,84 @@ LABEL_12:
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(PETDistribution *)self->_distribution copyWithZone:a3];
+  v8 = [(PETDistribution *)self->_distribution copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_key)
   {
-    [v4 setKey:?];
-    v4 = v5;
+    [toCopy setKey:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 2) = self->_count;
-    *(v4 + 32) |= 1u;
+    *(toCopy + 2) = self->_count;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_distribution)
   {
     [v5 setDistribution:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_key)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     count = self->_count;
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_distribution)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   key = self->_key;
   if (key)
   {
-    v5 = [(PETAggregationKey *)key dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"key"];
+    dictionaryRepresentation = [(PETAggregationKey *)key dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"key"];
   }
 
   if (*&self->_has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_count];
-    [v3 setObject:v6 forKey:@"count"];
+    [dictionary setObject:v6 forKey:@"count"];
   }
 
   distribution = self->_distribution;
   if (distribution)
   {
-    v8 = [(PETDistribution *)distribution dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"distribution"];
+    dictionaryRepresentation2 = [(PETDistribution *)distribution dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"distribution"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -227,8 +227,8 @@ LABEL_12:
   v8.receiver = self;
   v8.super_class = PETAggregatedMessage;
   v4 = [(PETAggregatedMessage *)&v8 description];
-  v5 = [(PETAggregatedMessage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PETAggregatedMessage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

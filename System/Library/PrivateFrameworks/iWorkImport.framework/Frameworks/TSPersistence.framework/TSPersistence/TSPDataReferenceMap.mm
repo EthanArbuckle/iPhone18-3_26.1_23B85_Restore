@@ -1,25 +1,25 @@
 @interface TSPDataReferenceMap
-- (BOOL)isDataInDocument:(id)a3;
-- (BOOL)p_isDataInDocument:(int64_t)a3;
-- (BOOL)p_isObjectIdentifierInDocument:(int64_t)a3;
-- (BOOL)p_objectIdentifier:(int64_t)a3 didAddReferenceToDataIdentifier:(int64_t)a4 increment:(int64_t)a5 isObjectPersisted:(BOOL)a6;
-- (BOOL)p_objectIdentifier:(int64_t)a3 willRemoveReferenceToDataIdentifier:(int64_t)a4 isObjectPersisted:(BOOL)a5;
+- (BOOL)isDataInDocument:(id)document;
+- (BOOL)p_isDataInDocument:(int64_t)document;
+- (BOOL)p_isObjectIdentifierInDocument:(int64_t)document;
+- (BOOL)p_objectIdentifier:(int64_t)identifier didAddReferenceToDataIdentifier:(int64_t)dataIdentifier increment:(int64_t)increment isObjectPersisted:(BOOL)persisted;
+- (BOOL)p_objectIdentifier:(int64_t)identifier willRemoveReferenceToDataIdentifier:(int64_t)dataIdentifier isObjectPersisted:(BOOL)persisted;
 - (TSPDataReferenceMap)init;
-- (TSPDataReferenceMap)initWithDelegate:(id)a3;
-- (id)allObjectsReferencingData:(id)a3;
-- (id)p_allReferencesFromDataIdentifier:(int64_t)a3;
-- (id)p_allReferencesFromObjectIdentifier:(int64_t)a3;
-- (id)p_consolidatedIdentifiersWithPersistedIdentifiers:(id)a3 identifierOverrides:(id)a4;
-- (void)appendComponentDataReferenceMap:(id)a3 forUnarchivedObjects:(id)a4;
-- (void)enumerateDataInDocumentUsingBlock:(id)a3;
-- (void)objectIdentifier:(int64_t)a3 didAddReferenceToDataIdentifier:(int64_t)a4 isObjectPersisted:(BOOL)a5;
-- (void)objectIdentifier:(int64_t)a3 willRemoveReferenceToDataIdentifier:(int64_t)a4 isObjectPersisted:(BOOL)a5;
+- (TSPDataReferenceMap)initWithDelegate:(id)delegate;
+- (id)allObjectsReferencingData:(id)data;
+- (id)p_allReferencesFromDataIdentifier:(int64_t)identifier;
+- (id)p_allReferencesFromObjectIdentifier:(int64_t)identifier;
+- (id)p_consolidatedIdentifiersWithPersistedIdentifiers:(id)identifiers identifierOverrides:(id)overrides;
+- (void)appendComponentDataReferenceMap:(id)map forUnarchivedObjects:(id)objects;
+- (void)enumerateDataInDocumentUsingBlock:(id)block;
+- (void)objectIdentifier:(int64_t)identifier didAddReferenceToDataIdentifier:(int64_t)dataIdentifier isObjectPersisted:(BOOL)persisted;
+- (void)objectIdentifier:(int64_t)identifier willRemoveReferenceToDataIdentifier:(int64_t)dataIdentifier isObjectPersisted:(BOOL)persisted;
 - (void)p_notifyDataInDocumentUpdated;
-- (void)p_recalculateDataInDocumentWithAllDataIdentifiers:(id)a3;
-- (void)setInitialDataIdentifiersInDocumentIndexSet:(id)a3;
-- (void)setPersistedDataReferenceMap:(id)a3 allDataIdentifiers:(id)a4 persistedObjectProvider:(id)a5;
+- (void)p_recalculateDataInDocumentWithAllDataIdentifiers:(id)identifiers;
+- (void)setInitialDataIdentifiersInDocumentIndexSet:(id)set;
+- (void)setPersistedDataReferenceMap:(id)map allDataIdentifiers:(id)identifiers persistedObjectProvider:(id)provider;
 - (void)snapshotDataReferenceCountsForAutosave;
-- (void)updateWithObjectIdentifierAddedToDocument:(int64_t)a3 objectIdentifierRemovedFromDocument:(int64_t)a4;
+- (void)updateWithObjectIdentifierAddedToDocument:(int64_t)document objectIdentifierRemovedFromDocument:(int64_t)fromDocument;
 @end
 
 @implementation TSPDataReferenceMap
@@ -41,16 +41,16 @@
   objc_exception_throw(v14);
 }
 
-- (TSPDataReferenceMap)initWithDelegate:(id)a3
+- (TSPDataReferenceMap)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = TSPDataReferenceMap;
   v5 = [(TSPDataReferenceMap *)&v20 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("TSPDataReferenceMap.Access", v7);
     accessQueue = v6->_accessQueue;
@@ -77,9 +77,9 @@
   return v6;
 }
 
-- (void)setInitialDataIdentifiersInDocumentIndexSet:(id)a3
+- (void)setInitialDataIdentifiersInDocumentIndexSet:(id)set
 {
-  v6 = a3;
+  setCopy = set;
   v7 = atomic_load(&self->_isTornDown);
   if ((v7 & 1) == 0)
   {
@@ -90,22 +90,22 @@
     v9[2] = sub_276A5CD18;
     v9[3] = &unk_27A6E4808;
     v9[4] = self;
-    v10 = v6;
+    v10 = setCopy;
     dispatch_async(accessQueue, v9);
   }
 }
 
-- (void)setPersistedDataReferenceMap:(id)a3 allDataIdentifiers:(id)a4 persistedObjectProvider:(id)a5
+- (void)setPersistedDataReferenceMap:(id)map allDataIdentifiers:(id)identifiers persistedObjectProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mapCopy = map;
+  identifiersCopy = identifiers;
+  providerCopy = provider;
   dispatch_assert_queue_not_V2(self->_accessQueue);
   v13 = atomic_load(&self->_isTornDown);
   if ((v13 & 1) == 0)
   {
     objc_msgSend_markAsReady(self, v11, v12);
-    if (!v8)
+    if (!mapCopy)
     {
       sub_276BD50AC();
     }
@@ -116,17 +116,17 @@
     v15[2] = sub_276A5CE94;
     v15[3] = &unk_27A6E4FA0;
     v15[4] = self;
-    v16 = v8;
-    v17 = v10;
-    v18 = v9;
+    v16 = mapCopy;
+    v17 = providerCopy;
+    v18 = identifiersCopy;
     dispatch_async(accessQueue, v15);
   }
 }
 
-- (void)appendComponentDataReferenceMap:(id)a3 forUnarchivedObjects:(id)a4
+- (void)appendComponentDataReferenceMap:(id)map forUnarchivedObjects:(id)objects
 {
-  v6 = a3;
-  v7 = a4;
+  mapCopy = map;
+  objectsCopy = objects;
   dispatch_assert_queue_not_V2(self->_accessQueue);
   v10 = atomic_load(&self->_isReady);
   if ((v10 & 1) == 0)
@@ -139,7 +139,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v16, v17);
   }
 
-  if (objc_msgSend_objectCount(v6, v8, v9))
+  if (objc_msgSend_objectCount(mapCopy, v8, v9))
   {
     accessQueue = self->_accessQueue;
     block[0] = MEMORY[0x277D85DD0];
@@ -147,8 +147,8 @@
     block[2] = sub_276A5DAA0;
     block[3] = &unk_27A6E5018;
     block[4] = self;
-    v20 = v6;
-    v21 = v7;
+    v20 = mapCopy;
+    v21 = objectsCopy;
     dispatch_async(accessQueue, block);
   }
 }
@@ -175,7 +175,7 @@
   dispatch_async(accessQueue, block);
 }
 
-- (void)objectIdentifier:(int64_t)a3 didAddReferenceToDataIdentifier:(int64_t)a4 isObjectPersisted:(BOOL)a5
+- (void)objectIdentifier:(int64_t)identifier didAddReferenceToDataIdentifier:(int64_t)dataIdentifier isObjectPersisted:(BOOL)persisted
 {
   v9 = atomic_load(&self->_isReady);
   if ((v9 & 1) == 0)
@@ -183,7 +183,7 @@
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDataReferenceMap objectIdentifier:didAddReferenceToDataIdentifier:isObjectPersisted:]");
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDataReferenceMap.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v14, v11, v13, 289, 0, "Attempting to add reference from object identifier %llu to data identifier %llu when data reference map is not ready.", a3, a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v14, v11, v13, 289, 0, "Attempting to add reference from object identifier %llu to data identifier %llu when data reference map is not ready.", identifier, dataIdentifier);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
   }
@@ -193,14 +193,14 @@
   block[1] = 3221225472;
   block[2] = sub_276A5DF54;
   block[3] = &unk_27A6E5040;
-  v19 = a5;
+  persistedCopy = persisted;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = identifier;
+  block[6] = dataIdentifier;
   dispatch_sync(accessQueue, block);
 }
 
-- (void)objectIdentifier:(int64_t)a3 willRemoveReferenceToDataIdentifier:(int64_t)a4 isObjectPersisted:(BOOL)a5
+- (void)objectIdentifier:(int64_t)identifier willRemoveReferenceToDataIdentifier:(int64_t)dataIdentifier isObjectPersisted:(BOOL)persisted
 {
   v9 = atomic_load(&self->_isReady);
   if ((v9 & 1) == 0)
@@ -208,7 +208,7 @@
     v10 = MEMORY[0x277D81150];
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDataReferenceMap objectIdentifier:willRemoveReferenceToDataIdentifier:isObjectPersisted:]");
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDataReferenceMap.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v14, v11, v13, 313, 0, "Attempting to remove reference from object identifier %llu to data identifier %llu when data reference map is not ready.", a3, a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v10, v14, v11, v13, 313, 0, "Attempting to remove reference from object identifier %llu to data identifier %llu when data reference map is not ready.", identifier, dataIdentifier);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
   }
@@ -218,14 +218,14 @@
   block[1] = 3221225472;
   block[2] = sub_276A5E1CC;
   block[3] = &unk_27A6E5040;
-  v19 = a5;
+  persistedCopy = persisted;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = identifier;
+  block[6] = dataIdentifier;
   dispatch_sync(accessQueue, block);
 }
 
-- (void)updateWithObjectIdentifierAddedToDocument:(int64_t)a3 objectIdentifierRemovedFromDocument:(int64_t)a4
+- (void)updateWithObjectIdentifierAddedToDocument:(int64_t)document objectIdentifierRemovedFromDocument:(int64_t)fromDocument
 {
   v7 = atomic_load(&self->_isReady);
   if ((v7 & 1) == 0)
@@ -233,13 +233,13 @@
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSPDataReferenceMap updateWithObjectIdentifierAddedToDocument:objectIdentifierRemovedFromDocument:]");
     v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDataReferenceMap.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v12, v9, v11, 338, 0, "Attempting to update data reference map with added object identifier %llu and removed object identifier %llu when it is not ready.", a3, a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v12, v9, v11, 338, 0, "Attempting to update data reference map with added object identifier %llu and removed object identifier %llu when it is not ready.", document, fromDocument);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v13, v14);
   }
 
   v15 = atomic_load(&self->_isTornDown);
-  if (a4 | a3)
+  if (fromDocument | document)
   {
     if ((v15 & 1) == 0)
     {
@@ -249,16 +249,16 @@
       block[2] = sub_276A5E450;
       block[3] = &unk_27A6E5090;
       block[4] = self;
-      block[5] = a3;
-      block[6] = a4;
+      block[5] = document;
+      block[6] = fromDocument;
       dispatch_async(accessQueue, block);
     }
   }
 }
 
-- (BOOL)isDataInDocument:(id)a3
+- (BOOL)isDataInDocument:(id)document
 {
-  v4 = a3;
+  documentCopy = document;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -268,10 +268,10 @@
   block[1] = 3221225472;
   block[2] = sub_276A5E77C;
   block[3] = &unk_27A6E50B8;
-  v9 = v4;
-  v10 = self;
+  v9 = documentCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
+  v6 = documentCopy;
   dispatch_sync(accessQueue, block);
   LOBYTE(accessQueue) = *(v13 + 24);
 
@@ -279,17 +279,17 @@
   return accessQueue;
 }
 
-- (id)allObjectsReferencingData:(id)a3
+- (id)allObjectsReferencingData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = atomic_load(&self->_isReady);
   if ((v6 & 1) == 0)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSPDataReferenceMap allObjectsReferencingData:]");
     v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDataReferenceMap.m");
-    v13 = objc_msgSend_identifier(v5, v11, v12);
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v14, v8, v10, 411, 0, "Attempting to retrieve all objects referencing data identifier %llu when data reference map is not ready. data=%@", v13, v5);
+    v13 = objc_msgSend_identifier(dataCopy, v11, v12);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v7, v14, v8, v10, 411, 0, "Attempting to retrieve all objects referencing data identifier %llu when data reference map is not ready. data=%@", v13, dataCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v15, v16);
   }
@@ -307,7 +307,7 @@
   block[3] = &unk_27A6E50E0;
   v35 = &v36;
   block[4] = self;
-  v18 = v5;
+  v18 = dataCopy;
   v34 = v18;
   dispatch_sync(accessQueue, block);
   v21 = objc_msgSend_count(v37[5], v19, v20);
@@ -339,9 +339,9 @@
   return v30;
 }
 
-- (void)enumerateDataInDocumentUsingBlock:(id)a3
+- (void)enumerateDataInDocumentUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatch_assert_queue_not_V2(self->_accessQueue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = objc_msgSend_dataManagingForDataReferenceMap_(WeakRetained, v6, self);
@@ -379,14 +379,14 @@
         v17[2] = sub_276A5EDEC;
         v17[3] = &unk_27A6E5158;
         v17[4] = v14;
-        v18 = v4;
+        v18 = blockCopy;
         objc_msgSend_enumerateIndexesUsingBlock_(v15, v16, v17);
       }
     }
 
     else
     {
-      objc_msgSend_enumerateAllDataUsingBlock_(v7, v9, v4);
+      objc_msgSend_enumerateAllDataUsingBlock_(v7, v9, blockCopy);
     }
 
     _Block_object_dispose(&v20, 8);
@@ -395,39 +395,39 @@
   }
 }
 
-- (BOOL)p_objectIdentifier:(int64_t)a3 didAddReferenceToDataIdentifier:(int64_t)a4 increment:(int64_t)a5 isObjectPersisted:(BOOL)a6
+- (BOOL)p_objectIdentifier:(int64_t)identifier didAddReferenceToDataIdentifier:(int64_t)dataIdentifier increment:(int64_t)increment isObjectPersisted:(BOOL)persisted
 {
-  v6 = a6;
+  persistedCopy = persisted;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v12 = objc_msgSend_incrementReferenceFromIdentifier_toIdentifier_increment_(self->_dataToObjectReferenceMap, v11, a4, a3, a5);
-  if (v12 != objc_msgSend_incrementReferenceFromIdentifier_toIdentifier_increment_(self->_objectToDataReferenceMap, v13, a3, a4, a5))
+  v12 = objc_msgSend_incrementReferenceFromIdentifier_toIdentifier_increment_(self->_dataToObjectReferenceMap, v11, dataIdentifier, identifier, increment);
+  if (v12 != objc_msgSend_incrementReferenceFromIdentifier_toIdentifier_increment_(self->_objectToDataReferenceMap, v13, identifier, dataIdentifier, increment))
   {
     sub_276BD53F0();
   }
 
-  if (v6)
+  if (persistedCopy)
   {
-    v15 = objc_msgSend_allReferencesFromDataIdentifier_(self->_persistedDataReferenceMap, v14, a4);
-    v12 += objc_msgSend_countForIdentifier_default_(v15, v16, a3, 0);
+    v15 = objc_msgSend_allReferencesFromDataIdentifier_(self->_persistedDataReferenceMap, v14, dataIdentifier);
+    v12 += objc_msgSend_countForIdentifier_default_(v15, v16, identifier, 0);
   }
 
   return v12 == 1;
 }
 
-- (BOOL)p_objectIdentifier:(int64_t)a3 willRemoveReferenceToDataIdentifier:(int64_t)a4 isObjectPersisted:(BOOL)a5
+- (BOOL)p_objectIdentifier:(int64_t)identifier willRemoveReferenceToDataIdentifier:(int64_t)dataIdentifier isObjectPersisted:(BOOL)persisted
 {
-  v5 = a5;
+  persistedCopy = persisted;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v10 = objc_msgSend_removeReferenceFromIdentifier_toIdentifier_(self->_dataToObjectReferenceMap, v9, a4, a3);
-  if (v10 != objc_msgSend_removeReferenceFromIdentifier_toIdentifier_(self->_objectToDataReferenceMap, v11, a3, a4))
+  v10 = objc_msgSend_removeReferenceFromIdentifier_toIdentifier_(self->_dataToObjectReferenceMap, v9, dataIdentifier, identifier);
+  if (v10 != objc_msgSend_removeReferenceFromIdentifier_toIdentifier_(self->_objectToDataReferenceMap, v11, identifier, dataIdentifier))
   {
     sub_276BD5494();
   }
 
-  if (v5)
+  if (persistedCopy)
   {
-    v13 = objc_msgSend_allReferencesFromDataIdentifier_(self->_persistedDataReferenceMap, v12, a4);
-    v10 += objc_msgSend_countForIdentifier_default_(v13, v14, a3, 0);
+    v13 = objc_msgSend_allReferencesFromDataIdentifier_(self->_persistedDataReferenceMap, v12, dataIdentifier);
+    v10 += objc_msgSend_countForIdentifier_default_(v13, v14, identifier, 0);
   }
 
   if (v10 < 0)
@@ -435,7 +435,7 @@
     v15 = MEMORY[0x277D81150];
     v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "[TSPDataReferenceMap p_objectIdentifier:willRemoveReferenceToDataIdentifier:isObjectPersisted:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPDataReferenceMap.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v19, v16, v18, 531, 0, "Object identifier %llu removed reference from data %llu that does not exist.", a3, a4);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v15, v19, v16, v18, 531, 0, "Object identifier %llu removed reference from data %llu that does not exist.", identifier, dataIdentifier);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21);
   }
@@ -443,10 +443,10 @@
   return v10 == 0;
 }
 
-- (void)p_recalculateDataInDocumentWithAllDataIdentifiers:(id)a3
+- (void)p_recalculateDataInDocumentWithAllDataIdentifiers:(id)identifiers
 {
   accessQueue = self->_accessQueue;
-  v5 = a3;
+  identifiersCopy = identifiers;
   dispatch_assert_queue_V2(accessQueue);
   v6 = objc_alloc_init(MEMORY[0x277CCAB58]);
   v12[0] = MEMORY[0x277D85DD0];
@@ -455,7 +455,7 @@
   v12[3] = &unk_27A6E5180;
   v12[4] = self;
   v12[5] = v6;
-  objc_msgSend_enumerateIndexesUsingBlock_(v5, v7, v12);
+  objc_msgSend_enumerateIndexesUsingBlock_(identifiersCopy, v7, v12);
 
   if ((objc_msgSend_isEqualToIndexSet_(self->_dataInDocument, v8, v6) & 1) == 0)
   {
@@ -468,10 +468,10 @@
   }
 }
 
-- (BOOL)p_isDataInDocument:(int64_t)a3
+- (BOOL)p_isDataInDocument:(int64_t)document
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  v6 = objc_msgSend_p_allReferencesFromDataIdentifier_(self, v5, a3);
+  v6 = objc_msgSend_p_allReferencesFromDataIdentifier_(self, v5, document);
   if (objc_msgSend_count(v6, v7, v8))
   {
     if (objc_msgSend_isAnyObjectIdentifierInDocument_(self->_persistedDataReferenceMap, v9, v6))
@@ -495,46 +495,46 @@
   return isAnyObjectIdentifierInDocument;
 }
 
-- (id)p_allReferencesFromDataIdentifier:(int64_t)a3
+- (id)p_allReferencesFromDataIdentifier:(int64_t)identifier
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  v6 = objc_msgSend_allReferencesFromDataIdentifier_(self->_persistedDataReferenceMap, v5, a3);
-  v8 = objc_msgSend_allReferencesFromIdentifier_(self->_dataToObjectReferenceMap, v7, a3);
+  v6 = objc_msgSend_allReferencesFromDataIdentifier_(self->_persistedDataReferenceMap, v5, identifier);
+  v8 = objc_msgSend_allReferencesFromIdentifier_(self->_dataToObjectReferenceMap, v7, identifier);
   v10 = objc_msgSend_p_consolidatedIdentifiersWithPersistedIdentifiers_identifierOverrides_(self, v9, v6, v8);
 
   return v10;
 }
 
-- (id)p_allReferencesFromObjectIdentifier:(int64_t)a3
+- (id)p_allReferencesFromObjectIdentifier:(int64_t)identifier
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  v6 = objc_msgSend_allReferencesFromObjectIdentifier_(self->_persistedDataReferenceMap, v5, a3);
-  v8 = objc_msgSend_allReferencesFromIdentifier_(self->_objectToDataReferenceMap, v7, a3);
+  v6 = objc_msgSend_allReferencesFromObjectIdentifier_(self->_persistedDataReferenceMap, v5, identifier);
+  v8 = objc_msgSend_allReferencesFromIdentifier_(self->_objectToDataReferenceMap, v7, identifier);
   v10 = objc_msgSend_p_consolidatedIdentifiersWithPersistedIdentifiers_identifierOverrides_(self, v9, v6, v8);
 
   return v10;
 }
 
-- (id)p_consolidatedIdentifiersWithPersistedIdentifiers:(id)a3 identifierOverrides:(id)a4
+- (id)p_consolidatedIdentifiersWithPersistedIdentifiers:(id)identifiers identifierOverrides:(id)overrides
 {
-  v5 = a3;
-  v6 = a4;
-  if (objc_msgSend_count(v6, v7, v8))
+  identifiersCopy = identifiers;
+  overridesCopy = overrides;
+  if (objc_msgSend_count(overridesCopy, v7, v8))
   {
-    if (objc_msgSend_count(v5, v9, v10))
+    if (objc_msgSend_count(identifiersCopy, v9, v10))
     {
-      v12 = objc_msgSend_formMergeWithIdentifierSet_(v5, v11, v6);
+      v12 = objc_msgSend_formMergeWithIdentifierSet_(identifiersCopy, v11, overridesCopy);
     }
 
     else
     {
-      v12 = v6;
+      v12 = overridesCopy;
     }
   }
 
   else
   {
-    v12 = v5;
+    v12 = identifiersCopy;
   }
 
   v13 = v12;
@@ -542,17 +542,17 @@
   return v13;
 }
 
-- (BOOL)p_isObjectIdentifierInDocument:(int64_t)a3
+- (BOOL)p_isObjectIdentifierInDocument:(int64_t)document
 {
   dispatch_assert_queue_V2(self->_accessQueue);
-  if (objc_msgSend_isObjectIdentifierInDocument_(self->_persistedDataReferenceMap, v5, a3))
+  if (objc_msgSend_isObjectIdentifierInDocument_(self->_persistedDataReferenceMap, v5, document))
   {
     return 1;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v9 = objc_msgSend_objectInDocumentContainingForDataReferenceMap_(WeakRetained, v8, self);
-  isObjectIdentifierInDocument = objc_msgSend_isObjectIdentifierInDocument_(v9, v10, a3);
+  isObjectIdentifierInDocument = objc_msgSend_isObjectIdentifierInDocument_(v9, v10, document);
 
   return isObjectIdentifierInDocument;
 }

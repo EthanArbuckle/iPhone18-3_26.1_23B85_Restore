@@ -1,6 +1,6 @@
 @interface NSSNewsAnalyticsSessionAnnotator
 - (NSSNewsAnalyticsSessionAnnotator)init;
-- (void)annotateSession:(id)a3 withOptions:(unint64_t)a4;
+- (void)annotateSession:(id)session withOptions:(unint64_t)options;
 @end
 
 @implementation NSSNewsAnalyticsSessionAnnotator
@@ -12,17 +12,17 @@
   return [(NSSNewsAnalyticsSessionAnnotator *)&v3 init];
 }
 
-- (void)annotateSession:(id)a3 withOptions:(unint64_t)a4
+- (void)annotateSession:(id)session withOptions:(unint64_t)options
 {
-  v4 = a4;
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  optionsCopy = options;
+  sessionCopy = session;
+  if (!sessionCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NSSNewsAnalyticsSessionAnnotator annotateSession:withOptions:];
-    if ((v4 & 1) == 0)
+    if ((optionsCopy & 1) == 0)
     {
 LABEL_4:
-      if ((v4 & 2) == 0)
+      if ((optionsCopy & 2) == 0)
       {
         goto LABEL_5;
       }
@@ -31,18 +31,18 @@ LABEL_4:
     }
   }
 
-  else if ((v4 & 1) == 0)
+  else if ((optionsCopy & 1) == 0)
   {
     goto LABEL_4;
   }
 
   v7 = NSSNTPBAnalyticsAppBuildNumberValue();
-  [v5 setAppBuildNumber:v7];
+  [sessionCopy setAppBuildNumber:v7];
 
-  if ((v4 & 2) == 0)
+  if ((optionsCopy & 2) == 0)
   {
 LABEL_5:
-    if ((v4 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -52,12 +52,12 @@ LABEL_5:
 
 LABEL_21:
   v8 = NSSNTPBAnalyticsAppVersionValue();
-  [v5 setAppVersion:v8];
+  [sessionCopy setAppVersion:v8];
 
-  if ((v4 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_6:
-    if ((v4 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_7;
     }
@@ -66,11 +66,11 @@ LABEL_6:
   }
 
 LABEL_22:
-  [v5 setCellularRadioAccessTechnology:NSSNTPBAnalyticsCellularRadioAccessTechnologyValue()];
-  if ((v4 & 0x10) == 0)
+  [sessionCopy setCellularRadioAccessTechnology:NSSNTPBAnalyticsCellularRadioAccessTechnologyValue()];
+  if ((optionsCopy & 0x10) == 0)
   {
 LABEL_7:
-    if ((v4 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       goto LABEL_8;
     }
@@ -80,12 +80,12 @@ LABEL_7:
 
 LABEL_23:
   v9 = NSSNTPBAnalyticsCountryCodeValue();
-  [v5 setCountryCode:v9];
+  [sessionCopy setCountryCode:v9];
 
-  if ((v4 & 0x20) == 0)
+  if ((optionsCopy & 0x20) == 0)
   {
 LABEL_8:
-    if ((v4 & 0x40) == 0)
+    if ((optionsCopy & 0x40) == 0)
     {
       goto LABEL_9;
     }
@@ -95,12 +95,12 @@ LABEL_8:
 
 LABEL_24:
   v10 = NFDevicePlatform();
-  [v5 setDeviceModel:v10];
+  [sessionCopy setDeviceModel:v10];
 
-  if ((v4 & 0x40) == 0)
+  if ((optionsCopy & 0x40) == 0)
   {
 LABEL_9:
-    if ((v4 & 0x80) == 0)
+    if ((optionsCopy & 0x80) == 0)
     {
       goto LABEL_10;
     }
@@ -110,12 +110,12 @@ LABEL_9:
 
 LABEL_25:
   v11 = NSSNTPBAnalyticsDevicePlatformValue();
-  [v5 setDevicePlatform:v11];
+  [sessionCopy setDevicePlatform:v11];
 
-  if ((v4 & 0x80) == 0)
+  if ((optionsCopy & 0x80) == 0)
   {
 LABEL_10:
-    if ((v4 & 0x100) == 0)
+    if ((optionsCopy & 0x100) == 0)
     {
       goto LABEL_11;
     }
@@ -125,12 +125,12 @@ LABEL_10:
 
 LABEL_26:
   v12 = NSSNTPBAnalyticsLanguageCodeValue();
-  [v5 setLanguageCode:v12];
+  [sessionCopy setLanguageCode:v12];
 
-  if ((v4 & 0x100) == 0)
+  if ((optionsCopy & 0x100) == 0)
   {
 LABEL_11:
-    if ((v4 & 0x200) == 0)
+    if ((optionsCopy & 0x200) == 0)
     {
       goto LABEL_12;
     }
@@ -149,11 +149,11 @@ LABEL_27:
     v13 = 2;
   }
 
-  [v5 setOsInstallVariant:v13];
-  if ((v4 & 0x200) == 0)
+  [sessionCopy setOsInstallVariant:v13];
+  if ((optionsCopy & 0x200) == 0)
   {
 LABEL_12:
-    if ((v4 & 0x400) == 0)
+    if ((optionsCopy & 0x400) == 0)
     {
       goto LABEL_13;
     }
@@ -163,12 +163,12 @@ LABEL_12:
 
 LABEL_31:
   v14 = NSSNTPBAnalyticsOsVersionValue();
-  [v5 setOsVersion:v14];
+  [sessionCopy setOsVersion:v14];
 
-  if ((v4 & 0x400) == 0)
+  if ((optionsCopy & 0x400) == 0)
   {
 LABEL_13:
-    if ((v4 & 0x800) == 0)
+    if ((optionsCopy & 0x800) == 0)
     {
       goto LABEL_14;
     }
@@ -177,11 +177,11 @@ LABEL_13:
   }
 
 LABEL_32:
-  [v5 setReachabilityStatus:NSSNTPBAnalyticsReachabilityStatusValue()];
-  if ((v4 & 0x800) == 0)
+  [sessionCopy setReachabilityStatus:NSSNTPBAnalyticsReachabilityStatusValue()];
+  if ((optionsCopy & 0x800) == 0)
   {
 LABEL_14:
-    if ((v4 & 0x1000) == 0)
+    if ((optionsCopy & 0x1000) == 0)
     {
       goto LABEL_15;
     }
@@ -190,18 +190,18 @@ LABEL_14:
   }
 
 LABEL_33:
-  [v5 setUtcOffset:NSSNTPBAnalyticsUtcOffsetValue()];
-  if ((v4 & 0x1000) == 0)
+  [sessionCopy setUtcOffset:NSSNTPBAnalyticsUtcOffsetValue()];
+  if ((optionsCopy & 0x1000) == 0)
   {
 LABEL_15:
-    if ((v4 & 0x2000) == 0)
+    if ((optionsCopy & 0x2000) == 0)
     {
       goto LABEL_16;
     }
 
 LABEL_35:
-    [v5 setSignedIntoIcloud:NSSNTPBAnalyticsSignedIntoIcloudValue()];
-    if ((v4 & 0x4000) == 0)
+    [sessionCopy setSignedIntoIcloud:NSSNTPBAnalyticsSignedIntoIcloudValue()];
+    if ((optionsCopy & 0x4000) == 0)
     {
       goto LABEL_18;
     }
@@ -210,18 +210,18 @@ LABEL_35:
   }
 
 LABEL_34:
-  [v5 setPrivateDataSyncOn:NSSNTPBAnalyticsPrivateDataSyncOnValue()];
-  if ((v4 & 0x2000) != 0)
+  [sessionCopy setPrivateDataSyncOn:NSSNTPBAnalyticsPrivateDataSyncOnValue()];
+  if ((optionsCopy & 0x2000) != 0)
   {
     goto LABEL_35;
   }
 
 LABEL_16:
-  if ((v4 & 0x4000) != 0)
+  if ((optionsCopy & 0x4000) != 0)
   {
 LABEL_17:
     v6 = NSSNTPBAnalyticsUserStorefrontIdValue();
-    [v5 setUserStorefrontId:v6];
+    [sessionCopy setUserStorefrontId:v6];
   }
 
 LABEL_18:

@@ -1,49 +1,49 @@
 @interface DYMTLCommandQueueInfo
-+ (BOOL)isLabelAppleInternal:(const char *)a3;
-- (BOOL)isEqual:(id)a3;
-- (DYMTLCommandQueueInfo)initWithCoder:(id)a3;
-- (DYMTLCommandQueueInfo)initWithCommandQueue:(id)a3;
++ (BOOL)isLabelAppleInternal:(const char *)internal;
+- (BOOL)isEqual:(id)equal;
+- (DYMTLCommandQueueInfo)initWithCoder:(id)coder;
+- (DYMTLCommandQueueInfo)initWithCommandQueue:(id)queue;
 - (NSString)description;
 - (NSString)displayName;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DYMTLCommandQueueInfo
 
-- (DYMTLCommandQueueInfo)initWithCommandQueue:(id)a3
+- (DYMTLCommandQueueInfo)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = DYMTLCommandQueueInfo;
   v5 = [(DYMTLCommandQueueInfo *)&v16 init];
   if (v5)
   {
-    v6 = v4;
+    v6 = queueCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [v6 originalObject];
+      originalObject = [v6 originalObject];
     }
 
     else
     {
-      v7 = v6;
+      originalObject = v6;
     }
 
-    v8 = v7;
+    v8 = originalObject;
 
-    v9 = [v8 device];
-    v5->_deviceAddress = v9;
+    device = [v8 device];
+    v5->_deviceAddress = device;
 
-    v10 = [v8 device];
-    v5->_deviceStreamRef = [v10 streamReference];
+    device2 = [v8 device];
+    v5->_deviceStreamRef = [device2 streamReference];
 
     v5->_queueAddress = v8;
     v5->_toolsQueueAddress = v6;
-    v11 = [v8 label];
+    label = [v8 label];
     label = v5->_label;
-    v5->_label = v11;
+    v5->_label = label;
 
     displayName = v5->_displayName;
     v5->_displayName = 0;
@@ -63,7 +63,7 @@
     label = self->_label;
     if (label)
     {
-      v4 = label;
+      toolsQueueAddress = label;
     }
 
     else
@@ -74,11 +74,11 @@
         toolsQueueAddress = self->_queueAddress;
       }
 
-      v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Command Queue 0x%llx", toolsQueueAddress];
+      toolsQueueAddress = [MEMORY[0x277CCACA8] stringWithFormat:@"Command Queue 0x%llx", toolsQueueAddress];
     }
 
     displayName = self->_displayName;
-    self->_displayName = v4;
+    self->_displayName = toolsQueueAddress;
   }
 
   v7 = self->_displayName;
@@ -86,44 +86,44 @@
   return v7;
 }
 
-- (DYMTLCommandQueueInfo)initWithCoder:(id)a3
+- (DYMTLCommandQueueInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = DYMTLCommandQueueInfo;
   v5 = [(DYMTLCommandQueueInfo *)&v10 init];
   if (v5)
   {
-    v5->_streamRef = [v4 decodeInt64ForKey:@"streamRef"];
-    v5->_deviceAddress = [v4 decodeInt64ForKey:@"deviceAddress"];
-    v5->_deviceStreamRef = [v4 decodeInt64ForKey:@"deviceStreamRef"];
-    v5->_queueAddress = [v4 decodeInt64ForKey:@"queueAddress"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+    v5->_streamRef = [coderCopy decodeInt64ForKey:@"streamRef"];
+    v5->_deviceAddress = [coderCopy decodeInt64ForKey:@"deviceAddress"];
+    v5->_deviceStreamRef = [coderCopy decodeInt64ForKey:@"deviceStreamRef"];
+    v5->_queueAddress = [coderCopy decodeInt64ForKey:@"queueAddress"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
     label = v5->_label;
     v5->_label = v6;
 
     v5->_canBeCaptured = 1;
-    if ([v4 containsValueForKey:@"canBeCaptured"])
+    if ([coderCopy containsValueForKey:@"canBeCaptured"])
     {
-      v5->_canBeCaptured = [v4 decodeBoolForKey:@"canBeCaptured"];
+      v5->_canBeCaptured = [coderCopy decodeBoolForKey:@"canBeCaptured"];
     }
 
     v5->_isOpenGLQueue = 0;
-    if ([v4 containsValueForKey:@"isOpenGLQueue"])
+    if ([coderCopy containsValueForKey:@"isOpenGLQueue"])
     {
-      v5->_isOpenGLQueue = [v4 decodeBoolForKey:@"isOpenGLQueue"];
+      v5->_isOpenGLQueue = [coderCopy decodeBoolForKey:@"isOpenGLQueue"];
     }
 
     v5->_isInternalQueue = 0;
-    if ([v4 containsValueForKey:@"isInternalQueue"])
+    if ([coderCopy containsValueForKey:@"isInternalQueue"])
     {
-      v5->_isInternalQueue = [v4 decodeBoolForKey:@"isInternalQueue"];
+      v5->_isInternalQueue = [coderCopy decodeBoolForKey:@"isInternalQueue"];
     }
 
     v5->_toolsQueueAddress = 0;
-    if ([v4 containsValueForKey:@"toolsQueueAddress"])
+    if ([coderCopy containsValueForKey:@"toolsQueueAddress"])
     {
-      v5->_toolsQueueAddress = [v4 decodeInt64ForKey:@"toolsQueueAddress"];
+      v5->_toolsQueueAddress = [coderCopy decodeInt64ForKey:@"toolsQueueAddress"];
     }
 
     v8 = v5;
@@ -132,21 +132,21 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:self->_streamRef forKey:@"streamRef"];
-  [v4 encodeInt64:self->_deviceAddress forKey:@"deviceAddress"];
-  [v4 encodeInt64:self->_deviceStreamRef forKey:@"deviceStreamRef"];
-  [v4 encodeInt64:self->_queueAddress forKey:@"queueAddress"];
-  [v4 encodeInt64:self->_toolsQueueAddress forKey:@"toolsQueueAddress"];
-  [v4 encodeObject:self->_label forKey:@"label"];
-  [v4 encodeBool:self->_canBeCaptured forKey:@"canBeCaptured"];
-  [v4 encodeBool:self->_isOpenGLQueue forKey:@"isOpenGLQueue"];
-  [v4 encodeBool:self->_isInternalQueue forKey:@"isInternalQueue"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:self->_streamRef forKey:@"streamRef"];
+  [coderCopy encodeInt64:self->_deviceAddress forKey:@"deviceAddress"];
+  [coderCopy encodeInt64:self->_deviceStreamRef forKey:@"deviceStreamRef"];
+  [coderCopy encodeInt64:self->_queueAddress forKey:@"queueAddress"];
+  [coderCopy encodeInt64:self->_toolsQueueAddress forKey:@"toolsQueueAddress"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeBool:self->_canBeCaptured forKey:@"canBeCaptured"];
+  [coderCopy encodeBool:self->_isOpenGLQueue forKey:@"isOpenGLQueue"];
+  [coderCopy encodeBool:self->_isInternalQueue forKey:@"isInternalQueue"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = v4;
@@ -201,10 +201,10 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"device:0x%llx, queue:0x%llx, toolsQueue:0x%llx, label:%@, canBeCaptured:%@, isOpenGL:%@, isInternal: %@", self->_deviceAddress, self->_queueAddress, self->_toolsQueueAddress, self->_label, v3, v4, v2];
 }
 
-+ (BOOL)isLabelAppleInternal:(const char *)a3
++ (BOOL)isLabelAppleInternal:(const char *)internal
 {
   {
-    if (a3)
+    if (internal)
     {
       goto LABEL_3;
     }
@@ -215,7 +215,7 @@ LABEL_7:
   }
 
   +[DYMTLCommandQueueInfo isLabelAppleInternal:]::kPrefixLength = 1;
-  if (!a3)
+  if (!internal)
   {
     goto LABEL_7;
   }
@@ -231,7 +231,7 @@ LABEL_3:
     v4 = 0;
   }
 
-  if (strncmp("com.apple", a3, v4))
+  if (strncmp("com.apple", internal, v4))
   {
     goto LABEL_7;
   }
@@ -239,7 +239,7 @@ LABEL_3:
   v6 = -1;
   for (i = +[DYMTLCommandQueueInfo isLabelAppleInternal:]::kWhitelistedLabels; ; ++i)
   {
-    v5 = strcmp(a3, *i);
+    v5 = strcmp(internal, *i);
     if (!v5)
     {
       break;
@@ -255,11 +255,11 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  v6 = v5 == objc_opt_class() && self->_queueAddress == v4[6];
+  v6 = v5 == objc_opt_class() && self->_queueAddress == equalCopy[6];
 
   return v6;
 }

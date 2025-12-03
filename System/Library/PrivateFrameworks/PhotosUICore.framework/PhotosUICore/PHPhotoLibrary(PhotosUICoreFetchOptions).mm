@@ -6,10 +6,10 @@
 
 - (id)px_standardLibrarySpecificFetchOptions
 {
-  v1 = [a1 librarySpecificFetchOptions];
-  [v1 setCacheSizeForFetch:200000];
+  librarySpecificFetchOptions = [self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setCacheSizeForFetch:200000];
 
-  return v1;
+  return librarySpecificFetchOptions;
 }
 
 @end

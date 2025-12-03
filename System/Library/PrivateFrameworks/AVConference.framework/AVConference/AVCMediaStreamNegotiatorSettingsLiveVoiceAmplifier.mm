@@ -1,11 +1,11 @@
 @interface AVCMediaStreamNegotiatorSettingsLiveVoiceAmplifier
 - (id)newAudioRuleCollection;
-- (void)setUpPropertiesWithOptions:(id)a3;
+- (void)setUpPropertiesWithOptions:(id)options;
 @end
 
 @implementation AVCMediaStreamNegotiatorSettingsLiveVoiceAmplifier
 
-- (void)setUpPropertiesWithOptions:(id)a3
+- (void)setUpPropertiesWithOptions:(id)options
 {
   self->super._pTime = 5;
   self->super._channelCount = 1;

@@ -1,17 +1,17 @@
 @interface FPXItemsObserver
-- (FPXItemsObserver)initWithObservedItemID:(id)a3 domainContext:(id)a4 nsFileProviderRequest:(id)a5;
-- (void)didEnumerateItems:(id)a3;
-- (void)finishEnumeratingUpToPage:(id)a3;
-- (void)finishEnumeratingWithError:(id)a3;
+- (FPXItemsObserver)initWithObservedItemID:(id)d domainContext:(id)context nsFileProviderRequest:(id)request;
+- (void)didEnumerateItems:(id)items;
+- (void)finishEnumeratingUpToPage:(id)page;
+- (void)finishEnumeratingWithError:(id)error;
 @end
 
 @implementation FPXItemsObserver
 
-- (FPXItemsObserver)initWithObservedItemID:(id)a3 domainContext:(id)a4 nsFileProviderRequest:(id)a5
+- (FPXItemsObserver)initWithObservedItemID:(id)d domainContext:(id)context nsFileProviderRequest:(id)request
 {
   v9.receiver = self;
   v9.super_class = FPXItemsObserver;
-  v5 = [(FPXObserver *)&v9 initWithObservedItemID:a3 domainContext:a4 nsFileProviderRequest:a5];
+  v5 = [(FPXObserver *)&v9 initWithObservedItemID:d domainContext:context nsFileProviderRequest:request];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -24,34 +24,34 @@
   return v5;
 }
 
-- (void)didEnumerateItems:(id)a3
+- (void)didEnumerateItems:(id)items
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   v5 = [(FPXDomainContext *)self->super._domainContext log];
   v6 = fpfs_adopt_log(v5);
 
-  v7 = [(FPXDomainContext *)self->super._domainContext domain];
-  v8 = [v7 personaIdentifier];
-  v9 = [MEMORY[0x1E69DF068] sharedManager];
-  v10 = [v9 currentPersona];
-  v11 = [v10 userPersonaUniqueString];
-  if ([v8 isEqualToString:v11])
+  domain = [(FPXDomainContext *)self->super._domainContext domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
     [MEMORY[0x1E69DF068] sharedManager];
-    v12 = v28 = v4;
-    v13 = [v12 currentPersona];
-    v26 = [v13 userPersonaUniqueString];
-    v14 = [(FPXDomainContext *)self->super._domainContext domain];
-    [v14 personaIdentifier];
-    v15 = v27 = v7;
+    v12 = v28 = itemsCopy;
+    currentPersona2 = [v12 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [(FPXDomainContext *)self->super._domainContext domain];
+    [domain2 personaIdentifier];
+    v15 = v27 = domain;
 
-    v4 = v28;
-    if (v26 != v15)
+    itemsCopy = v28;
+    if (userPersonaUniqueString2 != v15)
     {
       v25 = fp_current_or_default_log();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -66,11 +66,11 @@
   v16 = fp_current_or_default_log();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    [(FPXItemsObserver *)self didEnumerateItems:v4, v16];
+    [(FPXItemsObserver *)self didEnumerateItems:itemsCopy, v16];
   }
 
   v17 = [(NSMutableArray *)self->_items count];
-  if (([v4 count] + v17) >= 0x4E21)
+  if (([itemsCopy count] + v17) >= 0x4E21)
   {
     __FILEPROVIDER_OBSERVER_TOO_MANY_ITEMS__(self->super._observedItemID);
   }
@@ -79,7 +79,7 @@
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v18 = v4;
+  v18 = itemsCopy;
   v19 = [v18 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v19)
   {
@@ -110,34 +110,34 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishEnumeratingUpToPage:(id)a3
+- (void)finishEnumeratingUpToPage:(id)page
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pageCopy = page;
   v5 = [(FPXDomainContext *)self->super._domainContext log];
   v6 = fpfs_adopt_log(v5);
 
-  v7 = [(FPXDomainContext *)self->super._domainContext domain];
-  v8 = [v7 personaIdentifier];
-  v9 = [MEMORY[0x1E69DF068] sharedManager];
-  v10 = [v9 currentPersona];
-  v11 = [v10 userPersonaUniqueString];
-  if ([v8 isEqualToString:v11])
+  domain = [(FPXDomainContext *)self->super._domainContext domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
     [MEMORY[0x1E69DF068] sharedManager];
-    v12 = v27 = v4;
-    v13 = [v12 currentPersona];
-    v25 = [v13 userPersonaUniqueString];
-    v14 = [(FPXDomainContext *)self->super._domainContext domain];
-    [v14 personaIdentifier];
-    v15 = v26 = v7;
+    v12 = v27 = pageCopy;
+    currentPersona2 = [v12 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [(FPXDomainContext *)self->super._domainContext domain];
+    [domain2 personaIdentifier];
+    v15 = v26 = domain;
 
-    v4 = v27;
-    if (v25 != v15)
+    pageCopy = v27;
+    if (userPersonaUniqueString2 != v15)
     {
       v24 = fp_current_or_default_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -149,10 +149,10 @@
     }
   }
 
-  [(FPXObserver *)self verifyVendorToken:v4];
-  v16 = [(FPXItemsObserver *)self finishedBlock];
+  [(FPXObserver *)self verifyVendorToken:pageCopy];
+  finishedBlock = [(FPXItemsObserver *)self finishedBlock];
 
-  if (!v16)
+  if (!finishedBlock)
   {
     __FILEPROVIDER_OBSERVER_FINISHED_MORE_THAN_ONCE__(self->super._observedItemID);
   }
@@ -160,19 +160,19 @@
   v17 = fp_current_or_default_log();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [MEMORY[0x1E696AEC0] fp_hashForToken:v4];
+    v18 = [MEMORY[0x1E696AEC0] fp_hashForToken:pageCopy];
     *buf = 138543362;
     v29 = v18;
     _os_log_impl(&dword_1AAAE1000, v17, OS_LOG_TYPE_INFO, "[INFO] page enumeration returned page token %{public}@", buf, 0xCu);
   }
 
-  v19 = [(FPXItemsObserver *)self finishedBlock];
-  if (v19)
+  finishedBlock2 = [(FPXItemsObserver *)self finishedBlock];
+  if (finishedBlock2)
   {
     items = self->_items;
-    v21 = [(FPXItemsObserver *)self syncAnchor];
+    syncAnchor = [(FPXItemsObserver *)self syncAnchor];
     v22 = [(FPXDomainContext *)self->super._domainContext currentResponseWithRequest:self->super._nsFileProviderRequest];
-    (v19)[2](v19, items, v4, v21, v22, 0);
+    (finishedBlock2)[2](finishedBlock2, items, pageCopy, syncAnchor, v22, 0);
 
     [(FPXItemsObserver *)self setFinishedBlock:0];
   }
@@ -180,31 +180,31 @@
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishEnumeratingWithError:(id)a3
+- (void)finishEnumeratingWithError:(id)error
 {
-  v21 = a3;
+  errorCopy = error;
   v4 = [(FPXDomainContext *)self->super._domainContext log];
   v5 = fpfs_adopt_log(v4);
 
-  v6 = [(FPXDomainContext *)self->super._domainContext domain];
-  v7 = [v6 personaIdentifier];
-  v8 = [MEMORY[0x1E69DF068] sharedManager];
-  v9 = [v8 currentPersona];
-  v10 = [v9 userPersonaUniqueString];
-  if ([v7 isEqualToString:v10])
+  domain = [(FPXDomainContext *)self->super._domainContext domain];
+  personaIdentifier = [domain personaIdentifier];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
+  userPersonaUniqueString = [currentPersona userPersonaUniqueString];
+  if ([personaIdentifier isEqualToString:userPersonaUniqueString])
   {
   }
 
   else
   {
     [MEMORY[0x1E69DF068] sharedManager];
-    v11 = v20 = v6;
-    v12 = [v11 currentPersona];
-    v19 = [v12 userPersonaUniqueString];
-    v13 = [(FPXDomainContext *)self->super._domainContext domain];
-    v14 = [v13 personaIdentifier];
+    v11 = v20 = domain;
+    currentPersona2 = [v11 currentPersona];
+    userPersonaUniqueString2 = [currentPersona2 userPersonaUniqueString];
+    domain2 = [(FPXDomainContext *)self->super._domainContext domain];
+    personaIdentifier2 = [domain2 personaIdentifier];
 
-    if (v19 != v14)
+    if (userPersonaUniqueString2 != personaIdentifier2)
     {
       v18 = fp_current_or_default_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -216,18 +216,18 @@
     }
   }
 
-  v15 = [(FPXItemsObserver *)self finishedBlock];
+  finishedBlock = [(FPXItemsObserver *)self finishedBlock];
 
-  if (!v15)
+  if (!finishedBlock)
   {
     __FILEPROVIDER_OBSERVER_FINISHED_MORE_THAN_ONCE__(self->super._observedItemID);
   }
 
-  v16 = [(FPXItemsObserver *)self finishedBlock];
-  if (v16)
+  finishedBlock2 = [(FPXItemsObserver *)self finishedBlock];
+  if (finishedBlock2)
   {
     v17 = [(FPXDomainContext *)self->super._domainContext currentResponseWithRequest:self->super._nsFileProviderRequest];
-    (v16)[2](v16, MEMORY[0x1E695E0F0], 0, 0, v17, v21);
+    (finishedBlock2)[2](finishedBlock2, MEMORY[0x1E695E0F0], 0, 0, v17, errorCopy);
 
     [(FPXItemsObserver *)self setFinishedBlock:0];
   }

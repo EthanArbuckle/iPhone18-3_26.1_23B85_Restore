@@ -1,14 +1,14 @@
 @interface DiskSpaceDiagnosticsExtension
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4;
-- (id)snapshotFilesystemMetadata:(id *)a3 progressHandler:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler;
+- (id)snapshotFilesystemMetadata:(id *)metadata progressHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation DiskSpaceDiagnosticsExtension
 
-- (id)snapshotFilesystemMetadata:(id *)a3 progressHandler:(id)a4
+- (id)snapshotFilesystemMetadata:(id *)metadata progressHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DSFilesystemMetadataSnapshotting];
   v8 = [NSXPCConnection alloc];
   v9 = [v8 initWithServiceName:kDSFilesystemMetadataSnapshotServiceName];
@@ -32,7 +32,7 @@
   v32 = __Block_byref_object_copy_;
   v33 = __Block_byref_object_dispose_;
   v34 = 0;
-  v10 = [v9 remoteObjectProxy];
+  remoteObjectProxy = [v9 remoteObjectProxy];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = __76__DiskSpaceDiagnosticsExtension_snapshotFilesystemMetadata_progressHandler___block_invoke;
@@ -40,10 +40,10 @@
   v28[4] = &v29;
   v28[5] = &v41;
   v28[6] = &v35;
-  v11 = [v10 generateFilesystemMetadataSnapshotWithOptions:0 reply:v28];
+  v11 = [remoteObjectProxy generateFilesystemMetadataSnapshotWithOptions:0 reply:v28];
 
   v12 = [[DECollectionProgress alloc] initWithPercentComplete:0.0];
-  v26 = objc_retainBlock(v6);
+  v26 = objc_retainBlock(handlerCopy);
   v13 = v12;
   v27 = v13;
   v14 = NSStringFromSelector("fractionCompleted");
@@ -62,7 +62,7 @@
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "%@", buf, 0xCu);
     }
 
-    if (a3)
+    if (metadata)
     {
       v19 = [NSMutableDictionary dictionaryWithCapacity:2];
       [v19 setObject:v17 forKeyedSubscript:NSLocalizedFailureReasonErrorKey];
@@ -73,8 +73,8 @@
       }
 
       v21 = [NSError errorWithDomain:@"com.apple.DiskSpaceDiagnostics.diagnosticextension" code:0 userInfo:v19];
-      v22 = *a3;
-      *a3 = v21;
+      v22 = *metadata;
+      *metadata = v21;
     }
   }
 
@@ -125,26 +125,26 @@ void __76__DiskSpaceDiagnosticsExtension_snapshotFilesystemMetadata_progressHand
   dispatch_semaphore_signal(*(*(a1[6] + 8) + 40));
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v13 = a4;
-  v8 = a3;
+  objectCopy = object;
+  pathCopy = path;
   v9 = NSStringFromSelector("fractionCompleted");
-  v10 = [v8 isEqualToString:v9];
+  v10 = [pathCopy isEqualToString:v9];
 
   if (v10)
   {
-    [v13 fractionCompleted];
-    [*(a6 + 1) setPercentComplete:{fmin(v11 * 100.0, 100.0)}];
-    v12 = *(a6 + 1);
-    (*(*a6 + 16))();
+    [objectCopy fractionCompleted];
+    [*(context + 1) setPercentComplete:{fmin(v11 * 100.0, 100.0)}];
+    v12 = *(context + 1);
+    (*(*context + 16))();
   }
 }
 
-- (id)attachmentsForParameters:(id)a3 withProgressHandler:(id)a4
+- (id)attachmentsForParameters:(id)parameters withProgressHandler:(id)handler
 {
   v9 = 0;
-  v4 = [(DiskSpaceDiagnosticsExtension *)self snapshotFilesystemMetadata:&v9 progressHandler:a4];
+  v4 = [(DiskSpaceDiagnosticsExtension *)self snapshotFilesystemMetadata:&v9 progressHandler:handler];
   v5 = shared_diagnostics_extension_log_handle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {

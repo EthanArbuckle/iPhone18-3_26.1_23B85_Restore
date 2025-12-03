@@ -1,36 +1,36 @@
 @interface WCAFetchResponse
-+ (id)fetchResponseWithError:(id)a3;
-- (WCAFetchResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)fetchResponseWithError:(id)error;
+- (WCAFetchResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WCAFetchResponse
 
-+ (id)fetchResponseWithError:(id)a3
++ (id)fetchResponseWithError:(id)error
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setError:v4];
+  errorCopy = error;
+  v5 = objc_alloc_init(self);
+  [v5 setError:errorCopy];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   error = self->_error;
   if (error)
   {
-    [a3 encodeObject:error forKey:@"_error"];
+    [coder encodeObject:error forKey:@"_error"];
   }
 }
 
-- (WCAFetchResponse)initWithCoder:(id)a3
+- (WCAFetchResponse)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = WCAFetchResponse;
-  v3 = a3;
+  coderCopy = coder;
   v4 = [(WCAFetchResponse *)&v8 init];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:{@"_error", v8.receiver, v8.super_class}];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"_error", v8.receiver, v8.super_class}];
 
   error = v4->_error;
   v4->_error = v5;

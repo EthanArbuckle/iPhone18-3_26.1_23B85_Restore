@@ -1,31 +1,31 @@
 @interface DDLookupQuery
-+ (id)dictionarySectionForString:(id)a3 queryId:(unint64_t)a4;
-+ (id)footerSectionForString:(id)a3 queryId:(unint64_t)a4;
-+ (id)queryWithQuery:(id)a3;
++ (id)dictionarySectionForString:(id)string queryId:(unint64_t)id;
++ (id)footerSectionForString:(id)string queryId:(unint64_t)id;
++ (id)queryWithQuery:(id)query;
 + (id)queryWithoutNetwork;
 - (BOOL)parsecEnabled;
-- (DDLookupQuery)initWithSession:(id)a3;
-- (id)_rankFeedbackWithLocalSections:(id)a3 remoteSections:(id)a4 footerSection:(id)a5;
+- (DDLookupQuery)initWithSession:(id)session;
+- (id)_rankFeedbackWithLocalSections:(id)sections remoteSections:(id)remoteSections footerSection:(id)section;
 - (id)bag;
-- (void)sectionsForString:(id)a3 useNetwork:(BOOL)a4 clientId:(id)a5 queryId:(unint64_t)a6 selectionType:(int64_t)a7 domain:(id)a8 range:(_NSRange)a9 scale:(double)a10 proxy:(id)a11 handler:(id)a12;
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5;
+- (void)sectionsForString:(id)string useNetwork:(BOOL)network clientId:(id)id queryId:(unint64_t)queryId selectionType:(int64_t)type domain:(id)domain range:(_NSRange)range scale:(double)self0 proxy:(id)self1 handler:(id)self2;
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error;
 @end
 
 @implementation DDLookupQuery
 
-+ (id)queryWithQuery:(id)a3
++ (id)queryWithQuery:(id)query
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  queryCopy = query;
+  v5 = queryCopy;
+  if (queryCopy)
   {
-    v6 = [v4 userAgent];
-    v7 = [v5 identifier];
+    userAgent = [queryCopy userAgent];
+    identifier = [v5 identifier];
   }
 
   else
   {
-    v8 = [NSBundle bundleForClass:a1];
+    v8 = [NSBundle bundleForClass:self];
     v9 = [v8 objectForInfoDictionaryKey:kCFBundleVersionKey];
 
     if (![(__CFString *)v9 length])
@@ -34,12 +34,12 @@
       v9 = @"1.0";
     }
 
-    v6 = [NSString stringWithFormat:@"%@/%@", kPARLookupClient, v9];
+    userAgent = [NSString stringWithFormat:@"%@/%@", kPARLookupClient, v9];
 
-    v7 = @"com.apple.lookup";
+    identifier = @"com.apple.lookup";
   }
 
-  v10 = [[PARSessionConfiguration alloc] initWithId:v7 userAgent:v6];
+  v10 = [[PARSessionConfiguration alloc] initWithId:identifier userAgent:userAgent];
   v11 = +[PARSession sharedSession];
   [v11 setConfiguration:v10];
 
@@ -57,22 +57,22 @@
   return v2;
 }
 
-- (DDLookupQuery)initWithSession:(id)a3
+- (DDLookupQuery)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v16.receiver = self;
   v16.super_class = DDLookupQuery;
   v6 = [(DDLookupQuery *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (sessionCopy)
     {
       v8 = dispatch_queue_create("DDLookupQuery.bag", 0);
       bagQueue = v7->_bagQueue;
       v7->_bagQueue = v8;
 
-      v10 = [v5 bag];
+      v10 = [sessionCopy bag];
       bag = v7->_bag;
       v7->_bag = v10;
 
@@ -88,8 +88,8 @@
         v7->_bagSem = v13;
       }
 
-      objc_storeStrong(&v7->_session, a3);
-      [v5 setDelegate:v7];
+      objc_storeStrong(&v7->_session, session);
+      [sessionCopy setDelegate:v7];
     }
 
     else
@@ -154,9 +154,9 @@
   return v9;
 }
 
-- (void)session:(id)a3 bag:(id)a4 didLoadWithError:(id)a5
+- (void)session:(id)session bag:(id)bag didLoadWithError:(id)error
 {
-  v6 = a4;
+  bagCopy = bag;
   v7 = self->_bagSem;
   if (v7)
   {
@@ -166,7 +166,7 @@
     block[2] = sub_1000022D4;
     block[3] = &unk_100018760;
     block[4] = self;
-    v10 = v6;
+    v10 = bagCopy;
     v11 = v7;
     dispatch_async(bagQueue, block);
   }
@@ -185,20 +185,20 @@
 
   if (v5)
   {
-    v6 = 0;
+    isEnabled = 0;
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
       *v12 = 0;
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Parsec disabled from system setting, network calls will be disabled", v12, 2u);
-      v6 = 0;
+      isEnabled = 0;
     }
 
     goto LABEL_14;
   }
 
   v8 = [(DDLookupQuery *)self bag];
-  v6 = [v8 isEnabled];
-  if ((v6 & 1) == 0)
+  isEnabled = [v8 isEnabled];
+  if ((isEnabled & 1) == 0)
   {
     v9 = os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT);
     if (v8)
@@ -223,30 +223,30 @@ LABEL_12:
   }
 
 LABEL_14:
-  return v6;
+  return isEnabled;
 }
 
-- (id)_rankFeedbackWithLocalSections:(id)a3 remoteSections:(id)a4 footerSection:(id)a5
+- (id)_rankFeedbackWithLocalSections:(id)sections remoteSections:(id)remoteSections footerSection:(id)section
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sectionsCopy = sections;
+  remoteSectionsCopy = remoteSections;
+  sectionCopy = section;
   v11 = +[NSDate date];
-  if (![v9 count])
+  if (![remoteSectionsCopy count])
   {
     goto LABEL_6;
   }
 
-  v12 = [v9 firstObject];
-  v13 = [v12 results];
-  v14 = [v13 firstObject];
-  v15 = [v14 placement];
+  firstObject = [remoteSectionsCopy firstObject];
+  results = [firstObject results];
+  firstObject2 = [results firstObject];
+  placement = [firstObject2 placement];
 
-  if (v15 != 1)
+  if (placement != 1)
   {
 LABEL_6:
     v17 = &__NSArray0__struct;
-    if (![v8 count])
+    if (![sectionsCopy count])
     {
       goto LABEL_8;
     }
@@ -254,54 +254,54 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v16 = [v9 firstObject];
-  v60 = v16;
+  firstObject3 = [remoteSectionsCopy firstObject];
+  v60 = firstObject3;
   v17 = [NSArray arrayWithObjects:&v60 count:1];
 
-  if ([v9 count] == 1)
+  if ([remoteSectionsCopy count] == 1)
   {
 
-    v9 = 0;
-    if (![v8 count])
+    remoteSectionsCopy = 0;
+    if (![sectionsCopy count])
     {
       goto LABEL_8;
     }
 
 LABEL_7:
-    v18 = [v17 arrayByAddingObjectsFromArray:v8];
+    v18 = [v17 arrayByAddingObjectsFromArray:sectionsCopy];
 
     v17 = v18;
     goto LABEL_8;
   }
 
-  v40 = [v9 subarrayWithRange:{1, objc_msgSend(v9, "count") - 1}];
+  v40 = [remoteSectionsCopy subarrayWithRange:{1, objc_msgSend(remoteSectionsCopy, "count") - 1}];
 
-  v9 = v40;
-  if ([v8 count])
+  remoteSectionsCopy = v40;
+  if ([sectionsCopy count])
   {
     goto LABEL_7;
   }
 
 LABEL_8:
-  if ([v9 count])
+  if ([remoteSectionsCopy count])
   {
-    v19 = [v17 arrayByAddingObjectsFromArray:v9];
+    v19 = [v17 arrayByAddingObjectsFromArray:remoteSectionsCopy];
 
     v17 = v19;
   }
 
-  v44 = v8;
-  v42 = self;
-  v43 = v10;
-  if (v10)
+  v44 = sectionsCopy;
+  selfCopy = self;
+  v43 = sectionCopy;
+  if (sectionCopy)
   {
     if (![v17 count])
     {
       v20 = DDLocalizedString();
-      [v10 setTitle:v20];
+      [sectionCopy setTitle:v20];
     }
 
-    v21 = [v17 arrayByAddingObject:v10];
+    v21 = [v17 arrayByAddingObject:sectionCopy];
 
     v17 = v21;
   }
@@ -336,8 +336,8 @@ LABEL_8:
         v52 = 0u;
         v53 = 0u;
         v49 = v28;
-        v30 = [v28 results];
-        v31 = [v30 countByEnumeratingWithState:&v50 objects:v58 count:16];
+        results2 = [v28 results];
+        v31 = [results2 countByEnumeratingWithState:&v50 objects:v58 count:16];
         if (v31)
         {
           v32 = v31;
@@ -349,14 +349,14 @@ LABEL_8:
             {
               if (*v51 != v34)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(results2);
               }
 
               v36 = [[SFResultRankingFeedback alloc] initWithResult:*(*(&v50 + 1) + 8 * j) hiddenResults:0 duplicateResults:0 localResultPosition:v33++];
               [v29 addObject:v36];
             }
 
-            v32 = [v30 countByEnumeratingWithState:&v50 objects:v58 count:16];
+            v32 = [results2 countByEnumeratingWithState:&v50 objects:v58 count:16];
           }
 
           while (v32);
@@ -375,21 +375,21 @@ LABEL_8:
   }
 
   v37 = [[SFRankingFeedback alloc] initWithSections:v47 blendingDuration:-v23];
-  v38 = [(DDLookupQuery *)v42 feedbackListener];
-  [v38 didRankSections:v37];
+  feedbackListener = [(DDLookupQuery *)selfCopy feedbackListener];
+  [feedbackListener didRankSections:v37];
 
   return v24;
 }
 
-- (void)sectionsForString:(id)a3 useNetwork:(BOOL)a4 clientId:(id)a5 queryId:(unint64_t)a6 selectionType:(int64_t)a7 domain:(id)a8 range:(_NSRange)a9 scale:(double)a10 proxy:(id)a11 handler:(id)a12
+- (void)sectionsForString:(id)string useNetwork:(BOOL)network clientId:(id)id queryId:(unint64_t)queryId selectionType:(int64_t)type domain:(id)domain range:(_NSRange)range scale:(double)self0 proxy:(id)self1 handler:(id)self2
 {
-  v16 = a4;
-  v18 = a3;
-  v61 = a5;
-  v19 = a8;
-  v62 = a11;
-  v20 = a12;
-  [v18 substringWithRange:{a9.location, a9.length}];
+  networkCopy = network;
+  stringCopy = string;
+  idCopy = id;
+  domainCopy = domain;
+  proxyCopy = proxy;
+  handlerCopy = handler;
+  [stringCopy substringWithRange:{range.location, range.length}];
   v100 = 0;
   v101 = &v100;
   v102 = 0x3032000000;
@@ -398,7 +398,7 @@ LABEL_8:
   v105 = v21;
   if ([v101[5] containsString:@""])
   {
-    v22 = v19;
+    v22 = domainCopy;
     v99 = 0;
     v23 = [NSRegularExpression regularExpressionWithPattern:@"[\\p{Letter}&&\\p{script=hebrew}]()[\\p{Letter}&&\\p{script=hebrew}]" options:0 error:&v99];
     v24 = v99;
@@ -411,7 +411,7 @@ LABEL_8:
     v98[4] = &v100;
     [v23 enumerateMatchesInString:v25 options:0 range:0 usingBlock:{v26, v98}];
 
-    v19 = v22;
+    domainCopy = v22;
   }
 
   v27 = [v101[5] stringByReplacingOccurrencesOfString:@"׳" withString:@"'"];
@@ -456,7 +456,7 @@ LABEL_8:
   {
     if (qword_10001FA50 == -1)
     {
-      if (v16)
+      if (networkCopy)
       {
         goto LABEL_21;
       }
@@ -465,10 +465,10 @@ LABEL_8:
     else
     {
       sub_10000B538();
-      if (v16)
+      if (networkCopy)
       {
 LABEL_21:
-        v41 = v19;
+        v41 = domainCopy;
         group = dispatch_group_create();
         v96[0] = 0;
         v96[1] = v96;
@@ -480,7 +480,7 @@ LABEL_21:
         v94[1] = v94;
         v94[2] = 0x2020000000;
         v95 = 0;
-        if (a7 != 2)
+        if (type != 2)
         {
           v42 = qword_10001FA48;
           block[0] = _NSConcreteStackBlock;
@@ -488,15 +488,15 @@ LABEL_21:
           block[2] = sub_10000353C;
           block[3] = &unk_1000187D0;
           v92 = v96;
-          v93 = a6;
+          queryIdCopy = queryId;
           v90 = v40;
-          v91 = self;
+          selfCopy = self;
           dispatch_group_async(group, v42, block);
         }
 
         v43 = [(DDLookupQuery *)self bag];
-        v44 = [v43 searchRenderTimeout];
-        [v44 floatValue];
+        searchRenderTimeout = [v43 searchRenderTimeout];
+        [searchRenderTimeout floatValue];
         v46 = v45;
 
         if (v46 > 0.0)
@@ -510,19 +510,19 @@ LABEL_21:
           v86 = v94;
           v87 = v96;
           v82 = group;
-          v83 = self;
+          selfCopy2 = self;
           v84 = v40;
-          v88 = a6;
-          v85 = v20;
+          queryIdCopy2 = queryId;
+          v85 = handlerCopy;
           dispatch_after(v47, v43, v81);
         }
 
-        if (v62)
+        if (proxyCopy)
         {
-          v48 = [(PARSession *)self->_session configuration];
-          v49 = [v48 identifier];
-          v50 = [(PARSession *)self->_session configuration];
-          v51 = [v50 userAgent];
+          configuration = [(PARSession *)self->_session configuration];
+          identifier = [configuration identifier];
+          configuration2 = [(PARSession *)self->_session configuration];
+          userAgent = [configuration2 userAgent];
           v74[0] = _NSConcreteStackBlock;
           v74[1] = 3221225472;
           v74[2] = sub_1000038D8;
@@ -532,32 +532,32 @@ LABEL_21:
           v78 = v94;
           v79 = v96;
           v76 = v40;
-          v80 = a6;
-          v77 = v20;
-          [v62 performClientTextQueryWithTerm:v76 queryId:a6 sessionId:v49 userAgent:v51 reply:v74];
+          queryIdCopy3 = queryId;
+          v77 = handlerCopy;
+          [proxyCopy performClientTextQueryWithTerm:v76 queryId:queryId sessionId:identifier userAgent:userAgent reply:v74];
 
 LABEL_38:
           _Block_object_dispose(v94, 8);
           _Block_object_dispose(v96, 8);
 
-          v19 = v58;
+          domainCopy = v58;
 LABEL_41:
 
           goto LABEL_42;
         }
 
-        v52 = v61;
-        if (!v61)
+        bundleIdentifier = idCopy;
+        if (!idCopy)
         {
           v43 = +[NSBundle mainBundle];
-          v52 = [v43 bundleIdentifier];
+          bundleIdentifier = [v43 bundleIdentifier];
         }
 
-        v53 = [PARRequest lookupRequestWithString:v40 queryContext:v18 domain:v41 lookupSelectionType:a7 appBundleId:v52 queryId:a6];
-        if (v61)
+        v53 = [PARRequest lookupRequestWithString:v40 queryContext:stringCopy domain:v41 lookupSelectionType:type appBundleId:bundleIdentifier queryId:queryId];
+        if (idCopy)
         {
-          v54 = a10;
-          if (a10 > 0.0)
+          scaleCopy2 = scale;
+          if (scale > 0.0)
           {
             goto LABEL_35;
           }
@@ -566,12 +566,12 @@ LABEL_41:
         else
         {
 
-          v54 = a10;
-          if (a10 > 0.0)
+          scaleCopy2 = scale;
+          if (scale > 0.0)
           {
 LABEL_35:
-            [v53 setScale:v54];
-            if (a10 <= 0.0)
+            [v53 setScale:scaleCopy2];
+            if (scale <= 0.0)
             {
             }
 
@@ -585,8 +585,8 @@ LABEL_35:
             v71 = v94;
             v72 = v96;
             v69 = v40;
-            v73 = a6;
-            v70 = v20;
+            queryIdCopy4 = queryId;
+            v70 = handlerCopy;
             v56 = [(PARSession *)session taskWithRequest:v53 completion:v67];
             [v56 resume];
 
@@ -606,27 +606,27 @@ LABEL_35:
     v63[2] = sub_100003D5C;
     v63[3] = &unk_1000188E8;
     v64 = v40;
-    v66 = a6;
-    v65 = v20;
+    queryIdCopy5 = queryId;
+    v65 = handlerCopy;
     dispatch_async(v57, v63);
 
     v41 = v64;
     goto LABEL_41;
   }
 
-  (*(v20 + 2))(v20, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0);
 LABEL_42:
   _Block_object_dispose(&v100, 8);
 }
 
-+ (id)dictionarySectionForString:(id)a3 queryId:(unint64_t)a4
++ (id)dictionarySectionForString:(id)string queryId:(unint64_t)id
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v6 = [[DDSearchResultDictionarySection alloc] initWithSearchString:v5 queryId:a4];
-    v7 = [(DDSearchResultDictionarySection *)v6 results];
-    if ([v7 count])
+    v6 = [[DDSearchResultDictionarySection alloc] initWithSearchString:stringCopy queryId:id];
+    results = [(DDSearchResultDictionarySection *)v6 results];
+    if ([results count])
     {
       v8 = v6;
     }
@@ -647,12 +647,12 @@ LABEL_42:
   return v9;
 }
 
-+ (id)footerSectionForString:(id)a3 queryId:(unint64_t)a4
++ (id)footerSectionForString:(id)string queryId:(unint64_t)id
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v6 = [[DDSearchResultFooterSection alloc] initWithQuery:v5 queryId:a4];
+    v6 = [[DDSearchResultFooterSection alloc] initWithQuery:stringCopy queryId:id];
 
     v7 = v6;
   }

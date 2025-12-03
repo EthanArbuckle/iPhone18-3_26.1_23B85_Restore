@@ -1,27 +1,27 @@
 @interface TSCECategoryRefFormulaNode
-- (TSCECategoryRefFormulaNode)initWithCategoryRef:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6;
+- (TSCECategoryRefFormulaNode)initWithCategoryRef:(id)ref;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine;
 @end
 
 @implementation TSCECategoryRefFormulaNode
 
-- (TSCECategoryRefFormulaNode)initWithCategoryRef:(id)a3
+- (TSCECategoryRefFormulaNode)initWithCategoryRef:(id)ref
 {
-  v5 = a3;
+  refCopy = ref;
   v9.receiver = self;
   v9.super_class = TSCECategoryRefFormulaNode;
   v6 = [(TSCEFormulaNode *)&v9 initWithNodeType:19];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_categoryRef, a3);
+    objc_storeStrong(&v6->_categoryRef, ref);
   }
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = TSCECategoryRefFormulaNode;
@@ -33,14 +33,14 @@
   return v4;
 }
 
-- (void)appendToNodeArray:(TSCEASTNodeArray *)a3 hostCellRef:(const TSCECellRef *)a4 symbolTable:(void *)a5 calcEngine:(id)a6
+- (void)appendToNodeArray:(TSCEASTNodeArray *)array hostCellRef:(const TSCECellRef *)ref symbolTable:(void *)table calcEngine:(id)engine
 {
-  TSCEASTCategoryRefElement::appendCategoryRefElement(a3, self->_categoryRef, a3);
+  TSCEASTCategoryRefElement::appendCategoryRefElement(array, self->_categoryRef, array);
   v16 = objc_msgSend_whitespaceBefore(self, v8, v9, v10, v11);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 31, v16);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 31, v16);
 
   v17 = objc_msgSend_whitespaceAfter(self, v12, v13, v14, v15);
-  TSCEASTWhitespaceElement::appendWhitespaceElement(a3, 32, v17);
+  TSCEASTWhitespaceElement::appendWhitespaceElement(array, 32, v17);
 }
 
 @end

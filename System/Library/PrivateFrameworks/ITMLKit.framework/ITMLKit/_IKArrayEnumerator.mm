@@ -1,20 +1,20 @@
 @interface _IKArrayEnumerator
-- (_IKArrayEnumerator)initWithArray:(id)a3;
+- (_IKArrayEnumerator)initWithArray:(id)array;
 - (id)nextObject;
 @end
 
 @implementation _IKArrayEnumerator
 
-- (_IKArrayEnumerator)initWithArray:(id)a3
+- (_IKArrayEnumerator)initWithArray:(id)array
 {
-  v5 = a3;
+  arrayCopy = array;
   v9.receiver = self;
   v9.super_class = _IKArrayEnumerator;
   v6 = [(_IKArrayEnumerator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_array, a3);
+    objc_storeStrong(&v6->_array, array);
   }
 
   return v7;

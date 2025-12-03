@@ -1,20 +1,20 @@
 @interface AFMemoryPressureObserver
 + (id)sharedObserver;
-- (AFMemoryPressureObserver)initWithOptions:(unint64_t)a3;
-- (void)_handleMemoryPressureWithFlags:(unint64_t)a3;
-- (void)_startObservingMemoryPressureWithOptions:(unint64_t)a3;
+- (AFMemoryPressureObserver)initWithOptions:(unint64_t)options;
+- (void)_handleMemoryPressureWithFlags:(unint64_t)flags;
+- (void)_startObservingMemoryPressureWithOptions:(unint64_t)options;
 - (void)_stopObservingMemoryPressure;
-- (void)addListener:(id)a3;
+- (void)addListener:(id)listener;
 - (void)dealloc;
-- (void)getCurrentConditionWithCompletion:(id)a3;
+- (void)getCurrentConditionWithCompletion:(id)completion;
 - (void)invalidate;
 - (void)removeAllListeners;
-- (void)removeListener:(id)a3;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation AFMemoryPressureObserver
 
-- (void)_handleMemoryPressureWithFlags:(unint64_t)a3
+- (void)_handleMemoryPressureWithFlags:(unint64_t)flags
 {
   v49 = *MEMORY[0x1E69E9840];
   v5 = objc_autoreleasePoolPush();
@@ -61,35 +61,35 @@
     }
   }
 
-  v9 = 0;
-  self->_memoryPressureFlags = a3;
-  if (a3 <= 3)
+  flagsCopy = 0;
+  self->_memoryPressureFlags = flags;
+  if (flags <= 3)
   {
-    if (a3 == 1 || a3 == 2)
+    if (flags == 1 || flags == 2)
     {
-      v9 = a3;
+      flagsCopy = flags;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(flags)
     {
       case 4uLL:
-        v9 = 3;
+        flagsCopy = 3;
         break;
       case 0x10uLL:
-        v9 = 4;
+        flagsCopy = 4;
         break;
       case 0x20uLL:
-        v9 = 5;
+        flagsCopy = 5;
         break;
     }
   }
 
   v10 = AFSiriLogContextUtility;
   v11 = os_log_type_enabled(AFSiriLogContextUtility, OS_LOG_TYPE_INFO);
-  if (v7 == v9)
+  if (v7 == flagsCopy)
   {
     if (!v11)
     {
@@ -133,14 +133,14 @@
       v13 = off_1E7344C78[v7 - 1];
     }
 
-    if (v9 - 1 > 4)
+    if (flagsCopy - 1 > 4)
     {
       v18 = @"unknown";
     }
 
     else
     {
-      v18 = off_1E7344C78[v9 - 1];
+      v18 = off_1E7344C78[flagsCopy - 1];
     }
 
     *buf = 136315650;
@@ -170,28 +170,28 @@ LABEL_40:
     _os_log_impl(&dword_1912FE000, v20, OS_LOG_TYPE_INFO, "%s Current memory info is %@.", buf, 0x16u);
   }
 
-  if (v7 != v9)
+  if (v7 != flagsCopy)
   {
-    v22 = [MEMORY[0x1E696AE30] processInfo];
-    v23 = [v22 processName];
-    v24 = [v23 isEqualToString:@"assistantd"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
+    v24 = [processName isEqualToString:@"assistantd"];
 
     if (v24)
     {
       v25 = +[AFAnalytics sharedAnalytics];
       v41[0] = @"processName";
-      v26 = [MEMORY[0x1E696AE30] processInfo];
-      v27 = [v26 processName];
+      processInfo2 = [MEMORY[0x1E696AE30] processInfo];
+      processName2 = [processInfo2 processName];
       v41[1] = @"memoryPressureChange";
-      v42[0] = v27;
-      if (v9 - 1 > 4)
+      v42[0] = processName2;
+      if (flagsCopy - 1 > 4)
       {
         v28 = @"unknown";
       }
 
       else
       {
-        v28 = off_1E7344C78[v9 - 1];
+        v28 = off_1E7344C78[flagsCopy - 1];
       }
 
       v42[1] = v28;
@@ -218,7 +218,7 @@ LABEL_40:
             objc_enumerationMutation(v30);
           }
 
-          [*(*(&v36 + 1) + 8 * i) memoryPressureObserver:self didChangeFromCondition:v7 toCondition:{v9, v36}];
+          [*(*(&v36 + 1) + 8 * i) memoryPressureObserver:self didChangeFromCondition:v7 toCondition:{flagsCopy, v36}];
         }
 
         v32 = [(NSHashTable *)v30 countByEnumeratingWithState:&v36 objects:v40 count:16];
@@ -258,12 +258,12 @@ LABEL_40:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_startObservingMemoryPressureWithOptions:(unint64_t)a3
+- (void)_startObservingMemoryPressureWithOptions:(unint64_t)options
 {
   v16 = *MEMORY[0x1E69E9840];
   if (!self->_memoryPressureSource)
   {
-    v4 = dispatch_source_create(MEMORY[0x1E69E96E8], 0, a3 & 0x30 | (a3 >> 1) & 7, self->_queue);
+    v4 = dispatch_source_create(MEMORY[0x1E69E96E8], 0, options & 0x30 | (options >> 1) & 7, self->_queue);
     memoryPressureSource = self->_memoryPressureSource;
     self->_memoryPressureSource = v4;
 
@@ -325,11 +325,11 @@ uint64_t __38__AFMemoryPressureObserver_invalidate__block_invoke(uint64_t a1)
   return [v2 _removeAllListeners];
 }
 
-- (void)getCurrentConditionWithCompletion:(id)a3
+- (void)getCurrentConditionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -337,7 +337,7 @@ uint64_t __38__AFMemoryPressureObserver_invalidate__block_invoke(uint64_t a1)
     v7[2] = __62__AFMemoryPressureObserver_getCurrentConditionWithCompletion___block_invoke;
     v7[3] = &unk_1E7349838;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -402,11 +402,11 @@ uint64_t __62__AFMemoryPressureObserver_getCurrentConditionWithCompletion___bloc
   dispatch_async(queue, block);
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -414,16 +414,16 @@ uint64_t __62__AFMemoryPressureObserver_getCurrentConditionWithCompletion___bloc
     v7[2] = __43__AFMemoryPressureObserver_removeListener___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  listenerCopy = listener;
+  v5 = listenerCopy;
+  if (listenerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x1E69E9820];
@@ -431,7 +431,7 @@ uint64_t __62__AFMemoryPressureObserver_getCurrentConditionWithCompletion___bloc
     v7[2] = __40__AFMemoryPressureObserver_addListener___block_invoke;
     v7[3] = &unk_1E7349860;
     v7[4] = self;
-    v8 = v4;
+    v8 = listenerCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -444,7 +444,7 @@ uint64_t __62__AFMemoryPressureObserver_getCurrentConditionWithCompletion___bloc
   [(AFMemoryPressureObserver *)&v3 dealloc];
 }
 
-- (AFMemoryPressureObserver)initWithOptions:(unint64_t)a3
+- (AFMemoryPressureObserver)initWithOptions:(unint64_t)options
 {
   v14.receiver = self;
   v14.super_class = AFMemoryPressureObserver;
@@ -464,7 +464,7 @@ uint64_t __62__AFMemoryPressureObserver_getCurrentConditionWithCompletion___bloc
     v11[2] = __44__AFMemoryPressureObserver_initWithOptions___block_invoke;
     v11[3] = &unk_1E7348498;
     v12 = v4;
-    v13 = a3;
+    optionsCopy = options;
     dispatch_async(v9, v11);
   }
 

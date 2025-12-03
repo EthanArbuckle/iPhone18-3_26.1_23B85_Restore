@@ -1,32 +1,32 @@
 @interface SBDeviceApplicationSceneStatusBarBreadcrumbProvider
-+ (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)a3 sceneHandle:(id)a4 withTransitionContext:(id)a5;
-+ (id)_breadcrumbBundleIdForActivatingSceneEntity:(id)a3 withTransitionContext:(id)a4;
-+ (id)_breadcrumbSceneIdForAppWithBundleID:(id)a3 activatingSceneEntity:(id)a4 withTransitionContext:(id)a5;
-+ (id)_breadcrumbTitleForAppWithBundleID:(id)a3 sceneHandle:(id)a4 activatingSceneEntity:(id)a5 withTransitionContext:(id)a6;
-+ (id)_destinationContextsForActivatingSceneEntity:(id)a3 withTransitionContext:(id)a4;
++ (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)entity sceneHandle:(id)handle withTransitionContext:(id)context;
++ (id)_breadcrumbBundleIdForActivatingSceneEntity:(id)entity withTransitionContext:(id)context;
++ (id)_breadcrumbSceneIdForAppWithBundleID:(id)d activatingSceneEntity:(id)entity withTransitionContext:(id)context;
++ (id)_breadcrumbTitleForAppWithBundleID:(id)d sceneHandle:(id)handle activatingSceneEntity:(id)entity withTransitionContext:(id)context;
++ (id)_destinationContextsForActivatingSceneEntity:(id)entity withTransitionContext:(id)context;
 - (BOOL)_showTransientOverlayInPlace;
 - (BOOL)activateBreadcrumbIfPossible;
 - (BOOL)hasBreadcrumb;
 - (NSString)breadcrumbTitle;
-- (SBDeviceApplicationSceneStatusBarBreadcrumbProvider)initWithSceneHandle:(id)a3;
-- (id)_breadcrumbNavigationActionContextForActivatingSceneEntity:(id)a3 withTransitionContext:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBDeviceApplicationSceneStatusBarBreadcrumbProvider)initWithSceneHandle:(id)handle;
+- (id)_breadcrumbNavigationActionContextForActivatingSceneEntity:(id)entity withTransitionContext:(id)context;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
-- (int64_t)_openStrategyForAppLinkState:(id)a3;
-- (void)_activateBreadcrumbApplication:(id)a3 withSceneIdentifier:(id)a4 sceneHandleProvider:(id)a5 displayConfiguration:(id)a6;
+- (int64_t)_openStrategyForAppLinkState:(id)state;
+- (void)_activateBreadcrumbApplication:(id)application withSceneIdentifier:(id)identifier sceneHandleProvider:(id)provider displayConfiguration:(id)configuration;
 - (void)_handleBreadcrumbAction;
-- (void)_installedApplicationsDidChange:(id)a3;
+- (void)_installedApplicationsDidChange:(id)change;
 - (void)_presentAssistantFromBreadcrumb;
-- (void)_presentSpotlightFromBreadcrumbInWindowScene:(id)a3;
-- (void)_setCurrentBreadcrumbActionContext:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)captureContextForActivatingSceneEntity:(id)a3 withTransitionContext:(id)a4;
+- (void)_presentSpotlightFromBreadcrumbInWindowScene:(id)scene;
+- (void)_setCurrentBreadcrumbActionContext:(id)context;
+- (void)addObserver:(id)observer;
+- (void)captureContextForActivatingSceneEntity:(id)entity withTransitionContext:(id)context;
 - (void)noteDidUpdateDisplayProperties;
 - (void)prepareForReuse;
-- (void)removeObserver:(id)a3;
-- (void)sceneHandle:(id)a3 didChangeEffectiveForegroundness:(BOOL)a4;
+- (void)removeObserver:(id)observer;
+- (void)sceneHandle:(id)handle didChangeEffectiveForegroundness:(BOOL)foregroundness;
 @end
 
 @implementation SBDeviceApplicationSceneStatusBarBreadcrumbProvider
@@ -37,8 +37,8 @@
   if (currentBreadcrumbActionContext && currentBreadcrumbActionContext->_didCaptureContext && currentBreadcrumbActionContext->_breadcrumbAppBundleID)
   {
     WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-    v4 = [WeakRetained application];
-    v5 = [v4 bundleIdentifier];
+    application = [WeakRetained application];
+    bundleIdentifier = [application bundleIdentifier];
     v6 = BSEqualStrings() ^ 1;
   }
 
@@ -50,29 +50,29 @@
   return v6;
 }
 
-- (SBDeviceApplicationSceneStatusBarBreadcrumbProvider)initWithSceneHandle:(id)a3
+- (SBDeviceApplicationSceneStatusBarBreadcrumbProvider)initWithSceneHandle:(id)handle
 {
-  v4 = a3;
+  handleCopy = handle;
   v8.receiver = self;
   v8.super_class = SBDeviceApplicationSceneStatusBarBreadcrumbProvider;
   v5 = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_sceneHandle, v4);
-    [v4 addObserver:v6];
+    objc_storeWeak(&v5->_sceneHandle, handleCopy);
+    [handleCopy addObserver:v6];
   }
 
   return v6;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
     observers = self->_observers;
-    v9 = v4;
+    v9 = observerCopy;
     if (!observers)
     {
       v6 = [objc_alloc(MEMORY[0x277CCAA50]) initWithOptions:5 capacity:1];
@@ -83,58 +83,58 @@
     }
 
     v8 = [(NSHashTable *)observers containsObject:v9];
-    v4 = v9;
+    observerCopy = v9;
     if (!v8)
     {
       [(NSHashTable *)self->_observers addObject:v9];
-      v4 = v9;
+      observerCopy = v9;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
 }
 
-- (void)captureContextForActivatingSceneEntity:(id)a3 withTransitionContext:(id)a4
+- (void)captureContextForActivatingSceneEntity:(id)entity withTransitionContext:(id)context
 {
-  v23 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_sceneHandle);
-  v8 = [WeakRetained sceneIdentifier];
-  v9 = [objc_opt_class() _breadcrumbBundleIdForActivatingSceneEntity:v23 withTransitionContext:v6];
-  v10 = [v23 application];
-  v11 = [v10 bundleIdentifier];
-  v12 = [v9 isEqualToString:v11];
+  sceneIdentifier = [WeakRetained sceneIdentifier];
+  v9 = [objc_opt_class() _breadcrumbBundleIdForActivatingSceneEntity:entityCopy withTransitionContext:contextCopy];
+  application = [entityCopy application];
+  bundleIdentifier = [application bundleIdentifier];
+  v12 = [v9 isEqualToString:bundleIdentifier];
 
-  v13 = [v23 layoutRole];
-  if (v13 != 1 && (SBLayoutRoleIsValidForSplitView(v13) & v12) == 1)
+  layoutRole = [entityCopy layoutRole];
+  if (layoutRole != 1 && (SBLayoutRoleIsValidForSplitView(layoutRole) & v12) == 1)
   {
     [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self _setCurrentBreadcrumbActionContext:0];
   }
 
-  if ([objc_opt_class() _shouldAddBreadcrumbToActivatingSceneEntity:v23 sceneHandle:WeakRetained withTransitionContext:v6])
+  if ([objc_opt_class() _shouldAddBreadcrumbToActivatingSceneEntity:entityCopy sceneHandle:WeakRetained withTransitionContext:contextCopy])
   {
-    v14 = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self _breadcrumbNavigationActionContextForActivatingSceneEntity:v23 withTransitionContext:v6];
-    v15 = [objc_opt_class() _breadcrumbTitleForAppWithBundleID:v9 sceneHandle:WeakRetained activatingSceneEntity:v23 withTransitionContext:v6];
+    v14 = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self _breadcrumbNavigationActionContextForActivatingSceneEntity:entityCopy withTransitionContext:contextCopy];
+    v15 = [objc_opt_class() _breadcrumbTitleForAppWithBundleID:v9 sceneHandle:WeakRetained activatingSceneEntity:entityCopy withTransitionContext:contextCopy];
     v16 = *(v14 + 64);
     *(v14 + 64) = v15;
 
-    v17 = [v6 request];
-    v18 = [v17 displayConfiguration];
+    request = [contextCopy request];
+    displayConfiguration = [request displayConfiguration];
     v19 = *(v14 + 72);
-    *(v14 + 72) = v18;
+    *(v14 + 72) = displayConfiguration;
 
-    v20 = [SBApp windowSceneManager];
-    v21 = [*(v14 + 72) identity];
-    v22 = [v20 windowSceneForDisplayIdentity:v21];
+    windowSceneManager = [SBApp windowSceneManager];
+    identity = [*(v14 + 72) identity];
+    v22 = [windowSceneManager windowSceneForDisplayIdentity:identity];
     objc_storeWeak((v14 + 80), v22);
 
-    if (v8)
+    if (sceneIdentifier)
     {
       [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self _setCurrentBreadcrumbActionContext:v14];
     }
@@ -171,13 +171,13 @@
 
 - (void)noteDidUpdateDisplayProperties
 {
-  v3 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __85__SBDeviceApplicationSceneStatusBarBreadcrumbProvider_noteDidUpdateDisplayProperties__block_invoke;
   v4[3] = &unk_2783AF7C8;
   v4[4] = self;
-  [v3 enumerateObjectsUsingBlock:v4];
+  [allObjects enumerateObjectsUsingBlock:v4];
 }
 
 void __85__SBDeviceApplicationSceneStatusBarBreadcrumbProvider_noteDidUpdateDisplayProperties__block_invoke(uint64_t a1, void *a2)
@@ -189,69 +189,69 @@ void __85__SBDeviceApplicationSceneStatusBarBreadcrumbProvider_noteDidUpdateDisp
   }
 }
 
-+ (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)a3 sceneHandle:(id)a4 withTransitionContext:(id)a5
++ (BOOL)_shouldAddBreadcrumbToActivatingSceneEntity:(id)entity sceneHandle:(id)handle withTransitionContext:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v8 applicationSceneEntityForLayoutRole:1];
-  v11 = [v10 application];
-  v67 = [v11 bundleIdentifier];
+  entityCopy = entity;
+  contextCopy = context;
+  handleCopy = handle;
+  v10 = [contextCopy applicationSceneEntityForLayoutRole:1];
+  application = [v10 application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  v12 = [v8 previousApplicationSceneEntityForLayoutRole:1];
-  v13 = [v12 application];
-  v14 = [v13 bundleIdentifier];
+  v12 = [contextCopy previousApplicationSceneEntityForLayoutRole:1];
+  application2 = [v12 application];
+  bundleIdentifier2 = [application2 bundleIdentifier];
 
-  v15 = [v8 previousApplicationSceneEntityForLayoutRole:2];
-  v16 = [v15 application];
-  v66 = [v16 bundleIdentifier];
+  v15 = [contextCopy previousApplicationSceneEntityForLayoutRole:2];
+  application3 = [v15 application];
+  bundleIdentifier3 = [application3 bundleIdentifier];
 
-  v17 = [v9 application];
+  application4 = [handleCopy application];
 
-  v68 = [v17 bundleIdentifier];
+  bundleIdentifier4 = [application4 bundleIdentifier];
 
-  v18 = [v8 request];
-  v60 = [v18 source];
-  v19 = [v18 originatingProcess];
-  v20 = [v19 bundleIdentifier];
+  request = [contextCopy request];
+  source = [request source];
+  originatingProcess = [request originatingProcess];
+  bundleIdentifier5 = [originatingProcess bundleIdentifier];
 
-  v69 = v14;
-  v62 = [v14 length];
-  v21 = [v7 BOOLForActivationSetting:44];
-  v22 = [v20 isEqualToString:@"com.apple.Spotlight"];
-  v64 = [v7 BOOLForActivationSetting:26];
+  v69 = bundleIdentifier2;
+  v62 = [bundleIdentifier2 length];
+  v21 = [entityCopy BOOLForActivationSetting:44];
+  v22 = [bundleIdentifier5 isEqualToString:@"com.apple.Spotlight"];
+  v64 = [entityCopy BOOLForActivationSetting:26];
   v23 = objc_opt_class();
-  v24 = [v8 previousApplicationSceneEntityForLayoutRole:1];
-  v25 = [v24 sceneHandle];
-  v26 = SBSafeCast(v23, v25);
+  v24 = [contextCopy previousApplicationSceneEntityForLayoutRole:1];
+  sceneHandle = [v24 sceneHandle];
+  v26 = SBSafeCast(v23, sceneHandle);
 
-  v27 = [v26 forbidsActivationByBreadcrumbAction];
-  v28 = [v26 application];
-  LOBYTE(v25) = [v28 isSetup];
+  forbidsActivationByBreadcrumbAction = [v26 forbidsActivationByBreadcrumbAction];
+  application5 = [v26 application];
+  LOBYTE(sceneHandle) = [application5 isSetup];
 
-  if (v25 & 1) != 0 || (+[SBDefaults localDefaults](SBDefaults, "localDefaults"), v29 = objc_claimAutoreleasedReturnValue(), [v29 workspaceDefaults], v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isBreadcrumbDisabled") | v27, v30, v29, (v31))
+  if (sceneHandle & 1) != 0 || (+[SBDefaults localDefaults](SBDefaults, "localDefaults"), v29 = objc_claimAutoreleasedReturnValue(), [v29 workspaceDefaults], v30 = objc_claimAutoreleasedReturnValue(), v31 = objc_msgSend(v30, "isBreadcrumbDisabled") | forbidsActivationByBreadcrumbAction, v30, v29, (v31))
   {
     LOBYTE(v21) = 0;
 LABEL_4:
-    v32 = v67;
+    v32 = bundleIdentifier;
 LABEL_5:
-    v33 = v68;
+    v33 = bundleIdentifier4;
     v34 = v69;
     goto LABEL_6;
   }
 
-  v32 = v67;
+  v32 = bundleIdentifier;
   v34 = v69;
-  v33 = v68;
-  if (([v67 isEqual:v69] & v22 & v64) == 1)
+  v33 = bundleIdentifier4;
+  if (([bundleIdentifier isEqual:v69] & v22 & v64) == 1)
   {
     LOBYTE(v21) = +[SBHomeScreenReturnToSpotlightPolicy areSpotlightBreadcrumbsEnabled];
     goto LABEL_6;
   }
 
-  if ([v67 isEqual:v68])
+  if ([bundleIdentifier isEqual:bundleIdentifier4])
   {
-    if (!(v21 & 1 | (([v69 isEqual:v68] & 1) == 0)))
+    if (!(v21 & 1 | (([v69 isEqual:bundleIdentifier4] & 1) == 0)))
     {
       goto LABEL_17;
     }
@@ -262,23 +262,23 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (![v18 isMainWorkspaceTransitionRequest])
+  if (![request isMainWorkspaceTransitionRequest])
   {
 LABEL_17:
     LOBYTE(v21) = 0;
     goto LABEL_6;
   }
 
-  v59 = [v7 BOOLForActivationSetting:42];
-  v36 = [v7 BOOLForActivationSetting:40];
-  v37 = [v20 isEqualToString:@"com.apple.camera"];
+  v59 = [entityCopy BOOLForActivationSetting:42];
+  v36 = [entityCopy BOOLForActivationSetting:40];
+  v37 = [bundleIdentifier5 isEqualToString:@"com.apple.camera"];
   if (v62)
   {
     v38 = [MEMORY[0x277CEBE80] applicationWithBundleIdentifier:v69];
-    v39 = [v38 isHidden];
+    isHidden = [v38 isHidden];
 
-    v32 = v67;
-    if (v39)
+    v32 = bundleIdentifier;
+    if (isHidden)
     {
       LOBYTE(v21) = 0;
       goto LABEL_5;
@@ -287,22 +287,22 @@ LABEL_17:
 
   if (v21)
   {
-    v33 = v68;
-    LOBYTE(v21) = [SBAssistantController shouldBreadcrumbLaunchedApplicationWithBundleIdentifier:v68];
+    v33 = bundleIdentifier4;
+    LOBYTE(v21) = [SBAssistantController shouldBreadcrumbLaunchedApplicationWithBundleIdentifier:bundleIdentifier4];
 LABEL_23:
     v34 = v69;
     goto LABEL_6;
   }
 
-  v33 = v68;
-  if (v60 == 45 || (v36 & v37 & 1) != 0)
+  v33 = bundleIdentifier4;
+  if (source == 45 || (v36 & v37 & 1) != 0)
   {
     LOBYTE(v21) = 1;
     goto LABEL_23;
   }
 
   v40 = v59;
-  if (v60 == 6)
+  if (source == 6)
   {
     v40 = 1;
   }
@@ -314,7 +314,7 @@ LABEL_23:
     goto LABEL_6;
   }
 
-  if ((v60 & 0xFFFFFFFFFFFFFFFELL) == 4)
+  if ((source & 0xFFFFFFFFFFFFFFFELL) == 4)
   {
     if (v62)
     {
@@ -330,24 +330,24 @@ LABEL_23:
   }
 
   LOBYTE(v21) = 0;
-  if (v60 <= 0x13 && ((1 << v60) & 0x8A004) != 0)
+  if (source <= 0x13 && ((1 << source) & 0x8A004) != 0)
   {
-    v41 = [v7 BOOLForActivationSetting:50];
-    v42 = [v7 BOOLForActivationSetting:41];
-    v43 = [v7 objectForActivationSetting:5];
+    v41 = [entityCopy BOOLForActivationSetting:50];
+    v42 = [entityCopy BOOLForActivationSetting:41];
+    v43 = [entityCopy objectForActivationSetting:5];
 
     v61 = v42;
     if (v41)
     {
-      v44 = [v7 objectForActivationSetting:14];
+      v44 = [entityCopy objectForActivationSetting:14];
       v45 = v44;
       if (v62 && v44)
       {
-        v46 = [v8 previousApplicationSceneEntityForBundleID:v44];
+        v46 = [contextCopy previousApplicationSceneEntityForBundleID:v44];
 
         if (v46)
         {
-          v33 = v68;
+          v33 = bundleIdentifier4;
 LABEL_44:
           if (v64)
           {
@@ -374,7 +374,7 @@ LABEL_44:
           {
             v52 = v33;
             v53 = [v69 isEqual:v45];
-            v54 = [v66 isEqual:v45];
+            v54 = [bundleIdentifier3 isEqual:v45];
             v65 = [v45 isEqual:v52];
             v51 = v53 | v54;
           }
@@ -382,17 +382,17 @@ LABEL_44:
           v63 = v51;
           v55 = +[SBApplicationController sharedInstance];
           v56 = [v55 applicationWithBundleIdentifier:v45];
-          v57 = [v56 info];
-          v58 = [v57 shouldLaunchSuspendedAlways];
+          info = [v56 info];
+          shouldLaunchSuspendedAlways = [info shouldLaunchSuspendedAlways];
 
-          LOBYTE(v21) = v63 & ((v65 | v58) ^ 1);
+          LOBYTE(v21) = v63 & ((v65 | shouldLaunchSuspendedAlways) ^ 1);
           goto LABEL_4;
         }
 
         v48 = v69;
 
         v45 = v48;
-        v33 = v68;
+        v33 = bundleIdentifier4;
       }
 
       v47 = v69;
@@ -404,7 +404,7 @@ LABEL_44:
 
     else
     {
-      v47 = v20;
+      v47 = bundleIdentifier5;
       if (!v42)
       {
         v45 = 0;
@@ -421,22 +421,22 @@ LABEL_6:
   return v21 & 1;
 }
 
-- (id)_breadcrumbNavigationActionContextForActivatingSceneEntity:(id)a3 withTransitionContext:(id)a4
+- (id)_breadcrumbNavigationActionContextForActivatingSceneEntity:(id)entity withTransitionContext:(id)context
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  entityCopy = entity;
+  contextCopy = context;
   v7 = objc_alloc_init(SBBreadcrumbActionContext);
   v7->_lastSource = SBSpotlightLastPresentationSource();
-  v8 = [objc_opt_class() _breadcrumbBundleIdForActivatingSceneEntity:v5 withTransitionContext:v6];
+  v8 = [objc_opt_class() _breadcrumbBundleIdForActivatingSceneEntity:entityCopy withTransitionContext:contextCopy];
   breadcrumbAppBundleID = v7->_breadcrumbAppBundleID;
   v7->_breadcrumbAppBundleID = v8;
 
-  v10 = [objc_opt_class() _breadcrumbSceneIdForAppWithBundleID:v7->_breadcrumbAppBundleID activatingSceneEntity:v5 withTransitionContext:v6];
+  v10 = [objc_opt_class() _breadcrumbSceneIdForAppWithBundleID:v7->_breadcrumbAppBundleID activatingSceneEntity:entityCopy withTransitionContext:contextCopy];
   breadcrumbSceneID = v7->_breadcrumbSceneID;
   v7->_breadcrumbSceneID = v10;
 
-  if ([v5 BOOLForActivationSetting:26])
+  if ([entityCopy BOOLForActivationSetting:26])
   {
     v12 = 1;
   }
@@ -447,7 +447,7 @@ LABEL_6:
   }
 
   v7->_wasFromSpotlight = v12;
-  if ([v5 BOOLForActivationSetting:44])
+  if ([entityCopy BOOLForActivationSetting:44])
   {
     v13 = 1;
   }
@@ -458,11 +458,11 @@ LABEL_6:
   }
 
   v7->_wasFromAssistant = v13;
-  v14 = [v6 previousApplicationSceneEntityForLayoutRole:2];
-  v15 = [v14 application];
-  v16 = [v15 bundleIdentifier];
+  v14 = [contextCopy previousApplicationSceneEntityForLayoutRole:2];
+  application = [v14 application];
+  bundleIdentifier = [application bundleIdentifier];
   previousSideBundleId = v7->_previousSideBundleId;
-  v7->_previousSideBundleId = v16;
+  v7->_previousSideBundleId = bundleIdentifier;
 
   if (v7->_wasFromSpotlight)
   {
@@ -491,26 +491,26 @@ LABEL_6:
   v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:&v25 count:1];
   v21 = MEMORY[0x277D65DD0];
   v22 = v20;
-  v23 = [v21 sharedInstance];
-  [v23 emitEvent:15 withPayload:v22];
+  sharedInstance = [v21 sharedInstance];
+  [sharedInstance emitEvent:15 withPayload:v22];
 
   v7->_didCaptureContext = 1;
 
   return v7;
 }
 
-+ (id)_destinationContextsForActivatingSceneEntity:(id)a3 withTransitionContext:(id)a4
++ (id)_destinationContextsForActivatingSceneEntity:(id)entity withTransitionContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _breadcrumbBundleIdForActivatingSceneEntity:v7 withTransitionContext:v6];
-  v9 = [a1 _breadcrumbSceneIdForAppWithBundleID:v8 activatingSceneEntity:v7 withTransitionContext:v6];
-  v10 = [v6 previousApplicationSceneEntityForLayoutRole:1];
-  v11 = [v10 sceneHandle];
+  contextCopy = context;
+  entityCopy = entity;
+  v8 = [self _breadcrumbBundleIdForActivatingSceneEntity:entityCopy withTransitionContext:contextCopy];
+  v9 = [self _breadcrumbSceneIdForAppWithBundleID:v8 activatingSceneEntity:entityCopy withTransitionContext:contextCopy];
+  v10 = [contextCopy previousApplicationSceneEntityForLayoutRole:1];
+  sceneHandle = [v10 sceneHandle];
 
-  v12 = [a1 _breadcrumbTitleForAppWithBundleID:v8 sceneHandle:v11 activatingSceneEntity:v7 withTransitionContext:v6];
+  v12 = [self _breadcrumbTitleForAppWithBundleID:v8 sceneHandle:sceneHandle activatingSceneEntity:entityCopy withTransitionContext:contextCopy];
 
-  v13 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (v9)
   {
     [MEMORY[0x277D75B00] systemNavigationActionContextWithTitle:v12 sceneIdentifier:v9];
@@ -521,39 +521,39 @@ LABEL_6:
     [MEMORY[0x277D75B00] systemNavigationActionContextWithTitle:v12 bundleId:v8];
   }
   v14 = ;
-  [v13 setObject:v14 forKeyedSubscript:&unk_2833704D8];
+  [dictionary setObject:v14 forKeyedSubscript:&unk_2833704D8];
 
-  return v13;
+  return dictionary;
 }
 
-+ (id)_breadcrumbTitleForAppWithBundleID:(id)a3 sceneHandle:(id)a4 activatingSceneEntity:(id)a5 withTransitionContext:(id)a6
++ (id)_breadcrumbTitleForAppWithBundleID:(id)d sceneHandle:(id)handle activatingSceneEntity:(id)entity withTransitionContext:(id)context
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  dCopy = d;
+  entityCopy = entity;
+  contextCopy = context;
   v12 = +[SBApplicationController sharedInstance];
-  v13 = [v12 applicationWithBundleIdentifier:v9];
+  v13 = [v12 applicationWithBundleIdentifier:dCopy];
 
-  if ([v10 BOOLForActivationSetting:26])
+  if ([entityCopy BOOLForActivationSetting:26])
   {
-    if (![v10 BOOLForActivationSetting:44])
+    if (![entityCopy BOOLForActivationSetting:44])
     {
       goto LABEL_7;
     }
 
 LABEL_5:
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = v15;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v16 = mainBundle;
     v17 = @"SIRI";
 LABEL_8:
-    v18 = [v15 localizedStringForKey:v17 value:&stru_283094718 table:@"SpringBoard"];
+    title = [mainBundle localizedStringForKey:v17 value:&stru_283094718 table:@"SpringBoard"];
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v14 = [v9 isEqualToString:@"com.apple.springboard.spotlight-placeholder"];
-  if ([v10 BOOLForActivationSetting:44])
+  v14 = [dCopy isEqualToString:@"com.apple.springboard.spotlight-placeholder"];
+  if ([entityCopy BOOLForActivationSetting:44])
   {
     goto LABEL_5;
   }
@@ -561,51 +561,51 @@ LABEL_9:
   if (v14)
   {
 LABEL_7:
-    v15 = [MEMORY[0x277CCA8D8] mainBundle];
-    v16 = v15;
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    v16 = mainBundle;
     v17 = @"SYSTEM_SEARCH_TITLE";
     goto LABEL_8;
   }
 
-  if ([v9 isEqualToString:@"com.apple.webapp"])
+  if ([dCopy isEqualToString:@"com.apple.webapp"])
   {
-    v16 = [a1 _breadcrumbSceneIdForAppWithBundleID:v9 activatingSceneEntity:v10 withTransitionContext:v11];
+    v16 = [self _breadcrumbSceneIdForAppWithBundleID:dCopy activatingSceneEntity:entityCopy withTransitionContext:contextCopy];
     v20 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:v16];
     v21 = [MEMORY[0x277D75D70] webClipWithIdentifier:v20];
-    v18 = [v21 title];
+    title = [v21 title];
 
     goto LABEL_9;
   }
 
-  v18 = [v13 displayName];
+  title = [v13 displayName];
 LABEL_10:
 
-  return v18;
+  return title;
 }
 
-+ (id)_breadcrumbBundleIdForActivatingSceneEntity:(id)a3 withTransitionContext:(id)a4
++ (id)_breadcrumbBundleIdForActivatingSceneEntity:(id)entity withTransitionContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 BOOLForActivationSetting:26];
-  v8 = [v6 BOOLForActivationSetting:44];
+  contextCopy = context;
+  entityCopy = entity;
+  v7 = [entityCopy BOOLForActivationSetting:26];
+  v8 = [entityCopy BOOLForActivationSetting:44];
 
-  v9 = [v5 request];
-  v10 = [v9 originatingProcess];
-  v11 = [v10 bundleIdentifier];
+  request = [contextCopy request];
+  originatingProcess = [request originatingProcess];
+  bundleIdentifier = [originatingProcess bundleIdentifier];
 
-  v12 = [v11 isEqualToString:@"com.apple.camera"];
+  v12 = [bundleIdentifier isEqualToString:@"com.apple.camera"];
   if (v8)
   {
     v13 = @"com.apple.Siri";
 LABEL_3:
-    v14 = v13;
+    bundleIdentifier2 = v13;
     goto LABEL_9;
   }
 
   if (v7)
   {
-    v14 = @"com.apple.springboard.spotlight-placeholder";
+    bundleIdentifier2 = @"com.apple.springboard.spotlight-placeholder";
   }
 
   else
@@ -616,76 +616,76 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v15 = [v5 previousApplicationSceneEntityForLayoutRole:1];
-    v16 = [v15 application];
-    v14 = [v16 bundleIdentifier];
+    v15 = [contextCopy previousApplicationSceneEntityForLayoutRole:1];
+    application = [v15 application];
+    bundleIdentifier2 = [application bundleIdentifier];
   }
 
 LABEL_9:
 
-  return v14;
+  return bundleIdentifier2;
 }
 
-+ (id)_breadcrumbSceneIdForAppWithBundleID:(id)a3 activatingSceneEntity:(id)a4 withTransitionContext:(id)a5
++ (id)_breadcrumbSceneIdForAppWithBundleID:(id)d activatingSceneEntity:(id)entity withTransitionContext:(id)context
 {
-  v6 = a5;
-  v7 = a3;
-  v8 = [v6 previousApplicationSceneEntityForLayoutRole:1];
-  v9 = [v8 application];
-  v10 = [v9 bundleIdentifier];
+  contextCopy = context;
+  dCopy = d;
+  v8 = [contextCopy previousApplicationSceneEntityForLayoutRole:1];
+  application = [v8 application];
+  bundleIdentifier = [application bundleIdentifier];
 
-  LODWORD(v8) = [v10 isEqualToString:v7];
+  LODWORD(v8) = [bundleIdentifier isEqualToString:dCopy];
   if (v8)
   {
-    v11 = [v6 previousApplicationSceneEntityForLayoutRole:1];
-    v12 = [v11 sceneHandle];
-    v13 = [v12 sceneIdentifier];
+    v11 = [contextCopy previousApplicationSceneEntityForLayoutRole:1];
+    sceneHandle = [v11 sceneHandle];
+    sceneIdentifier = [sceneHandle sceneIdentifier];
   }
 
   else
   {
-    v13 = 0;
+    sceneIdentifier = 0;
   }
 
-  return v13;
+  return sceneIdentifier;
 }
 
-- (void)_setCurrentBreadcrumbActionContext:(id)a3
+- (void)_setCurrentBreadcrumbActionContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   currentBreadcrumbActionContext = self->_currentBreadcrumbActionContext;
-  if (currentBreadcrumbActionContext != v5)
+  if (currentBreadcrumbActionContext != contextCopy)
   {
-    v11 = v5;
+    v11 = contextCopy;
     v7 = currentBreadcrumbActionContext;
-    objc_storeStrong(&self->_currentBreadcrumbActionContext, a3);
+    objc_storeStrong(&self->_currentBreadcrumbActionContext, context);
     v8 = self->_currentBreadcrumbActionContext;
     if (v7)
     {
       if (!v8)
       {
-        v9 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v10 = +[SBApplicationController sharedInstance];
-        [v9 removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:v10];
+        [defaultCenter removeObserver:self name:@"SBInstalledApplicationsDidChangeNotification" object:v10];
 LABEL_7:
       }
     }
 
     else if (v8)
     {
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v10 = +[SBApplicationController sharedInstance];
-      [v9 addObserver:self selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v10];
+      [defaultCenter addObserver:self selector:sel__installedApplicationsDidChange_ name:@"SBInstalledApplicationsDidChangeNotification" object:v10];
       goto LABEL_7;
     }
 
-    v5 = v11;
+    contextCopy = v11;
   }
 }
 
-- (void)_installedApplicationsDidChange:(id)a3
+- (void)_installedApplicationsDidChange:(id)change
 {
-  v9 = a3;
+  changeCopy = change;
   currentBreadcrumbActionContext = self->_currentBreadcrumbActionContext;
   if (currentBreadcrumbActionContext)
   {
@@ -725,8 +725,8 @@ LABEL_7:
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
     v8 = MEMORY[0x277D65DD0];
     v9 = v7;
-    v10 = [v8 sharedInstance];
-    [v10 emitEvent:16 withPayload:v9];
+    sharedInstance = [v8 sharedInstance];
+    [sharedInstance emitEvent:16 withPayload:v9];
 
     if (v4->_wasFromAssistant)
     {
@@ -742,8 +742,8 @@ LABEL_7:
     {
       v11 = SBWorkspaceApplicationForIdentifier(v4->_breadcrumbAppBundleID);
       breadcrumbSceneID = v4->_breadcrumbSceneID;
-      v13 = [WeakRetained sceneManager];
-      [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self _activateBreadcrumbApplication:v11 withSceneIdentifier:breadcrumbSceneID sceneHandleProvider:v13 displayConfiguration:v4->_displayConfiguration];
+      sceneManager = [WeakRetained sceneManager];
+      [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self _activateBreadcrumbApplication:v11 withSceneIdentifier:breadcrumbSceneID sceneHandleProvider:sceneManager displayConfiguration:v4->_displayConfiguration];
     }
   }
 }
@@ -751,8 +751,8 @@ LABEL_7:
 - (void)_presentAssistantFromBreadcrumb
 {
   v3 = +[SBSceneManagerCoordinator mainDisplaySceneManager];
-  v4 = [v3 policyAggregator];
-  v5 = [v4 allowsCapability:4];
+  policyAggregator = [v3 policyAggregator];
+  v5 = [policyAggregator allowsCapability:4];
 
   if (v5)
   {
@@ -764,8 +764,8 @@ LABEL_7:
     v9[4] = self;
     v6 = [MEMORY[0x277D0AB18] eventWithName:@"SiriBreadcrumb" handler:v9];
     v7 = +[SBWorkspace mainWorkspace];
-    v8 = [v7 eventQueue];
-    [v8 executeOrAppendEvent:v6];
+    eventQueue = [v7 eventQueue];
+    [eventQueue executeOrAppendEvent:v6];
   }
 }
 
@@ -785,12 +785,12 @@ uint64_t __86__SBDeviceApplicationSceneStatusBarBreadcrumbProvider__presentAssis
   return [v2 activate];
 }
 
-- (void)_presentSpotlightFromBreadcrumbInWindowScene:(id)a3
+- (void)_presentSpotlightFromBreadcrumbInWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   if ([(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self _showTransientOverlayInPlace])
   {
-    [SBApp toggleSearchOnWindowScene:v4 fromBreadcrumbSource:1 withWillBeginHandler:0 completionHandler:0];
+    [SBApp toggleSearchOnWindowScene:sceneCopy fromBreadcrumbSource:1 withWillBeginHandler:0 completionHandler:0];
     [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self prepareForReuse];
   }
 
@@ -801,11 +801,11 @@ uint64_t __86__SBDeviceApplicationSceneStatusBarBreadcrumbProvider__presentAssis
     v10[1] = 3221225472;
     v10[2] = __100__SBDeviceApplicationSceneStatusBarBreadcrumbProvider__presentSpotlightFromBreadcrumbInWindowScene___block_invoke;
     v10[3] = &unk_2783A8C18;
-    v11 = v4;
+    v11 = sceneCopy;
     v6 = [v5 eventWithName:@"presentSpotlight" handler:v10];
     v7 = +[SBWorkspace mainWorkspace];
-    v8 = [v7 eventQueue];
-    [v8 executeOrAppendEvent:v6];
+    eventQueue = [v7 eventQueue];
+    [eventQueue executeOrAppendEvent:v6];
 
     v9 = +[SBWorkspace mainWorkspace];
     [v9 requestTransitionWithBuilder:&__block_literal_global_59];
@@ -837,48 +837,48 @@ void __100__SBDeviceApplicationSceneStatusBarBreadcrumbProvider__presentSpotligh
 
 - (BOOL)_showTransientOverlayInPlace
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFBLL) == 1;
+  return (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1;
 }
 
-- (int64_t)_openStrategyForAppLinkState:(id)a3
+- (int64_t)_openStrategyForAppLinkState:(id)state
 {
-  v3 = [a3 objectForKeyedSubscript:*MEMORY[0x277D66E88]];
+  v3 = [state objectForKeyedSubscript:*MEMORY[0x277D66E88]];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-- (void)_activateBreadcrumbApplication:(id)a3 withSceneIdentifier:(id)a4 sceneHandleProvider:(id)a5 displayConfiguration:(id)a6
+- (void)_activateBreadcrumbApplication:(id)application withSceneIdentifier:(id)identifier sceneHandleProvider:(id)provider displayConfiguration:(id)configuration
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  applicationCopy = application;
+  identifierCopy = identifier;
+  providerCopy = provider;
+  configurationCopy = configuration;
   v13 = +[(SBWorkspace *)SBMainWorkspace];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __147__SBDeviceApplicationSceneStatusBarBreadcrumbProvider__activateBreadcrumbApplication_withSceneIdentifier_sceneHandleProvider_displayConfiguration___block_invoke;
   v18[3] = &unk_2783AF818;
-  v19 = v9;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  v17 = v9;
+  v19 = applicationCopy;
+  v20 = identifierCopy;
+  v21 = providerCopy;
+  v22 = configurationCopy;
+  v14 = configurationCopy;
+  v15 = providerCopy;
+  v16 = identifierCopy;
+  v17 = applicationCopy;
   [v13 requestTransitionWithOptions:0 displayConfiguration:v14 builder:v18];
 }
 
@@ -920,9 +920,9 @@ void __147__SBDeviceApplicationSceneStatusBarBreadcrumbProvider__activateBreadcr
   [v3 setActivatingEntity:v9];
 }
 
-- (void)sceneHandle:(id)a3 didChangeEffectiveForegroundness:(BOOL)a4
+- (void)sceneHandle:(id)handle didChangeEffectiveForegroundness:(BOOL)foregroundness
 {
-  if (!a4)
+  if (!foregroundness)
   {
     [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self prepareForReuse];
   }
@@ -930,32 +930,32 @@ void __147__SBDeviceApplicationSceneStatusBarBreadcrumbProvider__activateBreadcr
 
 - (id)succinctDescription
 {
-  v2 = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self breadcrumbTitle];
-  [v3 appendString:v4 withName:@"breadcrumbTitle" skipIfEmpty:1];
+  breadcrumbTitle = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self breadcrumbTitle];
+  [v3 appendString:breadcrumbTitle withName:@"breadcrumbTitle" skipIfEmpty:1];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self succinctDescriptionBuilder];
   v5 = self->_currentBreadcrumbActionContext;
   if (v5 && [(SBDeviceApplicationSceneStatusBarBreadcrumbProvider *)self hasBreadcrumb])
   {
@@ -967,9 +967,9 @@ void __147__SBDeviceApplicationSceneStatusBarBreadcrumbProvider__activateBreadcr
     v6 = 0;
   }
 
-  [v4 appendString:v6 withName:@"breadcrumbAppBundleID" skipIfEmpty:1];
+  [succinctDescriptionBuilder appendString:v6 withName:@"breadcrumbAppBundleID" skipIfEmpty:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

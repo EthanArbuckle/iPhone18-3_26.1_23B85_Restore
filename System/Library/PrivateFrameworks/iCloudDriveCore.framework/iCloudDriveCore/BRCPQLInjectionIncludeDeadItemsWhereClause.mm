@@ -1,12 +1,12 @@
 @interface BRCPQLInjectionIncludeDeadItemsWhereClause
-+ (id)_createInjectionWithCondition:(BOOL)a3;
++ (id)_createInjectionWithCondition:(BOOL)condition;
 @end
 
 @implementation BRCPQLInjectionIncludeDeadItemsWhereClause
 
-+ (id)_createInjectionWithCondition:(BOOL)a3
++ (id)_createInjectionWithCondition:(BOOL)condition
 {
-  if (a3)
+  if (condition)
   {
     v3 = "";
     v4 = 0;

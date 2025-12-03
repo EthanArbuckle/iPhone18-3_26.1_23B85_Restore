@@ -1,12 +1,12 @@
 @interface HDHealthStoreEndpoint
-+ (id)endpointWithClient:(id)a3 healthDaemon:(id)a4;
++ (id)endpointWithClient:(id)client healthDaemon:(id)daemon;
 - (HDDaemon)daemon;
-- (HDHealthStoreEndpoint)initWithClient:(id)a3 daemon:(id)a4;
+- (HDHealthStoreEndpoint)initWithClient:(id)client daemon:(id)daemon;
 - (HKProfileIdentifier)profileIdentifier;
 - (void)connectionConfigured;
 - (void)invalidate;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)remote_serverForConfiguration:(id)a3 completion:(id)a4;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)remote_serverForConfiguration:(id)configuration completion:(id)completion;
 @end
 
 @implementation HDHealthStoreEndpoint
@@ -20,56 +20,56 @@
 
   os_unfair_lock_unlock(&self->_lock);
   [(HDHealthStoreServer *)v4 invalidate];
-  v5 = [(HDXPCClient *)self->_client connection];
+  connection = [(HDXPCClient *)self->_client connection];
 
-  [v5 invalidate];
+  [connection invalidate];
   WeakRetained = objc_loadWeakRetained(&self->_daemon);
-  v6 = [WeakRetained connectionManager];
-  [v6 endpointInvalidated:self];
+  connectionManager = [WeakRetained connectionManager];
+  [connectionManager endpointInvalidated:self];
 }
 
-+ (id)endpointWithClient:(id)a3 healthDaemon:(id)a4
++ (id)endpointWithClient:(id)client healthDaemon:(id)daemon
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 behavior];
+  clientCopy = client;
+  daemonCopy = daemon;
+  behavior = [daemonCopy behavior];
   objc_opt_self();
-  v8 = [v7 isDeviceSupported];
+  isDeviceSupported = [behavior isDeviceSupported];
 
-  if ((v8 & 1) == 0)
+  if ((isDeviceSupported & 1) == 0)
   {
-    v18 = [MEMORY[0x277CCA9B8] hk_healthDataUnavailableError];
-    v19 = v18;
-    if (v18)
+    hk_healthDataUnavailableError = [MEMORY[0x277CCA9B8] hk_healthDataUnavailableError];
+    v19 = hk_healthDataUnavailableError;
+    if (hk_healthDataUnavailableError)
     {
-      v20 = v18;
+      v20 = hk_healthDataUnavailableError;
     }
 
     v21 = v19;
     goto LABEL_15;
   }
 
-  [v6 behavior];
+  [daemonCopy behavior];
   v9 = v30 = 0;
-  v10 = v5;
+  v10 = clientCopy;
   objc_opt_self();
-  v11 = [v10 process];
+  process = [v10 process];
 
   v12 = *MEMORY[0x277CCC1B8];
-  if ([v11 hasEntitlement:*MEMORY[0x277CCC1B8]] & 1) != 0 || (objc_msgSend(v11, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
+  if ([process hasEntitlement:*MEMORY[0x277CCC1B8]] & 1) != 0 || (objc_msgSend(process, "hasEntitlement:", *MEMORY[0x277CCC8B0]))
   {
-    v13 = [v9 additionalEntitlementForConnection];
-    if (!v13 || (v14 = v13, [v9 additionalEntitlementForConnection], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v11, "hasEntitlement:", v15), v15, v14, (v16 & 1) != 0))
+    additionalEntitlementForConnection = [v9 additionalEntitlementForConnection];
+    if (!additionalEntitlementForConnection || (v14 = additionalEntitlementForConnection, [v9 additionalEntitlementForConnection], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(process, "hasEntitlement:", v15), v15, v14, (v16 & 1) != 0))
     {
       v17 = 1;
       goto LABEL_13;
     }
 
-    v22 = [MEMORY[0x277CCA9B8] hk_healthDataUnavailableError];
+    hk_healthDataUnavailableError2 = [MEMORY[0x277CCA9B8] hk_healthDataUnavailableError];
     v23 = MEMORY[0x277CCA9B8];
-    v24 = [v22 code];
-    v25 = [v22 description];
-    [v23 hk_assignError:&v30 code:v24 description:v25];
+    code = [hk_healthDataUnavailableError2 code];
+    v25 = [hk_healthDataUnavailableError2 description];
+    [v23 hk_assignError:&v30 code:code description:v25];
   }
 
   else
@@ -83,7 +83,7 @@ LABEL_13:
   v21 = v30;
   if (v17)
   {
-    v26 = [[HDHealthStoreEndpoint alloc] initWithClient:v10 daemon:v6];
+    v26 = [[HDHealthStoreEndpoint alloc] initWithClient:v10 daemon:daemonCopy];
     goto LABEL_21;
   }
 
@@ -100,7 +100,7 @@ LABEL_15:
   {
     v31.receiver = v26;
     v31.super_class = HDHealthStoreErrorEndpoint;
-    v28 = objc_msgSendSuper2(&v31, sel_initWithClient_daemon_, v5, v6);
+    v28 = objc_msgSendSuper2(&v31, sel_initWithClient_daemon_, clientCopy, daemonCopy);
     v26 = v28;
     if (v28)
     {
@@ -113,27 +113,27 @@ LABEL_21:
   return v26;
 }
 
-- (HDHealthStoreEndpoint)initWithClient:(id)a3 daemon:(id)a4
+- (HDHealthStoreEndpoint)initWithClient:(id)client daemon:(id)daemon
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  daemonCopy = daemon;
   v20.receiver = self;
   v20.super_class = HDHealthStoreEndpoint;
   v9 = [(HDHealthStoreEndpoint *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_client, a3);
-    v11 = [v7 process];
+    objc_storeStrong(&v9->_client, client);
+    process = [clientCopy process];
     v12 = MEMORY[0x277CCACA8];
-    v13 = [v11 bundleIdentifier];
-    v14 = [v12 stringWithFormat:@"connection.%@.%d", v13, objc_msgSend(v11, "processIdentifier")];
+    bundleIdentifier = [process bundleIdentifier];
+    v14 = [v12 stringWithFormat:@"connection.%@.%d", bundleIdentifier, objc_msgSend(process, "processIdentifier")];
 
     v15 = HKCreateSerialDispatchQueue();
     connectionQueue = v10->_connectionQueue;
     v10->_connectionQueue = v15;
 
-    objc_storeWeak(&v10->_daemon, v8);
+    objc_storeWeak(&v10->_daemon, daemonCopy);
     v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
     serverCompletionsAwaitingProfileReady = v10->_serverCompletionsAwaitingProfileReady;
     v10->_serverCompletionsAwaitingProfileReady = v17;
@@ -142,35 +142,35 @@ LABEL_21:
   return v10;
 }
 
-- (void)remote_serverForConfiguration:(id)a3 completion:(id)a4
+- (void)remote_serverForConfiguration:(id)configuration completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  configurationCopy = configuration;
+  completionCopy = completion;
+  if (completionCopy)
   {
     WeakRetained = objc_loadWeakRetained(&self->_daemon);
-    v10 = [WeakRetained profileManager];
-    v11 = [v7 profileIdentifier];
-    v12 = [v10 profileForIdentifier:v11];
+    profileManager = [WeakRetained profileManager];
+    profileIdentifier = [configurationCopy profileIdentifier];
+    v12 = [profileManager profileForIdentifier:profileIdentifier];
 
     if (!v12)
     {
-      v15 = [MEMORY[0x277CCA9B8] hk_healthStoreUnavailableError];
+      hk_healthStoreUnavailableError = [MEMORY[0x277CCA9B8] hk_healthStoreUnavailableError];
       goto LABEL_7;
     }
 
-    v13 = [MEMORY[0x277CCDD30] sharedBehavior];
-    if ([v13 isiPad])
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    if ([mEMORY[0x277CCDD30] isiPad])
     {
-      [v7 applicationSDKVersionToken];
+      [configurationCopy applicationSDKVersionToken];
       v14 = dyld_version_token_at_least();
 
       if ((v14 & 1) == 0)
       {
-        v15 = [MEMORY[0x277CCA9B8] hk_healthDataUnavailableError];
+        hk_healthStoreUnavailableError = [MEMORY[0x277CCA9B8] hk_healthDataUnavailableError];
 LABEL_7:
-        v16 = v15;
-        v8[2](v8, 0, v15);
+        v16 = hk_healthStoreUnavailableError;
+        completionCopy[2](completionCopy, 0, hk_healthStoreUnavailableError);
 
 LABEL_40:
         goto LABEL_41;
@@ -181,8 +181,8 @@ LABEL_40:
     {
     }
 
-    v17 = [[HDHealthStoreClient alloc] initWithXPCClient:self->_client configuration:v7 profile:v12 databaseAccessibilityAssertions:0];
-    [v7 sourceBundleIdentifier];
+    v17 = [[HDHealthStoreClient alloc] initWithXPCClient:self->_client configuration:configurationCopy profile:v12 databaseAccessibilityAssertions:0];
+    [configurationCopy sourceBundleIdentifier];
     v18 = v42 = 0;
     v19 = v17;
     v20 = v19;
@@ -192,14 +192,14 @@ LABEL_40:
       goto LABEL_23;
     }
 
-    v24 = [(HDXPCClient *)self->_client process];
-    if ([v24 hasEntitlement:*MEMORY[0x277CCBBA0]])
+    process = [(HDXPCClient *)self->_client process];
+    if ([process hasEntitlement:*MEMORY[0x277CCBBA0]])
     {
       goto LABEL_21;
     }
 
     v25 = *MEMORY[0x277CCCDE0];
-    if ([v24 hasArrayEntitlement:*MEMORY[0x277CCCDE0] containing:*MEMORY[0x277CCB808]])
+    if ([process hasArrayEntitlement:*MEMORY[0x277CCCDE0] containing:*MEMORY[0x277CCB808]])
     {
       if ([MEMORY[0x277CCDA00] isAppleDeviceBundleIdentifier:v18])
       {
@@ -207,19 +207,19 @@ LABEL_40:
       }
     }
 
-    if ([v24 hasEntitlement:*MEMORY[0x277CCCDE8]])
+    if ([process hasEntitlement:*MEMORY[0x277CCCDE8]])
     {
-      v26 = [(HDXPCClient *)self->_client process];
-      v38 = [v26 applicationIdentifier];
+      process2 = [(HDXPCClient *)self->_client process];
+      applicationIdentifier = [process2 applicationIdentifier];
 
-      if ([v38 length] && objc_msgSend(v18, "hasPrefix:", v38))
+      if ([applicationIdentifier length] && objc_msgSend(v18, "hasPrefix:", applicationIdentifier))
       {
 
         goto LABEL_21;
       }
     }
 
-    if (([v24 hasArrayEntitlement:v25 containing:v18] & 1) == 0)
+    if (([process hasArrayEntitlement:v25 containing:v18] & 1) == 0)
     {
       [MEMORY[0x277CCA9B8] hk_assignError:&v42 code:4 format:{@"Unauthorized use of source bundle identifier %@", v18}];
       v23 = 0;
@@ -243,13 +243,13 @@ LABEL_23:
         {
           v29 = v28;
           os_unfair_lock_unlock(&self->_lock);
-          v30 = [(HDHealthStoreServer *)v29 configuration];
-          v31 = [v30 isEqual:v7];
+          configuration = [(HDHealthStoreServer *)v29 configuration];
+          v31 = [configuration isEqual:configurationCopy];
 
           if ((v31 & 1) == 0)
           {
             v32 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Requested server configuration does not match existing server configuration."];
-            v8[2](v8, 0, v32);
+            completionCopy[2](completionCopy, 0, v32);
 
 LABEL_38:
             goto LABEL_39;
@@ -258,7 +258,7 @@ LABEL_38:
 
         else
         {
-          v29 = [[HDHealthStoreServer alloc] initWithClient:v20 profile:v12 configuration:v7 connectionQueue:self->_connectionQueue];
+          v29 = [[HDHealthStoreServer alloc] initWithClient:v20 profile:v12 configuration:configurationCopy connectionQueue:self->_connectionQueue];
           server = self->_server;
           self->_server = v29;
 
@@ -267,7 +267,7 @@ LABEL_38:
           if (!v29)
           {
             v29 = [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:@"Requested server configuration is invalid."];
-            v8[2](v8, 0, v29);
+            completionCopy[2](completionCopy, 0, v29);
             goto LABEL_38;
           }
 
@@ -282,7 +282,7 @@ LABEL_38:
           v39[1] = 3221225472;
           v39[2] = __66__HDHealthStoreEndpoint_remote_serverForConfiguration_completion___block_invoke;
           v39[3] = &unk_278614008;
-          v41 = v8;
+          v41 = completionCopy;
           v40 = v29;
           v36 = [v39 copy];
           v37 = _Block_copy(v36);
@@ -291,20 +291,20 @@ LABEL_38:
 
         else
         {
-          (v8)[2](v8, v29, 0);
+          (completionCopy)[2](completionCopy, v29, 0);
         }
 
         os_unfair_lock_unlock(&self->_lock);
         goto LABEL_38;
       }
 
-      v33 = [MEMORY[0x277CCA9B8] hk_healthStoreUnavailableError];
-      v8[2](v8, 0, v33);
+      hk_healthStoreUnavailableError2 = [MEMORY[0x277CCA9B8] hk_healthStoreUnavailableError];
+      completionCopy[2](completionCopy, 0, hk_healthStoreUnavailableError2);
     }
 
     else
     {
-      v8[2](v8, 0, v27);
+      completionCopy[2](completionCopy, 0, v27);
     }
 
 LABEL_39:
@@ -317,19 +317,19 @@ LABEL_41:
 
 - (HKProfileIdentifier)profileIdentifier
 {
-  v2 = [(HDHealthStoreServer *)self->_server profile];
-  v3 = [v2 profileIdentifier];
+  profile = [(HDHealthStoreServer *)self->_server profile];
+  profileIdentifier = [profile profileIdentifier];
 
-  return v3;
+  return profileIdentifier;
 }
 
 - (void)connectionConfigured
 {
-  v3 = [(HDXPCClient *)self->_client connection];
-  [v3 _setQueue:self->_connectionQueue];
+  connection = [(HDXPCClient *)self->_client connection];
+  [connection _setQueue:self->_connectionQueue];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   v16 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);

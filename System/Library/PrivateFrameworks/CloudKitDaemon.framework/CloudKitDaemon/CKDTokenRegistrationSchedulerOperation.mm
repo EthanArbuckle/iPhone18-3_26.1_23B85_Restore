@@ -1,20 +1,20 @@
 @interface CKDTokenRegistrationSchedulerOperation
-- (CKDTokenRegistrationSchedulerOperation)initWithOperationInfo:(id)a3 container:(id)a4 apsToken:(id)a5;
+- (CKDTokenRegistrationSchedulerOperation)initWithOperationInfo:(id)info container:(id)container apsToken:(id)token;
 - (void)main;
 @end
 
 @implementation CKDTokenRegistrationSchedulerOperation
 
-- (CKDTokenRegistrationSchedulerOperation)initWithOperationInfo:(id)a3 container:(id)a4 apsToken:(id)a5
+- (CKDTokenRegistrationSchedulerOperation)initWithOperationInfo:(id)info container:(id)container apsToken:(id)token
 {
-  v9 = a5;
+  tokenCopy = token;
   v13.receiver = self;
   v13.super_class = CKDTokenRegistrationSchedulerOperation;
-  v10 = [(CKDOperation *)&v13 initWithOperationInfo:a3 container:a4];
+  v10 = [(CKDOperation *)&v13 initWithOperationInfo:info container:container];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_apsToken, a5);
+    objc_storeStrong(&v10->_apsToken, token);
   }
 
   return v11;

@@ -1,29 +1,29 @@
 @interface ServerAuthUICredentialStore
-- (void)dropCredentialsForServerURL:(id)a3;
-- (void)getUsername:(id *)a3 password:(id *)a4 forServerURL:(id)a5;
-- (void)storeCredentialsFromServerURL:(id)a3;
+- (void)dropCredentialsForServerURL:(id)l;
+- (void)getUsername:(id *)username password:(id *)password forServerURL:(id)l;
+- (void)storeCredentialsFromServerURL:(id)l;
 @end
 
 @implementation ServerAuthUICredentialStore
 
-- (void)getUsername:(id *)a3 password:(id *)a4 forServerURL:(id)a5
+- (void)getUsername:(id *)username password:(id *)password forServerURL:(id)l
 {
   v35[0] = kSecClassInternetPassword;
   v34[0] = kSecClass;
   v34[1] = kSecAttrServer;
-  v7 = a5;
-  v8 = [v7 host];
-  v35[1] = v8;
+  lCopy = l;
+  host = [lCopy host];
+  v35[1] = host;
   v34[2] = kSecAttrProtocol;
-  v9 = [v7 serverAuthUI_protocolFromScheme];
-  v35[2] = v9;
+  serverAuthUI_protocolFromScheme = [lCopy serverAuthUI_protocolFromScheme];
+  v35[2] = serverAuthUI_protocolFromScheme;
   v34[3] = kSecAttrPort;
-  v10 = [v7 port];
+  port = [lCopy port];
 
   v11 = &off_100008650;
-  if (v10)
+  if (port)
   {
-    v11 = v10;
+    v11 = port;
   }
 
   v35[3] = v11;
@@ -103,16 +103,16 @@ LABEL_22:
           v23 = v22;
           if (v20 && v22)
           {
-            if (a3)
+            if (username)
             {
               v24 = v20;
-              *a3 = v20;
+              *username = v20;
             }
 
-            if (a4)
+            if (password)
             {
               v25 = v23;
-              *a4 = v23;
+              *password = v23;
             }
           }
 
@@ -181,12 +181,12 @@ LABEL_22:
   }
 }
 
-- (void)storeCredentialsFromServerURL:(id)a3
+- (void)storeCredentialsFromServerURL:(id)l
 {
-  v3 = a3;
-  v4 = [NSURLComponents componentsWithURL:v3 resolvingAgainstBaseURL:0];
-  v5 = [v4 user];
-  v6 = [v4 password];
+  lCopy = l;
+  v4 = [NSURLComponents componentsWithURL:lCopy resolvingAgainstBaseURL:0];
+  user = [v4 user];
+  password = [v4 password];
   [v4 setPassword:&stru_1000085C8];
   v7 = serverAuthUILogHandle;
   if (!serverAuthUILogHandle)
@@ -204,9 +204,9 @@ LABEL_22:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Updating keychain with user input credentials for server URL %@", buf, 0xCu);
   }
 
-  if (v5)
+  if (user)
   {
-    v10 = v6 == 0;
+    v10 = password == 0;
   }
 
   else
@@ -219,25 +219,25 @@ LABEL_22:
     v47[0] = kSecClass;
     v47[1] = kSecAttrAccount;
     v48[0] = kSecClassInternetPassword;
-    v48[1] = v5;
-    v44 = v5;
+    v48[1] = user;
+    v44 = user;
     v47[2] = kSecValueData;
-    v43 = v6;
-    v11 = [v6 dataUsingEncoding:4];
+    v43 = password;
+    v11 = [password dataUsingEncoding:4];
     v48[2] = v11;
     v47[3] = kSecAttrServer;
-    v12 = [v3 host];
-    v48[3] = v12;
+    host = [lCopy host];
+    v48[3] = host;
     v47[4] = kSecAttrProtocol;
-    v13 = [v3 serverAuthUI_protocolFromScheme];
-    v48[4] = v13;
+    serverAuthUI_protocolFromScheme = [lCopy serverAuthUI_protocolFromScheme];
+    v48[4] = serverAuthUI_protocolFromScheme;
     v47[5] = kSecAttrPort;
-    v14 = [v3 port];
-    v15 = v14;
+    port = [lCopy port];
+    v15 = port;
     v16 = &off_100008650;
-    if (v14)
+    if (port)
     {
-      v16 = v14;
+      v16 = port;
     }
 
     v48[5] = v16;
@@ -257,7 +257,7 @@ LABEL_22:
         v20 = serverAuthUILogHandle;
       }
 
-      v5 = v44;
+      user = v44;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -299,7 +299,7 @@ LABEL_22:
         }
       }
 
-      v6 = v43;
+      password = v43;
     }
 
     else
@@ -308,14 +308,14 @@ LABEL_22:
       if (v18)
       {
         v36 = serverAuthUILogHandle;
-        v5 = v44;
+        user = v44;
         if (!serverAuthUILogHandle)
         {
           ServerAuthUIInitLogging();
           v36 = serverAuthUILogHandle;
         }
 
-        v6 = v43;
+        password = v43;
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
         {
           sub_100003E04(v19, v36, v37, v38, v39, v40, v41, v42);
@@ -324,16 +324,16 @@ LABEL_22:
 
       else
       {
-        v6 = v43;
-        v5 = v44;
+        password = v43;
+        user = v44;
       }
     }
   }
 }
 
-- (void)dropCredentialsForServerURL:(id)a3
+- (void)dropCredentialsForServerURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = serverAuthUILogHandle;
   if (!serverAuthUILogHandle)
   {
@@ -344,23 +344,23 @@ LABEL_22:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v23 = v3;
+    v23 = lCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Dropping credentials for server URL %@", buf, 0xCu);
   }
 
   v21[0] = kSecClassInternetPassword;
-  v5 = [v3 host];
-  v21[1] = v5;
+  host = [lCopy host];
+  v21[1] = host;
   v20[2] = kSecAttrProtocol;
-  v6 = [v3 serverAuthUI_protocolFromScheme];
-  v21[2] = v6;
+  serverAuthUI_protocolFromScheme = [lCopy serverAuthUI_protocolFromScheme];
+  v21[2] = serverAuthUI_protocolFromScheme;
   v20[3] = kSecAttrPort;
-  v7 = [v3 port];
-  v8 = v7;
+  port = [lCopy port];
+  v8 = port;
   v9 = &off_100008650;
-  if (v7)
+  if (port)
   {
-    v9 = v7;
+    v9 = port;
   }
 
   v20[4] = kSecAttrSynchronizable;

@@ -7,18 +7,18 @@
 
 - (id)bundleID
 {
-  v1 = [a1 metrics];
-  v2 = [v1 allKeys];
-  v3 = [v2 firstObject];
+  metrics = [self metrics];
+  allKeys = [metrics allKeys];
+  firstObject = [allKeys firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (uint64_t)sourceIDString
 {
-  v1 = [a1 sourceID];
+  sourceID = [self sourceID];
 
-  return [&unk_286A1BA78 objectAtIndexedSubscript:v1];
+  return [&unk_286A1BA78 objectAtIndexedSubscript:sourceID];
 }
 
 @end

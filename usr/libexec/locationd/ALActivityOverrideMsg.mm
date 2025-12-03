@@ -1,13 +1,13 @@
 @interface ALActivityOverrideMsg
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)overrideActionAsString:(int)a3;
-- (int)StringAsOverrideAction:(id)a3;
+- (id)overrideActionAsString:(int)string;
+- (int)StringAsOverrideAction:(id)action;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALActivityOverrideMsg
@@ -20,32 +20,32 @@
   [(ALActivityOverrideMsg *)&v3 dealloc];
 }
 
-- (id)overrideActionAsString:(int)a3
+- (id)overrideActionAsString:(int)string
 {
-  if ((a3 + 1) >= 3)
+  if ((string + 1) >= 3)
   {
-    return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    return [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    return *(&off_102457410 + (a3 + 1));
+    return *(&off_102457410 + (string + 1));
   }
 }
 
-- (int)StringAsOverrideAction:(id)a3
+- (int)StringAsOverrideAction:(id)action
 {
-  if ([a3 isEqualToString:@"kOverrideActionNone"])
+  if ([action isEqualToString:@"kOverrideActionNone"])
   {
     return -1;
   }
 
-  if ([a3 isEqualToString:@"kOverrideActionClear"])
+  if ([action isEqualToString:@"kOverrideActionClear"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"kOverrideActionSet"])
+  if ([action isEqualToString:@"kOverrideActionSet"])
   {
     return 1;
   }
@@ -84,7 +84,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteInt32Field();
   if (!self->_activity)
@@ -95,24 +95,24 @@
   PBDataWriterWriteSubmessage();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 4) = self->_overrideAction;
 
-  *(v5 + 1) = [(ALCLMotionActivity *)self->_activity copyWithZone:a3];
+  *(v5 + 1) = [(ALCLMotionActivity *)self->_activity copyWithZone:zone];
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    if (self->_overrideAction == *(a3 + 4))
+    if (self->_overrideAction == *(equal + 4))
     {
       activity = self->_activity;
-      if (activity | *(a3 + 1))
+      if (activity | *(equal + 1))
       {
 
         LOBYTE(v5) = [(ALCLMotionActivity *)activity isEqual:?];
@@ -133,10 +133,10 @@
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_overrideAction = *(a3 + 4);
-  v3 = *(a3 + 1);
+  self->_overrideAction = *(from + 4);
+  v3 = *(from + 1);
   if (self->_activity)
   {
     if (v3)

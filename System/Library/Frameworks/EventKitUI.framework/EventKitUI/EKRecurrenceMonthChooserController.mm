@@ -1,24 +1,24 @@
 @interface EKRecurrenceMonthChooserController
-- (EKRecurrenceMonthChooserController)initWithDate:(id)a3;
+- (EKRecurrenceMonthChooserController)initWithDate:(id)date;
 - (NSArray)monthsOfTheYear;
 - (id)cellLabels;
 - (id)tableViewCell;
 - (void)prepareForDisplay;
 - (void)refreshCells;
-- (void)selectCell:(id)a3 atIndex:(int64_t)a4;
-- (void)setMonthsOfTheYear:(id)a3;
-- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)a3;
-- (void)updateFromRecurrenceRule:(id)a3;
-- (void)updateRecurrenceRuleBuilder:(id)a3;
+- (void)selectCell:(id)cell atIndex:(int64_t)index;
+- (void)setMonthsOfTheYear:(id)year;
+- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)recurrence;
+- (void)updateFromRecurrenceRule:(id)rule;
+- (void)updateRecurrenceRuleBuilder:(id)builder;
 @end
 
 @implementation EKRecurrenceMonthChooserController
 
-- (EKRecurrenceMonthChooserController)initWithDate:(id)a3
+- (EKRecurrenceMonthChooserController)initWithDate:(id)date
 {
   v7.receiver = self;
   v7.super_class = EKRecurrenceMonthChooserController;
-  v3 = [(EKRecurrenceChooserController *)&v7 initWithDate:a3];
+  v3 = [(EKRecurrenceChooserController *)&v7 initWithDate:date];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -31,43 +31,43 @@
 
 - (NSArray)monthsOfTheYear
 {
-  v2 = [(NSMutableSet *)self->_monthsOfTheYearSet allObjects];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  allObjects = [(NSMutableSet *)self->_monthsOfTheYearSet allObjects];
+  v3 = [allObjects sortedArrayUsingSelector:sel_compare_];
 
   return v3;
 }
 
-- (void)setMonthsOfTheYear:(id)a3
+- (void)setMonthsOfTheYear:(id)year
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithArray:a3];
+  v6 = [MEMORY[0x1E695DFD8] setWithArray:year];
   v4 = [v6 mutableCopy];
   monthsOfTheYearSet = self->_monthsOfTheYearSet;
   self->_monthsOfTheYearSet = v4;
 }
 
-- (void)updateRecurrenceRuleBuilder:(id)a3
+- (void)updateRecurrenceRuleBuilder:(id)builder
 {
-  v7 = a3;
-  v4 = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
-  v5 = [v4 count];
+  builderCopy = builder;
+  monthsOfTheYear = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
+  v5 = [monthsOfTheYear count];
 
   if (v5)
   {
-    [v7 setFrequency:3];
-    v6 = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
-    [v7 setMonthNumbers:v6];
+    [builderCopy setFrequency:3];
+    monthsOfTheYear2 = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
+    [builderCopy setMonthNumbers:monthsOfTheYear2];
   }
 }
 
-- (void)updateFromRecurrenceRule:(id)a3
+- (void)updateFromRecurrenceRule:(id)rule
 {
-  v6 = a3;
-  v4 = [v6 monthsOfTheYear];
+  ruleCopy = rule;
+  monthsOfTheYear = [ruleCopy monthsOfTheYear];
 
-  if (v4)
+  if (monthsOfTheYear)
   {
-    v5 = [v6 monthsOfTheYear];
-    [(EKRecurrenceMonthChooserController *)self setMonthsOfTheYear:v5];
+    monthsOfTheYear2 = [ruleCopy monthsOfTheYear];
+    [(EKRecurrenceMonthChooserController *)self setMonthsOfTheYear:monthsOfTheYear2];
 
     [(EKRecurrenceMonthChooserController *)self refreshCells];
   }
@@ -77,10 +77,10 @@
 {
   v4.receiver = self;
   v4.super_class = EKRecurrenceMonthChooserController;
-  v2 = [(EKRecurrenceGridChooserController *)&v4 tableViewCell];
-  [v2 setDrawsTopDivider:1];
+  tableViewCell = [(EKRecurrenceGridChooserController *)&v4 tableViewCell];
+  [tableViewCell setDrawsTopDivider:1];
 
-  return v2;
+  return tableViewCell;
 }
 
 - (id)cellLabels
@@ -122,8 +122,8 @@ void __48__EKRecurrenceMonthChooserController_cellLabels__block_invoke()
 - (void)prepareForDisplay
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
-  v4 = [v3 count];
+  monthsOfTheYear = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
+  v4 = [monthsOfTheYear count];
 
   if (!v4)
   {
@@ -138,12 +138,12 @@ void __48__EKRecurrenceMonthChooserController_cellLabels__block_invoke()
 - (void)refreshCells
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(EKRecurrenceGridChooserController *)self allCells];
+  allCells = [(EKRecurrenceGridChooserController *)self allCells];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v4 = [allCells countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -154,11 +154,11 @@ void __48__EKRecurrenceMonthChooserController_cellLabels__block_invoke()
       {
         if (*v14 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allCells);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v3 indexOfObject:v8];
+        v9 = [allCells indexOfObject:v8];
         monthsOfTheYearSet = self->_monthsOfTheYearSet;
         v11 = [MEMORY[0x1E696AD98] numberWithInteger:v9 + 1];
         v12 = [(NSMutableSet *)monthsOfTheYearSet containsObject:v11];
@@ -166,22 +166,22 @@ void __48__EKRecurrenceMonthChooserController_cellLabels__block_invoke()
         [v8 setSelected:v12];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v5 = [allCells countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)selectCell:(id)a3 atIndex:(int64_t)a4
+- (void)selectCell:(id)cell atIndex:(int64_t)index
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (-[NSMutableSet count](self->_monthsOfTheYearSet, "count") != 1 || ([v6 selected] & 1) == 0)
+  cellCopy = cell;
+  if (-[NSMutableSet count](self->_monthsOfTheYearSet, "count") != 1 || ([cellCopy selected] & 1) == 0)
   {
-    [v6 setSelected:{objc_msgSend(v6, "selected") ^ 1}];
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4 + 1];
-    if ([v6 selected] && -[EKRecurrenceMonthChooserController prohibitsMultipleMonthsInYearlyRecurrence](self, "prohibitsMultipleMonthsInYearlyRecurrence"))
+    [cellCopy setSelected:{objc_msgSend(cellCopy, "selected") ^ 1}];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:index + 1];
+    if ([cellCopy selected] && -[EKRecurrenceMonthChooserController prohibitsMultipleMonthsInYearlyRecurrence](self, "prohibitsMultipleMonthsInYearlyRecurrence"))
     {
       v11[0] = v7;
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:1];
@@ -192,9 +192,9 @@ void __48__EKRecurrenceMonthChooserController_cellLabels__block_invoke()
 
     else
     {
-      v9 = [v6 selected];
+      selected = [cellCopy selected];
       monthsOfTheYearSet = self->_monthsOfTheYearSet;
-      if (v9)
+      if (selected)
       {
         [(NSMutableSet *)monthsOfTheYearSet addObject:v7];
       }
@@ -209,22 +209,22 @@ void __48__EKRecurrenceMonthChooserController_cellLabels__block_invoke()
   }
 }
 
-- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)a3
+- (void)setProhibitsMultipleMonthsInYearlyRecurrence:(BOOL)recurrence
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (self->_prohibitsMultipleMonthsInYearlyRecurrence != a3)
+  if (self->_prohibitsMultipleMonthsInYearlyRecurrence != recurrence)
   {
-    self->_prohibitsMultipleMonthsInYearlyRecurrence = a3;
-    if (a3)
+    self->_prohibitsMultipleMonthsInYearlyRecurrence = recurrence;
+    if (recurrence)
     {
-      v4 = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
-      v5 = [v4 count];
+      monthsOfTheYear = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
+      v5 = [monthsOfTheYear count];
 
       if (v5)
       {
-        v6 = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
-        v7 = [v6 firstObject];
-        v9[0] = v7;
+        monthsOfTheYear2 = [(EKRecurrenceMonthChooserController *)self monthsOfTheYear];
+        firstObject = [monthsOfTheYear2 firstObject];
+        v9[0] = firstObject;
         v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
         [(EKRecurrenceMonthChooserController *)self setMonthsOfTheYear:v8];
 

@@ -16,13 +16,13 @@
 
   else
   {
-    v8 = [MEMORY[0x1E695DF58] currentLocale];
-    v9 = [v8 localeIdentifier];
+    currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+    localeIdentifier = [currentLocale localeIdentifier];
 
-    v7 = [v9 isEqualToString:@"en_US"];
+    v7 = [localeIdentifier isEqualToString:@"en_US"];
   }
 
-  v10 = [a1 _accessibilitySpeakableDisplayValueWithStyle:a3 isUSKeyboard:v7];
+  v10 = [self _accessibilitySpeakableDisplayValueWithStyle:a3 isUSKeyboard:v7];
 
   return v10;
 }
@@ -30,7 +30,7 @@
 - (id)_accessibilitySpeakableDisplayValueWithStyle:()Speaking isUSKeyboard:
 {
   v1 = MEMORY[0x1E6988D60];
-  v2 = [a1 displayValueWithStyle:? isUSKeyboard:?];
+  v2 = [self displayValueWithStyle:? isUSKeyboard:?];
   v3 = [v1 axAttributedStringWithString:v2];
 
   [v3 setAttribute:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6988F78]];

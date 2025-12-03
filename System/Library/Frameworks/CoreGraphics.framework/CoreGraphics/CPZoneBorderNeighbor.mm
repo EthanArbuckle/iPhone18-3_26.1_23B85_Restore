@@ -1,20 +1,20 @@
 @interface CPZoneBorderNeighbor
 - (CPZoneBorderNeighbor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initSuper;
 - (void)dealloc;
-- (void)setNeighborShape:(id)a3;
+- (void)setNeighborShape:(id)shape;
 @end
 
 @implementation CPZoneBorderNeighbor
 
-- (void)setNeighborShape:(id)a3
+- (void)setNeighborShape:(id)shape
 {
   neighborShape = self->neighborShape;
-  if (neighborShape != a3)
+  if (neighborShape != shape)
   {
 
-    self->neighborShape = a3;
+    self->neighborShape = shape;
   }
 }
 
@@ -25,9 +25,9 @@
   [(CPZoneBorderNeighbor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = CPCopyObject(self, a3);
+  v3 = CPCopyObject(self, zone);
   v4 = v3[1];
   return v3;
 }

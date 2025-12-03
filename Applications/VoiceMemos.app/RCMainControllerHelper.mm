@@ -1,25 +1,25 @@
 @interface RCMainControllerHelper
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_selectedTimeRange;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)allowedTimeRange;
-- (BOOL)_errorIsRecordingUnavailable:(id)a3;
-- (BOOL)_isSelectionTrimmableByDeletingRange:(id)a3;
-- (BOOL)_isSelectionTrimmableByKeepingRange:(id)a3;
-- (BOOL)_performRecordingEndTransitionWithUUID:(id)a3;
+- (BOOL)_errorIsRecordingUnavailable:(id)unavailable;
+- (BOOL)_isSelectionTrimmableByDeletingRange:(id)range;
+- (BOOL)_isSelectionTrimmableByKeepingRange:(id)range;
+- (BOOL)_performRecordingEndTransitionWithUUID:(id)d;
 - (BOOL)_shouldEnableTrimSave;
-- (BOOL)_transitionToActivityType:(int64_t)a3 toSubType:(int64_t)a4 withDisplayModel:(id)a5 waveformDataSource:(id)a6 composition:(id)a7;
-- (BOOL)_transitionToIdleForItemWithUUID:(id)a3;
-- (BOOL)_transitionToPlayingBackForItemWithUUID:(id)a3;
+- (BOOL)_transitionToActivityType:(int64_t)type toSubType:(int64_t)subType withDisplayModel:(id)model waveformDataSource:(id)source composition:(id)composition;
+- (BOOL)_transitionToIdleForItemWithUUID:(id)d;
+- (BOOL)_transitionToPlayingBackForItemWithUUID:(id)d;
 - (BOOL)canJumpBackward;
 - (BOOL)canJumpForward;
 - (BOOL)currentSelectionHasSpatialAudio;
 - (BOOL)isPaused;
 - (BOOL)isPlaying;
-- (BOOL)isPlayingForUUID:(id)a3;
+- (BOOL)isPlayingForUUID:(id)d;
 - (BOOL)isRecording;
-- (BOOL)isSilenceRemovedForUUID:(id)a3;
-- (BOOL)isSpeechIsolatorEnabledForUUID:(id)a3;
+- (BOOL)isSilenceRemovedForUUID:(id)d;
+- (BOOL)isSpeechIsolatorEnabledForUUID:(id)d;
 - (BOOL)readyForPlayback;
-- (BOOL)startCapturing:(id)a3;
+- (BOOL)startCapturing:(id)capturing;
 - (NSHashTable)timeObservers;
 - (RCActivityWaveformProcessor)activityWaveformProcessor;
 - (RCMainControllerHelper)init;
@@ -27,129 +27,129 @@
 - (_TtC10VoiceMemos19RCLiveTranscription)liveTranscription;
 - (double)currentDuration;
 - (double)currentTime;
-- (double)layerMixForUUID:(id)a3;
-- (double)playbackSpeedForUUID:(id)a3;
-- (float)speechIsolatorForUUID:(id)a3;
-- (id)_alertControllerWithTitle:(id)a3 message:(id)a4 isDestructive:(BOOL)a5 preferredStyle:(int64_t)a6 source:(id)a7 handler:(id)a8 actionTitle:(id)a9 cancelHandler:(id)a10;
-- (id)_presentFolderDeletionConfirmationForFolder:(id)a3 source:(id)a4 completionBlock:(id)a5;
-- (id)_restoreRecordingsWithUUIDs:(id)a3 isRecover:(BOOL)a4 source:(id)a5 collectionViewController:(id)a6;
-- (id)_undoActionNameForTrimMode:(int64_t)a3 isUndo:(BOOL)a4;
-- (id)compositionForUUID:(id)a3;
-- (id)currentPlayerForUUID:(id)a3;
-- (id)deleteFolder:(id)a3 source:(id)a4 completionBlock:(id)a5;
-- (id)deleteWithUUIDs:(id)a3 source:(id)a4 showInfo:(BOOL)a5;
-- (id)eraseAllRecordingsAndConfirmWithSource:(id)a3;
-- (id)eraseAndConfirmWithUUIDs:(id)a3 source:(id)a4 collectionViewController:(id)a5;
-- (id)playbackSettingsForUUID:(id)a3;
+- (double)layerMixForUUID:(id)d;
+- (double)playbackSpeedForUUID:(id)d;
+- (float)speechIsolatorForUUID:(id)d;
+- (id)_alertControllerWithTitle:(id)title message:(id)message isDestructive:(BOOL)destructive preferredStyle:(int64_t)style source:(id)source handler:(id)handler actionTitle:(id)actionTitle cancelHandler:(id)self0;
+- (id)_presentFolderDeletionConfirmationForFolder:(id)folder source:(id)source completionBlock:(id)block;
+- (id)_restoreRecordingsWithUUIDs:(id)ds isRecover:(BOOL)recover source:(id)source collectionViewController:(id)controller;
+- (id)_undoActionNameForTrimMode:(int64_t)mode isUndo:(BOOL)undo;
+- (id)compositionForUUID:(id)d;
+- (id)currentPlayerForUUID:(id)d;
+- (id)deleteFolder:(id)folder source:(id)source completionBlock:(id)block;
+- (id)deleteWithUUIDs:(id)ds source:(id)source showInfo:(BOOL)info;
+- (id)eraseAllRecordingsAndConfirmWithSource:(id)source;
+- (id)eraseAndConfirmWithUUIDs:(id)ds source:(id)source collectionViewController:(id)controller;
+- (id)playbackSettingsForUUID:(id)d;
 - (id)recordingInProgressUUID;
-- (id)restoreRecordingsWithUUIDs:(id)a3 isRecover:(BOOL)a4 source:(id)a5 force:(BOOL)a6 collectionViewController:(id)a7;
+- (id)restoreRecordingsWithUUIDs:(id)ds isRecover:(BOOL)recover source:(id)source force:(BOOL)force collectionViewController:(id)controller;
 - (id)undoManager;
 - (id)uuidOfPlayingOrSelectedRecording;
 - (int64_t)timeControllerState;
 - (void)__setupRemoteControlCommandsForPlayback;
 - (void)__setupRemoteControlCommandsForRecordingForeground;
-- (void)_addCommandTarget:(id)a3 withHandler:(id)a4;
-- (void)_addRecordingObservations:(id)a3;
-- (void)_adjustCurrentTrimOperationUndoCount:(int64_t)a3;
-- (void)_audioContentOrDurationDidChange:(id)a3;
-- (void)_beginOrResumeCaptureSessionWithReplace:(BOOL)a3 trackIndex:(unint64_t)a4;
-- (void)_beginSelectionEditingModeForInsertMode:(BOOL)a3;
-- (void)_checkAudioPlayer:(id)a3;
-- (void)_clearPlaybackInAudioPlayer:(id)a3;
+- (void)_addCommandTarget:(id)target withHandler:(id)handler;
+- (void)_addRecordingObservations:(id)observations;
+- (void)_adjustCurrentTrimOperationUndoCount:(int64_t)count;
+- (void)_audioContentOrDurationDidChange:(id)change;
+- (void)_beginOrResumeCaptureSessionWithReplace:(BOOL)replace trackIndex:(unint64_t)index;
+- (void)_beginSelectionEditingModeForInsertMode:(BOOL)mode;
+- (void)_checkAudioPlayer:(id)player;
+- (void)_clearPlaybackInAudioPlayer:(id)player;
 - (void)_clearTrimModeUndoStack;
-- (void)_deleteFolderWithoutAlert:(id)a3;
-- (void)_deleteRecordingsWithUUIDs:(id)a3 isRecover:(BOOL)a4;
+- (void)_deleteFolderWithoutAlert:(id)alert;
+- (void)_deleteRecordingsWithUUIDs:(id)ds isRecover:(BOOL)recover;
 - (void)_endSelectionEditingMode;
 - (void)_enterTrimMode;
-- (void)_eraseRecordingsWithUUIDs:(id)a3;
-- (void)_handleRecordingUnavailableError:(id)a3;
-- (void)_jumpByIncrement:(double)a3 forUUID:(id)a4;
-- (void)_jumpToTargetTime:(double)a3;
+- (void)_eraseRecordingsWithUUIDs:(id)ds;
+- (void)_handleRecordingUnavailableError:(id)error;
+- (void)_jumpByIncrement:(double)increment forUUID:(id)d;
+- (void)_jumpToTargetTime:(double)time;
 - (void)_markCurrentFileVersionIfNecessary;
-- (void)_preloadRecordingForPlayback:(id)a3;
+- (void)_preloadRecordingForPlayback:(id)playback;
 - (void)_reconcileAudioStateWithApplicationState;
-- (void)_recordingFailed:(id)a3 error:(id)a4;
-- (void)_recordingStarted:(id)a3;
-- (void)_recordingStopped:(id)a3;
-- (void)_redoCaptureFragmentWithCompositionControllerRedoInfo:(id)a3;
-- (void)_redoTrim:(int64_t)a3;
-- (void)_refreshAfterEditingOperation:(id)a3;
-- (void)_registerUndoDeleteFolder:(id)a3;
-- (void)_registerUndoForSetFavorite:(BOOL)a3 changedUUIDs:(id)a4;
-- (void)_reloadWaveformDataSourceAndPreviewAssetWithInitialTime:(double)a3;
-- (void)_removeRecordingObservations:(id)a3;
-- (void)_removeRecordingsObservationsForUUIDs:(id)a3;
+- (void)_recordingFailed:(id)failed error:(id)error;
+- (void)_recordingStarted:(id)started;
+- (void)_recordingStopped:(id)stopped;
+- (void)_redoCaptureFragmentWithCompositionControllerRedoInfo:(id)info;
+- (void)_redoTrim:(int64_t)trim;
+- (void)_refreshAfterEditingOperation:(id)operation;
+- (void)_registerUndoDeleteFolder:(id)folder;
+- (void)_registerUndoForSetFavorite:(BOOL)favorite changedUUIDs:(id)ds;
+- (void)_reloadWaveformDataSourceAndPreviewAssetWithInitialTime:(double)time;
+- (void)_removeRecordingObservations:(id)observations;
+- (void)_removeRecordingsObservationsForUUIDs:(id)ds;
 - (void)_resetSelectedTimeRangeToFullDuration;
-- (void)_restoreFolder:(id)a3;
-- (void)_restoreRecordingsWithUUIDs:(id)a3 isRecover:(BOOL)a4;
-- (void)_sceneDidActivateNotification:(id)a3;
-- (void)_sceneWillDeactivateNotification:(id)a3;
-- (void)_setIsInSelectionEditingMode:(BOOL)a3 forInsertMode:(BOOL)a4;
-- (void)_startNowPlayingUpdateTimerWithPlaybackTime:(double)a3 playbackRate:(double)a4;
-- (void)_startPlaybackOfUUID:(id)a3 atPosition:(double)a4;
-- (void)_stopForUUIDs:(id)a3;
-- (void)_stopPlaybackInAudioPlayer:(id)a3;
+- (void)_restoreFolder:(id)folder;
+- (void)_restoreRecordingsWithUUIDs:(id)ds isRecover:(BOOL)recover;
+- (void)_sceneDidActivateNotification:(id)notification;
+- (void)_sceneWillDeactivateNotification:(id)notification;
+- (void)_setIsInSelectionEditingMode:(BOOL)mode forInsertMode:(BOOL)insertMode;
+- (void)_startNowPlayingUpdateTimerWithPlaybackTime:(double)time playbackRate:(double)rate;
+- (void)_startPlaybackOfUUID:(id)d atPosition:(double)position;
+- (void)_stopForUUIDs:(id)ds;
+- (void)_stopPlaybackInAudioPlayer:(id)player;
 - (void)_teardownRemoteControlCommands;
 - (void)_undoCaptureFragment;
-- (void)_undoTrim:(int64_t)a3;
+- (void)_undoTrim:(int64_t)trim;
 - (void)_updateNowPlayingInfo;
-- (void)_updateRemoteControlState:(int64_t)a3;
+- (void)_updateRemoteControlState:(int64_t)state;
 - (void)_updateTrimSaveEnabledState;
-- (void)_updateWillMigrateFromSingleLayerToMultiLayerForRecordingID:(id)a3;
-- (void)addTimeObserver:(id)a3;
-- (void)cancelTrimModeWithDismissal:(BOOL)a3;
+- (void)_updateWillMigrateFromSingleLayerToMultiLayerForRecordingID:(id)d;
+- (void)addTimeObserver:(id)observer;
+- (void)cancelTrimModeWithDismissal:(BOOL)dismissal;
 - (void)dealloc;
-- (void)defaultSceneDidConnect:(id)a3;
+- (void)defaultSceneDidConnect:(id)connect;
 - (void)deleteRecordingCanceled;
-- (void)displayLinkDidUpdate:(id)a3 withTimeController:(id)a4;
-- (void)doneButtonShouldSaveAsNew:(BOOL)a3;
+- (void)displayLinkDidUpdate:(id)update withTimeController:(id)controller;
+- (void)doneButtonShouldSaveAsNew:(BOOL)new;
 - (void)endDescriptionViewTextEditing;
-- (void)endScrubbingForUUID:(id)a3 atPosition:(double)a4;
+- (void)endScrubbingForUUID:(id)d atPosition:(double)position;
 - (void)enterTrimMode;
 - (void)exitEditMode;
 - (void)exitTrimMode;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)openForModifyRecordingWithUUID:(id)a3 withSubActivityType:(int64_t)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)openForModifyRecordingWithUUID:(id)d withSubActivityType:(int64_t)type;
 - (void)pauseCapturing;
-- (void)pauseForUUID:(id)a3;
+- (void)pauseForUUID:(id)d;
 - (void)pauseTime;
 - (void)performClearAllRecentlyDeleted;
-- (void)performTrimByDeletingSelectedRangeForRecordingWithUUID:(id)a3 source:(id)a4;
-- (void)performTrimByKeepingSelectedRangeForRecordingWithUUID:(id)a3 source:(id)a4;
-- (void)playbackForUUID:(id)a3;
-- (void)prepareForPlaybackForUUID:(id)a3 force:(BOOL)a4;
-- (void)removeTimeObserver:(id)a3;
-- (void)replaceCapturing:(unint64_t)a3;
-- (void)resumeCapturing:(unint64_t)a3;
-- (void)setAllowedTimeRange:(id)a3;
-- (void)setAudioPlayer:(id)a3;
-- (void)setAudioRecorder:(id)a3;
-- (void)setCurrentRate:(float)a3;
-- (void)setCurrentRecordingDisplayModel:(id)a3;
-- (void)setCurrentTime:(double)a3;
-- (void)setFavorite:(BOOL)a3 forRecordingWithUUID:(id)a4;
-- (void)setFavorite:(BOOL)a3 forRecordingsWithUUIDs:(id)a4;
-- (void)setLayerMix:(double)a3 forUUID:(id)a4;
-- (void)setLooping:(BOOL)a3 forUUID:(id)a4;
-- (void)setPlaybackSpeed:(double)a3 forUUID:(id)a4;
-- (void)setRecordingError:(id)a3;
-- (void)setRemoveSilence:(BOOL)a3 forUUID:(id)a4;
-- (void)setSpeechIsolatorEnabled:(BOOL)a3 forUUID:(id)a4;
-- (void)setSpeechIsolatorValue:(float)a3 forUUID:(id)a4;
-- (void)setTargetTime:(double)a3;
-- (void)shareRecordingsWithUUIDs:(id)a3 inViewController:(id)a4 source:(id)a5 isShareButton:(BOOL)a6 completionWithItemsHandler:(id)a7;
+- (void)performTrimByDeletingSelectedRangeForRecordingWithUUID:(id)d source:(id)source;
+- (void)performTrimByKeepingSelectedRangeForRecordingWithUUID:(id)d source:(id)source;
+- (void)playbackForUUID:(id)d;
+- (void)prepareForPlaybackForUUID:(id)d force:(BOOL)force;
+- (void)removeTimeObserver:(id)observer;
+- (void)replaceCapturing:(unint64_t)capturing;
+- (void)resumeCapturing:(unint64_t)capturing;
+- (void)setAllowedTimeRange:(id)range;
+- (void)setAudioPlayer:(id)player;
+- (void)setAudioRecorder:(id)recorder;
+- (void)setCurrentRate:(float)rate;
+- (void)setCurrentRecordingDisplayModel:(id)model;
+- (void)setCurrentTime:(double)time;
+- (void)setFavorite:(BOOL)favorite forRecordingWithUUID:(id)d;
+- (void)setFavorite:(BOOL)favorite forRecordingsWithUUIDs:(id)ds;
+- (void)setLayerMix:(double)mix forUUID:(id)d;
+- (void)setLooping:(BOOL)looping forUUID:(id)d;
+- (void)setPlaybackSpeed:(double)speed forUUID:(id)d;
+- (void)setRecordingError:(id)error;
+- (void)setRemoveSilence:(BOOL)silence forUUID:(id)d;
+- (void)setSpeechIsolatorEnabled:(BOOL)enabled forUUID:(id)d;
+- (void)setSpeechIsolatorValue:(float)value forUUID:(id)d;
+- (void)setTargetTime:(double)time;
+- (void)shareRecordingsWithUUIDs:(id)ds inViewController:(id)controller source:(id)source isShareButton:(BOOL)button completionWithItemsHandler:(id)handler;
 - (void)startMonitoringFinalizingRecordings;
-- (void)startScrubbingForUUID:(id)a3 atPosition:(double)a4;
+- (void)startScrubbingForUUID:(id)d atPosition:(double)position;
 - (void)stopCapturing;
-- (void)stopForUUID:(id)a3;
+- (void)stopForUUID:(id)d;
 - (void)stopPlayback;
-- (void)toggleFavoriteForUUID:(id)a3;
-- (void)toggleForUUID:(id)a3;
+- (void)toggleFavoriteForUUID:(id)d;
+- (void)toggleForUUID:(id)d;
 - (void)togglePlayback;
-- (void)updateScrubbingForUUID:(id)a3 atPosition:(double)a4;
-- (void)waveformDataSource:(id)a3 didLoadWaveformSegment:(id)a4;
-- (void)waveformDataSourceDidFinishLoading:(id)a3;
-- (void)waveformDataSourceRequiresUpdate:(id)a3;
+- (void)updateScrubbingForUUID:(id)d atPosition:(double)position;
+- (void)waveformDataSource:(id)source didLoadWaveformSegment:(id)segment;
+- (void)waveformDataSourceDidFinishLoading:(id)loading;
+- (void)waveformDataSourceRequiresUpdate:(id)update;
 @end
 
 @implementation RCMainControllerHelper
@@ -174,8 +174,8 @@
     displayLinkManager = v2->_displayLinkManager;
     v2->_displayLinkManager = v7;
 
-    v9 = [(RCMainControllerHelper *)v2 timeController];
-    [(RCDisplayLinkManager *)v2->_displayLinkManager setTimeController:v9];
+    timeController = [(RCMainControllerHelper *)v2 timeController];
+    [(RCDisplayLinkManager *)v2->_displayLinkManager setTimeController:timeController];
 
     v10 = [[RCUndoTarget alloc] initWithUndoTargetType:1];
     trimModeUndoTarget = v2->_trimModeUndoTarget;
@@ -189,8 +189,8 @@
     recordingsModelInteractor = v2->_recordingsModelInteractor;
     v2->_recordingsModelInteractor = v14;
 
-    v16 = [(RCRecordingsModelInteractor *)v2->_recordingsModelInteractor audioProperties];
-    v17 = [v16 valueForKey:@"name"];
+    audioProperties = [(RCRecordingsModelInteractor *)v2->_recordingsModelInteractor audioProperties];
+    v17 = [audioProperties valueForKey:@"name"];
     audioProperties = v2->_audioProperties;
     v2->_audioProperties = v17;
 
@@ -205,14 +205,14 @@
     v2->_appStoreRatingPrompter = v23;
 
     v25 = +[RecorderAppDelegate sharedAppDelegate];
-    v26 = [v25 defaultSceneDelegate];
-    v27 = [v26 window];
-    v28 = [v27 windowScene];
+    defaultSceneDelegate = [v25 defaultSceneDelegate];
+    window = [defaultSceneDelegate window];
+    windowScene = [window windowScene];
 
     v29 = +[NSNotificationCenter defaultCenter];
-    [v29 addObserver:v2 selector:"_sceneDidActivateNotification:" name:UISceneDidActivateNotification object:v28];
-    [v29 addObserver:v2 selector:"_sceneDidEnterBackgroundNotification:" name:UISceneDidEnterBackgroundNotification object:v28];
-    [v29 addObserver:v2 selector:"_sceneWillDeactivateNotification:" name:UISceneWillDeactivateNotification object:v28];
+    [v29 addObserver:v2 selector:"_sceneDidActivateNotification:" name:UISceneDidActivateNotification object:windowScene];
+    [v29 addObserver:v2 selector:"_sceneDidEnterBackgroundNotification:" name:UISceneDidEnterBackgroundNotification object:windowScene];
+    [v29 addObserver:v2 selector:"_sceneWillDeactivateNotification:" name:UISceneWillDeactivateNotification object:windowScene];
   }
 
   return v2;
@@ -220,49 +220,49 @@
 
 - (void)stopPlayback
 {
-  v3 = [(RCMainControllerHelper *)self audioPlayer];
-  if ([v3 playing])
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  if ([audioPlayer playing])
   {
-    [(RCMainControllerHelper *)self _clearPlaybackInAudioPlayer:v3];
+    [(RCMainControllerHelper *)self _clearPlaybackInAudioPlayer:audioPlayer];
   }
 }
 
 - (BOOL)isRecording
 {
-  v2 = [(RCMainControllerHelper *)self audioRecorder];
-  v3 = v2;
-  if (v2)
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  v3 = audioRecorder;
+  if (audioRecorder)
   {
-    if ([v2 preparing])
+    if ([audioRecorder preparing])
     {
-      v4 = 1;
+      recording = 1;
     }
 
     else
     {
-      v4 = [v3 recording];
+      recording = [v3 recording];
     }
   }
 
   else
   {
-    v4 = 0;
+    recording = 0;
   }
 
-  return v4;
+  return recording;
 }
 
 - (double)currentTime
 {
-  v3 = [(RCMainControllerHelper *)self currentUserActivity];
-  if (![v3 activityType] && objc_msgSend(v3, "subActivityType") != 3)
+  currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+  if (![currentUserActivity activityType] && objc_msgSend(currentUserActivity, "subActivityType") != 3)
   {
     goto LABEL_8;
   }
 
-  v4 = [(RCMainControllerHelper *)self audioRecorder];
-  v5 = v4;
-  if (!v4 || ![v4 recording] || (v8 = 0, v9 = 0.0, (objc_msgSend(v5, "monitorRecordingTime:duration:", &v9, &v8) & 1) == 0))
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  v5 = audioRecorder;
+  if (!audioRecorder || ![audioRecorder recording] || (v8 = 0, v9 = 0.0, (objc_msgSend(v5, "monitorRecordingTime:duration:", &v9, &v8) & 1) == 0))
   {
 
 LABEL_8:
@@ -292,11 +292,11 @@ LABEL_9:
   objc_destroyWeak(&location);
 }
 
-- (void)defaultSceneDidConnect:(id)a3
+- (void)defaultSceneDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   v5 = +[NSNotificationCenter defaultCenter];
-  [v5 addObserver:self selector:"_defaultSceneWillEnterForeground:" name:UISceneWillEnterForegroundNotification object:v4];
+  [v5 addObserver:self selector:"_defaultSceneWillEnterForeground:" name:UISceneWillEnterForegroundNotification object:connectCopy];
 }
 
 - (void)dealloc
@@ -367,16 +367,16 @@ LABEL_9:
   [(RCMainControllerHelper *)&v15 dealloc];
 }
 
-- (void)setCurrentRecordingDisplayModel:(id)a3
+- (void)setCurrentRecordingDisplayModel:(id)model
 {
-  objc_storeStrong(&self->_currentRecordingDisplayModel, a3);
-  v4 = [(RCMainControllerHelper *)self delegate];
-  [v4 didUpdateCurrentRecordingDisplayModel];
+  objc_storeStrong(&self->_currentRecordingDisplayModel, model);
+  delegate = [(RCMainControllerHelper *)self delegate];
+  [delegate didUpdateCurrentRecordingDisplayModel];
 }
 
-- (BOOL)startCapturing:(id)a3
+- (BOOL)startCapturing:(id)capturing
 {
-  v4 = a3;
+  capturingCopy = capturing;
   v5 = OSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -386,46 +386,46 @@ LABEL_9:
   }
 
   v6 = +[VMAudioService sharedInstance];
-  v7 = [(RCMainControllerHelper *)self currentUserActivity];
-  v8 = [v7 isTrim];
+  currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+  isTrim = [currentUserActivity isTrim];
 
-  if (v8)
+  if (isTrim)
   {
     [(RCMainControllerHelper *)self exitTrimMode];
   }
 
   else
   {
-    v9 = [(RCMainControllerHelper *)self currentUserActivity];
-    v10 = [v9 activityType];
+    currentUserActivity2 = [(RCMainControllerHelper *)self currentUserActivity];
+    activityType = [currentUserActivity2 activityType];
 
-    if (v10 == 3)
+    if (activityType == 3)
     {
       [(RCMainControllerHelper *)self exitEditMode];
     }
   }
 
-  v11 = [(RCMainControllerHelper *)self currentUserActivity];
-  [v11 setSubActivityType:0];
+  currentUserActivity3 = [(RCMainControllerHelper *)self currentUserActivity];
+  [currentUserActivity3 setSubActivityType:0];
 
   v20 = 0;
   v12 = [v6 isRecordingEnabled:&v20];
   v13 = v20;
   if (v12)
   {
-    v14 = [v6 newRecorderWithTitleBase:v4];
+    v14 = [v6 newRecorderWithTitleBase:capturingCopy];
     [(RCMainControllerHelper *)self setAudioRecorder:v14];
-    v15 = [(RCMainControllerHelper *)self timeController];
-    [v15 setTargetTime:0.0];
+    timeController = [(RCMainControllerHelper *)self timeController];
+    [timeController setTargetTime:0.0];
 
     [(RCMainControllerHelper *)self setTargetTrackIndex:0];
     [(RCMainControllerHelper *)self setOverdubbing:0];
     [(RCMainControllerHelper *)self setSilencing:0];
     if (([v14 startRecording] & 1) == 0)
     {
-      v16 = [(RCMainControllerHelper *)self delegate];
-      v17 = [(RCMainControllerHelper *)self recordingError];
-      [v16 captureFailedWithError:v17];
+      delegate = [(RCMainControllerHelper *)self delegate];
+      recordingError = [(RCMainControllerHelper *)self recordingError];
+      [delegate captureFailedWithError:recordingError];
     }
   }
 
@@ -436,8 +436,8 @@ LABEL_9:
 
   else
   {
-    v18 = [(RCMainControllerHelper *)self delegate];
-    [v18 captureFailedWithError:v13];
+    delegate2 = [(RCMainControllerHelper *)self delegate];
+    [delegate2 captureFailedWithError:v13];
   }
 
   return v12;
@@ -453,16 +453,16 @@ LABEL_9:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s -- Requested pause capturing", &v8, 0xCu);
   }
 
-  v4 = [(RCMainControllerHelper *)self audioRecorder];
-  v5 = [(RCMainControllerHelper *)self currentUserActivity];
-  [v5 setSubActivityType:3];
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+  [currentUserActivity setSubActivityType:3];
 
-  if (v4)
+  if (audioRecorder)
   {
-    if ([v4 recording])
+    if ([audioRecorder recording])
     {
       [(RCMainControllerHelper *)self _stopDisplayLink];
-      if (([v4 stopRecording] & 1) == 0)
+      if (([audioRecorder stopRecording] & 1) == 0)
       {
         v6 = OSLogForCategory();
         if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -473,11 +473,11 @@ LABEL_9:
     }
   }
 
-  v7 = [(RCMainControllerHelper *)self undoManager];
-  [v7 setUndoDisabled:0];
+  undoManager = [(RCMainControllerHelper *)self undoManager];
+  [undoManager setUndoDisabled:0];
 }
 
-- (void)resumeCapturing:(unint64_t)a3
+- (void)resumeCapturing:(unint64_t)capturing
 {
   v5 = OSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -485,14 +485,14 @@ LABEL_9:
     v6 = 136315394;
     v7 = "[RCMainControllerHelper resumeCapturing:]";
     v8 = 2048;
-    v9 = a3;
+    capturingCopy = capturing;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s -- Requested resume capture on track %lu", &v6, 0x16u);
   }
 
-  [(RCMainControllerHelper *)self _beginOrResumeCaptureSessionWithReplace:0 trackIndex:a3];
+  [(RCMainControllerHelper *)self _beginOrResumeCaptureSessionWithReplace:0 trackIndex:capturing];
 }
 
-- (void)replaceCapturing:(unint64_t)a3
+- (void)replaceCapturing:(unint64_t)capturing
 {
   v5 = OSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -500,29 +500,29 @@ LABEL_9:
     v6 = 136315394;
     v7 = "[RCMainControllerHelper replaceCapturing:]";
     v8 = 2048;
-    v9 = a3;
+    capturingCopy = capturing;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s -- Requested replace capture on track %lu", &v6, 0x16u);
   }
 
-  [(RCMainControllerHelper *)self _beginOrResumeCaptureSessionWithReplace:1 trackIndex:a3];
+  [(RCMainControllerHelper *)self _beginOrResumeCaptureSessionWithReplace:1 trackIndex:capturing];
 }
 
 - (void)stopCapturing
 {
-  v8 = [(RCMainControllerHelper *)self audioRecorder];
-  v3 = [(RCMainControllerHelper *)self currentUserActivity];
-  if ([v3 activityType] == 1 && objc_msgSend(v3, "subActivityType") == 3)
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+  if ([currentUserActivity activityType] == 1 && objc_msgSend(currentUserActivity, "subActivityType") == 3)
   {
-    v4 = [(RCMainControllerHelper *)self currentUserActivity];
-    v5 = [v3 activityType];
-    v6 = [v3 displayModel];
-    [v4 transitionToActivityType:v5 subType:4 withDisplayModel:v6];
+    currentUserActivity2 = [(RCMainControllerHelper *)self currentUserActivity];
+    activityType = [currentUserActivity activityType];
+    displayModel = [currentUserActivity displayModel];
+    [currentUserActivity2 transitionToActivityType:activityType subType:4 withDisplayModel:displayModel];
   }
 
-  if (v8 && [v8 recording] && objc_msgSend(v8, "stopRecording"))
+  if (audioRecorder && [audioRecorder recording] && objc_msgSend(audioRecorder, "stopRecording"))
   {
-    v7 = [(RCMainControllerHelper *)self undoManager];
-    [v7 setUndoDisabled:0];
+    undoManager = [(RCMainControllerHelper *)self undoManager];
+    [undoManager setUndoDisabled:0];
   }
 
   [(RCMainControllerHelper *)self setDidTrimPlayback:0];
@@ -530,28 +530,28 @@ LABEL_9:
 
 - (BOOL)isPlaying
 {
-  v2 = [(RCMainControllerHelper *)self audioPlayer];
-  v3 = v2;
-  if (v2)
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  v3 = audioPlayer;
+  if (audioPlayer)
   {
-    v4 = [v2 playing];
+    playing = [audioPlayer playing];
   }
 
   else
   {
-    v4 = 0;
+    playing = 0;
   }
 
-  return v4;
+  return playing;
 }
 
 - (BOOL)isPaused
 {
-  v2 = [(RCMainControllerHelper *)self audioPlayer];
-  v3 = v2;
-  if (v2)
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  v3 = audioPlayer;
+  if (audioPlayer)
   {
-    v4 = [v2 playing] ^ 1;
+    v4 = [audioPlayer playing] ^ 1;
   }
 
   else
@@ -564,13 +564,13 @@ LABEL_9:
 
 - (id)recordingInProgressUUID
 {
-  v2 = [(RCMainControllerHelper *)self audioRecorder];
-  v3 = [v2 recordingID];
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  recordingID = [audioRecorder recordingID];
 
-  return v3;
+  return recordingID;
 }
 
-- (void)_beginOrResumeCaptureSessionWithReplace:(BOOL)a3 trackIndex:(unint64_t)a4
+- (void)_beginOrResumeCaptureSessionWithReplace:(BOOL)replace trackIndex:(unint64_t)index
 {
   v6 = +[VMAudioService sharedInstance];
   v39 = 0;
@@ -578,8 +578,8 @@ LABEL_9:
   v8 = v39;
   if (v7)
   {
-    v9 = [(RCMainControllerHelper *)self audioRecorder];
-    if ([v9 shouldWaitForAccessToken])
+    audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+    if ([audioRecorder shouldWaitForAccessToken])
     {
       v10 = OSLogForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -590,37 +590,37 @@ LABEL_9:
       goto LABEL_14;
     }
 
-    v11 = [(RCMainControllerHelper *)self uuidOfPlayingOrSelectedRecording];
-    if (v9 | v11)
+    uuidOfPlayingOrSelectedRecording = [(RCMainControllerHelper *)self uuidOfPlayingOrSelectedRecording];
+    if (audioRecorder | uuidOfPlayingOrSelectedRecording)
     {
-      if (!v9)
+      if (!audioRecorder)
       {
-        v9 = [v6 recorderForRecordingID:v11];
-        [(RCMainControllerHelper *)self setAudioRecorder:v9];
+        audioRecorder = [v6 recorderForRecordingID:uuidOfPlayingOrSelectedRecording];
+        [(RCMainControllerHelper *)self setAudioRecorder:audioRecorder];
       }
 
-      v12 = [v9 recordingID];
-      v13 = [v6 fetchRecording:v12];
-      v14 = [(RCMainControllerHelper *)self timeController];
-      [v14 currentTime];
-      [v14 setTargetTime:?];
-      [(RCMainControllerHelper *)self setTargetTrackIndex:a4];
-      [(RCMainControllerHelper *)self setOverdubbing:a4 == 1];
-      if (a4 == 1)
+      recordingID = [audioRecorder recordingID];
+      v13 = [v6 fetchRecording:recordingID];
+      timeController = [(RCMainControllerHelper *)self timeController];
+      [timeController currentTime];
+      [timeController setTargetTime:?];
+      [(RCMainControllerHelper *)self setTargetTrackIndex:index];
+      [(RCMainControllerHelper *)self setOverdubbing:index == 1];
+      if (index == 1)
       {
         v15 = +[RecorderAppDelegate sharedAppDelegate];
         [v15 dependencyContainer];
-        v36 = v11;
-        v16 = v14;
+        v36 = uuidOfPlayingOrSelectedRecording;
+        v16 = timeController;
         v17 = v13;
-        v19 = v18 = v12;
-        v20 = [v19 analyticsManager];
-        [v20 userCapturedSecondLayer];
+        v19 = v18 = recordingID;
+        analyticsManager = [v19 analyticsManager];
+        [analyticsManager userCapturedSecondLayer];
 
-        v12 = v18;
+        recordingID = v18;
         v13 = v17;
-        v14 = v16;
-        v11 = v36;
+        timeController = v16;
+        uuidOfPlayingOrSelectedRecording = v36;
 
         [v13 composedAssetHasMultipleTracks];
         v21 = 0;
@@ -628,9 +628,9 @@ LABEL_9:
 
       else
       {
-        v22 = [v13 composedAssetHasMultipleTracks];
+        composedAssetHasMultipleTracks = [v13 composedAssetHasMultipleTracks];
         v21 = 0;
-        if (!a4 && v22)
+        if (!index && composedAssetHasMultipleTracks)
         {
           v21 = RCOverdubRecordingIsEnabled() ^ 1;
         }
@@ -638,43 +638,43 @@ LABEL_9:
 
       [(RCMainControllerHelper *)self setSilencing:v21];
       self->_isResumingOrReplacing = 1;
-      if (([v9 startRecording]& 1) != 0)
+      if (([audioRecorder startRecording]& 1) != 0)
       {
         [v13 length];
         if (v23 > 0.0)
         {
-          v24 = [(RCMainControllerHelper *)self undoManager];
+          undoManager = [(RCMainControllerHelper *)self undoManager];
           editModeUndoTarget = self->_editModeUndoTarget;
           v38[0] = _NSConcreteStackBlock;
           v38[1] = 3221225472;
           v38[2] = sub_1000B4FB0;
           v38[3] = &unk_10028C488;
           v38[4] = self;
-          [v24 registerUndoWithTarget:editModeUndoTarget handler:v38];
+          [undoManager registerUndoWithTarget:editModeUndoTarget handler:v38];
 
-          v26 = [(RCMainControllerHelper *)self undoManager];
+          undoManager2 = [(RCMainControllerHelper *)self undoManager];
           v27 = +[NSBundle mainBundle];
           [v27 localizedStringForKey:@"TITLE_FOR_OVERDUB_UNDO" value:&stru_100295BB8 table:0];
-          v37 = v11;
-          v28 = v14;
+          v37 = uuidOfPlayingOrSelectedRecording;
+          v28 = timeController;
           v29 = v13;
-          v31 = v30 = v12;
-          [v26 setActionName:v31];
+          v31 = v30 = recordingID;
+          [undoManager2 setActionName:v31];
 
-          v12 = v30;
+          recordingID = v30;
           v13 = v29;
-          v14 = v28;
-          v11 = v37;
+          timeController = v28;
+          uuidOfPlayingOrSelectedRecording = v37;
 
-          v32 = [(RCMainControllerHelper *)self delegate];
-          [v32 enableUndoFirstResponder];
+          delegate = [(RCMainControllerHelper *)self delegate];
+          [delegate enableUndoFirstResponder];
         }
 
-        v33 = [(RCMainControllerHelper *)self undoManager];
-        [v33 setUndoDisabled:1];
+        undoManager3 = [(RCMainControllerHelper *)self undoManager];
+        [undoManager3 setUndoDisabled:1];
 
-        v34 = [(RCMainControllerHelper *)self currentUserActivity];
-        [v34 setSubActivityType:3];
+        currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+        [currentUserActivity setSubActivityType:3];
 
         [(RCMainControllerHelper *)self setUuidOfPlayingRecording:0];
       }
@@ -692,8 +692,8 @@ LABEL_9:
 
     else
     {
-      v9 = OSLogForCategory();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      audioRecorder = OSLogForCategory();
+      if (os_log_type_enabled(audioRecorder, OS_LOG_TYPE_ERROR))
       {
         sub_1001BAE14();
       }
@@ -704,8 +704,8 @@ LABEL_9:
   {
     if (![(RCMainControllerHelper *)self _errorIsRecordingUnavailable:v8])
     {
-      v9 = [(RCMainControllerHelper *)self delegate];
-      [v9 captureFailedWithError:v8];
+      audioRecorder = [(RCMainControllerHelper *)self delegate];
+      [audioRecorder captureFailedWithError:v8];
 LABEL_14:
 
       goto LABEL_29;
@@ -717,17 +717,17 @@ LABEL_14:
 LABEL_29:
 }
 
-- (void)_recordingStarted:(id)a3
+- (void)_recordingStarted:(id)started
 {
-  v4 = a3;
+  startedCopy = started;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 isRunningTest];
+  isRunningTest = [v5 isRunningTest];
 
-  if (v6)
+  if (isRunningTest)
   {
     v7 = +[UIApplication sharedApplication];
-    v8 = [v7 delegate];
-    [v8 ppt_didStartRecording];
+    delegate = [v7 delegate];
+    [delegate ppt_didStartRecording];
   }
 
   v9 = OSLogForCategory();
@@ -743,20 +743,20 @@ LABEL_29:
   [v10 setRecordingTimeAtStartTime:?];
   [(RCMainControllerHelper *)self currentDuration];
   [v10 setRecordingDurationAtStartTime:?];
-  v11 = [(RCMainControllerHelper *)self delegate];
+  delegate2 = [(RCMainControllerHelper *)self delegate];
   v34 = v10;
-  [v11 recordingDidStartWithInfo:v10];
+  [delegate2 recordingDidStartWithInfo:v10];
 
-  v12 = [v4 recordingID];
+  recordingID = [startedCopy recordingID];
   v32 = +[VMAudioService sharedInstance];
-  v13 = [v32 fetchRecording:v12];
+  v13 = [v32 fetchRecording:recordingID];
   if (v13)
   {
     [(RCMainControllerHelper *)self _addRecordingObservations:v13];
   }
 
-  v14 = [v13 title];
-  v15 = [v13 creationDate];
+  title = [v13 title];
+  creationDate = [v13 creationDate];
   v16 = 0.0;
   if (self->_isResumingOrReplacing)
   {
@@ -767,16 +767,16 @@ LABEL_29:
   BYTE3(v29) = 0;
   BYTE2(v29) = [v13 composedAssetIsSpatialRecording];
   LOWORD(v29) = 0;
-  v31 = v14;
-  v18 = [RCRecordingDisplayModel recordingDisplayModelWithTitle:"recordingDisplayModelWithTitle:creationDate:duration:UUID:recentlyDeleted:representsDownloadingFile:isFavorite:isEnhanced:hasTranscription:isSpatialRecording:wasManuallyRenamed:" creationDate:v14 duration:v15 UUID:v12 recentlyDeleted:0 representsDownloadingFile:0 isFavorite:0 isEnhanced:v16 hasTranscription:v29 isSpatialRecording:? wasManuallyRenamed:?];
+  v31 = title;
+  v18 = [RCRecordingDisplayModel recordingDisplayModelWithTitle:"recordingDisplayModelWithTitle:creationDate:duration:UUID:recentlyDeleted:representsDownloadingFile:isFavorite:isEnhanced:hasTranscription:isSpatialRecording:wasManuallyRenamed:" creationDate:title duration:creationDate UUID:recordingID recentlyDeleted:0 representsDownloadingFile:0 isFavorite:0 isEnhanced:v16 hasTranscription:v29 isSpatialRecording:? wasManuallyRenamed:?];
   [(RCMainControllerHelper *)self setCurrentRecordingDisplayModel:v18];
-  v33 = v12;
-  v19 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:v12];
+  v33 = recordingID;
+  v19 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:recordingID];
   [(RCMainControllerHelper *)self setCurrentComposition:v19];
 
-  v35 = v4;
-  v20 = [v4 waveformDataSource];
-  [v20 addObserver:self];
+  v35 = startedCopy;
+  waveformDataSource = [startedCopy waveformDataSource];
+  [waveformDataSource addObserver:self];
   [(RCMainControllerHelper *)self setUuidOfPlayingRecording:0];
   if (self->_isResumingOrReplacing)
   {
@@ -788,16 +788,16 @@ LABEL_29:
     v21 = 2;
   }
 
-  v22 = [(RCMainControllerHelper *)self currentComposition];
+  currentComposition = [(RCMainControllerHelper *)self currentComposition];
   v30 = v18;
-  [(RCMainControllerHelper *)self _transitionToActivityType:1 toSubType:v21 withDisplayModel:v18 waveformDataSource:v20 composition:v22];
+  [(RCMainControllerHelper *)self _transitionToActivityType:1 toSubType:v21 withDisplayModel:v18 waveformDataSource:waveformDataSource composition:currentComposition];
 
   v38 = 0u;
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v23 = [(NSHashTable *)self->_timeObservers allObjects];
-  v24 = [v23 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  allObjects = [(NSHashTable *)self->_timeObservers allObjects];
+  v24 = [allObjects countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v24)
   {
     v25 = v24;
@@ -808,7 +808,7 @@ LABEL_29:
       {
         if (*v37 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(allObjects);
         }
 
         v28 = *(*(&v36 + 1) + 8 * i);
@@ -818,7 +818,7 @@ LABEL_29:
         }
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v25 = [allObjects countByEnumeratingWithState:&v36 objects:v40 count:16];
     }
 
     while (v25);
@@ -827,9 +827,9 @@ LABEL_29:
   [(RCMainControllerHelper *)self _startDisplayLink];
 }
 
-- (void)_recordingStopped:(id)a3
+- (void)_recordingStopped:(id)stopped
 {
-  v4 = a3;
+  stoppedCopy = stopped;
   v5 = OSLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -838,45 +838,45 @@ LABEL_29:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s -- Recording stopped UI callback", buf, 0xCu);
   }
 
-  v6 = [(RCMainControllerHelper *)self delegate];
-  [v6 recordingDidEnd];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  [delegate recordingDidEnd];
 
-  v7 = [v4 recordingID];
-  if (v7)
+  recordingID = [stoppedCopy recordingID];
+  if (recordingID)
   {
-    v8 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor recordingForUUID:v7];
+    v8 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor recordingForUUID:recordingID];
     if (v8)
     {
       v9 = v8;
-      v10 = [(RCMainControllerHelper *)self currentUserActivity];
-      v11 = [v10 subActivityType];
+      currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+      subActivityType = [currentUserActivity subActivityType];
 
-      if (v11 == 2)
+      if (subActivityType == 2)
       {
-        v12 = [(RCMainControllerHelper *)self timeController];
-        [v12 setTargetTime:0.0];
+        timeController = [(RCMainControllerHelper *)self timeController];
+        [timeController setTargetTime:0.0];
       }
 
-      v13 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:v7];
+      v13 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:recordingID];
       [(RCMainControllerHelper *)self setCurrentComposition:v13];
 
-      [(RCMainControllerHelper *)self _updateWillMigrateFromSingleLayerToMultiLayerForRecordingID:v7];
-      [(RCMainControllerHelper *)self _performRecordingEndTransitionWithUUID:v7];
-      v14 = [(RCMainControllerHelper *)self currentComposition];
-      v15 = [v14 savedRecordingUUID];
-      if (v15)
+      [(RCMainControllerHelper *)self _updateWillMigrateFromSingleLayerToMultiLayerForRecordingID:recordingID];
+      [(RCMainControllerHelper *)self _performRecordingEndTransitionWithUUID:recordingID];
+      currentComposition = [(RCMainControllerHelper *)self currentComposition];
+      savedRecordingUUID = [currentComposition savedRecordingUUID];
+      if (savedRecordingUUID)
       {
-        v16 = v15;
-        v17 = [(RCMainControllerHelper *)self currentComposition];
-        v18 = [v17 savedRecordingUUID];
-        v19 = [v18 isEqual:v7];
+        v16 = savedRecordingUUID;
+        currentComposition2 = [(RCMainControllerHelper *)self currentComposition];
+        savedRecordingUUID2 = [currentComposition2 savedRecordingUUID];
+        v19 = [savedRecordingUUID2 isEqual:recordingID];
 
         if (v19)
         {
-          v40 = v7;
+          v40 = recordingID;
 LABEL_14:
-          v23 = [(RCMainControllerHelper *)self timeController];
-          [v23 currentTime];
+          timeController2 = [(RCMainControllerHelper *)self timeController];
+          [timeController2 currentTime];
           v25 = v24;
 
           [v9 length];
@@ -887,15 +887,15 @@ LABEL_14:
           RCTimeRangeMake();
           v30 = v29;
           v32 = v31;
-          v33 = [(RCMainControllerHelper *)self timeController];
-          [v33 setAllowedTimeRange:{v30, v32}];
+          timeController3 = [(RCMainControllerHelper *)self timeController];
+          [timeController3 setAllowedTimeRange:{v30, v32}];
 
           v43 = 0u;
           v44 = 0u;
           v41 = 0u;
           v42 = 0u;
-          v34 = [(NSHashTable *)self->_timeObservers allObjects];
-          v35 = [v34 countByEnumeratingWithState:&v41 objects:v45 count:16];
+          allObjects = [(NSHashTable *)self->_timeObservers allObjects];
+          v35 = [allObjects countByEnumeratingWithState:&v41 objects:v45 count:16];
           if (v35)
           {
             v36 = v35;
@@ -906,7 +906,7 @@ LABEL_14:
               {
                 if (*v42 != v37)
                 {
-                  objc_enumerationMutation(v34);
+                  objc_enumerationMutation(allObjects);
                 }
 
                 v39 = *(*(&v41 + 1) + 8 * i);
@@ -921,28 +921,28 @@ LABEL_14:
                 }
               }
 
-              v36 = [v34 countByEnumeratingWithState:&v41 objects:v45 count:16];
+              v36 = [allObjects countByEnumeratingWithState:&v41 objects:v45 count:16];
             }
 
             while (v36);
           }
 
           [(RCMainControllerHelper *)self _stopDisplayLink];
-          v7 = v40;
+          recordingID = v40;
           [(RCMainControllerHelper *)self _preloadRecordingForPlayback:v40];
           v20 = v9;
           goto LABEL_26;
         }
 
-        v21 = [(RCMainControllerHelper *)self currentComposition];
-        v22 = [v21 savedRecordingUUID];
+        currentComposition3 = [(RCMainControllerHelper *)self currentComposition];
+        savedRecordingUUID3 = [currentComposition3 savedRecordingUUID];
 
-        [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor recordingForUUID:v22];
-        v9 = v14 = v9;
-        v7 = v22;
+        [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor recordingForUUID:savedRecordingUUID3];
+        v9 = currentComposition = v9;
+        recordingID = savedRecordingUUID3;
       }
 
-      v40 = v7;
+      v40 = recordingID;
 
       goto LABEL_14;
     }
@@ -957,33 +957,33 @@ LABEL_14:
 LABEL_26:
 }
 
-- (void)_recordingFailed:(id)a3 error:(id)a4
+- (void)_recordingFailed:(id)failed error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  failedCopy = failed;
+  errorCopy = error;
   v8 = OSLogForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     sub_1001BB02C();
   }
 
-  if (([v6 recording] & 1) == 0)
+  if (([failedCopy recording] & 1) == 0)
   {
-    [(RCMainControllerHelper *)self _recordingStopped:v6];
+    [(RCMainControllerHelper *)self _recordingStopped:failedCopy];
     [(RCMainControllerHelper *)self setAudioRecorder:0];
   }
 
-  v9 = [(RCMainControllerHelper *)self delegate];
-  [v9 captureFailedWithError:v7];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  [delegate captureFailedWithError:errorCopy];
 }
 
-- (BOOL)_errorIsRecordingUnavailable:(id)a3
+- (BOOL)_errorIsRecordingUnavailable:(id)unavailable
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"VMAudioServiceErrorDomain"])
+  unavailableCopy = unavailable;
+  domain = [unavailableCopy domain];
+  if ([domain isEqualToString:@"VMAudioServiceErrorDomain"])
   {
-    v5 = [v3 code] == 5;
+    v5 = [unavailableCopy code] == 5;
   }
 
   else
@@ -994,23 +994,23 @@ LABEL_26:
   return v5;
 }
 
-- (void)_handleRecordingUnavailableError:(id)a3
+- (void)_handleRecordingUnavailableError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_recordingUnavailableAlertController);
 
   if (!WeakRetained)
   {
-    v6 = [v4 userInfo];
+    userInfo = [errorCopy userInfo];
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000B5A50;
     v14 = &unk_10028A650;
-    v15 = self;
-    v16 = v4;
+    selfCopy = self;
+    v16 = errorCopy;
     v7 = objc_retainBlock(&v11);
-    v8 = [v6 objectForKeyedSubscript:{NSLocalizedFailureReasonErrorKey, v11, v12, v13, v14, v15}];
-    v9 = [v6 objectForKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
+    v8 = [userInfo objectForKeyedSubscript:{NSLocalizedFailureReasonErrorKey, v11, v12, v13, v14, selfCopy}];
+    v9 = [userInfo objectForKeyedSubscript:NSLocalizedRecoverySuggestionErrorKey];
     v10 = [UIAlertController rc_OKAlertControllerWithTitle:v8 message:v9 handler:v7];
 
     [v10 rc_showInMainWindow];
@@ -1018,41 +1018,41 @@ LABEL_26:
   }
 }
 
-- (void)prepareForPlaybackForUUID:(id)a3 force:(BOOL)a4
+- (void)prepareForPlaybackForUUID:(id)d force:(BOOL)force
 {
-  v4 = a4;
-  v26 = a3;
-  v6 = [(RCMainControllerHelper *)self currentComposition];
-  v7 = [v6 savedRecordingUUID];
-  v8 = [v7 isEqualToString:v26];
-  v9 = [(RCMainControllerHelper *)self audioPlayer];
+  forceCopy = force;
+  dCopy = d;
+  currentComposition = [(RCMainControllerHelper *)self currentComposition];
+  savedRecordingUUID = [currentComposition savedRecordingUUID];
+  v8 = [savedRecordingUUID isEqualToString:dCopy];
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
 
-  if (v4 || !v9 || (v8 & 1) == 0)
+  if (forceCopy || !audioPlayer || (v8 & 1) == 0)
   {
-    [(RCMainControllerHelper *)self setUuidOfPlayingRecording:v26];
-    v10 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:v26];
+    [(RCMainControllerHelper *)self setUuidOfPlayingRecording:dCopy];
+    v10 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:dCopy];
     [(RCMainControllerHelper *)self setCurrentComposition:v10];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v12 = [WeakRetained waveformViewController];
+    waveformViewController = [WeakRetained waveformViewController];
     waveformViewController = self->_waveformViewController;
-    self->_waveformViewController = v12;
+    self->_waveformViewController = waveformViewController;
 
     v14 = objc_loadWeakRetained(&self->_delegate);
-    v15 = [v14 overviewWaveformViewController];
+    overviewWaveformViewController = [v14 overviewWaveformViewController];
     overviewWaveformViewController = self->_overviewWaveformViewController;
-    self->_overviewWaveformViewController = v15;
+    self->_overviewWaveformViewController = overviewWaveformViewController;
 
     [(RCAVWaveformViewController *)self->_waveformViewController setActiveTimeController:self];
     [(RCAVWaveformViewController *)self->_overviewWaveformViewController setActiveTimeController:self];
     v17 = self->_recordingsModelInteractor;
-    v18 = [(RCRecordingsModelInteractor *)v17 recordingForUUID:v7];
+    v18 = [(RCRecordingsModelInteractor *)v17 recordingForUUID:savedRecordingUUID];
     if (v18)
     {
       [(RCMainControllerHelper *)self _removeRecordingObservations:v18];
     }
 
-    v19 = [(RCRecordingsModelInteractor *)v17 recordingForUUID:v26];
+    v19 = [(RCRecordingsModelInteractor *)v17 recordingForUUID:dCopy];
     if (v19)
     {
       [(RCMainControllerHelper *)self _addRecordingObservations:v19];
@@ -1065,37 +1065,37 @@ LABEL_26:
         RCTimeRangeMake();
         v22 = v21;
         v24 = v23;
-        v25 = [(RCMainControllerHelper *)self timeController];
-        [v25 setAllowedTimeRange:{v22, v24}];
+        timeController = [(RCMainControllerHelper *)self timeController];
+        [timeController setAllowedTimeRange:{v22, v24}];
       }
     }
 
-    [(RCMainControllerHelper *)self _preloadRecordingForPlayback:v26];
+    [(RCMainControllerHelper *)self _preloadRecordingForPlayback:dCopy];
   }
 }
 
 - (BOOL)readyForPlayback
 {
-  v3 = [(RCMainControllerHelper *)self audioPlayer];
-  v4 = [v3 recordingID];
-  if (v4)
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
+  if (recordingID)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(RCMainControllerHelper *)self audioRecorder];
-    v7 = [v6 recordingID];
-    v5 = v7 != 0;
+    audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+    recordingID2 = [audioRecorder recordingID];
+    v5 = recordingID2 != 0;
   }
 
   return v5;
 }
 
-- (void)playbackForUUID:(id)a3
+- (void)playbackForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   if ([(RCMainControllerHelper *)self isRecording])
   {
     v5 = OSLogForCategory();
@@ -1107,91 +1107,91 @@ LABEL_26:
 
   else
   {
-    v6 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
-    v7 = [v6 isEqualToString:v4];
+    uuidOfPlayingRecording = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+    v7 = [uuidOfPlayingRecording isEqualToString:dCopy];
 
     if ((v7 & 1) == 0)
     {
-      [(RCMainControllerHelper *)self setUuidOfPlayingRecording:v4];
-      [(RCMainControllerHelper *)self prepareForPlaybackForUUID:v4];
+      [(RCMainControllerHelper *)self setUuidOfPlayingRecording:dCopy];
+      [(RCMainControllerHelper *)self prepareForPlaybackForUUID:dCopy];
     }
 
-    v8 = [(RCMainControllerHelper *)self timeController];
-    [v8 currentTime];
-    [(RCMainControllerHelper *)self _startPlaybackOfUUID:v4 atPosition:?];
+    timeController = [(RCMainControllerHelper *)self timeController];
+    [timeController currentTime];
+    [(RCMainControllerHelper *)self _startPlaybackOfUUID:dCopy atPosition:?];
   }
 }
 
 - (void)togglePlayback
 {
-  v3 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
-  [(RCMainControllerHelper *)self toggleForUUID:v3];
+  uuidOfPlayingRecording = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+  [(RCMainControllerHelper *)self toggleForUUID:uuidOfPlayingRecording];
 }
 
-- (void)toggleForUUID:(id)a3
+- (void)toggleForUUID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   v4 = [(RCMainControllerHelper *)self currentPlayerForUUID:?];
   v5 = v4;
   if (v4)
   {
     if ([v4 playing])
     {
-      [(RCMainControllerHelper *)self pauseForUUID:v6];
+      [(RCMainControllerHelper *)self pauseForUUID:dCopy];
     }
 
     else
     {
-      [(RCMainControllerHelper *)self playbackForUUID:v6];
+      [(RCMainControllerHelper *)self playbackForUUID:dCopy];
     }
   }
 }
 
-- (BOOL)isPlayingForUUID:(id)a3
+- (BOOL)isPlayingForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self audioPlayer];
-  v6 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
-  v7 = [v6 isEqualToString:v4];
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  uuidOfPlayingRecording = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+  v7 = [uuidOfPlayingRecording isEqualToString:dCopy];
 
   if (v7)
   {
-    v8 = [v5 playing];
+    playing = [audioPlayer playing];
   }
 
   else
   {
-    v8 = 0;
+    playing = 0;
   }
 
-  return v8;
+  return playing;
 }
 
-- (void)pauseForUUID:(id)a3
+- (void)pauseForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  uuidOfPlayingRecording = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+  v6 = [dCopy isEqualToString:uuidOfPlayingRecording];
 
   if (v6)
   {
-    v7 = [(RCMainControllerHelper *)self currentPlayerForUUID:v4];
+    v7 = [(RCMainControllerHelper *)self currentPlayerForUUID:dCopy];
     [(RCMainControllerHelper *)self _stopPlaybackInAudioPlayer:v7];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v8 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+    uuidOfPlayingRecording2 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
 
-    if (v8)
+    if (uuidOfPlayingRecording2)
     {
       v7 = OSLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        sub_1001BB128(v4, self);
+        sub_1001BB128(dCopy, self);
       }
 
       goto LABEL_7;
@@ -1201,31 +1201,31 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)stopForUUID:(id)a3
+- (void)stopForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  uuidOfPlayingRecording = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+  v6 = [dCopy isEqualToString:uuidOfPlayingRecording];
 
   if (v6)
   {
-    v7 = [(RCMainControllerHelper *)self currentPlayerForUUID:v4];
+    v7 = [(RCMainControllerHelper *)self currentPlayerForUUID:dCopy];
     [(RCMainControllerHelper *)self _clearPlaybackInAudioPlayer:v7];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v4)
+  if (dCopy)
   {
-    v8 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+    uuidOfPlayingRecording2 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
 
-    if (v8)
+    if (uuidOfPlayingRecording2)
     {
       v7 = OSLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        sub_1001BB1D0(v4, self);
+        sub_1001BB1D0(dCopy, self);
       }
 
       goto LABEL_7;
@@ -1235,13 +1235,13 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)startScrubbingForUUID:(id)a3 atPosition:(double)a4
+- (void)startScrubbingForUUID:(id)d atPosition:(double)position
 {
-  v5 = a3;
+  dCopy = d;
   if (([(VMAudioPlayer *)self->_audioPlayer playing]& 1) != 0 || [(VMAudioPlayer *)self->_audioPlayer willPlayPendingPreparation])
   {
     self->_scrubState = 1;
-    [(RCMainControllerHelper *)self pauseForUUID:v5];
+    [(RCMainControllerHelper *)self pauseForUUID:dCopy];
   }
 
   else
@@ -1250,17 +1250,17 @@ LABEL_8:
   }
 }
 
-- (void)updateScrubbingForUUID:(id)a3 atPosition:(double)a4
+- (void)updateScrubbingForUUID:(id)d atPosition:(double)position
 {
-  v5 = [(RCMainControllerHelper *)self timeController];
-  [v5 setTargetTime:a4];
+  timeController = [(RCMainControllerHelper *)self timeController];
+  [timeController setTargetTime:position];
 }
 
-- (void)endScrubbingForUUID:(id)a3 atPosition:(double)a4
+- (void)endScrubbingForUUID:(id)d atPosition:(double)position
 {
   if (self->_scrubState == 1)
   {
-    [(RCMainControllerHelper *)self playbackForUUID:a3, a4];
+    [(RCMainControllerHelper *)self playbackForUUID:d, position];
   }
 
   self->_scrubState = 0;
@@ -1270,10 +1270,10 @@ LABEL_8:
 {
   if (![(RCMainControllerHelper *)self isRecording])
   {
-    v3 = [(RCMainControllerHelper *)self readyForPlayback];
-    if (!v3)
+    readyForPlayback = [(RCMainControllerHelper *)self readyForPlayback];
+    if (!readyForPlayback)
     {
-      return v3;
+      return readyForPlayback;
     }
 
     [(RCMainControllerHelper *)self currentDuration];
@@ -1282,58 +1282,58 @@ LABEL_8:
       [(RCMainControllerHelper *)self currentTime];
       v6 = v5;
       [(RCMainControllerHelper *)self currentDuration];
-      LOBYTE(v3) = v6 < v7;
-      return v3;
+      LOBYTE(readyForPlayback) = v6 < v7;
+      return readyForPlayback;
     }
   }
 
-  LOBYTE(v3) = 0;
-  return v3;
+  LOBYTE(readyForPlayback) = 0;
+  return readyForPlayback;
 }
 
 - (BOOL)canJumpBackward
 {
   if (![(RCMainControllerHelper *)self isRecording])
   {
-    v3 = [(RCMainControllerHelper *)self readyForPlayback];
-    if (!v3)
+    readyForPlayback = [(RCMainControllerHelper *)self readyForPlayback];
+    if (!readyForPlayback)
     {
-      return v3;
+      return readyForPlayback;
     }
 
     [(RCMainControllerHelper *)self currentDuration];
     if (v4 > 0.05)
     {
       [(RCMainControllerHelper *)self currentTime];
-      LOBYTE(v3) = v5 > 0.0;
-      return v3;
+      LOBYTE(readyForPlayback) = v5 > 0.0;
+      return readyForPlayback;
     }
   }
 
-  LOBYTE(v3) = 0;
-  return v3;
+  LOBYTE(readyForPlayback) = 0;
+  return readyForPlayback;
 }
 
-- (void)_stopForUUIDs:(id)a3
+- (void)_stopForUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
-  v6 = [v4 containsObject:v5];
+  dsCopy = ds;
+  uuidOfPlayingRecording = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+  v6 = [dsCopy containsObject:uuidOfPlayingRecording];
 
   if (v6)
   {
-    v7 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
-    [(RCMainControllerHelper *)self stopForUUID:v7];
+    uuidOfPlayingRecording2 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+    [(RCMainControllerHelper *)self stopForUUID:uuidOfPlayingRecording2];
   }
 }
 
-- (void)_preloadRecordingForPlayback:(id)a3
+- (void)_preloadRecordingForPlayback:(id)playback
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self audioPlayer];
-  if (!v5 || (v6 = v5, -[RCMainControllerHelper audioPlayer](self, "audioPlayer"), v7 = objc_claimAutoreleasedReturnValue(), [v7 recordingID], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", v4), v8, v7, v6, (v9 & 1) == 0))
+  playbackCopy = playback;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  if (!audioPlayer || (v6 = audioPlayer, -[RCMainControllerHelper audioPlayer](self, "audioPlayer"), v7 = objc_claimAutoreleasedReturnValue(), [v7 recordingID], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEqualToString:", playbackCopy), v8, v7, v6, (v9 & 1) == 0))
   {
-    v10 = [(RCMainControllerHelper *)self currentPlayerForUUID:v4];
+    v10 = [(RCMainControllerHelper *)self currentPlayerForUUID:playbackCopy];
     if (!v10)
     {
       v11 = OSLogForCategory();
@@ -1345,52 +1345,52 @@ LABEL_8:
   }
 }
 
-- (void)_startPlaybackOfUUID:(id)a3 atPosition:(double)a4
+- (void)_startPlaybackOfUUID:(id)d atPosition:(double)position
 {
-  v6 = a3;
+  dCopy = d;
   v7 = +[RecorderAppDelegate sharedAppDelegate];
-  v8 = [v7 dependencyContainer];
-  v9 = [v8 analyticsManager];
-  [v9 userPlayedVoiceMemo];
+  dependencyContainer = [v7 dependencyContainer];
+  analyticsManager = [dependencyContainer analyticsManager];
+  [analyticsManager userPlayedVoiceMemo];
 
-  v16 = [(RCMainControllerHelper *)self timeController];
-  v10 = [(RCMainControllerHelper *)self currentPlayerForUUID:v6];
+  timeController = [(RCMainControllerHelper *)self timeController];
+  v10 = [(RCMainControllerHelper *)self currentPlayerForUUID:dCopy];
 
-  [v16 allowedTimeRange];
+  [timeController allowedTimeRange];
   v12 = v11;
   v14 = v13;
   [v10 setPlayableRange:?];
-  if (v14 - a4 >= 0.01)
+  if (v14 - position >= 0.01)
   {
-    v15 = a4;
+    positionCopy = position;
   }
 
   else
   {
-    v15 = v12;
+    positionCopy = v12;
   }
 
-  [v16 setTargetTime:v15];
+  [timeController setTargetTime:positionCopy];
   [v10 startPlaying];
 }
 
-- (void)_clearPlaybackInAudioPlayer:(id)a3
+- (void)_clearPlaybackInAudioPlayer:(id)player
 {
-  [(RCMainControllerHelper *)self _stopPlaybackInAudioPlayer:a3];
+  [(RCMainControllerHelper *)self _stopPlaybackInAudioPlayer:player];
 
   [(RCMainControllerHelper *)self setUuidOfPlayingRecording:0];
 }
 
-- (void)_stopPlaybackInAudioPlayer:(id)a3
+- (void)_stopPlaybackInAudioPlayer:(id)player
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  playerCopy = player;
+  v4 = playerCopy;
+  if (playerCopy)
   {
-    v6 = v3;
-    v5 = [v3 playing];
+    v6 = playerCopy;
+    playing = [playerCopy playing];
     v4 = v6;
-    if (v5)
+    if (playing)
     {
       [v6 stopPlaying];
       v4 = v6;
@@ -1398,14 +1398,14 @@ LABEL_8:
   }
 }
 
-- (id)currentPlayerForUUID:(id)a3
+- (id)currentPlayerForUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(RCMainControllerHelper *)self audioPlayer];
-    v6 = v5;
-    if (v5 && ([v5 recordingID], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v4, "isEqualToString:", v7), v7, v8))
+    audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+    v6 = audioPlayer;
+    if (audioPlayer && ([audioPlayer recordingID], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(dCopy, "isEqualToString:", v7), v7, v8))
     {
       v9 = v6;
     }
@@ -1413,12 +1413,12 @@ LABEL_8:
     else
     {
       v10 = +[VMAudioService sharedInstance];
-      v9 = [v10 playerForRecordingID:v4];
+      v9 = [v10 playerForRecordingID:dCopy];
       LODWORD(v11) = 1.0;
       [(RCMainControllerHelper *)self setTargetRate:v11];
-      v12 = [(RCMainControllerHelper *)self audioRecorder];
-      v13 = [v12 recordingID];
-      v14 = [v4 isEqualToString:v13];
+      audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+      recordingID = [audioRecorder recordingID];
+      v14 = [dCopy isEqualToString:recordingID];
 
       if (v14)
       {
@@ -1450,50 +1450,50 @@ LABEL_8:
   return v9;
 }
 
-- (void)_jumpByIncrement:(double)a3 forUUID:(id)a4
+- (void)_jumpByIncrement:(double)increment forUUID:(id)d
 {
-  v8 = [(RCMainControllerHelper *)self audioPlayer];
-  v6 = [(RCMainControllerHelper *)self timeController];
-  if ([v8 playing])
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  timeController = [(RCMainControllerHelper *)self timeController];
+  if ([audioPlayer playing])
   {
-    [v8 playerTime];
+    [audioPlayer playerTime];
   }
 
   else
   {
-    [v6 currentTime];
+    [timeController currentTime];
   }
 
-  [(RCMainControllerHelper *)self _jumpToTargetTime:v7 + a3];
+  [(RCMainControllerHelper *)self _jumpToTargetTime:v7 + increment];
 }
 
-- (void)_jumpToTargetTime:(double)a3
+- (void)_jumpToTargetTime:(double)time
 {
-  v5 = [(RCMainControllerHelper *)self timeController];
-  v6 = [(RCMainControllerHelper *)self audioRecorder];
-  v7 = v6;
+  timeController = [(RCMainControllerHelper *)self timeController];
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  v7 = audioRecorder;
   v10 = 0;
   v11 = 0;
-  if (v6 && [v6 recording] && objc_msgSend(v7, "monitorRecordingTime:duration:", &v11, &v10))
+  if (audioRecorder && [audioRecorder recording] && objc_msgSend(v7, "monitorRecordingTime:duration:", &v11, &v10))
   {
     RCTimeRangeMake();
   }
 
   else
   {
-    [v5 allowedTimeRange];
+    [timeController allowedTimeRange];
   }
 
-  if (v8 <= a3)
+  if (timeCopy <= time)
   {
-    v8 = a3;
-    if (v9 < a3)
+    timeCopy = time;
+    if (v9 < time)
     {
-      v8 = v9;
+      timeCopy = v9;
     }
   }
 
-  [v5 setTargetTime:v8];
+  [timeController setTargetTime:timeCopy];
   [(RCMainControllerHelper *)self _reconcileAudioStateWithApplicationState];
 }
 
@@ -1505,20 +1505,20 @@ LABEL_8:
 
 - (void)enterTrimMode
 {
-  v3 = [(RCMainControllerHelper *)self audioRecorder];
-  if (!v3)
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  if (!audioRecorder)
   {
     v4 = +[VMAudioService sharedInstance];
-    v5 = [(RCMainControllerHelper *)self uuidOfPlayingOrSelectedRecording];
-    v3 = [v4 recorderForRecordingID:v5];
+    uuidOfPlayingOrSelectedRecording = [(RCMainControllerHelper *)self uuidOfPlayingOrSelectedRecording];
+    audioRecorder = [v4 recorderForRecordingID:uuidOfPlayingOrSelectedRecording];
   }
 
-  if ([v3 recording])
+  if ([audioRecorder recording])
   {
-    if ([v3 stopRecording])
+    if ([audioRecorder stopRecording])
     {
       v6 = [NSString stringWithUTF8String:"recording"];
-      v8 = v3;
+      v8 = audioRecorder;
       v7 = RCObserveChangesToKeyPath();
     }
   }
@@ -1532,13 +1532,13 @@ LABEL_8:
 - (void)exitTrimMode
 {
   [(RCUndoTarget *)self->_trimModeUndoTarget setShouldEnableSave:0];
-  v3 = [(RCMainControllerHelper *)self delegate];
+  delegate = [(RCMainControllerHelper *)self delegate];
   [(RCMainControllerHelper *)self currentDuration];
-  [v3 recordingDurationUpdated:?];
+  [delegate recordingDurationUpdated:?];
 
   [(RCMainControllerHelper *)self _setIsInSelectionEditingMode:0 forInsertMode:0];
-  v4 = [(RCMainControllerHelper *)self currentUserActivity];
-  [v4 setSubActivityType:0];
+  currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+  [currentUserActivity setSubActivityType:0];
 
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"TRIM_END_ANNOUNCE" value:&stru_100295BB8 table:0];
@@ -1553,84 +1553,84 @@ LABEL_8:
   dispatch_after(v7, &_dispatch_main_q, block);
 }
 
-- (void)cancelTrimModeWithDismissal:(BOOL)a3
+- (void)cancelTrimModeWithDismissal:(BOOL)dismissal
 {
-  v3 = a3;
+  dismissalCopy = dismissal;
   if ([(RCUndoTarget *)self->_trimModeUndoTarget sizeOfUndoStack]>= 1)
   {
-    v5 = [(RCMainControllerHelper *)self audioRecorder];
-    if ([v5 restoreMarkedVersion])
+    audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+    if ([audioRecorder restoreMarkedVersion])
     {
       [(RCMainControllerHelper *)self _reloadWaveformDataSourceAndPreviewAssetWithInitialTime:0.0];
       [(RCMainControllerHelper *)self _clearTrimModeUndoStack];
-      v6 = [(RCMainControllerHelper *)self timeController];
-      [v6 setTargetTime:0.0];
+      timeController = [(RCMainControllerHelper *)self timeController];
+      [timeController setTargetTime:0.0];
     }
 
     else
     {
-      v6 = OSLogForCategory();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      timeController = OSLogForCategory();
+      if (os_log_type_enabled(timeController, OS_LOG_TYPE_ERROR))
       {
         sub_1001BB374(self);
       }
     }
   }
 
-  if (v3)
+  if (dismissalCopy)
   {
     [(RCMainControllerHelper *)self exitTrimMode];
   }
 }
 
-- (void)doneButtonShouldSaveAsNew:(BOOL)a3
+- (void)doneButtonShouldSaveAsNew:(BOOL)new
 {
-  v3 = a3;
-  v5 = [(RCMainControllerHelper *)self audioRecorder];
-  v6 = [v5 isNewRecording];
+  newCopy = new;
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  isNewRecording = [audioRecorder isNewRecording];
 
-  [(RCMainControllerHelper *)self setShouldSaveAsNew:v3 & (v6 ^ 1)];
+  [(RCMainControllerHelper *)self setShouldSaveAsNew:newCopy & (isNewRecording ^ 1)];
 }
 
 - (void)exitEditMode
 {
-  v3 = [(RCMainControllerHelper *)self undoManager];
-  [v3 removeAllActionsWithTarget:self->_editModeUndoTarget];
+  undoManager = [(RCMainControllerHelper *)self undoManager];
+  [undoManager removeAllActionsWithTarget:self->_editModeUndoTarget];
 
   [(RCUndoTarget *)self->_editModeUndoTarget setSizeOfUndoStack:0];
   [(RCMainControllerHelper *)self _clearTrimModeUndoStack];
-  v7 = [(RCMainControllerHelper *)self audioRecorder];
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
   [CATransaction setFrameStallSkipRequest:1];
-  v4 = v7;
-  if (v7)
+  v4 = audioRecorder;
+  if (audioRecorder)
   {
-    v5 = [v7 finishEditing:{-[RCMainControllerHelper shouldSaveAsNew](self, "shouldSaveAsNew")}];
+    v5 = [audioRecorder finishEditing:{-[RCMainControllerHelper shouldSaveAsNew](self, "shouldSaveAsNew")}];
     if (v5)
     {
-      v6 = [(RCMainControllerHelper *)self delegate];
-      [v6 finishedEditingWithNewRecordingUUID:v5];
+      delegate = [(RCMainControllerHelper *)self delegate];
+      [delegate finishedEditingWithNewRecordingUUID:v5];
     }
 
     [(RCMainControllerHelper *)self setAudioRecorder:0];
 
-    v4 = v7;
+    v4 = audioRecorder;
   }
 }
 
-- (void)performTrimByKeepingSelectedRangeForRecordingWithUUID:(id)a3 source:(id)a4
+- (void)performTrimByKeepingSelectedRangeForRecordingWithUUID:(id)d source:(id)source
 {
-  v5 = a3;
+  dCopy = d;
   [(RCMainControllerHelper *)self _selectedTimeRange];
   v7 = v6;
   v9 = v8;
   if ([(RCMainControllerHelper *)self _isSelectionTrimmableByKeepingRange:?])
   {
     v10 = +[VMAudioService sharedInstance];
-    v11 = [(RCMainControllerHelper *)self audioRecorder];
-    v12 = v11;
-    if (!v11 || ([v11 recordingID], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v5, "isEqualToString:", v13), v13, (v14 & 1) == 0))
+    audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+    v12 = audioRecorder;
+    if (!audioRecorder || ([audioRecorder recordingID], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(dCopy, "isEqualToString:", v13), v13, (v14 & 1) == 0))
     {
-      v15 = [v10 recorderForRecordingID:v5];
+      v15 = [v10 recorderForRecordingID:dCopy];
 
       [(RCMainControllerHelper *)self setAudioRecorder:v15];
       v12 = v15;
@@ -1642,27 +1642,27 @@ LABEL_8:
     v17 = v23;
     if (v16)
     {
-      [(RCMainControllerHelper *)self _refreshAfterEditingOperation:v5];
-      v18 = [(RCMainControllerHelper *)self delegate];
+      [(RCMainControllerHelper *)self _refreshAfterEditingOperation:dCopy];
+      delegate = [(RCMainControllerHelper *)self delegate];
       [(RCMainControllerHelper *)self _adjustCurrentTrimOperationUndoCount:1];
-      v19 = [v18 undoManager];
+      undoManager = [delegate undoManager];
       trimModeUndoTarget = self->_trimModeUndoTarget;
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1000B70A0;
       v22[3] = &unk_10028C488;
       v22[4] = self;
-      [v19 registerUndoWithTarget:trimModeUndoTarget handler:v22];
+      [undoManager registerUndoWithTarget:trimModeUndoTarget handler:v22];
       v21 = [(RCMainControllerHelper *)self _undoActionNameForTrimMode:0 isUndo:1];
-      [v19 setActionName:v21];
+      [undoManager setActionName:v21];
 
-      [v18 enableUndoFirstResponder];
+      [delegate enableUndoFirstResponder];
     }
 
     else
     {
-      v18 = OSLogForCategory();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      delegate = OSLogForCategory();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
       {
         sub_1001BB40C();
       }
@@ -1675,20 +1675,20 @@ LABEL_8:
   }
 }
 
-- (void)performTrimByDeletingSelectedRangeForRecordingWithUUID:(id)a3 source:(id)a4
+- (void)performTrimByDeletingSelectedRangeForRecordingWithUUID:(id)d source:(id)source
 {
-  v5 = a3;
+  dCopy = d;
   [(RCMainControllerHelper *)self _selectedTimeRange];
   v7 = v6;
   v9 = v8;
   if ([(RCMainControllerHelper *)self _isSelectionTrimmableByDeletingRange:?])
   {
     v10 = +[VMAudioService sharedInstance];
-    v11 = [(RCMainControllerHelper *)self audioRecorder];
-    v12 = v11;
-    if (!v11 || ([v11 recordingID], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v5, "isEqualToString:", v13), v13, (v14 & 1) == 0))
+    audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+    v12 = audioRecorder;
+    if (!audioRecorder || ([audioRecorder recordingID], v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(dCopy, "isEqualToString:", v13), v13, (v14 & 1) == 0))
     {
-      v15 = [v10 recorderForRecordingID:v5];
+      v15 = [v10 recorderForRecordingID:dCopy];
 
       [(RCMainControllerHelper *)self setAudioRecorder:v15];
       v12 = v15;
@@ -1700,27 +1700,27 @@ LABEL_8:
     v17 = v23;
     if (v16)
     {
-      [(RCMainControllerHelper *)self _refreshAfterEditingOperation:v5];
-      v18 = [(RCMainControllerHelper *)self delegate];
+      [(RCMainControllerHelper *)self _refreshAfterEditingOperation:dCopy];
+      delegate = [(RCMainControllerHelper *)self delegate];
       [(RCMainControllerHelper *)self _adjustCurrentTrimOperationUndoCount:1];
-      v19 = [v18 undoManager];
+      undoManager = [delegate undoManager];
       trimModeUndoTarget = self->_trimModeUndoTarget;
       v22[0] = _NSConcreteStackBlock;
       v22[1] = 3221225472;
       v22[2] = sub_1000B72DC;
       v22[3] = &unk_10028C488;
       v22[4] = self;
-      [v19 registerUndoWithTarget:trimModeUndoTarget handler:v22];
+      [undoManager registerUndoWithTarget:trimModeUndoTarget handler:v22];
       v21 = [(RCMainControllerHelper *)self _undoActionNameForTrimMode:1 isUndo:1];
-      [v19 setActionName:v21];
+      [undoManager setActionName:v21];
 
-      [v18 enableUndoFirstResponder];
+      [delegate enableUndoFirstResponder];
     }
 
     else
     {
-      v18 = OSLogForCategory();
-      if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+      delegate = OSLogForCategory();
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
       {
         sub_1001BB488();
       }
@@ -1733,29 +1733,29 @@ LABEL_8:
   }
 }
 
-- (void)openForModifyRecordingWithUUID:(id)a3 withSubActivityType:(int64_t)a4
+- (void)openForModifyRecordingWithUUID:(id)d withSubActivityType:(int64_t)type
 {
-  v12 = a3;
+  dCopy = d;
   v6 = [RCRecordingDisplayModel recordingDisplayModelForUUID:?];
   v7 = v6;
   if (v6 && ([v6 recentlyDeleted] & 1) == 0)
   {
     v8 = +[VMAudioService sharedInstance];
-    v9 = [v8 recorderForRecordingID:v12];
+    v9 = [v8 recorderForRecordingID:dCopy];
     [(RCMainControllerHelper *)self setAudioRecorder:v9];
-    v10 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:v12];
+    v10 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:dCopy];
     [(RCMainControllerHelper *)self setCurrentComposition:v10];
 
-    v11 = [(RCMainControllerHelper *)self currentComposition];
-    [(RCMainControllerHelper *)self _transitionToActivityType:3 toSubType:a4 withDisplayModel:v7 waveformDataSource:0 composition:v11];
+    currentComposition = [(RCMainControllerHelper *)self currentComposition];
+    [(RCMainControllerHelper *)self _transitionToActivityType:3 toSubType:type withDisplayModel:v7 waveformDataSource:0 composition:currentComposition];
   }
 }
 
 - (void)_enterTrimMode
 {
   [(RCMainControllerHelper *)self _setIsInSelectionEditingMode:1 forInsertMode:0];
-  v3 = [(RCMainControllerHelper *)self currentUserActivity];
-  [v3 setSubActivityType:1];
+  currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+  [currentUserActivity setSubActivityType:1];
 
   [(RCMainControllerHelper *)self _adjustCurrentTrimOperationUndoCount:0];
 }
@@ -1763,35 +1763,35 @@ LABEL_8:
 - (void)_resetSelectedTimeRangeToFullDuration
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained waveformViewController];
-  [v4 resetSelectedTimeRangeToFullDuration];
+  waveformViewController = [WeakRetained waveformViewController];
+  [waveformViewController resetSelectedTimeRangeToFullDuration];
 
   v5 = objc_loadWeakRetained(&self->_delegate);
-  v6 = [v5 overviewWaveformViewController];
-  [v6 resetSelectedTimeRangeToFullDuration];
+  overviewWaveformViewController = [v5 overviewWaveformViewController];
+  [overviewWaveformViewController resetSelectedTimeRangeToFullDuration];
 
   v13 = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v13 waveformViewController];
-  [v7 selectedTimeRange];
+  waveformViewController2 = [v13 waveformViewController];
+  [waveformViewController2 selectedTimeRange];
   v9 = v8;
   v11 = v10;
-  v12 = [(RCMainControllerHelper *)self timeController];
-  [v12 setAllowedTimeRange:{v9, v11}];
+  timeController = [(RCMainControllerHelper *)self timeController];
+  [timeController setAllowedTimeRange:{v9, v11}];
 }
 
-- (void)_setIsInSelectionEditingMode:(BOOL)a3 forInsertMode:(BOOL)a4
+- (void)_setIsInSelectionEditingMode:(BOOL)mode forInsertMode:(BOOL)insertMode
 {
-  if (byte_1002E8C90 != a3)
+  if (byte_1002E8C90 != mode)
   {
-    byte_1002E8C90 = a3;
-    if (a3)
+    byte_1002E8C90 = mode;
+    if (mode)
     {
-      [(RCMainControllerHelper *)self _beginSelectionEditingModeForInsertMode:a4];
+      [(RCMainControllerHelper *)self _beginSelectionEditingModeForInsertMode:insertMode];
     }
 
     else
     {
-      [(RCMainControllerHelper *)self _endSelectionEditingMode:a3];
+      [(RCMainControllerHelper *)self _endSelectionEditingMode:mode];
     }
   }
 
@@ -1805,14 +1805,14 @@ LABEL_8:
 - (void)_endSelectionEditingMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained waveformViewController];
+  waveformViewController = [WeakRetained waveformViewController];
   waveformViewController = self->_waveformViewController;
-  self->_waveformViewController = v4;
+  self->_waveformViewController = waveformViewController;
 
   v6 = objc_loadWeakRetained(&self->_delegate);
-  v7 = [v6 overviewWaveformViewController];
+  overviewWaveformViewController = [v6 overviewWaveformViewController];
   overviewWaveformViewController = self->_overviewWaveformViewController;
-  self->_overviewWaveformViewController = v7;
+  self->_overviewWaveformViewController = overviewWaveformViewController;
 
   v9 = self->_waveformViewController;
   v10[0] = _NSConcreteStackBlock;
@@ -1825,31 +1825,31 @@ LABEL_8:
   [(RCMainControllerHelper *)self pauseCapturing];
 }
 
-- (void)_beginSelectionEditingModeForInsertMode:(BOOL)a3
+- (void)_beginSelectionEditingModeForInsertMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained waveformViewController];
+  waveformViewController = [WeakRetained waveformViewController];
   waveformViewController = self->_waveformViewController;
-  self->_waveformViewController = v6;
+  self->_waveformViewController = waveformViewController;
 
   v8 = objc_loadWeakRetained(&self->_delegate);
-  v9 = [v8 overviewWaveformViewController];
+  overviewWaveformViewController = [v8 overviewWaveformViewController];
   overviewWaveformViewController = self->_overviewWaveformViewController;
-  self->_overviewWaveformViewController = v9;
+  self->_overviewWaveformViewController = overviewWaveformViewController;
 
-  [(RCAVWaveformViewController *)self->_waveformViewController showSelectionOverlayAndEnableInsertMode:v3];
+  [(RCAVWaveformViewController *)self->_waveformViewController showSelectionOverlayAndEnableInsertMode:modeCopy];
   v11 = self->_overviewWaveformViewController;
 
-  [(RCAVWaveformViewController *)v11 showSelectionOverlayAndEnableInsertMode:v3];
+  [(RCAVWaveformViewController *)v11 showSelectionOverlayAndEnableInsertMode:modeCopy];
 }
 
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_selectedTimeRange
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained waveformViewController];
+  waveformViewController = [WeakRetained waveformViewController];
   waveformViewController = self->_waveformViewController;
-  self->_waveformViewController = v4;
+  self->_waveformViewController = waveformViewController;
 
   v6 = self->_waveformViewController;
 
@@ -1859,14 +1859,14 @@ LABEL_8:
   return result;
 }
 
-- (void)_refreshAfterEditingOperation:(id)a3
+- (void)_refreshAfterEditingOperation:(id)operation
 {
   recordingsModelInteractor = self->_recordingsModelInteractor;
-  v5 = a3;
-  v6 = [(RCRecordingsModelInteractor *)recordingsModelInteractor compositionLoadedForSavedRecordingUUID:v5];
+  operationCopy = operation;
+  v6 = [(RCRecordingsModelInteractor *)recordingsModelInteractor compositionLoadedForSavedRecordingUUID:operationCopy];
   [(RCMainControllerHelper *)self setCurrentComposition:v6];
 
-  [(RCMainControllerHelper *)self _updateWillMigrateFromSingleLayerToMultiLayerForRecordingID:v5];
+  [(RCMainControllerHelper *)self _updateWillMigrateFromSingleLayerToMultiLayerForRecordingID:operationCopy];
   [(RCAVWaveformViewController *)self->_waveformViewController nextPreviewStartTime];
   [(RCMainControllerHelper *)self _reloadWaveformDataSourceAndPreviewAssetWithInitialTime:?];
 
@@ -1877,12 +1877,12 @@ LABEL_8:
 {
   if (![(RCUndoTarget *)self->_trimModeUndoTarget sizeOfUndoStack])
   {
-    v3 = [(RCMainControllerHelper *)self audioRecorder];
-    [v3 markCurrentVersion];
+    audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+    [audioRecorder markCurrentVersion];
   }
 }
 
-- (BOOL)_isSelectionTrimmableByKeepingRange:(id)a3
+- (BOOL)_isSelectionTrimmableByKeepingRange:(id)range
 {
   RCTimeRangeDeltaWithUIPrecision();
   v5 = v4;
@@ -1895,7 +1895,7 @@ LABEL_8:
   return v7 - v5 > 0.05;
 }
 
-- (BOOL)_isSelectionTrimmableByDeletingRange:(id)a3
+- (BOOL)_isSelectionTrimmableByDeletingRange:(id)range
 {
   RCTimeRangeDeltaWithUIPrecision();
   v5 = v4;
@@ -1908,59 +1908,59 @@ LABEL_8:
   return v6 - v5 >= 1.0;
 }
 
-- (void)_reloadWaveformDataSourceAndPreviewAssetWithInitialTime:(double)a3
+- (void)_reloadWaveformDataSourceAndPreviewAssetWithInitialTime:(double)time
 {
-  v5 = [(RCMainControllerHelper *)self currentComposition];
-  [v5 composedDuration];
+  currentComposition = [(RCMainControllerHelper *)self currentComposition];
+  [currentComposition composedDuration];
   v7 = v6;
 
-  if (v7 <= a3)
+  if (v7 <= time)
   {
-    a3 = v7;
+    time = v7;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v9 = [(RCMainControllerHelper *)self currentComposition];
-  [WeakRetained reloadWaveformsFromComposition:v9];
+  currentComposition2 = [(RCMainControllerHelper *)self currentComposition];
+  [WeakRetained reloadWaveformsFromComposition:currentComposition2];
 
-  v10 = [(RCMainControllerHelper *)self timeController];
-  [v10 setTargetTime:a3];
+  timeController = [(RCMainControllerHelper *)self timeController];
+  [timeController setTargetTime:time];
 }
 
-- (void)setFavorite:(BOOL)a3 forRecordingWithUUID:(id)a4
+- (void)setFavorite:(BOOL)favorite forRecordingWithUUID:(id)d
 {
-  v4 = a3;
-  v8 = a4;
-  v6 = a4;
-  v7 = [NSArray arrayWithObjects:&v8 count:1];
+  favoriteCopy = favorite;
+  dCopy = d;
+  dCopy2 = d;
+  v7 = [NSArray arrayWithObjects:&dCopy count:1];
 
-  [(RCMainControllerHelper *)self setFavorite:v4 forRecordingsWithUUIDs:v7, v8];
+  [(RCMainControllerHelper *)self setFavorite:favoriteCopy forRecordingsWithUUIDs:v7, dCopy];
 }
 
-- (void)setFavorite:(BOOL)a3 forRecordingsWithUUIDs:(id)a4
+- (void)setFavorite:(BOOL)favorite forRecordingsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v6 = a4;
+  favoriteCopy = favorite;
+  dsCopy = ds;
   [(RCMainControllerHelper *)self endDescriptionViewTextEditing];
-  v7 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor setFavorite:v4 forUUIDs:v6];
+  v7 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor setFavorite:favoriteCopy forUUIDs:dsCopy];
 
-  [(RCMainControllerHelper *)self _registerUndoForSetFavorite:v4 changedUUIDs:v7];
+  [(RCMainControllerHelper *)self _registerUndoForSetFavorite:favoriteCopy changedUUIDs:v7];
 }
 
-- (void)_registerUndoForSetFavorite:(BOOL)a3 changedUUIDs:(id)a4
+- (void)_registerUndoForSetFavorite:(BOOL)favorite changedUUIDs:(id)ds
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(RCMainControllerHelper *)self undoManager];
+  favoriteCopy = favorite;
+  dsCopy = ds;
+  undoManager = [(RCMainControllerHelper *)self undoManager];
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_1000B7D14;
   v20 = &unk_10028C4D0;
-  v22 = v4;
-  v8 = v6;
+  v22 = favoriteCopy;
+  v8 = dsCopy;
   v21 = v8;
-  [v7 registerUndoWithTarget:self handler:&v17];
-  LODWORD(self) = [v7 isUndoing];
+  [undoManager registerUndoWithTarget:self handler:&v17];
+  LODWORD(self) = [undoManager isUndoing];
   v9 = +[NSBundle mainBundle];
   v10 = v9;
   if (self)
@@ -1975,7 +1975,7 @@ LABEL_8:
 
   v12 = [v9 localizedStringForKey:v11 value:&stru_100295BB8 table:0];
 
-  if ([v7 isUndoing])
+  if ([undoManager isUndoing])
   {
     v13 = @"ADD_TO_FAVORITES_ACTION";
   }
@@ -1988,7 +1988,7 @@ LABEL_8:
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:v13 value:&stru_100295BB8 table:0];
 
-  if (v4)
+  if (favoriteCopy)
   {
     v16 = v12;
   }
@@ -1998,32 +1998,32 @@ LABEL_8:
     v16 = v15;
   }
 
-  [v7 setActionName:v16];
+  [undoManager setActionName:v16];
 }
 
-- (void)toggleFavoriteForUUID:(id)a3
+- (void)toggleFavoriteForUUID:(id)d
 {
-  v4 = a3;
-  [(RCMainControllerHelper *)self setFavorite:[(RCMainControllerHelper *)self isFavoriteForUUID:v4]^ 1 forRecordingWithUUID:v4];
+  dCopy = d;
+  [(RCMainControllerHelper *)self setFavorite:[(RCMainControllerHelper *)self isFavoriteForUUID:dCopy]^ 1 forRecordingWithUUID:dCopy];
 }
 
-- (id)compositionForUUID:(id)a3
+- (id)compositionForUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(RCMainControllerHelper *)self currentComposition];
-    v6 = [v5 savedRecordingUUID];
-    v7 = [v6 isEqualToString:v4];
+    currentComposition = [(RCMainControllerHelper *)self currentComposition];
+    savedRecordingUUID = [currentComposition savedRecordingUUID];
+    v7 = [savedRecordingUUID isEqualToString:dCopy];
 
     if (v7)
     {
-      v8 = v5;
+      v8 = currentComposition;
     }
 
     else
     {
-      v8 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:v4];
+      v8 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor compositionLoadedForSavedRecordingUUID:dCopy];
     }
 
     v9 = v8;
@@ -2037,35 +2037,35 @@ LABEL_8:
   return v9;
 }
 
-- (id)playbackSettingsForUUID:(id)a3
+- (id)playbackSettingsForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCRecordingDisplayModel *)self->_currentRecordingDisplayModel UUID];
-  v6 = [v4 isEqualToString:v5];
+  dCopy = d;
+  uUID = [(RCRecordingDisplayModel *)self->_currentRecordingDisplayModel UUID];
+  v6 = [dCopy isEqualToString:uUID];
 
   if (v6)
   {
-    v7 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor recordingForUUID:v4];
-    v8 = [v7 enhanced];
-    v9 = [v7 isSkipSilenceEnabled];
+    v7 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor recordingForUUID:dCopy];
+    enhanced = [v7 enhanced];
+    isSkipSilenceEnabled = [v7 isSkipSilenceEnabled];
     [v7 playRate];
     v11 = v10;
     [v7 layerMix];
     v13 = v12;
-    v14 = [(RCMainControllerHelper *)self currentComposition];
-    v15 = [v14 hasMultipleTracks];
+    currentComposition = [(RCMainControllerHelper *)self currentComposition];
+    hasMultipleTracks = [currentComposition hasMultipleTracks];
 
-    v16 = [(RCMainControllerHelper *)self currentComposition];
-    v17 = [v16 hasSpatialAudio];
+    currentComposition2 = [(RCMainControllerHelper *)self currentComposition];
+    hasSpatialAudio = [currentComposition2 hasSpatialAudio];
 
-    v18 = [v7 isSpeechIsolatorEnabled];
+    isSpeechIsolatorEnabled = [v7 isSpeechIsolatorEnabled];
     [v7 speechIsolatorValue];
     v20 = v19;
     v21 = [RCPlaybackSettings alloc];
     LODWORD(v22) = v11;
     LODWORD(v23) = v13;
     LODWORD(v24) = v20;
-    v25 = [(RCPlaybackSettings *)v21 initWithUUID:v4 enhanced:v8 silenceRemoved:v9 playbackSpeed:v15 layerMix:v17 hasMultipleTracks:v18 isSpatialRecording:v22 speechIsolatorEnabled:v23 speechIsolatorValue:v24];
+    v25 = [(RCPlaybackSettings *)v21 initWithUUID:dCopy enhanced:enhanced silenceRemoved:isSkipSilenceEnabled playbackSpeed:hasMultipleTracks layerMix:hasSpatialAudio hasMultipleTracks:isSpeechIsolatorEnabled isSpatialRecording:v22 speechIsolatorEnabled:v23 speechIsolatorValue:v24];
   }
 
   else
@@ -2076,16 +2076,16 @@ LABEL_8:
   return v25;
 }
 
-- (BOOL)isSilenceRemovedForUUID:(id)a3
+- (BOOL)isSilenceRemovedForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self audioPlayer];
-  v6 = [v5 recordingID];
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v4 isEqualToString:v6])
+  if ([dCopy isEqualToString:recordingID])
   {
-    v7 = [(RCMainControllerHelper *)self audioPlayer];
-    v8 = [v7 silenceRemoverEnabled];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    silenceRemoverEnabled = [audioPlayer2 silenceRemoverEnabled];
   }
 
   else
@@ -2096,22 +2096,22 @@ LABEL_8:
       sub_1001BB504();
     }
 
-    v8 = 0;
+    silenceRemoverEnabled = 0;
   }
 
-  return v8;
+  return silenceRemoverEnabled;
 }
 
-- (double)playbackSpeedForUUID:(id)a3
+- (double)playbackSpeedForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self audioPlayer];
-  v6 = [v5 recordingID];
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v4 isEqualToString:v6])
+  if ([dCopy isEqualToString:recordingID])
   {
-    v7 = [(RCMainControllerHelper *)self audioPlayer];
-    [v7 rate];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    [audioPlayer2 rate];
     v9 = v8;
   }
 
@@ -2129,16 +2129,16 @@ LABEL_8:
   return v9;
 }
 
-- (double)layerMixForUUID:(id)a3
+- (double)layerMixForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self audioPlayer];
-  v6 = [v5 recordingID];
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v4 isEqualToString:v6])
+  if ([dCopy isEqualToString:recordingID])
   {
-    v7 = [(RCMainControllerHelper *)self audioPlayer];
-    [v7 layerMix];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    [audioPlayer2 layerMix];
     v9 = v8;
   }
 
@@ -2156,16 +2156,16 @@ LABEL_8:
   return v9;
 }
 
-- (BOOL)isSpeechIsolatorEnabledForUUID:(id)a3
+- (BOOL)isSpeechIsolatorEnabledForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self audioPlayer];
-  v6 = [v5 recordingID];
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v4 isEqualToString:v6])
+  if ([dCopy isEqualToString:recordingID])
   {
-    v7 = [(RCMainControllerHelper *)self audioPlayer];
-    v8 = [v7 speechIsolatorEnabled];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    speechIsolatorEnabled = [audioPlayer2 speechIsolatorEnabled];
   }
 
   else
@@ -2176,22 +2176,22 @@ LABEL_8:
       sub_1001BB660();
     }
 
-    v8 = 0;
+    speechIsolatorEnabled = 0;
   }
 
-  return v8;
+  return speechIsolatorEnabled;
 }
 
-- (float)speechIsolatorForUUID:(id)a3
+- (float)speechIsolatorForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self audioPlayer];
-  v6 = [v5 recordingID];
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v4 isEqualToString:v6])
+  if ([dCopy isEqualToString:recordingID])
   {
-    v7 = [(RCMainControllerHelper *)self audioPlayer];
-    [v7 speechIsolatorValue];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    [audioPlayer2 speechIsolatorValue];
     v9 = v8;
   }
 
@@ -2211,23 +2211,23 @@ LABEL_8:
 
 - (BOOL)currentSelectionHasSpatialAudio
 {
-  v2 = [(RCMainControllerHelper *)self currentComposition];
-  v3 = [v2 hasSpatialAudio];
+  currentComposition = [(RCMainControllerHelper *)self currentComposition];
+  hasSpatialAudio = [currentComposition hasSpatialAudio];
 
-  return v3;
+  return hasSpatialAudio;
 }
 
-- (void)setRemoveSilence:(BOOL)a3 forUUID:(id)a4
+- (void)setRemoveSilence:(BOOL)silence forUUID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(RCMainControllerHelper *)self audioPlayer];
-  v8 = [v7 recordingID];
+  silenceCopy = silence;
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v6 isEqualToString:v8])
+  if ([dCopy isEqualToString:recordingID])
   {
-    v9 = [(RCMainControllerHelper *)self audioPlayer];
-    [v9 setSilenceRemoverEnabled:v4];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    [audioPlayer2 setSilenceRemoverEnabled:silenceCopy];
 
     [(RCMainControllerHelper *)self _reconcileAudioStateWithApplicationState];
   }
@@ -2242,18 +2242,18 @@ LABEL_8:
   }
 }
 
-- (void)setPlaybackSpeed:(double)a3 forUUID:(id)a4
+- (void)setPlaybackSpeed:(double)speed forUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(RCMainControllerHelper *)self audioPlayer];
-  v8 = [v7 recordingID];
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v6 isEqualToString:v8])
+  if ([dCopy isEqualToString:recordingID])
   {
-    v10 = [(RCMainControllerHelper *)self audioPlayer];
-    v9 = a3;
-    *&v11 = v9;
-    [v10 setRate:v11];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    speedCopy = speed;
+    *&v11 = speedCopy;
+    [audioPlayer2 setRate:v11];
 
     [(RCMainControllerHelper *)self _reconcileAudioStateWithApplicationState];
   }
@@ -2268,27 +2268,27 @@ LABEL_8:
   }
 }
 
-- (void)setLayerMix:(double)a3 forUUID:(id)a4
+- (void)setLayerMix:(double)mix forUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(RCMainControllerHelper *)self audioPlayer];
-  v8 = [v7 recordingID];
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v6 isEqualToString:v8])
+  if ([dCopy isEqualToString:recordingID])
   {
     +[RCApplicationModel sharedApplicationModel];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_1000B8720;
     v14 = v13[3] = &unk_10028C4F8;
-    v15 = v6;
-    v16 = a3;
+    v15 = dCopy;
+    mixCopy = mix;
     v9 = v14;
     [v9 performBlockAndWait:v13];
-    v11 = [(RCMainControllerHelper *)self audioPlayer];
-    v10 = a3;
-    *&v12 = v10;
-    [v11 setLayerMix:v12];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    mixCopy2 = mix;
+    *&v12 = mixCopy2;
+    [audioPlayer2 setLayerMix:v12];
 
     [(RCMainControllerHelper *)self _reconcileAudioStateWithApplicationState];
   }
@@ -2303,15 +2303,15 @@ LABEL_8:
   }
 }
 
-- (void)setLooping:(BOOL)a3 forUUID:(id)a4
+- (void)setLooping:(BOOL)looping forUUID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(RCMainControllerHelper *)self audioPlayer];
-  v8 = [v7 recordingID];
-  if ([v6 isEqualToString:v8])
+  loopingCopy = looping;
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
+  if ([dCopy isEqualToString:recordingID])
   {
-    [v7 setLooping:v4];
+    [audioPlayer setLooping:loopingCopy];
   }
 
   else
@@ -2324,20 +2324,20 @@ LABEL_8:
   }
 }
 
-- (void)setSpeechIsolatorEnabled:(BOOL)a3 forUUID:(id)a4
+- (void)setSpeechIsolatorEnabled:(BOOL)enabled forUUID:(id)d
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(RCMainControllerHelper *)self audioPlayer];
-  v8 = [v7 recordingID];
+  enabledCopy = enabled;
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v6 isEqualToString:v8])
+  if ([dCopy isEqualToString:recordingID])
   {
-    v9 = [(RCMainControllerHelper *)self audioPlayer];
-    [v9 setSpeechIsolatorEnabled:v4];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    [audioPlayer2 setSpeechIsolatorEnabled:enabledCopy];
 
     [(RCMainControllerHelper *)self _reconcileAudioStateWithApplicationState];
-    if (!v4)
+    if (!enabledCopy)
     {
       goto LABEL_8;
     }
@@ -2351,35 +2351,35 @@ LABEL_8:
     sub_1001BB918();
   }
 
-  if (v4)
+  if (enabledCopy)
   {
 LABEL_7:
     v11 = +[RecorderAppDelegate sharedAppDelegate];
-    v12 = [v11 dependencyContainer];
-    v13 = [v12 analyticsManager];
-    [v13 userEnabledStudioVoice];
+    dependencyContainer = [v11 dependencyContainer];
+    analyticsManager = [dependencyContainer analyticsManager];
+    [analyticsManager userEnabledStudioVoice];
   }
 
 LABEL_8:
 }
 
-- (void)setSpeechIsolatorValue:(float)a3 forUUID:(id)a4
+- (void)setSpeechIsolatorValue:(float)value forUUID:(id)d
 {
-  v6 = a4;
-  v7 = [(RCMainControllerHelper *)self audioPlayer];
-  v8 = [v7 recordingID];
+  dCopy = d;
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  recordingID = [audioPlayer recordingID];
 
-  if ([v6 isEqualToString:v8])
+  if ([dCopy isEqualToString:recordingID])
   {
-    v9 = [(RCMainControllerHelper *)self audioPlayer];
-    *&v10 = a3;
-    [v9 setSpeechIsolatorValue:v10];
+    audioPlayer2 = [(RCMainControllerHelper *)self audioPlayer];
+    *&v10 = value;
+    [audioPlayer2 setSpeechIsolatorValue:v10];
 
     [(RCMainControllerHelper *)self _reconcileAudioStateWithApplicationState];
     v11 = +[RecorderAppDelegate sharedAppDelegate];
-    v12 = [v11 dependencyContainer];
-    v13 = [v12 analyticsManager];
-    [v13 userEditedStudioVoiceSlider];
+    dependencyContainer = [v11 dependencyContainer];
+    analyticsManager = [dependencyContainer analyticsManager];
+    [analyticsManager userEditedStudioVoiceSlider];
   }
 
   else
@@ -2392,13 +2392,13 @@ LABEL_8:
   }
 }
 
-- (void)shareRecordingsWithUUIDs:(id)a3 inViewController:(id)a4 source:(id)a5 isShareButton:(BOOL)a6 completionWithItemsHandler:(id)a7
+- (void)shareRecordingsWithUUIDs:(id)ds inViewController:(id)controller source:(id)source isShareButton:(BOOL)button completionWithItemsHandler:(id)handler
 {
-  v11 = a4;
-  v12 = a5;
-  v30 = a7;
+  controllerCopy = controller;
+  sourceCopy = source;
+  handlerCopy = handler;
   v13 = self->_recordingsModelInteractor;
-  v14 = [(RCRecordingsModelInteractor *)v13 recordingsForUUIDs:a3];
+  v14 = [(RCRecordingsModelInteractor *)v13 recordingsForUUIDs:ds];
   v15 = +[NSMutableArray array];
   v31 = 0u;
   v32 = 0u;
@@ -2434,42 +2434,42 @@ LABEL_8:
   }
 
   v22 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v23 = [v22 shouldShareUsingRCShareMemoViewController];
+  shouldShareUsingRCShareMemoViewController = [v22 shouldShareUsingRCShareMemoViewController];
 
-  if (v23)
+  if (shouldShareUsingRCShareMemoViewController)
   {
-    v24 = v30;
-    LOBYTE(v28) = a6;
-    [RCShareMemoViewController presentInViewController:v11 source:v12 compositions:v15 ignoringInteraction:1 shouldContinuePreparingBlock:0 preparedToPresentBlock:0 isShareButton:v28 completionWithItemsHandler:v30];
+    v24 = handlerCopy;
+    LOBYTE(v28) = button;
+    [RCShareMemoViewController presentInViewController:controllerCopy source:sourceCopy compositions:v15 ignoringInteraction:1 shouldContinuePreparingBlock:0 preparedToPresentBlock:0 isShareButton:v28 completionWithItemsHandler:handlerCopy];
   }
 
   else
   {
     v25 = [VMActivityItemsConfigurationHelper activityItemsConfigurationForCompositions:v15];
     v26 = [[UIActivityViewController alloc] initWithActivityItemsConfiguration:v25];
-    v24 = v30;
-    [v26 setCompletionWithItemsHandler:v30];
-    [v11 setModalPresentationStyle:7];
-    if (v12)
+    v24 = handlerCopy;
+    [v26 setCompletionWithItemsHandler:handlerCopy];
+    [controllerCopy setModalPresentationStyle:7];
+    if (sourceCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v27 = [v26 popoverPresentationController];
-        [v27 setBarButtonItem:v12];
+        popoverPresentationController = [v26 popoverPresentationController];
+        [popoverPresentationController setBarButtonItem:sourceCopy];
       }
     }
 
-    [v11 presentViewController:v26 animated:1 completion:0];
+    [controllerCopy presentViewController:v26 animated:1 completion:0];
   }
 }
 
-- (id)eraseAndConfirmWithUUIDs:(id)a3 source:(id)a4 collectionViewController:(id)a5
+- (id)eraseAndConfirmWithUUIDs:(id)ds source:(id)source collectionViewController:(id)controller
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 count];
+  dsCopy = ds;
+  controllerCopy = controller;
+  sourceCopy = source;
+  v11 = [dsCopy count];
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"ERASE_RECORDINGS" value:&stru_100295BB8 table:0];
   v14 = [NSString localizedStringWithFormat:v13, v11];
@@ -2479,32 +2479,32 @@ LABEL_8:
   v17 = [v16 localizedStringForKey:@"DELETE_FOREVER" value:&stru_100295BB8 table:0];
 
   v18 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v19 = [v18 presentsRecoverConfirmationAsAlert];
+  presentsRecoverConfirmationAsAlert = [v18 presentsRecoverConfirmationAsAlert];
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1000B8F30;
   v25[3] = &unk_10028C520;
-  v26 = v9;
-  v27 = self;
-  v28 = v8;
+  v26 = controllerCopy;
+  selfCopy = self;
+  v28 = dsCopy;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000B8F74;
   v24[3] = &unk_10028B378;
   v24[4] = self;
-  v20 = v8;
-  v21 = v9;
-  v22 = [(RCMainControllerHelper *)self _alertControllerWithTitle:v15 message:0 isDestructive:1 preferredStyle:v19 source:v10 handler:v25 actionTitle:v17 cancelHandler:v24];
+  v20 = dsCopy;
+  v21 = controllerCopy;
+  v22 = [(RCMainControllerHelper *)self _alertControllerWithTitle:v15 message:0 isDestructive:1 preferredStyle:presentsRecoverConfirmationAsAlert source:sourceCopy handler:v25 actionTitle:v17 cancelHandler:v24];
 
   return v22;
 }
 
-- (id)eraseAllRecordingsAndConfirmWithSource:(id)a3
+- (id)eraseAllRecordingsAndConfirmWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v6 = [v5 presentsRecoverConfirmationAsAlert];
+  presentsRecoverConfirmationAsAlert = [v5 presentsRecoverConfirmationAsAlert];
 
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"ERASE_ALL_MEMOS_CONFIRMATION_ALERT_TITLE" value:&stru_100295BB8 table:0];
@@ -2515,46 +2515,46 @@ LABEL_8:
   v13[4] = self;
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"DELETE_FOREVER" value:&stru_100295BB8 table:0];
-  v11 = [(RCMainControllerHelper *)self _alertControllerWithTitle:v8 message:0 isDestructive:1 preferredStyle:v6 source:v4 handler:v13 actionTitle:v10 cancelHandler:0];
+  v11 = [(RCMainControllerHelper *)self _alertControllerWithTitle:v8 message:0 isDestructive:1 preferredStyle:presentsRecoverConfirmationAsAlert source:sourceCopy handler:v13 actionTitle:v10 cancelHandler:0];
 
   return v11;
 }
 
-- (void)_eraseRecordingsWithUUIDs:(id)a3
+- (void)_eraseRecordingsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  [(RCMainControllerHelper *)self _stopForUUIDs:v4];
-  [(RCMainControllerHelper *)self _removeRecordingsObservationsForUUIDs:v4];
-  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor eraseRecordingsWithUUIDs:v4];
-  v5 = [(RCMainControllerHelper *)self delegate];
-  [v5 userDidEraseRecordingsWithUUIDs:v4];
+  dsCopy = ds;
+  [(RCMainControllerHelper *)self _stopForUUIDs:dsCopy];
+  [(RCMainControllerHelper *)self _removeRecordingsObservationsForUUIDs:dsCopy];
+  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor eraseRecordingsWithUUIDs:dsCopy];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  [delegate userDidEraseRecordingsWithUUIDs:dsCopy];
 
-  v7 = [(RCMainControllerHelper *)self delegate];
-  v6 = [v7 undoManager];
-  [v6 removeAllActionsWithTarget:self];
+  delegate2 = [(RCMainControllerHelper *)self delegate];
+  undoManager = [delegate2 undoManager];
+  [undoManager removeAllActionsWithTarget:self];
 }
 
-- (id)deleteWithUUIDs:(id)a3 source:(id)a4 showInfo:(BOOL)a5
+- (id)deleteWithUUIDs:(id)ds source:(id)source showInfo:(BOOL)info
 {
-  v5 = a5;
-  v7 = a3;
-  [(RCMainControllerHelper *)self _deleteRecordingsWithUUIDs:v7 isRecover:0];
+  infoCopy = info;
+  dsCopy = ds;
+  [(RCMainControllerHelper *)self _deleteRecordingsWithUUIDs:dsCopy isRecover:0];
   v8 = +[NSUserDefaults sharedSettingsUserDefaults];
   v9 = v8;
   v10 = 0;
-  if (v5)
+  if (infoCopy)
   {
     if (v8)
     {
-      v11 = [v8 rc_recentlyDeletedWindow];
-      v12 = [v9 rc_deletionIsImmediate];
+      rc_recentlyDeletedWindow = [v8 rc_recentlyDeletedWindow];
+      rc_deletionIsImmediate = [v9 rc_deletionIsImmediate];
       v13 = +[NSUserDefaults standardUserDefaults];
       v14 = [v13 BOOLForKey:@"kRCDeleteInformationAlertAlreadyShownKey"];
 
       v10 = 0;
-      if ((v12 & 1) == 0 && (v14 & 1) == 0)
+      if ((rc_deletionIsImmediate & 1) == 0 && (v14 & 1) == 0)
       {
-        v15 = [v7 count];
+        v15 = [dsCopy count];
         v16 = +[NSBundle mainBundle];
         v17 = v16;
         if (v15 == 1)
@@ -2570,15 +2570,15 @@ LABEL_8:
         v19 = [v16 localizedStringForKey:v18 value:&stru_100295BB8 table:0];
 
         v20 = 0;
-        if (v11 > 6)
+        if (rc_recentlyDeletedWindow > 6)
         {
-          if (v11 == 7)
+          if (rc_recentlyDeletedWindow == 7)
           {
             v21 = @"DELETE_MEMO_INFORMATION_ALERT_MESSAGE_SEVEN_DAYS";
             goto LABEL_17;
           }
 
-          if (v11 == 30)
+          if (rc_recentlyDeletedWindow == 30)
           {
             v21 = @"DELETE_MEMO_INFORMATION_ALERT_MESSAGE_THIRTY_DAYS";
             goto LABEL_17;
@@ -2587,13 +2587,13 @@ LABEL_8:
 
         else
         {
-          if (v11 == -1)
+          if (rc_recentlyDeletedWindow == -1)
           {
             v21 = @"DELETE_MEMO_INFORMATION_ALERT_MESSAGE_FOREVER";
             goto LABEL_17;
           }
 
-          if (v11 == 1)
+          if (rc_recentlyDeletedWindow == 1)
           {
             v21 = @"DELETE_MEMO_INFORMATION_ALERT_MESSAGE_ONE_DAY";
 LABEL_17:
@@ -2622,23 +2622,23 @@ LABEL_17:
 - (void)performClearAllRecentlyDeleted
 {
   [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor eraseAllDeleted];
-  v3 = [(RCMainControllerHelper *)self delegate];
-  v4 = [v3 undoManager];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  undoManager = [delegate undoManager];
 
-  [v4 removeAllActionsWithTarget:self];
+  [undoManager removeAllActionsWithTarget:self];
 }
 
-- (id)restoreRecordingsWithUUIDs:(id)a3 isRecover:(BOOL)a4 source:(id)a5 force:(BOOL)a6 collectionViewController:(id)a7
+- (id)restoreRecordingsWithUUIDs:(id)ds isRecover:(BOOL)recover source:(id)source force:(BOOL)force collectionViewController:(id)controller
 {
-  if (a6)
+  if (force)
   {
-    [(RCMainControllerHelper *)self _restoreRecordingsWithUUIDs:a3 isRecover:a4, a5, a6, a7];
+    [(RCMainControllerHelper *)self _restoreRecordingsWithUUIDs:ds isRecover:recover, source, force, controller];
     v7 = 0;
   }
 
   else
   {
-    v7 = [(RCMainControllerHelper *)self _restoreRecordingsWithUUIDs:a3 isRecover:a4 source:a5 collectionViewController:a7];
+    v7 = [(RCMainControllerHelper *)self _restoreRecordingsWithUUIDs:ds isRecover:recover source:source collectionViewController:controller];
   }
 
   return v7;
@@ -2646,45 +2646,45 @@ LABEL_17:
 
 - (void)deleteRecordingCanceled
 {
-  v2 = [(RCMainControllerHelper *)self delegate];
-  [v2 userDidCancelDeleteRecording];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  [delegate userDidCancelDeleteRecording];
 }
 
-- (void)_deleteRecordingsWithUUIDs:(id)a3 isRecover:(BOOL)a4
+- (void)_deleteRecordingsWithUUIDs:(id)ds isRecover:(BOOL)recover
 {
-  v4 = a4;
-  v6 = a3;
+  recoverCopy = recover;
+  dsCopy = ds;
   v7 = +[NSUserDefaults sharedSettingsUserDefaults];
   v8 = v7;
   if (v7 && [v7 rc_deletionIsImmediate])
   {
-    [(RCMainControllerHelper *)self _stopForUUIDs:v6];
-    [(RCMainControllerHelper *)self _removeRecordingsObservationsForUUIDs:v6];
-    [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor eraseRecordingsWithUUIDs:v6];
-    v9 = [(RCMainControllerHelper *)self delegate];
-    [v9 userDidEraseRecordingsWithUUIDs:v6];
+    [(RCMainControllerHelper *)self _stopForUUIDs:dsCopy];
+    [(RCMainControllerHelper *)self _removeRecordingsObservationsForUUIDs:dsCopy];
+    [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor eraseRecordingsWithUUIDs:dsCopy];
+    delegate = [(RCMainControllerHelper *)self delegate];
+    [delegate userDidEraseRecordingsWithUUIDs:dsCopy];
   }
 
   else
   {
-    [(RCMainControllerHelper *)self _stopForUUIDs:v6];
-    [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor deleteRecordingsWithUUIDs:v6];
-    v10 = [(RCMainControllerHelper *)self delegate];
-    [v10 userDidDeleteRecordingsWithUUIDs:v6];
+    [(RCMainControllerHelper *)self _stopForUUIDs:dsCopy];
+    [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor deleteRecordingsWithUUIDs:dsCopy];
+    delegate2 = [(RCMainControllerHelper *)self delegate];
+    [delegate2 userDidDeleteRecordingsWithUUIDs:dsCopy];
 
-    v11 = [(RCMainControllerHelper *)self delegate];
-    v12 = [v11 undoManager];
+    delegate3 = [(RCMainControllerHelper *)self delegate];
+    undoManager = [delegate3 undoManager];
 
     v17 = _NSConcreteStackBlock;
     v18 = 3221225472;
     v19 = sub_1000B9770;
     v20 = &unk_10028C548;
-    v21 = v6;
-    v22 = v4;
-    [v12 registerUndoWithTarget:self handler:&v17];
+    v21 = dsCopy;
+    v22 = recoverCopy;
+    [undoManager registerUndoWithTarget:self handler:&v17];
     v13 = [NSBundle mainBundle:v17];
     v14 = v13;
-    if (v4)
+    if (recoverCopy)
     {
       v15 = @"RECOVER_RECORDING_ACTION";
     }
@@ -2696,32 +2696,32 @@ LABEL_17:
 
     v16 = [v13 localizedStringForKey:v15 value:&stru_100295BB8 table:0];
 
-    [v12 setActionName:v16];
+    [undoManager setActionName:v16];
   }
 }
 
-- (void)_restoreRecordingsWithUUIDs:(id)a3 isRecover:(BOOL)a4
+- (void)_restoreRecordingsWithUUIDs:(id)ds isRecover:(BOOL)recover
 {
-  v4 = a4;
-  v6 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor restoreRecordingsWithUUIDs:a3];
-  v7 = [(RCMainControllerHelper *)self delegate];
-  [v7 userDidRecoverRecordingsWithUUIDs:v6];
+  recoverCopy = recover;
+  v6 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor restoreRecordingsWithUUIDs:ds];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  [delegate userDidRecoverRecordingsWithUUIDs:v6];
 
   if ([v6 count])
   {
-    v8 = [(RCMainControllerHelper *)self delegate];
-    v9 = [v8 undoManager];
+    delegate2 = [(RCMainControllerHelper *)self delegate];
+    undoManager = [delegate2 undoManager];
 
     v14 = _NSConcreteStackBlock;
     v15 = 3221225472;
     v16 = sub_1000B9904;
     v17 = &unk_10028C548;
     v18 = v6;
-    v19 = v4;
-    [v9 registerUndoWithTarget:self handler:&v14];
+    v19 = recoverCopy;
+    [undoManager registerUndoWithTarget:self handler:&v14];
     v10 = [NSBundle mainBundle:v14];
     v11 = v10;
-    if (v4)
+    if (recoverCopy)
     {
       v12 = @"RECOVER_RECORDING_ACTION";
     }
@@ -2733,20 +2733,20 @@ LABEL_17:
 
     v13 = [v10 localizedStringForKey:v12 value:&stru_100295BB8 table:0];
 
-    [v9 setActionName:v13];
+    [undoManager setActionName:v13];
   }
 }
 
-- (id)_restoreRecordingsWithUUIDs:(id)a3 isRecover:(BOOL)a4 source:(id)a5 collectionViewController:(id)a6
+- (id)_restoreRecordingsWithUUIDs:(id)ds isRecover:(BOOL)recover source:(id)source collectionViewController:(id)controller
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = [v10 count];
+  recoverCopy = recover;
+  dsCopy = ds;
+  controllerCopy = controller;
+  sourceCopy = source;
+  v13 = [dsCopy count];
   v14 = +[NSBundle mainBundle];
   v15 = v14;
-  if (v8)
+  if (recoverCopy)
   {
     v16 = @"Recover %lu Recordings";
   }
@@ -2760,48 +2760,48 @@ LABEL_17:
   v18 = [NSString localizedStringWithFormat:v17, v13];
 
   v19 = +[RCRecorderStyleProvider sharedStyleProvider];
-  v20 = [v19 presentsRecoverConfirmationAsAlert];
+  presentsRecoverConfirmationAsAlert = [v19 presentsRecoverConfirmationAsAlert];
 
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_1000B9ADC;
   v25[3] = &unk_10028C570;
-  v26 = v11;
-  v27 = self;
-  v28 = v10;
-  v29 = v8;
-  v21 = v10;
-  v22 = v11;
-  v23 = [(RCMainControllerHelper *)self _alertControllerWithTitle:0 message:0 isDestructive:!v8 preferredStyle:v20 source:v12 handler:v25 actionTitle:v18 cancelHandler:0];
+  v26 = controllerCopy;
+  selfCopy = self;
+  v28 = dsCopy;
+  v29 = recoverCopy;
+  v21 = dsCopy;
+  v22 = controllerCopy;
+  v23 = [(RCMainControllerHelper *)self _alertControllerWithTitle:0 message:0 isDestructive:!recoverCopy preferredStyle:presentsRecoverConfirmationAsAlert source:sourceCopy handler:v25 actionTitle:v18 cancelHandler:0];
 
   return v23;
 }
 
-- (id)deleteFolder:(id)a3 source:(id)a4 completionBlock:(id)a5
+- (id)deleteFolder:(id)folder source:(id)source completionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  sourceCopy = source;
+  blockCopy = block;
+  folderCopy = folder;
   v11 = +[RCApplicationModel sharedApplicationModel];
-  v12 = [v11 playableRecordingsForFolder:v10];
+  v12 = [v11 playableRecordingsForFolder:folderCopy];
   v13 = [v12 na_map:&stru_10028C5B0];
 
   v14 = [_TtC10VoiceMemos23RCUserFolderRestoreInfo alloc];
-  v15 = [v10 name];
-  v16 = -[RCUserFolderRestoreInfo initWithName:rank:recordingUUIDs:](v14, "initWithName:rank:recordingUUIDs:", v15, [v10 rank], v13);
+  name = [folderCopy name];
+  v16 = -[RCUserFolderRestoreInfo initWithName:rank:recordingUUIDs:](v14, "initWithName:rank:recordingUUIDs:", name, [folderCopy rank], v13);
 
   if ([v13 count])
   {
-    v17 = [(RCMainControllerHelper *)self _presentFolderDeletionConfirmationForFolder:v10 source:v8 completionBlock:v9];
+    v17 = [(RCMainControllerHelper *)self _presentFolderDeletionConfirmationForFolder:folderCopy source:sourceCopy completionBlock:blockCopy];
   }
 
   else
   {
-    [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor deleteUserFolder:v10];
+    [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor deleteUserFolder:folderCopy];
 
-    if (v9)
+    if (blockCopy)
     {
-      v9[2](v9, 1);
+      blockCopy[2](blockCopy, 1);
     }
 
     v17 = 0;
@@ -2812,21 +2812,21 @@ LABEL_17:
   return v17;
 }
 
-- (void)_registerUndoDeleteFolder:(id)a3
+- (void)_registerUndoDeleteFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   v5 = +[NSUserDefaults sharedSettingsUserDefaults];
   v6 = v5;
   if (!v5 || ([v5 rc_deletionIsImmediate] & 1) == 0)
   {
-    v7 = [(RCMainControllerHelper *)self undoManager];
+    undoManager = [(RCMainControllerHelper *)self undoManager];
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000B9DD8;
     v14 = &unk_10028C1D8;
-    v15 = v4;
-    v16 = self;
-    [v7 registerUndoWithTarget:self handler:&v11];
+    v15 = folderCopy;
+    selfCopy = self;
+    [undoManager registerUndoWithTarget:self handler:&v11];
 
     v8 = [(RCMainControllerHelper *)self undoManager:v11];
     v9 = +[NSBundle mainBundle];
@@ -2835,53 +2835,53 @@ LABEL_17:
   }
 }
 
-- (void)_deleteFolderWithoutAlert:(id)a3
+- (void)_deleteFolderWithoutAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = +[RCApplicationModel sharedApplicationModel];
-  v6 = [v5 playableRecordingsForFolder:v4];
+  v6 = [v5 playableRecordingsForFolder:alertCopy];
   v10 = [v6 na_map:&stru_10028C5D0];
 
   v7 = [_TtC10VoiceMemos23RCUserFolderRestoreInfo alloc];
-  v8 = [v4 name];
-  v9 = -[RCUserFolderRestoreInfo initWithName:rank:recordingUUIDs:](v7, "initWithName:rank:recordingUUIDs:", v8, [v4 rank], v10);
+  name = [alertCopy name];
+  v9 = -[RCUserFolderRestoreInfo initWithName:rank:recordingUUIDs:](v7, "initWithName:rank:recordingUUIDs:", name, [alertCopy rank], v10);
 
-  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor deleteUserFolder:v4];
+  [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor deleteUserFolder:alertCopy];
   [(RCMainControllerHelper *)self _registerUndoDeleteFolder:v9];
 }
 
-- (void)_restoreFolder:(id)a3
+- (void)_restoreFolder:(id)folder
 {
-  v4 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor restoreFolder:a3];
+  v4 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor restoreFolder:folder];
   if (v4)
   {
-    v5 = [(RCMainControllerHelper *)self undoManager];
+    undoManager = [(RCMainControllerHelper *)self undoManager];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000BA094;
     v9[3] = &unk_10028C488;
     v10 = v4;
-    [v5 registerUndoWithTarget:self handler:v9];
+    [undoManager registerUndoWithTarget:self handler:v9];
 
-    v6 = [(RCMainControllerHelper *)self undoManager];
+    undoManager2 = [(RCMainControllerHelper *)self undoManager];
     v7 = +[NSBundle mainBundle];
     v8 = [v7 localizedStringForKey:@"DELETE_FOLDER_ACTION" value:&stru_100295BB8 table:0];
-    [v6 setActionName:v8];
+    [undoManager2 setActionName:v8];
   }
 }
 
-- (id)_presentFolderDeletionConfirmationForFolder:(id)a3 source:(id)a4 completionBlock:(id)a5
+- (id)_presentFolderDeletionConfirmationForFolder:(id)folder source:(id)source completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor playableCountForFolder:v8];
+  folderCopy = folder;
+  sourceCopy = source;
+  blockCopy = block;
+  v11 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor playableCountForFolder:folderCopy];
   if (v11)
   {
     v12 = v11;
     v13 = +[NSUserDefaults sharedSettingsUserDefaults];
     v25 = v13;
-    v26 = v9;
+    v26 = sourceCopy;
     if (v13 && ([v13 rc_deletionIsImmediate] & 1) != 0)
     {
       v14 = @"ERASE_FOLDER_IMMEDIATE";
@@ -2906,8 +2906,8 @@ LABEL_17:
     v29[2] = sub_1000BA344;
     v29[3] = &unk_10028C5F8;
     v29[4] = self;
-    v30 = v8;
-    v31 = v10;
+    v30 = folderCopy;
+    v31 = blockCopy;
     v21 = +[NSBundle mainBundle];
     v22 = [v21 localizedStringForKey:@"OK" value:&stru_100295BB8 table:0];
     v27[0] = _NSConcreteStackBlock;
@@ -2915,7 +2915,7 @@ LABEL_17:
     v27[2] = sub_1000BA3A0;
     v27[3] = &unk_10028B7B0;
     v28 = v31;
-    v9 = v26;
+    sourceCopy = v26;
     v23 = [(RCMainControllerHelper *)self _alertControllerWithTitle:v17 message:v20 isDestructive:1 preferredStyle:1 source:v26 handler:v29 actionTitle:v22 cancelHandler:v27];
   }
 
@@ -2927,35 +2927,35 @@ LABEL_17:
   return v23;
 }
 
-- (void)_addCommandTarget:(id)a3 withHandler:(id)a4
+- (void)_addCommandTarget:(id)target withHandler:(id)handler
 {
-  v7 = a3;
-  v6 = [v7 addTargetWithHandler:a4];
+  targetCopy = target;
+  v6 = [targetCopy addTargetWithHandler:handler];
   if (v6)
   {
-    [(NSMapTable *)self->_commandTargets setObject:v6 forKey:v7];
+    [(NSMapTable *)self->_commandTargets setObject:v6 forKey:targetCopy];
   }
 }
 
-- (void)_updateRemoteControlState:(int64_t)a3
+- (void)_updateRemoteControlState:(int64_t)state
 {
-  if (self->_remoteControlState != a3)
+  if (self->_remoteControlState != state)
   {
-    self->_remoteControlState = a3;
+    self->_remoteControlState = state;
     [(RCMainControllerHelper *)self _teardownRemoteControlCommands];
-    if (a3)
+    if (state)
     {
       v5 = +[NSMapTable weakToStrongObjectsMapTable];
       commandTargets = self->_commandTargets;
       self->_commandTargets = v5;
 
-      if (a3 == 2)
+      if (state == 2)
       {
 
         [(RCMainControllerHelper *)self __setupRemoteControlCommandsForRecordingForeground];
       }
 
-      else if (a3 == 1)
+      else if (state == 1)
       {
 
         [(RCMainControllerHelper *)self __setupRemoteControlCommandsForPlayback];
@@ -2968,18 +2968,18 @@ LABEL_17:
 {
   [(NSTimer *)self->_nowPlayingUpdateTimer invalidate];
   v3 = +[MPNowPlayingInfoCenter defaultCenter];
-  v4 = [(RCMainControllerHelper *)self currentRecordingDisplayModel];
-  v5 = [v4 title];
-  v6 = v5;
-  if (!v4 || !self->_remoteControlState || !v5)
+  currentRecordingDisplayModel = [(RCMainControllerHelper *)self currentRecordingDisplayModel];
+  title = [currentRecordingDisplayModel title];
+  v6 = title;
+  if (!currentRecordingDisplayModel || !self->_remoteControlState || !title)
   {
     [v3 setNowPlayingInfo:0];
     [v3 setPlaybackState:0];
     goto LABEL_19;
   }
 
-  v7 = [(RCMainControllerHelper *)self audioPlayer];
-  v8 = [(RCMainControllerHelper *)self timeController];
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  timeController = [(RCMainControllerHelper *)self timeController];
   remoteControlState = self->_remoteControlState;
   v10 = 1.0;
   v11 = 0.0;
@@ -2996,22 +2996,22 @@ LABEL_17:
       goto LABEL_15;
     }
 
-    [v4 duration];
+    [currentRecordingDisplayModel duration];
     v12 = v13;
-    if ([v7 playing])
+    if ([audioPlayer playing])
     {
-      [v7 playerTime];
+      [audioPlayer playerTime];
     }
 
     else
     {
-      [v8 currentTime];
+      [timeController currentTime];
     }
 
     v11 = v14;
-    [v7 rate];
+    [audioPlayer rate];
     v10 = v16;
-    if ([v7 playing])
+    if ([audioPlayer playing])
     {
       v15 = 1;
     }
@@ -3040,7 +3040,7 @@ LABEL_15:
   v20 = [NSDictionary dictionaryWithObjects:v22 forKeys:v21 count:5];
   [v3 setNowPlayingInfo:v20];
 
-  if ([v7 playing] && objc_msgSend(v7, "silenceRemoverEnabled"))
+  if ([audioPlayer playing] && objc_msgSend(audioPlayer, "silenceRemoverEnabled"))
   {
     [(RCMainControllerHelper *)self _startNowPlayingUpdateTimerWithPlaybackTime:v11 playbackRate:v10];
   }
@@ -3048,7 +3048,7 @@ LABEL_15:
 LABEL_19:
 }
 
-- (void)_startNowPlayingUpdateTimerWithPlaybackTime:(double)a3 playbackRate:(double)a4
+- (void)_startNowPlayingUpdateTimerWithPlaybackTime:(double)time playbackRate:(double)rate
 {
   [(NSTimer *)self->_nowPlayingUpdateTimer invalidate];
   v7 = +[NSDate date];
@@ -3060,8 +3060,8 @@ LABEL_19:
   objc_copyWeak(v13, &location);
   v8 = v7;
   v12 = v8;
-  v13[1] = *&a3;
-  v13[2] = *&a4;
+  v13[1] = *&time;
+  v13[2] = *&rate;
   v13[3] = 0x3FF0000000000000;
   v9 = [NSTimer scheduledTimerWithTimeInterval:1 repeats:v11 block:1.0];
   nowPlayingUpdateTimer = self->_nowPlayingUpdateTimer;
@@ -3075,71 +3075,71 @@ LABEL_19:
 {
   v3 = +[MPRemoteCommandCenter sharedCommandCenter];
   objc_initWeak(location, self);
-  v4 = [v3 pauseCommand];
+  pauseCommand = [v3 pauseCommand];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1000BAE90;
   v28[3] = &unk_10028C648;
   objc_copyWeak(&v29, location);
-  [(RCMainControllerHelper *)self _addCommandTarget:v4 withHandler:v28];
+  [(RCMainControllerHelper *)self _addCommandTarget:pauseCommand withHandler:v28];
 
-  v5 = [v3 playCommand];
+  playCommand = [v3 playCommand];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1000BAF04;
   v26[3] = &unk_10028C648;
   objc_copyWeak(&v27, location);
-  [(RCMainControllerHelper *)self _addCommandTarget:v5 withHandler:v26];
+  [(RCMainControllerHelper *)self _addCommandTarget:playCommand withHandler:v26];
 
-  v6 = [v3 togglePlayPauseCommand];
+  togglePlayPauseCommand = [v3 togglePlayPauseCommand];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1000BAF8C;
   v24[3] = &unk_10028C648;
   objc_copyWeak(&v25, location);
-  [(RCMainControllerHelper *)self _addCommandTarget:v6 withHandler:v24];
+  [(RCMainControllerHelper *)self _addCommandTarget:togglePlayPauseCommand withHandler:v24];
 
-  v7 = [v3 skipBackwardCommand];
-  [v7 setPreferredIntervals:&off_10029AC38];
+  skipBackwardCommand = [v3 skipBackwardCommand];
+  [skipBackwardCommand setPreferredIntervals:&off_10029AC38];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000BB000;
   v22[3] = &unk_10028C648;
   objc_copyWeak(&v23, location);
-  [(RCMainControllerHelper *)self _addCommandTarget:v7 withHandler:v22];
-  v8 = [v3 skipForwardCommand];
-  [v8 setPreferredIntervals:&off_10029AC50];
+  [(RCMainControllerHelper *)self _addCommandTarget:skipBackwardCommand withHandler:v22];
+  skipForwardCommand = [v3 skipForwardCommand];
+  [skipForwardCommand setPreferredIntervals:&off_10029AC50];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1000BB090;
   v20[3] = &unk_10028C648;
   objc_copyWeak(&v21, location);
-  [(RCMainControllerHelper *)self _addCommandTarget:v8 withHandler:v20];
-  v9 = [v3 seekBackwardCommand];
+  [(RCMainControllerHelper *)self _addCommandTarget:skipForwardCommand withHandler:v20];
+  seekBackwardCommand = [v3 seekBackwardCommand];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000BB11C;
   v17[3] = &unk_10028C670;
   objc_copyWeak(&v19, location);
   v18 = &off_10029AC38;
-  [(RCMainControllerHelper *)self _addCommandTarget:v9 withHandler:v17];
+  [(RCMainControllerHelper *)self _addCommandTarget:seekBackwardCommand withHandler:v17];
 
-  v10 = [v3 seekForwardCommand];
+  seekForwardCommand = [v3 seekForwardCommand];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000BB1B0;
   v14[3] = &unk_10028C670;
   objc_copyWeak(&v16, location);
   v15 = &off_10029AC38;
-  [(RCMainControllerHelper *)self _addCommandTarget:v10 withHandler:v14];
+  [(RCMainControllerHelper *)self _addCommandTarget:seekForwardCommand withHandler:v14];
 
-  v11 = [v3 changePlaybackPositionCommand];
+  changePlaybackPositionCommand = [v3 changePlaybackPositionCommand];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1000BB240;
   v12[3] = &unk_10028C648;
   objc_copyWeak(&v13, location);
-  [(RCMainControllerHelper *)self _addCommandTarget:v11 withHandler:v12];
+  [(RCMainControllerHelper *)self _addCommandTarget:changePlaybackPositionCommand withHandler:v12];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v16);
@@ -3164,11 +3164,11 @@ LABEL_19:
   objc_copyWeak(&v11, &location);
   v3 = objc_retainBlock(&v7);
   v4 = [MPRemoteCommandCenter sharedCommandCenter:v7];
-  v5 = [v4 pauseCommand];
-  [(RCMainControllerHelper *)self _addCommandTarget:v5 withHandler:v3];
+  pauseCommand = [v4 pauseCommand];
+  [(RCMainControllerHelper *)self _addCommandTarget:pauseCommand withHandler:v3];
 
-  v6 = [v4 togglePlayPauseCommand];
-  [(RCMainControllerHelper *)self _addCommandTarget:v6 withHandler:v3];
+  togglePlayPauseCommand = [v4 togglePlayPauseCommand];
+  [(RCMainControllerHelper *)self _addCommandTarget:togglePlayPauseCommand withHandler:v3];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -3214,7 +3214,7 @@ LABEL_19:
   }
 }
 
-- (void)_sceneDidActivateNotification:(id)a3
+- (void)_sceneDidActivateNotification:(id)notification
 {
   if (self->_hasBecomeActive)
   {
@@ -3224,7 +3224,7 @@ LABEL_19:
   self->_hasBecomeActive = 1;
 }
 
-- (void)_sceneWillDeactivateNotification:(id)a3
+- (void)_sceneWillDeactivateNotification:(id)notification
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3234,14 +3234,14 @@ LABEL_19:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)displayLinkDidUpdate:(id)a3 withTimeController:(id)a4
+- (void)displayLinkDidUpdate:(id)update withTimeController:(id)controller
 {
-  v5 = [(RCMainControllerHelper *)self currentUserActivity:a3];
+  v5 = [(RCMainControllerHelper *)self currentUserActivity:update];
   if ([v5 activityType] || objc_msgSend(v5, "subActivityType") == 3)
   {
-    v6 = [(RCMainControllerHelper *)self audioRecorder];
-    v7 = v6;
-    if (v6 && [v6 recording])
+    audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+    v7 = audioRecorder;
+    if (audioRecorder && [audioRecorder recording])
     {
       v19 = 0.0;
       v20 = 0.0;
@@ -3256,8 +3256,8 @@ LABEL_20:
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = [(NSHashTable *)self->_timeObservers allObjects];
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      allObjects = [(NSHashTable *)self->_timeObservers allObjects];
+      v9 = [allObjects countByEnumeratingWithState:&v15 objects:v21 count:16];
       if (v9)
       {
         v10 = v9;
@@ -3268,7 +3268,7 @@ LABEL_20:
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(allObjects);
             }
 
             v13 = *(*(&v15 + 1) + 8 * i);
@@ -3278,7 +3278,7 @@ LABEL_20:
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v21 count:16];
+          v10 = [allObjects countByEnumeratingWithState:&v15 objects:v21 count:16];
         }
 
         while (v10);
@@ -3287,11 +3287,11 @@ LABEL_20:
 
     else
     {
-      v14 = [(RCMainControllerHelper *)self audioPlayer];
-      v8 = v14;
-      if (v14 && [v14 playing])
+      audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+      allObjects = audioPlayer;
+      if (audioPlayer && [audioPlayer playing])
       {
-        [v8 playerTime];
+        [allObjects playerTime];
         [(RCMainControllerHelper *)self setCurrentTime:?];
       }
     }
@@ -3302,46 +3302,46 @@ LABEL_20:
 LABEL_21:
 }
 
-- (BOOL)_transitionToActivityType:(int64_t)a3 toSubType:(int64_t)a4 withDisplayModel:(id)a5 waveformDataSource:(id)a6 composition:(id)a7
+- (BOOL)_transitionToActivityType:(int64_t)type toSubType:(int64_t)subType withDisplayModel:(id)model waveformDataSource:(id)source composition:(id)composition
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if ([(RCMainControllerHelper *)self _requiresUUIDForActivityType:a3])
+  modelCopy = model;
+  sourceCopy = source;
+  compositionCopy = composition;
+  if ([(RCMainControllerHelper *)self _requiresUUIDForActivityType:type])
   {
-    v15 = [v12 UUID];
+    uUID = [modelCopy UUID];
 
-    if (!v15)
+    if (!uUID)
     {
       goto LABEL_8;
     }
   }
 
-  v16 = [(RCMainControllerHelper *)self currentUserActivity];
-  v17 = [v16 activityType];
+  currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+  activityType = [currentUserActivity activityType];
 
-  v18 = [(RCMainControllerHelper *)self currentUserActivity];
-  v19 = [v18 subActivityType];
+  currentUserActivity2 = [(RCMainControllerHelper *)self currentUserActivity];
+  subActivityType = [currentUserActivity2 subActivityType];
 
-  if (v17 == 3)
+  if (activityType == 3)
   {
-    v20 = [(RCMainControllerHelper *)self currentUserActivity];
-    v21 = [v20 subActivityType];
+    currentUserActivity3 = [(RCMainControllerHelper *)self currentUserActivity];
+    subActivityType2 = [currentUserActivity3 subActivityType];
 
-    if (v21 == 1)
+    if (subActivityType2 == 1)
     {
       [(RCUndoTarget *)self->_trimModeUndoTarget setShouldEnableSave:1];
     }
   }
 
-  v22 = [(RCMainControllerHelper *)self currentUserActivity];
-  v23 = [v22 transitionToActivityType:a3 subType:a4 withDisplayModel:v12];
+  currentUserActivity4 = [(RCMainControllerHelper *)self currentUserActivity];
+  v23 = [currentUserActivity4 transitionToActivityType:type subType:subType withDisplayModel:modelCopy];
 
   if (v23)
   {
-    v24 = [[RCUserActivityTypeTransitionInfo alloc] initWithToActivityType:a3 toSubType:a4 fromActivityType:v17 fromSubType:v19 displayModel:v12 waveformDataSource:v13 composition:v14];
-    v25 = [(RCMainControllerHelper *)self delegate];
-    [v25 didTransitionWithTransitionInfo:v24];
+    v24 = [[RCUserActivityTypeTransitionInfo alloc] initWithToActivityType:type toSubType:subType fromActivityType:activityType fromSubType:subActivityType displayModel:modelCopy waveformDataSource:sourceCopy composition:compositionCopy];
+    delegate = [(RCMainControllerHelper *)self delegate];
+    [delegate didTransitionWithTransitionInfo:v24];
 
     v26 = 1;
   }
@@ -3355,20 +3355,20 @@ LABEL_8:
   return v26;
 }
 
-- (BOOL)_performRecordingEndTransitionWithUUID:(id)a3
+- (BOOL)_performRecordingEndTransitionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self currentUserActivity];
-  v6 = [v5 requiresDismissalAtEndOfCapture];
+  dCopy = d;
+  currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+  requiresDismissalAtEndOfCapture = [currentUserActivity requiresDismissalAtEndOfCapture];
 
-  v7 = [(RCMainControllerHelper *)self delegate];
-  v8 = [v7 isQuickRecordingWorkflowDismissal];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  isQuickRecordingWorkflowDismissal = [delegate isQuickRecordingWorkflowDismissal];
 
-  v9 = [RCRecordingDisplayModel recordingDisplayModelForUUID:v4];
+  v9 = [RCRecordingDisplayModel recordingDisplayModelForUUID:dCopy];
 
   if (v9)
   {
-    if ((v6 | v8))
+    if ((requiresDismissalAtEndOfCapture | isQuickRecordingWorkflowDismissal))
     {
       v10 = 0;
     }
@@ -3378,8 +3378,8 @@ LABEL_8:
       v10 = 3;
     }
 
-    v11 = [(RCMainControllerHelper *)self currentComposition];
-    v12 = [(RCMainControllerHelper *)self _transitionToActivityType:v10 toSubType:0 withDisplayModel:v9 waveformDataSource:0 composition:v11];
+    currentComposition = [(RCMainControllerHelper *)self currentComposition];
+    v12 = [(RCMainControllerHelper *)self _transitionToActivityType:v10 toSubType:0 withDisplayModel:v9 waveformDataSource:0 composition:currentComposition];
   }
 
   else
@@ -3390,9 +3390,9 @@ LABEL_8:
   return v12;
 }
 
-- (BOOL)_transitionToIdleForItemWithUUID:(id)a3
+- (BOOL)_transitionToIdleForItemWithUUID:(id)d
 {
-  v4 = [RCRecordingDisplayModel recordingDisplayModelForUUID:a3];
+  v4 = [RCRecordingDisplayModel recordingDisplayModelForUUID:d];
   if (v4)
   {
     if (self->_scrubState == 1)
@@ -3402,14 +3402,14 @@ LABEL_8:
 
     else
     {
-      v7 = [(RCMainControllerHelper *)self currentUserActivity];
-      v8 = [v7 isTrim];
+      currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+      isTrim = [currentUserActivity isTrim];
 
-      v5 = v8;
+      v5 = isTrim;
     }
 
-    v9 = [(RCMainControllerHelper *)self currentComposition];
-    v6 = [(RCMainControllerHelper *)self _transitionToActivityType:0 toSubType:v5 withDisplayModel:v4 waveformDataSource:0 composition:v9];
+    currentComposition = [(RCMainControllerHelper *)self currentComposition];
+    v6 = [(RCMainControllerHelper *)self _transitionToActivityType:0 toSubType:v5 withDisplayModel:v4 waveformDataSource:0 composition:currentComposition];
   }
 
   else
@@ -3420,13 +3420,13 @@ LABEL_8:
   return v6;
 }
 
-- (BOOL)_transitionToPlayingBackForItemWithUUID:(id)a3
+- (BOOL)_transitionToPlayingBackForItemWithUUID:(id)d
 {
-  v4 = [RCRecordingDisplayModel recordingDisplayModelForUUID:a3];
+  v4 = [RCRecordingDisplayModel recordingDisplayModelForUUID:d];
   if (v4)
   {
-    v5 = [(RCMainControllerHelper *)self currentComposition];
-    v6 = [(RCMainControllerHelper *)self _transitionToActivityType:2 toSubType:0 withDisplayModel:v4 waveformDataSource:0 composition:v5];
+    currentComposition = [(RCMainControllerHelper *)self currentComposition];
+    v6 = [(RCMainControllerHelper *)self _transitionToActivityType:2 toSubType:0 withDisplayModel:v4 waveformDataSource:0 composition:currentComposition];
   }
 
   else
@@ -3439,53 +3439,53 @@ LABEL_8:
 
 - (id)undoManager
 {
-  v2 = [(RCMainControllerHelper *)self delegate];
-  v3 = [v2 undoManager];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  undoManager = [delegate undoManager];
 
-  return v3;
+  return undoManager;
 }
 
 - (void)_undoCaptureFragment
 {
-  v3 = [(RCMainControllerHelper *)self audioRecorder];
-  if ([v3 undoEditing])
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  if ([audioRecorder undoEditing])
   {
-    v4 = [v3 recordingID];
-    [(RCMainControllerHelper *)self _refreshAfterEditingOperation:v4];
+    recordingID = [audioRecorder recordingID];
+    [(RCMainControllerHelper *)self _refreshAfterEditingOperation:recordingID];
 
     v5 = +[NSMutableDictionary dictionary];
-    v6 = [(RCMainControllerHelper *)self undoManager];
+    undoManager = [(RCMainControllerHelper *)self undoManager];
     editModeUndoTarget = self->_editModeUndoTarget;
     v13 = _NSConcreteStackBlock;
     v14 = 3221225472;
     v15 = sub_1000BBDC0;
     v16 = &unk_10028C1D8;
-    v17 = self;
+    selfCopy = self;
     v18 = v5;
     v8 = v5;
-    [v6 registerUndoWithTarget:editModeUndoTarget handler:&v13];
+    [undoManager registerUndoWithTarget:editModeUndoTarget handler:&v13];
 
     v9 = [(RCMainControllerHelper *)self undoManager:v13];
     v10 = +[NSBundle mainBundle];
     v11 = [v10 localizedStringForKey:@"TITLE_FOR_OVERDUB_REDO" value:&stru_100295BB8 table:0];
     [v9 setActionName:v11];
 
-    v12 = [(RCMainControllerHelper *)self delegate];
-    [v12 enableUndoFirstResponder];
+    delegate = [(RCMainControllerHelper *)self delegate];
+    [delegate enableUndoFirstResponder];
   }
 }
 
-- (void)_undoTrim:(int64_t)a3
+- (void)_undoTrim:(int64_t)trim
 {
-  v5 = [(RCMainControllerHelper *)self audioRecorder];
-  if ([v5 undoEditing])
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  if ([audioRecorder undoEditing])
   {
     [(RCMainControllerHelper *)self _adjustCurrentTrimOperationUndoCount:-1];
-    v6 = [v5 recordingID];
-    [(RCMainControllerHelper *)self _refreshAfterEditingOperation:v6];
+    recordingID = [audioRecorder recordingID];
+    [(RCMainControllerHelper *)self _refreshAfterEditingOperation:recordingID];
 
-    v7 = [(RCMainControllerHelper *)self delegate];
-    v8 = [v7 undoManager];
+    delegate = [(RCMainControllerHelper *)self delegate];
+    undoManager = [delegate undoManager];
 
     trimModeUndoTarget = self->_trimModeUndoTarget;
     v11[0] = _NSConcreteStackBlock;
@@ -3493,33 +3493,33 @@ LABEL_8:
     v11[2] = sub_1000BBF28;
     v11[3] = &unk_10028C698;
     v11[4] = self;
-    v11[5] = a3;
-    [v8 registerUndoWithTarget:trimModeUndoTarget handler:v11];
-    v10 = [(RCMainControllerHelper *)self _undoActionNameForTrimMode:a3 isUndo:0];
-    [v8 setActionName:v10];
+    v11[5] = trim;
+    [undoManager registerUndoWithTarget:trimModeUndoTarget handler:v11];
+    v10 = [(RCMainControllerHelper *)self _undoActionNameForTrimMode:trim isUndo:0];
+    [undoManager setActionName:v10];
   }
 
   else
   {
-    v8 = OSLogForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    undoManager = OSLogForCategory();
+    if (os_log_type_enabled(undoManager, OS_LOG_TYPE_ERROR))
     {
       sub_1001BBA00(self);
     }
   }
 }
 
-- (void)_redoTrim:(int64_t)a3
+- (void)_redoTrim:(int64_t)trim
 {
-  v5 = [(RCMainControllerHelper *)self audioRecorder];
-  if ([v5 redoEditing])
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  if ([audioRecorder redoEditing])
   {
     [(RCMainControllerHelper *)self _adjustCurrentTrimOperationUndoCount:1];
-    v6 = [v5 recordingID];
-    [(RCMainControllerHelper *)self _refreshAfterEditingOperation:v6];
+    recordingID = [audioRecorder recordingID];
+    [(RCMainControllerHelper *)self _refreshAfterEditingOperation:recordingID];
 
-    v7 = [(RCMainControllerHelper *)self delegate];
-    v8 = [v7 undoManager];
+    delegate = [(RCMainControllerHelper *)self delegate];
+    undoManager = [delegate undoManager];
 
     trimModeUndoTarget = self->_trimModeUndoTarget;
     v11[0] = _NSConcreteStackBlock;
@@ -3527,61 +3527,61 @@ LABEL_8:
     v11[2] = sub_1000BC090;
     v11[3] = &unk_10028C698;
     v11[4] = self;
-    v11[5] = a3;
-    [v8 registerUndoWithTarget:trimModeUndoTarget handler:v11];
-    v10 = [(RCMainControllerHelper *)self _undoActionNameForTrimMode:a3 isUndo:1];
-    [v8 setActionName:v10];
+    v11[5] = trim;
+    [undoManager registerUndoWithTarget:trimModeUndoTarget handler:v11];
+    v10 = [(RCMainControllerHelper *)self _undoActionNameForTrimMode:trim isUndo:1];
+    [undoManager setActionName:v10];
   }
 
   else
   {
-    v8 = OSLogForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    undoManager = OSLogForCategory();
+    if (os_log_type_enabled(undoManager, OS_LOG_TYPE_ERROR))
     {
       sub_1001BBA98(self);
     }
   }
 }
 
-- (void)_redoCaptureFragmentWithCompositionControllerRedoInfo:(id)a3
+- (void)_redoCaptureFragmentWithCompositionControllerRedoInfo:(id)info
 {
-  v4 = [(RCMainControllerHelper *)self audioRecorder];
-  if ([v4 redoEditing])
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  if ([audioRecorder redoEditing])
   {
-    v5 = [v4 recordingID];
-    [(RCMainControllerHelper *)self _refreshAfterEditingOperation:v5];
+    recordingID = [audioRecorder recordingID];
+    [(RCMainControllerHelper *)self _refreshAfterEditingOperation:recordingID];
 
-    v6 = [(RCMainControllerHelper *)self undoManager];
+    undoManager = [(RCMainControllerHelper *)self undoManager];
     editModeUndoTarget = self->_editModeUndoTarget;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1000BC1E8;
     v12[3] = &unk_10028C488;
     v12[4] = self;
-    [v6 registerUndoWithTarget:editModeUndoTarget handler:v12];
+    [undoManager registerUndoWithTarget:editModeUndoTarget handler:v12];
 
-    v8 = [(RCMainControllerHelper *)self undoManager];
+    undoManager2 = [(RCMainControllerHelper *)self undoManager];
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"TITLE_FOR_OVERDUB_UNDO" value:&stru_100295BB8 table:0];
-    [v8 setActionName:v10];
+    [undoManager2 setActionName:v10];
 
-    v11 = [(RCMainControllerHelper *)self delegate];
-    [v11 enableUndoFirstResponder];
+    delegate = [(RCMainControllerHelper *)self delegate];
+    [delegate enableUndoFirstResponder];
   }
 }
 
-- (id)_undoActionNameForTrimMode:(int64_t)a3 isUndo:(BOOL)a4
+- (id)_undoActionNameForTrimMode:(int64_t)mode isUndo:(BOOL)undo
 {
-  if (a3)
+  if (mode)
   {
-    if (a3 != 1)
+    if (mode != 1)
     {
       v7 = 0;
       goto LABEL_11;
     }
 
     v5 = +[NSBundle mainBundle];
-    if (a4)
+    if (undo)
     {
       v6 = @"TITLE_FOR_DELETE_RANGE_UNDO";
     }
@@ -3595,7 +3595,7 @@ LABEL_8:
   else
   {
     v5 = +[NSBundle mainBundle];
-    if (a4)
+    if (undo)
     {
       v6 = @"TITLE_FOR_TRIM_TO_RANGE_UNDO";
     }
@@ -3613,31 +3613,31 @@ LABEL_11:
   return v7;
 }
 
-- (void)_adjustCurrentTrimOperationUndoCount:(int64_t)a3
+- (void)_adjustCurrentTrimOperationUndoCount:(int64_t)count
 {
   trimModeUndoTarget = self->_trimModeUndoTarget;
-  if (a3)
+  if (count)
   {
-    a3 += [(RCUndoTarget *)self->_trimModeUndoTarget sizeOfUndoStack];
+    count += [(RCUndoTarget *)self->_trimModeUndoTarget sizeOfUndoStack];
   }
 
-  [(RCUndoTarget *)trimModeUndoTarget setSizeOfUndoStack:a3];
+  [(RCUndoTarget *)trimModeUndoTarget setSizeOfUndoStack:count];
 
   [(RCMainControllerHelper *)self _updateTrimSaveEnabledState];
 }
 
 - (void)_clearTrimModeUndoStack
 {
-  v3 = [(RCMainControllerHelper *)self undoManager];
-  [v3 removeAllActionsWithTarget:self->_trimModeUndoTarget];
+  undoManager = [(RCMainControllerHelper *)self undoManager];
+  [undoManager removeAllActionsWithTarget:self->_trimModeUndoTarget];
 
   [(RCMainControllerHelper *)self _adjustCurrentTrimOperationUndoCount:0];
 }
 
 - (void)_updateTrimSaveEnabledState
 {
-  v3 = [(RCMainControllerHelper *)self delegate];
-  [v3 shouldEnableTrimSave:{-[RCMainControllerHelper _shouldEnableTrimSave](self, "_shouldEnableTrimSave")}];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  [delegate shouldEnableTrimSave:{-[RCMainControllerHelper _shouldEnableTrimSave](self, "_shouldEnableTrimSave")}];
 }
 
 - (BOOL)_shouldEnableTrimSave
@@ -3652,28 +3652,28 @@ LABEL_11:
   return [(RCUndoTarget *)trimModeUndoTarget shouldEnableSave];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a4;
-  if (self->_audioProperties == a6)
+  objectCopy = object;
+  if (self->_audioProperties == context)
   {
-    v12 = a5;
-    v13 = [v12 objectForKeyedSubscript:NSKeyValueChangeOldKey];
-    v14 = [v12 objectForKeyedSubscript:NSKeyValueChangeNewKey];
+    changeCopy = change;
+    v13 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeOldKey];
+    v14 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeNewKey];
 
-    LOBYTE(v12) = [v13 isEqual:v14];
-    if ((v12 & 1) == 0)
+    LOBYTE(changeCopy) = [v13 isEqual:v14];
+    if ((changeCopy & 1) == 0)
     {
-      v15 = [(RCMainControllerHelper *)self audioPlayer];
-      v16 = v15;
-      if (v15 && [v15 playing])
+      audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+      v16 = audioPlayer;
+      if (audioPlayer && [audioPlayer playing])
       {
         self->_hasDeferredContentChanges = 1;
       }
 
       else
       {
-        [(RCMainControllerHelper *)self _audioContentOrDurationDidChange:v10];
+        [(RCMainControllerHelper *)self _audioContentOrDurationDidChange:objectCopy];
       }
     }
   }
@@ -3682,24 +3682,24 @@ LABEL_11:
   {
     v17.receiver = self;
     v17.super_class = RCMainControllerHelper;
-    v11 = a5;
-    [(RCMainControllerHelper *)&v17 observeValueForKeyPath:a3 ofObject:v10 change:v11 context:a6];
+    changeCopy2 = change;
+    [(RCMainControllerHelper *)&v17 observeValueForKeyPath:path ofObject:objectCopy change:changeCopy2 context:context];
   }
 }
 
-- (void)_addRecordingObservations:(id)a3
+- (void)_addRecordingObservations:(id)observations
 {
-  v4 = a3;
+  observationsCopy = observations;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(NSMutableSet *)self->_recordingObservances containsObject:v4]& 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([(NSMutableSet *)self->_recordingObservances containsObject:observationsCopy]& 1) == 0)
   {
     v5 = OSLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_1001BBB30(v4);
+      sub_1001BBB30(observationsCopy);
     }
 
-    [(NSMutableSet *)self->_recordingObservances addObject:v4];
+    [(NSMutableSet *)self->_recordingObservances addObject:observationsCopy];
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
@@ -3720,7 +3720,7 @@ LABEL_11:
             objc_enumerationMutation(v6);
           }
 
-          [v4 addObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v10) options:3 context:{self->_audioProperties, v11}];
+          [observationsCopy addObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v10) options:3 context:{self->_audioProperties, v11}];
           v10 = v10 + 1;
         }
 
@@ -3733,16 +3733,16 @@ LABEL_11:
   }
 }
 
-- (void)_removeRecordingObservations:(id)a3
+- (void)_removeRecordingObservations:(id)observations
 {
-  v4 = a3;
+  observationsCopy = observations;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSMutableSet *)self->_recordingObservances containsObject:v4])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [(NSMutableSet *)self->_recordingObservances containsObject:observationsCopy])
   {
     v5 = OSLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      sub_1001BBBC0(v4);
+      sub_1001BBBC0(observationsCopy);
     }
 
     v13 = 0u;
@@ -3765,7 +3765,7 @@ LABEL_11:
             objc_enumerationMutation(v6);
           }
 
-          [v4 removeObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v10) context:{self->_audioProperties, v11}];
+          [observationsCopy removeObserver:self forKeyPath:*(*(&v11 + 1) + 8 * v10) context:{self->_audioProperties, v11}];
           v10 = v10 + 1;
         }
 
@@ -3776,13 +3776,13 @@ LABEL_11:
       while (v8);
     }
 
-    [(NSMutableSet *)self->_recordingObservances removeObject:v4];
+    [(NSMutableSet *)self->_recordingObservances removeObject:observationsCopy];
   }
 }
 
-- (void)_removeRecordingsObservationsForUUIDs:(id)a3
+- (void)_removeRecordingsObservationsForUUIDs:(id)ds
 {
-  v4 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor recordingsForUUIDs:a3];
+  v4 = [(RCRecordingsModelInteractor *)self->_recordingsModelInteractor recordingsForUUIDs:ds];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -3820,24 +3820,24 @@ LABEL_11:
   }
 }
 
-- (void)_audioContentOrDurationDidChange:(id)a3
+- (void)_audioContentOrDurationDidChange:(id)change
 {
-  v4 = a3;
-  v9 = [RCComposition compositionLoadedForSavedRecording:v4];
+  changeCopy = change;
+  v9 = [RCComposition compositionLoadedForSavedRecording:changeCopy];
   [(RCMainControllerHelper *)self setCurrentComposition:?];
-  v5 = [(RCMainControllerHelper *)self delegate];
-  [v4 length];
+  delegate = [(RCMainControllerHelper *)self delegate];
+  [changeCopy length];
   v7 = v6;
 
-  [v5 recordingDurationUpdated:v7];
-  v8 = [(RCMainControllerHelper *)self audioPlayer];
-  if ([v8 playing])
+  [delegate recordingDurationUpdated:v7];
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  if ([audioPlayer playing])
   {
-    [v8 stopPlaying];
+    [audioPlayer stopPlaying];
   }
 }
 
-- (void)waveformDataSourceDidFinishLoading:(id)a3
+- (void)waveformDataSourceDidFinishLoading:(id)loading
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3847,7 +3847,7 @@ LABEL_11:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)waveformDataSource:(id)a3 didLoadWaveformSegment:(id)a4
+- (void)waveformDataSource:(id)source didLoadWaveformSegment:(id)segment
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3857,7 +3857,7 @@ LABEL_11:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)waveformDataSourceRequiresUpdate:(id)a3
+- (void)waveformDataSourceRequiresUpdate:(id)update
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -3867,10 +3867,10 @@ LABEL_11:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setAllowedTimeRange:(id)a3
+- (void)setAllowedTimeRange:(id)range
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   if (RCTimeRangeEqualToTimeRange())
   {
     v6 = OSLogForCategory();
@@ -3882,39 +3882,39 @@ LABEL_11:
 
   self->_allowedTimeRange.beginTime = var0;
   self->_allowedTimeRange.endTime = var1;
-  v7 = [(RCMainControllerHelper *)self audioPlayer];
-  v8 = v7;
-  if (v7)
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  v8 = audioPlayer;
+  if (audioPlayer)
   {
-    [v7 setPlayableRange:{var0, var1}];
+    [audioPlayer setPlayableRange:{var0, var1}];
   }
 }
 
 - (int64_t)timeControllerState
 {
-  v3 = [(RCMainControllerHelper *)self audioRecorder];
-  v4 = v3;
-  if (v3 && ([v3 recording] & 1) != 0)
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  v4 = audioRecorder;
+  if (audioRecorder && ([audioRecorder recording] & 1) != 0)
   {
-    v5 = 2;
+    playing = 2;
   }
 
   else
   {
-    v6 = [(RCMainControllerHelper *)self audioPlayer];
-    v7 = v6;
-    if (v6)
+    audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+    v7 = audioPlayer;
+    if (audioPlayer)
     {
-      v5 = [v6 playing];
+      playing = [audioPlayer playing];
     }
 
     else
     {
-      v5 = 0;
+      playing = 0;
     }
   }
 
-  return v5;
+  return playing;
 }
 
 - (NSHashTable)timeObservers
@@ -3934,75 +3934,75 @@ LABEL_11:
 
 - (void)pauseTime
 {
-  v5 = [(RCMainControllerHelper *)self audioPlayer];
-  if (v5)
+  audioPlayer = [(RCMainControllerHelper *)self audioPlayer];
+  if (audioPlayer)
   {
-    [v5 stopPlaying];
+    [audioPlayer stopPlaying];
   }
 
-  v3 = [(RCMainControllerHelper *)self audioRecorder];
-  v4 = v3;
-  if (v3)
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  v4 = audioRecorder;
+  if (audioRecorder)
   {
-    [v3 stopRecording];
+    [audioRecorder stopRecording];
   }
 }
 
-- (void)addTimeObserver:(id)a3
+- (void)addTimeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self timeObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  timeObservers = [(RCMainControllerHelper *)self timeObservers];
+  [timeObservers addObject:observerCopy];
 }
 
-- (void)removeTimeObserver:(id)a3
+- (void)removeTimeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(RCMainControllerHelper *)self timeObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  timeObservers = [(RCMainControllerHelper *)self timeObservers];
+  [timeObservers removeObject:observerCopy];
 }
 
 - (RCActivityWaveformProcessor)activityWaveformProcessor
 {
-  v2 = [(RCMainControllerHelper *)self audioRecorder];
-  v3 = [v2 activityWaveformProcessor];
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  activityWaveformProcessor = [audioRecorder activityWaveformProcessor];
 
-  return v3;
+  return activityWaveformProcessor;
 }
 
 - (_TtC10VoiceMemos19RCLiveTranscription)liveTranscription
 {
-  v2 = [(RCMainControllerHelper *)self audioRecorder];
-  v3 = [v2 liveTranscription];
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  liveTranscription = [audioRecorder liveTranscription];
 
-  return v3;
+  return liveTranscription;
 }
 
-- (void)setTargetTime:(double)a3
+- (void)setTargetTime:(double)time
 {
-  self->_targetTime = a3;
+  self->_targetTime = time;
   audioPlayer = self->_audioPlayer;
   if (audioPlayer)
   {
-    [(VMAudioPlayer *)audioPlayer setPlayerTime:a3];
+    [(VMAudioPlayer *)audioPlayer setPlayerTime:time];
   }
 
   if ([(RCMainControllerHelper *)self timeControllerState]!= 2)
   {
 
-    [(RCMainControllerHelper *)self setCurrentTime:a3];
+    [(RCMainControllerHelper *)self setCurrentTime:time];
   }
 }
 
-- (void)setCurrentRate:(float)a3
+- (void)setCurrentRate:(float)rate
 {
-  self->_currentRate = a3;
+  self->_currentRate = rate;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSHashTable *)self->_timeObservers allObjects];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allObjects = [(NSHashTable *)self->_timeObservers allObjects];
+  v6 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -4014,13 +4014,13 @@ LABEL_11:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allObjects);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          *&v11 = a3;
+          *&v11 = rate;
           [v10 timeController:self didChangeRate:v11];
         }
 
@@ -4028,26 +4028,26 @@ LABEL_11:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allObjects countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  self->_currentTime = a3;
-  v5 = [(RCMainControllerHelper *)self delegate];
-  v6 = [(RCMainControllerHelper *)self uuidOfPlayingOrSelectedRecording];
-  [v5 setCurrentTime:v6 withUUID:a3];
+  self->_currentTime = time;
+  delegate = [(RCMainControllerHelper *)self delegate];
+  uuidOfPlayingOrSelectedRecording = [(RCMainControllerHelper *)self uuidOfPlayingOrSelectedRecording];
+  [delegate setCurrentTime:uuidOfPlayingOrSelectedRecording withUUID:time];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [(NSHashTable *)self->_timeObservers allObjects];
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  allObjects = [(NSHashTable *)self->_timeObservers allObjects];
+  v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -4059,31 +4059,31 @@ LABEL_11:
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allObjects);
         }
 
         v12 = *(*(&v13 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          [v12 timeController:self didChangeCurrentTime:a3];
+          [v12 timeController:self didChangeCurrentTime:time];
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)setRecordingError:(id)a3
+- (void)setRecordingError:(id)error
 {
-  v5 = a3;
-  objc_storeStrong(&self->_recordingError, a3);
-  if (v5)
+  errorCopy = error;
+  objc_storeStrong(&self->_recordingError, error);
+  if (errorCopy)
   {
     v6 = OSLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -4095,16 +4095,16 @@ LABEL_11:
     v8 = v7;
     if (v7)
     {
-      (*(v7 + 2))(v7, v5);
+      (*(v7 + 2))(v7, errorCopy);
     }
   }
 }
 
 - (double)currentDuration
 {
-  v3 = [(RCMainControllerHelper *)self audioRecorder];
-  v4 = v3;
-  if (v3 && [v3 recording])
+  audioRecorder = [(RCMainControllerHelper *)self audioRecorder];
+  v4 = audioRecorder;
+  if (audioRecorder && [audioRecorder recording])
   {
     v10 = 0.0;
     v11 = 0;
@@ -4122,26 +4122,26 @@ LABEL_11:
 
   else
   {
-    v6 = [(RCMainControllerHelper *)self currentRecordingDisplayModel];
-    [v6 duration];
+    currentRecordingDisplayModel = [(RCMainControllerHelper *)self currentRecordingDisplayModel];
+    [currentRecordingDisplayModel duration];
     v5 = v7;
   }
 
   return v5;
 }
 
-- (void)_checkAudioPlayer:(id)a3
+- (void)_checkAudioPlayer:(id)player
 {
-  v5 = a3;
-  if (![v5 playing])
+  playerCopy = player;
+  if (![playerCopy playing])
   {
     [(RCMainControllerHelper *)self setCurrentRate:0.0];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v15 = [(NSHashTable *)self->_timeObservers allObjects];
-    v16 = [v15 countByEnumeratingWithState:&v34 objects:v42 count:16];
+    allObjects = [(NSHashTable *)self->_timeObservers allObjects];
+    v16 = [allObjects countByEnumeratingWithState:&v34 objects:v42 count:16];
     if (v16)
     {
       v17 = v16;
@@ -4152,7 +4152,7 @@ LABEL_11:
         {
           if (*v35 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(allObjects);
           }
 
           v20 = *(*(&v34 + 1) + 8 * i);
@@ -4167,14 +4167,14 @@ LABEL_11:
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v34 objects:v42 count:16];
+        v17 = [allObjects countByEnumeratingWithState:&v34 objects:v42 count:16];
       }
 
       while (v17);
     }
 
-    v21 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
-    [(RCMainControllerHelper *)self _transitionToIdleForItemWithUUID:v21];
+    uuidOfPlayingRecording = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+    [(RCMainControllerHelper *)self _transitionToIdleForItemWithUUID:uuidOfPlayingRecording];
 
     [(RCMainControllerHelper *)self _stopDisplayLink];
     if (!self->_hasDeferredContentChanges)
@@ -4183,8 +4183,8 @@ LABEL_11:
     }
 
     recordingsModelInteractor = self->_recordingsModelInteractor;
-    v23 = [v5 recordingID];
-    v11 = [(RCRecordingsModelInteractor *)recordingsModelInteractor recordingForUUID:v23];
+    recordingID = [playerCopy recordingID];
+    v11 = [(RCRecordingsModelInteractor *)recordingsModelInteractor recordingForUUID:recordingID];
 
     if (v11)
     {
@@ -4200,39 +4200,39 @@ LABEL_37:
   }
 
   v6 = +[UIApplication sharedApplication];
-  v7 = [v6 isRunningTest];
+  isRunningTest = [v6 isRunningTest];
 
-  if (v7)
+  if (isRunningTest)
   {
     v8 = +[UIApplication sharedApplication];
-    v9 = [v8 delegate];
-    [v9 ppt_didStartVoiceMemoPreviewPlayback];
+    delegate = [v8 delegate];
+    [delegate ppt_didStartVoiceMemoPreviewPlayback];
   }
 
-  v10 = [v5 recordingID];
-  v11 = [RCRecordingDisplayModel recordingDisplayModelForUUID:v10];
+  recordingID2 = [playerCopy recordingID];
+  v11 = [RCRecordingDisplayModel recordingDisplayModelForUUID:recordingID2];
 
   if (v11)
   {
-    v33 = v5;
+    v33 = playerCopy;
     [v11 setIsPlaying:1];
-    v12 = [(RCMainControllerHelper *)self currentUserActivity];
-    v13 = [v12 isTrim];
-    if (v13)
+    currentUserActivity = [(RCMainControllerHelper *)self currentUserActivity];
+    isTrim = [currentUserActivity isTrim];
+    if (isTrim)
     {
-      v3 = [(RCMainControllerHelper *)self currentUserActivity];
-      v14 = [v3 subActivityType];
+      currentUserActivity2 = [(RCMainControllerHelper *)self currentUserActivity];
+      subActivityType = [currentUserActivity2 subActivityType];
     }
 
     else
     {
-      v14 = 0;
+      subActivityType = 0;
     }
 
-    v24 = [(RCMainControllerHelper *)self currentComposition];
-    [(RCMainControllerHelper *)self _transitionToActivityType:2 toSubType:v14 withDisplayModel:v11 waveformDataSource:0 composition:v24];
+    currentComposition = [(RCMainControllerHelper *)self currentComposition];
+    [(RCMainControllerHelper *)self _transitionToActivityType:2 toSubType:subActivityType withDisplayModel:v11 waveformDataSource:0 composition:currentComposition];
 
-    if (v13)
+    if (isTrim)
     {
     }
 
@@ -4244,8 +4244,8 @@ LABEL_37:
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v26 = [(NSHashTable *)self->_timeObservers allObjects];
-    v27 = [v26 countByEnumeratingWithState:&v38 objects:v43 count:16];
+    allObjects2 = [(NSHashTable *)self->_timeObservers allObjects];
+    v27 = [allObjects2 countByEnumeratingWithState:&v38 objects:v43 count:16];
     if (v27)
     {
       v28 = v27;
@@ -4256,7 +4256,7 @@ LABEL_37:
         {
           if (*v39 != v29)
           {
-            objc_enumerationMutation(v26);
+            objc_enumerationMutation(allObjects2);
           }
 
           v31 = *(*(&v38 + 1) + 8 * j);
@@ -4272,22 +4272,22 @@ LABEL_37:
           }
         }
 
-        v28 = [v26 countByEnumeratingWithState:&v38 objects:v43 count:16];
+        v28 = [allObjects2 countByEnumeratingWithState:&v38 objects:v43 count:16];
       }
 
       while (v28);
     }
 
-    v5 = v33;
+    playerCopy = v33;
     goto LABEL_36;
   }
 
 LABEL_38:
 }
 
-- (void)setAudioPlayer:(id)a3
+- (void)setAudioPlayer:(id)player
 {
-  v5 = a3;
+  playerCopy = player;
   playerObservance = self->_playerObservance;
   if (playerObservance)
   {
@@ -4296,16 +4296,16 @@ LABEL_38:
     self->_playerObservance = 0;
   }
 
-  objc_storeStrong(&self->_audioPlayer, a3);
-  if (v5)
+  objc_storeStrong(&self->_audioPlayer, player);
+  if (playerCopy)
   {
     v8 = [NSString stringWithUTF8String:"playing"];
     v11 = _NSConcreteStackBlock;
     v12 = 3221225472;
     v13 = sub_1000BD97C;
     v14 = &unk_10028BA68;
-    v15 = self;
-    v16 = v5;
+    selfCopy = self;
+    v16 = playerCopy;
     v9 = RCObserveChangesToKeyPath();
     v10 = self->_playerObservance;
     self->_playerObservance = v9;
@@ -4314,9 +4314,9 @@ LABEL_38:
   [(RCMainControllerHelper *)self _reconcileAudioStateWithApplicationState:v11];
 }
 
-- (void)setAudioRecorder:(id)a3
+- (void)setAudioRecorder:(id)recorder
 {
-  v5 = a3;
+  recorderCopy = recorder;
   audioRecorder = self->_audioRecorder;
   if (audioRecorder)
   {
@@ -4337,7 +4337,7 @@ LABEL_38:
     self->_audioVersions = 0;
   }
 
-  objc_storeStrong(&self->_audioRecorder, a3);
+  objc_storeStrong(&self->_audioRecorder, recorder);
   if (self->_audioRecorder)
   {
     objc_initWeak(&location, self);
@@ -4347,7 +4347,7 @@ LABEL_38:
     v22 = sub_1000BDBB0;
     v23 = &unk_10028C6C0;
     objc_copyWeak(&v25, &location);
-    v11 = v5;
+    v11 = recorderCopy;
     v24 = v11;
     v12 = RCObserveChangesToKeyPath();
     v13 = self->_recorderObservance;
@@ -4362,9 +4362,9 @@ LABEL_38:
     v19 = v14;
     v15 = objc_retainBlock(v18);
     [(RCMainControllerHelper *)self setRecordingErrorHandler:v15];
-    v16 = [v14 versions];
+    versions = [v14 versions];
     v17 = self->_audioVersions;
-    self->_audioVersions = v16;
+    self->_audioVersions = versions;
 
     [(VMAudioRecorder *)self->_audioRecorder setController:self];
     objc_destroyWeak(&v25);
@@ -4380,20 +4380,20 @@ LABEL_38:
 - (void)_reconcileAudioStateWithApplicationState
 {
   v3 = +[RecorderAppDelegate sharedAppDelegate];
-  v4 = [v3 defaultSceneDelegate];
-  v5 = [v4 isInForeground];
-  v6 = [(RCMainControllerHelper *)self isPlaying];
-  v7 = [(RCMainControllerHelper *)self isPaused];
-  v8 = [(RCMainControllerHelper *)self isRecording];
+  defaultSceneDelegate = [v3 defaultSceneDelegate];
+  isInForeground = [defaultSceneDelegate isInForeground];
+  isPlaying = [(RCMainControllerHelper *)self isPlaying];
+  isPaused = [(RCMainControllerHelper *)self isPaused];
+  isRecording = [(RCMainControllerHelper *)self isRecording];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [v3 connectedPlatterSceneDelegates];
-  v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  connectedPlatterSceneDelegates = [v3 connectedPlatterSceneDelegates];
+  v10 = [connectedPlatterSceneDelegates countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v10)
   {
-    v15 = v7;
+    v15 = isPaused;
     v11 = *v17;
     while (2)
     {
@@ -4401,7 +4401,7 @@ LABEL_38:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(connectedPlatterSceneDelegates);
         }
 
         if ([*(*(&v16 + 1) + 8 * i) isInAndromeda])
@@ -4411,7 +4411,7 @@ LABEL_38:
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v10 = [connectedPlatterSceneDelegates countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         continue;
@@ -4421,48 +4421,48 @@ LABEL_38:
     }
 
 LABEL_11:
-    v7 = v15;
+    isPaused = v15;
   }
 
   [(RCDisplayLinkManager *)self->_displayLinkManager setPaused:v10];
-  if (((v6 | v8 | v5) & 1) == 0)
+  if (((isPlaying | isRecording | isInForeground) & 1) == 0)
   {
     v13 = +[VMAudioService sharedInstance];
     [v13 deactivateAudioSession];
   }
 
-  if (v5 & v8)
+  if (isInForeground & isRecording)
   {
     v14 = 2;
   }
 
   else
   {
-    v14 = (v6 | v7 & v5) & 1;
+    v14 = (isPlaying | isPaused & isInForeground) & 1;
   }
 
   [(RCMainControllerHelper *)self _updateRemoteControlState:v14];
   [(RCMainControllerHelper *)self _updateNowPlayingInfo];
 }
 
-- (id)_alertControllerWithTitle:(id)a3 message:(id)a4 isDestructive:(BOOL)a5 preferredStyle:(int64_t)a6 source:(id)a7 handler:(id)a8 actionTitle:(id)a9 cancelHandler:(id)a10
+- (id)_alertControllerWithTitle:(id)title message:(id)message isDestructive:(BOOL)destructive preferredStyle:(int64_t)style source:(id)source handler:(id)handler actionTitle:(id)actionTitle cancelHandler:(id)self0
 {
-  v12 = a5;
-  v15 = a8;
-  v16 = a9;
-  v17 = a10;
-  if (a7)
+  destructiveCopy = destructive;
+  handlerCopy = handler;
+  actionTitleCopy = actionTitle;
+  cancelHandlerCopy = cancelHandler;
+  if (source)
   {
-    v18 = a6;
+    styleCopy = style;
   }
 
   else
   {
-    v18 = 1;
+    styleCopy = 1;
   }
 
-  v19 = [UIAlertController alertControllerWithTitle:a3 message:a4 preferredStyle:v18];
-  if (v12)
+  v19 = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:styleCopy];
+  if (destructiveCopy)
   {
     v20 = 2;
   }
@@ -4472,10 +4472,10 @@ LABEL_11:
     v20 = 0;
   }
 
-  v21 = [UIAlertAction actionWithTitle:v16 style:v20 handler:v15];
+  v21 = [UIAlertAction actionWithTitle:actionTitleCopy style:v20 handler:handlerCopy];
   v22 = +[NSBundle mainBundle];
   v23 = [v22 localizedStringForKey:@"CANCEL" value:&stru_100295BB8 table:0];
-  v24 = [UIAlertAction actionWithTitle:v23 style:1 handler:v17];
+  v24 = [UIAlertAction actionWithTitle:v23 style:1 handler:cancelHandlerCopy];
 
   v36[0] = v21;
   v36[1] = v24;
@@ -4512,29 +4512,29 @@ LABEL_11:
 
 - (id)uuidOfPlayingOrSelectedRecording
 {
-  v3 = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
-  v4 = v3;
-  if (v3)
+  uuidOfPlayingRecording = [(RCMainControllerHelper *)self uuidOfPlayingRecording];
+  v4 = uuidOfPlayingRecording;
+  if (uuidOfPlayingRecording)
   {
-    v5 = v3;
+    selectedUUID = uuidOfPlayingRecording;
   }
 
   else
   {
-    v6 = [(RCMainControllerHelper *)self delegate];
-    v5 = [v6 selectedUUID];
+    delegate = [(RCMainControllerHelper *)self delegate];
+    selectedUUID = [delegate selectedUUID];
   }
 
-  return v5;
+  return selectedUUID;
 }
 
-- (void)_updateWillMigrateFromSingleLayerToMultiLayerForRecordingID:(id)a3
+- (void)_updateWillMigrateFromSingleLayerToMultiLayerForRecordingID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   if (RCOverdubRecordingIsEnabled())
   {
     v4 = +[RCApplicationModel sharedApplicationModel];
-    v5 = [v4 recordingWithUniqueID:v7];
+    v5 = [v4 recordingWithUniqueID:dCopy];
 
     if (v5)
     {

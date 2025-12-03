@@ -1,5 +1,5 @@
 @interface MapsSuggestionsRoutineFeeler
-- (MapsSuggestionsRoutineFeeler)initWithDelegate:(id)a3 name:(id)a4;
+- (MapsSuggestionsRoutineFeeler)initWithDelegate:(id)delegate name:(id)name;
 - (double)updateSignals;
 @end
 
@@ -15,27 +15,27 @@
   }
 
   v4 = dispatch_group_create();
-  v5 = self;
-  objc_sync_enter(v5);
-  sub_100012074(v5, 0, v4);
-  sub_100012074(v5, 1uLL, v4);
-  sub_100012250(v5, v4);
-  sub_10001243C(v5, v4);
-  sub_10004C6F4(v5, v4);
-  pollingFrequency = v5->_pollingFrequency;
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sub_100012074(selfCopy, 0, v4);
+  sub_100012074(selfCopy, 1uLL, v4);
+  sub_100012250(selfCopy, v4);
+  sub_10001243C(selfCopy, v4);
+  sub_10004C6F4(selfCopy, v4);
+  pollingFrequency = selfCopy->_pollingFrequency;
+  objc_sync_exit(selfCopy);
 
   return pollingFrequency;
 }
 
-- (MapsSuggestionsRoutineFeeler)initWithDelegate:(id)a3 name:(id)a4
+- (MapsSuggestionsRoutineFeeler)initWithDelegate:(id)delegate name:(id)name
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, delegate);
+  nameCopy = name;
   v7 = objc_loadWeakRetained(&location);
   v16.receiver = self;
   v16.super_class = MapsSuggestionsRoutineFeeler;
-  v8 = [(MapsSuggestionsBaseFeeler *)&v16 initWithDelegate:v7 name:v6];
+  v8 = [(MapsSuggestionsBaseFeeler *)&v16 initWithDelegate:v7 name:nameCopy];
 
   if (v8)
   {

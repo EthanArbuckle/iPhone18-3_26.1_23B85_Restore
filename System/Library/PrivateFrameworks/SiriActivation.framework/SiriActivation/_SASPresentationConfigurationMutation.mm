@@ -1,20 +1,20 @@
 @interface _SASPresentationConfigurationMutation
-- (_SASPresentationConfigurationMutation)initWithBaseModel:(id)a3;
+- (_SASPresentationConfigurationMutation)initWithBaseModel:(id)model;
 - (id)generate;
 @end
 
 @implementation _SASPresentationConfigurationMutation
 
-- (_SASPresentationConfigurationMutation)initWithBaseModel:(id)a3
+- (_SASPresentationConfigurationMutation)initWithBaseModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = _SASPresentationConfigurationMutation;
   v6 = [(_SASPresentationConfigurationMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_baseModel, a3);
+    objc_storeStrong(&v6->_baseModel, model);
   }
 
   return v7;
@@ -29,26 +29,26 @@
     {
       if ((*&self->_mutationFlags & 2) != 0)
       {
-        v6 = self->_presentationIdentifier;
+        presentationIdentifier = self->_presentationIdentifier;
       }
 
       else
       {
-        v6 = [(SASPresentationConfiguration *)baseModel presentationIdentifier];
+        presentationIdentifier = [(SASPresentationConfiguration *)baseModel presentationIdentifier];
       }
 
-      v7 = v6;
+      v7 = presentationIdentifier;
       if ((*&self->_mutationFlags & 4) != 0)
       {
-        v8 = self->_sourceActiveOverridePreference;
+        sourceActiveOverridePreference = self->_sourceActiveOverridePreference;
       }
 
       else
       {
-        v8 = [(SASPresentationConfiguration *)self->_baseModel sourceActiveOverridePreference];
+        sourceActiveOverridePreference = [(SASPresentationConfiguration *)self->_baseModel sourceActiveOverridePreference];
       }
 
-      v9 = v8;
+      v9 = sourceActiveOverridePreference;
       if ((*&self->_mutationFlags & 8) != 0)
       {
         desiresDismissalSignalsEvenWhenOff = self->_desiresDismissalSignalsEvenWhenOff;

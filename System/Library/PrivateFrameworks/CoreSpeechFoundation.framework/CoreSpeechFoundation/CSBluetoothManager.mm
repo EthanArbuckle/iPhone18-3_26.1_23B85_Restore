@@ -1,30 +1,30 @@
 @interface CSBluetoothManager
 + (id)sharedInstance;
 - (CSBluetoothManager)init;
-- (id)_getAddressWithBTDevice:(BTDeviceImpl *)a3;
-- (id)_getBluetoothDeviceInfoForDeviceWithBTAddressString:(id)a3;
-- (id)_getConnectedBluetoothDeviceAddressesFromLocalDevice:(BTLocalDeviceImpl *)a3;
-- (id)_getWirelessSplitterInfoFromLocalDevice:(BTLocalDeviceImpl *)a3;
-- (id)_setBluetoothDeviceInfoForDevice:(BTDeviceImpl *)a3;
-- (id)getBluetoothDeviceInfoForDeviceWithId:(id)a3;
+- (id)_getAddressWithBTDevice:(BTDeviceImpl *)device;
+- (id)_getBluetoothDeviceInfoForDeviceWithBTAddressString:(id)string;
+- (id)_getConnectedBluetoothDeviceAddressesFromLocalDevice:(BTLocalDeviceImpl *)device;
+- (id)_getWirelessSplitterInfoFromLocalDevice:(BTLocalDeviceImpl *)device;
+- (id)_setBluetoothDeviceInfoForDevice:(BTDeviceImpl *)device;
+- (id)getBluetoothDeviceInfoForDeviceWithId:(id)id;
 - (void)_attachBluetoothSession;
-- (void)_clearBluetoothDeviceInfoForDevice:(BTDeviceImpl *)a3;
+- (void)_clearBluetoothDeviceInfoForDevice:(BTDeviceImpl *)device;
 - (void)_detachBluetoothSession;
 - (void)_fetchAllConnectedDevices;
-- (void)_loadAACPCapabilityForDevice:(BTDeviceImpl *)a3 deviceAddress:(id)a4;
-- (void)_sessionAttached:(BTSessionImpl *)a3 result:(int)a4;
-- (void)_sessionDetached:(BTSessionImpl *)a3;
-- (void)_sessionTerminated:(BTSessionImpl *)a3;
+- (void)_loadAACPCapabilityForDevice:(BTDeviceImpl *)device deviceAddress:(id)address;
+- (void)_sessionAttached:(BTSessionImpl *)attached result:(int)result;
+- (void)_sessionDetached:(BTSessionImpl *)detached;
+- (void)_sessionTerminated:(BTSessionImpl *)terminated;
 - (void)_setUpAccessoryManager;
 - (void)_setUpLocalDevice;
 - (void)_tearDownAccessoryManager;
 - (void)_tearDownLocalDevice;
-- (void)accessoryManager:(BTAccessoryManagerImpl *)a3 accessoryEvent:(int)a4 device:(BTDeviceImpl *)a5 accessoryState:(int)a6;
-- (void)device:(BTDeviceImpl *)a3 serviceMask:(unsigned int)a4 serviceEventType:(int)a5 serviceSpecificEvent:(unsigned int)a6 result:(int)a7;
-- (void)getBTDeviceInfoWithBTAddressString:(id)a3 withCompletion:(id)a4;
-- (void)getBTLocalDeviceWithCompletion:(id)a3;
-- (void)getConnectedBluetoothDeviceAddressesWithCompletion:(id)a3;
-- (void)getWirelessSplitterInfoWithCompletion:(id)a3;
+- (void)accessoryManager:(BTAccessoryManagerImpl *)manager accessoryEvent:(int)event device:(BTDeviceImpl *)device accessoryState:(int)state;
+- (void)device:(BTDeviceImpl *)device serviceMask:(unsigned int)mask serviceEventType:(int)type serviceSpecificEvent:(unsigned int)event result:(int)result;
+- (void)getBTDeviceInfoWithBTAddressString:(id)string withCompletion:(id)completion;
+- (void)getBTLocalDeviceWithCompletion:(id)completion;
+- (void)getConnectedBluetoothDeviceAddressesWithCompletion:(id)completion;
+- (void)getWirelessSplitterInfoWithCompletion:(id)completion;
 @end
 
 @implementation CSBluetoothManager
@@ -49,10 +49,10 @@ uint64_t __65__CSBluetoothManager_CSFirstUnlockMonitor_didReceiveFirstUnlock___b
   return [v2 _fetchAllConnectedDevices];
 }
 
-- (void)_clearBluetoothDeviceInfoForDevice:(BTDeviceImpl *)a3
+- (void)_clearBluetoothDeviceInfoForDevice:(BTDeviceImpl *)device
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [(CSBluetoothManager *)self _getAddressWithBTDevice:a3];
+  v4 = [(CSBluetoothManager *)self _getAddressWithBTDevice:device];
   if (v4)
   {
     v5 = [(NSMutableDictionary *)self->_deviceAddressToDeviceInfoMap objectForKey:v4];
@@ -75,11 +75,11 @@ uint64_t __65__CSBluetoothManager_CSFirstUnlockMonitor_didReceiveFirstUnlock___b
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_loadAACPCapabilityForDevice:(BTDeviceImpl *)a3 deviceAddress:(id)a4
+- (void)_loadAACPCapabilityForDevice:(BTDeviceImpl *)device deviceAddress:(id)address
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  if (v5)
+  addressCopy = address;
+  if (addressCopy)
   {
     v6 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -87,11 +87,11 @@ uint64_t __65__CSBluetoothManager_CSFirstUnlockMonitor_didReceiveFirstUnlock___b
       *buf = 136315395;
       v19 = "[CSBluetoothManager _loadAACPCapabilityForDevice:deviceAddress:]";
       v20 = 2113;
-      *v21 = v5;
+      *v21 = addressCopy;
       _os_log_impl(&dword_1DDA4B000, v6, OS_LOG_TYPE_DEFAULT, "%s Loading AACP capabilities for BTDevice with address %{private}@", buf, 0x16u);
     }
 
-    v7 = [(NSMutableDictionary *)self->_deviceAddressToDeviceInfoMap objectForKey:v5];
+    v7 = [(NSMutableDictionary *)self->_deviceAddressToDeviceInfoMap objectForKey:addressCopy];
     if (v7)
     {
       v8 = mach_absolute_time();
@@ -141,7 +141,7 @@ uint64_t __65__CSBluetoothManager_CSFirstUnlockMonitor_didReceiveFirstUnlock___b
         *buf = 136315395;
         v19 = "[CSBluetoothManager _loadAACPCapabilityForDevice:deviceAddress:]";
         v20 = 2113;
-        *v21 = v5;
+        *v21 = addressCopy;
         _os_log_impl(&dword_1DDA4B000, v16, OS_LOG_TYPE_DEFAULT, "%s Received AACP capabilities for BTDevice with address %{private}@ not in the connected list.", buf, 0x16u);
       }
     }
@@ -150,7 +150,7 @@ uint64_t __65__CSBluetoothManager_CSFirstUnlockMonitor_didReceiveFirstUnlock___b
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_setBluetoothDeviceInfoForDevice:(BTDeviceImpl *)a3
+- (id)_setBluetoothDeviceInfoForDevice:(BTDeviceImpl *)device
 {
   *&v16[5] = *MEMORY[0x1E69E9840];
   v5 = [(CSBluetoothManager *)self _getAddressWithBTDevice:?];
@@ -198,7 +198,7 @@ uint64_t __65__CSBluetoothManager_CSFirstUnlockMonitor_didReceiveFirstUnlock___b
       [(CSBluetoothDeviceInfo *)v6 setSupportDoAP:0];
       [(CSBluetoothDeviceInfo *)v6 setIsTemporaryPairedNotInContacts:1];
       [(NSMutableDictionary *)self->_deviceAddressToDeviceInfoMap setObject:v6 forKey:v5];
-      [(CSBluetoothManager *)self _loadAACPCapabilityForDevice:a3 deviceAddress:v5];
+      [(CSBluetoothManager *)self _loadAACPCapabilityForDevice:device deviceAddress:v5];
     }
   }
 
@@ -385,7 +385,7 @@ LABEL_11:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sessionTerminated:(BTSessionImpl *)a3
+- (void)_sessionTerminated:(BTSessionImpl *)terminated
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = CSLogContextFacilityCoreSpeech;
@@ -394,13 +394,13 @@ LABEL_11:
     v8 = 136315394;
     v9 = "[CSBluetoothManager _sessionTerminated:]";
     v10 = 2048;
-    v11 = a3;
+    terminatedCopy = terminated;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s session = %p", &v8, 0x16u);
   }
 
-  if (self->_bluetoothSession == a3)
+  if (self->_bluetoothSession == terminated)
   {
-    if (a3)
+    if (terminated)
     {
       BTServiceRemoveCallbacks();
       self->_bluetoothSession = 0;
@@ -425,7 +425,7 @@ LABEL_11:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sessionDetached:(BTSessionImpl *)a3
+- (void)_sessionDetached:(BTSessionImpl *)detached
 {
   v12 = *MEMORY[0x1E69E9840];
   v5 = CSLogContextFacilityCoreSpeech;
@@ -434,11 +434,11 @@ LABEL_11:
     v8 = 136315394;
     v9 = "[CSBluetoothManager _sessionDetached:]";
     v10 = 2048;
-    v11 = a3;
+    detachedCopy = detached;
     _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s session = %p", &v8, 0x16u);
   }
 
-  if (self->_bluetoothSession == a3)
+  if (self->_bluetoothSession == detached)
   {
     [(CSBluetoothManager *)self _tearDownLocalDevice];
     if (self->_bluetoothSession)
@@ -465,7 +465,7 @@ LABEL_11:
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sessionAttached:(BTSessionImpl *)a3 result:(int)a4
+- (void)_sessionAttached:(BTSessionImpl *)attached result:(int)result
 {
   v15 = *MEMORY[0x1E69E9840];
   v7 = CSLogContextFacilityCoreSpeech;
@@ -474,18 +474,18 @@ LABEL_11:
     v9 = 136315650;
     v10 = "[CSBluetoothManager _sessionAttached:result:]";
     v11 = 2050;
-    v12 = a3;
+    attachedCopy = attached;
     v13 = 1026;
-    v14 = a4;
+    resultCopy = result;
     _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s session = %{public}p, result = %{public}d", &v9, 0x1Cu);
   }
 
   self->_isAttachingBluetoothSession = 0;
-  if (!a4)
+  if (!result)
   {
     [(CSBluetoothManager *)self _detachBluetoothSession];
-    self->_bluetoothSession = a3;
-    if (a3)
+    self->_bluetoothSession = attached;
+    if (attached)
     {
       BTServiceAddCallbacks();
     }
@@ -499,10 +499,10 @@ LABEL_11:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)accessoryManager:(BTAccessoryManagerImpl *)a3 accessoryEvent:(int)a4 device:(BTDeviceImpl *)a5 accessoryState:(int)a6
+- (void)accessoryManager:(BTAccessoryManagerImpl *)manager accessoryEvent:(int)event device:(BTDeviceImpl *)device accessoryState:(int)state
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (a4 == 22)
+  if (event == 22)
   {
     v8 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -518,7 +518,7 @@ LABEL_11:
     v11[2] = __76__CSBluetoothManager_accessoryManager_accessoryEvent_device_accessoryState___block_invoke;
     v11[3] = &unk_1E865CC58;
     v11[4] = self;
-    v11[5] = a5;
+    v11[5] = device;
     dispatch_async(queue, v11);
   }
 
@@ -531,18 +531,18 @@ void __76__CSBluetoothManager_accessoryManager_accessoryEvent_device_accessorySt
   [*(a1 + 32) _loadAACPCapabilityForDevice:*(a1 + 40) deviceAddress:v2];
 }
 
-- (void)device:(BTDeviceImpl *)a3 serviceMask:(unsigned int)a4 serviceEventType:(int)a5 serviceSpecificEvent:(unsigned int)a6 result:(int)a7
+- (void)device:(BTDeviceImpl *)device serviceMask:(unsigned int)mask serviceEventType:(int)type serviceSpecificEvent:(unsigned int)event result:(int)result
 {
   queue = self->_queue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __86__CSBluetoothManager_device_serviceMask_serviceEventType_serviceSpecificEvent_result___block_invoke;
   v8[3] = &unk_1E865CC30;
-  v9 = a7;
-  v10 = a5;
-  v11 = a6;
+  resultCopy = result;
+  typeCopy = type;
+  eventCopy = event;
   v8[4] = self;
-  v8[5] = a3;
+  v8[5] = device;
   dispatch_async(queue, v8);
 }
 
@@ -635,10 +635,10 @@ id __86__CSBluetoothManager_device_serviceMask_serviceEventType_serviceSpecificE
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getWirelessSplitterInfoFromLocalDevice:(BTLocalDeviceImpl *)a3
+- (id)_getWirelessSplitterInfoFromLocalDevice:(BTLocalDeviceImpl *)device
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
 LABEL_5:
     v6 = 0;
@@ -670,17 +670,17 @@ LABEL_6:
   return v6;
 }
 
-- (id)_getBluetoothDeviceInfoForDeviceWithBTAddressString:(id)a3
+- (id)_getBluetoothDeviceInfoForDeviceWithBTAddressString:(id)string
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stringCopy = string;
   v5 = mach_absolute_time();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v6 = [(NSMutableDictionary *)self->_deviceAddressToDeviceInfoMap allValues];
-  v7 = [v6 countByEnumeratingWithState:&v31 objects:v41 count:16];
+  allValues = [(NSMutableDictionary *)self->_deviceAddressToDeviceInfoMap allValues];
+  v7 = [allValues countByEnumeratingWithState:&v31 objects:v41 count:16];
   if (v7)
   {
     v8 = v7;
@@ -691,12 +691,12 @@ LABEL_6:
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v11 = *(*(&v31 + 1) + 8 * i);
-        v12 = [v11 address];
-        v13 = [v12 isEqualToString:v4];
+        address = [v11 address];
+        v13 = [address isEqualToString:stringCopy];
 
         if (v13)
         {
@@ -704,13 +704,13 @@ LABEL_6:
           if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
           {
             v18 = v17;
-            v19 = [v11 address];
+            address2 = [v11 address];
             *buf = 136315651;
             v36 = "[CSBluetoothManager _getBluetoothDeviceInfoForDeviceWithBTAddressString:]";
             v37 = 2113;
             v38 = *&v11;
             v39 = 2113;
-            v40 = v19;
+            v40 = address2;
             _os_log_impl(&dword_1DDA4B000, v18, OS_LOG_TYPE_DEFAULT, "%s Using cached CSBluetoothDeviceInfo: %{private}@ for BTDevice with Address: %{private}@", buf, 0x20u);
           }
 
@@ -720,7 +720,7 @@ LABEL_6:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v31 objects:v41 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v31 objects:v41 count:16];
       if (v8)
       {
         continue;
@@ -730,12 +730,12 @@ LABEL_6:
     }
   }
 
-  [v4 UTF8String];
+  [stringCopy UTF8String];
   BTDeviceAddressFromString();
-  if (v4 && self->_bluetoothSession)
+  if (stringCopy && self->_bluetoothSession)
   {
     v14 = objc_alloc_init(CSBluetoothDeviceInfo);
-    [(NSMutableDictionary *)self->_deviceAddressToDeviceInfoMap setObject:v14 forKey:v4];
+    [(NSMutableDictionary *)self->_deviceAddressToDeviceInfoMap setObject:v14 forKey:stringCopy];
     bluetoothSession = self->_bluetoothSession;
     v16 = BTDeviceFromAddress();
     v21 = CSLogContextFacilityCoreSpeech;
@@ -744,7 +744,7 @@ LABEL_6:
       *buf = 136315650;
       v36 = "[CSBluetoothManager _getBluetoothDeviceInfoForDeviceWithBTAddressString:]";
       v37 = 2112;
-      v38 = *&v4;
+      v38 = *&stringCopy;
       v39 = 1024;
       LODWORD(v40) = v16;
       _os_log_error_impl(&dword_1DDA4B000, v21, OS_LOG_TYPE_ERROR, "%s Cannot find BTDevice with BTAddressString %@, BTDeviceFromAddress result is %d", buf, 0x1Cu);
@@ -793,10 +793,10 @@ LABEL_26:
   return v20;
 }
 
-- (id)getBluetoothDeviceInfoForDeviceWithId:(id)a3
+- (id)getBluetoothDeviceInfoForDeviceWithId:(id)id
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idCopy = id;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -810,7 +810,7 @@ LABEL_26:
   block[2] = __60__CSBluetoothManager_getBluetoothDeviceInfoForDeviceWithId___block_invoke;
   block[3] = &unk_1E865CC08;
   block[4] = self;
-  v7 = v4;
+  v7 = idCopy;
   v18 = v7;
   v19 = &v20;
   dispatch_sync(queue, block);
@@ -928,10 +928,10 @@ LABEL_13:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_getAddressWithBTDevice:(BTDeviceImpl *)a3
+- (id)_getAddressWithBTDevice:(BTDeviceImpl *)device
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!device)
   {
 LABEL_5:
     v7 = 0;
@@ -950,7 +950,7 @@ LABEL_5:
       v10 = 136315650;
       v11 = "[CSBluetoothManager _getAddressWithBTDevice:]";
       v12 = 2048;
-      v13 = a3;
+      deviceCopy = device;
       v14 = 1024;
       v15 = v5;
       _os_log_error_impl(&dword_1DDA4B000, v6, OS_LOG_TYPE_ERROR, "%s Failed getting address from BTDevice %p (result = %d).", &v10, 0x1Cu);
@@ -966,11 +966,11 @@ LABEL_7:
   return v7;
 }
 
-- (id)_getConnectedBluetoothDeviceAddressesFromLocalDevice:(BTLocalDeviceImpl *)a3
+- (id)_getConnectedBluetoothDeviceAddressesFromLocalDevice:(BTLocalDeviceImpl *)device
 {
   v54 = *MEMORY[0x1E69E9840];
   v3 = CSLogContextFacilityCoreSpeech;
-  if (!a3)
+  if (!device)
   {
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
@@ -993,7 +993,7 @@ LABEL_8:
     *buf = 136315394;
     *&buf[4] = "[CSBluetoothManager _getConnectedBluetoothDeviceAddressesFromLocalDevice:]";
     *&buf[12] = 2048;
-    *&buf[14] = a3;
+    *&buf[14] = device;
     _os_log_impl(&dword_1DDA4B000, v3, OS_LOG_TYPE_DEFAULT, "%s Getting connected devices from local device %p...", buf, 0x16u);
   }
 
@@ -1038,9 +1038,9 @@ LABEL_8:
       *v17 = 136315650;
       v18 = "[CSBluetoothManager _getConnectedBluetoothDeviceAddressesFromLocalDevice:]";
       v19 = 2048;
-      v20 = a3;
+      deviceCopy = device;
       v21 = 1024;
-      LODWORD(v22) = v6;
+      LODWORD(deviceCopy2) = v6;
       v8 = "%s Failed getting connected devices from local device %p (result = %d).";
       v9 = v17;
       v10 = v7;
@@ -1070,9 +1070,9 @@ LABEL_19:
     *v17 = 136315650;
     v18 = "[CSBluetoothManager _getConnectedBluetoothDeviceAddressesFromLocalDevice:]";
     v19 = 2048;
-    v20 = [v12 count];
+    deviceCopy = [v12 count];
     v21 = 2048;
-    v22 = a3;
+    deviceCopy2 = device;
     _os_log_impl(&dword_1DDA4B000, v14, OS_LOG_TYPE_DEFAULT, "%s Got %tu connected devices from local device %p.", v17, 0x20u);
   }
 
@@ -1082,16 +1082,16 @@ LABEL_15:
   return v12;
 }
 
-- (void)getConnectedBluetoothDeviceAddressesWithCompletion:(id)a3
+- (void)getConnectedBluetoothDeviceAddressesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __73__CSBluetoothManager_getConnectedBluetoothDeviceAddressesWithCompletion___block_invoke;
   v6[3] = &unk_1E865CBE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CSBluetoothManager *)self getBTLocalDeviceWithCompletion:v6];
 }
 
@@ -1105,16 +1105,16 @@ void __73__CSBluetoothManager_getConnectedBluetoothDeviceAddressesWithCompletion
   }
 }
 
-- (void)getWirelessSplitterInfoWithCompletion:(id)a3
+- (void)getWirelessSplitterInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __60__CSBluetoothManager_getWirelessSplitterInfoWithCompletion___block_invoke;
   v6[3] = &unk_1E865CBE0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(CSBluetoothManager *)self getBTLocalDeviceWithCompletion:v6];
 }
 
@@ -1128,19 +1128,19 @@ void __60__CSBluetoothManager_getWirelessSplitterInfoWithCompletion___block_invo
   }
 }
 
-- (void)getBTDeviceInfoWithBTAddressString:(id)a3 withCompletion:(id)a4
+- (void)getBTDeviceInfoWithBTAddressString:(id)string withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  completionCopy = completion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __72__CSBluetoothManager_getBTDeviceInfoWithBTAddressString_withCompletion___block_invoke;
   v10[3] = &unk_1E865CBB8;
-  v11 = v6;
-  v12 = v7;
+  v11 = stringCopy;
+  v12 = completionCopy;
   v10[4] = self;
-  v8 = v6;
-  v9 = v7;
+  v8 = stringCopy;
+  v9 = completionCopy;
   [(CSBluetoothManager *)self getBTLocalDeviceWithCompletion:v10];
 }
 
@@ -1154,10 +1154,10 @@ void __72__CSBluetoothManager_getBTDeviceInfoWithBTAddressString_withCompletion_
   }
 }
 
-- (void)getBTLocalDeviceWithCompletion:(id)a3
+- (void)getBTLocalDeviceWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -1173,8 +1173,8 @@ void __72__CSBluetoothManager_getBTDeviceInfoWithBTAddressString_withCompletion_
   v10[2] = __53__CSBluetoothManager_getBTLocalDeviceWithCompletion___block_invoke;
   v10[3] = &unk_1E865CB90;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = completionCopy;
+  v8 = completionCopy;
   dispatch_group_notify(bluetoothSessionSetupGroup, queue, v10);
 
   v9 = *MEMORY[0x1E69E9840];
@@ -1226,7 +1226,7 @@ uint64_t __53__CSBluetoothManager_getBTLocalDeviceWithCompletion___block_invoke(
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -1245,9 +1245,9 @@ uint64_t __53__CSBluetoothManager_getBTLocalDeviceWithCompletion___block_invoke(
       *(v4 + 8) = v7;
 
       *(v4 + 8) = 0;
-      v9 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v10 = *(v4 + 10);
-      *(v4 + 10) = v9;
+      *(v4 + 10) = dictionary;
 
       dispatch_group_enter(*(v4 + 8));
       v11 = *(v4 + 2);
@@ -1260,10 +1260,10 @@ uint64_t __53__CSBluetoothManager_getBTLocalDeviceWithCompletion___block_invoke(
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 void __26__CSBluetoothManager_init__block_invoke(uint64_t a1)

@@ -1,5 +1,5 @@
 @interface DDAddToAddressBookAction
-+ (BOOL)actionAvailableForContact:(id)a3;
++ (BOOL)actionAvailableForContact:(id)contact;
 - (id)compactTitle;
 - (id)contact;
 - (id)notificationTitle;
@@ -10,19 +10,19 @@
 
 - (void)invalidate
 {
-  v3 = [(DDAction *)self viewController];
-  [v3 setAction:0];
+  viewController = [(DDAction *)self viewController];
+  [viewController setAction:0];
 
   v4.receiver = self;
   v4.super_class = DDAddToAddressBookAction;
   [(DDAction *)&v4 invalidate];
 }
 
-+ (BOOL)actionAvailableForContact:(id)a3
++ (BOOL)actionAvailableForContact:(id)contact
 {
-  if (a3)
+  if (contact)
   {
-    return [a1 isAvailable];
+    return [self isAvailable];
   }
 
   else
@@ -33,30 +33,30 @@
 
 - (id)compactTitle
 {
-  v3 = [(DDAddToAddressBookAction *)self contact];
-  if (!v3)
+  contact = [(DDAddToAddressBookAction *)self contact];
+  if (!contact)
   {
     goto LABEL_7;
   }
 
-  v4 = [MEMORY[0x277CBDA78] stringFromContact:v3 style:0];
-  if (![v4 length] && objc_msgSend(v3, "isKeyAvailable:", @"organizationName"))
+  compactTitle = [MEMORY[0x277CBDA78] stringFromContact:contact style:0];
+  if (![compactTitle length] && objc_msgSend(contact, "isKeyAvailable:", @"organizationName"))
   {
-    v5 = [v3 organizationName];
+    organizationName = [contact organizationName];
 
-    v4 = v5;
+    compactTitle = organizationName;
   }
 
-  if (![v4 length])
+  if (![compactTitle length])
   {
 
 LABEL_7:
     v7.receiver = self;
     v7.super_class = DDAddToAddressBookAction;
-    v4 = [(DDAction *)&v7 compactTitle];
+    compactTitle = [(DDAction *)&v7 compactTitle];
   }
 
-  return v4;
+  return compactTitle;
 }
 
 - (id)contact
@@ -162,9 +162,9 @@ LABEL_17:
 - (id)notificationTitle
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = [(DDAddToAddressBookAction *)self contact];
+  contact = [(DDAddToAddressBookAction *)self contact];
 
-  if (v3)
+  if (contact)
   {
     v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v5 = [MEMORY[0x277CBDA78] stringFromContact:self->super.super._contact style:0];
@@ -173,12 +173,12 @@ LABEL_17:
       [v4 addObject:v5];
     }
 
-    v6 = [(CNContact *)self->super.super._contact phoneNumbers];
-    v7 = [v6 firstObject];
-    v8 = [v7 value];
-    v9 = [v8 stringValue];
+    phoneNumbers = [(CNContact *)self->super.super._contact phoneNumbers];
+    firstObject = [phoneNumbers firstObject];
+    value = [firstObject value];
+    stringValue = [value stringValue];
 
-    if ([v9 length])
+    if ([stringValue length])
     {
       v10 = TUFormattedPhoneNumber();
       v11 = v10;
@@ -189,7 +189,7 @@ LABEL_17:
 
       else
       {
-        v12 = v9;
+        v12 = stringValue;
       }
 
       [v4 addObject:v12];
@@ -202,13 +202,13 @@ LABEL_17:
 
     else
     {
-      v22 = [(CNContact *)self->super.super._contact emailAddresses];
-      v23 = [v22 firstObject];
-      v24 = [v23 value];
+      emailAddresses = [(CNContact *)self->super.super._contact emailAddresses];
+      firstObject2 = [emailAddresses firstObject];
+      value2 = [firstObject2 value];
 
-      if ([v24 length])
+      if ([value2 length])
       {
-        [v4 addObject:v24];
+        [v4 addObject:value2];
 
         if ([v4 count] == 1)
         {
@@ -225,16 +225,16 @@ LABEL_19:
 
       else
       {
-        v31 = [(CNContact *)self->super.super._contact postalAddresses];
-        v32 = [v31 firstObject];
-        v33 = [v32 value];
+        postalAddresses = [(CNContact *)self->super.super._contact postalAddresses];
+        firstObject3 = [postalAddresses firstObject];
+        value3 = [firstObject3 value];
 
-        if (v33)
+        if (value3)
         {
-          v48 = v24;
-          v34 = [MEMORY[0x277CBDB80] stringFromPostalAddress:v33 style:0];
-          v35 = [MEMORY[0x277CCA900] newlineCharacterSet];
-          v36 = [v34 componentsSeparatedByCharactersInSet:v35];
+          v48 = value2;
+          v34 = [MEMORY[0x277CBDB80] stringFromPostalAddress:value3 style:0];
+          newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+          v36 = [v34 componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
           v37 = objc_alloc_init(MEMORY[0x277CBEB18]);
           v49 = 0u;
@@ -258,8 +258,8 @@ LABEL_19:
                 }
 
                 v43 = *(*(&v49 + 1) + 8 * i);
-                v44 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-                v45 = [v43 stringByTrimmingCharactersInSet:v44];
+                whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+                v45 = [v43 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
                 if ([v45 length])
                 {
@@ -289,7 +289,7 @@ LABEL_35:
             [v4 addObject:v46];
           }
 
-          v24 = v48;
+          value2 = v48;
         }
 
         if ([v4 count] == 1)

@@ -3,9 +3,9 @@
 - (NSString)debugDescription;
 - (NSString)stateCaptureTitle;
 - (RBConnectionListener)init;
-- (id)initWithContext:(id)a1;
+- (id)initWithContext:(id)context;
 - (id)readyClients;
-- (void)connectionIsReady:(uint64_t)a1;
+- (void)connectionIsReady:(uint64_t)ready;
 - (void)start;
 @end
 
@@ -54,11 +54,11 @@ void __29__RBConnectionListener_start__block_invoke_30(uint64_t a1, void *a2)
 
 - (id)readyClients
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    v2 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:*(a1 + 48)];
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    v2 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:*(self + 48)];
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -240,8 +240,8 @@ void __48__RBConnectionListener_sharedConnectionWorkloop__block_invoke()
 
 - (RBConnectionListener)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"RBConnectionListener.m" lineNumber:63 description:@"-init is not allowed on RBConnectionListener"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"RBConnectionListener.m" lineNumber:63 description:@"-init is not allowed on RBConnectionListener"];
 
   return 0;
 }
@@ -255,8 +255,8 @@ void __48__RBConnectionListener_sharedConnectionWorkloop__block_invoke()
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(NSMapTable *)self->_lock_connectionToClientMap objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  objectEnumerator = [(NSMapTable *)self->_lock_connectionToClientMap objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -267,17 +267,17 @@ void __48__RBConnectionListener_sharedConnectionWorkloop__block_invoke()
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [(RBConnectionClient *)v9 processIdentity];
-        v11 = [v10 description];
-        v12 = [(RBConnectionClient *)v9 processIdentifier];
-        [v3 appendFormat:@"%@:%d\n\t", v11, objc_msgSend(v12, "pid")];
+        processIdentity = [(RBConnectionClient *)v9 processIdentity];
+        v11 = [processIdentity description];
+        processIdentifier = [(RBConnectionClient *)v9 processIdentifier];
+        [v3 appendFormat:@"%@:%d\n\t", v11, objc_msgSend(processIdentifier, "pid")];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -300,80 +300,80 @@ void __48__RBConnectionListener_sharedConnectionWorkloop__block_invoke()
   return NSStringFromClass(v2);
 }
 
-- (id)initWithContext:(id)a1
+- (id)initWithContext:(id)context
 {
   v4 = a2;
   v5 = v4;
-  if (a1)
+  if (context)
   {
     if (!v4)
     {
-      v19 = [MEMORY[0x277CCA890] currentHandler];
-      [v19 handleFailureInMethod:sel_initWithContext_ object:a1 file:@"RBConnectionListener.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"context"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:sel_initWithContext_ object:context file:@"RBConnectionListener.m" lineNumber:68 description:{@"Invalid parameter not satisfying: %@", @"context"}];
     }
 
-    v20.receiver = a1;
+    v20.receiver = context;
     v20.super_class = RBConnectionListener;
     v6 = objc_msgSendSuper2(&v20, sel_init);
-    a1 = v6;
+    context = v6;
     if (v6)
     {
       v6[2] = 0;
       v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       v8 = dispatch_queue_create("com.apple.runningboard.listener", v7);
-      v9 = *(a1 + 2);
-      *(a1 + 2) = v8;
+      v9 = *(context + 2);
+      *(context + 2) = v8;
 
-      mach_service = xpc_connection_create_mach_service([*MEMORY[0x277D47060] UTF8String], *(a1 + 2), 1uLL);
-      v11 = *(a1 + 3);
-      *(a1 + 3) = mach_service;
+      mach_service = xpc_connection_create_mach_service([*MEMORY[0x277D47060] UTF8String], *(context + 2), 1uLL);
+      v11 = *(context + 3);
+      *(context + 3) = mach_service;
 
-      v12 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-      v13 = *(a1 + 4);
-      *(a1 + 4) = v12;
+      strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      v13 = *(context + 4);
+      *(context + 4) = strongToStrongObjectsMapTable;
 
-      v14 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
-      v15 = *(a1 + 5);
-      *(a1 + 5) = v14;
+      strongToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+      v15 = *(context + 5);
+      *(context + 5) = strongToStrongObjectsMapTable2;
 
       v16 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      v17 = *(a1 + 6);
-      *(a1 + 6) = v16;
+      v17 = *(context + 6);
+      *(context + 6) = v16;
 
-      objc_storeStrong(a1 + 7, a2);
+      objc_storeStrong(context + 7, a2);
     }
   }
 
-  return a1;
+  return context;
 }
 
-- (void)connectionIsReady:(uint64_t)a1
+- (void)connectionIsReady:(uint64_t)ready
 {
-  if (a1)
+  if (ready)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 8));
-    [*(a1 + 48) addObject:v3];
+    os_unfair_lock_lock((ready + 8));
+    [*(ready + 48) addObject:v3];
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((ready + 8));
   }
 }
 
 - (void)start
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 56);
-    v3 = *(a1 + 24);
+    v2 = *(self + 56);
+    v3 = *(self + 24);
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __29__RBConnectionListener_start__block_invoke;
     v5[3] = &unk_279B329F8;
     v6 = v2;
-    v7 = a1;
+    selfCopy = self;
     v4 = v2;
     xpc_connection_set_event_handler(v3, v5);
-    xpc_connection_activate(*(a1 + 24));
+    xpc_connection_activate(*(self + 24));
   }
 }
 

@@ -1,25 +1,25 @@
 @interface PPSModelURLDecoder
-+ (BOOL)isDecodableMetric:(id)a3;
-+ (id)decodeValue:(id)a3 withMetric:(id)a4;
++ (BOOL)isDecodableMetric:(id)metric;
++ (id)decodeValue:(id)value withMetric:(id)metric;
 + (id)prefixDecodingDictionary;
 @end
 
 @implementation PPSModelURLDecoder
 
-+ (BOOL)isDecodableMetric:(id)a3
++ (BOOL)isDecodableMetric:(id)metric
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  metricCopy = metric;
+  v4 = metricCopy;
+  if (metricCopy)
   {
-    v5 = [v3 category];
-    if ([&unk_2870180F0 containsObject:v5])
+    category = [metricCopy category];
+    if ([&unk_2870180F0 containsObject:category])
     {
-      v6 = [v4 name];
-      if ([v6 isEqualToString:@"modelURL"])
+      name = [v4 name];
+      if ([name isEqualToString:@"modelURL"])
       {
-        v7 = [v4 subsystem];
-        v8 = [v7 isEqualToString:@"ANE"];
+        subsystem = [v4 subsystem];
+        v8 = [subsystem isEqualToString:@"ANE"];
       }
 
       else
@@ -60,19 +60,19 @@ void __46__PPSModelURLDecoder_prefixDecodingDictionary__block_invoke()
   prefixDecodingDictionary_modelURLPrefixDecoder = &unk_287018108;
 }
 
-+ (id)decodeValue:(id)a3 withMetric:(id)a4
++ (id)decodeValue:(id)value withMetric:(id)metric
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  valueCopy = value;
+  metricCopy = metric;
+  if (valueCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 length] > 1)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [valueCopy length] > 1)
     {
-      v24 = v6;
-      v8 = [MEMORY[0x277CCAB68] string];
+      v24 = metricCopy;
+      string = [MEMORY[0x277CCAB68] string];
       v9 = +[PPSModelURLDecoder prefixDecodingDictionary];
-      v23 = [v5 componentsSeparatedByString:@"/"];
+      v23 = [valueCopy componentsSeparatedByString:@"/"];
       v10 = [v23 objectAtIndex:0];
       v11 = [v10 length];
       if (v11)
@@ -92,7 +92,7 @@ void __46__PPSModelURLDecoder_prefixDecodingDictionary__block_invoke()
           }
 
           v19 = v18;
-          [v8 appendString:v18];
+          [string appendString:v18];
 
           v13 += 2;
           v14 = v15;
@@ -102,10 +102,10 @@ void __46__PPSModelURLDecoder_prefixDecodingDictionary__block_invoke()
           }
         }
 
-        v7 = v5;
+        v7 = valueCopy;
 
         v20 = v23;
-        v6 = v24;
+        metricCopy = v24;
       }
 
       else
@@ -114,18 +114,18 @@ LABEL_13:
         v20 = v23;
         if ([v23 count] >= 2)
         {
-          v21 = [v5 substringFromIndex:{objc_msgSend(v10, "length")}];
-          [v8 appendString:v21];
+          v21 = [valueCopy substringFromIndex:{objc_msgSend(v10, "length")}];
+          [string appendString:v21];
         }
 
-        v7 = v8;
-        v6 = v24;
+        v7 = string;
+        metricCopy = v24;
       }
     }
 
     else
     {
-      v7 = v5;
+      v7 = valueCopy;
     }
   }
 

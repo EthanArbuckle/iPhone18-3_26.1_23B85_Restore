@@ -1,10 +1,10 @@
 @interface HPRFWorkoutConfigurationDataSourcesViewController
-- (id)getConfigurationStateWithSpecifier:(id)a3;
+- (id)getConfigurationStateWithSpecifier:(id)specifier;
 - (id)model;
-- (id)providerForSpecifier:(id)a3;
+- (id)providerForSpecifier:(id)specifier;
 - (id)specifiers;
-- (void)_setAndResizeImage:(id)a3 forSpecifier:(id)a4;
-- (void)setConfigurationState:(id)a3 specifier:(id)a4;
+- (void)_setAndResizeImage:(id)image forSpecifier:(id)specifier;
+- (void)setConfigurationState:(id)state specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -12,10 +12,10 @@
 
 - (id)model
 {
-  v2 = [(HPRFWorkoutConfigurationDataSourcesViewController *)self specifier];
-  v3 = [v2 userInfo];
+  specifier = [(HPRFWorkoutConfigurationDataSourcesViewController *)self specifier];
+  userInfo = [specifier userInfo];
 
-  return v3;
+  return userInfo;
 }
 
 - (void)viewDidLoad
@@ -23,8 +23,8 @@
   v4.receiver = self;
   v4.super_class = HPRFWorkoutConfigurationDataSourcesViewController;
   [(HPRFWorkoutConfigurationDataSourcesViewController *)&v4 viewDidLoad];
-  v3 = [objc_opt_class() title];
-  [(HPRFWorkoutConfigurationDataSourcesViewController *)self setTitle:v3];
+  title = [objc_opt_class() title];
+  [(HPRFWorkoutConfigurationDataSourcesViewController *)self setTitle:title];
 }
 
 - (id)specifiers
@@ -47,11 +47,11 @@
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v8 = [(HPRFWorkoutConfigurationDataSourcesViewController *)self model];
-    v9 = [v8 bridgedExternalProviders];
+    model = [(HPRFWorkoutConfigurationDataSourcesViewController *)self model];
+    bridgedExternalProviders = [model bridgedExternalProviders];
 
-    obj = v9;
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v30 count:16];
+    obj = bridgedExternalProviders;
+    v10 = [bridgedExternalProviders countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v10)
     {
       v11 = v10;
@@ -66,16 +66,16 @@
           }
 
           v14 = *(*(&v24 + 1) + 8 * i);
-          v15 = [v14 sourceName];
-          v16 = [PSSpecifier preferenceSpecifierNamed:v15 target:self set:"setConfigurationState:specifier:" get:"getConfigurationStateWithSpecifier:" detail:0 cell:6 edit:0];
+          sourceName = [v14 sourceName];
+          v16 = [PSSpecifier preferenceSpecifierNamed:sourceName target:self set:"setConfigurationState:specifier:" get:"getConfigurationStateWithSpecifier:" detail:0 cell:6 edit:0];
 
           v28 = @"externalProviderSpecifier";
           v29 = v14;
           v17 = [NSDictionary dictionaryWithObjects:&v29 forKeys:&v28 count:1];
           [v16 setUserInfo:v17];
 
-          v18 = [v14 sourceImageData];
-          [(HPRFWorkoutConfigurationDataSourcesViewController *)self _setAndResizeImage:v18 forSpecifier:v16];
+          sourceImageData = [v14 sourceImageData];
+          [(HPRFWorkoutConfigurationDataSourcesViewController *)self _setAndResizeImage:sourceImageData forSpecifier:v16];
 
           [v4 addObject:v16];
         }
@@ -95,37 +95,37 @@
   return v3;
 }
 
-- (id)providerForSpecifier:(id)a3
+- (id)providerForSpecifier:(id)specifier
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:@"externalProviderSpecifier"];
+  userInfo = [specifier userInfo];
+  v4 = [userInfo objectForKeyedSubscript:@"externalProviderSpecifier"];
 
   return v4;
 }
 
-- (void)setConfigurationState:(id)a3 specifier:(id)a4
+- (void)setConfigurationState:(id)state specifier:(id)specifier
 {
-  v6 = a3;
-  v9 = [(HPRFWorkoutConfigurationDataSourcesViewController *)self providerForSpecifier:a4];
-  v7 = [(HPRFWorkoutConfigurationDataSourcesViewController *)self model];
-  v8 = [v6 BOOLValue];
+  stateCopy = state;
+  v9 = [(HPRFWorkoutConfigurationDataSourcesViewController *)self providerForSpecifier:specifier];
+  model = [(HPRFWorkoutConfigurationDataSourcesViewController *)self model];
+  bOOLValue = [stateCopy BOOLValue];
 
-  [v7 updateExternalProvider:v9 enable:v8];
+  [model updateExternalProvider:v9 enable:bOOLValue];
 }
 
-- (id)getConfigurationStateWithSpecifier:(id)a3
+- (id)getConfigurationStateWithSpecifier:(id)specifier
 {
-  v3 = [(HPRFWorkoutConfigurationDataSourcesViewController *)self providerForSpecifier:a3];
+  v3 = [(HPRFWorkoutConfigurationDataSourcesViewController *)self providerForSpecifier:specifier];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 isEnabled]);
 
   return v4;
 }
 
-- (void)_setAndResizeImage:(id)a3 forSpecifier:(id)a4
+- (void)_setAndResizeImage:(id)image forSpecifier:(id)specifier
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[UIImage alloc] initWithData:v7];
+  specifierCopy = specifier;
+  imageCopy = image;
+  v8 = [[UIImage alloc] initWithData:imageCopy];
 
   [v8 size];
   if (v9 > 29.0 || ([v8 size], v10 > 29.0))
@@ -151,8 +151,8 @@
     v8 = [v18 imageWithActions:v19];
   }
 
-  [v6 setProperty:v8 forKey:PSIconImageKey];
-  [(HPRFWorkoutConfigurationDataSourcesViewController *)self reloadSpecifier:v6];
+  [specifierCopy setProperty:v8 forKey:PSIconImageKey];
+  [(HPRFWorkoutConfigurationDataSourcesViewController *)self reloadSpecifier:specifierCopy];
 }
 
 @end

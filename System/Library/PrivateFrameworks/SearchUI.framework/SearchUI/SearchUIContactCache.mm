@@ -2,13 +2,13 @@
 + (SearchUIContactCache)sharedCache;
 + (id)placeholderContact;
 - (SearchUIContactCache)init;
-- (id)contactForContactViewController:(id)a3;
-- (id)contactForIdentifier:(id)a3;
-- (id)contactsForIdentifiers:(id)a3;
-- (void)computeObjectsForKeys:(id)a3 completionHandler:(id)a4;
-- (void)fetchContactForIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)fetchContactForPerson:(id)a3 completionHandler:(id)a4;
-- (void)fetchContactsForIdentifiers:(id)a3 completionHandler:(id)a4;
+- (id)contactForContactViewController:(id)controller;
+- (id)contactForIdentifier:(id)identifier;
+- (id)contactsForIdentifiers:(id)identifiers;
+- (void)computeObjectsForKeys:(id)keys completionHandler:(id)handler;
+- (void)fetchContactForIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)fetchContactForPerson:(id)person completionHandler:(id)handler;
+- (void)fetchContactsForIdentifiers:(id)identifiers completionHandler:(id)handler;
 @end
 
 @implementation SearchUIContactCache
@@ -44,36 +44,36 @@ uint64_t __35__SearchUIContactCache_sharedCache__block_invoke()
     v4 = [objc_alloc(MEMORY[0x1E695CE18]) initWithConfiguration:v3];
     [(SearchUIContactCache *)v2 setContactStore:v4];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = *MEMORY[0x1E695C3D8];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __28__SearchUIContactCache_init__block_invoke;
     v9[3] = &unk_1E85B4808;
     v10 = v2;
-    v7 = [v5 addObserverForName:v6 object:0 queue:0 usingBlock:v9];
+    v7 = [defaultCenter addObserverForName:v6 object:0 queue:0 usingBlock:v9];
   }
 
   return v2;
 }
 
-- (void)fetchContactForPerson:(id)a3 completionHandler:(id)a4
+- (void)fetchContactForPerson:(id)person completionHandler:(id)handler
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 contactIdentifier];
+  personCopy = person;
+  handlerCopy = handler;
+  contactIdentifier = [personCopy contactIdentifier];
 
-  if (v8)
+  if (contactIdentifier)
   {
-    v9 = [v6 contactIdentifier];
-    v48[0] = v9;
+    contactIdentifier2 = [personCopy contactIdentifier];
+    v48[0] = contactIdentifier2;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __64__SearchUIContactCache_fetchContactForPerson_completionHandler___block_invoke;
     v44[3] = &unk_1E85B47B8;
-    v45 = v7;
+    v45 = handlerCopy;
     [(SearchUIContactCache *)self fetchContactsForIdentifiers:v10 completionHandler:v44];
 
     v11 = v45;
@@ -81,10 +81,10 @@ uint64_t __35__SearchUIContactCache_sharedCache__block_invoke()
 
   else
   {
-    v35 = v7;
+    v35 = handlerCopy;
     v12 = objc_opt_new();
-    v13 = [v6 displayName];
-    v14 = [v13 length];
+    displayName = [personCopy displayName];
+    v14 = [displayName length];
 
     if (v14)
     {
@@ -92,8 +92,8 @@ uint64_t __35__SearchUIContactCache_sharedCache__block_invoke()
       [v12 setNamePrefix:v15];
 
       v16 = objc_opt_new();
-      v17 = [v6 displayName];
-      v18 = [v16 personNameComponentsFromString:v17];
+      displayName2 = [personCopy displayName];
+      v18 = [v16 personNameComponentsFromString:displayName2];
 
       [v18 overrideComponentsInContact:v12];
     }
@@ -104,8 +104,8 @@ uint64_t __35__SearchUIContactCache_sharedCache__block_invoke()
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v20 = [v6 phoneNumbers];
-    v21 = [v20 countByEnumeratingWithState:&v40 objects:v47 count:16];
+    phoneNumbers = [personCopy phoneNumbers];
+    v21 = [phoneNumbers countByEnumeratingWithState:&v40 objects:v47 count:16];
     if (v21)
     {
       v22 = v21;
@@ -117,7 +117,7 @@ uint64_t __35__SearchUIContactCache_sharedCache__block_invoke()
         {
           if (*v41 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(phoneNumbers);
           }
 
           v25 = [MEMORY[0x1E695CF50] phoneNumberWithStringValue:{*(*(&v40 + 1) + 8 * v24), v34}];
@@ -128,7 +128,7 @@ uint64_t __35__SearchUIContactCache_sharedCache__block_invoke()
         }
 
         while (v22 != v24);
-        v22 = [v20 countByEnumeratingWithState:&v40 objects:v47 count:16];
+        v22 = [phoneNumbers countByEnumeratingWithState:&v40 objects:v47 count:16];
       }
 
       while (v22);
@@ -141,8 +141,8 @@ uint64_t __35__SearchUIContactCache_sharedCache__block_invoke()
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v28 = [v6 emailAddresses];
-    v29 = [v28 countByEnumeratingWithState:&v36 objects:v46 count:16];
+    emailAddresses = [personCopy emailAddresses];
+    v29 = [emailAddresses countByEnumeratingWithState:&v36 objects:v46 count:16];
     if (v29)
     {
       v30 = v29;
@@ -154,7 +154,7 @@ uint64_t __35__SearchUIContactCache_sharedCache__block_invoke()
         {
           if (*v37 != v31)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(emailAddresses);
           }
 
           v33 = [MEMORY[0x1E695CEE0] labeledValueWithLabel:0 value:{*(*(&v36 + 1) + 8 * v32), v34}];
@@ -164,14 +164,14 @@ uint64_t __35__SearchUIContactCache_sharedCache__block_invoke()
         }
 
         while (v30 != v32);
-        v30 = [v28 countByEnumeratingWithState:&v36 objects:v46 count:16];
+        v30 = [emailAddresses countByEnumeratingWithState:&v36 objects:v46 count:16];
       }
 
       while (v30);
     }
 
     [v11 setEmailAddresses:v27];
-    v7 = v35;
+    handlerCopy = v35;
     v35[2](v35, v11);
   }
 }
@@ -183,14 +183,14 @@ void __64__SearchUIContactCache_fetchContactForPerson_completionHandler___block_
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)fetchContactForIdentifier:(id)a3 completionHandler:(id)a4
+- (void)fetchContactForIdentifier:(id)identifier completionHandler:(id)handler
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (identifierCopy)
   {
-    v12[0] = v6;
+    v12[0] = identifierCopy;
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   }
 
@@ -203,10 +203,10 @@ void __64__SearchUIContactCache_fetchContactForPerson_completionHandler___block_
   v10[1] = 3221225472;
   v10[2] = __68__SearchUIContactCache_fetchContactForIdentifier_completionHandler___block_invoke;
   v10[3] = &unk_1E85B47B8;
-  v9 = v7;
+  v9 = handlerCopy;
   v11 = v9;
   [(SearchUIContactCache *)self fetchContactsForIdentifiers:v8 completionHandler:v10];
-  if (v6)
+  if (identifierCopy)
   {
   }
 }
@@ -218,45 +218,45 @@ void __68__SearchUIContactCache_fetchContactForIdentifier_completionHandler___bl
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)fetchContactsForIdentifiers:(id)a3 completionHandler:(id)a4
+- (void)fetchContactsForIdentifiers:(id)identifiers completionHandler:(id)handler
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  identifiersCopy = identifiers;
+  handlerCopy = handler;
+  if ([identifiersCopy count])
   {
-    [(TLKAsyncCache *)self getObjectsForKeys:v6 completionHandler:v7];
+    [(TLKAsyncCache *)self getObjectsForKeys:identifiersCopy completionHandler:handlerCopy];
   }
 
   else
   {
-    v8 = [objc_opt_class() placeholderContact];
-    v10[0] = v8;
+    placeholderContact = [objc_opt_class() placeholderContact];
+    v10[0] = placeholderContact;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-    v7[2](v7, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 }
 
-- (void)computeObjectsForKeys:(id)a3 completionHandler:(id)a4
+- (void)computeObjectsForKeys:(id)keys completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = [(SearchUIContactCache *)self contactsForIdentifiers:a3];
-  (*(a4 + 2))(v7, v8);
+  handlerCopy = handler;
+  v8 = [(SearchUIContactCache *)self contactsForIdentifiers:keys];
+  (*(handler + 2))(handlerCopy, v8);
 }
 
-- (id)contactsForIdentifiers:(id)a3
+- (id)contactsForIdentifiers:(id)identifiers
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   if (contactsForIdentifiers__onceToken != -1)
   {
     [SearchUIContactCache contactsForIdentifiers:];
   }
 
-  v5 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:{v4, v4}];
-  v6 = [(SearchUIContactCache *)self contactStore];
+  v5 = [MEMORY[0x1E695CD58] predicateForContactsWithIdentifiers:{identifiersCopy, identifiersCopy}];
+  contactStore = [(SearchUIContactCache *)self contactStore];
   v32 = v5;
-  v7 = [v6 unifiedContactsMatchingPredicate:v5 keysToFetch:contactsForIdentifiers__requiredKeys error:0];
+  v7 = [contactStore unifiedContactsMatchingPredicate:v5 keysToFetch:contactsForIdentifiers__requiredKeys error:0];
 
   v8 = objc_opt_new();
   v42 = 0u;
@@ -279,15 +279,15 @@ void __68__SearchUIContactCache_fetchContactForIdentifier_completionHandler___bl
         }
 
         v13 = *(*(&v42 + 1) + 8 * i);
-        v14 = [v13 identifier];
-        [v8 setObject:v13 forKeyedSubscript:v14];
+        identifier = [v13 identifier];
+        [v8 setObject:v13 forKeyedSubscript:identifier];
 
         v40 = 0u;
         v41 = 0u;
         v38 = 0u;
         v39 = 0u;
-        v15 = [v13 linkedContacts];
-        v16 = [v15 countByEnumeratingWithState:&v38 objects:v47 count:16];
+        linkedContacts = [v13 linkedContacts];
+        v16 = [linkedContacts countByEnumeratingWithState:&v38 objects:v47 count:16];
         if (v16)
         {
           v17 = v16;
@@ -298,14 +298,14 @@ void __68__SearchUIContactCache_fetchContactForIdentifier_completionHandler___bl
             {
               if (*v39 != v18)
               {
-                objc_enumerationMutation(v15);
+                objc_enumerationMutation(linkedContacts);
               }
 
-              v20 = [*(*(&v38 + 1) + 8 * j) identifier];
-              [v8 setObject:v13 forKeyedSubscript:v20];
+              identifier2 = [*(*(&v38 + 1) + 8 * j) identifier];
+              [v8 setObject:v13 forKeyedSubscript:identifier2];
             }
 
-            v17 = [v15 countByEnumeratingWithState:&v38 objects:v47 count:16];
+            v17 = [linkedContacts countByEnumeratingWithState:&v38 objects:v47 count:16];
           }
 
           while (v17);
@@ -346,8 +346,8 @@ void __68__SearchUIContactCache_fetchContactForIdentifier_completionHandler___bl
 
         else
         {
-          v28 = [objc_opt_class() placeholderContact];
-          [v21 addObject:v28];
+          placeholderContact = [objc_opt_class() placeholderContact];
+          [v21 addObject:placeholderContact];
         }
       }
 
@@ -378,45 +378,45 @@ void __47__SearchUIContactCache_contactsForIdentifiers___block_invoke()
   contactsForIdentifiers__requiredKeys = v4;
 }
 
-- (id)contactForIdentifier:(id)a3
+- (id)contactForIdentifier:(id)identifier
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(TLKAsyncCache *)self getCachedObjectIfAvailableForKey:v4];
+  identifierCopy = identifier;
+  v5 = [(TLKAsyncCache *)self getCachedObjectIfAvailableForKey:identifierCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
+    placeholderContact = v5;
 LABEL_3:
-    v8 = v7;
+    firstObject = placeholderContact;
     goto LABEL_6;
   }
 
-  if (!v4)
+  if (!identifierCopy)
   {
-    v7 = [objc_opt_class() placeholderContact];
+    placeholderContact = [objc_opt_class() placeholderContact];
     goto LABEL_3;
   }
 
-  v12[0] = v4;
+  v12[0] = identifierCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
   v10 = [(SearchUIContactCache *)self contactsForIdentifiers:v9];
-  v8 = [v10 firstObject];
+  firstObject = [v10 firstObject];
 
 LABEL_6:
 
-  return v8;
+  return firstObject;
 }
 
-- (id)contactForContactViewController:(id)a3
+- (id)contactForContactViewController:(id)controller
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(SearchUIContactCache *)self contactStore];
-  v6 = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
-  v10[0] = v6;
+  controllerCopy = controller;
+  contactStore = [(SearchUIContactCache *)self contactStore];
+  descriptorForRequiredKeys = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
+  v10[0] = descriptorForRequiredKeys;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
-  v8 = [v5 unifiedContactWithIdentifier:v4 keysToFetch:v7 error:0];
+  v8 = [contactStore unifiedContactWithIdentifier:controllerCopy keysToFetch:v7 error:0];
 
   return v8;
 }

@@ -31,10 +31,10 @@
   if (inputImage && self->inputImage2 && ([(CIImage *)inputImage extent], v5 = v4, v7 = v6, v9 = v8, v11 = v10, [(CIImage *)self->inputImage2 extent], v28.origin.x = v12, v28.origin.y = v13, v28.size.width = v14, v28.size.height = v15, v26.origin.x = v5, v26.origin.y = v7, v26.size.width = v9, v26.size.height = v11, v27 = CGRectIntersection(v26, v28), x = v27.origin.x, y = v27.origin.y, width = v27.size.width, height = v27.size.height, !CGRectIsEmpty(v27)))
   {
     v21 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_colorAbsDiff];
-    v22 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
-    v23 = [(CIImage *)self->inputImage2 imageByUnpremultiplyingAlpha];
-    v24[0] = v22;
-    v24[1] = v23;
+    imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha2 = [(CIImage *)self->inputImage2 imageByUnpremultiplyingAlpha];
+    v24[0] = imageByUnpremultiplyingAlpha;
+    v24[1] = imageByUnpremultiplyingAlpha2;
     return -[CIImage imageByPremultiplyingAlpha](-[CIColorKernel applyWithExtent:arguments:](v21, "applyWithExtent:arguments:", [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2], x, y, width, height), "imageByPremultiplyingAlpha");
   }
 

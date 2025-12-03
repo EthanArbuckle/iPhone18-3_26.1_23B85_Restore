@@ -1,22 +1,22 @@
 @interface BLTPBSectionInfoSettings
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasScheduledDeliverySetting:(BOOL)a3;
-- (void)setHasTimeSensitiveSetting:(BOOL)a3;
-- (void)setHasUserConfiguredTimeSensitiveSetting:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasScheduledDeliverySetting:(BOOL)setting;
+- (void)setHasTimeSensitiveSetting:(BOOL)setting;
+- (void)setHasUserConfiguredTimeSensitiveSetting:(BOOL)setting;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBSectionInfoSettings
 
-- (void)setHasTimeSensitiveSetting:(BOOL)a3
+- (void)setHasTimeSensitiveSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUserConfiguredTimeSensitiveSetting:(BOOL)a3
+- (void)setHasUserConfiguredTimeSensitiveSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 8;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasScheduledDeliverySetting:(BOOL)a3
+- (void)setHasScheduledDeliverySetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 2;
   }
@@ -65,33 +65,33 @@
   v8.receiver = self;
   v8.super_class = BLTPBSectionInfoSettings;
   v4 = [(BLTPBSectionInfoSettings *)&v8 description];
-  v5 = [(BLTPBSectionInfoSettings *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBSectionInfoSettings *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithInt:self->_announceSetting];
-    [v3 setObject:v4 forKey:@"announceSetting"];
+    [dictionary setObject:v4 forKey:@"announceSetting"];
   }
 
   muteAssertion = self->_muteAssertion;
   if (muteAssertion)
   {
-    v6 = [(BLTPBMuteAssertion *)muteAssertion dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"muteAssertion"];
+    dictionaryRepresentation = [(BLTPBMuteAssertion *)muteAssertion dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"muteAssertion"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v10 = [MEMORY[0x277CCABB0] numberWithInt:self->_timeSensitiveSetting];
-    [v3 setObject:v10 forKey:@"timeSensitiveSetting"];
+    [dictionary setObject:v10 forKey:@"timeSensitiveSetting"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -112,23 +112,23 @@ LABEL_7:
   }
 
   v11 = [MEMORY[0x277CCABB0] numberWithBool:self->_userConfiguredTimeSensitiveSetting];
-  [v3 setObject:v11 forKey:@"userConfiguredTimeSensitiveSetting"];
+  [dictionary setObject:v11 forKey:@"userConfiguredTimeSensitiveSetting"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
     v8 = [MEMORY[0x277CCABB0] numberWithInt:self->_scheduledDeliverySetting];
-    [v3 setObject:v8 forKey:@"scheduledDeliverySetting"];
+    [dictionary setObject:v8 forKey:@"scheduledDeliverySetting"];
   }
 
 LABEL_9:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     announceSetting = self->_announceSetting;
@@ -175,27 +175,27 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_announceSetting;
-    *(v4 + 36) |= 1u;
+    toCopy[2] = self->_announceSetting;
+    *(toCopy + 36) |= 1u;
   }
 
   if (self->_muteAssertion)
   {
-    v6 = v4;
-    [v4 setMuteAssertion:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setMuteAssertion:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    v4[7] = self->_timeSensitiveSetting;
-    *(v4 + 36) |= 4u;
+    toCopy[7] = self->_timeSensitiveSetting;
+    *(toCopy + 36) |= 4u;
     has = self->_has;
     if ((has & 8) == 0)
     {
@@ -214,21 +214,21 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 32) = self->_userConfiguredTimeSensitiveSetting;
-  *(v4 + 36) |= 8u;
+  *(toCopy + 32) = self->_userConfiguredTimeSensitiveSetting;
+  *(toCopy + 36) |= 8u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_8:
-    v4[6] = self->_scheduledDeliverySetting;
-    *(v4 + 36) |= 2u;
+    toCopy[6] = self->_scheduledDeliverySetting;
+    *(toCopy + 36) |= 2u;
   }
 
 LABEL_9:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -236,7 +236,7 @@ LABEL_9:
     *(v5 + 36) |= 1u;
   }
 
-  v7 = [(BLTPBMuteAssertion *)self->_muteAssertion copyWithZone:a3];
+  v7 = [(BLTPBMuteAssertion *)self->_muteAssertion copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -278,31 +278,31 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = *(v4 + 36);
+  v6 = *(equalCopy + 36);
   if (has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_announceSetting != *(v4 + 2))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_announceSetting != *(equalCopy + 2))
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_22;
   }
 
   muteAssertion = self->_muteAssertion;
-  if (muteAssertion | *(v4 + 2))
+  if (muteAssertion | *(equalCopy + 2))
   {
     if (![(BLTPBMuteAssertion *)muteAssertion isEqual:?])
     {
@@ -314,20 +314,20 @@ LABEL_6:
 
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_timeSensitiveSetting != *(v4 + 7))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_timeSensitiveSetting != *(equalCopy + 7))
     {
       goto LABEL_22;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_22;
   }
 
   if ((has & 8) == 0)
   {
-    if ((*(v4 + 36) & 8) == 0)
+    if ((*(equalCopy + 36) & 8) == 0)
     {
       goto LABEL_17;
     }
@@ -337,30 +337,30 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((*(v4 + 36) & 8) == 0)
+  if ((*(equalCopy + 36) & 8) == 0)
   {
     goto LABEL_22;
   }
 
-  v10 = *(v4 + 32);
+  v10 = *(equalCopy + 32);
   if (self->_userConfiguredTimeSensitiveSetting)
   {
-    if ((*(v4 + 32) & 1) == 0)
+    if ((*(equalCopy + 32) & 1) == 0)
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_22;
   }
 
 LABEL_17:
-  v8 = (*(v4 + 36) & 2) == 0;
+  v8 = (*(equalCopy + 36) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_scheduledDeliverySetting != *(v4 + 6))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_scheduledDeliverySetting != *(equalCopy + 6))
     {
       goto LABEL_22;
     }
@@ -424,13 +424,13 @@ LABEL_7:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[9])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[9])
   {
-    self->_announceSetting = v4[2];
+    self->_announceSetting = fromCopy[2];
     *&self->_has |= 1u;
   }
 

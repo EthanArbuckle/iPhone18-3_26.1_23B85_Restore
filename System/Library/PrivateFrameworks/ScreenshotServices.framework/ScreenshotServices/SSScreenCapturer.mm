@@ -1,7 +1,7 @@
 @interface SSScreenCapturer
 + (BOOL)_filesAppExistsOnSystem;
 + (void)playScreenshotSound;
-- (BOOL)_betaFeedbackEnabled:(id)a3;
+- (BOOL)_betaFeedbackEnabled:(id)enabled;
 - (BOOL)_screenshotWasTakenOverBetaApp;
 - (SSScreenCapturer)init;
 - (SSScreenCapturerDelegate)delegate;
@@ -9,24 +9,24 @@
 - (id)_betaApplicationName;
 - (id)_bundleIDForCurrentApplication;
 - (id)_currentDisplayLayout;
-- (id)_environmentDescriptionFromImage:(id)a3;
+- (id)_environmentDescriptionFromImage:(id)image;
 - (id)_testingCoordinator;
-- (void)_captureAndSendDocumentForEnvironmentElement:(id)a3;
-- (void)_captureAndSendMetadataAndDocumentForEnvironmentDescription:(id)a3 metadataCaptureCompletion:(id)a4;
-- (void)_captureAndSendMetadataForEnvironmentElement:(id)a3 metadataCapture:(id)a4 sendCompletion:(id)a5;
-- (void)_preheatAndTakeScreenshotIfPossibleWithOptionsCollection:(id)a3 presentationOptions:(id)a4 appleInternalOptions:(id)a5;
-- (void)_saveImageToPhotoLibrary:(id)a3 environmentDescription:(id)a4;
-- (void)_sendEnvironmentDescription:(id)a3 savingImageToPhotos:(id)a4 withCompletion:(id)a5;
-- (void)_sendEnvironmentDescription:(id)a3 withCompletion:(id)a4;
-- (void)_takeScreenshotWithOptionsCollection:(id)a3 serviceOptions:(id)a4 presentationOptions:(id)a5 appleInternalOptions:(id)a6;
+- (void)_captureAndSendDocumentForEnvironmentElement:(id)element;
+- (void)_captureAndSendMetadataAndDocumentForEnvironmentDescription:(id)description metadataCaptureCompletion:(id)completion;
+- (void)_captureAndSendMetadataForEnvironmentElement:(id)element metadataCapture:(id)capture sendCompletion:(id)completion;
+- (void)_preheatAndTakeScreenshotIfPossibleWithOptionsCollection:(id)collection presentationOptions:(id)options appleInternalOptions:(id)internalOptions;
+- (void)_saveImageToPhotoLibrary:(id)library environmentDescription:(id)description;
+- (void)_sendEnvironmentDescription:(id)description savingImageToPhotos:(id)photos withCompletion:(id)completion;
+- (void)_sendEnvironmentDescription:(id)description withCompletion:(id)completion;
+- (void)_takeScreenshotWithOptionsCollection:(id)collection serviceOptions:(id)options presentationOptions:(id)presentationOptions appleInternalOptions:(id)internalOptions;
 - (void)dealloc;
-- (void)preheatWithPresentationOptions:(id)a3;
+- (void)preheatWithPresentationOptions:(id)options;
 - (void)screenshotWindowWasDismissed;
 - (void)screenshotWindowWillBeDisplayed;
-- (void)server:(id)a3 handleRequest:(id)a4 withCompletion:(id)a5;
+- (void)server:(id)server handleRequest:(id)request withCompletion:(id)completion;
 - (void)startRecap;
 - (void)takeScreenshot;
-- (void)testingCoordinator:(id)a3 requestsTakingScreenshotForRunPPTRequest:(id)a4;
+- (void)testingCoordinator:(id)coordinator requestsTakingScreenshotForRunPPTRequest:(id)request;
 @end
 
 @implementation SSScreenCapturer
@@ -147,9 +147,9 @@
   }
 }
 
-- (void)preheatWithPresentationOptions:(id)a3
+- (void)preheatWithPresentationOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = os_log_create("com.apple.screenshotservices", "Capture");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -161,7 +161,7 @@
   if ([v6 isAbleToTakeScreenshots])
   {
     [(SSScreenshotsWindow *)self->_serviceWindow activateRemoteViewControllerIfAppropriate];
-    -[SSDittoRemoteConnection sendDittoProcessPreheatRequestWithPresentationMode:completion:](self->_dittoRemoteConnection, "sendDittoProcessPreheatRequestWithPresentationMode:completion:", [v4 presentationMode], &__block_literal_global_9);
+    -[SSDittoRemoteConnection sendDittoProcessPreheatRequestWithPresentationMode:completion:](self->_dittoRemoteConnection, "sendDittoProcessPreheatRequestWithPresentationMode:completion:", [optionsCopy presentationMode], &__block_literal_global_9);
   }
 
   else
@@ -205,17 +205,17 @@
   }
 }
 
-- (id)_environmentDescriptionFromImage:(id)a3
+- (id)_environmentDescriptionFromImage:(id)image
 {
-  v3 = a3;
+  imageCopy = image;
   v4 = objc_alloc_init(SSEnvironmentDescription);
-  v5 = [v3 ss_imageSurfaceFromImage];
-  [(SSEnvironmentDescription *)v4 setImageSurface:v5];
+  ss_imageSurfaceFromImage = [imageCopy ss_imageSurfaceFromImage];
+  [(SSEnvironmentDescription *)v4 setImageSurface:ss_imageSurfaceFromImage];
 
-  [v3 size];
+  [imageCopy size];
   v7 = v6;
   v9 = v8;
-  [v3 scale];
+  [imageCopy scale];
   v11 = v10;
 
   [(SSEnvironmentDescription *)v4 setImagePixelSize:v7 * v11, v9 * v11];
@@ -224,22 +224,22 @@
   return v4;
 }
 
-- (void)_sendEnvironmentDescription:(id)a3 savingImageToPhotos:(id)a4 withCompletion:(id)a5
+- (void)_sendEnvironmentDescription:(id)description savingImageToPhotos:(id)photos withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  descriptionCopy = description;
+  photosCopy = photos;
+  completionCopy = completion;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __83__SSScreenCapturer__sendEnvironmentDescription_savingImageToPhotos_withCompletion___block_invoke;
   v14[3] = &unk_1E85909E0;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v8;
-  v12 = v9;
-  v13 = v10;
+  v15 = photosCopy;
+  v16 = descriptionCopy;
+  v17 = completionCopy;
+  v11 = descriptionCopy;
+  v12 = photosCopy;
+  v13 = completionCopy;
   [(SSScreenCapturer *)self _sendEnvironmentDescription:v11 withCompletion:v14];
 }
 
@@ -258,10 +258,10 @@ uint64_t __83__SSScreenCapturer__sendEnvironmentDescription_savingImageToPhotos_
   return [v3 _saveImageToPhotoLibrary:v4 environmentDescription:v5];
 }
 
-- (void)_sendEnvironmentDescription:(id)a3 withCompletion:(id)a4
+- (void)_sendEnvironmentDescription:(id)description withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  descriptionCopy = description;
   v8 = _SSSignpostLog();
   if (os_signpost_enabled(v8))
   {
@@ -281,9 +281,9 @@ uint64_t __83__SSScreenCapturer__sendEnvironmentDescription_savingImageToPhotos_
   v12[1] = 3221225472;
   v12[2] = __63__SSScreenCapturer__sendEnvironmentDescription_withCompletion___block_invoke;
   v12[3] = &unk_1E8590228;
-  v13 = v6;
-  v11 = v6;
-  [(SSDittoRemoteConnection *)dittoRemoteConnection sendDittoProcessEnvironmentDescription:v7 completion:v12];
+  v13 = completionCopy;
+  v11 = completionCopy;
+  [(SSDittoRemoteConnection *)dittoRemoteConnection sendDittoProcessEnvironmentDescription:descriptionCopy completion:v12];
 }
 
 uint64_t __63__SSScreenCapturer__sendEnvironmentDescription_withCompletion___block_invoke(uint64_t a1)
@@ -297,11 +297,11 @@ uint64_t __63__SSScreenCapturer__sendEnvironmentDescription_withCompletion___blo
   return result;
 }
 
-- (void)_captureAndSendMetadataForEnvironmentElement:(id)a3 metadataCapture:(id)a4 sendCompletion:(id)a5
+- (void)_captureAndSendMetadataForEnvironmentElement:(id)element metadataCapture:(id)capture sendCompletion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  captureCopy = capture;
+  completionCopy = completion;
+  elementCopy = element;
   v11 = _SSSignpostLog();
   if (os_signpost_enabled(v11))
   {
@@ -322,11 +322,11 @@ uint64_t __63__SSScreenCapturer__sendEnvironmentDescription_withCompletion___blo
   v16[2] = __96__SSScreenCapturer__captureAndSendMetadataForEnvironmentElement_metadataCapture_sendCompletion___block_invoke;
   v16[3] = &unk_1E8590A08;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v14 = v9;
-  v15 = v8;
-  [(SSApplicationScreenshotSupplementalDataCapturer *)metadataCapturer captureMetadataForEnvironmentElement:v10 withCompletionBlock:v16];
+  v17 = captureCopy;
+  v18 = completionCopy;
+  v14 = completionCopy;
+  v15 = captureCopy;
+  [(SSApplicationScreenshotSupplementalDataCapturer *)metadataCapturer captureMetadataForEnvironmentElement:elementCopy withCompletionBlock:v16];
 }
 
 void __96__SSScreenCapturer__captureAndSendMetadataForEnvironmentElement_metadataCapture_sendCompletion___block_invoke(void *a1, void *a2)
@@ -365,9 +365,9 @@ void __96__SSScreenCapturer__captureAndSendMetadataForEnvironmentElement_metadat
   }
 }
 
-- (void)_captureAndSendDocumentForEnvironmentElement:(id)a3
+- (void)_captureAndSendDocumentForEnvironmentElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = _SSSignpostLog();
   if (os_signpost_enabled(v5))
   {
@@ -388,7 +388,7 @@ void __96__SSScreenCapturer__captureAndSendMetadataForEnvironmentElement_metadat
   v8[2] = __65__SSScreenCapturer__captureAndSendDocumentForEnvironmentElement___block_invoke;
   v8[3] = &unk_1E8590A30;
   v8[4] = self;
-  [(SSApplicationScreenshotSupplementalDataCapturer *)metadataCapturer captureDocumentForEnvironmentElement:v4 withCompletionBlock:v8];
+  [(SSApplicationScreenshotSupplementalDataCapturer *)metadataCapturer captureDocumentForEnvironmentElement:elementCopy withCompletionBlock:v8];
 }
 
 void __65__SSScreenCapturer__captureAndSendDocumentForEnvironmentElement___block_invoke(uint64_t a1, void *a2)
@@ -414,18 +414,18 @@ void __65__SSScreenCapturer__captureAndSendDocumentForEnvironmentElement___block
   }
 }
 
-- (void)_captureAndSendMetadataAndDocumentForEnvironmentDescription:(id)a3 metadataCaptureCompletion:(id)a4
+- (void)_captureAndSendMetadataAndDocumentForEnvironmentDescription:(id)description metadataCaptureCompletion:(id)completion
 {
   v54 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v24 = a4;
+  descriptionCopy = description;
+  completionCopy = completion;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v27 = v6;
-  v7 = [v6 elements];
-  v8 = [v7 countByEnumeratingWithState:&v40 objects:v49 count:16];
+  v27 = descriptionCopy;
+  elements = [descriptionCopy elements];
+  v8 = [elements countByEnumeratingWithState:&v40 objects:v49 count:16];
   if (v8)
   {
     v9 = *v41;
@@ -435,7 +435,7 @@ void __65__SSScreenCapturer__captureAndSendDocumentForEnvironmentElement___block
       {
         if (*v41 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(elements);
         }
 
         if (![*(*(&v40 + 1) + 8 * i) supportsMetadataCapture])
@@ -445,7 +445,7 @@ void __65__SSScreenCapturer__captureAndSendDocumentForEnvironmentElement___block
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v40 objects:v49 count:16];
+      v8 = [elements countByEnumeratingWithState:&v40 objects:v49 count:16];
       if (v8)
       {
         continue;
@@ -478,8 +478,8 @@ LABEL_11:
         }
 
         v15 = *(*(&v36 + 1) + 8 * j);
-        v16 = [v15 bundleIdentifier];
-        if (v16)
+        bundleIdentifier = [v15 bundleIdentifier];
+        if (bundleIdentifier)
         {
           v44 = 0;
           v45 = &v44;
@@ -499,16 +499,16 @@ LABEL_11:
 
           v18 = v17;
           _Block_object_dispose(&v44, 8);
-          v19 = [v17 applicationWithBundleIdentifier:v16];
-          v20 = [v19 isLocked];
+          v19 = [v17 applicationWithBundleIdentifier:bundleIdentifier];
+          isLocked = [v19 isLocked];
 
-          if (v20)
+          if (isLocked)
           {
             v21 = os_log_create("com.apple.screenshotservices", "Capture");
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
               LODWORD(buf) = 138412290;
-              *(&buf + 4) = v16;
+              *(&buf + 4) = bundleIdentifier;
               _os_log_impl(&dword_1D9E04000, v21, OS_LOG_TYPE_DEFAULT, "Skip requesting metadata from locked app with bundleID: %@", &buf, 0xCu);
             }
 
@@ -551,8 +551,8 @@ LABEL_26:
   block[1] = 3221225472;
   block[2] = __106__SSScreenCapturer__captureAndSendMetadataAndDocumentForEnvironmentDescription_metadataCaptureCompletion___block_invoke_3;
   block[3] = &unk_1E8590228;
-  v29 = v24;
-  v23 = v24;
+  v29 = completionCopy;
+  v23 = completionCopy;
   dispatch_group_notify(v12, v22, block);
 }
 
@@ -611,35 +611,35 @@ uint64_t __106__SSScreenCapturer__captureAndSendMetadataAndDocumentForEnvironmen
   return result;
 }
 
-- (void)_saveImageToPhotoLibrary:(id)a3 environmentDescription:(id)a4
+- (void)_saveImageToPhotoLibrary:(id)library environmentDescription:(id)description
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  libraryCopy = library;
+  descriptionCopy = description;
   v8 = objc_alloc_init(SSScreenshotAssetManagerRegistrationOptions);
-  v9 = [v7 serviceOptions];
-  -[SSScreenshotAssetManagerRegistrationOptions setSaveLocation:](v8, "setSaveLocation:", [v9 saveLocation]);
+  serviceOptions = [descriptionCopy serviceOptions];
+  -[SSScreenshotAssetManagerRegistrationOptions setSaveLocation:](v8, "setSaveLocation:", [serviceOptions saveLocation]);
 
-  v10 = [v7 serviceOptions];
-  v11 = [v10 assetMetadata];
-  [(SSScreenshotAssetManagerRegistrationOptions *)v8 setAssetMetadata:v11];
+  serviceOptions2 = [descriptionCopy serviceOptions];
+  assetMetadata = [serviceOptions2 assetMetadata];
+  [(SSScreenshotAssetManagerRegistrationOptions *)v8 setAssetMetadata:assetMetadata];
 
-  v12 = [v7 currentApplicationBundleID];
-  [(SSScreenshotAssetManagerRegistrationOptions *)v8 setApplicationBundleID:v12];
+  currentApplicationBundleID = [descriptionCopy currentApplicationBundleID];
+  [(SSScreenshotAssetManagerRegistrationOptions *)v8 setApplicationBundleID:currentApplicationBundleID];
 
-  v13 = [v7 harvestedMetadata];
-  [(SSScreenshotAssetManagerRegistrationOptions *)v8 setHarvestedMetadata:v13];
+  harvestedMetadata = [descriptionCopy harvestedMetadata];
+  [(SSScreenshotAssetManagerRegistrationOptions *)v8 setHarvestedMetadata:harvestedMetadata];
 
   v14 = os_log_create("com.apple.screenshotservices", "Capture");
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
-    v15 = [v6 description];
+    v15 = [libraryCopy description];
     *buf = 138412290;
     v27 = v15;
     _os_log_impl(&dword_1D9E04000, v14, OS_LOG_TYPE_INFO, "Registering image with asset manager %@", buf, 0xCu);
   }
 
-  v16 = [v7 identifier];
+  identifier = [descriptionCopy identifier];
   v17 = _SSSignpostLog();
   if (os_signpost_enabled(v17))
   {
@@ -659,11 +659,11 @@ uint64_t __106__SSScreenCapturer__captureAndSendMetadataAndDocumentForEnvironmen
   v22[1] = 3221225472;
   v22[2] = __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___block_invoke;
   v22[3] = &unk_1E8590AA8;
-  v23 = v16;
-  v24 = v6;
-  v25 = self;
-  v20 = v6;
-  v21 = v16;
+  v23 = identifier;
+  v24 = libraryCopy;
+  selfCopy = self;
+  v20 = libraryCopy;
+  v21 = identifier;
   [v19 registerImageForPersistable:v20 options:v8 withRegistrationBlock:v22];
 }
 
@@ -704,12 +704,12 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
   [*(*(a1 + 48) + 16) sendDittoProcessImageIdentifierUpdate:v8];
 }
 
-- (void)_preheatAndTakeScreenshotIfPossibleWithOptionsCollection:(id)a3 presentationOptions:(id)a4 appleInternalOptions:(id)a5
+- (void)_preheatAndTakeScreenshotIfPossibleWithOptionsCollection:(id)collection presentationOptions:(id)options appleInternalOptions:(id)internalOptions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  optionsCopy = options;
+  internalOptionsCopy = internalOptions;
   v11 = _SSSignpostLog();
   if (os_signpost_enabled(v11))
   {
@@ -756,7 +756,7 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
   v17 = os_log_create("com.apple.screenshotservices", "Capture");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v9 description];
+    v18 = [optionsCopy description];
     v21 = 138412290;
     v22 = v18;
     _os_log_impl(&dword_1D9E04000, v17, OS_LOG_TYPE_DEFAULT, "Asked to capture with presentation options %@", &v21, 0xCu);
@@ -766,7 +766,7 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
   if ([v19 isAbleToTakeScreenshots])
   {
     [(SSScreenshotsWindow *)self->_serviceWindow activateRemoteViewControllerIfAppropriate];
-    [(SSScreenCapturer *)self _takeScreenshotWithOptionsCollection:v8 serviceOptions:0 presentationOptions:v9 appleInternalOptions:v10];
+    [(SSScreenCapturer *)self _takeScreenshotWithOptionsCollection:collectionCopy serviceOptions:0 presentationOptions:optionsCopy appleInternalOptions:internalOptionsCopy];
   }
 
   else
@@ -779,18 +779,18 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
   }
 }
 
-- (void)_takeScreenshotWithOptionsCollection:(id)a3 serviceOptions:(id)a4 presentationOptions:(id)a5 appleInternalOptions:(id)a6
+- (void)_takeScreenshotWithOptionsCollection:(id)collection serviceOptions:(id)options presentationOptions:(id)presentationOptions appleInternalOptions:(id)internalOptions
 {
   v79 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v57 = a4;
-  v56 = a5;
-  v55 = a6;
-  v10 = [MEMORY[0x1E696AFB0] UUID];
-  v59 = [v10 UUIDString];
+  collectionCopy = collection;
+  optionsCopy = options;
+  presentationOptionsCopy = presentationOptions;
+  internalOptionsCopy = internalOptions;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v58 = [MEMORY[0x1E695DF00] date];
-  v60 = [MEMORY[0x1E695DF70] array];
+  date = [MEMORY[0x1E695DF00] date];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = _SSSignpostLog();
   if (os_signpost_enabled(v11))
   {
@@ -806,7 +806,7 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
   }
 
   v70 = 0;
-  v13 = [(SSSnapshotter *)self->_snapshotter captureAvailableSnapshotsWithOptionsCollection:v53 didFindOnenessScreens:&v70];
+  v13 = [(SSSnapshotter *)self->_snapshotter captureAvailableSnapshotsWithOptionsCollection:collectionCopy didFindOnenessScreens:&v70];
   v14 = _SSSignpostLog();
   if (os_signpost_enabled(v14))
   {
@@ -825,11 +825,11 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
   v17 = os_log_create("com.apple.screenshotservices", "Capture");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [v59 shorterLoggableString];
+    shorterLoggableString = [uUIDString shorterLoggableString];
     *buf = 134218242;
     *&buf[4] = v16;
     *&buf[12] = 2112;
-    *&buf[14] = v18;
+    *&buf[14] = shorterLoggableString;
     _os_log_impl(&dword_1D9E04000, v17, OS_LOG_TYPE_INFO, "Have %ld potential snapshots for session %@", buf, 0x16u);
   }
 
@@ -854,26 +854,26 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
         }
 
         v20 = *(*(&v66 + 1) + 8 * i);
-        v21 = [v20 screen];
-        [v60 addObject:v21];
-        v22 = [v20 image];
-        v23 = [(SSScreenCapturer *)self _environmentDescriptionFromImage:v22];
+        screen = [v20 screen];
+        [array addObject:screen];
+        image = [v20 image];
+        v23 = [(SSScreenCapturer *)self _environmentDescriptionFromImage:image];
 
-        [v23 setDate:v58];
-        [v23 setSessionIdentifier:v59];
-        [v21 scale];
+        [v23 setDate:date];
+        [v23 setSessionIdentifier:uUIDString];
+        [screen scale];
         [v23 setImageScale:?];
-        [v23 setServiceOptions:v57];
-        v24 = [v56 effectivePresentationMode];
-        v25 = [MEMORY[0x1E695DF00] date];
-        [v25 timeIntervalSince1970];
+        [v23 setServiceOptions:optionsCopy];
+        effectivePresentationMode = [presentationOptionsCopy effectivePresentationMode];
+        date2 = [MEMORY[0x1E695DF00] date];
+        [date2 timeIntervalSince1970];
         v27 = v26;
 
         lastScreenshotTime = self->_lastScreenshotTime;
         self->_lastScreenshotTime = v27;
-        v29 = [(SSScreenshotsWindow *)self->_serviceWindow hasRemoteViewController];
-        v30 = v24 != 3 && v29;
-        if (v30 && (v27 - lastScreenshotTime >= 0.5 || self->_lastUsedPresentationMode != 2 || v24 != 2))
+        hasRemoteViewController = [(SSScreenshotsWindow *)self->_serviceWindow hasRemoteViewController];
+        v30 = effectivePresentationMode != 3 && hasRemoteViewController;
+        if (v30 && (v27 - lastScreenshotTime >= 0.5 || self->_lastUsedPresentationMode != 2 || effectivePresentationMode != 2))
         {
           v31 = os_log_create("com.apple.screenshotservices", "ScreenCapturer");
           if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
@@ -882,20 +882,20 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
             _os_log_impl(&dword_1D9E04000, v31, OS_LOG_TYPE_DEFAULT, "overridden effectivePresentationMode to PIP", buf, 2u);
           }
 
-          v24 = 1;
+          effectivePresentationMode = 1;
         }
 
-        self->_lastUsedPresentationMode = v24;
-        [v23 setPresentationMode:v24];
-        [v23 setAppleInternalOptions:v55];
+        self->_lastUsedPresentationMode = effectivePresentationMode;
+        [v23 setPresentationMode:effectivePresentationMode];
+        [v23 setAppleInternalOptions:internalOptionsCopy];
         [v23 setHasOnenessScreen:v70];
-        v32 = [(SSScreenCapturer *)self screenshotsWindow];
-        [v32 safeAreaInsets];
+        screenshotsWindow = [(SSScreenCapturer *)self screenshotsWindow];
+        [screenshotsWindow safeAreaInsets];
         [v23 setScreenshotsWindowSafeAreaInsets:?];
 
-        if (v21)
+        if (screen)
         {
-          v33 = [v53 screenshotOptionsForScreen:v21];
+          v33 = [collectionCopy screenshotOptionsForScreen:screen];
           v34 = v33;
           if (v33)
           {
@@ -911,12 +911,12 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
 
         if ([(SSScreenCapturer *)self _screenshotWasTakenOverBetaApp])
         {
-          v35 = [(SSScreenCapturer *)self _bundleIDForCurrentApplication];
-          if ([(SSScreenCapturer *)self _betaFeedbackEnabled:v35])
+          _bundleIDForCurrentApplication = [(SSScreenCapturer *)self _bundleIDForCurrentApplication];
+          if ([(SSScreenCapturer *)self _betaFeedbackEnabled:_bundleIDForCurrentApplication])
           {
-            [v23 setBetaApplicationBundleID:v35];
-            v36 = [(SSScreenCapturer *)self _betaApplicationName];
-            [v23 setBetaApplicationName:v36];
+            [v23 setBetaApplicationBundleID:_bundleIDForCurrentApplication];
+            _betaApplicationName = [(SSScreenCapturer *)self _betaApplicationName];
+            [v23 setBetaApplicationName:_betaApplicationName];
           }
         }
 
@@ -944,23 +944,23 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
           _Block_object_dispose(&v71, 8);
           v39 = [v37 alloc];
           v40 = [(RCPEventStreamRecorder *)self->_recap copy];
-          v41 = [(RCPScreenRecorder *)self->_recapSnapshotter snapshots];
-          v42 = [v39 initWithEventStream:v40 snapshots:v41];
+          snapshots = [(RCPScreenRecorder *)self->_recapSnapshotter snapshots];
+          v42 = [v39 initWithEventStream:v40 snapshots:snapshots];
 
           v43 = objc_alloc_init(SSEnvironmentDescriptionAppleInternalOptions);
           [v23 setAppleInternalOptions:v43];
 
-          v44 = [v23 appleInternalOptions];
-          [v44 setRecapMovie:v42];
+          appleInternalOptions = [v23 appleInternalOptions];
+          [appleInternalOptions setRecapMovie:v42];
         }
 
-        v45 = [MEMORY[0x1E69DCEB0] mainScreen];
-        v46 = v21 == v45;
+        mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+        v46 = screen == mainScreen;
 
         if (v46)
         {
-          v47 = [(SSScreenCapturer *)self _currentDisplayLayout];
-          [v23 takeElementsFromDisplayLayout:v47];
+          _currentDisplayLayout = [(SSScreenCapturer *)self _currentDisplayLayout];
+          [v23 takeElementsFromDisplayLayout:_currentDisplayLayout];
         }
 
         objc_initWeak(buf, self);
@@ -984,12 +984,12 @@ void __68__SSScreenCapturer__saveImageToPhotoLibrary_environmentDescription___bl
     while (v61);
   }
 
-  v49 = [(SSScreenCapturer *)self delegate];
+  delegate = [(SSScreenCapturer *)self delegate];
 
-  if (v49)
+  if (delegate)
   {
-    v50 = [(SSScreenCapturer *)self delegate];
-    [v50 screenCapturer:self didCaptureScreenshotsOfScreens:v60];
+    delegate2 = [(SSScreenCapturer *)self delegate];
+    [delegate2 screenCapturer:self didCaptureScreenshotsOfScreens:array];
   }
 }
 
@@ -1036,30 +1036,30 @@ void __113__SSScreenCapturer__takeScreenshotWithOptionsCollection_serviceOptions
 
 - (BOOL)_screenshotWasTakenOverBetaApp
 {
-  v2 = [(SSScreenCapturer *)self _applicationProxyForCurrentApp];
-  v3 = v2;
-  if (!v2)
+  _applicationProxyForCurrentApp = [(SSScreenCapturer *)self _applicationProxyForCurrentApp];
+  v3 = _applicationProxyForCurrentApp;
+  if (!_applicationProxyForCurrentApp)
   {
     goto LABEL_8;
   }
 
-  v4 = [v2 applicationType];
-  if (![v4 isEqualToString:@"User"])
+  applicationType = [_applicationProxyForCurrentApp applicationType];
+  if (![applicationType isEqualToString:@"User"])
   {
     goto LABEL_7;
   }
 
-  v5 = [v3 itemID];
-  if (![v5 unsignedIntegerValue])
+  itemID = [v3 itemID];
+  if (![itemID unsignedIntegerValue])
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v6 = [v3 isBetaApp];
+  isBetaApp = [v3 isBetaApp];
 
-  if ((v6 & 1) == 0)
+  if ((isBetaApp & 1) == 0)
   {
 LABEL_8:
     v7 = 0;
@@ -1074,49 +1074,49 @@ LABEL_9:
 
 - (id)_betaApplicationName
 {
-  v2 = [(SSScreenCapturer *)self _applicationProxyForCurrentApp];
-  v3 = v2;
-  if (v2)
+  _applicationProxyForCurrentApp = [(SSScreenCapturer *)self _applicationProxyForCurrentApp];
+  v3 = _applicationProxyForCurrentApp;
+  if (_applicationProxyForCurrentApp)
   {
-    v4 = [v2 itemName];
+    itemName = [_applicationProxyForCurrentApp itemName];
   }
 
   else
   {
-    v4 = 0;
+    itemName = 0;
   }
 
-  return v4;
+  return itemName;
 }
 
 - (id)_bundleIDForCurrentApplication
 {
-  v2 = [(SSScreenCapturer *)self _currentDisplayLayout];
-  v3 = [v2 elements];
-  v4 = [v3 count];
+  _currentDisplayLayout = [(SSScreenCapturer *)self _currentDisplayLayout];
+  elements = [_currentDisplayLayout elements];
+  v4 = [elements count];
 
   if (v4 == 1)
   {
-    v5 = [v2 elements];
-    v6 = [v5 objectAtIndexedSubscript:0];
+    elements2 = [_currentDisplayLayout elements];
+    v6 = [elements2 objectAtIndexedSubscript:0];
 
-    v7 = [v6 bundleIdentifier];
+    bundleIdentifier = [v6 bundleIdentifier];
   }
 
   else
   {
-    v7 = 0;
+    bundleIdentifier = 0;
   }
 
-  return v7;
+  return bundleIdentifier;
 }
 
 - (id)_applicationProxyForCurrentApp
 {
-  v2 = [(SSScreenCapturer *)self _bundleIDForCurrentApplication];
-  if (v2)
+  _bundleIDForCurrentApplication = [(SSScreenCapturer *)self _bundleIDForCurrentApplication];
+  if (_bundleIDForCurrentApplication)
   {
-    v3 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:v2];
+    v3 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:_bundleIDForCurrentApplication];
   }
 
   else
@@ -1127,9 +1127,9 @@ LABEL_9:
   return v3;
 }
 
-- (BOOL)_betaFeedbackEnabled:(id)a3
+- (BOOL)_betaFeedbackEnabled:(id)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -1148,19 +1148,19 @@ LABEL_9:
 
   v5 = v4;
   _Block_object_dispose(&v10, 8);
-  v6 = [[v4 alloc] initForAppWithIdentifier:v3];
-  v7 = [v6 isProactiveFeedbackEnabledForInstalledVersion];
+  v6 = [[v4 alloc] initForAppWithIdentifier:enabledCopy];
+  isProactiveFeedbackEnabledForInstalledVersion = [v6 isProactiveFeedbackEnabledForInstalledVersion];
 
-  return v7;
+  return isProactiveFeedbackEnabledForInstalledVersion;
 }
 
 + (BOOL)_filesAppExistsOnSystem
 {
   v2 = [MEMORY[0x1E69635E0] applicationProxyForIdentifier:@"com.apple.DocumentsApp"];
-  v3 = [v2 appState];
-  v4 = [v3 isInstalled];
+  appState = [v2 appState];
+  isInstalled = [appState isInstalled];
 
-  return v4;
+  return isInstalled;
 }
 
 - (id)_currentDisplayLayout
@@ -1169,8 +1169,8 @@ LABEL_9:
   if (!layoutMonitor)
   {
     v4 = MEMORY[0x1E699FAE0];
-    v5 = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
-    v6 = [v4 monitorWithConfiguration:v5];
+    configurationForDefaultMainDisplayMonitor = [MEMORY[0x1E699FAF8] configurationForDefaultMainDisplayMonitor];
+    v6 = [v4 monitorWithConfiguration:configurationForDefaultMainDisplayMonitor];
     v7 = self->_layoutMonitor;
     self->_layoutMonitor = v6;
 
@@ -1209,21 +1209,21 @@ LABEL_9:
   v2(1108);
 }
 
-- (void)server:(id)a3 handleRequest:(id)a4 withCompletion:(id)a5
+- (void)server:(id)server handleRequest:(id)request withCompletion:(id)completion
 {
-  v12 = a4;
-  v7 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   [(SSScreenshotsWindow *)self->_serviceWindow activateRemoteViewControllerIfAppropriate];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v12;
-    v9 = [v8 image];
-    v10 = [(SSScreenCapturer *)self _environmentDescriptionFromImage:v9];
-    v11 = [v8 options];
+    v8 = requestCopy;
+    image = [v8 image];
+    v10 = [(SSScreenCapturer *)self _environmentDescriptionFromImage:image];
+    options = [v8 options];
 
-    [(SSScreenCapturerPresentationOptions *)v10 setServiceOptions:v11];
-    [(SSScreenCapturer *)self _sendEnvironmentDescription:v10 savingImageToPhotos:v9 withCompletion:v7];
+    [(SSScreenCapturerPresentationOptions *)v10 setServiceOptions:options];
+    [(SSScreenCapturer *)self _sendEnvironmentDescription:v10 savingImageToPhotos:image withCompletion:completionCopy];
   }
 
   else
@@ -1231,9 +1231,9 @@ LABEL_9:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = v12;
-      v9 = [(SSScreenCapturer *)self _testingCoordinator];
-      [v9 handleRunPPTRequest:v10];
+      v10 = requestCopy;
+      image = [(SSScreenCapturer *)self _testingCoordinator];
+      [image handleRunPPTRequest:v10];
     }
 
     else
@@ -1244,10 +1244,10 @@ LABEL_9:
         goto LABEL_8;
       }
 
-      v9 = [v12 options];
+      image = [requestCopy options];
       v10 = objc_alloc_init(SSScreenCapturerPresentationOptions);
       [(SSScreenCapturerPresentationOptions *)v10 setPresentationMode:1];
-      [(SSScreenCapturer *)self _takeScreenshotWithOptionsCollection:0 serviceOptions:v9 presentationOptions:v10 appleInternalOptions:0];
+      [(SSScreenCapturer *)self _takeScreenshotWithOptionsCollection:0 serviceOptions:image presentationOptions:v10 appleInternalOptions:0];
     }
   }
 
@@ -1270,12 +1270,12 @@ LABEL_8:
   return testingCoordinator;
 }
 
-- (void)testingCoordinator:(id)a3 requestsTakingScreenshotForRunPPTRequest:(id)a4
+- (void)testingCoordinator:(id)coordinator requestsTakingScreenshotForRunPPTRequest:(id)request
 {
-  v5 = a4;
+  requestCopy = request;
   v6 = objc_alloc_init(SSEnvironmentDescriptionAppleInternalOptions);
-  [(SSEnvironmentDescriptionAppleInternalOptions *)v6 setRunPPTServiceRequest:v5];
-  if ([v5 numberOfRequiredScreenshots])
+  [(SSEnvironmentDescriptionAppleInternalOptions *)v6 setRunPPTServiceRequest:requestCopy];
+  if ([requestCopy numberOfRequiredScreenshots])
   {
     v7 = 0;
     v8 = MEMORY[0x1E69E96A0];
@@ -1291,7 +1291,7 @@ LABEL_8:
       dispatch_after(v9, v8, v10);
     }
 
-    while (v7 < [v5 numberOfRequiredScreenshots]);
+    while (v7 < [requestCopy numberOfRequiredScreenshots]);
   }
 }
 

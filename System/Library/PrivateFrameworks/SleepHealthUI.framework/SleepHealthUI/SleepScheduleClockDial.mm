@@ -1,13 +1,13 @@
 @interface SleepScheduleClockDial
-- (_TtC13SleepHealthUI22SleepScheduleClockDial)initWithCoder:(id)a3;
-- (_TtC13SleepHealthUI22SleepScheduleClockDial)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC13SleepHealthUI22SleepScheduleClockDial)initWithCoder:(id)coder;
+- (_TtC13SleepHealthUI22SleepScheduleClockDial)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
 @implementation SleepScheduleClockDial
 
-- (_TtC13SleepHealthUI22SleepScheduleClockDial)initWithCoder:(id)a3
+- (_TtC13SleepHealthUI22SleepScheduleClockDial)initWithCoder:(id)coder
 {
   sub_269D9A8E0();
   sub_269D9A8D0();
@@ -32,16 +32,16 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_269CE9214();
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   sub_269D9A8E0();
   sub_269D9A8D0();
   sub_269D9A880();
@@ -50,11 +50,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_269CE94D0(x, y, width, height);
 }
 
-- (_TtC13SleepHealthUI22SleepScheduleClockDial)initWithFrame:(CGRect)a3
+- (_TtC13SleepHealthUI22SleepScheduleClockDial)initWithFrame:(CGRect)frame
 {
   sub_269D9A8E0();
   sub_269D9A8D0();

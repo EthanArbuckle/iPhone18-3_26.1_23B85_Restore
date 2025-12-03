@@ -1,24 +1,24 @@
 @interface ETQuadCurvePointFIFO
-- (ETQuadCurvePointFIFO)initWithFIFO:(id)a3;
-- (char)setControlPoints:(char *)a3;
-- (char)setPoints:(char *)a3;
-- (char)setPrevPoints:(char *)a3;
+- (ETQuadCurvePointFIFO)initWithFIFO:(id)o;
+- (char)setControlPoints:(char *)points;
+- (char)setPoints:(char *)points;
+- (char)setPrevPoints:(char *)points;
 - (id).cxx_construct;
 - (uint64_t)controlPoints;
 - (uint64_t)points;
 - (uint64_t)prevPoints;
-- (void)addPoints:(ETQuadCurvePointFIFO *)self count:(SEL)a2;
+- (void)addPoints:(ETQuadCurvePointFIFO *)self count:(SEL)count;
 - (void)clear;
 - (void)flush;
 @end
 
 @implementation ETQuadCurvePointFIFO
 
-- (ETQuadCurvePointFIFO)initWithFIFO:(id)a3
+- (ETQuadCurvePointFIFO)initWithFIFO:(id)o
 {
   v4.receiver = self;
   v4.super_class = ETQuadCurvePointFIFO;
-  result = [(ETPointFIFO *)&v4 initWithFIFO:a3];
+  result = [(ETPointFIFO *)&v4 initWithFIFO:o];
   if (result)
   {
     result->_unitSize = 1.0;
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (void)addPoints:(ETQuadCurvePointFIFO *)self count:(SEL)a2
+- (void)addPoints:(ETQuadCurvePointFIFO *)self count:(SEL)count
 {
   if (v3)
   {
@@ -206,15 +206,15 @@
   a2[1] = 0;
   a2[2] = 0;
   *a2 = 0;
-  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(a1 + 40), *(a1 + 48), (*(a1 + 48) - *(a1 + 40)) >> 3);
+  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(self + 40), *(self + 48), (*(self + 48) - *(self + 40)) >> 3);
 }
 
-- (char)setPrevPoints:(char *)a3
+- (char)setPrevPoints:(char *)points
 {
-  result = (a1 + 40);
-  if (result != a3)
+  result = (self + 40);
+  if (result != points)
   {
-    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *a3, a3[1], (a3[1] - *a3) >> 3);
+    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *points, points[1], (points[1] - *points) >> 3);
   }
 
   return result;
@@ -225,15 +225,15 @@
   a2[1] = 0;
   a2[2] = 0;
   *a2 = 0;
-  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(a1 + 64), *(a1 + 72), (*(a1 + 72) - *(a1 + 64)) >> 3);
+  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(self + 64), *(self + 72), (*(self + 72) - *(self + 64)) >> 3);
 }
 
-- (char)setPoints:(char *)a3
+- (char)setPoints:(char *)points
 {
-  result = (a1 + 64);
-  if (result != a3)
+  result = (self + 64);
+  if (result != points)
   {
-    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *a3, a3[1], (a3[1] - *a3) >> 3);
+    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *points, points[1], (points[1] - *points) >> 3);
   }
 
   return result;
@@ -244,15 +244,15 @@
   a2[1] = 0;
   a2[2] = 0;
   *a2 = 0;
-  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(a1 + 88), *(a1 + 96), (*(a1 + 96) - *(a1 + 88)) >> 3);
+  return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(a2, *(self + 88), *(self + 96), (*(self + 96) - *(self + 88)) >> 3);
 }
 
-- (char)setControlPoints:(char *)a3
+- (char)setControlPoints:(char *)points
 {
-  result = (a1 + 88);
-  if (result != a3)
+  result = (self + 88);
+  if (result != points)
   {
-    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *a3, a3[1], (a3[1] - *a3) >> 3);
+    return _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEE18__assign_with_sizeB8ne200100IPS1_S6_EEvT_T0_l(result, *points, points[1], (points[1] - *points) >> 3);
   }
 
   return result;

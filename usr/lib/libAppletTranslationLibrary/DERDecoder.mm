@@ -1,16 +1,16 @@
 @interface DERDecoder
-+ (id)DecodeItem:(id)a3 outTag:(unint64_t *)a4 outError:(id *)a5;
-+ (id)dataWithSource:(id)a3 item:(id *)a4;
++ (id)DecodeItem:(id)item outTag:(unint64_t *)tag outError:(id *)error;
++ (id)dataWithSource:(id)source item:(id *)item;
 @end
 
 @implementation DERDecoder
 
-+ (id)DecodeItem:(id)a3 outTag:(unint64_t *)a4 outError:(id *)a5
++ (id)DecodeItem:(id)item outTag:(unint64_t *)tag outError:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v28[0] = [v7 bytes];
-  v28[1] = [v7 length];
+  itemCopy = item;
+  v28[0] = [itemCopy bytes];
+  v28[1] = [itemCopy length];
   v26 = 0;
   v27[0] = 0;
   v27[1] = 0;
@@ -22,7 +22,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v34 = v7;
+      v34 = itemCopy;
       v35 = 1024;
       v36 = v9;
       v37 = 2048;
@@ -31,14 +31,14 @@
     }
 
     v11 = objc_alloc(MEMORY[0x277CCACA8]);
-    v12 = [v11 initWithFormat:@"Failed to decode item %@ : %d (0x%llx)", v7, v9, v26];
+    v12 = [v11 initWithFormat:@"Failed to decode item %@ : %d (0x%llx)", itemCopy, v9, v26];
     v13 = v12;
-    if (a5)
+    if (error)
     {
-      v14 = *a5;
+      v14 = *error;
       v15 = MEMORY[0x277CCA9B8];
       v16 = *MEMORY[0x277CCA450];
-      if (*a5)
+      if (*error)
       {
         v17 = *MEMORY[0x277CCA7E8];
         v29[0] = *MEMORY[0x277CCA450];
@@ -62,7 +62,7 @@
       }
 
       v23 = [v18 dictionaryWithObjects:v19 forKeys:v20 count:v21];
-      *a5 = [v15 errorWithDomain:@"ATL" code:8 userInfo:v23];
+      *error = [v15 errorWithDomain:@"ATL" code:8 userInfo:v23];
     }
 
     v22 = 0;
@@ -70,12 +70,12 @@
 
   else
   {
-    if (a4)
+    if (tag)
     {
-      *a4 = v26;
+      *tag = v26;
     }
 
-    v22 = [DERDecoder dataWithSource:v7 item:v27];
+    v22 = [DERDecoder dataWithSource:itemCopy item:v27];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -83,11 +83,11 @@
   return v22;
 }
 
-+ (id)dataWithSource:(id)a3 item:(id *)a4
++ (id)dataWithSource:(id)source item:(id *)item
 {
-  var0 = a4->var0;
-  v6 = a3;
-  v7 = [v6 subdataWithRange:{&var0[-objc_msgSend(v6, "bytes")], a4->var1}];
+  var0 = item->var0;
+  sourceCopy = source;
+  v7 = [sourceCopy subdataWithRange:{&var0[-objc_msgSend(sourceCopy, "bytes")], item->var1}];
 
   return v7;
 }

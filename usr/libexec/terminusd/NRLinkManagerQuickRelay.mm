@@ -1,22 +1,22 @@
 @interface NRLinkManagerQuickRelay
 - (id)copyStatusString;
 - (void)cancel;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 - (void)dealloc;
 - (void)invalidateManager;
-- (void)linkDidReceiveData:(id)a3 data:(id)a4;
-- (void)linkIsAvailable:(id)a3;
-- (void)linkIsReady:(id)a3;
-- (void)linkIsSuspended:(id)a3;
-- (void)linkIsUnavailable:(id)a3;
+- (void)linkDidReceiveData:(id)data data:(id)a4;
+- (void)linkIsAvailable:(id)available;
+- (void)linkIsReady:(id)ready;
+- (void)linkIsSuspended:(id)suspended;
+- (void)linkIsUnavailable:(id)unavailable;
 @end
 
 @implementation NRLinkManagerQuickRelay
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v12 = a3;
-  v6 = a4;
+  connectionCopy = connection;
+  tokenCopy = token;
   if (qword_1002291D0 != -1)
   {
     dispatch_once(&qword_1002291D0, &stru_1001FBED8);
@@ -29,23 +29,23 @@
       dispatch_once(&qword_1002291D0, &stru_1001FBED8);
     }
 
-    v10 = v12;
-    v11 = v6;
+    v10 = connectionCopy;
+    v11 = tokenCopy;
     v9 = 300;
     v7 = "";
     v8 = "[NRLinkManagerQuickRelay connection:didReceivePublicToken:]";
     _NRLogWithArgs();
   }
 
-  -[NRLinkManagerQuickRelay connection:didChangeConnectedStatus:](self, "connection:didChangeConnectedStatus:", v12, [v12 isConnected]);
+  -[NRLinkManagerQuickRelay connection:didChangeConnectedStatus:](self, "connection:didChangeConnectedStatus:", connectionCopy, [connectionCopy isConnected]);
 }
 
-- (void)linkDidReceiveData:(id)a3 data:(id)a4
+- (void)linkDidReceiveData:(id)data data:(id)a4
 {
-  v6 = a3;
+  dataCopy = data;
   v7 = a4;
   v8 = v7;
-  if (!v6)
+  if (!dataCopy)
   {
     v12 = sub_10012141C();
     IsLevelEnabled = _NRLogIsLevelEnabled();
@@ -95,31 +95,31 @@ LABEL_10:
   block[2] = sub_100121470;
   block[3] = &unk_1001FD088;
   block[4] = self;
-  v18 = v6;
+  v18 = dataCopy;
   v19 = v8;
   dispatch_async(v11, block);
 
 LABEL_6:
 }
 
-- (void)linkIsUnavailable:(id)a3
+- (void)linkIsUnavailable:(id)unavailable
 {
-  v4 = a3;
-  if (v4)
+  unavailableCopy = unavailable;
+  if (unavailableCopy)
   {
     if (self)
     {
       v5 = self->super._queue;
       dispatch_assert_queue_V2(v5);
 
-      [(NSMutableSet *)self->_links removeObject:v4];
+      [(NSMutableSet *)self->_links removeObject:unavailableCopy];
       queue = self->super._queue;
     }
 
     else
     {
       dispatch_assert_queue_V2(0);
-      [0 removeObject:v4];
+      [0 removeObject:unavailableCopy];
       queue = 0;
     }
 
@@ -129,7 +129,7 @@ LABEL_6:
     block[2] = sub_10012161C;
     block[3] = &unk_1001FD060;
     block[4] = self;
-    v12 = v4;
+    v12 = unavailableCopy;
     dispatch_async(v7, block);
 
     sub_10012167C(self);
@@ -148,10 +148,10 @@ LABEL_6:
   }
 }
 
-- (void)linkIsReady:(id)a3
+- (void)linkIsReady:(id)ready
 {
-  v4 = a3;
-  if (v4)
+  readyCopy = ready;
+  if (readyCopy)
   {
     if (self)
     {
@@ -172,8 +172,8 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = sub_100121BF0;
     block[3] = &unk_1001FD060;
-    v12 = v4;
-    v13 = self;
+    v12 = readyCopy;
+    selfCopy = self;
     dispatch_async(v7, block);
   }
 
@@ -190,10 +190,10 @@ LABEL_6:
   }
 }
 
-- (void)linkIsSuspended:(id)a3
+- (void)linkIsSuspended:(id)suspended
 {
-  v4 = a3;
-  if (v4)
+  suspendedCopy = suspended;
+  if (suspendedCopy)
   {
     if (self)
     {
@@ -214,8 +214,8 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = sub_100121E34;
     block[3] = &unk_1001FD060;
-    v12 = v4;
-    v13 = self;
+    v12 = suspendedCopy;
+    selfCopy = self;
     dispatch_async(v7, block);
   }
 
@@ -232,24 +232,24 @@ LABEL_6:
   }
 }
 
-- (void)linkIsAvailable:(id)a3
+- (void)linkIsAvailable:(id)available
 {
-  v4 = a3;
-  if (v4)
+  availableCopy = available;
+  if (availableCopy)
   {
     if (self)
     {
       v5 = self->super._queue;
       dispatch_assert_queue_V2(v5);
 
-      [(NSMutableSet *)self->_links addObject:v4];
+      [(NSMutableSet *)self->_links addObject:availableCopy];
       queue = self->super._queue;
     }
 
     else
     {
       dispatch_assert_queue_V2(0);
-      [0 addObject:v4];
+      [0 addObject:availableCopy];
       queue = 0;
     }
 
@@ -258,8 +258,8 @@ LABEL_6:
     block[1] = 3221225472;
     block[2] = sub_100122098;
     block[3] = &unk_1001FD060;
-    v12 = v4;
-    v13 = self;
+    v12 = availableCopy;
+    selfCopy = self;
     dispatch_async(v7, block);
   }
 
@@ -292,8 +292,8 @@ LABEL_6:
   dispatch_assert_queue_V2(v4);
 
   v5 = objc_alloc_init(NSMutableString);
-  v6 = [(NRLinkManagerQuickRelay *)self copyName];
-  [v5 appendFormat:@"\nName: %@", v6];
+  copyName = [(NRLinkManagerQuickRelay *)self copyName];
+  [v5 appendFormat:@"\nName: %@", copyName];
 
   if (!self)
   {
@@ -323,7 +323,7 @@ LABEL_6:
       case 0x3EC:
         v11 = "Cancelled";
 LABEL_18:
-        v12 = [v10 initWithUTF8String:v11];
+        state = [v10 initWithUTF8String:v11];
         goto LABEL_19;
     }
 
@@ -344,10 +344,10 @@ LABEL_17:
   }
 
 LABEL_14:
-  v12 = [v10 initWithFormat:@"Unknown(%u)", state];
+  state = [v10 initWithFormat:@"Unknown(%u)", state];
 LABEL_19:
-  v14 = v12;
-  [v5 appendFormat:@"\nState: %@", v12];
+  v14 = state;
+  [v5 appendFormat:@"\nState: %@", state];
 
   return v5;
 }
@@ -367,7 +367,7 @@ LABEL_19:
     }
 
     v5 = 89;
-    v6 = self;
+    selfCopy = self;
     v3 = "";
     v4 = "[NRLinkManagerQuickRelay dealloc]";
     _NRLogWithArgs();

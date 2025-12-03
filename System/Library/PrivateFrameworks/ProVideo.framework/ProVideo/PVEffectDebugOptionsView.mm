@@ -1,37 +1,37 @@
 @interface PVEffectDebugOptionsView
-- (PVEffectDebugOptionsView)initWithFrame:(CGRect)a3 options:(id)a4;
+- (PVEffectDebugOptionsView)initWithFrame:(CGRect)frame options:(id)options;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateWithOptions:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateWithOptions:(id)options;
 @end
 
 @implementation PVEffectDebugOptionsView
 
 - (void)dealloc
 {
-  v3 = [(PVEffectDebugOptionsView *)self options];
-  [v3 removeObserver:self forKeyPath:@"enabled"];
+  options = [(PVEffectDebugOptionsView *)self options];
+  [options removeObserver:self forKeyPath:@"enabled"];
 
   v4.receiver = self;
   v4.super_class = PVEffectDebugOptionsView;
   [(PVEffectDebugOptionsView *)&v4 dealloc];
 }
 
-- (PVEffectDebugOptionsView)initWithFrame:(CGRect)a3 options:(id)a4
+- (PVEffectDebugOptionsView)initWithFrame:(CGRect)frame options:(id)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v224[4] = *MEMORY[0x277D85DE8];
-  v9 = a4;
+  optionsCopy = options;
   v207.receiver = self;
   v207.super_class = PVEffectDebugOptionsView;
-  v10 = [(PVEffectDebugOptionsView *)&v207 initWithFrame:x, y, width, height];
-  v11 = v10;
-  if (v10)
+  height = [(PVEffectDebugOptionsView *)&v207 initWithFrame:x, y, width, height];
+  v11 = height;
+  if (height)
   {
-    [(PVEffectDebugOptionsView *)v10 setOptions:v9];
+    [(PVEffectDebugOptionsView *)height setOptions:optionsCopy];
     v12 = objc_alloc(MEMORY[0x277D75A68]);
     [(PVEffectDebugOptionsView *)v11 bounds];
     v13 = [v12 initWithFrame:?];
@@ -44,27 +44,27 @@
     [v13 setLayoutMarginsRelativeArrangement:1];
     [(PVEffectDebugOptionsView *)v11 addSubview:v13];
     v169 = MEMORY[0x277CCAAD0];
-    v178 = [(PVEffectDebugOptionsView *)v11 layoutMarginsGuide];
-    v175 = [v178 leadingAnchor];
-    v174 = [v13 leadingAnchor];
-    v173 = [v175 constraintEqualToAnchor:v174];
+    layoutMarginsGuide = [(PVEffectDebugOptionsView *)v11 layoutMarginsGuide];
+    leadingAnchor = [layoutMarginsGuide leadingAnchor];
+    leadingAnchor2 = [v13 leadingAnchor];
+    v173 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v224[0] = v173;
-    v172 = [(PVEffectDebugOptionsView *)v11 layoutMarginsGuide];
-    v171 = [v172 trailingAnchor];
-    v170 = [v13 trailingAnchor];
-    [v171 constraintEqualToAnchor:v170];
-    v168 = v177 = v9;
+    layoutMarginsGuide2 = [(PVEffectDebugOptionsView *)v11 layoutMarginsGuide];
+    trailingAnchor = [layoutMarginsGuide2 trailingAnchor];
+    trailingAnchor2 = [v13 trailingAnchor];
+    [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
+    v168 = v177 = optionsCopy;
     v224[1] = v168;
-    v14 = [(PVEffectDebugOptionsView *)v11 layoutMarginsGuide];
-    v15 = [v14 topAnchor];
-    v16 = [v13 topAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    layoutMarginsGuide3 = [(PVEffectDebugOptionsView *)v11 layoutMarginsGuide];
+    topAnchor = [layoutMarginsGuide3 topAnchor];
+    topAnchor2 = [v13 topAnchor];
+    v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v224[2] = v17;
     v176 = v11;
-    v18 = [(PVEffectDebugOptionsView *)v11 layoutMarginsGuide];
-    v19 = [v18 bottomAnchor];
-    v20 = [v13 bottomAnchor];
-    v21 = [v19 constraintGreaterThanOrEqualToAnchor:v20];
+    layoutMarginsGuide4 = [(PVEffectDebugOptionsView *)v11 layoutMarginsGuide];
+    bottomAnchor = [layoutMarginsGuide4 bottomAnchor];
+    bottomAnchor2 = [v13 bottomAnchor];
+    v21 = [bottomAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor2];
     v224[3] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v224 count:4];
     [v169 activateConstraints:v22];
@@ -114,8 +114,8 @@
     v42 = v41;
     [v40 frame];
     v44 = v43;
-    v45 = [MEMORY[0x277D759A0] mainScreen];
-    [v45 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v47 = v46;
     v225.width = v42;
     v225.height = v44;
@@ -128,14 +128,14 @@
     v221[1] = v49;
     v220[2] = @"on";
     v50 = MEMORY[0x277CCABB0];
-    v51 = [v29 showDocumentBoundingBox];
-    v52 = 0;
-    if (v51)
+    showDocumentBoundingBox = [v29 showDocumentBoundingBox];
+    showOrigin = 0;
+    if (showDocumentBoundingBox)
     {
-      v52 = [v29 showOrigin];
+      showOrigin = [v29 showOrigin];
     }
 
-    v53 = [v50 numberWithInt:v52];
+    v53 = [v50 numberWithInt:showOrigin];
     v221[2] = v53;
     v220[3] = @"action";
     v54 = MEMORY[0x277D750C8];
@@ -163,8 +163,8 @@
     v64 = v63;
     [v62 frame];
     v66 = v65;
-    v67 = [MEMORY[0x277D759A0] mainScreen];
-    [v67 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     v69 = v68;
     v226.width = v64;
     v226.height = v66;
@@ -204,8 +204,8 @@
     v83 = v82;
     [v81 frame];
     v85 = v84;
-    v86 = [MEMORY[0x277D759A0] mainScreen];
-    [v86 scale];
+    mainScreen3 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen3 scale];
     v88 = v87;
     v227.width = v83;
     v227.height = v85;
@@ -220,15 +220,15 @@
     v91 = MEMORY[0x277CCABB0];
     if ([v74 showObjectAlignedBoundingBox] && objc_msgSend(v74, "showMidpoint"))
     {
-      v92 = [v74 showCornerPoints];
+      showCornerPoints = [v74 showCornerPoints];
     }
 
     else
     {
-      v92 = 0;
+      showCornerPoints = 0;
     }
 
-    v93 = [v91 numberWithInt:v92];
+    v93 = [v91 numberWithInt:showCornerPoints];
     v217[2] = v93;
     v216[3] = @"action";
     v94 = MEMORY[0x277D750C8];
@@ -256,8 +256,8 @@
     v104 = v103;
     [v102 frame];
     v106 = v105;
-    v107 = [MEMORY[0x277D759A0] mainScreen];
-    [v107 scale];
+    mainScreen4 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen4 scale];
     v109 = v108;
     v228.width = v104;
     v228.height = v106;
@@ -270,14 +270,14 @@
     v215[1] = v111;
     v214[2] = @"on";
     v112 = MEMORY[0x277CCABB0];
-    v113 = [v95 showTextBoundingBoxes];
-    v114 = 0;
-    if (v113)
+    showTextBoundingBoxes = [v95 showTextBoundingBoxes];
+    showTextCornerPoints = 0;
+    if (showTextBoundingBoxes)
     {
-      v114 = [v95 showTextCornerPoints];
+      showTextCornerPoints = [v95 showTextCornerPoints];
     }
 
-    v115 = [v112 numberWithInt:v114];
+    v115 = [v112 numberWithInt:showTextCornerPoints];
     v215[2] = v115;
     v214[3] = @"action";
     v116 = MEMORY[0x277D750C8];
@@ -305,8 +305,8 @@
     v126 = v125;
     [v124 frame];
     v128 = v127;
-    v129 = [MEMORY[0x277D759A0] mainScreen];
-    [v129 scale];
+    mainScreen5 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen5 scale];
     v131 = v130;
     v229.width = v126;
     v229.height = v128;
@@ -319,14 +319,14 @@
     v213[1] = v133;
     v212[2] = @"on";
     v134 = MEMORY[0x277CCABB0];
-    v135 = [v117 showHitAreaShape];
-    v136 = 0;
-    if (v135)
+    showHitAreaShape = [v117 showHitAreaShape];
+    showHitAreaPoints = 0;
+    if (showHitAreaShape)
     {
-      v136 = [v117 showHitAreaPoints];
+      showHitAreaPoints = [v117 showHitAreaPoints];
     }
 
-    v137 = [v134 numberWithInt:v136];
+    v137 = [v134 numberWithInt:showHitAreaPoints];
     v213[2] = v137;
     v212[3] = @"action";
     v138 = MEMORY[0x277D750C8];
@@ -399,24 +399,24 @@
     v162 = [(PVEffectDebugKeyRowView *)v156 initWithFrame:v161 config:v32, v33, v34, v35];
 
     [v179 addArrangedSubview:v162];
-    v163 = [MEMORY[0x277CBEB18] array];
-    v164 = [v179 arrangedSubviews];
+    array = [MEMORY[0x277CBEB18] array];
+    arrangedSubviews = [v179 arrangedSubviews];
     v180[0] = MEMORY[0x277D85DD0];
     v180[1] = *"";
     v180[2] = __50__PVEffectDebugOptionsView_initWithFrame_options___block_invoke_9;
     v180[3] = &unk_279AA4BD8;
-    v181 = v163;
+    v181 = array;
     v182 = v179;
     v165 = v179;
-    v166 = v163;
-    [v164 enumerateObjectsUsingBlock:v180];
+    v166 = array;
+    [arrangedSubviews enumerateObjectsUsingBlock:v180];
 
     [MEMORY[0x277CCAAD0] activateConstraints:v166];
     v11 = v176;
     [(PVEffectDebugOptionsView *)v176 updateWithOptions:v159];
     [v159 addObserver:v176 forKeyPath:@"enabled" options:1 context:0];
 
-    v9 = v177;
+    optionsCopy = v177;
   }
 
   return v11;
@@ -543,18 +543,18 @@ void __50__PVEffectDebugOptionsView_initWithFrame_options___block_invoke_9(uint6
   [v3 addObject:v8];
 }
 
-- (void)updateWithOptions:(id)a3
+- (void)updateWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(PVEffectDebugOptionsView *)self rowsStackView];
-  v6 = [v5 arrangedSubviews];
+  optionsCopy = options;
+  rowsStackView = [(PVEffectDebugOptionsView *)self rowsStackView];
+  arrangedSubviews = [rowsStackView arrangedSubviews];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = *"";
   v8[2] = __46__PVEffectDebugOptionsView_updateWithOptions___block_invoke;
   v8[3] = &unk_279AA4C00;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateObjectsUsingBlock:v8];
+  v9 = optionsCopy;
+  v7 = optionsCopy;
+  [arrangedSubviews enumerateObjectsUsingBlock:v8];
 }
 
 void __46__PVEffectDebugOptionsView_updateWithOptions___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -575,20 +575,20 @@ void __46__PVEffectDebugOptionsView_updateWithOptions___block_invoke(uint64_t a1
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v14 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v14 isEqualToString:@"enabled"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"enabled"])
   {
-    v11 = [v10 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
-    v12 = [v11 BOOLValue];
+    v11 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    bOOLValue = [v11 BOOLValue];
 
-    v13 = [MEMORY[0x277CCABB0] numberWithBool:v12];
-    NSLog(&cfstr_UpdatedFor.isa, v13, v14);
+    v13 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
+    NSLog(&cfstr_UpdatedFor.isa, v13, pathCopy);
 
-    [(PVEffectDebugOptionsView *)self updateWithOptions:v9];
+    [(PVEffectDebugOptionsView *)self updateWithOptions:objectCopy];
   }
 }
 

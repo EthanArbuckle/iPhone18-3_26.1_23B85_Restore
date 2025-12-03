@@ -1,13 +1,13 @@
 @interface StickerPickerViewController
 - (_TtC10StickerKit27StickerPickerViewController)init;
-- (_TtC10StickerKit27StickerPickerViewController)initWithCoder:(id)a3;
-- (_TtC10StickerKit27StickerPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10StickerKit27StickerPickerViewController)initWithCoder:(id)coder;
+- (_TtC10StickerKit27StickerPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
 @implementation StickerPickerViewController
 
-- (_TtC10StickerKit27StickerPickerViewController)initWithCoder:(id)a3
+- (_TtC10StickerKit27StickerPickerViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC10StickerKit27StickerPickerViewController_sceneViewController;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(STKStickerPickerSceneViewController) init];
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC10StickerKit27StickerPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10StickerKit27StickerPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v5 = OBJC_IVAR____TtC10StickerKit27StickerPickerViewController_sceneViewController;
   *(&self->super.super.super.isa + v5) = [objc_allocWithZone(STKStickerPickerSceneViewController) init];
@@ -42,7 +42,7 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_19A75537C();
 }
 

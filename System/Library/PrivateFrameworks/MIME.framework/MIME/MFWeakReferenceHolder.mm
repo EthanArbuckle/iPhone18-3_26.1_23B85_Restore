@@ -1,6 +1,6 @@
 @interface MFWeakReferenceHolder
-+ (id)weakReferenceWithObject:(id)a3;
-- (id)_initWithObject:(id)a3;
++ (id)weakReferenceWithObject:(id)object;
+- (id)_initWithObject:(id)object;
 - (void)dealloc;
 @end
 
@@ -14,7 +14,7 @@
   [(MFWeakReferenceHolder *)&v3 dealloc];
 }
 
-- (id)_initWithObject:(id)a3
+- (id)_initWithObject:(id)object
 {
   v8.receiver = self;
   v8.super_class = MFWeakReferenceHolder;
@@ -22,14 +22,14 @@
   v6 = v5;
   if (v5)
   {
-    if (a3)
+    if (object)
     {
-      if (!objc_storeWeak(&v5->_reference, a3))
+      if (!objc_storeWeak(&v5->_reference, object))
       {
-        [(MFWeakReferenceHolder *)a2 _initWithObject:v6, a3];
+        [(MFWeakReferenceHolder *)a2 _initWithObject:v6, object];
       }
 
-      objc_setAssociatedObject(a3, sWeakReferenceKey, v6, 1);
+      objc_setAssociatedObject(object, sWeakReferenceKey, v6, 1);
     }
 
     else
@@ -42,13 +42,13 @@
   return v6;
 }
 
-+ (id)weakReferenceWithObject:(id)a3
++ (id)weakReferenceWithObject:(id)object
 {
   os_unfair_lock_lock(&weakReferenceWithObject__lock);
-  v4 = objc_getAssociatedObject(a3, sWeakReferenceKey);
+  v4 = objc_getAssociatedObject(object, sWeakReferenceKey);
   if (!v4)
   {
-    v4 = [[MFWeakReferenceHolder alloc] _initWithObject:a3];
+    v4 = [[MFWeakReferenceHolder alloc] _initWithObject:object];
   }
 
   os_unfair_lock_unlock(&weakReferenceWithObject__lock);

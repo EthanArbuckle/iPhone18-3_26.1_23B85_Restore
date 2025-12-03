@@ -1,33 +1,33 @@
 @interface RTHintManager
 + (id)vendedClasses;
-- (RTHintManager)initWithBatteryManager:(id)a3 bluetoothManager:(id)a4 cameraManager:(id)a5 hintStore:(id)a6 learnedLocationManager:(id)a7 locationManager:(id)a8 metricManager:(id)a9 navigationManager:(id)a10 reachabilityManager:(id)a11 walletManager:(id)a12;
-- (void)_onBatteryNotification:(id)a3;
-- (void)_onBluetoothNotification:(id)a3;
-- (void)_onCameraNotification:(id)a3;
-- (void)_onLearnedLocationNotification:(id)a3;
-- (void)_onNavigationNotification:(id)a3;
-- (void)_onReachabilityChange:(id)a3;
-- (void)_onWalletNotification:(id)a3;
+- (RTHintManager)initWithBatteryManager:(id)manager bluetoothManager:(id)bluetoothManager cameraManager:(id)cameraManager hintStore:(id)store learnedLocationManager:(id)locationManager locationManager:(id)a8 metricManager:(id)metricManager navigationManager:(id)self0 reachabilityManager:(id)self1 walletManager:(id)self2;
+- (void)_onBatteryNotification:(id)notification;
+- (void)_onBluetoothNotification:(id)notification;
+- (void)_onCameraNotification:(id)notification;
+- (void)_onLearnedLocationNotification:(id)notification;
+- (void)_onNavigationNotification:(id)notification;
+- (void)_onReachabilityChange:(id)change;
+- (void)_onWalletNotification:(id)notification;
 - (void)_registerForNotifications;
-- (void)_shutdownWithHandler:(id)a3;
-- (void)_storeHintSignificantRegion:(id)a3 hintSource:(int64_t)a4 handler:(id)a5;
-- (void)_storeHints:(id)a3 handler:(id)a4;
-- (void)_submitHintFromSource:(int64_t)a3;
-- (void)_submitHintFromSource:(int64_t)a3 location:(id)a4 handler:(id)a5;
+- (void)_shutdownWithHandler:(id)handler;
+- (void)_storeHintSignificantRegion:(id)region hintSource:(int64_t)source handler:(id)handler;
+- (void)_storeHints:(id)hints handler:(id)handler;
+- (void)_submitHintFromSource:(int64_t)source;
+- (void)_submitHintFromSource:(int64_t)source location:(id)location handler:(id)handler;
 - (void)_unregisterForNotifications;
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5;
-- (void)onBatteryNotification:(id)a3;
-- (void)onBluetoothNotification:(id)a3;
-- (void)onCameraNotification:(id)a3;
-- (void)onLearnedLocationNotification:(id)a3;
-- (void)onNavigationNotification:(id)a3;
-- (void)onReachabilityChange:(id)a3;
-- (void)onWalletNotification:(id)a3;
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5;
-- (void)storeHintSignificantRegion:(id)a3 hintSource:(int64_t)a4 handler:(id)a5;
-- (void)storeHints:(id)a3 handler:(id)a4;
-- (void)submitHintFromSource:(int64_t)a3 location:(id)a4;
-- (void)submitHintFromSource:(int64_t)a3 location:(id)a4 handler:(id)a5;
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler;
+- (void)onBatteryNotification:(id)notification;
+- (void)onBluetoothNotification:(id)notification;
+- (void)onCameraNotification:(id)notification;
+- (void)onLearnedLocationNotification:(id)notification;
+- (void)onNavigationNotification:(id)notification;
+- (void)onReachabilityChange:(id)change;
+- (void)onWalletNotification:(id)notification;
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion;
+- (void)storeHintSignificantRegion:(id)region hintSource:(int64_t)source handler:(id)handler;
+- (void)storeHints:(id)hints handler:(id)handler;
+- (void)submitHintFromSource:(int64_t)source location:(id)location;
+- (void)submitHintFromSource:(int64_t)source location:(id)location handler:(id)handler;
 @end
 
 @implementation RTHintManager
@@ -47,45 +47,45 @@
   return v2;
 }
 
-- (RTHintManager)initWithBatteryManager:(id)a3 bluetoothManager:(id)a4 cameraManager:(id)a5 hintStore:(id)a6 learnedLocationManager:(id)a7 locationManager:(id)a8 metricManager:(id)a9 navigationManager:(id)a10 reachabilityManager:(id)a11 walletManager:(id)a12
+- (RTHintManager)initWithBatteryManager:(id)manager bluetoothManager:(id)bluetoothManager cameraManager:(id)cameraManager hintStore:(id)store learnedLocationManager:(id)locationManager locationManager:(id)a8 metricManager:(id)metricManager navigationManager:(id)self0 reachabilityManager:(id)self1 walletManager:(id)self2
 {
-  v17 = a3;
-  v37 = a4;
-  v18 = a4;
-  v38 = a5;
-  v43 = a5;
-  v39 = a6;
-  v19 = a6;
-  v40 = a7;
-  v20 = a7;
+  managerCopy = manager;
+  bluetoothManagerCopy = bluetoothManager;
+  bluetoothManagerCopy2 = bluetoothManager;
+  cameraManagerCopy = cameraManager;
+  cameraManagerCopy2 = cameraManager;
+  storeCopy = store;
+  storeCopy2 = store;
+  locationManagerCopy = locationManager;
+  locationManagerCopy2 = locationManager;
   v41 = a8;
   v21 = a8;
-  v22 = a9;
-  v23 = a10;
-  v24 = a11;
-  v25 = a12;
-  v44 = v17;
-  if (v17)
+  metricManagerCopy = metricManager;
+  navigationManagerCopy = navigationManager;
+  reachabilityManagerCopy = reachabilityManager;
+  walletManagerCopy = walletManager;
+  v44 = managerCopy;
+  if (managerCopy)
   {
-    if (v18)
+    if (bluetoothManagerCopy2)
     {
-      v26 = v43;
-      if (v43)
+      v26 = cameraManagerCopy2;
+      if (cameraManagerCopy2)
       {
-        if (v19)
+        if (storeCopy2)
         {
-          if (v20)
+          if (locationManagerCopy2)
           {
             if (v21)
             {
-              if (v22)
+              if (metricManagerCopy)
               {
-                if (v23)
+                if (navigationManagerCopy)
                 {
-                  if (v24)
+                  if (reachabilityManagerCopy)
                   {
-                    v27 = v25;
-                    if (v25)
+                    v27 = walletManagerCopy;
+                    if (walletManagerCopy)
                     {
                       v52.receiver = self;
                       v52.super_class = RTHintManager;
@@ -104,23 +104,23 @@
                         v49[3] = &unk_2788C5908;
                         objc_copyWeak(&v50, &location);
                         [(RTDarwinNotificationHelper *)v46 addObserverForNotificationName:@"HKHealthDaemonActiveWorkoutServersDidUpdateNotification" handler:v49];
-                        objc_storeStrong(&v28->_batteryManager, a3);
-                        objc_storeStrong(&v28->_bluetoothManager, v37);
-                        objc_storeStrong(&v28->_cameraManager, v38);
-                        objc_storeStrong(&v28->_hintStore, v39);
-                        objc_storeStrong(&v28->_learnedLocationManager, v40);
+                        objc_storeStrong(&v28->_batteryManager, manager);
+                        objc_storeStrong(&v28->_bluetoothManager, bluetoothManagerCopy);
+                        objc_storeStrong(&v28->_cameraManager, cameraManagerCopy);
+                        objc_storeStrong(&v28->_hintStore, storeCopy);
+                        objc_storeStrong(&v28->_learnedLocationManager, locationManagerCopy);
                         objc_storeStrong(&v28->_locationManager, v41);
-                        objc_storeStrong(&v28->_metricManager, a9);
-                        objc_storeStrong(&v28->_navigationManager, a10);
-                        objc_storeStrong(&v28->_reachabilityManager, a11);
-                        objc_storeStrong(&v28->_walletManager, a12);
-                        v42 = [(RTNotifier *)v28 queue];
+                        objc_storeStrong(&v28->_metricManager, metricManager);
+                        objc_storeStrong(&v28->_navigationManager, navigationManager);
+                        objc_storeStrong(&v28->_reachabilityManager, reachabilityManager);
+                        objc_storeStrong(&v28->_walletManager, walletManager);
+                        queue = [(RTNotifier *)v28 queue];
                         block[0] = MEMORY[0x277D85DD0];
                         block[1] = 3221225472;
                         block[2] = __186__RTHintManager_initWithBatteryManager_bluetoothManager_cameraManager_hintStore_learnedLocationManager_locationManager_metricManager_navigationManager_reachabilityManager_walletManager___block_invoke_3;
                         block[3] = &unk_2788C4EA0;
                         v48 = v28;
-                        dispatch_async(v42, block);
+                        dispatch_async(queue, block);
 
                         objc_destroyWeak(&v50);
                         objc_destroyWeak(&location);
@@ -145,7 +145,7 @@ LABEL_36:
                     goto LABEL_37;
                   }
 
-                  v27 = v25;
+                  v27 = walletManagerCopy;
                   v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                   if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
                   {
@@ -158,7 +158,7 @@ LABEL_36:
 
                 else
                 {
-                  v27 = v25;
+                  v27 = walletManagerCopy;
                   v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                   if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
                   {
@@ -172,7 +172,7 @@ LABEL_36:
 
               else
               {
-                v27 = v25;
+                v27 = walletManagerCopy;
                 v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
                 if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
                 {
@@ -186,7 +186,7 @@ LABEL_36:
 
             else
             {
-              v27 = v25;
+              v27 = walletManagerCopy;
               v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
               if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
               {
@@ -200,7 +200,7 @@ LABEL_36:
 
           else
           {
-            v27 = v25;
+            v27 = walletManagerCopy;
             v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
             if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
             {
@@ -214,7 +214,7 @@ LABEL_36:
 
         else
         {
-          v27 = v25;
+          v27 = walletManagerCopy;
           v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
           {
@@ -228,7 +228,7 @@ LABEL_36:
 
       else
       {
-        v27 = v25;
+        v27 = walletManagerCopy;
         v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
         if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
         {
@@ -242,9 +242,9 @@ LABEL_36:
 
     else
     {
-      v27 = v25;
+      v27 = walletManagerCopy;
       v33 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-      v26 = v43;
+      v26 = cameraManagerCopy2;
       if (!os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_36;
@@ -259,7 +259,7 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v27 = v25;
+  v27 = walletManagerCopy;
   v32 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
   if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
   {
@@ -268,7 +268,7 @@ LABEL_35:
   }
 
   v31 = 0;
-  v26 = v43;
+  v26 = cameraManagerCopy2;
 LABEL_37:
 
   return v31;
@@ -290,94 +290,94 @@ void __186__RTHintManager_initWithBatteryManager_bluetoothManager_cameraManager_
   }
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   [(RTHintManager *)self _unregisterForNotifications];
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v4 = handlerCopy;
   }
 }
 
 - (void)_registerForNotifications
 {
-  v3 = [(RTHintManager *)self bluetoothManager];
+  bluetoothManager = [(RTHintManager *)self bluetoothManager];
   v4 = +[(RTNotification *)RTBluetoothManagerNotificationConnected];
-  [v3 addObserver:self selector:sel_onBluetoothNotification_ name:v4];
+  [bluetoothManager addObserver:self selector:sel_onBluetoothNotification_ name:v4];
 
-  v5 = [(RTHintManager *)self bluetoothManager];
+  bluetoothManager2 = [(RTHintManager *)self bluetoothManager];
   v6 = +[(RTNotification *)RTBluetoothManagerNotificationDisconnected];
-  [v5 addObserver:self selector:sel_onBluetoothNotification_ name:v6];
+  [bluetoothManager2 addObserver:self selector:sel_onBluetoothNotification_ name:v6];
 
-  v7 = [(RTHintManager *)self batteryManager];
+  batteryManager = [(RTHintManager *)self batteryManager];
   v8 = +[(RTNotification *)RTBatteryManagerNotificationChargerConnected];
-  [v7 addObserver:self selector:sel_onBatteryNotification_ name:v8];
+  [batteryManager addObserver:self selector:sel_onBatteryNotification_ name:v8];
 
-  v9 = [(RTHintManager *)self navigationManager];
+  navigationManager = [(RTHintManager *)self navigationManager];
   v10 = +[(RTNotification *)RTNavigationManagerRouteSummaryNotification];
-  [v9 addObserver:self selector:sel_onNavigationNotification_ name:v10];
+  [navigationManager addObserver:self selector:sel_onNavigationNotification_ name:v10];
 
-  v11 = [(RTHintManager *)self reachabilityManager];
+  reachabilityManager = [(RTHintManager *)self reachabilityManager];
   v12 = +[(RTNotification *)RTReachabilityMonitorNotificationReachabilityChanged];
-  [v11 addObserver:self selector:sel_onReachabilityChange_ name:v12];
+  [reachabilityManager addObserver:self selector:sel_onReachabilityChange_ name:v12];
 
-  v13 = [(RTHintManager *)self cameraManager];
+  cameraManager = [(RTHintManager *)self cameraManager];
   v14 = +[(RTNotification *)RTCameraManagerNotificationCameraPowerChanged];
-  [v13 addObserver:self selector:sel_onCameraNotification_ name:v14];
+  [cameraManager addObserver:self selector:sel_onCameraNotification_ name:v14];
 
-  v15 = [(RTHintManager *)self walletManager];
+  walletManager = [(RTHintManager *)self walletManager];
   v16 = +[(RTNotification *)RTWalletManagerNotificationPassUsed];
-  [v15 addObserver:self selector:sel_onWalletNotification_ name:v16];
+  [walletManager addObserver:self selector:sel_onWalletNotification_ name:v16];
 
-  v17 = [(RTHintManager *)self walletManager];
+  walletManager2 = [(RTHintManager *)self walletManager];
   v18 = +[(RTNotification *)RTWalletManagerNotificationPaymentUsed];
-  [v17 addObserver:self selector:sel_onWalletNotification_ name:v18];
+  [walletManager2 addObserver:self selector:sel_onWalletNotification_ name:v18];
 
-  v20 = [(RTHintManager *)self learnedLocationManager];
+  learnedLocationManager = [(RTHintManager *)self learnedLocationManager];
   v19 = +[(RTNotification *)RTLearnedLocationManagerNotificationDidUpdate];
-  [v20 addObserver:self selector:sel_onLearnedLocationNotification_ name:v19];
+  [learnedLocationManager addObserver:self selector:sel_onLearnedLocationNotification_ name:v19];
 }
 
 - (void)_unregisterForNotifications
 {
-  v3 = [(RTHintManager *)self bluetoothManager];
-  [v3 removeObserver:self];
+  bluetoothManager = [(RTHintManager *)self bluetoothManager];
+  [bluetoothManager removeObserver:self];
 
-  v4 = [(RTHintManager *)self batteryManager];
-  [v4 removeObserver:self];
+  batteryManager = [(RTHintManager *)self batteryManager];
+  [batteryManager removeObserver:self];
 
-  v5 = [(RTHintManager *)self navigationManager];
-  [v5 removeObserver:self];
+  navigationManager = [(RTHintManager *)self navigationManager];
+  [navigationManager removeObserver:self];
 
-  v6 = [(RTHintManager *)self reachabilityManager];
-  [v6 removeObserver:self];
+  reachabilityManager = [(RTHintManager *)self reachabilityManager];
+  [reachabilityManager removeObserver:self];
 
-  v7 = [(RTHintManager *)self cameraManager];
-  [v7 removeObserver:self];
+  cameraManager = [(RTHintManager *)self cameraManager];
+  [cameraManager removeObserver:self];
 
-  v8 = [(RTHintManager *)self walletManager];
-  [v8 removeObserver:self];
+  walletManager = [(RTHintManager *)self walletManager];
+  [walletManager removeObserver:self];
 
-  v9 = [(RTHintManager *)self learnedLocationManager];
-  [v9 removeObserver:self];
+  learnedLocationManager = [(RTHintManager *)self learnedLocationManager];
+  [learnedLocationManager removeObserver:self];
 
-  v10 = [(RTHintManager *)self notificationHelper];
-  [v10 removeObserverForNotificationName:@"HKHealthDaemonActiveWorkoutServersDidUpdateNotification"];
+  notificationHelper = [(RTHintManager *)self notificationHelper];
+  [notificationHelper removeObserverForNotificationName:@"HKHealthDaemonActiveWorkoutServersDidUpdateNotification"];
 }
 
-- (void)_submitHintFromSource:(int64_t)a3
+- (void)_submitHintFromSource:(int64_t)source
 {
-  v5 = [(RTHintManager *)self locationManager];
+  locationManager = [(RTHintManager *)self locationManager];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__RTHintManager__submitHintFromSource___block_invoke;
   v6[3] = &unk_2788CC668;
   v6[4] = self;
-  v6[5] = a3;
-  [v5 fetchCurrentLocationWithHandler:v6];
+  v6[5] = source;
+  [locationManager fetchCurrentLocationWithHandler:v6];
 }
 
 void __39__RTHintManager__submitHintFromSource___block_invoke(uint64_t a1, void *a2)
@@ -408,36 +408,36 @@ void __39__RTHintManager__submitHintFromSource___block_invoke(uint64_t a1, void 
   dispatch_async(v6, block);
 }
 
-- (void)storeHints:(id)a3 handler:(id)a4
+- (void)storeHints:(id)hints handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RTNotifier *)self queue];
+  hintsCopy = hints;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __36__RTHintManager_storeHints_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = hintsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = hintsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_storeHints:(id)a3 handler:(id)a4
+- (void)_storeHints:(id)hints handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  hintsCopy = hints;
+  handlerCopy = handler;
   hintStore = self->_hintStore;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __37__RTHintManager__storeHints_handler___block_invoke;
   v11[3] = &unk_2788C4F60;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = hintsCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = hintsCopy;
   [(RTHintStore *)hintStore storeHints:v10 handler:v11];
 }
 
@@ -491,49 +491,49 @@ void __37__RTHintManager__storeHints_handler___block_invoke_75(uint64_t a1, void
   }
 }
 
-- (void)submitHintFromSource:(int64_t)a3 location:(id)a4
+- (void)submitHintFromSource:(int64_t)source location:(id)location
 {
-  v6 = a4;
-  v7 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTHintManager_submitHintFromSource_location___block_invoke;
   block[3] = &unk_2788C5020;
-  v10 = v6;
-  v11 = a3;
+  v10 = locationCopy;
+  sourceCopy = source;
   block[4] = self;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v8 = locationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)submitHintFromSource:(int64_t)a3 location:(id)a4 handler:(id)a5
+- (void)submitHintFromSource:(int64_t)source location:(id)location handler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  locationCopy = location;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __55__RTHintManager_submitHintFromSource_location_handler___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = locationCopy;
+  v15 = handlerCopy;
+  sourceCopy = source;
+  v11 = handlerCopy;
+  v12 = locationCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)_submitHintFromSource:(int64_t)a3 location:(id)a4 handler:(id)a5
+- (void)_submitHintFromSource:(int64_t)source location:(id)location handler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (v8)
+  locationCopy = location;
+  handlerCopy = handler;
+  if (locationCopy)
   {
     v10 = objc_alloc(MEMORY[0x277D01120]);
-    v11 = [MEMORY[0x277CBEAA8] date];
-    v12 = [v10 initWithLocation:v8 source:a3 date:v11];
+    date = [MEMORY[0x277CBEAA8] date];
+    v12 = [v10 initWithLocation:locationCopy source:source date:date];
 
     v24 = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v24 count:1];
@@ -542,8 +542,8 @@ void __37__RTHintManager__storeHints_handler___block_invoke_75(uint64_t a1, void
     v20[2] = __56__RTHintManager__submitHintFromSource_location_handler___block_invoke;
     v20[3] = &unk_2788C6508;
     v21 = v12;
-    v22 = self;
-    v23 = v9;
+    selfCopy = self;
+    v23 = handlerCopy;
     v14 = v12;
     [(RTHintManager *)self _storeHints:v13 handler:v20];
 
@@ -558,14 +558,14 @@ LABEL_9:
     v16 = _rt_log_facility_get_os_log(RTLogFacilityHint);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [MEMORY[0x277D01120] hintSourceToString:a3];
+      v17 = [MEMORY[0x277D01120] hintSourceToString:source];
       *buf = 138412290;
       v28 = v17;
       _os_log_impl(&dword_2304B3000, v16, OS_LOG_TYPE_INFO, "could not get location, dropping hint, source, %@", buf, 0xCu);
     }
   }
 
-  if (v9)
+  if (handlerCopy)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277D01448];
@@ -573,7 +573,7 @@ LABEL_9:
     v26 = @"No location, dropping hint";
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
     v15 = [v18 errorWithDomain:v19 code:7 userInfo:v14];
-    (*(v9 + 2))(v9, v15);
+    (*(handlerCopy + 2))(handlerCopy, v15);
     goto LABEL_9;
   }
 
@@ -638,40 +638,40 @@ void __56__RTHintManager__submitHintFromSource_location_handler___block_invoke_8
   [v2 postNotification:v5];
 }
 
-- (void)storeHintSignificantRegion:(id)a3 hintSource:(int64_t)a4 handler:(id)a5
+- (void)storeHintSignificantRegion:(id)region hintSource:(int64_t)source handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(RTNotifier *)self queue];
+  regionCopy = region;
+  handlerCopy = handler;
+  queue = [(RTNotifier *)self queue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __63__RTHintManager_storeHintSignificantRegion_hintSource_handler___block_invoke;
   v13[3] = &unk_2788C4C20;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = regionCopy;
+  v15 = handlerCopy;
+  sourceCopy = source;
+  v11 = handlerCopy;
+  v12 = regionCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)_storeHintSignificantRegion:(id)a3 hintSource:(int64_t)a4 handler:(id)a5
+- (void)_storeHintSignificantRegion:(id)region hintSource:(int64_t)source handler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
+  regionCopy = region;
+  handlerCopy = handler;
   learnedLocationManager = self->_learnedLocationManager;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__RTHintManager__storeHintSignificantRegion_hintSource_handler___block_invoke;
   v14[3] = &unk_2788C5980;
   v14[4] = self;
-  v15 = v9;
+  v15 = regionCopy;
   v17 = a2;
-  v18 = a4;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  sourceCopy = source;
+  v16 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = regionCopy;
   [(RTLearnedLocationManager *)learnedLocationManager fetchLocationOfInterestForRegion:v13 handler:v14];
 }
 
@@ -901,43 +901,43 @@ uint64_t __64__RTHintManager__storeHintSignificantRegion_hintSource_handler___bl
   return [RTSignificantRegionHintInjectionMetrics submitMetricsWithHintSource:v11 region:v12 locationOfInterest:v13 hintSubmitted:v14 matchingError:v15];
 }
 
-- (void)performPurgeOfType:(int64_t)a3 referenceDate:(id)a4 completion:(id)a5
+- (void)performPurgeOfType:(int64_t)type referenceDate:(id)date completion:(id)completion
 {
-  v11 = a4;
-  v8 = a5;
-  if (a3 <= 2 && (v9 = v11) != 0)
+  dateCopy = date;
+  completionCopy = completion;
+  if (type <= 2 && (v9 = dateCopy) != 0)
   {
     v10 = v9;
-    [(RTHintStore *)self->_hintStore purgeHintsPredating:v9 handler:v8];
+    [(RTHintStore *)self->_hintStore purgeHintsPredating:v9 handler:completionCopy];
   }
 
-  else if (v8)
+  else if (completionCopy)
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)onBluetoothNotification:(id)a3
+- (void)onBluetoothNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __41__RTHintManager_onBluetoothNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onBluetoothNotification:(id)a3
+- (void)_onBluetoothNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTBluetoothManagerNotificationConnected];
-  if ([v5 isEqualToString:v6])
+  if ([name isEqualToString:v6])
   {
 
 LABEL_4:
@@ -946,9 +946,9 @@ LABEL_4:
       v10 = _rt_log_facility_get_os_log(RTLogFacilityHint);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [v4 name];
+        name2 = [notificationCopy name];
         v13 = 138412290;
-        v14 = v12;
+        v14 = name2;
         _os_log_debug_impl(&dword_2304B3000, v10, OS_LOG_TYPE_DEBUG, "received bluetooth notification, %@", &v13, 0xCu);
       }
     }
@@ -957,9 +957,9 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  v7 = [v4 name];
+  name3 = [notificationCopy name];
   v8 = +[(RTNotification *)RTBluetoothManagerNotificationDisconnected];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [name3 isEqualToString:v8];
 
   if (v9)
   {
@@ -970,7 +970,7 @@ LABEL_4:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     v13 = 138412802;
-    v14 = v4;
+    v14 = notificationCopy;
     v15 = 2080;
     v16 = "[RTHintManager _onBluetoothNotification:]";
     v17 = 1024;
@@ -981,27 +981,27 @@ LABEL_4:
 LABEL_12:
 }
 
-- (void)onBatteryNotification:(id)a3
+- (void)onBatteryNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__RTHintManager_onBatteryNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onBatteryNotification:(id)a3
+- (void)_onBatteryNotification:(id)notification
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTBatteryManagerNotificationChargerConnected];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
@@ -1010,9 +1010,9 @@ LABEL_12:
       v8 = _rt_log_facility_get_os_log(RTLogFacilityHint);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v10 = [v4 name];
+        name2 = [notificationCopy name];
         v11 = 138412290;
-        v12 = v10;
+        v12 = name2;
         _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "received battery notification, %@", &v11, 0xCu);
       }
     }
@@ -1026,7 +1026,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v11 = 138412802;
-      v12 = v4;
+      v12 = notificationCopy;
       v13 = 2080;
       v14 = "[RTHintManager _onBatteryNotification:]";
       v15 = 1024;
@@ -1036,27 +1036,27 @@ LABEL_12:
   }
 }
 
-- (void)onNavigationNotification:(id)a3
+- (void)onNavigationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__RTHintManager_onNavigationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onNavigationNotification:(id)a3
+- (void)_onNavigationNotification:(id)notification
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTNavigationManagerRouteSummaryNotification];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
@@ -1065,14 +1065,14 @@ LABEL_12:
       v8 = _rt_log_facility_get_os_log(RTLogFacilityHint);
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v18 = [v4 name];
+        name2 = [notificationCopy name];
         v19 = 138412290;
-        v20 = v18;
+        v20 = name2;
         _os_log_debug_impl(&dword_2304B3000, v8, OS_LOG_TYPE_DEBUG, "received navigation notification, %@", &v19, 0xCu);
       }
     }
 
-    v9 = v4;
+    v9 = notificationCopy;
     v10 = objc_alloc(MEMORY[0x277D01160]);
     [v9 destinationLatitude];
     v12 = v11;
@@ -1099,7 +1099,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v19 = 138412802;
-      v20 = v4;
+      v20 = notificationCopy;
       v21 = 2080;
       v22 = "[RTHintManager _onNavigationNotification:]";
       v23 = 1024;
@@ -1109,43 +1109,43 @@ LABEL_12:
   }
 }
 
-- (void)onReachabilityChange:(id)a3
+- (void)onReachabilityChange:(id)change
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  changeCopy = change;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__RTHintManager_onReachabilityChange___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changeCopy;
+  v6 = changeCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onReachabilityChange:(id)a3
+- (void)_onReachabilityChange:(id)change
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  changeCopy = change;
+  name = [changeCopy name];
   v6 = +[(RTNotification *)RTReachabilityMonitorNotificationReachabilityChanged];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    v8 = [v4 reachability];
+    reachability = [changeCopy reachability];
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v9 = _rt_log_facility_get_os_log(RTLogFacilityHint);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
         v12 = 134217984;
-        v13 = v8;
+        v13 = reachability;
         _os_log_debug_impl(&dword_2304B3000, v9, OS_LOG_TYPE_DEBUG, "Received reachability change, %ld", &v12, 0xCu);
       }
     }
 
-    if (v8)
+    if (reachability)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -1167,7 +1167,7 @@ LABEL_12:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v12 = 138412802;
-      v13 = v4;
+      v13 = changeCopy;
       v14 = 2080;
       v15 = "[RTHintManager _onReachabilityChange:]";
       v16 = 1024;
@@ -1177,31 +1177,31 @@ LABEL_12:
   }
 }
 
-- (void)onCameraNotification:(id)a3
+- (void)onCameraNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__RTHintManager_onCameraNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onCameraNotification:(id)a3
+- (void)_onCameraNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTCameraManagerNotificationCameraPowerChanged];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
-    if ([v4 powerState] == 1)
+    if ([notificationCopy powerState] == 1)
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -1223,7 +1223,7 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412802;
-      v11 = v4;
+      v11 = notificationCopy;
       v12 = 2080;
       v13 = "[RTHintManager _onCameraNotification:]";
       v14 = 1024;
@@ -1233,27 +1233,27 @@ LABEL_12:
   }
 }
 
-- (void)onWalletNotification:(id)a3
+- (void)onWalletNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__RTHintManager_onWalletNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onWalletNotification:(id)a3
+- (void)_onWalletNotification:(id)notification
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTWalletManagerNotificationPassUsed];
-  if ([v5 isEqualToString:v6])
+  if ([name isEqualToString:v6])
   {
 
 LABEL_4:
@@ -1271,9 +1271,9 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  v7 = [v4 name];
+  name2 = [notificationCopy name];
   v8 = +[(RTNotification *)RTWalletManagerNotificationPaymentUsed];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [name2 isEqualToString:v8];
 
   if (v9)
   {
@@ -1284,7 +1284,7 @@ LABEL_4:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     v12 = 138412802;
-    v13 = v4;
+    v13 = notificationCopy;
     v14 = 2080;
     v15 = "[RTHintManager _onWalletNotification:]";
     v16 = 1024;
@@ -1295,27 +1295,27 @@ LABEL_4:
 LABEL_12:
 }
 
-- (void)onLearnedLocationNotification:(id)a3
+- (void)onLearnedLocationNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(RTNotifier *)self queue];
+  notificationCopy = notification;
+  queue = [(RTNotifier *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__RTHintManager_onLearnedLocationNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onLearnedLocationNotification:(id)a3
+- (void)_onLearnedLocationNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 name];
+  notificationCopy = notification;
+  name = [notificationCopy name];
   v6 = +[(RTNotification *)RTLearnedLocationManagerNotificationDidUpdate];
-  v7 = [v5 isEqualToString:v6];
+  v7 = [name isEqualToString:v6];
 
   if (v7)
   {
@@ -1329,22 +1329,22 @@ LABEL_12:
       }
     }
 
-    v9 = [(RTHintManager *)self hintStore];
-    [v9 regenerateLOIHintsWithHandler:&__block_literal_global_129];
+    hintStore = [(RTHintManager *)self hintStore];
+    [hintStore regenerateLOIHintsWithHandler:&__block_literal_global_129];
   }
 
   else
   {
-    v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    hintStore = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (os_log_type_enabled(hintStore, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412802;
-      v11 = v4;
+      v11 = notificationCopy;
       v12 = 2080;
       v13 = "[RTHintManager _onLearnedLocationNotification:]";
       v14 = 1024;
       v15 = 579;
-      _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "unhandled notification, %@ (in %s:%d)", &v10, 0x1Cu);
+      _os_log_error_impl(&dword_2304B3000, hintStore, OS_LOG_TYPE_ERROR, "unhandled notification, %@ (in %s:%d)", &v10, 0x1Cu);
     }
   }
 }
@@ -1383,22 +1383,22 @@ void __48__RTHintManager__onLearnedLocationNotification___block_invoke(uint64_t 
 LABEL_5:
 }
 
-- (void)fetchEnumerableObjectsWithOptions:(id)a3 offset:(unint64_t)a4 handler:(id)a5
+- (void)fetchEnumerableObjectsWithOptions:(id)options offset:(unint64_t)offset handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  optionsCopy = options;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v10 = [(RTNotifier *)self queue];
+    queue = [(RTNotifier *)self queue];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __66__RTHintManager_fetchEnumerableObjectsWithOptions_offset_handler___block_invoke;
     v12[3] = &unk_2788C6940;
-    v13 = v8;
-    v14 = self;
-    v15 = v9;
-    v16 = a4;
-    dispatch_async(v10, v12);
+    v13 = optionsCopy;
+    selfCopy = self;
+    v15 = handlerCopy;
+    offsetCopy = offset;
+    dispatch_async(queue, v12);
 
     v11 = v13;
   }

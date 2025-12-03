@@ -1,12 +1,12 @@
 @interface LNEntitlementsValidator
-+ (BOOL)currentProcessHasMachLookup:(id)a3;
-+ (BOOL)validateEntitlement:(id)a3 auditToken:(id *)a4 validator:(id)a5;
-+ (BOOL)validateEntitlement:(id)a3 forCurrentTaskWithValidator:(id)a4;
-+ (BOOL)validateEntitlement:(id)a3 secTaskRef:(__SecTask *)a4 validator:(id)a5;
++ (BOOL)currentProcessHasMachLookup:(id)lookup;
++ (BOOL)validateEntitlement:(id)entitlement auditToken:(id *)token validator:(id)validator;
++ (BOOL)validateEntitlement:(id)entitlement forCurrentTaskWithValidator:(id)validator;
++ (BOOL)validateEntitlement:(id)entitlement secTaskRef:(__SecTask *)ref validator:(id)validator;
 + (NSString)bundleIdentifierForCurrentProcess;
-+ (id)bundleIdentifierForAuditToken:(id *)a3;
-+ (id)valueForEntitlement:(id)a3 auditToken:(id *)a4;
-+ (id)valueForEntitlement:(id)a3 secTaskRef:(__SecTask *)a4;
++ (id)bundleIdentifierForAuditToken:(id *)token;
++ (id)valueForEntitlement:(id)entitlement auditToken:(id *)token;
++ (id)valueForEntitlement:(id)entitlement secTaskRef:(__SecTask *)ref;
 @end
 
 @implementation LNEntitlementsValidator
@@ -52,10 +52,10 @@
   return v5;
 }
 
-+ (id)bundleIdentifierForAuditToken:(id *)a3
++ (id)bundleIdentifierForAuditToken:(id *)token
 {
-  v3 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v3 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v3;
   v4 = SecTaskCreateWithAuditToken(0, &token);
   if (v4)
@@ -96,20 +96,20 @@
   return v7;
 }
 
-+ (BOOL)currentProcessHasMachLookup:(id)a3
++ (BOOL)currentProcessHasMachLookup:(id)lookup
 {
-  v3 = a3;
+  lookupCopy = lookup;
   getpid();
   v4 = *MEMORY[0x1E69E9BD0];
-  [v3 UTF8String];
+  [lookupCopy UTF8String];
 
   return sandbox_check() == 0;
 }
 
-+ (BOOL)validateEntitlement:(id)a3 forCurrentTaskWithValidator:(id)a4
++ (BOOL)validateEntitlement:(id)entitlement forCurrentTaskWithValidator:(id)validator
 {
-  v6 = a3;
-  v7 = a4;
+  entitlementCopy = entitlement;
+  validatorCopy = validator;
   v8 = SecTaskCreateFromSelf(0);
   if (v8)
   {
@@ -120,7 +120,7 @@
     aBlock[3] = &__block_descriptor_40_e5_v8__0l;
     aBlock[4] = v8;
     v10 = _Block_copy(aBlock);
-    v11 = [a1 validateEntitlement:v6 secTaskRef:v9 validator:v7];
+    v11 = [self validateEntitlement:entitlementCopy secTaskRef:v9 validator:validatorCopy];
     (*(v10 + 16))(v10);
   }
 
@@ -139,12 +139,12 @@
   return v11;
 }
 
-+ (BOOL)validateEntitlement:(id)a3 auditToken:(id *)a4 validator:(id)a5
++ (BOOL)validateEntitlement:(id)entitlement auditToken:(id *)token validator:(id)validator
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = *&a4->var0[4];
-  *token.val = *a4->var0;
+  entitlementCopy = entitlement;
+  validatorCopy = validator;
+  v10 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v10;
   v11 = SecTaskCreateWithAuditToken(0, &token);
   if (v11)
@@ -156,7 +156,7 @@
     aBlock[3] = &__block_descriptor_40_e5_v8__0l;
     aBlock[4] = v11;
     v13 = _Block_copy(aBlock);
-    v14 = [a1 validateEntitlement:v8 secTaskRef:v12 validator:v9];
+    v14 = [self validateEntitlement:entitlementCopy secTaskRef:v12 validator:validatorCopy];
     (*(v13 + 16))(v13);
   }
 
@@ -175,12 +175,12 @@
   return v14;
 }
 
-+ (BOOL)validateEntitlement:(id)a3 secTaskRef:(__SecTask *)a4 validator:(id)a5
++ (BOOL)validateEntitlement:(id)entitlement secTaskRef:(__SecTask *)ref validator:(id)validator
 {
   v16 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  validatorCopy = validator;
   error = 0;
-  v8 = SecTaskCopyValueForEntitlement(a4, a3, &error);
+  v8 = SecTaskCopyValueForEntitlement(ref, entitlement, &error);
   if (error)
   {
     v9 = getLNLogCategorySecurity();
@@ -197,18 +197,18 @@
 
   else
   {
-    v10 = v7[2](v7, v8);
+    v10 = validatorCopy[2](validatorCopy, v8);
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-+ (id)valueForEntitlement:(id)a3 auditToken:(id *)a4
++ (id)valueForEntitlement:(id)entitlement auditToken:(id *)token
 {
-  v6 = a3;
-  v7 = *&a4->var0[4];
-  *token.val = *a4->var0;
+  entitlementCopy = entitlement;
+  v7 = *&token->var0[4];
+  *token.val = *token->var0;
   *&token.val[4] = v7;
   v8 = SecTaskCreateWithAuditToken(0, &token);
   if (v8)
@@ -220,7 +220,7 @@
     aBlock[3] = &__block_descriptor_40_e5_v8__0l;
     aBlock[4] = v8;
     v10 = _Block_copy(aBlock);
-    v11 = [a1 valueForEntitlement:v6 secTaskRef:v9];
+    v11 = [self valueForEntitlement:entitlementCopy secTaskRef:v9];
     (*(v10 + 16))(v10);
   }
 
@@ -239,11 +239,11 @@
   return v11;
 }
 
-+ (id)valueForEntitlement:(id)a3 secTaskRef:(__SecTask *)a4
++ (id)valueForEntitlement:(id)entitlement secTaskRef:(__SecTask *)ref
 {
   v13 = *MEMORY[0x1E69E9840];
   error = 0;
-  v4 = SecTaskCopyValueForEntitlement(a4, a3, &error);
+  v4 = SecTaskCopyValueForEntitlement(ref, entitlement, &error);
   v5 = v4;
   if (error)
   {

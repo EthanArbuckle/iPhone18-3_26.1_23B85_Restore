@@ -1,28 +1,28 @@
 @interface AVURLAsset
 + (AVURLAsset)URLAssetWithURL:(NSURL *)URL options:(NSDictionary *)options;
-+ (BOOL)isPlayableExtendedMIMEType:(id)a3 options:(id)a4;
++ (BOOL)isPlayableExtendedMIMEType:(id)type options:(id)options;
 + (NSArray)audiovisualContentTypes;
-+ (id)UTTypeIDArrayFromUTTypeArray:(id)a3;
++ (id)UTTypeIDArrayFromUTTypeArray:(id)array;
 + (id)_UTTypes;
 + (id)_avfValidationPlist;
 + (id)_avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMIMETypes;
 + (id)_figMIMETypes;
 + (id)_fileUTTypes;
-+ (id)_getFigAssetCreationOptionsFromURLAssetInitializationOptions:(id)a3 assetLoggingIdentifier:(id)a4 figAssetCreationFlags:(unint64_t *)a5 error:(id *)a6;
-+ (id)_getFigAssetiTunesStoreContentInfoFromURLAssetiTunesStoreContentInfo:(id)a3;
++ (id)_getFigAssetCreationOptionsFromURLAssetInitializationOptions:(id)options assetLoggingIdentifier:(id)identifier figAssetCreationFlags:(unint64_t *)flags error:(id *)error;
++ (id)_getFigAssetiTunesStoreContentInfoFromURLAssetiTunesStoreContentInfo:(id)info;
 + (id)_initializationOptionsClasses;
-+ (id)_objectWithItemProviderFileURL:(id)a3 typeIdentifier:(id)a4 isInPlace:(BOOL)a5 error:(id *)a6;
++ (id)_objectWithItemProviderFileURL:(id)l typeIdentifier:(id)identifier isInPlace:(BOOL)place error:(id *)error;
 + (id)_streamingUTTypes;
-+ (id)assetForNSURLSessionWithURL:(id)a3 propertyList:(id)a4;
++ (id)assetForNSURLSessionWithURL:(id)l propertyList:(id)list;
 + (id)instanceIdentifierMapTable;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
 + (id)readableTypeIdentifiersForItemProvider;
-+ (id)userInfoObjectForURLAsset:(id)a3;
-+ (id)userInfoObjectForURLAssetInstanceIdentifier:(id)a3;
++ (id)userInfoObjectForURLAsset:(id)asset;
++ (id)userInfoObjectForURLAssetInstanceIdentifier:(id)identifier;
 + (id)writableTypeIdentifiersForItemProvider;
 - (AVAssetCache)assetCache;
-- (AVURLAsset)initWithFigCreationOptions:(id)a3 options:(id)a4 figAssetCreationOptions:(id)a5 figAssetCreationFlags:(unint64_t)a6;
-- (AVURLAsset)initWithFileURL:(id)a3 offset:(int64_t)a4 length:(int64_t)a5 options:(id)a6;
+- (AVURLAsset)initWithFigCreationOptions:(id)options options:(id)a4 figAssetCreationOptions:(id)creationOptions figAssetCreationFlags:(unint64_t)flags;
+- (AVURLAsset)initWithFileURL:(id)l offset:(int64_t)offset length:(int64_t)length options:(id)options;
 - (AVURLAsset)initWithURL:(NSURL *)URL options:(NSDictionary *)options;
 - (BOOL)_attachedToExternalContentKeySession;
 - (BOOL)_clientURLLoadingRepresentsAccurateNetworkStatistics;
@@ -37,25 +37,25 @@
 - (NSUUID)uniqueIdentifier;
 - (id)SHA1Digest;
 - (id)_absoluteURL;
-- (id)_errorForFigNotificationPayload:(__CFDictionary *)a3 key:(__CFString *)a4;
-- (id)_installHandlerForNSURLSessionConfiguration:(id)a3 queue:(id)a4;
-- (id)_loadFileRepresentationOfTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (id)_resourceLoaderWithRemoteHandlerContext:(id)a3;
+- (id)_errorForFigNotificationPayload:(__CFDictionary *)payload key:(__CFString *)key;
+- (id)_installHandlerForNSURLSessionConfiguration:(id)configuration queue:(id)queue;
+- (id)_loadFileRepresentationOfTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (id)_resourceLoaderWithRemoteHandlerContext:(id)context;
 - (id)_serializableCreationOptions;
 - (id)identifyingTag;
 - (id)identifyingTagClass;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (id)propertyListForNSURLSessionAssetReturningError:(id *)a3;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (id)propertyListForNSURLSessionAssetReturningError:(id *)error;
 - (id)recommendedDestinationURLPathExtension;
 - (id)tracks;
-- (int)_attachToContentKeySession:(id)a3 contentKeyBoss:(OpaqueFigContentKeyBoss *)a4 failedSinceAlreadyAttachedToAnotherSession:(BOOL *)a5;
+- (int)_attachToContentKeySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss failedSinceAlreadyAttachedToAnotherSession:(BOOL *)anotherSession;
 - (unint64_t)referenceRestrictions;
 - (void)_addFigAssetNotifications;
 - (void)_ensureAssetDownloadCache;
 - (void)_removeFigAssetNotifications;
 - (void)_removeUserInfoObject;
-- (void)_setAssetInspectorLoader:(id)a3;
-- (void)_setUserInfoObject:(id)a3;
+- (void)_setAssetInspectorLoader:(id)loader;
+- (void)_setUserInfoObject:(id)object;
 - (void)_tracksDidChange;
 - (void)cancelLoading;
 - (void)dealloc;
@@ -149,7 +149,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v12 = [a1 UTTypeIDArrayFromUTTypeArray:{objc_msgSend(MEMORY[0x1E6982C40], "typesWithTag:tagClass:conformingToType:", *(*(&v27 + 1) + 8 * i), v9, v10)}];
+          v12 = [self UTTypeIDArrayFromUTTypeArray:{objc_msgSend(MEMORY[0x1E6982C40], "typesWithTag:tagClass:conformingToType:", *(*(&v27 + 1) + 8 * i), v9, v10)}];
           if (AVAssetUTIsAreComplementary(v4, v12))
           {
             [v4 addObjectsFromArray:v12];
@@ -183,7 +183,7 @@
             objc_enumerationMutation(v13);
           }
 
-          v20 = [a1 UTTypeIDArrayFromUTTypeArray:{objc_msgSend(MEMORY[0x1E6982C40], "typesWithTag:tagClass:conformingToType:", *(*(&v23 + 1) + 8 * j), v17, v18)}];
+          v20 = [self UTTypeIDArrayFromUTTypeArray:{objc_msgSend(MEMORY[0x1E6982C40], "typesWithTag:tagClass:conformingToType:", *(*(&v23 + 1) + 8 * j), v17, v18)}];
           if (AVAssetUTIsAreComplementary(v4, v20))
           {
             [v4 addObjectsFromArray:v20];
@@ -253,7 +253,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v13 = [a1 UTTypeIDArrayFromUTTypeArray:{objc_msgSend(MEMORY[0x1E6982C40], "typesWithTag:tagClass:conformingToType:", *(*(&v26 + 1) + 8 * i), v10, v11)}];
+          v13 = [self UTTypeIDArrayFromUTTypeArray:{objc_msgSend(MEMORY[0x1E6982C40], "typesWithTag:tagClass:conformingToType:", *(*(&v26 + 1) + 8 * i), v10, v11)}];
           if (AVAssetUTIsAreComplementary(v4, v13))
           {
             [v4 addObjectsFromArray:v13];
@@ -285,7 +285,7 @@
             objc_enumerationMutation(v5);
           }
 
-          v19 = [a1 UTTypeIDArrayFromUTTypeArray:{objc_msgSend(MEMORY[0x1E6982C40], "typesWithTag:tagClass:conformingToType:", *(*(&v22 + 1) + 8 * j), v17, objc_msgSend(MEMORY[0x1E6982C40], "typeWithIdentifier:", @"public.playlist"}];
+          v19 = [self UTTypeIDArrayFromUTTypeArray:{objc_msgSend(MEMORY[0x1E6982C40], "typesWithTag:tagClass:conformingToType:", *(*(&v22 + 1) + 8 * j), v17, objc_msgSend(MEMORY[0x1E6982C40], "typeWithIdentifier:", @"public.playlist"}];
           if (AVAssetUTIsAreComplementary(v4, v19))
           {
             [v4 addObjectsFromArray:v19];
@@ -315,52 +315,52 @@
 
 - (void)_removeFigAssetNotifications
 {
-  v3 = [(AVURLAsset *)self _assetInspectorLoader];
-  if (v3)
+  _assetInspectorLoader = [(AVURLAsset *)self _assetInspectorLoader];
+  if (_assetInspectorLoader)
   {
-    v4 = v3;
+    v4 = _assetInspectorLoader;
     v5 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v6 = [(AVAsset *)self _weakReference];
-    [v5 removeListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EA8] object:v4];
-    [v5 removeListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EA0] object:v4];
-    [v5 removeListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EC8] object:v4];
-    [v5 removeListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970ED0] object:v4];
-    [v5 removeListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EC0] object:v4];
-    [v5 removeListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EB8] object:v4];
+    _weakReference = [(AVAsset *)self _weakReference];
+    [v5 removeListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EA8] object:v4];
+    [v5 removeListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EA0] object:v4];
+    [v5 removeListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EC8] object:v4];
+    [v5 removeListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970ED0] object:v4];
+    [v5 removeListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EC0] object:v4];
+    [v5 removeListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EB8] object:v4];
 
-    CFRelease(v6);
+    CFRelease(_weakReference);
   }
 }
 
 - (void)_addFigAssetNotifications
 {
-  v3 = [(AVURLAsset *)self _assetInspectorLoader];
-  if (v3)
+  _assetInspectorLoader = [(AVURLAsset *)self _assetInspectorLoader];
+  if (_assetInspectorLoader)
   {
-    v4 = v3;
+    v4 = _assetInspectorLoader;
     v5 = [AVCMNotificationDispatcher notificationDispatcherForCMNotificationCenter:CMNotificationCenterGetDefaultLocalCenter()];
-    v6 = [(AVAsset *)self _weakReference];
-    CFRetain(v6);
-    [v5 addListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EA8] object:v4 flags:0];
-    [v5 addListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EA0] object:v4 flags:0];
-    [v5 addListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EC8] object:v4 flags:0];
-    [v5 addListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970ED0] object:v4 flags:0];
-    [v5 addListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EC0] object:v4 flags:0];
+    _weakReference = [(AVAsset *)self _weakReference];
+    CFRetain(_weakReference);
+    [v5 addListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EA8] object:v4 flags:0];
+    [v5 addListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EA0] object:v4 flags:0];
+    [v5 addListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EC8] object:v4 flags:0];
+    [v5 addListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970ED0] object:v4 flags:0];
+    [v5 addListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:*MEMORY[0x1E6970EC0] object:v4 flags:0];
     v7 = *MEMORY[0x1E6970EB8];
 
-    [v5 addListenerWithWeakReference:v6 callback:figLoaderNotificationHandler name:v7 object:v4 flags:0];
+    [v5 addListenerWithWeakReference:_weakReference callback:figLoaderNotificationHandler name:v7 object:v4 flags:0];
   }
 }
 
 - (id)_absoluteURL
 {
-  v3 = [(AVURLAsset *)self URL];
-  if (!v3)
+  resolvedURL = [(AVURLAsset *)self URL];
+  if (!resolvedURL)
   {
-    v3 = [(AVURLAsset *)self resolvedURL];
+    resolvedURL = [(AVURLAsset *)self resolvedURL];
   }
 
-  return [(NSURL *)v3 absoluteURL];
+  return [(NSURL *)resolvedURL absoluteURL];
 }
 
 - (NSURL)URL
@@ -371,14 +371,14 @@
     return URL;
   }
 
-  v3 = [(AVURLAsset *)self _assetInspector];
+  _assetInspector = [(AVURLAsset *)self _assetInspector];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  return [v3 URL];
+  return [_assetInspector URL];
 }
 
 - (void)dealloc
@@ -456,7 +456,7 @@ id __33__AVURLAsset__avfValidationPlist__block_invoke()
   block[1] = 3221225472;
   block[2] = __79__AVURLAsset__avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMIMETypes__block_invoke;
   block[3] = &unk_1E7460C00;
-  block[4] = a1;
+  block[4] = self;
   if (_avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMIMETypes_loadValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMIMETypesOnceToken != -1)
   {
     dispatch_once(&_avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMIMETypes_loadValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMIMETypesOnceToken, block);
@@ -529,15 +529,15 @@ void __79__AVURLAsset__avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMI
   return v6;
 }
 
-+ (id)UTTypeIDArrayFromUTTypeArray:(id)a3
++ (id)UTTypeIDArrayFromUTTypeArray:(id)array
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -549,20 +549,20 @@ void __79__AVURLAsset__avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMI
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(array);
         }
 
-        [v4 addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "identifier")}];
+        [array addObject:{objc_msgSend(*(*(&v10 + 1) + 8 * v8++), "identifier")}];
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [array countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 
-  return v4;
+  return array;
 }
 
 + (NSArray)audiovisualContentTypes
@@ -573,9 +573,9 @@ void __79__AVURLAsset__avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMI
   return [objc_msgSend(v2 setByAddingObjectsFromSet:{stringsToUTIs(0)), "allObjects"}];
 }
 
-+ (BOOL)isPlayableExtendedMIMEType:(id)a3 options:(id)a4
++ (BOOL)isPlayableExtendedMIMEType:(id)type options:(id)options
 {
-  if (a4 && [objc_msgSend(a4 objectForKey:{@"AVURLAssetExtendedMIMETypePlayabilityTreatPlaylistMIMETypesAsISOBMFFMediaDataContainersKey", "BOOLValue"}])
+  if (options && [objc_msgSend(options objectForKey:{@"AVURLAssetExtendedMIMETypePlayabilityTreatPlaylistMIMETypesAsISOBMFFMediaDataContainersKey", "BOOLValue"}])
   {
     +[AVURLAsset _avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMIMETypes];
   }
@@ -591,23 +591,23 @@ void __79__AVURLAsset__avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMI
 
 + (AVURLAsset)URLAssetWithURL:(NSURL *)URL options:(NSDictionary *)options
 {
-  v4 = [[a1 alloc] initWithURL:URL options:options];
+  v4 = [[self alloc] initWithURL:URL options:options];
 
   return v4;
 }
 
-+ (id)_getFigAssetiTunesStoreContentInfoFromURLAssetiTunesStoreContentInfo:(id)a3
++ (id)_getFigAssetiTunesStoreContentInfoFromURLAssetiTunesStoreContentInfo:(id)info
 {
   v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:0];
-  v5 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentIDKey"];
-  v6 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentTypeKey"];
-  v7 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentUserAgentKey"];
-  v8 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentDownloadParametersKey"];
-  v9 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentDSIDKey"];
-  v10 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentPurchasedMediaKindKey"];
-  v11 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentRentalIDKey"];
-  v12 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentHLSAssetURLStringKey"];
-  v13 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentAlternateContentInfoKey"];
+  v5 = [info objectForKey:@"AVURLAssetiTunesStoreContentIDKey"];
+  v6 = [info objectForKey:@"AVURLAssetiTunesStoreContentTypeKey"];
+  v7 = [info objectForKey:@"AVURLAssetiTunesStoreContentUserAgentKey"];
+  v8 = [info objectForKey:@"AVURLAssetiTunesStoreContentDownloadParametersKey"];
+  v9 = [info objectForKey:@"AVURLAssetiTunesStoreContentDSIDKey"];
+  v10 = [info objectForKey:@"AVURLAssetiTunesStoreContentPurchasedMediaKindKey"];
+  v11 = [info objectForKey:@"AVURLAssetiTunesStoreContentRentalIDKey"];
+  v12 = [info objectForKey:@"AVURLAssetiTunesStoreContentHLSAssetURLStringKey"];
+  v13 = [info objectForKey:@"AVURLAssetiTunesStoreContentAlternateContentInfoKey"];
   [v4 setValue:v5 forKey:*MEMORY[0x1E6971600]];
   [v4 setValue:v6 forKey:*MEMORY[0x1E6971618]];
   [v4 setValue:v7 forKey:*MEMORY[0x1E6971620]];
@@ -622,7 +622,7 @@ void __79__AVURLAsset__avfValidationPlistWithPlaylistMIMETypesTreatedAsISOBMFFMI
 
   if (v13)
   {
-    v14 = [a1 _getFigAssetiTunesStoreContentInfoFromURLAssetiTunesStoreContentInfo:v13];
+    v14 = [self _getFigAssetiTunesStoreContentInfoFromURLAssetiTunesStoreContentInfo:v13];
     v15 = [v13 objectForKey:@"AVURLAssetiTunesStoreContentAlternateContentInfoAssetURLStringKey"];
     [v14 setValue:v15 forKey:*MEMORY[0x1E69715E0]];
     [v4 setValue:v14 forKey:*MEMORY[0x1E69715D8]];
@@ -656,11 +656,11 @@ id __43__AVURLAsset__initializationOptionsClasses__block_invoke()
   return result;
 }
 
-+ (id)_getFigAssetCreationOptionsFromURLAssetInitializationOptions:(id)a3 assetLoggingIdentifier:(id)a4 figAssetCreationFlags:(unint64_t *)a5 error:(id *)a6
++ (id)_getFigAssetCreationOptionsFromURLAssetInitializationOptions:(id)options assetLoggingIdentifier:(id)identifier figAssetCreationFlags:(unint64_t *)flags error:(id *)error
 {
   v136 = *MEMORY[0x1E69E9840];
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v12 = [a3 objectForKey:@"AVURLAssetReferenceRestrictionsKey"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v12 = [options objectForKey:@"AVURLAssetReferenceRestrictionsKey"];
   if (v12)
   {
     v13 = 4 * ([v12 unsignedIntegerValue] & 0xF);
@@ -671,8 +671,8 @@ id __43__AVURLAsset__initializationOptionsClasses__block_invoke()
     v13 = 8;
   }
 
-  *a5 = v13;
-  v14 = [a3 objectForKey:@"AVURLAssetPreferNominalDurationsKey"];
+  *flags = v13;
+  v14 = [options objectForKey:@"AVURLAssetPreferNominalDurationsKey"];
   if (v14)
   {
     if (([v14 BOOLValue] & 1) == 0)
@@ -686,16 +686,16 @@ id __43__AVURLAsset__initializationOptionsClasses__block_invoke()
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
 LABEL_6:
-    *a5 |= 0x100uLL;
+    *flags |= 0x100uLL;
   }
 
 LABEL_7:
-  if ([objc_msgSend(a3 objectForKey:{@"AVURLAssetDoNotLogURLsKey", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"AVURLAssetDoNotLogURLsKey", "BOOLValue"}])
   {
-    *a5 |= 0x200uLL;
+    *flags |= 0x200uLL;
   }
 
-  v15 = [a3 objectForKey:@"AVURLAssetTypeKey"];
+  v15 = [options objectForKey:@"AVURLAssetTypeKey"];
   if (v15)
   {
     v16 = v15;
@@ -708,40 +708,40 @@ LABEL_7:
         v18 = MEMORY[0x1E6971508];
       }
 
-      [v11 setObject:*v18 forKey:*MEMORY[0x1E6970F70]];
+      [dictionary setObject:*v18 forKey:*MEMORY[0x1E6970F70]];
     }
   }
 
-  v19 = [a3 objectForKey:@"AVURLAssetClientBundleIdentifierKey"];
+  v19 = [options objectForKey:@"AVURLAssetClientBundleIdentifierKey"];
   if (v19)
   {
-    [v11 setObject:v19 forKey:*MEMORY[0x1E6970F50]];
+    [dictionary setObject:v19 forKey:*MEMORY[0x1E6970F50]];
   }
 
-  v20 = [a3 objectForKey:@"AVURLAssetClientAuditTokenKey"];
+  v20 = [options objectForKey:@"AVURLAssetClientAuditTokenKey"];
   if (v20)
   {
-    [v11 setObject:v20 forKey:*MEMORY[0x1E6970F48]];
+    [dictionary setObject:v20 forKey:*MEMORY[0x1E6970F48]];
   }
 
-  v21 = [a3 objectForKey:@"AVURLAssetAlternativeConfigurationOptionsKey"];
+  v21 = [options objectForKey:@"AVURLAssetAlternativeConfigurationOptionsKey"];
   if (v21)
   {
-    [v11 setObject:v21 forKey:*MEMORY[0x1E6970F10]];
+    [dictionary setObject:v21 forKey:*MEMORY[0x1E6970F10]];
   }
 
-  v22 = [a3 objectForKey:@"AVURLAssetSSLPropertiesKey"];
+  v22 = [options objectForKey:@"AVURLAssetSSLPropertiesKey"];
   if (v22)
   {
-    [v11 setObject:v22 forKey:*MEMORY[0x1E69710D8]];
+    [dictionary setObject:v22 forKey:*MEMORY[0x1E69710D8]];
   }
 
-  v23 = [a3 objectForKey:@"AVURLAssetMaxSizeAllowedForCellularAccessKey"];
-  v24 = [a3 objectForKey:@"AVURLAssetAllowsCellularAccessKey"];
+  v23 = [options objectForKey:@"AVURLAssetMaxSizeAllowedForCellularAccessKey"];
+  v24 = [options objectForKey:@"AVURLAssetAllowsCellularAccessKey"];
   if (v24)
   {
-    v25 = [v24 BOOLValue];
-    if (v23 && ((v25 ^ ([v23 longLongValue] == 0)) & 1) == 0)
+    bOOLValue = [v24 BOOLValue];
+    if (v23 && ((bOOLValue ^ ([v23 longLongValue] == 0)) & 1) == 0)
     {
       v67 = MEMORY[0x1E695DF30];
       v68 = *MEMORY[0x1E695D940];
@@ -749,7 +749,7 @@ LABEL_7:
       goto LABEL_198;
     }
 
-    if ((v25 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v23 = [MEMORY[0x1E696AD98] numberWithInt:0];
     }
@@ -757,100 +757,100 @@ LABEL_7:
 
   if (v23)
   {
-    [v11 setObject:v23 forKey:*MEMORY[0x1E6971018]];
+    [dictionary setObject:v23 forKey:*MEMORY[0x1E6971018]];
   }
 
-  v26 = [a3 objectForKey:@"AVURLAssetAllowsExpensiveNetworkAccessKey"];
+  v26 = [options objectForKey:@"AVURLAssetAllowsExpensiveNetworkAccessKey"];
   if (v26 && ([v26 BOOLValue] & 1) == 0)
   {
-    [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6970FA0]];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6970FA0]];
   }
 
-  v27 = [a3 objectForKey:@"AVURLAssetAllowsConstrainedNetworkAccessKey"];
+  v27 = [options objectForKey:@"AVURLAssetAllowsConstrainedNetworkAccessKey"];
   if (v27 && ([v27 BOOLValue] & 1) == 0)
   {
-    [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6970F98]];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6970F98]];
   }
 
-  if ([objc_msgSend(a3 objectForKey:{@"AVURLAssetInheritURIQueryComponentFromReferencingURIKey", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"AVURLAssetInheritURIQueryComponentFromReferencingURIKey", "BOOLValue"}])
   {
-    [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6970FF0]];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6970FF0]];
   }
 
-  v28 = [a3 objectForKey:@"AVURLAssetBoundNetworkInterfaceName"];
+  v28 = [options objectForKey:@"AVURLAssetBoundNetworkInterfaceName"];
   if (v28)
   {
-    [v11 setObject:v28 forKey:*MEMORY[0x1E6970F30]];
+    [dictionary setObject:v28 forKey:*MEMORY[0x1E6970F30]];
   }
 
-  if ([objc_msgSend(a3 objectForKey:{@"AVURLAssetUseAppleWirelessDirectLinkKey", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"AVURLAssetUseAppleWirelessDirectLinkKey", "BOOLValue"}])
   {
-    [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6971110]];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6971110]];
   }
 
-  v29 = [a3 objectForKey:@"AVURLAssetPreferPreciseDurationAndTimingKey"];
+  v29 = [options objectForKey:@"AVURLAssetPreferPreciseDurationAndTimingKey"];
   if (v29)
   {
-    [v11 setObject:v29 forKey:*MEMORY[0x1E6971090]];
+    [dictionary setObject:v29 forKey:*MEMORY[0x1E6971090]];
   }
 
-  v30 = [a3 objectForKey:@"AVURLAssetOutOfBandMIMETypeKey"];
+  v30 = [options objectForKey:@"AVURLAssetOutOfBandMIMETypeKey"];
   if (v30)
   {
     v31 = [objc_msgSend(objc_msgSend(v30 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "whitespaceCharacterSet")), "componentsSeparatedByString:", @";", "firstObject"}];
-    [v11 setObject:v31 forKey:*MEMORY[0x1E6971070]];
+    [dictionary setObject:v31 forKey:*MEMORY[0x1E6971070]];
   }
 
-  v32 = [a3 objectForKey:@"AVURLAssetOverrideFileTypeKey"];
+  v32 = [options objectForKey:@"AVURLAssetOverrideFileTypeKey"];
   if (v32)
   {
-    [v11 setObject:v32 forKey:*MEMORY[0x1E6971068]];
+    [dictionary setObject:v32 forKey:*MEMORY[0x1E6971068]];
   }
 
-  v33 = [a3 objectForKey:@"AVURLAssetAllowableTypeCategoriesKey"];
+  v33 = [options objectForKey:@"AVURLAssetAllowableTypeCategoriesKey"];
   if (v33)
   {
-    [v11 setObject:v33 forKey:*MEMORY[0x1E6970EF8]];
+    [dictionary setObject:v33 forKey:*MEMORY[0x1E6970EF8]];
   }
 
-  v34 = [a3 objectForKey:@"AVURLAssetAllowableAudioCodecTypesKey"];
+  v34 = [options objectForKey:@"AVURLAssetAllowableAudioCodecTypesKey"];
   if (v34)
   {
-    [v11 setObject:v34 forKey:*MEMORY[0x1E6970EE8]];
+    [dictionary setObject:v34 forKey:*MEMORY[0x1E6970EE8]];
   }
 
-  v35 = [a3 objectForKey:@"AVURLAssetAllowableVideoCodecTypesKey"];
+  v35 = [options objectForKey:@"AVURLAssetAllowableVideoCodecTypesKey"];
   if (v35)
   {
-    [v11 setObject:v35 forKey:*MEMORY[0x1E6970F00]];
+    [dictionary setObject:v35 forKey:*MEMORY[0x1E6970F00]];
   }
 
-  v36 = [a3 objectForKey:@"AVURLAssetAllowableCaptionFormatsKey"];
+  v36 = [options objectForKey:@"AVURLAssetAllowableCaptionFormatsKey"];
   if (v36)
   {
-    [v11 setObject:v36 forKey:*MEMORY[0x1E6970EF0]];
+    [dictionary setObject:v36 forKey:*MEMORY[0x1E6970EF0]];
   }
 
-  if ([AVAsset _assetCreationOptionsRequiresInProcessOperation:a3])
+  if ([AVAsset _assetCreationOptionsRequiresInProcessOperation:options])
   {
     v37 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v11 setObject:v37 forKey:*MEMORY[0x1E69710D0]];
+    [dictionary setObject:v37 forKey:*MEMORY[0x1E69710D0]];
   }
 
-  if ([AVAsset _assetCreationOptionsPrefersSandboxedOption:a3])
+  if ([AVAsset _assetCreationOptionsPrefersSandboxedOption:options])
   {
     v38 = [MEMORY[0x1E696AD98] numberWithBool:1];
-    [v11 setObject:v38 forKey:*MEMORY[0x1E6971098]];
+    [dictionary setObject:v38 forKey:*MEMORY[0x1E6971098]];
   }
 
-  v39 = [a3 objectForKey:@"AVURLAssetByteRangeInFileKey"];
+  v39 = [options objectForKey:@"AVURLAssetByteRangeInFileKey"];
   if (v39)
   {
-    [v11 setObject:v39 forKey:*MEMORY[0x1E6970F38]];
+    [dictionary setObject:v39 forKey:*MEMORY[0x1E6970F38]];
   }
 
-  v40 = [a3 objectForKey:@"AVURLAssetHTTPUserAgentKey"];
-  v41 = [a3 objectForKey:@"AVURLAssetHTTPHeaderFieldsKey"];
+  v40 = [options objectForKey:@"AVURLAssetHTTPUserAgentKey"];
+  v41 = [options objectForKey:@"AVURLAssetHTTPHeaderFieldsKey"];
   if (!v41)
   {
     if (!v40)
@@ -859,15 +859,15 @@ LABEL_7:
     }
 
 LABEL_70:
-    v42 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     goto LABEL_71;
   }
 
-  v42 = v41;
+  dictionary2 = v41;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v42 = 0;
+    dictionary2 = 0;
   }
 
   if (!v40)
@@ -875,49 +875,49 @@ LABEL_70:
     goto LABEL_72;
   }
 
-  if (!v42)
+  if (!dictionary2)
   {
     goto LABEL_70;
   }
 
-  v42 = [v42 mutableCopy];
-  v43 = [v42 allKeys];
+  dictionary2 = [dictionary2 mutableCopy];
+  allKeys = [dictionary2 allKeys];
   v133[0] = MEMORY[0x1E69E9820];
   v133[1] = 3221225472;
   v133[2] = __126__AVURLAsset__getFigAssetCreationOptionsFromURLAssetInitializationOptions_assetLoggingIdentifier_figAssetCreationFlags_error___block_invoke;
   v133[3] = &unk_1E74620F0;
-  v133[4] = v42;
-  [v43 enumerateObjectsUsingBlock:v133];
+  v133[4] = dictionary2;
+  [allKeys enumerateObjectsUsingBlock:v133];
 LABEL_71:
-  [v42 setObject:v40 forKey:@"User-Agent"];
+  [dictionary2 setObject:v40 forKey:@"User-Agent"];
 LABEL_72:
-  if (v42)
+  if (dictionary2)
   {
-    [v11 setObject:v42 forKey:*MEMORY[0x1E6970FE8]];
+    [dictionary setObject:dictionary2 forKey:*MEMORY[0x1E6970FE8]];
   }
 
 LABEL_74:
-  v44 = [a3 objectForKey:@"AVURLAssetAllowedHTTPProtocolTypesKey"];
+  v44 = [options objectForKey:@"AVURLAssetAllowedHTTPProtocolTypesKey"];
   if (v44)
   {
-    [v11 setObject:v44 forKey:*MEMORY[0x1E6970F08]];
+    [dictionary setObject:v44 forKey:*MEMORY[0x1E6970F08]];
   }
 
-  v45 = [a3 objectForKey:@"AVURLAssetApplicationTransportSecurityKey"];
+  v45 = [options objectForKey:@"AVURLAssetApplicationTransportSecurityKey"];
   if (v45)
   {
-    [v11 setObject:v45 forKey:*MEMORY[0x1E6970F28]];
+    [dictionary setObject:v45 forKey:*MEMORY[0x1E6970F28]];
   }
 
-  v46 = [a3 objectForKey:@"AVURLAssetCacheKey"];
+  v46 = [options objectForKey:@"AVURLAssetCacheKey"];
   v47 = [v46 URL];
   if (v47)
   {
-    [v11 setObject:v47 forKey:*MEMORY[0x1E6971040]];
-    [v11 setObject:*MEMORY[0x1E6970E78] forKey:*MEMORY[0x1E6971030]];
+    [dictionary setObject:v47 forKey:*MEMORY[0x1E6971040]];
+    [dictionary setObject:*MEMORY[0x1E6970E78] forKey:*MEMORY[0x1E6971030]];
     if ([v46 isProgressiveDownloadCacheEnabled])
     {
-      [v11 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6970F40]];
+      [dictionary setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6970F40]];
     }
 
     if ([v46 isHTTPLiveStreamingCacheEnabled])
@@ -925,14 +925,14 @@ LABEL_74:
       v48 = MEMORY[0x1E695E118];
       v49 = MEMORY[0x1E6970FE0];
 LABEL_86:
-      [v11 setObject:v48 forKey:*v49];
+      [dictionary setObject:v48 forKey:*v49];
     }
   }
 
-  else if ([objc_msgSend(a3 objectForKey:{@"AVURLAssetCacheUseNonPurgeableMemoryKey", "BOOLValue"}])
+  else if ([objc_msgSend(options objectForKey:{@"AVURLAssetCacheUseNonPurgeableMemoryKey", "BOOLValue"}])
   {
-    [v11 setObject:*MEMORY[0x1E6970E80] forKey:*MEMORY[0x1E6971030]];
-    v50 = [a3 objectForKey:@"AVURLAssetCacheNonPurgeableMemoryLimitKey"];
+    [dictionary setObject:*MEMORY[0x1E6970E80] forKey:*MEMORY[0x1E6971030]];
+    v50 = [options objectForKey:@"AVURLAssetCacheNonPurgeableMemoryLimitKey"];
     if (v50)
     {
       v48 = v50;
@@ -941,134 +941,134 @@ LABEL_86:
     }
   }
 
-  v51 = [a3 objectForKey:@"AVURLAssetVideoNotEligibleForAppRecordingKey"];
+  v51 = [options objectForKey:@"AVURLAssetVideoNotEligibleForAppRecordingKey"];
   v52 = MEMORY[0x1E695E4C0];
   if (v51)
   {
-    v53 = [v51 BOOLValue];
+    bOOLValue2 = [v51 BOOLValue];
     v54 = MEMORY[0x1E695E4D0];
-    if (!v53)
+    if (!bOOLValue2)
     {
       v54 = v52;
     }
 
-    [v11 setObject:*v54 forKey:*MEMORY[0x1E6971120]];
+    [dictionary setObject:*v54 forKey:*MEMORY[0x1E6971120]];
   }
 
-  v55 = [a3 objectForKey:@"AVURLAssetUsesNoPersistentCacheKey"];
+  v55 = [options objectForKey:@"AVURLAssetUsesNoPersistentCacheKey"];
   v56 = v55;
   if (v55)
   {
-    v57 = [v55 BOOLValue];
+    bOOLValue3 = [v55 BOOLValue];
     v58 = MEMORY[0x1E695E4D0];
-    if (!v57)
+    if (!bOOLValue3)
     {
       v58 = v52;
     }
 
-    [v11 setObject:*v58 forKey:*MEMORY[0x1E6971058]];
+    [dictionary setObject:*v58 forKey:*MEMORY[0x1E6971058]];
   }
 
-  if ([objc_msgSend(a3 objectForKey:{@"AVURLAssetShouldMatchDataInCacheByURLPathComponentOnlyKey", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"AVURLAssetShouldMatchDataInCacheByURLPathComponentOnlyKey", "BOOLValue"}])
   {
-    [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6971048]];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6971048]];
   }
 
-  if ([objc_msgSend(a3 objectForKey:{@"AVURLAssetShouldMatchDataInCacheByURLWithoutQueryComponentKey", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"AVURLAssetShouldMatchDataInCacheByURLWithoutQueryComponentKey", "BOOLValue"}])
   {
-    [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6971050]];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6971050]];
   }
 
-  v59 = [a3 objectForKey:@"AVURLAssetReadAheadOnByteStreamCreationEnabledKey"];
+  v59 = [options objectForKey:@"AVURLAssetReadAheadOnByteStreamCreationEnabledKey"];
   if (v59)
   {
-    [v11 setObject:v59 forKey:*MEMORY[0x1E6971010]];
+    [dictionary setObject:v59 forKey:*MEMORY[0x1E6971010]];
   }
 
-  v60 = [a3 objectForKey:@"AVURLAssetNetworkProbeRequestDisabledKey"];
+  v60 = [options objectForKey:@"AVURLAssetNetworkProbeRequestDisabledKey"];
   v61 = MEMORY[0x1E6970F90];
   if (v60)
   {
-    [v11 setObject:v60 forKey:*MEMORY[0x1E6970F90]];
+    [dictionary setObject:v60 forKey:*MEMORY[0x1E6970F90]];
   }
 
-  v62 = [a3 objectForKey:@"AVURLAssetNetworkLatencyMitigationKeyPodcastsOnly"];
+  v62 = [options objectForKey:@"AVURLAssetNetworkLatencyMitigationKeyPodcastsOnly"];
   if (v62)
   {
     v63 = v62;
-    [v11 setObject:v62 forKey:*MEMORY[0x1E69710E8]];
-    [v11 setObject:v63 forKey:*MEMORY[0x1E6970F78]];
-    [v11 setObject:v63 forKey:*v61];
-    [v11 setObject:v63 forKey:*MEMORY[0x1E6970F20]];
-    [v11 setObject:v63 forKey:*MEMORY[0x1E6970F18]];
+    [dictionary setObject:v62 forKey:*MEMORY[0x1E69710E8]];
+    [dictionary setObject:v63 forKey:*MEMORY[0x1E6970F78]];
+    [dictionary setObject:v63 forKey:*v61];
+    [dictionary setObject:v63 forKey:*MEMORY[0x1E6970F20]];
+    [dictionary setObject:v63 forKey:*MEMORY[0x1E6970F18]];
   }
 
-  v64 = [a3 objectForKey:@"AVURLAssetDownloadDestinationURLKey"];
+  v64 = [options objectForKey:@"AVURLAssetDownloadDestinationURLKey"];
   if (v64)
   {
-    [v11 setObject:v64 forKey:*MEMORY[0x1E6970FB0]];
+    [dictionary setObject:v64 forKey:*MEMORY[0x1E6970FB0]];
   }
 
-  v65 = [a3 objectForKey:@"AVURLAssetDownloadIsLowPriorityKey"];
+  v65 = [options objectForKey:@"AVURLAssetDownloadIsLowPriorityKey"];
   if (v65)
   {
-    [v11 setObject:v65 forKey:*MEMORY[0x1E6970FB8]];
+    [dictionary setObject:v65 forKey:*MEMORY[0x1E6970FB8]];
   }
 
   if (v56)
   {
-    v66 = [v56 BOOLValue];
+    bOOLValue4 = [v56 BOOLValue];
     if (v64)
     {
-      if (v66)
+      if (bOOLValue4)
       {
         v67 = MEMORY[0x1E695DF30];
         v68 = *MEMORY[0x1E695D940];
         v69 = @"AVURLAssetDownloadDestinationURLKey and AVURLAssetUsesNoPersistentCacheKey options are incompatible";
 LABEL_198:
         v117 = AVErrorForClientProgrammingError([v67 exceptionWithName:v68 reason:v69 userInfo:0]);
-        v11 = 0;
+        dictionary = 0;
         goto LABEL_199;
       }
     }
   }
 
-  v70 = [a3 objectForKey:@"AVURLAssetPreloadDurationWhenNextItemKey"];
+  v70 = [options objectForKey:@"AVURLAssetPreloadDurationWhenNextItemKey"];
   if (v70)
   {
     memset(&v132[32], 0, 24);
     [v70 CMTimeValue];
     *v132 = *&v132[32];
-    [v11 setObject:AVDictionaryWithTime(v132) forKey:*MEMORY[0x1E69710A0]];
+    [dictionary setObject:AVDictionaryWithTime(v132) forKey:*MEMORY[0x1E69710A0]];
   }
 
-  if ([objc_msgSend(a3 objectForKey:{@"AVURLAssetOptimizeAccessForLinearMoviePlaybackKey", "BOOLValue"}])
+  if ([objc_msgSend(options objectForKey:{@"AVURLAssetOptimizeAccessForLinearMoviePlaybackKey", "BOOLValue"}])
   {
     v71 = *MEMORY[0x1E695E4D0];
-    [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6971010]];
-    [v11 setObject:v71 forKey:*MEMORY[0x1E6970FF8]];
-    [v11 setObject:v71 forKey:*MEMORY[0x1E69710C0]];
-    [v11 setObject:v71 forKey:*MEMORY[0x1E6970F88]];
-    [v11 setObject:v71 forKey:*v61];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E6971010]];
+    [dictionary setObject:v71 forKey:*MEMORY[0x1E6970FF8]];
+    [dictionary setObject:v71 forKey:*MEMORY[0x1E69710C0]];
+    [dictionary setObject:v71 forKey:*MEMORY[0x1E6970F88]];
+    [dictionary setObject:v71 forKey:*v61];
   }
 
-  v72 = [a3 objectForKey:@"AVAssetPrepareForIncrementalFragmentsKey"];
+  v72 = [options objectForKey:@"AVAssetPrepareForIncrementalFragmentsKey"];
   if (v72)
   {
-    [v11 setObject:v72 forKey:*MEMORY[0x1E69710B0]];
+    [dictionary setObject:v72 forKey:*MEMORY[0x1E69710B0]];
   }
 
-  v121 = a4;
-  v73 = [a3 objectForKey:@"AVURLAssetRequiresCustomURLLoadingKey"];
-  v74 = [a3 objectForKey:@"AVURLAssetUseClientURLLoadingExclusively"];
+  identifierCopy = identifier;
+  v73 = [options objectForKey:@"AVURLAssetRequiresCustomURLLoadingKey"];
+  v74 = [options objectForKey:@"AVURLAssetUseClientURLLoadingExclusively"];
   if (([v73 BOOLValue] & 1) != 0 || objc_msgSend(v74, "BOOLValue"))
   {
-    [v11 setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E69710C8]];
+    [dictionary setObject:*MEMORY[0x1E695E4D0] forKey:*MEMORY[0x1E69710C8]];
   }
 
-  v75 = [a3 objectForKey:@"AVURLAssetProtectedContentSupportStorageURLKey"];
-  v76 = [a3 objectForKey:@"AVURLAssetPurchaseBundleKey"];
-  v77 = [a3 objectForKey:@"AVURLAssetAirPlayAuthorizationInfoKey"];
+  v75 = [options objectForKey:@"AVURLAssetProtectedContentSupportStorageURLKey"];
+  v76 = [options objectForKey:@"AVURLAssetPurchaseBundleKey"];
+  v77 = [options objectForKey:@"AVURLAssetAirPlayAuthorizationInfoKey"];
   v78 = v77;
   if (v75 || v76 || v77)
   {
@@ -1089,10 +1089,10 @@ LABEL_198:
       [v80 setValue:v78 forKey:*MEMORY[0x1E6970C08]];
     }
 
-    [v11 setObject:v80 forKey:*MEMORY[0x1E6970F60]];
+    [dictionary setObject:v80 forKey:*MEMORY[0x1E6970F60]];
   }
 
-  v81 = [a3 objectForKey:@"AVURLAssetHTTPCookiesKey"];
+  v81 = [options objectForKey:@"AVURLAssetHTTPCookiesKey"];
   if ([v81 count])
   {
     v82 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v81, "count")}];
@@ -1114,10 +1114,10 @@ LABEL_198:
             objc_enumerationMutation(v81);
           }
 
-          v87 = [*(*(&v128 + 1) + 8 * i) properties];
-          if (v87)
+          properties = [*(*(&v128 + 1) + 8 * i) properties];
+          if (properties)
           {
-            [v82 addObject:v87];
+            [v82 addObject:properties];
           }
         }
 
@@ -1127,22 +1127,22 @@ LABEL_198:
       while (v84);
     }
 
-    [v11 setObject:v82 forKey:*MEMORY[0x1E6970ED8]];
+    [dictionary setObject:v82 forKey:*MEMORY[0x1E6970ED8]];
   }
 
-  v88 = [a3 objectForKey:@"AVURLAssetiTunesStoreContentInfoKey"];
+  v88 = [options objectForKey:@"AVURLAssetiTunesStoreContentInfoKey"];
   if (v88)
   {
-    v89 = [a1 _getFigAssetiTunesStoreContentInfoFromURLAssetiTunesStoreContentInfo:v88];
-    [v11 setObject:v89 forKey:*MEMORY[0x1E6971128]];
+    v89 = [self _getFigAssetiTunesStoreContentInfoFromURLAssetiTunesStoreContentInfo:v88];
+    [dictionary setObject:v89 forKey:*MEMORY[0x1E6971128]];
   }
 
-  v90 = [a3 objectForKey:@"AVURLAssetOutOfBandAlternateTracksKey"];
+  v90 = [options objectForKey:@"AVURLAssetOutOfBandAlternateTracksKey"];
   if (v90)
   {
     v91 = v90;
-    v119 = v11;
-    v120 = a6;
+    v119 = dictionary;
+    errorCopy = error;
     v92 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v90, "count")}];
     v124 = 0u;
     v125 = 0u;
@@ -1190,131 +1190,131 @@ LABEL_198:
       while (v94);
     }
 
-    v11 = v119;
+    dictionary = v119;
     [v119 setObject:v92 forKey:*MEMORY[0x1E6971060]];
-    a6 = v120;
+    error = errorCopy;
   }
 
-  v100 = [a3 objectForKey:@"AVURLAssetEnableQUICKey"];
+  v100 = [options objectForKey:@"AVURLAssetEnableQUICKey"];
   if (v100)
   {
-    [v11 setObject:v100 forKey:*MEMORY[0x1E6970FC8]];
+    [dictionary setObject:v100 forKey:*MEMORY[0x1E6970FC8]];
   }
 
-  v101 = [a3 objectForKey:@"AVURLAssetForceQUICKey"];
+  v101 = [options objectForKey:@"AVURLAssetForceQUICKey"];
   if (v101)
   {
-    [v11 setObject:v101 forKey:*MEMORY[0x1E6970FD0]];
+    [dictionary setObject:v101 forKey:*MEMORY[0x1E6970FD0]];
   }
 
-  v102 = [a3 objectForKey:@"AVURLAssetWhitelistQUICKey"];
+  v102 = [options objectForKey:@"AVURLAssetWhitelistQUICKey"];
   if (v102)
   {
-    [v11 setObject:v102 forKey:*MEMORY[0x1E6970EE0]];
+    [dictionary setObject:v102 forKey:*MEMORY[0x1E6970EE0]];
   }
 
-  v103 = [a3 objectForKey:@"AVURLAssetEnableMultiPath"];
+  v103 = [options objectForKey:@"AVURLAssetEnableMultiPath"];
   if (v103)
   {
-    [v11 setObject:v103 forKey:*MEMORY[0x1E6970FC0]];
+    [dictionary setObject:v103 forKey:*MEMORY[0x1E6970FC0]];
   }
 
-  v104 = [a3 objectForKey:@"AVURLAssetPrimarySessionIdentifierKey"];
+  v104 = [options objectForKey:@"AVURLAssetPrimarySessionIdentifierKey"];
   if (v104)
   {
-    v105 = [v104 UUIDString];
-    [v11 setObject:v105 forKey:*MEMORY[0x1E69710B8]];
+    uUIDString = [v104 UUIDString];
+    [dictionary setObject:uUIDString forKey:*MEMORY[0x1E69710B8]];
   }
 
-  v106 = [a3 objectForKey:@"AVURLAssetInitialPreloadedPlaylistKey"];
+  v106 = [options objectForKey:@"AVURLAssetInitialPreloadedPlaylistKey"];
   if (v106)
   {
-    [v11 setObject:v106 forKey:*MEMORY[0x1E6971000]];
+    [dictionary setObject:v106 forKey:*MEMORY[0x1E6971000]];
   }
 
-  v107 = [a3 objectForKey:@"AVURLAssetPreferLargeResourceRequests"];
+  v107 = [options objectForKey:@"AVURLAssetPreferLargeResourceRequests"];
   if (v107)
   {
-    [v11 setObject:v107 forKey:*MEMORY[0x1E6971088]];
+    [dictionary setObject:v107 forKey:*MEMORY[0x1E6971088]];
   }
 
-  if (v121)
+  if (identifierCopy)
   {
-    [v11 setObject:v121 forKey:*MEMORY[0x1E6971008]];
+    [dictionary setObject:identifierCopy forKey:*MEMORY[0x1E6971008]];
   }
 
-  v108 = [a3 objectForKey:@"AVURLAssetUnitTestOptions"];
+  v108 = [options objectForKey:@"AVURLAssetUnitTestOptions"];
   if (v108)
   {
-    [v11 setObject:v108 forKey:*MEMORY[0x1E6971108]];
+    [dictionary setObject:v108 forKey:*MEMORY[0x1E6971108]];
   }
 
-  if ([a3 objectForKey:@"AVURLAssetParentNetworkActivityKey"])
+  if ([options objectForKey:@"AVURLAssetParentNetworkActivityKey"])
   {
     Token = FigNWActivityCreateToken();
     if (Token)
     {
       v110 = Token;
-      [v11 setObject:Token forKey:*MEMORY[0x1E6971078]];
+      [dictionary setObject:Token forKey:*MEMORY[0x1E6971078]];
       CFRelease(v110);
     }
   }
 
-  v111 = [a3 objectForKey:@"AVURLAssetURLRequestAttributionKey"];
+  v111 = [options objectForKey:@"AVURLAssetURLRequestAttributionKey"];
   if (v111)
   {
-    [v11 setObject:v111 forKey:*MEMORY[0x1E6971100]];
+    [dictionary setObject:v111 forKey:*MEMORY[0x1E6971100]];
   }
 
-  v112 = [a3 objectForKey:@"AVURLAssetShouldEnableLegacyWebKitCompatibilityModeForContentKeyRequests"];
+  v112 = [options objectForKey:@"AVURLAssetShouldEnableLegacyWebKitCompatibilityModeForContentKeyRequests"];
   if (v112)
   {
-    [v11 setObject:v112 forKey:*MEMORY[0x1E69710E0]];
+    [dictionary setObject:v112 forKey:*MEMORY[0x1E69710E0]];
   }
 
-  v113 = [a3 objectForKey:@"AVURLAssetCustomURLLoaderKey"];
+  v113 = [options objectForKey:@"AVURLAssetCustomURLLoaderKey"];
   if (v113)
   {
-    [v11 setObject:v113 forKey:*MEMORY[0x1E6970F68]];
+    [dictionary setObject:v113 forKey:*MEMORY[0x1E6970F68]];
   }
 
   if ((dyld_program_sdk_at_least() & 1) == 0)
   {
-    [v11 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6970FA8]];
+    [dictionary setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6970FA8]];
   }
 
-  v114 = [a3 objectForKey:@"AVURLAssetShouldSupportAIMEMetadataKey"];
+  v114 = [options objectForKey:@"AVURLAssetShouldSupportAIMEMetadataKey"];
   if (v114)
   {
-    [v11 setObject:v114 forKey:*MEMORY[0x1E69710F0]];
+    [dictionary setObject:v114 forKey:*MEMORY[0x1E69710F0]];
   }
 
-  v115 = [a3 objectForKey:@"AVURLAssetShouldParseExternalSphericalTagsKey"];
+  v115 = [options objectForKey:@"AVURLAssetShouldParseExternalSphericalTagsKey"];
   if (v115)
   {
-    [v11 setObject:v115 forKey:*MEMORY[0x1E6971080]];
+    [dictionary setObject:v115 forKey:*MEMORY[0x1E6971080]];
   }
 
-  v116 = [a3 objectForKey:@"AVURLAssetDisableL4SKey"];
+  v116 = [options objectForKey:@"AVURLAssetDisableL4SKey"];
   if (v116)
   {
-    [v11 setObject:v116 forKey:*MEMORY[0x1E6970F80]];
+    [dictionary setObject:v116 forKey:*MEMORY[0x1E6970F80]];
   }
 
-  v117 = [a3 objectForKey:@"AVURLAssetRequiresNWLoaderKey"];
+  v117 = [options objectForKey:@"AVURLAssetRequiresNWLoaderKey"];
   if (v117)
   {
-    [v11 setObject:v117 forKey:*MEMORY[0x1E6971118]];
+    [dictionary setObject:v117 forKey:*MEMORY[0x1E6971118]];
     v117 = 0;
   }
 
 LABEL_199:
-  if (a6 && !v11)
+  if (error && !dictionary)
   {
-    *a6 = v117;
+    *error = v117;
   }
 
-  return v11;
+  return dictionary;
 }
 
 uint64_t __126__AVURLAsset__getFigAssetCreationOptionsFromURLAssetInitializationOptions_assetLoggingIdentifier_figAssetCreationFlags_error___block_invoke(uint64_t a1, void *a2)
@@ -1348,50 +1348,50 @@ uint64_t __126__AVURLAsset__getFigAssetCreationOptionsFromURLAssetInitialization
   return result;
 }
 
-- (AVURLAsset)initWithFigCreationOptions:(id)a3 options:(id)a4 figAssetCreationOptions:(id)a5 figAssetCreationFlags:(unint64_t)a6
+- (AVURLAsset)initWithFigCreationOptions:(id)options options:(id)a4 figAssetCreationOptions:(id)creationOptions figAssetCreationFlags:(unint64_t)flags
 {
   v11.receiver = self;
   v11.super_class = AVURLAsset;
   result = [(AVAsset *)&v11 init];
   if (result)
   {
-    return avurlasset_setupGuts(result, a3, a4, a5, a6);
+    return avurlasset_setupGuts(result, options, a4, creationOptions, flags);
   }
 
   return result;
 }
 
-- (AVURLAsset)initWithFileURL:(id)a3 offset:(int64_t)a4 length:(int64_t)a5 options:(id)a6
+- (AVURLAsset)initWithFileURL:(id)l offset:(int64_t)offset length:(int64_t)length options:(id)options
 {
-  v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a6];
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v12 = [MEMORY[0x1E696AD98] numberWithLongLong:a4];
-  [v11 setObject:v12 forKey:*MEMORY[0x1E6970BF0]];
-  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:a5];
-  [v11 setObject:v13 forKey:*MEMORY[0x1E6970BE8]];
-  [v10 setObject:v11 forKey:@"AVURLAssetByteRangeInFileKey"];
-  if (!a3 || ![a3 isFileURL])
+  v10 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:options];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v12 = [MEMORY[0x1E696AD98] numberWithLongLong:offset];
+  [dictionary setObject:v12 forKey:*MEMORY[0x1E6970BF0]];
+  v13 = [MEMORY[0x1E696AD98] numberWithLongLong:length];
+  [dictionary setObject:v13 forKey:*MEMORY[0x1E6970BE8]];
+  [v10 setObject:dictionary forKey:@"AVURLAssetByteRangeInFileKey"];
+  if (!l || ![l isFileURL])
   {
     return 0;
   }
 
-  return [(AVURLAsset *)self initWithURL:a3 options:v10];
+  return [(AVURLAsset *)self initWithURL:l options:v10];
 }
 
-- (id)_errorForFigNotificationPayload:(__CFDictionary *)a3 key:(__CFString *)a4
+- (id)_errorForFigNotificationPayload:(__CFDictionary *)payload key:(__CFString *)key
 {
-  if (!a3)
+  if (!payload)
   {
     return 0;
   }
 
-  v6 = CFGetTypeID(a3);
+  v6 = CFGetTypeID(payload);
   if (v6 != CFDictionaryGetTypeID())
   {
     return 0;
   }
 
-  Value = CFDictionaryGetValue(a3, a4);
+  Value = CFDictionaryGetValue(payload, key);
   valuePtr = 0;
   if (!Value)
   {
@@ -1450,20 +1450,20 @@ AVAssetDownloadCache *__39__AVURLAsset__ensureAssetDownloadCache__block_invoke(u
   return [v3 stringWithFormat:@"<%@: %p, URL = %@>", v5, self, v6];
 }
 
-- (void)_setAssetInspectorLoader:(id)a3
+- (void)_setAssetInspectorLoader:(id)loader
 {
-  if (self->_URLAsset->loader != a3)
+  if (self->_URLAsset->loader != loader)
   {
     [(AVURLAsset *)self _removeFigAssetNotifications];
-    v5 = a3;
+    loaderCopy = loader;
 
-    self->_URLAsset->loader = a3;
+    self->_URLAsset->loader = loader;
     URLRequestHelper = self->_URLAsset->URLRequestHelper;
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __39__AVURLAsset__setAssetInspectorLoader___block_invoke;
     v7[3] = &unk_1E7462118;
-    v7[4] = a3;
+    v7[4] = loader;
     [(AVAssetClientURLRequestHelper *)URLRequestHelper setFigAssetProvider:v7];
     [(AVURLAsset *)self _addFigAssetNotifications];
   }
@@ -1511,9 +1511,9 @@ AVAssetDownloadCache *__39__AVURLAsset__ensureAssetDownloadCache__block_invoke(u
 
 - (NSUUID)httpSessionIdentifier
 {
-  v2 = [(AVURLAsset *)self _assetInspector];
+  _assetInspector = [(AVURLAsset *)self _assetInspector];
 
-  return [v2 httpSessionIdentifier];
+  return [_assetInspector httpSessionIdentifier];
 }
 
 - (id)recommendedDestinationURLPathExtension
@@ -1523,23 +1523,23 @@ AVAssetDownloadCache *__39__AVURLAsset__ensureAssetDownloadCache__block_invoke(u
     return @"movpkg";
   }
 
-  v4 = [(AVURLAsset *)self identifyingTagClass];
-  v3 = [(AVURLAsset *)self identifyingTag];
-  if ([v4 isEqualToString:*MEMORY[0x1E6982C48]])
+  identifyingTagClass = [(AVURLAsset *)self identifyingTagClass];
+  identifyingTag = [(AVURLAsset *)self identifyingTag];
+  if ([identifyingTagClass isEqualToString:*MEMORY[0x1E6982C48]])
   {
-    return v3;
+    return identifyingTag;
   }
 
-  if (v3)
+  if (identifyingTag)
   {
-    if (v4)
+    if (identifyingTagClass)
     {
-      v6 = [MEMORY[0x1E6982C40] typeWithTag:v3 tagClass:v4 conformingToType:0];
+      v6 = [MEMORY[0x1E6982C40] typeWithTag:identifyingTag tagClass:identifyingTagClass conformingToType:0];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E6982C40] typeWithIdentifier:v3];
+      v6 = [MEMORY[0x1E6982C40] typeWithIdentifier:identifyingTag];
     }
   }
 
@@ -1607,23 +1607,23 @@ AVAssetDownloadCache *__39__AVURLAsset__ensureAssetDownloadCache__block_invoke(u
 
 - (id)identifyingTagClass
 {
-  v2 = [(AVURLAsset *)self _assetInspector];
+  _assetInspector = [(AVURLAsset *)self _assetInspector];
 
-  return [v2 identifyingTagClass];
+  return [_assetInspector identifyingTagClass];
 }
 
 - (id)identifyingTag
 {
-  v2 = [(AVURLAsset *)self _assetInspector];
+  _assetInspector = [(AVURLAsset *)self _assetInspector];
 
-  return [v2 identifyingTag];
+  return [_assetInspector identifyingTag];
 }
 
 - (id)SHA1Digest
 {
-  v2 = [(AVURLAsset *)self _assetInspector];
+  _assetInspector = [(AVURLAsset *)self _assetInspector];
 
-  return [v2 SHA1Digest];
+  return [_assetInspector SHA1Digest];
 }
 
 - (BOOL)_shouldOptimizeAccessForLinearMoviePlayback
@@ -1645,7 +1645,7 @@ AVAssetDownloadCache *__39__AVURLAsset__ensureAssetDownloadCache__block_invoke(u
   return [v4 BOOLValue];
 }
 
-- (id)_resourceLoaderWithRemoteHandlerContext:(id)a3
+- (id)_resourceLoaderWithRemoteHandlerContext:(id)context
 {
   makeOneResourceLoaderOnly = self->_URLAsset->makeOneResourceLoaderOnly;
   v6[0] = MEMORY[0x1E69E9820];
@@ -1653,7 +1653,7 @@ AVAssetDownloadCache *__39__AVURLAsset__ensureAssetDownloadCache__block_invoke(u
   v6[2] = __85__AVURLAsset_AVURLAssetURLHandlingInternal___resourceLoaderWithRemoteHandlerContext___block_invoke;
   v6[3] = &unk_1E7460DF0;
   v6[4] = self;
-  v6[5] = a3;
+  v6[5] = context;
   [(AVDispatchOnce *)makeOneResourceLoaderOnly runBlockOnce:v6];
   return self->_URLAsset->resourceLoader;
 }
@@ -1686,17 +1686,17 @@ uint64_t __76__AVURLAsset_AVURLAssetInstanceIdentiferMapping__instanceIdentifier
   return result;
 }
 
-- (void)_setUserInfoObject:(id)a3
+- (void)_setUserInfoObject:(id)object
 {
-  v5 = [(NSUUID *)[(AVURLAsset *)self httpSessionIdentifier] UUIDString];
+  uUIDString = [(NSUUID *)[(AVURLAsset *)self httpSessionIdentifier] UUIDString];
   v6 = +[AVURLAsset instanceIdentifierMapTable];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__AVURLAsset_AVURLAssetInstanceIdentiferMapping___setUserInfoObject___block_invoke;
   v7[3] = &unk_1E7462140;
-  v7[4] = a3;
+  v7[4] = object;
   v7[5] = v6;
-  v7[6] = v5;
+  v7[6] = uUIDString;
   v7[7] = self;
   av_readwrite_dispatch_queue_write(sInstanceIdentifierMapTableQueue, v7);
 }
@@ -1721,19 +1721,19 @@ uint64_t __69__AVURLAsset_AVURLAssetInstanceIdentiferMapping___setUserInfoObject
   return result;
 }
 
-+ (id)userInfoObjectForURLAsset:(id)a3
++ (id)userInfoObjectForURLAsset:(id)asset
 {
-  result = [objc_msgSend(a3 "httpSessionIdentifier")];
+  result = [objc_msgSend(asset "httpSessionIdentifier")];
   if (result)
   {
 
-    return [a1 userInfoObjectForURLAssetInstanceIdentifier:result];
+    return [self userInfoObjectForURLAssetInstanceIdentifier:result];
   }
 
   return result;
 }
 
-+ (id)userInfoObjectForURLAssetInstanceIdentifier:(id)a3
++ (id)userInfoObjectForURLAssetInstanceIdentifier:(id)identifier
 {
   v8 = 0;
   v9 = &v8;
@@ -1741,14 +1741,14 @@ uint64_t __69__AVURLAsset_AVURLAssetInstanceIdentiferMapping___setUserInfoObject
   v11 = __Block_byref_object_copy__4;
   v12 = __Block_byref_object_dispose__4;
   v13 = 0;
-  v4 = [a1 instanceIdentifierMapTable];
+  instanceIdentifierMapTable = [self instanceIdentifierMapTable];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __94__AVURLAsset_AVURLAssetInstanceIdentiferMapping__userInfoObjectForURLAssetInstanceIdentifier___block_invoke;
   block[3] = &unk_1E7461068;
-  block[5] = a3;
+  block[5] = identifier;
   block[6] = &v8;
-  block[4] = v4;
+  block[4] = instanceIdentifierMapTable;
   av_readwrite_dispatch_queue_read(sInstanceIdentifierMapTableQueue, block);
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1764,29 +1764,29 @@ uint64_t __94__AVURLAsset_AVURLAssetInstanceIdentiferMapping__userInfoObjectForU
 
 - (NSUUID)uniqueIdentifier
 {
-  v2 = [(AVURLAsset *)self _assetInspector];
+  _assetInspector = [(AVURLAsset *)self _assetInspector];
 
-  return [v2 uniqueIdentifier];
+  return [_assetInspector uniqueIdentifier];
 }
 
 - (BOOL)_attachedToExternalContentKeySession
 {
-  v2 = [(AVWeakReference *)self->_URLAsset->sessionReference referencedObject];
-  if (v2)
+  referencedObject = [(AVWeakReference *)self->_URLAsset->sessionReference referencedObject];
+  if (referencedObject)
   {
-    LOBYTE(v2) = [v2 isInternal] ^ 1;
+    LOBYTE(referencedObject) = [referencedObject isInternal] ^ 1;
   }
 
-  return v2;
+  return referencedObject;
 }
 
 - (void)expire
 {
   [(AVURLAsset *)self cancelLoading];
-  v3 = [(AVAsset *)self _figAsset];
-  if (v3)
+  _figAsset = [(AVAsset *)self _figAsset];
+  if (_figAsset)
   {
-    v4 = v3;
+    v4 = _figAsset;
     v5 = *(*(CMBaseObjectGetVTable() + 8) + 24);
     if (v5)
     {
@@ -1796,13 +1796,13 @@ uint64_t __94__AVURLAsset_AVURLAssetInstanceIdentiferMapping__userInfoObjectForU
   }
 }
 
-- (id)_installHandlerForNSURLSessionConfiguration:(id)a3 queue:(id)a4
+- (id)_installHandlerForNSURLSessionConfiguration:(id)configuration queue:(id)queue
 {
   v7 = objc_alloc_init(MEMORY[0x1E696ADC8]);
   [v7 setMaxConcurrentOperationCount:1];
-  [v7 setUnderlyingQueue:a4];
+  [v7 setUnderlyingQueue:queue];
   v8 = [[AVAssetCustomURLBridgeForNSURLSession alloc] initWithFigAsset:[(AVAsset *)self _figAsset]];
-  -[AVAssetCustomURLBridgeForNSURLSession setSession:](v8, "setSession:", [MEMORY[0x1E695AC78] sessionWithConfiguration:a3 delegate:v8 delegateQueue:v7]);
+  -[AVAssetCustomURLBridgeForNSURLSession setSession:](v8, "setSession:", [MEMORY[0x1E695AC78] sessionWithConfiguration:configuration delegate:v8 delegateQueue:v7]);
   return v8;
 }
 
@@ -1813,24 +1813,24 @@ uint64_t __94__AVURLAsset_AVURLAssetInstanceIdentiferMapping__userInfoObjectForU
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:1];
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v17 = 0;
-  if ([a4 caseInsensitiveCompare:@"com.apple.avfoundation.urlasset"])
+  if ([identifier caseInsensitiveCompare:@"com.apple.avfoundation.urlasset"])
   {
     v18 = *MEMORY[0x1E696A278];
-    v19[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Reading data from the type identifier %@ is not supported by AVURLAsset.", a4];
-    a3 = 0;
+    v19[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Reading data from the type identifier %@ is not supported by AVURLAsset.", identifier];
+    data = 0;
     v17 = AVLocalizedError(@"AVFoundationErrorDomain", -11862, [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1]);
   }
 
-  else if (a3)
+  else if (data)
   {
-    v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:a3 error:&v17];
-    v11 = [v10 securityScopedURL];
-    v12 = [v10 assetInitializationOptions];
-    if (v11)
+    v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:data error:&v17];
+    securityScopedURL = [v10 securityScopedURL];
+    assetInitializationOptions = [v10 assetInitializationOptions];
+    if (securityScopedURL)
     {
       v13 = v17 == 0;
     }
@@ -1842,7 +1842,7 @@ uint64_t __94__AVURLAsset_AVURLAssetInstanceIdentiferMapping__userInfoObjectForU
 
     if (v13)
     {
-      v14 = v12;
+      v14 = assetInitializationOptions;
       v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v16 = v15;
       if (v14)
@@ -1851,16 +1851,16 @@ uint64_t __94__AVURLAsset_AVURLAssetInstanceIdentiferMapping__userInfoObjectForU
       }
 
       [v16 setValue:MEMORY[0x1E695E118] forKey:@"AVURLAssetHasSecurityScopedURLKey"];
-      a3 = [AVURLAsset URLAssetWithURL:v11 options:v16];
+      data = [AVURLAsset URLAssetWithURL:securityScopedURL options:v16];
     }
 
     else
     {
-      a3 = 0;
+      data = 0;
     }
   }
 
-  if (a5 && !a3)
+  if (error && !data)
   {
     v8 = v17;
     if (!v17)
@@ -1868,27 +1868,27 @@ uint64_t __94__AVURLAsset_AVURLAssetInstanceIdentiferMapping__userInfoObjectForU
       v8 = AVLocalizedError(@"AVFoundationErrorDomain", -11800, 0);
     }
 
-    *a5 = v8;
+    *error = v8;
   }
 
-  return a3;
+  return data;
 }
 
-+ (id)_objectWithItemProviderFileURL:(id)a3 typeIdentifier:(id)a4 isInPlace:(BOOL)a5 error:(id *)a6
++ (id)_objectWithItemProviderFileURL:(id)l typeIdentifier:(id)identifier isInPlace:(BOOL)place error:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  if ([a4 caseInsensitiveCompare:@"com.apple.avfoundation.urlasset"])
+  if ([identifier caseInsensitiveCompare:@"com.apple.avfoundation.urlasset"])
   {
-    v13[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Reading file representations for the type identifier %@ is not supported by AVURLAsset.", a4, *MEMORY[0x1E696A278]];
+    v13[0] = [MEMORY[0x1E696AEC0] stringWithFormat:@"Reading file representations for the type identifier %@ is not supported by AVURLAsset.", identifier, *MEMORY[0x1E696A278]];
     v9 = AVLocalizedError(@"AVFoundationErrorDomain", -11862, [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1]);
-    if (a6)
+    if (error)
     {
       v10 = v9;
       if (v9)
       {
 LABEL_8:
         result = 0;
-        *a6 = v10;
+        *error = v10;
         return result;
       }
 
@@ -1902,8 +1902,8 @@ LABEL_7:
 
   else
   {
-    result = [AVURLAsset URLAssetWithURL:a3 options:0];
-    if (a6 && !result)
+    result = [AVURLAsset URLAssetWithURL:l options:0];
+    if (error && !result)
     {
       goto LABEL_7;
     }
@@ -1919,16 +1919,16 @@ LABEL_7:
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v3 count:1];
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
   v18[1] = *MEMORY[0x1E69E9840];
   v7 = [(AVURLAsset *)self URL];
   v14 = 0;
-  if ([a3 caseInsensitiveCompare:@"com.apple.avfoundation.urlasset"])
+  if ([identifier caseInsensitiveCompare:@"com.apple.avfoundation.urlasset"])
   {
     v15 = *MEMORY[0x1E696A278];
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Loading data from the type identifier %@ is not supported by AVURLAsset.", a3];
-    v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v16 forKeys:&v15 count:1];
+    identifier = [MEMORY[0x1E696AEC0] stringWithFormat:@"Loading data from the type identifier %@ is not supported by AVURLAsset.", identifier];
+    v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&identifier forKeys:&v15 count:1];
     v9 = -11862;
   }
 
@@ -1950,7 +1950,7 @@ LABEL_7:
 
       if (v12)
       {
-        (*(a4 + 2))(a4, v11);
+        (*(handler + 2))(handler, v11);
         return 0;
       }
 
@@ -1976,17 +1976,17 @@ LABEL_12:
   }
 
 LABEL_13:
-  (*(a4 + 2))(a4, 0);
+  (*(handler + 2))(handler, 0);
   return 0;
 }
 
-- (id)_loadFileRepresentationOfTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)_loadFileRepresentationOfTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v6 = [(AVURLAsset *)self URL];
-  if ([a3 caseInsensitiveCompare:@"com.apple.avfoundation.urlasset"])
+  if ([identifier caseInsensitiveCompare:@"com.apple.avfoundation.urlasset"])
   {
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Loading file representations for the type identifier %@ is not supported by AVURLAsset.", a3, *MEMORY[0x1E696A278]];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Loading file representations for the type identifier %@ is not supported by AVURLAsset.", identifier, *MEMORY[0x1E696A278]];
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v12 forKeys:&v11 count:1];
     v8 = -11862;
   }
@@ -1995,7 +1995,7 @@ LABEL_13:
   {
     if ([(NSURL *)v6 isFileURL])
     {
-      (*(a4 + 2))(a4, v6, 1, 0);
+      (*(handler + 2))(handler, v6, 1, 0);
       return 0;
     }
 
@@ -2011,7 +2011,7 @@ LABEL_13:
     v9 = AVLocalizedError(@"AVFoundationErrorDomain", -11800, 0);
   }
 
-  (*(a4 + 2))(a4, 0, 0, v9);
+  (*(handler + 2))(handler, 0, 0, v9);
   return 0;
 }
 
@@ -2022,37 +2022,37 @@ LABEL_13:
   return v2;
 }
 
-+ (id)assetForNSURLSessionWithURL:(id)a3 propertyList:(id)a4
++ (id)assetForNSURLSessionWithURL:(id)l propertyList:(id)list
 {
   objc_opt_class();
-  if (objc_opt_isKindOfClass() & 1) != 0 && ([a4 objectForKey:@"figAssetCreationOptions"], FigAssetCreateOptionsDictFromPList(), v6 = objc_msgSend(a4, "objectForKey:", @"figAssetCreationFlags"), objc_opt_class(), (objc_opt_isKindOfClass()))
+  if (objc_opt_isKindOfClass() & 1) != 0 && ([list objectForKey:@"figAssetCreationOptions"], FigAssetCreateOptionsDictFromPList(), v6 = objc_msgSend(list, "objectForKey:", @"figAssetCreationFlags"), objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v7 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedLongLongValue = 0;
   }
 
   v8 = [AVURLAsset alloc];
   v9 = 0;
-  return [(AVURLAsset *)v8 initWithFigCreationOptions:a3 options:MEMORY[0x1E695E0F8] figAssetCreationOptions:v9 figAssetCreationFlags:v7];
+  return [(AVURLAsset *)v8 initWithFigCreationOptions:l options:MEMORY[0x1E695E0F8] figAssetCreationOptions:v9 figAssetCreationFlags:unsignedLongLongValue];
 }
 
-- (int)_attachToContentKeySession:(id)a3 contentKeyBoss:(OpaqueFigContentKeyBoss *)a4 failedSinceAlreadyAttachedToAnotherSession:(BOOL *)a5
+- (int)_attachToContentKeySession:(id)session contentKeyBoss:(OpaqueFigContentKeyBoss *)boss failedSinceAlreadyAttachedToAnotherSession:(BOOL *)anotherSession
 {
   v41 = *MEMORY[0x1E69E9840];
   v38 = 0;
   v39 = 0;
-  v9 = [a3 _weakReference];
-  if (!a3 || (v10 = 0, atomic_compare_exchange_strong(&self->_URLAsset->sessionReference, &v10, v9), v10))
+  _weakReference = [session _weakReference];
+  if (!session || (v10 = 0, atomic_compare_exchange_strong(&self->_URLAsset->sessionReference, &v10, _weakReference), v10))
   {
-    if (a5)
+    if (anotherSession)
     {
-      if (v9)
+      if (_weakReference)
       {
-        v19 = v9 != self->_URLAsset->sessionReference;
+        v19 = _weakReference != self->_URLAsset->sessionReference;
       }
 
       else
@@ -2060,7 +2060,7 @@ LABEL_13:
         v19 = 0;
       }
 
-      *a5 = v19;
+      *anotherSession = v19;
     }
 
     v20 = 0;
@@ -2091,7 +2091,7 @@ LABEL_40:
     goto LABEL_34;
   }
 
-  if (a4 && v38)
+  if (boss && v38)
   {
     v15 = _os_feature_enabled_impl();
     v16 = v38;
@@ -2102,7 +2102,7 @@ LABEL_40:
       if (v18)
       {
 LABEL_18:
-        v20 = v18(v16, a4);
+        v20 = v18(v16, boss);
         if (v20)
         {
           goto LABEL_34;
@@ -2141,12 +2141,12 @@ LABEL_19:
     goto LABEL_40;
   }
 
-  v23 = [a3 _contentKeyGroups];
+  _contentKeyGroups = [session _contentKeyGroups];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v24 = [v23 countByEnumeratingWithState:&v34 objects:v40 count:16];
+  v24 = [_contentKeyGroups countByEnumeratingWithState:&v34 objects:v40 count:16];
   if (v24)
   {
     v25 = v24;
@@ -2157,18 +2157,18 @@ LABEL_23:
     {
       if (*v35 != v26)
       {
-        objc_enumerationMutation(v23);
+        objc_enumerationMutation(_contentKeyGroups);
       }
 
       v28 = v39;
-      v29 = [*(*(&v34 + 1) + 8 * v27) _figContentKeySession];
+      _figContentKeySession = [*(*(&v34 + 1) + 8 * v27) _figContentKeySession];
       v30 = *(*(CMBaseObjectGetVTable() + 16) + 8);
       if (!v30)
       {
         goto LABEL_33;
       }
 
-      v14 = v30(v28, v29);
+      v14 = v30(v28, _figContentKeySession);
       if (v14)
       {
         goto LABEL_40;
@@ -2176,7 +2176,7 @@ LABEL_23:
 
       if (v25 == ++v27)
       {
-        v25 = [v23 countByEnumeratingWithState:&v34 objects:v40 count:16];
+        v25 = [_contentKeyGroups countByEnumeratingWithState:&v34 objects:v40 count:16];
         if (v25)
         {
           goto LABEL_23;
@@ -2187,12 +2187,12 @@ LABEL_23:
     }
   }
 
-  v31 = [(AVURLAsset *)self resourceLoader];
+  resourceLoader = [(AVURLAsset *)self resourceLoader];
   cf = 0;
-  v20 = [a3 createAndInstallCustomURLHandlerForAsset:self outHandler:&cf];
+  v20 = [session createAndInstallCustomURLHandlerForAsset:self outHandler:&cf];
   if (!v20)
   {
-    [(AVAssetResourceLoader *)v31 _setContentKeySessionCustomURLHandler:cf];
+    [(AVAssetResourceLoader *)resourceLoader _setContentKeySessionCustomURLHandler:cf];
     if (cf)
     {
       CFRelease(cf);
@@ -2213,7 +2213,7 @@ LABEL_34:
   return v20;
 }
 
-- (id)propertyListForNSURLSessionAssetReturningError:(id *)a3
+- (id)propertyListForNSURLSessionAssetReturningError:(id *)error
 {
   if (![(AVAsset *)self _figAsset])
   {
@@ -2238,9 +2238,9 @@ LABEL_10:
 
   v7 = -12782;
 LABEL_6:
-  if (a3 && v7)
+  if (error && v7)
   {
-    *a3 = AVLocalizedErrorWithUnderlyingOSStatus(v7, 0);
+    *error = AVLocalizedErrorWithUnderlyingOSStatus(v7, 0);
   }
 
   return 0;

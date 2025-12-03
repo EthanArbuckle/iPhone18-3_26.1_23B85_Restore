@@ -1,28 +1,28 @@
 @interface UNNotificationActionIcon
-- (BOOL)isEqual:(id)a3;
-- (UNNotificationActionIcon)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (UNNotificationActionIcon)initWithCoder:(id)coder;
 - (id)_description;
-- (id)_initWithImageName:(id)a3 systemIcon:(BOOL)a4;
+- (id)_initWithImageName:(id)name systemIcon:(BOOL)icon;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationActionIcon
 
-- (id)_initWithImageName:(id)a3 systemIcon:(BOOL)a4
+- (id)_initWithImageName:(id)name systemIcon:(BOOL)icon
 {
-  v6 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = UNNotificationActionIcon;
   v7 = [(UNNotificationActionIcon *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [nameCopy copy];
     imageName = v7->_imageName;
     v7->_imageName = v8;
 
-    v7->_systemIcon = a4;
+    v7->_systemIcon = icon;
   }
 
   return v7;
@@ -30,25 +30,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [(UNNotificationActionIcon *)self imageName];
-  v4 = [v3 hash];
-  v5 = [(UNNotificationActionIcon *)self isSystemIcon];
+  imageName = [(UNNotificationActionIcon *)self imageName];
+  v4 = [imageName hash];
+  isSystemIcon = [(UNNotificationActionIcon *)self isSystemIcon];
 
-  return v4 ^ v5;
+  return v4 ^ isSystemIcon;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(UNNotificationActionIcon *)self imageName];
-    v6 = [v4 imageName];
-    if (UNEqualStrings(v5, v6))
+    imageName = [(UNNotificationActionIcon *)self imageName];
+    imageName2 = [equalCopy imageName];
+    if (UNEqualStrings(imageName, imageName2))
     {
-      v7 = [(UNNotificationActionIcon *)self isSystemIcon];
-      v8 = v7 ^ [v4 isSystemIcon] ^ 1;
+      isSystemIcon = [(UNNotificationActionIcon *)self isSystemIcon];
+      v8 = isSystemIcon ^ [equalCopy isSystemIcon] ^ 1;
     }
 
     else
@@ -69,10 +69,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UNNotificationActionIcon *)self imageName];
+  imageName = [(UNNotificationActionIcon *)self imageName];
   [(UNNotificationActionIcon *)self isSystemIcon];
   v6 = NSStringFromBOOL();
-  v7 = [v3 stringWithFormat:@"<%@: %p imageName: %@, isSystemIcon: %@", v4, self, v5, v6];;
+  v7 = [v3 stringWithFormat:@"<%@: %p imageName: %@, isSystemIcon: %@", v4, self, imageName, v6];;
 
   return v7;
 }
@@ -80,28 +80,28 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(UNNotificationActionIcon *)self _description];
-  v4 = [v2 stringWithFormat:@"%@>", v3];
+  _description = [(UNNotificationActionIcon *)self _description];
+  v4 = [v2 stringWithFormat:@"%@>", _description];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(UNNotificationActionIcon *)self imageName];
-  [v5 encodeObject:v4 forKey:@"imageName"];
+  coderCopy = coder;
+  imageName = [(UNNotificationActionIcon *)self imageName];
+  [coderCopy encodeObject:imageName forKey:@"imageName"];
 
-  [v5 encodeBool:-[UNNotificationActionIcon isSystemIcon](self forKey:{"isSystemIcon"), @"systemIcon"}];
+  [coderCopy encodeBool:-[UNNotificationActionIcon isSystemIcon](self forKey:{"isSystemIcon"), @"systemIcon"}];
 }
 
-- (UNNotificationActionIcon)initWithCoder:(id)a3
+- (UNNotificationActionIcon)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageName"];
   v6 = [v5 copy];
 
-  v7 = [v4 decodeBoolForKey:@"systemIcon"];
+  v7 = [coderCopy decodeBoolForKey:@"systemIcon"];
   v8 = [(UNNotificationActionIcon *)self _initWithImageName:v6 systemIcon:v7];
 
   return v8;

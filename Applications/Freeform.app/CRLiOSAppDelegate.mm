@@ -1,38 +1,38 @@
 @interface CRLiOSAppDelegate
 + (_TtC8Freeform17CRLiOSAppDelegate)shared;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (void)applicationDidEnterBackground;
 - (void)applicationWillEnterForeground;
-- (void)applicationWillTerminate:(id)a3;
-- (void)buildMenuWithBuilder:(id)a3;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)buildMenuWithBuilder:(id)builder;
 @end
 
 @implementation CRLiOSAppDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 role];
+  sessionCopy = session;
+  role = [sessionCopy role];
   v7 = objc_allocWithZone(UISceneConfiguration);
   v8 = String._bridgeToObjectiveC()();
-  v9 = [v7 initWithName:v8 sessionRole:v6];
+  v9 = [v7 initWithName:v8 sessionRole:role];
 
   return v9;
 }
 
 - (void)applicationWillEnterForeground
 {
-  v2 = self;
+  selfCopy = self;
   sub_100051E20();
 }
 
 + (_TtC8Freeform17CRLiOSAppDelegate)shared
 {
-  v2 = [objc_opt_self() sharedApplication];
-  v3 = [v2 delegate];
+  sharedApplication = [objc_opt_self() sharedApplication];
+  delegate = [sharedApplication delegate];
 
-  if (v3)
+  if (delegate)
   {
     type metadata accessor for CRLiOSAppDelegate();
     v5 = swift_dynamicCastClassUnconditional();
@@ -50,33 +50,33 @@
 
 - (void)applicationDidEnterBackground
 {
-  v2 = self;
+  selfCopy = self;
   sub_10077E21C();
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v4 = a3;
-  v5 = self;
+  terminateCopy = terminate;
+  selfCopy = self;
   sub_100788354();
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10077E9D0(a3);
+  selfCopy = self;
+  sub_10077E9D0(builder);
   swift_unknownObjectRelease();
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!test)
   {
     v8 = 0;
     v10 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -86,16 +86,16 @@
 
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  v13 = sub_100B8A6DC(a3, v8, v10, v5);
+  applicationCopy = application;
+  selfCopy = self;
+  v13 = sub_100B8A6DC(application, v8, v10, optionsCopy);
 
   return v13 & 1;
 }

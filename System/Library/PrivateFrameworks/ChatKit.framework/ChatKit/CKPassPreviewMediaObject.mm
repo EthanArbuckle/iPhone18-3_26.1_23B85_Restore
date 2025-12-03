@@ -1,34 +1,34 @@
 @interface CKPassPreviewMediaObject
-+ (id)_colorFromColorString:(id)a3;
-+ (id)_darkenColor:(id)a3;
-+ (void)_setTextForPresentationRow:(id)a3 representation:(id)a4;
-+ (void)_updatePresentationPropertiesForRow:(id)a3 representation:(id)a4;
-+ (void)_updatePresentationPropertiesForRow:(id)a3 text:(id)a4 color:(id)a5;
++ (id)_colorFromColorString:(id)string;
++ (id)_darkenColor:(id)color;
++ (void)_setTextForPresentationRow:(id)row representation:(id)representation;
++ (void)_updatePresentationPropertiesForRow:(id)row representation:(id)representation;
++ (void)_updatePresentationPropertiesForRow:(id)row text:(id)text color:(id)color;
 - (BOOL)generatePreviewOutOfProcess;
-- (Class)balloonViewClassForWidth:(double)a3 orientation:(char)a4;
+- (Class)balloonViewClassForWidth:(double)width orientation:(char)orientation;
 - (Class)previewBalloonViewClass;
 - (LPWebLinkPresentationProperties)presentationProperties;
 - (PKPassSecurePreviewContext)passPreview;
-- (id)_initWithOverrideFileURL:(id)a3;
+- (id)_initWithOverrideFileURL:(id)l;
 - (id)fileURL;
 - (id)generatePreviewMetadata;
-- (id)generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4;
+- (id)generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets;
 - (id)presentationPropertiesForReplyPreview;
 - (id)previewMetadata;
 @end
 
 @implementation CKPassPreviewMediaObject
 
-- (id)_initWithOverrideFileURL:(id)a3
+- (id)_initWithOverrideFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = CKPassPreviewMediaObject;
   v5 = [(CKPassPreviewMediaObject *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CKPassPreviewMediaObject *)v5 setOverrideFileURL:v4];
+    [(CKPassPreviewMediaObject *)v5 setOverrideFileURL:lCopy];
   }
 
   return v6;
@@ -48,49 +48,49 @@
 
 - (id)fileURL
 {
-  v3 = [(CKPassPreviewMediaObject *)self overrideFileURL];
-  v4 = v3;
-  if (v3)
+  overrideFileURL = [(CKPassPreviewMediaObject *)self overrideFileURL];
+  v4 = overrideFileURL;
+  if (overrideFileURL)
   {
-    v5 = v3;
+    fileURL = overrideFileURL;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CKPassPreviewMediaObject;
-    v5 = [(CKMediaObject *)&v8 fileURL];
+    fileURL = [(CKMediaObject *)&v8 fileURL];
   }
 
-  v6 = v5;
+  v6 = fileURL;
 
   return v6;
 }
 
 - (id)previewMetadata
 {
-  v3 = [(CKPassPreviewMediaObject *)self overrideMetadataProperties];
-  v4 = v3;
-  if (v3)
+  overrideMetadataProperties = [(CKPassPreviewMediaObject *)self overrideMetadataProperties];
+  v4 = overrideMetadataProperties;
+  if (overrideMetadataProperties)
   {
-    v5 = v3;
+    previewMetadata = overrideMetadataProperties;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = CKPassPreviewMediaObject;
-    v5 = [(CKMediaObject *)&v8 previewMetadata];
+    previewMetadata = [(CKMediaObject *)&v8 previewMetadata];
   }
 
-  v6 = v5;
+  v6 = previewMetadata;
 
   return v6;
 }
 
-- (Class)balloonViewClassForWidth:(double)a3 orientation:(char)a4
+- (Class)balloonViewClassForWidth:(double)width orientation:(char)orientation
 {
-  v4 = a4;
+  orientationCopy = orientation;
   if ([(CKPassbookMediaObject *)self isSupported]&& ([(CKPassPreviewMediaObject *)self previewMetadata], (v7 = objc_claimAutoreleasedReturnValue()) != 0) && (v8 = v7, v9 = [(CKMediaObject *)self shouldSuppressPreview], v8, !v9))
   {
     v10 = objc_opt_class();
@@ -100,7 +100,7 @@
   {
     v12.receiver = self;
     v12.super_class = CKPassPreviewMediaObject;
-    v10 = [(CKMediaObject *)&v12 balloonViewClassForWidth:v4 orientation:a3];
+    v10 = [(CKMediaObject *)&v12 balloonViewClassForWidth:orientationCopy orientation:width];
   }
 
   return v10;
@@ -122,17 +122,17 @@
   return v3;
 }
 
-- (id)generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4
+- (id)generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.height;
-  width = a3.width;
-  v11 = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  transcoderPreviewGenerationFailed = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
   v12 = IMOSLoggingEnabled();
-  if (v11)
+  if (transcoderPreviewGenerationFailed)
   {
     if (v12)
     {
@@ -144,7 +144,7 @@
       }
     }
 
-    v14 = 0;
+    right = 0;
   }
 
   else
@@ -159,17 +159,17 @@
       }
     }
 
-    v14 = [CKWalletMediaObjectMetadataHandler generateThumbnailFillToSize:self->_presentationProperties contentAlignmentInsets:width presentationProperties:height, top, left, bottom, right];
+    right = [CKWalletMediaObjectMetadataHandler generateThumbnailFillToSize:self->_presentationProperties contentAlignmentInsets:width presentationProperties:height, top, left, bottom, right];
   }
 
-  return v14;
+  return right;
 }
 
 - (id)generatePreviewMetadata
 {
-  v3 = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
+  transcoderPreviewGenerationFailed = [(CKMediaObject *)self transcoderPreviewGenerationFailed];
   v4 = IMOSLoggingEnabled();
-  if (v3)
+  if (transcoderPreviewGenerationFailed)
   {
     if (v4)
     {
@@ -196,13 +196,13 @@
       }
     }
 
-    v8 = [(CKPassPreviewMediaObject *)self passPreview];
-    if (v8)
+    passPreview = [(CKPassPreviewMediaObject *)self passPreview];
+    if (passPreview)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v10 = objc_opt_class();
-      v11 = [v8 backgroundColor];
-      v12 = [v10 _colorFromColorString:v11];
+      backgroundColor = [passPreview backgroundColor];
+      v12 = [v10 _colorFromColorString:backgroundColor];
       v13 = [CKWalletMediaObjectMetadataHandler colorDictionaryFromColor:v12];
 
       if (v13)
@@ -217,7 +217,7 @@
 
       if (objc_opt_respondsToSelector())
       {
-        [v8 backgroundImage];
+        [passPreview backgroundImage];
         v15 = IMCreatePNGImageDataFromCGImageRef();
         if (v15)
         {
@@ -226,19 +226,19 @@
         }
       }
 
-      v17 = [v8 primaryText];
-      if (v17)
+      primaryText = [passPreview primaryText];
+      if (primaryText)
       {
-        v18 = v17;
-        v19 = [v8 primaryColor];
+        v18 = primaryText;
+        primaryColor = [passPreview primaryColor];
 
-        if (v19)
+        if (primaryColor)
         {
-          v20 = [v8 primaryText];
+          primaryText2 = [passPreview primaryText];
           v21 = objc_opt_class();
-          v22 = [v8 primaryColor];
-          v23 = [v21 _colorFromColorString:v22];
-          v24 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:v20 color:v23];
+          primaryColor2 = [passPreview primaryColor];
+          v23 = [v21 _colorFromColorString:primaryColor2];
+          v24 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:primaryText2 color:v23];
 
           if (v24)
           {
@@ -252,19 +252,19 @@
         }
       }
 
-      v25 = [v8 secondaryText];
-      if (v25)
+      secondaryText = [passPreview secondaryText];
+      if (secondaryText)
       {
-        v26 = v25;
-        v27 = [v8 secondaryColor];
+        v26 = secondaryText;
+        secondaryColor = [passPreview secondaryColor];
 
-        if (v27)
+        if (secondaryColor)
         {
-          v28 = [v8 secondaryText];
+          secondaryText2 = [passPreview secondaryText];
           v29 = objc_opt_class();
-          v30 = [v8 secondaryColor];
-          v31 = [v29 _colorFromColorString:v30];
-          v32 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:v28 color:v31];
+          secondaryColor2 = [passPreview secondaryColor];
+          v31 = [v29 _colorFromColorString:secondaryColor2];
+          v32 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:secondaryText2 color:v31];
 
           if (v32)
           {
@@ -278,19 +278,19 @@
         }
       }
 
-      v33 = [v8 tertiaryText];
-      if (v33)
+      tertiaryText = [passPreview tertiaryText];
+      if (tertiaryText)
       {
-        v34 = v33;
-        v35 = [v8 tertiaryColor];
+        v34 = tertiaryText;
+        tertiaryColor = [passPreview tertiaryColor];
 
-        if (v35)
+        if (tertiaryColor)
         {
-          v36 = [v8 tertiaryText];
+          tertiaryText2 = [passPreview tertiaryText];
           v37 = objc_opt_class();
-          v38 = [v8 tertiaryColor];
-          v39 = [v37 _colorFromColorString:v38];
-          v40 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:v36 color:v39];
+          tertiaryColor2 = [passPreview tertiaryColor];
+          v39 = [v37 _colorFromColorString:tertiaryColor2];
+          v40 = [CKWalletMediaObjectMetadataHandler dictionaryRepresentationForText:tertiaryText2 color:v39];
 
           if (v40)
           {
@@ -304,14 +304,14 @@
         }
       }
 
-      [v8 image];
+      [passPreview image];
       v41 = IMCreatePNGImageDataFromCGImageRef();
       if (v41)
       {
         CFDictionarySetValue(v9, *MEMORY[0x1E69A7E30], v41);
       }
 
-      [v8 icon];
+      [passPreview icon];
       v42 = IMCreatePNGImageDataFromCGImageRef();
       if (v42)
       {
@@ -343,7 +343,7 @@
 - (id)presentationPropertiesForReplyPreview
 {
   v25 = *MEMORY[0x1E69E9840];
-  v2 = [(CKPassPreviewMediaObject *)self previewMetadata];
+  previewMetadata = [(CKPassPreviewMediaObject *)self previewMetadata];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -352,24 +352,24 @@
     [v3 setCaptionBar:v4];
 
     v5 = objc_opt_class();
-    v6 = [v3 captionBar];
-    v7 = [v6 top];
-    v8 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69A7E40]];
+    captionBar = [v3 captionBar];
+    v7 = [captionBar top];
+    v8 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E40]];
     [v5 _setTextForPresentationRow:v7 representation:v8];
 
     v9 = objc_opt_class();
-    v10 = [v3 captionBar];
-    v11 = [v10 bottom];
-    v12 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69A7E48]];
-    [v9 _setTextForPresentationRow:v11 representation:v12];
+    captionBar2 = [v3 captionBar];
+    bottom = [captionBar2 bottom];
+    v12 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E48]];
+    [v9 _setTextForPresentationRow:bottom representation:v12];
 
     v13 = objc_opt_class();
-    v14 = [v3 captionBar];
-    v15 = [v14 belowBottom];
-    v16 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69A7E50]];
-    [v13 _setTextForPresentationRow:v15 representation:v16];
+    captionBar3 = [v3 captionBar];
+    belowBottom = [captionBar3 belowBottom];
+    v16 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E50]];
+    [v13 _setTextForPresentationRow:belowBottom representation:v16];
 
-    v17 = [v2 objectForKeyedSubscript:*MEMORY[0x1E69A7E28]];
+    v17 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E28]];
     if (v17)
     {
       objc_opt_class();
@@ -377,8 +377,8 @@
       {
         v18 = [MEMORY[0x1E69DCAB8] imageWithData:v17];
         v19 = [objc_alloc(MEMORY[0x1E696EC68]) initWithPlatformImage:v18];
-        v20 = [v3 captionBar];
-        [v20 setLeadingIcon:v19];
+        captionBar4 = [v3 captionBar];
+        [captionBar4 setLeadingIcon:v19];
       }
     }
   }
@@ -391,7 +391,7 @@
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v23 = 138412290;
-        v24 = v2;
+        v24 = previewMetadata;
         _os_log_impl(&dword_19020E000, v21, OS_LOG_TYPE_INFO, "CKPassPreviewMediaObject: Invalid metadata file %@", &v23, 0xCu);
       }
     }
@@ -402,15 +402,15 @@
   return v3;
 }
 
-+ (id)_colorFromColorString:(id)a3
++ (id)_colorFromColorString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   if (_colorFromColorString__onceToken != -1)
   {
     +[CKPassPreviewMediaObject _colorFromColorString:];
   }
 
-  v4 = [_colorFromColorString__sPKPassClass colorFromString:v3];
+  v4 = [_colorFromColorString__sPKPassClass colorFromString:stringCopy];
   v5 = v4;
   if (v4)
   {
@@ -443,13 +443,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v4 = [(CKPassPreviewMediaObject *)self previewMetadata];
+  previewMetadata = [(CKPassPreviewMediaObject *)self previewMetadata];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_alloc_init(MEMORY[0x1E696ED20]);
     [v5 setStyle:44];
-    v33 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A7E30]];
+    v33 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E30]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -459,11 +459,11 @@ LABEL_14:
       [v5 setImage:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A7DF8]];
+    v9 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7DF8]];
     v32 = [CKWalletMediaObjectMetadataHandler colorFromDictionaryRepresentation:v9];
 
     [v5 setBackgroundColor:v32];
-    v31 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A7E00]];
+    v31 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E00]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -486,22 +486,22 @@ LABEL_14:
     [v5 setCaptionBar:v16];
 
     v17 = objc_opt_class();
-    v18 = [v5 captionBar];
-    v19 = [v18 top];
-    v20 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A7E40]];
+    captionBar = [v5 captionBar];
+    v19 = [captionBar top];
+    v20 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E40]];
     [v17 _updatePresentationPropertiesForRow:v19 representation:v20];
 
     v21 = objc_opt_class();
-    v22 = [v5 captionBar];
-    v23 = [v22 bottom];
-    v24 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A7E48]];
-    [v21 _updatePresentationPropertiesForRow:v23 representation:v24];
+    captionBar2 = [v5 captionBar];
+    bottom = [captionBar2 bottom];
+    v24 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E48]];
+    [v21 _updatePresentationPropertiesForRow:bottom representation:v24];
 
     v25 = objc_opt_class();
-    v26 = [v5 captionBar];
-    v27 = [v26 belowBottom];
-    v28 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69A7E50]];
-    [v25 _updatePresentationPropertiesForRow:v27 representation:v28];
+    captionBar3 = [v5 captionBar];
+    belowBottom = [captionBar3 belowBottom];
+    v28 = [previewMetadata objectForKeyedSubscript:*MEMORY[0x1E69A7E50]];
+    [v25 _updatePresentationPropertiesForRow:belowBottom representation:v28];
 
     v29 = self->_presentationProperties;
     self->_presentationProperties = v5;
@@ -516,7 +516,7 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v35 = v4;
+      v35 = previewMetadata;
       _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "CKPassPreviewMediaObject: Invalid metadata file %@", buf, 0xCu);
     }
   }
@@ -527,55 +527,55 @@ LABEL_15:
   return v14;
 }
 
-+ (void)_updatePresentationPropertiesForRow:(id)a3 representation:(id)a4
++ (void)_updatePresentationPropertiesForRow:(id)row representation:(id)representation
 {
-  if (a4)
+  if (representation)
   {
     v6 = *MEMORY[0x1E69A7E58];
-    v7 = a4;
-    v8 = a3;
-    v9 = [v7 objectForKeyedSubscript:v6];
+    representationCopy = representation;
+    rowCopy = row;
+    v9 = [representationCopy objectForKeyedSubscript:v6];
     v11 = [CKWalletMediaObjectMetadataHandler colorFromDictionaryRepresentation:v9];
 
-    v10 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69A7E60]];
+    v10 = [representationCopy objectForKeyedSubscript:*MEMORY[0x1E69A7E60]];
 
-    [a1 _updatePresentationPropertiesForRow:v8 text:v10 color:v11];
+    [self _updatePresentationPropertiesForRow:rowCopy text:v10 color:v11];
   }
 }
 
-+ (void)_setTextForPresentationRow:(id)a3 representation:(id)a4
++ (void)_setTextForPresentationRow:(id)row representation:(id)representation
 {
-  if (a4)
+  if (representation)
   {
     v5 = *MEMORY[0x1E69A7E60];
-    v6 = a3;
-    v8 = [a4 objectForKeyedSubscript:v5];
-    v7 = [v6 leading];
+    rowCopy = row;
+    v8 = [representation objectForKeyedSubscript:v5];
+    leading = [rowCopy leading];
 
-    [v7 setText:v8];
+    [leading setText:v8];
   }
 }
 
-+ (void)_updatePresentationPropertiesForRow:(id)a3 text:(id)a4 color:(id)a5
++ (void)_updatePresentationPropertiesForRow:(id)row text:(id)text color:(id)color
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 leading];
-  [v10 setText:v8];
+  colorCopy = color;
+  textCopy = text;
+  rowCopy = row;
+  leading = [rowCopy leading];
+  [leading setText:textCopy];
 
-  v11 = [v9 leading];
+  leading2 = [rowCopy leading];
 
-  [v11 setColor:v7];
+  [leading2 setColor:colorCopy];
 }
 
-+ (id)_darkenColor:(id)a3
++ (id)_darkenColor:(id)color
 {
   v8 = 0.0;
   v6 = 0.0;
   v7 = 0.0;
   v5 = 0.0;
-  [a3 getRed:&v8 green:&v7 blue:&v6 alpha:&v5];
+  [color getRed:&v8 green:&v7 blue:&v6 alpha:&v5];
   v3 = [MEMORY[0x1E69DC888] colorWithRed:v8 * 0.8 green:v7 * 0.8 blue:v6 * 0.8 alpha:v5];
 
   return v3;
@@ -591,15 +591,15 @@ LABEL_15:
     {
       v5 = MEMORY[0x1E695DFF8];
       v6 = IMSafeTemporaryDirectory();
-      v7 = [v6 path];
-      v21[0] = v7;
+      path = [v6 path];
+      v21[0] = path;
       v21[1] = @"PassPreview";
       v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
       v9 = [v5 fileURLWithPathComponents:v8];
 
-      v10 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v18 = 0;
-      LOBYTE(v8) = [v10 createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v18];
+      LOBYTE(v8) = [defaultManager createDirectoryAtURL:v9 withIntermediateDirectories:1 attributes:0 error:&v18];
       v11 = v18;
 
       if ((v8 & 1) == 0)
@@ -618,8 +618,8 @@ LABEL_15:
         goto LABEL_15;
       }
 
-      v12 = [(CKPassPreviewMediaObject *)self fileURL];
-      MessagesPreview = PKPassSecurePreviewContextCreateMessagesPreview(v12, v9);
+      fileURL = [(CKPassPreviewMediaObject *)self fileURL];
+      MessagesPreview = PKPassSecurePreviewContextCreateMessagesPreview(fileURL, v9);
       v14 = self->_passPreview;
       self->_passPreview = MessagesPreview;
 

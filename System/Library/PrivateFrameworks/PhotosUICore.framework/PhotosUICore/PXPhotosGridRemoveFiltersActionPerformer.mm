@@ -1,16 +1,16 @@
 @interface PXPhotosGridRemoveFiltersActionPerformer
 - (NSString)activitySystemImageName;
 - (NSString)activityType;
-- (PXPhotosGridRemoveFiltersActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXPhotosGridRemoveFiltersActionPerformer)initWithViewModel:(id)model actionType:(id)type;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridRemoveFiltersActionPerformer
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A48F39D0();
   v5 = v4;
 
@@ -44,15 +44,15 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A48F3678();
 }
 
-- (PXPhotosGridRemoveFiltersActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4
+- (PXPhotosGridRemoveFiltersActionPerformer)initWithViewModel:(id)model actionType:(id)type
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PhotosGridRemoveFiltersActionPerformer();
-  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:a3 actionType:a4];
+  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:model actionType:type];
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface SLHighlightPillMetrics
-+ (CGSize)chevronSizeWithStyle:(id)a3 variant:(unint64_t)a4;
-+ (NSEdgeInsets)pillMarginsWithStyle:(id)a3 variant:(unint64_t)a4 maxWidth:(double)a5;
-+ (const)chevronFontDescriptorWithStyle:(id)a3 variant:(unint64_t)a4;
-+ (const)truncatedLineFrom:(id)a3 maxWidth:(double)a4;
-+ (double)pillHeightWithStyle:(id)a3 variant:(unint64_t)a4 maxWidth:(double)a5;
-+ (id)accessibilityLabelFor:(id)a3;
-+ (int64_t)maxSendersToDisplayWithStyle:(id)a3 variant:(unint64_t)a4;
++ (CGSize)chevronSizeWithStyle:(id)style variant:(unint64_t)variant;
++ (NSEdgeInsets)pillMarginsWithStyle:(id)style variant:(unint64_t)variant maxWidth:(double)width;
++ (const)chevronFontDescriptorWithStyle:(id)style variant:(unint64_t)variant;
++ (const)truncatedLineFrom:(id)from maxWidth:(double)width;
++ (double)pillHeightWithStyle:(id)style variant:(unint64_t)variant maxWidth:(double)width;
++ (id)accessibilityLabelFor:(id)for;
++ (int64_t)maxSendersToDisplayWithStyle:(id)style variant:(unint64_t)variant;
 - (BOOL)hasValidMetricsForDrawing;
 - (BOOL)shouldDisplayPin;
 - (BOOL)useDoubleLinedLabel;
@@ -15,7 +15,7 @@
 - (NSEdgeInsets)margins;
 - (NSEdgeInsets)minimumLabelHorizontalMargines;
 - (SLHighlightPillMetrics)init;
-- (SLHighlightPillMetrics)initWithSlotStyle:(id)a3 tag:(id)a4;
+- (SLHighlightPillMetrics)initWithSlotStyle:(id)style tag:(id)tag;
 - (const)baseFont;
 - (const)chevronFontDescriptor;
 - (const)firstLine;
@@ -31,11 +31,11 @@
 
 @implementation SLHighlightPillMetrics
 
-- (SLHighlightPillMetrics)initWithSlotStyle:(id)a3 tag:(id)a4
+- (SLHighlightPillMetrics)initWithSlotStyle:(id)style tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[SLHighlightPillMetrics initWithSlotStyle:tag:variant:](self, sel_initWithSlotStyle_tag_variant_, v6, v7, [v7 variant]);
+  styleCopy = style;
+  tagCopy = tag;
+  v8 = -[SLHighlightPillMetrics initWithSlotStyle:tag:variant:](self, sel_initWithSlotStyle_tag_variant_, styleCopy, tagCopy, [tagCopy variant]);
 
   return v8;
 }
@@ -49,7 +49,7 @@
 
 - (NSEdgeInsets)margins
 {
-  v2 = self;
+  selfCopy = self;
   PillMetrics.pillMetrics.getter(v7);
 
   outlined destroy of SLDHighlightPillMetrics(v7);
@@ -66,7 +66,7 @@
 
 - (CGSize)pillSize
 {
-  v2 = self;
+  selfCopy = self;
   PillMetrics.pillMetrics.getter(v5);
 
   outlined destroy of SLDHighlightPillMetrics(v5);
@@ -79,7 +79,7 @@
 
 - (BOOL)hasValidMetricsForDrawing
 {
-  v2 = self;
+  selfCopy = self;
   PillMetrics.pillMetrics.getter(v4);
 
   outlined destroy of SLDHighlightPillMetrics(v4);
@@ -88,7 +88,7 @@
 
 - (const)firstLine
 {
-  v2 = self;
+  selfCopy = self;
   PillMetrics.pillMetrics.getter(v5);
 
   v3 = v5[7];
@@ -99,7 +99,7 @@
 
 - (const)secondLine
 {
-  v2 = self;
+  selfCopy = self;
   PillMetrics.pillMetrics.getter(v5);
 
   v3 = v5[8];
@@ -110,7 +110,7 @@
 
 - (double)overlappedAvatarKnockoutBorderWidth
 {
-  v2 = self;
+  selfCopy = self;
   PillMetrics.pillMetrics.getter(v4);
 
   outlined destroy of SLDHighlightPillMetrics(v4);
@@ -119,7 +119,7 @@
 
 - (NSEdgeInsets)labelHorizontalMargins
 {
-  v2 = self;
+  selfCopy = self;
   PillMetrics.pillMetrics.getter(v7);
 
   outlined destroy of SLDHighlightPillMetrics(v7);
@@ -238,10 +238,10 @@
   return result;
 }
 
-+ (id)accessibilityLabelFor:(id)a3
++ (id)accessibilityLabelFor:(id)for
 {
-  v3 = a3;
-  v4 = specialized static PillMetrics.accessibilityLabel(for:)(v3);
+  forCopy = for;
+  v4 = specialized static PillMetrics.accessibilityLabel(for:)(forCopy);
   v6 = v5;
 
   if (v6)
@@ -257,19 +257,19 @@
   return v7;
 }
 
-+ (double)pillHeightWithStyle:(id)a3 variant:(unint64_t)a4 maxWidth:(double)a5
++ (double)pillHeightWithStyle:(id)style variant:(unint64_t)variant maxWidth:(double)width
 {
-  v7 = a3;
-  specialized static PillMetrics.pillHeight(style:variant:maxWidth:)(v7, a4, a5);
+  styleCopy = style;
+  specialized static PillMetrics.pillHeight(style:variant:maxWidth:)(styleCopy, variant, width);
   v9 = v8;
 
   return v9;
 }
 
-+ (NSEdgeInsets)pillMarginsWithStyle:(id)a3 variant:(unint64_t)a4 maxWidth:(double)a5
++ (NSEdgeInsets)pillMarginsWithStyle:(id)style variant:(unint64_t)variant maxWidth:(double)width
 {
-  v7 = a3;
-  specialized static PillMetrics.pillMargins(style:variant:maxWidth:)(v7, a4, a5);
+  styleCopy = style;
+  specialized static PillMetrics.pillMargins(style:variant:maxWidth:)(styleCopy, variant, width);
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -286,11 +286,11 @@
   return result;
 }
 
-+ (int64_t)maxSendersToDisplayWithStyle:(id)a3 variant:(unint64_t)a4
++ (int64_t)maxSendersToDisplayWithStyle:(id)style variant:(unint64_t)variant
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  static PillMetrics.metricsPlaceholder(for:variant:)(v6, a4, v14);
+  styleCopy = style;
+  static PillMetrics.metricsPlaceholder(for:variant:)(styleCopy, variant, v14);
   v7 = v15;
   v8 = v16;
   __swift_project_boxed_opaque_existential_1(v14, v15);
@@ -309,11 +309,11 @@
   return v9;
 }
 
-+ (const)chevronFontDescriptorWithStyle:(id)a3 variant:(unint64_t)a4
++ (const)chevronFontDescriptorWithStyle:(id)style variant:(unint64_t)variant
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  static PillMetrics.metricsPlaceholder(for:variant:)(v6, a4, v11);
+  styleCopy = style;
+  static PillMetrics.metricsPlaceholder(for:variant:)(styleCopy, variant, v11);
   v7 = v12;
   v8 = v13;
   __swift_project_boxed_opaque_existential_1(v11, v12);
@@ -324,11 +324,11 @@
   return v9;
 }
 
-+ (CGSize)chevronSizeWithStyle:(id)a3 variant:(unint64_t)a4
++ (CGSize)chevronSizeWithStyle:(id)style variant:(unint64_t)variant
 {
   swift_getObjCClassMetadata();
-  v6 = a3;
-  static PillMetrics.metricsPlaceholder(for:variant:)(v6, a4, v14);
+  styleCopy = style;
+  static PillMetrics.metricsPlaceholder(for:variant:)(styleCopy, variant, v14);
   v7 = v15;
   v8 = v16;
   __swift_project_boxed_opaque_existential_1(v14, v15);
@@ -343,10 +343,10 @@
   return result;
 }
 
-+ (const)truncatedLineFrom:(id)a3 maxWidth:(double)a4
++ (const)truncatedLineFrom:(id)from maxWidth:(double)width
 {
-  v4 = a3;
-  v5 = CTLineCreateWithAttributedString(v4);
+  fromCopy = from;
+  v5 = CTLineCreateWithAttributedString(fromCopy);
   TruncatedLineWithTokenHandler = CTLineCreateTruncatedLineWithTokenHandler();
 
   return TruncatedLineWithTokenHandler;

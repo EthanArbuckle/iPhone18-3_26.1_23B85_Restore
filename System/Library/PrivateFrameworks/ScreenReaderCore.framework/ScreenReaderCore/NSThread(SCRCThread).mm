@@ -8,11 +8,11 @@
 
 - (void)registerForStopNotification
 {
-  v1 = [a1 threadDictionary];
-  if (v1)
+  threadDictionary = [self threadDictionary];
+  if (threadDictionary)
   {
-    v3 = v1;
-    v2 = [v1 objectForKeyedSubscript:@"SCRCThreadKey"];
+    v3 = threadDictionary;
+    v2 = [threadDictionary objectForKeyedSubscript:@"SCRCThreadKey"];
     if (v2)
     {
       [_RegistryLock lock];
@@ -20,17 +20,17 @@
       [_RegistryLock unlock];
     }
 
-    v1 = v3;
+    threadDictionary = v3;
   }
 }
 
 - (void)unregisterForStopNotification
 {
-  v1 = [a1 threadDictionary];
-  if (v1)
+  threadDictionary = [self threadDictionary];
+  if (threadDictionary)
   {
-    v3 = v1;
-    v2 = [v1 objectForKeyedSubscript:@"SCRCThreadKey"];
+    v3 = threadDictionary;
+    v2 = [threadDictionary objectForKeyedSubscript:@"SCRCThreadKey"];
     if (v2)
     {
       [_RegistryLock lock];
@@ -38,26 +38,26 @@
       [_RegistryLock unlock];
     }
 
-    v1 = v3;
+    threadDictionary = v3;
   }
 }
 
 - (uint64_t)shouldStop
 {
-  v1 = [a1 threadDictionary];
-  v2 = v1;
-  if (v1)
+  threadDictionary = [self threadDictionary];
+  v2 = threadDictionary;
+  if (threadDictionary)
   {
-    v3 = [v1 objectForKeyedSubscript:@"SCRCThreadKey"];
-    v4 = [v3 _shouldStop];
+    v3 = [threadDictionary objectForKeyedSubscript:@"SCRCThreadKey"];
+    _shouldStop = [v3 _shouldStop];
   }
 
   else
   {
-    v4 = 0;
+    _shouldStop = 0;
   }
 
-  return v4;
+  return _shouldStop;
 }
 
 @end

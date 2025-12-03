@@ -7,7 +7,7 @@
 - (id)avt_SHA256
 {
   v5 = *MEMORY[0x1E69E9840];
-  CC_SHA256([a1 bytes], objc_msgSend(a1, "length"), md);
+  CC_SHA256([self bytes], objc_msgSend(self, "length"), md);
   v1 = [MEMORY[0x1E696AD60] stringWithCapacity:64];
   for (i = 0; i != 16; ++i)
   {

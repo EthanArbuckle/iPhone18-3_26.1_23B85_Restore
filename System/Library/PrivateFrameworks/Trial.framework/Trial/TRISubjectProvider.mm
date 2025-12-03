@@ -1,19 +1,19 @@
 @interface TRISubjectProvider
-+ (id)defaultProviderWithPaths:(id)a3;
-- (BOOL)loadUsingGuardedData:(id)a3;
++ (id)defaultProviderWithPaths:(id)paths;
+- (BOOL)loadUsingGuardedData:(id)data;
 - (BOOL)save;
-- (TRISubjectProvider)initWithCoder:(id)a3;
-- (TRISubjectProvider)initWithPath:(id)a3;
+- (TRISubjectProvider)initWithCoder:(id)coder;
+- (TRISubjectProvider)initWithPath:(id)path;
 - (id)anchorDate;
 - (id)nextRotationDate;
-- (id)nextRotationDateAfter:(id)a3;
+- (id)nextRotationDateAfter:(id)after;
 - (id)subject;
-- (id)subjectWithProjectId:(int)a3;
-- (void)decodeWithCoder:(id)a3 guardedData:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3 guardedData:(id)a4;
+- (id)subjectWithProjectId:(int)id;
+- (void)decodeWithCoder:(id)coder guardedData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder guardedData:(id)data;
 - (void)rotateSubject;
-- (void)setNextRotationDate:(id)a3;
+- (void)setNextRotationDate:(id)date;
 @end
 
 @implementation TRISubjectProvider
@@ -81,27 +81,27 @@ void __29__TRISubjectProvider_subject__block_invoke(uint64_t a1, void *a2)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)defaultProviderWithPaths:(id)a3
++ (id)defaultProviderWithPaths:(id)paths
 {
-  v3 = a3;
+  pathsCopy = paths;
   v4 = [TRISubjectProvider alloc];
-  v5 = [v3 subjectDataFile];
+  subjectDataFile = [pathsCopy subjectDataFile];
 
-  v6 = [(TRISubjectProvider *)v4 initWithPath:v5];
+  v6 = [(TRISubjectProvider *)v4 initWithPath:subjectDataFile];
 
   return v6;
 }
 
-- (TRISubjectProvider)initWithPath:(id)a3
+- (TRISubjectProvider)initWithPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = TRISubjectProvider;
   v6 = [(TRISubjectProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
     v8 = objc_alloc(MEMORY[0x277D425F8]);
     v9 = objc_opt_new();
     v10 = [v8 initWithGuardedData:v9];
@@ -112,16 +112,16 @@ void __29__TRISubjectProvider_subject__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (TRISubjectProvider)initWithCoder:(id)a3
+- (TRISubjectProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = TRISubjectProvider;
   v5 = [(TRISubjectProvider *)&v10 init];
   if (v5)
   {
     v6 = objc_opt_new();
-    [(TRISubjectProvider *)v5 decodeWithCoder:v4 guardedData:v6];
+    [(TRISubjectProvider *)v5 decodeWithCoder:coderCopy guardedData:v6];
     v7 = [objc_alloc(MEMORY[0x277D425F8]) initWithGuardedData:v6];
     lock = v5->_lock;
     v5->_lock = v7;
@@ -130,64 +130,64 @@ void __29__TRISubjectProvider_subject__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)decodeWithCoder:(id)a3 guardedData:(id)a4
+- (void)decodeWithCoder:(id)coder guardedData:(id)data
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"subjectData"];
-  v8 = v5[1];
-  v5[1] = v7;
+  dataCopy = data;
+  coderCopy = coder;
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subjectData"];
+  v8 = dataCopy[1];
+  dataCopy[1] = v7;
 
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"rotationDate"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rotationDate"];
 
-  v10 = v5[2];
-  v5[2] = v9;
+  v10 = dataCopy[2];
+  dataCopy[2] = v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__TRISubjectProvider_encodeWithCoder___block_invoke;
   v7[3] = &unk_27885EC58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = coderCopy;
+  v6 = coderCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (void)encodeWithCoder:(id)a3 guardedData:(id)a4
+- (void)encodeWithCoder:(id)coder guardedData:(id)data
 {
-  v5 = *(a4 + 1);
-  v6 = a4;
-  v8 = a3;
-  [v8 encodeObject:v5 forKey:@"subjectData"];
-  v7 = v6[2];
+  v5 = *(data + 1);
+  dataCopy = data;
+  coderCopy = coder;
+  [coderCopy encodeObject:v5 forKey:@"subjectData"];
+  v7 = dataCopy[2];
 
-  [v8 encodeObject:v7 forKey:@"rotationDate"];
+  [coderCopy encodeObject:v7 forKey:@"rotationDate"];
 }
 
-- (void)setNextRotationDate:(id)a3
+- (void)setNextRotationDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__TRISubjectProvider_setNextRotationDate___block_invoke;
   v7[3] = &unk_27885EC80;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (BOOL)loadUsingGuardedData:(id)a3
+- (BOOL)loadUsingGuardedData:(id)data
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v5 isReadableFileAtPath:self->_path])
+  dataCopy = data;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager isReadableFileAtPath:self->_path])
   {
     path = self->_path;
     v23 = 0;
@@ -200,9 +200,9 @@ void __29__TRISubjectProvider_subject__block_invoke(uint64_t a1, void *a2)
       v22 = 0;
       v10 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v7 error:&v22];
       v9 = v22;
-      if (v10 && ([(TRISubjectProvider *)self decodeWithCoder:v10 guardedData:v4], !v9))
+      if (v10 && ([(TRISubjectProvider *)self decodeWithCoder:v10 guardedData:dataCopy], !v9))
       {
-        if (![*(v4 + 1) hasDeviceId] || (objc_msgSend(*(v4 + 1), "deviceId"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "length"), v15, v16 > 7))
+        if (![*(dataCopy + 1) hasDeviceId] || (objc_msgSend(*(dataCopy + 1), "deviceId"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "length"), v15, v16 > 7))
         {
           v9 = 0;
           v12 = 1;
@@ -212,18 +212,18 @@ void __29__TRISubjectProvider_subject__block_invoke(uint64_t a1, void *a2)
         v17 = TRILogCategory_ClientFramework();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
         {
-          v20 = [*(v4 + 1) deviceId];
-          v21 = [v20 length];
+          deviceId = [*(dataCopy + 1) deviceId];
+          v21 = [deviceId length];
           *buf = 134217984;
           v25 = v21;
           _os_log_fault_impl(&dword_22EA6B000, v17, OS_LOG_TYPE_FAULT, "rejecting deserialized subject due to unreasonably short deviceId of length %tu", buf, 0xCu);
         }
 
-        v18 = *(v4 + 1);
-        *(v4 + 1) = 0;
+        v18 = *(dataCopy + 1);
+        *(dataCopy + 1) = 0;
 
-        v11 = *(v4 + 2);
-        *(v4 + 2) = 0;
+        v11 = *(dataCopy + 2);
+        *(dataCopy + 2) = 0;
       }
 
       else
@@ -371,20 +371,20 @@ LABEL_15:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)subjectWithProjectId:(int)a3
+- (id)subjectWithProjectId:(int)id
 {
   v5 = objc_opt_new();
-  v6 = [(TRISubjectProvider *)self subject];
+  subject = [(TRISubjectProvider *)self subject];
 
-  if (v6)
+  if (subject)
   {
-    v7 = [(TRISubjectProvider *)self subject];
-    [v7 copyTo:v5];
+    subject2 = [(TRISubjectProvider *)self subject];
+    [subject2 copyTo:v5];
 
-    v8 = [v5 deviceId];
-    v9 = [v8 triHashWithIntegerSalt:a3];
-    v10 = [v9 UUIDString];
-    [v5 setDeviceId:v10];
+    deviceId = [v5 deviceId];
+    v9 = [deviceId triHashWithIntegerSalt:id];
+    uUIDString = [v9 UUIDString];
+    [v5 setDeviceId:uUIDString];
   }
 
   else
@@ -394,7 +394,7 @@ LABEL_15:
     v13[1] = 3221225472;
     v13[2] = __43__TRISubjectProvider_subjectWithProjectId___block_invoke;
     v13[3] = &unk_27885ECD0;
-    v15 = a3;
+    idCopy = id;
     v14 = v5;
     [(_PASLock *)lock runWithLockAcquired:v13];
   }
@@ -471,29 +471,29 @@ void __38__TRISubjectProvider_nextRotationDate__block_invoke(uint64_t a1, void *
   return v2;
 }
 
-- (id)nextRotationDateAfter:(id)a3
+- (id)nextRotationDateAfter:(id)after
 {
-  v5 = a3;
-  if (!v5)
+  afterCopy = after;
+  if (!afterCopy)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
+    afterCopy = [MEMORY[0x277CBEAA8] date];
   }
 
   v6 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5D0]];
   v7 = [MEMORY[0x277CBEBB0] timeZoneForSecondsFromGMT:0];
   [v6 setTimeZone:v7];
 
-  v8 = [(TRISubjectProvider *)self anchorDate];
-  v9 = [v6 components:16 fromDate:v8 toDate:v5 options:0];
+  anchorDate = [(TRISubjectProvider *)self anchorDate];
+  v9 = [v6 components:16 fromDate:anchorDate toDate:afterCopy options:0];
   v10 = [v9 day] / 7;
   v11 = v10 / [(TRISubjectProvider *)self numberOfWeeksPerRotation];
   v12 = objc_opt_new();
   [v12 setDay:{-[TRISubjectProvider numberOfWeeksPerRotation](self, "numberOfWeeksPerRotation") * (7 * v11 + 7)}];
-  v13 = [v6 dateByAddingComponents:v12 toDate:v8 options:0];
+  v13 = [v6 dateByAddingComponents:v12 toDate:anchorDate options:0];
   if (!v13)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRISubjectProvider.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"epochRelativeDate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRISubjectProvider.m" lineNumber:256 description:{@"Invalid parameter not satisfying: %@", @"epochRelativeDate"}];
   }
 
   v14 = [v6 startOfDayForDate:v13];

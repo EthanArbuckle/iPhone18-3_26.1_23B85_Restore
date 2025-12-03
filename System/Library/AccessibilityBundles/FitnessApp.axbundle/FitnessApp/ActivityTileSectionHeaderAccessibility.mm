@@ -10,8 +10,8 @@
   v5.super_class = ActivityTileSectionHeaderAccessibility;
   [(ActivityTileSectionHeaderAccessibility *)&v5 _accessibilityLoadAccessibilityInformation];
   v3 = [(ActivityTileSectionHeaderAccessibility *)self safeSwiftValueForKey:@"titleLabel"];
-  v4 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:UIAccessibilityTraitHeader | v4];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:UIAccessibilityTraitHeader | accessibilityTraits];
 }
 
 @end

@@ -1,78 +1,78 @@
 @interface SWURLSchemeHandlerManager
-- (SWURLSchemeHandlerManager)initWithConfiguration:(id)a3 logger:(id)a4;
+- (SWURLSchemeHandlerManager)initWithConfiguration:(id)configuration logger:(id)logger;
 - (WKWebViewConfiguration)configuration;
-- (void)registerFactory:(id)a3 forScheme:(id)a4;
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4;
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4;
+- (void)registerFactory:(id)factory forScheme:(id)scheme;
+- (void)webView:(id)view startURLSchemeTask:(id)task;
+- (void)webView:(id)view stopURLSchemeTask:(id)task;
 @end
 
 @implementation SWURLSchemeHandlerManager
 
-- (SWURLSchemeHandlerManager)initWithConfiguration:(id)a3 logger:(id)a4
+- (SWURLSchemeHandlerManager)initWithConfiguration:(id)configuration logger:(id)logger
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  loggerCopy = logger;
   v15.receiver = self;
   v15.super_class = SWURLSchemeHandlerManager;
   v8 = [(SWURLSchemeHandlerManager *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_configuration, v6);
-    objc_storeStrong(&v9->_logger, a4);
-    v10 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeWeak(&v8->_configuration, configurationCopy);
+    objc_storeStrong(&v9->_logger, logger);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     factories = v9->_factories;
-    v9->_factories = v10;
+    v9->_factories = dictionary;
 
-    v12 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     handlers = v9->_handlers;
-    v9->_handlers = v12;
+    v9->_handlers = strongToStrongObjectsMapTable;
   }
 
   return v9;
 }
 
-- (void)registerFactory:(id)a3 forScheme:(id)a4
+- (void)registerFactory:(id)factory forScheme:(id)scheme
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWURLSchemeHandlerManager *)self factories];
-  [v8 setObject:v7 forKey:v6];
+  schemeCopy = scheme;
+  factoryCopy = factory;
+  factories = [(SWURLSchemeHandlerManager *)self factories];
+  [factories setObject:factoryCopy forKey:schemeCopy];
 
   v12 = [[SWWeakURLSchemeHandler alloc] initWithURLSchemeHandler:self];
-  v9 = [(SWURLSchemeHandlerManager *)self configuration];
-  [v9 setURLSchemeHandler:v12 forURLScheme:v6];
+  configuration = [(SWURLSchemeHandlerManager *)self configuration];
+  [configuration setURLSchemeHandler:v12 forURLScheme:schemeCopy];
 
-  v10 = [(SWURLSchemeHandlerManager *)self logger];
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Register URL scheme handler factory %@ for scheme %@", v7, v6];
+  logger = [(SWURLSchemeHandlerManager *)self logger];
+  schemeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Register URL scheme handler factory %@ for scheme %@", factoryCopy, schemeCopy];
 
-  [v10 log:v11];
+  [logger log:schemeCopy];
 }
 
-- (void)webView:(id)a3 startURLSchemeTask:(id)a4
+- (void)webView:(id)view startURLSchemeTask:(id)task
 {
-  v32 = a3;
-  v6 = a4;
-  v33 = [(SWURLSchemeHandlerManager *)self session];
-  v7 = [(SWURLSchemeHandlerManager *)self logger];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Start URL scheme task with %@", v6];
-  [v7 log:v8];
+  viewCopy = view;
+  taskCopy = task;
+  session = [(SWURLSchemeHandlerManager *)self session];
+  logger = [(SWURLSchemeHandlerManager *)self logger];
+  taskCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Start URL scheme task with %@", taskCopy];
+  [logger log:taskCopy];
 
-  v9 = [v6 request];
-  v10 = [v9 URL];
-  v11 = [v10 scheme];
+  request = [taskCopy request];
+  v10 = [request URL];
+  scheme = [v10 scheme];
 
-  if (!v11)
+  if (!scheme)
   {
     goto LABEL_9;
   }
 
-  v12 = [(SWURLSchemeHandlerManager *)self factories];
-  v13 = [v12 objectForKey:v11];
+  factories = [(SWURLSchemeHandlerManager *)self factories];
+  v13 = [factories objectForKey:scheme];
 
-  v14 = [(SWURLSchemeHandlerManager *)self logger];
-  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found URL scheme handler factory %@ for task %@", v13, v6];
-  [v14 log:v15];
+  logger2 = [(SWURLSchemeHandlerManager *)self logger];
+  taskCopy2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Found URL scheme handler factory %@ for task %@", v13, taskCopy];
+  [logger2 log:taskCopy2];
 
   if (!v13)
   {
@@ -80,12 +80,12 @@
   }
 
   v16 = [SWURLSchemeTask alloc];
-  v17 = [(SWURLSchemeHandlerManager *)self logger];
-  v18 = [(SWURLSchemeTask *)v16 initWithTask:v6 logger:v17];
+  logger3 = [(SWURLSchemeHandlerManager *)self logger];
+  v18 = [(SWURLSchemeTask *)v16 initWithTask:taskCopy logger:logger3];
 
-  v19 = [(SWURLSchemeHandlerManager *)self logger];
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Created wrapping task %@ for task %@", v18, v6];
-  [v19 log:v20];
+  logger4 = [(SWURLSchemeHandlerManager *)self logger];
+  taskCopy3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Created wrapping task %@ for task %@", v18, taskCopy];
+  [logger4 log:taskCopy3];
 
   objc_initWeak(&location, self);
   v34[0] = MEMORY[0x1E69E9820];
@@ -93,7 +93,7 @@
   v34[2] = __56__SWURLSchemeHandlerManager_webView_startURLSchemeTask___block_invoke;
   v34[3] = &unk_1E84DB9B0;
   objc_copyWeak(&v36, &location);
-  v21 = v33;
+  v21 = session;
   v35 = v21;
   [(SWURLSchemeTask *)v18 onCompletion:v34];
   v22 = [v13 createURLSchemeHandlerWithTask:v18];
@@ -104,33 +104,33 @@
     objc_destroyWeak(&location);
 
 LABEL_9:
-    v30 = [(SWURLSchemeHandlerManager *)self logger];
-    v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create URL scheme handler for task %@", v6];
-    [v30 logError:v31];
+    logger5 = [(SWURLSchemeHandlerManager *)self logger];
+    taskCopy4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Failed to create URL scheme handler for task %@", taskCopy];
+    [logger5 logError:taskCopy4];
 
     v13 = [MEMORY[0x1E696ABC0] errorWithDomain:@"web_content" code:3 userInfo:0];
-    [v6 didFailWithError:v13];
+    [taskCopy didFailWithError:v13];
     v22 = 0;
     goto LABEL_10;
   }
 
-  v23 = [(SWURLSchemeHandlerManager *)self logger];
-  v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Created URL scheme handler %@ for task %@", v22, v6];
-  [v23 log:v24];
+  logger6 = [(SWURLSchemeHandlerManager *)self logger];
+  taskCopy5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Created URL scheme handler %@ for task %@", v22, taskCopy];
+  [logger6 log:taskCopy5];
 
-  v25 = [(SWURLSchemeHandlerManager *)self handlers];
-  [v25 setObject:v22 forKey:v6];
+  handlers = [(SWURLSchemeHandlerManager *)self handlers];
+  [handlers setObject:v22 forKey:taskCopy];
 
-  v26 = [(SWURLSchemeHandlerManager *)self session];
-  if (v26)
+  session2 = [(SWURLSchemeHandlerManager *)self session];
+  if (session2)
   {
-    v27 = [(SWURLSchemeHandlerManager *)self session];
-    v28 = [v27 isEqual:v21];
+    session3 = [(SWURLSchemeHandlerManager *)self session];
+    v28 = [session3 isEqual:v21];
 
     if (v28)
     {
-      v29 = [(SWURLSchemeHandlerManager *)self session];
-      [v29 startSessionForHandler:v22 withTask:v6];
+      session4 = [(SWURLSchemeHandlerManager *)self session];
+      [session4 startSessionForHandler:v22 withTask:taskCopy];
     }
   }
 
@@ -188,37 +188,37 @@ LABEL_6:
   [v19 log:v20];
 }
 
-- (void)webView:(id)a3 stopURLSchemeTask:(id)a4
+- (void)webView:(id)view stopURLSchemeTask:(id)task
 {
-  v16 = a4;
-  v5 = [(SWURLSchemeHandlerManager *)self session];
-  v6 = [(SWURLSchemeHandlerManager *)self handlers];
-  v7 = [v6 objectForKey:v16];
+  taskCopy = task;
+  session = [(SWURLSchemeHandlerManager *)self session];
+  handlers = [(SWURLSchemeHandlerManager *)self handlers];
+  v7 = [handlers objectForKey:taskCopy];
 
   [v7 cancel];
   if (v7)
   {
-    v8 = [(SWURLSchemeHandlerManager *)self session];
-    if (v8)
+    session2 = [(SWURLSchemeHandlerManager *)self session];
+    if (session2)
     {
-      v9 = v8;
-      v10 = [(SWURLSchemeHandlerManager *)self session];
-      v11 = [v10 isEqual:v5];
+      v9 = session2;
+      session3 = [(SWURLSchemeHandlerManager *)self session];
+      v11 = [session3 isEqual:session];
 
       if (v11)
       {
-        v12 = [(SWURLSchemeHandlerManager *)self session];
-        [v12 endSessionForHandler:v7 withTask:v16];
+        session4 = [(SWURLSchemeHandlerManager *)self session];
+        [session4 endSessionForHandler:v7 withTask:taskCopy];
       }
     }
   }
 
-  v13 = [(SWURLSchemeHandlerManager *)self handlers];
-  [v13 removeObjectForKey:v16];
+  handlers2 = [(SWURLSchemeHandlerManager *)self handlers];
+  [handlers2 removeObjectForKey:taskCopy];
 
-  v14 = [(SWURLSchemeHandlerManager *)self logger];
-  v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cancel URL scheme handler %@ for task %@", v7, v16];
-  [v14 log:v15];
+  logger = [(SWURLSchemeHandlerManager *)self logger];
+  taskCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Cancel URL scheme handler %@ for task %@", v7, taskCopy];
+  [logger log:taskCopy];
 }
 
 - (WKWebViewConfiguration)configuration

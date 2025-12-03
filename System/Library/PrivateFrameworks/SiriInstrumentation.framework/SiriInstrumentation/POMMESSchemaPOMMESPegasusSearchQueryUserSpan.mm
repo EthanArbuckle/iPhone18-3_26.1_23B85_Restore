@@ -1,24 +1,24 @@
 @interface POMMESSchemaPOMMESPegasusSearchQueryUserSpan
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (POMMESSchemaPOMMESPegasusSearchQueryUserSpan)initWithDictionary:(id)a3;
-- (POMMESSchemaPOMMESPegasusSearchQueryUserSpan)initWithJSON:(id)a3;
+- (POMMESSchemaPOMMESPegasusSearchQueryUserSpan)initWithDictionary:(id)dictionary;
+- (POMMESSchemaPOMMESPegasusSearchQueryUserSpan)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation POMMESSchemaPOMMESPegasusSearchQueryUserSpan
 
-- (POMMESSchemaPOMMESPegasusSearchQueryUserSpan)initWithDictionary:(id)a3
+- (POMMESSchemaPOMMESPegasusSearchQueryUserSpan)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = POMMESSchemaPOMMESPegasusSearchQueryUserSpan;
   v5 = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"label"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"label"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (POMMESSchemaPOMMESPegasusSearchQueryUserSpan)initWithJSON:(id)a3
+- (POMMESSchemaPOMMESPegasusSearchQueryUserSpan)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,31 +68,31 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_label)
   {
-    v4 = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"label"];
+    label = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
+    v5 = [label copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"label"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
-    v6 = [v4 label];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    label = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
+    label2 = [equalCopy label];
+    v7 = label2;
+    if ((label != 0) != (label2 == 0))
     {
-      v8 = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
-      if (!v8)
+      label3 = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
+      if (!label3)
       {
 
 LABEL_10:
@@ -100,10 +100,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
-      v11 = [v4 label];
-      v12 = [v10 isEqual:v11];
+      v9 = label3;
+      label4 = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
+      label5 = [equalCopy label];
+      v12 = [label4 isEqual:label5];
 
       if (v12)
       {
@@ -122,12 +122,12 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
+  toCopy = to;
+  label = [(POMMESSchemaPOMMESPegasusSearchQueryUserSpan *)self label];
 
-  if (v4)
+  if (label)
   {
     PBDataWriterWriteStringField();
   }

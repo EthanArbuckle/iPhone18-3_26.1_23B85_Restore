@@ -1,15 +1,15 @@
 @interface BMContextualUnderstandingAmbientLight
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMContextualUnderstandingAmbientLight)initWithAmbientLightColorComponent0:(id)a3 ambientLightColorComponent1:(id)a4 ambientLightColorComponent2:(id)a5;
-- (BMContextualUnderstandingAmbientLight)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
+- (BMContextualUnderstandingAmbientLight)initWithAmbientLightColorComponent0:(id)component0 ambientLightColorComponent1:(id)component1 ambientLightColorComponent2:(id)component2;
+- (BMContextualUnderstandingAmbientLight)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMContextualUnderstandingAmbientLight
@@ -18,9 +18,9 @@
 {
   v3 = objc_opt_new();
   [(BMContextualUnderstandingAmbientLight *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
 + (id)columns
@@ -39,13 +39,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     if (-[BMContextualUnderstandingAmbientLight hasAmbientLightColorComponent0](self, "hasAmbientLightColorComponent0") || [v5 hasAmbientLightColorComponent0])
     {
       if (![(BMContextualUnderstandingAmbientLight *)self hasAmbientLightColorComponent0])
@@ -162,29 +162,29 @@ LABEL_20:
   }
 
   v18[0] = @"ambientLightColorComponent0";
-  v12 = v5;
+  null = v5;
   if (!v5)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[0] = v12;
+  v19[0] = null;
   v18[1] = @"ambientLightColorComponent1";
-  v13 = v8;
+  null2 = v8;
   if (!v8)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[1] = v13;
+  v19[1] = null2;
   v18[2] = @"ambientLightColorComponent2";
-  v14 = v11;
+  null3 = v11;
   if (!v11)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v19[2] = v14;
+  v19[2] = null3;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:v18 count:3];
   if (v11)
   {
@@ -222,25 +222,25 @@ LABEL_22:
   return v15;
 }
 
-- (BMContextualUnderstandingAmbientLight)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMContextualUnderstandingAmbientLight)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"ambientLightColorComponent0"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"ambientLightColorComponent0"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v8 = 0;
 LABEL_4:
-    v9 = [v6 objectForKeyedSubscript:@"ambientLightColorComponent1"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"ambientLightColorComponent1"];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (!a4)
+        if (!error)
         {
           v10 = 0;
-          v13 = 0;
+          selfCopy = 0;
           goto LABEL_12;
         }
 
@@ -252,8 +252,8 @@ LABEL_4:
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
         v19 = [v23 initWithDomain:v18 code:2 userInfo:v11];
         v10 = 0;
-        v13 = 0;
-        *a4 = v19;
+        selfCopy = 0;
+        *error = v19;
         goto LABEL_11;
       }
 
@@ -265,13 +265,13 @@ LABEL_4:
       v10 = 0;
     }
 
-    v11 = [v6 objectForKeyedSubscript:@"ambientLightColorComponent2"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"ambientLightColorComponent2"];
     if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        if (a4)
+        if (error)
         {
           v24 = objc_alloc(MEMORY[0x1E696ABC0]);
           v22 = *MEMORY[0x1E698F240];
@@ -279,11 +279,11 @@ LABEL_4:
           v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber", objc_opt_class(), @"ambientLightColorComponent2"];
           v26 = v20;
           v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-          *a4 = [v24 initWithDomain:v22 code:2 userInfo:v21];
+          *error = [v24 initWithDomain:v22 code:2 userInfo:v21];
         }
 
         v12 = 0;
-        v13 = 0;
+        selfCopy = 0;
         goto LABEL_11;
       }
 
@@ -296,7 +296,7 @@ LABEL_4:
     }
 
     self = [(BMContextualUnderstandingAmbientLight *)self initWithAmbientLightColorComponent0:v8 ambientLightColorComponent1:v10 ambientLightColorComponent2:v12];
-    v13 = self;
+    selfCopy = self;
 LABEL_11:
 
     goto LABEL_12;
@@ -309,10 +309,10 @@ LABEL_11:
     goto LABEL_4;
   }
 
-  if (!a4)
+  if (!error)
   {
     v8 = 0;
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -323,44 +323,44 @@ LABEL_11:
   v30[0] = v10;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   v8 = 0;
-  v13 = 0;
-  *a4 = [v16 initWithDomain:v17 code:2 userInfo:v9];
+  selfCopy = 0;
+  *error = [v16 initWithDomain:v17 code:2 userInfo:v9];
 LABEL_12:
 
 LABEL_13:
   v14 = *MEMORY[0x1E69E9840];
-  return v13;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_hasAmbientLightColorComponent0)
   {
     ambientLightColorComponent0 = self->_ambientLightColorComponent0;
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasAmbientLightColorComponent1)
   {
     ambientLightColorComponent1 = self->_ambientLightColorComponent1;
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_hasAmbientLightColorComponent2)
   {
     ambientLightColorComponent2 = self->_ambientLightColorComponent2;
     PBDataWriterWriteFloatField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v30.receiver = self;
   v30.super_class = BMContextualUnderstandingAmbientLight;
   v5 = [(BMEventBase *)&v30 init];
@@ -369,12 +369,12 @@ LABEL_13:
     goto LABEL_42;
   }
 
-  v6 = [v4 position];
-  if (v6 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     do
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         break;
       }
@@ -385,18 +385,18 @@ LABEL_13:
       while (1)
       {
         LOBYTE(v31) = 0;
-        v10 = [v4 position] + 1;
-        if (v10 >= [v4 position] && (v11 = objc_msgSend(v4, "position") + 1, v11 <= objc_msgSend(v4, "length")))
+        v10 = [fromCopy position] + 1;
+        if (v10 >= [fromCopy position] && (v11 = objc_msgSend(fromCopy, "position") + 1, v11 <= objc_msgSend(fromCopy, "length")))
         {
-          v12 = [v4 data];
-          [v12 getBytes:&v31 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v31 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v9 |= (LOBYTE(v31) & 0x7F) << v7;
@@ -413,9 +413,9 @@ LABEL_13:
         }
       }
 
-      v14 = [v4 hasError] ? 0 : v9;
+      v14 = [fromCopy hasError] ? 0 : v9;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v14 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v14 & 7) == 4)
       {
         break;
       }
@@ -425,18 +425,18 @@ LABEL_16:
       {
         v5->_hasAmbientLightColorComponent2 = 1;
         v31 = 0.0;
-        v20 = [v4 position] + 4;
-        if (v20 >= [v4 position] && (v21 = objc_msgSend(v4, "position") + 4, v21 <= objc_msgSend(v4, "length")))
+        v20 = [fromCopy position] + 4;
+        if (v20 >= [fromCopy position] && (v21 = objc_msgSend(fromCopy, "position") + 4, v21 <= objc_msgSend(fromCopy, "length")))
         {
-          v25 = [v4 data];
-          [v25 getBytes:&v31 range:{objc_msgSend(v4, "position"), 4}];
+          data2 = [fromCopy data];
+          [data2 getBytes:&v31 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v23 = v31;
@@ -447,18 +447,18 @@ LABEL_16:
       {
         v5->_hasAmbientLightColorComponent1 = 1;
         v31 = 0.0;
-        v18 = [v4 position] + 4;
-        if (v18 >= [v4 position] && (v19 = objc_msgSend(v4, "position") + 4, v19 <= objc_msgSend(v4, "length")))
+        v18 = [fromCopy position] + 4;
+        if (v18 >= [fromCopy position] && (v19 = objc_msgSend(fromCopy, "position") + 4, v19 <= objc_msgSend(fromCopy, "length")))
         {
-          v22 = [v4 data];
-          [v22 getBytes:&v31 range:{objc_msgSend(v4, "position"), 4}];
+          data3 = [fromCopy data];
+          [data3 getBytes:&v31 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v23 = v31;
@@ -479,18 +479,18 @@ LABEL_16:
 
         v5->_hasAmbientLightColorComponent0 = 1;
         v31 = 0.0;
-        v16 = [v4 position] + 4;
-        if (v16 >= [v4 position] && (v17 = objc_msgSend(v4, "position") + 4, v17 <= objc_msgSend(v4, "length")))
+        v16 = [fromCopy position] + 4;
+        if (v16 >= [fromCopy position] && (v17 = objc_msgSend(fromCopy, "position") + 4, v17 <= objc_msgSend(fromCopy, "length")))
         {
-          v26 = [v4 data];
-          [v26 getBytes:&v31 range:{objc_msgSend(v4, "position"), 4}];
+          data4 = [fromCopy data];
+          [data4 getBytes:&v31 range:{objc_msgSend(fromCopy, "position"), 4}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 4}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 4}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v23 = v31;
@@ -499,13 +499,13 @@ LABEL_16:
 
       *(&v5->super.super.isa + *v24) = v23;
 LABEL_39:
-      v27 = [v4 position];
+      position2 = [fromCopy position];
     }
 
-    while (v27 < [v4 length]);
+    while (position2 < [fromCopy length]);
   }
 
-  if ([v4 hasError])
+  if ([fromCopy hasError])
   {
 LABEL_41:
     v28 = 0;
@@ -537,21 +537,21 @@ LABEL_42:
   return v10;
 }
 
-- (BMContextualUnderstandingAmbientLight)initWithAmbientLightColorComponent0:(id)a3 ambientLightColorComponent1:(id)a4 ambientLightColorComponent2:(id)a5
+- (BMContextualUnderstandingAmbientLight)initWithAmbientLightColorComponent0:(id)component0 ambientLightColorComponent1:(id)component1 ambientLightColorComponent2:(id)component2
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  component0Copy = component0;
+  component1Copy = component1;
+  component2Copy = component2;
   v19.receiver = self;
   v19.super_class = BMContextualUnderstandingAmbientLight;
   v11 = [(BMEventBase *)&v19 init];
   if (v11)
   {
     v11->_dataVersion = [objc_opt_class() latestDataVersion];
-    if (v8)
+    if (component0Copy)
     {
       v11->_hasAmbientLightColorComponent0 = 1;
-      [v8 floatValue];
+      [component0Copy floatValue];
       v13 = v12;
     }
 
@@ -562,10 +562,10 @@ LABEL_42:
     }
 
     v11->_ambientLightColorComponent0 = v13;
-    if (v9)
+    if (component1Copy)
     {
       v11->_hasAmbientLightColorComponent1 = 1;
-      [v9 floatValue];
+      [component1Copy floatValue];
       v15 = v14;
     }
 
@@ -576,10 +576,10 @@ LABEL_42:
     }
 
     v11->_ambientLightColorComponent1 = v15;
-    if (v10)
+    if (component2Copy)
     {
       v11->_hasAmbientLightColorComponent2 = 1;
-      [v10 floatValue];
+      [component2Copy floatValue];
       v17 = v16;
     }
 
@@ -610,9 +610,9 @@ LABEL_42:
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -620,8 +620,8 @@ LABEL_42:
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMContextualUnderstandingAmbientLight alloc] initByReadFrom:v7];
     v4 = v8;

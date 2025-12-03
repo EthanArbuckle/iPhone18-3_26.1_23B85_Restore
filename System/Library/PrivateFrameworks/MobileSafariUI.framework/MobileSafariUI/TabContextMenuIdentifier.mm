@@ -1,31 +1,31 @@
 @interface TabContextMenuIdentifier
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TabCollectionItem)sourceItem;
-- (TabContextMenuIdentifier)initWithTabUUID:(id)a3 sourceItem:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TabContextMenuIdentifier)initWithTabUUID:(id)d sourceItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TabContextMenuIdentifier
 
-- (TabContextMenuIdentifier)initWithTabUUID:(id)a3 sourceItem:(id)a4
+- (TabContextMenuIdentifier)initWithTabUUID:(id)d sourceItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = TabContextMenuIdentifier;
   v9 = [(TabContextMenuIdentifier *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_tabUUID, a3);
-    objc_storeWeak(&v10->_sourceItem, v8);
+    objc_storeStrong(&v9->_tabUUID, d);
+    objc_storeWeak(&v10->_sourceItem, itemCopy);
     v11 = v10;
   }
 
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   tabUUID = self->_tabUUID;
@@ -35,10 +35,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -48,7 +48,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSUUID *)self->_tabUUID isEqual:v4->_tabUUID];
+      v5 = [(NSUUID *)self->_tabUUID isEqual:equalCopy->_tabUUID];
     }
 
     else

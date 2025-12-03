@@ -1,15 +1,15 @@
 @interface BKFontCache
 + (id)sharedInstance;
 - (BKFontCache)init;
-- (id)_presetsFileNameForLanguage:(id)a3;
-- (id)_presetsForFileName:(id)a3;
-- (id)defaultFontNameForLanguage:(id)a3;
-- (id)fontFromFamilyName:(id)a3 language:(id)a4;
-- (id)fontsForLanguage:(id)a3 completion:(id)a4;
-- (id)presetPostscriptsLookupForLanguage:(id)a3;
-- (id)presetSettingsForFontFamily:(id)a3 language:(id)a4;
-- (id)presetsForLanguage:(id)a3;
-- (void)_didReceiveMemoryWarning:(id)a3;
+- (id)_presetsFileNameForLanguage:(id)language;
+- (id)_presetsForFileName:(id)name;
+- (id)defaultFontNameForLanguage:(id)language;
+- (id)fontFromFamilyName:(id)name language:(id)language;
+- (id)fontsForLanguage:(id)language completion:(id)completion;
+- (id)presetPostscriptsLookupForLanguage:(id)language;
+- (id)presetSettingsForFontFamily:(id)family language:(id)language;
+- (id)presetsForLanguage:(id)language;
+- (void)_didReceiveMemoryWarning:(id)warning;
 @end
 
 @implementation BKFontCache
@@ -58,29 +58,29 @@
   return v2;
 }
 
-- (id)fontsForLanguage:(id)a3 completion:(id)a4
+- (id)fontsForLanguage:(id)language completion:(id)completion
 {
-  v46 = a3;
-  v43 = a4;
+  languageCopy = language;
+  completionCopy = completion;
   v6 = _AEBookPluginsFontCacheLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v66 = v46;
+    v66 = languageCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Prewarming AEBookPlugin for language %@", buf, 0xCu);
   }
 
-  v49 = self;
-  objc_sync_enter(v49);
-  if ([v46 length])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([languageCopy length])
   {
-    v45 = [(BKFontCache *)v49 _presetsFileNameForLanguage:v46];
-    v7 = [(BKFontCache *)v49 fontsByFileName];
-    v44 = [v7 objectForKeyedSubscript:v45];
+    v45 = [(BKFontCache *)selfCopy _presetsFileNameForLanguage:languageCopy];
+    fontsByFileName = [(BKFontCache *)selfCopy fontsByFileName];
+    v44 = [fontsByFileName objectForKeyedSubscript:v45];
 
     if (![v44 count])
     {
-      v8 = [(BKFontCache *)v49 _presetsForFileName:v45];
+      v8 = [(BKFontCache *)selfCopy _presetsForFileName:v45];
       v9 = objc_opt_new();
       v48 = objc_opt_new();
       v10 = dispatch_group_create();
@@ -124,7 +124,7 @@
             {
               v22 = [v15 valueForKey:@"system"];
               v23 = [v15 valueForKey:@"isPreinstalled"];
-              v24 = [v23 BOOLValue];
+              bOOLValue = [v23 BOOLValue];
 
               v25 = objc_opt_new();
               if ([(__CFString *)v19 length])
@@ -138,7 +138,7 @@
                 {
                   v27 = [v22 isEqualToString:@"default"];
                   v28 = 2;
-                  if (!v24)
+                  if (!bOOLValue)
                   {
                     v28 = 0;
                   }
@@ -185,7 +185,7 @@
               v59 = v31;
               v60 = v47;
               v56 = v33;
-              v57 = v49;
+              v57 = selfCopy;
               v58 = v10;
               [v33 checkStateSynchronously:0 completion:v55];
             }
@@ -203,15 +203,15 @@
       }
 
       v34 = [v48 copy];
-      v35 = [(BKFontCache *)v49 fontsByFileName];
-      [v35 setObject:v34 forKeyedSubscript:v45];
+      fontsByFileName2 = [(BKFontCache *)selfCopy fontsByFileName];
+      [fontsByFileName2 setObject:v34 forKeyedSubscript:v45];
 
       v36 = [v9 copy];
-      v37 = [(BKFontCache *)v49 fontLookupByFileName];
-      [v37 setObject:v36 forKeyedSubscript:v45];
+      fontLookupByFileName = [(BKFontCache *)selfCopy fontLookupByFileName];
+      [fontLookupByFileName setObject:v36 forKeyedSubscript:v45];
 
-      v38 = [(BKFontCache *)v49 fileNames];
-      [v38 addObject:v45];
+      fileNames = [(BKFontCache *)selfCopy fileNames];
+      [fileNames addObject:v45];
 
       v39 = _AEBookPluginsFontCacheLog();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
@@ -220,7 +220,7 @@
         *buf = 134218242;
         v66 = v40;
         v67 = 2114;
-        v68 = v46;
+        v68 = languageCopy;
         _os_log_impl(&dword_0, v39, OS_LOG_TYPE_DEFAULT, "Cached %lu fonts for language: %{public}@", buf, 0x16u);
       }
 
@@ -228,10 +228,10 @@
       block[1] = 3221225472;
       block[2] = sub_18838;
       block[3] = &unk_1E2F78;
-      v54 = v43;
+      v54 = completionCopy;
       v44 = v34;
       v52 = v44;
-      v53 = v46;
+      v53 = languageCopy;
       dispatch_group_notify(v10, &_dispatch_main_q, block);
     }
   }
@@ -249,28 +249,28 @@
     v44 = &__NSArray0__struct;
   }
 
-  objc_sync_exit(v49);
+  objc_sync_exit(selfCopy);
 
   return v44;
 }
 
-- (id)fontFromFamilyName:(id)a3 language:(id)a4
+- (id)fontFromFamilyName:(id)name language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
-  if ([v7 length])
+  nameCopy = name;
+  languageCopy = language;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([languageCopy length])
   {
-    v9 = [(BKFontCache *)v8 _presetsFileNameForLanguage:v7];
+    v9 = [(BKFontCache *)selfCopy _presetsFileNameForLanguage:languageCopy];
     if ([v9 length])
     {
-      v10 = [(BKFontCache *)v8 fontLookupByFileName];
-      v11 = [v10 objectForKeyedSubscript:v9];
+      fontLookupByFileName = [(BKFontCache *)selfCopy fontLookupByFileName];
+      v11 = [fontLookupByFileName objectForKeyedSubscript:v9];
 
       if (v11)
       {
-        v12 = [v11 objectForKeyedSubscript:v6];
+        v12 = [v11 objectForKeyedSubscript:nameCopy];
 LABEL_14:
 
         goto LABEL_15;
@@ -291,7 +291,7 @@ LABEL_14:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v15 = 138543362;
-        v16 = v7;
+        v16 = languageCopy;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "Filename for %{public}@ not found, no font found", &v15, 0xCu);
       }
     }
@@ -304,33 +304,33 @@ LABEL_14:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v15 = 138543362;
-    v16 = v6;
+    v16 = nameCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_ERROR, "Empty language parameter, no font found for %{public}@", &v15, 0xCu);
   }
 
   v12 = 0;
 LABEL_15:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v12;
 }
 
-- (id)defaultFontNameForLanguage:(id)a3
+- (id)defaultFontNameForLanguage:(id)language
 {
-  v4 = a3;
-  v25 = self;
-  objc_sync_enter(v25);
-  v23 = v4;
-  if (![v4 length])
+  languageCopy = language;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v23 = languageCopy;
+  if (![languageCopy length])
   {
     v21 = 0;
     goto LABEL_28;
   }
 
-  [(BKFontCache *)v25 prewarmFontsForLanguage:v4 completion:0];
-  v24 = [(BKFontCache *)v25 _presetsFileNameForLanguage:v4];
-  [(BKFontCache *)v25 _presetsForFileName:?];
+  [(BKFontCache *)selfCopy prewarmFontsForLanguage:languageCopy completion:0];
+  v24 = [(BKFontCache *)selfCopy _presetsFileNameForLanguage:languageCopy];
+  [(BKFontCache *)selfCopy _presetsForFileName:?];
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
@@ -352,9 +352,9 @@ LABEL_15:
 
         v10 = *(*(&v27 + 1) + 8 * i);
         v11 = [v10 valueForKey:{@"default", v23}];
-        v12 = [v11 integerValue];
+        integerValue = [v11 integerValue];
 
-        if (v12 > v6)
+        if (integerValue > v6)
         {
           v13 = [v10 valueForKey:@"fontFamily"];
           v14 = v13;
@@ -366,8 +366,8 @@ LABEL_15:
 
           v16 = v15;
 
-          v17 = [(BKFontCache *)v25 fontLookupByFileName];
-          v18 = [v17 objectForKeyedSubscript:v24];
+          fontLookupByFileName = [(BKFontCache *)selfCopy fontLookupByFileName];
+          v18 = [fontLookupByFileName objectForKeyedSubscript:v24];
 
           v19 = [v18 objectForKeyedSubscript:v16];
           if (([v19 isInstalled] & 1) == 0)
@@ -379,7 +379,7 @@ LABEL_15:
           {
             v20 = v10;
 
-            v6 = v12;
+            v6 = integerValue;
             v7 = v20;
           }
         }
@@ -417,45 +417,45 @@ LABEL_27:
   v21 = [v7 valueForKey:@"fontFamily"];
 
 LABEL_28:
-  objc_sync_exit(v25);
+  objc_sync_exit(selfCopy);
 
   return v21;
 }
 
-- (id)presetsForLanguage:(id)a3
+- (id)presetsForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(BKFontCache *)v5 _presetsFileNameForLanguage:v4];
-  v7 = [(BKFontCache *)v5 _presetsForFileName:v6];
+  languageCopy = language;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(BKFontCache *)selfCopy _presetsFileNameForLanguage:languageCopy];
+  v7 = [(BKFontCache *)selfCopy _presetsForFileName:v6];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (id)presetSettingsForFontFamily:(id)a3 language:(id)a4
+- (id)presetSettingsForFontFamily:(id)family language:(id)language
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  objc_sync_enter(v8);
+  familyCopy = family;
+  languageCopy = language;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = sub_19184;
   v23 = sub_19194;
   v24 = 0;
-  if ([v7 length])
+  if ([languageCopy length])
   {
-    v9 = [(BKFontCache *)v8 _presetsFileNameForLanguage:v7];
-    v10 = [(BKFontCache *)v8 _presetsForFileName:v9];
+    v9 = [(BKFontCache *)selfCopy _presetsFileNameForLanguage:languageCopy];
+    v10 = [(BKFontCache *)selfCopy _presetsForFileName:v9];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1919C;
     v16[3] = &unk_1E2FA0;
-    v11 = v6;
+    v11 = familyCopy;
     v17 = v11;
     v18 = &v19;
     [v10 enumerateObjectsUsingBlock:v16];
@@ -464,7 +464,7 @@ LABEL_28:
       v12 = _AEBookPluginsFontCacheLog();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_136AD4(v11, v7, v12);
+        sub_136AD4(v11, languageCopy, v12);
       }
 
       v13 = v20[5];
@@ -475,43 +475,43 @@ LABEL_28:
   v14 = v20[5];
   _Block_object_dispose(&v19, 8);
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   return v14;
 }
 
-- (id)presetPostscriptsLookupForLanguage:(id)a3
+- (id)presetPostscriptsLookupForLanguage:(id)language
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [(BKFontCache *)v5 prewarmFontsForLanguage:v4 completion:0];
-  v6 = [(BKFontCache *)v5 _presetsFileNameForLanguage:v4];
-  v7 = [(BKFontCache *)v5 fontFaceLookupByFileName];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  languageCopy = language;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(BKFontCache *)selfCopy prewarmFontsForLanguage:languageCopy completion:0];
+  v6 = [(BKFontCache *)selfCopy _presetsFileNameForLanguage:languageCopy];
+  fontFaceLookupByFileName = [(BKFontCache *)selfCopy fontFaceLookupByFileName];
+  v8 = [fontFaceLookupByFileName objectForKeyedSubscript:v6];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }
 
-- (void)_didReceiveMemoryWarning:(id)a3
+- (void)_didReceiveMemoryWarning:(id)warning
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(BKFontCache *)v5 fileNames];
-  v7 = [v6 array];
-  v8 = [v7 copy];
+  warningCopy = warning;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  fileNames = [(BKFontCache *)selfCopy fileNames];
+  array = [fileNames array];
+  v8 = [array copy];
 
   if ([v8 count] < 2)
   {
     v13 = _AEBookPluginsFontCacheLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(BKFontCache *)v5 fileNames];
+      fileNames2 = [(BKFontCache *)selfCopy fileNames];
       *buf = 138543362;
-      v22 = v14;
+      v22 = fileNames2;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_DEFAULT, "Received memory warning - files did not exceed minimum. Remaining files cached: %{public}@", buf, 0xCu);
     }
   }
@@ -524,31 +524,31 @@ LABEL_28:
     v18 = &unk_1E2FC8;
     v9 = v8;
     v19 = v9;
-    v20 = v5;
+    v20 = selfCopy;
     [v9 enumerateObjectsUsingBlock:&v15];
     v10 = _AEBookPluginsFontCacheLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v11 = [v9 count:v15];
-      v12 = [(BKFontCache *)v5 fileNames];
+      fileNames3 = [(BKFontCache *)selfCopy fileNames];
       *buf = 134218242;
       v22 = v11 - 1;
       v23 = 2114;
-      v24 = v12;
+      v24 = fileNames3;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "Received memory warning - cleared %lu files. Remaining files cached: %{public}@", buf, 0x16u);
     }
 
     v13 = v19;
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)_presetsForFileName:(id)a3
+- (id)_presetsForFileName:(id)name
 {
-  v4 = a3;
-  v5 = [(BKFontCache *)self presetsByFileName];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  presetsByFileName = [(BKFontCache *)self presetsByFileName];
+  v6 = [presetsByFileName objectForKeyedSubscript:nameCopy];
 
   if ([v6 count])
   {
@@ -558,7 +558,7 @@ LABEL_28:
   else
   {
     v8 = AEBundle();
-    v9 = [v8 pathForResource:v4 ofType:@"plist"];
+    v9 = [v8 pathForResource:nameCopy ofType:@"plist"];
 
     v10 = [[NSDictionary alloc] initWithContentsOfFile:v9];
     v11 = [v10 valueForKey:@"fonts"];
@@ -581,12 +581,12 @@ LABEL_28:
     [v11 enumerateObjectsUsingBlock:v23];
     v7 = [v15 copy];
 
-    v17 = [(BKFontCache *)self presetsByFileName];
-    [v17 setObject:v7 forKeyedSubscript:v4];
+    presetsByFileName2 = [(BKFontCache *)self presetsByFileName];
+    [presetsByFileName2 setObject:v7 forKeyedSubscript:nameCopy];
 
     v18 = [v13 copy];
-    v19 = [(BKFontCache *)self fontFaceLookupByFileName];
-    [v19 setObject:v18 forKeyedSubscript:v4];
+    fontFaceLookupByFileName = [(BKFontCache *)self fontFaceLookupByFileName];
+    [fontFaceLookupByFileName setObject:v18 forKeyedSubscript:nameCopy];
 
     v20 = _AEBookPluginsFontCacheLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -595,7 +595,7 @@ LABEL_28:
       *buf = 134218242;
       v29 = v21;
       v30 = 2114;
-      v31 = v4;
+      v31 = nameCopy;
       _os_log_impl(&dword_0, v20, OS_LOG_TYPE_DEFAULT, "Cached %lu presets from file: %{public}@", buf, 0x16u);
     }
   }
@@ -603,9 +603,9 @@ LABEL_28:
   return v7;
 }
 
-- (id)_presetsFileNameForLanguage:(id)a3
+- (id)_presetsFileNameForLanguage:(id)language
 {
-  v3 = [BKStyleManager suffixForLanguage:a3];
+  v3 = [BKStyleManager suffixForLanguage:language];
   if ([v3 length])
   {
     v4 = [NSString stringWithFormat:@"-%@", v3];

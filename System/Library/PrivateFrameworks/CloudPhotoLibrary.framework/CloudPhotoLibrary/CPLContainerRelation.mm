@@ -1,29 +1,29 @@
 @interface CPLContainerRelation
-- (CPLContainerRelation)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CPLContainerRelation)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)proposedScopedIdentifierForItemScopedIdentifier:(id)a3;
+- (id)proposedScopedIdentifierForItemScopedIdentifier:(id)identifier;
 @end
 
 @implementation CPLContainerRelation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 cplCopyPropertiesFromObject:self withCopyBlock:0];
   return v4;
 }
 
-- (CPLContainerRelation)initWithCoder:(id)a3
+- (CPLContainerRelation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = CPLContainerRelation;
   v5 = [(CPLContainerRelation *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [v5 cplDecodePropertiesFromCoder:v4];
+    [v5 cplDecodePropertiesFromCoder:coderCopy];
   }
 
   return v6;
@@ -46,19 +46,19 @@
   return [v3 stringWithFormat:@"<%@ [position: %ld container: %@ %@]>", v4, self->_position, self->_containerIdentifier, v5];
 }
 
-- (id)proposedScopedIdentifierForItemScopedIdentifier:(id)a3
+- (id)proposedScopedIdentifierForItemScopedIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [v4 alloc];
-  v7 = [v5 identifier];
-  v8 = [(CPLContainerRelation *)self containerIdentifier];
-  v9 = [v6 initWithFormat:@"%@-IN-%@", v7, v8];
+  identifier = [identifierCopy identifier];
+  containerIdentifier = [(CPLContainerRelation *)self containerIdentifier];
+  v9 = [v6 initWithFormat:@"%@-IN-%@", identifier, containerIdentifier];
 
   v10 = [CPLScopedIdentifier alloc];
-  v11 = [v5 scopeIdentifier];
+  scopeIdentifier = [identifierCopy scopeIdentifier];
 
-  v12 = [(CPLScopedIdentifier *)v10 initWithScopeIdentifier:v11 identifier:v9];
+  v12 = [(CPLScopedIdentifier *)v10 initWithScopeIdentifier:scopeIdentifier identifier:v9];
 
   return v12;
 }

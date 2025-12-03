@@ -1,34 +1,34 @@
 @interface HDQueryControlServer
 - (BOOL)hasActiveQueries;
-- (HDQueryControlServer)initWithParentServer:(id)a3 connectionQueue:(id)a4;
+- (HDQueryControlServer)initWithParentServer:(id)server connectionQueue:(id)queue;
 - (const)_lock_hasActiveQueries;
-- (id)createQueryServerEndpointForIdentifier:(id)a3 queryUUID:(id)a4 configuration:(id)a5 forceReactivation:(BOOL)a6 error:(id *)a7;
-- (void)_lock_queryDidFinish:(uint64_t)a1;
+- (id)createQueryServerEndpointForIdentifier:(id)identifier queryUUID:(id)d configuration:(id)configuration forceReactivation:(BOOL)reactivation error:(id *)error;
+- (void)_lock_queryDidFinish:(uint64_t)finish;
 - (void)invalidate;
-- (void)queryServer:(id)a3 shouldStartWithCompletion:(id)a4;
-- (void)queryServerDidFinish:(id)a3;
-- (void)taskServerDidFailToInitializeForUUID:(id)a3;
+- (void)queryServer:(id)server shouldStartWithCompletion:(id)completion;
+- (void)queryServerDidFinish:(id)finish;
+- (void)taskServerDidFailToInitializeForUUID:(id)d;
 @end
 
 @implementation HDQueryControlServer
 
-- (HDQueryControlServer)initWithParentServer:(id)a3 connectionQueue:(id)a4
+- (HDQueryControlServer)initWithParentServer:(id)server connectionQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = HDQueryControlServer;
   v8 = [(HDQueryControlServer *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_server, v6);
-    v10 = [v6 client];
+    objc_storeWeak(&v8->_server, serverCopy);
+    client = [serverCopy client];
     client = v9->_client;
-    v9->_client = v10;
+    v9->_client = client;
 
-    v12 = [v6 profile];
-    objc_storeWeak(&v9->_profile, v12);
+    profile = [serverCopy profile];
+    objc_storeWeak(&v9->_profile, profile);
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
     queryServersByUUID = v9->_queryServersByUUID;
@@ -38,7 +38,7 @@
     queryServerEndpointsByUUID = v9->_queryServerEndpointsByUUID;
     v9->_queryServerEndpointsByUUID = v15;
 
-    objc_storeStrong(&v9->_connectionQueue, a4);
+    objc_storeStrong(&v9->_connectionQueue, queue);
     v9->_lock._os_unfair_lock_opaque = 0;
   }
 
@@ -49,11 +49,11 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_queryServersByUUID allValues];
+  allValues = [(NSMutableDictionary *)self->_queryServersByUUID allValues];
   queryServersByUUID = self->_queryServersByUUID;
   self->_queryServersByUUID = 0;
 
-  v5 = [(NSMutableDictionary *)self->_queryServerEndpointsByUUID allValues];
+  allValues2 = [(NSMutableDictionary *)self->_queryServerEndpointsByUUID allValues];
   queryServerEndpointsByUUID = self->_queryServerEndpointsByUUID;
   self->_queryServerEndpointsByUUID = 0;
 
@@ -62,7 +62,7 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = v3;
+  v7 = allValues;
   v8 = [v7 countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v8)
   {
@@ -100,7 +100,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = v5;
+  v13 = allValues2;
   v14 = [v13 countByEnumeratingWithState:&v19 objects:v28 count:16];
   if (v14)
   {
@@ -147,23 +147,23 @@ void __34__HDQueryControlServer_invalidate__block_invoke(uint64_t a1)
   v3 = *MEMORY[0x277D85DE8];
 }
 
-- (id)createQueryServerEndpointForIdentifier:(id)a3 queryUUID:(id)a4 configuration:(id)a5 forceReactivation:(BOOL)a6 error:(id *)a7
+- (id)createQueryServerEndpointForIdentifier:(id)identifier queryUUID:(id)d configuration:(id)configuration forceReactivation:(BOOL)reactivation error:(id *)error
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  if (!v12)
+  reactivationCopy = reactivation;
+  identifierCopy = identifier;
+  dCopy = d;
+  configurationCopy = configuration;
+  if (!identifierCopy)
   {
     v22 = MEMORY[0x277CCA9B8];
     v23 = @"Nil query server identifier";
 LABEL_13:
-    [v22 hk_assignError:a7 code:3 format:v23];
-    v24 = 0;
+    [v22 hk_assignError:error code:3 format:v23];
+    listenerEndpoint = 0;
     goto LABEL_21;
   }
 
-  if (!v13)
+  if (!dCopy)
   {
     v22 = MEMORY[0x277CCA9B8];
     v23 = @"Nil query UUID";
@@ -180,8 +180,8 @@ LABEL_13:
     WeakRetained = 0;
   }
 
-  v16 = [WeakRetained daemon];
-  v17 = [v16 taskServerRegistry];
+  daemon = [WeakRetained daemon];
+  taskServerRegistry = [daemon taskServerRegistry];
 
   if (self)
   {
@@ -193,14 +193,14 @@ LABEL_13:
     client = 0;
   }
 
-  v19 = [v17 createTaskServerEndpointForIdentifier:v12 taskUUID:v13 instanceUUID:v13 configuration:v14 client:client connectionQueue:self->_connectionQueue error:a7];
+  v19 = [taskServerRegistry createTaskServerEndpointForIdentifier:identifierCopy taskUUID:dCopy instanceUUID:dCopy configuration:configurationCopy client:client connectionQueue:self->_connectionQueue error:error];
   if (v19)
   {
     v20 = v19;
     os_unfair_lock_lock(&self->_lock);
-    if (v8)
+    if (reactivationCopy)
     {
-      v21 = [(NSMutableDictionary *)self->_queryServersByUUID objectForKeyedSubscript:v13];
+      v21 = [(NSMutableDictionary *)self->_queryServersByUUID objectForKeyedSubscript:dCopy];
       if (v21)
       {
         [(HDQueryControlServer *)self _lock_queryDidFinish:v21];
@@ -212,13 +212,13 @@ LABEL_13:
       v21 = 0;
     }
 
-    v25 = [(NSMutableDictionary *)self->_queryServerEndpointsByUUID objectForKeyedSubscript:v13];
+    v25 = [(NSMutableDictionary *)self->_queryServerEndpointsByUUID objectForKeyedSubscript:dCopy];
 
     if (v25)
     {
       v26 = MEMORY[0x277CCA9B8];
-      v27 = [v13 UUIDString];
-      [v26 hk_assignError:a7 code:100 format:{@"Query '%@' already exists", v27}];
+      uUIDString = [dCopy UUIDString];
+      [v26 hk_assignError:error code:100 format:{@"Query '%@' already exists", uUIDString}];
 
       [v20 invalidate];
       v20 = 0;
@@ -226,7 +226,7 @@ LABEL_13:
 
     else
     {
-      [(NSMutableDictionary *)self->_queryServerEndpointsByUUID setObject:v20 forKeyedSubscript:v13];
+      [(NSMutableDictionary *)self->_queryServerEndpointsByUUID setObject:v20 forKeyedSubscript:dCopy];
       [v20 setDelegate:self];
       [v20 setTaskServerDelegate:self];
       [v20 resume];
@@ -234,39 +234,39 @@ LABEL_13:
 
     os_unfair_lock_unlock(&self->_lock);
     [v21 deactivateServerWithCompletion:0];
-    v24 = [v20 listenerEndpoint];
+    listenerEndpoint = [v20 listenerEndpoint];
   }
 
   else
   {
-    v24 = 0;
+    listenerEndpoint = 0;
   }
 
 LABEL_21:
 
-  return v24;
+  return listenerEndpoint;
 }
 
-- (void)_lock_queryDidFinish:(uint64_t)a1
+- (void)_lock_queryDidFinish:(uint64_t)finish
 {
-  if (a1)
+  if (finish)
   {
     v3 = a2;
-    os_unfair_lock_assert_owner((a1 + 32));
-    v9 = [v3 queryUUID];
-    v4 = [*(a1 + 8) objectForKeyedSubscript:?];
+    os_unfair_lock_assert_owner((finish + 32));
+    queryUUID = [v3 queryUUID];
+    v4 = [*(finish + 8) objectForKeyedSubscript:?];
 
     if (v4 == v3)
     {
-      v5 = [(HDQueryControlServer *)a1 _lock_hasActiveQueries];
-      v6 = [*(a1 + 16) objectForKeyedSubscript:v9];
-      [*(a1 + 8) removeObjectForKey:v9];
-      [*(a1 + 16) removeObjectForKey:v9];
-      v7 = [(HDQueryControlServer *)a1 _lock_hasActiveQueries];
+      _lock_hasActiveQueries = [(HDQueryControlServer *)finish _lock_hasActiveQueries];
+      v6 = [*(finish + 16) objectForKeyedSubscript:queryUUID];
+      [*(finish + 8) removeObjectForKey:queryUUID];
+      [*(finish + 16) removeObjectForKey:queryUUID];
+      _lock_hasActiveQueries2 = [(HDQueryControlServer *)finish _lock_hasActiveQueries];
       [v6 invalidate];
-      if (v5 != v7)
+      if (_lock_hasActiveQueries != _lock_hasActiveQueries2)
       {
-        WeakRetained = objc_loadWeakRetained((a1 + 40));
+        WeakRetained = objc_loadWeakRetained((finish + 40));
         [WeakRetained _serverActivityChanged];
       }
     }
@@ -276,9 +276,9 @@ LABEL_21:
 - (BOOL)hasActiveQueries
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HDQueryControlServer *)self _lock_hasActiveQueries];
+  _lock_hasActiveQueries = [(HDQueryControlServer *)self _lock_hasActiveQueries];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_hasActiveQueries;
 }
 
 - (const)_lock_hasActiveQueries
@@ -301,12 +301,12 @@ LABEL_21:
   return result;
 }
 
-- (void)taskServerDidFailToInitializeForUUID:(id)a3
+- (void)taskServerDidFailToInitializeForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NSMutableDictionary *)self->_queryServerEndpointsByUUID objectForKeyedSubscript:v4];
-  [(NSMutableDictionary *)self->_queryServerEndpointsByUUID setObject:0 forKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_queryServerEndpointsByUUID objectForKeyedSubscript:dCopy];
+  [(NSMutableDictionary *)self->_queryServerEndpointsByUUID setObject:0 forKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   [v5 invalidate];
@@ -401,41 +401,41 @@ void __95__HDQueryControlServer_queryServer_requestsAuthorizationWithContext_pro
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queryServer:(id)a3 shouldStartWithCompletion:(id)a4
+- (void)queryServer:(id)server shouldStartWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  serverCopy = server;
+  completionCopy = completion;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_server);
-    v9 = [WeakRetained daemon];
-    v10 = [v9 queryManager];
+    daemon = [WeakRetained daemon];
+    queryManager = [daemon queryManager];
 
-    if (v10)
+    if (queryManager)
     {
       v12[0] = MEMORY[0x277D85DD0];
       v12[1] = 3221225472;
       v12[2] = __53__HDQueryControlServer__startQueryServer_completion___block_invoke;
       v12[3] = &unk_278613150;
       v12[4] = self;
-      v13 = v6;
-      v14 = v7;
-      [v10 startQueryServer:v13 completion:v12];
+      v13 = serverCopy;
+      v14 = completionCopy;
+      [queryManager startQueryServer:v13 completion:v12];
     }
 
     else
     {
       v11 = [MEMORY[0x277CCA9B8] hk_error:100 description:@"Query manager unavailable"];
-      (*(v7 + 2))(v7, 0, v11);
+      (*(completionCopy + 2))(completionCopy, 0, v11);
     }
   }
 }
 
-- (void)queryServerDidFinish:(id)a3
+- (void)queryServerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   os_unfair_lock_lock(&self->_lock);
-  [(HDQueryControlServer *)self _lock_queryDidFinish:v4];
+  [(HDQueryControlServer *)self _lock_queryDidFinish:finishCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

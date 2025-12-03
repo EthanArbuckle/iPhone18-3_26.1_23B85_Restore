@@ -1,94 +1,94 @@
 @interface REMListsDataViewInvocationResult
-- (BOOL)isEqual:(id)a3;
-- (REMListsDataViewInvocationResult)initWithAccountStorages:(id)a3 listStorages:(id)a4 objectIDs:(id)a5;
-- (REMListsDataViewInvocationResult)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMListsDataViewInvocationResult)initWithAccountStorages:(id)storages listStorages:(id)listStorages objectIDs:(id)ds;
+- (REMListsDataViewInvocationResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMListsDataViewInvocationResult
 
-- (REMListsDataViewInvocationResult)initWithAccountStorages:(id)a3 listStorages:(id)a4 objectIDs:(id)a5
+- (REMListsDataViewInvocationResult)initWithAccountStorages:(id)storages listStorages:(id)listStorages objectIDs:(id)ds
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storagesCopy = storages;
+  listStoragesCopy = listStorages;
+  dsCopy = ds;
   v15.receiver = self;
   v15.super_class = REMListsDataViewInvocationResult;
   v12 = [(REMStoreInvocationValueStorage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accountStorages, a3);
-    objc_storeStrong(&v13->_listStorages, a4);
-    objc_storeStrong(&v13->_objectIDs, a5);
+    objc_storeStrong(&v12->_accountStorages, storages);
+    objc_storeStrong(&v13->_listStorages, listStorages);
+    objc_storeStrong(&v13->_objectIDs, ds);
   }
 
   return v13;
 }
 
-- (REMListsDataViewInvocationResult)initWithCoder:(id)a3
+- (REMListsDataViewInvocationResult)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"accountStorages"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"accountStorages"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"listStorages"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"listStorages"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v5 decodeObjectOfClasses:v15 forKey:@"objectIDs"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"objectIDs"];
 
-  v17 = 0;
+  selfCopy = 0;
   if (v8 && v12 && v16)
   {
     self = [(REMListsDataViewInvocationResult *)self initWithAccountStorages:v8 listStorages:v12 objectIDs:v16];
-    v17 = self;
+    selfCopy = self;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMListsDataViewInvocationResult *)self accountStorages];
-  [v4 encodeObject:v5 forKey:@"accountStorages"];
+  coderCopy = coder;
+  accountStorages = [(REMListsDataViewInvocationResult *)self accountStorages];
+  [coderCopy encodeObject:accountStorages forKey:@"accountStorages"];
 
-  v6 = [(REMListsDataViewInvocationResult *)self listStorages];
-  [v4 encodeObject:v6 forKey:@"listStorages"];
+  listStorages = [(REMListsDataViewInvocationResult *)self listStorages];
+  [coderCopy encodeObject:listStorages forKey:@"listStorages"];
 
-  v7 = [(REMListsDataViewInvocationResult *)self objectIDs];
-  [v4 encodeObject:v7 forKey:@"objectIDs"];
+  objectIDs = [(REMListsDataViewInvocationResult *)self objectIDs];
+  [coderCopy encodeObject:objectIDs forKey:@"objectIDs"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v5 = [(REMListsDataViewInvocationResult *)self accountStorages];
-  v6 = [v4 accountStorages];
-  v7 = v6;
-  if (v5 == v6)
+  accountStorages = [(REMListsDataViewInvocationResult *)self accountStorages];
+  accountStorages2 = [equalCopy accountStorages];
+  v7 = accountStorages2;
+  if (accountStorages == accountStorages2)
   {
   }
 
   else
   {
-    v8 = [(REMListsDataViewInvocationResult *)self accountStorages];
-    v9 = [v4 accountStorages];
-    v10 = [v8 isEqual:v9];
+    accountStorages3 = [(REMListsDataViewInvocationResult *)self accountStorages];
+    accountStorages4 = [equalCopy accountStorages];
+    v10 = [accountStorages3 isEqual:accountStorages4];
 
     if (!v10)
     {
@@ -96,18 +96,18 @@
     }
   }
 
-  v11 = [(REMListsDataViewInvocationResult *)self listStorages];
-  v12 = [v4 listStorages];
-  v13 = v12;
-  if (v11 == v12)
+  listStorages = [(REMListsDataViewInvocationResult *)self listStorages];
+  listStorages2 = [equalCopy listStorages];
+  v13 = listStorages2;
+  if (listStorages == listStorages2)
   {
   }
 
   else
   {
-    v14 = [(REMListsDataViewInvocationResult *)self listStorages];
-    v15 = [v4 listStorages];
-    v16 = [v14 isEqual:v15];
+    listStorages3 = [(REMListsDataViewInvocationResult *)self listStorages];
+    listStorages4 = [equalCopy listStorages];
+    v16 = [listStorages3 isEqual:listStorages4];
 
     if (!v16)
     {
@@ -117,18 +117,18 @@ LABEL_8:
     }
   }
 
-  v18 = [(REMListsDataViewInvocationResult *)self objectIDs];
-  v19 = [v4 objectIDs];
-  if (v18 == v19)
+  objectIDs = [(REMListsDataViewInvocationResult *)self objectIDs];
+  objectIDs2 = [equalCopy objectIDs];
+  if (objectIDs == objectIDs2)
   {
     v17 = 1;
   }
 
   else
   {
-    v20 = [(REMListsDataViewInvocationResult *)self objectIDs];
-    v21 = [v4 objectIDs];
-    v17 = [v20 isEqual:v21];
+    objectIDs3 = [(REMListsDataViewInvocationResult *)self objectIDs];
+    objectIDs4 = [equalCopy objectIDs];
+    v17 = [objectIDs3 isEqual:objectIDs4];
   }
 
 LABEL_14:
@@ -137,12 +137,12 @@ LABEL_14:
 
 - (unint64_t)hash
 {
-  v3 = [(REMListsDataViewInvocationResult *)self accountStorages];
-  v4 = [v3 hash];
-  v5 = [(REMListsDataViewInvocationResult *)self listStorages];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(REMListsDataViewInvocationResult *)self objectIDs];
-  v8 = [v7 hash];
+  accountStorages = [(REMListsDataViewInvocationResult *)self accountStorages];
+  v4 = [accountStorages hash];
+  listStorages = [(REMListsDataViewInvocationResult *)self listStorages];
+  v6 = [listStorages hash] ^ v4;
+  objectIDs = [(REMListsDataViewInvocationResult *)self objectIDs];
+  v8 = [objectIDs hash];
 
   return v6 ^ v8;
 }

@@ -1,12 +1,12 @@
 @interface ButtonGradientBackgroundView
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation ButtonGradientBackgroundView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   ButtonGradientBackgroundView.draw(_:)(v5);
 }
 

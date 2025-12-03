@@ -1,18 +1,18 @@
 @interface PXCMMInvitationsIsNewMonitor
 + (PXCMMInvitationsIsNewMonitor)sharedMonitor;
-- (BOOL)invitationIsNew:(id)a3;
+- (BOOL)invitationIsNew:(id)new;
 - (PXCMMInvitationsIsNewMonitor)init;
-- (void)_lastExitedDateDidChange:(id)a3;
+- (void)_lastExitedDateDidChange:(id)change;
 - (void)_updateLastExitedDate;
 @end
 
 @implementation PXCMMInvitationsIsNewMonitor
 
-- (void)_lastExitedDateDidChange:(id)a3
+- (void)_lastExitedDateDidChange:(id)change
 {
   [(PXCMMInvitationsIsNewMonitor *)self _updateLastExitedDate];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"PXCMMInvitationsIsNewMonitorDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"PXCMMInvitationsIsNewMonitorDidChangeNotification" object:self];
 }
 
 - (void)_updateLastExitedDate
@@ -22,24 +22,24 @@
   self->_lastExitedForYouDate = v3;
 }
 
-- (BOOL)invitationIsNew:(id)a3
+- (BOOL)invitationIsNew:(id)new
 {
-  v4 = a3;
+  newCopy = new;
   v5 = +[PXCompleteMyMomentSettings sharedInstance];
-  v6 = [v5 simulateAllMomentSharesAreNew];
+  simulateAllMomentSharesAreNew = [v5 simulateAllMomentSharesAreNew];
 
-  if (v6)
+  if (simulateAllMomentSharesAreNew)
   {
     v7 = 1;
   }
 
-  else if ([v4 shareType] == 1)
+  else if ([newCopy shareType] == 1)
   {
-    v8 = [v4 creationDate];
-    v9 = v8;
-    if (v8)
+    creationDate = [newCopy creationDate];
+    v9 = creationDate;
+    if (creationDate)
     {
-      v7 = [v8 compare:self->_lastExitedForYouDate] == 1;
+      v7 = [creationDate compare:self->_lastExitedForYouDate] == 1;
     }
 
     else
@@ -67,8 +67,8 @@
     lastExitedForYouDate = v2->_lastExitedForYouDate;
     v2->_lastExitedForYouDate = v3;
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v2 selector:sel__lastExitedDateDidChange_ name:@"PXForYouLastExitedDateChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__lastExitedDateDidChange_ name:@"PXForYouLastExitedDateChangeNotification" object:0];
 
     [(PXCMMInvitationsIsNewMonitor *)v2 _updateLastExitedDate];
   }

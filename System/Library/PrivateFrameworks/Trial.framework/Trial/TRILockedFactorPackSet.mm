@@ -1,34 +1,34 @@
 @interface TRILockedFactorPackSet
-+ (id)lockedSetWithFactorPackSetId:(id)a3 path:(id)a4 lock:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLockedSet:(id)a3;
-- (TRILockedFactorPackSet)initWithFactorPackSetId:(id)a3 path:(id)a4 lock:(id)a5;
-- (id)copyWithReplacementFactorPackSetId:(id)a3;
-- (id)copyWithReplacementLock:(id)a3;
-- (id)copyWithReplacementPath:(id)a3;
++ (id)lockedSetWithFactorPackSetId:(id)id path:(id)path lock:(id)lock;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLockedSet:(id)set;
+- (TRILockedFactorPackSet)initWithFactorPackSetId:(id)id path:(id)path lock:(id)lock;
+- (id)copyWithReplacementFactorPackSetId:(id)id;
+- (id)copyWithReplacementLock:(id)lock;
+- (id)copyWithReplacementPath:(id)path;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TRILockedFactorPackSet
 
-- (TRILockedFactorPackSet)initWithFactorPackSetId:(id)a3 path:(id)a4 lock:(id)a5
+- (TRILockedFactorPackSet)initWithFactorPackSetId:(id)id path:(id)path lock:(id)lock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  idCopy = id;
+  pathCopy = path;
+  lockCopy = lock;
+  if (idCopy)
   {
-    if (v11)
+    if (pathCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1734 description:{@"Invalid parameter not satisfying: %@", @"path != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1734 description:{@"Invalid parameter not satisfying: %@", @"path != nil"}];
 
-    if (v12)
+    if (lockCopy)
     {
       goto LABEL_4;
     }
@@ -36,23 +36,23 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1733 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1733 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId != nil"}];
 
-  if (!v11)
+  if (!pathCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v12)
+  if (lockCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v18 = [MEMORY[0x277CCA890] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1735 description:{@"Invalid parameter not satisfying: %@", @"lock != nil"}];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIClientTupleTypes.m" lineNumber:1735 description:{@"Invalid parameter not satisfying: %@", @"lock != nil"}];
 
 LABEL_4:
   v19.receiver = self;
@@ -61,60 +61,60 @@ LABEL_4:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_factorPackSetId, a3);
-    objc_storeStrong(&v14->_path, a4);
-    objc_storeStrong(&v14->_lock, a5);
+    objc_storeStrong(&v13->_factorPackSetId, id);
+    objc_storeStrong(&v14->_path, path);
+    objc_storeStrong(&v14->_lock, lock);
   }
 
   return v14;
 }
 
-+ (id)lockedSetWithFactorPackSetId:(id)a3 path:(id)a4 lock:(id)a5
++ (id)lockedSetWithFactorPackSetId:(id)id path:(id)path lock:(id)lock
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithFactorPackSetId:v10 path:v9 lock:v8];
+  lockCopy = lock;
+  pathCopy = path;
+  idCopy = id;
+  v11 = [[self alloc] initWithFactorPackSetId:idCopy path:pathCopy lock:lockCopy];
 
   return v11;
 }
 
-- (id)copyWithReplacementFactorPackSetId:(id)a3
+- (id)copyWithReplacementFactorPackSetId:(id)id
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFactorPackSetId:v4 path:self->_path lock:self->_lock];
+  idCopy = id;
+  v5 = [objc_alloc(objc_opt_class()) initWithFactorPackSetId:idCopy path:self->_path lock:self->_lock];
 
   return v5;
 }
 
-- (id)copyWithReplacementPath:(id)a3
+- (id)copyWithReplacementPath:(id)path
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFactorPackSetId:self->_factorPackSetId path:v4 lock:self->_lock];
+  pathCopy = path;
+  v5 = [objc_alloc(objc_opt_class()) initWithFactorPackSetId:self->_factorPackSetId path:pathCopy lock:self->_lock];
 
   return v5;
 }
 
-- (id)copyWithReplacementLock:(id)a3
+- (id)copyWithReplacementLock:(id)lock
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithFactorPackSetId:self->_factorPackSetId path:self->_path lock:v4];
+  lockCopy = lock;
+  v5 = [objc_alloc(objc_opt_class()) initWithFactorPackSetId:self->_factorPackSetId path:self->_path lock:lockCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToLockedSet:(id)a3
+- (BOOL)isEqualToLockedSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  setCopy = set;
+  v5 = setCopy;
+  if (!setCopy)
   {
     goto LABEL_11;
   }
 
   v6 = self->_factorPackSetId == 0;
-  v7 = [v4 factorPackSetId];
-  v8 = v7 != 0;
+  factorPackSetId = [setCopy factorPackSetId];
+  v8 = factorPackSetId != 0;
 
   if (v6 == v8)
   {
@@ -124,8 +124,8 @@ LABEL_4:
   factorPackSetId = self->_factorPackSetId;
   if (factorPackSetId)
   {
-    v10 = [v5 factorPackSetId];
-    v11 = [(TRIFactorPackSetId *)factorPackSetId isEqual:v10];
+    factorPackSetId2 = [v5 factorPackSetId];
+    v11 = [(TRIFactorPackSetId *)factorPackSetId isEqual:factorPackSetId2];
 
     if (!v11)
     {
@@ -134,8 +134,8 @@ LABEL_4:
   }
 
   v12 = self->_path == 0;
-  v13 = [v5 path];
-  v14 = v13 != 0;
+  path = [v5 path];
+  v14 = path != 0;
 
   if (v12 == v14)
   {
@@ -145,8 +145,8 @@ LABEL_4:
   path = self->_path;
   if (path)
   {
-    v16 = [v5 path];
-    v17 = [(NSString *)path isEqual:v16];
+    path2 = [v5 path];
+    v17 = [(NSString *)path isEqual:path2];
 
     if (!v17)
     {
@@ -155,8 +155,8 @@ LABEL_4:
   }
 
   v18 = self->_lock == 0;
-  v19 = [v5 lock];
-  v20 = v19 != 0;
+  lock = [v5 lock];
+  v20 = lock != 0;
 
   if (v18 == v20)
   {
@@ -169,8 +169,8 @@ LABEL_11:
     lock = self->_lock;
     if (lock)
     {
-      v22 = [v5 lock];
-      v23 = [(TRIReferenceManagedDirReaderLock *)lock isEqual:v22];
+      lock2 = [v5 lock];
+      v23 = [(TRIReferenceManagedDirReaderLock *)lock isEqual:lock2];
     }
 
     else
@@ -182,18 +182,18 @@ LABEL_11:
   return v23 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRILockedFactorPackSet *)self isEqualToLockedSet:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRILockedFactorPackSet *)self isEqualToLockedSet:v5];
   }
 
   return v6;

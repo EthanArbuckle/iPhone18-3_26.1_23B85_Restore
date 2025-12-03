@@ -1,20 +1,20 @@
 @interface SKUISectionHeaderCollectionViewCell
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-- (SKUISectionHeaderCollectionViewCell)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
+- (SKUISectionHeaderCollectionViewCell)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation SKUISectionHeaderCollectionViewCell
 
-- (SKUISectionHeaderCollectionViewCell)initWithFrame:(CGRect)a3
+- (SKUISectionHeaderCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUISectionHeaderCollectionViewCell initWithFrame:];
@@ -22,47 +22,47 @@
 
   v15.receiver = self;
   v15.super_class = SKUISectionHeaderCollectionViewCell;
-  v8 = [(SKUICollectionViewCell *)&v15 initWithFrame:x, y, width, height];
-  v9 = v8;
-  if (v8)
+  height = [(SKUICollectionViewCell *)&v15 initWithFrame:x, y, width, height];
+  v9 = height;
+  if (height)
   {
-    v10 = [(SKUISectionHeaderCollectionViewCell *)v8 contentView];
+    contentView = [(SKUISectionHeaderCollectionViewCell *)height contentView];
     v11 = [SKUISectionHeaderView alloc];
-    [v10 bounds];
+    [contentView bounds];
     v12 = [(SKUISectionHeaderView *)v11 initWithFrame:?];
     headerView = v9->_headerView;
     v9->_headerView = v12;
 
-    [v10 addSubview:v9->_headerView];
+    [contentView addSubview:v9->_headerView];
   }
 
   return v9;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   headerView = self->_headerView;
   v5 = MEMORY[0x277D75348];
-  v6 = a3;
-  v7 = [v5 clearColor];
-  [(SKUIViewReuseView *)headerView setBackgroundColor:v7];
+  attributesCopy = attributes;
+  clearColor = [v5 clearColor];
+  [(SKUIViewReuseView *)headerView setBackgroundColor:clearColor];
 
   v8.receiver = self;
   v8.super_class = SKUISectionHeaderCollectionViewCell;
-  [(SKUICollectionViewCell *)&v8 applyLayoutAttributes:v6];
+  [(SKUICollectionViewCell *)&v8 applyLayoutAttributes:attributesCopy];
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
-  [SKUISectionHeaderView preferredSizeForViewElement:a3 context:a4];
+  [SKUISectionHeaderView preferredSizeForViewElement:element context:context];
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
-  [SKUISectionHeaderView sizeThatFitsWidth:a4 viewElement:a5 context:a3];
+  [SKUISectionHeaderView sizeThatFitsWidth:element viewElement:context context:width];
   result.height = v6;
   result.width = v5;
   return result;
@@ -74,19 +74,19 @@
   v5.super_class = SKUISectionHeaderCollectionViewCell;
   [(SKUICollectionViewCell *)&v5 layoutSubviews];
   headerView = self->_headerView;
-  v4 = [(SKUISectionHeaderCollectionViewCell *)self contentView];
-  [v4 bounds];
+  contentView = [(SKUISectionHeaderCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(SKUISectionHeaderView *)headerView setFrame:?];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   headerView = self->_headerView;
-  v5 = a3;
-  [(SKUIViewReuseView *)headerView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUIViewReuseView *)headerView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUISectionHeaderCollectionViewCell;
-  [(SKUICollectionViewCell *)&v6 setBackgroundColor:v5];
+  [(SKUICollectionViewCell *)&v6 setBackgroundColor:colorCopy];
 }
 
 - (void)initWithFrame:.cold.1()

@@ -1,33 +1,33 @@
 @interface CHWorkoutDetailSummaryTableViewCell
-+ (double)preferredHeightForWorkout:(id)a3;
++ (double)preferredHeightForWorkout:(id)workout;
 + (id)_geocoder;
 + (id)_locationArrowImage;
-- (BOOL)_workoutIsThirdParty:(id)a3;
-- (CHWorkoutDetailSummaryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (BOOL)_workoutIsThirdParty:(id)party;
+- (CHWorkoutDetailSummaryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_constrainViews;
 - (void)_navigateToSeymourWorkout;
-- (void)_treatAsFirstPartyWorkout:(id)a3 workoutActivity:(id)a4 formattingManager:(id)a5;
-- (void)setLocation:(id)a3 completion:(id)a4;
-- (void)setSwimDistanceByStrokeStyle:(id)a3;
-- (void)summaryConfigureWithWorkout:(id)a3 workoutActivity:(id)a4 fitnessAppContext:(id)a5 catalogItemViewModel:(id)a6 formattingManager:(id)a7 resizeBlock:(id)a8;
+- (void)_treatAsFirstPartyWorkout:(id)workout workoutActivity:(id)activity formattingManager:(id)manager;
+- (void)setLocation:(id)location completion:(id)completion;
+- (void)setSwimDistanceByStrokeStyle:(id)style;
+- (void)summaryConfigureWithWorkout:(id)workout workoutActivity:(id)activity fitnessAppContext:(id)context catalogItemViewModel:(id)model formattingManager:(id)manager resizeBlock:(id)block;
 @end
 
 @implementation CHWorkoutDetailSummaryTableViewCell
 
-+ (double)preferredHeightForWorkout:(id)a3
++ (double)preferredHeightForWorkout:(id)workout
 {
-  v3 = a3;
-  v4 = [v3 _goalType];
-  v5 = [v3 workoutActivityType];
+  workoutCopy = workout;
+  _goalType = [workoutCopy _goalType];
+  workoutActivityType = [workoutCopy workoutActivityType];
 
-  if (v4)
+  if (_goalType)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v5 == 46;
+    v6 = workoutActivityType == 46;
   }
 
   result = 184.0;
@@ -63,11 +63,11 @@
   return v3;
 }
 
-- (CHWorkoutDetailSummaryTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailSummaryTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v65.receiver = self;
   v65.super_class = CHWorkoutDetailSummaryTableViewCell;
-  v4 = [(CHWorkoutDetailSummaryTableViewCell *)&v65 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CHWorkoutDetailSummaryTableViewCell *)&v65 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = +[UIColor systemBackgroundColor];
@@ -80,8 +80,8 @@
     [(UIImageView *)v4->_ringImageView setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v8) = 1148846080;
     [(UIImageView *)v4->_ringImageView setContentCompressionResistancePriority:0 forAxis:v8];
-    v9 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
-    [v9 addSubview:v4->_ringImageView];
+    contentView = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_ringImageView];
 
     v10 = objc_alloc_init(UIImageView);
     iconImageView = v4->_iconImageView;
@@ -91,16 +91,16 @@
     [(UIImageView *)v4->_iconImageView setUserInteractionEnabled:1];
     LODWORD(v12) = 1148846080;
     [(UIImageView *)v4->_iconImageView setContentCompressionResistancePriority:0 forAxis:v12];
-    v13 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
-    [v13 addSubview:v4->_iconImageView];
+    contentView2 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_iconImageView];
 
     v14 = objc_alloc_init(UIImageView);
     workoutTypeIconImageView = v4->_workoutTypeIconImageView;
     v4->_workoutTypeIconImageView = v14;
 
     [(UIImageView *)v4->_workoutTypeIconImageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v16 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
-    [v16 addSubview:v4->_workoutTypeIconImageView];
+    contentView3 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_workoutTypeIconImageView];
 
     v17 = [[UIStackView alloc] initWithArrangedSubviews:&__NSArray0__struct];
     summaryContainer = v4->_summaryContainer;
@@ -112,8 +112,8 @@
     [(UIStackView *)v4->_summaryContainer setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v19) = 1148846080;
     [(UIStackView *)v4->_summaryContainer setContentCompressionResistancePriority:1 forAxis:v19];
-    v20 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
-    [v20 addSubview:v4->_summaryContainer];
+    contentView4 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
+    [contentView4 addSubview:v4->_summaryContainer];
 
     v21 = objc_alloc_init(UILabel);
     workoutTypeLabel = v4->_workoutTypeLabel;
@@ -167,8 +167,8 @@
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v40 = [(_CHWorkoutDetailTextSpacerView *)v36 initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(UIStackView *)v4->_summaryContainer addArrangedSubview:v40];
+    height = [(_CHWorkoutDetailTextSpacerView *)v36 initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(UIStackView *)v4->_summaryContainer addArrangedSubview:height];
     v41 = objc_alloc_init(UILabel);
     swimmingDistanceByStrokeStyleLabel = v4->_swimmingDistanceByStrokeStyleLabel;
     v4->_swimmingDistanceByStrokeStyleLabel = v41;
@@ -185,11 +185,11 @@
     LODWORD(v45) = 1148846080;
     [(UILabel *)v4->_swimmingDistanceByStrokeStyleLabel setContentCompressionResistancePriority:1 forAxis:v45];
     [(UIStackView *)v4->_summaryContainer addArrangedSubview:v4->_swimmingDistanceByStrokeStyleLabel];
-    v46 = [[_CHWorkoutDetailTextSpacerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-    [(UIStackView *)v4->_summaryContainer addArrangedSubview:v46];
+    height2 = [[_CHWorkoutDetailTextSpacerView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+    [(UIStackView *)v4->_summaryContainer addArrangedSubview:height2];
     swimmingDistanceByStrokeStyleLabelTrailingSpacer = v4->_swimmingDistanceByStrokeStyleLabelTrailingSpacer;
-    v4->_swimmingDistanceByStrokeStyleLabelTrailingSpacer = v46;
-    v48 = v46;
+    v4->_swimmingDistanceByStrokeStyleLabelTrailingSpacer = height2;
+    v48 = height2;
 
     v49 = objc_alloc_init(UILabel);
     timeRangeLabel = v4->_timeRangeLabel;
@@ -226,12 +226,12 @@
     v4->_contentViewLayoutView = v59;
 
     [(UIView *)v4->_contentViewLayoutView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v61 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
-    [v61 addSubview:v4->_contentViewLayoutView];
+    contentView5 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
+    [contentView5 addSubview:v4->_contentViewLayoutView];
 
     v62 = [[UITapGestureRecognizer alloc] initWithTarget:v4 action:"_navigateToSeymourWorkout"];
-    v63 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
-    [v63 addGestureRecognizer:v62];
+    contentView6 = [(CHWorkoutDetailSummaryTableViewCell *)v4 contentView];
+    [contentView6 addGestureRecognizer:v62];
 
     [(CHWorkoutDetailSummaryTableViewCell *)v4 _constrainViews];
   }
@@ -239,30 +239,30 @@
   return v4;
 }
 
-- (void)summaryConfigureWithWorkout:(id)a3 workoutActivity:(id)a4 fitnessAppContext:(id)a5 catalogItemViewModel:(id)a6 formattingManager:(id)a7 resizeBlock:(id)a8
+- (void)summaryConfigureWithWorkout:(id)workout workoutActivity:(id)activity fitnessAppContext:(id)context catalogItemViewModel:(id)model formattingManager:(id)manager resizeBlock:(id)block
 {
-  v15 = a3;
-  v16 = a4;
-  v43 = a5;
-  v17 = a6;
-  v18 = a7;
-  v42 = a8;
-  objc_storeStrong(&self->_currentWorkout, a3);
-  objc_storeStrong(&self->_currentWorkoutActivity, a4);
-  objc_storeStrong(&self->_fitnessAppContext, a5);
-  objc_storeStrong(&self->_catalogItemViewModel, a6);
-  objc_storeWeak(&self->_formattingManager, v18);
-  v19 = [v18 formattedTypeForWorkout:v15 workoutActivity:v16 context:@"WorkoutDetailDisplayContext"];
+  workoutCopy = workout;
+  activityCopy = activity;
+  contextCopy = context;
+  modelCopy = model;
+  managerCopy = manager;
+  blockCopy = block;
+  objc_storeStrong(&self->_currentWorkout, workout);
+  objc_storeStrong(&self->_currentWorkoutActivity, activity);
+  objc_storeStrong(&self->_fitnessAppContext, context);
+  objc_storeStrong(&self->_catalogItemViewModel, model);
+  objc_storeWeak(&self->_formattingManager, managerCopy);
+  v19 = [managerCopy formattedTypeForWorkout:workoutCopy workoutActivity:activityCopy context:@"WorkoutDetailDisplayContext"];
   [(UILabel *)self->_workoutTypeLabel setAttributedText:v19];
 
-  v20 = [v18 formattedTimeRangeForWorkout:v15 workoutActivity:v16 context:@"WorkoutDetailDisplayContext"];
+  v20 = [managerCopy formattedTimeRangeForWorkout:workoutCopy workoutActivity:activityCopy context:@"WorkoutDetailDisplayContext"];
   [(UILabel *)self->_timeRangeLabel setAttributedText:v20];
 
-  v21 = [v15 fiui_connectedGymBrandName];
-  v41 = v21;
-  if (v21)
+  fiui_connectedGymBrandName = [workoutCopy fiui_connectedGymBrandName];
+  v41 = fiui_connectedGymBrandName;
+  if (fiui_connectedGymBrandName)
   {
-    [(UILabel *)self->_brandLabel setText:v21];
+    [(UILabel *)self->_brandLabel setText:fiui_connectedGymBrandName];
   }
 
   else
@@ -270,13 +270,13 @@
     [(UIStackView *)self->_summaryContainer removeArrangedSubview:self->_brandLabel];
   }
 
-  v22 = [v15 isFirstPartyWorkout];
-  v23 = [v43 seymourCatalogItemDataProvider];
-  v24 = [v23 isSeymourWorkout:v15];
+  isFirstPartyWorkout = [workoutCopy isFirstPartyWorkout];
+  seymourCatalogItemDataProvider = [contextCopy seymourCatalogItemDataProvider];
+  v24 = [seymourCatalogItemDataProvider isSeymourWorkout:workoutCopy];
 
-  if ([v15 fiui_isConnectedGymWorkout])
+  if ([workoutCopy fiui_isConnectedGymWorkout])
   {
-    v25 = [v18 hasConnectedGymVendorIconForWorkout:v15];
+    v25 = [managerCopy hasConnectedGymVendorIconForWorkout:workoutCopy];
     objc_initWeak(location, self);
     if (!(v24 & 1 | ((v25 & 1) == 0)))
     {
@@ -289,7 +289,7 @@
       v49[3] = &unk_10083C298;
       v26 = &v50;
       objc_copyWeak(&v50, location);
-      [v18 fetchIconImageForWorkout:v15 context:@"WorkoutDetailDisplayContext" completion:v49];
+      [managerCopy fetchIconImageForWorkout:workoutCopy context:@"WorkoutDetailDisplayContext" completion:v49];
       [(UILabel *)self->_completionLabel setHidden:1];
       goto LABEL_24;
     }
@@ -300,34 +300,34 @@
     objc_initWeak(location, self);
   }
 
-  if (((v17 != 0) & v24) == 1)
+  if (((modelCopy != 0) & v24) == 1)
   {
-    v27 = [v17 isSeymourPairedWorkout];
+    isSeymourPairedWorkout = [modelCopy isSeymourPairedWorkout];
     [(UIImageView *)self->_workoutTypeIconImageView setHidden:1];
     [(UIImageView *)self->_ringImageView setHidden:1];
     [(UILabel *)self->_swimmingDistanceByStrokeStyleLabel setHidden:1];
     [(_CHWorkoutDetailTextSpacerView *)self->_swimmingDistanceByStrokeStyleLabelTrailingSpacer setHidden:1];
-    v28 = [(UIImageView *)self->_iconImageView layer];
-    [v28 setMasksToBounds:1];
+    layer = [(UIImageView *)self->_iconImageView layer];
+    [layer setMasksToBounds:1];
 
-    v29 = [(UIImageView *)self->_iconImageView layer];
-    v30 = v29;
+    layer2 = [(UIImageView *)self->_iconImageView layer];
+    v30 = layer2;
     v31 = 12.0;
-    if (v27)
+    if (isSeymourPairedWorkout)
     {
       v31 = 10.0;
     }
 
-    [v29 setCornerRadius:v31];
+    [layer2 setCornerRadius:v31];
 
-    v32 = [v17 title];
-    [(UILabel *)self->_workoutTypeLabel setAttributedText:v32];
+    title = [modelCopy title];
+    [(UILabel *)self->_workoutTypeLabel setAttributedText:title];
 
-    v33 = [v17 subtitle];
-    [(UILabel *)self->_completionLabel setAttributedText:v33];
+    subtitle = [modelCopy subtitle];
+    [(UILabel *)self->_completionLabel setAttributedText:subtitle];
 
-    v34 = [*(&self->super.super.super.super.isa + v40) seymourCatalogItemDataProvider];
-    if (v27)
+    seymourCatalogItemDataProvider2 = [*(&self->super.super.super.super.isa + v40) seymourCatalogItemDataProvider];
+    if (isSeymourPairedWorkout)
     {
       v35 = 76.0;
     }
@@ -337,7 +337,7 @@
       v35 = 85.0;
     }
 
-    if (v27)
+    if (isSeymourPairedWorkout)
     {
       v36 = 135.0;
     }
@@ -353,24 +353,24 @@
     v46[3] = &unk_10083CCF0;
     v26 = &v48;
     objc_copyWeak(&v48, location);
-    v47 = v42;
-    [v34 fetchCatalogArtworkForCatalogItemViewModel:v17 imageSize:v46 completion:{v36, v35}];
+    v47 = blockCopy;
+    [seymourCatalogItemDataProvider2 fetchCatalogArtworkForCatalogItemViewModel:modelCopy imageSize:v46 completion:{v36, v35}];
   }
 
   else
   {
-    v37 = [v15 isMultiSportWorkout] ^ 1;
-    if (!v16)
+    v37 = [workoutCopy isMultiSportWorkout] ^ 1;
+    if (!activityCopy)
     {
       LOBYTE(v37) = 1;
     }
 
     if ((v37 & 1) == 0)
     {
-      v38 = [v18 defaultCircularRingImageForContext:@"WorkoutDetailDisplayContext"];
+      v38 = [managerCopy defaultCircularRingImageForContext:@"WorkoutDetailDisplayContext"];
       [(UIImageView *)self->_ringImageView setImage:v38];
 
-      [(CHWorkoutDetailSummaryTableViewCell *)self _treatAsFirstPartyWorkout:v15 workoutActivity:v16 formattingManager:v18];
+      [(CHWorkoutDetailSummaryTableViewCell *)self _treatAsFirstPartyWorkout:workoutCopy workoutActivity:activityCopy formattingManager:managerCopy];
       goto LABEL_25;
     }
 
@@ -380,22 +380,22 @@
     v44[3] = &unk_10083C298;
     v26 = &v45;
     objc_copyWeak(&v45, location);
-    [v18 fetchIconImageForWorkout:v15 context:@"WorkoutDetailDisplayContext" completion:v44];
-    if (v22)
+    [managerCopy fetchIconImageForWorkout:workoutCopy context:@"WorkoutDetailDisplayContext" completion:v44];
+    if (isFirstPartyWorkout)
     {
-      [(CHWorkoutDetailSummaryTableViewCell *)self _treatAsFirstPartyWorkout:v15 workoutActivity:v16 formattingManager:v18];
+      [(CHWorkoutDetailSummaryTableViewCell *)self _treatAsFirstPartyWorkout:workoutCopy workoutActivity:activityCopy formattingManager:managerCopy];
     }
   }
 
 LABEL_24:
   objc_destroyWeak(v26);
 LABEL_25:
-  if ([v15 workoutActivityType] == 84)
+  if ([workoutCopy workoutActivityType] == 84)
   {
     [(UILabel *)self->_completionLabel setHidden:1];
   }
 
-  v39 = [v18 locationForWorkout:v15 workoutActivity:v16];
+  v39 = [managerCopy locationForWorkout:workoutCopy workoutActivity:activityCopy];
   if (v39)
   {
     [(UILabel *)self->_locationLabel setText:@" "];
@@ -410,8 +410,8 @@ LABEL_25:
 
 - (void)_navigateToSeymourWorkout
 {
-  v3 = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
-  v4 = [v3 isSeymourWorkout:self->_currentWorkout];
+  seymourCatalogItemDataProvider = [(CHFitnessAppContext *)self->_fitnessAppContext seymourCatalogItemDataProvider];
+  v4 = [seymourCatalogItemDataProvider isSeymourWorkout:self->_currentWorkout];
 
   if (v4)
   {
@@ -422,30 +422,30 @@ LABEL_25:
   }
 }
 
-- (void)_treatAsFirstPartyWorkout:(id)a3 workoutActivity:(id)a4 formattingManager:(id)a5
+- (void)_treatAsFirstPartyWorkout:(id)workout workoutActivity:(id)activity formattingManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v89 = a5;
-  v10 = [ARUIMetricColors metricColorsForWorkout:v8];
-  v11 = [v10 nonGradientTextColor];
+  workoutCopy = workout;
+  activityCopy = activity;
+  managerCopy = manager;
+  v10 = [ARUIMetricColors metricColorsForWorkout:workoutCopy];
+  nonGradientTextColor = [v10 nonGradientTextColor];
 
   [(UIImageView *)self->_ringImageView setHidden:0];
-  if (v9)
+  if (activityCopy)
   {
-    v12 = v9;
+    v12 = activityCopy;
   }
 
   else
   {
-    v12 = v8;
+    v12 = workoutCopy;
   }
 
-  v13 = [v12 fiui_activityType];
-  v14 = [v8 fiui_isConnectedGymWorkout];
+  fiui_activityType = [v12 fiui_activityType];
+  fiui_isConnectedGymWorkout = [workoutCopy fiui_isConnectedGymWorkout];
   workoutTypeIconImageView = self->_workoutTypeIconImageView;
-  v88 = v13;
-  if (v14)
+  v88 = fiui_activityType;
+  if (fiui_isConnectedGymWorkout)
   {
     [(UIImageView *)workoutTypeIconImageView setHidden:1];
   }
@@ -457,15 +457,15 @@ LABEL_25:
     v17 = [v16 imageWithRenderingMode:2];
 
     [(UIImageView *)self->_workoutTypeIconImageView setImage:v17];
-    [(UIImageView *)self->_workoutTypeIconImageView setTintColor:v11];
+    [(UIImageView *)self->_workoutTypeIconImageView setTintColor:nonGradientTextColor];
   }
 
   [(UIImageView *)self->_iconImageView setHidden:1];
   v18 = [[NSAttributedString alloc] initWithString:&stru_1008680E8];
   v19 = &selRef_textViewWritingToolsWillBegin_;
-  if (!v9)
+  if (!activityCopy)
   {
-    if ([v8 wasUserEntered])
+    if ([workoutCopy wasUserEntered])
     {
       v85 = +[UIColor secondaryLabelColor];
 
@@ -484,24 +484,24 @@ LABEL_25:
 
       v26 = +[NSBundle mainBundle];
       v27 = [v26 localizedStringForKey:@"MANUALLY_LOGGED_WORKOUT_DETAIL" value:&stru_1008680E8 table:@"Localizable-Kahana"];
-      v28 = [v8 formattedCreationDate];
-      v29 = [NSString stringWithFormat:v27, v28];
+      formattedCreationDate = [workoutCopy formattedCreationDate];
+      v29 = [NSString stringWithFormat:v27, formattedCreationDate];
 
       v30 = [[NSAttributedString alloc] initWithString:v29];
       [v20 appendAttributedString:v30];
 
       v19 = &selRef_textViewWritingToolsWillBegin_;
       v18 = v20;
-      v11 = v85;
+      nonGradientTextColor = v85;
       goto LABEL_31;
     }
 
-    v79 = [v8 _goalType] - 1;
-    v31 = [v89 fitnessUIFormattingManager];
-    v84 = [v8 displayDetail:v31];
+    v79 = [workoutCopy _goalType] - 1;
+    fitnessUIFormattingManager = [managerCopy fitnessUIFormattingManager];
+    v84 = [workoutCopy displayDetail:fitnessUIFormattingManager];
 
-    v32 = [(UILabel *)self->_completionLabel font];
-    v86 = [v32 fontDescriptor];
+    font = [(UILabel *)self->_completionLabel font];
+    fontDescriptor = [font fontDescriptor];
     v97 = UIFontDescriptorFeatureSettingsAttribute;
     v94[0] = UIFontFeatureTypeIdentifierKey;
     v94[1] = UIFontFeatureSelectorIdentifierKey;
@@ -515,21 +515,21 @@ LABEL_25:
 
     v36 = v84;
     v81 = v35;
-    v37 = [v86 fontDescriptorByAddingAttributes:v35];
-    v82 = v32;
-    [v32 pointSize];
+    v37 = [fontDescriptor fontDescriptorByAddingAttributes:v35];
+    v82 = font;
+    [font pointSize];
     v38 = [UIFont fontWithDescriptor:v37 size:?];
     v39 = v38;
     if (v79 <= 2 && v84)
     {
       v78 = v37;
       v80 = v38;
-      v40 = [(__CFString *)v84 localizedLowercaseString];
+      localizedLowercaseString = [(__CFString *)v84 localizedLowercaseString];
       v41 = +[NSBundle mainBundle];
       v42 = [v41 localizedStringForKey:@"WORKOUT_SUMMARY_GOAL_TITLE" value:&stru_1008680E8 table:@"Localizable"];
-      if (v40)
+      if (localizedLowercaseString)
       {
-        v43 = v40;
+        v43 = localizedLowercaseString;
       }
 
       else
@@ -540,7 +540,7 @@ LABEL_25:
       v44 = [NSString stringWithFormat:v42, v43];
 
       v45 = [[NSMutableAttributedString alloc] initWithString:v44];
-      v46 = [v44 rangeOfString:v40];
+      v46 = [v44 rangeOfString:localizedLowercaseString];
       if (v46 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v48 = v46;
@@ -553,14 +553,14 @@ LABEL_25:
 
       v50 = [v45 copy];
 
-      v18 = v40;
+      v18 = localizedLowercaseString;
       v19 = &selRef_textViewWritingToolsWillBegin_;
       v36 = v84;
     }
 
     else
     {
-      if (![v8 isRaceWorkout])
+      if (![workoutCopy isRaceWorkout])
       {
         v64 = [NSAttributedString alloc];
         if (v84)
@@ -579,11 +579,11 @@ LABEL_25:
 
       v78 = v37;
       v80 = v39;
-      v51 = [v89 fitnessUIFormattingManager];
-      [v8 raceWorkoutDisplayDistance];
+      fitnessUIFormattingManager2 = [managerCopy fitnessUIFormattingManager];
+      [workoutCopy raceWorkoutDisplayDistance];
       v53 = v52;
-      v54 = [v8 fiui_activityType];
-      v55 = [v51 localizedCompactGoalDescriptionForGoalType:1 goalValue:v54 activityType:v53];
+      fiui_activityType2 = [workoutCopy fiui_activityType];
+      v55 = [fitnessUIFormattingManager2 localizedCompactGoalDescriptionForGoalType:1 goalValue:fiui_activityType2 activityType:v53];
 
       v36 = v84;
       v56 = [NSMutableAttributedString alloc];
@@ -628,38 +628,38 @@ LABEL_31:
   v66 = v88;
   v67 = *(v19 + 656);
   [*(&self->super.super.super.super.isa + v67) setAttributedText:v18];
-  [*(&self->super.super.super.super.isa + v67) setColor:v11];
+  [*(&self->super.super.super.super.isa + v67) setColor:nonGradientTextColor];
   if ([v88 identifier] == 46)
   {
-    v68 = [(CHWorkoutDetailSummaryTableViewCell *)self swimDistanceByStrokeStyle];
+    swimDistanceByStrokeStyle = [(CHWorkoutDetailSummaryTableViewCell *)self swimDistanceByStrokeStyle];
 
-    if (v68)
+    if (swimDistanceByStrokeStyle)
     {
       v87 = v18;
-      v69 = v11;
-      if (v9)
+      v69 = nonGradientTextColor;
+      if (activityCopy)
       {
         v70 = v88;
-        v71 = [v9 workoutConfiguration];
-        v72 = [v71 swimmingLocationType];
+        workoutConfiguration = [activityCopy workoutConfiguration];
+        swimmingLocationType = [workoutConfiguration swimmingLocationType];
       }
 
       else
       {
-        v9 = 0;
+        activityCopy = 0;
         v70 = v88;
-        v72 = [v8 fi_swimmingLocationType];
+        swimmingLocationType = [workoutCopy fi_swimmingLocationType];
       }
 
-      v73 = [(CHWorkoutDetailSummaryTableViewCell *)self swimDistanceByStrokeStyle];
-      v74 = [v89 formattedDistanceByStrokeStyle:v73 isPoolSwim:v72 == 1 context:@"WorkoutDetailDisplayContext"];
+      swimDistanceByStrokeStyle2 = [(CHWorkoutDetailSummaryTableViewCell *)self swimDistanceByStrokeStyle];
+      v74 = [managerCopy formattedDistanceByStrokeStyle:swimDistanceByStrokeStyle2 isPoolSwim:swimmingLocationType == 1 context:@"WorkoutDetailDisplayContext"];
       [(UILabel *)self->_swimmingDistanceByStrokeStyleLabel setAttributedText:v74];
 
-      v75 = [(UILabel *)self->_swimmingDistanceByStrokeStyleLabel attributedText];
-      v76 = [v75 length];
+      attributedText = [(UILabel *)self->_swimmingDistanceByStrokeStyleLabel attributedText];
+      v76 = [attributedText length];
 
       v66 = v70;
-      v11 = v69;
+      nonGradientTextColor = v69;
       v18 = v87;
       if (v76)
       {
@@ -672,27 +672,27 @@ LABEL_31:
   [(_CHWorkoutDetailTextSpacerView *)self->_swimmingDistanceByStrokeStyleLabelTrailingSpacer setHidden:!self->_shouldShowSubtypeLabel];
 }
 
-- (void)setLocation:(id)a3 completion:(id)a4
+- (void)setLocation:(id)location completion:(id)completion
 {
-  v6 = a4;
-  if (a3)
+  completionCopy = completion;
+  if (location)
   {
-    v7 = a3;
-    v8 = [objc_opt_class() _geocoder];
+    locationCopy = location;
+    _geocoder = [objc_opt_class() _geocoder];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_10011D1B8;
     v9[3] = &unk_10083B328;
     v9[4] = self;
-    v10 = v6;
-    [v8 reverseGeocodeLocation:v7 completionHandler:v9];
+    v10 = completionCopy;
+    [_geocoder reverseGeocodeLocation:locationCopy completionHandler:v9];
   }
 }
 
-- (void)setSwimDistanceByStrokeStyle:(id)a3
+- (void)setSwimDistanceByStrokeStyle:(id)style
 {
-  v11 = a3;
-  objc_storeStrong(&self->_swimDistanceByStrokeStyle, a3);
+  styleCopy = style;
+  objc_storeStrong(&self->_swimDistanceByStrokeStyle, style);
   if (self->_currentWorkout)
   {
     WeakRetained = objc_loadWeakRetained(&self->_formattingManager);
@@ -709,13 +709,13 @@ LABEL_31:
   }
 }
 
-- (BOOL)_workoutIsThirdParty:(id)a3
+- (BOOL)_workoutIsThirdParty:(id)party
 {
-  v3 = [a3 sourceRevision];
-  v4 = [v3 source];
-  v5 = [v4 _isAppleWatch];
+  sourceRevision = [party sourceRevision];
+  source = [sourceRevision source];
+  _isAppleWatch = [source _isAppleWatch];
 
-  return v5 ^ 1;
+  return _isAppleWatch ^ 1;
 }
 
 - (void)_constrainViews
@@ -723,70 +723,70 @@ LABEL_31:
   if (![(NSArray *)self->_addedConstraints count])
   {
     v3 = objc_alloc_init(NSMutableArray);
-    v4 = [(UIImageView *)self->_ringImageView leadingAnchor];
-    v5 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
-    v6 = [v5 leadingAnchor];
-    v72 = [v4 constraintEqualToAnchor:v6];
+    leadingAnchor = [(UIImageView *)self->_ringImageView leadingAnchor];
+    contentView = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v72 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
-    v7 = [(UIImageView *)self->_ringImageView topAnchor];
-    v8 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
-    v9 = [v8 topAnchor];
-    v71 = [v7 constraintEqualToAnchor:v9 constant:14.0];
+    topAnchor = [(UIImageView *)self->_ringImageView topAnchor];
+    contentView2 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
+    topAnchor2 = [contentView2 topAnchor];
+    v71 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:14.0];
 
     v77[0] = v72;
     v77[1] = v71;
     v10 = [NSArray arrayWithObjects:v77 count:2];
     [v3 addObjectsFromArray:v10];
 
-    v11 = [(UIImageView *)self->_workoutTypeIconImageView centerXAnchor];
-    v12 = [(UIImageView *)self->_ringImageView centerXAnchor];
-    v70 = [v11 constraintEqualToAnchor:v12];
+    centerXAnchor = [(UIImageView *)self->_workoutTypeIconImageView centerXAnchor];
+    centerXAnchor2 = [(UIImageView *)self->_ringImageView centerXAnchor];
+    v70 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
-    v13 = [(UIImageView *)self->_workoutTypeIconImageView centerYAnchor];
-    v14 = [(UIImageView *)self->_ringImageView centerYAnchor];
-    v69 = [v13 constraintEqualToAnchor:v14];
+    centerYAnchor = [(UIImageView *)self->_workoutTypeIconImageView centerYAnchor];
+    centerYAnchor2 = [(UIImageView *)self->_ringImageView centerYAnchor];
+    v69 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
 
     v76[0] = v70;
     v76[1] = v69;
     v15 = [NSArray arrayWithObjects:v76 count:2];
     [v3 addObjectsFromArray:v15];
 
-    v16 = [(UIImageView *)self->_iconImageView leadingAnchor];
-    v17 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
-    v18 = [v17 leadingAnchor];
-    v68 = [v16 constraintEqualToAnchor:v18];
+    leadingAnchor3 = [(UIImageView *)self->_iconImageView leadingAnchor];
+    contentView3 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
+    leadingAnchor4 = [contentView3 leadingAnchor];
+    v68 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
-    v19 = [(UIImageView *)self->_iconImageView topAnchor];
-    v20 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
-    v21 = [v20 topAnchor];
-    v67 = [v19 constraintEqualToAnchor:v21 constant:14.0];
+    topAnchor3 = [(UIImageView *)self->_iconImageView topAnchor];
+    contentView4 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
+    topAnchor4 = [contentView4 topAnchor];
+    v67 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:14.0];
 
     v75[0] = v68;
     v75[1] = v67;
     v22 = [NSArray arrayWithObjects:v75 count:2];
     [v3 addObjectsFromArray:v22];
 
-    v23 = [(UIStackView *)self->_summaryContainer leadingAnchor];
-    v24 = [(UIImageView *)self->_iconImageView trailingAnchor];
+    leadingAnchor5 = [(UIStackView *)self->_summaryContainer leadingAnchor];
+    trailingAnchor = [(UIImageView *)self->_iconImageView trailingAnchor];
     [(CHWorkoutDetailSummaryTableViewCell *)self directionalLayoutMargins];
-    v26 = [v23 constraintEqualToAnchor:v24 constant:v25];
+    v26 = [leadingAnchor5 constraintEqualToAnchor:trailingAnchor constant:v25];
     v63 = v3;
     [v3 addObject:v26];
 
-    v27 = [(UIStackView *)self->_summaryContainer leadingAnchor];
-    v28 = [(UIImageView *)self->_ringImageView trailingAnchor];
+    leadingAnchor6 = [(UIStackView *)self->_summaryContainer leadingAnchor];
+    trailingAnchor2 = [(UIImageView *)self->_ringImageView trailingAnchor];
     [(CHWorkoutDetailSummaryTableViewCell *)self directionalLayoutMargins];
-    v66 = [v27 constraintEqualToAnchor:v28 constant:v29];
+    v66 = [leadingAnchor6 constraintEqualToAnchor:trailingAnchor2 constant:v29];
 
-    v30 = [(UIStackView *)self->_summaryContainer trailingAnchor];
-    v31 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
-    v32 = [v31 trailingAnchor];
-    v65 = [v30 constraintEqualToAnchor:v32];
+    trailingAnchor3 = [(UIStackView *)self->_summaryContainer trailingAnchor];
+    contentView5 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
+    trailingAnchor4 = [contentView5 trailingAnchor];
+    v65 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
-    v33 = [(UIStackView *)self->_summaryContainer topAnchor];
-    v34 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
-    v35 = [v34 topAnchor];
-    v64 = [v33 constraintEqualToAnchor:v35 constant:14.0];
+    topAnchor5 = [(UIStackView *)self->_summaryContainer topAnchor];
+    contentView6 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
+    topAnchor6 = [contentView6 topAnchor];
+    v64 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:14.0];
 
     v74[0] = v66;
     v74[1] = v65;
@@ -794,35 +794,35 @@ LABEL_31:
     v36 = [NSArray arrayWithObjects:v74 count:3];
     [v3 addObjectsFromArray:v36];
 
-    v37 = [(UIView *)self->_contentViewLayoutView widthAnchor];
-    v62 = [v37 constraintEqualToConstant:30.0];
+    widthAnchor = [(UIView *)self->_contentViewLayoutView widthAnchor];
+    v62 = [widthAnchor constraintEqualToConstant:30.0];
 
-    v38 = [(UIView *)self->_contentViewLayoutView topAnchor];
-    v39 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
-    v40 = [v39 topAnchor];
-    v61 = [v38 constraintEqualToAnchor:v40 constant:14.0];
+    topAnchor7 = [(UIView *)self->_contentViewLayoutView topAnchor];
+    contentView7 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
+    topAnchor8 = [contentView7 topAnchor];
+    v61 = [topAnchor7 constraintEqualToAnchor:topAnchor8 constant:14.0];
 
-    v41 = [(UIView *)self->_contentViewLayoutView bottomAnchor];
-    v42 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
-    v43 = [v42 bottomAnchor];
-    v60 = [v41 constraintEqualToAnchor:v43 constant:-14.0];
+    bottomAnchor = [(UIView *)self->_contentViewLayoutView bottomAnchor];
+    contentView8 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
+    bottomAnchor2 = [contentView8 bottomAnchor];
+    v60 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-14.0];
 
-    v44 = [(UIView *)self->_contentViewLayoutView leadingAnchor];
-    v45 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
-    v46 = [v45 leadingAnchor];
-    v59 = [v44 constraintEqualToAnchor:v46];
+    leadingAnchor7 = [(UIView *)self->_contentViewLayoutView leadingAnchor];
+    contentView9 = [(CHWorkoutDetailSummaryTableViewCell *)self contentView];
+    leadingAnchor8 = [contentView9 leadingAnchor];
+    v59 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
 
-    v47 = [(UIView *)self->_contentViewLayoutView heightAnchor];
-    v48 = [(UIStackView *)self->_summaryContainer heightAnchor];
-    v58 = [v47 constraintGreaterThanOrEqualToAnchor:v48];
+    heightAnchor = [(UIView *)self->_contentViewLayoutView heightAnchor];
+    heightAnchor2 = [(UIStackView *)self->_summaryContainer heightAnchor];
+    v58 = [heightAnchor constraintGreaterThanOrEqualToAnchor:heightAnchor2];
 
-    v49 = [(UIView *)self->_contentViewLayoutView heightAnchor];
-    v50 = [(UIImageView *)self->_iconImageView heightAnchor];
-    v51 = [v49 constraintGreaterThanOrEqualToAnchor:v50];
+    heightAnchor3 = [(UIView *)self->_contentViewLayoutView heightAnchor];
+    heightAnchor4 = [(UIImageView *)self->_iconImageView heightAnchor];
+    v51 = [heightAnchor3 constraintGreaterThanOrEqualToAnchor:heightAnchor4];
 
-    v52 = [(UIView *)self->_contentViewLayoutView heightAnchor];
-    v53 = [(UIImageView *)self->_ringImageView heightAnchor];
-    v54 = [v52 constraintGreaterThanOrEqualToAnchor:v53];
+    heightAnchor5 = [(UIView *)self->_contentViewLayoutView heightAnchor];
+    heightAnchor6 = [(UIImageView *)self->_ringImageView heightAnchor];
+    v54 = [heightAnchor5 constraintGreaterThanOrEqualToAnchor:heightAnchor6];
 
     v73[0] = v62;
     v73[1] = v61;

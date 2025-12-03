@@ -1,9 +1,9 @@
 @interface GPBAutocreatedArray
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)addObject:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)addObject:(id)object;
 - (void)dealloc;
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4;
+- (void)insertObject:(id)object atIndex:(unint64_t)index;
 @end
 
 @implementation GPBAutocreatedArray
@@ -20,7 +20,7 @@
   [(GPBAutocreatedArray *)&v3 dealloc];
 }
 
-- (void)insertObject:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObject:(id)object atIndex:(unint64_t)index
 {
   array = self->_array;
   if (!array)
@@ -29,7 +29,7 @@
     self->_array = array;
   }
 
-  [(NSMutableArray *)array insertObject:a3 atIndex:a4];
+  [(NSMutableArray *)array insertObject:object atIndex:index];
   autocreator = self->_autocreator;
   if (autocreator)
   {
@@ -38,7 +38,7 @@
   }
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
   array = self->_array;
   if (!array)
@@ -47,7 +47,7 @@
     self->_array = array;
   }
 
-  [(NSMutableArray *)array addObject:a3];
+  [(NSMutableArray *)array addObject:object];
   autocreator = self->_autocreator;
   if (autocreator)
   {
@@ -56,35 +56,35 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   array = self->_array;
   if (array)
   {
 
-    return [(NSMutableArray *)array copyWithZone:a3];
+    return [(NSMutableArray *)array copyWithZone:zone];
   }
 
   else
   {
-    v7 = [NSMutableArray allocWithZone:a3, v3];
+    v7 = [NSMutableArray allocWithZone:zone, v3];
 
     return [(NSMutableArray *)v7 init];
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   array = self->_array;
   if (array)
   {
 
-    return [(NSMutableArray *)array mutableCopyWithZone:a3];
+    return [(NSMutableArray *)array mutableCopyWithZone:zone];
   }
 
   else
   {
-    v7 = [NSMutableArray allocWithZone:a3, v3];
+    v7 = [NSMutableArray allocWithZone:zone, v3];
 
     return [(NSMutableArray *)v7 init];
   }

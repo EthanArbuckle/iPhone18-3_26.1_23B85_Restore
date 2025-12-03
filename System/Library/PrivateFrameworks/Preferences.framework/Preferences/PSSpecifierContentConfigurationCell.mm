@@ -1,16 +1,16 @@
 @interface PSSpecifierContentConfigurationCell
-- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithCoder:(id)a3;
-- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithCoder:(id)coder;
+- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation PSSpecifierContentConfigurationCell
 
-- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_18B0F51B0();
     v6 = (self + OBJC_IVAR____TtC11Preferences35PSSpecifierContentConfigurationCell_contentViewModel);
@@ -29,16 +29,16 @@
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for PSSpecifierContentConfigurationCell();
-  v9 = [(PSTableCell *)&v11 initWithStyle:a3 reuseIdentifier:v7];
+  v9 = [(PSTableCell *)&v11 initWithStyle:style reuseIdentifier:v7];
 
   return v9;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v5 = a3;
-  v6 = self;
-  sub_18B0129EC(a3);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_18B0129EC(specifier);
 }
 
 - (void)prepareForReuse
@@ -55,9 +55,9 @@
   swift_endAccess();
 }
 
-- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  if (a4)
+  if (identifier)
   {
     v7 = sub_18B0F51B0();
     v9 = v8;
@@ -69,19 +69,19 @@
     v9 = 0;
   }
 
-  v10 = a5;
-  return PSSpecifierContentConfigurationCell.init(style:reuseIdentifier:specifier:)(a3, v7, v9, a5);
+  specifierCopy = specifier;
+  return PSSpecifierContentConfigurationCell.init(style:reuseIdentifier:specifier:)(style, v7, v9, specifier);
 }
 
-- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithCoder:(id)a3
+- (_TtC11Preferences35PSSpecifierContentConfigurationCell)initWithCoder:(id)coder
 {
   v4 = (self + OBJC_IVAR____TtC11Preferences35PSSpecifierContentConfigurationCell_contentViewModel);
   *v4 = 0u;
   v4[1] = 0u;
   v8.receiver = self;
   v8.super_class = type metadata accessor for PSSpecifierContentConfigurationCell();
-  v5 = a3;
-  v6 = [(PSSpecifierContentConfigurationCell *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(PSSpecifierContentConfigurationCell *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

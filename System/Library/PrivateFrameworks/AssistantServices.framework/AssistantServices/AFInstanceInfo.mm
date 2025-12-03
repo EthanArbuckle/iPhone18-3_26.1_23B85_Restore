@@ -1,15 +1,15 @@
 @interface AFInstanceInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFInstanceInfo)initWithBuilder:(id)a3;
-- (AFInstanceInfo)initWithCoder:(id)a3;
-- (AFInstanceInfo)initWithDictionaryRepresentation:(id)a3;
-- (AFInstanceInfo)initWithInstanceUUID:(id)a3 applicationType:(int64_t)a4 applicationUUID:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFInstanceInfo)initWithBuilder:(id)builder;
+- (AFInstanceInfo)initWithCoder:(id)coder;
+- (AFInstanceInfo)initWithDictionaryRepresentation:(id)representation;
+- (AFInstanceInfo)initWithInstanceUUID:(id)d applicationType:(int64_t)type applicationUUID:(id)iD;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
 - (id)buildDictionaryRepresentation;
-- (id)mutatedCopyWithMutator:(id)a3;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFInstanceInfo
@@ -55,13 +55,13 @@
   return v11;
 }
 
-- (AFInstanceInfo)initWithDictionaryRepresentation:(id)a3
+- (AFInstanceInfo)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy)
   {
-    v6 = [v4 objectForKey:@"instanceUUID"];
+    v6 = [representationCopy objectForKey:@"instanceUUID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -98,45 +98,45 @@
     }
 
     self = [(AFInstanceInfo *)self initWithInstanceUUID:v7 applicationType:v10 applicationUUID:v12];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   instanceUUID = self->_instanceUUID;
-  v6 = a3;
-  [v6 encodeObject:instanceUUID forKey:@"AFInstanceInfo::instanceUUID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:instanceUUID forKey:@"AFInstanceInfo::instanceUUID"];
   v5 = [MEMORY[0x1E696AD98] numberWithInteger:self->_applicationType];
-  [v6 encodeObject:v5 forKey:@"AFInstanceInfo::applicationType"];
+  [coderCopy encodeObject:v5 forKey:@"AFInstanceInfo::applicationType"];
 
-  [v6 encodeObject:self->_applicationUUID forKey:@"AFInstanceInfo::applicationUUID"];
+  [coderCopy encodeObject:self->_applicationUUID forKey:@"AFInstanceInfo::applicationUUID"];
 }
 
-- (AFInstanceInfo)initWithCoder:(id)a3
+- (AFInstanceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFInstanceInfo::instanceUUID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFInstanceInfo::applicationType"];
-  v7 = [v6 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInstanceInfo::instanceUUID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInstanceInfo::applicationType"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFInstanceInfo::applicationUUID"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFInstanceInfo::applicationUUID"];
 
-  v9 = [(AFInstanceInfo *)self initWithInstanceUUID:v5 applicationType:v7 applicationUUID:v8];
+  v9 = [(AFInstanceInfo *)self initWithInstanceUUID:v5 applicationType:integerValue applicationUUID:v8];
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -146,17 +146,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       applicationType = self->_applicationType;
       if (applicationType == [(AFInstanceInfo *)v5 applicationType])
       {
-        v7 = [(AFInstanceInfo *)v5 instanceUUID];
+        instanceUUID = [(AFInstanceInfo *)v5 instanceUUID];
         instanceUUID = self->_instanceUUID;
-        if (instanceUUID == v7 || [(NSUUID *)instanceUUID isEqual:v7])
+        if (instanceUUID == instanceUUID || [(NSUUID *)instanceUUID isEqual:instanceUUID])
         {
-          v9 = [(AFInstanceInfo *)v5 applicationUUID];
+          applicationUUID = [(AFInstanceInfo *)v5 applicationUUID];
           applicationUUID = self->_applicationUUID;
-          v11 = applicationUUID == v9 || [(NSUUID *)applicationUUID isEqual:v9];
+          v11 = applicationUUID == applicationUUID || [(NSUUID *)applicationUUID isEqual:applicationUUID];
         }
 
         else
@@ -190,7 +190,7 @@
   return v5 ^ v6;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v13.receiver = self;
@@ -220,19 +220,19 @@
   return v11;
 }
 
-- (AFInstanceInfo)initWithInstanceUUID:(id)a3 applicationType:(int64_t)a4 applicationUUID:(id)a5
+- (AFInstanceInfo)initWithInstanceUUID:(id)d applicationType:(int64_t)type applicationUUID:(id)iD
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__AFInstanceInfo_initWithInstanceUUID_applicationType_applicationUUID___block_invoke;
   v14[3] = &unk_1E7342570;
-  v16 = v9;
-  v17 = a4;
-  v15 = v8;
-  v10 = v9;
-  v11 = v8;
+  v16 = iDCopy;
+  typeCopy = type;
+  v15 = dCopy;
+  v10 = iDCopy;
+  v11 = dCopy;
   v12 = [(AFInstanceInfo *)self initWithBuilder:v14];
 
   return v12;
@@ -247,27 +247,27 @@ void __71__AFInstanceInfo_initWithInstanceUUID_applicationType_applicationUUID__
   [v4 setApplicationUUID:a1[5]];
 }
 
-- (AFInstanceInfo)initWithBuilder:(id)a3
+- (AFInstanceInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v15.receiver = self;
   v15.super_class = AFInstanceInfo;
   v5 = [(AFInstanceInfo *)&v15 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFInstanceInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFInstanceInfoMutation *)v7 isDirty])
     {
-      v8 = [(_AFInstanceInfoMutation *)v7 getInstanceUUID];
-      v9 = [v8 copy];
+      getInstanceUUID = [(_AFInstanceInfoMutation *)v7 getInstanceUUID];
+      v9 = [getInstanceUUID copy];
       instanceUUID = v6->_instanceUUID;
       v6->_instanceUUID = v9;
 
       v6->_applicationType = [(_AFInstanceInfoMutation *)v7 getApplicationType];
-      v11 = [(_AFInstanceInfoMutation *)v7 getApplicationUUID];
-      v12 = [v11 copy];
+      getApplicationUUID = [(_AFInstanceInfoMutation *)v7 getApplicationUUID];
+      v12 = [getApplicationUUID copy];
       applicationUUID = v6->_applicationUUID;
       v6->_applicationUUID = v12;
     }
@@ -276,32 +276,32 @@ void __71__AFInstanceInfo_initWithInstanceUUID_applicationType_applicationUUID__
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFInstanceInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFInstanceInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFInstanceInfo);
-      v7 = [(_AFInstanceInfoMutation *)v5 getInstanceUUID];
-      v8 = [v7 copy];
+      getInstanceUUID = [(_AFInstanceInfoMutation *)v5 getInstanceUUID];
+      v8 = [getInstanceUUID copy];
       instanceUUID = v6->_instanceUUID;
       v6->_instanceUUID = v8;
 
       v6->_applicationType = [(_AFInstanceInfoMutation *)v5 getApplicationType];
-      v10 = [(_AFInstanceInfoMutation *)v5 getApplicationUUID];
-      v11 = [v10 copy];
+      getApplicationUUID = [(_AFInstanceInfoMutation *)v5 getApplicationUUID];
+      v11 = [getApplicationUUID copy];
       applicationUUID = v6->_applicationUUID;
       v6->_applicationUUID = v11;
     }

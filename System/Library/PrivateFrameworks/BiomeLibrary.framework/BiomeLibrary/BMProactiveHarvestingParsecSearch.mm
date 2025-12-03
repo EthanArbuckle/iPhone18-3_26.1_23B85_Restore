@@ -1,40 +1,40 @@
 @interface BMProactiveHarvestingParsecSearch
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMProactiveHarvestingParsecSearch)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (BMProactiveHarvestingParsecSearch)initWithResultID:(id)a3 domainID:(id)a4 absoluteTimestamp:(id)a5 userInput:(id)a6 completedQuery:(id)a7 entities:(id)a8 uniqueID:(id)a9 contentProtection:(id)a10 personaId:(id)a11;
-- (BOOL)isEqual:(id)a3;
+- (BMProactiveHarvestingParsecSearch)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (BMProactiveHarvestingParsecSearch)initWithResultID:(id)d domainID:(id)iD absoluteTimestamp:(id)timestamp userInput:(id)input completedQuery:(id)query entities:(id)entities uniqueID:(id)uniqueID contentProtection:(id)self0 personaId:(id)self1;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)absoluteTimestamp;
 - (NSString)description;
 - (id)_entitiesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMProactiveHarvestingParsecSearch
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMProactiveHarvestingParsecSearch *)self resultID];
-    v7 = [v5 resultID];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    resultID = [(BMProactiveHarvestingParsecSearch *)self resultID];
+    resultID2 = [v5 resultID];
+    v8 = resultID2;
+    if (resultID == resultID2)
     {
     }
 
     else
     {
-      v9 = [(BMProactiveHarvestingParsecSearch *)self resultID];
-      v10 = [v5 resultID];
-      v11 = [v9 isEqual:v10];
+      resultID3 = [(BMProactiveHarvestingParsecSearch *)self resultID];
+      resultID4 = [v5 resultID];
+      v11 = [resultID3 isEqual:resultID4];
 
       if (!v11)
       {
@@ -42,18 +42,18 @@
       }
     }
 
-    v13 = [(BMProactiveHarvestingParsecSearch *)self domainID];
-    v14 = [v5 domainID];
-    v15 = v14;
-    if (v13 == v14)
+    domainID = [(BMProactiveHarvestingParsecSearch *)self domainID];
+    domainID2 = [v5 domainID];
+    v15 = domainID2;
+    if (domainID == domainID2)
     {
     }
 
     else
     {
-      v16 = [(BMProactiveHarvestingParsecSearch *)self domainID];
-      v17 = [v5 domainID];
-      v18 = [v16 isEqual:v17];
+      domainID3 = [(BMProactiveHarvestingParsecSearch *)self domainID];
+      domainID4 = [v5 domainID];
+      v18 = [domainID3 isEqual:domainID4];
 
       if (!v18)
       {
@@ -61,18 +61,18 @@
       }
     }
 
-    v19 = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
-    v20 = [v5 absoluteTimestamp];
-    v21 = v20;
-    if (v19 == v20)
+    absoluteTimestamp = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
+    absoluteTimestamp2 = [v5 absoluteTimestamp];
+    v21 = absoluteTimestamp2;
+    if (absoluteTimestamp == absoluteTimestamp2)
     {
     }
 
     else
     {
-      v22 = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
-      v23 = [v5 absoluteTimestamp];
-      v24 = [v22 isEqual:v23];
+      absoluteTimestamp3 = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
+      absoluteTimestamp4 = [v5 absoluteTimestamp];
+      v24 = [absoluteTimestamp3 isEqual:absoluteTimestamp4];
 
       if (!v24)
       {
@@ -80,18 +80,18 @@
       }
     }
 
-    v25 = [(BMProactiveHarvestingParsecSearch *)self userInput];
-    v26 = [v5 userInput];
-    v27 = v26;
-    if (v25 == v26)
+    userInput = [(BMProactiveHarvestingParsecSearch *)self userInput];
+    userInput2 = [v5 userInput];
+    v27 = userInput2;
+    if (userInput == userInput2)
     {
     }
 
     else
     {
-      v28 = [(BMProactiveHarvestingParsecSearch *)self userInput];
-      v29 = [v5 userInput];
-      v30 = [v28 isEqual:v29];
+      userInput3 = [(BMProactiveHarvestingParsecSearch *)self userInput];
+      userInput4 = [v5 userInput];
+      v30 = [userInput3 isEqual:userInput4];
 
       if (!v30)
       {
@@ -99,18 +99,18 @@
       }
     }
 
-    v31 = [(BMProactiveHarvestingParsecSearch *)self completedQuery];
-    v32 = [v5 completedQuery];
-    v33 = v32;
-    if (v31 == v32)
+    completedQuery = [(BMProactiveHarvestingParsecSearch *)self completedQuery];
+    completedQuery2 = [v5 completedQuery];
+    v33 = completedQuery2;
+    if (completedQuery == completedQuery2)
     {
     }
 
     else
     {
-      v34 = [(BMProactiveHarvestingParsecSearch *)self completedQuery];
-      v35 = [v5 completedQuery];
-      v36 = [v34 isEqual:v35];
+      completedQuery3 = [(BMProactiveHarvestingParsecSearch *)self completedQuery];
+      completedQuery4 = [v5 completedQuery];
+      v36 = [completedQuery3 isEqual:completedQuery4];
 
       if (!v36)
       {
@@ -118,18 +118,18 @@
       }
     }
 
-    v37 = [(BMProactiveHarvestingParsecSearch *)self entities];
-    v38 = [v5 entities];
-    v39 = v38;
-    if (v37 == v38)
+    entities = [(BMProactiveHarvestingParsecSearch *)self entities];
+    entities2 = [v5 entities];
+    v39 = entities2;
+    if (entities == entities2)
     {
     }
 
     else
     {
-      v40 = [(BMProactiveHarvestingParsecSearch *)self entities];
-      v41 = [v5 entities];
-      v42 = [v40 isEqual:v41];
+      entities3 = [(BMProactiveHarvestingParsecSearch *)self entities];
+      entities4 = [v5 entities];
+      v42 = [entities3 isEqual:entities4];
 
       if (!v42)
       {
@@ -137,18 +137,18 @@
       }
     }
 
-    v43 = [(BMProactiveHarvestingParsecSearch *)self uniqueID];
-    v44 = [v5 uniqueID];
-    v45 = v44;
-    if (v43 == v44)
+    uniqueID = [(BMProactiveHarvestingParsecSearch *)self uniqueID];
+    uniqueID2 = [v5 uniqueID];
+    v45 = uniqueID2;
+    if (uniqueID == uniqueID2)
     {
     }
 
     else
     {
-      v46 = [(BMProactiveHarvestingParsecSearch *)self uniqueID];
-      v47 = [v5 uniqueID];
-      v48 = [v46 isEqual:v47];
+      uniqueID3 = [(BMProactiveHarvestingParsecSearch *)self uniqueID];
+      uniqueID4 = [v5 uniqueID];
+      v48 = [uniqueID3 isEqual:uniqueID4];
 
       if (!v48)
       {
@@ -156,18 +156,18 @@
       }
     }
 
-    v49 = [(BMProactiveHarvestingParsecSearch *)self contentProtection];
-    v50 = [v5 contentProtection];
-    v51 = v50;
-    if (v49 == v50)
+    contentProtection = [(BMProactiveHarvestingParsecSearch *)self contentProtection];
+    contentProtection2 = [v5 contentProtection];
+    v51 = contentProtection2;
+    if (contentProtection == contentProtection2)
     {
     }
 
     else
     {
-      v52 = [(BMProactiveHarvestingParsecSearch *)self contentProtection];
-      v53 = [v5 contentProtection];
-      v54 = [v52 isEqual:v53];
+      contentProtection3 = [(BMProactiveHarvestingParsecSearch *)self contentProtection];
+      contentProtection4 = [v5 contentProtection];
+      v54 = [contentProtection3 isEqual:contentProtection4];
 
       if (!v54)
       {
@@ -179,18 +179,18 @@ LABEL_34:
       }
     }
 
-    v56 = [(BMProactiveHarvestingParsecSearch *)self personaId];
-    v57 = [v5 personaId];
-    if (v56 == v57)
+    personaId = [(BMProactiveHarvestingParsecSearch *)self personaId];
+    personaId2 = [v5 personaId];
+    if (personaId == personaId2)
     {
       v12 = 1;
     }
 
     else
     {
-      v58 = [(BMProactiveHarvestingParsecSearch *)self personaId];
-      v59 = [v5 personaId];
-      v12 = [v58 isEqual:v59];
+      personaId3 = [(BMProactiveHarvestingParsecSearch *)self personaId];
+      personaId4 = [v5 personaId];
+      v12 = [personaId3 isEqual:personaId4];
     }
 
     goto LABEL_34;
@@ -222,14 +222,14 @@ LABEL_35:
 - (id)jsonDictionary
 {
   v35[9] = *MEMORY[0x1E69E9840];
-  v3 = [(BMProactiveHarvestingParsecSearch *)self resultID];
-  v4 = [(BMProactiveHarvestingParsecSearch *)self domainID];
-  v5 = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
-  if (v5)
+  resultID = [(BMProactiveHarvestingParsecSearch *)self resultID];
+  domainID = [(BMProactiveHarvestingParsecSearch *)self domainID];
+  absoluteTimestamp = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
+  if (absoluteTimestamp)
   {
     v6 = MEMORY[0x1E696AD98];
-    v7 = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
-    [v7 timeIntervalSinceReferenceDate];
+    absoluteTimestamp2 = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
+    [absoluteTimestamp2 timeIntervalSinceReferenceDate];
     v8 = [v6 numberWithDouble:?];
   }
 
@@ -238,102 +238,102 @@ LABEL_35:
     v8 = 0;
   }
 
-  v9 = [(BMProactiveHarvestingParsecSearch *)self userInput];
-  v10 = [(BMProactiveHarvestingParsecSearch *)self completedQuery];
-  v33 = [(BMProactiveHarvestingParsecSearch *)self _entitiesJSONArray];
-  v11 = [(BMProactiveHarvestingParsecSearch *)self uniqueID];
-  v12 = [(BMProactiveHarvestingParsecSearch *)self contentProtection];
-  v13 = [(BMProactiveHarvestingParsecSearch *)self personaId];
+  userInput = [(BMProactiveHarvestingParsecSearch *)self userInput];
+  completedQuery = [(BMProactiveHarvestingParsecSearch *)self completedQuery];
+  _entitiesJSONArray = [(BMProactiveHarvestingParsecSearch *)self _entitiesJSONArray];
+  uniqueID = [(BMProactiveHarvestingParsecSearch *)self uniqueID];
+  contentProtection = [(BMProactiveHarvestingParsecSearch *)self contentProtection];
+  personaId = [(BMProactiveHarvestingParsecSearch *)self personaId];
   v34[0] = @"resultID";
-  v14 = v3;
-  if (!v3)
+  null = resultID;
+  if (!resultID)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v28 = v14;
-  v35[0] = v14;
+  v28 = null;
+  v35[0] = null;
   v34[1] = @"domainID";
-  v15 = v4;
-  if (!v4)
+  null2 = domainID;
+  if (!domainID)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v27 = v15;
-  v35[1] = v15;
+  v27 = null2;
+  v35[1] = null2;
   v34[2] = @"absoluteTimestamp";
-  v16 = v8;
+  null3 = v8;
   if (!v8)
   {
-    v16 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32 = v3;
-  v26 = v16;
-  v35[2] = v16;
+  v32 = resultID;
+  v26 = null3;
+  v35[2] = null3;
   v34[3] = @"userInput";
-  v17 = v9;
-  if (!v9)
+  null4 = userInput;
+  if (!userInput)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v31 = v4;
-  v25 = v17;
-  v35[3] = v17;
+  v31 = domainID;
+  v25 = null4;
+  v35[3] = null4;
   v34[4] = @"completedQuery";
-  v18 = v10;
-  if (!v10)
+  null5 = completedQuery;
+  if (!completedQuery)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
   v30 = v8;
-  v35[4] = v18;
+  v35[4] = null5;
   v34[5] = @"entities";
-  v19 = v33;
-  if (!v33)
+  null6 = _entitiesJSONArray;
+  if (!_entitiesJSONArray)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    null6 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[5] = v19;
+  v35[5] = null6;
   v34[6] = @"uniqueID";
-  v20 = v11;
-  if (!v11)
+  null7 = uniqueID;
+  if (!uniqueID)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null7 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[6] = v20;
+  v35[6] = null7;
   v34[7] = @"contentProtection";
-  v21 = v12;
-  if (!v12)
+  null8 = contentProtection;
+  if (!contentProtection)
   {
-    v21 = [MEMORY[0x1E695DFB0] null];
+    null8 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[7] = v21;
+  v35[7] = null8;
   v34[8] = @"personaId";
-  v22 = v13;
-  if (!v13)
+  null9 = personaId;
+  if (!personaId)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    null9 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[8] = v22;
+  v35[8] = null9;
   v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:9];
-  if (v13)
+  if (personaId)
   {
-    if (v12)
+    if (contentProtection)
     {
       goto LABEL_24;
     }
 
 LABEL_38:
 
-    if (v11)
+    if (uniqueID)
     {
       goto LABEL_25;
     }
@@ -341,13 +341,13 @@ LABEL_38:
     goto LABEL_39;
   }
 
-  if (!v12)
+  if (!contentProtection)
   {
     goto LABEL_38;
   }
 
 LABEL_24:
-  if (v11)
+  if (uniqueID)
   {
     goto LABEL_25;
   }
@@ -355,15 +355,15 @@ LABEL_24:
 LABEL_39:
 
 LABEL_25:
-  if (!v33)
+  if (!_entitiesJSONArray)
   {
   }
 
-  if (!v10)
+  if (!completedQuery)
   {
   }
 
-  if (!v9)
+  if (!userInput)
   {
   }
 
@@ -411,8 +411,8 @@ LABEL_34:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(BMProactiveHarvestingParsecSearch *)self entities];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  entities = [(BMProactiveHarvestingParsecSearch *)self entities];
+  v5 = [entities countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -423,14 +423,14 @@ LABEL_34:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entities);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
-        [v3 addObject:v9];
+        jsonDictionary = [*(*(&v12 + 1) + 8 * i) jsonDictionary];
+        [v3 addObject:jsonDictionary];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [entities countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -441,25 +441,25 @@ LABEL_34:
   return v3;
 }
 
-- (BMProactiveHarvestingParsecSearch)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (BMProactiveHarvestingParsecSearch)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v148[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"resultID"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"resultID"];
   if (!v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v118 = a4;
-    a4 = 0;
+    errorCopy2 = error;
+    error = 0;
     goto LABEL_4;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v118 = a4;
-    a4 = v7;
+    errorCopy2 = error;
+    error = v7;
 LABEL_4:
-    v8 = [v6 objectForKeyedSubscript:@"domainID"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"domainID"];
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v116 = 0;
@@ -471,20 +471,20 @@ LABEL_4:
     {
       v116 = v8;
 LABEL_7:
-      v9 = [v6 objectForKeyedSubscript:@"absoluteTimestamp"];
+      v9 = [dictionaryCopy objectForKeyedSubscript:@"absoluteTimestamp"];
       v117 = v9;
       if (!v9 || (v10 = v9, objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
         v113 = 0;
 LABEL_23:
-        v35 = [v6 objectForKeyedSubscript:@"userInput"];
+        v35 = [dictionaryCopy objectForKeyedSubscript:@"userInput"];
         v114 = v35;
         if (v35 && (v36 = v35, objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
         {
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            if (!v118)
+            if (!errorCopy2)
             {
               v115 = 0;
               v24 = 0;
@@ -497,11 +497,11 @@ LABEL_23:
             v52 = objc_alloc(MEMORY[0x1E696ABC0]);
             v53 = *MEMORY[0x1E698F240];
             v141 = *MEMORY[0x1E696A578];
-            v54 = a4;
+            errorCopy3 = error;
             v55 = objc_alloc(MEMORY[0x1E696AEC0]);
             v100 = objc_opt_class();
             v56 = v55;
-            a4 = v54;
+            error = errorCopy3;
             v112 = [v56 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v100, @"userInput"];
             v142 = v112;
             v57 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v142 forKeys:&v141 count:1];
@@ -511,7 +511,7 @@ LABEL_23:
             v37 = v57;
             v115 = 0;
             v24 = 0;
-            *v118 = [v58 initWithDomain:v59 code:2 userInfo:v57];
+            *errorCopy2 = [v58 initWithDomain:v59 code:2 userInfo:v57];
             goto LABEL_101;
           }
 
@@ -523,7 +523,7 @@ LABEL_23:
           v115 = 0;
         }
 
-        v37 = [v6 objectForKeyedSubscript:@"completedQuery"];
+        v37 = [dictionaryCopy objectForKeyedSubscript:@"completedQuery"];
         v119 = v37;
         v110 = v7;
         if (!v37 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -539,15 +539,15 @@ LABEL_23:
           v109 = v8;
           v112 = v37;
 LABEL_29:
-          v38 = [v6 objectForKeyedSubscript:@"entities"];
-          v39 = [MEMORY[0x1E695DFB0] null];
-          v40 = [v38 isEqual:v39];
+          v38 = [dictionaryCopy objectForKeyedSubscript:@"entities"];
+          null = [MEMORY[0x1E695DFB0] null];
+          v40 = [v38 isEqual:null];
 
-          v111 = self;
+          selfCopy = self;
           if (v40)
           {
-            v106 = a4;
-            v108 = v6;
+            errorCopy5 = error;
+            v108 = dictionaryCopy;
 
             v38 = 0;
           }
@@ -559,7 +559,7 @@ LABEL_29:
               objc_opt_class();
               if ((objc_opt_isKindOfClass() & 1) == 0)
               {
-                if (!v118)
+                if (!errorCopy2)
                 {
                   v24 = 0;
                   v8 = v109;
@@ -575,13 +575,13 @@ LABEL_29:
                 v138 = v120;
                 v50 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v138 forKeys:&v137 count:1];
                 v24 = 0;
-                *v118 = [v78 initWithDomain:v79 code:2 userInfo:v50];
+                *errorCopy2 = [v78 initWithDomain:v79 code:2 userInfo:v50];
                 goto LABEL_66;
               }
             }
 
-            v106 = a4;
-            v108 = v6;
+            errorCopy5 = error;
+            v108 = dictionaryCopy;
           }
 
           v120 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v38, "count")}];
@@ -617,8 +617,8 @@ LABEL_36:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v69 = v118;
-              if (v118)
+              v69 = errorCopy2;
+              if (errorCopy2)
               {
                 v70 = objc_alloc(MEMORY[0x1E696ABC0]);
                 v71 = *MEMORY[0x1E698F240];
@@ -642,16 +642,16 @@ LABEL_36:
             if (v49)
             {
               v75 = v49;
-              if (v118)
+              if (errorCopy2)
               {
                 v77 = v49;
-                *v118 = v75;
+                *errorCopy2 = v75;
               }
 
               v24 = 0;
               v50 = v38;
-              a4 = v106;
-              v6 = v108;
+              error = errorCopy5;
+              dictionaryCopy = v108;
               v8 = v109;
               v37 = v119;
               goto LABEL_85;
@@ -671,17 +671,17 @@ LABEL_36:
 
 LABEL_44:
 
-              v6 = v108;
+              dictionaryCopy = v108;
               v46 = [v108 objectForKeyedSubscript:@"uniqueID"];
               if (!v46)
               {
                 v50 = 0;
-                a4 = v106;
+                error = errorCopy5;
                 goto LABEL_74;
               }
 
               objc_opt_class();
-              a4 = v106;
+              error = errorCopy5;
               if (objc_opt_isKindOfClass())
               {
                 v50 = 0;
@@ -696,7 +696,7 @@ LABEL_74:
                     goto LABEL_77;
                   }
 
-                  if (v118)
+                  if (errorCopy2)
                   {
                     v107 = objc_alloc(MEMORY[0x1E696ABC0]);
                     v95 = *MEMORY[0x1E698F240];
@@ -707,7 +707,7 @@ LABEL_74:
                     v96 = [v107 initWithDomain:v95 code:2 userInfo:v81];
                     v75 = 0;
                     v24 = 0;
-                    *v118 = v96;
+                    *errorCopy2 = v96;
                     goto LABEL_81;
                   }
 
@@ -731,13 +731,13 @@ LABEL_77:
                   {
                     v82 = v81;
 LABEL_80:
-                    v24 = [(BMProactiveHarvestingParsecSearch *)v111 initWithResultID:a4 domainID:v116 absoluteTimestamp:v113 userInput:v115 completedQuery:v112 entities:v120 uniqueID:v50 contentProtection:v75 personaId:v82];
-                    v111 = v24;
+                    v24 = [(BMProactiveHarvestingParsecSearch *)selfCopy initWithResultID:error domainID:v116 absoluteTimestamp:v113 userInput:v115 completedQuery:v112 entities:v120 uniqueID:v50 contentProtection:v75 personaId:v82];
+                    selfCopy = v24;
                   }
 
                   else
                   {
-                    if (v118)
+                    if (errorCopy2)
                     {
                       v105 = objc_alloc(MEMORY[0x1E696ABC0]);
                       v103 = *MEMORY[0x1E698F240];
@@ -745,7 +745,7 @@ LABEL_80:
                       v97 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"personaId"];
                       v127 = v97;
                       v98 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v127 forKeys:&v126 count:1];
-                      *v118 = [v105 initWithDomain:v103 code:2 userInfo:v98];
+                      *errorCopy2 = [v105 initWithDomain:v103 code:2 userInfo:v98];
                     }
 
                     v82 = 0;
@@ -772,7 +772,7 @@ LABEL_85:
                   goto LABEL_74;
                 }
 
-                if (v118)
+                if (errorCopy2)
                 {
                   v104 = objc_alloc(MEMORY[0x1E696ABC0]);
                   v93 = *MEMORY[0x1E698F240];
@@ -783,7 +783,7 @@ LABEL_85:
                   v94 = [v104 initWithDomain:v93 code:2 userInfo:v80];
                   v50 = 0;
                   v24 = 0;
-                  *v118 = v94;
+                  *errorCopy2 = v94;
                   goto LABEL_82;
                 }
 
@@ -794,7 +794,7 @@ LABEL_85:
               }
 
 LABEL_87:
-              self = v111;
+              self = selfCopy;
 LABEL_88:
               v21 = v116;
               v31 = v113;
@@ -808,8 +808,8 @@ LABEL_91:
             }
           }
 
-          v69 = v118;
-          if (v118)
+          v69 = errorCopy2;
+          if (errorCopy2)
           {
             v70 = objc_alloc(MEMORY[0x1E696ABC0]);
             v71 = *MEMORY[0x1E698F240];
@@ -826,32 +826,32 @@ LABEL_59:
             v24 = 0;
             *v69 = [v70 initWithDomain:v76 code:2 userInfo:v75];
             v50 = v38;
-            a4 = v106;
-            v6 = v108;
+            error = errorCopy5;
+            dictionaryCopy = v108;
             goto LABEL_84;
           }
 
 LABEL_65:
           v24 = 0;
           v50 = v38;
-          a4 = v106;
-          v6 = v108;
+          error = errorCopy5;
+          dictionaryCopy = v108;
 LABEL_66:
           v8 = v109;
           goto LABEL_87;
         }
 
-        if (v118)
+        if (errorCopy2)
         {
           v60 = v8;
           v61 = objc_alloc(MEMORY[0x1E696ABC0]);
           v62 = *MEMORY[0x1E698F240];
           v139 = *MEMORY[0x1E696A578];
-          v63 = a4;
+          errorCopy6 = error;
           v64 = objc_alloc(MEMORY[0x1E696AEC0]);
           v101 = objc_opt_class();
           v65 = v64;
-          a4 = v63;
+          error = errorCopy6;
           v38 = [v65 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v101, @"completedQuery"];
           v140 = v38;
           v66 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v140 forKeys:&v139 count:1];
@@ -862,7 +862,7 @@ LABEL_66:
           v120 = v66;
           v112 = 0;
           v24 = 0;
-          *v118 = [v67 initWithDomain:v68 code:2 userInfo:?];
+          *errorCopy2 = [v67 initWithDomain:v68 code:2 userInfo:?];
           goto LABEL_88;
         }
 
@@ -907,17 +907,17 @@ LABEL_16:
         goto LABEL_16;
       }
 
-      if (v118)
+      if (errorCopy2)
       {
         v85 = v8;
         v86 = objc_alloc(MEMORY[0x1E696ABC0]);
         v87 = *MEMORY[0x1E698F240];
         v143 = *MEMORY[0x1E696A578];
-        v88 = a4;
+        errorCopy7 = error;
         v89 = objc_alloc(MEMORY[0x1E696AEC0]);
         v102 = objc_opt_class();
         v90 = v89;
-        a4 = v88;
+        error = errorCopy7;
         v115 = [v90 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSNumber (as time internal since 2001 (CFAbsoluteTime)), NSString (ISO8601 format), or NSDate", v102, @"absoluteTimestamp"];
         v144 = v115;
         v91 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v144 forKeys:&v143 count:1];
@@ -926,7 +926,7 @@ LABEL_16:
         v114 = v91;
         v31 = 0;
         v24 = 0;
-        *v118 = [v92 initWithDomain:v87 code:2 userInfo:?];
+        *errorCopy2 = [v92 initWithDomain:v87 code:2 userInfo:?];
         v21 = v116;
         goto LABEL_91;
       }
@@ -939,17 +939,17 @@ LABEL_92:
       goto LABEL_93;
     }
 
-    if (v118)
+    if (errorCopy2)
     {
       v25 = v8;
       v26 = objc_alloc(MEMORY[0x1E696ABC0]);
       v27 = *MEMORY[0x1E698F240];
       v145 = *MEMORY[0x1E696A578];
-      v28 = a4;
+      errorCopy8 = error;
       v29 = objc_alloc(MEMORY[0x1E696AEC0]);
       v99 = objc_opt_class();
       v30 = v29;
-      a4 = v28;
+      error = errorCopy8;
       v31 = [v30 initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", v99, @"domainID"];
       v146 = v31;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v146 forKeys:&v145 count:1];
@@ -958,7 +958,7 @@ LABEL_92:
       v117 = v32;
       v21 = 0;
       v24 = 0;
-      *v118 = [v33 initWithDomain:v27 code:2 userInfo:?];
+      *errorCopy2 = [v33 initWithDomain:v27 code:2 userInfo:?];
       goto LABEL_92;
     }
 
@@ -969,20 +969,20 @@ LABEL_93:
     goto LABEL_94;
   }
 
-  if (a4)
+  if (error)
   {
     v18 = objc_alloc(MEMORY[0x1E696ABC0]);
     v19 = *MEMORY[0x1E698F240];
     v147 = *MEMORY[0x1E696A578];
-    v20 = a4;
+    errorCopy9 = error;
     v21 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Unexpected type %@ for element of %@, expecting NSString", objc_opt_class(), @"resultID"];
     v148[0] = v21;
     v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v148 forKeys:&v147 count:1];
     v23 = v18;
     v8 = v22;
-    a4 = 0;
+    error = 0;
     v24 = 0;
-    *v20 = [v23 initWithDomain:v19 code:2 userInfo:v22];
+    *errorCopy9 = [v23 initWithDomain:v19 code:2 userInfo:v22];
     goto LABEL_93;
   }
 
@@ -997,15 +997,15 @@ LABEL_94:
 {
   v3 = objc_opt_new();
   [(BMProactiveHarvestingParsecSearch *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_resultID)
   {
     PBDataWriterWriteStringField();
@@ -1053,7 +1053,7 @@ LABEL_94:
 
         v11 = *(*(&v13 + 1) + 8 * i);
         PBDataWriterPlaceMark();
-        [v11 writeTo:v4];
+        [v11 writeTo:toCopy];
         PBDataWriterRecallMark();
       }
 
@@ -1081,9 +1081,9 @@ LABEL_94:
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v31.receiver = self;
   v31.super_class = BMProactiveHarvestingParsecSearch;
   v5 = [(BMEventBase *)&v31 init];
@@ -1093,12 +1093,12 @@ LABEL_94:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_50;
       }
@@ -1109,18 +1109,18 @@ LABEL_94:
       while (1)
       {
         LOBYTE(v32[0]) = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:v32 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v32[0] & 0x7F) << v8;
@@ -1137,9 +1137,9 @@ LABEL_94:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_50;
       }
@@ -1195,7 +1195,7 @@ LABEL_46:
 
       v32[0] = 0;
       v32[1] = 0;
-      if (!PBReaderPlaceMark() || (v19 = [[BMProactiveHarvestingParsecSearchEntity alloc] initByReadFrom:v4]) == 0)
+      if (!PBReaderPlaceMark() || (v19 = [[BMProactiveHarvestingParsecSearchEntity alloc] initByReadFrom:fromCopy]) == 0)
       {
 LABEL_54:
 
@@ -1207,8 +1207,8 @@ LABEL_54:
       PBReaderRecallMark();
 
 LABEL_44:
-      v24 = [v4 position];
-      if (v24 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_50;
       }
@@ -1220,18 +1220,18 @@ LABEL_44:
       {
         v5->_hasRaw_absoluteTimestamp = 1;
         v32[0] = 0;
-        v21 = [v4 position] + 8;
-        if (v21 >= [v4 position] && (v22 = objc_msgSend(v4, "position") + 8, v22 <= objc_msgSend(v4, "length")))
+        v21 = [fromCopy position] + 8;
+        if (v21 >= [fromCopy position] && (v22 = objc_msgSend(fromCopy, "position") + 8, v22 <= objc_msgSend(fromCopy, "length")))
         {
-          v25 = [v4 data];
-          [v25 getBytes:v32 range:{objc_msgSend(v4, "position"), 8}];
+          data2 = [fromCopy data];
+          [data2 getBytes:v32 range:{objc_msgSend(fromCopy, "position"), 8}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 8}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 8}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         *&v5->_raw_absoluteTimestamp = v32[0];
@@ -1271,8 +1271,8 @@ LABEL_50:
   entities = v5->_entities;
   v5->_entities = v26;
 
-  v28 = [v4 hasError];
-  if (v28)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_51:
     v29 = 0;
@@ -1290,44 +1290,44 @@ LABEL_52:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMProactiveHarvestingParsecSearch *)self resultID];
-  v5 = [(BMProactiveHarvestingParsecSearch *)self domainID];
-  v6 = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
-  v7 = [(BMProactiveHarvestingParsecSearch *)self userInput];
-  v8 = [(BMProactiveHarvestingParsecSearch *)self completedQuery];
-  v9 = [(BMProactiveHarvestingParsecSearch *)self entities];
-  v10 = [(BMProactiveHarvestingParsecSearch *)self uniqueID];
-  v11 = [(BMProactiveHarvestingParsecSearch *)self contentProtection];
-  v12 = [(BMProactiveHarvestingParsecSearch *)self personaId];
-  v13 = [v3 initWithFormat:@"BMProactiveHarvestingParsecSearch with resultID: %@, domainID: %@, absoluteTimestamp: %@, userInput: %@, completedQuery: %@, entities: %@, uniqueID: %@, contentProtection: %@, personaId: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  resultID = [(BMProactiveHarvestingParsecSearch *)self resultID];
+  domainID = [(BMProactiveHarvestingParsecSearch *)self domainID];
+  absoluteTimestamp = [(BMProactiveHarvestingParsecSearch *)self absoluteTimestamp];
+  userInput = [(BMProactiveHarvestingParsecSearch *)self userInput];
+  completedQuery = [(BMProactiveHarvestingParsecSearch *)self completedQuery];
+  entities = [(BMProactiveHarvestingParsecSearch *)self entities];
+  uniqueID = [(BMProactiveHarvestingParsecSearch *)self uniqueID];
+  contentProtection = [(BMProactiveHarvestingParsecSearch *)self contentProtection];
+  personaId = [(BMProactiveHarvestingParsecSearch *)self personaId];
+  v13 = [v3 initWithFormat:@"BMProactiveHarvestingParsecSearch with resultID: %@, domainID: %@, absoluteTimestamp: %@, userInput: %@, completedQuery: %@, entities: %@, uniqueID: %@, contentProtection: %@, personaId: %@", resultID, domainID, absoluteTimestamp, userInput, completedQuery, entities, uniqueID, contentProtection, personaId];
 
   return v13;
 }
 
-- (BMProactiveHarvestingParsecSearch)initWithResultID:(id)a3 domainID:(id)a4 absoluteTimestamp:(id)a5 userInput:(id)a6 completedQuery:(id)a7 entities:(id)a8 uniqueID:(id)a9 contentProtection:(id)a10 personaId:(id)a11
+- (BMProactiveHarvestingParsecSearch)initWithResultID:(id)d domainID:(id)iD absoluteTimestamp:(id)timestamp userInput:(id)input completedQuery:(id)query entities:(id)entities uniqueID:(id)uniqueID contentProtection:(id)self0 personaId:(id)self1
 {
-  v30 = a3;
-  v29 = a4;
-  v18 = a5;
-  v28 = a6;
-  v27 = a7;
-  obj = a8;
-  v26 = a8;
-  v25 = a9;
-  v19 = a10;
-  v20 = a11;
+  dCopy = d;
+  iDCopy = iD;
+  timestampCopy = timestamp;
+  inputCopy = input;
+  queryCopy = query;
+  obj = entities;
+  entitiesCopy = entities;
+  uniqueIDCopy = uniqueID;
+  protectionCopy = protection;
+  idCopy = id;
   v31.receiver = self;
   v31.super_class = BMProactiveHarvestingParsecSearch;
   v21 = [(BMEventBase *)&v31 init];
   if (v21)
   {
     v21->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v21->_resultID, a3);
-    objc_storeStrong(&v21->_domainID, a4);
-    if (v18)
+    objc_storeStrong(&v21->_resultID, d);
+    objc_storeStrong(&v21->_domainID, iD);
+    if (timestampCopy)
     {
       v21->_hasRaw_absoluteTimestamp = 1;
-      [v18 timeIntervalSinceReferenceDate];
+      [timestampCopy timeIntervalSinceReferenceDate];
     }
 
     else
@@ -1337,12 +1337,12 @@ LABEL_52:
     }
 
     v21->_raw_absoluteTimestamp = v22;
-    objc_storeStrong(&v21->_userInput, a6);
-    objc_storeStrong(&v21->_completedQuery, a7);
+    objc_storeStrong(&v21->_userInput, input);
+    objc_storeStrong(&v21->_completedQuery, query);
     objc_storeStrong(&v21->_entities, obj);
-    objc_storeStrong(&v21->_uniqueID, a9);
-    objc_storeStrong(&v21->_contentProtection, a10);
-    objc_storeStrong(&v21->_personaId, a11);
+    objc_storeStrong(&v21->_uniqueID, uniqueID);
+    objc_storeStrong(&v21->_contentProtection, protection);
+    objc_storeStrong(&v21->_personaId, id);
   }
 
   return v21;
@@ -1412,13 +1412,13 @@ id __44__BMProactiveHarvestingParsecSearch_columns__block_invoke(uint64_t a1, vo
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 2)
+  if (version == 2)
   {
     v4 = MEMORY[0x1E69C65B8];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithData:v5];
+    dataCopy = data;
+    v6 = [[v4 alloc] initWithData:dataCopy];
 
     v7 = [[BMProactiveHarvestingParsecSearch alloc] initByReadFrom:v6];
     v8 = v7;

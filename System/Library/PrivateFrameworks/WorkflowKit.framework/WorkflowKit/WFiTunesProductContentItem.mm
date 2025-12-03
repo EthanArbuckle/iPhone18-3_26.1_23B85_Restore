@@ -3,9 +3,9 @@
 + (id)ownedTypes;
 + (id)propertyBuilders;
 + (id)stringConversionBehavior;
-- (BOOL)getListAltText:(id)a3;
-- (BOOL)getListSubtitle:(id)a3;
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4;
+- (BOOL)getListAltText:(id)text;
+- (BOOL)getListSubtitle:(id)subtitle;
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size;
 - (id)mediaTrackObject;
 @end
 
@@ -13,7 +13,7 @@
 
 + (id)outputTypes
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___WFiTunesProductContentItem;
   v2 = objc_msgSendSuper2(&v6, sel_outputTypes);
   v3 = [MEMORY[0x1E6996ED0] typeWithClassName:@"MPMediaItem" frameworkName:@"MediaPlayer" location:2];
@@ -125,19 +125,19 @@ void __46__WFiTunesProductContentItem_propertyBuilders__block_invoke_2(uint64_t 
   (*(v2 + 16))(v2, v3);
 }
 
-- (BOOL)getListThumbnail:(id)a3 forSize:(CGSize)a4
+- (BOOL)getListThumbnail:(id)thumbnail forSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = v7;
-  if (v7)
+  height = size.height;
+  width = size.width;
+  thumbnailCopy = thumbnail;
+  v8 = thumbnailCopy;
+  if (thumbnailCopy)
   {
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __55__WFiTunesProductContentItem_getListThumbnail_forSize___block_invoke;
     v10[3] = &unk_1E837D710;
-    v11 = v7;
+    v11 = thumbnailCopy;
     [(WFiTunesObjectContentItem *)self getArtworkForSize:v10 completionHandler:width, height];
   }
 
@@ -158,27 +158,27 @@ void __55__WFiTunesProductContentItem_getListThumbnail_forSize___block_invoke(ui
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
-- (BOOL)getListAltText:(id)a3
+- (BOOL)getListAltText:(id)text
 {
-  if (a3)
+  if (text)
   {
-    v5 = a3;
-    v6 = [(WFiTunesProductContentItem *)self storeObject];
-    v7 = [v6 formattedPrice];
-    (*(a3 + 2))(v5, v7);
+    textCopy = text;
+    storeObject = [(WFiTunesProductContentItem *)self storeObject];
+    formattedPrice = [storeObject formattedPrice];
+    (*(text + 2))(textCopy, formattedPrice);
   }
 
   return 1;
 }
 
-- (BOOL)getListSubtitle:(id)a3
+- (BOOL)getListSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
-    v5 = a3;
-    v6 = [(WFiTunesProductContentItem *)self storeObject];
-    v7 = [v6 artistName];
-    (*(a3 + 2))(v5, v7);
+    subtitleCopy = subtitle;
+    storeObject = [(WFiTunesProductContentItem *)self storeObject];
+    artistName = [storeObject artistName];
+    (*(subtitle + 2))(subtitleCopy, artistName);
   }
 
   return 1;
@@ -186,13 +186,13 @@ void __55__WFiTunesProductContentItem_getListThumbnail_forSize___block_invoke(ui
 
 - (id)mediaTrackObject
 {
-  v2 = [(WFiTunesObjectContentItem *)self object];
-  if (v2)
+  object = [(WFiTunesObjectContentItem *)self object];
+  if (object)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
+      v3 = object;
     }
 
     else

@@ -1,16 +1,16 @@
 @interface SNNMILContext
-+ (id)valueForIRTensorValue:(const IRTensorValue *)a3;
-+ (id)valueForIRTensorValueType:(const IRTensorValueType *)a3 name:()basic_string<char;
-+ (id)valueForIRValue:(const IRValue *)a3;
-+ (id)valueForIRValueType:(const IRValueType *)a3 name:()basic_string<char;
++ (id)valueForIRTensorValue:(const IRTensorValue *)value;
++ (id)valueForIRTensorValueType:(const IRTensorValueType *)type name:()basic_string<char;
++ (id)valueForIRValue:(const IRValue *)value;
++ (id)valueForIRValueType:(const IRValueType *)type name:()basic_string<char;
 - (SNNMILContext)init;
-- (SNNMILContext)initWithOpsetName:(id)a3;
+- (SNNMILContext)initWithOpsetName:(id)name;
 - (basic_string<char,)opsetName;
 - (id).cxx_construct;
 - (shared_ptr<MIL::MILContext>)context;
-- (unique_ptr<const)milValueForString:(id)a3;
-- (unique_ptr<const)milValueForTensorBlobWithFilename:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 offset:(id)a6;
-- (unique_ptr<const)milValueForTensorWithBytes:(void *)a3 shape:(id)a4 dataType:(unint64_t)a5;
+- (unique_ptr<const)milValueForString:(id)string;
+- (unique_ptr<const)milValueForTensorBlobWithFilename:(id)filename shape:(id)shape dataType:(unint64_t)type offset:(id)offset;
+- (unique_ptr<const)milValueForTensorWithBytes:(void *)bytes shape:(id)shape dataType:(unint64_t)type;
 - (void)dealloc;
 @end
 
@@ -34,9 +34,9 @@
   return v2;
 }
 
-- (SNNMILContext)initWithOpsetName:(id)a3
+- (SNNMILContext)initWithOpsetName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = SNNMILContext;
   v5 = [(SNNMILContext *)&v10 init];
@@ -49,9 +49,9 @@
     (*(*v6 + 8))(v6);
   }
 
-  if (v4)
+  if (nameCopy)
   {
-    [v4 cxxString];
+    [nameCopy cxxString];
   }
 
   else
@@ -101,15 +101,15 @@
   return result;
 }
 
-- (unique_ptr<const)milValueForString:(id)a3
+- (unique_ptr<const)milValueForString:(id)string
 {
   v5 = v3;
-  v6 = a3;
+  stringCopy = string;
   ptr = self->_context.__ptr_;
   MIL::IRTensorValueType::MakeScalar();
-  if (v6)
+  if (stringCopy)
   {
-    [v6 cxxString];
+    [stringCopy cxxString];
   }
 
   else
@@ -129,28 +129,28 @@
   return v8;
 }
 
-- (unique_ptr<const)milValueForTensorWithBytes:(void *)a3 shape:(id)a4 dataType:(unint64_t)a5
+- (unique_ptr<const)milValueForTensorWithBytes:(void *)bytes shape:(id)shape dataType:(unint64_t)type
 {
   v9 = v5;
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = v10;
+  shapeCopy = shape;
+  v11 = shapeCopy;
   __p = 0;
   v40 = 0;
   v41 = 0;
-  v12 = v10;
-  if (v10)
+  v12 = shapeCopy;
+  if (shapeCopy)
   {
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v13 = v10;
+    v13 = shapeCopy;
     v14 = [v13 countByEnumeratingWithState:&v35 objects:v42 count:16];
     if (v14)
     {
-      v28 = a5;
-      v29 = a3;
+      typeCopy = type;
+      bytesCopy = bytes;
       v30 = v9;
       v15 = *v36;
       v16 = 1;
@@ -164,11 +164,11 @@
           }
 
           v18 = *(*(&v35 + 1) + 8 * i);
-          v19 = [v18 unsignedIntegerValue];
+          unsignedIntegerValue = [v18 unsignedIntegerValue];
           v32 = MIL::IRConstantDimension::Make(self->_context.__ptr_, [v18 unsignedIntegerValue]);
           v11 = v12;
           std::vector<MIL::IRDimension const*>::push_back[abi:ne200100](&__p, &v32);
-          v16 *= v19;
+          v16 *= unsignedIntegerValue;
         }
 
         v14 = [v13 countByEnumeratingWithState:&v35 objects:v42 count:16];
@@ -176,9 +176,9 @@
 
       while (v14);
       v20 = v16;
-      a3 = v29;
+      bytes = bytesCopy;
       v9 = v30;
-      a5 = v28;
+      type = typeCopy;
     }
 
     else
@@ -192,9 +192,9 @@
     v20 = 1;
   }
 
-  if (a5 - 1 <= 0xB)
+  if (type - 1 <= 0xB)
   {
-    v21 = dword_25BCBA98C[a5 - 1];
+    v21 = dword_25BCBA98C[type - 1];
   }
 
   ptr = self->_context.__ptr_;
@@ -219,21 +219,21 @@
           v32 = 0;
           v33 = 0;
           v34 = 0;
-          std::vector<unsigned short>::__init_with_size[abi:ne200100]<unsigned short *,unsigned short *>(&v32, a3, a3 + 2 * v20, v20);
+          std::vector<unsigned short>::__init_with_size[abi:ne200100]<unsigned short *,unsigned short *>(&v32, bytes, bytes + 2 * v20, v20);
           MIL::IRTensorValueType::MakeUInt16Value();
           goto LABEL_46;
         case 16:
           v32 = 0;
           v33 = 0;
           v34 = 0;
-          std::vector<unsigned int>::__init_with_size[abi:ne200100]<unsigned int *,unsigned int *>(&v32, a3, a3 + 4 * v20, v20);
+          std::vector<unsigned int>::__init_with_size[abi:ne200100]<unsigned int *,unsigned int *>(&v32, bytes, bytes + 4 * v20, v20);
           MIL::IRTensorValueType::MakeUInt32Value();
           goto LABEL_46;
         case 17:
           v32 = 0;
           v33 = 0;
           v34 = 0;
-          std::vector<unsigned long long>::__init_with_size[abi:ne200100]<unsigned long long *,unsigned long long *>(&v32, a3, a3 + 8 * v20, v20);
+          std::vector<unsigned long long>::__init_with_size[abi:ne200100]<unsigned long long *,unsigned long long *>(&v32, bytes, bytes + 8 * v20, v20);
           MIL::IRTensorValueType::MakeUInt64Value();
           goto LABEL_46;
       }
@@ -247,21 +247,21 @@
           v32 = 0;
           v33 = 0;
           v34 = 0;
-          std::vector<int>::__init_with_size[abi:ne200100]<int *,int *>(&v32, a3, a3 + 4 * v20, v20);
+          std::vector<int>::__init_with_size[abi:ne200100]<int *,int *>(&v32, bytes, bytes + 4 * v20, v20);
           MIL::IRTensorValueType::MakeInt32Value();
           goto LABEL_46;
         case 12:
           v32 = 0;
           v33 = 0;
           v34 = 0;
-          std::vector<long long>::__init_with_size[abi:ne200100]<long long *,long long *>(&v32, a3, a3 + 8 * v20, v20);
+          std::vector<long long>::__init_with_size[abi:ne200100]<long long *,long long *>(&v32, bytes, bytes + 8 * v20, v20);
           MIL::IRTensorValueType::MakeInt64Value();
           goto LABEL_46;
         case 14:
           v32 = 0;
           v33 = 0;
           v34 = 0;
-          std::vector<unsigned char>::__init_with_size[abi:ne200100]<unsigned char *,unsigned char *>(&v32, a3, a3 + v20, v20);
+          std::vector<unsigned char>::__init_with_size[abi:ne200100]<unsigned char *,unsigned char *>(&v32, bytes, bytes + v20, v20);
           MIL::IRTensorValueType::MakeUInt8Value();
           goto LABEL_46;
       }
@@ -278,21 +278,21 @@
         v32 = 0;
         v33 = 0;
         v34 = 0;
-        std::vector<double>::__init_with_size[abi:ne200100]<double *,double *>(&v32, a3, a3 + 8 * v20, v20);
+        std::vector<double>::__init_with_size[abi:ne200100]<double *,double *>(&v32, bytes, bytes + 8 * v20, v20);
         MIL::IRTensorValueType::MakeFloat64Value();
         goto LABEL_46;
       case 9:
         v32 = 0;
         v33 = 0;
         v34 = 0;
-        std::vector<signed char>::__init_with_size[abi:ne200100]<signed char *,signed char *>(&v32, a3, a3 + v20, v20);
+        std::vector<signed char>::__init_with_size[abi:ne200100]<signed char *,signed char *>(&v32, bytes, bytes + v20, v20);
         MIL::IRTensorValueType::MakeInt8Value();
         goto LABEL_46;
       case 10:
         v32 = 0;
         v33 = 0;
         v34 = 0;
-        std::vector<short>::__init_with_size[abi:ne200100]<short *,short *>(&v32, a3, a3 + 2 * v20, v20);
+        std::vector<short>::__init_with_size[abi:ne200100]<short *,short *>(&v32, bytes, bytes + 2 * v20, v20);
         MIL::IRTensorValueType::MakeInt16Value();
         goto LABEL_46;
     }
@@ -309,7 +309,7 @@ LABEL_52:
       v32 = 0;
       v33 = 0;
       v34 = 0;
-      std::vector<MIL::Fp16>::__init_with_size[abi:ne200100]<MIL::Fp16*,MIL::Fp16*>(&v32, a3, a3 + 2 * v20, v20);
+      std::vector<MIL::Fp16>::__init_with_size[abi:ne200100]<MIL::Fp16*,MIL::Fp16*>(&v32, bytes, bytes + 2 * v20, v20);
       MIL::IRTensorValueType::MakeFloat16Value();
       goto LABEL_46;
     }
@@ -319,7 +319,7 @@ LABEL_52:
       v32 = 0;
       v33 = 0;
       v34 = 0;
-      std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v32, a3, a3 + 4 * v20, v20);
+      std::vector<float>::__init_with_size[abi:ne200100]<float *,float *>(&v32, bytes, bytes + 4 * v20, v20);
       MIL::IRTensorValueType::MakeFloat32Value();
 LABEL_46:
       v25 = v32;
@@ -339,7 +339,7 @@ LABEL_46:
   v32 = 0;
   v33 = 0;
   v34 = 0;
-  std::vector<BOOL>::__init_with_size[abi:ne200100]<BOOL *,BOOL *>(&v32, a3, a3 + v20, v20);
+  std::vector<BOOL>::__init_with_size[abi:ne200100]<BOOL *,BOOL *>(&v32, bytes, bytes + v20, v20);
   MIL::IRTensorValueType::MakeBoolValue();
   v25 = v32;
   *v9 = v31;
@@ -360,13 +360,13 @@ LABEL_49:
   return v26;
 }
 
-- (unique_ptr<const)milValueForTensorBlobWithFilename:(id)a3 shape:(id)a4 dataType:(unint64_t)a5 offset:(id)a6
+- (unique_ptr<const)milValueForTensorBlobWithFilename:(id)filename shape:(id)shape dataType:(unint64_t)type offset:(id)offset
 {
   v34 = v6;
   v53 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  filenameCopy = filename;
+  shapeCopy = shape;
+  offsetCopy = offset;
   v48 = 0;
   v49 = 0;
   v50 = 0;
@@ -374,7 +374,7 @@ LABEL_49:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v14 = v12;
+  v14 = shapeCopy;
   v15 = [v14 countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v15)
   {
@@ -400,9 +400,9 @@ LABEL_49:
     while (v15);
   }
 
-  if (a5 - 1 <= 0xB)
+  if (type - 1 <= 0xB)
   {
-    v19 = dword_25BCBA98C[a5 - 1];
+    v19 = dword_25BCBA98C[type - 1];
   }
 
   ptr = self->_context.__ptr_;
@@ -436,9 +436,9 @@ LABEL_49:
 
   v24 = self->_context.__ptr_;
   MIL::IRTensorValueType::MakeScalar();
-  if (v11)
+  if (filenameCopy)
   {
-    [v11 cxxString];
+    [filenameCopy cxxString];
   }
 
   else
@@ -471,7 +471,7 @@ LABEL_49:
 
   v27 = self->_context.__ptr_;
   Scalar = MIL::IRTensorValueType::MakeScalar();
-  [v13 unsignedLongValue];
+  [offsetCopy unsignedLongValue];
   MIL::IRTensorValueType::MakeUInt64Value(Scalar);
   std::string::basic_string[abi:ne200100]<0>(__p, "offset");
   v51 = __p;
@@ -503,10 +503,10 @@ LABEL_49:
   return v32;
 }
 
-+ (id)valueForIRTensorValueType:(const IRTensorValueType *)a3 name:()basic_string<char
++ (id)valueForIRTensorValueType:(const IRTensorValueType *)type name:()basic_string<char
 {
   v5 = [objc_alloc(MEMORY[0x277CCACA8]) initWithCXXString:a4];
-  v6 = (*(a3->var0 + 11))(a3) - 2;
+  v6 = (*(type->var0 + 11))(type) - 2;
   if (v6 < 0x10 && ((0xF79Fu >> v6) & 1) != 0)
   {
     v7 = qword_25BCBA9C0[v6];
@@ -536,7 +536,7 @@ LABEL_49:
   }
 
   v10 = [MEMORY[0x277CBEBF8] mutableCopy];
-  v11 = (*(a3->var0 + 12))(a3);
+  v11 = (*(type->var0 + 12))(type);
   v12 = *v11;
   v13 = *(v11 + 8);
   if (*v11 != v13)
@@ -558,9 +558,9 @@ LABEL_49:
   return v16;
 }
 
-+ (id)valueForIRValueType:(const IRValueType *)a3 name:()basic_string<char
++ (id)valueForIRValueType:(const IRValueType *)type name:()basic_string<char
 {
-  v6 = (*(a3->var0 + 3))(a3, a2);
+  v6 = (*(type->var0 + 3))(type, a2);
   if (v6)
   {
     v7 = v6;
@@ -585,11 +585,11 @@ LABEL_49:
 
   else
   {
-    v8 = (*(a3->var0 + 4))(a3);
+    v8 = (*(type->var0 + 4))(type);
     if (!v8)
     {
-      (*(a3->var0 + 5))(a3);
-      (*(a3->var0 + 6))(a3);
+      (*(type->var0 + 5))(type);
+      (*(type->var0 + 6))(type);
       v10 = 0;
       goto LABEL_15;
     }
@@ -620,9 +620,9 @@ LABEL_15:
   return v10;
 }
 
-+ (id)valueForIRTensorValue:(const IRTensorValue *)a3
++ (id)valueForIRTensorValue:(const IRTensorValue *)value
 {
-  v4 = (*(a3->var0 + 4))(a3, a2);
+  v4 = (*(value->var0 + 4))(value, a2);
   v5 = (*(*v4 + 88))(v4) - 2;
   if (v5 < 0x10 && ((0xF79Fu >> v5) & 1) != 0)
   {
@@ -654,7 +654,7 @@ LABEL_15:
   }
 
   v9 = [MEMORY[0x277CBEBF8] mutableCopy];
-  v10 = (*(a3->var0 + 4))(a3);
+  v10 = (*(value->var0 + 4))(value);
   v11 = (*(*v10 + 96))(v10);
   v13 = *v11;
   v12 = *(v11 + 8);
@@ -670,9 +670,9 @@ LABEL_15:
     ++v13;
   }
 
-  if ((*(a3->var0 + 10))(a3))
+  if ((*(value->var0 + 10))(value))
   {
-    v18 = (*(a3->var0 + 11))(a3);
+    v18 = (*(value->var0 + 11))(value);
     std::unordered_map<std::string,std::shared_ptr<MIL::IRValue const>>::unordered_map(__p, v18);
     std::string::basic_string[abi:ne200100]<0>(v59, "type");
     v57[0] = v59;
@@ -985,9 +985,9 @@ LABEL_96:
   return v22;
 }
 
-+ (id)valueForIRValue:(const IRValue *)a3
++ (id)valueForIRValue:(const IRValue *)value
 {
-  v4 = (*(a3->var0 + 5))(a3, a2);
+  v4 = (*(value->var0 + 5))(value, a2);
   if (v4)
   {
     v5 = [SNNMILContext valueForIRTensorValue:v4];
@@ -995,7 +995,7 @@ LABEL_96:
 
   else
   {
-    v5 = (*(a3->var0 + 6))(a3);
+    v5 = (*(value->var0 + 6))(value);
     if (v5)
     {
       v6 = [MEMORY[0x277CBEBF8] mutableCopy];
@@ -1024,8 +1024,8 @@ LABEL_96:
 
     else
     {
-      (*(a3->var0 + 7))(a3);
-      (*(a3->var0 + 8))(a3);
+      (*(value->var0 + 7))(value);
+      (*(value->var0 + 8))(value);
     }
   }
 

@@ -6,10 +6,10 @@
 
 - (uint64_t)_sb_requiresBaselineController
 {
-  result = [a1 isRootIdentity];
+  result = [self isRootIdentity];
   if (result)
   {
-    if ([a1 isAirPlayDisplay] & 1) != 0 || (objc_msgSend(a1, "isRestrictedAirPlayDisplay") & 1) != 0 || (objc_msgSend(a1, "isiPodOnlyDisplay"))
+    if ([self isAirPlayDisplay] & 1) != 0 || (objc_msgSend(self, "isRestrictedAirPlayDisplay") & 1) != 0 || (objc_msgSend(self, "isiPodOnlyDisplay"))
     {
       return 1;
     }
@@ -17,7 +17,7 @@
     else
     {
 
-      return [a1 isMusicOnlyDisplay];
+      return [self isMusicOnlyDisplay];
     }
   }
 

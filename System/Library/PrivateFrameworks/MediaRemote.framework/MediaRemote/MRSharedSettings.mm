@@ -106,26 +106,26 @@ void __35__MRSharedSettings_currentSettings__block_invoke()
 
 - (BOOL)supportSessionBasedLockScreenPlatter
 {
-  v2 = [(MRSharedSettings *)self supportSessionBasedUI];
-  if (v2)
+  supportSessionBasedUI = [(MRSharedSettings *)self supportSessionBasedUI];
+  if (supportSessionBasedUI)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(supportSessionBasedUI) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return supportSessionBasedUI;
 }
 
 - (BOOL)supportLockScreenBackground
 {
-  v2 = [(MRSharedSettings *)self supportSessionBasedLockScreenPlatter];
-  if (v2)
+  supportSessionBasedLockScreenPlatter = [(MRSharedSettings *)self supportSessionBasedLockScreenPlatter];
+  if (supportSessionBasedLockScreenPlatter)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(supportSessionBasedLockScreenPlatter) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return supportSessionBasedLockScreenPlatter;
 }
 
 - (double)quickControlsInactiveTimeout
@@ -140,9 +140,9 @@ void __35__MRSharedSettings_currentSettings__block_invoke()
 - (BOOL)staticWaveform
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 staticWaveform];
+  staticWaveform = [v2 staticWaveform];
 
-  return v3;
+  return staticWaveform;
 }
 
 - (double)lockScreenAPLTarget
@@ -165,14 +165,14 @@ void __35__MRSharedSettings_currentSettings__block_invoke()
 
 - (BOOL)supportGroupSessionHomePodBoop
 {
-  v2 = [(MRSharedSettings *)self supportGroupSessionHome];
-  if (v2)
+  supportGroupSessionHome = [(MRSharedSettings *)self supportGroupSessionHome];
+  if (supportGroupSessionHome)
   {
 
-    LOBYTE(v2) = _os_feature_enabled_impl();
+    LOBYTE(supportGroupSessionHome) = _os_feature_enabled_impl();
   }
 
-  return v2;
+  return supportGroupSessionHome;
 }
 
 - (BOOL)supportAirPlayLeaderInfoSync
@@ -185,7 +185,7 @@ void __35__MRSharedSettings_currentSettings__block_invoke()
   v3 = +[MRUserSettings currentSettings];
   if ([v3 supportMRRelay])
   {
-    v2 = 1;
+    supportTopologyHealing = 1;
   }
 
   else
@@ -193,17 +193,17 @@ void __35__MRSharedSettings_currentSettings__block_invoke()
     v4 = +[MRUserSettings currentSettings];
     if ([v4 supportRoutingContinuity])
     {
-      v2 = 1;
+      supportTopologyHealing = 1;
     }
 
     else
     {
       v5 = +[MRUserSettings currentSettings];
-      v2 = [v5 supportTopologyHealing];
+      supportTopologyHealing = [v5 supportTopologyHealing];
     }
   }
 
-  return v2;
+  return supportTopologyHealing;
 }
 
 - (double)oneTapSuggestionInactiveTimeout
@@ -236,41 +236,41 @@ void __35__MRSharedSettings_currentSettings__block_invoke()
 - (BOOL)supportManyRecommendationsPlatters
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 supportManyRecommendationsPlatters];
+  supportManyRecommendationsPlatters = [v2 supportManyRecommendationsPlatters];
 
-  return v3;
+  return supportManyRecommendationsPlatters;
 }
 
 - (BOOL)suppressScreenMirroringErrors
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 suppressScreenMirroringErrors];
+  suppressScreenMirroringErrors = [v2 suppressScreenMirroringErrors];
 
-  return v3;
+  return suppressScreenMirroringErrors;
 }
 
 - (BOOL)verboseImageLoadingLogging
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 verboseImageLoadingLogging];
+  verboseImageLoadingLogging = [v2 verboseImageLoadingLogging];
 
-  return v3;
+  return verboseImageLoadingLogging;
 }
 
 - (BOOL)verboseMediaControlLogging
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 verboseMediaControlLogging];
+  verboseMediaControlLogging = [v2 verboseMediaControlLogging];
 
-  return v3;
+  return verboseMediaControlLogging;
 }
 
 - (BOOL)supportPTOTRefactorPart2
 {
   v2 = +[MRUserSettings currentSettings];
-  v3 = [v2 supportPTOTRefactorPart2];
+  supportPTOTRefactorPart2 = [v2 supportPTOTRefactorPart2];
 
-  return v3;
+  return supportPTOTRefactorPart2;
 }
 
 @end

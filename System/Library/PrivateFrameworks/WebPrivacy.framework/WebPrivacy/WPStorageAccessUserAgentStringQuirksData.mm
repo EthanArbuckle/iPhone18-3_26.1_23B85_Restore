@@ -1,13 +1,13 @@
 @interface WPStorageAccessUserAgentStringQuirksData
-- (WPStorageAccessUserAgentStringQuirksData)initWithQuirks:(id)a3;
+- (WPStorageAccessUserAgentStringQuirksData)initWithQuirks:(id)quirks;
 @end
 
 @implementation WPStorageAccessUserAgentStringQuirksData
 
-- (WPStorageAccessUserAgentStringQuirksData)initWithQuirks:(id)a3
+- (WPStorageAccessUserAgentStringQuirksData)initWithQuirks:(id)quirks
 {
   v31 = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  quirksCopy = quirks;
   v29.receiver = self;
   v29.super_class = WPStorageAccessUserAgentStringQuirksData;
   v14 = [(WPStorageAccessUserAgentStringQuirksData *)&v29 init];
@@ -18,7 +18,7 @@
     v25 = 0x3032000000;
     v26 = __Block_byref_object_copy__1;
     v27 = __Block_byref_object_dispose__1;
-    v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v13, "count")}];
+    v28 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(quirksCopy, "count")}];
     v20 = 0;
     v21[0] = &v20;
     v21[1] = 0x2020000000;
@@ -27,7 +27,7 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v4 = v13;
+    v4 = quirksCopy;
     v5 = [v4 countByEnumeratingWithState:&v16 objects:v30 count:16];
     if (v5)
     {

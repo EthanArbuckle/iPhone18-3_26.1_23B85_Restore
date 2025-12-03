@@ -1,43 +1,43 @@
 @interface CRSUIWallpaperDimmingView
-- (CRSUIWallpaperDimmingView)initWithFrame:(CGRect)a3;
-- (void)setDim:(double)a3 animated:(BOOL)a4;
-- (void)setUseDimStyle:(unint64_t)a3;
+- (CRSUIWallpaperDimmingView)initWithFrame:(CGRect)frame;
+- (void)setDim:(double)dim animated:(BOOL)animated;
+- (void)setUseDimStyle:(unint64_t)style;
 @end
 
 @implementation CRSUIWallpaperDimmingView
 
-- (CRSUIWallpaperDimmingView)initWithFrame:(CGRect)a3
+- (CRSUIWallpaperDimmingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = CRSUIWallpaperDimmingView;
-  v3 = [(CRSUIWallpaperDimmingView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CRSUIWallpaperDimmingView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CRSUIWallpaperDimmingView *)v3 setUseDimStyle:3];
-    v5 = [(CRSUIWallpaperDimmingView *)v4 layer];
-    v6 = [MEMORY[0x277D75348] blackColor];
-    v7 = [v6 colorWithAlphaComponent:0.1];
-    [v5 setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
+    layer = [(CRSUIWallpaperDimmingView *)v4 layer];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v7 = [blackColor colorWithAlphaComponent:0.1];
+    [layer setBackgroundColor:{objc_msgSend(v7, "CGColor")}];
   }
 
   return v4;
 }
 
-- (void)setDim:(double)a3 animated:(BOOL)a4
+- (void)setDim:(double)dim animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [(CRSUIWallpaperDimmingView *)self layer];
+  animatedCopy = animated;
+  layer = [(CRSUIWallpaperDimmingView *)self layer];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __45__CRSUIWallpaperDimmingView_setDim_animated___block_invoke;
   v13 = &unk_278DA0AE0;
-  v7 = v6;
+  v7 = layer;
   v14 = v7;
-  v15 = a3;
+  dimCopy = dim;
   v8 = MEMORY[0x245D2CF20](&v10);
   v9 = v8;
-  if (v4)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] _animateUsingSpringWithDuration:4 delay:v8 options:0 mass:0.3388 stiffness:0.0 damping:1.0 initialVelocity:343.985 animations:37.0937 completion:{0.0, v10, v11, v12, v13}];
   }
@@ -55,21 +55,21 @@ uint64_t __45__CRSUIWallpaperDimmingView_setDim_animated___block_invoke(uint64_t
   return [*(a1 + 32) setOpacity:v1];
 }
 
-- (void)setUseDimStyle:(unint64_t)a3
+- (void)setUseDimStyle:(unint64_t)style
 {
-  if (self->_currentDimStyle != a3)
+  if (self->_currentDimStyle != style)
   {
-    self->_currentDimStyle = a3;
-    if (a3 > 1)
+    self->_currentDimStyle = style;
+    if (style > 1)
     {
-      v19 = [(CRSUIWallpaperDimmingView *)self layer];
-      [v19 setFilters:MEMORY[0x277CBEBF8]];
+      layer = [(CRSUIWallpaperDimmingView *)self layer];
+      [layer setFilters:MEMORY[0x277CBEBF8]];
     }
 
     else
     {
       v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
-      if (!a3)
+      if (!style)
       {
         dimmingColorMatrixFilter = self->_dimmingColorMatrixFilter;
         if (!dimmingColorMatrixFilter)
@@ -106,7 +106,7 @@ uint64_t __45__CRSUIWallpaperDimmingView_setDim_animated___block_invoke(uint64_t
         luminanceCurveMapFilter = self->_luminanceCurveMapFilter;
       }
 
-      if (a3)
+      if (style)
       {
         v14 = &unk_2855E8ED8;
       }
@@ -131,8 +131,8 @@ uint64_t __45__CRSUIWallpaperDimmingView_setDim_animated___block_invoke(uint64_t
       }
 
       [v5 addObject:saturationFilter];
-      v18 = [(CRSUIWallpaperDimmingView *)self layer];
-      [v18 setFilters:v5];
+      layer2 = [(CRSUIWallpaperDimmingView *)self layer];
+      [layer2 setFilters:v5];
     }
   }
 }

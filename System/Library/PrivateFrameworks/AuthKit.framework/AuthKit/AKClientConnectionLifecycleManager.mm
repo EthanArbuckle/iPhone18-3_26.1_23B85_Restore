@@ -1,6 +1,6 @@
 @interface AKClientConnectionLifecycleManager
 - (AKClientConnectionLifecycleManager)init;
-- (AKClientConnectionLifecycleManager)initWithConfiguration:(id)a3;
+- (AKClientConnectionLifecycleManager)initWithConfiguration:(id)configuration;
 - (id)activeServiceConnection;
 - (void)dealloc;
 - (void)teardownServiceConnection;
@@ -156,10 +156,10 @@ id __61__AKClientConnectionLifecycleManager_activeServiceConnection__block_invok
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AKClientConnectionLifecycleManager *)self teardownServiceConnection];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AKClientConnectionLifecycleManager;
   [(AKClientConnectionLifecycleManager *)&v2 dealloc];
 }
@@ -253,25 +253,25 @@ void __61__AKClientConnectionLifecycleManager_activeServiceConnection__block_inv
   *MEMORY[0x1E69E9840];
 }
 
-- (AKClientConnectionLifecycleManager)initWithConfiguration:(id)a3
+- (AKClientConnectionLifecycleManager)initWithConfiguration:(id)configuration
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v8;
-  v8 = 0;
+  objc_storeStrong(location, configuration);
+  v3 = selfCopy;
+  selfCopy = 0;
   v6 = [(AKClientConnectionLifecycleManager *)v3 init];
-  v8 = v6;
-  objc_storeStrong(&v8, v6);
+  selfCopy = v6;
+  objc_storeStrong(&selfCopy, v6);
   if (v6)
   {
-    objc_storeStrong(&v8->_serviceConnectionConfig, location[0]);
+    objc_storeStrong(&selfCopy->_serviceConnectionConfig, location[0]);
   }
 
-  v5 = MEMORY[0x1E69E5928](v8);
+  v5 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v8, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 

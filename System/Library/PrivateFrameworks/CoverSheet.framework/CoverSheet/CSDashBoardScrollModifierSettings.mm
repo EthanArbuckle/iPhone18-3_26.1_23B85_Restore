@@ -14,11 +14,11 @@
   [(CSDashBoardScrollModifierSettings *)self setMaxDragFromVerticalPerFrame:8.0];
   [(CSDashBoardScrollModifierSettings *)self setPowerOfVerticalDirectionSine2:1.5];
   [(CSDashBoardScrollModifierSettings *)self setInertialMultiplierSigmoidBase:0.0];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
   v5 = 48.0;
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v5 = 12.0;
   }
@@ -26,21 +26,21 @@
   [(CSDashBoardScrollModifierSettings *)self setInertialMultiplierSigmoidRange:v5];
   [(CSDashBoardScrollModifierSettings *)self setInertialMultiplierSigmoidPivot:75.0];
   [(CSDashBoardScrollModifierSettings *)self setInertialMultiplierSigmoidAlpha:-0.04];
-  v6 = [MEMORY[0x277D75418] currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom2 = [currentDevice2 userInterfaceIdiom];
 
   v8 = 45.0;
-  if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom2 & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v8 = 36.0;
   }
 
   [(CSDashBoardScrollModifierSettings *)self setMinPercentageSigmoidBase:v8];
-  v9 = [MEMORY[0x277D75418] currentDevice];
-  v10 = [v9 userInterfaceIdiom];
+  currentDevice3 = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom3 = [currentDevice3 userInterfaceIdiom];
 
   v11 = 14.0;
-  if ((v10 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     v11 = 8.0;
   }

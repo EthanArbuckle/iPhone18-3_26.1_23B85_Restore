@@ -1,6 +1,6 @@
 @interface DOCSBFolderGridCollectionViewLayout
 - (_TtC21DockFolderViewService35DOCSBFolderGridCollectionViewLayout)init;
-- (_TtC21DockFolderViewService35DOCSBFolderGridCollectionViewLayout)initWithCoder:(id)a3;
+- (_TtC21DockFolderViewService35DOCSBFolderGridCollectionViewLayout)initWithCoder:(id)coder;
 @end
 
 @implementation DOCSBFolderGridCollectionViewLayout
@@ -18,7 +18,7 @@
   return v2;
 }
 
-- (_TtC21DockFolderViewService35DOCSBFolderGridCollectionViewLayout)initWithCoder:(id)a3
+- (_TtC21DockFolderViewService35DOCSBFolderGridCollectionViewLayout)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);

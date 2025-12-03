@@ -1,28 +1,28 @@
 @interface CarTrafficAlertCardViewController
-+ (BOOL)alertVotable:(id)a3;
-- (BOOL)_alertRequiresOptIn:(id)a3;
-- (CarTrafficAlertCardViewController)initWithDelegate:(id)a3 trafficAlert:(id)a4 response:(id)a5;
++ (BOOL)alertVotable:(id)votable;
+- (BOOL)_alertRequiresOptIn:(id)in;
+- (CarTrafficAlertCardViewController)initWithDelegate:(id)delegate trafficAlert:(id)alert response:(id)response;
 - (CarTrafficAlertCardViewControllerDelegate)delegate;
 - (NSArray)focusOrderSubItems;
 - (NSArray)preferredFocusEnvironments;
-- (int)_feedbackActionTypeFor:(int64_t)a3;
-- (int)_voteTypeAlertWithResult:(int64_t)a3;
+- (int)_feedbackActionTypeFor:(int64_t)for;
+- (int)_voteTypeAlertWithResult:(int64_t)result;
 - (void)_cancelDismissTimer;
-- (void)_didReceiveIncidentUpdate:(id)a3;
-- (void)_didVoteIncident:(int64_t)a3 onTarget:(int)a4;
-- (void)_dismissTrafficAlertWithResult:(int64_t)a3;
-- (void)_dismissTrafficAlertWithResult:(int64_t)a3 onTarget:(int)a4;
-- (void)_recordEVAnalyticsWithResult:(int64_t)a3;
+- (void)_didReceiveIncidentUpdate:(id)update;
+- (void)_didVoteIncident:(int64_t)incident onTarget:(int)target;
+- (void)_dismissTrafficAlertWithResult:(int64_t)result;
+- (void)_dismissTrafficAlertWithResult:(int64_t)result onTarget:(int)target;
+- (void)_recordEVAnalyticsWithResult:(int64_t)result;
 - (void)_registerForSceneNotifications;
-- (void)_sceneDidActivate:(id)a3;
-- (void)_sendTrafficFeedbackForAlert:(id)a3 actionType:(int)a4;
+- (void)_sceneDidActivate:(id)activate;
+- (void)_sendTrafficFeedbackForAlert:(id)alert actionType:(int)type;
 - (void)_startProgressAnimationIfNeeded;
 - (void)dealloc;
 - (void)loadView;
-- (void)updateFromTrafficAlert:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)updateFromTrafficAlert:(id)alert;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CarTrafficAlertCardViewController
@@ -34,13 +34,13 @@
   return WeakRetained;
 }
 
-- (void)_didReceiveIncidentUpdate:(id)a3
+- (void)_didReceiveIncidentUpdate:(id)update
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"SiriTrafficIncidentIsClearKey"];
-  v6 = [v5 BOOLValue];
+  userInfo = [update userInfo];
+  v5 = [userInfo objectForKey:@"SiriTrafficIncidentIsClearKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = 4;
   }
@@ -53,65 +53,65 @@
   [(CarTrafficAlertCardViewController *)self _dismissTrafficAlertWithResult:v7 onTarget:0];
 }
 
-- (int)_feedbackActionTypeFor:(int64_t)a3
+- (int)_feedbackActionTypeFor:(int64_t)for
 {
-  if (a3 > 6)
+  if (for > 6)
   {
     return 1;
   }
 
   else
   {
-    return dword_101212F78[a3];
+    return dword_101212F78[for];
   }
 }
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = [(CarTrafficAlertCardViewController *)self trafficAlertView];
-  v3 = [v2 preferredFocusEnvironments];
+  trafficAlertView = [(CarTrafficAlertCardViewController *)self trafficAlertView];
+  preferredFocusEnvironments = [trafficAlertView preferredFocusEnvironments];
 
-  return v3;
+  return preferredFocusEnvironments;
 }
 
 - (NSArray)focusOrderSubItems
 {
-  v2 = [(CarTrafficAlertCardViewController *)self trafficAlertView];
-  v3 = [v2 focusOrderSubItems];
+  trafficAlertView = [(CarTrafficAlertCardViewController *)self trafficAlertView];
+  focusOrderSubItems = [trafficAlertView focusOrderSubItems];
 
-  return v3;
+  return focusOrderSubItems;
 }
 
-- (int)_voteTypeAlertWithResult:(int64_t)a3
+- (int)_voteTypeAlertWithResult:(int64_t)result
 {
-  if ((a3 - 3) > 3)
+  if ((result - 3) > 3)
   {
     return 1;
   }
 
   else
   {
-    return dword_101212BF0[a3 - 3];
+    return dword_101212BF0[result - 3];
   }
 }
 
-- (void)_didVoteIncident:(int64_t)a3 onTarget:(int)a4
+- (void)_didVoteIncident:(int64_t)incident onTarget:(int)target
 {
-  v4 = *&a4;
+  v4 = *&target;
   v7 = [(CarTrafficAlertCardViewController *)self _voteTypeAlertWithResult:?];
   if (v7 == 1)
   {
-    if (a3 != 5)
+    if (incident != 5)
     {
       return;
     }
 
-    v29 = +[MKMapService sharedService];
-    v8 = [(CarTrafficAlertCardViewController *)self trafficAlert];
-    v9 = [v8 incident];
-    v10 = [v9 type];
+    incident2 = +[MKMapService sharedService];
+    trafficAlert = [(CarTrafficAlertCardViewController *)self trafficAlert];
+    incident = [trafficAlert incident];
+    type = [incident type];
     v11 = @"ACCIDENT";
-    switch(v10)
+    switch(type)
     {
       case 0:
         break;
@@ -155,7 +155,7 @@
         v11 = @"AREA_INCIDENT";
         break;
       default:
-        if (v10 == 100)
+        if (type == 100)
         {
           v11 = @"TIME_BASED_RESTRICTION";
         }
@@ -163,57 +163,57 @@
         else
         {
 LABEL_31:
-          v11 = [NSString stringWithFormat:@"(unknown: %i)", v10];
+          v11 = [NSString stringWithFormat:@"(unknown: %i)", type];
         }
 
         break;
     }
 
-    [v29 captureUserAction:108 onTarget:v4 eventValue:v11];
+    [incident2 captureUserAction:108 onTarget:v4 eventValue:v11];
   }
 
   else
   {
     v12 = v7;
-    v13 = [(CarTrafficAlertCardViewController *)self trafficAlert];
-    v29 = [v13 incident];
+    trafficAlert2 = [(CarTrafficAlertCardViewController *)self trafficAlert];
+    incident2 = [trafficAlert2 incident];
 
-    v8 = [v29 incidentId];
-    v14 = +[MKTrafficSupport GEOTrafficIncidentTypeForGEORouteIncidentType:](MKTrafficSupport, "GEOTrafficIncidentTypeForGEORouteIncidentType:", [v29 type]);
-    if ([v29 hasPosition])
+    trafficAlert = [incident2 incidentId];
+    v14 = +[MKTrafficSupport GEOTrafficIncidentTypeForGEORouteIncidentType:](MKTrafficSupport, "GEOTrafficIncidentTypeForGEORouteIncidentType:", [incident2 type]);
+    if ([incident2 hasPosition])
     {
       v15 = [GEOLocation alloc];
-      v16 = [v29 position];
-      [v16 lat];
+      position = [incident2 position];
+      [position lat];
       v18 = v17;
-      v19 = [v29 position];
-      [v19 lng];
-      v9 = [v15 initWithLatitude:v18 longitude:v20];
+      position2 = [incident2 position];
+      [position2 lng];
+      incident = [v15 initWithLatitude:v18 longitude:v20];
     }
 
     else
     {
-      v16 = +[MKLocationManager sharedLocationManager];
-      v9 = [v16 currentLocation];
+      position = +[MKLocationManager sharedLocationManager];
+      incident = [position currentLocation];
     }
 
-    v11 = [[TrafficIncidentReport alloc] initWithIncidentLocation:v9 type:v14 userPath:3];
+    v11 = [[TrafficIncidentReport alloc] initWithIncidentLocation:incident type:v14 userPath:3];
     [(__CFString *)v11 setReportedFromCarplay:1];
-    if (v12 == 3 && v29)
+    if (v12 == 3 && incident2)
     {
-      v21 = [[VKTrafficIncidentFeature alloc] initWithRouteIncident:v29 routeOffsetInMeters:0 routeRelevance:0 onRoute:0];
+      v21 = [[VKTrafficIncidentFeature alloc] initWithRouteIncident:incident2 routeOffsetInMeters:0 routeRelevance:0 onRoute:0];
       v22 = +[TrafficIncidentsStorageManager sharedInstance];
       [v22 removeTrafficIncidentFeature:v21];
     }
 
-    [(__CFString *)v11 submitFeedbackForType:v12 incidentId:v8 completionHandler:0];
+    [(__CFString *)v11 submitFeedbackForType:v12 incidentId:trafficAlert completionHandler:0];
     v23 = +[MKMapService sharedService];
     v24 = [TrafficIncidentReport actionForVoteType:v12];
-    v25 = [(CarTrafficAlertCardViewController *)self trafficAlert];
-    v26 = [v25 incident];
-    v27 = [v26 type];
+    trafficAlert3 = [(CarTrafficAlertCardViewController *)self trafficAlert];
+    incident3 = [trafficAlert3 incident];
+    type2 = [incident3 type];
     v28 = @"ACCIDENT";
-    switch(v27)
+    switch(type2)
     {
       case 0:
         break;
@@ -257,7 +257,7 @@ LABEL_31:
         v28 = @"AREA_INCIDENT";
         break;
       default:
-        if (v27 == 100)
+        if (type2 == 100)
         {
           v28 = @"TIME_BASED_RESTRICTION";
         }
@@ -265,7 +265,7 @@ LABEL_31:
         else
         {
 LABEL_16:
-          v28 = [NSString stringWithFormat:@"(unknown: %i)", v27];
+          v28 = [NSString stringWithFormat:@"(unknown: %i)", type2];
         }
 
         break;
@@ -275,12 +275,12 @@ LABEL_16:
   }
 }
 
-- (BOOL)_alertRequiresOptIn:(id)a3
+- (BOOL)_alertRequiresOptIn:(id)in
 {
-  v3 = a3;
-  if ([v3 alertType] == 3)
+  inCopy = in;
+  if ([inCopy alertType] == 3)
   {
-    v4 = [v3 isAutomaticReroute] ^ 1;
+    v4 = [inCopy isAutomaticReroute] ^ 1;
   }
 
   else
@@ -291,72 +291,72 @@ LABEL_16:
   return v4;
 }
 
-- (void)_sendTrafficFeedbackForAlert:(id)a3 actionType:(int)a4
+- (void)_sendTrafficFeedbackForAlert:(id)alert actionType:(int)type
 {
-  v4 = *&a4;
-  v29 = a3;
+  v4 = *&type;
+  alertCopy = alert;
   v6 = objc_alloc_init(GEOTrafficRerouteFeedback);
-  v7 = [v29 etaResponseID];
-  [v6 setResponseId:v7];
+  etaResponseID = [alertCopy etaResponseID];
+  [v6 setResponseId:etaResponseID];
 
-  v8 = [v29 alternateRoute];
-  v9 = [v8 serverRouteID];
-  [v6 setReroutedRouteID:v9];
+  alternateRoute = [alertCopy alternateRoute];
+  serverRouteID = [alternateRoute serverRouteID];
+  [v6 setReroutedRouteID:serverRouteID];
 
-  [v29 newEstimatedTime];
+  [alertCopy newEstimatedTime];
   [v6 setReroutedRouteTravelTime:v10];
-  v11 = [v29 alternateRoute];
-  [v6 setReroutedRouteHistoricTravelTime:{objc_msgSend(v11, "historicTravelTime")}];
+  alternateRoute2 = [alertCopy alternateRoute];
+  [v6 setReroutedRouteHistoricTravelTime:{objc_msgSend(alternateRoute2, "historicTravelTime")}];
 
-  v12 = [v29 originalRoute];
-  v13 = [v12 serverRouteID];
-  [v6 setOldRouteID:v13];
+  originalRoute = [alertCopy originalRoute];
+  serverRouteID2 = [originalRoute serverRouteID];
+  [v6 setOldRouteID:serverRouteID2];
 
-  [v29 oldEstimatedTime];
+  [alertCopy oldEstimatedTime];
   [v6 setOldRouteTravelTime:v14];
-  [v29 oldHistoricTime];
+  [alertCopy oldHistoricTime];
   [v6 setOldRouteHistoricTravelTime:v15];
-  v16 = [v29 oldRouteIncidents];
-  [v6 setOldRouteIncidents:v16];
+  oldRouteIncidents = [alertCopy oldRouteIncidents];
+  [v6 setOldRouteIncidents:oldRouteIncidents];
 
   [v6 setActionType:v4];
   [v6 setBackgrounded:{+[UIApplication _maps_isAnyApplicationOrCarPlayApplicationSceneForeground](UIApplication, "_maps_isAnyApplicationOrCarPlayApplicationSceneForeground") ^ 1}];
-  v17 = [v29 bannerID];
-  [v6 setDisplayedBannerId:v17];
+  bannerID = [alertCopy bannerID];
+  [v6 setDisplayedBannerId:bannerID];
 
-  [v29 distanceToDestination];
+  [alertCopy distanceToDestination];
   [v6 setDistanceToDestination:?];
-  v18 = [(CarTrafficAlertCardViewController *)self displayTime];
-  if (v18)
+  displayTime = [(CarTrafficAlertCardViewController *)self displayTime];
+  if (displayTime)
   {
-    v19 = v18;
-    v20 = [(CarTrafficAlertCardViewController *)self dismissTime];
+    v19 = displayTime;
+    dismissTime = [(CarTrafficAlertCardViewController *)self dismissTime];
 
-    if (v20)
+    if (dismissTime)
     {
-      v21 = [(CarTrafficAlertCardViewController *)self dismissTime];
-      v22 = [(CarTrafficAlertCardViewController *)self displayTime];
-      [v21 timeIntervalSinceDate:v22];
+      dismissTime2 = [(CarTrafficAlertCardViewController *)self dismissTime];
+      displayTime2 = [(CarTrafficAlertCardViewController *)self displayTime];
+      [dismissTime2 timeIntervalSinceDate:displayTime2];
       v24 = v23;
 
       [v6 setBannerDurationSeconds:v24];
     }
   }
 
-  v25 = [v29 alertType];
-  if (v25 <= 7)
+  alertType = [alertCopy alertType];
+  if (alertType <= 7)
   {
-    if (((1 << v25) & 0x18) != 0)
+    if (((1 << alertType) & 0x18) != 0)
     {
       v26 = 2;
       goto LABEL_16;
     }
 
-    if (((1 << v25) & 0x44) != 0)
+    if (((1 << alertType) & 0x44) != 0)
     {
-      v27 = [v29 incident];
+      incident = [alertCopy incident];
 
-      if (v27)
+      if (incident)
       {
         v26 = 5;
       }
@@ -369,13 +369,13 @@ LABEL_16:
       goto LABEL_16;
     }
 
-    if (((1 << v25) & 0xA0) != 0)
+    if (((1 << alertType) & 0xA0) != 0)
     {
       goto LABEL_11;
     }
   }
 
-  if (!v25)
+  if (!alertType)
   {
 LABEL_11:
     v26 = 0;
@@ -383,7 +383,7 @@ LABEL_11:
 
   else
   {
-    if (v25 != 1)
+    if (alertType != 1)
     {
       goto LABEL_17;
     }
@@ -398,28 +398,28 @@ LABEL_17:
   [v28 addTrafficRerouteFeedback:v6];
 }
 
-- (void)_recordEVAnalyticsWithResult:(int64_t)a3
+- (void)_recordEVAnalyticsWithResult:(int64_t)result
 {
-  v5 = [(MNTrafficIncidentAlert *)self->_trafficAlert originalRoute];
-  v6 = [v5 waypoints];
-  v7 = [v6 count];
-  v8 = [(MNTrafficIncidentAlert *)self->_trafficAlert alternateRoute];
-  v9 = [v8 waypoints];
-  v10 = [v9 count];
+  originalRoute = [(MNTrafficIncidentAlert *)self->_trafficAlert originalRoute];
+  waypoints = [originalRoute waypoints];
+  v7 = [waypoints count];
+  alternateRoute = [(MNTrafficIncidentAlert *)self->_trafficAlert alternateRoute];
+  waypoints2 = [alternateRoute waypoints];
+  v10 = [waypoints2 count];
 
   if (v7 != v10)
   {
     v11 = +[NavigationFeedbackCollector sharedFeedbackCollector];
-    v12 = [(MNTrafficIncidentAlert *)self->_trafficAlert alternateRoute];
-    [v11 offeredEVRerouteWithAlternateRoute:v12 wasAccepted:0];
+    alternateRoute2 = [(MNTrafficIncidentAlert *)self->_trafficAlert alternateRoute];
+    [v11 offeredEVRerouteWithAlternateRoute:alternateRoute2 wasAccepted:0];
   }
 
-  v13 = [(MNTrafficIncidentAlert *)self->_trafficAlert originalRoute];
-  if ([v13 isEVRoute])
+  originalRoute2 = [(MNTrafficIncidentAlert *)self->_trafficAlert originalRoute];
+  if ([originalRoute2 isEVRoute])
   {
-    v14 = [(MNTrafficIncidentAlert *)self->_trafficAlert alternateRoute];
+    alternateRoute3 = [(MNTrafficIncidentAlert *)self->_trafficAlert alternateRoute];
 
-    if (v14)
+    if (alternateRoute3)
     {
       v15 = +[MKMapService sharedService];
       v29 = v15;
@@ -434,8 +434,8 @@ LABEL_11:
   {
   }
 
-  v17 = [(MNTrafficIncidentAlert *)self->_trafficAlert originalRoute];
-  if (([v17 isEVRoute] & 1) == 0)
+  originalRoute3 = [(MNTrafficIncidentAlert *)self->_trafficAlert originalRoute];
+  if (([originalRoute3 isEVRoute] & 1) == 0)
   {
 
 LABEL_16:
@@ -447,43 +447,43 @@ LABEL_23:
       return;
     }
 
-    v23 = self;
+    selfCopy = self;
     v24 = objc_opt_class();
     v25 = NSStringFromClass(v24);
     if (objc_opt_respondsToSelector())
     {
-      v26 = [(CarTrafficAlertCardViewController *)v23 performSelector:"accessibilityIdentifier"];
+      v26 = [(CarTrafficAlertCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v27 = v26;
       if (v26 && ![v26 isEqualToString:v25])
       {
-        v28 = [NSString stringWithFormat:@"%@<%p, %@>", v25, v23, v27];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v25, selfCopy, v27];
 
         goto LABEL_22;
       }
     }
 
-    v28 = [NSString stringWithFormat:@"%@<%p>", v25, v23];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v25, selfCopy];
 LABEL_22:
 
     *buf = 138543362;
-    v31 = v28;
+    v31 = selfCopy;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "[%{public}@] CarTrafficAlertCardViewController: tried to record EV CarPlay dodgeball, but received an unsupported state.", buf, 0xCu);
 
     goto LABEL_23;
   }
 
-  v18 = [(MNTrafficIncidentAlert *)self->_trafficAlert originalRouteNavigability];
-  v19 = [v18 isEvFeasible];
+  originalRouteNavigability = [(MNTrafficIncidentAlert *)self->_trafficAlert originalRouteNavigability];
+  isEvFeasible = [originalRouteNavigability isEvFeasible];
 
-  if (v19)
+  if (isEvFeasible)
   {
     goto LABEL_16;
   }
 
-  v20 = [(MNTrafficIncidentAlert *)self->_trafficAlert isReroute];
+  isReroute = [(MNTrafficIncidentAlert *)self->_trafficAlert isReroute];
   v15 = +[MKMapService sharedService];
   v29 = v15;
-  if (v20)
+  if (isReroute)
   {
     v16 = 6095;
     goto LABEL_11;
@@ -491,7 +491,7 @@ LABEL_22:
 
   [v15 captureUserAction:75 onTarget:1001 eventValue:0];
 
-  if (a3 != 1)
+  if (result != 1)
   {
     return;
   }
@@ -504,23 +504,23 @@ LABEL_12:
   [v15 captureUserAction:v16 onTarget:v21 eventValue:0];
 }
 
-- (void)_dismissTrafficAlertWithResult:(int64_t)a3 onTarget:(int)a4
+- (void)_dismissTrafficAlertWithResult:(int64_t)result onTarget:(int)target
 {
-  v4 = *&a4;
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([(CarTrafficAlertCardViewController *)v6 isDismissing])
+  v4 = *&target;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(CarTrafficAlertCardViewController *)selfCopy isDismissing])
   {
     v7 = sub_100006E1C();
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
 LABEL_20:
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
       return;
     }
 
-    v8 = v6;
+    v8 = selfCopy;
     if (!v8)
     {
       v13 = @"<nil>";
@@ -552,15 +552,15 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  [(CarTrafficAlertCardViewController *)v6 setIsDismissing:1];
-  objc_sync_exit(v6);
+  [(CarTrafficAlertCardViewController *)selfCopy setIsDismissing:1];
+  objc_sync_exit(selfCopy);
 
-  [(CarTrafficAlertCardViewController *)v6 _cancelDismissTimer];
-  v14 = [(CarTrafficAlertCardViewController *)v6 _feedbackActionTypeFor:a3];
+  [(CarTrafficAlertCardViewController *)selfCopy _cancelDismissTimer];
+  v14 = [(CarTrafficAlertCardViewController *)selfCopy _feedbackActionTypeFor:result];
   v15 = sub_100006E1C();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = v6;
+    v16 = selfCopy;
     if (!v16)
     {
       v21 = @"<nil>";
@@ -588,7 +588,7 @@ LABEL_22:
     *buf = 138543618;
     v51 = v21;
     v52 = 1024;
-    LODWORD(v53) = v14;
+    LODWORD(resultCopy) = v14;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_INFO, "[%{public}@] CarTrafficAlertCardViewController: Dismissing TrafficAlert with actionType: %d", buf, 0x12u);
   }
 
@@ -599,8 +599,8 @@ LABEL_22:
 
   else if (v14 == 3)
   {
-    v22 = [(CarTrafficAlertCardViewController *)v6 trafficAlert];
-    v23 = [(CarTrafficAlertCardViewController *)v6 _alertRequiresOptIn:v22];
+    trafficAlert = [(CarTrafficAlertCardViewController *)selfCopy trafficAlert];
+    v23 = [(CarTrafficAlertCardViewController *)selfCopy _alertRequiresOptIn:trafficAlert];
 
     v24 = v23 ^ 1;
   }
@@ -610,66 +610,66 @@ LABEL_22:
     v24 = 0;
   }
 
-  v25 = [(CarTrafficAlertCardViewController *)v6 response];
-  v26 = v25 == 0;
+  response = [(CarTrafficAlertCardViewController *)selfCopy response];
+  v26 = response == 0;
 
   if (!v26)
   {
-    v27 = [(CarTrafficAlertCardViewController *)v6 response];
-    v27[2](v27, v24);
+    response2 = [(CarTrafficAlertCardViewController *)selfCopy response];
+    response2[2](response2, v24);
 
-    [(CarTrafficAlertCardViewController *)v6 setResponse:0];
+    [(CarTrafficAlertCardViewController *)selfCopy setResponse:0];
   }
 
   v28 = +[NSDate date];
-  [(CarTrafficAlertCardViewController *)v6 setDismissTime:v28];
+  [(CarTrafficAlertCardViewController *)selfCopy setDismissTime:v28];
 
-  v29 = [(CarTrafficAlertCardViewController *)v6 trafficAlert];
-  [(CarTrafficAlertCardViewController *)v6 _sendTrafficFeedbackForAlert:v29 actionType:v14];
+  trafficAlert2 = [(CarTrafficAlertCardViewController *)selfCopy trafficAlert];
+  [(CarTrafficAlertCardViewController *)selfCopy _sendTrafficFeedbackForAlert:trafficAlert2 actionType:v14];
 
-  v30 = [(MNTrafficIncidentAlert *)v6->_trafficAlert originalRoute];
-  LODWORD(v29) = [v30 isEVRoute];
+  originalRoute = [(MNTrafficIncidentAlert *)selfCopy->_trafficAlert originalRoute];
+  LODWORD(trafficAlert2) = [originalRoute isEVRoute];
 
-  if (v29)
+  if (trafficAlert2)
   {
-    [(CarTrafficAlertCardViewController *)v6 _recordEVAnalyticsWithResult:a3];
+    [(CarTrafficAlertCardViewController *)selfCopy _recordEVAnalyticsWithResult:result];
   }
 
   else
   {
-    v31 = [(MNTrafficIncidentAlert *)v6->_trafficAlert analyticsMessage];
+    analyticsMessage = [(MNTrafficIncidentAlert *)selfCopy->_trafficAlert analyticsMessage];
 
-    if (v31)
+    if (analyticsMessage)
     {
-      if (a3 == 2)
+      if (result == 2)
       {
         v34 = +[MKMapService sharedService];
-        v35 = [(MNTrafficIncidentAlert *)v6->_trafficAlert analyticsMessage];
-        [v34 captureUserAction:3061 onTarget:1001 eventValue:v35];
+        analyticsMessage2 = [(MNTrafficIncidentAlert *)selfCopy->_trafficAlert analyticsMessage];
+        [v34 captureUserAction:3061 onTarget:1001 eventValue:analyticsMessage2];
       }
 
-      else if (a3 == 1)
+      else if (result == 1)
       {
         v32 = +[MKMapService sharedService];
-        v33 = [(MNTrafficIncidentAlert *)v6->_trafficAlert analyticsMessage];
-        [v32 captureUserAction:3060 onTarget:1001 eventValue:v33];
+        analyticsMessage3 = [(MNTrafficIncidentAlert *)selfCopy->_trafficAlert analyticsMessage];
+        [v32 captureUserAction:3060 onTarget:1001 eventValue:analyticsMessage3];
       }
     }
   }
 
   v36 = +[IPCServer sharedServer];
-  v37 = [(CarTrafficAlertCardViewController *)v6 trafficAlert];
-  [v36 dismissTrafficIncidentAlert:v37];
+  trafficAlert3 = [(CarTrafficAlertCardViewController *)selfCopy trafficAlert];
+  [v36 dismissTrafficIncidentAlert:trafficAlert3];
 
   v38 = +[MSPMapsPushDaemonRemoteProxy sharedInstance];
-  v39 = [(CarTrafficAlertCardViewController *)v6 trafficAlert];
-  v40 = [v39 alertID];
-  [v38 clearTrafficIncidentBulletinWithAlertID:v40];
+  trafficAlert4 = [(CarTrafficAlertCardViewController *)selfCopy trafficAlert];
+  alertID = [trafficAlert4 alertID];
+  [v38 clearTrafficIncidentBulletinWithAlertID:alertID];
 
-  v41 = [(CarTrafficAlertCardViewController *)v6 trafficAlert];
-  LODWORD(v39) = [CarTrafficAlertCardViewController alertVotable:v41];
+  trafficAlert5 = [(CarTrafficAlertCardViewController *)selfCopy trafficAlert];
+  LODWORD(trafficAlert4) = [CarTrafficAlertCardViewController alertVotable:trafficAlert5];
 
-  if (!v39)
+  if (!trafficAlert4)
   {
     goto LABEL_46;
   }
@@ -677,7 +677,7 @@ LABEL_22:
   v42 = sub_100006E1C();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_INFO))
   {
-    v43 = v6;
+    v43 = selfCopy;
     v44 = objc_opt_class();
     v45 = NSStringFromClass(v44);
     if (objc_opt_respondsToSelector())
@@ -698,49 +698,49 @@ LABEL_44:
     *buf = 138543618;
     v51 = v48;
     v52 = 2048;
-    v53 = a3;
+    resultCopy = result;
     _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "[%{public}@] CarTrafficAlertCardViewController: did vote on TrafficAlert: %ld", buf, 0x16u);
   }
 
-  [(CarTrafficAlertCardViewController *)v6 _didVoteIncident:a3 onTarget:v4];
+  [(CarTrafficAlertCardViewController *)selfCopy _didVoteIncident:result onTarget:v4];
 LABEL_46:
-  v49 = [(CarTrafficAlertCardViewController *)v6 delegate];
-  [v49 trafficAlertCardViewControllerDismiss:v6];
+  delegate = [(CarTrafficAlertCardViewController *)selfCopy delegate];
+  [delegate trafficAlertCardViewControllerDismiss:selfCopy];
 
-  [(CarTrafficAlertCardViewController *)v6 setIsDismissing:0];
+  [(CarTrafficAlertCardViewController *)selfCopy setIsDismissing:0];
 }
 
-- (void)_dismissTrafficAlertWithResult:(int64_t)a3
+- (void)_dismissTrafficAlertWithResult:(int64_t)result
 {
   [(CarTrafficAlertCardViewController *)self setStartedAnimatingProgressBar:0];
 
-  [(CarTrafficAlertCardViewController *)self _dismissTrafficAlertWithResult:a3 onTarget:1001];
+  [(CarTrafficAlertCardViewController *)self _dismissTrafficAlertWithResult:result onTarget:1001];
 }
 
-- (void)updateFromTrafficAlert:(id)a3
+- (void)updateFromTrafficAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = sub_1005B8AF4();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v7 = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = alertCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Updating traffic alert: %@", &v7, 0x16u);
   }
 
-  [(CarTrafficAlertCardViewController *)self setTrafficAlert:v4];
-  v6 = [(CarTrafficAlertCardViewController *)self trafficAlertView];
-  [v6 setTrafficAlert:v4];
+  [(CarTrafficAlertCardViewController *)self setTrafficAlert:alertCopy];
+  trafficAlertView = [(CarTrafficAlertCardViewController *)self trafficAlertView];
+  [trafficAlertView setTrafficAlert:alertCopy];
 
   [(CarTrafficAlertCardViewController *)self _startProgressAnimationIfNeeded];
 }
 
 - (void)_cancelDismissTimer
 {
-  v3 = [(CarTrafficAlertCardViewController *)self dismissTimer];
-  [v3 invalidate];
+  dismissTimer = [(CarTrafficAlertCardViewController *)self dismissTimer];
+  [dismissTimer invalidate];
 
   [(CarTrafficAlertCardViewController *)self setDismissTimer:0];
 }
@@ -751,30 +751,30 @@ LABEL_46:
   {
     if ([(CarTrafficAlertCardViewController *)self isViewLoaded])
     {
-      v3 = [(CarTrafficAlertCardViewController *)self view];
-      v4 = [v3 window];
+      view = [(CarTrafficAlertCardViewController *)self view];
+      window = [view window];
 
-      if (v4)
+      if (window)
       {
-        v5 = [(CarTrafficAlertCardViewController *)self trafficAlert];
-        v6 = [v5 shouldShowTimer];
-        v7 = [(CarTrafficAlertCardViewController *)self trafficAlertView];
-        [v7 setProgressionHidden:v6 ^ 1];
+        trafficAlert = [(CarTrafficAlertCardViewController *)self trafficAlert];
+        shouldShowTimer = [trafficAlert shouldShowTimer];
+        trafficAlertView = [(CarTrafficAlertCardViewController *)self trafficAlertView];
+        [trafficAlertView setProgressionHidden:shouldShowTimer ^ 1];
 
-        v8 = [(CarTrafficAlertCardViewController *)self trafficAlert];
-        [v8 alertDisplayDuration];
+        trafficAlert2 = [(CarTrafficAlertCardViewController *)self trafficAlert];
+        [trafficAlert2 alertDisplayDuration];
         v10 = v9;
 
         if (v10 > 0.0)
         {
-          v11 = [(CarTrafficAlertCardViewController *)self trafficAlert];
-          v12 = [v11 shouldShowTimer];
+          trafficAlert3 = [(CarTrafficAlertCardViewController *)self trafficAlert];
+          shouldShowTimer2 = [trafficAlert3 shouldShowTimer];
 
-          if (v12)
+          if (shouldShowTimer2)
           {
             objc_initWeak(&location, self);
-            v13 = [(CarTrafficAlertCardViewController *)self trafficAlertView];
-            [v13 startProgressAnimationWithDuration:v10];
+            trafficAlertView2 = [(CarTrafficAlertCardViewController *)self trafficAlertView];
+            [trafficAlertView2 startProgressAnimationWithDuration:v10];
 
             [(CarTrafficAlertCardViewController *)self setStartedAnimatingProgressBar:1];
             [(CarTrafficAlertCardViewController *)self _cancelDismissTimer];
@@ -795,7 +795,7 @@ LABEL_46:
   }
 }
 
-- (void)_sceneDidActivate:(id)a3
+- (void)_sceneDidActivate:(id)activate
 {
   if (![(CarTrafficAlertCardViewController *)self hasStartedAnimatingProgressBar])
   {
@@ -807,11 +807,11 @@ LABEL_46:
 
 - (void)_registerForSceneNotifications
 {
-  v3 = [(CarTrafficAlertCardViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  view = [(CarTrafficAlertCardViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (!v5)
+  if (!windowScene)
   {
     v6 = sub_100006E1C();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -819,10 +819,10 @@ LABEL_46:
       goto LABEL_13;
     }
 
-    v7 = self;
-    if (!v7)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v12 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_12;
     }
 
@@ -830,53 +830,53 @@ LABEL_46:
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CarTrafficAlertCardViewController *)v7 performSelector:"accessibilityIdentifier"];
+      v10 = [(CarTrafficAlertCardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v9, selfCopy, v11];
 
         goto LABEL_10;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v9, selfCopy];
 LABEL_10:
 
 LABEL_12:
     *buf = 138543362;
-    v14 = v12;
+    v14 = selfCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "[%{public}@] CarTrafficAlert card failed to get scene to register for lifecycle events.", buf, 0xCu);
 
     goto LABEL_13;
   }
 
   v6 = +[NSNotificationCenter defaultCenter];
-  [v6 addObserver:self selector:"_sceneDidActivate:" name:UISceneDidActivateNotification object:v5];
+  [v6 addObserver:self selector:"_sceneDidActivate:" name:UISceneDidActivateNotification object:windowScene];
 LABEL_13:
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CarTrafficAlertCardViewController;
-  [(CarTrafficAlertCardViewController *)&v5 viewWillDisappear:a3];
+  [(CarTrafficAlertCardViewController *)&v5 viewWillDisappear:disappear];
   [(CarTrafficAlertCardViewController *)self _cancelDismissTimer];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = CarTrafficAlertCardViewController;
-  [(CarTrafficAlertCardViewController *)&v9 viewDidAppear:a3];
-  v4 = [(CarTrafficAlertCardViewController *)self view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 activationState];
+  [(CarTrafficAlertCardViewController *)&v9 viewDidAppear:appear];
+  view = [(CarTrafficAlertCardViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  activationState = [windowScene activationState];
 
-  if (v7)
+  if (activationState)
   {
     [(CarTrafficAlertCardViewController *)self _registerForSceneNotifications];
   }
@@ -892,35 +892,35 @@ LABEL_13:
   [(CarTrafficAlertCardViewController *)self setDismissTime:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v8.receiver = self;
   v8.super_class = CarTrafficAlertCardViewController;
-  [(CarTrafficAlertCardViewController *)&v8 viewWillAppear:a3];
+  [(CarTrafficAlertCardViewController *)&v8 viewWillAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"_didReceiveIncidentUpdate:" name:@"SiriTrafficIncidentUpdateNotification" object:0];
 
-  v5 = [(MNTrafficIncidentAlert *)self->_trafficAlert analyticsMessage];
+  analyticsMessage = [(MNTrafficIncidentAlert *)self->_trafficAlert analyticsMessage];
 
-  if (v5)
+  if (analyticsMessage)
   {
     v6 = +[MKMapService sharedService];
-    v7 = [(MNTrafficIncidentAlert *)self->_trafficAlert analyticsMessage];
-    [v6 captureUserAction:248 onTarget:1001 eventValue:v7];
+    analyticsMessage2 = [(MNTrafficIncidentAlert *)self->_trafficAlert analyticsMessage];
+    [v6 captureUserAction:248 onTarget:1001 eventValue:analyticsMessage2];
   }
 }
 
 - (void)loadView
 {
   v3 = [CarTrafficAlertView alloc];
-  v4 = [(CarTrafficAlertCardViewController *)self trafficAlert];
-  v6 = [(CarTrafficAlertView *)v3 initWithDelegate:self trafficAlert:v4];
+  trafficAlert = [(CarTrafficAlertCardViewController *)self trafficAlert];
+  v6 = [(CarTrafficAlertView *)v3 initWithDelegate:self trafficAlert:trafficAlert];
 
   [(CarTrafficAlertView *)v6 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CarTrafficAlertCardViewController *)self setView:v6];
   [(CarTrafficAlertCardViewController *)self setTrafficAlertView:v6];
-  v5 = [(CarTrafficAlertCardViewController *)self trafficAlert];
-  [(CarTrafficAlertCardViewController *)self _sendTrafficFeedbackForAlert:v5 actionType:4];
+  trafficAlert2 = [(CarTrafficAlertCardViewController *)self trafficAlert];
+  [(CarTrafficAlertCardViewController *)self _sendTrafficFeedbackForAlert:trafficAlert2 actionType:4];
 }
 
 - (void)dealloc
@@ -929,7 +929,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -938,11 +938,11 @@ LABEL_13:
   [(CarTrafficAlertCardViewController *)&v4 dealloc];
 }
 
-- (CarTrafficAlertCardViewController)initWithDelegate:(id)a3 trafficAlert:(id)a4 response:(id)a5
+- (CarTrafficAlertCardViewController)initWithDelegate:(id)delegate trafficAlert:(id)alert response:(id)response
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  alertCopy = alert;
+  responseCopy = response;
   v16.receiver = self;
   v16.super_class = CarTrafficAlertCardViewController;
   v11 = [(CarTrafficAlertCardViewController *)&v16 initWithNibName:0 bundle:0];
@@ -954,13 +954,13 @@ LABEL_13:
       *buf = 134349314;
       v18 = v11;
       v19 = 2112;
-      v20 = v9;
+      v20 = alertCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] Initializing with traffic alert: %@", buf, 0x16u);
     }
 
-    objc_storeWeak(&v11->_delegate, v8);
-    objc_storeStrong(&v11->_trafficAlert, a4);
-    v13 = objc_retainBlock(v10);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_trafficAlert, alert);
+    v13 = objc_retainBlock(responseCopy);
     response = v11->_response;
     v11->_response = v13;
   }
@@ -968,13 +968,13 @@ LABEL_13:
   return v11;
 }
 
-+ (BOOL)alertVotable:(id)a3
++ (BOOL)alertVotable:(id)votable
 {
-  v3 = a3;
-  if ([v3 alertType] == 1 || objc_msgSend(v3, "alertType") == 2)
+  votableCopy = votable;
+  if ([votableCopy alertType] == 1 || objc_msgSend(votableCopy, "alertType") == 2)
   {
-    v4 = [v3 acceptButtonInfo];
-    v5 = v4 != 0;
+    acceptButtonInfo = [votableCopy acceptButtonInfo];
+    v5 = acceptButtonInfo != 0;
   }
 
   else

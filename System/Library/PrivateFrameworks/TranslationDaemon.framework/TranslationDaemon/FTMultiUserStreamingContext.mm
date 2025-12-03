@@ -1,29 +1,29 @@
 @interface FTMultiUserStreamingContext
-- (FTMultiUserStreamingContext)initWithGRPCStreamingCallContext:(id)a3;
-- (void)sendMultiUserStreamingRequest:(id)a3;
+- (FTMultiUserStreamingContext)initWithGRPCStreamingCallContext:(id)context;
+- (void)sendMultiUserStreamingRequest:(id)request;
 @end
 
 @implementation FTMultiUserStreamingContext
 
-- (FTMultiUserStreamingContext)initWithGRPCStreamingCallContext:(id)a3
+- (FTMultiUserStreamingContext)initWithGRPCStreamingCallContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = FTMultiUserStreamingContext;
   v6 = [(FTMultiUserStreamingContext *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_grpcContext, a3);
+    objc_storeStrong(&v6->_grpcContext, context);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)sendMultiUserStreamingRequest:(id)a3
+- (void)sendMultiUserStreamingRequest:(id)request
 {
-  v4 = [a3 flatbuffData];
+  flatbuffData = [request flatbuffData];
   [(OspreyClientStreamingContext *)self->_grpcContext writeFrame:?];
 }
 

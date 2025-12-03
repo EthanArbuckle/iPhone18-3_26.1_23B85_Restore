@@ -1,40 +1,40 @@
 @interface MTOptionsTableViewController
-- (MTOptionsTableViewController)initWithOption:(id)a3 largeTitleDisplayMode:(int64_t)a4;
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4;
+- (MTOptionsTableViewController)initWithOption:(id)option largeTitleDisplayMode:(int64_t)mode;
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section;
 - (id)footerText;
 - (id)headerText;
 - (id)metricsName;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)selectedIndex;
-- (void)_updateTextColorForCell:(id)a3 selected:(BOOL)a4;
-- (void)contentSizeCategoryDidChange:(id)a3;
+- (void)_updateTextColorForCell:(id)cell selected:(BOOL)selected;
+- (void)contentSizeCategoryDidChange:(id)change;
 - (void)dealloc;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
 - (void)updateRowHeight;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTOptionsTableViewController
 
-- (MTOptionsTableViewController)initWithOption:(id)a3 largeTitleDisplayMode:(int64_t)a4
+- (MTOptionsTableViewController)initWithOption:(id)option largeTitleDisplayMode:(int64_t)mode
 {
-  v7 = a3;
+  optionCopy = option;
   v13.receiver = self;
   v13.super_class = MTOptionsTableViewController;
   v8 = [(MTOptionsTableViewController *)&v13 initWithStyle:2];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_option, a3);
+    objc_storeStrong(&v8->_option, option);
     v10 = +[NSNotificationCenter defaultCenter];
     [v10 addObserver:v9 selector:"contentSizeCategoryDidChange:" name:UIContentSizeCategoryDidChangeNotification object:0];
 
-    v11 = [(MTOptionsTableViewController *)v9 navigationItem];
-    [v11 setLargeTitleDisplayMode:a4];
+    navigationItem = [(MTOptionsTableViewController *)v9 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:mode];
   }
 
   return v9;
@@ -58,60 +58,60 @@
   [(MTOptionsTableViewController *)&v4 dealloc];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = MTOptionsTableViewController;
-  v7 = a4;
-  [(MTOptionsTableViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(MTOptionsTableViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10010F5E4;
   v8[3] = &unk_1004DB448;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
-- (void)contentSizeCategoryDidChange:(id)a3
+- (void)contentSizeCategoryDidChange:(id)change
 {
-  v4 = [(MTOptionsTableViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(MTOptionsTableViewController *)self view];
+  [view setNeedsLayout];
 
   [(MTOptionsTableViewController *)self updateRowHeight];
 }
 
 - (void)updateRowHeight
 {
-  v3 = [(MTOptionsTableViewController *)self tableView];
+  tableView = [(MTOptionsTableViewController *)self tableView];
   [objc_opt_class() rowHeight];
-  [v3 setRowHeight:?];
+  [tableView setRowHeight:?];
 
-  v4 = [(MTOptionsTableViewController *)self tableView];
-  [v4 reloadData];
+  tableView2 = [(MTOptionsTableViewController *)self tableView];
+  [tableView2 reloadData];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(MTOptionsTableViewController *)self option:a3];
-  v5 = [v4 options];
-  v6 = [v5 longTitles];
-  v7 = [v6 count];
+  v4 = [(MTOptionsTableViewController *)self option:view];
+  options = [v4 options];
+  longTitles = [options longTitles];
+  v7 = [longTitles count];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"OptionCell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"OptionCell"];
   if (!v7)
   {
     v7 = [[MTTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"OptionCell"];
   }
 
-  v8 = [v6 row];
+  v8 = [pathCopy row];
   v9 = v8 == [(MTOptionsTableViewController *)self selectedIndex];
   v10 = v9;
   if (v9)
@@ -126,49 +126,49 @@
 
   [(MTTableViewCell *)v7 setAccessoryType:v11];
   [(MTOptionsTableViewController *)self _updateTextColorForCell:v7 selected:v10];
-  v12 = [(MTTableViewCell *)v7 textLabel];
-  v13 = [objc_opt_class() optionFont];
-  [v12 setFont:v13];
+  textLabel = [(MTTableViewCell *)v7 textLabel];
+  optionFont = [objc_opt_class() optionFont];
+  [textLabel setFont:optionFont];
 
-  v14 = [(MTTableViewCell *)v7 textLabel];
-  v15 = [(MTOptionsTableViewController *)self option];
-  v16 = [v15 options];
-  v17 = [v16 longTitles];
-  v18 = [v17 objectAtIndex:{objc_msgSend(v6, "row")}];
-  [v14 setText:v18];
+  textLabel2 = [(MTTableViewCell *)v7 textLabel];
+  option = [(MTOptionsTableViewController *)self option];
+  options = [option options];
+  longTitles = [options longTitles];
+  v18 = [longTitles objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+  [textLabel2 setText:v18];
 
   return v7;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v5 = [(MTOptionsTableViewController *)self footerText:a3];
+  v5 = [(MTOptionsTableViewController *)self footerText:view];
 
   if (v5)
   {
     v5 = objc_alloc_init(MTGenericSettingsFooterLabelView);
-    v6 = [(MTOptionsTableViewController *)self footerText];
-    v7 = [(MTGenericSettingsFooterLabelView *)v5 textView];
-    [v7 setAttributedText:v6];
+    footerText = [(MTOptionsTableViewController *)self footerText];
+    textView = [(MTGenericSettingsFooterLabelView *)v5 textView];
+    [textView setAttributedText:footerText];
   }
 
   return v5;
 }
 
-- (double)tableView:(id)a3 heightForFooterInSection:(int64_t)a4
+- (double)tableView:(id)view heightForFooterInSection:(int64_t)section
 {
-  v5 = [(MTOptionsTableViewController *)self footerText:a3];
+  v5 = [(MTOptionsTableViewController *)self footerText:view];
   if ([v5 length])
   {
-    v6 = [v5 string];
-    v7 = [(MTOptionsTableViewController *)self view];
-    [v7 frame];
+    string = [v5 string];
+    view = [(MTOptionsTableViewController *)self view];
+    [view frame];
     v8 = CGRectGetWidth(v17) + -64.0;
     v15 = NSFontAttributeName;
     v9 = +[UIFont sectionFooterFont];
     v16 = v9;
     v10 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
-    [v6 boundingRectWithSize:1 options:v10 attributes:0 context:{v8, 1.79769313e308}];
+    [string boundingRectWithSize:1 options:v10 attributes:0 context:{v8, 1.79769313e308}];
     v12 = v11;
 
     v13 = v12 + 16.0;
@@ -182,56 +182,56 @@
   return v13;
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v9 = a4;
+  headerViewCopy = headerView;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v9;
-    v7 = [(MTOptionsTableViewController *)self headerText];
-    v8 = [v6 textLabel];
+    v6 = headerViewCopy;
+    headerText = [(MTOptionsTableViewController *)self headerText];
+    textLabel = [v6 textLabel];
 
-    [v8 setText:v7];
+    [textLabel setText:headerText];
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", -[MTOptionsTableViewController selectedIndex](self, "selectedIndex"), [v6 section]);
-  v8 = [v15 cellForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", -[MTOptionsTableViewController selectedIndex](self, "selectedIndex"), [pathCopy section]);
+  v8 = [viewCopy cellForRowAtIndexPath:v7];
   [v8 setAccessoryType:0];
   [(MTOptionsTableViewController *)self _updateTextColorForCell:v8 selected:0];
-  v9 = [v15 cellForRowAtIndexPath:v6];
+  v9 = [viewCopy cellForRowAtIndexPath:pathCopy];
 
   [v9 setAccessoryType:3];
   [(MTOptionsTableViewController *)self _updateTextColorForCell:v9 selected:1];
-  [v15 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   optionSelectedBlock = self->_optionSelectedBlock;
   if (optionSelectedBlock)
   {
-    optionSelectedBlock[2](optionSelectedBlock, [v6 row]);
+    optionSelectedBlock[2](optionSelectedBlock, [pathCopy row]);
   }
 
-  v11 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [v6 section]);
-  [v15 reloadSections:v11 withRowAnimation:100];
+  v11 = +[NSIndexSet indexSetWithIndex:](NSIndexSet, "indexSetWithIndex:", [pathCopy section]);
+  [viewCopy reloadSections:v11 withRowAnimation:100];
 
-  v12 = [v15 headerViewForSection:{objc_msgSend(v6, "section")}];
+  v12 = [viewCopy headerViewForSection:{objc_msgSend(pathCopy, "section")}];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v13 = [v12 textLabel];
-    v14 = [(MTOptionsTableViewController *)self headerText];
-    [v13 setText:v14];
+    textLabel = [v12 textLabel];
+    headerText = [(MTOptionsTableViewController *)self headerText];
+    [textLabel setText:headerText];
   }
 }
 
-- (void)_updateTextColorForCell:(id)a3 selected:(BOOL)a4
+- (void)_updateTextColorForCell:(id)cell selected:(BOOL)selected
 {
-  v5 = a3;
-  if (a4)
+  cellCopy = cell;
+  if (selected)
   {
     +[UIColor appTintColor];
   }
@@ -241,47 +241,47 @@
     +[UIColor cellTextColor];
   }
   v7 = ;
-  v6 = [v5 textLabel];
+  textLabel = [cellCopy textLabel];
 
-  [v6 setTextColor:v7];
+  [textLabel setTextColor:v7];
 }
 
 - (id)footerText
 {
-  v3 = [(MTOptionsTableViewController *)self option];
-  v4 = [v3 footerText];
+  option = [(MTOptionsTableViewController *)self option];
+  footerText = [option footerText];
 
-  v5 = [(MTOptionsTableViewController *)self option];
-  v6 = [v5 options];
-  v7 = [v6 footerCallback];
+  option2 = [(MTOptionsTableViewController *)self option];
+  options = [option2 options];
+  footerCallback = [options footerCallback];
 
-  if (v7)
+  if (footerCallback)
   {
-    v8 = [(MTOptionsTableViewController *)self option];
-    v9 = [v8 options];
-    v10 = [v9 footerCallback];
-    v11 = [(MTOptionsTableViewController *)self option];
-    v12 = [v11 value];
-    v13 = (v10)[2](v10, [v12 unsignedIntegerValue]);
+    option3 = [(MTOptionsTableViewController *)self option];
+    options2 = [option3 options];
+    footerCallback2 = [options2 footerCallback];
+    option4 = [(MTOptionsTableViewController *)self option];
+    value = [option4 value];
+    v13 = (footerCallback2)[2](footerCallback2, [value unsignedIntegerValue]);
   }
 
-  return v4;
+  return footerText;
 }
 
 - (id)headerText
 {
-  v3 = [(MTOptionsTableViewController *)self option];
-  v4 = [v3 options];
-  v5 = [v4 headerCallback];
+  option = [(MTOptionsTableViewController *)self option];
+  options = [option options];
+  headerCallback = [options headerCallback];
 
-  if (v5)
+  if (headerCallback)
   {
-    v6 = [(MTOptionsTableViewController *)self option];
-    v7 = [v6 options];
-    v8 = [v7 headerCallback];
-    v9 = [(MTOptionsTableViewController *)self option];
-    v10 = [v9 value];
-    v11 = (v8)[2](v8, [v10 unsignedIntegerValue]);
+    option2 = [(MTOptionsTableViewController *)self option];
+    options2 = [option2 options];
+    headerCallback2 = [options2 headerCallback];
+    option3 = [(MTOptionsTableViewController *)self option];
+    value = [option3 value];
+    v11 = (headerCallback2)[2](headerCallback2, [value unsignedIntegerValue]);
   }
 
   return 0;
@@ -289,20 +289,20 @@
 
 - (unint64_t)selectedIndex
 {
-  v3 = [(MTOptionsTableViewController *)self option];
-  v4 = [v3 options];
-  v5 = [(MTOptionsTableViewController *)self option];
-  v6 = [v5 value];
-  v7 = [v4 indexForValue:{objc_msgSend(v6, "unsignedIntegerValue")}];
+  option = [(MTOptionsTableViewController *)self option];
+  options = [option options];
+  option2 = [(MTOptionsTableViewController *)self option];
+  value = [option2 value];
+  v7 = [options indexForValue:{objc_msgSend(value, "unsignedIntegerValue")}];
 
   return v7;
 }
 
 - (id)metricsName
 {
-  v2 = [(MTOptionsTableViewController *)self option];
-  v3 = [v2 headerTitle];
-  v4 = [NSString stringWithFormat:@"Settings: %@", v3];
+  option = [(MTOptionsTableViewController *)self option];
+  headerTitle = [option headerTitle];
+  v4 = [NSString stringWithFormat:@"Settings: %@", headerTitle];
 
   return v4;
 }

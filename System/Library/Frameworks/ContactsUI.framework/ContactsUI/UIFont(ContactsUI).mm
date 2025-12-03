@@ -10,9 +10,9 @@
 
 - (id)withCaseSensitiveAttributes
 {
-  v1 = [a1 fontDescriptor];
-  v2 = [MEMORY[0x1E69DB878] caseSensitiveAttributes];
-  v3 = [v1 fontDescriptorByAddingAttributes:v2];
+  fontDescriptor = [self fontDescriptor];
+  caseSensitiveAttributes = [MEMORY[0x1E69DB878] caseSensitiveAttributes];
+  v3 = [fontDescriptor fontDescriptorByAddingAttributes:caseSensitiveAttributes];
 
   v4 = [MEMORY[0x1E69DB878] fontWithDescriptor:v3 size:0.0];
 
@@ -46,8 +46,8 @@
 + (id)cnui_footnoteFont
 {
   v0 = MEMORY[0x1E69DB878];
-  v1 = [MEMORY[0x1E69DB880] cnui_footnoteFontDescriptor];
-  v2 = [v0 fontWithDescriptor:v1 size:0.0];
+  cnui_footnoteFontDescriptor = [MEMORY[0x1E69DB880] cnui_footnoteFontDescriptor];
+  v2 = [v0 fontWithDescriptor:cnui_footnoteFontDescriptor size:0.0];
 
   return v2;
 }
@@ -55,8 +55,8 @@
 + (id)cnui_bodyFont
 {
   v0 = MEMORY[0x1E69DB878];
-  v1 = [MEMORY[0x1E69DB880] cnui_bodyFontDescriptor];
-  v2 = [v0 fontWithDescriptor:v1 size:0.0];
+  cnui_bodyFontDescriptor = [MEMORY[0x1E69DB880] cnui_bodyFontDescriptor];
+  v2 = [v0 fontWithDescriptor:cnui_bodyFontDescriptor size:0.0];
 
   return v2;
 }

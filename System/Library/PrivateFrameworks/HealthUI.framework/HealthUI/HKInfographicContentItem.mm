@@ -1,21 +1,21 @@
 @interface HKInfographicContentItem
-- (HKInfographicContentItem)initWithTitle:(id)a3 description:(id)a4;
+- (HKInfographicContentItem)initWithTitle:(id)title description:(id)description;
 @end
 
 @implementation HKInfographicContentItem
 
-- (HKInfographicContentItem)initWithTitle:(id)a3 description:(id)a4
+- (HKInfographicContentItem)initWithTitle:(id)title description:(id)description
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  descriptionCopy = description;
   v11.receiver = self;
   v11.super_class = HKInfographicContentItem;
   v8 = [(HKInfographicContentItem *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(HKInfographicContentItem *)v8 setTitleString:v6];
-    [(HKInfographicContentItem *)v9 setDescriptionString:v7];
+    [(HKInfographicContentItem *)v8 setTitleString:titleCopy];
+    [(HKInfographicContentItem *)v9 setDescriptionString:descriptionCopy];
   }
 
   return v9;

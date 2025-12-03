@@ -1,23 +1,23 @@
 @interface ATXInformationHeuristicRefreshNotitifcationTrigger
-- (ATXInformationHeuristicRefreshNotitifcationTrigger)initWithCoder:(id)a3;
-- (ATXInformationHeuristicRefreshNotitifcationTrigger)initWithNotification:(id)a3 type:(int64_t)a4 coalescingInterval:(double)a5;
-- (BOOL)isEqual:(id)a3;
+- (ATXInformationHeuristicRefreshNotitifcationTrigger)initWithCoder:(id)coder;
+- (ATXInformationHeuristicRefreshNotitifcationTrigger)initWithNotification:(id)notification type:(int64_t)type coalescingInterval:(double)interval;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 - (void)_createCoalescingTimer;
 - (void)_start;
 - (void)_stop;
 - (void)_triggerRefresh;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXInformationHeuristicRefreshNotitifcationTrigger
 
 - (void)_triggerRefresh
 {
-  v4 = [(ATXInformationHeuristicRefreshTrigger *)self delegate];
-  v3 = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
-  [v4 informationHeuristicRefreshTrigger:self didTriggerRefreshForHeuristics:v3];
+  delegate = [(ATXInformationHeuristicRefreshTrigger *)self delegate];
+  registeredHeuristics = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
+  [delegate informationHeuristicRefreshTrigger:self didTriggerRefreshForHeuristics:registeredHeuristics];
 }
 
 void __60__ATXInformationHeuristicRefreshNotitifcationTrigger__start__block_invoke_103(uint64_t a1)
@@ -73,18 +73,18 @@ void __76__ATXInformationHeuristicRefreshNotitifcationTrigger__createCoalescingT
   [WeakRetained _triggerRefresh];
 }
 
-- (ATXInformationHeuristicRefreshNotitifcationTrigger)initWithNotification:(id)a3 type:(int64_t)a4 coalescingInterval:(double)a5
+- (ATXInformationHeuristicRefreshNotitifcationTrigger)initWithNotification:(id)notification type:(int64_t)type coalescingInterval:(double)interval
 {
-  v9 = a3;
+  notificationCopy = notification;
   v13.receiver = self;
   v13.super_class = ATXInformationHeuristicRefreshNotitifcationTrigger;
   v10 = [(ATXInformationHeuristicRefreshTrigger *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_notificationType = a4;
-    objc_storeStrong(&v10->_notificationName, a3);
-    v11->_coalescingInterval = a5;
+    v10->_notificationType = type;
+    objc_storeStrong(&v10->_notificationName, notification);
+    v11->_coalescingInterval = interval;
     [(ATXInformationHeuristicRefreshNotitifcationTrigger *)v11 _createCoalescingTimer];
   }
 
@@ -128,14 +128,14 @@ void __76__ATXInformationHeuristicRefreshNotitifcationTrigger__createCoalescingT
     if (notificationType == 1)
     {
       out_token = 0;
-      v10 = [(NSString *)self->_notificationName UTF8String];
+      uTF8String = [(NSString *)self->_notificationName UTF8String];
       v11 = dispatch_get_global_queue(9, 0);
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __60__ATXInformationHeuristicRefreshNotitifcationTrigger__start__block_invoke_103;
       handler[3] = &unk_278C3CF68;
       objc_copyWeak(&v16, buf);
-      notify_register_dispatch(v10, &out_token, v11, handler);
+      notify_register_dispatch(uTF8String, &out_token, v11, handler);
 
       v12 = [MEMORY[0x277CCABB0] numberWithInt:out_token];
       observerToken = self->_observerToken;
@@ -146,14 +146,14 @@ void __76__ATXInformationHeuristicRefreshNotitifcationTrigger__createCoalescingT
 
     else if (!notificationType)
     {
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
       v7 = self->_notificationName;
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __60__ATXInformationHeuristicRefreshNotitifcationTrigger__start__block_invoke;
       v18[3] = &unk_278C3CF18;
       objc_copyWeak(&v19, buf);
-      v8 = [v6 addObserverForName:v7 object:0 queue:0 usingBlock:v18];
+      v8 = [defaultCenter addObserverForName:v7 object:0 queue:0 usingBlock:v18];
       v9 = self->_observerToken;
       self->_observerToken = v8;
 
@@ -202,8 +202,8 @@ void __60__ATXInformationHeuristicRefreshNotitifcationTrigger__start__block_invo
 
     else if (!notificationType)
     {
-      v5 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v5 removeObserver:self->_observerToken];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter removeObserver:self->_observerToken];
     }
 
     v6 = self->_observerToken;
@@ -220,10 +220,10 @@ void __60__ATXInformationHeuristicRefreshNotitifcationTrigger__start__block_invo
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -233,7 +233,7 @@ void __60__ATXInformationHeuristicRefreshNotitifcationTrigger__start__block_invo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5->_notificationName;
       notificationName = self->_notificationName;
       v8 = (notificationName == v6 || [(NSString *)notificationName isEqual:v6]) && self->_notificationType == v5->_notificationType;
@@ -255,44 +255,44 @@ void __60__ATXInformationHeuristicRefreshNotitifcationTrigger__start__block_invo
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ATXInformationHeuristicRefreshNotitifcationTrigger;
-  v4 = a3;
-  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_notificationType forKey:{@"notificationType", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_notificationName forKey:@"notificationName"];
-  [v4 encodeDouble:@"coalescingInterval" forKey:self->_coalescingInterval];
+  coderCopy = coder;
+  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_notificationType forKey:{@"notificationType", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_notificationName forKey:@"notificationName"];
+  [coderCopy encodeDouble:@"coalescingInterval" forKey:self->_coalescingInterval];
 }
 
-- (ATXInformationHeuristicRefreshNotitifcationTrigger)initWithCoder:(id)a3
+- (ATXInformationHeuristicRefreshNotitifcationTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = ATXInformationHeuristicRefreshNotitifcationTrigger;
-  v5 = [(ATXInformationHeuristicRefreshTrigger *)&v16 initWithCoder:v4];
+  v5 = [(ATXInformationHeuristicRefreshTrigger *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 error];
+    error = [coderCopy error];
 
-    if (!v6)
+    if (!error)
     {
-      v9 = [v4 decodeIntegerForKey:@"notificationType"];
+      v9 = [coderCopy decodeIntegerForKey:@"notificationType"];
       v5->_notificationType = v9;
-      if (v9 || ([v4 error], v14 = objc_claimAutoreleasedReturnValue(), v14, !v14))
+      if (v9 || ([coderCopy error], v14 = objc_claimAutoreleasedReturnValue(), v14, !v14))
       {
-        v10 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"notificationName" withCoder:v4 nonNull:1];
+        v10 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"notificationName" withCoder:coderCopy nonNull:1];
         notificationName = v5->_notificationName;
         v5->_notificationName = v10;
 
         if (v5->_notificationName)
         {
-          v12 = [v4 error];
+          error2 = [coderCopy error];
 
-          if (!v12)
+          if (!error2)
           {
-            [v4 decodeDoubleForKey:@"coalescingInterval"];
+            [coderCopy decodeDoubleForKey:@"coalescingInterval"];
             v5->_coalescingInterval = v13;
             [(ATXInformationHeuristicRefreshNotitifcationTrigger *)v5 _createCoalescingTimer];
             v7 = v5;
@@ -306,7 +306,7 @@ void __60__ATXInformationHeuristicRefreshNotitifcationTrigger__start__block_invo
         v15 = __atxlog_handle_gi();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          [ATXInformationHeuristicRefreshNotitifcationTrigger initWithCoder:v4];
+          [ATXInformationHeuristicRefreshNotitifcationTrigger initWithCoder:coderCopy];
         }
       }
     }

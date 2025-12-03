@@ -1,35 +1,35 @@
 @interface PEGASUSSchemaPEGASUSRequestEnded
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PEGASUSSchemaPEGASUSRequestEnded)initWithDictionary:(id)a3;
-- (PEGASUSSchemaPEGASUSRequestEnded)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PEGASUSSchemaPEGASUSRequestEnded)initWithDictionary:(id)dictionary;
+- (PEGASUSSchemaPEGASUSRequestEnded)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)otherProvidersAtIndex:(unint64_t)a3;
+- (int)otherProvidersAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addOtherProviders:(int)a3;
-- (void)setHasIsFollowupResponse:(BOOL)a3;
-- (void)setHasIsHandOffExecution:(BOOL)a3;
-- (void)setHasIsSnippetAnswerSeeking:(BOOL)a3;
-- (void)setHasPrimaryProvider:(BOOL)a3;
-- (void)setHasProductArea:(BOOL)a3;
-- (void)setHasQueryConfidenceScore:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addOtherProviders:(int)providers;
+- (void)setHasIsFollowupResponse:(BOOL)response;
+- (void)setHasIsHandOffExecution:(BOOL)execution;
+- (void)setHasIsSnippetAnswerSeeking:(BOOL)seeking;
+- (void)setHasPrimaryProvider:(BOOL)provider;
+- (void)setHasProductArea:(BOOL)area;
+- (void)setHasQueryConfidenceScore:(BOOL)score;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PEGASUSSchemaPEGASUSRequestEnded
 
-- (PEGASUSSchemaPEGASUSRequestEnded)initWithDictionary:(id)a3
+- (PEGASUSSchemaPEGASUSRequestEnded)initWithDictionary:(id)dictionary
 {
   v65 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v63.receiver = self;
   v63.super_class = PEGASUSSchemaPEGASUSRequestEnded;
   v5 = [(PEGASUSSchemaPEGASUSRequestEnded *)&v63 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"exists"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"exists"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
     }
 
     v54 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"linkId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(PEGASUSSchemaPEGASUSRequestEnded *)v5 setLinkId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"productArea"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"productArea"];
     objc_opt_class();
     v58 = v9;
     if (objc_opt_isKindOfClass())
@@ -53,7 +53,7 @@
       -[PEGASUSSchemaPEGASUSRequestEnded setProductArea:](v5, "setProductArea:", [v9 intValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"primaryProvider"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"primaryProvider"];
     objc_opt_class();
     v57 = v10;
     if (objc_opt_isKindOfClass())
@@ -61,7 +61,7 @@
       -[PEGASUSSchemaPEGASUSRequestEnded setPrimaryProvider:](v5, "setPrimaryProvider:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"otherProviders"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"otherProviders"];
     objc_opt_class();
     v56 = v11;
     if (objc_opt_isKindOfClass())
@@ -100,7 +100,7 @@
       }
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"intent"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"intent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -108,7 +108,7 @@
       [(PEGASUSSchemaPEGASUSRequestEnded *)v5 setIntent:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"queryConfidenceScore"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"queryConfidenceScore"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,7 +116,7 @@
       [(PEGASUSSchemaPEGASUSRequestEnded *)v5 setQueryConfidenceScore:?];
     }
 
-    v21 = [v4 objectForKeyedSubscript:@"isFollowupResponse"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"isFollowupResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -124,7 +124,7 @@
     }
 
     v51 = v20;
-    v22 = [v4 objectForKeyedSubscript:@"isHandOffExecution"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"isHandOffExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -132,7 +132,7 @@
     }
 
     v49 = v22;
-    v23 = [v4 objectForKeyedSubscript:@"crossIntentRankerResponse"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"crossIntentRankerResponse"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,7 +140,7 @@
       [(PEGASUSSchemaPEGASUSRequestEnded *)v5 setCrossIntentRankerResponse:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"kgQAExecution"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"kgQAExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -148,7 +148,7 @@
       [(PEGASUSSchemaPEGASUSRequestEnded *)v5 setKgQAExecution:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"webAnswerExecution"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"webAnswerExecution"];
     objc_opt_class();
     v55 = v27;
     if (objc_opt_isKindOfClass())
@@ -158,7 +158,7 @@
     }
 
     v48 = v23;
-    v29 = [v4 objectForKeyedSubscript:@"sportsExecution"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"sportsExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -168,7 +168,7 @@
 
     v46 = v29;
     v47 = v25;
-    v31 = [v4 objectForKeyedSubscript:@"mapsExecution"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"mapsExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -177,7 +177,7 @@
     }
 
     v53 = v7;
-    v33 = [v4 objectForKeyedSubscript:@"audioExecution"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"audioExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -186,7 +186,7 @@
     }
 
     v52 = v18;
-    v35 = [v4 objectForKeyedSubscript:@"videoExecution"];
+    v35 = [dictionaryCopy objectForKeyedSubscript:@"videoExecution"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -195,7 +195,7 @@
     }
 
     v50 = v21;
-    v37 = [v4 objectForKeyedSubscript:@"edge"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"edge"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -203,7 +203,7 @@
       [(PEGASUSSchemaPEGASUSRequestEnded *)v5 setEdge:v38];
     }
 
-    v39 = [v4 objectForKeyedSubscript:@"alternateQuerySuggestion"];
+    v39 = [dictionaryCopy objectForKeyedSubscript:@"alternateQuerySuggestion"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -211,14 +211,14 @@
       [(PEGASUSSchemaPEGASUSRequestEnded *)v5 setAlternateQuerySuggestion:v40];
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"isSnippetAnswerSeeking"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"isSnippetAnswerSeeking"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PEGASUSSchemaPEGASUSRequestEnded setIsSnippetAnswerSeeking:](v5, "setIsSnippetAnswerSeeking:", [v41 BOOLValue]);
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"alternateQuerySuggestionTier1"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"alternateQuerySuggestionTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -232,30 +232,30 @@
   return v5;
 }
 
-- (PEGASUSSchemaPEGASUSRequestEnded)initWithJSON:(id)a3
+- (PEGASUSSchemaPEGASUSRequestEnded)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PEGASUSSchemaPEGASUSRequestEnded *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PEGASUSSchemaPEGASUSRequestEnded *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -268,97 +268,97 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_alternateQuerySuggestion)
   {
-    v4 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    alternateQuerySuggestion = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
+    dictionaryRepresentation = [alternateQuerySuggestion dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"alternateQuerySuggestion"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"alternateQuerySuggestion"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"alternateQuerySuggestion"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"alternateQuerySuggestion"];
     }
   }
 
   if (self->_alternateQuerySuggestionTier1)
   {
-    v7 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    alternateQuerySuggestionTier1 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
+    dictionaryRepresentation2 = [alternateQuerySuggestionTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"alternateQuerySuggestionTier1"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"alternateQuerySuggestionTier1"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"alternateQuerySuggestionTier1"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"alternateQuerySuggestionTier1"];
     }
   }
 
   if (self->_audioExecution)
   {
-    v10 = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    audioExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
+    dictionaryRepresentation3 = [audioExecution dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"audioExecution"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"audioExecution"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"audioExecution"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"audioExecution"];
     }
   }
 
   if (self->_crossIntentRankerResponse)
   {
-    v13 = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    crossIntentRankerResponse = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
+    dictionaryRepresentation4 = [crossIntentRankerResponse dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"crossIntentRankerResponse"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"crossIntentRankerResponse"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"crossIntentRankerResponse"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"crossIntentRankerResponse"];
     }
   }
 
   if (self->_edge)
   {
-    v16 = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
-    v17 = [v16 copy];
-    [v3 setObject:v17 forKeyedSubscript:@"edge"];
+    edge = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
+    v17 = [edge copy];
+    [dictionary setObject:v17 forKeyedSubscript:@"edge"];
   }
 
   if (*&self->_has)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSRequestEnded exists](self, "exists")}];
-    [v3 setObject:v18 forKeyedSubscript:@"exists"];
+    [dictionary setObject:v18 forKeyedSubscript:@"exists"];
   }
 
   if (self->_intent)
   {
-    v19 = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    intent = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
+    dictionaryRepresentation5 = [intent dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"intent"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"intent"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"intent"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"intent"];
     }
   }
 
@@ -366,7 +366,7 @@
   if ((has & 0x10) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSRequestEnded isFollowupResponse](self, "isFollowupResponse")}];
-    [v3 setObject:v26 forKeyedSubscript:@"isFollowupResponse"];
+    [dictionary setObject:v26 forKeyedSubscript:@"isFollowupResponse"];
 
     has = self->_has;
     if ((has & 0x20) == 0)
@@ -387,69 +387,69 @@ LABEL_32:
   }
 
   v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSRequestEnded isHandOffExecution](self, "isHandOffExecution")}];
-  [v3 setObject:v27 forKeyedSubscript:@"isHandOffExecution"];
+  [dictionary setObject:v27 forKeyedSubscript:@"isHandOffExecution"];
 
   if ((*&self->_has & 0x40) != 0)
   {
 LABEL_33:
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[PEGASUSSchemaPEGASUSRequestEnded isSnippetAnswerSeeking](self, "isSnippetAnswerSeeking")}];
-    [v3 setObject:v23 forKeyedSubscript:@"isSnippetAnswerSeeking"];
+    [dictionary setObject:v23 forKeyedSubscript:@"isSnippetAnswerSeeking"];
   }
 
 LABEL_34:
   if (self->_kgQAExecution)
   {
-    v24 = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
-    v25 = [v24 dictionaryRepresentation];
-    if (v25)
+    kgQAExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
+    dictionaryRepresentation6 = [kgQAExecution dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v25 forKeyedSubscript:@"kgQAExecution"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"kgQAExecution"];
     }
 
     else
     {
-      v28 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v28 forKeyedSubscript:@"kgQAExecution"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"kgQAExecution"];
     }
   }
 
   if (self->_linkId)
   {
-    v29 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
-    v30 = [v29 dictionaryRepresentation];
-    if (v30)
+    linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
+    dictionaryRepresentation7 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v30 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v31 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v31 forKeyedSubscript:@"linkId"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_mapsExecution)
   {
-    v32 = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
-    v33 = [v32 dictionaryRepresentation];
-    if (v33)
+    mapsExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
+    dictionaryRepresentation8 = [mapsExecution dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v33 forKeyedSubscript:@"mapsExecution"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"mapsExecution"];
     }
 
     else
     {
-      v34 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v34 forKeyedSubscript:@"mapsExecution"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"mapsExecution"];
     }
   }
 
   if ([(NSArray *)self->_otherProviders count])
   {
-    v35 = [(PEGASUSSchemaPEGASUSRequestEnded *)self otherProviders];
-    v36 = [v35 copy];
-    [v3 setObject:v36 forKeyedSubscript:@"otherProviders"];
+    otherProviders = [(PEGASUSSchemaPEGASUSRequestEnded *)self otherProviders];
+    v36 = [otherProviders copy];
+    [dictionary setObject:v36 forKeyedSubscript:@"otherProviders"];
   }
 
   v37 = self->_has;
@@ -466,7 +466,7 @@ LABEL_34:
       v43 = off_1E78DFB18[v42];
     }
 
-    [v3 setObject:v43 forKeyedSubscript:@"primaryProvider"];
+    [dictionary setObject:v43 forKeyedSubscript:@"primaryProvider"];
     v37 = self->_has;
     if ((v37 & 2) == 0)
     {
@@ -496,69 +496,69 @@ LABEL_56:
     v45 = off_1E78DFBA0[v44];
   }
 
-  [v3 setObject:v45 forKeyedSubscript:@"productArea"];
+  [dictionary setObject:v45 forKeyedSubscript:@"productArea"];
   if ((*&self->_has & 8) != 0)
   {
 LABEL_57:
     v38 = MEMORY[0x1E696AD98];
     [(PEGASUSSchemaPEGASUSRequestEnded *)self queryConfidenceScore];
     v39 = [v38 numberWithFloat:?];
-    [v3 setObject:v39 forKeyedSubscript:@"queryConfidenceScore"];
+    [dictionary setObject:v39 forKeyedSubscript:@"queryConfidenceScore"];
   }
 
 LABEL_58:
   if (self->_sportsExecution)
   {
-    v40 = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
-    v41 = [v40 dictionaryRepresentation];
-    if (v41)
+    sportsExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
+    dictionaryRepresentation9 = [sportsExecution dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v41 forKeyedSubscript:@"sportsExecution"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"sportsExecution"];
     }
 
     else
     {
-      v46 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v46 forKeyedSubscript:@"sportsExecution"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"sportsExecution"];
     }
   }
 
   if (self->_videoExecution)
   {
-    v47 = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
-    v48 = [v47 dictionaryRepresentation];
-    if (v48)
+    videoExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
+    dictionaryRepresentation10 = [videoExecution dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v48 forKeyedSubscript:@"videoExecution"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"videoExecution"];
     }
 
     else
     {
-      v49 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v49 forKeyedSubscript:@"videoExecution"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"videoExecution"];
     }
   }
 
   if (self->_webAnswerExecution)
   {
-    v50 = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
-    v51 = [v50 dictionaryRepresentation];
-    if (v51)
+    webAnswerExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
+    dictionaryRepresentation11 = [webAnswerExecution dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v51 forKeyedSubscript:@"webAnswerExecution"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"webAnswerExecution"];
     }
 
     else
     {
-      v52 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v52 forKeyedSubscript:@"webAnswerExecution"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"webAnswerExecution"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v53 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v53 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -679,15 +679,15 @@ LABEL_9:
   return v28 ^ v29 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v22 ^ v21 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ [(PEGASUSSchemaPEGASUSAlternateQuerySuggestionTier1 *)self->_alternateQuerySuggestionTier1 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_91;
   }
 
-  if ((*&self->_has & 1) != (v4[144] & 1))
+  if ((*&self->_has & 1) != (equalCopy[144] & 1))
   {
     goto LABEL_91;
   }
@@ -695,26 +695,26 @@ LABEL_9:
   if (*&self->_has)
   {
     exists = self->_exists;
-    if (exists != [v4 exists])
+    if (exists != [equalCopy exists])
     {
       goto LABEL_91;
     }
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
-  v7 = [v4 linkId];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
+  linkId2 = [equalCopy linkId];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v8 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
-  if (v8)
+  linkId3 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
+  if (linkId3)
   {
-    v9 = v8;
-    v10 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
-    v11 = [v4 linkId];
-    v12 = [v10 isEqual:v11];
+    v9 = linkId3;
+    linkId4 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
+    linkId5 = [equalCopy linkId];
+    v12 = [linkId4 isEqual:linkId5];
 
     if (!v12)
     {
@@ -728,7 +728,7 @@ LABEL_9:
 
   has = self->_has;
   v14 = (*&has >> 1) & 1;
-  v15 = v4[144];
+  v15 = equalCopy[144];
   if (v14 != ((v15 >> 1) & 1))
   {
     goto LABEL_91;
@@ -737,13 +737,13 @@ LABEL_9:
   if (v14)
   {
     productArea = self->_productArea;
-    if (productArea != [v4 productArea])
+    if (productArea != [equalCopy productArea])
     {
       goto LABEL_91;
     }
 
     has = self->_has;
-    v15 = v4[144];
+    v15 = equalCopy[144];
   }
 
   v17 = (*&has >> 2) & 1;
@@ -755,26 +755,26 @@ LABEL_9:
   if (v17)
   {
     primaryProvider = self->_primaryProvider;
-    if (primaryProvider != [v4 primaryProvider])
+    if (primaryProvider != [equalCopy primaryProvider])
     {
       goto LABEL_91;
     }
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self otherProviders];
-  v7 = [v4 otherProviders];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self otherProviders];
+  linkId2 = [equalCopy otherProviders];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v19 = [(PEGASUSSchemaPEGASUSRequestEnded *)self otherProviders];
-  if (v19)
+  otherProviders = [(PEGASUSSchemaPEGASUSRequestEnded *)self otherProviders];
+  if (otherProviders)
   {
-    v20 = v19;
-    v21 = [(PEGASUSSchemaPEGASUSRequestEnded *)self otherProviders];
-    v22 = [v4 otherProviders];
-    v23 = [v21 isEqual:v22];
+    v20 = otherProviders;
+    otherProviders2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self otherProviders];
+    otherProviders3 = [equalCopy otherProviders];
+    v23 = [otherProviders2 isEqual:otherProviders3];
 
     if (!v23)
     {
@@ -786,20 +786,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
-  v7 = [v4 intent];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
+  linkId2 = [equalCopy intent];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v24 = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
-  if (v24)
+  intent = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
+  if (intent)
   {
-    v25 = v24;
-    v26 = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
-    v27 = [v4 intent];
-    v28 = [v26 isEqual:v27];
+    v25 = intent;
+    intent2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
+    intent3 = [equalCopy intent];
+    v28 = [intent2 isEqual:intent3];
 
     if (!v28)
     {
@@ -813,7 +813,7 @@ LABEL_9:
 
   v29 = self->_has;
   v30 = (*&v29 >> 3) & 1;
-  v31 = v4[144];
+  v31 = equalCopy[144];
   if (v30 != ((v31 >> 3) & 1))
   {
     goto LABEL_91;
@@ -822,14 +822,14 @@ LABEL_9:
   if (v30)
   {
     queryConfidenceScore = self->_queryConfidenceScore;
-    [v4 queryConfidenceScore];
+    [equalCopy queryConfidenceScore];
     if (queryConfidenceScore != v33)
     {
       goto LABEL_91;
     }
 
     v29 = self->_has;
-    v31 = v4[144];
+    v31 = equalCopy[144];
   }
 
   v34 = (*&v29 >> 4) & 1;
@@ -841,13 +841,13 @@ LABEL_9:
   if (v34)
   {
     isFollowupResponse = self->_isFollowupResponse;
-    if (isFollowupResponse != [v4 isFollowupResponse])
+    if (isFollowupResponse != [equalCopy isFollowupResponse])
     {
       goto LABEL_91;
     }
 
     v29 = self->_has;
-    v31 = v4[144];
+    v31 = equalCopy[144];
   }
 
   v36 = (*&v29 >> 5) & 1;
@@ -859,26 +859,26 @@ LABEL_9:
   if (v36)
   {
     isHandOffExecution = self->_isHandOffExecution;
-    if (isHandOffExecution != [v4 isHandOffExecution])
+    if (isHandOffExecution != [equalCopy isHandOffExecution])
     {
       goto LABEL_91;
     }
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
-  v7 = [v4 crossIntentRankerResponse];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
+  linkId2 = [equalCopy crossIntentRankerResponse];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v38 = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
-  if (v38)
+  crossIntentRankerResponse = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
+  if (crossIntentRankerResponse)
   {
-    v39 = v38;
-    v40 = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
-    v41 = [v4 crossIntentRankerResponse];
-    v42 = [v40 isEqual:v41];
+    v39 = crossIntentRankerResponse;
+    crossIntentRankerResponse2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
+    crossIntentRankerResponse3 = [equalCopy crossIntentRankerResponse];
+    v42 = [crossIntentRankerResponse2 isEqual:crossIntentRankerResponse3];
 
     if (!v42)
     {
@@ -890,20 +890,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
-  v7 = [v4 kgQAExecution];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
+  linkId2 = [equalCopy kgQAExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v43 = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
-  if (v43)
+  kgQAExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
+  if (kgQAExecution)
   {
-    v44 = v43;
-    v45 = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
-    v46 = [v4 kgQAExecution];
-    v47 = [v45 isEqual:v46];
+    v44 = kgQAExecution;
+    kgQAExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
+    kgQAExecution3 = [equalCopy kgQAExecution];
+    v47 = [kgQAExecution2 isEqual:kgQAExecution3];
 
     if (!v47)
     {
@@ -915,20 +915,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
-  v7 = [v4 webAnswerExecution];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
+  linkId2 = [equalCopy webAnswerExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v48 = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
-  if (v48)
+  webAnswerExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
+  if (webAnswerExecution)
   {
-    v49 = v48;
-    v50 = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
-    v51 = [v4 webAnswerExecution];
-    v52 = [v50 isEqual:v51];
+    v49 = webAnswerExecution;
+    webAnswerExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
+    webAnswerExecution3 = [equalCopy webAnswerExecution];
+    v52 = [webAnswerExecution2 isEqual:webAnswerExecution3];
 
     if (!v52)
     {
@@ -940,20 +940,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
-  v7 = [v4 sportsExecution];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
+  linkId2 = [equalCopy sportsExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v53 = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
-  if (v53)
+  sportsExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
+  if (sportsExecution)
   {
-    v54 = v53;
-    v55 = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
-    v56 = [v4 sportsExecution];
-    v57 = [v55 isEqual:v56];
+    v54 = sportsExecution;
+    sportsExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
+    sportsExecution3 = [equalCopy sportsExecution];
+    v57 = [sportsExecution2 isEqual:sportsExecution3];
 
     if (!v57)
     {
@@ -965,20 +965,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
-  v7 = [v4 mapsExecution];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
+  linkId2 = [equalCopy mapsExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v58 = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
-  if (v58)
+  mapsExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
+  if (mapsExecution)
   {
-    v59 = v58;
-    v60 = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
-    v61 = [v4 mapsExecution];
-    v62 = [v60 isEqual:v61];
+    v59 = mapsExecution;
+    mapsExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
+    mapsExecution3 = [equalCopy mapsExecution];
+    v62 = [mapsExecution2 isEqual:mapsExecution3];
 
     if (!v62)
     {
@@ -990,20 +990,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
-  v7 = [v4 audioExecution];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
+  linkId2 = [equalCopy audioExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v63 = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
-  if (v63)
+  audioExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
+  if (audioExecution)
   {
-    v64 = v63;
-    v65 = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
-    v66 = [v4 audioExecution];
-    v67 = [v65 isEqual:v66];
+    v64 = audioExecution;
+    audioExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
+    audioExecution3 = [equalCopy audioExecution];
+    v67 = [audioExecution2 isEqual:audioExecution3];
 
     if (!v67)
     {
@@ -1015,20 +1015,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
-  v7 = [v4 videoExecution];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
+  linkId2 = [equalCopy videoExecution];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v68 = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
-  if (v68)
+  videoExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
+  if (videoExecution)
   {
-    v69 = v68;
-    v70 = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
-    v71 = [v4 videoExecution];
-    v72 = [v70 isEqual:v71];
+    v69 = videoExecution;
+    videoExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
+    videoExecution3 = [equalCopy videoExecution];
+    v72 = [videoExecution2 isEqual:videoExecution3];
 
     if (!v72)
     {
@@ -1040,20 +1040,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
-  v7 = [v4 edge];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
+  linkId2 = [equalCopy edge];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v73 = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
-  if (v73)
+  edge = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
+  if (edge)
   {
-    v74 = v73;
-    v75 = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
-    v76 = [v4 edge];
-    v77 = [v75 isEqual:v76];
+    v74 = edge;
+    edge2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
+    edge3 = [equalCopy edge];
+    v77 = [edge2 isEqual:edge3];
 
     if (!v77)
     {
@@ -1065,20 +1065,20 @@ LABEL_9:
   {
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
-  v7 = [v4 alternateQuerySuggestion];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
+  linkId2 = [equalCopy alternateQuerySuggestion];
+  if ((linkId != 0) == (linkId2 == 0))
   {
     goto LABEL_90;
   }
 
-  v78 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
-  if (v78)
+  alternateQuerySuggestion = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
+  if (alternateQuerySuggestion)
   {
-    v79 = v78;
-    v80 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
-    v81 = [v4 alternateQuerySuggestion];
-    v82 = [v80 isEqual:v81];
+    v79 = alternateQuerySuggestion;
+    alternateQuerySuggestion2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
+    alternateQuerySuggestion3 = [equalCopy alternateQuerySuggestion];
+    v82 = [alternateQuerySuggestion2 isEqual:alternateQuerySuggestion3];
 
     if (!v82)
     {
@@ -1091,7 +1091,7 @@ LABEL_9:
   }
 
   v83 = (*&self->_has >> 6) & 1;
-  if (v83 != ((v4[144] >> 6) & 1))
+  if (v83 != ((equalCopy[144] >> 6) & 1))
   {
     goto LABEL_91;
   }
@@ -1099,23 +1099,23 @@ LABEL_9:
   if (v83)
   {
     isSnippetAnswerSeeking = self->_isSnippetAnswerSeeking;
-    if (isSnippetAnswerSeeking != [v4 isSnippetAnswerSeeking])
+    if (isSnippetAnswerSeeking != [equalCopy isSnippetAnswerSeeking])
     {
       goto LABEL_91;
     }
   }
 
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
-  v7 = [v4 alternateQuerySuggestionTier1];
-  if ((v6 != 0) == (v7 == 0))
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
+  linkId2 = [equalCopy alternateQuerySuggestionTier1];
+  if ((linkId != 0) == (linkId2 == 0))
   {
 LABEL_90:
 
     goto LABEL_91;
   }
 
-  v85 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
-  if (!v85)
+  alternateQuerySuggestionTier1 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
+  if (!alternateQuerySuggestionTier1)
   {
 
 LABEL_94:
@@ -1123,10 +1123,10 @@ LABEL_94:
     goto LABEL_92;
   }
 
-  v86 = v85;
-  v87 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
-  v88 = [v4 alternateQuerySuggestionTier1];
-  v89 = [v87 isEqual:v88];
+  v86 = alternateQuerySuggestionTier1;
+  alternateQuerySuggestionTier12 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
+  alternateQuerySuggestionTier13 = [equalCopy alternateQuerySuggestionTier1];
+  v89 = [alternateQuerySuggestionTier12 isEqual:alternateQuerySuggestionTier13];
 
   if (v89)
   {
@@ -1140,20 +1140,20 @@ LABEL_92:
   return v90;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
   }
 
-  v5 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
 
-  if (v5)
+  if (linkId)
   {
-    v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
+    linkId2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1198,11 +1198,11 @@ LABEL_92:
     while (v10);
   }
 
-  v13 = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
+  intent = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
 
-  if (v13)
+  if (intent)
   {
-    v14 = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
+    intent2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1236,74 +1236,74 @@ LABEL_21:
   }
 
 LABEL_22:
-  v16 = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
+  crossIntentRankerResponse = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
 
-  if (v16)
+  if (crossIntentRankerResponse)
   {
-    v17 = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
+    crossIntentRankerResponse2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
+  kgQAExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
 
-  if (v18)
+  if (kgQAExecution)
   {
-    v19 = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
+    kgQAExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
+  webAnswerExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
 
-  if (v20)
+  if (webAnswerExecution)
   {
-    v21 = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
+    webAnswerExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
+  sportsExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
 
-  if (v22)
+  if (sportsExecution)
   {
-    v23 = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
+    sportsExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
+  mapsExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
 
-  if (v24)
+  if (mapsExecution)
   {
-    v25 = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
+    mapsExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
+  audioExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
 
-  if (v26)
+  if (audioExecution)
   {
-    v27 = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
+    audioExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v28 = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
+  videoExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
 
-  if (v28)
+  if (videoExecution)
   {
-    v29 = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
+    videoExecution2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
+  edge = [(PEGASUSSchemaPEGASUSRequestEnded *)self edge];
 
-  if (v30)
+  if (edge)
   {
     PBDataWriterWriteStringField();
   }
 
-  v31 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
+  alternateQuerySuggestion = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
 
-  if (v31)
+  if (alternateQuerySuggestion)
   {
-    v32 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
+    alternateQuerySuggestion2 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1312,18 +1312,18 @@ LABEL_22:
     PBDataWriterWriteBOOLField();
   }
 
-  v33 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
+  alternateQuerySuggestionTier1 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
 
-  if (v33)
+  if (alternateQuerySuggestionTier1)
   {
-    v34 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
+    alternateQuerySuggestionTier12 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasIsSnippetAnswerSeeking:(BOOL)a3
+- (void)setHasIsSnippetAnswerSeeking:(BOOL)seeking
 {
-  if (a3)
+  if (seeking)
   {
     v3 = 64;
   }
@@ -1336,9 +1336,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasIsHandOffExecution:(BOOL)a3
+- (void)setHasIsHandOffExecution:(BOOL)execution
 {
-  if (a3)
+  if (execution)
   {
     v3 = 32;
   }
@@ -1351,9 +1351,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIsFollowupResponse:(BOOL)a3
+- (void)setHasIsFollowupResponse:(BOOL)response
 {
-  if (a3)
+  if (response)
   {
     v3 = 16;
   }
@@ -1366,9 +1366,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasQueryConfidenceScore:(BOOL)a3
+- (void)setHasQueryConfidenceScore:(BOOL)score
 {
-  if (a3)
+  if (score)
   {
     v3 = 8;
   }
@@ -1381,23 +1381,23 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)otherProvidersAtIndex:(unint64_t)a3
+- (int)otherProvidersAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_otherProviders objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_otherProviders objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addOtherProviders:(int)a3
+- (void)addOtherProviders:(int)providers
 {
-  v3 = *&a3;
+  v3 = *&providers;
   otherProviders = self->_otherProviders;
   if (!otherProviders)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_otherProviders;
-    self->_otherProviders = v6;
+    self->_otherProviders = array;
 
     otherProviders = self->_otherProviders;
   }
@@ -1406,9 +1406,9 @@ LABEL_22:
   [(NSArray *)otherProviders addObject:v8];
 }
 
-- (void)setHasPrimaryProvider:(BOOL)a3
+- (void)setHasPrimaryProvider:(BOOL)provider
 {
-  if (a3)
+  if (provider)
   {
     v3 = 4;
   }
@@ -1421,9 +1421,9 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasProductArea:(BOOL)a3
+- (void)setHasProductArea:(BOOL)area
 {
-  if (a3)
+  if (area)
   {
     v3 = 2;
   }
@@ -1436,107 +1436,107 @@ LABEL_22:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v40.receiver = self;
   v40.super_class = PEGASUSSchemaPEGASUSRequestEnded;
-  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:v4];
-  v6 = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v40 applySensitiveConditionsPolicy:policyCopy];
+  linkId = [(PEGASUSSchemaPEGASUSRequestEnded *)self linkId];
+  v7 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteLinkId];
   }
 
-  v9 = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  intent = [(PEGASUSSchemaPEGASUSRequestEnded *)self intent];
+  v10 = [intent applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteIntent];
   }
 
-  v12 = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  crossIntentRankerResponse = [(PEGASUSSchemaPEGASUSRequestEnded *)self crossIntentRankerResponse];
+  v13 = [crossIntentRankerResponse applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteCrossIntentRankerResponse];
   }
 
-  v15 = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  kgQAExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self kgQAExecution];
+  v16 = [kgQAExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteKgQAExecution];
   }
 
-  v18 = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  webAnswerExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self webAnswerExecution];
+  v19 = [webAnswerExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteWebAnswerExecution];
   }
 
-  v21 = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  sportsExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self sportsExecution];
+  v22 = [sportsExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteSportsExecution];
   }
 
-  v24 = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  mapsExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self mapsExecution];
+  v25 = [mapsExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteMapsExecution];
   }
 
-  v27 = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  audioExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self audioExecution];
+  v28 = [audioExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteAudioExecution];
   }
 
-  v30 = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  videoExecution = [(PEGASUSSchemaPEGASUSRequestEnded *)self videoExecution];
+  v31 = [videoExecution applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteVideoExecution];
   }
 
-  v33 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  alternateQuerySuggestion = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestion];
+  v34 = [alternateQuerySuggestion applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteAlternateQuerySuggestion];
   }
 
-  v36 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  alternateQuerySuggestionTier1 = [(PEGASUSSchemaPEGASUSRequestEnded *)self alternateQuerySuggestionTier1];
+  v37 = [alternateQuerySuggestionTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(PEGASUSSchemaPEGASUSRequestEnded *)self deleteAlternateQuerySuggestionTier1];
   }

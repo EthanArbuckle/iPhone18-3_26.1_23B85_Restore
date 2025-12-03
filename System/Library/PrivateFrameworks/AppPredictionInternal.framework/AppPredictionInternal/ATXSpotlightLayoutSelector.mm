@@ -1,46 +1,46 @@
 @interface ATXSpotlightLayoutSelector
-+ (BOOL)_isCommuteMediaSuggestion:(id)a3;
-+ (BOOL)_isCommuteWildCardSuggestion:(id)a3;
-+ (id)_commuteWildcardReducer:(id)a3;
-- (ATXSpotlightLayoutSelector)initWithSuggestionDeduplicator:(id)a3 hyperParameters:(id)a4;
-- (BOOL)_isValidForReasons:(unint64_t)a3;
-- (double)_adaptedScoreForSuggestion:(id)a3;
-- (id)_autoShortcutsForBundleId:(id)a3 provider:(id)a4;
-- (id)_clearDuplicateContextsFromSuggestions:(id)a3 suggestionDict:(id)a4;
-- (id)_collectionsWithSuggestions:(id)a3;
-- (id)_createPOISuggestionWithMUID:(id)a3 fromHeroSuggestion:(id)a4;
-- (id)_createTopAppShortcutCollectionsWithSuggestions:(id)a3;
++ (BOOL)_isCommuteMediaSuggestion:(id)suggestion;
++ (BOOL)_isCommuteWildCardSuggestion:(id)suggestion;
++ (id)_commuteWildcardReducer:(id)reducer;
+- (ATXSpotlightLayoutSelector)initWithSuggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters;
+- (BOOL)_isValidForReasons:(unint64_t)reasons;
+- (double)_adaptedScoreForSuggestion:(id)suggestion;
+- (id)_autoShortcutsForBundleId:(id)id provider:(id)provider;
+- (id)_clearDuplicateContextsFromSuggestions:(id)suggestions suggestionDict:(id)dict;
+- (id)_collectionsWithSuggestions:(id)suggestions;
+- (id)_createPOISuggestionWithMUID:(id)d fromHeroSuggestion:(id)suggestion;
+- (id)_createTopAppShortcutCollectionsWithSuggestions:(id)suggestions;
 - (id)_createTopAppShortcutSuggestions;
-- (id)_heroDataReducer:(id)a3;
-- (id)_intervalStringWithCriteria:(id)a3;
-- (id)_poiMUIDFromHero:(id)a3;
-- (id)_preferredContextWithContextCode:(id)a3 contextCriteria:(id)a4;
-- (id)_scoresFlattenForCollections:(id)a3;
-- (id)_staticTitleForContextCode:(int64_t)a3;
-- (id)_suggestionFromAutoShortcutContextualAction:(id)a3 title:(id)a4 predictionReasons:(unint64_t)a5;
-- (id)_titleForContextCode:(int64_t)a3 suggestions:(id)a4;
-- (id)_titleForParameterizedAutoShortcutContextualAction:(id)a3 provider:(id)a4;
-- (id)_validAutoShortcutContextualActionsForBundleId:(id)a3 limit:(unint64_t)a4 provider:(id)a5;
-- (int64_t)_contextReasonCodeWithPredictionReasons:(unint64_t)a3;
+- (id)_heroDataReducer:(id)reducer;
+- (id)_intervalStringWithCriteria:(id)criteria;
+- (id)_poiMUIDFromHero:(id)hero;
+- (id)_preferredContextWithContextCode:(id)code contextCriteria:(id)criteria;
+- (id)_scoresFlattenForCollections:(id)collections;
+- (id)_staticTitleForContextCode:(int64_t)code;
+- (id)_suggestionFromAutoShortcutContextualAction:(id)action title:(id)title predictionReasons:(unint64_t)reasons;
+- (id)_titleForContextCode:(int64_t)code suggestions:(id)suggestions;
+- (id)_titleForParameterizedAutoShortcutContextualAction:(id)action provider:(id)provider;
+- (id)_validAutoShortcutContextualActionsForBundleId:(id)id limit:(unint64_t)limit provider:(id)provider;
+- (int64_t)_contextReasonCodeWithPredictionReasons:(unint64_t)reasons;
 - (unint64_t)_supportedContextReasons;
-- (void)_dedupeSuggestions:(id)a3 suggestionDict:(id)a4;
-- (void)_indexSpotlightActions:(id)a3;
+- (void)_dedupeSuggestions:(id)suggestions suggestionDict:(id)dict;
+- (void)_indexSpotlightActions:(id)actions;
 @end
 
 @implementation ATXSpotlightLayoutSelector
 
-- (ATXSpotlightLayoutSelector)initWithSuggestionDeduplicator:(id)a3 hyperParameters:(id)a4
+- (ATXSpotlightLayoutSelector)initWithSuggestionDeduplicator:(id)deduplicator hyperParameters:(id)parameters
 {
-  v7 = a3;
-  v8 = a4;
+  deduplicatorCopy = deduplicator;
+  parametersCopy = parameters;
   v14.receiver = self;
   v14.super_class = ATXSpotlightLayoutSelector;
   v9 = [(ATXSpotlightLayoutSelector *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deduplicator, a3);
-    objc_storeStrong(&v10->_hyperParameters, a4);
+    objc_storeStrong(&v9->_deduplicator, deduplicator);
+    objc_storeStrong(&v10->_hyperParameters, parameters);
     v11 = objc_opt_new();
     adapter = v10->_adapter;
     v10->_adapter = v11;
@@ -52,12 +52,12 @@
 - (unint64_t)_supportedContextReasons
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(ATXSpotlightLayoutSelector *)self _rankedReasonCodes];
+  _rankedReasonCodes = [(ATXSpotlightLayoutSelector *)self _rankedReasonCodes];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v3 = [_rankedReasonCodes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -69,13 +69,13 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(_rankedReasonCodes);
         }
 
         v5 |= 1 << [*(*(&v10 + 1) + 8 * i) integerValue];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [_rankedReasonCodes countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -90,9 +90,9 @@
   return v5;
 }
 
-- (BOOL)_isValidForReasons:(unint64_t)a3
+- (BOOL)_isValidForReasons:(unint64_t)reasons
 {
-  v3 = [(ATXSpotlightLayoutSelector *)self _supportedContextReasons]& a3;
+  v3 = [(ATXSpotlightLayoutSelector *)self _supportedContextReasons]& reasons;
   if (v3)
   {
     if ((v3 & (v3 - 1)) == 0)
@@ -110,10 +110,10 @@
   return 0;
 }
 
-- (void)_indexSpotlightActions:(id)a3
+- (void)_indexSpotlightActions:(id)actions
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  actionsCopy = actions;
   if ([MEMORY[0x277CC34A8] isIndexingAvailable])
   {
     v17[0] = MEMORY[0x277D85DD0];
@@ -121,7 +121,7 @@
     v17[2] = __53__ATXSpotlightLayoutSelector__indexSpotlightActions___block_invoke;
     v17[3] = &unk_2785A1330;
     v18 = @"com.apple.duetexpertd.spotlightZKW";
-    v4 = [v3 _pas_mappedArrayWithTransform:v17];
+    v4 = [actionsCopy _pas_mappedArrayWithTransform:v17];
     v5 = __atxlog_handle_blending();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -370,13 +370,13 @@ LABEL_10:
   return v6;
 }
 
-- (double)_adaptedScoreForSuggestion:(id)a3
+- (double)_adaptedScoreForSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = [v3 uiSpecification];
-  v5 = [v4 predictionReasons];
+  suggestionCopy = suggestion;
+  uiSpecification = [suggestionCopy uiSpecification];
+  predictionReasons = [uiSpecification predictionReasons];
 
-  if ((v5 & 0x800000) != 0)
+  if ((predictionReasons & 0x800000) != 0)
   {
     *&v9 = 50.0;
 LABEL_11:
@@ -384,8 +384,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v6 = [v3 uiSpecification];
-  v7 = [v6 predictionReasons] & 0x1E000000;
+  uiSpecification2 = [suggestionCopy uiSpecification];
+  v7 = [uiSpecification2 predictionReasons] & 0x1E000000;
 
   if (v7)
   {
@@ -393,20 +393,20 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [v3 uiSpecification];
-  v11 = [v10 predictionReasons];
+  uiSpecification3 = [suggestionCopy uiSpecification];
+  predictionReasons2 = [uiSpecification3 predictionReasons];
 
-  if ((v11 & 0x20000000) != 0 || ([v3 uiSpecification], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "predictionReasons"), v12, (v13 & 0x40000000) != 0))
+  if ((predictionReasons2 & 0x20000000) != 0 || ([suggestionCopy uiSpecification], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "predictionReasons"), v12, (v13 & 0x40000000) != 0))
   {
     *&v9 = 40.0;
     goto LABEL_11;
   }
 
   v8 = 30.0;
-  if (([objc_opt_class() _isCommuteMediaSuggestion:v3] & 1) == 0 && (objc_msgSend(objc_opt_class(), "_isCommuteWildCardSuggestion:", v3) & 1) == 0)
+  if (([objc_opt_class() _isCommuteMediaSuggestion:suggestionCopy] & 1) == 0 && (objc_msgSend(objc_opt_class(), "_isCommuteWildCardSuggestion:", suggestionCopy) & 1) == 0)
   {
-    v14 = [v3 scoreSpecification];
-    [v14 rawScore];
+    scoreSpecification = [suggestionCopy scoreSpecification];
+    [scoreSpecification rawScore];
     v8 = v15;
   }
 
@@ -415,7 +415,7 @@ LABEL_12:
   return v8;
 }
 
-- (id)_collectionsWithSuggestions:(id)a3
+- (id)_collectionsWithSuggestions:(id)suggestions
 {
   v90 = *MEMORY[0x277D85DE8];
   v80[0] = MEMORY[0x277D85DD0];
@@ -423,7 +423,7 @@ LABEL_12:
   v80[2] = __58__ATXSpotlightLayoutSelector__collectionsWithSuggestions___block_invoke;
   v80[3] = &unk_2785A1380;
   v80[4] = self;
-  [a3 sortedArrayUsingComparator:v80];
+  [suggestions sortedArrayUsingComparator:v80];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
@@ -446,16 +446,16 @@ LABEL_12:
         v8 = __atxlog_handle_blending();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
         {
-          v9 = [v7 uiSpecification];
-          v10 = [v9 title];
-          v11 = [v10 hash];
-          v12 = [v7 scoreSpecification];
-          v13 = [v12 suggestedConfidenceCategory];
+          uiSpecification = [v7 uiSpecification];
+          title = [uiSpecification title];
+          v11 = [title hash];
+          scoreSpecification = [v7 scoreSpecification];
+          suggestedConfidenceCategory = [scoreSpecification suggestedConfidenceCategory];
           [(ATXSpotlightLayoutSelector *)self _adaptedScoreForSuggestion:v7];
           *buf = 134218496;
           v84 = v11;
           v85 = 2048;
-          v86 = v13;
+          v86 = suggestedConfidenceCategory;
           v87 = 2048;
           v88 = v14;
           _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "SLS: _collectionsWithSuggestions rankedAndFilteredSuggestions [%lu] = %ld %f", buf, 0x20u);
@@ -477,7 +477,7 @@ LABEL_12:
     _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "SLS: _collectionsWithSuggestions %lu rankedAndFilteredSuggestions", buf, 0xCu);
   }
 
-  v66 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v17 = __atxlog_handle_blending();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
@@ -508,19 +508,19 @@ LABEL_12:
         }
 
         v24 = *(*(&v72 + 1) + 8 * j);
-        v25 = [v24 uiSpecification];
-        v26 = -[ATXSpotlightLayoutSelector _contextReasonCodeWithPredictionReasons:](self, "_contextReasonCodeWithPredictionReasons:", [v25 predictionReasons]);
+        uiSpecification2 = [v24 uiSpecification];
+        v26 = -[ATXSpotlightLayoutSelector _contextReasonCodeWithPredictionReasons:](self, "_contextReasonCodeWithPredictionReasons:", [uiSpecification2 predictionReasons]);
 
         v27 = __atxlog_handle_blending();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
           objb = [v24 uiSpecification];
-          v28 = [objb title];
+          title2 = [objb title];
           v29 = v21;
           v30 = v22;
-          v31 = [v28 hash];
-          v32 = [v24 uiSpecification];
-          v33 = [v32 predictionReasons];
+          v31 = [title2 hash];
+          uiSpecification3 = [v24 uiSpecification];
+          predictionReasons = [uiSpecification3 predictionReasons];
           *buf = 134218496;
           v84 = v31;
           v22 = v30;
@@ -528,12 +528,12 @@ LABEL_12:
           v85 = 2048;
           v86 = v26;
           v87 = 2048;
-          v88 = v33;
+          v88 = predictionReasons;
           _os_log_impl(&dword_2263AA000, v27, OS_LOG_TYPE_DEFAULT, "SLS: ATXSpotlightLayoutSelector suggestion =[%lu] contextCode found: %ld for reasons %llu", buf, 0x20u);
         }
 
         v34 = [*(v22 + 2992) numberWithInteger:v26];
-        v35 = [v66 objectForKeyedSubscript:v34];
+        v35 = [dictionary objectForKeyedSubscript:v34];
 
         if (v35)
         {
@@ -544,7 +544,7 @@ LABEL_12:
         {
           v35 = [MEMORY[0x277CBEB18] arrayWithObject:v24];
           v36 = [*(v22 + 2992) numberWithInteger:v26];
-          [v66 setObject:v35 forKeyedSubscript:v36];
+          [dictionary setObject:v35 forKeyedSubscript:v36];
         }
       }
 
@@ -554,16 +554,16 @@ LABEL_12:
     while (v20);
   }
 
-  v37 = [(ATXSpotlightLayoutSelector *)self _clearDuplicateContextsFromSuggestions:v61 suggestionDict:v66];
+  v37 = [(ATXSpotlightLayoutSelector *)self _clearDuplicateContextsFromSuggestions:v61 suggestionDict:dictionary];
 
   v60 = v37;
-  [(ATXSpotlightLayoutSelector *)self _dedupeSuggestions:v37 suggestionDict:v66];
+  [(ATXSpotlightLayoutSelector *)self _dedupeSuggestions:v37 suggestionDict:dictionary];
   v62 = objc_opt_new();
-  v38 = [(ATXSpotlightLayoutSelector *)self _rankedReasonCodes];
+  _rankedReasonCodes = [(ATXSpotlightLayoutSelector *)self _rankedReasonCodes];
   v39 = __atxlog_handle_blending();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
   {
-    v40 = [v38 componentsJoinedByString:{@", "}];
+    v40 = [_rankedReasonCodes componentsJoinedByString:{@", "}];
     *buf = 138412290;
     v84 = v40;
     _os_log_impl(&dword_2263AA000, v39, OS_LOG_TYPE_DEFAULT, "SLS: rankedReasonKeys = %@", buf, 0xCu);
@@ -573,7 +573,7 @@ LABEL_12:
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obja = v38;
+  obja = _rankedReasonCodes;
   v41 = [obja countByEnumeratingWithState:&v68 objects:v81 count:16];
   if (v41)
   {
@@ -589,7 +589,7 @@ LABEL_12:
         }
 
         v45 = *(*(&v68 + 1) + 8 * k);
-        v46 = [v66 objectForKeyedSubscript:v45];
+        v46 = [dictionary objectForKeyedSubscript:v45];
         v47 = v46;
         if (v46 && [v46 count])
         {
@@ -597,7 +597,7 @@ LABEL_12:
           v49 = __atxlog_handle_blending();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
-            v50 = [v66 objectForKeyedSubscript:v45];
+            v50 = [dictionary objectForKeyedSubscript:v45];
             v51 = [v50 count];
             v52 = [v48 hash];
             *buf = 138412802;
@@ -666,16 +666,16 @@ uint64_t __58__ATXSpotlightLayoutSelector__collectionsWithSuggestions___block_in
   return v13;
 }
 
-- (id)_clearDuplicateContextsFromSuggestions:(id)a3 suggestionDict:(id)a4
+- (id)_clearDuplicateContextsFromSuggestions:(id)suggestions suggestionDict:(id)dict
 {
   v91 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v55 = [a3 mutableCopy];
+  dictCopy = dict;
+  v55 = [suggestions mutableCopy];
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
   v81 = 0u;
-  obj = v5;
+  obj = dictCopy;
   v57 = [obj countByEnumeratingWithState:&v78 objects:v90 count:16];
   if (v57)
   {
@@ -733,9 +733,9 @@ uint64_t __58__ATXSpotlightLayoutSelector__collectionsWithSuggestions___block_in
                 v14 = __atxlog_handle_blending();
                 if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
                 {
-                  v15 = [v13 uiSpecification];
-                  v16 = [v15 title];
-                  v17 = [v16 hash];
+                  uiSpecification = [v13 uiSpecification];
+                  title = [uiSpecification title];
+                  v17 = [title hash];
                   *buf = 138412546;
                   *v85 = v62;
                   *&v85[8] = 2048;
@@ -743,21 +743,21 @@ uint64_t __58__ATXSpotlightLayoutSelector__collectionsWithSuggestions___block_in
                   _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEFAULT, "SLS: _collectionsWithSuggestions suggestionDict[%@] = [%lu]", buf, 0x16u);
                 }
 
-                v18 = [v13 uiSpecification];
-                v19 = [v18 predictionReasons] & 0x700000;
+                uiSpecification2 = [v13 uiSpecification];
+                v19 = [uiSpecification2 predictionReasons] & 0x700000;
 
-                v20 = [v13 uiSpecification];
-                v21 = [v20 predictionReasons] & 0x380000000;
+                uiSpecification3 = [v13 uiSpecification];
+                v21 = [uiSpecification3 predictionReasons] & 0x380000000;
 
-                v22 = [v13 atxActionCriteria];
-                v23 = [v13 uiSpecification];
-                v24 = [v23 reason];
+                atxActionCriteria = [v13 atxActionCriteria];
+                uiSpecification4 = [v13 uiSpecification];
+                reason = [uiSpecification4 reason];
 
                 v25 = __atxlog_handle_blending();
                 if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
                 {
-                  v26 = [v24 hash];
-                  v27 = [(ATXSpotlightLayoutSelector *)self _intervalStringWithCriteria:v22];
+                  v26 = [reason hash];
+                  v27 = [(ATXSpotlightLayoutSelector *)self _intervalStringWithCriteria:atxActionCriteria];
                   *buf = 67109890;
                   *v85 = v19 != 0;
                   v10 = v61;
@@ -772,9 +772,9 @@ uint64_t __58__ATXSpotlightLayoutSelector__collectionsWithSuggestions___block_in
                   v11 = v60;
                 }
 
-                if ([v24 length] && v19 | v21)
+                if ([reason length] && v19 | v21)
                 {
-                  [v10 setObject:v22 forKeyedSubscript:v24];
+                  [v10 setObject:atxActionCriteria forKeyedSubscript:reason];
                 }
               }
 
@@ -856,9 +856,9 @@ uint64_t __58__ATXSpotlightLayoutSelector__collectionsWithSuggestions___block_in
                   }
 
                   v46 = *(*(&v66 + 1) + 8 * m);
-                  v47 = [v46 uiSpecification];
-                  v48 = [v47 reason];
-                  v49 = [v39 isEqualToString:v48];
+                  uiSpecification5 = [v46 uiSpecification];
+                  reason2 = [uiSpecification5 reason];
+                  v49 = [v39 isEqualToString:reason2];
 
                   if ((v49 & 1) == 0)
                   {
@@ -895,30 +895,30 @@ uint64_t __58__ATXSpotlightLayoutSelector__collectionsWithSuggestions___block_in
   return v51;
 }
 
-- (id)_preferredContextWithContextCode:(id)a3 contextCriteria:(id)a4
+- (id)_preferredContextWithContextCode:(id)code contextCriteria:(id)criteria
 {
   v78 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 integerValue];
-  if (v8 > 0x21)
+  codeCopy = code;
+  criteriaCopy = criteria;
+  integerValue = [codeCopy integerValue];
+  if (integerValue > 0x21)
   {
     goto LABEL_41;
   }
 
-  if (((1 << v8) & 0x80100000) != 0)
+  if (((1 << integerValue) & 0x80100000) != 0)
   {
     v69 = 0u;
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    obj = v7;
+    obj = criteriaCopy;
     v36 = [obj countByEnumeratingWithState:&v67 objects:v77 count:16];
     if (v36)
     {
-      v54 = self;
-      v55 = v7;
-      v56 = v6;
+      selfCopy3 = self;
+      v55 = criteriaCopy;
+      v56 = codeCopy;
       v58 = 0;
       v11 = 0;
       v37 = *v68;
@@ -933,20 +933,20 @@ uint64_t __58__ATXSpotlightLayoutSelector__collectionsWithSuggestions___block_in
           }
 
           v40 = *(*(&v67 + 1) + 8 * i);
-          v41 = [obj objectForKeyedSubscript:v40, v54, v55, v56];
+          v41 = [obj objectForKeyedSubscript:v40, selfCopy3, v55, v56];
           if (!v11)
           {
             goto LABEL_37;
           }
 
-          v42 = [v58 endDate];
-          if (v42)
+          endDate = [v58 endDate];
+          if (endDate)
           {
-            v43 = v42;
+            v43 = endDate;
             [v41 startDate];
             v45 = v44 = v38;
-            v46 = [v58 startDate];
-            v47 = [v45 compare:v46];
+            startDate = [v58 startDate];
+            v47 = [v45 compare:startDate];
 
             v38 = v44;
             if (v47 == -1)
@@ -971,22 +971,22 @@ LABEL_37:
     goto LABEL_43;
   }
 
-  if (((1 << v8) & 0x100200000) == 0)
+  if (((1 << integerValue) & 0x100200000) == 0)
   {
-    if (((1 << v8) & 0x200400000) != 0)
+    if (((1 << integerValue) & 0x200400000) != 0)
     {
       v65 = 0u;
       v66 = 0u;
       v63 = 0u;
       v64 = 0u;
-      obj = v7;
+      obj = criteriaCopy;
       v9 = [obj countByEnumeratingWithState:&v63 objects:v76 count:16];
       if (v9)
       {
         v10 = v9;
-        v54 = self;
-        v55 = v7;
-        v56 = v6;
+        selfCopy3 = self;
+        v55 = criteriaCopy;
+        v56 = codeCopy;
         v58 = 0;
         v11 = 0;
         v12 = *v64;
@@ -1000,19 +1000,19 @@ LABEL_37:
             }
 
             v14 = *(*(&v63 + 1) + 8 * j);
-            v15 = [obj objectForKeyedSubscript:v14, v54, v55, v56];
+            v15 = [obj objectForKeyedSubscript:v14, selfCopy3, v55, v56];
             if (!v11)
             {
               goto LABEL_13;
             }
 
-            v16 = [v58 endDate];
-            if (v16)
+            endDate2 = [v58 endDate];
+            if (endDate2)
             {
-              v17 = v16;
-              v18 = [v15 endDate];
-              v19 = [v58 endDate];
-              v20 = [v18 compare:v19];
+              v17 = endDate2;
+              endDate3 = [v15 endDate];
+              endDate4 = [v58 endDate];
+              v20 = [endDate3 compare:endDate4];
 
               if (v20 == 1)
               {
@@ -1031,9 +1031,9 @@ LABEL_13:
 
         while (v10);
 LABEL_40:
-        v7 = v55;
-        v6 = v56;
-        self = v54;
+        criteriaCopy = v55;
+        codeCopy = v56;
+        self = selfCopy3;
         goto LABEL_44;
       }
 
@@ -1054,14 +1054,14 @@ LABEL_41:
   v62 = 0u;
   v59 = 0u;
   v60 = 0u;
-  obj = v7;
+  obj = criteriaCopy;
   v23 = [obj countByEnumeratingWithState:&v59 objects:v75 count:16];
   if (v23)
   {
     v24 = v23;
-    v54 = self;
-    v55 = v7;
-    v56 = v6;
+    selfCopy3 = self;
+    v55 = criteriaCopy;
+    v56 = codeCopy;
     v58 = 0;
     v11 = 0;
     v25 = *v60;
@@ -1075,19 +1075,19 @@ LABEL_41:
         }
 
         v27 = *(*(&v59 + 1) + 8 * k);
-        v28 = [obj objectForKeyedSubscript:v27, v54, v55, v56];
+        v28 = [obj objectForKeyedSubscript:v27, selfCopy3, v55, v56];
         if (!v11)
         {
           goto LABEL_25;
         }
 
-        v29 = [v58 endDate];
-        if (v29)
+        endDate5 = [v58 endDate];
+        if (endDate5)
         {
-          v30 = v29;
-          v31 = [v28 endDate];
-          v32 = [v58 endDate];
-          v33 = [v31 compare:v32];
+          v30 = endDate5;
+          endDate6 = [v28 endDate];
+          endDate7 = [v58 endDate];
+          v33 = [endDate6 compare:endDate7];
 
           if (v33 == 1)
           {
@@ -1129,18 +1129,18 @@ LABEL_44:
   return v11;
 }
 
-- (id)_intervalStringWithCriteria:(id)a3
+- (id)_intervalStringWithCriteria:(id)criteria
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  criteriaCopy = criteria;
+  v4 = criteriaCopy;
+  if (criteriaCopy)
   {
-    v5 = [v3 startDate];
-    if (v5)
+    startDate = [criteriaCopy startDate];
+    if (startDate)
     {
       v6 = MEMORY[0x277CCA968];
-      v7 = [v4 startDate];
-      v8 = [v6 localizedStringFromDate:v7 dateStyle:0 timeStyle:1];
+      startDate2 = [v4 startDate];
+      v8 = [v6 localizedStringFromDate:startDate2 dateStyle:0 timeStyle:1];
     }
 
     else
@@ -1148,12 +1148,12 @@ LABEL_44:
       v8 = @"no-date";
     }
 
-    v10 = [v4 endDate];
-    if (v10)
+    endDate = [v4 endDate];
+    if (endDate)
     {
       v11 = MEMORY[0x277CCA968];
-      v12 = [v4 endDate];
-      v13 = [v11 localizedStringFromDate:v12 dateStyle:0 timeStyle:1];
+      endDate2 = [v4 endDate];
+      v13 = [v11 localizedStringFromDate:endDate2 dateStyle:0 timeStyle:1];
     }
 
     else
@@ -1172,16 +1172,16 @@ LABEL_44:
   return v9;
 }
 
-- (id)_scoresFlattenForCollections:(id)a3
+- (id)_scoresFlattenForCollections:(id)collections
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  collectionsCopy = collections;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = collectionsCopy;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
@@ -1201,8 +1201,8 @@ LABEL_44:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = [v9 suggestions];
-        v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        suggestions = [v9 suggestions];
+        v11 = [suggestions countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {
           v12 = v11;
@@ -1213,7 +1213,7 @@ LABEL_44:
             {
               if (*v21 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(suggestions);
               }
 
               [(ATXSpotlightLayoutSelector *)self _adaptedScoreForSuggestion:*(*(&v20 + 1) + 8 * j)];
@@ -1221,7 +1221,7 @@ LABEL_44:
               [v5 addObject:v15];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v12 = [suggestions countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v12);
@@ -1239,17 +1239,17 @@ LABEL_44:
   return v5;
 }
 
-- (void)_dedupeSuggestions:(id)a3 suggestionDict:(id)a4
+- (void)_dedupeSuggestions:(id)suggestions suggestionDict:(id)dict
 {
   v87 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v57 = a4;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
+  suggestionsCopy = suggestions;
+  dictCopy = dict;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = v5;
+  obj = suggestionsCopy;
   v7 = [obj countByEnumeratingWithState:&v76 objects:v86 count:16];
   if (v7)
   {
@@ -1268,30 +1268,30 @@ LABEL_44:
         }
 
         v11 = *(*(&v76 + 1) + 8 * v10);
-        v12 = [v11 uiSpecification];
-        v13 = [v12 title];
+        uiSpecification = [v11 uiSpecification];
+        title = [uiSpecification title];
 
-        if ([v13 length])
+        if ([title length])
         {
-          v14 = [v11 atxActionExecutableObject];
-          if ([v14 actionType] == 6)
+          atxActionExecutableObject = [v11 atxActionExecutableObject];
+          if ([atxActionExecutableObject actionType] == 6)
           {
             v15 = MEMORY[0x277CCACA8];
-            v16 = [v14 _bundleIdForDisplay];
-            v17 = [v14 menuItemPath];
-            [v17 componentsJoinedByString:v61];
-            v18 = v6;
+            _bundleIdForDisplay = [atxActionExecutableObject _bundleIdForDisplay];
+            menuItemPath = [atxActionExecutableObject menuItemPath];
+            [menuItemPath componentsJoinedByString:v61];
+            v18 = dictionary;
             v20 = v19 = v9;
-            v21 = [v15 stringWithFormat:@"%@-%@", v16, v20];
+            v21 = [v15 stringWithFormat:@"%@-%@", _bundleIdForDisplay, v20];
 
             v9 = v19;
-            v6 = v18;
+            dictionary = v18;
             v8 = v62;
 
-            v13 = v21;
+            title = v21;
           }
 
-          v22 = [v6 objectForKeyedSubscript:v13];
+          v22 = [dictionary objectForKeyedSubscript:title];
           if (v22)
           {
             v23 = v22;
@@ -1301,7 +1301,7 @@ LABEL_44:
           else
           {
             v23 = [MEMORY[0x277CBEB18] arrayWithObject:v11];
-            [v6 setObject:v23 forKeyedSubscript:v13];
+            [dictionary setObject:v23 forKeyedSubscript:title];
           }
         }
 
@@ -1315,12 +1315,12 @@ LABEL_44:
     while (v8);
   }
 
-  v56 = [(ATXSpotlightLayoutSelector *)self _rankedReasonCodes];
+  _rankedReasonCodes = [(ATXSpotlightLayoutSelector *)self _rankedReasonCodes];
   v72 = 0u;
   v73 = 0u;
   v74 = 0u;
   v75 = 0u;
-  v24 = v6;
+  v24 = dictionary;
   v25 = [v24 countByEnumeratingWithState:&v72 objects:v85 count:16];
   if (v25)
   {
@@ -1367,9 +1367,9 @@ LABEL_44:
           v69[2] = __64__ATXSpotlightLayoutSelector__dedupeSuggestions_suggestionDict___block_invoke;
           v69[3] = &unk_2785A13A8;
           v69[4] = self;
-          v38 = v57;
+          v38 = dictCopy;
           v70 = v38;
-          v71 = v56;
+          v71 = _rankedReasonCodes;
           [v37 sortUsingComparator:v69];
           [v37 removeLastObject];
           v67 = 0u;
@@ -1392,14 +1392,14 @@ LABEL_44:
                 }
 
                 v43 = *(*(&v65 + 1) + 8 * i);
-                v44 = [v43 uiSpecification];
-                v45 = -[ATXSpotlightLayoutSelector _contextReasonCodeWithPredictionReasons:](self, "_contextReasonCodeWithPredictionReasons:", [v44 predictionReasons]);
+                uiSpecification2 = [v43 uiSpecification];
+                v45 = -[ATXSpotlightLayoutSelector _contextReasonCodeWithPredictionReasons:](self, "_contextReasonCodeWithPredictionReasons:", [uiSpecification2 predictionReasons]);
 
                 v46 = __atxlog_handle_blending();
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
                 {
-                  v47 = [v43 uiSpecification];
-                  [v47 title];
+                  uiSpecification3 = [v43 uiSpecification];
+                  [uiSpecification3 title];
                   v49 = v48 = v28;
                   v50 = [v49 hash];
                   *buf = 134218240;
@@ -1493,17 +1493,17 @@ uint64_t __64__ATXSpotlightLayoutSelector__dedupeSuggestions_suggestionDict___bl
   v5 = [v3 appPredictionsForConsumerSubType:9 blackList:v4 limit:8 runningDiagnostics:0];
 
   v6 = objc_alloc_init(MEMORY[0x277D23B78]);
-  v7 = [v5 error];
+  error = [v5 error];
 
-  if (v7)
+  if (error)
   {
-    v8 = __atxlog_handle_blending();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    predictedApps = __atxlog_handle_blending();
+    if (os_log_type_enabled(predictedApps, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [v5 error];
+      error2 = [v5 error];
       *buf = 138412290;
-      v17 = v9;
-      _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "SLS: [AppShortcut] ATXResponse error: %@", buf, 0xCu);
+      v17 = error2;
+      _os_log_impl(&dword_2263AA000, predictedApps, OS_LOG_TYPE_DEFAULT, "SLS: [AppShortcut] ATXResponse error: %@", buf, 0xCu);
     }
 
     v10 = MEMORY[0x277CBEBF8];
@@ -1511,12 +1511,12 @@ uint64_t __64__ATXSpotlightLayoutSelector__dedupeSuggestions_suggestionDict___bl
 
   else
   {
-    v8 = [v5 predictedApps];
+    predictedApps = [v5 predictedApps];
     v11 = __atxlog_handle_blending();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v8;
+      v17 = predictedApps;
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "SLS: [AppShortcut] Query top apps for auto shortcuts: %@", buf, 0xCu);
     }
 
@@ -1526,7 +1526,7 @@ uint64_t __64__ATXSpotlightLayoutSelector__dedupeSuggestions_suggestionDict___bl
     v14[3] = &unk_2785A13D0;
     v14[4] = self;
     v15 = v6;
-    v10 = [v8 _pas_mappedArrayWithTransform:v14];
+    v10 = [predictedApps _pas_mappedArrayWithTransform:v14];
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1582,14 +1582,14 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
   return v9;
 }
 
-- (id)_createTopAppShortcutCollectionsWithSuggestions:(id)a3
+- (id)_createTopAppShortcutCollectionsWithSuggestions:(id)suggestions
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  suggestionsCopy = suggestions;
+  if ([suggestionsCopy count])
   {
-    v5 = [(ATXSpotlightContextAdapter *)self->_adapter topAutoShortcutSectionIdentifier];
-    v6 = [objc_alloc(MEMORY[0x277D420B8]) initWithSuggestions:v4 contextTitle:0 sectionIdentifier:v5];
+    topAutoShortcutSectionIdentifier = [(ATXSpotlightContextAdapter *)self->_adapter topAutoShortcutSectionIdentifier];
+    v6 = [objc_alloc(MEMORY[0x277D420B8]) initWithSuggestions:suggestionsCopy contextTitle:0 sectionIdentifier:topAutoShortcutSectionIdentifier];
     v10[0] = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
   }
@@ -1604,10 +1604,10 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
   return v7;
 }
 
-- (id)_titleForContextCode:(int64_t)a3 suggestions:(id)a4
+- (id)_titleForContextCode:(int64_t)code suggestions:(id)suggestions
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  suggestionsCopy = suggestions;
   v7 = stringForATXSuggestionPredictionReasonCode();
   v8 = __atxlog_handle_blending();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1615,11 +1615,11 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
     *buf = 138412546;
     v44 = v7;
     v45 = 2048;
-    v46 = a3;
+    codeCopy3 = code;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "SLS: ATXSpotlightLayoutSelector Section title requested for %@, code: %lu", buf, 0x16u);
   }
 
-  if ([(ATXSpotlightLayoutSelector *)self _hasNilTitleForContextCode:a3])
+  if ([(ATXSpotlightLayoutSelector *)self _hasNilTitleForContextCode:code])
   {
     v9 = __atxlog_handle_blending();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1627,7 +1627,7 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
       *buf = 138412546;
       v44 = v7;
       v45 = 2048;
-      v46 = a3;
+      codeCopy3 = code;
       _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "SLS: ATXSpotlightLayoutSelector Section title is nil for %@, code: %lu", buf, 0x16u);
     }
 
@@ -1635,7 +1635,7 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
     goto LABEL_35;
   }
 
-  v9 = [(ATXSpotlightLayoutSelector *)self _staticTitleForContextCode:a3];
+  v9 = [(ATXSpotlightLayoutSelector *)self _staticTitleForContextCode:code];
   v11 = __atxlog_handle_blending();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
   if (!v9)
@@ -1645,7 +1645,7 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
       *buf = 138412546;
       v44 = v7;
       v45 = 2048;
-      v46 = a3;
+      codeCopy3 = code;
       _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "SLS: ATXSpotlightLayoutSelector Section title dynamic, calculating: %@, code: %lu", buf, 0x16u);
     }
 
@@ -1653,14 +1653,14 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
     v41 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v13 = v6;
+    v13 = suggestionsCopy;
     v14 = [v13 countByEnumeratingWithState:&v38 objects:v42 count:16];
     if (v14)
     {
       v15 = v14;
       obj = v13;
       v35 = v7;
-      v36 = v6;
+      v36 = suggestionsCopy;
       v10 = 0;
       v16 = *v39;
       do
@@ -1677,39 +1677,39 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
           v20 = __atxlog_handle_blending();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
           {
-            v21 = [v18 uiSpecification];
-            v22 = [v21 reason];
-            v23 = [v22 hash];
+            uiSpecification = [v18 uiSpecification];
+            reason = [uiSpecification reason];
+            v23 = [reason hash];
             *buf = 138412546;
             v44 = v19;
             v45 = 2048;
-            v46 = v23;
+            codeCopy3 = v23;
             _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEFAULT, "SLS: reasonKey:%@ suggestion.uiSpecification.reason.hash = %lu", buf, 0x16u);
           }
 
           if (v10 && ([v18 uiSpecification], v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v24, "reason"), v25 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend(v10, "isEqualToString:", v25), v25, v24, (v26 & 1) == 0))
           {
-            v27 = __atxlog_handle_blending();
-            if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
+            uiSpecification3 = __atxlog_handle_blending();
+            if (os_log_type_enabled(uiSpecification3, OS_LOG_TYPE_FAULT))
             {
-              v29 = [v18 uiSpecification];
-              v30 = [v29 reason];
+              uiSpecification2 = [v18 uiSpecification];
+              reason2 = [uiSpecification2 reason];
               *buf = 136446722;
               v44 = "[ATXSpotlightLayoutSelector _titleForContextCode:suggestions:]";
               v45 = 2112;
-              v46 = v10;
+              codeCopy3 = v10;
               v47 = 2112;
-              v48 = v30;
-              _os_log_fault_impl(&dword_2263AA000, v27, OS_LOG_TYPE_FAULT, "SLS: %{public}s %@ and %@ are two different suggestion reason for the same context. The resulting title might be wrong", buf, 0x20u);
+              codeCopy5 = reason2;
+              _os_log_fault_impl(&dword_2263AA000, uiSpecification3, OS_LOG_TYPE_FAULT, "SLS: %{public}s %@ and %@ are two different suggestion reason for the same context. The resulting title might be wrong", buf, 0x20u);
             }
           }
 
           else
           {
-            v27 = [v18 uiSpecification];
-            v28 = [v27 reason];
+            uiSpecification3 = [v18 uiSpecification];
+            reason3 = [uiSpecification3 reason];
 
-            v10 = v28;
+            v10 = reason3;
           }
         }
 
@@ -1719,7 +1719,7 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
       while (v15);
 
       v7 = v35;
-      v6 = v36;
+      suggestionsCopy = v36;
       v9 = 0;
       if (v10)
       {
@@ -1730,9 +1730,9 @@ id __62__ATXSpotlightLayoutSelector__createTopAppShortcutSuggestions__block_invo
           *buf = 134218498;
           v44 = v32;
           v45 = 2112;
-          v46 = v35;
+          codeCopy3 = v35;
           v47 = 2048;
-          v48 = a3;
+          codeCopy5 = code;
           _os_log_impl(&dword_2263AA000, v31, OS_LOG_TYPE_DEFAULT, "SLS: ATXSpotlightLayoutSelector Section title is dynamic [%lu] for %@, code: %lu", buf, 0x20u);
         }
 
@@ -1761,9 +1761,9 @@ LABEL_34:
     *buf = 138412802;
     v44 = v9;
     v45 = 2112;
-    v46 = v7;
+    codeCopy3 = v7;
     v47 = 2048;
-    v48 = a3;
+    codeCopy5 = code;
     _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "SLS: ATXSpotlightLayoutSelector Section title is static[%@] for %@, code: %lu", buf, 0x20u);
   }
 
@@ -1776,12 +1776,12 @@ LABEL_35:
   return v10;
 }
 
-- (id)_staticTitleForContextCode:(int64_t)a3
+- (id)_staticTitleForContextCode:(int64_t)code
 {
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
   v6 = 0;
-  switch(a3)
+  switch(code)
   {
     case 19:
       v7 = @"CONTEXT_TITLE_ONGOING_CALL";
@@ -1834,7 +1834,7 @@ LABEL_16:
   return v6;
 }
 
-- (int64_t)_contextReasonCodeWithPredictionReasons:(unint64_t)a3
+- (int64_t)_contextReasonCodeWithPredictionReasons:(unint64_t)reasons
 {
   [(ATXSpotlightLayoutSelector *)self _supportedContextReasons];
   v5 = 0;
@@ -1847,46 +1847,46 @@ LABEL_16:
   return v3;
 }
 
-+ (BOOL)_isCommuteWildCardSuggestion:(id)a3
++ (BOOL)_isCommuteWildCardSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = [v3 uiSpecification];
-  v5 = [v4 predictionReasons];
+  suggestionCopy = suggestion;
+  uiSpecification = [suggestionCopy uiSpecification];
+  predictionReasons = [uiSpecification predictionReasons];
 
-  v6 = [v3 uiSpecification];
-  v7 = [v6 predictionReasons];
+  uiSpecification2 = [suggestionCopy uiSpecification];
+  predictionReasons2 = [uiSpecification2 predictionReasons];
 
   v8 = MEMORY[0x277D42070];
-  v9 = [v3 clientModelSpecification];
+  clientModelSpecification = [suggestionCopy clientModelSpecification];
 
-  v10 = [v9 clientModelId];
-  v11 = [v8 clientModelTypeFromClientModelId:v10];
+  clientModelId = [clientModelSpecification clientModelId];
+  v11 = [v8 clientModelTypeFromClientModelId:clientModelId];
 
-  return v11 == 1 && (v5 & 0x1000000000 | v7 & 0x2000000000) != 0;
+  return v11 == 1 && (predictionReasons & 0x1000000000 | predictionReasons2 & 0x2000000000) != 0;
 }
 
-+ (BOOL)_isCommuteMediaSuggestion:(id)a3
++ (BOOL)_isCommuteMediaSuggestion:(id)suggestion
 {
-  v3 = a3;
-  v4 = [v3 uiSpecification];
-  v5 = [v4 predictionReasons];
+  suggestionCopy = suggestion;
+  uiSpecification = [suggestionCopy uiSpecification];
+  predictionReasons = [uiSpecification predictionReasons];
 
-  v6 = [v3 uiSpecification];
-  v7 = [v6 predictionReasons];
+  uiSpecification2 = [suggestionCopy uiSpecification];
+  predictionReasons2 = [uiSpecification2 predictionReasons];
 
-  v8 = [v3 atxActionExecutableObject];
+  atxActionExecutableObject = [suggestionCopy atxActionExecutableObject];
 
-  v9 = [v8 intent];
+  intent = [atxActionExecutableObject intent];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  return (isKindOfClass & 1) != 0 && (v5 & 0x1000000000 | v7 & 0x2000000000) != 0;
+  return (isKindOfClass & 1) != 0 && (predictionReasons & 0x1000000000 | predictionReasons2 & 0x2000000000) != 0;
 }
 
-+ (id)_commuteWildcardReducer:(id)a3
++ (id)_commuteWildcardReducer:(id)reducer
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reducerCopy = reducer;
   v27 = objc_opt_new();
   v5 = __atxlog_handle_blending();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -1899,7 +1899,7 @@ LABEL_16:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v4;
+  obj = reducerCopy;
   v6 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v6)
   {
@@ -1917,9 +1917,9 @@ LABEL_16:
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        if (![a1 _isCommuteMediaSuggestion:v11])
+        if (![self _isCommuteMediaSuggestion:v11])
         {
-          if (![a1 _isCommuteWildCardSuggestion:v11])
+          if (![self _isCommuteWildCardSuggestion:v11])
           {
             [v27 addObject:v11];
             continue;
@@ -1955,10 +1955,10 @@ LABEL_23:
           continue;
         }
 
-        v12 = [v11 atxActionExecutableObject];
-        v13 = [v12 intent];
-        v14 = [v13 launchId];
-        v15 = [v14 isEqualToString:@"com.apple.tv"];
+        atxActionExecutableObject = [v11 atxActionExecutableObject];
+        intent = [atxActionExecutableObject intent];
+        launchId = [intent launchId];
+        v15 = [launchId isEqualToString:@"com.apple.tv"];
 
         if (!v15)
         {
@@ -2011,10 +2011,10 @@ LABEL_27:
   return v27;
 }
 
-- (id)_heroDataReducer:(id)a3
+- (id)_heroDataReducer:(id)reducer
 {
   v65 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reducerCopy = reducer;
   v48 = objc_opt_new();
   v49 = objc_opt_new();
   v5 = objc_alloc_init(MEMORY[0x277D23B78]);
@@ -2023,7 +2023,7 @@ LABEL_27:
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v7 = v4;
+  v7 = reducerCopy;
   v51 = [v7 countByEnumeratingWithState:&v52 objects:v64 count:16];
   if (v51)
   {
@@ -2032,7 +2032,7 @@ LABEL_27:
     *&v8 = 138412290;
     v41 = v8;
     v43 = v7;
-    v44 = self;
+    selfCopy = self;
     v46 = v6;
     v47 = v5;
     v45 = *v53;
@@ -2046,10 +2046,10 @@ LABEL_27:
         }
 
         v12 = *(*(&v52 + 1) + 8 * i);
-        v13 = [v12 uiSpecification];
-        v14 = [v13 allowedOnSpotlight];
+        uiSpecification = [v12 uiSpecification];
+        allowedOnSpotlight = [uiSpecification allowedOnSpotlight];
 
-        if (v14)
+        if (allowedOnSpotlight)
         {
           v15 = [(ATXSpotlightLayoutSelector *)self _poiMUIDFromHero:v12];
           if (v15)
@@ -2058,9 +2058,9 @@ LABEL_27:
             v17 = __atxlog_handle_blending();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
             {
-              v18 = [v15 unsignedLongLongValue];
+              unsignedLongLongValue = [v15 unsignedLongLongValue];
               *buf = 134218498;
-              v57 = v18;
+              v57 = unsignedLongLongValue;
               v58 = 2112;
               v59 = v16;
               v60 = 2112;
@@ -2068,18 +2068,18 @@ LABEL_27:
               _os_log_impl(&dword_2263AA000, v17, OS_LOG_TYPE_DEFAULT, "_heroDataReducer: Created POI [%llu] suggestion: %@, from hero suggestion: %@", buf, 0x20u);
             }
 
-            v19 = [v16 clientModelSpecification];
-            v20 = [v19 clientModelId];
+            clientModelSpecification = [v16 clientModelSpecification];
+            clientModelId = [clientModelSpecification clientModelId];
 
-            v21 = [v48 objectForKeyedSubscript:v20];
+            v21 = [v48 objectForKeyedSubscript:clientModelId];
 
             if (!v21)
             {
               v22 = objc_opt_new();
-              [v48 setObject:v22 forKeyedSubscript:v20];
+              [v48 setObject:v22 forKeyedSubscript:clientModelId];
             }
 
-            v23 = [v48 objectForKeyedSubscript:v20];
+            v23 = [v48 objectForKeyedSubscript:clientModelId];
             [v23 addObject:v16];
 
             [v6 addObject:v16];
@@ -2097,18 +2097,18 @@ LABEL_27:
             v49 = v24;
           }
 
-          v25 = [v12 bundleIdExecutableObject];
+          bundleIdExecutableObject = [v12 bundleIdExecutableObject];
           v26 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:23];
-          if (v25)
+          if (bundleIdExecutableObject)
           {
-            v27 = [v12 clientModelSpecification];
-            v28 = [v27 clientModelId];
-            v29 = [v28 isEqual:v26];
+            clientModelSpecification2 = [v12 clientModelSpecification];
+            clientModelId2 = [clientModelSpecification2 clientModelId];
+            v29 = [clientModelId2 isEqual:v26];
 
             if (v29)
             {
               v30 = objc_autoreleasePoolPush();
-              v31 = [(ATXSpotlightLayoutSelector *)self _validAutoShortcutContextualActionsForBundleId:v25 limit:1 provider:v47];
+              v31 = [(ATXSpotlightLayoutSelector *)self _validAutoShortcutContextualActionsForBundleId:bundleIdExecutableObject limit:1 provider:v47];
               objc_autoreleasePoolPop(v30);
               [v31 firstObject];
               v33 = v32 = self;
@@ -2122,12 +2122,12 @@ LABEL_27:
                 v37 = __atxlog_handle_blending();
                 if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
                 {
-                  v42 = [v33 autoShortcut];
-                  v38 = [v42 localizedAutoShortcutDescription];
+                  autoShortcut = [v33 autoShortcut];
+                  localizedAutoShortcutDescription = [autoShortcut localizedAutoShortcutDescription];
                   *buf = 138413058;
-                  v57 = v25;
+                  v57 = bundleIdExecutableObject;
                   v58 = 2112;
-                  v59 = v38;
+                  v59 = localizedAutoShortcutDescription;
                   v60 = 2112;
                   v61 = v36;
                   v62 = 2112;
@@ -2147,14 +2147,14 @@ LABEL_27:
                 if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = v41;
-                  v57 = v25;
+                  v57 = bundleIdExecutableObject;
                   _os_log_impl(&dword_2263AA000, v35, OS_LOG_TYPE_DEFAULT, "_heroDataReducer: No auto shortcuts found for bundle: %@", buf, 0xCu);
                 }
               }
 
               v7 = v43;
 
-              self = v44;
+              self = selfCopy;
             }
           }
 
@@ -2181,32 +2181,32 @@ LABEL_27:
   return v6;
 }
 
-- (id)_poiMUIDFromHero:(id)a3
+- (id)_poiMUIDFromHero:(id)hero
 {
-  v3 = [a3 appClipHeroAppPredictionExecutableObject];
-  v4 = v3;
-  if (!v3)
+  appClipHeroAppPredictionExecutableObject = [hero appClipHeroAppPredictionExecutableObject];
+  v4 = appClipHeroAppPredictionExecutableObject;
+  if (!appClipHeroAppPredictionExecutableObject)
   {
-    v5 = 0;
+    poiMuid = 0;
     goto LABEL_16;
   }
 
-  v5 = [v3 poiMuid];
-  if (!v5)
+  poiMuid = [appClipHeroAppPredictionExecutableObject poiMuid];
+  if (!poiMuid)
   {
-    v7 = [v4 clipMetadata];
+    clipMetadata = [v4 clipMetadata];
 
-    if (v7)
+    if (clipMetadata)
     {
-      v8 = [v4 clipMetadata];
-      v5 = [v8 clipMapItemMUID];
+      clipMetadata2 = [v4 clipMetadata];
+      poiMuid = [clipMetadata2 clipMapItemMUID];
 
-      if (v5)
+      if (poiMuid)
       {
         v9 = __atxlog_handle_hero();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
-          [ATXSpotlightLayoutSelector _poiMUIDFromHero:v5];
+          [ATXSpotlightLayoutSelector _poiMUIDFromHero:poiMuid];
         }
 
 LABEL_15:
@@ -2221,7 +2221,7 @@ LABEL_12:
         [ATXSpotlightLayoutSelector _poiMUIDFromHero:v9];
       }
 
-      v5 = 0;
+      poiMuid = 0;
       goto LABEL_15;
     }
   }
@@ -2229,53 +2229,53 @@ LABEL_12:
   v6 = __atxlog_handle_hero();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [ATXSpotlightLayoutSelector _poiMUIDFromHero:v5];
+    [ATXSpotlightLayoutSelector _poiMUIDFromHero:poiMuid];
   }
 
-  if (!v5)
+  if (!poiMuid)
   {
     goto LABEL_12;
   }
 
 LABEL_16:
 
-  return v5;
+  return poiMuid;
 }
 
-- (id)_createPOISuggestionWithMUID:(id)a3 fromHeroSuggestion:(id)a4
+- (id)_createPOISuggestionWithMUID:(id)d fromHeroSuggestion:(id)suggestion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 appClipHeroAppPredictionExecutableObject];
-  v8 = [v7 bundleId];
+  dCopy = d;
+  suggestionCopy = suggestion;
+  appClipHeroAppPredictionExecutableObject = [suggestionCopy appClipHeroAppPredictionExecutableObject];
+  bundleId = [appClipHeroAppPredictionExecutableObject bundleId];
   v9 = __atxlog_handle_blending();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 adamId];
-    v11 = [v7 bundleId];
-    v12 = [v5 unsignedLongLongValue];
-    v13 = [v7 clipMetadata];
-    v14 = [v13 clipURLHash];
+    adamId = [appClipHeroAppPredictionExecutableObject adamId];
+    bundleId2 = [appClipHeroAppPredictionExecutableObject bundleId];
+    unsignedLongLongValue = [dCopy unsignedLongLongValue];
+    clipMetadata = [appClipHeroAppPredictionExecutableObject clipMetadata];
+    clipURLHash = [clipMetadata clipURLHash];
     *buf = 134218754;
-    v36 = v10;
+    v36 = adamId;
     v37 = 2112;
-    v38 = v11;
+    v38 = bundleId2;
     v39 = 2048;
-    v40 = v12;
+    v40 = unsignedLongLongValue;
     v41 = 2112;
-    v42 = v14;
+    v42 = clipURLHash;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "_heroDataReducer: found POI adam: %lu, bundle: %@, muid: %llu, clipURLHash: %@, ", buf, 0x2Au);
   }
 
-  v15 = [objc_alloc(MEMORY[0x277CEB860]) initWithPOIName:v8 muid:v5 criteria:0];
+  v15 = [objc_alloc(MEMORY[0x277CEB860]) initWithPOIName:bundleId muid:dCopy criteria:0];
   v32 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:44];
-  v33 = v5;
+  v33 = dCopy;
   v16 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v32 clientModelVersion:@"1.0" engagementResetPolicy:1];
   v17 = objc_alloc(MEMORY[0x277D42080]);
-  v18 = [v15 actionDescription];
-  v19 = [v15 actionIdentifier];
-  v20 = [v17 initWithExecutableObject:v15 executableDescription:v18 executableIdentifier:v19 suggestionExecutableType:8];
+  actionDescription = [v15 actionDescription];
+  actionIdentifier = [v15 actionIdentifier];
+  v20 = [v17 initWithExecutableObject:v15 executableDescription:actionDescription executableIdentifier:actionIdentifier suggestionExecutableType:8];
 
   v21 = [objc_alloc(MEMORY[0x277D42088]) initWithApplicableSuggestionLayout:5];
   v34 = v21;
@@ -2283,9 +2283,9 @@ LABEL_16:
 
   LOWORD(v31) = 1;
   v23 = [objc_alloc(MEMORY[0x277D420A0]) initWithTitle:0 subtitle:0 predictionReason:0 preferredLayoutConfigs:v22 allowedOnLockscreen:0 allowedOnHomeScreen:0 allowedOnSpotlight:v31 shouldClearOnEngagement:0x800000 predictionReasons:?];
-  [v6 scoreSpecification];
-  v24 = v7;
-  v26 = v25 = v8;
+  [suggestionCopy scoreSpecification];
+  v24 = appClipHeroAppPredictionExecutableObject;
+  v26 = v25 = bundleId;
 
   v27 = [v26 copy];
   v28 = [objc_alloc(MEMORY[0x277D42068]) initWithClientModelSpecification:v16 executableSpecification:v20 uiSpecification:v23 scoreSpecification:v27];
@@ -2295,20 +2295,20 @@ LABEL_16:
   return v28;
 }
 
-- (id)_validAutoShortcutContextualActionsForBundleId:(id)a3 limit:(unint64_t)a4 provider:(id)a5
+- (id)_validAutoShortcutContextualActionsForBundleId:(id)id limit:(unint64_t)limit provider:(id)provider
 {
   v52 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if ([MEMORY[0x277CEB868] isAutoShortcutsEnabledForSpotlightForBundleId:v7])
+  idCopy = id;
+  providerCopy = provider;
+  if ([MEMORY[0x277CEB868] isAutoShortcutsEnabledForSpotlightForBundleId:idCopy])
   {
-    v35 = v8;
-    v9 = [(ATXSpotlightLayoutSelector *)self _autoShortcutsForBundleId:v7 provider:v8];
+    v35 = providerCopy;
+    v9 = [(ATXSpotlightLayoutSelector *)self _autoShortcutsForBundleId:idCopy provider:providerCopy];
     v10 = __atxlog_handle_blending();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412803;
-      v47 = v7;
+      v47 = idCopy;
       v48 = 2048;
       v49 = [v9 count];
       v50 = 2117;
@@ -2320,8 +2320,8 @@ LABEL_16:
     v43[1] = 3221225472;
     v43[2] = __92__ATXSpotlightLayoutSelector__validAutoShortcutContextualActionsForBundleId_limit_provider___block_invoke;
     v43[3] = &unk_2785A1420;
-    v36 = v7;
-    v11 = v7;
+    v36 = idCopy;
+    v11 = idCopy;
     v44 = v11;
     v34 = v9;
     v12 = [v9 _pas_mappedArrayWithTransform:v43];
@@ -2349,9 +2349,9 @@ LABEL_6:
 
         v19 = *(*(&v39 + 1) + 8 * v18);
         v20 = MEMORY[0x277CEB868];
-        v21 = [v19 phrase];
-        v22 = [v21 signature];
-        v23 = [v20 isAutoShortcutEnabledForSpotlightForBundleId:v11 signature:v22];
+        phrase = [v19 phrase];
+        signature = [phrase signature];
+        v23 = [v20 isAutoShortcutEnabledForSpotlightForBundleId:v11 signature:signature];
 
         v24 = __atxlog_handle_blending();
         v25 = os_log_type_enabled(v24, OS_LOG_TYPE_INFO);
@@ -2359,9 +2359,9 @@ LABEL_6:
         {
           if (v25)
           {
-            v26 = [v19 autoShortcut];
+            autoShortcut = [v19 autoShortcut];
             *buf = 138739971;
-            v47 = v26;
+            v47 = autoShortcut;
             _os_log_impl(&dword_2263AA000, v24, OS_LOG_TYPE_INFO, "SLS: [AutoShortcut] enabled: %{sensitive}@", buf, 0xCu);
           }
 
@@ -2372,14 +2372,14 @@ LABEL_6:
         {
           if (v25)
           {
-            v27 = [v19 autoShortcut];
+            autoShortcut2 = [v19 autoShortcut];
             *buf = 138739971;
-            v47 = v27;
+            v47 = autoShortcut2;
             _os_log_impl(&dword_2263AA000, v24, OS_LOG_TYPE_INFO, "SLS: [AutoShortcut] disabled: %{sensitive}@", buf, 0xCu);
           }
         }
 
-        if ([v14 count]>= a4)
+        if ([v14 count]>= limit)
         {
           break;
         }
@@ -2411,8 +2411,8 @@ LABEL_6:
     }
 
     v30 = [v14 copy];
-    v8 = v35;
-    v7 = v36;
+    providerCopy = v35;
+    idCopy = v36;
     v31 = v34;
   }
 
@@ -2422,7 +2422,7 @@ LABEL_6:
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v47 = v7;
+      v47 = idCopy;
       _os_log_impl(&dword_2263AA000, v31, OS_LOG_TYPE_DEFAULT, "SLS: [AutoShortcut] Shortcuts setting off for bundle %@", buf, 0xCu);
     }
 
@@ -2452,19 +2452,19 @@ uint64_t __92__ATXSpotlightLayoutSelector__validAutoShortcutContextualActionsFor
   return v2 ^ 1;
 }
 
-- (id)_autoShortcutsForBundleId:(id)a3 provider:(id)a4
+- (id)_autoShortcutsForBundleId:(id)id provider:(id)provider
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CBEAF8] currentLocale];
-  v8 = [v7 localeIdentifier];
+  idCopy = id;
+  providerCopy = provider;
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  localeIdentifier = [currentLocale localeIdentifier];
 
   v9 = __atxlog_handle_blending();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = idCopy;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "SLS: [AutoShortcut] searching %@", &buf, 0xCu);
   }
 
@@ -2479,12 +2479,12 @@ uint64_t __92__ATXSpotlightLayoutSelector__validAutoShortcutContextualActionsFor
   v19[1] = 3221225472;
   v19[2] = __65__ATXSpotlightLayoutSelector__autoShortcutsForBundleId_provider___block_invoke;
   v19[3] = &unk_2785991D8;
-  v11 = v5;
+  v11 = idCopy;
   v20 = v11;
   p_buf = &buf;
   v12 = v10;
   v21 = v12;
-  [v6 autoShortcutsForBundleIdentifier:v11 localeIdentifier:v8 completion:v19];
+  [providerCopy autoShortcutsForBundleIdentifier:v11 localeIdentifier:localeIdentifier completion:v19];
   if ([MEMORY[0x277D425A0] waitForSemaphore:v12 timeoutSeconds:5.0] == 1)
   {
     v13 = __atxlog_handle_default();
@@ -2534,20 +2534,20 @@ void __65__ATXSpotlightLayoutSelector__autoShortcutsForBundleId_provider___block
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (id)_titleForParameterizedAutoShortcutContextualAction:(id)a3 provider:(id)a4
+- (id)_titleForParameterizedAutoShortcutContextualAction:(id)action provider:(id)provider
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 phrase];
-  v8 = [v7 parameterIdentifier];
+  actionCopy = action;
+  providerCopy = provider;
+  phrase = [actionCopy phrase];
+  parameterIdentifier = [phrase parameterIdentifier];
 
-  if (v8)
+  if (parameterIdentifier)
   {
-    v30 = v8;
+    v30 = parameterIdentifier;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
     v29 = 0;
-    v10 = [v6 propertiesForIdentifiers:v9 error:&v29];
+    v10 = [providerCopy propertiesForIdentifiers:v9 error:&v29];
     v11 = v29;
 
     if (v11)
@@ -2555,7 +2555,7 @@ void __65__ATXSpotlightLayoutSelector__autoShortcutsForBundleId_provider___block
       v12 = __atxlog_handle_blending();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [ATXSpotlightLayoutSelector _titleForParameterizedAutoShortcutContextualAction:v5 provider:?];
+        [ATXSpotlightLayoutSelector _titleForParameterizedAutoShortcutContextualAction:actionCopy provider:?];
       }
     }
 
@@ -2563,54 +2563,54 @@ void __65__ATXSpotlightLayoutSelector__autoShortcutsForBundleId_provider___block
     {
       if (v10)
       {
-        v16 = [v10 objectForKeyedSubscript:v8];
+        v16 = [v10 objectForKeyedSubscript:parameterIdentifier];
         v12 = v16;
         if (v16)
         {
-          v17 = [v16 value];
-          v18 = [v17 displayRepresentation];
+          value = [v16 value];
+          displayRepresentation = [value displayRepresentation];
 
-          v19 = [v18 title];
+          title = [displayRepresentation title];
 
-          if (v19)
+          if (title)
           {
-            v20 = [v18 title];
-            v13 = [v20 atx_efficientLocalizedString];
+            title2 = [displayRepresentation title];
+            atx_efficientLocalizedString = [title2 atx_efficientLocalizedString];
           }
 
           else
           {
-            v20 = __atxlog_handle_blending();
-            if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
+            title2 = __atxlog_handle_blending();
+            if (os_log_type_enabled(title2, OS_LOG_TYPE_DEFAULT))
             {
-              v25 = [v5 bundleIdentifier];
-              v26 = [v5 actionIdentifier];
+              bundleIdentifier = [actionCopy bundleIdentifier];
+              actionIdentifier = [actionCopy actionIdentifier];
               *buf = 138412546;
-              v32 = v25;
+              v32 = bundleIdentifier;
               v33 = 2112;
-              v34 = v26;
-              _os_log_impl(&dword_2263AA000, v20, OS_LOG_TYPE_DEFAULT, "SLS: [AutoShortcut] displayRepresentation or title nil for %@, %@", buf, 0x16u);
+              v34 = actionIdentifier;
+              _os_log_impl(&dword_2263AA000, title2, OS_LOG_TYPE_DEFAULT, "SLS: [AutoShortcut] displayRepresentation or title nil for %@, %@", buf, 0x16u);
             }
 
-            v13 = 0;
+            atx_efficientLocalizedString = 0;
           }
         }
 
         else
         {
-          v18 = __atxlog_handle_blending();
-          if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+          displayRepresentation = __atxlog_handle_blending();
+          if (os_log_type_enabled(displayRepresentation, OS_LOG_TYPE_DEFAULT))
           {
-            v23 = [v5 bundleIdentifier];
-            v24 = [v5 actionIdentifier];
+            bundleIdentifier2 = [actionCopy bundleIdentifier];
+            actionIdentifier2 = [actionCopy actionIdentifier];
             *buf = 138412546;
-            v32 = v23;
+            v32 = bundleIdentifier2;
             v33 = 2112;
-            v34 = v24;
-            _os_log_impl(&dword_2263AA000, v18, OS_LOG_TYPE_DEFAULT, "SLS: [AutoShortcut] property nil for %@, %@", buf, 0x16u);
+            v34 = actionIdentifier2;
+            _os_log_impl(&dword_2263AA000, displayRepresentation, OS_LOG_TYPE_DEFAULT, "SLS: [AutoShortcut] property nil for %@, %@", buf, 0x16u);
           }
 
-          v13 = 0;
+          atx_efficientLocalizedString = 0;
         }
 
         goto LABEL_23;
@@ -2619,17 +2619,17 @@ void __65__ATXSpotlightLayoutSelector__autoShortcutsForBundleId_provider___block
       v12 = __atxlog_handle_blending();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v5 bundleIdentifier];
-        v22 = [v5 actionIdentifier];
+        bundleIdentifier3 = [actionCopy bundleIdentifier];
+        actionIdentifier3 = [actionCopy actionIdentifier];
         *buf = 138412546;
-        v32 = v21;
+        v32 = bundleIdentifier3;
         v33 = 2112;
-        v34 = v22;
+        v34 = actionIdentifier3;
         _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, "SLS: [AutoShortcut] all properties nil for %@, %@", buf, 0x16u);
       }
     }
 
-    v13 = 0;
+    atx_efficientLocalizedString = 0;
 LABEL_23:
 
     goto LABEL_24;
@@ -2638,60 +2638,60 @@ LABEL_23:
   v11 = __atxlog_handle_blending();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v5 bundleIdentifier];
-    v15 = [v5 actionIdentifier];
+    bundleIdentifier4 = [actionCopy bundleIdentifier];
+    actionIdentifier4 = [actionCopy actionIdentifier];
     *buf = 138412546;
-    v32 = v14;
+    v32 = bundleIdentifier4;
     v33 = 2112;
-    v34 = v15;
+    v34 = actionIdentifier4;
     _os_log_impl(&dword_2263AA000, v11, OS_LOG_TYPE_DEFAULT, "SLS: [AutoShortcut] not a phrase with parameters, use short title %@, %@", buf, 0x16u);
   }
 
-  v13 = 0;
+  atx_efficientLocalizedString = 0;
 LABEL_24:
 
   v27 = *MEMORY[0x277D85DE8];
 
-  return v13;
+  return atx_efficientLocalizedString;
 }
 
-- (id)_suggestionFromAutoShortcutContextualAction:(id)a3 title:(id)a4 predictionReasons:(unint64_t)a5
+- (id)_suggestionFromAutoShortcutContextualAction:(id)action title:(id)title predictionReasons:(unint64_t)reasons
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [objc_alloc(MEMORY[0x277CEB820]) initWithContextualAction:v7 criteria:0];
-  if (!v8)
+  actionCopy = action;
+  titleCopy = title;
+  v9 = [objc_alloc(MEMORY[0x277CEB820]) initWithContextualAction:actionCopy criteria:0];
+  if (!titleCopy)
   {
-    v10 = [v7 autoShortcut];
-    v11 = [v10 localizedShortTitle];
-    v12 = v11;
-    if (v11)
+    autoShortcut = [actionCopy autoShortcut];
+    localizedShortTitle = [autoShortcut localizedShortTitle];
+    v12 = localizedShortTitle;
+    if (localizedShortTitle)
     {
-      v13 = v11;
+      displayString = localizedShortTitle;
     }
 
     else
     {
-      v13 = [v7 displayString];
+      displayString = [actionCopy displayString];
     }
 
-    v8 = v13;
+    titleCopy = displayString;
   }
 
   v14 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:44];
   v15 = [objc_alloc(MEMORY[0x277D42078]) initWithClientModelId:v14 clientModelVersion:@"1.0" engagementResetPolicy:1];
   v16 = objc_alloc(MEMORY[0x277D42080]);
-  v17 = [v7 displayString];
-  v18 = [v7 uniqueIdentifier];
-  v19 = [v16 initWithExecutableObject:v9 executableDescription:v17 executableIdentifier:v18 suggestionExecutableType:9];
+  displayString2 = [actionCopy displayString];
+  uniqueIdentifier = [actionCopy uniqueIdentifier];
+  v19 = [v16 initWithExecutableObject:v9 executableDescription:displayString2 executableIdentifier:uniqueIdentifier suggestionExecutableType:9];
 
   v20 = [objc_alloc(MEMORY[0x277D42088]) initWithApplicableSuggestionLayout:5];
   v28[0] = v20;
   v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
 
   LOWORD(v27) = 1;
-  v22 = [objc_alloc(MEMORY[0x277D420A0]) initWithTitle:v8 subtitle:0 predictionReason:0 preferredLayoutConfigs:v21 allowedOnLockscreen:0 allowedOnHomeScreen:0 allowedOnSpotlight:v27 shouldClearOnEngagement:a5 predictionReasons:?];
+  v22 = [objc_alloc(MEMORY[0x277D420A0]) initWithTitle:titleCopy subtitle:0 predictionReason:0 preferredLayoutConfigs:v21 allowedOnLockscreen:0 allowedOnHomeScreen:0 allowedOnSpotlight:v27 shouldClearOnEngagement:reasons predictionReasons:?];
   v23 = [objc_alloc(MEMORY[0x277D42090]) initWithRawScore:4 suggestedConfidenceCategory:15.0];
   v24 = [objc_alloc(MEMORY[0x277D42068]) initWithClientModelSpecification:v15 executableSpecification:v19 uiSpecification:v22 scoreSpecification:v23];
 

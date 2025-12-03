@@ -26,9 +26,9 @@
 - (UIView)searchableResponderAsView
 {
   WeakRetained = objc_loadWeakRetained(&self->_searchableResponder);
-  v4 = [WeakRetained __isKindOfUIView];
+  __isKindOfUIView = [WeakRetained __isKindOfUIView];
 
-  if (v4)
+  if (__isKindOfUIView)
   {
     v5 = objc_loadWeakRetained(&self->_searchableResponder);
   }
@@ -46,10 +46,10 @@
   WeakRetained = objc_loadWeakRetained(&self->_divergentResponderForSession);
   if (!WeakRetained || (v4 = WeakRetained, v5 = objc_loadWeakRetained(&self->_divergentResponderForSession), [v5 _window], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v4, !v6))
   {
-    v7 = [(UIFindSession *)self searchableResponder];
-    v8 = [v7 _window];
-    v9 = [v8 _deepestActionResponder];
-    objc_storeWeak(&self->_divergentResponderForSession, v9);
+    searchableResponder = [(UIFindSession *)self searchableResponder];
+    _window = [searchableResponder _window];
+    _deepestActionResponder = [_window _deepestActionResponder];
+    objc_storeWeak(&self->_divergentResponderForSession, _deepestActionResponder);
   }
 
   v10 = objc_loadWeakRetained(&self->_divergentResponderForSession);

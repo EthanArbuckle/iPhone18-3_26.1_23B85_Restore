@@ -1,14 +1,14 @@
 @interface AVTAvatarLibraryCollectionViewAddCell
-- (AVTAvatarLibraryCollectionViewAddCell)initWithFrame:(CGRect)a3;
+- (AVTAvatarLibraryCollectionViewAddCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AVTAvatarLibraryCollectionViewAddCell
 
-- (AVTAvatarLibraryCollectionViewAddCell)initWithFrame:(CGRect)a3
+- (AVTAvatarLibraryCollectionViewAddCell)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = AVTAvatarLibraryCollectionViewAddCell;
-  v3 = [(AVTAvatarLibraryCollectionViewAddCell *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTAvatarLibraryCollectionViewAddCell *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = MEMORY[0x1E69DCAB8];
@@ -16,18 +16,18 @@
     v6 = [v4 imageNamed:@"silhouetteHead" inBundle:v5 compatibleWithTraitCollection:0];
 
     v7 = objc_alloc(MEMORY[0x1E69DCAE0]);
-    v8 = [(AVTAvatarLibraryCollectionViewAddCell *)v3 contentView];
-    [v8 bounds];
+    contentView = [(AVTAvatarLibraryCollectionViewAddCell *)v3 contentView];
+    [contentView bounds];
     v9 = [v7 initWithFrame:?];
 
     [v9 setImage:v6];
     [v9 setAutoresizingMask:18];
-    v10 = [(AVTAvatarLibraryCollectionViewAddCell *)v3 contentView];
-    [v10 addSubview:v9];
+    contentView2 = [(AVTAvatarLibraryCollectionViewAddCell *)v3 contentView];
+    [contentView2 addSubview:v9];
 
     v11 = objc_alloc(MEMORY[0x1E69DCC10]);
-    v12 = [(AVTAvatarLibraryCollectionViewAddCell *)v3 contentView];
-    [v12 bounds];
+    contentView3 = [(AVTAvatarLibraryCollectionViewAddCell *)v3 contentView];
+    [contentView3 bounds];
     v13 = [v11 initWithFrame:?];
 
     [v13 setText:@"+"];
@@ -39,8 +39,8 @@
 
     [v13 setTextAlignment:1];
     [v13 setAutoresizingMask:18];
-    v16 = [(AVTAvatarLibraryCollectionViewAddCell *)v3 contentView];
-    [v16 addSubview:v13];
+    contentView4 = [(AVTAvatarLibraryCollectionViewAddCell *)v3 contentView];
+    [contentView4 addSubview:v13];
   }
 
   return v3;

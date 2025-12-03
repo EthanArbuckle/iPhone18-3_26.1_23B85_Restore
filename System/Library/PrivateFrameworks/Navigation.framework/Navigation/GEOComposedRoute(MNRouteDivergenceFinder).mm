@@ -12,17 +12,17 @@
 
 - (id)_navigation_allLeafBoundingSections
 {
-  v1 = [a1 _navigation_rootBoundingSection];
-  if (v1)
+  _navigation_rootBoundingSection = [self _navigation_rootBoundingSection];
+  if (_navigation_rootBoundingSection)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __80__GEOComposedRoute_MNRouteDivergenceFinder___navigation_allLeafBoundingSections__block_invoke;
     v7[3] = &unk_1E842F040;
-    v3 = v2;
+    v3 = array;
     v8 = v3;
-    [v1 traverseWithHandler:v7];
+    [_navigation_rootBoundingSection traverseWithHandler:v7];
     if ([v3 count])
     {
       v4 = v3;
@@ -47,8 +47,8 @@
 - (id)_navigation_leafBoundingSectionsIntersectingSection:()MNRouteDivergenceFinder paddingMapPoints:
 {
   v6 = a4;
-  v7 = [a1 _navigation_rootBoundingSection];
-  v8 = [v7 leafSectionsIntersectingSection:v6 paddingMapPoints:a2];
+  _navigation_rootBoundingSection = [self _navigation_rootBoundingSection];
+  v8 = [_navigation_rootBoundingSection leafSectionsIntersectingSection:v6 paddingMapPoints:a2];
 
   return v8;
 }
@@ -56,17 +56,17 @@
 - (id)_navigation_leafBoundingSectionsIntersectingSection:()MNRouteDivergenceFinder
 {
   v4 = a3;
-  v5 = [a1 _navigation_rootBoundingSection];
-  v6 = [v5 leafSectionsIntersectingSection:v4 paddingMapPoints:0.0];
+  _navigation_rootBoundingSection = [self _navigation_rootBoundingSection];
+  v6 = [_navigation_rootBoundingSection leafSectionsIntersectingSection:v4 paddingMapPoints:0.0];
 
   return v6;
 }
 
 - (id)_navigation_leafBoundingSectionContainingCoordinate:()MNRouteDivergenceFinder
 {
-  v7 = [a1 _navigation_rootBoundingSection];
-  v8 = v7;
-  if (v7)
+  _navigation_rootBoundingSection = [self _navigation_rootBoundingSection];
+  v8 = _navigation_rootBoundingSection;
+  if (_navigation_rootBoundingSection)
   {
     v12 = 0;
     v13 = &v12;
@@ -82,7 +82,7 @@
     *&v11[5] = a2;
     *&v11[6] = a3;
     *&v11[7] = a4;
-    [v7 traverseWithHandler:v11];
+    [_navigation_rootBoundingSection traverseWithHandler:v11];
     v9 = v13[5];
     _Block_object_dispose(&v12, 8);
   }
@@ -97,36 +97,36 @@
 
 - (id)_navigation_leafBoundingSectionForRouteCoordinate:()MNRouteDivergenceFinder
 {
-  v1 = [a1 _navigation_rootBoundingSection];
-  [v1 range];
+  _navigation_rootBoundingSection = [self _navigation_rootBoundingSection];
+  [_navigation_rootBoundingSection range];
   if (GEOPolylineCoordinateInRange())
   {
-    if (v1)
+    if (_navigation_rootBoundingSection)
     {
-      while (([v1 isLeaf] & 1) == 0)
+      while (([_navigation_rootBoundingSection isLeaf] & 1) == 0)
       {
-        v2 = [v1 left];
-        if (v2 && ([v1 left], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "range"), v4 = GEOPolylineCoordinateInRange(), v3, v2, v4))
+        left = [_navigation_rootBoundingSection left];
+        if (left && ([_navigation_rootBoundingSection left], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "range"), v4 = GEOPolylineCoordinateInRange(), v3, left, v4))
         {
-          v5 = [v1 left];
+          left2 = [_navigation_rootBoundingSection left];
         }
 
         else
         {
-          v6 = [v1 right];
-          if (!v6 || ([v1 right], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "range"), v8 = GEOPolylineCoordinateInRange(), v7, v6, !v8))
+          right = [_navigation_rootBoundingSection right];
+          if (!right || ([_navigation_rootBoundingSection right], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "range"), v8 = GEOPolylineCoordinateInRange(), v7, right, !v8))
           {
 
-            v1 = 0;
+            _navigation_rootBoundingSection = 0;
             break;
           }
 
-          v5 = [v1 right];
+          left2 = [_navigation_rootBoundingSection right];
         }
 
-        v9 = v5;
+        v9 = left2;
 
-        v1 = v9;
+        _navigation_rootBoundingSection = v9;
         if (!v9)
         {
           break;
@@ -134,8 +134,8 @@
       }
     }
 
-    v1 = v1;
-    v10 = v1;
+    _navigation_rootBoundingSection = _navigation_rootBoundingSection;
+    v10 = _navigation_rootBoundingSection;
   }
 
   else
@@ -156,22 +156,22 @@
 
   else
   {
-    [a1 distanceBetweenRouteCoordinate:a3 andRouteCoordinate:a4];
+    [self distanceBetweenRouteCoordinate:a3 andRouteCoordinate:a4];
     v11 = v10;
     v9 = objc_alloc_init(MNRouteDivergenceFinderBoundingSection);
     [(MNRouteDivergenceFinderBoundingSection *)v9 setRange:a3, a4];
     [(MNRouteDivergenceFinderBoundingSection *)v9 setLength:v11];
-    [a1 distance];
+    [self distance];
     v13 = v12 * 0.001;
     v14 = 1609.0;
     if (v13 >= 1609.0)
     {
-      [a1 distance];
+      [self distance];
       v14 = v15 * 0.001;
     }
 
     v16 = v11 <= v14 || a3 + 1 >= a4;
-    if (v16 || ([a1 routeCoordinateForDistance:a3 afterRouteCoordinate:v11 * 0.5], v17 = GEOPolylineCoordinateNearestIndex(), (GEOPolylineCoordinateEqual() & 1) != 0) || (GEOPolylineCoordinateEqual() & 1) != 0)
+    if (v16 || ([self routeCoordinateForDistance:a3 afterRouteCoordinate:v11 * 0.5], v17 = GEOPolylineCoordinateNearestIndex(), (GEOPolylineCoordinateEqual() & 1) != 0) || (GEOPolylineCoordinateEqual() & 1) != 0)
     {
       a3 = a3;
       if (a3 <= a4)
@@ -183,7 +183,7 @@
         v22 = -180.0;
         do
         {
-          [a1 pointAt:a3];
+          [self pointAt:a3];
           v20 = fmin(v20, v23);
           v21 = fmin(v21, v24);
           v19 = fmax(v19, v23);
@@ -202,8 +202,8 @@
 
     else
     {
-      v27 = [a1 _navigation_boundingSectionForRange:a3 leafIndex:{v17, a5}];
-      v28 = [a1 _navigation_boundingSectionForRange:v17 leafIndex:{a4, a5}];
+      v27 = [self _navigation_boundingSectionForRange:a3 leafIndex:{v17, a5}];
+      v28 = [self _navigation_boundingSectionForRange:v17 leafIndex:{a4, a5}];
       v29 = v28;
       if (!v27 || !v28)
       {
@@ -221,10 +221,10 @@
 
       [(MNRouteDivergenceFinderBoundingSection *)v9 setLeft:v27];
       [(MNRouteDivergenceFinderBoundingSection *)v9 setRight:v29];
-      v30 = [(MNRouteDivergenceFinderBoundingSection *)v9 left];
-      [v30 boundingRect];
-      v31 = [(MNRouteDivergenceFinderBoundingSection *)v9 right];
-      [v31 boundingRect];
+      left = [(MNRouteDivergenceFinderBoundingSection *)v9 left];
+      [left boundingRect];
+      right = [(MNRouteDivergenceFinderBoundingSection *)v9 right];
+      [right boundingRect];
       GEOMapRectUnion();
       [(MNRouteDivergenceFinderBoundingSection *)v9 setBoundingRect:?];
 
@@ -239,12 +239,12 @@
 
 - (id)_navigation_rootBoundingSection
 {
-  v4 = objc_getAssociatedObject(a1, a2);
+  v4 = objc_getAssociatedObject(self, a2);
   if (!v4)
   {
     v6 = 0;
-    v4 = [a1 _navigation_boundingSectionForRange:0 leafIndex:{objc_msgSend(a1, "endRouteCoordinate"), &v6}];
-    objc_setAssociatedObject(a1, a2, v4, 1);
+    v4 = [self _navigation_boundingSectionForRange:0 leafIndex:{objc_msgSend(self, "endRouteCoordinate"), &v6}];
+    objc_setAssociatedObject(self, a2, v4, 1);
   }
 
   return v4;

@@ -1,5 +1,5 @@
 @interface FMDDeviceMotion
-+ (id)stringFromActivityState:(int64_t)a3;
++ (id)stringFromActivityState:(int64_t)state;
 - (id)description;
 @end
 
@@ -8,22 +8,22 @@
 - (id)description
 {
   v3 = [FMDDeviceMotion stringFromActivityState:[(FMDDeviceMotion *)self activityState]];
-  v4 = [(FMDDeviceMotion *)self activityStartDate];
-  v5 = [NSString stringWithFormat:@"DeviceMotion state %@, startDate %@", v3, v4];
+  activityStartDate = [(FMDDeviceMotion *)self activityStartDate];
+  v5 = [NSString stringWithFormat:@"DeviceMotion state %@, startDate %@", v3, activityStartDate];
 
   return v5;
 }
 
-+ (id)stringFromActivityState:(int64_t)a3
++ (id)stringFromActivityState:(int64_t)state
 {
-  if ((a3 - 1) > 4)
+  if ((state - 1) > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return *(&off_1002CF4C8 + a3 - 1);
+    return *(&off_1002CF4C8 + state - 1);
   }
 }
 

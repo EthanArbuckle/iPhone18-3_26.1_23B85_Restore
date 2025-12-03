@@ -10,14 +10,14 @@
 - (id)__ck_attributedStringByApplyingRichLinkInteraction:()RichLinks toRichLinkItems:stringDidChange:
 {
   v8 = a4;
-  v9 = a1;
+  selfCopy = self;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__23;
   v26 = __Block_byref_object_dispose__23;
-  v27 = [v9 mutableCopy];
-  v10 = [v9 length];
+  v27 = [selfCopy mutableCopy];
+  v10 = [selfCopy length];
   v11 = *MEMORY[0x1E69DB5F8];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -26,7 +26,7 @@
   v12 = v8;
   v17 = v12;
   v20 = a3;
-  v13 = v9;
+  v13 = selfCopy;
   v18 = v13;
   v19 = &v22;
   v21 = a5;
@@ -63,7 +63,7 @@
 
 - (id)ck_linkPreviewTextAttachmentsInRange:()RichLinks
 {
-  v20.length = [a1 length];
+  v20.length = [self length];
   v19.location = a3;
   v19.length = a4;
   v20.location = 0;
@@ -75,14 +75,14 @@
     v14 = 0x3032000000;
     v15 = __Block_byref_object_copy__23;
     v16 = __Block_byref_object_dispose__23;
-    v17 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v8 = *MEMORY[0x1E69DB5F8];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __70__NSAttributedString_RichLinks__ck_linkPreviewTextAttachmentsInRange___block_invoke;
     v11[3] = &unk_1E72EF840;
     v11[4] = &v12;
-    [a1 enumerateAttribute:v8 inRange:v7.location options:v7.length usingBlock:{0, v11}];
+    [self enumerateAttribute:v8 inRange:v7.location options:v7.length usingBlock:{0, v11}];
     v9 = [v13[5] copy];
     _Block_object_dispose(&v12, 8);
   }
@@ -103,7 +103,7 @@
   v15 = 0x3010000000;
   v16 = &unk_190F92BB2;
   v17 = xmmword_190DCEFA0;
-  v5 = [a1 length];
+  v5 = [self length];
   v6 = *MEMORY[0x1E69DB5F8];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -112,7 +112,7 @@
   v7 = v4;
   v11 = v7;
   v12 = &v13;
-  [a1 enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v10}];
+  [self enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v10}];
   v8 = v14[4];
 
   _Block_object_dispose(&v13, 8);

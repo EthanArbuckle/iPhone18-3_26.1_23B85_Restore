@@ -1,9 +1,9 @@
 @interface TSCH3DPrefilteredLineSetting
 + (id)setting;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TSCH3DPrefilteredLineSetting)init;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (tvec4<float>)filterRadius;
 - (tvec4<float>)strokeColor;
 - (unint64_t)hash;
@@ -13,7 +13,7 @@
 
 + (id)setting
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
@@ -35,10 +35,10 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, a3);
+  v10 = objc_msgSend_allocWithZone_(v5, v6, v7, v8, v9, zone);
   v15 = objc_msgSend_init(v10, v11, v12, v13, v14);
   v20 = v15;
   if (v15)
@@ -75,9 +75,9 @@
   return vadd_f32(vdup_lane_s32(v10, 1), vadd_f32(v10, vadd_f32(v9, vdup_lane_s32(v9, 1)))).f32[0] + 37 * (self->_useNormals + 37 * (v7 + 37 * v6) + self->_disableColorOutput + self->_cullBackfaces);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
   v6 = v5;

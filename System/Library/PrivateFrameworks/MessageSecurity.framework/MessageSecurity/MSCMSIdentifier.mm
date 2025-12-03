@@ -1,8 +1,8 @@
 @interface MSCMSIdentifier
-+ (id)decodeIdentifier:(heim_base_data *)a3 error:(id *)a4;
-- (MSCMSIdentifier)initWithIssuerName:(id)a3 serialNumber:(id)a4 negativeNumber:(BOOL)a5;
-- (MSCMSIdentifier)initWithSkid:(id)a3;
-- (id)encodeMessageSecurityObject:(id *)a3;
++ (id)decodeIdentifier:(heim_base_data *)identifier error:(id *)error;
+- (MSCMSIdentifier)initWithIssuerName:(id)name serialNumber:(id)number negativeNumber:(BOOL)negativeNumber;
+- (MSCMSIdentifier)initWithSkid:(id)skid;
+- (id)encodeMessageSecurityObject:(id *)object;
 - (void)dealloc;
 @end
 
@@ -17,9 +17,9 @@
   [(MSCMSIdentifier *)&v3 dealloc];
 }
 
-- (MSCMSIdentifier)initWithSkid:(id)a3
+- (MSCMSIdentifier)initWithSkid:(id)skid
 {
-  v4 = a3;
+  skidCopy = skid;
   v13.receiver = self;
   v13.super_class = MSCMSIdentifier;
   v5 = [(MSCMSIdentifier *)&v13 init];
@@ -27,7 +27,7 @@
   if (v5)
   {
     [(MSCMSIdentifier *)v5 setType:2];
-    [(MSCMSIdentifier *)v6 setSkidData:v4];
+    [(MSCMSIdentifier *)v6 setSkidData:skidCopy];
     [(MSCMSIdentifier *)v6 setSubjectKeyId:malloc_type_malloc(0x10uLL, 0x108004057E67DB5uLL)];
     if (![(MSCMSIdentifier *)v6 subjectKeyId])
     {
@@ -35,13 +35,13 @@
       goto LABEL_6;
     }
 
-    v7 = [(MSCMSIdentifier *)v6 skidData];
-    v8 = [v7 length];
+    skidData = [(MSCMSIdentifier *)v6 skidData];
+    v8 = [skidData length];
     *[(MSCMSIdentifier *)v6 subjectKeyId]= v8;
 
-    v9 = [(MSCMSIdentifier *)v6 skidData];
-    v10 = [v9 bytes];
-    *([(MSCMSIdentifier *)v6 subjectKeyId]+ 8) = v10;
+    skidData2 = [(MSCMSIdentifier *)v6 skidData];
+    bytes = [skidData2 bytes];
+    *([(MSCMSIdentifier *)v6 subjectKeyId]+ 8) = bytes;
   }
 
   v11 = v6;
@@ -50,11 +50,11 @@ LABEL_6:
   return v11;
 }
 
-- (MSCMSIdentifier)initWithIssuerName:(id)a3 serialNumber:(id)a4 negativeNumber:(BOOL)a5
+- (MSCMSIdentifier)initWithIssuerName:(id)name serialNumber:(id)number negativeNumber:(BOOL)negativeNumber
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  negativeNumberCopy = negativeNumber;
+  nameCopy = name;
+  numberCopy = number;
   v22.receiver = self;
   v22.super_class = MSCMSIdentifier;
   v10 = [(MSCMSIdentifier *)&v22 init];
@@ -62,8 +62,8 @@ LABEL_6:
   if (v10)
   {
     [(MSCMSIdentifier *)v10 setType:1];
-    [(MSCMSIdentifier *)v11 setIssuerNameData:v8];
-    [(MSCMSIdentifier *)v11 setSerialNumberData:v9];
+    [(MSCMSIdentifier *)v11 setIssuerNameData:nameCopy];
+    [(MSCMSIdentifier *)v11 setSerialNumberData:numberCopy];
     [(MSCMSIdentifier *)v11 setIssuerAndSerialNumber:malloc_type_malloc(0x28uLL, 0x1080040EAE5A63AuLL)];
     if (![(MSCMSIdentifier *)v11 issuerAndSerialNumber])
     {
@@ -71,23 +71,23 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v12 = [(MSCMSIdentifier *)v11 issuerNameData];
-    v13 = [v12 bytes];
-    *([(MSCMSIdentifier *)v11 issuerAndSerialNumber]+ 8) = v13;
+    issuerNameData = [(MSCMSIdentifier *)v11 issuerNameData];
+    bytes = [issuerNameData bytes];
+    *([(MSCMSIdentifier *)v11 issuerAndSerialNumber]+ 8) = bytes;
 
-    v14 = [(MSCMSIdentifier *)v11 issuerNameData];
-    v15 = [v14 length];
+    issuerNameData2 = [(MSCMSIdentifier *)v11 issuerNameData];
+    v15 = [issuerNameData2 length];
     *[(MSCMSIdentifier *)v11 issuerAndSerialNumber]= v15;
 
-    v16 = [(MSCMSIdentifier *)v11 serialNumberData];
-    v17 = [v16 bytes];
-    *([(MSCMSIdentifier *)v11 issuerAndSerialNumber]+ 24) = v17;
+    serialNumberData = [(MSCMSIdentifier *)v11 serialNumberData];
+    bytes2 = [serialNumberData bytes];
+    *([(MSCMSIdentifier *)v11 issuerAndSerialNumber]+ 24) = bytes2;
 
-    v18 = [(MSCMSIdentifier *)v11 serialNumberData];
-    v19 = [v18 length];
+    serialNumberData2 = [(MSCMSIdentifier *)v11 serialNumberData];
+    v19 = [serialNumberData2 length];
     *([(MSCMSIdentifier *)v11 issuerAndSerialNumber]+ 16) = v19;
 
-    *([(MSCMSIdentifier *)v11 issuerAndSerialNumber]+ 32) = v5;
+    *([(MSCMSIdentifier *)v11 issuerAndSerialNumber]+ 32) = negativeNumberCopy;
   }
 
   v20 = v11;
@@ -96,15 +96,15 @@ LABEL_6:
   return v20;
 }
 
-- (id)encodeMessageSecurityObject:(id *)a3
+- (id)encodeMessageSecurityObject:(id *)object
 {
   v27[1] = *MEMORY[0x277D85DE8];
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
   LODWORD(v22) = [(MSCMSIdentifier *)self type];
-  v5 = [(MSCMSIdentifier *)self type];
-  if (v5 == 2)
+  type = [(MSCMSIdentifier *)self type];
+  if (type == 2)
   {
     if ([(MSCMSIdentifier *)self subjectKeyId])
     {
@@ -120,7 +120,7 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  if (v5 != 1)
+  if (type != 1)
   {
     v12 = [MSError MSErrorWithDomain:MSErrorCMSDomain[0] code:-50 underlyingError:0 description:@"CMSIdentifer has unknown type: %d", [(MSCMSIdentifier *)self type]];
 LABEL_13:
@@ -174,10 +174,10 @@ LABEL_12:
 
   v12 = 0;
 LABEL_14:
-  if (a3 && v12)
+  if (object && v12)
   {
     v15 = v12;
-    *a3 = v12;
+    *object = v12;
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -185,11 +185,11 @@ LABEL_14:
   return v8;
 }
 
-+ (id)decodeIdentifier:(heim_base_data *)a3 error:(id *)a4
++ (id)decodeIdentifier:(heim_base_data *)identifier error:(id *)error
 {
-  if (a4 && *a4)
+  if (error && *error)
   {
-    v6 = [*a4 copy];
+    v6 = [*error copy];
   }
 
   else
@@ -201,8 +201,8 @@ LABEL_14:
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  var0 = a3->var0;
-  var1 = a3->var1;
+  var0 = identifier->var0;
+  var1 = identifier->var1;
   v9 = decode_CMSIdentifier();
   if (v9)
   {
@@ -210,7 +210,7 @@ LABEL_14:
     goto LABEL_23;
   }
 
-  if (v22 != a3->var0)
+  if (v22 != identifier->var0)
   {
     [MSCMSIdentifier decodeIdentifier:v6 error:&v19];
     goto LABEL_23;
@@ -220,7 +220,7 @@ LABEL_14:
   {
     v21 = 0;
     v20 = 0;
-    v14 = a3->var1;
+    v14 = identifier->var1;
     tag = der_get_tag();
     if (!tag)
     {
@@ -233,7 +233,7 @@ LABEL_14:
 LABEL_23:
     v13 = 0;
     v6 = v19;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -247,7 +247,7 @@ LABEL_23:
 
     v13 = 0;
     v6 = v16;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_17;
     }
@@ -261,7 +261,7 @@ LABEL_23:
   v13 = [(MSCMSIdentifier *)v12 initWithIssuerName:v10 serialNumber:v11 negativeNumber:DWORD2(v25) != 0];
 
 LABEL_14:
-  if (!a4)
+  if (!error)
   {
     goto LABEL_17;
   }
@@ -270,7 +270,7 @@ LABEL_15:
   if (v6)
   {
     v17 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
 LABEL_17:

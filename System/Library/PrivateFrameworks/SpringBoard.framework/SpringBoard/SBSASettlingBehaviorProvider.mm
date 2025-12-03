@@ -1,23 +1,23 @@
 @interface SBSASettlingBehaviorProvider
-- (UIEdgeInsets)_overshootOutsetsForTransitionPhase:(int64_t)a3 baseOutsets:(UIEdgeInsets)a4 elementContext:(id)a5;
-- (UIEdgeInsets)_overshootOutsetsTargetingContainerDescription:(id)a3 initialContainerDescription:(id)a4 settings:(id)a5 context:(id)a6;
-- (double)_overshootFractionForDampingRatio:(double)a3;
-- (double)_progressMilestoneForTransitionPhase:(int64_t)a3;
-- (id)_fluidBehaviorSettingsForTransitionPhase:(int64_t)a3 forElementContext:(id)a4;
-- (id)preferencesFromContext:(id)a3;
-- (void)_setActivePhase:(int64_t)a3 context:(id)a4 logReason:(id)a5;
+- (UIEdgeInsets)_overshootOutsetsForTransitionPhase:(int64_t)phase baseOutsets:(UIEdgeInsets)outsets elementContext:(id)context;
+- (UIEdgeInsets)_overshootOutsetsTargetingContainerDescription:(id)description initialContainerDescription:(id)containerDescription settings:(id)settings context:(id)context;
+- (double)_overshootFractionForDampingRatio:(double)ratio;
+- (double)_progressMilestoneForTransitionPhase:(int64_t)phase;
+- (id)_fluidBehaviorSettingsForTransitionPhase:(int64_t)phase forElementContext:(id)context;
+- (id)preferencesFromContext:(id)context;
+- (void)_setActivePhase:(int64_t)phase context:(id)context logReason:(id)reason;
 @end
 
 @implementation SBSASettlingBehaviorProvider
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
   v266 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  contextCopy = context;
+  if (contextCopy)
   {
     v5 = objc_opt_self();
-    v6 = v4;
+    v6 = contextCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -51,8 +51,8 @@
 
   v9 = v8;
 
-  v10 = [v9 preferences];
-  v11 = [v10 lastChangingElementLayoutTransition];
+  preferences = [v9 preferences];
+  lastChangingElementLayoutTransition = [preferences lastChangingElementLayoutTransition];
 
   v197 = BSEqualObjects();
   if ((v197 & 1) == 0)
@@ -63,7 +63,7 @@
       [SBSASettlingBehaviorProvider preferencesFromContext:v9];
     }
 
-    objc_storeStrong(&self->_lastChangingElementLayoutTransition, v11);
+    objc_storeStrong(&self->_lastChangingElementLayoutTransition, lastChangingElementLayoutTransition);
     [(SBSASettlingBehaviorProvider *)self _setActivePhase:0 context:v9 logReason:@"Element Layout Changed"];
     containerIDsToOvershootOutsets = self->_containerIDsToOvershootOutsets;
     self->_containerIDsToOvershootOutsets = 0;
@@ -72,8 +72,8 @@
     self->_pendingPhaseTransitionPropertyIdentities = 0;
   }
 
-  v15 = [v9 requests];
-  v16 = [v15 bs_firstObjectOfClass:objc_opt_class()];
+  requests = [v9 requests];
+  v16 = [requests bs_firstObjectOfClass:objc_opt_class()];
 
   if (v16)
   {
@@ -85,8 +85,8 @@
     self->_collisionImminent = [(SBSAElementLayoutTransition *)self->_lastChangingElementLayoutTransition isCollisionRequired];
   }
 
-  v189 = v4;
-  v190 = v11;
+  v189 = contextCopy;
+  v190 = lastChangingElementLayoutTransition;
   [(SBSASettlingBehaviorProvider *)self _progressMilestoneForTransitionPhase:self->_activePhase];
   v18 = v17;
   v250 = 0u;
@@ -116,18 +116,18 @@
         }
 
         v24 = self->_pendingPhaseTransitionPropertyIdentities;
-        v25 = [*(*(&v250 + 1) + 8 * v22) associatedInterfaceElementPropertyIdentity];
-        v26 = [(NSSet *)v24 containsObject:v25];
+        associatedInterfaceElementPropertyIdentity = [*(*(&v250 + 1) + 8 * v22) associatedInterfaceElementPropertyIdentity];
+        v26 = [(NSSet *)v24 containsObject:associatedInterfaceElementPropertyIdentity];
 
         [v23 targetedMilestone];
         v27 = BSFloatApproximatelyEqualToFloat();
-        v28 = [v23 isTransitionEndTargeted];
-        if (v28)
+        isTransitionEndTargeted = [v23 isTransitionEndTargeted];
+        if (isTransitionEndTargeted)
         {
-          v28 = [v23 finished];
+          isTransitionEndTargeted = [v23 finished];
         }
 
-        if ((v26 & (v27 | v28)) != 1)
+        if ((v26 & (v27 | isTransitionEndTargeted)) != 1)
         {
           goto LABEL_33;
         }
@@ -138,7 +138,7 @@
         v30 = SBLogSystemAperturePreferencesStackSettling();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
         {
-          v48 = [v9 queryIteration];
+          queryIteration = [v9 queryIteration];
           *buf = 134349314;
           v49 = @"skipped";
           if (v27)
@@ -146,7 +146,7 @@
             v49 = @"hit";
           }
 
-          v255 = v48;
+          v255 = queryIteration;
           v256 = 2112;
           v257 = v49;
           _os_log_debug_impl(&dword_21ED4E000, v30, OS_LOG_TYPE_DEBUG, "[%{public}lu] Pending phase transition property identity %@.", buf, 0x16u);
@@ -172,21 +172,21 @@ LABEL_33:
         }
 
         pendingCollisionPropertyIdentities = self->_pendingCollisionPropertyIdentities;
-        v34 = [v23 associatedInterfaceElementPropertyIdentity];
-        v35 = [(NSSet *)pendingCollisionPropertyIdentities containsObject:v34];
+        associatedInterfaceElementPropertyIdentity2 = [v23 associatedInterfaceElementPropertyIdentity];
+        v35 = [(NSSet *)pendingCollisionPropertyIdentities containsObject:associatedInterfaceElementPropertyIdentity2];
 
         [v23 targetedMilestone];
-        v36 = [objc_opt_class() settings];
-        [v36 boundsCollisionProgress];
+        settings = [objc_opt_class() settings];
+        [settings boundsCollisionProgress];
         v37 = BSFloatApproximatelyEqualToFloat();
 
-        v38 = [v23 isTransitionEndTargeted];
-        if (v38)
+        isTransitionEndTargeted2 = [v23 isTransitionEndTargeted];
+        if (isTransitionEndTargeted2)
         {
-          v38 = [v23 finished];
+          isTransitionEndTargeted2 = [v23 finished];
         }
 
-        if ((v35 & (v37 | v38)) == 1)
+        if ((v35 & (v37 | isTransitionEndTargeted2)) == 1)
         {
           v39 = self->_pendingCollisionPropertyIdentities;
           self->_pendingCollisionPropertyIdentities = 0;
@@ -195,7 +195,7 @@ LABEL_33:
           v40 = SBLogSystemAperturePreferencesStackSettling();
           if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
           {
-            v46 = [v9 queryIteration];
+            queryIteration2 = [v9 queryIteration];
             *buf = 134349314;
             v47 = @"skipped";
             if (v37)
@@ -203,7 +203,7 @@ LABEL_33:
               v47 = @"reached";
             }
 
-            v255 = v46;
+            v255 = queryIteration2;
             v256 = 2112;
             v257 = v47;
             _os_log_debug_impl(&dword_21ED4E000, v40, OS_LOG_TYPE_DEBUG, "[%{public}lu] Collision threshold %@ (explicit)", buf, 0x16u);
@@ -223,12 +223,12 @@ LABEL_33:
         }
 
         pendingSteadyPropertyIdentities = self->_pendingSteadyPropertyIdentities;
-        v42 = [v23 associatedInterfaceElementPropertyIdentity];
-        if (-[NSSet containsObject:](pendingSteadyPropertyIdentities, "containsObject:", v42) && [v23 isTransitionEndTargeted])
+        associatedInterfaceElementPropertyIdentity3 = [v23 associatedInterfaceElementPropertyIdentity];
+        if (-[NSSet containsObject:](pendingSteadyPropertyIdentities, "containsObject:", associatedInterfaceElementPropertyIdentity3) && [v23 isTransitionEndTargeted])
         {
-          v43 = [v23 finished];
+          finished = [v23 finished];
 
-          if (!v43)
+          if (!finished)
           {
             goto LABEL_48;
           }
@@ -237,8 +237,8 @@ LABEL_33:
           self->_pendingSteadyPropertyIdentities = 0;
 
           v45 = [v9 copyByAddingSignals:2 debugRequestingProvider:self];
-          v42 = SBLogSystemAperturePreferencesStackSettling();
-          if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
+          associatedInterfaceElementPropertyIdentity3 = SBLogSystemAperturePreferencesStackSettling();
+          if (os_log_type_enabled(associatedInterfaceElementPropertyIdentity3, OS_LOG_TYPE_DEBUG))
           {
             [(SBSASettlingBehaviorProvider *)v263 preferencesFromContext:v45];
           }
@@ -271,14 +271,14 @@ LABEL_48:
   v52 = 88;
   if (self->_collisionImminent)
   {
-    v53 = [v9 preferences];
+    preferences2 = [v9 preferences];
     v249[0] = MEMORY[0x277D85DD0];
     v249[1] = 3221225472;
     v249[2] = __55__SBSASettlingBehaviorProvider_preferencesFromContext___block_invoke;
     v249[3] = &unk_2783A93E8;
     v249[5] = a2;
     v249[4] = self;
-    v54 = [v53 copyWithBlock:v249];
+    v54 = [preferences2 copyWithBlock:v249];
     v55 = [v9 copyByUpdatingPreferences:v54];
 
     v56 = SBLogSystemAperturePreferencesStackSettling();
@@ -320,13 +320,13 @@ LABEL_48:
   v61 = v60;
 
   v201 = v61;
-  v62 = [v61 containerViewDescriptions];
-  v63 = [MEMORY[0x277CBEB38] dictionary];
+  containerViewDescriptions = [v61 containerViewDescriptions];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v244 = 0u;
   v245 = 0u;
   v246 = 0u;
   v247 = 0u;
-  v64 = v62;
+  v64 = containerViewDescriptions;
   v65 = [v64 countByEnumeratingWithState:&v244 objects:v262 count:16];
   if (v65)
   {
@@ -345,8 +345,8 @@ LABEL_48:
         v70 = MEMORY[0x277CCAE60];
         [v69 bounds];
         v71 = [v70 valueWithCGRect:?];
-        v72 = [v69 interfaceElementIdentifier];
-        [v63 setObject:v71 forKey:v72];
+        interfaceElementIdentifier = [v69 interfaceElementIdentifier];
+        [dictionary setObject:v71 forKey:interfaceElementIdentifier];
       }
 
       v66 = [v64 countByEnumeratingWithState:&v244 objects:v262 count:16];
@@ -365,7 +365,7 @@ LABEL_48:
       stackContainerInterfaceElementIdentifiersToBounds = self->_stackContainerInterfaceElementIdentifiersToBounds;
       if (stackContainerInterfaceElementIdentifiersToBounds)
       {
-        if (([(NSDictionary *)stackContainerInterfaceElementIdentifiersToBounds isEqual:v63]& 1) == 0)
+        if (([(NSDictionary *)stackContainerInterfaceElementIdentifiersToBounds isEqual:dictionary]& 1) == 0)
         {
           objc_storeStrong(&self->_lastChangingElementLayoutTransition, v190);
           [(SBSASettlingBehaviorProvider *)self _setActivePhase:0 context:v205 logReason:@"Reset due to container frames changing during dynamic animation"];
@@ -379,12 +379,12 @@ LABEL_48:
     }
   }
 
-  v78 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v63];
+  v78 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:dictionary];
   v79 = self->_stackContainerInterfaceElementIdentifiersToBounds;
   self->_stackContainerInterfaceElementIdentifiersToBounds = v78;
 
   obja = v64;
-  v191 = v63;
+  v191 = dictionary;
   if ([v205 containsAnyOfSignals:1])
   {
     if (!self->_activePhase)
@@ -397,21 +397,21 @@ LABEL_48:
     v241 = 0u;
     v242 = 0u;
     v243 = 0u;
-    v81 = [v205 containerViewDescriptions];
-    v82 = [v81 countByEnumeratingWithState:&v240 objects:v261 count:16];
+    containerViewDescriptions2 = [v205 containerViewDescriptions];
+    v82 = [containerViewDescriptions2 countByEnumeratingWithState:&v240 objects:v261 count:16];
     if (v82)
     {
       v83 = v82;
       v84 = 0;
       v85 = *v241;
-      v202 = v81;
+      v202 = containerViewDescriptions2;
       do
       {
         for (j = 0; j != v83; ++j)
         {
           if (*v241 != v85)
           {
-            objc_enumerationMutation(v81);
+            objc_enumerationMutation(containerViewDescriptions2);
           }
 
           v87 = *(*(&v240 + 1) + 8 * j);
@@ -463,21 +463,21 @@ LABEL_48:
                 v103 = SBLogSystemAperturePreferencesStackSettling();
                 if (os_log_type_enabled(v103, OS_LOG_TYPE_DEBUG))
                 {
-                  v207 = [v205 queryIteration];
-                  v105 = [v87 interfaceElementIdentifier];
+                  queryIteration3 = [v205 queryIteration];
+                  interfaceElementIdentifier2 = [v87 interfaceElementIdentifier];
                   *buf = 134349314;
-                  v255 = v207;
+                  v255 = queryIteration3;
                   v256 = 2112;
-                  v257 = v105;
+                  v257 = interfaceElementIdentifier2;
                   _os_log_debug_impl(&dword_21ED4E000, v103, OS_LOG_TYPE_DEBUG, "[%{public}lu] Container is now Expanding, dropping overshoot offsets for: (%@)", buf, 0x16u);
                 }
 
-                v104 = [v87 interfaceElementIdentifier];
+                interfaceElementIdentifier3 = [v87 interfaceElementIdentifier];
                 v80 = v102;
-                [v102 removeObjectForKey:v104];
+                [v102 removeObjectForKey:interfaceElementIdentifier3];
 
                 v84 = 1;
-                v81 = v202;
+                containerViewDescriptions2 = v202;
               }
             }
           }
@@ -485,7 +485,7 @@ LABEL_48:
           v64 = obja;
         }
 
-        v83 = [v81 countByEnumeratingWithState:&v240 objects:v261 count:16];
+        v83 = [containerViewDescriptions2 countByEnumeratingWithState:&v240 objects:v261 count:16];
       }
 
       while (v83);
@@ -500,7 +500,7 @@ LABEL_48:
       if ([v80 count])
       {
         v106 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v80];
-        v81 = self->_containerIDsToOvershootOutsets;
+        containerViewDescriptions2 = self->_containerIDsToOvershootOutsets;
         self->_containerIDsToOvershootOutsets = v106;
       }
 
@@ -510,7 +510,7 @@ LABEL_48:
         v107 = self->_containerIDsToOvershootOutsets;
         self->_containerIDsToOvershootOutsets = 0;
 
-        v81 = self->_pendingPhaseTransitionPropertyIdentities;
+        containerViewDescriptions2 = self->_pendingPhaseTransitionPropertyIdentities;
         self->_pendingPhaseTransitionPropertyIdentities = 0;
       }
     }
@@ -542,8 +542,8 @@ LABEL_106:
   v236 = 0u;
   v237 = 0u;
   v238 = 0u;
-  v208 = [v74 containerViewDescriptions];
-  v111 = [v208 countByEnumeratingWithState:&v235 objects:v260 count:16];
+  containerViewDescriptions3 = [v74 containerViewDescriptions];
+  v111 = [containerViewDescriptions3 countByEnumeratingWithState:&v235 objects:v260 count:16];
   if (v111)
   {
     v112 = v111;
@@ -554,7 +554,7 @@ LABEL_106:
       {
         if (*v236 != v210)
         {
-          objc_enumerationMutation(v208);
+          objc_enumerationMutation(containerViewDescriptions3);
         }
 
         v114 = *(*(&v235 + 1) + 8 * k);
@@ -566,8 +566,8 @@ LABEL_106:
         v115 = [v64 bs_firstObjectPassingTest:v234];
         if (v115)
         {
-          v116 = [v74 elementContexts];
-          v117 = SBSAElementContextAssociatedWithContainerViewDescription(v115, v116, 0);
+          elementContexts = [v74 elementContexts];
+          v117 = SBSAElementContextAssociatedWithContainerViewDescription(v115, elementContexts, 0);
 
           v118 = [(SBSASettlingBehaviorProvider *)self _fluidBehaviorSettingsForTransitionPhase:-3 forElementContext:v117];
           [(SBSASettlingBehaviorProvider *)self _overshootOutsetsTargetingContainerDescription:v115 initialContainerDescription:v114 settings:v118 context:v74];
@@ -582,23 +582,23 @@ LABEL_106:
             *&v233[2] = v121;
             *&v233[3] = v122;
             v127 = [MEMORY[0x277CCAE60] valueWithBytes:v233 objCType:"{UIEdgeInsets=dddd}"];
-            v128 = [v114 interfaceElementIdentifier];
-            [v203 setObject:v127 forKey:v128];
+            interfaceElementIdentifier4 = [v114 interfaceElementIdentifier];
+            [v203 setObject:v127 forKey:interfaceElementIdentifier4];
 
             v129 = SBLogSystemAperturePreferencesStackSettling();
             if (os_log_type_enabled(v129, OS_LOG_TYPE_DEBUG))
             {
-              v198 = [v205 queryIteration];
-              v130 = [v114 interfaceElementIdentifier];
+              queryIteration4 = [v205 queryIteration];
+              interfaceElementIdentifier5 = [v114 interfaceElementIdentifier];
               v272.top = v123;
               v272.left = v124;
               v272.bottom = v125;
               v272.right = v126;
               v131 = NSStringFromUIEdgeInsets(v272);
               *buf = 134349570;
-              v255 = v198;
+              v255 = queryIteration4;
               v256 = 2112;
-              v257 = v130;
+              v257 = interfaceElementIdentifier5;
               v258 = 2112;
               v259 = v131;
               _os_log_debug_impl(&dword_21ED4E000, v129, OS_LOG_TYPE_DEBUG, "[%{public}lu] Updated overshoot outsets for container description '%@': %@", buf, 0x20u);
@@ -611,7 +611,7 @@ LABEL_106:
         }
       }
 
-      v112 = [v208 countByEnumeratingWithState:&v235 objects:v260 count:16];
+      v112 = [containerViewDescriptions3 countByEnumeratingWithState:&v235 objects:v260 count:16];
     }
 
     while (v112);
@@ -620,7 +620,7 @@ LABEL_106:
   objc_storeStrong(&self->_containerIDsToOvershootOutsets, v203);
   v109 = -3;
   v52 = 88;
-  v63 = v191;
+  dictionary = v191;
 LABEL_125:
   v132 = [(NSDictionary *)self->_containerIDsToOvershootOutsets count];
   v133 = v132;
@@ -682,12 +682,12 @@ LABEL_134:
     {
       v139 = [obja objectAtIndex:{v137, v187}];
       v140 = [SBSAInterfaceElementPropertyIdentity alloc];
-      v141 = [v139 interfaceElementIdentifier];
-      v209 = [(SBSAInterfaceElementPropertyIdentity *)v140 initWithAssociatedInterfaceElementIdentifier:v141 andProperty:@"bounds"];
+      interfaceElementIdentifier6 = [v139 interfaceElementIdentifier];
+      v209 = [(SBSAInterfaceElementPropertyIdentity *)v140 initWithAssociatedInterfaceElementIdentifier:interfaceElementIdentifier6 andProperty:@"bounds"];
 
       v142 = self->_containerIDsToOvershootOutsets;
-      v143 = [v139 interfaceElementIdentifier];
-      v144 = [(NSDictionary *)v142 objectForKey:v143];
+      interfaceElementIdentifier7 = [v139 interfaceElementIdentifier];
+      v144 = [(NSDictionary *)v142 objectForKey:interfaceElementIdentifier7];
 
       v145 = objc_alloc_init(MEMORY[0x277CBEB58]);
       v211 = v145;
@@ -699,8 +699,8 @@ LABEL_134:
         v150 = v149;
         v152 = v151;
         v154 = v153;
-        v155 = [v74 elementContexts];
-        SBSAElementContextAssociatedWithContainerViewDescription(v139, v155, 0);
+        elementContexts2 = [v74 elementContexts];
+        SBSAElementContextAssociatedWithContainerViewDescription(v139, elementContexts2, 0);
         v157 = v156 = v146;
 
         [(SBSASettlingBehaviorProvider *)self _overshootOutsetsForTransitionPhase:self->_activePhase baseOutsets:v157 elementContext:v148, v150, v152, v154];
@@ -742,8 +742,8 @@ LABEL_134:
         if (!v144 || ([v144 UIEdgeInsetsValue], BSFloatIsZero()))
         {
           v165 = MEMORY[0x277CCABB0];
-          v166 = [objc_opt_class() settings];
-          [v166 boundsCollisionProgress];
+          settings2 = [objc_opt_class() settings];
+          [settings2 boundsCollisionProgress];
           v167 = [v165 numberWithDouble:?];
           [v211 addObject:v167];
 
@@ -751,9 +751,9 @@ LABEL_134:
           v168 = SBLogSystemAperturePreferencesStackSettling();
           if (os_log_type_enabled(v168, OS_LOG_TYPE_DEBUG))
           {
-            v180 = [v205 queryIteration];
+            queryIteration5 = [v205 queryIteration];
             *buf = v187;
-            v255 = v180;
+            v255 = queryIteration5;
             v256 = 2112;
             v257 = v209;
             _os_log_debug_impl(&dword_21ED4E000, v168, OS_LOG_TYPE_DEBUG, "[%{public}lu] Added pending collision property ID: %@", buf, 0x16u);
@@ -761,8 +761,8 @@ LABEL_134:
         }
       }
 
-      v169 = [v201 elementLayoutTransition];
-      v170 = [v169 isLayoutChange];
+      elementLayoutTransition = [v201 elementLayoutTransition];
+      isLayoutChange = [elementLayoutTransition isLayoutChange];
 
       v171 = self->_activePhase;
       if (!v133)
@@ -806,7 +806,7 @@ LABEL_157:
       v52 = v175;
       if (v199 == v137)
       {
-        v63 = v191;
+        dictionary = v191;
         v181 = v192;
         v182 = v195;
         v183 = v193;
@@ -822,7 +822,7 @@ LABEL_157:
     }
 
     v74 = v205;
-    if (((v173 | v170) & 1) == 0)
+    if (((v173 | isLayoutChange) & 1) == 0)
     {
       goto LABEL_157;
     }
@@ -833,9 +833,9 @@ LABEL_154:
     v174 = SBLogSystemAperturePreferencesStackSettling();
     if (os_log_type_enabled(v174, OS_LOG_TYPE_DEBUG))
     {
-      v179 = [v74 queryIteration];
+      queryIteration6 = [v74 queryIteration];
       *buf = 134349570;
-      v255 = v179;
+      v255 = queryIteration6;
       v256 = 2112;
       v257 = v188;
       v258 = 2112;
@@ -1161,19 +1161,19 @@ void __55__SBSASettlingBehaviorProvider_preferencesFromContext___block_invoke_74
   [v6 addMilestones:*(a1 + 40) forPropertyIdentity:*(a1 + 48)];
 }
 
-- (void)_setActivePhase:(int64_t)a3 context:(id)a4 logReason:(id)a5
+- (void)_setActivePhase:(int64_t)phase context:(id)context logReason:(id)reason
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  reasonCopy = reason;
   activePhase = self->_activePhase;
   v11 = SBLogSystemAperturePreferencesStackSettling();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
-  if (activePhase == a3)
+  if (activePhase == phase)
   {
     if (v12)
     {
-      v13 = [v8 queryIteration];
+      queryIteration = [contextCopy queryIteration];
       v14 = self->_activePhase + 3;
       if (v14 != 3 && self->_activePhase < 0xFFFFFFFFFFFFFFFDLL)
       {
@@ -1186,11 +1186,11 @@ void __55__SBSASettlingBehaviorProvider_preferencesFromContext___block_invoke_74
       }
 
       v23 = 134349570;
-      v24 = v13;
+      v24 = queryIteration;
       v25 = 2112;
       v26 = v15;
       v27 = 2112;
-      v28 = v9;
+      v28 = reasonCopy;
       v19 = "[%{public}lu] (%@) Active Phase Not updated: %@";
       v20 = v11;
       v21 = 32;
@@ -1201,7 +1201,7 @@ LABEL_16:
 
   else if (v12)
   {
-    v16 = [v8 queryIteration];
+    queryIteration2 = [contextCopy queryIteration];
     v17 = self->_activePhase + 3;
     if (v17 != 3 && self->_activePhase < 0xFFFFFFFFFFFFFFFDLL)
     {
@@ -1213,84 +1213,84 @@ LABEL_16:
       v18 = off_2783C0B30[v17];
     }
 
-    if (a3 != 0 && a3 < 0xFFFFFFFFFFFFFFFDLL)
+    if (phase != 0 && phase < 0xFFFFFFFFFFFFFFFDLL)
     {
       v22 = @"[invalid]";
     }
 
     else
     {
-      v22 = off_2783C0B30[a3 + 3];
+      v22 = off_2783C0B30[phase + 3];
     }
 
     v23 = 134349826;
-    v24 = v16;
+    v24 = queryIteration2;
     v25 = 2112;
     v26 = v18;
     v27 = 2112;
     v28 = v22;
     v29 = 2112;
-    v30 = v9;
+    v30 = reasonCopy;
     v19 = "[%{public}lu] (%@) -> (%@) Active Phase Updated: %@";
     v20 = v11;
     v21 = 42;
     goto LABEL_16;
   }
 
-  self->_activePhase = a3;
+  self->_activePhase = phase;
 }
 
-- (id)_fluidBehaviorSettingsForTransitionPhase:(int64_t)a3 forElementContext:(id)a4
+- (id)_fluidBehaviorSettingsForTransitionPhase:(int64_t)phase forElementContext:(id)context
 {
-  v5 = [a4 systemApertureCustomLayoutCustomAnimationStyle];
-  v6 = [objc_opt_class() settings];
-  v7 = v6;
-  if (v5 == 3)
+  systemApertureCustomLayoutCustomAnimationStyle = [context systemApertureCustomLayoutCustomAnimationStyle];
+  settings = [objc_opt_class() settings];
+  v7 = settings;
+  if (systemApertureCustomLayoutCustomAnimationStyle == 3)
   {
-    v8 = [v6 jindoBoundsOval];
+    jindoBoundsOval = [settings jindoBoundsOval];
   }
 
   else
   {
-    v9 = [v6 inertInterfaceElementTransitionSettings];
-    v8 = [v9 boundsBehaviorSettings];
+    inertInterfaceElementTransitionSettings = [settings inertInterfaceElementTransitionSettings];
+    jindoBoundsOval = [inertInterfaceElementTransitionSettings boundsBehaviorSettings];
   }
 
-  if (a3 == -2)
+  if (phase == -2)
   {
-    v10 = [objc_opt_class() settings];
-    v11 = [v10 inertCompensatingInterfaceElementTransitionSettings];
+    settings2 = [objc_opt_class() settings];
+    inertCompensatingInterfaceElementTransitionSettings = [settings2 inertCompensatingInterfaceElementTransitionSettings];
     goto LABEL_9;
   }
 
-  if (a3 == -3 && v5 != 3)
+  if (phase == -3 && systemApertureCustomLayoutCustomAnimationStyle != 3)
   {
-    v10 = [objc_opt_class() settings];
-    v11 = [v10 inertCollapsingInterfaceElementTransitionSettings];
+    settings2 = [objc_opt_class() settings];
+    inertCompensatingInterfaceElementTransitionSettings = [settings2 inertCollapsingInterfaceElementTransitionSettings];
 LABEL_9:
-    v12 = v11;
-    v13 = [v11 boundsBehaviorSettings];
+    v12 = inertCompensatingInterfaceElementTransitionSettings;
+    boundsBehaviorSettings = [inertCompensatingInterfaceElementTransitionSettings boundsBehaviorSettings];
 
-    v8 = v13;
+    jindoBoundsOval = boundsBehaviorSettings;
   }
 
-  return v8;
+  return jindoBoundsOval;
 }
 
-- (double)_progressMilestoneForTransitionPhase:(int64_t)a3
+- (double)_progressMilestoneForTransitionPhase:(int64_t)phase
 {
-  if (a3 == -2)
+  if (phase == -2)
   {
-    v4 = [objc_opt_class() settings];
-    [v4 boundsCompensatingPhaseChangeProgress];
+    settings = [objc_opt_class() settings];
+    [settings boundsCompensatingPhaseChangeProgress];
     goto LABEL_5;
   }
 
   v3 = 0.0;
-  if (a3 == -3)
+  if (phase == -3)
   {
-    v4 = [objc_opt_class() settings];
-    [v4 boundsCollapsingPhaseChangeProgress];
+    settings = [objc_opt_class() settings];
+    [settings boundsCollapsingPhaseChangeProgress];
 LABEL_5:
     v3 = v5;
   }
@@ -1298,35 +1298,35 @@ LABEL_5:
   return v3;
 }
 
-- (double)_overshootFractionForDampingRatio:(double)a3
+- (double)_overshootFractionForDampingRatio:(double)ratio
 {
   if (!BSFloatLessThanFloat())
   {
     return 0.0;
   }
 
-  v4 = a3 * -3.14159265 / sqrt(1.0 - a3 * a3);
+  v4 = ratio * -3.14159265 / sqrt(1.0 - ratio * ratio);
 
   return exp(v4);
 }
 
-- (UIEdgeInsets)_overshootOutsetsTargetingContainerDescription:(id)a3 initialContainerDescription:(id)a4 settings:(id)a5 context:(id)a6
+- (UIEdgeInsets)_overshootOutsetsTargetingContainerDescription:(id)description initialContainerDescription:(id)containerDescription settings:(id)settings context:(id)context
 {
   v86 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  descriptionCopy = description;
+  containerDescriptionCopy = containerDescription;
+  settingsCopy = settings;
+  contextCopy = context;
   v14 = *(MEMORY[0x277D768C8] + 8);
   v75 = *(MEMORY[0x277D768C8] + 16);
   v73 = *MEMORY[0x277D768C8];
   v74 = *(MEMORY[0x277D768C8] + 24);
-  [v11 bounds];
+  [containerDescriptionCopy bounds];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [v10 bounds];
+  [descriptionCopy bounds];
   height = v87.size.height;
   x = v87.origin.x;
   width = v87.size.width;
@@ -1345,7 +1345,7 @@ LABEL_5:
   v23 = SBLogSystemAperturePreferencesStackSettling();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
   {
-    v65 = [v13 queryIteration];
+    queryIteration = [contextCopy queryIteration];
     v97.origin.x = v16;
     v97.origin.y = v18;
     v97.size.width = v20;
@@ -1356,23 +1356,23 @@ LABEL_5:
     v98.size.width = width;
     v98.origin.y = y;
     v59 = NSStringFromRect(v98);
-    v66 = [v10 associatedSystemApertureElementIdentity];
-    v60 = [v66 elementIdentifier];
-    v61 = [v10 interfaceElementIdentifier];
+    associatedSystemApertureElementIdentity = [descriptionCopy associatedSystemApertureElementIdentity];
+    elementIdentifier = [associatedSystemApertureElementIdentity elementIdentifier];
+    interfaceElementIdentifier = [descriptionCopy interfaceElementIdentifier];
     *buf = 134350082;
-    v77 = v65;
+    v77 = queryIteration;
     v78 = 2112;
     v79 = v58;
     v80 = 2112;
     v81 = v59;
     v82 = 2112;
-    v83 = v60;
+    v83 = elementIdentifier;
     v84 = 2112;
-    v85 = v61;
+    v85 = interfaceElementIdentifier;
     _os_log_debug_impl(&dword_21ED4E000, v23, OS_LOG_TYPE_DEBUG, "[%{public}lu] initial:(%@) target:(%@) '%@' -> %@", buf, 0x34u);
   }
 
-  [v12 dampingRatio];
+  [settingsCopy dampingRatio];
   [(SBSASettlingBehaviorProvider *)self _overshootFractionForDampingRatio:?];
   if (BSFloatIsZero())
   {
@@ -1382,7 +1382,7 @@ LABEL_5:
 
   else
   {
-    [v10 boundsVelocity];
+    [descriptionCopy boundsVelocity];
     v30 = v29;
     v63 = v31;
     v64 = v29;
@@ -1420,7 +1420,7 @@ LABEL_5:
     v93.size.width = v62;
     v93.size.height = v36;
     CGRectGetHeight(v93);
-    [v13 displayScale];
+    [contextCopy displayScale];
     BSFloatRoundForScale();
     v38 = v37;
     BSFloatRoundForScale();
@@ -1440,7 +1440,7 @@ LABEL_5:
     v44 = v43;
     v46 = v45;
     v48 = v47;
-    [v13 inertContainerFrame];
+    [contextCopy inertContainerFrame];
     BSRectWithSize();
     v101.origin.x = v49;
     v101.origin.y = v50;
@@ -1454,12 +1454,12 @@ LABEL_5:
     v24 = v73;
     if (!CGRectContainsRect(v96, v101))
     {
-      v53 = [v13 elementContexts];
-      v54 = SBSAElementContextAssociatedWithContainerViewDescription(v11, v53, 0);
+      elementContexts = [contextCopy elementContexts];
+      v54 = SBSAElementContextAssociatedWithContainerViewDescription(containerDescriptionCopy, elementContexts, 0);
 
-      v55 = [v54 interfaceOrientation];
+      interfaceOrientation = [v54 interfaceOrientation];
       v56 = v38 * -2.0;
-      if (v55 == 3)
+      if (interfaceOrientation == 3)
       {
         v57 = v38 * -2.0;
       }
@@ -1469,7 +1469,7 @@ LABEL_5:
         v57 = -v38;
       }
 
-      if (v55 == 4)
+      if (interfaceOrientation == 4)
       {
         v57 = -v38;
       }
@@ -1479,14 +1479,14 @@ LABEL_5:
         v56 = -v38;
       }
 
-      if (v55 < 3)
+      if (interfaceOrientation < 3)
       {
         v57 = -v38;
       }
 
       v74 = v57;
       v75 = -v40;
-      if (v55 >= 3)
+      if (interfaceOrientation >= 3)
       {
         v14 = v56;
       }
@@ -1496,7 +1496,7 @@ LABEL_5:
         v14 = -v38;
       }
 
-      if (v55 >= 3)
+      if (interfaceOrientation >= 3)
       {
         v24 = -v40;
       }
@@ -1519,15 +1519,15 @@ LABEL_5:
   return result;
 }
 
-- (UIEdgeInsets)_overshootOutsetsForTransitionPhase:(int64_t)a3 baseOutsets:(UIEdgeInsets)a4 elementContext:(id)a5
+- (UIEdgeInsets)_overshootOutsetsForTransitionPhase:(int64_t)phase baseOutsets:(UIEdgeInsets)outsets elementContext:(id)context
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  v10 = a5;
-  v11 = v10;
-  if ((a3 + 1) < 2)
+  right = outsets.right;
+  bottom = outsets.bottom;
+  left = outsets.left;
+  top = outsets.top;
+  contextCopy = context;
+  v11 = contextCopy;
+  if ((phase + 1) < 2)
   {
     top = *MEMORY[0x277D768C8];
     left = *(MEMORY[0x277D768C8] + 8);
@@ -1535,14 +1535,14 @@ LABEL_5:
     right = *(MEMORY[0x277D768C8] + 24);
   }
 
-  else if (a3 == -2)
+  else if (phase == -2)
   {
-    v15 = [v10 interfaceOrientation];
+    interfaceOrientation = [contextCopy interfaceOrientation];
     v16 = top + top;
     v17 = bottom + bottom;
     v18 = right + left;
     v19 = left + right;
-    if (v15 == 3)
+    if (interfaceOrientation == 3)
     {
       v20 = 0.0;
     }
@@ -1552,7 +1552,7 @@ LABEL_5:
       v20 = right;
     }
 
-    if (v15 == 3)
+    if (interfaceOrientation == 3)
     {
       v21 = bottom + bottom;
     }
@@ -1562,7 +1562,7 @@ LABEL_5:
       v21 = bottom;
     }
 
-    if (v15 == 3)
+    if (interfaceOrientation == 3)
     {
       v22 = top + top;
     }
@@ -1573,7 +1573,7 @@ LABEL_5:
       v22 = top;
     }
 
-    if (v15 == 4)
+    if (interfaceOrientation == 4)
     {
       v19 = 0.0;
     }
@@ -1585,7 +1585,7 @@ LABEL_5:
       v16 = v22;
     }
 
-    if (v15 >= 3)
+    if (interfaceOrientation >= 3)
     {
       right = v18;
     }
@@ -1595,7 +1595,7 @@ LABEL_5:
       right = right + right;
     }
 
-    if (v15 >= 3)
+    if (interfaceOrientation >= 3)
     {
       bottom = v17;
     }
@@ -1605,7 +1605,7 @@ LABEL_5:
       bottom = bottom + top;
     }
 
-    if (v15 >= 3)
+    if (interfaceOrientation >= 3)
     {
       left = v19;
     }
@@ -1615,7 +1615,7 @@ LABEL_5:
       left = left + left;
     }
 
-    if (v15 >= 3)
+    if (interfaceOrientation >= 3)
     {
       top = v16;
     }
@@ -1626,17 +1626,17 @@ LABEL_5:
     }
   }
 
-  else if (a3 == -3)
+  else if (phase == -3)
   {
-    v12 = [v10 interfaceOrientation];
+    interfaceOrientation2 = [contextCopy interfaceOrientation];
     v13 = right * 0.5;
     v14 = left * 0.5;
-    if (v12 != 3)
+    if (interfaceOrientation2 != 3)
     {
       v14 = left;
     }
 
-    if (v12 == 4)
+    if (interfaceOrientation2 == 4)
     {
       v14 = left;
     }
@@ -1646,7 +1646,7 @@ LABEL_5:
       v13 = right;
     }
 
-    if (v12 < 3)
+    if (interfaceOrientation2 < 3)
     {
       bottom = 0.0;
     }
@@ -1656,7 +1656,7 @@ LABEL_5:
       right = v13;
     }
 
-    if (v12 >= 3)
+    if (interfaceOrientation2 >= 3)
     {
       left = v14;
     }

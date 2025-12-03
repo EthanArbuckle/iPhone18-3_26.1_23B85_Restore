@@ -34,17 +34,17 @@
   {
     v9.receiver = self;
     v9.super_class = PlatformSelectorViewAccessibility;
-    v6 = *MEMORY[0x29EDC7F70] | [(PlatformSelectorViewAccessibility *)&v9 accessibilityTraits];
+    accessibilityTraits = *MEMORY[0x29EDC7F70] | [(PlatformSelectorViewAccessibility *)&v9 accessibilityTraits];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = PlatformSelectorViewAccessibility;
-    v6 = [(PlatformSelectorViewAccessibility *)&v8 accessibilityTraits];
+    accessibilityTraits = [(PlatformSelectorViewAccessibility *)&v8 accessibilityTraits];
   }
 
-  return v6;
+  return accessibilityTraits;
 }
 
 @end

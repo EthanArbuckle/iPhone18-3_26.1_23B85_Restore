@@ -7,8 +7,8 @@
 
 - (id)as_groupMemberTableViewCellDescription
 {
-  v2 = [a1 participants];
-  v3 = [v2 count];
+  participants = [self participants];
+  v3 = [participants count];
 
   if (v3 == 1)
   {
@@ -17,7 +17,7 @@
   }
 
   v5 = +[_ASAccountSharingGroupMemberDataManager sharedManager];
-  v6 = [v5 groupMemberDataForGroup:a1];
+  v6 = [v5 groupMemberDataForGroup:self];
 
   v7 = [v6 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_9];
   v8 = [v6 count];
@@ -88,7 +88,7 @@ LABEL_21:
     goto LABEL_15;
   }
 
-  v4 = [a1 _subtitleForNumberOfGroupMembersNotSavedAsContacts:{objc_msgSend(v6, "count")}];
+  v4 = [self _subtitleForNumberOfGroupMembersNotSavedAsContacts:{objc_msgSend(v6, "count")}];
 LABEL_22:
 
 LABEL_23:

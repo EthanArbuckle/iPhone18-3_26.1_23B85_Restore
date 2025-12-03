@@ -1,27 +1,27 @@
 @interface MOVStreamEncoderConfig
-+ (BOOL)isEncoderAvailableOfType:(unsigned int)a3 withId:(id)a4;
-+ (BOOL)isProResCodec:(unsigned int)a3;
-+ (id)encoderIdsForType:(unsigned int)a3;
-+ (id)monochrome10BitEncoderConfigUsingAVEWithBitrate:(unint64_t)a3;
-+ (id)monochrome10BitEncoderConfigUsingAVEWithQuality:(double)a3;
++ (BOOL)isEncoderAvailableOfType:(unsigned int)type withId:(id)id;
++ (BOOL)isProResCodec:(unsigned int)codec;
++ (id)encoderIdsForType:(unsigned int)type;
++ (id)monochrome10BitEncoderConfigUsingAVEWithBitrate:(unint64_t)bitrate;
++ (id)monochrome10BitEncoderConfigUsingAVEWithQuality:(double)quality;
 + (id)supportedProfileLevelsForHEVC;
-- (BOOL)applySessionProperties:(OpaqueVTCompressionSession *)a3;
-- (BOOL)writeToFile:(id)a3 error:(id *)a4;
-- (MOVStreamEncoderConfig)initWithCodecType:(unsigned int)a3 encoderSpecification:(id)a4 sessionProperties:(id)a5;
-- (MOVStreamEncoderConfig)initWithContentsOfFile:(id)a3 error:(id *)a4;
-- (MOVStreamEncoderConfig)initWithDictionary:(id)a3;
+- (BOOL)applySessionProperties:(OpaqueVTCompressionSession *)properties;
+- (BOOL)writeToFile:(id)file error:(id *)error;
+- (MOVStreamEncoderConfig)initWithCodecType:(unsigned int)type encoderSpecification:(id)specification sessionProperties:(id)properties;
+- (MOVStreamEncoderConfig)initWithContentsOfFile:(id)file error:(id *)error;
+- (MOVStreamEncoderConfig)initWithDictionary:(id)dictionary;
 - (NSDictionary)dictionaryRepresentation;
 - (void)enableAVEHighPerformanceProfile;
 @end
 
 @implementation MOVStreamEncoderConfig
 
-+ (BOOL)isProResCodec:(unsigned int)a3
++ (BOOL)isProResCodec:(unsigned int)codec
 {
   result = 1;
-  if (a3 <= 1634755431)
+  if (codec <= 1634755431)
   {
-    if (a3 == 1634743400)
+    if (codec == 1634743400)
     {
       return result;
     }
@@ -30,11 +30,11 @@
     goto LABEL_8;
   }
 
-  if ((a3 - 1634755432 > 0xB || ((1 << (a3 - 104)) & 0x8C1) == 0) && a3 != 1634759272)
+  if ((codec - 1634755432 > 0xB || ((1 << (codec - 104)) & 0x8C1) == 0) && codec != 1634759272)
   {
     v4 = 29294;
 LABEL_8:
-    if (a3 != (v4 | 0x61700000))
+    if (codec != (v4 | 0x61700000))
     {
       return 0;
     }
@@ -43,10 +43,10 @@ LABEL_8:
   return result;
 }
 
-+ (BOOL)isEncoderAvailableOfType:(unsigned int)a3 withId:(id)a4
++ (BOOL)isEncoderAvailableOfType:(unsigned int)type withId:(id)id
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  idCopy = id;
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v7 = *MEMORY[0x277CBED28];
   CFDictionaryAddValue(Mutable, *MEMORY[0x277CE2B98], *MEMORY[0x277CBED28]);
@@ -91,18 +91,18 @@ LABEL_12:
   {
     ValueAtIndex = CFArrayGetValueAtIndex(listOfVideoEncodersOut, v10);
     v15 = CFGetTypeID(ValueAtIndex);
-    if (v15 != CFDictionaryGetTypeID() || [CFDictionaryGetValue(ValueAtIndex v11)] != a3)
+    if (v15 != CFDictionaryGetTypeID() || [CFDictionaryGetValue(ValueAtIndex v11)] != type)
     {
       goto LABEL_9;
     }
 
-    if (!v5)
+    if (!idCopy)
     {
       break;
     }
 
     v16 = CFDictionaryGetValue(ValueAtIndex, v12);
-    if ([v16 isEqualToString:v5])
+    if ([v16 isEqualToString:idCopy])
     {
       if (listOfVideoEncodersOut)
       {
@@ -133,7 +133,7 @@ LABEL_14:
   return v13;
 }
 
-+ (id)encoderIdsForType:(unsigned int)a3
++ (id)encoderIdsForType:(unsigned int)type
 {
   v22 = *MEMORY[0x277D85DE8];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -168,7 +168,7 @@ LABEL_14:
     {
       ValueAtIndex = CFArrayGetValueAtIndex(listOfVideoEncodersOut, v9);
       v13 = CFGetTypeID(ValueAtIndex);
-      if (v13 == CFDictionaryGetTypeID() && [CFDictionaryGetValue(ValueAtIndex v10)] == a3)
+      if (v13 == CFDictionaryGetTypeID() && [CFDictionaryGetValue(ValueAtIndex v10)] == type)
       {
         v14 = CFDictionaryGetValue(ValueAtIndex, v11);
         [v8 addObject:v14];
@@ -183,7 +183,7 @@ LABEL_14:
   return v8;
 }
 
-+ (id)monochrome10BitEncoderConfigUsingAVEWithQuality:(double)a3
++ (id)monochrome10BitEncoderConfigUsingAVEWithQuality:(double)quality
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v4 = +[MOVStreamIOUtility AVEProfileLevel10BitMonochrome];
@@ -203,7 +203,7 @@ LABEL_14:
   v16[2] = v9;
   v16[3] = v10;
   v11 = MEMORY[0x277CCABB0];
-  [MOVStreamIOUtility clampedQuality:a3];
+  [MOVStreamIOUtility clampedQuality:quality];
   v12 = [v11 numberWithDouble:?];
   v17[3] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:4];
@@ -212,7 +212,7 @@ LABEL_14:
   return v14;
 }
 
-+ (id)monochrome10BitEncoderConfigUsingAVEWithBitrate:(unint64_t)a3
++ (id)monochrome10BitEncoderConfigUsingAVEWithBitrate:(unint64_t)bitrate
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v4 = +[MOVStreamIOUtility AVEProfileLevel10BitMonochrome];
@@ -230,7 +230,7 @@ LABEL_14:
   v9 = *MEMORY[0x277CE2518];
   v14[2] = *MEMORY[0x277CE25F0];
   v14[3] = v9;
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:a3];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:bitrate];
   v15[3] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:4];
   v12 = [(MOVStreamEncoderConfig *)v5 initWithCodecType:1752589105 encoderSpecification:v7 sessionProperties:v11];
@@ -267,22 +267,22 @@ LABEL_14:
   return v3;
 }
 
-- (MOVStreamEncoderConfig)initWithCodecType:(unsigned int)a3 encoderSpecification:(id)a4 sessionProperties:(id)a5
+- (MOVStreamEncoderConfig)initWithCodecType:(unsigned int)type encoderSpecification:(id)specification sessionProperties:(id)properties
 {
-  v8 = a4;
-  v9 = a5;
+  specificationCopy = specification;
+  propertiesCopy = properties;
   v17.receiver = self;
   v17.super_class = MOVStreamEncoderConfig;
   v10 = [(MOVStreamEncoderConfig *)&v17 init];
   v11 = v10;
   if (v10)
   {
-    v10->_codecType = a3;
-    v12 = [v8 copy];
+    v10->_codecType = type;
+    v12 = [specificationCopy copy];
     encoderSpecification = v11->_encoderSpecification;
     v11->_encoderSpecification = v12;
 
-    v14 = [v9 copy];
+    v14 = [propertiesCopy copy];
     sessionProperties = v11->_sessionProperties;
     v11->_sessionProperties = v14;
   }
@@ -290,9 +290,9 @@ LABEL_14:
   return v11;
 }
 
-- (MOVStreamEncoderConfig)initWithDictionary:(id)a3
+- (MOVStreamEncoderConfig)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = MOVStreamEncoderConfig;
   v5 = [(MOVStreamEncoderConfig *)&v17 init];
@@ -301,17 +301,17 @@ LABEL_14:
     goto LABEL_4;
   }
 
-  if (v4)
+  if (dictionaryCopy)
   {
-    v6 = [v4 objectForKey:@"codecType"];
+    v6 = [dictionaryCopy objectForKey:@"codecType"];
     v5->_codecType = [v6 unsignedIntValue];
 
-    v7 = [v4 objectForKey:@"encoderSpecification"];
+    v7 = [dictionaryCopy objectForKey:@"encoderSpecification"];
     v8 = [v7 copy];
     encoderSpecification = v5->_encoderSpecification;
     v5->_encoderSpecification = v8;
 
-    v10 = [v4 objectForKey:@"sessionProperties"];
+    v10 = [dictionaryCopy objectForKey:@"sessionProperties"];
     v11 = [v10 copy];
     sessionProperties = v5->_sessionProperties;
     v5->_sessionProperties = v11;
@@ -334,18 +334,18 @@ LABEL_8:
   return v13;
 }
 
-- (MOVStreamEncoderConfig)initWithContentsOfFile:(id)a3 error:(id *)a4
+- (MOVStreamEncoderConfig)initWithContentsOfFile:(id)file error:(id *)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v6];
+  fileCopy = file;
+  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:fileCopy];
   if (v7)
   {
-    v8 = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:0 format:0 error:a4];
+    v8 = [MEMORY[0x277CCAC58] propertyListWithData:v7 options:0 format:0 error:error];
     if (v8)
     {
       self = [(MOVStreamEncoderConfig *)self initWithDictionary:v8];
-      v9 = self;
+      selfCopy = self;
     }
 
     else
@@ -353,30 +353,30 @@ LABEL_8:
       v12 = +[MIOLog defaultLog];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = *a4;
+        v13 = *error;
         *buf = 138543362;
         v16 = v13;
         _os_log_impl(&dword_257883000, v12, OS_LOG_TYPE_ERROR, "⛔️⛔️⛔️ ERROR: Cannot read config from file '%{public}@'. ⛔️⛔️⛔️", buf, 0xCu);
       }
 
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot read config from file '%@'.", v6];
-    v11 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v10 code:24];
-    if (a4)
+    fileCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot read config from file '%@'.", fileCopy];
+    v11 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:fileCopy code:24];
+    if (error)
     {
       v11 = v11;
-      *a4 = v11;
+      *error = v11;
     }
 
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -386,30 +386,30 @@ LABEL_8:
   v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[MOVStreamEncoderConfig codecType](self, "codecType")}];
   v9[0] = v3;
   v8[1] = @"encoderSpecification";
-  v4 = [(MOVStreamEncoderConfig *)self encoderSpecification];
-  v9[1] = v4;
+  encoderSpecification = [(MOVStreamEncoderConfig *)self encoderSpecification];
+  v9[1] = encoderSpecification;
   v8[2] = @"sessionProperties";
-  v5 = [(MOVStreamEncoderConfig *)self sessionProperties];
-  v9[2] = v5;
+  sessionProperties = [(MOVStreamEncoderConfig *)self sessionProperties];
+  v9[2] = sessionProperties;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
   return v6;
 }
 
-- (BOOL)writeToFile:(id)a3 error:(id *)a4
+- (BOOL)writeToFile:(id)file error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  fileCopy = file;
   v7 = MEMORY[0x277CCAC58];
-  v8 = [(MOVStreamEncoderConfig *)self dictionaryRepresentation];
-  v9 = [v7 dataWithPropertyList:v8 format:100 options:0 error:a4];
+  dictionaryRepresentation = [(MOVStreamEncoderConfig *)self dictionaryRepresentation];
+  v9 = [v7 dataWithPropertyList:dictionaryRepresentation format:100 options:0 error:error];
 
-  if (a4 && *a4)
+  if (error && *error)
   {
     v10 = +[MIOLog defaultLog];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = *a4;
+      v11 = *error;
       *buf = 138543362;
       v17 = v11;
       _os_log_impl(&dword_257883000, v10, OS_LOG_TYPE_ERROR, "⛔️⛔️⛔️ ERROR: %{public}@. ⛔️⛔️⛔️", buf, 0xCu);
@@ -420,14 +420,14 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (([v9 writeToFile:v6 atomically:1] & 1) == 0)
+  if (([v9 writeToFile:fileCopy atomically:1] & 1) == 0)
   {
-    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot write to file %@.", v6];
-    v14 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:v13 code:24];
-    if (a4)
+    fileCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot write to file %@.", fileCopy];
+    v14 = [MEMORY[0x277CCA9B8] streamErrorWithMessage:fileCopy code:24];
+    if (error)
     {
       v14 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     goto LABEL_11;
@@ -450,15 +450,15 @@ LABEL_12:
   self->_sessionProperties = v3;
 }
 
-- (BOOL)applySessionProperties:(OpaqueVTCompressionSession *)a3
+- (BOOL)applySessionProperties:(OpaqueVTCompressionSession *)properties
 {
   v29 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [(MOVStreamEncoderConfig *)self sessionProperties];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v28 count:16];
+  sessionProperties = [(MOVStreamEncoderConfig *)self sessionProperties];
+  v6 = [sessionProperties countByEnumeratingWithState:&v18 objects:v28 count:16];
   if (v6)
   {
     v7 = v6;
@@ -469,14 +469,14 @@ LABEL_12:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sessionProperties);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [(MOVStreamEncoderConfig *)self sessionProperties];
-        v12 = [v11 valueForKey:v10];
+        sessionProperties2 = [(MOVStreamEncoderConfig *)self sessionProperties];
+        v12 = [sessionProperties2 valueForKey:v10];
 
-        v13 = VTSessionSetProperty(a3, v10, v12);
+        v13 = VTSessionSetProperty(properties, v10, v12);
         if (v13)
         {
           v15 = v13;
@@ -497,7 +497,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v28 count:16];
+      v7 = [sessionProperties countByEnumeratingWithState:&v18 objects:v28 count:16];
       if (v7)
       {
         continue;

@@ -9,8 +9,8 @@
 {
   v2 = MEMORY[0x1E696AE18];
   v3 = +[_DKSystemEventStreams appIntentsStream];
-  v4 = [v3 name];
-  v5 = [v2 predicateWithFormat:@"streamName == %@", v4];
+  name = [v3 name];
+  v5 = [v2 predicateWithFormat:@"streamName == %@", name];
 
   return v5;
 }
@@ -19,8 +19,8 @@
 {
   v2 = MEMORY[0x1E696AE18];
   v3 = +[_DKSystemEventStreams appIntentsStream];
-  v4 = [v3 name];
-  v5 = [v2 predicateWithFormat:@"stream.name == %@", v4];
+  name = [v3 name];
+  v5 = [v2 predicateWithFormat:@"stream.name == %@", name];
 
   return v5;
 }

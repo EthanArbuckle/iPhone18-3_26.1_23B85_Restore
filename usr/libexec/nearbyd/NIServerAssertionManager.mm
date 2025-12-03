@@ -1,5 +1,5 @@
 @interface NIServerAssertionManager
-- (NIServerAssertionManager)initWithClientPid:(int)a3 signingIdentity:(id)a4 sessionIdentifier:(id)a5;
+- (NIServerAssertionManager)initWithClientPid:(int)pid signingIdentity:(id)identity sessionIdentifier:(id)identifier;
 - (void)acquireClientMessageHandlingRuntimeAssertion;
 - (void)acquireMemoryAssertion;
 - (void)acquirePowerAssertion;
@@ -10,14 +10,14 @@
 
 @implementation NIServerAssertionManager
 
-- (NIServerAssertionManager)initWithClientPid:(int)a3 signingIdentity:(id)a4 sessionIdentifier:(id)a5
+- (NIServerAssertionManager)initWithClientPid:(int)pid signingIdentity:(id)identity sessionIdentifier:(id)identifier
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  identityCopy = identity;
+  identifierCopy = identifier;
+  v12 = identifierCopy;
+  if (identityCopy)
   {
-    if (v11)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -52,9 +52,9 @@ LABEL_3:
     v14->_osTransaction = 0;
 
     v14->_powerAssertion = 0;
-    v14->_clientPid = a3;
-    objc_storeStrong(&v14->_clientSigningIdentity, a4);
-    objc_storeStrong(&v14->_sessionIdentifier, a5);
+    v14->_clientPid = pid;
+    objc_storeStrong(&v14->_clientSigningIdentity, identity);
+    objc_storeStrong(&v14->_sessionIdentifier, identifier);
     v17 = v14;
   }
 

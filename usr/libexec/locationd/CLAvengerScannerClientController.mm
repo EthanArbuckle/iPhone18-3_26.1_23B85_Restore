@@ -15,12 +15,12 @@
   v3 = qword_1025D47E8;
   if (os_log_type_enabled(qword_1025D47E8, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NSString *)self->_clientIdentifier UTF8String];
+    uTF8String = [(NSString *)self->_clientIdentifier UTF8String];
     *buf = 68289282;
     v7 = 2082;
     v8 = "";
     v9 = 2082;
-    v10 = v4;
+    v10 = uTF8String;
     _os_log_impl(dword_100000000, v3, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Ending scan, ClientId:%{public, location:escape_only}s}", buf, 0x1Cu);
   }
 
@@ -58,7 +58,7 @@
     result = 0;
     if (v5)
     {
-      v6 = [(NSString *)self->_clientIdentifier UTF8String];
+      uTF8String = [(NSString *)self->_clientIdentifier UTF8String];
       v7 = sub_101435100(self->_currentUseCase);
       centralManagerPoweredOn = self->_centralManagerPoweredOn;
       v9[0] = 68289794;
@@ -66,7 +66,7 @@
       v10 = 2082;
       v11 = "";
       v12 = 2082;
-      v13 = v6;
+      v13 = uTF8String;
       v14 = 2082;
       v15 = v7;
       v16 = 1026;

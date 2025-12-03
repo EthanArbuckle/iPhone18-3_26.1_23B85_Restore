@@ -1,74 +1,74 @@
 @interface PUAdjustmentsToolController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)canResetToDefaultValue;
-- (PUAdjustmentsToolController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PUAdjustmentsToolController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)_sliderLength;
-- (id)_indexPathForAdjustmentCategory:(int64_t)a3;
-- (id)adjustmentsRenderer:(id)a3;
+- (id)_indexPathForAdjustmentCategory:(int64_t)category;
+- (id)adjustmentsRenderer:(id)renderer;
 - (id)adjustmentsViewControllerMainContainerView;
 - (id)centerToolbarView;
 - (id)viewsActivatingMainToolbarShadow;
 - (id)viewsActivatingToolControlShadow;
 - (void)_performInitialAction;
-- (void)_ppt_scrollAfterDelay:(id)a3;
-- (void)_updateBadgeTextWithInfo:(id)a3;
+- (void)_ppt_scrollAfterDelay:(id)delay;
+- (void)_updateBadgeTextWithInfo:(id)info;
 - (void)_updateToolLabelAppearanceIfNeeded;
-- (void)adjustmentsViewControllerDidUpdateSelectedControl:(id)a3;
-- (void)adjustmentsViewControllerSliderDidEndScrubbing:(id)a3;
-- (void)adjustmentsViewControllerSliderWillBeginScrubbing:(id)a3;
+- (void)adjustmentsViewControllerDidUpdateSelectedControl:(id)control;
+- (void)adjustmentsViewControllerSliderDidEndScrubbing:(id)scrubbing;
+- (void)adjustmentsViewControllerSliderWillBeginScrubbing:(id)scrubbing;
 - (void)autoEnhanceActionStateChanged;
-- (void)compositionControllerDidChangeForAdjustments:(id)a3;
-- (void)configureForAdjustmentCategory:(int64_t)a3;
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments;
+- (void)configureForAdjustmentCategory:(int64_t)category;
 - (void)didBecomeActiveTool;
-- (void)mediaViewDidEndZooming:(id)a3;
-- (void)ppt_selectSliderNamed:(id)a3 completion:(id)a4;
+- (void)mediaViewDidEndZooming:(id)zooming;
+- (void)ppt_selectSliderNamed:(id)named completion:(id)completion;
 - (void)reactivate;
-- (void)resetToDefaultValueAnimated:(BOOL)a3;
-- (void)setBackdropViewGroupName:(id)a3;
-- (void)setUseGradientBackground:(BOOL)a3 animated:(BOOL)a4;
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6;
+- (void)resetToDefaultValueAnimated:(BOOL)animated;
+- (void)setBackdropViewGroupName:(id)name;
+- (void)setUseGradientBackground:(BOOL)background animated:(BOOL)animated;
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator;
 - (void)specDidChange;
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4;
-- (void)validateCommand:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection;
+- (void)validateCommand:(id)command;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)willBecomeActiveTool;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUAdjustmentsToolController
 
-- (void)_ppt_scrollAfterDelay:(id)a3
+- (void)_ppt_scrollAfterDelay:(id)delay
 {
-  v3 = a3;
+  delayCopy = delay;
   v4 = dispatch_time(0, 5000000000);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__PUAdjustmentsToolController__ppt_scrollAfterDelay___block_invoke;
   block[3] = &unk_1E7B80C88;
-  v7 = v3;
-  v5 = v3;
+  v7 = delayCopy;
+  v5 = delayCopy;
   dispatch_after(v4, MEMORY[0x1E69E96A0], block);
 }
 
-- (void)ppt_selectSliderNamed:(id)a3 completion:(id)a4
+- (void)ppt_selectSliderNamed:(id)named completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PUAdjustmentsToolController *)self dataSource];
+  namedCopy = named;
+  completionCopy = completion;
+  dataSource = [(PUAdjustmentsToolController *)self dataSource];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(PUAdjustmentsToolController *)self dataSource];
-    v11 = [v10 numberOfItemsInAllSections];
+    dataSource2 = [(PUAdjustmentsToolController *)self dataSource];
+    numberOfItemsInAllSections = [dataSource2 numberOfItemsInAllSections];
 
-    if ((v11 & 0x8000000000000000) == 0)
+    if ((numberOfItemsInAllSections & 0x8000000000000000) == 0)
     {
-      v12 = v11 + 1;
+      v12 = numberOfItemsInAllSections + 1;
       goto LABEL_5;
     }
   }
@@ -79,9 +79,9 @@
 LABEL_5:
     while (1)
     {
-      v13 = [(PUAdjustmentsViewController *)self->_adjustmentsViewController selectedAdjustmentInfo];
-      v14 = [v13 localizedName];
-      v15 = [v14 caseInsensitiveCompare:v6];
+      selectedAdjustmentInfo = [(PUAdjustmentsViewController *)self->_adjustmentsViewController selectedAdjustmentInfo];
+      localizedName = [selectedAdjustmentInfo localizedName];
+      v15 = [localizedName caseInsensitiveCompare:namedCopy];
 
       if (!v15)
       {
@@ -95,14 +95,14 @@ LABEL_5:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v16 = dispatch_time(0, 1000000000);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __64__PUAdjustmentsToolController_ppt_selectSliderNamed_completion___block_invoke;
       block[3] = &unk_1E7B80C88;
-      v18 = v7;
+      v18 = completionCopy;
       dispatch_after(v16, MEMORY[0x1E69E96A0], block);
     }
   }
@@ -110,26 +110,26 @@ LABEL_5:
 LABEL_10:
 }
 
-- (void)validateCommand:(id)a3
+- (void)validateCommand:(id)command
 {
-  v7 = a3;
-  if ([v7 action] == sel_autoEnhanceAssets_)
+  commandCopy = command;
+  if ([commandCopy action] == sel_autoEnhanceAssets_)
   {
     v4 = MEMORY[0x1E69C4260];
-    v5 = [(PUPhotoEditToolController *)self compositionController];
-    [v4 isAutoEnhanceEnabledForCompositionController:v5];
+    compositionController = [(PUPhotoEditToolController *)self compositionController];
+    [v4 isAutoEnhanceEnabledForCompositionController:compositionController];
 
     v6 = PXLocalizedString();
-    [v7 setTitle:v6];
+    [commandCopy setTitle:v6];
   }
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel_autoEnhanceAssets_ == a3)
+  if (sel_autoEnhanceAssets_ == action)
   {
-    v5 = [(PUAdjustmentsToolController *)self autoAdjustmentController];
-    v4 = [v5 isBusy] ^ 1;
+    autoAdjustmentController = [(PUAdjustmentsToolController *)self autoAdjustmentController];
+    v4 = [autoAdjustmentController isBusy] ^ 1;
   }
 
   else
@@ -144,8 +144,8 @@ LABEL_10:
 
 - (double)_sliderLength
 {
-  v2 = [(PUPhotoEditToolController *)self toolControllerSpec];
-  [v2 sliderLength];
+  toolControllerSpec = [(PUPhotoEditToolController *)self toolControllerSpec];
+  [toolControllerSpec sliderLength];
   v4 = v3;
 
   return v4;
@@ -153,26 +153,26 @@ LABEL_10:
 
 - (void)autoEnhanceActionStateChanged
 {
-  v2 = [(PUPhotoEditToolController *)self delegate];
-  [v2 updateProgressIndicatorAnimated:1];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  [delegate updateProgressIndicatorAnimated:1];
 }
 
-- (id)adjustmentsRenderer:(id)a3
+- (id)adjustmentsRenderer:(id)renderer
 {
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 toolControllerMainRenderer:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v5 = [delegate toolControllerMainRenderer:self];
 
   return v5;
 }
 
-- (void)adjustmentsViewControllerSliderDidEndScrubbing:(id)a3
+- (void)adjustmentsViewControllerSliderDidEndScrubbing:(id)scrubbing
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:0];
 
   [(PUPhotoEditToolController *)self setPerformingLiveInteraction:0];
 }
 
-- (void)adjustmentsViewControllerSliderWillBeginScrubbing:(id)a3
+- (void)adjustmentsViewControllerSliderWillBeginScrubbing:(id)scrubbing
 {
   [(PUPhotoEditToolController *)self setActivelyAdjusting:1];
 
@@ -181,23 +181,23 @@ LABEL_10:
 
 - (id)adjustmentsViewControllerMainContainerView
 {
-  v3 = [(PUPhotoEditToolController *)self delegate];
-  v4 = [v3 toolControllerMainContainerView:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v4 = [delegate toolControllerMainContainerView:self];
 
   return v4;
 }
 
-- (void)adjustmentsViewControllerDidUpdateSelectedControl:(id)a3
+- (void)adjustmentsViewControllerDidUpdateSelectedControl:(id)control
 {
-  v4 = [a3 selectedAdjustmentInfo];
-  [(PUAdjustmentsToolController *)self _updateBadgeTextWithInfo:v4];
+  selectedAdjustmentInfo = [control selectedAdjustmentInfo];
+  [(PUAdjustmentsToolController *)self _updateBadgeTextWithInfo:selectedAdjustmentInfo];
 }
 
-- (void)compositionControllerDidChangeForAdjustments:(id)a3
+- (void)compositionControllerDidChangeForAdjustments:(id)adjustments
 {
   v4.receiver = self;
   v4.super_class = PUAdjustmentsToolController;
-  [(PUPhotoEditToolController *)&v4 compositionControllerDidChangeForAdjustments:a3];
+  [(PUPhotoEditToolController *)&v4 compositionControllerDidChangeForAdjustments:adjustments];
   [(PUAdjustmentsDataSource *)self->_dataSource compositionControllerDidChange];
 }
 
@@ -211,25 +211,25 @@ LABEL_10:
 - (id)viewsActivatingToolControlShadow
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v4 = [v3 currentLayoutStyle];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-  v5 = [(PUPhotoEditToolController *)self layoutOrientation];
-  if (v5 == 3)
+  layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+  if (layoutOrientation == 3)
   {
-    if (v4 == 4)
+    if (currentLayoutStyle == 4)
     {
-      v6 = [(PUAdjustmentsViewController *)self->_adjustmentsViewController slider];
-      v10 = v6;
+      slider = [(PUAdjustmentsViewController *)self->_adjustmentsViewController slider];
+      v10 = slider;
       v7 = &v10;
       goto LABEL_6;
     }
   }
 
-  else if (v5 == 2)
+  else if (layoutOrientation == 2)
   {
-    v6 = [(PUAdjustmentsViewController *)self->_adjustmentsViewController slider];
-    v11[0] = v6;
+    slider = [(PUAdjustmentsViewController *)self->_adjustmentsViewController slider];
+    v11[0] = slider;
     v7 = v11;
 LABEL_6:
     v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
@@ -246,16 +246,16 @@ LABEL_8:
 - (id)viewsActivatingMainToolbarShadow
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v4 = [v3 currentLayoutStyle];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-  v5 = [(PUPhotoEditToolController *)self layoutOrientation];
-  if (v5 == 3)
+  layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+  if (layoutOrientation == 3)
   {
-    if (v4 != 4)
+    if (currentLayoutStyle != 4)
     {
-      v6 = [(PUAdjustmentsViewController *)self->_adjustmentsViewController slider];
-      v10 = v6;
+      slider = [(PUAdjustmentsViewController *)self->_adjustmentsViewController slider];
+      v10 = slider;
       v7 = &v10;
       goto LABEL_7;
     }
@@ -265,13 +265,13 @@ LABEL_5:
     goto LABEL_8;
   }
 
-  if (v5 != 1)
+  if (layoutOrientation != 1)
   {
     goto LABEL_5;
   }
 
-  v6 = [(PUAdjustmentsViewController *)self->_adjustmentsViewController slider];
-  v11[0] = v6;
+  slider = [(PUAdjustmentsViewController *)self->_adjustmentsViewController slider];
+  v11[0] = slider;
   v7 = v11;
 LABEL_7:
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:1];
@@ -281,12 +281,12 @@ LABEL_8:
   return v8;
 }
 
-- (id)_indexPathForAdjustmentCategory:(int64_t)a3
+- (id)_indexPathForAdjustmentCategory:(int64_t)category
 {
-  v5 = [(PUAdjustmentsToolController *)self dataSource];
-  v6 = [v5 numberOfSections];
+  dataSource = [(PUAdjustmentsToolController *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
 
-  if (!v6)
+  if (!numberOfSections)
   {
 LABEL_18:
     v11 = 0;
@@ -297,8 +297,8 @@ LABEL_18:
   v25 = *MEMORY[0x1E69BDF98];
   while (1)
   {
-    v8 = [(PUAdjustmentsToolController *)self dataSource];
-    v9 = [v8 numberOfItemsInSection:v7];
+    dataSource2 = [(PUAdjustmentsToolController *)self dataSource];
+    v9 = [dataSource2 numberOfItemsInSection:v7];
 
     if (v9)
     {
@@ -307,10 +307,10 @@ LABEL_18:
 
 LABEL_17:
     ++v7;
-    v22 = [(PUAdjustmentsToolController *)self dataSource];
-    v23 = [v22 numberOfSections];
+    dataSource3 = [(PUAdjustmentsToolController *)self dataSource];
+    numberOfSections2 = [dataSource3 numberOfSections];
 
-    if (v7 >= v23)
+    if (v7 >= numberOfSections2)
     {
       goto LABEL_18;
     }
@@ -320,25 +320,25 @@ LABEL_17:
   while (1)
   {
     v11 = [MEMORY[0x1E696AC88] indexPathForItem:v10 inSection:v7];
-    v12 = [(PUAdjustmentsToolController *)self dataSource];
-    v13 = [v12 infoForItemAtIndexPath:v11];
+    dataSource4 = [(PUAdjustmentsToolController *)self dataSource];
+    v13 = [dataSource4 infoForItemAtIndexPath:v11];
 
-    if (a3 <= 1)
+    if (category <= 1)
     {
-      if (a3)
+      if (category)
       {
-        if (a3 == 1)
+        if (category == 1)
         {
-          v14 = [v13 settingKey];
-          v15 = [MEMORY[0x1E69BDF70] offsetExposureKey];
+          settingKey = [v13 settingKey];
+          offsetExposureKey = [MEMORY[0x1E69BDF70] offsetExposureKey];
           goto LABEL_15;
         }
       }
 
       else
       {
-        v16 = [v13 identifier];
-        v17 = [v16 isEqualToString:v25];
+        identifier = [v13 identifier];
+        v17 = [identifier isEqualToString:v25];
 
         if (v17)
         {
@@ -349,23 +349,23 @@ LABEL_17:
       goto LABEL_16;
     }
 
-    if (a3 == 2)
+    if (category == 2)
     {
       break;
     }
 
-    if (a3 == 3)
+    if (category == 3)
     {
-      v14 = [v13 settingKey];
-      v15 = [MEMORY[0x1E69BDF90] warmTempKey];
+      settingKey = [v13 settingKey];
+      offsetExposureKey = [MEMORY[0x1E69BDF90] warmTempKey];
       goto LABEL_15;
     }
 
 LABEL_16:
 
     ++v10;
-    v20 = [(PUAdjustmentsToolController *)self dataSource];
-    v21 = [v20 numberOfItemsInSection:v7];
+    dataSource5 = [(PUAdjustmentsToolController *)self dataSource];
+    v21 = [dataSource5 numberOfItemsInSection:v7];
 
     if (v10 >= v21)
     {
@@ -373,11 +373,11 @@ LABEL_16:
     }
   }
 
-  v14 = [v13 settingKey];
-  v15 = [MEMORY[0x1E69BDF68] offsetSaturationKey];
+  settingKey = [v13 settingKey];
+  offsetExposureKey = [MEMORY[0x1E69BDF68] offsetSaturationKey];
 LABEL_15:
-  v18 = v15;
-  v19 = [v14 isEqualToString:v15];
+  v18 = offsetExposureKey;
+  v19 = [settingKey isEqualToString:offsetExposureKey];
 
   if ((v19 & 1) == 0)
   {
@@ -391,9 +391,9 @@ LABEL_20:
   return v11;
 }
 
-- (void)configureForAdjustmentCategory:(int64_t)a3
+- (void)configureForAdjustmentCategory:(int64_t)category
 {
-  v4 = [(PUAdjustmentsToolController *)self _indexPathForAdjustmentCategory:a3];
+  v4 = [(PUAdjustmentsToolController *)self _indexPathForAdjustmentCategory:category];
   v5 = v4;
   if (v4)
   {
@@ -407,9 +407,9 @@ LABEL_20:
 
 - (void)didBecomeActiveTool
 {
-  v3 = [(PUAdjustmentsToolController *)self view];
-  v4 = [v3 layer];
-  [v4 setAllowsGroupOpacity:1];
+  view = [(PUAdjustmentsToolController *)self view];
+  layer = [view layer];
+  [layer setAllowsGroupOpacity:1];
 
   v5.receiver = self;
   v5.super_class = PUAdjustmentsToolController;
@@ -431,27 +431,27 @@ LABEL_20:
   v5.receiver = self;
   v5.super_class = PUAdjustmentsToolController;
   [(PUPhotoEditToolController *)&v5 willBecomeActiveTool];
-  v3 = [(PUAdjustmentsToolController *)self view];
-  v4 = [v3 layer];
-  [v4 setAllowsGroupOpacity:0];
+  view = [(PUAdjustmentsToolController *)self view];
+  layer = [view layer];
+  [layer setAllowsGroupOpacity:0];
 }
 
-- (void)resetToDefaultValueAnimated:(BOOL)a3
+- (void)resetToDefaultValueAnimated:(BOOL)animated
 {
   v3.receiver = self;
   v3.super_class = PUAdjustmentsToolController;
-  [(PUPhotoEditToolController *)&v3 resetToDefaultValueAnimated:a3];
+  [(PUPhotoEditToolController *)&v3 resetToDefaultValueAnimated:animated];
 }
 
 - (BOOL)canResetToDefaultValue
 {
-  v4 = [(PUPhotoEditToolController *)self delegate];
-  v5 = [v4 toolControllerUneditedCompositionController:self];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v5 = [delegate toolControllerUneditedCompositionController:self];
 
   if (!v5)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PUAdjustmentsToolController.m" lineNumber:353 description:@"Cannot continue without a base composition."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAdjustmentsToolController.m" lineNumber:353 description:@"Cannot continue without a base composition."];
   }
 
   return 0;
@@ -461,47 +461,47 @@ LABEL_20:
 {
   v2 = +[PUInterfaceManager currentTheme];
   v3 = PULocalizedString(@"PHOTOEDIT_ADJUSTMENTS_TOP_LABEL");
-  v4 = [v3 localizedUppercaseString];
+  localizedUppercaseString = [v3 localizedUppercaseString];
 
-  v5 = [v2 photoEditingTopToolbarToolLabelButtonColor];
+  photoEditingTopToolbarToolLabelButtonColor = [v2 photoEditingTopToolbarToolLabelButtonColor];
   v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setText:v4];
-  [v6 setTextColor:v5];
-  v7 = [v2 topToolbarToolLabelFont];
-  [v6 setFont:v7];
+  [v6 setText:localizedUppercaseString];
+  [v6 setTextColor:photoEditingTopToolbarToolLabelButtonColor];
+  topToolbarToolLabelFont = [v2 topToolbarToolLabelFont];
+  [v6 setFont:topToolbarToolLabelFont];
 
   return v6;
 }
 
-- (void)_updateBadgeTextWithInfo:(id)a3
+- (void)_updateBadgeTextWithInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = MEMORY[0x1B8C6D660]();
-  v8 = [(PUAdjustmentsToolController *)self badgeView];
-  v6 = [v4 localizedName];
+  badgeView = [(PUAdjustmentsToolController *)self badgeView];
+  localizedName = [infoCopy localizedName];
 
-  v7 = [v6 localizedUppercaseString];
+  localizedUppercaseString = [localizedName localizedUppercaseString];
   if (v5)
   {
-    [v8 setText:v7];
+    [badgeView setText:localizedUppercaseString];
   }
 
   else
   {
-    [v8 _setText:v7];
+    [badgeView _setText:localizedUppercaseString];
 
-    v8 = [(PUAdjustmentsToolController *)self badgeView];
-    [v8 sizeToFit];
+    badgeView = [(PUAdjustmentsToolController *)self badgeView];
+    [badgeView sizeToFit];
   }
 }
 
-- (void)setBackdropViewGroupName:(id)a3
+- (void)setBackdropViewGroupName:(id)name
 {
-  v6 = a3;
+  nameCopy = name;
   if (![(NSString *)self->super._backdropViewGroupName isEqualToString:?])
   {
-    v4 = [v6 copy];
+    v4 = [nameCopy copy];
     backdropViewGroupName = self->super._backdropViewGroupName;
     self->super._backdropViewGroupName = v4;
 
@@ -509,22 +509,22 @@ LABEL_20:
   }
 }
 
-- (void)setUseGradientBackground:(BOOL)a3 animated:(BOOL)a4
+- (void)setUseGradientBackground:(BOOL)background animated:(BOOL)animated
 {
-  if (self->_useTranslucentBackground != a3)
+  if (self->_useTranslucentBackground != background)
   {
-    self->_useTranslucentBackground = a3;
+    self->_useTranslucentBackground = background;
   }
 }
 
 - (void)reactivate
 {
-  v3 = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
+  ppt_didBecomeActiveToolBlock = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
 
-  if (v3)
+  if (ppt_didBecomeActiveToolBlock)
   {
-    v4 = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
-    v4[2]();
+    ppt_didBecomeActiveToolBlock2 = [(PUPhotoEditToolController *)self ppt_didBecomeActiveToolBlock];
+    ppt_didBecomeActiveToolBlock2[2]();
   }
 }
 
@@ -532,8 +532,8 @@ LABEL_20:
 {
   if (MEMORY[0x1B8C6D660](self, a2))
   {
-    v3 = [(PUPhotoEditToolController *)self delegate];
-    v14 = [v3 mediaView];
+    delegate = [(PUPhotoEditToolController *)self delegate];
+    mediaView = [delegate mediaView];
 
     v4 = self->_badgeView;
     [(UIView *)v4 frame];
@@ -541,7 +541,7 @@ LABEL_20:
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    [v14 imageFrame];
+    [mediaView imageFrame];
     v17.origin.x = v6;
     v17.origin.y = v8;
     v17.size.width = v10;
@@ -556,27 +556,27 @@ LABEL_20:
   }
 }
 
-- (void)mediaViewDidEndZooming:(id)a3
+- (void)mediaViewDidEndZooming:(id)zooming
 {
   v4.receiver = self;
   v4.super_class = PUAdjustmentsToolController;
-  [(PUPhotoEditToolController *)&v4 mediaViewDidEndZooming:a3];
+  [(PUPhotoEditToolController *)&v4 mediaViewDidEndZooming:zooming];
   [(PUAdjustmentsToolController *)self _updateToolLabelAppearanceIfNeeded];
 }
 
-- (void)setupWithAsset:(id)a3 compositionController:(id)a4 editSource:(id)a5 valuesCalculator:(id)a6
+- (void)setupWithAsset:(id)asset compositionController:(id)controller editSource:(id)source valuesCalculator:(id)calculator
 {
   v13.receiver = self;
   v13.super_class = PUAdjustmentsToolController;
-  [(PUPhotoEditToolController *)&v13 setupWithAsset:a3 compositionController:a4 editSource:a5 valuesCalculator:a6];
-  v7 = [(PUPhotoEditToolController *)self delegate];
-  v8 = [v7 toolControllerSourceAssetType:self];
+  [(PUPhotoEditToolController *)&v13 setupWithAsset:asset compositionController:controller editSource:source valuesCalculator:calculator];
+  delegate = [(PUPhotoEditToolController *)self delegate];
+  v8 = [delegate toolControllerSourceAssetType:self];
 
-  v9 = [(PUAdjustmentsToolController *)self dataSource];
-  v10 = [(PUPhotoEditToolController *)self compositionController];
-  v11 = [(PUPhotoEditToolController *)self valuesCalculator];
-  v12 = [(PUAdjustmentsToolController *)self autoAdjustmentController];
-  [v9 setupWithCompositionController:v10 valuesCalculator:v11 autoAdjustmentController:v12 assetType:v8];
+  dataSource = [(PUAdjustmentsToolController *)self dataSource];
+  compositionController = [(PUPhotoEditToolController *)self compositionController];
+  valuesCalculator = [(PUPhotoEditToolController *)self valuesCalculator];
+  autoAdjustmentController = [(PUAdjustmentsToolController *)self autoAdjustmentController];
+  [dataSource setupWithCompositionController:compositionController valuesCalculator:valuesCalculator autoAdjustmentController:autoAdjustmentController assetType:v8];
 }
 
 - (void)viewDidLayoutSubviews
@@ -584,21 +584,21 @@ LABEL_20:
   v81.receiver = self;
   v81.super_class = PUAdjustmentsToolController;
   [(PUPhotoEditToolController *)&v81 viewDidLayoutSubviews];
-  v3 = [(PUPhotoEditToolController *)self layoutOrientation];
-  v4 = [(PUPhotoEditToolController *)self photoEditSpec];
-  v5 = [v4 currentLayoutStyle];
+  layoutOrientation = [(PUPhotoEditToolController *)self layoutOrientation];
+  photoEditSpec = [(PUPhotoEditToolController *)self photoEditSpec];
+  currentLayoutStyle = [photoEditSpec currentLayoutStyle];
 
-  v6 = [(PUAdjustmentsToolController *)self view];
-  [v6 bounds];
+  view = [(PUAdjustmentsToolController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  if (v5 == 4)
+  if (currentLayoutStyle == 4)
   {
-    v15 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v15 bounds];
+    toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView bounds];
     v17 = v16;
     v19 = v18;
     v21 = v20;
@@ -616,23 +616,23 @@ LABEL_20:
 
     [(UIView *)self->_adjustmentPickerView setFrame:v17, v19, v24, v23];
     [(PUAdjustmentsViewController *)self->_adjustmentsViewController setLayoutDirection:1];
-    v25 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v25 frame];
+    toolContainerView2 = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView2 frame];
     MinX = CGRectGetMinX(v82);
 
-    v27 = [(PUPhotoEditToolController *)self toolContainerView];
-    v28 = [(PUAdjustmentsToolController *)self view];
-    v29 = [v28 window];
-    [v29 center];
+    toolContainerView3 = [(PUPhotoEditToolController *)self toolContainerView];
+    view2 = [(PUAdjustmentsToolController *)self view];
+    window = [view2 window];
+    [window center];
     v31 = v30;
     v33 = v32;
-    v34 = [(PUAdjustmentsToolController *)self view];
-    v35 = [v34 window];
-    [v27 convertPoint:v35 fromView:{v31, v33}];
+    view3 = [(PUAdjustmentsToolController *)self view];
+    window2 = [view3 window];
+    [toolContainerView3 convertPoint:window2 fromView:{v31, v33}];
     v37 = v36;
 
-    v38 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v38 center];
+    toolContainerView4 = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView4 center];
 
     if (MEMORY[0x1B8C6D660]())
     {
@@ -644,33 +644,33 @@ LABEL_20:
       v39 = 6.0;
     }
 
-    v40 = [(PUAdjustmentsToolController *)self badgeView];
-    [v40 bounds];
+    badgeView = [(PUAdjustmentsToolController *)self badgeView];
+    [badgeView bounds];
     v42 = MinX + v41 * -0.5 - v39;
   }
 
   else
   {
-    if (v3 != 1)
+    if (layoutOrientation != 1)
     {
-      v52 = [(PUPhotoEditToolController *)self toolContainerView];
-      [v52 bounds];
+      toolContainerView5 = [(PUPhotoEditToolController *)self toolContainerView];
+      [toolContainerView5 bounds];
       [(UIView *)self->_adjustmentPickerView setFrame:?];
 
       [(PUAdjustmentsViewController *)self->_adjustmentsViewController setLayoutDirection:1];
-      v53 = [(PUPhotoEditToolController *)self delegate];
-      v51 = [v53 mediaView];
+      delegate = [(PUPhotoEditToolController *)self delegate];
+      mediaView = [delegate mediaView];
 
-      [v51 center];
+      [mediaView center];
       v55 = v54;
       v57 = v56;
-      v58 = [v51 superview];
-      v59 = [(PUAdjustmentsToolController *)self view];
-      [v58 convertPoint:v59 toView:{v55, v57}];
+      superview = [mediaView superview];
+      view4 = [(PUAdjustmentsToolController *)self view];
+      [superview convertPoint:view4 toView:{v55, v57}];
       v61 = v60;
 
-      v62 = [(PUAdjustmentsToolController *)self view];
-      [v62 safeAreaInsets];
+      view5 = [(PUAdjustmentsToolController *)self view];
+      [view5 safeAreaInsets];
       v64 = v8 + v63;
       v66 = v10 + v65;
       v68 = v12 - (v63 + v67);
@@ -681,12 +681,12 @@ LABEL_20:
       v84.size.width = v68;
       v84.size.height = v70;
       MaxY = CGRectGetMaxY(v84);
-      v72 = [(PUAdjustmentsToolController *)self badgeView];
-      [v72 bounds];
+      badgeView2 = [(PUAdjustmentsToolController *)self badgeView];
+      [badgeView2 bounds];
       v74 = MaxY + v73 * -0.5;
 
-      v75 = [(PUAdjustmentsToolController *)self badgeView];
-      [v75 setCenter:{v61, v74}];
+      badgeView3 = [(PUAdjustmentsToolController *)self badgeView];
+      [badgeView3 setCenter:{v61, v74}];
 
       goto LABEL_13;
     }
@@ -698,69 +698,69 @@ LABEL_20:
     v80[1] = v44;
     v80[2] = *(MEMORY[0x1E695EFD0] + 32);
     [(UIView *)adjustmentPickerView setTransform:v80];
-    v45 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v45 frame];
+    toolContainerView6 = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView6 frame];
     [(UIView *)self->_adjustmentPickerView setFrame:?];
 
-    v46 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v46 bounds];
+    toolContainerView7 = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView7 bounds];
     UIRectGetCenter();
     [(UIView *)self->_adjustmentPickerView setCenter:?];
 
-    v47 = [(PUPhotoEditToolController *)self toolContainerView];
-    [v47 frame];
+    toolContainerView8 = [(PUPhotoEditToolController *)self toolContainerView];
+    [toolContainerView8 frame];
     MinY = CGRectGetMinY(v83);
 
     UIRectGetCenter();
     v42 = v49;
-    v40 = [(PUAdjustmentsToolController *)self badgeView];
-    [v40 bounds];
+    badgeView = [(PUAdjustmentsToolController *)self badgeView];
+    [badgeView bounds];
     v37 = MinY + v50 * -0.5 + 2.0;
   }
 
-  v51 = [(PUAdjustmentsToolController *)self badgeView];
-  [v51 setCenter:{v42, v37}];
+  mediaView = [(PUAdjustmentsToolController *)self badgeView];
+  [mediaView setCenter:{v42, v37}];
 LABEL_13:
 
-  v76 = [(PUPhotoEditToolController *)self toolContainerView];
-  [v76 frame];
+  toolContainerView9 = [(PUPhotoEditToolController *)self toolContainerView];
+  [toolContainerView9 frame];
   v78 = v77;
-  v79 = [(PUPhotoEditToolController *)self toolContainerView];
-  [v79 frame];
+  toolContainerView10 = [(PUPhotoEditToolController *)self toolContainerView];
+  [toolContainerView10 frame];
   [(_UIBackdropView *)self->_backdropBackgroundView setFrame:0.0, 0.0, v78];
 
   [(PUAdjustmentsToolController *)self _updateToolLabelAppearanceIfNeeded];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4.receiver = self;
   v4.super_class = PUAdjustmentsToolController;
-  [(PUPhotoEditToolController *)&v4 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
+  [(PUPhotoEditToolController *)&v4 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
   v4.receiver = self;
   v4.super_class = PUAdjustmentsToolController;
-  [(PUAdjustmentsToolController *)&v4 willTransitionToTraitCollection:a3 withTransitionCoordinator:a4];
+  [(PUAdjustmentsToolController *)&v4 willTransitionToTraitCollection:collection withTransitionCoordinator:coordinator];
 }
 
-- (void)traitEnvironment:(id)a3 didChangeTraitCollection:(id)a4
+- (void)traitEnvironment:(id)environment didChangeTraitCollection:(id)collection
 {
   v6.receiver = self;
   v6.super_class = PUAdjustmentsToolController;
-  [(PUPhotoEditToolController *)&v6 traitEnvironment:a3 didChangeTraitCollection:a4];
-  v5 = [(PUAdjustmentsViewController *)self->_adjustmentsViewController selectedAdjustmentInfo];
-  [(PUAdjustmentsToolController *)self _updateBadgeTextWithInfo:v5];
+  [(PUPhotoEditToolController *)&v6 traitEnvironment:environment didChangeTraitCollection:collection];
+  selectedAdjustmentInfo = [(PUAdjustmentsViewController *)self->_adjustmentsViewController selectedAdjustmentInfo];
+  [(PUAdjustmentsToolController *)self _updateBadgeTextWithInfo:selectedAdjustmentInfo];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v9 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = PUAdjustmentsToolController;
-  [(PUPhotoEditToolController *)&v6 viewDidAppear:a3];
+  [(PUPhotoEditToolController *)&v6 viewDidAppear:appear];
   if (self->_viewLoadingStartTime >= 1)
   {
     v4 = PLPhotoEditGetLog();
@@ -776,11 +776,11 @@ LABEL_13:
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUAdjustmentsToolController;
-  [(PUPhotoEditToolController *)&v4 viewWillAppear:a3];
+  [(PUPhotoEditToolController *)&v4 viewWillAppear:appear];
   self->_viewLoadingStartTime = mach_absolute_time();
 }
 
@@ -791,26 +791,26 @@ LABEL_13:
   [(PUAdjustmentsToolController *)&v26 viewDidLoad];
   v3 = objc_alloc_init(PUAdjustmentsToolControllerSpec);
   [(PUPhotoEditToolController *)self setToolControllerSpec:v3];
-  v4 = [(PUPhotoEditToolController *)self toolContainerView];
+  toolContainerView = [(PUPhotoEditToolController *)self toolContainerView];
   v5 = [objc_alloc(MEMORY[0x1E69DD370]) initWithPrivateStyle:2030];
   backdropBackgroundView = self->_backdropBackgroundView;
   self->_backdropBackgroundView = v5;
 
   [(_UIBackdropView *)self->_backdropBackgroundView setHidden:1];
-  v7 = [(_UIBackdropView *)self->_backdropBackgroundView layer];
-  [v7 setAllowsGroupOpacity:0];
+  layer = [(_UIBackdropView *)self->_backdropBackgroundView layer];
+  [layer setAllowsGroupOpacity:0];
 
-  v8 = [(_UIBackdropView *)self->_backdropBackgroundView groupName];
+  groupName = [(_UIBackdropView *)self->_backdropBackgroundView groupName];
   backdropViewGroupName = self->super._backdropViewGroupName;
-  self->super._backdropViewGroupName = v8;
+  self->super._backdropViewGroupName = groupName;
 
-  [v4 addSubview:self->_backdropBackgroundView];
+  [toolContainerView addSubview:self->_backdropBackgroundView];
   [(PUAdjustmentsToolController *)self addChildViewController:self->_adjustmentsViewController];
-  v10 = [(PUAdjustmentsViewController *)self->_adjustmentsViewController view];
+  view = [(PUAdjustmentsViewController *)self->_adjustmentsViewController view];
   adjustmentPickerView = self->_adjustmentPickerView;
-  self->_adjustmentPickerView = v10;
+  self->_adjustmentPickerView = view;
 
-  [v4 addSubview:self->_adjustmentPickerView];
+  [toolContainerView addSubview:self->_adjustmentPickerView];
   if (MEMORY[0x1B8C6D660]([(PUAdjustmentsViewController *)self->_adjustmentsViewController didMoveToParentViewController:self]))
   {
     v12 = [PUEditBadgeLabel alloc];
@@ -823,11 +823,11 @@ LABEL_13:
     v13 = +[PUInterfaceManager currentTheme];
     v15 = objc_alloc(MEMORY[0x1E6993830]);
     v14 = [v15 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
-    v16 = [v13 photoEditingBadgeViewFillColor];
-    [(PUEditBadgeLabel *)v14 _setFillColor:v16];
+    photoEditingBadgeViewFillColor = [v13 photoEditingBadgeViewFillColor];
+    [(PUEditBadgeLabel *)v14 _setFillColor:photoEditingBadgeViewFillColor];
 
-    v17 = [v13 photoEditingBadgeViewContentColor];
-    [(PUEditBadgeLabel *)v14 _setContentColor:v17];
+    photoEditingBadgeViewContentColor = [v13 photoEditingBadgeViewContentColor];
+    [(PUEditBadgeLabel *)v14 _setContentColor:photoEditingBadgeViewContentColor];
 
     [(PUEditBadgeLabel *)v14 _setFillCornerRadius:4.0];
     [MEMORY[0x1E6993830] _defaultTextInsets];
@@ -836,22 +836,22 @@ LABEL_13:
 
   [(PUAdjustmentsToolController *)self setBadgeView:v14];
 
-  v22 = [(PUAdjustmentsToolController *)self badgeView];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
+  badgeView = [(PUAdjustmentsToolController *)self badgeView];
+  [badgeView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v23 = [(PUAdjustmentsToolController *)self badgeView];
-  [v23 setUserInteractionEnabled:0];
+  badgeView2 = [(PUAdjustmentsToolController *)self badgeView];
+  [badgeView2 setUserInteractionEnabled:0];
 
-  v24 = [(PUAdjustmentsToolController *)self view];
-  v25 = [(PUAdjustmentsToolController *)self badgeView];
-  [v24 addSubview:v25];
+  view2 = [(PUAdjustmentsToolController *)self view];
+  badgeView3 = [(PUAdjustmentsToolController *)self badgeView];
+  [view2 addSubview:badgeView3];
 }
 
-- (PUAdjustmentsToolController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUAdjustmentsToolController)initWithNibName:(id)name bundle:(id)bundle
 {
   v13.receiver = self;
   v13.super_class = PUAdjustmentsToolController;
-  v4 = [(PUPhotoEditToolController *)&v13 initWithNibName:a3 bundle:a4];
+  v4 = [(PUPhotoEditToolController *)&v13 initWithNibName:name bundle:bundle];
   if (v4)
   {
     v5 = objc_alloc_init(PUAdjustmentsDataSource);

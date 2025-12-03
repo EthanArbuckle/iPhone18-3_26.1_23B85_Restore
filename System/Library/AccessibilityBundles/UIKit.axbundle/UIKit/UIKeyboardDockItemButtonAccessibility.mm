@@ -1,28 +1,28 @@
 @interface UIKeyboardDockItemButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation UIKeyboardDockItemButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   objc_storeStrong(location, 0);
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   v3.receiver = self;
   v3.super_class = UIKeyboardDockItemButtonAccessibility;
-  v4 = [(UIKeyboardDockItemButtonAccessibility *)&v3 accessibilityTraits];
-  v4 |= *MEMORY[0x29EDBDAD0];
-  return v4 | *MEMORY[0x29EDBDB00];
+  accessibilityTraits = [(UIKeyboardDockItemButtonAccessibility *)&v3 accessibilityTraits];
+  accessibilityTraits |= *MEMORY[0x29EDBDAD0];
+  return accessibilityTraits | *MEMORY[0x29EDBDB00];
 }
 
 @end

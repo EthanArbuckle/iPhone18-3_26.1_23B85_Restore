@@ -1,50 +1,50 @@
 @interface _INPBMassValue
-- (BOOL)isEqual:(id)a3;
-- (_INPBMassValue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBMassValue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsUnit:(id)a3;
+- (int)StringAsUnit:(id)unit;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHasUnit:(BOOL)a3;
-- (void)setUnit:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHasUnit:(BOOL)unit;
+- (void)setUnit:(int)unit;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBMassValue
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBMassValue *)self hasMagnitude])
   {
     v4 = MEMORY[0x1E696AD98];
     [(_INPBMassValue *)self magnitude];
     v5 = [v4 numberWithDouble:?];
-    [v3 setObject:v5 forKeyedSubscript:@"magnitude"];
+    [dictionary setObject:v5 forKeyedSubscript:@"magnitude"];
   }
 
   if ([(_INPBMassValue *)self hasUnit])
   {
-    v6 = [(_INPBMassValue *)self unit];
-    if (v6 >= 0x11)
+    unit = [(_INPBMassValue *)self unit];
+    if (unit >= 0x11)
     {
-      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+      v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", unit];
     }
 
     else
     {
-      v7 = *(&off_1E7287378 + v6);
+      v7 = *(&off_1E7287378 + unit);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"unit"];
+    [dictionary setObject:v7 forKeyedSubscript:@"unit"];
   }
 
-  v8 = [(_INPBMassValue *)self valueMetadata];
-  v9 = [v8 dictionaryRepresentation];
-  [v3 setObject:v9 forKeyedSubscript:@"valueMetadata"];
+  valueMetadata = [(_INPBMassValue *)self valueMetadata];
+  dictionaryRepresentation = [valueMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"valueMetadata"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -95,28 +95,28 @@
   return v9 ^ v8 ^ [(_INPBValueMetadata *)self->_valueMetadata hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBMassValue *)self hasMagnitude];
-    if (v5 == [v4 hasMagnitude])
+    hasMagnitude = [(_INPBMassValue *)self hasMagnitude];
+    if (hasMagnitude == [equalCopy hasMagnitude])
     {
-      if (!-[_INPBMassValue hasMagnitude](self, "hasMagnitude") || ![v4 hasMagnitude] || (magnitude = self->_magnitude, objc_msgSend(v4, "magnitude"), magnitude == v7))
+      if (!-[_INPBMassValue hasMagnitude](self, "hasMagnitude") || ![equalCopy hasMagnitude] || (magnitude = self->_magnitude, objc_msgSend(equalCopy, "magnitude"), magnitude == v7))
       {
-        v8 = [(_INPBMassValue *)self hasUnit];
-        if (v8 == [v4 hasUnit])
+        hasUnit = [(_INPBMassValue *)self hasUnit];
+        if (hasUnit == [equalCopy hasUnit])
         {
-          if (!-[_INPBMassValue hasUnit](self, "hasUnit") || ![v4 hasUnit] || (unit = self->_unit, unit == objc_msgSend(v4, "unit")))
+          if (!-[_INPBMassValue hasUnit](self, "hasUnit") || ![equalCopy hasUnit] || (unit = self->_unit, unit == objc_msgSend(equalCopy, "unit")))
           {
-            v10 = [(_INPBMassValue *)self valueMetadata];
-            v11 = [v4 valueMetadata];
-            v12 = v11;
-            if ((v10 != 0) != (v11 == 0))
+            valueMetadata = [(_INPBMassValue *)self valueMetadata];
+            valueMetadata2 = [equalCopy valueMetadata];
+            v12 = valueMetadata2;
+            if ((valueMetadata != 0) != (valueMetadata2 == 0))
             {
-              v13 = [(_INPBMassValue *)self valueMetadata];
-              if (!v13)
+              valueMetadata3 = [(_INPBMassValue *)self valueMetadata];
+              if (!valueMetadata3)
               {
 
 LABEL_18:
@@ -124,10 +124,10 @@ LABEL_18:
                 goto LABEL_16;
               }
 
-              v14 = v13;
-              v15 = [(_INPBMassValue *)self valueMetadata];
-              v16 = [v4 valueMetadata];
-              v17 = [v15 isEqual:v16];
+              v14 = valueMetadata3;
+              valueMetadata4 = [(_INPBMassValue *)self valueMetadata];
+              valueMetadata5 = [equalCopy valueMetadata];
+              v17 = [valueMetadata4 isEqual:valueMetadata5];
 
               if (v17)
               {
@@ -150,7 +150,7 @@ LABEL_16:
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBMassValue allocWithZone:](_INPBMassValue init];
   if ([(_INPBMassValue *)self hasMagnitude])
@@ -164,39 +164,39 @@ LABEL_16:
     [(_INPBMassValue *)v5 setUnit:[(_INPBMassValue *)self unit]];
   }
 
-  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:a3];
+  v6 = [(_INPBValueMetadata *)self->_valueMetadata copyWithZone:zone];
   [(_INPBMassValue *)v5 setValueMetadata:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBMassValue *)self data];
+  coderCopy = coder;
+  data = [(_INPBMassValue *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBMassValue)initWithCoder:(id)a3
+- (_INPBMassValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBMassValue *)self initWithData:v6];
+    self = [(_INPBMassValue *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if ([(_INPBMassValue *)self hasMagnitude])
   {
     magnitude = self->_magnitude;
@@ -209,102 +209,102 @@ LABEL_16:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(_INPBMassValue *)self valueMetadata];
+  valueMetadata = [(_INPBMassValue *)self valueMetadata];
 
-  v7 = v9;
-  if (v6)
+  v7 = toCopy;
+  if (valueMetadata)
   {
-    v8 = [(_INPBMassValue *)self valueMetadata];
+    valueMetadata2 = [(_INPBMassValue *)self valueMetadata];
     PBDataWriterWriteSubmessage();
 
-    v7 = v9;
+    v7 = toCopy;
   }
 }
 
-- (int)StringAsUnit:(id)a3
+- (int)StringAsUnit:(id)unit
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_MASS_UNIT"])
+  unitCopy = unit;
+  if ([unitCopy isEqualToString:@"UNKNOWN_MASS_UNIT"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"KILOGRAM"])
+  else if ([unitCopy isEqualToString:@"KILOGRAM"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"GRAM"])
+  else if ([unitCopy isEqualToString:@"GRAM"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"DECIGRAM"])
+  else if ([unitCopy isEqualToString:@"DECIGRAM"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CENTIGRAM"])
+  else if ([unitCopy isEqualToString:@"CENTIGRAM"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"MILLIGRAM"])
+  else if ([unitCopy isEqualToString:@"MILLIGRAM"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"MICROGRAM"])
+  else if ([unitCopy isEqualToString:@"MICROGRAM"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"NANOGRAM"])
+  else if ([unitCopy isEqualToString:@"NANOGRAM"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"PICOGRAM"])
+  else if ([unitCopy isEqualToString:@"PICOGRAM"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"OUNCE"])
+  else if ([unitCopy isEqualToString:@"OUNCE"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"POUND"])
+  else if ([unitCopy isEqualToString:@"POUND"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"STONE"])
+  else if ([unitCopy isEqualToString:@"STONE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"METRIC_TONNE"])
+  else if ([unitCopy isEqualToString:@"METRIC_TONNE"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"SHORT_TONNE"])
+  else if ([unitCopy isEqualToString:@"SHORT_TONNE"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"CARATS"])
+  else if ([unitCopy isEqualToString:@"CARATS"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"OUNCE_TROY"])
+  else if ([unitCopy isEqualToString:@"OUNCE_TROY"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"SLUG"])
+  else if ([unitCopy isEqualToString:@"SLUG"])
   {
     v4 = 16;
   }
@@ -317,9 +317,9 @@ LABEL_16:
   return v4;
 }
 
-- (void)setHasUnit:(BOOL)a3
+- (void)setHasUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 2;
   }
@@ -332,10 +332,10 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setUnit:(int)a3
+- (void)setUnit:(int)unit
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (unit == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -343,7 +343,7 @@ LABEL_16:
   else
   {
     *&self->_has = has | 2;
-    self->_unit = a3;
+    self->_unit = unit;
   }
 }
 

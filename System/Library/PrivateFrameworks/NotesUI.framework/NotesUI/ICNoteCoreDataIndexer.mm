@@ -1,43 +1,43 @@
 @interface ICNoteCoreDataIndexer
-- (BOOL)dateHeadersAreStaleForNote:(id)a3;
+- (BOOL)dateHeadersAreStaleForNote:(id)note;
 - (BOOL)isShowingDateHeaders;
 - (BOOL)sortsByPinned;
-- (ICNoteCoreDataIndexer)initWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4;
+- (ICNoteCoreDataIndexer)initWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
 - (NSArray)sortedNoteIdentifiers;
 - (id)activeFetchedResultsControllers;
-- (id)dateHeadersValueForNote:(id)a3;
+- (id)dateHeadersValueForNote:(id)note;
 - (id)expansionStateContext;
 - (id)firstRelevantItemIdentifier;
-- (id)indexObjectsInSection:(id)a3 sectionIndex:(unint64_t)a4 fetchedResultsController:(id)a5;
+- (id)indexObjectsInSection:(id)section sectionIndex:(unint64_t)index fetchedResultsController:(id)controller;
 - (id)modernDateHeadersAttribute;
-- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4;
-- (id)nextRelevantItemIdentifierAfter:(id)a3;
-- (id)sectionForObjectID:(id)a3;
-- (id)sectionIdentifierForHeaderInSection:(int64_t)a3;
-- (id)sectionIdentifiersForSectionType:(unint64_t)a3;
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5;
+- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
+- (id)nextRelevantItemIdentifierAfter:(id)after;
+- (id)sectionForObjectID:(id)d;
+- (id)sectionIdentifierForHeaderInSection:(int64_t)section;
+- (id)sectionIdentifiersForSectionType:(unint64_t)type;
+- (id)sectionSnapshotsForSectionType:(unint64_t)type legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext;
 - (id)unpinnedNoteIdentifiers;
-- (id)unpinnedSectionIdentifierForObject:(id)a3;
+- (id)unpinnedSectionIdentifierForObject:(id)object;
 - (int64_t)resolvedDateHeadersType;
 - (unint64_t)totalFolderCount;
 - (unint64_t)totalInvitationsCount;
 - (unint64_t)totalNoteCount;
-- (void)addObjectIDs:(id)a3 toIndexInSection:(id)a4;
-- (void)deleteObjectWithIDFromIndex:(id)a3 inSection:(id)a4;
-- (void)deleteWithDecisionController:(id)a3 completion:(id)a4;
+- (void)addObjectIDs:(id)ds toIndexInSection:(id)section;
+- (void)deleteObjectWithIDFromIndex:(id)index inSection:(id)section;
+- (void)deleteWithDecisionController:(id)controller completion:(id)completion;
 - (void)didIndex;
 - (void)mergePinnedNotesAndNotesSectionIfNeeded;
-- (void)prependObjectIDs:(id)a3 toIndexInSection:(id)a4;
-- (void)removeObjectIDs:(id)a3 fromIndexInSection:(id)a4;
-- (void)removeUnpinnedNoteObjectIds:(id)a3;
-- (void)setNoteCollection:(id)a3;
-- (void)setNoteContainer:(id)a3;
-- (void)setNoteQuery:(id)a3;
-- (void)setShouldIncludeOutlineParentItems:(BOOL)a3;
-- (void)setSortType:(id)a3 force:(BOOL)a4;
-- (void)setVirtualSmartFolder:(id)a3;
-- (void)sortSection:(id)a3;
-- (void)togglePinnedForNote:(id)a3;
+- (void)prependObjectIDs:(id)ds toIndexInSection:(id)section;
+- (void)removeObjectIDs:(id)ds fromIndexInSection:(id)section;
+- (void)removeUnpinnedNoteObjectIds:(id)ids;
+- (void)setNoteCollection:(id)collection;
+- (void)setNoteContainer:(id)container;
+- (void)setNoteQuery:(id)query;
+- (void)setShouldIncludeOutlineParentItems:(BOOL)items;
+- (void)setSortType:(id)type force:(BOOL)force;
+- (void)setVirtualSmartFolder:(id)folder;
+- (void)sortSection:(id)section;
+- (void)togglePinnedForNote:(id)note;
 - (void)unmergePinnedNotesAndNotesSectionIfNeeded;
 - (void)updateContainerPredicate;
 - (void)updateLegacyFetchedResultsControllers;
@@ -50,36 +50,36 @@
 
 - (id)expansionStateContext
 {
-  v3 = [(ICNoteCoreDataIndexer *)self noteContainer];
-  v4 = [v3 objectID];
-  v5 = [v4 URIRepresentation];
-  v6 = [v5 absoluteString];
-  v7 = v6;
-  if (v6)
+  noteContainer = [(ICNoteCoreDataIndexer *)self noteContainer];
+  objectID = [noteContainer objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
+  v7 = absoluteString;
+  if (absoluteString)
   {
-    v8 = v6;
+    identifier = absoluteString;
   }
 
   else
   {
-    v9 = [(ICNoteCoreDataIndexer *)self noteCollection];
-    v10 = [v9 objectID];
-    v11 = [v10 URIRepresentation];
-    v12 = [v11 absoluteString];
-    v13 = v12;
-    if (v12)
+    noteCollection = [(ICNoteCoreDataIndexer *)self noteCollection];
+    objectID2 = [noteCollection objectID];
+    uRIRepresentation2 = [objectID2 URIRepresentation];
+    absoluteString2 = [uRIRepresentation2 absoluteString];
+    v13 = absoluteString2;
+    if (absoluteString2)
     {
-      v8 = v12;
+      identifier = absoluteString2;
     }
 
     else
     {
-      v14 = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
-      v8 = [v14 identifier];
+      virtualSmartFolder = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
+      identifier = [virtualSmartFolder identifier];
     }
   }
 
-  return v8;
+  return identifier;
 }
 
 - (unint64_t)totalNoteCount
@@ -88,13 +88,13 @@
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v2 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __39__ICNoteCoreDataIndexer_totalNoteCount__block_invoke;
   v5[3] = &unk_1E846B200;
   v5[4] = &v6;
-  [v2 enumerateKeysAndObjectsUsingBlock:v5];
+  [sectionIdentifiersToManagedObjectIDs enumerateKeysAndObjectsUsingBlock:v5];
 
   v3 = v7[3];
   _Block_object_dispose(&v6, 8);
@@ -108,10 +108,10 @@
     return 0;
   }
 
-  v3 = [(ICNoteCoreDataIndexer *)self folderIndexer];
-  v4 = [v3 totalFolderCount];
+  folderIndexer = [(ICNoteCoreDataIndexer *)self folderIndexer];
+  totalFolderCount = [folderIndexer totalFolderCount];
 
-  return v4;
+  return totalFolderCount;
 }
 
 - (unint64_t)totalInvitationsCount
@@ -121,21 +121,21 @@
     return 0;
   }
 
-  v3 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  v4 = [v3 totalInvitationsCount];
+  invitationsIndexer = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  totalInvitationsCount = [invitationsIndexer totalInvitationsCount];
 
-  return v4;
+  return totalInvitationsCount;
 }
 
 - (void)updateModernFetchedResultsControllers
 {
-  v3 = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __62__ICNoteCoreDataIndexer_updateModernFetchedResultsControllers__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(indexAccessQueue, block);
 }
 
 void __62__ICNoteCoreDataIndexer_updateModernFetchedResultsControllers__block_invoke(uint64_t a1)
@@ -334,26 +334,26 @@ LABEL_9:
 
 - (BOOL)sortsByPinned
 {
-  v3 = [(ICNoteCoreDataIndexer *)self noteQuery];
-  if (!v3)
+  noteQuery = [(ICNoteCoreDataIndexer *)self noteQuery];
+  if (!noteQuery)
   {
-    v6 = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
+    virtualSmartFolder = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
 
-    if (v6)
+    if (virtualSmartFolder)
     {
       LOBYTE(v5) = 1;
       return v5;
     }
 
-    v8 = [MEMORY[0x1E696AF00] isMainThread];
-    v9 = [(ICNoteCoreDataIndexer *)self noteContainer];
-    v4 = v9;
-    if (v8)
+    isMainThread = [MEMORY[0x1E696AF00] isMainThread];
+    noteContainer = [(ICNoteCoreDataIndexer *)self noteContainer];
+    v4 = noteContainer;
+    if (isMainThread)
     {
-      if (v9)
+      if (noteContainer)
       {
-        v10 = [(ICNoteCoreDataIndexer *)self noteContainer];
-        v5 = [v10 isTrashFolder] ^ 1;
+        noteContainer2 = [(ICNoteCoreDataIndexer *)self noteContainer];
+        v5 = [noteContainer2 isTrashFolder] ^ 1;
 
         goto LABEL_3;
       }
@@ -364,18 +364,18 @@ LABEL_9:
       objc_opt_class();
       v11 = ICClassAndProtocolCast();
 
-      v12 = [(ICNoteCoreDataIndexer *)self noteContainer];
+      noteContainer3 = [(ICNoteCoreDataIndexer *)self noteContainer];
 
-      if (!v12)
+      if (!noteContainer3)
       {
         LOBYTE(v5) = 0;
         v4 = v11;
         goto LABEL_3;
       }
 
-      v13 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
-      v14 = [v11 objectID];
-      v15 = [v13 ic_existingObjectWithID:v14];
+      modernManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+      objectID = [v11 objectID];
+      v15 = [modernManagedObjectContext ic_existingObjectWithID:objectID];
       objc_opt_class();
       v4 = ICClassAndProtocolCast();
 
@@ -390,7 +390,7 @@ LABEL_9:
     goto LABEL_3;
   }
 
-  v4 = v3;
+  v4 = noteQuery;
   LOBYTE(v5) = 1;
 LABEL_3:
 
@@ -399,14 +399,14 @@ LABEL_3:
 
 - (id)modernDateHeadersAttribute
 {
-  v2 = [(ICNoteCoreDataIndexer *)self resolvedDateHeadersType];
+  resolvedDateHeadersType = [(ICNoteCoreDataIndexer *)self resolvedDateHeadersType];
   v3 = @"creationDate";
-  if (v2 != 2)
+  if (resolvedDateHeadersType != 2)
   {
     v3 = 0;
   }
 
-  if (v2 == 1)
+  if (resolvedDateHeadersType == 1)
   {
     return @"modificationDate";
   }
@@ -424,17 +424,17 @@ LABEL_3:
     return 0;
   }
 
-  v3 = [(ICNoteCoreDataIndexer *)self sortType];
-  v4 = [v3 resolvedCustomSortTypeOrder];
+  sortType = [(ICNoteCoreDataIndexer *)self sortType];
+  resolvedCustomSortTypeOrder = [sortType resolvedCustomSortTypeOrder];
 
-  if (v4 > 3)
+  if (resolvedCustomSortTypeOrder > 3)
   {
     return 1;
   }
 
   else
   {
-    return qword_1D4434290[v4];
+    return qword_1D4434290[resolvedCustomSortTypeOrder];
   }
 }
 
@@ -445,46 +445,46 @@ LABEL_3:
     return 1;
   }
 
-  v4 = [(ICNoteCoreDataIndexer *)self noteContainer];
-  if (!v4 || -[ICNoteCoreDataIndexer dateHeadersType](self, "dateHeadersType") || [MEMORY[0x1E69B7A50] defaultDateHeadersType] == 1)
+  noteContainer = [(ICNoteCoreDataIndexer *)self noteContainer];
+  if (!noteContainer || -[ICNoteCoreDataIndexer dateHeadersType](self, "dateHeadersType") || [MEMORY[0x1E69B7A50] defaultDateHeadersType] == 1)
   {
-    v5 = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
-    if (!v5 || -[ICNoteCoreDataIndexer dateHeadersType](self, "dateHeadersType") || [MEMORY[0x1E69B7A50] defaultDateHeadersType] == 1)
+    virtualSmartFolder = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
+    if (!virtualSmartFolder || -[ICNoteCoreDataIndexer dateHeadersType](self, "dateHeadersType") || [MEMORY[0x1E69B7A50] defaultDateHeadersType] == 1)
     {
-      v6 = [(ICNoteCoreDataIndexer *)self noteQuery];
-      if (v6 && ![(ICNoteCoreDataIndexer *)self dateHeadersType])
+      noteQuery = [(ICNoteCoreDataIndexer *)self noteQuery];
+      if (noteQuery && ![(ICNoteCoreDataIndexer *)self dateHeadersType])
       {
-        v3 = [MEMORY[0x1E69B7A50] showsQueryDateHeaders];
+        showsQueryDateHeaders = [MEMORY[0x1E69B7A50] showsQueryDateHeaders];
       }
 
       else
       {
-        v3 = 0;
+        showsQueryDateHeaders = 0;
       }
     }
 
     else
     {
-      v3 = 1;
+      showsQueryDateHeaders = 1;
     }
   }
 
   else
   {
-    v3 = 1;
+    showsQueryDateHeaders = 1;
   }
 
-  return v3;
+  return showsQueryDateHeaders;
 }
 
 - (void)updateLegacyFetchedResultsControllers
 {
   v24[1] = *MEMORY[0x1E69E9840];
-  v3 = [(ICNoteCoreDataIndexer *)self noteCollection];
+  noteCollection = [(ICNoteCoreDataIndexer *)self noteCollection];
 
-  if (v3)
+  if (noteCollection)
   {
-    v4 = [(ICNoteCoreDataIndexer *)self noteCollection];
+    noteCollection2 = [(ICNoteCoreDataIndexer *)self noteCollection];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     v6 = @"store";
@@ -496,44 +496,44 @@ LABEL_3:
     v7 = v6;
 
     v8 = MEMORY[0x1E696AE18];
-    v9 = [(ICNoteCoreDataIndexer *)self noteCollection];
-    v10 = [v8 predicateWithFormat:@"%K == %@ AND deletedFlag == NO AND isBookkeepingEntry == NO AND body.content != nil", v7, v9];
+    noteCollection3 = [(ICNoteCoreDataIndexer *)self noteCollection];
+    v10 = [v8 predicateWithFormat:@"%K == %@ AND deletedFlag == NO AND isBookkeepingEntry == NO AND body.content != nil", v7, noteCollection3];
 
     v11 = [MEMORY[0x1E69B7A88] legacySortDescriptorsForType:{objc_msgSend(MEMORY[0x1E69B7A88], "currentNoteListSortType")}];
-    v12 = [(ICNoteCoreDataIndexer *)self legacyNoteFetchedResultsController];
+    legacyNoteFetchedResultsController = [(ICNoteCoreDataIndexer *)self legacyNoteFetchedResultsController];
 
-    if (v12)
+    if (legacyNoteFetchedResultsController)
     {
-      v13 = [(ICNoteCoreDataIndexer *)self legacyNoteFetchedResultsController];
-      v14 = [v13 fetchRequest];
-      [v14 setPredicate:v10];
+      legacyNoteFetchedResultsController2 = [(ICNoteCoreDataIndexer *)self legacyNoteFetchedResultsController];
+      fetchRequest = [legacyNoteFetchedResultsController2 fetchRequest];
+      [fetchRequest setPredicate:v10];
 
-      v15 = [(ICNoteCoreDataIndexer *)self legacyNoteFetchedResultsController];
-      v16 = [v15 fetchRequest];
-      [v16 setSortDescriptors:v11];
+      legacyNoteFetchedResultsController3 = [(ICNoteCoreDataIndexer *)self legacyNoteFetchedResultsController];
+      fetchRequest2 = [legacyNoteFetchedResultsController3 fetchRequest];
+      [fetchRequest2 setSortDescriptors:v11];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Note"];
-      [v15 setPredicate:v10];
-      [v15 setSortDescriptors:v11];
+      legacyNoteFetchedResultsController3 = [MEMORY[0x1E695D5E0] fetchRequestWithEntityName:@"Note"];
+      [legacyNoteFetchedResultsController3 setPredicate:v10];
+      [legacyNoteFetchedResultsController3 setSortDescriptors:v11];
       v17 = objc_alloc(MEMORY[0x1E695D600]);
-      v16 = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
-      v18 = [v17 initWithFetchRequest:v15 managedObjectContext:v16 sectionNameKeyPath:0 cacheName:0];
+      fetchRequest2 = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
+      v18 = [v17 initWithFetchRequest:legacyNoteFetchedResultsController3 managedObjectContext:fetchRequest2 sectionNameKeyPath:0 cacheName:0];
       [(ICNoteCoreDataIndexer *)self setLegacyNoteFetchedResultsController:v18];
     }
 
-    v19 = [(ICNoteCoreDataIndexer *)self legacyDateHeadersAttribute];
+    legacyDateHeadersAttribute = [(ICNoteCoreDataIndexer *)self legacyDateHeadersAttribute];
 
-    if (v19)
+    if (legacyDateHeadersAttribute)
     {
-      v20 = [(ICNoteCoreDataIndexer *)self legacyDateHeadersAttribute];
-      v24[0] = v20;
+      legacyDateHeadersAttribute2 = [(ICNoteCoreDataIndexer *)self legacyDateHeadersAttribute];
+      v24[0] = legacyDateHeadersAttribute2;
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:1];
-      v22 = [(ICNoteCoreDataIndexer *)self legacyNoteFetchedResultsController];
-      v23 = [v22 fetchRequest];
-      [v23 setPropertiesToFetch:v21];
+      legacyNoteFetchedResultsController4 = [(ICNoteCoreDataIndexer *)self legacyNoteFetchedResultsController];
+      fetchRequest3 = [legacyNoteFetchedResultsController4 fetchRequest];
+      [fetchRequest3 setPropertiesToFetch:v21];
     }
   }
 
@@ -552,14 +552,14 @@ LABEL_3:
   v10 = __Block_byref_object_copy__28;
   v11 = __Block_byref_object_dispose__28;
   v12 = [MEMORY[0x1E695DFA8] set];
-  v3 = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __56__ICNoteCoreDataIndexer_activeFetchedResultsControllers__block_invoke;
   v6[3] = &unk_1E846B1D8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(indexAccessQueue, v6);
 
   v4 = [v8[5] copy];
   _Block_object_dispose(&v7, 8);
@@ -645,13 +645,13 @@ LABEL_13:
 
 - (void)willIndex
 {
-  v3 = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __34__ICNoteCoreDataIndexer_willIndex__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(indexAccessQueue, block);
 }
 
 void __34__ICNoteCoreDataIndexer_willIndex__block_invoke(uint64_t a1)
@@ -675,49 +675,49 @@ void __34__ICNoteCoreDataIndexer_willIndex__block_invoke(uint64_t a1)
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = 0;
-  v3 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+  modernManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __64__ICNoteCoreDataIndexer_mergePinnedNotesAndNotesSectionIfNeeded__block_invoke;
   v16[3] = &unk_1E8468FA8;
   v16[4] = self;
   v16[5] = &v17;
-  [v3 performBlockAndWait:v16];
+  [modernManagedObjectContext performBlockAndWait:v16];
 
   if (v18[3])
   {
-    v4 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-    v5 = [(ICNoteCoreDataIndexer *)self pinnedNoteSectionIdentifier];
-    v6 = [v4 objectForKeyedSubscript:v5];
-    v7 = [v6 array];
-    v8 = [v7 copy];
+    sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+    pinnedNoteSectionIdentifier = [(ICNoteCoreDataIndexer *)self pinnedNoteSectionIdentifier];
+    v6 = [sectionIdentifiersToManagedObjectIDs objectForKeyedSubscript:pinnedNoteSectionIdentifier];
+    array = [v6 array];
+    v8 = [array copy];
 
     if (v8)
     {
       v9 = [v8 count];
       if (v9 < [(ICNoteCoreDataIndexer *)self pinnedNotesSectionMinimumCount])
       {
-        v10 = [(ICNoteCoreDataIndexer *)self pinnedNoteSectionIdentifier];
-        [(ICNoteCoreDataIndexer *)self removeObjectIDs:v8 fromIndexInSection:v10];
+        pinnedNoteSectionIdentifier2 = [(ICNoteCoreDataIndexer *)self pinnedNoteSectionIdentifier];
+        [(ICNoteCoreDataIndexer *)self removeObjectIDs:v8 fromIndexInSection:pinnedNoteSectionIdentifier2];
 
         if ([(ICNoteCoreDataIndexer *)self resolvedDateHeadersType])
         {
-          v11 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+          modernManagedObjectContext2 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
           v13[0] = MEMORY[0x1E69E9820];
           v13[1] = 3221225472;
           v13[2] = __64__ICNoteCoreDataIndexer_mergePinnedNotesAndNotesSectionIfNeeded__block_invoke_2;
           v13[3] = &unk_1E8468F80;
           v14 = v8;
-          v15 = self;
-          [v11 performBlockAndWait:v13];
+          selfCopy = self;
+          [modernManagedObjectContext2 performBlockAndWait:v13];
 
-          v12 = v14;
+          noteSectionIdentifier = v14;
         }
 
         else
         {
-          v12 = [(ICNoteCoreDataIndexer *)self noteSectionIdentifier];
-          [(ICNoteCoreDataIndexer *)self prependObjectIDs:v8 toIndexInSection:v12];
+          noteSectionIdentifier = [(ICNoteCoreDataIndexer *)self noteSectionIdentifier];
+          [(ICNoteCoreDataIndexer *)self prependObjectIDs:v8 toIndexInSection:noteSectionIdentifier];
         }
       }
     }
@@ -735,47 +735,47 @@ uint64_t __64__ICNoteCoreDataIndexer_mergePinnedNotesAndNotesSectionIfNeeded__bl
 
 - (void)updateSectionIdentifiers
 {
-  v3 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-  v4 = [v3 allKeys];
-  v13 = [v4 mutableCopy];
+  sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  allKeys = [sectionIdentifiersToManagedObjectIDs allKeys];
+  v13 = [allKeys mutableCopy];
 
   if ([(ICNoteCoreDataIndexer *)self shouldIncludeTags]|| [(ICNoteCoreDataIndexer *)self shouldIncludeTagDetail])
   {
-    v5 = [(ICNoteCoreDataIndexer *)self tagSectionIdentifier];
-    v6 = [v13 containsObject:v5];
+    tagSectionIdentifier = [(ICNoteCoreDataIndexer *)self tagSectionIdentifier];
+    v6 = [v13 containsObject:tagSectionIdentifier];
 
     if ((v6 & 1) == 0)
     {
-      v7 = [(ICNoteCoreDataIndexer *)self tagSectionIdentifier];
-      [v13 insertObject:v7 atIndex:0];
+      tagSectionIdentifier2 = [(ICNoteCoreDataIndexer *)self tagSectionIdentifier];
+      [v13 insertObject:tagSectionIdentifier2 atIndex:0];
     }
   }
 
-  v8 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v9 = +[ICNoteSectionIdentifier sortDescriptors];
-  [v8 addObjectsFromArray:v9];
+  [array addObjectsFromArray:v9];
 
   if ([(ICNoteCoreDataIndexer *)self resolvedDateHeadersType])
   {
-    v10 = [(ICNoteCoreDataIndexer *)self sortType];
-    v11 = +[ICNoteTimelineSectionIdentifier sortDescriptorsWithDirection:](ICNoteTimelineSectionIdentifier, "sortDescriptorsWithDirection:", [v10 direction]);
-    [v8 addObjectsFromArray:v11];
+    sortType = [(ICNoteCoreDataIndexer *)self sortType];
+    v11 = +[ICNoteTimelineSectionIdentifier sortDescriptorsWithDirection:](ICNoteTimelineSectionIdentifier, "sortDescriptorsWithDirection:", [sortType direction]);
+    [array addObjectsFromArray:v11];
   }
 
-  [v13 sortUsingDescriptors:v8];
+  [v13 sortUsingDescriptors:array];
   v12 = [MEMORY[0x1E695DFB8] orderedSetWithArray:v13];
   [(ICNoteCoreDataIndexer *)self setSectionIdentifiers:v12];
 }
 
 - (void)didIndex
 {
-  v3 = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__ICNoteCoreDataIndexer_didIndex__block_invoke;
   block[3] = &unk_1E8468BA0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(indexAccessQueue, block);
 }
 
 void __33__ICNoteCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
@@ -787,13 +787,13 @@ void __33__ICNoteCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
   [v3 didIndex];
 }
 
-- (ICNoteCoreDataIndexer)initWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4
+- (ICNoteCoreDataIndexer)initWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  objectContextCopy = objectContext;
   v32.receiver = self;
   v32.super_class = ICNoteCoreDataIndexer;
-  v8 = [(ICCoreDataIndexer *)&v32 initWithLegacyManagedObjectContext:v6 modernManagedObjectContext:v7];
+  v8 = [(ICCoreDataIndexer *)&v32 initWithLegacyManagedObjectContext:contextCopy modernManagedObjectContext:objectContextCopy];
   v9 = v8;
   if (v8)
   {
@@ -806,9 +806,9 @@ void __33__ICNoteCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
     indexAccessQueue = v9->_indexAccessQueue;
     v9->_indexAccessQueue = v11;
 
-    v13 = [MEMORY[0x1E69B7A68] noteSortTypeDefaultAscending];
+    noteSortTypeDefaultAscending = [MEMORY[0x1E69B7A68] noteSortTypeDefaultAscending];
     sortType = v9->_sortType;
-    v9->_sortType = v13;
+    v9->_sortType = noteSortTypeDefaultAscending;
 
     v9->_pinnedNotesSectionMinimumCount = 1;
     v15 = [[ICNoteSectionIdentifier alloc] initWithNoteSectionType:0];
@@ -832,12 +832,12 @@ void __33__ICNoteCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
     v9->_noteSectionIdentifier = v23;
 
     v25 = [ICInvitationsCoreDataIndexer alloc];
-    v26 = [(ICNoteCoreDataIndexer *)v9 invitationsSectionIdentifier];
-    v27 = [(ICInvitationsCoreDataIndexer *)v25 initWithModernManagedObjectContext:v7 sectionIdentifier:v26];
+    invitationsSectionIdentifier = [(ICNoteCoreDataIndexer *)v9 invitationsSectionIdentifier];
+    v27 = [(ICInvitationsCoreDataIndexer *)v25 initWithModernManagedObjectContext:objectContextCopy sectionIdentifier:invitationsSectionIdentifier];
     invitationsIndexer = v9->_invitationsIndexer;
     v9->_invitationsIndexer = v27;
 
-    v29 = [[ICFolderCoreDataIndexer alloc] initWithLegacyManagedObjectContext:v6 modernManagedObjectContext:v7];
+    v29 = [[ICFolderCoreDataIndexer alloc] initWithLegacyManagedObjectContext:contextCopy modernManagedObjectContext:objectContextCopy];
     folderIndexer = v9->_folderIndexer;
     v9->_folderIndexer = v29;
 
@@ -853,21 +853,21 @@ void __33__ICNoteCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)setShouldIncludeOutlineParentItems:(BOOL)a3
+- (void)setShouldIncludeOutlineParentItems:(BOOL)items
 {
-  v3 = a3;
-  self->_shouldIncludeOutlineParentItems = a3;
-  v5 = [(ICNoteCoreDataIndexer *)self folderIndexer];
-  [v5 setShouldIncludeOutlineParentItems:v3];
+  itemsCopy = items;
+  self->_shouldIncludeOutlineParentItems = items;
+  folderIndexer = [(ICNoteCoreDataIndexer *)self folderIndexer];
+  [folderIndexer setShouldIncludeOutlineParentItems:itemsCopy];
 
-  v6 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  [v6 setShouldIncludeOutlineParentItems:v3];
+  invitationsIndexer = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  [invitationsIndexer setShouldIncludeOutlineParentItems:itemsCopy];
 }
 
-- (void)setNoteCollection:(id)a3
+- (void)setNoteCollection:(id)collection
 {
-  objc_storeStrong(&self->_noteCollection, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_noteCollection, collection);
+  collectionCopy = collection;
   noteContainer = self->_noteContainer;
   self->_noteContainer = 0;
 
@@ -877,30 +877,30 @@ void __33__ICNoteCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
   virtualSmartFolder = self->_virtualSmartFolder;
   self->_virtualSmartFolder = 0;
 
-  v9 = [v5 objectID];
+  objectID = [collectionCopy objectID];
 
-  v10 = [(ICNoteCoreDataIndexer *)self folderIndexer];
-  [v10 setAncestorObjectID:v9];
+  folderIndexer = [(ICNoteCoreDataIndexer *)self folderIndexer];
+  [folderIndexer setAncestorObjectID:objectID];
 
-  v11 = [(ICNoteCoreDataIndexer *)self expansionStateContext];
-  v12 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  [v12 setExpansionStateContext:v11];
+  expansionStateContext = [(ICNoteCoreDataIndexer *)self expansionStateContext];
+  invitationsIndexer = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  [invitationsIndexer setExpansionStateContext:expansionStateContext];
 
-  v13 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  [v13 setAccount:0];
+  invitationsIndexer2 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  [invitationsIndexer2 setAccount:0];
 
   [(ICCoreDataIndexer *)self setNeedsFetchedResultsControllerUpdate:1];
 }
 
-- (void)setNoteContainer:(id)a3
+- (void)setNoteContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   noteCollection = self->_noteCollection;
   self->_noteCollection = 0;
 
   noteContainer = self->_noteContainer;
-  self->_noteContainer = v4;
-  v7 = v4;
+  self->_noteContainer = containerCopy;
+  v7 = containerCopy;
 
   noteQuery = self->_noteQuery;
   self->_noteQuery = 0;
@@ -910,26 +910,26 @@ void __33__ICNoteCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
 
   objc_opt_class();
   v10 = ICDynamicCast();
-  v11 = [v10 objectID];
-  v12 = [(ICNoteCoreDataIndexer *)self folderIndexer];
-  [v12 setAncestorObjectID:v11];
+  objectID = [v10 objectID];
+  folderIndexer = [(ICNoteCoreDataIndexer *)self folderIndexer];
+  [folderIndexer setAncestorObjectID:objectID];
 
-  v13 = [(ICNoteCoreDataIndexer *)self expansionStateContext];
-  v14 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  [v14 setExpansionStateContext:v13];
+  expansionStateContext = [(ICNoteCoreDataIndexer *)self expansionStateContext];
+  invitationsIndexer = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  [invitationsIndexer setExpansionStateContext:expansionStateContext];
 
   objc_opt_class();
   v15 = ICDynamicCast();
 
-  v16 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  [v16 setAccount:v15];
+  invitationsIndexer2 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  [invitationsIndexer2 setAccount:v15];
 
   [(ICCoreDataIndexer *)self setNeedsFetchedResultsControllerUpdate:1];
 }
 
-- (void)setNoteQuery:(id)a3
+- (void)setNoteQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   noteCollection = self->_noteCollection;
   self->_noteCollection = 0;
 
@@ -937,28 +937,28 @@ void __33__ICNoteCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
   self->_noteContainer = 0;
 
   noteQuery = self->_noteQuery;
-  self->_noteQuery = v4;
-  v8 = v4;
+  self->_noteQuery = queryCopy;
+  v8 = queryCopy;
 
   virtualSmartFolder = self->_virtualSmartFolder;
   self->_virtualSmartFolder = 0;
 
-  v10 = [(ICNoteCoreDataIndexer *)self folderIndexer];
-  [v10 setAncestorObjectID:0];
+  folderIndexer = [(ICNoteCoreDataIndexer *)self folderIndexer];
+  [folderIndexer setAncestorObjectID:0];
 
-  v11 = [(ICNoteCoreDataIndexer *)self expansionStateContext];
-  v12 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  [v12 setExpansionStateContext:v11];
+  expansionStateContext = [(ICNoteCoreDataIndexer *)self expansionStateContext];
+  invitationsIndexer = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  [invitationsIndexer setExpansionStateContext:expansionStateContext];
 
-  v13 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  [v13 setAccount:0];
+  invitationsIndexer2 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  [invitationsIndexer2 setAccount:0];
 
   [(ICCoreDataIndexer *)self setNeedsFetchedResultsControllerUpdate:1];
 }
 
-- (void)setVirtualSmartFolder:(id)a3
+- (void)setVirtualSmartFolder:(id)folder
 {
-  v4 = a3;
+  folderCopy = folder;
   noteCollection = self->_noteCollection;
   self->_noteCollection = 0;
 
@@ -969,29 +969,29 @@ void __33__ICNoteCoreDataIndexer_didIndex__block_invoke(uint64_t a1)
   self->_noteQuery = 0;
 
   virtualSmartFolder = self->_virtualSmartFolder;
-  self->_virtualSmartFolder = v4;
+  self->_virtualSmartFolder = folderCopy;
 
-  v9 = [(ICNoteCoreDataIndexer *)self folderIndexer];
-  [v9 setAncestorObjectID:0];
+  folderIndexer = [(ICNoteCoreDataIndexer *)self folderIndexer];
+  [folderIndexer setAncestorObjectID:0];
 
-  v10 = [(ICNoteCoreDataIndexer *)self expansionStateContext];
-  v11 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  [v11 setExpansionStateContext:v10];
+  expansionStateContext = [(ICNoteCoreDataIndexer *)self expansionStateContext];
+  invitationsIndexer = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  [invitationsIndexer setExpansionStateContext:expansionStateContext];
 
-  v12 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-  [v12 setAccount:0];
+  invitationsIndexer2 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+  [invitationsIndexer2 setAccount:0];
 
   [(ICCoreDataIndexer *)self setNeedsFetchedResultsControllerUpdate:1];
 }
 
-- (void)setSortType:(id)a3 force:(BOOL)a4
+- (void)setSortType:(id)type force:(BOOL)force
 {
-  v8 = a3;
-  if (a4 || ([(ICFolderCustomNoteSortType *)self->_sortType isEqual:v8]& 1) == 0)
+  typeCopy = type;
+  if (force || ([(ICFolderCustomNoteSortType *)self->_sortType isEqual:typeCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_sortType, a3);
-    v7 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-    [v7 setSortType:v8];
+    objc_storeStrong(&self->_sortType, type);
+    invitationsIndexer = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+    [invitationsIndexer setSortType:typeCopy];
 
     [(ICCoreDataIndexer *)self setNeedsFetchedResultsControllerUpdate:1];
   }
@@ -1006,9 +1006,9 @@ void __39__ICNoteCoreDataIndexer_totalNoteCount__block_invoke(uint64_t a1, void 
   }
 }
 
-- (void)togglePinnedForNote:(id)a3
+- (void)togglePinnedForNote:(id)note
 {
-  v4 = a3;
+  noteCopy = note;
   objc_opt_class();
   v5 = ICDynamicCast();
   v6 = v5;
@@ -1016,22 +1016,22 @@ void __39__ICNoteCoreDataIndexer_totalNoteCount__block_invoke(uint64_t a1, void 
   {
     if ([(ICNoteCoreDataIndexer *)self sortsByPinned])
     {
-      v7 = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
+      indexAccessQueue = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __45__ICNoteCoreDataIndexer_togglePinnedForNote___block_invoke;
       block[3] = &unk_1E8468D98;
       block[4] = self;
-      v10 = v4;
+      v10 = noteCopy;
       v11 = v6;
-      dispatch_sync(v7, block);
+      dispatch_sync(indexAccessQueue, block);
     }
 
     else
     {
       [v6 changePinStatusIfPossible];
-      v8 = [v6 managedObjectContext];
-      [v8 ic_save];
+      managedObjectContext = [v6 managedObjectContext];
+      [managedObjectContext ic_save];
     }
   }
 }
@@ -1110,73 +1110,73 @@ uint64_t __45__ICNoteCoreDataIndexer_togglePinnedForNote___block_invoke(id *a1)
 
 - (void)updateContainerPredicate
 {
-  v3 = [(ICNoteCoreDataIndexer *)self noteCollection];
+  noteCollection = [(ICNoteCoreDataIndexer *)self noteCollection];
 
-  if (v3)
+  if (noteCollection)
   {
-    v7 = [(ICNoteCoreDataIndexer *)self noteCollection];
+    noteCollection2 = [(ICNoteCoreDataIndexer *)self noteCollection];
     [(ICNoteCoreDataIndexer *)self setNoteCollection:?];
   }
 
   else
   {
-    v4 = [(ICNoteCoreDataIndexer *)self noteContainer];
+    noteContainer = [(ICNoteCoreDataIndexer *)self noteContainer];
 
-    if (v4)
+    if (noteContainer)
     {
-      v7 = [(ICNoteCoreDataIndexer *)self noteContainer];
+      noteCollection2 = [(ICNoteCoreDataIndexer *)self noteContainer];
       [(ICNoteCoreDataIndexer *)self setNoteContainer:?];
     }
 
     else
     {
-      v5 = [(ICNoteCoreDataIndexer *)self noteQuery];
+      noteQuery = [(ICNoteCoreDataIndexer *)self noteQuery];
 
-      if (v5)
+      if (noteQuery)
       {
-        v7 = [(ICNoteCoreDataIndexer *)self noteQuery];
+        noteCollection2 = [(ICNoteCoreDataIndexer *)self noteQuery];
         [(ICNoteCoreDataIndexer *)self setNoteQuery:?];
       }
 
       else
       {
-        v6 = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
+        virtualSmartFolder = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
 
-        if (!v6)
+        if (!virtualSmartFolder)
         {
           return;
         }
 
-        v7 = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
+        noteCollection2 = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
         [(ICNoteCoreDataIndexer *)self setVirtualSmartFolder:?];
       }
     }
   }
 }
 
-- (id)indexObjectsInSection:(id)a3 sectionIndex:(unint64_t)a4 fetchedResultsController:(id)a5
+- (id)indexObjectsInSection:(id)section sectionIndex:(unint64_t)index fetchedResultsController:(id)controller
 {
-  v8 = a3;
-  v9 = a5;
+  sectionCopy = section;
+  controllerCopy = controller;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__28;
   v25 = __Block_byref_object_dispose__28;
   v26 = 0;
-  v10 = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __85__ICNoteCoreDataIndexer_indexObjectsInSection_sectionIndex_fetchedResultsController___block_invoke;
   block[3] = &unk_1E846B228;
-  v16 = v9;
-  v17 = v8;
-  v18 = self;
+  v16 = controllerCopy;
+  v17 = sectionCopy;
+  selfCopy = self;
   v19 = &v21;
-  v20 = a4;
-  v11 = v8;
-  v12 = v9;
-  dispatch_sync(v10, block);
+  indexCopy = index;
+  v11 = sectionCopy;
+  v12 = controllerCopy;
+  dispatch_sync(indexAccessQueue, block);
 
   v13 = v22[5];
   _Block_object_dispose(&v21, 8);
@@ -1371,10 +1371,10 @@ void __85__ICNoteCoreDataIndexer_indexObjectsInSection_sectionIndex_fetchedResul
   *(v4 + 40) = v3;
 }
 
-- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)a3 modernManagedObjectContext:(id)a4
+- (id)newSnapshotFromIndexWithLegacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
   v5 = objc_alloc_init(MEMORY[0x1E69955A0]);
-  v6 = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
+  indexAccessQueue = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __103__ICNoteCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectContext_modernManagedObjectContext___block_invoke;
@@ -1382,7 +1382,7 @@ void __85__ICNoteCoreDataIndexer_indexObjectsInSection_sectionIndex_fetchedResul
   v11[4] = self;
   v7 = v5;
   v12 = v7;
-  dispatch_sync(v6, v11);
+  dispatch_sync(indexAccessQueue, v11);
 
   v8 = v12;
   v9 = v7;
@@ -1445,43 +1445,43 @@ void __103__ICNoteCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectCon
   }
 }
 
-- (id)sectionIdentifiersForSectionType:(unint64_t)a3
+- (id)sectionIdentifiersForSectionType:(unint64_t)type
 {
   v23[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695E0F0];
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
-      v9 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
-      v10 = [v9 array];
-      v11 = v10;
+      sectionIdentifiers = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
+      array = [sectionIdentifiers array];
+      v11 = array;
       v12 = &__block_literal_global_41;
     }
 
     else
     {
-      if (a3 != 5)
+      if (type != 5)
       {
         goto LABEL_16;
       }
 
-      v9 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
-      v10 = [v9 array];
-      v11 = v10;
+      sectionIdentifiers = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
+      array = [sectionIdentifiers array];
+      v11 = array;
       v12 = &__block_literal_global_43;
     }
 
-    v4 = [v10 ic_objectsPassingTest:v12];
+    v4 = [array ic_objectsPassingTest:v12];
   }
 
   else
   {
-    if (a3 == 1)
+    if (type == 1)
     {
-      v13 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
-      v14 = [v13 array];
-      v15 = [v14 ic_objectsPassingTest:&__block_literal_global_34];
+      sectionIdentifiers2 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
+      array2 = [sectionIdentifiers2 array];
+      v15 = [array2 ic_objectsPassingTest:&__block_literal_global_34];
 
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
@@ -1493,22 +1493,22 @@ void __103__ICNoteCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectCon
       goto LABEL_16;
     }
 
-    if (a3 != 2)
+    if (type != 2)
     {
       goto LABEL_16;
     }
 
-    v5 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
-    v6 = [v5 array];
-    v4 = [v6 ic_objectsPassingTest:&__block_literal_global_35];
+    sectionIdentifiers3 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
+    array3 = [sectionIdentifiers3 array];
+    v4 = [array3 ic_objectsPassingTest:&__block_literal_global_35];
 
-    v7 = [(ICNoteCoreDataIndexer *)self shouldIncludeTags];
-    if (v7 || ([(ICNoteCoreDataIndexer *)self noteQuery], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+    shouldIncludeTags = [(ICNoteCoreDataIndexer *)self shouldIncludeTags];
+    if (shouldIncludeTags || ([(ICNoteCoreDataIndexer *)self noteQuery], (array3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       if ([v4 count])
       {
         v8 = 0;
-        if (v7)
+        if (shouldIncludeTags)
         {
           goto LABEL_8;
         }
@@ -1517,7 +1517,7 @@ void __103__ICNoteCoreDataIndexer_newSnapshotFromIndexWithLegacyManagedObjectCon
       else
       {
         v8 = [(ICNoteCoreDataIndexer *)self totalInvitationsCount]== 0;
-        if (v7)
+        if (shouldIncludeTags)
         {
 LABEL_8:
           if (!v8)
@@ -1537,19 +1537,19 @@ LABEL_8:
       goto LABEL_21;
     }
 
-    v19 = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
-    if (v19)
+    virtualSmartFolder = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
+    if (virtualSmartFolder)
     {
-      v20 = v19;
+      v20 = virtualSmartFolder;
       if ([v4 count])
       {
       }
 
       else
       {
-        v21 = [(ICNoteCoreDataIndexer *)self totalInvitationsCount];
+        totalInvitationsCount = [(ICNoteCoreDataIndexer *)self totalInvitationsCount];
 
-        if (!v21)
+        if (!totalInvitationsCount)
         {
 LABEL_21:
           v17 = [[ICNoteSectionIdentifier alloc] initWithNoteSectionType:4];
@@ -1596,26 +1596,26 @@ BOOL __58__ICNoteCoreDataIndexer_sectionIdentifiersForSectionType___block_invoke
   return v3;
 }
 
-- (id)sectionSnapshotsForSectionType:(unint64_t)a3 legacyManagedObjectContext:(id)a4 modernManagedObjectContext:(id)a5
+- (id)sectionSnapshotsForSectionType:(unint64_t)type legacyManagedObjectContext:(id)context modernManagedObjectContext:(id)objectContext
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  objectContextCopy = objectContext;
   v10 = MEMORY[0x1E695E0F8];
-  if (a3 <= 5 && ((1 << a3) & 0x36) != 0)
+  if (type <= 5 && ((1 << type) & 0x36) != 0)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    v12 = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    indexAccessQueue = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __110__ICNoteCoreDataIndexer_sectionSnapshotsForSectionType_legacyManagedObjectContext_modernManagedObjectContext___block_invoke;
     block[3] = &unk_1E846B298;
-    v19 = a3;
+    typeCopy = type;
     block[4] = self;
-    v16 = v11;
-    v17 = v8;
-    v18 = v9;
-    v13 = v11;
-    dispatch_sync(v12, block);
+    v16 = dictionary;
+    v17 = contextCopy;
+    v18 = objectContextCopy;
+    v13 = dictionary;
+    dispatch_sync(indexAccessQueue, block);
 
     v10 = [v13 copy];
   }
@@ -1858,17 +1858,17 @@ LABEL_52:
 LABEL_53:
 }
 
-- (id)sectionIdentifierForHeaderInSection:(int64_t)a3
+- (id)sectionIdentifierForHeaderInSection:(int64_t)section
 {
-  v5 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
-  v6 = [v5 count];
+  sectionIdentifiers = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
+  v6 = [sectionIdentifiers count];
 
-  v7 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-  v8 = [(ICNoteCoreDataIndexer *)self pinnedNoteSectionIdentifier];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  pinnedNoteSectionIdentifier = [(ICNoteCoreDataIndexer *)self pinnedNoteSectionIdentifier];
+  v9 = [sectionIdentifiersToManagedObjectIDs objectForKeyedSubscript:pinnedNoteSectionIdentifier];
 
-  v10 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
-  if ([v10 count] >= a3)
+  sectionIdentifiers2 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
+  if ([sectionIdentifiers2 count] >= section)
   {
 
     if (v6 <= 1 && !v9)
@@ -1877,8 +1877,8 @@ LABEL_53:
       goto LABEL_8;
     }
 
-    v10 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
-    v11 = [v10 objectAtIndexedSubscript:a3];
+    sectionIdentifiers2 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
+    v11 = [sectionIdentifiers2 objectAtIndexedSubscript:section];
   }
 
   else
@@ -1893,58 +1893,58 @@ LABEL_8:
 
 - (id)firstRelevantItemIdentifier
 {
-  v3 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
-  v4 = [v3 ic_objectPassingTest:&__block_literal_global_49];
+  sectionIdentifiers = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
+  v4 = [sectionIdentifiers ic_objectPassingTest:&__block_literal_global_49];
 
-  v5 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-  v6 = [v5 objectForKeyedSubscript:v4];
-  v7 = [v6 firstObject];
+  sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  v6 = [sectionIdentifiersToManagedObjectIDs objectForKeyedSubscript:v4];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
-- (id)nextRelevantItemIdentifierAfter:(id)a3
+- (id)nextRelevantItemIdentifierAfter:(id)after
 {
-  v4 = a3;
-  v5 = [(ICNoteCoreDataIndexer *)self sortedNoteIdentifiers];
-  v6 = [v5 mutableCopy];
+  afterCopy = after;
+  sortedNoteIdentifiers = [(ICNoteCoreDataIndexer *)self sortedNoteIdentifiers];
+  v6 = [sortedNoteIdentifiers mutableCopy];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __57__ICNoteCoreDataIndexer_nextRelevantItemIdentifierAfter___block_invoke;
   v20[3] = &unk_1E846A378;
-  v7 = v4;
+  v7 = afterCopy;
   v21 = v7;
-  v8 = [v5 indexesOfObjectsPassingTest:v20];
+  v8 = [sortedNoteIdentifiers indexesOfObjectsPassingTest:v20];
   [v6 removeObjectsAtIndexes:v8];
-  v9 = [v5 count];
+  v9 = [sortedNoteIdentifiers count];
   if (v9 == [v6 count])
   {
-    v10 = 0;
+    firstRelevantItemIdentifier = 0;
     goto LABEL_17;
   }
 
-  v11 = [v6 firstObject];
-  v12 = [v5 indexOfObject:v11];
+  firstObject = [v6 firstObject];
+  v12 = [sortedNoteIdentifiers indexOfObject:firstObject];
 
-  v13 = [v6 lastObject];
-  v14 = [v5 indexOfObject:v13];
+  lastObject = [v6 lastObject];
+  v14 = [sortedNoteIdentifiers indexOfObject:lastObject];
 
   v15 = MEMORY[0x1E695E0F0];
-  if (v12 != 0x7FFFFFFFFFFFFFFFLL && v14 != 0x7FFFFFFFFFFFFFFFLL && [v5 count] > v14)
+  if (v12 != 0x7FFFFFFFFFFFFFFFLL && v14 != 0x7FFFFFFFFFFFFFFFLL && [sortedNoteIdentifiers count] > v14)
   {
-    v15 = [v5 subarrayWithRange:{v12, v14 - v12}];
+    v15 = [sortedNoteIdentifiers subarrayWithRange:{v12, v14 - v12}];
   }
 
   v16 = [v15 mutableCopy];
   [v16 removeObjectsInArray:v7];
   if ([v16 count])
   {
-    v17 = [v16 firstObject];
+    firstObject2 = [v16 firstObject];
   }
 
   else
   {
-    if ([v5 count] > v14 + 1)
+    if ([sortedNoteIdentifiers count] > v14 + 1)
     {
       v18 = v14 + 1;
     }
@@ -1954,36 +1954,36 @@ LABEL_8:
       v18 = v12 - 1;
     }
 
-    if ([v5 count] <= v18)
+    if ([sortedNoteIdentifiers count] <= v18)
     {
       goto LABEL_15;
     }
 
-    v17 = [v5 objectAtIndexedSubscript:v18];
+    firstObject2 = [sortedNoteIdentifiers objectAtIndexedSubscript:v18];
   }
 
-  v10 = v17;
-  if (!v17)
+  firstRelevantItemIdentifier = firstObject2;
+  if (!firstObject2)
   {
 LABEL_15:
-    v10 = [(ICNoteCoreDataIndexer *)self firstRelevantItemIdentifier];
+    firstRelevantItemIdentifier = [(ICNoteCoreDataIndexer *)self firstRelevantItemIdentifier];
   }
 
 LABEL_17:
 
-  return v10;
+  return firstRelevantItemIdentifier;
 }
 
-- (void)deleteObjectWithIDFromIndex:(id)a3 inSection:(id)a4
+- (void)deleteObjectWithIDFromIndex:(id)index inSection:(id)section
 {
-  v6 = a3;
-  v7 = a4;
+  indexCopy = index;
+  sectionCopy = section;
   objc_opt_class();
   v8 = ICDynamicCast();
   if (v8)
   {
-    v9 = [(ICNoteCoreDataIndexer *)self folderSectionIdentifier];
-    v10 = [v8 isEqual:v9];
+    folderSectionIdentifier = [(ICNoteCoreDataIndexer *)self folderSectionIdentifier];
+    v10 = [v8 isEqual:folderSectionIdentifier];
 
     if (v10)
     {
@@ -1993,19 +1993,19 @@ LABEL_17:
       v30 = __Block_byref_object_copy__28;
       v31 = __Block_byref_object_dispose__28;
       v32 = 0;
-      v11 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+      modernManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
       v24[0] = MEMORY[0x1E69E9820];
       v24[1] = 3221225472;
       v24[2] = __63__ICNoteCoreDataIndexer_deleteObjectWithIDFromIndex_inSection___block_invoke;
       v24[3] = &unk_1E8469640;
       v26 = &v27;
       v24[4] = self;
-      v12 = v6;
+      v12 = indexCopy;
       v25 = v12;
-      [v11 performBlockAndWait:v24];
+      [modernManagedObjectContext performBlockAndWait:v24];
 
-      v13 = [(ICNoteCoreDataIndexer *)self folderIndexer];
-      [v13 deleteObjectWithIDFromIndex:v12 inSection:v28[5]];
+      folderIndexer = [(ICNoteCoreDataIndexer *)self folderIndexer];
+      [folderIndexer deleteObjectWithIDFromIndex:v12 inSection:v28[5]];
 
       [(ICNoteCoreDataIndexer *)self updateSectionIdentifiers];
       _Block_object_dispose(&v27, 8);
@@ -2015,28 +2015,28 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    v16 = [(ICNoteCoreDataIndexer *)self invitationsSectionIdentifier];
-    v17 = [v8 isEqual:v16];
+    invitationsSectionIdentifier = [(ICNoteCoreDataIndexer *)self invitationsSectionIdentifier];
+    v17 = [v8 isEqual:invitationsSectionIdentifier];
 
     if (!v17)
     {
-      v20 = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
+      indexAccessQueue = [(ICNoteCoreDataIndexer *)self indexAccessQueue];
       v21[0] = MEMORY[0x1E69E9820];
       v21[1] = 3221225472;
       v21[2] = __63__ICNoteCoreDataIndexer_deleteObjectWithIDFromIndex_inSection___block_invoke_2;
       v21[3] = &unk_1E8468D98;
       v21[4] = self;
-      v22 = v6;
+      v22 = indexCopy;
       v23 = v8;
-      dispatch_sync(v20, v21);
+      dispatch_sync(indexAccessQueue, v21);
 
       v14 = v22;
       goto LABEL_10;
     }
 
-    v18 = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
-    v19 = [(ICNoteCoreDataIndexer *)self invitationsSectionIdentifier];
-    [v18 deleteObjectWithIDFromIndex:v6 inSection:v19];
+    invitationsIndexer = [(ICNoteCoreDataIndexer *)self invitationsIndexer];
+    invitationsSectionIdentifier2 = [(ICNoteCoreDataIndexer *)self invitationsSectionIdentifier];
+    [invitationsIndexer deleteObjectWithIDFromIndex:indexCopy inSection:invitationsSectionIdentifier2];
 
     [(ICNoteCoreDataIndexer *)self updateSectionIdentifiers];
   }
@@ -2046,7 +2046,7 @@ LABEL_10:
     v15 = os_log_create("com.apple.notes", "UI");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
     {
-      [(ICNoteCoreDataIndexer *)v6 deleteObjectWithIDFromIndex:v7 inSection:v15];
+      [(ICNoteCoreDataIndexer *)indexCopy deleteObjectWithIDFromIndex:sectionCopy inSection:v15];
     }
   }
 
@@ -2076,23 +2076,23 @@ uint64_t __63__ICNoteCoreDataIndexer_deleteObjectWithIDFromIndex_inSection___blo
   return [*(a1 + 32) updateSectionIdentifiers];
 }
 
-- (void)deleteWithDecisionController:(id)a3 completion:(id)a4
+- (void)deleteWithDecisionController:(id)controller completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 sourceObjects];
-  v9 = [v8 valueForKey:@"objectID"];
+  completionCopy = completion;
+  controllerCopy = controller;
+  sourceObjects = [controllerCopy sourceObjects];
+  v9 = [sourceObjects valueForKey:@"objectID"];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __65__ICNoteCoreDataIndexer_deleteWithDecisionController_completion___block_invoke;
   v12[3] = &unk_1E846B2C0;
-  v14 = self;
-  v15 = v6;
+  selfCopy = self;
+  v15 = completionCopy;
   v13 = v9;
   v10 = v9;
-  v11 = v6;
-  [v7 performDecisionWithCompletion:v12];
+  v11 = completionCopy;
+  [controllerCopy performDecisionWithCompletion:v12];
 }
 
 uint64_t __65__ICNoteCoreDataIndexer_deleteWithDecisionController_completion___block_invoke(uint64_t a1, char a2)
@@ -2206,13 +2206,13 @@ LABEL_19:
 {
   if ([(ICNoteCoreDataIndexer *)self sortsByPinned])
   {
-    v3 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+    modernManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __66__ICNoteCoreDataIndexer_unmergePinnedNotesAndNotesSectionIfNeeded__block_invoke;
     v4[3] = &unk_1E8468BA0;
     v4[4] = self;
-    [v3 performBlockAndWait:v4];
+    [modernManagedObjectContext performBlockAndWait:v4];
   }
 }
 
@@ -2314,115 +2314,115 @@ id __64__ICNoteCoreDataIndexer_mergePinnedNotesAndNotesSectionIfNeeded__block_in
   return v6;
 }
 
-- (void)prependObjectIDs:(id)a3 toIndexInSection:(id)a4
+- (void)prependObjectIDs:(id)ds toIndexInSection:(id)section
 {
-  v11 = a3;
-  v6 = a4;
-  if ([v11 count])
+  dsCopy = ds;
+  sectionCopy = section;
+  if ([dsCopy count])
   {
-    v7 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+    orderedSet = [sectionIdentifiersToManagedObjectIDs objectForKeyedSubscript:sectionCopy];
 
-    if (!v8)
+    if (!orderedSet)
     {
-      v8 = [MEMORY[0x1E695DFA0] orderedSet];
-      v9 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-      [v9 setObject:v8 forKeyedSubscript:v6];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+      sectionIdentifiersToManagedObjectIDs2 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+      [sectionIdentifiersToManagedObjectIDs2 setObject:orderedSet forKeyedSubscript:sectionCopy];
     }
 
-    v10 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(v11, "count")}];
-    [v8 insertObjects:v11 atIndexes:v10];
+    v10 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{0, objc_msgSend(dsCopy, "count")}];
+    [orderedSet insertObjects:dsCopy atIndexes:v10];
   }
 }
 
-- (void)addObjectIDs:(id)a3 toIndexInSection:(id)a4
+- (void)addObjectIDs:(id)ds toIndexInSection:(id)section
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 count])
+  dsCopy = ds;
+  sectionCopy = section;
+  if ([dsCopy count])
   {
-    v7 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+    orderedSet = [sectionIdentifiersToManagedObjectIDs objectForKeyedSubscript:sectionCopy];
 
-    if (!v8)
+    if (!orderedSet)
     {
-      v8 = [MEMORY[0x1E695DFA0] orderedSet];
-      v9 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-      [v9 setObject:v8 forKeyedSubscript:v6];
+      orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
+      sectionIdentifiersToManagedObjectIDs2 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+      [sectionIdentifiersToManagedObjectIDs2 setObject:orderedSet forKeyedSubscript:sectionCopy];
     }
 
-    [v8 addObjectsFromArray:v10];
+    [orderedSet addObjectsFromArray:dsCopy];
   }
 }
 
-- (void)removeObjectIDs:(id)a3 fromIndexInSection:(id)a4
+- (void)removeObjectIDs:(id)ds fromIndexInSection:(id)section
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 count])
+  dsCopy = ds;
+  sectionCopy = section;
+  if ([dsCopy count])
   {
-    v7 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-    v8 = [v7 objectForKeyedSubscript:v6];
+    sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+    v8 = [sectionIdentifiersToManagedObjectIDs objectForKeyedSubscript:sectionCopy];
 
     if (v8)
     {
-      [v8 removeObjectsInArray:v10];
+      [v8 removeObjectsInArray:dsCopy];
       if (![v8 count])
       {
-        v9 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-        [v9 setObject:0 forKeyedSubscript:v6];
+        sectionIdentifiersToManagedObjectIDs2 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+        [sectionIdentifiersToManagedObjectIDs2 setObject:0 forKeyedSubscript:sectionCopy];
       }
     }
   }
 }
 
-- (void)sortSection:(id)a3
+- (void)sortSection:(id)section
 {
-  v4 = a3;
-  if ([v4 sectionType] != 2)
+  sectionCopy = section;
+  if ([sectionCopy sectionType] != 2)
   {
-    v6 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-    v5 = [v6 objectForKeyedSubscript:v4];
+    sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+    v5 = [sectionIdentifiersToManagedObjectIDs objectForKeyedSubscript:sectionCopy];
 
     if (!v5)
     {
       goto LABEL_10;
     }
 
-    v7 = [(ICNoteCoreDataIndexer *)self noteContainer];
-    if (v7 || ([(ICNoteCoreDataIndexer *)self noteQuery], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    noteContainer = [(ICNoteCoreDataIndexer *)self noteContainer];
+    if (noteContainer || ([(ICNoteCoreDataIndexer *)self noteQuery], (noteContainer = objc_claimAutoreleasedReturnValue()) != 0))
     {
     }
 
     else
     {
-      v12 = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
+      virtualSmartFolder = [(ICNoteCoreDataIndexer *)self virtualSmartFolder];
 
-      if (!v12)
+      if (!virtualSmartFolder)
       {
-        v13 = [(ICNoteCoreDataIndexer *)self noteCollection];
+        noteCollection = [(ICNoteCoreDataIndexer *)self noteCollection];
 
-        if (!v13)
+        if (!noteCollection)
         {
           goto LABEL_10;
         }
 
-        v8 = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
+        legacyManagedObjectContext = [(ICCoreDataIndexer *)self legacyManagedObjectContext];
         v14 = MEMORY[0x1E69E9820];
         v15 = 3221225472;
         v16 = __37__ICNoteCoreDataIndexer_sortSection___block_invoke_4;
         v17 = &unk_1E8468D98;
-        v18 = self;
+        selfCopy = self;
         v9 = &v19;
         v19 = v5;
         v10 = &v20;
-        v20 = v4;
+        v20 = sectionCopy;
         v11 = &v14;
         goto LABEL_9;
       }
     }
 
-    v8 = [(ICCoreDataIndexer *)self modernManagedObjectContext];
+    legacyManagedObjectContext = [(ICCoreDataIndexer *)self modernManagedObjectContext];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __37__ICNoteCoreDataIndexer_sortSection___block_invoke;
@@ -2431,10 +2431,10 @@ id __64__ICNoteCoreDataIndexer_mergePinnedNotesAndNotesSectionIfNeeded__block_in
     v9 = &v22;
     v22 = v5;
     v10 = &v23;
-    v23 = v4;
+    v23 = sectionCopy;
     v11 = v21;
 LABEL_9:
-    [v8 performBlockAndWait:{v11, v14, v15, v16, v17, v18}];
+    [legacyManagedObjectContext performBlockAndWait:{v11, v14, v15, v16, v17, selfCopy}];
 
     goto LABEL_10;
   }
@@ -2513,13 +2513,13 @@ id __37__ICNoteCoreDataIndexer_sortSection___block_invoke_5(uint64_t a1, void *a
 - (NSArray)sortedNoteIdentifiers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  sectionIdentifiers = [(ICNoteCoreDataIndexer *)self sectionIdentifiers];
+  v5 = [sectionIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2530,23 +2530,23 @@ id __37__ICNoteCoreDataIndexer_sortSection___block_invoke_5(uint64_t a1, void *a
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sectionIdentifiers);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-        v11 = [v10 objectForKeyedSubscript:v9];
-        v12 = [v11 array];
-        [v3 addObjectsFromArray:v12];
+        sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+        v11 = [sectionIdentifiersToManagedObjectIDs objectForKeyedSubscript:v9];
+        array2 = [v11 array];
+        [array addObjectsFromArray:array2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [sectionIdentifiers countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v6);
   }
 
-  v13 = [v3 ic_compactMap:&__block_literal_global_211];
+  v13 = [array ic_compactMap:&__block_literal_global_211];
 
   return v13;
 }
@@ -2569,37 +2569,37 @@ void *__46__ICNoteCoreDataIndexer_sortedNoteIdentifiers__block_invoke(uint64_t a
   return v3;
 }
 
-- (id)unpinnedSectionIdentifierForObject:(id)a3
+- (id)unpinnedSectionIdentifierForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(ICNoteCoreDataIndexer *)self dateHeadersValueForNote:v4];
+  objectCopy = object;
+  v5 = [(ICNoteCoreDataIndexer *)self dateHeadersValueForNote:objectCopy];
   if (v5)
   {
-    v6 = [v4 objectID];
-    v7 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-    v8 = [ICNoteTimelineController timelineSectionIdentifierForNoteObjectID:v6 date:v5 sectionIdentifiersToManagedObjectIDs:v7];
+    objectID = [objectCopy objectID];
+    sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+    noteSectionIdentifier = [ICNoteTimelineController timelineSectionIdentifierForNoteObjectID:objectID date:v5 sectionIdentifiersToManagedObjectIDs:sectionIdentifiersToManagedObjectIDs];
   }
 
   else
   {
-    v8 = [(ICNoteCoreDataIndexer *)self noteSectionIdentifier];
+    noteSectionIdentifier = [(ICNoteCoreDataIndexer *)self noteSectionIdentifier];
   }
 
-  return v8;
+  return noteSectionIdentifier;
 }
 
-- (id)sectionForObjectID:(id)a3
+- (id)sectionForObjectID:(id)d
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-  v6 = [v5 allKeys];
+  sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  allKeys = [sectionIdentifiersToManagedObjectIDs allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2610,13 +2610,13 @@ void *__46__ICNoteCoreDataIndexer_sortedNoteIdentifiers__block_invoke(uint64_t a
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-        v13 = [v12 objectForKeyedSubscript:v11];
-        v14 = [v13 containsObject:v4];
+        sectionIdentifiersToManagedObjectIDs2 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+        v13 = [sectionIdentifiersToManagedObjectIDs2 objectForKeyedSubscript:v11];
+        v14 = [v13 containsObject:dCopy];
 
         if (v14)
         {
@@ -2625,7 +2625,7 @@ void *__46__ICNoteCoreDataIndexer_sortedNoteIdentifiers__block_invoke(uint64_t a
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -2643,14 +2643,14 @@ LABEL_11:
 
 - (id)unpinnedNoteIdentifiers
 {
-  v3 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-  v4 = [v3 allKeys];
+  sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  allKeys = [sectionIdentifiersToManagedObjectIDs allKeys];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __48__ICNoteCoreDataIndexer_unpinnedNoteIdentifiers__block_invoke;
   v7[3] = &unk_1E846B3A0;
   v7[4] = self;
-  v5 = [v4 ic_flatMap:v7];
+  v5 = [allKeys ic_flatMap:v7];
 
   return v5;
 }
@@ -2684,18 +2684,18 @@ LABEL_6:
   return v8;
 }
 
-- (void)removeUnpinnedNoteObjectIds:(id)a3
+- (void)removeUnpinnedNoteObjectIds:(id)ids
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  idsCopy = ids;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-  v6 = [v5 allKeys];
+  sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+  allKeys = [sectionIdentifiersToManagedObjectIDs allKeys];
 
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2707,12 +2707,12 @@ LABEL_6:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * v10);
-        v12 = [(ICNoteCoreDataIndexer *)self noteSectionIdentifier];
-        if ([v12 isEqual:v11])
+        noteSectionIdentifier = [(ICNoteCoreDataIndexer *)self noteSectionIdentifier];
+        if ([noteSectionIdentifier isEqual:v11])
         {
         }
 
@@ -2727,34 +2727,34 @@ LABEL_6:
           }
         }
 
-        [(ICNoteCoreDataIndexer *)self removeObjectIDs:v4 fromIndexInSection:v11];
+        [(ICNoteCoreDataIndexer *)self removeObjectIDs:idsCopy fromIndexInSection:v11];
 LABEL_10:
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
   }
 }
 
-- (id)dateHeadersValueForNote:(id)a3
+- (id)dateHeadersValueForNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICNoteCoreDataIndexer *)self resolvedDateHeadersType];
-  if (v5 == 2)
+  noteCopy = note;
+  resolvedDateHeadersType = [(ICNoteCoreDataIndexer *)self resolvedDateHeadersType];
+  if (resolvedDateHeadersType == 2)
   {
-    v6 = [v4 creationDate];
+    creationDate = [noteCopy creationDate];
     goto LABEL_5;
   }
 
-  if (v5 == 1)
+  if (resolvedDateHeadersType == 1)
   {
-    v6 = [v4 modificationDate];
+    creationDate = [noteCopy modificationDate];
 LABEL_5:
-    v7 = v6;
+    v7 = creationDate;
     goto LABEL_7;
   }
 
@@ -2764,34 +2764,34 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)dateHeadersAreStaleForNote:(id)a3
+- (BOOL)dateHeadersAreStaleForNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICNoteCoreDataIndexer *)self dateHeadersValueForNote:v4];
+  noteCopy = note;
+  v5 = [(ICNoteCoreDataIndexer *)self dateHeadersValueForNote:noteCopy];
   if (v5)
   {
-    if ([v4 isPinned])
+    if ([noteCopy isPinned])
     {
-      v6 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-      v7 = [(ICNoteCoreDataIndexer *)self pinnedNoteSectionIdentifier];
-      v8 = v6;
-      v9 = v7;
+      sectionIdentifiersToManagedObjectIDs = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+      pinnedNoteSectionIdentifier = [(ICNoteCoreDataIndexer *)self pinnedNoteSectionIdentifier];
+      sectionIdentifiersToManagedObjectIDs3 = sectionIdentifiersToManagedObjectIDs;
+      v9 = pinnedNoteSectionIdentifier;
     }
 
     else
     {
-      v11 = [v4 objectID];
-      v12 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-      v6 = [ICNoteTimelineController timelineSectionIdentifierForNoteObjectID:v11 date:v5 sectionIdentifiersToManagedObjectIDs:v12];
+      objectID = [noteCopy objectID];
+      sectionIdentifiersToManagedObjectIDs2 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+      sectionIdentifiersToManagedObjectIDs = [ICNoteTimelineController timelineSectionIdentifierForNoteObjectID:objectID date:v5 sectionIdentifiersToManagedObjectIDs:sectionIdentifiersToManagedObjectIDs2];
 
-      v8 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
-      v7 = v8;
-      v9 = v6;
+      sectionIdentifiersToManagedObjectIDs3 = [(ICNoteCoreDataIndexer *)self sectionIdentifiersToManagedObjectIDs];
+      pinnedNoteSectionIdentifier = sectionIdentifiersToManagedObjectIDs3;
+      v9 = sectionIdentifiersToManagedObjectIDs;
     }
 
-    v13 = [v8 objectForKeyedSubscript:v9];
-    v14 = [v4 objectID];
-    v10 = [v13 containsObject:v14] ^ 1;
+    v13 = [sectionIdentifiersToManagedObjectIDs3 objectForKeyedSubscript:v9];
+    objectID2 = [noteCopy objectID];
+    v10 = [v13 containsObject:objectID2] ^ 1;
   }
 
   else

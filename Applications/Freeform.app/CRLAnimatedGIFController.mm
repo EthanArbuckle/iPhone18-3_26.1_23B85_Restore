@@ -1,26 +1,26 @@
 @interface CRLAnimatedGIFController
-+ (BOOL)canInitWithDataType:(id)a3;
-+ (double)delayTimeForImageProperties:(__CFDictionary *)a3;
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)p_timebaseTimeForHostTime:(SEL)a3 rate:(id *)a4 updatedRate:(double)a5 anchorTime:(double *)a6;
-- (BOOL)hasNewImageForTime:(double)a3 sinceTime:(double)a4;
++ (BOOL)canInitWithDataType:(id)type;
++ (double)delayTimeForImageProperties:(__CFDictionary *)properties;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)p_timebaseTimeForHostTime:(SEL)time rate:(id *)rate updatedRate:(double)updatedRate anchorTime:(double *)anchorTime;
+- (BOOL)hasNewImageForTime:(double)time sinceTime:(double)sinceTime;
 - (CGImage)imageForCurrentTime;
-- (CGImage)imageForTime:(double)a3;
-- (CRLAnimatedGIFController)initWithData:(id)a3 delegate:(id)a4;
-- (CRLAnimatedGIFController)initWithImageSource:(CGImageSource *)a3 delegate:(id)a4;
+- (CGImage)imageForTime:(double)time;
+- (CRLAnimatedGIFController)initWithData:(id)data delegate:(id)delegate;
+- (CRLAnimatedGIFController)initWithImageSource:(CGImageSource *)source delegate:(id)delegate;
 - (double)absoluteCurrentTime;
 - (double)absoluteDuration;
 - (double)currentTime;
 - (double)duration;
 - (double)endTime;
 - (double)remainingTime;
-- (double)timeForHostTime:(double)a3;
+- (double)timeForHostTime:(double)time;
 - (float)rate;
-- (id)addPeriodicTimeObserverForInterval:(double)a3 block:(id)a4;
+- (id)addPeriodicTimeObserverForInterval:(double)interval block:(id)block;
 - (id)delegate;
 - (id)newLayer;
 - (id)newRenderable;
-- (id)p_frameAtTime:(double)a3 fromIndex:(unint64_t)a4 frameIndex:(unint64_t *)a5;
-- (void)addLayer:(id)a3;
+- (id)p_frameAtTime:(double)time fromIndex:(unint64_t)index frameIndex:(unint64_t *)frameIndex;
+- (void)addLayer:(id)layer;
 - (void)beginScrubbing;
 - (void)dealloc;
 - (void)endScrubbing;
@@ -28,21 +28,21 @@
 - (void)p_displayLinkDidTrigger;
 - (void)p_enableDisplayLink;
 - (void)p_prepareFrames;
-- (void)p_setAbsoluteCurrentTime:(double)a3;
-- (void)p_setRate:(float)a3;
+- (void)p_setAbsoluteCurrentTime:(double)time;
+- (void)p_setRate:(float)rate;
 - (void)p_timebaseTimeDidChangeToStartOrEndTime;
 - (void)p_updateDisplayLink;
 - (void)p_updateLayers;
 - (void)p_updateTimebaseTimerSourceNextFireTime;
-- (void)removeLayer:(id)a3;
-- (void)scrubToTime:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5;
+- (void)removeLayer:(id)layer;
+- (void)scrubToTime:(double)time withTolerance:(double)tolerance completionHandler:(id)handler;
 - (void)seekToBeginning;
 - (void)seekToEnd;
-- (void)setEndTime:(double)a3;
-- (void)setPlaying:(BOOL)a3;
-- (void)setRate:(float)a3;
-- (void)setRepeatMode:(int64_t)a3;
-- (void)setStartTime:(double)a3;
+- (void)setEndTime:(double)time;
+- (void)setPlaying:(BOOL)playing;
+- (void)setRate:(float)rate;
+- (void)setRepeatMode:(int64_t)mode;
+- (void)setStartTime:(double)time;
 - (void)teardown;
 @end
 
@@ -50,34 +50,34 @@
 
 - (id)newRenderable
 {
-  v2 = [(CRLAnimatedGIFController *)self newLayer];
-  v3 = [CRLCanvasRenderable renderableFromLayer:v2];
+  newLayer = [(CRLAnimatedGIFController *)self newLayer];
+  v3 = [CRLCanvasRenderable renderableFromLayer:newLayer];
 
   return v3;
 }
 
-+ (BOOL)canInitWithDataType:(id)a3
++ (BOOL)canInitWithDataType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[CRLIngestionTypes supportedMovieAnimatedImageTypes];
-  v5 = [v3 crl_conformsToAnyUTI:v4];
+  v5 = [typeCopy crl_conformsToAnyUTI:v4];
 
   return v5;
 }
 
-- (CRLAnimatedGIFController)initWithImageSource:(CGImageSource *)a3 delegate:(id)a4
+- (CRLAnimatedGIFController)initWithImageSource:(CGImageSource *)source delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v49.receiver = self;
   v49.super_class = CRLAnimatedGIFController;
   v7 = [(CRLAnimatedGIFController *)&v49 init];
   v8 = v7;
   if (v7)
   {
-    if (a3)
+    if (source)
     {
-      v7->_imageSource = a3;
-      CFRetain(a3);
+      v7->_imageSource = source;
+      CFRetain(source);
     }
 
     else
@@ -170,7 +170,7 @@
       [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:152 isFatal:0 description:"%@ can only play GIFs, HEIFs or PNGs with multiple frames.", objc_opt_class()];
     }
 
-    objc_storeWeak(&v8->_delegate, v6);
+    objc_storeWeak(&v8->_delegate, delegateCopy);
     v20 = objc_alloc_init(NSMutableSet);
     layers = v8->_layers;
     v8->_layers = v20;
@@ -301,15 +301,15 @@
   return v8;
 }
 
-- (CRLAnimatedGIFController)initWithData:(id)a3 delegate:(id)a4
+- (CRLAnimatedGIFController)initWithData:(id)data delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = [a3 newCGImageSource];
-  v8 = [(CRLAnimatedGIFController *)self initWithImageSource:v7 delegate:v6];
+  delegateCopy = delegate;
+  newCGImageSource = [data newCGImageSource];
+  v8 = [(CRLAnimatedGIFController *)self initWithImageSource:newCGImageSource delegate:delegateCopy];
 
-  if (v7)
+  if (newCGImageSource)
   {
-    CFRelease(v7);
+    CFRelease(newCGImageSource);
   }
 
   return v8;
@@ -457,16 +457,16 @@
   }
 }
 
-- (void)setPlaying:(BOOL)a3
+- (void)setPlaying:(BOOL)playing
 {
-  if (self->_playing != a3)
+  if (self->_playing != playing)
   {
     v16 = v8;
     v17 = v7;
     v18 = v4;
     v19 = v3;
-    self->_playing = a3;
-    if (a3)
+    self->_playing = playing;
+    if (playing)
     {
       [(CRLAnimatedGIFController *)self absoluteCurrentTime];
       v11 = v10;
@@ -499,18 +499,18 @@
   return Rate;
 }
 
-- (void)setRate:(float)a3
+- (void)setRate:(float)rate
 {
   os_unfair_lock_lock(&self->_timebaseLock);
-  *&v5 = a3;
+  *&v5 = rate;
   [(CRLAnimatedGIFController *)self p_setRate:v5];
 
   os_unfair_lock_unlock(&self->_timebaseLock);
 }
 
-- (void)p_setRate:(float)a3
+- (void)p_setRate:(float)rate
 {
-  v4 = CMTimebaseSetRate(self->_timebase, a3);
+  v4 = CMTimebaseSetRate(self->_timebase, rate);
   if (v4)
   {
     v5 = v4;
@@ -555,11 +555,11 @@
   return sub_1004C3240(v6, 0.0, v7);
 }
 
-- (void)p_setAbsoluteCurrentTime:(double)a3
+- (void)p_setAbsoluteCurrentTime:(double)time
 {
   os_unfair_lock_lock(&self->_timebaseLock);
   timebase = self->_timebase;
-  CMTimeMakeWithSeconds(&time, a3, 1000000000);
+  CMTimeMakeWithSeconds(&time, time, 1000000000);
   CMTimebaseSetTime(timebase, &time);
   os_unfair_lock_unlock(&self->_timebaseLock);
 }
@@ -588,8 +588,8 @@
 
 - (double)absoluteDuration
 {
-  v2 = [(NSArray *)self->_frames lastObject];
-  [v2 time];
+  lastObject = [(NSArray *)self->_frames lastObject];
+  [lastObject time];
   v4 = v3;
 
   return v4;
@@ -608,13 +608,13 @@
   return sub_1004C3240(v6, 0.0, v8 - v9);
 }
 
-- (void)setStartTime:(double)a3
+- (void)setStartTime:(double)time
 {
-  if (self->_startTime != a3)
+  if (self->_startTime != time)
   {
     v7 = v3;
     v8 = v4;
-    self->_startTime = a3;
+    self->_startTime = time;
     os_unfair_lock_lock(&self->_timebaseLock);
     CMTimeMakeWithSeconds(&v6, self->_startTime, 1000000000);
     self->_timebaseStartTime = v6;
@@ -634,13 +634,13 @@
   return result;
 }
 
-- (void)setEndTime:(double)a3
+- (void)setEndTime:(double)time
 {
-  if (self->_endTime != a3)
+  if (self->_endTime != time)
   {
     v7 = v3;
     v8 = v4;
-    self->_endTime = a3;
+    self->_endTime = time;
     os_unfair_lock_lock(&self->_timebaseLock);
     CMTimeMakeWithSeconds(&v6, self->_endTime, 1000000000);
     self->_timebaseEndTime = v6;
@@ -649,12 +649,12 @@
   }
 }
 
-- (void)setRepeatMode:(int64_t)a3
+- (void)setRepeatMode:(int64_t)mode
 {
-  if (self->_repeatMode != a3)
+  if (self->_repeatMode != mode)
   {
-    self->_repeatMode = a3;
-    if (a3 != 2)
+    self->_repeatMode = mode;
+    if (mode != 2)
     {
       [(CRLAnimatedGIFController *)self rate];
       if (*&v5 < 0.0)
@@ -695,9 +695,9 @@
   }
 }
 
-- (void)scrubToTime:(double)a3 withTolerance:(double)a4 completionHandler:(id)a5
+- (void)scrubToTime:(double)time withTolerance:(double)tolerance completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   if (![(CRLAnimatedGIFController *)self isScrubbing])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -732,10 +732,10 @@
   block[1] = 3221225472;
   block[2] = sub_1005ADB80;
   block[3] = &unk_10183F0D0;
-  v15 = a3;
+  timeCopy = time;
   block[4] = self;
-  v14 = v7;
-  v12 = v7;
+  v14 = handlerCopy;
+  v12 = handlerCopy;
   CFRunLoopPerformBlock(Main, kCFRunLoopCommonModes, block);
 }
 
@@ -813,22 +813,22 @@ LABEL_11:
   [(CRLAnimatedGIFController *)self p_setAbsoluteCurrentTime:?];
 }
 
-- (double)timeForHostTime:(double)a3
+- (double)timeForHostTime:(double)time
 {
   os_unfair_lock_lock(&self->_timebaseLock);
   Rate = CMTimebaseGetRate(self->_timebase);
-  CMTimeMakeWithSeconds(&v8, a3, 1000000000);
+  CMTimeMakeWithSeconds(&v8, time, 1000000000);
   [(CRLAnimatedGIFController *)self p_timebaseTimeForHostTime:&v8 rate:0 updatedRate:0 anchorTime:Rate];
   Seconds = CMTimeGetSeconds(&time);
   os_unfair_lock_unlock(&self->_timebaseLock);
   return Seconds;
 }
 
-- (BOOL)hasNewImageForTime:(double)a3 sinceTime:(double)a4
+- (BOOL)hasNewImageForTime:(double)time sinceTime:(double)sinceTime
 {
   v12 = 0;
-  v7 = [(CRLAnimatedGIFController *)self p_frameAtTime:0 fromIndex:&v12 frameIndex:a4];
-  if (a3 < a4)
+  v7 = [(CRLAnimatedGIFController *)self p_frameAtTime:0 fromIndex:&v12 frameIndex:sinceTime];
+  if (time < sinceTime)
   {
     v8 = 0;
   }
@@ -838,18 +838,18 @@ LABEL_11:
     v8 = v12;
   }
 
-  v9 = [(CRLAnimatedGIFController *)self p_frameAtTime:v8 fromIndex:0 frameIndex:a3];
+  v9 = [(CRLAnimatedGIFController *)self p_frameAtTime:v8 fromIndex:0 frameIndex:time];
   v10 = v9 != v7;
 
   return v10;
 }
 
-- (CGImage)imageForTime:(double)a3
+- (CGImage)imageForTime:(double)time
 {
-  v3 = [(CRLAnimatedGIFController *)self p_frameAtTime:0 fromIndex:0 frameIndex:a3];
-  v4 = [v3 image];
+  v3 = [(CRLAnimatedGIFController *)self p_frameAtTime:0 fromIndex:0 frameIndex:time];
+  image = [v3 image];
 
-  return v4;
+  return image;
 }
 
 - (CGImage)imageForCurrentTime
@@ -859,24 +859,24 @@ LABEL_11:
   return [(CRLAnimatedGIFController *)self imageForTime:?];
 }
 
-- (id)p_frameAtTime:(double)a3 fromIndex:(unint64_t)a4 frameIndex:(unint64_t *)a5
+- (id)p_frameAtTime:(double)time fromIndex:(unint64_t)index frameIndex:(unint64_t *)frameIndex
 {
   [(CRLAnimatedGIFController *)self absoluteDuration];
   v10 = v9;
-  v11 = [(NSArray *)self->_frames objectAtIndexedSubscript:a4];
+  v11 = [(NSArray *)self->_frames objectAtIndexedSubscript:index];
   v12 = [(NSArray *)self->_frames count];
-  if ((a4 + 1) < v12)
+  if ((index + 1) < v12)
   {
     v13 = v12;
-    v14 = fmin(a3, v10 + -2.22044605e-16);
+    v14 = fmin(time, v10 + -2.22044605e-16);
     v15 = [(NSArray *)self->_frames objectAtIndexedSubscript:?];
     [v15 time];
     if (v16 >= v14)
     {
 LABEL_6:
-      if (a5)
+      if (frameIndex)
       {
-        *a5 = a4;
+        *frameIndex = index;
       }
     }
 
@@ -888,14 +888,14 @@ LABEL_6:
         v18 = v11;
         v11 = v15;
 
-        if (v17 == a4)
+        if (v17 == index)
         {
           break;
         }
 
-        v15 = [(NSArray *)self->_frames objectAtIndexedSubscript:a4 + 2];
+        v15 = [(NSArray *)self->_frames objectAtIndexedSubscript:index + 2];
         [v15 time];
-        ++a4;
+        ++index;
         if (v19 >= v14)
         {
           goto LABEL_6;
@@ -907,29 +907,29 @@ LABEL_6:
   return v11;
 }
 
-- (id)addPeriodicTimeObserverForInterval:(double)a3 block:(id)a4
+- (id)addPeriodicTimeObserverForInterval:(double)interval block:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-  v7 = dispatch_time(0, (a3 * 1000000000.0));
-  dispatch_source_set_timer(v6, v7, (a3 * 1000000000.0), vcvtd_n_f64_u64((a3 * 1000000000.0), 2uLL));
-  dispatch_source_set_event_handler(v6, v5);
+  v7 = dispatch_time(0, (interval * 1000000000.0));
+  dispatch_source_set_timer(v6, v7, (interval * 1000000000.0), vcvtd_n_f64_u64((interval * 1000000000.0), 2uLL));
+  dispatch_source_set_event_handler(v6, blockCopy);
 
   dispatch_resume(v6);
 
   return v6;
 }
 
-- (void)addLayer:(id)a3
+- (void)addLayer:(id)layer
 {
-  [(NSMutableSet *)self->_layers addObject:a3];
+  [(NSMutableSet *)self->_layers addObject:layer];
 
   [(CRLAnimatedGIFController *)self p_updateDisplayLink];
 }
 
-- (void)removeLayer:(id)a3
+- (void)removeLayer:(id)layer
 {
-  [(NSMutableSet *)self->_layers removeObject:a3];
+  [(NSMutableSet *)self->_layers removeObject:layer];
 
   [(CRLAnimatedGIFController *)self p_updateDisplayLink];
 }
@@ -1044,16 +1044,16 @@ LABEL_6:
   self->_frames = v3;
 }
 
-+ (double)delayTimeForImageProperties:(__CFDictionary *)a3
++ (double)delayTimeForImageProperties:(__CFDictionary *)properties
 {
-  if (!a3)
+  if (!properties)
   {
     return 0.1;
   }
 
-  Value = CFDictionaryGetValue(a3, kCGImagePropertyGIFDictionary);
-  v5 = CFDictionaryGetValue(a3, kCGImagePropertyHEICSDictionary);
-  v6 = CFDictionaryGetValue(a3, kCGImagePropertyPNGDictionary);
+  Value = CFDictionaryGetValue(properties, kCGImagePropertyGIFDictionary);
+  v5 = CFDictionaryGetValue(properties, kCGImagePropertyHEICSDictionary);
+  v6 = CFDictionaryGetValue(properties, kCGImagePropertyPNGDictionary);
   if (Value)
   {
     v7 = CFDictionaryGetValue(Value, kCGImagePropertyGIFUnclampedDelayTime);
@@ -1125,9 +1125,9 @@ LABEL_15:
   return 0.1;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)p_timebaseTimeForHostTime:(SEL)a3 rate:(id *)a4 updatedRate:(double)a5 anchorTime:(double *)a6
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)p_timebaseTimeForHostTime:(SEL)time rate:(id *)rate updatedRate:(double)updatedRate anchorTime:(double *)anchorTime
 {
-  if ((a6 != 0) != (a7 != 0))
+  if ((anchorTime != 0) != (a7 != 0))
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -1159,7 +1159,7 @@ LABEL_15:
   HostTimeClock = CMClockGetHostTimeClock();
   memset(&v36, 0, sizeof(v36));
   timebase = self->_timebase;
-  time = *a4;
+  time = *rate;
   CMSyncConvertTime(&v36, &time, HostTimeClock, timebase);
   v18 = *&v36.value;
   *&retstr->var0 = *&v36.value;
@@ -1182,36 +1182,36 @@ LABEL_15:
     {
       *&retstr->var0 = *&self->_timebaseStartTime.value;
       retstr->var3 = self->_timebaseStartTime.epoch;
-      if (a6 | a7)
+      if (anchorTime | a7)
       {
         timebaseRepeatMode = self->_timebaseRepeatMode;
         if (timebaseRepeatMode)
         {
           if (timebaseRepeatMode == 2)
           {
-            v24 = a5;
-            if (a5 < 0.0)
+            updatedRateCopy9 = updatedRate;
+            if (updatedRate < 0.0)
             {
-              v24 = -a5;
+              updatedRateCopy9 = -updatedRate;
             }
           }
 
           else
           {
-            v24 = a5;
+            updatedRateCopy9 = updatedRate;
             if (timebaseRepeatMode == 1)
             {
-              v24 = a5;
-              if (a5 < 0.0)
+              updatedRateCopy9 = updatedRate;
+              if (updatedRate < 0.0)
               {
                 *&retstr->var0 = *&self->_timebaseEndTime.value;
                 retstr->var3 = self->_timebaseEndTime.epoch;
-                v24 = a5;
+                updatedRateCopy9 = updatedRate;
               }
             }
           }
 
-          if (a5 < 0.0 && v24 != 0.0)
+          if (updatedRate < 0.0 && updatedRateCopy9 != 0.0)
           {
             time2 = v36;
             *&rhs.value = *&self->_timebaseStartTime.value;
@@ -1225,7 +1225,7 @@ LABEL_38:
         }
 
 LABEL_26:
-        v24 = 0.0;
+        updatedRateCopy9 = 0.0;
         goto LABEL_38;
       }
     }
@@ -1235,36 +1235,36 @@ LABEL_26:
   {
     *&retstr->var0 = *&self->_timebaseEndTime.value;
     retstr->var3 = self->_timebaseEndTime.epoch;
-    if (a6 | a7)
+    if (anchorTime | a7)
     {
       v23 = self->_timebaseRepeatMode;
       if (v23)
       {
         if (v23 == 2)
         {
-          v24 = a5;
-          if (a5 > 0.0)
+          updatedRateCopy9 = updatedRate;
+          if (updatedRate > 0.0)
           {
-            v24 = -a5;
+            updatedRateCopy9 = -updatedRate;
           }
         }
 
         else
         {
-          v24 = a5;
+          updatedRateCopy9 = updatedRate;
           if (v23 == 1)
           {
-            v24 = a5;
-            if (a5 > 0.0)
+            updatedRateCopy9 = updatedRate;
+            if (updatedRate > 0.0)
             {
               *&retstr->var0 = *&self->_timebaseStartTime.value;
               retstr->var3 = self->_timebaseStartTime.epoch;
-              v24 = a5;
+              updatedRateCopy9 = updatedRate;
             }
           }
         }
 
-        if (a5 > 0.0 && v24 != 0.0)
+        if (updatedRate > 0.0 && updatedRateCopy9 != 0.0)
         {
           time2 = self->_timebaseEndTime;
           *&rhs.value = *&v36.value;
@@ -1287,14 +1287,14 @@ LABEL_32:
   }
 
   v26 = v21;
-  v24 = a5;
+  updatedRateCopy9 = updatedRate;
 LABEL_39:
   *&time.value = *&kCMTimeInvalid.value;
   time.epoch = v21;
   if (!a7 || (flags & 1) == 0)
   {
 LABEL_43:
-    if (!a6)
+    if (!anchorTime)
     {
       goto LABEL_45;
     }
@@ -1306,7 +1306,7 @@ LABEL_43:
   if (v28)
   {
     v29 = v28;
-    time2 = *a4;
+    time2 = *rate;
     rhs.value = value;
     rhs.timescale = timescale;
     rhs.flags = flags;
@@ -1345,10 +1345,10 @@ LABEL_43:
   v32 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLKit/CRLAnimatedGIFController.m"];
   [CRLAssertionHandler handleFailureInFunction:v31 file:v32 lineNumber:737 isFatal:0 description:"invalid nil value for '%{public}s'", "masterClockOrTimebase"];
 
-  if (a6)
+  if (anchorTime)
   {
 LABEL_44:
-    *a6 = v24;
+    *anchorTime = updatedRateCopy9;
   }
 
 LABEL_45:
@@ -1574,8 +1574,8 @@ LABEL_16:
   else
   {
     [(CRLAnimatedGIFController *)self setPlaying:0];
-    v9 = [(CRLAnimatedGIFController *)self delegate];
-    [v9 playbackDidStopForPlayerController:self];
+    delegate = [(CRLAnimatedGIFController *)self delegate];
+    [delegate playbackDidStopForPlayerController:self];
   }
 }
 

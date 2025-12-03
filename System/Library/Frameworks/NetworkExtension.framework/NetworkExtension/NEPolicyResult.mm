@@ -1,21 +1,21 @@
 @interface NEPolicyResult
 + (id)allowUnentitled;
-+ (id)divertSocketToControlUnit:(unsigned int)a3;
++ (id)divertSocketToControlUnit:(unsigned int)unit;
 + (id)drop;
-+ (id)dropWithFlags:(unsigned int)a3;
-+ (id)filterWithControlUnit:(unsigned int)a3;
-+ (id)netAgentUUID:(id)a3;
++ (id)dropWithFlags:(unsigned int)flags;
++ (id)filterWithControlUnit:(unsigned int)unit;
++ (id)netAgentUUID:(id)d;
 + (id)pass;
-+ (id)passWithFlags:(unsigned int)a3;
++ (id)passWithFlags:(unsigned int)flags;
 + (id)prohibitFilters;
-+ (id)removeNetworkAgentDomain:(id)a3 agentType:(id)a4;
-+ (id)removeNetworkAgentUUID:(id)a3;
-+ (id)routeRules:(id)a3;
-+ (id)scopeSocketToInterfaceName:(id)a3;
++ (id)removeNetworkAgentDomain:(id)domain agentType:(id)type;
++ (id)removeNetworkAgentUUID:(id)d;
++ (id)routeRules:(id)rules;
++ (id)scopeSocketToInterfaceName:(id)name;
 + (id)scopeToDirectInterface;
-+ (id)scopedNetworkAgent:(id)a3;
-+ (id)skipWithOrder:(unsigned int)a3;
-+ (id)tunnelIPToInterfaceName:(id)a3 secondaryResultType:(int64_t)a4;
++ (id)scopedNetworkAgent:(id)agent;
++ (id)skipWithOrder:(unsigned int)order;
++ (id)tunnelIPToInterfaceName:(id)name secondaryResultType:(int64_t)type;
 - (NEPolicyResult)init;
 @end
 
@@ -53,9 +53,9 @@
   return v3;
 }
 
-+ (id)scopedNetworkAgent:(id)a3
++ (id)scopedNetworkAgent:(id)agent
 {
-  v3 = a3;
+  agentCopy = agent;
   v4 = [NEPolicyResult alloc];
   if (v4)
   {
@@ -65,7 +65,7 @@
     [v5 setResultType:11];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 56);
+      objc_setProperty_atomic_copy(v5, v6, agentCopy, 56);
     }
   }
 
@@ -78,9 +78,9 @@
   return v5;
 }
 
-+ (id)routeRules:(id)a3
++ (id)routeRules:(id)rules
 {
-  v3 = a3;
+  rulesCopy = rules;
   v4 = [NEPolicyResult alloc];
   if (v4)
   {
@@ -90,7 +90,7 @@
     [v5 setResultType:9];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 80);
+      objc_setProperty_atomic_copy(v5, v6, rulesCopy, 80);
     }
   }
 
@@ -103,10 +103,10 @@
   return v5;
 }
 
-+ (id)removeNetworkAgentDomain:(id)a3 agentType:(id)a4
++ (id)removeNetworkAgentDomain:(id)domain agentType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
+  domainCopy = domain;
+  typeCopy = type;
   v7 = [NEPolicyResult alloc];
   if (v7)
   {
@@ -116,8 +116,8 @@
     [v8 setResultType:16];
     if (v8)
     {
-      objc_setProperty_atomic_copy(v8, v9, v5, 64);
-      objc_setProperty_atomic_copy(v8, v10, v6, 72);
+      objc_setProperty_atomic_copy(v8, v9, domainCopy, 64);
+      objc_setProperty_atomic_copy(v8, v10, typeCopy, 72);
     }
   }
 
@@ -130,9 +130,9 @@
   return v8;
 }
 
-+ (id)removeNetworkAgentUUID:(id)a3
++ (id)removeNetworkAgentUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [NEPolicyResult alloc];
   if (v4)
   {
@@ -142,7 +142,7 @@
     [v5 setResultType:15];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 56);
+      objc_setProperty_atomic_copy(v5, v6, dCopy, 56);
     }
   }
 
@@ -155,9 +155,9 @@
   return v5;
 }
 
-+ (id)netAgentUUID:(id)a3
++ (id)netAgentUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [NEPolicyResult alloc];
   if (v4)
   {
@@ -167,7 +167,7 @@
     [v5 setResultType:8];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 56);
+      objc_setProperty_atomic_copy(v5, v6, dCopy, 56);
     }
   }
 
@@ -200,7 +200,7 @@
   return v3;
 }
 
-+ (id)filterWithControlUnit:(unsigned int)a3
++ (id)filterWithControlUnit:(unsigned int)unit
 {
   v4 = [NEPolicyResult alloc];
   if (v4)
@@ -211,7 +211,7 @@
     [v5 setResultType:7];
     if (v5)
     {
-      v5[5] = a3;
+      v5[5] = unit;
     }
   }
 
@@ -224,9 +224,9 @@
   return v5;
 }
 
-+ (id)tunnelIPToInterfaceName:(id)a3 secondaryResultType:(int64_t)a4
++ (id)tunnelIPToInterfaceName:(id)name secondaryResultType:(int64_t)type
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = [NEPolicyResult alloc];
   if (v6)
   {
@@ -236,8 +236,8 @@
     [v7 setResultType:6];
     if (v7)
     {
-      objc_setProperty_atomic_copy(v7, v8, v5, 48);
-      v7[5] = a4;
+      objc_setProperty_atomic_copy(v7, v8, nameCopy, 48);
+      v7[5] = type;
     }
   }
 
@@ -270,9 +270,9 @@
   return v3;
 }
 
-+ (id)scopeSocketToInterfaceName:(id)a3
++ (id)scopeSocketToInterfaceName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [NEPolicyResult alloc];
   if (v4)
   {
@@ -282,7 +282,7 @@
     [v5 setResultType:5];
     if (v5)
     {
-      objc_setProperty_atomic_copy(v5, v6, v3, 48);
+      objc_setProperty_atomic_copy(v5, v6, nameCopy, 48);
     }
   }
 
@@ -295,7 +295,7 @@
   return v5;
 }
 
-+ (id)divertSocketToControlUnit:(unsigned int)a3
++ (id)divertSocketToControlUnit:(unsigned int)unit
 {
   v4 = [NEPolicyResult alloc];
   if (v4)
@@ -306,7 +306,7 @@
     [v5 setResultType:4];
     if (v5)
     {
-      v5[5] = a3;
+      v5[5] = unit;
     }
   }
 
@@ -319,7 +319,7 @@
   return v5;
 }
 
-+ (id)dropWithFlags:(unsigned int)a3
++ (id)dropWithFlags:(unsigned int)flags
 {
   v4 = [NEPolicyResult alloc];
   if (v4)
@@ -330,7 +330,7 @@
     [v5 setResultType:3];
     if (v5)
     {
-      v5[4] = a3;
+      v5[4] = flags;
     }
   }
 
@@ -363,7 +363,7 @@
   return v3;
 }
 
-+ (id)skipWithOrder:(unsigned int)a3
++ (id)skipWithOrder:(unsigned int)order
 {
   v4 = [NEPolicyResult alloc];
   if (v4)
@@ -374,7 +374,7 @@
     [v5 setResultType:2];
     if (v5)
     {
-      v5[2] = a3;
+      v5[2] = order;
     }
   }
 
@@ -387,7 +387,7 @@
   return v5;
 }
 
-+ (id)passWithFlags:(unsigned int)a3
++ (id)passWithFlags:(unsigned int)flags
 {
   v4 = [NEPolicyResult alloc];
   if (v4)
@@ -398,7 +398,7 @@
     [v5 setResultType:1];
     if (v5)
     {
-      v5[3] = a3;
+      v5[3] = flags;
     }
   }
 

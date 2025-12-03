@@ -1,14 +1,14 @@
 @interface CONetworkActivityFactory
-+ (id)activityWithLabel:(unsigned int)a3 parentActivity:(id)a4;
++ (id)activityWithLabel:(unsigned int)label parentActivity:(id)activity;
 @end
 
 @implementation CONetworkActivityFactory
 
-+ (id)activityWithLabel:(unsigned int)a3 parentActivity:(id)a4
++ (id)activityWithLabel:(unsigned int)label parentActivity:(id)activity
 {
-  v4 = a4;
+  activityCopy = activity;
   v5 = nw_activity_create();
-  if (v4)
+  if (activityCopy)
   {
     nw_activity_set_parent_activity();
   }

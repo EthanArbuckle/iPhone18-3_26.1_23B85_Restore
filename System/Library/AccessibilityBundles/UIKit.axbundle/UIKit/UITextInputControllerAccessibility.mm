@@ -1,27 +1,27 @@
 @interface UITextInputControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axTextInputResponderAccessibilityParentElementForDelegate:(uint64_t)a1;
-- (void)_accessibilityUpdateSelectionNotification:(id)a3;
-- (void)_sendDelegateChangeNotificationsForText:(BOOL)a3 selection:(BOOL)a4;
-- (void)copy:(id)a3;
-- (void)cut:(id)a3;
-- (void)paste:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)toggleBoldface:(id)a3;
-- (void)toggleItalics:(id)a3;
-- (void)toggleUnderline:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axTextInputResponderAccessibilityParentElementForDelegate:(uint64_t)delegate;
+- (void)_accessibilityUpdateSelectionNotification:(id)notification;
+- (void)_sendDelegateChangeNotificationsForText:(BOOL)text selection:(BOOL)selection;
+- (void)copy:(id)copy;
+- (void)cut:(id)cut;
+- (void)paste:(id)paste;
+- (void)selectAll:(id)all;
+- (void)toggleBoldface:(id)boldface;
+- (void)toggleItalics:(id)italics;
+- (void)toggleUnderline:(id)underline;
 @end
 
 @implementation UITextInputControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v6 = "B";
   v4 = @"UITextInputController";
   v3 = "v";
@@ -41,22 +41,22 @@
   objc_storeStrong(v8, v7);
 }
 
-- (void)_sendDelegateChangeNotificationsForText:(BOOL)a3 selection:(BOOL)a4
+- (void)_sendDelegateChangeNotificationsForText:(BOOL)text selection:(BOOL)selection
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  v10 = a4;
+  textCopy = text;
+  selectionCopy = selection;
   v9.receiver = self;
   v9.super_class = UITextInputControllerAccessibility;
-  [(UITextInputControllerAccessibility *)&v9 _sendDelegateChangeNotificationsForText:a3 selection:a4];
+  [(UITextInputControllerAccessibility *)&v9 _sendDelegateChangeNotificationsForText:text selection:selection];
   v7 = 0;
-  v4 = 0;
-  if (v10)
+  isFirstResponder = 0;
+  if (selectionCopy)
   {
-    v8 = [(UITextInputControllerAccessibility *)v13 safeUIViewForKey:@"_firstTextView"];
+    v8 = [(UITextInputControllerAccessibility *)selfCopy safeUIViewForKey:@"_firstTextView"];
     v7 = 1;
-    v4 = [v8 isFirstResponder];
+    isFirstResponder = [v8 isFirstResponder];
   }
 
   if (v7)
@@ -64,10 +64,10 @@
     MEMORY[0x29EDC9740](v8);
   }
 
-  if (v4)
+  if (isFirstResponder)
   {
-    v6 = v11;
-    v5 = MEMORY[0x29EDC9748](v13);
+    v6 = textCopy;
+    v5 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformBlockAsynchronouslyOnMainThread();
     objc_storeStrong(&v5, 0);
   }
@@ -100,16 +100,16 @@ double __88__UITextInputControllerAccessibility__sendDelegateChangeNotifications
   return result;
 }
 
-- (id)_axTextInputResponderAccessibilityParentElementForDelegate:(uint64_t)a1
+- (id)_axTextInputResponderAccessibilityParentElementForDelegate:(uint64_t)delegate
 {
-  v12 = a1;
+  delegateCopy = delegate;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v12)
+  if (delegateCopy)
   {
-    v8 = [location _accessibilityWindow];
-    MEMORY[0x29EDC9740](v8);
-    if (v8)
+    _accessibilityWindow = [location _accessibilityWindow];
+    MEMORY[0x29EDC9740](_accessibilityWindow);
+    if (_accessibilityWindow)
     {
       v9 = MEMORY[0x29EDC9748](location);
       while (v9 && ([v9 isAccessibilityElement] & 1) == 0)
@@ -117,16 +117,16 @@ double __88__UITextInputControllerAccessibility__sendDelegateChangeNotifications
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v2 = [v9 _accessibilityResponderElement];
+          _accessibilityResponderElement = [v9 _accessibilityResponderElement];
           v3 = v9;
-          v9 = v2;
+          v9 = _accessibilityResponderElement;
           MEMORY[0x29EDC9740](v3);
           break;
         }
 
-        v4 = [v9 accessibilityContainer];
+        accessibilityContainer = [v9 accessibilityContainer];
         v5 = v9;
-        v9 = v4;
+        v9 = accessibilityContainer;
         MEMORY[0x29EDC9740](v5);
       }
 
@@ -154,13 +154,13 @@ double __88__UITextInputControllerAccessibility__sendDelegateChangeNotifications
   return v6;
 }
 
-- (void)_accessibilityUpdateSelectionNotification:(id)a3
+- (void)_accessibilityUpdateSelectionNotification:(id)notification
 {
   v16 = *MEMORY[0x29EDCA608];
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, notification);
   argument = 0;
   v9 = [location[0] _accessibilityFindAncestor:&__block_literal_global_49 startWithSelf:1];
   if ([v9 _accessibilityTextViewIgnoresValueChanges])
@@ -189,7 +189,7 @@ double __88__UITextInputControllerAccessibility__sendDelegateChangeNotifications
       MEMORY[0x29EDC9740](v4);
     }
 
-    v5 = [(UITextInputControllerAccessibility *)v12 _axTextInputResponderAccessibilityParentElementForDelegate:?];
+    v5 = [(UITextInputControllerAccessibility *)selfCopy _axTextInputResponderAccessibilityParentElementForDelegate:?];
     if (v5)
     {
       _UIAccessibilitySetAssociatedElementContextForNextNotification();
@@ -222,43 +222,43 @@ uint64_t __80__UITextInputControllerAccessibility__accessibilityUpdateSelectionN
   return isKindOfClass & 1;
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, copy);
+  v3.receiver = selfCopy;
   v3.super_class = UITextInputControllerAccessibility;
   [(UITextInputControllerAccessibility *)&v3 copy:location[0]];
-  [(UITextInputControllerAccessibility *)v5 _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC18]];
+  [(UITextInputControllerAccessibility *)selfCopy _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC18]];
   objc_storeStrong(location, 0);
 }
 
-- (void)cut:(id)a3
+- (void)cut:(id)cut
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UITextInputControllerAccessibility *)v5 _accessibilityIgnoreNextPostPasteboardTextOperation:*MEMORY[0x29EDBDC18]];
-  v3.receiver = v5;
+  objc_storeStrong(location, cut);
+  [(UITextInputControllerAccessibility *)selfCopy _accessibilityIgnoreNextPostPasteboardTextOperation:*MEMORY[0x29EDBDC18]];
+  v3.receiver = selfCopy;
   v3.super_class = UITextInputControllerAccessibility;
   [(UITextInputControllerAccessibility *)&v3 cut:location[0]];
-  [(UITextInputControllerAccessibility *)v5 _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC20]];
+  [(UITextInputControllerAccessibility *)selfCopy _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC20]];
   objc_storeStrong(location, 0);
 }
 
-- (void)paste:(id)a3
+- (void)paste:(id)paste
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(UITextInputControllerAccessibility *)v7 safeValueForKey:@"delegate"];
-  v4 = [(UITextInputControllerAccessibility *)v7 _axTextInputResponderAccessibilityParentElementForDelegate:v5];
-  [(UITextInputControllerAccessibility *)v7 _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC50] associatedObject:v4];
-  v3.receiver = v7;
+  objc_storeStrong(location, paste);
+  v5 = [(UITextInputControllerAccessibility *)selfCopy safeValueForKey:@"delegate"];
+  v4 = [(UITextInputControllerAccessibility *)selfCopy _axTextInputResponderAccessibilityParentElementForDelegate:v5];
+  [(UITextInputControllerAccessibility *)selfCopy _accessibilityPostPasteboardTextForOperation:*MEMORY[0x29EDBDC50] associatedObject:v4];
+  v3.receiver = selfCopy;
   v3.super_class = UITextInputControllerAccessibility;
   [(UITextInputControllerAccessibility *)&v3 paste:location[0]];
   objc_storeStrong(&v4, 0);
@@ -266,13 +266,13 @@ uint64_t __80__UITextInputControllerAccessibility__accessibilityUpdateSelectionN
   objc_storeStrong(location, 0);
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5.receiver = v7;
+  objc_storeStrong(location, all);
+  v5.receiver = selfCopy;
   v5.super_class = UITextInputControllerAccessibility;
   [(UITextInputControllerAccessibility *)&v5 selectAll:location[0]];
   notification = *MEMORY[0x29EDC7EA8];
@@ -282,18 +282,18 @@ uint64_t __80__UITextInputControllerAccessibility__accessibilityUpdateSelectionN
   objc_storeStrong(location, 0);
 }
 
-- (void)toggleBoldface:(id)a3
+- (void)toggleBoldface:(id)boldface
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21.receiver = v23;
+  objc_storeStrong(location, boldface);
+  v21.receiver = selfCopy;
   v21.super_class = UITextInputControllerAccessibility;
   [(UITextInputControllerAccessibility *)&v21 toggleBoldface:location[0]];
   v19 = 0;
   objc_opt_class();
-  v8 = [(UITextInputControllerAccessibility *)v23 safeValueForKey:@"typingAttributes"];
+  v8 = [(UITextInputControllerAccessibility *)selfCopy safeValueForKey:@"typingAttributes"];
   v18 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v8);
   v17 = MEMORY[0x29EDC9748](v18);
@@ -308,9 +308,9 @@ uint64_t __80__UITextInputControllerAccessibility__accessibilityUpdateSelectionN
     MEMORY[0x29EDC9740](0);
   }
 
-  v5 = [v16 fontDescriptor];
-  v6 = ([v5 symbolicTraits] & 2) != 0;
-  MEMORY[0x29EDC9740](v5);
+  fontDescriptor = [v16 fontDescriptor];
+  v6 = ([fontDescriptor symbolicTraits] & 2) != 0;
+  MEMORY[0x29EDC9740](fontDescriptor);
   v15 = v6;
   v12 = 0;
   v10 = 0;
@@ -350,18 +350,18 @@ uint64_t __80__UITextInputControllerAccessibility__accessibilityUpdateSelectionN
   objc_storeStrong(location, 0);
 }
 
-- (void)toggleUnderline:(id)a3
+- (void)toggleUnderline:(id)underline
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v18.receiver = v20;
+  objc_storeStrong(location, underline);
+  v18.receiver = selfCopy;
   v18.super_class = UITextInputControllerAccessibility;
   [(UITextInputControllerAccessibility *)&v18 toggleUnderline:location[0]];
   v16 = 0;
   objc_opt_class();
-  v5 = [(UITextInputControllerAccessibility *)v20 safeValueForKey:@"typingAttributes"];
+  v5 = [(UITextInputControllerAccessibility *)selfCopy safeValueForKey:@"typingAttributes"];
   v15 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v5);
   v14 = MEMORY[0x29EDC9748](v15);
@@ -407,18 +407,18 @@ uint64_t __80__UITextInputControllerAccessibility__accessibilityUpdateSelectionN
   objc_storeStrong(location, 0);
 }
 
-- (void)toggleItalics:(id)a3
+- (void)toggleItalics:(id)italics
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v21.receiver = v23;
+  objc_storeStrong(location, italics);
+  v21.receiver = selfCopy;
   v21.super_class = UITextInputControllerAccessibility;
   [(UITextInputControllerAccessibility *)&v21 toggleItalics:location[0]];
   v19 = 0;
   objc_opt_class();
-  v8 = [(UITextInputControllerAccessibility *)v23 safeValueForKey:@"typingAttributes"];
+  v8 = [(UITextInputControllerAccessibility *)selfCopy safeValueForKey:@"typingAttributes"];
   v18 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v8);
   v17 = MEMORY[0x29EDC9748](v18);
@@ -433,9 +433,9 @@ uint64_t __80__UITextInputControllerAccessibility__accessibilityUpdateSelectionN
     MEMORY[0x29EDC9740](0);
   }
 
-  v5 = [v16 fontDescriptor];
-  v6 = ([v5 symbolicTraits] & 1) != 0;
-  MEMORY[0x29EDC9740](v5);
+  fontDescriptor = [v16 fontDescriptor];
+  v6 = ([fontDescriptor symbolicTraits] & 1) != 0;
+  MEMORY[0x29EDC9740](fontDescriptor);
   v15 = v6;
   v12 = 0;
   v10 = 0;

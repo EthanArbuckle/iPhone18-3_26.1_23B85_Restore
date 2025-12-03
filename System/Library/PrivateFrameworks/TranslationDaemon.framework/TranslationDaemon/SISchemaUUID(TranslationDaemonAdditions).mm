@@ -8,12 +8,12 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    [a1 toSafeNSUUID];
+    [self toSafeNSUUID];
   }
 
   else
   {
-    [a1 toNSUUID];
+    [self toNSUUID];
   }
   v2 = ;
 

@@ -1,18 +1,18 @@
 @interface ShaderFallback
-- (_TtC17ShaderFallbackKit14ShaderFallback)initWithFrame:(CGRect)a3;
-- (void)drawInMTKView:(id)a3;
+- (_TtC17ShaderFallbackKit14ShaderFallback)initWithFrame:(CGRect)frame;
+- (void)drawInMTKView:(id)view;
 @end
 
 @implementation ShaderFallback
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  ShaderFallback.draw(in:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  ShaderFallback.draw(in:)(viewCopy);
 }
 
-- (_TtC17ShaderFallbackKit14ShaderFallback)initWithFrame:(CGRect)a3
+- (_TtC17ShaderFallbackKit14ShaderFallback)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

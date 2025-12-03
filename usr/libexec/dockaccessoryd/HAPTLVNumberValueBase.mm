@@ -1,12 +1,12 @@
 @interface HAPTLVNumberValueBase
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPTLVNumberValueBase)init;
-- (HAPTLVNumberValueBase)initWithValue:(id)a3;
-- (id)_parseFromData:(const char *)a3 length:(unint64_t)a4 status:(int *)a5;
+- (HAPTLVNumberValueBase)initWithValue:(id)value;
+- (id)_parseFromData:(const char *)data length:(unint64_t)length status:(int *)status;
 - (id)_serialize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPTLVNumberValueBase
@@ -18,34 +18,34 @@
   return [(HAPTLVNumberValueBase *)&v3 init];
 }
 
-- (HAPTLVNumberValueBase)initWithValue:(id)a3
+- (HAPTLVNumberValueBase)initWithValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   v9.receiver = self;
   v9.super_class = HAPTLVNumberValueBase;
   v6 = [(HAPTLVNumberValueBase *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_value, a3);
+    objc_storeStrong(&v6->_value, value);
   }
 
   return v7;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  if ([v6 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
     v10 = 0;
-    v7 = -[HAPTLVNumberValueBase _parseFromData:length:status:](self, "_parseFromData:length:status:", [v6 bytes], objc_msgSend(v6, "length"), &v10);
+    v7 = -[HAPTLVNumberValueBase _parseFromData:length:status:](self, "_parseFromData:length:status:", [dataCopy bytes], objc_msgSend(dataCopy, "length"), &v10);
     v8 = v10 == 0;
     if (v10)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = sub_100041618(v10);
+        *error = sub_100041618(v10);
       }
     }
 
@@ -55,10 +55,10 @@
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     [NSError hmfErrorWithCode:3];
-    *a4 = v8 = 0;
+    *error = v8 = 0;
   }
 
   else
@@ -69,7 +69,7 @@
   return v8;
 }
 
-- (id)_parseFromData:(const char *)a3 length:(unint64_t)a4 status:(int *)a5
+- (id)_parseFromData:(const char *)data length:(unint64_t)length status:(int *)status
 {
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"%@ is unavailable", v5];
@@ -79,22 +79,22 @@
   objc_exception_throw(v7);
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
-  if (a3 && ([(HAPTLVNumberValueBase *)self value], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (error && ([(HAPTLVNumberValueBase *)self value], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v7 = [NSError hmfErrorWithCode:8];
     v8 = v7;
-    v6 = 0;
-    *a3 = v7;
+    _serialize = 0;
+    *error = v7;
   }
 
   else
   {
-    v6 = [(HAPTLVNumberValueBase *)self _serialize];
+    _serialize = [(HAPTLVNumberValueBase *)self _serialize];
   }
 
-  return v6;
+  return _serialize;
 }
 
 - (id)_serialize
@@ -107,19 +107,19 @@
   objc_exception_throw(v4);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPTLVNumberValueBase allocWithZone:a3];
-  v5 = [(HAPTLVNumberValueBase *)self value];
-  v6 = [(HAPTLVNumberValueBase *)v4 initWithValue:v5];
+  v4 = [HAPTLVNumberValueBase allocWithZone:zone];
+  value = [(HAPTLVNumberValueBase *)self value];
+  v6 = [(HAPTLVNumberValueBase *)v4 initWithValue:value];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -129,11 +129,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPTLVNumberValueBase *)self value];
-      v7 = [(HAPTLVNumberValueBase *)v5 value];
+      v5 = equalCopy;
+      value = [(HAPTLVNumberValueBase *)self value];
+      value2 = [(HAPTLVNumberValueBase *)v5 value];
 
-      v8 = [v6 isEqualToNumber:v7];
+      v8 = [value isEqualToNumber:value2];
     }
 
     else

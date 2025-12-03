@@ -1,5 +1,5 @@
 @interface NSFESelEvent
-+ (BOOL)handle:(id)a3;
++ (BOOL)handle:(id)handle;
 - (NSFESelEvent)init;
 - (NSString)description;
 @end
@@ -8,7 +8,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_100009008();
 
   v3 = String._bridgeToObjectiveC()();
@@ -16,10 +16,10 @@
   return v3;
 }
 
-+ (BOOL)handle:(id)a3
++ (BOOL)handle:(id)handle
 {
-  v3 = a3;
-  v4 = sub_10000B8A4(v3);
+  handleCopy = handle;
+  v4 = sub_10000B8A4(handleCopy);
 
   return v4;
 }

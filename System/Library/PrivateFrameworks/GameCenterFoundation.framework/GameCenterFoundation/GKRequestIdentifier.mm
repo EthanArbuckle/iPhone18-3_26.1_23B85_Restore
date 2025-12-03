@@ -1,28 +1,28 @@
 @interface GKRequestIdentifier
-+ (id)requestIdentifierForInvocation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (GKRequestIdentifier)initWithInvocation:(id)a3;
++ (id)requestIdentifierForInvocation:(id)invocation;
+- (BOOL)isEqual:(id)equal;
+- (GKRequestIdentifier)initWithInvocation:(id)invocation;
 - (SEL)selector;
-- (id)_argumentsForInvocation:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_argumentsForInvocation:(id)invocation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setSelector:(SEL)a3;
+- (void)setSelector:(SEL)selector;
 @end
 
 @implementation GKRequestIdentifier
 
-- (id)_argumentsForInvocation:(id)a3
+- (id)_argumentsForInvocation:(id)invocation
 {
-  v3 = a3;
-  v4 = [v3 methodSignature];
-  v5 = [v4 numberOfArguments];
-  v6 = v5 - [v3 _gkHasReplyBlock];
+  invocationCopy = invocation;
+  methodSignature = [invocationCopy methodSignature];
+  numberOfArguments = [methodSignature numberOfArguments];
+  v6 = numberOfArguments - [invocationCopy _gkHasReplyBlock];
   v7 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v6];
   if (v6 >= 3)
   {
     for (i = 2; v6 != i; ++i)
     {
-      v9 = *[v4 getArgumentTypeAtIndex:i];
+      v9 = *[methodSignature getArgumentTypeAtIndex:i];
       if (v9 <= 0x52)
       {
         if (v9 > 66)
@@ -37,9 +37,9 @@
               }
 
 LABEL_33:
-              v14 = 0;
-              [v3 getArgument:&v14 atIndex:i];
-              v10 = [MEMORY[0x277CCABB0] numberWithLongLong:v14];
+              null = 0;
+              [invocationCopy getArgument:&null atIndex:i];
+              v10 = [MEMORY[0x277CCABB0] numberWithLongLong:null];
               goto LABEL_38;
             }
           }
@@ -58,9 +58,9 @@ LABEL_33:
           }
 
 LABEL_25:
-          LODWORD(v14) = 0;
-          [v3 getArgument:&v14 atIndex:i];
-          v10 = [MEMORY[0x277CCABB0] numberWithInt:v14];
+          LODWORD(null) = 0;
+          [invocationCopy getArgument:&null atIndex:i];
+          v10 = [MEMORY[0x277CCABB0] numberWithInt:null];
           goto LABEL_38;
         }
 
@@ -71,11 +71,11 @@ LABEL_25:
 
         if (v9 == 64)
         {
-          v14 = 0;
-          [v3 getArgument:&v14 atIndex:i];
-          if (!v14)
+          null = 0;
+          [invocationCopy getArgument:&null atIndex:i];
+          if (!null)
           {
-            v14 = [MEMORY[0x277CBEB68] null];
+            null = [MEMORY[0x277CBEB68] null];
           }
 
           [v7 addObject:?];
@@ -90,9 +90,9 @@ LABEL_41:
           continue;
         }
 
-        LOBYTE(v14) = 0;
-        [v3 getArgument:&v14 atIndex:i];
-        v10 = [MEMORY[0x277CCABB0] numberWithBool:v14];
+        LOBYTE(null) = 0;
+        [invocationCopy getArgument:&null atIndex:i];
+        v10 = [MEMORY[0x277CCABB0] numberWithBool:null];
       }
 
       else
@@ -112,9 +112,9 @@ LABEL_41:
             }
 
 LABEL_31:
-            LOWORD(v14) = 0;
-            [v3 getArgument:&v14 atIndex:i];
-            v10 = [MEMORY[0x277CCABB0] numberWithShort:v14];
+            LOWORD(null) = 0;
+            [invocationCopy getArgument:&null atIndex:i];
+            v10 = [MEMORY[0x277CCABB0] numberWithShort:null];
             goto LABEL_38;
           }
 
@@ -136,9 +136,9 @@ LABEL_31:
             }
 
 LABEL_32:
-            LOBYTE(v14) = 0;
-            [v3 getArgument:&v14 atIndex:i];
-            v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:v14];
+            LOBYTE(null) = 0;
+            [invocationCopy getArgument:&null atIndex:i];
+            v10 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:null];
             goto LABEL_38;
           }
 
@@ -147,9 +147,9 @@ LABEL_32:
 
         if (v9 == 100)
         {
-          v14 = 0;
-          [v3 getArgument:&v14 atIndex:i];
-          v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&v14];
+          null = 0;
+          [invocationCopy getArgument:&null atIndex:i];
+          v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&null];
         }
 
         else
@@ -159,9 +159,9 @@ LABEL_32:
             goto LABEL_41;
           }
 
-          LODWORD(v14) = 0;
-          [v3 getArgument:&v14 atIndex:i];
-          LODWORD(v11) = v14;
+          LODWORD(null) = 0;
+          [invocationCopy getArgument:&null atIndex:i];
+          LODWORD(v11) = null;
           v10 = [MEMORY[0x277CCABB0] numberWithFloat:v11];
         }
       }
@@ -175,9 +175,9 @@ LABEL_38:
   return v7;
 }
 
-- (GKRequestIdentifier)initWithInvocation:(id)a3
+- (GKRequestIdentifier)initWithInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v13.receiver = self;
   v13.super_class = GKRequestIdentifier;
   v5 = [(GKRequestIdentifier *)&v13 init];
@@ -185,10 +185,10 @@ LABEL_38:
   if (v5)
   {
     p_selector = &v5->_selector;
-    v8 = [v4 selector];
-    if (v8)
+    selector = [invocationCopy selector];
+    if (selector)
     {
-      *p_selector = v8;
+      *p_selector = selector;
     }
 
     else
@@ -196,10 +196,10 @@ LABEL_38:
       *p_selector = 0;
     }
 
-    v9 = NSStringFromSelector(v8);
+    v9 = NSStringFromSelector(selector);
     v6->_savedHash = [v9 hash];
 
-    v10 = [(GKRequestIdentifier *)v6 _argumentsForInvocation:v4];
+    v10 = [(GKRequestIdentifier *)v6 _argumentsForInvocation:invocationCopy];
     arguments = v6->_arguments;
     v6->_arguments = v10;
   }
@@ -207,21 +207,21 @@ LABEL_38:
   return v6;
 }
 
-+ (id)requestIdentifierForInvocation:(id)a3
++ (id)requestIdentifierForInvocation:(id)invocation
 {
-  v3 = a3;
-  v4 = [[GKRequestIdentifier alloc] initWithInvocation:v3];
+  invocationCopy = invocation;
+  v4 = [[GKRequestIdentifier alloc] initWithInvocation:invocationCopy];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = [(GKRequestIdentifier *)self hash];
     if (v6 == [v5 hash] && (!self->_selector ? (selector = 0) : (selector = self->_selector), !v5[2] ? (v9 = 0) : (v9 = v5[2]), sel_isEqual(selector, v9)))
     {
@@ -242,7 +242,7 @@ LABEL_38:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[GKRequestIdentifier allocWithZone:?]];
   selector = self->_selector;
@@ -287,19 +287,19 @@ LABEL_38:
   }
 }
 
-- (void)setSelector:(SEL)a3
+- (void)setSelector:(SEL)selector
 {
-  if (a3)
+  if (selector)
   {
-    v3 = a3;
+    selectorCopy = selector;
   }
 
   else
   {
-    v3 = 0;
+    selectorCopy = 0;
   }
 
-  self->_selector = v3;
+  self->_selector = selectorCopy;
 }
 
 @end

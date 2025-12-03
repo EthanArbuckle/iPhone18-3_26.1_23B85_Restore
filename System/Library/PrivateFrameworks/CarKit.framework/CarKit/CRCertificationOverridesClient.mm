@@ -1,21 +1,21 @@
 @interface CRCertificationOverridesClient
-+ (void)_servicePerformBlock:(id)a3 errorHandler:(id)a4;
-+ (void)fetchNextSessionOverrideAirPlayFeatureStringsWithCompletion:(id)a3;
-+ (void)setNextSessionOverrideAirPlayFeatureStrings:(id)a3 completion:(id)a4;
++ (void)_servicePerformBlock:(id)block errorHandler:(id)handler;
++ (void)fetchNextSessionOverrideAirPlayFeatureStringsWithCompletion:(id)completion;
++ (void)setNextSessionOverrideAirPlayFeatureStrings:(id)strings completion:(id)completion;
 @end
 
 @implementation CRCertificationOverridesClient
 
-+ (void)setNextSessionOverrideAirPlayFeatureStrings:(id)a3 completion:(id)a4
++ (void)setNextSessionOverrideAirPlayFeatureStrings:(id)strings completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stringsCopy = strings;
+  completionCopy = completion;
   v8 = CarGeneralLogging();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = stringsCopy;
     _os_log_impl(&dword_1C81FC000, v8, OS_LOG_TYPE_DEFAULT, "setNextSessionOverrideAirPlayFeatureStrings: %{public}@", buf, 0xCu);
   }
 
@@ -23,11 +23,11 @@
   v11[1] = 3221225472;
   v11[2] = __89__CRCertificationOverridesClient_setNextSessionOverrideAirPlayFeatureStrings_completion___block_invoke;
   v11[3] = &unk_1E82FD538;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [a1 _servicePerformBlock:v11 errorHandler:&__block_literal_global_28];
+  v12 = stringsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = stringsCopy;
+  [self _servicePerformBlock:v11 errorHandler:&__block_literal_global_28];
 }
 
 void __89__CRCertificationOverridesClient_setNextSessionOverrideAirPlayFeatureStrings_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -86,16 +86,16 @@ void __89__CRCertificationOverridesClient_setNextSessionOverrideAirPlayFeatureSt
   }
 }
 
-+ (void)fetchNextSessionOverrideAirPlayFeatureStringsWithCompletion:(id)a3
++ (void)fetchNextSessionOverrideAirPlayFeatureStringsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __94__CRCertificationOverridesClient_fetchNextSessionOverrideAirPlayFeatureStringsWithCompletion___block_invoke;
   v6[3] = &unk_1E82FD560;
-  v7 = v4;
-  v5 = v4;
-  [a1 _servicePerformBlock:v6 errorHandler:&__block_literal_global_26];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [self _servicePerformBlock:v6 errorHandler:&__block_literal_global_26];
 }
 
 void __94__CRCertificationOverridesClient_fetchNextSessionOverrideAirPlayFeatureStringsWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -149,10 +149,10 @@ void __94__CRCertificationOverridesClient_fetchNextSessionOverrideAirPlayFeature
   }
 }
 
-+ (void)_servicePerformBlock:(id)a3 errorHandler:(id)a4
++ (void)_servicePerformBlock:(id)block errorHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  blockCopy = block;
+  handlerCopy = handler;
   v7 = CarCertificationOverrideLogging();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -168,17 +168,17 @@ void __94__CRCertificationOverridesClient_fetchNextSessionOverrideAirPlayFeature
   v14[1] = 3221225472;
   v14[2] = __68__CRCertificationOverridesClient__servicePerformBlock_errorHandler___block_invoke;
   v14[3] = &unk_1E82FBF48;
-  v10 = v6;
+  v10 = handlerCopy;
   v15 = v10;
   v11 = [v9 remoteObjectProxyWithErrorHandler:v14];
-  if (v5)
+  if (blockCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __68__CRCertificationOverridesClient__servicePerformBlock_errorHandler___block_invoke_2;
     v12[3] = &unk_1E82FBF70;
     v13 = v9;
-    v5[2](v5, v11, v12);
+    blockCopy[2](blockCopy, v11, v12);
   }
 }
 

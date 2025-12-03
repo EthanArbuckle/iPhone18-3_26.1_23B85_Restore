@@ -1,35 +1,35 @@
 @interface FlexMLSong
-+ (id)loadSongAtPath:(id)a3;
++ (id)loadSongAtPath:(id)path;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)minimumDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)naturalDuration;
-- (BOOL)verifyRendition:(id)a3 forDuration:(id *)a4 failureReason:(id *)a5;
-- (FlexMLSong)initWithFileAtPath:(id)a3;
+- (BOOL)verifyRendition:(id)rendition forDuration:(id *)duration failureReason:(id *)reason;
+- (FlexMLSong)initWithFileAtPath:(id)path;
 - (NSURL)audioFileURL;
 - (id)_summaryManager;
 - (id)idealDurations;
-- (id)renditionForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5;
-- (id)timedMetadataItemsWithIdentifier:(id)a3 forRendition:(id)a4;
-- (void)setCachedNaturalDuration:(id *)a3;
+- (id)renditionForDuration:(id *)duration withOptions:(id)options testingContext:(id)context;
+- (id)timedMetadataItemsWithIdentifier:(id)identifier forRendition:(id)rendition;
+- (void)setCachedNaturalDuration:(id *)duration;
 @end
 
 @implementation FlexMLSong
 
-+ (id)loadSongAtPath:(id)a3
++ (id)loadSongAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v4 = [FlexMLSong alloc];
-  v8 = objc_msgSend_initWithFileAtPath_(v4, v5, v3, v6, v7);
+  v8 = objc_msgSend_initWithFileAtPath_(v4, v5, pathCopy, v6, v7);
 
   return v8;
 }
 
-- (FlexMLSong)initWithFileAtPath:(id)a3
+- (FlexMLSong)initWithFileAtPath:(id)path
 {
   v172 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  pathCopy = path;
   v10 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v6, v7, v8, v9);
   v169 = 0;
-  v13 = objc_msgSend_contentsOfDirectoryAtPath_error_(v10, v11, v5, &v169, v12);
+  v13 = objc_msgSend_contentsOfDirectoryAtPath_error_(v10, v11, pathCopy, &v169, v12);
   v14 = v169;
 
   v167 = 0u;
@@ -37,11 +37,11 @@
   v165 = 0u;
   v166 = 0u;
   v15 = v13;
-  v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v165, v171, 16);
-  if (v21)
+  selfCopy = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v16, &v165, v171, 16);
+  if (selfCopy)
   {
     v162 = v14;
-    v163 = v5;
+    v163 = pathCopy;
     v22 = *v166;
 LABEL_3:
     v23 = 0;
@@ -61,32 +61,32 @@ LABEL_3:
         break;
       }
 
-      if (v21 == ++v23)
+      if (selfCopy == ++v23)
       {
-        v21 = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v17, &v165, v171, 16);
-        if (v21)
+        selfCopy = objc_msgSend_countByEnumeratingWithState_objects_count_(v15, v17, &v165, v171, 16);
+        if (selfCopy)
         {
           goto LABEL_3;
         }
 
         v30 = v15;
         v14 = v162;
-        v5 = v163;
+        pathCopy = v163;
         goto LABEL_32;
       }
     }
 
-    v5 = v163;
+    pathCopy = v163;
     v30 = objc_msgSend_stringByAppendingPathComponent_(v163, v17, v24, v19, v20);
 
     if (!v30)
     {
-      v21 = 0;
+      selfCopy = 0;
       v14 = v162;
       goto LABEL_33;
     }
 
-    objc_storeStrong(&self->_rootPath, a3);
+    objc_storeStrong(&self->_rootPath, path);
     objc_storeStrong(&self->_metadataPath, v30);
     v34 = objc_msgSend_dictionaryWithContentsOfFile_(MEMORY[0x277CBEB38], v31, v30, v32, v33);
     v38 = objc_msgSend_objectForKey_(v34, v35, @"plistRuntimeVersion", v36, v37);
@@ -94,7 +94,7 @@ LABEL_3:
 
     if ((v43 - 1) > 1)
     {
-      v21 = 0;
+      selfCopy = 0;
       v14 = v162;
 LABEL_31:
 
@@ -135,7 +135,7 @@ LABEL_31:
 LABEL_30:
       self = v91;
 
-      v21 = self;
+      selfCopy = self;
       goto LABEL_31;
     }
 
@@ -196,7 +196,7 @@ LABEL_29:
         v144 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v142, &v170, 1, v143);
         objc_msgSend__setupInitialAssets_(v91, v145, v144, v146, v147);
 
-        v5 = v163;
+        pathCopy = v163;
         v65 = v153;
         v47 = v154;
         goto LABEL_30;
@@ -222,7 +222,7 @@ LABEL_32:
 
 LABEL_33:
   v148 = *MEMORY[0x277D85DE8];
-  return v21;
+  return selfCopy;
 }
 
 - (id)_summaryManager
@@ -239,14 +239,14 @@ LABEL_33:
   return v23;
 }
 
-- (id)renditionForDuration:(id *)a3 withOptions:(id)a4 testingContext:(id)a5
+- (id)renditionForDuration:(id *)duration withOptions:(id)options testingContext:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  optionsCopy = options;
   v8 = FlexLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = *a3;
+    v24 = *duration;
     Seconds = CMTimeGetSeconds(&v24);
     LODWORD(v24.var0) = 134217984;
     *(&v24.var0 + 4) = Seconds;
@@ -254,22 +254,22 @@ LABEL_33:
   }
 
   v14 = objc_msgSend__summaryManager(self, v10, v11, v12, v13);
-  v24 = *a3;
+  v24 = *duration;
   v18 = objc_msgSend_summaryForDuration_(v14, v15, &v24, v16, v17);
   v19 = [FlexMLSongRendition alloc];
-  v24 = *a3;
-  v21 = objc_msgSend_initWithSong_options_andSummary_forDuration_(v19, v20, self, v7, v18, &v24);
+  v24 = *duration;
+  v21 = objc_msgSend_initWithSong_options_andSummary_forDuration_(v19, v20, self, optionsCopy, v18, &v24);
 
   v22 = *MEMORY[0x277D85DE8];
 
   return v21;
 }
 
-- (id)timedMetadataItemsWithIdentifier:(id)a3 forRendition:(id)a4
+- (id)timedMetadataItemsWithIdentifier:(id)identifier forRendition:(id)rendition
 {
   v738 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  renditionCopy = rendition;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -277,7 +277,7 @@ LABEL_33:
     goto LABEL_138;
   }
 
-  v7 = v6;
+  v7 = renditionCopy;
   v12 = objc_msgSend_array(MEMORY[0x277CBEB18], v8, v9, v10, v11);
   v17 = objc_msgSend_summary(v7, v13, v14, v15, v16);
   v22 = objc_msgSend_videoCues(v17, v18, v19, v20, v21);
@@ -365,11 +365,11 @@ LABEL_33:
 
     v115 = v35;
     v116 = preferredTimescale;
-    v642 = v5;
-    v640 = v6;
+    v642 = identifierCopy;
+    v640 = renditionCopy;
     v670 = v12;
     v646 = v94;
-    if (objc_msgSend_isEqualToString_(v5, v104, @"FMTimedMetadataIdentifierLoopPoints", v105, v106))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v104, @"FMTimedMetadataIdentifierLoopPoints", v105, v106))
     {
       v698 = 0u;
       v699 = 0u;
@@ -419,8 +419,8 @@ LABEL_33:
         }
 
         while (v133);
-        v5 = v642;
-        v6 = v640;
+        identifierCopy = v642;
+        renditionCopy = v640;
         v7 = v644;
         v94 = v646;
       }
@@ -428,7 +428,7 @@ LABEL_33:
 
     else
     {
-      if (!objc_msgSend_isEqualToString_(v5, v117, @"FMTimedMetadataIdentifierSection", v119, v120))
+      if (!objc_msgSend_isEqualToString_(identifierCopy, v117, @"FMTimedMetadataIdentifierSection", v119, v120))
       {
         goto LABEL_53;
       }
@@ -536,7 +536,7 @@ LABEL_33:
 
       if (isEqualToString)
       {
-        v6 = v640;
+        renditionCopy = v640;
         v7 = v644;
         v94 = v646;
         v252 = objc_msgSend_durationOfSilence(v644, v248, v249, v250, v251);
@@ -551,7 +551,7 @@ LABEL_33:
         CMTimeMakeWithSeconds(&start.start, v262, preferredTimescale);
         duration = **&MEMORY[0x277CC08F0];
         CMTimeRangeMake(&v695, &start.start, &duration);
-        v6 = v640;
+        renditionCopy = v640;
         v7 = v644;
         if (v666)
         {
@@ -582,7 +582,7 @@ LABEL_33:
         v284 = objc_msgSend_initWithIdentifier_name_timeRange_values_(v282, v283, @"FMTimedMetadataIdentifierSection", @"section", &start, v281);
         objc_msgSend_addObject_(v670, v285, v284, v286, v287);
 
-        v5 = v642;
+        identifierCopy = v642;
         v252 = objc_msgSend_durationOfSilence(v644, v288, v289, v290, v291);
       }
 
@@ -607,7 +607,7 @@ LABEL_33:
 
 LABEL_53:
     v301 = v115 / v116;
-    if (objc_msgSend_isEqualToString_(v5, v162, @"FMTimedMetadataIdentifierSegment", v163, v164))
+    if (objc_msgSend_isEqualToString_(identifierCopy, v162, @"FMTimedMetadataIdentifierSegment", v163, v164))
     {
       v660 = objc_msgSend_objectForKeyedSubscript_(v641, v302, @"fadeToBlack", v303, v304);
       v309 = objc_msgSend_summary(v7, v305, v306, v307, v308);
@@ -792,13 +792,13 @@ LABEL_69:
         objc_msgSend_addObject_(v12, v442, v441, v443, v444);
       }
 
-      v5 = v642;
-      v6 = v640;
+      identifierCopy = v642;
+      renditionCopy = v640;
       v445 = v660;
       goto LABEL_121;
     }
 
-    if ((objc_msgSend_isEqualToString_(v5, v302, @"FMTimedMetadataIdentifierBar", v303, v304) & 1) == 0 && !objc_msgSend_isEqualToString_(v5, v446, @"FMTimedMetadataIdentifierBeat", v448, v449))
+    if ((objc_msgSend_isEqualToString_(identifierCopy, v302, @"FMTimedMetadataIdentifierBar", v303, v304) & 1) == 0 && !objc_msgSend_isEqualToString_(identifierCopy, v446, @"FMTimedMetadataIdentifierBeat", v448, v449))
     {
       goto LABEL_122;
     }
@@ -835,7 +835,7 @@ LABEL_69:
     {
 LABEL_120:
 
-      v6 = v640;
+      renditionCopy = v640;
 LABEL_121:
 
       v94 = v646;
@@ -983,13 +983,13 @@ LABEL_89:
       v534 = objc_msgSend_sortedArrayUsingSelector_(v530, v531, sel_compare_, v532, v533);
 
       v658 = v534;
-      if (objc_msgSend_isEqualToString_(v5, v535, @"FMTimedMetadataIdentifierBar", v536, v537))
+      if (objc_msgSend_isEqualToString_(identifierCopy, v535, @"FMTimedMetadataIdentifierBar", v536, v537))
       {
         break;
       }
 
       v564 = v657;
-      if (objc_msgSend_isEqualToString_(v5, v538, @"FMTimedMetadataIdentifierBeat", v540, v541))
+      if (objc_msgSend_isEqualToString_(identifierCopy, v538, @"FMTimedMetadataIdentifierBeat", v540, v541))
       {
         v649 = v523;
         v676 = 0u;
@@ -1037,7 +1037,7 @@ LABEL_89:
           }
 
           while (v570);
-          v5 = v642;
+          identifierCopy = v642;
           v483 = v643;
           v12 = v670;
 LABEL_111:
@@ -1095,25 +1095,25 @@ LABEL_138:
   return v69;
 }
 
-- (BOOL)verifyRendition:(id)a3 forDuration:(id *)a4 failureReason:(id *)a5
+- (BOOL)verifyRendition:(id)rendition forDuration:(id *)duration failureReason:(id *)reason
 {
   v426 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  renditionCopy = rendition;
   v420.receiver = self;
   v420.super_class = FlexMLSong;
-  v419 = *a4;
-  if ([(FlexSongBackend *)&v420 verifyRendition:v8 forDuration:&v419 failureReason:a5])
+  v419 = *duration;
+  if ([(FlexSongBackend *)&v420 verifyRendition:renditionCopy forDuration:&v419 failureReason:reason])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = objc_msgSend_trackA(v8, v9, v10, v11, v12);
+      v13 = objc_msgSend_trackA(renditionCopy, v9, v10, v11, v12);
       v18 = objc_msgSend_mixParameters(v13, v14, v15, v16, v17);
       v23 = objc_msgSend_volumeKeyFrames(v18, v19, v20, v21, v22);
       v28 = objc_msgSend_lastObject(v23, v24, v25, v26, v27);
       v33 = objc_msgSend_sampleTime(v28, v29, v30, v31, v32);
 
-      v38 = objc_msgSend_trackB(v8, v34, v35, v36, v37);
+      v38 = objc_msgSend_trackB(renditionCopy, v34, v35, v36, v37);
       v43 = objc_msgSend_mixParameters(v38, v39, v40, v41, v42);
       v48 = objc_msgSend_volumeKeyFrames(v43, v44, v45, v46, v47);
       v53 = objc_msgSend_lastObject(v48, v49, v50, v51, v52);
@@ -1124,23 +1124,23 @@ LABEL_138:
         v33 = v58;
       }
 
-      if (v33 <= objc_msgSend_duration(v8, v59, v60, v61, v62))
+      if (v33 <= objc_msgSend_duration(renditionCopy, v59, v60, v61, v62))
       {
-        v397 = a5;
-        v88 = objc_msgSend_trackA(v8, v63, v64, v65, v66);
+        reasonCopy = reason;
+        v88 = objc_msgSend_trackA(renditionCopy, v63, v64, v65, v66);
         v93 = objc_msgSend_clips(v88, v89, v90, v91, v92);
         v98 = objc_msgSend_lastObject(v93, v94, v95, v96, v97);
         v103 = objc_msgSend_position(v98, v99, v100, v101, v102);
-        v108 = objc_msgSend_trackA(v8, v104, v105, v106, v107);
+        v108 = objc_msgSend_trackA(renditionCopy, v104, v105, v106, v107);
         v113 = objc_msgSend_clips(v108, v109, v110, v111, v112);
         v118 = objc_msgSend_lastObject(v113, v114, v115, v116, v117);
         v123 = objc_msgSend_duration(v118, v119, v120, v121, v122) + v103;
 
-        v128 = objc_msgSend_trackB(v8, v124, v125, v126, v127);
+        v128 = objc_msgSend_trackB(renditionCopy, v124, v125, v126, v127);
         v133 = objc_msgSend_clips(v128, v129, v130, v131, v132);
         v138 = objc_msgSend_lastObject(v133, v134, v135, v136, v137);
         v143 = objc_msgSend_position(v138, v139, v140, v141, v142);
-        v148 = objc_msgSend_trackB(v8, v144, v145, v146, v147);
+        v148 = objc_msgSend_trackB(renditionCopy, v144, v145, v146, v147);
         v153 = objc_msgSend_clips(v148, v149, v150, v151, v152);
         v158 = objc_msgSend_lastObject(v153, v154, v155, v156, v157);
         v163 = objc_msgSend_duration(v158, v159, v160, v161, v162) + v143;
@@ -1155,11 +1155,11 @@ LABEL_138:
           v168 = v123;
         }
 
-        if (v168 == objc_msgSend_duration(v8, v164, v165, v166, v167))
+        if (v168 == objc_msgSend_duration(renditionCopy, v164, v165, v166, v167))
         {
-          v172 = objc_msgSend_timedMetadataItemsWithIdentifier_(v8, v169, @"FMTimedMetadataIdentifierLoopPoints", v170, v171);
+          v172 = objc_msgSend_timedMetadataItemsWithIdentifier_(renditionCopy, v169, @"FMTimedMetadataIdentifierLoopPoints", v170, v171);
           v177 = v172;
-          v178 = v397;
+          v178 = reasonCopy;
           if (v172 && objc_msgSend_count(v172, v173, v174, v175, v176))
           {
             memset(&v419, 0, sizeof(v419));
@@ -1186,19 +1186,19 @@ LABEL_138:
             time = v419;
             CMTimeMultiply(&v418, &time, v211);
             value = v418.value;
-            if (value > objc_msgSend_duration(v8, v213, v214, v215, v216))
+            if (value > objc_msgSend_duration(renditionCopy, v213, v214, v215, v216))
             {
               v217 = MEMORY[0x277CCACA8];
               v218 = objc_msgSend_numberWithInt_(MEMORY[0x277CCABB0], v173, v211, v175, v176);
               v222 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], v219, v419.value, v220, v221);
               v223 = MEMORY[0x277CCABB0];
-              v228 = objc_msgSend_duration(v8, v224, v225, v226, v227);
+              v228 = objc_msgSend_duration(renditionCopy, v224, v225, v226, v227);
               v232 = objc_msgSend_numberWithLongLong_(v223, v229, v228, v230, v231);
-              *v397 = objc_msgSend_stringWithFormat_(v217, v233, @"Expected that the number of loops detected (%@) * the max duration detected from the idealDurations.lastObject (%@) is <= the rendition.duration (%@)", v234, v235, v218, v222, v232);
+              *reasonCopy = objc_msgSend_stringWithFormat_(v217, v233, @"Expected that the number of loops detected (%@) * the max duration detected from the idealDurations.lastObject (%@) is <= the rendition.duration (%@)", v234, v235, v218, v222, v232);
             }
           }
 
-          v236 = objc_msgSend_summary(v8, v173, v174, v175, v176);
+          v236 = objc_msgSend_summary(renditionCopy, v173, v174, v175, v176);
           v413 = 0u;
           v414 = 0u;
           v415 = 0u;
@@ -1264,7 +1264,7 @@ LABEL_53:
                         objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v254, @"Expected a gain value of 0.00000000000001 or 1 for the first and last object in the gainFunction but found %f", v256, v257, *&v264);
 LABEL_54:
                         v82 = 0;
-                        *v397 = v68 = v396;
+                        *reasonCopy = v68 = v396;
                         v236 = v393;
                         v308 = v394;
                         goto LABEL_84;
@@ -1272,13 +1272,13 @@ LABEL_54:
 
                       objc_msgSend_gainFunction(v250, v274, v275, v276, v277);
                       v278 = v251;
-                      v279 = v8;
+                      v279 = renditionCopy;
                       v281 = v280 = v250;
                       v286 = objc_msgSend_lastObject(v281, v282, v283, v284, v285);
                       isEqual = objc_msgSend_isEqual_(v261, v287, v286, v288, v289);
 
                       v250 = v280;
-                      v8 = v279;
+                      renditionCopy = v279;
                       v251 = v278;
                       v258 = v398;
 
@@ -1319,7 +1319,7 @@ LABEL_41:
                   objc_msgSend_segmentTime(v251, v300, v301, v302, v303);
                 }
 
-                v178 = v397;
+                v178 = reasonCopy;
                 if (v250)
                 {
                   objc_msgSend_duration(v250, v300, v301, v302, v303);
@@ -1350,7 +1350,7 @@ LABEL_41:
                   v308 = v394;
                   v381 = CMTimeGetSeconds(&time);
                   objc_msgSend_stringWithFormat_(v375, v382, @"The last segmentTime value (%f) in the gain function must match that of the segment duration (%f).", v383, v384, *&Seconds, *&v381);
-                  *v397 = v82 = 0;
+                  *reasonCopy = v82 = 0;
                   goto LABEL_84;
                 }
 
@@ -1464,7 +1464,7 @@ LABEL_41:
                         objc_msgSend_floatValue(v359, v352, v353, v354, v355);
                         if (vabdd_f64(v361, v338) > 0.001)
                         {
-                          *v397 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v352, @"All video cue values should be < the summary.duration (%f).", v354, v355, *&v338);
+                          *reasonCopy = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], v352, @"All video cue values should be < the summary.duration (%f).", v354, v355, *&v338);
 
                           v82 = 0;
                           v236 = v347;
@@ -1490,7 +1490,7 @@ LABEL_41:
                 }
 
                 ++v346;
-                v178 = v397;
+                v178 = reasonCopy;
                 v236 = v347;
                 v308 = v395;
                 v345 = v385;
@@ -1529,9 +1529,9 @@ LABEL_84:
         v190 = MEMORY[0x277CCACA8];
         v68 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], v169, v168, v170, v171);
         v191 = MEMORY[0x277CCABB0];
-        v196 = objc_msgSend_duration(v8, v192, v193, v194, v195);
+        v196 = objc_msgSend_duration(renditionCopy, v192, v193, v194, v195);
         v78 = objc_msgSend_numberWithLongLong_(v191, v197, v196, v198, v199);
-        *v397 = objc_msgSend_stringWithFormat_(v190, v200, @"The last clip's end time of %@ should equal the rendition's duration in seconds: %@. Here we are assuming that clips are using a timescale of 'sampleRate'.", v201, v202, v68, v78);
+        *reasonCopy = objc_msgSend_stringWithFormat_(v190, v200, @"The last clip's end time of %@ should equal the rendition's duration in seconds: %@. Here we are assuming that clips are using a timescale of 'sampleRate'.", v201, v202, v68, v78);
       }
 
       else
@@ -1539,9 +1539,9 @@ LABEL_84:
         v67 = MEMORY[0x277CCACA8];
         v68 = objc_msgSend_numberWithLongLong_(MEMORY[0x277CCABB0], v63, v33, v65, v66);
         v69 = MEMORY[0x277CCABB0];
-        v74 = objc_msgSend_duration(v8, v70, v71, v72, v73);
+        v74 = objc_msgSend_duration(renditionCopy, v70, v71, v72, v73);
         v78 = objc_msgSend_numberWithLongLong_(v69, v75, v74, v76, v77);
-        *a5 = objc_msgSend_stringWithFormat_(v67, v79, @"Final keyframe sampleTime: %@ must be less or equal to the rendition's duration: %@", v80, v81, v68, v78);
+        *reason = objc_msgSend_stringWithFormat_(v67, v79, @"Final keyframe sampleTime: %@ must be less or equal to the rendition's duration: %@", v80, v81, v68, v78);
       }
 
       v82 = 0;
@@ -1553,7 +1553,7 @@ LABEL_84:
       v84 = objc_opt_class();
       v68 = NSStringFromClass(v84);
       objc_msgSend_stringWithFormat_(v83, v85, @"Expected a FlexMLSongRendition but got a %@.", v86, v87, v68);
-      *a5 = v82 = 0;
+      *reason = v82 = 0;
     }
 
 LABEL_85:
@@ -1582,7 +1582,7 @@ LABEL_86:
   p_var3 = &self[5].var3;
   if ((self[6].var0 & 0x100000000) == 0)
   {
-    v7 = self;
+    selfCopy = self;
     v8 = objc_msgSend_existingAssetWithID_(self, a3, @"FMSongBundleAssetID", v3, v4);
     v13 = objc_msgSend_localURL(v8, v9, v10, v11, v12);
 
@@ -1622,7 +1622,7 @@ LABEL_5:
 
           v44 = *(*(&v76 + 1) + 8 * v43);
           v45 = objc_msgSend_pathExtension(v44, v36, v37, v38, v39, v72);
-          v50 = objc_msgSend_audioFileExtension(v7, v46, v47, v48, v49);
+          v50 = objc_msgSend_audioFileExtension(selfCopy, v46, v47, v48, v49);
           isEqualToString = objc_msgSend_isEqualToString_(v45, v51, v50, v52, v53);
 
           if (isEqualToString)
@@ -1683,8 +1683,8 @@ LABEL_5:
           {
             v62 = v81;
             ExtAudioFileDispose(outExtAudioFile);
-            objc_msgSend_updateSampleRate_(v7, v63, v60, v64, v65);
-            v70 = objc_msgSend_sampleRate(v7, v66, v67, v68, v69);
+            objc_msgSend_updateSampleRate_(selfCopy, v63, v60, v64, v65);
+            v70 = objc_msgSend_sampleRate(selfCopy, v66, v67, v68, v69);
             v71 = v62;
             v32 = v74;
             CMTimeMake(&outPropertyData, v71, v70);
@@ -1819,10 +1819,10 @@ LABEL_16:
   return result;
 }
 
-- (void)setCachedNaturalDuration:(id *)a3
+- (void)setCachedNaturalDuration:(id *)duration
 {
-  var3 = a3->var3;
-  *&self->_cachedNaturalDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_cachedNaturalDuration.value = *&duration->var0;
   self->_cachedNaturalDuration.epoch = var3;
 }
 

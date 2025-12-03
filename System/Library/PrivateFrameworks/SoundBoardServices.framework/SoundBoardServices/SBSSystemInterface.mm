@@ -1,5 +1,5 @@
 @interface SBSSystemInterface
-- (SBSSystemInterface)initWithTarget:(id)a3;
+- (SBSSystemInterface)initWithTarget:(id)target;
 - (void)dealloc;
 @end
 
@@ -13,22 +13,22 @@
   [(SBSSystemInterface *)&v3 dealloc];
 }
 
-- (SBSSystemInterface)initWithTarget:(id)a3
+- (SBSSystemInterface)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = SBSSystemInterface;
   v5 = [(SBSSystemInterface *)&v9 init];
   if (v5)
   {
-    if ([v4 isEqualToString:@"localhost"])
+    if ([targetCopy isEqualToString:@"localhost"])
     {
       [SBSUtils createProxyConnectionForXPCWithExportedObject:0 connection:&v5->_sbConnection];
     }
 
     else
     {
-      [SBSUtils createProxyConnectionForRapportTarget:v4];
+      [SBSUtils createProxyConnectionForRapportTarget:targetCopy];
     }
     v6 = ;
     sbProxy = v5->_sbProxy;

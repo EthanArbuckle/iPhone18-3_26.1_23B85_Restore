@@ -1,13 +1,13 @@
 @interface GQHWrapSandbag
-- (GQHWrapSandbag)initWithSize:(CGSize)a3 floatsLeft:(BOOL)a4;
+- (GQHWrapSandbag)initWithSize:(CGSize)size floatsLeft:(BOOL)left;
 @end
 
 @implementation GQHWrapSandbag
 
-- (GQHWrapSandbag)initWithSize:(CGSize)a3 floatsLeft:(BOOL)a4
+- (GQHWrapSandbag)initWithSize:(CGSize)size floatsLeft:(BOOL)left
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = GQHWrapSandbag;
   result = [(GQHWrapSandbag *)&v8 init];
@@ -15,7 +15,7 @@
   {
     result->mSize.width = width;
     result->mSize.height = height;
-    result->mFloatsLeft = a4;
+    result->mFloatsLeft = left;
   }
 
   return result;

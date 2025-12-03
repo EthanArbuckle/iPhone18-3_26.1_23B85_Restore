@@ -1,32 +1,32 @@
 @interface BMPeerToPeerMessage
 - (id)dictionaryRepresentation;
-- (id)initFromDictionary:(id)a3;
+- (id)initFromDictionary:(id)dictionary;
 @end
 
 @implementation BMPeerToPeerMessage
 
-- (id)initFromDictionary:(id)a3
+- (id)initFromDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = BMPeerToPeerMessage;
   v5 = [(BMPeerToPeerMessage *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"protocolVersion"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"protocolVersion"];
     v5->_protocolVersion = [v6 unsignedIntegerValue];
 
     v7 = [BMSyncDevicePeer alloc];
-    v8 = [v4 objectForKeyedSubscript:@"peer"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"peer"];
     v9 = [(BMSyncDevicePeer *)v7 initFromDictionary:v8];
     peer = v5->_peer;
     v5->_peer = v9;
 
-    v11 = [v4 objectForKeyedSubscript:@"walltime"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"walltime"];
     [v11 doubleValue];
     v5->_walltime = v12;
 
-    v13 = [v4 objectForKeyedSubscript:@"syncReason"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"syncReason"];
     v5->_syncReason = [v13 unsignedIntegerValue];
   }
 
@@ -39,8 +39,8 @@
   v3 = [NSNumber numberWithUnsignedInteger:self->_protocolVersion];
   v10[0] = v3;
   v9[1] = @"peer";
-  v4 = [(BMSyncDevicePeer *)self->_peer dictionaryRepresentation];
-  v10[1] = v4;
+  dictionaryRepresentation = [(BMSyncDevicePeer *)self->_peer dictionaryRepresentation];
+  v10[1] = dictionaryRepresentation;
   v9[2] = @"walltime";
   v5 = [NSNumber numberWithDouble:self->_walltime];
   v10[2] = v5;

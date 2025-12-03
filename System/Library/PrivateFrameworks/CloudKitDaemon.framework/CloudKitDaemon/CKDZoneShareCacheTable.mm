@@ -1,11 +1,11 @@
 @interface CKDZoneShareCacheTable
 + (id)dbProperties;
-- (BOOL)addZoneShareID:(id)a3 error:(id *)a4;
-- (BOOL)hasZoneID:(id)a3 error:(id *)a4;
-- (BOOL)removeRowID:(id)a3 error:(id *)a4;
-- (CKDZoneShareCacheTable)initWithShareIDTable:(id)a3;
-- (id)entryForZoneID:(id)a3 error:(id *)a4;
-- (id)shareIDForZoneID:(id)a3 error:(id *)a4;
+- (BOOL)addZoneShareID:(id)d error:(id *)error;
+- (BOOL)hasZoneID:(id)d error:(id *)error;
+- (BOOL)removeRowID:(id)d error:(id *)error;
+- (CKDZoneShareCacheTable)initWithShareIDTable:(id)table;
+- (id)entryForZoneID:(id)d error:(id *)error;
+- (id)shareIDForZoneID:(id)d error:(id *)error;
 @end
 
 @implementation CKDZoneShareCacheTable
@@ -23,28 +23,28 @@
   return v2;
 }
 
-- (CKDZoneShareCacheTable)initWithShareIDTable:(id)a3
+- (CKDZoneShareCacheTable)initWithShareIDTable:(id)table
 {
-  v5 = a3;
+  tableCopy = table;
   v9.receiver = self;
   v9.super_class = CKDZoneShareCacheTable;
   v6 = [(CKSQLiteCacheTable *)&v9 initWithLogicalTableName:@"ZoneShareTable" entryCountLimit:0x2000 dataSizeLimit:0 expirationTime:0.0 expireDelay:86400.0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_shareIDTable, a3);
+    objc_storeStrong(&v6->_shareIDTable, table);
   }
 
   return v7;
 }
 
-- (id)entryForZoneID:(id)a3 error:(id *)a4
+- (id)entryForZoneID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v9 = objc_msgSend_shareIDTable(self, v7, v8);
   v12 = objc_msgSend_zoneIDTable(v9, v10, v11);
   v22 = 0;
-  v14 = objc_msgSend_rowIDForZoneID_addIfNotFound_error_(v12, v13, v6, 0, &v22);
+  v14 = objc_msgSend_rowIDForZoneID_addIfNotFound_error_(v12, v13, dCopy, 0, &v22);
 
   v15 = v22;
   v17 = 0;
@@ -60,19 +60,19 @@
     }
   }
 
-  if (a4)
+  if (error)
   {
     v19 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   return v17;
 }
 
-- (id)shareIDForZoneID:(id)a3 error:(id *)a4
+- (id)shareIDForZoneID:(id)d error:(id *)error
 {
   v24 = 0;
-  v6 = objc_msgSend_entryForZoneID_error_(self, a2, a3, &v24);
+  v6 = objc_msgSend_entryForZoneID_error_(self, a2, d, &v24);
   v7 = v24;
   if (v7)
   {
@@ -96,7 +96,7 @@
   {
 LABEL_12:
     v20 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_14;
     }
@@ -116,11 +116,11 @@ LABEL_12:
     v20 = v19;
   }
 
-  if (a4)
+  if (error)
   {
 LABEL_13:
     v21 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
 LABEL_14:
@@ -128,13 +128,13 @@ LABEL_14:
   return v20;
 }
 
-- (BOOL)hasZoneID:(id)a3 error:(id *)a4
+- (BOOL)hasZoneID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v9 = objc_msgSend_shareIDTable(self, v7, v8);
   v12 = objc_msgSend_zoneIDTable(v9, v10, v11);
   v21 = 0;
-  v14 = objc_msgSend_rowIDForZoneID_addIfNotFound_error_(v12, v13, v6, 0, &v21);
+  v14 = objc_msgSend_rowIDForZoneID_addIfNotFound_error_(v12, v13, dCopy, 0, &v21);
 
   v15 = v21;
   hasEntryWithPrimaryKey_error = 0;
@@ -145,21 +145,21 @@ LABEL_14:
     v15 = v20;
   }
 
-  if (a4)
+  if (error)
   {
     v18 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   return hasEntryWithPrimaryKey_error;
 }
 
-- (BOOL)addZoneShareID:(id)a3 error:(id *)a4
+- (BOOL)addZoneShareID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v9 = objc_msgSend_shareIDTable(self, v7, v8);
   v52 = 0;
-  v11 = objc_msgSend_entryForShareID_addIfNotFound_error_(v9, v10, v6, 1, &v52);
+  v11 = objc_msgSend_entryForShareID_addIfNotFound_error_(v9, v10, dCopy, 1, &v52);
 
   v12 = v52;
   if (v12)
@@ -175,7 +175,7 @@ LABEL_14:
   if (v15)
   {
     v16 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_24;
     }
@@ -240,11 +240,11 @@ LABEL_17:
 LABEL_21:
 
 LABEL_22:
-  if (a4)
+  if (error)
   {
 LABEL_23:
     v48 = v12;
-    *a4 = v12;
+    *error = v12;
   }
 
 LABEL_24:
@@ -252,19 +252,19 @@ LABEL_24:
   return v16;
 }
 
-- (BOOL)removeRowID:(id)a3 error:(id *)a4
+- (BOOL)removeRowID:(id)d error:(id *)error
 {
-  v6 = objc_msgSend_deletePrimaryKeyValue_(self, a2, a3);
+  v6 = objc_msgSend_deletePrimaryKeyValue_(self, a2, d);
   if (v6 && objc_msgSend_CKIsNoMatchingRowError_(MEMORY[0x277CCA9B8], v5, v6))
   {
 
     v6 = 0;
   }
 
-  if (a4)
+  if (error)
   {
     v7 = v6;
-    *a4 = v6;
+    *error = v6;
   }
 
   return v6 == 0;

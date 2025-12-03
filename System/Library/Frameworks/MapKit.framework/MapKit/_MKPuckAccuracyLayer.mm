@@ -5,16 +5,16 @@
 - (void)_createFaux3DRings;
 - (void)_updateColors;
 - (void)_updateFaux3DRingsIfNecessary;
-- (void)setAccuracy:(double)a3 duration:(double)a4;
-- (void)setFaux3DEnabled:(BOOL)a3;
-- (void)setFillOpacity:(double)a3 duration:(double)a4;
-- (void)setHidden:(BOOL)a3;
-- (void)setMapCameraDistance:(double)a3;
-- (void)setMapPitchRadians:(double)a3;
-- (void)setMinimumRadius:(double)a3;
-- (void)setStrokeOpacity:(double)a3 duration:(double)a4;
-- (void)setTintColor:(id)a3;
-- (void)setTraitCollection:(id)a3;
+- (void)setAccuracy:(double)accuracy duration:(double)duration;
+- (void)setFaux3DEnabled:(BOOL)enabled;
+- (void)setFillOpacity:(double)opacity duration:(double)duration;
+- (void)setHidden:(BOOL)hidden;
+- (void)setMapCameraDistance:(double)distance;
+- (void)setMapPitchRadians:(double)radians;
+- (void)setMinimumRadius:(double)radius;
+- (void)setStrokeOpacity:(double)opacity duration:(double)duration;
+- (void)setTintColor:(id)color;
+- (void)setTraitCollection:(id)collection;
 - (void)startAnimationsIfNecessary;
 - (void)stopAnimations;
 - (void)updateLegacyConfiguration;
@@ -32,9 +32,9 @@
   {
     v2->_additionalOpacityMultiplier = 1.0;
     v2->_additionalStrokeOpacityMultiplier = 1.0;
-    v4 = [MEMORY[0x1E6979398] layer];
+    layer = [MEMORY[0x1E6979398] layer];
     ring = v3->_ring;
-    v3->_ring = v4;
+    v3->_ring = layer;
 
     [(_MKPuckAccuracyLayer *)v3 bounds];
     [(CALayer *)v3->_ring setFrame:?];
@@ -66,7 +66,7 @@
 {
   v45[3] = *MEMORY[0x1E69E9840];
   v3 = 0x1E69DD000uLL;
-  v4 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+  currentTraitCollection = [MEMORY[0x1E69DD1B8] currentTraitCollection];
   [MEMORY[0x1E69DD1B8] setCurrentTraitCollection:self->_traitCollection];
   if (self->_stale)
   {
@@ -113,12 +113,12 @@
       self->_baseStrokeOpacity = 1.0;
     }
 
-    v14 = [(UIColor *)self->_fullOpacityStrokeColor colorWithAlphaComponent:self->_additionalStrokeOpacityMultiplier, v6, v4];
+    v14 = [(UIColor *)self->_fullOpacityStrokeColor colorWithAlphaComponent:self->_additionalStrokeOpacityMultiplier, v6, currentTraitCollection];
     -[CALayer setBorderColor:](self->_ring, "setBorderColor:", [v14 CGColor]);
 
     [(CALayer *)self->_ring setBorderWidth:3.0];
-    v15 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
-    v16 = [v15 userInterfaceStyle] == 2;
+    currentTraitCollection2 = [MEMORY[0x1E69DD1B8] currentTraitCollection];
+    v16 = [currentTraitCollection2 userInterfaceStyle] == 2;
 
     self->_useDarkAppearance = v16;
     [(CALayer *)self->_ring setShadowRadius:4.0];
@@ -205,8 +205,8 @@
       while (v30);
     }
 
-    v35 = [MEMORY[0x1E69DC888] clearColor];
-    -[CALayer setBorderColor:](self->_faux3DShadow, "setBorderColor:", [v35 CGColor]);
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    -[CALayer setBorderColor:](self->_faux3DShadow, "setBorderColor:", [clearColor CGColor]);
 
     [(CALayer *)self->_ring borderWidth];
     [(CALayer *)self->_faux3DShadow setBorderWidth:?];
@@ -218,7 +218,7 @@
     [(CALayer *)self->_faux3DShadow setShadowOpacity:0.0];
     [(_MKPuckAccuracyLayer *)self _updateFaux3DRingsIfNecessary];
     v6 = v38;
-    v4 = v39;
+    currentTraitCollection = v39;
     v3 = 0x1E69DD000;
   }
 
@@ -232,7 +232,7 @@
     [(CALayer *)self->_ring setShadowOpacity:0.0];
   }
 
-  [*(v3 + 440) setCurrentTraitCollection:v4];
+  [*(v3 + 440) setCurrentTraitCollection:currentTraitCollection];
 }
 
 - (void)_updateFaux3DRingsIfNecessary
@@ -557,14 +557,14 @@ LABEL_23:
     v7 = *(MEMORY[0x1E695EFF8] + 8);
     do
     {
-      v8 = [MEMORY[0x1E6979398] layer];
-      [v8 setAnchorPoint:{v6, v7}];
-      v9 = [(CALayer *)self->_ring actions];
-      [v8 setActions:v9];
+      layer = [MEMORY[0x1E6979398] layer];
+      [layer setAnchorPoint:{v6, v7}];
+      actions = [(CALayer *)self->_ring actions];
+      [layer setActions:actions];
 
-      [v8 setHidden:1];
-      [(NSArray *)v5 addObject:v8];
-      [(CALayer *)self->_faux3DHighlightMask insertSublayer:v8 atIndex:0];
+      [layer setHidden:1];
+      [(NSArray *)v5 addObject:layer];
+      [(CALayer *)self->_faux3DHighlightMask insertSublayer:layer atIndex:0];
 
       --v4;
     }
@@ -574,33 +574,33 @@ LABEL_23:
     self->_faux3DHighlightMaskRings = v5;
     v14 = v5;
 
-    v11 = [MEMORY[0x1E6979398] layer];
+    layer2 = [MEMORY[0x1E6979398] layer];
     faux3DShadow = self->_faux3DShadow;
-    self->_faux3DShadow = v11;
+    self->_faux3DShadow = layer2;
 
     [(CALayer *)self->_faux3DShadow setAnchorPoint:0.5, 0.5];
-    v13 = [(CALayer *)self->_ring actions];
-    [(CALayer *)self->_faux3DShadow setActions:v13];
+    actions2 = [(CALayer *)self->_ring actions];
+    [(CALayer *)self->_faux3DShadow setActions:actions2];
 
     [(CALayer *)self->_faux3DShadow setHidden:1];
     [(_MKPuckAccuracyLayer *)self insertSublayer:self->_faux3DShadow atIndex:0];
   }
 }
 
-- (void)setMapCameraDistance:(double)a3
+- (void)setMapCameraDistance:(double)distance
 {
-  if (vabdd_f64(a3, self->_mapCameraDistance) >= 0.00000011920929)
+  if (vabdd_f64(distance, self->_mapCameraDistance) >= 0.00000011920929)
   {
-    self->_mapCameraDistance = a3;
+    self->_mapCameraDistance = distance;
     [(_MKPuckAccuracyLayer *)self _updateFaux3DRingsIfNecessary];
   }
 }
 
-- (void)setMapPitchRadians:(double)a3
+- (void)setMapPitchRadians:(double)radians
 {
-  if (vabdd_f64(a3, self->_mapPitchRadians) >= 0.000001)
+  if (vabdd_f64(radians, self->_mapPitchRadians) >= 0.000001)
   {
-    self->_mapPitchRadians = a3;
+    self->_mapPitchRadians = radians;
     [(_MKPuckAccuracyLayer *)self _updateFaux3DRingsIfNecessary];
   }
 }
@@ -643,10 +643,10 @@ LABEL_23:
   [(CALayer *)self->_faux3DShadow removeAnimationForKey:@"pulse"];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  self->_externallyHidden = a3;
-  v5 = a3 || self->_internallyHidden;
+  self->_externallyHidden = hidden;
+  v5 = hidden || self->_internallyHidden;
   v7 = v3;
   v8 = v4;
   v6.receiver = self;
@@ -654,11 +654,11 @@ LABEL_23:
   [(_MKPuckAccuracyLayer *)&v6 setHidden:v5];
 }
 
-- (void)setStrokeOpacity:(double)a3 duration:(double)a4
+- (void)setStrokeOpacity:(double)opacity duration:(double)duration
 {
-  if (vabdd_f64(a3, self->_additionalStrokeOpacityMultiplier) >= 0.000001)
+  if (vabdd_f64(opacity, self->_additionalStrokeOpacityMultiplier) >= 0.000001)
   {
-    self->_additionalStrokeOpacityMultiplier = a3;
+    self->_additionalStrokeOpacityMultiplier = opacity;
     if (self->_useDarkAppearance)
     {
       v7 = 0.150000006;
@@ -680,9 +680,9 @@ LABEL_23:
     }
 
     v9 = cos(self->_mapPitchRadians);
-    v10 = ((1.0 - v9) * v8 + (1.0 - (1.0 - v9)) * v7) * a3;
-    v27 = [(UIColor *)self->_fullOpacityStrokeColor colorWithAlphaComponent:a3];
-    if (a4 <= 0.0)
+    v10 = ((1.0 - v9) * v8 + (1.0 - (1.0 - v9)) * v7) * opacity;
+    v27 = [(UIColor *)self->_fullOpacityStrokeColor colorWithAlphaComponent:opacity];
+    if (duration <= 0.0)
     {
       [(CALayer *)self->_ring removeAnimationForKey:@"strokeOpacity"];
       [(CAGradientLayer *)self->_faux3DHighlight removeAnimationForKey:@"strokeOpacity"];
@@ -694,30 +694,30 @@ LABEL_23:
     {
       v11 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
       v12 = MEMORY[0x1E696AD98];
-      v13 = [(CALayer *)self->_ring currentLayer];
-      [v13 opacity];
+      currentLayer = [(CALayer *)self->_ring currentLayer];
+      [currentLayer opacity];
       v14 = [v12 numberWithFloat:?];
       [v11 setFromValue:v14];
 
-      v15 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+      v15 = [MEMORY[0x1E696AD98] numberWithDouble:opacity];
       [v11 setToValue:v15];
 
-      [v11 setDuration:a4];
+      [v11 setDuration:duration];
       [v11 setRemovedOnCompletion:1];
       [(CALayer *)self->_ring addAnimation:v11 forKey:@"strokeOpacity"];
       [(CAGradientLayer *)self->_faux3DHighlight addAnimation:v11 forKey:@"strokeOpacity"];
       [(CALayer *)self->_faux3DShadow addAnimation:v11 forKey:@"strokeOpacity"];
       v16 = [MEMORY[0x1E6979318] animationWithKeyPath:@"shadowOpacity"];
       v17 = MEMORY[0x1E696AD98];
-      v18 = [(CALayer *)self->_ring currentLayer];
-      [v18 shadowOpacity];
+      currentLayer2 = [(CALayer *)self->_ring currentLayer];
+      [currentLayer2 shadowOpacity];
       v19 = [v17 numberWithFloat:?];
       [v16 setFromValue:v19];
 
       v20 = [MEMORY[0x1E696AD98] numberWithDouble:v10];
       [v16 setToValue:v20];
 
-      [v16 setDuration:a4];
+      [v16 setDuration:duration];
       [v16 setRemovedOnCompletion:1];
       [(CALayer *)self->_ring addAnimation:v16 forKey:@"shadowOpacity"];
     }
@@ -740,13 +740,13 @@ LABEL_23:
   }
 }
 
-- (void)setFillOpacity:(double)a3 duration:(double)a4
+- (void)setFillOpacity:(double)opacity duration:(double)duration
 {
-  if (vabdd_f64(a3, self->_additionalOpacityMultiplier) >= 0.000001)
+  if (vabdd_f64(opacity, self->_additionalOpacityMultiplier) >= 0.000001)
   {
-    self->_additionalOpacityMultiplier = a3;
-    v12 = [(UIColor *)self->_fullOpacityFillColor colorWithAlphaComponent:self->_baseOpacity * a3];
-    if (a4 <= 0.0)
+    self->_additionalOpacityMultiplier = opacity;
+    opacity = [(UIColor *)self->_fullOpacityFillColor colorWithAlphaComponent:self->_baseOpacity * opacity];
+    if (duration <= 0.0)
     {
       [(CALayer *)self->_ring removeAnimationForKey:@"opacity"];
     }
@@ -754,11 +754,11 @@ LABEL_23:
     else
     {
       v6 = [MEMORY[0x1E6979318] animationWithKeyPath:@"backgroundColor"];
-      v7 = [(CALayer *)self currentLayer];
-      [v6 setFromValue:{objc_msgSend(v7, "backgroundColor")}];
+      currentLayer = [(CALayer *)self currentLayer];
+      [v6 setFromValue:{objc_msgSend(currentLayer, "backgroundColor")}];
 
-      [v6 setToValue:{objc_msgSend(v12, "CGColor")}];
-      [v6 setDuration:a4];
+      [v6 setToValue:{objc_msgSend(opacity, "CGColor")}];
+      [v6 setDuration:duration];
       v8 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED8]];
       [v6 setTimingFunction:v8];
 
@@ -768,24 +768,24 @@ LABEL_23:
     v9 = +[MKThreadContext currentContext];
     [v9 _CA_setDisableActions:1];
 
-    v10 = v12;
-    -[CALayer setBackgroundColor:](self->_ring, "setBackgroundColor:", [v12 CGColor]);
+    v10 = opacity;
+    -[CALayer setBackgroundColor:](self->_ring, "setBackgroundColor:", [opacity CGColor]);
     v11 = +[MKThreadContext currentContext];
     [v11 _CA_setDisableActions:0];
   }
 }
 
-- (void)setAccuracy:(double)a3 duration:(double)a4
+- (void)setAccuracy:(double)accuracy duration:(double)duration
 {
   v135 = *MEMORY[0x1E69E9840];
-  if (self->_minimumRadius >= a3)
+  if (self->_minimumRadius >= accuracy)
   {
     minimumRadius = self->_minimumRadius;
   }
 
   else
   {
-    minimumRadius = a3;
+    minimumRadius = accuracy;
   }
 
   mapPitchRadians = self->_mapPitchRadians;
@@ -804,28 +804,28 @@ LABEL_23:
     v8 = v10 * (v12 * 12.0 + (1.0 - v12) * 0.0);
   }
 
-  v13 = [(CALayer *)self->_ring currentLayer];
-  [v13 bounds];
+  currentLayer = [(CALayer *)self->_ring currentLayer];
+  [currentLayer bounds];
   v96 = v14;
   v16 = v15;
   v103 = v18;
   v105 = v17;
 
-  v19 = [(CAGradientLayer *)self->_faux3DHighlight currentLayer];
-  [v19 bounds];
+  currentLayer2 = [(CAGradientLayer *)self->_faux3DHighlight currentLayer];
+  [currentLayer2 bounds];
   v98 = v21;
   v99 = v20;
   v101 = v23;
   v102 = v22;
 
-  v24 = [(CAGradientLayer *)self->_faux3DHighlight currentLayer];
-  [v24 position];
+  currentLayer3 = [(CAGradientLayer *)self->_faux3DHighlight currentLayer];
+  [currentLayer3 position];
   v26 = v25;
   v28 = v27;
 
   v92 = v28;
   v94 = v26;
-  if (a4 <= 0.0)
+  if (duration <= 0.0)
   {
     v31 = [(CALayer *)self->_ring animationForKey:@"radius"];
     v32 = v31;
@@ -845,7 +845,7 @@ LABEL_23:
       }
 
       [v32 duration];
-      a4 = v38;
+      duration = v38;
     }
 
     else
@@ -926,8 +926,8 @@ LABEL_23:
     }
 
     v133[0] = &unk_1F1611CE0;
-    v52 = [MEMORY[0x1E696AD98] numberWithDouble:v30 / a4];
-    v133[1] = v52;
+    duration = [MEMORY[0x1E696AD98] numberWithDouble:v30 / duration];
+    v133[1] = duration;
     v133[2] = &unk_1F1611CF8;
     v53 = [MEMORY[0x1E695DEC8] arrayWithObjects:v133 count:3];
 
@@ -944,28 +944,28 @@ LABEL_23:
     v56 = _accuracyRadiusAnimation(@"bounds", v54, v55, v53);
 
     v57 = MEMORY[0x1E696AD98];
-    v58 = [(CALayer *)self->_ring currentLayer];
-    [v58 cornerRadius];
+    currentLayer4 = [(CALayer *)self->_ring currentLayer];
+    [currentLayer4 cornerRadius];
     v59 = [v57 numberWithDouble:?];
     v60 = [MEMORY[0x1E696AD98] numberWithDouble:minimumRadius];
     v61 = _accuracyRadiusAnimation(@"cornerRadius", v59, v60, v53);
 
-    v62 = [(CALayer *)self->_ring currentLayer];
-    v63 = _accuracyRadiusAnimation(@"shadowPath", [v62 shadowPath], CopyByStrokingPath, v53);
+    currentLayer5 = [(CALayer *)self->_ring currentLayer];
+    v63 = _accuracyRadiusAnimation(@"shadowPath", [currentLayer5 shadowPath], CopyByStrokingPath, v53);
 
-    v64 = [MEMORY[0x1E6979308] animation];
+    animation = [MEMORY[0x1E6979308] animation];
     v132[0] = v56;
     v104 = v61;
     v132[1] = v61;
     v97 = v63;
     v132[2] = v63;
     v65 = [MEMORY[0x1E695DEC8] arrayWithObjects:v132 count:3];
-    [v64 setAnimations:v65];
+    [animation setAnimations:v65];
 
-    [v64 setDuration:a4];
+    [animation setDuration:duration];
     if (v100 > 0.0)
     {
-      [v64 setBeginTime:v100];
+      [animation setBeginTime:v100];
     }
 
     ring = self->_ring;
@@ -975,7 +975,7 @@ LABEL_23:
     v121[3] = &unk_1E76CD038;
     v121[4] = self;
     *&v121[5] = minimumRadius;
-    [(CALayer *)ring _mapkit_addAnimation:v64 forKey:@"radius" completion:v121];
+    [(CALayer *)ring _mapkit_addAnimation:animation forKey:@"radius" completion:v121];
     v119 = 0u;
     v120 = 0u;
     v117 = 0u;
@@ -995,7 +995,7 @@ LABEL_23:
             objc_enumerationMutation(v67);
           }
 
-          [*(*(&v117 + 1) + 8 * j) addAnimation:v64 forKey:@"radius"];
+          [*(*(&v117 + 1) + 8 * j) addAnimation:animation forKey:@"radius"];
         }
 
         v69 = [(NSArray *)v67 countByEnumeratingWithState:&v117 objects:v131 count:16];
@@ -1004,7 +1004,7 @@ LABEL_23:
       while (v69);
     }
 
-    [(CALayer *)self->_faux3DShadow addAnimation:v64 forKey:@"radius"];
+    [(CALayer *)self->_faux3DShadow addAnimation:animation forKey:@"radius"];
     if (self->_faux3DHighlight)
     {
       v116[0] = v99;
@@ -1027,20 +1027,20 @@ LABEL_23:
       v76 = [MEMORY[0x1E696B098] valueWithBytes:v113 objCType:"{CGPoint=dd}"];
       v77 = _accuracyRadiusAnimation(@"position", v75, v76, v53);
 
-      v78 = [MEMORY[0x1E6979308] animation];
+      animation2 = [MEMORY[0x1E6979308] animation];
 
       v130[0] = v74;
       v130[1] = v77;
       v79 = [MEMORY[0x1E695DEC8] arrayWithObjects:v130 count:2];
-      [v78 setAnimations:v79];
+      [animation2 setAnimations:v79];
 
-      [v78 setDuration:a4];
+      [animation2 setDuration:duration];
       if (v100 > 0.0)
       {
-        [v78 setBeginTime:v100];
+        [animation2 setBeginTime:v100];
       }
 
-      [(CAGradientLayer *)self->_faux3DHighlight addAnimation:v78 forKey:@"radius"];
+      [(CAGradientLayer *)self->_faux3DHighlight addAnimation:animation2 forKey:@"radius"];
       v112[0] = v99;
       v112[1] = v98;
       v112[2] = v102;
@@ -1053,7 +1053,7 @@ LABEL_23:
       v81 = [MEMORY[0x1E696B098] valueWithBytes:v111 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
       v82 = _accuracyRadiusAnimation(@"frame", v80, v81, v53);
 
-      [v82 setDuration:a4];
+      [v82 setDuration:duration];
       if (v100 > 0.0)
       {
         [v82 setBeginTime:v100];
@@ -1066,7 +1066,7 @@ LABEL_23:
 
     else
     {
-      v78 = v64;
+      animation2 = animation;
     }
   }
 
@@ -1144,30 +1144,30 @@ LABEL_23:
 
 - (double)currentAccuracy
 {
-  v2 = [(CALayer *)self->_ring currentLayer];
-  [v2 bounds];
+  currentLayer = [(CALayer *)self->_ring currentLayer];
+  [currentLayer bounds];
   v4 = v3 * 0.5;
 
   return v4;
 }
 
-- (void)setTraitCollection:(id)a3
+- (void)setTraitCollection:(id)collection
 {
-  objc_storeStrong(&self->_traitCollection, a3);
+  objc_storeStrong(&self->_traitCollection, collection);
 
   [(_MKPuckAccuracyLayer *)self _updateColors];
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  objc_storeStrong(&self->_tintColor, a3);
+  objc_storeStrong(&self->_tintColor, color);
 
   [(_MKPuckAccuracyLayer *)self _updateColors];
 }
 
-- (void)setMinimumRadius:(double)a3
+- (void)setMinimumRadius:(double)radius
 {
-  self->_minimumRadius = a3;
+  self->_minimumRadius = radius;
   [(CALayer *)self->_ring bounds];
   if (CGRectGetWidth(v5) * 0.5 < self->_minimumRadius)
   {
@@ -1178,24 +1178,24 @@ LABEL_23:
   }
 }
 
-- (void)setFaux3DEnabled:(BOOL)a3
+- (void)setFaux3DEnabled:(BOOL)enabled
 {
   v30 = *MEMORY[0x1E69E9840];
-  if (self->_faux3DEnabled != a3)
+  if (self->_faux3DEnabled != enabled)
   {
-    self->_faux3DEnabled = a3;
-    if (a3)
+    self->_faux3DEnabled = enabled;
+    if (enabled)
     {
-      v4 = [MEMORY[0x1E6979380] layer];
+      layer = [MEMORY[0x1E6979380] layer];
       faux3DHighlight = self->_faux3DHighlight;
-      self->_faux3DHighlight = v4;
+      self->_faux3DHighlight = layer;
 
       [(CAGradientLayer *)self->_faux3DHighlight _mapkit_setActionsToRemoveDefaultImplicitActions];
       [(CAGradientLayer *)self->_faux3DHighlight setStartPoint:0.0, 0.5];
       [(CAGradientLayer *)self->_faux3DHighlight setEndPoint:1.0, 0.5];
-      v6 = [MEMORY[0x1E6979398] layer];
+      layer2 = [MEMORY[0x1E6979398] layer];
       faux3DHighlightMask = self->_faux3DHighlightMask;
-      self->_faux3DHighlightMask = v6;
+      self->_faux3DHighlightMask = layer2;
 
       [(CALayer *)self->_faux3DHighlightMask _mapkit_setActionsToRemoveDefaultImplicitActions];
       [(CAGradientLayer *)self->_faux3DHighlight setMask:self->_faux3DHighlightMask];

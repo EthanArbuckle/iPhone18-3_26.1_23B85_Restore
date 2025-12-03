@@ -1,26 +1,26 @@
 @interface _SFNavigationUtilitiesManager
 + (id)_sharedUserAgentQuirksManager;
-- (BOOL)_shouldOverrideUserAgentSettingForFacebookAuthURL:(id)a3;
+- (BOOL)_shouldOverrideUserAgentSettingForFacebookAuthURL:(id)l;
 - (WBSUserDefinedContentBlockerManager)userDefinedContentBlockerManager;
 - (_SFBrowserDocument)browserDocument;
-- (_SFNavigationUtilitiesManager)initWithPerSitePreferencesVendor:(id)a3;
+- (_SFNavigationUtilitiesManager)initWithPerSitePreferencesVendor:(id)vendor;
 - (_SFReloadOptionsController)reloadOptionsController;
-- (void)_applyAutoplayQuirksToWebsitePolicies:(id)a3 desktopSiteSetting:(int64_t)a4;
-- (void)websitePoliciesForURL:(id)a3 isForMainFrameNavigation:(BOOL)a4 navigationType:(int64_t)a5 completionHandler:(id)a6;
+- (void)_applyAutoplayQuirksToWebsitePolicies:(id)policies desktopSiteSetting:(int64_t)setting;
+- (void)websitePoliciesForURL:(id)l isForMainFrameNavigation:(BOOL)navigation navigationType:(int64_t)type completionHandler:(id)handler;
 @end
 
 @implementation _SFNavigationUtilitiesManager
 
-- (_SFNavigationUtilitiesManager)initWithPerSitePreferencesVendor:(id)a3
+- (_SFNavigationUtilitiesManager)initWithPerSitePreferencesVendor:(id)vendor
 {
-  v5 = a3;
+  vendorCopy = vendor;
   v10.receiver = self;
   v10.super_class = _SFNavigationUtilitiesManager;
   v6 = [(_SFNavigationUtilitiesManager *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_preferencesVendor, a3);
+    objc_storeStrong(&v6->_preferencesVendor, vendor);
     v8 = v7;
   }
 
@@ -39,33 +39,33 @@
   return v3;
 }
 
-- (void)_applyAutoplayQuirksToWebsitePolicies:(id)a3 desktopSiteSetting:(int64_t)a4
+- (void)_applyAutoplayQuirksToWebsitePolicies:(id)policies desktopSiteSetting:(int64_t)setting
 {
-  v17 = a3;
+  policiesCopy = policies;
   cachedPlayingPauseQuirkEnabled = self->_cachedPlayingPauseQuirkEnabled;
   if (!cachedPlayingPauseQuirkEnabled)
   {
-    v7 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v8 = [v7 safari_numberForKey:*MEMORY[0x1E69B1E90]];
+    safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v8 = [safari_browserDefaults safari_numberForKey:*MEMORY[0x1E69B1E90]];
     v9 = self->_cachedPlayingPauseQuirkEnabled;
     self->_cachedPlayingPauseQuirkEnabled = v8;
 
     cachedPlayingPauseQuirkEnabled = self->_cachedPlayingPauseQuirkEnabled;
   }
 
-  v10 = [(NSNumber *)cachedPlayingPauseQuirkEnabled BOOLValue];
+  bOOLValue = [(NSNumber *)cachedPlayingPauseQuirkEnabled BOOLValue];
   cachedPerDocumentAutoplayBehaviorQuirkEnabled = self->_cachedPerDocumentAutoplayBehaviorQuirkEnabled;
   if (!cachedPerDocumentAutoplayBehaviorQuirkEnabled)
   {
-    v12 = [MEMORY[0x1E695E000] safari_browserDefaults];
-    v13 = [v12 safari_numberForKey:*MEMORY[0x1E69B1F40]];
+    safari_browserDefaults2 = [MEMORY[0x1E695E000] safari_browserDefaults];
+    v13 = [safari_browserDefaults2 safari_numberForKey:*MEMORY[0x1E69B1F40]];
     v14 = self->_cachedPerDocumentAutoplayBehaviorQuirkEnabled;
     self->_cachedPerDocumentAutoplayBehaviorQuirkEnabled = v13;
 
     cachedPerDocumentAutoplayBehaviorQuirkEnabled = self->_cachedPerDocumentAutoplayBehaviorQuirkEnabled;
   }
 
-  v15 = a4 == 1 || v10;
+  v15 = setting == 1 || bOOLValue;
   if ([(NSNumber *)cachedPerDocumentAutoplayBehaviorQuirkEnabled BOOLValue])
   {
     v16 = v15 | 8;
@@ -76,19 +76,19 @@
     v16 = v15;
   }
 
-  [v17 _setAllowedAutoplayQuirks:v16];
+  [policiesCopy _setAllowedAutoplayQuirks:v16];
 }
 
-- (void)websitePoliciesForURL:(id)a3 isForMainFrameNavigation:(BOOL)a4 navigationType:(int64_t)a5 completionHandler:(id)a6
+- (void)websitePoliciesForURL:(id)l isForMainFrameNavigation:(BOOL)navigation navigationType:(int64_t)type completionHandler:(id)handler
 {
-  v7 = a4;
-  v9 = a3;
-  v10 = a6;
+  navigationCopy = navigation;
+  lCopy = l;
+  handlerCopy = handler;
   v11 = objc_alloc_init(MEMORY[0x1E69853B0]);
-  v12 = [(_SFNavigationUtilitiesManager *)self reloadOptionsController];
-  if (v12)
+  reloadOptionsController = [(_SFNavigationUtilitiesManager *)self reloadOptionsController];
+  if (reloadOptionsController)
   {
-    v13 = v7;
+    v13 = navigationCopy;
   }
 
   else
@@ -101,10 +101,10 @@
     [(_SFNavigationUtilitiesManager *)self _applyAutoplayQuirksToWebsitePolicies:v11 desktopSiteSetting:1];
   }
 
-  v14 = [v9 safari_userVisibleHostWithoutWWWSubdomain];
-  if ([v14 length])
+  safari_userVisibleHostWithoutWWWSubdomain = [lCopy safari_userVisibleHostWithoutWWWSubdomain];
+  if ([safari_userVisibleHostWithoutWWWSubdomain length])
   {
-    v33 = v10;
+    v33 = handlerCopy;
     v15 = dispatch_group_create();
     v16 = v15;
     if (v13)
@@ -115,17 +115,17 @@
       v59[2] = __113___SFNavigationUtilitiesManager_websitePoliciesForURL_isForMainFrameNavigation_navigationType_completionHandler___block_invoke;
       v59[3] = &unk_1E8494608;
       v59[4] = self;
-      v60 = v9;
+      v60 = lCopy;
       v61 = v11;
       v62 = v16;
-      [v12 customUserAgentSettingForMainFrameURL:v60 withTimeout:v59 completionHandler:0.02];
+      [reloadOptionsController customUserAgentSettingForMainFrameURL:v60 withTimeout:v59 completionHandler:0.02];
     }
 
-    v32 = v12;
-    v17 = [v9 host];
-    v18 = [(_SFNavigationUtilitiesManager *)self userDefinedContentBlockerManager];
-    v19 = v18;
-    if (v7 && v18 && [v17 length] && objc_msgSend(MEMORY[0x1E69C8880], "isScribbleEnabled"))
+    v32 = reloadOptionsController;
+    host = [lCopy host];
+    userDefinedContentBlockerManager = [(_SFNavigationUtilitiesManager *)self userDefinedContentBlockerManager];
+    v19 = userDefinedContentBlockerManager;
+    if (navigationCopy && userDefinedContentBlockerManager && [host length] && objc_msgSend(MEMORY[0x1E69C8880], "isScribbleEnabled"))
     {
       dispatch_group_enter(v16);
       v56[0] = MEMORY[0x1E69E9820];
@@ -135,7 +135,7 @@
       v56[4] = self;
       v57 = v11;
       v58 = v16;
-      [v19 getAllPaintingAvoidanceSelectorsThatApplyToHost:v17 completionHandler:v56];
+      [v19 getAllPaintingAvoidanceSelectorsThatApplyToHost:host completionHandler:v56];
     }
 
     v31 = v19;
@@ -144,23 +144,23 @@
     aBlock[1] = 3221225472;
     aBlock[2] = __113___SFNavigationUtilitiesManager_websitePoliciesForURL_isForMainFrameNavigation_navigationType_completionHandler___block_invoke_5;
     aBlock[3] = &unk_1E8494658;
-    v21 = v14;
+    v21 = safari_userVisibleHostWithoutWWWSubdomain;
     v55 = Current;
     v51 = v21;
-    v52 = self;
+    selfCopy = self;
     v22 = v11;
     v53 = v22;
     v23 = v16;
     v54 = v23;
     v24 = _Block_copy(aBlock);
     dispatch_group_enter(v23);
-    v25 = [(_SFPerSitePreferencesVendor *)self->_preferencesVendor contentBlockersPreferenceManager];
-    [v25 getContentBlockersEnabledStateForDomain:v21 withTimeout:1 fallbackEnabledState:v24 completionHandler:0.02];
+    contentBlockersPreferenceManager = [(_SFPerSitePreferencesVendor *)self->_preferencesVendor contentBlockersPreferenceManager];
+    [contentBlockersPreferenceManager getContentBlockersEnabledStateForDomain:v21 withTimeout:1 fallbackEnabledState:v24 completionHandler:0.02];
 
     if ([MEMORY[0x1E69C98B8] isLockdownModeEnabledForSafari])
     {
       dispatch_group_enter(v23);
-      v26 = [(_SFPerSitePreferencesVendor *)self->_preferencesVendor lockdownModePreferenceManager];
+      lockdownModePreferenceManager = [(_SFPerSitePreferencesVendor *)self->_preferencesVendor lockdownModePreferenceManager];
       v47[0] = MEMORY[0x1E69E9820];
       v47[1] = 3221225472;
       v47[2] = __113___SFNavigationUtilitiesManager_websitePoliciesForURL_isForMainFrameNavigation_navigationType_completionHandler___block_invoke_19;
@@ -168,7 +168,7 @@
       v47[4] = self;
       v48 = v22;
       v49 = v23;
-      [v26 getLockdownModeEnabledForDomain:v21 withTimeout:1 fallbackEnabledState:v47 usingBlock:0.02];
+      [lockdownModePreferenceManager getLockdownModeEnabledForDomain:v21 withTimeout:1 fallbackEnabledState:v47 usingBlock:0.02];
     }
 
     v45[0] = 0;
@@ -208,30 +208,30 @@
     v30 = v27;
     dispatch_after(v29, v28, v34);
 
-    v10 = v33;
+    handlerCopy = v33;
     _Block_object_dispose(v43, 8);
 
     _Block_object_dispose(v45, 8);
-    v12 = v32;
+    reloadOptionsController = v32;
   }
 
   else
   {
-    (*(v10 + 2))(v10, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 }
 
-- (BOOL)_shouldOverrideUserAgentSettingForFacebookAuthURL:(id)a3
+- (BOOL)_shouldOverrideUserAgentSettingForFacebookAuthURL:(id)l
 {
-  v4 = a3;
-  v5 = v4;
+  lCopy = l;
+  v5 = lCopy;
   if (self->_persona == 1)
   {
-    v6 = [v4 host];
-    if ([v6 safari_isCaseInsensitiveEqualToString:@"m.facebook.com"])
+    host = [lCopy host];
+    if ([host safari_isCaseInsensitiveEqualToString:@"m.facebook.com"])
     {
-      v7 = [v5 path];
-      v8 = [v7 hasSuffix:@"/dialog/oauth"];
+      path = [v5 path];
+      v8 = [path hasSuffix:@"/dialog/oauth"];
     }
 
     else

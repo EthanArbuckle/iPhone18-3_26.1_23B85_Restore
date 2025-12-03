@@ -11,7 +11,7 @@
   v4 = a3;
   if (objc_opt_respondsToSelector())
   {
-    [a1 canGenerateTargetedPreviewsWithCompletionHandler:v4];
+    [self canGenerateTargetedPreviewsWithCompletionHandler:v4];
   }
 
   else
@@ -26,7 +26,7 @@
   v14 = a8;
   if (objc_opt_respondsToSelector())
   {
-    [a1 updatedTargetedPreviewGeometryFor:v15 previous:v14 completionHandler:{a2, a3, a4, a5}];
+    [self updatedTargetedPreviewGeometryFor:v15 previous:v14 completionHandler:{a2, a3, a4, a5}];
   }
 
   else
@@ -41,7 +41,7 @@
   v6 = a4;
   if (objc_opt_respondsToSelector())
   {
-    [a1 canGenerateTargetedPreviewForChunk:v7 completionHandler:v6];
+    [self canGenerateTargetedPreviewForChunk:v7 completionHandler:v6];
   }
 
   else

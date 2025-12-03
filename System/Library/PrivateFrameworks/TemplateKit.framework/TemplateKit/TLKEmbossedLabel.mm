@@ -1,19 +1,19 @@
 @interface TLKEmbossedLabel
 - (BOOL)adjustsFontSizeToFitWidth;
 - (CGSize)customInsetSize;
-- (CGSize)effectiveLayoutSizeFittingSize:(CGSize)a3;
+- (CGSize)effectiveLayoutSizeFittingSize:(CGSize)size;
 - (CGSize)textOffset;
 - (TLKEmbossedLabel)init;
 - (double)effectiveBaselineOffsetFromBottom;
 - (double)effectiveFirstBaselineOffsetFromTop;
 - (void)layoutSubviews;
 - (void)observedPropertiesChanged;
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3;
-- (void)setColor:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setShouldBadge:(BOOL)a3;
-- (void)setText:(id)a3;
-- (void)setText:(id)a3 font:(id)a4 customInsetSize:(CGSize)a5 badge:(BOOL)a6;
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width;
+- (void)setColor:(id)color;
+- (void)setFont:(id)font;
+- (void)setShouldBadge:(BOOL)badge;
+- (void)setText:(id)text;
+- (void)setText:(id)text font:(id)font customInsetSize:(CGSize)size badge:(BOOL)badge;
 @end
 
 @implementation TLKEmbossedLabel
@@ -28,17 +28,17 @@
     v3 = [TLKProminenceView viewWithProminence:3];
     [(TLKEmbossedLabel *)v2 setBackgroundView:v3];
 
-    v4 = [(TLKEmbossedLabel *)v2 backgroundView];
-    [(TLKEmbossedLabel *)v2 addSubview:v4];
+    backgroundView = [(TLKEmbossedLabel *)v2 backgroundView];
+    [(TLKEmbossedLabel *)v2 addSubview:backgroundView];
 
     v5 = objc_opt_new();
     [(TLKEmbossedLabel *)v2 setLabel:v5];
 
-    v6 = [(TLKEmbossedLabel *)v2 label];
-    [v6 setTextAlignment:1];
+    label = [(TLKEmbossedLabel *)v2 label];
+    [label setTextAlignment:1];
 
-    v7 = [(TLKEmbossedLabel *)v2 label];
-    [(TLKEmbossedLabel *)v2 addSubview:v7];
+    label2 = [(TLKEmbossedLabel *)v2 label];
+    [(TLKEmbossedLabel *)v2 addSubview:label2];
 
     v2->_shouldBadge = 1;
   }
@@ -46,75 +46,75 @@
   return v2;
 }
 
-- (void)setShouldBadge:(BOOL)a3
+- (void)setShouldBadge:(BOOL)badge
 {
-  if (self->_shouldBadge != a3)
+  if (self->_shouldBadge != badge)
   {
-    self->_shouldBadge = a3;
-    v4 = [(TLKView *)self observer];
-    if (v4)
+    self->_shouldBadge = badge;
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v5 = v4;
-      v6 = [(TLKView *)self observer];
-      v7 = [v6 batchUpdateCount];
+      v5 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v7)
+      if (!batchUpdateCount)
       {
-        v8 = [(TLKView *)self observer];
-        [v8 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v10 = a3;
-  if (self->_color != v10)
+  colorCopy = color;
+  if (self->_color != colorCopy)
   {
-    objc_storeStrong(&self->_color, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_color, color);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v10 = a3;
-  if (self->_font != v10)
+  fontCopy = font;
+  if (self->_font != fontCopy)
   {
-    objc_storeStrong(&self->_font, a3);
-    v5 = [(TLKView *)self observer];
-    if (v5)
+    objc_storeStrong(&self->_font, font);
+    observer = [(TLKView *)self observer];
+    if (observer)
     {
-      v6 = v5;
-      v7 = [(TLKView *)self observer];
-      v8 = [v7 batchUpdateCount];
+      v6 = observer;
+      observer2 = [(TLKView *)self observer];
+      batchUpdateCount = [observer2 batchUpdateCount];
 
-      if (!v8)
+      if (!batchUpdateCount)
       {
-        v9 = [(TLKView *)self observer];
-        [v9 propertiesDidChange];
+        observer3 = [(TLKView *)self observer];
+        [observer3 propertiesDidChange];
       }
     }
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  textCopy = text;
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_text setObserver:0];
@@ -125,7 +125,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = textCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -158,11 +158,11 @@
         while (v8);
       }
 
-      v5 = v23;
+      textCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_text, a3);
+  objc_storeStrong(&self->_text, text);
   if (objc_opt_respondsToSelector())
   {
     [(TLKObject *)self->_text setObserver:self];
@@ -207,44 +207,44 @@
     }
   }
 
-  v18 = [(TLKView *)self observer];
-  if (v18)
+  observer = [(TLKView *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKView *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKView *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKView *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKView *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
-- (void)setText:(id)a3 font:(id)a4 customInsetSize:(CGSize)a5 badge:(BOOL)a6
+- (void)setText:(id)text font:(id)font customInsetSize:(CGSize)size badge:(BOOL)badge
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
-  v15 = a3;
-  v12 = a4;
+  badgeCopy = badge;
+  height = size.height;
+  width = size.width;
+  textCopy = text;
+  fontCopy = font;
   text = self->_text;
-  v14 = text != v15;
-  if (text != v15)
+  v14 = text != textCopy;
+  if (text != textCopy)
   {
-    objc_storeStrong(&self->_text, a3);
+    objc_storeStrong(&self->_text, text);
   }
 
-  if (self->_font != v12)
+  if (self->_font != fontCopy)
   {
-    objc_storeStrong(&self->_font, a4);
+    objc_storeStrong(&self->_font, font);
     v14 = 1;
   }
 
-  if (self->_shouldBadge != v6)
+  if (self->_shouldBadge != badgeCopy)
   {
-    self->_shouldBadge = v6;
+    self->_shouldBadge = badgeCopy;
     v14 = 1;
   }
 
@@ -267,31 +267,31 @@ LABEL_11:
 
 - (void)observedPropertiesChanged
 {
-  v3 = [(TLKEmbossedLabel *)self font];
+  font = [(TLKEmbossedLabel *)self font];
 
-  if (!v3)
+  if (!font)
   {
     v4 = +[TLKFontUtilities footnoteFont];
     [(TLKEmbossedLabel *)self setFont:v4];
   }
 
-  v5 = [(TLKEmbossedLabel *)self label];
+  label = [(TLKEmbossedLabel *)self label];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __45__TLKEmbossedLabel_observedPropertiesChanged__block_invoke;
   v10[3] = &unk_1E7FD8E98;
   v10[4] = self;
-  [v5 performBatchUpdates:v10];
+  [label performBatchUpdates:v10];
 
-  LODWORD(v5) = [(TLKEmbossedLabel *)self shouldBadge];
-  v6 = [(TLKEmbossedLabel *)self backgroundView];
-  [v6 setHidden:v5 ^ 1];
+  LODWORD(label) = [(TLKEmbossedLabel *)self shouldBadge];
+  backgroundView = [(TLKEmbossedLabel *)self backgroundView];
+  [backgroundView setHidden:label ^ 1];
 
   [(TLKEmbossedLabel *)self effectiveLayoutSizeFittingSize:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
   v8 = v7;
-  v9 = [(TLKEmbossedLabel *)self backgroundView];
+  backgroundView2 = [(TLKEmbossedLabel *)self backgroundView];
   [TLKLayoutUtilities deviceScaledRoundedValue:self forView:v8 * 0.5];
-  [v9 tlks_setCornerRadius:*MEMORY[0x1E69796E0] withStyle:?];
+  [backgroundView2 tlks_setCornerRadius:*MEMORY[0x1E69796E0] withStyle:?];
 
   [(TLKEmbossedLabel *)self invalidateIntrinsicContentSize];
 }
@@ -315,25 +315,25 @@ void __45__TLKEmbossedLabel_observedPropertiesChanged__block_invoke(uint64_t a1)
   [v9 setProminence:v8];
 }
 
-- (void)setAdjustsFontSizeToFitWidth:(BOOL)a3
+- (void)setAdjustsFontSizeToFitWidth:(BOOL)width
 {
-  v3 = a3;
-  v4 = [(TLKEmbossedLabel *)self label];
-  [v4 setAdjustsFontSizeToFitWidth:v3];
+  widthCopy = width;
+  label = [(TLKEmbossedLabel *)self label];
+  [label setAdjustsFontSizeToFitWidth:widthCopy];
 }
 
 - (BOOL)adjustsFontSizeToFitWidth
 {
-  v2 = [(TLKEmbossedLabel *)self label];
-  v3 = [v2 adjustsFontSizeToFitWidth];
+  label = [(TLKEmbossedLabel *)self label];
+  adjustsFontSizeToFitWidth = [label adjustsFontSizeToFitWidth];
 
-  return v3;
+  return adjustsFontSizeToFitWidth;
 }
 
 - (double)effectiveBaselineOffsetFromBottom
 {
-  v3 = [(TLKEmbossedLabel *)self label];
-  [v3 effectiveBaselineOffsetFromBottom];
+  label = [(TLKEmbossedLabel *)self label];
+  [label effectiveBaselineOffsetFromBottom];
   v5 = v4 + self->_customInsetSize.height;
 
   return v5;
@@ -341,19 +341,19 @@ void __45__TLKEmbossedLabel_observedPropertiesChanged__block_invoke(uint64_t a1)
 
 - (double)effectiveFirstBaselineOffsetFromTop
 {
-  v3 = [(TLKEmbossedLabel *)self label];
-  [v3 effectiveFirstBaselineOffsetFromTop];
+  label = [(TLKEmbossedLabel *)self label];
+  [label effectiveFirstBaselineOffsetFromTop];
   v5 = v4 + self->_customInsetSize.height;
 
   return v5;
 }
 
-- (CGSize)effectiveLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)effectiveLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TLKEmbossedLabel *)self label];
-  [v6 effectiveLayoutSizeFittingSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  label = [(TLKEmbossedLabel *)self label];
+  [label effectiveLayoutSizeFittingSize:{width, height}];
   v8 = v7;
   v10 = v9;
 
@@ -377,12 +377,12 @@ void __45__TLKEmbossedLabel_observedPropertiesChanged__block_invoke(uint64_t a1)
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(TLKEmbossedLabel *)self backgroundView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  backgroundView = [(TLKEmbossedLabel *)self backgroundView];
+  [backgroundView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(TLKEmbossedLabel *)self label];
+  label = [(TLKEmbossedLabel *)self label];
   [(TLKEmbossedLabel *)self bounds];
-  [v12 effectiveLayoutSizeFittingSize:{v13, v14}];
+  [label effectiveLayoutSizeFittingSize:{v13, v14}];
   v16 = v15;
 
   [(TLKEmbossedLabel *)self textOffset];
@@ -399,8 +399,8 @@ void __45__TLKEmbossedLabel_observedPropertiesChanged__block_invoke(uint64_t a1)
   v27 = v26;
   v29 = v28;
   v31 = v30;
-  v32 = [(TLKEmbossedLabel *)self label];
-  [v32 setFrame:{v25, v27, v29, v31}];
+  label2 = [(TLKEmbossedLabel *)self label];
+  [label2 setFrame:{v25, v27, v29, v31}];
 }
 
 - (CGSize)textOffset

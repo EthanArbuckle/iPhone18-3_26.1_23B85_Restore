@@ -1,28 +1,28 @@
 @interface _UITextUnderlineRect
-+ (id)underlineRectWithRect:(CGRect)a3 offset:(double)a4 transform:(CGAffineTransform *)a5;
++ (id)underlineRectWithRect:(CGRect)rect offset:(double)offset transform:(CGAffineTransform *)transform;
 - (CGAffineTransform)transform;
 - (CGRect)fullRect;
 - (CGRect)rect;
 - (_UITextUnderlineRect)init;
 - (id)description;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation _UITextUnderlineRect
 
-+ (id)underlineRectWithRect:(CGRect)a3 offset:(double)a4 transform:(CGAffineTransform *)a5
++ (id)underlineRectWithRect:(CGRect)rect offset:(double)offset transform:(CGAffineTransform *)transform
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v11 = objc_alloc_init(_UITextUnderlineRect);
   [(_UITextUnderlineRect *)v11 setRect:x, y, width, height];
-  [(UITextSelectionRect *)v11 setBaselineOffset:a4];
-  v12 = *&a5->c;
-  v14[0] = *&a5->a;
+  [(UITextSelectionRect *)v11 setBaselineOffset:offset];
+  v12 = *&transform->c;
+  v14[0] = *&transform->a;
   v14[1] = v12;
-  v14[2] = *&a5->tx;
+  v14[2] = *&transform->tx;
   [(_UITextUnderlineRect *)v11 setTransform:v14];
   [(_UITextUnderlineRect *)v11 setUnderlineType:1];
 
@@ -80,11 +80,11 @@
   return self;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_transform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_transform.a = *&transform->a;
   *&self->_transform.c = v4;
   *&self->_transform.tx = v3;
 }

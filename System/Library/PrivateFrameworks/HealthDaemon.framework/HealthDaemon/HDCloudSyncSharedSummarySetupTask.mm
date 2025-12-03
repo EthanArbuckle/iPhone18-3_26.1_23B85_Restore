@@ -1,60 +1,60 @@
 @interface HDCloudSyncSharedSummarySetupTask
-- (HDCloudSyncSharedSummarySetupTask)initWithManager:(id)a3 context:(id)a4 codableEntry:(id)a5 authorizationIdentifiers:(id)a6 accessibilityAssertion:(id)a7 completion:(id)a8;
-- (id)pipelineForRepository:(id)a3;
+- (HDCloudSyncSharedSummarySetupTask)initWithManager:(id)manager context:(id)context codableEntry:(id)entry authorizationIdentifiers:(id)identifiers accessibilityAssertion:(id)assertion completion:(id)completion;
+- (id)pipelineForRepository:(id)repository;
 @end
 
 @implementation HDCloudSyncSharedSummarySetupTask
 
-- (HDCloudSyncSharedSummarySetupTask)initWithManager:(id)a3 context:(id)a4 codableEntry:(id)a5 authorizationIdentifiers:(id)a6 accessibilityAssertion:(id)a7 completion:(id)a8
+- (HDCloudSyncSharedSummarySetupTask)initWithManager:(id)manager context:(id)context codableEntry:(id)entry authorizationIdentifiers:(id)identifiers accessibilityAssertion:(id)assertion completion:(id)completion
 {
-  v15 = a5;
-  v16 = a6;
+  entryCopy = entry;
+  identifiersCopy = identifiers;
   v20.receiver = self;
   v20.super_class = HDCloudSyncSharedSummarySetupTask;
-  v17 = [(HDCloudSyncManagerPipelineTask *)&v20 initWithManager:a3 context:a4 accessibilityAssertion:a7 completion:a8];
+  v17 = [(HDCloudSyncManagerPipelineTask *)&v20 initWithManager:manager context:context accessibilityAssertion:assertion completion:completion];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_codableEntry, a5);
-    objc_storeStrong(&v18->_authorizationIdentifiers, a6);
+    objc_storeStrong(&v17->_codableEntry, entry);
+    objc_storeStrong(&v18->_authorizationIdentifiers, identifiers);
   }
 
   return v18;
 }
 
-- (id)pipelineForRepository:(id)a3
+- (id)pipelineForRepository:(id)repository
 {
-  v4 = a3;
+  repositoryCopy = repository;
   v5 = [HDCloudSyncPipeline alloc];
-  v6 = [(HDCloudSyncManagerRepositoryTask *)self context];
-  v7 = [(HDCloudSyncManagerPipelineTask *)self accessibilityAssertion];
-  v8 = [(HDCloudSyncManagerRepositoryTask *)self manager];
-  v9 = [v8 queue];
-  v10 = [(HDCloudSyncPipeline *)v5 initForContext:v6 repository:v4 accessibilityAssertion:v7 queue:v9];
+  context = [(HDCloudSyncManagerRepositoryTask *)self context];
+  accessibilityAssertion = [(HDCloudSyncManagerPipelineTask *)self accessibilityAssertion];
+  manager = [(HDCloudSyncManagerRepositoryTask *)self manager];
+  queue = [manager queue];
+  v10 = [(HDCloudSyncPipeline *)v5 initForContext:context repository:repositoryCopy accessibilityAssertion:accessibilityAssertion queue:queue];
 
   v11 = [HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability alloc];
-  v12 = [v10 operationConfiguration];
-  v13 = [(HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability *)v11 initWithConfiguration:v12];
+  operationConfiguration = [v10 operationConfiguration];
+  v13 = [(HDCloudSyncPipelineStageWaitForDeviceToDeviceEncryptionAvailability *)v11 initWithConfiguration:operationConfiguration];
   [v10 addStage:v13];
 
   v14 = [HDCloudSyncPipelineStageFetchAndUpdateCache alloc];
-  v15 = [v10 operationConfiguration];
-  v16 = [(HDCloudSyncPipelineStage *)v14 initWithConfiguration:v15 cloudState:0];
+  operationConfiguration2 = [v10 operationConfiguration];
+  v16 = [(HDCloudSyncPipelineStage *)v14 initWithConfiguration:operationConfiguration2 cloudState:0];
   [v10 addStage:v16];
 
   v17 = [HDCloudSyncPipelineStageSynchronize alloc];
-  v18 = [v10 operationConfiguration];
-  v19 = [(HDCloudSyncPipelineStage *)v17 initWithConfiguration:v18 cloudState:0];
+  operationConfiguration3 = [v10 operationConfiguration];
+  v19 = [(HDCloudSyncPipelineStage *)v17 initWithConfiguration:operationConfiguration3 cloudState:0];
   [v10 addStage:v19];
 
   v20 = [HDCloudSyncPipelineStageSharedSummarySynchronizeSharingEntryState alloc];
-  v21 = [v10 operationConfiguration];
-  v22 = [(HDCloudSyncPipelineStage *)v20 initWithConfiguration:v21 cloudState:0];
+  operationConfiguration4 = [v10 operationConfiguration];
+  v22 = [(HDCloudSyncPipelineStage *)v20 initWithConfiguration:operationConfiguration4 cloudState:0];
   [v10 addStage:v22];
 
   v23 = [HDCloudSyncPipelineStageSharedSummaryAddParticipant alloc];
-  v24 = [v10 operationConfiguration];
-  v25 = [(HDCloudSyncPipelineStageSharedSummaryAddParticipant *)v23 initWithConfiguration:v24 cloudState:0 codableEntry:self->_codableEntry authorizationIdentifiers:self->_authorizationIdentifiers];
+  operationConfiguration5 = [v10 operationConfiguration];
+  v25 = [(HDCloudSyncPipelineStageSharedSummaryAddParticipant *)v23 initWithConfiguration:operationConfiguration5 cloudState:0 codableEntry:self->_codableEntry authorizationIdentifiers:self->_authorizationIdentifiers];
   addParticipantStage = self->_addParticipantStage;
   self->_addParticipantStage = v25;
 

@@ -1,10 +1,10 @@
 @interface VMULeaksAnalyzer
-- (id)analysisSummaryWithError:(id *)a3;
+- (id)analysisSummaryWithError:(id *)error;
 @end
 
 @implementation VMULeaksAnalyzer
 
-- (id)analysisSummaryWithError:(id *)a3
+- (id)analysisSummaryWithError:(id *)error
 {
   v4 = [[VMULeakDetector alloc] initWithVMUTask:0 graph:self->super._graph scanner:0 stackLogReader:0];
   v16 = 0;
@@ -13,11 +13,11 @@
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (error)
     {
       v8 = v6;
       v9 = 0;
-      *a3 = v7;
+      *error = v7;
     }
 
     else

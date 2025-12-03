@@ -12,7 +12,7 @@
   [value setCard:0];
   [value setInlineCard:0];
   [value setCompactCard:0];
-  objc_setAssociatedObject(a1, &spotlightBackingResultKey, value, 1);
+  objc_setAssociatedObject(self, &spotlightBackingResultKey, value, 1);
 }
 
 @end

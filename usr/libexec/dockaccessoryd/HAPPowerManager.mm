@@ -2,9 +2,9 @@
 + (id)logCategory;
 + (id)sharedInstance;
 - (HAPPowerManager)init;
-- (void)deRegisterFromSleepWake:(id)a3;
+- (void)deRegisterFromSleepWake:(id)wake;
 - (void)dealloc;
-- (void)registerForSleepWake:(id)a3 queue:(id)a4;
+- (void)registerForSleepWake:(id)wake queue:(id)queue;
 @end
 
 @implementation HAPPowerManager
@@ -80,11 +80,11 @@
     if (v4)
     {
       v5 = v4;
-      v6 = self;
+      selfCopy = self;
       v7 = sub_10007FAA0();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = sub_10007FAFC(v6);
+        v8 = sub_10007FAFC(selfCopy);
         *buf = 138543618;
         v21 = v8;
         v22 = 1024;
@@ -110,11 +110,11 @@
     if (v11)
     {
       v12 = v11;
-      v13 = self;
+      selfCopy2 = self;
       v14 = sub_10007FAA0();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = sub_10007FAFC(v13);
+        v15 = sub_10007FAFC(selfCopy2);
         *buf = 138543618;
         v21 = v15;
         v22 = 1024;
@@ -126,49 +126,49 @@
     self->_systemPowerMgr = 0;
   }
 
-  v16 = self;
+  selfCopy3 = self;
   v17 = sub_10007FAA0();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = sub_10007FAFC(v16);
+    v18 = sub_10007FAFC(selfCopy3);
     *buf = 138543362;
     v21 = v18;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%{public}@Deallocating Power Manager", buf, 0xCu);
   }
 
-  v19.receiver = v16;
+  v19.receiver = selfCopy3;
   v19.super_class = HAPPowerManager;
   [(HAPPowerManager *)&v19 dealloc];
 }
 
-- (void)registerForSleepWake:(id)a3 queue:(id)a4
+- (void)registerForSleepWake:(id)wake queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  wakeCopy = wake;
+  queueCopy = queue;
   workQueue = self->_workQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10007C8C0;
   block[3] = &unk_100273748;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = wakeCopy;
+  v13 = queueCopy;
+  v9 = queueCopy;
+  v10 = wakeCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)deRegisterFromSleepWake:(id)a3
+- (void)deRegisterFromSleepWake:(id)wake
 {
-  v4 = a3;
+  wakeCopy = wake;
   workQueue = self->_workQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10007C9C8;
   v7[3] = &unk_100273370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = wakeCopy;
+  v6 = wakeCopy;
   dispatch_async(workQueue, v7);
 }
 

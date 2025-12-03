@@ -1,10 +1,10 @@
 @interface MPConcreteMediaEntityPropertiesCache
-- (MPConcreteMediaEntityPropertiesCache)initWithLibraryDataProvider:(id)a3 dataProviderEntityClass:(Class)a4 identifier:(int64_t)a5;
+- (MPConcreteMediaEntityPropertiesCache)initWithLibraryDataProvider:(id)provider dataProviderEntityClass:(Class)class identifier:(int64_t)identifier;
 - (MPMediaLibraryDataProvider)dataProvider;
-- (id)valueForProperty:(id)a3 isCached:(BOOL *)a4;
-- (void)_cacheValues:(id)a3 persistValueInBackgroundBlock:(id)a4;
-- (void)cachePropertyValues:(id)a3 forProperties:(id)a4 persistValueInBackgroundBlock:(id)a5;
-- (void)cacheValue:(id)a3 forProperty:(id)a4 persistValueInBackgroundBlock:(id)a5;
+- (id)valueForProperty:(id)property isCached:(BOOL *)cached;
+- (void)_cacheValues:(id)values persistValueInBackgroundBlock:(id)block;
+- (void)cachePropertyValues:(id)values forProperties:(id)properties persistValueInBackgroundBlock:(id)block;
+- (void)cacheValue:(id)value forProperty:(id)property persistValueInBackgroundBlock:(id)block;
 - (void)dealloc;
 - (void)delete;
 - (void)invalidate;
@@ -22,8 +22,8 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_dataProvider);
-  v4 = [WeakRetained entityCache];
-  [v4 removeEntityWithIdentifier:self->_identifier dataProviderEntityClass:self->_dataProviderEntityClass];
+  entityCache = [WeakRetained entityCache];
+  [entityCache removeEntityWithIdentifier:self->_identifier dataProviderEntityClass:self->_dataProviderEntityClass];
 
   v5.receiver = self;
   v5.super_class = MPConcreteMediaEntityPropertiesCache;
@@ -34,13 +34,13 @@
 {
   v17 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(NSMutableDictionary *)self->_valuePersistenceBlocks allKeys];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  allKeys = [(NSMutableDictionary *)self->_valuePersistenceBlocks allKeys];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = allKeys;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -59,7 +59,7 @@
         v11 = [(NSMutableDictionary *)self->_properties valueForKey:v10, v12];
         if (v11)
         {
-          [v4 setObject:v11 forKey:v10];
+          [dictionary setObject:v11 forKey:v10];
         }
       }
 
@@ -71,7 +71,7 @@
 
   if (self->_properties)
   {
-    objc_storeStrong(&self->_properties, v4);
+    objc_storeStrong(&self->_properties, dictionary);
   }
 
   os_unfair_lock_unlock(&self->_lock);
@@ -90,53 +90,53 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)cacheValue:(id)a3 forProperty:(id)a4 persistValueInBackgroundBlock:(id)a5
+- (void)cacheValue:(id)value forProperty:(id)property persistValueInBackgroundBlock:(id)block
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v10)
+  valueCopy = value;
+  propertyCopy = property;
+  blockCopy = block;
+  if (!propertyCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryDataProvider.m" lineNumber:1721 description:@"Property can't be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaLibraryDataProvider.m" lineNumber:1721 description:@"Property can't be nil"];
 
-    if (v9)
+    if (valueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     goto LABEL_6;
   }
 
-  if (!v9)
+  if (!valueCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v12 = v9;
+  null = valueCopy;
 LABEL_6:
-  v14 = v12;
-  v16 = v10;
-  v17[0] = v12;
+  v14 = null;
+  v16 = propertyCopy;
+  v17[0] = null;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
-  [(MPConcreteMediaEntityPropertiesCache *)self _cacheValues:v15 persistValueInBackgroundBlock:v11];
+  [(MPConcreteMediaEntityPropertiesCache *)self _cacheValues:v15 persistValueInBackgroundBlock:blockCopy];
 }
 
-- (void)cachePropertyValues:(id)a3 forProperties:(id)a4 persistValueInBackgroundBlock:(id)a5
+- (void)cachePropertyValues:(id)values forProperties:(id)properties persistValueInBackgroundBlock:(id)block
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 mutableCopy];
+  valuesCopy = values;
+  propertiesCopy = properties;
+  v9 = [valuesCopy mutableCopy];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = v8;
+  v10 = propertiesCopy;
   v11 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
@@ -152,12 +152,12 @@ LABEL_6:
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        v16 = [v7 objectForKey:{v15, v18}];
+        v16 = [valuesCopy objectForKey:{v15, v18}];
 
         if (!v16)
         {
-          v17 = [MEMORY[0x1E695DFB0] null];
-          [v9 setObject:v17 forKey:v15];
+          null = [MEMORY[0x1E695DFB0] null];
+          [v9 setObject:null forKey:v15];
         }
       }
 
@@ -170,19 +170,19 @@ LABEL_6:
   [(MPConcreteMediaEntityPropertiesCache *)self _cacheValues:v9 persistValueInBackgroundBlock:0];
 }
 
-- (void)_cacheValues:(id)a3 persistValueInBackgroundBlock:(id)a4
+- (void)_cacheValues:(id)values persistValueInBackgroundBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
+  blockCopy = block;
+  valuesCopy = values;
   os_unfair_lock_lock(&self->_lock);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __83__MPConcreteMediaEntityPropertiesCache__cacheValues_persistValueInBackgroundBlock___block_invoke;
   v9[3] = &unk_1E7679A20;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
-  [v7 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = blockCopy;
+  v8 = blockCopy;
+  [valuesCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -255,23 +255,23 @@ void __83__MPConcreteMediaEntityPropertiesCache__cacheValues_persistValueInBackg
   }
 }
 
-- (id)valueForProperty:(id)a3 isCached:(BOOL *)a4
+- (id)valueForProperty:(id)property isCached:(BOOL *)cached
 {
-  v6 = a3;
+  propertyCopy = property;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NSMutableDictionary *)self->_properties objectForKey:v6];
+  v7 = [(NSMutableDictionary *)self->_properties objectForKey:propertyCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (v7)
   {
-    if (a4)
+    if (cached)
     {
-      *a4 = 1;
+      *cached = 1;
     }
 
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
 
-    if (v7 == v8)
+    if (v7 == null)
     {
 
       v7 = 0;
@@ -281,17 +281,17 @@ void __83__MPConcreteMediaEntityPropertiesCache__cacheValues_persistValueInBackg
   return v7;
 }
 
-- (MPConcreteMediaEntityPropertiesCache)initWithLibraryDataProvider:(id)a3 dataProviderEntityClass:(Class)a4 identifier:(int64_t)a5
+- (MPConcreteMediaEntityPropertiesCache)initWithLibraryDataProvider:(id)provider dataProviderEntityClass:(Class)class identifier:(int64_t)identifier
 {
-  v7 = a3;
+  providerCopy = provider;
   v17.receiver = self;
   v17.super_class = MPConcreteMediaEntityPropertiesCache;
   v8 = [(MPConcreteMediaEntityPropertiesCache *)&v17 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataProvider, v7);
-    v9->_dataProviderEntityClass = a4;
+    objc_storeWeak(&v8->_dataProvider, providerCopy);
+    v9->_dataProviderEntityClass = class;
     v10 = objc_alloc_init(MEMORY[0x1E695DF90]);
     properties = v9->_properties;
     v9->_properties = v10;

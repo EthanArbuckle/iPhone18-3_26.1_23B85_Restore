@@ -1,60 +1,60 @@
 @interface CSActivityManager
 + (id)sharedInstance;
-- (BOOL)_clockActivityExistsForGroupingIdentifier:(id)a3;
-- (BOOL)_itemIsNowPlaying:(id)a3;
-- (BOOL)_shouldHandleActivityWithContentUpdate:(id)a3;
-- (BOOL)_shouldSetDefaultBackgroundForViewController:(id)a3;
-- (BOOL)activityViewController:(id)a3 didReceiveAction:(id)a4;
+- (BOOL)_clockActivityExistsForGroupingIdentifier:(id)identifier;
+- (BOOL)_itemIsNowPlaying:(id)playing;
+- (BOOL)_shouldHandleActivityWithContentUpdate:(id)update;
+- (BOOL)_shouldSetDefaultBackgroundForViewController:(id)controller;
+- (BOOL)activityViewController:(id)controller didReceiveAction:(id)action;
 - (CSActivityManager)init;
 - (CSListItemSection)section;
-- (double)_relevanceScoreForItemWithViewController:(id)a3;
-- (id)_appNameForBundleIdentifier:(id)a3;
-- (id)_authorizationActionsForOptionsType:(int64_t)a3 item:(id)a4 configuration:(id)a5;
-- (id)_backgroundTintColorForUserInterfaceStyle:(int64_t)a3;
-- (id)_buildConfigurationFromViewController:(id)a3;
-- (id)_createdDateForItemWithViewController:(id)a3;
+- (double)_relevanceScoreForItemWithViewController:(id)controller;
+- (id)_appNameForBundleIdentifier:(id)identifier;
+- (id)_authorizationActionsForOptionsType:(int64_t)type item:(id)item configuration:(id)configuration;
+- (id)_backgroundTintColorForUserInterfaceStyle:(int64_t)style;
+- (id)_buildConfigurationFromViewController:(id)controller;
+- (id)_createdDateForItemWithViewController:(id)controller;
 - (id)_currentSupplementaryItemDescriptions;
-- (id)_latestActivityCreationDateForGroupingIdentifier:(id)a3;
-- (id)_primaryActionTitleForAuthorizationOptionsType:(int64_t)a3;
-- (id)_secondaryActionTitleForAuthorizationOptionsType:(int64_t)a3;
-- (id)_summaryTextForAuthorizationOptionsType:(int64_t)a3 appName:(id)a4;
-- (id)_textColorForUserInterfaceStyle:(int64_t)a3;
-- (id)iconZoomingViewForActivityIdentifier:(id)a3;
+- (id)_latestActivityCreationDateForGroupingIdentifier:(id)identifier;
+- (id)_primaryActionTitleForAuthorizationOptionsType:(int64_t)type;
+- (id)_secondaryActionTitleForAuthorizationOptionsType:(int64_t)type;
+- (id)_summaryTextForAuthorizationOptionsType:(int64_t)type appName:(id)name;
+- (id)_textColorForUserInterfaceStyle:(int64_t)style;
+- (id)iconZoomingViewForActivityIdentifier:(id)identifier;
 - (id)itemsGroupSortComparator;
 - (id)itemsViewControllerSortComparator;
-- (void)_addActivityListItemForContentUpdate:(id)a3;
-- (void)_addAppActivitiesRecordForBundleId:(id)a3 activityItem:(id)a4;
-- (void)_clearAuthorizationOptionsIfNecessaryForGroupingIdentifier:(id)a3;
-- (void)_endAllActivitiesForBundleId:(id)a3;
-- (void)_handleActivityExceedingReducedPushBudgetWithIdentifier:(id)a3;
-- (void)_hostShouldCancelTouchesWithIdentifier:(id)a3;
-- (void)_removeActivityWithContentUpdate:(id)a3;
-- (void)_removeAppActivitiesRecordForBundleId:(id)a3 activityItem:(id)a4;
-- (void)_setActivitiesEnabled:(BOOL)a3 forBundleId:(id)a4;
-- (void)_setFrequentUpdatesEnabled:(BOOL)a3 forBundleId:(id)a4;
-- (void)_setHidden:(BOOL)a3 forItem:(id)a4;
-- (void)_significantUserInteractionBeganForIdentifier:(id)a3;
-- (void)_significantUserInteractionEndedForIdentifier:(id)a3;
-- (void)_unlockAndLaunchAppIfPossible:(id)a3 withAction:(id)a4;
-- (void)_updateActivityIfNeededWithContentUpdate:(id)a3;
+- (void)_addActivityListItemForContentUpdate:(id)update;
+- (void)_addAppActivitiesRecordForBundleId:(id)id activityItem:(id)item;
+- (void)_clearAuthorizationOptionsIfNecessaryForGroupingIdentifier:(id)identifier;
+- (void)_endAllActivitiesForBundleId:(id)id;
+- (void)_handleActivityExceedingReducedPushBudgetWithIdentifier:(id)identifier;
+- (void)_hostShouldCancelTouchesWithIdentifier:(id)identifier;
+- (void)_removeActivityWithContentUpdate:(id)update;
+- (void)_removeAppActivitiesRecordForBundleId:(id)id activityItem:(id)item;
+- (void)_setActivitiesEnabled:(BOOL)enabled forBundleId:(id)id;
+- (void)_setFrequentUpdatesEnabled:(BOOL)enabled forBundleId:(id)id;
+- (void)_setHidden:(BOOL)hidden forItem:(id)item;
+- (void)_significantUserInteractionBeganForIdentifier:(id)identifier;
+- (void)_significantUserInteractionEndedForIdentifier:(id)identifier;
+- (void)_unlockAndLaunchAppIfPossible:(id)possible withAction:(id)action;
+- (void)_updateActivityIfNeededWithContentUpdate:(id)update;
 - (void)_updateAllApplicationMonitoringPolicies;
-- (void)_updateForScreenTimeLimitForBundleId:(id)a3 policy:(id)a4;
-- (void)activityViewController:(id)a3 requestsLaunchWithAction:(id)a4;
-- (void)activityViewControllerAudioCategoriesDisablingVolumeHUDDidChange:(id)a3;
-- (void)activityViewControllerBackgroundTintColorDidChange:(id)a3;
-- (void)activityViewControllerHostShouldCancelTouches:(id)a3;
-- (void)activityViewControllerSignificantUserInteractionBegan:(id)a3;
-- (void)activityViewControllerSignificantUserInteractionEnded:(id)a3;
-- (void)activityViewControllerTextColorDidChange:(id)a3;
-- (void)addActivityWithContentUpdate:(id)a3;
+- (void)_updateForScreenTimeLimitForBundleId:(id)id policy:(id)policy;
+- (void)activityViewController:(id)controller requestsLaunchWithAction:(id)action;
+- (void)activityViewControllerAudioCategoriesDisablingVolumeHUDDidChange:(id)change;
+- (void)activityViewControllerBackgroundTintColorDidChange:(id)change;
+- (void)activityViewControllerHostShouldCancelTouches:(id)touches;
+- (void)activityViewControllerSignificantUserInteractionBegan:(id)began;
+- (void)activityViewControllerSignificantUserInteractionEnded:(id)ended;
+- (void)activityViewControllerTextColorDidChange:(id)change;
+- (void)addActivityWithContentUpdate:(id)update;
 - (void)dealloc;
-- (void)handleActivityExceedingReducedPushBudgetForIdentifier:(id)a3;
-- (void)handleRemovedItems:(id)a3;
-- (void)removeActivityWithContentUpdate:(id)a3;
-- (void)restrictsTouches:(BOOL)a3 onHostedSceneInViewController:(id)a4;
-- (void)restrictsTouchesOnAllHostedScenes:(BOOL)a3;
-- (void)setActivityHidden:(BOOL)a3 forIdentifier:(id)a4;
-- (void)updateActivityWithContentUpdate:(id)a3;
+- (void)handleActivityExceedingReducedPushBudgetForIdentifier:(id)identifier;
+- (void)handleRemovedItems:(id)items;
+- (void)removeActivityWithContentUpdate:(id)update;
+- (void)restrictsTouches:(BOOL)touches onHostedSceneInViewController:(id)controller;
+- (void)restrictsTouchesOnAllHostedScenes:(BOOL)scenes;
+- (void)setActivityHidden:(BOOL)hidden forIdentifier:(id)identifier;
+- (void)updateActivityWithContentUpdate:(id)update;
 @end
 
 @implementation CSActivityManager
@@ -130,108 +130,108 @@ uint64_t __35__CSActivityManager_sharedInstance__block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)addActivityWithContentUpdate:(id)a3
+- (void)addActivityWithContentUpdate:(id)update
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = SBLogCoverSheetActivities();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
-    v7 = [v4 descriptor];
-    v8 = [v7 platterTargetBundleIdentifier];
+    identifier = [updateCopy identifier];
+    descriptor = [updateCopy descriptor];
+    platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
     v9 = 138412546;
-    v10 = v6;
+    v10 = identifier;
     v11 = 2112;
-    v12 = v8;
+    v12 = platterTargetBundleIdentifier;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "Activity started: %@, platter target: %@", &v9, 0x16u);
   }
 
-  if ([(CSActivityManager *)self _shouldHandleActivityWithContentUpdate:v4])
+  if ([(CSActivityManager *)self _shouldHandleActivityWithContentUpdate:updateCopy])
   {
-    [(CSActivityManager *)self _addActivityWithContentUpdate:v4];
+    [(CSActivityManager *)self _addActivityWithContentUpdate:updateCopy];
   }
 }
 
-- (void)updateActivityWithContentUpdate:(id)a3
+- (void)updateActivityWithContentUpdate:(id)update
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = SBLogCoverSheetActivities();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
-    v7 = [v4 descriptor];
-    v8 = [v7 platterTargetBundleIdentifier];
+    identifier = [updateCopy identifier];
+    descriptor = [updateCopy descriptor];
+    platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
     v9 = 138412546;
-    v10 = v6;
+    v10 = identifier;
     v11 = 2112;
-    v12 = v8;
+    v12 = platterTargetBundleIdentifier;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "Activity updated: %@, platter target: %@", &v9, 0x16u);
   }
 
-  if ([(CSActivityManager *)self _shouldHandleActivityWithContentUpdate:v4])
+  if ([(CSActivityManager *)self _shouldHandleActivityWithContentUpdate:updateCopy])
   {
-    [(CSActivityManager *)self _updateActivityIfNeededWithContentUpdate:v4];
+    [(CSActivityManager *)self _updateActivityIfNeededWithContentUpdate:updateCopy];
   }
 }
 
-- (void)removeActivityWithContentUpdate:(id)a3
+- (void)removeActivityWithContentUpdate:(id)update
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = SBLogCoverSheetActivities();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
-    v7 = [v4 descriptor];
-    v8 = [v7 platterTargetBundleIdentifier];
+    identifier = [updateCopy identifier];
+    descriptor = [updateCopy descriptor];
+    platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
     v9 = 138412546;
-    v10 = v6;
+    v10 = identifier;
     v11 = 2112;
-    v12 = v8;
+    v12 = platterTargetBundleIdentifier;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "Activity dismissed: %@, platter target: %@", &v9, 0x16u);
   }
 
-  if ([(CSActivityManager *)self _shouldHandleActivityWithContentUpdate:v4])
+  if ([(CSActivityManager *)self _shouldHandleActivityWithContentUpdate:updateCopy])
   {
-    [(CSActivityManager *)self _removeActivityWithContentUpdate:v4];
+    [(CSActivityManager *)self _removeActivityWithContentUpdate:updateCopy];
   }
 }
 
-- (void)setActivityHidden:(BOOL)a3 forIdentifier:(id)a4
+- (void)setActivityHidden:(BOOL)hidden forIdentifier:(id)identifier
 {
-  v4 = a3;
-  v6 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:a4];
-  [(CSActivityManager *)self _setHidden:v4 forItem:v6];
+  hiddenCopy = hidden;
+  v6 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:identifier];
+  [(CSActivityManager *)self _setHidden:hiddenCopy forItem:v6];
 }
 
-- (void)handleActivityExceedingReducedPushBudgetForIdentifier:(id)a3
+- (void)handleActivityExceedingReducedPushBudgetForIdentifier:(id)identifier
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = SBLogCoverSheetActivities();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = identifierCopy;
     _os_log_impl(&dword_21EB05000, v5, OS_LOG_TYPE_DEFAULT, "Activity exceeded reduced push budget: %@", &v6, 0xCu);
   }
 
-  [(CSActivityManager *)self _handleActivityExceedingReducedPushBudgetWithIdentifier:v4];
+  [(CSActivityManager *)self _handleActivityExceedingReducedPushBudgetWithIdentifier:identifierCopy];
 }
 
-- (id)iconZoomingViewForActivityIdentifier:(id)a3
+- (id)iconZoomingViewForActivityIdentifier:(id)identifier
 {
-  v4 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:identifier];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 identifier];
-    v7 = [(NSMutableDictionary *)self->_activityViewControllersByActivityIdentifier objectForKey:v6];
-    v8 = [v7 view];
+    identifier = [v4 identifier];
+    v7 = [(NSMutableDictionary *)self->_activityViewControllersByActivityIdentifier objectForKey:identifier];
+    view = [v7 view];
     v9 = objc_opt_class();
-    v10 = v8;
+    v10 = view;
     if (v9)
     {
       if (objc_opt_isKindOfClass())
@@ -268,15 +268,15 @@ uint64_t __35__CSActivityManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)handleRemovedItems:(id)a3
+- (void)handleRemovedItems:(id)items
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -288,22 +288,22 @@ uint64_t __35__CSActivityManager_sharedInstance__block_invoke()
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * v8) identifier];
-        v10 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:v9];
+        identifier = [*(*(&v11 + 1) + 8 * v8) identifier];
+        v10 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:identifier];
 
         if (v10)
         {
-          [(ACActivityCenter *)self->_activityCenter endActivity:v9];
+          [(ACActivityCenter *)self->_activityCenter endActivity:identifier];
         }
 
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -454,11 +454,11 @@ uint64_t __54__CSActivityManager_itemsViewControllerSortComparator__block_invoke
   return v12;
 }
 
-- (void)restrictsTouches:(BOOL)a3 onHostedSceneInViewController:(id)a4
+- (void)restrictsTouches:(BOOL)touches onHostedSceneInViewController:(id)controller
 {
-  v21 = a3;
+  touchesCopy = touches;
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  controllerCopy = controller;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -500,10 +500,10 @@ uint64_t __54__CSActivityManager_itemsViewControllerSortComparator__block_invoke
               }
 
               v13 = *(*(&v22 + 1) + 8 * i);
-              v14 = [v13 contentHost];
-              if (v14 == v5)
+              contentHost = [v13 contentHost];
+              if (contentHost == controllerCopy)
               {
-                v15 = [v13 contentHost];
+                contentHost2 = [v13 contentHost];
                 v16 = objc_opt_respondsToSelector();
 
                 if ((v16 & 1) == 0)
@@ -511,8 +511,8 @@ uint64_t __54__CSActivityManager_itemsViewControllerSortComparator__block_invoke
                   continue;
                 }
 
-                v14 = [v13 contentHost];
-                [v14 setRestrictsTouchesOnHostedScene:v21];
+                contentHost = [v13 contentHost];
+                [contentHost setRestrictsTouchesOnHostedScene:touchesCopy];
               }
             }
 
@@ -533,18 +533,18 @@ uint64_t __54__CSActivityManager_itemsViewControllerSortComparator__block_invoke
   }
 }
 
-- (void)restrictsTouchesOnAllHostedScenes:(BOOL)a3
+- (void)restrictsTouchesOnAllHostedScenes:(BOOL)scenes
 {
-  v3 = a3;
+  scenesCopy = scenes;
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(CSActivityManager *)self activityIdentifiersToSupplemantaryItems];
-  v5 = [v4 allValues];
+  activityIdentifiersToSupplemantaryItems = [(CSActivityManager *)self activityIdentifiersToSupplemantaryItems];
+  allValues = [activityIdentifiersToSupplemantaryItems allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -555,42 +555,42 @@ uint64_t __54__CSActivityManager_itemsViewControllerSortComparator__block_invoke
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 contentHost];
+        contentHost = [v10 contentHost];
         v12 = objc_opt_respondsToSelector();
 
         if (v12)
         {
-          v13 = [v10 contentHost];
-          [v13 setRestrictsTouchesOnHostedScene:v3];
+          contentHost2 = [v10 contentHost];
+          [contentHost2 setRestrictsTouchesOnHostedScene:scenesCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)activityViewController:(id)a3 requestsLaunchWithAction:(id)a4
+- (void)activityViewController:(id)controller requestsLaunchWithAction:(id)action
 {
-  v6 = a4;
-  v7 = [a3 hostViewController];
-  v8 = [v7 activitySceneDescriptor];
-  v9 = [v8 activityDescriptor];
+  actionCopy = action;
+  hostViewController = [controller hostViewController];
+  activitySceneDescriptor = [hostViewController activitySceneDescriptor];
+  activityDescriptor = [activitySceneDescriptor activityDescriptor];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__CSActivityManager_activityViewController_requestsLaunchWithAction___block_invoke;
   v11[3] = &unk_27838DCE8;
-  v12 = v9;
-  v10 = v9;
+  v12 = activityDescriptor;
+  v10 = activityDescriptor;
   [(CSActivityManager *)self _sendAnalyticsEventWithName:@"com.apple.activitykit.activity" payloadBuilder:v11];
-  [(CSActivityManager *)self _unlockAndLaunchAppIfPossible:v7 withAction:v6];
+  [(CSActivityManager *)self _unlockAndLaunchAppIfPossible:hostViewController withAction:actionCopy];
 }
 
 id __69__CSActivityManager_activityViewController_requestsLaunchWithAction___block_invoke(uint64_t a1)
@@ -609,23 +609,23 @@ id __69__CSActivityManager_activityViewController_requestsLaunchWithAction___blo
   return v4;
 }
 
-- (BOOL)activityViewController:(id)a3 didReceiveAction:(id)a4
+- (BOOL)activityViewController:(id)controller didReceiveAction:(id)action
 {
   v46 = *MEMORY[0x277D85DE8];
-  v25 = a3;
-  v26 = a4;
-  v28 = [v25 hostViewController];
-  v5 = [v28 activitySceneDescriptor];
-  v27 = [v5 activityIdentifier];
+  controllerCopy = controller;
+  actionCopy = action;
+  hostViewController = [controllerCopy hostViewController];
+  activitySceneDescriptor = [hostViewController activitySceneDescriptor];
+  activityIdentifier = [activitySceneDescriptor activityIdentifier];
 
-  v31 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:v27];
+  v31 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:activityIdentifier];
   if (!v31)
   {
     goto LABEL_10;
   }
 
   v6 = objc_opt_class();
-  v7 = v26;
+  v7 = actionCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -654,9 +654,9 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  v12 = [v31 configuration];
+  configuration = [v31 configuration];
   v13 = objc_opt_class();
-  v14 = v12;
+  v14 = configuration;
   if (v13)
   {
     if (objc_opt_isKindOfClass())
@@ -677,10 +677,10 @@ LABEL_10:
 
   v16 = v15;
 
-  v17 = [v9 title];
-  [v16 setAuxiliaryOptionsSummaryText:v17];
+  title = [v9 title];
+  [v16 setAuxiliaryOptionsSummaryText:title];
 
-  v18 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
@@ -714,7 +714,7 @@ LABEL_10:
         v33 = v9;
         v34 = v22;
         v24 = [v23 actionWithTitle:v22 image:0 identifier:0 handler:v32];
-        [v18 addObject:v24];
+        [array addObject:v24];
 
         objc_destroyWeak(&v37);
         objc_destroyWeak(&v36);
@@ -730,7 +730,7 @@ LABEL_10:
     while (v19);
   }
 
-  [v16 setAuxiliaryOptionActions:v18];
+  [v16 setAuxiliaryOptionActions:array];
   [v31 setConfiguration:v16];
   [(CSListItemManaging *)self->_itemManager updateItem:v31];
 
@@ -756,20 +756,20 @@ void __61__CSActivityManager_activityViewController_didReceiveAction___block_inv
   }
 }
 
-- (void)activityViewControllerBackgroundTintColorDidChange:(id)a3
+- (void)activityViewControllerBackgroundTintColorDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 hostViewController];
-  v6 = [v5 activitySceneDescriptor];
-  v7 = [v6 activityIdentifier];
+  changeCopy = change;
+  hostViewController = [changeCopy hostViewController];
+  activitySceneDescriptor = [hostViewController activitySceneDescriptor];
+  activityIdentifier = [activitySceneDescriptor activityIdentifier];
 
-  v8 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:activityIdentifier];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 configuration];
+    configuration = [v8 configuration];
     v11 = objc_opt_class();
-    v12 = v10;
+    v12 = configuration;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -790,48 +790,48 @@ void __61__CSActivityManager_activityViewController_didReceiveAction___block_inv
 
     v14 = v13;
 
-    v15 = [v5 backgroundTintColor];
-    v16 = [v5 textColor];
-    if ([(CSActivityManager *)self _shouldSetDefaultBackgroundForViewController:v5])
+    backgroundTintColor = [hostViewController backgroundTintColor];
+    textColor = [hostViewController textColor];
+    if ([(CSActivityManager *)self _shouldSetDefaultBackgroundForViewController:hostViewController])
     {
-      v17 = [v4 traitCollection];
-      v18 = [v17 userInterfaceStyle];
+      traitCollection = [changeCopy traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      v19 = [(CSActivityManager *)self _backgroundTintColorForUserInterfaceStyle:v18];
+      v19 = [(CSActivityManager *)self _backgroundTintColorForUserInterfaceStyle:userInterfaceStyle];
 
-      v20 = [(CSActivityManager *)self _textColorForUserInterfaceStyle:v18];
+      v20 = [(CSActivityManager *)self _textColorForUserInterfaceStyle:userInterfaceStyle];
 
-      v16 = v20;
-      v15 = v19;
+      textColor = v20;
+      backgroundTintColor = v19;
     }
 
-    [v14 setTintColor:v15];
-    [v14 setTextColor:v16];
+    [v14 setTintColor:backgroundTintColor];
+    [v14 setTextColor:textColor];
     [v9 setConfiguration:v14];
     v21 = SBLogCoverSheetActivities();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      [(CSActivityManager *)v7 activityViewControllerBackgroundTintColorDidChange:v9];
+      [(CSActivityManager *)activityIdentifier activityViewControllerBackgroundTintColorDidChange:v9];
     }
 
     [(CSListItemManaging *)self->_itemManager updateItem:v9];
   }
 }
 
-- (void)activityViewControllerTextColorDidChange:(id)a3
+- (void)activityViewControllerTextColorDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 hostViewController];
-  v6 = [v5 activitySceneDescriptor];
-  v7 = [v6 activityIdentifier];
+  changeCopy = change;
+  hostViewController = [changeCopy hostViewController];
+  activitySceneDescriptor = [hostViewController activitySceneDescriptor];
+  activityIdentifier = [activitySceneDescriptor activityIdentifier];
 
-  v8 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:v7];
+  v8 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:activityIdentifier];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 configuration];
+    configuration = [v8 configuration];
     v11 = objc_opt_class();
-    v12 = v10;
+    v12 = configuration;
     if (v11)
     {
       if (objc_opt_isKindOfClass())
@@ -852,77 +852,77 @@ void __61__CSActivityManager_activityViewController_didReceiveAction___block_inv
 
     v14 = v13;
 
-    v15 = [v5 textColor];
-    if (!v15)
+    textColor = [hostViewController textColor];
+    if (!textColor)
     {
-      if ([(CSActivityManager *)self _shouldSetDefaultBackgroundForViewController:v5])
+      if ([(CSActivityManager *)self _shouldSetDefaultBackgroundForViewController:hostViewController])
       {
-        v16 = [v4 traitCollection];
-        v17 = [v16 userInterfaceStyle];
+        traitCollection = [changeCopy traitCollection];
+        userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-        v15 = [(CSActivityManager *)self _textColorForUserInterfaceStyle:v17];
+        textColor = [(CSActivityManager *)self _textColorForUserInterfaceStyle:userInterfaceStyle];
       }
 
       else
       {
-        v15 = 0;
+        textColor = 0;
       }
     }
 
-    [v14 setTextColor:v15];
+    [v14 setTextColor:textColor];
     [v9 setConfiguration:v14];
     v18 = SBLogCoverSheetActivities();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
     {
-      [(CSActivityManager *)v7 activityViewControllerTextColorDidChange:v9];
+      [(CSActivityManager *)activityIdentifier activityViewControllerTextColorDidChange:v9];
     }
 
     [(CSListItemManaging *)self->_itemManager updateItem:v9];
   }
 }
 
-- (void)activityViewControllerHostShouldCancelTouches:(id)a3
+- (void)activityViewControllerHostShouldCancelTouches:(id)touches
 {
-  v4 = [a3 hostViewController];
-  v5 = [v4 activitySceneDescriptor];
-  v6 = [v5 activityIdentifier];
+  hostViewController = [touches hostViewController];
+  activitySceneDescriptor = [hostViewController activitySceneDescriptor];
+  activityIdentifier = [activitySceneDescriptor activityIdentifier];
 
-  [(CSActivityManager *)self _hostShouldCancelTouchesWithIdentifier:v6];
+  [(CSActivityManager *)self _hostShouldCancelTouchesWithIdentifier:activityIdentifier];
 }
 
-- (void)activityViewControllerSignificantUserInteractionBegan:(id)a3
+- (void)activityViewControllerSignificantUserInteractionBegan:(id)began
 {
-  v4 = [a3 hostViewController];
-  v5 = [v4 activitySceneDescriptor];
-  v6 = [v5 activityIdentifier];
+  hostViewController = [began hostViewController];
+  activitySceneDescriptor = [hostViewController activitySceneDescriptor];
+  activityIdentifier = [activitySceneDescriptor activityIdentifier];
 
-  [(CSActivityManager *)self _significantUserInteractionBeganForIdentifier:v6];
+  [(CSActivityManager *)self _significantUserInteractionBeganForIdentifier:activityIdentifier];
 }
 
-- (void)activityViewControllerSignificantUserInteractionEnded:(id)a3
+- (void)activityViewControllerSignificantUserInteractionEnded:(id)ended
 {
-  v4 = [a3 hostViewController];
-  v5 = [v4 activitySceneDescriptor];
-  v6 = [v5 activityIdentifier];
+  hostViewController = [ended hostViewController];
+  activitySceneDescriptor = [hostViewController activitySceneDescriptor];
+  activityIdentifier = [activitySceneDescriptor activityIdentifier];
 
-  [(CSActivityManager *)self _significantUserInteractionEndedForIdentifier:v6];
+  [(CSActivityManager *)self _significantUserInteractionEndedForIdentifier:activityIdentifier];
 }
 
-- (void)activityViewControllerAudioCategoriesDisablingVolumeHUDDidChange:(id)a3
+- (void)activityViewControllerAudioCategoriesDisablingVolumeHUDDidChange:(id)change
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = [a3 hostViewController];
-  v6 = [v5 activitySceneDescriptor];
-  v7 = [v6 activityIdentifier];
+  hostViewController = [change hostViewController];
+  activitySceneDescriptor = [hostViewController activitySceneDescriptor];
+  activityIdentifier = [activitySceneDescriptor activityIdentifier];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v8 = [(CSActivityManager *)self activityIdentifiersToSupplemantaryItems];
-  v9 = [v8 allValues];
+  activityIdentifiersToSupplemantaryItems = [(CSActivityManager *)self activityIdentifiersToSupplemantaryItems];
+  allValues = [activityIdentifiersToSupplemantaryItems allValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  v10 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = v10;
@@ -933,70 +933,70 @@ void __61__CSActivityManager_activityViewController_didReceiveAction___block_inv
       {
         if (*v22 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        v16 = [v15 isEqualToString:v7];
+        identifier = [v14 identifier];
+        v16 = [identifier isEqualToString:activityIdentifier];
 
         if (v16)
         {
-          v17 = [v14 contentHost];
+          contentHost = [v14 contentHost];
           v18 = objc_opt_self();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
             v20 = NSStringFromSelector(a2);
-            [v17 reevaluateAudioCategoriesDisablingVolumeHUDForReason:v20];
+            [contentHost reevaluateAudioCategoriesDisablingVolumeHUDForReason:v20];
           }
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)_hostShouldCancelTouchesWithIdentifier:(id)a3
+- (void)_hostShouldCancelTouchesWithIdentifier:(id)identifier
 {
-  v4 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:identifier];
   [(CSListItemManaging *)self->_itemManager cancelTouchesForItem:v4];
 }
 
-- (void)_significantUserInteractionBeganForIdentifier:(id)a3
+- (void)_significantUserInteractionBeganForIdentifier:(id)identifier
 {
-  v4 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:identifier];
   [(CSListItemManaging *)self->_itemManager significantUserInteractionBeganForItem:v4];
 }
 
-- (void)_significantUserInteractionEndedForIdentifier:(id)a3
+- (void)_significantUserInteractionEndedForIdentifier:(id)identifier
 {
-  v4 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:identifier];
   [(CSListItemManaging *)self->_itemManager significantUserInteractionEndedForItem:v4];
 }
 
-- (void)_unlockAndLaunchAppIfPossible:(id)a3 withAction:(id)a4
+- (void)_unlockAndLaunchAppIfPossible:(id)possible withAction:(id)action
 {
   v30[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 activityIdentifier];
-  v8 = [v6 activitySceneDescriptor];
+  actionCopy = action;
+  possibleCopy = possible;
+  activityIdentifier = [possibleCopy activityIdentifier];
+  activitySceneDescriptor = [possibleCopy activitySceneDescriptor];
 
-  v9 = [v8 activityDescriptor];
-  v10 = [v9 platterTargetBundleIdentifier];
+  activityDescriptor = [activitySceneDescriptor activityDescriptor];
+  platterTargetBundleIdentifier = [activityDescriptor platterTargetBundleIdentifier];
 
-  if (v10)
+  if (platterTargetBundleIdentifier)
   {
     v11 = MEMORY[0x277D0AD60];
     v29[0] = *MEMORY[0x277D0ABD0];
-    if (v5)
+    if (actionCopy)
     {
-      v28 = v5;
+      v28 = actionCopy;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
     }
 
@@ -1015,7 +1015,7 @@ void __61__CSActivityManager_activityViewController_didReceiveAction___block_inv
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:3];
     v13 = [v11 optionsWithDictionary:v16];
 
-    if (v5)
+    if (actionCopy)
     {
     }
 
@@ -1023,22 +1023,22 @@ void __61__CSActivityManager_activityViewController_didReceiveAction___block_inv
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543875;
-      v23 = v7;
+      v23 = activityIdentifier;
       v24 = 2114;
-      v25 = v10;
+      v25 = platterTargetBundleIdentifier;
       v26 = 2113;
-      v27 = v5;
+      v27 = actionCopy;
       _os_log_impl(&dword_21EB05000, v17, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Sending open application request for %{private}@", buf, 0x20u);
     }
 
-    v18 = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
+    serviceWithDefaultShellEndpoint = [MEMORY[0x277D0AD78] serviceWithDefaultShellEndpoint];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __62__CSActivityManager__unlockAndLaunchAppIfPossible_withAction___block_invoke;
     v19[3] = &unk_27838DD38;
-    v20 = v7;
-    v21 = v10;
-    [v18 openApplication:v21 withOptions:v13 completion:v19];
+    v20 = activityIdentifier;
+    v21 = platterTargetBundleIdentifier;
+    [serviceWithDefaultShellEndpoint openApplication:v21 withOptions:v13 completion:v19];
   }
 
   else
@@ -1046,7 +1046,7 @@ void __61__CSActivityManager_activityViewController_didReceiveAction___block_inv
     v13 = SBLogCoverSheetActivities();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      [CSActivityManager _unlockAndLaunchAppIfPossible:v7 withAction:v13];
+      [CSActivityManager _unlockAndLaunchAppIfPossible:activityIdentifier withAction:v13];
     }
   }
 }
@@ -1105,25 +1105,25 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
   [v3 addObject:v7];
 }
 
-- (void)_removeActivityWithContentUpdate:(id)a3
+- (void)_removeActivityWithContentUpdate:(id)update
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 descriptor];
+  updateCopy = update;
+  identifier = [updateCopy identifier];
+  descriptor = [updateCopy descriptor];
 
-  v7 = [v6 platterTargetBundleIdentifier];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-  v8 = [(NSMutableDictionary *)self->_activityViewControllersByActivityIdentifier objectForKey:v5];
+  v8 = [(NSMutableDictionary *)self->_activityViewControllersByActivityIdentifier objectForKey:identifier];
   if (v8)
   {
     v9 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543618;
-      v21 = v5;
+      v21 = identifier;
       v22 = 2114;
-      v23 = v7;
+      v23 = platterTargetBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] finished, removing from the list...", &v20, 0x16u);
     }
 
@@ -1131,27 +1131,27 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543618;
-      v21 = v5;
+      v21 = identifier;
       v22 = 2114;
-      v23 = v7;
+      v23 = platterTargetBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v10, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] removes activity view controller from CoverSheet", &v20, 0x16u);
     }
 
     v11 = SBLogCoverSheetActivities();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(CSActivityManager *)self _currentSupplementaryItemDescriptions];
+      _currentSupplementaryItemDescriptions = [(CSActivityManager *)self _currentSupplementaryItemDescriptions];
       v20 = 138543874;
-      v21 = v5;
+      v21 = identifier;
       v22 = 2114;
-      v23 = v7;
+      v23 = platterTargetBundleIdentifier;
       v24 = 2112;
-      v25 = v12;
+      v25 = _currentSupplementaryItemDescriptions;
       _os_log_impl(&dword_21EB05000, v11, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Current supplementary items before removal: %@", &v20, 0x20u);
     }
 
-    v13 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:v5];
-    v14 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:v5];
+    v13 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:identifier];
+    v14 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:identifier];
 
     v15 = SBLogCoverSheetActivities();
     v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -1160,43 +1160,43 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
       if (v16)
       {
         v17 = [v13 description];
-        v18 = [v13 contentHost];
+        contentHost = [v13 contentHost];
         v20 = 138544130;
-        v21 = v5;
+        v21 = identifier;
         v22 = 2114;
-        v23 = v7;
+        v23 = platterTargetBundleIdentifier;
         v24 = 2112;
         v25 = v17;
         v26 = 2112;
-        v27 = v18;
+        v27 = contentHost;
         _os_log_impl(&dword_21EB05000, v15, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Activity item is getting removed: %@, Content Host: %@", &v20, 0x2Au);
       }
 
       [(CSListItemManaging *)self->_itemManager removeItem:v13];
-      [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems removeObjectForKey:v5];
+      [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems removeObjectForKey:identifier];
       [v8 invalidate];
       if ([(CSActivityManager *)self _itemIsNowPlaying:v13])
       {
         [(CSListItemManaging *)self->_itemManager setNowPlayingItem:0];
       }
 
-      v15 = [(NSMutableDictionary *)self->_descriptorByActivityIdentifier objectForKey:v5];
-      v19 = [v15 platterTargetBundleIdentifier];
-      [(CSActivityManager *)self _removeAppActivitiesRecordForBundleId:v19 activityItem:v13];
+      v15 = [(NSMutableDictionary *)self->_descriptorByActivityIdentifier objectForKey:identifier];
+      platterTargetBundleIdentifier2 = [v15 platterTargetBundleIdentifier];
+      [(CSActivityManager *)self _removeAppActivitiesRecordForBundleId:platterTargetBundleIdentifier2 activityItem:v13];
     }
 
     else if (v16)
     {
       v20 = 138543618;
-      v21 = v5;
+      v21 = identifier;
       v22 = 2114;
-      v23 = v7;
+      v23 = platterTargetBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v15, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] No supplemantary item found to remove", &v20, 0x16u);
     }
 
     [v8 invalidate];
-    [(NSMutableDictionary *)self->_descriptorByActivityIdentifier removeObjectForKey:v5];
-    [(NSMutableDictionary *)self->_activityViewControllersByActivityIdentifier removeObjectForKey:v5];
+    [(NSMutableDictionary *)self->_descriptorByActivityIdentifier removeObjectForKey:identifier];
+    [(NSMutableDictionary *)self->_activityViewControllersByActivityIdentifier removeObjectForKey:identifier];
   }
 
   else
@@ -1205,22 +1205,22 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138543618;
-      v21 = v5;
+      v21 = identifier;
       v22 = 2114;
-      v23 = v7;
+      v23 = platterTargetBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v13, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] found no activity view controller to remove in CoverSheet", &v20, 0x16u);
     }
   }
 }
 
-- (void)_updateActivityIfNeededWithContentUpdate:(id)a3
+- (void)_updateActivityIfNeededWithContentUpdate:(id)update
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:v5];
-  v7 = [v4 content];
-  [v7 relevanceScore];
+  updateCopy = update;
+  identifier = [updateCopy identifier];
+  v6 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKeyedSubscript:identifier];
+  content = [updateCopy content];
+  [content relevanceScore];
   v9 = v8;
 
   [v6 relevanceScore];
@@ -1229,12 +1229,12 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
     v11 = SBLogCoverSheetActivities();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v4 descriptor];
-      v13 = [v12 platterTargetBundleIdentifier];
+      descriptor = [updateCopy descriptor];
+      platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
       v14 = 138544130;
-      v15 = v5;
+      v15 = identifier;
       v16 = 2114;
-      v17 = v13;
+      v17 = platterTargetBundleIdentifier;
       v18 = 2114;
       v19 = v6;
       v20 = 2050;
@@ -1247,15 +1247,15 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
   }
 }
 
-- (void)_addActivityListItemForContentUpdate:(id)a3
+- (void)_addActivityListItemForContentUpdate:(id)update
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v4 descriptor];
-  v7 = [v6 platterTargetBundleIdentifier];
+  updateCopy = update;
+  identifier = [updateCopy identifier];
+  descriptor = [updateCopy descriptor];
+  platterTargetBundleIdentifier = [descriptor platterTargetBundleIdentifier];
 
-  v8 = [(NSMutableDictionary *)self->_activityViewControllersByActivityIdentifier objectForKey:v5];
+  v8 = [(NSMutableDictionary *)self->_activityViewControllersByActivityIdentifier objectForKey:identifier];
   v9 = SBLogCoverSheetActivities();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -1263,13 +1263,13 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
     if (v10)
     {
       *buf = 138543618;
-      v36 = v5;
+      v36 = identifier;
       v37 = 2114;
-      v38 = v7;
+      v38 = platterTargetBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Has already a host view controller in CoverSheet, updating activity if needed", buf, 0x16u);
     }
 
-    [(CSActivityManager *)self _updateActivityIfNeededWithContentUpdate:v4];
+    [(CSActivityManager *)self _updateActivityIfNeededWithContentUpdate:updateCopy];
   }
 
   else
@@ -1277,16 +1277,16 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
     if (v10)
     {
       *buf = 138543618;
-      v36 = v5;
+      v36 = identifier;
       v37 = 2114;
-      v38 = v7;
+      v38 = platterTargetBundleIdentifier;
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "[ActivityID: %{public}@, BundleID: %{public}@] Creating activity view controller", buf, 0x16u);
     }
 
-    v11 = [v4 descriptor];
-    [(NSMutableDictionary *)self->_descriptorByActivityIdentifier setObject:v11 forKey:v5];
-    v22 = [v11 platterTargetBundleIdentifier];
-    v12 = [[CSActivityListItemViewController alloc] initWithDescriptor:v11];
+    descriptor2 = [updateCopy descriptor];
+    [(NSMutableDictionary *)self->_descriptorByActivityIdentifier setObject:descriptor2 forKey:identifier];
+    platterTargetBundleIdentifier2 = [descriptor2 platterTargetBundleIdentifier];
+    v12 = [[CSActivityListItemViewController alloc] initWithDescriptor:descriptor2];
     [(CSActivityViewController *)v12 setHostDelegate:self];
     [(CSActivityViewController *)v12 setSceneHostEnvironmentObserver:self];
     objc_initWeak(&location, self);
@@ -1302,9 +1302,9 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
     v15 = SBLogCoverSheetActivities();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(CSActivityManager *)self _currentSupplementaryItemDescriptions];
+      _currentSupplementaryItemDescriptions = [(CSActivityManager *)self _currentSupplementaryItemDescriptions];
       *buf = 138412290;
-      v36 = v16;
+      v36 = _currentSupplementaryItemDescriptions;
       _os_log_impl(&dword_21EB05000, v15, OS_LOG_TYPE_DEFAULT, "Current supplementary items before addition: %@", buf, 0xCu);
     }
 
@@ -1314,15 +1314,15 @@ void __58__CSActivityManager__currentSupplementaryItemDescriptions__block_invoke
     v23[1] = 3221225472;
     v23[2] = __58__CSActivityManager__addActivityListItemForContentUpdate___block_invoke_52;
     v23[3] = &unk_27838DDB0;
-    v24 = v5;
-    v25 = v7;
+    v24 = identifier;
+    v25 = platterTargetBundleIdentifier;
     v19 = v12;
     v26 = v19;
-    v27 = self;
-    v20 = v22;
+    selfCopy = self;
+    v20 = platterTargetBundleIdentifier2;
     v28 = v20;
-    v29 = v4;
-    v21 = v11;
+    v29 = updateCopy;
+    v21 = descriptor2;
     v30 = v21;
     [(CSActivityViewController *)v19 ensureContent:v17 queue:v23 completion:1.79769313e308];
 
@@ -1456,13 +1456,13 @@ void __58__CSActivityManager__addActivityListItemForContentUpdate___block_invoke
   }
 }
 
-- (void)_handleActivityExceedingReducedPushBudgetWithIdentifier:(id)a3
+- (void)_handleActivityExceedingReducedPushBudgetWithIdentifier:(id)identifier
 {
-  v13 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:a3];
-  v4 = [v13 groupingIdentifier];
-  v5 = [v13 configuration];
+  v13 = [(NSMutableDictionary *)self->_activityIdentifiersToSupplemantaryItems objectForKey:identifier];
+  groupingIdentifier = [v13 groupingIdentifier];
+  configuration = [v13 configuration];
   v6 = objc_opt_class();
-  v7 = v5;
+  v7 = configuration;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -1486,7 +1486,7 @@ void __58__CSActivityManager__addActivityListItemForContentUpdate___block_invoke
   v10 = [(CSActivityManager *)self _authorizationActionsForOptionsType:2 item:v13 configuration:v9];
   [v9 setAuxiliaryOptionActions:v10];
 
-  v11 = [(CSActivityManager *)self _appNameForBundleIdentifier:v4];
+  v11 = [(CSActivityManager *)self _appNameForBundleIdentifier:groupingIdentifier];
   v12 = [(CSActivityManager *)self _summaryTextForAuthorizationOptionsType:2 appName:v11];
   [v9 setAuxiliaryOptionsSummaryText:v12];
 
@@ -1494,15 +1494,15 @@ void __58__CSActivityManager__addActivityListItemForContentUpdate___block_invoke
   [(CSListItemManaging *)self->_itemManager updateItem:v13];
 }
 
-- (id)_appNameForBundleIdentifier:(id)a3
+- (id)_appNameForBundleIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v9 = 0;
-  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v3 allowPlaceholder:1 error:&v9];
+  v4 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:1 error:&v9];
   v5 = v9;
   if (v4)
   {
-    v6 = [v4 localizedName];
+    localizedName = [v4 localizedName];
   }
 
   else
@@ -1510,62 +1510,62 @@ void __58__CSActivityManager__addActivityListItemForContentUpdate___block_invoke
     v7 = *MEMORY[0x277D77DD0];
     if (os_log_type_enabled(*MEMORY[0x277D77DD0], OS_LOG_TYPE_ERROR))
     {
-      [(CSActivityManager *)v3 _appNameForBundleIdentifier:v7, v5];
+      [(CSActivityManager *)identifierCopy _appNameForBundleIdentifier:v7, v5];
     }
 
-    v6 = 0;
+    localizedName = 0;
   }
 
-  return v6;
+  return localizedName;
 }
 
-- (BOOL)_shouldSetDefaultBackgroundForViewController:(id)a3
+- (BOOL)_shouldSetDefaultBackgroundForViewController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 activitySceneDescriptor];
-  v5 = [v4 activityDescriptor];
-  v6 = [v5 contentType];
+  controllerCopy = controller;
+  activitySceneDescriptor = [controllerCopy activitySceneDescriptor];
+  activityDescriptor = [activitySceneDescriptor activityDescriptor];
+  contentType = [activityDescriptor contentType];
 
-  v7 = [v3 backgroundTintColor];
+  backgroundTintColor = [controllerCopy backgroundTintColor];
 
-  return (v7 | v6) == 0;
+  return (backgroundTintColor | contentType) == 0;
 }
 
-- (id)_buildConfigurationFromViewController:(id)a3
+- (id)_buildConfigurationFromViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [v4 activitySceneDescriptor];
-  v6 = [v5 activityDescriptor];
-  v7 = [v6 platterTargetBundleIdentifier];
+  controllerCopy = controller;
+  activitySceneDescriptor = [controllerCopy activitySceneDescriptor];
+  activityDescriptor = [activitySceneDescriptor activityDescriptor];
+  platterTargetBundleIdentifier = [activityDescriptor platterTargetBundleIdentifier];
 
-  v8 = [v4 backgroundTintColor];
-  v9 = [v4 textColor];
-  if ([(CSActivityManager *)self _shouldSetDefaultBackgroundForViewController:v4])
+  backgroundTintColor = [controllerCopy backgroundTintColor];
+  textColor = [controllerCopy textColor];
+  if ([(CSActivityManager *)self _shouldSetDefaultBackgroundForViewController:controllerCopy])
   {
-    v10 = [v4 traitCollection];
-    v11 = [v10 userInterfaceStyle];
+    traitCollection = [controllerCopy traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    v12 = [(CSActivityManager *)self _backgroundTintColorForUserInterfaceStyle:v11];
+    v12 = [(CSActivityManager *)self _backgroundTintColorForUserInterfaceStyle:userInterfaceStyle];
 
-    v13 = [(CSActivityManager *)self _textColorForUserInterfaceStyle:v11];
+    v13 = [(CSActivityManager *)self _textColorForUserInterfaceStyle:userInterfaceStyle];
 
-    v9 = v13;
-    v8 = v12;
+    textColor = v13;
+    backgroundTintColor = v12;
   }
 
   v14 = objc_alloc_init(MEMORY[0x277D78068]);
-  v15 = [v4 activitySceneDescriptor];
-  v16 = [v15 activityDescriptor];
+  activitySceneDescriptor2 = [controllerCopy activitySceneDescriptor];
+  activityDescriptor2 = [activitySceneDescriptor2 activityDescriptor];
 
-  v17 = [v16 presentationOptions];
-  v18 = [v17 isUserDismissalAllowedOnLockScreen];
+  presentationOptions = [activityDescriptor2 presentationOptions];
+  isUserDismissalAllowedOnLockScreen = [presentationOptions isUserDismissalAllowedOnLockScreen];
 
-  if ((v18 & 1) == 0)
+  if ((isUserDismissalAllowedOnLockScreen & 1) == 0)
   {
     [v14 setPreventsUserDismissal:1];
   }
 
-  if (v8)
+  if (backgroundTintColor)
   {
     v19 = 22;
   }
@@ -1575,11 +1575,11 @@ void __58__CSActivityManager__addActivityListItemForContentUpdate___block_invoke
     v19 = 1;
   }
 
-  [v14 setGroupingIdentifier:v7];
+  [v14 setGroupingIdentifier:platterTargetBundleIdentifier];
   [v14 setMaterialRecipe:v19];
-  [v14 setTintColor:v8];
-  [v14 setTextColor:v9];
-  v20 = [(CSActivityManager *)self _appNameForBundleIdentifier:v7];
+  [v14 setTintColor:backgroundTintColor];
+  [v14 setTextColor:textColor];
+  v20 = [(CSActivityManager *)self _appNameForBundleIdentifier:platterTargetBundleIdentifier];
   [v14 setGroupName:v20];
 
   [v14 setContainsUnmanagedContent:1];
@@ -1587,14 +1587,14 @@ void __58__CSActivityManager__addActivityListItemForContentUpdate___block_invoke
   return v14;
 }
 
-- (id)_backgroundTintColorForUserInterfaceStyle:(int64_t)a3
+- (id)_backgroundTintColorForUserInterfaceStyle:(int64_t)style
 {
-  if (!a3 || a3 == 2)
+  if (!style || style == 2)
   {
     self = [MEMORY[0x277D75348] systemBlackColor];
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
     self = [MEMORY[0x277D75348] systemWhiteColor];
   }
@@ -1602,14 +1602,14 @@ void __58__CSActivityManager__addActivityListItemForContentUpdate___block_invoke
   return self;
 }
 
-- (id)_textColorForUserInterfaceStyle:(int64_t)a3
+- (id)_textColorForUserInterfaceStyle:(int64_t)style
 {
-  if (!a3 || a3 == 2)
+  if (!style || style == 2)
   {
     self = [MEMORY[0x277D75348] systemWhiteColor];
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
     self = [MEMORY[0x277D75348] systemBlackColor];
   }
@@ -1617,20 +1617,20 @@ void __58__CSActivityManager__addActivityListItemForContentUpdate___block_invoke
   return self;
 }
 
-- (void)_setActivitiesEnabled:(BOOL)a3 forBundleId:(id)a4
+- (void)_setActivitiesEnabled:(BOOL)enabled forBundleId:(id)id
 {
-  v4 = a3;
-  v6 = a4;
+  enabledCopy = enabled;
+  idCopy = id;
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __55__CSActivityManager__setActivitiesEnabled_forBundleId___block_invoke;
   v12 = &unk_27838DDD8;
-  v13 = v6;
-  v14 = v4;
-  v7 = v6;
+  v13 = idCopy;
+  v14 = enabledCopy;
+  v7 = idCopy;
   [(CSActivityManager *)self _sendAnalyticsEventWithName:@"com.apple.springboard.activityAuthorizationChange" payloadBuilder:&v9];
   v8 = objc_alloc_init(MEMORY[0x277CB9898]);
-  [v8 setActivitiesEnabled:v4 forBundleId:v7 source:{0, v9, v10, v11, v12}];
+  [v8 setActivitiesEnabled:enabledCopy forBundleId:v7 source:{0, v9, v10, v11, v12}];
 }
 
 id __55__CSActivityManager__setActivitiesEnabled_forBundleId___block_invoke(uint64_t a1)
@@ -1648,26 +1648,26 @@ id __55__CSActivityManager__setActivitiesEnabled_forBundleId___block_invoke(uint
   return v2;
 }
 
-- (void)_setFrequentUpdatesEnabled:(BOOL)a3 forBundleId:(id)a4
+- (void)_setFrequentUpdatesEnabled:(BOOL)enabled forBundleId:(id)id
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v5 = MEMORY[0x277CB9898];
-  v6 = a4;
+  idCopy = id;
   v7 = objc_alloc_init(v5);
-  [v7 setFrequentPushesEnabled:v4 forBundleId:v6];
+  [v7 setFrequentPushesEnabled:enabledCopy forBundleId:idCopy];
 }
 
-- (id)_authorizationActionsForOptionsType:(int64_t)a3 item:(id)a4 configuration:(id)a5
+- (id)_authorizationActionsForOptionsType:(int64_t)type item:(id)item configuration:(id)configuration
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  val = a5;
-  v9 = [v8 groupingIdentifier];
+  itemCopy = item;
+  val = configuration;
+  groupingIdentifier = [itemCopy groupingIdentifier];
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v8);
+  objc_initWeak(&from, itemCopy);
   objc_initWeak(&v31, val);
   v10 = MEMORY[0x277D750C8];
-  v11 = [(CSActivityManager *)self _primaryActionTitleForAuthorizationOptionsType:a3];
+  v11 = [(CSActivityManager *)self _primaryActionTitleForAuthorizationOptionsType:type];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __76__CSActivityManager__authorizationActionsForOptionsType_item_configuration___block_invoke;
@@ -1675,13 +1675,13 @@ id __55__CSActivityManager__setActivitiesEnabled_forBundleId___block_invoke(uint
   objc_copyWeak(&v28, &location);
   objc_copyWeak(&v29, &from);
   objc_copyWeak(v30, &v31);
-  v30[1] = a3;
-  v12 = v9;
+  v30[1] = type;
+  v12 = groupingIdentifier;
   v27 = v12;
   v13 = [v10 actionWithTitle:v11 image:0 identifier:0 handler:v26];
 
   v14 = MEMORY[0x277D750C8];
-  v15 = [(CSActivityManager *)self _secondaryActionTitleForAuthorizationOptionsType:a3];
+  v15 = [(CSActivityManager *)self _secondaryActionTitleForAuthorizationOptionsType:type];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __76__CSActivityManager__authorizationActionsForOptionsType_item_configuration___block_invoke_2;
@@ -1689,7 +1689,7 @@ id __55__CSActivityManager__setActivitiesEnabled_forBundleId___block_invoke(uint
   objc_copyWeak(&v23, &location);
   objc_copyWeak(&v24, &from);
   objc_copyWeak(v25, &v31);
-  v25[1] = a3;
+  v25[1] = type;
   v16 = v12;
   v22 = v16;
   v17 = [v14 actionWithTitle:v15 image:0 identifier:0 handler:v21];
@@ -1782,16 +1782,16 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)_primaryActionTitleForAuthorizationOptionsType:(int64_t)a3
+- (id)_primaryActionTitleForAuthorizationOptionsType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_27838DED8[a3];
+    v3 = off_27838DED8[type];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_28302FDA0 table:@"CoverSheet"];
   }
@@ -1799,16 +1799,16 @@ LABEL_10:
   return v5;
 }
 
-- (id)_secondaryActionTitleForAuthorizationOptionsType:(int64_t)a3
+- (id)_secondaryActionTitleForAuthorizationOptionsType:(int64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     v5 = 0;
   }
 
   else
   {
-    v3 = off_27838DEF0[a3];
+    v3 = off_27838DEF0[type];
     v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:v3 value:&stru_28302FDA0 table:@"CoverSheet"];
   }
@@ -1816,34 +1816,34 @@ LABEL_10:
   return v5;
 }
 
-- (id)_summaryTextForAuthorizationOptionsType:(int64_t)a3 appName:(id)a4
+- (id)_summaryTextForAuthorizationOptionsType:(int64_t)type appName:(id)name
 {
-  v5 = a4;
-  if (a3 > 2)
+  nameCopy = name;
+  if (type > 2)
   {
-    v10 = 0;
+    nameCopy = 0;
   }
 
   else
   {
-    v6 = off_27838DF08[a3];
+    v6 = off_27838DF08[type];
     v7 = MEMORY[0x277CCACA8];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v9 = [v8 localizedStringForKey:v6 value:&stru_28302FDA0 table:@"CoverSheet"];
-    v10 = [v7 stringWithFormat:v9, v5];
+    nameCopy = [v7 stringWithFormat:v9, nameCopy];
   }
 
-  return v10;
+  return nameCopy;
 }
 
-- (id)_latestActivityCreationDateForGroupingIdentifier:(id)a3
+- (id)_latestActivityCreationDateForGroupingIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:identifier];
   v4 = [v3 sortedArrayUsingComparator:&__block_literal_global_104];
-  v5 = [v4 firstObject];
-  v6 = [v5 contentCreatedDate];
+  firstObject = [v4 firstObject];
+  contentCreatedDate = [firstObject contentCreatedDate];
 
-  return v6;
+  return contentCreatedDate;
 }
 
 BOOL __70__CSActivityManager__latestActivityCreationDateForGroupingIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -1855,18 +1855,18 @@ BOOL __70__CSActivityManager__latestActivityCreationDateForGroupingIdentifier___
   return v5 > v6;
 }
 
-- (double)_relevanceScoreForItemWithViewController:(id)a3
+- (double)_relevanceScoreForItemWithViewController:(id)controller
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(CSActivityManager *)self activityIdentifiersToSupplemantaryItems];
-  v6 = [v5 allValues];
+  activityIdentifiersToSupplemantaryItems = [(CSActivityManager *)self activityIdentifiersToSupplemantaryItems];
+  allValues = [activityIdentifiersToSupplemantaryItems allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
   v8 = 0.0;
   if (v7)
   {
@@ -1878,13 +1878,13 @@ BOOL __70__CSActivityManager__latestActivityCreationDateForGroupingIdentifier___
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [v12 contentHost];
+        contentHost = [v12 contentHost];
 
-        if (v13 == v4)
+        if (contentHost == controllerCopy)
         {
           [v12 relevanceScore];
           v8 = v14;
@@ -1892,7 +1892,7 @@ BOOL __70__CSActivityManager__latestActivityCreationDateForGroupingIdentifier___
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [allValues countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v9)
       {
         continue;
@@ -1907,42 +1907,42 @@ LABEL_11:
   return v8;
 }
 
-- (id)_createdDateForItemWithViewController:(id)a3
+- (id)_createdDateForItemWithViewController:(id)controller
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(CSActivityManager *)self activityIdentifiersToSupplemantaryItems];
-  v6 = [v5 allValues];
+  activityIdentifiersToSupplemantaryItems = [(CSActivityManager *)self activityIdentifiersToSupplemantaryItems];
+  allValues = [activityIdentifiersToSupplemantaryItems allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
-  if (v7)
+  contentCreatedDate = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
+  if (contentCreatedDate)
   {
     v8 = *v14;
     while (2)
     {
-      for (i = 0; i != v7; i = i + 1)
+      for (i = 0; i != contentCreatedDate; i = i + 1)
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 contentHost];
+        contentHost = [v10 contentHost];
 
-        if (v11 == v4)
+        if (contentHost == controllerCopy)
         {
-          v7 = [v10 contentCreatedDate];
+          contentCreatedDate = [v10 contentCreatedDate];
           goto LABEL_11;
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
-      if (v7)
+      contentCreatedDate = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
+      if (contentCreatedDate)
       {
         continue;
       }
@@ -1953,13 +1953,13 @@ LABEL_11:
 
 LABEL_11:
 
-  return v7;
+  return contentCreatedDate;
 }
 
-- (void)_clearAuthorizationOptionsIfNecessaryForGroupingIdentifier:(id)a3
+- (void)_clearAuthorizationOptionsIfNecessaryForGroupingIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:identifier];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -1979,9 +1979,9 @@ LABEL_11:
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
-        v10 = [v9 configuration];
+        configuration = [v9 configuration];
         v11 = objc_opt_class();
-        v12 = v10;
+        v12 = configuration;
         if (v11)
         {
           if (objc_opt_isKindOfClass())
@@ -2003,8 +2003,8 @@ LABEL_11:
         v14 = v13;
 
         [v14 setAuxiliaryOptionActions:0];
-        v15 = [(CSActivityManager *)self itemManager];
-        [v15 updateItem:v9];
+        itemManager = [(CSActivityManager *)self itemManager];
+        [itemManager updateItem:v9];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -2014,10 +2014,10 @@ LABEL_11:
   }
 }
 
-- (void)_endAllActivitiesForBundleId:(id)a3
+- (void)_endAllActivitiesForBundleId:(id)id
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:id];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -2038,8 +2038,8 @@ LABEL_11:
         }
 
         activityCenter = self->_activityCenter;
-        v10 = [*(*(&v11 + 1) + 8 * v8) identifier];
-        [(ACActivityCenter *)activityCenter endActivity:v10];
+        identifier = [*(*(&v11 + 1) + 8 * v8) identifier];
+        [(ACActivityCenter *)activityCenter endActivity:identifier];
 
         ++v8;
       }
@@ -2055,14 +2055,14 @@ LABEL_11:
 - (void)_updateAllApplicationMonitoringPolicies
 {
   BSDispatchQueueAssertMain();
-  v3 = [(CSActivityManager *)self applicationPolicyMonitor];
-  v4 = [(NSMutableDictionary *)self->_activityItemsByBundleId allKeys];
+  applicationPolicyMonitor = [(CSActivityManager *)self applicationPolicyMonitor];
+  allKeys = [(NSMutableDictionary *)self->_activityItemsByBundleId allKeys];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __60__CSActivityManager__updateAllApplicationMonitoringPolicies__block_invoke;
   v5[3] = &unk_27838DE70;
   v5[4] = self;
-  [v3 requestPoliciesForBundleIdentifiers:v4 completionHandler:v5];
+  [applicationPolicyMonitor requestPoliciesForBundleIdentifiers:allKeys completionHandler:v5];
 }
 
 void __60__CSActivityManager__updateAllApplicationMonitoringPolicies__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2093,12 +2093,12 @@ void __60__CSActivityManager__updateAllApplicationMonitoringPolicies__block_invo
   }
 }
 
-- (void)_updateForScreenTimeLimitForBundleId:(id)a3 policy:(id)a4
+- (void)_updateForScreenTimeLimitForBundleId:(id)id policy:(id)policy
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:a3];
-  v8 = [v6 integerValue];
+  policyCopy = policy;
+  v7 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:id];
+  integerValue = [policyCopy integerValue];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -2120,12 +2120,12 @@ void __60__CSActivityManager__updateAllApplicationMonitoringPolicies__block_invo
 
         v14 = *(*(&v18 + 1) + 8 * i);
         descriptorByActivityIdentifier = self->_descriptorByActivityIdentifier;
-        v16 = [v14 identifier];
-        v17 = [(NSMutableDictionary *)descriptorByActivityIdentifier objectForKey:v16];
+        identifier = [v14 identifier];
+        v17 = [(NSMutableDictionary *)descriptorByActivityIdentifier objectForKey:identifier];
 
         if ([v17 contentType] != 1)
         {
-          [(CSActivityManager *)self _setHidden:v8 != 0 forItem:v14];
+          [(CSActivityManager *)self _setHidden:integerValue != 0 forItem:v14];
         }
       }
 
@@ -2136,17 +2136,17 @@ void __60__CSActivityManager__updateAllApplicationMonitoringPolicies__block_invo
   }
 }
 
-- (void)_addAppActivitiesRecordForBundleId:(id)a3 activityItem:(id)a4
+- (void)_addAppActivitiesRecordForBundleId:(id)id activityItem:(id)item
 {
-  v12 = a3;
+  idCopy = id;
   activityItemsByBundleId = self->_activityItemsByBundleId;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)activityItemsByBundleId allKeys];
-  v9 = [v8 containsObject:v12];
+  itemCopy = item;
+  allKeys = [(NSMutableDictionary *)activityItemsByBundleId allKeys];
+  v9 = [allKeys containsObject:idCopy];
 
   if (v9)
   {
-    v10 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:v12];
+    v10 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:idCopy];
   }
 
   else
@@ -2155,51 +2155,51 @@ void __60__CSActivityManager__updateAllApplicationMonitoringPolicies__block_invo
   }
 
   v11 = v10;
-  [v10 addObject:v7];
+  [v10 addObject:itemCopy];
 
-  [(NSMutableDictionary *)self->_activityItemsByBundleId setObject:v11 forKey:v12];
+  [(NSMutableDictionary *)self->_activityItemsByBundleId setObject:v11 forKey:idCopy];
 }
 
-- (void)_removeAppActivitiesRecordForBundleId:(id)a3 activityItem:(id)a4
+- (void)_removeAppActivitiesRecordForBundleId:(id)id activityItem:(id)item
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:v9];
+  idCopy = id;
+  itemCopy = item;
+  v7 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:idCopy];
 
   if (v7)
   {
-    v8 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:v9];
-    if ([v8 containsObject:v6])
+    v8 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:idCopy];
+    if ([v8 containsObject:itemCopy])
     {
-      [v8 removeObject:v6];
-      [(NSMutableDictionary *)self->_activityItemsByBundleId setObject:v8 forKey:v9];
+      [v8 removeObject:itemCopy];
+      [(NSMutableDictionary *)self->_activityItemsByBundleId setObject:v8 forKey:idCopy];
     }
   }
 }
 
-- (BOOL)_itemIsNowPlaying:(id)a3
+- (BOOL)_itemIsNowPlaying:(id)playing
 {
-  v3 = [a3 groupingIdentifier];
-  v4 = [v3 isEqualToString:@"com.apple.MediaRemoteUI"];
+  groupingIdentifier = [playing groupingIdentifier];
+  v4 = [groupingIdentifier isEqualToString:@"com.apple.MediaRemoteUI"];
 
   return v4;
 }
 
-- (void)_setHidden:(BOOL)a3 forItem:(id)a4
+- (void)_setHidden:(BOOL)hidden forItem:(id)item
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  itemCopy = item;
+  v7 = itemCopy;
+  if (itemCopy)
   {
-    if (v4)
+    if (hiddenCopy)
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __40__CSActivityManager__setHidden_forItem___block_invoke;
       v10[3] = &unk_27838DCE8;
-      v8 = v6;
+      v8 = itemCopy;
       v11 = v8;
       [(CSActivityManager *)self _sendAnalyticsEventWithName:@"com.apple.activitykit.activity" payloadBuilder:v10];
       [(CSListItemManaging *)self->_itemManager removeItem:v8];
@@ -2211,7 +2211,7 @@ void __60__CSActivityManager__updateAllApplicationMonitoringPolicies__block_invo
 
     else
     {
-      [(CSListItemManaging *)self->_itemManager addItem:v6];
+      [(CSListItemManaging *)self->_itemManager addItem:itemCopy];
       [(NSMutableArray *)self->_hiddenItems removeObject:v7];
     }
   }
@@ -2222,7 +2222,7 @@ void __60__CSActivityManager__updateAllApplicationMonitoringPolicies__block_invo
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v13 = v4;
+      v13 = hiddenCopy;
       _os_log_impl(&dword_21EB05000, v9, OS_LOG_TYPE_DEFAULT, "No item found, _setHidden: %{BOOL}u", buf, 8u);
     }
   }
@@ -2244,20 +2244,20 @@ id __40__CSActivityManager__setHidden_forItem___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (BOOL)_shouldHandleActivityWithContentUpdate:(id)a3
+- (BOOL)_shouldHandleActivityWithContentUpdate:(id)update
 {
-  v3 = [a3 descriptor];
-  v4 = [v3 presentationOptions];
+  descriptor = [update descriptor];
+  presentationOptions = [descriptor presentationOptions];
 
-  v5 = [v4 destinations];
-  v6 = [v5 bs_containsObjectPassingTest:&__block_literal_global_112];
+  destinations = [presentationOptions destinations];
+  v6 = [destinations bs_containsObjectPassingTest:&__block_literal_global_112];
 
   return v6;
 }
 
-- (BOOL)_clockActivityExistsForGroupingIdentifier:(id)a3
+- (BOOL)_clockActivityExistsForGroupingIdentifier:(id)identifier
 {
-  v4 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:a3];
+  v4 = [(NSMutableDictionary *)self->_activityItemsByBundleId objectForKey:identifier];
   v5 = v4;
   if (v4)
   {

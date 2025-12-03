@@ -1,11 +1,11 @@
 @interface HearingTestMainViewController
-+ (id)makeStandardViewControllerWithHealthStore:(id)a3 entryPoint:(int64_t)a4 options:(id)a5 articleProvider:(id)a6 importFlowProvider:(id)a7;
++ (id)makeStandardViewControllerWithHealthStore:(id)store entryPoint:(int64_t)point options:(id)options articleProvider:(id)provider importFlowProvider:(id)flowProvider;
 - (void)viewDidLoad;
 @end
 
 @implementation HearingTestMainViewController
 
-+ (id)makeStandardViewControllerWithHealthStore:(id)a3 entryPoint:(int64_t)a4 options:(id)a5 articleProvider:(id)a6 importFlowProvider:(id)a7
++ (id)makeStandardViewControllerWithHealthStore:(id)store entryPoint:(int64_t)point options:(id)options articleProvider:(id)provider importFlowProvider:(id)flowProvider
 {
   sub_20CE13B84();
   sub_20CE13B74();
@@ -16,19 +16,19 @@
   }
 
   v11 = objc_allocWithZone(type metadata accessor for HearingTestMainViewController());
-  v12 = a3;
-  v13 = a5;
+  storeCopy = store;
+  optionsCopy = options;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v14 = sub_20CDCACA4(v12, a4, v13, a6);
-  v15 = [objc_allocWithZone(MEMORY[0x277D12978]) initWithRootViewController_];
-  [v15 setModalInPresentation_];
-  [v15 setModalPresentationStyle_];
+  v14 = sub_20CDCACA4(storeCopy, point, optionsCopy, provider);
+  initWithRootViewController_ = [objc_allocWithZone(MEMORY[0x277D12978]) initWithRootViewController_];
+  [initWithRootViewController_ setModalInPresentation_];
+  [initWithRootViewController_ setModalPresentationStyle_];
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 
-  return v15;
+  return initWithRootViewController_;
 }
 
 - (void)viewDidLoad
@@ -43,9 +43,9 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for HearingTestMainViewController();
-  v3 = self;
+  selfCopy = self;
   [(OBBaseWelcomeController *)&v5 viewDidLoad];
-  v4 = [(HearingTestMainViewController *)v3 headerView:v5.receiver];
+  v4 = [(HearingTestMainViewController *)selfCopy headerView:v5.receiver];
   [v4 setAllowFullWidthIcon_];
 
   sub_20CDC94D4();

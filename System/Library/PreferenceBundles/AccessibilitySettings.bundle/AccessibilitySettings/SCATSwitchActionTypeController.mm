@@ -1,41 +1,41 @@
 @interface SCATSwitchActionTypeController
-- (SCATSwitchActionTypeController)initWithSwitch:(id)a3;
-- (id)actionStringForLongPress:(BOOL)a3;
-- (id)controllerForLongPress:(BOOL)a3;
+- (SCATSwitchActionTypeController)initWithSwitch:(id)switch;
+- (id)actionStringForLongPress:(BOOL)press;
+- (id)controllerForLongPress:(BOOL)press;
 @end
 
 @implementation SCATSwitchActionTypeController
 
-- (SCATSwitchActionTypeController)initWithSwitch:(id)a3
+- (SCATSwitchActionTypeController)initWithSwitch:(id)switch
 {
-  v4 = a3;
+  switchCopy = switch;
   v8.receiver = self;
   v8.super_class = SCATSwitchActionTypeController;
   v5 = [(SCATSwitchActionTypeController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SCATSwitchActionTypeController *)v5 setStoredSwitch:v4];
+    [(SCATSwitchActionTypeController *)v5 setStoredSwitch:switchCopy];
   }
 
   return v6;
 }
 
-- (id)actionStringForLongPress:(BOOL)a3
+- (id)actionStringForLongPress:(BOOL)press
 {
-  v4 = [(SCATSwitchActionTypeController *)self storedSwitch];
-  v5 = v4;
-  if (a3)
+  storedSwitch = [(SCATSwitchActionTypeController *)self storedSwitch];
+  v5 = storedSwitch;
+  if (press)
   {
-    v6 = [v4 longPressAction];
+    longPressAction = [storedSwitch longPressAction];
   }
 
   else
   {
-    v6 = [v4 action];
+    longPressAction = [storedSwitch action];
   }
 
-  v7 = v6;
+  v7 = longPressAction;
 
   if (v7)
   {
@@ -51,17 +51,17 @@
   return v8;
 }
 
-- (id)controllerForLongPress:(BOOL)a3
+- (id)controllerForLongPress:(BOOL)press
 {
-  v3 = a3;
+  pressCopy = press;
   v5 = [SCATSwitchActionsController alloc];
-  v6 = [(SCATSwitchActionTypeController *)self storedSwitch];
-  v7 = [(SCATSwitchActionsController *)v5 initWithSwitch:v6];
+  storedSwitch = [(SCATSwitchActionTypeController *)self storedSwitch];
+  v7 = [(SCATSwitchActionsController *)v5 initWithSwitch:storedSwitch];
 
   v8 = AXParameterizedLocalizedString();
   [(SCATSwitchActionsController *)v7 setTitle:v8];
 
-  [(SCATSwitchActionsController *)v7 setSelectLongPress:v3];
+  [(SCATSwitchActionsController *)v7 setSelectLongPress:pressCopy];
 
   return v7;
 }

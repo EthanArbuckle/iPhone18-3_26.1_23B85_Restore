@@ -1,7 +1,7 @@
 @interface VSAccountsArchive
 - (VSAccountsArchive)init;
-- (VSAccountsArchive)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VSAccountsArchive)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSAccountsArchive
@@ -21,10 +21,10 @@
   return v3;
 }
 
-- (VSAccountsArchive)initWithCoder:(id)a3
+- (VSAccountsArchive)initWithCoder:(id)coder
 {
-  v4 = a3;
-  VSRequireKeyedCoder(v4);
+  coderCopy = coder;
+  VSRequireKeyedCoder(coderCopy);
   v17.receiver = self;
   v17.super_class = VSAccountsArchive;
   v5 = [(VSAccountsArchive *)&v17 init];
@@ -33,7 +33,7 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"accounts"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"accounts"];
 
     if (v9)
     {
@@ -48,7 +48,7 @@
     accounts = v5->_accounts;
     v5->_accounts = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"channels"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"channels"];
     if (v12)
     {
       v13 = [VSAccountChannels deserializationResultWithData:v12];
@@ -80,17 +80,17 @@ void __35__VSAccountsArchive_initWithCoder___block_invoke_2()
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  VSRequireKeyedCoder(v4);
-  v5 = [(VSAccountsArchive *)self accounts];
-  [v4 encodeObject:v5 forKey:@"accounts"];
+  coderCopy = coder;
+  VSRequireKeyedCoder(coderCopy);
+  accounts = [(VSAccountsArchive *)self accounts];
+  [coderCopy encodeObject:accounts forKey:@"accounts"];
 
-  v8 = [(VSAccountsArchive *)self channels];
-  v6 = [v8 serializationResultWithFormat:200];
-  v7 = [v6 object];
-  [v4 encodeObject:v7 forKey:@"channels"];
+  channels = [(VSAccountsArchive *)self channels];
+  v6 = [channels serializationResultWithFormat:200];
+  object = [v6 object];
+  [coderCopy encodeObject:object forKey:@"channels"];
 }
 
 @end

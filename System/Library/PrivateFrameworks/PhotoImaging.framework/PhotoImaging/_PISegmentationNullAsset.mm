@@ -2,11 +2,11 @@
 - (CGRect)acceptableCropRect;
 - (CGRect)gazeAreaRect;
 - (CGRect)preferredCropRect;
-- (int)loadCropRectsWithResultHandler:(id)a3;
-- (int)loadFocalLengthIn35mm:(id)a3;
-- (int)loadMotionScore:(id)a3;
-- (int)loadParallaxResource:(int64_t)a3 options:(id)a4 resultHandler:(id)a5;
-- (int)loadPetsRegionsWithOptions:(id)a3 resultHandler:(id)a4;
+- (int)loadCropRectsWithResultHandler:(id)handler;
+- (int)loadFocalLengthIn35mm:(id)in35mm;
+- (int)loadMotionScore:(id)score;
+- (int)loadParallaxResource:(int64_t)resource options:(id)options resultHandler:(id)handler;
+- (int)loadPetsRegionsWithOptions:(id)options resultHandler:(id)handler;
 @end
 
 @implementation _PISegmentationNullAsset
@@ -50,52 +50,52 @@
   return result;
 }
 
-- (int)loadFocalLengthIn35mm:(id)a3
+- (int)loadFocalLengthIn35mm:(id)in35mm
 {
   v4 = MEMORY[0x1E69B3A48];
-  v5 = a3;
+  in35mmCopy = in35mm;
   v6 = [v4 unsupportedError:@"Not available" object:0];
-  (*(a3 + 2))(v5, 0, v6);
+  (*(in35mm + 2))(in35mmCopy, 0, v6);
 
   return 0;
 }
 
-- (int)loadMotionScore:(id)a3
+- (int)loadMotionScore:(id)score
 {
   v4 = MEMORY[0x1E69B3A48];
-  v5 = a3;
+  scoreCopy = score;
   v6 = [v4 unsupportedError:@"Not available" object:0];
-  (*(a3 + 2))(v5, v6, -1.0);
+  (*(score + 2))(scoreCopy, v6, -1.0);
 
   return 0;
 }
 
-- (int)loadCropRectsWithResultHandler:(id)a3
+- (int)loadCropRectsWithResultHandler:(id)handler
 {
   v4 = MEMORY[0x1E69B3A48];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [v4 unsupportedError:@"Not available" object:0];
-  (*(a3 + 2))(v5, v6, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
+  (*(handler + 2))(handlerCopy, v6, *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *MEMORY[0x1E695F050], *(MEMORY[0x1E695F050] + 8), *(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24));
 
   return 0;
 }
 
-- (int)loadPetsRegionsWithOptions:(id)a3 resultHandler:(id)a4
+- (int)loadPetsRegionsWithOptions:(id)options resultHandler:(id)handler
 {
   v5 = MEMORY[0x1E69B3A48];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = [v5 unsupportedError:@"Not available" object:0];
-  (*(a4 + 2))(v6, 0, 0, v7);
+  (*(handler + 2))(handlerCopy, 0, 0, v7);
 
   return 0;
 }
 
-- (int)loadParallaxResource:(int64_t)a3 options:(id)a4 resultHandler:(id)a5
+- (int)loadParallaxResource:(int64_t)resource options:(id)options resultHandler:(id)handler
 {
   v6 = MEMORY[0x1E69B3A48];
-  v7 = a5;
+  handlerCopy = handler;
   v8 = [v6 unsupportedError:@"Not available" object:0];
-  (*(a5 + 2))(v7, 0, v8);
+  (*(handler + 2))(handlerCopy, 0, v8);
 
   return 0;
 }
